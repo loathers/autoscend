@@ -378,14 +378,14 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "blackbox") && (my_path() != "Heavy Rains") && (get_property("_raindohCopiesMade").to_int() < 5))
 	{
-		if((enemy == $monster[Writing Desk]) && (get_property("writingDesksDefeated").to_int() < 4) && (get_property("lastSecondFloorUnlock").to_int() < my_ascensions()))
-		{
-			set_property("sl_doCombatCopy", "yes");
-		}
-		if((enemy == $monster[Gaudy Pirate]) && (get_property("sl_gaudypiratecount").to_int() < 1) && !possessEquipment($item[Talisman O\' Namsilat]) && (item_amount($item[Gaudy Key]) < 2))
-		{
-			set_property("sl_doCombatCopy", "yes");
-		}
+#		if((enemy == $monster[Writing Desk]) && (get_property("writingDesksDefeated").to_int() < 4) && (get_property("lastSecondFloorUnlock").to_int() < my_ascensions()))
+#		{
+#			set_property("sl_doCombatCopy", "yes");
+#		}
+#		if((enemy == $monster[Gaudy Pirate]) && (get_property("sl_gaudypiratecount").to_int() < 1) && !possessEquipment($item[Talisman O\' Namsilat]) && (item_amount($item[Gaudy Key]) < 2))
+#		{
+#			set_property("sl_doCombatCopy", "yes");
+#		}
 		if((enemy == $monster[Modern Zmobie]) && (get_property("sl_modernzmobiecount").to_int() < 3))
 		{
 			set_property("sl_doCombatCopy", "yes");
@@ -640,7 +640,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "winkat") && (my_familiar() == $familiar[Reanimated Reanimator]))
 	{
-		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin, Writing Desk] contains enemy)
+		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin] contains enemy)
 		{
 			set_property("sl_combatHandler", combatState + "(winkat)");
 			if((get_property("_badlyRomanticArrows").to_int() == 1) && (round <= 1) && (get_property("romanticTarget") != enemy))
@@ -1270,7 +1270,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	# Instakill handler
 	boolean doInstaKill = true;
-	if($monsters[Lobsterfrogman, Ninja Snowman Assassin, Writing Desk] contains enemy)
+	if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
 	{
 		if(sl_have_skill($skill[Digitize]) && (get_property("_sourceTerminalDigitizeMonster") != enemy))
 		{
@@ -1643,7 +1643,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "digitize") && sl_have_skill($skill[Digitize]) && (my_mp() > mp_cost($skill[Digitize])) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !get_property("kingLiberated").to_boolean())
 	{
-		if($monsters[Ninja Snowman Assassin, Lobsterfrogman, Writing Desk] contains enemy)
+		if($monsters[Ninja Snowman Assassin, Lobsterfrogman] contains enemy)
 		{
 			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
 			{
@@ -2647,7 +2647,7 @@ string sl_edCombatHandler(int round, string opp, string text)
 
 	# Instakill handler
 	boolean doInstaKill = true;
-	if($monsters[Lobsterfrogman, Ninja Snowman Assassin, Writing Desk] contains enemy)
+	if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
 	{
 		if(sl_have_skill($skill[Digitize]) && (get_property("_sourceTerminalDigitizeMonster") != enemy))
 		{

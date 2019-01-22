@@ -394,13 +394,6 @@ boolean chateaumantegna_usePainting(string option)
 			return false;
 		}
 	}
-	if(get_property("chateauMonster") == $monster[Writing Desk])
-	{
-		if(get_property("writingDesksDefeated").to_int() >= 5)
-		{
-			return false;
-		}
-	}
 	if(get_property("chateauMonster") == $monster[Ninja Snowman Assassin])
 	{
 		if((item_amount($item[Ninja Carabiner]) > 0) && (item_amount($item[Ninja Crampons]) > 0) && (item_amount($item[Ninja Rope]) > 0))

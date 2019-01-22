@@ -179,14 +179,7 @@ void initializeSettings()
 	set_property("sl_mosquito", "");
 	set_property("sl_nuns", "");
 
-	if((my_name() == "cheesecookie") && (sl_my_path() != "Actually Ed the Undying"))
-	{
-		set_property("sl_nunsTrick", "yes");
-	}
-	else
-	{
-		set_property("sl_nunsTrick", "no");
-	}
+	set_property("sl_nunsTrick", "no");
 	set_property("sl_nunsTrickActive", "no");
 	set_property("sl_nunsTrickGland", "");
 	set_property("sl_nunsTrickCount", "0");
@@ -202,7 +195,7 @@ void initializeSettings()
 	set_property("sl_powerLevelLastLevel", "0");
 	set_property("sl_powerLevelAdvCount", "0");
 	set_property("sl_powerLevelLastAttempted", "0");
-	set_property("sl_shenCopperhead", false);
+	set_property("sl_shenCopperhead", true);
 	set_property("sl_skipDesert", 0);
 	set_property("sl_snapshot", "");
 	set_property("sl_sniffs", "");
@@ -667,20 +660,20 @@ boolean LX_faxing()
 
 boolean LX_chateauPainting()
 {
-	if((get_property("chateauMonster") == $monster[Writing Desk]) && (sl_get_campground() contains $item[Source Terminal]))
-	{
-		if(get_property("writingDesksDefeated").to_int() < 5)
-		{
-			if(chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && (my_daycount() == 1))
-			{
-				sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-				if(chateaumantegna_usePainting())
-				{
-					return true;
-				}
-			}
-		}
-	}
+#	if((get_property("chateauMonster") == $monster[Writing Desk]) && (sl_get_campground() contains $item[Source Terminal]))
+#	{
+#		if(get_property("writingDesksDefeated").to_int() < 5)
+#		{
+#			if(chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && (my_daycount() == 1))
+#			{
+#				sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+#				if(chateaumantegna_usePainting())
+#				{
+#					return true;
+#				}
+#			}
+#		}
+#	}
 
 	consumeStuff();
 	int paintingLevel = 8;
@@ -11204,168 +11197,164 @@ boolean LX_handleSpookyravenFirstFloor()
 		abort("Have Lady Spookyraven's Necklace but did not give it to her....");
 	}
 
-	if((get_property("_sourceTerminalDigitizeMonster") == $monster[Writing Desk]) && (get_property("writingDesksDefeated").to_int() < 5))
-	{
-		if(loopHandler("_sl_digitizeDeskTurn", "_sl_digitizeDeskCounter", "Potentially unable to do anything while waiting on digitized writing desks.", 10))
-		{
-			print("Have a digitized Writing Desk, let's not bother with the Spooky First Floor", "blue");
-		}
-		if((get_property("sl_war") != "finished") && (get_property("sl_powerLevelAdvCount").to_int() < 5) && (get_property("_sl_digitizeDeskCounter").to_int() < 5))
-		{
-			return false;
-		}
-	}
+#	if((get_property("_sourceTerminalDigitizeMonster") == $monster[Writing Desk]) && (get_property("writingDesksDefeated").to_int() < 5))
+#	{
+#		if(loopHandler("_sl_digitizeDeskTurn", "_sl_digitizeDeskCounter", "Potentially unable to do anything while waiting on digitized writing desks.", 10))
+#		{
+#			print("Have a digitized Writing Desk, let's not bother with the Spooky First Floor", "blue");
+#		}
+#		if((get_property("sl_war") != "finished") && (get_property("sl_powerLevelAdvCount").to_int() < 5) && (get_property("_sl_digitizeDeskCounter").to_int() < 5))
+#		{
+#			return false;
+#		}
+#	}
 
-	if(!have_skill($skill[Rain Man]) || is100FamiliarRun())
+	if(hasSpookyravenLibraryKey())
 	{
-		if(hasSpookyravenLibraryKey())
-		{
-			print("Well, we need writing desks", "blue");
-			print("Going to the liberry!", "blue");
+		print("Well, we need writing desks", "blue");
+		print("Going to the liberry!", "blue");
 #			cli_execute("olfact writing desk");
-			set_property("choiceAdventure888", "4");
-			set_property("choiceAdventure889", "4");
-			set_property("choiceAdventure163", "4");
-			ccAdv(1, $location[The Haunted Library]);
-		}
-		else if(item_amount($item[Spookyraven Billiards Room Key]) == 1)
+		set_property("choiceAdventure888", "4");
+		set_property("choiceAdventure889", "4");
+		set_property("choiceAdventure163", "4");
+		ccAdv(1, $location[The Haunted Library]);
+	}
+	else if(item_amount($item[Spookyraven Billiards Room Key]) == 1)
+	{
+		int expectPool = get_property("poolSkill").to_int();
+		expectPool += min(10,to_int(2 * square_root(get_property("poolSharkCount").to_int())));
+		if(my_inebriety() >= 10)
 		{
-			int expectPool = get_property("poolSkill").to_int();
-			expectPool += min(10,to_int(2 * square_root(get_property("poolSharkCount").to_int())));
-			if(my_inebriety() >= 10)
-			{
-				expectPool += (30 - (2 * my_inebriety()));
-			}
-			else
-			{
-				expectPool += my_inebriety();
-			}
-			// Staff of Fats (non-Ed and Ed) and Staff of Ed (from Ed)
-			#if(have_equipped($item[2268]) || have_equipped($item[7964]) || have_equipped($item[7961]))
-			if(possessEquipment($item[2268]) || possessEquipment($item[7964]) || possessEquipment($item[7961]))
-			{
-				expectPool += 5;
-			}
-			if(have_equipped($item[Pool Cue]))
-			{
-				expectPool += 3;
-			}
-			if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
-			{
-				expectPool += 3;
-			}
-			if(have_effect($effect[Chalked Weapon]) > 0)
-			{
-				expectPool += 5;
-			}
-			if(have_effect($effect[Influence of Sphere]) > 0)
-			{
-				expectPool += 5;
-			}
-			if(have_effect($effect[Video... Games?]) > 0)
-			{
-				expectPool += 5;
-			}
-			if(have_effect($effect[Swimming with Sharks]) > 0)
-			{
-				expectPool += 3;
-			}
-
-			if(!possessEquipment($item[Pool Cue]))
-			{
-				print("Well, I need a pool cueball...", "blue");
-				backupSetting("choiceAdventure330", 1);
-				ccAdv(1, $location[The Haunted Billiards Room]);
-				restoreSetting("choiceAdventure330");
-				return true;
-			}
-
-			print("Looking at the billiards room: 14 <= " + expectPool + " <= 18", "green");
-			if((my_inebriety() < 8) && ((my_inebriety() + 2) < inebriety_limit()))
-			{
-				if(expectPool < 18)
-				{
-					print("Not quite boozed up for the billiards room... we'll be back.", "green");
-					if(get_property("sl_powerLevelAdvCount").to_int() < 5)
-					{
-						return false;
-					}
-				}
-
-				print("Well, maybe I'll just deal with not being drunk enough, punk", "blue");
-			}
-			if((my_inebriety() > 12) && (expectPool < 16))
-			{
-				if(in_hardcore() && (my_daycount() <= 2))
-				{
-					print("Ok, I'm too boozed up for the billards room, I'll be back.", "green");
-				}
-				if(!in_hardcore() && (my_daycount() <= 1))
-				{
-					print("I'm too drunk for pool, at least it is only " + format_date_time("yyyyMMdd", today_to_string(), "EEEE"), "green");
-				}
-				return false;
-			}
-
-			set_property("choiceAdventure875" , "1");
-			if(expectPool < 14)
-			{
-				set_property("choiceAdventure875", "2");
-			}
-			if(possessEquipment($item[Pool Cue]))
-			{
-				buffMaintain($effect[Chalky Hand], 0, 1, 1);
-			}
-
-			# Staff of Fats
-			if(item_amount($item[7964]) > 0)
-			{
-				equip($item[7964]);
-			}
-			if(item_amount($item[2268]) > 0)
-			{
-				equip($item[2268]);
-			}
-			#Staff of Ed
-			if(item_amount($item[7961]) > 0)
-			{
-				equip($item[7961]);
-			}
-
-			print("It's billiards time!", "blue");
-			backupSetting("choiceAdventure330", 1);
-			ccAdv(1, $location[The Haunted Billiards Room]);
-			restoreSetting("choiceAdventure330");
+			expectPool += (30 - (2 * my_inebriety()));
 		}
 		else
 		{
-			print("Looking for the Billards Room key (Hot/Stench:" + elemental_resist($element[hot]) + "/" + elemental_resist($element[stench]) + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
-			handleFamiliar($familiar[Exotic Parrot]);
-			if(is100FamiliarRun())
-			{
-				if(sl_have_familiar($familiar[Trick-or-Treating Tot]) && (available_amount($item[Li\'l Candy Corn Costume]) > 0))
-				{
-					handleFamiliar($familiar[Trick-or-Treating Tot]);
-				}
-			}
-			if(get_property("manorDrawerCount").to_int() >= 24)
-			{
-				cli_execute("refresh inv");
-				if(item_amount($item[Spookyraven Billiards Room Key]) == 0)
-				{
-					print("We think you've opened enough drawers in the kitchen but you don't have the Billiards Room Key.");
-					wait(10);
-				}
-			}
-			buffMaintain($effect[Hide of Sobek], 10, 1, 1);
-			buffMaintain($effect[Patent Prevention], 0, 1, 1);
-
-			ccAdv(1, $location[The Haunted Kitchen]);
-			handleFamiliar("item");
+			expectPool += my_inebriety();
 		}
-		return true;
+		// Staff of Fats (non-Ed and Ed) and Staff of Ed (from Ed)
+		#if(have_equipped($item[2268]) || have_equipped($item[7964]) || have_equipped($item[7961]))
+		if(possessEquipment($item[2268]) || possessEquipment($item[7964]) || possessEquipment($item[7961]))
+		{
+			expectPool += 5;
+		}
+		if(have_equipped($item[Pool Cue]))
+		{
+			expectPool += 3;
+		}
+		if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
+		{
+			expectPool += 3;
+		}
+		if(have_effect($effect[Chalked Weapon]) > 0)
+		{
+			expectPool += 5;
+		}
+		if(have_effect($effect[Influence of Sphere]) > 0)
+		{
+			expectPool += 5;
+		}
+		if(have_effect($effect[Video... Games?]) > 0)
+		{
+			expectPool += 5;
+		}
+		if(have_effect($effect[Swimming with Sharks]) > 0)
+		{
+			expectPool += 3;
+		}
+
+		if(!possessEquipment($item[Pool Cue]))
+		{
+			print("Well, I need a pool cueball...", "blue");
+			backupSetting("choiceAdventure330", 1);
+			ccAdv(1, $location[The Haunted Billiards Room]);
+			restoreSetting("choiceAdventure330");
+			return true;
+		}
+
+		print("Looking at the billiards room: 14 <= " + expectPool + " <= 18", "green");
+		if((my_inebriety() < 8) && ((my_inebriety() + 2) < inebriety_limit()))
+		{
+			if(expectPool < 18)
+			{
+				print("Not quite boozed up for the billiards room... we'll be back.", "green");
+				if(get_property("sl_powerLevelAdvCount").to_int() < 5)
+				{
+					return false;
+				}
+			}
+
+			print("Well, maybe I'll just deal with not being drunk enough, punk", "blue");
+		}
+		if((my_inebriety() > 12) && (expectPool < 16))
+		{
+			if(in_hardcore() && (my_daycount() <= 2))
+			{
+				print("Ok, I'm too boozed up for the billards room, I'll be back.", "green");
+			}
+			if(!in_hardcore() && (my_daycount() <= 1))
+			{
+				print("I'm too drunk for pool, at least it is only " + format_date_time("yyyyMMdd", today_to_string(), "EEEE"), "green");
+			}
+			return false;
+		}
+
+		set_property("choiceAdventure875" , "1");
+		if(expectPool < 14)
+		{
+			set_property("choiceAdventure875", "2");
+		}
+		if(possessEquipment($item[Pool Cue]))
+		{
+			buffMaintain($effect[Chalky Hand], 0, 1, 1);
+		}
+
+		# Staff of Fats
+		if(item_amount($item[7964]) > 0)
+		{
+			equip($item[7964]);
+		}
+		if(item_amount($item[2268]) > 0)
+		{
+			equip($item[2268]);
+		}
+		#Staff of Ed
+		if(item_amount($item[7961]) > 0)
+		{
+			equip($item[7961]);
+		}
+
+		print("It's billiards time!", "blue");
+		backupSetting("choiceAdventure330", 1);
+		ccAdv(1, $location[The Haunted Billiards Room]);
+		restoreSetting("choiceAdventure330");
 	}
-	return false;
+	else
+	{
+		print("Looking for the Billards Room key (Hot/Stench:" + elemental_resist($element[hot]) + "/" + elemental_resist($element[stench]) + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
+		handleFamiliar($familiar[Exotic Parrot]);
+		if(is100FamiliarRun())
+		{
+			if(sl_have_familiar($familiar[Trick-or-Treating Tot]) && (available_amount($item[Li\'l Candy Corn Costume]) > 0))
+			{
+				handleFamiliar($familiar[Trick-or-Treating Tot]);
+			}
+		}
+		if(get_property("manorDrawerCount").to_int() >= 24)
+		{
+			cli_execute("refresh inv");
+			if(item_amount($item[Spookyraven Billiards Room Key]) == 0)
+			{
+				print("We think you've opened enough drawers in the kitchen but you don't have the Billiards Room Key.");
+				wait(10);
+			}
+		}
+		buffMaintain($effect[Hide of Sobek], 10, 1, 1);
+		buffMaintain($effect[Patent Prevention], 0, 1, 1);
+
+		ccAdv(1, $location[The Haunted Kitchen]);
+		handleFamiliar("item");
+	}
+	return true;
 }
 
 boolean L5_getEncryptionKey()
