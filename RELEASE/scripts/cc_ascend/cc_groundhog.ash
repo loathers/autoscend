@@ -1,40 +1,40 @@
-script "cc_groundhog.ash"
+script "sl_groundhog.ash"
 
 void groundhog_initializeSettings()
 {
-	if(cc_my_path() == "Live. Ascend. Repeat.")
+	if(sl_my_path() == "Live. Ascend. Repeat.")
 	{
-		set_property("cc_ballroomsong", "finished");
-		set_property("cc_cubeItems", true);
-		set_property("cc_getStarKey", true);
-		set_property("cc_grimstoneOrnateDowsingRod", false);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_useCubeling", true);
-		set_property("cc_wandOfNagamar", true);
+		set_property("sl_ballroomsong", "finished");
+		set_property("sl_cubeItems", true);
+		set_property("sl_getStarKey", true);
+		set_property("sl_grimstoneOrnateDowsingRod", false);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_useCubeling", true);
+		set_property("sl_wandOfNagamar", true);
 	}
 }
 
 boolean groundhogSafeguard()
 {
-	if(cc_my_path() == "Live. Ascend. Repeat.")
+	if(sl_my_path() == "Live. Ascend. Repeat.")
 	{
 		string repeats = get_property("lastEncounter");
 		if((repeats == "Skull, Skull, Skull") || (repeats == "Urning Your Keep") || (repeats == "Turn Your Head and Coffin") || (repeats == "Curtains") || (repeats == "There's No Ability Like Possibility") || (repeats == "Putting Off Is Off-Putting") || (repeats == "Huzzah!"))
 		{
-			if(get_property("_cc_groundhogSkip").to_int() == my_turncount())
+			if(get_property("_sl_groundhogSkip").to_int() == my_turncount())
 			{
-				set_property("_cc_groundhogSkipCounter", get_property("_cc_groundhogSkipCounter").to_int()+1);
+				set_property("_sl_groundhogSkipCounter", get_property("_sl_groundhogSkipCounter").to_int()+1);
 			}
-			if(get_property("_cc_groundhogSkipCounter").to_int() > 6)
+			if(get_property("_sl_groundhogSkipCounter").to_int() > 6)
 			{
 				abort("You have a non-combat that can infinitely loop and we are going to infintely loop on it like a groundhog. Maybe you should spend this adventure somewhere to ease the pain for all of us.");
 			}
-			set_property("_cc_groundhogSkip", my_turncount());
+			set_property("_sl_groundhogSkip", my_turncount());
 		}
 		else
 		{
-			set_property("_cc_groundhogSkipCounter", 0);
-			set_property("_cc_groundhogSkip", -1);
+			set_property("_sl_groundhogSkipCounter", 0);
+			set_property("_sl_groundhogSkip", -1);
 		}
 	}
 	return false;
@@ -42,11 +42,11 @@ boolean groundhogSafeguard()
 
 boolean canGroundhog(location loc)
 {
-	if(cc_my_path() == "Live. Ascend. Repeat.")
+	if(sl_my_path() == "Live. Ascend. Repeat.")
 	{
 		if($locations[The Castle In The Clouds In The Sky (Ground Floor), The Defiled Alcove, The Defiled Niche, The Defiled Nook, The Haunted Ballroom] contains loc)
 		{
-			if(get_property("_cc_groundhogSkip").to_int() == my_turncount())
+			if(get_property("_sl_groundhogSkip").to_int() == my_turncount())
 			{
 				return false;
 			}
@@ -59,7 +59,7 @@ boolean canGroundhog(location loc)
 
 boolean groundhogAbort(location loc)
 {
-	if(cc_my_path() == "Live. Ascend. Repeat.")
+	if(sl_my_path() == "Live. Ascend. Repeat.")
 	{
 		generic_t itemNeed = zone_needItem(loc);
 		if(!itemNeed._boolean)
@@ -83,7 +83,7 @@ boolean groundhogAbort(location loc)
 boolean LM_groundhog()
 {
 	//Not best way but just do it...
-	if(cc_my_path() == "Live. Ascend. Repeat.")
+	if(sl_my_path() == "Live. Ascend. Repeat.")
 	{
 		if(get_property("_sourceTerminalDigitizeUses").to_int() < 3)
 		{

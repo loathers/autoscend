@@ -1,4 +1,4 @@
-script "cc_zone.ash"
+script "sl_zone.ash"
 
 //All functions should fail if the king is liberated?
 //Zone functions come here.
@@ -213,7 +213,7 @@ generic_t zone_needItem(location loc)
 		{
 			int progress = get_property("booPeakProgress").to_int();
 			progress -= (30 * item_amount($item[A-Boo Clue]));
-			if(get_property("cc_aboopending").to_int() != 0)
+			if(get_property("sl_aboopending").to_int() != 0)
 			{
 				progress -= 30;
 			}
@@ -288,19 +288,19 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The Haunted Pantry]:
-		if((cc_my_path() == "Community Service") && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
+		if((sl_my_path() == "Community Service") && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
 		{
 			retval._float = 59.4;
 		}
 		break;
 	case $location[The Skeleton Store]:
-		if((cc_my_path() == "Community Service") && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
+		if((sl_my_path() == "Community Service") && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
 		{	//No idea, should spade this for great justice.
 			retval._float = 33.0;
 		}
 		break;
 	case $location[The Secret Government Laboratory]:
-		if((cc_my_path() == "Community Service") && (item_amount($item[Experimental Serum G-9]) < 2))
+		if((sl_my_path() == "Community Service") && (item_amount($item[Experimental Serum G-9]) < 2))
 		{	//No idea, assume it is low.
 			retval._float = 10.0;
 		}
@@ -321,7 +321,7 @@ generic_t zone_needItem(location loc)
 		retval._boolean = true;
 		retval._float = 10000.0/value;
 
-		if(cc_my_path() == "Live. Ascend. Repeat.")
+		if(sl_my_path() == "Live. Ascend. Repeat.")
 		{
 			retval._float = 5000.0/value;
 		}
@@ -386,7 +386,7 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[The Hidden Temple]:
-		if(cc_my_path() == "G-Lover")
+		if(sl_my_path() == "G-Lover")
 		{
 			value = -90;
 		}
@@ -527,7 +527,7 @@ generic_t zone_combatMod(location loc)
 		break;
 	}
 
-	if(cc_my_path() == "Live. Ascend. Repeat.")
+	if(sl_my_path() == "Live. Ascend. Repeat.")
 	{
 		value = 0;
 	}
@@ -658,7 +658,7 @@ generic_t zone_available(location loc)
 		}
 
 	case $location[Super Villain\'s Lair]:
-		if((cc_my_path() == "License to Adventure") && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_cc_bondBriefing") == "started"))
+		if((sl_my_path() == "License to Adventure") && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_sl_bondBriefing") == "started"))
 		{
 			retval._boolean = true;
 		}
@@ -949,7 +949,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[The Poop Deck]:
-		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (internalQuestStatus("questM12Pirate") >= 6) && (get_property("cc_mcmuffin") != ""))
+		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (internalQuestStatus("questM12Pirate") >= 6) && (get_property("sl_mcmuffin") != ""))
 		{
 			if((get_property("questL12War") == "unstarted") || (get_property("questL12War") == "finished"))
 			{
@@ -958,7 +958,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[Belowdecks]:
-		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (get_property("questM12Pirate") == "finished") && (get_property("cc_mcmuffin") != ""))
+		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (get_property("questM12Pirate") == "finished") && (get_property("sl_mcmuffin") != ""))
 		{
 			if((get_property("questL12War") == "unstarted") || (get_property("questL12War") == "finished"))
 			{

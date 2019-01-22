@@ -1,5 +1,5 @@
 script "precheese.ash";
-import<cc_ascend.ash>
+import<sl_ascend.ash>
 
 void handlePreAdventure()
 {
@@ -8,7 +8,7 @@ void handlePreAdventure()
 
 void handlePreAdventure(location place)
 {
-	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (cc_my_path() == "Heavy Rains"))
+	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (sl_my_path() == "Heavy Rains"))
 	{
 		abort("Familiar has no equipment, WTF");
 	}
@@ -16,14 +16,14 @@ void handlePreAdventure(location place)
 #	set_location doesn't help us to resolve this, just let it infinite and fail in that exotic case that was propbably due to a bad user.
 #	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
 #	{
-#		if(!cc_have_familiar($familiar[Machine Elf]))
+#		if(!sl_have_familiar($familiar[Machine Elf]))
 #		{
 #			abort("Massive failure, we don't use snowglobes.");
 #		}
 #		print("Somehow we are considering the DMT without a Machine Elf...", "red");
 #	}
 
-	if(get_property("cc_disableAdventureHandling").to_boolean())
+	if(get_property("sl_disableAdventureHandling").to_boolean())
 	{
 		print("Preadventure skipped by standard adventure handler.", "green");
 		return;
@@ -43,8 +43,8 @@ void handlePreAdventure(location place)
 
 	print("Starting preadventure script...", "green");
 
-	familiar famChoice = to_familiar(get_property("cc_familiarChoice"));
-	if(cc_my_path() == "Pocket Familiars")
+	familiar famChoice = to_familiar(get_property("sl_familiarChoice"));
+	if(sl_my_path() == "Pocket Familiars")
 	{
 		famChoice = $familiar[none];
 	}
@@ -60,7 +60,7 @@ void handlePreAdventure(location place)
 
 	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
 	{
-		if(!cc_have_familiar($familiar[Machine Elf]))
+		if(!sl_have_familiar($familiar[Machine Elf]))
 		{
 			abort("Massive failure, we don't use snowglobes.");
 		}
@@ -121,7 +121,7 @@ void handlePreAdventure(location place)
 				buffMaintain($effect[Song of Accompaniment], 10, 1, 1);
 			}
 		}
-		else if((place.turns_spent > 1) && (place != get_property("cc_priorLocation").to_location()))
+		else if((place.turns_spent > 1) && (place != get_property("sl_priorLocation").to_location()))
 		{
 			//When do we consider Song of Cockiness?
 			buffMaintain($effect[Song of Fortune], 10, 1, 1);
@@ -134,7 +134,7 @@ void handlePreAdventure(location place)
 
 	if(my_class() == $class[Ed])
 	{
-		if((zone_combatMod(place)._int < combat_rate_modifier()) && (have_effect($effect[Shelter Of Shed]) == 0) && cc_have_skill($skill[Shelter Of Shed]))
+		if((zone_combatMod(place)._int < combat_rate_modifier()) && (have_effect($effect[Shelter Of Shed]) == 0) && sl_have_skill($skill[Shelter Of Shed]))
 		{
 			acquireMP(25, false);
 		}
@@ -222,7 +222,7 @@ void handlePreAdventure(location place)
 		print("Warning, we don't have a lot of MP but we are chugging along anyway", "red");
 	}
 	groundhogAbort(place);
-	set_property("cc_priorLocation", place);
+	set_property("sl_priorLocation", place);
 	print("Pre Adventure at " + place + " done, beep.", "blue");
 }
 

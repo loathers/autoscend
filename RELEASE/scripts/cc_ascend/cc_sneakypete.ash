@@ -1,18 +1,18 @@
-script "cc_sneakypete.ash"
+script "sl_sneakypete.ash"
 
 void pete_initializeSettings()
 {
 	if(my_path() == "Avatar of Sneaky Pete")
 	{
-		set_property("cc_100familiar", $familiar[Egg Benedict]);
-		set_property("cc_ballroomsong", "finished");
-		set_property("cc_peteSkills", -1);
-		set_property("cc_cubeItems", false);
-		set_property("cc_getStarKey", true);
-		set_property("cc_grimstoneOrnateDowsingRod", false);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_useCubeling", false);
-		set_property("cc_wandOfNagamar", false);
+		set_property("sl_100familiar", $familiar[Egg Benedict]);
+		set_property("sl_ballroomsong", "finished");
+		set_property("sl_peteSkills", -1);
+		set_property("sl_cubeItems", false);
+		set_property("sl_getStarKey", true);
+		set_property("sl_grimstoneOrnateDowsingRod", false);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_useCubeling", false);
+		set_property("sl_wandOfNagamar", false);
 	}
 }
 
@@ -25,9 +25,9 @@ void pete_initializeDay(int day)
 	}
 	if(day == 1)
 	{
-		if(get_property("cc_day1_init") != "finished")
+		if(get_property("sl_day1_init") != "finished")
 		{
-			#set_property("cc_day1_init", "finished");
+			#set_property("sl_day1_init", "finished");
 		}
 	}
 	else if(day == 2)
@@ -35,10 +35,10 @@ void pete_initializeDay(int day)
 		equipBaseline();
 		ovenHandle();
 
-		if(get_property("cc_day2_init") == "")
+		if(get_property("sl_day2_init") == "")
 		{
 
-			if(get_property("cc_dickstab").to_boolean() && chateaumantegna_available())
+			if(get_property("sl_dickstab").to_boolean() && chateaumantegna_available())
 			{
 				boolean[item] furniture = chateaumantegna_decorations();
 				if(!furniture[$item[Ceiling Fan]])
@@ -61,23 +61,23 @@ void pete_initializeDay(int day)
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 			pullXWhenHaveY(whatHiMein(), 1, 0);
 
-			#set_property("cc_day2_init", "finished");
+			#set_property("sl_day2_init", "finished");
 		}
 	}
 	else if(day == 3)
 	{
-		if(get_property("cc_day3_init") == "")
+		if(get_property("sl_day3_init") == "")
 		{
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("cc_day3_init", "finished");
+			set_property("sl_day3_init", "finished");
 		}
 	}
 	else if(day == 4)
 	{
-		if(get_property("cc_day4_init") == "")
+		if(get_property("sl_day4_init") == "")
 		{
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("cc_day4_init", "finished");
+			set_property("sl_day4_init", "finished");
 		}
 	}
 }
@@ -88,7 +88,7 @@ boolean pete_buySkills()
 	{
 		return false;
 	}
-	if(my_level() <= get_property("cc_peteSkills").to_int())
+	if(my_level() <= get_property("sl_peteSkills").to_int())
 	{
 		return false;
 	}
@@ -305,7 +305,7 @@ boolean pete_buySkills()
 		my_cyclePoints = create_matcher("Upping Your Grade", page);
 	}
 
-	set_property("cc_peteSkills", my_level());
+	set_property("sl_peteSkills", my_level());
 	return true;
 }
 

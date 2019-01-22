@@ -1,27 +1,27 @@
-script "cc_bondmember.ash"
+script "sl_bondmember.ash"
 
 void bond_initializeSettings()
 {
 	if(my_path() == "License to Adventure")
 	{
-		set_property("cc_100familiar", $familiar[Egg Benedict]);
-		set_property("cc_getBeehive", true);
-		set_property("cc_cubeItems", true);
-		set_property("cc_getStarKey", true);
-		set_property("cc_grimstoneOrnateDowsingRod", true);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_useCubeling", true);
-		set_property("cc_wandOfNagamar", false);
+		set_property("sl_100familiar", $familiar[Egg Benedict]);
+		set_property("sl_getBeehive", true);
+		set_property("sl_cubeItems", true);
+		set_property("sl_getStarKey", true);
+		set_property("sl_grimstoneOrnateDowsingRod", true);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_useCubeling", true);
+		set_property("sl_wandOfNagamar", false);
 		set_property("choiceAdventure1258", 2);
 		set_property("choiceAdventure1261", 1);
-		set_property("cc_familiarChoice", "");
+		set_property("sl_familiarChoice", "");
 	}
 	else
 	{
 		return;
 	}
 
-	if(get_property("cc_dickstab").to_boolean())
+	if(get_property("sl_dickstab").to_boolean())
 	{
 		int have = item_amount($item[Improved Martini]) + item_amount($item[Splendid Martini]);
 		if((my_inebriety() == 0) && (have == 0))
@@ -59,7 +59,7 @@ void bond_initializeSettings()
 		{
 			cli_execute("make 1 " + $item[Viral Video]);
 		}
-		if(!get_property("_pottedTeaTreeUsed").to_boolean() && (cc_get_campground() contains $item[Potted Tea Tree]))
+		if(!get_property("_pottedTeaTreeUsed").to_boolean() && (sl_get_campground() contains $item[Potted Tea Tree]))
 		{
 			cli_execute("teatree " + $item[Cuppa Sobrie Tea]);
 		}
@@ -88,7 +88,7 @@ boolean bond_initializeDay(int day)
 	}
 	if(day == 2)
 	{
-		if(get_property("cc_dickstab").to_boolean())
+		if(get_property("sl_dickstab").to_boolean())
 		{
 			if(chateaumantegna_available())
 			{
@@ -130,9 +130,9 @@ boolean bond_initializeDay(int day)
 				deck_cheat("tower");
 				deck_cheat("mine");
 			}
-			if(!get_property("_cc_kgbSetup").to_boolean())
+			if(!get_property("_sl_kgbSetup").to_boolean())
 			{
-				set_property("_cc_kgbSetup", true);
+				set_property("_sl_kgbSetup", true);
 				kgb_getMartini();
 			}
 			int have = item_amount($item[Improved Martini]) + item_amount($item[Splendid Martini]);
@@ -160,7 +160,7 @@ boolean bond_initializeDay(int day)
 			{
 				cli_execute("make 1 " + $item[Viral Video]);
 			}
-			if(!get_property("_pottedTeaTreeUsed").to_boolean() && (cc_get_campground() contains $item[Potted Tea Tree]))
+			if(!get_property("_pottedTeaTreeUsed").to_boolean() && (sl_get_campground() contains $item[Potted Tea Tree]))
 			{
 				cli_execute("teatree " + $item[Cuppa Sobrie Tea]);
 			}
@@ -168,9 +168,9 @@ boolean bond_initializeDay(int day)
 			//Digitize a blooper? Time spin it?
 			equipBaseline();
 
-			if(get_property("cc_dickstab").to_boolean() && !possessEquipment($item[Dented Scepter]) && is_unrestricted($item[Witchess Set]) && get_property("lovebugsUnlocked").to_boolean() && possessEquipment($item[Your Cowboy Boots]) && have_skills($skills[Curse of Weaksauce, Shell Up, Lunging Thrust-Smack, Sauceshell, Itchy Curse Finger]) && is_unrestricted($item[Source Terminal]) && (cc_get_campground() contains $item[Witchess Set]) && (cc_get_campground() contains $item[Source Terminal]) && (get_property("_witchessFights").to_int() < 5))
+			if(get_property("sl_dickstab").to_boolean() && !possessEquipment($item[Dented Scepter]) && is_unrestricted($item[Witchess Set]) && get_property("lovebugsUnlocked").to_boolean() && possessEquipment($item[Your Cowboy Boots]) && have_skills($skills[Curse of Weaksauce, Shell Up, Lunging Thrust-Smack, Sauceshell, Itchy Curse Finger]) && is_unrestricted($item[Source Terminal]) && (sl_get_campground() contains $item[Witchess Set]) && (sl_get_campground() contains $item[Source Terminal]) && (get_property("_witchessFights").to_int() < 5))
 			{
-				cc_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
+				sl_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
 				if(my_mp() < 55)
 				{
 					doRest();
@@ -178,11 +178,11 @@ boolean bond_initializeDay(int day)
 				buffMaintain($effect[Pyromania], 15, 1, 1);
 				buffMaintain($effect[Frostbeard], 15, 1, 1);
 				buffMaintain($effect[Power Ballad of the Arrowsmith], 5, 1, 1);
-				set_property("cc_combatDirective", "start;skill weaksauce;skill cowboy kick;item time-spinner;skill love stinkbug;skill love mosquito;skill compress;skill turbo;skill shell up;skill sauceshell;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack");
-				boolean retval = cc_advWitchess("king");
-				set_property("cc_combatDirective", "");
+				set_property("sl_combatDirective", "start;skill weaksauce;skill cowboy kick;item time-spinner;skill love stinkbug;skill love mosquito;skill compress;skill turbo;skill shell up;skill sauceshell;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack");
+				boolean retval = sl_advWitchess("king");
+				set_property("sl_combatDirective", "");
 
-				cc_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+				sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 				if(!possessEquipment($item[Dented Scepter]))
 				{
 					abort("Dickstab failed");
@@ -198,7 +198,7 @@ boolean bond_initializeDay(int day)
 					cli_execute("make 1 " + $item[Glass Casserole Dish]);
 				}
 			}
-			set_property("_cc_bondBriefing", "started");
+			set_property("_sl_bondBriefing", "started");
 
 		}
 	}
@@ -366,19 +366,19 @@ boolean LM_bond()
 		{
 			use_skill(1, $skill[Disco Nap]);
 		}
-		set_property("_cc_bondBriefing", "started");
+		set_property("_sl_bondBriefing", "started");
 	}
 
-	if((get_property("_cc_bondBriefing") == "started") && (get_property("_villainLairProgress").to_int() >= 999))
+	if((get_property("_sl_bondBriefing") == "started") && (get_property("_villainLairProgress").to_int() >= 999))
 	{
-		set_property("_cc_bondBriefing", "finished");
+		set_property("_sl_bondBriefing", "finished");
 	}
 
-	if(get_property("_cc_bondBriefing") == "started")
+	if(get_property("_sl_bondBriefing") == "started")
 	{
-		if(get_property("cc_dickstab").to_boolean() && !possessEquipment($item[Dented Scepter]) && is_unrestricted($item[Witchess Set]) && get_property("lovebugsUnlocked").to_boolean() && possessEquipment($item[Your Cowboy Boots]) && have_skills($skills[Curse of Weaksauce, Shell Up, Lunging Thrust-Smack, Sauceshell, Itchy Curse Finger]) && is_unrestricted($item[Source Terminal]) && (cc_get_campground() contains $item[Witchess Set]) && (cc_get_campground() contains $item[Source Terminal]) && (get_property("_witchessFights").to_int() < 5))
+		if(get_property("sl_dickstab").to_boolean() && !possessEquipment($item[Dented Scepter]) && is_unrestricted($item[Witchess Set]) && get_property("lovebugsUnlocked").to_boolean() && possessEquipment($item[Your Cowboy Boots]) && have_skills($skills[Curse of Weaksauce, Shell Up, Lunging Thrust-Smack, Sauceshell, Itchy Curse Finger]) && is_unrestricted($item[Source Terminal]) && (sl_get_campground() contains $item[Witchess Set]) && (sl_get_campground() contains $item[Source Terminal]) && (get_property("_witchessFights").to_int() < 5))
 		{
-			cc_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
+			sl_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
 			if(my_mp() < 55)
 			{
 				doRest();
@@ -386,11 +386,11 @@ boolean LM_bond()
 			buffMaintain($effect[Pyromania], 15, 1, 1);
 			buffMaintain($effect[Frostbeard], 15, 1, 1);
 			buffMaintain($effect[Power Ballad of the Arrowsmith], 5, 1, 1);
-			set_property("cc_combatDirective", "start;skill weaksauce;skill cowboy kick;item time-spinner;skill love stinkbug;skill love mosquito;skill compress;skill turbo;skill shell up;skill sauceshell;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack");
-			boolean retval = cc_advWitchess("king");
-			set_property("cc_combatDirective", "");
+			set_property("sl_combatDirective", "start;skill weaksauce;skill cowboy kick;item time-spinner;skill love stinkbug;skill love mosquito;skill compress;skill turbo;skill shell up;skill sauceshell;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack;skill lunging thrust-smack");
+			boolean retval = sl_advWitchess("king");
+			set_property("sl_combatDirective", "");
 
-			cc_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+			sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 			if(!possessEquipment($item[Dented Scepter]))
 			{
 				abort("Dickstab failed");
@@ -409,19 +409,19 @@ boolean LM_bond()
 		boolean retval = ccAdv($location[Super Villain\'s Lair]);
 		if(!retval)
 		{
-			set_property("_cc_bondBriefing", "finished");
+			set_property("_sl_bondBriefing", "finished");
 			bond_buySkills();
 		}
 		return retval;
 	}
 
-	if(get_property("_cc_bondLevel").to_int() < my_level())
+	if(get_property("_sl_bondLevel").to_int() < my_level())
 	{
-		set_property("_cc_bondLevel", my_level());
+		set_property("_sl_bondLevel", my_level());
 		bond_buySkills();
 	}
 
-	if(get_property("cc_dickstab").to_boolean())
+	if(get_property("sl_dickstab").to_boolean())
 	{
 		if((inebriety_left() == 0) && (my_adventures() <= 2) && (my_daycount() == 1))
 		{
@@ -443,7 +443,7 @@ boolean LM_bond()
 		{
 			use(3, $item[Stuffing Fluffer]);
 		}
-		if((get_property("_cc_bondBriefing") == "finished") && get_property("gingerbreadCityAvailable").to_boolean() && (get_property("_gingerbreadCityTurns").to_int() < 5))
+		if((get_property("_sl_bondBriefing") == "finished") && get_property("gingerbreadCityAvailable").to_boolean() && (get_property("_gingerbreadCityTurns").to_int() < 5))
 		{
 			if(!get_property("_gingerbreadClockAdvanced").to_boolean())
 			{
@@ -476,7 +476,7 @@ boolean LM_bond()
 			abort("Gingerdickstab error");
 		}
 
-		if(get_property("_cc_bondBriefing") == "finished")
+		if(get_property("_sl_bondBriefing") == "finished")
 		{
 			if(my_daycount() == 1)
 			{
@@ -549,21 +549,21 @@ boolean LM_bond()
 			if(item_amount($item[Goat Cheese]) == 0)
 			{
 				L8_trapperStart();
-				set_property("cc_combatDirective", "start;(olfaction)");
+				set_property("sl_combatDirective", "start;(olfaction)");
 				if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
 				{
 					equip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
 				}
 				if(L8_trapperGround())
 				{
-					set_property("cc_combatDirective", "");
+					set_property("sl_combatDirective", "");
 					return true;
 				}
-				set_property("cc_combatDirective", "");
+				set_property("sl_combatDirective", "");
 			}
 			else if(item_amount($item[Goat Cheese]) == 2)
 			{
-				cc_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+				sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 				return timeSpinnerCombat($monster[Dairy Goat]);
 			}
 			else if(item_amount(to_item(get_property("trapperOre"))) == 1)
@@ -609,10 +609,10 @@ boolean LM_bond()
 				{
 					woods_questStart();
 					equip($slot[acc2], $item[Continuum Transfunctioner]);
-					cc_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-					set_property("cc_digitizeDirective", $monster[Blooper]);
+					sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+					set_property("sl_digitizeDirective", $monster[Blooper]);
 					ccAdv(1, $location[8-bit Realm]);
-					set_property("cc_digitizeDirective", "");
+					set_property("sl_digitizeDirective", "");
 					return true;
 				}
 			}
@@ -624,10 +624,10 @@ boolean LM_bond()
 			{
 				if((get_property("_sourceTerminalDigitizeUses").to_int() == 1) && (get_property("_timeSpinnerMinutesUsed").to_int() < 7) && (item_amount($item[White Pixel]) < 30) && (item_amount($item[Richard\'s Star Key]) == 0) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Richard\'s Star Key]))
 				{
-					cc_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-					set_property("cc_combatDirective", "start;skill digitize");
+					sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+					set_property("sl_combatDirective", "start;skill digitize");
 					timeSpinnerCombat($monster[Blooper]);
-					set_property("cc_combatDirective", "");
+					set_property("sl_combatDirective", "");
 					return true;
 				}
 			}
@@ -665,9 +665,9 @@ boolean LM_bond()
 				{
 					abort("Can not restore MP in order to disintegrate a filthworm. Please YR the filthworm we can access next. Thank you.");
 				}
-				set_property("cc_combatDirective", "start;" + yellowRayCombatString());
+				set_property("sl_combatDirective", "start;" + yellowRayCombatString());
 				boolean retval = ccAdv(loc);
-				set_property("cc_combatDirective", "");
+				set_property("sl_combatDirective", "");
 				return retval;
 			}
 		}
@@ -690,7 +690,7 @@ boolean LM_bond()
 					return true;
 				}
 			}
-			if(!get_property("cc_getStarKey").to_boolean())
+			if(!get_property("sl_getStarKey").to_boolean())
 			{
 				if((item_amount($item[Richard\'s Star Key]) == 0) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Richard\'s Star Key]))
 				{
@@ -717,12 +717,12 @@ boolean LM_bond()
 
 		if(internalQuestStatus("questM21Dance") >= 4)
 		{
-			if((get_property("cc_swordfish") != "finished") && (item_amount($item[Disposable Instant Camera]) == 0))
+			if((get_property("sl_swordfish") != "finished") && (item_amount($item[Disposable Instant Camera]) == 0))
 			{
 				if(contains_text($location[The Haunted Bedroom], $monster[Animated Ornate Nightstand]))
 				{
 					set_property("choiceAdventure878", 4);
-					set_property("cc_disableAdventureHandling", true);
+					set_property("sl_disableAdventureHandling", true);
 					timeSpinnerCombat($monster[Animated Ornate Nightstand]);
 					if(contains_text(visit_url("main.php"), "choice.php"))
 					{
@@ -732,13 +732,13 @@ boolean LM_bond()
 					{
 						ccAdv($location[The Haunted Bedroom]);
 					}
-					set_property("cc_disableAdventureHandling", false);
+					set_property("sl_disableAdventureHandling", false);
 				}
 			}
 		}
 		if(my_daycount() == 1)
 		{
-			if(((my_inebriety() == 16) && (spleen_left() < 8) && (my_adventures() < 4)) || (get_property("cc_gaudy") == "start"))
+			if(((my_inebriety() == 16) && (spleen_left() < 8) && (my_adventures() < 4)) || (get_property("sl_gaudy") == "start"))
 			{
 				string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
 				if(contains_text(mod, "Weapon Damage Percent"))
@@ -778,9 +778,9 @@ boolean LM_bond()
 						abort("Can not restore MP for a Harem Girl disintegrate. Her whorish ways shall continue unabated!");
 					}
 
-					set_property("cc_disableAdventureHandling", true);
+					set_property("sl_disableAdventureHandling", true);
 					boolean result = L5_haremOutfit();
-					set_property("cc_disableAdventureHandling", false);
+					set_property("sl_disableAdventureHandling", false);
 					if(!result)
 					{
 						abort("Some restrictive event is preventing us from going to the Harem. This is serious. You might have an STD. Please report this.");
@@ -792,9 +792,9 @@ boolean LM_bond()
 					if(contains_text($location[The Haunted Bedroom].combat_queue, $monster[Animated Ornate Nightstand]))
 					{
 						set_property("choiceAdventure878", "4");
-						set_property("cc_disableAdventureHandling", true);
+						set_property("sl_disableAdventureHandling", true);
 						boolean result = timeSpinnerCombat($monster[Animated Ornate Nightstand]);
-						set_property("cc_disableAdventureHandling", false);
+						set_property("sl_disableAdventureHandling", false);
 						string page = visit_url("main.php");
 						page = run_choice(4);
 						return result;
@@ -808,7 +808,7 @@ boolean LM_bond()
 					}
 				}
 			}
-			if(get_property("cc_gaudy") == "start")
+			if(get_property("sl_gaudy") == "start")
 			{
 				if((item_amount($item[Perforated Battle Paddle]) > 0) && (spleen_left() > 0))
 				{
@@ -836,7 +836,7 @@ boolean LM_bond()
 		}
 	}
 
-	if(get_property("_cc_bondBriefing") == "finished")
+	if(get_property("_sl_bondBriefing") == "finished")
 	{
 		return false;
 	}

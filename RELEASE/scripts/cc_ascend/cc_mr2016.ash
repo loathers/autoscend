@@ -1,25 +1,25 @@
-script "cc_mr2016.ash"
+script "sl_mr2016.ash"
 
 #	This is meant for items that have a date of 2016.
 #	Handling: Witchess Set, Snojo, Source Terminal, Protonic Accelerator Pack
 #			Time-Spinner
 
 boolean snojoFightAvailable();
-boolean cc_advWitchess(string target);
-boolean cc_advWitchess(string target, string option);
+boolean sl_advWitchess(string target);
+boolean sl_advWitchess(string target, string option);
 
-boolean cc_haveWitchess();
-boolean cc_haveSourceTerminal();
-boolean cc_sourceTerminalRequest(string request);
-boolean cc_sourceTerminalEnhance(string request);
-int cc_sourceTerminalEnhanceLeft();
-boolean cc_sourceTerminalExtrude(string request);
-int cc_sourceTerminalExtrudeLeft();
-int[string] cc_sourceTerminalStatus();
-boolean cc_doPrecinct();
-item cc_bestBadge();
-boolean cc_sourceTerminalEducate(skill first);
-boolean cc_sourceTerminalEducate(skill first, skill second);
+boolean sl_haveWitchess();
+boolean sl_haveSourceTerminal();
+boolean sl_sourceTerminalRequest(string request);
+boolean sl_sourceTerminalEnhance(string request);
+int sl_sourceTerminalEnhanceLeft();
+boolean sl_sourceTerminalExtrude(string request);
+int sl_sourceTerminalExtrudeLeft();
+int[string] sl_sourceTerminalStatus();
+boolean sl_doPrecinct();
+item sl_bestBadge();
+boolean sl_sourceTerminalEducate(skill first);
+boolean sl_sourceTerminalEducate(skill first, skill second);
 boolean LX_ghostBusting();
 boolean expectGhostReport();
 boolean haveGhostReport();
@@ -36,7 +36,7 @@ boolean rethinkingCandy(effect acquire, boolean simulate);
 boolean rethinkingCandyList();
 
 //Supplemental
-int cc_advWitchessTargets(string target);
+int sl_advWitchessTargets(string target);
 
 
 
@@ -126,27 +126,27 @@ boolean snojoFightAvailable()
 }
 
 
-boolean cc_haveSourceTerminal()
+boolean sl_haveSourceTerminal()
 {
 	if(!is_unrestricted($item[Source Terminal]))
 	{
 		return false;
 	}
 	static boolean didCheck = false;
-	if((cc_my_path() == "Nuclear Autumn") && !didCheck)
+	if((sl_my_path() == "Nuclear Autumn") && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
 		if(contains_text(temp, "Source Terminal"))
 		{
-			set_property("cc_haveSourceTerminal", true);
+			set_property("sl_haveSourceTerminal", true);
 		}
 	}
 
-	return (cc_get_campground() contains $item[Source Terminal]);
+	return (sl_get_campground() contains $item[Source Terminal]);
 }
 
-boolean cc_sourceTerminalRequest(string request)
+boolean sl_sourceTerminalRequest(string request)
 {
 	//enhance <effect>.enh		[meat|items|init|critical]
 	//enquiry <effect>.enq		[familiar|monsters]
@@ -157,9 +157,9 @@ boolean cc_sourceTerminalRequest(string request)
 
 
 	//"campground.php?action=terminal&hack=enhance items.enh"
-	if(cc_haveSourceTerminal())
+	if(sl_haveSourceTerminal())
 	{
-		if(cc_my_path() == "Nuclear Autumn")
+		if(sl_my_path() == "Nuclear Autumn")
 		{
 			string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
 		}
@@ -175,13 +175,13 @@ boolean cc_sourceTerminalRequest(string request)
 	return false;
 }
 
-boolean cc_sourceTerminalExtrude(string request)
+boolean sl_sourceTerminalExtrude(string request)
 {
-	if(!cc_haveSourceTerminal())
+	if(!sl_haveSourceTerminal())
 	{
 		return false;
 	}
-	if(cc_sourceTerminalExtrudeLeft() == 0)
+	if(sl_sourceTerminalExtrudeLeft() == 0)
 	{
 		return false;
 	}
@@ -201,25 +201,25 @@ boolean cc_sourceTerminalExtrude(string request)
 	default:			return false;
 	}
 
-	return cc_sourceTerminalRequest("extrude -f " + actual + ".ext");
+	return sl_sourceTerminalRequest("extrude -f " + actual + ".ext");
 }
 
-int cc_sourceTerminalExtrudeLeft()
+int sl_sourceTerminalExtrudeLeft()
 {
-	if(cc_haveSourceTerminal())
+	if(sl_haveSourceTerminal())
 	{
 		return 3 - get_property("_sourceTerminalExtrudes").to_int();
 	}
 	return 0;
 }
 
-boolean cc_sourceTerminalEnhance(string request)
+boolean sl_sourceTerminalEnhance(string request)
 {
-	if(!cc_haveSourceTerminal())
+	if(!sl_haveSourceTerminal())
 	{
 		return false;
 	}
-	if(cc_sourceTerminalEnhanceLeft() == 0)
+	if(sl_sourceTerminalEnhanceLeft() == 0)
 	{
 		return false;
 	}
@@ -245,13 +245,13 @@ boolean cc_sourceTerminalEnhance(string request)
 
 	if(contains_text(get_property("sourceTerminalEnhanceKnown"), actual + ".enh"))
 	{
-		return cc_sourceTerminalRequest("enhance " + actual + ".enh");
+		return sl_sourceTerminalRequest("enhance " + actual + ".enh");
 	}
 	return false;
 }
-int cc_sourceTerminalEnhanceLeft()
+int sl_sourceTerminalEnhanceLeft()
 {
-	if(cc_haveSourceTerminal())
+	if(sl_haveSourceTerminal())
 	{
 		int used = get_property("_sourceTerminalEnhanceUses").to_int();
 
@@ -273,7 +273,7 @@ int cc_sourceTerminalEnhanceLeft()
 	return 0;
 }
 
-int[string] cc_sourceTerminalMissing()
+int[string] sl_sourceTerminalMissing()
 {
 	int[string] status;
 
@@ -321,7 +321,7 @@ int[string] cc_sourceTerminalMissing()
 	status["substats.enh"] = 1;
 	status["tram.ext"] = 1;
 	status["turbo.edu"] = 1;
-	int[string] have = cc_sourceTerminalStatus();
+	int[string] have = sl_sourceTerminalStatus();
 	foreach thing in have
 	{
 		status[thing] -= have[thing];
@@ -329,10 +329,10 @@ int[string] cc_sourceTerminalMissing()
 	return status;
 }
 
-int[string] cc_sourceTerminalStatus()
+int[string] sl_sourceTerminalStatus()
 {
 	int[string] status;
-	if(cc_haveSourceTerminal())
+	if(sl_haveSourceTerminal())
 	{
 		string temp = visit_url("campground.php?action=terminal");
 		temp = visit_url("choice.php?pwd=&whichchoice=1191&option=1&input=reset");
@@ -371,13 +371,13 @@ int[string] cc_sourceTerminalStatus()
 	return status;
 }
 
-boolean cc_sourceTerminalEducate(skill first, skill second)
+boolean sl_sourceTerminalEducate(skill first, skill second)
 {
-	if(!cc_haveSourceTerminal())
+	if(!sl_haveSourceTerminal())
 	{
 		return false;
 	}
-	if(cc_my_path() == "Pocket Familiars")
+	if(sl_my_path() == "Pocket Familiars")
 	{
 		return false;
 	}
@@ -408,36 +408,36 @@ boolean cc_sourceTerminalEducate(skill first, skill second)
 		}
 	}
 
-	cc_sourceTerminalRequest("educate " + firstSkill);
+	sl_sourceTerminalRequest("educate " + firstSkill);
 	if(secondSkill != "none.edu")
 	{
-		cc_sourceTerminalRequest("educate " + secondSkill);
+		sl_sourceTerminalRequest("educate " + secondSkill);
 	}
 	return true;
 }
 
-boolean cc_sourceTerminalEducate(skill first)
+boolean sl_sourceTerminalEducate(skill first)
 {
-	return cc_sourceTerminalEducate(first, $skill[none]);
+	return sl_sourceTerminalEducate(first, $skill[none]);
 }
 
-boolean cc_haveWitchess()
+boolean sl_haveWitchess()
 {
 	if(!is_unrestricted($item[Witchess Set]))
 	{
 		return false;
 	}
-	return (cc_get_campground() contains $item[Witchess Set]);
+	return (sl_get_campground() contains $item[Witchess Set]);
 }
 
-boolean cc_advWitchess(string target)
+boolean sl_advWitchess(string target)
 {
-	return cc_advWitchess(target, "");
+	return sl_advWitchess(target, "");
 }
 
-boolean cc_advWitchess(string target, string option)
+boolean sl_advWitchess(string target, string option)
 {
-	if(!cc_haveWitchess())
+	if(!sl_haveWitchess())
 	{
 		return false;
 	}
@@ -447,13 +447,13 @@ boolean cc_advWitchess(string target, string option)
 		return false;
 	}
 
-	int goal = cc_advWitchessTargets(target);
+	int goal = sl_advWitchessTargets(target);
 	if(goal == 0)
 	{
 		return false;
 	}
 
-	if(get_property("_cc_witchessBattles").to_int() >= 5)
+	if(get_property("_sl_witchessBattles").to_int() >= 5)
 	{
 		return false;
 	}
@@ -463,18 +463,18 @@ boolean cc_advWitchess(string target, string option)
 #		return false;
 #	}
 
-#	if(get_property("_witchessFights").to_int() > get_property("_cc_witchessBattles").to_int())
+#	if(get_property("_witchessFights").to_int() > get_property("_sl_witchessBattles").to_int())
 #	{
 #		print("_witchessFights is greater than our tracking, it is probably more accurate at this point (assuming manual Witchess combats).", "red");
-#		set_property("_cc_witchessBattles", get_property("_witchessFights"));
+#		set_property("_sl_witchessBattles", get_property("_witchessFights"));
 #	}
 
-	set_property("_cc_witchessBattles", get_property("_cc_witchessBattles").to_int() + 1);
+	set_property("_sl_witchessBattles", get_property("_sl_witchessBattles").to_int() + 1);
 
 	string temp = visit_url("campground.php?action=witchess");
 	if(!contains_text(temp, "Examine the shrink ray"))
 	{
-		set_property("_cc_witchessBattles", 5);
+		set_property("_sl_witchessBattles", 5);
 		return false;
 	}
 	temp = visit_url("choice.php?whichchoice=1181&pwd=&option=1");
@@ -482,14 +482,14 @@ boolean cc_advWitchess(string target, string option)
 	if(witchessMatcher.find())
 	{
 		int consider = (5 - witchessMatcher.group(1).to_int()) + 1;
-		if(consider > get_property("_cc_witchessBattles").to_int())
+		if(consider > get_property("_sl_witchessBattles").to_int())
 		{
-			set_property("_cc_witchessBattles", consider);
+			set_property("_sl_witchessBattles", consider);
 		}
 	}
 	else
 	{
-		set_property("_cc_witchessBattles", 5);
+		set_property("_sl_witchessBattles", 5);
 		return false;
 	}
 	temp = visit_url("choice.php?pwd=&option=2&whichchoice=1182");
@@ -504,7 +504,7 @@ boolean cc_advWitchess(string target, string option)
 }
 
 
-int cc_advWitchessTargets(string target)
+int sl_advWitchessTargets(string target)
 {
 	target = to_lower_case(target);
 	if((target == "knight") || (target == "meat") || (target == "food"))
@@ -524,7 +524,7 @@ int cc_advWitchessTargets(string target)
 		return 1938;
 	}
 
-	if((target == 1942) && (cc_my_path() == "Teetotaler"))
+	if((target == 1942) && (sl_my_path() == "Teetotaler"))
 	{
 		return 1936;
 	}
@@ -553,7 +553,7 @@ int cc_advWitchessTargets(string target)
 }
 
 
-item cc_bestBadge()
+item sl_bestBadge()
 {
 	item retval = $item[none];
 	foreach it in $items[Plastic Detective Badge, Bronze Detective Badge, Silver Detective Badge, Gold Detective Badge]
@@ -567,7 +567,7 @@ item cc_bestBadge()
 	return retval;
 }
 
-boolean cc_doPrecinct()
+boolean sl_doPrecinct()
 {
 	if(!is_unrestricted($item[Detective School Application]))
 	{
@@ -588,9 +588,9 @@ boolean cc_doPrecinct()
 		return true;
 	}
 
-	if(get_property("cc_eggDetective") != "")
+	if(get_property("sl_eggDetective") != "")
 	{
-		set_property("cc_eggDetective", "");
+		set_property("sl_eggDetective", "");
 	}
 
 
@@ -643,9 +643,9 @@ boolean cc_doPrecinct()
 		return false;
 	}
 
-	while(!contains_text(get_property("cc_eggDetective"), "solved"))
+	while(!contains_text(get_property("sl_eggDetective"), "solved"))
 	{
-		string[int] eggData = split_string(get_property("cc_eggDetective"), ",");
+		string[int] eggData = split_string(get_property("sl_eggDetective"), ",");
 		int i=1;
 		while(i<=9)
 		{
@@ -700,13 +700,13 @@ boolean cc_doPrecinct()
 						print("Jerkwad '" + person + "' won't say anything!", "blue");
 						generated += ":liar";
 					}
-					set_property("cc_eggDetective", generated + "," + get_property("cc_eggDetective"));
+					set_property("sl_eggDetective", generated + "," + get_property("sl_eggDetective"));
 				}
 			}
 			i += 1;
 		}
 
-		eggData = split_string(get_property("cc_eggDetective"), ",");
+		eggData = split_string(get_property("sl_eggDetective"), ",");
 		print("Generating goals...", "blue");
 		//At this point we\'ve visited every place and queried everyone. Now we need to determine who is identifying a killer.
 
@@ -768,10 +768,10 @@ boolean cc_doPrecinct()
 					replaceString = subEgg[4];
 				}
 
-				string temp = get_property("cc_eggDetective");
+				string temp = get_property("sl_eggDetective");
 				temp = replace_string(temp, oldValue, replaceString);
-				set_property("cc_eggDetective", temp);
-				eggData = split_string(get_property("cc_eggDetective"), ",");
+				set_property("sl_eggDetective", temp);
+				eggData = split_string(get_property("sl_eggDetective"), ",");
 				subEgg[4] = replaceString;
 			}
 			if(subEgg[4] != "liar")
@@ -905,14 +905,14 @@ boolean cc_doPrecinct()
 						{
 							print("Received a pension of " + pensionMatcher.group(1) + " cop dollars.", "green");
 						}
-						set_property("cc_eggDetective", "");
+						set_property("sl_eggDetective", "");
 						return true;
 					}
 				}
 			}
 		}
 
-		set_property("cc_eggDetective", get_property("cc_eggDetective") + "solved");
+		set_property("sl_eggDetective", get_property("sl_eggDetective") + "solved");
 		return false;
 	}
 
@@ -985,7 +985,7 @@ boolean LX_ghostBusting()
 
 	if((goal != $location[none]) && canAttempt)
 	{
-		if((cc_my_path() == "Community Service") && (my_daycount() == 1) && (goal == $location[The Spooky Forest]))
+		if((sl_my_path() == "Community Service") && (my_daycount() == 1) && (goal == $location[The Spooky Forest]))
 		{
 			return false;
 		}
@@ -1077,17 +1077,17 @@ boolean LX_ghostBusting()
 			return false;
 		}
 
-		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("cc_trapper") != "yeti") && (get_property("cc_trapper") != "finished")))
+		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("sl_trapper") != "yeti") && (get_property("sl_trapper") != "finished")))
 		{
 			return false;
 		}
-		if((goal == $location[The VERY Unquiet Garves]) && (get_property("cc_crypt") != "finished"))
+		if((goal == $location[The VERY Unquiet Garves]) && (get_property("sl_crypt") != "finished"))
 		{
 			return false;
 		}
 		if(goal == $location[The Castle in the Clouds in the Sky (Top Floor)])
 		{
-			if(get_property("cc_castleground") != "finished")
+			if(get_property("sl_castleground") != "finished")
 			{
 				return false;
 			}
@@ -1111,7 +1111,7 @@ boolean LX_ghostBusting()
 		{
 			return false;
 		}
-		if((goal == $location[The Hidden Park]) && (get_property("cc_hiddenunlock") == "finished"))
+		if((goal == $location[The Hidden Park]) && (get_property("sl_hiddenunlock") == "finished"))
 		{
 			return false;
 		}
@@ -1320,16 +1320,16 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 	}
 
 	int maxprice = 2500;
-	if(get_property("cc_maxCandyPrice").to_int() != 0)
+	if(get_property("sl_maxCandyPrice").to_int() != 0)
 	{
-		maxprice = get_property("cc_maxCandyPrice").to_int();
+		maxprice = get_property("sl_maxCandyPrice").to_int();
 	}
 
 	item[int] simpleList;
 	item[int] complexList;
 	foreach it in $items[]
 	{
-		if(it.candy && (item_amount(it) > 0) && (cc_mall_price(it) <= maxprice) && it.tradeable)
+		if(it.candy && (item_amount(it) > 0) && (sl_mall_price(it) <= maxprice) && it.tradeable)
 		{
 			if(it.candy_type == "simple")
 			{
@@ -1342,19 +1342,19 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 		}
 	}
 
-	sort simpleList by cc_mall_price(value);
-	sort complexList by cc_mall_price(value);
+	sort simpleList by sl_mall_price(value);
+	sort complexList by sl_mall_price(value);
 	item[int] simple = List(simpleList);
 	item[int] complex = List(complexList);
 
 #	foreach idx, it in simple
 #	{
-#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + cc_mall_price(it), "blue");
+#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + sl_mall_price(it), "blue");
 #	}
 #
 #	foreach idx, it in complex
 #	{
-#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + cc_mall_price(it), "blue");
+#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + sl_mall_price(it), "blue");
 #	}
 
 	int bestCost = 2 * maxprice;
@@ -1380,9 +1380,9 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 					{
 						print("Possible: " + simple[i] + ", " + simple[j], "blue");
 					}
-					if((cc_mall_price(simple[i]) + cc_mall_price(simple[j])) < bestCost)
+					if((sl_mall_price(simple[i]) + sl_mall_price(simple[j])) < bestCost)
 					{
-						bestCost = cc_mall_price(simple[i]) + cc_mall_price(simple[j]);
+						bestCost = sl_mall_price(simple[i]) + sl_mall_price(simple[j]);
 						bestFirst = simple[i];
 						bestSecond = simple[j];
 					}
@@ -1405,9 +1405,9 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 					{
 						print("Possible: " + simple[i] + ", " + complex[j], "blue");
 					}
-					if((cc_mall_price(simple[i]) + cc_mall_price(complex[j])) < bestCost)
+					if((sl_mall_price(simple[i]) + sl_mall_price(complex[j])) < bestCost)
 					{
-						bestCost = cc_mall_price(simple[i]) + cc_mall_price(complex[j]);
+						bestCost = sl_mall_price(simple[i]) + sl_mall_price(complex[j]);
 						bestFirst = simple[i];
 						bestSecond = complex[j];
 					}
@@ -1435,9 +1435,9 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 					{
 						print("Possible: " + complex[i] + ", " + complex[j], "blue");
 					}
-					if((cc_mall_price(complex[i]) + cc_mall_price(complex[j])) < bestCost)
+					if((sl_mall_price(complex[i]) + sl_mall_price(complex[j])) < bestCost)
 					{
-						bestCost = cc_mall_price(complex[i]) + cc_mall_price(complex[j]);
+						bestCost = sl_mall_price(complex[i]) + sl_mall_price(complex[j]);
 						bestFirst = complex[i];
 						bestSecond = complex[j];
 					}

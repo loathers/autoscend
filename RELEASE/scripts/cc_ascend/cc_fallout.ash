@@ -1,20 +1,20 @@
-script "cc_fallout.ash"
+script "sl_fallout.ash"
 
 void fallout_initializeSettings()
 {
 	if(my_path() == "Nuclear Autumn")
 	{
-		set_property("cc_cubeItems", false);
-		set_property("cc_getBeehive", true);
-		set_property("cc_getStarKey", true);
-		set_property("cc_grimstoneOrnateDowsingRod", true);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_useCubeling", true);
-		set_property("cc_wandOfNagamar", true);
+		set_property("sl_cubeItems", false);
+		set_property("sl_getBeehive", true);
+		set_property("sl_getStarKey", true);
+		set_property("sl_grimstoneOrnateDowsingRod", true);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_useCubeling", true);
+		set_property("sl_wandOfNagamar", true);
 
 		if(item_amount($item[Deck of Every Card]) > 0)
 		{
-			set_property("cc_useCubeling", false);
+			set_property("sl_useCubeling", false);
 		}
 	}
 }
@@ -39,18 +39,18 @@ void fallout_initializeDay(int day)
 
 	if((my_daycount() % 2) == 1)
 	{
-		cc_sourceTerminalRequest("enquiry stats.enq");
+		sl_sourceTerminalRequest("enquiry stats.enq");
 	}
 	else
 	{
-		cc_sourceTerminalRequest("enquiry familiar.enq");
+		sl_sourceTerminalRequest("enquiry familiar.enq");
 	}
 
 	if(day == 1)
 	{
-		if(get_property("cc_day1_init") != "finished")
+		if(get_property("sl_day1_init") != "finished")
 		{
-			#set_property("cc_day1_init", "finished");
+			#set_property("sl_day1_init", "finished");
 		}
 	}
 	else if(day == 2)
@@ -58,10 +58,10 @@ void fallout_initializeDay(int day)
 		equipBaseline();
 		ovenHandle();
 
-		if(get_property("cc_day2_init") == "")
+		if(get_property("sl_day2_init") == "")
 		{
 
-			if(get_property("cc_dickstab").to_boolean() && chateaumantegna_available())
+			if(get_property("sl_dickstab").to_boolean() && chateaumantegna_available())
 			{
 				boolean[item] furniture = chateaumantegna_decorations();
 				if(!furniture[$item[Ceiling Fan]])
@@ -84,23 +84,23 @@ void fallout_initializeDay(int day)
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 			pullXWhenHaveY(whatHiMein(), 1, 0);
 
-			#set_property("cc_day2_init", "finished");
+			#set_property("sl_day2_init", "finished");
 		}
 	}
 	else if(day == 3)
 	{
-		if(get_property("cc_day3_init") == "")
+		if(get_property("sl_day3_init") == "")
 		{
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			set_property("cc_day3_init", "finished");
+			set_property("sl_day3_init", "finished");
 		}
 	}
 	else if(day == 4)
 	{
-		if(get_property("cc_day4_init") == "")
+		if(get_property("sl_day4_init") == "")
 		{
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			set_property("cc_day4_init", "finished");
+			set_property("sl_day4_init", "finished");
 		}
 	}
 }

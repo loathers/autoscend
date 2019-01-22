@@ -1,4 +1,4 @@
-script "cc_adventure.ash"
+script "sl_adventure.ash"
 
 # num is not handled properly anyway, so we'll just reject it.
 boolean ccAdv(location loc, string option)
@@ -9,17 +9,17 @@ boolean ccAdv(location loc, string option)
 # num is not handled properly anyway, so we'll just reject it.
 boolean ccAdv(int num, location loc, string option)
 {
-	set_property("cc_combatHandler", "");
-	set_property("cc_diag_round", 0);
+	set_property("sl_combatHandler", "");
+	set_property("sl_diag_round", 0);
 	if(option == "")
 	{
-		option = "cc_combatHandler";
+		option = "sl_combatHandler";
 	}
-	if(cc_my_path() == "Actually Ed the Undying")
+	if(sl_my_path() == "Actually Ed the Undying")
 	{
 		return ed_ccAdv(num, loc, option);
 	}
-	if(cc_my_path() == "Pocket Familiars")
+	if(sl_my_path() == "Pocket Familiars")
 	{
 		return digimon_ccAdv(num, loc, option);
 	}
@@ -44,7 +44,7 @@ boolean ccAdv(int num, location loc, string option)
 	{
 		retval = adv1(loc, 0, option);
 	}
-	if(cc_my_path() == "One Crazy Random Summer")
+	if(sl_my_path() == "One Crazy Random Summer")
 	{
 		if(last_monster().random_modifiers["clingy"])
 		{
@@ -139,7 +139,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	}
 
 	string combatPage = "<b>Combat";
-	if(cc_my_path() == "Pocket Familiars")
+	if(sl_my_path() == "Pocket Familiars")
 	{
 		combatPage = "<b>Fight!";
 	}
@@ -190,7 +190,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	{
 		return false;
 	}
-	if(cc_my_path() == "G-Lover")
+	if(sl_my_path() == "G-Lover")
 	{
 		if(get_property("lastEncounter") == "The Hidden Heart of the Hidden Temple")
 		{
@@ -226,7 +226,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 		}
 		else
 		{
-			set_property("cc_disableAdventureHandling", true);
+			set_property("sl_disableAdventureHandling", true);
 			boolean retval = true;
 			if((inebriety_left() >= 0) || (equipped_item($slot[off-hand]) == $item[Drunkula\'s Wineglass]))
 			{
@@ -236,7 +236,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 			{
 				run_combat(option);
 			}
-			set_property("cc_disableAdventureHandling", false);
+			set_property("sl_disableAdventureHandling", false);
 			cli_execute("postcheese");
 		}
 		return retval;
@@ -296,7 +296,7 @@ boolean preAdvXiblaxian(location loc)
 	{
 		string area = loc.environment;
 		# This is an attempt to farm Xiblaxian food/booze stuff.
-		item toMake = to_item(get_property("cc_xiblaxianChoice"));
+		item toMake = to_item(get_property("sl_xiblaxianChoice"));
 		if(toMake == $item[none])
 		{
 			toMake = $item[Xiblaxian Ultraburrito];

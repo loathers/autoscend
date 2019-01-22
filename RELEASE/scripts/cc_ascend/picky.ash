@@ -1,6 +1,6 @@
 script "picky.ash"
 
-import<cc_util.ash>
+import<sl_util.ash>
 # Code here is supplementary handlers and specialized handlers
 
 void picky_dnaPotions()
@@ -63,10 +63,10 @@ void picky_initializeSettings()
 {
 	if(my_path() == "Picky")
 	{
-		set_property("cc_getStarKey", true);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_nunsTrick", false);
-		set_property("cc_wandOfNagamar", true);
+		set_property("sl_getStarKey", true);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_nunsTrick", false);
+		set_property("sl_wandOfNagamar", true);
 	}
 }
 

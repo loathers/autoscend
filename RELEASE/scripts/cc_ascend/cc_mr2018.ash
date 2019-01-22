@@ -1,4 +1,4 @@
-script "cc_mr2018.ash"
+script "sl_mr2018.ash"
 
 #	This is meant for items that have a date of 2018.
 
@@ -90,7 +90,7 @@ boolean januaryToteAcquire(item it)
 
 	if(choice == 2)
 	{
-		if((cc_my_path() == "Way of the Surprising Fist") || (my_class() == $class[Avatar Of Boris]))
+		if((sl_my_path() == "Way of the Surprising Fist") || (my_class() == $class[Avatar Of Boris]))
 		{
 			return false;
 		}
@@ -186,7 +186,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 		equip($slot[familiar], it);
 	}
 
-	set_property("cc_disableAdventureHandling", true);
+	set_property("sl_disableAdventureHandling", true);
 
 	string temp = visit_url("main.php?fightgodlobster=1");
 	if(contains_text(temp, "You can't challenge your God Lobster anymore"))
@@ -221,7 +221,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 		restoreSetting("choiceAdventure1310");
 	}
 
-	set_property("cc_disableAdventureHandling", false);
+	set_property("sl_disableAdventureHandling", false);
 	if(my_familiar() != last)
 	{
 		use_familiar(last);
@@ -299,7 +299,7 @@ boolean fantasyRealmToken()
 	{
 		return false;
 	}
-	set_property("cc_familiarChoice", "none");
+	set_property("sl_familiarChoice", "none");
 	use_familiar($familiar[none]);
 
 	if(possessEquipment($item[FantasyRealm G. E. M.]))
@@ -759,17 +759,17 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option)
 	return retval;
 }
 
-boolean cc_voteSetup()
+boolean sl_voteSetup()
 {
-	return cc_voteSetup(0,0,0);
+	return sl_voteSetup(0,0,0);
 }
 
-boolean cc_voteSetup(int candidate)
+boolean sl_voteSetup(int candidate)
 {
-	return cc_voteSetup(candidate,0,0);
+	return sl_voteSetup(candidate,0,0);
 }
 
-boolean cc_voteSetup(int candidate, int first, int second)
+boolean sl_voteSetup(int candidate, int first, int second)
 {
 	if((candidate < 0) || (candidate > 2))
 	{
@@ -820,22 +820,22 @@ boolean cc_voteSetup(int candidate, int first, int second)
 	return true;
 }
 
-boolean cc_voteMonster()
+boolean sl_voteMonster()
 {
-	return cc_voteMonster(false);
+	return sl_voteMonster(false);
 }
 
-boolean cc_voteMonster(boolean freeMon)
+boolean sl_voteMonster(boolean freeMon)
 {
-	return cc_voteMonster(freeMon, $location[none], "");
+	return sl_voteMonster(freeMon, $location[none], "");
 }
 
-boolean cc_voteMonster(boolean freeMon, location loc)
+boolean sl_voteMonster(boolean freeMon, location loc)
 {
-	return cc_voteMonster(freeMon, loc, "");
+	return sl_voteMonster(freeMon, loc, "");
 }
 
-boolean cc_voteMonster(boolean freeMon, location loc, string option)
+boolean sl_voteMonster(boolean freeMon, location loc, string option)
 {
 	if(!get_property("_voteToday").to_boolean() && !get_property("voteAlways").to_boolean())
 	{

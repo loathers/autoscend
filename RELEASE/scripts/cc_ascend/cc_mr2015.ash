@@ -1,11 +1,11 @@
-script "cc_mr2015.ash"
+script "sl_mr2015.ash"
 
 #	This is meant for items that have a date of 2015
 #	Handling: shrine to the Barrel God, Chateau Mantegna Room Key, Deck of Every Card
 #
 
-boolean cc_barrelPrayers();
-boolean cc_mayoItems();
+boolean sl_barrelPrayers();
+boolean sl_mayoItems();
 
 boolean chateaumantegna_available();
 void chateaumantegna_useDesk();
@@ -33,14 +33,14 @@ boolean mayo_acquireMayo(item it)
 	{
 		return false;
 	}
-	if(!(cc_get_campground() contains $item[Portable Mayo Clinic]))
+	if(!(sl_get_campground() contains $item[Portable Mayo Clinic]))
 	{
 		return false;
 	}
 	return true;
 }
 
-boolean cc_barrelPrayers()
+boolean sl_barrelPrayers()
 {
 	if(!is_unrestricted($item[Shrine to the Barrel God]))
 	{
@@ -206,7 +206,7 @@ boolean cc_barrelPrayers()
 }
 
 
-boolean cc_mayoItems()
+boolean sl_mayoItems()
 {
 	if(!is_unrestricted($item[Portable Mayo Clinic]))
 	{
@@ -220,7 +220,7 @@ boolean cc_mayoItems()
 	{
 		return false;
 	}
-	if(!(cc_get_campground() contains $item[Portable Mayo Clinic]))
+	if(!(sl_get_campground() contains $item[Portable Mayo Clinic]))
 	{
 		return false;
 	}
@@ -824,7 +824,7 @@ boolean deck_useScheme(string action)
 	else if(action == "turns")
 	{
 		cards = $strings[Ancestral Recall, Island];
-		if((get_property("cc_trapper") == "") || (get_property("cc_trapper") == "start"))
+		if((get_property("sl_trapper") == "") || (get_property("sl_trapper") == "start"))
 		{
 			cards = $strings[Ancestral Recall, Island, Mine];
 		}
@@ -1038,7 +1038,7 @@ boolean deck_useScheme(string action)
 		{
 			if(my_daycount() == 1)
 			{
-				set_property("cc_cubeItems", false);
+				set_property("sl_cubeItems", false);
 			}
 			if(towerKeyCount() >= 3)
 			{
@@ -1081,7 +1081,7 @@ boolean deck_useScheme(string action)
 
 	if((action == "") && (my_meat() < 10000))
 	{
-		cc_autosell(min(1, item_amount($item[1952 Mickey Mantle Card])), $item[1952 Mickey Mantle Card]);
+		sl_autosell(min(1, item_amount($item[1952 Mickey Mantle Card])), $item[1952 Mickey Mantle Card]);
 	}
 
 	if((action == "farming") || (action == "turns"))

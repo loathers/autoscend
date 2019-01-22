@@ -1,6 +1,6 @@
 script "standard.ash"
 
-import<cc_util.ash>
+import<sl_util.ash>
 # Code here is supplementary handlers and specialized handlers
 
 void standard_dnaPotions()
@@ -67,10 +67,10 @@ void standard_initializeSettings()
 {
 	if(my_path() == "Standard")
 	{
-		set_property("cc_getStarKey", true);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_wandOfNagamar", true);
-		set_property("cc_useCubeling", true);
+		set_property("sl_getStarKey", true);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_wandOfNagamar", true);
+		set_property("sl_useCubeling", true);
 	}
 }
 

@@ -1,4 +1,4 @@
-script "cc_digimon.ash"
+script "sl_digimon.ash"
 
 
 void digimon_initializeDay(int day)
@@ -8,29 +8,29 @@ void digimon_initializeDay(int day)
 
 void digimon_initializeSettings()
 {
-	if(cc_my_path() == "Pocket Familiars")
+	if(sl_my_path() == "Pocket Familiars")
 	{
-		set_property("cc_ballroomsong", "finished");
-		set_property("cc_getBeehive", false);
-		set_property("cc_getBoningKnife", false);
-		set_property("cc_cubeItems", false);
-		set_property("cc_getStarKey", true);
-		set_property("cc_gremlins", "finished");
-		set_property("cc_grimstoneOrnateDowsingRod", false);
-		set_property("cc_hippyInstead", true);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_ignoreFlyer", true);
-		set_property("cc_shenCopperhead", true);
-		set_property("cc_swordfish", "finished");
-		set_property("cc_useCubeling", false);
-		set_property("cc_wandOfNagamar", false);
+		set_property("sl_ballroomsong", "finished");
+		set_property("sl_getBeehive", false);
+		set_property("sl_getBoningKnife", false);
+		set_property("sl_cubeItems", false);
+		set_property("sl_getStarKey", true);
+		set_property("sl_gremlins", "finished");
+		set_property("sl_grimstoneOrnateDowsingRod", false);
+		set_property("sl_hippyInstead", true);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_ignoreFlyer", true);
+		set_property("sl_shenCopperhead", true);
+		set_property("sl_swordfish", "finished");
+		set_property("sl_useCubeling", false);
+		set_property("sl_wandOfNagamar", false);
 	}
 }
 
 
 boolean digimon_makeTeam()
 {
-	if(cc_my_path() == "Pocket Familiars")
+	if(sl_my_path() == "Pocket Familiars")
 	{
 		string temp = visit_url("famteam.php", false);
 
@@ -102,12 +102,12 @@ boolean digimon_makeTeam()
 
 boolean LM_digimon()
 {
-	if(cc_my_path() == "Pocket Familiars")
+	if(sl_my_path() == "Pocket Familiars")
 	{
 		digimon_makeTeam();
 		if((my_primestat() == $stat[Muscle]) && !possessEquipment($item[Dented Scepter]) && (my_level() < 13))
 		{
-			cc_advWitchess("king");
+			sl_advWitchess("king");
 		}
 	}
 	return false;
@@ -115,7 +115,7 @@ boolean LM_digimon()
 
 boolean digimon_ccAdv(int num, location loc, string option)
 {
-	if(cc_my_path() != "Pocket Familiars")
+	if(sl_my_path() != "Pocket Familiars")
 	{
 		abort("Can not use Digimon protocols without Digimon!");
 	}
@@ -128,7 +128,7 @@ boolean digimon_ccAdv(int num, location loc, string option)
 #	boolean retval = adv1(loc, 0, option);
 	string temp = visit_url(to_url(loc), false);
 
-	if((get_property("cc_mcmuffin") == "ed") && (cc_my_path() == "Pocket Familiars") && (loc == $location[The Lower Chambers]))
+	if((get_property("sl_mcmuffin") == "ed") && (sl_my_path() == "Pocket Familiars") && (loc == $location[The Lower Chambers]))
 	{
 		temp = visit_url(to_url(loc) + "a", false);
 	}

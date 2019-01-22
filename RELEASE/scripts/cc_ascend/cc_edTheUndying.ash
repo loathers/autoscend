@@ -1,4 +1,4 @@
-script "cc_edTheUndying.ash"
+script "sl_edTheUndying.ash"
 
 int ed_spleen_limit()
 {
@@ -25,28 +25,28 @@ void ed_initializeSettings()
 {
 	if(my_path() == "Actually Ed the Undying")
 	{
-		set_property("cc_100familiar", $familiar[Egg Benedict]);
-		set_property("cc_crackpotjar", "done");
-		set_property("cc_cubeItems", false);
-		set_property("cc_day1_dna", "finished");
-		set_property("cc_getBeehive", false);
-		set_property("cc_getStarKey", false);
-		set_property("cc_grimstoneFancyOilPainting", false);
-		set_property("cc_grimstoneOrnateDowsingRod", false);
-		set_property("cc_holeinthesky", false);
-		set_property("cc_lashes", "");
-		set_property("cc_needLegs", false);
-		set_property("cc_renenutet", "");
-		set_property("cc_servantChoice", "");
-		set_property("cc_useCubeling", false);
-		set_property("cc_wandOfNagamar", false);
+		set_property("sl_100familiar", $familiar[Egg Benedict]);
+		set_property("sl_crackpotjar", "done");
+		set_property("sl_cubeItems", false);
+		set_property("sl_day1_dna", "finished");
+		set_property("sl_getBeehive", false);
+		set_property("sl_getStarKey", false);
+		set_property("sl_grimstoneFancyOilPainting", false);
+		set_property("sl_grimstoneOrnateDowsingRod", false);
+		set_property("sl_holeinthesky", false);
+		set_property("sl_lashes", "");
+		set_property("sl_needLegs", false);
+		set_property("sl_renenutet", "");
+		set_property("sl_servantChoice", "");
+		set_property("sl_useCubeling", false);
+		set_property("sl_wandOfNagamar", false);
 
-		set_property("cc_edSkills", -1);
-		set_property("cc_chasmBusted", false);
-		set_property("cc_renenutetBought", 0);
+		set_property("sl_edSkills", -1);
+		set_property("sl_chasmBusted", false);
+		set_property("sl_renenutetBought", 0);
 
-		set_property("cc_edCombatCount", 0);
-		set_property("cc_edCombatRoundCount", 0);
+		set_property("sl_edCombatCount", 0);
+		set_property("sl_edCombatRoundCount", 0);
 
 		set_property("choiceAdventure1002", 1);
 		set_property("choiceAdventure1023", "");
@@ -61,9 +61,9 @@ void ed_initializeSession()
 	{
 		if(get_property("hpAutoRecoveryItems") != "linen bandages")
 		{
-			set_property("cc_hpAutoRecoveryItems", get_property("hpAutoRecoveryItems"));
-			set_property("cc_hpAutoRecovery", get_property("hpAutoRecovery"));
-			set_property("cc_hpAutoRecoveryTarget", get_property("hpAutoRecoveryTarget"));
+			set_property("sl_hpAutoRecoveryItems", get_property("hpAutoRecoveryItems"));
+			set_property("sl_hpAutoRecovery", get_property("hpAutoRecovery"));
+			set_property("sl_hpAutoRecoveryTarget", get_property("hpAutoRecoveryTarget"));
 			set_property("hpAutoRecoveryItems", "linen bandages");
 			set_property("hpAutoRecovery", 0.0);
 			set_property("hpAutoRecoveryTarget", 0.0);
@@ -77,12 +77,12 @@ void ed_terminateSession()
 	{
 		if(get_property("hpAutoRecoveryItems") == "linen bandages")
 		{
-			set_property("hpAutoRecoveryItems", get_property("cc_hpAutoRecoveryItems"));
-			set_property("hpAutoRecovery", get_property("cc_hpAutoRecovery"));
-			set_property("hpAutoRecoveryTarget", get_property("cc_hpAutoRecoveryTarget"));
-			set_property("cc_hpAutoRecoveryItems", "");
-			set_property("cc_hpAutoRecovery", 0.0);
-			set_property("cc_hpAutoRecoveryTarget", 0.0);
+			set_property("hpAutoRecoveryItems", get_property("sl_hpAutoRecoveryItems"));
+			set_property("hpAutoRecovery", get_property("sl_hpAutoRecovery"));
+			set_property("hpAutoRecoveryTarget", get_property("sl_hpAutoRecoveryTarget"));
+			set_property("sl_hpAutoRecoveryItems", "");
+			set_property("sl_hpAutoRecovery", 0.0);
+			set_property("sl_hpAutoRecoveryTarget", 0.0);
 		}
 	}
 }
@@ -95,9 +95,9 @@ void ed_initializeDay(int day)
 	}
 	if(day == 1)
 	{
-		if(get_property("cc_day1_init") != "finished")
+		if(get_property("sl_day1_init") != "finished")
 		{
-			set_property("cc_renenutetBought", 0);
+			set_property("sl_renenutetBought", 0);
 			if(item_amount($item[transmission from planet Xi]) > 0)
 			{
 				use(1, $item[transmission from planet xi]);
@@ -114,7 +114,7 @@ void ed_initializeDay(int day)
 
 			equipBaseline();
 
-			set_property("cc_day1_init", "finished");
+			set_property("sl_day1_init", "finished");
 		}
 	}
 	else if(day == 2)
@@ -122,10 +122,10 @@ void ed_initializeDay(int day)
 		equipBaseline();
 		ovenHandle();
 
-		if(get_property("cc_day2_init") == "")
+		if(get_property("sl_day2_init") == "")
 		{
 
-			if(get_property("cc_dickstab").to_boolean() && chateaumantegna_available())
+			if(get_property("sl_dickstab").to_boolean() && chateaumantegna_available())
 			{
 				boolean[item] furniture = chateaumantegna_decorations();
 				if(!furniture[$item[Ceiling Fan]])
@@ -134,7 +134,7 @@ void ed_initializeDay(int day)
 				}
 			}
 
-			set_property("cc_renenutetBought", 0);
+			set_property("sl_renenutetBought", 0);
 			if(item_amount($item[gym membership card]) > 0)
 			{
 				use(1, $item[gym membership card]);
@@ -149,25 +149,25 @@ void ed_initializeDay(int day)
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 			pullXWhenHaveY(whatHiMein(), 1, 0);
 
-			set_property("cc_day2_init", "finished");
+			set_property("sl_day2_init", "finished");
 		}
 	}
 	else if(day == 3)
 	{
-		if(get_property("cc_day3_init") == "")
+		if(get_property("sl_day3_init") == "")
 		{
-			set_property("cc_renenutetBought", 0);
+			set_property("sl_renenutetBought", 0);
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("cc_day3_init", "finished");
+			set_property("sl_day3_init", "finished");
 		}
 	}
 	else if(day == 4)
 	{
-		if(get_property("cc_day4_init") == "")
+		if(get_property("sl_day4_init") == "")
 		{
-			set_property("cc_renenutetBought", 0);
+			set_property("sl_renenutetBought", 0);
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("cc_day4_init", "finished");
+			set_property("sl_day4_init", "finished");
 		}
 	}
 }
@@ -178,13 +178,13 @@ boolean L13_ed_towerHandler()
 	{
 		return false;
 	}
-	if(get_property("cc_sorceress") != "")
+	if(get_property("sl_sorceress") != "")
 	{
 		return false;
 	}
 	if(item_amount($item[Thwaitgold Scarab Beetle Statuette]) > 0)
 	{
-		set_property("cc_sorceress", "finished");
+		set_property("sl_sorceress", "finished");
 		council();
 		return true;
 	}
@@ -199,7 +199,7 @@ boolean L13_ed_towerHandler()
 
 		if(item_amount($item[Thwaitgold Scarab Beetle Statuette]) > 0)
 		{
-			set_property("cc_sorceress", "finished");
+			set_property("sl_sorceress", "finished");
 			council();
 		}
 		return true;
@@ -270,7 +270,7 @@ boolean L13_ed_councilWarehouse()
 	{
 		return false;
 	}
-	if(get_property("cc_sorceress") != "finished")
+	if(get_property("sl_sorceress") != "finished")
 	{
 		return false;
 	}
@@ -295,8 +295,8 @@ boolean L13_ed_councilWarehouse()
 	{
 		council();
 		print("McMuffin is found!", "blue");
-		print("Ed Combats: " + get_property("cc_edCombatCount"), "blue");
-		print("Ed Combat Rounds: " + get_property("cc_edCombatRoundCount"), "blue");
+		print("Ed Combats: " + get_property("sl_edCombatCount"), "blue");
+		print("Ed Combat Rounds: " + get_property("sl_edCombatRoundCount"), "blue");
 
 		return false;
 	}
@@ -461,7 +461,7 @@ boolean ed_buySkills()
 	{
 		return false;
 	}
-	if(my_level() <= get_property("cc_edSkills").to_int())
+	if(my_level() <= get_property("sl_edSkills").to_int())
 	{
 		return false;
 	}
@@ -645,7 +645,7 @@ boolean ed_buySkills()
 		{
 			servant tryImbue = $servant[none];
 
-			if(get_property("cc_dickstab").to_boolean())
+			if(get_property("sl_dickstab").to_boolean())
 			{
 				if(have_servant($servant[Priest]) && ($servant[Priest].experience < 81))
 				{
@@ -719,7 +719,7 @@ boolean ed_buySkills()
 		handleServant(current);
 	}
 
-	set_property("cc_edSkills", my_level());
+	set_property("sl_edSkills", my_level());
 	return true;
 }
 
@@ -781,7 +781,7 @@ boolean ed_eatStuff()
 		eatFancyDog("video games hot dog");
 	}
 
-	if(get_property("cc_dickstab").to_boolean() && !get_property("_fancyHotDogEaten").to_boolean() && (my_daycount() == 1) && ((my_fullness() + 2) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) == 0) && (item_amount($item[Clan VIP Lounge Key]) > 0) && chateaumantegna_available())
+	if(get_property("sl_dickstab").to_boolean() && !get_property("_fancyHotDogEaten").to_boolean() && (my_daycount() == 1) && ((my_fullness() + 2) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) == 0) && (item_amount($item[Clan VIP Lounge Key]) > 0) && chateaumantegna_available())
 	{
 		eatFancyDog("sleeping dog");
 	}
@@ -811,7 +811,7 @@ boolean ed_eatStuff()
 
 	if((!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie")) && (get_property("semirareLocation") != $location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
-		if((item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500) && (inebriety_limit() == 4) && ((my_inebriety() == 0) || (my_inebriety() == 3)) && (cc_get_clan_lounge() contains $item[Clan Speakeasy]))
+		if((item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500) && (inebriety_limit() == 4) && ((my_inebriety() == 0) || (my_inebriety() == 3)) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]))
 		{
 			drinkSpeakeasyDrink($item[Lucky Lindy]);
 			#cli_execute("drink 1 lucky lindy");
@@ -832,12 +832,12 @@ boolean ed_needShop()
 		return false;
 	}
 
-	if(have_skill($skill[Upgraded Legs]) && get_property("cc_needLegs").to_boolean())
+	if(have_skill($skill[Upgraded Legs]) && get_property("sl_needLegs").to_boolean())
 	{
-		set_property("cc_needLegs", false);
+		set_property("sl_needLegs", false);
 	}
 
-	if(get_property("cc_needLegs").to_boolean() && (item_amount($item[Ka Coin]) >= 10))
+	if(get_property("sl_needLegs").to_boolean() && (item_amount($item[Ka Coin]) >= 10))
 	{
 		return true;
 	}
@@ -866,7 +866,7 @@ boolean ed_needShop()
 #		limiter = $skill[Upgraded Spine];
 #	}
 
-	if((canEat == 0) && have_skill(limiter) && (item_amount($item[Linen Bandages]) >= 4) && (get_property("cc_renenutetBought").to_int() >= 7) && (item_amount($item[Holy Spring Water]) >= 1) && (item_amount($item[Talisman of Horus]) >= 2))
+	if((canEat == 0) && have_skill(limiter) && (item_amount($item[Linen Bandages]) >= 4) && (get_property("sl_renenutetBought").to_int() >= 7) && (item_amount($item[Holy Spring Water]) >= 1) && (item_amount($item[Talisman of Horus]) >= 2))
 	{
 		if((item_amount($item[Ka Coin]) > 30) && (item_amount($item[Spirit Beer]) == 0))
 		{
@@ -907,24 +907,24 @@ boolean ed_shopping()
 	visit_url("choice.php?pwd=&whichchoice=1023&option=1", true);
 
 
-	if(get_property("cc_breakstone").to_boolean())
+	if(get_property("sl_breakstone").to_boolean())
 	{
 		string temp = visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
 		temp = visit_url("place.php?whichplace=edunder&action=edunder_hippy");
 		temp = visit_url("choice.php?pwd&whichchoice=1057&option=1", true);
 //		temp = visit_url("peevpee.php?place=fight");
-		set_property("cc_breakstone", false);
+		set_property("sl_breakstone", false);
 	}
 
 	int skillBuy = 0;
 	int coins = item_amount($item[Ka Coin]);
 	//Handler for low-powered accounts
-	if(!have_skill($skill[Upgraded Legs]) && get_property("cc_needLegs").to_boolean())
+	if(!have_skill($skill[Upgraded Legs]) && get_property("sl_needLegs").to_boolean())
 	{
 		if(coins >= 10)
 		{
 			print("Buying Upgraded Legs", "green");
-			set_property("cc_needLegs", false);
+			set_property("sl_needLegs", false);
 			skillBuy = 36;
 		}
 		//Prevent other purchases from interrupting us.
@@ -981,7 +981,7 @@ boolean ed_shopping()
 			skillBuy = 28;
 		}
 	}
-	else if(!have_skill($skill[Upgraded Legs]) && !get_property("cc_dickstab").to_boolean())
+	else if(!have_skill($skill[Upgraded Legs]) && !get_property("sl_dickstab").to_boolean())
 	{
 		if(coins >= 10)
 		{
@@ -989,7 +989,7 @@ boolean ed_shopping()
 			skillBuy = 36;
 		}
 	}
-	else if(!have_skill($skill[More Legs]) && !get_property("cc_dickstab").to_boolean())
+	else if(!have_skill($skill[More Legs]) && !get_property("sl_dickstab").to_boolean())
 	{
 		if(coins >= 20)
 		{
@@ -1005,7 +1005,7 @@ boolean ed_shopping()
 			skillBuy = 32;
 		}
 	}
-	else if(!have_skill($skill[Replacement Liver]) && get_property("cc_dickstab").to_boolean())
+	else if(!have_skill($skill[Replacement Liver]) && get_property("sl_dickstab").to_boolean())
 	{
 		if(coins >= 30)
 		{
@@ -1037,7 +1037,7 @@ boolean ed_shopping()
 			skillBuy = 29;
 		}
 	}
-	else if(!have_skill($skill[Elemental Wards]) && !get_property("cc_dickstab").to_boolean())
+	else if(!have_skill($skill[Elemental Wards]) && !get_property("sl_dickstab").to_boolean())
 	{
 		if(coins >= 10)
 		{
@@ -1053,13 +1053,13 @@ boolean ed_shopping()
 			skillBuy = 35;
 		}
 	}
-	else if((get_property("cc_renenutetBought").to_int() < 7) && (coins > 1))
+	else if((get_property("sl_renenutetBought").to_int() < 7) && (coins > 1))
 	{
-		while((get_property("cc_renenutetBought").to_int() < 7) && (coins > 1))
+		while((get_property("sl_renenutetBought").to_int() < 7) && (coins > 1))
 		{
 			print("Buying Talisman of Renenutet", "green");
 			visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=439", true);
-			set_property("cc_renenutetBought", 1 + get_property("cc_renenutetBought").to_int());
+			set_property("sl_renenutetBought", 1 + get_property("sl_renenutetBought").to_int());
 			coins = coins - 1;
 			if(!have_skill($skill[Okay Seriously, This is the Last Spleen]))
 			{
@@ -1152,11 +1152,11 @@ boolean ed_shopping()
 	}
 	else if(have_skill($skill[Okay Seriously, This is the Last Spleen]) && (canEat < 1))
 	{	//437 438?
-		while((coins >= 1) && (get_property("cc_renenutetBought").to_int() < 7))
+		while((coins >= 1) && (get_property("sl_renenutetBought").to_int() < 7))
 		{
 			print("Buying Talisman of Renenutet", "green");
 			visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=439", true);
-			set_property("cc_renenutetBought", 1 + get_property("cc_renenutetBought").to_int());
+			set_property("sl_renenutetBought", 1 + get_property("sl_renenutetBought").to_int());
 			coins = coins - 1;
 		}
 		while((item_amount($item[Linen Bandages]) < 4) && (coins >= 4))
@@ -1224,7 +1224,7 @@ boolean ed_handleAdventureServant(int num, location loc, string option)
 
 	if(reassign)
 	{
-		if(!have_skill($skill[Gift of the Maid]) && have_servant($servant[Maid]) && (get_property("cc_nuns") != "finished") && (get_property("cc_nuns") != "done"))
+		if(!have_skill($skill[Gift of the Maid]) && have_servant($servant[Maid]) && (get_property("sl_nuns") != "finished") && (get_property("sl_nuns") != "done"))
 		{
 			handleServant($servant[Maid]);
 		}
@@ -1284,7 +1284,7 @@ boolean ed_handleAdventureServant(int num, location loc, string option)
 		(loc == $location[The Dark Heart of the Woods]) ||
 		(loc == $location[The Dark Elbow of the Woods]))
 	{
-		if((get_property("cc_pirateoutfit") != "finished") && (get_property("cc_pirateoutfit") != "almost") && (item_amount($item[Hot Wing]) < 3))
+		if((get_property("sl_pirateoutfit") != "finished") && (get_property("sl_pirateoutfit") != "almost") && (item_amount($item[Hot Wing]) < 3))
 		{
 			if(!handleServant($servant[Cat]))
 			{
@@ -1348,9 +1348,9 @@ boolean ed_preAdv(int num, location loc, string option)
 
 boolean ed_ccAdv(int num, location loc, string option, boolean skipFirstLife)
 {
-	if((option == "") || (option == "cc_combatHandler"))
+	if((option == "") || (option == "sl_combatHandler"))
 	{
-		option = "cc_edCombatHandler";
+		option = "sl_edCombatHandler";
 	}
 
 	if(!skipFirstLife)
@@ -1374,17 +1374,17 @@ boolean ed_ccAdv(int num, location loc, string option, boolean skipFirstLife)
 			print("This fight and " + num + " more left.", "blue");
 		}
 		cli_execute("precheese");
-		set_property("cc_disableAdventureHandling", true);
-		set_property("cc_edCombatHandler", "");
+		set_property("sl_disableAdventureHandling", true);
+		set_property("sl_edCombatHandler", "");
 
 		if(!skipFirstLife)
 		{
-			set_property("cc_edCombatStage", 0);
+			set_property("sl_edCombatStage", 0);
 			print("Starting Ed Battle at " + loc, "blue");
 			status = adv1(loc, 0, option);
 			if(!status && (get_property("lastEncounter") == "Like a Bat Into Hell"))
 			{
-				set_property("cc_disableAdventureHandling", false);
+				set_property("sl_disableAdventureHandling", false);
 				abort("Either a) We had a connection problem and lost track of the battle, or we were defeated multiple times beyond our usual UNDYING. Manually handle the fight and rerun.");
 			}
 		}
@@ -1402,14 +1402,14 @@ boolean ed_ccAdv(int num, location loc, string option, boolean skipFirstLife)
 				#If this visit_url results in the enemy dying, we don't want to continue
 				visit_url("choice.php?pwd=&whichchoice=1023&option=2", true);
 			}
-			set_property("cc_edCombatStage", 1);
+			set_property("sl_edCombatStage", 1);
 			print("Ed returning to battle Stage 1", "blue");
 
 			if(get_property("_edDefeats").to_int() == 0)
 			{
 				print("Monster defeated in initialization, aborting attempt.", "red");
-				set_property("cc_edCombatStage", 0);
-				set_property("cc_disableAdventureHandling", false);
+				set_property("sl_edCombatStage", 0);
+				set_property("sl_disableAdventureHandling", false);
 				cli_execute("postcheese.ash");
 				return true;
 			}
@@ -1433,14 +1433,14 @@ boolean ed_ccAdv(int num, location loc, string option, boolean skipFirstLife)
 					#If this visit_url results in the enemy dying, we don't want to continue
 					visit_url("choice.php?pwd=&whichchoice=1023&option=2", true);
 				}
-				set_property("cc_edCombatStage", 2);
+				set_property("sl_edCombatStage", 2);
 				print("Ed returning to battle Stage 2", "blue");
 
 				if(get_property("_edDefeats").to_int() == 0)
 				{
 					print("Monster defeated in initialization, aborting attempt.", "red");
-					set_property("cc_edCombatStage", 0);
-					set_property("cc_disableAdventureHandling", false);
+					set_property("sl_edCombatStage", 0);
+					set_property("sl_disableAdventureHandling", false);
 					cli_execute("postcheese.ash");
 					return true;
 				}
@@ -1452,8 +1452,8 @@ boolean ed_ccAdv(int num, location loc, string option, boolean skipFirstLife)
 				}
 			}
 		}
-		set_property("cc_edCombatStage", 0);
-		set_property("cc_disableAdventureHandling", false);
+		set_property("sl_edCombatStage", 0);
+		set_property("sl_disableAdventureHandling", false);
 
 		if(get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int())
 		{
@@ -1490,7 +1490,7 @@ boolean L1_ed_dinsey()
 	{
 		return false;
 	}
-	if(!get_property("cc_dickstab").to_boolean())
+	if(!get_property("sl_dickstab").to_boolean())
 	{
 		return false;
 	}
@@ -1514,7 +1514,7 @@ boolean L1_ed_island(int dickstabOverride)
 	}
 
 	skill blocker = $skill[Still Another Extra Spleen];
-	if(get_property("cc_dickstab").to_boolean())
+	if(get_property("sl_dickstab").to_boolean())
 	{
 		if(turns_played() > 22)
 		{
@@ -1700,20 +1700,20 @@ boolean L1_ed_islandFallback()
 		buffMaintain($effect[Wisdom Of Thoth], 20, 1, 1);
 		return ccAdv(1, $location[Hippy Camp]);
 	}
-	set_property("cc_needLegs", true);
+	set_property("sl_needLegs", true);
 	return ccAdv(1, $location[The Outskirts of Cobb\'s Knob]);
 }
 
 boolean L9_ed_chasmStart()
 {
-	if((my_class() == $class[Ed]) && !get_property("cc_chasmBusted").to_boolean())
+	if((my_class() == $class[Ed]) && !get_property("sl_chasmBusted").to_boolean())
 	{
 		print("It's a troll on a bridge!!!!", "blue");
 
 		string page = visit_url("place.php?whichplace=orc_chasm&action=bridge_done");
 		ccAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
 
-		set_property("cc_chasmBusted", true);
+		set_property("sl_chasmBusted", true);
 		set_property("chasmBridgeProgress", 0);
 		return true;
 	}
@@ -1722,14 +1722,14 @@ boolean L9_ed_chasmStart()
 
 boolean L9_ed_chasmBuild()
 {
-	if((my_class() == $class[Ed]) && !get_property("cc_chasmBusted").to_boolean())
+	if((my_class() == $class[Ed]) && !get_property("sl_chasmBusted").to_boolean())
 	{
 		print("What a nice bridge over here...." , "green");
 
 		string page = visit_url("place.php?whichplace=orc_chasm&action=bridge_done");
 		ccAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
 
-		set_property("cc_chasmBusted", true);
+		set_property("sl_chasmBusted", true);
 		set_property("chasmBridgeProgress", 0);
 		return true;
 	}
@@ -1763,7 +1763,7 @@ boolean L11_ed_mauriceSpookyraven()
 	{
 		if(item_amount($item[7962]) == 0)
 		{
-			set_property("cc_ballroom", "finished");
+			set_property("sl_ballroom", "finished");
 			return true;
 		}
 	}
@@ -1829,7 +1829,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 
-	if(get_property("cc_dickstab").to_boolean())
+	if(get_property("sl_dickstab").to_boolean())
 	{
 		if((my_level() >= 5) && (chateaumantegna_havePainting()) && (my_daycount() <= 2) && (my_class() != $class[Ed]))
 		{
@@ -1926,7 +1926,7 @@ boolean LM_edTheUndying()
 	{
 		return true;
 	}
-	if(!get_property("cc_dickstab").to_boolean() || (my_daycount() >= 2))
+	if(!get_property("sl_dickstab").to_boolean() || (my_daycount() >= 2))
 	{
 		if(L3_tavern())
 		{

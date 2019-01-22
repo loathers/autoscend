@@ -1,4 +1,4 @@
-script "cc_ascend/cc_equipment.ash";
+script "sl_ascend/sl_equipment.ash";
 
 void equipBaseline();
 void equipBaselineWeapon();
@@ -303,7 +303,7 @@ void handleOffHand()
 			possList = possList.ListRemove($item[Barrel Lid]);
 		}
 	}
-	if(cc_my_path() == "Disguises Delimit")
+	if(sl_my_path() == "Disguises Delimit")
 	{
 		int barrelLid = possList.ListFind($item[KoL Con 13 Snowglobe]);
 		if(barrelLid != -1)
@@ -360,7 +360,7 @@ item handleSolveThing(item[int] poss)
 
 item handleSolveThing(item[int] poss, slot loc)
 {
-	string override = get_property("cc_equipment_override_" + loc);
+	string override = get_property("sl_equipment_override_" + loc);
 	if(override != "")
 	{
 		string[int] overrides = split_string(override, ";");
@@ -372,29 +372,29 @@ item handleSolveThing(item[int] poss, slot loc)
 	}
 
 	item toEquip = $item[none];
-	set_property("cc_ignoreCombat", to_lower_case(get_property("cc_ignoreCombat")));
+	set_property("sl_ignoreCombat", to_lower_case(get_property("sl_ignoreCombat")));
 	int idx = 0;
 	while(idx < count(poss))
 	{
 		boolean ignore = false;
 		item thing = poss[idx];
-		if(contains_text(get_property("cc_ignoreCombat"), "(noncombat)") && (numeric_modifier(thing, "Combat Rate") < 0))
+		if(contains_text(get_property("sl_ignoreCombat"), "(noncombat)") && (numeric_modifier(thing, "Combat Rate") < 0))
 		{
 			ignore = true;
 		}
-		if(contains_text(get_property("cc_ignoreCombat"), "(combat)") && (numeric_modifier(thing, "Combat Rate") > 0))
+		if(contains_text(get_property("sl_ignoreCombat"), "(combat)") && (numeric_modifier(thing, "Combat Rate") > 0))
 		{
 			ignore = true;
 		}
-		if(contains_text(get_property("cc_ignoreCombat"), "(ml)") && (numeric_modifier(thing, "Monster Level") > 0))
+		if(contains_text(get_property("sl_ignoreCombat"), "(ml)") && (numeric_modifier(thing, "Monster Level") > 0))
 		{
 			ignore = true;
 		}
-		if((get_property("cc_beatenUpCount").to_int() >= 7) && (numeric_modifier(thing, "Monster Level") > 0))
+		if((get_property("sl_beatenUpCount").to_int() >= 7) && (numeric_modifier(thing, "Monster Level") > 0))
 		{
 			ignore = true;
 		}
-		if(contains_text(get_property("cc_ignoreCombat"), "(seal)") && (loc == $slot[weapon]) && (item_type(thing) != "club"))
+		if(contains_text(get_property("sl_ignoreCombat"), "(seal)") && (loc == $slot[weapon]) && (item_type(thing) != "club"))
 		{
 			ignore = true;
 		}
@@ -722,7 +722,7 @@ void equipBaseline()
 		handleBjornify($familiar[El Vibrato Megadrone]);
 	}
 
-	if(get_property("cc_diceMode").to_boolean())
+	if(get_property("sl_diceMode").to_boolean())
 	{
 		if(item_amount($item[Dice Ring]) > 0)
 		{
@@ -765,7 +765,7 @@ void equipBaselineAccessories()
 	}
 
 	//Remove things based on needs:
-	//cc_beatenupcount (sp)
+	//sl_beatenupcount (sp)
 	//DO we want +item
 	//World\'s Best Adventurer Sash value, sphygmayomanometer value
 	//spectacles value
@@ -927,24 +927,24 @@ void equipBaselineHolster()
 
 void ensureSealClubs()
 {
-	set_property("cc_ignoreCombat", get_property("cc_ignoreCombat") + "(seal)");
+	set_property("sl_ignoreCombat", get_property("sl_ignoreCombat") + "(seal)");
 	equipBaseline();
-	set_property("cc_ignoreCombat", "");
+	set_property("sl_ignoreCombat", "");
 }
 
 
 void removeNonCombat()
 {
-	set_property("cc_ignoreCombat", get_property("cc_ignoreCombat") + "(noncombat)");
+	set_property("sl_ignoreCombat", get_property("sl_ignoreCombat") + "(noncombat)");
 	equipBaseline();
-	set_property("cc_ignoreCombat", "");
+	set_property("sl_ignoreCombat", "");
 }
 
 void removeCombat()
 {
-	set_property("cc_ignoreCombat", get_property("cc_ignoreCombat") + "(combat)");
+	set_property("sl_ignoreCombat", get_property("sl_ignoreCombat") + "(combat)");
 	equipBaseline();
-	set_property("cc_ignoreCombat", "");
+	set_property("sl_ignoreCombat", "");
 }
 
 void equipRollover()
@@ -1107,12 +1107,12 @@ void equipRollover()
 
 	### Original end of rollover accessory code.
 
-	if(have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li\'l Unicorn Costume]) && !is100FamiliarRun() && (my_meat() > (3000 + npc_price($item[Li\'l Unicorn Costume]))) && (cc_my_path() != "G-Lover") && (cc_my_path() != "Pocket Familiars"))
+	if(have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li\'l Unicorn Costume]) && !is100FamiliarRun() && (my_meat() > (3000 + npc_price($item[Li\'l Unicorn Costume]))) && (sl_my_path() != "G-Lover") && (sl_my_path() != "Pocket Familiars"))
 	{
 		cli_execute("buy Li\'l Unicorn Costume");
 	}
 
-	if(have_familiar($familiar[Trick-or-Treating Tot]) && possessEquipment($item[Li\'l Unicorn Costume]) && !is100FamiliarRun($familiar[Trick-or-Treating Tot]) && (my_familiar() != $familiar[none]) && (cc_my_path() != "G-Lover"))
+	if(have_familiar($familiar[Trick-or-Treating Tot]) && possessEquipment($item[Li\'l Unicorn Costume]) && !is100FamiliarRun($familiar[Trick-or-Treating Tot]) && (my_familiar() != $familiar[none]) && (sl_my_path() != "G-Lover"))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
 		if(equipped_item($slot[Familiar]) != $item[Li\'l Unicorn Costume])

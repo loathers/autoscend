@@ -1,4 +1,4 @@
-script "cc_util.ash";
+script "sl_util.ash";
 
 // Public Prototypes
 void debugMaximize(string req, int meat);			//This function will be removed.
@@ -15,7 +15,7 @@ string yellowRayCombatString();
 int solveCookie();
 boolean use_barrels();
 int ccCraft(string mode, int count, item item1, item item2);
-int[item] cc_get_campground();
+int[item] sl_get_campground();
 int towerKeyCount();
 boolean haveSpleenFamiliar();
 boolean considerGrimstoneGolem(boolean bjornCrown);
@@ -40,7 +40,7 @@ boolean isProtonGhost(monster mon);
 boolean isGhost(monster mon);
 boolean instakillable(monster mon);
 boolean in_ronin();
-boolean cc_autosell(int quantity, item toSell);
+boolean sl_autosell(int quantity, item toSell);
 boolean forceEquip(slot sl, item it);
 item whatHiMein();
 int maxSealSummons();
@@ -137,7 +137,7 @@ boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
 boolean evokeEldritchHorror();
-boolean cc_change_mcd(int mcd);
+boolean sl_change_mcd(int mcd);
 boolean providePlusCombat(int amt);
 boolean providePlusNonCombat(int amt);
 boolean providePlusCombat(int amt, boolean doEquips);
@@ -406,7 +406,7 @@ void debugMaximize(string req, int meat)
 	print_html(tableDo);
 	print_html(tableDont);
 
-	if(get_property("cc_shareMaximizer").to_boolean() && get_property("cc_allowSharingData").to_boolean())
+	if(get_property("sl_shareMaximizer").to_boolean() && get_property("sl_allowSharingData").to_boolean())
 	{
 		print("Sharing Maximizer data.", "blue");
 		#print("http://cheesellc.com/kol/sharing.php?type=maximizer&data="+url_encode(tableDo + tableDont), "red");
@@ -555,9 +555,9 @@ boolean backupSetting(string setting, string newValue)
 			return false;
 		}
 
-		if(get_property("cc_backup_" + setting) == "")
+		if(get_property("sl_backup_" + setting) == "")
 		{
-			set_property("cc_backup_" + setting, oldValue);
+			set_property("sl_backup_" + setting, oldValue);
 		}
 		set_property(setting, newValue);
 		return true;
@@ -582,17 +582,17 @@ boolean restoreAllSettings()
 
 boolean restoreSetting(string setting)
 {
-	if(get_property("cc_backup_" + setting) != "")
+	if(get_property("sl_backup_" + setting) != "")
 	{
-		if(get_property("cc_backup_" + setting) == "__BLANK__")
+		if(get_property("sl_backup_" + setting) == "__BLANK__")
 		{
 			set_property(setting, "");
 		}
 		else
 		{
-			set_property(setting, get_property("cc_backup_" + setting));
+			set_property(setting, get_property("sl_backup_" + setting));
 		}
-		remove_property("cc_backup_" + setting);
+		remove_property("sl_backup_" + setting);
 		return true;
 	}
 
@@ -601,7 +601,7 @@ boolean restoreSetting(string setting)
 
 boolean startArmorySubQuest()
 {
-	if(cc_my_path() == "Nuclear Autumn")
+	if(sl_my_path() == "Nuclear Autumn")
 	{
 		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
 		{
@@ -623,7 +623,7 @@ boolean startArmorySubQuest()
 
 boolean startMeatsmithSubQuest()
 {
-	if(cc_my_path() == "Nuclear Autumn")
+	if(sl_my_path() == "Nuclear Autumn")
 	{
 		if(item_amount($item[Bone With a Price Tag On It]) > 0)
 		{
@@ -644,7 +644,7 @@ boolean startMeatsmithSubQuest()
 
 boolean startGalaktikSubQuest()
 {
-	if(cc_my_path() == "Nuclear Autumn")
+	if(sl_my_path() == "Nuclear Autumn")
 	{
 		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
 		{
@@ -801,7 +801,7 @@ boolean loopHandlerDelay(string counterSetting, int threshold)
 
 boolean is100FamiliarRun()
 {
-	if(get_property("cc_100familiar") == $familiar[Egg Benedict])
+	if(get_property("sl_100familiar") == $familiar[Egg Benedict])
 	{
 		if(have_familiar($familiar[Mosquito]))
 		{
@@ -809,11 +809,11 @@ boolean is100FamiliarRun()
 		}
 	}
 
-	if(get_property("cc_100familiar") == $familiar[none])
+	if(get_property("sl_100familiar") == $familiar[none])
 	{
 		return false;
 	}
-	if(get_property("cc_100familiar") == "")
+	if(get_property("sl_100familiar") == "")
 	{
 		return false;
 	}
@@ -824,7 +824,7 @@ boolean is100FamiliarRun(familiar thisOne)
 {
 	if(is100FamiliarRun())
 	{
-		if(get_property("cc_100familiar") == thisOne)
+		if(get_property("sl_100familiar") == thisOne)
 		{
 			return false;
 		}
@@ -1008,19 +1008,19 @@ int solveCookie()
 	{
 		if(contains_text(get_counters("Fortune Cookie", 0, i), "Fortune Cookie"))
 		{
-			set_property("cc_cookie", my_turncount() + i);
+			set_property("sl_cookie", my_turncount() + i);
 			break;
 		}
 		i = i + 1;
 	}
 
-	return get_property("cc_cookie").to_int();
+	return get_property("sl_cookie").to_int();
 }
 
 
 boolean needOre()
 {
-	if((get_property("cc_trapper") == "yeti") || (get_property("cc_trapper") == "finished"))
+	if((get_property("sl_trapper") == "yeti") || (get_property("sl_trapper") == "finished"))
 	{
 		return false;
 	}
@@ -1102,7 +1102,7 @@ boolean summonMonster(string option)
 			bootyCalls++;
 		}
 	}
-	if(cc_my_path() == "Heavy Rains")
+	if(sl_my_path() == "Heavy Rains")
 	{
 		int rain = my_rain() + (turns_left * 0.85);
 		rainCalls = rain / 50;
@@ -1128,7 +1128,7 @@ boolean summonMonster(string option)
 	int digitizePower = 0;
 	boolean digitizeRedigitize = false;
 	monster digitizeMonster = $monster[none];
-	if(cc_get_campground() contains $item[Source Terminal])
+	if(sl_get_campground() contains $item[Source Terminal])
 	{
 		digitizeLeft = 3 - get_property("_sourceTerminalDigitizeUses").to_int();
 
@@ -1245,7 +1245,7 @@ boolean summonMonster(string option)
 boolean canYellowRay()
 {
 	# Use this to determine if it is safe to enter a yellow ray combat.
-	if((cc_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean())
+	if((sl_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean())
 	{
 		return true;
 	}
@@ -1388,7 +1388,7 @@ string banisherCombatString(monster enemy, location loc)
 
 	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
 
-	if(cc_have_skill($skill[Give Your Opponent The Stinkeye]) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
+	if(sl_have_skill($skill[Give Your Opponent The Stinkeye]) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
 	{
 		return "skill " + $skill[Give Your Opponent The Stinkeye];
 	}
@@ -1399,52 +1399,52 @@ string banisherCombatString(monster enemy, location loc)
 #		return "skill " + $skill[Creepy Grin];
 #	}
 
-	if(cc_have_skill($skill[Thunder Clap]) && (my_thunder() >= thunder_cost($skill[Thunder Clap])) && (!(used contains "thunder clap")))
+	if(sl_have_skill($skill[Thunder Clap]) && (my_thunder() >= thunder_cost($skill[Thunder Clap])) && (!(used contains "thunder clap")))
 	{
 		return "skill " + $skill[Thunder Clap];
 	}
-	if(cc_have_skill($skill[Asdon Martin: Spring-Loaded Front Bumper]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Spring-Loaded Front Bumper])) && (!(used contains "Spring-Loaded Front Bumper")))
+	if(sl_have_skill($skill[Asdon Martin: Spring-Loaded Front Bumper]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Spring-Loaded Front Bumper])) && (!(used contains "Spring-Loaded Front Bumper")))
 	{
 		if(!contains_text(get_property("banishedMonsters"), "Spring-Loaded Front Bumper"))
 		{
 			return "skill " + $skill[Asdon Martin: Spring-Loaded Front Bumper];
 		}
 	}
-	if(cc_have_skill($skill[Curse Of Vacation]) && (my_mp() > mp_cost($skill[Curse Of Vacation])) && (!(used contains "curse of vacation")))
+	if(sl_have_skill($skill[Curse Of Vacation]) && (my_mp() > mp_cost($skill[Curse Of Vacation])) && (!(used contains "curse of vacation")))
 	{
 		return "skill " + $skill[Curse Of Vacation];
 	}
 
-	if(cc_have_skill($skill[Show Them Your Ring]) && !get_property("_mafiaMiddleFingerRingUsed").to_boolean() && (my_mp() >= mp_cost($skill[Show Them Your Ring])))
+	if(sl_have_skill($skill[Show Them Your Ring]) && !get_property("_mafiaMiddleFingerRingUsed").to_boolean() && (my_mp() >= mp_cost($skill[Show Them Your Ring])))
 	{
 		return "skill " + $skill[Show Them Your Ring];
 	}
-	if(cc_have_skill($skill[Breathe Out]) && (my_mp() >= mp_cost($skill[Breathe Out])) && (!(used contains "breathe out")))
+	if(sl_have_skill($skill[Breathe Out]) && (my_mp() >= mp_cost($skill[Breathe Out])) && (!(used contains "breathe out")))
 	{
 		return "skill " + $skill[Breathe Out];
 	}
-	if(cc_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (item_type(equipped_item($slot[weapon])) == "club") && (!(used contains "batter up!")))
+	if(sl_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (item_type(equipped_item($slot[weapon])) == "club") && (!(used contains "batter up!")))
 	{
 		return "skill " + $skill[Batter Up!];
 	}
 
-	if(cc_have_skill($skill[Banishing Shout]) && (my_mp() > mp_cost($skill[Banishing Shout])) && (!(used contains "banishing shout")))
+	if(sl_have_skill($skill[Banishing Shout]) && (my_mp() > mp_cost($skill[Banishing Shout])) && (!(used contains "banishing shout")))
 	{
 		return "skill " + $skill[Banishing Shout];
 	}
-	if(cc_have_skill($skill[Walk Away From Explosion]) && (my_mp() > mp_cost($skill[Walk Away From Explosion])) && (have_effect($effect[Bored With Explosions]) == 0) && (!(used contains "walk away from explosion")))
+	if(sl_have_skill($skill[Walk Away From Explosion]) && (my_mp() > mp_cost($skill[Walk Away From Explosion])) && (have_effect($effect[Bored With Explosions]) == 0) && (!(used contains "walk away from explosion")))
 	{
 		return "skill " + $skill[Walk Away From Explosion];
 	}
 
-	if(cc_have_skill($skill[Talk About Politics]) && (get_property("_pantsgivingBanish").to_int() < 5) && have_equipped($item[Pantsgiving]) && (!(used contains "pantsgiving")))
+	if(sl_have_skill($skill[Talk About Politics]) && (get_property("_pantsgivingBanish").to_int() < 5) && have_equipped($item[Pantsgiving]) && (!(used contains "pantsgiving")))
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if(cc_have_skill($skill[KGB Tranquilizer Dart]) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
+	if(sl_have_skill($skill[KGB Tranquilizer Dart]) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
 	{
 		boolean useIt = true;
-		if((get_property("cc_gremlins") == "finished") && (my_daycount() >= 2) && (get_property("_kgbTranquilizerDartUses").to_int() >= 2))
+		if((get_property("sl_gremlins") == "finished") && (my_daycount() >= 2) && (get_property("_kgbTranquilizerDartUses").to_int() >= 2))
 		{
 			useIt = false;
 		}
@@ -1454,18 +1454,18 @@ string banisherCombatString(monster enemy, location loc)
 			return "skill " + $skill[KGB Tranquilizer Dart];
 		}
 	}
-	if(cc_have_skill($skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() < 3) && ((my_mp() - 20) >= mp_cost($skill[Snokebomb])) && (!(used contains "snokebomb")))
+	if(sl_have_skill($skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() < 3) && ((my_mp() - 20) >= mp_cost($skill[Snokebomb])) && (!(used contains "snokebomb")))
 	{
 		return "skill " + $skill[Snokebomb];
 	}
-	if(cc_have_skill($skill[Beancannon]) && (get_property("_beancannonUses").to_int() < 5) && ((my_mp() - 20) >= mp_cost($skill[Beancannon])) && (!(used contains "beancannon")))
+	if(sl_have_skill($skill[Beancannon]) && (get_property("_beancannonUses").to_int() < 5) && ((my_mp() - 20) >= mp_cost($skill[Beancannon])) && (!(used contains "beancannon")))
 	{
 		if($items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork \'n\' Pork \'n\' Pork \'n\' Beans, Shrub\'s Premium Baked Beans, Tesla\'s Electroplated Beans, Trader Olaf\'s Exotic Stinkbeans, World\'s Blackest-Eyed Peas] contains equipped_item($slot[Off-hand]))
 		{
 			return "skill " + $skill[Beancannon];
 		}
 	}
-	if(cc_have_skill($skill[Breathe Out]) && (!(used contains "breathe out")))
+	if(sl_have_skill($skill[Breathe Out]) && (!(used contains "breathe out")))
 	{
 		return "skill " + $skill[Breathe Out];
 	}
@@ -1477,7 +1477,7 @@ string banisherCombatString(monster enemy, location loc)
 	}
 
 	int keep = 1;
-	if(get_property("cc_gremlins") == "finished")
+	if(get_property("sl_gremlins") == "finished")
 	{
 		keep = 0;
 	}
@@ -1503,7 +1503,7 @@ string yellowRayCombatString()
 {
 	if(have_effect($effect[Everything Looks Yellow]) > 0)
 	{
-		if((cc_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean())
+		if((sl_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean())
 		{
 			return "skill " + $skill[Asdon Martin: Missile Launcher];
 		}
@@ -1514,7 +1514,7 @@ string yellowRayCombatString()
 		return "";
 	}
 
-	if(cc_have_skill($skill[Disintegrate]) && (my_mp() >= (100 + mp_cost($skill[Disintegrate]))))
+	if(sl_have_skill($skill[Disintegrate]) && (my_mp() >= (100 + mp_cost($skill[Disintegrate]))))
 	{
 		return "skill " + $skill[Disintegrate];
 	}
@@ -1522,11 +1522,11 @@ string yellowRayCombatString()
 	{
 		return "item " + $item[Yellowcake Bomb];
 	}
-	if(cc_have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
+	if(sl_have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
 	{
 		return "skill " + $skill[Ball Lightning];
 	}
-	if(cc_have_skill($skill[Wrath of Ra]) && (my_mp() >= mp_cost($skill[Wrath of Ra])))
+	if(sl_have_skill($skill[Wrath of Ra]) && (my_mp() >= mp_cost($skill[Wrath of Ra])))
 	{
 		return "skill " + $skill[Wrath of Ra];
 	}
@@ -1538,7 +1538,7 @@ string yellowRayCombatString()
 	{
 		return "skill " + $skill[Open a Big Yellow Present];
 	}
-	if((get_property("peteMotorbikeHeadlight") == "Ultrabright Yellow Bulb") && cc_have_skill($skill[Flash Headlight]) && (my_mp() >= mp_cost($skill[Flash Headlight])))
+	if((get_property("peteMotorbikeHeadlight") == "Ultrabright Yellow Bulb") && sl_have_skill($skill[Flash Headlight]) && (my_mp() >= mp_cost($skill[Flash Headlight])))
 	{
 		return "skill " + $skill[Flash Headlight];
 	}
@@ -1549,16 +1549,16 @@ string yellowRayCombatString()
 			return "item " + it;
 		}
 	}
-	if(cc_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
+	if(sl_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
 	{
 		return "skill " + $skill[Disintegrate];
 	}
-	if(cc_have_skill($skill[Unleash Cowrruption]) && (have_effect($effect[Cowrruption]) >= 30))
+	if(sl_have_skill($skill[Unleash Cowrruption]) && (have_effect($effect[Cowrruption]) >= 30))
 	{
 		return "skill " + $skill[Unleash Cowrruption];
 	}
 
-	if((cc_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean() && cc_have_skill($skill[Asdon MArtin: Missile Launcher]))
+	if((sl_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean() && sl_have_skill($skill[Asdon MArtin: Missile Launcher]))
 	{
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
@@ -1628,7 +1628,7 @@ boolean uneffect(effect toRemove)
 	{
 		return true;
 	}
-	if(($effects[Driving Intimidatingly, Driving Obnoxiously, Driving Observantly, Driving Quickly, Driving Recklessly, Driving Safely, Driving Stealthily, Driving Wastefully, Driving Waterproofly] contains toRemove) && (cc_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(($effects[Driving Intimidatingly, Driving Obnoxiously, Driving Observantly, Driving Quickly, Driving Recklessly, Driving Safely, Driving Stealthily, Driving Wastefully, Driving Waterproofly] contains toRemove) && (sl_get_campground() contains $item[Asdon Martin Keyfob]))
 	{
 		string temp = visit_url("campground.php?pwd=&preaction=undrive");
 		return true;
@@ -1900,34 +1900,34 @@ item whatHiMein()
 
 void tootGetMeat()
 {
-	cc_autosell(min(5, item_amount($item[hamethyst])), $item[hamethyst]);
-	cc_autosell(min(5, item_amount($item[baconstone])), $item[baconstone]);
-	cc_autosell(min(5, item_amount($item[porquoise])), $item[porquoise]);
+	sl_autosell(min(5, item_amount($item[hamethyst])), $item[hamethyst]);
+	sl_autosell(min(5, item_amount($item[baconstone])), $item[baconstone]);
+	sl_autosell(min(5, item_amount($item[porquoise])), $item[porquoise]);
 }
 
 
 boolean ovenHandle()
 {
-	if((cc_get_campground() contains $item[Dramatic&trade; range]) && !get_property("cc_haveoven").to_boolean())
+	if((sl_get_campground() contains $item[Dramatic&trade; range]) && !get_property("sl_haveoven").to_boolean())
 	{
-		if((cc_get_campground() contains $item[Certificate of Participation]) && (my_class() == $class[Ed]))
+		if((sl_get_campground() contains $item[Certificate of Participation]) && (my_class() == $class[Ed]))
 		{
 			print("Mafia reports we have an oven but we do not. Logging back in will resolve this.", "red");
 		}
 		else
 		{
 			print("Oven found! We can cook!", "blue");
-			set_property("cc_haveoven", true);
+			set_property("sl_haveoven", true);
 		}
 	}
 
-	if(!get_property("cc_haveoven").to_boolean() && (my_meat() > 4000) && isGeneralStoreAvailable())
+	if(!get_property("sl_haveoven").to_boolean() && (my_meat() > 4000) && isGeneralStoreAvailable())
 	{
 		buyUpTo(1, $item[Dramatic&trade; range]);
 		use(1, $item[Dramatic&trade; range]);
-		set_property("cc_haveoven", true);
+		set_property("sl_haveoven", true);
 	}
-	return get_property("cc_haveoven").to_boolean();
+	return get_property("sl_haveoven").to_boolean();
 }
 
 boolean isGhost(monster mon)
@@ -2001,7 +2001,7 @@ boolean acquireMP(int goal, boolean buyIt)
 
 	while(buyIt && (my_mp() < goal))
 	{
-		boolean gLoverBlock = (cc_my_path() == "G-Lover");
+		boolean gLoverBlock = (sl_my_path() == "G-Lover");
 		item goal = $item[none];
 
 		if(($classes[Pastamancer, Sauceror] contains my_class()) && guild_store_available() && (my_level() >= 5))
@@ -2051,7 +2051,7 @@ int cloversAvailable()
 	retval += item_amount($item[Ten-Leaf Clover]);
 	retval += closet_amount($item[Ten-Leaf Clover]);
 
-	if(cc_my_path() == "G-Lover")
+	if(sl_my_path() == "G-Lover")
 	{
 		retval -= item_amount($item[Disassembled Clover]);
 	}
@@ -2073,7 +2073,7 @@ boolean cloverUsageInit()
 
 	if(item_amount($item[Disassembled Clover]) > 0)
 	{
-		if(cc_my_path() != "G-Lover")
+		if(sl_my_path() != "G-Lover")
 		{
 			use(1, $item[Disassembled Clover]);
 		}
@@ -2102,7 +2102,7 @@ boolean cloverUsageFinish()
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
 		print("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
-		if(cc_my_path() == "G-Lover")
+		if(sl_my_path() == "G-Lover")
 		{
 			put_closet(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
 		}
@@ -2208,11 +2208,11 @@ boolean acquireHermitItem(item it)
 
 boolean isHermitAvailable()
 {
-	if(cc_my_path() == "Nuclear Autumn")
+	if(sl_my_path() == "Nuclear Autumn")
 	{
 		return false;
 	}
-	if(cc_my_path() == "Zombie Master")
+	if(sl_my_path() == "Zombie Master")
 	{
 		return false;
 	}
@@ -2221,11 +2221,11 @@ boolean isHermitAvailable()
 
 boolean isGalaktikAvailable()
 {
-	if(cc_my_path() == "Nuclear Autumn")
+	if(sl_my_path() == "Nuclear Autumn")
 	{
 		return false;
 	}
-	if(cc_my_path() == "Zombie Master")
+	if(sl_my_path() == "Zombie Master")
 	{
 		return false;
 	}
@@ -2234,11 +2234,11 @@ boolean isGalaktikAvailable()
 
 boolean isGeneralStoreAvailable()
 {
-	if(cc_my_path() == "Nuclear Autumn")
+	if(sl_my_path() == "Nuclear Autumn")
 	{
 		return false;
 	}
-	if(cc_my_path() == "Zombie Master")
+	if(sl_my_path() == "Zombie Master")
 	{
 		return false;
 	}
@@ -2247,11 +2247,11 @@ boolean isGeneralStoreAvailable()
 
 boolean isUnclePAvailable()
 {
-	if(cc_my_path() == "Nuclear Autumn")
+	if(sl_my_path() == "Nuclear Autumn")
 	{
 		return false;
 	}
-	if(cc_my_path() == "Zombie Master")
+	if(sl_my_path() == "Zombie Master")
 	{
 		return false;
 	}
@@ -2271,9 +2271,9 @@ questRecord questRecord(string prop, string mprop, int type, string func)
 questRecord[int] questDatabase()
 {
 	questRecord[int] retval;
-	retval[0] = questRecord("cc_mosquito", "questL02Larva", 0, "L2_mosquito");
-	retval[1] = questRecord("cc_tavern", "questL03Rat", 0, "L3_tavern");
-	retval[2] = questRecord("cc_bat", "questL04Bat", 0, "L4_batCave");
+	retval[0] = questRecord("sl_mosquito", "questL02Larva", 0, "L2_mosquito");
+	retval[1] = questRecord("sl_tavern", "questL03Rat", 0, "L3_tavern");
+	retval[2] = questRecord("sl_bat", "questL04Bat", 0, "L4_batCave");
 	return retval;
 }
 
@@ -2488,7 +2488,7 @@ boolean declineTrades()
 	return false;
 }
 
-boolean cc_deleteMail(kmailObject msg)
+boolean sl_deleteMail(kmailObject msg)
 {
 	if((msg.fromid == 0) && (contains_text(msg.message, "We found this telegram at the bottom of an old bin of mail.")))
 	{
@@ -2498,7 +2498,7 @@ boolean cc_deleteMail(kmailObject msg)
 	{
 		return true;
 	}
-	if((msg.fromid == 3038166) && (contains_text(msg.message, "CheeseFax completed your relationship fortune test")) && get_property("cc_hideAdultery").to_boolean())
+	if((msg.fromid == 3038166) && (contains_text(msg.message, "CheeseFax completed your relationship fortune test")) && get_property("sl_hideAdultery").to_boolean())
 	{
 		return true;
 	}
@@ -2507,7 +2507,7 @@ boolean cc_deleteMail(kmailObject msg)
 	{
 		return true;
 	}
-	if(contains_text(msg.message, "I have opted to let you know that I have chosen to run &lt;cc_ascend.ash&gt;.  Thanks for writing this script"))
+	if(contains_text(msg.message, "I have opted to let you know that I have chosen to run &lt;sl_ascend.ash&gt;.  Thanks for writing this script"))
 	{
 		return true;
 	}
@@ -2778,9 +2778,9 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	return true;
 }
 
-boolean cc_have_familiar(familiar fam)
+boolean sl_have_familiar(familiar fam)
 {
-	if(cc_my_path() == "License to Adventure")
+	if(sl_my_path() == "License to Adventure")
 	{
 		return false;
 	}
@@ -2803,24 +2803,24 @@ boolean basicAdjustML()
 		if(base <= 150)
 		{
 			int canhave = 150 - base;
-			cc_change_mcd(canhave);
+			sl_change_mcd(canhave);
 		}
 	}
 	else
 	{
-		if(((get_property("flyeredML").to_int() >= 10000) || get_property("cc_ignoreFlyer").to_boolean()) && (my_level() >= 13))
+		if(((get_property("flyeredML").to_int() >= 10000) || get_property("sl_ignoreFlyer").to_boolean()) && (my_level() >= 13))
 		{
-			cc_change_mcd(0);
+			sl_change_mcd(0);
 		}
 		else if((monster_level_adjustment() + (10 - current_mcd())) <= 150)
 		{
-			cc_change_mcd(10);
+			sl_change_mcd(10);
 		}
 	}
 	return false;
 }
 
-boolean cc_change_mcd(int mcd)
+boolean sl_change_mcd(int mcd)
 {
 	int best = 10;
 	if($strings[Mongoose, Vole, Wallaby] contains my_sign())
@@ -2829,7 +2829,7 @@ boolean cc_change_mcd(int mcd)
 		{
 			return false;
 		}
-		if(cc_my_path() == "G-Lover")
+		if(sl_my_path() == "G-Lover")
 		{
 			return false;
 		}
@@ -2850,10 +2850,10 @@ boolean cc_change_mcd(int mcd)
 		best = 11;
 	}
 
-	int handicap = 10 - get_property("cc_beatenUpCount").to_int();
+	int handicap = 10 - get_property("sl_beatenUpCount").to_int();
 	if(my_level() >= 13)
 	{
-		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("cc_ignoreFlyer").to_boolean())
+		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("sl_ignoreFlyer").to_boolean())
 		{
 			mcd = 0;
 		}
@@ -3038,7 +3038,7 @@ int towerKeyCount(boolean effective)
 	{
 		tokens = tokens + 1;
 	}
-	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (cc_my_path() != "Pocket Familiars"))
+	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (sl_my_path() != "Pocket Familiars"))
 	{
 		tokens = tokens + 1;
 	}
@@ -3129,7 +3129,7 @@ boolean forceEquip(slot sl, item it)
 	return true;
 }
 
-boolean cc_autosell(int quantity, item toSell)
+boolean sl_autosell(int quantity, item toSell)
 {
 	if(my_meat() > 100000)
 	{
@@ -3285,7 +3285,7 @@ int doNumberology(string goal, boolean doIt)
 
 int doNumberology(string goal, boolean doIt, string option)
 {
-	if(!cc_have_skill($skill[Calculate the Universe]))
+	if(!sl_have_skill($skill[Calculate the Universe]))
 	{
 		return -1;
 	}
@@ -3389,7 +3389,7 @@ int doNumberology(string goal, boolean doIt, string option)
 	return -1;
 }
 
-boolean cc_have_skill(skill sk)
+boolean sl_have_skill(skill sk)
 {
 	if(!glover_usable(sk) && !sk.passive)
 	{
@@ -3403,7 +3403,7 @@ boolean have_skills(boolean[skill] array)
 {
 	foreach sk in array
 	{
-		if(!cc_have_skill(sk))
+		if(!sl_have_skill(sk))
 		{
 			return false;
 		}
@@ -3447,7 +3447,7 @@ void pullAndUse(item it, int uses)
 	}
 }
 
-int cc_mall_price(item it)
+int sl_mall_price(item it)
 {
 	if(is_tradeable(it))
 	{
@@ -3463,7 +3463,7 @@ int cc_mall_price(item it)
 
 boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 {
-	if(cc_my_path() == "Community Service")
+	if(sl_my_path() == "Community Service")
 	{
 		return false;
 	}
@@ -3489,7 +3489,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 		while(storage_amount(it) < howMany)
 		{
 			int oldPrice = historical_price(it) * 1.2;
-			int curPrice = cc_mall_price(it);
+			int curPrice = sl_mall_price(it);
 			int meat = my_storage_meat();
 			boolean getFromStorage = true;
 			if(can_interact() && (meat < curPrice))
@@ -3608,9 +3608,9 @@ boolean buy_item(item it, int quantity, int maxprice)
 	{
 		take_storage(storage_amount(it), it);
 	}
-	while((item_amount(it) < quantity) && (cc_mall_price(it) < maxprice))
+	while((item_amount(it) < quantity) && (sl_mall_price(it) < maxprice))
 	{
-		if(cc_mall_price(it) > my_meat())
+		if(sl_mall_price(it) > my_meat())
 		{
 			abort("Don't have enough meat to restock, big sad");
 		}
@@ -3622,7 +3622,7 @@ boolean buy_item(item it, int quantity, int maxprice)
 	}
 	if(item_amount(it) < quantity)
 	{
-		if(cc_mall_price(it) >= maxprice)
+		if(sl_mall_price(it) >= maxprice)
 		{
 			print("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
 		}
@@ -3911,22 +3911,22 @@ boolean beehiveConsider()
 	{
 		if(have_skill($skill[Shell Up]) && have_skill($skill[Sauceshell]))
 		{
-			set_property("cc_getBeehive", false);
+			set_property("sl_getBeehive", false);
 		}
 		else
 		{
-			set_property("cc_getBeehive", true);
+			set_property("sl_getBeehive", true);
 		}
 	}
 	else
 	{
 		if(have_skill($skill[Shell Up]) || have_skill($skill[Sauceshell]))
 		{
-			set_property("cc_getBeehive", false);
+			set_property("sl_getBeehive", false);
 		}
 		else
 		{
-			set_property("cc_getBeehive", true);
+			set_property("sl_getBeehive", true);
 		}
 	}
 	return true;
@@ -3984,7 +3984,7 @@ void shrugAT(effect anticipated)
 	}
 }
 
-string cc_my_path()
+string sl_my_path()
 {
 	// This is for handling the situation briefly after a new path is created so that we can
 	// attempt to use proper names.
@@ -4012,7 +4012,7 @@ boolean considerGrimstoneGolem(boolean bjornCrown)
 
 	if(get_property("chasmBridgeProgress").to_int() >= 29)
 	{
-		if(!get_property("cc_grimstoneOrnateDowsingRod").to_boolean())
+		if(!get_property("sl_grimstoneOrnateDowsingRod").to_boolean())
 		{
 			return false;
 		}
@@ -4020,7 +4020,7 @@ boolean considerGrimstoneGolem(boolean bjornCrown)
 
 	if(get_property("desertExploration").to_int() >= 70)
 	{
-		if(!get_property("cc_grimstoneFancyOilPainting").to_boolean())
+		if(!get_property("sl_grimstoneFancyOilPainting").to_boolean())
 		{
 			return false;
 		}
@@ -4034,9 +4034,9 @@ boolean haveSpleenFamiliar()
 	boolean [familiar] spleenies = $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey];
 
 	int[familiar] blacklist;
-	if(get_property("cc_blacklistFamiliar") != "")
+	if(get_property("sl_blacklistFamiliar") != "")
 	{
-		string[int] noFams = split_string(get_property("cc_blacklistFamiliar"), ";");
+		string[int] noFams = split_string(get_property("sl_blacklistFamiliar"), ";");
 		foreach index, fam in noFams
 		{
 			blacklist[to_familiar(trim(fam))] = 1;
@@ -4073,7 +4073,7 @@ boolean acquireTransfunctioner()
 	return true;
 }
 
-int [item] cc_get_campground()
+int [item] sl_get_campground()
 {
 	int [item] campItems = get_campground();
 
@@ -4130,27 +4130,27 @@ int [item] cc_get_campground()
 		campItems[$item[packet of tall grass seeds]] = 1;
 	}
 
-	if((campItems contains $item[Source Terminal]) && !get_property("cc_haveSourceTerminal").to_boolean())
+	if((campItems contains $item[Source Terminal]) && !get_property("sl_haveSourceTerminal").to_boolean())
 	{
-		set_property("cc_haveSourceTerminal", true);
+		set_property("sl_haveSourceTerminal", true);
 	}
 
 	static boolean didCheck = false;
-	if((cc_my_path() == "Nuclear Autumn") && !didCheck)
+	if((sl_my_path() == "Nuclear Autumn") && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
 		if(contains_text(temp, "Source Terminal"))
 		{
-			set_property("cc_haveSourceTerminal", true);
+			set_property("sl_haveSourceTerminal", true);
 		}
 	}
 
-	if(!(campItems contains $item[Dramatic&trade; range]) && get_property("cc_haveoven").to_boolean())
+	if(!(campItems contains $item[Dramatic&trade; range]) && get_property("sl_haveoven").to_boolean())
 	{
 		campItems[$item[Dramatic&trade; range]] = 1;
 	}
-	if(!(campItems contains $item[Source Terminal]) && get_property("cc_haveSourceTerminal").to_boolean())
+	if(!(campItems contains $item[Source Terminal]) && get_property("sl_haveSourceTerminal").to_boolean())
 	{
 		campItems[$item[Source Terminal]] = 1;
 	}
@@ -4404,13 +4404,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Feroci Tea]:					useItem = $item[cuppa Feroci tea];				break;
 	case $effect[Fire Inside]:					useItem = $item[Hot Coal];						break;
 	case $effect[Fishy\, Oily]:
-		if(cc_my_path() == "Heavy Rains")
+		if(sl_my_path() == "Heavy Rains")
 		{
 			useItem = $item[Gourmet Gourami Oil];
 		}																						break;
 	case $effect[Fishy Fortification]:			useItem = $item[Fish-Liver Oil];				break;
 	case $effect[Fishy Whiskers]:
-		if(cc_my_path() == "Heavy Rains")
+		if(sl_my_path() == "Heavy Rains")
 		{
 			useItem = $item[Catfish Whiskers];
 		}																						break;

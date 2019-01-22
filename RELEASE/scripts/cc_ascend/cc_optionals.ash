@@ -1,10 +1,10 @@
-script "cc_optionals.ash"
+script "sl_optionals.ash"
 
-// All prototypes for this code described in cc_ascend_header.ash
+// All prototypes for this code described in sl_ascend_header.ash
 
 boolean LX_artistQuest()
 {
-	if((get_property("cc_doArtistQuest").to_boolean()) && (get_property("questM02Artist") != "finished"))
+	if((get_property("sl_doArtistQuest").to_boolean()) && (get_property("questM02Artist") != "finished"))
 	{
 		if(get_property("questM02Artist") == "unstarted")
 		{
@@ -35,7 +35,7 @@ boolean LX_artistQuest()
 		else
 		{
 			print("Failed starting artist quest, rejecting completely.", "red");
-			set_property("cc_doArtistQuest", false);
+			set_property("sl_doArtistQuest", false);
 			return false;
 		}
 	}
@@ -44,7 +44,7 @@ boolean LX_artistQuest()
 
 boolean LX_dinseylandfillFunbucks()
 {
-	if(!get_property("cc_getDinseyGarbageMoney").to_boolean())
+	if(!get_property("sl_getDinseyGarbageMoney").to_boolean())
 	{
 		return false;
 	}
@@ -52,7 +52,7 @@ boolean LX_dinseylandfillFunbucks()
 	{
 		return false;
 	}
-	if(get_property("cc_dinseyGarbageMoney").to_int() == my_daycount())
+	if(get_property("sl_dinseyGarbageMoney").to_int() == my_daycount())
 	{
 		return false;
 	}

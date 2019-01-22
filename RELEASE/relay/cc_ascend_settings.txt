@@ -3,47 +3,47 @@
 3	sleazeAirportAlways	boolean	ANY	Do you have access to Spring Break Beach?
 4	spookyAirportAlways	boolean	ANY	Do you have access to Conspiracy Island?
 5	stenchAirportAlways	boolean	ANY	Do you have access to DinseyLandfill?
-6	cc_newbieOverride	boolean	ANY	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
-7	cc_delayHauntedKitchen	boolean	ANY	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
-8	cc_dickstab	boolean	ANY	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
-9	cc_getBeehive	boolean	POST	Go for the beehive?
-10	cc_getStarKey	boolean	POST	Get Richard's Star Key?
-11	cc_holeinthesky	boolean	POST	Do we need to open the Hole in the Sky?
-12	cc_pvpEnable	boolean	PRE	Automatically participate in PvP?
-13	cc_getDinseyGarbageMoney	boolean	ANY	Spend a few turns getting the easy FunBucks during a run?
-14	cc_hippyInstead	boolean	POST	Fight on the side of the hippies instead of the Frat Warriors?
-15	cc_ignoreFlyer	boolean	POST	Do not do the flyer quest, recommended to set true if fighting for the hippies.
-16	cc_haveoven	boolean	POST	If you have an oven, this should be true. But we can't always check the campground.
-17	cc_wandOfNagamar	boolean	POST	Do we need to get a Wand of Nagamar?
-18	cc_borrowedTimeOnLiberation	boolean	ANY	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
-19	cc_clearCombatScripts	boolean	ANY	Clear out the postAdventure, preAdventure and kingLiberated settings upon kingLiberation. These will return upon running the script in a new ascension.
-20	cc_interrupt	boolean	ACTION	Cause script to stop before starting next turn action (instead of trying to abort midturn).
-21	cc_delayTimer	integer	ANY	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
-22	cc_pullPVPJunk	boolean	ANY	Pull various PVP junk when liberating the King? Mostly avatar potions but other stuff might get added.
-23	cc_diceMode	boolean	ANY	Equip all available Dice (OCRS) gear. This is probably not FUN.
-24	cc_kingLiberation	boolean	ANY	Use the CHEDDAH kingLiberation script?
-25	cc_allowSharingData	boolean	ANY	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
-26	cc_shareMaximizer	boolean	SHARING	Share maximzer data. This includes the maximzer string, class, path, softcore/hardcore and moon sign.
-27	cc_stayInRun	boolean	ANY	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
-28	cc_alwaysGetSteelOrgan	boolean	PRE	If true, get the Steel Organ in the next ascension.
-29	cc_teaChoice	string	ANY	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
-30	cc_floundryChoice	string	ANY	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
-31	cc_xiblaxianChoice	string	ANY	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
-32	cc_extrudeChoice	string	ANY	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
-33	cc_mummeryChoice	string	ANY	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
-34	cc_blacklistFamiliar	string	ANY	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
-35	cc_doArtistQuest	boolean	ANY	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
-36	cc_ashtonLimit	integer	ANY	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
-37	cc_limitConsume	boolean	ANY	When false, pull cheapish food/booze when we run low so we can continue.
-38	cc_equipment_override_hat	string	ANY	A semicolon separated list of overrides for the hat slot.
-39	cc_equipment_override_back	string	ANY	A semicolon separated list of overrides for the back slot.
-40	cc_equipment_override_shirt	string	ANY	A semicolon separated list of overrides for the shirt slot.
-41	cc_equipment_override_weapon	string	ANY	A semicolon separated list of overrides for the weapon slot.
-42	cc_equipment_override_off-hand	string	ANY	A semicolon separated list of overrides for the off-hand slot.
-43	cc_equipment_override_pants	string	ANY	A semicolon separated list of overrides for the pants slot.
-44	cc_equipment_override_acc1	string	ANY	A semicolon separated list of overrides for the acc1 slot.
-45	cc_equipment_override_acc2	string	ANY	A semicolon separated list of overrides for the acc2 slot.
-46	cc_equipment_override_acc3	string	ANY	A semicolon separated list of overrides for the acc3 slot.
-47	cc_hideAdultery	boolean	ANY	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
-48	cc_slowSteelOrgan	boolean	ANY	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
-49	cc_saveSausage	boolean	ANY	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
+6	sl_newbieOverride	boolean	ANY	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
+7	sl_delayHauntedKitchen	boolean	ANY	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
+8	sl_dickstab	boolean	ANY	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
+9	sl_getBeehive	boolean	POST	Go for the beehive?
+10	sl_getStarKey	boolean	POST	Get Richard's Star Key?
+11	sl_holeinthesky	boolean	POST	Do we need to open the Hole in the Sky?
+12	sl_pvpEnable	boolean	PRE	Automatically participate in PvP?
+13	sl_getDinseyGarbageMoney	boolean	ANY	Spend a few turns getting the easy FunBucks during a run?
+14	sl_hippyInstead	boolean	POST	Fight on the side of the hippies instead of the Frat Warriors?
+15	sl_ignoreFlyer	boolean	POST	Do not do the flyer quest, recommended to set true if fighting for the hippies.
+16	sl_haveoven	boolean	POST	If you have an oven, this should be true. But we can't always check the campground.
+17	sl_wandOfNagamar	boolean	POST	Do we need to get a Wand of Nagamar?
+18	sl_borrowedTimeOnLiberation	boolean	ANY	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
+19	sl_clearCombatScripts	boolean	ANY	Clear out the postAdventure, preAdventure and kingLiberated settings upon kingLiberation. These will return upon running the script in a new ascension.
+20	sl_interrupt	boolean	ACTION	Cause script to stop before starting next turn action (instead of trying to abort midturn).
+21	sl_delayTimer	integer	ANY	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
+22	sl_pullPVPJunk	boolean	ANY	Pull various PVP junk when liberating the King? Mostly avatar potions but other stuff might get added.
+23	sl_diceMode	boolean	ANY	Equip all available Dice (OCRS) gear. This is probably not FUN.
+24	sl_kingLiberation	boolean	ANY	Use the CHEDDAH kingLiberation script?
+25	sl_allowSharingData	boolean	ANY	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
+26	sl_shareMaximizer	boolean	SHARING	Share maximzer data. This includes the maximzer string, class, path, softcore/hardcore and moon sign.
+27	sl_stayInRun	boolean	ANY	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
+28	sl_alwaysGetSteelOrgan	boolean	PRE	If true, get the Steel Organ in the next ascension.
+29	sl_teaChoice	string	ANY	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
+30	sl_floundryChoice	string	ANY	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
+31	sl_xiblaxianChoice	string	ANY	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
+32	sl_extrudeChoice	string	ANY	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
+33	sl_mummeryChoice	string	ANY	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
+34	sl_blacklistFamiliar	string	ANY	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
+35	sl_doArtistQuest	boolean	ANY	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
+36	sl_ashtonLimit	integer	ANY	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
+37	sl_limitConsume	boolean	ANY	When false, pull cheapish food/booze when we run low so we can continue.
+38	sl_equipment_override_hat	string	ANY	A semicolon separated list of overrides for the hat slot.
+39	sl_equipment_override_back	string	ANY	A semicolon separated list of overrides for the back slot.
+40	sl_equipment_override_shirt	string	ANY	A semicolon separated list of overrides for the shirt slot.
+41	sl_equipment_override_weapon	string	ANY	A semicolon separated list of overrides for the weapon slot.
+42	sl_equipment_override_off-hand	string	ANY	A semicolon separated list of overrides for the off-hand slot.
+43	sl_equipment_override_pants	string	ANY	A semicolon separated list of overrides for the pants slot.
+44	sl_equipment_override_acc1	string	ANY	A semicolon separated list of overrides for the acc1 slot.
+45	sl_equipment_override_acc2	string	ANY	A semicolon separated list of overrides for the acc2 slot.
+46	sl_equipment_override_acc3	string	ANY	A semicolon separated list of overrides for the acc3 slot.
+47	sl_hideAdultery	boolean	ANY	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
+48	sl_slowSteelOrgan	boolean	ANY	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
+49	sl_saveSausage	boolean	ANY	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).

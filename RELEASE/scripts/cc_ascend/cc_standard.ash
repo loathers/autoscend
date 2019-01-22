@@ -3,18 +3,18 @@ script "standard.ash"
 
 void standard_initializeSettings()
 {
-	if(cc_my_path() == "Standard")
+	if(sl_my_path() == "Standard")
 	{
-		set_property("cc_getStarKey", true);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_wandOfNagamar", true);
-		set_property("cc_useCubeling", true);
+		set_property("sl_getStarKey", true);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_wandOfNagamar", true);
+		set_property("sl_useCubeling", true);
 	}
 }
 
 void standard_pulls()
 {
-	if(cc_my_path() == "Standard")
+	if(sl_my_path() == "Standard")
 	{
 		if(my_daycount() == 3)
 		{

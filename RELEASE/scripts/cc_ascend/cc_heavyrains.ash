@@ -7,20 +7,20 @@ void hr_initializeSettings()
 	if(my_path() == "Heavy Rains")
 	{
 		#Rain Man (Heavy Rains) Related settings
-		set_property("cc_gaudypirate", "");
-		set_property("cc_holeinthesky", false);
-		set_property("cc_mountainmen", "");
-		set_property("cc_ninjasnowmanassassin", "");
-		set_property("cc_orcishfratboyspy", "");
+		set_property("sl_gaudypirate", "");
+		set_property("sl_holeinthesky", false);
+		set_property("sl_mountainmen", "");
+		set_property("sl_ninjasnowmanassassin", "");
+		set_property("sl_orcishfratboyspy", "");
 
-		set_property("cc_lastthunder", "100");
-		set_property("cc_lastthunderturn", "0");
+		set_property("sl_lastthunder", "100");
+		set_property("sl_lastthunderturn", "0");
 
-		set_property("cc_wandOfNagamar", false);
-		set_property("cc_writingDeskSummon", true);
+		set_property("sl_wandOfNagamar", false);
+		set_property("sl_writingDeskSummon", true);
 
-		set_property("cc_day1_desk", "");
-		set_property("cc_day1_skills", "");
+		set_property("sl_day1_desk", "");
+		set_property("sl_day1_skills", "");
 	}
 }
 
@@ -36,36 +36,36 @@ boolean hr_handleFamiliar(familiar fam)
 
 boolean routineRainManHandler()
 {
-	if(!have_skill($skill[Rain Man]) || (cc_my_path() != "Heavy Rains"))
+	if(!have_skill($skill[Rain Man]) || (sl_my_path() != "Heavy Rains"))
 	{
 		return false;
 	}
 #	if(my_rain() > (92 - (12 * my_daycount())))
-	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0) && (get_property("cc_nunsTrickReady") != "yes") && (get_property("cc_nunsTrickActive") != "yes"))
+	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0) && (get_property("sl_nunsTrickReady") != "yes") && (get_property("sl_nunsTrickActive") != "yes"))
 	{
-		if(get_property("cc_mountainmen") == "")
+		if(get_property("sl_mountainmen") == "")
 		{
-			set_property("cc_mountainmen", "1");
+			set_property("sl_mountainmen", "1");
 			return rainManSummon("mountain man", true, false);
 		}
 
-		if(get_property("cc_gaudypirate") == "")
+		if(get_property("sl_gaudypirate") == "")
 		{
-			set_property("cc_gaudypirate", "1");
+			set_property("sl_gaudypirate", "1");
 			return rainManSummon("gaudy pirate", true, false);
 		}
 
-		if(get_property("cc_trapper") == "start")
+		if(get_property("sl_trapper") == "start")
 		{
 			return rainManSummon("mountain man", false, false);
 		}
 
-		if(get_property("cc_ninjasnowmanassassin") == "")
+		if(get_property("sl_ninjasnowmanassassin") == "")
 		{
 			return rainManSummon("ninja snowman assassin", true, false);
 		}
 
-		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("cc_orcishfratboyspy") == ""))
+		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("sl_orcishfratboyspy") == ""))
 		{
 			return rainManSummon("orcish frat boy spy", false, false);
 		}
@@ -87,7 +87,7 @@ boolean routineRainManHandler()
 		}
 		if(needDigitalKey())
 		{
-			if((get_property("cc_nuns") == "done") || (my_rain() > 92))
+			if((get_property("sl_nuns") == "done") || (my_rain() > 92))
 			{
 				if((item_amount($item[white pixel]) < 30) && (item_amount($item[digital key]) == 0))
 				{
@@ -110,7 +110,7 @@ void hr_initializeDay(int day)
 {
 	if(my_path() == "Heavy Rains")
 	{
-		if((day == 1) && (get_property("cc_day1_skills") != "finished"))
+		if((day == 1) && (get_property("sl_day1_skills") != "finished"))
 		{
 			set_property("choiceAdventure967", "1");
 			set_property("choiceAdventure968", "1");
@@ -147,7 +147,7 @@ void hr_initializeDay(int day)
 			{
 				buyUpTo(1, $item[miniature life preserver]);
 			}
-			set_property("cc_day1_skills", "finished");
+			set_property("sl_day1_skills", "finished");
 			visit_url("main.php");
 		}
 		else if((day == 2) && (my_rain() > 80))
@@ -303,11 +303,11 @@ boolean doHRSkills()
 
 boolean L1_HRstart()
 {
-	if(cc_my_path() != "Heavy Rains")
+	if(sl_my_path() != "Heavy Rains")
 	{
 		return false;
 	}
-	if((get_property("cc_day1_desk") == "finished") || (my_daycount() != 1))
+	if((get_property("sl_day1_desk") == "finished") || (my_daycount() != 1))
 	{
 		return false;
 	}
@@ -329,7 +329,7 @@ boolean L1_HRstart()
 		}
 		dna_generic();
 	}
-	set_property("cc_day1_desk", "finished");
+	set_property("sl_day1_desk", "finished");
 	return true;
 }
 
@@ -345,7 +345,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		return false;
 	}
 
-	# Some of the logic here has been lost due to cc_combat.ash
+	# Some of the logic here has been lost due to sl_combat.ash
 	# It will probably never be updated since it just slows down the script and has no actual damage.
 
 	if(my_rain() < 50)
@@ -467,7 +467,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		#already have the subgoal, don't summon
 		return false;
 	}
-	if(((get_property("cc_gunpowder") == "finished") || (item_amount($item[barrel of gunpowder]) >= 5)) && (monsterName == "lobsterfrogman"))
+	if(((get_property("sl_gunpowder") == "finished") || (item_amount($item[barrel of gunpowder]) >= 5)) && (monsterName == "lobsterfrogman"))
 	{
 		#already have the subgoal, don't summon
 		return false;
@@ -480,13 +480,13 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		count = count + min(item_amount($item[ninja carabiner]), 1);
 		if(count == 3)
 		{
-			set_property("cc_ninjasnowmanassassin", "1");
+			set_property("sl_ninjasnowmanassassin", "1");
 			#already have all ninja gear
 			return false;
 		}
 		if(count == 2)
 		{
-			set_property("cc_ninjasnowmanassassin", "1");
+			set_property("sl_ninjasnowmanassassin", "1");
 			copy = false;
 		}
 		wink = false;
@@ -494,7 +494,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 
 	if(monsterName == "orcish frat boy spy")
 	{
-		set_property("cc_orcishfratboyspy", "done");
+		set_property("sl_orcishfratboyspy", "done");
 		if((item_amount($item[beer helmet]) > 0) || (item_amount($item[bejeweled pledge pin]) > 0) || (item_amount($item[distressed denim pants]) > 0))
 		{
 			return false;
@@ -552,7 +552,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 
 	if(copy)
 	{
-		set_property("cc_doCombatCopy", "yes");
+		set_property("sl_doCombatCopy", "yes");
 	}
 	print("Looking to summon: " + monsterName, "blue");
 

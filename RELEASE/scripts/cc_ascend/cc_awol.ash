@@ -1,14 +1,14 @@
-script "cc_awol.ash"
+script "sl_awol.ash"
 
 boolean awol_initializeSettings()
 {
 	if(my_path() == "Avatar of West of Loathing")
 	{
-		set_property("cc_awolLastSkill", 0);
-		set_property("cc_getBeehive", true);
-		set_property("cc_getStarKey", true);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_wandOfNagamar", true);
+		set_property("sl_awolLastSkill", 0);
+		set_property("sl_getBeehive", true);
+		set_property("sl_getStarKey", true);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_wandOfNagamar", true);
 	}
 	return false;
 }
@@ -133,15 +133,15 @@ effect awol_walkBuff()
 
 boolean awol_buySkills()
 {
-	if(get_property("cc_awolLastSkill").to_int() == 0)
+	if(get_property("sl_awolLastSkill").to_int() == 0)
 	{
 		//Catch that Mafia does not see our second/third skillbook at ascension start
 		cli_execute("refresh inv");
 	}
 
-	if(get_property("cc_awolLastSkill").to_int() < my_level())
+	if(get_property("sl_awolLastSkill").to_int() < my_level())
 	{
-		set_property("cc_awolLastSkill", my_level());
+		set_property("sl_awolLastSkill", my_level());
 	}
 	else
 	{

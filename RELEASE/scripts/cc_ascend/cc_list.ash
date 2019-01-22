@@ -1,4 +1,4 @@
-script "cc_list.ash"
+script "sl_list.ash"
 
 # familiar, int, item, effect, location defined. Define the rest at some point.
 

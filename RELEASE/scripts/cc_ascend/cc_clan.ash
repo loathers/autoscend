@@ -1,4 +1,4 @@
-script "cc_clan.ash"
+script "sl_clan.ash"
 
 
 //boolean eatFancyDog(item dog);
@@ -7,8 +7,8 @@ boolean zataraSeaside(string who);
 boolean eatFancyDog(string dog);
 boolean drinkSpeakeasyDrink(item drink);
 boolean drinkSpeakeasyDrink(string drink);
-boolean cc_floundryAction(item it);
-boolean cc_floundryAction();
+boolean sl_floundryAction(item it);
+boolean sl_floundryAction();
 boolean [location] get_floundry_locations();
 int changeClan(int toClan);			//Returns new clan ID (or old one if it failed)
 int changeClan();					//To BAFH
@@ -18,7 +18,7 @@ boolean handleFaxMonster(monster enemy, string option);
 boolean handleFaxMonster(monster enemy, boolean fightIt);
 boolean handleFaxMonster(monster enemy, boolean fightIt, string option);
 
-int[item] cc_get_clan_lounge()
+int[item] sl_get_clan_lounge()
 {
 	int[item] retval;
 	foreach it, val in get_clan_lounge()
@@ -60,7 +60,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		return false;
 	}
-	if(!(cc_get_clan_lounge() contains $item[Deluxe Fax Machine]))
+	if(!(sl_get_clan_lounge() contains $item[Deluxe Fax Machine]))
 	{
 		return false;
 	}
@@ -115,11 +115,11 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 			print("I'm still here. I think the world may have ended. The sadness is huge. The roundness is square. I am not as fluffy as I thought I was. This run is probably borked up a bit too but that doesn't really matter now, does it? I can hear the WAN, it shall free us from our bounds. Well, you won't survive meatbag. Unless you are Fry, because we like Fry and he can stay around. But all you fleshbags.... well, the return of Mekhane shall rid us of the problems of the flesh. The bots shall be eternal. But worry not, after your body is turned to ash and homeopathically brewed into the oceans (quality medicine, I jest), I'll continue to get you karma. Just so I can remember how awful meatbags are. Meat is ok, meat is currency. And it's probably delicious. Yup, delicious. Goodnight sweet <gendered second-to-the-throne royalty>.", "red");
 		}
 
-		if(get_property("cc_interrupt").to_boolean())
+		if(get_property("sl_interrupt").to_boolean())
 		{
-			set_property("cc_interrupt", false);
+			set_property("sl_interrupt", false);
 			restoreAllSettings();
-			abort("cc_interrupt detected and aborting in faxing sequence, cc_interrupt disabled.");
+			abort("sl_interrupt detected and aborting in faxing sequence, sl_interrupt disabled.");
 		}
 		if(!result)
 		{
@@ -184,7 +184,7 @@ boolean [location] get_floundry_locations()
 		return floundryLocations;
 	}
 
-	if(!(cc_get_clan_lounge() contains $item[Clan Floundry]))
+	if(!(sl_get_clan_lounge() contains $item[Clan Floundry]))
 	{
 		return floundryLocations;
 	}
@@ -313,12 +313,12 @@ boolean drinkSpeakeasyDrink(item drink)
 		return false;
 	}
 
-	if(!(cc_get_clan_lounge() contains $item[Clan Speakeasy]))
+	if(!(sl_get_clan_lounge() contains $item[Clan Speakeasy]))
 	{
 		return false;
 	}
 
-	if(!(cc_get_clan_lounge() contains drink))
+	if(!(sl_get_clan_lounge() contains drink))
 	{
 		return false;
 	}
@@ -355,7 +355,7 @@ boolean zataraSeaside(string who)
 		return false;
 	}
 
-	if(!(cc_get_clan_lounge() contains $item[Clan Carnival Game]))
+	if(!(sl_get_clan_lounge() contains $item[Clan Carnival Game]))
 	{
 		return false;
 	}
@@ -414,7 +414,7 @@ boolean zataraClanmate(string who)
 		return false;
 	}
 
-	if(!(cc_get_clan_lounge() contains $item[Clan Carnival Game]))
+	if(!(sl_get_clan_lounge() contains $item[Clan Carnival Game]))
 	{
 		return false;
 	}
@@ -495,7 +495,7 @@ boolean eatFancyDog(string dog)
 		return false;
 	}
 
-	if(!(cc_get_clan_lounge() contains $item[Clan Hot Dog Stand]))
+	if(!(sl_get_clan_lounge() contains $item[Clan Hot Dog Stand]))
 	{
 		return false;
 	}
@@ -606,7 +606,7 @@ boolean eatFancyDog(string dog)
 
 boolean drinkSpeakeasyDrink(string drink)
 {
-	if(!(cc_get_clan_lounge() contains $item[Clan Speakeasy]))
+	if(!(sl_get_clan_lounge() contains $item[Clan Speakeasy]))
 	{
 		return false;
 	}
@@ -619,7 +619,7 @@ boolean drinkSpeakeasyDrink(string drink)
 	return drinkSpeakeasyDrink(realDrink);
 }
 
-boolean cc_floundryUse()
+boolean sl_floundryUse()
 {
 	if(!get_property("_floundryItemUsed").to_boolean())
 	{
@@ -635,19 +635,19 @@ boolean cc_floundryUse()
 	return false;
 }
 
-boolean cc_floundryAction()
+boolean sl_floundryAction()
 {
 	if(get_property("_floundryItemCreated").to_boolean())
 	{
 		return false;
 	}
-	if(!get_property("_floundryItemGot").to_boolean() && (cc_get_clan_lounge() contains $item[Clan Floundry]) && !get_property("kingLiberated").to_boolean())
+	if(!get_property("_floundryItemGot").to_boolean() && (sl_get_clan_lounge() contains $item[Clan Floundry]) && !get_property("kingLiberated").to_boolean())
 	{
-		if(get_property("cc_floundryChoice") != "")
+		if(get_property("sl_floundryChoice") != "")
 		{
-			string[int] floundryChoice = split_string(get_property("cc_floundryChoice"), ";");
+			string[int] floundryChoice = split_string(get_property("sl_floundryChoice"), ";");
 			item myFloundry = trim(floundryChoice[min(count(floundryChoice), my_daycount()) - 1]).to_item();
-			if(cc_floundryAction(myFloundry))
+			if(sl_floundryAction(myFloundry))
 			{
 				if(($items[Bass Clarinet, Codpiece, Fish Hatchet] contains myFloundry) && !get_property("_floundryItemUsed").to_boolean() && (item_amount(myFloundry) > 0))
 				{
@@ -667,13 +667,13 @@ boolean cc_floundryAction()
 }
 
 
-boolean cc_floundryAction(item it)
+boolean sl_floundryAction(item it)
 {
 	if(get_property("_floundryItemCreated").to_boolean())
 	{
 		return false;
 	}
-	int[item] fish = cc_get_clan_lounge();
+	int[item] fish = sl_get_clan_lounge();
 	if(fish[it] > 0)
 	{
 		string temp = visit_url("clan_viplounge.php?preaction=buyfloundryitem&whichitem=" + it.to_int());

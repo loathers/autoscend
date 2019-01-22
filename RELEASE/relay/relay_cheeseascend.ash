@@ -134,11 +134,11 @@ void main()
 	writeln("<html><head><title>cheeseascend (CHEDDAH) Crapulent Manager</title>");
 	writeln("</head><body><h1>cheeseascend (CHEDDAH) Manager</h1>");
 
-	file_to_map("cc_ascend_settings.txt", s);
+	file_to_map("sl_ascend_settings.txt", s);
 
 	boolean dickstab = false;
 	writeln("<form action='' method='post'>");
-	writeln("<input type='hidden' name='cc_interrupt' value='true'/>");
+	writeln("<input type='hidden' name='sl_interrupt' value='true'/>");
 	writeln("<input type='submit' name='' value='Interrupt Script'/></form>");
 
 
@@ -166,9 +166,9 @@ void main()
 #				writeln("Property " + x + " had: " + oldSetting + " now: " + fields[x] + "<br>");
 #			}
 
-			if(x == "cc_dickstab")
+			if(x == "sl_dickstab")
 			{
-				if((fields[x] != get_property("cc_dickstab")) && (fields[x] == "true"))
+				if((fields[x] != get_property("sl_dickstab")) && (fields[x] == "true"))
 				{
 					dickstab = true;
 				}
@@ -183,29 +183,29 @@ void main()
 
 	if(dickstab)
 	{
-		writeln("cc_dickstab was just set to true<br>");
+		writeln("sl_dickstab was just set to true<br>");
 		writeln("Your warranty has been declared void.<br>");
-		set_property("cc_voidWarranty", "rekt");
-		writeln("Togging incompatible settings. You can re-enabled them here if you so desire. This resetting only takes effect upon setting cc_dickstab to true.<br><br>");
-#		if(get_property("cc_getDinseyGarbageMoney").to_boolean())
+		set_property("sl_voidWarranty", "rekt");
+		writeln("Togging incompatible settings. You can re-enabled them here if you so desire. This resetting only takes effect upon setting sl_dickstab to true.<br><br>");
+#		if(get_property("sl_getDinseyGarbageMoney").to_boolean())
 #		{
-#			set_property("cc_getDinseyGarbageMoney", false);
-#			writeln("Disabled cc_getDinseyGarbageMoney.<br>");
+#			set_property("sl_getDinseyGarbageMoney", false);
+#			writeln("Disabled sl_getDinseyGarbageMoney.<br>");
 #		}
-		if(get_property("cc_hippyInstead").to_boolean())
+		if(get_property("sl_hippyInstead").to_boolean())
 		{
-			set_property("cc_hippyInstead", false);
-			writeln("Disabled cc_hippyInstead.<br>");
+			set_property("sl_hippyInstead", false);
+			writeln("Disabled sl_hippyInstead.<br>");
 		}
-		if(get_property("cc_ignoreFlyer").to_boolean())
+		if(get_property("sl_ignoreFlyer").to_boolean())
 		{
-			set_property("cc_ignoreFlyer", false);
-			writeln("Disabled cc_ignoreFlyer.<br>");
+			set_property("sl_ignoreFlyer", false);
+			writeln("Disabled sl_ignoreFlyer.<br>");
 		}
-		if(!get_property("cc_delayHauntedKitchen").to_boolean())
+		if(!get_property("sl_delayHauntedKitchen").to_boolean())
 		{
-			set_property("cc_delayHauntedKitchen", true);
-			writeln("Enabled cc_delayHauntedKitchen.<br>");
+			set_property("sl_delayHauntedKitchen", true);
+			writeln("Enabled sl_delayHauntedKitchen.<br>");
 		}
 	}
 
@@ -250,7 +250,7 @@ void main()
 		{
 			continue;
 		}
-		if(get_property("cc_allowSharingData").to_boolean())
+		if(get_property("sl_allowSharingData").to_boolean())
 		{
 			handleSetting(x);
 		}
@@ -262,7 +262,7 @@ void main()
 	writeln("<tr bgcolor=#ffff00><td>Pre: This setting takes effect on the next run that is started with the script.</td></tr>");
 	writeln("<tr bgcolor=#00ff00><td>Post: This setting is set by the first run of the script but can be overrode after that. Translation: Run script on day 1, after first adventure, set these however you like.</td></tr>");
 	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
-	if(get_property("cc_allowSharingData").to_boolean())
+	if(get_property("sl_allowSharingData").to_boolean())
 	{
 		writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data. This causes something to immediately (or when reasonable) happen.</td></tr>");
 	}
@@ -271,36 +271,36 @@ void main()
 	writeln("<br>Handle <a href=\"ccascend_quests.php\">Quest Tracker</a><br>");
 
 	writeln("<h2>Banishes</h2>");
-	generateTrackingData("cc_banishes", true);
+	generateTrackingData("sl_banishes", true);
 
 	writeln("<h2>Yellow Rays <img src=\"images/itemimages/eyes.gif\"></h2>");
-	generateTrackingData("cc_yellowRays", true);
+	generateTrackingData("sl_yellowRays", true);
 
 	writeln("<h2>Sniffing</h2>");
-	generateTrackingData("cc_sniffs", true);
+	generateTrackingData("sl_sniffs", true);
 
 	writeln("<h2>Instakills</h2>");
-	generateTrackingData("cc_instakill", true);
+	generateTrackingData("sl_instakill", true);
 
 	writeln("<h2>Eated</h2>");
-	generateTrackingData("cc_eaten", false);
+	generateTrackingData("sl_eaten", false);
 
 	writeln("<h2>Drinkenated</h2>");
-	generateTrackingData("cc_drunken", false);
+	generateTrackingData("sl_drunken", false);
 
 	if(my_class() == $class[Ed])
 	{
 		writeln("<h2>Lash of the Cobra <img src=\"images/itemimages/cobrahead.gif\"></h2>");
-		generateTrackingData("cc_lashes", false);
+		generateTrackingData("sl_lashes", false);
 
 		writeln("<h2>Talisman of Renenutet <img src=\"images/itemimages/tal_r.gif\"></h2>");
-		generateTrackingData("cc_renenutet", false);
+		generateTrackingData("sl_renenutet", false);
 	}
 
 	if(my_path() == "One Crazy Random Summer")
 	{
 		writeln("<h2>One Crazy Random Summer Fun-o-meter!</h2>");
-		generateTrackingData("cc_funTracker", true);
+		generateTrackingData("sl_funTracker", true);
 	}
 
 	writeln("<h2>Info</h2>");
@@ -310,11 +310,11 @@ void main()
 	writeln("Tavern: " + get_property("tavernLayout") + "<br>");
 	if(my_class() == $class[Ed])
 	{
-		writeln("Combats: " + get_property("cc_edCombatCount") + "<br>");
-		writeln("Combat Rounds: " + get_property("cc_edCombatRoundCount") + "<br>");
+		writeln("Combats: " + get_property("sl_edCombatCount") + "<br>");
+		writeln("Combat Rounds: " + get_property("sl_edCombatRoundCount") + "<br>");
 	}
 	writeln("Version (790e8b93-0ac5-4690-9eeb-5e64edcd6dc): " + svn_info("790e8b93-0ac5-4690-9eeb-5e64edcd6dc").last_changed_rev + "<br>");
-	writeln("Version (ccascend): " + svn_info("ccascend-cc_ascend").last_changed_rev + "<br>");
+	writeln("Version (ccascend): " + svn_info("ccascend-sl_ascend").last_changed_rev + "<br>");
 	writeln("Version (cheeseascend): " + svn_info("cheeseascend").last_changed_rev + "<br>");
 
 	writeln("</body></html>");

@@ -5,10 +5,10 @@ void picky_initializeSettings()
 {
 	if(my_path() == "Picky")
 	{
-		set_property("cc_getStarKey", true);
-		set_property("cc_holeinthesky", true);
-		set_property("cc_nunsTrick", false);
-		set_property("cc_wandOfNagamar", true);
+		set_property("sl_getStarKey", true);
+		set_property("sl_holeinthesky", true);
+		set_property("sl_nunsTrick", false);
+		set_property("sl_wandOfNagamar", true);
 	}
 }
 
@@ -184,7 +184,7 @@ boolean picky_buyskills()
 		}
 		break;
 	case $class[Sauceror]:
-		if((my_level() >= 1) && (my_meat() >= 1250) && !have_skill($skill[Simmer]) && (cc_my_path() == "Community Service"))
+		if((my_level() >= 1) && (my_meat() >= 1250) && !have_skill($skill[Simmer]) && (sl_my_path() == "Community Service"))
 		{
 			visit_url("guild.php?action=buyskill&skillid=25", true);
 		}
