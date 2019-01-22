@@ -12369,10 +12369,10 @@ boolean L9_chasmBuild()
 	{
 		return false;
 	}
-	if(LX_getDictionary() || LX_dictionary())
-	{
-		return true;
-	}
+#	if(LX_getDictionary() || LX_dictionary())
+#	{
+#		return true;
+#	}
 	print("Chasm time", "blue");
 
 	if(item_amount($item[fancy oil painting]) > 0)
@@ -13174,7 +13174,7 @@ boolean LX_fcle()
 	{
 		return false;
 	}
-	LX_getDictionary();
+#	LX_getDictionary();
 	if(get_property("sl_fcle") != "")
 	{
 		return false;
@@ -13304,7 +13304,7 @@ boolean LX_pirateBeerPong()
 	{
 		abort("Could not put on Swashbuckling Getup, aborting");
 	}
-	LX_getDictionary();
+#	LX_getDictionary();
 	#	ccAdvBypass may be a bit trickier here.
 	#	handlePreAdventure($location[Barrrney\'s Barrr]);
 	#	We can get a Doghouse adventure here....
@@ -13406,7 +13406,7 @@ boolean LX_pirateBlueprint()
 	}
 
 	print("Trying to blueprint handle", "blue");
-	LX_getDictionary();
+#	LX_getDictionary();
 	if(LX_nastyBooty())
 	{
 		return true;
@@ -13497,7 +13497,7 @@ boolean LX_pirateInsults()
 		print("Can not equip, or do not have the Swashbuckling Getup. Delaying.", "red");
 		return false;
 	}
-	LX_getDictionary();
+#	LX_getDictionary();
 
 	if((item_amount($item[The Big Book Of Pirate Insults]) == 0) && (my_meat() > 500))
 	{
@@ -14567,7 +14567,7 @@ boolean doTasks()
 	if(LX_chateauPainting())			return true;
 	if(LX_faxing())						return true;
 	if(LX_artistQuest())				return true;
-	if(LX_dictionary())					return true;
+#	if(LX_dictionary())					return true;
 	if(L5_findKnob())					return true;
 	if(LM_edTheUndying())				return true;
 
@@ -14682,11 +14682,11 @@ boolean doTasks()
 	if(L8_trapperGround())				return true;
 	if(L8_trapperYeti())				return true;
 	if(LX_steelOrgan())					return true;
-	if(LX_pirateOutfit())				return true;
-	if(LX_pirateInsults())				return true;
-	if(LX_pirateBlueprint())			return true;
-	if(LX_pirateBeerPong())				return true;
-	if(LX_fcle())						return true;
+#	if(LX_pirateOutfit())				return true;
+#	if(LX_pirateInsults())				return true;
+#	if(LX_pirateBlueprint())			return true;
+#	if(LX_pirateBeerPong())				return true;
+#	if(LX_fcle())						return true;
 	if(L10_plantThatBean())				return true;
 	if(L12_preOutfit())					return true;
 	if(L10_airship())					return true;
