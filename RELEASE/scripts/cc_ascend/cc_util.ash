@@ -143,6 +143,9 @@ boolean providePlusNonCombat(int amt);
 boolean providePlusCombat(int amt, boolean doEquips);
 boolean providePlusNonCombat(int amt, boolean doEquips);
 boolean basicAdjustML();
+boolean sl_is_valid(item it);
+boolean sl_is_valid(familiar fam);
+boolean sl_is_valid(skill sk);
 
 
 // Private Prototypes
@@ -4905,4 +4908,19 @@ location solveDelayZone()
 		}
 	}
 	return burnZone;
+}
+
+boolean sl_is_valid(item it)
+{
+	return glover_usable(it.to_string()) && is_unrestricted(it);
+}
+
+boolean sl_is_valid(familiar fam)
+{
+	return glover_usable(fam.to_string()) && is_unrestricted(fam);
+}
+
+boolean sl_is_valid(skill sk)
+{
+	return is_unrestricted(sk.to_string()) && is_unrestricted(sk);
 }
