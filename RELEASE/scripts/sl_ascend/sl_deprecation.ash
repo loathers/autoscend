@@ -187,15 +187,15 @@ boolean settingFixer()
 	}
 	if(get_property("afterAdventureScript") == "scripts/postadventure.ash")
 	{
-		set_property("afterAdventureScript", "postcheese.ash");
+		set_property("afterAdventureScript", "postsool.ash");
 	}
 	if(get_property("betweenAdventureScript") == "scripts/preadventure.ash")
 	{
-		set_property("betweenAdventureScript", "precheese.ash");
+		set_property("betweenAdventureScript", "presool.ash");
 	}
 	if(get_property("betweenBattleScript") == "scripts/preadventure.ash")
 	{
-		set_property("betweenBattleScript", "precheese.ash");
+		set_property("betweenBattleScript", "presool.ash");
 	}
 
 	if(get_property("sl_abooclover") == "")

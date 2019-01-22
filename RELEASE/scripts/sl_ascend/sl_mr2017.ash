@@ -289,7 +289,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	}
 
 	#string temp = visit_url("place.php?whichplace=town_wrong&action=townwrong_tunnel");
-	cli_execute("precheese");
+	cli_execute("presool");
 	temp = visit_url("place.php?whichplace=town_wrong&action=townwrong_tunnel");
 	if(contains_text(temp, "Come back tomorrow!"))
 	{
@@ -385,7 +385,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	if(enforcer || engineer || equivocator)
 	{
 		set_property("sl_disableAdventureHandling", false);
-		cli_execute("postcheese");
+		cli_execute("postsool");
 	}
 
 	return true;

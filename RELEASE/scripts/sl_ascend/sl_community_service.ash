@@ -366,7 +366,7 @@ boolean LA_cs_communityService()
 				{
 					use(1, $item[A Ten-Percent Bonus]);
 					curQuest = 0;
-					cli_execute("postcheese");
+					cli_execute("postsool");
 					return true;
 				}
 				else
@@ -1412,7 +1412,7 @@ boolean LA_cs_communityService()
 
 			while(((total_free_rests() - get_property("timesRested").to_int()) > 4) && chateaumantegna_available())
 			{
-				cli_execute("postcheese");
+				cli_execute("postsool");
 				doRest();
 			}
 
@@ -2222,7 +2222,7 @@ boolean LA_cs_communityService()
 			while((my_level() < 8) && (restsLeft > 0) && chateaumantegna_available() && ((my_basestat(my_primestat()) + restsLeft) >= 53))
 			{
 				doRest();
-				cli_execute("postcheese");
+				cli_execute("postsool");
 			}
 
 			if((my_level() < 8) && !get_property("_fancyHotDogEaten").to_boolean() && (fullness_left() >= 12))
@@ -3242,7 +3242,7 @@ void cs_initializeDay(int day)
 				acquireGumItem($item[Saucepan]);
 			}
 
-			cli_execute("postcheese");
+			cli_execute("postsool");
 
 			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{
@@ -3262,7 +3262,7 @@ boolean do_chateauGoat()
 		{
 			buffMaintain(eff, mp_cost(to_skill(eff)), 1, 1);
 		}
-		cli_execute("postcheese");
+		cli_execute("postsool");
 		doRest();
 		foreach eff in $effects[Astral Shell, Ghostly Shell, Blubbered Up, Springy Fusilli, The Moxious Madrigal, Cletus\'s Canticle of Celerity, Walberg\'s Dim Bulb]
 		{

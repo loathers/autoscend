@@ -146,6 +146,8 @@ boolean basicAdjustML();
 boolean sl_is_valid(item it);
 boolean sl_is_valid(familiar fam);
 boolean sl_is_valid(skill sk);
+boolean sl_debug_print(string s, string color);
+boolean sl_debug_print(string s);
 
 
 // Private Prototypes
@@ -1219,12 +1221,12 @@ boolean summonMonster(string option)
 		}
 	}
 
-	if(get_property("lastSecondFloorUnlock").to_int() < my_ascensions())
-	{
-		int need = 5 - get_property("writingDesksDefeated").to_int();
-		targets[count(targets)].target = $monster[Writing Desk];
-		targets[count(targets)].amt = need;
-	}
+#	if(get_property("lastSecondFloorUnlock").to_int() < my_ascensions())
+#	{
+#		int need = 5 - get_property("writingDesksDefeated").to_int();
+#		targets[count(targets)].target = $monster[Writing Desk];
+#		targets[count(targets)].amt = need;
+#	}
 
 	//	Racecar Bob 5, Gaudy Pirate 2* (Special Case when we have extra)
 	//	Pygmy Bowler 5+, Mountain Man 2+ (Special Case, when we have extra)
@@ -1253,13 +1255,13 @@ boolean canYellowRay()
 	{
 		return false;
 	}
-	if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && glover_usable($item[Mayo Lance]))
+	if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && sl_is_valid($item[Mayo Lance]))
 	{
 		return true;
 	}
 	foreach it in $items[Golden Light, Unbearable Light, Pumpkin Bomb, Yellowcake Bomb, Viral Video]
 	{
-		if((item_amount(it) > 0) && glover_usable(it))
+		if((item_amount(it) > 0) && sl_is_valid(it))
 		{
 			return true;
 		}
@@ -2788,7 +2790,7 @@ boolean sl_have_familiar(familiar fam)
 	{
 		return false;
 	}
-	if(!glover_usable(fam))
+	if(!sl_is_valid(fam))
 	{
 		return false;
 	}
@@ -3391,12 +3393,7 @@ int doNumberology(string goal, boolean doIt, string option)
 
 boolean sl_have_skill(skill sk)
 {
-	if(!glover_usable(sk) && !sk.passive)
-	{
-		return false;
-	}
-
-	return have_skill(sk);
+	return sl_is_valid(sk) && have_skill(sk);
 }
 
 boolean have_skills(boolean[skill] array)
@@ -4922,5 +4919,25 @@ boolean sl_is_valid(familiar fam)
 
 boolean sl_is_valid(skill sk)
 {
-	return is_unrestricted(sk.to_string()) && is_unrestricted(sk);
+	return (glover_usable(sk.to_string()) || sk.passive) && is_unrestricted(sk);
+}
+
+boolean sl_debug_print(string s, string color)
+{
+	if(get_property("sl_debug").to_boolean())
+	{
+		print(s, color);
+		return true;
+	}
+	return false;
+}
+
+boolean sl_debug_print(string s)
+{
+	if(get_property("sl_debug").to_boolean())
+	{
+		print(s);
+		return true;
+	}
+	return false;
 }

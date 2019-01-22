@@ -1,5 +1,5 @@
 script "sl_ascend.ash";
-notify cheesecookie;
+notify soolar the second;
 since r19023;
 /***
 	svn checkout https://svn.code.sf.net/p/ccascend/code/sl_ascend
@@ -4151,7 +4151,7 @@ boolean L13_towerNSFinal()
 	}
 	else
 	{
-		cli_execute("scripts/postcheese.ash");
+		cli_execute("scripts/postsool.ash");
 	}
 	if((item_amount($item[Ouija Board\, Ouija Board]) > 0) && (my_class() == $class[Turtle Tamer]) && can_equip($item[Ouija Board\, Ouija Board]))
 	{
@@ -4205,7 +4205,7 @@ boolean L13_towerNSFinal()
 
 	if(internalQuestStatus("questL13Final") < 13)
 	{
-		cli_execute("scripts/precheese.ash");
+		cli_execute("scripts/presool.ash");
 		set_property("sl_disableAdventureHandling", true);
 		ccAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
 		if(have_effect($effect[Beaten Up]) > 0)
@@ -4333,7 +4333,7 @@ boolean L13_towerNSTower()
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
 			use_familiar($familiar[Warbear Drone]);
-			cli_execute("precheese");
+			cli_execute("presool");
 			if(!possessEquipment($item[Warbear Drone Codes]))
 			{
 				pullXWhenHaveY($item[warbear drone codes], 1, 0);
@@ -4608,7 +4608,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Strong Grip], 0, 1, 1);
 			buffMaintain($effect[Spiky Hair], 0, 1, 1);
 		}
-		cli_execute("scripts/postcheese.ash");
+		cli_execute("scripts/postsool.ash");
 		doHottub();
 
 		ccAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
@@ -4807,7 +4807,7 @@ boolean L13_towerNSContests()
 					handleFamiliar(my_familiar());
 				}
 
-				cli_execute("precheese");
+				cli_execute("presool");
 				break;
 			}
 
@@ -5107,7 +5107,7 @@ boolean L13_towerNSEntrance()
 			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (sl_my_path() != "The Source"))
 			{
 				doRest();
-				cli_execute("scripts/postcheese.ash");
+				cli_execute("scripts/postsool.ash");
 				loopHandlerDelay("_sl_lastABooCycleFix");
 				loopHandlerDelay("_sl_digitizeDeskCounter");
 				loopHandlerDelay("_sl_digitizeAssassinCounter");
@@ -14597,7 +14597,7 @@ boolean doTasks()
 		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (sl_my_path() != "The Source"))
 		{
 			doRest();
-			cli_execute("scripts/postcheese.ash");
+			cli_execute("scripts/postsool.ash");
 			return true;
 		}
 	}
@@ -14890,7 +14890,7 @@ void sl_begin()
 	}
 
 	print("Hello " + my_name() + ", time to explode!");
-	print("This is version: " + svn_info("ccascend-sl_ascend").last_changed_rev + " Mafia: " + get_revision());
+	print("This is version: " + svn_info("slascend-sl_ascend").last_changed_rev + " Mafia: " + get_revision());
 	print("This is day " + my_daycount() + ".");
 	print("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	print("Current Ascension: " + sl_my_path());
@@ -14909,16 +14909,16 @@ void sl_begin()
 	backupSetting("removeMalignantEffects", false);
 	backupSetting("autoAntidote", 0);
 
-	backupSetting("kingLiberatedScript", "scripts/kingcheese.ash");
-	backupSetting("afterAdventureScript", "scripts/postcheese.ash");
-	backupSetting("betweenAdventureScript", "scripts/precheese.ash");
-	backupSetting("betweenBattleScript", "scripts/precheese.ash");
+	backupSetting("kingLiberatedScript", "scripts/kingsool.ash");
+	backupSetting("afterAdventureScript", "scripts/postsool.ash");
+	backupSetting("betweenAdventureScript", "scripts/presool.ash");
+	backupSetting("betweenBattleScript", "scripts/presool.ash");
 
 	backupSetting("choiceAdventure1107", 1);
 
 	if(get_property("counterScript") != "")
 	{
-		backupSetting("counterScript", "scripts/cheeseCounter.ash");
+		backupSetting("counterScript", "scripts/sl_ascend/soolCounter.ash");
 	}
 
 	string charpane = visit_url("charpane.php");

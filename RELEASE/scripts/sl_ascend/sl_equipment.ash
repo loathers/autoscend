@@ -431,7 +431,7 @@ item handleSolveThing(item[int] poss, slot loc)
 		{
 			acc3 = $item[none];
 		}
-		//Yes, $slot[acc3] is always blocked here, however, we need to reconcile this with the Xiblaxian handler in precheese.ash
+		//Yes, $slot[acc3] is always blocked here, however, we need to reconcile this with the Xiblaxian handler in presool.ash
 
 		if(possessEquipment(thing) && can_equip(thing) && (acc1 != thing) && (acc2 != thing) && (acc3 != thing) && !ignore)
 		{

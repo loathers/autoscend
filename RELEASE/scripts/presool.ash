@@ -42,6 +42,7 @@ void handlePreAdventure(location place)
 	}
 
 	print("Starting preadventure script...", "green");
+	sl_debug_print("Adventuring at " + place.to_string(), "green");
 
 	familiar famChoice = to_familiar(get_property("sl_familiarChoice"));
 	if(sl_my_path() == "Pocket Familiars")

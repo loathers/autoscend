@@ -103,7 +103,7 @@ boolean ccAdvBypass(string url, location loc, string option)
 boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
 	set_property("nextAdventure", loc);
-	cli_execute("precheese");
+	cli_execute("presool");
 #	handlePreAdventure(loc);
 	if(my_class() == $class[Ed])
 	{
@@ -158,21 +158,21 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 				else
 				{
 					string temp = run_combat(option);
-					cli_execute("postcheese");
+					cli_execute("postsool");
 					return true;
 				}
 			}
 			else
 			{
 				string temp = run_combat();
-				cli_execute("postcheese");
+				cli_execute("postsool");
 				return true;
 			}
 		}
 		else
 		{
 			string temp = run_combat();
-			cli_execute("postcheese");
+			cli_execute("postsool");
 			return true;
 		}
 	}
@@ -221,7 +221,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 		if(!retval)
 		{
 			run_choice(get_property("choiceAdventure" + choice).to_int());
-			cli_execute("postcheese");
+			cli_execute("postsool");
 			//We can no longer return an adventure return value here... is false acceptable?
 		}
 		else
@@ -237,7 +237,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 				run_combat(option);
 			}
 			set_property("sl_disableAdventureHandling", false);
-			cli_execute("postcheese");
+			cli_execute("postsool");
 		}
 		return retval;
 	}

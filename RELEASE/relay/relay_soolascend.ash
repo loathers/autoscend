@@ -268,7 +268,7 @@ void main()
 	}
 	writeln("</table>");
 
-	writeln("<br>Handle <a href=\"ccascend_quests.php\">Quest Tracker</a><br>");
+	writeln("<br>Handle <a href=\"slascend_quests.php\">Quest Tracker</a><br>");
 
 	writeln("<h2>Banishes</h2>");
 	generateTrackingData("sl_banishes", true);
@@ -314,8 +314,8 @@ void main()
 		writeln("Combat Rounds: " + get_property("sl_edCombatRoundCount") + "<br>");
 	}
 	writeln("Version (790e8b93-0ac5-4690-9eeb-5e64edcd6dc): " + svn_info("790e8b93-0ac5-4690-9eeb-5e64edcd6dc").last_changed_rev + "<br>");
-	writeln("Version (ccascend): " + svn_info("ccascend-sl_ascend").last_changed_rev + "<br>");
-	writeln("Version (cheeseascend): " + svn_info("cheeseascend").last_changed_rev + "<br>");
+	writeln("Version (slascend): " + svn_info("slascend-sl_ascend").last_changed_rev + "<br>");
+	writeln("Version (soolascend): " + svn_info("soolascend").last_changed_rev + "<br>");
 
 	writeln("</body></html>");
 }

@@ -825,10 +825,10 @@ record kmailObject {
 boolean sl_deleteMail(kmailObject msg);						//Defined in sl_ascend/sl_util.ash
 
 //Dump from accessory scripts.
-void handlePreAdventure();									//Defined in precheese.ash
-void handlePreAdventure(location place);					//Defined in precheese.ash
+void handlePreAdventure();									//Defined in presool.ash
+void handlePreAdventure(location place);					//Defined in presool.ash
 
-void handlePostAdventure();									//Defined in postcheese.ash
+void handlePostAdventure();									//Defined in postsool.ash
 
 void handleKingLiberation();								//Defined in kingcheese.ash
 boolean pullPVPJunk();										//Defined in kingcheese.ash

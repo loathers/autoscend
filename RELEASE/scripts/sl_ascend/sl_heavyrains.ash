@@ -1,4 +1,4 @@
-script "heavyrains.ash"
+script "sl_heavyrains.ash"
 
 boolean rainManSummon(string monsterName, boolean copy, boolean wink);
 

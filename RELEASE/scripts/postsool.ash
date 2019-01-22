@@ -1,4 +1,4 @@
-script "postcheese.ash";
+script "postsool.ash";
 import<sl_ascend.ash>
 
 void handlePostAdventure()
