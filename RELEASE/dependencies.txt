@@ -1,0 +1,3 @@
+https://github.com/Ezandora/Detective-Solver/branches/Release/
+https://github.com/Ezandora/Helix-Fossil/branches/Release/
+https://github.com/Ezandora/Far-Future/branches/Release/

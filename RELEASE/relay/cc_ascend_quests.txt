@@ -1,0 +1,114 @@
+1	cc_abooclover	boolean	ANY	Are we considering using a clover at A-Boo Peak?
+2	cc_aboocount	integer	ANY	(5 - Number of turns) left at A-Boo Peak before we consider using our Clues.
+3	cc_aboopending	integer	ANY	The last turn of a pending A-Boo Clue. 0 if no clue active.
+4	cc_aftercore	boolean	ANY	Do we think we are in aftercore?
+5	cc_airship	string	ANY	'finished' if we have access to the Castle in the Clouds (S.O.C.K. equivalence)
+6	cc_ballroom	string	ANY	-
+7	cc_ballroomflat	string	ANY	-
+8	cc_ballroomopen	string	ANY -
+9	cc_ballroomsong	string	ANY	-
+10	cc_bat	string	ANY 'finished' if we have completed the Bat Quest.
+11	cc_bean	boolean	ANY	Have we planted a beanstalk bean?
+12	cc_blackfam	boolean	ANY	True when we have not yet initialized The Black Forest. False once it has been set up.
+13	cc_blackmap	string	ANY	-
+14	cc_boopeak	string	ANY	'finished' is A-Boo Peak is completed.
+15	cc_castlebasement	string	ANY	'finished' if we have finished the Castle in the Clouds Basement.
+16	cc_castleground	string	ANY	'finished' if we have finished the Castle in the Clouds Ground Floor.
+17	cc_castletop	string	ANY	'finished' if we have finished the Castle in the Clouds Top Floor.
+18	cc_chasmBusted	boolean	ANY	Has the orc chasm bridge been 'trolled yet? Ed only.
+19	cc_clanstuff	string	ANY	What was the last day we did 'end of day' clan stuff.
+20	cc_cookie	integer	ANY	HCCS Only: Tracks fortune cookie.
+21	cc_crackpotjar	string	ANY	Status of Crackpot Mystic Jar of Psychoses
+22	cc_crypt	string	ANY	'finished' if the Bonerdagon (or equivalent) has been defeated.
+23	cc_cubeItems	boolean	ANY	Do we need to use the Gelatinous Cube for Phat Loot Tokens?
+24	cc_day1_cobb	string	ANY	'finished' if we have found the Knob Goblin Encryption Key.
+25	cc_day1_dna	string	ANY	'finished' if we have hybridized ourselves at the start of Ascension.
+26	cc_day1_init	string	ANY	'finished' if we properly initialized on day 1.
+27	cc_day2_init	string	ANY	'finished' if we properly initialized on day 2.
+28	cc_day3_init	string	ANY	'finished' if we properly initialized on day 3.
+29	cc_day4_init	string	ANY	'finished' if we properly initialized on day 4. :(
+30	cc_disableAdventureHandling	string	ANY	When set this prevents post/preadventure behavior. This is necessary for multi-adventure situations and 'a choice follows this' situations.
+31	cc_familiarChoice	string	ANY	The current familiar we are planning to take. This changes a lot.
+32	cc_fcle	string	ANY	'finished' if we got the Pirate Fledges, or equivalent.
+33	cc_friars	string	ANY	'finished' if we completed the Friars Quest. Only 'done' if we don't/didn't have enough hot wings.
+34	cc_gaudy	string	ANY	-
+35	cc_getBoningKnife	boolean	ANY	-
+36	cc_gnasirUnlocked	boolean	ANY	Have we found gnasir in the Desert?
+37	cc_goblinking	string	ANY	-
+38	cc_gremlins	string	ANY	-
+39	cc_grimstoneFancyOilPainting	boolean	ANY	-
+40	cc_grimstoneOrnateDowsingRod	boolean	ANY	-
+41	cc_gunpowder	string	ANY	Did we initiate the Sonofa Beach quest?
+42	cc_hedge	string	ANY	'fast' or 'slow', determining how quickly we want to finish the Hedge Maze.
+43	cc_hiddenapartment	string	ANY	-
+44	cc_hiddenbowling	string	ANY	-
+45	cc_hiddencity	string	ANY	-
+46	cc_hiddenhospital	string	ANY	-
+47	cc_hiddenoffice	string	ANY	-
+48	cc_hiddenunlock	string	ANY	-
+49	cc_hiddenzones	string	ANY	-
+50	cc_highlandlord	string	ANY	-
+51	cc_mcmuffin	string	ANY	-
+52	cc_mistypeak	string	ANY	-
+53	cc_mosquito	string	ANY	'finished' if we have completed the Mosquito Larva quest.
+54	cc_nuns	string	ANY	-
+55	cc_nunsTrick	string	ANY	-
+56	cc_nunsTrickActive	string	ANY	-
+57	cc_nunsTrickGland	string	ANY	-
+58	cc_nunsTrickCount	string	ANY	-
+59	cc_nunsTrickReady	string	ANY	-
+60	cc_oilpeak	string	ANY	'finished' if The Oil Peak is completed.
+61	cc_orchard	string	ANY	-
+62	cc_palindome	string	ANY	'finished' if the Palindome is finished.
+63	cc_phatloot	integer	ANY	Last day that we completed our Phat Loot Token handling.
+64	cc_prewar	string	ANY	-
+65	cc_prehippy	string	ANY	-
+66	cc_pirateoutfit	string	ANY	Pirate Sidequest Tracker: '', 'insults', 'blueprint', 'almost', 'finished'
+67	cc_powerLevelLastLevel	string	ANY	Last Level that we had nothing to do.
+68	cc_powerLevelAdvCount	string	ANY	Adventures count of times we had nothing to do.
+69	cc_powerLevelLastAttempted	string	ANY	Last adventure that we did nothing on.
+70	cc_skipDesert	string	ANY	Tracks last time we skipped the Desert.
+71	cc_spookyfertilizer	string	ANY	'finished' if we've dealt with the Spooky-Gro Fertilizer
+72	cc_spookyravensecond	string	ANY	-
+73	cc_spookysapling	string	ANY	'finished' if we've dealt with the Spooky Sapling
+74	cc_sonofa	string	ANY	'finished' if we've finished or skipped The Lighthouse side quest.
+75	cc_sorceress	string	ANY	Sorceress Tower tracker: '', 'start', 'hedge', 'door', 'tower', 'top', 'final', 'finished'
+76	cc_swordfish	string	ANY	'finished' if we've finished the Poop Deck. Heh, poop.
+77	cc_tavern	string	ANY	'finished' if we've completed the Tavern Quest
+78	cc_trytower	string	ANY	Deprecated, should be removed any day now...
+79	cc_trapper	string	ANY	Trapper Quest Tracker: '', 'start', 'yeti', 'finished'
+80	cc_treecoin	string	ANY	'finished' if we've dealt with the Tree-Holed Coin
+81	cc_twinpeak	string	ANY	'finished' if Twin Peak is completed. (Not really).
+82	cc_twinpeakprogress	string	ANY	-
+83	cc_waitingArrowAlcove	integer	ANY	If we arrowed a modern zmobie, this tells us when to return to the Alcove (cyrptAlcoveEvilness value).
+84	cc_war	string	ANY	'finished' is the war is done. 'done' if the battleground is empty but we still need to turn in items and fight the boss.
+85	cc_winebomb	string	ANY	'partial' if we have a fulminate, 'finished' if we've made it into a wine bomb
+86	cc_100familiar	string	PRE	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
+87	cc_borisSkills	integer	ANY	?? Number of Boris skills?
+88	cc_awolLastSkill	integer	PRE	Last level we handled AWOL skills
+89	cc_beatenUpCount	integer	PRE	?? Something to do with ML disabling?
+90	cc_bedroomHandler1	string	PRE	Part of Multi-adventure Bedroom handling
+91	cc_bedroomHandler2	string	PRE	Part of Multi-adventure Bedroom handling
+92	cc_dinseyGarbageMoney	string	PRE	Tracks when we last depositing a Bag of Park Garbage (can we remove this?)
+93	cc_doneInitialize	integer	PRE	Indicates last ascension that we initialized with the script.
+94	cc_lastABooConsider	integer	PRE	Last adventure that we considered A-Boo Peak.
+95	cc_lastABooCycleFix	integer	PRE	Duration of current A-Boo Peak cycle.
+96	cc_noSnakeOil	integer	PRE	Last day that we could no longer Extract Oil.
+97	cc_renenutetBought	integer	PRE	Number of Talisman of Renenutet's bought on last tracking.
+98	cc_batoomerangDay	integer	PRE	Part of Replica Bat-oomerang Tracker
+99	cc_batoomerangUse	integer	PRE	Part of Replica Bat-oomerang Tracker
+100	cc_longConMonster	string	PRE	Last Monster hit by Long Con
+101	cc_noSleepingDog	boolean	PRE	When true, do not eat a Sleeping Dog.
+101	cc_saveMargarita	boolean	PRE	Save Emergency Margarita in HCCS run.
+102	cc_masonryWall	boolean	ANY	If true, we've destroyed the Masonry Wall in Spookyraven Manor
+103	cc_csDoWheel	boolean	PRE	In HCCS: Use Wheel of Fortune instead of Myst Stats Deck Cheat
+104	_cc_lastABooConsider	integer	POST	Last turn that we considered doing A-Boo Peak
+105	_cc_lastABooCycleFix	integer	POST	Tracker to prevent us infinitely looping on A-Boo Peak
+106	_cc_witchessBattles	integer	POST	Tracker for Witchess Combats (yes, this is actually needed).
+107	cc_combatDirective	string	ANY	State of overloading of combat behaviors.
+108	cc_copperhead	integer	ANY	Tracks the first 3 choice options when being a waiter at Copperhead (1|2|4)
+109	cc_needLegs	boolean	PRE	In Ed, do we require getting legs before trying to Ka farm?
+110	cc_getSteelOrgan	boolean	ANY	Are we trying to get a Steel Organ this ascension?
+111	cc_hccsTurnSave	boolean	ANY	In HCCS: Should we ignore pixel farming?
+112	cc_maxCandyPrice	integer	ANY	Max allowable price per candy for Rethinking Candy (default 2500)
+113	cc_hccsNoConcludeDay	boolean	ANY	In HCCS: When true, reduce how many daily end-of-day things we do.

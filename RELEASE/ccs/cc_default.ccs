@@ -1,0 +1,628 @@
+[ alley catfish ]
+if hascombatitem DNA extraction syringe && !hascombatitem hair spray
+    item DNA extraction syringe
+endif
+default
+
+[ animated mahogany nightstand ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ animated possessions ]
+if hasskill batter up!
+    skill batter up!
+endif
+if hascombatitem green smoke bomb
+    item green smoke bomb
+endif
+default
+
+[ animated rustic nightstand ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ astronomer ]
+if hascombatitem DNA extraction syringe && hascombatitem hair spray && hascombatitem louder than bomb
+    item DNA extraction syringe
+endif
+default
+
+[ big wisnaqua ]
+if hasskill curse of weaksauce
+    skill curse of weaksauce
+endif
+if hasskill thunderstrike
+    skill thunderstrike
+endif
+if hasskill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+endif
+default
+
+[ bob racecar ]
+if !haseffect on the trail && hasskill transcendent olfaction
+    skill transcendent olfaction
+endif
+if hascombatitem disposable instant camera
+    item disposable instant camera
+endif
+default
+
+[ bubblemint twins ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ burly sidekick ]
+if !haseffect everything looks yellow
+    skill ball lightning
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ chatty pirate ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ clingy pirate ]
+if hascombatitem cocktail napkin
+    item cocktail napkin
+endif
+default
+
+[ coaltergeist ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ crusty pirate ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ cubist bull ]
+if !haseffect on the trail && hasskill transcendent olfaction
+    skill transcendent olfaction
+endif
+default
+
+[ default ]
+scrollwhendone
+if !mpbelow 60
+    if hasskill curse of weaksauce
+        skill curse of weaksauce
+    endif
+endif
+if hascombatitem rock band flyers
+    item rock band flyers
+endif
+#if snarfblat 403 && hascombatitem DNA extraction syringe
+#    item DNA extraction syringe
+#endif
+if (snarfblat 157 || snarfblat 66) && hascombatitem the big book of pirate insults
+    item The Big Book of Pirate Insults
+    if hasskill lightning strike
+        skill lightning strike
+    endif
+endif
+if hasskill pocket crumbs
+    skill pocket crumbs
+    skill air dirty laundry
+endif
+if hasskill ply reality
+    skill ply reality
+endif
+if hascombatitem rain-doh indigo cup
+    item Rain-Doh indigo cup
+    item Rain-Doh blue balls
+endif
+while !pastround 25 && !hppercentbelow 30
+    if hasskill lunge smack
+        skill lunge smack
+    endif
+    if !hasskill lunge smack
+        attack with weapon
+    endif
+endwhile
+if hasskill thunderstrike
+    skill thunderstrike
+endif
+if hasskill unleash the greash
+    skill unleash the greash
+endif
+if hasskill thousand-yard stare
+    skill thousand-yard stare
+endif
+if hasskill northern explosion
+    skill northern explosion
+endif
+if hasskill lunging thrust-smack
+    skill lunging thrust-smack
+    skill lunging thrust-smack
+endif
+if hasskill lunging thrust-smack
+    skill lunging thrust-smack
+endif
+
+[ dirty thieving brigand ]
+#if hasskill make it rain
+#    skill make it rain
+#endif
+default
+
+[ doughbat ]
+if hasskill talk about politics
+    skill talk about politics
+endif
+default
+
+[ drunk goat ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ ed the undying ]
+if hascombatitem rain-doh indigo cup
+    item Rain-Doh indigo cup
+endif
+if hasskill pocket crumbs
+    skill pocket crumbs
+endif
+while !pastround 25 && !hppercentbelow 50
+    if hasskill lunging thrust-smack
+        skill lunging thrust-smack
+    endif
+    if !hasskill lunge smack
+        attack with weapon
+    endif
+endwhile
+
+[ empty suit of armor ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ evil olive ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ family jewels ]
+if hascombatitem DNA extraction syringe && hascombatitem hair spray && hascombatitem louder than bomb
+    item DNA extraction syringe
+endif
+default
+
+[ filthworm royal guard ]
+if !haseffect everything looks yellow
+    skill ball lightning
+endif
+default
+
+[ flock of stab-bats ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ freshwater bonefish ]
+if hascombatitem DNA extraction syringe && !hascombatitem hair spray
+    item DNA extraction syringe
+endif
+default
+
+[ gamblin' man ]
+if !haseffect on the trail && hasskill transcendent olfaction
+    skill transcendent olfaction
+endif
+default
+
+[ gaudy pirate ]
+if hascombatitem the big book of pirate insults
+    item The Big Book of Pirate Insults
+endif
+default
+
+[ gourmet gourami ]
+if hascombatitem DNA extraction syringe && !hascombatitem hair spray
+    item DNA extraction syringe
+endif
+default
+
+[ guy with a pitchfork, and his wife ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ knob goblin harem girl ]
+if !haseffect everything looks yellow
+    skill ball lightning
+endif
+default
+
+[ knob goblin harem guard ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ mad wino ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ magimechtech mechamech ]
+if hasskill talk about politics
+    skill talk about politics
+endif
+default
+
+[ mismatched twins ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ monstrous boiler ]
+if hasskill lightning strike
+    skill lightning strike
+endif
+
+[ morbid skull ]
+if !haseffect on the trail && hasskill transcendent olfaction
+    skill transcendent olfaction
+endif
+default
+
+[ natural spider ]
+if hasskill batter up!
+    skill batter up!
+endif
+if hascombatitem green smoke bomb
+    item green smoke bomb
+endif
+default
+
+[ oil cartel ]
+if hascombatitem duskwalker syringe
+    item Duskwalker syringe
+endif
+default
+
+[ one of doctor weirdeaux's creations ]
+if hascombatitem military-grade fingernail clippers
+    item military-grade fingernail clippers
+    item military-grade fingernail clippers
+    item military-grade fingernail clippers
+endif
+default
+
+[ pair of burnouts ]
+if hascombatitem opium grenade
+    item opium grenade
+endif
+default
+
+[ piranhadon ]
+if hascombatitem DNA extraction syringe && !hascombatitem hair spray
+    item DNA extraction syringe
+endif
+default
+
+[ plaid ghost ]
+if hasskill talk about politics
+    skill talk about politics
+endif
+if hasskill batter up!
+    skill batter up!
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ possessed laundry press ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ procrastination giant ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ protagonist ]
+if hasskill batter up! && !haseffect temporary amnesia
+    skill batter up!
+endif
+while haseffect temporary amnesia
+    attack with weapon
+endwhile
+default
+
+[ punk rock giant ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ pygmy bowler ]
+if !haseffect on the trail && hasskill transcendent olfaction
+    skill transcendent olfaction
+endif
+default
+
+[ pygmy headhunter ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ pygmy janitor ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ pygmy orderlies ]
+if hasskill talk about politics
+    skill talk about politics
+endif
+if hascombatitem short writ of habeas corpus
+    item short writ of habeas corpus
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ pygmy witch lawyer ]
+if hascombatitem short writ of habeas corpus
+    item short writ of habeas corpus
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ pygmy witch nurse ]
+if hascombatitem short writ of habeas corpus
+    item short writ of habeas corpus
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ pygmy witch surgeon ]
+if !haseffect on the trail && hasskill transcendent olfaction
+    skill transcendent olfaction
+endif
+default
+
+[ quiet healer ]
+if !haseffect on the trail && hasskill transcendent olfaction
+    skill transcendent olfaction
+endif
+default
+
+[ racecar bob ]
+if !haseffect on the trail && hasskill transcendent olfaction
+    skill transcendent olfaction
+endif
+if hascombatitem disposable instant camera
+    item disposable instant camera
+endif
+default
+
+[ sabre-toothed goat ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ senile lihc ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ sentient atm ]
+if hasskill lunging thrust-smack
+    skill lunging thrust-smack
+endif
+default
+
+[ shady pirate ]
+if (snarfblat 157 || snarfblat 66) && hascombatitem the big book of pirate insults
+    item The Big Book of Pirate Insults
+endif
+if hasskill batter up!
+    skill batter up!
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+if hasskill lightning strike
+    skill lightning strike
+endif
+default
+
+[ shifty pirate ]
+if (snarfblat 157 || snarfblat 66) && hascombatitem the big book of pirate insults
+    item The Big Book of Pirate Insults
+endif
+if hasskill talk about politics
+    skill talk about politics
+endif
+if hasskill lightning strike
+    skill lightning strike
+endif
+default
+
+[ skeletal sommelier ]
+if hasskill talk about politics
+    skill talk about politics
+endif
+if hasskill batter up!
+    skill batter up!
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ skinflute ]
+if hascombatitem DNA extraction syringe && hascombatitem hair spray && hascombatitem louder than bomb
+    item DNA extraction syringe
+endif
+default
+
+[ slick lihc ]
+if hasskill talk about politics
+    skill talk about politics
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ snow queen ]
+if hasskill batter up!
+    skill batter up!
+endif
+default
+
+[ steam elemental ]
+if hasskill batter up!
+    skill batter up!
+endif
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ storm cow ]
+if hasskill unleash the greash
+    skill unleash the greash
+endif
+default
+
+[ taco cat ]
+if hasskill talk about politics
+    skill talk about politics
+endif
+default
+
+[ tan gnat ]
+if hascombatitem louder than bomb
+    item Louder Than Bomb
+endif
+default
+
+[ the big wisniewski ]
+if hasskill thunderstrike
+    skill thunderstrike
+endif
+if hasskill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+endif
+default
+
+[ the rain king ]
+if hasskill curse of weaksauce
+    skill curse of weaksauce
+endif
+if hasskill thunderstrike
+    skill thunderstrike
+endif
+if hasskill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+    skill thunder bird
+endif
+default
+
+[ tomb asp ]
+if hasskill batter up!
+    skill batter up!
+endif
+if hasskill talk about politics
+    skill talk about politics
+endif
+default
+
+[ tomb rat ]
+if hascombatitem tangle of rat tails
+    item tangle of rat tails
+endif
+default
+
+[ tomb servant ]
+if hasskill thunder clap
+    skill thunder clap
+endif
+default
+
+[ trouser snake ]
+if hascombatitem DNA extraction syringe && hascombatitem hair spray && hascombatitem louder than bomb
+    item DNA extraction syringe
+endif
+default
+
+[ upgraded ram ]
+if hasskill talk about politics
+    skill talk about politics
+endif
+if hascombatitem louder than bomb
+    item Louder Than Bomb
+endif
+default
+
+[ wardr&ouml;b nightstand ]
+skill talk about politics
+default
+
+[ writing desk ]
+if hasskill wink at
+    skill wink at
+endif
+default
+
