@@ -27,6 +27,23 @@ Basically, your ascension may or may not break in spectacular ways! Sorry in adv
 
 Also, at the moment you will probably have to handle the vast majority of your diet manually.
 
+## Issues?
+
+Please do create github issues for any problems you run in to. I make no promises about how fast
+I'll be to handle them, but I'll try to fix reasonable problems in a reasonable timeframe.
+
+If you really need a quick answer about something, feel free to kmail me in game at
+Soolar the Second (#2463557), but be warned that not even I fully understand this code base
+at the moment, so I might not be able to help!
+
+## So what IS fixed?
+
+I believe I have properly modified the script to no longer ever consider the pirate route, and to
+always take the copperhead route. I also believe I have properly purged any attempt at using the
+nuns trick or the writing desk trick, since both of those were deleted from the game. I'm only
+90% sure about this though. If you find a situation where the script attempts to do pirates or
+the nuns trick or the writing desk trick for any reason, please let me know ASAP!
+
 ## Special Thanks
 
 This script would obviously not be possible without the work of Cheesecookie and bumcheekcity before
