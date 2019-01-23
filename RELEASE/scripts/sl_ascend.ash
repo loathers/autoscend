@@ -9374,7 +9374,7 @@ boolean L6_friarsGetParts()
 	print("Finishing friars", "blue");
 	visit_url("friars.php?action=ritual&pwd");
 	council();
-	set_property("sl_friars", "done");
+	set_property("sl_friars", "finished"); # used to be done, but no longer need hot wings
 	return true;
 }
 
