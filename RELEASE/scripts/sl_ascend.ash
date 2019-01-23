@@ -12684,7 +12684,7 @@ boolean L11_shenCopperhead()
 		case $item[The First Pizza]:					goal = $location[Lair of the Ninja Snowmen];						break;
 		case $item[Murphy\'s Rancid Black Flag]:		goal = $location[The Castle in the Clouds in the Sky (Top Floor)];	break;
 		case $item[The Eye of the Stars]:				goal = $location[The Hole in the Sky];								break;
-//		case $item[The Lacrosse Stick of Lacoronado]:	goal = $location[Orcish Frat House];								break;
+		case $item[The Lacrosse Stick of Lacoronado]:	goal = $location[The Smut Orc Logging Camp];								break;
 		case $item[The Shield of Brook]:				goal = $location[The VERY Unquiet Garves];							break;
 		}
 		if(goal == $location[none])
