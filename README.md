@@ -26,6 +26,7 @@ perfectly yet...
 Basically, your ascension may or may not break in spectacular ways! Sorry in advance if that happens!
 
 Also, at the moment you will probably have to handle the vast majority of your diet manually.
+At least, in hardcore standard, anyway.
 
 ## Issues?
 
