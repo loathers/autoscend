@@ -313,9 +313,7 @@ void main()
 		writeln("Combats: " + get_property("sl_edCombatCount") + "<br>");
 		writeln("Combat Rounds: " + get_property("sl_edCombatRoundCount") + "<br>");
 	}
-	writeln("Version (790e8b93-0ac5-4690-9eeb-5e64edcd6dc): " + svn_info("790e8b93-0ac5-4690-9eeb-5e64edcd6dc").last_changed_rev + "<br>");
-	writeln("Version (slascend): " + svn_info("slascend-sl_ascend").last_changed_rev + "<br>");
-	writeln("Version (soolascend): " + svn_info("soolascend").last_changed_rev + "<br>");
+	writeln("Version (sl_ascend): " + svn_info("soolar-sl_ascend-trunk-RELEASE").last_changed_rev + "<br>");
 
 	writeln("</body></html>");
 }
