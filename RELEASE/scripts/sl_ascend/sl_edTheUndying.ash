@@ -1284,24 +1284,11 @@ boolean ed_handleAdventureServant(int num, location loc, string option)
 		(loc == $location[The Dark Heart of the Woods]) ||
 		(loc == $location[The Dark Elbow of the Woods]))
 	{
-		if((get_property("sl_pirateoutfit") != "finished") && (get_property("sl_pirateoutfit") != "almost") && (item_amount($item[Hot Wing]) < 3))
+		if(!handleServant($servant[Scribe]))
 		{
 			if(!handleServant($servant[Cat]))
 			{
-				if(!handleServant($servant[Scribe]))
-				{
-					handleServant($servant[Maid]);
-				}
-			}
-		}
-		else
-		{
-			if(!handleServant($servant[Scribe]))
-			{
-				if(!handleServant($servant[Cat]))
-				{
-					handleServant($servant[Maid]);
-				}
+				handleServant($servant[Maid]);
 			}
 		}
 	}
@@ -1867,10 +1854,6 @@ boolean LM_edTheUndying()
 		{
 			return true;
 		}
-		if(LX_pirateOutfit() || LX_pirateInsults() || LX_pirateBlueprint() || LX_pirateBeerPong() || LX_fcle())
-		{
-			return true;
-		}
 		if(LX_dinseylandfillFunbucks())
 		{
 			return true;
@@ -1906,10 +1889,6 @@ boolean LM_edTheUndying()
 	}
 
 
-	if(LX_pirateOutfit() || LX_pirateInsults() || LX_pirateBlueprint() || LX_pirateBeerPong() || LX_fcle())
-	{
-		return true;
-	}
 	if(L2_mosquito() || L2_treeCoin() || L2_spookyMap() || L2_spookyFertilizer() || L2_spookySapling())
 	{
 		return true;
