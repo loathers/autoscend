@@ -1,4 +1,4 @@
-script "kingcheese.ash";
+script "kingsool.ash";
 import <sl_ascend.ash>
 
 void handleKingLiberation()
@@ -95,7 +95,7 @@ void handleKingLiberation()
 			}
 			if(svn_info("ccascend-snapshot").last_changed_rev > 0)
 			{
-				cli_execute("sl_snapshot");
+				cli_execute("cc_snapshot");
 			}
 			set_property("sl_snapshot", "done");
 		}
