@@ -4954,6 +4954,9 @@ boolean sl_can_equip(item it, slot s)
 	if(s == $slot[shirt] && !hasTorso())
 		return false;
 
+	if(s == $slot[off-hand] && it.to_slot() == $slot[weapon] && !sl_have_skill($skill[Double-Fisted Skull Smashing]))
+		return false;
+
 	if(it.item_type() == "chefstaff" && (!(sl_have_skill($skill[Spirit of Rigatoni]) || (my_class() == $class[Sauceror] && equipped_amount($item[special sauce glove]) > 0) || my_class() == $class[Avatar of Jarlsberg]) || s != $slot[weapon]))
 		return false;
 
