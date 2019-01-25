@@ -1,0 +1,92 @@
+# Weapons (Many are repeated in off-hands, but not all)
+# Look ma, no hands!
+none	path:Way of the Surprising Fist
+# The only weapon for Boris
+Trusty	class:Avatar of Boris
+# Why would you ever use anything else when LIGHTNING GENERATION?
+Thor's Pliers	path:Heavy Rains
+# Some other goodies
+Staff of the Standalone Cheese	class:Avatar of Jarlsberg
+sewage-clogged pistol	class:Ed
+# The staff of Ed, when playing as Ed
+7961	class:Ed
+Dented Scepter	mainstat:Muscle
+# Clubs for the seal clubbers
+Meat Tenderizer Is Murder	class:Seal Clubber
+Lead Pipe	class:Seal Clubber
+# We interrupt your regularly scheduled clubs for some floundry stuff
+Fish Hatchet
+Bass Clarinet
+# We now resume the previous club broadcast
+Porcelain Police Baton	class:Seal Clubber
+Stainless Steel Shillelagh	class:Seal Clubber
+Frozen Seal Spine	class:Seal Clubber
+Ghast Iron Cleaver	class:Seal Clubber
+Oversized Pipe	class:Seal Clubber
+Curmudgel	class:Seal Clubber
+Elegant Nightstick	class:Seal Clubber
+Maxwell's Silver Hammer	class:Seal Clubber
+Red Hot Poker	class:Seal Clubber
+Giant Foam Finger	class:Seal Clubber
+Hilarious Comedy Prop	class:Seal Clubber
+Infernal Toilet Brush	class:Seal Clubber
+Mannequin Leg	class:Seal Clubber
+Gnawed-Up Dog Bone	class:Seal Clubber
+Severed Flipper	class:Seal Clubber
+Spiked Femur	class:Seal Clubber
+Corrupt Club of Corrupt Corruption	class:Seal Clubber
+Kneecapping Stick	class:Seal Clubber
+Homoerotic Frat-Paddle	class:Seal Clubber
+Flaming Crutch	class:Seal Clubber
+Corrupt Club of Corruption	class:Seal Clubber
+Skeleton Bone	class:Seal Clubber
+Remaindered Axe	class:Seal Clubber
+Club of Corruption	class:Seal Clubber
+Gnollish Flyswatter	class:Seal Clubber
+Seal-Clubbing Club	class:Seal Clubber
+# Some okay stuff for Turtle Tamers
+Garbage Sticker	class:Turtle Tamer
+Work Is A Four Letter Sword	class:Turtle Tamer
+# Smiths weapons for the other classes
+Saucepanic	class:Sauceror
+Hand That Rocks The Ladle	class:Pastamancer
+Frankly Mr. Shank	class:Disco Bandit
+Shakespeare's Sister's Accordion	class:Accordion Thief
+# Good stuff but less good than Smithsness
+Sneaky Pete's Basket	class:Avatar of Sneaky Pete
+Rope	mainstat:Muscle
+Lead Pipe	mainstat:Muscle
+accord ion	class:Accordion Thief
+revolver	mainstat:Moxie
+knife	mainstat:Moxie
+# Autohits? Yes please.
+Thor's Pliers
+# Some more stuff. It's okay, I guess
+The Jokester's Gun	mainstat:Moxie
+Frigid Derringer	mainstat:Moxie
+witty rapier	mainstat:Mysticality
+Chopsticks	mainstat:Mysticality
+Oversized Pizza Cutter	mainstat:Mysticality
+Eggbeater	mainstat:Mysticality
+Corn Holder	mainstat:Mysticality
+Dishrag	mainstat:Mysticality
+# This stuff is definitely better than garbage
+finger cymbals	mainstat:Moxie
+Rusty Piece Of Rebar
+Octopus's Spade
+Oversized Pipe
+Ghast Iron Cleaver
+Short-Handled Mop
+Spectral Axe
+Antique Machete
+Skeleton Bone
+Corn Holder
+Knob Goblin Scimitar
+Knob Goblin Tongs
+# Absolute garbage, but better than nothing, probably?
+Turtle Totem	class:Turtle Tamer
+Saucepan	class:Sauceror
+Pasta Spoon	class:Pastamancer
+disco ball	class:Disco Bandit
+stolen accordion	class:Accordion Thief
+# I probably missed some stuff from the old weapon handling but c'est la vie

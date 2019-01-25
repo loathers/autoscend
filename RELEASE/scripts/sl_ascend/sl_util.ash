@@ -148,6 +148,8 @@ boolean sl_is_valid(familiar fam);
 boolean sl_is_valid(skill sk);
 boolean sl_debug_print(string s, string color);
 boolean sl_debug_print(string s);
+boolean sl_can_equip(item it);
+boolean sl_can_equip(item it, slot s);
 
 
 // Private Prototypes
@@ -4940,4 +4942,20 @@ boolean sl_debug_print(string s)
 		return true;
 	}
 	return false;
+}
+
+boolean sl_can_equip(item it)
+{
+	return sl_can_equip(it, it.to_slot());
+}
+
+boolean sl_can_equip(item it, slot s)
+{
+	if(s == $slot[shirt] && !hasTorso())
+		return false;
+
+	if(it.item_type() == "chefstaff" && (!(sl_have_skill($skill[Spirit of Rigatoni]) || (my_class() == $class[Sauceror] && equipped_amount($item[special sauce glove]) > 0) || my_class() == $class[Avatar of Jarlsberg]) || s != $slot[weapon]))
+		return false;
+
+	return can_equip(it);
 }

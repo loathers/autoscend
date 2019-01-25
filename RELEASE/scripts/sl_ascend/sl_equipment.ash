@@ -20,10 +20,149 @@ item handleSolveThing(item[int] poss);
 item handleSolveThing(boolean[item] poss, slot loc);
 item handleSolveThing(boolean[item] poss);
 void makeStartingSmiths();
+void equipBaselineGear();
 
 
 //	Replace the current acc3 item (from baseline) with another. Mostly for our Xiblaxian handling so that is why this is the only one implemented.
 void replaceBaselineAcc3();
+
+void equipBaselineGear()
+{
+	string [string,int,string] equipment_text;
+	if(!file_to_map("sl_ascend_equipment.txt", equipment_text))
+		print("Could not load sl_ascend_equipment.txt. This is bad!", "red");
+	item [slot] [int] equipment;
+	foreach slot_str, pri, item_str, conds in equipment_text
+	{
+		item it = to_item(item_str);
+		if(it == $item[none] && item_str != "none")
+			abort('"' + item_str + '" does not properly convert to an item!');
+
+		if(conds != "")
+		{
+			string [int] conditions = conds.split_string(";");
+			boolean failure = false;
+			foreach i, cond in conditions
+			{
+				matcher m = create_matcher("(!?)(\\w+):(.+)", cond);
+				if(!m.find())
+					abort('"' + cond + '" is not proper condition formatting!');
+				boolean condition_inverted = m.group(1) == "!";
+				string condition_type = m.group(2);
+				string condition_data = m.group(3);
+				boolean this_failed = false;
+				switch(condition_type)
+				{
+					case "class":
+						class req_class = to_class(condition_data);
+						if(req_class == $class[none])
+							abort('"' + condition_data + '" does not properly convert to a class!');
+						if(req_class != my_class())
+							this_failed = true;
+						break;
+					case "mainstat":
+						stat req_mainstat = to_stat(condition_data);
+						if(req_mainstat == $stat[none])
+							abort('"' + condition_data + '" does not properly convert to a stat!');
+						if(req_mainstat != my_primestat())
+							this_failed = true;
+						break;
+					case "path":
+						if(condition_data != sl_my_path())
+							this_failed = true;
+						break;
+					case "skill":
+						skill req_skill = to_skill(condition_data);
+						if(req_skill == $skill[none])
+							abort('"' + condition_data + '" does not properly convert to a skill!');
+						if(!sl_have_skill(req_skill))
+							this_failed = true;
+						break;
+					case "effect":
+						effect req_effect = to_effect(condition_data);
+						if(req_effect == $effect[none])
+							abort('"' + condition_data + '" does not properly convert to an effect!');
+						if(have_effect(req_effect) == 0)
+							this_failed = true;
+						break;
+					case "prop":
+						matcher m2 = create_matcher("([^=])=(.+)", condition_data);
+						if(!m2.find())
+							abort('"' + condition_data + '" is not a proper prop condition format!');
+						if(get_property(m2.group(1)) != m2.group(2))
+							this_failed = true;
+						break;
+					default:
+						abort('Invalid condition type "' + condition_type + '" found!');
+				}
+				if(this_failed != condition_inverted)
+				{
+					failure = true;
+					break;
+				}
+			}
+			if(failure)
+				continue;
+		}
+		// item did not fail its conditions (if any), we should check if we have it and can use it
+		if(item_amount(it) + equipped_amount(it) == 0)
+			continue;
+
+		slot eq_slot = $slot[none];
+		if(slot_str == "acc")
+			eq_slot = $slot[acc1];
+		else
+		{
+			eq_slot = slot_str.to_slot();
+			if(eq_slot == $slot[none])
+				abort('"' + eq_slot + '" could not be properly converted to a slot!');
+		}
+		if(!sl_can_equip(it, eq_slot))
+			continue;
+
+		equipment[eq_slot][equipment[eq_slot].count()] = it;
+	}
+
+	item [slot] gear_to_equip;
+	int [item] amount_to_equip;
+	slot [int] slots_to_equip;
+	foreach sl in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3]
+		slots_to_equip[slots_to_equip.count()] = sl;
+	if(my_familiar() != $familiar[none])
+		slots_to_equip[slots_to_equip.count()] = $slot[familiar];
+	if($classes[Cow Puncher, Beanslinger, Snake Oiler] contains my_class())
+		slots_to_equip[slots_to_equip.count()] = $slot[holster];
+	foreach _,sl in slots_to_equip
+	{
+		slot list_slot = ($slots[acc2, acc3] contains sl) ? $slot[acc1] : sl;
+		foreach i,it in equipment[list_slot]
+		{
+			if(it == $item[none]) // for way of the surprising fist only so far...
+				break;
+			if(amount_to_equip[it] > 0 && it.boolean_modifier("Single Equip"))
+				continue;
+			if(amount_to_equip[it] >= item_amount(it) + equipped_amount(it))
+				continue;
+			if(sl == $slot[off-hand])
+			{
+				if(gear_to_equip[$slot[weapon]].weapon_hands() > 1)
+					break;
+				if(gear_to_equip[$slot[weapon]].weapon_type() == $stat[Moxie] && !($stats[Moxie, none] contains it.weapon_type()))
+					continue;
+			}
+
+			gear_to_equip[sl] = it;
+			amount_to_equip[it]++;
+			break;
+		}
+	}
+
+	foreach _,sl in slots_to_equip
+	{
+		item to_equip = gear_to_equip[sl];
+		equip(sl, to_equip);
+	}
+}
 
 void makeStartingSmiths()
 {
@@ -692,16 +831,21 @@ void equipBaselineFam()
 
 void equipBaseline()
 {
-	equipBaselineHat();
-	equipBaselineShirt();
-	equipBaselineWeapon();
-	equipBaselinePants();
-	equipBaselineBack();
-	equipBaselineAcc1();
-	equipBaselineAcc2();
-	equipBaselineAcc3();
-	equipBaselineFam();
-	equipBaselineHolster();
+	if(!get_property("sl_beta_test").to_boolean())
+	{
+		equipBaselineHat();
+		equipBaselineShirt();
+		equipBaselineWeapon();
+		equipBaselinePants();
+		equipBaselineBack();
+		equipBaselineAcc1();
+		equipBaselineAcc2();
+		equipBaselineAcc3();
+		equipBaselineFam();
+		equipBaselineHolster();
+	}
+	else
+		equipBaselineGear();
 
 	if(my_daycount() == 1)
 	{
