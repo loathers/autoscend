@@ -800,6 +800,12 @@ boolean sl_voteSetup(int candidate, int first, int second)
 		return false;
 	}
 
+	if(svn_info("Ezandora-Voting-Booth-trunk-Release").last_changed_rev > 0)
+	{
+		cli_execute("VotingBooth.ash");
+		return true;
+	}
+
 	if(candidate == 0)
 	{
 		candidate = 1 + random(2);
