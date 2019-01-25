@@ -1098,7 +1098,7 @@ void equipRollover()
 		return;
 	}
 
-	if(sl_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li'l Unicorn Costume])) && sl_is_valid($item[Li'l Unicorn Costume]) && my_familiar() != $familiar[none]) // last thing is to make sure familiars are valid
+	if(sl_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li'l Unicorn Costume])) && sl_is_valid($item[Li'l Unicorn Costume]) && sl_my_path() != "Pocket Familiars")
 	{
 		cli_execute("buy Li'l Unicorn Costume");
 	}
