@@ -783,7 +783,7 @@ boolean sl_voteSetup(int candidate, int first, int second)
 	{
 		return false;
 	}
-	if(first == second)
+	if(first == second && first != 0)
 	{
 		return false;
 	}
