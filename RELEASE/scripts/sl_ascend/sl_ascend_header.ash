@@ -576,6 +576,14 @@ boolean sl_voteMonster();									//Defined in sl_ascend/sl_mr2018.ash
 boolean sl_voteMonster(boolean freeMon);					//Defined in sl_ascend/sl_mr2018.ash
 boolean sl_voteMonster(boolean freeMon, location loc);		//Defined in sl_ascend/sl_mr2018.ash
 boolean sl_voteMonster(boolean freeMon, location loc, string option);//Defined in sl_ascend/sl_mr2018.ash
+int sl_sausageEaten(); // Defined in sl_ascend/sl_mr2019.ash
+int sl_sausageLeftToday(); // Defined in sl_ascend/sl_mr2019.ash
+int sl_sausageUnitsNeededForSausage(int numSaus); // Defined in sl_ascend/sl_mr2019.ash
+int sl_sausageMeatPasteNeededForSausage(int numSaus); // Defined in sl_ascend/sl_mr2019.ash
+int sl_sausageFightsToday(); // Defined in sl_ascend/sl_mr2019.ash
+boolean sl_sausageGrind(int numSaus); // Defined in sl_ascend/sl_mr2019.ash
+boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll); // Defined in sl_ascend/sl_mr2019.ash
+boolean sl_sausageEatEmUp(); // Defined in sl_ascend/sl_mr2019.ash
 boolean getSpaceJelly();									//Defined in sl_ascend/sl_mr2017.ash
 int horseCost();											//Defined in sl_ascend/sl_mr2017.ash
 boolean getHorse(string type);								//Defined in sl_ascend/sl_mr2017.ash

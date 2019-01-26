@@ -29,6 +29,7 @@ import <sl_ascend/sl_mr2015.ash>
 import <sl_ascend/sl_mr2016.ash>
 import <sl_ascend/sl_mr2017.ash>
 import <sl_ascend/sl_mr2018.ash>
+import <sl_ascend/sl_mr2019.ash>
 
 import <sl_ascend/sl_boris.ash>
 import <sl_ascend/sl_jellonewbie.ash>

@@ -549,6 +549,10 @@ boolean canEat(item toEat)
 
 void consumeStuff()
 {
+	// grind and eat any sausage that you can
+	sl_sausageGrind(item_amount($item[magical sausage casing]));
+	sl_sausageEatEmUp();
+
 	if(ed_eatStuff())
 	{
 		return;
