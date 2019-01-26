@@ -58,7 +58,7 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	{
 		int sausNum = i + sausMade;
 		int pastesForThisSaus = sl_sausageMeatPasteNeededForSausage(sausNum);
-		if((pastesNeeded + pastesForThisSaus - pastesAvail) * 10 + 3000 > my_meat())
+		if((pastesNeeded + pastesForThisSaus - pastesAvail) * 10 + 6000 > my_meat())
 		{
 			if(failIfCantMakeAll)
 			{
