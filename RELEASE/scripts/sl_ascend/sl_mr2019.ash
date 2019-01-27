@@ -87,7 +87,7 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 
 boolean sl_sausageEatEmUp()
 {
-	if(item_amount($item[magical sausage]) == 0)
+	if(item_amount($item[magical sausage]) == 0 || get_property("sl_saveMagicalSausage").to_boolean())
 		return false;
 
 	if(sl_sausageLeftToday() <= 0)
