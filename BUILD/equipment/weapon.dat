@@ -70,6 +70,11 @@ Oversized Pizza Cutter	mainstat:Mysticality
 Eggbeater	mainstat:Mysticality
 Corn Holder	mainstat:Mysticality
 Dishrag	mainstat:Mysticality
+# Knives that are fine
+soap knife	mainstat:Moxie;skill:Tricky Knifework
+candy knife	mainstat:Moxie;skill:Tricky Knifework
+sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
+broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
 finger cymbals	mainstat:Moxie
 Rusty Piece Of Rebar
@@ -79,6 +84,9 @@ Ghast Iron Cleaver
 Short-Handled Mop
 Spectral Axe
 Antique Machete
+# The worst knife, but it's still a knife
+boot knife	mainstat:Moxie;skill:Tricky Knifework
+# Almost absolute garbage
 Skeleton Bone
 Corn Holder
 Knob Goblin Scimitar
