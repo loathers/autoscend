@@ -61,6 +61,8 @@ revolver	mainstat:Moxie
 knife	mainstat:Moxie
 # Autohits? Yes please.
 Thor's Pliers
+# Nice ultra rare you got there
+The Nuge's favorite crossbow	mainstat:Moxie
 # Some more stuff. It's okay, I guess
 The Jokester's Gun	mainstat:Moxie
 Frigid Derringer	mainstat:Moxie
@@ -77,6 +79,12 @@ sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
 broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
 finger cymbals	mainstat:Moxie
+# The worst knife, but it's still a knife
+boot knife	mainstat:Moxie;skill:Tricky Knifework
+# It's not good, but at least it's a ranged weapon that takes one hand
+disco ball	mainstat:Moxie
+stolen accordion	class:Accordion Thief
+# Some melee weapons
 Rusty Piece Of Rebar
 Octopus's Spade
 Oversized Pipe
@@ -84,8 +92,6 @@ Ghast Iron Cleaver
 Short-Handled Mop
 Spectral Axe
 Antique Machete
-# The worst knife, but it's still a knife
-boot knife	mainstat:Moxie;skill:Tricky Knifework
 # Almost absolute garbage
 Skeleton Bone
 Corn Holder
@@ -95,6 +101,4 @@ Knob Goblin Tongs
 Turtle Totem	class:Turtle Tamer
 Saucepan	class:Sauceror
 Pasta Spoon	class:Pastamancer
-disco ball	class:Disco Bandit
-stolen accordion	class:Accordion Thief
 # I probably missed some stuff from the old weapon handling but c'est la vie
