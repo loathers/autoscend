@@ -180,11 +180,6 @@ void initializeSettings()
 	set_property("sl_mosquito", "");
 	set_property("sl_nuns", "");
 
-	set_property("sl_nunsTrick", "no");
-	set_property("sl_nunsTrickActive", "no");
-	set_property("sl_nunsTrickGland", "");
-	set_property("sl_nunsTrickCount", "0");
-	set_property("sl_nunsTrickReady", "");
 	set_property("sl_oilpeak", "");
 	set_property("sl_orchard", "");
 	set_property("sl_palindome", "");
@@ -1104,7 +1099,7 @@ boolean warAdventure()
 	return true;
 }
 
-boolean doThemtharHills(boolean trickMode)
+boolean doThemtharHills()
 {
 	if(get_property("sl_nuns") == "done")
 	{
@@ -1113,9 +1108,7 @@ boolean doThemtharHills(boolean trickMode)
 	if((get_property("currentNunneryMeat").to_int() >= 100000) || (get_property("sidequestNunsCompleted") != "none") || (sl_my_path() == "Way of the Surprising Fist"))
 	{
 		handleBjornify($familiar[el vibrato megadrone]);
-		set_property("sl_nunsTrickReady", "done");
 		set_property("sl_nuns", "done");
-		set_property("sl_nunsTrick", "finished");
 		return false;
 	}
 
@@ -1127,51 +1120,6 @@ boolean doThemtharHills(boolean trickMode)
 	if(get_property("sl_hippyInstead").to_boolean() || (get_property("hippiesDefeated").to_int() >= 192))
 	{
 		print("Themthar Nuns!", "blue");
-		trickMode = false;
-	}
-	else
-	{
-		print("Themthar Nuns! Trick Mode Bitches!", "blue");
-	}
-
-	int copyAvailable = 0;
-	boolean copyPossible = false;
-	boolean fightCopy = false;
-	if(trickMode && (get_property("sl_nunsTrickReady") == "yes") && (get_property("hippiesDefeated").to_int() < 192))
-	{
-		if(have_skill($skill[Rain Man]))
-		{
-			copyPossible = true;
-			if(my_rain() >= 60)
-			{
-				copyAvailable = 1;
-			}
-		}
-
-#		Sample for allowed Rain-Doh usage.
-#		if((item_amount($item[Rain-doh Black Box]) > 0) && (get_property("_raindohCopiesMade").to_int() < 5))
-#		{
-#			copyAvailable = 2;
-#			copyPossible = true;
-#		}
-
-		if((item_amount($item[shaking 4-d camera]) > 0) && !get_property("_cameraUsed").to_boolean())
-		{
-			copyAvailable = 3;
-			copyPossible = true;
-		}
-
-		if(item_amount($item[Unfinished Ice Sculpture]) > 0)
-		{
-			copyAvailable = 4;
-			copyPossible = true;
-		}
-
-		if(copyAvailable == 0)
-		{
-			return false;
-		}
-		fightCopy = true;
 	}
 
 	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
@@ -1203,11 +1151,6 @@ boolean doThemtharHills(boolean trickMode)
 	shrugAT($effect[Polka of Plenty]);
 	if(my_class() == $class[Ed])
 	{
-		if(fightCopy)
-		{
-			adjustEdHat("meat");
-		}
-
 		if(!have_skill($skill[Gift of the Maid]) && ($servant[Maid].experience >= 441))
 		{
 			visit_url("charsheet.php");
@@ -1277,10 +1220,6 @@ boolean doThemtharHills(boolean trickMode)
 	{
 		buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
 	}
-	else if((get_property("sl_nunsTrickCount").to_int() > 2) || (meat_drop_modifier() > 600.0))
-	{
-		buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
-	}
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
 #	if(sl_my_path() == "Standard")
@@ -1294,11 +1233,6 @@ boolean doThemtharHills(boolean trickMode)
 	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0)
 	{
 		meat_need = meat_need - 200;
-	}
-	if(trickMode)
-	{
-		// Trick Mode should probably target more than 7000 meat per brigand.
-		meat_need = meat_need + 200.00;
 	}
 
 	meatDropHave = meat_drop_modifier();
@@ -1314,19 +1248,11 @@ boolean doThemtharHills(boolean trickMode)
 		float minget = 800.00 * (meatDropHave / 100.0);
 		int meatneed = 100000 - get_property("currentNunneryMeat").to_int();
 		print("The min we expect is: " + minget + " and we need: " + meatneed, "blue");
-		if(trickMode)
-		{
-			if(!user_confirm("About to cancel nuns trick (click yes to continue, no to abort), still need testing on the parameters here."))
-			{
-				abort("User aborted nuns trick. We do not turn off the nuns flags (sl_nunsTrick->finished to abort). Beep.");
-			}
-		}
 
 		if(minget < meatneed)
 		{
 			int curMeat = get_property("currentNunneryMeat").to_int();
-			int advs = get_property("sl_nunsTrickCount").to_int();
-			advs = $location[The Themthar Hills].turns_spent;
+			int advs = $location[The Themthar Hills].turns_spent;
 			int needMeat = 100000 - curMeat;
 
 			boolean failNuns = true;
@@ -1344,8 +1270,6 @@ boolean doThemtharHills(boolean trickMode)
 			if(failNuns)
 			{
 				set_property("sl_nuns", "done");
-				set_property("sl_nunsTrick", "no");
-				set_property("sl_nunsTrickReady", "done");
 				handleFamiliar("item");
 				return true;
 			}
@@ -1371,53 +1295,8 @@ boolean doThemtharHills(boolean trickMode)
 	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
 
-	if(fightCopy)
 	{
-		print("Themthar Nuns Trick attempt to finish: " + copyAvailable, "blue");
-		print("Meat drop to start: " + meat_drop_modifier(), "blue");
-		useCocoon();
-		if(equipped_item($slot[hat]) == $item[Reinforced Beaded Headband])
-		{
-			abort("Trying to nuns trick and might be wearing the Hippy Outfit");
-		}
-
-		switch(copyAvailable)
-		{
-		case 1:
-			rainManSummon("dirty thieving brigand", false, false);
-			set_property("sl_nunsTrickGland", "done");
-			break;
-		case 2:		//Rain-doh box
-			break;
-		case 3:
-			handleCopiedMonster($item[Shaking 4-D Camera]);
-			break;
-		case 4:
-			handleCopiedMonster($item[Ice Sculpture]);
-			break;
-		default:
-			abort("Trying nuns trick but unhandled copy case (" + copyAvailable + ")");
-			break;
-		}
-	}
-	else
-	{
-		if(trickMode)
-		{
-			if(!get_property("_cameraUsed").to_boolean() && (item_amount($item[shaking 4-d camera]) == 0))
-			{
-				pullXWhenHaveY($item[4-d camera], 1, 0);
-			}
-			outfit("war hippy fatigues");
-			if(get_property("sl_nunsTrickCount").to_int() == 0)
-			{
-				visit_url("bigisland.php?place=nunnery");
-			}
-		}
-		else
-		{
-			warOutfit();
-		}
+		warOutfit();
 
 		int lastMeat = get_property("currentNunneryMeat").to_int();
 		int myLastMeat = my_meat();
@@ -1443,8 +1322,7 @@ boolean doThemtharHills(boolean trickMode)
 			set_property("currentNunneryMeat", diffMeat);
 		}
 
-		int advs = get_property("sl_nunsTrickCount").to_int() + 1;
-		set_property("sl_nunsTrickCount", advs);
+		int advs = $location[The Themthar Hills].turns_spent + 1;
 
 		int diffMeat = curMeat - lastMeat;
 		int needMeat = 100000 - curMeat;
@@ -1453,22 +1331,6 @@ boolean doThemtharHills(boolean trickMode)
 
 		diffMeat = diffMeat * 1.2;
 		average = average * 1.2;
-		if(trickMode && ((needMeat < diffMeat) || (needMeat < average)))
-		{
-			set_property("sl_nunsTrickReady", "yes");
-			print("Attempting nuns trick, beep boop!! No more auto-aborting!");
-		}
-		if(((item_amount($item[stone wool]) > 0) || (have_effect($effect[Stone-Faced]) > 0)) && (get_property("sl_nunsTrickCount").to_int() > 2) && (get_property("lastTempleAdventures") != my_ascensions()))
-		{
-			set_property("choiceAdventure582", "1");
-			set_property("choiceAdventure579", "3");
-			if(have_effect($effect[Stone-Faced]) == 0)
-			{
-				use(1, $item[stone wool]);
-			}
-			put_closet(item_amount($item[stone wool]), $item[stone wool]);
-			ccAdv(1, $location[The Hidden Temple]);
-		}
 	}
 	handleFamiliar("item");
 	return true;
@@ -3258,11 +3120,6 @@ boolean questOverride()
 
 	if(get_property("sidequestOrchardCompleted") != "none")
 	{
-		if(get_property("sl_nunsTrickGland") != "done")
-		{
-			print("Found completed Orchard (Nuns Trick - Gland) (12)");
-			set_property("sl_nunsTrickGland", "done");
-		}
 		if(get_property("sl_orchard") != "finished")
 		{
 			print("Found completed Orchard (12)");
@@ -3420,9 +3277,8 @@ boolean questOverride()
 		set_property("sl_war", "done");
 	}
 
-	if(get_property("sl_hippyInstead").to_boolean() && (get_property("sl_nunsTrick") == "true"))
+	if(get_property("sl_hippyInstead").to_boolean())
 	{
-		set_property("sl_nunsTrick", false);
 		set_property("sl_ignoreFlyer", true);
 	}
 
@@ -3553,21 +3409,6 @@ boolean L11_aridDesert()
 			foreach it in $items[Beer Helmet, Distressed Denim Pants, Bejeweled Pledge Pin]
 			{
 				take_closet(closet_amount(it), it);
-			}
-
-			if(get_property("sl_nunsTrick") == "true")
-			{
-				print("Had gotten War Hippy Fatigues during the Ferret rescue. Don't need to worry about them now.", "blue");
-				set_property("sl_nunsTrick", "got");
-				set_property("sl_nunsTrickGland", "start");
-			}
-		}
-		else if(get_property("sl_nunsTrick") != "no")
-		{
-#			print("Only have some of the War Hippy Fatigues, so I'm going to closet everything relevant to get them in the desert", "blue");
-			foreach it in $items[Reinforced Beaded Headband, Bullet-proof Corduroys, Round Purple Sunglasses, Beer Helmet, Distressed Denim Pants, Bejeweled Pledge Pin]
-			{
-				put_closet(item_amount(it), it);
 			}
 		}
 
@@ -3817,11 +3658,6 @@ boolean L11_aridDesert()
 			take_closet(closet_amount($item[Beer Helmet]), $item[Beer Helmet]);
 			take_closet(closet_amount($item[Distressed Denim Pants]), $item[Distressed Denim Pants]);
 			take_closet(closet_amount($item[Bejeweled Pledge Pin]), $item[Bejeweled Pledge Pin]);
-			if(get_property("sl_nunsTrick") != "no")
-			{
-				set_property("sl_nunsTrick", "got");
-				set_property("sl_nunsTrickGland", "start");
-			}
 		}
 	}
 	else
@@ -6856,11 +6692,6 @@ boolean L11_unlockEd()
 		print("Uh oh, didn\'t do the tavern and we are at the pyramid....", "red");
 	}
 
-	if(get_property("sl_nunsTrick") == "got")
-	{
-		set_property("sl_nunsTrickActive", "yes");
-	}
-
 	print("In the pyramid (W:" + item_amount($item[crumbling wooden wheel]) + ") (R:" + item_amount($item[tomb ratchet]) + ") (U:" + get_property("controlRoomUnlock") + ")", "blue");
 
 	if(!get_property("middleChamberUnlock").to_boolean())
@@ -7751,42 +7582,6 @@ void handleJar()
 			put_closet(1, $item[psychoanalytic jar]);
 		}
 	}
-}
-
-boolean L12_nunsTrickGlandGet()
-{
-	if(get_property("sidequestOrchardCompleted") != "none")
-	{
-		return false;
-	}
-	if(get_property("sl_nunsTrickGland") != "start")
-	{
-		return false;
-	}
-	if(!canYellowRay())
-	{
-		return false;
-	}
-
-	if(!outfit("war hippy fatigues"))
-	{
-		abort("Could not wear war hippy fatigues, failing");
-	}
-	if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
-	{
-		handleFamiliar("yellow ray");
-	}
-	if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
-	{
-		set_property("sl_nunsTrickGland", "done");
-		return true;
-	}
-	ccAdv(1, $location[The Hatching Chamber]);
-	if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
-	{
-		set_property("sl_nunsTrickGland", "done");
-	}
-	return true;
 }
 
 boolean L12_finalizeWar()
@@ -14087,25 +13882,7 @@ boolean doTasks()
 	if(L11_unlockHiddenCity())			return true;
 	if(L11_hiddenCityZones())			return true;
 	if(LX_ornateDowsingRod())			return true;
-	if(L12_nunsTrickGlandGet())			return true;
 	if(L11_aridDesert())				return true;
-
-	if((get_property("sl_nunsTrick") == "got") && (get_property("currentNunneryMeat").to_int() < 100000) && !is100FamiliarRun())
-	{
-		set_property("sl_nunsTrickActive", "yes");
-		if((get_property("sl_mcmuffin") == "ed") || (get_property("sl_mcmuffin") == "finished"))
-		{
-			if(doThemtharHills(true))
-			{
-				return true;
-			}
-		}
-	}
-
-	if(get_property("sl_nunsTrickActive") == "yes")
-	{
-		set_property("sl_nunsTrickActive", "no");
-	}
 
 	if((get_property("sl_nuns") == "done") && (item_amount($item[Half A Purse]) == 1))
 	{
@@ -14131,7 +13908,7 @@ boolean doTasks()
 
 	if((my_level() >= 12) && ((get_property("hippiesDefeated").to_int() >= 192) || get_property("sl_hippyInstead").to_boolean()) && (get_property("sl_nuns") == ""))
 	{
-		if(doThemtharHills(false))
+		if(doThemtharHills())
 		{
 			return true;
 		}

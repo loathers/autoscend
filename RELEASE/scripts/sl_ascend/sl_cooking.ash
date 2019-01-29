@@ -1253,23 +1253,6 @@ void consumeStuff()
 			}
 		}
 
-		if((get_property("sl_nunsTrick") == "got") && (get_property("currentNunneryMeat").to_int() < 100000) && is_unrestricted($item[Fist Turkey Outline]))
-		{
-			if((get_property("sl_mcmuffin") == "ed") || (get_property("sl_mcmuffin") == "finished"))
-			{
-				if((my_inebriety() >= 6) && (my_inebriety() <= 11) && (my_mp() >= mpForOde) && canDrink($item[Ambitious Turkey]))
-				{
-					if(item_amount($item[ambitious turkey]) > 0)
-					{
-						shrugAT($effect[Ode to Booze]);
-						buffMaintain($effect[Ode to Booze], 50, 1, 1);
-						ccDrink(1, $item[Ambitious Turkey]);
-					}
-				}
-			}
-		}
-
-
 		if(in_hardcore() && (my_mp() > mpForOde) && (item_amount($item[Pixel Daiquiri]) > 0) && (inebriety_left() >= 2) && is_unrestricted($item[Yellow Puck]) && canDrink($item[Pixel Daiquiri]))
 		{
 			shrugAT($effect[Ode to Booze]);

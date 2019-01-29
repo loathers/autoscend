@@ -136,7 +136,6 @@ boolean L12_gremlinStart();
 boolean L12_orchardFinalize();
 boolean L12_orchardStart();
 boolean L12_finalizeWar();
-boolean L12_nunsTrickGlandGet();
 boolean L13_sorceressDoor();
 boolean L13_towerNSEntrance();
 boolean L13_towerNSContests();
@@ -484,7 +483,7 @@ int doNumberology(string goal, string option);				//Defined in sl_ascend/sl_util
 int doRest();												//Defined in sl_ascend/sl_util.ash
 boolean doTasks();											//Defined in sl_ascend.ash
 boolean keepOnTruckin();									//Defined in sl_ascend/sl_cooking.ash
-boolean doThemtharHills(boolean trickMode);					//Defined in sl_ascend.ash
+boolean doThemtharHills();									//Defined in sl_ascend.ash
 boolean drinkSpeakeasyDrink(item drink);					//Defined in sl_ascend/sl_clan.ash
 boolean drinkSpeakeasyDrink(string drink);					//Defined in sl_ascend/sl_clan.ash
 boolean eatFancyDog(string dog);							//Defined in sl_ascend/sl_clan.ash

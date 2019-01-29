@@ -52,11 +52,11 @@
 52	sl_mistypeak	string	ANY	-
 53	sl_mosquito	string	ANY	'finished' if we have completed the Mosquito Larva quest.
 54	sl_nuns	string	ANY	-
-55	sl_nunsTrick	string	ANY	-
-56	sl_nunsTrickActive	string	ANY	-
-57	sl_nunsTrickGland	string	ANY	-
-58	sl_nunsTrickCount	string	ANY	-
-59	sl_nunsTrickReady	string	ANY	-
+55	sl_nunsTrick	string	ANY	Deprecated
+56	sl_nunsTrickActive	string	ANY	Deprecated
+57	sl_nunsTrickGland	string	ANY	Deprecated
+58	sl_nunsTrickCount	string	ANY	Deprecated
+59	sl_nunsTrickReady	string	ANY	Deprecated
 60	sl_oilpeak	string	ANY	'finished' if The Oil Peak is completed.
 61	sl_orchard	string	ANY	-
 62	sl_palindome	string	ANY	'finished' if the Palindome is finished.
