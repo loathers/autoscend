@@ -335,9 +335,19 @@ string sl_combatHandler(int round, string opp, string text)
 			return "skill " + $skill[Sauceshell];
 		}
 
-		if(have_equipped($item[Astral Shirt]))
-		{
-			if(sl_have_skill($skill[headbutt]) && (my_mp() >= 3))
+		if(sl_have_skill($skill[Belch the Rainbow]) && (my_mp() >= mp_cost($skill[Belch the Rainbow]))) {
+			return "skill " + $skill[Belch the Rainbow];
+		}
+
+		int sources = 0;
+		foreach damage in $strings[Cold Damage, Hot Damage, Sleaze Damage, Spooky Damage, Stench Damage] {
+			if(numeric_modifier(damage) > 0) {
+				sources += 1;
+			}
+		}
+
+		if (sources >= 4) {
+			if(sl_have_skill($skill[headbutt]) && (my_mp() >= mp_cost($skill[Headbutt])))
 			{
 				return "skill " + $skill[Headbutt];
 			}
@@ -345,10 +355,6 @@ string sl_combatHandler(int round, string opp, string text)
 			{
 				return "skill " + $skill[Clobber];
 			}
-		}
-		if(sl_have_skill($skill[Belch the Rainbow]) && (my_mp() >= mp_cost($skill[Belch the Rainbow])))
-		{
-			return "skill " + $skill[Belch the Rainbow];
 		}
 		return "attack with weapon";
 	}

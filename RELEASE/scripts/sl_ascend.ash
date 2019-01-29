@@ -4302,6 +4302,23 @@ boolean L13_towerNSTower()
 		{
 			equip($item[astral shirt]);
 		}
+		else if(item_amount($item[Unfortunato's foolscap]) > 0)
+		{
+			equip($item[Unfortunato's foolscap]);
+		}
+		else if(item_amount($item[cigar box turtle]) > 0)
+		{
+			use(1, $item[cigar box turtle]);
+		}
+		else if(have_effect($effect[damage.enh]) == 0)
+		{
+			int enhances = sl_sourceTerminalEnhanceLeft();
+			if(enhances > 0)
+			{
+				sl_sourceTerminalEnhance("damage");
+			}
+		}
+
 		if((my_class() == $class[Turtle Tamer]) && (item_amount($item[Shocked Shell]) > 0))
 		{
 			equip($slot[shirt], $item[Shocked Shell]);
@@ -6400,8 +6417,8 @@ boolean LX_spookyravenSecond()
 		}
 		if(item_amount($item[Lady Spookyraven\'s Dancing Shoes]) == 0)
 		{
- 			set_property("louvreGoal", "7");
- 			set_property("louvreDesiredGoal", "7");
+			set_property("louvreGoal", "7");
+			set_property("louvreDesiredGoal", "7");
 			print("Spookyraven: Gallery", "blue");
 
 			sl_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
@@ -12412,7 +12429,7 @@ boolean L9_chasmBuild()
 
 		ccAdv(1, $location[The Smut Orc Logging Camp]);
 
- 		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
+		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
 		{
 			if(sl_my_path() != "G-Lover")
 			{
@@ -13713,7 +13730,7 @@ void print_header()
 		print("Still flyering: " + get_property("flyeredML"), "blue");
 	}
 	print("Encounter: " + combat_rate_modifier() + "   Exp Bonus: " + experience_bonus(), "blue");
-	print("Meat Drop: " + meat_drop_modifier() + "   Item Drop: " + item_drop_modifier(), "blue");
+	print("Meat Drop: " + meat_drop_modifier() + "	 Item Drop: " + item_drop_modifier(), "blue");
 	print("HP: " + my_hp() + "/" + my_maxhp() + ", MP: " + my_mp() + "/" + my_maxmp(), "blue");
 	print("Tummy: " + my_fullness() + "/" + fullness_limit() + " Liver: " + my_inebriety() + "/" + inebriety_limit() + " Spleen: " + my_spleen_use() + "/" + spleen_limit(), "blue");
 	print("ML: " + monster_level_adjustment() + " control: " + current_mcd(), "blue");
