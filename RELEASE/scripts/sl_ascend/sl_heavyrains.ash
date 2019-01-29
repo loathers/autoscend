@@ -41,7 +41,7 @@ boolean routineRainManHandler()
 		return false;
 	}
 #	if(my_rain() > (92 - (12 * my_daycount())))
-	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0) && (get_property("sl_nunsTrickReady") != "yes") && (get_property("sl_nunsTrickActive") != "yes"))
+	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0))
 	{
 		if(get_property("sl_mountainmen") == "")
 		{

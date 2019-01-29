@@ -566,24 +566,6 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if((enemy == $monster[dirty thieving brigand]) && !contains_text(combatState, "makeitrain") && (get_property("sl_nunsTrickReady") == "yes"))
-	{
-		if((my_rain() > rain_cost($skill[Make It Rain])) && sl_have_skill($skill[Make It Rain]))
-		{
-			set_property("sl_combatHandler", combatState + "(makeitrain)");
-			return "skill " + $skill[Make It Rain];
-		}
-	}
-
-	if((enemy == $monster[dirty thieving brigand]) && !contains_text(combatState, "makeitrain") && (my_rain() > 60))
-	{
-		if((my_rain() > rain_cost($skill[Make It Rain])) && sl_have_skill($skill[Make It Rain]))
-		{
-			set_property("sl_combatHandler", combatState + "(makeitrain)");
-			return "skill " + $skill[Make It Rain];
-		}
-	}
-
 	if(my_class() == $class[Seal Clubber])
 	{
 		if(enemy == $monster[Hellseal Pup])
@@ -968,12 +950,6 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if((enemy == $monster[dirty thieving brigand]) && !contains_text(combatState, "4dcamera") && (get_property("sl_nunsTrickActive") == "yes") && (item_amount($item[4-d Camera]) == 1) && (get_property("_cameraUsed").to_boolean() != true))
-	{
-		set_property("sl_combatHandler", combatState + "(4dcamera)");
-		return "item " + $item[4-d camera];
-	}
-
 	if(item_amount($item[Cocktail Napkin]) > 0)
 	{
 		if($monsters[Clingy Pirate (Female), Clingy Pirate (Male)] contains enemy)
@@ -999,10 +975,6 @@ string sl_combatHandler(int round, string opp, string text)
 			doYellow = true;
 		}
 		if((enemy == $monster[Quiet Healer]) && !possessEquipment($item[Amulet of Extreme Plot Significance]) && (get_property("sl_airship") == "finished"))
-		{
-			doYellow = true;
-		}
-		if((get_property("sl_nunsTrickGland") == "start") && (enemy == $monster[larval filthworm]))
 		{
 			doYellow = true;
 		}

@@ -7,7 +7,6 @@ void picky_initializeSettings()
 	{
 		set_property("sl_getStarKey", true);
 		set_property("sl_holeinthesky", true);
-		set_property("sl_nunsTrick", false);
 		set_property("sl_wandOfNagamar", true);
 	}
 }
