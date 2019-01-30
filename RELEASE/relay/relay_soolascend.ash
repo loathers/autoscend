@@ -1,6 +1,6 @@
-script "relay_cheeseascend.ash";
+script "relay_soolascend.ash";
 
-// Thanks to relay_bumcheekascend.ash for a starting point here.
+// Thanks to relay_cheeseascend.ash for a starting point here.
 
 record setting {
 	string name;
@@ -131,8 +131,8 @@ void generateTrackingData(string tracked, boolean hasSkill)
 void main()
 {
 	write_styles();
-	writeln("<html><head><title>cheeseascend (CHEDDAH) Crapulent Manager</title>");
-	writeln("</head><body><h1>cheeseascend (CHEDDAH) Manager</h1>");
+	writeln("<html><head><title>soolascend Crapulent Manager</title>");
+	writeln("</head><body><h1>soolascend Manager</h1>");
 
 	file_to_map("sl_ascend_settings.txt", s);
 
