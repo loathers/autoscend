@@ -37,6 +37,8 @@ If you really need a quick answer about something, feel free to kmail me in game
 Soolar the Second (#2463557), but be warned that not even I fully understand this code base
 at the moment, so I might not be able to help!
 
+You can also come discuss problems with the script on the [#sl\_ascend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3), or just discuss the script in general!
+
 ## So what IS fixed?
 
 I believe I have properly modified the script to no longer ever consider the pirate route, and to
@@ -44,6 +46,14 @@ always take the copperhead route. I also believe I have properly purged any atte
 nuns trick or the writing desk trick, since both of those were deleted from the game. I'm only
 90% sure about this though. If you find a situation where the script attempts to do pirates or
 the nuns trick or the writing desk trick for any reason, please let me know ASAP!
+
+## Other Contributors
+
+Thanks to the following people for their contributions via pull requests:
+
+Rinn (IGN: Epicgamer (#37195))
+
+jaspercb (IGN: Jeparo (#2246666))
 
 ## Special Thanks
 
