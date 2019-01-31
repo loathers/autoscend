@@ -738,7 +738,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatSTate, "(matingcall)") && sl_have_skill($skill[Gallapagosian Mating Call]) && (my_mp() >= mp_cost($skill[Gallapagosian Mating Call])))
 	{
-		if((enemy == $monster[pygmy shaman]) && (my_location() == $location[The Hidden Apartment Building]) && (have_effect($effect[Thrice-Cursed]) == 0) && (get_property("gallapagosMonster") != enemy))
+		if((enemy == $monster[pygmy shaman]) && (my_location() == $location[The Hidden Apartment Building]) && (have_effect($effect[Thrice-Cursed]) == 0) && (get_property("_gallapagosMonster") != enemy))
 		{
 			set_property("sl_combatHandler", combatState + "(matingcall)");
 			handleTracker(enemy, $skill[Gallapagosian Mating Call], "sl_sniffs");
@@ -778,7 +778,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "(matingcall)") && sl_have_skill($skill[Gallapagosian Mating Call]) && (my_mp() >= mp_cost($skill[Gallapagosian Mating Call])) && (!sl_have_skill($skill[Rain Man]) || is100FamiliarRun()))
 	{
-		if((enemy == $monster[Writing Desk]) && (my_location() == $location[The Haunted Library]) && (get_property("writingDesksDefeated").to_int() < 5) && (get_property("gallapagosMonster") != enemy))
+		if((enemy == $monster[Writing Desk]) && (my_location() == $location[The Haunted Library]) && (get_property("writingDesksDefeated").to_int() < 5) && (get_property("_gallapagosMonster") != enemy))
 		{
 			set_property("sl_combatHandler", combatState + "(matingcall)");
 			handleTracker(enemy, $skill[Gallapagosian Mating Call], "sl_sniffs");
@@ -821,13 +821,13 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "(matingcall)") && sl_have_skill($skill[Gallapagosian Mating Call]) && (my_mp() >= mp_cost($skill[Gallapagosian Mating Call])))
 	{
-		if(($monsters[cabinet of Dr. Limpieza, Dairy Goat, Morbid Skull, Pygmy Bowler, Pygmy Witch Surgeon, Quiet Healer, Tomb Rat] contains enemy) && (get_property("gallapagosMonster") != enemy))
+		if(($monsters[cabinet of Dr. Limpieza, Dairy Goat, Morbid Skull, Pygmy Bowler, Pygmy Witch Surgeon, Quiet Healer, Tomb Rat] contains enemy) && (get_property("_gallapagosMonster") != enemy))
 		{
 			set_property("sl_combatHandler", combatState + "(matingcall)");
 			handleTracker(enemy, $skill[Gallapagosian Mating Call], "sl_sniffs");
 			return "skill " + $skill[Gallapagosian Mating Call];
 		}
-		if(($monsters[Blooper] contains enemy) && (my_location() == $location[8-Bit Realm]) && (get_property("gallapagosMonster") != enemy))
+		if(($monsters[Blooper] contains enemy) && (my_location() == $location[8-Bit Realm]) && (get_property("_gallapagosMonster") != enemy))
 		{
 			set_property("sl_combatHandler", combatState + "(matingcall)");
 			handleTracker(enemy, $skill[Gallapagosian Mating Call], "sl_sniffs");
@@ -835,7 +835,7 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 		if($monsters[Bob Racecar, Racecar Bob] contains enemy)
 		{
-			if((get_property("gallapagosMonster") != $monster[Bob Racecar]) && (get_property("gallapagosMonster") != $monster[Racecar Bob]))
+			if((get_property("_gallapagosMonster") != $monster[Bob Racecar]) && (get_property("_gallapagosMonster") != $monster[Racecar Bob]))
 			{
 				set_property("sl_combatHandler", combatState + "(matingcall)");
 				handleTracker(enemy, $skill[Gallapagosian Mating Call], "sl_sniffs");

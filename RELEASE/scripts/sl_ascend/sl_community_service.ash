@@ -3852,7 +3852,7 @@ string cs_combatNormal(int round, string opp, string text)
 
 	if(((have_effect($effect[On The Trail]) < 40) || (contains_text(combatState, "(lattesniff)"))) && have_skill($skill[Gallapagosian Mating Call]) && (my_mp() >= mp_cost($skill[Gallapagosian Mating Call])) && !contains_text(combatState, "(matingcall)"))
 	{
-		if(($monster[Government Scientist] == enemy) && (get_property("gallapagosMonster") != enemy))
+		if(($monster[Government Scientist] == enemy) && (get_property("_gallapagosMonster") != enemy))
 		{
 			if((!contains_text(combatState, "weaksauce")) && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 72))
 			{
