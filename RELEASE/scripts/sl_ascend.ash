@@ -12172,6 +12172,30 @@ boolean L9_oilPeak()
 	return true;
 }
 
+boolean LX_loggingHatchet()
+{
+	if (!canadia_available())
+	{
+		return false;
+	}
+
+	if (available_amount($item[logging hatchet]) > 0)
+	{
+		return false;
+	}
+
+	if ($location[Camp Logging Camp].turns_spent > 0 ||
+		$location[Camp Logging Camp].combat_queue != "" ||
+		$location[Camp Logging Camp].noncombat_queue != "")
+	{
+		return false;
+	}
+
+	print("Acquiring the logging hatchet from Camp Logging Camp", "blue");
+	ccAdv(1, $location[Camp Logging Camp]);
+	return true;
+}
+
 boolean L9_chasmBuild()
 {
 	if((my_level() < 9) || (get_property("chasmBridgeProgress").to_int() >= 30))
@@ -12497,12 +12521,22 @@ boolean L11_shenCopperhead()
 		case $item[The First Pizza]:					goal = $location[Lair of the Ninja Snowmen];						break;
 		case $item[Murphy\'s Rancid Black Flag]:		goal = $location[The Castle in the Clouds in the Sky (Top Floor)];	break;
 		case $item[The Eye of the Stars]:				goal = $location[The Hole in the Sky];								break;
-		case $item[The Lacrosse Stick of Lacoronado]:	goal = $location[The Smut Orc Logging Camp];								break;
+		case $item[The Lacrosse Stick of Lacoronado]:	goal = $location[The Smut Orc Logging Camp];						break;
 		case $item[The Shield of Brook]:				goal = $location[The VERY Unquiet Garves];							break;
 		}
 		if(goal == $location[none])
 		{
 			abort("Could not parse Shen event");
+		}
+		if (goal == $location[The Smut Orc Logging Camp])
+		{
+			foreach it in $items[Loadstone, Logging Hatchet]
+			{
+				if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
+				{
+					equip(it);
+				}
+			}
 		}
 		return ccAdv(goal);
 	}
@@ -13810,6 +13844,7 @@ boolean doTasks()
 	}
 
 	if(L12_sonofaPrefix())				return true;
+	if(LX_loggingHatchet())				return true;
 	if(LX_guildUnlock())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_handleSpookyravenNecklace())	return true;
