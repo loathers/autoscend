@@ -14363,7 +14363,7 @@ void print_help_text()
 {
 	print_html("Thank you for using sl_ascend!");
 	print_html("If you need to configure the script, choose <b>soolascend</b> from the drop-down \"run script\" menu in your browser.");
-	print_html("If you encounter a bug or want to contribute, please open an issue at <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>");
+	print_html("If you want to contribute, please open an issue at <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>");
 }
 
 void main()
