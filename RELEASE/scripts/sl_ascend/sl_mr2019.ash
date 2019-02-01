@@ -85,9 +85,11 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	return true;
 }
 
-boolean sl_sausageEatEmUp()
+boolean sl_sausageEatEmUp(int maxToEat)
 {
-	if(item_amount($item[magical sausage]) == 0 || get_property("sl_saveMagicalSausage").to_boolean())
+	int sausage_reserve_size = 3;
+
+	if(item_amount($item[magical sausage]) <= sausage_reserve_size || get_property("sl_saveMagicalSausage").to_boolean())
 		return false;
 
 	if(sl_sausageLeftToday() <= 0)
@@ -98,7 +100,7 @@ boolean sl_sausageEatEmUp()
 	maximize("mp,-tie", false);
 	// I could optimize this a little more by eating more sausage at once if you have enough max mp...
 	// but meh.
-	while(item_amount($item[magical sausage]) > 0)
+	while(maxToEat > 0 && item_amount($item[magical sausage]) > sausage_reserve_size)
 	{
 		if(sl_sausageLeftToday() <= 0)
 			break;
@@ -111,6 +113,7 @@ boolean sl_sausageEatEmUp()
 			print("Somehow failed to eat a sausage! What??", "red");
 			return false;
 		}
+		maxToEat--;
 	}
 
 	// burn any mp that'll go away when equipment switches back
@@ -119,4 +122,8 @@ boolean sl_sausageEatEmUp()
 		cli_execute("burn " + mpToBurn);
 
 	return true;
+}
+
+boolean sl_sausageEatEmUp() {
+	return sl_sausageEatEmUp(sl_sausageLeftToday());
 }

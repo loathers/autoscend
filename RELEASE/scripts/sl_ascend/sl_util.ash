@@ -1966,6 +1966,12 @@ boolean acquireMP(int goal, boolean buyIt)
 		return false;
 	}
 
+	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
+	if (my_maxmp() - my_mp() > 300)
+	{
+		sl_sausageEatEmUp(1);
+	}
+
 	item[int] recovers = List($items[Holy Spring Water, Spirit Beer, Sacramental Wine, Magical Mystery Juice, Black Cherry Soda, Doc Galaktik\'s Invigorating Tonic, Carbonated Soy Milk, Natural Fennel Soda, Grogpagne, Bottle Of Monsieur Bubble, Tiny House, Marquis De Poivre Soda, Cloaca-Cola, Phonics Down, Psychokinetic Energy Blob]);
 	int at = 0;
 	while((at < count(recovers)) && (my_mp() < goal))

@@ -583,6 +583,7 @@ int sl_sausageMeatPasteNeededForSausage(int numSaus); // Defined in sl_ascend/sl
 int sl_sausageFightsToday(); // Defined in sl_ascend/sl_mr2019.ash
 boolean sl_sausageGrind(int numSaus); // Defined in sl_ascend/sl_mr2019.ash
 boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll); // Defined in sl_ascend/sl_mr2019.ash
+boolean sl_sausageEatEmUp(int maximumToEat); // Defined in sl_ascend/sl_mr2019.ash
 boolean sl_sausageEatEmUp(); // Defined in sl_ascend/sl_mr2019.ash
 boolean getSpaceJelly();									//Defined in sl_ascend/sl_mr2017.ash
 int horseCost();											//Defined in sl_ascend/sl_mr2017.ash
