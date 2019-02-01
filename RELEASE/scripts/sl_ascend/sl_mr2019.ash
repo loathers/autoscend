@@ -87,7 +87,16 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 
 boolean sl_sausageEatEmUp(int maxToEat)
 {
+	// if maxToEat is 0, eat as many sausages as possible while respecting the reserve
 	int sausage_reserve_size = 3;
+	if (maxToEat == 0)
+	{
+		maxToEat = sl_sausageLeftToday();
+	}
+	else
+	{
+		sausage_reserve_size = 0;
+	}
 
 	if(item_amount($item[magical sausage]) <= sausage_reserve_size || get_property("sl_saveMagicalSausage").to_boolean())
 		return false;
@@ -125,5 +134,5 @@ boolean sl_sausageEatEmUp(int maxToEat)
 }
 
 boolean sl_sausageEatEmUp() {
-	return sl_sausageEatEmUp(sl_sausageLeftToday());
+	return sl_sausageEatEmUp(0);
 }
