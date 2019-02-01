@@ -14361,20 +14361,13 @@ void sl_begin()
 
 void print_help_text()
 {
-	print_html("sl_ascend - an aspirationally automated ascension script");
-	print_html("");
-	print_html("<b>Usage</b>: This script is run with <b>sl_ascend</b> and does not currently support any arguments other than this help page.");
-	print_html("");
-	print_html("<b>Configuration Manager</b>: In the relay browser, on the top bar of the game page is a drop down menu that says <b>-run script-</b>. Click that and then select <b>soolascend</b> to in order to bring up the configuration options. This page will also let you safely abort the script as well as see some statistics.");
-	print_html("");
-	print_html("If something goes wrong: please post bug reports <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>.");
+	print_html("Thank you for using sl_ascend!");
+	print_html("If you need to configure the script, choose <b>soolascend</b> from the drop-down \"run script\" menu in your browser.");
+	print_html("If you encounter a bug or want to contribute, please open an issue at <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>");
 }
 
-void main(string arguments)
+void main()
 {
-	if (arguments.to_lower_case() == "help") {
-		print_help_text();
-		return;
-	}
+	print_help_text();
 	sl_begin(); 
 }
