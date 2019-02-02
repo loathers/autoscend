@@ -105,6 +105,10 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	set_property("nextAdventure", loc);
 	cli_execute("presool");
 #	handlePreAdventure(loc);
+	if(option == "")
+	{
+		option = "sl_combatHandler";
+	}
 	if(my_class() == $class[Ed])
 	{
 		ed_preAdv(1, loc, option);

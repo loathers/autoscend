@@ -460,10 +460,10 @@ boolean LA_cs_communityService()
 			if((internalQuestStatus("questG07Myst") == 1) || (internalQuestStatus("questG08Moxie") == 1) || (internalQuestStatus("questG09Muscle") == 1))
 			{
 				handleBarrelFullOfBarrels(true);
+				visit_url("guild.php?place=challenge");
 				if(knoll_available())
 				{
 					while(LX_bitchinMeatcar());
-					visit_url("guild.php?place=challenge");
 					visit_url("guild.php?place=paco");
 					visit_url("guild.php?place=paco");
 					visit_url("guild.php?place=paco");
@@ -1367,7 +1367,7 @@ boolean LA_cs_communityService()
 			{
 				if(do_cs_quest(30))
 				{
-					cli_execute("call kingcheese");
+					cli_execute("call kingsool");
 					return true;
 				}
 				else
@@ -2098,7 +2098,7 @@ boolean LA_cs_communityService()
 						}
 
 					}
-					else
+					else if ((item_amount($item[Vintage Smart Drink]) > 0) && !get_property("sl_saveVintage").to_boolean())
 					{
 						shrugAT($effect[Ode to Booze]);
 						buffMaintain($effect[Ode to Booze], 50, 1, 10);
@@ -2494,7 +2494,7 @@ boolean LA_cs_communityService()
 			}
 			asdonBuff($effect[Driving Stealthily]);
 
-			if(have_familiar($familiar[Disgeist]))
+			if(!is100FamiliarRun($familiar[Disgeist]) && have_familiar($familiar[Disgeist]))
 			{
 				# Need 37-41 pounds to save 3 turns. (probably 40)
 				# 74 does not save 6 but 79 does.
