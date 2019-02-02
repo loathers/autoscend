@@ -834,8 +834,8 @@ void handlePreAdventure(location place);					//Defined in presool.ash
 
 void handlePostAdventure();									//Defined in postsool.ash
 
-void handleKingLiberation();								//Defined in kingcheese.ash
-boolean pullPVPJunk();										//Defined in kingcheese.ash
+void handleKingLiberation();								//Defined in kingsool.ash
+boolean pullPVPJunk();										//Defined in kingsool.ash
 
 boolean sl_acquireKeycards();								//Defined in sl_ascend/sl_aftercore.ash
 boolean sl_aftercore();										//Defined in sl_ascend/sl_aftercore.ash

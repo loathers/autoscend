@@ -183,7 +183,7 @@ boolean settingFixer()
 
 	if(get_property("kingLiberatedScript") == "scripts/kingLiberated.ash")
 	{
-		set_property("kingLiberatedScript", "kingcheese.ash");
+		set_property("kingLiberatedScript", "kingsool.ash");
 	}
 	if(get_property("afterAdventureScript") == "scripts/postadventure.ash")
 	{
