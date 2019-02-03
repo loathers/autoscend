@@ -2507,19 +2507,6 @@ boolean sl_deleteMail(kmailObject msg)
 		return true;
 	}
 
-	if(contains_text(msg.message, "I have opted to let you know that I have chosen to run &lt;snapshot.ash&gt;.  Thanks for writing this script"))
-	{
-		return true;
-	}
-	if(contains_text(msg.message, "I have opted to let you know that I have chosen to run &lt;sl_ascend.ash&gt;.  Thanks for writing this script"))
-	{
-		return true;
-	}
-	if(contains_text(msg.message, "I have opted to let you know that I have chosen to run &lt;batfellow.ash&gt;.  Thanks for writing this script"))
-	{
-		return true;
-	}
-
 	if((msg.fromid == -1) && (contains_text(msg.message, "Your dedication to helping me fight crime in Gotpork city almost makes me forget about the fact that crime in Gotpork city cost me my parents.")))
 	{
 		return true;
