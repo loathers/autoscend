@@ -38,6 +38,38 @@ void equipBaselineGear()
 		if(it == $item[none] && item_str != "none")
 			abort('"' + item_str + '" does not properly convert to an item!');
 
+		slot eq_slot = $slot[none];
+		if(slot_str == "acc")
+			eq_slot = $slot[acc1];
+		else
+		{
+			eq_slot = slot_str.to_slot();
+			if(eq_slot == $slot[none])
+				abort('"' + eq_slot + '" could not be properly converted to a slot!');
+		}
+		// might as well make sure we can even equip it before looking at conditions
+		if(!sl_can_equip(it, eq_slot))
+			continue;
+		// also we need to have it for it to be equippable, obviously
+		if(item_amount(it) + equipped_amount(it) == 0)
+			continue;
+
+
+		string ignore = get_property("sl_ignoreCombat");
+		if(get_property("sl_beatenUpCount").to_int() >= 7)
+			ignore += "(ml)";
+		if(ignore != "")
+		{
+			if(contains_text(ignore, "(noncombat)") && (numeric_modifier(it, "Combat Rate") < 0))
+				continue;
+			if(contains_text(ignore, "(combat)") && (numeric_modifier(it, "Combat Rate") > 0))
+				continue;
+			if(contains_text(ignore, "(ml)") && (numeric_modifier(it, "Monster Level") > 0))
+				continue;
+			if(contains_text(ignore, "(seal)") && (eq_slot == $slot[weapon]) && (item_type(it) != "club"))
+				continue;
+		}
+
 		if(conds != "")
 		{
 			string [int] conditions = conds.split_string(";");
@@ -104,22 +136,7 @@ void equipBaselineGear()
 			if(failure)
 				continue;
 		}
-		// item did not fail its conditions (if any), we should check if we have it and can use it
-		if(item_amount(it) + equipped_amount(it) == 0)
-			continue;
-
-		slot eq_slot = $slot[none];
-		if(slot_str == "acc")
-			eq_slot = $slot[acc1];
-		else
-		{
-			eq_slot = slot_str.to_slot();
-			if(eq_slot == $slot[none])
-				abort('"' + eq_slot + '" could not be properly converted to a slot!');
-		}
-		if(!sl_can_equip(it, eq_slot))
-			continue;
-
+		// The item is approved! In to the list it goes.
 		equipment[eq_slot][equipment[eq_slot].count()] = it;
 	}
 
@@ -1071,24 +1088,27 @@ void equipBaselineHolster()
 
 void ensureSealClubs()
 {
-	set_property("sl_ignoreCombat", get_property("sl_ignoreCombat") + "(seal)");
+	string ignore = get_property("sl_ignoreCombat");
+	set_property("sl_ignoreCombat", ignore + "(seal)");
 	equipBaseline();
-	set_property("sl_ignoreCombat", "");
+	set_property("sl_ignoreCombat", ignore);
 }
 
 
 void removeNonCombat()
 {
-	set_property("sl_ignoreCombat", get_property("sl_ignoreCombat") + "(noncombat)");
+	string ignore = get_property("sl_ignoreCombat");
+	set_property("sl_ignoreCombat", ignore + "(noncombat)");
 	equipBaseline();
-	set_property("sl_ignoreCombat", "");
+	set_property("sl_ignoreCombat", ignore);
 }
 
 void removeCombat()
 {
-	set_property("sl_ignoreCombat", get_property("sl_ignoreCombat") + "(combat)");
+	string ignore = get_property("sl_ignoreCombat");
+	set_property("sl_ignoreCombat", ignore + "(combat)");
 	equipBaseline();
-	set_property("sl_ignoreCombat", "");
+	set_property("sl_ignoreCombat", ignore);
 }
 
 void equipRollover()

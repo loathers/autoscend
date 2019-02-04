@@ -4898,7 +4898,14 @@ location solveDelayZone()
 
 boolean sl_is_valid(item it)
 {
-	return glover_usable(it.to_string()) && is_unrestricted(it);
+	if(!glover_usable(it))
+	{
+		if(it != $item[Protonic Accelerator Pack])
+			return false;
+		else if(!expectGhostReport() && !haveGhostReport())
+			return false;
+	}
+	return is_unrestricted(it);
 }
 
 boolean sl_is_valid(familiar fam)
@@ -4947,5 +4954,5 @@ boolean sl_can_equip(item it, slot s)
 	if(it.item_type() == "chefstaff" && (!(sl_have_skill($skill[Spirit of Rigatoni]) || (my_class() == $class[Sauceror] && equipped_amount($item[special sauce glove]) > 0) || my_class() == $class[Avatar of Jarlsberg]) || s != $slot[weapon]))
 		return false;
 
-	return can_equip(it);
+	return sl_is_valid(it) && can_equip(it);
 }
