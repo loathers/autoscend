@@ -497,7 +497,7 @@ boolean LA_cs_communityService()
 				}
 				if(loc.turns_spent > 8)
 				{
-					abort("Could not find the <guild quest goal>. Could not sudo it. Find it and re-run.");
+					abort("Could not find the guild quest goal. Could not sudo it. Find it and re-run.");
 				}
 
 				buffMaintain($effect[Musk of the Moose], 10, 1, 1);
