@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19023;
+since r19083;
 /***
 	svn checkout https://svn.code.sf.net/p/ccascend/code/sl_ascend
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
@@ -12172,6 +12172,30 @@ boolean L9_oilPeak()
 	return true;
 }
 
+boolean LX_loggingHatchet()
+{
+	if (!canadia_available())
+	{
+		return false;
+	}
+
+	if (available_amount($item[logging hatchet]) > 0)
+	{
+		return false;
+	}
+
+	if ($location[Camp Logging Camp].turns_spent > 0 ||
+		$location[Camp Logging Camp].combat_queue != "" ||
+		$location[Camp Logging Camp].noncombat_queue != "")
+	{
+		return false;
+	}
+
+	print("Acquiring the logging hatchet from Camp Logging Camp", "blue");
+	ccAdv(1, $location[Camp Logging Camp]);
+	return true;
+}
+
 boolean L9_chasmBuild()
 {
 	if((my_level() < 9) || (get_property("chasmBridgeProgress").to_int() >= 30))
@@ -12497,12 +12521,22 @@ boolean L11_shenCopperhead()
 		case $item[The First Pizza]:					goal = $location[Lair of the Ninja Snowmen];						break;
 		case $item[Murphy\'s Rancid Black Flag]:		goal = $location[The Castle in the Clouds in the Sky (Top Floor)];	break;
 		case $item[The Eye of the Stars]:				goal = $location[The Hole in the Sky];								break;
-		case $item[The Lacrosse Stick of Lacoronado]:	goal = $location[The Smut Orc Logging Camp];								break;
+		case $item[The Lacrosse Stick of Lacoronado]:	goal = $location[The Smut Orc Logging Camp];						break;
 		case $item[The Shield of Brook]:				goal = $location[The VERY Unquiet Garves];							break;
 		}
 		if(goal == $location[none])
 		{
 			abort("Could not parse Shen event");
+		}
+		if (goal == $location[The Smut Orc Logging Camp])
+		{
+			foreach it in $items[Loadstone, Logging Hatchet]
+			{
+				if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
+				{
+					equip(it);
+				}
+			}
 		}
 		return ccAdv(goal);
 	}
@@ -13810,6 +13844,7 @@ boolean doTasks()
 	}
 
 	if(L12_sonofaPrefix())				return true;
+	if(LX_loggingHatchet())				return true;
 	if(LX_guildUnlock())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_handleSpookyravenNecklace())	return true;
@@ -14153,8 +14188,15 @@ void sl_begin()
 	}
 }
 
-void main()
+void print_help_text()
 {
-	sl_begin(); 
+	print_html("Thank you for using sl_ascend!");
+	print_html("If you need to configure the script, choose <b>soolascend</b> from the drop-down \"run script\" menu in your browser.");
+	print_html("If you want to contribute, please open an issue at <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>");
 }
 
+void main()
+{
+	print_help_text();
+	sl_begin(); 
+}

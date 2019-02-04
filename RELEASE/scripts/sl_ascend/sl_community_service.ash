@@ -460,10 +460,10 @@ boolean LA_cs_communityService()
 			if((internalQuestStatus("questG07Myst") == 1) || (internalQuestStatus("questG08Moxie") == 1) || (internalQuestStatus("questG09Muscle") == 1))
 			{
 				handleBarrelFullOfBarrels(true);
+				visit_url("guild.php?place=challenge");
 				if(knoll_available())
 				{
 					while(LX_bitchinMeatcar());
-					visit_url("guild.php?place=challenge");
 					visit_url("guild.php?place=paco");
 					visit_url("guild.php?place=paco");
 					visit_url("guild.php?place=paco");
@@ -1367,7 +1367,7 @@ boolean LA_cs_communityService()
 			{
 				if(do_cs_quest(30))
 				{
-					cli_execute("call kingcheese");
+					cli_execute("call kingsool");
 					return true;
 				}
 				else
@@ -2098,7 +2098,7 @@ boolean LA_cs_communityService()
 						}
 
 					}
-					else
+					else if ((item_amount($item[Vintage Smart Drink]) > 0) && !get_property("sl_saveVintage").to_boolean())
 					{
 						shrugAT($effect[Ode to Booze]);
 						buffMaintain($effect[Ode to Booze], 50, 1, 10);
@@ -2494,7 +2494,7 @@ boolean LA_cs_communityService()
 			}
 			asdonBuff($effect[Driving Stealthily]);
 
-			if(have_familiar($familiar[Disgeist]))
+			if(!is100FamiliarRun($familiar[Disgeist]) && have_familiar($familiar[Disgeist]))
 			{
 				# Need 37-41 pounds to save 3 turns. (probably 40)
 				# 74 does not save 6 but 79 does.
@@ -3852,7 +3852,7 @@ string cs_combatNormal(int round, string opp, string text)
 
 	if(((have_effect($effect[On The Trail]) < 40) || (contains_text(combatState, "(lattesniff)"))) && have_skill($skill[Gallapagosian Mating Call]) && (my_mp() >= mp_cost($skill[Gallapagosian Mating Call])) && !contains_text(combatState, "(matingcall)"))
 	{
-		if(($monster[Government Scientist] == enemy) && (get_property("gallapagosMonster") != enemy))
+		if(($monster[Government Scientist] == enemy) && (get_property("_gallapagosMonster") != enemy))
 		{
 			if((!contains_text(combatState, "weaksauce")) && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 72))
 			{
