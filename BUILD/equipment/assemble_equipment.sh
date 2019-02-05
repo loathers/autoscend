@@ -34,6 +34,10 @@ HEADER="# EDITTING THIS FILE DIRECTLY IS NOT RECOMMENDED
 ## prop
 ### data: <propname>=<value>
 ### Only simple comparison is available at the moment
+## expectghostreport
+### data: Doesn't matter, but put something so I don't have to support dataless conditions
+### True when you expect a protonic ghost report
+### Pretty much just for the protonic accelerator pack
 # An item can be listed multiple times (presumably with different conditionals)
 # First item found that is available, can be equipped, and meets its conditions (if any) will be used
 

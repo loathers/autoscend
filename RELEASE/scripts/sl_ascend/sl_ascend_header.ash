@@ -206,6 +206,7 @@ boolean dailyEvents();
 
 //Do we have a some item either equipped or in inventory (not closet or hagnk\'s.
 boolean possessEquipment(item equipment);		//Defined in sl_ascend/sl_equipment.ash
+int equipmentAmount(item equipment); // Defined in sl_ascend/sl_equipment.ash
 
 //Do Bjorn stuff
 boolean handleBjornify(familiar fam);			//Defined in sl_ascend/sl_equipment.ash
@@ -513,17 +514,6 @@ int elemental_resist(element goal);							//Defined in sl_ascend/sl_util.ash
 float elemental_resist_value(int resistance);				//Defined in sl_ascend/sl_util.ash
 void ensureSealClubs();										//Defined in sl_ascend/sl_equipment.ash
 void equipBaseline();										//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineAccessories();							//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineAcc1();									//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineAcc2();									//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineAcc3();									//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineBack();									//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineFam();									//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineHat();									//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineHolster();								//Defined in sl_ascend/sl_equipment.ash
-void equipBaselinePants();									//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineShirt();									//Defined in sl_ascend/sl_equipment.ash
-void equipBaselineWeapon();									//Defined in sl_ascend/sl_equipment.ash
 void equipRollover();										//Defined in sl_ascend/sl_equipment.ash
 boolean eudora_available();									//Defined in sl_ascend/sl_eudora.ash
 item eudora_current();										//Defined in sl_ascend/sl_eudora.ash
@@ -621,7 +611,6 @@ boolean handleFaxMonster(monster enemy, boolean fightIt);	//Defined in sl_ascend
 boolean handleFaxMonster(monster enemy, boolean fightIt, string option);//Defined in sl_ascend/sl_clan.ash
 boolean handleFaxMonster(monster enemy, string option);		//Defined in sl_ascend/sl_clan.ash
 void handleJar();											//Defined in sl_ascend.ash
-void handleOffHand();										//Defined in sl_ascend/sl_equipment.ash
 int handlePulls(int day);									//Defined in sl_ascend.ash
 boolean handleSealAncient();								//Defined in sl_ascend/sl_util.ash
 boolean handleSealAncient(string option);					//Defined in sl_ascend/sl_util.ash

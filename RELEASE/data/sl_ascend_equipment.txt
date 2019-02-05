@@ -32,6 +32,10 @@
 ## prop
 ### data: <propname>=<value>
 ### Only simple comparison is available at the moment
+## expectghostreport
+### data: Doesn't matter, but put something so I don't have to support dataless conditions
+### True when you expect a protonic ghost report
+### Pretty much just for the protonic accelerator pack
 # An item can be listed multiple times (presumably with different conditionals)
 # First item found that is available, can be equipped, and meets its conditions (if any) will be used
 
@@ -94,24 +98,25 @@ acc	52	Vampire Collar
 acc	53	Jaunty Feather
 
 # Back items
-back	0	LOV Epaulettes	mainstat:Mysticality
-back	1	Protonic Accelerator Pack
-back	2	Camp Scout Backpack
-back	3	Buddy Bjorn
-back	4	Polyester Parachute
-back	5	Makeshift Cape
-back	6	Misty Robe
-back	7	Misty Cape
-back	8	Misty Cloak
-back	9	Frozen Turtle Shell
-back	10	Giant Gym Membership Card
-back	11	Fiberglass Frock
-back	12	Gabardine Gunnysack
-back	13	Oil Shell
-back	14	Pillow Shell
-back	15	Black Cloak
-back	16	Whatsit-Covered Turtle Shell
-back	17	Barskin Cloak
+back	0	Protonic Accelerator Pack	expectghostreport:true
+back	1	LOV Epaulettes	mainstat:Mysticality
+back	2	Protonic Accelerator Pack
+back	3	Camp Scout Backpack
+back	4	Buddy Bjorn
+back	5	Polyester Parachute
+back	6	Makeshift Cape
+back	7	Misty Robe
+back	8	Misty Cape
+back	9	Misty Cloak
+back	10	Frozen Turtle Shell
+back	11	Giant Gym Membership Card
+back	12	Fiberglass Frock
+back	13	Gabardine Gunnysack
+back	14	Oil Shell
+back	15	Pillow Shell
+back	16	Black Cloak
+back	17	Whatsit-Covered Turtle Shell
+back	18	Barskin Cloak
 
 # Familiar gear
 familiar	0	miniature life preserver	path:Heavy Rains
