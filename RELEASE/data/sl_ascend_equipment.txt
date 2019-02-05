@@ -44,58 +44,60 @@
 # Accessories! You get 3 of 'em, how fun!
 acc	0	Over-The-Shoulder Folder Holder	path:KOLHS
 acc	1	World's Best Adventurer Sash
-acc	2	Kremlin's Greatest Briefcase	!prop:_kgbTranquilizerDartUses=3
-acc	3	Over-The-Shoulder Folder Holder
-acc	4	LOV Earrings
-acc	5	Xiblaxian Holo-Wrist-Puter
-acc	6	Your Cowboy Boots
-acc	7	Battle Broom
-acc	8	Barrel Hoop Earring
-acc	9	Nouveau nosering
-acc	10	Brutal brogues
-acc	11	Draftsman's driving gloves
-acc	12	Caveman Dan's Favorite Rock
-acc	13	Gumshoes
-acc	14	Codpiece
-acc	15	Hand In Glove
-acc	16	Astral Bracer
-acc	17	Astral Ring
-acc	18	Mr. Cheeng's Spectacles
-acc	19	Bram's Choker
-acc	20	Astral Belt
-acc	21	Astral Mask
-acc	22	Numberwang
-acc	23	Kremlin's Greatest Briefcase
-acc	24	Sphygmayomanometer
-acc	25	Ring Of The Skeleton Lord
-acc	26	Gold Detective Badge
-acc	27	Silver Detective Badge
-acc	28	Ghost of a Necklace
-acc	29	Bronze Detective Badge
-acc	30	Badge Of Authority
-acc	31	Xiblaxian Holo-Wrist-Puter
-acc	32	Time-Twitching Toolbelt
-acc	33	Mr. Accessory Jr.
-acc	34	Iron Beta of Industry
-acc	35	Perfume-Soaked Bandana
-acc	36	Wicker Kickers
-acc	37	Compression Stocking
-acc	38	Glow-In-The-Dark Necklace
-acc	39	Pirate Fledges
-acc	40	Plastic Detective Badge
-acc	41	Jangly Bracelet
-acc	42	Glowing Red Eye
-acc	43	Jolly Roger Charrrm Bracelet
-acc	44	Grumpy Old Man Charrrm Bracelet
-acc	45	Bonerdagon Necklace
-acc	46	Batskin Belt
-acc	47	Garish Pinky Ring
-acc	48	Ring Of Telling Skeletons What To Do
-acc	49	Imp Unity Ring
-acc	50	Infernal Insoles
-acc	51	Stuffed Shoulder Parrot
-acc	52	Vampire Collar
-acc	53	Jaunty Feather
+acc	2	Lil' Doctor&trade; bag	!prop:_chestXRayUsed=3
+acc	3	Kremlin's Greatest Briefcase	!prop:_kgbTranquilizerDartUses=3
+acc	4	Lil' Doctor&trade; bag	!prop:_reflexHammerUsed=3
+acc	5	Over-The-Shoulder Folder Holder
+acc	6	LOV Earrings
+acc	7	Xiblaxian Holo-Wrist-Puter
+acc	8	Your Cowboy Boots
+acc	9	Battle Broom
+acc	10	Barrel Hoop Earring
+acc	11	Nouveau nosering
+acc	12	Brutal brogues
+acc	13	Draftsman's driving gloves
+acc	14	Caveman Dan's Favorite Rock
+acc	15	Gumshoes
+acc	16	Codpiece
+acc	17	Hand In Glove
+acc	18	Astral Bracer
+acc	19	Astral Ring
+acc	20	Mr. Cheeng's Spectacles
+acc	21	Bram's Choker
+acc	22	Astral Belt
+acc	23	Astral Mask
+acc	24	Numberwang
+acc	25	Kremlin's Greatest Briefcase
+acc	26	Sphygmayomanometer
+acc	27	Ring Of The Skeleton Lord
+acc	28	Gold Detective Badge
+acc	29	Silver Detective Badge
+acc	30	Ghost of a Necklace
+acc	31	Bronze Detective Badge
+acc	32	Badge Of Authority
+acc	33	Xiblaxian Holo-Wrist-Puter
+acc	34	Time-Twitching Toolbelt
+acc	35	Mr. Accessory Jr.
+acc	36	Iron Beta of Industry
+acc	37	Perfume-Soaked Bandana
+acc	38	Wicker Kickers
+acc	39	Compression Stocking
+acc	40	Glow-In-The-Dark Necklace
+acc	41	Pirate Fledges
+acc	42	Plastic Detective Badge
+acc	43	Jangly Bracelet
+acc	44	Jolly Roger Charrrm Bracelet
+acc	45	Grumpy Old Man Charrrm Bracelet
+acc	46	Bonerdagon Necklace
+acc	47	Batskin Belt
+acc	48	Garish Pinky Ring
+acc	49	Ring Of Telling Skeletons What To Do
+acc	50	Imp Unity Ring
+acc	51	Infernal Insoles
+acc	52	Glowing Red Eye
+acc	53	Stuffed Shoulder Parrot
+acc	54	Vampire Collar
+acc	55	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true
@@ -240,14 +242,14 @@ off-hand	3	Basaltamander Buckler	mainstat:Mysticality
 off-hand	4	Barrel Lid
 off-hand	5	Jarlsberg's pan (Cosmic portal mode)	class:Avatar of Jarlsberg
 off-hand	6	Jarlsberg's pan	mainstat:Mysticality
-off-hand	7	Tesla's Electroplated Beans	skill:Beancannon
-off-hand	8	Mixed Garbanzos and Chickpeas	skill:Beancannon
-off-hand	9	Hellfire Spicy Beans	skill:Beancannon
-off-hand	10	Frigid Northern Beans	skill:Beancannon
-off-hand	11	World's Blackest-Eyed Peas	skill:Beancannon
-off-hand	12	Trader Olaf's Exotic Stinkbeans	skill:Beancannon
-off-hand	13	Pork 'n' Pork 'n' Pork 'n' Beans	skill:Beancannon
-off-hand	14	Heimz Fortified Kidney Beans	skill:Beancannon
+off-hand	7	Tesla's Electroplated Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	8	Mixed Garbanzos and Chickpeas	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	9	Hellfire Spicy Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	10	Frigid Northern Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	11	World's Blackest-Eyed Peas	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	12	Trader Olaf's Exotic Stinkbeans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	13	Pork 'n' Pork 'n' Pork 'n' Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	14	Heimz Fortified Kidney Beans	skill:Beancannon;!prop:_beancannonUses=5
 off-hand	15	Ouija Board, Ouija Board	class:Turtle Tamer
 off-hand	16	Kramco Sausage-O-Matic&trade;
 off-hand	17	Operation Patriot Shield

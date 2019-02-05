@@ -1267,6 +1267,15 @@ string sl_combatHandler(int round, string opp, string text)
 			}
 		}
 
+		if(!contains_text(combatState, "chest x-ray") && equipped_amount($item[Lil' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
+		{
+			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
+			{
+				set_property("sl_combatHandler", combatState + "(chest x-ray)");
+				handleTracker(enemy, $skill[Chest X-Ray], "sl_instakill");
+				return "skill " + $skill[Chest X-Ray];
+			}
+		}
 		if(!contains_text(combatState, "shattering punch") && sl_have_skill($skill[Shattering Punch]) && ((my_mp() / 2) > mp_cost($skill[Shattering Punch])) && (get_property("_shatteringPunchUsed").to_int() < 3))
 		{
 			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
@@ -2170,7 +2179,7 @@ string findBanisher(int round, string opp, string text)
 		}
 	}
 
-	foreach act in $skills[Banishing Shout, Asdon Martin: Spring-Loaded Front Bumper, Talk About Politics, Batter Up!, Thunder Clap, Curse of Vacation, Breathe Out, Snokebomb, KGB Tranquilizer Dart, Beancannon]
+	foreach act in $skills[Banishing Shout, Asdon Martin: Spring-Loaded Front Bumper, Talk About Politics, Batter Up!, Thunder Clap, Curse of Vacation, Breathe Out, Snokebomb, Reflex Hammer, KGB Tranquilizer Dart, Beancannon]
 	{
 		if((!contains_text(get_property("sl_gremlinBanishes"), act)) && sl_have_skill(act) && (my_mp() >= mp_cost(act)) && (my_thunder() >= thunder_cost(act)) && (get_fuel() >= fuel_cost(act)))
 		{
@@ -2200,6 +2209,10 @@ string findBanisher(int round, string opp, string text)
 				continue;
 			}
 			if((act == $skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() >= 3))
+			{
+				continue;
+			}
+			if((act == $skill[Reflex Hammer]) && (get_property("_reflexHammerUsed").to_int() >= 3))
 			{
 				continue;
 			}

@@ -98,7 +98,7 @@ void equipBaselineGear()
 							this_failed = true;
 						break;
 					case "prop":
-						matcher m2 = create_matcher("([^=])=(.+)", condition_data);
+						matcher m2 = create_matcher("([^=]+)=(.+)", condition_data);
 						if(!m2.find())
 							abort('"' + condition_data + '" is not a proper prop condition format!');
 						if(get_property(m2.group(1)) != m2.group(2))
@@ -356,6 +356,12 @@ boolean handleBjornify(familiar fam)
 void equipBaseline()
 {
 	equipBaselineGear();
+
+	if(equipped_amount($item[Lil' Doctor&trade; bag]) > 0)
+	{
+		// Take doctor cases because a good reason not to hasn't occurred to me yet...
+		set_property("choiceAdventure1340", "1");
+	}
 
 	if(my_daycount() == 1)
 	{
