@@ -4526,7 +4526,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Nigh-Invincible]:				useItem = $item[pixel star];					break;
 	case $effect[Notably Lovely]:				useItem = $item[Confiscated Love Note];			break;
 	case $effect[Obscuri Tea]:					useItem = $item[cuppa Obscuri tea];				break;
-	case $effect[Ode to Booze]:					useSkill = $skill[The Ode to Booze];			break;
+	case $effect[Ode to Booze]:					shrugAT($effect[Ode to Booze]);
+												useSkill = $skill[The Ode to Booze];			break;
 	case $effect[Of Course It Looks Great]:		useSkill = $skill[Check Hair];					break;
 	case $effect[Oiled Skin]:					useItem = $item[Skin Oil];						break;
 	case $effect[Oiled-Up]:						useItem = $item[Pec Oil];						break;

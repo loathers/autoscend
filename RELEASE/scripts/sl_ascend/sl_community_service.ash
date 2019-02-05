@@ -253,7 +253,6 @@ boolean LA_cs_communityService()
 				{
 					doRest();
 				}
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, 1);
 				#cli_execute("drink lucky lindy");
 				drinkSpeakeasyDrink($item[Lucky Lindy]);
@@ -296,7 +295,6 @@ boolean LA_cs_communityService()
 					{
 						doRest();
 					}
-					shrugAT($effect[Ode to Booze]);
 					buffMaintain($effect[Ode to Booze], 50, 1, (inebriety_left() - 9));
 					if(hippy_stone_broken())
 					{
@@ -313,7 +311,6 @@ boolean LA_cs_communityService()
 					{
 						doRest();
 					}
-					shrugAT($effect[Ode to Booze]);
 					buffMaintain($effect[Ode to Booze], 50, 1, (inebriety_left() - 9));
 					drink(min(item_amount($item[Sacramento Wine]), (inebriety_left() - 9)), $item[Sacramento Wine]);
 				}
@@ -323,7 +320,6 @@ boolean LA_cs_communityService()
 					{
 						doRest();
 					}
-					shrugAT($effect[Ode to Booze]);
 					buffMaintain($effect[Ode to Booze], 50, 1, 4);
 					drink(1, $item[Ice Island Long Tea]);
 				}
@@ -333,7 +329,6 @@ boolean LA_cs_communityService()
 					{
 						doRest();
 					}
-					shrugAT($effect[Ode to Booze]);
 					buffMaintain($effect[Ode to Booze], 50, 1, (inebriety_left() - 9));
 					drink(min(item_amount($item[Splendid Martini]), (inebriety_left() - 9)), $item[Splendid Martini]);
 				}
@@ -343,7 +338,6 @@ boolean LA_cs_communityService()
 					{
 						doRest();
 					}
-					shrugAT($effect[Ode to Booze]);
 					buffMaintain($effect[Ode to Booze], 50, 1, (inebriety_left() - 9));
 					drink(min(item_amount($item[Meadeorite]), (inebriety_left() - 9)), $item[Meadeorite]);
 				}
@@ -1220,7 +1214,6 @@ boolean LA_cs_communityService()
 				}
 				if((item_amount($item[Astral Pilsner]) > 0) && (inebriety_left() > 0) && (my_level() >= 11))
 				{
-					shrugAT($effect[Ode to Booze]);
 					buffMaintain($effect[Ode to Booze], 50, 1, min(inebriety_left(), item_amount($item[Astral Pilsner])));
 					drink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
 				}
@@ -1269,7 +1262,6 @@ boolean LA_cs_communityService()
 					abort("We have an emergency margarita but it seems really dumb to drink it right now (consider closeting the margarita and set sl_saveMargarita = true)...");
 				}
 				buffMaintain($effect[Simmering], 0, 1, 1);
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, 1);
 				if((inebriety_left() == 0) && have_familiar($familiar[Stooper]))
 				{
@@ -1288,7 +1280,6 @@ boolean LA_cs_communityService()
 			}
 			else
 			{
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, 5);
 				put_closet(item_amount($item[Emergency Margarita]), $item[Emergency Margarita]);
 				if((item_amount($item[Hacked Gibson]) == 0) && (inebriety_left() == 0))
@@ -1547,7 +1538,6 @@ boolean LA_cs_communityService()
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (get_cs_questCost(curQuest) < 20))
 			{
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, 2);
 				cli_execute("drink 1 bee's knees");
 			}
@@ -1703,7 +1693,6 @@ boolean LA_cs_communityService()
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, 2);
 				cli_execute("drink 1 bee's knees");
 			}
@@ -1802,7 +1791,6 @@ boolean LA_cs_communityService()
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, 2);
 				cli_execute("drink 1 bee's knees");
 			}
@@ -1920,7 +1908,6 @@ boolean LA_cs_communityService()
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, 2);
 				cli_execute("drink 1 bee's knees");
 			}
@@ -2066,7 +2053,6 @@ boolean LA_cs_communityService()
 
 					if((my_adventures() + extraAdv) > needCost)
 					{
-						shrugAT($effect[Ode to Booze]);
 						if((item_amount($item[Sacramento Wine]) >= 4) && (inebriety_left() >= 4))
 						{
 							buffMaintain($effect[Ode to Booze], 50, 1, 4);
@@ -2100,7 +2086,6 @@ boolean LA_cs_communityService()
 					}
 					else if ((item_amount($item[Vintage Smart Drink]) > 0) && !get_property("sl_saveVintage").to_boolean())
 					{
-						shrugAT($effect[Ode to Booze]);
 						buffMaintain($effect[Ode to Booze], 50, 1, 10);
 						drink(1, $item[Vintage Smart Drink]);
 					}
@@ -2175,7 +2160,6 @@ boolean LA_cs_communityService()
 			//This needs to be cleaned up.
 			if(((my_inebriety() == 5) || (my_inebriety() == 11)) && (have_effect($effect[In A Lather]) == 0))
 			{
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, 2);
 				cli_execute("drink sockdollager");
 			}
@@ -2244,7 +2228,6 @@ boolean LA_cs_communityService()
 
 			if((item_amount($item[Astral Pilsner]) > 0) && (inebriety_left() > 0) && (my_adventures() < get_cs_questCost(curQuest)))
 			{
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, min(inebriety_left(), item_amount($item[Astral Pilsner])));
 				drink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
 			}
@@ -2722,7 +2705,6 @@ boolean LA_cs_communityService()
 
 			if((item_amount($item[Astral Pilsner]) > 0) && (inebriety_left() > 0) && (my_adventures() < get_cs_questCost(curQuest)))
 			{
-				shrugAT($effect[Ode to Booze]);
 				buffMaintain($effect[Ode to Booze], 50, 1, min(inebriety_left(), item_amount($item[Astral Pilsner])));
 				drink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
 			}
