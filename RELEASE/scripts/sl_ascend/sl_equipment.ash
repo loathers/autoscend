@@ -32,7 +32,7 @@ void equipBaselineGear()
 	if(!file_to_map("sl_ascend_equipment.txt", equipment_text))
 		print("Could not load sl_ascend_equipment.txt. This is bad!", "red");
 	item [slot] [int] equipment;
-	foreach slot_str, pri, item_str, conds in equipment_text
+	boolean considerGearOption(string item_str, string slot_str, string conds)
 	{
 		item it = to_item(item_str);
 		if(it == $item[none] && item_str != "none")
@@ -49,11 +49,10 @@ void equipBaselineGear()
 		}
 		// might as well make sure we can even equip it before looking at conditions
 		if(!sl_can_equip(it, eq_slot))
-			continue;
+			return false;
 		// also we need to have it for it to be equippable, obviously
 		if(item_amount(it) + equipped_amount(it) == 0)
-			continue;
-
+			return false;
 
 		string ignore = get_property("sl_ignoreCombat");
 		if(get_property("sl_beatenUpCount").to_int() >= 7)
@@ -61,13 +60,13 @@ void equipBaselineGear()
 		if(ignore != "")
 		{
 			if(contains_text(ignore, "(noncombat)") && (numeric_modifier(it, "Combat Rate") < 0))
-				continue;
+				return false;
 			if(contains_text(ignore, "(combat)") && (numeric_modifier(it, "Combat Rate") > 0))
-				continue;
+				return false;
 			if(contains_text(ignore, "(ml)") && (numeric_modifier(it, "Monster Level") > 0))
-				continue;
+				return false;
 			if(contains_text(ignore, "(seal)") && (eq_slot == $slot[weapon]) && (item_type(it) != "club"))
-				continue;
+				return false;
 		}
 
 		if(conds != "")
@@ -134,10 +133,27 @@ void equipBaselineGear()
 				}
 			}
 			if(failure)
-				continue;
+				return false;
 		}
 		// The item is approved! In to the list it goes.
 		equipment[eq_slot][equipment[eq_slot].count()] = it;
+		return true;
+	}
+	boolean [string] ignore_slots;
+	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc]
+	{
+		string override = get_property("sl_equipment_override_" + slot_str);
+		if(override == "")
+			continue;
+		ignore_slots[slot_str] = true;
+		string [int] options = override.split_string(";");
+		foreach i,item_str in options
+			considerGearOption(item_str, slot_str, "");
+	}
+	foreach slot_str, pri, item_str, conds in equipment_text
+	{
+		if(!ignore_slots[slot_str])
+			considerGearOption(item_str, slot_str, conds);
 	}
 
 	item [slot] gear_to_equip;

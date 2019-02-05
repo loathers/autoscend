@@ -41,13 +41,11 @@
 41	sl_equipment_override_weapon	string	ANY	A semicolon separated list of overrides for the weapon slot.
 42	sl_equipment_override_off-hand	string	ANY	A semicolon separated list of overrides for the off-hand slot.
 43	sl_equipment_override_pants	string	ANY	A semicolon separated list of overrides for the pants slot.
-44	sl_equipment_override_acc1	string	ANY	A semicolon separated list of overrides for the acc1 slot.
-45	sl_equipment_override_acc2	string	ANY	A semicolon separated list of overrides for the acc2 slot.
-46	sl_equipment_override_acc3	string	ANY	A semicolon separated list of overrides for the acc3 slot.
-47	sl_hideAdultery	boolean	ANY	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
-48	sl_slowSteelOrgan	boolean	ANY	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
-49	sl_saveSausage	boolean	ANY	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
-50	sl_saveVintage	boolean	ANY	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
-51	sl_saveMagicalSausage	boolean	ANY	When true, don't eat magical sausage, so you can save them up for aftercore.
-52	sl_beta_test	boolean	ANY	Occasionally I might need to make big changes, but not want to do so without some broader testing. If you're a kind, generous soul, you can test these features by setting this to true! sl_beta_test will be mentioned in the change logs whenever there is something to test, and mentioned again when that feature stops being a beta feature.
+44	sl_equipment_override_acc	string	ANY	A semicolon separated list of overrides for the acc slots.
+45	sl_hideAdultery	boolean	ANY	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
+46	sl_slowSteelOrgan	boolean	ANY	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
+47	sl_saveSausage	boolean	ANY	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
+48	sl_saveVintage	boolean	ANY	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
+49	sl_saveMagicalSausage	boolean	ANY	When true, don't eat magical sausage, so you can save them up for aftercore.
+50	sl_beta_test	boolean	ANY	Occasionally I might need to make big changes, but not want to do so without some broader testing. If you're a kind, generous soul, you can test these features by setting this to true! sl_beta_test will be mentioned in the change logs whenever there is something to test, and mentioned again when that feature stops being a beta feature.
 
