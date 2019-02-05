@@ -890,8 +890,8 @@ boolean sl_voteMonster(boolean freeMon, location loc, string option)
 
 boolean fightClubNap()
 {
-    if(!is_unrestricted($item[Boxing Day care package]))
-    {
+	if(!is_unrestricted($item[Boxing Day care package]))
+	{
 		return false;
 	}
 	if(!get_property("daycareOpen").to_boolean())
@@ -956,8 +956,8 @@ boolean fightClubSpa(effect eff)
 
 boolean fightClubSpa(int option)
 {
-    if(!is_unrestricted($item[Boxing Day care package]))
-    {
+	if(!is_unrestricted($item[Boxing Day care package]))
+	{
 		return false;
 	}
 	if(!get_property("daycareOpen").to_boolean())
@@ -985,7 +985,6 @@ boolean fightClubSpa(int option)
 	{
 		abort("fightClubtracking failed");
 	}
-
 
 	//Do I need to leave as well, I think I do...
 	page = visit_url("choice.php?pwd=&whichchoice=1334&option=4");
