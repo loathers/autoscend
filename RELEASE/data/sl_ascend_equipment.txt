@@ -111,6 +111,7 @@ back	13	Oil Shell
 back	14	Pillow Shell
 back	15	Black Cloak
 back	16	Whatsit-Covered Turtle Shell
+back	17	Barskin Cloak
 
 # Familiar gear
 familiar	0	miniature life preserver	path:Heavy Rains
@@ -341,11 +342,10 @@ shirt	28	White Snakeskin Duster
 shirt	29	KoL Con 13 T-Shirt
 shirt	30	Bronze Breastplate
 shirt	31	Clownskin Harness
-shirt	32	Harem Girl T-Shirt
+shirt	32	shoe ad T-shirt
 shirt	33	Thinknerd T-Shirt
-shirt	34	Barskin Cloak
-shirt	35	Professor What T-Shirt
-shirt	36	shoe ad T-shirt
+shirt	34	Professor What T-Shirt
+shirt	35	Harem Girl T-Shirt
 
 # Weapons (Many are repeated in off-hands, but not all)
 # Look ma, no hands!
@@ -414,41 +414,50 @@ weapon	49	Thor's Pliers
 weapon	50	The Nuge's favorite crossbow	mainstat:Moxie
 # Some more stuff. It's okay, I guess
 weapon	51	The Jokester's Gun	mainstat:Moxie
-weapon	52	Frigid Derringer	mainstat:Moxie
-weapon	53	witty rapier	mainstat:Mysticality
-weapon	54	Chopsticks	mainstat:Mysticality
-weapon	55	Oversized Pizza Cutter	mainstat:Mysticality
-weapon	56	Eggbeater	mainstat:Mysticality
-weapon	57	Corn Holder	mainstat:Mysticality
-weapon	58	Dishrag	mainstat:Mysticality
+weapon	52	world's smallest violin	mainstat:Moxie
+weapon	53	Frigid Derringer	mainstat:Moxie
+weapon	54	witty rapier	mainstat:Mysticality
+weapon	55	Chopsticks	mainstat:Mysticality
+weapon	56	Oversized Pizza Cutter	mainstat:Mysticality
+weapon	57	Eggbeater	mainstat:Mysticality
+weapon	58	Corn Holder	mainstat:Mysticality
+weapon	59	Dishrag	mainstat:Mysticality
+# Good knives
+weapon	60	black blade	mainstat:Moxie;skill:Tricky Knifework
+weapon	61	batblade	mainstat:Moxie;skill:Tricky Knifework
+weapon	62	soap knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	63	Saturday Night Special	mainstat:Moxie
 # Knives that are fine
-weapon	59	soap knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	60	candy knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	61	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
-weapon	62	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
+weapon	64	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
+weapon	65	candy knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	66	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
+weapon	67	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
+weapon	68	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
-weapon	63	finger cymbals	mainstat:Moxie
+weapon	69	finger cymbals	mainstat:Moxie
 # The worst knife, but it's still a knife
-weapon	64	boot knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	70	boot knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	71	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
 # It's not good, but at least it's a ranged weapon that takes one hand
-weapon	65	disco ball	mainstat:Moxie
-weapon	66	stolen accordion	class:Accordion Thief
+weapon	72	disco ball	mainstat:Moxie
+weapon	73	stolen accordion	class:Accordion Thief
 # Some melee weapons
-weapon	67	Rusty Piece Of Rebar
-weapon	68	Octopus's Spade
-weapon	69	Oversized Pipe
-weapon	70	Ghast Iron Cleaver
-weapon	71	Short-Handled Mop
-weapon	72	Spectral Axe
-weapon	73	Antique Machete
+weapon	74	Rusty Piece Of Rebar
+weapon	75	Octopus's Spade
+weapon	76	Oversized Pipe
+weapon	77	Ghast Iron Cleaver
+weapon	78	Short-Handled Mop
+weapon	79	Spectral Axe
+weapon	80	Antique Machete
+weapon	81	red-hot sausage fork
 # Almost absolute garbage
-weapon	74	Skeleton Bone
-weapon	75	Corn Holder
-weapon	76	Knob Goblin Scimitar
-weapon	77	Knob Goblin Tongs
+weapon	82	Skeleton Bone
+weapon	83	Corn Holder
+weapon	84	Knob Goblin Scimitar
+weapon	85	Knob Goblin Tongs
 # Absolute garbage, but better than nothing, probably?
-weapon	78	Turtle Totem	class:Turtle Tamer
-weapon	79	Saucepan	class:Sauceror
-weapon	80	Pasta Spoon	class:Pastamancer
+weapon	86	Turtle Totem	class:Turtle Tamer
+weapon	87	Saucepan	class:Sauceror
+weapon	88	Pasta Spoon	class:Pastamancer
 # I probably missed some stuff from the old weapon handling but c'est la vie
 

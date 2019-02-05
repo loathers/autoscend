@@ -65,6 +65,7 @@ Thor's Pliers
 The Nuge's favorite crossbow	mainstat:Moxie
 # Some more stuff. It's okay, I guess
 The Jokester's Gun	mainstat:Moxie
+world's smallest violin	mainstat:Moxie
 Frigid Derringer	mainstat:Moxie
 witty rapier	mainstat:Mysticality
 Chopsticks	mainstat:Mysticality
@@ -72,15 +73,22 @@ Oversized Pizza Cutter	mainstat:Mysticality
 Eggbeater	mainstat:Mysticality
 Corn Holder	mainstat:Mysticality
 Dishrag	mainstat:Mysticality
-# Knives that are fine
+# Good knives
+black blade	mainstat:Moxie;skill:Tricky Knifework
+batblade	mainstat:Moxie;skill:Tricky Knifework
 soap knife	mainstat:Moxie;skill:Tricky Knifework
+Saturday Night Special	mainstat:Moxie
+# Knives that are fine
+half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
 candy knife	mainstat:Moxie;skill:Tricky Knifework
 sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
+sabre teeth	mainstat:Moxie;skill:Tricky Knifework
 broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
 finger cymbals	mainstat:Moxie
 # The worst knife, but it's still a knife
 boot knife	mainstat:Moxie;skill:Tricky Knifework
+asparagus knife	mainstat:Moxie;skill:Tricky Knifework
 # It's not good, but at least it's a ranged weapon that takes one hand
 disco ball	mainstat:Moxie
 stolen accordion	class:Accordion Thief
@@ -92,6 +100,7 @@ Ghast Iron Cleaver
 Short-Handled Mop
 Spectral Axe
 Antique Machete
+red-hot sausage fork
 # Almost absolute garbage
 Skeleton Bone
 Corn Holder
