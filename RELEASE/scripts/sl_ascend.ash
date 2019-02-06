@@ -12538,7 +12538,7 @@ boolean L11_shenCopperhead()
 				}
 			}
 		}
-		if(!zone_isAvailable(goal)
+		if(!zone_isAvailable(goal))
 			return false;
 		return ccAdv(goal);
 	}
