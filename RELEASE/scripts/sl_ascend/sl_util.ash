@@ -4444,7 +4444,6 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Hardened Sweatshirt]:			useSkill = $skill[Magic Sweat];					break;
 	case $effect[Hardly Poisoned At All]:		useSkill = $skill[Disco Nap];					break;
 	case $effect[Healthy Blue Glow]:			useItem = $item[gold star];						break;
-	case $effect[Heavy Petting]:				useItem = $item[Knob Goblin Pet-Buffing Spray];	break;
 	case $effect[Heightened Senses]:			useItem = $item[airborne mutagen];				break;
 	case $effect[Hide of Sobek]:				useSkill = $skill[Hide of Sobek];				break;
 	case $effect[High Colognic]:				useItem = $item[Musk Turtle];					break;
@@ -4548,7 +4547,6 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Patent Sallowness]:			useItem = $item[Patent Sallowness Tonic];		break;
 	case $effect[Patience of the Tortoise]:		useSkill = $skill[Patience of the Tortoise];	break;
 	case $effect[Patient Smile]:				useSkill = $skill[Patient Smile];				break;
-	case $effect[Peeled Eyeballs]:				useItem = $item[Knob Goblin Eyedrops];			break;
 	case $effect[Penne Fedora]:					useSkill = $skill[none];						break;
 	case $effect[Peppermint Bite]:				useItem = $item[Crimbo Peppermint Bark];		break;
 	case $effect[Peppermint Twisted]:			useItem = $item[Peppermint Twist];				break;
@@ -4720,7 +4718,6 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Vitali Tea]:					useItem = $item[cuppa Vitali tea];				break;
 	case $effect[Walberg\'s Dim Bulb]:			useSkill = $skill[Walberg\'s Dim Bulb];			break;
 	case $effect[WAKKA WAKKA WAKKA]:			useItem = $item[Yellow Pixel Potion];			break;
-	case $effect[Wasabi Sinuses]:				useItem = $item[Knob Goblin Nasal Spray];		break;
 	case $effect[Wasabi With You]:				useItem = $item[Wasabi Marble Soda];			break;
 	case $effect[Well-Oiled]:					useItem = $item[Oil of Parrrlay];				break;
 	case $effect[Well-Swabbed Ear]:				useItem = $item[Swabbie&trade; Swab];			break;
