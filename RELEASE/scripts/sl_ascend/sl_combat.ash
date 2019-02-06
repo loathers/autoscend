@@ -1051,6 +1051,7 @@ string sl_combatHandler(int round, string opp, string text)
 		if(dohug)
 		{
 			set_property("sl_combatHandler", combatState + "(hugpocket)");
+			handleTracker(enemy, $skill[Hugs and Kisses!], "sl_otherstuff");
 			return "skill " + $skill[Hugs and Kisses!];
 		}
 	}

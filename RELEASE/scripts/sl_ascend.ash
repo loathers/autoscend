@@ -179,9 +179,9 @@ void initializeSettings()
 	set_property("sl_modernzmobiecount", "");
 	set_property("sl_mosquito", "");
 	set_property("sl_nuns", "");
-
 	set_property("sl_oilpeak", "");
 	set_property("sl_orchard", "");
+	set_property("sl_otherstuff", "");
 	set_property("sl_palindome", "");
 	set_property("sl_phatloot", "");
 	set_property("sl_prewar", "");

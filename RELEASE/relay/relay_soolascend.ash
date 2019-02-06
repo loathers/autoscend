@@ -302,6 +302,9 @@ void main()
 		writeln("<h2>One Crazy Random Summer Fun-o-meter!</h2>");
 		generateTrackingData("sl_funTracker", true);
 	}
+	writeln("<h2>Other Stuff</h2>");
+	generateTrackingData("sl_otherstuff", true);
+
 
 	writeln("<h2>Info</h2>");
 	writeln("Ascension: " + my_ascensions() + "<br>");
