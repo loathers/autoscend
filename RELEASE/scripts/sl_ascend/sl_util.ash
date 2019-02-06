@@ -4342,6 +4342,9 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Busy Bein\' Delicious]:		useItem = $item[Crimbo fudge];					break;
 	case $effect[Butt-Rock Hair]:				useItem = $item[Hair Spray];					break;
 	case $effect[Carlweather\'s Cantata of Confrontation]:useSkill = $skill[Carlweather\'s Cantata of Confrontation];break;
+	case $effect[Carol Of The Bulls]: useSkill = $skill[Carol Of The Bulls]; break;
+	case $effect[Carol Of The Hells]: useSkill = $skill[Carol Of The Hells]; break;
+	case $effect[Carol Of The Thrills]: useSkill = $skill[Carol Of The Thrills]; break;
 	case $effect[Cautious Prowl]:				useSkill = $skill[Walk: Cautious Prowl];		break;
 	case $effect[Celestial Camouflage]:			useItem = $item[Celestial Squid Ink];			break;
 	case $effect[Celestial Saltiness]:			useItem = $item[Celestial Au Jus];				break;
