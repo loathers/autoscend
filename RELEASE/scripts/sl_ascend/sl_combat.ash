@@ -1029,9 +1029,26 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(!contains_text(combatState, "hugpocket") && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10))
+	if(!contains_text(combatState, "hugpocket") && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
 	{
+		boolean dohug = false;
 		if($monsters[Filthworm Drone, Filthworm Royal Guard, Larval Filthworm] contains enemy)
+		{
+			dohug = true;
+		}
+
+		if(get_property("_xoHugsUsed").to_int() < 8)
+		{
+			// snatch a wig if we're lucky
+			if(enemy == $monster[Burly Sidekick] && !possessEquipment($item[Mohawk wig]))
+				dohug = true;
+
+			// snatch a hedge trimmer if we're lucky
+			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
+				dohug = true;
+		}
+
+		if(dohug)
 		{
 			set_property("sl_combatHandler", combatState + "(hugpocket)");
 			return "skill " + $skill[Hugs and Kisses!];
