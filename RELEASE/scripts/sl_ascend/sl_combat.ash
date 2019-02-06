@@ -1113,48 +1113,36 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(sl_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10) && (my_mp() > mp_cost($skill[Macrometeorite])) && (sl_my_path() != "G-Lover"))
 	{
+		boolean dometeor = false;
 		if((enemy == $monster[Banshee Librarian]) && (item_amount($item[Killing Jar]) == 0))
 		{
-			return "skill " + $skill[Macrometeorite];
+			dometeor = true;
 		}
 		if((enemy == $monster[Beefy Bodyguard Bat]) && ($location[The Boss Bat\'s Lair].turns_spent >= 4) && (my_location() == $location[The Boss Bat\'s Lair]))
 		{
-			return "skill " + $skill[Macrometeorite];
+			dometeor = true;
 		}
 		if((enemy == $monster[Government Agent]) && (my_location() == $location[Sonofa Beach]))
 		{
-			return "skill " + $skill[Macrometeorite];
+			dometeor = true;
 		}
 		if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) == 0))
 		{
-			return "skill " + $skill[Macrometeorite];
+			dometeor = true;
 		}
 		if($monsters[Bookbat, Craven Carven Raven, Drunk Goat, Knight In White Satin, Knob Goblin Harem Guard, Mad Wino, Plaid Ghost, Possessed Laundry Press, Sabre-Toothed Goat, Senile Lihc, Skeletal Sommelier, Slick Lihc, White Chocolate Golem] contains enemy)
 		{
-			return "skill " + $skill[Macrometeorite];
+			dometeor = true;
 		}
 		if((enemy == $monster[Stone Temple Pirate]) && possessEquipment($item[Eyepatch]))
 		{
-			return "skill " + $skill[Macrometeorite];
+			dometeor = true;
 		}
-		if(my_location() == $location[The Obligatory Pirate\'s Cove])
+
+		if(dometeor)
 		{
-			if($monsters[Shady Pirate, Shifty Pirate] contains enemy)
-			{
-				return "skill " + $skill[Macrometeorite];
-			}
-			if((enemy == $monster[Sassy Pirate]) && possessEquipment($item[Swashbuckling Pants]))
-			{
-				return "skill " + $skill[Macrometeorite];
-			}
-			if((enemy == $monster[Smarmy Pirate]) && possessEquipment($item[Eyepatch]))
-			{
-				return "skill " + $skill[Macrometeorite];
-			}
-			if((enemy == $monster[Swarthy Pirate]) && possessEquipment($item[Stuffed Shoulder Parrot]))
-			{
-				return "skill " + $skill[Macrometeorite];
-			}
+			handleTracker(enemy, $skill[Macrometeorite], "sl_otherstuff");
+			return "skill " + $skill[Macrometeorite];
 		}
 	}
 
