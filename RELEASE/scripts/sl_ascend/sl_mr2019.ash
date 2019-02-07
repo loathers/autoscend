@@ -106,6 +106,7 @@ boolean sl_sausageEatEmUp(int maxToEat)
 
 	print("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
 	int originalMp = my_maxmp();
+	cli_execute("checkpoint");
 	maximize("mp,-tie", false);
 	// I could optimize this a little more by eating more sausage at once if you have enough max mp...
 	// but meh.
@@ -129,6 +130,7 @@ boolean sl_sausageEatEmUp(int maxToEat)
 	int mpToBurn = max(my_mp() - originalMp, 0);
 	if(mpToBurn > 0)
 		cli_execute("burn " + mpToBurn);
+	cli_execute("outfit checkpoint");
 
 	return true;
 }
