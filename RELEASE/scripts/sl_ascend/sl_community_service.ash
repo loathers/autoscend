@@ -2624,7 +2624,6 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 11, 1, 1);
 			buffMaintain($effect[Steely-Eyed Squint], 101, 1, 1);
 			buffMaintain($effect[Heightened Senses], 0, 1, 1);
-			buffMaintain($effect[Peeled Eyeballs], 0, 1, 1);
 			asdonBuff($effect[Driving Observantly]);
 
 			buffMaintain($effect[Spice Haze], 250, 1, 1);
