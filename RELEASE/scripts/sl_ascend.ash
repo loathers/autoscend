@@ -1838,11 +1838,11 @@ void initializeDay(int day)
 				buyUpTo(1, $item[Toy Accordion]);
 			}
 
-			if(item_amount($item[Turtle Totem]) == 0)
+			if(!possessEquipment($item[Turtle Totem]))
 			{
 				acquireGumItem($item[Turtle Totem]);
 			}
-			if(item_amount($item[Saucepan]) == 0)
+			if(!possessEquipment($item[Saucepan]))
 			{
 				acquireGumItem($item[Saucepan]);
 			}
@@ -7040,12 +7040,12 @@ boolean L12_gremlinStart()
 
 	if((!possessEquipment($item[Ouija Board\, Ouija Board])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 	{
-		if(item_amount($item[Turtle Totem]) == 0)
+		if(!possessEquipment($item[Turtle Totem]))
 		{
 			acquireGumItem($item[Turtle Totem]);
 		}
 		ccCraft("smith", 1, $item[lump of Brituminous coal], $item[turtle totem]);
-		if(item_amount($item[Turtle Totem]) == 0)
+		if(!possessEquipment($item[Turtle Totem]))
 		{
 			acquireGumItem($item[Turtle Totem]);
 		}

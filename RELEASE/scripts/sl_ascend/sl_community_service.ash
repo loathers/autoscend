@@ -3218,7 +3218,7 @@ void cs_initializeDay(int day)
 			{
 				cli_execute("garden pick");
 			}
-			if(item_amount($item[Saucepan]) == 0)
+			if(!possessEquipment($item[Saucepan]))
 			{
 				acquireGumItem($item[Saucepan]);
 			}
