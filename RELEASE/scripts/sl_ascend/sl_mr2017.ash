@@ -289,6 +289,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	}
 
 	#string temp = visit_url("place.php?whichplace=town_wrong&action=townwrong_tunnel");
+	set_location($location[The Tunnel of L.O.V.E.]);
 	cli_execute("presool");
 	temp = visit_url("place.php?whichplace=town_wrong&action=townwrong_tunnel");
 	if(contains_text(temp, "Come back tomorrow!"))
@@ -298,8 +299,6 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 		temp = visit_url("choice.php?pwd=&whichchoice=1222&option=2");
 		return false;
 	}
-
-	set_location($location[The Tunnel of L.O.V.E.]);
 
 	temp = visit_url("choice.php?pwd=&whichchoice=1222&option=1");
 
