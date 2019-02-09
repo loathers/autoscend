@@ -67,7 +67,7 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 			}
 			if(i == 1)
 			{
-				print("Never mind, we can't even afford to make a single sausage :(", "brown");
+				print("Never mind, we'd be too poor after making a single sausage :(", "brown");
 				return false;
 			}
 			numSaus = i - 1;
