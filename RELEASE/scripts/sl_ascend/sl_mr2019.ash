@@ -54,11 +54,14 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	int sausMade = get_property("_sausagesMade").to_int();
 	int pastesNeeded = 0;
 	int pastesAvail = item_amount($item[meat paste]);
+	int meatToSave = 5000;
+	if(sl_my_path() == "Community Service")
+		meatToSave = 500;
 	for i from 1 to numSaus
 	{
 		int sausNum = i + sausMade;
 		int pastesForThisSaus = sl_sausageMeatPasteNeededForSausage(sausNum);
-		if((pastesNeeded + pastesForThisSaus - pastesAvail) * 10 + 6000 > my_meat())
+		if((pastesNeeded + pastesForThisSaus - pastesAvail) * 10 + meatToSave > my_meat())
 		{
 			if(failIfCantMakeAll)
 			{
