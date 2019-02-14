@@ -134,10 +134,6 @@ void main()
 	writeln("</head><body><h1>soolascend Manager</h1>");
 
 	file_to_map("sl_ascend_settings.txt", s);
-	foreach type,x,set in s
-	{
-		print(type + ", " + x + ", " + set.name + ", " + set.description + ", " + set.type);
-	}
 
 	boolean dickstab = false;
 	writeln("<form action='' method='post'>");
