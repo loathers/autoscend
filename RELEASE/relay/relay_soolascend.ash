@@ -5,12 +5,10 @@ script "relay_soolascend.ash";
 record setting {
 	string name;
 	string type;
-	string condition;
 	string description;
-	string value;
 };
 
-setting[int] s;
+setting[string][int] s;
 string[string] fields;
 boolean success;
 
@@ -40,24 +38,25 @@ void write_styles()
 }
 
 
-void handleSetting(int x)
+void handleSetting(string type, int x)
 {
 	string color = "white";
-	switch(s[x].condition)
+	switch(type)
 	{
-	case "ANY":		color = "#00ffff";		break;
-	case "PRE":		color = "#ffff00";		break;
-	case "POST":	color = "#00ff00";		break;
-	case "ACTION":	color = "#af6fbf";		break;
-	case "SHARING":	color = "#ff6644";		break;
+	case "any":		color = "#00ffff";		break;
+	case "pre":		color = "#ffff00";		break;
+	case "post":	color = "#00ff00";		break;
+	case "action":	color = "#af6fbf";		break;
+	case "sharing":	color = "#ff6644";		break;
 	default:		color = "#ffffff";		break;
 	}
 
-	switch(s[x].type)
+	setting set = s[type][x];
+	switch(set.type)
 	{
 	case "boolean":
-		write("<tr bgcolor="+color+"><td align=center>"+s[x].name+"</td><td align=center><select name='"+s[x].name+"'>");
-		if(get_property(s[x].name) == "true")
+		write("<tr bgcolor="+color+"><td align=center>"+set.name+"</td><td align=center><select name='"+set.name+"'>");
+		if(get_property(set.name) == "true")
 		{
 			write("<option value='true' selected='selected'>true</option><option value='false'>false</option>");
 		}
@@ -65,13 +64,13 @@ void handleSetting(int x)
 		{
 			write("<option value='true'>true</option><option value='false' selected='selected'>false</option>");
 		}
-		writeln("</td><td>"+s[x].description+"</td></tr>");
+		writeln("</td><td>"+set.description+"</td></tr>");
 		break;
 	default:
-		writeln("<tr bgcolor="+color+"><td align=center>"+s[x].name+"</td><td><input type='text' name='"+s[x].name+"' value='"+get_property(s[x].name)+"' /></td><td>"+s[x].description+"</td></tr>");
+		writeln("<tr bgcolor="+color+"><td align=center>"+set.name+"</td><td><input type='text' name='"+set.name+"' value='"+get_property(set.name)+"' /></td><td>"+set.description+"</td></tr>");
 		break;
 	}
-	writeln("<input type='hidden' name='"+s[x].name+"_didchange' value='"+get_property(s[x].name)+"' />");
+	writeln("<input type='hidden' name='"+set.name+"_didchange' value='"+get_property(set.name)+"' />");
 }
 
 void generateTrackingData(string tracked, boolean hasSkill)
@@ -135,6 +134,10 @@ void main()
 	writeln("</head><body><h1>soolascend Manager</h1>");
 
 	file_to_map("sl_ascend_settings.txt", s);
+	foreach type,x,set in s
+	{
+		print(type + ", " + x + ", " + set.name + ", " + set.description + ", " + set.type);
+	}
 
 	boolean dickstab = false;
 	writeln("<form action='' method='post'>");
@@ -212,47 +215,27 @@ void main()
 
 	writeln("<form action='' method='post'>");
 	writeln("<table><tr><th width=20%>Setting</th><th width=20%>Value</th><th width=60%>Description</th></tr>");
-	foreach x in s
+	foreach x in s["any"]
 	{
-		if(s[x].condition != "ANY")
-		{
-			continue;
-		}
-		handleSetting(x);
+		handleSetting("any", x);
 	}
-	foreach x in s
+	foreach x in s["pre"]
 	{
-		if(s[x].condition != "PRE")
-		{
-			continue;
-		}
-		handleSetting(x);
+		handleSetting("pre", x);
 	}
-	foreach x in s
+	foreach x in s["post"]
 	{
-		if(s[x].condition != "POST")
-		{
-			continue;
-		}
-		handleSetting(x);
+		handleSetting("post", x);
 	}
-	foreach x in s
+	foreach x in s["action"]
 	{
-		if(s[x].condition != "ACTION")
-		{
-			continue;
-		}
-		handleSetting(x);
+		handleSetting("action", x);
 	}
-	foreach x in s
+	foreach x in s["sharing"]
 	{
-		if(s[x].condition != "SHARING")
-		{
-			continue;
-		}
 		if(get_property("sl_allowSharingData").to_boolean())
 		{
-			handleSetting(x);
+			handleSetting("sharing", x);
 		}
 	}
 	writeln("<tr><td align=center colspan='3'><input type='submit' name='' value='Save Changes'/></td></tr></table></form>");
