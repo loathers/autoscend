@@ -7227,7 +7227,8 @@ boolean L12_sonofaBeach()
 				retval = sl_voteMonster(true, $location[Sonofa Beach], "");
 				set_property("sl_combatDirective", "");
 			}
-			return retval;
+			if(retval || get_property("cc_gremlins") != "finished")
+				return retval;
 		}
 	}
 
