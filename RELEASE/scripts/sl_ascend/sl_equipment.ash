@@ -357,12 +357,6 @@ void equipBaseline()
 {
 	equipBaselineGear();
 
-	if(equipped_amount($item[Lil' Doctor&trade; bag]) > 0)
-	{
-		// Take doctor cases because a good reason not to hasn't occurred to me yet...
-		set_property("choiceAdventure1340", "1");
-	}
-
 	if(my_daycount() == 1)
 	{
 		if(have_familiar($familiar[grimstone golem]))

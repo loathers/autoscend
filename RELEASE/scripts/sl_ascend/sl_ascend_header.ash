@@ -889,6 +889,8 @@ boolean canGroundhog(location loc);							//Defined in sl_ascend/sl_groundhog.as
 boolean groundhogAbort(location loc);						//Defined in sl_ascend/sl_groundhog.ash
 boolean LM_groundhog();										//Defined in sl_ascend/sl_groundhog.ash
 
+void bat_initializeSettings(); // Defined in sl_ascend/sl_batpath.ash
+
 //Record from sl_ascend/sl_zone.ash
 record generic_t
 {
