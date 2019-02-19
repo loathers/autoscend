@@ -2847,7 +2847,7 @@ boolean sl_change_mcd(int mcd)
 		best = 11;
 	}
 
-	int handicap = 10 - get_property("sl_beatenUpCount").to_int();
+	int handicap = best - get_property("sl_beatenUpCount").to_int();
 	if(my_level() >= 13)
 	{
 		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("sl_ignoreFlyer").to_boolean())
