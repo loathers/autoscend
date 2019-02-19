@@ -255,6 +255,7 @@ void initializeSettings()
 	digimon_initializeSettings();
 	majora_initializeSettings();
 	glover_initializeSettings();
+	bat_initializeSettings();
 }
 
 boolean handleFamiliar(string type)
