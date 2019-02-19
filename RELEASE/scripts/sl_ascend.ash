@@ -47,6 +47,7 @@ import <sl_ascend/sl_groundhog.ash>
 import <sl_ascend/sl_digimon.ash>
 import <sl_ascend/sl_majora.ash>
 import <sl_ascend/sl_glover.ash>
+import <sl_ascend/sl_batpath.ash>
 import <sl_ascend/sl_monsterparts.ash>
 import <sl_ascend/sl_theSource.ash>
 import <sl_ascend/sl_optionals.ash>
@@ -1797,6 +1798,7 @@ void initializeDay(int day)
 	bond_initializeDay(day);
 	digimon_initializeDay(day);
 	majora_initializeDay(day);
+	glover_initializeDay(day);
 
 	if(day == 1)
 	{

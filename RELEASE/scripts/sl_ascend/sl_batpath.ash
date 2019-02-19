@@ -14,7 +14,7 @@ void bat_initializeSettings()
 	}
 }
 
-bat_maxHPCost(skill sk)
+int bat_maxHPCost(skill sk)
 {
 	switch(sk)
 	{
@@ -40,7 +40,7 @@ bat_maxHPCost(skill sk)
 		case $skill[Sanguine Magnetism]:
 		case $skill[Perceive Soul]:
 		case $skill[Sinister Charm]:
-		case $skill[Batlick Reflexes]:
+		case $skill[Batlike Reflexes]:
 		case $skill[Spot Weakness]:
 			return 15;
 		case $skill[Savage Bite]:

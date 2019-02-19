@@ -890,6 +890,9 @@ boolean groundhogAbort(location loc);						//Defined in sl_ascend/sl_groundhog.a
 boolean LM_groundhog();										//Defined in sl_ascend/sl_groundhog.ash
 
 void bat_initializeSettings(); // Defined in sl_ascend/sl_batpath.ash
+int bat_maxHPCost(skill sk);
+skill [int] bat_pickSkills();
+boolean bat_shouldEnsorcel(monster m);
 
 //Record from sl_ascend/sl_zone.ash
 record generic_t
