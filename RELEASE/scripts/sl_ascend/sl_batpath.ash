@@ -80,7 +80,15 @@ boolean bat_shouldEnsorcel(monster m)
 	if(my_class() != $class[Vampyre] || !sl_have_skill($skill[Ensorcel]))
 		return false;
 
-	// need a way to determine what the current ensorcelee is first...
+	// until we can track ensorcel uses, just don't...
+	// I know I could track them myself, but it's gotta be coming to mafia natively eventually...
+	return false;
+
+	// until we have a way to tell what we already have as an ensorcelee, just ensorcel goblins
+	// to help avoid getting beaten up...
+	if(m.monster_phylum() == $phylum[goblin] && !isFreeMonster(m))
+		return true;
+
 	return false;
 }
 
@@ -135,7 +143,7 @@ boolean bat_consumption()
 	return true;
 }
 
-boolean bat_skillValid(sk)
+boolean bat_skillValid(skill sk)
 {
 	if($skills[Savage Bite, Crush, Baleful Howl, Ceaseless Snarl] contains sk && have_effect($effect[Bats Form]) + have_effect($effect[Mist Form]) > 0)
 		return false;
