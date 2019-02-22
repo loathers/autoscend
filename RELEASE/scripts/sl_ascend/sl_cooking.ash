@@ -557,6 +557,10 @@ void consumeStuff()
 	{
 		return;
 	}
+	if(bat_consumption())
+	{
+		return;
+	}
 	if(get_property("kingLiberated") != false)
 	{
 		return;

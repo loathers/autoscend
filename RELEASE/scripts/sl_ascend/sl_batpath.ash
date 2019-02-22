@@ -57,9 +57,20 @@ int bat_maxHPCost(skill sk)
 }
 
 // to be called when already in Torpor
-skill [int] bat_pickSkills()
+skill [int] bat_pickSkills(int hpLeft)
 {
+	int costSoFar = 0;
+	int baseHP = 20 * get_property("darkGyfftePoints").to_int() + my_basestat($stat[Muscle]) + 23;
 	skill [int] picks;
+
+	boolean addPick(skill sk)
+	{
+		if(baseHP - costSoFar - bat_maxHPCost(sk) < hpLeft)
+			return false;
+		costSoFar += bat_maxHPCost(sk);
+		picks[picks.count()] = sk;
+		return true;
+	}
 
 	return picks;
 }
@@ -71,4 +82,55 @@ boolean bat_shouldEnsorcel(monster m)
 
 	// need a way to determine what the current ensorcelee is first...
 	return false;
+}
+
+boolean bat_consumption()
+{
+	if(my_class() != $class[Vampyre])
+		return false;
+
+	boolean consume_first(boolean [item] its)
+	{
+		foreach it in its
+		{
+			if(creatable_amount(it) > 0)
+			{
+				create(1, it);
+				if(it.fullness > 0)
+					eat(1, it);
+				else if(it.inebriety > 0)
+					drink(1, it);
+				else if(it.spleen > 0)
+					chew(1, it);
+				else
+				{
+					print("Woah, I made a " + it + " to consume, but you can't consume that?", "red");
+					return false;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	while(item_amount($item[blood bag]) > 0 && my_fullness() < fullness_limit())
+	{
+		// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
+		if(!consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
+			break;
+	}
+
+	while(item_amount($item[blood bag]) > 0 && my_inebriety() < inebriety_limit())
+	{
+		// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
+		if(!consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
+			break;
+	}
+
+	if(my_adventures() <= 1)
+	{
+		consume_first($items[bloodstick, bottle of Sanguiovese]);
+	}
+
+	return true;
 }
