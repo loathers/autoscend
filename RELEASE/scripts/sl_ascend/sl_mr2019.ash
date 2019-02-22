@@ -39,13 +39,11 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	if(casingsOwned == 0)
 		return false;
 
-	print("Let's grind some sausage!", "blue");
 
 	if(casingsOwned < numSaus)
 	{
 		if(failIfCantMakeAll)
 		{
-			print("Never mind, don't have enough casings and won't settle for less...", "brown");
 			return false;
 		}
 		numSaus = casingsOwned;
@@ -65,12 +63,10 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 		{
 			if(failIfCantMakeAll)
 			{
-				print("Never mind, we'd be too poor after making " + numSaus + ", or can't afford to at all...", "brown");
 				return false;
 			}
 			if(i == 1)
 			{
-				print("Never mind, we'd be too poor after making a single sausage :(", "brown");
 				return false;
 			}
 			numSaus = i - 1;
@@ -79,6 +75,7 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 		pastesNeeded += pastesForThisSaus;
 	}
 
+	print("Let's grind some sausage!", "blue");
 	if(!create(numSaus, $item[magical sausage]))
 	{
 		print("Something went wrong while grinding sausage...", "red");
