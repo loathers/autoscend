@@ -2014,18 +2014,20 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 		break;
 
-		case $class[Vampyre]:
-			foreach sk in $skills[Chill of the Tomb, Blood Spike, Piercing Gaze, Savage Bite]
+	case $class[Vampyre]:
+		foreach sk in $skills[Chill of the Tomb, Blood Spike, Piercing Gaze, Savage Bite]
+		{
+			if(sl_have_skill(sk) && my_hp() > 3 * hp_cost(sk))
 			{
-				if(sl_have_skill(sk) && my_hp() > 3 * hp_cost(sk))
-				{
-					attackMinor = "skill " + sk;
-					attackMajor = "skill " + sk;
-					break;
-				}
+				attackMinor = "skill " + sk;
+				attackMajor = "skill " + sk;
+				break;
 			}
-			// intentionally not setting costMinor or costMajor since they don't cost mp...
-			break;
+		}
+		if(sl_have_skill($skill[Blood Chains]) && my_hp() > 3 * hp_cost($skill[Blood Chains]))
+			stunner = "skill " + $skill[Blood Chains];
+		// intentionally not setting costMinor or costMajor since they don't cost mp...
+		break;
 	}
 
 	if(round <= 25)
