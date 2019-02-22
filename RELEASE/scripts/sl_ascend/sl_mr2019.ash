@@ -88,7 +88,7 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 boolean sl_sausageEatEmUp(int maxToEat)
 {
 	// if maxToEat is 0, eat as many sausages as possible while respecting the reserve
-	int sausage_reserve_size = 3;
+	int sausage_reserve_size = my_class() == $class[Vampyre] ? 0 : 3;
 	if (maxToEat == 0)
 	{
 		maxToEat = sl_sausageLeftToday();
