@@ -1252,6 +1252,13 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
+	# Ensorcel handler
+	if(bat_shouldEnsorcel(enemy) && !contains_text(combatState, "ensorcel") && my_hp() > hp_cost($skill[Ensorcel]))
+	{
+		set_property("sl_combatHandler", combatState + "(ensorcel)");
+		return "skill " + $skill[Ensorcel];
+	}
+
 	# Instakill handler
 	boolean doInstaKill = true;
 	if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
@@ -1504,13 +1511,13 @@ string sl_combatHandler(int round, string opp, string text)
 			return "item " + $item[Time-Spinner];
 		}
 
-		if(!contains_text(combatState, "(sing along)") && sl_have_skill($skill[Sing Along]) && (my_mp() > (mp_cost($skill[Sing Along]))) && (get_property("_boomBoxSong") == "Remainin\' Alive"))
+		if(!contains_text(combatState, "(sing along)") && sl_have_skill($skill[Sing Along]) && (my_mp() > (mp_cost($skill[Sing Along]))) && (get_property("boomBoxSong") == "Remainin\' Alive"))
 		{
 			set_property("sl_combatHandler", combatState + "(sing along)");
 			return "skill " + $skill[Sing Along];
 		}
 
-		if(!contains_text(combatState, "(sing along)") && sl_have_skill($skill[Sing Along]) && (my_mp() > (mp_cost($skill[Sing Along]))) && canSurvive(2.5) && (get_property("_boomBoxSong") == "Total Eclipse of Your Meat"))
+		if(!contains_text(combatState, "(sing along)") && sl_have_skill($skill[Sing Along]) && (my_mp() > (mp_cost($skill[Sing Along]))) && canSurvive(2.5) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat"))
 		{
 			set_property("sl_combatHandler", combatState + "(sing along)");
 			return "skill " + $skill[Sing Along];
@@ -1540,7 +1547,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 		if(!contains_text(combatState, "(sing along)") && sl_have_skill($skill[Sing Along]) && (my_mp() > (mp_cost($skill[Sing Along]))))
 		{
-			if((get_property("_boomBoxSong") == "Remainin\' Alive") || (get_property("_boomBoxSong") == "Total Eclipse of Your Meat"))
+			if((get_property("boomBoxSong") == "Remainin\' Alive") || (get_property("boomBoxSong") == "Total Eclipse of Your Meat"))
 			{
 				set_property("sl_combatHandler", combatState + "(sing along)");
 				return "skill " + $skill[Sing Along];
@@ -2594,7 +2601,7 @@ string sl_edCombatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "(sing along)") && sl_have_skill($skill[Sing Along]) && (my_mp() > (mp_cost($skill[Sing Along]))))
 	{
-		if((get_property("_boomBoxSong") == "Remainin\' Alive") || ((get_property("_boomBoxSong") == "Total Eclipse of Your Meat") && canSurvive(2.0)))
+		if((get_property("boomBoxSong") == "Remainin\' Alive") || ((get_property("boomBoxSong") == "Total Eclipse of Your Meat") && canSurvive(2.0)))
 		{
 			set_property("sl_combatHandler", combatState + "(sing along)");
 			return "skill " + $skill[Sing Along];
