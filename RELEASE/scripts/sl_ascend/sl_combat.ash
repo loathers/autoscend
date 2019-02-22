@@ -1257,6 +1257,7 @@ string sl_combatHandler(int round, string opp, string text)
 	{
 		set_property("sl_combatHandler", combatState + "(ensorcel)");
 		set_property("sl_bat_ensorcels", get_property("sl_bat_ensorcels").to_int() + 1);
+		handleTracker(enemy, $skill[Ensorcel], "sl_otherstuff");
 		return "skill " + $skill[Ensorcel];
 	}
 
