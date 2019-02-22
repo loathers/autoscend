@@ -2013,6 +2013,19 @@ string sl_combatHandler(int round, string opp, string text)
 			costStunner = mp_cost($skill[Hogtie]);
 		}
 		break;
+
+		case $class[Vampyre]:
+			foreach sk in $skills[Chill of the Tomb, Blood Spike, Piercing Gaze, Savage Bite]
+			{
+				if(sl_have_skill(sk) && my_hp() > 3 * hp_cost(sk))
+				{
+					attackMinor = "skill " + sk;
+					attackMajor = "skill " + sk;
+					break;
+				}
+			}
+			// intentionally not setting costMinor or costMajor since they don't cost mp...
+			break;
 	}
 
 	if(round <= 25)
@@ -2187,7 +2200,7 @@ string findBanisher(int round, string opp, string text)
 
 	foreach act in $skills[Banishing Shout, Asdon Martin: Spring-Loaded Front Bumper, Talk About Politics, Batter Up!, Thunder Clap, Curse of Vacation, Breathe Out, Snokebomb, Reflex Hammer, KGB Tranquilizer Dart, Beancannon]
 	{
-		if((!contains_text(get_property("sl_gremlinBanishes"), act)) && sl_have_skill(act) && (my_mp() >= mp_cost(act)) && (my_thunder() >= thunder_cost(act)) && (get_fuel() >= fuel_cost(act)))
+		if((!contains_text(get_property("sl_gremlinBanishes"), act)) && sl_have_skill(act) && (my_mp() >= mp_cost(act)) && (my_thunder() >= thunder_cost(act)) && (get_fuel() >= fuel_cost(act)) && (my_hp() > hp_cost(act)))
 		{
 			if(act == $skill[Banishing Shout])
 			{
