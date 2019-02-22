@@ -2248,9 +2248,15 @@ string findBanisher(int round, string opp, string text)
 			{
 				continue;
 			}
-			if((act == $skill[Baleful Howl]) && (get_property("sl_bat_howls").to_int() >= 10))
+			if(act == $skill[Baleful Howl])
 			{
-				continue;
+				if(get_property("sl_bat_howls").to_int() >= 10)
+					continue;
+				else
+				{
+					set_property("sl_bat_howls", get_property("sl_bat_howls").to_int() + 1);
+					set_property("sl_bat_howled", enemy);
+				}
 			}
 			set_property("sl_gremlinBanishes", get_property("sl_gremlinBanishes") + "(" + act + ")");
 			handleTracker(enemy, act, "sl_banishes");

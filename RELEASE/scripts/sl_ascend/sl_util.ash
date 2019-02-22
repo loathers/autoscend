@@ -1416,6 +1416,8 @@ string banisherCombatString(monster enemy, location loc)
 
 	if(sl_have_skill($skill[Baleful Howl]) && my_hp() > hp_cost($skill[Baleful Howl]) && get_property("sl_bat_howls").to_int() < 10 && !(used contains "Baleful Howl"))
 	{
+		set_property("sl_bat_howls", get_property("sl_bat_howls").to_int() + 1);
+		set_property("sl_bat_howled", enemy);
 		return "skill " + $skill[Baleful Howl];
 	}
 
