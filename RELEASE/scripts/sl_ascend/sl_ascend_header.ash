@@ -894,6 +894,7 @@ int bat_maxHPCost(skill sk); // Defined in sl_ascend/sl_batpath.ash
 skill [int] bat_pickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_shouldEnsorcel(monster m); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_consumption(); // Defined in sl_ascend/sl_batpath.ash
+boolean bat_skillValid(skill sk); // Defined in sl_ascend/sl_batpath.ash
 
 //Record from sl_ascend/sl_zone.ash
 record generic_t

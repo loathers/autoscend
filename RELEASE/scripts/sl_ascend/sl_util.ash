@@ -4922,7 +4922,7 @@ boolean sl_is_valid(familiar fam)
 
 boolean sl_is_valid(skill sk)
 {
-	return (glover_usable(sk.to_string()) || sk.passive) && is_unrestricted(sk);
+	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && is_unrestricted(sk);
 }
 
 boolean sl_debug_print(string s, string color)
