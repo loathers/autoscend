@@ -1445,6 +1445,10 @@ string banisherCombatString(monster enemy, location loc)
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
+	if(sl_have_skill($skill[Reflex Hammer]) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
+	{
+		return "skill " + $skill[Reflex Hammer];
+	}
 	if(sl_have_skill($skill[KGB Tranquilizer Dart]) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
 	{
 		boolean useIt = true;
