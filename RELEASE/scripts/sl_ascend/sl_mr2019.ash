@@ -88,7 +88,8 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 boolean sl_sausageEatEmUp(int maxToEat)
 {
 	// if maxToEat is 0, eat as many sausages as possible while respecting the reserve
-	int sausage_reserve_size = my_class() == $class[Vampyre] ? 0 : 3;
+	boolean noMP = my_class() == $class[Vampyre];
+	int sausage_reserve_size = noMP ? 0 : 3;
 	if (maxToEat == 0)
 	{
 		maxToEat = sl_sausageLeftToday();
@@ -104,20 +105,26 @@ boolean sl_sausageEatEmUp(int maxToEat)
 	if(sl_sausageLeftToday() <= 0)
 		return false;
 
-	print("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
 	int originalMp = my_maxmp();
-	cli_execute("checkpoint");
-	maximize("mp,-tie", false);
+	if(!noMP)
+	{
+		print("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
+		cli_execute("checkpoint");
+		maximize("mp,-tie", false);
+	}
 	// I could optimize this a little more by eating more sausage at once if you have enough max mp...
 	// but meh.
 	while(maxToEat > 0 && item_amount($item[magical sausage]) > sausage_reserve_size)
 	{
 		if(sl_sausageLeftToday() <= 0)
 			break;
-		int desiredMp = max(my_maxmp() - 999, 0);
-		int mpToBurn = max(my_mp() - desiredMp, 0);
-		if(mpToBurn > 0)
-			cli_execute("burn " + mpToBurn);
+		if(!noMP)
+		{
+			int desiredMp = max(my_maxmp() - 999, 0);
+			int mpToBurn = max(my_mp() - desiredMp, 0);
+			if(mpToBurn > 0)
+				cli_execute("burn " + mpToBurn);
+		}
 		if(!eat(1, $item[magical sausage]))
 		{
 			print("Somehow failed to eat a sausage! What??", "red");
@@ -127,10 +134,13 @@ boolean sl_sausageEatEmUp(int maxToEat)
 	}
 
 	// burn any mp that'll go away when equipment switches back
-	int mpToBurn = max(my_mp() - originalMp, 0);
-	if(mpToBurn > 0)
-		cli_execute("burn " + mpToBurn);
-	cli_execute("outfit checkpoint");
+	if(!noMP)
+	{
+		int mpToBurn = max(my_mp() - originalMp, 0);
+		if(mpToBurn > 0)
+			cli_execute("burn " + mpToBurn);
+		cli_execute("outfit checkpoint");
+	}
 
 	return true;
 }
