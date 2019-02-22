@@ -1367,6 +1367,17 @@ string banisherCombatString(monster enemy, location loc)
 			}
 		}
 	}
+	if(get_property("sl_bat_howled") != "")
+	{
+		monster howlMon = to_monster(get_property("sl_bat_howled"));
+		for(int i=0; i<count(atLoc); i++)
+		{
+			if(atLoc[i] == howlMon)
+			{
+				used["Baleful Howl"] = true;
+			}
+		}
+	}
 
 	/*	If we have banished anything else in this zone, make sure we do not undo the banishing.
 		mad wino:batter up!:378:skeletal sommelier:KGB tranquilizer dart:381
@@ -1402,6 +1413,11 @@ string banisherCombatString(monster enemy, location loc)
 #	{
 #		return "skill " + $skill[Creepy Grin];
 #	}
+
+	if(sl_have_skill($skill[Baleful Howl]) && my_hp() > hp_cost($skill[Baleful Howl]) && get_property("sl_bat_howls").to_int() < 10 && !(used contains "Baleful Howl"))
+	{
+		return "skill " + $skill[Baleful Howl];
+	}
 
 	if(sl_have_skill($skill[Thunder Clap]) && (my_thunder() >= thunder_cost($skill[Thunder Clap])) && (!(used contains "thunder clap")))
 	{

@@ -1799,6 +1799,7 @@ void initializeDay(int day)
 	digimon_initializeDay(day);
 	majora_initializeDay(day);
 	glover_initializeDay(day);
+	bat_initializeDay(day);
 
 	if(day == 1)
 	{

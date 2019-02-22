@@ -14,6 +14,17 @@ void bat_initializeSettings()
 	}
 }
 
+void bat_initializeDay(int day)
+{
+	if(my_path() == "Dark Gyffte")
+	{
+		set_property("sl_bat_bloodBank", 0); // 0: no blood yet, 1: base blood, 2: intimidating blood
+		set_property("sl_bat_ensorcels", 0);
+		set_property("sl_bat_howls", 0);
+		set_property("sl_bat_howled", "");
+	}
+}
+
 int bat_maxHPCost(skill sk)
 {
 	switch(sk)
@@ -56,11 +67,16 @@ int bat_maxHPCost(skill sk)
 	}
 }
 
+int bat_baseHP()
+{
+	return 20 * get_property("darkGifftePoints").to_int() + my_basestat($stat[Muscle]) + 20;
+}
+
 // to be called when already in Torpor
 skill [int] bat_pickSkills(int hpLeft)
 {
 	int costSoFar = 0;
-	int baseHP = 20 * get_property("darkGyfftePoints").to_int() + my_basestat($stat[Muscle]) + 23;
+	int baseHP = bat_baseHP();
 	skill [int] picks;
 
 	boolean addPick(skill sk)
@@ -72,6 +88,36 @@ skill [int] bat_pickSkills(int hpLeft)
 		return true;
 	}
 
+	if(get_property("sl_bat_bloodBank") != "2")
+		addPick($skill[Intimidating Aura]);
+
+	// no forms JUST yet
+	foreach sk in $skills[
+		Chill of the Tomb,
+		Blood Chains,
+		Madness of Untold Aeons,
+		Sinister Charm,
+		Spot Weakness,
+		Preternatural Strength,
+		Blood Cloak,
+		Baleful Howl,
+		Perceive Soul,
+		Ensorcel,
+		Sharp Eyes,
+		Batlike Reflexes,
+		Sanguine Magnetism,
+		Macabre Cunning,
+		Ferocity,
+		Flesh Scent,
+		Savage Bite,
+		Ceaseless Snarl,
+		Spectral Awareness,
+		Piercing Gaze,
+		Blood Spike,
+	]
+	{
+		addPick(sk);
+	}
 	return picks;
 }
 
@@ -79,10 +125,6 @@ boolean bat_shouldEnsorcel(monster m)
 {
 	if(my_class() != $class[Vampyre] || !sl_have_skill($skill[Ensorcel]))
 		return false;
-
-	// until we can track ensorcel uses, just don't...
-	// I know I could track them myself, but it's gotta be coming to mafia natively eventually...
-	return false;
 
 	// until we have a way to tell what we already have as an ensorcelee, just ensorcel goblins
 	// to help avoid getting beaten up...

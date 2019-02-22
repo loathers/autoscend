@@ -1253,9 +1253,10 @@ string sl_combatHandler(int round, string opp, string text)
 	}
 
 	# Ensorcel handler
-	if(bat_shouldEnsorcel(enemy) && !contains_text(combatState, "ensorcel") && my_hp() > hp_cost($skill[Ensorcel]))
+	if(bat_shouldEnsorcel(enemy) && !contains_text(combatState, "ensorcel") && my_hp() > hp_cost($skill[Ensorcel]) && get_property("sl_bat_ensorcels").to_int() < 3)
 	{
 		set_property("sl_combatHandler", combatState + "(ensorcel)");
+		set_property("sl_bat_ensorcels", get_property("sl_bat_ensorcels").to_int() + 1);
 		return "skill " + $skill[Ensorcel];
 	}
 
@@ -2207,7 +2208,7 @@ string findBanisher(int round, string opp, string text)
 		}
 	}
 
-	foreach act in $skills[Banishing Shout, Asdon Martin: Spring-Loaded Front Bumper, Talk About Politics, Batter Up!, Thunder Clap, Curse of Vacation, Breathe Out, Snokebomb, Reflex Hammer, KGB Tranquilizer Dart, Beancannon]
+	foreach act in $skills[Banishing Shout, Asdon Martin: Spring-Loaded Front Bumper, Baleful Howl, Talk About Politics, Batter Up!, Thunder Clap, Curse of Vacation, Breathe Out, Snokebomb, Reflex Hammer, KGB Tranquilizer Dart, Beancannon]
 	{
 		if((!contains_text(get_property("sl_gremlinBanishes"), act)) && sl_have_skill(act) && (my_mp() >= mp_cost(act)) && (my_thunder() >= thunder_cost(act)) && (get_fuel() >= fuel_cost(act)) && (my_hp() > hp_cost(act)))
 		{
@@ -2241,6 +2242,10 @@ string findBanisher(int round, string opp, string text)
 				continue;
 			}
 			if((act == $skill[Reflex Hammer]) && (get_property("_reflexHammerUsed").to_int() >= 3))
+			{
+				continue;
+			}
+			if((act == $skill[Baleful Howl]) && (get_property("sl_bat_howls").to_int() >= 10))
 			{
 				continue;
 			}
