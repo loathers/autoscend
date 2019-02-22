@@ -22,6 +22,7 @@ void bat_initializeDay(int day)
 		set_property("sl_bat_ensorcels", 0);
 		set_property("sl_bat_howls", 0);
 		set_property("sl_bat_howled", "");
+		bat_reallyPickSkills(20);
 	}
 }
 
@@ -69,7 +70,20 @@ int bat_maxHPCost(skill sk)
 
 int bat_baseHP()
 {
-	return 20 * get_property("darkGifftePoints").to_int() + my_basestat($stat[Muscle]) + 20;
+	return 20 * get_property("darkGyfftePoints").to_int() + my_basestat($stat[Muscle]) + 20;
+}
+
+int bat_remainingBaseHP()
+{
+	int baseHP = bat_baseHP();
+	foreach sk in $skills[]
+	{
+		// important that this uses have_skill and not sl_have_skill, as sl_have_skill would
+		// report incorrectly if any form intrinsics are active
+		if(have_skill(sk))
+			baseHP -= bat_maxHPCost(sk);
+	}
+	return baseHP;
 }
 
 // to be called when already in Torpor
@@ -119,6 +133,50 @@ skill [int] bat_pickSkills(int hpLeft)
 		addPick(sk);
 	}
 	return picks;
+}
+
+void bat_reallyPickSkills(int hpLeft)
+{
+	visit_url("main.php"); // check if we're already in Torpor
+	if(last_choice() != 1342)
+		visit_url("campground.php?action=coffin");
+
+	skill [int] picks = bat_pickSkills(hpLeft);
+	string url = "choice.php?whichchoice=1342&option=2&pwd=" + my_hash();
+	foreach i,sk in picks
+	{
+		url += "&sk[]=";
+		url += sk.to_int() - 24000;
+	}
+	visit_url(url);
+	visit_url("choice.php?whichchoice=1342&option=1&pwd=" + my_hash());
+}
+
+boolean bat_shouldPickSkills(int hpLeft)
+{
+	skill [int] picks = bat_pickSkills(hpLeft);
+
+	foreach sk in $skills[]
+	{
+		if(sk.bat_maxHPCost() == 0)
+			continue;
+
+		boolean found = false;
+
+		foreach i,pick in picks
+		{
+			if(sk == pick)
+			{
+				found = true;
+				break;
+			}
+		}
+
+		if(found != have_skill(sk))
+			return true;
+	}
+
+	return false;
 }
 
 boolean bat_shouldEnsorcel(monster m)
@@ -197,4 +255,25 @@ boolean bat_skillValid(skill sk)
 		return false;
 
 	return true;
+}
+
+boolean LM_batpath()
+{
+	if(my_class() != $class[Vampyre])
+		return false;
+
+	if(bat_remainingBaseHP() >= 70 && bat_shouldPickSkills(20))
+	{
+		bat_reallyPickSkills(20);
+		return true;
+	}
+
+	int bloodBank = get_property("sl_bat_bloodBank").to_int();
+	if(bloodBank == 0 || (bloodBank == 1 && have_skill($skill[Intimidating Aura])))
+	{
+		visit_url("place.php?whichplace=town_right&action=town_bloodbank");
+		set_property("sl_bat_bloodBank", (have_skill($skill[Intimidating Aura]) ? 2 : 1));
+	}
+
+	return false;
 }

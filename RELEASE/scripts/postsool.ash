@@ -75,6 +75,9 @@ void handlePostAdventure()
 				print("Accepting doctor quest, it's our job!");
 				run_choice(1);
 				break;
+			case 1342: // Torpor
+				bat_reallyPickSkills(20);
+				break;
 			default:
 				print("Unrecognized unhandled choice after combat " + last_choice(), "red");
 				break;

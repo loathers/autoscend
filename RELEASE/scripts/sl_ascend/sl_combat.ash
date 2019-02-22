@@ -2025,6 +2025,8 @@ string sl_combatHandler(int round, string opp, string text)
 	case $class[Vampyre]:
 		foreach sk in $skills[Chill of the Tomb, Blood Spike, Piercing Gaze, Savage Bite]
 		{
+			if(sk == $skill[Chill of the Tomb] && enemy.monster_element() == $element[cold])
+				continue;
 			if(sl_have_skill(sk) && my_hp() > 3 * hp_cost(sk))
 			{
 				attackMinor = "skill " + sk;

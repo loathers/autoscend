@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19092; // doctor bag
+since r19107; // darkGyfftePoints
 /***
 	svn checkout https://svn.code.sf.net/p/ccascend/code/sl_ascend
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
@@ -9878,6 +9878,7 @@ boolean L4_batCave()
 	buffMaintain($effect[Hide of Sobek], 10, 1, 1);
 	buffMaintain($effect[Astral Shell], 10, 1, 1);
 	buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
+	buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 	if(elemental_resist($element[stench]) < 1)
 	{
 		if(possessEquipment($item[Knob Goblin Harem Veil]))
@@ -10969,6 +10970,7 @@ boolean LX_handleSpookyravenFirstFloor()
 			int hot = elemental_resist($element[hot]);
 			int stench = elemental_resist($element[stench]);
 			int mpNeed = 0;
+			int hpNeed = 0;
 			if((hot < 9) && (stench < 9) && have_skill($skill[Astral Shell]) && (have_effect($effect[Astral Shell]) == 0))
 			{
 				hot += 1;
@@ -10981,10 +10983,17 @@ boolean LX_handleSpookyravenFirstFloor()
 				stench += 2;
 				mpNeed += mp_cost($skill[Elemental Saucesphere]);
 			}
-			if((my_mp() > mpNeed) && (hot >= 9) && (stench >= 9))
+			if((hot < 9) && (stench < 9) && sl_have_skill($skill[Spectral Awareness]) && (have_effect($effect[Spectral Awareness]) == 0))
+			{
+				hot += 2;
+				stench += 2;
+				hpNeed += hp_cost($skill[Spectral Awareness]);
+			}
+			if((my_mp() > mpNeed) && (my_hp() > hpNeed) && (hot >= 9) && (stench >= 9))
 			{
 				buffMaintain($effect[Astral Shell], mp_cost($skill[Astral Shell]), 1, 1);
 				buffMaintain($effect[Elemental Saucesphere], mp_cost($skill[Elemental Saucesphere]), 1, 1);
+				buffMaintain($effect[Spectral Awareness], hp_cost($skill[Spectral Awareness]), 1, 1);
 			}
 			if((elemental_resist($element[hot]) >= 9) && (elemental_resist($element[stench]) >= 9))
 			{
@@ -11714,6 +11723,7 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Balls of Ectoplasm], 0, 1, 1);
 			buffMaintain($effect[Red Door Syndrome], 0, 1, 1);
 			buffMaintain($effect[Well-Oiled], 0, 1, 1);
+			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
@@ -11911,6 +11921,7 @@ boolean L9_twinPeak()
 		buffMaintain($effect[Astral Shell], 10, 1, 1);
 		buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 		buffMaintain($effect[Hide of Sobek], 10, 1, 1);
+		buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 		int possibleGain = 0;
 		if(item_amount($item[Polysniff Perfume]) > 0)
 		{
@@ -12944,6 +12955,7 @@ boolean L8_trapperGroar()
 			buffMaintain($effect[Astral Shell], 10, 1, 1);
 			buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 			buffMaintain($effect[Hide of Sobek], 10, 1, 1);
+			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 		}
 		string lihcface = "";
 		if((my_class() == $class[Ed]) && possessEquipment($item[The Crown of Ed the Undying]))
@@ -13667,6 +13679,7 @@ boolean doTasks()
 	if(LM_groundhog())					return true;
 	if(LM_digimon())					return true;
 	if(LM_majora())						return true;
+	if(LM_batpath()) return true;
 	if(doHRSkills())					return true;
 
 	if(sl_my_path() != "Community Service")

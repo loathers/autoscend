@@ -2766,7 +2766,7 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 
 	shrugAT($effect[The Sonata of Sneakiness]);
 	//Assumes that Rev Engine was taken with Extra-Quite Muffler.
-	foreach eff in $effects[Shelter Of Shed, Brooding, Muffled, Smooth Movements, The Sonata of Sneakiness, Song of Solitude, Inked Well, Bent Knees, Extended Toes, Ink Cloud, Patent Invisibility]
+	foreach eff in $effects[Shelter Of Shed, Brooding, Muffled, Smooth Movements, The Sonata of Sneakiness, Song of Solitude, Inked Well, Bent Knees, Extended Toes, Ink Cloud, Patent Invisibility, Cloak of Shadows]
 	{
 		buffMaintain(eff, 0, 1, 1);
 		if(numeric_modifier("Combat Rate").to_int() <= amt)
@@ -4226,6 +4226,10 @@ boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns
 	{
 		return false;
 	}
+	if((my_hp() < mp_min) || (my_mp() < (casts * hp_cost(source))))
+	{
+		return false;
+	}
 	if(my_adventures() < (casts * adv_cost(source)))
 	{
 		return false;
@@ -4371,6 +4375,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Celestial Sheen]:				useItem = $item[Celestial Olive Oil];			break;
 	case $effect[Cinnamon Challenger]:			useItem = $item[Pulled Red Taffy];				break;
 	case $effect[Cletus\'s Canticle of Celerity]:	useSkill = $skill[Cletus\'s Canticle of Celerity];break;
+	case $effect[Cloak of Shadows]: useSkill = $skill[Blood Cloak]; break;
 	case $effect[Clyde\'s Blessing]:			useItem = $item[The Legendary Beat];			break;
 	case $effect[Chalky Hand]:					useItem = $item[Handful of Hand Chalk];			break;
 	case $effect[Cranberry Cordiality]:			useItem = $item[Cranberry Cordial];				break;
@@ -4678,6 +4683,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[The Sonata of Sneakiness]:		useSkill = $skill[The Sonata of Sneakiness];	break;
 	case $effect[Soulerskates]:					useSkill = $skill[Soul Rotation];				break;
 	case $effect[Sour Softshoe]:				useItem = $item[pulled yellow taffy];			break;
+	case $effect[Spectral Awareness]: useSkill = $skill[Spectral Awareness]; break;
 	case $effect[Spice Haze]:					useSkill = $skill[Bind Spice Ghost];			break;
 	case $effect[Spiky Hair]:					useItem = $item[Super-Spiky Hair Gel];			break;
 	case $effect[Spiky Shell]:					useSkill = $skill[Spiky Shell];					break;
