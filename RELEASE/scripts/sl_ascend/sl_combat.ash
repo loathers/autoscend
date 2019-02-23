@@ -2035,6 +2035,11 @@ string sl_combatHandler(int round, string opp, string text)
 				break;
 			}
 		}
+		if((monster_hp() <= 30 || (monster_hp() <= 100 && sl_have_skill($skill[Hypnotic Eyes]))) && !contains_text(combatState, "dark feast"))
+		{
+			set_property("sl_combatHandler", combatState + "(dark feast)");
+			return "skill " + $skill[Dark Feast];
+		}
 		if(sl_have_skill($skill[Blood Chains]) && my_hp() > 3 * hp_cost($skill[Blood Chains]))
 			stunner = "skill " + $skill[Blood Chains];
 		// intentionally not setting costMinor or costMajor since they don't cost mp...

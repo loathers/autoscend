@@ -116,6 +116,7 @@ skill [int] bat_pickSkills(int hpLeft)
 		Blood Cloak,
 		Baleful Howl,
 		Perceive Soul,
+		Hypnotic Eyes,
 		Ensorcel,
 		Sharp Eyes,
 		Batlike Reflexes,
