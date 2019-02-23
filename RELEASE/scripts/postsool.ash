@@ -734,6 +734,10 @@ void handlePostAdventure()
 			{
 				buffMaintain($effect[Pride of the Puffin], 80, 1, 10);
 			}
+			if((monster_level_adjustment() + 30) <= 150)
+			{
+				buffMaintain($effect[Ceaseless Snarling], 0, 1, 10);
+			}
 		}
 		buffMaintain($effect[Big], 100, 1, 10);
 		buffMaintain($effect[Rage of the Reindeer], 80, 1, 10);

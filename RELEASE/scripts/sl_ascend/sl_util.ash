@@ -4228,7 +4228,7 @@ boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns
 	{
 		return false;
 	}
-	if((my_hp() < mp_min) || (my_mp() < (casts * hp_cost(source))))
+	if(my_hp() <= (casts * hp_cost(source)))
 	{
 		return false;
 	}
@@ -4372,6 +4372,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Carol Of The Hells]: useSkill = $skill[Carol Of The Hells]; break;
 	case $effect[Carol Of The Thrills]: useSkill = $skill[Carol Of The Thrills]; break;
 	case $effect[Cautious Prowl]:				useSkill = $skill[Walk: Cautious Prowl];		break;
+	case $effect[Ceaseless Snarling]: useSkill = $skill[Ceaseless Snarl]; break;
 	case $effect[Celestial Camouflage]:			useItem = $item[Celestial Squid Ink];			break;
 	case $effect[Celestial Saltiness]:			useItem = $item[Celestial Au Jus];				break;
 	case $effect[Celestial Sheen]:				useItem = $item[Celestial Olive Oil];			break;
@@ -4896,7 +4897,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	{
 		return buffMaintain(useItem, buff, casts, turns);
 	}
-	if((useSkill != $skill[none]) && have_skill(useSkill))
+	if((useSkill != $skill[none]) && sl_have_skill(useSkill))
 	{
 		return buffMaintain(useSkill, buff, mp_min, casts, turns);
 	}

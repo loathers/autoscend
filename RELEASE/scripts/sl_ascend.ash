@@ -12115,6 +12115,10 @@ boolean L9_oilPeak()
 	{
 		expectedML += (2 * my_level());
 	}
+	if(have_skill($skill[Ceaseless Snarl]))
+	{
+		expectedML += 30;
+	}
 
 	if((monster_level_adjustment() < expectedML) && (my_level() < 12))
 	{
