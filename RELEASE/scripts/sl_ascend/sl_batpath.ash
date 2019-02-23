@@ -201,7 +201,6 @@ boolean bat_consumption()
 
 	if(have_outfit("War Hippy Fatigues"))
 	{
-		print("Getting dimes.", "blue");
 		sell($item[padl phone].buyer, item_amount($item[padl phone]), $item[padl phone]);
 		sell($item[red class ring].buyer, item_amount($item[red class ring]), $item[red class ring]);
 		sell($item[blue class ring].buyer, item_amount($item[blue class ring]), $item[blue class ring]);
@@ -209,7 +208,6 @@ boolean bat_consumption()
 	}
 	if(have_outfit("Frat Warrior Fatigues"))
 	{
-		print("Getting quarters.", "blue");
 		sell($item[pink clay bead].buyer, item_amount($item[pink clay bead]), $item[pink clay bead]);
 		sell($item[purple clay bead].buyer, item_amount($item[purple clay bead]), $item[purple clay bead]);
 		sell($item[green clay bead].buyer, item_amount($item[green clay bead]), $item[green clay bead]);
