@@ -22,6 +22,7 @@ void bat_initializeDay(int day)
 		set_property("sl_bat_ensorcels", 0);
 		set_property("sl_bat_howls", 0);
 		set_property("sl_bat_howled", "");
+		set_property("sl_bat_soulmonster", "");
 		bat_reallyPickSkills(20);
 	}
 }
@@ -198,6 +199,23 @@ boolean bat_consumption()
 	if(my_class() != $class[Vampyre])
 		return false;
 
+	if(have_outfit("War Hippy Fatigues"))
+	{
+		print("Getting dimes.", "blue");
+		sell($item[padl phone].buyer, item_amount($item[padl phone]), $item[padl phone]);
+		sell($item[red class ring].buyer, item_amount($item[red class ring]), $item[red class ring]);
+		sell($item[blue class ring].buyer, item_amount($item[blue class ring]), $item[blue class ring]);
+		sell($item[white class ring].buyer, item_amount($item[white class ring]), $item[white class ring]);
+	}
+	if(have_outfit("Frat Warrior Fatigues"))
+	{
+		print("Getting quarters.", "blue");
+		sell($item[pink clay bead].buyer, item_amount($item[pink clay bead]), $item[pink clay bead]);
+		sell($item[purple clay bead].buyer, item_amount($item[purple clay bead]), $item[purple clay bead]);
+		sell($item[green clay bead].buyer, item_amount($item[green clay bead]), $item[green clay bead]);
+		sell($item[communications windchimes].buyer, item_amount($item[communications windchimes]), $item[communications windchimes]);
+	}
+
 	boolean consume_first(boolean [item] its)
 	{
 		foreach it in its
@@ -206,11 +224,11 @@ boolean bat_consumption()
 			{
 				create(1, it);
 				if(it.fullness > 0)
-					eat(1, it);
+					ccEat(1, it);
 				else if(it.inebriety > 0)
-					drink(1, it);
+					ccDrink(1, it);
 				else if(it.spleen > 0)
-					chew(1, it);
+					ccChew(1, it);
 				else
 				{
 					print("Woah, I made a " + it + " to consume, but you can't consume that?", "red");
