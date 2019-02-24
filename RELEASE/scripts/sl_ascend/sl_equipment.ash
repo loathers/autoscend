@@ -97,6 +97,13 @@ void equipBaselineGear()
 						if(have_effect(req_effect) == 0)
 							this_failed = true;
 						break;
+					case "familiar":
+						familiar req_familiar = to_familiar(condition_data);
+						if(req_familiar == $familiar[none])
+							abort('"' + condition_data + '" does not properly convert to a familiar!');
+						if(my_familiar() != req_familiar)
+							this_failed = true;
+						break;
 					case "prop":
 						matcher m2 = create_matcher("([^=]+)=(.+)", condition_data);
 						if(!m2.find())
