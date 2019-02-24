@@ -26,6 +26,10 @@
 ### data: Text name of the effect, as used by to_effect()
 ### You must have at least one turn of the given effect
 ### As a precaution, sl_ascend aborts if to_effect returns $effect[none]
+## familiar
+### data: Text name of the familiar, as used by to_familiar()
+### You must be currently using this familiar
+### As a precaution, sl_ascend aborts if to_familiar returns $familiar[none]
 ## prop
 ### data: <propname>=<value>
 ### Only simple comparison is available at the moment
