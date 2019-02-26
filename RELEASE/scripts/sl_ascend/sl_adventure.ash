@@ -320,7 +320,7 @@ boolean preAdvXiblaxian(location loc)
 		# However, that means we\'d lose the Noob Cave canaray
 		if(loc == $location[Noob Cave])
 		{
-			replaceBaselineAcc3();
+			#replaceBaselineAcc3();
 			return true;
 		}
 
@@ -328,15 +328,15 @@ boolean preAdvXiblaxian(location loc)
 		{
 			if((area == "indoor") && (item_amount($item[Xiblaxian Circuitry]) > 0))
 			{
-				replaceBaselineAcc3();
+				#replaceBaselineAcc3();
 			}
 			else if((area == "outdoor") && (item_amount($item[Xiblaxian Polymer]) > 0))
 			{
-				replaceBaselineAcc3();
+				#replaceBaselineAcc3();
 			}
 			else if((area == "underground") && (item_amount($item[Xiblaxian Alloy]) > 2))
 			{
-				replaceBaselineAcc3();
+				#replaceBaselineAcc3();
 			}
 			else
 			{
@@ -347,15 +347,15 @@ boolean preAdvXiblaxian(location loc)
 		{
 			if((area == "indoor") && (item_amount($item[Xiblaxian Circuitry]) > 2))
 			{
-				replaceBaselineAcc3();
+				#replaceBaselineAcc3();
 			}
 			else if((area == "outdoor") && (item_amount($item[Xiblaxian Polymer]) > 0))
 			{
-				replaceBaselineAcc3();
+				#replaceBaselineAcc3();
 			}
 			else if((area == "underground") && (item_amount($item[Xiblaxian Alloy]) > 0))
 			{
-				replaceBaselineAcc3();
+				#replaceBaselineAcc3();
 			}
 			else
 			{
