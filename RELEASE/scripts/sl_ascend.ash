@@ -12228,6 +12228,20 @@ boolean L9_chasmBuild()
 #	}
 	print("Chasm time", "blue");
 
+	// Temporary logic until Blech House is spaded further
+	switch(my_primestat())
+	{
+		case $stat[Muscle]:
+			set_property("choiceAdventure1345", 1);
+			break;
+		case $stat[Mysticality]:
+			set_property("choiceAdventure1345", 2);
+			break;
+		case $stat[Moxie]:
+			set_property("choiceAdventure1345", 3);
+			break;
+	}
+
 	if(item_amount($item[fancy oil painting]) > 0)
 	{
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
