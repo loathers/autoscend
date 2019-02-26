@@ -3023,7 +3023,7 @@ void cs_initializeDay(int day)
 
 	if(day == 1)
 	{
-		if(get_property("sl_day1_init") != "finished")
+		if(get_property("sl_day_init").to_int() < 1)
 		{
 			set_property("sl_day1_dna", "finished");
 			if(!have_familiar($familiar[Puck Man]) && !have_familiar($familiar[Ms. Puck Man]))
@@ -3165,7 +3165,7 @@ void cs_initializeDay(int day)
 				temp = visit_url("peevpee.php?place=fight");
 				set_property("sl_breakstone", false);
 			}
-			set_property("sl_day1_init", "finished");
+			set_property("sl_day_init", 1);
 			try
 			{
 				visit_url("council.php");
@@ -3178,7 +3178,7 @@ void cs_initializeDay(int day)
 	}
 	else if(day == 2)
 	{
-		if(get_property("sl_day2_init") != "finished")
+		if(get_property("sl_day_init").to_int() < 2)
 		{
 			equipBaseline();
 
@@ -3230,7 +3230,7 @@ void cs_initializeDay(int day)
 				doRest();
 			}
 
-			set_property("sl_day2_init", "finished");
+			set_property("sl_day_init", 2);
 		}
 	}
 }

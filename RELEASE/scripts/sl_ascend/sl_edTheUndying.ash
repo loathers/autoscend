@@ -95,7 +95,7 @@ void ed_initializeDay(int day)
 	}
 	if(day == 1)
 	{
-		if(get_property("sl_day1_init") != "finished")
+		if(get_property("sl_day_init").to_int() < 1)
 		{
 			set_property("sl_renenutetBought", 0);
 			if(item_amount($item[transmission from planet Xi]) > 0)
@@ -113,8 +113,6 @@ void ed_initializeDay(int day)
 			tootGetMeat();
 
 			equipBaseline();
-
-			set_property("sl_day1_init", "finished");
 		}
 	}
 	else if(day == 2)
@@ -122,7 +120,7 @@ void ed_initializeDay(int day)
 		equipBaseline();
 		ovenHandle();
 
-		if(get_property("sl_day2_init") == "")
+		if(get_property("sl_day_init").to_int() < 2)
 		{
 
 			if(get_property("sl_dickstab").to_boolean() && chateaumantegna_available())
@@ -148,28 +146,27 @@ void ed_initializeDay(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 			pullXWhenHaveY(whatHiMein(), 1, 0);
-
-			set_property("sl_day2_init", "finished");
 		}
 	}
 	else if(day == 3)
 	{
-		if(get_property("sl_day3_init") == "")
+		if(get_property("sl_day_init").to_int() < 3)
 		{
 			set_property("sl_renenutetBought", 0);
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("sl_day3_init", "finished");
 		}
 	}
 	else if(day == 4)
 	{
-		if(get_property("sl_day4_init") == "")
+		if(get_property("sl_day_init").to_int() < 4)
 		{
 			set_property("sl_renenutetBought", 0);
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("sl_day4_init", "finished");
 		}
 	}
+
+	// ed overrides normal day initialization
+	set_property("sl_day_init", day);
 }
 
 boolean L13_ed_towerHandler()

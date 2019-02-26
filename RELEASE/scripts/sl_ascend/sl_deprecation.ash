@@ -259,5 +259,14 @@ boolean settingFixer()
 		set_property("lastTempleUnlock", my_ascensions());
 	}
 
+	if(property_exists("sl_day1_init"))
+	{
+		print("Found old day initialization trackers, removing...", "red");
+		remove_property("sl_day1_init");
+		remove_property("sl_day2_init");
+		remove_property("sl_day3_init");
+		remove_property("sl_day4_init");
+	}
+
 	return true;
 }

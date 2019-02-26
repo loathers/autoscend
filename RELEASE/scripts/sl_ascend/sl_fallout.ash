@@ -46,19 +46,12 @@ void fallout_initializeDay(int day)
 		sl_sourceTerminalRequest("enquiry familiar.enq");
 	}
 
-	if(day == 1)
-	{
-		if(get_property("sl_day1_init") != "finished")
-		{
-			#set_property("sl_day1_init", "finished");
-		}
-	}
-	else if(day == 2)
+	if(day == 2)
 	{
 		equipBaseline();
 		ovenHandle();
 
-		if(get_property("sl_day2_init") == "")
+		if(get_property("sl_day_init").to_int() < 2)
 		{
 
 			if(get_property("sl_dickstab").to_boolean() && chateaumantegna_available())
@@ -83,24 +76,22 @@ void fallout_initializeDay(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 			pullXWhenHaveY(whatHiMein(), 1, 0);
-
-			#set_property("sl_day2_init", "finished");
 		}
 	}
 	else if(day == 3)
 	{
-		if(get_property("sl_day3_init") == "")
+		if(get_property("sl_day_init").to_int() < 3)
 		{
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			set_property("sl_day3_init", "finished");
+			set_property("sl_day_init", 3);
 		}
 	}
 	else if(day == 4)
 	{
-		if(get_property("sl_day4_init") == "")
+		if(get_property("sl_day_init").to_int() < 4)
 		{
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			set_property("sl_day4_init", "finished");
+			set_property("sl_day_init", 4);
 		}
 	}
 }

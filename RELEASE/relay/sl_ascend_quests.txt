@@ -23,10 +23,7 @@
 23	sl_cubeItems	boolean	ANY	Do we need to use the Gelatinous Cube for Phat Loot Tokens?
 24	sl_day1_cobb	string	ANY	'finished' if we have found the Knob Goblin Encryption Key.
 25	sl_day1_dna	string	ANY	'finished' if we have hybridized ourselves at the start of Ascension.
-26	sl_day1_init	string	ANY	'finished' if we properly initialized on day 1.
-27	sl_day2_init	string	ANY	'finished' if we properly initialized on day 2.
-28	sl_day3_init	string	ANY	'finished' if we properly initialized on day 3.
-29	sl_day4_init	string	ANY	'finished' if we properly initialized on day 4. :(
+29	sl_day_init	string	ANY	Current daycount if we finished initializing today.
 30	sl_disableAdventureHandling	string	ANY	When set this prevents post/preadventure behavior. This is necessary for multi-adventure situations and 'a choice follows this' situations.
 31	sl_familiarChoice	string	ANY	The current familiar we are planning to take. This changes a lot.
 32	sl_fcle	string	ANY	'finished' if we got the Pirate Fledges, or equivalent.

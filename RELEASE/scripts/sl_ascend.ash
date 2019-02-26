@@ -132,12 +132,9 @@ void initializeSettings()
 	set_property("sl_crypt", "");
 	set_property("sl_cubeItems", true);
 	set_property("sl_dakotaFanning", false);
+	set_property("sl_day_init", 0);
 	set_property("sl_day1_cobb", "");
 	set_property("sl_day1_dna", "");
-	set_property("sl_day1_init", "");
-	set_property("sl_day2_init", "");
-	set_property("sl_day3_init", "");
-	set_property("sl_day4_init", "");
 	set_property("sl_disableAdventureHandling", false);
 	set_property("sl_doCombatCopy", "no");
 	set_property("sl_drunken", "");
@@ -1803,7 +1800,7 @@ void initializeDay(int day)
 
 	if(day == 1)
 	{
-		if(get_property("sl_day1_init") != "finished")
+		if(get_property("sl_day_init").to_int() < 1)
 		{
 			kgbSetup();
 			if(item_amount($item[transmission from planet Xi]) > 0)
@@ -1867,7 +1864,6 @@ void initializeDay(int day)
 				temp = visit_url("peevpee.php?place=fight");
 				set_property("sl_breakstone", false);
 			}
-			set_property("sl_day1_init", "finished");
 		}
 
 		if((get_property("lastCouncilVisit").to_int() < my_level()) && (sl_my_path() != "Community Service"))
@@ -1881,7 +1877,7 @@ void initializeDay(int day)
 		equipBaseline();
 		fortuneCookieEvent();
 
-		if(get_property("sl_day2_init") == "")
+		if(get_property("sl_day_init").to_int() < 2)
 		{
 			if((item_amount($item[Tonic Djinn]) > 0) && !get_property("_tonicDjinn").to_boolean())
 			{
@@ -1958,8 +1954,6 @@ void initializeDay(int day)
 #			{
 #				pullXWhenHaveY($item[milk of magnesium], 1, 0);
 #			}
-
-			set_property("sl_day2_init", "finished");
 		}
 		if(chateaumantegna_havePainting() && (my_class() != $class[Ed]) && (sl_my_path() != "Community Service"))
 		{
@@ -1973,22 +1967,20 @@ void initializeDay(int day)
 	}
 	else if(day == 3)
 	{
-		if(get_property("sl_day3_init") == "")
+		if(get_property("sl_day_init").to_int() < 3)
 		{
 			while(acquireHermitItem($item[Ten-leaf Clover]));
 
 			picky_pulls();
 			standard_pulls();
 
-			set_property("sl_day3_init", "finished");
 		}
 	}
 	else if(day == 4)
 	{
-		if(get_property("sl_day4_init") == "")
+		if(get_property("sl_day_init").to_int() < 4)
 		{
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("sl_day4_init", "finished");
 		}
 	}
 	if(day >= 2)
@@ -2009,6 +2001,8 @@ void initializeDay(int day)
 	{
 		cli_execute("garden pick");
 	}
+
+	set_property("sl_day_init", day);
 }
 
 boolean dailyEvents()

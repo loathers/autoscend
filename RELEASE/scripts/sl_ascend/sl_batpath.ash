@@ -16,7 +16,12 @@ void bat_initializeSettings()
 
 void bat_initializeDay(int day)
 {
-	if(my_path() == "Dark Gyffte")
+	if(my_path() != "Dark Gyffte")
+	{
+		return;
+	}
+
+	if(get_property("sl_day_init").to_int() < day)
 	{
 		set_property("sl_bat_bloodBank", 0); // 0: no blood yet, 1: base blood, 2: intimidating blood
 		set_property("sl_bat_ensorcels", 0);
