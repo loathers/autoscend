@@ -181,6 +181,8 @@ void initializeSettings()
 	set_property("sl_orchard", "");
 	set_property("sl_otherstuff", "");
 	set_property("sl_palindome", "");
+	set_property("sl_paranoia", -1);
+	set_property("sl_paranoia_counter", 0);
 	set_property("sl_phatloot", "");
 	set_property("sl_prewar", "");
 	set_property("sl_prehippy", "");
@@ -13648,6 +13650,23 @@ boolean doTasks()
 	{
 		print("Delay between adventures... beep boop... ", "blue");
 		wait(delay);
+	}
+
+	int paranoia = get_property("sl_paranoia").to_int();
+	if(paranoia != -1)
+	{
+		int paranoia_counter = get_property("sl_paranoia_counter").to_int();
+		if(paranoia_counter >= paranoia)
+		{
+			print("I think I'm paranoid and complicated", "blue");
+			print("I think I'm paranoid, manipulated", "blue");
+			cli_execute("refresh quests");
+			set_property("sl_paranoia_counter", 0);
+		}
+		else
+		{
+			set_property("sl_paranoia_counter", paranoia_counter + 1);
+		}
 	}
 
 	basicAdjustML();

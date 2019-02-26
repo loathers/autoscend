@@ -52,6 +52,7 @@ post	3	sl_hippyInstead	boolean	Fight on the side of the hippies instead of the F
 post	4	sl_ignoreFlyer	boolean	Do not do the flyer quest, recommended to set true if fighting for the hippies.
 post	5	sl_haveoven	boolean	If you have an oven, this should be true. But we can't always check the campground.
 post	6	sl_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar?
+post	7	sl_paranoia	integer	How often should we refresh quests? -1 is never, lower positive numbers = more often.
 
 pre	0	sl_pvpEnable	boolean	Automatically participate in PvP?
 pre	1	sl_alwaysGetSteelOrgan	boolean	If true, get the Steel Organ in the next ascension.

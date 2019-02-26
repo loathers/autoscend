@@ -5,3 +5,4 @@ sl_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat War
 sl_ignoreFlyer	boolean	Do not do the flyer quest, recommended to set true if fighting for the hippies.
 sl_haveoven	boolean	If you have an oven, this should be true. But we can't always check the campground.
 sl_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar?
+sl_paranoia	integer	How often should we refresh quests? -1 is never, lower positive numbers = more often.
