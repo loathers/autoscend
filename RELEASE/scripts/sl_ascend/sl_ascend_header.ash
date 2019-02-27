@@ -808,6 +808,8 @@ void woods_questStart();									//Defined in sl_ascend/sl_util.ash
 boolean xiblaxian_makeStuff();								//Defined in sl_ascend/sl_mr2014.ash
 string yellowRayCombatString();								//Defined in sl_ascend/sl_util.ash
 string banisherCombatString(monster enemy, location loc);	//Defined in sl_ascend/sl_util.ash
+boolean[string] sl_banishesUsedAt(location loc); // Defined in sl_ascend/sl_util.ash
+boolean sl_wantToBanish(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
 boolean zoneCombat(location loc);							//Defined in sl_ascend/sl_util.ash
 boolean zoneItem(location loc);								//Defined in sl_ascend/sl_util.ash
 boolean zoneMeat(location loc);								//Defined in sl_ascend/sl_util.ash

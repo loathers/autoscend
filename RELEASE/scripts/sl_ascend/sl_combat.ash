@@ -2082,70 +2082,25 @@ string sl_combatHandler(int round, string opp, string text)
 
 string findBanisher(int round, string opp, string text)
 {
-	print("In findBanisher for: " + opp, "green");
 	monster enemy = to_monster(opp);
 
-	foreach itm in $items[Louder Than Bomb, Tennis Ball]
+	string banishAction = banisherCombatString(enemy, my_location());
+	if(banishAction != "")
 	{
-		if(!contains_text(get_property("sl_gremlinBanishes"), itm) && (item_amount(itm) > 0))
+		print("Looking at banishAction: " + banishAction, "green");
+		if(index_of(banishAction, "skill") == 0)
 		{
-			set_property("sl_gremlinBanishes", get_property("sl_gremlinBanishes") + "(" + itm + ")");
-			handleTracker(enemy, itm, "sl_banishes");
-			return "item " + itm;
+			handleTracker(enemy, to_skill(substring(banishAction, 6)), "sl_banishes");
 		}
-	}
-
-	foreach act in $skills[Banishing Shout, Asdon Martin: Spring-Loaded Front Bumper, Baleful Howl, Talk About Politics, Batter Up!, Thunder Clap, Curse of Vacation, Breathe Out, Snokebomb, Reflex Hammer, KGB Tranquilizer Dart, Beancannon]
-	{
-		if((!contains_text(get_property("sl_gremlinBanishes"), act)) && sl_have_skill(act) && (my_mp() >= mp_cost(act)) && (my_thunder() >= thunder_cost(act)) && (get_fuel() >= fuel_cost(act)) && (my_hp() > hp_cost(act)))
+		else if(index_of(banishAction, "item") == 0)
 		{
-			if(act == $skill[Banishing Shout])
-			{
-				handleTracker(enemy, act, "sl_banishes");
-				return "skill " + act;
-			}
-			if((act == $skill[Batter Up!]) && ((my_fury() < 5) || (item_type(equipped_item($slot[weapon])) != "club")))
-			{
-				continue;
-			}
-			if((act == $skill[Asdon Martin: Spring-Loaded Front Bumper]) && contains_text(get_property("banishedMonsters"),"Spring-Loaded Front Bumper"))
-			{
-				continue;
-			}
-			if((act == $skill[Talk About Politics]) && (get_property("_pantsgivingBanish").to_int() >= 5))
-			{
-				continue;
-			}
-			if((act == $skill[Beancannon]) && (get_property("_beancannonUses").to_int() >= 5))
-			{
-				continue;
-			}
-			if((act == $skill[Beancannon]) && !($items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork \'n\' Pork \'n\' Pork \'n\' Beans, Shrub\'s Premium Baked Beans, Tesla\'s Electroplated Beans, Trader Olaf\'s Exotic Stinkbeans, World\'s Blackest-Eyed Peas] contains equipped_item($slot[Off-hand])))
-			{
-				continue;
-			}
-			if((act == $skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() >= 3))
-			{
-				continue;
-			}
-			if((act == $skill[Reflex Hammer]) && (get_property("_reflexHammerUsed").to_int() >= 3))
-			{
-				continue;
-			}
-			if(act == $skill[Baleful Howl])
-			{
-				if(get_property("sl_bat_howls").to_int() >= 10)
-					continue;
-				else
-				{
-					set_property("sl_bat_howls", get_property("sl_bat_howls").to_int() + 1);
-					set_property("sl_bat_howled", enemy);
-				}
-			}
-			set_property("sl_gremlinBanishes", get_property("sl_gremlinBanishes") + "(" + act + ")");
-			handleTracker(enemy, act, "sl_banishes");
-			return "skill " + act;
+			handleTracker(enemy, to_item(substring(banishAction, 5)), "sl_banishes");
 		}
+		else
+		{
+			print("Unable to track banisher behavior: " + banishAction, "red");
+		}
+		return banishAction;
 	}
 
 //	if(sl_have_skill($skill[Lunging Thrust-Smack]) && (my_mp() >= mp_cost($skill[Lunging Thrust-Smack])))

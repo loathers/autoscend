@@ -1318,42 +1318,14 @@ boolean canYellowRay()
 	return false;
 }
 
-string banisherCombatString(monster enemy, location loc)
+// private
+boolean[string] sl_reallyBanishesUsedAt(location loc)
 {
-	if(get_property("kingLiberated").to_boolean())
-	{
-		return "";
-	}
-
-	//Check that we actually want to banish this thing.
-
-
-	// Is it a special banish? (cocktail napkin?)
-
-	if(!($monsters[Animated Mahogany Nightstand, Animated Possessions, Animated Rustic Nightstand, Bubblemint Twins, Bullet Bill, Burly Sidekick, Chatty Pirate, Clingy Pirate (Female), Clingy Pirate (Male), Coaltergeist, Crusty Pirate, Doughbat, Drunk Goat, Evil Olive, Flock Of Stab-Bats, Knob Goblin Harem Guard, Knob Goblin Madam, Mad Wino, Mismatched Twins, Natural Spider, Plaid Ghost, Possessed Laundry Press, Procrastination Giant, Protagonist, Pygmy Headhunter, Pygmy Janitor, Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse, Sabre-Toothed Goat, Senile Lihc, Slick Lihc, Skeletal Sommelier, Snow Queen, Steam Elemental, Taco Cat, Tan Gnat, Tomb Asp, Tomb Servant, Wardr&ouml;b Nightstand, Warehouse Janitor, Upgraded Ram] contains enemy))
-	{
-		return "";
-	}
-
-	if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) == 0))
-	{
-		return "";
-	}
-	if((enemy == $monster[Burly Sidekick]) && !possessEquipment($item[Mohawk Wig]))
-	{
-		return "";
-	}
-	if((enemy == $monster[Pygmy Janitor]) && (get_property("hiddenTavernUnlock").to_int() < my_ascensions()))
-	{
-		return "";
-	}
-
 	string banished = get_property("banishedMonsters");
 	string[int] banishList = split_string(banished, ":");
 	monster[int] atLoc = get_monsters(loc);
-
-	//src/net/sourceforge/kolmafia/session/BanishManager.java
 	boolean[string] used;
+
 	for(int i=0; (i+1)<count(banishList); i = i + 3)
 	{
 		monster curMon = to_monster(banishList[i]);
@@ -1378,6 +1350,66 @@ string banisherCombatString(monster enemy, location loc)
 			}
 		}
 	}
+
+	return used;
+}
+
+boolean[string] sl_banishesUsedAt(location loc)
+{
+	if($locations[Next To That Barrel With Something Burning In It, Out By That Rusted-Out Car, Over Where The Old Tires Are, Near an Abandoned Refrigerator] contains loc)
+	{
+		boolean[string] gremlinBanishes;
+		foreach l in $locations[Next To That Barrel With Something Burning In It, Out By That Rusted-Out Car, Over Where The Old Tires Are, Near an Abandoned Refrigerator]
+		{
+			boolean[string] used = sl_reallyBanishesUsedAt(l);
+			foreach s in used
+			{
+				gremlinBanishes[s] = true;
+			}
+		}
+		return gremlinBanishes;
+	}
+	return sl_reallyBanishesUsedAt(loc);
+}
+
+boolean sl_wantToBanish(monster enemy, location loc)
+{
+	if(!($monsters[Animated Mahogany Nightstand, Animated Possessions, Animated Rustic Nightstand, Bubblemint Twins, Bullet Bill, Burly Sidekick, Chatty Pirate, Clingy Pirate (Female), Clingy Pirate (Male), Coaltergeist, Crusty Pirate, Doughbat, Drunk Goat, Evil Olive, Flock Of Stab-Bats, Knob Goblin Harem Guard, Knob Goblin Madam, Mad Wino, Mismatched Twins, Natural Spider, Plaid Ghost, Possessed Laundry Press, Procrastination Giant, Protagonist, Pygmy Headhunter, Pygmy Janitor, Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse, Sabre-Toothed Goat, Senile Lihc, Slick Lihc, Skeletal Sommelier, Snow Queen, Steam Elemental, Taco Cat, Tan Gnat, Tomb Asp, Tomb Servant, Wardr&ouml;b Nightstand, Warehouse Janitor, Upgraded Ram] contains enemy))
+	{
+		return false;
+	}
+
+	if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) == 0))
+	{
+		return false;
+	}
+	if((enemy == $monster[Burly Sidekick]) && !possessEquipment($item[Mohawk Wig]))
+	{
+		return false;
+	}
+	if((enemy == $monster[Pygmy Janitor]) && (get_property("hiddenTavernUnlock").to_int() < my_ascensions()))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+string banisherCombatString(monster enemy, location loc)
+{
+	if(get_property("kingLiberated").to_boolean())
+	{
+		return "";
+	}
+
+	//Check that we actually want to banish this thing.
+	if(!sl_wantToBanish(enemy, loc))
+		return "";
+
+	print("Finding a banisher to use on " + enemy + " at " + loc, "green");
+
+	//src/net/sourceforge/kolmafia/session/BanishManager.java
+	boolean[string] used = sl_banishesUsedAt(loc);
 
 	/*	If we have banished anything else in this zone, make sure we do not undo the banishing.
 		mad wino:batter up!:378:skeletal sommelier:KGB tranquilizer dart:381
@@ -1524,7 +1556,6 @@ string banisherCombatString(monster enemy, location loc)
 	{
 		return "item " + $item[Deathchucks];
 	}
-
 
 	return "";
 }
