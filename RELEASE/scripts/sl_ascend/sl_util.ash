@@ -1414,7 +1414,7 @@ string banisherCombatString(monster enemy, location loc)
 	}
 
 	What is the preference for this?
-	if(have_skill($skill[Creepy Grin]) && !get_property("_vmaskBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Creepy Grin])))
+	if(sl_have_skill($skill[Creepy Grin]) && !get_property("_vmaskBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Creepy Grin])))
 	{
 		return "skill " + $skill[Creepy Grin];
 	}
