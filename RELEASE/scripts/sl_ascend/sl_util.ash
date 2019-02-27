@@ -805,6 +805,8 @@ boolean loopHandlerDelay(string counterSetting, int threshold)
 
 boolean is100FamiliarRun()
 {
+	// Answers the question "am I not allowed to change my familiar?"
+	// Returns true for paths with no familiars
 	if(get_property("sl_100familiar") == $familiar[Egg Benedict])
 	{
 		if(have_familiar($familiar[Mosquito]))
@@ -2840,6 +2842,9 @@ boolean sl_have_familiar(familiar fam)
 	}
 	if($classes[Avatar Of Boris, Avatar Of Jarlsberg, Avatar Of Sneaky Pete, Ed] contains my_class())
 	{
+		return false;
+	}
+	if(sl_my_path() == "Dark Gyffte") {
 		return false;
 	}
 	if(!sl_is_valid(fam))
