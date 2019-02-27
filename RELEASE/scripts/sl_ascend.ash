@@ -12950,7 +12950,7 @@ boolean L8_trapperGroar()
 		}
 	}
 
-	if((item_amount($item[Groar\'s Fur]) > 0) || (item_amount($item[Winged Yeti Fur]) > 0))
+	if((item_amount($item[Groar\'s Fur]) > 0) || (item_amount($item[Winged Yeti Fur]) > 0) || (internalQuestStatus("questL08Trapper") == 5))
 	{
 		visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
 		if(item_amount($item[Dense Meat Stack]) >= 5)
