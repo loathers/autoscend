@@ -295,7 +295,8 @@ boolean fantasyRealmToken()
 		}
 	}
 
-	if(is100familiarRun())
+	// If we're not allowed to adventure without a familiar
+	if(is100familiarRun() && sl_have_familiar($familiar[Mosquito]))
 	{
 		return false;
 	}
