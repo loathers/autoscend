@@ -9,7 +9,7 @@ void bat_initializeSettings()
 		set_property("sl_getSteelOrgan", false);
 		set_property("sl_grimstoneFancyOilPainting", false);
 		set_property("sl_grimstoneOrnateDowsingRod", false);
-		set_property("sl_paranoia", 10);
+		set_property("sl_paranoia", 100);
 		set_property("sl_useCubeling", false);
 		set_property("sl_wandOfNagamar", false);
 	}
