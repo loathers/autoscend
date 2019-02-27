@@ -268,5 +268,11 @@ boolean settingFixer()
 		remove_property("sl_day4_init");
 	}
 
+	if(get_property("sl_paranoia") == "")
+	{
+		print("No paranoia value, we probably don't want to be paranoid...", "red");
+		set_property("sl_paranoia", -1);
+	}
+
 	return true;
 }
