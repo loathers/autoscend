@@ -759,6 +759,221 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option)
 	return retval;
 }
 
+string sl_latteDropName(location l) {
+	switch(l) {
+		case $location[The Mouldering Mansion]: return "ancient";
+		case $location[The Overgrown Lot]: return "basil";
+		case $location[Whitey's Grove]: return "belgian";
+		case $location[The Bugbear Pen]: return "bug-thistle";
+		case $location[Madness Bakery]: return "butternut";
+		case $location[The Black Forest]: return "cajun";
+		case $location[The Haunted Billiards Room]: return "chalk";
+		case $location[The Dire Warren]: return "carrot";
+		case $location[Barrrney's Barrr]: return "carrrdamom";
+		case $location[The Haunted Kitchen]: return "chili";
+		case $location[The Sleazy Back Alley]: return "cloves";
+		case $location[The Haunted Boiler Room]: return "coal";
+		case $location[The Icy Peak]: return "cocoa";
+		case $location[Battlefield (No Uniform)]: return "diet";
+		case $location[Itznotyerzitz Mine]: return "dwarf";
+		case $location[The Feeding Chamber]: return "filth";
+		case $location[The Road to the White Citadel]: return "flour";
+		case $location[The Fungal Nethers]: return "fungus";
+		case $location[The Hidden Park]: return "grass";
+		case $location[Cobb's Knob Barracks]: return "greasy";
+		case $location[The Daily Dungeon]: return "healing";
+		case $location[The Dark Neck of the Woods]: return "hellion";
+		case $location[Wartime Frat House (Hippy Disguise)]: return "greek";
+		case $location[The Old Rubee Mine]: return "grobold";
+		case $location[The Bat Hole Entrance]: return "guarna";
+		case $location[1st Floor, Shiawase-Mitsuhama Building]: return "gunpowder";
+		case $location[Hobopolis Town Square]: return "hobo";
+		case $location[The Haunted Library]: return "ink";
+		case $location[Wartime Hippy Camp (Frat Disguise)]: return "kombucha";
+		case $location[The Defiled Niche]: return "lihc";
+		case $location[The Arid, Extra-Dry Desert]: return "lizard";
+		case $location[Cobb's Knob Laboratory]: return "mega";
+		case $location[The Unquiet Garves]: return "mold";
+		case $location[The Briniest Deepests]: return "msg";
+		case $location[The Haunted Pantry]: return "noodles";
+		case $location[The Ice Hole]: return "norwhal";
+		case $location[The Old Landfill]: return "oil";
+		case $location[The Haunted Gallery]: return "paint";
+		case $location[The Stately Pleasure Dome]: return "paradise";
+		case $location[The Spooky Forest]: return "rawhide";
+		case $location[The Brinier Deepers]: return "rock";
+		case $location[The Briny Deeps]: return "salt";
+		case $location[Noob Cave]: return "sandalwood";
+		case $location[Cobb's Knob Kitchens]: return "sausage";
+		case $location[The Hole in the Sky]: return "space";
+		case $location[The Copperhead Club]: return "squash";
+		case $location[The Caliginous Abyss]: return "squamous";
+		case $location[The VERY Unquiet Garves]: return "teeth";
+		case $location[The Middle Chamber]: return "venom";
+		case $location[The Dark Elbow of the Woods]: return "vitamins";
+		case $location[The Dark Heart of the Woods]: return "wing";
+		default: return "";
+	}
+}
+
+boolean sl_latteDropAvailable(location l) {
+	// obviously no latte drops are available if you don't HAVE a latte
+	if(available_amount($item[latte lovers member's mug]) == 0)
+		return false;
+	string latteDrop = sl_latteDropName(l);
+	if(latteDrop == "")
+		return false;
+	return !get_property("latteUnlocks").contains_text(latteDrop);
+}
+
+string sl_latteTranslate(string ingredient)
+{
+	switch(ingredient.to_lower_case())
+	{
+		case "combat": return "wing";
+		case "noncombat": case "noncom": return "ink";
+		case "famxp": return "vitamins";
+		case "exp":
+			switch(my_primestat())
+			{
+				case $stat[Muscle]: return "vanilla";
+				case $stat[Mysticality]: return "pumpkin";
+				case $stat[Moxie]: return "cinnamon";
+			}
+			break;
+		case "fam": case "weight": case "famweight": return "rawhide";
+		case "prismatic": case "prism": case "pris": return "paint";
+		case "meat": return "cajun";
+		case "item": return "carrot";
+	}
+	return ingredient.to_lower_case();
+}
+
+boolean sl_latteRefill(string want1, string want2, string want3, boolean force)
+{
+	if(available_amount($item[latte lovers member's mug]) == 0)
+		return false;
+
+	if(get_property("_latteRefillsUsed").to_int() >= 3)
+		return false;
+
+	// don't want to waste banishes
+	if(!get_property("_latteBanishUsed").to_boolean() && !force)
+		return false;
+
+	boolean [string] unlocked;
+	string [int] unlocked_array = get_property("latteUnlocks").split_string(",");
+	foreach i,s in unlocked_array
+	{
+		unlocked[s] = true;
+	}
+
+	want1 = sl_latteTranslate(want1);
+	want2 = sl_latteTranslate(want2);
+	want3 = sl_latteTranslate(want3);
+
+	string [int] wants;
+	if(want1 != "")
+	{
+		if(!unlocked[want1])
+			return false;
+		wants[wants.count()] = want1;
+	}
+	if(want2 != "")
+	{
+		if(!unlocked[want2])
+			return false;
+		wants[wants.count()] = want2;
+	}
+	if(want3 != "")
+	{
+		if(!unlocked[want3])
+			return false;
+		wants[wants.count()] = want3;
+	}
+
+	boolean haveWant(string want)
+	{
+		want = sl_latteTranslate(want);
+		foreach i,s in wants
+		{
+			if(s == want)
+				return true;
+		}
+		return false;
+	}
+
+	boolean tryAddWant(string want)
+	{
+		if(wants.count() >= 3 || haveWant(want))
+			return false;
+		want = sl_latteTranslate(want);
+		if(!unlocked[want])
+			return false;
+
+		wants[wants.count()] = want;
+		return true;
+	}
+
+	if(my_class() == $class[Vampyre])
+		tryAddWant("healing");
+
+	if(!haveWant("combat"))
+		tryAddWant("noncombat");
+
+	tryAddWant("item");
+	tryAddWant("meat");
+
+	if(my_familiar() != $familiar[none])
+		tryAddWant("famweight");
+
+	tryAddWant("exp");
+	tryAddWant("grass");
+
+	if(my_familiar() != $familiar[none])
+		tryAddWant("famxp");
+
+	// just to make sure we have at least 3 ingredients
+	foreach want in $strings[pumpkin, cinnamon, vanilla]
+		tryAddWant(want);
+
+	if(wants.count() < 3)
+		abort("Something went terribly wrong while trying to refill latte. Yikes!");
+
+	cli_execute("latte refill " + wants[0] + " " + wants[1] + " " + wants[2]);
+	return true;
+}
+
+boolean sl_latteRefill(string want1, string want2, string want3)
+{
+	return sl_latteRefill(want1, want2, want3, false);
+}
+
+boolean sl_latteRefill(string want1, string want2, boolean force)
+{
+	return sl_latteRefill(want1, want2, "", force);
+}
+
+boolean sl_latteRefill(string want1, string want2)
+{
+	return sl_latteRefill(want1, want2, false);
+}
+
+boolean sl_latteRefill(string want1, boolean force)
+{
+	return sl_latteRefill(want1, "", force);
+}
+
+boolean sl_latteRefill(string want1)
+{
+	return sl_latteRefill(want1, false);
+}
+
+boolean sl_latteRefill()
+{
+	return sl_latteRefill("");
+}
+
 boolean sl_voteSetup()
 {
 	return sl_voteSetup(0,0,0);

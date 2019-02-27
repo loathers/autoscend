@@ -559,6 +559,16 @@ boolean neverendingPartyCombat(stat st);					//Defined in sl_ascend/sl_mr2018.as
 boolean neverendingPartyCombat(effect eff);					//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat();							//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyAvailable();						//Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteDropName(location l); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteDropAvailable(location l); // Defined in sl_ascend/sl_mr2018.ash
+string sl_latteTranslate(string ingredient); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteRefill(string want1, string want2, string want3, boolean force); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteRefill(string want1, string want2, string want3); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteRefill(string want1, string want2, boolean force); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteRefill(string want1, string want2); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteRefill(string want1, boolean force); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteRefill(string want1); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteRefill(); // Defined in sl_ascend/sl_mr2018.ash
 boolean sl_voteSetup();										//Defined in sl_ascend/sl_mr2018.ash
 boolean sl_voteSetup(int candidate);						//Defined in sl_ascend/sl_mr2018.ash
 boolean sl_voteSetup(int candidate, int first, int second);	//Defined in sl_ascend/sl_mr2018.ash

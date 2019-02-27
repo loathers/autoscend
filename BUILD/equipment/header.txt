@@ -37,6 +37,10 @@
 ### data: Doesn't matter, but put something so I don't have to support dataless conditions
 ### True when you expect a protonic ghost report
 ### Pretty much just for the protonic accelerator pack
+## latte
+### data: Doesn't matter, but put something so I don't have to support dataless conditions
+### True when there is a latte unlock available in the area (that you don't have, of course)
+### Pretty much just for the latte
 # An item can be listed multiple times (presumably with different conditionals)
 # First item found that is available, can be equipped, and meets its conditions (if any) will be used
 

@@ -13684,6 +13684,7 @@ boolean doTasks()
 
 	oldPeoplePlantStuff();
 	use_barrels();
+	sl_latteRefill();
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;

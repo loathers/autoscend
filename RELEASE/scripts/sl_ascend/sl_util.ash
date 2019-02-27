@@ -1403,6 +1403,11 @@ string banisherCombatString(monster enemy, location loc)
 
 	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
 
+	if(sl_have_skill($skill[Throw Latte on Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
+	{
+		return "skill " + $skill[Throw Latte on Opponent];
+	}
+
 	if(sl_have_skill($skill[Give Your Opponent The Stinkeye]) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
 	{
 		return "skill " + $skill[Give Your Opponent The Stinkeye];

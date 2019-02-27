@@ -1,6 +1,7 @@
 # Off-hands (including weapons, which require dual wielding)
 none	path:Way of the Surprising Fist
 Lead Umbrella	path:Nuclear Autumn;!effect:Rad-Pro Tected
+latte lovers member's mug	latte:true
 Fake Washboard	mainstat:Muscle
 Basaltamander Buckler	mainstat:Mysticality
 Barrel Lid

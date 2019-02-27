@@ -902,6 +902,12 @@ string sl_combatHandler(int round, string opp, string text)
 			handleTracker(enemy, $skill[Gallapagosian Mating Call], "sl_sniffs");
 			return useSkill($skill[Gallapagosian Mating Call]);
 		}
+
+		if(canUse($skill[Offer Latte to Opponent]) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
+		{
+			handleTracker(enemy, $skill[Offer Latte to Opponent], "sl_sniffs");
+			return useSkill($skill[Offer Latte to Opponent]);
+		}
 	}
 
 	if((canUse($item[Rock Band Flyers]) || canUse($item[Jam Band Flyers])) && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("sl_ignoreFlyer").to_boolean())
