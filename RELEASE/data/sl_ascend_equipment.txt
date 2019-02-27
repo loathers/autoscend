@@ -247,39 +247,40 @@ holster	8	toy sixgun
 # Off-hands (including weapons, which require dual wielding)
 off-hand	0	none	path:Way of the Surprising Fist
 off-hand	1	Lead Umbrella	path:Nuclear Autumn;!effect:Rad-Pro Tected
-off-hand	2	Fake Washboard	mainstat:Muscle
-off-hand	3	Basaltamander Buckler	mainstat:Mysticality
-off-hand	4	Barrel Lid
-off-hand	5	Jarlsberg's pan (Cosmic portal mode)	class:Avatar of Jarlsberg
-off-hand	6	Jarlsberg's pan	mainstat:Mysticality
-off-hand	7	Tesla's Electroplated Beans	skill:Beancannon;!prop:_beancannonUses=5
-off-hand	8	Mixed Garbanzos and Chickpeas	skill:Beancannon;!prop:_beancannonUses=5
-off-hand	9	Hellfire Spicy Beans	skill:Beancannon;!prop:_beancannonUses=5
-off-hand	10	Frigid Northern Beans	skill:Beancannon;!prop:_beancannonUses=5
-off-hand	11	World's Blackest-Eyed Peas	skill:Beancannon;!prop:_beancannonUses=5
-off-hand	12	Trader Olaf's Exotic Stinkbeans	skill:Beancannon;!prop:_beancannonUses=5
-off-hand	13	Pork 'n' Pork 'n' Pork 'n' Beans	skill:Beancannon;!prop:_beancannonUses=5
-off-hand	14	Heimz Fortified Kidney Beans	skill:Beancannon;!prop:_beancannonUses=5
-off-hand	15	Ouija Board, Ouija Board	class:Turtle Tamer
-off-hand	16	Kramco Sausage-O-Matic&trade;
-off-hand	17	Operation Patriot Shield
-off-hand	18	Ox-head Shield
-off-hand	19	Latte Lovers Member's Mug
-off-hand	20	KoL Con 13 Snowglobe
-off-hand	21	astral shield
-off-hand	22	Keg Shield
-off-hand	23	Wicker Shield
-off-hand	24	Sawblade Shield
-off-hand	25	Yorick
-off-hand	26	Party Crasher
-off-hand	27	Spiked Femur
-off-hand	28	Hot Plate
-off-hand	29	Oversized Pizza Cutter
-off-hand	30	Cardboard Wakizashi
-off-hand	31	Pitchfork
-off-hand	32	Sabre Teeth
-off-hand	33	Knob Goblin Scimitar
-off-hand	34	Turtle Totem
+off-hand	2	latte lovers member's mug	latte:true
+off-hand	3	Fake Washboard	mainstat:Muscle
+off-hand	4	Basaltamander Buckler	mainstat:Mysticality
+off-hand	5	Barrel Lid
+off-hand	6	Jarlsberg's pan (Cosmic portal mode)	class:Avatar of Jarlsberg
+off-hand	7	Jarlsberg's pan	mainstat:Mysticality
+off-hand	8	Tesla's Electroplated Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	9	Mixed Garbanzos and Chickpeas	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	10	Hellfire Spicy Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	11	Frigid Northern Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	12	World's Blackest-Eyed Peas	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	13	Trader Olaf's Exotic Stinkbeans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	14	Pork 'n' Pork 'n' Pork 'n' Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	15	Heimz Fortified Kidney Beans	skill:Beancannon;!prop:_beancannonUses=5
+off-hand	16	Ouija Board, Ouija Board	class:Turtle Tamer
+off-hand	17	Kramco Sausage-O-Matic&trade;
+off-hand	18	Operation Patriot Shield
+off-hand	19	Ox-head Shield
+off-hand	20	Latte Lovers Member's Mug
+off-hand	21	KoL Con 13 Snowglobe
+off-hand	22	astral shield
+off-hand	23	Keg Shield
+off-hand	24	Wicker Shield
+off-hand	25	Sawblade Shield
+off-hand	26	Yorick
+off-hand	27	Party Crasher
+off-hand	28	Spiked Femur
+off-hand	29	Hot Plate
+off-hand	30	Oversized Pizza Cutter
+off-hand	31	Cardboard Wakizashi
+off-hand	32	Pitchfork
+off-hand	33	Sabre Teeth
+off-hand	34	Knob Goblin Scimitar
+off-hand	35	Turtle Totem
 
 # Good ol' pants
 pants	0	Pantsgiving
