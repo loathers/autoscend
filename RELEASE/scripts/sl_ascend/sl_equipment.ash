@@ -116,7 +116,7 @@ void equipBaselineGear()
 							this_failed = true;
 						break;
 					case "latte":
-						if(!sl_latteDropAvailable(my_location())
+						if(!sl_latteDropAvailable(my_location()))
 							this_failed = true;
 						break;
 					default:
