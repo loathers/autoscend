@@ -4083,7 +4083,7 @@ boolean L13_towerNSFinal()
 				abort("User wanted to stay in run (sl_stayInRun), we are done.");
 			}
 
-			if($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Gelatinous Noob] contains my_class())
+			if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))
 			{
 				set_property("sl_disableAdventureHandling", false);
 				if(get_property("sl_sorceress") == "finished")
