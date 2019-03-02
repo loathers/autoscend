@@ -621,6 +621,32 @@ boolean basicFamiliarOverrides()
 }
 
 
+boolean LX_burnDelay()
+{
+	location burnZone = solveDelayZone();
+	if(burnZone != $location[none])
+	{
+		if(sl_voteMonster(true))
+		{
+			print("Burn some delay somewhere (voting), if we found a place!", "green");
+			if(sl_voteMonster(true, burnZone, ""))
+			{
+				return true;
+			}
+		}
+		if(isOverdueDigitize())
+		{
+			print("Burn some delay somewhere (digitize), if we found a place!", "green");
+			if(ccAdv(burnZone))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 boolean LX_universeFrat()
 {
 	if(my_daycount() >= 2)
@@ -7216,22 +7242,6 @@ boolean L12_sonofaBeach()
 		}
 	}
 
-	if(possessEquipment($item[&quot;I voted!&quot; sticker]) && (my_adventures() > 15))
-	{
-		if(have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
-		{
-			boolean retval = false;
-			if(sl_voteMonster())
-			{
-				set_property("sl_combatDirective", "start;skill macrometeorite");
-				retval = sl_voteMonster(true, $location[Sonofa Beach], "");
-				set_property("sl_combatDirective", "");
-			}
-			if(retval || get_property("cc_gremlins") != "finished")
-				return retval;
-		}
-	}
-
 	if((my_class() == $class[Ed]) && (item_amount($item[Talisman of Horus]) == 0))
 	{
 		return false;
@@ -7326,10 +7336,6 @@ boolean L12_sonofaPrefix()
 	{
 		return false;
 	}
-	if(!(sl_get_campground() contains $item[Source Terminal]))
-	{
-		return false;
-	}
 
 	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Lobsterfrogman])
 	{
@@ -7358,6 +7364,30 @@ boolean L12_sonofaPrefix()
 			handleFamiliar("stat");
 			return true;
 		}
+	}
+
+	if(!(sl_get_campground() contains $item[Source Terminal]))
+	{
+		if(possessEquipment($item[&quot;I voted!&quot; sticker]))
+		{
+			if(sl_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
+			{
+				if(sl_voteMonster(true))
+				{
+					if(item_amount($item[barrel of gunpowder]) < 4)
+					{
+						set_property("sl_doCombatCopy", "yes");
+					}
+					set_property("sl_combatDirective", "start;skill macrometeorite");
+					ccAdv(1, $location[Sonofa Beach]);
+					set_property("sl_combatDirective", "");
+					set_property("sl_doCombatCopy", "no");
+					handleFamiliar("item");
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	if((my_class() == $class[Ed]) && (item_amount($item[Talisman of Horus]) == 0))
@@ -13844,26 +13874,7 @@ boolean doTasks()
 	if(L5_findKnob())					return true;
 	if(LM_edTheUndying())				return true;
 
-	location burnZone = solveDelayZone();
-	if(burnZone != $location[Barf Mountain])
-	{
-		if(sl_voteMonster(true))
-		{
-			print("Burn some delay somewhere (voting), if we found a place!", "green");
-			if(sl_voteMonster(true, burnZone, ""))
-			{
-				return true;
-			}
-		}
-		if(isOverdueDigitize())
-		{
-			print("Burn some delay somewhere (digitize), if we found a place!", "green");
-			if(ccAdv(burnZone))
-			{
-				return true;
-			}
-		}
-	}
+	if(LX_burnDelay())					return true;
 
 	if((my_class() != $class[Ed]) && (my_level() >= 9) && (my_daycount() == 1))
 	{

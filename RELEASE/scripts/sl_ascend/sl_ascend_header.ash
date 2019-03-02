@@ -47,6 +47,7 @@ boolean LX_witchess();
 boolean LX_chateauPainting();
 boolean LX_faxing();
 boolean LX_universeFrat();
+boolean LX_burnDelay();
 boolean LX_loggingHatchet();
 
 
