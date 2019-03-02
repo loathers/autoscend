@@ -7370,20 +7370,17 @@ boolean L12_sonofaPrefix()
 	{
 		if(possessEquipment($item[&quot;I voted!&quot; sticker]))
 		{
-			if(sl_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
+			if(sl_voteMonster() && sl_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
 			{
-				if(sl_voteMonster(true))
+				if(item_amount($item[barrel of gunpowder]) < 4)
 				{
-					if(item_amount($item[barrel of gunpowder]) < 4)
-					{
-						set_property("sl_doCombatCopy", "yes");
-					}
-					set_property("sl_combatDirective", "start;skill macrometeorite");
-					sl_voteMonster(true, $location[Sonofa Beach], "")
-					set_property("sl_combatDirective", "");
-					set_property("sl_doCombatCopy", "no");
-					return true;
+					set_property("sl_doCombatCopy", "yes");
 				}
+				set_property("sl_combatDirective", "start;skill macrometeorite");
+				sl_voteMonster(false, $location[Sonofa Beach], "")
+				set_property("sl_combatDirective", "");
+				set_property("sl_doCombatCopy", "no");
+				return true;
 			}
 		}
 		return false;
@@ -7457,9 +7454,13 @@ boolean L12_sonofaPrefix()
 	{
 		if(have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
 		{
-			if(sl_voteMonster(true))
+			if(sl_voteMonster())
 			{
 				set_property("sl_combatDirective", "start;skill macrometeorite");
+				if(!have_equipped($item[&quot;I voted!&quot; sticker]))
+				{
+					equip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
+				}
 			}
 			else
 			{
