@@ -553,6 +553,11 @@ void consumeStuff()
 	sl_sausageGrind(item_amount($item[magical sausage casing]));
 	sl_sausageEatEmUp();
 
+	if (get_property("sl_limitConsume").to_boolean())
+	{
+		return;
+	}
+
 	if(ed_eatStuff())
 	{
 		return;
