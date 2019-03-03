@@ -7377,7 +7377,7 @@ boolean L12_sonofaPrefix()
 					set_property("sl_doCombatCopy", "yes");
 				}
 				set_property("sl_combatDirective", "start;skill macrometeorite");
-				sl_voteMonster(false, $location[Sonofa Beach], "")
+				sl_voteMonster(false, $location[Sonofa Beach], "");
 				set_property("sl_combatDirective", "");
 				set_property("sl_doCombatCopy", "no");
 				return true;
