@@ -258,9 +258,14 @@ boolean bat_consumption()
 			break;
 	}
 
-	if(my_adventures() <= 1)
+	if(my_adventures() <= 1 && my_fullness() < fullness_limit())
 	{
-		consume_first($items[bloodstick, bottle of Sanguiovese]);
+		consume_first($items[bloodstick]);
+	}
+
+	if(my_adventures() <= 1 && my_inebriety() < inebriety_limit())
+	{
+		consume_first($items[bottle of Sanguiovese]);
 	}
 
 	return true;
