@@ -548,6 +548,7 @@ boolean fantasyRealmToken();								//Defined in sl_ascend/sl_mr2018.ash
 boolean songboomSetting(string goal);						//Defined in sl_ascend/sl_mr2018.ash
 boolean songboomSetting(int choice);						//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubNap();										//Defined in sl_ascend/sl_mr2018.ash
+boolean fightClubStats();									//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa();										//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa(int option);							//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa(effect eff);							//Defined in sl_ascend/sl_mr2018.ash

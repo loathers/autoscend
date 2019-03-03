@@ -2040,6 +2040,7 @@ boolean dailyEvents()
 
 	kgb_getMartini();
 	fightClubNap();
+	fightClubStats();
 
 	chateaumantegna_useDesk();
 
