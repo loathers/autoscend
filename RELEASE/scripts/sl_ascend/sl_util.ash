@@ -4948,11 +4948,7 @@ location solveDelayZone()
 {
 	int[location] delayableZones = zone_delayable();
 	int amt = count(delayableZones);
-	location burnZone = $location[Noob Cave];
-	if(zone_isAvailable($location[Barf Mountain]))
-	{
-		burnZone = $location[Barf Mountain];
-	}
+	location burnZone = $location[none];
 	if(amt != 0)
 	{
 		int index = 0;
