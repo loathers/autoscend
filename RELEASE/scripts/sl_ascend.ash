@@ -14160,6 +14160,10 @@ void sl_begin()
 	{
 		jello_startAscension(page);
 	}
+	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you"))
+	{
+		bat_startAscension();
+	}
 
 #	if(my_class() == $class[Astral Spirit])
 	if(to_string(my_class()) == "Astral Spirit")

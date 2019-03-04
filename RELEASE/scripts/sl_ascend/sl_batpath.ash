@@ -1,5 +1,12 @@
 script "sl_batpath.ash"
 
+void bat_startAscension()
+{
+	if(my_path() == "Dark Gyffte") {
+		visit_url("choice.php?whichchoice=1343&option=1");
+		bat_reallyPickSkills(20);
+	}
+}
 void bat_initializeSettings()
 {
 	if(my_path() == "Dark Gyffte")
@@ -29,7 +36,10 @@ void bat_initializeDay(int day)
 		set_property("sl_bat_howls", 0);
 		set_property("sl_bat_howled", "");
 		set_property("sl_bat_soulmonster", "");
-		bat_reallyPickSkills(20);
+		if (bat_shouldPickSkills(20))
+		{
+			bat_reallyPickSkills(20);
+		}
 	}
 }
 
