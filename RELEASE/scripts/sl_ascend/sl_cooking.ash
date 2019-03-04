@@ -482,6 +482,10 @@ boolean canDrink(item toDrink)
 	{
 		return false;
 	}
+	if(sl_my_path() == "Dark Gyffte")
+	{
+		return ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bottle of Sanguiovese] contains toDrink);
+	}
 	if(sl_my_path() == "KOLHS")
 	{
 		if(!($items[Bottle of Fruity &quot;Wine&quot;, Can of the Cheapest Beer, Single Swig of Vodka, Steel Margarita] contains toDrink))
@@ -533,7 +537,10 @@ boolean canEat(item toEat)
 	{
 		return false;
 	}
-
+	if(sl_my_path() == "Dark Gyffte")
+	{
+		return ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat);
+	}
 	if(!glover_usable(toEat))
 	{
 		return false;

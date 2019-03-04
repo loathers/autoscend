@@ -246,7 +246,7 @@ boolean bat_consumption()
 
 	if ((my_level() >= 7) &&
 		(spleen_left() >= 3) &&
-		(fullness_left() <= 3) &&
+		(fullness_left() >= 2) &&
 		(item_amount($item[blood-soaked sponge cake]) > 0) ||
 		 (item_amount($item[blood bag]) > 0 && (1 <= item_amount($item[filthy poultice]) + item_amount($item[gauze garter]))))
 	{
@@ -254,14 +254,14 @@ boolean bat_consumption()
 		ccEat(1, $item[blood-soaked sponge cake]);
 		return true;
 	}
-	if (item_amount($item[blood bag]) > 0 && inebriety_left() > 0)
+	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0 && inebriety_left() > 0)
 	{
 		// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
 		if(!consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
 			return true;
 	}
 
-	if (item_amount($item[blood bag]) > 0 && fullness_left() > 0)
+	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0 && fullness_left() > 0)
 	{
 		// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
 		if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
