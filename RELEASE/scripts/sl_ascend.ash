@@ -4699,7 +4699,16 @@ boolean L13_towerNSContests()
 				doRest();
 			}
 			buffMaintain($effect[Big], 15, 1, 1);
-			switch(ns_crowd2())
+			stat crowd_stat = ns_crowd2();
+			if (my_path() == "Dark Gyffte")
+			{
+				// This could be generalized for stat equalizer potions, but that seems marginal
+				if (crowd_stat == $stat[muscle] && have_skill($skill[Preternatural Strength]))
+					crowd_stat = $stat[mysticality];
+				if (crowd_stat == $stat[moxie] && have_skill($skill[Sinister Charm]))
+					crowd_stat = $stat[mysticality];
+			}
+			switch(crowd_stat)
 			{
 			case $stat[moxie]:
 				foreach eff in $effects[Almost Cool, Busy Bein\' Delicious, Butt-Rock Hair, Funky Coal Patina, Impeccable Coiffure, Liquidy Smoky, Locks Like the Raven, Lycanthropy\, Eh?, Memories of Puppy Love, Newt Gets In Your Eyes, Notably Lovely, Oiled Skin, Pill Power, Radiating Black Body&trade;, Seriously Mutated,  Spiky Hair, Sugar Rush, Standard Issue Bravery, Superhuman Sarcasm, Tomato Power, Vital]
