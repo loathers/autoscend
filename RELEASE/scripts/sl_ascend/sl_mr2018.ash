@@ -1232,7 +1232,9 @@ boolean fightClubStats()
 
 	if(get_property("_daycareGymScavenges").to_int() != 1)
 	{
-		abort("fightClubtracking failed");
+		// Seems like we can't trust KoLmafia to set this for us
+		// abort("fightClubtracking failed");
+		set_property("_daycareGymScavenges", 1);
 	}
 
 	//Do I need to leave as well, I think I do...
