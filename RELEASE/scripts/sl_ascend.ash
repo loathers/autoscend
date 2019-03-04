@@ -7148,9 +7148,15 @@ boolean L12_gremlins()
 	{
 		equip($item[Reinforced Beaded Headband]);
 	}
+	if (item_amount($item[astral shield]) > 0)
+	{
+		equip($item[astral shield]);
+	}
 	useCocoon();
 
 	handleFamiliar("init");
+	// TODO: find a way to songboom DR without it getting overridden every turn
+	// songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
 		ccAdv(1, $location[Next to that barrel with something burning in it], "ccsJunkyard");
@@ -11304,6 +11310,7 @@ boolean L12_startWar()
 	}
 	buffMaintain($effect[Snow Shoes], 0, 1, 1);
 	buffMaintain($effect[Become Superficially Interested], 0, 1, 1);
+	
 	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
