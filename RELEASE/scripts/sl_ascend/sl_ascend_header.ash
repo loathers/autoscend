@@ -548,6 +548,7 @@ boolean fantasyRealmToken();								//Defined in sl_ascend/sl_mr2018.ash
 boolean songboomSetting(string goal);						//Defined in sl_ascend/sl_mr2018.ash
 boolean songboomSetting(int choice);						//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubNap();										//Defined in sl_ascend/sl_mr2018.ash
+boolean fightClubStats();									//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa();										//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa(int option);							//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa(effect eff);							//Defined in sl_ascend/sl_mr2018.ash
@@ -902,6 +903,7 @@ boolean canGroundhog(location loc);							//Defined in sl_ascend/sl_groundhog.as
 boolean groundhogAbort(location loc);						//Defined in sl_ascend/sl_groundhog.ash
 boolean LM_groundhog();										//Defined in sl_ascend/sl_groundhog.ash
 
+void bat_startAscension(); // Defined in sl_ascend/sl_batpath.ash
 void bat_initializeSettings(); // Defined in sl_ascend/sl_batpath.ash
 void bat_initializeDay(int day); // Defined in sl_ascend/sl_batpath.ash
 int bat_maxHPCost(skill sk); // Defined in sl_ascend/sl_batpath.ash

@@ -1,5 +1,12 @@
 script "sl_batpath.ash"
 
+void bat_startAscension()
+{
+	if(my_path() == "Dark Gyffte") {
+		visit_url("choice.php?whichchoice=1343&option=1");
+		bat_reallyPickSkills(20);
+	}
+}
 void bat_initializeSettings()
 {
 	if(my_path() == "Dark Gyffte")
@@ -12,6 +19,7 @@ void bat_initializeSettings()
 		set_property("sl_paranoia", 10);
 		set_property("sl_useCubeling", false);
 		set_property("sl_wandOfNagamar", false);
+		set_property("sl_getStarKey", true);
 	}
 }
 
@@ -29,7 +37,10 @@ void bat_initializeDay(int day)
 		set_property("sl_bat_howls", 0);
 		set_property("sl_bat_howled", "");
 		set_property("sl_bat_soulmonster", "");
-		bat_reallyPickSkills(20);
+		if (bat_shouldPickSkills(20))
+		{
+			bat_reallyPickSkills(20);
+		}
 	}
 }
 
@@ -244,28 +255,40 @@ boolean bat_consumption()
 		return false;
 	}
 
-	while(item_amount($item[blood bag]) > 0 && my_fullness() < fullness_limit())
+	if ((my_level() >= 7) &&
+		(spleen_left() >= 3) &&
+		(fullness_left() >= 2) &&
+		(item_amount($item[blood-soaked sponge cake]) > 0) ||
+		 (item_amount($item[blood bag]) > 0 && (1 <= item_amount($item[filthy poultice]) + item_amount($item[gauze garter]))))
 	{
-		// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
-		if(!consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
-			break;
+		ccChew(1, $item[dieting pill]);
+		ccEat(1, $item[blood-soaked sponge cake]);
+		return true;
 	}
-
-	while(item_amount($item[blood bag]) > 0 && my_inebriety() < inebriety_limit())
+	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0 && inebriety_left() > 0)
 	{
 		// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
 		if(!consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
-			break;
+			return true;
 	}
 
-	if(my_adventures() <= 1 && my_fullness() < fullness_limit())
+	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0 && fullness_left() > 0)
 	{
-		consume_first($items[bloodstick]);
+		// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
+		if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
+			return true;
 	}
 
-	if(my_adventures() <= 1 && my_inebriety() < inebriety_limit())
+	if(my_adventures() <= 1 && fullness_left() > 0)
 	{
-		consume_first($items[bottle of Sanguiovese]);
+		if (consume_first($items[bloodstick]))
+			return true;
+	}
+
+	if(my_adventures() <= 1 && inebriety_left() > 0)
+	{
+		if (consume_first($items[bottle of Sanguiovese]))
+			return true;
 	}
 
 	return true;

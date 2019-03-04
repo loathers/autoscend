@@ -2040,6 +2040,7 @@ boolean dailyEvents()
 
 	kgb_getMartini();
 	fightClubNap();
+	fightClubStats();
 
 	chateaumantegna_useDesk();
 
@@ -4698,7 +4699,16 @@ boolean L13_towerNSContests()
 				doRest();
 			}
 			buffMaintain($effect[Big], 15, 1, 1);
-			switch(ns_crowd2())
+			stat crowd_stat = ns_crowd2();
+			if (my_path() == "Dark Gyffte")
+			{
+				// This could be generalized for stat equalizer potions, but that seems marginal
+				if (crowd_stat == $stat[muscle] && have_skill($skill[Preternatural Strength]))
+					crowd_stat = $stat[mysticality];
+				if (crowd_stat == $stat[moxie] && have_skill($skill[Sinister Charm]))
+					crowd_stat = $stat[mysticality];
+			}
+			switch(crowd_stat)
 			{
 			case $stat[moxie]:
 				foreach eff in $effects[Almost Cool, Busy Bein\' Delicious, Butt-Rock Hair, Funky Coal Patina, Impeccable Coiffure, Liquidy Smoky, Locks Like the Raven, Lycanthropy\, Eh?, Memories of Puppy Love, Newt Gets In Your Eyes, Notably Lovely, Oiled Skin, Pill Power, Radiating Black Body&trade;, Seriously Mutated,  Spiky Hair, Sugar Rush, Standard Issue Bravery, Superhuman Sarcasm, Tomato Power, Vital]
@@ -7147,9 +7157,15 @@ boolean L12_gremlins()
 	{
 		equip($item[Reinforced Beaded Headband]);
 	}
+	if (item_amount($item[astral shield]) > 0)
+	{
+		equip($item[astral shield]);
+	}
 	useCocoon();
 
 	handleFamiliar("init");
+	// TODO: find a way to songboom DR without it getting overridden every turn
+	// songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
 		ccAdv(1, $location[Next to that barrel with something burning in it], "ccsJunkyard");
@@ -7994,6 +8010,10 @@ boolean L12_orchardStart()
 boolean L12_orchardFinalize()
 {
 	if(get_property("sl_orchard") != "done")
+	{
+		return false;
+	}
+	if(!get_property("sl_hippyInstead").to_boolean() && (get_property("hippiesDefeated").to_int() < 64))
 	{
 		return false;
 	}
@@ -11303,7 +11323,8 @@ boolean L12_startWar()
 	}
 	buffMaintain($effect[Snow Shoes], 0, 1, 1);
 	buffMaintain($effect[Become Superficially Interested], 0, 1, 1);
-	if((my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
+	
+	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
 	}
@@ -14138,6 +14159,10 @@ void sl_begin()
 	else if(contains_text(page, "Welcome to the Kingdom, Gelatinous Noob"))
 	{
 		jello_startAscension(page);
+	}
+	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you"))
+	{
+		bat_startAscension();
 	}
 
 #	if(my_class() == $class[Astral Spirit])

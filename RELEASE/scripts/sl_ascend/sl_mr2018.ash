@@ -1208,3 +1208,37 @@ boolean fightClubSpa(int option)
 
 	return true;
 }
+
+boolean fightClubStats()
+{
+	if(!is_unrestricted($item[Boxing Day care package]))
+	{
+		return false;
+	}
+	if(!get_property("daycareOpen").to_boolean())
+	{
+		return false;
+	}
+	if(get_property("_daycareGymScavenges").to_int() > 0)
+	{
+		return false;
+	}
+
+	string page = visit_url("place.php?whichplace=town_wrong&action=townwrong_boxingdaycare", false);
+	// Enter the Boxing Daycare
+	page = visit_url("choice.php?pwd=&whichchoice=1334&option=3");
+	// Scavenge for gym equipment
+	page = visit_url("choice.php?pwd=&whichchoice=1336&option=2");
+
+	if(get_property("_daycareGymScavenges").to_int() != 1)
+	{
+		// Seems like we can't trust KoLmafia to set this for us
+		// abort("fightClubtracking failed");
+		set_property("_daycareGymScavenges", 1);
+	}
+
+	//Do I need to leave as well, I think I do...
+	page = visit_url("choice.php?pwd=&whichchoice=1334&option=4");
+
+	return true;
+}
