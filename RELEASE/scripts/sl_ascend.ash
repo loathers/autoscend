@@ -8004,6 +8004,10 @@ boolean L12_orchardFinalize()
 	{
 		return false;
 	}
+	if(!get_property("sl_hippyInstead").to_boolean() && (get_property("hippiesDefeated").to_int() < 64))
+	{
+		return false;
+	}
 	set_property("sl_orchard", "finished");
 	if(item_amount($item[A Light that Never Goes Out]) == 1)
 	{
