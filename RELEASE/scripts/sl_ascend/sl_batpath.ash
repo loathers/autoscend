@@ -19,6 +19,7 @@ void bat_initializeSettings()
 		set_property("sl_paranoia", 10);
 		set_property("sl_useCubeling", false);
 		set_property("sl_wandOfNagamar", false);
+		set_property("sl_getStarKey", true);
 	}
 }
 
