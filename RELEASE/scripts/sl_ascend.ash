@@ -12038,7 +12038,7 @@ boolean L9_twinPeak()
 			}
 		}
 
-		if(elemental_resist($element[stench]) > 4)
+		if(elemental_resist($element[stench]) >= 4)
 		{
 			attemptNum = 1;
 			attempt = true;
@@ -13833,7 +13833,7 @@ boolean doTasks()
 			{
 				songboomSetting(3);
 			}
-			else if((sl_my_path() == "Disguises Delimit") && (get_property("sl_crypt") != "finished") && (get_property("_songboomCounter").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
+			else if((sl_my_path() == "Disguises Delimit") && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
 			{
 				songboomSetting(1);
 			}
