@@ -484,7 +484,7 @@ boolean canDrink(item toDrink)
 	}
 	if(sl_my_path() == "Dark Gyffte")
 	{
-		return ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bottle of Sanguiovese] contains toDrink);
+		return ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink);
 	}
 	if(sl_my_path() == "KOLHS")
 	{
