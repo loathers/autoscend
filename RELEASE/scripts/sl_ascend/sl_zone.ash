@@ -455,6 +455,9 @@ generic_t zone_combatMod(location loc)
 	case $location[Wartime Hippy Camp (Frat Disguise)]:
 		value = -80;
 		break;
+	case $location[Wartime Hippy Camp]:
+		value = -80;
+		break;
 	case $location[The Extreme Slope]:
 		value = -95;
 		break;

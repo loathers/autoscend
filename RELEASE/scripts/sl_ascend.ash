@@ -9105,6 +9105,11 @@ boolean L7_crypt()
 			set_property("sl_crypt", "finished");
 			use(1, $item[chest of the bonerdagon]);
 		}
+		else if(get_property("questL07Cyrptic") == "finished")
+		{
+			print("Looks like we don't have the chest of the bonerdagon but KoLmafia marked Cyrpt quest as finished anyway. Probably some weird path shenanigans.", "red");
+			set_property("sl_crypt", "finished");
+		}
 		else if(!tryBoner)
 		{
 			print("We tried to kill the Bonerdagon because the cyrpt was defiled but couldn't adventure there and the chest of the bonerdagon is gone so we can't check that. Anyway, we are going to assume the cyrpt is done now.", "red");
@@ -12033,7 +12038,7 @@ boolean L9_twinPeak()
 			}
 		}
 
-		if(elemental_resist($element[stench]) > 4)
+		if(elemental_resist($element[stench]) >= 4)
 		{
 			attemptNum = 1;
 			attempt = true;
@@ -13828,7 +13833,7 @@ boolean doTasks()
 			{
 				songboomSetting(3);
 			}
-			else if((sl_my_path() == "Disguises Delimit") && (get_property("sl_crypt") != "finished") && (get_property("_songboomCounter").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
+			else if((sl_my_path() == "Disguises Delimit") && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
 			{
 				songboomSetting(1);
 			}
