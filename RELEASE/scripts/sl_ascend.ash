@@ -13878,7 +13878,7 @@ boolean doTasks()
 	{
 		if(my_daycount() == 1)
 		{
-			if((my_adventures() < 10) && (my_level() >= 7))
+			if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0))
 			{
 				fightScienceTentacle();
 				if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
@@ -13887,7 +13887,7 @@ boolean doTasks()
 				}
 			}
 		}
-		else if(my_level() >= 9)
+		else if((my_level() >= 9) && (my_hp() > 0))
 		{
 			fightScienceTentacle();
 		}
@@ -13962,7 +13962,7 @@ boolean doTasks()
 
 	if(in_hardcore() && isGuildClass())
 	{
-		if(L6_friarsGetParts() || L6_friarsHotWing())
+		if(L6_friarsGetParts())
 		{
 			return true;
 		}
@@ -13972,7 +13972,6 @@ boolean doTasks()
 	if(LX_setBallroomSong())			return true;
 	if(L3_tavern())						return true;
 	if(L6_friarsGetParts())				return true;
-	if(L6_friarsHotWing())				return true;
 	if(LX_hardcoreFoodFarm())			return true;
 	
 	if(in_hardcore() && LX_steelOrgan())
