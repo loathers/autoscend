@@ -12231,9 +12231,24 @@ boolean L9_oilPeak()
 	{
 		buffMaintain($effect[Punchable Face], 50, 1, 1);
 	}
-	if((monster_level_adjustment() < 60) && (item_amount($item[Dress Pants]) > 0))
+	if(monster_level_adjustment() < 60)
 	{
-		equip($slot[Pants], $item[Dress Pants]);
+		buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
+	}
+	if((monster_level_adjustment() < 60))
+	{
+		if (item_amount($item[Dress Pants]) > 0)
+		{
+			equip($slot[Pants], $item[Dress Pants]);
+		}
+		else
+		{
+			januaryToteAcquire($item[tinsel tights]);
+			if(item_amount($item[tinsel tights]) > 0)
+			{
+				equip($item[tinsel tights]);
+			}
+		}
 	}
 	ccAdv(1, $location[Oil Peak]);
 	if(get_property("lastAdventure") == "Unimpressed with Pressure")
