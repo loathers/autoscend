@@ -1672,7 +1672,7 @@ boolean L1_ed_islandFallback()
 	boolean haveLegs = have_skill($skill[Upgraded Legs]);
 	#Consider trying to get Upgraded legs first
 
-	change_mcd(max(2, my_level()-1));
+	sl_change_mcd(max(2, my_level()-1));
 	if(haveLegs)
 	{
 		if(have_outfit("Filthy Hippy Disguise") && is_wearing_outfit("Filthy Hippy Disguise"))
