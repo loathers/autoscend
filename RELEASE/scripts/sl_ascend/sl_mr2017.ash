@@ -320,7 +320,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	int statValue = 4;
 	if(statItem == $stat[none])
 	{
-		if (my_class == $class[Vampyre] && possessEquipment($item[Vampyric Cloake])
+		if (my_class() == $class[Vampyre] && possessEquipment($item[Vampyric Cloake])
 		{
 			statItem = $stat[Muscle];
 		}
