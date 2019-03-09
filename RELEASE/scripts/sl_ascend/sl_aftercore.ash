@@ -1262,7 +1262,7 @@ boolean sl_cheesePostCS(int leave)
 
 	getDiscoStyle(7);
 	volcano_bunkerJob();
-	change_mcd(0);
+	sl_change_mcd(0);
 
 	sl_sourceTerminalEducate($skill[Extract], $skill[Turbo]);
 

@@ -2873,7 +2873,7 @@ boolean basicAdjustML()
 		}
 		else if((monster_level_adjustment() + (10 - current_mcd())) <= 150)
 		{
-			sl_change_mcd(10);
+			sl_change_mcd(11);
 		}
 	}
 	return false;

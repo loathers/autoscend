@@ -657,7 +657,7 @@ void handlePostAdventure()
 		if(((get_property("flyeredML").to_int() > 9999) || get_property("sl_hippyInstead").to_boolean() || (get_property("sl_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && (my_level() >= 13))
 		{
 			doML = false;
-			#change_mcd(0);
+			#sl_change_mcd(0);
 		}
 		if((my_mp() > 150) && (my_maxhp() > 300) && (my_hp() < 140))
 		{
