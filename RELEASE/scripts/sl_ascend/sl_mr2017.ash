@@ -320,7 +320,14 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	int statValue = 4;
 	if(statItem == $stat[none])
 	{
-		statItem = my_primestat();
+		if (my_class == $class[Vampyre] && possessEquipment($item[Vampyric Cloake])
+		{
+			statItem = $stat[Muscle];
+		}
+		else
+		{
+			statItem = my_primestat();
+		}
 	}
 	switch(statItem)
 	{
@@ -331,7 +338,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 
 	if(!have_skill($skill[Torso Awaregness]) && !have_skill($skill[Best Dressed]) && (statValue == 1))
 	{
-		if(possessEquipment($item[Protonic Accelerator Pack]))
+		if(possessEquipment($item[Protonic Accelerator Pack]) || possessEquipment($item[Vampyric Cloake]))
 		{
 			statValue = 3;
 		}

@@ -110,24 +110,26 @@ acc	56	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true
-back	1	LOV Epaulettes	mainstat:Mysticality
-back	2	Protonic Accelerator Pack
-back	3	Camp Scout Backpack
-back	4	Buddy Bjorn
-back	5	Polyester Parachute
-back	6	Makeshift Cape
-back	7	Misty Robe
-back	8	Misty Cape
-back	9	Misty Cloak
-back	10	Frozen Turtle Shell
-back	11	Giant Gym Membership Card
-back	12	Fiberglass Frock
-back	13	Gabardine Gunnysack
-back	14	Oil Shell
-back	15	Pillow Shell
-back	16	Black Cloak
-back	17	Whatsit-Covered Turtle Shell
-back	18	Barskin Cloak
+back	1	Vampyric Cloake	class:Vampyre
+back	2	LOV Epaulettes	mainstat:Mysticality
+back	3	Protonic Accelerator Pack
+back	4	Camp Scout Backpack
+back	5	Buddy Bjorn
+back	6	Vampyric Cloake
+back	7	Polyester Parachute
+back	8	Makeshift Cape
+back	9	Misty Robe
+back	10	Misty Cape
+back	11	Misty Cloak
+back	12	Frozen Turtle Shell
+back	13	Giant Gym Membership Card
+back	14	Fiberglass Frock
+back	15	Gabardine Gunnysack
+back	16	Oil Shell
+back	17	Pillow Shell
+back	18	Black Cloak
+back	19	Whatsit-Covered Turtle Shell
+back	20	Barskin Cloak
 
 # Familiar gear
 familiar	0	miniature life preserver	path:Heavy Rains
