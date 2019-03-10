@@ -235,9 +235,10 @@ boolean bat_consumption()
 	{
 		foreach it in its
 		{
-			if(creatable_amount(it) > 0)
+			if(creatable_amount(it) > 0 || available_amount(it) > 0)
 			{
-				create(1, it);
+				if (available_amount(it) == 0)
+					create(1, it);
 				if(it.fullness > 0)
 					ccEat(1, it);
 				else if(it.inebriety > 0)
@@ -268,30 +269,34 @@ boolean bat_consumption()
 		ccEat(1, $item[blood-soaked sponge cake]);
 		return true;
 	}
-	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0 && inebriety_left() > 0)
+	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0)
 	{
-		// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
-		if(!consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
-			return true;
+		if (inebriety_left() > 0)
+		{
+			// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
+			if(consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
+				return true;
+		}
+		if (fullness_left() > 0)
+		{
+			// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
+			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
+				return true;
+		}
 	}
 
-	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0 && fullness_left() > 0)
+	if(my_adventures() <= 1)
 	{
-		// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
-		if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
-			return true;
-	}
-
-	if(my_adventures() <= 1 && fullness_left() > 0)
-	{
-		if (consume_first($items[bloodstick]))
-			return true;
-	}
-
-	if(my_adventures() <= 1 && inebriety_left() > 0)
-	{
-		if (consume_first($items[bottle of Sanguiovese]))
-			return true;
+		if (fullness_left() > 0)
+		{
+			if (consume_first($items[bloodstick]))
+				return true;
+		}
+		if(inebriety_left() > 0)
+		{
+			if (consume_first($items[bottle of Sanguiovese]))
+				return true;
+		}
 	}
 
 	return true;
