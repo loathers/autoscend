@@ -579,6 +579,14 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
+	if(canUse($item[Glark Cable], true) && (my_location() == $location[The Red Zeppelin]) && (get_property("questL11Ron") == "step3") && (get_property("_glarkCableUses").to_int() < 5))
+	{
+		if($monsters[Man With The Red Buttons, Red Butler, Red Fox, Red Skeleton] contains enemy)
+		{
+			return useItem($item[Glark Cable]);
+		}
+	}
+
 	if(canUse($item[Cigarette Lighter]) && (my_location() == $location[A Mob Of Zeppelin Protesters]) && (get_property("questL11Ron") == "step1"))
 	{
 		return useItem($item[Cigarette Lighter]);
