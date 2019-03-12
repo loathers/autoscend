@@ -7784,6 +7784,7 @@ boolean L12_finalizeWar()
 		council();
 	}
 
+	cli_execute("refresh quests");
 	if(get_property("questL12War") != "finished")
 	{
 		abort("Failing to complete the war.");
