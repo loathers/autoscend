@@ -9105,7 +9105,7 @@ boolean L7_crypt()
 			set_property("sl_crypt", "finished");
 			use(1, $item[chest of the bonerdagon]);
 		}
-		else if(get_property("questL07Cyrptic") == "finished")
+		else if(cli_execute("refresh quests") && get_property("questL07Cyrptic") == "finished")
 		{
 			print("Looks like we don't have the chest of the bonerdagon but KoLmafia marked Cyrpt quest as finished anyway. Probably some weird path shenanigans.", "red");
 			set_property("sl_crypt", "finished");
@@ -12394,6 +12394,13 @@ boolean L9_chasmBuild()
 		}
 
 		ccAdv(1, $location[The Smut Orc Logging Camp]);
+		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
+		{
+			if(sl_my_path() != "G-Lover")
+			{
+				use(1, $item[Smut Orc Keepsake Box]);
+			}
+		}
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		return true;
 	}
@@ -14183,6 +14190,10 @@ void sl_begin()
 	{
 		bat_startAscension();
 	}
+	else if(contains_text(page, "<b>Torpor</b>") && contains_text(page, "Madness of Untold Aeons") && contains_text(page, "Rest for untold Millenia"))
+	{
+		bat_reallyPickSkills(20);
+	}
 
 #	if(my_class() == $class[Astral Spirit])
 	if(to_string(my_class()) == "Astral Spirit")
@@ -14193,7 +14204,7 @@ void sl_begin()
 	}
 
 	print("Hello " + my_name() + ", time to explode!");
-	print("This is version: " + svn_info("slascend-sl_ascend").last_changed_rev + " Mafia: " + get_revision());
+	print("This is version: " + svn_info("sl_ascend").last_changed_rev + " Mafia: " + get_revision());
 	print("This is day " + my_daycount() + ".");
 	print("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	print("Current Ascension: " + sl_my_path());

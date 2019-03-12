@@ -1372,7 +1372,7 @@ boolean LA_cs_communityService()
 				wait(5);
 				if(get_property("kingLiberated").to_boolean())
 				{
-					cli_execute("call kingcheese");
+					cli_execute("call kingsool");
 					return true;
 				}
 				else
