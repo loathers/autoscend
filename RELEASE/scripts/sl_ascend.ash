@@ -4002,7 +4002,7 @@ boolean L13_towerNSFinal()
 	}
 
 	//Only if the final boss does not unbuff us...
-	if($strings[Actually Ed the Unyding, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, Heavy Rains, The Source, Way of the Surprising Fist, Zombie Slayer] contains sl_my_path())
+	if($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, Heavy Rains, The Source, Way of the Surprising Fist, Zombie Slayer] contains sl_my_path())
 	{
 		if(sl_my_path() == "The Source")
 		{
@@ -9080,6 +9080,8 @@ boolean L7_crypt()
 		{
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
+		buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
+		providePlusNonCombat(25);
 		ccAdv(1, $location[The Defiled Cranny]);
 		return true;
 	}
@@ -9101,12 +9103,13 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Machine Elf]);
 		}
 		boolean tryBoner = ccAdv(1, $location[Haert of the Cyrpt]);
+		cli_execute("refresh quests");
 		if(item_amount($item[chest of the bonerdagon]) == 1)
 		{
 			set_property("sl_crypt", "finished");
 			use(1, $item[chest of the bonerdagon]);
 		}
-		else if(cli_execute("refresh quests") && get_property("questL07Cyrptic") == "finished")
+		else if(get_property("questL07Cyrptic") == "finished")
 		{
 			print("Looks like we don't have the chest of the bonerdagon but KoLmafia marked Cyrpt quest as finished anyway. Probably some weird path shenanigans.", "red");
 			set_property("sl_crypt", "finished");
@@ -9262,7 +9265,7 @@ boolean LX_steelOrgan()
 	{
 		return false;
 	}
-	if($classes[Ed, Gelatinous Noob] contains my_class())
+	if($classes[Ed, Gelatinous Noob, Vampyre] contains my_class())
 	{
 		print(my_class() + " can not use a Steel Organ, turning off setting.", "blue");
 		set_property("sl_getSteelOrgan", false);
@@ -13615,6 +13618,13 @@ boolean autosellCrap()
 	{
 		sl_autosell(1, $item[dense meat stack]);
 	}
+	foreach it in $items[Blue Money Bag, Red Money Bag, White Money Bag]
+	{
+		if(item_amount(it) > 0)
+		{
+			sl_autosell(item_amount(it), it);
+		}
+	}
 
 	if(!in_hardcore() && !isGuildClass())
 	{
@@ -13630,7 +13640,7 @@ boolean autosellCrap()
 		sl_autosell(1, $item[meat stack]);
 	}
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Ratgut, Red Money Bag, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, White Money Bag, Windchimes]
+	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Ratgut, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
 	{
 		if(item_amount(it) > 0)
 		{
