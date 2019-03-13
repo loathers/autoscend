@@ -242,6 +242,18 @@ boolean godLobsterCombat(item it, int goal, string option)
 	return true;
 }
 
+boolean fantasyRealmAvailable()
+{
+	if(!is_unrestricted($item[FantasyRealm membership packet]))
+	{
+		return false;
+	}
+	if((get_property("frAlways").to_boolean() || get_property("_frToday").to_boolean()))
+	{
+		return true;
+	}
+	return false;
+}
 
 boolean fantasyRealmToken()
 {

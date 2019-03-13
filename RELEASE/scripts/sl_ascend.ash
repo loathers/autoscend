@@ -10704,6 +10704,10 @@ boolean LX_phatLootToken()
 	{
 		return true;
 	}
+	if(fantasyRealmAvailable() && get_property("sl_sorceress") != "door")
+	{
+		return false;
+	}
 
 	if((!possessEquipment($item[Ring of Detect Boring Doors]) || (item_amount($item[Eleven-Foot Pole]) == 0) || (item_amount($item[Pick-O-Matic Lockpicks]) == 0)) && sl_have_familiar($familiar[Gelatinous Cubeling]))
 	{

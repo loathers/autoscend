@@ -545,6 +545,7 @@ boolean godLobsterCombat(item it);							//Defined in sl_ascend/sl_mr2018.ash
 boolean godLobsterCombat(item it, int goal);				//Defined in sl_ascend/sl_mr2018.ash
 boolean godLobsterCombat(item it, int goal, string option);	//Defined in sl_ascend/sl_mr2018.ash
 boolean fantasyRealmToken();								//Defined in sl_ascend/sl_mr2018.ash
+boolean fantasyRealmAvailable();							//Defined in sl_ascend/sl_mr2018.ash
 boolean songboomSetting(string goal);						//Defined in sl_ascend/sl_mr2018.ash
 boolean songboomSetting(int choice);						//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubNap();										//Defined in sl_ascend/sl_mr2018.ash
