@@ -32,7 +32,7 @@ void bat_initializeDay(int day)
 
 	if(get_property("sl_day_init").to_int() < day)
 	{
-		set_property("sl_bat_bloodBank", 0); // 0: no blood yet, 1: base blood, 2: intimidating blood
+		set_property("_sl_bat_bloodBank", 0); // 0: no blood yet, 1: base blood, 2: intimidating blood
 		set_property("sl_bat_ensorcels", 0);
 		set_property("sl_bat_howls", 0);
 		set_property("sl_bat_howled", "");
@@ -120,7 +120,7 @@ skill [int] bat_pickSkills(int hpLeft)
 		return true;
 	}
 
-	if(get_property("sl_bat_bloodBank") != "2")
+	if(get_property("_sl_bat_bloodBank") != "2")
 		addPick($skill[Intimidating Aura]);
 
 	// no forms JUST yet
@@ -327,11 +327,11 @@ boolean LM_batpath()
 		return true;
 	}
 
-	int bloodBank = get_property("sl_bat_bloodBank").to_int();
+	int bloodBank = get_property("_sl_bat_bloodBank").to_int();
 	if(bloodBank == 0 || (bloodBank == 1 && have_skill($skill[Intimidating Aura])))
 	{
 		visit_url("place.php?whichplace=town_right&action=town_bloodbank");
-		set_property("sl_bat_bloodBank", (have_skill($skill[Intimidating Aura]) ? 2 : 1));
+		set_property("_sl_bat_bloodBank", (have_skill($skill[Intimidating Aura]) ? 2 : 1));
 	}
 
 	return false;
