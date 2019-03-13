@@ -2555,7 +2555,7 @@ boolean doBedtime()
 		visit_url("place.php?whichplace=desertbeach&action=db_nukehouse");
 	}
 
-	if((get_property("puzzleChampBonus").to_int() == 20) && !get_property("_witchessBuff").to_boolean() && (get_campground() contains $item[Witchess Set]))
+	if(sl_haveWitchess() && (get_property("puzzleChampBonus").to_int() == 20) && !get_property("_witchessBuff").to_boolean())
 	{
 		visit_url("campground.php?action=witchess");
 		visit_url("choice.php?whichchoice=1181&pwd=&option=3");
