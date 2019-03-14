@@ -9128,6 +9128,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Machine Elf]);
 		}
 		boolean tryBoner = ccAdv(1, $location[Haert of the Cyrpt]);
+		council();
 		cli_execute("refresh quests");
 		if(item_amount($item[chest of the bonerdagon]) == 1)
 		{
