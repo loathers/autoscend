@@ -2804,7 +2804,7 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	}
 
 	shrugAT($effect[The Sonata of Sneakiness]);
-	//Assumes that Rev Engine was taken with Extra-Quite Muffler.
+	//Assumes that Rev Engine was taken with Extra-Quiet Muffler.
 	foreach eff in $effects[Shelter Of Shed, Brooding, Muffled, Smooth Movements, The Sonata of Sneakiness, Song of Solitude, Inked Well, Bent Knees, Extended Toes, Ink Cloud, Patent Invisibility, Cloak of Shadows]
 	{
 		buffMaintain(eff, 0, 1, 1);
