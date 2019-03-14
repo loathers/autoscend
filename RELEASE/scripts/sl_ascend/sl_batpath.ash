@@ -23,6 +23,28 @@ void bat_initializeSettings()
 	}
 }
 
+void bat_initializeSession()
+{
+	if(my_class() == $class[Vampyre])
+	{
+		set_property("sl_mpAutoRecovery", get_property("mpAutoRecovery"));
+		set_property("sl_mpAutoRecoveryTarget", get_property("mpAutoRecoveryTarget"));
+		set_property("mpAutoRecovery", -0.05);
+		set_property("mpAutoRecoveryTarget", 0.0);
+	}
+}
+
+void bat_terminateSession()
+{
+	if(my_class() == $class[Vampyre])
+	{
+		set_property("mpAutoRecovery", get_property("sl_mpAutoRecovery"));
+		set_property("sl_mpAutoRecovery", 0.0);
+		set_property("mpAutoRecoveryTarget", get_property("sl_mpAutoRecoveryTarget"));
+		set_property("sl_mpAutoRecoveryTarget", 0.0);
+	}
+}
+
 void bat_initializeDay(int day)
 {
 	if(my_path() != "Dark Gyffte")

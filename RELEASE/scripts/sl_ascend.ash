@@ -2195,6 +2195,7 @@ boolean doBedtime()
 	}
 
 	ed_terminateSession();
+	bat_terminateSession();
 
 	equipBaseline();
 	while(LX_freeCombats())
@@ -4113,6 +4114,7 @@ boolean L13_towerNSFinal()
 			if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))
 			{
 				set_property("sl_disableAdventureHandling", false);
+				cli_execute("refresh quests");
 				if(get_property("sl_sorceress") == "finished")
 				{
 					abort("Freeing the king will result in a path change and we can barely handle The Sleazy Back Alley. Aborting, run the script again after selecting your aftercore path in order for it to clean up.");
@@ -14282,6 +14284,7 @@ void sl_begin()
 	}
 
 	ed_initializeSession();
+	bat_initializeSession();
 	questOverride();
 
 	if(my_daycount() > 1)
