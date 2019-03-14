@@ -4469,7 +4469,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_08_monster4"))
 	{
-		set_property("choiceAdventure1015", "2");
+		if (my_class() != $class[Vampyre])
+			set_property("choiceAdventure1015", "2");
+		else
+			set_property("choiceAdventure1015", "1");
 		visit_url("place.php?whichplace=nstower&action=ns_08_monster4");
 		visit_url("choice.php?pwd=&whichchoice=1015&option=2", true);
 		return true;
