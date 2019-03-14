@@ -916,6 +916,7 @@ boolean bat_shouldPickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_shouldEnsorcel(monster m); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_consumption(); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_skillValid(skill sk); // Defined in sl_ascend/sl_batpath.ash
+boolean bat_tryBloodBank(); // Defined in sl_ascend/sl_batpath.ash
 boolean LM_batpath(); // Defined in sl_ascend/sl_batpath.ash
 
 //Record from sl_ascend/sl_zone.ash

@@ -37,6 +37,7 @@ void bat_initializeDay(int day)
 		set_property("sl_bat_howls", 0);
 		set_property("sl_bat_howled", "");
 		set_property("sl_bat_soulmonster", "");
+		bat_tryBloodBank();
 		if (bat_shouldPickSkills(20))
 		{
 			bat_reallyPickSkills(20);
@@ -316,6 +317,19 @@ boolean bat_skillValid(skill sk)
 	return true;
 }
 
+boolean bat_tryBloodBank()
+{
+	int bloodBank = get_property("_sl_bat_bloodBank").to_int();
+	if(bloodBank == 0 || (bloodBank == 1 && have_skill($skill[Intimidating Aura])))
+	{
+		visit_url("place.php?whichplace=town_right&action=town_bloodbank");
+		set_property("_sl_bat_bloodBank", (have_skill($skill[Intimidating Aura]) ? 2 : 1));
+		return true;
+	}
+
+	return false;
+}
+
 boolean LM_batpath()
 {
 	if(my_class() != $class[Vampyre])
@@ -326,13 +340,6 @@ boolean LM_batpath()
 		bat_reallyPickSkills(20);
 		return true;
 	}
-
-	int bloodBank = get_property("_sl_bat_bloodBank").to_int();
-	if(bloodBank == 0 || (bloodBank == 1 && have_skill($skill[Intimidating Aura])))
-	{
-		visit_url("place.php?whichplace=town_right&action=town_bloodbank");
-		set_property("_sl_bat_bloodBank", (have_skill($skill[Intimidating Aura]) ? 2 : 1));
-	}
-
+	bat_tryBloodBank();
 	return false;
 }
