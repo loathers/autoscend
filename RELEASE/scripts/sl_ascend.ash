@@ -7691,6 +7691,26 @@ boolean L12_finalizeWar()
 		}
 	}
 
+	// Just in case we need the extra turngen to complete this day
+	if (my_class() == $class[Vampyre])
+	{
+		int have = item_amount($item[monstar energy beverage]) + item_amount($item[carbonated soy milk]);
+		if(have < 5)
+		{
+			int need = 5 - have;
+			if(!get_property("sl_hippyInstead").to_boolean())
+			{
+				need = min(need, $coinmaster[Quartersmaster].available_tokens / 3);
+				cli_execute("make " + need + " Monstar energy beverage");
+			}
+			else
+			{
+				need = min(need, $coinmaster[Dimemaster].available_tokens / 3);
+				cli_execute("make " + need + " carbonated soy milk");
+			}
+		}
+	}
+
 	int have = item_amount($item[filthy poultice]) + item_amount($item[gauze garter]);
 	if(have < 10)
 	{
