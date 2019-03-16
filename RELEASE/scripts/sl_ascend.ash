@@ -6245,6 +6245,7 @@ boolean LX_spookyravenSecond()
 
 	//Convert Spookyraven Spectacles to a toggle
 	boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0);
+	boolean needCamera = (item_amount($item[disposable instant camera]) == 0);
 	if(my_class() == $class[Avatar of Boris])
 	{
 		needSpectacles = false;
@@ -6263,7 +6264,7 @@ boolean LX_spookyravenSecond()
 	}
 	else
 	{
-		if(item_amount($item[Disposable Instant Camera]) == 0)
+		if(needCamera)
 		{
 			set_property("choiceAdventure878", "4");
 		}
@@ -6276,15 +6277,21 @@ boolean LX_spookyravenSecond()
 	set_property("choiceAdventure877", "1");
 	if((get_property("sl_ballroomopen") == "open") || (get_property("questM21Dance") == "finished") || (get_property("questM21Dance") == "step3"))
 	{
-		if(!needSpectacles)
-		{
-			set_property("sl_spookyravensecond", "finished");
-		}
-		else
+		if(needSpectacles)
 		{
 			print("Need Spectacles, damn it.", "blue");
 			LX_spookyBedroomCombat();
 			print("Finished 1 Spookyraven Bedroom Spectacle Sequence", "blue");
+		}
+		else if(needCamera)
+		{
+			print("Need Disposable Instant Camera, damn it.", "blue");
+			LX_spookyBedroomCombat();
+			print("Finished 1 Spookyraven Bedroom Disposable Instant Camera Sequence", "blue");
+		}
+		else
+		{
+			set_property("sl_spookyravensecond", "finished");
 		}
 		return true;
 	}
