@@ -10527,6 +10527,15 @@ boolean LX_bitchinMeatcar()
 	}
 	else
 	{
+		if((my_meat() >= 6000) && isGeneralStoreAvailable())
+		{
+			print("We're rich, let's take the bus instead of building a car.", "blue");
+			buyUpTo(1, $item[Desert Bus Pass]);
+			if(item_amount($item[Desert Bus Pass]) > 0)
+			{
+				return true;
+			}
+		}
 		print("Farming for a Bitchin' Meatcar", "blue");
 		if(get_property("questM01Untinker") == "unstarted")
 		{
