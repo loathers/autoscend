@@ -2195,6 +2195,7 @@ boolean doBedtime()
 	}
 
 	ed_terminateSession();
+	bat_terminateSession();
 
 	equipBaseline();
 	while(LX_freeCombats())
@@ -4113,6 +4114,7 @@ boolean L13_towerNSFinal()
 			if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))
 			{
 				set_property("sl_disableAdventureHandling", false);
+				cli_execute("refresh quests");
 				if(get_property("sl_sorceress") == "finished")
 				{
 					abort("Freeing the king will result in a path change and we can barely handle The Sleazy Back Alley. Aborting, run the script again after selecting your aftercore path in order for it to clean up.");
@@ -4469,7 +4471,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_08_monster4"))
 	{
-		set_property("choiceAdventure1015", "2");
+		if (my_class() != $class[Vampyre])
+			set_property("choiceAdventure1015", "2");
+		else
+			set_property("choiceAdventure1015", "1");
 		visit_url("place.php?whichplace=nstower&action=ns_08_monster4");
 		visit_url("choice.php?pwd=&whichchoice=1015&option=2", true);
 		return true;
@@ -9123,6 +9128,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Machine Elf]);
 		}
 		boolean tryBoner = ccAdv(1, $location[Haert of the Cyrpt]);
+		council();
 		cli_execute("refresh quests");
 		if(item_amount($item[chest of the bonerdagon]) == 1)
 		{
@@ -14279,6 +14285,7 @@ void sl_begin()
 	}
 
 	ed_initializeSession();
+	bat_initializeSession();
 	questOverride();
 
 	if(my_daycount() > 1)
