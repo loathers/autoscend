@@ -296,12 +296,14 @@ boolean bat_consumption()
 	{
 		if (inebriety_left() > 0)
 		{
+			pullXWhenHaveY($item[monstar energy beverage], 1, 0);
 			// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
 			if(consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
 				return true;
 		}
 		if (fullness_left() > 0)
 		{
+			pullXWhenHaveY($item[gauze garter], 1, 0);
 			// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
 			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
 				return true;
