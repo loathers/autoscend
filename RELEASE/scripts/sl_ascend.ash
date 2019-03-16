@@ -12519,6 +12519,11 @@ boolean L11_redZeppelin()
 		return ccAdv($location[A Mob Of Zeppelin Protesters]);
 	}
 
+	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
+	{
+		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[Noob Cave]);
+	}
+
 	int lastProtest = get_property("zeppelinProtestors").to_int();
 	set_property("choiceAdventure856", 1);
 	set_property("choiceAdventure857", 1);

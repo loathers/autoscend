@@ -39,6 +39,8 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	if(casingsOwned == 0)
 		return false;
 
+	if(numSaus <= 0)
+		return false;
 
 	if(casingsOwned < numSaus)
 	{
