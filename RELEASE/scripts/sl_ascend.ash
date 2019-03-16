@@ -9053,7 +9053,7 @@ boolean L7_crypt()
 		}
 
 		januaryToteAcquire($item[Broken Champagne Bottle]);
-		if((item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
+		if((numeric_modifier("item") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
 			equip($item[Broken Champagne Bottle]);
 		}
