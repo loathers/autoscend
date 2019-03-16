@@ -12573,34 +12573,65 @@ boolean L11_redZeppelin()
 		return ccAdv($location[A Mob Of Zeppelin Protesters]);
 	}
 
+	// TODO: create lynyrd skin items
+
+	set_property("choiceAdventure856", 1);
+	set_property("choiceAdventure857", 1);
+	set_property("choiceAdventure858", 1);
+	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
+	buffMaintain($effect[Musky], 0, 1, 1);
+	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
+
+	providePlusNonCombat(25);
+	foreach it in $items[ratty knitted cap, disturbing fanfic]
+	{
+		if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
+		{
+			equip(it);
+		}
+	}
+
+	if($location[A Mob of Zeppelin Protesters].turns_spent % 7 == 6)
+	{
+		print("Oooh, the guaranteed Zeppelin noncombat is coming.", "blue");
+		// We can stock up on +sleaze damage and +sleaze spell dmg, since
+		// we know we won't get in a combat.
+
+		if(item_amount($item[Flamin\' Whatshisname]) > 0)
+		{
+			backupSetting("choiceAdventure866", 3);
+		}
+		else
+		{
+			backupSetting("choiceAdventure866", 2);
+		}
+
+		ccMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
+		foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
+		{
+			if(possessEquipment(it) && !have_equipped(it) && can_equip(it) &&
+			   (item_amount(it) > 0) &&
+			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze dmg") < 5) &&
+			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell dmg") < 5))
+			{
+				equip(it);
+			}
+		}
+
+		boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
+		if(!($strings[Bench Warrant, Fire Up Above, This Looks Like a Good Bush for an Ambush, Not So Much With The Humanity] contains get_property("lastEncounter")))
+		{
+			abort("Uh oh, we expected to get a scheduled Zeppelin noncombat there but didn't. That's not supposed to happen. There's a bug in Jeparo's new code!");
+		}
+		return retval;
+	}
+
 	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
 	{
 		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[Noob Cave]);
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
-	set_property("choiceAdventure856", 1);
-	set_property("choiceAdventure857", 1);
-	set_property("choiceAdventure858", 1);
-
-	if(item_amount($item[Flamin\' Whatshisname]) > 0)
-	{
-		backupSetting("choiceAdventure866", 3);
-	}
-	else
-	{
-		backupSetting("choiceAdventure866", 2);
-	}
-
-	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
-	buffMaintain($effect[Musky], 0, 1, 1);
-	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
-
-	if((item_amount($item[Halibut]) > 0) && can_equip($item[Halibut]))
-	{
-		equip($slot[weapon], $item[Halibut]);
-	}
-
 	boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
 	if(!lastAdventureSpecialNC())
 	{

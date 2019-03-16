@@ -433,7 +433,7 @@ boolean zataraClanmate(string who)
 #	set_property("_clanFortuneConsultUses", get_property("_clanFortuneConsultUses").to_int() + 1);
 
 	int oldClan = get_clan_id();
-    string clanName = get_property("sl_consultClan");
+	string clanName = get_property("sl_consultClan");
 	if (clanName != "")
 	{
 		changeClan(clanName);	
