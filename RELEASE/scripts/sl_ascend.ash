@@ -4115,7 +4115,7 @@ boolean L13_towerNSFinal()
 			{
 				set_property("sl_disableAdventureHandling", false);
 				cli_execute("refresh quests");
-				if(get_property("sl_sorceress") == "finished")
+				if(get_property("sl_sorceress") == "finished" || get_property("questL13Final") == "finished")
 				{
 					abort("Freeing the king will result in a path change and we can barely handle The Sleazy Back Alley. Aborting, run the script again after selecting your aftercore path in order for it to clean up.");
 				}
@@ -4125,6 +4125,10 @@ boolean L13_towerNSFinal()
 			visit_url("place.php?whichplace=nstower&action=ns_11_prism");
 		}
 		set_property("sl_disableAdventureHandling", false);
+	}
+	else if(my_class() == $class[Vampyre])
+	{
+		return true;
 	}
 	else
 	{
@@ -4471,12 +4475,12 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_08_monster4"))
 	{
-		if (my_class() != $class[Vampyre])
-			set_property("choiceAdventure1015", "2");
-		else
-			set_property("choiceAdventure1015", "1");
+		set_property("choiceAdventure1015", "2");
 		visit_url("place.php?whichplace=nstower&action=ns_08_monster4");
-		visit_url("choice.php?pwd=&whichchoice=1015&option=2", true);
+		if (my_class() != $class[Vampyre])
+			visit_url("choice.php?pwd=&whichchoice=1015&option=2", true);
+		else
+			visit_url("choice.php?pwd=&whichchoice=1015&option=1", true);
 		return true;
 	}
 
@@ -4678,6 +4682,7 @@ boolean L13_towerNSContests()
 				buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
 				buffMaintain($effect[Song of Slowness], 100, 1, 1);
 				buffMaintain($effect[Soulerskates], 0, 1, 1);
+				asdonBuff($effect[Driving Quickly]);
 
 				if(is100FamiliarRun())
 				{
