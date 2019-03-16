@@ -1862,18 +1862,19 @@ void initializeDay(int day)
 
 			hr_initializeDay(day);
 
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && !($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()) && (my_meat() > npc_price($item[Toy Accordion])))
+			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
-				buyUpTo(1, $item[Toy Accordion]);
-			}
+				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
+					buyUpTo(1, $item[Toy Accordion]);
 
-			if(!possessEquipment($item[Turtle Totem]))
-			{
-				acquireGumItem($item[Turtle Totem]);
-			}
-			if(!possessEquipment($item[Saucepan]))
-			{
-				acquireGumItem($item[Saucepan]);
+				if(!possessEquipment($item[Turtle Totem]))
+				{
+					acquireGumItem($item[Turtle Totem]);
+				}
+				if(!possessEquipment($item[Saucepan]))
+				{
+					acquireGumItem($item[Saucepan]);
+				}
 			}
 
 			makeStartingSmiths();
