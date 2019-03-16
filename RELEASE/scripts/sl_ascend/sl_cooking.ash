@@ -557,7 +557,7 @@ boolean canEat(item toEat)
 void consumeStuff()
 {
 	// grind and eat any sausage that you can
-	sl_sausageGrind(item_amount($item[magical sausage casing]));
+	sl_sausageGrind(23 - get_property("_sausagesMade").to_int());
 	sl_sausageEatEmUp();
 
 	if (get_property("sl_limitConsume").to_boolean())
