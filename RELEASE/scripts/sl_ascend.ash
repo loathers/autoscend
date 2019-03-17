@@ -802,7 +802,6 @@ void maximize_hedge()
 	element first = ns_hedge1();
 	element second = ns_hedge2();
 	element third = ns_hedge3();
-	buffMaintain($effect[Patent Prevention], 0, 1, 1);
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
 		ccMaximize("all res -equip snow suit", 2500, 0, false);
@@ -812,11 +811,11 @@ void maximize_hedge()
 		ccMaximize(to_string(first) + " res, " + to_string(second) + " res, " + to_string(third) + " res -equip snow suit", 2500, 0, false);
 	}
 
-	foreach eff in $effects[Egged On, Patent Prevention]
+	bat_formMist();
+	foreach eff in $effects[Egged On, Patent Prevention, Spectral Awareness]
 	{
 		buffMaintain(eff, 0, 1, 1);
 	}
-
 }
 
 int pullsNeeded(string data)
@@ -1261,6 +1260,10 @@ boolean doThemtharHills()
 	{
 		meat_need = meat_need - 200;
 	}
+	if((my_class() == $class[vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
+	{
+		meat_need = meat_need - 150;
+	}
 
 	meatDropHave = meat_drop_modifier();
 
@@ -1321,6 +1324,7 @@ boolean doThemtharHills()
 	buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
 	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
+	bat_formWolf();
 
 	{
 		warOutfit();
@@ -4364,6 +4368,7 @@ boolean L13_towerNSTower()
 		buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
 		buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
 		buffMaintain($effect[Patent Avarice], 0, 1, 1);
+		bat_formWolf();
 		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 		{
 			cli_execute("concert 2");
@@ -4694,6 +4699,8 @@ boolean L13_towerNSContests()
 					ccMaximize("init, -equip snow suit, switch xiblaxian holo-companion, switch oily woim, switch happy medium ", 1500, 0, false);
 					handleFamiliar(my_familiar());
 				}
+
+				bat_formBats();
 
 				cli_execute("presool");
 				break;
@@ -6809,6 +6816,8 @@ boolean L11_unlockEd()
 		buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
 		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
+		// TODO: use Baleful Howl, then use Bat Form
+		// bat_formBats();
 		if(get_property("sl_dickstab").to_boolean())
 		{
 			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
@@ -7180,6 +7189,8 @@ boolean L12_gremlins()
 		equip($item[astral shield]);
 	}
 	useCocoon();
+	// TODO: use Baleful Howl, then use Mist Form for the DR
+	// bat_formMist();
 
 	handleFamiliar("init");
 	// TODO: find a way to songboom DR without it getting overridden every turn
@@ -7573,6 +7584,7 @@ boolean L12_filthworms()
 		buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
 		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
 		asdonBuff($effect[Driving Observantly]);
+		bat_formBats();
 
 		if(get_property("sl_dickstab").to_boolean())
 		{
@@ -9052,6 +9064,7 @@ boolean L7_crypt()
 			equip($item[Gravy Boat]);
 		}
 
+		bat_formBats();
 		januaryToteAcquire($item[Broken Champagne Bottle]);
 		if((numeric_modifier("item") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
@@ -9944,6 +9957,7 @@ boolean L4_batCave()
 	if(batStatus >= 3)
 	{
 		buffMaintain($effect[Polka of Plenty], 15, 1, 1);
+		bat_formWolf();
 		int batskinBelt = item_amount($item[Batskin Belt]);
 		ccAdv(1, $location[The Boss Bat\'s Lair]);
 		# DIGIMON remove once mafia tracks this
@@ -11280,6 +11294,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		}
 		buffMaintain($effect[Hide of Sobek], 10, 1, 1);
 		buffMaintain($effect[Patent Prevention], 0, 1, 1);
+		bat_formMist();
 
 		ccAdv(1, $location[The Haunted Kitchen]);
 		handleFamiliar("item");
@@ -11738,6 +11753,19 @@ boolean L9_aBooPeak()
 			spookyResist += 2;
 		}
 
+		if(have_skill($skill[Mist Form]))
+		{
+			coldResist += 4;
+			spookyResist += 4;
+			hpDifference -= 10;
+		}
+		else if(have_skill($skill[Spectral Awareness]))
+		{
+			coldResist += 2;
+			spookyResist += 2;
+			hpDifference -= 10;
+		}
+
 		if((item_amount($item[Spooky Powder]) > 0) && (have_effect($effect[Spookypants]) == 0))
 		{
 			spookyResist = spookyResist + 1;
@@ -11832,6 +11860,7 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Red Door Syndrome], 0, 1, 1);
 			buffMaintain($effect[Well-Oiled], 0, 1, 1);
 			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			bat_formMist();
 
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)

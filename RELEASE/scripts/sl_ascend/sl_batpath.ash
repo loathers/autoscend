@@ -83,7 +83,7 @@ boolean bat_switchForm(effect form)
 
 boolean bat_formPreAdventure()
 {
-	if(my_class() == $class[Vampyre]) return false;
+	if(my_class() != $class[Vampyre]) return false;
 
 	string desiredForm = get_property("sl_bat_desiredForm");
 	effect form;
