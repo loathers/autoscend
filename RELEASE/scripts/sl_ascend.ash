@@ -13814,6 +13814,7 @@ boolean doTasks()
 			set_property("sl_paranoia_counter", paranoia_counter + 1);
 		}
 	}
+	bat_formNone();
 
 	basicAdjustML();
 	powerLevelAdjustment();
