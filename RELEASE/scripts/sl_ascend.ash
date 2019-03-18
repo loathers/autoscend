@@ -5198,7 +5198,10 @@ boolean LX_attemptPowerLevel()
 		ccAdv(1, $location[The X-32-F Combat Training Snowman]);
 		return true;
 	}
-
+	if(LX_freeCombats())
+	{
+		return true;
+	}
 
 	if(!hasTorso())
 	{
@@ -11902,7 +11905,7 @@ boolean L9_aBooPeak()
 			{
 				use(1, $item[Linen Bandages]);
 			}
-			if(((my_hp() * 4) < my_maxhp()) && (item_amount($item[Scroll of Drastic Healing]) > 0) && (my_class() != $class[Ed]))
+			if(((my_hp() * 4) < my_maxhp()) && (item_amount($item[Scroll of Drastic Healing]) > 0) && (my_class() != $class[Ed] && my_class() != $class[Vampyre]))
 			{
 				use(1, $item[Scroll of Drastic Healing]);
 			}
