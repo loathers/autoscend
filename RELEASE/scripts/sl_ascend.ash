@@ -802,7 +802,6 @@ void maximize_hedge()
 	element first = ns_hedge1();
 	element second = ns_hedge2();
 	element third = ns_hedge3();
-	buffMaintain($effect[Patent Prevention], 0, 1, 1);
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
 		ccMaximize("all res -equip snow suit", 2500, 0, false);
@@ -812,11 +811,11 @@ void maximize_hedge()
 		ccMaximize(to_string(first) + " res, " + to_string(second) + " res, " + to_string(third) + " res -equip snow suit", 2500, 0, false);
 	}
 
-	foreach eff in $effects[Egged On, Patent Prevention]
+	bat_formMist();
+	foreach eff in $effects[Egged On, Patent Prevention, Spectral Awareness]
 	{
 		buffMaintain(eff, 0, 1, 1);
 	}
-
 }
 
 int pullsNeeded(string data)
@@ -1261,6 +1260,10 @@ boolean doThemtharHills()
 	{
 		meat_need = meat_need - 200;
 	}
+	if((my_class() == $class[vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
+	{
+		meat_need = meat_need - 150;
+	}
 
 	meatDropHave = meat_drop_modifier();
 
@@ -1321,6 +1324,7 @@ boolean doThemtharHills()
 	buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
 	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
+	bat_formWolf();
 
 	{
 		warOutfit();
@@ -1862,18 +1866,19 @@ void initializeDay(int day)
 
 			hr_initializeDay(day);
 
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && !($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()) && (my_meat() > npc_price($item[Toy Accordion])))
+			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
-				buyUpTo(1, $item[Toy Accordion]);
-			}
+				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
+					buyUpTo(1, $item[Toy Accordion]);
 
-			if(!possessEquipment($item[Turtle Totem]))
-			{
-				acquireGumItem($item[Turtle Totem]);
-			}
-			if(!possessEquipment($item[Saucepan]))
-			{
-				acquireGumItem($item[Saucepan]);
+				if(!possessEquipment($item[Turtle Totem]))
+				{
+					acquireGumItem($item[Turtle Totem]);
+				}
+				if(!possessEquipment($item[Saucepan]))
+				{
+					acquireGumItem($item[Saucepan]);
+				}
 			}
 
 			makeStartingSmiths();
@@ -4115,7 +4120,7 @@ boolean L13_towerNSFinal()
 			{
 				set_property("sl_disableAdventureHandling", false);
 				cli_execute("refresh quests");
-				if(get_property("sl_sorceress") == "finished")
+				if(get_property("sl_sorceress") == "finished" || get_property("questL13Final") == "finished")
 				{
 					abort("Freeing the king will result in a path change and we can barely handle The Sleazy Back Alley. Aborting, run the script again after selecting your aftercore path in order for it to clean up.");
 				}
@@ -4125,6 +4130,10 @@ boolean L13_towerNSFinal()
 			visit_url("place.php?whichplace=nstower&action=ns_11_prism");
 		}
 		set_property("sl_disableAdventureHandling", false);
+	}
+	else if(my_class() == $class[Vampyre])
+	{
+		return true;
 	}
 	else
 	{
@@ -4359,6 +4368,7 @@ boolean L13_towerNSTower()
 		buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
 		buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
 		buffMaintain($effect[Patent Avarice], 0, 1, 1);
+		bat_formWolf();
 		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 		{
 			cli_execute("concert 2");
@@ -4471,12 +4481,12 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_08_monster4"))
 	{
-		if (my_class() != $class[Vampyre])
-			set_property("choiceAdventure1015", "2");
-		else
-			set_property("choiceAdventure1015", "1");
+		set_property("choiceAdventure1015", "2");
 		visit_url("place.php?whichplace=nstower&action=ns_08_monster4");
-		visit_url("choice.php?pwd=&whichchoice=1015&option=2", true);
+		if (my_class() != $class[Vampyre])
+			visit_url("choice.php?pwd=&whichchoice=1015&option=2", true);
+		else
+			visit_url("choice.php?pwd=&whichchoice=1015&option=1", true);
 		return true;
 	}
 
@@ -4678,6 +4688,7 @@ boolean L13_towerNSContests()
 				buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
 				buffMaintain($effect[Song of Slowness], 100, 1, 1);
 				buffMaintain($effect[Soulerskates], 0, 1, 1);
+				asdonBuff($effect[Driving Quickly]);
 
 				if(is100FamiliarRun())
 				{
@@ -4688,6 +4699,8 @@ boolean L13_towerNSContests()
 					ccMaximize("init, -equip snow suit, switch xiblaxian holo-companion, switch oily woim, switch happy medium ", 1500, 0, false);
 					handleFamiliar(my_familiar());
 				}
+
+				bat_formBats();
 
 				cli_execute("presool");
 				break;
@@ -5185,7 +5198,10 @@ boolean LX_attemptPowerLevel()
 		ccAdv(1, $location[The X-32-F Combat Training Snowman]);
 		return true;
 	}
-
+	if(LX_freeCombats())
+	{
+		return true;
+	}
 
 	if(!hasTorso())
 	{
@@ -6240,6 +6256,7 @@ boolean LX_spookyravenSecond()
 
 	//Convert Spookyraven Spectacles to a toggle
 	boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0);
+	boolean needCamera = (item_amount($item[disposable instant camera]) == 0);
 	if(my_class() == $class[Avatar of Boris])
 	{
 		needSpectacles = false;
@@ -6258,7 +6275,7 @@ boolean LX_spookyravenSecond()
 	}
 	else
 	{
-		if(item_amount($item[Disposable Instant Camera]) == 0)
+		if(needCamera)
 		{
 			set_property("choiceAdventure878", "4");
 		}
@@ -6271,15 +6288,21 @@ boolean LX_spookyravenSecond()
 	set_property("choiceAdventure877", "1");
 	if((get_property("sl_ballroomopen") == "open") || (get_property("questM21Dance") == "finished") || (get_property("questM21Dance") == "step3"))
 	{
-		if(!needSpectacles)
-		{
-			set_property("sl_spookyravensecond", "finished");
-		}
-		else
+		if(needSpectacles)
 		{
 			print("Need Spectacles, damn it.", "blue");
 			LX_spookyBedroomCombat();
 			print("Finished 1 Spookyraven Bedroom Spectacle Sequence", "blue");
+		}
+		else if(needCamera)
+		{
+			print("Need Disposable Instant Camera, damn it.", "blue");
+			LX_spookyBedroomCombat();
+			print("Finished 1 Spookyraven Bedroom Disposable Instant Camera Sequence", "blue");
+		}
+		else
+		{
+			set_property("sl_spookyravensecond", "finished");
 		}
 		return true;
 	}
@@ -6796,6 +6819,8 @@ boolean L11_unlockEd()
 		buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
 		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
+		// TODO: use Baleful Howl, then use Bat Form
+		// bat_formBats();
 		if(get_property("sl_dickstab").to_boolean())
 		{
 			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
@@ -7167,6 +7192,8 @@ boolean L12_gremlins()
 		equip($item[astral shield]);
 	}
 	useCocoon();
+	// TODO: use Baleful Howl, then use Mist Form for the DR
+	// bat_formMist();
 
 	handleFamiliar("init");
 	// TODO: find a way to songboom DR without it getting overridden every turn
@@ -7560,6 +7587,7 @@ boolean L12_filthworms()
 		buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
 		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
 		asdonBuff($effect[Driving Observantly]);
+		bat_formBats();
 
 		if(get_property("sl_dickstab").to_boolean())
 		{
@@ -9039,8 +9067,9 @@ boolean L7_crypt()
 			equip($item[Gravy Boat]);
 		}
 
+		bat_formBats();
 		januaryToteAcquire($item[Broken Champagne Bottle]);
-		if((item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
+		if((numeric_modifier("item") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
 			equip($item[Broken Champagne Bottle]);
 		}
@@ -9931,6 +9960,7 @@ boolean L4_batCave()
 	if(batStatus >= 3)
 	{
 		buffMaintain($effect[Polka of Plenty], 15, 1, 1);
+		bat_formWolf();
 		int batskinBelt = item_amount($item[Batskin Belt]);
 		ccAdv(1, $location[The Boss Bat\'s Lair]);
 		# DIGIMON remove once mafia tracks this
@@ -10514,6 +10544,15 @@ boolean LX_bitchinMeatcar()
 	}
 	else
 	{
+		if((my_meat() >= 6000) && isGeneralStoreAvailable())
+		{
+			print("We're rich, let's take the bus instead of building a car.", "blue");
+			buyUpTo(1, $item[Desert Bus Pass]);
+			if(item_amount($item[Desert Bus Pass]) > 0)
+			{
+				return true;
+			}
+		}
 		print("Farming for a Bitchin' Meatcar", "blue");
 		if(get_property("questM01Untinker") == "unstarted")
 		{
@@ -11258,6 +11297,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		}
 		buffMaintain($effect[Hide of Sobek], 10, 1, 1);
 		buffMaintain($effect[Patent Prevention], 0, 1, 1);
+		bat_formMist();
 
 		ccAdv(1, $location[The Haunted Kitchen]);
 		handleFamiliar("item");
@@ -11716,6 +11756,19 @@ boolean L9_aBooPeak()
 			spookyResist += 2;
 		}
 
+		if(have_skill($skill[Mist Form]))
+		{
+			coldResist += 4;
+			spookyResist += 4;
+			hpDifference -= 10;
+		}
+		else if(have_skill($skill[Spectral Awareness]))
+		{
+			coldResist += 2;
+			spookyResist += 2;
+			hpDifference -= 10;
+		}
+
 		if((item_amount($item[Spooky Powder]) > 0) && (have_effect($effect[Spookypants]) == 0))
 		{
 			spookyResist = spookyResist + 1;
@@ -11810,6 +11863,7 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Red Door Syndrome], 0, 1, 1);
 			buffMaintain($effect[Well-Oiled], 0, 1, 1);
 			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			bat_formMist();
 
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
@@ -11851,7 +11905,7 @@ boolean L9_aBooPeak()
 			{
 				use(1, $item[Linen Bandages]);
 			}
-			if(((my_hp() * 4) < my_maxhp()) && (item_amount($item[Scroll of Drastic Healing]) > 0) && (my_class() != $class[Ed]))
+			if(((my_hp() * 4) < my_maxhp()) && (item_amount($item[Scroll of Drastic Healing]) > 0) && (my_class() != $class[Ed] && my_class() != $class[Vampyre]))
 			{
 				use(1, $item[Scroll of Drastic Healing]);
 			}
@@ -13792,6 +13846,7 @@ boolean doTasks()
 			set_property("sl_paranoia_counter", paranoia_counter + 1);
 		}
 	}
+	bat_formNone();
 
 	basicAdjustML();
 	powerLevelAdjustment();

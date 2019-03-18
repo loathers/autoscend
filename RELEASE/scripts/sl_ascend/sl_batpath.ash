@@ -20,6 +20,88 @@ void bat_initializeSettings()
 		set_property("sl_useCubeling", false);
 		set_property("sl_wandOfNagamar", false);
 		set_property("sl_getStarKey", true);
+		set_property("sl_bat_desiredForm", "");
+	}
+}
+
+// The following functions set the desired form.
+// The pre-adventure handler adjusts our actual form to match.
+// This is done to avoid getting stuck in an incorrect form,
+// or wasting HP switching back and forth.
+
+void bat_formNone()
+{
+	if(my_class() != $class[Vampyre]) return;
+	if(get_property("sl_bat_desiredForm") != "")
+	{
+		set_property("sl_bat_desiredForm", "");
+	}
+}
+
+void bat_formWolf()
+{
+	if(my_class() != $class[Vampyre]) return;
+	set_property("sl_bat_desiredForm", "wolf");
+	bat_switchForm($effect[Wolf Form]);
+}
+
+void bat_formMist()
+{
+	if(my_class() != $class[Vampyre]) return;
+	set_property("sl_bat_desiredForm", "mist");
+	bat_switchForm($effect[Mist Form]);
+}
+
+void bat_formBats()
+{
+	if(my_class() != $class[Vampyre]) return;
+	set_property("sl_bat_desiredForm", "bats");
+	bat_switchForm($effect[Bats Form]);
+}
+
+void bat_clearForms()
+{
+	foreach ef in $effects[Wolf Form, Mist Form, Bats Form]
+	{
+		if (0 != have_effect(ef)) {
+			use_skill(to_skill(ef));
+		}
+	}
+}
+
+boolean bat_switchForm(effect form)
+{
+	if (0 != have_effect(form)) return true;
+	bat_clearForms();
+	if (my_hp() <= 10)
+	{
+		print("We don't have enough HP to switch form to " + form + "!", "red");
+		return false;
+	}
+	return use_skill(1, form.to_skill());
+}
+
+boolean bat_formPreAdventure()
+{
+	if(my_class() != $class[Vampyre]) return false;
+
+	string desiredForm = get_property("sl_bat_desiredForm");
+	effect form;
+	switch(desiredForm)
+	{
+	case "wolf":
+		return bat_switchForm($effect[Wolf Form]);
+	case "mist":
+		return bat_switchForm($effect[Mist Form]);
+	case "bats":
+		return bat_switchForm($effect[Bats Form]);
+	case "":
+		bat_clearForms();
+		return true;
+	default:
+		print("sl_bat_desiredForm was set to bad value: '" + desiredForm + "'. Should be '', 'wolf', 'mist', or 'bats'.", "red");
+		set_property("sl_bat_desiredForm", "");
+		return false;
 	}
 }
 
@@ -146,7 +228,6 @@ skill [int] bat_pickSkills(int hpLeft)
 	if(get_property("_sl_bat_bloodBank") != "2")
 		addPick($skill[Intimidating Aura]);
 
-	// no forms JUST yet
 	foreach sk in $skills[
 		Chill of the Tomb,
 		Blood Chains,
@@ -159,14 +240,17 @@ skill [int] bat_pickSkills(int hpLeft)
 		Ensorcel,
 		Sharp Eyes,
 		Batlike Reflexes,
+		Ceaseless Snarl,
+		Flock of Bats Form,
+		Mist Form,
 		Sanguine Magnetism,
 		Macabre Cunning,
 		Ferocity,
 		Flesh Scent,
+		Wolf Form,
 		Spot Weakness,
 		Preternatural Strength,
 		Savage Bite,
-		Ceaseless Snarl,
 		Spectral Awareness,
 		Piercing Gaze,
 		Blood Spike,
@@ -296,12 +380,14 @@ boolean bat_consumption()
 	{
 		if (inebriety_left() > 0)
 		{
+			pullXWhenHaveY($item[monstar energy beverage], 1, 0);
 			// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
 			if(consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
 				return true;
 		}
 		if (fullness_left() > 0)
 		{
+			pullXWhenHaveY($item[gauze garter], 1, 0);
 			// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
 			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
 				return true;

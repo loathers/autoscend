@@ -207,6 +207,8 @@ void handlePreAdventure(location place)
 		}
 	}
 
+	bat_formPreAdventure();
+
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean && (item_drop_modifier() < itemNeed._float))
 	{
