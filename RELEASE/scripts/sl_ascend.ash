@@ -12383,20 +12383,6 @@ boolean L9_chasmBuild()
 #	}
 	print("Chasm time", "blue");
 
-	// Temporary logic until Blech House is spaded further
-	switch(my_primestat())
-	{
-		case $stat[Muscle]:
-			set_property("choiceAdventure1345", 1);
-			break;
-		case $stat[Mysticality]:
-			set_property("choiceAdventure1345", 2);
-			break;
-		case $stat[Moxie]:
-			set_property("choiceAdventure1345", 3);
-			break;
-	}
-
 	if(item_amount($item[fancy oil painting]) > 0)
 	{
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
@@ -12432,6 +12418,34 @@ boolean L9_chasmBuild()
 			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 			{
 				equip(it);
+			}
+		}
+
+		if(get_property("smutOrcNoncombatProgress").to_int() == 15)
+		{
+			// This is a hardcoded patch for Dark Gyffte
+			// TODO: once explicit formulas are spaded, use simulated maximizer
+			// to determine best approach.
+			if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]))
+			{
+				// Maximizing moxie (through equalizer) and sleaze res is good here
+				ccMaximize("myst, 50 sleaze res", 1000, 0, false);
+				bat_formMist();
+				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			}
+			else {
+				switch(my_primestat())
+				{
+					case $stat[Muscle]:
+						set_property("choiceAdventure1345", 1);
+						break;
+					case $stat[Mysticality]:
+						set_property("choiceAdventure1345", 2);
+						break;
+					case $stat[Moxie]:
+						set_property("choiceAdventure1345", 3);
+						break;
+				}
 			}
 		}
 
@@ -13760,7 +13774,7 @@ boolean autosellCrap()
 		sl_autosell(1, $item[meat stack]);
 	}
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Ratgut, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
 	{
 		if(item_amount(it) > 0)
 		{
