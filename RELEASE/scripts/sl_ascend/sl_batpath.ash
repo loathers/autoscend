@@ -73,6 +73,7 @@ boolean bat_switchForm(effect form)
 {
 	if (0 != have_effect(form)) return true;
 	bat_clearForms();
+	if(!have_skill(form.to_skill())) return false;
 	if (my_hp() <= 10)
 	{
 		print("We don't have enough HP to switch form to " + form + "!", "red");
