@@ -433,7 +433,15 @@ boolean zataraClanmate(string who)
 #	set_property("_clanFortuneConsultUses", get_property("_clanFortuneConsultUses").to_int() + 1);
 
 	int oldClan = get_clan_id();
-	changeClan();
+    string clanName = get_property("sl_consultClan");
+	if (clanName != "")
+	{
+		changeClan(clanName);	
+	}
+	else
+	{
+		changeClan();
+	}
 	if(oldClan == get_clan_id())
 	{
 		set_property("_clanFortuneConsultUses", 42069);
@@ -442,13 +450,25 @@ boolean zataraClanmate(string who)
 
 	int attempts = 0;
 	int player = 3038166;
+	string consultOverrideName = get_property("sl_consultChoice");
 	string name = get_player_name(player);
+	if (consultOverrideName != "")
+	{
+		name = consultOverrideName;
+		player = get_player_id(consultOverrideName).to_int();
+	}
+
 	boolean needWait = true;
 
 	while(attempts < 5)
 	{
 		string temp = visit_url("clan_viplounge.php?preaction=lovetester", false);
-		temp = visit_url("choice.php?pwd=&whichchoice=1278&option=1&which=1&whichid=3038166&q1=pizza&q2=batman&q3=thick");
+		string choices = "&q1=pizza&q2=batman&q3=thick";
+		if (get_property("sl_optimizeConsultsInRun").to_boolean() && my_path() != "None")
+		{
+			choices = "&q1=cake&q2=wonderwoman&q3=thick";
+		}
+		temp = visit_url("choice.php?pwd=&whichchoice=1278&option=1&which=1&whichid="+ player + choices);
 
 		if(contains_text(temp, "You can't consult Madame Zatara about your relationship with anyone else today."))
 		{

@@ -32,6 +32,9 @@ sl_equipment_override_off-hand	string	A semicolon separated list of overrides fo
 sl_equipment_override_pants	string	A semicolon separated list of overrides for the pants slot.
 sl_equipment_override_acc	string	A semicolon separated list of overrides for the acc slots.
 sl_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
+sl_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get relevant rewards.
+sl_consultClan	string	The clan name of the player you want to do Zatara consults with.
+sl_consultChoice	string	The name of the player you want to do Zatara consults with.
 sl_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
 sl_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
 sl_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).

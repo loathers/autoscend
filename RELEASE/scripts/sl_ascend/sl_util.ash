@@ -2567,7 +2567,14 @@ boolean sl_deleteMail(kmailObject msg)
 	{
 		return true;
 	}
-	if((msg.fromid == 3038166) && (contains_text(msg.message, "CheeseFax completed your relationship fortune test")) && get_property("sl_hideAdultery").to_boolean())
+	if (get_property("sl_consultChoice") != ""){
+		int id = get_player_id(get_property("sl_consultChoice")).to_int();
+		if( msg.fromid == id && (contains_text(msg.message, "completed your relationship fortune test")) && get_property("sl_hideAdultery").to_boolean())
+		{
+			return true;
+		}
+	}
+	if((msg.fromid == 3038166) && (contains_text(msg.message, "completed your relationship fortune test")) && get_property("sl_hideAdultery").to_boolean())
 	{
 		return true;
 	}
