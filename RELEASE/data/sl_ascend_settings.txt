@@ -39,7 +39,7 @@ any	30	sl_equipment_override_off-hand	string	A semicolon separated list of overr
 any	31	sl_equipment_override_pants	string	A semicolon separated list of overrides for the pants slot.
 any	32	sl_equipment_override_acc	string	A semicolon separated list of overrides for the acc slots.
 any	33	sl_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
-any	34	sl_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get relevant rewards.
+any	34	sl_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get Ascension relevant rewards.
 any	35	sl_consultClan	string	The clan name of the player you want to do Zatara consults with.
 any	36	sl_consultChoice	string	The name of the player you want to do Zatara consults with.
 any	37	sl_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
