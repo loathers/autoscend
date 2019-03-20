@@ -1603,6 +1603,45 @@ int handlePulls(int day)
 				ccChew(1, $item[Unconscious Collective Dream Jar]);
 			}
 		}
+
+
+		if(my_class() == $class[Vampyre])
+		{
+			print("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
+			if((storage_amount($item[mime army shotglass]) > 0) && is_unrestricted($item[mime army shotglass]))
+			{
+				pullXWhenHaveY($item[mime army shotglass], 1, 0);
+			}
+			int available_bloodbags = 7;
+			if(item_amount($item[Vampyric cloake]) > 0)
+			{
+				available_bloodbags += 1;
+			}
+			if(item_amount($item[Lil\' Doctor&trade; Bag]) > 0)
+			{
+				available_bloodbags += 1;
+			}
+
+			int available_organspace = 10;
+			if(item_amount($item[mime army shotglass]) > 0)
+			{
+				available_organspace += 1;
+			}
+
+			pullXWhenHaveY($item[dieting pill], 1, 0);
+			pullXWhenHaveY($item[dieting pill], 1, 1);
+			available_organspace -= min(2, item_amount($item[dieting pill]));
+
+			for(int i=0; i<available_organspace-available_bloodbags; i++)
+			{
+				pullXWhenHaveY($item[vampagne], 1, i);
+			}
+
+			// this is a somewhat meat-heavy path, especially if
+			// buying torso awaregness and desert bus pass
+			pullXWhenHaveY($item[gold wedding ring], 1, 0);
+			sl_autosell(1, $item[gold wedding ring]);
+		}
 	}
 	else if(day == 2)
 	{
