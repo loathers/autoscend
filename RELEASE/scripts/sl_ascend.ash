@@ -9951,6 +9951,7 @@ boolean L5_goblinKing()
 	}
 
 	ccAdv(1, $location[Throne Room]);
+	cli_execute("refresh quests");
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished"))
 	{
