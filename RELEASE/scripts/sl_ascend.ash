@@ -1260,7 +1260,7 @@ boolean doThemtharHills()
 	{
 		meat_need = meat_need - 200;
 	}
-	if((my_class() == $class[vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
+	if((my_class() == $class[Vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
 	{
 		meat_need = meat_need - 150;
 	}
