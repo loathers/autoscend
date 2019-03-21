@@ -1636,11 +1636,6 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[vampagne], 1, i);
 			}
-
-			// this is a somewhat meat-heavy path, especially if
-			// buying torso awaregness and desert bus pass
-			pullXWhenHaveY($item[gold wedding ring], 1, 0);
-			sl_autosell(1, $item[gold wedding ring]);
 		}
 	}
 	else if(day == 2)
