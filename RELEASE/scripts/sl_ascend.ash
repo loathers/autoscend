@@ -1260,7 +1260,7 @@ boolean doThemtharHills()
 	{
 		meat_need = meat_need - 200;
 	}
-	if((my_class() == $class[vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
+	if((my_class() == $class[Vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
 	{
 		meat_need = meat_need - 150;
 	}
@@ -1601,6 +1601,40 @@ int handlePulls(int day)
 			if(item_amount($item[Unconscious Collective Dream Jar]) > 0)
 			{
 				ccChew(1, $item[Unconscious Collective Dream Jar]);
+			}
+		}
+
+
+		if(my_class() == $class[Vampyre])
+		{
+			print("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
+			if((storage_amount($item[mime army shotglass]) > 0) && is_unrestricted($item[mime army shotglass]))
+			{
+				pullXWhenHaveY($item[mime army shotglass], 1, 0);
+			}
+			int available_bloodbags = 7;
+			if(item_amount($item[Vampyric cloake]) > 0)
+			{
+				available_bloodbags += 1;
+			}
+			if(item_amount($item[Lil\' Doctor&trade; Bag]) > 0)
+			{
+				available_bloodbags += 1;
+			}
+
+			int available_organspace = 10;
+			if(item_amount($item[mime army shotglass]) > 0)
+			{
+				available_organspace += 1;
+			}
+
+			pullXWhenHaveY($item[dieting pill], 1, 0);
+			pullXWhenHaveY($item[dieting pill], 1, 1);
+			available_organspace -= min(2, item_amount($item[dieting pill]));
+
+			for(int i=0; i<available_organspace-available_bloodbags; i++)
+			{
+				pullXWhenHaveY($item[vampagne], 1, i);
 			}
 		}
 	}
@@ -9912,6 +9946,7 @@ boolean L5_goblinKing()
 	}
 
 	ccAdv(1, $location[Throne Room]);
+	cli_execute("refresh quests");
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished"))
 	{
@@ -12383,20 +12418,6 @@ boolean L9_chasmBuild()
 #	}
 	print("Chasm time", "blue");
 
-	// Temporary logic until Blech House is spaded further
-	switch(my_primestat())
-	{
-		case $stat[Muscle]:
-			set_property("choiceAdventure1345", 1);
-			break;
-		case $stat[Mysticality]:
-			set_property("choiceAdventure1345", 2);
-			break;
-		case $stat[Moxie]:
-			set_property("choiceAdventure1345", 3);
-			break;
-	}
-
 	if(item_amount($item[fancy oil painting]) > 0)
 	{
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
@@ -12432,6 +12453,34 @@ boolean L9_chasmBuild()
 			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 			{
 				equip(it);
+			}
+		}
+
+		if(get_property("smutOrcNoncombatProgress").to_int() == 15)
+		{
+			// This is a hardcoded patch for Dark Gyffte
+			// TODO: once explicit formulas are spaded, use simulated maximizer
+			// to determine best approach.
+			if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]))
+			{
+				// Maximizing moxie (through equalizer) and sleaze res is good here
+				ccMaximize("myst, 50 sleaze res", 1000, 0, false);
+				bat_formMist();
+				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			}
+			else {
+				switch(my_primestat())
+				{
+					case $stat[Muscle]:
+						set_property("choiceAdventure1345", 1);
+						break;
+					case $stat[Mysticality]:
+						set_property("choiceAdventure1345", 2);
+						break;
+					case $stat[Moxie]:
+						set_property("choiceAdventure1345", 3);
+						break;
+				}
 			}
 		}
 
@@ -12573,34 +12622,65 @@ boolean L11_redZeppelin()
 		return ccAdv($location[A Mob Of Zeppelin Protesters]);
 	}
 
+	// TODO: create lynyrd skin items
+
+	set_property("choiceAdventure856", 1);
+	set_property("choiceAdventure857", 1);
+	set_property("choiceAdventure858", 1);
+	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
+	buffMaintain($effect[Musky], 0, 1, 1);
+	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
+
+	providePlusNonCombat(25);
+	foreach it in $items[ratty knitted cap, disturbing fanfic]
+	{
+		if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
+		{
+			equip(it);
+		}
+	}
+
+	if($location[A Mob of Zeppelin Protesters].turns_spent % 7 == 6)
+	{
+		print("Oooh, the guaranteed Zeppelin noncombat is coming.", "blue");
+		// We can stock up on +sleaze damage and +sleaze spell dmg, since
+		// we know we won't get in a combat.
+
+		if(item_amount($item[Flamin\' Whatshisname]) > 0)
+		{
+			backupSetting("choiceAdventure866", 3);
+		}
+		else
+		{
+			backupSetting("choiceAdventure866", 2);
+		}
+
+		ccMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
+		foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
+		{
+			if(possessEquipment(it) && !have_equipped(it) && can_equip(it) &&
+			   (item_amount(it) > 0) &&
+			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze dmg") < 5) &&
+			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell dmg") < 5))
+			{
+				equip(it);
+			}
+		}
+
+		boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
+		if(!($strings[Bench Warrant, Fire Up Above, This Looks Like a Good Bush for an Ambush, Not So Much With The Humanity] contains get_property("lastEncounter")))
+		{
+			abort("Uh oh, we expected to get a scheduled Zeppelin noncombat there but didn't. That's not supposed to happen. There's a bug in Jeparo's new code!");
+		}
+		return retval;
+	}
+
 	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
 	{
 		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[Noob Cave]);
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
-	set_property("choiceAdventure856", 1);
-	set_property("choiceAdventure857", 1);
-	set_property("choiceAdventure858", 1);
-
-	if(item_amount($item[Flamin\' Whatshisname]) > 0)
-	{
-		backupSetting("choiceAdventure866", 3);
-	}
-	else
-	{
-		backupSetting("choiceAdventure866", 2);
-	}
-
-	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
-	buffMaintain($effect[Musky], 0, 1, 1);
-	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
-
-	if((item_amount($item[Halibut]) > 0) && can_equip($item[Halibut]))
-	{
-		equip($slot[weapon], $item[Halibut]);
-	}
-
 	boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
 	if(!lastAdventureSpecialNC())
 	{
@@ -13729,7 +13809,7 @@ boolean autosellCrap()
 		sl_autosell(1, $item[meat stack]);
 	}
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Ratgut, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
 	{
 		if(item_amount(it) > 0)
 		{
