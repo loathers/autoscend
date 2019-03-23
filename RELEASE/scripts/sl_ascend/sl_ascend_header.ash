@@ -918,6 +918,7 @@ boolean bat_shouldEnsorcel(monster m); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_consumption(); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_skillValid(skill sk); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_tryBloodBank(); // Defined in sl_ascend/sl_batpath.ash
+boolean bat_wantHowl(location loc); // Defined in sl_ascend/sl_batpath.ash
 void bat_formNone(); // Defined in sl_ascend/sl_batpath.ash
 void bat_formWolf(); // Defined in sl_ascend/sl_batpath.ash
 void bat_formMist(); // Defined in sl_ascend/sl_batpath.ash

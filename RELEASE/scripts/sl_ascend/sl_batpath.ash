@@ -29,6 +29,23 @@ void bat_initializeSettings()
 // This is done to avoid getting stuck in an incorrect form,
 // or wasting HP switching back and forth.
 
+boolean bat_wantHowl(location loc)
+{
+	if(sl_banishesUsedAt(loc) contains "Baleful Howl")
+	{
+		return false;
+	}
+	int[monster] banished = banishedMonsters();
+	monster[int] monsters = get_monsters(loc);
+	foreach i in monsters
+	{
+		if (!(banished contains monsters[i]) && (sl_wantToBanish(monsters[i], loc))) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void bat_formNone()
 {
 	if(my_class() != $class[Vampyre]) return;
