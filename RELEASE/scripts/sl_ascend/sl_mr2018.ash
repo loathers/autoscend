@@ -702,6 +702,7 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	{
 		return false;
 	}
+	fightClubSpa();
 	//May need to actually have 1 adventure left.
 
 	backupSetting("choiceAdventure1322", 1);
