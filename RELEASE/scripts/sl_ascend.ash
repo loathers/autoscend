@@ -12551,6 +12551,7 @@ boolean L9_chasmBuild()
 			}
 		}
 
+		sl_change_mcd(0);
 		ccAdv(1, $location[The Smut Orc Logging Camp]);
 		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
 		{
