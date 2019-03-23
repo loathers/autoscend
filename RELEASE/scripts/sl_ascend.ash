@@ -5027,6 +5027,10 @@ boolean L13_towerNSEntrance()
 					}
 				}
 			}
+			if(neverendingPartyPowerlevel())
+			{
+				return true;
+			}
 			if(!hasTorso())
 			{
 				if(LX_melvignShirt())

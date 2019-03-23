@@ -554,13 +554,14 @@ boolean fightClubSpa();										//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa(int option);							//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa(effect eff);							//Defined in sl_ascend/sl_mr2018.ash
 boolean cheeseWarMachine(int stats, int it, int buff, int potion);//Defined in sl_ascend/sl_mr2018.ash
-boolean neverendingPartyCombat(stat st, boolean hardmode, string option);//Defined in sl_ascend/sl_mr2018.ash
-boolean neverendingPartyCombat(effect eff, boolean hardmode, string option);//Defined in sl_ascend/sl_mr2018.ash
+boolean neverendingPartyCombat(stat st, boolean hardmode, string option, boolean powerlevelling);//Defined in sl_ascend/sl_mr2018.ash
+boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, boolean powerlevelling);//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat(stat st, boolean hardmode);	//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat(effect eff, boolean hardmode);//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat(stat st);					//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat(effect eff);					//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat();							//Defined in sl_ascend/sl_mr2018.ash
+boolean neverendingPartyPowerlevel();					//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyAvailable();						//Defined in sl_ascend/sl_mr2018.ash
 string sl_latteDropName(location l); // Defined in sl_ascend/sl_mr2018.ash
 boolean sl_latteDropAvailable(location l); // Defined in sl_ascend/sl_mr2018.ash
