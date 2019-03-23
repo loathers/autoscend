@@ -50,6 +50,9 @@ boolean canUse(skill sk, boolean onlyOnce)
 	if(!sl_have_skill(sk))
 		return false;
 
+	if(!sl_is_valid(sk))
+		return false;
+
 	if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
 		my_hp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
