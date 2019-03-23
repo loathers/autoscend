@@ -1929,6 +1929,11 @@ string sl_combatHandler(int round, string opp, string text)
 				break;
 			}
 		}
+		// Hack for Logging Camp: deprioritize Dark Feast, use Chill of the Tomb aggressively
+		if(my_hp() > 0.6 * my_maxhp() && attackMajor == $skill[Chill of the Tomb] && my_location() == $location[The Smut Orc Logging Camp])
+		{
+			break;
+		}
 		if(my_hp() < my_maxhp() && (monster_hp() <= 30 || (monster_hp() <= 100 && sl_have_skill($skill[Hypnotic Eyes]))) && canUse($skill[Dark Feast]))
 		{
 			return useSkill($skill[Dark Feast]);
