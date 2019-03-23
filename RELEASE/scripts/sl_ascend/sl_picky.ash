@@ -75,12 +75,11 @@ void picky_startAscension()
 boolean picky_buyskills()
 {
 	// TODO: Torso Awaregness is worth obtaining in other cases too.
-	if(my_meat() >= 10000
-	   && (my_class() == $class[Vampyre])
+	if((my_meat() >= 10000)
 	   && gnomads_available()
 	   && (!have_skill($skill[Torso Awaregness]))
 	   && (item_amount($item[January\'s Garbage Tote]) != 0)
-	   && (!is_unrestricted($item[January\'s Garbage Tote])))
+	   && (is_unrestricted($item[January\'s Garbage Tote])))
 	{
 		visit_url("gnomes.php?action=trainskill&whichskill=12");
 	}
