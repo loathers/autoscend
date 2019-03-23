@@ -554,13 +554,14 @@ boolean fightClubSpa();										//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa(int option);							//Defined in sl_ascend/sl_mr2018.ash
 boolean fightClubSpa(effect eff);							//Defined in sl_ascend/sl_mr2018.ash
 boolean cheeseWarMachine(int stats, int it, int buff, int potion);//Defined in sl_ascend/sl_mr2018.ash
-boolean neverendingPartyCombat(stat st, boolean hardmode, string option);//Defined in sl_ascend/sl_mr2018.ash
-boolean neverendingPartyCombat(effect eff, boolean hardmode, string option);//Defined in sl_ascend/sl_mr2018.ash
+boolean neverendingPartyCombat(stat st, boolean hardmode, string option, boolean powerlevelling);//Defined in sl_ascend/sl_mr2018.ash
+boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, boolean powerlevelling);//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat(stat st, boolean hardmode);	//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat(effect eff, boolean hardmode);//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat(stat st);					//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat(effect eff);					//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyCombat();							//Defined in sl_ascend/sl_mr2018.ash
+boolean neverendingPartyPowerlevel();					//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyAvailable();						//Defined in sl_ascend/sl_mr2018.ash
 string sl_latteDropName(location l); // Defined in sl_ascend/sl_mr2018.ash
 boolean sl_latteDropAvailable(location l); // Defined in sl_ascend/sl_mr2018.ash
@@ -918,6 +919,7 @@ boolean bat_shouldEnsorcel(monster m); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_consumption(); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_skillValid(skill sk); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_tryBloodBank(); // Defined in sl_ascend/sl_batpath.ash
+boolean bat_wantHowl(location loc); // Defined in sl_ascend/sl_batpath.ash
 void bat_formNone(); // Defined in sl_ascend/sl_batpath.ash
 void bat_formWolf(); // Defined in sl_ascend/sl_batpath.ash
 void bat_formMist(); // Defined in sl_ascend/sl_batpath.ash

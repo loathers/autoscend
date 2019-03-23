@@ -584,6 +584,11 @@ boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 	return true;
 }
 
+boolean neverendingPartyPowerlevel()
+{
+	return neverendingPartyCombat(my_primestat(), false, "", true);
+}
+
 boolean neverendingPartyCombat()
 {
 	return neverendingPartyCombat(my_primestat());
@@ -599,26 +604,25 @@ boolean neverendingPartyCombat(effect ef)
 	return neverendingPartyCombat(ef, false);
 }
 
-
 boolean neverendingPartyCombat(stat st, boolean hardmode)
 {
-	return neverendingPartyCombat(st, hardmode, "");
+	return neverendingPartyCombat(st, hardmode, "", false);
 }
 
 boolean neverendingPartyCombat(effect ef, boolean hardmode)
 {
-	return neverendingPartyCombat(ef, hardmode, "");
+	return neverendingPartyCombat(ef, hardmode, "", false);
 }
 
-boolean neverendingPartyCombat(stat st, boolean hardmode, string option)
+boolean neverendingPartyCombat(stat st, boolean hardmode, string option, boolean powerlevelling)
 {
 	switch(st)
 	{
-	case $stat[Muscle]:			return neverendingPartyCombat($effect[Spiced Up], hardmode, option);
-	case $stat[Mysticality]:	return neverendingPartyCombat($effect[Tomes of Opportunity], hardmode, option);
-	case $stat[Moxie]:			return neverendingPartyCombat($effect[The Best Hair You\'ve Ever Had], hardmode, option);
+	case $stat[Muscle]:			return neverendingPartyCombat($effect[Spiced Up], hardmode, option, powerlevelling);
+	case $stat[Mysticality]:	return neverendingPartyCombat($effect[Tomes of Opportunity], hardmode, option, powerlevelling);
+	case $stat[Moxie]:			return neverendingPartyCombat($effect[The Best Hair You\'ve Ever Had], hardmode, option, powerlevelling);
 	}
-	return neverendingPartyCombat($effect[none], hardmode, option);
+	return neverendingPartyCombat($effect[none], hardmode, option, powerlevelling);
 }
 
 boolean neverendingPartyAvailable()
@@ -656,13 +660,13 @@ boolean neverendingPartyAvailable()
 }
 
 
-boolean neverendingPartyCombat(effect eff, boolean hardmode, string option)
+boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, boolean powerlevelling)
 {
 	if(!get_property("neverendingPartyAlways").to_boolean() && !get_property("_neverendingPartyToday").to_boolean())
 	{
 		return false;
 	}
-	if(get_property("_neverendingPartyFreeTurns").to_int() >= 10)
+	if((get_property("_neverendingPartyFreeTurns").to_int() >= 10) && !powerlevelling)
 	{
 		if(get_property("_neverendingNotEarly").to_boolean())
 		{
@@ -698,6 +702,7 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option)
 	{
 		return false;
 	}
+	fightClubSpa();
 	//May need to actually have 1 adventure left.
 
 	backupSetting("choiceAdventure1322", 1);

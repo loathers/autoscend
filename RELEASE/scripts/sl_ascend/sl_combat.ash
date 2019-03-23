@@ -50,6 +50,9 @@ boolean canUse(skill sk, boolean onlyOnce)
 	if(!sl_have_skill(sk))
 		return false;
 
+	if(!sl_is_valid(sk))
+		return false;
+
 	if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
 		my_hp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
@@ -157,6 +160,11 @@ string getStallString(monster enemy)
 	if(canUse($skill[Soul Bubble]))
 	{
 		return useSkill($skill[Soul Bubble]);
+	}
+
+	if(canUse($skill[Blood Chains]))
+	{
+		return useSkill($skill[Blood Chains]);
 	}
 
 	if(canUse($skill[Hogtie]) && !haveUsed($skill[Beanscreen]) && (my_mp() >= (6 * mp_cost($skill[Hogtie]))) && hasLeg(enemy))
@@ -1928,6 +1936,11 @@ string sl_combatHandler(int round, string opp, string text)
 				attackMinor = useSkill(sk, false);
 				break;
 			}
+		}
+		// Hack for Logging Camp: deprioritize Dark Feast, use Chill of the Tomb aggressively
+		if(my_hp() > 0.6 * my_maxhp() && attackMajor == $skill[Chill of the Tomb] && my_location() == $location[The Smut Orc Logging Camp])
+		{
+			break;
 		}
 		if(my_hp() < my_maxhp() && (monster_hp() <= 30 || (monster_hp() <= 100 && sl_have_skill($skill[Hypnotic Eyes]))) && canUse($skill[Dark Feast]))
 		{

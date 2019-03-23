@@ -29,6 +29,23 @@ void bat_initializeSettings()
 // This is done to avoid getting stuck in an incorrect form,
 // or wasting HP switching back and forth.
 
+boolean bat_wantHowl(location loc)
+{
+	if(sl_banishesUsedAt(loc) contains "Baleful Howl")
+	{
+		return false;
+	}
+	int[monster] banished = banishedMonsters();
+	monster[int] monsters = get_monsters(loc);
+	foreach i in monsters
+	{
+		if (!(banished contains monsters[i]) && (sl_wantToBanish(monsters[i], loc))) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void bat_formNone()
 {
 	if(my_class() != $class[Vampyre]) return;
@@ -367,6 +384,10 @@ boolean bat_consumption()
 		return false;
 	}
 
+	if (fullness_left() > 0)
+	{
+		pullXWhenHaveY($item[gauze garter], 1, 0);
+	}
 	if ((my_level() >= 7) &&
 		(spleen_left() >= 3) &&
 		(fullness_left() >= 2) &&
@@ -391,7 +412,6 @@ boolean bat_consumption()
 		}
 		if (fullness_left() > 0)
 		{
-			pullXWhenHaveY($item[gauze garter], 1, 0);
 			// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
 			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
 				return true;

@@ -5017,13 +5017,6 @@ boolean L13_towerNSEntrance()
 					return true;
 				}
 			}
-			if(!hasTorso())
-			{
-				if(LX_melvignShirt())
-				{
-					return true;
-				}
-			}
 			if(needStarKey())
 			{
 				if(zone_isAvailable($location[The Hole In The Sky]))
@@ -5032,6 +5025,17 @@ boolean L13_towerNSEntrance()
 					{
 						return true;
 					}
+				}
+			}
+			if(neverendingPartyPowerlevel())
+			{
+				return true;
+			}
+			if(!hasTorso())
+			{
+				if(LX_melvignShirt())
+				{
+					return true;
 				}
 			}
 
@@ -6600,6 +6604,10 @@ boolean L11_mauriceSpookyraven()
 			handleBjornify($familiar[Grimstone Golem]);
 		}
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
+		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
+		{
+			bat_formBats();
+		}
 		ccAdv(1, $location[The Haunted Wine Cellar]);
 		return true;
 	}
@@ -6609,6 +6617,10 @@ boolean L11_mauriceSpookyraven()
 		if(considerGrimstoneGolem(true))
 		{
 			handleBjornify($familiar[Grimstone Golem]);
+		}
+		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
+		{
+			bat_formBats();
 		}
 		ccAdv(1, $location[The Haunted Laundry Room]);
 		return true;
@@ -6853,8 +6865,10 @@ boolean L11_unlockEd()
 		buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
 		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
-		// TODO: use Baleful Howl, then use Bat Form
-		// bat_formBats();
+		if(!bat_wantHowl($location[The Middle Chamber]))
+		{
+			bat_formBats();
+		}
 		if(get_property("sl_dickstab").to_boolean())
 		{
 			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
@@ -7226,9 +7240,10 @@ boolean L12_gremlins()
 		equip($item[astral shield]);
 	}
 	useCocoon();
-	// TODO: use Baleful Howl, then use Mist Form for the DR
-	// bat_formMist();
-
+	if(!bat_wantHowl($location[over where the old tires are]))
+	{
+		bat_formMist();
+	}
 	handleFamiliar("init");
 	// TODO: find a way to songboom DR without it getting overridden every turn
 	// songboomSetting("dr");
@@ -8550,13 +8565,19 @@ boolean L10_airship()
 			handleFamiliar("yellow ray");
 		}
 	}
+	if($location[The Penultimate Fantasy Airship].turns_spent < 10)
+	{
+		bat_formBats();
+	}
+	else
+	{
+		providePlusNonCombat(25);
 
-	providePlusNonCombat(25);
-
-	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-	buffMaintain($effect[Snow Shoes], 0, 1, 1);
-	buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
-	buffMaintain($effect[Gummed Shoes], 0, 1, 1);
+		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
+		buffMaintain($effect[Snow Shoes], 0, 1, 1);
+		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
+		buffMaintain($effect[Gummed Shoes], 0, 1, 1);
+	}
 
 	if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
 	{
@@ -12530,6 +12551,7 @@ boolean L9_chasmBuild()
 			}
 		}
 
+		sl_change_mcd(0);
 		ccAdv(1, $location[The Smut Orc Logging Camp]);
 		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
 		{
