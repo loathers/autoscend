@@ -384,6 +384,10 @@ boolean bat_consumption()
 		return false;
 	}
 
+	if (fullness_left() > 0)
+	{
+		pullXWhenHaveY($item[gauze garter], 1, 0);
+	}
 	if ((my_level() >= 7) &&
 		(spleen_left() >= 3) &&
 		(fullness_left() >= 2) &&
@@ -408,7 +412,6 @@ boolean bat_consumption()
 		}
 		if (fullness_left() > 0)
 		{
-			pullXWhenHaveY($item[gauze garter], 1, 0);
 			// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
 			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
 				return true;
