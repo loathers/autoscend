@@ -162,6 +162,11 @@ string getStallString(monster enemy)
 		return useSkill($skill[Soul Bubble]);
 	}
 
+	if(canUse($skill[Blood Chains]))
+	{
+		return useSkill($skill[Blood Chains]);
+	}
+
 	if(canUse($skill[Hogtie]) && !haveUsed($skill[Beanscreen]) && (my_mp() >= (6 * mp_cost($skill[Hogtie]))) && hasLeg(enemy))
 	{
 		return useSkill($skill[Hogtie]);
