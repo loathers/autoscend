@@ -5017,13 +5017,6 @@ boolean L13_towerNSEntrance()
 					return true;
 				}
 			}
-			if(!hasTorso())
-			{
-				if(LX_melvignShirt())
-				{
-					return true;
-				}
-			}
 			if(needStarKey())
 			{
 				if(zone_isAvailable($location[The Hole In The Sky]))
@@ -5032,6 +5025,13 @@ boolean L13_towerNSEntrance()
 					{
 						return true;
 					}
+				}
+			}
+			if(!hasTorso())
+			{
+				if(LX_melvignShirt())
+				{
+					return true;
 				}
 			}
 
