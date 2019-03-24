@@ -4875,13 +4875,35 @@ boolean L13_towerNSContests()
 				ccMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
 			}
 
-	
-
 			float score = numeric_modifier(challenge + " damage ");
 			score += numeric_modifier(challenge + " spell damage ");
 			if((score > 20.0) && (score < 85.0))
 			{
 				buffMaintain($effect[Bendin\' Hell], 100, 1, 1);
+			}
+
+			score = numeric_modifier(challenge + " damage ");
+			score += numeric_modifier(challenge + " spell damage ");
+			if((score < 80) && (item_amount($item[Genie bottle]) > 0))
+			{
+				switch(challenge)
+				{
+				case $element[cold]:
+					makeGenieWish($effect[Staying Frosty]);
+					break;
+				case $element[hot]:
+					makeGenieWish($effect[Dragged Through the Coals]);
+					break;
+				case $element[sleaze]:
+					makeGenieWish($effect[Fifty Ways to Bereave your Lover]);
+					break;
+				case $element[stench]:
+					makeGenieWish($effect[Sewer-Drenched]);
+					break;
+				case $element[spooky]:
+					makeGenieWish($effect[You're Back...]);
+					break;
+				}
 			}
 
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
