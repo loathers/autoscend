@@ -14081,6 +14081,10 @@ boolean doTasks()
 		// Once we've started the war, we want to be able to micromanage songs
 		// for Gremlins and Nuns. Don't break this for them.
 	}
+	else if((my_class() != $class[Ed]) && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
+	{
+		songboomSetting("nightmare");
+	}
 	else
 	{
 		if((my_fullness() == 0) || (item_amount($item[Special Seasoning]) < 4))
@@ -14092,10 +14096,6 @@ boolean doTasks()
 			if((sl_my_path() == "G-Lover") && (my_meat() > 10000))
 			{
 				songboomSetting("dr");
-			}
-			else if(((sl_my_path() == "Disguises Delimit") || (my_class() == $class[Vampyre])) && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
-			{
-				songboomSetting("nightmare");
 			}
 			else
 			{
