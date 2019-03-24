@@ -12754,6 +12754,8 @@ boolean L11_ronCopperhead()
 		{
 			buy(1, $item[Red Zeppelin Ticket]);
 		}
+		// For Glark Cables. OPTIMAL!
+		bat_formBats();
 		return ccAdv($location[The Red Zeppelin]);
 	}
 
