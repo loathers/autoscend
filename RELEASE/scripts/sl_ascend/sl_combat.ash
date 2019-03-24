@@ -1121,7 +1121,7 @@ string sl_combatHandler(int round, string opp, string text)
 		{
 			dometeor = true;
 		}
-		if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) == 0))
+		if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) > 0))
 		{
 			dometeor = true;
 		}
