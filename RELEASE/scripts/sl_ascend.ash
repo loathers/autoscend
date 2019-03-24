@@ -2364,7 +2364,7 @@ boolean doBedtime()
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
-		if(sl_my_path() == "Pocket Familiars")
+		if(sl_my_path() == "Pocket Familiars" || my_class() == $class[Vampyre])
 		{
 			cli_execute("friars food");
 		}
