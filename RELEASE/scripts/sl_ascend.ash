@@ -2364,7 +2364,7 @@ boolean doBedtime()
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
-		if(sl_my_path() == "Pocket Familiars")
+		if(sl_my_path() == "Pocket Familiars" || my_class() == $class[Vampyre])
 		{
 			cli_execute("friars food");
 		}
@@ -2774,7 +2774,7 @@ boolean doBedtime()
 	}
 
 	boolean done = (my_inebriety() > inebriety_limit());
-	if((my_class() == $class[Gelatinous Noob]) || !can_drink())
+	if((my_class() == $class[Gelatinous Noob]) || !can_drink() || out_of_blood)
 	{
 		if((my_adventures() <= 1) || (internalQuestStatus("questL13Final") >= 14))
 		{
