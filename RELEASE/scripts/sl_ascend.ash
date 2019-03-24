@@ -4169,10 +4169,6 @@ boolean L13_towerNSFinal()
 		}
 		set_property("sl_disableAdventureHandling", false);
 	}
-	else if(my_class() == $class[Vampyre])
-	{
-		return true;
-	}
 	else
 	{
 		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
@@ -4183,6 +4179,10 @@ boolean L13_towerNSFinal()
 		abort("User wanted to stay in run (sl_stayInRun), we are done.");
 	}
 
+	if(my_class() == $class[Vampyre])
+	{
+		abort("Freeing the king will result in a path change. Enjoy your immortality.");
+	}
 
 	visit_url("place.php?whichplace=nstower&action=ns_11_prism");
 	if(get_property("kingLiberated") == "false")
