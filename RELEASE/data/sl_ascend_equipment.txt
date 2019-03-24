@@ -432,52 +432,55 @@ weapon	48	knife	mainstat:Moxie
 weapon	49	Thor's Pliers
 # Nice ultra rare you got there
 weapon	50	The Nuge's favorite crossbow	mainstat:Moxie
+# Vampyres are a Mysticality class that sometimes can't use spells. Ugh.
+weapon	51	disco ball	class:Vampyre;skill:Sinister Charm;effect:Bats Form;!skill:Piercing Gaze
+weapon	52	disco ball	class:Vampyre;skill:Sinister Charm;effect:Wolf Form;!skill:Savage Bite
 # Some more stuff. It's okay, I guess
-weapon	51	The Jokester's Gun	mainstat:Moxie
-weapon	52	world's smallest violin	mainstat:Moxie
-weapon	53	Frigid Derringer	mainstat:Moxie
-weapon	54	witty rapier	mainstat:Mysticality
-weapon	55	Chopsticks	mainstat:Mysticality
-weapon	56	Oversized Pizza Cutter	mainstat:Mysticality
-weapon	57	Eggbeater	mainstat:Mysticality
-weapon	58	Corn Holder	mainstat:Mysticality
-weapon	59	Dishrag	mainstat:Mysticality
+weapon	53	The Jokester's Gun	mainstat:Moxie
+weapon	54	world's smallest violin	mainstat:Moxie
+weapon	55	Frigid Derringer	mainstat:Moxie
+weapon	56	witty rapier	mainstat:Mysticality
+weapon	57	Chopsticks	mainstat:Mysticality
+weapon	58	Oversized Pizza Cutter	mainstat:Mysticality
+weapon	59	Eggbeater	mainstat:Mysticality
+weapon	60	Corn Holder	mainstat:Mysticality
+weapon	61	Dishrag	mainstat:Mysticality
 # Good knives
-weapon	60	black blade	mainstat:Moxie;skill:Tricky Knifework
-weapon	61	batblade	mainstat:Moxie;skill:Tricky Knifework
-weapon	62	soap knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	63	Saturday Night Special	mainstat:Moxie
+weapon	62	black blade	mainstat:Moxie;skill:Tricky Knifework
+weapon	63	batblade	mainstat:Moxie;skill:Tricky Knifework
+weapon	64	soap knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	65	Saturday Night Special	mainstat:Moxie
 # Knives that are fine
-weapon	64	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
-weapon	65	candy knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	66	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
-weapon	67	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
-weapon	68	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
+weapon	66	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
+weapon	67	candy knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	68	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
+weapon	69	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
+weapon	70	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
-weapon	69	finger cymbals	mainstat:Moxie
+weapon	71	finger cymbals	mainstat:Moxie
 # The worst knife, but it's still a knife
-weapon	70	boot knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	71	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	72	boot knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	73	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
 # It's not good, but at least it's a ranged weapon that takes one hand
-weapon	72	disco ball	mainstat:Moxie
-weapon	73	stolen accordion	class:Accordion Thief
+weapon	74	disco ball	mainstat:Moxie
+weapon	75	stolen accordion	class:Accordion Thief
 # Some melee weapons
-weapon	74	Rusty Piece Of Rebar
-weapon	75	Octopus's Spade
-weapon	76	Oversized Pipe
-weapon	77	Ghast Iron Cleaver
-weapon	78	Short-Handled Mop
-weapon	79	Spectral Axe
-weapon	80	Antique Machete
-weapon	81	red-hot sausage fork
+weapon	76	Rusty Piece Of Rebar
+weapon	77	Octopus's Spade
+weapon	78	Oversized Pipe
+weapon	79	Ghast Iron Cleaver
+weapon	80	Short-Handled Mop
+weapon	81	Spectral Axe
+weapon	82	Antique Machete
+weapon	83	red-hot sausage fork
 # Almost absolute garbage
-weapon	82	Skeleton Bone
-weapon	83	Corn Holder
-weapon	84	Knob Goblin Scimitar
-weapon	85	Knob Goblin Tongs
+weapon	84	Skeleton Bone
+weapon	85	Corn Holder
+weapon	86	Knob Goblin Scimitar
+weapon	87	Knob Goblin Tongs
 # Absolute garbage, but better than nothing, probably?
-weapon	86	Turtle Totem	class:Turtle Tamer
-weapon	87	Saucepan	class:Sauceror
-weapon	88	Pasta Spoon	class:Pastamancer
+weapon	88	Turtle Totem	class:Turtle Tamer
+weapon	89	Saucepan	class:Sauceror
+weapon	90	Pasta Spoon	class:Pastamancer
 # I probably missed some stuff from the old weapon handling but c'est la vie
 

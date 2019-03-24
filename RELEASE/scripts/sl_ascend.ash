@@ -1188,9 +1188,8 @@ boolean doThemtharHills()
 		handleServant($servant[maid]);
 	}
 	buffMaintain($effect[Purr of the Feline], 10, 1, 1);
-	float meatDropHave = meat_drop_modifier();
+	songboomSetting("meat");
 
-/*
 	if(is100FamiliarRun())
 	{
 		ccMaximize("meat drop, -equip snow suit", 1500, 0, false);
@@ -1201,7 +1200,6 @@ boolean doThemtharHills()
 		handleFamiliar(my_familiar());
 	}
 	int expectedMeat = numeric_modifier("Generated:_spec", "meat drop");
-*/
 
 	buffMaintain($effect[Greedy Resolve], 0, 1, 1);
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
@@ -1216,6 +1214,10 @@ boolean doThemtharHills()
 	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
 	buffMaintain($effect[Patent Avarice], 0, 1, 1);
+	if(item_amount($item[body spradium]) > 0)
+	{
+		ccChew(1, $item[body spradium]);
+	}
 	if(have_effect($effect[meat.enh]) == 0)
 	{
 		if(sl_sourceTerminalEnhanceLeft() > 0)
@@ -1265,7 +1267,7 @@ boolean doThemtharHills()
 		meat_need = meat_need - 150;
 	}
 
-	meatDropHave = meat_drop_modifier();
+	float meatDropHave = meat_drop_modifier();
 
 	if((my_class() == $class[Ed]) && have_skill($skill[Curse of Fortune]) && (item_amount($item[Ka Coin]) > 0))
 	{
@@ -2211,11 +2213,12 @@ boolean doBedtime()
 			}
 		}
 	}
-	if((fullness_left() > 0) && can_eat())
+	boolean out_of_blood = (my_class() == $class[Vampyre] && item_amount($item[blood bag]) == 0);
+	if((fullness_left() > 0) && can_eat() && !out_of_blood)
 	{
 		return false;
 	}
-	if((inebriety_left() > 0) && can_drink())
+	if((inebriety_left() > 0) && can_drink() && !out_of_blood)
 	{
 		return false;
 	}
@@ -4415,13 +4418,14 @@ boolean L13_towerNSTower()
 		{
 			equip($item[Sneaky Pete\'s Leather Jacket]);
 		}
+		string chosen_outfit = get_property("sl_hippyInstead").to_boolean() ? "Frat Warrior Fatigues" : "War Hippy Fatigues";
 		if(is100FamiliarRun())
 		{
-			ccMaximize("meat drop, -equip snow suit", 1500, 0, false);
+			ccMaximize(chosen_outfit + ", meat drop, -equip snow suit", 1500, 0, false);
 		}
 		else
 		{
-			ccMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun", 1500, 0, false);
+			ccMaximize(chosen_outfit + ", meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun", 1500, 0, false);
 			handleFamiliar(my_familiar());
 		}
 		if((my_class() == $class[Seal Clubber]) && (item_amount($item[Meat Tenderizer is Murder]) > 0))
@@ -7245,8 +7249,7 @@ boolean L12_gremlins()
 		bat_formMist();
 	}
 	handleFamiliar("init");
-	// TODO: find a way to songboom DR without it getting overridden every turn
-	// songboomSetting("dr");
+	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
 		ccAdv(1, $location[Next to that barrel with something burning in it], "ccsJunkyard");
@@ -7635,6 +7638,7 @@ boolean L12_filthworms()
 		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
 		buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
 		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
+		buffMaintain($effect[Eagle Eyes], 0, 1, 1);
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
@@ -9105,6 +9109,7 @@ boolean L7_crypt()
 		{
 			equip($item[The Nuge\'s Favorite Crossbow]);
 		}
+		bat_formBats();
 
 		print("The Alcove! (" + initiative_modifier() + ")", "blue");
 		ccAdv(1, $location[The Defiled Alcove]);
@@ -12692,14 +12697,14 @@ boolean L11_redZeppelin()
 		boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
 		if(!($strings[Bench Warrant, Fire Up Above, This Looks Like a Good Bush for an Ambush, Not So Much With The Humanity] contains get_property("lastEncounter")))
 		{
-			abort("Uh oh, we expected to get a scheduled Zeppelin noncombat there but didn't. That's not supposed to happen. There's a bug in Jeparo's new code!");
+			print("Uh oh, we expected to get a scheduled Zeppelin noncombat there but didn't. This is still being spaded - send Jeparo logs if you're interested in getting this fixed", "red");
 		}
 		return retval;
 	}
 
 	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
 	{
-		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[Noob Cave]);
+		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
@@ -14044,27 +14049,32 @@ boolean doTasks()
 
 	if(get_property("sl_beatenUpCount").to_int() > 5)
 	{
-		songboomSetting(3);
+		songboomSetting("dr");
+	}
+	else if ((get_property("sl_prewar") == "started") && (get_property("sl_war") != "finished"))
+	{
+		// Once we've started the war, we want to be able to micromanage songs
+		// for Gremlins and Nuns. Don't break this for them.
 	}
 	else
 	{
 		if((my_fullness() == 0) || (item_amount($item[Special Seasoning]) < 4))
 		{
-			songboomSetting(2);
+			songboomSetting("food");
 		}
 		else
 		{
 			if((sl_my_path() == "G-Lover") && (my_meat() > 10000))
 			{
-				songboomSetting(3);
+				songboomSetting("dr");
 			}
-			else if((sl_my_path() == "Disguises Delimit") && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
+			else if(((sl_my_path() == "Disguises Delimit") || (my_class() == $class[Vampyre])) && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
 			{
-				songboomSetting(1);
+				songboomSetting("nightmare");
 			}
 			else
 			{
-				songboomSetting(5);
+				songboomSetting("meat");
 			}
 		}
 	}

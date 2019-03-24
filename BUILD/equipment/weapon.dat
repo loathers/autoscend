@@ -63,6 +63,9 @@ knife	mainstat:Moxie
 Thor's Pliers
 # Nice ultra rare you got there
 The Nuge's favorite crossbow	mainstat:Moxie
+# Vampyres are a Mysticality class that sometimes can't use spells. Ugh.
+disco ball	class:Vampyre;skill:Sinister Charm;effect:Bats Form;!skill:Piercing Gaze
+disco ball	class:Vampyre;skill:Sinister Charm;effect:Wolf Form;!skill:Savage Bite
 # Some more stuff. It's okay, I guess
 The Jokester's Gun	mainstat:Moxie
 world's smallest violin	mainstat:Moxie

@@ -387,13 +387,15 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 #5		Plush Elephant		LOV Elephant (Shield, DR+10)
 #6		Toast? Only with Space Jellyfish?
 #7		Nothing
-
 	if(enforcer || engineer || equivocator)
 	{
 		set_property("sl_disableAdventureHandling", false);
 		cli_execute("postsool");
 	}
-
+	if(item_amount($item[LOV Extraterrestrial Chocolate]) > 0)
+	{
+		use(1, $item[LOV Extraterrestrial Chocolate]);
+	}
 	return true;
 }
 
