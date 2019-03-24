@@ -13846,6 +13846,13 @@ boolean autosellCrap()
 			sl_autosell(item_amount(it), it);
 		}
 	}
+	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	{
+		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
+		{
+			use(1, it);
+		}
+	}
 
 	if(!in_hardcore() && !isGuildClass())
 	{
@@ -13871,13 +13878,6 @@ boolean autosellCrap()
 	if(item_amount($item[hot wing]) > 3)
 	{
 		sl_autosell(item_amount($item[hot wing]) - 3, $item[hot wing]);
-	}
-	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
-	{
-		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
-		{
-			use(1, it);
-		}
 	}
 	return true;
 }
