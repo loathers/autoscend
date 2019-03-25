@@ -1504,7 +1504,7 @@ boolean makeGenieWish(effect eff)
 	{
 		return false;
 	}
-	if(get_property("_genieWishesUsed").to_int() >= 3)
+	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
 	{
 		return false;
 	}
@@ -1534,7 +1534,7 @@ boolean makeGenieCombat(monster mon, string option)
 	{
 		return false;
 	}
-	if(get_property("_genieWishesUsed").to_int() >= 3)
+	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
 	{
 		return false;
 	}
