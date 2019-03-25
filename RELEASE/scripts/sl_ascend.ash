@@ -12518,6 +12518,7 @@ boolean L9_chasmBuild()
 				ccMaximize("myst, 50 sleaze res", 1000, 0, false);
 				bat_formMist();
 				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+				set_property("choiceAdventure1345", 3);
 			}
 			else {
 				switch(my_primestat())
