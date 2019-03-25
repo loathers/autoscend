@@ -384,7 +384,7 @@ boolean bat_consumption()
 		return false;
 	}
 
-	if (fullness_left() > 0)
+	if ((fullness_left() > 0) && (get_property("availableQuarters").to_int() < 2))
 	{
 		pullXWhenHaveY($item[gauze garter], 1, 0);
 	}
@@ -401,11 +401,14 @@ boolean bat_consumption()
 		ccEat(1, $item[blood-soaked sponge cake]);
 		return true;
 	}
-	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0)
+	if (my_adventures() <= 8 && item_amount($item[blood bag]) > 0)
 	{
 		if (inebriety_left() > 0)
 		{
-			pullXWhenHaveY($item[monstar energy beverage], 1, 0);
+			if (get_property("availableQuarters").to_int() < 3)
+			{
+				pullXWhenHaveY($item[monstar energy beverage], 1, 0);
+			}
 			// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
 			if(consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
 				return true;

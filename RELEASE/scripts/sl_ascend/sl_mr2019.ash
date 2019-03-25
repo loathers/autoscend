@@ -34,6 +34,13 @@ boolean sl_sausageGrind(int numSaus)
 
 boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 {
+	// Some paths are pretty meat-intensive early. Just in case...
+	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
+	if(my_turncount() < 90 || !canDesert)
+	{
+		return false;
+	}
+
 	int casingsOwned = item_amount($item[magical sausage casing]);
 
 	if(casingsOwned == 0)

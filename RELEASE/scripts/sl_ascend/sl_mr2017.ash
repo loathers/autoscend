@@ -1296,7 +1296,54 @@ boolean asdonAutoFeed(int goal)
 	}
 
 	boolean didOnce = false;
-	foreach it in $items[A Little Sump\'m Sump\'m, Backwoods Screwdriver, Bag Of GORP, Ballroom Blintz, Bean Burrito, Bilge Wine,  Bottle Of Laundry Sherry, Black Forest Ham, Cactus Fruit, CSA Scoutmaster\'s &quot;water&quot;, Enchanted Bean Burrito, Giant Heirloom Grape Tomato, Gin And Tonic, Haggis-Wrapped Haggis-Stuffed Haggis, Insanely Spicy Bean Burrito, Insanely Spicy Enchanted Bean Burrito, Insanely Spicy Jumping Bean Burrito, Jumping Bean Burrito, Jungle Floor Wax, Loaf of Soda Bread, Margarita, McLeod\'s Hard Haggis-Ade, Mimosette, Mornington Crescent Roll, Open Sauce, Pink Pony, Roll In The Hay, Screwdriver, Slap And Tickle, Slip \'N\' Slide, Snifter Of Thoroughly Aged Brandy, Spicy Bean Burrito, Spicy Enchanted Bean Burrito, Spicy Jumping Bean Burrito, Stolen Sushi, Strawberry Daiquiri, Tequila Sunrise, Tequila Sunset, Vodka And Tonic, Water Purification Pills, Zmobie]
+	foreach it in $items[
+		A Little Sump\'m Sump\'m,
+		ancient frozen dinner,
+		antique packet of ketchup,
+		Backwoods Screwdriver,
+		Bag Of GORP,
+		Ballroom Blintz,
+		Bean Burrito,
+		Bilge Wine,
+		Bottle Of Laundry Sherry,
+		bowl of cottage cheese,
+		Black Forest Ham,
+		Cactus Fruit,
+		CSA Scoutmaster\'s &quot;water&quot;,
+		Enchanted Bean Burrito,
+		Giant Heirloom Grape Tomato,
+		Gin And Tonic,
+		Haggis-Wrapped Haggis-Stuffed Haggis,
+		hot wing,
+		ice-cold Willer,
+		Insanely Spicy Bean Burrito,
+		Insanely Spicy Enchanted Bean Burrito,
+		Insanely Spicy Jumping Bean Burrito,
+		Jumping Bean Burrito,
+		Jungle Floor Wax,
+		Loaf of Soda Bread,
+		Margarita,
+		McLeod\'s Hard Haggis-Ade,
+		Mimosette,
+		Mornington Crescent Roll,
+		Open Sauce,
+		Pink Pony,
+		Roll In The Hay,
+		Screwdriver,
+		Slap And Tickle,
+		Slip \'N\' Slide,
+		Snifter Of Thoroughly Aged Brandy,
+		Spicy Bean Burrito,
+		Spicy Enchanted Bean Burrito,
+		Spicy Jumping Bean Burrito,
+		Stolen Sushi,
+		Strawberry Daiquiri,
+		Tequila Sunrise,
+		Tequila Sunset,
+		Typical Tavern swill,
+		Vodka And Tonic,
+		Water Purification Pills,
+		Zmobie]
 	{
 		if(item_amount(it) > 0)
 		{
@@ -1457,7 +1504,7 @@ boolean makeGenieWish(effect eff)
 	{
 		return false;
 	}
-	if(get_property("_genieWishesUsed").to_int() >= 3)
+	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
 	{
 		return false;
 	}
@@ -1487,7 +1534,7 @@ boolean makeGenieCombat(monster mon, string option)
 	{
 		return false;
 	}
-	if(get_property("_genieWishesUsed").to_int() >= 3)
+	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
 	{
 		return false;
 	}

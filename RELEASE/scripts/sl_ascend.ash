@@ -9350,6 +9350,8 @@ boolean L6_friarsGetParts()
 		equip($slot[Shirt], $item[none]);
 	}
 
+	providePlusNonCombat(25);
+
 	if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 2))
 	{
 		handleFamiliar($familiar[Space Jellyfish]);
@@ -10056,6 +10058,7 @@ boolean L4_batCave()
 	}
 	if(batStatus >= 2)
 	{
+		bat_formBats();
 		if((item_amount($item[Enchanted Bean]) == 0) && !get_property("sl_bean").to_boolean() && (my_class() != $class[Ed]))
 		{
 			ccAdv(1, $location[The Beanbat Chamber]);
@@ -10066,6 +10069,7 @@ boolean L4_batCave()
 	}
 	if(batStatus >= 1)
 	{
+		bat_formBats();
 		ccAdv(1, $location[The Batrat and Ratbat Burrow]);
 		return true;
 	}
@@ -10088,6 +10092,7 @@ boolean L4_batCave()
 		{
 			if(get_property("sl_powerLevelAdvCount").to_int() >= 5)
 			{
+				bat_formBats();
 				ccAdv(1, $location[The Bat Hole Entrance]);
 				return true;
 			}
@@ -10105,6 +10110,7 @@ boolean L4_batCave()
 	}
 	if(numeric_modifier("stench resistance") >= 1.0)
 	{
+		bat_formBats();
 		ccAdv(1, $location[Guano Junction]);
 		return true;
 	}
@@ -11825,6 +11831,7 @@ boolean L9_aBooPeak()
 		int coldResist = numeric_modifier("Generated:_spec", "cold resistance");
 		int spookyResist = numeric_modifier("Generated:_spec", "spooky resistance");
 		int hpDifference = numeric_modifier("Generated:_spec", "Maximum HP") - numeric_modifier("Maximum HP");
+		int effectiveCurrentHP = my_hp();
 
 		//	Do we need to manually adjust for the parrot?
 
@@ -11844,13 +11851,13 @@ boolean L9_aBooPeak()
 		{
 			coldResist += 4;
 			spookyResist += 4;
-			hpDifference -= 10;
+			effectiveCurrentHP -= 10;
 		}
 		else if(have_skill($skill[Spectral Awareness]))
 		{
 			coldResist += 2;
 			spookyResist += 2;
-			hpDifference -= 10;
+			effectiveCurrentHP -= 10;
 		}
 
 		if((item_amount($item[Spooky Powder]) > 0) && (have_effect($effect[Spookypants]) == 0))
@@ -11918,7 +11925,7 @@ boolean L9_aBooPeak()
 		{
 			doThisBoo = true;
 		}
-		if((my_hp() >= totalDamage) && (my_mp() >= mp_need))
+		if((effectiveCurrentHP > totalDamage) && (my_mp() >= mp_need))
 		{
 			doThisBoo = true;
 		}
@@ -11930,6 +11937,11 @@ boolean L9_aBooPeak()
 		if(doThisBoo)
 		{
 			buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+			bat_formMist();
+			if(0 == have_effect($effect[Mist Form]))
+			{
+				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			}
 			ccMaximize("spooky res, cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
 			adjustEdHat("ml");
 
@@ -11946,8 +11958,6 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Balls of Ectoplasm], 0, 1, 1);
 			buffMaintain($effect[Red Door Syndrome], 0, 1, 1);
 			buffMaintain($effect[Well-Oiled], 0, 1, 1);
-			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-			bat_formMist();
 
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
@@ -12516,6 +12526,7 @@ boolean L9_chasmBuild()
 				ccMaximize("myst, 50 sleaze res", 1000, 0, false);
 				bat_formMist();
 				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+				set_property("choiceAdventure1345", 3);
 			}
 			else {
 				switch(my_primestat())
@@ -13201,6 +13212,7 @@ boolean L5_haremOutfit()
 	{
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	}
+	bat_formBats();
 
 	print("Looking for some sexy lingerie!", "blue");
 	ccAdv(1, $location[Cobb\'s Knob Harem]);
@@ -14213,12 +14225,12 @@ boolean doTasks()
 	if(L2_spookyFertilizer())			return true;
 	if(L2_spookySapling())				return true;
 	if(L6_dakotaFanning())				return true;
-	if(LX_bitchinMeatcar())				return true;
 	if(L5_haremOutfit())				return true;
 	if(LX_phatLootToken())				return true;
-	if(LX_islandAccess())				return true;
 	if(L4_batCave())					return true;
 	if(L5_goblinKing())					return true;
+	if(LX_bitchinMeatcar())				return true;
+	if(LX_islandAccess())				return true;
 
 	if(in_hardcore() && isGuildClass())
 	{
