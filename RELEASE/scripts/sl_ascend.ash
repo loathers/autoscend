@@ -3887,6 +3887,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				doHottub();
+				bat_reallyPickSkills(20);
 			}
 			visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 			if(!in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0))
@@ -4168,10 +4169,6 @@ boolean L13_towerNSFinal()
 		}
 		set_property("sl_disableAdventureHandling", false);
 	}
-	else if(my_class() == $class[Vampyre])
-	{
-		return true;
-	}
 	else
 	{
 		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
@@ -4182,6 +4179,10 @@ boolean L13_towerNSFinal()
 		abort("User wanted to stay in run (sl_stayInRun), we are done.");
 	}
 
+	if(my_class() == $class[Vampyre])
+	{
+		abort("Freeing the king will result in a path change. Enjoy your immortality.");
+	}
 
 	visit_url("place.php?whichplace=nstower&action=ns_11_prism");
 	if(get_property("kingLiberated") == "false")
@@ -4874,13 +4875,35 @@ boolean L13_towerNSContests()
 				ccMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
 			}
 
-	
-
 			float score = numeric_modifier(challenge + " damage ");
 			score += numeric_modifier(challenge + " spell damage ");
 			if((score > 20.0) && (score < 85.0))
 			{
 				buffMaintain($effect[Bendin\' Hell], 100, 1, 1);
+			}
+
+			score = numeric_modifier(challenge + " damage ");
+			score += numeric_modifier(challenge + " spell damage ");
+			if((score < 80) && (item_amount($item[Genie bottle]) > 0))
+			{
+				switch(challenge)
+				{
+				case $element[cold]:
+					makeGenieWish($effect[Staying Frosty]);
+					break;
+				case $element[hot]:
+					makeGenieWish($effect[Dragged Through the Coals]);
+					break;
+				case $element[sleaze]:
+					makeGenieWish($effect[Fifty Ways to Bereave your Lover]);
+					break;
+				case $element[stench]:
+					makeGenieWish($effect[Sewer-Drenched]);
+					break;
+				case $element[spooky]:
+					makeGenieWish($effect[You're Back...]);
+					break;
+				}
 			}
 
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
@@ -12753,6 +12776,8 @@ boolean L11_ronCopperhead()
 		{
 			buy(1, $item[Red Zeppelin Ticket]);
 		}
+		// For Glark Cables. OPTIMAL!
+		bat_formBats();
 		return ccAdv($location[The Red Zeppelin]);
 	}
 
@@ -13821,6 +13846,13 @@ boolean autosellCrap()
 			sl_autosell(item_amount(it), it);
 		}
 	}
+	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	{
+		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
+		{
+			use(1, it);
+		}
+	}
 
 	if(!in_hardcore() && !isGuildClass())
 	{
@@ -13846,13 +13878,6 @@ boolean autosellCrap()
 	if(item_amount($item[hot wing]) > 3)
 	{
 		sl_autosell(item_amount($item[hot wing]) - 3, $item[hot wing]);
-	}
-	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
-	{
-		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
-		{
-			use(1, it);
-		}
 	}
 	return true;
 }
@@ -14056,6 +14081,10 @@ boolean doTasks()
 		// Once we've started the war, we want to be able to micromanage songs
 		// for Gremlins and Nuns. Don't break this for them.
 	}
+	else if((my_class() != $class[Ed]) && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
+	{
+		songboomSetting("nightmare");
+	}
 	else
 	{
 		if((my_fullness() == 0) || (item_amount($item[Special Seasoning]) < 4))
@@ -14067,10 +14096,6 @@ boolean doTasks()
 			if((sl_my_path() == "G-Lover") && (my_meat() > 10000))
 			{
 				songboomSetting("dr");
-			}
-			else if(((sl_my_path() == "Disguises Delimit") || (my_class() == $class[Vampyre])) && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
-			{
-				songboomSetting("nightmare");
 			}
 			else
 			{
