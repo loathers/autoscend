@@ -9350,6 +9350,8 @@ boolean L6_friarsGetParts()
 		equip($slot[Shirt], $item[none]);
 	}
 
+	providePlusNonCombat(25);
+
 	if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 2))
 	{
 		handleFamiliar($familiar[Space Jellyfish]);
