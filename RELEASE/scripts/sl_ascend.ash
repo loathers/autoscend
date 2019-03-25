@@ -11827,6 +11827,7 @@ boolean L9_aBooPeak()
 		int coldResist = numeric_modifier("Generated:_spec", "cold resistance");
 		int spookyResist = numeric_modifier("Generated:_spec", "spooky resistance");
 		int hpDifference = numeric_modifier("Generated:_spec", "Maximum HP") - numeric_modifier("Maximum HP");
+		int effectiveCurrentHP = my_hp();
 
 		//	Do we need to manually adjust for the parrot?
 
@@ -11846,13 +11847,13 @@ boolean L9_aBooPeak()
 		{
 			coldResist += 4;
 			spookyResist += 4;
-			hpDifference -= 10;
+			effectiveCurrentHP -= 10;
 		}
 		else if(have_skill($skill[Spectral Awareness]))
 		{
 			coldResist += 2;
 			spookyResist += 2;
-			hpDifference -= 10;
+			effectiveCurrentHP -= 10;
 		}
 
 		if((item_amount($item[Spooky Powder]) > 0) && (have_effect($effect[Spookypants]) == 0))
@@ -11920,7 +11921,7 @@ boolean L9_aBooPeak()
 		{
 			doThisBoo = true;
 		}
-		if((my_hp() >= totalDamage) && (my_mp() >= mp_need))
+		if((effectiveCurrentHP > totalDamage) && (my_mp() >= mp_need))
 		{
 			doThisBoo = true;
 		}
@@ -11932,6 +11933,11 @@ boolean L9_aBooPeak()
 		if(doThisBoo)
 		{
 			buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+			bat_formMist();
+			if(0 == have_effect($effect[Mist Form]))
+			{
+				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			}
 			ccMaximize("spooky res, cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
 			adjustEdHat("ml");
 
@@ -11948,8 +11954,6 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Balls of Ectoplasm], 0, 1, 1);
 			buffMaintain($effect[Red Door Syndrome], 0, 1, 1);
 			buffMaintain($effect[Well-Oiled], 0, 1, 1);
-			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-			bat_formMist();
 
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
