@@ -10058,6 +10058,7 @@ boolean L4_batCave()
 	}
 	if(batStatus >= 2)
 	{
+		bat_formBats();
 		if((item_amount($item[Enchanted Bean]) == 0) && !get_property("sl_bean").to_boolean() && (my_class() != $class[Ed]))
 		{
 			ccAdv(1, $location[The Beanbat Chamber]);
@@ -10068,6 +10069,7 @@ boolean L4_batCave()
 	}
 	if(batStatus >= 1)
 	{
+		bat_formBats();
 		ccAdv(1, $location[The Batrat and Ratbat Burrow]);
 		return true;
 	}
@@ -10090,6 +10092,7 @@ boolean L4_batCave()
 		{
 			if(get_property("sl_powerLevelAdvCount").to_int() >= 5)
 			{
+				bat_formBats();
 				ccAdv(1, $location[The Bat Hole Entrance]);
 				return true;
 			}
@@ -10107,6 +10110,7 @@ boolean L4_batCave()
 	}
 	if(numeric_modifier("stench resistance") >= 1.0)
 	{
+		bat_formBats();
 		ccAdv(1, $location[Guano Junction]);
 		return true;
 	}
@@ -13208,6 +13212,7 @@ boolean L5_haremOutfit()
 	{
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	}
+	bat_formBats();
 
 	print("Looking for some sexy lingerie!", "blue");
 	ccAdv(1, $location[Cobb\'s Knob Harem]);
