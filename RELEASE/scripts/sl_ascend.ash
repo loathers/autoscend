@@ -14220,12 +14220,12 @@ boolean doTasks()
 	if(L2_spookyFertilizer())			return true;
 	if(L2_spookySapling())				return true;
 	if(L6_dakotaFanning())				return true;
-	if(LX_bitchinMeatcar())				return true;
 	if(L5_haremOutfit())				return true;
 	if(LX_phatLootToken())				return true;
-	if(LX_islandAccess())				return true;
 	if(L4_batCave())					return true;
 	if(L5_goblinKing())					return true;
+	if(LX_bitchinMeatcar())				return true;
+	if(LX_islandAccess())				return true;
 
 	if(in_hardcore() && isGuildClass())
 	{
