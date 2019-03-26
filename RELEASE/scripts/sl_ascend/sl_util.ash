@@ -2742,11 +2742,9 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	}
 
         if((numeric_modifier("Combat Rate").to_int() < amt)
-           && get_property("horseryAvailable").to_boolean()
-           && (get_property("_horsery") == "dark horse")
-           && (my_meat() >= 1000))
+           && (get_property("_horsery") == "dark horse"))
         {
-                cli_execute("horsery normal");
+                getHorse("return");
         }
 
 	if(numeric_modifier("Combat Rate").to_int() < amt)
@@ -2814,12 +2812,9 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		removeCombat();
 	}
 
-        if((numeric_modifier("Combat Rate").to_int() > amt)
-           && get_property("horseryAvailable").to_boolean()
-           && (get_property("_horsery") != "dark horse")
-           && (my_meat() >= 1000))
+        if((numeric_modifier("Combat Rate").to_int() > amt))
         {
-                cli_execute("horsery dark");
+                getHorse("noncombat");
         }
 
 	if(numeric_modifier("Combat Rate").to_int() > amt)
