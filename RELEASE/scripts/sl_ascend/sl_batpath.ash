@@ -279,6 +279,9 @@ skill [int] bat_pickSkills(int hpLeft)
 	{
 		addPick(sk);
 	}
+	if(get_property("_sl_bat_bloodBank") == "2")
+		addPick($skill[Intimidating Aura]);
+
 	return picks;
 }
 
