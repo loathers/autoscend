@@ -4419,14 +4419,13 @@ boolean L13_towerNSTower()
 		{
 			equip($item[Sneaky Pete\'s Leather Jacket]);
 		}
-		string chosen_outfit = get_property("sl_hippyInstead").to_boolean() ? "Frat Warrior Fatigues" : "War Hippy Fatigues";
 		if(is100FamiliarRun())
 		{
-			ccMaximize(chosen_outfit + ", meat drop, -equip snow suit", 1500, 0, false);
+			ccMaximize("meat drop, -equip snow suit", 1500, 0, false);
 		}
 		else
 		{
-			ccMaximize(chosen_outfit + ", meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun", 1500, 0, false);
+			ccMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun", 1500, 0, false);
 			handleFamiliar(my_familiar());
 		}
 		if((my_class() == $class[Seal Clubber]) && (item_amount($item[Meat Tenderizer is Murder]) > 0))
