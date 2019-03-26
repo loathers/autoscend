@@ -14226,6 +14226,7 @@ boolean doTasks()
 		if(LX_steelOrgan())					return true;
 	}
 
+	if(L4_batCave())					return true;
 	if(L2_mosquito())					return true;
 	if(L2_treeCoin())					return true;
 	if(L2_spookyMap())					return true;
@@ -14234,7 +14235,6 @@ boolean doTasks()
 	if(L6_dakotaFanning())				return true;
 	if(L5_haremOutfit())				return true;
 	if(LX_phatLootToken())				return true;
-	if(L4_batCave())					return true;
 	if(L5_goblinKing())					return true;
 	if(LX_bitchinMeatcar())				return true;
 	if(LX_islandAccess())				return true;
