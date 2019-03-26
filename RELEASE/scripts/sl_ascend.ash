@@ -10370,7 +10370,7 @@ boolean LX_craftAcquireItems()
 
 	if(sl_my_path() != "Community Service")
 	{
-		getHorse("noncombat");
+		horseDark();
 		if(item_amount($item[Portable Pantogram]) > 0)
 		{
 			switch(my_daycount())

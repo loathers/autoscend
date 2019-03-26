@@ -1498,6 +1498,49 @@ boolean getHorse(string type)
 	return true;
 }
 
+void horseNone()
+{
+        if(get_property("sl_desiredHorse") != "")
+	{
+		set_property("sl_desiredHorse", "");
+	}
+}
+
+void horseNormal()
+{
+        set_property("sl_desiredHorse", "regen");
+}
+
+void horseDark()
+{
+        set_property("sl_desiredHorse", "noncombat");
+}
+
+void horseCrazy()
+{
+        set_property("sl_desiredHorse", "random");
+}
+
+void horsePale()
+{
+        set_property("sl_desiredHorse", "resistance");
+}
+
+boolean horsePreAdventure()
+{
+        string desiredHorse = get_property("sl_desiredHorse");
+        if (desiredHose != "regen"
+            && desiredHorse != "noncombat"
+            && desiredHorse != "random"
+            && desiredHorse != "resistance")
+        {
+                print("sl_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
+		set_property("sl_desiredHorse", "");
+		return false;
+        }
+        return getHorse(desiredHorse);
+}
+
 boolean makeGenieWish(effect eff)
 {
 	if(item_amount($item[Genie Bottle]) == 0)

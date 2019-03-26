@@ -592,6 +592,12 @@ boolean sl_sausageEatEmUp(); // Defined in sl_ascend/sl_mr2019.ash
 boolean getSpaceJelly();									//Defined in sl_ascend/sl_mr2017.ash
 int horseCost();											//Defined in sl_ascend/sl_mr2017.ash
 boolean getHorse(string type);								//Defined in sl_ascend/sl_mr2017.ash
+void horseNone(); // Defined in sl_ascend/sl_mr2017.ash
+void horseNormal(); // Defined in sl_ascend/sl_mr2017.ash
+void horseDark(); // Defined in sl_ascend/sl_mr2017.ash
+void horseCrazy(); // Defined in sl_ascend/sl_mr2017.ash
+void horsePale(); // Defined in sl_ascend/sl_mr2017.ash
+boolean horsePreAdventure(); // Defined in sl_ascend/sl_mr2017.ash
 boolean kgbDiscovery();										//Defined in sl_ascend/sl_mr2017.ash
 boolean kgbWasteClicks();									//Defined in sl_ascend/sl_mr2017.ash
 boolean kgbTryEffect(effect ef);							//Defined in sl_ascend/sl_mr2017.ash

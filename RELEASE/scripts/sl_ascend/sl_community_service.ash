@@ -2523,7 +2523,7 @@ boolean LA_cs_communityService()
 			{
 				buffMaintain($effect[A Rose by Any Other Material], 0, 1, 1);
 			}
-			getHorse("non-combat");
+			horseDark();
 
 			if(my_adventures() < questCost)
 			{
@@ -2808,7 +2808,7 @@ boolean LA_cs_communityService()
 			}
 
 			asdonBuff($effect[Driving Safely]);
-			getHorse("resistance");
+			horsePale();
 
 			while((my_mp() < 37) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{

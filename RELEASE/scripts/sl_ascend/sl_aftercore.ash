@@ -914,7 +914,7 @@ boolean sl_cheesePostCS(int leave)
 	{
 		songboomSetting($item[Gathered Meat-Clip]);
 	}
-	getHorse("meat");
+	horseDark();
 	dailyEvents();
 
 	if(((my_daycount() == 2) && isOverdueDigitize()) || get_property("_sl_specialAftercore").to_boolean())
