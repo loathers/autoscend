@@ -1901,7 +1901,11 @@ void initializeDay(int day)
 			tootGetMeat();
 
 			hr_initializeDay(day);
-
+			// It's nice to have a moxie weapon for Flock of Bats form
+			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21)
+			{
+				acquireGumItem($item[disco ball]);
+			}
 			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
 				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
