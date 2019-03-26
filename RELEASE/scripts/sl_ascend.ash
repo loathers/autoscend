@@ -12819,6 +12819,10 @@ boolean L11_shenCopperhead()
 
 	if((internalQuestStatus("questL11Shen") == 0) || (internalQuestStatus("questL11Shen") == 2) || (internalQuestStatus("questL11Shen") == 4) || (internalQuestStatus("questL11Shen") == 6))
 	{
+		if(have_effect($effect[Ancient Annoying Serpent Poison]) > 0)
+		{
+			abort("We seem to be in a bad Shen state and I don't know what to do. Please complete the Copperhead quest manually.");
+		}
 		if((item_amount($item[Crappy Waiter Disguise]) > 0) && (have_effect($effect[Crappily Disguised as a Waiter]) == 0))
 		{
 			use(1, $item[Crappy Waiter Disguise]);
