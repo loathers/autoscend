@@ -1901,7 +1901,11 @@ void initializeDay(int day)
 			tootGetMeat();
 
 			hr_initializeDay(day);
-
+			// It's nice to have a moxie weapon for Flock of Bats form
+			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21)
+			{
+				acquireGumItem($item[disco ball]);
+			}
 			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
 				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
@@ -4419,14 +4423,13 @@ boolean L13_towerNSTower()
 		{
 			equip($item[Sneaky Pete\'s Leather Jacket]);
 		}
-		string chosen_outfit = get_property("sl_hippyInstead").to_boolean() ? "Frat Warrior Fatigues" : "War Hippy Fatigues";
 		if(is100FamiliarRun())
 		{
-			ccMaximize(chosen_outfit + ", meat drop, -equip snow suit", 1500, 0, false);
+			ccMaximize("meat drop, -equip snow suit", 1500, 0, false);
 		}
 		else
 		{
-			ccMaximize(chosen_outfit + ", meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun", 1500, 0, false);
+			ccMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun", 1500, 0, false);
 			handleFamiliar(my_familiar());
 		}
 		if((my_class() == $class[Seal Clubber]) && (item_amount($item[Meat Tenderizer is Murder]) > 0))
@@ -12820,6 +12823,10 @@ boolean L11_shenCopperhead()
 
 	if((internalQuestStatus("questL11Shen") == 0) || (internalQuestStatus("questL11Shen") == 2) || (internalQuestStatus("questL11Shen") == 4) || (internalQuestStatus("questL11Shen") == 6))
 	{
+		if(have_effect($effect[Ancient Annoying Serpent Poison]) > 0)
+		{
+			abort("We seem to be in a bad Shen state and I don't know what to do. Please complete the Copperhead quest manually.");
+		}
 		if((item_amount($item[Crappy Waiter Disguise]) > 0) && (have_effect($effect[Crappily Disguised as a Waiter]) == 0))
 		{
 			use(1, $item[Crappy Waiter Disguise]);
