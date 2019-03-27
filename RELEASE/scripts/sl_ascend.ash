@@ -11475,13 +11475,6 @@ boolean L12_startWar()
 		return false;
 	}
 
-	//Yes, we are going to make sure swordfish is complete first.
-	//We might want to put this on a timer
-	if(get_property("sl_swordfish") != "finished")
-	{
-		return false;
-	}
-
 	if((my_basestat($stat[Muscle]) < 70) || (my_basestat($stat[Mysticality]) < 70) || (my_basestat($stat[Moxie]) < 70))
 	{
 		return false;
@@ -12823,10 +12816,6 @@ boolean L11_shenCopperhead()
 
 	if((internalQuestStatus("questL11Shen") == 0) || (internalQuestStatus("questL11Shen") == 2) || (internalQuestStatus("questL11Shen") == 4) || (internalQuestStatus("questL11Shen") == 6))
 	{
-		if(have_effect($effect[Ancient Annoying Serpent Poison]) > 0)
-		{
-			abort("We seem to be in a bad Shen state and I don't know what to do. Please complete the Copperhead quest manually.");
-		}
 		if((item_amount($item[Crappy Waiter Disguise]) > 0) && (have_effect($effect[Crappily Disguised as a Waiter]) == 0))
 		{
 			use(1, $item[Crappy Waiter Disguise]);
@@ -14179,6 +14168,7 @@ boolean doTasks()
 	if(L5_findKnob())					return true;
 	if(LM_edTheUndying())				return true;
 
+	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
 
 	if((my_class() != $class[Ed]) && (my_level() >= 9) && (my_daycount() == 1))
@@ -14211,7 +14201,6 @@ boolean doTasks()
 		}
 	}
 
-	if(L12_sonofaPrefix())				return true;
 	if(LX_loggingHatchet())				return true;
 	if(LX_guildUnlock())				return true;
 	if(L5_getEncryptionKey())			return true;
@@ -14226,6 +14215,7 @@ boolean doTasks()
 		if(LX_steelOrgan())					return true;
 	}
 
+	if(L4_batCave())					return true;
 	if(L2_mosquito())					return true;
 	if(L2_treeCoin())					return true;
 	if(L2_spookyMap())					return true;
@@ -14234,7 +14224,6 @@ boolean doTasks()
 	if(L6_dakotaFanning())				return true;
 	if(L5_haremOutfit())				return true;
 	if(LX_phatLootToken())				return true;
-	if(L4_batCave())					return true;
 	if(L5_goblinKing())					return true;
 	if(LX_bitchinMeatcar())				return true;
 	if(LX_islandAccess())				return true;

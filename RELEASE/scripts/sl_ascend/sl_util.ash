@@ -1376,7 +1376,18 @@ boolean[string] sl_banishesUsedAt(location loc)
 
 boolean sl_wantToBanish(monster enemy, location loc)
 {
+	// Banishing these gives us more gaunt ghuols, which means more dieting pills
+	if((enemy == $monster[gluttonous ghuol]) && my_class() == $class[Vampyre])
+	{
+		return true;
+	}
+
 	if(!($monsters[A.M.C. Gremlin, Animated Mahogany Nightstand, Animated Possessions, Animated Rustic Nightstand, Bubblemint Twins, Bullet Bill, Burly Sidekick, Chatty Pirate, Clingy Pirate (Female), Clingy Pirate (Male), Coaltergeist, Crusty Pirate, Doughbat, Drunk Goat, Evil Olive, Flock Of Stab-Bats, Knob Goblin Harem Guard, Knob Goblin Madam, Mad Wino, Mismatched Twins, Natural Spider, Plaid Ghost, Possessed Laundry Press, Procrastination Giant, Protagonist, Pygmy Headhunter, Pygmy Janitor, Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse, Sabre-Toothed Goat, Senile Lihc, Slick Lihc, Skeletal Sommelier, Snow Queen, Steam Elemental, Taco Cat, Tan Gnat, Tomb Asp, Tomb Servant, Wardr&ouml;b Nightstand, Warehouse Janitor, Upgraded Ram] contains enemy))
+	{
+		return false;
+	}
+
+	if(($monsters[Senile Lihc, Slick Lihc] contains enemy) && (loc != $location[The Defiled Niche]))
 	{
 		return false;
 	}
