@@ -14168,6 +14168,7 @@ boolean doTasks()
 	if(L5_findKnob())					return true;
 	if(LM_edTheUndying())				return true;
 
+	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
 
 	if((my_class() != $class[Ed]) && (my_level() >= 9) && (my_daycount() == 1))
@@ -14200,7 +14201,6 @@ boolean doTasks()
 		}
 	}
 
-	if(L12_sonofaPrefix())				return true;
 	if(LX_loggingHatchet())				return true;
 	if(LX_guildUnlock())				return true;
 	if(L5_getEncryptionKey())			return true;
