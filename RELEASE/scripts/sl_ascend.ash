@@ -11475,13 +11475,6 @@ boolean L12_startWar()
 		return false;
 	}
 
-	//Yes, we are going to make sure swordfish is complete first.
-	//We might want to put this on a timer
-	if(get_property("sl_swordfish") != "finished")
-	{
-		return false;
-	}
-
 	if((my_basestat($stat[Muscle]) < 70) || (my_basestat($stat[Mysticality]) < 70) || (my_basestat($stat[Moxie]) < 70))
 	{
 		return false;
