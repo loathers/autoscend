@@ -2523,7 +2523,8 @@ boolean LA_cs_communityService()
 			{
 				buffMaintain($effect[A Rose by Any Other Material], 0, 1, 1);
 			}
-			horseDark();
+                        // Not using the horsePreAdventure system, Community Service tasks may not pass through presool.ash
+			getHorse("non-combat");
 
 			if(my_adventures() < questCost)
 			{
@@ -2808,7 +2809,8 @@ boolean LA_cs_communityService()
 			}
 
 			asdonBuff($effect[Driving Safely]);
-			horsePale();
+                        // Not using the horsePreAdventure system, Community Service tasks may not pass through presool.ash
+			getHorse("resistance");
 
 			while((my_mp() < 37) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{
