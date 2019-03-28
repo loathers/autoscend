@@ -29,6 +29,23 @@ void bat_initializeSettings()
 // This is done to avoid getting stuck in an incorrect form,
 // or wasting HP switching back and forth.
 
+boolean bat_wantHowl(location loc)
+{
+	if(sl_banishesUsedAt(loc) contains "Baleful Howl")
+	{
+		return false;
+	}
+	int[monster] banished = banishedMonsters();
+	monster[int] monsters = get_monsters(loc);
+	foreach i in monsters
+	{
+		if (!(banished contains monsters[i]) && (sl_wantToBanish(monsters[i], loc))) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void bat_formNone()
 {
 	if(my_class() != $class[Vampyre]) return;
@@ -72,8 +89,11 @@ void bat_clearForms()
 boolean bat_switchForm(effect form)
 {
 	if (0 != have_effect(form)) return true;
-	bat_clearForms();
-	if(!have_skill(form.to_skill())) return false;
+	if(!have_skill(form.to_skill()))
+	{
+		bat_clearForms();
+		return false;
+	}
 	if (my_hp() <= 10)
 	{
 		print("We don't have enough HP to switch form to " + form + "!", "red");
@@ -259,6 +279,9 @@ skill [int] bat_pickSkills(int hpLeft)
 	{
 		addPick(sk);
 	}
+	if(get_property("_sl_bat_bloodBank") == "2")
+		addPick($skill[Intimidating Aura]);
+
 	return picks;
 }
 
@@ -364,6 +387,10 @@ boolean bat_consumption()
 		return false;
 	}
 
+	if ((fullness_left() > 0) && (get_property("availableQuarters").to_int() < 2))
+	{
+		pullXWhenHaveY($item[gauze garter], 1, 0);
+	}
 	if ((my_level() >= 7) &&
 		(spleen_left() >= 3) &&
 		(fullness_left() >= 2) &&
@@ -377,18 +404,20 @@ boolean bat_consumption()
 		ccEat(1, $item[blood-soaked sponge cake]);
 		return true;
 	}
-	if (my_adventures() <= 5 && item_amount($item[blood bag]) > 0)
+	if (my_adventures() <= 8 && item_amount($item[blood bag]) > 0)
 	{
 		if (inebriety_left() > 0)
 		{
-			pullXWhenHaveY($item[monstar energy beverage], 1, 0);
+			if (get_property("availableQuarters").to_int() < 3)
+			{
+				pullXWhenHaveY($item[monstar energy beverage], 1, 0);
+			}
 			// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
 			if(consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
 				return true;
 		}
 		if (fullness_left() > 0)
 		{
-			pullXWhenHaveY($item[gauze garter], 1, 0);
 			// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
 			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
 				return true;

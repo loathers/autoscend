@@ -158,15 +158,6 @@ generic_t zone_needItem(location loc)
 			value = 20.0;
 		}
 		break;
-	case $location[The Dark Neck of the Woods]:
-	case $location[The Dark Heart of the Woods]:
-	case $location[The Dark Elbow of the Woods]:
-	case $location[Pandamonium Slums]:
-		if(item_amount($item[Hot Wing]) < 3)
-		{
-			value = 30.0;
-		}
-		break;
 	case $location[The Laugh Floor]:
 		if(item_amount($item[Imp Air]) < 5)
 		{

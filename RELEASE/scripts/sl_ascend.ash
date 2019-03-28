@@ -1188,9 +1188,8 @@ boolean doThemtharHills()
 		handleServant($servant[maid]);
 	}
 	buffMaintain($effect[Purr of the Feline], 10, 1, 1);
-	float meatDropHave = meat_drop_modifier();
+	songboomSetting("meat");
 
-/*
 	if(is100FamiliarRun())
 	{
 		ccMaximize("meat drop, -equip snow suit", 1500, 0, false);
@@ -1201,7 +1200,6 @@ boolean doThemtharHills()
 		handleFamiliar(my_familiar());
 	}
 	int expectedMeat = numeric_modifier("Generated:_spec", "meat drop");
-*/
 
 	buffMaintain($effect[Greedy Resolve], 0, 1, 1);
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
@@ -1216,6 +1214,10 @@ boolean doThemtharHills()
 	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
 	buffMaintain($effect[Patent Avarice], 0, 1, 1);
+	if(item_amount($item[body spradium]) > 0)
+	{
+		ccChew(1, $item[body spradium]);
+	}
 	if(have_effect($effect[meat.enh]) == 0)
 	{
 		if(sl_sourceTerminalEnhanceLeft() > 0)
@@ -1260,12 +1262,12 @@ boolean doThemtharHills()
 	{
 		meat_need = meat_need - 200;
 	}
-	if((my_class() == $class[vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
+	if((my_class() == $class[Vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
 	{
 		meat_need = meat_need - 150;
 	}
 
-	meatDropHave = meat_drop_modifier();
+	float meatDropHave = meat_drop_modifier();
 
 	if((my_class() == $class[Ed]) && have_skill($skill[Curse of Fortune]) && (item_amount($item[Ka Coin]) > 0))
 	{
@@ -1603,6 +1605,40 @@ int handlePulls(int day)
 				ccChew(1, $item[Unconscious Collective Dream Jar]);
 			}
 		}
+
+
+		if(my_class() == $class[Vampyre])
+		{
+			print("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
+			if((storage_amount($item[mime army shotglass]) > 0) && is_unrestricted($item[mime army shotglass]))
+			{
+				pullXWhenHaveY($item[mime army shotglass], 1, 0);
+			}
+			int available_bloodbags = 7;
+			if(item_amount($item[Vampyric cloake]) > 0)
+			{
+				available_bloodbags += 1;
+			}
+			if(item_amount($item[Lil\' Doctor&trade; Bag]) > 0)
+			{
+				available_bloodbags += 1;
+			}
+
+			int available_organspace = 10;
+			if(item_amount($item[mime army shotglass]) > 0)
+			{
+				available_organspace += 1;
+			}
+
+			pullXWhenHaveY($item[dieting pill], 1, 0);
+			pullXWhenHaveY($item[dieting pill], 1, 1);
+			available_organspace -= min(2, item_amount($item[dieting pill]));
+
+			for(int i=0; i<available_organspace-available_bloodbags; i++)
+			{
+				pullXWhenHaveY($item[vampagne], 1, i);
+			}
+		}
 	}
 	else if(day == 2)
 	{
@@ -1865,7 +1901,11 @@ void initializeDay(int day)
 			tootGetMeat();
 
 			hr_initializeDay(day);
-
+			// It's nice to have a moxie weapon for Flock of Bats form
+			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21)
+			{
+				acquireGumItem($item[disco ball]);
+			}
 			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
 				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
@@ -2177,11 +2217,12 @@ boolean doBedtime()
 			}
 		}
 	}
-	if((fullness_left() > 0) && can_eat())
+	boolean out_of_blood = (my_class() == $class[Vampyre] && item_amount($item[blood bag]) == 0);
+	if((fullness_left() > 0) && can_eat() && !out_of_blood)
 	{
 		return false;
 	}
-	if((inebriety_left() > 0) && can_drink())
+	if((inebriety_left() > 0) && can_drink() && !out_of_blood)
 	{
 		return false;
 	}
@@ -2327,7 +2368,7 @@ boolean doBedtime()
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
-		if(sl_my_path() == "Pocket Familiars")
+		if(sl_my_path() == "Pocket Familiars" || my_class() == $class[Vampyre])
 		{
 			cli_execute("friars food");
 		}
@@ -2737,7 +2778,7 @@ boolean doBedtime()
 	}
 
 	boolean done = (my_inebriety() > inebriety_limit());
-	if((my_class() == $class[Gelatinous Noob]) || !can_drink())
+	if((my_class() == $class[Gelatinous Noob]) || !can_drink() || out_of_blood)
 	{
 		if((my_adventures() <= 1) || (internalQuestStatus("questL13Final") >= 14))
 		{
@@ -3850,6 +3891,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				doHottub();
+				bat_reallyPickSkills(20);
 			}
 			visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 			if(!in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0))
@@ -4131,10 +4173,6 @@ boolean L13_towerNSFinal()
 		}
 		set_property("sl_disableAdventureHandling", false);
 	}
-	else if(my_class() == $class[Vampyre])
-	{
-		return true;
-	}
 	else
 	{
 		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
@@ -4145,6 +4183,10 @@ boolean L13_towerNSFinal()
 		abort("User wanted to stay in run (sl_stayInRun), we are done.");
 	}
 
+	if(my_class() == $class[Vampyre])
+	{
+		abort("Freeing the king will result in a path change. Enjoy your immortality.");
+	}
 
 	visit_url("place.php?whichplace=nstower&action=ns_11_prism");
 	if(get_property("kingLiberated") == "false")
@@ -4836,13 +4878,35 @@ boolean L13_towerNSContests()
 				ccMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
 			}
 
-	
-
 			float score = numeric_modifier(challenge + " damage ");
 			score += numeric_modifier(challenge + " spell damage ");
 			if((score > 20.0) && (score < 85.0))
 			{
 				buffMaintain($effect[Bendin\' Hell], 100, 1, 1);
+			}
+
+			score = numeric_modifier(challenge + " damage ");
+			score += numeric_modifier(challenge + " spell damage ");
+			if((score < 80) && (item_amount($item[Genie bottle]) > 0))
+			{
+				switch(challenge)
+				{
+				case $element[cold]:
+					makeGenieWish($effect[Staying Frosty]);
+					break;
+				case $element[hot]:
+					makeGenieWish($effect[Dragged Through the Coals]);
+					break;
+				case $element[sleaze]:
+					makeGenieWish($effect[Fifty Ways to Bereave your Lover]);
+					break;
+				case $element[stench]:
+					makeGenieWish($effect[Sewer-Drenched]);
+					break;
+				case $element[spooky]:
+					makeGenieWish($effect[You're Back...]);
+					break;
+				}
 			}
 
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
@@ -4983,13 +5047,6 @@ boolean L13_towerNSEntrance()
 					return true;
 				}
 			}
-			if(!hasTorso())
-			{
-				if(LX_melvignShirt())
-				{
-					return true;
-				}
-			}
 			if(needStarKey())
 			{
 				if(zone_isAvailable($location[The Hole In The Sky]))
@@ -4998,6 +5055,17 @@ boolean L13_towerNSEntrance()
 					{
 						return true;
 					}
+				}
+			}
+			if(neverendingPartyPowerlevel())
+			{
+				return true;
+			}
+			if(!hasTorso())
+			{
+				if(LX_melvignShirt())
+				{
+					return true;
 				}
 			}
 
@@ -6566,6 +6634,10 @@ boolean L11_mauriceSpookyraven()
 			handleBjornify($familiar[Grimstone Golem]);
 		}
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
+		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
+		{
+			bat_formBats();
+		}
 		ccAdv(1, $location[The Haunted Wine Cellar]);
 		return true;
 	}
@@ -6575,6 +6647,10 @@ boolean L11_mauriceSpookyraven()
 		if(considerGrimstoneGolem(true))
 		{
 			handleBjornify($familiar[Grimstone Golem]);
+		}
+		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
+		{
+			bat_formBats();
 		}
 		ccAdv(1, $location[The Haunted Laundry Room]);
 		return true;
@@ -6819,8 +6895,10 @@ boolean L11_unlockEd()
 		buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
 		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
-		// TODO: use Baleful Howl, then use Bat Form
-		// bat_formBats();
+		if(!bat_wantHowl($location[The Middle Chamber]))
+		{
+			bat_formBats();
+		}
 		if(get_property("sl_dickstab").to_boolean())
 		{
 			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
@@ -7192,12 +7270,12 @@ boolean L12_gremlins()
 		equip($item[astral shield]);
 	}
 	useCocoon();
-	// TODO: use Baleful Howl, then use Mist Form for the DR
-	// bat_formMist();
-
+	if(!bat_wantHowl($location[over where the old tires are]))
+	{
+		bat_formMist();
+	}
 	handleFamiliar("init");
-	// TODO: find a way to songboom DR without it getting overridden every turn
-	// songboomSetting("dr");
+	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
 		ccAdv(1, $location[Next to that barrel with something burning in it], "ccsJunkyard");
@@ -7586,6 +7664,7 @@ boolean L12_filthworms()
 		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
 		buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
 		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
+		buffMaintain($effect[Eagle Eyes], 0, 1, 1);
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
@@ -8516,13 +8595,19 @@ boolean L10_airship()
 			handleFamiliar("yellow ray");
 		}
 	}
+	if($location[The Penultimate Fantasy Airship].turns_spent < 10)
+	{
+		bat_formBats();
+	}
+	else
+	{
+		providePlusNonCombat(25);
 
-	providePlusNonCombat(25);
-
-	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-	buffMaintain($effect[Snow Shoes], 0, 1, 1);
-	buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
-	buffMaintain($effect[Gummed Shoes], 0, 1, 1);
+		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
+		buffMaintain($effect[Snow Shoes], 0, 1, 1);
+		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
+		buffMaintain($effect[Gummed Shoes], 0, 1, 1);
+	}
 
 	if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
 	{
@@ -9050,6 +9135,7 @@ boolean L7_crypt()
 		{
 			equip($item[The Nuge\'s Favorite Crossbow]);
 		}
+		bat_formBats();
 
 		print("The Alcove! (" + initiative_modifier() + ")", "blue");
 		ccAdv(1, $location[The Defiled Alcove]);
@@ -9266,6 +9352,8 @@ boolean L6_friarsGetParts()
 	{
 		equip($slot[Shirt], $item[none]);
 	}
+
+	providePlusNonCombat(25);
 
 	if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 2))
 	{
@@ -9912,6 +10000,7 @@ boolean L5_goblinKing()
 	}
 
 	ccAdv(1, $location[Throne Room]);
+	cli_execute("refresh quests");
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished"))
 	{
@@ -9972,6 +10061,7 @@ boolean L4_batCave()
 	}
 	if(batStatus >= 2)
 	{
+		bat_formBats();
 		if((item_amount($item[Enchanted Bean]) == 0) && !get_property("sl_bean").to_boolean() && (my_class() != $class[Ed]))
 		{
 			ccAdv(1, $location[The Beanbat Chamber]);
@@ -9982,6 +10072,7 @@ boolean L4_batCave()
 	}
 	if(batStatus >= 1)
 	{
+		bat_formBats();
 		ccAdv(1, $location[The Batrat and Ratbat Burrow]);
 		return true;
 	}
@@ -10004,6 +10095,7 @@ boolean L4_batCave()
 		{
 			if(get_property("sl_powerLevelAdvCount").to_int() >= 5)
 			{
+				bat_formBats();
 				ccAdv(1, $location[The Bat Hole Entrance]);
 				return true;
 			}
@@ -10021,6 +10113,7 @@ boolean L4_batCave()
 	}
 	if(numeric_modifier("stench resistance") >= 1.0)
 	{
+		bat_formBats();
 		ccAdv(1, $location[Guano Junction]);
 		return true;
 	}
@@ -11382,13 +11475,6 @@ boolean L12_startWar()
 		return false;
 	}
 
-	//Yes, we are going to make sure swordfish is complete first.
-	//We might want to put this on a timer
-	if(get_property("sl_swordfish") != "finished")
-	{
-		return false;
-	}
-
 	if((my_basestat($stat[Muscle]) < 70) || (my_basestat($stat[Mysticality]) < 70) || (my_basestat($stat[Moxie]) < 70))
 	{
 		return false;
@@ -11741,6 +11827,7 @@ boolean L9_aBooPeak()
 		int coldResist = numeric_modifier("Generated:_spec", "cold resistance");
 		int spookyResist = numeric_modifier("Generated:_spec", "spooky resistance");
 		int hpDifference = numeric_modifier("Generated:_spec", "Maximum HP") - numeric_modifier("Maximum HP");
+		int effectiveCurrentHP = my_hp();
 
 		//	Do we need to manually adjust for the parrot?
 
@@ -11760,13 +11847,13 @@ boolean L9_aBooPeak()
 		{
 			coldResist += 4;
 			spookyResist += 4;
-			hpDifference -= 10;
+			effectiveCurrentHP -= 10;
 		}
 		else if(have_skill($skill[Spectral Awareness]))
 		{
 			coldResist += 2;
 			spookyResist += 2;
-			hpDifference -= 10;
+			effectiveCurrentHP -= 10;
 		}
 
 		if((item_amount($item[Spooky Powder]) > 0) && (have_effect($effect[Spookypants]) == 0))
@@ -11834,7 +11921,7 @@ boolean L9_aBooPeak()
 		{
 			doThisBoo = true;
 		}
-		if((my_hp() >= totalDamage) && (my_mp() >= mp_need))
+		if((effectiveCurrentHP > totalDamage) && (my_mp() >= mp_need))
 		{
 			doThisBoo = true;
 		}
@@ -11846,6 +11933,11 @@ boolean L9_aBooPeak()
 		if(doThisBoo)
 		{
 			buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+			bat_formMist();
+			if(0 == have_effect($effect[Mist Form]))
+			{
+				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			}
 			ccMaximize("spooky res, cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
 			adjustEdHat("ml");
 
@@ -11862,8 +11954,6 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Balls of Ectoplasm], 0, 1, 1);
 			buffMaintain($effect[Red Door Syndrome], 0, 1, 1);
 			buffMaintain($effect[Well-Oiled], 0, 1, 1);
-			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-			bat_formMist();
 
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
@@ -12383,20 +12473,6 @@ boolean L9_chasmBuild()
 #	}
 	print("Chasm time", "blue");
 
-	// Temporary logic until Blech House is spaded further
-	switch(my_primestat())
-	{
-		case $stat[Muscle]:
-			set_property("choiceAdventure1345", 1);
-			break;
-		case $stat[Mysticality]:
-			set_property("choiceAdventure1345", 2);
-			break;
-		case $stat[Moxie]:
-			set_property("choiceAdventure1345", 3);
-			break;
-	}
-
 	if(item_amount($item[fancy oil painting]) > 0)
 	{
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
@@ -12432,6 +12508,35 @@ boolean L9_chasmBuild()
 			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 			{
 				equip(it);
+			}
+		}
+
+		if(get_property("smutOrcNoncombatProgress").to_int() == 15)
+		{
+			// This is a hardcoded patch for Dark Gyffte
+			// TODO: once explicit formulas are spaded, use simulated maximizer
+			// to determine best approach.
+			if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]))
+			{
+				// Maximizing moxie (through equalizer) and sleaze res is good here
+				ccMaximize("myst, 50 sleaze res", 1000, 0, false);
+				bat_formMist();
+				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+				set_property("choiceAdventure1345", 3);
+			}
+			else {
+				switch(my_primestat())
+				{
+					case $stat[Muscle]:
+						set_property("choiceAdventure1345", 1);
+						break;
+					case $stat[Mysticality]:
+						set_property("choiceAdventure1345", 2);
+						break;
+					case $stat[Moxie]:
+						set_property("choiceAdventure1345", 3);
+						break;
+				}
 			}
 		}
 
@@ -12481,6 +12586,7 @@ boolean L9_chasmBuild()
 			}
 		}
 
+		sl_change_mcd(0);
 		ccAdv(1, $location[The Smut Orc Logging Camp]);
 		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
 		{
@@ -12573,34 +12679,65 @@ boolean L11_redZeppelin()
 		return ccAdv($location[A Mob Of Zeppelin Protesters]);
 	}
 
-	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
-	{
-		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[Noob Cave]);
-	}
+	// TODO: create lynyrd skin items
 
-	int lastProtest = get_property("zeppelinProtestors").to_int();
 	set_property("choiceAdventure856", 1);
 	set_property("choiceAdventure857", 1);
 	set_property("choiceAdventure858", 1);
-
-	if(item_amount($item[Flamin\' Whatshisname]) > 0)
-	{
-		backupSetting("choiceAdventure866", 3);
-	}
-	else
-	{
-		backupSetting("choiceAdventure866", 2);
-	}
-
 	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
 	buffMaintain($effect[Musky], 0, 1, 1);
 	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
 
-	if((item_amount($item[Halibut]) > 0) && can_equip($item[Halibut]))
+	providePlusNonCombat(25);
+	foreach it in $items[ratty knitted cap, disturbing fanfic]
 	{
-		equip($slot[weapon], $item[Halibut]);
+		if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
+		{
+			equip(it);
+		}
 	}
 
+	if($location[A Mob of Zeppelin Protesters].turns_spent % 7 == 6)
+	{
+		print("Oooh, the guaranteed Zeppelin noncombat is coming.", "blue");
+		// We can stock up on +sleaze damage and +sleaze spell dmg, since
+		// we know we won't get in a combat.
+
+		if(item_amount($item[Flamin\' Whatshisname]) > 0)
+		{
+			backupSetting("choiceAdventure866", 3);
+		}
+		else
+		{
+			backupSetting("choiceAdventure866", 2);
+		}
+
+		ccMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
+		foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
+		{
+			if(possessEquipment(it) && !have_equipped(it) && can_equip(it) &&
+			   (item_amount(it) > 0) &&
+			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze dmg") < 5) &&
+			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell dmg") < 5))
+			{
+				equip(it);
+			}
+		}
+
+		boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
+		if(!($strings[Bench Warrant, Fire Up Above, This Looks Like a Good Bush for an Ambush, Not So Much With The Humanity] contains get_property("lastEncounter")))
+		{
+			print("Uh oh, we expected to get a scheduled Zeppelin noncombat there but didn't. This is still being spaded - send Jeparo logs if you're interested in getting this fixed", "red");
+		}
+		return retval;
+	}
+
+	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
+	{
+		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
+	}
+
+	int lastProtest = get_property("zeppelinProtestors").to_int();
 	boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
 	if(!lastAdventureSpecialNC())
 	{
@@ -12646,6 +12783,8 @@ boolean L11_ronCopperhead()
 		{
 			buy(1, $item[Red Zeppelin Ticket]);
 		}
+		// For Glark Cables. OPTIMAL!
+		bat_formBats();
 		return ccAdv($location[The Red Zeppelin]);
 	}
 
@@ -13069,6 +13208,7 @@ boolean L5_haremOutfit()
 	{
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	}
+	bat_formBats();
 
 	print("Looking for some sexy lingerie!", "blue");
 	ccAdv(1, $location[Cobb\'s Knob Harem]);
@@ -13714,6 +13854,13 @@ boolean autosellCrap()
 			sl_autosell(item_amount(it), it);
 		}
 	}
+	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	{
+		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
+		{
+			use(1, it);
+		}
+	}
 
 	if(!in_hardcore() && !isGuildClass())
 	{
@@ -13729,7 +13876,7 @@ boolean autosellCrap()
 		sl_autosell(1, $item[meat stack]);
 	}
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Ratgut, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
 	{
 		if(item_amount(it) > 0)
 		{
@@ -13739,13 +13886,6 @@ boolean autosellCrap()
 	if(item_amount($item[hot wing]) > 3)
 	{
 		sl_autosell(item_amount($item[hot wing]) - 3, $item[hot wing]);
-	}
-	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
-	{
-		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
-		{
-			use(1, it);
-		}
 	}
 	return true;
 }
@@ -13846,6 +13986,10 @@ boolean doTasks()
 			set_property("sl_paranoia_counter", paranoia_counter + 1);
 		}
 	}
+	if(get_property("sl_helpMeMafiaIsSuperBrokenAaah").to_boolean())
+	{
+		cli_execute("refresh items");
+	}
 	bat_formNone();
 
 	basicAdjustML();
@@ -13942,27 +14086,32 @@ boolean doTasks()
 
 	if(get_property("sl_beatenUpCount").to_int() > 5)
 	{
-		songboomSetting(3);
+		songboomSetting("dr");
+	}
+	else if ((get_property("sl_prewar") == "started") && (get_property("sl_war") != "finished"))
+	{
+		// Once we've started the war, we want to be able to micromanage songs
+		// for Gremlins and Nuns. Don't break this for them.
+	}
+	else if((my_class() != $class[Ed]) && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
+	{
+		songboomSetting("nightmare");
 	}
 	else
 	{
 		if((my_fullness() == 0) || (item_amount($item[Special Seasoning]) < 4))
 		{
-			songboomSetting(2);
+			songboomSetting("food");
 		}
 		else
 		{
 			if((sl_my_path() == "G-Lover") && (my_meat() > 10000))
 			{
-				songboomSetting(3);
-			}
-			else if((sl_my_path() == "Disguises Delimit") && (get_property("sl_crypt") != "finished") && (get_property("_boomBoxFights").to_int() == 10) && (get_property("_boomBoxSongsLeft").to_int() > 3))
-			{
-				songboomSetting(1);
+				songboomSetting("dr");
 			}
 			else
 			{
-				songboomSetting(5);
+				songboomSetting("meat");
 			}
 		}
 	}
@@ -14023,6 +14172,7 @@ boolean doTasks()
 	if(L5_findKnob())					return true;
 	if(LM_edTheUndying())				return true;
 
+	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
 
 	if((my_class() != $class[Ed]) && (my_level() >= 9) && (my_daycount() == 1))
@@ -14055,7 +14205,6 @@ boolean doTasks()
 		}
 	}
 
-	if(L12_sonofaPrefix())				return true;
 	if(LX_loggingHatchet())				return true;
 	if(LX_guildUnlock())				return true;
 	if(L5_getEncryptionKey())			return true;
@@ -14070,18 +14219,18 @@ boolean doTasks()
 		if(LX_steelOrgan())					return true;
 	}
 
+	if(L4_batCave())					return true;
 	if(L2_mosquito())					return true;
 	if(L2_treeCoin())					return true;
 	if(L2_spookyMap())					return true;
 	if(L2_spookyFertilizer())			return true;
 	if(L2_spookySapling())				return true;
 	if(L6_dakotaFanning())				return true;
-	if(LX_bitchinMeatcar())				return true;
 	if(L5_haremOutfit())				return true;
 	if(LX_phatLootToken())				return true;
-	if(LX_islandAccess())				return true;
-	if(L4_batCave())					return true;
 	if(L5_goblinKing())					return true;
+	if(LX_bitchinMeatcar())				return true;
+	if(LX_islandAccess())				return true;
 
 	if(in_hardcore() && isGuildClass())
 	{

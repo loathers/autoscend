@@ -148,7 +148,11 @@ void handlePreAdventure(location place)
 
 	if(!get_property("kingLiberated").to_boolean())
 	{
-		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site, Sonofa Beach] contains place))
+		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
+		{
+			acquireCombatMods(zone_combatMod(place)._int, false);
+		}
+		if(place == $location[Sonofa Beach] && !sl_voteMonster())
 		{
 			acquireCombatMods(zone_combatMod(place)._int, false);
 		}

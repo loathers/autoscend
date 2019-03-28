@@ -387,13 +387,15 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 #5		Plush Elephant		LOV Elephant (Shield, DR+10)
 #6		Toast? Only with Space Jellyfish?
 #7		Nothing
-
 	if(enforcer || engineer || equivocator)
 	{
 		set_property("sl_disableAdventureHandling", false);
 		cli_execute("postsool");
 	}
-
+	if(item_amount($item[LOV Extraterrestrial Chocolate]) > 0)
+	{
+		use(1, $item[LOV Extraterrestrial Chocolate]);
+	}
 	return true;
 }
 
@@ -1294,7 +1296,54 @@ boolean asdonAutoFeed(int goal)
 	}
 
 	boolean didOnce = false;
-	foreach it in $items[A Little Sump\'m Sump\'m, Backwoods Screwdriver, Bag Of GORP, Ballroom Blintz, Bean Burrito, Bilge Wine,  Bottle Of Laundry Sherry, Black Forest Ham, Cactus Fruit, CSA Scoutmaster\'s &quot;water&quot;, Enchanted Bean Burrito, Giant Heirloom Grape Tomato, Gin And Tonic, Haggis-Wrapped Haggis-Stuffed Haggis, Insanely Spicy Bean Burrito, Insanely Spicy Enchanted Bean Burrito, Insanely Spicy Jumping Bean Burrito, Jumping Bean Burrito, Jungle Floor Wax, Loaf of Soda Bread, Margarita, McLeod\'s Hard Haggis-Ade, Mimosette, Mornington Crescent Roll, Open Sauce, Pink Pony, Roll In The Hay, Screwdriver, Slap And Tickle, Slip \'N\' Slide, Snifter Of Thoroughly Aged Brandy, Spicy Bean Burrito, Spicy Enchanted Bean Burrito, Spicy Jumping Bean Burrito, Stolen Sushi, Strawberry Daiquiri, Tequila Sunrise, Tequila Sunset, Vodka And Tonic, Water Purification Pills, Zmobie]
+	foreach it in $items[
+		A Little Sump\'m Sump\'m,
+		ancient frozen dinner,
+		antique packet of ketchup,
+		Backwoods Screwdriver,
+		Bag Of GORP,
+		Ballroom Blintz,
+		Bean Burrito,
+		Bilge Wine,
+		Bottle Of Laundry Sherry,
+		bowl of cottage cheese,
+		Black Forest Ham,
+		Cactus Fruit,
+		CSA Scoutmaster\'s &quot;water&quot;,
+		Enchanted Bean Burrito,
+		Giant Heirloom Grape Tomato,
+		Gin And Tonic,
+		Haggis-Wrapped Haggis-Stuffed Haggis,
+		hot wing,
+		ice-cold Willer,
+		Insanely Spicy Bean Burrito,
+		Insanely Spicy Enchanted Bean Burrito,
+		Insanely Spicy Jumping Bean Burrito,
+		Jumping Bean Burrito,
+		Jungle Floor Wax,
+		Loaf of Soda Bread,
+		Margarita,
+		McLeod\'s Hard Haggis-Ade,
+		Mimosette,
+		Mornington Crescent Roll,
+		Open Sauce,
+		Pink Pony,
+		Roll In The Hay,
+		Screwdriver,
+		Slap And Tickle,
+		Slip \'N\' Slide,
+		Snifter Of Thoroughly Aged Brandy,
+		Spicy Bean Burrito,
+		Spicy Enchanted Bean Burrito,
+		Spicy Jumping Bean Burrito,
+		Stolen Sushi,
+		Strawberry Daiquiri,
+		Tequila Sunrise,
+		Tequila Sunset,
+		Typical Tavern swill,
+		Vodka And Tonic,
+		Water Purification Pills,
+		Zmobie]
 	{
 		if(item_amount(it) > 0)
 		{
@@ -1313,13 +1362,14 @@ boolean asdonAutoFeed(int goal)
 		}
 	}
 
-	if((get_fuel() < goal) && (my_meat() > 12000) && isGeneralStoreAvailable())
+	int meat_cutoff = 7000;
+	if((get_fuel() < goal) && (my_meat() > meat_cutoff) && isGeneralStoreAvailable())
 	{
 		int want = ((goal + 5) - get_fuel()) / 6;
-		want = min(3 + ((my_meat() - 12000) / 1000), want);
+		want = min(3 + ((my_meat() - meat_cutoff) / 1000), want);
 		if(want > 0)
 		{
-			while(!knoll_available() && my_meat() > 12000 && item_amount($item[wad of dough]) < want)
+			while(!knoll_available() && my_meat() > meat_cutoff && item_amount($item[wad of dough]) < want)
 				use(1, $item[all-purpose flower]);
 			cli_execute("make " + want + " " + $item[Loaf of Soda Bread]);
 			asdonFeed($item[Loaf of Soda Bread], want);
@@ -1455,7 +1505,7 @@ boolean makeGenieWish(effect eff)
 	{
 		return false;
 	}
-	if(get_property("_genieWishesUsed").to_int() >= 3)
+	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
 	{
 		return false;
 	}
@@ -1485,7 +1535,7 @@ boolean makeGenieCombat(monster mon, string option)
 	{
 		return false;
 	}
-	if(get_property("_genieWishesUsed").to_int() >= 3)
+	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
 	{
 		return false;
 	}
