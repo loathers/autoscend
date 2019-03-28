@@ -13986,6 +13986,10 @@ boolean doTasks()
 			set_property("sl_paranoia_counter", paranoia_counter + 1);
 		}
 	}
+	if(get_property("sl_helpMeMafiaIsSuperBrokenAaah").to_boolean())
+	{
+		cli_execute("refresh items");
+	}
 	bat_formNone();
 
 	basicAdjustML();

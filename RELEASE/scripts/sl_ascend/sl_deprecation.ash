@@ -274,5 +274,11 @@ boolean settingFixer()
 		set_property("sl_paranoia", -1);
 	}
 
+	if(get_property("sl_helpMeMafiaIsSuperBrokenAaah") == "")
+	{
+		print("Mafia probably isn't super broken, so let's set it that way...", "red");
+		set_property("sl_helpMeMafiaIsSuperBrokenAaah", false);
+	}
+
 	return true;
 }
