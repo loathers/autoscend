@@ -1529,7 +1529,7 @@ void horsePale()
 boolean horsePreAdventure()
 {
         string desiredHorse = get_property("sl_desiredHorse");
-        if (desiredHose != "regen"
+        if (desiredHorse != "regen"
             && desiredHorse != "noncombat"
             && desiredHorse != "random"
             && desiredHorse != "resistance")
