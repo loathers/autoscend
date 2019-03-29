@@ -1500,10 +1500,7 @@ boolean getHorse(string type)
 
 void horseNone()
 {
-        if(get_property("sl_desiredHorse") != "")
-	{
-		set_property("sl_desiredHorse", "");
-	}
+        set_property("sl_desiredHorse", "return");
 }
 
 void horseNormal()
@@ -1532,7 +1529,8 @@ boolean horsePreAdventure()
         if (desiredHorse != "regen"
             && desiredHorse != "noncombat"
             && desiredHorse != "random"
-            && desiredHorse != "resistance")
+            && desiredHorse != "resistance"
+            && desiredHorse != "return")
         {
                 print("sl_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
 		set_property("sl_desiredHorse", "");
