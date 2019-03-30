@@ -1554,7 +1554,7 @@ boolean makeGenieCombat(monster mon, string option)
 	string wish = "to fight " + mon;
 	string[int] pages;
 	int wish_provider = 9537; // pocket wish
-	if(get_property("_genieWishesUsed").to_int() >= 3)
+	if(get_property("_genieWishesUsed").to_int() < 3)
 	{
 		int wish_provider = 9529; // genie bottle
 	}
