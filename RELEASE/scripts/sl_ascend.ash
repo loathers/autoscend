@@ -354,6 +354,10 @@ boolean handleFamiliar(string type)
 			fams = ListRemove(fams, $familiar[Intergnat]);
 			fams = ListInsertAt(fams, $familiar[Intergnat], fams.ListFind($familiar[Gelatinous Cubeling]));
 		}
+		if(sl_have_familiar($familiar[Pair of Stomping Boots]) && get_property("_bootStomps").to_int() < 7)
+		{
+			fams = ListInsertAt(fams, $familiar[Pair of Stomping Boots], 0);
+		}
 		if($familiar[Bloovian Groose].drops_today >= $familiar[Bloovian Groose].drops_limit)
 		{
 			fams = ListRemove(fams, $familiar[Bloovian Groose]);

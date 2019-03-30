@@ -663,6 +663,14 @@ string sl_combatHandler(int round, string opp, string text)
 			return "item " + $item[Power Pill];
 		}
 	}
+	
+	if((my_familiar() == $familiar[Pair of Stomping Boots]) && (get_property("_bootStomps").to_int()) < 7 && instakillable(enemy) && get_property("bootsCharged").to_boolean())
+	{
+		if(!($monsters[Dairy Goat, Lobsterfrogman, Writing Desk] contains enemy) && !($locations[The Laugh Floor, Infernal Rackets Backstage] contains my_location())  )
+		{
+			return useSkill($skill[Release the boots]);
+		}
+	}
 
 	if(get_property("sl_useCleesh").to_boolean())
 	{
