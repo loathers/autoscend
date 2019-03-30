@@ -1961,7 +1961,7 @@ string sl_combatHandler(int round, string opp, string text)
 				return useSkill($skill[Thunderstrike]);
 			}
 
-			if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 50) && (my_mp() >= costStunner))
+			if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 100) && (my_mp() >= costStunner))
 			{
 				set_property("sl_combatHandler", combatState + "(stunner)");
 				return stunner;
