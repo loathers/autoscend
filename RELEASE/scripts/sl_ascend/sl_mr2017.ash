@@ -1553,9 +1553,11 @@ boolean makeGenieCombat(monster mon, string option)
 
 	string wish = "to fight " + mon;
 	string[int] pages;
-	int wish_provider = 9529; // genie bottle
-	if (item_amount($item[pocket wish]) > 0)
-		wish_provider = 9537; // pocket wish
+	int wish_provider = 9537; // pocket wish
+	if(get_property("_genieWishesUsed").to_int() >= 3)
+	{
+		int wish_provider = 9529; // genie bottle
+	}
 	pages[0] = "inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider;		//false
 	pages[1] = "choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish;
 	pages[2] = "main.php";
