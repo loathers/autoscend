@@ -7471,7 +7471,11 @@ boolean L12_sonofaPrefix()
 	{
 		return false;
 	}
-	if(item_amount($item[barrel of gunpowder]) >= 4)
+	if(item_amount($item[barrel of gunpowder]) >= 4 && !sl_voteMonster())
+	{
+		return false;
+	}
+	if(item_amount($item[barrel of gunpowder]) >= 5)
 	{
 		return false;
 	}

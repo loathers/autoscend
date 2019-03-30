@@ -1519,7 +1519,10 @@ boolean makeGenieWish(effect eff)
 	}
 
 	string wish = "to be " + eff;
-	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9529", false);
+	int wish_provider = 9529; // genie bottle
+	if (item_amount($item[pocket wish]) > 0)
+		wish_provider = 9537; // pocket wish
+	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider, false);
 	page = visit_url("choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish);
 	if(have_effect(eff) == 0)
 	{
@@ -1550,7 +1553,12 @@ boolean makeGenieCombat(monster mon, string option)
 
 	string wish = "to fight " + mon;
 	string[int] pages;
-	pages[0] = "inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9529";		//false
+	int wish_provider = 9537; // pocket wish
+	if(get_property("_genieWishesUsed").to_int() < 3)
+	{
+		int wish_provider = 9529; // genie bottle
+	}
+	pages[0] = "inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider;		//false
 	pages[1] = "choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish;
 	pages[2] = "main.php";
 
