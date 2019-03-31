@@ -5,45 +5,7 @@
 # Second column is priority number
 # Third column is what item
 # Fourth column (optional) is conditions for that item to be considered
-# Conditionals are formatted as \"<condition type>:<data>\"
-# Multiple conditionals can be added separated by a semicolon (;) with NO SPACES
-# Conditionals can be prepended with a ! to indicate that they must be FALSE
-# Valid conditionals:
-## class
-### data: The text name of the class, as used by to_class()
-### You must be the given class
-### As a precaution, sl_ascend aborts if to_class returns $class[none]
-## mainstat
-### data: The text name of the mainstat, as used by to_stat()
-### Your mainstat must be the given stat
-### As a precaution, sl_ascend aborts if to_stat returns $stat[none]
-## path
-### data: The text name of the path, as returned by my_path()
-### You must be currently on that path
-### No safety checking possible here, so hopefully you don't misspell anything
-## skill
-### data: Text name of the skill, as used by to_skill()
-### You must have the given skill
-### As a precaution, sl_ascend aborts if to_skill returns $skill[none]
-## effect
-### data: Text name of the effect, as used by to_effect()
-### You must have at least one turn of the given effect
-### As a precaution, sl_ascend aborts if to_effect returns $effect[none]
-## familiar
-### data: Text name of the familiar, as used by to_familiar()
-### You must be currently using this familiar
-### As a precaution, sl_ascend aborts if to_familiar returns $familiar[none]
-## prop
-### data: <propname>=<value>
-### Only simple comparison is available at the moment
-## expectghostreport
-### data: Doesn't matter, but put something so I don't have to support dataless conditions
-### True when you expect a protonic ghost report
-### Pretty much just for the protonic accelerator pack
-## latte
-### data: Doesn't matter, but put something so I don't have to support dataless conditions
-### True when there is a latte unlock available in the area (that you don't have, of course)
-### Pretty much just for the latte
+# See sl_check_conditions for information on valid conditionals
 # An item can be listed multiple times (presumably with different conditionals)
 # First item found that is available, can be equipped, and meets its conditions (if any) will be used
 

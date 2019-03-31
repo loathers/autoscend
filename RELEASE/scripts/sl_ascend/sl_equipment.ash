@@ -50,87 +50,8 @@ void equipBaselineGear()
 				return false;
 		}
 
-		if(conds != "")
-		{
-			string [int] conditions = conds.split_string(";");
-			boolean failure = false;
-			foreach i, cond in conditions
-			{
-				matcher m = create_matcher("(!?)(\\w+):(.+)", cond);
-				if(!m.find())
-					abort('"' + cond + '" is not proper condition formatting!');
-				boolean condition_inverted = m.group(1) == "!";
-				string condition_type = m.group(2);
-				string condition_data = m.group(3);
-				boolean this_failed = false;
-				switch(condition_type)
-				{
-					case "class":
-						class req_class = to_class(condition_data);
-						if(req_class == $class[none])
-							abort('"' + condition_data + '" does not properly convert to a class!');
-						if(req_class != my_class())
-							this_failed = true;
-						break;
-					case "mainstat":
-						stat req_mainstat = to_stat(condition_data);
-						if(req_mainstat == $stat[none])
-							abort('"' + condition_data + '" does not properly convert to a stat!');
-						if(req_mainstat != my_primestat())
-							this_failed = true;
-						break;
-					case "path":
-						if(condition_data != sl_my_path())
-							this_failed = true;
-						break;
-					case "skill":
-						skill req_skill = to_skill(condition_data);
-						if(req_skill == $skill[none])
-							abort('"' + condition_data + '" does not properly convert to a skill!');
-						if(!sl_have_skill(req_skill))
-							this_failed = true;
-						break;
-					case "effect":
-						effect req_effect = to_effect(condition_data);
-						if(req_effect == $effect[none])
-							abort('"' + condition_data + '" does not properly convert to an effect!');
-						if(have_effect(req_effect) == 0)
-							this_failed = true;
-						break;
-					case "familiar":
-						familiar req_familiar = to_familiar(condition_data);
-						if(req_familiar == $familiar[none])
-							abort('"' + condition_data + '" does not properly convert to a familiar!');
-						if(my_familiar() != req_familiar)
-							this_failed = true;
-						break;
-					case "prop":
-						matcher m2 = create_matcher("([^=]+)=(.+)", condition_data);
-						if(!m2.find())
-							abort('"' + condition_data + '" is not a proper prop condition format!');
-						if(get_property(m2.group(1)) != m2.group(2))
-							this_failed = true;
-						break;
-					case "expectghostreport":
-						if(!expectGhostReport())
-							this_failed = true;
-						break;
-					case "latte":
-						if(!sl_latteDropAvailable(my_location()))
-							this_failed = true;
-						break;
-					default:
-						abort('Invalid condition type "' + condition_type + '" found!');
-				}
-				if(this_failed != condition_inverted)
-				{
-					failure = true;
-					break;
-				}
-			}
-			if(failure)
-				return false;
-		}
+		if(!sl_check_conditions(conds))
+			return false;
 		// The item is approved! In to the list it goes.
 		equipment[eq_slot][equipment[eq_slot].count()] = it;
 		return true;

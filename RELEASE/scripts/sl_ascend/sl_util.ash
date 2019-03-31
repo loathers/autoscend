@@ -5047,3 +5047,116 @@ boolean sl_can_equip(item it, slot s)
 
 	return sl_is_valid(it) && can_equip(it);
 }
+
+// Conditionals are formatted as "<condition type>:<data>"
+// Multiple conditionals can be added separated by a semicolon (;) with NO SPACES
+// Conditionals can be prepended with a ! to indicate that they must be FALSE
+// See the switch statement for valid condition types and a description of their data
+boolean sl_check_conditions(string conds)
+{
+	if(conds == "")
+		return true;
+
+	string [int] conditions = conds.split_string(";");
+	boolean failure = false;
+	foreach i, cond in conditions
+	{
+		matcher m = create_matcher("(!?)(\\w+):(.+)", cond);
+		if(!m.find())
+			abort('"' + cond + '" is not proper condition formatting!');
+		boolean condition_inverted = m.group(1) == "!";
+		string condition_type = m.group(2);
+		string condition_data = m.group(3);
+		boolean this_failed = false;
+		switch(condition_type)
+		{
+			// data: The text name of the class, as used by to_class()
+			// You must be the given class
+			// As a precaution, sl_ascend aborts if to_class returns $class[none]
+			case "class":
+				class req_class = to_class(condition_data);
+				if(req_class == $class[none])
+					abort('"' + condition_data + '" does not properly convert to a class!');
+				if(req_class != my_class())
+					this_failed = true;
+				break;
+			// data: The text name of the mainstat, as used by to_stat()
+			// Your mainstat must be the given stat
+			// As a precaution, sl_ascend aborts if to_stat returns $stat[none]
+			case "mainstat":
+				stat req_mainstat = to_stat(condition_data);
+				if(req_mainstat == $stat[none])
+					abort('"' + condition_data + '" does not properly convert to a stat!');
+				if(req_mainstat != my_primestat())
+					this_failed = true;
+				break;
+			// data: The text name of the path, as returned by my_path()
+			// You must be currently on that path
+			// No safety checking possible here, so hopefully you don't misspell anything
+			case "path":
+				if(condition_data != sl_my_path())
+					this_failed = true;
+				break;
+			// data: Text name of the skill, as used by to_skill()
+			// You must have the given skill
+			// As a precaution, sl_ascend aborts if to_skill returns $skill[none]
+			case "skill":
+				skill req_skill = to_skill(condition_data);
+				if(req_skill == $skill[none])
+					abort('"' + condition_data + '" does not properly convert to a skill!');
+				if(!sl_have_skill(req_skill))
+					this_failed = true;
+				break;
+			// data: Text name of the effect, as used by to_effect()
+			// You must have at least one turn of the given effect
+			// As a precaution, sl_ascend aborts if to_effect returns $effect[none]
+			case "effect":
+				effect req_effect = to_effect(condition_data);
+				if(req_effect == $effect[none])
+					abort('"' + condition_data + '" does not properly convert to an effect!');
+				if(have_effect(req_effect) == 0)
+					this_failed = true;
+				break;
+			// data: Text name of the familiar, as used by to_familiar()
+			// You must be currently using this familiar
+			// As a precaution, sl_ascend aborts if to_familiar returns $familiar[none]
+			case "familiar":
+				familiar req_familiar = to_familiar(condition_data);
+				if(req_familiar == $familiar[none])
+					abort('"' + condition_data + '" does not properly convert to a familiar!');
+				if(my_familiar() != req_familiar)
+					this_failed = true;
+				break;
+			// data: <propname>=<value>
+			// Only simple equality is available at the moment
+			case "prop":
+				matcher m2 = create_matcher("([^=]+)=(.+)", condition_data);
+				if(!m2.find())
+					abort('"' + condition_data + '" is not a proper prop condition format!');
+				if(get_property(m2.group(1)) != m2.group(2))
+					this_failed = true;
+				break;
+			// data: Doesn't matter, but put something so I don't have to support dataless conditions
+			// True when you expect a protonic ghost report
+			// Pretty much just for the protonic accelerator pack
+			case "expectghostreport":
+				if(!expectGhostReport())
+					this_failed = true;
+				break;
+			// data: Doesn't matter, but put something so I don't have to support dataless conditions
+			// True when there is a latte unlock available in the area (that you don't have, of course)
+			// Pretty much just for the latte
+			case "latte":
+				if(!sl_latteDropAvailable(my_location()))
+					this_failed = true;
+				break;
+			default:
+				abort('Invalid condition type "' + condition_type + '" found!');
+		}
+
+		if(this_failed != condition_inverted)
+			return false;
+	}
+
+	return true;
+}

@@ -834,6 +834,18 @@ record kmailObject {
 };
 boolean sl_deleteMail(kmailObject msg);						//Defined in sl_ascend/sl_util.ash
 
+boolean sl_is_valid(item it);
+boolean sl_is_valid(familiar fam);
+boolean sl_is_valid(skill sk);
+
+boolean sl_debug_print(string s, string color);
+boolean sl_debug_print(string s);
+
+boolean sl_can_equip(item it);
+boolean sl_can_equip(item it, slot s);
+
+boolean sl_check_conditions(string conds);
+
 //Dump from accessory scripts.
 void handlePreAdventure();									//Defined in presool.ash
 void handlePreAdventure(location place);					//Defined in presool.ash
