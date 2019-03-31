@@ -230,15 +230,13 @@ int bat_remainingBaseHP()
 	return baseHP;
 }
 
-// to be called when already in Torpor
-boolean[skill] bat_pickSkills(int hpLeft)
+boolean[skill] bat_desiredSkills(int hpLeft)
 {
 	boolean[skill] requirements;
-	return bat_pickSkills(hpLeft, requirements);
+	return bat_desiredSkills(hpLeft, requirements);
 }
 
-// to be called when already in Torpor
-boolean[skill] bat_pickSkills(int hpLeft, boolean[skill] forcedPicks)
+boolean[skill] bat_desiredSkills(int hpLeft, boolean[skill] forcedPicks)
 {
 	int costSoFar = 0;
 	int baseHP = bat_baseHP();
@@ -298,11 +296,17 @@ boolean[skill] bat_pickSkills(int hpLeft, boolean[skill] forcedPicks)
 
 void bat_reallyPickSkills(int hpLeft)
 {
+	boolean[skill] requiredSkills;
+	bat_reallyPickSkills(hpLeft, requiredSkills);
+}
+
+void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills)
+{
 	visit_url("main.php"); // check if we're already in Torpor
 	if(last_choice() != 1342)
 		visit_url("campground.php?action=coffin");
 
-	boolean[skill] picks = bat_pickSkills(hpLeft);
+	boolean[skill] picks = bat_desiredSkills(hpLeft, requiredSkills);
 	string url = "choice.php?whichchoice=1342&option=2&pwd=" + my_hash();
 	foreach sk,_ in picks
 	{
@@ -315,7 +319,7 @@ void bat_reallyPickSkills(int hpLeft)
 
 boolean bat_shouldPickSkills(int hpLeft)
 {
-	boolean[skill] picks = bat_pickSkills(hpLeft);
+	boolean[skill] picks = bat_desiredSkills(hpLeft);
 
 	foreach sk in $skills[]
 	{

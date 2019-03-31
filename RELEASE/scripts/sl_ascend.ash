@@ -4766,7 +4766,7 @@ boolean L13_towerNSContests()
 				{
 					boolean[skill] requirements;
 					requirements[$skill[Preternatural Strength]] = true;
-					bat_pickSkills(20, requirements);
+					bat_reallyPickSkills(20, requirements);
 				}
 				// This could be generalized for stat equalizer potions, but that seems marginal
 				if (crowd_stat == $stat[muscle] && have_skill($skill[Preternatural Strength]))
