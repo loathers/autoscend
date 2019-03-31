@@ -4766,6 +4766,12 @@ boolean L13_towerNSContests()
 			stat crowd_stat = ns_crowd2();
 			if (my_path() == "Dark Gyffte")
 			{
+				if(crowd_stat == $stat[muscle] && !have_skill($skill[Preternatural Strength]))
+				{
+					boolean[skill] requirements;
+					requirements[$skill[Preternatural Strength]] = true;
+					bat_reallyPickSkills(20, requirements);
+				}
 				// This could be generalized for stat equalizer potions, but that seems marginal
 				if (crowd_stat == $stat[muscle] && have_skill($skill[Preternatural Strength]))
 					crowd_stat = $stat[mysticality];
@@ -14025,7 +14031,7 @@ boolean doTasks()
 	xiblaxian_makeStuff();
 	deck_useScheme("");
 	autosellCrap();
-	asdonAutoFeed(50);
+	asdonAutoFeed();
 	LX_craftAcquireItems();
 
 	ocrs_postCombatResolve();

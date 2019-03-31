@@ -1957,6 +1957,13 @@ string sl_combatHandler(int round, string opp, string text)
 		if(canUse($skill[Blood Chains], false) && my_hp() > 3 * hp_cost($skill[Blood Chains]))
 			stunner = useSkill($skill[Blood Chains], false);
 		// intentionally not setting costMinor or costMajor since they don't cost mp...
+
+		// If we're in a form or something, a beehive is probably better than just attacking
+		if(attackMajor == "attack with weapon" && !have_skill($skill[Preternatural Strength]) && canUse($item[beehive]) && ($stat[moxie] != weapon_type(equipped_item($slot[Weapon]))))
+		{
+			attackMajor = useItem($item[beehive], false);
+			attackMinor = useItem($item[beehive], false);
+		}
 		break;
 	}
 
@@ -1969,7 +1976,7 @@ string sl_combatHandler(int round, string opp, string text)
 				return useSkill($skill[Thunderstrike]);
 			}
 
-			if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 50) && (my_mp() >= costStunner))
+			if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 100) && (my_mp() >= costStunner))
 			{
 				set_property("sl_combatHandler", combatState + "(stunner)");
 				return stunner;

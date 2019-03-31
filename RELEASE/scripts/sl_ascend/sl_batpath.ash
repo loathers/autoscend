@@ -230,25 +230,36 @@ int bat_remainingBaseHP()
 	return baseHP;
 }
 
-// to be called when already in Torpor
-skill [int] bat_pickSkills(int hpLeft)
+boolean[skill] bat_desiredSkills(int hpLeft)
+{
+	boolean[skill] requirements;
+	return bat_desiredSkills(hpLeft, requirements);
+}
+
+boolean[skill] bat_desiredSkills(int hpLeft, boolean[skill] forcedPicks)
 {
 	int costSoFar = 0;
 	int baseHP = bat_baseHP();
-	skill [int] picks;
+	boolean[skill] picks;
+
+	if(get_property("_sl_bat_bloodBank") != "2")
+	{
+		forcedPicks[$skill[Intimidating Aura]] = true;
+	}
 
 	boolean addPick(skill sk)
 	{
+		if(picks contains sk) return true;
 		if(baseHP - costSoFar - bat_maxHPCost(sk) < hpLeft)
 			return false;
 		costSoFar += bat_maxHPCost(sk);
-		picks[picks.count()] = sk;
+		picks[sk] = true;
 		return true;
 	}
-
-	if(get_property("_sl_bat_bloodBank") != "2")
-		addPick($skill[Intimidating Aura]);
-
+	foreach sk in forcedPicks
+	{
+		addPick(sk);
+	}
 	foreach sk in $skills[
 		Chill of the Tomb,
 		Blood Chains,
@@ -272,6 +283,7 @@ skill [int] bat_pickSkills(int hpLeft)
 		Spot Weakness,
 		Preternatural Strength,
 		Savage Bite,
+		Intimidating Aura,
 		Spectral Awareness,
 		Piercing Gaze,
 		Blood Spike,
@@ -279,21 +291,24 @@ skill [int] bat_pickSkills(int hpLeft)
 	{
 		addPick(sk);
 	}
-	if(get_property("_sl_bat_bloodBank") == "2")
-		addPick($skill[Intimidating Aura]);
-
 	return picks;
 }
 
 void bat_reallyPickSkills(int hpLeft)
 {
+	boolean[skill] requiredSkills;
+	bat_reallyPickSkills(hpLeft, requiredSkills);
+}
+
+void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills)
+{
 	visit_url("main.php"); // check if we're already in Torpor
 	if(last_choice() != 1342)
 		visit_url("campground.php?action=coffin");
 
-	skill [int] picks = bat_pickSkills(hpLeft);
+	boolean[skill] picks = bat_desiredSkills(hpLeft, requiredSkills);
 	string url = "choice.php?whichchoice=1342&option=2&pwd=" + my_hash();
-	foreach i,sk in picks
+	foreach sk,_ in picks
 	{
 		url += "&sk[]=";
 		url += sk.to_int() - 24000;
@@ -304,25 +319,14 @@ void bat_reallyPickSkills(int hpLeft)
 
 boolean bat_shouldPickSkills(int hpLeft)
 {
-	skill [int] picks = bat_pickSkills(hpLeft);
+	boolean[skill] picks = bat_desiredSkills(hpLeft);
 
 	foreach sk in $skills[]
 	{
 		if(sk.bat_maxHPCost() == 0)
 			continue;
 
-		boolean found = false;
-
-		foreach i,pick in picks
-		{
-			if(sk == pick)
-			{
-				found = true;
-				break;
-			}
-		}
-
-		if(found != have_skill(sk))
+		if ((picks contains sk) != have_skill(sk))
 			return true;
 	}
 
