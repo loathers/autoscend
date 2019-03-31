@@ -234,10 +234,6 @@ int bat_remainingBaseHP()
 boolean[skill] bat_pickSkills(int hpLeft)
 {
 	boolean[skill] requirements;
-	if(get_property("_sl_bat_bloodBank") != "2")
-	{
-		requirements[$skill[Intimidating Aura]] = true;
-	}
 	return bat_pickSkills(hpLeft, requirements);
 }
 
@@ -247,6 +243,11 @@ boolean[skill] bat_pickSkills(int hpLeft, boolean[skill] forcedPicks)
 	int costSoFar = 0;
 	int baseHP = bat_baseHP();
 	boolean[skill] picks;
+
+	if(get_property("_sl_bat_bloodBank") != "2")
+	{
+		forcedPicks[$skill[Intimidating Aura]] = true;
+	}
 
 	boolean addPick(skill sk)
 	{
