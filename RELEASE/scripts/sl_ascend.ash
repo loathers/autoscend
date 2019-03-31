@@ -4762,6 +4762,12 @@ boolean L13_towerNSContests()
 			stat crowd_stat = ns_crowd2();
 			if (my_path() == "Dark Gyffte")
 			{
+				if(crowd_stat == $stat[muscle] && !have_skill($skill[Preternatural Strength]))
+				{
+					boolean[skill] requirements;
+					requirements[$skill[Preternatural Strength]] = true;
+					bat_pickSkills(20, requirements);
+				}
 				// This could be generalized for stat equalizer potions, but that seems marginal
 				if (crowd_stat == $stat[muscle] && have_skill($skill[Preternatural Strength]))
 					crowd_stat = $stat[mysticality];

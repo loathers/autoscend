@@ -912,7 +912,8 @@ void bat_initializeDay(int day); // Defined in sl_ascend/sl_batpath.ash
 int bat_maxHPCost(skill sk); // Defined in sl_ascend/sl_batpath.ash
 int bat_baseHP(); // Defined in sl_ascend/sl_batpath.ash
 int bat_remainingBaseHP(); // Defined in sl_ascend/sl_batpath.ash
-skill [int] bat_pickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
+boolean[skill] bat_pickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
+boolean[skill] bat_pickSkills(int hpLeft, boolean[skill] requiredSkills); // Defined in sl_ascend/sl_batpath.ash
 void bat_reallyPickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_shouldPickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_shouldEnsorcel(monster m); // Defined in sl_ascend/sl_batpath.ash
