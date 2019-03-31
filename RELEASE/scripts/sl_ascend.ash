@@ -7475,7 +7475,11 @@ boolean L12_sonofaPrefix()
 	{
 		return false;
 	}
-	if(item_amount($item[barrel of gunpowder]) >= 4)
+	if(item_amount($item[barrel of gunpowder]) >= 4 && !sl_voteMonster())
+	{
+		return false;
+	}
+	if(item_amount($item[barrel of gunpowder]) >= 5)
 	{
 		return false;
 	}
@@ -13992,7 +13996,7 @@ boolean doTasks()
 	}
 	if(get_property("sl_helpMeMafiaIsSuperBrokenAaah").to_boolean())
 	{
-		cli_execute("refresh items");
+		cli_execute("refresh inv");
 	}
 	bat_formNone();
 
