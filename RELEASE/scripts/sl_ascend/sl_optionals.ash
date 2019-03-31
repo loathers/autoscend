@@ -68,7 +68,7 @@ boolean LX_dinseylandfillFunbucks()
 	// If we don't do this, we get stuck in a loop of getting garbage, using it, and doing BARF more.
 	if(get_property("_dinseyGarbageDisposed").to_boolean()){
 		return false;
-	1}
+	}
 	if((my_daycount() >= 3) && (my_adventures() > 5))
 	{
 		# We do this after the item check since we may have an extra bag and we should turn that in.
