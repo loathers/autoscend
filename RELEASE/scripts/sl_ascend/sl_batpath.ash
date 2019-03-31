@@ -31,7 +31,7 @@ void bat_initializeSettings()
 
 boolean bat_wantHowl(location loc)
 {
-	if(sl_banishesUsedAt(loc) contains "Baleful Howl")
+	if(sl_banishesUsedAt(loc) contains "baleful howl")
 	{
 		return false;
 	}
@@ -159,8 +159,6 @@ void bat_initializeDay(int day)
 	{
 		set_property("_sl_bat_bloodBank", 0); // 0: no blood yet, 1: base blood, 2: intimidating blood
 		set_property("sl_bat_ensorcels", 0);
-		set_property("sl_bat_howls", 0);
-		set_property("sl_bat_howled", "");
 		set_property("sl_bat_soulmonster", "");
 		bat_tryBloodBank();
 		if (bat_shouldPickSkills(20))

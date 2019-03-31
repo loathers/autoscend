@@ -1341,18 +1341,6 @@ boolean[string] sl_reallyBanishesUsedAt(location loc)
 			}
 		}
 	}
-	if(get_property("sl_bat_howled") != "")
-	{
-		monster howlMon = to_monster(get_property("sl_bat_howled"));
-		for(int i=0; i<count(atLoc); i++)
-		{
-			if(atLoc[i] == howlMon)
-			{
-				used["Baleful Howl"] = true;
-			}
-		}
-	}
-
 	return used;
 }
 
@@ -1463,7 +1451,7 @@ string banisherCombatString(monster enemy, location loc)
 		return "skill " + $skill[Creepy Grin];
 	}
 
-	if(sl_have_skill($skill[Baleful Howl]) && my_hp() > hp_cost($skill[Baleful Howl]) && get_property("sl_bat_howls").to_int() < 10 && !(used contains "Baleful Howl"))
+	if(sl_have_skill($skill[Baleful Howl]) && my_hp() > hp_cost($skill[Baleful Howl]) && get_property("_balefulHowlUses").to_int() < 10 && !(used contains "baleful howl"))
 	{
 		set_property("sl_bat_howls", get_property("sl_bat_howls").to_int() + 1);
 		set_property("sl_bat_howled", enemy);
