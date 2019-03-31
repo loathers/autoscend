@@ -14027,7 +14027,7 @@ boolean doTasks()
 	xiblaxian_makeStuff();
 	deck_useScheme("");
 	autosellCrap();
-	asdonAutoFeed(50);
+	asdonAutoFeed();
 	LX_craftAcquireItems();
 
 	ocrs_postCombatResolve();
