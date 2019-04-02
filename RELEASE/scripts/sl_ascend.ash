@@ -11935,7 +11935,7 @@ boolean L9_aBooPeak()
 		{
 			doThisBoo = true;
 		}
-		if((effectiveCurrentHP > totalDamage) && (my_mp() >= mp_need))
+		if((min(effectiveCurrentHP, my_maxhp() + hpDifference) > totalDamage) && (my_mp() >= mp_need))
 		{
 			doThisBoo = true;
 		}
