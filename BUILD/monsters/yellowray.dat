@@ -1,0 +1,43 @@
+# Gotta get that wig
+Burly Sidekick	!item:Mohawk Wig
+# We also want an amulet, but not badly enough to yellow ray it unless we're backtracking to get it
+Quiet Healer	!item:amulet of extreme plot significance;prop:sl_airship=finished
+# Dressing up as a harem girl because we have no shame
+Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise
+# We don't want to yellow ray a mountain man if we already turned in ore
+# although I'm not sure why we'd be fighting one in that case...
+Mountain Man	quest:questL08Trapper<2
+# We want frat warrior fatigues!
+Beer Bongadier	!outfit:Frat Warrior Fatigues
+Danglin' Chad	!outfit:Frat Warrior Fatigues
+Elite Beer Bongadier	!outfit:Frat Warrior Fatigues
+Frat Warrior drill sergeant	!outfit:Frat Warrior Fatigues
+Orcish Frat Boy Spy	!outfit:Frat Warrior Fatigues
+Sorority Operator	!outfit:Frat Warrior Fatigues
+War Frat 110th Infantryman	!outfit:Frat Warrior Fatigues
+War Frat 151st Captain	!outfit:Frat Warrior Fatigues
+War Frat 151st Infantryman	!outfit:Frat Warrior Fatigues
+War Frat 500th Infantrygentleman	!outfit:Frat Warrior Fatigues
+War Frat Elite 110th Captain	!outfit:Frat Warrior Fatigues
+War Frat Elite 500th Captain	!outfit:Frat Warrior Fatigues
+War Frat Elite Wartender	!outfit:Frat Warrior Fatigues
+War Frat Kegrider	!outfit:Frat Warrior Fatigues
+War Frat Mobile Grill Unit	!outfit:Frat Warrior Fatigues
+War Frat Wartender	!outfit:Frat Warrior Fatigues
+War Pledge	!outfit:Frat Warrior Fatigues
+# We also want to dress up like a filthy hippy to get frat warrior fatigues
+business hippy	!outfit:Filthy Hippy Disguise
+crusty hippy	!outfit:Filthy Hippy Disguise
+crusty hippy Vegan chef	!outfit:Filthy Hippy Disguise
+crusty hippy jewelry maker	!outfit:Filthy Hippy Disguise
+dirty hippy	!outfit:Filthy Hippy Disguise
+dirty hippy Vegan chef	!outfit:Filthy Hippy Disguise
+dirty hippy jewelry maker	!outfit:Filthy Hippy Disguise
+filthy hippy	!outfit:Filthy Hippy Disguise
+filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise
+filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise
+zombie hippy	!outfit:Filthy Hippy Disguise
+# And we want filthworm glands, but not if we're gonna hugpocket them
+larval filthworm	!familiar:XO Skeleton
+filthworm drone	!familiar:XO Skeleton
+filthworm royal guard	!familiar:XO Skeleton

@@ -814,6 +814,8 @@ string yellowRayCombatString();								//Defined in sl_ascend/sl_util.ash
 string banisherCombatString(monster enemy, location loc);	//Defined in sl_ascend/sl_util.ash
 boolean[string] sl_banishesUsedAt(location loc); // Defined in sl_ascend/sl_util.ash
 boolean sl_wantToBanish(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
+boolean sl_wantToSniff(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
+boolean sl_wantToYellowRay(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
 boolean zoneCombat(location loc);							//Defined in sl_ascend/sl_util.ash
 boolean zoneItem(location loc);								//Defined in sl_ascend/sl_util.ash
 boolean zoneMeat(location loc);								//Defined in sl_ascend/sl_util.ash
@@ -834,17 +836,19 @@ record kmailObject {
 };
 boolean sl_deleteMail(kmailObject msg);						//Defined in sl_ascend/sl_util.ash
 
-boolean sl_is_valid(item it);
-boolean sl_is_valid(familiar fam);
-boolean sl_is_valid(skill sk);
+boolean sl_is_valid(item it); //Defined in sl_ascend/sl_util.ash
+boolean sl_is_valid(familiar fam); //Defined in sl_ascend/sl_util.ash
+boolean sl_is_valid(skill sk); //Defined in sl_ascend/sl_util.ash
 
-boolean sl_debug_print(string s, string color);
-boolean sl_debug_print(string s);
+boolean sl_debug_print(string s, string color); //Defined in sl_ascend/sl_util.ash
+boolean sl_debug_print(string s); //Defined in sl_ascend/sl_util.ash
 
-boolean sl_can_equip(item it);
-boolean sl_can_equip(item it, slot s);
+boolean sl_can_equip(item it); //Defined in sl_ascend/sl_util.ash
+boolean sl_can_equip(item it, slot s); //Defined in sl_ascend/sl_util.ash
 
-boolean sl_check_conditions(string conds);
+boolean sl_check_conditions(string conds); //Defined in sl_ascend/sl_util.ash
+
+boolean [monster] sl_getMonsters(string category); //Defined in sl_ascend/sl_util.ash
 
 //Dump from accessory scripts.
 void handlePreAdventure();									//Defined in presool.ash

@@ -857,44 +857,7 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	boolean shouldSniff = false;
-
-	if((enemy == $monster[pygmy shaman]) && (my_location() == $location[The Hidden Apartment Building]) && (item_amount($item[soft green echo eyedrop antidote]) > 3) && (have_effect($effect[Thrice-Cursed]) == 0))
-	{
-		shouldSniff = true;
-	}
-
-	if(enemy == $monster[Gurgle the Turgle])
-	{
-		shouldSniff = true;
-	}
-
-	if((enemy == $monster[Writing Desk]) && (my_location() == $location[The Haunted Library]) && (get_property("writingDesksDefeated").to_int() < 5))
-	{
-		shouldSniff = true;
-	}
-
-	if((enemy == $monster[Smoke Monster]) && (item_amount($item[Pack Of Smokes]) > 0))
-	{
-		shouldSniff = true;
-	}
-
-	if($monsters[cabinet of Dr. Limpieza, Dairy Goat, Morbid Skull, Pygmy Bowler, Pygmy Witch Surgeon, Quiet Healer, Tomb Rat] contains enemy)
-	{
-		shouldSniff = true;
-	}
-
-	if(($monsters[Blooper] contains enemy) && (my_location() == $location[8-Bit Realm]))
-	{
-		shouldSniff = true;
-	}
-
-	if($monsters[Bob Racecar, Racecar Bob] contains enemy && !($monsters[Bob Racecar, Racecar Bob] contains get_property("_gallapagosMonster").to_monster()))
-	{
-		shouldSniff = true;
-	}
-
-	if(shouldSniff)
+	if(sl_wantToSniff(enemy, my_location()))
 	{
 		if(canUse($skill[Transcendent Olfaction]) && (have_effect($effect[On The Trail]) == 0))
 		{
@@ -976,59 +939,33 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(!contains_text(combatState, "yellowray"))
+	if(!contains_text(combatState, "yellowray") && sl_wantToYellowRay(enemy, my_location()))
 	{
-		boolean doYellow = false;
-		if((enemy == $monster[burly sidekick]) && !possessEquipment($item[Mohawk Wig]))
+		string combatAction = yellowRayCombatString();
+		if(combatAction != "")
 		{
-			doYellow = true;
-		}
-		if((enemy == $monster[Quiet Healer]) && !possessEquipment($item[Amulet of Extreme Plot Significance]) && (get_property("sl_airship") == "finished"))
-		{
-			doYellow = true;
-		}
-
-		if(($monsters[Orcish Frat Boy Spy, War Frat 151st Infantryman] contains enemy) && !have_outfit("Frat Warrior Fatigues"))
-		{
-			doYellow = true;
-		}
-		if(($monsters[Knob Goblin Harem Girl] contains enemy) && !have_outfit("Knob Goblin Harem Girl Disguise"))
-		{
-			doYellow = true;
-		}
-		if($monsters[Filthworm Royal Guard] contains enemy)
-		{
-			doYellow = true;
-		}
-
-		if(doYellow)
-		{
-			string combatAction = yellowRayCombatString();
-			if(combatAction != "")
+			set_property("sl_combatHandler", combatState + "(yellowray)");
+			if(index_of(combatAction, "skill") == 0)
 			{
-				set_property("sl_combatHandler", combatState + "(yellowray)");
-				if(index_of(combatAction, "skill") == 0)
-				{
-					handleTracker(enemy, to_skill(substring(combatAction, 6)), "sl_yellowRays");
-				}
-				else if(index_of(combatAction, "item") == 0)
-				{
-					handleTracker(enemy, to_item(substring(combatAction, 5)), "sl_yellowRays");
-				}
-				else
-				{
-					print("Unable to track yellow ray behavior: " + combatAction, "red");
-				}
-				if(combatAction == useSkill($skill[Asdon Martin: Missile Launcher], false))
-				{
-					set_property("_missileLauncherUsed", true);
-				}
-				return combatAction;
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "sl_yellowRays");
+			}
+			else if(index_of(combatAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "sl_yellowRays");
 			}
 			else
 			{
-				print("Wanted a yellow ray but we can not find one.", "red");
+				print("Unable to track yellow ray behavior: " + combatAction, "red");
 			}
+			if(combatAction == useSkill($skill[Asdon Martin: Missile Launcher], false))
+			{
+				set_property("_missileLauncherUsed", true);
+			}
+			return combatAction;
+		}
+		else
+		{
+			print("Wanted a yellow ray but we can not find one.", "red");
 		}
 	}
 
@@ -2788,62 +2725,33 @@ string sl_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(!contains_text(combatState, "yellowray"))
+	if(!contains_text(combatState, "yellowray") && sl_wantToYellowRay(enemy, my_location()))
 	{
-		boolean doYellow = false;
-		if((my_location() == $location[Hippy Camp]) && !have_outfit("Filthy Hippy Disguise"))
+		string combatAction = yellowRayCombatString();
+		if(combatAction != "")
 		{
-			doYellow = true;
-		}
-		if((enemy == $monster[Burly sidekick]) && !possessEquipment($item[Mohawk Wig]))
-		{
-			doYellow = true;
-		}
-		if((enemy == $monster[Knob Goblin Harem Girl]) && !have_outfit("Knob Goblin Harem Girl Disguise"))
-		{
-			doYellow = true;
-		}
-		if((enemy == $monster[Mountain Man]) && (internalQuestStatus("questL08Trapper") < 2))
-		{
-			doYellow = true;
-		}
-
-		if((enemy == $monster[Frat Warrior Drill Sergeant]) || (enemy == $monster[War Pledge]))
-		{
-			if(!have_outfit("War Hippy Fatigues"))
+			set_property("sl_combatHandler", combatState + "(yellowray)");
+			if(index_of(combatAction, "skill") == 0)
 			{
-				doYellow = true;
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "sl_yellowRays");
 			}
-		}
-
-		if(doYellow)
-		{
-			string combatAction = yellowRayCombatString();
-			if(combatAction != "")
+			else if(index_of(combatAction, "item") == 0)
 			{
-				set_property("sl_combatHandler", combatState + "(yellowray)");
-				if(index_of(combatAction, "skill") == 0)
-				{
-					handleTracker(enemy, to_skill(substring(combatAction, 6)), "sl_yellowRays");
-				}
-				else if(index_of(combatAction, "item") == 0)
-				{
-					handleTracker(enemy, to_item(substring(combatAction, 5)), "sl_yellowRays");
-				}
-				else
-				{
-					print("Unable to track yellow ray behavior: " + combatAction, "red");
-				}
-				if(combatAction == ("skill " + $skill[Asdon Martin: Missile Launcher]))
-				{
-					set_property("_missileLauncherUsed", true);
-				}
-				return combatAction;
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "sl_yellowRays");
 			}
 			else
 			{
-				print("Wanted a yellow ray but we can not find one.", "red");
+				print("Unable to track yellow ray behavior: " + combatAction, "red");
 			}
+			if(combatAction == ("skill " + $skill[Asdon Martin: Missile Launcher]))
+			{
+				set_property("_missileLauncherUsed", true);
+			}
+			return combatAction;
+		}
+		else
+		{
+			print("Wanted a yellow ray but we can not find one.", "red");
 		}
 	}
 

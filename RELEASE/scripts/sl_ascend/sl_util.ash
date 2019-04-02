@@ -1364,36 +1364,11 @@ boolean[string] sl_banishesUsedAt(location loc)
 
 boolean sl_wantToBanish(monster enemy, location loc)
 {
-	// Banishing these gives us more gaunt ghuols, which means more dieting pills
-	if((enemy == $monster[gluttonous ghuol]) && my_class() == $class[Vampyre])
-	{
-		return true;
-	}
-
-	if(!($monsters[A.M.C. Gremlin, Animated Mahogany Nightstand, Animated Possessions, Animated Rustic Nightstand, Bubblemint Twins, Bullet Bill, Burly Sidekick, Chatty Pirate, Clingy Pirate (Female), Clingy Pirate (Male), Coaltergeist, Crusty Pirate, Doughbat, Drunk Goat, Evil Olive, Flock Of Stab-Bats, Knob Goblin Harem Guard, Knob Goblin Madam, Mad Wino, Mismatched Twins, Natural Spider, Plaid Ghost, Possessed Laundry Press, Procrastination Giant, Protagonist, Pygmy Headhunter, Pygmy Janitor, Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse, Sabre-Toothed Goat, Senile Lihc, Slick Lihc, Skeletal Sommelier, Snow Queen, Steam Elemental, Taco Cat, Tan Gnat, Tomb Asp, Tomb Servant, Wardr&ouml;b Nightstand, Warehouse Janitor, Upgraded Ram] contains enemy))
-	{
-		return false;
-	}
-
-	if(($monsters[Senile Lihc, Slick Lihc] contains enemy) && (loc != $location[The Defiled Niche]))
-	{
-		return false;
-	}
-
-	if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) == 0))
-	{
-		return false;
-	}
-	if((enemy == $monster[Burly Sidekick]) && !possessEquipment($item[Mohawk Wig]))
-	{
-		return false;
-	}
-	if((enemy == $monster[Pygmy Janitor]) && (get_property("hiddenTavernUnlock").to_int() < my_ascensions()))
-	{
-		return false;
-	}
-
-	return true;
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] monstersToBanish = sl_getMonsters("banish");
+	set_location(locCache);
+	return monstersToBanish[enemy];
 }
 
 string banisherCombatString(monster enemy, location loc)
@@ -5047,15 +5022,36 @@ boolean sl_check_conditions(string conds)
 
 	string [int] conditions = conds.split_string(";");
 	boolean failure = false;
-	foreach i, cond in conditions
+
+	boolean compare_numbers(int num1, int num2, string comparison)
 	{
-		matcher m = create_matcher("(!?)(\\w+):(.+)", cond);
+		switch(comparison)
+		{
+			case "=":
+			case "==":
+				return num1 == num2;
+			case ">":
+				return num1 > num2;
+			case "<":
+				return num1 < num2;
+			case ">=":
+				return num1 >= num2;
+			case "<=":
+				return num1 <= num2;
+			default:
+				abort('"' + comparison + '" is not a valid comparison operator!');
+		}
+		return false;
+	}
+
+	// does not account for !, the loop does that
+	boolean check_condition(string cond)
+	{
+		matcher m = create_matcher("^(\\w+):(.+)$", cond);
 		if(!m.find())
 			abort('"' + cond + '" is not proper condition formatting!');
-		boolean condition_inverted = m.group(1) == "!";
-		string condition_type = m.group(2);
-		string condition_data = m.group(3);
-		boolean this_failed = false;
+		string condition_type = m.group(1);
+		string condition_data = m.group(2);
 		switch(condition_type)
 		{
 			// data: The text name of the class, as used by to_class()
@@ -5065,9 +5061,7 @@ boolean sl_check_conditions(string conds)
 				class req_class = to_class(condition_data);
 				if(req_class == $class[none])
 					abort('"' + condition_data + '" does not properly convert to a class!');
-				if(req_class != my_class())
-					this_failed = true;
-				break;
+				return req_class == my_class();
 			// data: The text name of the mainstat, as used by to_stat()
 			// Your mainstat must be the given stat
 			// As a precaution, sl_ascend aborts if to_stat returns $stat[none]
@@ -5075,16 +5069,12 @@ boolean sl_check_conditions(string conds)
 				stat req_mainstat = to_stat(condition_data);
 				if(req_mainstat == $stat[none])
 					abort('"' + condition_data + '" does not properly convert to a stat!');
-				if(req_mainstat != my_primestat())
-					this_failed = true;
-				break;
+				return req_mainstat == my_primestat();
 			// data: The text name of the path, as returned by my_path()
 			// You must be currently on that path
 			// No safety checking possible here, so hopefully you don't misspell anything
 			case "path":
-				if(condition_data != sl_my_path())
-					this_failed = true;
-				break;
+				return condition_data == sl_my_path();
 			// data: Text name of the skill, as used by to_skill()
 			// You must have the given skill
 			// As a precaution, sl_ascend aborts if to_skill returns $skill[none]
@@ -5092,9 +5082,7 @@ boolean sl_check_conditions(string conds)
 				skill req_skill = to_skill(condition_data);
 				if(req_skill == $skill[none])
 					abort('"' + condition_data + '" does not properly convert to a skill!');
-				if(!sl_have_skill(req_skill))
-					this_failed = true;
-				break;
+				return sl_have_skill(req_skill);
 			// data: Text name of the effect, as used by to_effect()
 			// You must have at least one turn of the given effect
 			// As a precaution, sl_ascend aborts if to_effect returns $effect[none]
@@ -5102,49 +5090,152 @@ boolean sl_check_conditions(string conds)
 				effect req_effect = to_effect(condition_data);
 				if(req_effect == $effect[none])
 					abort('"' + condition_data + '" does not properly convert to an effect!');
-				if(have_effect(req_effect) == 0)
-					this_failed = true;
-				break;
+				return have_effect(req_effect) > 0;
+			// data: Text name of the item, as used by to_item()
+			// You must have at least one of this item
+			// As a precaution, sl_ascend aborts if to_item returns $item[none]
+			case "item":
+				item req_item = to_item(condition_data);
+				if(req_item == $item[none])
+					abort('"' + condition_data + '" does not properly convert to an item!');
+				return item_amount(req_item) + equipped_amount(req_item) > 0;
+			// data: The outfit name as used by have_outfit
+			// You must have the given outfit
+			// No safety checking here possible, at least not conveniently
+			case "outfit":
+				return have_outfit(condition_data);
 			// data: Text name of the familiar, as used by to_familiar()
 			// You must be currently using this familiar
 			// As a precaution, sl_ascend aborts if to_familiar returns $familiar[none]
+			// Unless the text is literall "none" (case sensitive)
 			case "familiar":
 				familiar req_familiar = to_familiar(condition_data);
-				if(req_familiar == $familiar[none])
+				if(req_familiar == $familiar[none] && condition_data != "none")
 					abort('"' + condition_data + '" does not properly convert to a familiar!');
-				if(my_familiar() != req_familiar)
-					this_failed = true;
-				break;
-			// data: <propname>=<value>
-			// Only simple equality is available at the moment
+				return my_familiar() == req_familiar;
+			// data: Text name of the location, as used by to_location()
+			// You must be in this location (if you want to check for elsewhere, temporarily set_location)
+			// As a precaution, sl_ascend aborts if to_location returns $location[none]
+			case "loc":
+				location req_loc = to_location(condition_data);
+				if(req_loc == $location[none])
+					abort('"' + condition_data + '" does not properly convert to a location!');
+				return my_location() == req_loc;
+			// data: <propname><comparison operator><value>
+			// >/</>=/<= only supported for integer properties!
 			case "prop":
-				matcher m2 = create_matcher("([^=]+)=(.+)", condition_data);
+				matcher m2 = create_matcher("([^=]+)([=<>]+)(.+)", condition_data);
 				if(!m2.find())
 					abort('"' + condition_data + '" is not a proper prop condition format!');
-				if(get_property(m2.group(1)) != m2.group(2))
-					this_failed = true;
-				break;
+				string prop = get_property(m2.group(1));
+				if(!($strings[=,==] contains m2.group(2)))
+					return compare_numbers(prop.to_int(), m2.group(3).to_int(), m2.group(2));
+				return prop == m2.group(3);
+			// data: <questpropname><comparison operator><value>
+			// like prop, but with > and < and >= and <= and uses internalQuestStatus
+			// the value to compare to should always be an integer
+			case "quest":
+				matcher m3 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
+				if(!m3.find())
+					abort('"' + condition_data + '" is not a proper quest condition format!');
+				int quest_state = internalQuestStatus(m3.group(1));
+				int compare_to = to_int(m3.group(3));
+				return compare_numbers(quest_state, compare_to, m3.group(2));
+			// data: Text name of the monster, as used by to_monster()
+			// True if that monster has been sniffed by any olfaction-like
+			// As a precaution, sl_ascend will abort if to_monster returns $monster[none]
+			case "sniffed":
+				monster check_sniffed = to_monster(condition_data);
+				if(check_sniffed == $monster[none])
+					abort('"' + condition_data + '" does not properly convert to a monster!');
+				if(have_effect($effect[On The Trail]) > 0 && get_property("olfactedMonster").to_monster() == check_sniffed)
+					return true;
+				if(my_class() == $class[Avatar of Sneaky Pete] && get_property("makeFriendsMonster").to_monster() == check_sniffed)
+					return true;
+				if($classes[Cow Puncher, Beanslinger, Snake Oiler] contains my_class() && get_property("longConMonster").to_monster() == check_sniffed)
+					return true;
+				if(my_class() == $class[Vampyre] && get_property("sl_bat_soulmonster").to_monster() == check_sniffed)
+					return true;
+				if(get_property("_gallapagosMonster").to_monster() == check_sniffed)
+					return true;
+				if(get_property("_latteMonster").to_monster() == check_sniffed)
+					return true;
+				return false;
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions
 			// True when you expect a protonic ghost report
 			// Pretty much just for the protonic accelerator pack
 			case "expectghostreport":
-				if(!expectGhostReport())
-					this_failed = true;
-				break;
+				return expectGhostReport();
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions
 			// True when there is a latte unlock available in the area (that you don't have, of course)
 			// Pretty much just for the latte
 			case "latte":
-				if(!sl_latteDropAvailable(my_location()))
-					this_failed = true;
-				break;
+				return sl_latteDropAvailable(my_location());
+			// data: Doesn't matter, but put something so I don't have to support dataless conditions
+			// True if the hidden tavern has been unlocked this ascension
+			case "tavern":
+				return get_property("hiddenTavernUnlock").to_int() < my_ascensions();
+			// data: The number of sgeeas you want to have
+			// True if you have at least that many sgeeas at your disposal
+			case "sgeea":
+				int sgeeas = to_int(condition_data);
+				return item_amount($item[soft green echo eyedrop antidote]) >= sgeeas;
 			default:
 				abort('Invalid condition type "' + condition_type + '" found!');
 		}
+		return false;
+	}
 
-		if(this_failed != condition_inverted)
+	foreach i, cond in conditions
+	{
+		matcher m = create_matcher("^(!?)(.+)$", cond);
+		if(!m.find())
+			abort('"' + cond + '" is not a proper condition!');
+		boolean invert = m.group(1) == "!";
+		boolean success = check_condition(m.group(2));
+
+		if(success == invert)
 			return false;
 	}
 
 	return true;
+}
+
+boolean [monster] sl_getMonsters(string category)
+{
+	boolean [monster] res;
+	string [string,int,string] monsters_text;
+	if(!file_to_map("sl_ascend_monsters.txt", monsters_text))
+		print("Could not load sl_ascend_monsters.txt. This is bad!", "red");
+	foreach i,name,conds in monsters_text[category]
+	{
+		monster thisMonster = name.to_monster();
+		if(thisMonster == $monster[none])
+		{
+			print('"' + name + '" does not convert to a monster properly!', "red");
+			continue;
+		}
+		if(!sl_check_conditions(conds))
+			continue;
+		res[thisMonster] = true;
+	}
+	return res;
+}
+
+boolean sl_wantToSniff(monster enemy, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] toSniff = sl_getMonsters("sniff");
+	set_location(locCache);
+	return toSniff[enemy];
+}
+
+boolean sl_wantToYellowRay(monster enemy, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] toSniff = sl_getMonsters("yellowray");
+	set_location(locCache);
+	return toSniff[enemy];
 }
