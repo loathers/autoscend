@@ -11851,7 +11851,7 @@ boolean L9_aBooPeak()
 			coldResist += 2;
 			spookyResist += 2;
 		}
-		else if((item_amount($item[Can of Black Paint]) > 0) && (have_effect($effect[Red Door Syndrome]) == 0))
+		else if((get_property("sl_blackmap") == "finished") && (item_amount($item[Can of Black Paint]) > 0) && (have_effect($effect[Red Door Syndrome]) == 0))
 		{
 			coldResist += 2;
 			spookyResist += 2;
@@ -11935,7 +11935,7 @@ boolean L9_aBooPeak()
 		{
 			doThisBoo = true;
 		}
-		if((effectiveCurrentHP > totalDamage) && (my_mp() >= mp_need))
+		if((min(effectiveCurrentHP, my_maxhp() + hpDifference) > totalDamage) && (my_mp() >= mp_need))
 		{
 			doThisBoo = true;
 		}
@@ -13256,6 +13256,9 @@ boolean L8_trapperGroar()
 	{
 		canGroar = true;
 	}
+
+	// TODO: remove this when killing Sharonna updates quest status
+	cli_execute("refresh quests");
 
 	//What is our potential +Combat score.
 	//Use that instead of the Avatar/Hound Dog checks.

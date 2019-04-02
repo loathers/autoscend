@@ -1377,7 +1377,6 @@ boolean asdonAutoFeed(int goal)
 		}
 	}
 
-	goal = 37;
 	if((get_fuel() < goal) && (my_meat() > 3500) && knoll_available() && isGeneralStoreAvailable())
 	{
 		int want = ((goal + 5) - get_fuel()) / 6;
