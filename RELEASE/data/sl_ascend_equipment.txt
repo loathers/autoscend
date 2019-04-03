@@ -367,7 +367,7 @@ weapon	25	Severed Flipper	class:Seal Clubber
 weapon	26	Spiked Femur	class:Seal Clubber
 weapon	27	Corrupt Club of Corrupt Corruption	class:Seal Clubber
 weapon	28	Kneecapping Stick	class:Seal Clubber
-weapon	29	Homoerotic Frat-Paddle	class:Seal Clubber
+weapon	29	Orcish frat-paddle	class:Seal Clubber
 weapon	30	Flaming Crutch	class:Seal Clubber
 weapon	31	Corrupt Club of Corruption	class:Seal Clubber
 weapon	32	Skeleton Bone	class:Seal Clubber
