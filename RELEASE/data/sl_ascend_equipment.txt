@@ -19,7 +19,7 @@ acc	3	Lil' Doctor&trade; bag	!prop:_chestXRayUsed=3
 acc	4	Kremlin's Greatest Briefcase	!prop:_kgbTranquilizerDartUses=3
 acc	5	Lil' Doctor&trade; bag	!prop:_reflexHammerUsed=3
 acc	6	Over-The-Shoulder Folder Holder
-acc	7	LOV Earrings
+acc	7	LOV Earrings	mainstat:Moxie
 acc	8	Xiblaxian Holo-Wrist-Puter
 acc	9	Your Cowboy Boots
 acc	10	Battle Broom
@@ -50,25 +50,26 @@ acc	34	Xiblaxian Holo-Wrist-Puter
 acc	35	Time-Twitching Toolbelt
 acc	36	Mr. Accessory Jr.
 acc	37	Iron Beta of Industry
-acc	38	Perfume-Soaked Bandana
-acc	39	Wicker Kickers
-acc	40	Compression Stocking
-acc	41	Glow-In-The-Dark Necklace
-acc	42	Pirate Fledges
-acc	43	Plastic Detective Badge
-acc	44	Jangly Bracelet
-acc	45	Jolly Roger Charrrm Bracelet
-acc	46	Grumpy Old Man Charrrm Bracelet
-acc	47	Bonerdagon Necklace
-acc	48	Batskin Belt
-acc	49	Garish Pinky Ring
-acc	50	Ring Of Telling Skeletons What To Do
-acc	51	Imp Unity Ring
-acc	52	Infernal Insoles
-acc	53	Glowing Red Eye
-acc	54	Stuffed Shoulder Parrot
-acc	55	Vampire Collar
-acc	56	Jaunty Feather
+acc	38	LOV Earrings
+acc	39	Perfume-Soaked Bandana
+acc	40	Wicker Kickers
+acc	41	Compression Stocking
+acc	42	Glow-In-The-Dark Necklace
+acc	43	Pirate Fledges
+acc	44	Plastic Detective Badge
+acc	45	Jangly Bracelet
+acc	46	Jolly Roger Charrrm Bracelet
+acc	47	Grumpy Old Man Charrrm Bracelet
+acc	48	Bonerdagon Necklace
+acc	49	Batskin Belt
+acc	50	Garish Pinky Ring
+acc	51	Ring Of Telling Skeletons What To Do
+acc	52	Imp Unity Ring
+acc	53	Infernal Insoles
+acc	54	Glowing Red Eye
+acc	55	Stuffed Shoulder Parrot
+acc	56	Vampire Collar
+acc	57	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true
