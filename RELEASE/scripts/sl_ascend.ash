@@ -14495,6 +14495,13 @@ void sl_begin()
 	backupSetting("betweenAdventureScript", "scripts/presool.ash");
 	backupSetting("betweenBattleScript", "scripts/presool.ash");
 
+	backupSetting("hpAutoRecovery", -1);
+	backupSetting("hpAutoRecoveryTarget", -1);
+	backupSetting("mpAutoRecovery", -1);
+	backupSetting("mpAutoRecoveryTarget", -1);
+	backupSetting("manaBurningTrigger", -1);
+	backupSetting("manaBurningThreshold", -1);
+
 	backupSetting("choiceAdventure1107", 1);
 
 	if(get_property("counterScript") != "")
