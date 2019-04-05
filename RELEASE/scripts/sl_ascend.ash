@@ -1205,6 +1205,11 @@ boolean doThemtharHills()
 	}
 	int expectedMeat = numeric_modifier("Generated:_spec", "meat drop");
 
+
+	if(get_property("sl_useWishes").to_boolean())
+	{
+		makeGenieWish($effect[Frosty]);
+	}
 	buffMaintain($effect[Greedy Resolve], 0, 1, 1);
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
 	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
@@ -4897,7 +4902,7 @@ boolean L13_towerNSContests()
 
 			score = numeric_modifier(challenge + " damage ");
 			score += numeric_modifier(challenge + " spell damage ");
-			if((score < 80) && (item_amount($item[Genie bottle]) > 0))
+			if((score < 80) && get_property("sl_useWishes").to_boolean())
 			{
 				switch(challenge)
 				{
@@ -6103,7 +6108,7 @@ boolean L11_unlockHiddenCity()
 	{
 		if((item_amount($item[Stone Wool]) == 0) && (have_effect($effect[Stone-Faced]) == 0))
 		{
-			if (canGenieCombat())
+			if (get_property("sl_useWishes").to_boolean() && canGenieCombat())
 			{
 				print("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
 				handleFamiliar("item");
@@ -12755,7 +12760,10 @@ boolean L11_redZeppelin()
 
 	if(cloversAvailable() > 0)
 	{
-		makeGenieWish($effect[Fifty Ways to Bereave Your Lover]);
+		if (get_property("sl_useWishes").to_boolean())
+		{
+			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]);
+		}
 		float fire_protestors = item_amount($item[Flamin' Whatshisname]) > 0 ? 10 : 3;
 		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
 		float sleaze_protestors = square_root(sleaze_amount);
