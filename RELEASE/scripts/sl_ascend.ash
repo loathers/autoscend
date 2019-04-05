@@ -6103,6 +6103,22 @@ boolean L11_unlockHiddenCity()
 	{
 		if((item_amount($item[Stone Wool]) == 0) && (have_effect($effect[Stone-Faced]) == 0))
 		{
+			if (canGenieCombat())
+			{
+				print("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
+				handleFamiliar("item");
+				if((numeric_modifier("item drop") >= 100))
+				{
+					if (!makeGenieCombat($monster[Baa'baa'bu'ran]) || item_amount($item[Stone Wool]) < 0)
+					{
+						print("Wishing for stone wool failed.", "red");
+					}
+				}
+				else
+				{
+					print("Never mind, we couldn't get a mere +100% item.", "red");
+				}
+			}
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 		buffMaintain($effect[Stone-Faced], 0, 1, 1);
@@ -9169,7 +9185,7 @@ boolean L7_crypt()
 
 		bat_formBats();
 		januaryToteAcquire($item[Broken Champagne Bottle]);
-		if((numeric_modifier("item") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
+		if((numeric_modifier("item drop") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
 			equip($item[Broken Champagne Bottle]);
 		}

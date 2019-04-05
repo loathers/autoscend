@@ -1531,7 +1531,7 @@ boolean makeGenieWish(effect eff)
 	return true;
 }
 
-boolean makeGenieCombat(monster mon, string option)
+boolean canGenieCombat()
 {
 	if(item_amount($item[Genie Bottle]) == 0)
 	{
@@ -1546,6 +1546,15 @@ boolean makeGenieCombat(monster mon, string option)
 		return false;
 	}
 	if(my_adventures() == 0)
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean makeGenieCombat(monster mon, string option)
+{
+	if(!canGenieCombat())
 	{
 		return false;
 	}
