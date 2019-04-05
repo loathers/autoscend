@@ -81,18 +81,19 @@ back	5	Buddy Bjorn
 back	6	Vampyric Cloake
 back	7	Polyester Parachute
 back	8	Makeshift Cape
-back	9	Misty Robe
-back	10	Misty Cape
-back	11	Misty Cloak
-back	12	Frozen Turtle Shell
-back	13	Giant Gym Membership Card
-back	14	Fiberglass Frock
-back	15	Gabardine Gunnysack
-back	16	Oil Shell
-back	17	Pillow Shell
-back	18	Black Cloak
-back	19	Whatsit-Covered Turtle Shell
-back	20	Barskin Cloak
+back	9	Sea Shawl
+back	10	Misty Robe
+back	11	Misty Cape
+back	12	Misty Cloak
+back	13	Frozen Turtle Shell
+back	14	Giant Gym Membership Card
+back	15	Fiberglass Frock
+back	16	Gabardine Gunnysack
+back	17	Oil Shell
+back	18	Pillow Shell
+back	19	Black Cloak
+back	20	Whatsit-Covered Turtle Shell
+back	21	Barskin Cloak
 
 # Familiar gear
 familiar	0	miniature life preserver	path:Heavy Rains
