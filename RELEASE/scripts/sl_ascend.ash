@@ -2374,6 +2374,10 @@ boolean doBedtime()
 			makeGeniePocket();
 		}
 	}
+	if(canGenieCombat() && item_amount($item[beer helmet]) == 0)
+	{
+		print("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
+	}
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
