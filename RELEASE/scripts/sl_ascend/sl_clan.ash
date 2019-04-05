@@ -440,9 +440,10 @@ boolean zataraClanmate(string who)
 	}
 	else
 	{
+		clanName = "Bonus Adventures from Hell";
 		changeClan();
 	}
-	if(oldClan == get_clan_id())
+	if(get_clan_name() != clanName)
 	{
 		set_property("_clanFortuneConsultUses", 42069);
 		return false;

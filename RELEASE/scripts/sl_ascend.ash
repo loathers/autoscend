@@ -14501,7 +14501,7 @@ void sl_begin()
 	{
 		jello_startAscension(page);
 	}
-	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you"))
+	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you") || (get_property("lastAdventure") == "Intro: View of a Vampire"))
 	{
 		bat_startAscension();
 	}
