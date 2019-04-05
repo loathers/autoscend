@@ -12760,9 +12760,10 @@ boolean L11_redZeppelin()
 
 	if(cloversAvailable() > 0)
 	{
-		if (get_property("sl_useWishes").to_boolean())
+		if(cloversAvailable() >= 3 && get_property("sl_useWishes").to_boolean())
 		{
-			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]);
+			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
+			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
 		}
 		float fire_protestors = item_amount($item[Flamin' Whatshisname]) > 0 ? 10 : 3;
 		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
