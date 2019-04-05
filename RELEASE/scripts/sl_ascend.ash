@@ -12727,44 +12727,76 @@ boolean L11_redZeppelin()
 		}
 	}
 
-	if($location[A Mob of Zeppelin Protesters].turns_spent % 7 == 6)
+	if(item_amount($item[Flamin\' Whatshisname]) > 0)
 	{
-		print("Oooh, the guaranteed Zeppelin noncombat is coming.", "blue");
-		// We can stock up on +sleaze damage and +sleaze spell dmg, since
-		// we know we won't get in a combat.
+		backupSetting("choiceAdventure866", 3);
+	}
+	else
+	{
+		backupSetting("choiceAdventure866", 2);
+	}
 
-		if(item_amount($item[Flamin\' Whatshisname]) > 0)
+	ccMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
+	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
+	{
+		if(possessEquipment(it) && !have_equipped(it) && can_equip(it) &&
+		   (item_amount(it) > 0) &&
+		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze dmg") < 5) &&
+		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell dmg") < 5))
 		{
-			backupSetting("choiceAdventure866", 3);
+			equip(it);
 		}
-		else
-		{
-			backupSetting("choiceAdventure866", 2);
-		}
-
-		ccMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
-		foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
-		{
-			if(possessEquipment(it) && !have_equipped(it) && can_equip(it) &&
-			   (item_amount(it) > 0) &&
-			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze dmg") < 5) &&
-			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell dmg") < 5))
-			{
-				equip(it);
-			}
-		}
-
-		boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
-		if(!($strings[Bench Warrant, Fire Up Above, This Looks Like a Good Bush for an Ambush, Not So Much With The Humanity] contains get_property("lastEncounter")))
-		{
-			print("Uh oh, we expected to get a scheduled Zeppelin noncombat there but didn't. This is still being spaded - send Jeparo logs if you're interested in getting this fixed", "red");
-		}
-		return retval;
 	}
 
 	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
 	{
 		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
+	}
+
+	if(cloversAvailable() > 0)
+	{
+		makeGenieWish($effect[Fifty Ways to Bereave Your Lover]);
+		float fire_protestors = item_amount($item[Flamin' Whatshisname]) > 0 ? 10 : 3;
+		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
+		float sleaze_protestors = square_root(sleaze_amount);
+		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
+		foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
+		{
+			if((item_amount(it) > 0) && can_equip(it))
+			{
+				lynyrd_protestors += 5;
+			}
+		}
+		print("Hiding in the bushes: " + lynyrd_protestors, "blue");
+		print("Going to a bench: " + sleaze_protestors, "blue");
+		print("Heading towards the flames" + fire_protestors, "blue");
+		float best_protestors = max(fire_protestors, max(sleaze_protestors, lynyrd_protestors));
+		if(best_protestors >= 10)
+		{
+			if(best_protestors == lynyrd_protestors)
+			{
+				foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
+				{
+					if((item_amount(it) > 0) && can_equip(it) && !have_equipped(it))
+					{
+						equip(it);
+					}
+				}
+				set_property("choiceAdventure866", 1);
+			}
+			else if(best_protestors == sleaze_protestors)
+			{
+				set_property("choiceAdventure866", 2);
+			}
+			else if (best_protestors == fire_protestors)
+			{
+				set_property("choiceAdventure866", 3);
+			}
+			cloverUsageInit();
+			boolean retval = ccAdv(1, $location[A Mob of Zeppelin Protesters]);
+			cloverUsageFinish();
+			return retval;
+		}
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
