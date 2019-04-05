@@ -51,25 +51,26 @@ acc	35	Time-Twitching Toolbelt
 acc	36	Mr. Accessory Jr.
 acc	37	Iron Beta of Industry
 acc	38	LOV Earrings
-acc	39	Perfume-Soaked Bandana
-acc	40	Wicker Kickers
-acc	41	Compression Stocking
-acc	42	Glow-In-The-Dark Necklace
-acc	43	Pirate Fledges
-acc	44	Plastic Detective Badge
-acc	45	Jangly Bracelet
-acc	46	Jolly Roger Charrrm Bracelet
-acc	47	Grumpy Old Man Charrrm Bracelet
-acc	48	Bonerdagon Necklace
-acc	49	Batskin Belt
-acc	50	Garish Pinky Ring
-acc	51	Ring Of Telling Skeletons What To Do
-acc	52	Imp Unity Ring
-acc	53	Infernal Insoles
-acc	54	Glowing Red Eye
-acc	55	Stuffed Shoulder Parrot
-acc	56	Vampire Collar
-acc	57	Jaunty Feather
+acc	39	wax hand
+acc	40	Perfume-Soaked Bandana
+acc	41	Wicker Kickers
+acc	42	Compression Stocking
+acc	43	Glow-In-The-Dark Necklace
+acc	44	Pirate Fledges
+acc	45	Plastic Detective Badge
+acc	46	Jangly Bracelet
+acc	47	Jolly Roger Charrrm Bracelet
+acc	48	Grumpy Old Man Charrrm Bracelet
+acc	49	Bonerdagon Necklace
+acc	50	Batskin Belt
+acc	51	Garish Pinky Ring
+acc	52	Ring Of Telling Skeletons What To Do
+acc	53	Imp Unity Ring
+acc	54	Infernal Insoles
+acc	55	Glowing Red Eye
+acc	56	Stuffed Shoulder Parrot
+acc	57	Vampire Collar
+acc	58	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true
@@ -81,18 +82,19 @@ back	5	Buddy Bjorn
 back	6	Vampyric Cloake
 back	7	Polyester Parachute
 back	8	Makeshift Cape
-back	9	Misty Robe
-back	10	Misty Cape
-back	11	Misty Cloak
-back	12	Frozen Turtle Shell
-back	13	Giant Gym Membership Card
-back	14	Fiberglass Frock
-back	15	Gabardine Gunnysack
-back	16	Oil Shell
-back	17	Pillow Shell
-back	18	Black Cloak
-back	19	Whatsit-Covered Turtle Shell
-back	20	Barskin Cloak
+back	9	Sea Shawl
+back	10	Misty Robe
+back	11	Misty Cape
+back	12	Misty Cloak
+back	13	Frozen Turtle Shell
+back	14	Giant Gym Membership Card
+back	15	Fiberglass Frock
+back	16	Gabardine Gunnysack
+back	17	Oil Shell
+back	18	Pillow Shell
+back	19	Black Cloak
+back	20	Whatsit-Covered Turtle Shell
+back	21	Barskin Cloak
 
 # Familiar gear
 familiar	0	miniature life preserver	path:Heavy Rains
@@ -167,37 +169,38 @@ hat	28	Van der Graaf helmet
 hat	29	Astral Chapeau
 hat	30	Wad Of Used Tape
 hat	31	Meteortarboard
-hat	32	Psychic's Circlet
-hat	33	seven-gallon hat
-hat	34	six-gallon hat
-hat	35	five-gallon hat
-hat	36	four-gallon hat
-hat	37	three-gallon hat
-hat	38	two-gallon hat
-hat	39	one-gallon hat
-hat	40	Gravy Boat
-hat	41	Crown of the Goblin King
-hat	42	Bellhop's Hat
-hat	43	Genie's Turbane
-hat	44	Chef's Hat
-hat	45	Filthy Knitted Dread Sack
-hat	46	Football Helmet
-hat	47	Wooden Salad Bowl
-hat	48	Yellow Plastic Hard Hat
-hat	49	Dolphin King's Crown
-hat	50	Goofily-Plumed Helmet
-hat	51	Oversized Skullcap
-hat	52	Pentacorn Hat
-hat	53	Eyepatch
-hat	54	Viking Helmet
-hat	55	Knobby Helmet Turtle
-hat	56	Kentucky-Style Derby
-hat	57	Hollandaise Helmet
-hat	58	Ravioli Hat
-hat	59	Helmet Turtle
-hat	60	Seal-Skull Helmet
-hat	61	Snorkel
-hat	62	Knob Goblin Harem Veil
+hat	32	chalk chapeau
+hat	33	Psychic's Circlet
+hat	34	seven-gallon hat
+hat	35	six-gallon hat
+hat	36	five-gallon hat
+hat	37	four-gallon hat
+hat	38	three-gallon hat
+hat	39	two-gallon hat
+hat	40	one-gallon hat
+hat	41	Gravy Boat
+hat	42	Crown of the Goblin King
+hat	43	Bellhop's Hat
+hat	44	Genie's Turbane
+hat	45	Chef's Hat
+hat	46	Filthy Knitted Dread Sack
+hat	47	Football Helmet
+hat	48	Wooden Salad Bowl
+hat	49	Yellow Plastic Hard Hat
+hat	50	Dolphin King's Crown
+hat	51	Goofily-Plumed Helmet
+hat	52	Oversized Skullcap
+hat	53	Pentacorn Hat
+hat	54	Eyepatch
+hat	55	Viking Helmet
+hat	56	Knobby Helmet Turtle
+hat	57	Kentucky-Style Derby
+hat	58	Hollandaise Helmet
+hat	59	Ravioli Hat
+hat	60	Helmet Turtle
+hat	61	Seal-Skull Helmet
+hat	62	Snorkel
+hat	63	Knob Goblin Harem Veil
 
 holster	0	Pecos Dave's sixgun
 holster	1	porquoise-handled sixgun

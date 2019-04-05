@@ -1205,6 +1205,11 @@ boolean doThemtharHills()
 	}
 	int expectedMeat = numeric_modifier("Generated:_spec", "meat drop");
 
+
+	if(get_property("sl_useWishes").to_boolean())
+	{
+		makeGenieWish($effect[Frosty]);
+	}
 	buffMaintain($effect[Greedy Resolve], 0, 1, 1);
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
 	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
@@ -2368,6 +2373,10 @@ boolean doBedtime()
 		{
 			makeGeniePocket();
 		}
+	}
+	if(canGenieCombat() && item_amount($item[beer helmet]) == 0)
+	{
+		print("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
@@ -4897,7 +4906,7 @@ boolean L13_towerNSContests()
 
 			score = numeric_modifier(challenge + " damage ");
 			score += numeric_modifier(challenge + " spell damage ");
-			if((score < 80) && (item_amount($item[Genie bottle]) > 0))
+			if((score < 80) && get_property("sl_useWishes").to_boolean())
 			{
 				switch(challenge)
 				{
@@ -6103,6 +6112,22 @@ boolean L11_unlockHiddenCity()
 	{
 		if((item_amount($item[Stone Wool]) == 0) && (have_effect($effect[Stone-Faced]) == 0))
 		{
+			if (get_property("sl_useWishes").to_boolean() && canGenieCombat())
+			{
+				print("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
+				handleFamiliar("item");
+				if((numeric_modifier("item drop") >= 100))
+				{
+					if (!makeGenieCombat($monster[Baa'baa'bu'ran]) || item_amount($item[Stone Wool]) < 0)
+					{
+						print("Wishing for stone wool failed.", "red");
+					}
+				}
+				else
+				{
+					print("Never mind, we couldn't get a mere +100% item.", "red");
+				}
+			}
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 		buffMaintain($effect[Stone-Faced], 0, 1, 1);
@@ -9169,7 +9194,7 @@ boolean L7_crypt()
 
 		bat_formBats();
 		januaryToteAcquire($item[Broken Champagne Bottle]);
-		if((numeric_modifier("item") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
+		if((numeric_modifier("item drop") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
 			equip($item[Broken Champagne Bottle]);
 		}
@@ -12711,44 +12736,80 @@ boolean L11_redZeppelin()
 		}
 	}
 
-	if($location[A Mob of Zeppelin Protesters].turns_spent % 7 == 6)
+	if(item_amount($item[Flamin\' Whatshisname]) > 0)
 	{
-		print("Oooh, the guaranteed Zeppelin noncombat is coming.", "blue");
-		// We can stock up on +sleaze damage and +sleaze spell dmg, since
-		// we know we won't get in a combat.
+		backupSetting("choiceAdventure866", 3);
+	}
+	else
+	{
+		backupSetting("choiceAdventure866", 2);
+	}
 
-		if(item_amount($item[Flamin\' Whatshisname]) > 0)
+	ccMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
+	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
+	{
+		if(possessEquipment(it) && !have_equipped(it) && can_equip(it) &&
+		   (item_amount(it) > 0) &&
+		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze dmg") < 5) &&
+		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell dmg") < 5))
 		{
-			backupSetting("choiceAdventure866", 3);
+			equip(it);
 		}
-		else
-		{
-			backupSetting("choiceAdventure866", 2);
-		}
-
-		ccMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
-		foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
-		{
-			if(possessEquipment(it) && !have_equipped(it) && can_equip(it) &&
-			   (item_amount(it) > 0) &&
-			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze dmg") < 5) &&
-			   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell dmg") < 5))
-			{
-				equip(it);
-			}
-		}
-
-		boolean retval = ccAdv($location[A Mob Of Zeppelin Protesters]);
-		if(!($strings[Bench Warrant, Fire Up Above, This Looks Like a Good Bush for an Ambush, Not So Much With The Humanity] contains get_property("lastEncounter")))
-		{
-			print("Uh oh, we expected to get a scheduled Zeppelin noncombat there but didn't. This is still being spaded - send Jeparo logs if you're interested in getting this fixed", "red");
-		}
-		return retval;
 	}
 
 	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
 	{
 		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
+	}
+
+	if(cloversAvailable() > 0)
+	{
+		if(cloversAvailable() >= 3 && get_property("sl_useWishes").to_boolean())
+		{
+			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
+			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
+		}
+		float fire_protestors = item_amount($item[Flamin' Whatshisname]) > 0 ? 10 : 3;
+		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
+		float sleaze_protestors = square_root(sleaze_amount);
+		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
+		foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
+		{
+			if((item_amount(it) > 0) && can_equip(it))
+			{
+				lynyrd_protestors += 5;
+			}
+		}
+		print("Hiding in the bushes: " + lynyrd_protestors, "blue");
+		print("Going to a bench: " + sleaze_protestors, "blue");
+		print("Heading towards the flames" + fire_protestors, "blue");
+		float best_protestors = max(fire_protestors, max(sleaze_protestors, lynyrd_protestors));
+		if(best_protestors >= 10)
+		{
+			if(best_protestors == lynyrd_protestors)
+			{
+				foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
+				{
+					if((item_amount(it) > 0) && can_equip(it) && !have_equipped(it))
+					{
+						equip(it);
+					}
+				}
+				set_property("choiceAdventure866", 1);
+			}
+			else if(best_protestors == sleaze_protestors)
+			{
+				set_property("choiceAdventure866", 2);
+			}
+			else if (best_protestors == fire_protestors)
+			{
+				set_property("choiceAdventure866", 3);
+			}
+			cloverUsageInit();
+			boolean retval = ccAdv(1, $location[A Mob of Zeppelin Protesters]);
+			cloverUsageFinish();
+			return retval;
+		}
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
@@ -14453,7 +14514,7 @@ void sl_begin()
 	{
 		jello_startAscension(page);
 	}
-	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you"))
+	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you") || (get_property("lastAdventure") == "Intro: View of a Vampire"))
 	{
 		bat_startAscension();
 	}
