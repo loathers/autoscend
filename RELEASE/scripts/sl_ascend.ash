@@ -6359,7 +6359,7 @@ boolean LX_spookyravenSecond()
 
 	//Convert Spookyraven Spectacles to a toggle
 	boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0);
-	boolean needCamera = (item_amount($item[disposable instant camera]) == 0);
+	boolean needCamera = (item_amount($item[disposable instant camera]) == 0) && !get_property("sl_palindome").to_boolean();
 	if(my_class() == $class[Avatar of Boris])
 	{
 		needSpectacles = false;
