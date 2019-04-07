@@ -300,6 +300,11 @@ void bat_reallyPickSkills(int hpLeft)
 
 void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills)
 {
+	if(my_class() != $class[Vampyre])
+	{
+		return;
+	}
+
 	visit_url("main.php"); // check if we're already in Torpor
 	if(last_choice() != 1342)
 		visit_url("campground.php?action=coffin");

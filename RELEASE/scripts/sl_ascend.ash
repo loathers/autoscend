@@ -3904,8 +3904,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				doHottub();
-				if(my_class() == $class[Vampyre])
-					bat_reallyPickSkills(20);
+				bat_reallyPickSkills(20);
 			}
 			visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 			if(!in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0))
