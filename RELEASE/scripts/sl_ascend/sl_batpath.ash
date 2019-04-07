@@ -300,7 +300,9 @@ void bat_reallyPickSkills(int hpLeft)
 
 void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills)
 {
-	if(my_class() != $class[Vampyre])
+	// Why Astral Spirit? When entering a DG run, before exiting the initial
+	// noncombat and Torpor, that's what KoLmafia thinks you are.
+	if(my_class() != $class[Vampyre] && to_string(my_class()) != "Astral Spirit")
 	{
 		return;
 	}
