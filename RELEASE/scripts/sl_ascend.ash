@@ -3904,7 +3904,8 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				doHottub();
-				bat_reallyPickSkills(20);
+				if(my_class() == $class[Vampyre])
+					bat_reallyPickSkills(20);
 			}
 			visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 			if(!in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0))
@@ -4773,7 +4774,7 @@ boolean L13_towerNSContests()
 			}
 			buffMaintain($effect[Big], 15, 1, 1);
 			stat crowd_stat = ns_crowd2();
-			if (my_path() == "Dark Gyffte")
+			if (my_class() == $class[Vampyre])
 			{
 				if(crowd_stat == $stat[muscle] && !have_skill($skill[Preternatural Strength]))
 				{
@@ -6359,7 +6360,7 @@ boolean LX_spookyravenSecond()
 
 	//Convert Spookyraven Spectacles to a toggle
 	boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0);
-	boolean needCamera = (item_amount($item[disposable instant camera]) == 0);
+	boolean needCamera = (item_amount($item[disposable instant camera]) == 0) && !get_property("sl_palindome").to_boolean();
 	if(my_class() == $class[Avatar of Boris])
 	{
 		needSpectacles = false;
