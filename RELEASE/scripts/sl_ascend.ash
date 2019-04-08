@@ -7450,12 +7450,6 @@ boolean L12_sonofaBeach()
 			}
 		}
 		asdonBuff($effect[Driving Obnoxiously]);
-                if (get_property("_horsery") == "dark horse")
-                {
-                        horseNone();
-                        getHorse("return");
-                        // note: it's retrieving the dark horse before every adventure
-                }
 
 		if(numeric_modifier("Combat Rate") < 0.0)
 		{

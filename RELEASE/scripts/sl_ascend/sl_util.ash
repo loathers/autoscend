@@ -2744,7 +2744,7 @@ boolean providePlusCombat(int amt, boolean doEquips)
         if((numeric_modifier("Combat Rate").to_int() < amt)
            && (get_property("_horsery") == "dark horse"))
         {
-                horseNone();
+                getHorse("return");
         }
 
 	if(numeric_modifier("Combat Rate").to_int() < amt)
@@ -2814,7 +2814,7 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 
         if((numeric_modifier("Combat Rate").to_int() > amt))
         {
-                horseDark();
+                getHorse("noncombat");
         }
 
 	if(numeric_modifier("Combat Rate").to_int() > amt)
