@@ -1448,11 +1448,12 @@ boolean getHorse(string type)
 	int choice = -1;
 	if((type == "regen") || (type == "init") || (get_property("sl_beatenUpCount").to_int() >= 20))
 	{
-		choice = 1;
 		if(get_property("_horsery") == "normal horse")
 		{
 			return false;
 		}
+                choice = 1;
+                set_property("sl_desiredHorse", "regen");
 
 	}
 	else if((type == "-combat") || (type == "noncombat") || (type == "non-combat") || (type == "meat"))
@@ -1462,6 +1463,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 2;
+                set_property("sl_desiredHorse", "noncombat");
 	}
 	else if((type == "random") || (type == "hookah"))
 	{
@@ -1470,6 +1472,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 3;
+                set_property("sl_desiredHorse", "random");
 	}
 	else if((type == "res") || (type == "resistance") || (type == "spooky") || (type == "damage"))
 	{
@@ -1478,11 +1481,13 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 4;
+                set_property("sl_desiredHorse", "resistance");
 	}
 	else if(type == "return")
 	{
 		choice = 5;
 		set_property("_horsery", "");
+                set_property("sl_desiredHorse", "return");
 	}
 
 	if(choice == -1)

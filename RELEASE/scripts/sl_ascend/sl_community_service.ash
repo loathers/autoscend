@@ -2523,8 +2523,6 @@ boolean LA_cs_communityService()
 			{
 				buffMaintain($effect[A Rose by Any Other Material], 0, 1, 1);
 			}
-                        horseDark();
-                        // Force horse switch in case our next action doesn't use presool.ash
 			getHorse("non-combat");
 
 			if(my_adventures() < questCost)
@@ -2810,8 +2808,6 @@ boolean LA_cs_communityService()
 			}
 
 			asdonBuff($effect[Driving Safely]);
-                        horsePale();
-                        // Force horse switch in case our next action doesn't use presool.ash
 			getHorse("resistance");
 
 			while((my_mp() < 37) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
@@ -4988,19 +4984,16 @@ boolean cs_preTurnStuff(int curQuest)
 	case 1:
 		if(get_property("_horseryRented").to_int() == 0)
 		{
-                        horseNormal();
                         getHorse("regen");
 		}
 	case 2:
 		if(get_property("_horseryRented").to_int() == 0)
 		{
-                        horseDark();
 			getHorse("non-combat");
 		}
 	default:
 		if(get_property("_horseryRented").to_int() == 0)
 		{
-                        horseDark();
 			getHorse("non-combat");
 		}
 	}
