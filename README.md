@@ -1,7 +1,7 @@
 # sl\_ascend
 
 sl\_ascend is a script that will play through an entire ascension for you in the Kingdom of Loathing.
-It is built up from cc\_ascend, which was built up from bumcheekascend before it.
+It is built up from cc\_ascend.
 
 ## Installation
 
@@ -57,6 +57,6 @@ jaspercb (IGN: Jeparo (#2246666))
 
 ## Special Thanks
 
-This script would obviously not be possible without the work of Cheesecookie and bumcheekcity before
-me. They did by far the majority of the work, all I've done so far is make some minor adjustments to
+This script would obviously not be possible without the work of Cheesecookie.
+He did by far the majority of the work, all I've done so far is make some minor adjustments to
 handle game changes and new IotMs. So thanks a bunch to both of them!
