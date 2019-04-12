@@ -9259,6 +9259,16 @@ boolean L7_crypt()
 		{
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
+
+		if(have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes])))
+		{
+			boolean desired_pills = in_hardcore() ? 6 : 4;
+			if(item_amount($item[dieting pill]) < desired_pills)
+			{
+				bat_formBats();
+				set_property("choiceAdventure523", "5");
+			}
+		}
 		buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
 		providePlusNonCombat(25);
 		ccAdv(1, $location[The Defiled Cranny]);
