@@ -14365,9 +14365,9 @@ boolean doTasks()
 	if(Lsc_flyerSeals())				return true;
 	if(L11_blackMarket())				return true;
 	if(L11_forgedDocuments())			return true;
+	if(L11_mauriceSpookyraven())		return true;
 	if(L11_mcmuffinDiary())				return true;
 	if(L11_talismanOfNam())				return true;
-	if(L11_mauriceSpookyraven())		return true;
 	if(L11_nostrilOfTheSerpent())		return true;
 	if(L11_unlockHiddenCity())			return true;
 	if(L11_hiddenCityZones())			return true;
