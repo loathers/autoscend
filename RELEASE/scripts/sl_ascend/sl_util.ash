@@ -2746,6 +2746,10 @@ boolean providePlusCombat(int amt, boolean doEquips)
         {
                 getHorse("return");
         }
+        else
+        {
+                horseMaintain();
+        }
 
 	if(numeric_modifier("Combat Rate").to_int() < amt)
 	{
