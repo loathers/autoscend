@@ -1435,44 +1435,44 @@ int horseCost()
 
 string horseNormalize(string horseText)
 {
-        switch(horseText)
+	switch(horseText)
 	{
-                case "normal":     return "normal";
-	        case "regen":      return "normal";
-	        case "init":       return "normal";
-                case "dark":       return "dark";
-                case "meat":       return "dark";
-	        case "-combat":    return "dark";
-	        case "noncombat":  return "dark";
-                case "non-combat": return "dark";
-                case "crazy":      return "crazy";
-                case "hookah":     return "crazy";
-                case "random":     return "crazy";
-                case "pale":       return "pale";
-                case "res":        return "pale";
-                case "resistance": return "pale";
-                case "spooky":     return "pale";
-                case "damage":     return "pale";
-                case "return":     return "return";
-                case "":           return "return";
+		case "normal":	   return "normal";
+		case "regen":	   return "normal";
+		case "init":	   return "normal";
+		case "dark":	   return "dark";
+		case "meat":	   return "dark";
+		case "-combat":	   return "dark";
+		case "noncombat":  return "dark";
+		case "non-combat": return "dark";
+		case "crazy":	   return "crazy";
+		case "hookah":	   return "crazy";
+		case "random":	   return "crazy";
+		case "pale":	   return "pale";
+		case "res":	   return "pale";
+		case "resistance": return "pale";
+		case "spooky":	   return "pale";
+		case "damage":	   return "pale";
+		case "return":	   return "return";
+		case "":	   return "return";
 	}
 
-        if (contains_text(horseText, "normal horse"))
-        {
-                return "normal";
-        } else if (contains_text(horseText, "dark horse"))
-        {
-                return "dark";
-        } else if (contains_text(horseText, "crazy horse"))
-        {
-                return "crazy";
-        } else if (contains_text(horseText, "pale horse"))
-        {
-                return "pale";
-        }
+	if (contains_text(horseText, "normal horse"))
+	{
+		return "normal";
+	} else if (contains_text(horseText, "dark horse"))
+	{
+		return "dark";
+	} else if (contains_text(horseText, "crazy horse"))
+	{
+		return "crazy";
+	} else if (contains_text(horseText, "pale horse"))
+	{
+		return "pale";
+	}
 
-        print("Unknown Horsery horse type: '" + horseText + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
-        return "";
+	print("Unknown Horsery horse type: '" + horseText + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
+	return "";
 }
 
 boolean getHorse(string type)
@@ -1494,8 +1494,8 @@ boolean getHorse(string type)
 		{
 			return false;
 		}
-                choice = 1;
-                set_property("sl_desiredHorse", "regen");
+		choice = 1;
+		set_property("sl_desiredHorse", "regen");
 
 	}
 	else if((type == "-combat") || (type == "noncombat") || (type == "non-combat") || (type == "meat"))
@@ -1505,7 +1505,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 2;
-                set_property("sl_desiredHorse", "noncombat");
+		set_property("sl_desiredHorse", "noncombat");
 	}
 	else if((type == "random") || (type == "hookah"))
 	{
@@ -1514,7 +1514,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 3;
-                set_property("sl_desiredHorse", "random");
+		set_property("sl_desiredHorse", "random");
 	}
 	else if((type == "res") || (type == "resistance") || (type == "spooky") || (type == "damage"))
 	{
@@ -1523,17 +1523,17 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 4;
-                set_property("sl_desiredHorse", "resistance");
+		set_property("sl_desiredHorse", "resistance");
 	}
 	else if(type == "return")
 	{
-                if(get_property("_horsery") == "")
-                {
-                        return false;
-                }
+		if(get_property("_horsery") == "")
+		{
+			return false;
+		}
 		choice = 5;
 		set_property("_horsery", "");
-                set_property("sl_desiredHorse", "return");
+		set_property("sl_desiredHorse", "return");
 	}
 
 	if(choice == -1)
@@ -1551,58 +1551,58 @@ boolean getHorse(string type)
 
 void horseDefault()
 {
-        set_property("sl_desiredHorse", "");
+	set_property("sl_desiredHorse", "");
 }
 
 void horseMaintain()
 {
-        set_property("sl_desiredHorse", horseNormalize(get_property("_horsery")));
+	set_property("sl_desiredHorse", horseNormalize(get_property("_horsery")));
 }
 
 void horseNone()
 {
-        set_property("sl_desiredHorse", "return");
+	set_property("sl_desiredHorse", "return");
 }
 
 void horseNormal()
 {
-        set_property("sl_desiredHorse", "regen");
+	set_property("sl_desiredHorse", "regen");
 }
 
 void horseDark()
 {
-        set_property("sl_desiredHorse", "noncombat");
+	set_property("sl_desiredHorse", "noncombat");
 }
 
 void horseCrazy()
 {
-        set_property("sl_desiredHorse", "random");
+	set_property("sl_desiredHorse", "random");
 }
 
 void horsePale()
 {
-        set_property("sl_desiredHorse", "resistance");
+	set_property("sl_desiredHorse", "resistance");
 }
 
 boolean horsePreAdventure()
 {
-        string desiredHorse = get_property("sl_desiredHorse");
-        if (desiredHorse == "")
-        {
-                desiredHorse = "noncombat";
-        }
+	string desiredHorse = get_property("sl_desiredHorse");
+	if (desiredHorse == "")
+	{
+		desiredHorse = "noncombat";
+	}
 
-        if (desiredHorse != "regen"
-            && desiredHorse != "noncombat"
-            && desiredHorse != "random"
-            && desiredHorse != "resistance"
-            && desiredHorse != "return")
-        {
-                print("sl_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
+	if (desiredHorse != "regen"
+	    && desiredHorse != "noncombat"
+	    && desiredHorse != "random"
+	    && desiredHorse != "resistance"
+	    && desiredHorse != "return")
+	{
+		print("sl_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
 		set_property("sl_desiredHorse", "");
 		return false;
-        }
-        return getHorse(desiredHorse);
+	}
+	return getHorse(desiredHorse);
 }
 
 boolean makeGenieWish(effect eff)

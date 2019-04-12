@@ -4984,7 +4984,7 @@ boolean cs_preTurnStuff(int curQuest)
 	case 1:
 		if(get_property("_horseryRented").to_int() == 0)
 		{
-                        getHorse("regen");
+			getHorse("regen");
 		}
 	case 2:
 		if(get_property("_horseryRented").to_int() == 0)
