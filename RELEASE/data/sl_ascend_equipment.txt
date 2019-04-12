@@ -401,52 +401,53 @@ weapon	50	The Nuge's favorite crossbow	mainstat:Moxie
 # Vampyres are a Mysticality class that sometimes can't use spells. Ugh.
 weapon	51	disco ball	class:Vampyre;skill:Sinister Charm;effect:Bats Form;!skill:Piercing Gaze
 weapon	52	disco ball	class:Vampyre;skill:Sinister Charm;effect:Wolf Form;!skill:Savage Bite
+weapon	53	disco ball	class:Vampyre;skill:Sinister Charm;!skill:Chill of the Tomb
 # Some more stuff. It's okay, I guess
-weapon	53	The Jokester's Gun	mainstat:Moxie
-weapon	54	world's smallest violin	mainstat:Moxie
-weapon	55	Frigid Derringer	mainstat:Moxie
-weapon	56	witty rapier	mainstat:Mysticality
-weapon	57	Chopsticks	mainstat:Mysticality
-weapon	58	Oversized Pizza Cutter	mainstat:Mysticality
-weapon	59	Eggbeater	mainstat:Mysticality
-weapon	60	Corn Holder	mainstat:Mysticality
-weapon	61	Dishrag	mainstat:Mysticality
+weapon	54	The Jokester's Gun	mainstat:Moxie
+weapon	55	world's smallest violin	mainstat:Moxie
+weapon	56	Frigid Derringer	mainstat:Moxie
+weapon	57	witty rapier	mainstat:Mysticality
+weapon	58	Chopsticks	mainstat:Mysticality
+weapon	59	Oversized Pizza Cutter	mainstat:Mysticality
+weapon	60	Eggbeater	mainstat:Mysticality
+weapon	61	Corn Holder	mainstat:Mysticality
+weapon	62	Dishrag	mainstat:Mysticality
 # Good knives
-weapon	62	black blade	mainstat:Moxie;skill:Tricky Knifework
-weapon	63	batblade	mainstat:Moxie;skill:Tricky Knifework
-weapon	64	soap knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	65	Saturday Night Special	mainstat:Moxie
+weapon	63	black blade	mainstat:Moxie;skill:Tricky Knifework
+weapon	64	batblade	mainstat:Moxie;skill:Tricky Knifework
+weapon	65	soap knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	66	Saturday Night Special	mainstat:Moxie
 # Knives that are fine
-weapon	66	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
-weapon	67	candy knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	68	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
-weapon	69	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
-weapon	70	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
+weapon	67	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
+weapon	68	candy knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	69	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
+weapon	70	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
+weapon	71	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
-weapon	71	finger cymbals	mainstat:Moxie
+weapon	72	finger cymbals	mainstat:Moxie
 # The worst knife, but it's still a knife
-weapon	72	boot knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	73	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	73	boot knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	74	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
 # It's not good, but at least it's a ranged weapon that takes one hand
-weapon	74	disco ball	mainstat:Moxie
-weapon	75	stolen accordion	class:Accordion Thief
+weapon	75	disco ball	mainstat:Moxie
+weapon	76	stolen accordion	class:Accordion Thief
 # Some melee weapons
-weapon	76	Rusty Piece Of Rebar
-weapon	77	Octopus's Spade
-weapon	78	Oversized Pipe
-weapon	79	Ghast Iron Cleaver
-weapon	80	Short-Handled Mop
-weapon	81	Spectral Axe
-weapon	82	Antique Machete
-weapon	83	red-hot sausage fork
+weapon	77	Rusty Piece Of Rebar
+weapon	78	Octopus's Spade
+weapon	79	Oversized Pipe
+weapon	80	Ghast Iron Cleaver
+weapon	81	Short-Handled Mop
+weapon	82	Spectral Axe
+weapon	83	Antique Machete
+weapon	84	red-hot sausage fork
 # Almost absolute garbage
-weapon	84	Skeleton Bone
-weapon	85	Corn Holder
-weapon	86	Knob Goblin Scimitar
-weapon	87	Knob Goblin Tongs
+weapon	85	Skeleton Bone
+weapon	86	Corn Holder
+weapon	87	Knob Goblin Scimitar
+weapon	88	Knob Goblin Tongs
 # Absolute garbage, but better than nothing, probably?
-weapon	88	Turtle Totem	class:Turtle Tamer
-weapon	89	Saucepan	class:Sauceror
-weapon	90	Pasta Spoon	class:Pastamancer
+weapon	89	Turtle Totem	class:Turtle Tamer
+weapon	90	Saucepan	class:Sauceror
+weapon	91	Pasta Spoon	class:Pastamancer
 # I probably missed some stuff from the old weapon handling but c'est la vie
 
