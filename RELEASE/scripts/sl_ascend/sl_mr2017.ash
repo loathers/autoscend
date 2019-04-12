@@ -1503,6 +1503,10 @@ boolean getHorse(string type)
 	return true;
 }
 
+void horseDefault()
+{
+        set_property("sl_desiredHorse", "");
+}
 void horseNone()
 {
         set_property("sl_desiredHorse", "return");
@@ -1531,6 +1535,11 @@ void horsePale()
 boolean horsePreAdventure()
 {
         string desiredHorse = get_property("sl_desiredHorse");
+        if (desiredHorse == "")
+        {
+                desiredHorse = "noncombat";
+        }
+
         if (desiredHorse != "regen"
             && desiredHorse != "noncombat"
             && desiredHorse != "random"

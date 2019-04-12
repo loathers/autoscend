@@ -10371,7 +10371,6 @@ boolean LX_craftAcquireItems()
 
 	if(sl_my_path() != "Community Service")
 	{
-		horseDark();
 		if(item_amount($item[Portable Pantogram]) > 0)
 		{
 			switch(my_daycount())
@@ -14070,6 +14069,7 @@ boolean doTasks()
 		cli_execute("refresh inv");
 	}
 	bat_formNone();
+        horseDefault();
 
 	basicAdjustML();
 	powerLevelAdjustment();
