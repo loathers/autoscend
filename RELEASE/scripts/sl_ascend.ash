@@ -9260,7 +9260,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
-		if(have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes])))
+		if(!bat_wantHowl($location[The Defiled Cranny]) && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
 		{
 			boolean desired_pills = in_hardcore() ? 6 : 4;
 			if(item_amount($item[dieting pill]) < desired_pills)
