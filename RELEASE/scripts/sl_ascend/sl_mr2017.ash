@@ -1433,6 +1433,48 @@ int horseCost()
 	return 0;
 }
 
+string horseNormalize(string horseText)
+{
+        switch(horseText)
+	{
+                case "normal":     return "normal";
+	        case "regen":      return "normal";
+	        case "init":       return "normal";
+                case "dark":       return "dark";
+                case "meat":       return "dark";
+	        case "-combat":    return "dark";
+	        case "noncombat":  return "dark";
+                case "non-combat": return "dark";
+                case "crazy":      return "crazy";
+                case "hookah":     return "crazy";
+                case "random":     return "crazy";
+                case "pale":       return "pale";
+                case "res":        return "pale";
+                case "resistance": return "pale";
+                case "spooky":     return "pale";
+                case "damage":     return "pale";
+                case "return":     return "return";
+                case "":           return "return";
+	}
+
+        if (contains_text(horseText, "normal horse"))
+        {
+                return "normal";
+        } else if (contains_text(horseText, "dark horse"))
+        {
+                return "dark";
+        } else if (contains_text(horseText, "crazy horse"))
+        {
+                return "crazy";
+        } else if (contains_text(horseText, "pale horse"))
+        {
+                return "pale";
+        }
+
+        print("Unknown Horsery horse type: '" + horseText + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
+        return "";
+}
+
 boolean getHorse(string type)
 {
 	if(!get_property("horseryAvailable").to_boolean())
@@ -1511,6 +1553,12 @@ void horseDefault()
 {
         set_property("sl_desiredHorse", "");
 }
+
+void horseMaintain()
+{
+        set_property("sl_desiredHorse", horseNormalize(get_property("_horsery")));
+}
+
 void horseNone()
 {
         set_property("sl_desiredHorse", "return");

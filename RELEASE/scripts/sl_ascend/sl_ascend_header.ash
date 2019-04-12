@@ -591,8 +591,10 @@ boolean sl_sausageEatEmUp(int maximumToEat); // Defined in sl_ascend/sl_mr2019.a
 boolean sl_sausageEatEmUp(); // Defined in sl_ascend/sl_mr2019.ash
 boolean getSpaceJelly();									//Defined in sl_ascend/sl_mr2017.ash
 int horseCost();											//Defined in sl_ascend/sl_mr2017.ash
+string horseNormalize(string horseText); // Defined in sl_ascend/sl_mr2017.ash
 boolean getHorse(string type);								//Defined in sl_ascend/sl_mr2017.ash
 void horseDefault(); // Defined in sl_ascend/sl_mr2017.ash
+void horseMaintain(); // Defined in sl_ascend/sl_mr2017.ash
 void horseNone(); // Defined in sl_ascend/sl_mr2017.ash
 void horseNormal(); // Defined in sl_ascend/sl_mr2017.ash
 void horseDark(); // Defined in sl_ascend/sl_mr2017.ash
