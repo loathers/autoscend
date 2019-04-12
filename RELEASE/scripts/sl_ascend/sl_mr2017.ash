@@ -1485,6 +1485,10 @@ boolean getHorse(string type)
 	}
 	else if(type == "return")
 	{
+                if(get_property("_horsery") == "")
+                {
+                        return false;
+                }
 		choice = 5;
 		set_property("_horsery", "");
                 set_property("sl_desiredHorse", "return");
