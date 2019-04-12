@@ -1437,28 +1437,33 @@ string horseNormalize(string horseText)
 {
 	switch(horseText)
 	{
-		case "normal horse":	return "normal";
-		case "normal":		return "normal";
-		case "regen":		return "normal";
-		case "init":		return "normal";
-		case "dark horse":	return "dark";
-		case "dark":		return "dark";
-		case "meat":		return "dark";
-		case "-combat":		return "dark";
-		case "noncombat":	return "dark";
-		case "non-combat":	return "dark";
-		case "crazy horse":	return "crazy";
-		case "crazy":		return "crazy";
-		case "hookah":		return "crazy";
-		case "random":		return "crazy";
-		case "pale horse":	return "pale";
-		case "pale":		return "pale";
-		case "res":		return "pale";
-		case "resistance":	return "pale";
-		case "spooky":		return "pale";
-		case "damage":		return "pale";
-		case "return":		return "return";
-		case "":		return "return";
+		case "normal horse":
+		case "normal":
+		case "regen":
+		case "init":
+			return "normal";
+		case "dark horse":
+		case "dark":
+		case "meat":
+		case "-combat":
+		case "noncombat":
+		case "non-combat":
+			return "dark";
+		case "crazy horse":
+		case "crazy":
+		case "hookah":
+		case "random":
+			return "crazy";
+		case "pale horse":
+		case "pale":
+		case "res":
+		case "resistance":
+		case "spooky":
+		case "damage":
+			return "pale";
+		case "return":
+		case "":
+			return "return";
 	}
 
 	if (contains_text(horseText, "normal horse"))
