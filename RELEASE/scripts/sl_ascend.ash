@@ -11294,7 +11294,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		print("Going to the liberry!", "blue");
 #			cli_execute("olfact writing desk");
 		set_property("choiceAdventure888", "4");
-		set_property("choiceAdventure889", "4");
+		set_property("choiceAdventure889", "5");
 		set_property("choiceAdventure163", "4");
 		ccAdv(1, $location[The Haunted Library]);
 	}
