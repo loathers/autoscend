@@ -1497,7 +1497,7 @@ boolean getHorse(string type)
 	}
 
 	int choice = -1;
-	if((type == "regen") || (type == "init") || (get_property("sl_beatenUpCount").to_int() >= 20))
+	if((horseNormalize(type) == "normal") || (get_property("sl_beatenUpCount").to_int() >= 20))
 	{
 		if(get_property("_horsery") == "normal horse")
 		{
@@ -1507,7 +1507,7 @@ boolean getHorse(string type)
 		set_property("sl_desiredHorse", "regen");
 
 	}
-	else if((type == "-combat") || (type == "noncombat") || (type == "non-combat") || (type == "meat"))
+	else if(horseNormalize(type) == "dark")
 	{
 		if(get_property("_horsery") == "dark horse")
 		{
@@ -1516,7 +1516,7 @@ boolean getHorse(string type)
 		choice = 2;
 		set_property("sl_desiredHorse", "noncombat");
 	}
-	else if((type == "random") || (type == "hookah"))
+	else if(horseNormalize(type) == "crazy")
 	{
 		if(contains_text(get_property("_horsery"), "crazy horse"))
 		{
@@ -1525,7 +1525,7 @@ boolean getHorse(string type)
 		choice = 3;
 		set_property("sl_desiredHorse", "random");
 	}
-	else if((type == "res") || (type == "resistance") || (type == "spooky") || (type == "damage"))
+	else if(horseNormalize(type) == "pale")
 	{
 		if(contains_text(get_property("_horsery"), "pale horse"))
 		{
@@ -1534,7 +1534,7 @@ boolean getHorse(string type)
 		choice = 4;
 		set_property("sl_desiredHorse", "resistance");
 	}
-	else if(type == "return")
+	else if(horseNormalize(type) == "return")
 	{
 		if(get_property("_horsery") == "")
 		{
