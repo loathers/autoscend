@@ -31,6 +31,10 @@ void bat_initializeSettings()
 
 boolean bat_wantHowl(location loc)
 {
+	if(!have_skill($skill[Baleful Howl]))
+	{
+		return false;
+	}
 	if(sl_banishesUsedAt(loc) contains "baleful howl")
 	{
 		return false;
