@@ -1480,7 +1480,7 @@ string horseNormalize(string horseText)
 		return "pale";
 	}
 
-	print("Unknown Horsery horse type: '" + horseText + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
+	print("Unknown Horsery horse type: '" + horseText + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
 	return "";
 }
 
@@ -1504,7 +1504,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 1;
-		set_property("sl_desiredHorse", "regen");
+		set_property("sl_desiredHorse", "normal");
 
 	}
 	else if(horseNormalize(type) == "dark")
@@ -1514,7 +1514,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 2;
-		set_property("sl_desiredHorse", "noncombat");
+		set_property("sl_desiredHorse", "dark");
 	}
 	else if(horseNormalize(type) == "crazy")
 	{
@@ -1523,7 +1523,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 3;
-		set_property("sl_desiredHorse", "random");
+		set_property("sl_desiredHorse", "crazy");
 	}
 	else if(horseNormalize(type) == "pale")
 	{
@@ -1532,7 +1532,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 4;
-		set_property("sl_desiredHorse", "resistance");
+		set_property("sl_desiredHorse", "pale");
 	}
 	else if(horseNormalize(type) == "return")
 	{
@@ -1575,22 +1575,22 @@ void horseNone()
 
 void horseNormal()
 {
-	set_property("sl_desiredHorse", "regen");
+	set_property("sl_desiredHorse", "normal");
 }
 
 void horseDark()
 {
-	set_property("sl_desiredHorse", "noncombat");
+	set_property("sl_desiredHorse", "dark");
 }
 
 void horseCrazy()
 {
-	set_property("sl_desiredHorse", "random");
+	set_property("sl_desiredHorse", "crazy");
 }
 
 void horsePale()
 {
-	set_property("sl_desiredHorse", "resistance");
+	set_property("sl_desiredHorse", "pale");
 }
 
 boolean horsePreAdventure()
@@ -1598,16 +1598,16 @@ boolean horsePreAdventure()
 	string desiredHorse = get_property("sl_desiredHorse");
 	if (desiredHorse == "")
 	{
-		desiredHorse = "noncombat";
+		desiredHorse = "dark";
 	}
 
-	if (desiredHorse != "regen"
-	    && desiredHorse != "noncombat"
-	    && desiredHorse != "random"
-	    && desiredHorse != "resistance"
+	if (desiredHorse != "normal"
+	    && desiredHorse != "dark"
+	    && desiredHorse != "crazy"
+	    && desiredHorse != "pale"
 	    && desiredHorse != "return")
 	{
-		print("sl_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'regen', 'noncombat', 'random', or 'resistance'.", "red");
+		print("sl_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
 		set_property("sl_desiredHorse", "");
 		return false;
 	}
