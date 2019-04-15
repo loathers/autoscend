@@ -14665,5 +14665,6 @@ void print_help_text()
 void main()
 {
 	print_help_text();
+	cli_execute("refresh all");
 	sl_begin(); 
 }
