@@ -3269,6 +3269,7 @@ boolean questOverride()
 	{
 		print("Found completed Island War (12)");
 		set_property("sl_war", "finished");
+		council();
 	}
 
 	if((internalQuestStatus("questL12War") >= 1)  && (get_property("sl_prewar") != "started"))
@@ -3281,6 +3282,7 @@ boolean questOverride()
 	{
 		print("Found completed Island War (12)");
 		set_property("sl_war", "finished");
+		council();
 	}
 
 	if((internalQuestStatus("questL13Final") >= 13) && (get_property("sl_sorceress") != "finished"))

@@ -360,14 +360,14 @@ boolean bat_consumption()
 	if(my_class() != $class[Vampyre])
 		return false;
 
-	if(have_outfit("War Hippy Fatigues"))
+	if(have_outfit("War Hippy Fatigues") && is_accessible($coinmaster[Dimemaster]))
 	{
 		sell($item[padl phone].buyer, item_amount($item[padl phone]), $item[padl phone]);
 		sell($item[red class ring].buyer, item_amount($item[red class ring]), $item[red class ring]);
 		sell($item[blue class ring].buyer, item_amount($item[blue class ring]), $item[blue class ring]);
 		sell($item[white class ring].buyer, item_amount($item[white class ring]), $item[white class ring]);
 	}
-	if(have_outfit("Frat Warrior Fatigues"))
+	if(have_outfit("Frat Warrior Fatigues") && is_accessible($coinmaster[Quartersmaster]))
 	{
 		sell($item[pink clay bead].buyer, item_amount($item[pink clay bead]), $item[pink clay bead]);
 		sell($item[purple clay bead].buyer, item_amount($item[purple clay bead]), $item[purple clay bead]);
