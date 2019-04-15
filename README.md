@@ -55,6 +55,8 @@ Rinn (IGN: Epicgamer (#37195))
 
 jaspercb (IGN: Jeparo (#2246666))
 
+MatthewDarling (IGN: MasterAssasin (#613216))
+
 ## Special Thanks
 
 This script would obviously not be possible without the work of Cheesecookie.
