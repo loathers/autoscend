@@ -355,6 +355,51 @@ boolean bat_shouldEnsorcel(monster m)
 	return false;
 }
 
+boolean bat_multicraft(string mode, boolean [item] options)
+{
+	if(my_class() != $class[Vampyre])
+		return false;
+	if(item_amount($item[blood bag]) == 0)
+		return false;
+
+	foreach ingredient in options
+	{
+		if(craft(mode, 1, $item[blood bag], ingredient) > 0)
+			return true;
+	}
+
+	return false;
+}
+
+boolean bat_cook(item desired)
+{
+	if(my_class() != $class[Vampyre])
+		return false;
+	if(item_amount($item[blood bag]) == 0)
+		return false;
+
+	switch(desired)
+	{
+		case $item[bloodstick]:
+		case $item[blood snowcone]:
+		case $item[blood roll-up]:
+		case $item[bottle of Sanguiovese]:
+		case $item[mulled blood]:
+		case $item[Red Russian]:
+			return create(1, desired);
+		case $item[actual blood sausage]:
+			return bat_multicraft("cook", $items[batgut, ratgut]);
+		case $item[blood-soaked sponge cake]:
+			return bat_multicraft("cook", $items[filthy poultice, gauze garter]);
+		case $item[dusty bottle of blood]:
+			return bat_multicraft("cocktail", $items[dusty bottle of Merlot, dusty bottle of Port, dusty bottle of Pinot Noir, dusty bottle of Zinfandel, dusty bottle of Marsala, dusty bottle of Muscat]);
+		case $item[vampagne]:
+			return bat_multicraft("cocktail", $items[carbonated soy milk, monstar energy beverage]);
+	}
+	print("Hmm, " + desired + " isn't a Vampyre consumable", "red");
+	return false;
+}
+
 boolean bat_consumption()
 {
 	if(my_class() != $class[Vampyre])
@@ -382,7 +427,7 @@ boolean bat_consumption()
 			if(creatable_amount(it) > 0 || available_amount(it) > 0)
 			{
 				if (available_amount(it) == 0)
-					create(1, it);
+					bat_cook(it);
 				if(it.fullness > 0)
 					ccEat(1, it);
 				else if(it.inebriety > 0)
