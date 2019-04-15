@@ -456,11 +456,13 @@ boolean bat_consumption()
 		((item_amount($item[blood-soaked sponge cake]) > 0) ||
 		 (item_amount($item[blood bag]) > 0 && (1 <= item_amount($item[filthy poultice]) + item_amount($item[gauze garter])))))
 	{
-		ccChew(1, $item[dieting pill]);
-		if (item_amount($item[blood-soaked sponge cake]) == 0)
-			create(1, $item[blood-soaked sponge cake]);
-		ccEat(1, $item[blood-soaked sponge cake]);
-		return true;
+		if (item_amount($item[blood-soaked sponge cake]) == 0 &&
+			bat_cook($item[blood-soaked sponge cake]))
+		{
+			ccChew(1, $item[dieting pill]);
+			ccEat(1, $item[blood-soaked sponge cake]);
+			return true;
+		}
 	}
 	if (my_adventures() <= 8 && item_amount($item[blood bag]) > 0)
 	{
