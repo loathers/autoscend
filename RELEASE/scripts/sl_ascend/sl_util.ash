@@ -2741,6 +2741,16 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		}
 	}
 
+	if((numeric_modifier("Combat Rate").to_int() < amt)
+	   && (get_property("_horsery") == "dark horse"))
+	{
+		getHorse("return");
+	}
+	else
+	{
+		horseMaintain();
+	}
+
 	if(numeric_modifier("Combat Rate").to_int() < amt)
 	{
 		asdonBuff($effect[Driving Obnoxiously]);
@@ -2804,6 +2814,11 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 			handleBjornify($familiar[Grimstone Golem]);
 		}
 		removeCombat();
+	}
+
+	if((numeric_modifier("Combat Rate").to_int() > amt))
+	{
+		getHorse("noncombat");
 	}
 
 	if(numeric_modifier("Combat Rate").to_int() > amt)

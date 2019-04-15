@@ -1433,6 +1433,57 @@ int horseCost()
 	return 0;
 }
 
+string horseNormalize(string horseText)
+{
+	switch(horseText)
+	{
+		case "normal horse":
+		case "normal":
+		case "regen":
+		case "init":
+			return "normal";
+		case "dark horse":
+		case "dark":
+		case "meat":
+		case "-combat":
+		case "noncombat":
+		case "non-combat":
+			return "dark";
+		case "crazy horse":
+		case "crazy":
+		case "hookah":
+		case "random":
+			return "crazy";
+		case "pale horse":
+		case "pale":
+		case "res":
+		case "resistance":
+		case "spooky":
+		case "damage":
+			return "pale";
+		case "return":
+		case "":
+			return "return";
+	}
+
+	if (contains_text(horseText, "normal horse"))
+	{
+		return "normal";
+	} else if (contains_text(horseText, "dark horse"))
+	{
+		return "dark";
+	} else if (contains_text(horseText, "crazy horse"))
+	{
+		return "crazy";
+	} else if (contains_text(horseText, "pale horse"))
+	{
+		return "pale";
+	}
+
+	print("Unknown Horsery horse type: '" + horseText + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
+	return "";
+}
+
 boolean getHorse(string type)
 {
 	if(!get_property("horseryAvailable").to_boolean())
@@ -1446,43 +1497,52 @@ boolean getHorse(string type)
 	}
 
 	int choice = -1;
-	if((type == "regen") || (type == "init") || (get_property("sl_beatenUpCount").to_int() >= 20))
+	if((horseNormalize(type) == "normal") || (get_property("sl_beatenUpCount").to_int() >= 20))
 	{
-		choice = 1;
 		if(get_property("_horsery") == "normal horse")
 		{
 			return false;
 		}
+		choice = 1;
+		set_property("sl_desiredHorse", "normal");
 
 	}
-	else if((type == "-combat") || (type == "noncombat") || (type == "non-combat") || (type == "meat"))
+	else if(horseNormalize(type) == "dark")
 	{
 		if(get_property("_horsery") == "dark horse")
 		{
 			return false;
 		}
 		choice = 2;
+		set_property("sl_desiredHorse", "dark");
 	}
-	else if((type == "random") || (type == "hookah"))
+	else if(horseNormalize(type) == "crazy")
 	{
 		if(contains_text(get_property("_horsery"), "crazy horse"))
 		{
 			return false;
 		}
 		choice = 3;
+		set_property("sl_desiredHorse", "crazy");
 	}
-	else if((type == "res") || (type == "resistance") || (type == "spooky") || (type == "damage"))
+	else if(horseNormalize(type) == "pale")
 	{
 		if(contains_text(get_property("_horsery"), "pale horse"))
 		{
 			return false;
 		}
 		choice = 4;
+		set_property("sl_desiredHorse", "pale");
 	}
-	else if(type == "return")
+	else if(horseNormalize(type) == "return")
 	{
+		if(get_property("_horsery") == "")
+		{
+			return false;
+		}
 		choice = 5;
 		set_property("_horsery", "");
+		set_property("sl_desiredHorse", "return");
 	}
 
 	if(choice == -1)
@@ -1496,6 +1556,62 @@ boolean getHorse(string type)
 		set_property("_horseryRented", get_property("_horseryRented").to_int() + 1);
 	}
 	return true;
+}
+
+void horseDefault()
+{
+	set_property("sl_desiredHorse", "");
+}
+
+void horseMaintain()
+{
+	set_property("sl_desiredHorse", horseNormalize(get_property("_horsery")));
+}
+
+void horseNone()
+{
+	set_property("sl_desiredHorse", "return");
+}
+
+void horseNormal()
+{
+	set_property("sl_desiredHorse", "normal");
+}
+
+void horseDark()
+{
+	set_property("sl_desiredHorse", "dark");
+}
+
+void horseCrazy()
+{
+	set_property("sl_desiredHorse", "crazy");
+}
+
+void horsePale()
+{
+	set_property("sl_desiredHorse", "pale");
+}
+
+boolean horsePreAdventure()
+{
+	string desiredHorse = get_property("sl_desiredHorse");
+	if (desiredHorse == "")
+	{
+		desiredHorse = "dark";
+	}
+
+	if (desiredHorse != "normal"
+	    && desiredHorse != "dark"
+	    && desiredHorse != "crazy"
+	    && desiredHorse != "pale"
+	    && desiredHorse != "return")
+	{
+		print("sl_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
+		set_property("sl_desiredHorse", "");
+		return false;
+	}
+	return getHorse(desiredHorse);
 }
 
 boolean makeGenieWish(effect eff)

@@ -7450,6 +7450,7 @@ boolean L12_sonofaBeach()
 			}
 		}
 		asdonBuff($effect[Driving Obnoxiously]);
+
 		if(numeric_modifier("Combat Rate") < 0.0)
 		{
 			print("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
@@ -10380,7 +10381,6 @@ boolean LX_craftAcquireItems()
 
 	if(sl_my_path() != "Community Service")
 	{
-		getHorse("noncombat");
 		if(item_amount($item[Portable Pantogram]) > 0)
 		{
 			switch(my_daycount())
@@ -14079,6 +14079,7 @@ boolean doTasks()
 		cli_execute("refresh inv");
 	}
 	bat_formNone();
+        horseDefault();
 
 	basicAdjustML();
 	powerLevelAdjustment();
