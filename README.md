@@ -14,7 +14,26 @@ Will require [a recent build of KoLMafia](http://builds.kolmafia.us/job/Kolmafia
 ## Usage
 
 Just type sl\_ascend in the gCLI! You can configure sl\_ascend in the relay browser via the relay
-script soolascend.
+script soolascend. If you ever want to interrupt the script, please use the interrupt button in
+the soolascend relay script rather than terminating via mafia with escape. Otherwise certain settings
+may not be restored properly to their pre-run values.
+
+## Requirements
+
+There aren't many specific requirements I can think of, but there is one important one: Saucestorm.
+If you run in to combat related issues in a path that allows access to your normally permed skills,
+don't report them if you don't have Saucestorm permed.
+
+Other things that help greatly but shouldn't be strictly required (I think):
+
+* Curse of Weaksauce + Itchy Curse Finger
+* Stuffed Mortar Shell
+* Saucegeyser
+
+## Community Service
+
+If you want to run HCCS, the recommended setup is Sauceror with all of the skills mentioned in the
+requirements section. Other classes should work as well, but Sauceror works best.
 
 ## Warning
 
@@ -39,14 +58,6 @@ at the moment, so I might not be able to help!
 
 You can also come discuss problems with the script on the [#sl\_ascend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3), or just discuss the script in general!
 
-## So what IS fixed?
-
-I believe I have properly modified the script to no longer ever consider the pirate route, and to
-always take the copperhead route. I also believe I have properly purged any attempt at using the
-nuns trick or the writing desk trick, since both of those were deleted from the game. I'm only
-90% sure about this though. If you find a situation where the script attempts to do pirates or
-the nuns trick or the writing desk trick for any reason, please let me know ASAP!
-
 ## Other Contributors
 
 Thanks to the following people for their contributions via pull requests:
@@ -61,4 +72,4 @@ MatthewDarling (IGN: MasterAssasin (#613216))
 
 This script would obviously not be possible without the work of Cheesecookie.
 He did by far the majority of the work, all I've done so far is make some minor adjustments to
-handle game changes and new IotMs. So thanks a bunch to both of them!
+handle game changes, new IotMs, and new paths. So thanks a bunch to Cheesecookie!
