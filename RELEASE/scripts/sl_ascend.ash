@@ -14081,7 +14081,7 @@ boolean doTasks()
 		cli_execute("refresh inv");
 	}
 	bat_formNone();
-        horseDefault();
+	horseDefault();
 
 	basicAdjustML();
 	powerLevelAdjustment();
@@ -14665,6 +14665,12 @@ void print_help_text()
 void main()
 {
 	print_help_text();
-	cli_execute("refresh all");
-	sl_begin(); 
+	try
+	{
+		cli_execute("refresh all");
+	}
+	finally
+	{
+		sl_begin();
+	}
 }
