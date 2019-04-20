@@ -355,6 +355,45 @@ boolean bat_shouldEnsorcel(monster m)
 	return false;
 }
 
+int available_total(boolean [item] items)
+{
+	int total = 0;
+	foreach it in items
+	{
+		total += available_amount(it);
+	}
+	return total;
+}
+
+int bat_creatable_amount(item desired)
+{
+	if(my_class() != $class[Vampyre])
+		return 0;
+	if(item_amount($item[blood bag]) == 0)
+		return 0;
+
+	switch(desired)
+	{
+		case $item[bloodstick]:
+		case $item[blood snowcone]:
+		case $item[blood roll-up]:
+		case $item[bottle of Sanguiovese]:
+		case $item[mulled blood]:
+		case $item[Red Russian]:
+			return creatable_amount(desired);
+		case $item[actual blood sausage]:
+			return min(available_amount($item[blood bag]), available_total($items[batgut, ratgut]));
+		case $item[blood-soaked sponge cake]:
+			return min(available_amount($item[blood bag]), available_total($items[filthy poultice, gauze garter]));
+		case $item[dusty bottle of blood]:
+			return min(available_amount($item[blood bag]), available_total($items[dusty bottle of Merlot, dusty bottle of Port, dusty bottle of Pinot Noir, dusty bottle of Zinfandel, dusty bottle of Marsala, dusty bottle of Muscat]));
+		case $item[vampagne]:
+			return min(available_amount($item[blood bag]), available_total($items[carbonated soy milk, monstar energy beverage]));
+	}
+	print("Hmm, " + desired + " isn't a Vampyre consumable", "red");
+	return 0;
+}
+
 boolean bat_multicraft(string mode, boolean [item] options)
 {
 	if(my_class() != $class[Vampyre])
@@ -424,7 +463,7 @@ boolean bat_consumption()
 	{
 		foreach it in its
 		{
-			if(creatable_amount(it) > 0 || available_amount(it) > 0)
+			if(bat_creatable_amount(it) > 0 || available_amount(it) > 0)
 			{
 				if (available_amount(it) == 0)
 					bat_cook(it);
