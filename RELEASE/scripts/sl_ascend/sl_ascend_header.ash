@@ -944,6 +944,8 @@ void bat_reallyPickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
 void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_shouldPickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_shouldEnsorcel(monster m); // Defined in sl_ascend/sl_batpath.ash
+int available_total(boolean [item] items); // Defined in sl_ascend/sl_batpath.ash
+int bat_creatable_amount(item desired); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_multicraft(string mode, boolean [item] options); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_cook(item desired); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_consumption(); // Defined in sl_ascend/sl_batpath.ash
