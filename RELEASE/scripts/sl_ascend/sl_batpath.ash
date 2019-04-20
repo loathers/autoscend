@@ -493,7 +493,7 @@ boolean bat_consumption()
 		(fullness_left() >= 2) &&
 		(item_amount($item[dieting pill]) > 0) &&
 		((item_amount($item[blood-soaked sponge cake]) > 0) ||
-		 bat_creatable_amount($item[blood-soaked sponge cake])))
+		 (bat_creatable_amount($item[blood-soaked sponge cake]) > 0)))
 	{
 		if (item_amount($item[blood-soaked sponge cake]) == 0)
 			bat_cook($item[blood-soaked sponge cake]);
