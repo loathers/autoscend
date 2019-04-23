@@ -355,16 +355,6 @@ boolean bat_shouldEnsorcel(monster m)
 	return false;
 }
 
-int total_items(boolean [item] items)
-{
-	int total = 0;
-	foreach it in items
-	{
-		total += item_amount(it);
-	}
-	return total;
-}
-
 int bat_creatable_amount(item desired)
 {
 	if(my_class() != $class[Vampyre])
