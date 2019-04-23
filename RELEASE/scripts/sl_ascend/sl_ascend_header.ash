@@ -826,6 +826,7 @@ boolean[string] sl_banishesUsedAt(location loc); // Defined in sl_ascend/sl_util
 boolean sl_wantToBanish(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
 boolean sl_wantToSniff(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
 boolean sl_wantToYellowRay(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
+int total_items(boolean [item] items); // Defined in sl_ascend/sl_util.ash
 boolean zoneCombat(location loc);							//Defined in sl_ascend/sl_util.ash
 boolean zoneItem(location loc);								//Defined in sl_ascend/sl_util.ash
 boolean zoneMeat(location loc);								//Defined in sl_ascend/sl_util.ash
@@ -944,6 +945,9 @@ void bat_reallyPickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
 void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_shouldPickSkills(int hpLeft); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_shouldEnsorcel(monster m); // Defined in sl_ascend/sl_batpath.ash
+int bat_creatable_amount(item desired); // Defined in sl_ascend/sl_batpath.ash
+boolean bat_multicraft(string mode, boolean [item] options); // Defined in sl_ascend/sl_batpath.ash
+boolean bat_cook(item desired); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_consumption(); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_skillValid(skill sk); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_tryBloodBank(); // Defined in sl_ascend/sl_batpath.ash
