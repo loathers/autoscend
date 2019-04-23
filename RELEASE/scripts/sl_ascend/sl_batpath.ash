@@ -355,12 +355,12 @@ boolean bat_shouldEnsorcel(monster m)
 	return false;
 }
 
-int available_total(boolean [item] items)
+int total_items(boolean [item] items)
 {
 	int total = 0;
 	foreach it in items
 	{
-		total += available_amount(it);
+		total += item_amount(it);
 	}
 	return total;
 }
@@ -382,13 +382,13 @@ int bat_creatable_amount(item desired)
 		case $item[Red Russian]:
 			return creatable_amount(desired);
 		case $item[actual blood sausage]:
-			return min(available_amount($item[blood bag]), available_total($items[batgut, ratgut]));
+			return min(item_amount($item[blood bag]), total_items($items[batgut, ratgut]));
 		case $item[blood-soaked sponge cake]:
-			return min(available_amount($item[blood bag]), available_total($items[filthy poultice, gauze garter]));
+			return min(item_amount($item[blood bag]), total_items($items[filthy poultice, gauze garter]));
 		case $item[dusty bottle of blood]:
-			return min(available_amount($item[blood bag]), available_total($items[dusty bottle of Merlot, dusty bottle of Port, dusty bottle of Pinot Noir, dusty bottle of Zinfandel, dusty bottle of Marsala, dusty bottle of Muscat]));
+			return min(item_amount($item[blood bag]), total_items($items[dusty bottle of Merlot, dusty bottle of Port, dusty bottle of Pinot Noir, dusty bottle of Zinfandel, dusty bottle of Marsala, dusty bottle of Muscat]));
 		case $item[vampagne]:
-			return min(available_amount($item[blood bag]), available_total($items[carbonated soy milk, monstar energy beverage]));
+			return min(item_amount($item[blood bag]), total_items($items[carbonated soy milk, monstar energy beverage]));
 	}
 	print("Hmm, " + desired + " isn't a Vampyre consumable", "red");
 	return 0;
