@@ -403,8 +403,11 @@ boolean bat_multicraft(string mode, boolean [item] options)
 
 	foreach ingredient in options
 	{
-		if(craft(mode, 1, $item[blood bag], ingredient) > 0)
-			return true;
+		if(item_amount(ingredient) > 0)
+		{
+			if(craft(mode, 1, $item[blood bag], ingredient) > 0)
+				return true;
+		}
 	}
 
 	return false;
