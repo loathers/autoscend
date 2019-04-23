@@ -5252,3 +5252,13 @@ boolean sl_wantToYellowRay(monster enemy, location loc)
 	set_location(locCache);
 	return toSniff[enemy];
 }
+
+int total_items(boolean [item] items)
+{
+	int total = 0;
+	foreach it in items
+	{
+		total += item_amount(it);
+	}
+	return total;
+}
