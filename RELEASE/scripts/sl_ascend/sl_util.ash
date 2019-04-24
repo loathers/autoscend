@@ -4385,6 +4385,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Blessing of Serqet]:			useSkill = $skill[Blessing of Serqet];			break;
 	case $effect[Blinking Belly]:				useSkill = $skill[Firefly Abdomen];				break;
 	case $effect[Blood-Gorged]:					useItem = $item[Vial Of Blood Simple Syrup];	break;
+	case $effect[Blood Bond]:					useSkill = $skill[Blood Bond];					break;
+	case $effect[Blood Bubble]:					useSkill = $skill[Blood Bubble];				break;
 	case $effect[Bloody Potato Bits]:			useSkill = $skill[none];						break;
 	case $effect[Bloodstain-Resistant]:			useItem = $item[Bloodstain Stick];				break;
 	case $effect[Blubbered Up]:					useSkill = $skill[Blubber Up];					break;
@@ -4395,6 +4397,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Boon of the War Snapper]:		useSkill = $skill[Spirit Boon];					break;
 	case $effect[Bounty of Renenutet]:			useSkill = $skill[Bounty of Renenutet];			break;
 	case $effect[Bow-Legged Swagger]:			useSkill = $skill[Bow-Legged Swagger];			break;
+	case $effect[Bram's Bloody Bagatelle]:		useSkill = $skill[Bram's Bloody Bagatelle];		break;
 	case $effect[Brawnee\'s Anthem of Absorption]:useSkill = $skill[Brawnee\'s Anthem of Absorption];break;
 	case $effect[Brilliant Resolve]:			useItem = $item[Resolution: Be Smarter];		break;
 	case $effect[Brooding]:						useSkill = $skill[Brood];						break;
@@ -4480,6 +4483,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Florid Cheeks]:				useItem = $item[Henna Face Paint];				break;
 	case $effect[Football Eyes]:				useItem = $item[Black Facepaint];				break;
 	case $effect[Fortunate Resolve]:			useItem = $item[Resolution: Be Luckier];		break;
+	case $effect[Frenzied, Bloody]:				useSkill = $skill[Blood Frenzy];				break;
 	case $effect[Frigidalmatian]:				useSkill = $skill[Frigidalmatian];				break;
 	case $effect[Frog in Your Throat]:			useItem = $item[Frogade];						break;
 	case $effect[From Nantucket]:				useItem = $item[Ye Olde Bawdy Limerick];		break;
