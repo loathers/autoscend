@@ -1911,7 +1911,7 @@ void initializeDay(int day)
 
 			hr_initializeDay(day);
 			// It's nice to have a moxie weapon for Flock of Bats form
-			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21)
+			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
 			{
 				acquireGumItem($item[disco ball]);
 			}
