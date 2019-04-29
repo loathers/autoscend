@@ -11316,6 +11316,7 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	else if(item_amount($item[Spookyraven Billiards Room Key]) == 1)
 	{
+		providePlusNonCombat(25, true);
 		int expectPool = get_property("poolSkill").to_int();
 		expectPool += min(10,to_int(2 * square_root(get_property("poolSharkCount").to_int())));
 		if(my_inebriety() >= 10)
