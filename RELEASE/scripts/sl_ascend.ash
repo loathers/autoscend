@@ -3866,7 +3866,8 @@ boolean L11_palindome()
 					restoreSetting("lastGuildStoreOpen");
 					return true;
 				}
-
+				// +item is nice to get that food
+				bat_formBats();
 				print("Off to the grove for some doofy food!", "blue");
 				ccAdv(1, $location[Whitey\'s Grove]);
 
@@ -11316,6 +11317,7 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	else if(item_amount($item[Spookyraven Billiards Room Key]) == 1)
 	{
+		providePlusNonCombat(25, true);
 		int expectPool = get_property("poolSkill").to_int();
 		expectPool += min(10,to_int(2 * square_root(get_property("poolSharkCount").to_int())));
 		if(my_inebriety() >= 10)
@@ -11331,10 +11333,6 @@ boolean LX_handleSpookyravenFirstFloor()
 		if(possessEquipment($item[2268]) || possessEquipment($item[7964]) || possessEquipment($item[7961]))
 		{
 			expectPool += 5;
-		}
-		if(have_equipped($item[Pool Cue]))
-		{
-			expectPool += 3;
 		}
 		if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
 		{
@@ -11353,6 +11351,14 @@ boolean LX_handleSpookyravenFirstFloor()
 			expectPool += 5;
 		}
 		if(have_effect($effect[Swimming with Sharks]) > 0)
+		{
+			expectPool += 3;
+		}
+		if(possessEquipment($item[Pool Cue]) && sl_is_valid($item[Pool Cue]) && !have_equipped($item[Pool Cue]) && (expectPool < 18))
+		{
+			equip($slot[weapon], $item[Pool Cue]);
+		}
+		if(have_equipped($item[Pool Cue]))
 		{
 			expectPool += 3;
 		}
@@ -12999,6 +13005,14 @@ boolean L11_talismanOfNam()
 	{
 		return true;
 	}
+	if(creatable_amount($item[Talisman O\' Namsilat]) > 0)
+	{
+		if(create(1, $item[Talisman O\' Namsilat]))
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
@@ -13193,7 +13207,7 @@ boolean L11_blackMarket()
 		handleBjornify($familiar[Grim Brother]);
 	}
 
-	if(!possessEquipment($item[Blackberry Galoshes]) && (item_amount($item[Blackberry]) >= 3))
+	if(!possessEquipment($item[Blackberry Galoshes]) && (item_amount($item[Blackberry]) >= 3) && (my_class() != $class[Vampyre]))
 	{
 		set_property("choiceAdventure924", "2");
 		set_property("choiceAdventure928", "4");
