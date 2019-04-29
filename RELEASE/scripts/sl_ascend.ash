@@ -12999,6 +12999,14 @@ boolean L11_talismanOfNam()
 	{
 		return true;
 	}
+	if(creatable_amount($item[Talisman O\' Namsilat]) > 0)
+	{
+		if(create(1, $item[Talisman O\' Namsilat]))
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
