@@ -3866,7 +3866,8 @@ boolean L11_palindome()
 					restoreSetting("lastGuildStoreOpen");
 					return true;
 				}
-
+				// +item is nice to get that food
+				bat_formBats();
 				print("Off to the grove for some doofy food!", "blue");
 				ccAdv(1, $location[Whitey\'s Grove]);
 
