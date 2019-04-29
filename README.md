@@ -58,6 +58,8 @@ at the moment, so I might not be able to help!
 
 You can also come discuss problems with the script on the [#sl\_ascend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3), or just discuss the script in general!
 
+Some people maintain a list of common problems, solutions, and tips on writing a bug report [in this document](https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns).
+
 ## Other Contributors
 
 Thanks to the following people for their contributions via pull requests:
