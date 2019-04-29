@@ -11332,10 +11332,6 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			expectPool += 5;
 		}
-		if(have_equipped($item[Pool Cue]))
-		{
-			expectPool += 3;
-		}
 		if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
 		{
 			expectPool += 3;
@@ -11353,6 +11349,14 @@ boolean LX_handleSpookyravenFirstFloor()
 			expectPool += 5;
 		}
 		if(have_effect($effect[Swimming with Sharks]) > 0)
+		{
+			expectPool += 3;
+		}
+		if(possessEquipment($item[Pool Cue]) && glover_usable($item[Pool Cue]) && !have_equipped($item[Pool Cue]) && (expectPool < 18))
+		{
+			equip($slot[weapon], $item[Pool Cue]);
+		}
+		if(have_equipped($item[Pool Cue]))
 		{
 			expectPool += 3;
 		}
