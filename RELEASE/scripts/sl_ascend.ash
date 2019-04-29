@@ -11354,7 +11354,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			expectPool += 3;
 		}
-		if(possessEquipment($item[Pool Cue]) && glover_usable($item[Pool Cue]) && !have_equipped($item[Pool Cue]) && (expectPool < 18))
+		if(possessEquipment($item[Pool Cue]) && sl_is_valid($item[Pool Cue]) && !have_equipped($item[Pool Cue]) && (expectPool < 18))
 		{
 			equip($slot[weapon], $item[Pool Cue]);
 		}
