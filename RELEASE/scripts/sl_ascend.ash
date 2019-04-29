@@ -5228,6 +5228,10 @@ boolean LX_attemptFlyering()
 	{
 		ccAdv(1, $location[Sloppy Seconds Diner]);
 	}
+	else if(neverendingPartyAvailable())
+	{
+		neverendingPartyPowerlevel();
+	}
 	else
 	{
 		if((my_level() >= 11) && (get_property("sl_hiddenzones") == "finished"))
