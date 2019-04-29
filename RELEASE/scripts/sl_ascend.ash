@@ -13201,7 +13201,7 @@ boolean L11_blackMarket()
 		handleBjornify($familiar[Grim Brother]);
 	}
 
-	if(!possessEquipment($item[Blackberry Galoshes]) && (item_amount($item[Blackberry]) >= 3))
+	if(!possessEquipment($item[Blackberry Galoshes]) && (item_amount($item[Blackberry]) >= 3) && (my_class() != $class[Vampyre]))
 	{
 		set_property("choiceAdventure924", "2");
 		set_property("choiceAdventure928", "4");
