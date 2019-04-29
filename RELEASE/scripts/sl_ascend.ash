@@ -9271,6 +9271,7 @@ boolean L7_crypt()
 		if(!bat_wantHowl($location[The Defiled Cranny]) && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
 		{
 			int desired_pills = in_hardcore() ? 6 : 4;
+			desired_pills -= fullness_left()/2;
 			if(item_amount($item[dieting pill]) < desired_pills)
 			{
 				bat_formBats();
