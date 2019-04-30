@@ -12556,6 +12556,7 @@ boolean L9_chasmBuild()
 
 	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
 	{
+		print("The smut orc noncombat is about to hit...");
 		// This is a hardcoded patch for Dark Gyffte
 		// TODO: once explicit formulas are spaded, use simulated maximizer
 		// to determine best approach.
@@ -12583,9 +12584,8 @@ boolean L9_chasmBuild()
 			}
 		}
 		ccAdv(1, $location[The Smut Orc Logging Camp]);
+		return true;
 	}
-
-	ccAdv(1, $location[The Smut Orc Logging Camp]);
 
 	if(in_hardcore())
 	{
