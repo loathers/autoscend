@@ -1660,6 +1660,23 @@ int handlePulls(int day)
 	return pulls_remaining();
 }
 
+boolean doVacation()
+{
+	if(my_primestat() == $stat[Muscle])
+	{
+		set_property("choiceAdventure793", "1");
+	}
+	else if(my_primestat() == $stat[Mysticality])
+	{
+		set_property("choiceAdventure793", "2");
+	}
+	else
+	{
+		set_property("choiceAdventure793", "3");
+	}
+	return ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+}
+
 boolean fortuneCookieEvent()
 {
 	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
@@ -3456,7 +3473,7 @@ boolean L11_aridDesert()
 				}
 				else if((my_adventures() > 3) && (my_meat() > 1200))
 				{
-					ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+					doVacation();
 					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
 					{
 						cli_execute("make UV-Resistant Compass");
@@ -7062,7 +7079,7 @@ boolean L11_unlockPyramid()
 				print("Did not have an Arid Desert Item and the Pyramid is next. Must backtrack and recover", "red");
 				if((my_adventures() >= 3) && (my_meat() >= 500))
 				{
-					ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+					doVacation();
 					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
 					{
 						cli_execute("make UV-Resistant Compass");
@@ -10875,21 +10892,9 @@ boolean LX_islandAccess()
 	{
 		abort("Dude, we got Dinghy Plans... we should not be here....");
 	}
-	if(my_primestat() == $stat[Muscle])
+	while((item_amount($item[Shore Inc. Ship Trip Scrip]) < 3) && (my_meat() >= 500) && (item_amount($item[Dinghy Plans]) == 0))
 	{
-		set_property("choiceAdventure793", "1");
-	}
-	else if(my_primestat() == $stat[Mysticality])
-	{
-		set_property("choiceAdventure793", "2");
-	}
-	else
-	{
-		set_property("choiceAdventure793", "3");
-	}
-	while((item_amount($item[Shore Inc. Ship Trip Scrip]) < 3) && (my_meat() > 500) && (item_amount($item[Dinghy Plans]) == 0))
-	{
-		ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+		doVacation();
 	}
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
 	{
@@ -13057,8 +13062,7 @@ boolean L11_mcmuffinDiary()
 	}
 
 	print("Getting the McMuffin Diary", "blue");
-	set_property("choiceAdventure793", "1");
-	ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+	doVacation();
 	use(item_amount($item[Your Father\'s Macguffin Diary]), $item[your father\'s macguffin diary]);
 	use(item_amount($item[Copy of a Jerk Adventurer\'s Father\'s Diary]), $item[Copy of a Jerk Adventurer\'s Father\'s Diary]);
 	set_property("sl_mcmuffin", "start");
