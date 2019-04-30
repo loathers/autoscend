@@ -12582,6 +12582,19 @@ boolean L9_chasmBuild()
 			}
 		}
 
+		switch(my_primestat())
+		{
+			case $stat[Muscle]:
+				set_property("choiceAdventure1345", 1);
+				break;
+			case $stat[Mysticality]:
+				set_property("choiceAdventure1345", 2);
+				break;
+			case $stat[Moxie]:
+				set_property("choiceAdventure1345", 3);
+				break;
+		}
+
 		if(get_property("smutOrcNoncombatProgress").to_int() == 15)
 		{
 			// This is a hardcoded patch for Dark Gyffte
@@ -12594,20 +12607,6 @@ boolean L9_chasmBuild()
 				bat_formMist();
 				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 				set_property("choiceAdventure1345", 3);
-			}
-			else {
-				switch(my_primestat())
-				{
-					case $stat[Muscle]:
-						set_property("choiceAdventure1345", 1);
-						break;
-					case $stat[Mysticality]:
-						set_property("choiceAdventure1345", 2);
-						break;
-					case $stat[Moxie]:
-						set_property("choiceAdventure1345", 3);
-						break;
-				}
 			}
 		}
 
