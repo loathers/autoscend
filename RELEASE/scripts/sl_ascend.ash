@@ -11344,6 +11344,10 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			expectPool += 5;
 		}
+		else if(possessEquipment($item[Pool Cue]))
+		{
+			expectPool += 3;
+		}
 		if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
 		{
 			expectPool += 3;
@@ -11364,16 +11368,8 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			expectPool += 3;
 		}
-		if(possessEquipment($item[Pool Cue]) && sl_is_valid($item[Pool Cue]) && !have_equipped($item[Pool Cue]) && (expectPool < 18))
-		{
-			equip($slot[weapon], $item[Pool Cue]);
-		}
-		if(have_equipped($item[Pool Cue]))
-		{
-			expectPool += 3;
-		}
 
-		if(!possessEquipment($item[Pool Cue]))
+		if(!possessEquipment($item[Pool Cue]) && !posessEquipment($item[7964]) && !posessEquipment($item[2268]) && !posessEquipment($item[7961]))
 		{
 			print("Well, I need a pool cueball...", "blue");
 			backupSetting("choiceAdventure330", 1);
@@ -11418,7 +11414,10 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			buffMaintain($effect[Chalky Hand], 0, 1, 1);
 		}
-
+		if(item_amount($item[Pool Cue]) > 0)
+		{
+			equip($slot[weapon], $item[Pool Cue]);
+		}
 		# Staff of Fats
 		if(item_amount($item[7964]) > 0)
 		{
