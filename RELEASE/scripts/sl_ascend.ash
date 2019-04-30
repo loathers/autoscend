@@ -4216,7 +4216,7 @@ boolean L13_towerNSFinal()
 		abort("User wanted to stay in run (sl_stayInRun), we are done.");
 	}
 
-	if(my_class() == $class[Vampyre])
+	if(my_class() == $class[Vampyre] && (0 < item_amount($item[Thwaitgold mosquito statue])))
 	{
 		abort("Freeing the king will result in a path change. Enjoy your immortality.");
 	}
