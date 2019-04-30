@@ -12554,6 +12554,39 @@ boolean L9_chasmBuild()
 		return true;
 	}
 
+	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
+	{
+		// This is a hardcoded patch for Dark Gyffte
+		// TODO: once explicit formulas are spaded, use simulated maximizer
+		// to determine best approach.
+		if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]))
+		{
+			// Maximizing moxie (through equalizer) and sleaze res is good here
+			ccMaximize("myst, 50 sleaze res", 1000, 0, false);
+			bat_formMist();
+			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			set_property("choiceAdventure1345", 3);
+		}
+		else
+		{
+			switch(my_primestat())
+			{
+				case $stat[Muscle]:
+					set_property("choiceAdventure1345", 1);
+					break;
+				case $stat[Mysticality]:
+					set_property("choiceAdventure1345", 2);
+					break;
+				case $stat[Moxie]:
+					set_property("choiceAdventure1345", 3);
+					break;
+			}
+		}
+		ccAdv(1, $location[The Smut Orc Logging Camp]);
+	}
+
+	ccAdv(1, $location[The Smut Orc Logging Camp]);
+
 	if(in_hardcore())
 	{
 		int need = (30 - get_property("chasmBridgeProgress").to_int());
@@ -12575,34 +12608,6 @@ boolean L9_chasmBuild()
 			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 			{
 				equip(it);
-			}
-		}
-
-		switch(my_primestat())
-		{
-			case $stat[Muscle]:
-				set_property("choiceAdventure1345", 1);
-				break;
-			case $stat[Mysticality]:
-				set_property("choiceAdventure1345", 2);
-				break;
-			case $stat[Moxie]:
-				set_property("choiceAdventure1345", 3);
-				break;
-		}
-
-		if(get_property("smutOrcNoncombatProgress").to_int() == 15)
-		{
-			// This is a hardcoded patch for Dark Gyffte
-			// TODO: once explicit formulas are spaded, use simulated maximizer
-			// to determine best approach.
-			if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]))
-			{
-				// Maximizing moxie (through equalizer) and sleaze res is good here
-				ccMaximize("myst, 50 sleaze res", 1000, 0, false);
-				bat_formMist();
-				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-				set_property("choiceAdventure1345", 3);
 			}
 		}
 
