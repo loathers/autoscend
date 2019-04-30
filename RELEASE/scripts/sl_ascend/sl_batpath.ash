@@ -497,6 +497,14 @@ boolean bat_consumption()
 			return true;
 		}
 	}
+	if (item_amount($item[blood bag]) > 0)
+	{
+		if (inebriety_left() > 0)
+		{
+			if(consume_first($items[vampagne]))
+				return true;
+		}
+	}
 	if (my_adventures() <= 8 && item_amount($item[blood bag]) > 0)
 	{
 		if (inebriety_left() > 0)

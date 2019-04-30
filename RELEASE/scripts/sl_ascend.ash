@@ -1633,20 +1633,16 @@ int handlePulls(int day)
 				available_bloodbags += 1;
 			}
 
-			int available_organspace = 10;
+			int available_stomach = 5;
+			int available_drink = 5;
 			if(item_amount($item[mime army shotglass]) > 0)
 			{
-				available_organspace += 1;
+				available_drink += 1;
 			}
 
-			pullXWhenHaveY($item[dieting pill], 1, 0);
-			pullXWhenHaveY($item[dieting pill], 1, 1);
-			available_organspace -= min(2, item_amount($item[dieting pill]));
-
-			for(int i=0; i<available_organspace-available_bloodbags; i++)
-			{
-				pullXWhenHaveY($item[vampagne], 1, i);
-			}
+			// assuming dieting pills
+			pullXWhenHaveY($item[gauze garter], (1+available_stomach)/2, 0);
+			pullXWhenHaveY($item[monstar energy beverage], available_drink, 0);
 		}
 	}
 	else if(day == 2)
@@ -4216,7 +4212,7 @@ boolean L13_towerNSFinal()
 		abort("User wanted to stay in run (sl_stayInRun), we are done.");
 	}
 
-	if(my_class() == $class[Vampyre] && (0 < item_amount($item[Thwaitgold mosquito statue])))
+	if(my_class() == $class[Vampyre] && (0 < item_amount($item[Thwaitgold mosquito statuette])))
 	{
 		abort("Freeing the king will result in a path change. Enjoy your immortality.");
 	}
@@ -9292,7 +9288,8 @@ boolean L7_crypt()
 		if(!bat_wantHowl($location[The Defiled Cranny]) && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
 		{
 			int desired_pills = in_hardcore() ? 6 : 4;
-			desired_pills -= fullness_left()/2;
+			desired_pills -= my_fullness()/2;
+			print("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
 			if(item_amount($item[dieting pill]) < desired_pills)
 			{
 				bat_formBats();
@@ -11369,7 +11366,7 @@ boolean LX_handleSpookyravenFirstFloor()
 			expectPool += 3;
 		}
 
-		if(!possessEquipment($item[Pool Cue]) && !posessEquipment($item[7964]) && !posessEquipment($item[2268]) && !posessEquipment($item[7961]))
+		if(!possessEquipment($item[Pool Cue]) && !possessEquipment($item[7964]) && !possessEquipment($item[2268]) && !possessEquipment($item[7961]))
 		{
 			print("Well, I need a pool cueball...", "blue");
 			backupSetting("choiceAdventure330", 1);
@@ -14687,6 +14684,7 @@ void print_help_text()
 	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>");
 	print_html("A FAQ with common issues (and tips for a great bug report) <a href=\"https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns\">can be found here</a>");
 	print_html("The developers also hang around on the Ascension Speed Society discord.");
+	print_html("");
 }
 
 void main()
