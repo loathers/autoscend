@@ -10922,7 +10922,7 @@ boolean LX_phatLootToken()
 	{
 		return false;
 	}
-	if(my_adventures() <= 5)
+	if(my_adventures() <= 15 - get_property("_lastDailyDungeonRoom").to_int())
 	{
 		return false;
 	}
