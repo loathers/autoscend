@@ -13403,6 +13403,10 @@ boolean L8_trapperGroar()
 			buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 			buffMaintain($effect[Hide of Sobek], 10, 1, 1);
 			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			if(elemental_resist($element[cold]) < 5)
+			{
+				bat_formMist();
+			}
 		}
 		string lihcface = "";
 		if((my_class() == $class[Ed]) && possessEquipment($item[The Crown of Ed the Undying]))
