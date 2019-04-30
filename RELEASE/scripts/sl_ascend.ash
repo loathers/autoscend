@@ -12283,6 +12283,11 @@ boolean L9_twinPeak()
 			}
 		}
 
+		if(elemental_resist($element[stench]) < 4)
+		{
+			bat_formMist();
+		}
+
 		if(elemental_resist($element[stench]) >= 4)
 		{
 			attemptNum = 1;
