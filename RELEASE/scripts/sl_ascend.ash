@@ -11336,8 +11336,10 @@ boolean LX_handleSpookyravenFirstFloor()
 			expectPool += my_inebriety();
 		}
 		// Staff of Fats (non-Ed and Ed) and Staff of Ed (from Ed)
-		#if(have_equipped($item[2268]) || have_equipped($item[7964]) || have_equipped($item[7961]))
-		if(possessEquipment($item[2268]) || possessEquipment($item[7964]) || possessEquipment($item[7961]))
+		item staffOfFats = $item[2268];
+		item staffOfFatsEd = $item[7964];
+		item staffOfEd = $item[7961];
+		if(possessEquipment(staffOfFats) || possessEquipment(staffOfFatsEd) || possessEquipment(staffOfEd))
 		{
 			expectPool += 5;
 		}
@@ -11366,7 +11368,7 @@ boolean LX_handleSpookyravenFirstFloor()
 			expectPool += 3;
 		}
 
-		if(!possessEquipment($item[Pool Cue]) && !possessEquipment($item[7964]) && !possessEquipment($item[2268]) && !possessEquipment($item[7961]))
+		if(!possessEquipment($item[Pool Cue]) && !possessEquipment(staffOfFats) && !possessEquipment(staffOfFatsEd) && !possessEquipment(staffOfEd))
 		{
 			print("Well, I need a pool cueball...", "blue");
 			backupSetting("choiceAdventure330", 1);
@@ -11415,19 +11417,17 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			equip($slot[weapon], $item[Pool Cue]);
 		}
-		# Staff of Fats
-		if(item_amount($item[7964]) > 0)
+		if(item_amount(staffOfFats) > 0)
 		{
-			equip($item[7964]);
+			equip(staffOfFats);
 		}
-		if(item_amount($item[2268]) > 0)
+		if(item_amount(staffOfFatsEd) > 0)
 		{
-			equip($item[2268]);
+			equip(staffOfFatsEd);
 		}
-		#Staff of Ed
-		if(item_amount($item[7961]) > 0)
+		if(item_amount(staffOfEd) > 0)
 		{
-			equip($item[7961]);
+			equip(staffOfEd);
 		}
 
 		print("It's billiards time!", "blue");
@@ -14697,7 +14697,7 @@ void print_help_text()
 	print_html("If you need to configure or interrupt the script, choose <b>soolascend</b> from the drop-down \"run script\" menu in your browser.");
 	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>");
 	print_html("A FAQ with common issues (and tips for a great bug report) <a href=\"https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns\">can be found here</a>");
-	print_html("The developers also hang around on the Ascension Speed Society discord.");
+	print_html("The developers also hang around <a href=\"https://discord.gg/96xZxv3\">on the Ascension Speed Society discord server</a>");
 	print_html("");
 }
 

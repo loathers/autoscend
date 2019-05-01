@@ -478,6 +478,7 @@ boolean dna_sorceressTest();								//Defined in sl_ascend/sl_mr2014.ash
 boolean dna_startAcquire();									//Defined in sl_ascend/sl_mr2014.ash
 boolean doBedtime();										//Defined in sl_ascend.ash
 boolean doHRSkills();										//Defined in sl_ascend/sl_heavyrains.ash
+boolean doVacation();										//Defined in sl_ascend.ash
 int doHottub();												//Defined in sl_ascend/sl_clan.ash
 int doNumberology(string goal);								//Defined in sl_ascend/sl_util.ash
 int doNumberology(string goal, boolean doIt);				//Defined in sl_ascend/sl_util.ash
@@ -613,7 +614,7 @@ int kgb_tabCount(string page);								//Defined in sl_ascend/sl_mr2017.ash
 boolean kgb_getMartini();									//Defined in sl_ascend/sl_mr2017.ash
 boolean kgb_getMartini(string page);						//Defined in sl_ascend/sl_mr2017.ash
 boolean kgb_getMartini(string page, boolean dontCare);		//Defined in sl_ascend/sl_mr2017.ash
-boolean kgbModifiers(string mod);							//Defined in sl_ascend/sl_mr2017.ash
+boolean kgbModifiers(string mod);							//Defined in sl_ajkscend/sl_mr2017.ash
 boolean asdonBuff(effect goal);								//Defined in sl_ascend/sl_mr2017.ash
 boolean asdonBuff(string goal);								//Defined in sl_ascend/sl_mr2017.ash
 boolean asdonFeed(item it, int qty);						//Defined in sl_ascend/sl_mr2017.ash
