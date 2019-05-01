@@ -478,6 +478,7 @@ boolean dna_sorceressTest();								//Defined in sl_ascend/sl_mr2014.ash
 boolean dna_startAcquire();									//Defined in sl_ascend/sl_mr2014.ash
 boolean doBedtime();										//Defined in sl_ascend.ash
 boolean doHRSkills();										//Defined in sl_ascend/sl_heavyrains.ash
+boolean doVacation();										//Defined in sl_ascend.ash
 int doHottub();												//Defined in sl_ascend/sl_clan.ash
 int doNumberology(string goal);								//Defined in sl_ascend/sl_util.ash
 int doNumberology(string goal, boolean doIt);				//Defined in sl_ascend/sl_util.ash

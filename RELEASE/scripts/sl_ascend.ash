@@ -1633,20 +1633,16 @@ int handlePulls(int day)
 				available_bloodbags += 1;
 			}
 
-			int available_organspace = 10;
+			int available_stomach = 5;
+			int available_drink = 5;
 			if(item_amount($item[mime army shotglass]) > 0)
 			{
-				available_organspace += 1;
+				available_drink += 1;
 			}
 
-			pullXWhenHaveY($item[dieting pill], 1, 0);
-			pullXWhenHaveY($item[dieting pill], 1, 1);
-			available_organspace -= min(2, item_amount($item[dieting pill]));
-
-			for(int i=0; i<available_organspace-available_bloodbags; i++)
-			{
-				pullXWhenHaveY($item[vampagne], 1, i);
-			}
+			// assuming dieting pills
+			pullXWhenHaveY($item[gauze garter], (1+available_stomach)/2, 0);
+			pullXWhenHaveY($item[monstar energy beverage], available_drink, 0);
 		}
 	}
 	else if(day == 2)
@@ -1658,6 +1654,23 @@ int handlePulls(int day)
 	}
 
 	return pulls_remaining();
+}
+
+boolean doVacation()
+{
+	if(my_primestat() == $stat[Muscle])
+	{
+		set_property("choiceAdventure793", "1");
+	}
+	else if(my_primestat() == $stat[Mysticality])
+	{
+		set_property("choiceAdventure793", "2");
+	}
+	else
+	{
+		set_property("choiceAdventure793", "3");
+	}
+	return ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
 }
 
 boolean fortuneCookieEvent()
@@ -3456,7 +3469,7 @@ boolean L11_aridDesert()
 				}
 				else if((my_adventures() > 3) && (my_meat() > 1200))
 				{
-					ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+					doVacation();
 					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
 					{
 						cli_execute("make UV-Resistant Compass");
@@ -4199,7 +4212,7 @@ boolean L13_towerNSFinal()
 		abort("User wanted to stay in run (sl_stayInRun), we are done.");
 	}
 
-	if(my_class() == $class[Vampyre])
+	if(my_class() == $class[Vampyre] && (0 < item_amount($item[Thwaitgold mosquito statuette])))
 	{
 		abort("Freeing the king will result in a path change. Enjoy your immortality.");
 	}
@@ -5227,6 +5240,10 @@ boolean LX_attemptFlyering()
 	else if(elementalPlanes_access($element[sleaze]))
 	{
 		ccAdv(1, $location[Sloppy Seconds Diner]);
+	}
+	else if(neverendingPartyAvailable())
+	{
+		neverendingPartyPowerlevel();
 	}
 	else
 	{
@@ -7058,7 +7075,7 @@ boolean L11_unlockPyramid()
 				print("Did not have an Arid Desert Item and the Pyramid is next. Must backtrack and recover", "red");
 				if((my_adventures() >= 3) && (my_meat() >= 500))
 				{
-					ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+					doVacation();
 					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
 					{
 						cli_execute("make UV-Resistant Compass");
@@ -9271,6 +9288,8 @@ boolean L7_crypt()
 		if(!bat_wantHowl($location[The Defiled Cranny]) && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
 		{
 			int desired_pills = in_hardcore() ? 6 : 4;
+			desired_pills -= my_fullness()/2;
+			print("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
 			if(item_amount($item[dieting pill]) < desired_pills)
 			{
 				bat_formBats();
@@ -10870,21 +10889,9 @@ boolean LX_islandAccess()
 	{
 		abort("Dude, we got Dinghy Plans... we should not be here....");
 	}
-	if(my_primestat() == $stat[Muscle])
+	while((item_amount($item[Shore Inc. Ship Trip Scrip]) < 3) && (my_meat() >= 500) && (item_amount($item[Dinghy Plans]) == 0))
 	{
-		set_property("choiceAdventure793", "1");
-	}
-	else if(my_primestat() == $stat[Mysticality])
-	{
-		set_property("choiceAdventure793", "2");
-	}
-	else
-	{
-		set_property("choiceAdventure793", "3");
-	}
-	while((item_amount($item[Shore Inc. Ship Trip Scrip]) < 3) && (my_meat() > 500) && (item_amount($item[Dinghy Plans]) == 0))
-	{
-		ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+		doVacation();
 	}
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
 	{
@@ -10912,7 +10919,7 @@ boolean LX_phatLootToken()
 	{
 		return false;
 	}
-	if(my_adventures() <= 5)
+	if(my_adventures() <= 15 - get_property("_lastDailyDungeonRoom").to_int())
 	{
 		return false;
 	}
@@ -11329,10 +11336,16 @@ boolean LX_handleSpookyravenFirstFloor()
 			expectPool += my_inebriety();
 		}
 		// Staff of Fats (non-Ed and Ed) and Staff of Ed (from Ed)
-		#if(have_equipped($item[2268]) || have_equipped($item[7964]) || have_equipped($item[7961]))
-		if(possessEquipment($item[2268]) || possessEquipment($item[7964]) || possessEquipment($item[7961]))
+		item staffOfFats = $item[2268];
+		item staffOfFatsEd = $item[7964];
+		item staffOfEd = $item[7961];
+		if(possessEquipment(staffOfFats) || possessEquipment(staffOfFatsEd) || possessEquipment(staffOfEd))
 		{
 			expectPool += 5;
+		}
+		else if(possessEquipment($item[Pool Cue]))
+		{
+			expectPool += 3;
 		}
 		if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
 		{
@@ -11354,16 +11367,8 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			expectPool += 3;
 		}
-		if(possessEquipment($item[Pool Cue]) && sl_is_valid($item[Pool Cue]) && !have_equipped($item[Pool Cue]) && (expectPool < 18))
-		{
-			equip($slot[weapon], $item[Pool Cue]);
-		}
-		if(have_equipped($item[Pool Cue]))
-		{
-			expectPool += 3;
-		}
 
-		if(!possessEquipment($item[Pool Cue]))
+		if(!possessEquipment($item[Pool Cue]) && !possessEquipment(staffOfFats) && !possessEquipment(staffOfFatsEd) && !possessEquipment(staffOfEd))
 		{
 			print("Well, I need a pool cueball...", "blue");
 			backupSetting("choiceAdventure330", 1);
@@ -11408,20 +11413,21 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			buffMaintain($effect[Chalky Hand], 0, 1, 1);
 		}
-
-		# Staff of Fats
-		if(item_amount($item[7964]) > 0)
+		if(item_amount($item[Pool Cue]) > 0)
 		{
-			equip($item[7964]);
+			equip($slot[weapon], $item[Pool Cue]);
 		}
-		if(item_amount($item[2268]) > 0)
+		if(item_amount(staffOfFats) > 0)
 		{
-			equip($item[2268]);
+			equip(staffOfFats);
 		}
-		#Staff of Ed
-		if(item_amount($item[7961]) > 0)
+		if(item_amount(staffOfFatsEd) > 0)
 		{
-			equip($item[7961]);
+			equip(staffOfFatsEd);
+		}
+		if(item_amount(staffOfEd) > 0)
+		{
+			equip(staffOfEd);
 		}
 
 		print("It's billiards time!", "blue");
@@ -12277,6 +12283,11 @@ boolean L9_twinPeak()
 			}
 		}
 
+		if(elemental_resist($element[stench]) < 4)
+		{
+			bat_formMist();
+		}
+
 		if(elemental_resist($element[stench]) >= 4)
 		{
 			attemptNum = 1;
@@ -12548,6 +12559,39 @@ boolean L9_chasmBuild()
 		return true;
 	}
 
+	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
+	{
+		print("The smut orc noncombat is about to hit...");
+		// This is a hardcoded patch for Dark Gyffte
+		// TODO: once explicit formulas are spaded, use simulated maximizer
+		// to determine best approach.
+		if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]))
+		{
+			// Maximizing moxie (through equalizer) and sleaze res is good here
+			ccMaximize("myst, 50 sleaze res", 1000, 0, false);
+			bat_formMist();
+			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			set_property("choiceAdventure1345", 3);
+		}
+		else
+		{
+			switch(my_primestat())
+			{
+				case $stat[Muscle]:
+					set_property("choiceAdventure1345", 1);
+					break;
+				case $stat[Mysticality]:
+					set_property("choiceAdventure1345", 2);
+					break;
+				case $stat[Moxie]:
+					set_property("choiceAdventure1345", 3);
+					break;
+			}
+		}
+		ccAdv(1, $location[The Smut Orc Logging Camp]);
+		return true;
+	}
+
 	if(in_hardcore())
 	{
 		int need = (30 - get_property("chasmBridgeProgress").to_int());
@@ -12569,35 +12613,6 @@ boolean L9_chasmBuild()
 			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 			{
 				equip(it);
-			}
-		}
-
-		if(get_property("smutOrcNoncombatProgress").to_int() == 15)
-		{
-			// This is a hardcoded patch for Dark Gyffte
-			// TODO: once explicit formulas are spaded, use simulated maximizer
-			// to determine best approach.
-			if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]))
-			{
-				// Maximizing moxie (through equalizer) and sleaze res is good here
-				ccMaximize("myst, 50 sleaze res", 1000, 0, false);
-				bat_formMist();
-				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-				set_property("choiceAdventure1345", 3);
-			}
-			else {
-				switch(my_primestat())
-				{
-					case $stat[Muscle]:
-						set_property("choiceAdventure1345", 1);
-						break;
-					case $stat[Mysticality]:
-						set_property("choiceAdventure1345", 2);
-						break;
-					case $stat[Moxie]:
-						set_property("choiceAdventure1345", 3);
-						break;
-				}
 			}
 		}
 
@@ -13052,8 +13067,7 @@ boolean L11_mcmuffinDiary()
 	}
 
 	print("Getting the McMuffin Diary", "blue");
-	set_property("choiceAdventure793", "1");
-	ccAdv(1, $location[The Shore\, Inc. Travel Agency]);
+	doVacation();
 	use(item_amount($item[Your Father\'s Macguffin Diary]), $item[your father\'s macguffin diary]);
 	use(item_amount($item[Copy of a Jerk Adventurer\'s Father\'s Diary]), $item[Copy of a Jerk Adventurer\'s Father\'s Diary]);
 	set_property("sl_mcmuffin", "start");
@@ -13389,6 +13403,10 @@ boolean L8_trapperGroar()
 			buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 			buffMaintain($effect[Hide of Sobek], 10, 1, 1);
 			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
+			if(elemental_resist($element[cold]) < 5)
+			{
+				bat_formMist();
+			}
 		}
 		string lihcface = "";
 		if((my_class() == $class[Ed]) && possessEquipment($item[The Crown of Ed the Undying]))
@@ -14677,7 +14695,10 @@ void print_help_text()
 {
 	print_html("Thank you for using sl_ascend!");
 	print_html("If you need to configure or interrupt the script, choose <b>soolascend</b> from the drop-down \"run script\" menu in your browser.");
-	print_html("If you want to contribute, please open an issue at <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>");
+	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/soolar/sl_ascend/issues\">on Github</a>");
+	print_html("A FAQ with common issues (and tips for a great bug report) <a href=\"https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns\">can be found here</a>");
+	print_html("The developers also hang around <a href=\"https://discord.gg/96xZxv3\">on the Ascension Speed Society discord server</a>");
+	print_html("");
 }
 
 void main()
