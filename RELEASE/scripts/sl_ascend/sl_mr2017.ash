@@ -1649,7 +1649,7 @@ boolean makeGenieWish(effect eff)
 
 boolean canGenieCombat()
 {
-	if(item_amount($item[Genie Bottle]) == 0)
+	if(item_amount($item[Genie Bottle]) == 0 && item_amount($item[pocket wish]) == 0)
 	{
 		return false;
 	}
