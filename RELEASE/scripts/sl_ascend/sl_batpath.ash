@@ -311,9 +311,8 @@ void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills)
 		return;
 	}
 
-	visit_url("main.php"); // check if we're already in Torpor
-	if(last_choice() != 1342)
-		visit_url("campground.php?action=coffin");
+	// Confirm that we're in Torpor
+	visit_url("campground.php?action=coffin");
 
 	boolean[skill] picks = bat_desiredSkills(hpLeft, requiredSkills);
 	string url = "choice.php?whichchoice=1342&option=2&pwd=" + my_hash();
