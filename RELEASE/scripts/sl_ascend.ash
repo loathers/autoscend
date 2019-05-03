@@ -13191,10 +13191,10 @@ boolean L11_blackMarket()
 	}
 	else
 	{
-		if(item_amount($item[Blackberry]) >= 3)
+		if(!possessEquipment($item[Blackberry Galoshes]) && (item_amount($item[Blackberry]) >= 3) && !(my_class() == $class[Vampyre]))
 		{
 			set_property("choiceAdventure924", "2");
-			set_property("choiceAdventure177", "4");
+			set_property("choiceAdventure928", "4");
 		}
 		else
 		{
@@ -13219,12 +13219,6 @@ boolean L11_blackMarket()
 	else
 	{
 		handleBjornify($familiar[Grim Brother]);
-	}
-
-	if(!possessEquipment($item[Blackberry Galoshes]) && (item_amount($item[Blackberry]) >= 3) && (my_class() != $class[Vampyre]))
-	{
-		set_property("choiceAdventure924", "2");
-		set_property("choiceAdventure928", "4");
 	}
 
 	if((my_ascensions() == 0) || (item_amount($item[Reassembled Blackbird]) == 0))
