@@ -2343,6 +2343,8 @@ boolean instakillable(monster mon)
 
 	boolean[monster] lovetunnel = $monsters[LOV Enforcer, LOV Engineer, LOV Equivocator];
 
+	boolean[monster] protectorspirits = $monsters[ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley)];
+
 	if($monster[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl] == mon)
 	{
 		return false;
@@ -2354,6 +2356,11 @@ boolean instakillable(monster mon)
 	}
 
 	if(lovetunnel contains mon)
+	{
+		return false;
+	}
+
+	if(protectorspirits contains mon)
 	{
 		return false;
 	}
