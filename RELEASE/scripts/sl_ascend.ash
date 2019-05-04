@@ -11904,17 +11904,20 @@ boolean L9_aBooPeak()
 			spookyResist += 2;
 		}
 
-		if(have_skill($skill[Mist Form]))
+		if(0 == have_effect($effect[Mist Form]))
 		{
-			coldResist += 4;
-			spookyResist += 4;
-			effectiveCurrentHP -= 10;
-		}
-		else if(have_skill($skill[Spectral Awareness]))
-		{
-			coldResist += 2;
-			spookyResist += 2;
-			effectiveCurrentHP -= 10;
+			if(have_skill($skill[Mist Form]))
+			{
+				coldResist += 4;
+				spookyResist += 4;
+				effectiveCurrentHP -= 10;
+			}
+			else if(have_skill($skill[Spectral Awareness]))
+			{
+				coldResist += 2;
+				spookyResist += 2;
+				effectiveCurrentHP -= 10;
+			}
 		}
 
 		if((item_amount($item[Spooky Powder]) > 0) && (have_effect($effect[Spookypants]) == 0))
