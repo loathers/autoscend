@@ -710,6 +710,7 @@ boolean loopHandler(string turnSetting, string counterSetting, int threshold);//
 boolean loopHandler(string turnSetting, string counterSetting, string abortMessage, int threshold);//Defined in sl_ascend/sl_util.ash
 boolean loopHandlerDelay(string counterSetting);			//Defined in sl_ascend/sl_util.ash
 boolean loopHandlerDelay(string counterSetting, int threshold);//Defined in sl_ascend/sl_util.ash
+boolean loopHandlerDelayAll();								// Defined in sl_ascend/sl_util.ash
 boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int loveEffect, boolean equivocator, int giftItem);//Defined in sl_ascend/sl_mr2017.ash
 boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int loveEffect, boolean equivocator, int giftItem, string option);//Defined in sl_ascend/sl_mr2017.ash
 boolean pantogramPants();									//Defined in sl_ascend/sl_mr2017.ash

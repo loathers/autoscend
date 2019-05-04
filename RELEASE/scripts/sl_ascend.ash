@@ -5115,9 +5115,7 @@ boolean L13_towerNSEntrance()
 			{
 				doRest();
 				cli_execute("scripts/postsool.ash");
-				loopHandlerDelay("_sl_lastABooCycleFix");
-				loopHandlerDelay("_sl_digitizeDeskCounter");
-				loopHandlerDelay("_sl_digitizeAssassinCounter");
+				loopHandlerDelayAll();
 				return true;
 			}
 
@@ -5941,6 +5939,7 @@ boolean L11_hiddenCityZones()
 
 		set_property("choiceAdventure781", "1");
 		ccAdv(1, $location[An Overgrown Shrine (Northwest)]);
+		loopHandlerDelayAll();
 		if(contains_text(get_property("lastEncounter"), "Earthbound and Down"))
 		{
 			set_property("sl_hiddenzones", "2");
@@ -5976,6 +5975,7 @@ boolean L11_hiddenCityZones()
 
 		set_property("choiceAdventure785", "1");
 		ccAdv(1, $location[An Overgrown Shrine (Northeast)]);
+		loopHandlerDelayAll();
 		if(contains_text(get_property("lastEncounter"), "Air Apparent"))
 		{
 			set_property("sl_hiddenzones", "3");
@@ -6012,6 +6012,7 @@ boolean L11_hiddenCityZones()
 
 		set_property("choiceAdventure783", "1");
 		ccAdv(1, $location[An Overgrown Shrine (Southwest)]);
+		loopHandlerDelayAll();
 		if(contains_text(get_property("lastEncounter"), "Water You Dune"))
 		{
 			set_property("sl_hiddenzones", "4");
@@ -6048,6 +6049,7 @@ boolean L11_hiddenCityZones()
 
 		set_property("choiceAdventure787", "1");
 		ccAdv(1, $location[An Overgrown Shrine (Southeast)]);
+		loopHandlerDelayAll();
 		if(contains_text(get_property("lastEncounter"), "Fire When Ready"))
 		{
 			set_property("sl_hiddenzones", "5");
@@ -8746,9 +8748,7 @@ boolean LX_freeCombats()
 		set_property("choiceAdventure1119", get_property("sl_choice1119"));
 		set_property("sl_choice1119", "");
 		handleFamiliar("item");
-		loopHandlerDelay("_sl_lastABooCycleFix");
-		loopHandlerDelay("_sl_digitizeDeskCounter");
-		loopHandlerDelay("_sl_digitizeAssassinCounter");
+		loopHandlerDelayAll();
 		return true;
 	}
 
@@ -8761,10 +8761,7 @@ boolean LX_freeCombats()
 		{
 			set_property("_sl_digitizeDeskCounter", get_property("_sl_digitizeDeskCounter").to_int() - 1);
 		}
-		loopHandlerDelay("_sl_lastABooCycleFix");
-		loopHandlerDelay("_sl_digitizeDeskCounter");
-		loopHandlerDelay("_sl_digitizeAssassinCounter");
-
+		loopHandlerDelayAll();
 		return true;
 	}
 

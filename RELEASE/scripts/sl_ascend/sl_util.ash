@@ -803,6 +803,14 @@ boolean loopHandlerDelay(string counterSetting, int threshold)
 	return false;
 }
 
+boolean loopHandlerDelayAll()
+{
+	boolean boo = loopHandlerDelay("_sl_lastABooCycleFix");
+	boolean desk = loopHandlerDelay("_sl_digitizeDeskCounter");
+	boolean digitize = loopHandlerDelay("_sl_digitizeAssassinCounter");
+	return boo || desk || digitize;
+}
+
 boolean is100FamiliarRun()
 {
 	// Answers the question "am I not allowed to change my familiar?"

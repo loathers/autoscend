@@ -760,9 +760,7 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 
 	if(retval)
 	{
-		loopHandlerDelay("_sl_lastABooCycleFix");
-		loopHandlerDelay("_sl_digitizeDeskCounter");
-		loopHandlerDelay("_sl_digitizeAssassinCounter");
+		loopHandlerDelayAll();
 	}
 
 	restoreSetting("choiceAdventure1322");
