@@ -8718,9 +8718,6 @@ boolean LX_freeCombats()
 
 	if((sl_my_path() != "Disguises Delimit") && neverendingPartyCombat())
 	{
-		loopHandlerDelay("_sl_lastABooCycleFix");
-		loopHandlerDelay("_sl_digitizeDeskCounter");
-		loopHandlerDelay("_sl_digitizeAssassinCounter");
 		return true;
 	}
 
