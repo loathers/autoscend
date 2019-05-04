@@ -758,6 +758,12 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 		retval = ccAdv(1, $location[The Neverending Party], option);
 	}
 
+	if(retval)
+	{
+		loopHandlerDelay("_sl_lastABooCycleFix");
+		loopHandlerDelay("_sl_digitizeDeskCounter");
+		loopHandlerDelay("_sl_digitizeAssassinCounter");
+	}
 
 	restoreSetting("choiceAdventure1322");
 	restoreSetting("choiceAdventure1324");
