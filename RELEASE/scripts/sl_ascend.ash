@@ -11912,7 +11912,7 @@ boolean L9_aBooPeak()
 				spookyResist += 4;
 				effectiveCurrentHP -= 10;
 			}
-			else if(have_skill($skill[Spectral Awareness]))
+			else if(have_skill($skill[Spectral Awareness]) && (0 == have_effect($effect[Spectral Awareness])))
 			{
 				coldResist += 2;
 				spookyResist += 2;
