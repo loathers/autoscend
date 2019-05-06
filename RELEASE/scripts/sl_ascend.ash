@@ -3920,6 +3920,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				doHottub();
+				print("Torporing, since it looks like we're dead from reading a book.", "blue");
 				bat_reallyPickSkills(20);
 			}
 			visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
@@ -4795,6 +4796,7 @@ boolean L13_towerNSContests()
 				{
 					boolean[skill] requirements;
 					requirements[$skill[Preternatural Strength]] = true;
+					print("Torporing, since we want to get Preternatural Strength.", "blue");
 					bat_reallyPickSkills(20, requirements);
 				}
 				// This could be generalized for stat equalizer potions, but that seems marginal
@@ -14563,6 +14565,7 @@ void sl_begin()
 	}
 	else if(contains_text(page, "<b>Torpor</b>") && contains_text(page, "Madness of Untold Aeons") && contains_text(page, "Rest for untold Millenia"))
 	{
+		print("Torporing, since I think we're already in torpor.", "blue");
 		bat_reallyPickSkills(20);
 	}
 

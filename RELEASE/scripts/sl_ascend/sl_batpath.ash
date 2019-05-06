@@ -335,7 +335,10 @@ boolean bat_shouldPickSkills(int hpLeft)
 			continue;
 
 		if ((picks contains sk) != have_skill(sk))
+		{
+			print("We'd like to make a skill change for " + sk.to_string() + ", which we " + (picks contains sk ? "want" : "don't want") + " but " + (have_skill(sk) ? "have" : "don't have"), "blue");
 			return true;
+		}
 	}
 
 	return false;
@@ -575,6 +578,7 @@ boolean LM_batpath()
 
 	if(bat_remainingBaseHP() >= 70 && bat_shouldPickSkills(20))
 	{
+		print("Let's swap out some skills", "blue");
 		bat_reallyPickSkills(20);
 		return true;
 	}
