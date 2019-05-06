@@ -39,6 +39,7 @@ boolean isFreeMonster(monster mon);
 boolean isProtonGhost(monster mon);
 boolean isGhost(monster mon);
 boolean instakillable(monster mon);
+boolean stunnable(monster mon);
 boolean in_ronin();
 boolean sl_autosell(int quantity, item toSell);
 boolean forceEquip(slot sl, item it);
@@ -809,6 +810,16 @@ boolean loopHandlerDelayAll()
 	boolean desk = loopHandlerDelay("_sl_digitizeDeskCounter");
 	boolean digitize = loopHandlerDelay("_sl_digitizeAssassinCounter");
 	return boo || desk || digitize;
+}
+
+string reverse(string s)
+{
+	string ret;
+	for(int i=length(s)-1; i>=0; i--)
+	{
+		ret += char_at(s, i);
+	}
+	return ret;
 }
 
 boolean is100FamiliarRun()
@@ -2376,6 +2387,35 @@ boolean instakillable(monster mon)
 	return true;
 }
 
+
+boolean stunnable(monster mon)
+{
+	// Incomplete, because challenge paths are a thing
+	boolean[monster] unstunnable_monsters = $monsters[
+		// Standard
+			Wall of Skin,
+			Wall of Bones,
+			Naughty Sorceress,
+		// Vampyre
+			Your Lack of Reflection,
+			// The final boss is handled separately
+		// Witchess Monsters
+			Witchess Witch,
+			Witchess Queen,
+			Witchess King,
+		// Other
+			Cyrus the Virus,
+	];
+
+	// Vampyre final boss has your name reversed, which is dumb.
+	// I wonder if this will hit any unlucky people...
+	if(reverse(my_name()) == mon.to_string())
+	{
+		return false;
+	}
+
+	return !(unstunnable_monsters contains mon);
+}
 
 int freeCrafts()
 {
