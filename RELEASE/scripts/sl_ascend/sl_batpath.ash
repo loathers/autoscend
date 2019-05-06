@@ -216,7 +216,7 @@ int bat_maxHPCost(skill sk)
 
 int bat_baseHP()
 {
-	return 20 * get_property("darkGyfftePoints").to_int() + my_basestat($stat[Muscle]) + 20;
+	return 20 * min(23, get_property("darkGyfftePoints").to_int()) + my_basestat($stat[Muscle]) + 20;
 }
 
 int bat_remainingBaseHP()
