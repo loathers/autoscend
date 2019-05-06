@@ -9279,14 +9279,17 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
-		if(!bat_wantHowl($location[The Defiled Cranny]) && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
+		if(have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
 		{
 			int desired_pills = in_hardcore() ? 6 : 4;
 			desired_pills -= my_fullness()/2;
 			print("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
 			if(item_amount($item[dieting pill]) < desired_pills)
 			{
-				bat_formBats();
+				if(!bat_wantHowl($location[The Defiled Cranny]))
+				{
+					bat_formBats();
+				}
 				set_property("choiceAdventure523", "5");
 			}
 		}
