@@ -1673,7 +1673,7 @@ boolean L1_ed_islandFallback()
 	#Consider trying to get Upgraded legs first
 
 	sl_change_mcd(max(2, my_level()-1));
-	if(haveLegs)
+	if(haveLegs || item_amount($item[Ka coin]) >= 10)
 	{
 		if(have_outfit("Filthy Hippy Disguise") && is_wearing_outfit("Filthy Hippy Disguise"))
 		{
