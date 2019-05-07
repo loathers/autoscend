@@ -3919,8 +3919,8 @@ boolean L11_palindome()
 			if(item_amount($item[&quot;2 Love Me\, Vol. 2&quot;]) > 0)
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
+				print("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
 				doHottub();
-				print("Torporing, since it looks like we're dead from reading a book.", "blue");
 				bat_reallyPickSkills(20);
 			}
 			visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
