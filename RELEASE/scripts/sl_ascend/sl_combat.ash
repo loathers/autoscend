@@ -1586,7 +1586,7 @@ string sl_combatHandler(int round, string opp, string text)
 			costStunner = mp_cost($skill[Shell Up]);
 		}
 
-		if(((monster_defense() - my_buffedstat(my_primestat())) > 20) && canUse($skill[Saucestorm], false))
+		if(((monster_defense() - my_buffedstat(weapon_type(equipped_item($slot[Weapon])))) > 20) && canUse($skill[Saucestorm], false))
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
