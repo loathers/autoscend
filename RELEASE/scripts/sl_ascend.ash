@@ -3919,6 +3919,7 @@ boolean L11_palindome()
 			if(item_amount($item[&quot;2 Love Me\, Vol. 2&quot;]) > 0)
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
+				print("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
 				doHottub();
 				bat_reallyPickSkills(20);
 			}
@@ -4795,6 +4796,7 @@ boolean L13_towerNSContests()
 				{
 					boolean[skill] requirements;
 					requirements[$skill[Preternatural Strength]] = true;
+					print("Torporing, since we want to get Preternatural Strength.", "blue");
 					bat_reallyPickSkills(20, requirements);
 				}
 				// This could be generalized for stat equalizer potions, but that seems marginal
@@ -9279,14 +9281,17 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
-		if(!bat_wantHowl($location[The Defiled Cranny]) && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
+		if(have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
 		{
 			int desired_pills = in_hardcore() ? 6 : 4;
 			desired_pills -= my_fullness()/2;
 			print("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
 			if(item_amount($item[dieting pill]) < desired_pills)
 			{
-				bat_formBats();
+				if(!bat_wantHowl($location[The Defiled Cranny]))
+				{
+					bat_formBats();
+				}
 				set_property("choiceAdventure523", "5");
 			}
 		}
@@ -14560,6 +14565,7 @@ void sl_begin()
 	}
 	else if(contains_text(page, "<b>Torpor</b>") && contains_text(page, "Madness of Untold Aeons") && contains_text(page, "Rest for untold Millenia"))
 	{
+		print("Torporing, since I think we're already in torpor.", "blue");
 		bat_reallyPickSkills(20);
 	}
 

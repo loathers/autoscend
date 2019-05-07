@@ -674,6 +674,7 @@ boolean in_ronin();											//Defined in sl_ascend/sl_util.ash
 int inebriety_left();										//Defined in sl_ascend/sl_util.ash
 void initializeDay(int day);								//Defined in sl_ascend.ash
 void initializeSettings();									//Defined in sl_ascend.ash
+boolean stunnable(monster mon);								//Defined in sl_ascend/sl_util.ash
 boolean instakillable(monster mon);							//Defined in sl_ascend/sl_util.ash
 int[int] intList();											//Defined in sl_ascend/sl_list.ash
 int internalQuestStatus(string prop);						//Defined in sl_ascend/sl_util.ash
@@ -711,6 +712,7 @@ boolean loopHandler(string turnSetting, string counterSetting, string abortMessa
 boolean loopHandlerDelay(string counterSetting);			//Defined in sl_ascend/sl_util.ash
 boolean loopHandlerDelay(string counterSetting, int threshold);//Defined in sl_ascend/sl_util.ash
 boolean loopHandlerDelayAll();								// Defined in sl_ascend/sl_util.ash
+string reverse(string s);									// Defined in sl_ascend/sl_util.ash
 boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int loveEffect, boolean equivocator, int giftItem);//Defined in sl_ascend/sl_mr2017.ash
 boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int loveEffect, boolean equivocator, int giftItem, string option);//Defined in sl_ascend/sl_mr2017.ash
 boolean pantogramPants();									//Defined in sl_ascend/sl_mr2017.ash

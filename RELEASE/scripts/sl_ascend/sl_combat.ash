@@ -1368,7 +1368,7 @@ string sl_combatHandler(int round, string opp, string text)
 			}
 		}
 
-		if(canUse($skill[Extract]) && (my_mp() > (mp_cost($skill[Extract]) * 3)) && (item_amount($item[Source Essence]) <= 60))
+		if(canUse($skill[Extract]) && (my_mp() > (mp_cost($skill[Extract]) * 3)) && (item_amount($item[Source Essence]) <= 60) && stunnable(enemy))
 		{
 			return useSkill($skill[Extract]);
 		}
@@ -1392,19 +1392,19 @@ string sl_combatHandler(int round, string opp, string text)
 			return useItem($item[Time-Spinner]);
 		}
 
-		if(canUse($skill[Sing Along]) && (get_property("boomBoxSong") == "Remainin\' Alive"))
+		if(canUse($skill[Sing Along]) && (get_property("boomBoxSong") == "Remainin\' Alive") && stunnable(enemy))
 		{
 			return useSkill($skill[Sing Along]);
 		}
 
-		if(canUse($skill[Sing Along]) && canSurvive(2.5) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat"))
+		if(canUse($skill[Sing Along]) && canSurvive(2.5) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && stunnable(enemy))
 		{
 			return useSkill($skill[Sing Along]);
 		}
 	}
 
 	#Default behaviors, multi-staggers when chance is 50% or greater
-	if(mcd < 100)
+	if(mcd < 100 && stunnable(enemy))
 	{
 		if(canUse($item[Rain-Doh blue balls]))
 		{
@@ -1913,7 +1913,7 @@ string sl_combatHandler(int round, string opp, string text)
 				return useSkill($skill[Thunderstrike]);
 			}
 
-			if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 100) && (my_mp() >= costStunner))
+			if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 100) && (my_mp() >= costStunner) && stunnable(enemy))
 			{
 				set_property("sl_combatHandler", combatState + "(stunner)");
 				return stunner;
