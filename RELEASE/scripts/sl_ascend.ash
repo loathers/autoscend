@@ -5621,7 +5621,7 @@ boolean L11_hiddenCity()
 							{
 								abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
 							}
-							if(my_mp() > 50)
+							if(acquireMP(mp_cost($skill[The Ode to Booze]), true))
 							{
 								shrugAT($effect[Ode to Booze]);
 								buffMaintain($effect[Ode to Booze], 50, 1, 1);
