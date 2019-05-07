@@ -342,112 +342,113 @@ weapon	1	Trusty	class:Avatar of Boris
 weapon	2	Thor's Pliers	path:Heavy Rains
 # Some other goodies
 weapon	3	Staff of the Standalone Cheese	class:Avatar of Jarlsberg
-weapon	4	sewage-clogged pistol	class:Ed
+weapon	4	Fourth of May Cosplay Saber
+weapon	5	sewage-clogged pistol	class:Ed
 # The staff of Ed, when playing as Ed
-weapon	5	7961	class:Ed
-weapon	6	Dented Scepter	mainstat:Muscle
+weapon	6	7961	class:Ed
+weapon	7	Dented Scepter	mainstat:Muscle
 # Clubs for the seal clubbers
-weapon	7	Meat Tenderizer Is Murder	class:Seal Clubber
-weapon	8	Lead Pipe	class:Seal Clubber
+weapon	8	Meat Tenderizer Is Murder	class:Seal Clubber
+weapon	9	Lead Pipe	class:Seal Clubber
 # We interrupt your regularly scheduled clubs for some floundry stuff
-weapon	9	Fish Hatchet
-weapon	10	Bass Clarinet
+weapon	10	Fish Hatchet
+weapon	11	Bass Clarinet
 # We now resume the previous club broadcast
-weapon	11	Porcelain Police Baton	class:Seal Clubber
-weapon	12	Stainless Steel Shillelagh	class:Seal Clubber
-weapon	13	Frozen Seal Spine	class:Seal Clubber
-weapon	14	Ghast Iron Cleaver	class:Seal Clubber
-weapon	15	Oversized Pipe	class:Seal Clubber
-weapon	16	Curmudgel	class:Seal Clubber
-weapon	17	Elegant Nightstick	class:Seal Clubber
-weapon	18	Maxwell's Silver Hammer	class:Seal Clubber
-weapon	19	Red Hot Poker	class:Seal Clubber
-weapon	20	Giant Foam Finger	class:Seal Clubber
-weapon	21	Hilarious Comedy Prop	class:Seal Clubber
-weapon	22	Infernal Toilet Brush	class:Seal Clubber
-weapon	23	Mannequin Leg	class:Seal Clubber
-weapon	24	Gnawed-Up Dog Bone	class:Seal Clubber
-weapon	25	Severed Flipper	class:Seal Clubber
-weapon	26	Spiked Femur	class:Seal Clubber
-weapon	27	Corrupt Club of Corrupt Corruption	class:Seal Clubber
-weapon	28	Kneecapping Stick	class:Seal Clubber
-weapon	29	Orcish frat-paddle	class:Seal Clubber
-weapon	30	Flaming Crutch	class:Seal Clubber
-weapon	31	Corrupt Club of Corruption	class:Seal Clubber
-weapon	32	Skeleton Bone	class:Seal Clubber
-weapon	33	Remaindered Axe	class:Seal Clubber
-weapon	34	Club of Corruption	class:Seal Clubber
-weapon	35	Gnollish Flyswatter	class:Seal Clubber
-weapon	36	Seal-Clubbing Club	class:Seal Clubber
+weapon	12	Porcelain Police Baton	class:Seal Clubber
+weapon	13	Stainless Steel Shillelagh	class:Seal Clubber
+weapon	14	Frozen Seal Spine	class:Seal Clubber
+weapon	15	Ghast Iron Cleaver	class:Seal Clubber
+weapon	16	Oversized Pipe	class:Seal Clubber
+weapon	17	Curmudgel	class:Seal Clubber
+weapon	18	Elegant Nightstick	class:Seal Clubber
+weapon	19	Maxwell's Silver Hammer	class:Seal Clubber
+weapon	20	Red Hot Poker	class:Seal Clubber
+weapon	21	Giant Foam Finger	class:Seal Clubber
+weapon	22	Hilarious Comedy Prop	class:Seal Clubber
+weapon	23	Infernal Toilet Brush	class:Seal Clubber
+weapon	24	Mannequin Leg	class:Seal Clubber
+weapon	25	Gnawed-Up Dog Bone	class:Seal Clubber
+weapon	26	Severed Flipper	class:Seal Clubber
+weapon	27	Spiked Femur	class:Seal Clubber
+weapon	28	Corrupt Club of Corrupt Corruption	class:Seal Clubber
+weapon	29	Kneecapping Stick	class:Seal Clubber
+weapon	30	Orcish frat-paddle	class:Seal Clubber
+weapon	31	Flaming Crutch	class:Seal Clubber
+weapon	32	Corrupt Club of Corruption	class:Seal Clubber
+weapon	33	Skeleton Bone	class:Seal Clubber
+weapon	34	Remaindered Axe	class:Seal Clubber
+weapon	35	Club of Corruption	class:Seal Clubber
+weapon	36	Gnollish Flyswatter	class:Seal Clubber
+weapon	37	Seal-Clubbing Club	class:Seal Clubber
 # Some okay stuff for Turtle Tamers
-weapon	37	Garbage Sticker	class:Turtle Tamer
-weapon	38	Work Is A Four Letter Sword	class:Turtle Tamer
+weapon	38	Garbage Sticker	class:Turtle Tamer
+weapon	39	Work Is A Four Letter Sword	class:Turtle Tamer
 # Smiths weapons for the other classes
-weapon	39	Saucepanic	class:Sauceror
-weapon	40	Hand That Rocks The Ladle	class:Pastamancer
-weapon	41	Frankly Mr. Shank	class:Disco Bandit
-weapon	42	Shakespeare's Sister's Accordion	class:Accordion Thief
+weapon	40	Saucepanic	class:Sauceror
+weapon	41	Hand That Rocks The Ladle	class:Pastamancer
+weapon	42	Frankly Mr. Shank	class:Disco Bandit
+weapon	43	Shakespeare's Sister's Accordion	class:Accordion Thief
 # Good stuff but less good than Smithsness
-weapon	43	Sneaky Pete's Basket	class:Avatar of Sneaky Pete
-weapon	44	Rope	mainstat:Muscle
-weapon	45	Lead Pipe	mainstat:Muscle
-weapon	46	accord ion	class:Accordion Thief
-weapon	47	revolver	mainstat:Moxie
-weapon	48	knife	mainstat:Moxie
+weapon	44	Sneaky Pete's Basket	class:Avatar of Sneaky Pete
+weapon	45	Rope	mainstat:Muscle
+weapon	46	Lead Pipe	mainstat:Muscle
+weapon	47	accord ion	class:Accordion Thief
+weapon	48	revolver	mainstat:Moxie
+weapon	49	knife	mainstat:Moxie
 # Autohits? Yes please.
-weapon	49	Thor's Pliers
+weapon	50	Thor's Pliers
 # Nice ultra rare you got there
-weapon	50	The Nuge's favorite crossbow	mainstat:Moxie
+weapon	51	The Nuge's favorite crossbow	mainstat:Moxie
 # Vampyres are a Mysticality class that sometimes can't use spells. Ugh.
-weapon	51	disco ball	class:Vampyre;skill:Sinister Charm;effect:Bats Form;!skill:Piercing Gaze
-weapon	52	disco ball	class:Vampyre;skill:Sinister Charm;effect:Wolf Form;!skill:Savage Bite
-weapon	53	disco ball	class:Vampyre;skill:Sinister Charm;!skill:Chill of the Tomb
+weapon	52	disco ball	class:Vampyre;skill:Sinister Charm;effect:Bats Form;!skill:Piercing Gaze
+weapon	53	disco ball	class:Vampyre;skill:Sinister Charm;effect:Wolf Form;!skill:Savage Bite
+weapon	54	disco ball	class:Vampyre;skill:Sinister Charm;!skill:Chill of the Tomb
 # Some more stuff. It's okay, I guess
-weapon	54	The Jokester's Gun	mainstat:Moxie
-weapon	55	world's smallest violin	mainstat:Moxie
-weapon	56	Frigid Derringer	mainstat:Moxie
-weapon	57	witty rapier	mainstat:Mysticality
-weapon	58	Chopsticks	mainstat:Mysticality
-weapon	59	Oversized Pizza Cutter	mainstat:Mysticality
-weapon	60	Eggbeater	mainstat:Mysticality
-weapon	61	Corn Holder	mainstat:Mysticality
-weapon	62	Dishrag	mainstat:Mysticality
+weapon	55	The Jokester's Gun	mainstat:Moxie
+weapon	56	world's smallest violin	mainstat:Moxie
+weapon	57	Frigid Derringer	mainstat:Moxie
+weapon	58	witty rapier	mainstat:Mysticality
+weapon	59	Chopsticks	mainstat:Mysticality
+weapon	60	Oversized Pizza Cutter	mainstat:Mysticality
+weapon	61	Eggbeater	mainstat:Mysticality
+weapon	62	Corn Holder	mainstat:Mysticality
+weapon	63	Dishrag	mainstat:Mysticality
 # Good knives
-weapon	63	black blade	mainstat:Moxie;skill:Tricky Knifework
-weapon	64	batblade	mainstat:Moxie;skill:Tricky Knifework
-weapon	65	soap knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	66	Saturday Night Special	mainstat:Moxie
+weapon	64	black blade	mainstat:Moxie;skill:Tricky Knifework
+weapon	65	batblade	mainstat:Moxie;skill:Tricky Knifework
+weapon	66	soap knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	67	Saturday Night Special	mainstat:Moxie
 # Knives that are fine
-weapon	67	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
-weapon	68	candy knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	69	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
-weapon	70	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
-weapon	71	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
+weapon	68	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
+weapon	69	candy knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	70	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
+weapon	71	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
+weapon	72	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
-weapon	72	finger cymbals	mainstat:Moxie
+weapon	73	finger cymbals	mainstat:Moxie
 # The worst knife, but it's still a knife
-weapon	73	boot knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	74	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	74	boot knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	75	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
 # It's not good, but at least it's a ranged weapon that takes one hand
-weapon	75	disco ball	mainstat:Moxie
-weapon	76	stolen accordion	class:Accordion Thief
+weapon	76	disco ball	mainstat:Moxie
+weapon	77	stolen accordion	class:Accordion Thief
 # Some melee weapons
-weapon	77	Rusty Piece Of Rebar
-weapon	78	Octopus's Spade
-weapon	79	Oversized Pipe
-weapon	80	Ghast Iron Cleaver
-weapon	81	Short-Handled Mop
-weapon	82	Spectral Axe
-weapon	83	Antique Machete
-weapon	84	red-hot sausage fork
+weapon	78	Rusty Piece Of Rebar
+weapon	79	Octopus's Spade
+weapon	80	Oversized Pipe
+weapon	81	Ghast Iron Cleaver
+weapon	82	Short-Handled Mop
+weapon	83	Spectral Axe
+weapon	84	Antique Machete
+weapon	85	red-hot sausage fork
 # Almost absolute garbage
-weapon	85	Skeleton Bone
-weapon	86	Corn Holder
-weapon	87	Knob Goblin Scimitar
-weapon	88	Knob Goblin Tongs
+weapon	86	Skeleton Bone
+weapon	87	Corn Holder
+weapon	88	Knob Goblin Scimitar
+weapon	89	Knob Goblin Tongs
 # Absolute garbage, but better than nothing, probably?
-weapon	89	Turtle Totem	class:Turtle Tamer
-weapon	90	Saucepan	class:Sauceror
-weapon	91	Pasta Spoon	class:Pastamancer
+weapon	90	Turtle Totem	class:Turtle Tamer
+weapon	91	Saucepan	class:Sauceror
+weapon	92	Pasta Spoon	class:Pastamancer
 # I probably missed some stuff from the old weapon handling but c'est la vie
 
