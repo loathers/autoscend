@@ -157,3 +157,46 @@ boolean sl_sausageEatEmUp(int maxToEat)
 boolean sl_sausageEatEmUp() {
 	return sl_sausageEatEmUp(0);
 }
+
+boolean sl_saberChoice(string choice)
+{
+	if(!is_unrestricted($item[Fourth of May Cosplay Saber]))
+	{
+		return false;
+	}
+	if(!possessEquipment($item[Fourth of May Cosplay Saber]))
+	{
+		return false;
+	}
+	if(get_property("_saberMod").to_int() != 0)
+	{
+		return false;
+	}
+
+	int choiceNum = 5; // Maybe Later
+	switch(choice)
+	{
+	case "mp regen":
+	case "mp":
+		choiceNum = 1;
+		break;
+	case "ml":
+	case "monster level":
+		choiceNum = 2;
+		break;
+	case "res":
+	case "resistance":
+		choiceNum = 3;
+		break;
+	case "fam":
+	case "fam weight":
+	case "familiar weight":
+	case "weight":
+		choiceNum = 4;
+		break;
+	}
+
+	string page = visit_url("main.php?action=may4", false);
+	page = visit_url("choice.php?pwd=&whichchoice=1386&option=" + choiceNum);
+	return true;
+}

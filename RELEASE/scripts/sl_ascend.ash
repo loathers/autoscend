@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19205; // Initial saber support
+since r19208; // Track saber mode
 /***
 	svn checkout https://svn.code.sf.net/p/ccascend/code/sl_ascend
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
@@ -1740,6 +1740,15 @@ void initializeDay(int day)
 		#{
 			string temp = visit_url("place.php?whichplace=town_right&action=townright_ltt");
 		#}
+	}
+
+	if (day == 1)
+	{
+		sl_saberChoice("ml");
+	}
+	else
+	{
+		sl_saberChoice("res");
 	}
 
 	cli_execute("ccs null");
