@@ -5023,6 +5023,23 @@ location solveDelayZone()
 	return burnZone;
 }
 
+boolean bees_hate_usable(string it)
+{
+	if(sl_my_path() != "G-Lover")
+	{
+		return true;
+	}
+	if(contains_text(it, "b"))
+	{
+		return false;
+	}
+	if(contains_text(it, "g"))
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean sl_is_valid(item it)
 {
 	if(!glover_usable(it))
@@ -5032,17 +5049,17 @@ boolean sl_is_valid(item it)
 		else if(!expectGhostReport() && !haveGhostReport())
 			return false;
 	}
-	return is_unrestricted(it);
+	return bees_hate_usable(it.to_string()) && is_unrestricted(it);
 }
 
 boolean sl_is_valid(familiar fam)
 {
-	return glover_usable(fam.to_string()) && is_unrestricted(fam);
+	return bees_hate_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean sl_is_valid(skill sk)
 {
-	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && is_unrestricted(sk);
+	return ((glover_usable(sk.to_string()) && bees_hate_usable(sk.to_string())) || sk.passive) && bat_skillValid(sk) && is_unrestricted(sk);
 }
 
 boolean sl_debug_print(string s, string color)
