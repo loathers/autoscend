@@ -1674,6 +1674,7 @@ string sl_combatHandler(int round, string opp, string text)
 			stunner = useSkill($skill[Soul Bubble]);
 			costStunner = mp_cost($skill[Soul Bubble]);
 		}
+		loopHandlerDelayAll();
 
 		if(!contains_text(combatState, "delaymortarshell") && canSurvive(2.0) && haveUsed($skill[Stuffed Mortar Shell]) && canUse($skill[Salsaball], false))
 		{

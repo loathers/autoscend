@@ -90,6 +90,7 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 		print("Something went wrong while grinding sausage...", "red");
 		return false;
 	}
+	loopHandlerDelayAll();
 
 	return true;
 }
