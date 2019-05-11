@@ -823,7 +823,7 @@ string sl_combatHandler(int round, string opp, string text)
 		return "item " + $item[military-grade fingernail clippers];
 	}
 
-	if((item_amount($item[military-grade fingernail clippers]) > 0)  && (enemy == $monster[one of Doctor Weirdeaux's creations]))
+	if((item_amount($item[military-grade fingernail clippers]) > 0)  && (enemy == $monster[one of Doctor Weirdeaux\'s creations]))
 	{
 		if(!haveUsed($item[military-grade fingernail clippers]))
 		{
@@ -1189,7 +1189,7 @@ string sl_combatHandler(int round, string opp, string text)
 			return useSkill($skill[lightning strike]);
 		}
 
-		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
+		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
 			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
 			{
@@ -1233,10 +1233,10 @@ string sl_combatHandler(int round, string opp, string text)
 			}
 		}
 
-		if(canUse($skill[Fire the Jokester's Gun]) && !get_property("_firedJokestersGun").to_boolean())
+		if(canUse($skill[Fire the Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean())
 		{
-			handleTracker(enemy, $skill[Fire the Jokester's Gun], "sl_instakill");
-			return useSkill($skill[Fire the Jokester's Gun]);
+			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "sl_instakill");
+			return useSkill($skill[Fire the Jokester\'s Gun]);
 		}
 	}
 
@@ -1430,7 +1430,7 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if((my_location() == $location[Super Villain's Lair]) && (sl_my_path() == "License to Adventure") && canSurvive(2.0) && (enemy == $monster[Villainous Minion]))
+	if((my_location() == $location[Super Villain\'s Lair]) && (sl_my_path() == "License to Adventure") && canSurvive(2.0) && (enemy == $monster[Villainous Minion]))
 	{
 		if(!get_property("_villainLairCanLidUsed").to_boolean() && (item_amount($item[Razor-Sharp Can Lid]) > 0))
 		{
@@ -2340,7 +2340,7 @@ string sl_edCombatHandler(int round, string opp, string text)
 	set_property("sl_edCombatRoundCount", 1 + get_property("sl_edCombatRoundCount").to_int());
 
 
-	if(my_location() == $location[Hippy Camp])
+	if($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location())
 	{
 		if(!ed_needShop())
 		{
@@ -2635,7 +2635,7 @@ string sl_edCombatHandler(int round, string opp, string text)
 
 	if(!contains_text(edCombatState, "curseofstench") && sl_have_skill($skill[Curse Of Stench]) && (my_mp() >= 35) && (get_property("stenchCursedMonster") != opp) && (get_property("sl_edCombatStage").to_int() < 3))
 	{
-		if($monsters[Bob Racecar, Cabinet of Dr. Limpieza, Dairy Goat, Dirty Old Lihc, Government Scientist,  Green Ops Soldier, Possessed Wine Rack, Pygmy Bowler, Pygmy Witch Surgeon, Quiet Healer, Racecar Bob, Writing Desk] contains enemy)
+		if($monsters[Bob Racecar, Cabinet of Dr. Limpieza, Dairy Goat, Dirty Old Lihc, Government Scientist,  Green Ops Soldier, Possessed Wine Rack, Pygmy Bowler, Pygmy Witch Surgeon, Quiet Healer, Racecar Bob, Writing Desk, Blue Oyster cultist] contains enemy)
 		{
 			set_property("sl_edCombatHandler", combatState + "(curseofstench)");
 			handleTracker(enemy, $skill[Curse Of Stench], "sl_sniffs");
@@ -2790,20 +2790,21 @@ string sl_edCombatHandler(int round, string opp, string text)
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean wantCrude = ((oilProgress & 4) == 0);
-		if(item_amount($item[Bubblin\' Crude]) > 11)
-		{
-			wantCrude = false;
-		}
-		if(item_amount($item[Jar Of Oil]) > 0)
+		if(item_amount($item[Bubblin\' Crude]) > 11 || item_amount($item[Jar Of Oil]) > 0)
 		{
 			wantCrude = false;
 		}
 
-		
 		if(wantCrude)
 		{
 			return "item " + $item[Duskwalker Syringe];
 		}
+	}
+
+	if(my_location() == $location[A Mob Of Zeppelin Protesters] && item_amount($item[cigarette lighter]) > 0)
+	{
+		return "item " + $item[cigarette lighter];
+		// insta-kills protestors and removes an additional 5-7 (optimal!)
 	}
 
 	if(!contains_text(edCombatState, "lashofthecobra") && sl_have_skill($skill[Lash of the Cobra]) && (my_mp() >= 12))
@@ -3076,7 +3077,6 @@ string sl_edCombatHandler(int round, string opp, string text)
 
 	if(get_property("sl_edStatus") == "UNDYING!")
 	{
-#		if((my_location() == $location[The Secret Government Laboratory]) || !ed_needShop())
 		if(my_location() == $location[The Secret Government Laboratory])
 		{
 			if((item_amount($item[Rock Band Flyers]) == 0) && (item_amount($item[Jam Band Flyers]) == 0))
@@ -3100,8 +3100,6 @@ string sl_edCombatHandler(int round, string opp, string text)
 
 		if(item_amount($item[Dictionary]) > 0)
 		{
-#			string macro = "item dictionary; repeat";
-#			visit_url("fight.php?action=macro&macrotext=" + url_encode(macro), true, true);
 			return "item " + $item[Dictionary];
 		}
 		if(item_amount($item[Seal Tooth]) > 0)
@@ -3129,18 +3127,6 @@ string sl_edCombatHandler(int round, string opp, string text)
 		return "skill " + $skill[Fist Of The Mummy];
 	}
 
-
-#	if(!contains_text(combatState, "love stinkbug") && sl_have_skill($skill[Summon Love Stinkbug]) && (mcd <= 50))
-#	{
-#		set_property("sl_combatHandler", combatState + "(love stinkbug1)");
-#		return "skill " + $skill[Summon Love Stinkbug];
-#	}
-#	if(!contains_text(combatState, "love stinkbug") && get_property("lovebugsUnlocked").to_boolean() && (mcd <= 50))
-#	{
-#		set_property("sl_combatHandler", combatState + "(love stinkbug2)");
-#		return "skill " + $skill[Summon Love Stinkbug];
-#	}
-
 	int fightStat = my_buffedstat(weapon_type(equipped_item($slot[weapon]))) - 20;
 	if((fightStat > monster_defense()) && (round < 20) && canSurvive(1.1) && (get_property("sl_edStatus") == "UNDYING!"))
 	{
@@ -3157,14 +3143,14 @@ string sl_edCombatHandler(int round, string opp, string text)
 	{
 		return "item " + $item[Ice-Cold Cloaca Zero];
 	}
-	if((my_mp() >= 8) && sl_have_skill($skill[Storm Of The Scarab]) && (my_buffedstat($stat[Mysticality]) > 35))
+	if(my_mp() >= mp_cost($skill[Storm Of The Scarab]) && sl_have_skill($skill[Storm Of The Scarab]) && my_buffedstat($stat[Mysticality]) > 35)
 	{
 		return "skill " + $skill[Storm Of The Scarab];
 	}
 
 	if((enemy.physical_resistance >= 100) || (round >= 25) || canSurvive(1.25))
 	{
-		if((my_mp() >= 5) && sl_have_skill($skill[Fist Of The Mummy]))
+		if(my_mp() >= mp_cost($skill[Fist Of The Mummy]) && sl_have_skill($skill[Fist Of The Mummy]))
 		{
 			return "skill " + $skill[Fist Of The Mummy];
 		}

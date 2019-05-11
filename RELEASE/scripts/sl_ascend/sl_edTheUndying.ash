@@ -813,7 +813,7 @@ boolean ed_eatStuff()
 			drinkSpeakeasyDrink($item[Lucky Lindy]);
 			#cli_execute("drink 1 lucky lindy");
 		}
-		else if((my_meat() >= npc_price($item[Fortune Cookie])) && (fullness_left() > 0) && (my_fullness() >= 4))
+		else if((my_meat() >= npc_price($item[Fortune Cookie])) && (fullness_left() > 0))
 		{
 			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
 			ccEat(1, $item[Fortune Cookie]);
@@ -839,16 +839,11 @@ boolean ed_needShop()
 		return true;
 	}
 
-#	if(!get_property("lovebugsUnlocked").to_boolean() && (item_amount($item[Ka Coin]) >= 2) && (item_amount($item[Spirit Beer]) == 0) && (ed_spleen_limit() >= 35))
-	if(!get_property("lovebugsUnlocked").to_boolean() && (item_amount($item[Ka Coin]) >= 2) && (item_amount($item[Spirit Beer]) == 0) && (my_mp() < 100))
-	{
-		return true;
-	}
-
 	if(item_amount($item[Ka Coin]) < 15)
 	{
 		return false;
 	}
+  
 	int canEat = (spleen_limit() - my_spleen_use()) / 5;
 	canEat = max(0, canEat - item_amount($item[Mummified Beef Haunch]));
 
@@ -857,11 +852,6 @@ boolean ed_needShop()
 	{
 		limiter = $skill[Healing Scarabs];
 	}
-
-#	else if(my_daycount() > 2)
-#	{
-#		limiter = $skill[Upgraded Spine];
-#	}
 
 	if((canEat == 0) && have_skill(limiter) && (item_amount($item[Linen Bandages]) >= 4) && (get_property("sl_renenutetBought").to_int() >= 7) && (item_amount($item[Holy Spring Water]) >= 1) && (item_amount($item[Talisman of Horus]) >= 2))
 	{
@@ -909,7 +899,6 @@ boolean ed_shopping()
 		string temp = visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
 		temp = visit_url("place.php?whichplace=edunder&action=edunder_hippy");
 		temp = visit_url("choice.php?pwd&whichchoice=1057&option=1", true);
-//		temp = visit_url("peevpee.php?place=fight");
 		set_property("sl_breakstone", false);
 	}
 
@@ -929,26 +918,18 @@ boolean ed_shopping()
 	}
 
 	//Limit mode: edunder
-	int canEat = 0;
-	if((my_spleen_use() + 5) <= ed_spleen_limit())
+	int canEat = (ed_spleen_limit() - my_spleen_use()) / 5;
+	canEat -= item_amount($item[Mummified Beef Haunch]);
+	while((coins >= 15) && (canEat > 0))
 	{
-		canEat = (ed_spleen_limit() - my_spleen_use()) / 5;
-		canEat = canEat - item_amount($item[Mummified Beef Haunch]);
-		while((coins >= 15) && (canEat > 0))
-		{
-			visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=428", true);
-			print("Buying a mummified beef haunch!", "green");
-			coins = coins - 15;
-			canEat = canEat - 1;
-		}
+		visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=428", true);
+		print("Buying a mummified beef haunch!", "green");
+		coins = coins - 15;
+		canEat = canEat - 1;
 	}
 
-#	if(!get_property("lovebugsUnlocked").to_boolean() && (item_amount($item[Ka Coin]) >= 2) && (item_amount($item[Spirit Beer]) == 0) && (ed_spleen_limit() >= 35))
-#	if(!get_property("lovebugsUnlocked").to_boolean() && (item_amount($item[Ka Coin]) >= 2) && (item_amount($item[Spirit Beer]) == 0) && (my_mp() < 100))
 	if(!get_property("lovebugsUnlocked").to_boolean() && (coins >= 2) && (item_amount($item[Holy Spring Water]) == 0) && (my_mp() < 15))
 	{
-#		print("Buying Spirit Beer", "green");
-#		visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=432", true);
 		print("Buying Holy Spring Water", "green");
 		visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=436", true);
 		coins -= 1;
