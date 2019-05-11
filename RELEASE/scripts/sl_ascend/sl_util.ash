@@ -5023,17 +5023,30 @@ location solveDelayZone()
 	return burnZone;
 }
 
-boolean bees_hate_usable(string it)
+boolean bees_hate_usable(string str)
 {
-	if(sl_my_path() != "G-Lover")
+	if(sl_my_path() != "Bees Hate You")
 	{
 		return true;
 	}
-	if(contains_text(it, "b"))
+
+	switch(str)
+	{
+	case "enchanted bean":
+	case "Cobb's Knob map":
+	case "ball polish":
+	case "black market map":
+	case "boring binder clip":
+	case "beehive":
+	case "electric boning knife":
+		return true;
+	}
+
+	if(contains_text(str, "b"))
 	{
 		return false;
 	}
-	if(contains_text(it, "g"))
+	if(contains_text(str, "B"))
 	{
 		return false;
 	}
