@@ -1447,6 +1447,7 @@ string banisherCombatString(monster enemy, location loc)
 
 	if(sl_have_skill($skill[Baleful Howl]) && my_hp() > hp_cost($skill[Baleful Howl]) && get_property("_balefulHowlUses").to_int() < 10 && !(used contains "baleful howl"))
 	{
+		loopHandlerDelayAll();
 		return "skill " + $skill[Baleful Howl];
 	}
 
@@ -5022,6 +5023,36 @@ location solveDelayZone()
 	return burnZone;
 }
 
+boolean bees_hate_usable(string str)
+{
+	if(sl_my_path() != "Bees Hate You")
+	{
+		return true;
+	}
+
+	switch(str)
+	{
+	case "enchanted bean":
+	case "Cobb's Knob map":
+	case "ball polish":
+	case "black market map":
+	case "boring binder clip":
+	case "beehive":
+	case "electric boning knife":
+		return true;
+	}
+
+	if(contains_text(str, "b"))
+	{
+		return false;
+	}
+	if(contains_text(str, "B"))
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean sl_is_valid(item it)
 {
 	if(!glover_usable(it))
@@ -5031,17 +5062,17 @@ boolean sl_is_valid(item it)
 		else if(!expectGhostReport() && !haveGhostReport())
 			return false;
 	}
-	return is_unrestricted(it);
+	return bees_hate_usable(it.to_string()) && is_unrestricted(it);
 }
 
 boolean sl_is_valid(familiar fam)
 {
-	return glover_usable(fam.to_string()) && is_unrestricted(fam);
+	return bees_hate_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean sl_is_valid(skill sk)
 {
-	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && is_unrestricted(sk);
+	return ((glover_usable(sk.to_string()) && bees_hate_usable(sk.to_string())) || sk.passive) && bat_skillValid(sk) && is_unrestricted(sk);
 }
 
 boolean sl_debug_print(string s, string color)

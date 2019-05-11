@@ -11993,7 +11993,7 @@ boolean L9_aBooPeak()
 			mp_need = mp_need - 20;
 		}
 
-		loopHandler("_sl_lastABooConsider", "_sl_lastABooCycleFix", "We are in an A-Boo Peak cycle and can't find anything else to do. Aborting. If you have actual other quests left, please report this. Otherwise, complete A-Boo peak manually",5);
+		loopHandler("_sl_lastABooConsider", "_sl_lastABooCycleFix", "We are in an A-Boo Peak cycle and can't find anything else to do. Aborting. If you have actual other quests left, please report this. Otherwise, complete A-Boo peak manually",15);
 
 		if(get_property("booPeakProgress").to_int() == 0)
 		{
@@ -12810,7 +12810,7 @@ boolean L11_redZeppelin()
 		return ccAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
 	}
 
-	if(cloversAvailable() > 0)
+	if(cloversAvailable() > 0 && get_property("zeppelinProtestors").to_int() < 80)
 	{
 		if(cloversAvailable() >= 3 && get_property("sl_useWishes").to_boolean())
 		{
