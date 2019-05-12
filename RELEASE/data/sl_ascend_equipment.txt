@@ -240,15 +240,16 @@ off-hand	23	Keg Shield
 off-hand	24	Wicker Shield
 off-hand	25	Sawblade Shield
 off-hand	26	Yorick
-off-hand	27	Party Crasher
-off-hand	28	Spiked Femur
-off-hand	29	Hot Plate
-off-hand	30	Oversized Pizza Cutter
-off-hand	31	Cardboard Wakizashi
-off-hand	32	Pitchfork
-off-hand	33	Sabre Teeth
-off-hand	34	Knob Goblin Scimitar
-off-hand	35	Turtle Totem
+off-hand	27	Red X Shield
+off-hand	28	Party Crasher
+off-hand	29	Spiked Femur
+off-hand	30	Hot Plate
+off-hand	31	Oversized Pizza Cutter
+off-hand	32	Cardboard Wakizashi
+off-hand	33	Pitchfork
+off-hand	34	Sabre Teeth
+off-hand	35	Knob Goblin Scimitar
+off-hand	36	Turtle Totem
 
 # Good ol' pants
 pants	0	Pantsgiving

@@ -1751,9 +1751,6 @@ void initializeDay(int day)
 		sl_saberChoice("res");
 	}
 
-	cli_execute("ccs null");
-	set_property("battleAction", "custom combat script");
-
 	if((item_amount($item[cursed microwave]) >= 1) && !get_property("_cursedMicrowaveUsed").to_boolean())
 	{
 		use(1, $item[cursed microwave]);
@@ -4950,7 +4947,7 @@ boolean L13_towerNSContests()
 					makeGenieWish($effect[Sewer-Drenched]);
 					break;
 				case $element[spooky]:
-					makeGenieWish($effect[You're Back...]);
+					makeGenieWish($effect[You\'re Back...]);
 					break;
 				}
 			}
@@ -6155,7 +6152,7 @@ boolean L11_unlockHiddenCity()
 				handleFamiliar("item");
 				if((numeric_modifier("item drop") >= 100))
 				{
-					if (!makeGenieCombat($monster[Baa'baa'bu'ran]) || item_amount($item[Stone Wool]) == 0)
+					if (!makeGenieCombat($monster[Baa\'baa\'bu\'ran]) || item_amount($item[Stone Wool]) == 0)
 					{
 						print("Wishing for stone wool failed.", "red");
 					}
@@ -12817,7 +12814,7 @@ boolean L11_redZeppelin()
 			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
 			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
 		}
-		float fire_protestors = item_amount($item[Flamin' Whatshisname]) > 0 ? 10 : 3;
+		float fire_protestors = item_amount($item[Flamin\' Whatshisname]) > 0 ? 10 : 3;
 		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
 		float sleaze_protestors = square_root(sleaze_amount);
 		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
@@ -12908,7 +12905,13 @@ boolean L11_ronCopperhead()
 		}
 		// For Glark Cables. OPTIMAL!
 		bat_formBats();
-		return ccAdv($location[The Red Zeppelin]);
+		boolean retval = ccAdv($location[The Red Zeppelin]);
+		// open red boxes when we get them (not sure if this is the place for this but it'll do for now)
+		if (item_amount($item[red box]) > 0)
+		{
+			use (item_amount($item[red box]), $item[red box]);
+		}
+		return retval;
 	}
 
 	if(get_property("questL11Ron") != "finished")
@@ -13001,9 +13004,24 @@ boolean L11_shenCopperhead()
 				}
 			}
 		}
+
 		if(!zone_isAvailable(goal))
+		{
+			// handle paths which don't need Tower keys but the World's Biggest Jerk asks for The Eye of the Stars
+			if (goal == $location[The Hole in the Sky])
+			{
+				if (!get_property("sl_holeinthesky").to_boolean())
+				{
+					set_property("sl_holeinthesky", true);
+				}
+				return L10_holeInTheSkyUnlock();
+			}
 			return false;
-		return ccAdv(goal);
+		}
+		else
+		{
+			return ccAdv(goal);
+		}
 	}
 
 	if(get_property("questL11Shen") != "finished")
@@ -14617,6 +14635,10 @@ void sl_begin()
 	backupSetting("mpAutoRecoveryTarget", -1);
 	backupSetting("manaBurningTrigger", -1);
 	backupSetting("manaBurningThreshold", -1);
+
+	backupSetting("currentMood", "apathetic");
+	backupSetting("customCombatScript", "null");
+	backupSetting("battleAction", "custom combat script");
 
 	backupSetting("choiceAdventure1107", 1);
 
