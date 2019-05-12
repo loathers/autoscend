@@ -12909,7 +12909,7 @@ boolean L11_ronCopperhead()
 		// open red boxes when we get them (not sure if this is the place for this but it'll do for now)
 		if (item_amount($item[red box]) > 0)
 		{
-			use (item_amount($item[red box]), $item[red box])
+			use (item_amount($item[red box]), $item[red box]);
 		}
 		return retval;
 	}
