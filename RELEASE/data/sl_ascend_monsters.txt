@@ -61,6 +61,10 @@ sniff	10	Tomb Rat
 sniff	11	Blooper	loc:8-Bit Realm
 sniff	12	Bob Racecar	!sniffed:Racecar Bob
 sniff	13	Racecar Bob	!sniffed:Bob Racecar
+sniff	14	Government Scientist	class:Ed
+sniff	15	Green Ops Soldier
+sniff	16	Possessed Wine Rack
+sniff	17	Blue Oyster cultist
 
 # Gotta get that wig
 yellowray	0	Burly Sidekick	!item:Mohawk Wig

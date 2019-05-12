@@ -1186,6 +1186,7 @@ string sl_combatHandler(int round, string opp, string text)
 		if(canUse($skill[lightning strike]))
 		{
 			handleTracker(enemy, $skill[lightning strike], "sl_instakill");
+			loopHandlerDelayAll();
 			return useSkill($skill[lightning strike]);
 		}
 
@@ -1194,6 +1195,7 @@ string sl_combatHandler(int round, string opp, string text)
 			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Chest X-Ray], "sl_instakill");
+				loopHandlerDelayAll();
 				return useSkill($skill[Chest X-Ray]);
 			}
 		}
@@ -1202,6 +1204,7 @@ string sl_combatHandler(int round, string opp, string text)
 			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[shattering punch], "sl_instakill");
+				loopHandlerDelayAll();
 				return useSkill($skill[shattering punch]);
 			}
 		}
@@ -1210,6 +1213,7 @@ string sl_combatHandler(int round, string opp, string text)
 			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Gingerbread Mob Hit], "sl_instakill");
+				loopHandlerDelayAll();
 				return useSkill($skill[Gingerbread Mob Hit]);
 			}
 		}
@@ -1229,6 +1233,7 @@ string sl_combatHandler(int round, string opp, string text)
 			{
 				set_property("sl_batoomerangUse", get_property("sl_batoomerangUse").to_int() + 1);
 				handleTracker(enemy, $item[Replica Bat-oomerang], "sl_instakill");
+				loopHandlerDelayAll();
 				return useItem($item[Replica Bat-oomerang]);
 			}
 		}
@@ -1236,6 +1241,7 @@ string sl_combatHandler(int round, string opp, string text)
 		if(canUse($skill[Fire the Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean())
 		{
 			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "sl_instakill");
+			loopHandlerDelayAll();
 			return useSkill($skill[Fire the Jokester\'s Gun]);
 		}
 	}
@@ -2514,6 +2520,7 @@ string sl_edCombatHandler(int round, string opp, string text)
 				set_property("sl_batoomerangUse", get_property("sl_batoomerangUse").to_int() + 1);
 				set_property("sl_combatHandler", combatState + "(batoomerang)");
 				handleTracker(enemy, $item[Replica Bat-oomerang], "sl_instakill");
+				loopHandlerDelayAll();
 				return "item " + $item[Replica Bat-oomerang];
 			}
 		}
@@ -2522,6 +2529,7 @@ string sl_edCombatHandler(int round, string opp, string text)
 		{
 			set_property("sl_combatHandler", combatState + "(jokesterGun)");
 			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "sl_instakill");
+			loopHandlerDelayAll();
 			return "skill" + $skill[Fire the Jokester\'s Gun];
 		}
 	}
