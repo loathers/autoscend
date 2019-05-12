@@ -1751,9 +1751,6 @@ void initializeDay(int day)
 		sl_saberChoice("res");
 	}
 
-	cli_execute("ccs null");
-	set_property("battleAction", "custom combat script");
-
 	if((item_amount($item[cursed microwave]) >= 1) && !get_property("_cursedMicrowaveUsed").to_boolean())
 	{
 		use(1, $item[cursed microwave]);
@@ -14640,6 +14637,8 @@ void sl_begin()
 	backupSetting("manaBurningThreshold", -1);
 
 	backupSetting("currentMood", "apathetic");
+	backupSetting("customCombatScript", "null");
+	backupSetting("battleAction", "custom combat script");
 
 	backupSetting("choiceAdventure1107", 1);
 

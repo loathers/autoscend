@@ -2635,7 +2635,7 @@ string sl_edCombatHandler(int round, string opp, string text)
 
 	if(!contains_text(edCombatState, "curseofstench") && sl_have_skill($skill[Curse Of Stench]) && (my_mp() >= 35) && (get_property("stenchCursedMonster") != opp) && (get_property("sl_edCombatStage").to_int() < 3))
 	{
-		if($monsters[Bob Racecar, Cabinet of Dr. Limpieza, Dairy Goat, Dirty Old Lihc, Government Scientist,  Green Ops Soldier, Possessed Wine Rack, Pygmy Bowler, Pygmy Witch Surgeon, Quiet Healer, Racecar Bob, Writing Desk, Blue Oyster cultist] contains enemy)
+		if(sl_wantToSniff(enemy, my_location()))
 		{
 			set_property("sl_edCombatHandler", combatState + "(curseofstench)");
 			handleTracker(enemy, $skill[Curse Of Stench], "sl_sniffs");
