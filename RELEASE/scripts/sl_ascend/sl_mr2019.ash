@@ -159,6 +159,29 @@ boolean sl_sausageEatEmUp() {
 	return sl_sausageEatEmUp(0);
 }
 
+boolean pirateRealmAvailable()
+{
+	if(!is_unrestricted($item[PirateRealm membership packet]))
+	{
+		return false;
+	}
+	if((get_property("prAlways").to_boolean() || get_property("_prToday").to_boolean()))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean LX_unlockPirateRealm()
+{
+	if(!pirateRealmAvailable())                       return false;
+	if(possessEquipment($item[PirateRealm eyepatch])) return false;
+	if(my_adventures() < 40)                          return false;
+
+	visit_url("place.php?whichplace=realm_pirate&action=pr_port");
+	return true;
+}
+
 boolean sl_saberChoice(string choice)
 {
 	if(!is_unrestricted($item[Fourth of May Cosplay Saber]))
