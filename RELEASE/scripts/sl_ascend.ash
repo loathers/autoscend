@@ -4250,7 +4250,7 @@ boolean L13_towerNSTower()
 		acquireMP(120, true);
 
 		int sources = 0;
-		if(item_amount($item[astral shirt]) > 0)
+		if(item_amount($item[astral shirt]) > 0 && can_equip($item[astral shirt]))
 		{
 			equip($item[astral shirt]);
 		}
