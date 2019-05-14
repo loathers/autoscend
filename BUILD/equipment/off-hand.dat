@@ -16,7 +16,7 @@ Trader Olaf's Exotic Stinkbeans	skill:Beancannon;!prop:_beancannonUses=5
 Pork 'n' Pork 'n' Pork 'n' Beans	skill:Beancannon;!prop:_beancannonUses=5
 Heimz Fortified Kidney Beans	skill:Beancannon;!prop:_beancannonUses=5
 Ouija Board, Ouija Board	class:Turtle Tamer
-Kramco Sausage-O-Matic&trade;
+Kramco Sausage-O-Matic&trade;	prop:_sausageFights>=7
 Operation Patriot Shield
 Ox-head Shield
 Latte Lovers Member's Mug
@@ -29,6 +29,7 @@ Yorick
 Red X Shield
 Party Crasher
 Spiked Femur
+Whatsian Ionic Pliers	class:Ed
 Hot Plate
 Oversized Pizza Cutter
 Cardboard Wakizashi

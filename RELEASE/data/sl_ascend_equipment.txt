@@ -64,14 +64,15 @@ acc	48	Jolly Roger Charrrm Bracelet
 acc	49	Grumpy Old Man Charrrm Bracelet
 acc	50	Bonerdagon Necklace
 acc	51	Batskin Belt
-acc	52	Garish Pinky Ring
-acc	53	Ring Of Telling Skeletons What To Do
-acc	54	Imp Unity Ring
-acc	55	Infernal Insoles
-acc	56	Glowing Red Eye
-acc	57	Stuffed Shoulder Parrot
-acc	58	Vampire Collar
-acc	59	Jaunty Feather
+acc	52	shiny ring
+acc	53	Garish Pinky Ring
+acc	54	Ring Of Telling Skeletons What To Do
+acc	55	Imp Unity Ring
+acc	56	Infernal Insoles
+acc	57	Glowing Red Eye
+acc	58	Stuffed Shoulder Parrot
+acc	59	Vampire Collar
+acc	60	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true
@@ -231,7 +232,7 @@ off-hand	13	Trader Olaf's Exotic Stinkbeans	skill:Beancannon;!prop:_beancannonUs
 off-hand	14	Pork 'n' Pork 'n' Pork 'n' Beans	skill:Beancannon;!prop:_beancannonUses=5
 off-hand	15	Heimz Fortified Kidney Beans	skill:Beancannon;!prop:_beancannonUses=5
 off-hand	16	Ouija Board, Ouija Board	class:Turtle Tamer
-off-hand	17	Kramco Sausage-O-Matic&trade;
+off-hand	17	Kramco Sausage-O-Matic&trade;	prop:_sausageFights>=7
 off-hand	18	Operation Patriot Shield
 off-hand	19	Ox-head Shield
 off-hand	20	Latte Lovers Member's Mug
@@ -244,13 +245,14 @@ off-hand	26	Yorick
 off-hand	27	Red X Shield
 off-hand	28	Party Crasher
 off-hand	29	Spiked Femur
-off-hand	30	Hot Plate
-off-hand	31	Oversized Pizza Cutter
-off-hand	32	Cardboard Wakizashi
-off-hand	33	Pitchfork
-off-hand	34	Sabre Teeth
-off-hand	35	Knob Goblin Scimitar
-off-hand	36	Turtle Totem
+off-hand	30	Whatsian Ionic Pliers	class:Ed
+off-hand	31	Hot Plate
+off-hand	32	Oversized Pizza Cutter
+off-hand	33	Cardboard Wakizashi
+off-hand	34	Pitchfork
+off-hand	35	Sabre Teeth
+off-hand	36	Knob Goblin Scimitar
+off-hand	37	Turtle Totem
 
 # Good ol' pants
 pants	0	Pantsgiving

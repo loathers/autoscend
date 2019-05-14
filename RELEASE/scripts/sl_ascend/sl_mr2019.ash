@@ -159,6 +159,59 @@ boolean sl_sausageEatEmUp() {
 	return sl_sausageEatEmUp(0);
 }
 
+boolean sl_sausageGoblin()
+{
+	return sl_sausageGoblin($location[none], "");
+}
+
+boolean sl_sausageGoblin(location loc)
+{
+	return sl_sausageGoblin(loc, "");
+}
+
+boolean sl_sausageGoblin(location loc, string option)
+{
+	// Sausage Goblins have super low encounter priority so they will be overriden
+	// by all sorts stuff like superlikelies, wanderers and semi-rares.
+	// The good news is, being overridden just means adventure there again to get it
+
+	if(!possessEquipment($item[Kramco Sausage-o-Matic&trade;]))
+	{
+		return false;
+	}
+
+	// My (Malibu Stacey) and Ezandora's spading appears to guarantee the first 
+	// 7 sausage goblins using a formula of 3n+1 adventures since the previous.
+	// After that, you're on your own (hey it's better than nothing).
+	// Also that doesn't apply to the first goblin, it's always 100%.
+	int sausageFights = get_property("_sausageFights").to_int();
+	if (sausageFights >= 7)
+	{
+		return false;
+	}
+
+	int currentGoblinCeiling = (3 * (sausageFights + 1)) + 1;
+	if (sausageFights > 0 && (total_turns_played() - get_property("_lastSausageMonsterTurn").to_int()) < currentGoblinCeiling)
+	{
+		return false;
+	}
+
+	if(loc == $location[none])
+	{
+		return true;
+	}
+
+	if(!have_equipped($item[Kramco Sausage-o-Matic&trade;]))
+	{
+		if(item_amount($item[Kramco Sausage-o-Matic&trade;]) == 0)
+		{
+			return false;
+		}
+		equip($item[Kramco Sausage-o-Matic&trade;]);
+	}
+	return slAdv(1, loc, option);
+}
+
 boolean pirateRealmAvailable()
 {
 	if(!is_unrestricted($item[PirateRealm membership packet]))
