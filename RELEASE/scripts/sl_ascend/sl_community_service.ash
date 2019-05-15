@@ -1978,6 +1978,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Loyal Tea], 0, 1, 1);
+			buffMaintain($effect[Blood Bond], 0, 1, 1);
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Joy]) > 0) && (have_effect($effect[Joy]) == 0))
 			{
 				chew(1, $item[Abstraction: Joy]);
@@ -2178,6 +2179,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Scowl of the Auk], 10, 1, 1);
 			buffMaintain($effect[Tenacity of the Snapper], 8, 1, 1);
 			buffMaintain($effect[Disdain of the War Snapper], 15, 1, 1);
+			buffMaintain($effect[Frenzied, Bloody], 10, 1, 1);
 			songboomSetting("weapon damage");
 
 			buffMaintain($effect[The Power Of LOV], 0, 1, 1);

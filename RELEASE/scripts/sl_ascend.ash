@@ -4250,7 +4250,7 @@ boolean L13_towerNSTower()
 		acquireMP(120, true);
 
 		int sources = 0;
-		if(item_amount($item[astral shirt]) > 0)
+		if(item_amount($item[astral shirt]) > 0 && can_equip($item[astral shirt]))
 		{
 			equip($item[astral shirt]);
 		}
@@ -14359,6 +14359,7 @@ boolean doTasks()
 	if(LX_guildUnlock())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_handleSpookyravenNecklace())	return true;
+	if(LX_unlockPirateRealm())			return true;
 	if(L0_handleRainDoh())				return true;
 	if(routineRainManHandler())			return true;
 	if(LX_handleSpookyravenFirstFloor())return true;

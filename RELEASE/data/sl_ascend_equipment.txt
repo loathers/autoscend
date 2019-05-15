@@ -47,30 +47,31 @@ acc	31	Ghost of a Necklace
 acc	32	Bronze Detective Badge
 acc	33	Badge Of Authority
 acc	34	Xiblaxian Holo-Wrist-Puter
-acc	35	Time-Twitching Toolbelt
-acc	36	Mr. Accessory Jr.
-acc	37	Iron Beta of Industry
-acc	38	LOV Earrings
-acc	39	wax hand
-acc	40	Perfume-Soaked Bandana
-acc	41	Wicker Kickers
-acc	42	Compression Stocking
-acc	43	Glow-In-The-Dark Necklace
-acc	44	Pirate Fledges
-acc	45	Plastic Detective Badge
-acc	46	Jangly Bracelet
-acc	47	Jolly Roger Charrrm Bracelet
-acc	48	Grumpy Old Man Charrrm Bracelet
-acc	49	Bonerdagon Necklace
-acc	50	Batskin Belt
-acc	51	Garish Pinky Ring
-acc	52	Ring Of Telling Skeletons What To Do
-acc	53	Imp Unity Ring
-acc	54	Infernal Insoles
-acc	55	Glowing Red Eye
-acc	56	Stuffed Shoulder Parrot
-acc	57	Vampire Collar
-acc	58	Jaunty Feather
+acc	35	Mr. Accessory Jr.
+acc	36	Iron Beta of Industry
+acc	37	LOV Earrings
+acc	38	wax hand
+acc	39	Perfume-Soaked Bandana
+acc	40	Wicker Kickers
+acc	41	Compression Stocking
+acc	42	Glow-In-The-Dark Necklace
+acc	43	Time-Twitching Toolbelt
+acc	44	Mr. Accessory
+acc	45	Pirate Fledges
+acc	46	Plastic Detective Badge
+acc	47	Jangly Bracelet
+acc	48	Jolly Roger Charrrm Bracelet
+acc	49	Grumpy Old Man Charrrm Bracelet
+acc	50	Bonerdagon Necklace
+acc	51	Batskin Belt
+acc	52	Garish Pinky Ring
+acc	53	Ring Of Telling Skeletons What To Do
+acc	54	Imp Unity Ring
+acc	55	Infernal Insoles
+acc	56	Glowing Red Eye
+acc	57	Stuffed Shoulder Parrot
+acc	58	Vampire Collar
+acc	59	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true

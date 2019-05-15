@@ -2391,6 +2391,14 @@ boolean instakillable(monster mon)
 
 boolean stunnable(monster mon)
 {
+	if (mon.random_modifiers contains "unstoppable")
+	{
+		return false;
+	}
+	if (mon.random_modifiers contains "rabbit mask")
+	{
+		return false;
+	}
 	// Incomplete, because challenge paths are a thing
 	boolean[monster] unstunnable_monsters = $monsters[
 		// Standard
