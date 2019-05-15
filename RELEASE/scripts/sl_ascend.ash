@@ -1549,7 +1549,7 @@ int handlePulls(int day)
 
 		if((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer]))
 		{
-			if((item_amount($item[Deck of Every Card]) == 0) && !have_skill($skill[Summon Smithsness]))
+			if((item_amount($item[Deck of Every Card]) == 0) && !sl_have_skill($skill[Summon Smithsness]))
 			{
 				pullXWhenHaveY($item[Thor\'s Pliers], 1, 0);
 			}
@@ -1563,7 +1563,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[gumshoes], 1, 0);
 		}
-		if(have_skill($skill[Summon Smithsness]))
+		if(sl_have_skill($skill[Summon Smithsness]))
 		{
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 		}
@@ -2009,7 +2009,7 @@ void initializeDay(int day)
 					buyUpTo(1, $item[Clancy\'s Crumhorn]);
 				}
 			}
-			if(have_skill($skill[Summon Smithsness]) && (my_mp() > (3 * mp_cost($skill[Summon Smithsness]))))
+			if(sl_have_skill($skill[Summon Smithsness]) && (my_mp() > (3 * mp_cost($skill[Summon Smithsness]))))
 			{
 				use_skill(3, $skill[Summon Smithsness]);
 			}
@@ -2585,15 +2585,15 @@ boolean doBedtime()
 		{
 			use(1, $item[The Legendary Beat]);
 		}
-		if(have_skill($skill[Summon Clip Art]) && get_property("_clipartSummons").to_int() == 0)
+		if(sl_have_skill($skill[Summon Clip Art]) && get_property("_clipartSummons").to_int() == 0)
 		{
 			cli_execute("make unbearable light");
 		}
-		if(have_skill($skill[Summon Clip Art]) && get_property("_clipartSummons").to_int() == 1)
+		if(sl_have_skill($skill[Summon Clip Art]) && get_property("_clipartSummons").to_int() == 1)
 		{
 			cli_execute("make cold-filtered water");
 		}
-		if(have_skill($skill[Summon Clip Art]) && get_property("_clipartSummons").to_int() == 2)
+		if(sl_have_skill($skill[Summon Clip Art]) && get_property("_clipartSummons").to_int() == 2)
 		{
 			cli_execute("make bucket of wine");
 		}
@@ -5227,7 +5227,7 @@ boolean L12_lastDitchFlyer()
 
 boolean LX_attemptFlyering()
 {
-	if(elementalPlanes_access($element[stench]) && have_skill($skill[Summon Smithsness]))
+	if(elementalPlanes_access($element[stench]) && sl_have_skill($skill[Summon Smithsness]))
 	{
 		ccAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 	}
@@ -5391,7 +5391,7 @@ boolean LX_attemptPowerLevel()
 		}
 	}
 
-	if(elementalPlanes_access($element[stench]) && have_skill($skill[Summon Smithsness]) && (get_property("sl_beatenUpCount").to_int() == 0))
+	if(elementalPlanes_access($element[stench]) && sl_have_skill($skill[Summon Smithsness]) && (get_property("sl_beatenUpCount").to_int() == 0))
 	{
 		ccAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 	}

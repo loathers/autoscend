@@ -555,6 +555,9 @@ boolean bat_skillValid(skill sk)
 	if($skills[Piercing Gaze, Perceive Soul, Ensorcel, Spectral Awareness] contains sk && have_effect($effect[Wolf Form]) + have_effect($effect[Mist Form]) > 0)
 		return false;
 
+	if((mp_cost(sk) > 0) && (my_class() == $class[Vampyre]))
+		return false;
+
 	return true;
 }
 
