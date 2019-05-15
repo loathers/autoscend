@@ -1752,19 +1752,19 @@ element ns_hedge3()
 
 skill preferredLibram()
 {
-	if(have_skill($skill[Summon Brickos]) && (get_property("_brickoEyeSummons").to_int() < 3))
+	if(sl_have_skill($skill[Summon Brickos]) && (get_property("_brickoEyeSummons").to_int() < 3))
 	{
 		return $skill[Summon Brickos];
 	}
-	if(have_skill($skill[Summon Party Favor]) && (get_property("_favorRareSummons").to_int() < 3))
+	if(sl_have_skill($skill[Summon Party Favor]) && (get_property("_favorRareSummons").to_int() < 3))
 	{
 		return $skill[Summon Party Favor];
 	}
-	if(have_skill($skill[Summon Resolutions]))
+	if(sl_have_skill($skill[Summon Resolutions]))
 	{
 		return $skill[Summon Resolutions];
 	}
-	if(have_skill($skill[Summon Taffy]))
+	if(sl_have_skill($skill[Summon Taffy]))
 	{
 		return $skill[Summon Taffy];
 	}
