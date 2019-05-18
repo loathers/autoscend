@@ -2017,8 +2017,13 @@ boolean acquireMP(int goal, boolean buyIt)
 		return false;
 	}
 
+	if(my_mp() >= goal)
+	{
+		return true;
+	}
+
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
-	if (my_maxmp() - my_mp() > 300)
+	if(my_maxmp() - my_mp() > 300)
 	{
 		sl_sausageEatEmUp(1);
 	}
