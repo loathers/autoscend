@@ -488,6 +488,8 @@ int doRest();												//Defined in sl_ascend/sl_util.ash
 boolean doTasks();											//Defined in sl_ascend.ash
 boolean keepOnTruckin();									//Defined in sl_ascend/sl_cooking.ash
 boolean doThemtharHills();									//Defined in sl_ascend.ash
+boolean isSpeakeasyDrink(item drink); //Defined in sl_ascend/sl_clan.ash
+boolean canDrinkSpeakeasyDrink(item drink); //Defined in sl_ascend/sl_clan.ash
 boolean drinkSpeakeasyDrink(item drink);					//Defined in sl_ascend/sl_clan.ash
 boolean drinkSpeakeasyDrink(string drink);					//Defined in sl_ascend/sl_clan.ash
 boolean eatFancyDog(string dog);							//Defined in sl_ascend/sl_clan.ash

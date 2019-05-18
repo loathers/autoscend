@@ -504,7 +504,6 @@ boolean LM_bond()
 			{
 				if((inebriety_left() < 3) && (inebriety_left() >= 1))
 				{
-					buffMaintain($effect[Ode to Booze], 50, 1, inebriety_left());
 					if(item_amount($item[Splendid Martini]) >= inebriety_left())
 					{
 						ccDrink(inebriety_left(), $item[Splendid Martini]);
@@ -519,7 +518,6 @@ boolean LM_bond()
 			{
 				if(inebriety_left() >= 10)
 				{
-					buffMaintain($effect[Ode to Booze], 50, 1, 10);
 					if(item_amount($item[Splendid Martini]) >= 10)
 					{
 						ccDrink(10, $item[Splendid Martini]);
@@ -531,7 +529,6 @@ boolean LM_bond()
 				}
 				else if(inebriety_left() >= 3)
 				{
-					buffMaintain($effect[Ode to Booze], 50, 1, 3);
 					if(item_amount($item[Splendid Martini]) >= 3)
 					{
 						ccDrink(3, $item[Splendid Martini]);

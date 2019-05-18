@@ -221,7 +221,7 @@ boolean L13_ed_towerHandler()
 			if(((my_inebriety() + 1) < inebriety_limit()) && (item_amount($item[Coinspiracy]) > 0) && (have_effect($effect[Jungle Juiced]) == 0))
 			{
 				buyUpTo(1, $item[Jungle Juice]);
-				drink(1, $item[Jungle Juice]);
+				ccDrink(1, $item[Jungle Juice]);
 				tryJungle = true;
 			}
 
@@ -786,32 +786,31 @@ boolean ed_eatStuff()
 
 	if((my_daycount() >= 3) && (my_inebriety() == 0) && (inebriety_limit() == 4) && (item_amount($item[Xiblaxian Space-Whiskey]) > 0) && (my_adventures() < 10))
 	{
-		drink(1, $item[Xiblaxian Space-Whiskey]);
+		ccDrink(1, $item[Xiblaxian Space-Whiskey]);
 	}
 	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 11))
 	{
-		drink(1, $item[Astral Pilsner]);
+		ccDrink(1, $item[Astral Pilsner]);
 	}
 	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 10) && (my_adventures() < 3))
 	{
-		drink(1, $item[Astral Pilsner]);
+		ccDrink(1, $item[Astral Pilsner]);
 	}
 	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 9) && (my_adventures() < 3) && (my_fullness() >= fullness_limit()))
 	{
-		drink(1, $item[Astral Pilsner]);
+		ccDrink(1, $item[Astral Pilsner]);
 	}
 	if((item_amount($item[Coinspiracy]) >= 6) && ((my_inebriety() + 3) <= inebriety_limit()) && (my_adventures() < 3) && (item_amount($item[Astral Pilsner]) == 0))
 	{
 		buyUpTo(1, $item[Highest Bitter]);
-		drink(1, $item[Highest Bitter]);
+		ccDrink(1, $item[Highest Bitter]);
 	}
 
 	if((!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie")) && (get_property("semirareLocation") != $location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		if((item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500) && (inebriety_limit() == 4) && ((my_inebriety() == 0) || (my_inebriety() == 3)) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]))
 		{
-			drinkSpeakeasyDrink($item[Lucky Lindy]);
-			#cli_execute("drink 1 lucky lindy");
+			ccDrink(1, $item[Lucky Lindy]);
 		}
 		else if((my_meat() >= npc_price($item[Fortune Cookie])) && (fullness_left() > 0))
 		{

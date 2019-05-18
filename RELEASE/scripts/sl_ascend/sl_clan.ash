@@ -5,6 +5,8 @@ script "sl_clan.ash"
 boolean zataraClanmate(string who);
 boolean zataraSeaside(string who);
 boolean eatFancyDog(string dog);
+boolean isSpeakeasyDrink(item drink);
+boolean canDrinkSpeakeasyDrink(item drink);
 boolean drinkSpeakeasyDrink(item drink);
 boolean drinkSpeakeasyDrink(string drink);
 boolean sl_floundryAction(item it);
@@ -301,8 +303,18 @@ int doHottub()
 	return 5 - get_property("_hotTubSoaks").to_int();
 }
 
-boolean drinkSpeakeasyDrink(item drink)
+boolean isSpeakeasyDrink(item drink)
 {
+	return $items[glass of &quot;milk&quot;, cup of &quot;tea&quot;, thermos of &quot;whiskey&quot;, Lucky Lindy, Bee's Knees, Sockdollager, Ish Kabibble, Hot Socks, Phonus Balonus, Flivver, Sloppy Jalopy] contains drink;
+}
+
+boolean canDrinkSpeakeasyDrink(item drink)
+{
+	if(!isSpeakeasyDrink(drink))
+	{
+		return false;
+	}
+
 	if(item_amount($item[Clan VIP Lounge Key]) == 0)
 	{
 		return false;
@@ -333,9 +345,17 @@ boolean drinkSpeakeasyDrink(item drink)
 		return false;
 	}
 
-	cli_execute("drink 1 " + drink);
-
 	return true;
+}
+
+boolean drinkSpeakeasyDrink(item drink)
+{
+	if(!canDrinkSpeakeasyDrink(drink))
+	{
+		return false;
+	}
+
+	return cli_execute("drink 1 " + drink);
 }
 
 

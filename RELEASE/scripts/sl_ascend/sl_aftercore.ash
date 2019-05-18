@@ -1180,7 +1180,6 @@ boolean sl_cheesePostCS(int leave)
 
 	while((inebriety_left() >= 1) && (item_amount($item[Astral Pilsner]) > 0))
 	{
-		buffMaintain($effect[Ode to Booze], 50, 1, 1);
 		ccDrink(1, $item[Astral Pilsner]);
 	}
 
@@ -1188,20 +1187,17 @@ boolean sl_cheesePostCS(int leave)
 	{
 		if(item_amount($item[Sacramento Wine]) > 0)
 		{
-			buffMaintain($effect[Ode to Booze], 50, 1, 1);
 			ccDrink(1, $item[Sacramento Wine]);
 		}
 	}
 
 	while((inebriety_left() >= 8) && (item_amount($item[Sacramento Wine]) > 4))
 	{
-		buffMaintain($effect[Ode to Booze], 50, 1, 4);
 		ccDrink(4, $item[Sacramento Wine]);
 	}
 
 	while((inebriety_left() >= 4) && (item_amount($item[Hacked Gibson]) > 0))
 	{
-		buffMaintain($effect[Ode to Booze], 50, 1, 4);
 		ccDrink(1, $item[Hacked Gibson]);
 	}
 	while((inebriety_left() >= 1) && (item_amount($item[Sacramento Wine]) > 0))
@@ -1211,7 +1207,6 @@ boolean sl_cheesePostCS(int leave)
 		{
 			equip($slot[Acc3], $item[Mafia Pinky Ring]);
 		}
-		buffMaintain($effect[Ode to Booze], 50, 1, 1);
 		ccDrink(1, $item[Sacramento Wine]);
 		if(equipped_item($slot[Acc3]) != it)
 		{
@@ -1642,7 +1637,7 @@ boolean sl_cheesePostCS(int leave)
 			print("Could not buy 5-Hour Acrimony, price too high", "red");
 			break;
 		}
-		drink(1, $item[5-Hour Acrimony]);
+		ccDrink(1, $item[5-Hour Acrimony]);
 	}
 
 
@@ -1653,7 +1648,7 @@ boolean sl_cheesePostCS(int leave)
 			print("Could not buy Beery Blood, price too high", "red");
 			break;
 		}
-		drink(1, $item[Beery Blood]);
+		ccDrink(1, $item[Beery Blood]);
 	}
 
 	if(fullness_left() > 0)
@@ -1771,7 +1766,7 @@ boolean sl_cheesePostCS(int leave)
 	{
 		if((item_amount($item[5-hour acrimony]) > 0) && (my_inebriety() <= inebriety_limit()))
 		{
-			overdrink(1, $item[5-hour acrimony]);
+			ccOverdrink(1, $item[5-hour acrimony]);
 		}
 		if(get_property("sl_pvpOutfit") != "")
 		{

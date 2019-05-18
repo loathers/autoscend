@@ -5627,12 +5627,6 @@ boolean L11_hiddenCity()
 							{
 								abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
 							}
-							if(acquireMP(mp_cost($skill[The Ode to Booze]), true))
-							{
-								shrugAT($effect[Ode to Booze]);
-								buffMaintain($effect[Ode to Booze], 50, 1, 1);
-							}
-
 							ccDrink(1, $item[Cursed Punch]);
 						}
 						else
@@ -9684,7 +9678,7 @@ boolean LX_steelOrgan()
 		}
 		if((item_amount($item[Steel Margarita]) > 0) && ((my_inebriety() <= 5) || (my_inebriety() >= 12)))
 		{
-			drink(1, $item[Steel Margarita]);
+			ccDrink(1, $item[Steel Margarita]);
 		}
 		if((item_amount($item[Steel-Scented Air Freshener]) > 0) && (spleen_left() >= 5))
 		{
