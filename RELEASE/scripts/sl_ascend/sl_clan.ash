@@ -641,6 +641,7 @@ boolean eatFancyDog(string dog)
 	visit_url("clan_viplounge.php?action=hotdogstand");
 
 	cli_execute("eatsilent 1 " + dog);
+	handleTracker(dog, "sl_eaten");
 	return true;
 }
 

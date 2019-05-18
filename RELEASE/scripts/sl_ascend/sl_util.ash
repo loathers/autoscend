@@ -514,6 +514,17 @@ void handleTracker(item used, string tracker)
 	set_property(tracker, cur);
 }
 
+void handleTracker(string used, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
 boolean organsFull()
 {
 	if(my_fullness() < fullness_limit())
