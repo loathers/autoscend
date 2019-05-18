@@ -301,7 +301,7 @@ boolean tryPantsEat()
 
 boolean canOde(item toDrink)
 {
-	if($items[Steel Margarita, 5-hour acrimony, beery blood, slap and slap again, used beer, shot of flower schapps] contains toDrink)
+	if($items[Steel Margarita, 5-hour acrimony, beery blood, slap and slap again, used beer, shot of flower schnapps] contains toDrink)
 	{
 		return false;
 	}
