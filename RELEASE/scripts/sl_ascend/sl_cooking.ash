@@ -299,6 +299,16 @@ boolean tryPantsEat()
 	return false;
 }
 
+boolean canOde(item toDrink)
+{
+	if($items[Steel Margarita, 5-hour acrimony, beery blood, slap and slap again, used beer, shot of flower schapps] contains toDrink)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 boolean ccDrink(int howMany, item toDrink)
 {
 	if((toDrink == $item[none]) || (howMany <= 0))
@@ -327,7 +337,7 @@ boolean ccDrink(int howMany, item toDrink)
 		equip($slot[Acc3], $item[Mafia Pinky Ring]);
 	}
 
-	if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
+	if(canOde(toDrink) && possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
 		if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
 		{
@@ -336,7 +346,7 @@ boolean ccDrink(int howMany, item toDrink)
 		buffMaintain($effect[Drunk and Avuncular], 0, 1, expectedInebriety);
 	}
 
-	if(sl_have_skill($skill[The Ode to Booze]))
+	if(canOde(toDrink) && sl_have_skill($skill[The Ode to Booze]))
 	{
 		shrugAT($effect[Ode to Booze]);
 		// get enough turns of ode

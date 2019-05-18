@@ -377,6 +377,7 @@ boolean canYellowRay();										//Defined in sl_ascend/sl_util.ash
 boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in sl_ascend/sl_adventure.ash
 boolean ccChew(int howMany, item toChew);					//Defined in sl_ascend/sl_cooking.ash
 int ccCraft(string mode, int count, item item1, item item2);//Defined in sl_ascend/sl_util.ash
+boolean canOde(item toDrink); //Defined in sl_ascend/sl_cooking.ash
 boolean ccDrink(int howMany, item toDrink);					//Defined in sl_ascend/sl_cooking.ash
 boolean ccEat(int howMany, item toEat);						//Defined in sl_ascend/sl_cooking.ash
 boolean ccEat(int howMany, item toEat, boolean silent);		//Defined in sl_ascend/sl_cooking.ash
