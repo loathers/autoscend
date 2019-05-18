@@ -1,13 +1,13 @@
 script "sl_adventure.ash"
 
 # num is not handled properly anyway, so we'll just reject it.
-boolean ccAdv(location loc, string option)
+boolean slAdv(location loc, string option)
 {
-	return ccAdv(1, loc, option);
+	return slAdv(1, loc, option);
 }
 
 # num is not handled properly anyway, so we'll just reject it.
-boolean ccAdv(int num, location loc, string option)
+boolean slAdv(int num, location loc, string option)
 {
 	set_property("sl_combatHandler", "");
 	set_property("sl_diag_round", 0);
@@ -17,11 +17,11 @@ boolean ccAdv(int num, location loc, string option)
 	}
 	if(sl_my_path() == "Actually Ed the Undying")
 	{
-		return ed_ccAdv(num, loc, option);
+		return ed_slAdv(num, loc, option);
 	}
 	if(sl_my_path() == "Pocket Familiars")
 	{
-		return digimon_ccAdv(num, loc, option);
+		return digimon_slAdv(num, loc, option);
 	}
 
 
@@ -49,7 +49,7 @@ boolean ccAdv(int num, location loc, string option)
 		if(last_monster().random_modifiers["clingy"])
 		{
 			int oldDesert = get_property("desertExploration").to_int();
-			retval = ccAdv(num, loc, option);
+			retval = slAdv(num, loc, option);
 			if(my_location() == $location[The Arid\, Extra-Dry Desert])
 			{
 				set_property("desertExploration", oldDesert);
@@ -59,48 +59,48 @@ boolean ccAdv(int num, location loc, string option)
 	return retval;
 }
 
-boolean ccAdv(int num, location loc)
+boolean slAdv(int num, location loc)
 {
-	return ccAdv(num, loc, "");
+	return slAdv(num, loc, "");
 }
 
-boolean ccAdv()
+boolean slAdv()
 {
 	if(my_location() == $location[none])
 	{
-		return ccAdv(1, $location[Noob Cave], "");
+		return slAdv(1, $location[Noob Cave], "");
 	}
-	return ccAdv(1, my_location(), "");
+	return slAdv(1, my_location(), "");
 }
 
-boolean ccAdv(location loc)
+boolean slAdv(location loc)
 {
-	return ccAdv(1, loc, "");
+	return slAdv(1, loc, "");
 }
 
-boolean ccAdvBypass(string url, location loc)
+boolean slAdvBypass(string url, location loc)
 {
-	return ccAdvBypass(url, loc, "");
+	return slAdvBypass(url, loc, "");
 }
 
-#boolean ccAdvBypass(string[int] url, location loc)
+#boolean slAdvBypass(string[int] url, location loc)
 #{
-#	return ccAdvBypass(url, loc, "");
+#	return slAdvBypass(url, loc, "");
 #}
 
-boolean ccAdvBypass(string url, location loc, string option)
+boolean slAdvBypass(string url, location loc, string option)
 {
 	string[int] urlConvert;
 	urlConvert[0] = url;
-	return ccAdvBypass(0, urlConvert, loc, option);
+	return slAdvBypass(0, urlConvert, loc, option);
 }
 
 # Preserved to remind us of this issue.
-#boolean ccAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option)
+#boolean slAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option)
 #
 #	urlGetFlags allows us to force visit_url(X, false). It is a bit field.
 #
-boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
+boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
 	set_property("nextAdventure", loc);
 	cli_execute("presool");
@@ -136,10 +136,10 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 		print("Uh oh! Died when starting a combat indirectly.", "red");
 		if(my_class() == $class[Ed])
 		{
-			return ed_ccAdv(1, loc, option, true);
+			return ed_slAdv(1, loc, option, true);
 		}
 		#Can we just return true here?
-		abort("ccAdvBypass override abort");
+		abort("slAdvBypass override abort");
 	}
 
 	string combatPage = "<b>Combat";
@@ -149,7 +149,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	}
 	if(contains_text(page, combatPage))
 	{
-		print("ccAdvBypass has encountered a combat! (param: '" + option + "')", "green");
+		print("slAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 
 		if(option != "null") // && (option != ""))
 		{
@@ -157,7 +157,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 			{
 				if((inebriety_left() >= 0) || (equipped_item($slot[off-hand]) == $item[Drunkula\'s Wineglass]))
 				{
-					return ccAdv(1, loc, option);
+					return slAdv(1, loc, option);
 				}
 				else
 				{
@@ -234,7 +234,7 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 			boolean retval = true;
 			if((inebriety_left() >= 0) || (equipped_item($slot[off-hand]) == $item[Drunkula\'s Wineglass]))
 			{
-				retval = ccAdv(1, loc, option);
+				retval = slAdv(1, loc, option);
 			}
 			else
 			{
@@ -254,40 +254,40 @@ boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	return false;
 }
 
-boolean ccAdvBypass(int snarfblat, location loc)
+boolean slAdvBypass(int snarfblat, location loc)
 {
 	string page = "adventure.php?snarfblat=" + snarfblat;
-	return ccAdvBypass(page, loc);
+	return slAdvBypass(page, loc);
 }
-boolean ccAdvBypass(int snarfblat, location loc, string option)
+boolean slAdvBypass(int snarfblat, location loc, string option)
 {
 	string page = "adventure.php?snarfblat=" + snarfblat;
-	return ccAdvBypass(page, loc, option);
+	return slAdvBypass(page, loc, option);
 }
 
-boolean ccAdvBypass(int snarfblat)
+boolean slAdvBypass(int snarfblat)
 {
-	return ccAdvBypass(snarfblat, $location[Noob Cave]);
+	return slAdvBypass(snarfblat, $location[Noob Cave]);
 }
-boolean ccAdvBypass(string url)
+boolean slAdvBypass(string url)
 {
-	return ccAdvBypass(url, $location[Noob Cave]);
+	return slAdvBypass(url, $location[Noob Cave]);
 }
-#boolean ccAdvBypass(string[int] url)
+#boolean slAdvBypass(string[int] url)
 #{
-#	return ccAdvBypass(url, $location[Noob Cave]);
+#	return slAdvBypass(url, $location[Noob Cave]);
 #}
-boolean ccAdvBypass(int snarfblat, string option)
+boolean slAdvBypass(int snarfblat, string option)
 {
-	return ccAdvBypass(snarfblat, $location[Noob Cave], option);
+	return slAdvBypass(snarfblat, $location[Noob Cave], option);
 }
-boolean ccAdvBypass(string url, string option)
+boolean slAdvBypass(string url, string option)
 {
-	return ccAdvBypass(url, $location[Noob Cave], option);
+	return slAdvBypass(url, $location[Noob Cave], option);
 }
-#boolean ccAdvBypass(string[int] url, string option)
+#boolean slAdvBypass(string[int] url, string option)
 #{
-#	return ccAdvBypass(url, $location[Noob Cave], option);
+#	return slAdvBypass(url, $location[Noob Cave], option);
 #}
 
 

@@ -195,7 +195,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 	}
 	else
 	{
-		ccAdv(1, $location[Noob Cave], option);
+		slAdv(1, $location[Noob Cave], option);
 		temp = visit_url("main.php");
 
 		string search = "I'd like part of your regalia.";
@@ -325,7 +325,7 @@ boolean fantasyRealmToken()
 
 	//This does not appear to check that we no longer need to adventure there...
 
-	ccAdv(1, $location[The Bandit Crossroads]);
+	slAdv(1, $location[The Bandit Crossroads]);
 	return true;
 }
 
@@ -751,11 +751,11 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	{
 		string[int] pages;
 		pages[0] = "choice.php?pwd&whichchoice=1324&option=" + get_property("choiceAdventure1324");
-		retval = ccAdvBypass(0, pages, $location[The Neverending Party], option);
+		retval = slAdvBypass(0, pages, $location[The Neverending Party], option);
 	}
 	else
 	{
-		retval = ccAdv(1, $location[The Neverending Party], option);
+		retval = slAdv(1, $location[The Neverending Party], option);
 	}
 
 	if(retval)
@@ -1129,7 +1129,7 @@ boolean sl_voteMonster(boolean freeMon, location loc, string option)
 		}
 		equip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
 	}
-	return ccAdv(1, loc, option);
+	return slAdv(1, loc, option);
 }
 
 boolean fightClubNap()

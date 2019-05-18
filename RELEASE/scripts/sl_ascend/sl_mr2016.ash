@@ -500,7 +500,7 @@ boolean sl_advWitchess(string target, string option)
 	pages[2] = "choice.php?pwd=" + my_hash() + "&whichchoice=1182&option=1&piece=" + goal;
 
 	// We use 4 to cause pages[2] to use GET.
-	return ccAdvBypass(4, pages, $location[Noob Cave], option);
+	return slAdvBypass(4, pages, $location[Noob Cave], option);
 }
 
 
@@ -1145,7 +1145,7 @@ boolean LX_ghostBusting()
 		}
 
 		print("Time to bust some ghosts!!!", "green");
-		boolean advVal = ccAdv(goal);
+		boolean advVal = slAdv(goal);
 		if(replaceAcc3 != $item[none])
 		{
 			equip($slot[acc3], replaceAcc3);
@@ -1239,7 +1239,7 @@ boolean timeSpinnerAdventure(string option)
 			string[int] pages;
 			pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
 			pages[1] = "choice.php?pwd=&whichchoice=1195&option=3";
-			if(ccAdvBypass(0, pages, $location[Noob Cave], option)) {}
+			if(slAdvBypass(0, pages, $location[Noob Cave], option)) {}
 			return true;
 		}
 	}
@@ -1263,7 +1263,7 @@ boolean timeSpinnerCombat(monster goal, string option)
 			pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
 			pages[1] = "choice.php?pwd=&whichchoice=1195&option=1";
 			pages[2] = "choice.php?pwd=&whichchoice=1196&option=1&monid=" + goal.id;
-			if(ccAdvBypass(0, pages, $location[Noob Cave], option))
+			if(slAdvBypass(0, pages, $location[Noob Cave], option))
 			{}
 			else
 			{

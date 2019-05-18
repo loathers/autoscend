@@ -406,7 +406,7 @@ boolean LM_bond()
 		{
 			set_property("choiceAdventure1261", 1);
 		}
-		boolean retval = ccAdv($location[Super Villain\'s Lair]);
+		boolean retval = slAdv($location[Super Villain\'s Lair]);
 		if(!retval)
 		{
 			set_property("_sl_bondBriefing", "finished");
@@ -453,19 +453,19 @@ boolean LM_bond()
 				}
 				string old = get_property("choiceAdventure1215");
 				set_property("choiceAdventure1215", 1);
-				ccAdv($location[Gingerbread Civic Center]);
+				slAdv($location[Gingerbread Civic Center]);
 				set_property("choiceAdventure1215", old);
 				return true;
 			}
 			if(get_property("_gingerbreadCityTurns").to_int() < 4)
 			{
-				return ccAdV($location[Gingerbread Upscale Retail District]);
+				return slAdv($location[Gingerbread Upscale Retail District]);
 			}
 			if(get_property("_gingerbreadCityTurns").to_int() == 4)
 			{
 				string old = get_property("choiceAdventure1204");
 				set_property("choiceAdventure1204", 1);
-				ccAdv($location[Gingerbread Train Station]);
+				slAdv($location[Gingerbread Train Station]);
 				set_property("choiceAdventure1204", old);
 				if(item_amount($item[Ultra Mega Sour Ball]) > 0)
 				{
@@ -506,11 +506,11 @@ boolean LM_bond()
 				{
 					if(item_amount($item[Splendid Martini]) >= inebriety_left())
 					{
-						ccDrink(inebriety_left(), $item[Splendid Martini]);
+						slDrink(inebriety_left(), $item[Splendid Martini]);
 					}
 					else
 					{
-						ccDrink(inebriety_left(), $item[Improved Martini]);
+						slDrink(inebriety_left(), $item[Improved Martini]);
 					}
 				}
 			}
@@ -520,22 +520,22 @@ boolean LM_bond()
 				{
 					if(item_amount($item[Splendid Martini]) >= 10)
 					{
-						ccDrink(10, $item[Splendid Martini]);
+						slDrink(10, $item[Splendid Martini]);
 					}
 					else
 					{
-						ccDrink(10, $item[Improved Martini]);
+						slDrink(10, $item[Improved Martini]);
 					}
 				}
 				else if(inebriety_left() >= 3)
 				{
 					if(item_amount($item[Splendid Martini]) >= 3)
 					{
-						ccDrink(3, $item[Splendid Martini]);
+						slDrink(3, $item[Splendid Martini]);
 					}
 					else
 					{
-						ccDrink(3, $item[Improved Martini]);
+						slDrink(3, $item[Improved Martini]);
 					}
 				}
 			}
@@ -568,7 +568,7 @@ boolean LM_bond()
 				while(acquireHermitItem($item[Ten-Leaf Clover]));
 				use(1, $item[Disassembled Clover]);
 				backupSetting("cloverProtectActive", false);
-				ccAdvBypass(270, $location[Itznotyerzitz Mine]);
+				slAdvBypass(270, $location[Itznotyerzitz Mine]);
 				restoreSetting("cloverProtectActive");
 				return true;
 			}
@@ -608,7 +608,7 @@ boolean LM_bond()
 					equip($slot[acc2], $item[Continuum Transfunctioner]);
 					sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 					set_property("sl_digitizeDirective", $monster[Blooper]);
-					ccAdv(1, $location[8-bit Realm]);
+					slAdv(1, $location[8-bit Realm]);
 					set_property("sl_digitizeDirective", "");
 					return true;
 				}
@@ -663,7 +663,7 @@ boolean LM_bond()
 					abort("Can not restore MP in order to disintegrate a filthworm. Please YR the filthworm we can access next. Thank you.");
 				}
 				set_property("sl_combatDirective", "start;" + yellowRayCombatString());
-				boolean retval = ccAdv(loc);
+				boolean retval = slAdv(loc);
 				set_property("sl_combatDirective", "");
 				return retval;
 			}
@@ -693,7 +693,7 @@ boolean LM_bond()
 				{
 					if(item_amount($item[Star Chart]) == 0)
 					{
-						return ccAdv($location[The Hole In The Sky]);
+						return slAdv($location[The Hole In The Sky]);
 					}
 				}
 			}
@@ -723,11 +723,11 @@ boolean LM_bond()
 					timeSpinnerCombat($monster[Animated Ornate Nightstand]);
 					if(contains_text(visit_url("main.php"), "choice.php"))
 					{
-						ccAdv($location[The Haunted Bedroom]);
+						slAdv($location[The Haunted Bedroom]);
 					}
 					if(contains_text(visit_url("main.php"), "Combat"))
 					{
-						ccAdv($location[The Haunted Bedroom]);
+						slAdv($location[The Haunted Bedroom]);
 					}
 					set_property("sl_disableAdventureHandling", false);
 				}

@@ -559,12 +559,12 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1";
 	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" + mId + "&option=1&choice2=and+Fight%21";
-	ccAdvBypass(0, pages, $location[Noob Cave], option);
+	slAdvBypass(0, pages, $location[Noob Cave], option);
 
 #	handlePreAdventure($location[Noob Cave]);
 #	visit_url("runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1", true);
 #	visit_url("choice.php?pwd&whichchoice=970&whichmonster=" + mId + "&option=1&choice2=and+Fight%21");
-#	ccAdv(1, $location[Noob Cave]);
+#	slAdv(1, $location[Noob Cave]);
 
 	if(wink == true)
 	{

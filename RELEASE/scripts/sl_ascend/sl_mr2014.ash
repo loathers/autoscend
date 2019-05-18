@@ -54,7 +54,7 @@ boolean dna_startAcquire()
 				handleBjornify($familiar[Grinning Turtle]);
 			}
 			handleFamiliar($familiar[Machine Elf]);
-			ccAdv(1, $location[The Deep Machine Tunnels]);
+			slAdv(1, $location[The Deep Machine Tunnels]);
 			if(bjorn == $familiar[Machine Elf])
 			{
 				handleBjornify(bjorn);
@@ -65,9 +65,9 @@ boolean dna_startAcquire()
 		{
 			if($location[Sloppy Seconds Diner].turns_spent == 0)
 			{
-				ccAdv(1, $location[Sloppy Seconds Diner]);
+				slAdv(1, $location[Sloppy Seconds Diner]);
 			}
-			ccAdv(1, $location[Sloppy Seconds Diner]);
+			slAdv(1, $location[Sloppy Seconds Diner]);
 			cli_execute("camp dnainject");
 		}
 	}

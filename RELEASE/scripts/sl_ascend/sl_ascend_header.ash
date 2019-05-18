@@ -156,23 +156,23 @@ boolean questOverride();
 //	Note that, as of at least Mafia r16560, we can not use run_combat(<combat filter>).
 //	Don\'t even try it, it requires a custom modification that we can not really do an ASH workaround for.
 //	They are all defined in sl_ascend/sl_adventure.ash
-boolean ccAdv();
-boolean ccAdv(location loc);								//num is ignored
-boolean ccAdv(int num, location loc);						//num is ignored
-boolean ccAdv(int num, location loc, string option);		//num is ignored
-boolean ccAdv(location loc, string option);
-boolean ccAdvBypass(string url);
-boolean ccAdvBypass(string url, string option);
-boolean ccAdvBypass(string url, location loc);
-boolean ccAdvBypass(string url, location loc, string option);
-#boolean ccAdvBypass(string[int] url);
-#boolean ccAdvBypass(string[int] url, string option);
-#boolean ccAdvBypass(string[int] url, location loc);
-boolean ccAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option);
-boolean ccAdvBypass(int snarfblat);
-boolean ccAdvBypass(int snarfblat, string option);
-boolean ccAdvBypass(int snarfblat, location loc);
-boolean ccAdvBypass(int snarfblat, location loc, string option);
+boolean slAdv();
+boolean slAdv(location loc);								//num is ignored
+boolean slAdv(int num, location loc);						//num is ignored
+boolean slAdv(int num, location loc, string option);		//num is ignored
+boolean slAdv(location loc, string option);
+boolean slAdvBypass(string url);
+boolean slAdvBypass(string url, string option);
+boolean slAdvBypass(string url, location loc);
+boolean slAdvBypass(string url, location loc, string option);
+#boolean slAdvBypass(string[int] url);
+#boolean slAdvBypass(string[int] url, string option);
+#boolean slAdvBypass(string[int] url, location loc);
+boolean slAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option);
+boolean slAdvBypass(int snarfblat);
+boolean slAdvBypass(int snarfblat, string option);
+boolean slAdvBypass(int snarfblat, location loc);
+boolean slAdvBypass(int snarfblat, location loc, string option);
 
 //
 //	Secondary adventuring functions
@@ -374,17 +374,17 @@ boolean buyableMaintain(item toMaintain, int howMany);		//Defined in sl_ascend/s
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin);//Defined in sl_ascend/sl_util.ash
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);//Defined in sl_ascend/sl_util.ash
 boolean canYellowRay();										//Defined in sl_ascend/sl_util.ash
-boolean ccAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in sl_ascend/sl_adventure.ash
-boolean ccChew(int howMany, item toChew);					//Defined in sl_ascend/sl_cooking.ash
-int ccCraft(string mode, int count, item item1, item item2);//Defined in sl_ascend/sl_util.ash
+boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in sl_ascend/sl_adventure.ash
+boolean slChew(int howMany, item toChew);					//Defined in sl_ascend/sl_cooking.ash
+int slCraft(string mode, int count, item item1, item item2);//Defined in sl_ascend/sl_util.ash
 boolean canOde(item toDrink); //Defined in sl_ascend/sl_cooking.ash
-boolean ccDrink(int howMany, item toDrink);					//Defined in sl_ascend/sl_cooking.ash
-boolean ccEat(int howMany, item toEat);						//Defined in sl_ascend/sl_cooking.ash
-boolean ccEat(int howMany, item toEat, boolean silent);		//Defined in sl_ascend/sl_cooking.ash
-boolean ccMaximize(string req, boolean simulate);			//Defined in sl_ascend/sl_util.ash
-boolean ccMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in sl_ascend/sl_util.ash
-aggregate ccMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);//Defined in sl_ascend/sl_util.ash
-boolean ccOverdrink(int howMany, item toOverdrink);			//Defined in sl_ascend/sl_cooking.ash
+boolean slDrink(int howMany, item toDrink);					//Defined in sl_ascend/sl_cooking.ash
+boolean slEat(int howMany, item toEat);						//Defined in sl_ascend/sl_cooking.ash
+boolean slEat(int howMany, item toEat, boolean silent);		//Defined in sl_ascend/sl_cooking.ash
+boolean slMaximize(string req, boolean simulate);			//Defined in sl_ascend/sl_util.ash
+boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in sl_ascend/sl_util.ash
+aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);//Defined in sl_ascend/sl_util.ash
+boolean slOverdrink(int howMany, item toOverdrink);			//Defined in sl_ascend/sl_cooking.ash
 boolean canDrink(item toDrink);								//Defined in sl_ascend/sl_cooking.ash
 boolean canEat(item toEat);									//Defined in sl_ascend/sl_cooking.ash
 boolean sl_have_familiar(familiar fam);						//Defined in sl_ascend/sl_cooking.ash
@@ -498,8 +498,8 @@ boolean zataraClanmate(string who);							//Defined in sl_ascend/sl_clan.ash
 boolean zataraSeaside(string who);							//Defined in sl_ascend/sl_clan.ash
 float edMeatBonus();										//Defined in sl_ascend/sl_edTheUndying.ash
 boolean ed_buySkills();										//Defined in sl_ascend/sl_edTheUndying.ash
-boolean ed_ccAdv(int num, location loc, string option);		//Defined in sl_ascend/sl_edTheUndying.ash
-boolean ed_ccAdv(int num, location loc, string option, boolean skipFirstLife);//Defined in sl_ascend/sl_edTheUndying.ash
+boolean ed_slAdv(int num, location loc, string option);		//Defined in sl_ascend/sl_edTheUndying.ash
+boolean ed_slAdv(int num, location loc, string option, boolean skipFirstLife);//Defined in sl_ascend/sl_edTheUndying.ash
 boolean ed_doResting();										//Defined in sl_ascend/sl_edTheUndying.ash
 boolean ed_eatStuff();										//Defined in sl_ascend/sl_edTheUndying.ash
 boolean ed_handleAdventureServant(int num, location loc, string option);//Defined in sl_ascend/sl_edTheUndying.ash
@@ -929,7 +929,7 @@ void digimon_initializeSettings();							//Defined in sl_ascend/sl_digimon.ash
 void digimon_initializeDay(int day);						//Defined in sl_ascend/sl_digimon.ash
 boolean digimon_makeTeam();									//Defined in sl_ascend/sl_digimon.ash
 boolean LM_digimon();										//Defined in sl_ascend/sl_digimon.ash
-boolean digimon_ccAdv(int num, location loc, string option);//Defined in sl_ascend/sl_digimon.ash
+boolean digimon_slAdv(int num, location loc, string option);//Defined in sl_ascend/sl_digimon.ash
 
 void glover_initializeSettings();							//Defined in sl_ascend/sl_glover.ash
 void glover_initializeDay(int day);							//Defined in sl_ascend/sl_glover.ash

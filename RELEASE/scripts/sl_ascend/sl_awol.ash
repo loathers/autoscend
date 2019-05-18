@@ -23,28 +23,28 @@ void awol_useStuff()
 			{
 				if((item_amount($item[Eldritch Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
 				{
-					ccCraft("cook", 1, $item[Eldritch Oil], $item[Snake Oil]);
+					slCraft("cook", 1, $item[Eldritch Oil], $item[Snake Oil]);
 				}
 			}
 			if(item_amount($item[Patent Avarice Tonic]) == 0)
 			{
 				if((item_amount($item[Unusual Oil]) > 0) && (item_amount($item[Skin Oil]) > 0))
 				{
-					ccCraft("cook", 1, $item[Unusual Oil], $item[Skin Oil]);
+					slCraft("cook", 1, $item[Unusual Oil], $item[Skin Oil]);
 				}
 			}
 			if(item_amount($item[Patent Aggression Tonic]) == 0)
 			{
 				if((item_amount($item[Unusual Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
 				{
-					ccCraft("cook", 1, $item[Unusual Oil], $item[Snake Oil]);
+					slCraft("cook", 1, $item[Unusual Oil], $item[Snake Oil]);
 				}
 			}
 			if(item_amount($item[Patent Preventative Tonic]) == 0)
 			{
 				if((item_amount($item[Skin Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
 				{
-					ccCraft("cook", 1, $item[Skin Oil], $item[Snake Oil]);
+					slCraft("cook", 1, $item[Skin Oil], $item[Snake Oil]);
 				}
 			}
 		}

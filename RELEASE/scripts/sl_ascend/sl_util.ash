@@ -2,9 +2,9 @@ script "sl_util.ash";
 
 // Public Prototypes
 void debugMaximize(string req, int meat);			//This function will be removed.
-boolean ccMaximize(string req, boolean simulate);
-boolean ccMaximize(string req, int maxPrice, int priceLevel, boolean simulate);
-aggregate ccMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);
+boolean slMaximize(string req, boolean simulate);
+boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate);
+aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);
 int doNumberology(string goal);
 int doNumberology(string goal, string option);
 int doNumberology(string goal, boolean doIt);
@@ -14,7 +14,7 @@ boolean canYellowRay();
 string yellowRayCombatString();
 int solveCookie();
 boolean use_barrels();
-int ccCraft(string mode, int count, item item1, item item2);
+int slCraft(string mode, int count, item item1, item item2);
 int[item] sl_get_campground();
 int towerKeyCount();
 boolean haveSpleenFamiliar();
@@ -167,7 +167,7 @@ location provideAdvPHPZone();
 // Function Definitions
 
 
-boolean ccMaximize(string req, boolean simulate)
+boolean slMaximize(string req, boolean simulate)
 {
 	if(!simulate)
 	{
@@ -177,7 +177,7 @@ boolean ccMaximize(string req, boolean simulate)
 	return maximize(req, simulate);
 }
 
-boolean ccMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
+boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 {
 	if(!simulate)
 	{
@@ -187,7 +187,7 @@ boolean ccMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 	return maximize(req, maxPrice, priceLevel, simulate);
 }
 
-aggregate ccMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip)
+aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip)
 {
 	if(!simulate)
 	{
@@ -866,7 +866,7 @@ boolean setAdvPHPFlag()
 	{
 		return false;
 	}
-	ccAdv(toAdv);
+	slAdv(toAdv);
 	return true;
 
 }
@@ -980,7 +980,7 @@ boolean is_avatar_potion(item it)
 	return (avatar != "");
 }
 
-int ccCraft(string mode, int count, item item1, item item2)
+int slCraft(string mode, int count, item item1, item item2)
 {
 	if((mode == "combine") && !knoll_available())
 	{
@@ -2706,7 +2706,7 @@ boolean handleCopiedMonster(item itm, string option)
 	}
 	if(id != 0)
 	{
-		return ccAdvBypass("inv_use.php?pwd&which=3&whichitem=" + id, $location[Noob Cave], option);
+		return slAdvBypass("inv_use.php?pwd&which=3&whichitem=" + id, $location[Noob Cave], option);
 	}
 	return false;
 }
@@ -3006,7 +3006,7 @@ boolean evokeEldritchHorror(string option)
 
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd=&targetplayer" + my_id() + "&quantity=1&whichskill=168";
-	return ccAdvBypass(0, pages, $location[Noob Cave], option);
+	return slAdvBypass(0, pages, $location[Noob Cave], option);
 }
 
 boolean evokeEldritchHorror()
@@ -3045,7 +3045,7 @@ boolean fightScienceTentacle(string option)
 	string[int] pages;
 	pages[0] = "place.php?whichplace=forestvillage&action=fv_scientist";
 	pages[1] = "choice.php?whichchoice=1201&pwd=&option=1";
-	return ccAdvBypass(0, pages, $location[Noob Cave], option);
+	return slAdvBypass(0, pages, $location[Noob Cave], option);
 
 }
 
@@ -3079,7 +3079,7 @@ boolean handleSealNormal(item it, string option)
 	if((get_property("_sealsSummoned").to_int() < maxSealSummons()) && (item_amount(it) > 0) && (item_amount($item[seal-blubber candle]) >= candles) && (my_level() >= level))
 	{
 		ensureSealClubs();
-		return ccAdvBypass("inv_use.php?pwd=&whichitem=" + to_int(it) + "&checked=1", $location[Noob Cave], option);
+		return slAdvBypass("inv_use.php?pwd=&whichitem=" + to_int(it) + "&checked=1", $location[Noob Cave], option);
 	}
 	else
 	{
@@ -3095,7 +3095,7 @@ boolean handleSealAncient(string option)
 {
 	if((get_property("_sealsSummoned").to_int() < maxSealSummons()) && (item_amount($item[figurine of an ancient seal]) > 0) && (item_amount($item[seal-blubber candle]) >= 3))
 	{
-		return ccAdvBypass("inv_use.php?pwd=&whichitem=3905&checked=1", $location[Noob Cave], option);
+		return slAdvBypass("inv_use.php?pwd=&whichitem=3905&checked=1", $location[Noob Cave], option);
 	}
 	else
 	{
@@ -3130,7 +3130,7 @@ boolean handleSealElement(element flavor, string option)
 	{
 		page = "inv_use.php?pwd=&whichitem=3908&checked=1";
 	}
-	return ccAdvBypass(page, $location[Noob Cave], option);
+	return slAdvBypass(page, $location[Noob Cave], option);
 }
 
 
@@ -3497,7 +3497,7 @@ int doNumberology(string goal, boolean doIt, string option)
 				string[int] pages;
 				pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
 				pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + i;
-				ccAdvBypass(0, pages, $location[Noob Cave], option);
+				slAdvBypass(0, pages, $location[Noob Cave], option);
 			}
 			else
 			{

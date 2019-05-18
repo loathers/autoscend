@@ -410,7 +410,7 @@ boolean chateaumantegna_usePainting(string option)
 	}
 	if(chateaumantegna_available())
 	{
-		return ccAdvBypass("place.php?whichplace=chateau&action=chateau_painting", $location[Noob Cave], option);
+		return slAdvBypass("place.php?whichplace=chateau&action=chateau_painting", $location[Noob Cave], option);
 	}
 	return false;
 }

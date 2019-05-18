@@ -463,11 +463,11 @@ boolean bat_consumption()
 				if (available_amount(it) == 0)
 					bat_cook(it);
 				if(it.fullness > 0)
-					ccEat(1, it);
+					slEat(1, it);
 				else if(it.inebriety > 0)
-					ccDrink(1, it);
+					slDrink(1, it);
 				else if(it.spleen > 0)
-					ccChew(1, it);
+					slChew(1, it);
 				else
 				{
 					print("Woah, I made a " + it + " to consume, but you can't consume that?", "red");
@@ -494,8 +494,8 @@ boolean bat_consumption()
 			bat_cook($item[blood-soaked sponge cake]);
 		if (item_amount($item[blood-soaked sponge cake]) > 0)
 		{
-			ccChew(1, $item[dieting pill]);
-			ccEat(1, $item[blood-soaked sponge cake]);
+			slChew(1, $item[dieting pill]);
+			slEat(1, $item[blood-soaked sponge cake]);
 			return true;
 		}
 	}

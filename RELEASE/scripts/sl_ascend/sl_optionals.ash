@@ -16,15 +16,15 @@ boolean LX_artistQuest()
 		{
 			if(item_amount($item[Pretentious Paintbrush]) == 0)
 			{
-				ccAdv($location[The Outskirts of Cobb\'s Knob]);
+				slAdv($location[The Outskirts of Cobb\'s Knob]);
 			}
 			else if(item_amount($item[Pretentious Palette]) == 0)
 			{
-				ccAdv($location[The Haunted Pantry]);
+				slAdv($location[The Haunted Pantry]);
 			}
 			else if(item_amount($item[Pail of Pretentious Paint]) == 0)
 			{
-				ccAdv($location[The Sleazy Back Alley]);
+				slAdv($location[The Sleazy Back Alley]);
 			}
 			else
 			{
@@ -75,7 +75,7 @@ boolean LX_dinseylandfillFunbucks()
 		return false;
 	}
 	buffMaintain($effect[How to Scam Tourists], 0, 1, 1);
-	ccAdv(1, $location[Barf Mountain]);
+	slAdv(1, $location[Barf Mountain]);
 	return true;
 }
 

@@ -72,7 +72,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		if(get_property("photocopyMonster") == enemy)
 		{
 			print("We already have the copy! Let's jam!", "blue");
-			return ccAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
+			return slAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
 		}
 		else
 		{
@@ -163,7 +163,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 
 	if(fightIt)
 	{
-		return ccAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
+		return slAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
 	}
 	return false;
 }

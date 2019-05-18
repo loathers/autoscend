@@ -192,7 +192,7 @@ boolean L13_ed_towerHandler()
 		print("We found the jerkwad!! Revenge!!!!!", "blue");
 
 		string page = "place.php?whichplace=nstower&action=ns_10_sorcfight";
-		ccAdvBypass(page, $location[Noob Cave]);
+		slAdvBypass(page, $location[Noob Cave]);
 
 		if(item_amount($item[Thwaitgold Scarab Beetle Statuette]) > 0)
 		{
@@ -221,7 +221,7 @@ boolean L13_ed_towerHandler()
 			if(((my_inebriety() + 1) < inebriety_limit()) && (item_amount($item[Coinspiracy]) > 0) && (have_effect($effect[Jungle Juiced]) == 0))
 			{
 				buyUpTo(1, $item[Jungle Juice]);
-				ccDrink(1, $item[Jungle Juice]);
+				slDrink(1, $item[Jungle Juice]);
 				tryJungle = true;
 			}
 
@@ -235,7 +235,7 @@ boolean L13_ed_towerHandler()
 
 			if(tryJungle)
 			{
-				ccAdv(1, $location[The Deep Dark Jungle]);
+				slAdv(1, $location[The Deep Dark Jungle]);
 			}
 			else
 			{
@@ -243,13 +243,13 @@ boolean L13_ed_towerHandler()
 				{
 					equip($slot[acc2], $item[Personal Ventilation Unit]);
 				}
-				ccAdv(1, $location[The Secret Government Laboratory]);
+				slAdv(1, $location[The Secret Government Laboratory]);
 			}
 			return true;
 		}
 		else if((my_level() < 13) && elementalPlanes_access($element[stench]))
 		{
-			ccAdv(1, $location[Pirates of the Garbage Barges]);
+			slAdv(1, $location[Pirates of the Garbage Barges]);
 			return true;
 		}
 		else
@@ -275,7 +275,7 @@ boolean L13_ed_councilWarehouse()
 #	if(item_amount($item[Holy MacGuffin]) == 0)
 	if(item_amount($item[7965]) == 0)
 	{
-		ccAdv(1, $location[The Secret Council Warehouse]);
+		slAdv(1, $location[The Secret Council Warehouse]);
 	}
 	else
 	{
@@ -755,23 +755,23 @@ boolean ed_eatStuff()
 
 	if((item_amount($item[Limp Broccoli]) > 0) && (my_level() >= 5) && ((my_fullness() == 0) || (my_fullness() == 3)) && (fullness_limit() >= 2))
 	{
-		ccEat(1, $item[Limp Broccoli]);
+		slEat(1, $item[Limp Broccoli]);
 	}
 	if((item_amount($item[Limp Broccoli]) > 0) && (my_level() >= 5) && (my_fullness() == 2) && (fullness_limit() >= 5) && (item_amount($item[Astral Hot Dog]) == 0))
 	{
-		ccEat(1, $item[Limp Broccoli]);
+		slEat(1, $item[Limp Broccoli]);
 	}
 	if((item_amount($item[Xiblaxian Ultraburrito]) > 0) && (my_fullness() == 0) && (fullness_limit() >= 4) && (item_amount($item[Astral Hot Dog]) == 0))
 	{
-		ccEat(1, $item[Xiblaxian Ultraburrito]);
+		slEat(1, $item[Xiblaxian Ultraburrito]);
 	}
 	if((my_level() >= 11) && ((my_fullness() + 3) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) > 0))
 	{
-		ccEat(1, $item[Astral Hot Dog]);
+		slEat(1, $item[Astral Hot Dog]);
 	}
 	if((my_level() >= 9) && ((my_fullness() + 3) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) > 0) && (my_adventures() < 4))
 	{
-		ccEat(1, $item[Astral Hot Dog]);
+		slEat(1, $item[Astral Hot Dog]);
 	}
 	if(!get_property("_fancyHotDogEaten").to_boolean() && (my_daycount() == 1) && (my_level() >= 9) && ((my_fullness() + 3) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) == 0) && (my_adventures() < 10) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 	{
@@ -786,36 +786,36 @@ boolean ed_eatStuff()
 
 	if((my_daycount() >= 3) && (my_inebriety() == 0) && (inebriety_limit() == 4) && (item_amount($item[Xiblaxian Space-Whiskey]) > 0) && (my_adventures() < 10))
 	{
-		ccDrink(1, $item[Xiblaxian Space-Whiskey]);
+		slDrink(1, $item[Xiblaxian Space-Whiskey]);
 	}
 	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 11))
 	{
-		ccDrink(1, $item[Astral Pilsner]);
+		slDrink(1, $item[Astral Pilsner]);
 	}
 	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 10) && (my_adventures() < 3))
 	{
-		ccDrink(1, $item[Astral Pilsner]);
+		slDrink(1, $item[Astral Pilsner]);
 	}
 	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 9) && (my_adventures() < 3) && (my_fullness() >= fullness_limit()))
 	{
-		ccDrink(1, $item[Astral Pilsner]);
+		slDrink(1, $item[Astral Pilsner]);
 	}
 	if((item_amount($item[Coinspiracy]) >= 6) && ((my_inebriety() + 3) <= inebriety_limit()) && (my_adventures() < 3) && (item_amount($item[Astral Pilsner]) == 0))
 	{
 		buyUpTo(1, $item[Highest Bitter]);
-		ccDrink(1, $item[Highest Bitter]);
+		slDrink(1, $item[Highest Bitter]);
 	}
 
 	if((!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie")) && (get_property("semirareLocation") != $location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		if((item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500) && (inebriety_limit() == 4) && ((my_inebriety() == 0) || (my_inebriety() == 3)) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]))
 		{
-			ccDrink(1, $item[Lucky Lindy]);
+			slDrink(1, $item[Lucky Lindy]);
 		}
 		else if((my_meat() >= npc_price($item[Fortune Cookie])) && (fullness_left() > 0))
 		{
 			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
-			ccEat(1, $item[Fortune Cookie]);
+			slEat(1, $item[Fortune Cookie]);
 		}
 	}
 	return true;
@@ -1310,7 +1310,7 @@ boolean ed_preAdv(int num, location loc, string option)
 	return preAdvXiblaxian(loc);
 }
 
-boolean ed_ccAdv(int num, location loc, string option, boolean skipFirstLife)
+boolean ed_slAdv(int num, location loc, string option, boolean skipFirstLife)
 {
 	if((option == "") || (option == "sl_combatHandler"))
 	{
@@ -1429,9 +1429,9 @@ boolean ed_ccAdv(int num, location loc, string option, boolean skipFirstLife)
 	return status;
 }
 
-boolean ed_ccAdv(int num, location loc, string option)
+boolean ed_slAdv(int num, location loc, string option)
 {
-	return ed_ccAdv(num, loc, option, false);
+	return ed_slAdv(num, loc, option, false);
 }
 
 
@@ -1462,7 +1462,7 @@ boolean L1_ed_dinsey()
 	{
 		return false;
 	}
-	ccAdv(1, $location[Pirates of the Garbage Barges]);
+	slAdv(1, $location[Pirates of the Garbage Barges]);
 	return true;
 }
 
@@ -1536,7 +1536,7 @@ boolean L1_ed_island(int dickstabOverride)
 	}
 
 	buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
-	ccAdv(1, $location[The Secret Government Laboratory]);
+	slAdv(1, $location[The Secret Government Laboratory]);
 	if(item_amount($item[Bottle-Opener Keycard]) > 0)
 	{
 		use(1, $item[Bottle-Opener Keycard]);
@@ -1603,7 +1603,7 @@ boolean L1_ed_islandFallback()
 			backupSetting("choiceAdventure1324", 5);
 		}
 
-		ccAdv(1, $location[The Neverending Party]);
+		slAdv(1, $location[The Neverending Party]);
 		restoreSetting("choiceAdventure1322");
 		restoreSetting("choiceAdventure1324");
 		restoreSetting("choiceAdventure1325");
@@ -1611,7 +1611,7 @@ boolean L1_ed_islandFallback()
 	}
 	if(elementalPlanes_access($element[stench]))
 	{
-		ccAdv(1, $location[Pirates of the Garbage Barges]);
+		slAdv(1, $location[Pirates of the Garbage Barges]);
 		return true;
 	}
 	if(elementalPlanes_access($element[cold]))
@@ -1631,14 +1631,14 @@ boolean L1_ed_islandFallback()
 		{
 			set_property("choiceAdventure1115", 9);
 		}
-		ccAdv(1, $location[VYKEA]);
+		slAdv(1, $location[VYKEA]);
 		return true;
 	}
 	if(elementalPlanes_access($element[hot]))
 	{
 		//Maybe this is a good choice?
 		set_property("choiceAdventure1094", 5);
-		ccAdv(1, $location[The SMOOCH Army HQ]);
+		slAdv(1, $location[The SMOOCH Army HQ]);
 		set_property("choiceAdventure1094", 2);
 		return true;
 	}
@@ -1662,10 +1662,10 @@ boolean L1_ed_islandFallback()
 			equipBaseline();
 		}
 		buffMaintain($effect[Wisdom Of Thoth], 20, 1, 1);
-		return ccAdv(1, $location[Hippy Camp]);
+		return slAdv(1, $location[Hippy Camp]);
 	}
 	set_property("sl_needLegs", true);
-	return ccAdv(1, $location[The Outskirts of Cobb\'s Knob]);
+	return slAdv(1, $location[The Outskirts of Cobb\'s Knob]);
 }
 
 boolean L9_ed_chasmStart()
@@ -1675,7 +1675,7 @@ boolean L9_ed_chasmStart()
 		print("It's a troll on a bridge!!!!", "blue");
 
 		string page = visit_url("place.php?whichplace=orc_chasm&action=bridge_done");
-		ccAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
+		slAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
 
 		set_property("sl_chasmBusted", true);
 		set_property("chasmBridgeProgress", 0);
@@ -1691,7 +1691,7 @@ boolean L9_ed_chasmBuild()
 		print("What a nice bridge over here...." , "green");
 
 		string page = visit_url("place.php?whichplace=orc_chasm&action=bridge_done");
-		ccAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
+		slAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
 
 		set_property("sl_chasmBusted", true);
 		set_property("chasmBridgeProgress", 0);
@@ -1706,7 +1706,7 @@ boolean L9_ed_chasmBuildClover(int need)
 	{
 		use(1, $item[disassembled clover]);
 		backupSetting("cloverProtectActive", false);
-		ccAdvBypass("adventure.php?snarfblat=295", $location[The Smut Orc Logging Camp]);
+		slAdvBypass("adventure.php?snarfblat=295", $location[The Smut Orc Logging Camp]);
 		if(item_amount($item[Ten-Leaf Clover]) > 0)
 		{
 			print("Wandering adventure in The Smut Orc Logging Camp, boo. Gonna have to do this again.");
@@ -1799,7 +1799,7 @@ boolean LM_edTheUndying()
 		{
 			if(chateaumantegna_usePainting())
 			{
-				ccAdv(1, $location[Noob Cave]);
+				slAdv(1, $location[Noob Cave]);
 				return true;
 			}
 		}

@@ -140,58 +140,58 @@ void makeStartingSmiths()
 	case $class[Seal Clubber]:
 		if(!possessEquipment($item[Meat Tenderizer is Murder]))
 		{
-			ccCraft("smith", 1, $item[lump of Brituminous coal], $item[seal-clubbing club]);
+			slCraft("smith", 1, $item[lump of Brituminous coal], $item[seal-clubbing club]);
 		}
 		if(!possessEquipment($item[Vicar\'s Tutu]) && (item_amount($item[Lump of Brituminous Coal]) > 0) && knoll_available())
 		{
 			buy(1, $item[Frilly Skirt]);
-			ccCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Frilly Skirt]);
+			slCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Frilly Skirt]);
 		}
 		break;
 	case $class[Turtle Tamer]:
 		if(!possessEquipment($item[Work is a Four Letter Sword]))
 		{
 			buyUpTo(1, $item[Sword Hilt]);
-			ccCraft("smith", 1, $item[lump of Brituminous coal], $item[sword hilt]);
+			slCraft("smith", 1, $item[lump of Brituminous coal], $item[sword hilt]);
 		}
 		if(!possessEquipment($item[Ouija Board\, Ouija Board]))
 		{
-			ccCraft("smith", 1, $item[lump of Brituminous coal], $item[turtle totem]);
+			slCraft("smith", 1, $item[lump of Brituminous coal], $item[turtle totem]);
 		}
 		break;
 	case $class[Sauceror]:
 		if(!possessEquipment($item[Saucepanic]))
 		{
-			ccCraft("smith", 1, $item[lump of Brituminous coal], $item[Saucepan]);
+			slCraft("smith", 1, $item[lump of Brituminous coal], $item[Saucepan]);
 		}
 		if(!possessEquipment($item[A Light that Never Goes Out]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 		{
-			ccCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Third-hand Lantern]);
+			slCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Third-hand Lantern]);
 		}
 		break;
 	case $class[Pastamancer]:
 		if(!possessEquipment($item[Hand That Rocks the Ladle]))
 		{
-			ccCraft("smith", 1, $item[lump of Brituminous coal], $item[Pasta Spoon]);
+			slCraft("smith", 1, $item[lump of Brituminous coal], $item[Pasta Spoon]);
 		}
 		break;
 	case $class[Disco Bandit]:
 		if(!possessEquipment($item[Frankly Mr. Shank]))
 		{
-			ccCraft("smith", 1, $item[lump of Brituminous coal], $item[Disco Ball]);
+			slCraft("smith", 1, $item[lump of Brituminous coal], $item[Disco Ball]);
 		}
 		break;
 	case $class[Accordion Thief]:
 		if(!possessEquipment($item[Shakespeare\'s Sister\'s Accordion]))
 		{
-			ccCraft("smith", 1, $item[lump of Brituminous coal], $item[Stolen Accordion]);
+			slCraft("smith", 1, $item[lump of Brituminous coal], $item[Stolen Accordion]);
 		}
 		break;
 	}
 
 	if(knoll_available() && !possessEquipment($item[Hairpiece on Fire]) && (item_amount($item[lump of Brituminous Coal]) > 0))
 	{
-		ccCraft("smith", 1, $item[lump of Brituminous coal], $item[maiden wig]);
+		slCraft("smith", 1, $item[lump of Brituminous coal], $item[maiden wig]);
 	}
 	buffMaintain($effect[Merry Smithsness], 0, 1, 10);
 }
