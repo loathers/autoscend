@@ -505,7 +505,7 @@ boolean canDrink(item toDrink)
 	{
 		return false;
 	}
-	if(!is_unrestricted(toDrink))
+	if(!sl_is_valid(toDrink))
 	{
 		return false;
 	}
@@ -541,11 +541,6 @@ boolean canDrink(item toDrink)
 		}
 	}
 
-	if(!glover_usable(toDrink))
-	{
-		return false;
-	}
-
 	if(my_level() < toDrink.levelreq)
 	{
 		return false;
@@ -560,7 +555,7 @@ boolean canEat(item toEat)
 	{
 		return false;
 	}
-	if(!is_unrestricted(toEat))
+	if(!sl_is_valid(toEat))
 	{
 		return false;
 	}
@@ -571,10 +566,6 @@ boolean canEat(item toEat)
 	if(sl_my_path() == "Dark Gyffte")
 	{
 		return ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat);
-	}
-	if(!glover_usable(toEat))
-	{
-		return false;
 	}
 
 	if(my_level() < toEat.levelreq)
@@ -614,7 +605,7 @@ void consumeStuff()
 		return;
 	}
 
-	int mpForOde = 50;
+	int mpForOde = mp_cost($skill[The Ode to Booze]);
 	if(!sl_have_skill($skill[The Ode to Booze]))
 	{
 		mpForOde = 0;
