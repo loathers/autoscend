@@ -93,7 +93,7 @@ void initializeSettings()
 	{
 		int curSkill = to_int(my_pool.group(1));
 		int sharkCountMin = ceil((curSkill * curSkill) / 4);
-		float sharkCountMax = ceil((curSkill + 1) * (curSkill + 1) / 4);
+		int sharkCountMax = ceil((curSkill + 1) * (curSkill + 1) / 4);
 		if(get_property("poolSharkCount").to_int() < sharkCountMin || get_property("poolSharkCount").to_int() >= sharkCountMax)
 		{
 			print("poolSharkCount set to incorrect value.", "red");
