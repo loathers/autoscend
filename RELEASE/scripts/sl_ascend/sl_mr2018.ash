@@ -438,6 +438,52 @@ boolean songboomSetting(int option)
 	return true;
 }
 
+int catBurglarHeistsLeft()
+{
+	if (!have_familiar($familiar[Cat Burglar]) !sl_is_valid($familiar[Cat Burglar]) || !is_unrestricted($item[kitten burglar]))
+	{
+		return 0;
+	}
+	int banked_heists = get_property("catBurglarBankHeists").to_int();
+	int charge = get_property("_catBurglarCharge").to_int();
+	int heists_complete = get_property("_catBurglarHeistsComplete").to_int();
+	int heists_left = banked_heists - heists_complete;
+	charge /= 10;
+	while (charge >= 1) {
+		heists_left++;
+		charge /= 2;
+	}
+	return heists_left;
+}
+
+boolean catBurglarHeist(item it)
+{
+	/* Costly to call (requires two familiar swaps and a page load, even on failure)
+	 * so I recommend calling this only after we fight a monster.
+	 */
+	if (0 == catBurglarHeistsLeft()) return false;
+
+	familiar backup_familiar = my_familiar();
+	try
+	{
+		use_familiar($familiar[Cat Burglar]);
+
+		string page = visit_url("main.php?heist=1");
+		matcher button = create_matcher("name=\"(st:\\d+:"+to_int(it)+")\"", page);
+		if(button.find())
+		{
+			string choice_name = button.group(1);
+			string url = "choice.php?whichchoice=1320&option=1&"+choice_name+"="+to_string(it)+"&pwd=" + my_hash();
+			page = visit_url(url);
+			return true;
+		}
+		return false;
+	}
+	finally {
+		use_familiar(backup_familiar);
+	}
+}
+
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 {
 	if(!is_unrestricted($item[Bastille Battalion Control Rig]))
