@@ -988,7 +988,7 @@ string sl_combatHandler(int round, string opp, string text)
 				dohug = true;
 
 			// snatch a killing jar if we're lucky
-			if(enemy == $monster[banshee librarian] && (0 ==item_amount($item[Killing jar])))
+			if(enemy == $monster[banshee librarian] && (0 == item_amount($item[Killing jar])))
 				dohug = true;
 
 			// snatch a sonar-in-a-biscuit if we're lucky
