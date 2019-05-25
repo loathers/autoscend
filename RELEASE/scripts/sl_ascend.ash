@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19208; // Track saber mode
+since r19229; // 2CRS support, kinda. Also Force support!
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
@@ -47,6 +47,7 @@ import <sl_ascend/sl_digimon.ash>
 import <sl_ascend/sl_majora.ash>
 import <sl_ascend/sl_glover.ash>
 import <sl_ascend/sl_batpath.ash>
+import <sl_ascend/sl_tcrs.ash>
 import <sl_ascend/sl_monsterparts.ash>
 import <sl_ascend/sl_theSource.ash>
 import <sl_ascend/sl_optionals.ash>
@@ -1130,6 +1131,11 @@ boolean warAdventure()
 
 boolean doThemtharHills()
 {
+	if(in_tcrs())
+	{
+		set_property("sl_nuns", "finished"); // if only :(
+		return false;
+	}
 	if(get_property("sl_nuns") == "done")
 	{
 		return false;
@@ -6129,6 +6135,10 @@ boolean L11_unlockHiddenCity()
 		backupSetting("choiceAdventure581", 1);
 		backupSetting("choiceAdventure579", 3);
 	}
+	if(in_tcrs())
+	{
+		useStoneWool = false;
+	}
 
 	print("Searching for the Hidden City", "blue");
 	if(useStoneWool)
@@ -7680,6 +7690,10 @@ boolean L12_sonofaPrefix()
 boolean L12_filthworms()
 {
 	if(my_level() < 12)
+	{
+		return false;
+	}
+	if(in_tcrs())
 	{
 		return false;
 	}

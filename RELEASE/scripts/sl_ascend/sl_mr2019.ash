@@ -41,6 +41,8 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 		return false;
 	}
 
+	if(in_tcrs()) return false;
+
 	int casingsOwned = item_amount($item[magical sausage casing]);
 
 	if(casingsOwned == 0)
@@ -97,6 +99,8 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 
 boolean sl_sausageEatEmUp(int maxToEat)
 {
+	if(in_tcrs()) return false;
+
 	// if maxToEat is 0, eat as many sausages as possible while respecting the reserve
 	boolean noMP = my_class() == $class[Vampyre];
 	int sausage_reserve_size = noMP ? 0 : 3;

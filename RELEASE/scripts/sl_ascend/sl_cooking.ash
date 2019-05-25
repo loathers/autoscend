@@ -587,11 +587,7 @@ void consumeStuff()
 		return;
 	}
 
-	if(ed_eatStuff())
-	{
-		return;
-	}
-	if(bat_consumption())
+	if(tcrs_consumption() || ed_eatStuff() || bat_consumption())
 	{
 		return;
 	}
