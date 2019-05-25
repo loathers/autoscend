@@ -123,6 +123,7 @@ void initializeSettings()
 	set_property("sl_castleground", "");
 	set_property("sl_castletop", "");
 	set_property("sl_chasmBusted", true);
+	set_property("sl_chewed", "");
 	set_property("sl_clanstuff", "0");
 	set_property("sl_combatHandler", "");
 	set_property("sl_consumption", "");
@@ -9159,7 +9160,7 @@ boolean L7_crypt()
 
 	if((spleen_left() > 0) && (item_amount($item[Nightmare Fuel]) > 0) && !is_unrestricted($item[Powdered Gold]))
 	{
-		chew(1, $item[Nightmare Fuel]);
+		slChew(1, $item[Nightmare Fuel]);
 	}
 
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("sl_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && canGroundhog($location[The Defiled Alcove]))
@@ -9695,7 +9696,7 @@ boolean LX_steelOrgan()
 		}
 		if((item_amount($item[Steel-Scented Air Freshener]) > 0) && (spleen_left() >= 5))
 		{
-			chew(1, $item[Steel-Scented Air Freshener]);
+			slChew(1, $item[Steel-Scented Air Freshener]);
 		}
 	}
 	return false;

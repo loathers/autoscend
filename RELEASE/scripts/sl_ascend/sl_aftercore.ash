@@ -1216,15 +1216,15 @@ boolean sl_cheesePostCS(int leave)
 
 	while((spleen_left() >= 4) && (item_amount($item[Agua de Vida]) > 0))
 	{
-		chew(1, $item[Agua de Vida]);
+		slChew(1, $item[Agua de Vida]);
 	}
 	while((spleen_left() >= 4) && (item_amount($item[Unconscious Collective Dream Jar]) > 0))
 	{
-		chew(1, $item[Unconscious Collective Dream Jar]);
+		slChew(1, $item[Unconscious Collective Dream Jar]);
 	}
 	while((spleen_left() >= 3) && (item_amount($item[Carrot Juice]) > 0))
 	{
-		chew(1, $item[Carrot Juice]);
+		slChew(1, $item[Carrot Juice]);
 	}
 
 	if(!get_property("_didMining").to_boolean() && (my_daycount() == 2) && have_skill($skill[Unaccompanied Miner]))

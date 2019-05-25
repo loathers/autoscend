@@ -730,7 +730,7 @@ boolean ed_eatStuff()
 	canEat = min(canEat, item_amount($item[Mummified Beef Haunch]));
 	if(canEat > 0)
 	{
-		chew(canEat, $item[Mummified Beef Haunch]);
+		slChew(canEat, $item[Mummified Beef Haunch]);
 	}
 	xiblaxian_makeStuff();
 #	if((my_daycount() == 2) && (eudora_current() == $item[Xi Receiver Unit]) && possessEquipment($item[Xiblaxian holo-wrist-puter]) && ((my_fullness() + 4) <= fullness_limit()) && (item_amount($item[Xiblaxian Circuitry]) >= 1) && (item_amount($item[Xiblaxian Polymer]) >= 1) && (item_amount($item[Xiblaxian Alloy]) >= 3))

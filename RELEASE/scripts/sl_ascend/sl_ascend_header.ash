@@ -390,6 +390,7 @@ aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate,
 boolean slOverdrink(int howMany, item toOverdrink);			//Defined in sl_ascend/sl_cooking.ash
 boolean canDrink(item toDrink);								//Defined in sl_ascend/sl_cooking.ash
 boolean canEat(item toEat);									//Defined in sl_ascend/sl_cooking.ash
+boolean canChew(item toChew); //Defined in sl_ascend/sl_cooking.ash
 boolean sl_have_familiar(familiar fam);						//Defined in sl_ascend/sl_cooking.ash
 boolean sl_advWitchess(string target);						//Defined in sl_ascend/sl_mr2016.ash
 boolean sl_advWitchess(string target, string option);		//Defined in sl_ascend/sl_mr2016.ash

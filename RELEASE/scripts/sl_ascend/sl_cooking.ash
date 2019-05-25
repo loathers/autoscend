@@ -392,7 +392,30 @@ boolean slOverdrink(int howMany, item toOverdrink)
 
 boolean slChew(int howMany, item toChew)
 {
-	return chew(howMany, toChew);
+	if(!canChew(toChew))
+	{
+		return false;
+	}
+	if(spleen_left() < toChew.spleen * howMany)
+	{
+		return false;
+	}
+	if(item_amount(toChew) < howMany)
+	{
+		return false;
+	}
+
+	boolean retval = chew(howMany, toChew);
+
+	if(retval)
+	{
+		for(int i = 0; i < howMany; ++i)
+		{
+			handleTracker(toChew, "sl_chewed");
+		}
+	}
+
+	return retval;
 }
 
 boolean slEat(int howMany, item toEat)
@@ -569,6 +592,20 @@ boolean canEat(item toEat)
 	}
 
 	if(my_level() < toEat.levelreq)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+boolean canChew(item toChew)
+{
+	if(!sl_is_valid(toChew))
+	{
+		return false;
+	}
+	if(my_level() < toChew.levelreq)
 	{
 		return false;
 	}
@@ -758,7 +795,7 @@ void consumeStuff()
 	{
 		if((my_spleen_use() == 0) && (item_amount($item[Grim Fairy Tale]) > 0))
 		{
-			chew(1, $item[Grim Fairy Tale]);
+			slChew(1, $item[Grim Fairy Tale]);
 		}
 
 		if(!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie") && (my_turncount() < 70) && (fullness_left() > 0) && (my_meat() >= npc_price($item[Fortune Cookie])) && (item_amount($item[Deck of Every Card]) == 0) && (item_amount($item[Stone Wool]) < 2) && !(sl_get_clan_lounge() contains $item[Clan Speakeasy]))
@@ -1019,22 +1056,22 @@ void consumeStuff()
 		if((my_spleen_use() == 4) && (spleen_left() == 11) && (item_amount($item[carrot nose]) > 0))
 		{
 			use(1, $item[carrot nose]);
-			chew(1, $item[carrot juice]);
+			slChew(1, $item[carrot juice]);
 		}
 
 		if(in_hardcore())
 		{
 			while((spleen_left() >= 4) && (item_amount($item[Unconscious Collective Dream Jar]) > 0))
 			{
-				chew(1, $item[Unconscious Collective Dream Jar]);
+				slChew(1, $item[Unconscious Collective Dream Jar]);
 			}
 			while((spleen_left() >= 4) && (item_amount($item[Powdered Gold]) > 0))
 			{
-				chew(1, $item[Powdered Gold]);
+				slChew(1, $item[Powdered Gold]);
 			}
 			while((spleen_left() >= 4) && (item_amount($item[Grim Fairy Tale]) > 0))
 			{
-				chew(1, $item[Grim Fairy Tale]);
+				slChew(1, $item[Grim Fairy Tale]);
 			}
 		}
 	}

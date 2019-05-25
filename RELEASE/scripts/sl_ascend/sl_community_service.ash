@@ -659,7 +659,7 @@ boolean LA_cs_communityService()
 
 			if((my_spleen_use() == 12) && (item_amount($item[Abstraction: Category]) > 0))
 			{
-				chew(1, $item[Abstraction: Category]);
+				slChew(1, $item[Abstraction: Category]);
 			}
 			if(!get_property("_aprilShower").to_boolean())
 			{
@@ -1162,19 +1162,19 @@ boolean LA_cs_communityService()
 
 				if((spleen_left() >= 3) && (item_amount($item[Handful of Smithereens]) > 0))
 				{
-					chew(1, $item[Handful of Smithereens]);
+					slChew(1, $item[Handful of Smithereens]);
 				}
 				if((spleen_left() >= 2) && (item_amount($item[Handful of Smithereens]) > 1))
 				{
-					chew(1, $item[Handful of Smithereens]);
+					slChew(1, $item[Handful of Smithereens]);
 				}
 				while((spleen_left() >= 2) && (item_amount($item[cuppa Activi tea]) > 0))
 				{
-					chew(1, $item[cuppa Activi tea]);
+					slChew(1, $item[cuppa Activi tea]);
 				}
 				while((spleen_left() >= 2) && (item_amount($item[Nasty Snuff]) > 0))
 				{
-					chew(1, $item[Nasty Snuff]);
+					slChew(1, $item[Nasty Snuff]);
 				}
 				if((item_amount($item[Astral Pilsner]) > 0) && (inebriety_left() > 0) && (my_level() >= 11))
 				{
@@ -1432,7 +1432,7 @@ boolean LA_cs_communityService()
 			}
 			if((item_amount($item[Ancient Medicinal Herbs]) > 0) && (have_effect($effect[Ancient Fortitude]) == 0))
 			{
-				chew(1, $item[Ancient Medicinal Herbs]);
+				slChew(1, $item[Ancient Medicinal Herbs]);
 			}
 
 			if(!get_property("_madTeaParty").to_boolean())
@@ -1470,7 +1470,7 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Action]) > 0) && (have_effect($effect[Action]) == 0))
 			{
-				chew(1, $item[Abstraction: Action]);
+				slChew(1, $item[Abstraction: Action]);
 			}
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (get_cs_questCost(curQuest) < 20))
@@ -1624,7 +1624,7 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Action]) > 0) && (have_effect($effect[Action]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				chew(1, $item[Abstraction: Action]);
+				slChew(1, $item[Abstraction: Action]);
 			}
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
@@ -1721,7 +1721,7 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Thought]) > 0) && (have_effect($effect[Thought]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				chew(1, $item[Abstraction: Thought]);
+				slChew(1, $item[Abstraction: Thought]);
 			}
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
@@ -1831,7 +1831,7 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Sensation]) > 0) && (have_effect($effect[Sensation]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				chew(1, $item[Abstraction: Sensation]);
+				slChew(1, $item[Abstraction: Sensation]);
 			}
 
 			if(get_cs_questCost(curQuest) > 5)
@@ -1914,7 +1914,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Blood Bond], 0, 1, 1);
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Joy]) > 0) && (have_effect($effect[Joy]) == 0))
 			{
-				chew(1, $item[Abstraction: Joy]);
+				slChew(1, $item[Abstraction: Joy]);
 			}
 
 			if((get_property("puzzleChampBonus").to_int() == 20) && !get_property("_witchessBuff").to_boolean())
@@ -2456,7 +2456,7 @@ boolean LA_cs_communityService()
 				equip($slot[off-hand], $item[none]);
 				pulverizeThing($item[A Light That Never Goes Out]);
 				pulverizeThing($item[Vicar\'s Tutu]);
-				chew(item_amount($item[Handful of Smithereens]), $item[Handful of Smithereens]);
+				slChew(item_amount($item[Handful of Smithereens]), $item[Handful of Smithereens]);
 			}
 
 			if((my_adventures() < questCost) || (sl_mall_price($item[Pocket Wish]) < 35000))
@@ -2600,7 +2600,7 @@ boolean LA_cs_communityService()
 			}
 			if((have_effect($effect[Certainty]) == 0) && (spleen_left() > 0) && (item_amount($item[Abstraction: Certainty]) > 0))
 			{
-				chew(1, $item[Abstraction: Certainty]);
+				slChew(1, $item[Abstraction: Certainty]);
 			}
 
 			if(!get_property("_incredibleSelfEsteemCast").to_boolean() && (my_mp() > mp_cost($skill[Incredible Self-Esteem])) && have_skill($skill[Incredible Self-Esteem]))
@@ -3409,14 +3409,14 @@ boolean cs_eat_spleen()
 	{
 		if((item_amount($item[Agua De Vida]) > 0) && (my_level() >= 4))
 		{
-			chew(1, $item[Agua De Vida]);
+			slChew(1, $item[Agua De Vida]);
 			continue;
 		}
 		foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease]
 		{
 			if(item_amount(it) > 0)
 			{
-				chew(1, it);
+				slChew(1, it);
 				break;
 			}
 		}

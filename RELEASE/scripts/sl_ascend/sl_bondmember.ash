@@ -812,7 +812,7 @@ boolean LM_bond()
 					pulverizeThing($item[Perforated Battle Paddle]);
 					if((spleen_left() == 1) && (item_amount($item[Twinkly Wad]) > 0))
 					{
-						chew(1, $item[Twinkly Wad]);
+						slChew(1, $item[Twinkly Wad]);
 					}
 				}
 				if(!have_outfit("Knob Goblin Harem Girl Disguise"))

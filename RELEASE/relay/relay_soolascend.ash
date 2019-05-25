@@ -267,6 +267,9 @@ void main()
 	writeln("<h2>Drinkenated</h2>");
 	generateTrackingData("sl_drunken", false);
 
+	writeln("<h2>Chewed</h2>");
+	generateTrackingData("sl_chewed", false);
+
 	if(my_class() == $class[Ed])
 	{
 		writeln("<h2>Lash of the Cobra <img src=\"images/itemimages/cobrahead.gif\"></h2>");
