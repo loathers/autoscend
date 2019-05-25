@@ -986,6 +986,14 @@ string sl_combatHandler(int round, string opp, string text)
 			// snatch a hedge trimmer if we're lucky
 			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
 				dohug = true;
+
+			// snatch a killing jar if we're lucky
+			if(enemy == $monster[banshee librarian] && (0 ==item_amount($item[Killing jar])))
+				dohug = true;
+
+			// snatch a sonar-in-a-biscuit if we're lucky
+			if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (get_property("questL04Bat")) != "finished")
+				dohug = true;
 		}
 
 		if(dohug)

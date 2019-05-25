@@ -440,7 +440,7 @@ boolean songboomSetting(int option)
 
 int catBurglarHeistsLeft()
 {
-	if (!have_familiar($familiar[Cat Burglar]) !sl_is_valid($familiar[Cat Burglar]) || !is_unrestricted($item[kitten burglar]))
+	if (!have_familiar($familiar[Cat Burglar]) || !sl_is_valid($familiar[Cat Burglar]) || !is_unrestricted($item[kitten burglar]))
 	{
 		return 0;
 	}
