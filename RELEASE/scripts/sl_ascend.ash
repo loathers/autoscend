@@ -810,6 +810,65 @@ boolean LX_witchess()
 	return false;
 }
 
+boolean LX_catBurglarHeist()
+{
+	if (catBurglarHeistsLeft() == 0) return false;
+
+	// We can't know what's burgleable without checking the burgle noncombat,
+	// and that's expensive to do repeatedly. So we burgle only if we want
+	// to burgle the last monster. This is bad if you're about to leave a zone.
+	// If force_burgle is true, we do the EXTREMELY COSTLY operation of, for 
+	// each thing we want to burgle, do a pageload to try to burgle it.
+	boolean forceBurgle = false;
+	item[monster] wannaBurgles;
+
+	item oreGoal = to_item(get_property("trapperOre"));
+	if((oreGoal != $item[none]) && (item_amount(oreGoal) >= 3) && get_property("sl_trapper") == "start" && in_hardcore())
+		wannaBurgles[$monster[mountain man]] = oreGoal;
+
+	if((item_amount($item[killing jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) == 4) && in_hardcore())
+		wannaBurgles[$monster[banshee librarian]] = $item[killing jar];
+
+	if(!possessEquipment($item[Mega Gem]) && in_hardcore())
+	{
+		if(item_amount($item[bird rib]) == 0)
+			wannaBurgles[$monster[whitesnake]] = $item[bird rib];
+		if(item_amount($item[lion oil]) == 0)
+			wannaBurgles[$monster[white lion]] = $item[lion oil];
+	}
+
+	if($location[The Penultimate Fantasy Airship].turns_spent >= 20)
+	{
+		if(!possessEquipment($item[amulet of extreme plot significance]))
+			wannaBurgles[$monster[Quiet Healer]] = $item[amulet of extreme plot significance];
+		if(!possessEquipment($item[Mohawk wig]))
+			wannaBurgles[$monster[Burly Sidekick]] = $item[Mohawk wig];
+		// Costly, but worth it. Probably. Who knows?
+		if($location[The Penultimate Fantasy Airship].turns_spent == 24)
+		{
+			static {
+				forceBurgle = true;
+			}
+		}
+	}
+
+	if (forceBurgle)
+	{
+		boolean ret = false;
+		foreach mon, it in wannaBurgles
+		{
+			if (catBurglarHeist(it))
+				ret = true;
+		}
+		return ret;
+	}
+	if (wannaBurgles contains last_monster())
+	{
+		return catBurglarHeist(wannaBurgles[last_monster()]);
+	}
+	return false;
+}
+
 void maximize_hedge()
 {
 	string data = visit_url("campground.php?action=telescopelow");
@@ -14339,6 +14398,7 @@ boolean doTasks()
 #	if(LX_dictionary())					return true;
 	if(L5_findKnob())					return true;
 	if(LM_edTheUndying())				return true;
+	if(LX_catBurglarHeist())			return true;
 
 	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
