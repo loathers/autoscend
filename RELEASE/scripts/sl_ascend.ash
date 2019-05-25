@@ -93,10 +93,12 @@ void initializeSettings()
 	if(my_pool.find() && (my_turncount() == 0))
 	{
 		int curSkill = to_int(my_pool.group(1));
-		int sharkCount = curSkill * curSkill;
-		if(get_property("poolSharkCount").to_int() < sharkCount)
+		int sharkCountMin = ceil((curSkill * curSkill) / 4);
+		int sharkCountMax = ceil((curSkill + 1) * (curSkill + 1) / 4);
+		if(get_property("poolSharkCount").to_int() < sharkCountMin || get_property("poolSharkCount").to_int() >= sharkCountMax)
 		{
-			set_property("poolSharkCount", sharkCount);
+			print("poolSharkCount set to incorrect value.", "red");
+			print("You can \"set poolSharkCount="+sharkCountMin+"\" to use the least optimistic value consistent with your pool skill.", "blue");
 		}
 	}
 
