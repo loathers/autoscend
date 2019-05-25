@@ -5251,7 +5251,7 @@ boolean sl_check_conditions(string conds)
 			// data: <propname><comparison operator><value>
 			// >/</>=/<= only supported for integer properties!
 			case "prop":
-				matcher m2 = create_matcher("([^=]+)([=<>]+)(.+)", condition_data);
+				matcher m2 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
 				if(!m2.find())
 					abort('"' + condition_data + '" is not a proper prop condition format!');
 				string prop = get_property(m2.group(1));
