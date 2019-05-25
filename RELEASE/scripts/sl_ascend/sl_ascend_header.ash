@@ -597,6 +597,9 @@ boolean sl_sausageGrind(int numSaus); // Defined in sl_ascend/sl_mr2019.ash
 boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll); // Defined in sl_ascend/sl_mr2019.ash
 boolean sl_sausageEatEmUp(int maximumToEat); // Defined in sl_ascend/sl_mr2019.ash
 boolean sl_sausageEatEmUp(); // Defined in sl_ascend/sl_mr2019.ash
+boolean sl_sausageGoblin(); // Defined in sl_ascend/sl_mr2019.ash
+boolean sl_sausageGoblin(location loc); // Defined in sl_ascend/sl_mr2019.ash
+boolean sl_sausageGoblin(location loc, string option); // Defined in sl_ascend/sl_mr2019.ash
 boolean pirateRealmAvailable(); // Defined in sl_ascend/sl_mr2019.ash
 boolean LX_unlockPirateRealm(); // Defined in sl_ascend/sl_mr2019.ash
 boolean sl_saberChoice(string choice);	// Defined in sl_ascend/sl_mr2019.ash

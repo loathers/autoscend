@@ -647,6 +647,14 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
+		if(sl_sausageGoblin())
+		{
+			print("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
+			if(sl_sausageGoblin(burnZone, ""))
+			{
+				return true;
+			}
+		}
 	}
 	return false;
 }
