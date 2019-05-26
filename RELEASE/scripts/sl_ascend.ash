@@ -9398,6 +9398,7 @@ boolean L7_crypt()
 		{
 			set_property("sl_crypt", "finished");
 			use(1, $item[chest of the bonerdagon]);
+			sl_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
 		}
 		else if(get_property("questL07Cyrptic") == "finished")
 		{
@@ -10212,6 +10213,7 @@ boolean L4_batCave()
 		if(item_amount($item[Batskin Belt]) != batskinBelt)
 		{
 			set_property("sl_bat", "finished");
+			sl_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
 		}
 		return true;
 	}
@@ -11272,7 +11274,7 @@ boolean L2_spookySapling()
 
 boolean L2_mosquito()
 {
-	if(item_amount($item[mosquito larva]) > 0)
+	if(get_property("sl_mosquito") != "finished" && item_amount($item[mosquito larva]) > 0)
 	{
 		council();
 		set_property("sl_mosquito", "finished");
@@ -14371,23 +14373,20 @@ boolean doTasks()
 		useCocoon();
 	}
 
-	if(my_ascensions() > 100)
+	if(my_daycount() == 1)
 	{
-		if(my_daycount() == 1)
-		{
-			if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0))
-			{
-				fightScienceTentacle();
-				if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
-				{
-					evokeEldritchHorror();
-				}
-			}
-		}
-		else if((my_level() >= 9) && (my_hp() > 0))
+		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0))
 		{
 			fightScienceTentacle();
+			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
+			{
+				evokeEldritchHorror();
+			}
 		}
+	}
+	else if((my_level() >= 9) && (my_hp() > 0))
+	{
+		fightScienceTentacle();
 	}
 
 	if(LX_catBurglarHeist())			return true;
