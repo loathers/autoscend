@@ -460,9 +460,11 @@ boolean catBurglarHeist(item it)
 {
 	/* Costly to call (requires two familiar swaps and a page load, even on failure)
 	 * so I recommend calling this only after we fight a monster.
+	 * Note that the Cat Burglar needs to be the active familiar in combat to heist that monster.
 	 */
 	if (0 == catBurglarHeistsLeft()) return false;
 
+	print("Trying to heist a " + it, "blue");
 	familiar backup_familiar = my_familiar();
 	try
 	{
@@ -477,6 +479,7 @@ boolean catBurglarHeist(item it)
 			page = visit_url(url);
 			return true;
 		}
+		print("We don't seem to be able to heist a " + it + ". Maybe we didn't fight it with the Cat Burglar?", "red");
 		return false;
 	}
 	finally {

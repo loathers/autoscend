@@ -59,6 +59,27 @@ void handlePreAdventure(location place)
 		}
 	}
 
+	if(sl_have_familiar($familiar[cat burglar]) && sl_is_valid($familiar[cat burglar]))
+	{
+		item[monster] heistDesires = catBurglarHeistDesires();
+		boolean wannaHeist = false;
+		foreach mon, it in heistDesires
+		{
+			foreach i, mmon in get_monsters(place)
+			{
+				if(mmon == mon)
+				{
+					sl_debug_print("Using cat burglar because we want to burgle a " + it + " from " + mon);
+					wannaHeist = true;
+				}
+			}
+		}
+		if(wannaHeist && (famChoice != $familiar[none]) && !is100FamiliarRun())
+		{
+			use_familiar($familiar[cat burglar]);
+		}
+	}
+
 	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
 	{
 		if(!sl_have_familiar($familiar[Machine Elf]))

@@ -1675,7 +1675,7 @@ boolean makeGenieCombat(monster mon, string option)
 		return false;
 	}
 
-	string wish = "to fight " + mon;
+	string wish = "to fight a " + mon;
 	string[int] pages;
 	int wish_provider = 9537; // pocket wish
 	if(get_property("_genieWishesUsed").to_int() < 3)
@@ -1683,7 +1683,7 @@ boolean makeGenieCombat(monster mon, string option)
 		int wish_provider = 9529; // genie bottle
 	}
 	pages[0] = "inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider;		//false
-	pages[1] = "choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish;
+	pages[1] = "choice.php?pwd" + my_hash() + "=&whichchoice=1267&option=1&wish=" + wish;
 	pages[2] = "main.php";
 
 	slAdvBypass(5, pages, $location[Noob Cave], option);
@@ -1722,7 +1722,7 @@ boolean makeGeniePocket()
 
 	string wish = "for more wishes";
 	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9529", false);
-	page = visit_url("choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish);
+	page = visit_url("choice.php?pwd=" + my_hash() + "&whichchoice=1267&option=1&wish=" + wish);
 
 	if(count == item_amount($item[Pocket Wish]))
 	{
