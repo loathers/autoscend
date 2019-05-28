@@ -1683,7 +1683,7 @@ boolean makeGenieCombat(monster mon, string option)
 		int wish_provider = 9529; // genie bottle
 	}
 	pages[0] = "inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider;		//false
-	pages[1] = "choice.php?pwd" + my_hash() + "=&whichchoice=1267&option=1&wish=" + wish;
+	pages[1] = "choice.php?pwd=" + my_hash() + "=&whichchoice=1267&option=1&wish=" + wish;
 	pages[2] = "main.php";
 
 	slAdvBypass(5, pages, $location[Noob Cave], option);

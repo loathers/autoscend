@@ -59,7 +59,7 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if(sl_have_familiar($familiar[cat burglar]) && sl_is_valid($familiar[cat burglar]))
+	if(sl_have_familiar($familiar[cat burglar]))
 	{
 		item[monster] heistDesires = catBurglarHeistDesires();
 		boolean wannaHeist = false;
