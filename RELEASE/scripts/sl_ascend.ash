@@ -259,6 +259,7 @@ void initializeSettings()
 	majora_initializeSettings();
 	glover_initializeSettings();
 	bat_initializeSettings();
+	tcrs_initializeSettings();
 }
 
 boolean handleFamiliar(string type)
@@ -810,6 +811,59 @@ boolean LX_witchess()
 	return false;
 }
 
+item[monster] catBurglarHeistDesires()
+{
+	/* Note that this is called from presool.ash - WE WILL OVERRIDE FAMILIAR IN
+	 * PREADVENTURE IF WE NEED THE BURGLE.
+	 */
+	item[monster] wannaHeists;
+
+	item oreGoal = to_item(get_property("trapperOre"));
+	if((oreGoal != $item[none]) && (item_amount(oreGoal) < 3) && get_property("sl_trapper") == "start" && in_hardcore())
+		wannaHeists[$monster[mountain man]] = oreGoal;
+
+	if((item_amount($item[killing jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) == 4) && in_hardcore())
+		wannaHeists[$monster[banshee librarian]] = $item[killing jar];
+
+	if(!possessEquipment($item[Mega Gem]) && in_hardcore() && (item_amount($item[wet stew]) == 0) && (item_amount($item[wet stunt nut stew]) == 0))
+	{
+		if(item_amount($item[bird rib]) == 0)
+			wannaHeists[$monster[whitesnake]] = $item[bird rib];
+		if(item_amount($item[lion oil]) == 0)
+			wannaHeists[$monster[white lion]] = $item[lion oil];
+	}
+
+	// 18 is a totally arbitrary cutoff here, but it's probably fine.
+	if($location[The Penultimate Fantasy Airship].turns_spent >= 18)
+	{
+		if(!possessEquipment($item[amulet of extreme plot significance]) && get_property("sl_castlebasement") != "finished")
+			wannaHeists[$monster[Quiet Healer]] = $item[amulet of extreme plot significance];
+		if(!possessEquipment($item[Mohawk wig]) && get_property("sl_castletop") != "finished")
+			wannaHeists[$monster[Burly Sidekick]] = $item[Mohawk wig];
+	}
+	foreach mon, it in wannaHeists
+	{
+		sl_debug_print("catBurglarHeistDesires(): Want to heist a " + it + " from a " + mon);
+	}
+	return wannaHeists;
+}
+
+boolean LX_catBurglarHeist()
+{
+	if (catBurglarHeistsLeft() == 0) return false;
+
+	// We can't know what's burgleable without checking the burgle noncombat,
+	// and that's expensive to do repeatedly. So we burgle only if we want
+	// to burgle the last monster. This is bad if you're about to leave a zone.
+	item[monster] wannaHeists = catBurglarHeistDesires();
+
+	if (wannaHeists contains last_monster())
+	{
+		return catBurglarHeist(wannaHeists[last_monster()]);
+	}
+	return false;
+}
+
 void maximize_hedge()
 {
 	string data = visit_url("campground.php?action=telescopelow");
@@ -1142,7 +1196,7 @@ boolean warAdventure()
 
 boolean doThemtharHills()
 {
-	if(in_tcrs())
+	if(sl_my_path() == "Two Crazy Random Summer")
 	{
 		set_property("sl_nuns", "finished"); // if only :(
 		return false;
@@ -5528,18 +5582,6 @@ boolean L11_hiddenCity()
 		return true;
 	}
 
-	if((item_amount($item[Moss-Covered Stone Sphere]) == 0) && (get_property("sl_hiddenapartment") != "finished"))
-	{
-		if(get_counters("Fortune Cookie", 0, 9) == "Fortune Cookie")
-		{
-			return false;
-		}
-		if((my_adventures() < (9 - get_property("sl_hiddenapartment").to_int())))
-		{
-			return false;
-		}
-	}
-
 	L11_hiddenTavernUnlock();
 
 	if(get_property("sl_hiddenzones") == "finished")
@@ -5595,7 +5637,15 @@ boolean L11_hiddenCity()
 			}
 		}
 
-		if((get_property("sl_hiddenapartment") != "finished") && (have_effect($effect[Ancient Fortitude]) == 0))
+
+	if((item_amount($item[Moss-Covered Stone Sphere]) == 0) && (get_property("sl_hiddenapartment") != "finished"))
+	{
+		if(get_counters("Fortune Cookie", 0, 9) == "Fortune Cookie")
+		{
+			return false;
+		}
+	}
+	if((get_property("sl_hiddenapartment") != "finished") && (get_counters("Fortune Cookie", 0, 9) != "Fortune Cookie") && (my_adventures() >= (9 - get_property("sl_hiddenapartment").to_int())) && (have_effect($effect[Ancient Fortitude]) == 0))
 		{
 			print("The idden [sic] apartment!", "blue");
 
@@ -6136,7 +6186,7 @@ boolean L11_unlockHiddenCity()
 
 	boolean useStoneWool = true;
 
-	if(sl_my_path() == "G-Lover")
+	if(sl_my_path() == "G-Lover" || sl_my_path() == "Two Crazy Random Summer")
 	{
 		if(my_adventures() <= 3)
 		{
@@ -6145,10 +6195,6 @@ boolean L11_unlockHiddenCity()
 		useStoneWool = false;
 		backupSetting("choiceAdventure581", 1);
 		backupSetting("choiceAdventure579", 3);
-	}
-	if(in_tcrs())
-	{
-		useStoneWool = false;
 	}
 
 	print("Searching for the Hidden City", "blue");
@@ -6187,7 +6233,7 @@ boolean L11_unlockHiddenCity()
 
 	boolean bypassResult = slAdvBypass(280);
 
-	if(sl_my_path() == "G-Lover")
+	if(sl_my_path() == "G-Lover" || sl_my_path() == "Two Crazy Random Summer")
 	{
 		if(get_property("lastEncounter") != "The Hidden Heart of the Hidden Temple")
 		{
@@ -6260,7 +6306,7 @@ boolean L11_nostrilOfTheSerpent()
 	print("Must get a snake nose.", "blue");
 	boolean useStoneWool = true;
 
-	if(sl_my_path() == "G-Lover")
+	if(sl_my_path() == "G-Lover" || sl_my_path() == "Two Crazy Random Summer")
 	{
 		if(my_adventures() <= 3)
 		{
@@ -6285,7 +6331,7 @@ boolean L11_nostrilOfTheSerpent()
 
 	set_property("choiceAdventure582", "1");
 	set_property("choiceAdventure579", "2");
-	if(sl_my_path() == "G-Lover")
+	if(sl_my_path() == "G-Lover" || sl_my_path() == "Two Crazy Random Summer")
 	{
 		if(!slAdvBypass(280))
 		{
@@ -7328,6 +7374,10 @@ boolean L12_gremlins()
 		}
 	}
 
+	if(0 < have_effect($effect[Curse of the Black Pearl Onion])) {
+		uneffect($effect[Curse of the Black Pearl Onion]);
+	}
+
 	if(item_amount($item[molybdenum magnet]) == 0)
 	{
 		abort("We don't have the molybdenum magnet but should... please get it and rerun the script");
@@ -7704,7 +7754,7 @@ boolean L12_filthworms()
 	{
 		return false;
 	}
-	if(in_tcrs())
+	if(sl_my_path() == "Two Crazy Random Summer")
 	{
 		return false;
 	}
@@ -9897,6 +9947,13 @@ boolean L8_trapperGround()
 		{
 			pullXWhenHaveY(oreGoal, 3 - item_amount(oreGoal), item_amount(oreGoal));
 		}
+	}
+	else if (canGenieCombat() && (get_property("sl_useWishes").to_boolean()) && (catBurglarHeistsLeft() >= 2))
+	{
+		print("Trying to wish for a mountain man, which the cat will then burgle, hopefully.");
+		handleFamiliar("item");
+		handleFamiliar($familiar[cat burglar]);
+		return makeGenieCombat($monster[mountain man]);
 	}
 	else if((my_level() >= 12) && in_hardcore())
 	{
@@ -14333,6 +14390,7 @@ boolean doTasks()
 		}
 	}
 
+	if(LX_catBurglarHeist())			return true;
 	if(LX_chateauPainting())			return true;
 	if(LX_faxing())						return true;
 	if(LX_artistQuest())				return true;
@@ -14588,10 +14646,7 @@ void sl_begin()
 
 	//This also should set our path too.
 	string page = visit_url("main.php");
-	if(my_ascensions() == 0)
-	{
-		page = visit_url("api.php?what=status&for=4", false);
-	}
+	page = visit_url("api.php?what=status&for=4", false);
 	if((get_property("_casualAscension").to_int() >= my_ascensions()) && (my_ascensions() > 0))
 	{
 		return;
