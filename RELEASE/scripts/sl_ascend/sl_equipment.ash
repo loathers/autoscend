@@ -116,7 +116,7 @@ void equipBaselineGear()
 
 void makeStartingSmiths()
 {
-	if(!have_skill($skill[Summon Smithsness]))
+	if(!sl_have_skill($skill[Summon Smithsness]))
 	{
 		return;
 	}
