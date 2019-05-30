@@ -837,7 +837,7 @@ item[monster] catBurglarHeistDesires()
 	boolean needStench = ((twinPeakProgress & 1) == 0);
 	boolean needFood = ((twinPeakProgress & 2) == 0);
 	boolean needJar = ((twinPeakProgress & 4) == 0);
-	boolean needInit = (twinPeakProgress == 7);
+	boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
 	int neededTrimmers = -item_amount($item[rusty hedge trimmers]);
 	if(needStench) neededTrimmers++;
 	if(needFood) neededTrimmers++;
