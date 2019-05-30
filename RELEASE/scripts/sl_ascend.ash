@@ -833,6 +833,23 @@ item[monster] catBurglarHeistDesires()
 			wannaHeists[$monster[white lion]] = $item[lion oil];
 	}
 
+	int twinPeakProgress = get_property("twinPeakProgress").to_int();
+	boolean needStench = ((twinPeakProgress & 1) == 0);
+	boolean needFood = ((twinPeakProgress & 2) == 0);
+	boolean needJar = ((twinPeakProgress & 4) == 0);
+	boolean needInit = (twinPeakProgress == 7);
+	int neededTrimmers = -item_amount($item[rusty hedge trimmers]);
+	if(needStench) neededTrimmers++;
+	if(needFood) neededTrimmers++;
+	if(needJar) neededTrimmers++;
+	if(needInit) neededTrimmers++;
+	if ((catBurglarHeistsLeft() >= 2) && (neededTrimmers > 0))
+	{
+		wannaHeists[$monster[bearpig topiary animal]] = $item[rusty hedge trimmers];
+		wannaHeists[$monster[elephant (meatcar?) topiary animal]] = $item[rusty hedge trimmers];
+		wannaHeists[$monster[spider (duck?) topiary animal]] = $item[rusty hedge trimmers];
+	}
+
 	// 18 is a totally arbitrary cutoff here, but it's probably fine.
 	if($location[The Penultimate Fantasy Airship].turns_spent >= 18)
 	{
@@ -841,6 +858,7 @@ item[monster] catBurglarHeistDesires()
 		if(!possessEquipment($item[Mohawk wig]) && get_property("sl_castletop") != "finished")
 			wannaHeists[$monster[Burly Sidekick]] = $item[Mohawk wig];
 	}
+
 	foreach mon, it in wannaHeists
 	{
 		sl_debug_print("catBurglarHeistDesires(): Want to heist a " + it + " from a " + mon);
