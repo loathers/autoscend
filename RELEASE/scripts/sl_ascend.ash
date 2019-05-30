@@ -12889,6 +12889,17 @@ boolean L11_redZeppelin()
 			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
 			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
 		}
+		if(my_path() == "Two Crazy Random Summer")
+		{
+			if(my_class() == $class[Sauceror] && my_sign() == "Blender")
+			{
+				if (0 == have_effect($effect[Improprie Tea]))
+				{
+					buyUpTo(1, $item[Ben-Gal&trade; Balm], 25);
+					use(1, $item[Ben-Gal&trade; Balm]);
+				}
+			}
+		}
 		float fire_protestors = item_amount($item[Flamin\' Whatshisname]) > 0 ? 10 : 3;
 		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
 		float sleaze_protestors = square_root(sleaze_amount);
