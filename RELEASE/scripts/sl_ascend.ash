@@ -825,7 +825,7 @@ item[monster] catBurglarHeistDesires()
 	if((item_amount($item[killing jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) == 4) && in_hardcore())
 		wannaHeists[$monster[banshee librarian]] = $item[killing jar];
 
-	if(!possessEquipment($item[Mega Gem]) && in_hardcore() && (item_amount($item[wet stew]) == 0) && (item_amount($item[wet stunt nut stew]) == 0))
+	if((my_level() >= 11) && !possessEquipment($item[Mega Gem]) && in_hardcore() && (item_amount($item[wet stew]) == 0) && (item_amount($item[wet stunt nut stew]) == 0))
 	{
 		if(item_amount($item[bird rib]) == 0)
 			wannaHeists[$monster[whitesnake]] = $item[bird rib];
@@ -843,11 +843,16 @@ item[monster] catBurglarHeistDesires()
 	if(needFood) neededTrimmers++;
 	if(needJar) neededTrimmers++;
 	if(needInit) neededTrimmers++;
-	if ((catBurglarHeistsLeft() >= 2) && (neededTrimmers > 0))
+	if ((my_level() >= 8) && (catBurglarHeistsLeft() >= 2) && (neededTrimmers > 0))
 	{
 		wannaHeists[$monster[bearpig topiary animal]] = $item[rusty hedge trimmers];
 		wannaHeists[$monster[elephant (meatcar?) topiary animal]] = $item[rusty hedge trimmers];
 		wannaHeists[$monster[spider (duck?) topiary animal]] = $item[rusty hedge trimmers];
+	}
+
+	if(get_property("questL11Shen") == "finished" && internalQuestStatus("questL11Ron") == 1 && catBurglarHeistsLeft() >= 2)
+	{
+		wannaHeists[$monster[Blue Oyster cultist]] = $item[cigarette lighter];
 	}
 
 	// 18 is a totally arbitrary cutoff here, but it's probably fine.
