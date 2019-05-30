@@ -13100,12 +13100,17 @@ boolean L11_shenCopperhead()
 				{
 					set_property("sl_holeinthesky", true);
 				}
-				return L10_holeInTheSkyUnlock();
+				return (L10_topFloor() || L10_holeInTheSkyUnlock());
 			}
 			return false;
 		}
 		else
 		{
+			// If we haven't completed the top floor, try to complete it.
+			if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (L10_topFloor() || L10_holeInTheSkyUnlock()))
+			{
+				return true;
+			}
 			return slAdv(goal);
 		}
 	}
