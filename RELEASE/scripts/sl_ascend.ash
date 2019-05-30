@@ -825,12 +825,34 @@ item[monster] catBurglarHeistDesires()
 	if((item_amount($item[killing jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) == 4) && in_hardcore())
 		wannaHeists[$monster[banshee librarian]] = $item[killing jar];
 
-	if(!possessEquipment($item[Mega Gem]) && in_hardcore() && (item_amount($item[wet stew]) == 0) && (item_amount($item[wet stunt nut stew]) == 0))
+	if((my_level() >= 11) && !possessEquipment($item[Mega Gem]) && in_hardcore() && (item_amount($item[wet stew]) == 0) && (item_amount($item[wet stunt nut stew]) == 0))
 	{
 		if(item_amount($item[bird rib]) == 0)
 			wannaHeists[$monster[whitesnake]] = $item[bird rib];
 		if(item_amount($item[lion oil]) == 0)
 			wannaHeists[$monster[white lion]] = $item[lion oil];
+	}
+
+	int twinPeakProgress = get_property("twinPeakProgress").to_int();
+	boolean needStench = ((twinPeakProgress & 1) == 0);
+	boolean needFood = ((twinPeakProgress & 2) == 0);
+	boolean needJar = ((twinPeakProgress & 4) == 0);
+	boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
+	int neededTrimmers = -item_amount($item[rusty hedge trimmers]);
+	if(needStench) neededTrimmers++;
+	if(needFood) neededTrimmers++;
+	if(needJar) neededTrimmers++;
+	if(needInit) neededTrimmers++;
+	if ((my_level() >= 8) && (catBurglarHeistsLeft() >= 2) && (neededTrimmers > 0))
+	{
+		wannaHeists[$monster[bearpig topiary animal]] = $item[rusty hedge trimmers];
+		wannaHeists[$monster[elephant (meatcar?) topiary animal]] = $item[rusty hedge trimmers];
+		wannaHeists[$monster[spider (duck?) topiary animal]] = $item[rusty hedge trimmers];
+	}
+
+	if(get_property("questL11Shen") == "finished" && internalQuestStatus("questL11Ron") == 1 && catBurglarHeistsLeft() >= 2)
+	{
+		wannaHeists[$monster[Blue Oyster cultist]] = $item[cigarette lighter];
 	}
 
 	// 18 is a totally arbitrary cutoff here, but it's probably fine.
@@ -841,6 +863,7 @@ item[monster] catBurglarHeistDesires()
 		if(!possessEquipment($item[Mohawk wig]) && get_property("sl_castletop") != "finished")
 			wannaHeists[$monster[Burly Sidekick]] = $item[Mohawk wig];
 	}
+
 	foreach mon, it in wannaHeists
 	{
 		sl_debug_print("catBurglarHeistDesires(): Want to heist a " + it + " from a " + mon);
@@ -12891,6 +12914,17 @@ boolean L11_redZeppelin()
 			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
 			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
 		}
+		if(my_path() == "Two Crazy Random Summer")
+		{
+			if(my_class() == $class[Sauceror] && my_sign() == "Blender")
+			{
+				if (0 == have_effect($effect[Improprie Tea]))
+				{
+					buyUpTo(1, $item[Ben-Gal&trade; Balm], 25);
+					use(1, $item[Ben-Gal&trade; Balm]);
+				}
+			}
+		}
 		float fire_protestors = item_amount($item[Flamin\' Whatshisname]) > 0 ? 10 : 3;
 		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
 		float sleaze_protestors = square_root(sleaze_amount);
@@ -13091,12 +13125,17 @@ boolean L11_shenCopperhead()
 				{
 					set_property("sl_holeinthesky", true);
 				}
-				return L10_holeInTheSkyUnlock();
+				return (L10_topFloor() || L10_holeInTheSkyUnlock());
 			}
 			return false;
 		}
 		else
 		{
+			// If we haven't completed the top floor, try to complete it.
+			if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (L10_topFloor() || L10_holeInTheSkyUnlock()))
+			{
+				return true;
+			}
 			return slAdv(goal);
 		}
 	}

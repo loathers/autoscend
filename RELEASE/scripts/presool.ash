@@ -167,6 +167,23 @@ void handlePreAdventure(location place)
 		}
 	}
 
+	if(my_path() == "Two Crazy Random Summer")
+	{
+		if(my_class() == $class[Sauceror] && my_sign() == "Blender")
+		{
+			if (0 == have_effect($effect[Uncucumbered]))
+			{
+				buyUpTo(1, $item[hair spray]);
+				use(1, $item[hair spray]);
+			}
+			if (0 == have_effect($effect[Minerva's Zen]))
+			{
+				buyUpTo(1, $item[glittery mascara]);
+				use(1, $item[glittery mascara]);
+			}
+		}
+	}
+
 	if(!get_property("kingLiberated").to_boolean())
 	{
 		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
