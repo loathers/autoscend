@@ -881,6 +881,8 @@ boolean sl_check_conditions(string conds); //Defined in sl_ascend/sl_util.ash
 
 boolean [monster] sl_getMonsters(string category); //Defined in sl_ascend/sl_util.ash
 
+boolean sl_badassBelt(); //Defined in sl_ascend/sl_util.ash
+
 //Dump from accessory scripts.
 void handlePreAdventure();									//Defined in presool.ash
 void handlePreAdventure(location place);					//Defined in presool.ash

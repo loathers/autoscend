@@ -151,6 +151,7 @@ boolean sl_debug_print(string s, string color);
 boolean sl_debug_print(string s);
 boolean sl_can_equip(item it);
 boolean sl_can_equip(item it, slot s);
+boolean sl_badassBelt();
 
 
 // Private Prototypes
@@ -5375,4 +5376,35 @@ int total_items(boolean [item] items)
 		total += item_amount(it);
 	}
 	return total;
+}
+
+boolean sl_badassBelt()
+{
+	if ((item_amount($item[Batskin Belt]) > 0 || equipped_amount($item[Batskin Belt]) > 0) && (item_amount($item[Skull of the Bonerdagon]) > 0 || equipped_amount($item[Skull of the Bonerdagon]) > 0))
+	{
+		if (have_equipped($item[Skull of the Bonerdagon]))
+		{
+			equip($slot[off-hand], $item[none]);
+		}
+		if (have_equipped($item[Batskin Belt]))
+		{
+			if (equipped_item($slot[acc1]) == $item[Batskin Belt])
+			{
+				equip($slot[acc1], $item[none]);
+			}
+			else if (equipped_item($slot[acc2]) == $item[Batskin Belt])
+			{
+				equip($slot[acc2], $item[none]);
+			}
+			else if (equipped_item($slot[acc3]) == $item[Batskin Belt])
+			{
+				equip($slot[acc3], $item[none]);
+			}
+		}
+		return create(1, $item[Badass Belt]);
+	}
+	else
+	{
+		return false;
+	}
 }

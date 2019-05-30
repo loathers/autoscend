@@ -43,36 +43,39 @@ acc	27	Sphygmayomanometer
 acc	28	Ring Of The Skeleton Lord
 acc	29	Gold Detective Badge
 acc	30	Silver Detective Badge
-acc	31	Ghost of a Necklace
-acc	32	Bronze Detective Badge
-acc	33	Badge Of Authority
-acc	34	Xiblaxian Holo-Wrist-Puter
-acc	35	Mr. Accessory Jr.
-acc	36	Iron Beta of Industry
-acc	37	LOV Earrings
-acc	38	wax hand
-acc	39	Perfume-Soaked Bandana
-acc	40	Wicker Kickers
-acc	41	Compression Stocking
-acc	42	Glow-In-The-Dark Necklace
-acc	43	Time-Twitching Toolbelt
-acc	44	Mr. Accessory
-acc	45	Pirate Fledges
-acc	46	Plastic Detective Badge
-acc	47	Jangly Bracelet
-acc	48	Jolly Roger Charrrm Bracelet
-acc	49	Grumpy Old Man Charrrm Bracelet
-acc	50	Bonerdagon Necklace
-acc	51	Batskin Belt
-acc	52	shiny ring
-acc	53	Garish Pinky Ring
-acc	54	Ring Of Telling Skeletons What To Do
-acc	55	Imp Unity Ring
-acc	56	Infernal Insoles
-acc	57	Glowing Red Eye
-acc	58	Stuffed Shoulder Parrot
-acc	59	Vampire Collar
-acc	60	Jaunty Feather
+acc	31	Bronze Detective Badge
+acc	32	Badge Of Authority
+acc	33	Xiblaxian Holo-Wrist-Puter
+acc	34	Mr. Accessory Jr.
+acc	35	Iron Beta of Industry
+acc	36	LOV Earrings
+acc	37	wax hand
+acc	38	Perfume-Soaked Bandana
+acc	39	Wicker Kickers
+acc	40	Compression Stocking
+acc	41	Glow-In-The-Dark Necklace
+acc	42	Time-Twitching Toolbelt
+acc	43	Mr. Accessory
+acc	44	Pirate Fledges
+acc	45	Plastic Detective Badge
+acc	46	Jangly Bracelet
+acc	47	Jolly Roger Charrrm Bracelet
+acc	48	Grumpy Old Man Charrrm Bracelet
+acc	49	Bonerdagon Necklace
+acc	50	Ghost of a Necklace
+acc	51	Blackberry Galoshes
+acc	52	badass belt
+acc	53	Talisman o' Namsilat
+acc	54	Batskin Belt
+acc	55	shiny ring
+acc	56	Garish Pinky Ring
+acc	57	Ring Of Telling Skeletons What To Do
+acc	58	Imp Unity Ring
+acc	59	Infernal Insoles
+acc	60	Glowing Red Eye
+acc	61	Stuffed Shoulder Parrot
+acc	62	Vampire Collar
+acc	63	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true
@@ -83,11 +86,11 @@ back	4	Camp Scout Backpack
 back	5	Buddy Bjorn
 back	6	Vampyric Cloake
 back	7	Polyester Parachute
-back	8	Makeshift Cape
-back	9	Sea Shawl
-back	10	Misty Robe
-back	11	Misty Cape
-back	12	Misty Cloak
+back	8	Sea Shawl
+back	9	Misty Robe
+back	10	Misty Cape
+back	11	Misty Cloak
+back	12	Makeshift Cape
 back	13	Frozen Turtle Shell
 back	14	Giant Gym Membership Card
 back	15	Fiberglass Frock
@@ -238,21 +241,24 @@ off-hand	19	Ox-head Shield
 off-hand	20	Latte Lovers Member's Mug
 off-hand	21	KoL Con 13 Snowglobe
 off-hand	22	astral shield
-off-hand	23	Keg Shield
-off-hand	24	Wicker Shield
-off-hand	25	Sawblade Shield
-off-hand	26	Yorick
-off-hand	27	Red X Shield
-off-hand	28	Party Crasher
-off-hand	29	Spiked Femur
-off-hand	30	Whatsian Ionic Pliers	class:Ed
-off-hand	31	Hot Plate
-off-hand	32	Oversized Pizza Cutter
-off-hand	33	Cardboard Wakizashi
-off-hand	34	Pitchfork
-off-hand	35	Sabre Teeth
-off-hand	36	Knob Goblin Scimitar
-off-hand	37	Turtle Totem
+off-hand	23	astral statuette
+off-hand	24	Keg Shield
+off-hand	25	Wicker Shield
+off-hand	26	Sawblade Shield
+off-hand	27	Yorick
+off-hand	28	Red X Shield
+off-hand	29	Party Crasher
+off-hand	30	Spiked Femur
+off-hand	31	little black book	class:Ed
+off-hand	32	Whatsian Ionic Pliers	class:Ed
+off-hand	33	giant penguin keychain
+off-hand	34	Hot Plate
+off-hand	35	Oversized Pizza Cutter
+off-hand	36	Cardboard Wakizashi
+off-hand	37	Pitchfork
+off-hand	38	Sabre Teeth
+off-hand	39	Knob Goblin Scimitar
+off-hand	40	Turtle Totem
 
 # Good ol' pants
 pants	0	Pantsgiving
@@ -280,24 +286,25 @@ pants	21	Leotarrrd
 pants	22	Demonskin Trousers
 pants	23	Ninja Hot Pants
 pants	24	Antique Greaves
-pants	25	Filthy Corduroys
-pants	26	Psychic's Pslacks
-pants	27	Knob Goblin Uberpants
-pants	28	Alpha-Mail Pants
-pants	29	Bloody Clown Pants
-pants	30	Troutpiece
-pants	31	Paper-Plate-Mail Pants
-pants	32	Hep Waders
-pants	33	Genie's Pants
-pants	34	Union Scalemail Pants
-pants	35	Stylish Swimsuit
-pants	36	Chain-Mail Monokini
-pants	37	Pants Of The Slug Lord
-pants	38	Knob Goblin Pants
-pants	39	three-legged pants
-pants	40	Knob Goblin Harem Pants
-pants	41	Studded Leather Boxer Shorts
-pants	42	Old Sweatpants
+pants	25	miner's pants
+pants	26	Filthy Corduroys
+pants	27	Psychic's Pslacks
+pants	28	Knob Goblin Uberpants
+pants	29	Alpha-Mail Pants
+pants	30	Bloody Clown Pants
+pants	31	Troutpiece
+pants	32	Paper-Plate-Mail Pants
+pants	33	Hep Waders
+pants	34	Genie's Pants
+pants	35	Union Scalemail Pants
+pants	36	Stylish Swimsuit
+pants	37	Chain-Mail Monokini
+pants	38	Pants Of The Slug Lord
+pants	39	Knob Goblin Pants
+pants	40	three-legged pants
+pants	41	Knob Goblin Harem Pants
+pants	42	Studded Leather Boxer Shorts
+pants	43	Old Sweatpants
 
 # Shirts
 shirt	0	LOV Eardigan	mainstat:Muscle
@@ -413,46 +420,47 @@ weapon	56	world's smallest violin	mainstat:Moxie
 weapon	57	Frigid Derringer	mainstat:Moxie
 weapon	58	witty rapier	mainstat:Mysticality
 weapon	59	Chopsticks	mainstat:Mysticality
-weapon	60	Oversized Pizza Cutter	mainstat:Mysticality
-weapon	61	Eggbeater	mainstat:Mysticality
-weapon	62	Corn Holder	mainstat:Mysticality
-weapon	63	Dishrag	mainstat:Mysticality
+weapon	60	giant artisanal rice peeler	mainstat:Mysticality
+weapon	61	Oversized Pizza Cutter	mainstat:Mysticality
+weapon	62	Eggbeater	mainstat:Mysticality
+weapon	63	Corn Holder	mainstat:Mysticality
+weapon	64	Dishrag	mainstat:Mysticality
 # Good knives
-weapon	64	black blade	mainstat:Moxie;skill:Tricky Knifework
-weapon	65	batblade	mainstat:Moxie;skill:Tricky Knifework
-weapon	66	soap knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	67	Saturday Night Special	mainstat:Moxie
+weapon	65	black blade	mainstat:Moxie;skill:Tricky Knifework
+weapon	66	batblade	mainstat:Moxie;skill:Tricky Knifework
+weapon	67	soap knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	68	Saturday Night Special	mainstat:Moxie
 # Knives that are fine
-weapon	68	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
-weapon	69	candy knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	70	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
-weapon	71	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
-weapon	72	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
+weapon	69	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
+weapon	70	candy knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	71	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
+weapon	72	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
+weapon	73	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
-weapon	73	finger cymbals	mainstat:Moxie
+weapon	74	finger cymbals	mainstat:Moxie
 # The worst knife, but it's still a knife
-weapon	74	boot knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	75	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	75	boot knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	76	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
 # It's not good, but at least it's a ranged weapon that takes one hand
-weapon	76	disco ball	mainstat:Moxie
-weapon	77	stolen accordion	class:Accordion Thief
+weapon	77	disco ball	mainstat:Moxie
+weapon	78	stolen accordion	class:Accordion Thief
 # Some melee weapons
-weapon	78	Rusty Piece Of Rebar
-weapon	79	Octopus's Spade
-weapon	80	Oversized Pipe
-weapon	81	Ghast Iron Cleaver
-weapon	82	Short-Handled Mop
-weapon	83	Spectral Axe
-weapon	84	Antique Machete
-weapon	85	red-hot sausage fork
+weapon	79	Rusty Piece Of Rebar
+weapon	80	Octopus's Spade
+weapon	81	Oversized Pipe
+weapon	82	Ghast Iron Cleaver
+weapon	83	Short-Handled Mop
+weapon	84	Spectral Axe
+weapon	85	Antique Machete
+weapon	86	red-hot sausage fork
 # Almost absolute garbage
-weapon	86	Skeleton Bone
-weapon	87	Corn Holder
-weapon	88	Knob Goblin Scimitar
-weapon	89	Knob Goblin Tongs
+weapon	87	Skeleton Bone
+weapon	88	Corn Holder
+weapon	89	Knob Goblin Scimitar
+weapon	90	Knob Goblin Tongs
 # Absolute garbage, but better than nothing, probably?
-weapon	90	Turtle Totem	class:Turtle Tamer
-weapon	91	Saucepan	class:Sauceror
-weapon	92	Pasta Spoon	class:Pastamancer
+weapon	91	Turtle Totem	class:Turtle Tamer
+weapon	92	Saucepan	class:Sauceror
+weapon	93	Pasta Spoon	class:Pastamancer
 # I probably missed some stuff from the old weapon handling but c'est la vie
 
