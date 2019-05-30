@@ -703,12 +703,14 @@ boolean LA_cs_communityService()
 
 			if(canYellowRay() && elementalPlanes_access($element[hot]))
 			{
-				if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
+				string yellowRay = yellowRayCombatString();
+				if(yellowRay == ("skill " + $skill[Open a Big Yellow Present]))
 				{
 					handleFamiliar("yellow ray");
 				}
-				if(!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants]))
+				if(!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants]) && $location[LavaCo&trade; Lamp Factory].turns_spent < 10)
 				{
+					print("Adventuring in LavaCo using the yellow ray source: " + yellowRay, "blue");
 					slAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatYR");
 					return true;
 				}
@@ -847,6 +849,7 @@ boolean LA_cs_communityService()
 			{
 				if(get_property("sl_tryPowerLevel").to_boolean())
 				{
+					print("Trying to powerlevel, since sl_tryPowerLevel=true", "blue");
 					if(elementalPlanes_access($element[stench]) && (my_hp() > 100))
 					{
 						if(current_mcd() < 10)
