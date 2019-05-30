@@ -11448,7 +11448,7 @@ boolean LX_handleSpookyravenFirstFloor()
 			expectPool += 3;
 		}
 
-		if(!possessEquipment($item[Pool Cue]) && !possessEquipment(staffOfFats) && !possessEquipment(staffOfFatsEd) && !possessEquipment(staffOfEd))
+		if(!possessEquipment($item[Pool Cue]) && !possessEquipment(staffOfFats) && !possessEquipment(staffOfFatsEd) && !possessEquipment(staffOfEd) && !in_tcrs())
 		{
 			print("Well, I need a pool cueball...", "blue");
 			backupSetting("choiceAdventure330", 1);
@@ -13017,7 +13017,7 @@ boolean L11_shenCopperhead()
 
 	if((internalQuestStatus("questL11Shen") == 0) || (internalQuestStatus("questL11Shen") == 2) || (internalQuestStatus("questL11Shen") == 4) || (internalQuestStatus("questL11Shen") == 6))
 	{
-		if((item_amount($item[Crappy Waiter Disguise]) > 0) && (have_effect($effect[Crappily Disguised as a Waiter]) == 0))
+		if((item_amount($item[Crappy Waiter Disguise]) > 0) && (have_effect($effect[Crappily Disguised as a Waiter]) == 0) && !in_tcrs())
 		{
 			use(1, $item[Crappy Waiter Disguise]);
 			switch(get_property("sl_copperhead").to_int())
