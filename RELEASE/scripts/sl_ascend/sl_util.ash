@@ -4373,6 +4373,11 @@ boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns
 
 boolean buffMaintain(item source, effect buff, int uses, int turns)
 {
+	if(in_tcrs())
+	{
+		return false;
+	}
+
 	if(!glover_usable(buff))
 	{
 		return false;
