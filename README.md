@@ -72,6 +72,10 @@ MatthewDarling (IGN: MasterAssasin (#613216))
 
 Malibu Stacey (IGN: Malibu Stacey (#2705901))
 
+cognificent (IGN: cognificent (#2313727))
+
+gausie (IGN: gausie (#1197090))
+
 ## Special Thanks
 
 This script would obviously not be possible without the work of Cheesecookie.
