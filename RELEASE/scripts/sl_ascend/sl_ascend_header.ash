@@ -605,6 +605,11 @@ boolean sl_sausageGoblin(location loc, string option); // Defined in sl_ascend/s
 boolean pirateRealmAvailable(); // Defined in sl_ascend/sl_mr2019.ash
 boolean LX_unlockPirateRealm(); // Defined in sl_ascend/sl_mr2019.ash
 boolean sl_saberChoice(string choice);	// Defined in sl_ascend/sl_mr2019.ash
+monster sl_saberCurrentMonster();	// Defined in sl_ascend/sl_mr2019.ash
+int sl_saberChargesAvailable();	// Defined in sl_ascend/sl_mr2019.ash
+string sl_combatSaberBanish();	// Defined in sl_ascend/sl_mr2019.ash
+string sl_combatSaberCopy();	// Defined in sl_ascend/sl_mr2019.ash
+string sl_combatSaberYR();	// Defined in sl_ascend/sl_mr2019.ash
 boolean getSpaceJelly();									//Defined in sl_ascend/sl_mr2017.ash
 int horseCost();											//Defined in sl_ascend/sl_mr2017.ash
 string horseNormalize(string horseText); // Defined in sl_ascend/sl_mr2017.ash

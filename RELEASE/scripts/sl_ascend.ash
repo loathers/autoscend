@@ -675,10 +675,7 @@ boolean LX_universeFrat()
 		}
 		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && canYellowRay() && (doNumberology("battlefield", false) != -1))
 		{
-			if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
-			{
-				handleFamiliar("yellow ray");
-			}
+			adjustForYellowRay(yellowRayCombatString());
 			doNumberology("battlefield");
 			return true;
 		}
@@ -7881,10 +7878,7 @@ boolean L12_filthworms()
 	{
 		if(canYellowRay())
 		{
-			if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
-			{
-				handleFamiliar("yellow ray");
-			}
+			adjustForYellowRay(yellowRayCombatString());
 		}
 		if(sl_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !is100FamiliarRun($familiar[XO Skeleton]))
 		{
@@ -8687,10 +8681,7 @@ boolean L10_basement()
 				{
 					if(canYellowRay())
 					{
-						if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
-						{
-							handleFamiliar("yellow ray");
-						}
+						adjustForYellowRay(yellowRayCombatString());
 					}
 					print("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
 					slAdv(1, $location[The Penultimate Fantasy Airship]);
@@ -8757,10 +8748,7 @@ boolean L10_airship()
 
 	if(!possessEquipment($item[Mohawk Wig]) && canYellowRay())
 	{
-		if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
-		{
-			handleFamiliar("yellow ray");
-		}
+		adjustForYellowRay(yellowRayCombatString());
 	}
 	if($location[The Penultimate Fantasy Airship].turns_spent < 10)
 	{
@@ -13459,10 +13447,7 @@ boolean L5_haremOutfit()
 		}
 	}
 
-	if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
-	{
-		handleFamiliar("yellow ray");
-	}
+	adjustForYellowRay(yellowRayCombatString());
 
 	if(sl_my_path() == "Heavy Rains")
 	{
