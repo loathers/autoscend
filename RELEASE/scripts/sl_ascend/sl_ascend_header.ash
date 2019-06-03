@@ -636,6 +636,7 @@ boolean asdonFeed(item it, int qty);						//Defined in sl_ascend/sl_mr2017.ash
 boolean asdonFeed(item it);									//Defined in sl_ascend/sl_mr2017.ash
 boolean asdonAutoFeed();									//Defined in sl_ascend/sl_mr2017.ash
 boolean asdonAutoFeed(int goal);							//Defined in sl_ascend/sl_mr2017.ash
+boolean asdonCanMissile();										//Defined in sl_ascend/sl_mr2017.ash
 boolean makeGenieWish(effect eff);							//Defined in sl_ascend/sl_mr2017.ash
 boolean canGenieCombat();									//Defined in sl_ascend/sl_mr2017.ash
 boolean makeGenieCombat(monster mon, string option);		//Defined in sl_ascend/sl_mr2017.ash

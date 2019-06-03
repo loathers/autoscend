@@ -1282,73 +1282,29 @@ boolean summonMonster(string option)
 boolean canYellowRay()
 {
 	# Use this to determine if it is safe to enter a yellow ray combat.
-	if((sl_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean())
-	{
-		return true;
-	}
-	if(have_effect($effect[Everything Looks Yellow]) > 0)
-	{
-		return false;
-	}
-	if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && sl_is_valid($item[Mayo Lance]))
-	{
-		return true;
-	}
-	foreach it in $items[Golden Light, Unbearable Light, Pumpkin Bomb, Yellowcake Bomb, Viral Video]
-	{
-		if((item_amount(it) > 0) && sl_is_valid(it))
-		{
-			return true;
-		}
-	}
-	# We might not have Flash Headlight outside of combat, will need to check that.
-	if((get_property("peteMotorbikeHeadlight") == "Ultrabright Yellow Bulb") && have_skill($skill[Flash Headlight]) && (my_mp() >= mp_cost($skill[Flash Headlight])))
-	{
-		return true;
-	}
-	if(have_skill($skill[Wrath of Ra]) && (my_mp() >= mp_cost($skill[Wrath of Ra])))
-	{
-		return true;
-	}
-	if(have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
-	{
-		return true;
-	}
+
+	// first, do any necessary prep to use a yellow ray
 	if((my_familiar() == $familiar[Crimbo Shrub]) || (!is100FamiliarRun($familiar[Crimbo Shrub]) && have_familiar($familiar[Crimbo Shrub])))
 	{
-		if(get_property("shrubGifts") == "yellow")
+		if(item_amount($item[box of old Crimbo decorations]) == 0)
 		{
-			return true;
+			familiar curr = my_familiar();
+			use_familiar($familiar[Crimbo Shrub]);
+			use_familiar(curr);
 		}
-		if(!get_property("_shrubDecorated").to_boolean())
+		if(get_property("shrubGifts") != "yellow" && !get_property("_shrubDecorated").to_boolean())
 		{
 			string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=7958");
 			temp = visit_url("choice.php?pwd=&whichchoice=999&option=1&topper=1&lights=1&garland=1&gift=1");
-			if(get_property("shrubGifts") == "yellow")
-			{
-				return true;
-			}
 		}
 	}
-	if(!get_property("_internetViralVideoBought").to_boolean() && (item_amount($item[BACON]) >= 20) && glover_usable($item[Viral Video]))
+	if(!get_property("_internetViralVideoBought").to_boolean() && (item_amount($item[BACON]) >= 20) && sl_is_valid($item[Viral Video]))
 	{
 		cli_execute("make " + $item[Viral Video]);
-		if(item_amount($item[Viral Video]) > 0)
-		{
-			return true;
-		}
-	}
-	if(have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
-	{
-		return true;
-	}
-	if(have_skill($skill[Unleash Cowrruption]) && (have_effect($effect[Cowrruption]) >= 30))
-	{
-		return true;
 	}
 	# Pulled Yellow Taffy	- How do we handle the underwater check?
 	# He-Boulder?			- How do we do this?
-	return false;
+	return yellowRayCombatString() != "";
 }
 
 // private
@@ -1570,24 +1526,20 @@ string yellowRayCombatString()
 {
 	if(have_effect($effect[Everything Looks Yellow]) > 0)
 	{
-		if((sl_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean())
+		if(asdonCanMissile())
 		{
 			return "skill " + $skill[Asdon Martin: Missile Launcher];
 		}
 		return "";
 	}
-	if(!canYellowRay())
-	{
-		return "";
-	}
 
-	if(sl_have_skill($skill[Disintegrate]) && (my_mp() >= (100 + mp_cost($skill[Disintegrate]))))
-	{
-		return "skill " + $skill[Disintegrate];
-	}
-	if((item_amount($item[Yellowcake Bomb]) > 0) && glover_usable($item[Yellowcake Bomb]))
+	if((item_amount($item[Yellowcake Bomb]) > 0) && sl_is_valid($item[Yellowcake Bomb]))
 	{
 		return "item " + $item[Yellowcake Bomb];
+	}
+	if(sl_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
+	{
+		return "skill " + $skill[Disintegrate];
 	}
 	if(sl_have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
 	{
@@ -1597,13 +1549,9 @@ string yellowRayCombatString()
 	{
 		return "skill " + $skill[Wrath of Ra];
 	}
-	if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && glover_usable($item[Mayo Lance]))
+	if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && sl_is_valid($item[Mayo Lance]))
 	{
 		return "item " + $item[Mayo Lance];
-	}
-	if(have_familiar($familiar[Crimbo Shrub]) && (get_property("shrubGifts") == "yellow"))
-	{
-		return "skill " + $skill[Open a Big Yellow Present];
 	}
 	if((get_property("peteMotorbikeHeadlight") == "Ultrabright Yellow Bulb") && sl_have_skill($skill[Flash Headlight]) && (my_mp() >= mp_cost($skill[Flash Headlight])))
 	{
@@ -1611,21 +1559,21 @@ string yellowRayCombatString()
 	}
 	foreach it in $items[Golden Light, Pumpkin Bomb, Unbearable Light, Viral Video]
 	{
-		if((item_amount(it) > 0) && glover_usable(it))
+		if((item_amount(it) > 0) && sl_is_valid(it))
 		{
 			return "item " + it;
 		}
-	}
-	if(sl_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
-	{
-		return "skill " + $skill[Disintegrate];
 	}
 	if(sl_have_skill($skill[Unleash Cowrruption]) && (have_effect($effect[Cowrruption]) >= 30))
 	{
 		return "skill " + $skill[Unleash Cowrruption];
 	}
+	if(have_familiar($familiar[Crimbo Shrub]) && (get_property("shrubGifts") == "yellow"))
+	{
+		return "skill " + $skill[Open a Big Yellow Present];
+	}
 
-	if((sl_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean() && sl_have_skill($skill[Asdon MArtin: Missile Launcher]))
+	if(asdonCanMissile())
 	{
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}

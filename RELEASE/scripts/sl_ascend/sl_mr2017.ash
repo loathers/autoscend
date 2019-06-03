@@ -1424,6 +1424,11 @@ boolean asdonFeed(item it)
 	return asdonFeed(it, 1);
 }
 
+boolean asdonCanMissile()
+{
+	return (sl_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
+}
+
 int horseCost()
 {
 	if(get_property("_horseryRented").to_int() > 0)
