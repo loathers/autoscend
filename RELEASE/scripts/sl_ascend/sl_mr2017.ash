@@ -1693,6 +1693,7 @@ boolean makeGenieCombat(monster mon, string option)
 		print("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
+	handleTracker(mon, to_item(wish_provider), "sl_copies");
 	return true;
 }
 

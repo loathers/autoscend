@@ -258,6 +258,9 @@ void main()
 	writeln("<h2>Sniffing</h2>");
 	generateTrackingData("sl_sniffs", true);
 
+	writeln("<h2>Copies</h2>");
+	generateTrackingData("sl_copies", true);
+
 	writeln("<h2>Instakills</h2>");
 	generateTrackingData("sl_instakill", true);
 

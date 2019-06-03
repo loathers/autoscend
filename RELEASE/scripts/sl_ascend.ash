@@ -130,6 +130,7 @@ void initializeSettings()
 	set_property("sl_combatHandler", "");
 	set_property("sl_consumption", "");
 	set_property("sl_cookie", -1);
+	set_property("sl_copies", "");
 	set_property("sl_copperhead", 0);
 	set_property("sl_crackpotjar", "");
 	set_property("sl_crypt", "");

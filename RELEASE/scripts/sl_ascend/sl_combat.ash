@@ -784,6 +784,7 @@ string sl_combatHandler(int round, string opp, string text)
 		markAsUsed($item[Rain-Doh black box]); // mark even if not used so we don't spam the error message
 		if(get_property("_raindohCopiesMade").to_int() < 5)
 		{
+			handleTracker(enemy, $item[Rain-Doh black box], "sl_copies");
 			return "item " + $item[Rain-Doh black box];
 		}
 		print("Can not issue copy directive because we have no copies left", "red");
@@ -1523,6 +1524,7 @@ string sl_combatHandler(int round, string opp, string text)
 		{
 			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
 			{
+				handleTracker(enemy, $skill[Digitize], "sl_copies");
 				return useSkill($skill[Digitize]);
 			}
 		}
@@ -1534,6 +1536,7 @@ string sl_combatHandler(int round, string opp, string text)
 		{
 			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
 			{
+				handleTracker(enemy, $skill[Digitize], "sl_copies");
 				return useSkill($skill[Digitize]);
 			}
 		}

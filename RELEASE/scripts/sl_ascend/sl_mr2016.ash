@@ -1264,7 +1264,9 @@ boolean timeSpinnerCombat(monster goal, string option)
 			pages[1] = "choice.php?pwd=&whichchoice=1195&option=1";
 			pages[2] = "choice.php?pwd=&whichchoice=1196&option=1&monid=" + goal.id;
 			if(slAdvBypass(0, pages, $location[Noob Cave], option))
-			{}
+			{
+				handleTracker(goal, $item[Time-Spinner], "sl_copies");
+			}
 			else
 			{
 				if(get_property("lastEncounter") == "Travel to a Recent Fight")
