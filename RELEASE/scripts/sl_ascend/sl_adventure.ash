@@ -56,6 +56,10 @@ boolean slAdv(int num, location loc, string option)
 			}
 		}
 	}
+	if(get_property("lastEncounter") == "Using the Force")
+	{
+		run_choice(get_property("_sl_saberChoice").to_int());
+	}
 	return retval;
 }
 

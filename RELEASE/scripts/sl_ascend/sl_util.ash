@@ -1530,6 +1530,12 @@ string yellowRayCombatString()
 		{
 			return "skill " + $skill[Asdon Martin: Missile Launcher];
 		}
+
+		if(possessEquipment($item[Fourth of May cosplay saber]) && (sl_saberChargesAvailable() > 0))
+		{
+			return sl_combatSaberYR();
+		}
+
 		return "";
 	}
 
@@ -1577,7 +1583,29 @@ string yellowRayCombatString()
 	{
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
+
+	if(possessEquipment($item[Fourth of May cosplay saber]) && (sl_saberChargesAvailable() > 0))
+	{
+		return sl_combatSaberYR();
+	}
+
 	return "";
+}
+
+/* Adjust equipment/familiars to have access to the desired Yellow Ray
+ */
+boolean adjustForYellowRay(string combat_string)
+{
+	if(combat_string == ("skill " + $skill[Open a Big Yellow Present]))
+	{
+		handleFamiliar("yellow ray");
+		return true;
+	}
+	if(combat_string == ("skill " + $skill[Use the Force]))
+	{
+		return equip($slot[weapon], $item[Fourth of May cosplay saber]);
+	}
+	return true;
 }
 
 string statCard()

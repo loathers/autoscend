@@ -520,6 +520,14 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
+	if((sl_saberChargesAvailable() > 0) && (enemy != sl_saberCurrentMonster()))
+	{
+		if(enemy == $monster[Blooper] && needDigitalKey())
+		{
+			return sl_combatSaberCopy();
+		}
+	}
+
 
 	if(!haveUsed($item[Rain-Doh black box]) && (my_path() != "Heavy Rains") && (get_property("_raindohCopiesMade").to_int() < 5))
 	{

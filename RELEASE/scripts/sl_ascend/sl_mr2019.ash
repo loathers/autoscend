@@ -281,3 +281,48 @@ boolean sl_saberChoice(string choice)
 	page = visit_url("choice.php?pwd=&whichchoice=1386&option=" + choiceNum);
 	return true;
 }
+
+monster sl_saberCurrentMonster()
+{
+	if (get_property("_saberForceMonsterCount") == "0")
+	{
+		return $monster[none];
+	}
+	return get_property("_saberForceMonster").to_monster();
+}
+
+/* Out-of-combat Saber check: doesn't check that it's equipped
+ */
+int sl_saberChargesAvailable()
+{
+	if(!is_unrestricted($item[Fourth of May cosplay saber kit]))
+	{
+		return 0;
+	}
+	if(!possessEquipment($item[Fourth of May cosplay saber]))
+	{
+		return 0;
+	}
+	return (5 - get_property("_saberForceUses").to_int());
+}
+
+string sl_combatSaberBanish()
+{
+	if(!canUse($skill[Use the Force])) abort("Bad Saber banish use, please report");
+	set_property("_sl_saberChoice", 1);
+	return "skill " + $skill[Use the Force];
+}
+
+string sl_combatSaberCopy()
+{
+	if(!canUse($skill[Use the Force])) abort("Bad Saber copy use, please report");
+	set_property("_sl_saberChoice", 2);
+	return "skill " + $skill[Use the Force];
+}
+
+string sl_combatSaberYR()
+{
+	if(!canUse($skill[Use the Force])) abort("Bad Saber YR use: please report");
+	set_property("_sl_saberChoice", 3);
+	return "skill " + $skill[Use the Force];
+}
