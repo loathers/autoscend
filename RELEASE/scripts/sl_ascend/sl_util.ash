@@ -1524,59 +1524,47 @@ string banisherCombatString(monster enemy, location loc)
 
 string yellowRayCombatString()
 {
-	if(have_effect($effect[Everything Looks Yellow]) > 0)
+	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
-		if(asdonCanMissile())
+		if((item_amount($item[Yellowcake Bomb]) > 0) && sl_is_valid($item[Yellowcake Bomb]))
 		{
-			return "skill " + $skill[Asdon Martin: Missile Launcher];
+			return "item " + $item[Yellowcake Bomb];
 		}
-
-		if(possessEquipment($item[Fourth of May cosplay saber]) && (sl_saberChargesAvailable() > 0))
+		if(sl_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
 		{
-			return sl_combatSaberYR();
+			return "skill " + $skill[Disintegrate];
 		}
-
-		return "";
-	}
-
-	if((item_amount($item[Yellowcake Bomb]) > 0) && sl_is_valid($item[Yellowcake Bomb]))
-	{
-		return "item " + $item[Yellowcake Bomb];
-	}
-	if(sl_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
-	{
-		return "skill " + $skill[Disintegrate];
-	}
-	if(sl_have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
-	{
-		return "skill " + $skill[Ball Lightning];
-	}
-	if(sl_have_skill($skill[Wrath of Ra]) && (my_mp() >= mp_cost($skill[Wrath of Ra])))
-	{
-		return "skill " + $skill[Wrath of Ra];
-	}
-	if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && sl_is_valid($item[Mayo Lance]))
-	{
-		return "item " + $item[Mayo Lance];
-	}
-	if((get_property("peteMotorbikeHeadlight") == "Ultrabright Yellow Bulb") && sl_have_skill($skill[Flash Headlight]) && (my_mp() >= mp_cost($skill[Flash Headlight])))
-	{
-		return "skill " + $skill[Flash Headlight];
-	}
-	foreach it in $items[Golden Light, Pumpkin Bomb, Unbearable Light, Viral Video]
-	{
-		if((item_amount(it) > 0) && sl_is_valid(it))
+		if(sl_have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
 		{
-			return "item " + it;
+			return "skill " + $skill[Ball Lightning];
 		}
-	}
-	if(sl_have_skill($skill[Unleash Cowrruption]) && (have_effect($effect[Cowrruption]) >= 30))
-	{
-		return "skill " + $skill[Unleash Cowrruption];
-	}
-	if(sl_have_familiar($familiar[Crimbo Shrub]) && (get_property("shrubGifts") == "yellow"))
-	{
-		return "skill " + $skill[Open a Big Yellow Present];
+		if(sl_have_skill($skill[Wrath of Ra]) && (my_mp() >= mp_cost($skill[Wrath of Ra])))
+		{
+			return "skill " + $skill[Wrath of Ra];
+		}
+		if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && sl_is_valid($item[Mayo Lance]))
+		{
+			return "item " + $item[Mayo Lance];
+		}
+		if((get_property("peteMotorbikeHeadlight") == "Ultrabright Yellow Bulb") && sl_have_skill($skill[Flash Headlight]) && (my_mp() >= mp_cost($skill[Flash Headlight])))
+		{
+			return "skill " + $skill[Flash Headlight];
+		}
+		foreach it in $items[Golden Light, Pumpkin Bomb, Unbearable Light, Viral Video]
+		{
+			if((item_amount(it) > 0) && sl_is_valid(it))
+			{
+				return "item " + it;
+			}
+		}
+		if(sl_have_skill($skill[Unleash Cowrruption]) && (have_effect($effect[Cowrruption]) >= 30))
+		{
+			return "skill " + $skill[Unleash Cowrruption];
+		}
+		if(sl_have_familiar($familiar[Crimbo Shrub]) && (get_property("shrubGifts") == "yellow"))
+		{
+			return "skill " + $skill[Open a Big Yellow Present];
+		}
 	}
 
 	if(asdonCanMissile())
