@@ -1572,10 +1572,10 @@ string yellowRayCombatString()
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
 
-	if(possessEquipment($item[Fourth of May cosplay saber]) && (sl_saberChargesAvailable() > 0))
-	{
-		return sl_combatSaberYR();
-	}
+	//if(possessEquipment($item[Fourth of May cosplay saber]) && (sl_saberChargesAvailable() > 0))
+	//{
+	//	return sl_combatSaberYR();
+	//}
 
 	return "";
 }
