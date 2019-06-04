@@ -520,7 +520,7 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if((sl_saberChargesAvailable() > 0) && (enemy != sl_saberCurrentMonster()))
+	if(canUse($skill[Use the Force]) && (sl_saberChargesAvailable() > 0) && (enemy != sl_saberCurrentMonster()))
 	{
 		if(enemy == $monster[Blooper] && needDigitalKey())
 		{
