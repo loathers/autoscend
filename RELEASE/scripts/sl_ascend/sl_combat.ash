@@ -524,6 +524,7 @@ string sl_combatHandler(int round, string opp, string text)
 	{
 		if(enemy == $monster[Blooper] && needDigitalKey())
 		{
+			handleTracker(enemy, $skill[Use the Force], "sl_copies");
 			return sl_combatSaberCopy();
 		}
 	}
