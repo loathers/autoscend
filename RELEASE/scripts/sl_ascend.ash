@@ -195,6 +195,7 @@ void initializeSettings()
 	set_property("sl_powerLevelLastLevel", "0");
 	set_property("sl_powerLevelAdvCount", "0");
 	set_property("sl_powerLevelLastAttempted", "0");
+	set_property("sl_pulls", "");
 	set_property("sl_shenCopperhead", true);
 	set_property("sl_skipDesert", 0);
 	set_property("sl_snapshot", "");

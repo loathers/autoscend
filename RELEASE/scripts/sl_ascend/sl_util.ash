@@ -3619,6 +3619,13 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 		{
 			print("Failed pulling " + howMany + " of " + it, "red");
 		}
+		else
+		{
+			for(int i = 0; i < howMany; ++i)
+			{
+				handleTracker(it, "sl_pulls");
+			}
+		}
 		return retval;
 	}
 	return false;

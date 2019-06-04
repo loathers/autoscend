@@ -287,6 +287,13 @@ void main()
 		writeln("<h2>One Crazy Random Summer Fun-o-meter!</h2>");
 		generateTrackingData("sl_funTracker", true);
 	}
+
+	if(!in_hardcore())
+	{
+		writeln("<h2>Pulls</h2>");
+		generateTrackingData("sl_pulls", false);
+	}
+
 	writeln("<h2>Other Stuff</h2>");
 	generateTrackingData("sl_otherstuff", true);
 
