@@ -10462,7 +10462,7 @@ boolean LX_craftAcquireItems()
 	LX_dolphinKingMap();
 	sl_mayoItems();
 
-	if(item_amount($item[Metal Meteoroid]) > 0)
+	if(item_amount($item[Metal Meteoroid]) > 0 && !in_tcrs())
 	{
 		item it = $item[Meteorthopedic Shoes];
 		if(!possessEquipment(it))
