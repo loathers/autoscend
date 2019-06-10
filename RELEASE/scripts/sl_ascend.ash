@@ -5708,7 +5708,7 @@ boolean L11_hiddenCity()
 					L11_hiddenTavernUnlock(true);
 					while(have_effect($effect[Thrice-Cursed]) == 0)
 					{
-						if((inebriety_left() > 0) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()))
+						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs())
 						{
 							buyUpTo(1, $item[Cursed Punch]);
 							if(item_amount($item[Cursed Punch]) == 0)
