@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19229; // 2CRS support, kinda. Also Force support!
+since r19280; // Add "tcrs spoon" command
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
