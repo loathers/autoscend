@@ -19,65 +19,63 @@ acc	3	Lil' Doctor&trade; bag	!prop:_chestXRayUsed=3
 acc	4	Kremlin's Greatest Briefcase	!prop:_kgbTranquilizerDartUses=3
 acc	5	Lil' Doctor&trade; bag	!prop:_reflexHammerUsed=3
 acc	6	Over-The-Shoulder Folder Holder
-acc	7	hewn moon-rune spoon	path:Two Crazy Random Summer
-acc	8	LOV Earrings	mainstat:Moxie
-acc	9	Xiblaxian Holo-Wrist-Puter
-acc	10	Your Cowboy Boots
-acc	11	Battle Broom
-acc	12	Barrel Hoop Earring
-acc	13	Nouveau nosering
-acc	14	Brutal brogues
-acc	15	Draftsman's driving gloves
-acc	16	hewn moon-rune spoon
-acc	17	Caveman Dan's Favorite Rock
-acc	18	Gumshoes
-acc	19	Codpiece
-acc	20	Hand In Glove
-acc	21	Astral Bracer
-acc	22	Astral Ring
-acc	23	Mr. Cheeng's Spectacles
-acc	24	Bram's Choker
-acc	25	Astral Belt
-acc	26	Astral Mask
-acc	27	Numberwang
-acc	28	Kremlin's Greatest Briefcase
-acc	29	Sphygmayomanometer
-acc	30	Ring Of The Skeleton Lord
-acc	31	Gold Detective Badge
-acc	32	Silver Detective Badge
-acc	33	Bronze Detective Badge
-acc	34	Badge Of Authority
-acc	35	Xiblaxian Holo-Wrist-Puter
-acc	36	Mr. Accessory Jr.
-acc	37	Iron Beta of Industry
-acc	38	LOV Earrings
-acc	39	wax hand
-acc	40	Perfume-Soaked Bandana
-acc	41	Wicker Kickers
-acc	42	Compression Stocking
-acc	43	Glow-In-The-Dark Necklace
-acc	44	Time-Twitching Toolbelt
-acc	45	Mr. Accessory
-acc	46	Pirate Fledges
-acc	47	Plastic Detective Badge
-acc	48	Jangly Bracelet
-acc	49	Jolly Roger Charrrm Bracelet
-acc	50	Grumpy Old Man Charrrm Bracelet
-acc	51	Bonerdagon Necklace
-acc	52	Ghost of a Necklace
-acc	53	Blackberry Galoshes
-acc	54	badass belt
-acc	55	Talisman o' Namsilat
-acc	56	Batskin Belt
-acc	57	shiny ring
-acc	58	Garish Pinky Ring
-acc	59	Ring Of Telling Skeletons What To Do
-acc	60	Imp Unity Ring
-acc	61	Infernal Insoles
-acc	62	Glowing Red Eye
-acc	63	Stuffed Shoulder Parrot
-acc	64	Vampire Collar
-acc	65	Jaunty Feather
+acc	7	LOV Earrings	mainstat:Moxie
+acc	8	Xiblaxian Holo-Wrist-Puter
+acc	9	Your Cowboy Boots
+acc	10	Battle Broom
+acc	11	Barrel Hoop Earring
+acc	12	Nouveau nosering
+acc	13	Brutal brogues
+acc	14	Draftsman's driving gloves
+acc	15	Caveman Dan's Favorite Rock
+acc	16	Gumshoes
+acc	17	Codpiece
+acc	18	Hand In Glove
+acc	19	Astral Bracer
+acc	20	Astral Ring
+acc	21	Mr. Cheeng's Spectacles
+acc	22	Bram's Choker
+acc	23	Astral Belt
+acc	24	Astral Mask
+acc	25	Numberwang
+acc	26	Kremlin's Greatest Briefcase
+acc	27	Sphygmayomanometer
+acc	28	Ring Of The Skeleton Lord
+acc	29	Gold Detective Badge
+acc	30	Silver Detective Badge
+acc	31	Bronze Detective Badge
+acc	32	Badge Of Authority
+acc	33	Xiblaxian Holo-Wrist-Puter
+acc	34	Mr. Accessory Jr.
+acc	35	Iron Beta of Industry
+acc	36	LOV Earrings
+acc	37	wax hand
+acc	38	Perfume-Soaked Bandana
+acc	39	Wicker Kickers
+acc	40	Compression Stocking
+acc	41	Glow-In-The-Dark Necklace
+acc	42	Time-Twitching Toolbelt
+acc	43	Mr. Accessory
+acc	44	Pirate Fledges
+acc	45	Plastic Detective Badge
+acc	46	Jangly Bracelet
+acc	47	Jolly Roger Charrrm Bracelet
+acc	48	Grumpy Old Man Charrrm Bracelet
+acc	49	Bonerdagon Necklace
+acc	50	Ghost of a Necklace
+acc	51	Blackberry Galoshes
+acc	52	badass belt
+acc	53	Talisman o' Namsilat
+acc	54	Batskin Belt
+acc	55	shiny ring
+acc	56	Garish Pinky Ring
+acc	57	Ring Of Telling Skeletons What To Do
+acc	58	Imp Unity Ring
+acc	59	Infernal Insoles
+acc	60	Glowing Red Eye
+acc	61	Stuffed Shoulder Parrot
+acc	62	Vampire Collar
+acc	63	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true
