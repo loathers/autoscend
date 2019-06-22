@@ -14272,6 +14272,7 @@ boolean doTasks()
 	autosellCrap();
 	asdonAutoFeed();
 	LX_craftAcquireItems();
+	sl_spoonTuneMoon();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -14710,6 +14711,8 @@ void sl_begin()
 	print("Current Ascension: " + sl_my_path());
 
 	set_property("sl_disableAdventureHandling", false);
+
+	sl_spoonTuneConfirm();
 
 	settingFixer();
 
