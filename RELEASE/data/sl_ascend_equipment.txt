@@ -249,62 +249,67 @@ off-hand	27	Yorick
 off-hand	28	Red X Shield
 off-hand	29	Party Crasher
 off-hand	30	Spiked Femur
-off-hand	31	little black book	class:Ed
-off-hand	32	Whatsian Ionic Pliers	class:Ed
-off-hand	33	giant penguin keychain
-off-hand	34	Hot Plate
-off-hand	35	Oversized Pizza Cutter
-off-hand	36	Cardboard Wakizashi
-off-hand	37	Pitchfork
-off-hand	38	Sabre Teeth
-off-hand	39	Knob Goblin Scimitar
-off-hand	40	Turtle Totem
+off-hand	31	red book	class:Ed
+off-hand	32	little black book	class:Ed
+off-hand	33	Whatsian Ionic Pliers	class:Ed
+off-hand	34	giant penguin keychain
+off-hand	35	snake shield
+off-hand	36	snarling wolf shield
+off-hand	37	Hot Plate
+off-hand	38	Oversized Pizza Cutter
+off-hand	39	Cardboard Wakizashi
+off-hand	40	Pitchfork
+off-hand	41	Sabre Teeth
+off-hand	42	Knob Goblin Scimitar
+off-hand	43	Turtle Totem
 
 # Good ol' pants
 pants	0	Pantsgiving
 pants	1	Astral Shorts
-pants	2	discarded swimming trunks	mainstat:Muscle
-pants	3	Bankruptcy Barrel
-pants	4	Troutsers
-pants	5	Pantogram Pants
-pants	6	Greatest American Pants
-pants	7	Distressed Denim Pants
-pants	8	Xiblaxian Stealth Trousers
-pants	9	Troll Britches
-pants	10	Vicar's Tutu
-pants	11	Stainless Steel Slacks
-pants	12	Spangly Mariachi Pants
-pants	13	Bloodied Surgical Dungarees
-pants	14	Pygmy Briefs
-pants	15	Furry Pants
-pants	16	Oil Slacks
-pants	17	Snowboarder Pants
-pants	18	Troutpiece
-pants	19	Burnt Snowpants
-pants	20	Swashbuckling Pants
-pants	21	Leotarrrd
-pants	22	Demonskin Trousers
-pants	23	Ninja Hot Pants
-pants	24	Antique Greaves
-pants	25	miner's pants
-pants	26	Filthy Corduroys
-pants	27	Psychic's Pslacks
-pants	28	Knob Goblin Uberpants
-pants	29	Alpha-Mail Pants
-pants	30	Bloody Clown Pants
-pants	31	Troutpiece
-pants	32	Paper-Plate-Mail Pants
-pants	33	Hep Waders
-pants	34	Genie's Pants
-pants	35	Union Scalemail Pants
-pants	36	Stylish Swimsuit
-pants	37	Chain-Mail Monokini
-pants	38	Pants Of The Slug Lord
-pants	39	Knob Goblin Pants
-pants	40	three-legged pants
-pants	41	Knob Goblin Harem Pants
-pants	42	Studded Leather Boxer Shorts
-pants	43	Old Sweatpants
+pants	2	Astral Trousers
+pants	3	discarded swimming trunks	mainstat:Muscle
+pants	4	Bankruptcy Barrel
+pants	5	Troutsers
+pants	6	Pantogram Pants
+pants	7	Greatest American Pants
+pants	8	Distressed Denim Pants
+pants	9	Xiblaxian Stealth Trousers
+pants	10	Troll Britches
+pants	11	Vicar's Tutu
+pants	12	Stainless Steel Slacks
+pants	13	Spangly Mariachi Pants
+pants	14	Bloodied Surgical Dungarees
+pants	15	Pygmy Briefs
+pants	16	Furry Pants
+pants	17	Oil Slacks
+pants	18	Whoompa Fur Pants
+pants	19	Snowboarder Pants
+pants	20	Troutpiece
+pants	21	Burnt Snowpants
+pants	22	Swashbuckling Pants
+pants	23	Leotarrrd
+pants	24	Demonskin Trousers
+pants	25	Ninja Hot Pants
+pants	26	Antique Greaves
+pants	27	miner's pants
+pants	28	Filthy Corduroys
+pants	29	Psychic's Pslacks
+pants	30	Knob Goblin Uberpants
+pants	31	Alpha-Mail Pants
+pants	32	Bloody Clown Pants
+pants	33	Troutpiece
+pants	34	Paper-Plate-Mail Pants
+pants	35	Hep Waders
+pants	36	Genie's Pants
+pants	37	Union Scalemail Pants
+pants	38	Stylish Swimsuit
+pants	39	Chain-Mail Monokini
+pants	40	Pants Of The Slug Lord
+pants	41	Knob Goblin Pants
+pants	42	three-legged pants
+pants	43	Knob Goblin Harem Pants
+pants	44	Studded Leather Boxer Shorts
+pants	45	Old Sweatpants
 
 # Shirts
 shirt	0	LOV Eardigan	mainstat:Muscle
@@ -422,45 +427,46 @@ weapon	58	witty rapier	mainstat:Mysticality
 weapon	59	Chopsticks	mainstat:Mysticality
 weapon	60	giant artisanal rice peeler	mainstat:Mysticality
 weapon	61	Oversized Pizza Cutter	mainstat:Mysticality
-weapon	62	Eggbeater	mainstat:Mysticality
-weapon	63	Corn Holder	mainstat:Mysticality
-weapon	64	Dishrag	mainstat:Mysticality
+weapon	62	Filthy Pestle	mainstat:Mysticality
+weapon	63	Eggbeater	mainstat:Mysticality
+weapon	64	Corn Holder	mainstat:Mysticality
+weapon	65	Dishrag	mainstat:Mysticality
 # Good knives
-weapon	65	black blade	mainstat:Moxie;skill:Tricky Knifework
-weapon	66	batblade	mainstat:Moxie;skill:Tricky Knifework
-weapon	67	soap knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	68	Saturday Night Special	mainstat:Moxie
+weapon	66	black blade	mainstat:Moxie;skill:Tricky Knifework
+weapon	67	batblade	mainstat:Moxie;skill:Tricky Knifework
+weapon	68	soap knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	69	Saturday Night Special	mainstat:Moxie
 # Knives that are fine
-weapon	69	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
-weapon	70	candy knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	71	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
-weapon	72	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
-weapon	73	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
+weapon	70	half-size scalpel	mainstat:Moxie;skill:Tricky Knifework
+weapon	71	candy knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	72	sharpened spoon	mainstat:Moxie;skill:Tricky Knifework
+weapon	73	sabre teeth	mainstat:Moxie;skill:Tricky Knifework
+weapon	74	broken beer bottle	mainstat:Moxie;skill:Tricky Knifework
 # This stuff is definitely better than garbage
-weapon	74	finger cymbals	mainstat:Moxie
+weapon	75	finger cymbals	mainstat:Moxie
 # The worst knife, but it's still a knife
-weapon	75	boot knife	mainstat:Moxie;skill:Tricky Knifework
-weapon	76	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	76	boot knife	mainstat:Moxie;skill:Tricky Knifework
+weapon	77	asparagus knife	mainstat:Moxie;skill:Tricky Knifework
 # It's not good, but at least it's a ranged weapon that takes one hand
-weapon	77	disco ball	mainstat:Moxie
-weapon	78	stolen accordion	class:Accordion Thief
+weapon	78	disco ball	mainstat:Moxie
+weapon	79	stolen accordion	class:Accordion Thief
 # Some melee weapons
-weapon	79	Rusty Piece Of Rebar
-weapon	80	Octopus's Spade
-weapon	81	Oversized Pipe
-weapon	82	Ghast Iron Cleaver
-weapon	83	Short-Handled Mop
-weapon	84	Spectral Axe
-weapon	85	Antique Machete
-weapon	86	red-hot sausage fork
+weapon	80	Rusty Piece Of Rebar
+weapon	81	Octopus's Spade
+weapon	82	Oversized Pipe
+weapon	83	Ghast Iron Cleaver
+weapon	84	Short-Handled Mop
+weapon	85	Spectral Axe
+weapon	86	Antique Machete
+weapon	87	red-hot sausage fork
 # Almost absolute garbage
-weapon	87	Skeleton Bone
-weapon	88	Corn Holder
-weapon	89	Knob Goblin Scimitar
-weapon	90	Knob Goblin Tongs
+weapon	88	Skeleton Bone
+weapon	89	Corn Holder
+weapon	90	Knob Goblin Scimitar
+weapon	91	Knob Goblin Tongs
 # Absolute garbage, but better than nothing, probably?
-weapon	91	Turtle Totem	class:Turtle Tamer
-weapon	92	Saucepan	class:Sauceror
-weapon	93	Pasta Spoon	class:Pastamancer
+weapon	92	Turtle Totem	class:Turtle Tamer
+weapon	93	Saucepan	class:Sauceror
+weapon	94	Pasta Spoon	class:Pastamancer
 # I probably missed some stuff from the old weapon handling but c'est la vie
 
