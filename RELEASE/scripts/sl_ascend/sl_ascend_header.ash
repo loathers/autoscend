@@ -681,6 +681,7 @@ void handleTracker(monster enemy, skill toTrack, string tracker);//Defined in sl
 void handleTracker(monster enemy, string toTrack, string tracker);//Defined in sl_ascend/sl_util.ash
 void handleTracker(monster enemy, string tracker);			//Defined in sl_ascend/sl_util.ash
 void handleTracker(string used, string tracker); //Defined in sl_ascend/sl_util.ash
+void handleTracker(item used, string detail, string tracker); //Defined in sl_ascend/sl_util.ash
 boolean hasArm(monster enemy);								//Defined in sl_ascend/sl_monsterparts.ash
 boolean hasHead(monster enemy);								//Defined in sl_ascend/sl_monsterparts.ash
 boolean hasLeg(monster enemy);								//Defined in sl_ascend/sl_monsterparts.ash

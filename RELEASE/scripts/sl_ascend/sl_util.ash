@@ -58,7 +58,9 @@ boolean handleSealAncient();
 boolean handleSealAncient(string option);
 boolean handleSealElement(element flavor);
 boolean handleSealElement(element flavor, string option);
+void handleTracker(string used, string tracker);
 void handleTracker(item used, string tracker);
+void handleTracker(item used, string detail, string tracker);
 void handleTracker(monster enemy, string tracker);
 void handleTracker(monster enemy, skill toTrack, string tracker);
 void handleTracker(monster enemy, string toTrack, string tracker);
@@ -512,6 +514,17 @@ void handleTracker(item used, string tracker)
 		cur = cur + ", ";
 	}
 	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
+void handleTracker(item used, string detail, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(detail) + ":" + my_turncount() + ")";
 	set_property(tracker, cur);
 }
 

@@ -1639,9 +1639,11 @@ boolean makeGenieWish(effect eff)
 	}
 
 	string wish = "to be " + eff;
-	int wish_provider = 9529; // genie bottle
+	int wish_provider = $item[genie bottle].to_int();
 	if (item_amount($item[pocket wish]) > 0)
-		wish_provider = 9537; // pocket wish
+	{
+		wish_provider = $item[pocket wish].to_int();
+	}
 	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider, false);
 	page = visit_url("choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish);
 	if(have_effect(eff) == 0)
@@ -1649,6 +1651,7 @@ boolean makeGenieWish(effect eff)
 		print("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
+	handleTracker(to_item(wish_provider), wish, "sl_wishes");
 	return true;
 }
 
@@ -1682,10 +1685,10 @@ boolean makeGenieCombat(monster mon, string option)
 
 	string wish = "to fight a " + mon;
 	string[int] pages;
-	int wish_provider = 9537; // pocket wish
-	if(get_property("_genieWishesUsed").to_int() < 3)
+	int wish_provider = $item[genie bottle].to_int();
+	if (item_amount($item[pocket wish]) > 0)
 	{
-		wish_provider = 9529; // genie bottle
+		wish_provider = $item[pocket wish].to_int();
 	}
 	pages[0] = "inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider;		//false
 	pages[1] = "choice.php?pwd=" + my_hash() + "&whichchoice=1267&option=1&wish=" + wish;
@@ -1699,6 +1702,7 @@ boolean makeGenieCombat(monster mon, string option)
 		return false;
 	}
 	handleTracker(mon, to_item(wish_provider), "sl_copies");
+	handleTracker(to_item(wish_provider), wish, "sl_wishes");
 	return true;
 }
 
@@ -1734,6 +1738,8 @@ boolean makeGeniePocket()
 	{
 		return false;
 	}
+
+	handleTracker($item[Genie Bottle], "for more wishes", "sl_wishes");
 	return true;
 }
 
