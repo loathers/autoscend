@@ -3487,6 +3487,7 @@ int doNumberology(string goal, boolean doIt, string option)
 				pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
 				pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + i;
 				slAdvBypass(0, pages, $location[Noob Cave], option);
+				handleTracker($monster[War Frat 151st Infantryman], $skill[Calculate the Universe], "sl_copies");
 			}
 			else
 			{
