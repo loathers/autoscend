@@ -4290,12 +4290,12 @@ boolean buyUpTo(int num, item it, int maxprice)
 	if(num > 0)
 	{
 		buy(num, it, maxprice);
-		if(item_amount(it) < num)
+		if(item_amount(it) < orig)
 		{
 			print("Could not buyUpTo(" + orig + ") of " + it + ". Maxprice: " + maxprice, "red");
 		}
 	}
-	return (item_amount(it) >= num);
+	return (item_amount(it) >= orig);
 }
 
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns)
