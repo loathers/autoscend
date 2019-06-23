@@ -482,6 +482,7 @@ boolean dna_bedtime();										//Defined in sl_ascend/sl_mr2014.ash
 boolean dna_generic();										//Defined in sl_ascend/sl_mr2014.ash
 boolean dna_sorceressTest();								//Defined in sl_ascend/sl_mr2014.ash
 boolean dna_startAcquire();									//Defined in sl_ascend/sl_mr2014.ash
+boolean sl_reagnimatedGetPart();	//Defined in sl_ascend/sl_mr2012.ash
 boolean doBedtime();										//Defined in sl_ascend.ash
 boolean doHRSkills();										//Defined in sl_ascend/sl_heavyrains.ash
 boolean doVacation();										//Defined in sl_ascend.ash
@@ -611,6 +612,10 @@ int sl_saberChargesAvailable();	// Defined in sl_ascend/sl_mr2019.ash
 string sl_combatSaberBanish();	// Defined in sl_ascend/sl_mr2019.ash
 string sl_combatSaberCopy();	// Defined in sl_ascend/sl_mr2019.ash
 string sl_combatSaberYR();	// Defined in sl_ascend/sl_mr2019.ash
+string sl_spoonGetDesiredSign();	// Defined in sl_ascend/sl_mr2019.ash
+void sl_spoonTuneConfirm();	// Defined in sl_ascend/sl_mr2019.ash
+boolean sl_spoonReadyToTuneMoon();	// Defined in sl_ascend/sl_mr2019.ash
+boolean sl_spoonTuneMoon();	// Defined in sl_ascend/sl_mr2019.ash
 boolean getSpaceJelly();									//Defined in sl_ascend/sl_mr2017.ash
 int horseCost();											//Defined in sl_ascend/sl_mr2017.ash
 string horseNormalize(string horseText); // Defined in sl_ascend/sl_mr2017.ash

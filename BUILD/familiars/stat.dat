@@ -1,0 +1,48 @@
+# Sombrero is desirable with a decent amount of ML
+Galloping Grill	ML:>=120
+Baby Sandworm	ML:>=120
+Hovering Sombrero	ML:>=120
+# Wanna get yummy chewables
+Golden Monkey	prop:_powderedGoldDrops<3
+Bloovian Groose	prop:_grooseDrops<3
+Unconscious Collective	prop:_dreamJarDrops<3
+Grim Brother	prop:_grimFairyTaleDrops<3
+# Might as well grab an egg
+Rockin' Robin	prop:rockinRobinProgress>=25
+# And some wax
+Optimistic Candle	prop:optimisticCandleProgress>=25
+# Can be tuned to give pure mainstat, so it's better than other volleyballs
+Crimbo Shrub
+# Free car fuel, or meat, or food/booze if we're really desperate
+Lil' Barrel Mimic
+# Volleyballs with a multiplier
+Baby Mutant Rattlesnake	grimdark:0
+Baby Mutant Rattlesnake	grimdark:1
+# Fairyballs
+Elf Operative
+Optimistic Candle
+Rockin' Robin
+# Volleychauns
+Golden Monkey
+Bloovian Groose
+Unconscious Collective
+Grim Brother
+Dramatic Hedgehog
+Chauvinist Pig
+Uniclops
+Hunchbacked Minion
+Nervous Tick
+Cymbal-Playing Monkey
+Cheshire Bat
+# Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
+Frumious Bandersnatch
+# Fancy
+Miniature Sword &trade; Martini Guy
+# Slightly special volleyballs
+Reanimated Reanimator
+God Lobster
+Baby Mutant Rattlesnake	grimdark:2
+# Turtles are cute
+Grinning Turtle
+# The original
+Blood-Faced Volleyball

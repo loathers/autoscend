@@ -23,6 +23,7 @@ import <sl_ascend/sl_elementalPlanes.ash>
 import <sl_ascend/sl_clan.ash>
 import <sl_ascend/sl_cooking.ash>
 import <sl_ascend/sl_adventure.ash>
+import <sl_ascend/sl_mr2012.ash>
 import <sl_ascend/sl_mr2014.ash>
 import <sl_ascend/sl_mr2015.ash>
 import <sl_ascend/sl_mr2016.ash>
@@ -14274,6 +14275,7 @@ boolean doTasks()
 	autosellCrap();
 	asdonAutoFeed();
 	LX_craftAcquireItems();
+	sl_spoonTuneMoon();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -14712,6 +14714,8 @@ void sl_begin()
 	print("Current Ascension: " + sl_my_path());
 
 	set_property("sl_disableAdventureHandling", false);
+
+	sl_spoonTuneConfirm();
 
 	settingFixer();
 

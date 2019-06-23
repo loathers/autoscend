@@ -326,3 +326,215 @@ string sl_combatSaberYR()
 	set_property("_sl_saberChoice", 3);
 	return "skill " + $skill[Use the Force];
 }
+
+string sl_spoonGetDesiredSign()
+{
+	string spoonsign = get_property("sl_spoonsign").to_lower_case();
+
+	string statSign(string musc, string myst, string mox)
+	{
+		switch(my_primestat())
+		{
+			case $stat[Muscle]:
+				return musc;
+			case $stat[Mysticality]:
+				return myst;
+			case $stat[Moxie]:
+				return mox;
+			default:
+				abort("Invalid mainstat, what?");
+				return "butts"; // needed or mafia complains about missing return value
+		}
+	}
+	// coerce spoonsign to be one of the nine signs, instead of shorthands
+	switch(spoonsign)
+	{
+		case "knoll":
+			return statSign("mongoose", "wallaby", "vole");
+		case "canadia":
+			return statSign("platypus", "opossum", "marmot");
+		case "gnomad":
+			return statSign("wombat", "blender", "packrat");
+		case "mongoose":
+		case "wallaby":
+		case "vole":
+		case "platypus":
+		case "opossum":
+		case "marmot":
+		case "wombat":
+		case "blender":
+		case "packrat":
+			return spoonsign;
+		// a couple extra alternate labels
+		case "clover":
+			return "marmot";
+		case "famweight":
+		case "weight":
+		case "familiar weight":
+		case "familiar":
+		case "fam":
+			return "platypus";
+		case "food":
+			return "opossum";
+		case "booze":
+			return "blender";
+		default:
+			// spoonsign is invalid or none/false/whatever to say don't do this
+			return "";
+	}
+}
+
+void sl_spoonTuneConfirm()
+{
+	if(!possessEquipment($item[hewn moon-rune spoon]) || !sl_is_valid($item[hewn moon-rune spoon]))
+	{
+		// couldn't change signs if we wanted to
+		return;
+	}
+
+	if(get_property("sl_spoonconfirmed").to_int() == my_ascensions())
+	{
+		return;
+	}
+
+	string spoonsign = sl_spoonGetDesiredSign();
+	if(spoonsign == "")
+	{
+		// the user doesn't want to change signs
+		return;
+	}
+
+	if(user_confirm("You're currently set to change signs to " + spoonsign + " after wrapping up your business in your current sign. Do you want to interrupt the script to go change that? Will default to 'No' in 15 seconds.", 15000, false))
+	{
+		abort("Alright, please go change sl_spoonsign via the soolascend relay script and then rerun.");
+	}
+	else
+	{
+		set_property("sl_spoonconfirmed", my_ascensions());
+	}
+}
+
+boolean sl_spoonReadyToTuneMoon()
+{
+	if(!possessEquipment($item[hewn moon-rune spoon]) || !sl_is_valid($item[hewn moon-rune spoon]))
+	{
+		// need a valid spoon to change moon signs
+		return false;
+	}
+
+	string currsign = my_sign().to_lower_case();
+	string spoonsign = sl_spoonGetDesiredSign();
+
+	if(spoonsign == "")
+	{
+		// the user doesn't want to change signs automatically
+		return false;
+	}
+
+	if(spoonsign == currsign)
+	{
+		// we'd just be changing to the same sign, so do nothing
+		return false;
+	}
+
+	boolean isKnoll = $strings[mongoose, wallaby, vole] contains currsign;
+	boolean isCanadia = $strings[platypus, opossum, marmot] contains currsign;
+	boolean isGnomad = $strings[wombat, blender, packrat] contains currsign;
+
+	boolean toKnoll = $strings[mongoose, wallaby, vole] contains spoonsign;
+	boolean toCanadia = $strings[platypus, opossum, marmot] contains spoonsign;
+	boolean toGnomad = $strings[wombat, blender, packrat] contains spoonsign;
+
+	if(!toKnoll && !toCanadia && !toGnomad)
+	{
+		abort("Something weird is going on with sl_spoonsign. It's not an invalid/blank value, but also not a knoll, canadia, or gnomad sign? This is impossible.");
+	}
+
+	if(my_sign() == "Vole" && get_property("cyrptAlcoveEvilness") > 0)
+	{
+		// we want to stay vole long enough to do the alcove, since the initiative helps
+		return false;
+	}
+
+	if(isKnoll && !toKnoll && get_property("lastDesertUnlock").to_int() < my_ascensions())
+	{
+		// we want to get the meatcar via the knoll store
+		return false;
+	}
+
+	if(isCanadia && !toCanadia && item_amount($item[logging hatchet]) == 0)
+	{
+		// want to make sure we've grabbed the logging hatchet before switching away from canadia
+		return false;
+	}
+
+	if(isGnomad && !toGnomad && sl_is_valid($skill[Torso Awaregness]) && !sl_have_skill($skill[Torso Awaregness]))
+	{
+		// we want to know about our torso before swapping away from gnomad signs
+		return false;
+	}
+
+	if(currsign == "opossum" && my_fullness() == 0)
+	{
+		// we want to eat something before swapping away from opossum
+		return false;
+	}
+
+	if(currsign == "blender" && my_inebriety() == 0)
+	{
+		// we want to drink something before swapping away from blender
+		return false;
+	}
+
+	return true;
+}
+
+boolean sl_spoonTuneMoon()
+{
+	if(!sl_spoonReadyToTuneMoon())
+	{
+		return false;
+	}
+
+	slot wasspoon = $slot[none];
+	foreach sl in $slots[acc1, acc2, acc3]
+	{
+		if(equipped_item(sl) == $item[hewn moon-rune spoon])
+		{
+			equip(sl, $item[none]);
+			wasspoon = sl;
+			break;
+		}
+	}
+
+	string spoonsign = sl_spoonGetDesiredSign();
+	int signnum = 0;
+	foreach sign in $strings[mongoose, wallaby, vole, platypus, opossum, marmot, wombat, blender, packrat]
+	{
+		++signnum;
+		if(sign == spoonsign)
+		{
+			break;
+		}
+	}
+
+	string res = visit_url('inv_use.php?whichitem=10254&pwd=' + my_hash());
+	boolean cantune = (res.index_of("You can't figure out the angle to see the moon's reflection in the spoon anymore.") == -1);
+	if(cantune)
+	{
+		print("Changing signs to " + spoonsign + ", sign #" + signnum, "blue");
+		visit_url('inv_use.php?whichitem=10254&pwd&doit=96&whichsign=' + signnum, true);
+		cli_execute("refresh all");
+	}
+	else
+	{
+		print("Tried to change signs to " + spoonsign + ", but moon has already been tuned", "red");
+	}
+
+	if(wasspoon != $slot[none])
+	{
+		equip(wasspoon, $item[hewn moon-rune spoon]);
+	}
+
+	return cantune;
+}

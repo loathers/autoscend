@@ -1,0 +1,56 @@
+# Typical starfish are better than whelps
+# Whelps on average restore .375*(weight+5)
+# Superwhelps up this to 0.75*(weight+5)
+# But starfish restore roughly 0.25*weight PER TURN
+# and average combat length looks to be ~6 rounds in sl_ascend, so that's 1.5*weight on average
+# Not even bothering with cocoabos
+
+# Ash is nice
+Galloping Grill	prop:_hotAshesDrops<5
+# Tokens are nice
+Rogue Program	prop:_tokenDrops<5
+# Hugpockets are good, Xs and Os are good, even if whelps aren't as good as starfish
+XO Skeleton	prop:_xoHugsUsed<11
+# Free stuff!
+Lil' Barrel Mimic
+# It's a starfish with reduced activation rate, except it ALWAYS attacks on turn one, so that's probably more hits per battle on average in short battles? oh, and it's a sombrero too
+Galloping Grill
+# A super starfish (50% activation instead of 33%)
+Sausage Golem
+# A slightly boosted starfish, for pastamancers
+Animated Macaroni Duck	class:Pastamancer
+# Regular starfish
+Unspeakachu
+Twitching Space Critter
+Rock Lobster
+Animated Macaroni Duck
+Midget Clownfish
+Snow Angel
+Underworld Bonsai
+Star Starfish
+# Fairysuperwhelps
+Garbage Fire
+XO Skeleton
+Choctopus
+# Superwhelps
+Plastic Pirate Skull
+Trick-or-Treating Tot
+# Fairywhelps
+Dandy Lion
+# Special whelps
+Ms. Puck Man
+Puck Man
+Squamous Gibberer
+He-Boulder
+Cotton Candy Carnie
+# Slightly better whelp for saucerors
+Pet Cheezling	class:Sauceror
+# Whelps with a multiplier, why not I guess
+Mutant Gila Monster	grimdark:0
+Mutant Gila Monster	grimdark:1
+# Marginally special whelps
+Mutant Gila Monster	grimdark:2
+Pottery Barn Owl
+# Regular old whelps
+Pet Cheezling
+Ghuol Whelp

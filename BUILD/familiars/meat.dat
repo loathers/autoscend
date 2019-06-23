@@ -1,0 +1,57 @@
+# Wanna get that jar
+Angry Jung Man	prop:_jungDrops<1;day:1
+# Wanna get grimstone mask
+Grimstone Golem	prop:_grimstoneMaskDrops<1;day:1
+# Wanna get yummy chewables
+Golden Monkey	prop:_powderedGoldDrops<3
+Bloovian Groose	prop:_grooseDrops<3
+Unconscious Collective	prop:_dreamJarDrops<3
+Grim Brother	prop:_grimFairyTaleDrops<3
+# Wanna build up heists
+Cat Burglar
+# Wanna get booze ingredients
+Robortender
+# Might as well get tales of spelunking
+Adventurous Spelunker	prop:_spelunkingTalesDrops<1
+# Might as well get devilish folios
+Blavious Kloop	prop:_kloopDrops<3
+# Leprechauns with a >1 multiplier
+Mutant Cactus Bud	grimdark:0
+Hobo Monkey
+Mutant Cactus Bud	grimdark:1
+# Volleychauns
+Golden Monkey
+Bloovian Groose
+Unconscious Collective
+Grim Brother
+Dramatic Hedgehog
+Chauvinist Pig
+Uniclops
+Hunchbacked Minion
+Nervous Tick
+Cymbal-Playing Monkey
+Cheshire Bat
+# Fairychauns
+Blavious Kloop
+Adventurous Spelunker
+Hippo Ballerina
+Dancing Frog
+Cheshire Bat
+Piano Cat
+Psychedelic Bear
+Casagnova Gnome
+Jitterbug
+Attention-Deficit Demon
+Coffee Pixie
+# Wowee
+Hand Turkey
+# Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
+He-Boulder
+# Marginally special leprechauns
+Knob Goblin Organ Grinder
+Mutant Cactus Bud	grimdark:2
+Urchin Urchin
+# Memes, doesn't actually give substats apparently
+Cornbeefadon
+# The original
+Leprechaun
