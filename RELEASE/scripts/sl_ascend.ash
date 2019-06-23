@@ -23,6 +23,7 @@ import <sl_ascend/sl_elementalPlanes.ash>
 import <sl_ascend/sl_clan.ash>
 import <sl_ascend/sl_cooking.ash>
 import <sl_ascend/sl_adventure.ash>
+import <sl_ascend/sl_mr2012.ash>
 import <sl_ascend/sl_mr2014.ash>
 import <sl_ascend/sl_mr2015.ash>
 import <sl_ascend/sl_mr2016.ash>

@@ -104,42 +104,43 @@ back	21	Barskin Cloak
 # Familiar gear
 familiar	0	miniature life preserver	path:Heavy Rains
 familiar	1	red-and-green microcamera	familiar:Elf Operative
-familiar	2	Luck Incense
-familiar	3	Amulet Coin
-familiar	4	Razor Fang
-familiar	5	Smoke Ball
-familiar	6	Shell Bell
-familiar	7	Muscle Band
-familiar	8	Astral Pet Sweater
-familiar	9	Snow Suit
-familiar	10	Ittah Bittah Hookah
-familiar	11	Moveable Feast
-familiar	12	Plastic Pumpkin Bucket
-familiar	13	Mayflower Bouquet
-familiar	14	Filthy Child Leash
-familiar	15	Little Box of Fireworks
-familiar	16	Loathing Legion Helicopter
-familiar	17	Kill Screen
-familiar	18	Miniature Gravy-Covered Maypole
-familiar	19	Lucky Tam O'Shatner
-familiar	20	Lucky Tam O'Shanter
-familiar	21	Wax Lips
-familiar	22	Flaming Familiar Doppelg&auml;nger
-familiar	23	Lead Necklace
-familiar	24	Li'l Businessman Kit
-familiar	25	Annoying Pitchfork
-familiar	26	Tiny Fly Glasses
-familiar	27	Origami &quot;Gentlemen's&quot; Magazine
-familiar	28	Anniversary Tiny Latex Mask
-familiar	29	Ant Sickle
-familiar	30	Ant Pitchfork
-familiar	31	Ant Rake
-familiar	32	Ant Pick
-familiar	33	Ant Hoe
-familiar	34	Vicious Spiked Collar
-familiar	35	Guard Turtle Collar
-familiar	36	Tiny Bowler
-familiar	37	Chocolate-stained Collar
+familiar	2	gnomish housemaid's kgnee	familiar:Reagnimated Gnome
+familiar	3	Luck Incense
+familiar	4	Amulet Coin
+familiar	5	Razor Fang
+familiar	6	Smoke Ball
+familiar	7	Shell Bell
+familiar	8	Muscle Band
+familiar	9	Astral Pet Sweater
+familiar	10	Snow Suit
+familiar	11	Ittah Bittah Hookah
+familiar	12	Moveable Feast
+familiar	13	Plastic Pumpkin Bucket
+familiar	14	Mayflower Bouquet
+familiar	15	Filthy Child Leash
+familiar	16	Little Box of Fireworks
+familiar	17	Loathing Legion Helicopter
+familiar	18	Kill Screen
+familiar	19	Miniature Gravy-Covered Maypole
+familiar	20	Lucky Tam O'Shatner
+familiar	21	Lucky Tam O'Shanter
+familiar	22	Wax Lips
+familiar	23	Flaming Familiar Doppelg&auml;nger
+familiar	24	Lead Necklace
+familiar	25	Li'l Businessman Kit
+familiar	26	Annoying Pitchfork
+familiar	27	Tiny Fly Glasses
+familiar	28	Origami &quot;Gentlemen's&quot; Magazine
+familiar	29	Anniversary Tiny Latex Mask
+familiar	30	Ant Sickle
+familiar	31	Ant Pitchfork
+familiar	32	Ant Rake
+familiar	33	Ant Pick
+familiar	34	Ant Hoe
+familiar	35	Vicious Spiked Collar
+familiar	36	Guard Turtle Collar
+familiar	37	Tiny Bowler
+familiar	38	Chocolate-stained Collar
 
 # Hats
 hat	0	Team Avarice Cap

@@ -1,0 +1,94 @@
+# Undead familiars only when a zombie
+XO Skeleton	path:Zombie Master;prop:_xoHugsUsed<11
+Reagnimated Gnome	path:Zombie Master
+# Do we wanna grab cubeling drops? Usually yes.
+Gelatinous Cubeling	prop:sl_useCubeling=true;prop:sl_cubeItems=true
+# Cheerleader isn't subject to weight restrictions in KOLHS, so let's just use it before almost anything to be safee
+Steam-Powered Cheerleader	path:KOLHS
+# Wanna get that jar
+Angry Jung Man	prop:_jungDrops<1;day:1
+# Wanna get that mask
+Grimstone Golem	prop:_grimstoneMaskDrops<1;day:1
+# That's some nice booze
+Fist Turkey	prop:_turkeyBooze<5
+# Might as well grab an egg
+Rockin' Robin	prop:rockinRobinProgress>=25
+# And some wax
+Optimistic Candle	prop:optimisticCandleProgress>=25
+# And some garbage
+Garbage Fire	prop:garbageFireProgress>=25
+# And devilish folios
+Blavious Kloop	prop:_kloopDrops<3
+# And some absinthe
+Green Pixie	prop:_absintheDrops<3
+# And a tales of spelunking
+Adventurous Spelunker	prop:_spelunkingTalesDrops<1
+# And some substats, if in The Source
+Fist Turkey	prop:_turkeyMuscle<5;mainstat:Muscle;path:The Source
+Fist Turkey	prop:_turkeyMyst<5;mainstat:Mysticality;path:The Source
+Fist Turkey	prop:_turkeyMoxie;mainstat:Moxie;path:The Source
+# And some hugpockets
+XO Skeleton	prop:_xoHugsUsed<5
+# And some pastes
+Pair of Stomping Boots	prop:_bootStomps<7
+# And some BACON
+Intergnat	item:BACON<350
+# And some heist charges
+Cat Burglar
+# And some more hugpockets
+XO Skeleton	prop:_xoHugsUsed<11
+# And some adventures
+Reagnimated Gnome
+# Fairies with a multiplier
+Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
+Mutant Fire Ant	grimdark:0
+Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
+# Jumpsuited Hound Dog DELIBERATELY not included because it provides usually unwanted +combat
+Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
+Mutant Fire Ant	grimdark:1
+Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
+# Fairyballs
+Elf Operative
+Optimistic Candle
+Rockin' Robin
+# More BACON, why not
+Intergnat
+# Fairywhelps
+XO Skeleton
+Garbage Fire
+Dandy Lion
+# Fairychauns
+Angry Jung Man
+Adventurous Spelunker
+Blavious Kloop
+Hippo Ballerina
+Dancing Frog
+Coffee Pixie
+Attention-Deficit Demon
+Jitterbug
+Casagnova Gnome
+Psychedelic Bear
+Piano Cat
+# Slightly special fairies
+Pair of Stomping Boots
+Gelatinous Cubeling
+Steam-Powered Cheerleader
+Obtuse Angel
+Green Pixie
+Mutant Fire Ant	grimdark:2
+# Let's bowl 300!
+Bowlet
+# Elemental fairies
+Sleazy Gravy Fairy
+Stinky Gravy Fairy
+Flaming Gravy Fairy
+Frozen Gravy Fairy
+Spooky Gravy Fairy
+# Barely special fairies
+Mechanical Songbird
+Grouper Groupie
+Peppermint Rhino
+# Turtles are cute
+Syncopated Turtle
+# The original
+Baby Gravy Fairy
