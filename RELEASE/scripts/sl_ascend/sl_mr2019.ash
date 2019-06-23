@@ -456,10 +456,21 @@ boolean sl_spoonReadyToTuneMoon()
 		return false;
 	}
 
-	if(isKnoll && !toKnoll && get_property("lastDesertUnlock").to_int() < my_ascensions())
+	if(isKnoll && !toKnoll)
 	{
-		// we want to get the meatcar via the knoll store
-		return false;
+		if(get_property("lastDesertUnlock").to_int() < my_ascensions())
+		{
+			// we want to get the meatcar via the knoll store
+			return false;
+		}
+		if((sl_get_campground() contains $item[Asdon Martin Keyfob]) && is_unrestricted($item[Asdon Martin Keyfob]))
+		{
+			// we want to get the bugbear outfit before switching away for easy bread access
+			if(!buyUpTo(1, $item[bugbear beanie]) || !buyUpTo(1, $item[bugbear bungguard]))
+			{
+				return false;
+			}
+		}
 	}
 
 	if(isCanadia && !toCanadia && item_amount($item[logging hatchet]) == 0)
