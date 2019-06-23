@@ -364,6 +364,7 @@ boolean summonMonster(string option);						//Defined in sl_ascend/sl_util.ash
 boolean in_tcrs();											//Defined in sl_ascend/sl_tcrs.ash
 boolean tcrs_initializeSettings();							//Defined in sl_ascend/sl_tcrs.ash
 boolean tcrs_consumption();									//Defined in sl_ascend/sl_tcrs.ash
+boolean tcrs_maximize_with_items(string maximizerString);	//Defined in sl_ascend/sl_tcrs.ash
 boolean boris_buySkills();									//Defined in sl_ascend/sl_boris.ash
 void boris_initializeDay(int day);							//Defined in sl_ascend/sl_boris.ash
 void boris_initializeSettings();							//Defined in sl_ascend/sl_boris.ash

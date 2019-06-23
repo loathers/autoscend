@@ -6197,7 +6197,9 @@ boolean L11_unlockHiddenCity()
 	{
 		return false;
 	}
-	if(get_property("sl_hiddenunlock") != "nose")
+	// Either we have the nostril of the serpent or 
+	// we've lucked out and hitten Pikachu accidentally
+	if(get_property("sl_hiddenunlock") != "nose" && get_property("questL11Worship") != "step2")
 	{
 		return false;
 	}
