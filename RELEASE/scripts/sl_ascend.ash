@@ -63,7 +63,6 @@ void initializeSettings()
 	{
 		return;
 	}
-	cli_execute("refresh all");
 	set_property("sl_doneInitialize", my_ascensions());
 	set_location($location[none]);
 
