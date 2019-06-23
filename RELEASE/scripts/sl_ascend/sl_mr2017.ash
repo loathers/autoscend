@@ -1369,7 +1369,7 @@ boolean asdonAutoFeed(int goal)
 		want = min(3 + ((my_meat() - meat_cutoff) / 1000), want);
 		if(want > 0)
 		{
-			while(!knoll_available() && my_meat() > meat_cutoff && item_amount($item[wad of dough]) < want)
+			while((npc_price($item[wad of dough]) == 0) && my_meat() > meat_cutoff && item_amount($item[wad of dough]) < want)
 				use(1, $item[all-purpose flower]);
 			cli_execute("make " + want + " " + $item[Loaf of Soda Bread]);
 			asdonFeed($item[Loaf of Soda Bread], want);
@@ -1377,7 +1377,7 @@ boolean asdonAutoFeed(int goal)
 		}
 	}
 
-	if((get_fuel() < goal) && (my_meat() > 3500) && knoll_available() && isGeneralStoreAvailable())
+	if((get_fuel() < goal) && (my_meat() > 3500) && (npc_price($item[wad of dough]) == 0) && isGeneralStoreAvailable())
 	{
 		int want = ((goal + 5) - get_fuel()) / 6;
 		if(want > 0)
