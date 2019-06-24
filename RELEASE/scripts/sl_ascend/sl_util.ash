@@ -5332,6 +5332,11 @@ boolean sl_check_conditions(string conds)
 			case "sgeea":
 				int sgeeas = to_int(condition_data);
 				return item_amount($item[soft green echo eyedrop antidote]) >= sgeeas;
+			// data: The day to check for
+			// True if we are currently on that day
+			case "day":
+				int day = to_int(condition_data);
+				return my_daycount() == day;
 			default:
 				abort('Invalid condition type "' + condition_type + '" found!');
 		}
