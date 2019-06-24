@@ -11,6 +11,12 @@
 
 
 
+boss	0	Machine Elf
+boss	1	Fist Turkey
+boss	2	Mu
+boss	3	Warbear Drone
+boss	4	Mosquito
+
 init	0	Xiblaxian Holo-Companion
 init	1	Cute Meteor
 init	2	Oily Woim
