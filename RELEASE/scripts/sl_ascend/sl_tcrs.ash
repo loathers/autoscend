@@ -72,20 +72,16 @@ boolean tcrs_maximize_with_items(string maximizerString)
 
 	/* In TCRS, items give random effects. Instead of hard-coding a list of
 	 * effects for each path/class combination, we look at what we got.
-	 * Buffs are applied in ascending order of score/cost, for efficiency. [could not do this, for simplicity]
-	 * Should not burn turns or non-renewable items. [could not do this, for simplicity]
 	 */
-	// user_confirm("tcrs_maximizing: " + maximizerString);
 	boolean used_anything = false;
 	foreach i, rec in maximize(maximizerString, 300, 0, true, false)
 	{
-		print("Considering " + rec.item, "red");
 		if((rec.item != $item[none])
 		&& (rec.item.fullness == 0)
 		&& (rec.item.inebriety == 0)
 		&& (0 == have_effect(rec.effect))
 		&& (mall_price(rec.item) <= 300)
-		&& (rec.score > 0.1)) // tiebreaker
+		&& (rec.score > 0.1)) // sometimes maximizer gives spurious results
 		{
 			cli_execute(rec.command);
 			used_anything = true;
