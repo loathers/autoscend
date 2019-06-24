@@ -285,6 +285,30 @@ boolean handleFamiliar(string type)
 		}
 	}
 
+	if(get_property("sl_beta_test").to_boolean())
+	{
+		string [string,int,string] familiars_text;
+		if(!file_to_map("sl_ascend_familiars.txt", familiars_text))
+			print("Could not load sl_ascend_familiars.txt. This is bad!", "red");
+		foreach i,name,conds in familiars_text[type]
+		{
+			familiar thisFamiliar = name.to_familiar();
+			if(thisFamiliar == $familiar[none] && name != "none")
+			{
+				print('"' + name + '" does not convert to a familiar properly!', "red");
+				continue;
+			}
+			if(!sl_check_conditions(conds))
+				continue;
+			if(!sl_have_familiar(thisFamiliar))
+				continue;
+			if(blacklist contains thisFamiliar)
+				continue;
+			return handleFamiliar(thisFamiliar);
+		}
+		return false;
+	}
+
 /*
 	if((type == "item") && (get_property("sl_beatenUpCount").to_int() > 5))
 	{
