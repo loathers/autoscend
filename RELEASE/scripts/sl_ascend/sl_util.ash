@@ -58,7 +58,9 @@ boolean handleSealAncient();
 boolean handleSealAncient(string option);
 boolean handleSealElement(element flavor);
 boolean handleSealElement(element flavor, string option);
+void handleTracker(string used, string tracker);
 void handleTracker(item used, string tracker);
+void handleTracker(item used, string detail, string tracker);
 void handleTracker(monster enemy, string tracker);
 void handleTracker(monster enemy, skill toTrack, string tracker);
 void handleTracker(monster enemy, string toTrack, string tracker);
@@ -515,6 +517,17 @@ void handleTracker(item used, string tracker)
 		cur = cur + ", ";
 	}
 	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
+void handleTracker(item used, string detail, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(detail) + ":" + my_turncount() + ")";
 	set_property(tracker, cur);
 }
 
@@ -3477,6 +3490,7 @@ int doNumberology(string goal, boolean doIt, string option)
 				pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
 				pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + i;
 				slAdvBypass(0, pages, $location[Noob Cave], option);
+				handleTracker($monster[War Frat 151st Infantryman], $skill[Calculate the Universe], "sl_copies");
 			}
 			else
 			{
@@ -4293,12 +4307,12 @@ boolean buyUpTo(int num, item it, int maxprice)
 	if(num > 0)
 	{
 		buy(num, it, maxprice);
-		if(item_amount(it) < num)
+		if(item_amount(it) < orig)
 		{
 			print("Could not buyUpTo(" + orig + ") of " + it + ". Maxprice: " + maxprice, "red");
 		}
 	}
-	return (item_amount(it) >= num);
+	return (item_amount(it) >= orig);
 }
 
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns)

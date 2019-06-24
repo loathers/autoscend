@@ -273,6 +273,13 @@ void main()
 	writeln("<h2>Chewed</h2>");
 	generateTrackingData("sl_chewed", false);
 
+	// Don't want to show if they can't make wishes, but maybe they can with pocket wishes
+	if(get_property("sl_wishes") != "" || item_amount($item[genie bottle]) > 0)
+	{
+		writeln("<h2>Wishes</h2>");
+		generateTrackingData("sl_wishes", true);
+	}
+
 	if(my_class() == $class[Ed])
 	{
 		writeln("<h2>Lash of the Cobra <img src=\"images/itemimages/cobrahead.gif\"></h2>");

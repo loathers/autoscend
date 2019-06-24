@@ -26,11 +26,17 @@ boolean tcrs_consumption()
 	if(my_class() == $class[Sauceror] && my_sign() == "Blender")
 	{
 		boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
-		if((inebriety_left() >= 4) && canDesert)
+		if((inebriety_left() >= 4) && canDesert && (my_meat() >= 75))
 		{
 			buffMaintain($effect[Ode to Booze], 20, 1, 4);
 			visit_url("cafe.php?cafeid=2");
 			visit_url("cafe.php?pwd="+my_hash()+"&phash="+my_hash()+"&cafeid=2&whichitem=-2&action=CONSUME!");
+			handleTracker("Scrawny Stout", "sl_drunken");
+		}
+		if((inebriety_left() == 3) && (my_meat() >= npc_price($item[used beer])))
+		{
+			buyUpTo(1, $item[used beer]);
+			slDrink(1, $item[used beer]);
 		}
 		if((my_adventures() <= 1 || item_amount($item[glass of goat's milk]) > 0) && fullness_left() == 15)
 		{

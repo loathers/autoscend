@@ -63,7 +63,6 @@ void initializeSettings()
 	{
 		return;
 	}
-	cli_execute("refresh all");
 	set_property("sl_doneInitialize", my_ascensions());
 	set_location($location[none]);
 
@@ -218,6 +217,7 @@ void initializeSettings()
 	set_property("sl_wandOfNagamar", true);
 	set_property("sl_war", "");
 	set_property("sl_winebomb", "");
+	set_property("sl_wishes", "");
 	set_property("sl_writingDeskSummon", false);
 	set_property("sl_yellowRays", "");
 
