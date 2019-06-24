@@ -39,7 +39,7 @@ boolean tcrs_consumption()
 		}
 		if((my_adventures() <= 1 || item_amount($item[glass of goat's milk]) > 0) && fullness_left() == 15)
 		{
-			if(get_property("sl_useWishes").to_boolean() && (0 != have_effect($effect[Got Milk])))
+			if(get_property("sl_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
 			{
 				makeGenieWish($effect[Got Milk]); // +15 adv is worth it for daycount
 			}
