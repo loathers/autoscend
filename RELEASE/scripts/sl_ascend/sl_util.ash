@@ -1276,7 +1276,7 @@ boolean summonMonster(string option)
 #		targets[count(targets)].amt = need;
 #	}
 
-	//	Racecar Bob 5, Gaudy Pirate 2* (Special Case when we have extra)
+	//	Racecar Bob 5
 	//	Pygmy Bowler 5+, Mountain Man 2+ (Special Case, when we have extra)
 	//	Frat Warrior for Outfit 1+ (Numberology)
 
@@ -1284,7 +1284,7 @@ boolean summonMonster(string option)
 	//Should we do a zero check on amt just in case, probably.
 
 	//	Targets (all)
-	//	Lobsterfrogman 5, Ninja Snowman Assassin 3, Writing Desk 5, Racecar Bob 5, Gaudy Pirate 2*
+	//	Lobsterfrogman 5, Ninja Snowman Assassin 3, Racecar Bob 5
 	//	Ghost 6+, Pygmy Bowler 5+, Mountain Man 2+, Skin Flute 4+, Astronomer 1+
 	//	Frat Warrior for Outfit 1+
 
@@ -3992,7 +3992,6 @@ creamy pirate
 crusty pirate
 curmudgeonly pirate
 dairy goat
-gaudy pirate 
 ninja snowman assassin
 smut orc jacker
 smut orc nailer

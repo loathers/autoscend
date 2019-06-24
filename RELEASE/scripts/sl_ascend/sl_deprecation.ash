@@ -268,6 +268,12 @@ boolean settingFixer()
 		remove_property("sl_day4_init");
 	}
 
+	if(property_exists("sl_gaudy"))
+	{
+		print("Some lingering stuff from when gaudy pirates mattered is still here, let's get rid of it...", "red");
+		remove_property("sl_gaudy");
+	}
+
 	if(get_property("sl_paranoia") == "")
 	{
 		print("No paranoia value, we probably don't want to be paranoid...", "red");

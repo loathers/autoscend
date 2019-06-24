@@ -7,7 +7,6 @@ void hr_initializeSettings()
 	if(my_path() == "Heavy Rains")
 	{
 		#Rain Man (Heavy Rains) Related settings
-		set_property("sl_gaudypirate", "");
 		set_property("sl_holeinthesky", false);
 		set_property("sl_mountainmen", "");
 		set_property("sl_ninjasnowmanassassin", "");
@@ -47,12 +46,6 @@ boolean routineRainManHandler()
 		{
 			set_property("sl_mountainmen", "1");
 			return rainManSummon("mountain man", true, false);
-		}
-
-		if(get_property("sl_gaudypirate") == "")
-		{
-			set_property("sl_gaudypirate", "1");
-			return rainManSummon("gaudy pirate", true, false);
 		}
 
 		if(get_property("sl_trapper") == "start")
@@ -301,38 +294,6 @@ boolean doHRSkills()
 	return false;
 }
 
-boolean L1_HRstart()
-{
-	if(sl_my_path() != "Heavy Rains")
-	{
-		return false;
-	}
-	if((get_property("sl_day1_desk") == "finished") || (my_daycount() != 1))
-	{
-		return false;
-	}
-	if((my_rain() < 50) || !have_skill($skill[Rain Man]))
-	{
-		return false;
-	}
-
-	if(get_property("romanticTarget") != $monster[Writing Desk])
-	{
-		if(my_hp() < my_maxhp())
-		{
-			doHottub();
-		}
-		rainManSummon("writing desk", true, true);
-		if((my_hp() * 2) < my_maxhp())
-		{
-			doHottub();
-		}
-		dna_generic();
-	}
-	set_property("sl_day1_desk", "finished");
-	return true;
-}
-
 boolean rainManSummon(string monsterName, boolean copy, boolean wink, string option)
 {
 	if(my_path() != "Heavy Rains")
@@ -393,10 +354,6 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	{
 		mId = 529;
 	}
-	if(monsterName == "gaudy pirate")
-	{
-		mId = 633;
-	}
 	if(monsterName == "ghost")
 	{
 		mId = 950;
@@ -419,22 +376,6 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	{
 		#No more writing desks please.
 		return false;
-	}
-	if((item_amount($item[Talisman O\' Namsilat]) == 1) && (monsterName == "gaudy pirate"))
-	{
-		#already have the goal, don't summon
-		return false;
-	}
-	if((item_amount($item[gaudy key]) >= 2) && (monsterName == "gaudy pirate"))
-	{
-		#already have the subgoal, don't summon
-		return false;
-	}
-	if((item_amount($item[gaudy key]) == 1) && (monsterName == "gaudy pirate"))
-	{
-		#stops copying me!!
-		copy = false;
-		wink = false;
 	}
 	if((item_amount($item[richard\'s star key]) == 1) && (monsterName == "skinflute"))
 	{

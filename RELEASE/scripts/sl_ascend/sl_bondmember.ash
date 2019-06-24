@@ -735,7 +735,7 @@ boolean LM_bond()
 		}
 		if(my_daycount() == 1)
 		{
-			if(((my_inebriety() == 16) && (spleen_left() < 8) && (my_adventures() < 4)) || (get_property("sl_gaudy") == "start"))
+			if(((my_inebriety() == 16) && (spleen_left() < 8) && (my_adventures() < 4)))
 			{
 				string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
 				if(contains_text(mod, "Weapon Damage Percent"))
@@ -804,31 +804,6 @@ boolean LM_bond()
 						return timeSpinnerCombat($monster[Sub-Assistant Knob Mad Scientist]);
 					}
 				}
-			}
-			if(get_property("sl_gaudy") == "start")
-			{
-				if((item_amount($item[Perforated Battle Paddle]) > 0) && (spleen_left() > 0))
-				{
-					pulverizeThing($item[Perforated Battle Paddle]);
-					if((spleen_left() == 1) && (item_amount($item[Twinkly Wad]) > 0))
-					{
-						slChew(1, $item[Twinkly Wad]);
-					}
-				}
-				if(!have_outfit("Knob Goblin Harem Girl Disguise"))
-				{
-					print("Need Harem Girl Disguise", "red");
-				}
-				if(item_amount($item[Disposable Instant Camera]) == 0)
-				{
-					print("Need Disposable Instant Camera", "red");
-				}
-				if(item_amount($item[Knob Goblin Firecracker]) == 0)
-				{
-					print("Need Knob Goblin Firecracker", "red");
-				}
-				abort("Made it too far. Done with BondStab Day 1");
-
 			}
 		}
 	}

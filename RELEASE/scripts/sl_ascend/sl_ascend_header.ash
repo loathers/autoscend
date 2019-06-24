@@ -64,7 +64,6 @@ boolean L1_ed_island();							//Defined in sl_ascend/sl_edTheUndying.ash
 boolean L1_ed_dinsey();							//Defined in sl_ascend/sl_edTheUndying.ash
 boolean L1_ed_island(int dickstabOverride);		//Defined in sl_ascend/sl_edTheUndying.ash
 boolean L1_ed_islandFallback();					//Defined in sl_ascend/sl_edTheUndying.ash
-boolean L1_HRstart();							//Defined in sl_ascend/sl_heavyrains.ash
 boolean L1_dnaAcquire();
 boolean L2_mosquito();
 boolean L2_treeCoin();

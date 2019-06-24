@@ -28,84 +28,83 @@
 31	sl_familiarChoice	string	ANY	The current familiar we are planning to take. This changes a lot.
 32	sl_fcle	string	ANY	'finished' if we got the Pirate Fledges, or equivalent.
 33	sl_friars	string	ANY	'finished' if we completed the Friars Quest. Only 'done' if we don't/didn't have enough hot wings.
-34	sl_gaudy	string	ANY	-
-35	sl_getBoningKnife	boolean	ANY	-
-36	sl_gnasirUnlocked	boolean	ANY	Have we found gnasir in the Desert?
-37	sl_goblinking	string	ANY	-
-38	sl_gremlins	string	ANY	-
-39	sl_grimstoneFancyOilPainting	boolean	ANY	-
-40	sl_grimstoneOrnateDowsingRod	boolean	ANY	-
-41	sl_gunpowder	string	ANY	Did we initiate the Sonofa Beach quest?
-42	sl_hedge	string	ANY	'fast' or 'slow', determining how quickly we want to finish the Hedge Maze.
-43	sl_hiddenapartment	string	ANY	-
-44	sl_hiddenbowling	string	ANY	-
-45	sl_hiddencity	string	ANY	-
-46	sl_hiddenhospital	string	ANY	-
-47	sl_hiddenoffice	string	ANY	-
-48	sl_hiddenunlock	string	ANY	-
-49	sl_hiddenzones	string	ANY	-
-50	sl_highlandlord	string	ANY	-
-51	sl_mcmuffin	string	ANY	-
-52	sl_mistypeak	string	ANY	-
-53	sl_mosquito	string	ANY	'finished' if we have completed the Mosquito Larva quest.
-54	sl_nuns	string	ANY	-
-55	sl_nunsTrick	string	ANY	Deprecated
-56	sl_nunsTrickActive	string	ANY	Deprecated
-57	sl_nunsTrickGland	string	ANY	Deprecated
-58	sl_nunsTrickCount	string	ANY	Deprecated
-59	sl_nunsTrickReady	string	ANY	Deprecated
-60	sl_oilpeak	string	ANY	'finished' if The Oil Peak is completed.
-61	sl_orchard	string	ANY	-
-62	sl_palindome	string	ANY	'finished' if the Palindome is finished.
-63	sl_phatloot	integer	ANY	Last day that we completed our Phat Loot Token handling.
-64	sl_prewar	string	ANY	-
-65	sl_prehippy	string	ANY	-
-66	sl_pirateoutfit	string	ANY	Pirate Sidequest Tracker: '', 'insults', 'blueprint', 'almost', 'finished'
-67	sl_powerLevelLastLevel	string	ANY	Last Level that we had nothing to do.
-68	sl_powerLevelAdvCount	string	ANY	Adventures count of times we had nothing to do.
-69	sl_powerLevelLastAttempted	string	ANY	Last adventure that we did nothing on.
-70	sl_skipDesert	string	ANY	Tracks last time we skipped the Desert.
-71	sl_spookyfertilizer	string	ANY	'finished' if we've dealt with the Spooky-Gro Fertilizer
-72	sl_spookyravensecond	string	ANY	-
-73	sl_spookysapling	string	ANY	'finished' if we've dealt with the Spooky Sapling
-74	sl_sonofa	string	ANY	'finished' if we've finished or skipped The Lighthouse side quest.
-75	sl_sorceress	string	ANY	Sorceress Tower tracker: '', 'start', 'hedge', 'door', 'tower', 'top', 'final', 'finished'
-76	sl_swordfish	string	ANY	'finished' if we've finished the Poop Deck. Heh, poop.
-77	sl_tavern	string	ANY	'finished' if we've completed the Tavern Quest
-78	sl_trytower	string	ANY	Deprecated, should be removed any day now...
-79	sl_trapper	string	ANY	Trapper Quest Tracker: '', 'start', 'yeti', 'finished'
-80	sl_treecoin	string	ANY	'finished' if we've dealt with the Tree-Holed Coin
-81	sl_twinpeak	string	ANY	'finished' if Twin Peak is completed. (Not really).
-82	sl_twinpeakprogress	string	ANY	-
-83	sl_waitingArrowAlcove	integer	ANY	If we arrowed a modern zmobie, this tells us when to return to the Alcove (cyrptAlcoveEvilness value).
-84	sl_war	string	ANY	'finished' is the war is done. 'done' if the battleground is empty but we still need to turn in items and fight the boss.
-85	sl_winebomb	string	ANY	'partial' if we have a fulminate, 'finished' if we've made it into a wine bomb
-86	sl_100familiar	string	PRE	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
-87	sl_borisSkills	integer	ANY	?? Number of Boris skills?
-88	sl_awolLastSkill	integer	PRE	Last level we handled AWOL skills
-89	sl_beatenUpCount	integer	PRE	?? Something to do with ML disabling?
-90	sl_bedroomHandler1	string	PRE	Part of Multi-adventure Bedroom handling
-91	sl_bedroomHandler2	string	PRE	Part of Multi-adventure Bedroom handling
-92	sl_dinseyGarbageMoney	string	PRE	Tracks when we last depositing a Bag of Park Garbage (can we remove this?)
-93	sl_doneInitialize	integer	PRE	Indicates last ascension that we initialized with the script.
-94	sl_lastABooConsider	integer	PRE	Last adventure that we considered A-Boo Peak.
-95	sl_lastABooCycleFix	integer	PRE	Duration of current A-Boo Peak cycle.
-96	sl_noSnakeOil	integer	PRE	Last day that we could no longer Extract Oil.
-97	sl_renenutetBought	integer	PRE	Number of Talisman of Renenutet's bought on last tracking.
-98	sl_batoomerangDay	integer	PRE	Part of Replica Bat-oomerang Tracker
-99	sl_batoomerangUse	integer	PRE	Part of Replica Bat-oomerang Tracker
-100	sl_longConMonster	string	PRE	Last Monster hit by Long Con
-101	sl_noSleepingDog	boolean	PRE	When true, do not eat a Sleeping Dog.
-101	sl_saveMargarita	boolean	PRE	Save Emergency Margarita in HCCS run.
-102	sl_masonryWall	boolean	ANY	If true, we've destroyed the Masonry Wall in Spookyraven Manor
-103	sl_csDoWheel	boolean	PRE	In HCCS: Use Wheel of Fortune instead of Myst Stats Deck Cheat
-104	_sl_lastABooConsider	integer	POST	Last turn that we considered doing A-Boo Peak
-105	_sl_lastABooCycleFix	integer	POST	Tracker to prevent us infinitely looping on A-Boo Peak
-106	_sl_witchessBattles	integer	POST	Tracker for Witchess Combats (yes, this is actually needed).
-107	sl_combatDirective	string	ANY	State of overloading of combat behaviors.
-108	sl_copperhead	integer	ANY	Tracks the first 3 choice options when being a waiter at Copperhead (1|2|4)
-109	sl_needLegs	boolean	PRE	In Ed, do we require getting legs before trying to Ka farm?
-110	sl_getSteelOrgan	boolean	ANY	Are we trying to get a Steel Organ this ascension?
-111	sl_hccsTurnSave	boolean	ANY	In HCCS: Should we ignore pixel farming?
-112	sl_maxCandyPrice	integer	ANY	Max allowable price per candy for Rethinking Candy (default 2500)
-113	sl_hccsNoConcludeDay	boolean	ANY	In HCCS: When true, reduce how many daily end-of-day things we do.
+34	sl_getBoningKnife	boolean	ANY	-
+35	sl_gnasirUnlocked	boolean	ANY	Have we found gnasir in the Desert?
+36	sl_goblinking	string	ANY	-
+37	sl_gremlins	string	ANY	-
+38	sl_grimstoneFancyOilPainting	boolean	ANY	-
+39	sl_grimstoneOrnateDowsingRod	boolean	ANY	-
+40	sl_gunpowder	string	ANY	Did we initiate the Sonofa Beach quest?
+41	sl_hedge	string	ANY	'fast' or 'slow', determining how quickly we want to finish the Hedge Maze.
+42	sl_hiddenapartment	string	ANY	-
+43	sl_hiddenbowling	string	ANY	-
+44	sl_hiddencity	string	ANY	-
+45	sl_hiddenhospital	string	ANY	-
+46	sl_hiddenoffice	string	ANY	-
+47	sl_hiddenunlock	string	ANY	-
+48	sl_hiddenzones	string	ANY	-
+49	sl_highlandlord	string	ANY	-
+50	sl_mcmuffin	string	ANY	-
+51	sl_mistypeak	string	ANY	-
+52	sl_mosquito	string	ANY	'finished' if we have completed the Mosquito Larva quest.
+53	sl_nuns	string	ANY	-
+54	sl_nunsTrick	string	ANY	Deprecated
+55	sl_nunsTrickActive	string	ANY	Deprecated
+56	sl_nunsTrickGland	string	ANY	Deprecated
+57	sl_nunsTrickCount	string	ANY	Deprecated
+58	sl_nunsTrickReady	string	ANY	Deprecated
+59	sl_oilpeak	string	ANY	'finished' if The Oil Peak is completed.
+60	sl_orchard	string	ANY	-
+61	sl_palindome	string	ANY	'finished' if the Palindome is finished.
+62	sl_phatloot	integer	ANY	Last day that we completed our Phat Loot Token handling.
+63	sl_prewar	string	ANY	-
+64	sl_prehippy	string	ANY	-
+65	sl_pirateoutfit	string	ANY	Pirate Sidequest Tracker: '', 'insults', 'blueprint', 'almost', 'finished'
+66	sl_powerLevelLastLevel	string	ANY	Last Level that we had nothing to do.
+67	sl_powerLevelAdvCount	string	ANY	Adventures count of times we had nothing to do.
+68	sl_powerLevelLastAttempted	string	ANY	Last adventure that we did nothing on.
+69	sl_skipDesert	string	ANY	Tracks last time we skipped the Desert.
+70	sl_spookyfertilizer	string	ANY	'finished' if we've dealt with the Spooky-Gro Fertilizer
+71	sl_spookyravensecond	string	ANY	-
+72	sl_spookysapling	string	ANY	'finished' if we've dealt with the Spooky Sapling
+73	sl_sonofa	string	ANY	'finished' if we've finished or skipped The Lighthouse side quest.
+73	sl_sorceress	string	ANY	Sorceress Tower tracker: '', 'start', 'hedge', 'door', 'tower', 'top', 'final', 'finished'
+75	sl_swordfish	string	ANY	'finished' if we've finished the Poop Deck. Heh, poop.
+76	sl_tavern	string	ANY	'finished' if we've completed the Tavern Quest
+77	sl_trytower	string	ANY	Deprecated, should be removed any day now...
+78	sl_trapper	string	ANY	Trapper Quest Tracker: '', 'start', 'yeti', 'finished'
+79	sl_treecoin	string	ANY	'finished' if we've dealt with the Tree-Holed Coin
+80	sl_twinpeak	string	ANY	'finished' if Twin Peak is completed. (Not really).
+81	sl_twinpeakprogress	string	ANY	-
+82	sl_waitingArrowAlcove	integer	ANY	If we arrowed a modern zmobie, this tells us when to return to the Alcove (cyrptAlcoveEvilness value).
+83	sl_war	string	ANY	'finished' is the war is done. 'done' if the battleground is empty but we still need to turn in items and fight the boss.
+84	sl_winebomb	string	ANY	'partial' if we have a fulminate, 'finished' if we've made it into a wine bomb
+85	sl_100familiar	string	PRE	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
+86	sl_borisSkills	integer	ANY	?? Number of Boris skills?
+87	sl_awolLastSkill	integer	PRE	Last level we handled AWOL skills
+88	sl_beatenUpCount	integer	PRE	?? Something to do with ML disabling?
+89	sl_bedroomHandler1	string	PRE	Part of Multi-adventure Bedroom handling
+90	sl_bedroomHandler2	string	PRE	Part of Multi-adventure Bedroom handling
+91	sl_dinseyGarbageMoney	string	PRE	Tracks when we last depositing a Bag of Park Garbage (can we remove this?)
+92	sl_doneInitialize	integer	PRE	Indicates last ascension that we initialized with the script.
+93	sl_lastABooConsider	integer	PRE	Last adventure that we considered A-Boo Peak.
+94	sl_lastABooCycleFix	integer	PRE	Duration of current A-Boo Peak cycle.
+95	sl_noSnakeOil	integer	PRE	Last day that we could no longer Extract Oil.
+96	sl_renenutetBought	integer	PRE	Number of Talisman of Renenutet's bought on last tracking.
+97	sl_batoomerangDay	integer	PRE	Part of Replica Bat-oomerang Tracker
+98	sl_batoomerangUse	integer	PRE	Part of Replica Bat-oomerang Tracker
+99	sl_longConMonster	string	PRE	Last Monster hit by Long Con
+100	sl_noSleepingDog	boolean	PRE	When true, do not eat a Sleeping Dog.
+100	sl_saveMargarita	boolean	PRE	Save Emergency Margarita in HCCS run.
+101	sl_masonryWall	boolean	ANY	If true, we've destroyed the Masonry Wall in Spookyraven Manor
+102	sl_csDoWheel	boolean	PRE	In HCCS: Use Wheel of Fortune instead of Myst Stats Deck Cheat
+103	_sl_lastABooConsider	integer	POST	Last turn that we considered doing A-Boo Peak
+104	_sl_lastABooCycleFix	integer	POST	Tracker to prevent us infinitely looping on A-Boo Peak
+105	_sl_witchessBattles	integer	POST	Tracker for Witchess Combats (yes, this is actually needed).
+106	sl_combatDirective	string	ANY	State of overloading of combat behaviors.
+107	sl_copperhead	integer	ANY	Tracks the first 3 choice options when being a waiter at Copperhead (1|2|4)
+108	sl_needLegs	boolean	PRE	In Ed, do we require getting legs before trying to Ka farm?
+109	sl_getSteelOrgan	boolean	ANY	Are we trying to get a Steel Organ this ascension?
+110	sl_hccsTurnSave	boolean	ANY	In HCCS: Should we ignore pixel farming?
+111	sl_maxCandyPrice	integer	ANY	Max allowable price per candy for Rethinking Candy (default 2500)
+112	sl_hccsNoConcludeDay	boolean	ANY	In HCCS: When true, reduce how many daily end-of-day things we do.

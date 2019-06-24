@@ -147,8 +147,6 @@ void initializeSettings()
 	set_property("sl_fcle", "");
 	set_property("sl_friars", "");
 	set_property("sl_funTracker", "");
-	set_property("sl_gaudy", "");
-	set_property("sl_gaudypiratecount", "");
 	set_property("sl_getBoningKnife", false);
 	set_property("sl_getStarKey", false);
 	set_property("sl_getSteelOrgan", get_property("sl_alwaysGetSteelOrgan").to_boolean());
@@ -3445,24 +3443,6 @@ boolean questOverride()
 		{
 			print("Found Pirate Fledges and incomplete F\'C\'le, fixing...");
 			set_property("sl_fcle", "finished");
-		}
-	}
-
-	if(internalQuestStatus("questM12Pirate") >= 7)
-	{
-		if(get_property("sl_gaudy") == "")
-		{
-			print("Completed Swordfish but Gaudy Pirate were not observed, fixing...");
-			set_property("sl_gaudy", "start");
-		}
-	}
-
-	if(possessEquipment($item[Talisman o\' Namsilat]))
-	{
-		if(get_property("sl_gaudy") != "finished")
-		{
-			print("Have Talisman o' Namsilat but incomplete Gaudy Pirates, fixing...");
-			set_property("sl_gaudy", "finished");
 		}
 	}
 
@@ -9105,7 +9085,7 @@ boolean L0_handleRainDoh()
 	}
 
 	/*	Should we check for an acceptable monster or just empty the box in that case?
-	huge swarm of ghuol whelps, modern zmobie, gaudy pirate, writing desk, mountain man
+	huge swarm of ghuol whelps, modern zmobie, mountain man
 	*/
 	//If doesn\'t match a special condition
 	if(enemy != $monster[none])
@@ -11316,10 +11296,6 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 
 	boolean delayKitchen = get_property("sl_delayHauntedKitchen").to_boolean();
-	if(get_property("sl_gaudy") == "finished")
-	{
-		delayKitchen = false;
-	}
 	if(item_amount($item[Spookyraven Billiards Room Key]) > 0)
 	{
 		delayKitchen = false;
@@ -13146,11 +13122,6 @@ boolean L11_talismanOfNam()
 	{
 		return false;
 	}
-	if(item_amount($item[Talisman O\' Namsilat]) > 0)
-	{
-		set_property("sl_swordfish", "finished");
-		set_property("sl_gaudy", "finished");
-	}
 
 	if(L11_shenCopperhead() || L11_redZeppelin() || L11_ronCopperhead())
 	{
@@ -14320,7 +14291,6 @@ boolean doTasks()
 	if(LX_ghostBusting())				return true;
 
 
-	if(L1_HRstart())					return true;
 	if(LX_witchess())					return true;
 	if(my_daycount() != 2)				doNumberology("adventures3");
 

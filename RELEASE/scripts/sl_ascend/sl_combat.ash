@@ -532,14 +532,6 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!haveUsed($item[Rain-Doh black box]) && (my_path() != "Heavy Rains") && (get_property("_raindohCopiesMade").to_int() < 5))
 	{
-#		if((enemy == $monster[Writing Desk]) && (get_property("writingDesksDefeated").to_int() < 4) && (get_property("lastSecondFloorUnlock").to_int() < my_ascensions()))
-#		{
-#			set_property("sl_doCombatCopy", "yes");
-#		}
-#		if((enemy == $monster[Gaudy Pirate]) && (get_property("sl_gaudypiratecount").to_int() < 1) && !possessEquipment($item[Talisman O\' Namsilat]) && (item_amount($item[Gaudy Key]) < 2))
-#		{
-#			set_property("sl_doCombatCopy", "yes");
-#		}
 		if((enemy == $monster[Modern Zmobie]) && (get_property("sl_modernzmobiecount").to_int() < 3))
 		{
 			set_property("sl_doCombatCopy", "yes");
@@ -1503,7 +1495,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !get_property("kingLiberated").to_boolean() && (sl_my_path() != "Nuclear Autumn"))
 	{
-		if($monsters[Dairy Goat, Gaudy Pirate] contains enemy)
+		if($monsters[Dairy Goat] contains enemy)
 		{
 			return useSkill($skill[Duplicate]);
 		}
@@ -1516,7 +1508,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(canUse($skill[Gelatinous Kick], false) && haveUsed($skill[Duplicate]))
 	{
-		if($monsters[Dairy Goat, Gaudy Pirate] contains enemy)
+		if($monsters[Dairy Goat] contains enemy)
 		{
 			return useSkill($skill[Gelatinous Kick], false);
 		}
