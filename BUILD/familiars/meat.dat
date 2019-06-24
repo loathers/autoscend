@@ -16,9 +16,9 @@ Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # Might as well get devilish folios
 Blavious Kloop	prop:_kloopDrops<3
 # Leprechauns with a >1 multiplier
-Mutant Cactus Bud	grimdark:0
+#Mutant Cactus Bud	grimdark:0
 Hobo Monkey
-Mutant Cactus Bud	grimdark:1
+#Mutant Cactus Bud	grimdark:1
 # Volleychauns
 Golden Monkey
 Bloovian Groose
@@ -49,7 +49,7 @@ Hand Turkey
 He-Boulder
 # Marginally special leprechauns
 Knob Goblin Organ Grinder
-Mutant Cactus Bud	grimdark:2
+#Mutant Cactus Bud	grimdark:2
 Urchin Urchin
 # Memes, doesn't actually give substats apparently
 Cornbeefadon

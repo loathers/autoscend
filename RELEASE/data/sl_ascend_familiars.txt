@@ -61,57 +61,57 @@ item	20	XO Skeleton	prop:_xoHugsUsed<11
 item	21	Reagnimated Gnome
 # Fairies with a multiplier
 item	22	Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
-item	23	Mutant Fire Ant	grimdark:0
-item	24	Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
+#Mutant Fire Ant	grimdark:0
+item	23	Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
 # Jumpsuited Hound Dog DELIBERATELY not included because it provides usually unwanted +combat
-item	25	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
-item	26	Mutant Fire Ant	grimdark:1
-item	27	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
+item	24	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
+#Mutant Fire Ant	grimdark:1
+item	25	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 # Fairyballs
-item	28	Elf Operative
-item	29	Optimistic Candle
-item	30	Rockin' Robin
+item	26	Elf Operative
+item	27	Optimistic Candle
+item	28	Rockin' Robin
 # More BACON, why not
-item	31	Intergnat
+item	29	Intergnat
 # Fairywhelps
-item	32	XO Skeleton
-item	33	Garbage Fire
-item	34	Dandy Lion
+item	30	XO Skeleton
+item	31	Garbage Fire
+item	32	Dandy Lion
 # Fairychauns
-item	35	Angry Jung Man
-item	36	Adventurous Spelunker
-item	37	Blavious Kloop
-item	38	Hippo Ballerina
-item	39	Dancing Frog
-item	40	Coffee Pixie
-item	41	Attention-Deficit Demon
-item	42	Jitterbug
-item	43	Casagnova Gnome
-item	44	Psychedelic Bear
-item	45	Piano Cat
+item	33	Angry Jung Man
+item	34	Adventurous Spelunker
+item	35	Blavious Kloop
+item	36	Hippo Ballerina
+item	37	Dancing Frog
+item	38	Coffee Pixie
+item	39	Attention-Deficit Demon
+item	40	Jitterbug
+item	41	Casagnova Gnome
+item	42	Psychedelic Bear
+item	43	Piano Cat
 # Slightly special fairies
-item	46	Pair of Stomping Boots
-item	47	Gelatinous Cubeling
-item	48	Steam-Powered Cheerleader
-item	49	Obtuse Angel
-item	50	Green Pixie
-item	51	Mutant Fire Ant	grimdark:2
+item	44	Pair of Stomping Boots
+item	45	Gelatinous Cubeling
+item	46	Steam-Powered Cheerleader
+item	47	Obtuse Angel
+item	48	Green Pixie
+#Mutant Fire Ant	grimdark:2
 # Let's bowl 300!
-item	52	Bowlet
+item	49	Bowlet
 # Elemental fairies
-item	53	Sleazy Gravy Fairy
-item	54	Stinky Gravy Fairy
-item	55	Flaming Gravy Fairy
-item	56	Frozen Gravy Fairy
-item	57	Spooky Gravy Fairy
+item	50	Sleazy Gravy Fairy
+item	51	Stinky Gravy Fairy
+item	52	Flaming Gravy Fairy
+item	53	Frozen Gravy Fairy
+item	54	Spooky Gravy Fairy
 # Barely special fairies
-item	58	Mechanical Songbird
-item	59	Grouper Groupie
-item	60	Peppermint Rhino
+item	55	Mechanical Songbird
+item	56	Grouper Groupie
+item	57	Peppermint Rhino
 # Turtles are cute
-item	61	Syncopated Turtle
+item	58	Syncopated Turtle
 # The original
-item	62	Baby Gravy Fairy
+item	59	Baby Gravy Fairy
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -131,45 +131,45 @@ meat	8	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # Might as well get devilish folios
 meat	9	Blavious Kloop	prop:_kloopDrops<3
 # Leprechauns with a >1 multiplier
-meat	10	Mutant Cactus Bud	grimdark:0
-meat	11	Hobo Monkey
-meat	12	Mutant Cactus Bud	grimdark:1
+#Mutant Cactus Bud	grimdark:0
+meat	10	Hobo Monkey
+#Mutant Cactus Bud	grimdark:1
 # Volleychauns
-meat	13	Golden Monkey
-meat	14	Bloovian Groose
-meat	15	Unconscious Collective
-meat	16	Grim Brother
-meat	17	Dramatic Hedgehog
-meat	18	Chauvinist Pig
-meat	19	Uniclops
-meat	20	Hunchbacked Minion
-meat	21	Nervous Tick
-meat	22	Cymbal-Playing Monkey
-meat	23	Cheshire Bat
+meat	11	Golden Monkey
+meat	12	Bloovian Groose
+meat	13	Unconscious Collective
+meat	14	Grim Brother
+meat	15	Dramatic Hedgehog
+meat	16	Chauvinist Pig
+meat	17	Uniclops
+meat	18	Hunchbacked Minion
+meat	19	Nervous Tick
+meat	20	Cymbal-Playing Monkey
+meat	21	Cheshire Bat
 # Fairychauns
-meat	24	Blavious Kloop
-meat	25	Adventurous Spelunker
-meat	26	Hippo Ballerina
-meat	27	Dancing Frog
-meat	28	Cheshire Bat
-meat	29	Piano Cat
-meat	30	Psychedelic Bear
-meat	31	Casagnova Gnome
-meat	32	Jitterbug
-meat	33	Attention-Deficit Demon
-meat	34	Coffee Pixie
+meat	22	Blavious Kloop
+meat	23	Adventurous Spelunker
+meat	24	Hippo Ballerina
+meat	25	Dancing Frog
+meat	26	Cheshire Bat
+meat	27	Piano Cat
+meat	28	Psychedelic Bear
+meat	29	Casagnova Gnome
+meat	30	Jitterbug
+meat	31	Attention-Deficit Demon
+meat	32	Coffee Pixie
 # Wowee
-meat	35	Hand Turkey
+meat	33	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	36	He-Boulder
+meat	34	He-Boulder
 # Marginally special leprechauns
-meat	37	Knob Goblin Organ Grinder
-meat	38	Mutant Cactus Bud	grimdark:2
-meat	39	Urchin Urchin
+meat	35	Knob Goblin Organ Grinder
+#Mutant Cactus Bud	grimdark:2
+meat	36	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	40	Cornbeefadon
+meat	37	Cornbeefadon
 # The original
-meat	41	Leprechaun
+meat	38	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)
@@ -219,14 +219,14 @@ regen	26	Cotton Candy Carnie
 # Slightly better whelp for saucerors
 regen	27	Pet Cheezling	class:Sauceror
 # Whelps with a multiplier, why not I guess
-regen	28	Mutant Gila Monster	grimdark:0
-regen	29	Mutant Gila Monster	grimdark:1
+#Mutant Gila Monster	grimdark:0
+#Mutant Gila Monster	grimdark:1
 # Marginally special whelps
-regen	30	Mutant Gila Monster	grimdark:2
-regen	31	Pottery Barn Owl
+#Mutant Gila Monster	grimdark:2
+regen	28	Pottery Barn Owl
 # Regular old whelps
-regen	32	Pet Cheezling
-regen	33	Ghuol Whelp
+regen	29	Pet Cheezling
+regen	30	Ghuol Whelp
 
 # Sombrero is desirable with a decent amount of ML
 stat	0	Galloping Grill	ML:>=120
@@ -246,36 +246,36 @@ stat	9	Crimbo Shrub
 # Free car fuel, or meat, or food/booze if we're really desperate
 stat	10	Lil' Barrel Mimic
 # Volleyballs with a multiplier
-stat	11	Baby Mutant Rattlesnake	grimdark:0
-stat	12	Baby Mutant Rattlesnake	grimdark:1
+#Baby Mutant Rattlesnake	grimdark:0
+#Baby Mutant Rattlesnake	grimdark:1
 # Fairyballs
-stat	13	Elf Operative
-stat	14	Optimistic Candle
-stat	15	Rockin' Robin
+stat	11	Elf Operative
+stat	12	Optimistic Candle
+stat	13	Rockin' Robin
 # Volleychauns
-stat	16	Golden Monkey
-stat	17	Bloovian Groose
-stat	18	Unconscious Collective
-stat	19	Grim Brother
-stat	20	Dramatic Hedgehog
-stat	21	Chauvinist Pig
-stat	22	Uniclops
-stat	23	Hunchbacked Minion
-stat	24	Nervous Tick
-stat	25	Cymbal-Playing Monkey
-stat	26	Cheshire Bat
+stat	14	Golden Monkey
+stat	15	Bloovian Groose
+stat	16	Unconscious Collective
+stat	17	Grim Brother
+stat	18	Dramatic Hedgehog
+stat	19	Chauvinist Pig
+stat	20	Uniclops
+stat	21	Hunchbacked Minion
+stat	22	Nervous Tick
+stat	23	Cymbal-Playing Monkey
+stat	24	Cheshire Bat
 # Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
-stat	27	Frumious Bandersnatch
+stat	25	Frumious Bandersnatch
 # Fancy
-stat	28	Miniature Sword &trade; Martini Guy
+stat	26	Miniature Sword &trade; Martini Guy
 # Slightly special volleyballs
-stat	29	Reanimated Reanimator
-stat	30	God Lobster
-stat	31	Baby Mutant Rattlesnake	grimdark:2
+stat	27	Reanimated Reanimator
+stat	28	God Lobster
+#Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	32	Grinning Turtle
+stat	29	Grinning Turtle
 # The original
-stat	33	Blood-Faced Volleyball
+stat	30	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work

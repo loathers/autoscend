@@ -41,11 +41,11 @@ XO Skeleton	prop:_xoHugsUsed<11
 Reagnimated Gnome
 # Fairies with a multiplier
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
-Mutant Fire Ant	grimdark:0
+#Mutant Fire Ant	grimdark:0
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
 # Jumpsuited Hound Dog DELIBERATELY not included because it provides usually unwanted +combat
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
-Mutant Fire Ant	grimdark:1
+#Mutant Fire Ant	grimdark:1
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 # Fairyballs
 Elf Operative
@@ -75,7 +75,7 @@ Gelatinous Cubeling
 Steam-Powered Cheerleader
 Obtuse Angel
 Green Pixie
-Mutant Fire Ant	grimdark:2
+#Mutant Fire Ant	grimdark:2
 # Let's bowl 300!
 Bowlet
 # Elemental fairies
