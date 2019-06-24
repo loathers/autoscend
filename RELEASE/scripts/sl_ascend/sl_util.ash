@@ -2924,11 +2924,14 @@ boolean sl_have_familiar(familiar fam)
 	{
 		return false;
 	}
-	if($classes[Avatar Of Boris, Avatar Of Jarlsberg, Avatar Of Sneaky Pete, Ed] contains my_class())
+	if($classes[
+		Avatar Of Boris,
+		Avatar Of Jarlsberg,
+		Avatar Of Sneaky Pete,
+		Ed,
+		Vampyre,
+		] contains my_class())
 	{
-		return false;
-	}
-	if(sl_my_path() == "Dark Gyffte") {
 		return false;
 	}
 	if(!sl_is_valid(fam))
