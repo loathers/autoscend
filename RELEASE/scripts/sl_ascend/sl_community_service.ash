@@ -708,7 +708,7 @@ boolean LA_cs_communityService()
 				{
 					handleFamiliar("yellow ray");
 				}
-				if(!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants]) && $location[LavaCo&trade; Lamp Factory].turns_spent < 10)
+				if((!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants])) && $location[LavaCo&trade; Lamp Factory].turns_spent < 10)
 				{
 					print("Adventuring in LavaCo using the yellow ray source: " + yellowRay, "blue");
 					slAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatYR");

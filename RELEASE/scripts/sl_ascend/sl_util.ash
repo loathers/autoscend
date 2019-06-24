@@ -176,6 +176,7 @@ boolean slMaximize(string req, boolean simulate)
 	if(!simulate)
 	{
 		debugMaximize(req, 0);
+		tcrs_maximize_with_items(req);
 #		user_confirm("Beep");
 	}
 	return maximize(req, simulate);
@@ -186,6 +187,7 @@ boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 	if(!simulate)
 	{
 		debugMaximize(req, maxPrice);
+		tcrs_maximize_with_items(req);
 #		user_confirm("Beep");
 	}
 	return maximize(req, maxPrice, priceLevel, simulate);
@@ -197,6 +199,7 @@ aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate,
 	{
 		debugMaximize(req, maxPrice);
 #		user_confirm("Beep");
+		tcrs_maximize_with_items(req);
 	}
 	return maximize(req, maxPrice, priceLevel, simulate, includeEquip);
 }
