@@ -457,7 +457,7 @@ boolean handleFamiliar(string type)
 			}
 		}
 	}
-	else if(type == "yellow ray")
+	else if(type == "yellowray")
 	{
 #		foreach fam in $familiars[Crimbo Shrub, Nanorhino, He-Boulder]
 		foreach fam in $familiars[Crimbo Shrub]

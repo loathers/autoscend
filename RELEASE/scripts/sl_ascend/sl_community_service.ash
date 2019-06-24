@@ -389,7 +389,7 @@ boolean LA_cs_communityService()
 				{
 					if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
 					{
-						handleFamiliar("yellow ray");
+						handleFamiliar("yellowray");
 					}
 					handleFaxMonster($monster[Dairy Goat], "cs_combatYR");
 				}
@@ -706,7 +706,7 @@ boolean LA_cs_communityService()
 				string yellowRay = yellowRayCombatString();
 				if(yellowRay == ("skill " + $skill[Open a Big Yellow Present]))
 				{
-					handleFamiliar("yellow ray");
+					handleFamiliar("yellowray");
 				}
 				if((!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants])) && $location[LavaCo&trade; Lamp Factory].turns_spent < 10)
 				{
@@ -1022,7 +1022,7 @@ boolean LA_cs_communityService()
 			{
 				if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
 				{
-					handleFamiliar("yellow ray");
+					handleFamiliar("yellowray");
 				}
 				string combatString = "cs_combatYR";
 				if(numeric_modifier("item drop") >= 150.0)
@@ -2671,7 +2671,7 @@ boolean LA_cs_communityService()
 					{
 						if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
 						{
-							handleFamiliar("yellow ray");
+							handleFamiliar("yellowray");
 						}
 						slAdv(1, $location[The Velvet / Gold Mine], "cs_combatYR");
 						return true;
@@ -3182,7 +3182,7 @@ boolean do_chateauGoat()
 		{
 			if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
 			{
-				handleFamiliar("yellow ray");
+				handleFamiliar("yellowray");
 			}
 			chateaumantegna_usePainting("cs_combatYR");
 		}
@@ -4399,7 +4399,7 @@ boolean sl_csHandleGrapes()
 	{
 		if(yellowRayCombatString() == ("skill " + $skill[Open a Big Yellow Present]))
 		{
-			handleFamiliar("yellow ray");
+			handleFamiliar("yellowray");
 		}
 		useCocoon();
 		handleFaxMonster($monster[Sk8 gnome], "cs_combatYR");

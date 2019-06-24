@@ -1617,7 +1617,7 @@ boolean adjustForYellowRay(string combat_string)
 {
 	if(combat_string == ("skill " + $skill[Open a Big Yellow Present]))
 	{
-		handleFamiliar("yellow ray");
+		handleFamiliar("yellowray");
 		return true;
 	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
