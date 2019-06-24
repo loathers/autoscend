@@ -13,7 +13,6 @@ boolean tcrs_initializeSettings()
 		set_property("sl_getStarKey", true);
 		set_property("sl_holeinthesky", true);
 		set_property("sl_wandOfNagamar", true);
-		set_property("sl_paranoia", 2);
 	}
 	return true;
 }
