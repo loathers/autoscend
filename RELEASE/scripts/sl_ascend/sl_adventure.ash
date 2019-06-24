@@ -11,6 +11,7 @@ boolean slAdv(int num, location loc, string option)
 {
 	set_property("sl_combatHandler", "");
 	set_property("sl_diag_round", 0);
+	set_property("nextAdventure", loc);
 	if(option == "")
 	{
 		option = "sl_combatHandler";

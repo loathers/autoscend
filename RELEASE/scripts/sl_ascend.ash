@@ -5343,7 +5343,7 @@ boolean LX_attemptFlyering()
 
 boolean powerLevelAdjustment()
 {
-	if(get_property("sl_powerLevelLastLevel").to_int() != my_level())
+	if(get_property("sl_powerLevelLastLevel").to_int() != my_level() && get_property("sl_powerLevelAdvCount").to_int() > 0)
 	{
 		set_property("sl_powerLevelLastLevel", my_level());
 		set_property("sl_powerLevelAdvCount", 0);
@@ -11301,11 +11301,12 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	if(delayKitchen)
 	{
-		if((elemental_resist($element[hot]) < 9) || (elemental_resist($element[stench]) < 9))
+		if(elemental_resist($element[hot]) < 9 || elemental_resist($element[stench]) < 9)
 		{
 			if(my_class() == $class[Ed])
 			{
-				delayKitchen = have_skill($skill[Even More Elemental Wards]);
+				// this should be false if we have the 3rd resist upgrade (max available for Ed) and true if we don't!
+				delayKitchen = !have_skill($skill[Even More Elemental Wards]); 
 			}
 		}
 		else
@@ -12972,9 +12973,18 @@ boolean L11_ronCopperhead()
 
 	if((internalQuestStatus("questL11Ron") == 2) || (internalQuestStatus("questL11Ron") == 3) || (internalQuestStatus("questL11Ron") == 4))
 	{
-		if((item_amount($item[Red Zeppelin Ticket]) == 0) && (my_meat() > npc_price($item[Red Zeppelin Ticket])))
+		if (item_amount($item[Red Zeppelin Ticket]) < 1)
 		{
-			buy(1, $item[Red Zeppelin Ticket]);
+			// use the priceless diamond since we go to the effort of trying to get one in the Copperhead Club
+			// and it saves us 4.5k meat.
+			if (item_amount($item[priceless diamond]) > 0)
+			{
+				buy($coinmaster[The Black Market], 1, $item[Red Zeppelin Ticket]);
+			}
+			else if (my_meat() > npc_price($item[Red Zeppelin Ticket]))
+			{
+				buy(1, $item[Red Zeppelin Ticket]);
+			}
 		}
 		// For Glark Cables. OPTIMAL!
 		bat_formBats();
@@ -13053,6 +13063,12 @@ boolean L11_shenCopperhead()
 	if((internalQuestStatus("questL11Shen") == 1) || (internalQuestStatus("questL11Shen") == 3) || (internalQuestStatus("questL11Shen") == 5))
 	{
 		item it = to_item(get_property("shenQuestItem"));
+		if (it == $item[none] && my_class() == $class[Ed])
+		{
+			// temp workaround until mafia bug is fixed - https://kolmafia.us/showthread.php?23742
+			cli_execute("refresh quests");
+			it = to_item(get_property("shenQuestItem"));
+		}
 		location goal = $location[none];
 		switch(it)
 		{
