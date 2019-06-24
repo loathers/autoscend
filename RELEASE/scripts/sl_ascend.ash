@@ -4631,12 +4631,14 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_08_monster4"))
 	{
-		set_property("choiceAdventure1015", "2");
+		boolean confidence = get_property("sl_confidence").to_boolean();
+		// confidence really just means take the first choice, so it's necessary in vampyre
+		if(my_class() == $class[Vampyre])
+			confidence = true;
+		string choicenum = (confidence ? "1" : "2");
+		set_property("choiceAdventure1015", choicenum);
 		visit_url("place.php?whichplace=nstower&action=ns_08_monster4");
-		if (my_class() != $class[Vampyre])
-			visit_url("choice.php?pwd=&whichchoice=1015&option=2", true);
-		else
-			visit_url("choice.php?pwd=&whichchoice=1015&option=1", true);
+		visit_url("choice.php?pwd=&whichchoice=1015&option=" + choicenum, true);
 		return true;
 	}
 

@@ -23,6 +23,7 @@ sl_diceMode	boolean	Equip all available Dice (OCRS) gear. This is probably not F
 sl_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
 sl_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
 sl_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
+sl_confidence	boolean	If true, we'll get the confidence buff instead of breaking the mirror. Good if your combat suite isn't very fleshed out yet, since it makes the Naughty Sorceress dramatically easier.
 sl_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
 sl_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
 sl_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
