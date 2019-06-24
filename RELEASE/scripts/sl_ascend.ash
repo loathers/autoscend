@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19280; // Add "tcrs spoon" command
+since r19335; // monster.copyable
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
@@ -672,9 +672,8 @@ boolean LX_universeFrat()
 		{
 			doNumberology("adventures3");
 		}
-		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && canYellowRay() && (doNumberology("battlefield", false) != -1))
+		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]) && (doNumberology("battlefield", false) != -1))
 		{
-			adjustForYellowRay(yellowRayCombatString());
 			doNumberology("battlefield");
 			return true;
 		}
@@ -7857,10 +7856,7 @@ boolean L12_filthworms()
 
 	if(have_effect($effect[Filthworm Drone Stench]) > 0)
 	{
-		if(canYellowRay())
-		{
-			adjustForYellowRay(yellowRayCombatString());
-		}
+		adjustForYellowRayIfPossible($monster[filthworm royal guard]);
 		if(sl_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !is100FamiliarRun($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
@@ -7869,6 +7865,7 @@ boolean L12_filthworms()
 	}
 	else if(have_effect($effect[Filthworm Larva Stench]) > 0)
 	{
+		adjustForYellowRayIfPossible($monster[filthworm drone]);
 		if(sl_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !is100FamiliarRun($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
@@ -7877,6 +7874,7 @@ boolean L12_filthworms()
 	}
 	else
 	{
+		adjustForYellowRayIfPossible($monster[larval filthworm]);
 		if(sl_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !is100FamiliarRun($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
@@ -8660,10 +8658,7 @@ boolean L10_basement()
 				}
 				else
 				{
-					if(canYellowRay())
-					{
-						adjustForYellowRay(yellowRayCombatString());
-					}
+					adjustForYellowRayIfPossible($monster[Quiet Healer]);
 					print("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
 					slAdv(1, $location[The Penultimate Fantasy Airship]);
 				}
@@ -8727,9 +8722,9 @@ boolean L10_airship()
 		handleFamiliar($familiar[Artistic Goth Kid]);
 	}
 
-	if(!possessEquipment($item[Mohawk Wig]) && canYellowRay())
+	if(!possessEquipment($item[Mohawk Wig]))
 	{
-		adjustForYellowRay(yellowRayCombatString());
+		adjustForYellowRayIfPossible($monster[Burly Sidekick]);
 	}
 	if($location[The Penultimate Fantasy Airship].turns_spent < 10)
 	{
@@ -13411,15 +13406,13 @@ boolean L5_haremOutfit()
 		return false;
 	}
 
-	if(!canYellowRay())
+	if(!adjustForYellowRayIfPossible($monster[Knob Goblin Harem Girl]))
 	{
 		if(my_level() != get_property("sl_powerLevelLastLevel").to_int())
 		{
 			return false;
 		}
 	}
-
-	adjustForYellowRay(yellowRayCombatString());
 
 	if(sl_my_path() == "Heavy Rains")
 	{

@@ -11,6 +11,7 @@ int doNumberology(string goal, boolean doIt);
 int doNumberology(string goal, boolean doIt, string option);
 boolean handleBarrelFullOfBarrels(boolean daily);
 boolean canYellowRay();
+string yellowRayCombatString(monster target);
 string yellowRayCombatString();
 int solveCookie();
 boolean use_barrels();
@@ -1292,7 +1293,7 @@ boolean summonMonster(string option)
 	return false;
 }
 
-boolean canYellowRay()
+boolean canYellowRay(monster target)
 {
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
@@ -1317,7 +1318,12 @@ boolean canYellowRay()
 	}
 	# Pulled Yellow Taffy	- How do we handle the underwater check?
 	# He-Boulder?			- How do we do this?
-	return yellowRayCombatString() != "";
+	return yellowRayCombatString(target) != "";
+}
+
+boolean canYellowRay()
+{
+	return canYellowRay($monster[none]);
 }
 
 // private
@@ -1535,7 +1541,7 @@ string banisherCombatString(monster enemy, location loc)
 	return "";
 }
 
-string yellowRayCombatString()
+string yellowRayCombatString(monster target)
 {
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
@@ -1585,12 +1591,21 @@ string yellowRayCombatString()
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
 
-	//if(possessEquipment($item[Fourth of May cosplay saber]) && (sl_saberChargesAvailable() > 0))
-	//{
-	//	return sl_combatSaberYR();
-	//}
+	if(possessEquipment($item[Fourth of May cosplay saber]) && (sl_saberChargesAvailable() > 0))
+	{
+		// can't use the force on uncopyable monsters
+		if(target == $monster[none] || target.copyable)
+		{
+			return sl_combatSaberYR();
+		}
+	}
 
 	return "";
+}
+
+string yellowRayCombatString()
+{
+	return yellowRayCombatString($monster[none]);
 }
 
 /* Adjust equipment/familiars to have access to the desired Yellow Ray
@@ -1607,6 +1622,20 @@ boolean adjustForYellowRay(string combat_string)
 		return equip($slot[weapon], $item[Fourth of May cosplay saber]);
 	}
 	return true;
+}
+
+boolean adjustForYellowRayIfPossible(monster target)
+{
+	if(canYellowRay(target))
+	{
+		return adjustForYellowRay(yellowRayCombatString(target));
+	}
+	return false;
+}
+
+boolean adjustForYellowRayIfPossible()
+{
+	return adjustForYellowRayIfPossible($monster[none]);
 }
 
 string statCard()

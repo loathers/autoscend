@@ -375,6 +375,7 @@ boolean buy_item(item it, int quantity, int maxprice);		//Defined in sl_ascend/s
 boolean buyableMaintain(item toMaintain, int howMany);		//Defined in sl_ascend/sl_util.ash
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin);//Defined in sl_ascend/sl_util.ash
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);//Defined in sl_ascend/sl_util.ash
+boolean canYellowRay(monster target); //Defined in sl_ascend/sl_util.ash
 boolean canYellowRay();										//Defined in sl_ascend/sl_util.ash
 boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in sl_ascend/sl_adventure.ash
 boolean slChew(int howMany, item toChew);					//Defined in sl_ascend/sl_cooking.ash
@@ -851,7 +852,11 @@ item whatHiMein();											//Defined in sl_ascend/sl_util.ash
 effect whatStatSmile();										//Defined in sl_ascend/sl_util.ash
 void woods_questStart();									//Defined in sl_ascend/sl_util.ash
 boolean xiblaxian_makeStuff();								//Defined in sl_ascend/sl_mr2014.ash
+string yellowRayCombatString(monster target);					//Defined in sl_ascend/sl_util.ash
 string yellowRayCombatString();								//Defined in sl_ascend/sl_util.ash
+boolean adjustForYellowRay(string combat_string); //Defined in sl_ascend/sl_util.ash
+boolean adjustForYellowRayIfPossible(monster target); //Defined in sl_ascend/sl_util.ash
+boolean adjustForYellowRayIfPossible(); //Defined in sl_ascend/sl_util.ash
 string banisherCombatString(monster enemy, location loc);	//Defined in sl_ascend/sl_util.ash
 boolean[string] sl_banishesUsedAt(location loc); // Defined in sl_ascend/sl_util.ash
 boolean sl_wantToBanish(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
