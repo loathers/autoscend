@@ -296,6 +296,7 @@ boolean handleFamiliar(string type)
 			if(thisFamiliar == $familiar[none] && name != "none")
 			{
 				print('"' + name + '" does not convert to a familiar properly!', "red");
+				print(type + "; " + i + "; " + conds, "red");
 				continue;
 			}
 			if(!sl_check_conditions(conds))
