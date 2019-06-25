@@ -14466,6 +14466,10 @@ boolean doTasks()
 	}
 
 	if(LX_loggingHatchet())				return true;
+	if(knoll_available() && get_property("sl_spoonconfirmed").to_int() == my_ascensions())
+	{
+		if(LX_bitchinMeatcar())			return true;
+	}
 	if(LX_guildUnlock())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_handleSpookyravenNecklace())	return true;
