@@ -52,7 +52,7 @@ item	12	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # And some substats, if in The Source
 item	13	Fist Turkey	prop:_turkeyMuscle<5;mainstat:Muscle;path:The Source
 item	14	Fist Turkey	prop:_turkeyMyst<5;mainstat:Mysticality;path:The Source
-item	15	Fist Turkey	prop:_turkeyMoxie;mainstat:Moxie;path:The Source
+item	15	Fist Turkey	prop:_turkeyMoxie<5;mainstat:Moxie;path:The Source
 # And some hugpockets
 item	16	XO Skeleton	prop:_xoHugsUsed<5
 # And some pastes
