@@ -459,5 +459,8 @@ void equipRollover()
 	
 	maximize(to_max, false);
 
-	print("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
+	if(!in_hardcore())
+	{
+		print("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
+	}
 }
