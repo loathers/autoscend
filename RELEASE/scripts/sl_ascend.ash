@@ -11325,7 +11325,16 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	if(delayKitchen)
 	{
-		if(elemental_resist($element[hot]) < 9 || elemental_resist($element[stench]) < 9)
+		boolean haveRes = (elemental_resist($element[hot]) >= 9 || elemental_resist($element[stench]) >= 9);
+		if(useMaximizeToEquip())
+		{
+			slMaximize("hot res max 9,stench res max 9", true);
+			if(numeric_modifier("Generated:_spec", "Hot Resistance") >= 9 && numeric_modifier("Generated:_spec", "Stench Resistance") >= 9)
+			{
+				haveRes = true;
+			}
+		}
+		if(!haveRes)
 		{
 			if(my_class() == $class[Ed])
 			{
@@ -11551,6 +11560,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		buffMaintain($effect[Patent Prevention], 0, 1, 1);
 		bat_formMist();
 
+		addToMaximize(",1000hot resistance max 9000,1000 stench resistance max 9000");
 		slAdv(1, $location[The Haunted Kitchen]);
 		handleFamiliar("item");
 	}
@@ -12628,6 +12638,60 @@ boolean LX_loggingHatchet()
 	return true;
 }
 
+void L9_chasmMaximizeForNoncombat()
+{
+	print("Let's assess our scores for blech house", "blue");
+	string best = "mus";
+	string mustry = "100muscle,100weapon damage,1000weapon damage percent";
+	string mystry = "100mysticality,100spell damage,1000 spell damage percent";
+	string moxtry = "100moxie,1000sleaze resistance";
+	simMaximizeWith(mustry);
+	float musmus = numeric_modifier("Generated:_spec", "Muscle");
+	print("Best muscle we can get is " + musmus);
+	float musflat = numeric_modifier("Generated:_spec", "Weapon Damage");
+	print("Best flat weapon damage we can get is " + musflat);
+	float musperc = numeric_modifier("Generated:_spec", "Weapon Damage Percent");
+	print("Best percent weapon damage we can get is " + musperc);
+	int musscore = floor(square_root((musmus + musflat)/15*(1+musperc/100)));
+	print("Muscle score: " + musscore);
+	simMaximizeWith(mystry);
+	float mysmys = numeric_modifier("Generated:_spec", "Mysticality");
+	print("Best myst we can get is " + mysmys);
+	float mysflat = numeric_modifier("Generated:_spec", "Spell Damage");
+	print("Best flat spell damage we can get is " + mysflat);
+	float mysperc = numeric_modifier("Generated:_spec", "Spell Damage Percent");
+	print("Best spell damage percent we can get is " + mysperc);
+	int mysscore = floor(square_root((mysmys + mysflat)/15*(1+mysperc/100)));
+	print("Mysticality score: " + mysscore);
+	if(mysscore > musscore)
+	{
+		best = "mys";
+	}
+	simMaximizeWith(moxtry);
+	float moxmox = numeric_modifier("Generated:_spec", "Moxie");
+	float moxres = numeric_modifier("Generated:_spec", "Sleaze Resistance");
+	int moxscore = floor(square_root(moxmox/30*(1+moxres*0.69)));
+	print("Moxie score: " + moxscore);
+	if(moxscore > mysscore && moxscore > musscore)
+	{
+		best = "mox";
+	}
+	switch(best)
+	{
+		case "mus":
+			addToMaximize(mustry);
+			set_property("choiceAdventure1345", 1);
+			break;
+		case "mys":
+			addToMaximize(mystry);
+			set_property("choiceAdventure1345", 2);
+			break;
+		case "mox":
+			addToMaximize(moxtry);
+			set_property("choiceAdventure1345", 3);
+			break;
+	}
+}
 boolean L9_chasmBuild()
 {
 	if((my_level() < 9) || (get_property("chasmBridgeProgress").to_int() >= 30))
@@ -12670,17 +12734,24 @@ boolean L9_chasmBuild()
 		}
 		else
 		{
-			switch(my_primestat())
+			if(useMaximizeToEquip())
 			{
-				case $stat[Muscle]:
-					set_property("choiceAdventure1345", 1);
-					break;
-				case $stat[Mysticality]:
-					set_property("choiceAdventure1345", 2);
-					break;
-				case $stat[Moxie]:
-					set_property("choiceAdventure1345", 3);
-					break;
+				L9_chasmMaximizeForNoncombat();
+			}
+			else
+			{
+				switch(my_primestat())
+				{
+					case $stat[Muscle]:
+						set_property("choiceAdventure1345", 1);
+						break;
+					case $stat[Mysticality]:
+						set_property("choiceAdventure1345", 2);
+						break;
+					case $stat[Moxie]:
+						set_property("choiceAdventure1345", 3);
+						break;
+				}
 			}
 		}
 		slAdv(1, $location[The Smut Orc Logging Camp]);
@@ -14249,6 +14320,7 @@ boolean doTasks()
 	}
 	bat_formNone();
 	horseDefault();
+	resetMaximize();
 
 	basicAdjustML();
 	powerLevelAdjustment();

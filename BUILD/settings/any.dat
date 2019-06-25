@@ -24,16 +24,10 @@ sl_diceMode	boolean	Equip all available Dice (OCRS) gear. This is probably not F
 sl_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
 sl_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
 sl_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
-sl_confidence	boolean	If true, we'll get the confidence buff instead of breaking the mirror. Good if your combat suite isn't very fleshed out yet, since it makes the Naughty Sorceress dramatically easier.
-sl_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
-sl_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
-sl_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
-sl_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
-sl_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
-sl_blacklistFamiliar	string	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
 sl_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
 sl_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
 sl_limitConsume	boolean	When false, pull cheapish food/booze when we run low so we can continue.
+sl_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank, will continue using the current data driven equipment instead. You probably want this blank for now!
 sl_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
 sl_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
 sl_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.
