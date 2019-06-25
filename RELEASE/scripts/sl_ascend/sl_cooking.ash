@@ -301,6 +301,10 @@ boolean tryPantsEat()
 
 boolean canOde(item toDrink)
 {
+	if(in_tcrs())
+	{
+		return true;
+	}
 	if($items[Steel Margarita, 5-hour acrimony, beery blood, slap and slap again, used beer, shot of flower schnapps] contains toDrink)
 	{
 		return false;
