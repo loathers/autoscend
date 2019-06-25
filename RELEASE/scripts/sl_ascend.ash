@@ -4212,14 +4212,21 @@ boolean L13_towerNSFinal()
 		equip($slot[Off-Hand], $item[Oscus\'s Garbage Can Lid]);
 	}
 
-	handleFamiliar($familiar[warbear drone]);
-	if(!sl_have_familiar($familiar[Warbear Drone]))
+	if(get_property("sl_beta_test").to_boolean())
 	{
-		handleFamiliar($familiar[Fist Turkey]);
+		handleFamiliar("boss");
 	}
-	if(sl_have_familiar($familiar[Machine Elf]))
+	else
 	{
-		handleFamiliar($familiar[Machine Elf]);
+		handleFamiliar($familiar[warbear drone]);
+		if(!sl_have_familiar($familiar[Warbear Drone]))
+		{
+			handleFamiliar($familiar[Fist Turkey]);
+		}
+		if(sl_have_familiar($familiar[Machine Elf]))
+		{
+			handleFamiliar($familiar[Machine Elf]);
+		}
 	}
 
 	if(item_amount($item[Beer Helmet]) > 0)
