@@ -4,7 +4,6 @@
 # But starfish restore roughly 0.25*weight PER TURN
 # and average combat length looks to be ~6 rounds in sl_ascend, so that's 1.5*weight on average
 # Not even bothering with cocoabos
-
 # Ash is nice
 Galloping Grill	prop:_hotAshesDrops<5
 # Tokens are nice

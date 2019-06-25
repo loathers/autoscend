@@ -183,56 +183,55 @@ meat	38	Leprechaun
 # But starfish restore roughly 0.25*weight PER TURN
 # and average combat length looks to be ~6 rounds in sl_ascend, so that's 1.5*weight on average
 # Not even bothering with cocoabos
-regen	0	
 # Ash is nice
-regen	1	Galloping Grill	prop:_hotAshesDrops<5
+regen	0	Galloping Grill	prop:_hotAshesDrops<5
 # Tokens are nice
-regen	2	Rogue Program	prop:_tokenDrops<5
+regen	1	Rogue Program	prop:_tokenDrops<5
 # Hugpockets are good, Xs and Os are good, even if whelps aren't as good as starfish
-regen	3	XO Skeleton	prop:_xoHugsUsed<11
+regen	2	XO Skeleton	prop:_xoHugsUsed<11
 # Free stuff!
-regen	4	Lil' Barrel Mimic
+regen	3	Lil' Barrel Mimic
 # It's a starfish with reduced activation rate, except it ALWAYS attacks on turn one, so that's probably more hits per battle on average in short battles? oh, and it's a sombrero too
-regen	5	Galloping Grill
+regen	4	Galloping Grill
 # A super starfish (50% activation instead of 33%)
-regen	6	Sausage Golem
+regen	5	Sausage Golem
 # A slightly boosted starfish, for pastamancers
-regen	7	Animated Macaroni Duck	class:Pastamancer
+regen	6	Animated Macaroni Duck	class:Pastamancer
 # Regular starfish
-regen	8	Unspeakachu
-regen	9	Twitching Space Critter
-regen	10	Rock Lobster
-regen	11	Animated Macaroni Duck
-regen	12	Midget Clownfish
-regen	13	Snow Angel
-regen	14	Underworld Bonsai
-regen	15	Star Starfish
+regen	7	Unspeakachu
+regen	8	Twitching Space Critter
+regen	9	Rock Lobster
+regen	10	Animated Macaroni Duck
+regen	11	Midget Clownfish
+regen	12	Snow Angel
+regen	13	Underworld Bonsai
+regen	14	Star Starfish
 # Fairysuperwhelps
-regen	16	Garbage Fire
-regen	17	XO Skeleton
-regen	18	Choctopus
+regen	15	Garbage Fire
+regen	16	XO Skeleton
+regen	17	Choctopus
 # Superwhelps
-regen	19	Plastic Pirate Skull
-regen	20	Trick-or-Treating Tot
+regen	18	Plastic Pirate Skull
+regen	19	Trick-or-Treating Tot
 # Fairywhelps
-regen	21	Dandy Lion
+regen	20	Dandy Lion
 # Special whelps
-regen	22	Ms. Puck Man
-regen	23	Puck Man
-regen	24	Squamous Gibberer
-regen	25	He-Boulder
-regen	26	Cotton Candy Carnie
+regen	21	Ms. Puck Man
+regen	22	Puck Man
+regen	23	Squamous Gibberer
+regen	24	He-Boulder
+regen	25	Cotton Candy Carnie
 # Slightly better whelp for saucerors
-regen	27	Pet Cheezling	class:Sauceror
+regen	26	Pet Cheezling	class:Sauceror
 # Whelps with a multiplier, why not I guess
 #Mutant Gila Monster	grimdark:0
 #Mutant Gila Monster	grimdark:1
 # Marginally special whelps
 #Mutant Gila Monster	grimdark:2
-regen	28	Pottery Barn Owl
+regen	27	Pottery Barn Owl
 # Regular old whelps
-regen	29	Pet Cheezling
-regen	30	Ghuol Whelp
+regen	28	Pet Cheezling
+regen	29	Ghuol Whelp
 
 # Sombrero is desirable with a decent amount of ML
 stat	0	Galloping Grill	ML:>=120
