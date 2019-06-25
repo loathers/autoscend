@@ -60,7 +60,7 @@ item	17	Pair of Stomping Boots	prop:_bootStomps<7
 # And some BACON
 item	18	Intergnat	item:BACON<350
 # And some heist charges
-item	19	Cat Burglar
+item	19	Cat Burglar	prop:_catBurglarCharge<30
 # And some more hugpockets
 item	20	XO Skeleton	prop:_xoHugsUsed<11
 # And some adventures
@@ -84,40 +84,41 @@ item	30	XO Skeleton
 item	31	Garbage Fire
 item	32	Dandy Lion
 # Fairychauns
-item	33	Angry Jung Man
-item	34	Adventurous Spelunker
-item	35	Blavious Kloop
-item	36	Hippo Ballerina
-item	37	Dancing Frog
-item	38	Coffee Pixie
-item	39	Attention-Deficit Demon
-item	40	Jitterbug
-item	41	Casagnova Gnome
-item	42	Psychedelic Bear
-item	43	Piano Cat
+item	33	Cat Burglar
+item	34	Angry Jung Man
+item	35	Adventurous Spelunker
+item	36	Blavious Kloop
+item	37	Hippo Ballerina
+item	38	Dancing Frog
+item	39	Coffee Pixie
+item	40	Attention-Deficit Demon
+item	41	Jitterbug
+item	42	Casagnova Gnome
+item	43	Psychedelic Bear
+item	44	Piano Cat
 # Slightly special fairies
-item	44	Pair of Stomping Boots
-item	45	Gelatinous Cubeling
-item	46	Steam-Powered Cheerleader
-item	47	Obtuse Angel
-item	48	Green Pixie
+item	45	Pair of Stomping Boots
+item	46	Gelatinous Cubeling
+item	47	Steam-Powered Cheerleader
+item	48	Obtuse Angel
+item	49	Green Pixie
 #Mutant Fire Ant	grimdark:2
 # Let's bowl 300!
-item	49	Bowlet
+item	50	Bowlet
 # Elemental fairies
-item	50	Sleazy Gravy Fairy
-item	51	Stinky Gravy Fairy
-item	52	Flaming Gravy Fairy
-item	53	Frozen Gravy Fairy
-item	54	Spooky Gravy Fairy
+item	51	Sleazy Gravy Fairy
+item	52	Stinky Gravy Fairy
+item	53	Flaming Gravy Fairy
+item	54	Frozen Gravy Fairy
+item	55	Spooky Gravy Fairy
 # Barely special fairies
-item	55	Mechanical Songbird
-item	56	Grouper Groupie
-item	57	Peppermint Rhino
+item	56	Mechanical Songbird
+item	57	Grouper Groupie
+item	58	Peppermint Rhino
 # Turtles are cute
-item	58	Syncopated Turtle
+item	59	Syncopated Turtle
 # The original
-item	59	Baby Gravy Fairy
+item	60	Baby Gravy Fairy
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -129,7 +130,7 @@ meat	3	Bloovian Groose	prop:_grooseDrops<3
 meat	4	Unconscious Collective	prop:_dreamJarDrops<3
 meat	5	Grim Brother	prop:_grimFairyTaleDrops<3
 # Wanna build up heists
-meat	6	Cat Burglar
+meat	6	Cat Burglar	prop:_catBurglarCharge<30
 # Wanna get booze ingredients
 meat	7	Robortender
 # Might as well get tales of spelunking
@@ -153,29 +154,30 @@ meat	19	Nervous Tick
 meat	20	Cymbal-Playing Monkey
 meat	21	Cheshire Bat
 # Fairychauns
-meat	22	Blavious Kloop
-meat	23	Adventurous Spelunker
-meat	24	Hippo Ballerina
-meat	25	Dancing Frog
-meat	26	Cheshire Bat
-meat	27	Piano Cat
-meat	28	Psychedelic Bear
-meat	29	Casagnova Gnome
-meat	30	Jitterbug
-meat	31	Attention-Deficit Demon
-meat	32	Coffee Pixie
+meat	22	Cat Burglar
+meat	23	Blavious Kloop
+meat	24	Adventurous Spelunker
+meat	25	Hippo Ballerina
+meat	26	Dancing Frog
+meat	27	Cheshire Bat
+meat	28	Piano Cat
+meat	29	Psychedelic Bear
+meat	30	Casagnova Gnome
+meat	31	Jitterbug
+meat	32	Attention-Deficit Demon
+meat	33	Coffee Pixie
 # Wowee
-meat	33	Hand Turkey
+meat	34	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	34	He-Boulder
+meat	35	He-Boulder
 # Marginally special leprechauns
-meat	35	Knob Goblin Organ Grinder
+meat	36	Knob Goblin Organ Grinder
 #Mutant Cactus Bud	grimdark:2
-meat	36	Urchin Urchin
+meat	37	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	37	Cornbeefadon
+meat	38	Cornbeefadon
 # The original
-meat	38	Leprechaun
+meat	39	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)

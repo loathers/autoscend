@@ -8,7 +8,7 @@ Bloovian Groose	prop:_grooseDrops<3
 Unconscious Collective	prop:_dreamJarDrops<3
 Grim Brother	prop:_grimFairyTaleDrops<3
 # Wanna build up heists
-Cat Burglar
+Cat Burglar	prop:_catBurglarCharge<30
 # Wanna get booze ingredients
 Robortender
 # Might as well get tales of spelunking
@@ -32,6 +32,7 @@ Nervous Tick
 Cymbal-Playing Monkey
 Cheshire Bat
 # Fairychauns
+Cat Burglar
 Blavious Kloop
 Adventurous Spelunker
 Hippo Ballerina

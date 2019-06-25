@@ -34,7 +34,7 @@ Pair of Stomping Boots	prop:_bootStomps<7
 # And some BACON
 Intergnat	item:BACON<350
 # And some heist charges
-Cat Burglar
+Cat Burglar	prop:_catBurglarCharge<30
 # And some more hugpockets
 XO Skeleton	prop:_xoHugsUsed<11
 # And some adventures
@@ -58,6 +58,7 @@ XO Skeleton
 Garbage Fire
 Dandy Lion
 # Fairychauns
+Cat Burglar
 Angry Jung Man
 Adventurous Spelunker
 Blavious Kloop
