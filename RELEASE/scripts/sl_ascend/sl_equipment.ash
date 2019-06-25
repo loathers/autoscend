@@ -7,8 +7,80 @@ void makeStartingSmiths();
 void equipBaselineGear();
 int equipmentAmount(item equipment);
 
+boolean useMaximizeToEquip()
+{
+	//return get_property("sl_maximize_baseline") != "";
+	return false;
+}
+
+void resetMaximize()
+{
+	string res = get_property("sl_maximize_baseline");
+	res += ",-equip hewn moon-rune spoon"; // Breaks mafia
+	res += ",-equip garbage shirt"; // Don't want this to come up automatically
+	res += ",-equip broken champagne bottle"; // Don't want to use this automatically
+	set_property("sl_maximize_current", res);
+}
+
+void addToMaximize(string add)
+{
+	string res = get_property("sl_maximize_current");
+	boolean addHasComma = add.substring(0, 1) == ",";
+	if(res != "" && !addHasComma)
+	{
+		res += ",";
+	}
+	else if(res == "" && addHasComma)
+	{
+		// maximizer fails on a leading comma
+		add = add.substring(1);
+	}
+	res += add;
+	set_property("sl_maximize_current", res);
+}
+
+void removeFromMaximize(string rem)
+{
+	string res = get_property("sl_maximize_current");
+	res = res.replace_string(rem, "");
+	// let's be safe here
+	res = res.replace_string(",,", ",");
+	if(res.ends_with(","))
+	{
+		res = res.substring(0, res.length() - 1);
+	}
+	if(res.starts_with(","))
+	{
+		res = res.substring(1);
+	}
+	set_property("sl_maximize_current", res);
+}
+
+boolean simMaximizeWith(string add)
+{
+	addToMaximize(add);
+	boolean res = slMaximize(get_property("sl_maximize_current"), true);
+	removeFromMaximize(add);
+	return res;
+}
+
+void equipMaximizedGear()
+{
+	if(!useMaximizeToEquip())
+	{
+		return;
+	}
+
+	slMaximize(get_property("sl_maximize_current"), false);
+}
+
 void equipBaselineGear()
 {
+	if(useMaximizeToEquip())
+	{
+		return;
+	}
+
 	string [string,int,string] equipment_text;
 	if(!file_to_map("sl_ascend_equipment.txt", equipment_text))
 		print("Could not load sl_ascend_equipment.txt. This is bad!", "red");
