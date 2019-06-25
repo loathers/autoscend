@@ -5337,6 +5337,11 @@ boolean sl_check_conditions(string conds)
 			case "day":
 				int day = to_int(condition_data);
 				return my_daycount() == day;
+			case "ML":
+				matcher m4 = create_matcher("([=<>]+)(.+)", condition_data);
+				if(!m4.find())
+					abort('"' + condition_data + '" is not a proper ML condition format!');
+				return compare_numbers(monster_level_adjustment(), to_int(m4.group(2)), m4.group(1));
 			default:
 				abort('Invalid condition type "' + condition_type + '" found!');
 		}
