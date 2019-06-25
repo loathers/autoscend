@@ -12646,32 +12646,26 @@ void L9_chasmMaximizeForNoncombat()
 	string mystry = "100mysticality,100spell damage,1000 spell damage percent";
 	string moxtry = "100moxie,1000sleaze resistance";
 	simMaximizeWith(mustry);
-	float musmus = numeric_modifier("Generated:_spec", "Muscle");
-	print("Best muscle we can get is " + musmus);
+	float musmus = numeric_modifier("Generated:_spec", "Buffed Muscle");
 	float musflat = numeric_modifier("Generated:_spec", "Weapon Damage");
-	print("Best flat weapon damage we can get is " + musflat);
 	float musperc = numeric_modifier("Generated:_spec", "Weapon Damage Percent");
-	print("Best percent weapon damage we can get is " + musperc);
 	int musscore = floor(square_root((musmus + musflat)/15*(1+musperc/100)));
-	print("Muscle score: " + musscore);
+	print("Muscle score: " + musscore, "blue");
 	simMaximizeWith(mystry);
-	float mysmys = numeric_modifier("Generated:_spec", "Mysticality");
-	print("Best myst we can get is " + mysmys);
+	float mysmys = numeric_modifier("Generated:_spec", "Buffed Mysticality");
 	float mysflat = numeric_modifier("Generated:_spec", "Spell Damage");
-	print("Best flat spell damage we can get is " + mysflat);
 	float mysperc = numeric_modifier("Generated:_spec", "Spell Damage Percent");
-	print("Best spell damage percent we can get is " + mysperc);
 	int mysscore = floor(square_root((mysmys + mysflat)/15*(1+mysperc/100)));
-	print("Mysticality score: " + mysscore);
+	print("Mysticality score: " + mysscore, "blue");
 	if(mysscore > musscore)
 	{
 		best = "mys";
 	}
 	simMaximizeWith(moxtry);
-	float moxmox = numeric_modifier("Generated:_spec", "Moxie");
+	float moxmox = numeric_modifier("Generated:_spec", "Buffed Moxie");
 	float moxres = numeric_modifier("Generated:_spec", "Sleaze Resistance");
 	int moxscore = floor(square_root(moxmox/30*(1+moxres*0.69)));
-	print("Moxie score: " + moxscore);
+	print("Moxie score: " + moxscore, "blue");
 	if(moxscore > mysscore && moxscore > musscore)
 	{
 		best = "mox";
