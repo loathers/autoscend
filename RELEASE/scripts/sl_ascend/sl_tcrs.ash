@@ -32,7 +32,7 @@ boolean tcrs_consumption()
 			visit_url("cafe.php?pwd="+my_hash()+"&phash="+my_hash()+"&cafeid=2&whichitem=-2&action=CONSUME!");
 			handleTracker("Scrawny Stout", "sl_drunken");
 		}
-		if((inebriety_left() == 3) && (my_meat() >= npc_price($item[used beer])))
+		if((my_adventures() <= 1) && (inebriety_left() == 3) && (my_meat() >= npc_price($item[used beer])))
 		{
 			buyUpTo(1, $item[used beer]);
 			slDrink(1, $item[used beer]);
