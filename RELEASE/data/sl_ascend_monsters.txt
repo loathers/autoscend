@@ -8,7 +8,7 @@ banish	2	Animated Possessions
 banish	3	Animated Rustic Nightstand
 banish	4	Bubblemint Twins
 banish	5	Bullet Bill
-banish	6	Burly Sidekick	item:Mohawk Wig
+banish	6	Burly Sidekick	item:Mohawk Wig>0
 banish	7	Chatty Pirate
 banish	8	Clingy Pirate (Female)
 banish	9	Clingy Pirate (Male)
@@ -20,7 +20,7 @@ banish	14	Evil Olive
 banish	15	Flock Of Stab-Bats
 banish	16	Gluttonous Ghuol	class:Vampyre
 banish	17	Knob Goblin Harem Guard
-banish	18	Knob Goblin Madam	item:Knob Goblin Perfume
+banish	18	Knob Goblin Madam	item:Knob Goblin Perfume>0
 banish	19	Mad Wino
 banish	20	Mismatched Twins
 banish	21	Natural Spider
@@ -50,7 +50,7 @@ banish	43	Upgraded Ram
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;sgeea:3;!effect:Thrice-Cursed
 sniff	1	Gurgle the Turgle
 sniff	2	Writing Desk	!prop:writingDesksDefeated=5
-sniff	3	Smoke Monster	item:Pack of Smokes
+sniff	3	Smoke Monster	item:Pack of Smokes>0
 sniff	4	cabinet of Dr. Limpieza
 sniff	5	Dairy Goat	loc:The Goatlet
 sniff	6	Morbid Skull
@@ -67,9 +67,9 @@ sniff	16	Possessed Wine Rack
 sniff	17	Blue Oyster cultist
 
 # Gotta get that wig
-yellowray	0	Burly Sidekick	!item:Mohawk Wig
+yellowray	0	Burly Sidekick	item:Mohawk Wig<1
 # We also want an amulet, but not badly enough to yellow ray it unless we're backtracking to get it
-yellowray	1	Quiet Healer	!item:amulet of extreme plot significance;prop:sl_airship=finished
+yellowray	1	Quiet Healer	item:amulet of extreme plot significance<1;prop:sl_airship=finished
 # Dressing up as a harem girl because we have no shame
 yellowray	2	Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise
 # We don't want to yellow ray a mountain man if we already turned in ore

@@ -5247,10 +5247,13 @@ boolean sl_check_conditions(string conds)
 			// You must have at least one of this item
 			// As a precaution, sl_ascend aborts if to_item returns $item[none]
 			case "item":
-				item req_item = to_item(condition_data);
+				matcher m5 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
+				if(!m5.find())
+					abort('"' + condition_data + '" is not a proper item condition format!');
+				item req_item = to_item(m5.group(1));
 				if(req_item == $item[none])
-					abort('"' + condition_data + '" does not properly convert to an item!');
-				return item_amount(req_item) + equipped_amount(req_item) > 0;
+					abort('"' + m5.group(1) + '" does not properly convert to an item!');
+				return compare_numbers(item_amount(req_item), m5.group(3).to_int(), m5.group(2));
 			// data: The outfit name as used by have_outfit
 			// You must have the given outfit
 			// No safety checking here possible, at least not conveniently

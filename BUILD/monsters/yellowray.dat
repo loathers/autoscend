@@ -1,7 +1,7 @@
 # Gotta get that wig
-Burly Sidekick	!item:Mohawk Wig
+Burly Sidekick	item:Mohawk Wig<1
 # We also want an amulet, but not badly enough to yellow ray it unless we're backtracking to get it
-Quiet Healer	!item:amulet of extreme plot significance;prop:sl_airship=finished
+Quiet Healer	item:amulet of extreme plot significance<1;prop:sl_airship=finished
 # Dressing up as a harem girl because we have no shame
 Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise
 # We don't want to yellow ray a mountain man if we already turned in ore
