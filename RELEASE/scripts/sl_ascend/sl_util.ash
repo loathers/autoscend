@@ -1622,7 +1622,7 @@ boolean adjustForYellowRay(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
-		return equip($slot[weapon], $item[Fourth of May cosplay saber]);
+		return slEquip($slot[weapon], $item[Fourth of May cosplay saber]);
 	}
 	return true;
 }
@@ -2814,24 +2814,36 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		}
 	}
 
+	int equipDiff = 0;
+
 	if(doEquips)
 	{
-		if(have_familiar($familiar[Grim Brother]) && possessEquipment($item[Buddy Bjorn]))
+		if(!useMaximizeToEquip())
 		{
-			if(equipped_item($slot[back]) != $item[Buddy Bjorn])
+			removeNonCombat();
+			if(have_familiar($familiar[Grim Brother]) && possessEquipment($item[Buddy Bjorn]))
 			{
-				equip($slot[Back], $item[Buddy Bjorn]);
+				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
+				{
+					slEquip($slot[Back], $item[Buddy Bjorn]);
+				}
+				handleBjornify($familiar[Grim Brother]);
 			}
-			handleBjornify($familiar[Grim Brother]);
+			if(have_familiar($familiar[Jumpsuited Hound Dog]))
+			{
+				handleFamiliar($familiar[Jumpsuited Hound Dog]);
+			}
 		}
-		removeNonCombat();
-		if(have_familiar($familiar[Jumpsuited Hound Dog]))
+		else
 		{
-			handleFamiliar($familiar[Jumpsuited Hound Dog]);
+			addToMaximize("50combat " + to_string(50 * amt) + "max");
+			simMaximizeWith("");
+			equipDiff = to_int(numeric_modifier("Generated:_spec", "Combat Rate") -
+				numeric_modifier("Combat Rate"));
 		}
 	}
 
-	if((numeric_modifier("Combat Rate").to_int() < amt)
+	if((numeric_modifier("Combat Rate").to_int() + equipDiff < amt)
 	   && (get_property("_horsery") == "dark horse"))
 	{
 		getHorse("return");
@@ -2841,12 +2853,13 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		horseMaintain();
 	}
 
-	if(numeric_modifier("Combat Rate").to_int() < amt)
+	if(numeric_modifier("Combat Rate").to_int() + equipDiff < amt)
 	{
 		asdonBuff($effect[Driving Obnoxiously]);
 	}
 	return true;
 }
+
 boolean providePlusNonCombat(int amt, boolean doEquips)
 {
 	if(amt == 0)
@@ -2893,25 +2906,37 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		}
 	}
 
+	int equipDiff = 0;
+
 	if(doEquips)
 	{
-		if(have_familiar($familiar[Grimstone Golem]) && possessEquipment($item[Buddy Bjorn]))
+		if(!useMaximizeToEquip())
 		{
-			if(equipped_item($slot[back]) != $item[Buddy Bjorn])
+			removeCombat();
+			if(have_familiar($familiar[Grimstone Golem]) && possessEquipment($item[Buddy Bjorn]))
 			{
-				equip($slot[Back], $item[Buddy Bjorn]);
+				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
+				{
+					slEquip($slot[Back], $item[Buddy Bjorn]);
+				}
+				handleBjornify($familiar[Grimstone Golem]);
 			}
-			handleBjornify($familiar[Grimstone Golem]);
 		}
-		removeCombat();
+		else
+		{
+			addToMaximize("-50combat " + to_string(-50 * amt) + "max");
+			simMaximizeWith("");
+			equipDiff = to_int(numeric_modifier("Generated:_spec", "Combat Rate") -
+				numeric_modifier("Combat Rate"));
+		}
 	}
 
-	if((numeric_modifier("Combat Rate").to_int() > amt))
+	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
 	{
 		getHorse("noncombat");
 	}
 
-	if(numeric_modifier("Combat Rate").to_int() > amt)
+	if(numeric_modifier("Combat Rate").to_int() + equipDiff > amt)
 	{
 		asdonBuff($effect[Driving Stealthily]);
 	}
@@ -3271,7 +3296,7 @@ boolean forceEquip(slot sl, item it)
 	{
 		return true;
 	}
-	equip(sl, it);
+	slEquip(sl, it);
 	return true;
 }
 

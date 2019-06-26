@@ -1147,7 +1147,7 @@ boolean tophatMaker()
 	print("Mark Steam-Hat upgraded!", "blue");
 	if(reEquip != $item[none])
 	{
-		equip($slot[hat], reEquip);
+		slEquip($slot[hat], reEquip);
 	}
 	return true;
 }
@@ -1282,15 +1282,15 @@ boolean doThemtharHills()
 
 	if(possessEquipment($item[Half a Purse]))
 	{
-		equip($item[Half a Purse]);
+		slEquip($item[Half a Purse]);
 	}
 	if((sl_my_path() == "Heavy Rains") && (item_amount($item[Thor\'s Pliers]) > 0))
 	{
-		equip($item[Thor\'s Pliers]);
+		slEquip($item[Thor\'s Pliers]);
 	}
 	if(possessEquipment($item[Miracle Whip]))
 	{
-		equip($item[Miracle Whip]);
+		slEquip($item[Miracle Whip]);
 	}
 
 	shrugAT($effect[Polka of Plenty]);
@@ -1363,7 +1363,7 @@ boolean doThemtharHills()
 		use_familiar($familiar[Trick-or-Treating Tot]);
 		if(equipped_item($slot[familiar]) != $item[Li\'l Pirate Costume])
 		{
-			equip($item[Li\'l Pirate Costume]);
+			slEquip($item[Li\'l Pirate Costume]);
 		}
 		handleFamiliar($familiar[Trick-or-Treating Tot]);
 	}
@@ -3602,7 +3602,7 @@ boolean L11_aridDesert()
 		print("Searching for the pyramid", "blue");
 		if((sl_my_path() == "Heavy Rains") && (item_amount($item[Thor\'s Pliers]) > 0))
 		{
-			equip($item[Thor\'s Pliers]);
+			slEquip($item[Thor\'s Pliers]);
 		}
 		if(sl_have_familiar($familiar[Artistic Goth Kid]))
 		{
@@ -3666,7 +3666,7 @@ boolean L11_aridDesert()
 
 		if((desertBuff != $item[none]) && can_equip(desertBuff))
 		{
-			equip(desertBuff);
+			slEquip(desertBuff);
 		}
 		handleFamiliar("initSuggest");
 		set_property("choiceAdventure805", 1);
@@ -3917,7 +3917,7 @@ boolean L11_palindome()
 
 	if(equipped_item($slot[acc3]) != $item[Talisman O\' Namsilat])
 	{
-		equip($slot[acc3], $item[Talisman O\' Namsilat]);
+		slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
 	int total = 0;
@@ -4064,7 +4064,7 @@ boolean L11_palindome()
 			print("No mega gem for us. Well, no raisin to go further here....", "red");
 			return false;
 		}
-		equip($slot[acc2], $item[Mega Gem]);
+		slEquip($slot[acc2], $item[Mega Gem]);
 		int palinChoice = random(3) + 1;
 		set_property("choiceAdventure131", palinChoice);
 
@@ -4196,7 +4196,7 @@ boolean L13_towerNSFinal()
 	}
 	if((item_amount($item[Ouija Board\, Ouija Board]) > 0) && (my_class() == $class[Turtle Tamer]) && can_equip($item[Ouija Board\, Ouija Board]))
 	{
-		equip($item[Ouija Board\, Ouija Board]);
+		slEquip($item[Ouija Board\, Ouija Board]);
 	}
 
 	if((pulls_remaining() == -1) || (pulls_remaining() > 0))
@@ -4209,7 +4209,7 @@ boolean L13_towerNSFinal()
 
 	if(possessEquipment($item[Oscus\'s Garbage Can Lid]) && can_equip($item[Oscus\'s Garbage Can Lid]))
 	{
-		equip($slot[Off-Hand], $item[Oscus\'s Garbage Can Lid]);
+		slEquip($slot[Off-Hand], $item[Oscus\'s Garbage Can Lid]);
 	}
 
 	if(get_property("sl_beta_test").to_boolean())
@@ -4231,23 +4231,23 @@ boolean L13_towerNSFinal()
 
 	if(item_amount($item[Beer Helmet]) > 0)
 	{
-		equip($item[Beer Helmet]);
+		slEquip($item[Beer Helmet]);
 	}
 	if(item_amount($item[Misty Cloak]) > 0)
 	{
-		equip($item[Misty Cloak]);
+		slEquip($item[Misty Cloak]);
 	}
 	if(item_amount($item[Attorney\'s Badge]) > 0)
 	{
-		equip($slot[acc2], $item[Attorney\'s Badge]);
+		slEquip($slot[acc2], $item[Attorney\'s Badge]);
 	}
 	if(item_amount($item[gumshoes]) > 0)
 	{
-		equip($slot[acc1], $item[gumshoes]);
+		slEquip($slot[acc1], $item[gumshoes]);
 	}
 	if(item_amount($item[World\'s Best Adventurer Sash]) > 0)
 	{
-		equip($slot[acc3], $item[World\'s Best Adventurer Sash]);
+		slEquip($slot[acc3], $item[World\'s Best Adventurer Sash]);
 	}
 
 
@@ -4356,11 +4356,11 @@ boolean L13_towerNSTower()
 		int sources = 0;
 		if(item_amount($item[astral shirt]) > 0 && can_equip($item[astral shirt]))
 		{
-			equip($item[astral shirt]);
+			slEquip($item[astral shirt]);
 		}
 		else if(item_amount($item[Unfortunato's foolscap]) > 0)
 		{
-			equip($item[Unfortunato's foolscap]);
+			slEquip($item[Unfortunato's foolscap]);
 		}
 		else if(item_amount($item[cigar box turtle]) > 0)
 		{
@@ -4377,7 +4377,7 @@ boolean L13_towerNSTower()
 
 		if((my_class() == $class[Turtle Tamer]) && (item_amount($item[Shocked Shell]) > 0))
 		{
-			equip($slot[shirt], $item[Shocked Shell]);
+			slEquip($slot[shirt], $item[Shocked Shell]);
 		}
 		if(have_skill($skill[Belch the Rainbow]))
 		{
@@ -4410,7 +4410,7 @@ boolean L13_towerNSTower()
 			}
 			if((item_amount($item[warbear drone codes]) > 0) || (equipped_item($slot[familiar]) == $item[warbear drone codes]))
 			{
-				equip($item[warbear drone codes]);
+				slEquip($item[warbear drone codes]);
 				sources = sources + 2;
 			}
 		}
@@ -4426,12 +4426,8 @@ boolean L13_towerNSTower()
 		}
 		if(item_amount($item[hippy protest button]) > 0)
 		{
-			equip($slot[acc1], $item[hippy protest button]);
+			slEquip($slot[acc1], $item[hippy protest button]);
 			sources = sources + 1;
-		}
-		else if(!have_equipped($item[Pirate Fledges]) && (item_amount($item[Pirate Fledges]) > 0))
-		{
-			equip($slot[acc1], $item[Pirate Fledges]);
 		}
 		if(item_amount($item[glob of spoiled mayo]) > 0)
 		{
@@ -4440,12 +4436,12 @@ boolean L13_towerNSTower()
 		}
 		if((item_amount($item[smirking shrunken head]) > 0) && can_equip($item[smirking shrunken head]))
 		{
-			equip($item[smirking shrunken head]);
+			slEquip($item[smirking shrunken head]);
 			sources = sources + 1;
 		}
 		else if((item_amount($item[hot plate]) > 0) && can_equip($item[hot plate]))
 		{
-			equip($item[hot plate]);
+			slEquip($item[hot plate]);
 			sources = sources + 1;
 		}
 		if(have_skill($skill[Scarysauce]))
@@ -4466,23 +4462,23 @@ boolean L13_towerNSTower()
 		handleBjornify($familiar[Hobo Monkey]);
 		if(equipped_item($slot[acc2]) != $item[world\'s best adventurer sash])
 		{
-			equip($slot[acc2], $item[world\'s best adventurer sash]);
+			slEquip($slot[acc2], $item[world\'s best adventurer sash]);
 		}
 		if(item_amount($item[Groll Doll]) > 0)
 		{
-			equip($slot[acc3], $item[Groll Doll]);
+			slEquip($slot[acc3], $item[Groll Doll]);
 		}
 		if(item_amount($item[old school calculator watch]) > 0)
 		{
-			equip($slot[acc3], $item[old school calculator watch]);
+			slEquip($slot[acc3], $item[old school calculator watch]);
 		}
 		if(item_amount($item[Bottle Opener Belt Buckle]) > 0)
 		{
-			equip($slot[acc3], $item[Bottle Opener Belt Buckle]);
+			slEquip($slot[acc3], $item[Bottle Opener Belt Buckle]);
 		}
 		if((equipped_item($slot[acc3]) != $item[acid-squirting flower]) && (item_amount($item[acid-squirting flower]) > 0))
 		{
-			equip($slot[acc3], $item[acid-squirting flower]);
+			slEquip($slot[acc3], $item[acid-squirting flower]);
 		}
 		if(have_skill($skill[Frigidalmatian]) && (my_mp() > 300))
 		{
@@ -4529,7 +4525,7 @@ boolean L13_towerNSTower()
 				handleFamiliar("item");
 				if(item_amount(familiarEquip) > 0)
 				{
-					equip(familiarEquip);
+					slEquip(familiarEquip);
 				}
 			}
 		}
@@ -4557,11 +4553,11 @@ boolean L13_towerNSTower()
 		}
 		if(item_amount($item[Silver Cow Creamer]) > 0)
 		{
-			equip($item[Silver Cow Creamer]);
+			slEquip($item[Silver Cow Creamer]);
 		}
 		if(item_amount($item[Sneaky Pete\'s Leather Jacket]) > 0)
 		{
-			equip($item[Sneaky Pete\'s Leather Jacket]);
+			slEquip($item[Sneaky Pete\'s Leather Jacket]);
 		}
 		if(is100FamiliarRun())
 		{
@@ -4574,7 +4570,7 @@ boolean L13_towerNSTower()
 		}
 		if((my_class() == $class[Seal Clubber]) && (item_amount($item[Meat Tenderizer is Murder]) > 0))
 		{
-			equip($item[Meat Tenderizer is Murder]);
+			slEquip($item[Meat Tenderizer is Murder]);
 		}
 
 		if(my_mp() >= 20)
@@ -4616,17 +4612,12 @@ boolean L13_towerNSTower()
 			{
 				slMaximize("myst -equip snow suit", 1500, 0, false);
 			}
-			if(equipped_item($slot[acc1]) == $item[hand in glove])
+			foreach s in $slots[acc1, acc2, acc3]
 			{
-				equip($slot[acc1], $item[Pirate Fledges]);
-			}
-			if(equipped_item($slot[acc2]) == $item[hand in glove])
-			{
-				equip($slot[acc2], $item[Pirate Fledges]);
-			}
-			if(equipped_item($slot[acc3]) == $item[hand in glove])
-			{
-				equip($slot[acc3], $item[Pirate Fledges]);
+				if(equipped_item(s) == $item[hand in glove])
+				{
+					equip(s, $item[none]);
+				}
 			}
 
 			useCocoon();
@@ -5537,7 +5528,7 @@ boolean LX_attemptPowerLevel()
 		{
 			if((monster_level_adjustment() < 60) && (item_amount($item[Dress Pants]) > 0) && (get_property("oilPeakProgress").to_float() > 0.0))
 			{
-				equip($slot[Pants], $item[Dress Pants]);
+				slEquip($slot[Pants], $item[Dress Pants]);
 			}
 			slAdv($location[Oil Peak]);
 			return true;
@@ -5828,23 +5819,23 @@ boolean L11_hiddenCity()
 
 			if(item_amount($item[bloodied surgical dungarees]) > 0)
 			{
-				equip($item[bloodied surgical dungarees]);
+				slEquip($item[bloodied surgical dungarees]);
 			}
 			if((item_amount($item[half-size scalpel]) > 0) && can_equip($item[half-size scalpel]))
 			{
-				equip($item[half-size scalpel]);
+				slEquip($item[half-size scalpel]);
 			}
 			if(item_amount($item[surgical apron]) > 0)
 			{
-				equip($item[surgical apron]);
+				slEquip($item[surgical apron]);
 			}
 			if(item_amount($item[head mirror]) > 0)
 			{
-				equip($slot[acc3], $item[head mirror]);
+				slEquip($slot[acc3], $item[head mirror]);
 			}
 			if(item_amount($item[surgical mask]) > 0)
 			{
-				equip($slot[acc2], $item[surgical mask]);
+				slEquip($slot[acc2], $item[surgical mask]);
 			}
 			print("Hidden Hospital Progress: " + get_property("hiddenHospitalProgress"), "blue");
 			if((my_mp() > 60) || considerGrimstoneGolem(true))
@@ -6024,7 +6015,7 @@ boolean L11_hiddenCityZones()
 		}
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			equip($item[Antique Machete]);
+			slEquip($item[Antique Machete]);
 		}
 		# Add provision for Golden Monkey, or even more so, "Do we need spleen item"
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
@@ -6061,7 +6052,7 @@ boolean L11_hiddenCityZones()
 		}
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			equip($item[Antique Machete]);
+			slEquip($item[Antique Machete]);
 		}
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -6097,7 +6088,7 @@ boolean L11_hiddenCityZones()
 		}
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			equip($item[Antique Machete]);
+			slEquip($item[Antique Machete]);
 		}
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
@@ -6134,7 +6125,7 @@ boolean L11_hiddenCityZones()
 		}
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			equip($item[Antique Machete]);
+			slEquip($item[Antique Machete]);
 		}
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
@@ -6166,7 +6157,7 @@ boolean L11_hiddenCityZones()
 	{
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			equip($item[Antique Machete]);
+			slEquip($item[Antique Machete]);
 		}
 
 		handleFamiliar($familiar[Fist Turkey]);
@@ -6417,7 +6408,7 @@ boolean LX_spookyBedroomCombat()
 
 	if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
 	{
-		equip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
+		slEquip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
 	}
 
 	slAdv(1, $location[The Haunted Bedroom]);
@@ -6655,7 +6646,7 @@ boolean L11_mauriceSpookyraven()
 
 		if(item_amount($item[Numberwang]) > 0)
 		{
-			equip($slot[acc3], $item[numberwang]);
+			slEquip($slot[acc3], $item[numberwang]);
 		}
 
 		#Cellar, laundry room Lights out ignore
@@ -6830,14 +6821,14 @@ boolean L11_mauriceSpookyraven()
 			{
 				equip($slot[weapon], $item[none]);
 			}
-			equip($item[unstable fulminate]);
+			slEquip($item[unstable fulminate]);
 		}
 		print("Now we mix and heat it up.", "blue");
 
 		if((sl_my_path() == "Picky") && (item_amount($item[gumshoes]) > 0))
 		{
 			sl_change_mcd(0);
-			equip($slot[acc2], $item[gumshoes]);
+			slEquip($slot[acc2], $item[gumshoes]);
 		}
 
 		if(equipped_item($slot[Off-hand]) != $item[Unstable Fulminate])
@@ -7240,14 +7231,17 @@ boolean L11_defeatEd()
 	}
 	if(baseML > 150)
 	{
-		if(equipped_item($slot[acc2]) == $item[Hand In Glove])
+		foreach s in $slots[acc1, acc2, acc3]
 		{
-			equip($slot[acc2], $item[pirate fledges]);
+			if(equipped_item(s) == $item[Hand In Glove])
+			{
+				equip(s, $item[none]);
+			}
 		}
 		uneffect($effect[Ur-kel\'s Aria of Annoyance]);
 		if(possessEquipment($item[Beer Helmet]))
 		{
-			equip($item[beer helmet]);
+			slEquip($item[beer helmet]);
 		}
 	}
 
@@ -7427,17 +7421,24 @@ boolean L12_gremlins()
 
 	#Put a different shield in here.
 	print("Doing them gremlins", "blue");
-	if(item_amount($item[Ouija Board\, Ouija Board]) > 0)
+	if(useMaximizeToEquip())
 	{
-		equip($item[Ouija Board\, Ouija Board]);
+		addToMaximize("20dr,1da 1000max,3hp");
 	}
-	if(item_amount($item[Reinforced Beaded Headband]) > 0)
+	else
 	{
-		equip($item[Reinforced Beaded Headband]);
-	}
-	if (item_amount($item[astral shield]) > 0)
-	{
-		equip($item[astral shield]);
+		if(item_amount($item[Ouija Board\, Ouija Board]) > 0)
+		{
+			equip($item[Ouija Board\, Ouija Board]);
+		}
+		if(item_amount($item[Reinforced Beaded Headband]) > 0)
+		{
+			equip($item[Reinforced Beaded Headband]);
+		}
+		if (item_amount($item[astral shield]) > 0)
+		{
+			equip($item[astral shield]);
+		}
 	}
 	useCocoon();
 	if(!bat_wantHowl($location[over where the old tires are]))
@@ -12829,7 +12830,7 @@ boolean L9_chasmBuild()
 		{
 			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 			{
-				equip(it);
+				slEquip(it);
 			}
 		}
 
@@ -12940,7 +12941,7 @@ boolean L11_redZeppelin()
 	{
 		if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 		{
-			equip(it);
+			slEquip(it);
 		}
 	}
 
@@ -12953,15 +12954,21 @@ boolean L11_redZeppelin()
 		backupSetting("choiceAdventure866", 2);
 	}
 
-	slMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
+	if(useMaximizeToEquip())
+	{
+		addToMaximize("20sleaze damage,20sleaze spell damage");
+	}
+	else
+	{
+		slMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
+	}
 	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
 	{
-		if(possessEquipment(it) && !have_equipped(it) && can_equip(it) &&
-		   (item_amount(it) > 0) &&
-		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze dmg") < 5) &&
-		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell dmg") < 5))
+		if(possessEquipment(it) && sl_can_equip(it) &&
+		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze damage") < 5) &&
+		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell damage") < 5))
 		{
-			equip(it);
+			slEquip(it);
 		}
 	}
 
@@ -13011,7 +13018,7 @@ boolean L11_redZeppelin()
 				{
 					if((item_amount(it) > 0) && can_equip(it) && !have_equipped(it))
 					{
-						equip(it);
+						slEquip(it);
 					}
 				}
 				set_property("choiceAdventure866", 1);
@@ -13189,7 +13196,7 @@ boolean L11_shenCopperhead()
 			{
 				if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 				{
-					equip(it);
+					slEquip(it);
 				}
 			}
 		}
@@ -13427,7 +13434,7 @@ boolean L11_blackMarket()
 
 	if((item_amount($item[Blackberry Galoshes]) > 0) && !have_equipped($item[Blackberry Galoshes]) && can_equip($item[Blackberry Galoshes]))
 	{
-		equip($slot[acc3], $item[Blackberry Galoshes]);
+		slEquip($slot[acc3], $item[Blackberry Galoshes]);
 	}
 
 	if(considerGrimstoneGolem(true))
@@ -13816,7 +13823,7 @@ boolean L8_trapperYeti()
 		{
 			if(possessEquipment($item[Carpe]))
 			{
-				equip($slot[Back], $item[Carpe]);
+				slEquip($slot[Back], $item[Carpe]);
 			}
 		}
 
@@ -13878,7 +13885,7 @@ boolean sl_tavern()
 
 		if(item_amount($item[17-Ball]) > 0)
 		{
-			equip($slot[off-hand], $item[17-Ball]);
+			slEquip($slot[off-hand], $item[17-Ball]);
 		}
 		if(possessEquipment($item[Kremlin\'s Greatest Briefcase]))
 		{
@@ -13903,7 +13910,7 @@ boolean sl_tavern()
 			mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
 			if(contains_text(mod, "Hot Damage"))
 			{
-				equip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
+				slEquip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
 				if(numeric_modifier("Hot Damage") < 20.0)
 				{
 					buffMaintain($effect[Pyromania], 20, 1, 1);

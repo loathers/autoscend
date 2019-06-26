@@ -229,7 +229,7 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to be retro but lacking the Continuum Transfunctioner.");
 		}
-		equip($slot[acc3], $item[Continuum Transfunctioner]);
+		slEquip($slot[acc3], $item[Continuum Transfunctioner]);
 	}
 
 	if((place == $location[Inside The Palindome]) && !have_equipped($item[Talisman O\' Namsilat]) && (my_turncount() != 0))
@@ -238,14 +238,14 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to go to The Palindome but don't have the Namsilat");
 		}
-		equip($slot[acc3], $item[Talisman O\' Namsilat]);
+		slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
 	if((place == $location[The Black Forest]) && !have_equipped($item[Blackberry Galoshes]))
 	{
 		if(possessEquipment($item[Blackberry Galoshes]) && can_equip($item[Blackberry Galoshes]))
 		{
-			equip($slot[acc3], $item[Blackberry Galoshes]);
+			slEquip($slot[acc3], $item[Blackberry Galoshes]);
 		}
 	}
 
