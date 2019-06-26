@@ -2836,7 +2836,7 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		}
 		else
 		{
-			addToMaximize("50combat " + to_string(50 * amt) + "max");
+			addToMaximize("50combat " + to_string(amt) + "max");
 			simMaximizeWith("");
 			equipDiff = to_int(numeric_modifier("Generated:_spec", "Combat Rate") -
 				numeric_modifier("Combat Rate"));
@@ -2924,7 +2924,7 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		}
 		else
 		{
-			addToMaximize("-50combat " + to_string(-50 * amt) + "max");
+			addToMaximize("-50combat " + to_string(-1 * amt) + "max");
 			simMaximizeWith("");
 			equipDiff = to_int(numeric_modifier("Generated:_spec", "Combat Rate") -
 				numeric_modifier("Combat Rate"));
