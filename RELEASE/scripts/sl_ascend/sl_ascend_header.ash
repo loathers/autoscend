@@ -524,6 +524,18 @@ boolean elementalPlanes_takeJob(element ele);				//Defined in sl_ascend/sl_eleme
 int elemental_resist(element goal);							//Defined in sl_ascend/sl_util.ash
 float elemental_resist_value(int resistance);				//Defined in sl_ascend/sl_util.ash
 void ensureSealClubs();										//Defined in sl_ascend/sl_equipment.ash
+string getMaximizeSlotPref(slot s); //Defined in sl_ascend/sl_equipment.ash
+item getTentativeMaximizeEquip(slot s); //Defined in sl_ascend/sl_equipment.ash
+boolean slEquip(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
+boolean slEquip(item it); //Defined in sl_ascend/sl_equipment.ash
+boolean tryAddItemToMaximize(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
+boolean useMaximizeToEquip(); //Defined in sl_ascend/sl_equipment.ash
+void resetMaximize(); //Defined in sl_ascend/sl_equipment.ash
+void finalizeMaximize(); //Defined in sl_ascend/sl_equipment.ash
+void addToMaximize(string add); //Defined in sl_ascend/sl_equipment.ash
+void removeFromMaximize(string rem); //Defined in sl_ascend/sl_equipment.ash
+boolean simMaximizeWith(string add); //Defined in sl_ascend/sl_equipment.ash
+void equipMaximizedGear(); //Defined in sl_ascend/sl_equipment.ash
 void equipBaseline();										//Defined in sl_ascend/sl_equipment.ash
 void equipRollover();										//Defined in sl_ascend/sl_equipment.ash
 boolean eudora_available();									//Defined in sl_ascend/sl_eudora.ash

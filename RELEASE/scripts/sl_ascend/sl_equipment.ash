@@ -7,10 +7,82 @@ void makeStartingSmiths();
 void equipBaselineGear();
 int equipmentAmount(item equipment);
 
+string getMaximizeSlotPref(slot s)
+{
+	return "_sl_maximize_equip_" + s.to_string();
+}
+
+item getTentativeMaximizeEquip(slot s)
+{
+	return get_property(getMaximizeSlotPref(s)).to_item();
+}
+
+boolean slEquip(slot s, item it)
+{
+	if(useMaximizeToEquip())
+	{
+		return tryAddItemToMaximize(s, it);
+	}
+	else
+	{
+		return equip(s, it);
+	}
+}
+
+boolean slEquip(item it)
+{
+	if(useMaximizeToEquip())
+	{
+		return tryAddItemToMaximize(it.to_slot(), it);
+	}
+	else
+	{
+		return equip(it);
+	}
+}
+
+boolean tryAddItemToMaximize(slot s, item it)
+{
+	if(!possessEquipment(it) || !sl_can_equip(it))
+	{
+		return false;
+	}
+	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
+	{
+		return false;
+	}
+	switch(s)
+	{
+		case $slot[weapon]:
+			if(it.weapon_hands() > 1)
+			{
+				set_property(getMaximizeSlotPref($slot[off-hand]), "");
+			}
+			break;
+		case $slot[off-hand]:
+			if(getTentativeMaximizeEquip($slot[weapon]).weapon_hands() > 1)
+			{
+				set_property(getMaximizeSlotPref($slot[weapon]), "");
+			}
+			// TODO: Ranged/melee mismatch handling
+			break;
+	}
+
+	string itString = it.to_string();
+	switch(it)
+	{
+		case $item[none]: itString = ""; break;
+		case $item[Ouija Board, Ouija Board]: itString = "Ouija Board"; break;
+		case $item[Victor, the Insult Comic Hellhound Puppet]: itString = "the Insult Comic Hellhound Puppet"; break;
+		case $item[tiny plastic Hank North, Photojournalist]: itString = "tiny plastic Hank North"; break;
+	}
+	set_property(getMaximizeSlotPref(s), itString);
+	return true;
+}
+
 boolean useMaximizeToEquip()
 {
-	//return get_property("sl_maximize_baseline") != "";
-	return false;
+	return get_property("sl_maximize_baseline") != "";
 }
 
 void resetMaximize()
@@ -20,6 +92,25 @@ void resetMaximize()
 	res += ",-equip garbage shirt"; // Don't want this to come up automatically
 	res += ",-equip broken champagne bottle"; // Don't want to use this automatically
 	set_property("sl_maximize_current", res);
+
+	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
+	{
+		set_property(getMaximizeSlotPref(s), "");
+	}
+}
+
+void finalizeMaximize()
+{
+	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
+	{
+		string pref = getMaximizeSlotPref(s);
+		string toEquip = get_property(pref);
+		if(toEquip != "")
+		{
+			removeFromMaximize("-equip " + toEquip);
+			addToMaximize("+equip " + toEquip);
+		}
+	}
 }
 
 void addToMaximize(string add)
@@ -71,7 +162,8 @@ void equipMaximizedGear()
 		return;
 	}
 
-	slMaximize(get_property("sl_maximize_current"), false);
+	finalizeMaximize();
+	maximize(get_property("sl_maximize_current"), false);
 }
 
 void equipBaselineGear()
@@ -384,57 +476,78 @@ void equipBaseline()
 	{
 		if(item_amount($item[Dice Ring]) > 0)
 		{
-			equip($slot[acc1], $item[Dice Ring]);
+			slEquip($slot[acc1], $item[Dice Ring]);
 		}
 		if(item_amount($item[Dice Belt Buckle]) > 0)
 		{
-			equip($slot[acc2], $item[Dice Belt Buckle]);
+			slEquip($slot[acc2], $item[Dice Belt Buckle]);
 		}
 		if(item_amount($item[Dice Sunglasses]) > 0)
 		{
-			equip($slot[acc3], $item[Dice Sunglasses]);
+			slEquip($slot[acc3], $item[Dice Sunglasses]);
 		}
 		if(item_amount($item[Dice-Print Do-Rag]) > 0)
 		{
-			equip($slot[hat], $item[Dice-Print Do-Rag]);
+			slEquip($slot[hat], $item[Dice-Print Do-Rag]);
 		}
 		if(item_amount($item[Dice-Shaped Backpack]) > 0)
 		{
-			equip($slot[back], $item[Dice-Shaped Backpack]);
+			slEquip($slot[back], $item[Dice-Shaped Backpack]);
 		}
 		if(item_amount($item[Dice-Print Pajama Pants]) > 0)
 		{
-			equip($slot[pants], $item[Dice-Print Pajama Pants]);
+			slEquip($slot[pants], $item[Dice-Print Pajama Pants]);
 		}
 		if((item_amount($item[Kill Screen]) > 0) && (my_familiar() != $familiar[none]))
 		{
-			equip($slot[familiar], $item[Kill Screen]);
+			slEquip($slot[familiar], $item[Kill Screen]);
 		}
 	}
 }
 
 void ensureSealClubs()
 {
-	string ignore = get_property("sl_ignoreCombat");
-	set_property("sl_ignoreCombat", ignore + "(seal)");
-	equipBaseline();
-	set_property("sl_ignoreCombat", ignore);
+	if(useMaximizeToEquip())
+	{
+		addToMaximize("+type club");
+	}
+	else
+	{
+		string ignore = get_property("sl_ignoreCombat");
+		set_property("sl_ignoreCombat", ignore + "(seal)");
+		equipBaseline();
+		set_property("sl_ignoreCombat", ignore);
+	}
 }
 
 void removeNonCombat()
 {
-	string ignore = get_property("sl_ignoreCombat");
-	set_property("sl_ignoreCombat", ignore + "(noncombat)");
-	equipBaseline();
-	set_property("sl_ignoreCombat", ignore);
+	if(useMaximizeToEquip())
+	{
+		addToMaximize("-50combat");
+	}
+	else
+	{
+		string ignore = get_property("sl_ignoreCombat");
+		set_property("sl_ignoreCombat", ignore + "(noncombat)");
+		equipBaseline();
+		set_property("sl_ignoreCombat", ignore);
+	}
 }
 
 void removeCombat()
 {
-	string ignore = get_property("sl_ignoreCombat");
-	set_property("sl_ignoreCombat", ignore + "(combat)");
-	equipBaseline();
-	set_property("sl_ignoreCombat", ignore);
+	if(useMaximizeToEquip())
+	{
+		addToMaximize("50combat");
+	}
+	else
+	{
+		string ignore = get_property("sl_ignoreCombat");
+		set_property("sl_ignoreCombat", ignore + "(combat)");
+		equipBaseline();
+		set_property("sl_ignoreCombat", ignore);
+	}
 }
 
 void equipRollover()
