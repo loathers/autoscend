@@ -10266,45 +10266,54 @@ boolean L4_batCave()
 	buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 	if(elemental_resist($element[stench]) < 1)
 	{
-		if(possessEquipment($item[Knob Goblin Harem Veil]))
+		if(!useMaximizeToEquip())
 		{
-			equip($item[Knob Goblin Harem Veil]);
-		}
-		else if(item_amount($item[Pine-Fresh Air Freshener]) > 0)
-		{
-			equip($slot[Acc3], $item[Pine-Fresh Air Freshener]);
+			if(possessEquipment($item[Knob Goblin Harem Veil]))
+			{
+				equip($item[Knob Goblin Harem Veil]);
+			}
+			else if(item_amount($item[Pine-Fresh Air Freshener]) > 0)
+			{
+				equip($slot[Acc3], $item[Pine-Fresh Air Freshener]);
+			}
+			else
+			{
+				if(get_property("sl_powerLevelAdvCount").to_int() >= 5)
+				{
+					bat_formBats();
+					slAdv(1, $location[The Bat Hole Entrance]);
+					return true;
+				}
+				print("I can nae handle the stench of the Guano Junction!", "green");
+				return false;
+			}
 		}
 		else
 		{
-			if(get_property("sl_powerLevelAdvCount").to_int() >= 5)
+			boolean success = simMaximizeWith("stench res 1max 1min");
+			if(success)
 			{
-				bat_formBats();
-				slAdv(1, $location[The Bat Hole Entrance]);
-				return true;
+				addToMaximize("stench res 1max 1min");
 			}
-			print("I can nae handle the stench of the Guano Junction!", "green");
-			return false;
+			else
+			{
+				print("I can nae handle the stench of the Guano Junction!", "green");
+				return false;
+			}
 		}
 	}
 
-	if((my_class() == $class[Ed]) && (cloversAvailable() > 0) && (batStatus <= 1) && (numeric_modifier("stench resistance") >= 1.0))
+	if((my_class() == $class[Ed]) && (cloversAvailable() > 0) && (batStatus <= 1))
 	{
 		cloverUsageInit();
 		slAdvBypass(31, $location[Guano Junction]);
 		cloverUsageFinish();
 		return true;
 	}
-	if(numeric_modifier("stench resistance") >= 1.0)
-	{
-		bat_formBats();
-		slAdv(1, $location[Guano Junction]);
-		return true;
-	}
-	else
-	{
-		print("I can nae handle the stench of the Guano Junction!", "green");
-	}
-	return false;
+
+	bat_formBats();
+	slAdv(1, $location[Guano Junction]);
+	return true;
 }
 
 boolean LX_craftAcquireItems()
@@ -11052,7 +11061,7 @@ boolean LX_phatLootToken()
 	set_property("choiceAdventure691", "2");
 	if(item_amount($item[Ring Of Detect Boring Doors]) > 0)
 	{
-		equip($slot[acc3], $item[Ring Of Detect Boring Doors]);
+		slEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
 	}
 
 	backupSetting("choiceAdventure692", 4);
@@ -11528,19 +11537,19 @@ boolean LX_handleSpookyravenFirstFloor()
 		}
 		if(item_amount($item[Pool Cue]) > 0)
 		{
-			equip($slot[weapon], $item[Pool Cue]);
+			slEquip($slot[weapon], $item[Pool Cue]);
 		}
 		if(item_amount(staffOfFats) > 0)
 		{
-			equip(staffOfFats);
+			slEquip(staffOfFats);
 		}
 		if(item_amount(staffOfFatsEd) > 0)
 		{
-			equip(staffOfFatsEd);
+			slEquip(staffOfFatsEd);
 		}
 		if(item_amount(staffOfEd) > 0)
 		{
-			equip(staffOfEd);
+			slEquip(staffOfEd);
 		}
 
 		print("It's billiards time!", "blue");
@@ -11954,7 +11963,7 @@ boolean L9_aBooPeak()
 			januaryToteAcquire($item[Broken Champagne Bottle]);
 			if(item_amount($item[Broken Champagne Bottle]) > 0)
 			{
-				equip($item[Broken Champagne Bottle]);
+				slEquip($item[Broken Champagne Bottle]);
 			}
 		}
 
