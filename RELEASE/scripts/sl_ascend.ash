@@ -3899,10 +3899,6 @@ boolean L11_palindome()
 	{
 		return false;
 	}
-	if(get_property("sl_swordfish") != "finished")
-	{
-		return false;
-	}
 
 	if(get_property("questL11Palindome") == "finished")
 	{
