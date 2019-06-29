@@ -274,7 +274,7 @@ stat	24	Cheshire Bat
 # Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
 stat	25	Frumious Bandersnatch
 # Fancy
-stat	26	Miniature Sword &trade; Martini Guy
+stat	26	Miniature Sword &amp; Martini Guy
 # Slightly special volleyballs
 stat	27	Reanimated Reanimator
 stat	28	God Lobster
