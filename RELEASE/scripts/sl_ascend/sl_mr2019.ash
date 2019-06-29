@@ -282,6 +282,25 @@ boolean sl_saberChoice(string choice)
 	return true;
 }
 
+boolean sl_saberDailyUpgrade(int day)
+{
+	if(my_class() == $class[Ed])
+	{
+		return sl_saberChoice("mp");
+	}
+
+	if(day == 1)
+	{
+		return sl_saberChoice("ml");
+	}
+	else
+	{
+		return sl_saberChoice("res");
+	}
+
+	return false;
+}
+
 monster sl_saberCurrentMonster()
 {
 	if (get_property("_saberForceMonsterCount") == "0")

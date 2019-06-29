@@ -1857,14 +1857,7 @@ void initializeDay(int day)
 		#}
 	}
 
-	if (day == 1)
-	{
-		sl_saberChoice("ml");
-	}
-	else
-	{
-		sl_saberChoice("res");
-	}
+	sl_saberDailyUpgrade(day);
 
 	if((item_amount($item[cursed microwave]) >= 1) && !get_property("_cursedMicrowaveUsed").to_boolean())
 	{
