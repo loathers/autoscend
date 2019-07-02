@@ -27,14 +27,14 @@ Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 Fist Turkey	prop:_turkeyMuscle<5;mainstat:Muscle;path:The Source
 Fist Turkey	prop:_turkeyMyst<5;mainstat:Mysticality;path:The Source
 Fist Turkey	prop:_turkeyMoxie<5;mainstat:Moxie;path:The Source
-# And some hugpockets
-XO Skeleton	prop:_xoHugsUsed<5
-# And some pastes
-Pair of Stomping Boots	prop:_bootStomps<7
 # And some BACON
 Intergnat	item:BACON<350
 # And some heist charges
 Cat Burglar	prop:_catBurglarCharge<30
+# And some hugpockets
+XO Skeleton	prop:_xoHugsUsed<5
+# And some pastes
+Pair of Stomping Boots	prop:_bootStomps<7
 # And some more hugpockets
 XO Skeleton	prop:_xoHugsUsed<11
 # And some adventures
