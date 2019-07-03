@@ -164,7 +164,7 @@ void equipMaximizedGear()
 	}
 
 	finalizeMaximize();
-	maximize(get_property("sl_maximize_current"), false);
+	maximize(get_property("sl_maximize_current"), 2500, 0, false);
 }
 
 void equipBaselineGear()
