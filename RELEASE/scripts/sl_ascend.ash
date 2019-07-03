@@ -918,11 +918,25 @@ void maximize_hedge()
 	element third = ns_hedge3();
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
-		slMaximize("all res -equip snow suit", 2500, 0, false);
+		if(useMaximizeToEquip())
+		{
+			addToMaximize("200all res");
+		}
+		else
+		{
+			slMaximize("all res -equip snow suit", 2500, 0, false);
+		}
 	}
 	else
 	{
-		slMaximize(to_string(first) + " res, " + to_string(second) + " res, " + to_string(third) + " res -equip snow suit", 2500, 0, false);
+		if(useMaximizeToEquip())
+		{
+			addToMaximize("200" + first + " res,200" + second + " res,200" + third + " res");
+		}
+		else
+		{
+			slMaximize(to_string(first) + " res, " + to_string(second) + " res, " + to_string(third) + " res -equip snow suit", 2500, 0, false);
+		}
 	}
 
 	bat_formMist();
@@ -1311,11 +1325,25 @@ boolean doThemtharHills()
 
 	if(is100FamiliarRun())
 	{
-		slMaximize("meat drop, -equip snow suit", 1500, 0, false);
+		if(useMaximizeToEquip())
+		{
+			addToMaximize("200meat drop");
+		}
+		else
+		{
+			slMaximize("meat drop, -equip snow suit", 1500, 0, false);
+		}
 	}
 	else
 	{
-		slMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun", 1500, 0, false);
+		if(useMaximizeToEquip())
+		{
+			addToMaximize("200meat drop,-equip snow suit,switch Hobo Monkey,switch rockin' robin,switch adventurous spelunker,switch Grimstone Golem,switch Fist Turkey,switch Unconscious Collective,switch Golden Monkey,switch Angry Jung Man,switch Leprechaun,switch cat burglar");
+		}
+		else
+		{
+			slMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun,switch cat burglar", 1500, 0, false);
+		}
 		handleFamiliar(my_familiar());
 	}
 	int expectedMeat = numeric_modifier("Generated:_spec", "meat drop");
@@ -4550,12 +4578,26 @@ boolean L13_towerNSTower()
 		}
 		if(is100FamiliarRun())
 		{
-			slMaximize("meat drop, -equip snow suit", 1500, 0, false);
+			if(useMaximizeToEquip())
+			{
+				addToMaximize("200meat drop");
+			}
+			else
+			{
+				slMaximize("meat drop, -equip snow suit", 1500, 0, false);
+			}
 		}
 		else
 		{
-			slMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun", 1500, 0, false);
-			handleFamiliar(my_familiar());
+			if(useMaximizeToEquip())
+			{
+				addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconcious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
+			}
+			else
+			{
+				slMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun,switch cat burglar", 1500, 0, false);
+				handleFamiliar(my_familiar());
+			}
 		}
 		if((my_class() == $class[Seal Clubber]) && (item_amount($item[Meat Tenderizer is Murder]) > 0))
 		{
@@ -4599,7 +4641,14 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Song of Sauce], 0, 1, 1);
 			if(item_amount($item[Electric Boning Knife]) == 0)
 			{
-				slMaximize("myst -equip snow suit", 1500, 0, false);
+				if(useMaximizeToEquip())
+				{
+					addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
+				}
+				else
+				{
+					slMaximize("myst -equip snow suit", 1500, 0, false);
+				}
 			}
 			foreach s in $slots[acc1, acc2, acc3]
 			{
@@ -4860,7 +4909,7 @@ boolean L13_towerNSContests()
 				}
 				else
 				{
-					slMaximize("init, -equip snow suit, switch xiblaxian holo-companion, switch oily woim, switch happy medium ", 1500, 0, false);
+					slMaximize("init, switch xiblaxian holo-companion, switch oily woim, switch happy medium,switch cute meteor", 1500, 0, false);
 					handleFamiliar(my_familiar());
 				}
 
@@ -11338,7 +11387,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		boolean haveRes = (elemental_resist($element[hot]) >= 9 || elemental_resist($element[stench]) >= 9);
 		if(useMaximizeToEquip())
 		{
-			slMaximize("hot res max 9,stench res max 9", true);
+			simMaximizeWith("1000hot res 9 max,1000stench res 9 max");
 			if(numeric_modifier("Generated:_spec", "Hot Resistance") >= 9 && numeric_modifier("Generated:_spec", "Stench Resistance") >= 9)
 			{
 				haveRes = true;
@@ -11570,7 +11619,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		buffMaintain($effect[Patent Prevention], 0, 1, 1);
 		bat_formMist();
 
-		addToMaximize(",1000hot resistance max 9000,1000 stench resistance max 9000");
+		addToMaximize("1000hot resistance 9 max,1000 stench resistance 9 max");
 		slAdv(1, $location[The Haunted Kitchen]);
 		handleFamiliar("item");
 	}
@@ -12002,7 +12051,7 @@ boolean L9_aBooPeak()
 			parrot = "";
 		}
 
-		slMaximize("spooky res, cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, true);
+		slMaximize("spooky res, cold res, 0.01hp " + lihcface + " -equip snow suit" + parrot, 0, 0, true);
 		int coldResist = numeric_modifier("Generated:_spec", "cold resistance");
 		int spookyResist = numeric_modifier("Generated:_spec", "spooky resistance");
 		int hpDifference = numeric_modifier("Generated:_spec", "Maximum HP") - numeric_modifier("Maximum HP");
@@ -12120,7 +12169,14 @@ boolean L9_aBooPeak()
 			{
 				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 			}
-			slMaximize("spooky res, cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
+			if(useMaximizeToEquip())
+			{
+				addToMaximize("1000spooky res,1000 cold res,10hp" + parrot);
+			}
+			else
+			{
+				slMaximize("spooky res, cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
+			}
 			adjustEdHat("ml");
 
 			if(item_amount($item[ghost of a necklace]) > 0)
@@ -13628,11 +13684,18 @@ boolean L8_trapperGroar()
 
 		if((elemental_resist($element[cold]) < 5) && (my_level() == get_property("sl_powerLevelLastLevel").to_int()))
 		{
-			slMaximize("cold res " + lihcface + " -equip snow suit", 0, 0, true);
+			slMaximize("cold res 5 max,-tie,-equip snow suit", 0, 0, true);
 			int coldResist = numeric_modifier("Generated:_spec", "cold resistance");
 			if(coldResist >= 5)
 			{
-				slMaximize("cold res " + lihcface + " -equip snow suit -weapon", 0, 0, false);
+				if(useMaximizeToEquip())
+				{
+					addToMaximize("2000cold res 5 max");
+				}
+				else
+				{
+					slMaximize("cold res,-tie,-equip snow suit,-weapon", 0, 0, false);
+				}
 			}
 		}
 
