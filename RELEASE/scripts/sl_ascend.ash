@@ -12784,7 +12784,7 @@ boolean L9_chasmBuild()
 		// This is a hardcoded patch for Dark Gyffte
 		// TODO: once explicit formulas are spaded, use simulated maximizer
 		// to determine best approach.
-		if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]))
+		if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]) && !useMaximizeToEquip())
 		{
 			// Maximizing moxie (through equalizer) and sleaze res is good here
 			slMaximize("myst, 50 sleaze res", 1000, 0, false);
