@@ -91,6 +91,7 @@ void resetMaximize()
 	res += ",-equip hewn moon-rune spoon"; // Breaks mafia
 	res += ",-equip garbage shirt"; // Don't want this to come up automatically
 	res += ",-equip broken champagne bottle"; // Don't want to use this automatically
+	res += ",-equip snow suit"; // Don't want to lose weight due to using this automatically
 	set_property("sl_maximize_current", res);
 
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
