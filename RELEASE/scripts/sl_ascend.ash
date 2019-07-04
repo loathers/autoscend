@@ -1170,13 +1170,13 @@ boolean warOutfit()
 {
 	if(!get_property("sl_hippyInstead").to_boolean())
 	{
-		if(!outfit("frat warrior fatigues"))
+		if(!slOutfit("frat warrior fatigues"))
 		{
 			foreach it in $items[Beer Helmet, Distressed Denim Pants, Bejeweled Pledge Pin]
 			{
 				take_closet(closet_amount(it), it);
 			}
-			if(!outfit("frat warrior fatigues"))
+			if(!slOutfit("frat warrior fatigues"))
 			{
 				abort("Do not have frat warrior fatigues and don't know why....");
 				return false;
@@ -1186,13 +1186,13 @@ boolean warOutfit()
 	}
 	else
 	{
-		if(!outfit("war hippy fatigues"))
+		if(!slOutfit("war hippy fatigues"))
 		{
 			foreach it in $items[Reinforced Beaded Headband, Bullet-proof Corduroys, Round Purple Sunglasses]
 			{
 				take_closet(closet_amount(it), it);
 			}
-			if(!outfit("war hippy fatigues"))
+			if(!slOutfit("war hippy fatigues"))
 			{
 				abort("Do not have war hippy fatigues and don't know why....");
 				return false;
@@ -1283,7 +1283,7 @@ boolean doThemtharHills()
 
 	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 	{
-		outfit("frat warrior fatigues");
+		slOutfit("frat warrior fatigues");
 		cli_execute("concert 2");
 	}
 
@@ -9325,14 +9325,16 @@ boolean L7_crypt()
 
 		if((item_amount($item[Gravy Boat]) > 0) && can_equip($item[Gravy Boat]))
 		{
-			equip($item[Gravy Boat]);
+			slEquip($item[Gravy Boat]);
 		}
 
 		if((item_amount($item[The Nuge\'s Favorite Crossbow]) > 0) && can_equip($item[The Nuge\'s Favorite Crossbow]) && (get_property("cyrptAlcoveEvilness").to_int() > 26))
 		{
-			equip($item[The Nuge\'s Favorite Crossbow]);
+			slEquip($item[The Nuge\'s Favorite Crossbow]);
 		}
 		bat_formBats();
+
+		addToMaximize("50initiative 850max");
 
 		print("The Alcove! (" + initiative_modifier() + ")", "blue");
 		slAdv(1, $location[The Defiled Alcove]);
@@ -9347,14 +9349,19 @@ boolean L7_crypt()
 		handleFamiliar("item");
 		if((item_amount($item[Gravy Boat]) > 0) && can_equip($item[Gravy Boat]))
 		{
-			equip($item[Gravy Boat]);
+			slEquip($item[Gravy Boat]);
 		}
 
 		bat_formBats();
-		januaryToteAcquire($item[Broken Champagne Bottle]);
-		if((numeric_modifier("item drop") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
+		januaryToteAcquire($item[broken champagne bottle]);
+		if(useMaximizeToEquip())
 		{
-			equip($item[Broken Champagne Bottle]);
+			removeFromMaximize("-equip " + $item[broken champagne bottle]);
+			addToMaximize("50item drop 400max");
+		}
+		else if((numeric_modifier("item drop") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
+		{
+			slEquip($item[broken champagne bottle]);
 		}
 
 		slAdv(1, $location[The Defiled Nook]);
@@ -9373,7 +9380,7 @@ boolean L7_crypt()
 		}
 		if((item_amount($item[Gravy Boat]) > 0) && can_equip($item[Gravy Boat]))
 		{
-			equip($item[Gravy Boat]);
+			slEquip($item[Gravy Boat]);
 		}
 
 		if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
@@ -9383,7 +9390,7 @@ boolean L7_crypt()
 
 		if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
 		{
-			equip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
+			slEquip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
 		}
 
 		print("The Niche!", "blue");
@@ -9405,7 +9412,7 @@ boolean L7_crypt()
 
 		if((item_amount($item[Gravy Boat]) > 0) && can_equip($item[Gravy Boat]))
 		{
-			equip($item[Gravy Boat]);
+			slEquip($item[Gravy Boat]);
 		}
 
 		if(get_property("spacegateVaccine3").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Emotional Vaccine]) == 0) && get_property("spacegateAlways").to_boolean())
@@ -9434,6 +9441,7 @@ boolean L7_crypt()
 		}
 		buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
 		providePlusNonCombat(25);
+		addToMaximize("20ml 150max");
 		slAdv(1, $location[The Defiled Cranny]);
 		return true;
 	}
@@ -9563,7 +9571,7 @@ boolean L6_friarsGetParts()
 	handleFamiliar("item");
 	if(equipped_item($slot[Shirt]) == $item[Tunac])
 	{
-		equip($slot[Shirt], $item[none]);
+		slEquip($slot[Shirt], $item[none]);
 	}
 
 	providePlusNonCombat(25);
@@ -10185,7 +10193,7 @@ boolean L5_goblinKing()
 	}
 
 	print("Death to the gobbo!!", "blue");
-	if(!outfit("knob goblin harem girl disguise"))
+	if(!slOutfit("knob goblin harem girl disguise"))
 	{
 		abort("Could not put on Knob Goblin Harem Girl Disguise, aborting");
 	}
@@ -10216,7 +10224,7 @@ boolean L5_goblinKing()
 
 	if(monster_level_adjustment() > 150)
 	{
-		equip($slot[acc2], $item[none]);
+		slEquip($slot[acc2], $item[none]);
 	}
 
 	slAdv(1, $location[Throne Room]);
@@ -11709,7 +11717,7 @@ boolean L12_startWar()
 	}
 
 	print("Must save the ferret!!", "blue");
-	outfit("frat warrior fatigues");
+	slOutfit("frat warrior fatigues");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
@@ -11780,7 +11788,7 @@ boolean L12_getOutfit()
 
 	if(get_property("sl_prehippy") == "firstOutfit")
 	{
-		outfit("filthy hippy disguise");
+		slOutfit("filthy hippy disguise");
 		if(my_lightning() >= 5)
 		{
 			slAdv(1, $location[Wartime Frat House]);
@@ -12179,7 +12187,7 @@ boolean L9_aBooPeak()
 			}
 			adjustEdHat("ml");
 
-			if(item_amount($item[ghost of a necklace]) > 0)
+			if(item_amount($item[ghost of a necklace]) > 0 && !useMaximizeToEquip())
 			{
 				equip($slot[acc2], $item[ghost of a necklace]);
 			}
@@ -12267,7 +12275,7 @@ boolean L9_aBooPeak()
 			januaryToteAcquire($item[Broken Champagne Bottle]);
 			if(item_amount($item[Broken Champagne Bottle]) > 0)
 			{
-				equip($item[Broken Champagne Bottle]);
+				slEquip($item[Broken Champagne Bottle]);
 			}
 		}
 
@@ -12408,7 +12416,7 @@ boolean L9_twinPeak()
 			possibleGain += 2;
 		}
 
-		if(elemental_resist($element[stench]) < 4)
+		if(elemental_resist($element[stench]) < 4 && !useMaximizeToEquip())
 		{
 			if(possessEquipment($item[Training Legwarmers]) && glover_usable($item[Training Legwarmers]))
 			{
@@ -12427,7 +12435,7 @@ boolean L9_twinPeak()
 				}
 				if(sl_have_familiar($familiar[Trick-Or-Treating Tot]))
 				{
-					if(possessEquipment($item[Li\'l Unicorn Costume]) && glover_usable($item[Li\'l Unicorn Costume]))
+					if(possessEquipment($item[li'l candy corn costume]) && sl_is_valid($item[li'l candy corn costume]))
 					{
 						resist = $familiar[Trick-Or-Treating Tot];
 					}
@@ -12437,7 +12445,7 @@ boolean L9_twinPeak()
 					handleFamiliar(resist);
 					if(resist == $familiar[Trick-Or-Treating Tot])
 					{
-						equip($slot[familiar], $item[Li\'l Unicorn Costume]);
+						slEquip($slot[familiar], $item[li'l candy corn costume]);
 					}
 				}
 			}
@@ -12453,13 +12461,22 @@ boolean L9_twinPeak()
 				}
 			}
 		}
+		else
+		{
+			addToMaximize("1000stench res 4max");
+		}
 
 		if(elemental_resist($element[stench]) < 4)
 		{
 			bat_formMist();
 		}
 
-		if(elemental_resist($element[stench]) >= 4)
+		if(useMaximizeToEquip())
+		{
+			simMaximize();
+		}
+
+		if((useMaximizeToEquip() ? numeric_modifier("Generated:_spec", "Stench Resistance") : elemental_resist($element[stench])) >= 4)
 		{
 			attemptNum = 1;
 			attempt = true;
@@ -13619,7 +13636,7 @@ boolean L8_trapperGroar()
 	}
 	if((internalQuestStatus("questL08Trapper") == 2) && (get_property("currentExtremity").to_int() == 3))
 	{
-		if(outfit("eXtreme Cold-Weather Gear"))
+		if(slOutfit("eXtreme Cold-Weather Gear"))
 		{
 			string temp = visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");
 			return true;
@@ -13752,7 +13769,7 @@ boolean L8_trapperExtreme()
 
 	if(have_outfit("eXtreme Cold-Weather Gear"))
 	{
-		if(outfit("eXtreme Cold-Weather Gear"))
+		if(slOutfit("eXtreme Cold-Weather Gear"))
 		{
 			set_property("choiceAdventure575", "3");
 			slAdv(1, $location[The eXtreme Slope]);

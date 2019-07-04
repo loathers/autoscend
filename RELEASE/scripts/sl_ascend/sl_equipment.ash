@@ -41,6 +41,27 @@ boolean slEquip(item it)
 	}
 }
 
+boolean slOutfit(string toWear)
+{
+	if(!have_outfit(toWear))
+		return false;
+
+	if(useMaximizeToEquip())
+	{
+		// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
+		boolean pass = true;
+		foreach i,it in outfit_pieces(toWear)
+		{
+			pass = pass && slEquip(it);
+		}
+		return pass;
+	}
+	else
+	{
+		return outfit(toWear);
+	}
+}
+
 boolean tryAddItemToMaximize(slot s, item it)
 {
 	if(!possessEquipment(it) || !sl_can_equip(it))
@@ -88,10 +109,12 @@ boolean useMaximizeToEquip()
 void resetMaximize()
 {
 	string res = get_property("sl_maximize_baseline");
-	res += ",-equip hewn moon-rune spoon"; // Breaks mafia
-	res += ",-equip garbage shirt"; // Don't want this to come up automatically
-	res += ",-equip broken champagne bottle"; // Don't want to use this automatically
-	res += ",-equip snow suit"; // Don't want to lose weight due to using this automatically
+	foreach it in $items[hewn moon-rune spoon, garbage shirt, broken champagne bottle, snow suit]
+	{
+		// don't want to equip these items automatically
+		// spoon breaks mafia, and the others have limited charges
+		res += ",-equip " + it;
+	}
 	set_property("sl_maximize_current", res);
 
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
@@ -117,7 +140,7 @@ void finalizeMaximize()
 void addToMaximize(string add)
 {
 	string res = get_property("sl_maximize_current");
-	boolean addHasComma = add.substring(0, 1) == ",";
+	boolean addHasComma = add.starts_with(",");
 	if(res != "" && !addHasComma)
 	{
 		res += ",";
@@ -146,6 +169,11 @@ void removeFromMaximize(string rem)
 		res = res.substring(1);
 	}
 	set_property("sl_maximize_current", res);
+}
+
+boolean simMaximize()
+{
+	return slMaximize(get_property("sl_maximize_current"), true);
 }
 
 boolean simMaximizeWith(string add)
