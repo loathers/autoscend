@@ -36,11 +36,11 @@ acc	20	Astral Ring
 acc	21	Mr. Cheeng's Spectacles
 acc	22	Bram's Choker
 acc	23	Astral Belt
-acc	24	Astral Mask
-acc	25	Numberwang
-acc	26	Kremlin's Greatest Briefcase
-acc	27	Sphygmayomanometer
-acc	28	Ring Of The Skeleton Lord
+acc	24	Ring Of The Skeleton Lord
+acc	25	Astral Mask
+acc	26	Numberwang
+acc	27	Kremlin's Greatest Briefcase
+acc	28	Sphygmayomanometer
 acc	29	Gold Detective Badge
 acc	30	Silver Detective Badge
 acc	31	Bronze Detective Badge
@@ -49,33 +49,34 @@ acc	33	Xiblaxian Holo-Wrist-Puter
 acc	34	Mr. Accessory Jr.
 acc	35	Iron Beta of Industry
 acc	36	LOV Earrings
-acc	37	wax hand
-acc	38	Perfume-Soaked Bandana
-acc	39	Wicker Kickers
-acc	40	Compression Stocking
-acc	41	Glow-In-The-Dark Necklace
-acc	42	Time-Twitching Toolbelt
-acc	43	Mr. Accessory
-acc	44	Pirate Fledges
-acc	45	Plastic Detective Badge
-acc	46	Jangly Bracelet
-acc	47	Jolly Roger Charrrm Bracelet
-acc	48	Grumpy Old Man Charrrm Bracelet
-acc	49	Bonerdagon Necklace
-acc	50	Ghost of a Necklace
-acc	51	Blackberry Galoshes
-acc	52	badass belt
-acc	53	Talisman o' Namsilat
-acc	54	Batskin Belt
-acc	55	shiny ring
-acc	56	Garish Pinky Ring
-acc	57	Ring Of Telling Skeletons What To Do
-acc	58	Imp Unity Ring
-acc	59	Infernal Insoles
-acc	60	Glowing Red Eye
-acc	61	Stuffed Shoulder Parrot
-acc	62	Vampire Collar
-acc	63	Jaunty Feather
+acc	37	Beach Comb
+acc	38	wax hand
+acc	39	Perfume-Soaked Bandana
+acc	40	Wicker Kickers
+acc	41	Compression Stocking
+acc	42	Glow-In-The-Dark Necklace
+acc	43	Time-Twitching Toolbelt
+acc	44	Mr. Accessory
+acc	45	Pirate Fledges
+acc	46	Plastic Detective Badge
+acc	47	Jangly Bracelet
+acc	48	Jolly Roger Charrrm Bracelet
+acc	49	Grumpy Old Man Charrrm Bracelet
+acc	50	Bonerdagon Necklace
+acc	51	Ghost of a Necklace
+acc	52	Blackberry Galoshes
+acc	53	badass belt
+acc	54	Talisman o' Namsilat
+acc	55	Batskin Belt
+acc	56	shiny ring
+acc	57	Garish Pinky Ring
+acc	58	Ring Of Telling Skeletons What To Do
+acc	59	Imp Unity Ring
+acc	60	Infernal Insoles
+acc	61	Glowing Red Eye
+acc	62	Stuffed Shoulder Parrot
+acc	63	Vampire Collar
+acc	64	Jaunty Feather
 
 # Back items
 back	0	Protonic Accelerator Pack	expectghostreport:true
