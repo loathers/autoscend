@@ -1391,7 +1391,8 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(!sl_wantToBanish(enemy, loc))
 		return "";
 
-	print("Finding a banisher to use on " + enemy + " at " + loc, "green");
+	if(inCombat)
+		print("Finding a banisher to use on " + enemy + " at " + loc, "green");
 
 	//src/net/sourceforge/kolmafia/session/BanishManager.java
 	boolean[string] used = sl_banishesUsedAt(loc);
