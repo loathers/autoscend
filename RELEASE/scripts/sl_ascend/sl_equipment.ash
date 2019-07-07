@@ -19,6 +19,13 @@ item getTentativeMaximizeEquip(slot s)
 
 boolean slEquip(slot s, item it)
 {
+	sl_debug_print("Equipping " + it + " to slot " + s, "yellow");
+	if(!possessEquipment(it) || !sl_can_equip(it))
+	{
+		sl_debug_print("But we can't equip or don't have " + it, "yellow");
+		return false;
+	}
+
 	if(useMaximizeToEquip())
 	{
 		return tryAddItemToMaximize(s, it);
@@ -31,14 +38,7 @@ boolean slEquip(slot s, item it)
 
 boolean slEquip(item it)
 {
-	if(useMaximizeToEquip())
-	{
-		return tryAddItemToMaximize(it.to_slot(), it);
-	}
-	else
-	{
-		return equip(it);
-	}
+	return slEquip(it.to_slot(), it);
 }
 
 boolean slOutfit(string toWear)
@@ -66,11 +66,6 @@ boolean slOutfit(string toWear)
 boolean tryAddItemToMaximize(slot s, item it)
 {
 	sl_debug_print("Want to equip " + it, "yellow");
-	if(!possessEquipment(it) || !sl_can_equip(it))
-	{
-		sl_debug_print("But we can't equip or don't have " + it, "yellow");
-		return false;
-	}
 	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
 	{
 		sl_debug_print("But " + s + " is an invalid equip slot... What?", "red");
