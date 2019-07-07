@@ -870,6 +870,7 @@ boolean zoneItem(location loc);								//Defined in sl_ascend/sl_util.ash
 boolean zoneMeat(location loc);								//Defined in sl_ascend/sl_util.ash
 boolean zoneNonCombat(location loc);						//Defined in sl_ascend/sl_util.ash
 boolean declineTrades();									//Defined in sl_ascend/sl_util.ash
+boolean sl_beta(); //Defined in sl_ascend/sl_util.ash
 
 //From Zlib Stuff
 record kmailObject {

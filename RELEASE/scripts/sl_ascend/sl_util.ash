@@ -5445,3 +5445,8 @@ boolean sl_badassBelt()
 		return false;
 	}
 }
+
+boolean sl_beta()
+{
+	return get_property("sl_beta_test").to_boolean();
+}

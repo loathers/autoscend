@@ -17,6 +17,12 @@ boss	2	Mu
 boss	3	Warbear Drone
 boss	4	Mosquito
 
+# We want to delevel, but don't want to deal damage
+gremlins	0	Nosy Nose
+gremlins	1	Plastic Pirate Skull
+gremlins	2	Space Jellyfish
+gremlins	3	Barrrnacle
+
 init	0	Xiblaxian Holo-Companion
 init	1	Cute Meteor
 init	2	Oily Woim

@@ -285,7 +285,7 @@ boolean handleFamiliar(string type)
 		}
 	}
 
-	if(get_property("sl_beta_test").to_boolean())
+	if(sl_beta())
 	{
 		string [string,int,string] familiars_text;
 		if(!file_to_map("sl_ascend_familiars.txt", familiars_text))
@@ -4201,7 +4201,7 @@ boolean L13_towerNSFinal()
 		equip($slot[Off-Hand], $item[Oscus\'s Garbage Can Lid]);
 	}
 
-	if(get_property("sl_beta_test").to_boolean())
+	if(sl_beta())
 	{
 		handleFamiliar("boss");
 	}
@@ -7433,7 +7433,7 @@ boolean L12_gremlins()
 	{
 		bat_formMist();
 	}
-	handleFamiliar("init");
+	handleFamiliar(in_beta() ? "gremlins" : "init");
 	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
