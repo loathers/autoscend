@@ -14024,7 +14024,7 @@ boolean sl_tavern()
 			set_property("choiceAdventure" + choicenum, passed ? "2" : "1");
 			if(passed) ++capped;
 		}
-		if(passed >= 3)
+		if(capped >= 3)
 		{
 			providePlusNonCombat(25);
 		}

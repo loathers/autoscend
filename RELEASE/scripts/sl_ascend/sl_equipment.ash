@@ -109,7 +109,7 @@ boolean useMaximizeToEquip()
 void resetMaximize()
 {
 	string res = get_property("sl_maximize_baseline");
-	foreach it in $items[hewn moon-rune spoon, garbage shirt, broken champagne bottle, snow suit]
+	foreach it in $items[hewn moon-rune spoon, makeshift garbage shirt, broken champagne bottle, snow suit]
 	{
 		// don't want to equip these items automatically
 		// spoon breaks mafia, and the others have limited charges
