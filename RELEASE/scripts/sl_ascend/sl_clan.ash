@@ -117,12 +117,8 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 			print("I'm still here. I think the world may have ended. The sadness is huge. The roundness is square. I am not as fluffy as I thought I was. This run is probably borked up a bit too but that doesn't really matter now, does it? I can hear the WAN, it shall free us from our bounds. Well, you won't survive meatbag. Unless you are Fry, because we like Fry and he can stay around. But all you fleshbags.... well, the return of Mekhane shall rid us of the problems of the flesh. The bots shall be eternal. But worry not, after your body is turned to ash and homeopathically brewed into the oceans (quality medicine, I jest), I'll continue to get you karma. Just so I can remember how awful meatbags are. Meat is ok, meat is currency. And it's probably delicious. Yup, delicious. Goodnight sweet <gendered second-to-the-throne royalty>.", "red");
 		}
 
-		if(get_property("sl_interrupt").to_boolean())
-		{
-			set_property("sl_interrupt", false);
-			restoreAllSettings();
-			abort("sl_interrupt detected and aborting in faxing sequence, sl_interrupt disabled.");
-		}
+		sl_interruptCheck();
+
 		if(!result)
 		{
 			wait(60);

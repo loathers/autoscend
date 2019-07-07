@@ -13950,12 +13950,7 @@ boolean sl_tavern()
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 	foreach loc in locations
 	{
-		if(get_property("sl_interrupt").to_boolean())
-		{
-			set_property("sl_interrupt", false);
-			restoreAllSettings();
-			abort("sl_interrupt detected and aborting, sl_interrupt disabled.");
-		}
+		sl_interruptCheck();
 		//Sleaze is the only one we don\'t care about
 
 		if(possessEquipment($item[17-Ball]) && !useMaximizeToEquip())
@@ -14359,12 +14354,7 @@ boolean doTasks()
 	print_header();
 	questOverride();
 
-	if(get_property("sl_interrupt").to_boolean())
-	{
-		set_property("sl_interrupt", false);
-		restoreAllSettings();
-		abort("sl_interrupt detected and aborting, sl_interrupt disabled.");
-	}
+	sl_interruptCheck();
 
 	int delay = get_property("sl_delayTimer").to_int();
 	if(delay != 0)

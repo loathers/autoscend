@@ -5475,3 +5475,13 @@ boolean sl_beta()
 {
 	return get_property("sl_beta_test").to_boolean();
 }
+
+void sl_interruptCheck()
+{
+	if(get_property("sl_interrupt").to_boolean())
+	{
+		set_property("sl_interrupt", false);
+		restoreAllSettings();
+		abort("sl_interrupt detected and aborting, sl_interrupt disabled.");
+	}
+}
