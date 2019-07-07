@@ -317,10 +317,7 @@ boolean fantasyRealmToken()
 
 	if(possessEquipment($item[FantasyRealm G. E. M.]))
 	{
-		if(!have_equipped($item[FantasyRealm G. E. M.]))
-		{
-			equip($slot[acc3], $item[FantasyRealm G. E. M.]);
-		}
+		slEquip($slot[acc3], $item[FantasyRealm G. E. M.]);
 	}
 
 	//This does not appear to check that we no longer need to adventure there...

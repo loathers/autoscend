@@ -205,14 +205,7 @@ boolean sl_sausageGoblin(location loc, string option)
 		return true;
 	}
 
-	if(!have_equipped($item[Kramco Sausage-o-Matic&trade;]))
-	{
-		if(item_amount($item[Kramco Sausage-o-Matic&trade;]) == 0)
-		{
-			return false;
-		}
-		slEquip($item[Kramco Sausage-o-Matic&trade;]);
-	}
+	slEquip($item[Kramco Sausage-o-Matic&trade;]);
 	return slAdv(1, loc, option);
 }
 
