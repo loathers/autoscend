@@ -8854,7 +8854,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(godLobsterCombat())
+	if(my_level() < 13 && godLobsterCombat())
 	{
 		return true;
 	}
