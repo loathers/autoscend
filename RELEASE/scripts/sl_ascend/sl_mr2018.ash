@@ -333,27 +333,27 @@ boolean songboomSetting(string goal)
 {
 	int option = 6;
 
-	if((goal ≈ "eye of the giger") || (goal ≈ "spooky") || (goal ≈ "nightmare") || (goal ≈ $item[Nightmare Fuel]) || (goal ≈ "stats"))
+	if((goal == "eye of the giger") || (goal == "spooky") || (goal == "nightmare") || (goal == $item[Nightmare Fuel]) || (goal == "stats"))
 	{
 		option = 1;
 	}
-	else if((goal ≈ "food vibrations") || (goal ≈ "food") || (goal ≈ "food drops") || (goal ≈ $item[Special Seasoning]) || (goal ≈ "spell damage") || (goal ≈ "adventures") || (goal ≈ "adv"))
+	else if((goal == "food vibrations") || (goal == "food") || (goal == "food drops") || (goal == $item[Special Seasoning]) || (goal == "spell damage") || (goal == "adventures") || (goal == "adv"))
 	{
 		option = 2;
 	}
-	else if((goal ≈ "remainin\' alive") || (goal ≈ "dr") || (goal ≈ "damage reduction") || (goal ≈ $item[Shielding Potion]) || (goal ≈ "delevel"))
+	else if((goal == "remainin\' alive") || (goal == "dr") || (goal == "damage reduction") || (goal == $item[Shielding Potion]) || (goal == "delevel"))
 	{
 		option = 3;
 	}
-	else if((goal ≈ "these fists were made for punchin\'") || (goal ≈ "weapon damage") || (goal ≈ "prismatic damage") || (goal ≈ $item[Punching Potion]) || (goal ≈ "prismatic"))
+	else if((goal == "these fists were made for punchin\'") || (goal == "weapon damage") || (goal == "prismatic damage") || (goal == $item[Punching Potion]) || (goal == "prismatic"))
 	{
 		option = 4;
 	}
-	else if((goal ≈ "total eclipse of your meat") || (goal ≈ "meat") || (goal ≈ "meat drop") || (goal ≈ $item[Gathered Meat-Clip]) || (goal ≈ "base meat"))
+	else if((goal == "total eclipse of your meat") || (goal == "meat") || (goal == "meat drop") || (goal == $item[Gathered Meat-Clip]) || (goal == "base meat"))
 	{
 		option = 5;
 	}
-	else if((goal ≈ "silence") || (goal ≈ "none") || (goal == ""))
+	else if((goal == "silence") || (goal == "none") || (goal == ""))
 	{
 		option = 6;
 	}
