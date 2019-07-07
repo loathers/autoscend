@@ -49,6 +49,7 @@ boolean slOutfit(string toWear)
 	if(useMaximizeToEquip())
 	{
 		// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
+		sl_debug_print('Adding outfit "' + toWear + '" to maximizer statement', "yellow");
 		boolean pass = true;
 		foreach i,it in outfit_pieces(toWear)
 		{
@@ -64,12 +65,15 @@ boolean slOutfit(string toWear)
 
 boolean tryAddItemToMaximize(slot s, item it)
 {
+	sl_debug_print("Want to equip " + it, "yellow");
 	if(!possessEquipment(it) || !sl_can_equip(it))
 	{
+		sl_debug_print("But we can't equip or don't have " + it, "yellow");
 		return false;
 	}
 	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
 	{
+		sl_debug_print("But " + s + " is an invalid equip slot... What?", "red");
 		return false;
 	}
 	switch(s)
@@ -116,6 +120,7 @@ void resetMaximize()
 		res += ",-equip " + it;
 	}
 	set_property("sl_maximize_current", res);
+	sl_debug_print("Resetting sl_maximize_current to " + res, "yellow");
 
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
@@ -139,6 +144,7 @@ void finalizeMaximize()
 
 void addToMaximize(string add)
 {
+	sl_debug_print('Adding "' + add + '" to current maximizer statement', "yellow");
 	string res = get_property("sl_maximize_current");
 	boolean addHasComma = add.starts_with(",");
 	if(res != "" && !addHasComma)
@@ -156,6 +162,7 @@ void addToMaximize(string add)
 
 void removeFromMaximize(string rem)
 {
+	sl_debug_print('Removing "' + rem + '" from current maximizer statement', "yellow");
 	string res = get_property("sl_maximize_current");
 	res = res.replace_string(rem, "");
 	// let's be safe here
@@ -173,12 +180,14 @@ void removeFromMaximize(string rem)
 
 boolean simMaximize()
 {
+	sl_debug_print("Simulating: " + get_property("sl_maximize_current"), "yellow");
 	return slMaximize(get_property("sl_maximize_current"), true);
 }
 
 boolean simMaximizeWith(string add)
 {
 	addToMaximize(add);
+	sl_debug_print("Simulating: " + get_property("sl_maximize_current"), "yellow");
 	boolean res = slMaximize(get_property("sl_maximize_current"), true);
 	removeFromMaximize(add);
 	return res;
@@ -197,6 +206,7 @@ void equipMaximizedGear()
 	}
 
 	finalizeMaximize();
+	sl_debug_print("Maximizing: " + get_property("sl_maximize_current"), "yellow");
 	maximize(get_property("sl_maximize_current"), 2500, 0, false);
 }
 
