@@ -249,6 +249,14 @@ void handlePreAdventure(location place)
 		}
 	}
 
+	foreach i,mon in get_monsters(place)
+	{
+		if(sl_wantToYellowRay(mon, place))
+		{
+			adjustForYellowRayIfPossible(mon);
+		}
+	}
+
 	bat_formPreAdventure();
 	horsePreAdventure();
 	equipMaximizedGear();

@@ -7930,7 +7930,6 @@ boolean L12_filthworms()
 
 	if(have_effect($effect[Filthworm Drone Stench]) > 0)
 	{
-		adjustForYellowRayIfPossible($monster[filthworm royal guard]);
 		if(sl_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !is100FamiliarRun($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
@@ -7939,7 +7938,6 @@ boolean L12_filthworms()
 	}
 	else if(have_effect($effect[Filthworm Larva Stench]) > 0)
 	{
-		adjustForYellowRayIfPossible($monster[filthworm drone]);
 		if(sl_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !is100FamiliarRun($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
@@ -7948,7 +7946,6 @@ boolean L12_filthworms()
 	}
 	else
 	{
-		adjustForYellowRayIfPossible($monster[larval filthworm]);
 		if(sl_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !is100FamiliarRun($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
@@ -8732,7 +8729,6 @@ boolean L10_basement()
 				}
 				else
 				{
-					adjustForYellowRayIfPossible($monster[Quiet Healer]);
 					print("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
 					slAdv(1, $location[The Penultimate Fantasy Airship]);
 				}
@@ -8796,10 +8792,6 @@ boolean L10_airship()
 		handleFamiliar($familiar[Artistic Goth Kid]);
 	}
 
-	if(!possessEquipment($item[Mohawk Wig]))
-	{
-		adjustForYellowRayIfPossible($monster[Burly Sidekick]);
-	}
 	if($location[The Penultimate Fantasy Airship].turns_spent < 10)
 	{
 		bat_formBats();
