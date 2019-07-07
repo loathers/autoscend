@@ -7433,7 +7433,7 @@ boolean L12_gremlins()
 	{
 		bat_formMist();
 	}
-	handleFamiliar(in_beta() ? "gremlins" : "init");
+	handleFamiliar(sl_beta() ? "gremlins" : "init");
 	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
