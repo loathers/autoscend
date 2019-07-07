@@ -1176,7 +1176,7 @@ boolean sl_voteMonster(boolean freeMon, location loc, string option)
 		{
 			return false;
 		}
-		equip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
+		slEquip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
 	}
 	return slAdv(1, loc, option);
 }

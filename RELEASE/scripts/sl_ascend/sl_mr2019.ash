@@ -211,7 +211,7 @@ boolean sl_sausageGoblin(location loc, string option)
 		{
 			return false;
 		}
-		equip($item[Kramco Sausage-o-Matic&trade;]);
+		slEquip($item[Kramco Sausage-o-Matic&trade;]);
 	}
 	return slAdv(1, loc, option);
 }

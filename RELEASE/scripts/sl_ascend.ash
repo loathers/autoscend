@@ -8508,7 +8508,7 @@ boolean L10_topFloor()
 	providePlusNonCombat(25);
 	if((item_amount($item[Mohawk Wig]) > 0) && can_equip($item[Mohawk Wig]))
 	{
-		equip($item[mohawk wig]);
+		slEquip($item[mohawk wig]);
 	}
 	slAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
@@ -8671,7 +8671,7 @@ boolean L10_basement()
 	else if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 	{
 		print("We was fast and furry-ous!", "blue");
-		equip($item[Titanium Assault Umbrella]);
+		slEquip($item[Titanium Assault Umbrella]);
 		set_property("choiceAdventure669", "1");
 		slAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 		if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
@@ -8730,7 +8730,7 @@ boolean L10_basement()
 				return true;
 			}
 		}
-		equip($slot[acc3], $item[Amulet Of Extreme Plot Significance]);
+		slEquip($slot[acc3], $item[Amulet Of Extreme Plot Significance]);
 		set_property("choiceAdventure670", "4");
 		if(!have_equipped($item[Amulet Of Extreme Plot Significance]))
 		{
@@ -9034,9 +9034,9 @@ boolean LX_dolphinKingMap()
 		{
 			buyUpTo(1, $item[Snorkel]);
 			item oldHat = equipped_item($slot[hat]);
-			equip($item[Snorkel]);
+			slEquip($item[Snorkel]);
 			use(1, $item[Dolphin King\'s Map]);
-			equip(oldHat);
+			slEquip(oldHat);
 			return true;
 		}
 	}
@@ -12654,14 +12654,14 @@ boolean L9_oilPeak()
 	{
 		if (item_amount($item[Dress Pants]) > 0)
 		{
-			equip($slot[Pants], $item[Dress Pants]);
+			slEquip($slot[Pants], $item[Dress Pants]);
 		}
 		else
 		{
 			januaryToteAcquire($item[tinsel tights]);
 			if(item_amount($item[tinsel tights]) > 0)
 			{
-				equip($item[tinsel tights]);
+				slEquip($item[tinsel tights]);
 			}
 		}
 	}
@@ -12832,7 +12832,7 @@ boolean L9_chasmBuild()
 		{
 			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
 			{
-				equip(it);
+				slEquip(it);
 			}
 		}
 
