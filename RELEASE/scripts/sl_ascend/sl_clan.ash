@@ -54,7 +54,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Deluxe Fax Machine]))
+	if(!is_unrestricted($item[deluxe fax machine]))
 	{
 		return false;
 	}
@@ -160,7 +160,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 
 	if(fightIt)
 	{
-		handleTracker(enemy, $item[Deluxe Photo Copier], "sl_copies");
+		handleTracker(enemy, $item[deluxe fax machine], "sl_copies");
 		return slAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
 	}
 	return false;
