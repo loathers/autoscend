@@ -72,6 +72,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		if(get_property("photocopyMonster") == enemy)
 		{
 			print("We already have the copy! Let's jam!", "blue");
+			handleTracker(enemy, $item[Deluxe Fax Machine], "sl_copies");
 			return slAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
 		}
 		else
@@ -159,6 +160,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 
 	if(fightIt)
 	{
+		handleTracker(enemy, $item[Deluxe Photo Copier], "sl_copies");
 		return slAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
 	}
 	return false;
