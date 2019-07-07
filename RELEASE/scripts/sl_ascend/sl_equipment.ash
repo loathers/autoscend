@@ -105,9 +105,48 @@ boolean useMaximizeToEquip()
 	return get_property("sl_maximize_baseline") != "";
 }
 
+string defaultMaximizeStatement()
+{
+	// TODO: Give this some nice logic, like not using fam exp if your familiar is max weight, etc
+	// also ideally not emphasizing spell damage if saucestorm is unknown, and emphasizing weapon
+	// damage instead of spell damage as a seal clubber, stuff like that...
+	string res = "0.5initiative,5item,meat,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,0.4hp,0.2mp,-fumble";
+
+	res += (my_class() == $class[Ed]) ? ",10mp regen" : ",5mp regen";
+
+	if(sl_have_familiar($familiar[mosquito]))
+	{
+		res += ",2familiar weight";
+		if(my_familiar().familiar_weight() < 20)
+		{
+			res += ",5familiar exp";
+		}
+	}
+
+	if(my_primestat() == $stat[Mysticality])
+	{
+		res += ",0.25spell damage,1.75spell damage percent";
+	}
+	else
+	{
+		res += ",effective,0.8weapon damage,1.2weapon damage percent";
+	}
+
+	if(my_level() < 13)
+	{
+		res += ",10exp";
+	}
+
+	return res;
+}
+
 void resetMaximize()
 {
 	string res = get_property("sl_maximize_baseline");
+	if(res.to_lower_case() == "default")
+	{
+		res = defaultMaximizeStatement();
+	}
 	foreach it in $items[hewn moon-rune spoon, makeshift garbage shirt, broken champagne bottle, snow suit]
 	{
 		// don't want to equip these items automatically

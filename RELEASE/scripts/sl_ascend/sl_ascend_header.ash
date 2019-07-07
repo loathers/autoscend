@@ -530,6 +530,7 @@ boolean slEquip(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
 boolean slEquip(item it); //Defined in sl_ascend/sl_equipment.ash
 boolean tryAddItemToMaximize(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
 boolean useMaximizeToEquip(); //Defined in sl_ascend/sl_equipment.ash
+string defaultMaximizeStatement(); //Defined in sl_ascend/sl_equipment.ash
 void resetMaximize(); //Defined in sl_ascend/sl_equipment.ash
 void finalizeMaximize(); //Defined in sl_ascend/sl_equipment.ash
 void addToMaximize(string add); //Defined in sl_ascend/sl_equipment.ash
