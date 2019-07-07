@@ -8,6 +8,7 @@ barrelShrineUnlocked	boolean	Do you have access to the barrel shrine?
 gingerbreadCityAvailable	boolean	Do you have access to the Gingerbread City?
 spacegateAlways	boolean	[standard] Do you have access to Spacegate?
 frAlways	boolean	[standard] Do you have access to FantasyRealm?
+prAlways	boolean	[standard] Do you have access to PirateRealm?
 neverendingPartyAlways	boolean	[standard] Do you have access to the Neverending Party?
 voteAlways	boolean	[standard] Do you have access to the Voting Booth?
 daycareOpen	boolean	[standard] Do you have access to the Boxing Daycare?
