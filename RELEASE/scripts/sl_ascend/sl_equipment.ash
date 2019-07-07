@@ -184,6 +184,11 @@ boolean simMaximizeWith(string add)
 	return res;
 }
 
+float simValue(string modifier)
+{
+	return numeric_modifier("Generated:_spec", modifier);
+}
+
 void equipMaximizedGear()
 {
 	if(!useMaximizeToEquip())

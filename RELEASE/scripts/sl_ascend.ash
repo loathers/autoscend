@@ -1346,7 +1346,7 @@ boolean doThemtharHills()
 		}
 		handleFamiliar(my_familiar());
 	}
-	int expectedMeat = numeric_modifier("Generated:_spec", "meat drop");
+	int expectedMeat = simValue("Meat Drop");
 
 
 	if(get_property("sl_useWishes").to_boolean())
@@ -11396,7 +11396,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		if(useMaximizeToEquip())
 		{
 			simMaximizeWith("1000hot res 9 max,1000stench res 9 max");
-			if(numeric_modifier("Generated:_spec", "Hot Resistance") >= 9 && numeric_modifier("Generated:_spec", "Stench Resistance") >= 9)
+			if(simValue("Hot Resistance") >= 9 && simValue("Stench Resistance") >= 9)
 			{
 				haveRes = true;
 			}
@@ -12060,9 +12060,9 @@ boolean L9_aBooPeak()
 		}
 
 		slMaximize("spooky res, cold res, 0.01hp " + lihcface + " -equip snow suit" + parrot, 0, 0, true);
-		int coldResist = numeric_modifier("Generated:_spec", "cold resistance");
-		int spookyResist = numeric_modifier("Generated:_spec", "spooky resistance");
-		int hpDifference = numeric_modifier("Generated:_spec", "Maximum HP") - numeric_modifier("Maximum HP");
+		int coldResist = simValue("Cold Resistance");
+		int spookyResist = simValue("Spooky Resistance");
+		int hpDifference = simValue("Maximum HP") - numeric_modifier("Maximum HP");
 		int effectiveCurrentHP = my_hp();
 
 		//	Do we need to manually adjust for the parrot?
@@ -12148,7 +12148,7 @@ boolean L9_aBooPeak()
 
 		int considerHP = my_maxhp() + hpDifference;
 
-		int mp_need = 20 + numeric_modifier("Generated:_spec", "Mana Cost");
+		int mp_need = 20 + simValue("Mana Cost");
 		if((my_hp() - totalDamage) > 50)
 		{
 			mp_need = mp_need - 20;
@@ -12476,7 +12476,7 @@ boolean L9_twinPeak()
 			simMaximize();
 		}
 
-		if((useMaximizeToEquip() ? numeric_modifier("Generated:_spec", "Stench Resistance") : elemental_resist($element[stench])) >= 4)
+		if((useMaximizeToEquip() ? simValue("Stench Resistance") : elemental_resist($element[stench])) >= 4)
 		{
 			attemptNum = 1;
 			attempt = true;
@@ -12729,15 +12729,15 @@ void L9_chasmMaximizeForNoncombat()
 	string mystry = "100mysticality,100spell damage,1000 spell damage percent";
 	string moxtry = "100moxie,1000sleaze resistance";
 	simMaximizeWith(mustry);
-	float musmus = numeric_modifier("Generated:_spec", "Buffed Muscle");
-	float musflat = numeric_modifier("Generated:_spec", "Weapon Damage");
-	float musperc = numeric_modifier("Generated:_spec", "Weapon Damage Percent");
+	float musmus = simValue("Buffed Muscle");
+	float musflat = simValue("Weapon Damage");
+	float musperc = simValue("Weapon Damage Percent");
 	int musscore = floor(square_root((musmus + musflat)/15*(1+musperc/100)));
 	print("Muscle score: " + musscore, "blue");
 	simMaximizeWith(mystry);
-	float mysmys = numeric_modifier("Generated:_spec", "Buffed Mysticality");
-	float mysflat = numeric_modifier("Generated:_spec", "Spell Damage");
-	float mysperc = numeric_modifier("Generated:_spec", "Spell Damage Percent");
+	float mysmys = simValue("Buffed Mysticality");
+	float mysflat = simValue("Spell Damage");
+	float mysperc = simValue("Spell Damage Percent");
 	int mysscore = floor(square_root((mysmys + mysflat)/15*(1+mysperc/100)));
 	print("Mysticality score: " + mysscore, "blue");
 	if(mysscore > musscore)
@@ -12745,8 +12745,8 @@ void L9_chasmMaximizeForNoncombat()
 		best = "mys";
 	}
 	simMaximizeWith(moxtry);
-	float moxmox = numeric_modifier("Generated:_spec", "Buffed Moxie");
-	float moxres = numeric_modifier("Generated:_spec", "Sleaze Resistance");
+	float moxmox = simValue("Buffed Moxie");
+	float moxres = simValue("Sleaze Resistance");
 	int moxscore = floor(square_root(moxmox/30*(1+moxres*0.69)));
 	print("Moxie score: " + moxscore, "blue");
 	if(moxscore > mysscore && moxscore > musscore)
@@ -13265,10 +13265,7 @@ boolean L11_shenCopperhead()
 		{
 			foreach it in $items[Loadstone, Logging Hatchet]
 			{
-				if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
-				{
-					slEquip(it);
-				}
+				slEquip(it);
 			}
 		}
 
@@ -13702,7 +13699,7 @@ boolean L8_trapperGroar()
 		if((elemental_resist($element[cold]) < 5) && (my_level() == get_property("sl_powerLevelLastLevel").to_int()))
 		{
 			slMaximize("cold res 5 max,-tie,-equip snow suit", 0, 0, true);
-			int coldResist = numeric_modifier("Generated:_spec", "cold resistance");
+			int coldResist = simValue("Cold Resistance");
 			if(coldResist >= 5)
 			{
 				if(useMaximizeToEquip())
@@ -13961,11 +13958,11 @@ boolean sl_tavern()
 		}
 		//Sleaze is the only one we don\'t care about
 
-		if(item_amount($item[17-Ball]) > 0)
+		if(possessEquipment($item[17-Ball]) && !useMaximizeToEquip())
 		{
-			slEquip($slot[off-hand], $item[17-Ball]);
+			slEquip($item[17-Ball]);
 		}
-		if(possessEquipment($item[Kremlin\'s Greatest Briefcase]))
+		if(possessEquipment($item[Kremlin's Greatest Briefcase]))
 		{
 			string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
 			if(contains_text(mod, "Weapon Damage Percent"))
@@ -13986,67 +13983,55 @@ boolean sl_tavern()
 				}
 			}
 			mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
-			if(contains_text(mod, "Hot Damage"))
+			if(contains_text(mod, "Hot Damage") && !useMaximizeToEquip())
 			{
 				slEquip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
-				if(numeric_modifier("Hot Damage") < 20.0)
-				{
-					buffMaintain($effect[Pyromania], 20, 1, 1);
-				}
-				if(numeric_modifier("Cold Damage") < 20.0)
-				{
-					buffMaintain($effect[Frostbeard], 20, 1, 1);
-				}
-				if(numeric_modifier("Stench Damage") < 20.0)
-				{
-					buffMaintain($effect[Rotten Memories], 20, 1, 1);
-				}
-				if(numeric_modifier("Spooky Damage") < 20.0)
-				{
-					if(have_skill($skill[Intimidating Mien]))
-					{
-						buffMaintain($effect[Intimidating Mien], 20, 1, 1);
-					}
-					else
-					{
-						buffMaintain($effect[Dirge of Dreadfulness], 20, 1, 1);
-						buffMaintain($effect[Snarl of the Timberwolf], 20, 1, 1);
-					}
-				}
 			}
 		}
 
-		if(numeric_modifier("Cold Damage") >= 20.0)
+		if(numeric_modifier("Hot Damage") < 20.0)
 		{
-			set_property("choiceAdventure513", "2");
+			buffMaintain($effect[Pyromania], 20, 1, 1);
 		}
-		else
+		if(numeric_modifier("Cold Damage") < 20.0)
 		{
-			set_property("choiceAdventure513", "1");
+			buffMaintain($effect[Frostbeard], 20, 1, 1);
 		}
-		if(numeric_modifier("Hot Damage") >= 20.0)
+		if(numeric_modifier("Stench Damage") < 20.0)
 		{
-			set_property("choiceAdventure496", "2");
+			buffMaintain($effect[Rotten Memories], 20, 1, 1);
 		}
-		else
+		if(numeric_modifier("Spooky Damage") < 20.0)
 		{
-			set_property("choiceAdventure496", "1");
+			if(have_skill($skill[Intimidating Mien]))
+			{
+				buffMaintain($effect[Intimidating Mien], 20, 1, 1);
+			}
+			else
+			{
+				buffMaintain($effect[Dirge of Dreadfulness], 20, 1, 1);
+				buffMaintain($effect[Snarl of the Timberwolf], 20, 1, 1);
+			}
 		}
-		if(numeric_modifier("Spooky Damage") >= 20.0)
+
+		addToMaximize("200cold damage 20max,200hot damage 20max,200spooky damage 20max,200stench damage 20max");
+		simMaximize();
+		int [string] eleChoiceCombos = {
+			"Cold": 513,
+			"Hot": 496,
+			"Spooky": 515,
+			"Stench": 514
+		};
+		int capped = 0;
+		foreach ele, choicenum in eleChoiceCombos
 		{
-			set_property("choiceAdventure515", "2");
+			boolean passed = simValue(ele + " Damage") >= 20.0;
+			set_property("choiceAdventure" + choicenum, passed ? "2" : "1");
+			if(passed) ++capped;
 		}
-		else
+		if(passed >= 3)
 		{
-			set_property("choiceAdventure515", "1");
-		}
-		if(numeric_modifier("Stench Damage") >= 20.0)
-		{
-			set_property("choiceAdventure514", "2");
-		}
-		else
-		{
-			set_property("choiceAdventure514", "1");
+			providePlusNonCombat(25);
 		}
 
 		tavern = get_property("tavernLayout");

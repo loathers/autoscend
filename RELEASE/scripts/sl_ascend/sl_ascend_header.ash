@@ -536,6 +536,7 @@ void addToMaximize(string add); //Defined in sl_ascend/sl_equipment.ash
 void removeFromMaximize(string rem); //Defined in sl_ascend/sl_equipment.ash
 boolean simMaximize(); //Defined in sl_ascend/sl_equipment.ash
 boolean simMaximizeWith(string add); //Defined in sl_ascend/sl_equipment.ash
+float simValue(string modifier); //Defined in sl_ascend/sl_equipment.ash
 void equipMaximizedGear(); //Defined in sl_ascend/sl_equipment.ash
 void equipBaseline();										//Defined in sl_ascend/sl_equipment.ash
 void equipRollover();										//Defined in sl_ascend/sl_equipment.ash
