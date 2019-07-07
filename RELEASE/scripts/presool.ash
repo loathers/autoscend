@@ -255,6 +255,11 @@ void handlePreAdventure(location place)
 		{
 			adjustForYellowRayIfPossible(mon);
 		}
+
+		if(sl_wantToBanish(mon, place))
+		{
+			adjustForBanishIfPossible(mon, place);
+		}
 	}
 
 	bat_formPreAdventure();

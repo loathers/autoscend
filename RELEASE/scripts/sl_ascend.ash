@@ -6444,11 +6444,6 @@ boolean LX_spookyBedroomCombat()
 {
 	set_property("sl_disableAdventureHandling", true);
 
-	if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
-	{
-		slEquip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
-	}
-
 	slAdv(1, $location[The Haunted Bedroom]);
 	if(contains_text(visit_url("main.php"), "choice.php"))
 	{
@@ -8806,11 +8801,6 @@ boolean L10_airship()
 		buffMaintain($effect[Gummed Shoes], 0, 1, 1);
 	}
 
-	if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
-	{
-		equip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
-	}
-
 	slAdv(1, $location[The Penultimate Fantasy Airship]);
 	handleFamiliar("item");
 	return true;
@@ -9378,11 +9368,6 @@ boolean L7_crypt()
 		if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
 			handleFamiliar($familiar[Space Jellyfish]);
-		}
-
-		if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
-		{
-			slEquip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
 		}
 
 		print("The Niche!", "blue");

@@ -873,6 +873,7 @@ string yellowRayCombatString();								//Defined in sl_ascend/sl_util.ash
 boolean adjustForYellowRay(string combat_string); //Defined in sl_ascend/sl_util.ash
 boolean adjustForYellowRayIfPossible(monster target); //Defined in sl_ascend/sl_util.ash
 boolean adjustForYellowRayIfPossible(); //Defined in sl_ascend/sl_util.ash
+string banisherCombatString(monster enemy, location loc, boolean inCombat); //Defined in sl_ascend/sl_util.ash
 string banisherCombatString(monster enemy, location loc);	//Defined in sl_ascend/sl_util.ash
 boolean[string] sl_banishesUsedAt(location loc); // Defined in sl_ascend/sl_util.ash
 boolean sl_wantToBanish(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
@@ -885,6 +886,7 @@ boolean zoneMeat(location loc);								//Defined in sl_ascend/sl_util.ash
 boolean zoneNonCombat(location loc);						//Defined in sl_ascend/sl_util.ash
 boolean declineTrades();									//Defined in sl_ascend/sl_util.ash
 boolean sl_beta(); //Defined in sl_ascend/sl_util.ash
+void sl_interruptCheck(); //Defined in sl_ascend/sl_util.ash
 
 //From Zlib Stuff
 record kmailObject {

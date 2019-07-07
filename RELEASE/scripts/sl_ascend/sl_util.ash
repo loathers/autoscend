@@ -1380,7 +1380,7 @@ boolean sl_wantToBanish(monster enemy, location loc)
 	return monstersToBanish[enemy];
 }
 
-string banisherCombatString(monster enemy, location loc)
+string banisherCombatString(monster enemy, location loc, boolean inCombat)
 {
 	if(get_property("kingLiberated").to_boolean())
 	{
@@ -1420,17 +1420,17 @@ string banisherCombatString(monster enemy, location loc)
 
 	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
 
-	if(sl_have_skill($skill[Throw Latte on Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
+	if((inCombat ? sl_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member's mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
 	{
 		return "skill " + $skill[Throw Latte on Opponent];
 	}
 
-	if(sl_have_skill($skill[Give Your Opponent The Stinkeye]) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
+	if((inCombat ? sl_have_skill($skill[Give Your Opponent The Stinkeye]) : possessEquipment($item[stinky cheese eye])) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
 	{
 		return "skill " + $skill[Give Your Opponent The Stinkeye];
 	}
 
-	if(sl_have_skill($skill[Creepy Grin]) && !get_property("_vmaskBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Creepy Grin])))
+	if((inCombat ? sl_have_skill($skill[Creepy Grin]) : possessEquipment($item[V for Vivala mask])) && !get_property("_vmaskBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Creepy Grin])))
 	{
 		return "skill " + $skill[Creepy Grin];
 	}
@@ -1457,7 +1457,7 @@ string banisherCombatString(monster enemy, location loc)
 		return "skill " + $skill[Curse Of Vacation];
 	}
 
-	if(sl_have_skill($skill[Show Them Your Ring]) && !get_property("_mafiaMiddleFingerRingUsed").to_boolean() && (my_mp() >= mp_cost($skill[Show Them Your Ring])))
+	if((inCombat ? sl_have_skill($skill[Show Them Your Ring]) : possessEquipment($item[Mafia middle finger ring])) && !get_property("_mafiaMiddleFingerRingUsed").to_boolean() && (my_mp() >= mp_cost($skill[Show Them Your Ring])))
 	{
 		return "skill " + $skill[Show Them Your Ring];
 	}
@@ -1465,7 +1465,7 @@ string banisherCombatString(monster enemy, location loc)
 	{
 		return "skill " + $skill[Breathe Out];
 	}
-	if(sl_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (item_type(equipped_item($slot[weapon])) == "club") && (!(used contains "batter up!")))
+	if(sl_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (inCombat ? (item_type(equipped_item($slot[weapon])) == "club") : true) && (!(used contains "batter up!")))
 	{
 		return "skill " + $skill[Batter Up!];
 	}
@@ -1479,15 +1479,15 @@ string banisherCombatString(monster enemy, location loc)
 		return "skill " + $skill[Walk Away From Explosion];
 	}
 
-	if(sl_have_skill($skill[Talk About Politics]) && (get_property("_pantsgivingBanish").to_int() < 5) && have_equipped($item[Pantsgiving]) && (!(used contains "pantsgiving")))
+	if((inCombat ? sl_have_skill($skill[Talk About Politics]) : possessEquipment($item[Pantsgiving])) && (get_property("_pantsgivingBanish").to_int() < 5) && have_equipped($item[Pantsgiving]) && (!(used contains "pantsgiving")))
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if(sl_have_skill($skill[Reflex Hammer]) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
+	if((inCombat ? sl_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil' Doctor&trade; bag])) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
-	if(sl_have_skill($skill[KGB Tranquilizer Dart]) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
+	if((inCombat ? sl_have_skill($skill[KGB Tranquilizer Dart]) : possessEquipment($item[Kremlin's Greatest Briefcase])) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
 	{
 		boolean useIt = true;
 		if((get_property("sl_gremlins") == "finished") && (my_daycount() >= 2) && (get_property("_kgbTranquilizerDartUses").to_int() >= 2))
@@ -1506,7 +1506,16 @@ string banisherCombatString(monster enemy, location loc)
 	}
 	if(sl_have_skill($skill[Beancannon]) && (get_property("_beancannonUses").to_int() < 5) && ((my_mp() - 20) >= mp_cost($skill[Beancannon])) && (!(used contains "beancannon")))
 	{
-		if($items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork \'n\' Pork \'n\' Pork \'n\' Beans, Shrub\'s Premium Baked Beans, Tesla\'s Electroplated Beans, Trader Olaf\'s Exotic Stinkbeans, World\'s Blackest-Eyed Peas] contains equipped_item($slot[Off-hand]))
+		boolean haveBeans = false;
+		foreach beancan in $items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork \'n\' Pork \'n\' Pork \'n\' Beans, Shrub\'s Premium Baked Beans, Tesla\'s Electroplated Beans, Trader Olaf\'s Exotic Stinkbeans, World\'s Blackest-Eyed Peas]
+		{
+			if(inCombat ? equipped_item($slot[off-hand]) == beancan : possessEquipment(beancan))
+			{
+				haveBeans = true;
+				break;
+			}
+		}
+		if(haveBeans)
 		{
 			return "skill " + $skill[Beancannon];
 		}
@@ -1542,6 +1551,75 @@ string banisherCombatString(monster enemy, location loc)
 	}
 
 	return "";
+}
+
+string banisherCombatString(monster enemy, location loc)
+{
+	return banisherCombatString(enemy, loc, false);
+}
+
+boolean canBanish(monster enemy, location loc)
+{
+	return banisherCombatString(enemy, loc) != "";
+}
+
+boolean adjustForBanish(string combat_string)
+{
+	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
+	{
+		return slEquip($item[latte lovers member's mug]);
+	}
+	if(combat_string == "skill " + $skill[Give Your Opponent The Stinkeye])
+	{
+		return slEquip($item[stinky cheese eye]);
+	}
+	if(combat_string == "skill " + $skill[Creepy Grin])
+	{
+		return slEquip($item[V for Vivala mask]);
+	}
+	if(combat_string == "skill " + $skill[Show Them Your Ring])
+	{
+		return slEquip($item[Mafia middle finger ring]);
+	}
+	if(combat_string == "skill " + $skill[Batter Up!])
+	{
+		cli_execute("acquire 1 seal-clubbing club");
+		ensureSealClubs();
+		return true;
+	}
+	if(combat_string == "skill " + $skill[Talk About Politics])
+	{
+		return slEquip($item[Pantsgiving]);
+	}
+	if(combat_string == "skill " + $skill[Reflex Hammer])
+	{
+		return slEquip($item[Lil' Doctor&trade; bag]);
+	}
+	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
+	{
+		return slEquip($item[Kremlin's Greatest Briefcase]);
+	}
+	if(combat_string == "skill " + $skill[Beancannon])
+	{
+		foreach beancan in $items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork 'n' Pork 'n' Pork 'n' Beans, Shrub's Premium Baked Beans, Tesla's Electroplated Beans, Trader Olaf's Exotic Stinkbeans, World's Blackest-Eyed Peas]
+		{
+			if(slEquip(beancan))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	return true;
+}
+
+boolean adjustForBanishIfPossible(monster enemy, location loc)
+{
+	if(canBanish(enemy, loc))
+	{
+		return adjustForBanish(banisherCombatString(enemy, loc));
+	}
+	return false;
 }
 
 string yellowRayCombatString(monster target)

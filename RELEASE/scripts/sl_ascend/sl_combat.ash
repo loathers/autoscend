@@ -1031,7 +1031,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "banishercheck"))
 	{
-		string banishAction = banisherCombatString(enemy, my_location());
+		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
 		{
 			print("Looking at banishAction: " + banishAction, "green");
@@ -2075,7 +2075,7 @@ string findBanisher(int round, string opp, string text)
 {
 	monster enemy = to_monster(opp);
 
-	string banishAction = banisherCombatString(enemy, my_location());
+	string banishAction = banisherCombatString(enemy, my_location(), true);
 	if(banishAction != "")
 	{
 		print("Looking at banishAction: " + banishAction, "green");
