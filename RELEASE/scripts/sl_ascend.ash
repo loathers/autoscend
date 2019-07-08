@@ -1163,7 +1163,7 @@ boolean tophatMaker()
 	print("Mark Steam-Hat upgraded!", "blue");
 	if(reEquip != $item[none])
 	{
-		slEquip($slot[hat], reEquip);
+		equip($slot[hat], reEquip);
 	}
 	return true;
 }
@@ -1296,18 +1296,12 @@ boolean doThemtharHills()
 		slCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Loose purse strings]);
 	}
 
-	if(possessEquipment($item[Half a Purse]))
-	{
-		slEquip($item[Half a Purse]);
-	}
-	if((sl_my_path() == "Heavy Rains") && (item_amount($item[Thor\'s Pliers]) > 0))
+	slEquip($item[Half a Purse]);
+	if(sl_my_path() == "Heavy Rains")
 	{
 		slEquip($item[Thor\'s Pliers]);
 	}
-	if(possessEquipment($item[Miracle Whip]))
-	{
-		slEquip($item[Miracle Whip]);
-	}
+	slEquip($item[Miracle Whip]);
 
 	shrugAT($effect[Polka of Plenty]);
 	if(my_class() == $class[Ed])
@@ -1391,10 +1385,7 @@ boolean doThemtharHills()
 	if(sl_have_familiar($familiar[Trick-or-Treating Tot]) && (available_amount($item[Li\'l Pirate Costume]) > 0) && !is100FamiliarRun($familiar[Trick-or-Treating Tot]) && (sl_my_path() != "Heavy Rains"))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
-		if(equipped_item($slot[familiar]) != $item[Li\'l Pirate Costume])
-		{
-			slEquip($item[Li\'l Pirate Costume]);
-		}
+		slEquip($item[Li\'l Pirate Costume]);
 		handleFamiliar($familiar[Trick-or-Treating Tot]);
 	}
 
@@ -3623,7 +3614,7 @@ boolean L11_aridDesert()
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
 	{
 		print("Searching for the pyramid", "blue");
-		if((sl_my_path() == "Heavy Rains") && (item_amount($item[Thor\'s Pliers]) > 0))
+		if(sl_my_path() == "Heavy Rains")
 		{
 			slEquip($item[Thor\'s Pliers]);
 		}
@@ -3687,7 +3678,7 @@ boolean L11_aridDesert()
 			}
 		}
 
-		if((desertBuff != $item[none]) && can_equip(desertBuff))
+		if(desertBuff != $item[none])
 		{
 			slEquip(desertBuff);
 		}
@@ -3934,10 +3925,7 @@ boolean L11_palindome()
 		return false;
 	}
 
-	if(equipped_item($slot[acc3]) != $item[Talisman O\' Namsilat])
-	{
-		slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
-	}
+	slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 
 	int total = 0;
 	total = total + item_amount($item[Photograph Of A Red Nugget]);
@@ -4213,7 +4201,7 @@ boolean L13_towerNSFinal()
 	{
 		cli_execute("scripts/postsool.ash");
 	}
-	if((item_amount($item[Ouija Board\, Ouija Board]) > 0) && (my_class() == $class[Turtle Tamer]) && can_equip($item[Ouija Board\, Ouija Board]))
+	if(my_class() == $class[Turtle Tamer])
 	{
 		slEquip($item[Ouija Board\, Ouija Board]);
 	}
@@ -4226,10 +4214,7 @@ boolean L13_towerNSFinal()
 		}
 	}
 
-	if(possessEquipment($item[Oscus\'s Garbage Can Lid]) && can_equip($item[Oscus\'s Garbage Can Lid]))
-	{
-		slEquip($slot[Off-Hand], $item[Oscus\'s Garbage Can Lid]);
-	}
+	slEquip($slot[Off-Hand], $item[Oscus\'s Garbage Can Lid]);
 
 	if(sl_beta())
 	{
@@ -4248,26 +4233,18 @@ boolean L13_towerNSFinal()
 		}
 	}
 
-	if(item_amount($item[Beer Helmet]) > 0)
+	if(!useMaximizeToEquip())
 	{
 		slEquip($item[Beer Helmet]);
-	}
-	if(item_amount($item[Misty Cloak]) > 0)
-	{
 		slEquip($item[Misty Cloak]);
-	}
-	if(item_amount($item[Attorney\'s Badge]) > 0)
-	{
-		slEquip($slot[acc2], $item[Attorney\'s Badge]);
-	}
-	if(item_amount($item[gumshoes]) > 0)
-	{
 		slEquip($slot[acc1], $item[gumshoes]);
-	}
-	if(item_amount($item[World\'s Best Adventurer Sash]) > 0)
-	{
 		slEquip($slot[acc3], $item[World\'s Best Adventurer Sash]);
 	}
+	else
+	{
+		addToMaximize("10dr,3moxie,0.5da 1000max");
+	}
+	slEquip($slot[acc2], $item[Attorney\'s Badge]);
 
 
 	if(internalQuestStatus("questL13Final") < 13)
@@ -4373,11 +4350,11 @@ boolean L13_towerNSTower()
 		acquireMP(120, true);
 
 		int sources = 0;
-		if(item_amount($item[astral shirt]) > 0 && can_equip($item[astral shirt]))
+		if(possessEquipment($item[astral shirt]))
 		{
 			slEquip($item[astral shirt]);
 		}
-		else if(item_amount($item[Unfortunato's foolscap]) > 0)
+		else if(possessEquipment($item[Unfortunato's foolscap]))
 		{
 			slEquip($item[Unfortunato's foolscap]);
 		}
@@ -4394,7 +4371,7 @@ boolean L13_towerNSTower()
 			}
 		}
 
-		if((my_class() == $class[Turtle Tamer]) && (item_amount($item[Shocked Shell]) > 0))
+		if(my_class() == $class[Turtle Tamer])
 		{
 			slEquip($slot[shirt], $item[Shocked Shell]);
 		}
@@ -4416,7 +4393,6 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 		}
-		item familiarEquip = equipped_item($slot[Familiar]);
 		if((sl_have_familiar($familiar[warbear drone])) && !is100FamiliarRun())
 		{
 			sources = sources + 2;
@@ -4427,7 +4403,7 @@ boolean L13_towerNSTower()
 			{
 				pullXWhenHaveY($item[warbear drone codes], 1, 0);
 			}
-			if((item_amount($item[warbear drone codes]) > 0) || (equipped_item($slot[familiar]) == $item[warbear drone codes]))
+			if(possessEquipment($item[warbear drone codes]))
 			{
 				slEquip($item[warbear drone codes]);
 				sources = sources + 2;
@@ -4443,9 +4419,8 @@ boolean L13_towerNSTower()
 			handleFamiliar($familiar[Imitation Crab]);
 			sources = sources + 2;
 		}
-		if(item_amount($item[hippy protest button]) > 0)
+		if(slEquip($slot[acc1], $item[hippy protest button]))
 		{
-			slEquip($slot[acc1], $item[hippy protest button]);
 			sources = sources + 1;
 		}
 		if(item_amount($item[glob of spoiled mayo]) > 0)
@@ -4453,14 +4428,12 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Mayeaugh], 0, 1, 1);
 			sources = sources + 1;
 		}
-		if((item_amount($item[smirking shrunken head]) > 0) && can_equip($item[smirking shrunken head]))
+		if(slEquip($item[smirking shrunken head]))
 		{
-			slEquip($item[smirking shrunken head]);
 			sources = sources + 1;
 		}
-		else if((item_amount($item[hot plate]) > 0) && can_equip($item[hot plate]))
+		else if(slEquip($item[hot plate]))
 		{
-			slEquip($item[hot plate]);
 			sources = sources + 1;
 		}
 		if(have_skill($skill[Scarysauce]))
@@ -4479,26 +4452,11 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);
 		}
 		handleBjornify($familiar[Hobo Monkey]);
-		if(equipped_item($slot[acc2]) != $item[world\'s best adventurer sash])
-		{
-			slEquip($slot[acc2], $item[world\'s best adventurer sash]);
-		}
-		if(item_amount($item[Groll Doll]) > 0)
-		{
-			slEquip($slot[acc3], $item[Groll Doll]);
-		}
-		if(item_amount($item[old school calculator watch]) > 0)
-		{
-			slEquip($slot[acc3], $item[old school calculator watch]);
-		}
-		if(item_amount($item[Bottle Opener Belt Buckle]) > 0)
-		{
-			slEquip($slot[acc3], $item[Bottle Opener Belt Buckle]);
-		}
-		if((equipped_item($slot[acc3]) != $item[acid-squirting flower]) && (item_amount($item[acid-squirting flower]) > 0))
-		{
-			slEquip($slot[acc3], $item[acid-squirting flower]);
-		}
+		slEquip($slot[acc2], $item[world\'s best adventurer sash]);
+		slEquip($slot[acc3], $item[Groll Doll]);
+		slEquip($slot[acc3], $item[old school calculator watch]);
+		slEquip($slot[acc3], $item[Bottle Opener Belt Buckle]);
+		slEquip($slot[acc3], $item[acid-squirting flower]);
 		if(have_skill($skill[Frigidalmatian]) && (my_mp() > 300))
 		{
 			sources = sources + 1;
@@ -4542,10 +4500,6 @@ boolean L13_towerNSTower()
 			else
 			{
 				handleFamiliar("item");
-				if(item_amount(familiarEquip) > 0)
-				{
-					slEquip(familiarEquip);
-				}
 			}
 		}
 		else
@@ -4570,14 +4524,8 @@ boolean L13_towerNSTower()
 		{
 			cli_execute("concert 2");
 		}
-		if(item_amount($item[Silver Cow Creamer]) > 0)
-		{
-			slEquip($item[Silver Cow Creamer]);
-		}
-		if(item_amount($item[Sneaky Pete\'s Leather Jacket]) > 0)
-		{
-			slEquip($item[Sneaky Pete\'s Leather Jacket]);
-		}
+		slEquip($item[Silver Cow Creamer]);
+		slEquip($item[Sneaky Pete\'s Leather Jacket]);
 		if(is100FamiliarRun())
 		{
 			if(useMaximizeToEquip())
@@ -4601,7 +4549,7 @@ boolean L13_towerNSTower()
 				handleFamiliar(my_familiar());
 			}
 		}
-		if((my_class() == $class[Seal Clubber]) && (item_amount($item[Meat Tenderizer is Murder]) > 0))
+		if(my_class() == $class[Seal Clubber])
 		{
 			slEquip($item[Meat Tenderizer is Murder]);
 		}
@@ -5566,7 +5514,7 @@ boolean LX_attemptPowerLevel()
 		}
 		if((my_level() >= 9) && ((get_property("sl_highlandlord") == "start") || (get_property("sl_highlandlord") == "finished")))
 		{
-			if((monster_level_adjustment() < 60) && (item_amount($item[Dress Pants]) > 0) && (get_property("oilPeakProgress").to_float() > 0.0))
+			if((monster_level_adjustment() < 60) && (get_property("oilPeakProgress").to_float() > 0.0))
 			{
 				slEquip($slot[Pants], $item[Dress Pants]);
 			}
@@ -5857,26 +5805,11 @@ boolean L11_hiddenCity()
 			print("The idden osptial!! [sic]", "blue");
 			set_property("choiceAdventure784", "1");
 
-			if(item_amount($item[bloodied surgical dungarees]) > 0)
-			{
-				slEquip($item[bloodied surgical dungarees]);
-			}
-			if((item_amount($item[half-size scalpel]) > 0) && can_equip($item[half-size scalpel]))
-			{
-				slEquip($item[half-size scalpel]);
-			}
-			if(item_amount($item[surgical apron]) > 0)
-			{
-				slEquip($item[surgical apron]);
-			}
-			if(item_amount($item[head mirror]) > 0)
-			{
-				slEquip($slot[acc3], $item[head mirror]);
-			}
-			if(item_amount($item[surgical mask]) > 0)
-			{
-				slEquip($slot[acc2], $item[surgical mask]);
-			}
+			slEquip($item[bloodied surgical dungarees]);
+			slEquip($item[half-size scalpel]);
+			slEquip($item[surgical apron]);
+			slEquip($slot[acc3], $item[head mirror]);
+			slEquip($slot[acc2], $item[surgical mask]);
 			print("Hidden Hospital Progress: " + get_property("hiddenHospitalProgress"), "blue");
 			if((my_mp() > 60) || considerGrimstoneGolem(true))
 			{
@@ -6679,7 +6612,7 @@ boolean L11_mauriceSpookyraven()
 		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
 		use(1, $item[recipe: mortar-dissolving solution]);
 
-		if(item_amount($item[Numberwang]) > 0)
+		if(!useMaximizeToEquip())
 		{
 			slEquip($slot[acc3], $item[numberwang]);
 		}
@@ -8509,10 +8442,7 @@ boolean L10_topFloor()
 
 	handleFamiliar("initSuggest");
 	providePlusNonCombat(25);
-	if((item_amount($item[Mohawk Wig]) > 0) && can_equip($item[Mohawk Wig]))
-	{
-		slEquip($item[mohawk wig]);
-	}
+	slEquip($item[mohawk wig]);
 	slAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
 
@@ -9037,9 +8967,9 @@ boolean LX_dolphinKingMap()
 		{
 			buyUpTo(1, $item[Snorkel]);
 			item oldHat = equipped_item($slot[hat]);
-			slEquip($item[Snorkel]);
+			equip($item[Snorkel]);
 			use(1, $item[Dolphin King\'s Map]);
-			slEquip(oldHat);
+			equip(oldHat);
 			return true;
 		}
 	}
@@ -9308,12 +9238,9 @@ boolean L7_crypt()
 			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
 		}
 
-		if((item_amount($item[Gravy Boat]) > 0) && can_equip($item[Gravy Boat]))
-		{
-			slEquip($item[Gravy Boat]);
-		}
+		slEquip($item[Gravy Boat]);
 
-		if((item_amount($item[The Nuge\'s Favorite Crossbow]) > 0) && can_equip($item[The Nuge\'s Favorite Crossbow]) && (get_property("cyrptAlcoveEvilness").to_int() > 26))
+		if(!useMaximizeToEquip() && (get_property("cyrptAlcoveEvilness").to_int() > 26))
 		{
 			slEquip($item[The Nuge\'s Favorite Crossbow]);
 		}
@@ -9332,10 +9259,7 @@ boolean L7_crypt()
 		print("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
 		handleFamiliar("item");
-		if((item_amount($item[Gravy Boat]) > 0) && can_equip($item[Gravy Boat]))
-		{
-			slEquip($item[Gravy Boat]);
-		}
+		slEquip($item[Gravy Boat]);
 
 		bat_formBats();
 		januaryToteAcquire($item[broken champagne bottle]);
@@ -9362,10 +9286,7 @@ boolean L7_crypt()
 		{
 			handleFamiliar($familiar[Artistic Goth Kid]);
 		}
-		if((item_amount($item[Gravy Boat]) > 0) && can_equip($item[Gravy Boat]))
-		{
-			slEquip($item[Gravy Boat]);
-		}
+		slEquip($item[Gravy Boat]);
 
 		if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
@@ -9389,10 +9310,7 @@ boolean L7_crypt()
 			handleBjornify($familiar[Grimstone Golem]);
 		}
 
-		if((item_amount($item[Gravy Boat]) > 0) && can_equip($item[Gravy Boat]))
-		{
-			slEquip($item[Gravy Boat]);
-		}
+		slEquip($item[Gravy Boat]);
 
 		if(get_property("spacegateVaccine3").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Emotional Vaccine]) == 0) && get_property("spacegateAlways").to_boolean())
 		{
@@ -11084,10 +11002,7 @@ boolean LX_phatLootToken()
 
 	print("Phat Loot Token Get!", "blue");
 	set_property("choiceAdventure691", "2");
-	if(item_amount($item[Ring Of Detect Boring Doors]) > 0)
-	{
-		slEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
-	}
+	slEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
 
 	backupSetting("choiceAdventure692", 4);
 	if(item_amount($item[Platinum Yendorian Express Card]) > 0)
@@ -11560,22 +11475,10 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			buffMaintain($effect[Chalky Hand], 0, 1, 1);
 		}
-		if(item_amount($item[Pool Cue]) > 0)
-		{
-			slEquip($slot[weapon], $item[Pool Cue]);
-		}
-		if(item_amount(staffOfFats) > 0)
-		{
-			slEquip(staffOfFats);
-		}
-		if(item_amount(staffOfFatsEd) > 0)
-		{
-			slEquip(staffOfFatsEd);
-		}
-		if(item_amount(staffOfEd) > 0)
-		{
-			slEquip(staffOfEd);
-		}
+		slEquip($slot[weapon], $item[Pool Cue]);
+		slEquip(staffOfFats);
+		slEquip(staffOfFatsEd);
+		slEquip(staffOfEd);
 
 		print("It's billiards time!", "blue");
 		backupSetting("choiceAdventure330", 1);
@@ -11986,9 +11889,13 @@ boolean L9_aBooPeak()
 		if(clueAmt < 3)
 		{
 			januaryToteAcquire($item[Broken Champagne Bottle]);
-			if(item_amount($item[Broken Champagne Bottle]) > 0)
+			if(!useMaximizeToEquip())
 			{
 				slEquip($item[Broken Champagne Bottle]);
+			}
+			else
+			{
+				removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
 			}
 		}
 
@@ -12252,9 +12159,13 @@ boolean L9_aBooPeak()
 		if($location[A-Boo Peak].turns_spent < 10)
 		{
 			januaryToteAcquire($item[Broken Champagne Bottle]);
-			if(item_amount($item[Broken Champagne Bottle]) > 0)
+			if(!useMaximizeToEquip())
 			{
 				slEquip($item[Broken Champagne Bottle]);
+			}
+			else
+			{
+				removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
 			}
 		}
 
@@ -12999,13 +12910,6 @@ boolean L11_redZeppelin()
 	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
 
 	providePlusNonCombat(25);
-	foreach it in $items[ratty knitted cap, disturbing fanfic]
-	{
-		if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
-		{
-			slEquip(it);
-		}
-	}
 
 	if(item_amount($item[Flamin\' Whatshisname]) > 0)
 	{
@@ -13491,10 +13395,7 @@ boolean L11_blackMarket()
 		providePlusCombat(5);
 	}
 
-	if((item_amount($item[Blackberry Galoshes]) > 0) && !have_equipped($item[Blackberry Galoshes]) && can_equip($item[Blackberry Galoshes]))
-	{
-		slEquip($slot[acc3], $item[Blackberry Galoshes]);
-	}
+	slEquip($slot[acc3], $item[Blackberry Galoshes]);
 
 	if(considerGrimstoneGolem(true))
 	{
@@ -13887,10 +13788,7 @@ boolean L8_trapperYeti()
 
 		if(numeric_modifier("Combat Rate") <= 9.0)
 		{
-			if(possessEquipment($item[Carpe]))
-			{
-				slEquip($slot[Back], $item[Carpe]);
-			}
+			slEquip($slot[Back], $item[Carpe]);
 		}
 
 		if(numeric_modifier("Combat Rate") <= 0.0)
@@ -13945,7 +13843,7 @@ boolean sl_tavern()
 		sl_interruptCheck();
 		//Sleaze is the only one we don't care about
 
-		if(possessEquipment($item[17-Ball]) && !useMaximizeToEquip())
+		if(!useMaximizeToEquip())
 		{
 			slEquip($item[17-Ball]);
 		}
