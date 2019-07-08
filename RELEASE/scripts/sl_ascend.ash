@@ -12813,6 +12813,17 @@ boolean L9_chasmBuild()
 		slAdv(1, $location[The Smut Orc Logging Camp]);
 		return true;
 	}
+	else
+	{
+		if(sl_have_skill($skill[Spirit of Peppermint]) && have_effect($effect[Spirit of Peppermint]) == 0)
+		{
+			use_skill($skill[Spirit of Peppermint]);
+		}
+		if(have_effect($effect[Spirit of Peppermint]) && sl_have_skill($skill[Stuffed Mortar Shell]))
+		{
+			addToMaximize("20spell damage,80spell damage percent,20cold spell damage");
+		}
+	}
 
 	if(in_hardcore())
 	{

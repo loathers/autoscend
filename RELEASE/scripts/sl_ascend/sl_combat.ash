@@ -1349,6 +1349,11 @@ string sl_combatHandler(int round, string opp, string text)
 			}
 		}
 
+		if(my_location() == $location[The Smut Orc Logging Camp] && canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0 && canSurvive(1.0))
+		{
+			return useSkill($skill[Stuffed Mortar Shell]);
+		}
+
 		if(canUse($skill[Air Dirty Laundry]))
 		{
 			return useSkill($skill[Air Dirty Laundry]);
