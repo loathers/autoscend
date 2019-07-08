@@ -320,21 +320,18 @@ int sl_saberChargesAvailable()
 
 string sl_combatSaberBanish()
 {
-	if(!canUse($skill[Use the Force])) abort("Bad Saber banish use, please report");
 	set_property("_sl_saberChoice", 1);
 	return "skill " + $skill[Use the Force];
 }
 
 string sl_combatSaberCopy()
 {
-	if(!canUse($skill[Use the Force])) abort("Bad Saber copy use, please report");
 	set_property("_sl_saberChoice", 2);
 	return "skill " + $skill[Use the Force];
 }
 
 string sl_combatSaberYR()
 {
-	if(!canUse($skill[Use the Force])) abort("Bad Saber YR use: please report");
 	set_property("_sl_saberChoice", 3);
 	return "skill " + $skill[Use the Force];
 }
