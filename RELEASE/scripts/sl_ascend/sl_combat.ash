@@ -187,9 +187,17 @@ string sl_combatHandler(int round, string opp, string text)
 	{
 		print("sl_combatHandler: " + round, "brown");
 
-		if(enemy == $monster[Government Agent])
+		switch(enemy)
 		{
-			set_property("_portscanPending", false);
+			case $monster[Government Agent]:
+				set_property("_portscanPending", false);
+				break;
+			case $monster[possessed wine rack]:
+				set_property("sl_wineracksencountered", get_property("sl_wineracksencountered").to_int() + 1);
+				break;
+			case $monster[cabinet of Dr. Limpieza]:
+				set_property("sl_cabinetsencountered", get_property("sl_cabinetsencountered").to_int() + 1);
+				break;
 		}
 
 		set_property("sl_combatHandler", "");

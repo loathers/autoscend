@@ -280,7 +280,21 @@ void handlePreAdventure(location place)
 	}
 	if(itemNeed._boolean && (item_drop_modifier() < itemNeed._float))
 	{
-		print("We can't cap this drop bear!", "purple");
+		addToMaximize("100item " + (itemNeed._float.to_int() + 1) + "max");
+		simMaximize();
+		float itemDrop = simValue("Item Drop");
+		if(itemDrop < itemNeed._float && !haveAsdonBuff())
+		{
+			asdonAutoFeed(37);
+			if(asdonBuff($effect[Driving Observantly]))
+			{
+				itemDrop += 50.0;
+			}
+		}
+		if(itemDrop < itemNeed._float)
+		{
+			print("We can't cap this drop bear!", "purple");
+		}
 	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))

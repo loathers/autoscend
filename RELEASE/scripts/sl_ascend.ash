@@ -121,6 +121,7 @@ void initializeSettings()
 	set_property("sl_blackmap", "");
 	set_property("sl_boopeak", "");
 	set_property("sl_breakstone", get_property("sl_pvpEnable").to_boolean());
+	set_property("sl_cabinetsencountered", 0);
 	set_property("sl_castlebasement", "");
 	set_property("sl_castleground", "");
 	set_property("sl_castletop", "");
@@ -215,6 +216,7 @@ void initializeSettings()
 	set_property("sl_wandOfNagamar", true);
 	set_property("sl_war", "");
 	set_property("sl_winebomb", "");
+	set_property("sl_wineracksencountered", 0);
 	set_property("sl_wishes", "");
 	set_property("sl_writingDeskSummon", false);
 	set_property("sl_yellowRays", "");
