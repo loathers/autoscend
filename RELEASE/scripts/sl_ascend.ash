@@ -12819,7 +12819,7 @@ boolean L9_chasmBuild()
 		{
 			use_skill($skill[Spirit of Peppermint]);
 		}
-		if(have_effect($effect[Spirit of Peppermint]) && sl_have_skill($skill[Stuffed Mortar Shell]))
+		if(have_effect($effect[Spirit of Peppermint]) != 0 && sl_have_skill($skill[Stuffed Mortar Shell]))
 		{
 			addToMaximize("20spell damage,80spell damage percent,20cold spell damage");
 		}
