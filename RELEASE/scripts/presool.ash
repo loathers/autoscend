@@ -249,6 +249,11 @@ void handlePreAdventure(location place)
 		}
 	}
 
+	if(sl_latteDropAvailable(place))
+	{
+		slEquip($item[latte lovers member's mug]);
+	}
+
 	foreach i,mon in get_monsters(place)
 	{
 		if(sl_wantToYellowRay(mon, place))
