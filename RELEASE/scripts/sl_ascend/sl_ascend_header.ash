@@ -528,6 +528,8 @@ string getMaximizeSlotPref(slot s); //Defined in sl_ascend/sl_equipment.ash
 item getTentativeMaximizeEquip(slot s); //Defined in sl_ascend/sl_equipment.ash
 boolean slEquip(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
 boolean slEquip(item it); //Defined in sl_ascend/sl_equipment.ash
+boolean slForceEquip(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
+boolean slForceEquip(item it); //Defined in sl_ascend/sl_equipment.ash
 boolean tryAddItemToMaximize(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
 boolean useMaximizeToEquip(); //Defined in sl_ascend/sl_equipment.ash
 string defaultMaximizeStatement(); //Defined in sl_ascend/sl_equipment.ash

@@ -41,6 +41,29 @@ boolean slEquip(item it)
 	return slEquip(it.to_slot(), it);
 }
 
+// specifically intended for forcing something in to a specific slot,
+// instead of just forcing it to be equipped in general
+// made for Antique Machete, mainly
+boolean slForceEquip(slot s, item it)
+{
+	if(!possessEquipment(it) || !sl_can_equip(it))
+	{
+		return false;
+	}
+	if(equip(s, it))
+	{
+		removeFromMaximize("-equip " + it);
+		addToMaximize("-" + s);
+		return true;
+	}
+	return false;
+}
+
+boolean slForceEquip(item it)
+{
+	return slForceEquip(it.to_slot(), it);
+}
+
 boolean slOutfit(string toWear)
 {
 	if(!have_outfit(toWear))

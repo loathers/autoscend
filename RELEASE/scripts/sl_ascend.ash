@@ -6055,7 +6055,7 @@ boolean L11_hiddenCityZones()
 		}
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			slEquip($item[Antique Machete]);
+			slForceEquip($item[Antique Machete]);
 		}
 		# Add provision for Golden Monkey, or even more so, "Do we need spleen item"
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
@@ -6092,7 +6092,7 @@ boolean L11_hiddenCityZones()
 		}
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			slEquip($item[Antique Machete]);
+			slForceEquip($item[Antique Machete]);
 		}
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -6128,7 +6128,7 @@ boolean L11_hiddenCityZones()
 		}
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			slEquip($item[Antique Machete]);
+			slForceEquip($item[Antique Machete]);
 		}
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
@@ -6165,7 +6165,7 @@ boolean L11_hiddenCityZones()
 		}
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			slEquip($item[Antique Machete]);
+			slForceEquip($item[Antique Machete]);
 		}
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
@@ -6197,7 +6197,7 @@ boolean L11_hiddenCityZones()
 	{
 		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
 		{
-			slEquip($item[Antique Machete]);
+			slForceEquip($item[Antique Machete]);
 		}
 
 		handleFamiliar($familiar[Fist Turkey]);
