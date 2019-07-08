@@ -9341,7 +9341,6 @@ boolean L7_crypt()
 		if(useMaximizeToEquip())
 		{
 			removeFromMaximize("-equip " + $item[broken champagne bottle]);
-			addToMaximize("50item drop 400max");
 		}
 		else if((numeric_modifier("item drop") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
