@@ -834,8 +834,10 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	return retval;
 }
 
-string sl_latteDropName(location l) {
-	switch(l) {
+string sl_latteDropName(location l)
+{
+	switch(l)
+	{
 		case $location[The Mouldering Mansion]: return "ancient";
 		case $location[The Overgrown Lot]: return "basil";
 		case $location[Whitey's Grove]: return "belgian";
@@ -891,7 +893,8 @@ string sl_latteDropName(location l) {
 	}
 }
 
-boolean sl_latteDropAvailable(location l) {
+boolean sl_latteDropAvailable(location l)
+{
 	// obviously no latte drops are available if you don't HAVE a latte
 	if(available_amount($item[latte lovers member's mug]) == 0)
 		return false;
@@ -899,6 +902,11 @@ boolean sl_latteDropAvailable(location l) {
 	if(latteDrop == "")
 		return false;
 	return !get_property("latteUnlocks").contains_text(latteDrop);
+}
+
+boolean sl_latteDropWanted(location l)
+{
+	return sl_latteDropAvailable(l) && !($locations[Noob Cave, The Haunted Boiler Room, The Arid\, Extra-Dry Desert] contains l);
 }
 
 string sl_latteTranslate(string ingredient)

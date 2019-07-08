@@ -249,7 +249,7 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if(sl_latteDropAvailable(place) && place != $location[Noob Cave])
+	if(sl_latteDropWanted(place))
 	{
 		slEquip($item[latte lovers member's mug]);
 	}
