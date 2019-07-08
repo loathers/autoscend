@@ -280,7 +280,7 @@ void handlePreAdventure(location place)
 	}
 	if(itemNeed._boolean && (item_drop_modifier() < itemNeed._float))
 	{
-		addToMaximize("100item " + (itemNeed._float.to_int() + 1) + "max");
+		addToMaximize("50item " + ceil(itemNeed._float) + "max");
 		simMaximize();
 		float itemDrop = simValue("Item Drop");
 		if(itemDrop < itemNeed._float && !haveAsdonBuff())
