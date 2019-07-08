@@ -8730,9 +8730,9 @@ boolean L10_basement()
 				return true;
 			}
 		}
-		slEquip($slot[acc3], $item[Amulet Of Extreme Plot Significance]);
 		set_property("choiceAdventure670", "4");
-		if(!have_equipped($item[Amulet Of Extreme Plot Significance]))
+
+		if(!slEquip($slot[acc3], $item[Amulet Of Extreme Plot Significance]))
 		{
 			abort("Unable to equip the Amulet when we wanted to...");
 		}
@@ -11701,7 +11701,7 @@ boolean L12_startWar()
 	}
 	buffMaintain($effect[Snow Shoes], 0, 1, 1);
 	buffMaintain($effect[Become Superficially Interested], 0, 1, 1);
-	
+
 	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
@@ -14620,7 +14620,7 @@ boolean doTasks()
 	if(L3_tavern())						return true;
 	if(L6_friarsGetParts())				return true;
 	if(LX_hardcoreFoodFarm())			return true;
-	
+
 	if(in_hardcore() && LX_steelOrgan())
 	{
 		return true;
