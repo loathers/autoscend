@@ -39,7 +39,10 @@ void markAsUsed(skill sk)
 
 void markAsUsed(item it)
 {
-	set_property("sl_combatHandler", get_property("sl_combatHandler") + "(it" + it.to_int().to_string() + ")");
+	if(it != $item[none])
+	{
+		set_property("sl_combatHandler", get_property("sl_combatHandler") + "(it" + it.to_int().to_string() + ")");
+	}
 }
 
 boolean canUse(skill sk, boolean onlyOnce)
@@ -598,7 +601,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(canUse($item[Cigarette Lighter]) && (my_location() == $location[A Mob Of Zeppelin Protesters]) && (get_property("questL11Ron") == "step1"))
 	{
-		return useItem($item[Cigarette Lighter]);
+		return useItems($item[Cigarette Lighter], $item[none]);
 	}
 
 	if((my_class() == $class[Avatar of Sneaky Pete]) && canSurvive(2.0))
@@ -805,7 +808,12 @@ string sl_combatHandler(int round, string opp, string text)
 	{
 		if((item_amount($item[Tomb Ratchet]) + item_amount($item[Crumbling Wooden Wheel])) < 10)
 		{
-			return "item " + $item[Tangle Of Rat Tails];
+			string res = "item " + $item[Tangle of Rat Tails];
+			if(sl_have_skill($skill[Ambidextrous Funkslinging]))
+			{
+				res += ", none";
+			}
+			return res;
 		}
 	}
 
@@ -2823,7 +2831,12 @@ string sl_edCombatHandler(int round, string opp, string text)
 
 	if(my_location() == $location[A Mob Of Zeppelin Protesters] && item_amount($item[cigarette lighter]) > 0)
 	{
-		return "item " + $item[cigarette lighter];
+		string res = "item " + $item[cigarette lighter];
+		if(sl_have_skill($skill[Ambidextrous Funkslinging]))
+		{
+			res += ", none";
+		}
+		return res;
 		// insta-kills protestors and removes an additional 5-7 (optimal!)
 	}
 
