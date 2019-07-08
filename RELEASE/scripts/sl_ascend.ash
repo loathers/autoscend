@@ -6852,11 +6852,10 @@ boolean L11_mauriceSpookyraven()
 	{
 		if(item_amount($item[unstable fulminate]) > 0)
 		{
-			if(weapon_hands(equipped_item($slot[weapon])) != 1)
+			if(weapon_hands(equipped_item($slot[weapon])) > 1)
 			{
-				equip($slot[weapon], $item[none]);
+				slEquip($slot[weapon], $item[none]);
 			}
-			slEquip($item[unstable fulminate]);
 		}
 		print("Now we mix and heat it up.", "blue");
 
@@ -6866,7 +6865,7 @@ boolean L11_mauriceSpookyraven()
 			slEquip($slot[acc2], $item[gumshoes]);
 		}
 
-		if(equipped_item($slot[Off-hand]) != $item[Unstable Fulminate])
+		if(!slEquip($item[Unstable Fulminate]))
 		{
 			abort("Unstable Fulminate was not equipped. Please report this and include the following: Equipped items and if you have or don't have an Unstable Fulminate. For now, get the wine bomb manually, and run again.");
 		}
