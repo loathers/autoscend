@@ -9318,7 +9318,7 @@ boolean L7_crypt()
 		}
 		bat_formBats();
 
-		addToMaximize("50initiative 850max");
+		addToMaximize("100initiative 850max");
 
 		print("The Alcove! (" + initiative_modifier() + ")", "blue");
 		slAdv(1, $location[The Defiled Alcove]);
@@ -9419,7 +9419,7 @@ boolean L7_crypt()
 		}
 		buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
 		providePlusNonCombat(25);
-		addToMaximize("20ml 150max");
+		addToMaximize("200ml 149max");
 		slAdv(1, $location[The Defiled Cranny]);
 		return true;
 	}
@@ -12660,12 +12660,13 @@ boolean L9_oilPeak()
 		else
 		{
 			januaryToteAcquire($item[tinsel tights]);
-			if(item_amount($item[tinsel tights]) > 0)
+			if(!useMaximizeToEquip())
 			{
 				slEquip($item[tinsel tights]);
 			}
 		}
 	}
+	addToMaximize("200ml 100max");
 	slAdv(1, $location[Oil Peak]);
 	if(get_property("lastAdventure") == "Unimpressed with Pressure")
 	{
@@ -13005,7 +13006,7 @@ boolean L11_redZeppelin()
 
 	if(useMaximizeToEquip())
 	{
-		addToMaximize("20sleaze damage,20sleaze spell damage");
+		addToMaximize("100sleaze damage,100sleaze spell damage");
 	}
 	else
 	{
@@ -13926,10 +13927,11 @@ boolean sl_tavern()
 	}
 	print("In the tavern! Layout: " + tavern, "blue");
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
+	boolean maximized = false;
 	foreach loc in locations
 	{
 		sl_interruptCheck();
-		//Sleaze is the only one we don\'t care about
+		//Sleaze is the only one we don't care about
 
 		if(possessEquipment($item[17-Ball]) && !useMaximizeToEquip())
 		{
@@ -13976,7 +13978,7 @@ boolean sl_tavern()
 		}
 		if(numeric_modifier("Spooky Damage") < 20.0)
 		{
-			if(have_skill($skill[Intimidating Mien]))
+			if(sl_have_skill($skill[Intimidating Mien]))
 			{
 				buffMaintain($effect[Intimidating Mien], 20, 1, 1);
 			}
@@ -13987,8 +13989,12 @@ boolean sl_tavern()
 			}
 		}
 
-		addToMaximize("200cold damage 20max,200hot damage 20max,200spooky damage 20max,200stench damage 20max");
-		simMaximize();
+		if(!maximized)
+		{
+			addToMaximize("200cold damage 20max,200hot damage 20max,200spooky damage 20max,200stench damage 20max,100ml 149max");
+			simMaximize();
+			maximized = true;
+		}
 		int [string] eleChoiceCombos = {
 			"Cold": 513,
 			"Hot": 496,
