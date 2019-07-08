@@ -110,7 +110,7 @@ string defaultMaximizeStatement()
 	// TODO: Give this some nice logic, like not using fam exp if your familiar is max weight, etc
 	// also ideally not emphasizing spell damage if saucestorm is unknown, and emphasizing weapon
 	// damage instead of spell damage as a seal clubber, stuff like that...
-	string res = "0.5initiative,5item,meat,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,0.4hp,0.2mp,-fumble";
+	string res = "0.5initiative,5item,meat,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,0.4hp,0.2mp 1000max,-fumble";
 
 	res += (my_class() == $class[Ed]) ? ",10mp regen" : ",5mp regen";
 
