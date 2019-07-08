@@ -130,26 +130,31 @@ boolean useMaximizeToEquip()
 
 string defaultMaximizeStatement()
 {
-	string res = "0.5initiative,5item,meat,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,0.4hp,0.2mp 1000max,-fumble";
+	string res = "5item,meat";
 
-	res += (my_class() == $class[Ed]) ? ",10mp regen" : ",5mp regen";
-
-	if(sl_have_familiar($familiar[mosquito]))
+	// combat is completely different in pokefam, so most stuff doesn't matter there
+	if(sl_my_path() != "Pocket Familiars")
 	{
-		res += ",2familiar weight";
-		if(my_familiar().familiar_weight() < 20)
+		res += ",0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,0.4hp,0.2mp 1000max,-fumble";
+		res += (my_class() == $class[Ed]) ? ",10mp regen" : ",5mp regen";
+
+		if(my_primestat() == $stat[Mysticality])
 		{
-			res += ",5familiar exp";
+			res += ",0.25spell damage,1.75spell damage percent";
 		}
-	}
+		else
+		{
+			res += ",effective,0.8weapon damage,1.2weapon damage percent";
+		}
 
-	if(my_primestat() == $stat[Mysticality])
-	{
-		res += ",0.25spell damage,1.75spell damage percent";
-	}
-	else
-	{
-		res += ",effective,0.8weapon damage,1.2weapon damage percent";
+		if(sl_have_familiar($familiar[mosquito]))
+		{
+			res += ",2familiar weight";
+			if(my_familiar().familiar_weight() < 20)
+			{
+				res += ",5familiar exp";
+			}
+		}
 	}
 
 	if(my_level() < 13)
