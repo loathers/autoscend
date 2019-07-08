@@ -243,10 +243,7 @@ void handlePreAdventure(location place)
 
 	if((place == $location[The Black Forest]) && !have_equipped($item[Blackberry Galoshes]))
 	{
-		if(possessEquipment($item[Blackberry Galoshes]) && can_equip($item[Blackberry Galoshes]))
-		{
-			slEquip($slot[acc3], $item[Blackberry Galoshes]);
-		}
+		slEquip($slot[acc3], $item[Blackberry Galoshes]);
 	}
 
 	if(sl_latteDropWanted(place))

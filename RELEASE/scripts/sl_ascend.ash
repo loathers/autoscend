@@ -5986,10 +5986,7 @@ boolean L11_hiddenCityZones()
 			set_property("sl_hiddenzones", "2");
 			return true;
 		}
-		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
-		{
-			slForceEquip($item[Antique Machete]);
-		}
+		slForceEquip($item[Antique Machete]);
 		# Add provision for Golden Monkey, or even more so, "Do we need spleen item"
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -6023,10 +6020,7 @@ boolean L11_hiddenCityZones()
 			set_property("sl_hiddenzones", "3");
 			return true;
 		}
-		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
-		{
-			slForceEquip($item[Antique Machete]);
-		}
+		slForceEquip($item[Antique Machete]);
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
 		{
 			handleFamiliar($familiar[Unconscious Collective]);
@@ -6059,10 +6053,7 @@ boolean L11_hiddenCityZones()
 			set_property("sl_hiddenzones", "4");
 			return true;
 		}
-		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
-		{
-			slForceEquip($item[Antique Machete]);
-		}
+		slForceEquip($item[Antique Machete]);
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -6096,10 +6087,7 @@ boolean L11_hiddenCityZones()
 			set_property("sl_hiddenzones", "5");
 			return true;
 		}
-		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
-		{
-			slForceEquip($item[Antique Machete]);
-		}
+		slForceEquip($item[Antique Machete]);
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && sl_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -6128,10 +6116,7 @@ boolean L11_hiddenCityZones()
 
 	if(get_property("sl_hiddenzones") == "5")
 	{
-		if(can_equip($item[Antique Machete]) && (item_amount($item[Antique Machete]) > 0))
-		{
-			slForceEquip($item[Antique Machete]);
-		}
+		slForceEquip($item[Antique Machete]);
 
 		handleFamiliar($familiar[Fist Turkey]);
 		handleBjornify($familiar[Grinning Turtle]);
