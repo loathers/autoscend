@@ -8207,7 +8207,11 @@ boolean LX_getDigitalKey()
 	else if(get_property("sl_crackpotjar") == "fail")
 	{
 		woods_questStart();
-		equip($slot[acc2], $item[Continuum Transfunctioner]);
+		slEquip($slot[acc2], $item[Continuum Transfunctioner]);
+		if(sl_saberChargesAvailable() > 0)
+		{
+			slEquip($item[Fourth of May cosplay saber]);
+		}
 		slAdv(1, $location[8-bit Realm]);
 	}
 	return true;
