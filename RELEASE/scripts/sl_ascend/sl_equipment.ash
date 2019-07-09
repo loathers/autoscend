@@ -144,7 +144,7 @@ string defaultMaximizeStatement()
 		}
 		else
 		{
-			res += ",effective,1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
 		}
 
 		if(sl_have_familiar($familiar[mosquito]))
@@ -198,6 +198,10 @@ void finalizeMaximize()
 			removeFromMaximize("-equip " + toEquip);
 			addToMaximize("+equip " + toEquip);
 		}
+	}
+	if(get_property(getMaximizeSlotPref($slot[weapon])) != "" && my_primestat() != $stat[Mysticality])
+	{
+		addToMaximize("effective");
 	}
 }
 
