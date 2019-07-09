@@ -2908,17 +2908,16 @@ boolean providePlusCombat(int amt, boolean doEquips)
 				}
 				handleBjornify($familiar[Grim Brother]);
 			}
-			if(have_familiar($familiar[Jumpsuited Hound Dog]))
-			{
-				handleFamiliar($familiar[Jumpsuited Hound Dog]);
-			}
 		}
 		else
 		{
 			addToMaximize("50combat " + to_string(amt) + "max");
 			simMaximize();
-			equipDiff = to_int(simValue("Combat Rate") -
-				numeric_modifier("Combat Rate"));
+			equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+		}
+		if(have_familiar($familiar[Jumpsuited Hound Dog]))
+		{
+			handleFamiliar($familiar[Jumpsuited Hound Dog]);
 		}
 	}
 
