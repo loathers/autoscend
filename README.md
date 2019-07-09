@@ -20,9 +20,12 @@ may not be restored properly to their pre-run values.
 
 ## Requirements
 
-There aren't many specific requirements I can think of, but there is one important one: Saucestorm.
-If you run in to combat related issues in a path that allows access to your normally permed skills,
-don't report them if you don't have Saucestorm permed.
+There are a couple specific requirements to run sl\_ascend effectively. If you run in to issues in
+a path that allows access to your normally permed skills, don't report them if you don't have these
+skills permed:
+
+* Saucestorm
+* Cannelloni Cocoon
 
 Other things that help greatly but shouldn't be strictly required (I think):
 
@@ -34,6 +37,12 @@ Other things that help greatly but shouldn't be strictly required (I think):
 
 If you want to run HCCS, the recommended setup is Sauceror with all of the skills mentioned in the
 requirements section. Other classes should work as well, but Sauceror works best.
+
+## Two Crazy Random Summer
+
+The recommended class/sign combination for running sl\_ascend in TCRS is Sauceror/Blender.
+Other signs should work okay too, but they won't have any special support (like automatic diet,
+or using certain nice cheap potions).
 
 ## Warning
 
@@ -79,5 +88,4 @@ gausie (IGN: gausie (#1197090))
 ## Special Thanks
 
 This script would obviously not be possible without the work of Cheesecookie.
-He did by far the majority of the work, all I've done so far is make some minor adjustments to
-handle game changes, new IotMs, and new paths. So thanks a bunch to Cheesecookie!
+He did by far the majority of the work. So thanks a bunch to Cheesecookie!
