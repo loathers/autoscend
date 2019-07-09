@@ -4553,7 +4553,7 @@ boolean L13_towerNSTower()
 		{
 			if(useMaximizeToEquip())
 			{
-				addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconcious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
+				addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconscious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
 			}
 			else
 			{
