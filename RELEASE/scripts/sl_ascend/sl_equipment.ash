@@ -159,7 +159,7 @@ string defaultMaximizeStatement()
 
 	if(my_level() < 13)
 	{
-		res += ",10exp";
+		res += ",10exp,5" + my_primestat() + " experience percent";
 	}
 
 	return res;
