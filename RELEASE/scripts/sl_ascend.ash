@@ -10176,6 +10176,7 @@ boolean L4_batCave()
 	{
 		buffMaintain($effect[Polka of Plenty], 15, 1, 1);
 		bat_formWolf();
+		addToMaximize("10meat");
 		int batskinBelt = item_amount($item[Batskin Belt]);
 		slAdv(1, $location[The Boss Bat\'s Lair]);
 		# DIGIMON remove once mafia tracks this
