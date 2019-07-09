@@ -144,7 +144,7 @@ string defaultMaximizeStatement()
 		}
 		else
 		{
-			res += ",effective,0.8weapon damage,1.2weapon damage percent,0.8elemental damage";
+			res += ",effective,1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
 		}
 
 		if(sl_have_familiar($familiar[mosquito]))
