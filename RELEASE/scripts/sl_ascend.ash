@@ -1168,17 +1168,29 @@ boolean tophatMaker()
 	return true;
 }
 
-boolean warOutfit()
+boolean warOutfit(boolean immediate)
 {
+	boolean reallyWarOutfit(string toWear)
+	{
+		if(immediate)
+		{
+			return outfit(toWear);
+		}
+		else
+		{
+			return slOutfit(toWear);
+		}
+	}
+
 	if(!get_property("sl_hippyInstead").to_boolean())
 	{
-		if(!slOutfit("frat warrior fatigues"))
+		if(!reallyWarOutfit("frat warrior fatigues"));
 		{
 			foreach it in $items[Beer Helmet, Distressed Denim Pants, Bejeweled Pledge Pin]
 			{
 				take_closet(closet_amount(it), it);
 			}
-			if(!slOutfit("frat warrior fatigues"))
+			if(!reallyWarOutfit("frat warrior fatigues"))
 			{
 				abort("Do not have frat warrior fatigues and don't know why....");
 				return false;
@@ -1188,13 +1200,13 @@ boolean warOutfit()
 	}
 	else
 	{
-		if(!slOutfit("war hippy fatigues"))
+		if(!reallyWarOutfit("war hippy fatigues"))
 		{
 			foreach it in $items[Reinforced Beaded Headband, Bullet-proof Corduroys, Round Purple Sunglasses]
 			{
 				take_closet(closet_amount(it), it);
 			}
-			if(!slOutfit("war hippy fatigues"))
+			if(!reallyWarOutfit("war hippy fatigues"))
 			{
 				abort("Do not have war hippy fatigues and don't know why....");
 				return false;
@@ -1285,7 +1297,7 @@ boolean doThemtharHills()
 
 	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 	{
-		slOutfit("frat warrior fatigues");
+		outfit("frat warrior fatigues");
 		cli_execute("concert 2");
 	}
 
@@ -1474,7 +1486,7 @@ boolean doThemtharHills()
 	bat_formWolf();
 
 	{
-		warOutfit();
+		warOutfit(false);
 
 		int lastMeat = get_property("currentNunneryMeat").to_int();
 		int myLastMeat = my_meat();
@@ -7258,7 +7270,7 @@ boolean L12_sonofaFinish()
 		return false;
 	}
 
-	warOutfit();
+	warOutfit(true);
 	visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
 	visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
 	set_property("sl_sonofa", "finished");
@@ -7425,7 +7437,7 @@ boolean L12_gremlins()
 		return true;
 	}
 	handleFamiliar("item");
-	warOutfit();
+	warOutfit(true);
 	visit_url("bigisland.php?action=junkman&pwd");
 	set_property("sl_gremlins", "finished");
 	return true;
@@ -8007,7 +8019,7 @@ boolean L12_finalizeWar()
 		}
 		doRest();
 	}
-	warOutfit();
+	warOutfit(false);
 #	cli_execute("refresh equip");
 	if(my_hp() < my_maxhp())
 	{
@@ -8261,7 +8273,7 @@ boolean L12_orchardStart()
 		return false;
 	}
 
-	warOutfit();
+	warOutfit(true);
 	visit_url("bigisland.php?place=orchard&action=stand&pwd");
 	set_property("sl_orchard", "start");
 	return true;
@@ -8282,7 +8294,7 @@ boolean L12_orchardFinalize()
 	{
 		pulverizeThing($item[A Light that Never Goes Out]);
 	}
-	warOutfit();
+	warOutfit(true);
 	string temp = visit_url("bigisland.php?place=orchard&action=stand&pwd");
 	temp = visit_url("bigisland.php?place=orchard&action=stand&pwd");
 	return true;
@@ -11783,7 +11795,7 @@ boolean L12_flyerFinish()
 		return false;
 	}
 	print("Done with this Flyer crap", "blue");
-	warOutfit();
+	warOutfit(true);
 	visit_url("bigisland.php?place=concert&pwd");
 
 	cli_execute("refresh inv");
@@ -13510,7 +13522,7 @@ boolean L8_trapperGroar()
 	}
 	if((internalQuestStatus("questL08Trapper") == 2) && (get_property("currentExtremity").to_int() == 3))
 	{
-		if(slOutfit("eXtreme Cold-Weather Gear"))
+		if(outfit("eXtreme Cold-Weather Gear"))
 		{
 			string temp = visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");
 			return true;
@@ -14639,7 +14651,7 @@ boolean doTasks()
 			return true;
 		}
 		handleFamiliar("item");
-		warOutfit();
+		warOutfit(false);
 		return warAdventure();
 	}
 
@@ -14647,7 +14659,7 @@ boolean doTasks()
 	{
 		print("Getting to the nunnery/junkyard", "blue");
 		handleFamiliar("item");
-		warOutfit();
+		warOutfit(false);
 		return warAdventure();
 	}
 
@@ -14655,7 +14667,7 @@ boolean doTasks()
 	{
 		print("Doing the wars.", "blue");
 		handleFamiliar("item");
-		warOutfit();
+		warOutfit(false);
 		return warAdventure();
 	}
 
