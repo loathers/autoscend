@@ -206,7 +206,7 @@ void finalizeMaximize()
 			addToMaximize("+equip " + toEquip);
 		}
 	}
-	if(get_property(getMaximizeSlotPref($slot[weapon])) == "" && my_primestat() != $stat[Mysticality])
+	if(get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		addToMaximize("effective");
 	}
@@ -246,6 +246,11 @@ void removeFromMaximize(string rem)
 		res = res.substring(1);
 	}
 	set_property("sl_maximize_current", res);
+}
+
+boolean maximizeContains(string check)
+{
+	return get_property("sl_maximize_current").contains_text(check);
 }
 
 boolean simMaximize()

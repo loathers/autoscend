@@ -537,6 +537,7 @@ void resetMaximize(); //Defined in sl_ascend/sl_equipment.ash
 void finalizeMaximize(); //Defined in sl_ascend/sl_equipment.ash
 void addToMaximize(string add); //Defined in sl_ascend/sl_equipment.ash
 void removeFromMaximize(string rem); //Defined in sl_ascend/sl_equipment.ash
+boolean maximizeContains(string check); //Defined in sl_ascend/sl_equipment.ash
 boolean simMaximize(); //Defined in sl_ascend/sl_equipment.ash
 boolean simMaximizeWith(string add); //Defined in sl_ascend/sl_equipment.ash
 float simValue(string modifier); //Defined in sl_ascend/sl_equipment.ash
