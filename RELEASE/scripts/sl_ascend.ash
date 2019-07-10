@@ -13152,13 +13152,6 @@ boolean L11_shenCopperhead()
 		{
 			abort("Could not parse Shen event");
 		}
-		if (goal == $location[The Smut Orc Logging Camp])
-		{
-			foreach it in $items[Loadstone, Logging Hatchet]
-			{
-				slEquip(it);
-			}
-		}
 
 		if(!zone_isAvailable(goal))
 		{
@@ -13180,6 +13173,11 @@ boolean L11_shenCopperhead()
 			{
 				return true;
 			}
+			else if(goal == $location[The Smut Orc Logging Camp] && (L9_chasmStart() || L9_chasmBuild()))
+			{
+				return true;
+			}
+
 			return slAdv(goal);
 		}
 	}
