@@ -3961,6 +3961,16 @@ string beerPong(string page)
 
 boolean useCocoon()
 {
+	if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue Of The Walrus]) && my_mp() >= mp_cost($skill[Tongue Of The Walrus]))
+	{
+		use_skill(1, $skill[Tongue Of The Walrus]);
+	}
+
+	if(my_hp() >= my_maxhp())
+	{
+		return true;
+	}
+
 	int mpCost = 0;
 	int casts = 1;
 	skill cocoon = $skill[none];
@@ -3968,6 +3978,16 @@ boolean useCocoon()
 	{
 		cocoon = $skill[Cannelloni Cocoon];
 		mpCost = mp_cost(cocoon);
+		int hpNeed = ceil((my_maxhp() - my_hp()) / 1000.0);
+		int maxCasts = my_mp() / mpCost;
+		casts = min(hpNeed, maxCasts);
+		if(sl_beta() && sl_have_skill($skill[Blood Bubble]))
+		{
+			int healto = my_hp() + 1000 * casts;
+			int wasted = min(max(healto - my_maxhp(), 0), my_hp() - 1);
+			int bubbles = wasted / 30;
+			use_skill(bubbles, $skill[Blood Bubble]);
+		}
 	}
 	else if(have_skill($skill[Shake It Off]))
 	{
@@ -3983,29 +4003,17 @@ boolean useCocoon()
 		int worst = min(hpNeed, maxCasts);
 		casts = min(worst, 7);
 	}
+
 	if(cocoon == $skill[none])
 	{
 		return false;
 	}
-	if(my_hp() < my_maxhp())
+	if(my_mp() >= (mpCost * casts))
 	{
-		if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue Of The Walrus]))
-		{
-			casts++;
-		}
-
-		if(my_mp() >= (mpCost * casts))
-		{
-			if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue Of The Walrus]))
-			{
-				use_skill(1, $skill[Tongue Of The Walrus]);
-			}
-			use_skill(casts, cocoon);
-			return true;
-		}
-		return false;
+		use_skill(casts, cocoon);
+		return true;
 	}
-	return true;
+	return false;
 }
 
 int howLongBeforeHoloWristDrop()
