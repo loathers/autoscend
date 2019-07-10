@@ -206,7 +206,7 @@ void finalizeMaximize()
 			addToMaximize("+equip " + toEquip);
 		}
 	}
-	if(get_property(getMaximizeSlotPref($slot[weapon])) != "" && my_primestat() != $stat[Mysticality])
+	if(get_property(getMaximizeSlotPref($slot[weapon])) == "" && my_primestat() != $stat[Mysticality])
 	{
 		addToMaximize("effective");
 	}
