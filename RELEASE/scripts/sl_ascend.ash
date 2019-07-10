@@ -4254,7 +4254,7 @@ boolean L13_towerNSFinal()
 	}
 	else
 	{
-		addToMaximize("10dr,3moxie,0.5da 1000max");
+		addToMaximize("10dr,3moxie,0.5da 1000max,-10ml");
 	}
 	slEquip($slot[acc2], $item[Attorney\'s Badge]);
 
@@ -7389,7 +7389,7 @@ boolean L12_gremlins()
 	print("Doing them gremlins", "blue");
 	if(useMaximizeToEquip())
 	{
-		addToMaximize("20dr,1da 1000max,3hp");
+		addToMaximize("20dr,1da 1000max,3hp,-3ml");
 	}
 	else
 	{
