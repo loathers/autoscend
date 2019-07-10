@@ -111,13 +111,9 @@ boolean tryAddItemToMaximize(slot s, item it)
 	}
 
 	string itString = it.to_string();
-	switch(it)
-	{
-		case $item[none]: itString = ""; break;
-		case $item[Ouija Board, Ouija Board]: itString = "Ouija Board"; break;
-		case $item[Victor, the Insult Comic Hellhound Puppet]: itString = "the Insult Comic Hellhound Puppet"; break;
-		case $item[tiny plastic Hank North, Photojournalist]: itString = "tiny plastic Hank North"; break;
-	}
+	// maximizer uses commas, so can't have a comma in an item name
+	// fortunately fuzzy matching means just stripping out the comma is fine
+	itString = itString.replace_string(",", "");
 	set_property(getMaximizeSlotPref(s), itString);
 	return true;
 }
