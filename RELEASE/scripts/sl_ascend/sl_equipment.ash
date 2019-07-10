@@ -243,15 +243,18 @@ void removeFromMaximize(string rem)
 
 boolean simMaximize()
 {
-	sl_debug_print("Simulating: " + get_property("sl_maximize_current"), "yellow");
-	return slMaximize(get_property("sl_maximize_current"), true);
+	string backup = get_property("sl_maximize_current");
+	finalizeMaximize();
+	boolean res = slMaximize(get_property("sl_maximize_current"), true);
+	set_property("sl_maximize_current", backup);
+	return res;
 }
 
 boolean simMaximizeWith(string add)
 {
 	addToMaximize(add);
 	sl_debug_print("Simulating: " + get_property("sl_maximize_current"), "yellow");
-	boolean res = slMaximize(get_property("sl_maximize_current"), true);
+	boolean res = simMaximize();
 	removeFromMaximize(add);
 	return res;
 }
