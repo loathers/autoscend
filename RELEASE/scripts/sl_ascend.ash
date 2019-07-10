@@ -12739,6 +12739,8 @@ boolean L9_chasmBuild()
 		if(have_effect($effect[Spirit of Peppermint]) != 0 && sl_have_skill($skill[Stuffed Mortar Shell]))
 		{
 			addToMaximize("20spell damage,80spell damage percent,20cold spell damage,-10ml");
+			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
+			buffMaintain($effect[Song of Sauce], 150, 1, 1);
 		}
 	}
 
