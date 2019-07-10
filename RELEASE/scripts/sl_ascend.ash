@@ -3937,8 +3937,6 @@ boolean L11_palindome()
 		return false;
 	}
 
-	slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
-
 	int total = 0;
 	total = total + item_amount($item[Photograph Of A Red Nugget]);
 	total = total + item_amount($item[Photograph Of An Ostrich Egg]);
@@ -4075,6 +4073,8 @@ boolean L11_palindome()
 
 		if(!possessEquipment($item[Mega Gem]))
 		{
+			if(equipped_amount($item[Talisman o' Namsilat]) == 0)
+				equip($slot[acc3], $item[Talisman o' Namsilat]);
 			visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 		}
 
@@ -4084,6 +4084,7 @@ boolean L11_palindome()
 			return false;
 		}
 		slEquip($slot[acc2], $item[Mega Gem]);
+		slEquip($slot[acc3], $item[Talisman o' Namsilat]);
 		int palinChoice = random(3) + 1;
 		set_property("choiceAdventure131", palinChoice);
 
