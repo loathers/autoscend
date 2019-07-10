@@ -4362,13 +4362,13 @@ boolean L13_towerNSTower()
 		acquireMP(120, true);
 
 		int sources = 0;
-		if(possessEquipment($item[astral shirt]))
+		if(slEquip($item[astral shirt]))
 		{
-			slEquip($item[astral shirt]);
+			// nothing, just for else
 		}
-		else if(possessEquipment($item[Unfortunato's foolscap]))
+		else if(slEquip($item[Unfortunato's foolscap]))
 		{
-			slEquip($item[Unfortunato's foolscap]);
+			// nothing, just for else
 		}
 		else if(item_amount($item[cigar box turtle]) > 0)
 		{
