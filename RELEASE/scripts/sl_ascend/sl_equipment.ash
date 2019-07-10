@@ -134,8 +134,16 @@ string defaultMaximizeStatement()
 	// combat is completely different in pokefam, so most stuff doesn't matter there
 	if(sl_my_path() != "Pocket Familiars")
 	{
-		res += ",0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,0.4hp,0.2mp 1000max,-fumble";
-		res += (my_class() == $class[Ed]) ? ",10mp regen" : ",5mp regen";
+		res += ",0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+		if(my_class() == $class[Vampyre])
+		{
+			res += ",0.8hp,3hp regen";
+		}
+		else
+		{
+			res += ",0.4hp,0.2mp 1000max";
+			res += (my_class() == $class[Ed]) ? ",10mp regen" : ",5mp regen";
+		}
 
 		if(my_primestat() == $stat[Mysticality])
 		{
