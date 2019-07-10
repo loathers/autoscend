@@ -4536,8 +4536,11 @@ boolean L13_towerNSTower()
 		{
 			cli_execute("concert 2");
 		}
-		slEquip($item[Silver Cow Creamer]);
-		slEquip($item[Sneaky Pete\'s Leather Jacket]);
+		if(!useMaximizeToEquip())
+		{
+			slEquip($item[Silver Cow Creamer]);
+			slEquip($item[Sneaky Pete\'s Leather Jacket]);
+		}
 		if(is100FamiliarRun())
 		{
 			if(useMaximizeToEquip())
