@@ -248,6 +248,7 @@ void handlePreAdventure(location place)
 
 	if(sl_latteDropWanted(place))
 	{
+		print('We want to get the "' + sl_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
 		slEquip($item[latte lovers member's mug]);
 	}
 
