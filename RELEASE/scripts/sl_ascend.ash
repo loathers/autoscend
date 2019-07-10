@@ -12757,10 +12757,7 @@ boolean L9_chasmBuild()
 
 		foreach it in $items[Loadstone, Logging Hatchet]
 		{
-			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
-			{
-				slEquip(it);
-			}
+			slEquip(it);
 		}
 
 		slAdv(1, $location[The Smut Orc Logging Camp]);
@@ -12803,10 +12800,7 @@ boolean L9_chasmBuild()
 	{
 		foreach it in $items[Loadstone, Logging Hatchet]
 		{
-			if(possessEquipment(it) && !have_equipped(it) && can_equip(it))
-			{
-				slEquip(it);
-			}
+			slEquip(it);
 		}
 
 		sl_change_mcd(0);
