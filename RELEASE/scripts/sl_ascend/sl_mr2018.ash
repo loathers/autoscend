@@ -781,14 +781,12 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	item shirt = equipped_item($slot[shirt]);
 	if(hardmode)
 	{
-		equip($slot[shirt], $item[PARTY HARD T-shirt]);
-	} else if (januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
+		slEquip($slot[shirt], $item[PARTY HARD T-shirt]);
+	}
+	else if (januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
 	{
 		januaryToteAcquire($item[Makeshift Garbage Shirt]);
-		if(item_amount($item[Makeshift Garbage Shirt]) > 0)
-		{
-			equip($slot[shirt], $item[Makeshift Garbage Shirt]);
-		}
+		slEquip($slot[shirt], $item[Makeshift Garbage Shirt]);
 	}
 
 	boolean retval;
@@ -816,7 +814,7 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	restoreSetting("choiceAdventure1327");
 	restoreSetting("choiceAdventure1328");
 
-	if(shirt != $item[none])
+	if(shirt != $item[none] && !useMaximizeToEquip())
 	{
 		equip($slot[shirt], shirt);
 	}
