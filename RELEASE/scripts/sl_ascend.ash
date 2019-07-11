@@ -11392,7 +11392,6 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	else if(item_amount($item[Spookyraven Billiards Room Key]) == 1)
 	{
-		providePlusNonCombat(25, true);
 		int expectPool = get_property("poolSkill").to_int();
 		expectPool += min(10,to_int(2 * square_root(get_property("poolSharkCount").to_int())));
 		if(my_inebriety() >= 10)
@@ -11440,6 +11439,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			print("Well, I need a pool cueball...", "blue");
 			backupSetting("choiceAdventure330", 1);
+			providePlusNonCombat(25, true);
 			slAdv(1, $location[The Haunted Billiards Room]);
 			restoreSetting("choiceAdventure330");
 			return true;
@@ -11488,6 +11488,7 @@ boolean LX_handleSpookyravenFirstFloor()
 
 		print("It's billiards time!", "blue");
 		backupSetting("choiceAdventure330", 1);
+		providePlusNonCombat(25, true);
 		slAdv(1, $location[The Haunted Billiards Room]);
 		restoreSetting("choiceAdventure330");
 	}
