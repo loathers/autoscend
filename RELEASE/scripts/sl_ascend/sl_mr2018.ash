@@ -317,10 +317,7 @@ boolean fantasyRealmToken()
 
 	if(possessEquipment($item[FantasyRealm G. E. M.]))
 	{
-		if(!have_equipped($item[FantasyRealm G. E. M.]))
-		{
-			equip($slot[acc3], $item[FantasyRealm G. E. M.]);
-		}
+		slEquip($slot[acc3], $item[FantasyRealm G. E. M.]);
 	}
 
 	//This does not appear to check that we no longer need to adventure there...
@@ -333,27 +330,27 @@ boolean songboomSetting(string goal)
 {
 	int option = 6;
 
-	if((goal ≈ "eye of the giger") || (goal ≈ "spooky") || (goal ≈ "nightmare") || (goal ≈ $item[Nightmare Fuel]) || (goal ≈ "stats"))
+	if((goal == "eye of the giger") || (goal == "spooky") || (goal == "nightmare") || (goal == $item[Nightmare Fuel]) || (goal == "stats"))
 	{
 		option = 1;
 	}
-	else if((goal ≈ "food vibrations") || (goal ≈ "food") || (goal ≈ "food drops") || (goal ≈ $item[Special Seasoning]) || (goal ≈ "spell damage") || (goal ≈ "adventures") || (goal ≈ "adv"))
+	else if((goal == "food vibrations") || (goal == "food") || (goal == "food drops") || (goal == $item[Special Seasoning]) || (goal == "spell damage") || (goal == "adventures") || (goal == "adv"))
 	{
 		option = 2;
 	}
-	else if((goal ≈ "remainin\' alive") || (goal ≈ "dr") || (goal ≈ "damage reduction") || (goal ≈ $item[Shielding Potion]) || (goal ≈ "delevel"))
+	else if((goal == "remainin\' alive") || (goal == "dr") || (goal == "damage reduction") || (goal == $item[Shielding Potion]) || (goal == "delevel"))
 	{
 		option = 3;
 	}
-	else if((goal ≈ "these fists were made for punchin\'") || (goal ≈ "weapon damage") || (goal ≈ "prismatic damage") || (goal ≈ $item[Punching Potion]) || (goal ≈ "prismatic"))
+	else if((goal == "these fists were made for punchin\'") || (goal == "weapon damage") || (goal == "prismatic damage") || (goal == $item[Punching Potion]) || (goal == "prismatic"))
 	{
 		option = 4;
 	}
-	else if((goal ≈ "total eclipse of your meat") || (goal ≈ "meat") || (goal ≈ "meat drop") || (goal ≈ $item[Gathered Meat-Clip]) || (goal ≈ "base meat"))
+	else if((goal == "total eclipse of your meat") || (goal == "meat") || (goal == "meat drop") || (goal == $item[Gathered Meat-Clip]) || (goal == "base meat"))
 	{
 		option = 5;
 	}
-	else if((goal ≈ "silence") || (goal ≈ "none") || (goal == ""))
+	else if((goal == "silence") || (goal == "none") || (goal == ""))
 	{
 		option = 6;
 	}
@@ -784,14 +781,12 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	item shirt = equipped_item($slot[shirt]);
 	if(hardmode)
 	{
-		equip($slot[shirt], $item[PARTY HARD T-shirt]);
-	} else if (januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
+		slEquip($slot[shirt], $item[PARTY HARD T-shirt]);
+	}
+	else if (januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
 	{
 		januaryToteAcquire($item[Makeshift Garbage Shirt]);
-		if(item_amount($item[Makeshift Garbage Shirt]) > 0)
-		{
-			equip($slot[shirt], $item[Makeshift Garbage Shirt]);
-		}
+		slEquip($slot[shirt], $item[Makeshift Garbage Shirt]);
 	}
 
 	boolean retval;
@@ -819,7 +814,7 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	restoreSetting("choiceAdventure1327");
 	restoreSetting("choiceAdventure1328");
 
-	if(shirt != $item[none])
+	if(shirt != $item[none] && !useMaximizeToEquip())
 	{
 		equip($slot[shirt], shirt);
 	}
@@ -837,8 +832,10 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	return retval;
 }
 
-string sl_latteDropName(location l) {
-	switch(l) {
+string sl_latteDropName(location l)
+{
+	switch(l)
+	{
 		case $location[The Mouldering Mansion]: return "ancient";
 		case $location[The Overgrown Lot]: return "basil";
 		case $location[Whitey's Grove]: return "belgian";
@@ -894,7 +891,8 @@ string sl_latteDropName(location l) {
 	}
 }
 
-boolean sl_latteDropAvailable(location l) {
+boolean sl_latteDropAvailable(location l)
+{
 	// obviously no latte drops are available if you don't HAVE a latte
 	if(available_amount($item[latte lovers member's mug]) == 0)
 		return false;
@@ -902,6 +900,11 @@ boolean sl_latteDropAvailable(location l) {
 	if(latteDrop == "")
 		return false;
 	return !get_property("latteUnlocks").contains_text(latteDrop);
+}
+
+boolean sl_latteDropWanted(location l)
+{
+	return sl_latteDropAvailable(l) && !($locations[Noob Cave, The Haunted Boiler Room, The Arid\, Extra-Dry Desert] contains l);
 }
 
 string sl_latteTranslate(string ingredient)
@@ -1176,7 +1179,7 @@ boolean sl_voteMonster(boolean freeMon, location loc, string option)
 		{
 			return false;
 		}
-		equip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
+		slEquip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
 	}
 	return slAdv(1, loc, option);
 }

@@ -1381,11 +1381,8 @@ boolean sl_cheesePostCS(int leave)
 			use(1, $item[License To Chill]);
 		}
 
-		if(get_property("sl_interrupt").to_boolean())
-		{
-			set_property("sl_interrupt", false);
-			abort("Abort requested.");
-		}
+		sl_interruptCheck();
+
 		if((fullness_left() > 0) && (item_amount($item[Jumping Horseradish]) > 0))
 		{
 			eatsilent(1, $item[Jumping Horseradish]);

@@ -1380,7 +1380,7 @@ boolean sl_wantToBanish(monster enemy, location loc)
 	return monstersToBanish[enemy];
 }
 
-string banisherCombatString(monster enemy, location loc)
+string banisherCombatString(monster enemy, location loc, boolean inCombat)
 {
 	if(get_property("kingLiberated").to_boolean())
 	{
@@ -1391,7 +1391,8 @@ string banisherCombatString(monster enemy, location loc)
 	if(!sl_wantToBanish(enemy, loc))
 		return "";
 
-	print("Finding a banisher to use on " + enemy + " at " + loc, "green");
+	if(inCombat)
+		print("Finding a banisher to use on " + enemy + " at " + loc, "green");
 
 	//src/net/sourceforge/kolmafia/session/BanishManager.java
 	boolean[string] used = sl_banishesUsedAt(loc);
@@ -1420,17 +1421,17 @@ string banisherCombatString(monster enemy, location loc)
 
 	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
 
-	if(sl_have_skill($skill[Throw Latte on Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
+	if((inCombat ? sl_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member's mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
 	{
 		return "skill " + $skill[Throw Latte on Opponent];
 	}
 
-	if(sl_have_skill($skill[Give Your Opponent The Stinkeye]) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
+	if((inCombat ? sl_have_skill($skill[Give Your Opponent The Stinkeye]) : possessEquipment($item[stinky cheese eye])) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
 	{
 		return "skill " + $skill[Give Your Opponent The Stinkeye];
 	}
 
-	if(sl_have_skill($skill[Creepy Grin]) && !get_property("_vmaskBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Creepy Grin])))
+	if((inCombat ? sl_have_skill($skill[Creepy Grin]) : possessEquipment($item[V for Vivala mask])) && !get_property("_vmaskBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Creepy Grin])))
 	{
 		return "skill " + $skill[Creepy Grin];
 	}
@@ -1457,7 +1458,7 @@ string banisherCombatString(monster enemy, location loc)
 		return "skill " + $skill[Curse Of Vacation];
 	}
 
-	if(sl_have_skill($skill[Show Them Your Ring]) && !get_property("_mafiaMiddleFingerRingUsed").to_boolean() && (my_mp() >= mp_cost($skill[Show Them Your Ring])))
+	if((inCombat ? sl_have_skill($skill[Show Them Your Ring]) : possessEquipment($item[Mafia middle finger ring])) && !get_property("_mafiaMiddleFingerRingUsed").to_boolean() && (my_mp() >= mp_cost($skill[Show Them Your Ring])))
 	{
 		return "skill " + $skill[Show Them Your Ring];
 	}
@@ -1465,7 +1466,7 @@ string banisherCombatString(monster enemy, location loc)
 	{
 		return "skill " + $skill[Breathe Out];
 	}
-	if(sl_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (item_type(equipped_item($slot[weapon])) == "club") && (!(used contains "batter up!")))
+	if(sl_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (inCombat ? (item_type(equipped_item($slot[weapon])) == "club") : true) && (!(used contains "batter up!")))
 	{
 		return "skill " + $skill[Batter Up!];
 	}
@@ -1479,15 +1480,15 @@ string banisherCombatString(monster enemy, location loc)
 		return "skill " + $skill[Walk Away From Explosion];
 	}
 
-	if(sl_have_skill($skill[Talk About Politics]) && (get_property("_pantsgivingBanish").to_int() < 5) && have_equipped($item[Pantsgiving]) && (!(used contains "pantsgiving")))
+	if((inCombat ? sl_have_skill($skill[Talk About Politics]) : possessEquipment($item[Pantsgiving])) && (get_property("_pantsgivingBanish").to_int() < 5) && have_equipped($item[Pantsgiving]) && (!(used contains "pantsgiving")))
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if(sl_have_skill($skill[Reflex Hammer]) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
+	if((inCombat ? sl_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil' Doctor&trade; bag])) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
-	if(sl_have_skill($skill[KGB Tranquilizer Dart]) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
+	if((inCombat ? sl_have_skill($skill[KGB Tranquilizer Dart]) : possessEquipment($item[Kremlin's Greatest Briefcase])) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
 	{
 		boolean useIt = true;
 		if((get_property("sl_gremlins") == "finished") && (my_daycount() >= 2) && (get_property("_kgbTranquilizerDartUses").to_int() >= 2))
@@ -1506,7 +1507,16 @@ string banisherCombatString(monster enemy, location loc)
 	}
 	if(sl_have_skill($skill[Beancannon]) && (get_property("_beancannonUses").to_int() < 5) && ((my_mp() - 20) >= mp_cost($skill[Beancannon])) && (!(used contains "beancannon")))
 	{
-		if($items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork \'n\' Pork \'n\' Pork \'n\' Beans, Shrub\'s Premium Baked Beans, Tesla\'s Electroplated Beans, Trader Olaf\'s Exotic Stinkbeans, World\'s Blackest-Eyed Peas] contains equipped_item($slot[Off-hand]))
+		boolean haveBeans = false;
+		foreach beancan in $items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork \'n\' Pork \'n\' Pork \'n\' Beans, Shrub\'s Premium Baked Beans, Tesla\'s Electroplated Beans, Trader Olaf\'s Exotic Stinkbeans, World\'s Blackest-Eyed Peas]
+		{
+			if(inCombat ? equipped_item($slot[off-hand]) == beancan : possessEquipment(beancan))
+			{
+				haveBeans = true;
+				break;
+			}
+		}
+		if(haveBeans)
 		{
 			return "skill " + $skill[Beancannon];
 		}
@@ -1542,6 +1552,75 @@ string banisherCombatString(monster enemy, location loc)
 	}
 
 	return "";
+}
+
+string banisherCombatString(monster enemy, location loc)
+{
+	return banisherCombatString(enemy, loc, false);
+}
+
+boolean canBanish(monster enemy, location loc)
+{
+	return banisherCombatString(enemy, loc) != "";
+}
+
+boolean adjustForBanish(string combat_string)
+{
+	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
+	{
+		return slEquip($item[latte lovers member's mug]);
+	}
+	if(combat_string == "skill " + $skill[Give Your Opponent The Stinkeye])
+	{
+		return slEquip($item[stinky cheese eye]);
+	}
+	if(combat_string == "skill " + $skill[Creepy Grin])
+	{
+		return slEquip($item[V for Vivala mask]);
+	}
+	if(combat_string == "skill " + $skill[Show Them Your Ring])
+	{
+		return slEquip($item[Mafia middle finger ring]);
+	}
+	if(combat_string == "skill " + $skill[Batter Up!])
+	{
+		cli_execute("acquire 1 seal-clubbing club");
+		ensureSealClubs();
+		return true;
+	}
+	if(combat_string == "skill " + $skill[Talk About Politics])
+	{
+		return slEquip($item[Pantsgiving]);
+	}
+	if(combat_string == "skill " + $skill[Reflex Hammer])
+	{
+		return slEquip($item[Lil' Doctor&trade; bag]);
+	}
+	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
+	{
+		return slEquip($item[Kremlin's Greatest Briefcase]);
+	}
+	if(combat_string == "skill " + $skill[Beancannon])
+	{
+		foreach beancan in $items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork 'n' Pork 'n' Pork 'n' Beans, Shrub's Premium Baked Beans, Tesla's Electroplated Beans, Trader Olaf's Exotic Stinkbeans, World's Blackest-Eyed Peas]
+		{
+			if(slEquip(beancan))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	return true;
+}
+
+boolean adjustForBanishIfPossible(monster enemy, location loc)
+{
+	if(canBanish(enemy, loc))
+	{
+		return adjustForBanish(banisherCombatString(enemy, loc));
+	}
+	return false;
 }
 
 string yellowRayCombatString(monster target)
@@ -1622,7 +1701,7 @@ boolean adjustForYellowRay(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
-		return equip($slot[weapon], $item[Fourth of May cosplay saber]);
+		return slEquip($slot[weapon], $item[Fourth of May cosplay saber]);
 	}
 	return true;
 }
@@ -2790,6 +2869,13 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		}
 	}
 
+	if(sl_have_familiar($familiar[Jumpsuited Hound Dog]) && my_familiar() == $familiar[Jumpsuited Hound Dog])
+	{
+		// prevent swapping back and forth between hound dog and not hound dog when just
+		// on the cusp of the right amount of +combat when we have the hound dog out
+		handleFamiliar($familiar[Jumpsuited Hound Dog]);
+	}
+
 	if(numeric_modifier("Combat Rate").to_int() >= amt)
 	{
 		return true;
@@ -2814,24 +2900,35 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		}
 	}
 
+	int equipDiff = 0;
+
 	if(doEquips)
 	{
-		if(have_familiar($familiar[Grim Brother]) && possessEquipment($item[Buddy Bjorn]))
+		if(!useMaximizeToEquip())
 		{
-			if(equipped_item($slot[back]) != $item[Buddy Bjorn])
+			removeNonCombat();
+			if(have_familiar($familiar[Grim Brother]) && possessEquipment($item[Buddy Bjorn]))
 			{
-				equip($slot[Back], $item[Buddy Bjorn]);
+				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
+				{
+					slEquip($slot[Back], $item[Buddy Bjorn]);
+				}
+				handleBjornify($familiar[Grim Brother]);
 			}
-			handleBjornify($familiar[Grim Brother]);
 		}
-		removeNonCombat();
-		if(have_familiar($familiar[Jumpsuited Hound Dog]))
+		else
+		{
+			addToMaximize("200combat " + to_string(amt) + "max");
+			simMaximize();
+			equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+		}
+		if(sl_have_familiar($familiar[Jumpsuited Hound Dog]))
 		{
 			handleFamiliar($familiar[Jumpsuited Hound Dog]);
 		}
 	}
 
-	if((numeric_modifier("Combat Rate").to_int() < amt)
+	if((numeric_modifier("Combat Rate").to_int() + equipDiff < amt)
 	   && (get_property("_horsery") == "dark horse"))
 	{
 		getHorse("return");
@@ -2841,12 +2938,13 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		horseMaintain();
 	}
 
-	if(numeric_modifier("Combat Rate").to_int() < amt)
+	if(numeric_modifier("Combat Rate").to_int() + equipDiff < amt)
 	{
 		asdonBuff($effect[Driving Obnoxiously]);
 	}
 	return true;
 }
+
 boolean providePlusNonCombat(int amt, boolean doEquips)
 {
 	if(amt == 0)
@@ -2893,25 +2991,37 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		}
 	}
 
+	int equipDiff = 0;
+
 	if(doEquips)
 	{
-		if(have_familiar($familiar[Grimstone Golem]) && possessEquipment($item[Buddy Bjorn]))
+		if(!useMaximizeToEquip())
 		{
-			if(equipped_item($slot[back]) != $item[Buddy Bjorn])
+			removeCombat();
+			if(have_familiar($familiar[Grimstone Golem]) && possessEquipment($item[Buddy Bjorn]))
 			{
-				equip($slot[Back], $item[Buddy Bjorn]);
+				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
+				{
+					slEquip($slot[Back], $item[Buddy Bjorn]);
+				}
+				handleBjornify($familiar[Grimstone Golem]);
 			}
-			handleBjornify($familiar[Grimstone Golem]);
 		}
-		removeCombat();
+		else
+		{
+			addToMaximize("-200combat " + to_string(-1 * amt) + "max");
+			simMaximize();
+			equipDiff = to_int(simValue("Combat Rate") -
+				numeric_modifier("Combat Rate"));
+		}
 	}
 
-	if((numeric_modifier("Combat Rate").to_int() > amt))
+	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
 	{
 		getHorse("noncombat");
 	}
 
-	if(numeric_modifier("Combat Rate").to_int() > amt)
+	if(numeric_modifier("Combat Rate").to_int() + equipDiff > amt)
 	{
 		asdonBuff($effect[Driving Stealthily]);
 	}
@@ -3271,7 +3381,7 @@ boolean forceEquip(slot sl, item it)
 	{
 		return true;
 	}
-	equip(sl, it);
+	slEquip(sl, it);
 	return true;
 }
 
@@ -3858,6 +3968,16 @@ string beerPong(string page)
 
 boolean useCocoon()
 {
+	if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue Of The Walrus]) && my_mp() >= mp_cost($skill[Tongue Of The Walrus]))
+	{
+		use_skill(1, $skill[Tongue Of The Walrus]);
+	}
+
+	if(my_hp() >= my_maxhp())
+	{
+		return true;
+	}
+
 	int mpCost = 0;
 	int casts = 1;
 	skill cocoon = $skill[none];
@@ -3865,6 +3985,16 @@ boolean useCocoon()
 	{
 		cocoon = $skill[Cannelloni Cocoon];
 		mpCost = mp_cost(cocoon);
+		int hpNeed = ceil((my_maxhp() - my_hp()) / 1000.0);
+		int maxCasts = my_mp() / mpCost;
+		casts = min(hpNeed, maxCasts);
+		if(sl_beta() && sl_have_skill($skill[Blood Bubble]))
+		{
+			int healto = my_hp() + 1000 * casts;
+			int wasted = min(max(healto - my_maxhp(), 0), my_hp() - 1);
+			int bubbles = wasted / 30;
+			use_skill(bubbles, $skill[Blood Bubble]);
+		}
 	}
 	else if(have_skill($skill[Shake It Off]))
 	{
@@ -3880,29 +4010,17 @@ boolean useCocoon()
 		int worst = min(hpNeed, maxCasts);
 		casts = min(worst, 7);
 	}
+
 	if(cocoon == $skill[none])
 	{
 		return false;
 	}
-	if(my_hp() < my_maxhp())
+	if(my_mp() >= (mpCost * casts))
 	{
-		if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue Of The Walrus]))
-		{
-			casts++;
-		}
-
-		if(my_mp() >= (mpCost * casts))
-		{
-			if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue Of The Walrus]))
-			{
-				use_skill(1, $skill[Tongue Of The Walrus]);
-			}
-			use_skill(casts, cocoon);
-			return true;
-		}
-		return false;
+		use_skill(casts, cocoon);
+		return true;
 	}
-	return true;
+	return false;
 }
 
 int howLongBeforeHoloWristDrop()
@@ -5449,4 +5567,40 @@ boolean sl_badassBelt()
 boolean sl_beta()
 {
 	return get_property("sl_beta_test").to_boolean();
+}
+
+void sl_interruptCheck()
+{
+	if(get_property("sl_interrupt").to_boolean())
+	{
+		set_property("sl_interrupt", false);
+		restoreAllSettings();
+		abort("sl_interrupt detected and aborting, sl_interrupt disabled.");
+	}
+}
+
+element sl_tunedElement()
+{
+	if(have_effect($effect[Spirit of Peppermint]) != 0)
+	{
+		return $element[cold];
+	}
+	if(have_effect($effect[Spirit of Bacon Grease]) != 0)
+	{
+		return $element[sleaze];
+	}
+	if(have_effect($effect[Spirit of Garlic]) != 0)
+	{
+		return $element[stench];
+	}
+	if(have_effect($effect[Spirit of Cayenne]) != 0)
+	{
+		return $element[hot];
+	}
+	if(have_effect($effect[Spirit of Wormwood]) != 0)
+	{
+		return $element[spooky];
+	}
+
+	return $element[none];
 }

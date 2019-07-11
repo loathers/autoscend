@@ -524,6 +524,24 @@ boolean elementalPlanes_takeJob(element ele);				//Defined in sl_ascend/sl_eleme
 int elemental_resist(element goal);							//Defined in sl_ascend/sl_util.ash
 float elemental_resist_value(int resistance);				//Defined in sl_ascend/sl_util.ash
 void ensureSealClubs();										//Defined in sl_ascend/sl_equipment.ash
+string getMaximizeSlotPref(slot s); //Defined in sl_ascend/sl_equipment.ash
+item getTentativeMaximizeEquip(slot s); //Defined in sl_ascend/sl_equipment.ash
+boolean slEquip(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
+boolean slEquip(item it); //Defined in sl_ascend/sl_equipment.ash
+boolean slForceEquip(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
+boolean slForceEquip(item it); //Defined in sl_ascend/sl_equipment.ash
+boolean tryAddItemToMaximize(slot s, item it); //Defined in sl_ascend/sl_equipment.ash
+boolean useMaximizeToEquip(); //Defined in sl_ascend/sl_equipment.ash
+string defaultMaximizeStatement(); //Defined in sl_ascend/sl_equipment.ash
+void resetMaximize(); //Defined in sl_ascend/sl_equipment.ash
+void finalizeMaximize(); //Defined in sl_ascend/sl_equipment.ash
+void addToMaximize(string add); //Defined in sl_ascend/sl_equipment.ash
+void removeFromMaximize(string rem); //Defined in sl_ascend/sl_equipment.ash
+boolean maximizeContains(string check); //Defined in sl_ascend/sl_equipment.ash
+boolean simMaximize(); //Defined in sl_ascend/sl_equipment.ash
+boolean simMaximizeWith(string add); //Defined in sl_ascend/sl_equipment.ash
+float simValue(string modifier); //Defined in sl_ascend/sl_equipment.ash
+void equipMaximizedGear(); //Defined in sl_ascend/sl_equipment.ash
 void equipBaseline();										//Defined in sl_ascend/sl_equipment.ash
 void equipRollover();										//Defined in sl_ascend/sl_equipment.ash
 boolean eudora_available();									//Defined in sl_ascend/sl_eudora.ash
@@ -577,6 +595,7 @@ boolean neverendingPartyPowerlevel();					//Defined in sl_ascend/sl_mr2018.ash
 boolean neverendingPartyAvailable();						//Defined in sl_ascend/sl_mr2018.ash
 string sl_latteDropName(location l); // Defined in sl_ascend/sl_mr2018.ash
 boolean sl_latteDropAvailable(location l); // Defined in sl_ascend/sl_mr2018.ash
+boolean sl_latteDropWanted(location l); // Defined in sl_ascend/sl_mr2018.ash
 string sl_latteTranslate(string ingredient); // Defined in sl_ascend/sl_mr2018.ash
 boolean sl_latteRefill(string want1, string want2, string want3, boolean force); // Defined in sl_ascend/sl_mr2018.ash
 boolean sl_latteRefill(string want1, string want2, string want3); // Defined in sl_ascend/sl_mr2018.ash
@@ -642,6 +661,7 @@ boolean kgb_getMartini();									//Defined in sl_ascend/sl_mr2017.ash
 boolean kgb_getMartini(string page);						//Defined in sl_ascend/sl_mr2017.ash
 boolean kgb_getMartini(string page, boolean dontCare);		//Defined in sl_ascend/sl_mr2017.ash
 boolean kgbModifiers(string mod);							//Defined in sl_ascend/sl_mr2017.ash
+boolean haveAsdonBuff();											//Defined in sl_ascend/sl_mr2017.ash
 boolean asdonBuff(effect goal);								//Defined in sl_ascend/sl_mr2017.ash
 boolean asdonBuff(string goal);								//Defined in sl_ascend/sl_mr2017.ash
 boolean asdonFeed(item it, int qty);						//Defined in sl_ascend/sl_mr2017.ash
@@ -859,6 +879,7 @@ string yellowRayCombatString();								//Defined in sl_ascend/sl_util.ash
 boolean adjustForYellowRay(string combat_string); //Defined in sl_ascend/sl_util.ash
 boolean adjustForYellowRayIfPossible(monster target); //Defined in sl_ascend/sl_util.ash
 boolean adjustForYellowRayIfPossible(); //Defined in sl_ascend/sl_util.ash
+string banisherCombatString(monster enemy, location loc, boolean inCombat); //Defined in sl_ascend/sl_util.ash
 string banisherCombatString(monster enemy, location loc);	//Defined in sl_ascend/sl_util.ash
 boolean[string] sl_banishesUsedAt(location loc); // Defined in sl_ascend/sl_util.ash
 boolean sl_wantToBanish(monster enemy, location loc); // Defined in sl_ascend/sl_util.ash
@@ -871,6 +892,7 @@ boolean zoneMeat(location loc);								//Defined in sl_ascend/sl_util.ash
 boolean zoneNonCombat(location loc);						//Defined in sl_ascend/sl_util.ash
 boolean declineTrades();									//Defined in sl_ascend/sl_util.ash
 boolean sl_beta(); //Defined in sl_ascend/sl_util.ash
+void sl_interruptCheck(); //Defined in sl_ascend/sl_util.ash
 
 //From Zlib Stuff
 record kmailObject {
@@ -1001,6 +1023,7 @@ void bat_clearForms(); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_switchForm(effect form); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_formPreAdventure(); // Defined in sl_ascend/sl_batpath.ash
 boolean LM_batpath(); // Defined in sl_ascend/sl_batpath.ash
+element sl_tunedElement(); // Defined in sl_ascend/sl_util.ash
 
 //Record from sl_ascend/sl_zone.ash
 record generic_t

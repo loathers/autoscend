@@ -205,14 +205,7 @@ boolean sl_sausageGoblin(location loc, string option)
 		return true;
 	}
 
-	if(!have_equipped($item[Kramco Sausage-o-Matic&trade;]))
-	{
-		if(item_amount($item[Kramco Sausage-o-Matic&trade;]) == 0)
-		{
-			return false;
-		}
-		equip($item[Kramco Sausage-o-Matic&trade;]);
-	}
+	slEquip($item[Kramco Sausage-o-Matic&trade;]);
 	return slAdv(1, loc, option);
 }
 
@@ -327,21 +320,18 @@ int sl_saberChargesAvailable()
 
 string sl_combatSaberBanish()
 {
-	if(!canUse($skill[Use the Force])) abort("Bad Saber banish use, please report");
 	set_property("_sl_saberChoice", 1);
 	return "skill " + $skill[Use the Force];
 }
 
 string sl_combatSaberCopy()
 {
-	if(!canUse($skill[Use the Force])) abort("Bad Saber copy use, please report");
 	set_property("_sl_saberChoice", 2);
 	return "skill " + $skill[Use the Force];
 }
 
 string sl_combatSaberYR()
 {
-	if(!canUse($skill[Use the Force])) abort("Bad Saber YR use: please report");
 	set_property("_sl_saberChoice", 3);
 	return "skill " + $skill[Use the Force];
 }
@@ -469,7 +459,7 @@ boolean sl_spoonReadyToTuneMoon()
 		abort("Something weird is going on with sl_spoonsign. It's not an invalid/blank value, but also not a knoll, canadia, or gnomad sign? This is impossible.");
 	}
 
-	if(my_sign() == "Vole" && get_property("cyrptAlcoveEvilness") > 0)
+	if(my_sign() == "Vole" && (get_property("cyrptAlcoveEvilness") > 26 || get_property("questL07Cyrptic") == "unstarted"))
 	{
 		// we want to stay vole long enough to do the alcove, since the initiative helps
 		return false;

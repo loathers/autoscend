@@ -229,7 +229,7 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to be retro but lacking the Continuum Transfunctioner.");
 		}
-		equip($slot[acc3], $item[Continuum Transfunctioner]);
+		slEquip($slot[acc3], $item[Continuum Transfunctioner]);
 	}
 
 	if((place == $location[Inside The Palindome]) && !have_equipped($item[Talisman O\' Namsilat]) && (my_turncount() != 0))
@@ -238,29 +238,75 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to go to The Palindome but don't have the Namsilat");
 		}
-		equip($slot[acc3], $item[Talisman O\' Namsilat]);
+		slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
 	if((place == $location[The Black Forest]) && !have_equipped($item[Blackberry Galoshes]))
 	{
-		if(possessEquipment($item[Blackberry Galoshes]) && can_equip($item[Blackberry Galoshes]))
+		slEquip($slot[acc3], $item[Blackberry Galoshes]);
+	}
+
+	if(sl_latteDropWanted(place))
+	{
+		print('We want to get the "' + sl_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
+		slEquip($item[latte lovers member's mug]);
+	}
+
+	foreach i,mon in get_monsters(place)
+	{
+		if(sl_wantToYellowRay(mon, place))
 		{
-			equip($slot[acc3], $item[Blackberry Galoshes]);
+			adjustForYellowRayIfPossible(mon);
+		}
+
+		if(sl_wantToBanish(mon, place))
+		{
+			adjustForBanishIfPossible(mon, place);
 		}
 	}
 
 	bat_formPreAdventure();
 	horsePreAdventure();
+	equipMaximizedGear();
+	cli_execute("checkpoint clear");
 
 	generic_t itemNeed = zone_needItem(place);
-	if(itemNeed._boolean && (item_drop_modifier() < itemNeed._float))
+	if(itemNeed._boolean)
 	{
-		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 20, 1, 10);
-		buffMaintain($effect[Singer\'s Faithful Ocelot], 35, 1, 10);
-	}
-	if(itemNeed._boolean && (item_drop_modifier() < itemNeed._float))
-	{
-		print("We can't cap this drop bear!", "purple");
+		float itemDrop;
+		if(useMaximizeToEquip())
+		{
+			addToMaximize("50item " + ceil(itemNeed._float) + "max");
+			simMaximize();
+			itemDrop = simValue("Item Drop");
+		}
+		else
+		{
+			itemDrop = numeric_modifier("Item Drop");
+		}
+		if(itemDrop < itemNeed._float)
+		{
+			if(buffMaintain($effect[Fat Leon's Phat Loot Lyric], 20, 1, 10))
+			{
+				itemDrop += 20.0;
+			}
+			if(buffMaintain($effect[Singer's Faithful Ocelot], 35, 1, 10))
+			{
+				itemDrop += 10.0;
+			}
+		}
+		if(itemDrop < itemNeed._float && !haveAsdonBuff())
+		{
+			asdonAutoFeed(37);
+			if(asdonBuff($effect[Driving Observantly]))
+			{
+				itemDrop += 50.0;
+			}
+		}
+		if(itemDrop < itemNeed._float)
+		{
+			print("We can't cap this drop bear!", "purple");
+		}
 	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))

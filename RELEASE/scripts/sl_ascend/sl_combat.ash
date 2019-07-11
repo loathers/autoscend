@@ -190,9 +190,17 @@ string sl_combatHandler(int round, string opp, string text)
 	{
 		print("sl_combatHandler: " + round, "brown");
 
-		if(enemy == $monster[Government Agent])
+		switch(enemy)
 		{
-			set_property("_portscanPending", false);
+			case $monster[Government Agent]:
+				set_property("_portscanPending", false);
+				break;
+			case $monster[possessed wine rack]:
+				set_property("sl_wineracksencountered", get_property("sl_wineracksencountered").to_int() + 1);
+				break;
+			case $monster[cabinet of Dr. Limpieza]:
+				set_property("sl_cabinetsencountered", get_property("sl_cabinetsencountered").to_int() + 1);
+				break;
 		}
 
 		set_property("sl_combatHandler", "");
@@ -1039,7 +1047,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "banishercheck"))
 	{
-		string banishAction = banisherCombatString(enemy, my_location());
+		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
 		{
 			print("Looking at banishAction: " + banishAction, "green");
@@ -1349,6 +1357,22 @@ string sl_combatHandler(int round, string opp, string text)
 			}
 		}
 
+		if(my_location() == $location[The Smut Orc Logging Camp] && canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0 && canSurvive(1.0))
+		{
+			return useSkill($skill[Stuffed Mortar Shell]);
+		}
+
+		if(my_location() == $location[The Haunted Kitchen] && equipped_amount($item[vampyric cloake]) > 0 && get_property("_vampyreCloakeFormUses").to_int() < 10)
+		{
+			int hot = to_int(numeric_modifier("Hot Resistance"));
+			int stench = to_int(numeric_modifier("Stench Resistance"));
+
+			if((hot < 9 && hot % 3 != 0) || (stench < 9 && stench % 3 != 0))
+			{
+				return useSkill($skill[Become a Cloud of Mist]);
+			}
+		}
+
 		if(canUse($skill[Air Dirty Laundry]))
 		{
 			return useSkill($skill[Air Dirty Laundry]);
@@ -1496,7 +1520,7 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(canUse($skill[Stuffed Mortar Shell]) && (my_class() == $class[Sauceror]) && canSurvive(2.0))
+	if(canUse($skill[Stuffed Mortar Shell]) && (my_class() == $class[Sauceror]) && canSurvive(2.0) && sl_tunedElement() != monster_element(enemy))
 	{
 		return useSkill($skill[Stuffed Mortar Shell]);
 	}
@@ -1787,7 +1811,20 @@ string sl_combatHandler(int round, string opp, string text)
 
 	case $class[Disco Bandit]:
 
-		// I have no idea how Disco Bandits fight, even less than AT.
+		if(sl_have_skill($skill[Disco State of Mind]) && sl_have_skill($skill[Flashy Dancer]) && sl_have_skill($skill[Disco Greed]) && sl_have_skill($skill[Disco Bravado]) && monster_level_adjustment() < 150)
+		{
+			float mpRegen = (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max")) / 2;
+			int netCost = 0;
+
+			foreach dance in $skills[Disco Dance of Doom, Disco Dance II: Electric Boogaloo, Disco Dance 3: Back in the Habit]
+			{
+				netCost += mp_cost(dance);
+				if(canUse(dance) && mpRegen > netCost * 2)
+				{
+					return useSkill(dance);
+				}
+			}
+		}
 
 		if(((monster_defense() - my_buffedstat(my_primestat())) > 20) && canUse($skill[Saucestorm], false))
 		{
@@ -2083,7 +2120,7 @@ string findBanisher(int round, string opp, string text)
 {
 	monster enemy = to_monster(opp);
 
-	string banishAction = banisherCombatString(enemy, my_location());
+	string banishAction = banisherCombatString(enemy, my_location(), true);
 	if(banishAction != "")
 	{
 		print("Looking at banishAction: " + banishAction, "green");

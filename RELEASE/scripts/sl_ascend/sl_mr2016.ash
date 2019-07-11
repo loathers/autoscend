@@ -1126,7 +1126,7 @@ boolean LX_ghostBusting()
 			if(equipped_item($slot[acc3]) != $item[Talisman O\' Namsilat])
 			{
 				replaceAcc3 = equipped_item($slot[acc3]);
-				equip($slot[acc3], $item[Talisman O\' Namsilat]);
+				slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 			}
 		}
 
@@ -1141,14 +1141,14 @@ boolean LX_ghostBusting()
 
 		if((equipped_item($slot[Back]) != $item[Protonic Accelerator Pack]) && can_equip($item[Protonic Accelerator Pack]))
 		{
-			equip($slot[Back], $item[Protonic Accelerator Pack]);
+			slEquip($slot[Back], $item[Protonic Accelerator Pack]);
 		}
 
 		print("Time to bust some ghosts!!!", "green");
 		boolean advVal = slAdv(goal);
 		if(replaceAcc3 != $item[none])
 		{
-			equip($slot[acc3], replaceAcc3);
+			slEquip($slot[acc3], replaceAcc3);
 		}
 		if(have_effect($effect[Beaten Up]) == 0)
 		{

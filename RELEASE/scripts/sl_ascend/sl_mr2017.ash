@@ -1157,6 +1157,17 @@ boolean getSpaceJelly()
 	return true;
 }
 
+boolean haveAsdonBuff()
+{
+	foreach eff in $effects[Driving Intimidatingly, Driving Obnoxiously, Driving Observantly, Driving Quickly, Driving Recklessly, Driving Safely, Driving Stealthily, Driving Wastefully, Driving Waterproofly]
+	{
+		if(have_effect(eff) != 0)
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 boolean asdonBuff(string goal)
 {

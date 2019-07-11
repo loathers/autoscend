@@ -74,8 +74,10 @@ generic_t zone_needItem(location loc)
 		value = 30.0;			#Just a guess.
 		break;
 	case $location[The Haunted Laundry Room]:
+		value = 5.0 * (1.0 + get_property("sl_cabinetsencountered").to_float());
+		break;
 	case $location[The Haunted Wine Cellar]:
-		value = 5.0;
+		value = 5.0 * (1.0 + get_property("sl_wineracksencountered").to_float());
 		break;
 	case $location[The Hidden Park]:
 	case $location[The Hidden Apartment Building]:

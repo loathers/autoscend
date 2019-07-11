@@ -7,8 +7,290 @@ void makeStartingSmiths();
 void equipBaselineGear();
 int equipmentAmount(item equipment);
 
+string getMaximizeSlotPref(slot s)
+{
+	return "_sl_maximize_equip_" + s.to_string();
+}
+
+item getTentativeMaximizeEquip(slot s)
+{
+	return get_property(getMaximizeSlotPref(s)).to_item();
+}
+
+boolean slEquip(slot s, item it)
+{
+	if(!possessEquipment(it) || !sl_can_equip(it))
+	{
+		return false;
+	}
+
+	sl_debug_print("Equipping " + it + " to slot " + s, "gold");
+
+	if(useMaximizeToEquip())
+	{
+		return tryAddItemToMaximize(s, it);
+	}
+	else
+	{
+		return equip(s, it);
+	}
+}
+
+boolean slEquip(item it)
+{
+	return slEquip(it.to_slot(), it);
+}
+
+// specifically intended for forcing something in to a specific slot,
+// instead of just forcing it to be equipped in general
+// made for Antique Machete, mainly
+boolean slForceEquip(slot s, item it)
+{
+	if(!possessEquipment(it) || !sl_can_equip(it))
+	{
+		return false;
+	}
+	if(equip(s, it))
+	{
+		removeFromMaximize("-equip " + it);
+		addToMaximize("-" + s);
+		return true;
+	}
+	return false;
+}
+
+boolean slForceEquip(item it)
+{
+	return slForceEquip(it.to_slot(), it);
+}
+
+boolean slOutfit(string toWear)
+{
+	if(!have_outfit(toWear))
+		return false;
+
+	if(useMaximizeToEquip())
+	{
+		// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
+		sl_debug_print('Adding outfit "' + toWear + '" to maximizer statement', "gold");
+		boolean pass = true;
+		foreach i,it in outfit_pieces(toWear)
+		{
+			pass = pass && slEquip(it);
+		}
+		return pass;
+	}
+	else
+	{
+		return outfit(toWear);
+	}
+}
+
+boolean tryAddItemToMaximize(slot s, item it)
+{
+	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
+	{
+		sl_debug_print("But " + s + " is an invalid equip slot... What?", "red");
+		return false;
+	}
+	switch(s)
+	{
+		case $slot[weapon]:
+			if(it.weapon_hands() > 1)
+			{
+				set_property(getMaximizeSlotPref($slot[off-hand]), "");
+			}
+			break;
+		case $slot[off-hand]:
+			if(getTentativeMaximizeEquip($slot[weapon]).weapon_hands() > 1)
+			{
+				set_property(getMaximizeSlotPref($slot[weapon]), "");
+			}
+			// TODO: Ranged/melee mismatch handling
+			break;
+	}
+
+	string itString = it.to_string();
+	// maximizer uses commas, so can't have a comma in an item name
+	// fortunately fuzzy matching means just stripping out the comma is fine
+	itString = itString.replace_string(",", "");
+	set_property(getMaximizeSlotPref(s), itString);
+	return true;
+}
+
+boolean useMaximizeToEquip()
+{
+	return get_property("sl_maximize_baseline") != "";
+}
+
+string defaultMaximizeStatement()
+{
+	string res = "5item,meat";
+
+	// combat is completely different in pokefam, so most stuff doesn't matter there
+	if(sl_my_path() != "Pocket Familiars")
+	{
+		res += ",0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+		if(my_class() == $class[Vampyre])
+		{
+			res += ",0.8hp,3hp regen";
+		}
+		else
+		{
+			res += ",0.4hp,0.2mp 1000max";
+			res += (my_class() == $class[Ed]) ? ",6mp regen" : ",3mp regen";
+		}
+
+		if(my_primestat() == $stat[Mysticality])
+		{
+			res += ",0.25spell damage,1.75spell damage percent";
+		}
+		else
+		{
+			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+		}
+
+		if(sl_have_familiar($familiar[mosquito]))
+		{
+			res += ",2familiar weight";
+			if(my_familiar().familiar_weight() < 20)
+			{
+				res += ",5familiar exp";
+			}
+		}
+	}
+
+	if(my_level() < 13)
+	{
+		res += ",10exp,5" + my_primestat() + " experience percent";
+	}
+
+	return res;
+}
+
+void resetMaximize()
+{
+	string res = get_property("sl_maximize_baseline");
+	if(res.to_lower_case() == "default")
+	{
+		res = defaultMaximizeStatement();
+	}
+	foreach it in $items[hewn moon-rune spoon, makeshift garbage shirt, broken champagne bottle, snow suit]
+	{
+		// don't want to equip these items automatically
+		// spoon breaks mafia, and the others have limited charges
+		res += ",-equip " + it;
+	}
+	set_property("sl_maximize_current", res);
+	sl_debug_print("Resetting sl_maximize_current to " + res, "gold");
+
+	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
+	{
+		set_property(getMaximizeSlotPref(s), "");
+	}
+}
+
+void finalizeMaximize()
+{
+	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
+	{
+		string pref = getMaximizeSlotPref(s);
+		string toEquip = get_property(pref);
+		if(toEquip != "")
+		{
+			removeFromMaximize("-equip " + toEquip);
+			addToMaximize("+equip " + toEquip);
+		}
+	}
+	if(get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
+	{
+		addToMaximize("effective");
+	}
+}
+
+void addToMaximize(string add)
+{
+	sl_debug_print('Adding "' + add + '" to current maximizer statement', "gold");
+	string res = get_property("sl_maximize_current");
+	boolean addHasComma = add.starts_with(",");
+	if(res != "" && !addHasComma)
+	{
+		res += ",";
+	}
+	else if(res == "" && addHasComma)
+	{
+		// maximizer fails on a leading comma
+		add = add.substring(1);
+	}
+	res += add;
+	set_property("sl_maximize_current", res);
+}
+
+void removeFromMaximize(string rem)
+{
+	sl_debug_print('Removing "' + rem + '" from current maximizer statement', "gold");
+	string res = get_property("sl_maximize_current");
+	res = res.replace_string(rem, "");
+	// let's be safe here
+	res = res.replace_string(",,", ",");
+	if(res.ends_with(","))
+	{
+		res = res.substring(0, res.length() - 1);
+	}
+	if(res.starts_with(","))
+	{
+		res = res.substring(1);
+	}
+	set_property("sl_maximize_current", res);
+}
+
+boolean maximizeContains(string check)
+{
+	return get_property("sl_maximize_current").contains_text(check);
+}
+
+boolean simMaximize()
+{
+	string backup = get_property("sl_maximize_current");
+	finalizeMaximize();
+	boolean res = slMaximize(get_property("sl_maximize_current"), true);
+	set_property("sl_maximize_current", backup);
+	return res;
+}
+
+boolean simMaximizeWith(string add)
+{
+	addToMaximize(add);
+	sl_debug_print("Simulating: " + get_property("sl_maximize_current"), "gold");
+	boolean res = simMaximize();
+	removeFromMaximize(add);
+	return res;
+}
+
+float simValue(string modifier)
+{
+	return numeric_modifier("Generated:_spec", modifier);
+}
+
+void equipMaximizedGear()
+{
+	if(!useMaximizeToEquip())
+	{
+		return;
+	}
+
+	finalizeMaximize();
+	sl_debug_print("Maximizing: " + get_property("sl_maximize_current"), "gold");
+	maximize(get_property("sl_maximize_current"), 2500, 0, false);
+}
+
 void equipBaselineGear()
 {
+	if(useMaximizeToEquip())
+	{
+		return;
+	}
+
 	string [string,int,string] equipment_text;
 	if(!file_to_map("sl_ascend_equipment.txt", equipment_text))
 		print("Could not load sl_ascend_equipment.txt. This is bad!", "red");
@@ -310,59 +592,59 @@ void equipBaseline()
 
 	if(get_property("sl_diceMode").to_boolean())
 	{
-		if(item_amount($item[Dice Ring]) > 0)
-		{
-			equip($slot[acc1], $item[Dice Ring]);
-		}
-		if(item_amount($item[Dice Belt Buckle]) > 0)
-		{
-			equip($slot[acc2], $item[Dice Belt Buckle]);
-		}
-		if(item_amount($item[Dice Sunglasses]) > 0)
-		{
-			equip($slot[acc3], $item[Dice Sunglasses]);
-		}
-		if(item_amount($item[Dice-Print Do-Rag]) > 0)
-		{
-			equip($slot[hat], $item[Dice-Print Do-Rag]);
-		}
-		if(item_amount($item[Dice-Shaped Backpack]) > 0)
-		{
-			equip($slot[back], $item[Dice-Shaped Backpack]);
-		}
-		if(item_amount($item[Dice-Print Pajama Pants]) > 0)
-		{
-			equip($slot[pants], $item[Dice-Print Pajama Pants]);
-		}
-		if((item_amount($item[Kill Screen]) > 0) && (my_familiar() != $familiar[none]))
-		{
-			equip($slot[familiar], $item[Kill Screen]);
-		}
+		slEquip($slot[acc1], $item[Dice Ring]);
+		slEquip($slot[acc2], $item[Dice Belt Buckle]);
+		slEquip($slot[acc3], $item[Dice Sunglasses]);
+		slEquip($slot[hat], $item[Dice-Print Do-Rag]);
+		slEquip($slot[back], $item[Dice-Shaped Backpack]);
+		slEquip($slot[pants], $item[Dice-Print Pajama Pants]);
+		slEquip($slot[familiar], $item[Kill Screen]);
 	}
 }
 
 void ensureSealClubs()
 {
-	string ignore = get_property("sl_ignoreCombat");
-	set_property("sl_ignoreCombat", ignore + "(seal)");
-	equipBaseline();
-	set_property("sl_ignoreCombat", ignore);
+	if(useMaximizeToEquip())
+	{
+		addToMaximize("+type club");
+	}
+	else
+	{
+		string ignore = get_property("sl_ignoreCombat");
+		set_property("sl_ignoreCombat", ignore + "(seal)");
+		equipBaseline();
+		set_property("sl_ignoreCombat", ignore);
+	}
 }
 
 void removeNonCombat()
 {
-	string ignore = get_property("sl_ignoreCombat");
-	set_property("sl_ignoreCombat", ignore + "(noncombat)");
-	equipBaseline();
-	set_property("sl_ignoreCombat", ignore);
+	if(useMaximizeToEquip())
+	{
+		addToMaximize("-50combat");
+	}
+	else
+	{
+		string ignore = get_property("sl_ignoreCombat");
+		set_property("sl_ignoreCombat", ignore + "(noncombat)");
+		equipBaseline();
+		set_property("sl_ignoreCombat", ignore);
+	}
 }
 
 void removeCombat()
 {
-	string ignore = get_property("sl_ignoreCombat");
-	set_property("sl_ignoreCombat", ignore + "(combat)");
-	equipBaseline();
-	set_property("sl_ignoreCombat", ignore);
+	if(useMaximizeToEquip())
+	{
+		addToMaximize("50combat");
+	}
+	else
+	{
+		string ignore = get_property("sl_ignoreCombat");
+		set_property("sl_ignoreCombat", ignore + "(combat)");
+		equipBaseline();
+		set_property("sl_ignoreCombat", ignore);
+	}
 }
 
 void equipRollover()
@@ -387,5 +669,8 @@ void equipRollover()
 	
 	maximize(to_max, false);
 
-	print("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
+	if(!in_hardcore())
+	{
+		print("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
+	}
 }

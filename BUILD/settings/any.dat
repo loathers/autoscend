@@ -34,6 +34,7 @@ sl_blacklistFamiliar	string	A semi-colon separate string of familiar names that 
 sl_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
 sl_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
 sl_limitConsume	boolean	When false, pull cheapish food/booze when we run low so we can continue.
+sl_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank, will continue using the current data driven equipment instead. You probably want this blank for now! You can also set it to default to use a generated maximizer statement that takes your current situation in to account somewhat.
 sl_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
 sl_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
 sl_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.
