@@ -271,16 +271,30 @@ void handlePreAdventure(location place)
 	cli_execute("checkpoint clear");
 
 	generic_t itemNeed = zone_needItem(place);
-	if(itemNeed._boolean && (item_drop_modifier() < itemNeed._float))
+	if(itemNeed._boolean)
 	{
-		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 20, 1, 10);
-		buffMaintain($effect[Singer\'s Faithful Ocelot], 35, 1, 10);
-	}
-	if(itemNeed._boolean && (item_drop_modifier() < itemNeed._float))
-	{
-		addToMaximize("50item " + ceil(itemNeed._float) + "max");
-		simMaximize();
-		float itemDrop = simValue("Item Drop");
+		float itemDrop;
+		if(useMaximizeToEquip())
+		{
+			addToMaximize("50item " + ceil(itemNeed._float) + "max");
+			simMaximize();
+			itemDrop = simValue("Item Drop");
+		}
+		else
+		{
+			itemDrop = numeric_modifier("Item Drop");
+		}
+		if(itemDrop < itemNeed._float)
+		{
+			if(buffMaintain($effect[Fat Leon's Phat Loot Lyric], 20, 1, 10))
+			{
+				itemDrop += 20.0;
+			}
+			if(buffMaintain($effect[Singer's Faithful Ocelot], 35, 1, 10))
+			{
+				itemDrop += 10.0;
+			}
+		}
 		if(itemDrop < itemNeed._float && !haveAsdonBuff())
 		{
 			asdonAutoFeed(37);
