@@ -138,7 +138,7 @@ string defaultMaximizeStatement()
 		else
 		{
 			res += ",0.4hp,0.2mp 1000max";
-			res += (my_class() == $class[Ed]) ? ",10mp regen" : ",5mp regen";
+			res += (my_class() == $class[Ed]) ? ",6mp regen" : ",3mp regen";
 		}
 
 		if(my_primestat() == $stat[Mysticality])
