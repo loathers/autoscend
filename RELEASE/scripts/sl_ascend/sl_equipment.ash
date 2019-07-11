@@ -592,34 +592,13 @@ void equipBaseline()
 
 	if(get_property("sl_diceMode").to_boolean())
 	{
-		if(item_amount($item[Dice Ring]) > 0)
-		{
-			slEquip($slot[acc1], $item[Dice Ring]);
-		}
-		if(item_amount($item[Dice Belt Buckle]) > 0)
-		{
-			slEquip($slot[acc2], $item[Dice Belt Buckle]);
-		}
-		if(item_amount($item[Dice Sunglasses]) > 0)
-		{
-			slEquip($slot[acc3], $item[Dice Sunglasses]);
-		}
-		if(item_amount($item[Dice-Print Do-Rag]) > 0)
-		{
-			slEquip($slot[hat], $item[Dice-Print Do-Rag]);
-		}
-		if(item_amount($item[Dice-Shaped Backpack]) > 0)
-		{
-			slEquip($slot[back], $item[Dice-Shaped Backpack]);
-		}
-		if(item_amount($item[Dice-Print Pajama Pants]) > 0)
-		{
-			slEquip($slot[pants], $item[Dice-Print Pajama Pants]);
-		}
-		if((item_amount($item[Kill Screen]) > 0) && (my_familiar() != $familiar[none]))
-		{
-			slEquip($slot[familiar], $item[Kill Screen]);
-		}
+		slEquip($slot[acc1], $item[Dice Ring]);
+		slEquip($slot[acc2], $item[Dice Belt Buckle]);
+		slEquip($slot[acc3], $item[Dice Sunglasses]);
+		slEquip($slot[hat], $item[Dice-Print Do-Rag]);
+		slEquip($slot[back], $item[Dice-Shaped Backpack]);
+		slEquip($slot[pants], $item[Dice-Print Pajama Pants]);
+		slEquip($slot[familiar], $item[Kill Screen]);
 	}
 }
 
