@@ -1023,6 +1023,7 @@ void bat_clearForms(); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_switchForm(effect form); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_formPreAdventure(); // Defined in sl_ascend/sl_batpath.ash
 boolean LM_batpath(); // Defined in sl_ascend/sl_batpath.ash
+element sl_tunedElement(); // Defined in sl_ascend/sl_util.ash
 
 //Record from sl_ascend/sl_zone.ash
 record generic_t

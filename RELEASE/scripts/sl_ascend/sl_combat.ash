@@ -1512,7 +1512,7 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(canUse($skill[Stuffed Mortar Shell]) && (my_class() == $class[Sauceror]) && canSurvive(2.0))
+	if(canUse($skill[Stuffed Mortar Shell]) && (my_class() == $class[Sauceror]) && canSurvive(2.0) && sl_tunedElement() != monster_element(enemy))
 	{
 		return useSkill($skill[Stuffed Mortar Shell]);
 	}

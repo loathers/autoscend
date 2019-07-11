@@ -5571,3 +5571,29 @@ void sl_interruptCheck()
 		abort("sl_interrupt detected and aborting, sl_interrupt disabled.");
 	}
 }
+
+element sl_tunedElement()
+{
+	if(have_effect($effect[Spirit of Peppermint]) != 0)
+	{
+		return $element[cold];
+	}
+	if(have_effect($effect[Spirit of Bacon Grease]) != 0)
+	{
+		return $element[sleaze];
+	}
+	if(have_effect($effect[Spirit of Garlic]) != 0)
+	{
+		return $element[stench];
+	}
+	if(have_effect($effect[Spirit of Cayenne]) != 0)
+	{
+		return $element[hot];
+	}
+	if(have_effect($effect[Spirit of Wormwood]) != 0)
+	{
+		return $element[spooky];
+	}
+
+	return $element[none];
+}
