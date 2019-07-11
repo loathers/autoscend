@@ -1792,7 +1792,23 @@ string sl_combatHandler(int round, string opp, string text)
 
 	case $class[Disco Bandit]:
 
-		// I have no idea how Disco Bandits fight, even less than AT.
+		if(sl_have_skill($skill[Disco State of Mind]) && sl_have_skill($skill[Flashy Dancer]) && monster_level_adjustment() < 150)
+		{
+			if(canUse($skill[Disco Dance of Doom]))
+			{
+				return useSkill($skill[Disco Dance of Doom]);
+			}
+
+			if(canUse($skill[Disco Dance II: Electric Boogaloo]))
+			{
+				return useSkill($skill[Disco Dance II: Electric Boogaloo]);
+			}
+
+			if(canUse($skill[Disco Dance 3: Back in the Habit]))
+			{
+				return useSkill($skill[Disco Dance 3: Back in the Habit]);
+			}
+		}
 
 		if(((monster_defense() - my_buffedstat(my_primestat())) > 20) && canUse($skill[Saucestorm], false))
 		{
