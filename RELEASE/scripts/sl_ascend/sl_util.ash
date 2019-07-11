@@ -2869,6 +2869,13 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		}
 	}
 
+	if(sl_have_familiar($familiar[Jumpsuited Hound Dog]) && my_familiar() == $familiar[Jumpsuited Hound Dog])
+	{
+		// prevent swapping back and forth between hound dog and not hound dog when just
+		// on the cusp of the right amount of +combat when we have the hound dog out
+		handleFamiliar($familiar[Jumpsuited Hound Dog]);
+	}
+
 	if(numeric_modifier("Combat Rate").to_int() >= amt)
 	{
 		return true;
@@ -2915,7 +2922,7 @@ boolean providePlusCombat(int amt, boolean doEquips)
 			simMaximize();
 			equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		}
-		if(have_familiar($familiar[Jumpsuited Hound Dog]))
+		if(sl_have_familiar($familiar[Jumpsuited Hound Dog]))
 		{
 			handleFamiliar($familiar[Jumpsuited Hound Dog]);
 		}
