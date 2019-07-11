@@ -1354,6 +1354,17 @@ string sl_combatHandler(int round, string opp, string text)
 			return useSkill($skill[Stuffed Mortar Shell]);
 		}
 
+		if(my_location() == $location[The Haunted Kitchen] && equipped_amount($item[vampyric cloake]) > 0 && get_property("_vampyreCloakeFormUses").to_int() < 10)
+		{
+			int hot = to_int(numeric_modifier("Hot Resistance"));
+			int stench = to_int(numeric_modifier("Stench Resistance"));
+
+			if((hot < 9 && hot % 3 != 0) || (stench < 9 && stench % 3 != 0))
+			{
+				return useSkill($skill[Become a Cloud of Mist]);
+			}
+		}
+
 		if(canUse($skill[Air Dirty Laundry]))
 		{
 			return useSkill($skill[Air Dirty Laundry]);
