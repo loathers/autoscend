@@ -1803,7 +1803,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	case $class[Disco Bandit]:
 
-		if(sl_have_skill($skill[Disco State of Mind]) && sl_have_skill($skill[Flashy Dancer]) && monster_level_adjustment() < 150)
+		if(sl_have_skill($skill[Disco State of Mind]) && sl_have_skill($skill[Flashy Dancer]) && sl_have_skill($skill[Disco Greed]) && sl_have_skill($skill[Disco Bravado]) && monster_level_adjustment() < 150)
 		{
 			if(canUse($skill[Disco Dance of Doom]))
 			{
