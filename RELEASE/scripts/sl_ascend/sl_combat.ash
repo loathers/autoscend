@@ -1805,19 +1805,16 @@ string sl_combatHandler(int round, string opp, string text)
 
 		if(sl_have_skill($skill[Disco State of Mind]) && sl_have_skill($skill[Flashy Dancer]) && sl_have_skill($skill[Disco Greed]) && sl_have_skill($skill[Disco Bravado]) && monster_level_adjustment() < 150)
 		{
-			if(canUse($skill[Disco Dance of Doom]))
-			{
-				return useSkill($skill[Disco Dance of Doom]);
-			}
+			float mpRegen = (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max")) / 2;
+			int netCost = 0;
 
-			if(canUse($skill[Disco Dance II: Electric Boogaloo]))
+			foreach dance in $skills[Disco Dance of Doom, Disco Dance II: Electric Boogaloo, Disco Dance 3: Back in the Habit]
 			{
-				return useSkill($skill[Disco Dance II: Electric Boogaloo]);
-			}
-
-			if(canUse($skill[Disco Dance 3: Back in the Habit]))
-			{
-				return useSkill($skill[Disco Dance 3: Back in the Habit]);
+				netCost += mp_cost(dance);
+				if(canUse(dance) && mpRegen > netCost * 2)
+				{
+					return useSkill(dance);
+				}
 			}
 		}
 
