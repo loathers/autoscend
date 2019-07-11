@@ -7729,10 +7729,7 @@ boolean L12_sonofaPrefix()
 			if(sl_voteMonster())
 			{
 				set_property("sl_combatDirective", "start;skill macrometeorite");
-				if(!have_equipped($item[&quot;I voted!&quot; sticker]))
-				{
-					equip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
-				}
+				slEquip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
 			}
 			else
 			{
@@ -12317,10 +12314,7 @@ boolean L9_twinPeak()
 		{
 			if(possessEquipment($item[Training Legwarmers]) && glover_usable($item[Training Legwarmers]))
 			{
-				if(!have_equipped($item[Training Legwarmers]))
-				{
-					equip($slot[acc3], $item[Training Legwarmers]);
-				}
+				slEquip($slot[acc3], $item[Training Legwarmers]);
 			}
 
 			familiar resist = $familiar[none];
@@ -12985,10 +12979,7 @@ boolean L11_redZeppelin()
 			{
 				foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
 				{
-					if((item_amount(it) > 0) && can_equip(it) && !have_equipped(it))
-					{
-						slEquip(it);
-					}
+					slEquip(it);
 				}
 				set_property("choiceAdventure866", 1);
 			}
