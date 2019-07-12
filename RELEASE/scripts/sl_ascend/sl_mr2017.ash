@@ -1388,7 +1388,7 @@ boolean asdonAutoFeed(int goal)
 		}
 	}
 
-	if((get_fuel() < goal) && (my_meat() > 3500) && (npc_price($item[wad of dough]) == 0) && isGeneralStoreAvailable())
+	if((get_fuel() < goal) && (my_meat() > 3500) && (npc_price($item[wad of dough]) != 0) && isGeneralStoreAvailable())
 	{
 		int want = ((goal + 5) - get_fuel()) / 6;
 		if(want > 0)
