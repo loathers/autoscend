@@ -32,6 +32,28 @@ boolean haveUsed(item it)
 	return get_property("sl_combatHandler").contains_text("(it" + it.to_int().to_string() + ")");
 }
 
+int usedCount(skill sk)
+{
+	matcher m = create_matcher("(sk" + sk.to_int().to_string() + ")", get_property("sl_combatHandler"));
+	int count = 0;
+	while(m.find())
+	{
+		++count;
+	}
+	return count;
+}
+
+int usedCount(item it)
+{
+	matcher m = create_matcher("(it" + it.to_int().to_string() + ")", get_property("sl_combatHandler"));
+	int count = 0;
+	while(m.find())
+	{
+		++count;
+	}
+	return count;
+}
+
 void markAsUsed(skill sk)
 {
 	set_property("sl_combatHandler", get_property("sl_combatHandler") + "(sk" + sk.to_int().to_string() + ")");
@@ -53,9 +75,6 @@ boolean canUse(skill sk, boolean onlyOnce)
 	if(!sl_have_skill(sk))
 		return false;
 
-	if(!sl_is_valid(sk))
-		return false;
-
 	if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
 		my_hp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
@@ -65,6 +84,39 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_soulsauce() < soulsauce_cost(sk)
 	)
 		return false;
+
+	record SkillSet
+	{
+		int count;
+		boolean [skill] skills;
+	};
+	static SkillSet [int] exclusives;
+	static
+	{
+		exclusives[exclusives.count()] = new SkillSet(1, $skills[Curse of Vichyssoise, Curse of Marinara, Curse of the Thousand Islands, Curse of Weaksauce]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[Vampyric Cloake]), $skills[Become a Wolf, Become a Cloud of Mist, Become a Bat]);
+		exclusives[exclusives.count()] = new SkillSet(1, $skills[Shadow Noodles, Entangling Noodles]);
+		exclusives[exclusives.count()] = new SkillSet(1, $skills[Silent Slam, Silent Squirt, Silent Slice]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter's Bite Technique]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[bottle-rocket crossbow]), $skills[Fire Red Bottle-Rocket, Fire Blue Bottle-Rocket, Fire Orange Bottle-Rocket, Fire Purple Bottle-Rocket, Fire Black Bottle-Rocket]);
+		exclusives[exclusives.count()] = new SkillSet(1, $skills[Kodiak Moment, Grizzly Scene, Bear-Backrub, Bear-ly Legal, Bear Hug]);
+	}
+
+	foreach i, set in exclusives
+	{
+		if(set.skills contains sk)
+		{
+			int total = 0;
+			foreach check in set.skills
+			{
+				total += usedCount(check);
+			}
+			if(total >= set.count)
+			{
+				return false;
+			}
+		}
+	}
 
 	return true;
 }
