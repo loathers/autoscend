@@ -1367,7 +1367,7 @@ string sl_combatHandler(int round, string opp, string text)
 			int hot = to_int(numeric_modifier("Hot Resistance"));
 			int stench = to_int(numeric_modifier("Stench Resistance"));
 
-			if((hot < 9 && hot % 3 != 0) || (stench < 9 && stench % 3 != 0))
+			if(((hot < 9 && hot % 3 != 0) || (stench < 9 && stench % 3 != 0)) && canUse($skill[Become a Cloud of Mist]))
 			{
 				return useSkill($skill[Become a Cloud of Mist]);
 			}
