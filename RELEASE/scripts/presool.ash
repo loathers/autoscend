@@ -269,6 +269,7 @@ void handlePreAdventure(location place)
 	horsePreAdventure();
 	equipMaximizedGear();
 	cli_execute("checkpoint clear");
+	executeFlavour();
 
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean)

@@ -2049,11 +2049,6 @@ void initializeDay(int day)
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
 			}
 
-			if(have_skill($skill[Spirit of Peppermint]))
-			{
-				use_skill(1, $skill[Spirit of Peppermint]);
-			}
-
 			if(have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0) && (my_class() == $class[Seal Clubber]))
 			{
 				use_skill(1, $skill[Iron Palm Technique]);
@@ -12735,11 +12730,7 @@ boolean L9_chasmBuild()
 	}
 	else
 	{
-		if(sl_have_skill($skill[Spirit of Peppermint]) && have_effect($effect[Spirit of Peppermint]) == 0)
-		{
-			use_skill($skill[Spirit of Peppermint]);
-		}
-		if(have_effect($effect[Spirit of Peppermint]) != 0 && sl_have_skill($skill[Stuffed Mortar Shell]))
+		if(setFlavour($element[cold]) && sl_have_skill($skill[Stuffed Mortar Shell]))
 		{
 			addToMaximize("20spell damage,80spell damage percent,20cold spell damage,-10ml");
 			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
@@ -14280,6 +14271,7 @@ boolean doTasks()
 	bat_formNone();
 	horseDefault();
 	resetMaximize();
+	resetFlavour();
 
 	basicAdjustML();
 	powerLevelAdjustment();

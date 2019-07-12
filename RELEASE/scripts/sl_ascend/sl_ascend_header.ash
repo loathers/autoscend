@@ -1023,7 +1023,11 @@ void bat_clearForms(); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_switchForm(effect form); // Defined in sl_ascend/sl_batpath.ash
 boolean bat_formPreAdventure(); // Defined in sl_ascend/sl_batpath.ash
 boolean LM_batpath(); // Defined in sl_ascend/sl_batpath.ash
-element sl_tunedElement(); // Defined in sl_ascend/sl_util.ash
+element currentFlavour(); // Defined in sl_ascend/sl_util.ash
+void resetFlavour(); // Defined in sl_ascend/sl_util.ash
+boolean setFlavour(element ele); // Defined in sl_ascend/sl_util.ash
+boolean executeFlavour(); // Defined in sl_ascend/sl_util.ash
+boolean autoFlavour(location place); // Defined in sl_ascend/sl_util.ash
 
 //Record from sl_ascend/sl_zone.ash
 record generic_t

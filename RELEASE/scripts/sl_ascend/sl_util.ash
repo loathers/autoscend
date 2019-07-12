@@ -5579,7 +5579,7 @@ void sl_interruptCheck()
 	}
 }
 
-element sl_tunedElement()
+element currentFlavour()
 {
 	if(have_effect($effect[Spirit of Peppermint]) != 0)
 	{
@@ -5603,4 +5603,179 @@ element sl_tunedElement()
 	}
 
 	return $element[none];
+}
+
+void resetFlavour()
+{
+	set_property("_sl_tunedElement", "");
+}
+
+boolean setFlavour(element ele)
+{
+	if(!sl_have_skill($skill[Flavour of Magic]))
+	{
+		return false;
+	}
+	set_property("_sl_tunedElement", ele);
+	return true;
+}
+
+boolean executeFlavour()
+{
+	if(!sl_have_skill($skill[Flavour of Magic]))
+	{
+		return false;
+	}
+
+	if(get_property("_sl_tunedElement") == "" && sl_beta())
+	{
+		autoFlavour(my_location());
+	}
+	if(get_property("_sl_tunedElement") == "")
+	{
+		return false;
+	}
+	element ele = get_property("_sl_tunedElement").to_element();
+	if(ele != currentFlavour())
+	{
+		switch(ele)
+		{
+			case $element[none]:
+				return use_skill(1, $skill[Spirit of Nothing]);
+			case $element[hot]:
+				return use_skill(1, $skill[Spirit of Cayenne]);
+			case $element[cold]:
+				return use_skill(1, $skill[Spirit of Peppermint]);
+			case $element[stench]:
+				return use_skill(1, $skill[Spirit of Garlic]);
+			case $element[spooky]:
+				return use_skill(1, $skill[Spirit of Wormwood]);
+			case $element[sleaze]:
+				return use_skill(1, $skill[Spirit of Bacon Grease]);
+		}
+	}
+
+	return true;
+}
+
+boolean autoFlavour(location place)
+{
+	if(!sl_have_skill($skill[Flavour of Magic]))
+	{
+		return false;
+	}
+
+	switch(place)
+	{
+		case $location[Hobopolis Town Square]:
+			// don't mess with scare hobos
+			return false;
+		case $location[dreadsylvanian woods]:
+		case $location[dreadsylvanian castle]:
+		case $location[dreadsylvanian village]:
+			// dread is complicated
+			return setFlavour($element[none]);
+	}
+
+	if(sl_my_path() == "One Crazy Random Summer")
+	{
+		// monsters can randomly be any element in OCRS
+		setFlavour($element[none]);
+		return true;
+	}
+
+	switch(place)
+	{
+		case $location[The Ancient Hobo Burial Ground]: // Everything here is immune to elemental damage
+			setFlavour($element[none]);
+			return true;
+		case $location[The Ice Hotel]:
+			if(get_property("walfordBucketItem") == "rain" && equipped_item($slot[off-hand]) == $item[Walford's bucket])
+			{
+				setFlavour($element[hot]); // doing 100 hot damage in a fight will fill bucket faster
+				return true;
+			}
+			// INTENTIONAL LACK OF BREAK
+		case $location[VYKEA]:
+			if(get_property("walfordBucketItem") == "ice" && equipped_item($slot[off-hand]) == $item[Walford's bucket])
+			{
+				setFlavour($element[cold]);
+				return true;
+			}
+			break;
+	}
+
+	float [element] superEffective;
+	boolean [element] perfect;
+	float [element] ineffective;
+
+	foreach ele in $elements[cold, hot, sleaze, spooky, stench, none]
+	{
+		superEffective[ele] = 0;
+		ineffective[ele] = 0;
+		perfect[ele] = true;
+	}
+
+	boolean [element] weaknesses(element ele)
+	{
+		switch(ele)
+		{
+			case $element[cold]: return $elements[hot, spooky];
+			case $element[spooky]: return $elements[hot, stench];
+			case $element[hot]: return $elements[stench, sleaze];
+			case $element[stench]: return $elements[sleaze, cold];
+			case $element[sleaze]: return $elements[cold, spooky];
+			default: return $elements[none];
+		}
+	}
+
+	void handle_monster(monster mon, float chance)
+	{
+		if(chance == 0 || mon == $monster[none])
+			return;
+
+		foreach ele in $elements[cold, hot, sleaze, spooky, stench]
+		{
+			if(ele == monster_element(mon))
+				ineffective[ele] += chance;
+
+			if(weaknesses(monster_element(mon)) contains ele)
+			{
+				superEffective[ele] += chance;
+			}
+			else
+			{
+				perfect[ele] = false;
+			}
+		}
+	}
+
+	foreach mon,chance in appearance_rates(place, true)
+	{
+		handle_monster(mon, chance);
+	}
+
+	if(equipped_amount($item[Kramco Sausage-o-Matic&trade;]) > 0)
+	{
+		handle_monster($monster[sausage goblin], 0.5);
+	}
+
+	element flavour = $element[none];
+	float bestScore = -1;
+	float bestSpellDamage = -99999;
+
+	foreach ele in $elements[cold, hot, sleaze, spooky, stench]
+	{
+		float spellDamage = numeric_modifier(ele.to_string() + " Spell Damage");
+		float scoreDiff = superEffective[ele] - bestScore;
+		scoreDiff = scoreDiff < 0 ? -scoreDiff : scoreDiff;
+		if(ineffective[ele] == 0 && ((superEffective[ele] > bestScore) || (scoreDiff < 0.00001  && spellDamage > bestSpellDamage)))
+		{
+			flavour = ele;
+			bestScore = superEffective[ele];
+			bestSpellDamage = spellDamage;
+		}
+	}
+
+	return setFlavour(flavour);
 }
