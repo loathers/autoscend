@@ -177,9 +177,13 @@ void resetMaximize()
 	}
 	foreach it in $items[hewn moon-rune spoon, makeshift garbage shirt, broken champagne bottle, snow suit]
 	{
+		if(res != "")
+		{
+			res += ",";
+		}
 		// don't want to equip these items automatically
 		// spoon breaks mafia, and the others have limited charges
-		res += ",-equip " + it;
+		res += "-equip " + it;
 	}
 	set_property("sl_maximize_current", res);
 	sl_debug_print("Resetting sl_maximize_current to " + res, "gold");
