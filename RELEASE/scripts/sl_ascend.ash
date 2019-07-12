@@ -12586,7 +12586,7 @@ boolean L9_oilPeak()
 			}
 		}
 	}
-	addToMaximize("200ml 100max");
+	addToMaximize("1000ml 100max");
 	slAdv(1, $location[Oil Peak]);
 	if(get_property("lastAdventure") == "Unimpressed with Pressure")
 	{
