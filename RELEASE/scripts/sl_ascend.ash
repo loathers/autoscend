@@ -3967,6 +3967,8 @@ boolean L11_palindome()
 
 	if((item_amount($item[Wet Stunt Nut Stew]) > 0) && !possessEquipment($item[Mega Gem]))
 	{
+		if(equipped_amount($item[Talisman o' Namsilat]) == 0)
+			equip($slot[acc3], $item[Talisman o' Namsilat]);
 		visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 	}
 
@@ -4003,11 +4005,11 @@ boolean L11_palindome()
 				bat_formBats();
 				print("Off to the grove for some doofy food!", "blue");
 				slAdv(1, $location[Whitey\'s Grove]);
-
 			}
 			else if(item_amount($item[Stunt Nuts]) == 0)
 			{
 				print("We got no nuts!! :O", "Blue");
+				slEquip($slot[acc3], $item[Talisman o' Namsilat]);
 				slAdv(1, $location[Inside the Palindome]);
 			}
 			else
@@ -4023,6 +4025,8 @@ boolean L11_palindome()
 		{
 			useILoveMeVolI();
 		}
+		if(equipped_amount($item[Talisman o' Namsilat]) == 0)
+			equip($slot[acc3], $item[Talisman o' Namsilat]);
 		visit_url("place.php?whichplace=palindome&action=pal_drlabel");
 		visit_url("choice.php?pwd&whichchoice=872&option=1&photo1=2259&photo2=7264&photo3=7263&photo4=7265");
 
@@ -4043,6 +4047,8 @@ boolean L11_palindome()
 				doHottub();
 				bat_reallyPickSkills(20);
 			}
+			if(equipped_amount($item[Talisman o' Namsilat]) == 0)
+				equip($slot[acc3], $item[Talisman o' Namsilat]);
 			visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 			if(!in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0))
 			{
