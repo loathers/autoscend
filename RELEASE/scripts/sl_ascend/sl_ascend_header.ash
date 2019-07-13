@@ -380,6 +380,7 @@ boolean canYellowRay(monster target); //Defined in sl_ascend/sl_util.ash
 boolean canYellowRay();										//Defined in sl_ascend/sl_util.ash
 boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in sl_ascend/sl_adventure.ash
 boolean slChew(int howMany, item toChew);					//Defined in sl_ascend/sl_cooking.ash
+float expectedAdventuresFrom(item it);						//Defined in sl_ascend/sl_cooking.ash
 int slCraft(string mode, int count, item item1, item item2);//Defined in sl_ascend/sl_util.ash
 boolean canOde(item toDrink); //Defined in sl_ascend/sl_cooking.ash
 boolean slDrink(int howMany, item toDrink);					//Defined in sl_ascend/sl_cooking.ash

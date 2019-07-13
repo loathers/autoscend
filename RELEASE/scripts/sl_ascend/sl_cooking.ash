@@ -76,9 +76,28 @@ boolean keepOnTruckin()
 			break;
 		}
 	}
-
 	consumeStuff();
 	return true;
+}
+
+float expectedAdventuresFrom(item it)
+{
+	if(in_tcrs())
+	{
+		int fill = max(it.fullness, it.inebriety);
+		switch(it.quality)
+		{
+		case "EPIC": return 5 * fill;
+		case "awesome": return 4 * fill;
+		case "good": return 3 * fill;
+		case "": return 2 * fill;
+		case "crappy": return 1 * fill;
+		default: abort("could not calculate expected adventures from " + it + " in 2CRS");
+		}
+	}
+	if (!it.adventures.contains_text("-")) return it.adventures.to_int();
+	string[int] s = split_string(it.adventures, "-");
+	return (s[1].to_int() + s[0].to_int())/2.0;
 }
 
 item getAvailablePerfectBooze()

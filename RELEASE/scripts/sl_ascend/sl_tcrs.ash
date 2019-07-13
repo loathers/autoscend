@@ -17,10 +17,151 @@ boolean tcrs_initializeSettings()
 	return true;
 }
 
+boolean[int] knapsack(int maxw, int n, int[int] weight, int[int] val)
+{
+	/*
+	 * standard implementation of 0-1 Knapsack problem with dynamic programming
+	 * Time complexity: O(maxw * n)
+	 * For 16k items on a 2017 laptop, took about 5 seconds and 60Mb of RAM
+	 *
+	 * Parameters:
+	 *   maxw is the desired sum-of-weights (e.g. fullness_left())
+	 *   n is the number of elements
+	 *   weight is the (e.g. a map from i=1..n => fullness of i-th food)
+	 *   val is the value to maximize (e.g. a map from i=1..n => adventures of i-th food)
+	 * Returns: a set of indices that were taken
+	 */
+
+	if(n*maxw >= 100000)
+	{
+		print("Solving a Knapsack instance with " + n + " elements and " + maxw + " total weight, this might be slow and memory-intensive.");
+	}
+
+	/* V[i][w] is "with only the first i items, what is the maximum
+	 * sum-of-vals we can generate with total weight w?
+	 */
+	float [int][int] V;
+
+	for (int i = 0; i <= n; i++)
+	{
+		for (int w = 0; w <= maxw; w++)
+		{
+			if (i==0 || w==0) 
+				V[i][w] = 0; 
+			else if (weight[i-1] <= w) 
+				V[i][w] = max(val[i-1] + V[i-1][w-weight[i-1]], V[i-1][w]);
+			else
+				V[i][w] = V[i-1][w];
+		}
+	}
+
+	boolean[int] ret;
+	// backtrack
+	int i = n;
+	int w = maxw;
+	while (i > 0 || w > 0)
+	{
+		// Did this item change our mind about how many adventures we could generate?
+		// If so, we took this item.
+		if (V[i][w] != V[i-1][w])
+		{
+			w -= weight[i-1];
+			ret[i-1] = true;
+		}
+		else
+		{
+			// do not take element
+			i -= 1;
+		}
+	}
+	// This can be somewhat memory-intensive.
+	// I'm not sure if this actually does anything, but it makes me feel better.
+	cli_execute("gc");
+	return ret;
+}
+
+int [item] knapsack_pick_food()
+{
+	int[int] fullness;
+	int[int] adv;
+	item[int] items;
+
+	foreach it in $items[]
+	{
+		if ((it.quality == "awesome" || it.quality == "EPIC") && canEat(it) && (it.fullness > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
+		{
+			int amount = available_amount(it) + creatable_amount(it);
+			int limit = min(amount, fullness_left()/it.fullness);
+			for (int i=0; i<limit; i++)
+			{
+				int n = count(fullness);
+				fullness[n] = it.fullness;
+				adv[n] = expectedAdventuresFrom(it);
+				items[n] = it;
+			}
+		}
+	}
+	int[item] ret;
+	foreach i in knapsack(fullness_left(), count(fullness), fullness, adv)
+	{
+		ret[items[i]] += 1;
+	}
+	return ret;
+}
+
+boolean[item] knapsack_pick_drinks()
+{
+	int[int] inebriety;
+	int[int] adv;
+	item[int] items;
+
+	foreach it in $items[]
+	{
+		if ((it.quality == "awesome" || it.quality == "EPIC") && canDrink(it) && (it.inebriety > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
+		{
+			int amount = available_amount(it) + creatable_amount(it);
+			int limit = min(amount, inebriety_left()/it.inebriety);
+			for (int i=0; i<limit; i++)
+			{
+				int n = count(inebriety);
+				inebriety[n] = it.inebriety;
+				adv[n] = expectedAdventuresFrom(it);
+				items[n] = it;
+			}
+		}
+	}
+	boolean[item] ret;
+	foreach i in knapsack(inebriety_left(), count(inebriety), inebriety, adv)
+	{
+		ret[items[i]] = true;
+	}
+	return ret;
+}
+
 boolean tcrs_consumption()
 {
 	if(!in_tcrs())
 		return false;
+
+	if(get_property("sl_beta").to_boolean())
+	{
+		if((inebriety_left() > 0) && my_adventures() < 10)
+		{
+			// just drink, like, anything, whatever
+		}
+		if((fullness_left() > 0) && my_adventures() < 10)
+		{
+			int[item] foods = knapsack_pick_food();
+			if(get_property("sl_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
+			{
+				makeGenieWish($effect[Got Milk]); // +15 adv is worth it for daycount
+			}
+			foreach what, howmany in foods
+			{
+				slEat(howmany, what);
+			}
+		}
+	}
 
 	if(my_class() == $class[Sauceror] && my_sign() == "Blender")
 	{
@@ -51,7 +192,7 @@ boolean tcrs_consumption()
 			{
 				slEat(1, $item[glass of goat's milk]);
 			}
-			else    // 1 adventure left, better than wasting the Milk charge?
+			else	 // 1 adventure left, better than wasting the Milk charge?
 			{
 				acquireHermitItem($item[Ketchup]);
 				slEat(1, $item[Ketchup]);
