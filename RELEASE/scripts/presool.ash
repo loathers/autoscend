@@ -232,7 +232,7 @@ void handlePreAdventure(location place)
 		slEquip($slot[acc3], $item[Continuum Transfunctioner]);
 	}
 
-	if((place == $location[Inside The Palindome]) && !have_equipped($item[Talisman O\' Namsilat]) && (my_turncount() != 0))
+	if((place == $location[Inside The Palindome]) && (my_turncount() != 0))
 	{
 		if(!possessEquipment($item[Talisman O\' Namsilat]))
 		{
