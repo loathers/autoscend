@@ -268,7 +268,10 @@ void handlePreAdventure(location place)
 	bat_formPreAdventure();
 	horsePreAdventure();
 	equipMaximizedGear();
-	cli_execute("checkpoint clear");
+	if(useMaximizeToEquip())
+	{
+		cli_execute("checkpoint clear");
+	}
 	executeFlavour();
 
 	generic_t itemNeed = zone_needItem(place);
