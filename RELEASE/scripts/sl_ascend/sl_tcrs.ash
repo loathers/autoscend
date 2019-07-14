@@ -80,8 +80,48 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, int[int] val)
 	return ret;
 }
 
+boolean can_simultaneously_acquire(int[item] needed)
+{
+	// Checks that a set of items isn't impossible to acquire because of
+	// conflicting crafting dependencies.
+
+	int[item] alreadyUsed;
+
+	boolean failed = false;
+	void addToAlreadyUsed(int amount, item toAdd)
+	{
+		int needToCraft = alreadyUsed[toAdd] + amount - item_amount(toAdd);
+		print("NeedToCraft: " + toAdd + " " + needToCraft);
+		alreadyUsed[toAdd] += amount;
+		if(needToCraft > 0)
+		{
+			if (count(get_ingredients(toAdd)) == 0)
+			{
+				print("failing on " + toAdd);
+				// not craftable
+				failed = true;
+			}
+
+			foreach ing,ingAmount in get_ingredients(toAdd)
+			{
+				addToAlreadyUsed(ingAmount * needToCraft, ing);
+			}
+		}
+	}
+
+	foreach it, amt in needed
+	{
+		addToAlreadyUsed(amt, it);
+	}
+
+	return !failed;
+}
+
 int [item] knapsack_pick_food()
 {
+	int[item] empty;
+	if(fullness_left() == 0) return empty;
+
 	int[int] fullness;
 	int[int] adv;
 	item[int] items;
@@ -106,11 +146,25 @@ int [item] knapsack_pick_food()
 	{
 		ret[items[i]] += 1;
 	}
+	if(can_simultaneously_acquire(ret))
+	{
+		print("Considering eating: ", "red");
+		foreach it, amt in ret
+		{
+			print(it + ":" + amt, "red");
+		}
+		print("I'm a little confused about what to eat. I'll wait and see if I get unconfused - otherwise, please eat manually.", "red");
+		return empty;
+	}
 	return ret;
 }
 
-boolean[item] knapsack_pick_drinks()
+int[item] knapsack_pick_drinks()
 {
+	int[item] empty;
+
+	if (inebriety_left() == 0) return empty;
+
 	int[int] inebriety;
 	int[int] adv;
 	item[int] items;
@@ -130,12 +184,40 @@ boolean[item] knapsack_pick_drinks()
 			}
 		}
 	}
-	boolean[item] ret;
+	int[item] ret;
 	foreach i in knapsack(inebriety_left(), count(inebriety), inebriety, adv)
 	{
-		ret[items[i]] = true;
+		ret[items[i]] += 1;
+	}
+	if(can_simultaneously_acquire(ret))
+	{
+		print("Considering drinking:", "red");
+		foreach it, amt in ret
+		{
+			print(it + ":" + amt, "red");
+		}
+		print("I'm a little confused about what to eat. I'll wait and see if I get unconfused - otherwise, please drink manually.", "red");
+		return empty;
 	}
 	return ret;
+}
+
+item sl_pick_drink()
+{
+	float best_adv_per_drunk = 0.0;
+	item best_item = $item[none];
+	foreach it in $items[]
+	{
+		int amount = available_amount(it) + creatable_amount(it);
+		if (amount == 0 || !canDrink(it) || it.inebriety == 0 || it.inebriety > inebriety_left()) continue;
+		float tentative_adv_per_drunk = expectedAdventuresFrom(it)/it.inebriety;
+		if (tentative_adv_per_drunk > best_adv_per_drunk)
+		{
+			best_adv_per_drunk = tentative_adv_per_drunk;
+			best_item = it;
+		}
+	}
+	return best_item;
 }
 
 boolean tcrs_consumption()
@@ -143,22 +225,51 @@ boolean tcrs_consumption()
 	if(!in_tcrs())
 		return false;
 
-	if(get_property("sl_beta").to_boolean())
+	if(get_property("sl_beta").to_boolean() && my_adventures() < 10)
 	{
-		if((inebriety_left() > 0) && my_adventures() < 10)
+		if(my_inebriety() < 8 && inebriety_left() > 0)
 		{
 			// just drink, like, anything, whatever
+			// find the best and biggest thing we can and drink it
+			item drink = sl_pick_drink();
+			slDrink(1, drink);
+			return true;
 		}
-		if((fullness_left() > 0) && my_adventures() < 10)
+		if(inebriety_left() > 0)
+		{
+			int[item] drinks = knapsack_pick_drinks();
+			if (count(drinks))
+			{
+				foreach what, howmany in drinks
+				{
+					cli_execute("acquire " + howmany + " " + what);
+				}
+				buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
+				foreach what, howmany in drinks
+				{
+					slDrink(howmany, what);
+				}
+				return true;
+			}
+		}
+		if(fullness_left() > 0)
 		{
 			int[item] foods = knapsack_pick_food();
-			if(get_property("sl_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
+			if (count(foods))
 			{
-				makeGenieWish($effect[Got Milk]); // +15 adv is worth it for daycount
-			}
-			foreach what, howmany in foods
-			{
-				slEat(howmany, what);
+				foreach what, howmany in foods
+				{
+					cli_execute("acquire " + howmany + " " + what);
+				}
+				if(get_property("sl_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
+				{
+					makeGenieWish($effect[Got Milk]); // +15 adv is worth it for daycount
+				}
+				foreach what, howmany in foods
+				{
+					slEat(howmany, what);
+				}
+				return true;
 			}
 		}
 	}
