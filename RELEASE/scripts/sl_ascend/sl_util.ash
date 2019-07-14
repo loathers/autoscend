@@ -4620,6 +4620,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Browbeaten]:					useItem = $item[Old Eyebrow Pencil];			break;
 	case $effect[Busy Bein\' Delicious]:		useItem = $item[Crimbo fudge];					break;
 	case $effect[Butt-Rock Hair]:				useItem = $item[Hair Spray];					break;
+	case $effect[Can't Smell Nothin']:	useItem = $item[Dogsgotnonoz pills];	break;
 	case $effect[Carlweather\'s Cantata of Confrontation]:useSkill = $skill[Carlweather\'s Cantata of Confrontation];break;
 	case $effect[Carol Of The Bulls]: useSkill = $skill[Carol Of The Bulls]; break;
 	case $effect[Carol Of The Hells]: useSkill = $skill[Carol Of The Hells]; break;
@@ -4679,6 +4680,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Fat Leon\'s Phat Loot Lyric]:	useSkill = $skill[Fat Leon\'s Phat Loot Lyric];	break;
 	case $effect[Feeling Punchy]:				useItem = $item[Punching Potion];				break;
 	case $effect[Feroci Tea]:					useItem = $item[cuppa Feroci tea];				break;
+	case $effect[Fever From the Flavor]:	useItem = $item[bottle of antifreeze];	break;
+	case $effect[Fireproof Lips]:					useItem = $item[SPF 451 lip balm];			break;
 	case $effect[Fire Inside]:					useItem = $item[Hot Coal];						break;
 	case $effect[Fishy\, Oily]:
 		if(sl_my_path() == "Heavy Rains")
@@ -4742,6 +4745,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Human-Machine Hybrid]:			useItem = $item[Gene Tonic: Construct];			break;
 	case $effect[Human-Mer-kin Hybrid]:			useItem = $item[Gene Tonic: Mer-kin];			break;
 	case $effect[Human-Pirate Hybrid]:			useItem = $item[Gene Tonic: Pirate];			break;
+	case $effect[Hyperoffended]:						useItem = $item[donkey flipbook];		break;
 	case $effect[Hyphemariffic]:				useItem = $item[Black Eyedrops];				break;
 	case $effect[Icy Glare]:					useSkill = $skill[Icy Glare];					break;
 	case $effect[Impeccable Coiffure]:			useSkill = $skill[Self-Combing Hair];			break;
@@ -4770,6 +4774,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Liquidy Smoky]:				useItem = $item[Liquid Smoke];					break;
 	case $effect[Lit Up]:						useItem = $item[Bottle of Lighter Fluid];		break;
 	case $effect[Litterbug]:					useItem = $item[Old Candy Wrapper];				break;
+	case $effect[Living Fast]:					useSkill = $skill[Live Fast];						break;
 	case $effect[Locks Like the Raven]:			useItem = $item[Black No. 2];					break;
 	case $effect[Loyal Tea]:					useItem = $item[cuppa Loyal Tea];				break;
 	case $effect[Lucky Struck]:					useItem = $item[Lucky Strikes Holo-Record];		break;
