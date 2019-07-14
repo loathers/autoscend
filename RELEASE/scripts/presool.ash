@@ -223,7 +223,7 @@ void handlePreAdventure(location place)
 		acquireMP(32, true);
 	}
 
-	if((place == $location[8-Bit Realm]) && !have_equipped($item[Continuum Transfunctioner]) && (my_turncount() != 0))
+	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))
 	{
 		if(!possessEquipment($item[Continuum Transfunctioner]))
 		{
@@ -241,7 +241,7 @@ void handlePreAdventure(location place)
 		slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
-	if((place == $location[The Black Forest]) && !have_equipped($item[Blackberry Galoshes]))
+	if(place == $location[The Black Forest])
 	{
 		slEquip($slot[acc3], $item[Blackberry Galoshes]);
 	}

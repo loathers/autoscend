@@ -241,7 +241,7 @@ boolean L13_ed_towerHandler()
 			{
 				if(item_amount($item[Personal Ventilation Unit]) > 0)
 				{
-					equip($slot[acc2], $item[Personal Ventilation Unit]);
+					slEquip($slot[acc2], $item[Personal Ventilation Unit]);
 				}
 				slAdv(1, $location[The Secret Government Laboratory]);
 			}
@@ -1514,12 +1514,12 @@ boolean L1_ed_island(int dickstabOverride)
 
 	if(item_amount($item[Gore Bucket]) > 0)
 	{
-		equip($item[Gore Bucket]);
+		slEquip($item[Gore Bucket]);
 	}
 
 	if(item_amount($item[Personal Ventilation Unit]) > 0)
 	{
-		equip($slot[acc2], $item[Personal Ventilation Unit]);
+		slEquip($slot[acc2], $item[Personal Ventilation Unit]);
 	}
 	if(possessEquipment($item[Gore Bucket]) && (get_property("goreCollected").to_int() >= 100))
 	{

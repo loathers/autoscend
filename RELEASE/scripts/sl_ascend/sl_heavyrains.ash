@@ -27,7 +27,7 @@ boolean hr_handleFamiliar(familiar fam)
 {
 	if((my_path() == "Heavy Rains") && (equipped_item($slot[familiar]) != $item[miniature life preserver]) && (my_familiar() != $familiar[none]))
 	{
-		equip($slot[familiar], $item[miniature life preserver]);
+		slEquip($slot[familiar], $item[miniature life preserver]);
 		return true;
 	}
 	return false;
