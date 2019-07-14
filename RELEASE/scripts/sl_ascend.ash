@@ -13608,7 +13608,7 @@ boolean L8_trapperGroar()
 			print("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 			if((item_amount($item[Groar\'s Fur]) == 0) && (item_amount($item[Winged Yeti Fur]) == 0))
 			{
-				addToMaximize("10meat");
+				addToMaximize("5meat");
 				//If this returns false, we might have finished already, can we check this?
 				slAdv(1, $location[Mist-shrouded Peak]);
 			}
