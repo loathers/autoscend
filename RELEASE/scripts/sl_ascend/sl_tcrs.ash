@@ -238,7 +238,7 @@ boolean tcrs_consumption()
 		if(inebriety_left() > 0)
 		{
 			int[item] drinks = knapsack_pick_drinks();
-			if (count(drinks))
+			if (count(drinks) > 0)
 			{
 				foreach what, howmany in drinks
 				{
@@ -255,7 +255,7 @@ boolean tcrs_consumption()
 		if(fullness_left() > 0)
 		{
 			int[item] foods = knapsack_pick_food();
-			if (count(foods))
+			if (count(foods) > 0)
 			{
 				foreach what, howmany in foods
 				{
