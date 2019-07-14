@@ -267,12 +267,6 @@ void handlePreAdventure(location place)
 
 	bat_formPreAdventure();
 	horsePreAdventure();
-	equipMaximizedGear();
-	if(useMaximizeToEquip())
-	{
-		cli_execute("checkpoint clear");
-	}
-	executeFlavour();
 
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean)
@@ -312,6 +306,13 @@ void handlePreAdventure(location place)
 			print("We can't cap this drop bear!", "purple");
 		}
 	}
+
+	equipMaximizedGear();
+	if(useMaximizeToEquip())
+	{
+		cli_execute("checkpoint clear");
+	}
+	executeFlavour();
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{
