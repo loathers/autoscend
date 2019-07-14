@@ -80,19 +80,28 @@ boolean keepOnTruckin()
 	return true;
 }
 
+float tcrs_expectedAdvPerFill(string quality)
+{
+	switch(quality)
+	{
+	case "EPIC":    return 5;
+	case "awesome": return 4;
+	case "good":    return 3;
+	case "decent":  return 2;
+	case "crappy":  return 1;
+	default:        abort("could not calculate expected adventures for quality " + quality + " in 2CRS");
+	}
+	return -1; // makes the compiler shut up
+}
+
 float expectedAdventuresFrom(item it)
 {
 	if(in_tcrs())
 	{
-		int fill = max(it.fullness, it.inebriety);
-		switch(it.quality)
+		// Some items have hard-coded adv values that don't change in TCRS
+		if (!($items[astral pilsner, astral hot dog, cold one, spaghetti breakfast, affirmation cookie, magical sausage] contains it))
 		{
-		case "EPIC": return 5 * fill;
-		case "awesome": return 4 * fill;
-		case "good": return 3 * fill;
-		case "": return 2 * fill;
-		case "crappy": return 1 * fill;
-		default: abort("could not calculate expected adventures from " + it + " in 2CRS");
+			return tcrs_expectedAdvPerFill(it.quality) * max(it.fullness, it.inebriety);
 		}
 	}
 	if (!it.adventures.contains_text("-")) return it.adventures.to_int();
@@ -411,6 +420,33 @@ boolean slOverdrink(int howMany, item toOverdrink)
 		return false;
 	}
 	return overdrink(howMany, toOverdrink);
+}
+
+boolean slDrinkCafe(int howmany, int id)
+{
+	// Note that caller is responsible for calling Ode to Booze,
+	// since we might be in TCRS and not know how many adventures
+	// we'll get from the drink.
+	string name = "";
+	switch(id)
+	{
+	case -1: name = "Petite Porter";
+	case -2: name = "Scrawny Stout";
+	case -3: name = "Infinitesimal IPA";
+	default: abort("slDrinkCafe does not recognize item id: " + id);
+	}
+	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
+	if(gnomads_available())
+	{
+		for (int i=0; i<howmany; i++)
+		{
+			// TODO: What if we run out of meat?
+			visit_url("cafe.php?cafeid=2");
+			visit_url("cafe.php?pwd="+my_hash()+"&phash="+my_hash()+"&cafeid=2&whichitem="+id+"&action=CONSUME!");
+			handleTracker(name, "sl_drunken");
+		}
+	}
+	return true;
 }
 
 boolean slChew(int howMany, item toChew)

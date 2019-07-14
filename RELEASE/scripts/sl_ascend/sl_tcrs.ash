@@ -17,7 +17,7 @@ boolean tcrs_initializeSettings()
 	return true;
 }
 
-boolean[int] knapsack(int maxw, int n, int[int] weight, int[int] val)
+boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 {
 	/*
 	 * standard implementation of 0-1 Knapsack problem with dynamic programming
@@ -82,6 +82,9 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, int[int] val)
 
 boolean can_simultaneously_acquire(int[item] needed)
 {
+	// The Knapsack solver can provide invalid solutions - for example, if we
+	// have 2 perfect ice cubes and 6 organ space, it might suggest two distinct
+	// perfect drinks.
 	// Checks that a set of items isn't impossible to acquire because of
 	// conflicting crafting dependencies.
 
@@ -91,13 +94,11 @@ boolean can_simultaneously_acquire(int[item] needed)
 	void addToAlreadyUsed(int amount, item toAdd)
 	{
 		int needToCraft = alreadyUsed[toAdd] + amount - item_amount(toAdd);
-		print("NeedToCraft: " + toAdd + " " + needToCraft);
 		alreadyUsed[toAdd] += amount;
 		if(needToCraft > 0)
 		{
 			if (count(get_ingredients(toAdd)) == 0)
 			{
-				print("failing on " + toAdd);
 				// not craftable
 				failed = true;
 			}
@@ -117,107 +118,221 @@ boolean can_simultaneously_acquire(int[item] needed)
 	return !failed;
 }
 
-int [item] knapsack_pick_food()
+boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety)
 {
-	int[item] empty;
-	if(fullness_left() == 0) return empty;
+	if(!in_tcrs()) return false;
+
+	record _CAFE_DRINK_TYPE {
+		string name;
+		int inebriety;
+		string quality;
+	};
+
+	_CAFE_DRINK_TYPE [int] cafe_booze;
+	string filename = "TCRS_" + my_class().to_string().replace_string(" ", "_") + "_" + my_sign() + "_cafe_booze.txt";
+	print("Loading " + filename, "blue");
+	file_to_map(filename, cafe_booze);
+	foreach i, r in cafe_booze
+	{
+		// Gnomish Microbrewery has item ids -1, -2, -3
+		if (i >= -3 && r.inebriety > 0)
+		{
+			int limit = min(my_meat()/100, inebriety_left()/r.inebriety);
+			for (int j=0; j<limit; j++)
+			{
+				int n = count(inebriety);
+				inebriety[n] = r.inebriety;
+				adv[n] = r.inebriety * tcrs_expectedAdvPerFill(r.quality);
+				cafe_backmap[n] = i;
+			}
+		}
+	}
+	return true;
+}
+
+boolean sl_knapsackAutoEat()
+{
+	// TODO: Doesn't yet use Canadian cafe food.
+
+	if(fullness_left() == 0) return false;
 
 	int[int] fullness;
-	int[int] adv;
-	item[int] items;
+	float[int] adv;
+	item[int] item_backmap;
 
 	foreach it in $items[]
 	{
 		if ((it.quality == "awesome" || it.quality == "EPIC") && canEat(it) && (it.fullness > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
 		{
 			int amount = available_amount(it) + creatable_amount(it);
+			if (npc_price(it) > 0) amount += my_meat() / npc_price(it);
 			int limit = min(amount, fullness_left()/it.fullness);
 			for (int i=0; i<limit; i++)
 			{
 				int n = count(fullness);
 				fullness[n] = it.fullness;
 				adv[n] = expectedAdventuresFrom(it);
-				items[n] = it;
+				item_backmap[n] = it;
 			}
 		}
 	}
-	int[item] ret;
+	int[item] foods;
 	foreach i in knapsack(fullness_left(), count(fullness), fullness, adv)
 	{
-		ret[items[i]] += 1;
+		foods[item_backmap[i]] += 1;
 	}
-	if(can_simultaneously_acquire(ret))
+	if(!can_simultaneously_acquire(foods))
 	{
 		print("Considering eating: ", "red");
-		foreach it, amt in ret
+		foreach it, amt in foods
 		{
 			print(it + ":" + amt, "red");
 		}
 		print("I'm a little confused about what to eat. I'll wait and see if I get unconfused - otherwise, please eat manually.", "red");
-		return empty;
+		return false;
 	}
-	return ret;
+	if (count(foods) > 0)
+	{
+		foreach what, howmany in foods
+		{
+			retrieve_item(howmany, what);
+		}
+		if (in_tcrs() && get_property("sl_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
+		{
+			// +15 adv is worth it for daycount
+			// TODO: Some folks have requested a setting to turn this off.
+			makeGenieWish($effect[Got Milk]);
+		}
+		else dealwithMilkOfMagnesium(true);
+
+		foreach what, howmany in foods
+		{
+			slEat(howmany, what);
+		}
+		return true;
+	}
+	return false;
 }
 
-int[item] knapsack_pick_drinks()
+boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 {
-	int[item] empty;
-
-	if (inebriety_left() == 0) return empty;
-
-	int[int] inebriety;
-	int[int] adv;
-	item[int] items;
-
 	foreach it in $items[]
 	{
+		// TODO: Maybe relax the "awesome or EPIC" standard outside of TCRS? I hear Standard is rough.
 		if ((it.quality == "awesome" || it.quality == "EPIC") && canDrink(it) && (it.inebriety > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
 		{
 			int amount = available_amount(it) + creatable_amount(it);
+			if (npc_price(it) > 0) amount += my_meat() / npc_price(it);
 			int limit = min(amount, inebriety_left()/it.inebriety);
 			for (int i=0; i<limit; i++)
 			{
 				int n = count(inebriety);
 				inebriety[n] = it.inebriety;
 				adv[n] = expectedAdventuresFrom(it);
-				items[n] = it;
+				item_backmap[n] = it;
 			}
 		}
 	}
-	int[item] ret;
-	foreach i in knapsack(inebriety_left(), count(inebriety), inebriety, adv)
+	return true;
+}
+
+boolean sl_knapsackAutoDrink()
+{
+	if (inebriety_left() == 0) return false;
+
+	int[int] inebriety;
+	float[int] adv;
+	item[int] item_backmap;
+	loadDrinks(item_backmap, adv, inebriety);
+
+	int [int] cafe_backmap;
+	tcrs_loadCafeDrinks(cafe_backmap, adv, inebriety);
+
+	int[item] normal_drinks;
+	int[int] cafe_drinks;
+
+	boolean[int] result = knapsack(inebriety_left(), count(inebriety), inebriety, adv);
+	foreach i in result
 	{
-		ret[items[i]] += 1;
+		if (cafe_backmap contains i)
+		{
+			cafe_drinks[cafe_backmap[i]] += 1;
+		}
+		else
+		{
+			normal_drinks[item_backmap[i]] += 1;
+		}
 	}
-	if(can_simultaneously_acquire(ret))
+	if(!can_simultaneously_acquire(normal_drinks))
 	{
 		print("Considering drinking:", "red");
-		foreach it, amt in ret
+		foreach it, amt in normal_drinks
 		{
 			print(it + ":" + amt, "red");
 		}
-		print("I'm a little confused about what to eat. I'll wait and see if I get unconfused - otherwise, please drink manually.", "red");
-		return empty;
+		print("It looks like I can't simultaneously get everything that I want to drink. I'll wait and see if I get unconfused - otherwise, please drink manually.", "red");
+		return false;
 	}
-	return ret;
+
+	if (count(normal_drinks) > 0)
+	{
+		foreach what, howmany in normal_drinks
+		{
+			retrieve_item(howmany, what);
+		}
+
+		foreach what, howmany in normal_drinks
+		{
+			print("TODO: would drink "+ howmany + " of " + what);
+			// slDrink(howmany, what);
+		}
+		return true;
+	}
+	foreach what, howmany in cafe_drinks
+	{
+		buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
+		slDrinkCafe(howmany, what);
+	}
+	return false;
 }
 
-item sl_pick_drink()
+boolean sl_autoDrinkOne()
 {
+	if (inebriety_left() == 0) return false;
+
+	int[int] inebriety;
+	float[int] adv;
+	item[int] item_backmap;
+	loadDrinks(item_backmap, adv, inebriety);
+
+	int [int] cafe_backmap;
+	tcrs_loadCafeDrinks(cafe_backmap, adv, inebriety);
+
+	int[item] normal_drinks;
+	int[int] cafe_drinks;
+
 	float best_adv_per_drunk = 0.0;
-	item best_item = $item[none];
-	foreach it in $items[]
+	int best_index = -1;
+	int n = count(inebriety);
+	for (int i=0; i<n; i++)
 	{
-		int amount = available_amount(it) + creatable_amount(it);
-		if (amount == 0 || !canDrink(it) || it.inebriety == 0 || it.inebriety > inebriety_left()) continue;
-		float tentative_adv_per_drunk = expectedAdventuresFrom(it)/it.inebriety;
+		float tentative_adv_per_drunk = adv[i]/inebriety[i];
 		if (tentative_adv_per_drunk > best_adv_per_drunk)
 		{
 			best_adv_per_drunk = tentative_adv_per_drunk;
-			best_item = it;
+			best_index = i;
 		}
 	}
-	return best_item;
+
+	if (cafe_backmap contains best_index)
+	{
+		buffMaintain($effect[Ode to Booze], 20, 1, inebriety[best_index]);
+		return slDrinkCafe(1, cafe_backmap[best_index]); // Scrawny Stout;
+	}
+	else
+	{
+		return slDrink(1, item_backmap[best_index]);
+	}
 }
 
 boolean tcrs_consumption()
@@ -225,52 +340,21 @@ boolean tcrs_consumption()
 	if(!in_tcrs())
 		return false;
 
-	if(get_property("sl_beta").to_boolean() && my_adventures() < 10)
+	if(sl_beta() && my_adventures() < 10)
 	{
 		if(my_inebriety() < 8 && inebriety_left() > 0)
 		{
 			// just drink, like, anything, whatever
 			// find the best and biggest thing we can and drink it
-			item drink = sl_pick_drink();
-			slDrink(1, drink);
-			return true;
+			return sl_autoDrinkOne();
 		}
 		if(inebriety_left() > 0)
 		{
-			int[item] drinks = knapsack_pick_drinks();
-			if (count(drinks) > 0)
-			{
-				foreach what, howmany in drinks
-				{
-					cli_execute("acquire " + howmany + " " + what);
-				}
-				buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
-				foreach what, howmany in drinks
-				{
-					slDrink(howmany, what);
-				}
-				return true;
-			}
+			if (sl_knapsackAutoDrink()) return true;
 		}
 		if(fullness_left() > 0)
 		{
-			int[item] foods = knapsack_pick_food();
-			if (count(foods) > 0)
-			{
-				foreach what, howmany in foods
-				{
-					cli_execute("acquire " + howmany + " " + what);
-				}
-				if(get_property("sl_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
-				{
-					makeGenieWish($effect[Got Milk]); // +15 adv is worth it for daycount
-				}
-				foreach what, howmany in foods
-				{
-					slEat(howmany, what);
-				}
-				return true;
-			}
+			if (sl_knapsackAutoEat()) return true;
 		}
 	}
 
@@ -280,9 +364,7 @@ boolean tcrs_consumption()
 		if((inebriety_left() >= 4) && canDesert && (my_meat() >= 75))
 		{
 			buffMaintain($effect[Ode to Booze], 20, 1, 4);
-			visit_url("cafe.php?cafeid=2");
-			visit_url("cafe.php?pwd="+my_hash()+"&phash="+my_hash()+"&cafeid=2&whichitem=-2&action=CONSUME!");
-			handleTracker("Scrawny Stout", "sl_drunken");
+			slDrinkCafe(1, -2); // Scrawny Stout;
 		}
 		if((my_adventures() <= 1) && (inebriety_left() == 3) && (my_meat() >= npc_price($item[used beer])))
 		{
