@@ -13905,7 +13905,7 @@ boolean sl_tavern()
 		int capped = 0;
 		foreach ele, choicenum in eleChoiceCombos
 		{
-			boolean passed = simValue(ele + " Damage") >= 20.0;
+			boolean passed = (useMaximizeToEquip() ? simValue(ele + " Damage") : numeric_modifier(ele + " Damage")) >= 20.0;
 			set_property("choiceAdventure" + choicenum, passed ? "2" : "1");
 			if(passed) ++capped;
 		}
