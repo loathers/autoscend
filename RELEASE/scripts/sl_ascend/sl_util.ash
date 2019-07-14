@@ -1768,13 +1768,6 @@ float elemental_resist_value(int resistance)
 int elemental_resist(element goal)
 {
 	return numeric_modifier(goal + " resistance");
-#	string page = to_lower_case(visit_url("charsheet.php"));
-#	matcher my_element = create_matcher(to_string(goal) + " protection:(.*?)((\\d\+)\)", page);
-#	if(my_element.find())
-#	{
-#		return to_int(my_element.group(2));
-#	}
-#	return 0;
 }
 
 boolean uneffect(effect toRemove)
