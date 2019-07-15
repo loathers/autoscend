@@ -188,7 +188,7 @@ boolean sl_knapsackAutoEat(boolean simulate)
 
 	if (item_amount($item[van key]) > 0)
 	{
-		use(min(5, item_amount($item[van key])), $item[van key]);
+		use(item_amount($item[van key]), $item[van key]);
 	}
 
 	int[int] fullness;
@@ -242,8 +242,8 @@ boolean sl_knapsackAutoEat(boolean simulate)
 			adv[n] += min(1.0, item_amount($item[special seasoning]) * it.fullness / fullness_left());
 			if (crafting)
 			{
-			  int turns_to_craft = creatable_turns(it, 1, false);
-			  adv[n] -= turns_to_craft;
+				int turns_to_craft = creatable_turns(it, i + 1, false) - creatable_turns(it, i, false);
+				adv[n] -= turns_to_craft;
 			}
 			item_backmap[n] = it;
 		}
@@ -365,8 +365,8 @@ boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 			adv[n] = expectedAdventuresFrom(it);
 			if (crafting)
 			{
-			  int turns_to_craft = creatable_turns(it, 1, false);
-			  adv[n] -= turns_to_craft;
+				int turns_to_craft = creatable_turns(it, i + 1, false) - creatable_turns(it, i, false);
+				adv[n] -= turns_to_craft;
 			}
 			item_backmap[n] = it;
 		}
@@ -415,7 +415,7 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 
 	if (item_amount($item[unremarkable duffel bag]) > 0)
 	{
-		use(min(5, item_amount($item[unremarkable duffel bag])), $item[unremarkable duffel bag]);
+		use(item_amount($item[unremarkable duffel bag]), $item[unremarkable duffel bag]);
 	}
 
 	int[int] inebriety;
@@ -502,17 +502,18 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 	return true;
 }
 
-boolean sl_autoDrinkOne()
+boolean sl_autoDrinkOne(boolean simulate)
 {
 	if (inebriety_left() == 0) return false;
 
 	int[int] inebriety;
 	float[int] adv;
-	item[int] item_backmap;
-	loadDrinks(item_backmap, adv, inebriety);
 
 	int [int] cafe_backmap;
 	tcrs_loadCafeDrinks(cafe_backmap, adv, inebriety);
+
+	item[int] item_backmap;
+	loadDrinks(item_backmap, adv, inebriety);
 
 	int[item] normal_drinks;
 	int[int] cafe_drinks;
@@ -530,14 +531,24 @@ boolean sl_autoDrinkOne()
 		}
 	}
 
-	if (cafe_backmap contains best_index)
+
+	if(!simulate)
 	{
-		buffMaintain($effect[Ode to Booze], 20, 1, inebriety[best_index]);
-		return slDrinkCafe(1, cafe_backmap[best_index]); // Scrawny Stout;
+		if (cafe_backmap contains best_index)
+		{
+			buffMaintain($effect[Ode to Booze], 20, 1, inebriety[best_index]);
+			return slDrinkCafe(1, cafe_backmap[best_index]);
+		}
+		else
+		{
+			return slDrink(1, item_backmap[best_index]);
+		}
 	}
 	else
 	{
-		return slDrink(1, item_backmap[best_index]);
+		string name = (cafe_backmap contains best_index) ? cafeDrinkName(cafe_backmap[best_index]) : item_backmap[best_index];
+		print("Would have drunk a " + name + " for " + adv[best_index] + " adventures and " + inebriety[best_index] + "inebriety.", "blue");
+		return true;
 	}
 }
 
@@ -552,7 +563,7 @@ boolean tcrs_consumption()
 		{
 			// just drink, like, anything, whatever
 			// find the best and biggest thing we can and drink it
-			sl_autoDrinkOne();
+			sl_autoDrinkOne(false);
 			return true;
 		}
 		if(inebriety_left() > 0 && !get_property("_sl_saving_for_stooper").to_boolean())
