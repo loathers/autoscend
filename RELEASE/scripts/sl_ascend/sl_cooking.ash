@@ -82,6 +82,8 @@ boolean keepOnTruckin()
 
 float expectedAdventuresFrom(item it)
 {
+	if(it == $item[magical sausage]) return 1;
+
 	float parse()
 	{
 		if (!it.adventures.contains_text("-")) return it.adventures.to_int();
@@ -407,19 +409,24 @@ boolean slOverdrink(int howMany, item toOverdrink)
 	return overdrink(howMany, toOverdrink);
 }
 
+string cafeDrinkName(int id)
+{
+	switch(id)
+	{
+	case -1: return "Petite Porter";
+	case -2: return "Scrawny Stout";
+	case -3: return "Infinitesimal IPA";
+	default: abort("slDrinkCafe does not recognize item id: " + id);
+	}
+	return "";
+}
+
 boolean slDrinkCafe(int howmany, int id)
 {
 	// Note that caller is responsible for calling Ode to Booze,
 	// since we might be in TCRS and not know how many adventures
 	// we'll get from the drink.
-	string name = "";
-	switch(id)
-	{
-	case -1: name = "Petite Porter"; break;
-	case -2: name = "Scrawny Stout"; break;
-	case -3: name = "Infinitesimal IPA"; break;
-	default: abort("slDrinkCafe does not recognize item id: " + id);
-	}
+	string name = cafeDrinkName(id);
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
 	if(gnomads_available())
 	{

@@ -193,44 +193,94 @@ boolean sl_knapsackAutoEat(boolean simulate)
 
 	int[int] fullness;
 	float[int] adv;
-	item[int] item_backmap;
+
+	// Since backtracking prioritizes the first elements in the input array,
+	// we put small owned items, then buyables, then large owned, then craftables
+	int[item] small_owned;
+	int[item] buyables;
+	int[item] large_owned;
+	int[item] craftables;
 
 	foreach it in $items[]
 	{
 		if ((it.quality == "awesome" || it.quality == "EPIC") && canEat(it) && (it.fullness > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
 		{
-			int amount = item_amount(it) + creatable_amount(it);
-			if (npc_price(it) > 0) amount += my_meat() / npc_price(it);
-			if (buy_price($coinmaster[hermit], it) > 0) amount += 100;
-			int limit = min(amount, fullness_left()/it.fullness);
-			for (int i=0; i<limit; i++)
+			int howmany = 1 + fullness_left()/it.fullness;
+			if (item_amount(it) > 0 && it.fullness <= 5)
 			{
-				int n = count(fullness);
-				fullness[n] = it.fullness;
-				adv[n] = expectedAdventuresFrom(it);
-				adv[n] += min(1.0, item_amount($item[special seasoning]) / limit);
-				if (item_amount(it) == 0 && creatable_amount(it) > 0)
-				{
-				  int turns_to_craft = creatable_turns(it, 1, false);
-				  adv[n] -= turns_to_craft;
-				}
-				item_backmap[n] = it;
+				small_owned[it] = min(item_amount(it), howmany);
+			}
+			if (npc_price(it) > 0)
+			{
+				howmany = min(howmany, my_meat() / npc_price(it));
+				buyables[it] = min(howmany, my_meat() / npc_price(it));
+			}
+			else if (buy_price($coinmaster[hermit], it) > 0)
+			{
+				buyables[it] += min(howmany, my_meat() / 500);
+			}
+			if (item_amount(it) > 0 && it.fullness > 5)
+			{
+				large_owned[it] = min(item_amount(it), howmany);
+			}
+			if (creatable_amount(it) > 0)
+			{
+				howmany = min(howmany, creatable_amount(it));
+				craftables[it] = howmany;
 			}
 		}
 	}
 
+	item[int] item_backmap;
+	void add(item it, boolean crafting, int howmany)
+	{
+		for (int i = 0; i < howmany; i++)
+		{
+			int n = count(fullness);
+			fullness[n] = it.fullness;
+			adv[n] = expectedAdventuresFrom(it);
+			adv[n] += min(1.0, item_amount($item[special seasoning]) * it.fullness / fullness_left());
+			if (crafting)
+			{
+			  int turns_to_craft = creatable_turns(it, 1, false);
+			  adv[n] -= turns_to_craft;
+			}
+			item_backmap[n] = it;
+		}
+	}
+
+	foreach it, howmany in small_owned
+	{
+		add(it, false, howmany);
+	}
+	foreach it, howmany in buyables
+	{
+		add(it, false, howmany);
+	}
+	foreach it, howmany in large_owned
+	{
+		add(it, false, howmany);
+	}
+	foreach it, howmany in craftables
+	{
+		add(it, true, howmany);
+	}
+
 	int[item] foods;
+	float total_adv = 0.0;
+	int total_foods = 0;
+	print("Knapsack food plan:", "blue");
 	foreach i in knapsack(fullness_left(), count(fullness), fullness, adv)
 	{
 		foods[item_backmap[i]] += 1;
+		string name = item_backmap[i];
+		print(adv[i] + " adventures from " + name + "(" + fullness[i] + " fullness)", "blue");
+		total_adv += expectedAdventuresFrom(item_backmap[i]);
+		total_foods += 1;
 	}
-	print("Knapsack food plan:", "blue");
-	foreach it, amt in foods
-	{
-		print(it + ":" + amt, "blue");
-	}
-
-	if(simulate) return true;
+	print("+" + min(item_amount($item[special seasoning]), total_foods) + " from special seasoning ("+ item_amount($item[special seasoning]) + " available)", "blue");
+	total_adv += min(item_amount($item[special seasoning]), total_foods);
+	print("For a total of: " + total_adv + " adventures.", "blue");
 
 	if(count(foods) == 0)
 	{
@@ -243,6 +293,9 @@ boolean sl_knapsackAutoEat(boolean simulate)
 		print("Looks like I can't simultaneously acquire all of those items. I'm a bit confused. I'll wait and see if I get unconfused - otherwise, please eat manually.", "red");
 		return false;
 	}
+
+	if(simulate) return true;
+
 	if (count(foods) > 0)
 	{
 		foreach what, howmany in foods
@@ -268,27 +321,72 @@ boolean sl_knapsackAutoEat(boolean simulate)
 
 boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 {
+	int[item] small_owned;
+	int[item] buyables;
+	int[item] large_owned;
+	int[item] craftables;
+
 	foreach it in $items[]
 	{
-		// TODO: Maybe relax the "awesome or EPIC" standard outside of TCRS? I hear Standard is rough.
-		if ((it.quality == "awesome" || it.quality == "EPIC") && canDrink(it) && (it.inebriety > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
+		if ((it.quality == "awesome" || it.quality == "EPIC") && canEat(it) && (it.inebriety > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
 		{
-			int amount = item_amount(it) + creatable_amount(it);
-			if (npc_price(it) > 0) amount += my_meat() / npc_price(it);
-			int limit = min(amount, 1 + inebriety_left()/it.inebriety);
-			for (int i=0; i<limit; i++)
+			int howmany = 1 + inebriety_left()/it.inebriety;
+			if (item_amount(it) > 0 && it.inebriety <= 5)
 			{
-				int n = count(inebriety);
-				inebriety[n] = it.inebriety;
-				adv[n] = expectedAdventuresFrom(it);
-				if (item_amount(it) == 0 && creatable_amount(it) > 0)
-				{
-				  int turns_to_craft = creatable_turns(it, 1, false);
-				  adv[n] -= turns_to_craft;
-				}
-				item_backmap[n] = it;
+				small_owned[it] = min(item_amount(it), howmany);
+			}
+			if (npc_price(it) > 0)
+			{
+				howmany = min(howmany, my_meat() / npc_price(it));
+				buyables[it] = min(howmany, my_meat() / npc_price(it));
+			}
+			else if (buy_price($coinmaster[hermit], it) > 0)
+			{
+				buyables[it] += min(howmany, my_meat() / 500);
+			}
+			if (item_amount(it) > 0 && it.inebriety > 5)
+			{
+				large_owned[it] = min(item_amount(it), howmany);
+			}
+			if (creatable_amount(it) > 0)
+			{
+				howmany = min(howmany, creatable_amount(it));
+				craftables[it] = howmany;
 			}
 		}
+	}
+
+	void add(item it, boolean crafting, int howmany)
+	{
+		for (int i = 0; i < howmany; i++)
+		{
+			int n = count(inebriety);
+			inebriety[n] = it.inebriety;
+			adv[n] = expectedAdventuresFrom(it);
+			if (crafting)
+			{
+			  int turns_to_craft = creatable_turns(it, 1, false);
+			  adv[n] -= turns_to_craft;
+			}
+			item_backmap[n] = it;
+		}
+	}
+
+	foreach it, howmany in small_owned
+	{
+		add(it, false, howmany);
+	}
+	foreach it, howmany in buyables
+	{
+		add(it, false, howmany);
+	}
+	foreach it, howmany in large_owned
+	{
+		add(it, false, howmany);
+	}
+	foreach it, howmany in craftables
+	{
+		add(it, true, howmany);
 	}
 	return true;
 }
@@ -322,11 +420,12 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 
 	int[int] inebriety;
 	float[int] adv;
-	item[int] item_backmap;
-	loadDrinks(item_backmap, adv, inebriety);
 
 	int [int] cafe_backmap;
 	tcrs_loadCafeDrinks(cafe_backmap, adv, inebriety);
+
+	item[int] item_backmap;
+	loadDrinks(item_backmap, adv, inebriety);
 
 	int[item] normal_drinks;
 	int[int] cafe_drinks;
@@ -338,27 +437,31 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 		liver_space += 1;
 	}
 
-	boolean[int] result = knapsack(inebriety_left(), count(inebriety), inebriety, adv);
+	boolean[int] result = knapsack(liver_space, count(inebriety), inebriety, adv);
+	print("Knapsack drink plan:", "blue");
+	float total_adv = 0.0;
 	foreach i in result
 	{
+		string name;
 		if (cafe_backmap contains i)
 		{
+			name = cafeDrinkName(cafe_backmap[i]);
 			cafe_drinks[cafe_backmap[i]] += 1;
 		}
 		else
 		{
+			name = to_string(item_backmap[i]);
 			normal_drinks[item_backmap[i]] += 1;
 		}
+		print(adv[i] + " adventures from " + name + "(" + inebriety[i] + " inebriety)", "blue");
+		total_adv += adv[i];
 	}
-	print("Knapsack drink plan:", "blue");
 	foreach it, amt in normal_drinks
 	{
-		print(it + ":" + amt, "blue");
+		print(amt * expectedAdventuresFrom(it) + " adventures from " + amt + "x " + it + "(" + amt + " * " + it.inebriety + " inebriety)", "blue");
+		total_adv += amt * expectedAdventuresFrom(it);
 	}
-	foreach it, amt in cafe_drinks
-	{
-		print(it + ":" + amt, "blue");
-	}
+	print("For a total of: " + total_adv + " adventures.", "blue");
 
 	if(count(result) == 0)
 	{
