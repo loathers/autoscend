@@ -167,7 +167,7 @@ boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] ineb
 		// Gnomish Microbrewery has item ids -1, -2, -3
 		if (i >= -3 && r.inebriety > 0)
 		{
-			int limit = min(my_meat()/100, inebriety_left()/r.inebriety);
+			int limit = 1 + min(my_meat()/100, inebriety_left()/r.inebriety);
 			for (int j=0; j<limit; j++)
 			{
 				int n = count(inebriety);
@@ -186,6 +186,11 @@ boolean sl_knapsackAutoEat(boolean simulate)
 
 	if(fullness_left() == 0) return false;
 
+	if (item_amount($item[van key]) > 0)
+	{
+		use(min(5, item_amount($item[van key])), $item[van key]);
+	}
+
 	int[int] fullness;
 	float[int] adv;
 	item[int] item_backmap;
@@ -194,7 +199,7 @@ boolean sl_knapsackAutoEat(boolean simulate)
 	{
 		if ((it.quality == "awesome" || it.quality == "EPIC") && canEat(it) && (it.fullness > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
 		{
-			int amount = available_amount(it) + creatable_amount(it);
+			int amount = item_amount(it) + creatable_amount(it);
 			if (npc_price(it) > 0) amount += my_meat() / npc_price(it);
 			if (buy_price($coinmaster[hermit], it) > 0) amount += 100;
 			int limit = min(amount, fullness_left()/it.fullness);
@@ -203,10 +208,17 @@ boolean sl_knapsackAutoEat(boolean simulate)
 				int n = count(fullness);
 				fullness[n] = it.fullness;
 				adv[n] = expectedAdventuresFrom(it);
+				adv[n] += min(1.0, item_amount($item[special seasoning]) / limit);
+				if (item_amount(it) == 0 && creatable_amount(it) > 0)
+				{
+				  int turns_to_craft = creatable_turns(it, 1, false);
+				  adv[n] -= turns_to_craft;
+				}
 				item_backmap[n] = it;
 			}
 		}
 	}
+
 	int[item] foods;
 	foreach i in knapsack(fullness_left(), count(fullness), fullness, adv)
 	{
@@ -261,14 +273,19 @@ boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 		// TODO: Maybe relax the "awesome or EPIC" standard outside of TCRS? I hear Standard is rough.
 		if ((it.quality == "awesome" || it.quality == "EPIC") && canDrink(it) && (it.inebriety > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
 		{
-			int amount = available_amount(it) + creatable_amount(it);
+			int amount = item_amount(it) + creatable_amount(it);
 			if (npc_price(it) > 0) amount += my_meat() / npc_price(it);
-			int limit = min(amount, max(1, inebriety_left()/it.inebriety));
+			int limit = min(amount, 1 + inebriety_left()/it.inebriety);
 			for (int i=0; i<limit; i++)
 			{
 				int n = count(inebriety);
 				inebriety[n] = it.inebriety;
 				adv[n] = expectedAdventuresFrom(it);
+				if (item_amount(it) == 0 && creatable_amount(it) > 0)
+				{
+				  int turns_to_craft = creatable_turns(it, 1, false);
+				  adv[n] -= turns_to_craft;
+				}
 				item_backmap[n] = it;
 			}
 		}
@@ -297,6 +314,11 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 {
 	// TODO: does not consider mime army shotglass
 	if (inebriety_left() == 0) return false;
+
+	if (item_amount($item[unremarkable duffel bag]) > 0)
+	{
+		use(min(5, item_amount($item[unremarkable duffel bag])), $item[unremarkable duffel bag]);
+	}
 
 	int[int] inebriety;
 	float[int] adv;

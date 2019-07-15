@@ -82,9 +82,16 @@ boolean keepOnTruckin()
 
 float expectedAdventuresFrom(item it)
 {
-	if (!it.adventures.contains_text("-")) return it.adventures.to_int();
-	string[int] s = split_string(it.adventures, "-");
-	return (s[1].to_int() + s[0].to_int())/2.0;
+	float parse()
+	{
+		if (!it.adventures.contains_text("-")) return it.adventures.to_int();
+		string[int] s = split_string(it.adventures, "-");
+		return (s[1].to_int() + s[0].to_int())/2.0;
+	}
+	float expected = parse();
+	//if (item_amount($item[black label]) > 0 && $items[bottle of gin, bottle of rum, bottle of tequila, bottle of vodka or bottle of whiskey] contains it)
+	//	expected += 3.5;
+	return expected;
 }
 
 item getAvailablePerfectBooze()
