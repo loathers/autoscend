@@ -4257,7 +4257,7 @@ boolean L13_towerNSFinal()
 	}
 	else
 	{
-		addToMaximize("10dr,3moxie,0.5da 1000max,-10ml");
+		addToMaximize("10dr,3moxie,0.5da 1000max,-5ml,1.5hp,0item,0meat");
 	}
 	slEquip($slot[acc2], $item[Attorney\'s Badge]);
 
