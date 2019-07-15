@@ -319,6 +319,7 @@ void handlePreAdventure(location place)
 		print("Warning, we don't have a lot of MP but we are chugging along anyway", "red");
 	}
 	groundhogAbort(place);
+	if(my_inebriety() > inebriety_limit()) abort("You are overdrunk. Stop it.");
 	set_property("sl_priorLocation", place);
 	print("Pre Adventure at " + place + " done, beep.", "blue");
 }

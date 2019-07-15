@@ -14702,6 +14702,17 @@ void sl_begin()
 		wait(10);
 	}
 
+	// Check to see if we're doing Stooper things.
+	use_familiar($familiar[none]);
+	if (my_inebriety() > inebriety_limit() && doBedtime())
+	{
+		if(sl_have_familiar($familiar[Stooper]))
+		{
+			use_familiar($familiar[Stooper]);
+		}
+		print("Done for today (" + my_daycount() + "), beep boop");
+		return;
+	}
 
 	//This also should set our path too.
 	string page = visit_url("main.php");
@@ -14801,7 +14812,7 @@ void sl_begin()
 
 	dailyEvents();
 	consumeStuff();
-	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && !get_property("kingLiberated").to_boolean() && doTasks())
+	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && (inebriety_left() > 0 && my_familiar() != $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
 	{
 		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
 		{
