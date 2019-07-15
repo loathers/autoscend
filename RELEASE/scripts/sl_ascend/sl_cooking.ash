@@ -80,30 +80,8 @@ boolean keepOnTruckin()
 	return true;
 }
 
-float tcrs_expectedAdvPerFill(string quality)
-{
-	switch(quality)
-	{
-	case "EPIC":    return 5;
-	case "awesome": return 4;
-	case "good":    return 3;
-	case "decent":  return 2;
-	case "crappy":  return 1;
-	default:        abort("could not calculate expected adventures for quality " + quality + " in 2CRS");
-	}
-	return -1; // makes the compiler shut up
-}
-
 float expectedAdventuresFrom(item it)
 {
-	if(in_tcrs())
-	{
-		// Some items have hard-coded adv values that don't change in TCRS
-		if (!($items[astral pilsner, astral hot dog, cold one, spaghetti breakfast, affirmation cookie, magical sausage] contains it))
-		{
-			return tcrs_expectedAdvPerFill(it.quality) * max(it.fullness, it.inebriety);
-		}
-	}
 	if (!it.adventures.contains_text("-")) return it.adventures.to_int();
 	string[int] s = split_string(it.adventures, "-");
 	return (s[1].to_int() + s[0].to_int())/2.0;
@@ -430,9 +408,9 @@ boolean slDrinkCafe(int howmany, int id)
 	string name = "";
 	switch(id)
 	{
-	case -1: name = "Petite Porter";
-	case -2: name = "Scrawny Stout";
-	case -3: name = "Infinitesimal IPA";
+	case -1: name = "Petite Porter"; break;
+	case -2: name = "Scrawny Stout"; break;
+	case -3: name = "Infinitesimal IPA"; break;
 	default: abort("slDrinkCafe does not recognize item id: " + id);
 	}
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());

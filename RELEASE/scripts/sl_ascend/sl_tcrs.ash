@@ -17,6 +17,20 @@ boolean tcrs_initializeSettings()
 	return true;
 }
 
+float tcrs_expectedAdvPerFill(string quality)
+{
+	switch(quality)
+	{
+	case "EPIC":    return 5;
+	case "awesome": return 4;
+	case "good":    return 3;
+	case "decent":  return 2;
+	case "crappy":  return 1;
+	default:        abort("could not calculate expected adventures for quality " + quality + " in 2CRS");
+	}
+	return -1; // makes the compiler shut up
+}
+
 boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 {
 	/*
@@ -31,6 +45,8 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 	 *   val is the value to maximize (e.g. a map from i=1..n => adventures of i-th food)
 	 * Returns: a set of indices that were taken
 	 */
+
+	boolean[int] empty;
 
 	if(n*maxw >= 100000)
 	{
@@ -55,12 +71,19 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 		}
 	}
 
+	// Catch unreachable case (e.g. only 2-fullness foods, targeting 15 stomach)
+	if (V[n][maxw] == 0.0)
+	{
+		return empty;
+	}
+
 	boolean[int] ret;
 	// backtrack
 	int i = n;
 	int w = maxw;
 	while (i > 0 || w > 0)
 	{
+		if(i < 0) return empty;
 		// Did this item change our mind about how many adventures we could generate?
 		// If so, we took this item.
 		if (V[i][w] != V[i-1][w])
@@ -89,6 +112,7 @@ boolean can_simultaneously_acquire(int[item] needed)
 	// conflicting crafting dependencies.
 
 	int[item] alreadyUsed;
+	int meatUsed;
 
 	boolean failed = false;
 	void addToAlreadyUsed(int amount, item toAdd)
@@ -97,10 +121,15 @@ boolean can_simultaneously_acquire(int[item] needed)
 		alreadyUsed[toAdd] += amount;
 		if(needToCraft > 0)
 		{
-			if (count(get_ingredients(toAdd)) == 0)
+			if (count(get_ingredients(toAdd)) == 0 && npc_price(toAdd) == 0)
 			{
 				// not craftable
+				sl_debug_print("can_simultaneously_acquire failing on " + toAdd, "red");
 				failed = true;
+			}
+			else if (npc_price(toAdd) > 0)
+			{
+				meatUsed += npc_price(toAdd);
 			}
 
 			foreach ing,ingAmount in get_ingredients(toAdd)
@@ -115,12 +144,13 @@ boolean can_simultaneously_acquire(int[item] needed)
 		addToAlreadyUsed(amt, it);
 	}
 
-	return !failed;
+	return !failed && meatUsed <= my_meat();
 }
 
 boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety)
 {
 	if(!in_tcrs()) return false;
+	if(!gnomads_available()) return false;
 
 	record _CAFE_DRINK_TYPE {
 		string name;
@@ -181,6 +211,11 @@ boolean sl_knapsackAutoEat()
 	{
 		foods[item_backmap[i]] += 1;
 	}
+	foreach it, amt in foods
+	{
+		print(it + ":" + amt, "red");
+	}
+	if(true) return true;
 	if(!can_simultaneously_acquire(foods))
 	{
 		print("Considering eating: ", "red");
@@ -278,7 +313,7 @@ boolean sl_knapsackAutoDrink()
 	{
 		foreach what, howmany in normal_drinks
 		{
-			retrieve_item(howmany, what);
+			// retrieve_item(howmany, what);
 		}
 
 		foreach what, howmany in normal_drinks
@@ -290,8 +325,9 @@ boolean sl_knapsackAutoDrink()
 	}
 	foreach what, howmany in cafe_drinks
 	{
-		buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
-		slDrinkCafe(howmany, what);
+		print("TODO: would slDrinkCafe "+ howmany + " of " + what);
+		// buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
+		// slDrinkCafe(howmany, what);
 	}
 	return false;
 }
@@ -346,17 +382,22 @@ boolean tcrs_consumption()
 		{
 			// just drink, like, anything, whatever
 			// find the best and biggest thing we can and drink it
-			return sl_autoDrinkOne();
+			sl_autoDrinkOne();
+			return true;
 		}
 		if(inebriety_left() > 0)
 		{
-			if (sl_knapsackAutoDrink()) return true;
+			sl_knapsackAutoDrink();
+			return true;
 		}
 		if(fullness_left() > 0)
 		{
-			if (sl_knapsackAutoEat()) return true;
+			sl_knapsackAutoEat();
+			return true;
 		}
 	}
+
+	if (sl_beta()) return true;
 
 	if(my_class() == $class[Sauceror] && my_sign() == "Blender")
 	{
