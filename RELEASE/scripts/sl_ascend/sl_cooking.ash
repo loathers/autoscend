@@ -540,9 +540,9 @@ boolean canDrink(item toDrink)
 	{
 		return false;
 	}
-	if(sl_my_path() == "Dark Gyffte")
+	if((sl_my_path() == "Dark Gyffte") != ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink))
 	{
-		return ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink);
+		return false;
 	}
 	if(sl_my_path() == "KOLHS")
 	{
@@ -590,9 +590,18 @@ boolean canEat(item toEat)
 	{
 		return false;
 	}
-	if(sl_my_path() == "Dark Gyffte")
+	if((sl_my_path() == "Dark Gyffte") && (toEat == $item[magical sausage]))
 	{
-		return ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat);
+		// the one thing you can eat as Vampyre AND other classes
+		return true;
+	}
+	if((sl_my_path() == "Dark Gyffte") != ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat))
+	{
+		return false;
+	}
+	if(sl_my_path() == "Zombie Slayer")
+	{
+		return ($items[crappy brain, decent brain, good brain, boss brain, hunter brain, brains casserole, fricasseed brains, steel lasagna] contains toEat);
 	}
 
 	if(my_level() < toEat.levelreq)

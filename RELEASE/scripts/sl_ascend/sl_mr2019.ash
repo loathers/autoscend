@@ -101,6 +101,11 @@ boolean sl_sausageEatEmUp(int maxToEat)
 {
 	if(in_tcrs()) return false;
 
+	if(!canEat($item[magical sausage]))
+	{
+		return false;
+	}
+
 	// if maxToEat is 0, eat as many sausages as possible while respecting the reserve
 	boolean noMP = my_class() == $class[Vampyre];
 	int sausage_reserve_size = noMP ? 0 : 3;
