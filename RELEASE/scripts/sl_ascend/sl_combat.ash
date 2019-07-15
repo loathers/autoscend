@@ -1354,6 +1354,11 @@ string sl_combatHandler(int round, string opp, string text)
 		mcd = 151;
 	}
 
+	if($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains enemy && !get_property("sl_confidence").to_boolean())
+	{
+		mcd = 151;
+	}
+
 	#Default behaviors:
 	if(mcd <= 150)
 	{
