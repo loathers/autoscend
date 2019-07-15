@@ -120,7 +120,7 @@ boolean tryAddItemToMaximize(slot s, item it)
 
 boolean useMaximizeToEquip()
 {
-	return get_property("sl_maximize_baseline") != "";
+	return get_property("sl_maximize_baseline").to_lower_case() != "disabled";
 }
 
 string defaultMaximizeStatement()
@@ -171,7 +171,7 @@ string defaultMaximizeStatement()
 void resetMaximize()
 {
 	string res = get_property("sl_maximize_baseline");
-	if(res.to_lower_case() == "default")
+	if(res == "" || res.to_lower_case() == "default")
 	{
 		res = defaultMaximizeStatement();
 	}
@@ -284,7 +284,7 @@ void equipMaximizedGear()
 	}
 
 	finalizeMaximize();
-	sl_debug_print("Maximizing: " + get_property("sl_maximize_current"), "gold");
+	print("Maximizing: " + get_property("sl_maximize_current"), "blue");
 	maximize(get_property("sl_maximize_current"), 2500, 0, false);
 }
 
