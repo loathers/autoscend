@@ -180,7 +180,7 @@ boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] ineb
 	return true;
 }
 
-boolean sl_knapsackAutoEat()
+boolean sl_knapsackAutoEat(boolean simulate)
 {
 	// TODO: Doesn't yet use Canadian cafe food.
 
@@ -217,6 +217,15 @@ boolean sl_knapsackAutoEat()
 	{
 		print(it + ":" + amt, "blue");
 	}
+
+	if(simulate) return true;
+
+	if(count(foods) == 0)
+	{
+		print("Couldn't find a way of finishing off our stomach space exactly.", "red");
+		return false;
+	}
+
 	if(!can_simultaneously_acquire(foods))
 	{
 		print("Looks like I can't simultaneously acquire all of those items. I'm a bit confused. I'll wait and see if I get unconfused - otherwise, please eat manually.", "red");
@@ -267,7 +276,7 @@ boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 	return true;
 }
 
-boolean sl_knapsackAutoDrink()
+boolean sl_knapsackAutoDrink(boolean simulate)
 {
 	if (inebriety_left() == 0) return false;
 
@@ -303,36 +312,39 @@ boolean sl_knapsackAutoDrink()
 	{
 		print(it + ":" + amt, "blue");
 	}
+
+	if(count(normal_drinks) + count(cafe_drinks) == 0)
+	{
+		print("Couldn't find a way of finishing off our liver space exactly.", "red");
+		return false;
+	}
+
 	if(!can_simultaneously_acquire(normal_drinks))
 	{
-		print("Considering drinking:", "red");
-		foreach it, amt in normal_drinks
-		{
-			print(it + ":" + amt, "red");
-		}
 		print("It looks like I can't simultaneously get everything that I want to drink. I'll wait and see if I get unconfused - otherwise, please drink manually.", "red");
 		return false;
 	}
+
+	if(simulate) return true;
 
 	if (count(normal_drinks) > 0)
 	{
 		foreach what, howmany in normal_drinks
 		{
-			// retrieve_item(howmany, what);
+			retrieve_item(howmany, what);
 		}
 
 		foreach what, howmany in normal_drinks
 		{
 			slDrink(howmany, what);
 		}
-		return true;
 	}
 	foreach what, howmany in cafe_drinks
 	{
 		buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
 		slDrinkCafe(howmany, what);
 	}
-	return false;
+	return true;
 }
 
 boolean sl_autoDrinkOne()
@@ -390,12 +402,12 @@ boolean tcrs_consumption()
 		}
 		if(inebriety_left() > 0)
 		{
-			sl_knapsackAutoDrink();
+			sl_knapsackAutoDrink(false);
 			return true;
 		}
 		if(fullness_left() > 0)
 		{
-			sl_knapsackAutoEat();
+			sl_knapsackAutoEat(false);
 			return true;
 		}
 	}
