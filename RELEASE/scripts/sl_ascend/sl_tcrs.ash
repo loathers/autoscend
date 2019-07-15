@@ -263,7 +263,7 @@ boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 		{
 			int amount = available_amount(it) + creatable_amount(it);
 			if (npc_price(it) > 0) amount += my_meat() / npc_price(it);
-			int limit = min(amount, inebriety_left()/it.inebriety);
+			int limit = min(amount, max(1, inebriety_left()/it.inebriety));
 			for (int i=0; i<limit; i++)
 			{
 				int n = count(inebriety);
@@ -274,6 +274,23 @@ boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 		}
 	}
 	return true;
+}
+
+item sl_bestNightcap()
+{
+	int[int] inebriety;
+	float[int] adv;
+	item[int] item_backmap;
+
+	loadDrinks(item_backmap, adv, inebriety);
+
+	int best = 0;
+	int n = count(item_backmap);
+	for (int i=1; i < n; i++)
+	{
+		if (adv[i] + inebriety[i] > adv[best] + inebriety[i]) best = i;
+	}
+	return item_backmap[best];
 }
 
 boolean sl_knapsackAutoDrink(boolean simulate)

@@ -2981,19 +2981,21 @@ boolean doBedtime()
 			print("You have a rain man to cast, please do so before overdrinking and then run me again.", "red");
 			return false;
 		}
-		if((item_amount($item[Psychotic Train Wine]) > 0) && (my_daycount() == 1))
+		item best_nightcap = sl_bestNightcap();
+		if(available_amount(best_nightcap) == 0)
 		{
-			print("You can drink a Psychotic Train Wine as your nightcap! Yay!", "blue");
+			print("You can create and drink a " + best_nightcap + " (" + best_nightcap.adventures + " adventures) as your nightcap! Yay!", "blue");
 		}
-		else if((item_amount($item[Hacked Gibson]) > 0) && (my_daycount() == 1))
+		else
 		{
-			print("You can drink a Hacked Gibson as your nightcap! Yay!", "blue");
-		}
-		else if((item_amount($item[Ye Olde Meade]) > 0) && (my_daycount() == 1))
-		{
-			print("You can drink a Ye Olde Meade as your nightcap! Yay!", "blue");
+			print("You can drink a " + best_nightcap + " (" + best_nightcap.adventures + " adventures) as your nightcap! Yay!", "blue");
 		}
 		print("You need to overdrink and then run me again. Beep.", "red");
+		if(have_skill($skill[The Ode to Booze]))
+		{
+			shrugAT($effect[Ode to Booze]);
+			buffMaintain($effect[Ode to Booze], 0, 1, 1);
+		}
 		return false;
 	}
 	else
