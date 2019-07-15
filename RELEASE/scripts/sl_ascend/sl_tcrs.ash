@@ -295,6 +295,7 @@ item sl_bestNightcap()
 
 boolean sl_knapsackAutoDrink(boolean simulate)
 {
+	// TODO: does not consider mime army shotglass
 	if (inebriety_left() == 0) return false;
 
 	int[int] inebriety;
@@ -307,6 +308,13 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 
 	int[item] normal_drinks;
 	int[int] cafe_drinks;
+
+	int liver_space = inebriety_left();
+	boolean saving_for_stooper = sl_have_familiar($familiar[Stooper]) && my_familiar() != $familiar[Stooper];
+	if (saving_for_stooper)
+	{
+		liver_space += 1;
+	}
 
 	boolean[int] result = knapsack(inebriety_left(), count(inebriety), inebriety, adv);
 	foreach i in result
@@ -330,7 +338,7 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 		print(it + ":" + amt, "blue");
 	}
 
-	if(count(normal_drinks) + count(cafe_drinks) == 0)
+	if(count(result) == 0)
 	{
 		print("Couldn't find a way of finishing off our liver space exactly.", "red");
 		return false;
@@ -344,22 +352,27 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 
 	if(simulate) return true;
 
-	if (count(normal_drinks) > 0)
+	foreach i in result
 	{
-		foreach what, howmany in normal_drinks
+		if(inebriety[i] >= inebriety_left() && !get_property("_sl_saving_for_stooper").to_boolean())
 		{
-			retrieve_item(howmany, what);
+			print("Leaving some liver space left for Stooper...");
+			set_property("_sl_saving_for_stooper", true);
+			break;
 		}
 
-		foreach what, howmany in normal_drinks
+		if (cafe_backmap contains i)
 		{
-			slDrink(howmany, what);
+			int what = cafe_backmap[i];
+			buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
+			slDrinkCafe(1, what);
 		}
-	}
-	foreach what, howmany in cafe_drinks
-	{
-		buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
-		slDrinkCafe(howmany, what);
+		else
+		{
+			item what = item_backmap[i];
+			retrieve_item(1, what);
+			slDrink(1, what);
+		}
 	}
 	return true;
 }
@@ -408,7 +421,7 @@ boolean tcrs_consumption()
 	if(!in_tcrs())
 		return false;
 
-	if(sl_beta() && my_adventures() < 10)
+	if(sl_beta() && my_adventures() < 5)
 	{
 		if(my_inebriety() < 8 && inebriety_left() > 0)
 		{
@@ -417,7 +430,7 @@ boolean tcrs_consumption()
 			sl_autoDrinkOne();
 			return true;
 		}
-		if(inebriety_left() > 0)
+		if(inebriety_left() > 0 && !get_property("_sl_saving_for_stooper").to_boolean())
 		{
 			sl_knapsackAutoDrink(false);
 			return true;
@@ -425,6 +438,12 @@ boolean tcrs_consumption()
 		if(fullness_left() > 0)
 		{
 			sl_knapsackAutoEat(false);
+			return true;
+		}
+		if(my_adventures() <= 1 && inebriety_left() > 0 && get_property("_sl_saving_for_stooper").to_boolean())
+		{
+			use_familiar($familiar[Stooper]);
+			sl_knapsackAutoDrink(false);
 			return true;
 		}
 	}

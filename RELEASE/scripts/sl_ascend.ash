@@ -2945,7 +2945,7 @@ boolean doBedtime()
 		}
 	}
 
-	boolean done = (my_inebriety() > inebriety_limit());
+	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
 	if((my_class() == $class[Gelatinous Noob]) || !can_drink() || out_of_blood)
 	{
 		if((my_adventures() <= 1) || (internalQuestStatus("questL13Final") >= 14))
