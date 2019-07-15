@@ -121,7 +121,7 @@ boolean can_simultaneously_acquire(int[item] needed)
 		alreadyUsed[toAdd] += amount;
 		if(needToCraft > 0)
 		{
-			if (count(get_ingredients(toAdd)) == 0 && npc_price(toAdd) == 0)
+			if (count(get_ingredients(toAdd)) == 0 && npc_price(toAdd) == 0 && buy_price($coinmaster[hermit], toAdd) == 0)
 			{
 				// not craftable
 				sl_debug_print("can_simultaneously_acquire failing on " + toAdd, "red");
@@ -196,6 +196,7 @@ boolean sl_knapsackAutoEat()
 		{
 			int amount = available_amount(it) + creatable_amount(it);
 			if (npc_price(it) > 0) amount += my_meat() / npc_price(it);
+			if (buy_price($coinmaster[hermit], it) > 0) amount += 100;
 			int limit = min(amount, fullness_left()/it.fullness);
 			for (int i=0; i<limit; i++)
 			{
@@ -211,19 +212,14 @@ boolean sl_knapsackAutoEat()
 	{
 		foods[item_backmap[i]] += 1;
 	}
+	print("Knapsack food plan:", "blue");
 	foreach it, amt in foods
 	{
-		print(it + ":" + amt, "red");
+		print(it + ":" + amt, "blue");
 	}
-	if(true) return true;
 	if(!can_simultaneously_acquire(foods))
 	{
-		print("Considering eating: ", "red");
-		foreach it, amt in foods
-		{
-			print(it + ":" + amt, "red");
-		}
-		print("I'm a little confused about what to eat. I'll wait and see if I get unconfused - otherwise, please eat manually.", "red");
+		print("Looks like I can't simultaneously acquire all of those items. I'm a bit confused. I'll wait and see if I get unconfused - otherwise, please eat manually.", "red");
 		return false;
 	}
 	if (count(foods) > 0)
@@ -298,6 +294,15 @@ boolean sl_knapsackAutoDrink()
 			normal_drinks[item_backmap[i]] += 1;
 		}
 	}
+	print("Knapsack drink plan:", "blue");
+	foreach it, amt in normal_drinks
+	{
+		print(it + ":" + amt, "blue");
+	}
+	foreach it, amt in cafe_drinks
+	{
+		print(it + ":" + amt, "blue");
+	}
 	if(!can_simultaneously_acquire(normal_drinks))
 	{
 		print("Considering drinking:", "red");
@@ -318,16 +323,14 @@ boolean sl_knapsackAutoDrink()
 
 		foreach what, howmany in normal_drinks
 		{
-			print("TODO: would drink "+ howmany + " of " + what);
-			// slDrink(howmany, what);
+			slDrink(howmany, what);
 		}
 		return true;
 	}
 	foreach what, howmany in cafe_drinks
 	{
-		print("TODO: would slDrinkCafe "+ howmany + " of " + what);
-		// buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
-		// slDrinkCafe(howmany, what);
+		buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
+		slDrinkCafe(howmany, what);
 	}
 	return false;
 }
