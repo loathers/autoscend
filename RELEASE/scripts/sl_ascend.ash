@@ -289,6 +289,16 @@ boolean handleFamiliar(string type)
 
 	if(sl_beta())
 	{
+		boolean suggest = type.ends_with("Suggest");
+		if(suggest)
+		{
+			type = type.substring(0, type.length() - length("Suggest"));
+			if(familiar_weight(my_familiar()) < 20)
+			{
+				return false;
+			}
+		}
+
 		string [string,int,string] familiars_text;
 		if(!file_to_map("sl_ascend_familiars.txt", familiars_text))
 			print("Could not load sl_ascend_familiars.txt. This is bad!", "red");
