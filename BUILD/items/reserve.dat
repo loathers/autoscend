@@ -1,0 +1,17 @@
+# Save for Mr. Alarm
+1 wet stew	quest:questL11Palindome<5
+1 stunt nuts	quest:questL11Palindome<5
+# Save for milk of magnesium
+3 glass of goat's milk	skill:advanced saucecrafting;!path:Two Crazy Random Summer
+# Save for trapper
+3 goat cheese	quest:questL08Trapper<2
+# Save for galoshes
+3 blackberry	item:blackberry galoshes<1;quest:questL11Black<2
+# Save for beanstalk
+1 enchanted bean	quest:questL10Garbage<2
+# Save for jar of oil
+12 bubblin' crude	prop:twinPeakProgress<4;item:jar of oil<1
+# Save for jelly toast
+11 toast	havefamiliar:Space Jellyfish
+# You won't have more than 1000 clovers in run. If you do somehow, enjoy your green beer, maybe.
+1000 ten-leaf clover

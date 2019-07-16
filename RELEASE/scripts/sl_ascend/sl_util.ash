@@ -5359,8 +5359,8 @@ boolean sl_check_conditions(string conds)
 				if(req_effect == $effect[none])
 					abort('"' + condition_data + '" does not properly convert to an effect!');
 				return have_effect(req_effect) > 0;
-			// data: Text name of the item, as used by to_item()
-			// You must have at least one of this item
+			// data: <item name><comparison operator><value>
+			// The number of that item you have must compare properly
 			// As a precaution, sl_ascend aborts if to_item returns $item[none]
 			case "item":
 				matcher m5 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
@@ -5369,7 +5369,7 @@ boolean sl_check_conditions(string conds)
 				item req_item = to_item(m5.group(1));
 				if(req_item == $item[none])
 					abort('"' + m5.group(1) + '" does not properly convert to an item!');
-				return compare_numbers(item_amount(req_item), m5.group(3).to_int(), m5.group(2));
+				return compare_numbers(item_amount(req_item) + equipped_amount(req_item), m5.group(3).to_int(), m5.group(2));
 			// data: The outfit name as used by have_outfit
 			// You must have the given outfit
 			// No safety checking here possible, at least not conveniently
@@ -5384,6 +5384,14 @@ boolean sl_check_conditions(string conds)
 				if(req_familiar == $familiar[none] && condition_data != "none")
 					abort('"' + condition_data + '" does not properly convert to a familiar!');
 				return my_familiar() == req_familiar;
+			// data: Text name of the familiar, as used by to_familiar()
+			// You must own this familiar, and it must be legal
+			// As a precaution, sl_ascend aborts if to_familiar returns $familiar[none]
+			case "havefamiliar":
+				familiar havefamiliar = to_familiar(condition_data);
+				if(havefamiliar == $familiar[none])
+					abort('"' + condition_data + '" does not properly convert to a familiar!');
+				return sl_have_familiar(havefamiliar);
 			// data: Text name of the location, as used by to_location()
 			// You must be in this location (if you want to check for elsewhere, temporarily set_location)
 			// As a precaution, sl_ascend aborts if to_location returns $location[none]
@@ -5894,3 +5902,48 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 	return ret;
 }
 
+int sl_reserveAmount(item it)
+{
+	string [string,int,string] itemdata;
+	if(!file_to_map("sl_ascend_items.txt", itemdata))
+		print("Could not load sl_ascend_items.txt! This is bad!", "red");
+	foreach i,counteditem,conds in itemdata["reserve"]
+	{
+		matcher m = create_matcher("(\\d+) (.+)", counteditem);
+		if(!m.find())
+		{
+			print('"' + counteditem + '" is not in the format "# itemname"!', "red");
+			continue;
+		}
+		item curr = m.group(2).to_item();
+		if(curr == $item[none])
+		{
+			print('"' + m.group(2) + '" does not convert to an item properly!', "red");
+			continue;
+		}
+		if(curr != it)
+			continue;
+		if(!sl_check_conditions(conds))
+			continue;
+		return m.group(1).to_int();
+	}
+	return 0;
+}
+
+int sl_reserveCraftAmount(item it)
+{
+	int reserve = 0;
+	foreach ing,amt in get_ingredients(it)
+	{
+		int ingReserve = sl_reserveAmount(ing);
+		if(ingReserve == 0)
+		{
+			ingReserve = sl_reserveCraftAmount(ing);
+		}
+		if(ingReserve * amt > reserve)
+		{
+			reserve = ingReserve * amt;
+		}
+	}
+	return reserve;
+}

@@ -1526,7 +1526,7 @@ boolean sl_knapsackAutoEat(boolean simulate)
 			int howmany = 1 + fullness_left()/it.fullness;
 			if (item_amount(it) > 0 && it.fullness <= 5)
 			{
-				small_owned[it] = min(item_amount(it), howmany);
+				small_owned[it] = min(max(item_amount(it) - sl_reserveAmount(it), 0), howmany);
 			}
 			if (npc_price(it) > 0)
 			{
@@ -1539,11 +1539,11 @@ boolean sl_knapsackAutoEat(boolean simulate)
 			}
 			if (item_amount(it) > 0 && it.fullness > 5)
 			{
-				large_owned[it] = min(item_amount(it), howmany);
+				large_owned[it] = min(max(item_amount(it) - sl_reserveAmount(it), 0), howmany);
 			}
 			if (creatable_amount(it) > 0)
 			{
-				howmany = min(howmany, creatable_amount(it));
+				howmany = min(howmany, max(0, creatable_amount(it) - sl_reserveCraftAmount(it)));
 				craftables[it] = howmany;
 			}
 		}
@@ -1651,7 +1651,7 @@ boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 			int howmany = 1 + inebriety_left()/it.inebriety;
 			if (item_amount(it) > 0 && it.inebriety <= 5)
 			{
-				small_owned[it] = min(item_amount(it), howmany);
+				small_owned[it] = min(max(item_amount(it) - sl_reserveAmount(it), 0), howmany);
 			}
 			if (npc_price(it) > 0)
 			{
@@ -1664,11 +1664,11 @@ boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety)
 			}
 			if (item_amount(it) > 0 && it.inebriety > 5)
 			{
-				large_owned[it] = min(item_amount(it), howmany);
+				large_owned[it] = min(max(item_amount(it) - sl_reserveAmount(it), 0), howmany);
 			}
 			if (creatable_amount(it) > 0)
 			{
-				howmany = min(howmany, creatable_amount(it));
+				howmany = min(howmany, max(0, creatable_amount(it) - sl_reserveCraftAmount(it)));
 				craftables[it] = howmany;
 			}
 		}
