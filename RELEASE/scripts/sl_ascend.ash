@@ -1384,7 +1384,7 @@ boolean doThemtharHills()
 	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
 	buffMaintain($effect[Patent Avarice], 0, 1, 1);
-	if(item_amount($item[body spradium]) > 0)
+	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{
 		slChew(1, $item[body spradium]);
 	}
