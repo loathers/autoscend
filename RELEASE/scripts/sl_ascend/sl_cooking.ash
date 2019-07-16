@@ -1557,7 +1557,7 @@ boolean sl_knapsackAutoEat(boolean simulate)
 			int n = count(fullness);
 			fullness[n] = it.fullness;
 			adv[n] = expectedAdventuresFrom(it);
-			adv[n] += min(1.0, item_amount($item[special seasoning]) * it.fullness / fullness_left());
+			adv[n] += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
 			if (crafting)
 			{
 				int turns_to_craft = creatable_turns(it, i + 1, false) - creatable_turns(it, i, false);
@@ -1717,11 +1717,19 @@ item sl_bestNightcap()
 
 	loadDrinks(item_backmap, adv, inebriety);
 
+	boolean have_ode = sl_have_skill($skill[The Ode to Booze]);
+	float advs_from(int i)
+	{
+		float ret = adv[i];
+		if (have_ode) ret += inebriety[i];
+		return ret;
+	}
+
 	int best = 0;
 	int n = count(item_backmap);
 	for (int i=1; i < n; i++)
 	{
-		if (adv[i] + inebriety[i] > adv[best] + inebriety[i]) best = i;
+		if (advs_from(i) > advs_from(best)) best = i;
 	}
 	return item_backmap[best];
 }

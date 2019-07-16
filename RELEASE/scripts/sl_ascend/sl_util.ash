@@ -5778,7 +5778,7 @@ boolean autoFlavour(location place)
 	return setFlavour(flavour);
 }
 
-boolean can_simultaneously_acquire(int[item] needed)
+boolean canSimultaneouslyAcquire(int[item] needed)
 {
 	// The Knapsack solver can provide invalid solutions - for example, if we
 	// have 2 perfect ice cubes and 6 organ space, it might suggest two distinct
@@ -5799,7 +5799,7 @@ boolean can_simultaneously_acquire(int[item] needed)
 			if (count(get_ingredients(toAdd)) == 0 && npc_price(toAdd) == 0 && buy_price($coinmaster[hermit], toAdd) == 0)
 			{
 				// not craftable
-				sl_debug_print("can_simultaneously_acquire failing on " + toAdd, "red");
+				sl_debug_print("canSimultaneouslyAcquire failing on " + toAdd, "red");
 				failed = true;
 			}
 			else if (npc_price(toAdd) > 0)
