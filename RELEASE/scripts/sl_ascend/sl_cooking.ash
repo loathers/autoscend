@@ -1782,11 +1782,6 @@ boolean sl_knapsackAutoDrink(boolean simulate)
 		print(adv[i] + " adventures from " + name + "(" + inebriety[i] + " inebriety)", "blue");
 		total_adv += adv[i];
 	}
-	foreach it, amt in normal_drinks
-	{
-		print(amt * expectedAdventuresFrom(it) + " adventures from " + amt + "x " + it + "(" + amt + " * " + it.inebriety + " inebriety)", "blue");
-		total_adv += amt * expectedAdventuresFrom(it);
-	}
 	print("For a total of: " + total_adv + " adventures.", "blue");
 
 	if(count(result) == 0)

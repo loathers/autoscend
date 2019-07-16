@@ -5804,6 +5804,10 @@ boolean canSimultaneouslyAcquire(int[item] needed)
 		alreadyUsed[toAdd] += amount;
 		if(needToCraft > 0)
 		{
+			if(get_property("autoSatisfyWithStorage").to_boolean() && pulls_remaining() == -1)
+			{
+				return;
+			}
 			if (count(get_ingredients(toAdd)) == 0 && npc_price(toAdd) == 0 && buy_price($coinmaster[hermit], toAdd) == 0)
 			{
 				// not craftable
