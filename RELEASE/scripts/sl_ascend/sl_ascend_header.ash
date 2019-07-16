@@ -362,6 +362,8 @@ boolean summonMonster();									//Defined in sl_ascend/sl_util.ash
 boolean summonMonster(string option);						//Defined in sl_ascend/sl_util.ash
 boolean in_tcrs();											//Defined in sl_ascend/sl_tcrs.ash
 boolean tcrs_initializeSettings();							//Defined in sl_ascend/sl_tcrs.ash
+float tcrs_expectedAdvPerFill(string quality);				//Defined in sl_ascend/sl_tcrs.ash
+boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety);	//Defined in sl_ascend/sl_tcrs.ash
 boolean tcrs_consumption();									//Defined in sl_ascend/sl_tcrs.ash
 boolean tcrs_maximize_with_items(string maximizerString);	//Defined in sl_ascend/sl_tcrs.ash
 boolean boris_buySkills();									//Defined in sl_ascend/sl_boris.ash
@@ -380,11 +382,19 @@ boolean canYellowRay(monster target); //Defined in sl_ascend/sl_util.ash
 boolean canYellowRay();										//Defined in sl_ascend/sl_util.ash
 boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in sl_ascend/sl_adventure.ash
 boolean slChew(int howMany, item toChew);					//Defined in sl_ascend/sl_cooking.ash
+float expectedAdventuresFrom(item it);						//Defined in sl_ascend/sl_cooking.ash
 int slCraft(string mode, int count, item item1, item item2);//Defined in sl_ascend/sl_util.ash
 boolean canOde(item toDrink); //Defined in sl_ascend/sl_cooking.ash
+boolean canSimultaneouslyAcquire(int[item] needed);			//Defined in sl_ascend/sl_util.ash
+boolean clear_property_if(string setting, string cond);		//Defined in sl_ascend/sl_util.ash
 boolean slDrink(int howMany, item toDrink);					//Defined in sl_ascend/sl_cooking.ash
 boolean slEat(int howMany, item toEat);						//Defined in sl_ascend/sl_cooking.ash
 boolean slEat(int howMany, item toEat, boolean silent);		//Defined in sl_ascend/sl_cooking.ash
+boolean sl_knapsackAutoEat(boolean simulate);				//Defined in sl_ascend/sl_cooking.ash
+boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety);					//Defined in sl_ascend/sl_cooking.ash
+item sl_bestNightcap();										//Defined in sl_ascend/sl_cooking.ash
+boolean sl_knapsackAutoDrink(boolean simulate);				//Defined in sl_ascend/sl_cooking.ash
+boolean sl_autoDrinkOne(boolean simulate);					//Defined in sl_ascend/sl_cooking.ash
 boolean slMaximize(string req, boolean simulate);			//Defined in sl_ascend/sl_util.ash
 boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in sl_ascend/sl_util.ash
 aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);//Defined in sl_ascend/sl_util.ash
@@ -648,6 +658,7 @@ void horseDark(); // Defined in sl_ascend/sl_mr2017.ash
 void horseCrazy(); // Defined in sl_ascend/sl_mr2017.ash
 void horsePale(); // Defined in sl_ascend/sl_mr2017.ash
 boolean horsePreAdventure(); // Defined in sl_ascend/sl_mr2017.ash
+boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val); // Defined in sl_ascend/sl_util.ash
 boolean kgbDiscovery();										//Defined in sl_ascend/sl_mr2017.ash
 boolean kgbWasteClicks();									//Defined in sl_ascend/sl_mr2017.ash
 boolean kgbTryEffect(effect ef);							//Defined in sl_ascend/sl_mr2017.ash

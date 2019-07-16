@@ -2955,7 +2955,7 @@ boolean doBedtime()
 		}
 	}
 
-	boolean done = (my_inebriety() > inebriety_limit());
+	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
 	if((my_class() == $class[Gelatinous Noob]) || !can_drink() || out_of_blood)
 	{
 		if((my_adventures() <= 1) || (internalQuestStatus("questL13Final") >= 14))
@@ -2991,19 +2991,21 @@ boolean doBedtime()
 			print("You have a rain man to cast, please do so before overdrinking and then run me again.", "red");
 			return false;
 		}
-		if((item_amount($item[Psychotic Train Wine]) > 0) && (my_daycount() == 1))
+		item best_nightcap = sl_bestNightcap();
+		if(available_amount(best_nightcap) == 0)
 		{
-			print("You can drink a Psychotic Train Wine as your nightcap! Yay!", "blue");
+			print("You can create and drink a " + best_nightcap + " (" + best_nightcap.adventures + " adventures) as your nightcap! Yay!", "blue");
 		}
-		else if((item_amount($item[Hacked Gibson]) > 0) && (my_daycount() == 1))
+		else
 		{
-			print("You can drink a Hacked Gibson as your nightcap! Yay!", "blue");
-		}
-		else if((item_amount($item[Ye Olde Meade]) > 0) && (my_daycount() == 1))
-		{
-			print("You can drink a Ye Olde Meade as your nightcap! Yay!", "blue");
+			print("You can drink a " + best_nightcap + " (" + best_nightcap.adventures + " adventures) as your nightcap! Yay!", "blue");
 		}
 		print("You need to overdrink and then run me again. Beep.", "red");
+		if(have_skill($skill[The Ode to Booze]))
+		{
+			shrugAT($effect[Ode to Booze]);
+			buffMaintain($effect[Ode to Booze], 0, 1, 1);
+		}
 		return false;
 	}
 	else
@@ -14710,6 +14712,17 @@ void sl_begin()
 		wait(10);
 	}
 
+	// Check to see if we're doing Stooper things.
+	use_familiar($familiar[none]);
+	if (my_inebriety() > inebriety_limit() && doBedtime())
+	{
+		if(sl_have_familiar($familiar[Stooper]))
+		{
+			use_familiar($familiar[Stooper]);
+		}
+		print("Done for today (" + my_daycount() + "), beep boop");
+		return;
+	}
 
 	//This also should set our path too.
 	string page = visit_url("main.php");
@@ -14809,7 +14822,7 @@ void sl_begin()
 
 	dailyEvents();
 	consumeStuff();
-	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && !get_property("kingLiberated").to_boolean() && doTasks())
+	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && (inebriety_left() > 0 && my_familiar() != $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
 	{
 		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
 		{

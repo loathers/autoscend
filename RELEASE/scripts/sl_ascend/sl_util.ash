@@ -5777,3 +5777,120 @@ boolean autoFlavour(location place)
 
 	return setFlavour(flavour);
 }
+
+boolean canSimultaneouslyAcquire(int[item] needed)
+{
+	// The Knapsack solver can provide invalid solutions - for example, if we
+	// have 2 perfect ice cubes and 6 organ space, it might suggest two distinct
+	// perfect drinks.
+	// Checks that a set of items isn't impossible to acquire because of
+	// conflicting crafting dependencies.
+
+	int[item] alreadyUsed;
+	int meatUsed;
+
+	boolean failed = false;
+	void addToAlreadyUsed(int amount, item toAdd)
+	{
+		int needToCraft = alreadyUsed[toAdd] + amount - item_amount(toAdd);
+		alreadyUsed[toAdd] += amount;
+		if(needToCraft > 0)
+		{
+			if (count(get_ingredients(toAdd)) == 0 && npc_price(toAdd) == 0 && buy_price($coinmaster[hermit], toAdd) == 0)
+			{
+				// not craftable
+				sl_debug_print("canSimultaneouslyAcquire failing on " + toAdd, "red");
+				failed = true;
+			}
+			else if (npc_price(toAdd) > 0)
+			{
+				meatUsed += npc_price(toAdd);
+			}
+
+			foreach ing,ingAmount in get_ingredients(toAdd)
+			{
+				addToAlreadyUsed(ingAmount * needToCraft, ing);
+			}
+		}
+	}
+
+	foreach it, amt in needed
+	{
+		addToAlreadyUsed(amt, it);
+	}
+
+	return !failed && meatUsed <= my_meat();
+}
+
+boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
+{
+	/*
+	 * standard implementation of 0-1 Knapsack problem with dynamic programming
+	 * Time complexity: O(maxw * n)
+	 * For 16k items on a 2017 laptop, took about 5 seconds and 60Mb of RAM
+	 *
+	 * Parameters:
+	 *   maxw is the desired sum-of-weights (e.g. fullness_left())
+	 *   n is the number of elements
+	 *   weight is the (e.g. a map from i=1..n => fullness of i-th food)
+	 *   val is the value to maximize (e.g. a map from i=1..n => adventures of i-th food)
+	 * Returns: a set of indices that were taken
+	 */
+
+	boolean[int] empty;
+
+	if(n*maxw >= 100000)
+	{
+		print("Solving a Knapsack instance with " + n + " elements and " + maxw + " total weight, this might be slow and memory-intensive.");
+	}
+
+	/* V[i][w] is "with only the first i items, what is the maximum
+	 * sum-of-vals we can generate with total weight w?
+	 */
+	float [int][int] V;
+
+	for (int i = 0; i <= n; i++)
+	{
+		for (int w = 0; w <= maxw; w++)
+		{
+			if (i==0 || w==0)
+				V[i][w] = 0;
+			else if (weight[i-1] <= w)
+				V[i][w] = max(val[i-1] + V[i-1][w-weight[i-1]], V[i-1][w]);
+			else
+				V[i][w] = V[i-1][w];
+		}
+	}
+
+	// Catch unreachable case (e.g. only 2-fullness foods, targeting 15 stomach)
+	if (V[n][maxw] == 0.0)
+	{
+		return empty;
+	}
+
+	boolean[int] ret;
+	// backtrack
+	int i = n;
+	int w = maxw;
+	while (i > 0 || w > 0)
+	{
+		if(i < 0) return empty;
+		// Did this item change our mind about how many adventures we could generate?
+		// If so, we took this item.
+		if (V[i][w] != V[i-1][w])
+		{
+			w -= weight[i-1];
+			ret[i-1] = true;
+		}
+		else
+		{
+			// do not take element
+			i -= 1;
+		}
+	}
+	// This can be somewhat memory-intensive.
+	// I'm not sure if this actually does anything, but it makes me feel better.
+	cli_execute("gc");
+	return ret;
+}
+
