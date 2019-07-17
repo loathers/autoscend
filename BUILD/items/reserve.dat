@@ -20,3 +20,6 @@
 11 unnamed cocktail	quest:questL11Ron<2
 # Save for protesters
 11 Flamin' Whatshisname	quest:questL11Ron<2
+# Don't save, just keep dough from causing an infinite loop
+-1 wad of dough
+-1 flat dough

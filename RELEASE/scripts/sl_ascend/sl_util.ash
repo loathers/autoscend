@@ -5913,7 +5913,7 @@ int sl_reserveAmount(item it)
 		print("Could not load sl_ascend_items.txt! This is bad!", "red");
 	foreach i,counteditem,conds in itemdata["reserve"]
 	{
-		matcher m = create_matcher("(\\d+) (.+)", counteditem);
+		matcher m = create_matcher("(\\-?\\d+) (.+)", counteditem);
 		if(!m.find())
 		{
 			print('"' + counteditem + '" is not in the format "# itemname"!', "red");
@@ -5940,7 +5940,11 @@ int sl_reserveCraftAmount(item it)
 	foreach ing,amt in get_ingredients(it)
 	{
 		int ingReserve = sl_reserveAmount(ing);
-		if(ingReserve == 0)
+		if(ingReserve == -1)
+		{
+			return 0;
+		}
+		else if(ingReserve == 0)
 		{
 			ingReserve = sl_reserveCraftAmount(ing);
 		}

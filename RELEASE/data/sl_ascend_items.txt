@@ -32,4 +32,7 @@ reserve	8	1000 ten-leaf clover
 reserve	9	11 unnamed cocktail	quest:questL11Ron<2
 # Save for protesters
 reserve	10	11 Flamin' Whatshisname	quest:questL11Ron<2
+# Don't save, just keep dough from causing an infinite loop
+reserve	11	-1 wad of dough
+reserve	12	-1 flat dough
 
