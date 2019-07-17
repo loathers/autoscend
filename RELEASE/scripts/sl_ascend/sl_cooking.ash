@@ -1940,8 +1940,7 @@ boolean sl_knapsackAutoConsume(string type, boolean simulate)
 			}
 			else if (type == "eat")
 			{
-				// TODO: implement slEatCafe
-				// slEatCafe(1, what);
+				slEatCafe(1, what);
 			}
 		}
 		else
