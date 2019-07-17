@@ -390,10 +390,9 @@ boolean clear_property_if(string setting, string cond);		//Defined in sl_ascend/
 boolean slDrink(int howMany, item toDrink);					//Defined in sl_ascend/sl_cooking.ash
 boolean slEat(int howMany, item toEat);						//Defined in sl_ascend/sl_cooking.ash
 boolean slEat(int howMany, item toEat, boolean silent);		//Defined in sl_ascend/sl_cooking.ash
-boolean sl_knapsackAutoEat(boolean simulate);				//Defined in sl_ascend/sl_cooking.ash
-boolean loadDrinks(item[int] item_backmap, float[int] adv, int[int] inebriety);					//Defined in sl_ascend/sl_cooking.ash
-item sl_bestNightcap();										//Defined in sl_ascend/sl_cooking.ash
-boolean sl_knapsackAutoDrink(boolean simulate);				//Defined in sl_ascend/sl_cooking.ash
+boolean sl_knapsackAutoConsume(string type, boolean simulate);	//Defined in sl_ascend/sl_cooking.ash
+boolean loadConsumables(item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] inebriety);	 //Defined in sl_ascend/sl_cooking.ash
+void sl_autoDrinkNightcap(boolean simulate);				//Defined in sl_ascend/sl_cooking.ash
 boolean sl_autoDrinkOne(boolean simulate);					//Defined in sl_ascend/sl_cooking.ash
 boolean slMaximize(string req, boolean simulate);			//Defined in sl_ascend/sl_util.ash
 boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in sl_ascend/sl_util.ash

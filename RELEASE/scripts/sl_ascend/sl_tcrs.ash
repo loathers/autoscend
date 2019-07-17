@@ -31,43 +31,10 @@ float tcrs_expectedAdvPerFill(string quality)
 	return -1; // makes the compiler shut up
 }
 
-boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety)
-{
-	if(!in_tcrs()) return false;
-	if(!gnomads_available()) return false;
-
-	record _CAFE_DRINK_TYPE {
-		string name;
-		int inebriety;
-		string quality;
-	};
-
-	_CAFE_DRINK_TYPE [int] cafe_booze;
-	string filename = "TCRS_" + my_class().to_string().replace_string(" ", "_") + "_" + my_sign() + "_cafe_booze.txt";
-	print("Loading " + filename, "blue");
-	file_to_map(filename, cafe_booze);
-	foreach i, r in cafe_booze
-	{
-		// Gnomish Microbrewery has item ids -1, -2, -3
-		if (i >= -3 && r.inebriety > 0)
-		{
-			int limit = 1 + min(my_meat()/100, inebriety_left()/r.inebriety);
-			for (int j=0; j<limit; j++)
-			{
-				int n = count(inebriety);
-				inebriety[n] = r.inebriety;
-				adv[n] = r.inebriety * tcrs_expectedAdvPerFill(r.quality);
-				cafe_backmap[n] = i;
-			}
-		}
-	}
-	return true;
-}
-
 boolean tcrs_consumption()
 {
-	if(!in_tcrs())
-		return false;
+	// if(!in_tcrs())
+	//	return false;
 
 	if(sl_beta() && my_adventures() < 5)
 	{
@@ -80,18 +47,19 @@ boolean tcrs_consumption()
 		}
 		if(inebriety_left() > 0 && !get_property("_sl_saving_for_stooper").to_boolean())
 		{
-			sl_knapsackAutoDrink(false);
+			use_familiar($familiar[none]);
+			sl_knapsackAutoConsume("drink", false);
 			return true;
 		}
 		if(fullness_left() > 0)
 		{
-			sl_knapsackAutoEat(false);
+			sl_knapsackAutoConsume("eat", false);
 			return true;
 		}
 		if(my_adventures() <= 1 && inebriety_left() > 0 && get_property("_sl_saving_for_stooper").to_boolean())
 		{
 			use_familiar($familiar[Stooper]);
-			sl_knapsackAutoDrink(false);
+			sl_knapsackAutoConsume("drink", false);
 			return true;
 		}
 	}

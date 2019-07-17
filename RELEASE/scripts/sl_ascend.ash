@@ -2385,7 +2385,7 @@ boolean doBedtime()
 	{
 		if(my_inebriety() <= inebriety_limit())
 		{
-			if(my_class() != $class[Gelatinous Noob])
+			if(my_class() != $class[Gelatinous Noob] && my_familiar() != $familiar[Stooper])
 			{
 				return false;
 			}
@@ -2991,15 +2991,7 @@ boolean doBedtime()
 			print("You have a rain man to cast, please do so before overdrinking and then run me again.", "red");
 			return false;
 		}
-		item best_nightcap = sl_bestNightcap();
-		if(available_amount(best_nightcap) == 0)
-		{
-			print("You can create and drink a " + best_nightcap + " (" + best_nightcap.adventures + " adventures) as your nightcap! Yay!", "blue");
-		}
-		else
-		{
-			print("You can drink a " + best_nightcap + " (" + best_nightcap.adventures + " adventures) as your nightcap! Yay!", "blue");
-		}
+		sl_autoDrinkNightcap(true); // simulate;
 		print("You need to overdrink and then run me again. Beep.", "red");
 		if(have_skill($skill[The Ode to Booze]))
 		{
@@ -14710,18 +14702,6 @@ void sl_begin()
 	{
 		print("You have an auto attack enabled. This may cause issues. We will try anyway.", "blue");
 		wait(10);
-	}
-
-	// Check to see if we're doing Stooper things.
-	use_familiar($familiar[none]);
-	if (my_inebriety() > inebriety_limit() && doBedtime())
-	{
-		if(sl_have_familiar($familiar[Stooper]))
-		{
-			use_familiar($familiar[Stooper]);
-		}
-		print("Done for today (" + my_daycount() + "), beep boop");
-		return;
 	}
 
 	//This also should set our path too.
