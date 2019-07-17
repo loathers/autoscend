@@ -394,6 +394,7 @@ boolean sl_knapsackAutoConsume(string type, boolean simulate);	//Defined in sl_a
 boolean loadConsumables(item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] inebriety);	 //Defined in sl_ascend/sl_cooking.ash
 void sl_autoDrinkNightcap(boolean simulate);				//Defined in sl_ascend/sl_cooking.ash
 boolean sl_autoDrinkOne(boolean simulate);					//Defined in sl_ascend/sl_cooking.ash
+boolean saucemavenApplies(item it);							//Defined in sl_ascend/sl_cooking.ash
 boolean slMaximize(string req, boolean simulate);			//Defined in sl_ascend/sl_util.ash
 boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in sl_ascend/sl_util.ash
 aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);//Defined in sl_ascend/sl_util.ash

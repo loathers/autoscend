@@ -80,6 +80,33 @@ boolean keepOnTruckin()
 	return true;
 }
 
+boolean saucemavenApplies(item it)
+{
+	static boolean[item] saucy_foods = $items[Cold hi mein,
+		Devil hair pasta,
+		Fettris,
+		Fettucini Inconnu,
+		Fleetwood mac 'n' cheese,
+		Fusillocybin,
+		Gnocchetti di Nietzsche,
+		Haunted Hell ramen,
+		Hell ramen,
+		Hot hi mein,
+		Libertagliatelle,
+		Linguini immondizia bianco,
+		Linguini of the sea,
+		Prescription noodles,
+		Shells a la shellfish,
+		Sleazy hi mein,
+		Spagecialetti,
+		Spaghetti con calaveras,
+		Spaghetti with Skullheads,
+		Spooky hi mein,
+		Stinky hi mein,
+		Turkish mostaccioli];
+	return saucy_foods contains it;
+}
+
 float expectedAdventuresFrom(item it)
 {
 	if(it == $item[magical sausage]) return 1;
@@ -91,6 +118,11 @@ float expectedAdventuresFrom(item it)
 		return (s[1].to_int() + s[0].to_int())/2.0;
 	}
 	float expected = parse();
+	if(sl_have_skill($skill[Saucemaven]) && saucemavenApplies(it))
+	{
+		if (my_class() == $class[Sauceror]) expected += 5;
+		else expected += 3;
+	}
 	//if (item_amount($item[black label]) > 0 && $items[bottle of gin, bottle of rum, bottle of tequila, bottle of vodka or bottle of whiskey] contains it)
 	//	expected += 3.5;
 	return expected;
