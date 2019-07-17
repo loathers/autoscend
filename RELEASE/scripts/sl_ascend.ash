@@ -14822,7 +14822,7 @@ void sl_begin()
 
 	dailyEvents();
 	consumeStuff();
-	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && (inebriety_left() > 0 && my_familiar() != $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
+	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
 	{
 		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
 		{
