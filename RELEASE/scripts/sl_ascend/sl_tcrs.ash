@@ -33,8 +33,8 @@ float tcrs_expectedAdvPerFill(string quality)
 
 boolean tcrs_consumption()
 {
-	// if(!in_tcrs())
-	//	return false;
+	if(!in_tcrs())
+		return false;
 
 	if(sl_beta() && my_adventures() < 5)
 	{
@@ -56,12 +56,15 @@ boolean tcrs_consumption()
 			sl_knapsackAutoConsume("eat", false);
 			return true;
 		}
+		// Stooper requires more testing to be truly safe.
+		/*
 		if(my_adventures() <= 1 && inebriety_left() > 0 && get_property("_sl_saving_for_stooper").to_boolean())
 		{
 			use_familiar($familiar[Stooper]);
 			sl_knapsackAutoConsume("drink", false);
 			return true;
 		}
+		*/
 	}
 
 	if (sl_beta()) return true;
