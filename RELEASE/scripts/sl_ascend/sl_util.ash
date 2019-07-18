@@ -5891,8 +5891,9 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 		// If so, we took this item.
 		if (V[i][w] != V[i-1][w])
 		{
-			w -= weight[i-1];
 			ret[i-1] = true;
+			w -= weight[i-1];
+			i -= 1;
 		}
 		else
 		{
