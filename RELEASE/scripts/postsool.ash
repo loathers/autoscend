@@ -278,7 +278,7 @@ void handlePostAdventure()
 	}
 	if(poisoned)
 	{
-		if((my_mp() > 12) && sl_have_skill($skill[Disco Nap]))
+		if((my_mp() > 12) && sl_have_skill($skill[Disco Nap]) && sl_have_skill($skill[Adventurer of Leisure]))
 		{
 			use_skill(1, $skill[Disco Nap]);
 		}
