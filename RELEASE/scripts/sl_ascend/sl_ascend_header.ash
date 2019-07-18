@@ -885,6 +885,7 @@ item whatHiMein();											//Defined in sl_ascend/sl_util.ash
 effect whatStatSmile();										//Defined in sl_ascend/sl_util.ash
 void woods_questStart();									//Defined in sl_ascend/sl_util.ash
 boolean xiblaxian_makeStuff();								//Defined in sl_ascend/sl_mr2014.ash
+string yellowRayCombatString(monster target, boolean inCombat); //Defined in sl_ascend/sl_util.ash
 string yellowRayCombatString(monster target);					//Defined in sl_ascend/sl_util.ash
 string yellowRayCombatString();								//Defined in sl_ascend/sl_util.ash
 boolean adjustForYellowRay(string combat_string); //Defined in sl_ascend/sl_util.ash

@@ -1011,7 +1011,7 @@ string sl_combatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "yellowray") && sl_wantToYellowRay(enemy, my_location()))
 	{
-		string combatAction = yellowRayCombatString();
+		string combatAction = yellowRayCombatString(enemy, true);
 		if(combatAction != "")
 		{
 			set_property("sl_combatHandler", combatState + "(yellowray)");
@@ -2849,7 +2849,7 @@ string sl_edCombatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "yellowray") && sl_wantToYellowRay(enemy, my_location()))
 	{
-		string combatAction = yellowRayCombatString(enemy);
+		string combatAction = yellowRayCombatString(enemy, true);
 		if(combatAction != "")
 		{
 			set_property("sl_combatHandler", combatState + "(yellowray)");

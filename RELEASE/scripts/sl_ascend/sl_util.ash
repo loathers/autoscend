@@ -1623,7 +1623,7 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	return false;
 }
 
-string yellowRayCombatString(monster target)
+string yellowRayCombatString(monster target, boolean inCombat)
 {
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
@@ -1662,7 +1662,7 @@ string yellowRayCombatString(monster target)
 		{
 			return "skill " + $skill[Unleash Cowrruption];
 		}
-		if(sl_have_familiar($familiar[Crimbo Shrub]) && (get_property("shrubGifts") == "yellow"))
+		if((inCombat ? my_familiar() == $familiar[Crimbo Shrub] : sl_have_familiar($familiar[Crimbo Shrub])) && (get_property("shrubGifts") == "yellow"))
 		{
 			return "skill " + $skill[Open a Big Yellow Present];
 		}
@@ -1673,7 +1673,7 @@ string yellowRayCombatString(monster target)
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
 
-	if(possessEquipment($item[Fourth of May cosplay saber]) && (sl_saberChargesAvailable() > 0))
+	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && (sl_saberChargesAvailable() > 0))
 	{
 		// can't use the force on uncopyable monsters
 		if(target == $monster[none] || target.copyable)
@@ -1683,6 +1683,11 @@ string yellowRayCombatString(monster target)
 	}
 
 	return "";
+}
+
+string yellowRayCombatString(monster target)
+{
+	return yellowRayCombatString(target, false);
 }
 
 string yellowRayCombatString()
