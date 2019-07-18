@@ -267,7 +267,16 @@ void handlePostAdventure()
 	}
 
 	#Deal with Poison, (should do all of them actually)
-	if((have_effect($effect[Really Quite Poisoned]) > 0) || (have_effect($effect[A Little Bit Poisoned]) > 0) || (have_effect($effect[Majorly Poisoned]) > 0))
+	boolean poisoned = false;
+	foreach poison in $effects[A Little Bit Poisoned, Hardly Poisoned At All, Majorly Poisoned, Really Quite Poisoned, Somewhat Poisoned]
+	{
+		if(have_effect(poison) > 0)
+		{
+			poisoned = true;
+			break;
+		}
+	}
+	if(poisoned)
 	{
 		if((my_mp() > 12) && sl_have_skill($skill[Disco Nap]))
 		{
