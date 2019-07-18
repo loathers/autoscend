@@ -13416,6 +13416,11 @@ boolean L11_blackMarket()
 
 	//If we want the Beehive, and don\'t have enough adventures, this is dangerous.
 	slAdv(1, $location[The Black Forest]);
+	//For people with autoCraft set to false for some reason
+	if(item_amount($item[Reassembled Blackbird]) == 0 && creatable_amount($item[Reassembled Blackbird]) > 0)
+	{
+		create(1, $item[Reassembled Blackbird]);
+	}
 	handleFamiliar("item");
 	return true;
 }
