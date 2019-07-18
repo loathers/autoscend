@@ -35,45 +35,48 @@ boolean keepOnTruckin()
 		return false;
 	}
 
-	foreach it in $items[Hacked Gibson, Browser Cookie, Popular Tart, Spaghetti With Skullheads, Crudles, Corpsedriver, Corpsetini, Corpse Island Iced Tea, Corpse On The Beach, Bungle In The Jungle, Mon Tiki, Yellow Brick Road, Divine, Gimlet, Neuromancer, Prussian Cathouse, Ye Olde Meade]
+	if(!in_tcrs())
 	{
-		if(!is_unrestricted(it))
+		foreach it in $items[Hacked Gibson, Browser Cookie, Popular Tart, Spaghetti With Skullheads, Crudles, Corpsedriver, Corpsetini, Corpse Island Iced Tea, Corpse On The Beach, Bungle In The Jungle, Mon Tiki, Yellow Brick Road, Divine, Gimlet, Neuromancer, Prussian Cathouse, Ye Olde Meade]
 		{
-			continue;
-		}
-		if(fullness_left() < it.fullness)
-		{
-			continue;
-		}
-		if((it.fullness > 0) && !canEat(it))
-		{
-			continue;
-		}
-		if((it.inebriety > 0) && !canDrink(it))
-		{
-			continue;
-		}
-		if(inebriety_left() < it.inebriety)
-		{
-			continue;
-		}
-		if(my_level() < it.levelreq)
-		{
-			continue;
-		}
-		int filling = it.fullness + it.inebriety;
-		if(mall_price(it) > (1250 * filling))
-		{
-			continue;
-		}
-		if(item_amount(it) > 0)
-		{
-			//We already have it and should probably eat it or something.
-			break;
-		}
-		if(pullXWhenHaveY(it, 1, 0))
-		{
-			break;
+			if(!is_unrestricted(it))
+			{
+				continue;
+			}
+			if(fullness_left() < it.fullness)
+			{
+				continue;
+			}
+			if((it.fullness > 0) && !canEat(it))
+			{
+				continue;
+			}
+			if((it.inebriety > 0) && !canDrink(it))
+			{
+				continue;
+			}
+			if(inebriety_left() < it.inebriety)
+			{
+				continue;
+			}
+			if(my_level() < it.levelreq)
+			{
+				continue;
+			}
+			int filling = it.fullness + it.inebriety;
+			if(mall_price(it) > (1250 * filling))
+			{
+				continue;
+			}
+			if(item_amount(it) > 0)
+			{
+				//We already have it and should probably eat it or something.
+				break;
+			}
+			if(pullXWhenHaveY(it, 1, 0))
+			{
+				break;
+			}
 		}
 	}
 	consumeStuff();
@@ -602,6 +605,11 @@ boolean slEat(int howMany, item toEat, boolean silent)
 
 boolean dealWithMilkOfMagnesium(boolean useAdv)
 {
+	if(in_tcrs())
+	{
+		return true;
+	}
+
 	if(item_amount($item[Milk Of Magnesium]) > 0)
 	{
 		return true;
