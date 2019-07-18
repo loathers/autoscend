@@ -2650,7 +2650,7 @@ boolean doBedtime()
 		use(1, $item[resolution: be more adventurous]);
 	}
 
-	if((my_daycount() <= 2) && (freeCrafts() > 0))
+	if((my_daycount() <= 2) && (freeCrafts() > 0) && !in_tcrs())
 	{
 		// Check for rapid prototyping
 		while((freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && (item_amount($item[Cranberries]) > 0) && (item_amount($item[Cranberry Cordial]) < 2) && have_skill($skill[Advanced Saucecrafting]))
