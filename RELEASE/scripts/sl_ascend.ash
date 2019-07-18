@@ -14809,6 +14809,11 @@ void sl_begin()
 		equipBaseline();
 	}
 
+	if(my_familiar() == $familiar[Stooper])
+	{
+		print("Avoiding stooper stupor...", "blue");
+		use_familiar($familiar[none]);
+	}
 	dailyEvents();
 	consumeStuff();
 	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
