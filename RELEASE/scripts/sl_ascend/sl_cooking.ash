@@ -120,7 +120,7 @@ float expectedAdventuresFrom(item it)
 	float expected = parse();
 	if(sl_have_skill($skill[Saucemaven]) && saucemavenApplies(it))
 	{
-		if (my_class() == $class[Sauceror]) expected += 5;
+		if ($classes[Sauceror, Pastamancer] contains my_class()) expected += 5;
 		else expected += 3;
 	}
 	//if (item_amount($item[black label]) > 0 && $items[bottle of gin, bottle of rum, bottle of tequila, bottle of vodka or bottle of whiskey] contains it)

@@ -5909,9 +5909,6 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 
 int sl_reserveAmount(item it)
 {
-	// Hard-code to avoid infinite loop between wad of dough and flat dough
-	if(it == $item[wad of dough] || it == $item[flat dough]) return 0;
-
 	string [string,int,string] itemdata;
 	if(!file_to_map("sl_ascend_items.txt", itemdata))
 		print("Could not load sl_ascend_items.txt! This is bad!", "red");
@@ -5940,9 +5937,6 @@ int sl_reserveAmount(item it)
 
 int sl_reserveCraftAmount(item it)
 {
-	// Hard-code to avoid infinite loop between wad of dough and flat dough
-	if(it == $item[wad of dough] || it == $item[flat dough]) return 0;
-
 	int reserve = 0;
 	foreach ing,amt in get_ingredients(it)
 	{
