@@ -6172,6 +6172,33 @@ boolean L11_hiddenCityZones()
 	return false;
 }
 
+boolean L11_wishForBaaBaaBuran()
+{
+	if(!get_property("sl_useWishes").to_boolean() && canGenieCombat())
+	{
+		print("Skipping wishing for Baa'baa'bu'ran because sl_useWishes=false", "red");
+	}
+	if (get_property("sl_useWishes").to_boolean() && canGenieCombat())
+	{
+		print("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
+		handleFamiliar("item");
+		if((numeric_modifier("item drop") >= 100))
+		{
+			if (!makeGenieCombat($monster[Baa\'baa\'bu\'ran]) || item_amount($item[Stone Wool]) == 0)
+			{
+				print("Wishing for stone wool failed.", "red");
+				return false;
+			}
+			return true;
+		}
+		else
+		{
+			print("Never mind, we couldn't get a mere +100% item for the Baa'baa'bu'ran wish.", "red");
+		}
+	}
+	return false;
+}
+
 boolean L11_unlockHiddenCity()
 {
 	if(my_level() < 11)
@@ -6210,26 +6237,7 @@ boolean L11_unlockHiddenCity()
 	{
 		if((item_amount($item[Stone Wool]) == 0) && (have_effect($effect[Stone-Faced]) == 0))
 		{
-			if(!get_property("sl_useWishes").to_boolean() && canGenieCombat())
-			{
-				print("Skipping wishing for Baa'baa'bu'ran because sl_useWishes=false", "red");
-			}
-			if (get_property("sl_useWishes").to_boolean() && canGenieCombat())
-			{
-				print("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
-				handleFamiliar("item");
-				if((numeric_modifier("item drop") >= 100))
-				{
-					if (!makeGenieCombat($monster[Baa\'baa\'bu\'ran]) || item_amount($item[Stone Wool]) == 0)
-					{
-						print("Wishing for stone wool failed.", "red");
-					}
-				}
-				else
-				{
-					print("Never mind, we couldn't get a mere +100% item for the Baa'baa'bu'ran wish.", "red");
-				}
-			}
+			L11_wishForBaaBaaBuran();
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 		buffMaintain($effect[Stone-Faced], 0, 1, 1);
@@ -6328,6 +6336,7 @@ boolean L11_nostrilOfTheSerpent()
 	{
 		if((item_amount($item[Stone Wool]) == 0) && (have_effect($effect[Stone-Faced]) == 0))
 		{
+			L11_wishForBaaBaaBuran();
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 		buffMaintain($effect[Stone-Faced], 0, 1, 1);
