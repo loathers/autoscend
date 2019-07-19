@@ -4743,6 +4743,7 @@ boolean L13_towerNSHedge()
 	set_property("choiceAdventure1013", "1");			# Masel Tov!
 
 	maximize_hedge();
+	cli_execute("presool");
 	useCocoon();
 	visit_url("place.php?whichplace=nstower&action=ns_03_hedgemaze");
 	if(get_property("lastEncounter") == "This Maze is... Mazelike...")
