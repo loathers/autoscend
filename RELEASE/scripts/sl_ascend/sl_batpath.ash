@@ -323,6 +323,7 @@ void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills)
 	}
 	visit_url(url);
 	visit_url("choice.php?whichchoice=1342&option=1&pwd=" + my_hash());
+	// FIXME: Check that our skill-setting succeeded.
 }
 
 boolean bat_shouldPickSkills(int hpLeft)
