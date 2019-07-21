@@ -486,7 +486,7 @@ boolean LA_cs_communityService()
 				buffMaintain($effect[Musk of the Moose], 10, 1, 1);
 				if(possessEquipment($item[Latte Lovers Member\'s Mug]) && !get_property("_latteBanishUsed").to_boolean())
 				{
-					equip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
+					slEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 				}
 				slAdv(1, $location[The Haunted Pantry], "cs_combatNormal");
 				return true;
@@ -517,7 +517,7 @@ boolean LA_cs_communityService()
 						string url = "choice.php?pwd=&whichchoice=1329&option=1&l1=" + opt1 + "&l2=" + opt2 + "&l3=" + opt3;
 						page = visit_url(url);
 					}
-					equip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
+					slEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 				}
 
 				if(item_amount($item[skeleton key]) == 0)
@@ -595,7 +595,7 @@ boolean LA_cs_communityService()
 
 				if(item_amount($item[Personal Ventilation Unit]) > 0)
 				{
-					equip($slot[acc1], $item[Personal Ventilation Unit]);
+					slEquip($slot[acc1], $item[Personal Ventilation Unit]);
 				}
 				int turns_max = 10;
 				if(have_skill($skill[CLEESH]))
@@ -617,7 +617,7 @@ boolean LA_cs_communityService()
 
 					if(possessEquipment($item[Latte Lovers Member\'s Mug]) && !get_property("_latteCopyUsed").to_boolean())
 					{
-						equip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
+						slEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 					}
 
 					slAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
@@ -726,7 +726,7 @@ boolean LA_cs_communityService()
 
 			if(!turnSave && (item_amount($item[Black Pixel]) < 2) && (item_amount($item[Pixel Star]) == 0) && (have_familiar($familiar[Puck Man]) || have_familiar($familiar[Ms. Puck Man])) && knoll_available())
 			{
-				equip($slot[acc1], $item[Continuum Transfunctioner]);
+				slEquip($slot[acc1], $item[Continuum Transfunctioner]);
 
 				if(get_property("sl_tryPowerLevel").to_boolean())
 				{
@@ -928,7 +928,7 @@ boolean LA_cs_communityService()
 				{
 					if(item_amount($item[Personal Ventilation Unit]) > 0)
 					{
-						equip($slot[acc1], $item[Personal Ventilation Unit]);
+						slEquip($slot[acc1], $item[Personal Ventilation Unit]);
 					}
 					slAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
 				}
