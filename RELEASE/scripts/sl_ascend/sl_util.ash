@@ -3981,10 +3981,11 @@ boolean useCocoon()
 	skill cocoon = $skill[none];
 	if(have_skill($skill[Cannelloni Cocoon]))
 	{
+		boolean canUseFamiliars = have_familiar($familiar[Mosquito]);
 		skill blood_skill = $skill[none];
 		if(sl_have_skill($skill[Blood Bubble]) && sl_have_skill($skill[Blood Bond]))
 		{
-			if(have_effect($effect[Blood Bubble]) > have_effect($effect[Blood Bond]))
+			if(have_effect($effect[Blood Bubble]) > have_effect($effect[Blood Bond]) && canUseFamiliars)
 			{
 				blood_skill = $skill[Blood Bond];
 			}
@@ -3997,7 +3998,7 @@ boolean useCocoon()
 		{
 			blood_skill = $skill[Blood Bubble];
 		}
-		else if(sl_have_skill($skill[Blood Bond]))
+		else if(sl_have_skill($skill[Blood Bond]) && canUseFamiliars)
 		{
 			blood_skill = $skill[Blood Bond];
 		}
