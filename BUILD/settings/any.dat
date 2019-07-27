@@ -10,6 +10,7 @@ spacegateAlways	boolean	[standard] Do you have access to Spacegate?
 frAlways	boolean	[standard] Do you have access to FantasyRealm?
 prAlways	boolean	[standard] Do you have access to PirateRealm?
 neverendingPartyAlways	boolean	[standard] Do you have access to the Neverending Party?
+sl_skipNEPOverride	boolean	If true, will not use the Neverending Party even if mafia says it is available.
 voteAlways	boolean	[standard] Do you have access to the Voting Booth?
 daycareOpen	boolean	[standard] Do you have access to the Boxing Daycare?
 sl_newbieOverride	boolean	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
@@ -55,4 +56,3 @@ sl_spoonsign	string	What sign to change to with the hewn moon-rune spoon after f
 sl_beta_test	boolean	Occasionally I might need to make big changes, but not want to do so without some broader testing. If you're a kind, generous soul, you can test these features by setting this to true! sl_beta_test will be mentioned in the change logs whenever there is something to test, and mentioned again when that feature stops being a beta feature.
 sl_legacyConsumeStuff	boolean	When true, use the old heuristic-based consumption strategy instead of the new solver that tries to pack as many adventures into your organs as possible. Not used in CS or Ed.
 sl_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
-sl_skipNEPOverride	boolean	If true, will not use the Neverending Party even if mafia says it is available.
