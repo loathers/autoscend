@@ -420,6 +420,7 @@ boolean sl_floundryAction(item it);							//Defined in sl_ascend/sl_clan.ash
 boolean sl_haveSourceTerminal();							//Defined in sl_ascend/sl_mr2016.ash
 boolean sl_haveWitchess();									//Defined in sl_ascend/sl_mr2016.ash
 boolean sl_mayoItems();										//Defined in sl_ascend/sl_mr2015.ash
+boolean sl_maximizedConsumeStuff();							//Defined in sl_ascend/sl_cooking.ash
 void sl_process_kmail(string functionname);					//Defined in sl_ascend/sl_zlib.ash
 boolean sl_sourceTerminalEducate(skill first);				//Defined in sl_ascend/sl_mr2016.ash
 boolean sl_sourceTerminalEducate(skill first, skill second);//Defined in sl_ascend/sl_mr2016.ash

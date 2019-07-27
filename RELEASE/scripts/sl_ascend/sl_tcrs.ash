@@ -36,38 +36,15 @@ boolean tcrs_consumption()
 	if(!in_tcrs())
 		return false;
 
-	if(sl_beta() && my_adventures() < 5)
+	if(get_property("sl_legacyConsumeStuff").to_boolean())
 	{
-		if(my_inebriety() < 8 && inebriety_left() > 0)
-		{
-			// just drink, like, anything, whatever
-			// find the best and biggest thing we can and drink it
-			sl_autoDrinkOne(false);
-			return true;
-		}
-		if(inebriety_left() > 0 && !get_property("_sl_saving_for_stooper").to_boolean())
-		{
-			use_familiar($familiar[none]);
-			sl_knapsackAutoConsume("drink", false);
-			return true;
-		}
-		if(fullness_left() > 0)
-		{
-			sl_knapsackAutoConsume("eat", false);
-			return true;
-		}
-		// Stooper requires more testing to be truly safe.
-		/*
-		if(my_adventures() <= 1 && inebriety_left() > 0 && get_property("_sl_saving_for_stooper").to_boolean())
-		{
-			use_familiar($familiar[Stooper]);
-			sl_knapsackAutoConsume("drink", false);
-			return true;
-		}
-		*/
+		// print("Using a hard-coded consumption strategy for TCRS. 'set sl_legacyConsumeStuff=false' to use the new, cool automatic consumption strategy.", "red");
 	}
-
-	if (sl_beta()) return true;
+	else
+	{
+		sl_maximizedConsumeStuff();
+		return true;
+	}
 
 	if(my_class() == $class[Sauceror] && my_sign() == "Blender")
 	{
