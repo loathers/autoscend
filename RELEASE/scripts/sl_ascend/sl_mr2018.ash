@@ -702,7 +702,14 @@ boolean neverendingPartyAvailable()
 	{
 		return false;
 	}
+	if(get_property("sl_skipNEPOverride").to_boolean())
+	{
+		print("NEP access disabled. This can be turned on in the Relay by setting sl_skipNEPOverride = false", "red");
+		return false;
+	}
+
 	return true;
+
 }
 
 
