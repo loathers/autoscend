@@ -2419,9 +2419,11 @@ boolean doBedtime()
 	bat_terminateSession();
 
 	equipBaseline();
-	while(LX_freeCombats())
+	while(true)
 	{
+		resetMaximize();
 		handleFamiliar("stat");
+		if(!LX_freeCombats()) break;
 	}
 
 	if((my_class() == $class[Seal Clubber]) && guild_store_available() && isHermitAvailable() && (sl_my_path() != "G-Lover"))
