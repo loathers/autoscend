@@ -1584,6 +1584,12 @@ void consumeStuff()
 
 boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] space)
 {
+	// Just in case!
+	if(sl_my_path() == "Dark Gyffte")
+	{
+		abort("We shouldn't be calling loadConsumables() in Dark Gyffte. Please report this.");
+	}
+
 	// type is "eat" or "drink"
 	int EAT   = 3;
 	int DRINK = 5;
@@ -1688,13 +1694,16 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 	if(type == EAT && !canadia_available()) return false;
 
 	// Add daily special
-	int daily_special_limit = 1 + min(my_meat()/(3*autosell_price(daily_special())), organLeft()/organCost(daily_special()));
-	for (int i=0; i < daily_special_limit; i++)
+	if (canConsume(daily_special()))
 	{
-		int n = count(space);
-		space[n] = organCost(daily_special());
-		adv[n] = expectedAdventuresFrom(daily_special());
-		cafe_backmap[n] = daily_special().to_int();
+		int daily_special_limit = 1 + min(my_meat()/(3*autosell_price(daily_special())), organLeft()/organCost(daily_special()));
+		for (int i=0; i < daily_special_limit; i++)
+		{
+			int n = count(space);
+			space[n] = organCost(daily_special());
+			adv[n] = expectedAdventuresFrom(daily_special());
+			cafe_backmap[n] = daily_special().to_int();
+		}
 	}
 
 	if(!in_tcrs()) 

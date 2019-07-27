@@ -3981,17 +3981,38 @@ boolean useCocoon()
 	skill cocoon = $skill[none];
 	if(have_skill($skill[Cannelloni Cocoon]))
 	{
+		boolean canUseFamiliars = have_familiar($familiar[Mosquito]);
+		skill blood_skill = $skill[none];
+		if(sl_have_skill($skill[Blood Bubble]) && sl_have_skill($skill[Blood Bond]))
+		{
+			if(have_effect($effect[Blood Bubble]) > have_effect($effect[Blood Bond]) && canUseFamiliars)
+			{
+				blood_skill = $skill[Blood Bond];
+			}
+			else
+			{
+				blood_skill = $skill[Blood Bubble];
+			}
+		}
+		else if(sl_have_skill($skill[Blood Bubble]))
+		{
+			blood_skill = $skill[Blood Bubble];
+		}
+		else if(sl_have_skill($skill[Blood Bond]) && canUseFamiliars)
+		{
+			blood_skill = $skill[Blood Bond];
+		}
 		cocoon = $skill[Cannelloni Cocoon];
 		mpCost = mp_cost(cocoon);
 		int hpNeed = ceil((my_maxhp() - my_hp()) / 1000.0);
 		int maxCasts = my_mp() / mpCost;
 		casts = min(hpNeed, maxCasts);
-		if(sl_beta() && sl_have_skill($skill[Blood Bubble]))
+		if(sl_beta() && blood_skill != $skill[none])
 		{
 			int healto = my_hp() + 1000 * casts;
 			int wasted = min(max(healto - my_maxhp(), 0), my_hp() - 1);
-			int bubbles = wasted / 30;
-			use_skill(bubbles, $skill[Blood Bubble]);
+			int blood_casts = wasted / 30;
+			use_skill(blood_casts, blood_skill);
 		}
 	}
 	else if(have_skill($skill[Shake It Off]))
