@@ -772,7 +772,7 @@ void consumeStuff()
 		return;
 	}
 
-	if (!get_property("sl_legacyConsumeStuff").to_boolean())
+	if (sl_beta() && !get_property("sl_legacyConsumeStuff").to_boolean())
 	{
 		sl_maximizedConsumeStuff();
 		return;
