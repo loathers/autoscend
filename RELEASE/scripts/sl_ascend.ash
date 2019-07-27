@@ -2653,7 +2653,7 @@ boolean doBedtime()
 	// If in TCRS skip using freecrafts but alert user of how many they can manually use.
 	if((in_tcrs()) && (freeCrafts() > 0))
 	{
-		print("Using My Free Crafts will have no benefit.", "red");
+		print("In TCRS: Items are variable, skipping End Of Day crafting", "red");
 		print("Consider manually using your "+freeCrafts()+" free crafts", "red");
 	}
 	else if((my_daycount() <= 2) && (freeCrafts() > 0))
