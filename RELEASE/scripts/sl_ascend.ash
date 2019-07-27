@@ -63,7 +63,6 @@ void initializeSettings()
 	{
 		return;
 	}
-	set_property("sl_doneInitialize", my_ascensions());
 	set_location($location[none]);
 
 	set_property("sl_useCubeling", true);
@@ -263,6 +262,8 @@ void initializeSettings()
 	glover_initializeSettings();
 	bat_initializeSettings();
 	tcrs_initializeSettings();
+
+	set_property("sl_doneInitialize", my_ascensions());
 }
 
 boolean handleFamiliar(string type)
@@ -856,7 +857,7 @@ item[monster] catBurglarHeistDesires()
 	if((oreGoal != $item[none]) && (item_amount(oreGoal) < 3) && get_property("sl_trapper") == "start" && in_hardcore())
 		wannaHeists[$monster[mountain man]] = oreGoal;
 
-	if((item_amount($item[killing jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) == 4) && in_hardcore())
+	if((item_amount($item[killing jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) == 0) && in_hardcore())
 		wannaHeists[$monster[banshee librarian]] = $item[killing jar];
 
 	if((my_level() >= 11) && !possessEquipment($item[Mega Gem]) && in_hardcore() && (item_amount($item[wet stew]) == 0) && (item_amount($item[wet stunt nut stew]) == 0))
@@ -2418,9 +2419,11 @@ boolean doBedtime()
 	bat_terminateSession();
 
 	equipBaseline();
-	while(LX_freeCombats())
+	while(true)
 	{
+		resetMaximize();
 		handleFamiliar("stat");
+		if(!LX_freeCombats()) break;
 	}
 
 	if((my_class() == $class[Seal Clubber]) && guild_store_available() && isHermitAvailable() && (sl_my_path() != "G-Lover"))
@@ -2975,6 +2978,7 @@ boolean doBedtime()
 		if(sl_have_familiar($familiar[Stooper]) && (inebriety_left() == 0) && (my_familiar() != $familiar[Stooper]) && (sl_my_path() != "Pocket Familiars"))
 		{
 			print("You have a Stooper, you can increase liver by 1!", "blue");
+			use_familiar($familiar[Stooper]);
 		}
 		if(sl_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5))
 		{
@@ -5267,6 +5271,7 @@ boolean L13_towerNSEntrance()
 				set_property("sl_powerLevelLastLevel", my_level());
 				return true;
 			}
+			council(); // Log council output
 			abort("Some sidequest is not done for some raisin. Some sidequest is missing, or something is missing, or something is not not something. We don't know what to do.");
 		}
 	}
