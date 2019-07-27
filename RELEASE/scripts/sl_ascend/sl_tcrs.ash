@@ -35,13 +35,15 @@ boolean tcrs_consumption()
 {
 	if(!in_tcrs())
 		return false;
+
 	if(get_property("sl_legacyConsumeStuff").to_boolean())
 	{
-		print("Using a hard-coded consumption strategy for TCRS. 'set sl_legacyConsumeStuff=false' to use the new, cool automatic consumption strategy.", "red");
+		// print("Using a hard-coded consumption strategy for TCRS. 'set sl_legacyConsumeStuff=false' to use the new, cool automatic consumption strategy.", "red");
 	}
 	else
 	{
-		return false;
+		sl_maximizedConsumeStuff();
+		return true;
 	}
 
 	if(my_class() == $class[Sauceror] && my_sign() == "Blender")

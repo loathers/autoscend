@@ -779,7 +779,7 @@ void consumeStuff()
 	}
 	else
 	{
-		print("Using old hard-coded consumption strategies. 'set sl_legacyConsumeStuff=false' to use the knapsack-solver consumption strategy.", "red");
+		// print("Using old hard-coded consumption strategies. 'set sl_legacyConsumeStuff=false' to use the knapsack-solver consumption strategy.", "red");
 	}
 
 	int mpForOde = mp_cost($skill[The Ode to Booze]);
