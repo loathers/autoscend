@@ -13539,6 +13539,8 @@ boolean L8_trapperGroar()
 	}
 	if((internalQuestStatus("questL08Trapper") == 2) && (get_property("currentExtremity").to_int() == 3))
 	{
+		// TODO: There are some reports of this breaking in TCRS, when cold-weather
+		// gear is not sufficient to have 5 cold resistance. Use a maximizer statement?
 		if(outfit("eXtreme Cold-Weather Gear"))
 		{
 			string temp = visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");
