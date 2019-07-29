@@ -1694,7 +1694,7 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 	if(type == EAT && !canadia_available()) return false;
 
 	// Add daily special
-	if (canConsume(daily_special()))
+	if (daily_special() != $item[none] && canConsume(daily_special()))
 	{
 		int daily_special_limit = 1 + min(my_meat()/(3*autosell_price(daily_special())), organLeft()/organCost(daily_special()));
 		for (int i=0; i < daily_special_limit; i++)
