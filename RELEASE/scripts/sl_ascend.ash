@@ -9738,11 +9738,14 @@ boolean LX_steelOrgan()
 	else if(get_property("questM10Azazel") == "finished")
 	{
 		print("Considering Steel Organ consumption.....", "blue");
-		if((item_amount($item[Steel Lasagna]) > 0) && (fullness_left() >= 5))
+		if((item_amount($item[Steel Lasagna]) > 0) && (fullness_left() >= $item[Steel Lasagna].fullness))
 		{
 			eatsilent(1, $item[Steel Lasagna]);
 		}
-		if((item_amount($item[Steel Margarita]) > 0) && ((my_inebriety() <= 5) || (my_inebriety() >= 12)))
+		boolean wontBeOverdrunk = inebriety_left() >= $item[Steel Margarita].inebriety - 5;
+		boolean notOverdrunk = my_inebriety() <= inebriety_limit();
+		boolean notSavingForBilliards = hasSpookyravenLibraryKey() || get_property("lastSecondFloorUnlock").to_int() == my_ascensions();
+		if((item_amount($item[Steel Margarita]) > 0) && wontBeOverdrunk && notOverdrunk && (notSavingForBilliards || my_inebriety() + $item[Steel Margarita].inebriety <= 10 || my_inebriety() >= 12))
 		{
 			slDrink(1, $item[Steel Margarita]);
 		}
