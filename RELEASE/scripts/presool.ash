@@ -132,6 +132,12 @@ void handlePreAdventure(location place)
 		uneffect($effect[Scarysauce]);
 	}
 
+	if($locations[Next to that Barrel with something Burning In It, Near an Abandoned Refrigerator, Over where the Old Tires Are, Out by that Rusted-Out Car] contains place)
+	{
+		uneffect($effect[Spiky Shell]);
+		uneffect($effect[Scarysauce]);
+	}
+
 	if(my_path() == $class[Avatar of Boris])
 	{
 		if((have_effect($effect[Song of Solitude]) == 0) && (have_effect($effect[Song of Battle]) == 0))
@@ -313,6 +319,12 @@ void handlePreAdventure(location place)
 		cli_execute("checkpoint clear");
 	}
 	executeFlavour();
+
+	// After maximizing equipment, we might not be at full HP
+	if ($locations[Tower Level 1] contains place)
+	{
+		useCocoon();
+	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{
