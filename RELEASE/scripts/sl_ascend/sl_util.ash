@@ -3265,8 +3265,6 @@ boolean handleSealElement(element flavor, string option)
 	return slAdvBypass(page, $location[Noob Cave], option);
 }
 
-
-
 int towerKeyCount()
 {
 	return towerKeyCount(true);
@@ -3701,7 +3699,7 @@ int sl_mall_price(item it)
 {
 	if(is_tradeable(it))
 	{
-		int retval = mall_price(it);
+		int retval = historical_price(it);
 		if(retval == -1)
 		{
 			abort("Failed getting mall price for " + it + ", aborting to prevent problems");
@@ -5819,10 +5817,8 @@ boolean canSimultaneouslyAcquire(int[item] needed)
 	// perfect drinks.
 	// Checks that a set of items isn't impossible to acquire because of
 	// conflicting crafting dependencies.
-
 	int[item] alreadyUsed;
 	int meatUsed;
-
 	boolean failed = false;
 	void addToAlreadyUsed(int amount, item toAdd)
 	{
@@ -5844,19 +5840,16 @@ boolean canSimultaneouslyAcquire(int[item] needed)
 			{
 				meatUsed += npc_price(toAdd);
 			}
-
 			foreach ing,ingAmount in get_ingredients(toAdd)
 			{
 				addToAlreadyUsed(ingAmount * needToCraft, ing);
 			}
 		}
 	}
-
 	foreach it, amt in needed
 	{
 		addToAlreadyUsed(amt, it);
 	}
-
 	return !failed && meatUsed <= my_meat();
 }
 
