@@ -35,4 +35,6 @@ reserve	10	11 Flamin' Whatshisname	quest:questL11Ron<2
 # Don't save, just keep dough from causing an infinite loop
 reserve	11	-1 wad of dough
 reserve	12	-1 flat dough
+# Don't auto-craft bounty-o's and such, yikes
+reserve	13	9999999 filthy lucre
 

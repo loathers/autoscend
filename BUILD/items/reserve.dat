@@ -23,3 +23,5 @@
 # Don't save, just keep dough from causing an infinite loop
 -1 wad of dough
 -1 flat dough
+# Don't auto-craft bounty-o's and such, yikes
+9999999 filthy lucre
