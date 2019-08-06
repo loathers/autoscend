@@ -25,3 +25,5 @@
 -1 flat dough
 # Don't auto-craft bounty-o's and such, yikes
 9999999 filthy lucre
+# Don't save, just keep firewood from causing an infinite loop
+-1 bundle of firewood

@@ -37,4 +37,6 @@ reserve	11	-1 wad of dough
 reserve	12	-1 flat dough
 # Don't auto-craft bounty-o's and such, yikes
 reserve	13	9999999 filthy lucre
+# Don't save, just keep firewood from causing an infinite loop
+reserve	14	-1 bundle of firewood
 
