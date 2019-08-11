@@ -1700,11 +1700,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		abort("We shouldn't be calling loadConsumables() in Dark Gyffte. Please report this.");
 	}
 
-	if (item_amount($item[unremarkable duffel bag]) > 0)
+	if ((item_amount($item[unremarkable duffel bag]) > 0) && (pulls_remaining() != -1))
 	{
 		use(item_amount($item[unremarkable duffel bag]), $item[unremarkable duffel bag]);
 	}
-	if (item_amount($item[van key]) > 0)
+	if ((item_amount($item[van key]) > 0) && (pulls_remaining() != -1))
 	{
 		use(item_amount($item[van key]), $item[van key]);
 	}
