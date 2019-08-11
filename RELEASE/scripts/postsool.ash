@@ -412,6 +412,11 @@ void handlePostAdventure()
 		useCocoon();
 	}
 
+	if((my_maxhp() > 200) && (my_hp() < 140) && (my_mp() > 100))
+	{
+		useCocoon();
+	}
+
 
 	if(sl_have_skill($skill[Thunderheart]) && (my_thunder() >= 90) && ((my_turncount() - get_property("sl_lastthunderturn").to_int()) >= 9))
 	{
@@ -459,6 +464,7 @@ void handlePostAdventure()
 		{
 			buffMaintain($effect[Empathy], 25, 1, 10);
 		}
+		// TODO: 'Get Big' is a pretty good skill
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 25))
 		{
 			use_skill(1, libram);

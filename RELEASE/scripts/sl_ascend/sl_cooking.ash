@@ -36,50 +36,6 @@ boolean keepOnTruckin()
 		return false;
 	}
 
-	if(!in_tcrs())
-	{
-		foreach it in $items[Hacked Gibson, Browser Cookie, Popular Tart, Spaghetti With Skullheads, Crudles, Corpsedriver, Corpsetini, Corpse Island Iced Tea, Corpse On The Beach, Bungle In The Jungle, Mon Tiki, Yellow Brick Road, Divine, Gimlet, Neuromancer, Prussian Cathouse, Ye Olde Meade]
-		{
-			if(!is_unrestricted(it))
-			{
-				continue;
-			}
-			if(fullness_left() < it.fullness)
-			{
-				continue;
-			}
-			if((it.fullness > 0) && !canEat(it))
-			{
-				continue;
-			}
-			if((it.inebriety > 0) && !canDrink(it))
-			{
-				continue;
-			}
-			if(inebriety_left() < it.inebriety)
-			{
-				continue;
-			}
-			if(my_level() < it.levelreq)
-			{
-				continue;
-			}
-			int filling = it.fullness + it.inebriety;
-			if(mall_price(it) > (1250 * filling))
-			{
-				continue;
-			}
-			if(item_amount(it) > 0)
-			{
-				//We already have it and should probably eat it or something.
-				break;
-			}
-			if(pullXWhenHaveY(it, 1, 0))
-			{
-				break;
-			}
-		}
-	}
 	consumeStuff();
 	return true;
 }
@@ -1598,6 +1554,7 @@ int SL_ORGAN_LIVER   = 2;
 int SL_OBTAIN_NULL  = 100;
 int SL_OBTAIN_CRAFT = 101;
 int SL_OBTAIN_PULL  = 102;
+int SL_OBTAIN_BUY   = 103;
 
 // Used internally for knapsack optimization.
 record ConsumeAction
@@ -1625,7 +1582,26 @@ string consumable_name(ConsumeAction action)
 	return name;
 }
 
-string to_string(ConsumeAction action)
+string to_pretty_string(ConsumeAction action)
+{
+	string organ_name = action.organ == SL_ORGAN_STOMACH ? "fullness" : "inebriety";
+	string logline = consumable_name(action) + " for " + action.adventures + " base adv (" + action.size + " " + organ_name + ")";
+	if (action.howToGet == SL_OBTAIN_PULL)
+	{
+		logline += " [PULL]";
+	}
+	if (action.howToGet == SL_OBTAIN_CRAFT)
+	{
+		logline += " [CRAFT]";
+	}
+	if (action.howToGet == SL_OBTAIN_BUY)
+	{
+		logline += " [BUY]";
+	}
+	return logline;
+}
+
+string to_debug_string(ConsumeAction action)
 {
 	string ret = "";
 	ret += "ConsumeAction(it="+action.it;
@@ -1649,7 +1625,7 @@ ConsumeAction MakeConsumeAction(item it)
 
 boolean slPrepConsume(ConsumeAction action)
 {
-	print(to_string(action));
+	print(to_debug_string(action));
 	if(action.howToGet == SL_OBTAIN_PULL)
 	{
 		print("slPrepConsume: Pulling a " + action.it, "blue");
@@ -1662,6 +1638,12 @@ boolean slPrepConsume(ConsumeAction action)
 		action.howToGet = SL_OBTAIN_NULL;
 		return create(1, action.it);
 	}
+	else if(action.howToGet == SL_OBTAIN_BUY)
+	{
+		print("slPrepConsume: Buying a " + action.it, "blue");
+		action.howToGet = SL_OBTAIN_NULL;
+		return buy(1, action.it);
+	}
 	else if (action.howToGet == SL_OBTAIN_NULL)
 	{
 		print("slPrepConsume: Doing nothing to get a " + action.it, "blue");
@@ -1673,7 +1655,7 @@ boolean slConsume(ConsumeAction action)
 {
 	if (action.howToGet == SL_OBTAIN_PULL || action.howToGet == SL_OBTAIN_CRAFT)
 	{
-		abort("ConsumeAction not prepped: " + to_string(action));
+		abort("ConsumeAction not prepped: " + to_debug_string(action));
 	}
 
 	if (action.organ == SL_ORGAN_LIVER)
@@ -1768,7 +1750,6 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 			if (npc_price(it) > 0)
 			{
-				howmany = min(howmany, my_meat() / npc_price(it));
 				buyables[it] = min(howmany, my_meat() / npc_price(it));
 			}
 			else if (buy_price($coinmaster[hermit], it) > 0)
@@ -1781,14 +1762,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 			if (creatable_amount(it) > 0)
 			{
-				howmany = min(howmany, max(0, creatable_amount(it) - sl_reserveCraftAmount(it)));
-				craftables[it] = howmany;
+				craftables[it] = min(howmany, max(0, creatable_amount(it) - sl_reserveCraftAmount(it)));
 			}
-			if (storage_amount(it) > 0)
+			if (storage_amount(it) > 0 && is_tradeable(it))
 			{
-				// We could have more stringent requirements here...
-				howmany = min(howmany, min(pulls_remaining()/2 - 2, storage_amount(it)));
-				pullables[it] = howmany;
+				pullables[it] = min(howmany, min(pulls_remaining(), storage_amount(it)));
 			}
 		}
 	}
@@ -1808,24 +1786,23 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			wantPetePie = true;
 	}
 
-	void add(item it, boolean crafting, boolean pulling, int howmany)
+	void add(item it, int obtain_mode, int howmany)
 	{
 		for (int i = 0; i < howmany; i++)
 		{
 			int n = count(actions);
 			actions[n] = MakeConsumeAction(it);
-			if (pulling)
+			if (obtain_mode == SL_OBTAIN_PULL)
 			{
 				// Is this a good estimate of how many adventures a pull is worth? I don't know!
 				// This could be a property, I don't know.
-				actions[n].desirability -= 10.0;
-				actions[n].howToGet = SL_OBTAIN_PULL;
+				actions[n].desirability -= 7.0;
 			}
 			if (type == SL_ORGAN_STOMACH && is_unrestricted($item[special seasoning]))
 			{
 				actions[n].desirability += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
 			}
-			if (pulling && (i == 0) &&
+			if ((obtain_mode == SL_OBTAIN_PULL) && (i == 0) &&
 					((it == $item[Boris's key lime pie] && wantBorisPie) ||
 					(it == $item[Jarlsberg's key lime pie] && wantJarlsbergPie) ||
 					(it == $item[Sneaky Pete's key lime pie] && wantPetePie)))
@@ -1833,34 +1810,34 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				print("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
 				actions[n].desirability += 25;
 			}
-			if (crafting)
+			if (obtain_mode == SL_OBTAIN_CRAFT)
 			{
 				int turns_to_craft = creatable_turns(it, i + 1, false) - creatable_turns(it, i, false);
 				actions[n].desirability -= turns_to_craft;
-				actions[n].howToGet = SL_OBTAIN_CRAFT;
 			}
+			actions[n].howToGet = obtain_mode;
 		}
 	}
 
 	foreach it, howmany in pullables
 	{
-		add(it, false, true, howmany);
+		add(it, SL_OBTAIN_PULL, howmany);
 	}
 	foreach it, howmany in small_owned
 	{
-		add(it, false, false, howmany);
+		add(it, SL_OBTAIN_NULL, howmany);
 	}
 	foreach it, howmany in buyables
 	{
-		add(it, false, false, howmany);
+		add(it, SL_OBTAIN_BUY, howmany);
 	}
 	foreach it, howmany in large_owned
 	{
-		add(it, false, false, howmany);
+		add(it, SL_OBTAIN_NULL, howmany);
 	}
 	foreach it, howmany in craftables
 	{
-		add(it, true, false, howmany);
+		add(it, SL_OBTAIN_CRAFT, howmany);
 	}
 
 	// Now, to load cafe consumables. This has some TCRS-specific code.
@@ -1971,9 +1948,9 @@ void sl_autoDrinkNightcap(boolean simulate)
 	loadConsumables("drink", actions);
 
 	boolean have_ode = sl_have_skill($skill[The Ode to Booze]);
-	float advs_from(int i)
+	float desirability(int i)
 	{
-		float ret = actions[i].adventures;
+		float ret = actions[i].desirability;
 		if (have_ode) ret += actions[i].size;
 		return ret;
 	}
@@ -1981,10 +1958,10 @@ void sl_autoDrinkNightcap(boolean simulate)
 	int best = 0;
 	for (int i=1; i < count(actions); i++)
 	{
-		if (advs_from(i) > advs_from(best)) best = i;
+		if (desirability(i) > desirability(best)) best = i;
 	}
 
-	print("Nightcap is a " + consumable_name(actions[best]) + " for " + advs_from(best) + " adventures.");
+	print("Nightcap is: " + to_pretty_string(actions[best]), "blue");
 
 	if (simulate) return;
 
@@ -2010,7 +1987,7 @@ boolean sl_autoDrinkOne(boolean simulate)
 		}
 	}
 
-	print("sl_autoDrinkOne: Planning to drink a " + to_string(actions[best]), "blue");
+	print("sl_autoDrinkOne: Planning to execute " + to_pretty_string(actions[best]), "blue");
 
 	if(!simulate)
 	{
@@ -2068,16 +2045,7 @@ boolean sl_knapsackAutoConsume(string type, boolean simulate)
 		}
 		consumable_count++;
 		sum_space += actions[i].size;
-		string logline = name + " for " + actions[i].adventures + " adv (" + actions[i].size + " " + organ_name + ")";
-		if (actions[i].howToGet == SL_OBTAIN_PULL)
-		{
-			logline += " [PULL]";
-		}
-		if (actions[i].howToGet == SL_OBTAIN_CRAFT)
-		{
-			logline += " [CRAFT]";
-		}
-		print(logline, "blue");
+		print(to_pretty_string(actions[i]), "blue");
 		total_adv += actions[i].adventures;
 	}
 	if (type == "eat")
@@ -2119,7 +2087,7 @@ boolean sl_knapsackAutoConsume(string type, boolean simulate)
 	{
 		if (!slPrepConsume(actions[i]))
 		{
-			abort("Unexpectedly couldn't prep " + to_string(actions[i]));
+			abort("Unexpectedly couldn't prep " + to_debug_string(actions[i]));
 		}
 	}
 
