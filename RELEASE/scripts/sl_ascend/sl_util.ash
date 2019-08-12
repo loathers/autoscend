@@ -3745,6 +3745,11 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 				meat = my_meat() - 5000;
 				getFromStorage = false;
 			}
+			if (curPrice >= 30000)
+			{
+				print(it + " is too expensive at " + curPrice + " meat, we're gonna skip buying one in the mall.", "red");
+				break;
+			}
 			if((curPrice <= oldPrice) && (curPrice < 30000) && (meat >= curPrice))
 			{
 				if(getFromStorage)

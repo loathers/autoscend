@@ -1598,10 +1598,7 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[xiblaxian stealth cowl], 1, 0);
 			}
-			if (storage_amount($item[Pantsgiving]) > 0)
-			{
-				pullXWhenHaveY($item[Pantsgiving], 1, 0);
-			}
+			pullXWhenHaveY($item[Pantsgiving], 1, 0);
 		}
 		else
 		{
