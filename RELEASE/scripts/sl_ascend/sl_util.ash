@@ -2468,7 +2468,7 @@ boolean instakillable(monster mon)
 
 	boolean[monster] protectorspirits = $monsters[ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley)];
 
-	if($monster[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl] == mon)
+	if($monsters[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl, Eldritch Tentacle] contains mon)
 	{
 		return false;
 	}
