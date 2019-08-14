@@ -1785,14 +1785,13 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean wantJarlsbergPie = false;
 	boolean wantPetePie = false;
 
-	if ((item_amount($item[Boris's key]) == 0) && (item_amount($item[Jarlsberg's key]) == 0) && (item_amount($item[Sneaky Pete's key]) == 0) && towerKeyCount() < 3)
+	if(towerKeyCount() < 3)
 	{
-		// I refuse to handle the hard case where someone has pulled and eaten a key
-		if (item_amount($item[fat loot token]) < 1)
+		if(item_amount($item[Boris's key]) == 0 && item_amount($item[phat loot token]) < 3)
 			wantBorisPie = true;
-		if (item_amount($item[fat loot token]) < 2)
+		if(item_amount($item[Jarlsberg's key]) == 0 && item_amount($item[phat loot token]) < 2)
 			wantJarlsbergPie = true;
-		if (item_amount($item[fat loot token]) < 3)
+		if(item_amount($item[Sneaky Pete's key]) == 0 && item_amount($item[phat loot token]) < 1)
 			wantPetePie = true;
 	}
 
