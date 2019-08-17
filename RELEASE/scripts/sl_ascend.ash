@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19375; // beach comb
+since r19482; // potion of temporary gr8ness rename
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
