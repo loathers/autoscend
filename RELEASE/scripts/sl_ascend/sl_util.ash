@@ -2462,6 +2462,8 @@ boolean instakillable(monster mon)
 		return false;
 	}
 
+	boolean[monster] cyrptbosses = $monsters[conjoined zmombie, gargantulihc, giant skeelton, huge ghuol];
+
 	boolean[monster] timeSpinner = $monsters[Ancient Skeleton with Skin still on it, Apathetic Tyrannosaurus, Assembly Elemental, Cro-Magnon Gnoll, Krakrox the Barbarian, Wooly Duck];
 
 	boolean[monster] lovetunnel = $monsters[LOV Enforcer, LOV Engineer, LOV Equivocator];
@@ -2469,6 +2471,11 @@ boolean instakillable(monster mon)
 	boolean[monster] protectorspirits = $monsters[ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley)];
 
 	if($monsters[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl, Eldritch Tentacle] contains mon)
+	{
+		return false;
+	}
+
+	if(cyrptbosses contains mon)
 	{
 		return false;
 	}
