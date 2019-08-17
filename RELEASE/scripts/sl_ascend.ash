@@ -2653,7 +2653,13 @@ boolean doBedtime()
 		use(1, $item[resolution: be more adventurous]);
 	}
 
-	if((my_daycount() <= 2) && (freeCrafts() > 0) && !in_tcrs())
+	// If in TCRS skip using freecrafts but alert user of how many they can manually use.
+	if((in_tcrs()) && (freeCrafts() > 0))
+	{
+		print("In TCRS: Items are variable, skipping End Of Day crafting", "red");
+		print("Consider manually using your "+freeCrafts()+" free crafts", "red");
+	}
+	else if((my_daycount() <= 2) && (freeCrafts() > 0))
 	{
 		// Check for rapid prototyping
 		while((freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && (item_amount($item[Cranberries]) > 0) && (item_amount($item[Cranberry Cordial]) < 2) && have_skill($skill[Advanced Saucecrafting]))
@@ -9422,6 +9428,12 @@ boolean LX_hardcoreFoodFarm()
 	}
 
 	if(my_level() < 8)
+	{
+		return false;
+	}
+
+	// If we are in TCRS we don't know what food is good, we don't want to waste adv.
+	if(in_tcrs())
 	{
 		return false;
 	}

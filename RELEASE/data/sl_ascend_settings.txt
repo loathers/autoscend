@@ -17,51 +17,52 @@ any	8	spacegateAlways	boolean	[standard] Do you have access to Spacegate?
 any	9	frAlways	boolean	[standard] Do you have access to FantasyRealm?
 any	10	prAlways	boolean	[standard] Do you have access to PirateRealm?
 any	11	neverendingPartyAlways	boolean	[standard] Do you have access to the Neverending Party?
-any	12	voteAlways	boolean	[standard] Do you have access to the Voting Booth?
-any	13	daycareOpen	boolean	[standard] Do you have access to the Boxing Daycare?
-any	14	sl_newbieOverride	boolean	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
-any	15	sl_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
-any	16	sl_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
-any	17	sl_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
-any	18	sl_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
-any	19	sl_clearCombatScripts	boolean	Clear out the postAdventure, preAdventure and kingLiberated settings upon kingLiberation. These will return upon running the script in a new ascension.
-any	20	sl_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
-any	21	sl_pullPVPJunk	boolean	Pull various PVP junk when liberating the King? Mostly avatar potions but other stuff might get added.
-any	22	sl_diceMode	boolean	Equip all available Dice (OCRS) gear. This is probably not FUN.
-any	23	sl_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
-any	24	sl_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
-any	25	sl_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
-any	26	sl_confidence	boolean	If true, we'll get the confidence buff instead of breaking the mirror. Good if your combat suite isn't very fleshed out yet, since it makes the Naughty Sorceress dramatically easier.
-any	27	sl_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
-any	28	sl_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
-any	29	sl_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
-any	30	sl_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
-any	31	sl_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
-any	32	sl_blacklistFamiliar	string	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
-any	33	sl_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
-any	34	sl_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
-any	35	sl_limitConsume	boolean	When false, pull cheapish food/booze when we run low so we can continue.
-any	36	sl_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat. If you set it to "disabled" it will revert to the old equipment system, for now.
-any	37	sl_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
-any	38	sl_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
-any	39	sl_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.
-any	40	sl_equipment_override_weapon	string	A semicolon separated list of overrides for the weapon slot.
-any	41	sl_equipment_override_off-hand	string	A semicolon separated list of overrides for the off-hand slot.
-any	42	sl_equipment_override_pants	string	A semicolon separated list of overrides for the pants slot.
-any	43	sl_equipment_override_acc	string	A semicolon separated list of overrides for the acc slots.
-any	44	sl_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
-any	45	sl_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get Ascension relevant rewards.
-any	46	sl_consultClan	string	The clan name of the player you want to do Zatara consults with.
-any	47	sl_consultChoice	string	The name of the player you want to do Zatara consults with.
-any	48	sl_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
-any	49	sl_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
-any	50	sl_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
-any	51	sl_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
-any	52	sl_useWishes	boolean	When true, use the Genie Bottle to go faster in non-Community Service runs.
-any	53	sl_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
-any	54	sl_beta_test	boolean	Occasionally I might need to make big changes, but not want to do so without some broader testing. If you're a kind, generous soul, you can test these features by setting this to true! sl_beta_test will be mentioned in the change logs whenever there is something to test, and mentioned again when that feature stops being a beta feature.
-any	55	sl_legacyConsumeStuff	boolean	When true, use the old heuristic-based consumption strategy instead of the new solver that tries to pack as many adventures into your organs as possible. Not used in CS or Ed.
-any	56	sl_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
+any	12	sl_skipNEPOverride	boolean	If true, will not use the Neverending Party even if mafia says it is available.
+any	13	voteAlways	boolean	[standard] Do you have access to the Voting Booth?
+any	14	daycareOpen	boolean	[standard] Do you have access to the Boxing Daycare?
+any	15	sl_newbieOverride	boolean	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
+any	16	sl_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
+any	17	sl_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
+any	18	sl_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
+any	19	sl_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
+any	20	sl_clearCombatScripts	boolean	Clear out the postAdventure, preAdventure and kingLiberated settings upon kingLiberation. These will return upon running the script in a new ascension.
+any	21	sl_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
+any	22	sl_pullPVPJunk	boolean	Pull various PVP junk when liberating the King? Mostly avatar potions but other stuff might get added.
+any	23	sl_diceMode	boolean	Equip all available Dice (OCRS) gear. This is probably not FUN.
+any	24	sl_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
+any	25	sl_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
+any	26	sl_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
+any	27	sl_confidence	boolean	If true, we'll get the confidence buff instead of breaking the mirror. Good if your combat suite isn't very fleshed out yet, since it makes the Naughty Sorceress dramatically easier.
+any	28	sl_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
+any	29	sl_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
+any	30	sl_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
+any	31	sl_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
+any	32	sl_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
+any	33	sl_blacklistFamiliar	string	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
+any	34	sl_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
+any	35	sl_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
+any	36	sl_limitConsume	boolean	When false, pull cheapish food/booze when we run low so we can continue.
+any	37	sl_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat. If you set it to "disabled" it will revert to the old equipment system, for now.
+any	38	sl_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
+any	39	sl_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
+any	40	sl_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.
+any	41	sl_equipment_override_weapon	string	A semicolon separated list of overrides for the weapon slot.
+any	42	sl_equipment_override_off-hand	string	A semicolon separated list of overrides for the off-hand slot.
+any	43	sl_equipment_override_pants	string	A semicolon separated list of overrides for the pants slot.
+any	44	sl_equipment_override_acc	string	A semicolon separated list of overrides for the acc slots.
+any	45	sl_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
+any	46	sl_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get Ascension relevant rewards.
+any	47	sl_consultClan	string	The clan name of the player you want to do Zatara consults with.
+any	48	sl_consultChoice	string	The name of the player you want to do Zatara consults with.
+any	49	sl_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
+any	50	sl_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
+any	51	sl_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
+any	52	sl_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
+any	53	sl_useWishes	boolean	When true, use the Genie Bottle to go faster in non-Community Service runs.
+any	54	sl_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
+any	55	sl_beta_test	boolean	Occasionally I might need to make big changes, but not want to do so without some broader testing. If you're a kind, generous soul, you can test these features by setting this to true! sl_beta_test will be mentioned in the change logs whenever there is something to test, and mentioned again when that feature stops being a beta feature.
+any	56	sl_legacyConsumeStuff	boolean	When true, use the old heuristic-based consumption strategy instead of the new solver that tries to pack as many adventures into your organs as possible. Not used in CS or Ed.
+any	57	sl_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
 
 post	0	sl_getBeehive	boolean	Go for the beehive?
 post	1	sl_getStarKey	boolean	Get Richard's Star Key?

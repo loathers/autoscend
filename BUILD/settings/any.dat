@@ -10,6 +10,7 @@ spacegateAlways	boolean	[standard] Do you have access to Spacegate?
 frAlways	boolean	[standard] Do you have access to FantasyRealm?
 prAlways	boolean	[standard] Do you have access to PirateRealm?
 neverendingPartyAlways	boolean	[standard] Do you have access to the Neverending Party?
+sl_skipNEPOverride	boolean	If true, will not use the Neverending Party even if mafia says it is available.
 voteAlways	boolean	[standard] Do you have access to the Voting Booth?
 daycareOpen	boolean	[standard] Do you have access to the Boxing Daycare?
 sl_newbieOverride	boolean	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
