@@ -2462,13 +2462,20 @@ boolean instakillable(monster mon)
 		return false;
 	}
 
+	boolean[monster] cyrptbosses = $monsters[conjoined zmombie, gargantulihc, giant skeelton, huge ghuol];
+
 	boolean[monster] timeSpinner = $monsters[Ancient Skeleton with Skin still on it, Apathetic Tyrannosaurus, Assembly Elemental, Cro-Magnon Gnoll, Krakrox the Barbarian, Wooly Duck];
 
 	boolean[monster] lovetunnel = $monsters[LOV Enforcer, LOV Engineer, LOV Equivocator];
 
 	boolean[monster] protectorspirits = $monsters[ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley)];
 
-	if($monster[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl] == mon)
+	if($monsters[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl, Eldritch Tentacle] contains mon)
+	{
+		return false;
+	}
+
+	if(cyrptbosses contains mon)
 	{
 		return false;
 	}
@@ -3265,8 +3272,6 @@ boolean handleSealElement(element flavor, string option)
 	return slAdvBypass(page, $location[Noob Cave], option);
 }
 
-
-
 int towerKeyCount()
 {
 	return towerKeyCount(true);
@@ -3746,6 +3751,11 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 			{
 				meat = my_meat() - 5000;
 				getFromStorage = false;
+			}
+			if (curPrice >= 30000)
+			{
+				print(it + " is too expensive at " + curPrice + " meat, we're gonna skip buying one in the mall.", "red");
+				break;
 			}
 			if((curPrice <= oldPrice) && (curPrice < 30000) && (meat >= curPrice))
 			{
@@ -5961,24 +5971,43 @@ int sl_reserveAmount(item it)
 	return 0;
 }
 
-int sl_reserveCraftAmount(item it)
+int sl_reserveCraftAmount(item orig_it)
 {
-	int reserve = 0;
-	foreach ing,amt in get_ingredients(it)
+	// Detect infinite loops
+	boolean [item] its;
+
+	int inner(item it)
 	{
-		int ingReserve = sl_reserveAmount(ing);
-		if(ingReserve == -1)
+		if (its contains it)
 		{
-			return 0;
+			print("Found dependency loop involving " + it + " when trying to craft " + orig_it + ", consider adding to reserve list.", "red");
+			print("Dependencies (in no particular order):", "red");
+			foreach iit in its
+			{
+				print("> " + iit, "red");
+			}
+			return 9999999;
 		}
-		else if(ingReserve == 0)
+		its[it] = true;
+		int reserve = 0;
+		foreach ing,amt in get_ingredients(it)
 		{
-			ingReserve = sl_reserveCraftAmount(ing);
+			int ingReserve = sl_reserveAmount(ing);
+			if(ingReserve == -1)
+			{
+				return 0;
+			}
+			else if(ingReserve == 0)
+			{
+				ingReserve = inner(ing);
+			}
+			if(ingReserve * amt > reserve)
+			{
+				reserve = ingReserve * amt;
+			}
 		}
-		if(ingReserve * amt > reserve)
-		{
-			reserve = ingReserve * amt;
-		}
+		remove its[it];
+		return reserve;
 	}
-	return reserve;
+	return inner(orig_it);
 }

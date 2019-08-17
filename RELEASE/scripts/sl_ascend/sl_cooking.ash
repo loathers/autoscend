@@ -36,50 +36,6 @@ boolean keepOnTruckin()
 		return false;
 	}
 
-	if(!in_tcrs())
-	{
-		foreach it in $items[Hacked Gibson, Browser Cookie, Popular Tart, Spaghetti With Skullheads, Crudles, Corpsedriver, Corpsetini, Corpse Island Iced Tea, Corpse On The Beach, Bungle In The Jungle, Mon Tiki, Yellow Brick Road, Divine, Gimlet, Neuromancer, Prussian Cathouse, Ye Olde Meade]
-		{
-			if(!is_unrestricted(it))
-			{
-				continue;
-			}
-			if(fullness_left() < it.fullness)
-			{
-				continue;
-			}
-			if((it.fullness > 0) && !canEat(it))
-			{
-				continue;
-			}
-			if((it.inebriety > 0) && !canDrink(it))
-			{
-				continue;
-			}
-			if(inebriety_left() < it.inebriety)
-			{
-				continue;
-			}
-			if(my_level() < it.levelreq)
-			{
-				continue;
-			}
-			int filling = it.fullness + it.inebriety;
-			if(mall_price(it) > (1250 * filling))
-			{
-				continue;
-			}
-			if(item_amount(it) > 0)
-			{
-				//We already have it and should probably eat it or something.
-				break;
-			}
-			if(pullXWhenHaveY(it, 1, 0))
-			{
-				break;
-			}
-		}
-	}
 	consumeStuff();
 	return true;
 }
@@ -694,6 +650,11 @@ boolean canDrink(item toDrink)
 		return false;
 	}
 
+	if(toDrink.levelreq >= 13 && !can_interact())
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -726,6 +687,11 @@ boolean canEat(item toEat)
 	}
 
 	if(my_level() < toEat.levelreq)
+	{
+		return false;
+	}
+
+	if(toEat.levelreq >= 13 && !can_interact())
 	{
 		return false;
 	}
@@ -1582,7 +1548,151 @@ void consumeStuff()
 	}
 }
 
-boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] space)
+int SL_ORGAN_STOMACH = 1;
+int SL_ORGAN_LIVER   = 2;
+
+int SL_OBTAIN_NULL  = 100;
+int SL_OBTAIN_CRAFT = 101;
+int SL_OBTAIN_PULL  = 102;
+int SL_OBTAIN_BUY   = 103;
+
+// Used internally for knapsack optimization.
+record ConsumeAction
+{
+	// exactly one of these is non-none
+	item it;
+	int cafeId;
+
+	int size;           // how much of organ is used
+	float adventures;   // expected adv from (thing)
+
+	float desirability; // adv count that will be used for optimization
+	                    // (lower for pulls, higher for buffs/tower keys)
+
+	int organ;          // SL_ORGAN_*
+	int howToGet;       // SL_OBTAIN_*
+};
+
+string consumable_name(ConsumeAction action)
+{
+	string name = "<name not found>";
+	if (action.it != $item[none]) name = to_string(action.it);
+	else if (action.organ == SL_ORGAN_LIVER) name = cafeDrinkName(action.cafeId);
+	else if (action.organ == SL_ORGAN_STOMACH) name = cafeFoodName(action.cafeId);
+	return name;
+}
+
+string to_pretty_string(ConsumeAction action)
+{
+	string organ_name = action.organ == SL_ORGAN_STOMACH ? "fullness" : "inebriety";
+	string logline = consumable_name(action) + " for " + action.adventures + " base adv (" + action.size + " " + organ_name + ")";
+	if (action.howToGet == SL_OBTAIN_PULL)
+	{
+		logline += " [PULL]";
+	}
+	if (action.howToGet == SL_OBTAIN_CRAFT)
+	{
+		logline += " [CRAFT]";
+	}
+	if (action.howToGet == SL_OBTAIN_BUY)
+	{
+		logline += " [BUY]";
+	}
+	return logline;
+}
+
+string to_debug_string(ConsumeAction action)
+{
+	string ret = "";
+	ret += "ConsumeAction(it="+action.it;
+	ret += ",cafeId="+action.cafeId;
+	ret += ",size="+action.size;
+	ret += ",adventures="+action.adventures;
+	ret += ",desirability="+action.desirability;
+	ret += ",organ="+action.organ;
+	ret += ",howToGet="+action.howToGet;
+	ret += ")";
+	return ret;
+}
+
+ConsumeAction MakeConsumeAction(item it)
+{
+	int organ = it.inebriety > 0 ? SL_ORGAN_LIVER : SL_ORGAN_STOMACH;
+	int size = max(it.inebriety, it.fullness);
+	float adv = expectedAdventuresFrom(it);
+	return new ConsumeAction(it, 0, size, adv, adv, organ, SL_OBTAIN_NULL);
+}
+
+boolean slPrepConsume(ConsumeAction action)
+{
+	print(to_debug_string(action));
+	if(action.howToGet == SL_OBTAIN_PULL)
+	{
+		print("slPrepConsume: Pulling a " + action.it, "blue");
+		action.howToGet = SL_OBTAIN_NULL;
+		return pullXWhenHaveY(action.it, 1, item_amount(action.it));
+	}
+	else if(action.howToGet == SL_OBTAIN_CRAFT)
+	{
+		print("slPrepConsume: Crafting a " + action.it, "blue");
+		action.howToGet = SL_OBTAIN_NULL;
+		return create(1, action.it);
+	}
+	else if(action.howToGet == SL_OBTAIN_BUY)
+	{
+		print("slPrepConsume: Buying a " + action.it, "blue");
+		action.howToGet = SL_OBTAIN_NULL;
+		return buy(1, action.it);
+	}
+	else if (action.howToGet == SL_OBTAIN_NULL)
+	{
+		print("slPrepConsume: Doing nothing to get a " + action.it, "blue");
+	}
+	return true;
+}
+
+boolean slConsume(ConsumeAction action)
+{
+	if (action.howToGet != SL_OBTAIN_NULL)
+	{
+		abort("ConsumeAction not prepped: " + to_debug_string(action));
+	}
+
+	if (action.organ == SL_ORGAN_LIVER)
+	{
+		buffMaintain($effect[Ode to Booze], 20, 1, action.size);
+	}
+	if(action.cafeId != 0)
+	{
+		if (action.organ == SL_ORGAN_LIVER)
+		{
+			return slDrinkCafe(1, action.cafeId);
+		}
+		else if (action.organ == SL_ORGAN_STOMACH)
+		{
+			return slEatCafe(1, action.cafeId);
+		}
+	}
+	else if(action.it != $item[none])
+	{
+		if (action.organ == SL_ORGAN_LIVER)
+		{
+			return slDrink(1, action.it);
+		}
+		else if (action.organ == SL_ORGAN_STOMACH)
+		{
+			return slEat(1, action.it);
+		}
+		else
+		{
+			abort("slConsume: Unrecognized organ " + action.organ);
+		}
+	}
+	abort("slConsume: exited with nothing");
+	return false;
+}
+
+boolean loadConsumables(string _type, ConsumeAction[int] actions)
 {
 	// Just in case!
 	if(sl_my_path() == "Dark Gyffte")
@@ -1590,29 +1700,37 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 		abort("We shouldn't be calling loadConsumables() in Dark Gyffte. Please report this.");
 	}
 
+	if ((item_amount($item[unremarkable duffel bag]) > 0) && (pulls_remaining() != -1))
+	{
+		use(item_amount($item[unremarkable duffel bag]), $item[unremarkable duffel bag]);
+	}
+	if ((item_amount($item[van key]) > 0) && (pulls_remaining() != -1))
+	{
+		use(item_amount($item[van key]), $item[van key]);
+	}
+
 	// type is "eat" or "drink"
-	int EAT   = 3;
-	int DRINK = 5;
 	int type  = 0;
-	if (_type == "eat")   type = EAT;
-	else if (_type == "drink") type = DRINK;
+	if (_type == "eat")   type = SL_ORGAN_STOMACH;
+	else if (_type == "drink") type = SL_ORGAN_LIVER;
 	else return false;
 
 	boolean canConsume(item it)
 	{
-		return type == EAT ? canEat(it) : canDrink(it);
+		return type == SL_ORGAN_STOMACH ? canEat(it) : canDrink(it);
 	}
 
 	int organLeft()
 	{
-		return type == EAT ? fullness_left() : inebriety_left();
+		return type == SL_ORGAN_STOMACH ? fullness_left() : inebriety_left();
 	}
 
 	int organCost(item it)
 	{
-		return type == EAT ? it.fullness : it.inebriety;
+		return type == SL_ORGAN_STOMACH ? it.fullness : it.inebriety;
 	}
 
+	int[item] pullables;
 	int[item] small_owned;
 	int[item] buyables;
 	int[item] large_owned;
@@ -1620,7 +1738,12 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 
 	foreach it in $items[]
 	{
-		if (canConsume(it) && (organCost(it) > 0) && is_unrestricted(it) && historical_price(it) <= 20000)
+		if (
+			canConsume(it) &&
+			(organCost(it) > 0) &&
+			(it.fullness == 0 || it.inebriety == 0) &&
+			is_unrestricted(it) &&
+			historical_price(it) <= 20000)
 		{
 			if((it == $item[astral pilsner] || it == $item[Cold One]) && my_level() < 11) continue;
 			if((it == $item[astral hot dog] || it == $item[Spaghetti Breakfast]) && my_level() < 11) continue;
@@ -1632,7 +1755,6 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 			}
 			if (npc_price(it) > 0)
 			{
-				howmany = min(howmany, my_meat() / npc_price(it));
 				buyables[it] = min(howmany, my_meat() / npc_price(it));
 			}
 			else if (buy_price($coinmaster[hermit], it) > 0)
@@ -1645,53 +1767,92 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 			}
 			if (creatable_amount(it) > 0)
 			{
-				howmany = min(howmany, max(0, creatable_amount(it) - sl_reserveCraftAmount(it)));
-				craftables[it] = howmany;
+				craftables[it] = min(howmany, max(0, creatable_amount(it) - sl_reserveCraftAmount(it)));
+			}
+			if (storage_amount(it) > 0 && is_tradeable(it))
+			{
+				pullables[it] = min(howmany, min(pulls_remaining(), storage_amount(it)));
+			}
+			boolean[item] KEY_LIME_PIES = $items[Boris's key lime pie, Jarlsberg's key lime pie, Sneaky Pete's key lime pie];
+			if ((KEY_LIME_PIES contains it) && !(pullables contains it))
+			{
+				pullables[it] = 1;
 			}
 		}
 	}
 
-	void add(item it, boolean crafting, int howmany)
+	boolean wantBorisPie = false;
+	boolean wantJarlsbergPie = false;
+	boolean wantPetePie = false;
+
+	if(towerKeyCount() < 3)
+	{
+		if(item_amount($item[Boris's key]) == 0 && item_amount($item[fat loot token]) < 3)
+			wantBorisPie = true;
+		if(item_amount($item[Jarlsberg's key]) == 0 && item_amount($item[fat loot token]) < 2)
+			wantJarlsbergPie = true;
+		if(item_amount($item[Sneaky Pete's key]) == 0 && item_amount($item[fat loot token]) < 1)
+			wantPetePie = true;
+	}
+
+	void add(item it, int obtain_mode, int howmany)
 	{
 		for (int i = 0; i < howmany; i++)
 		{
-			int n = count(space);
-			space[n] = organCost(it);
-			adv[n] = expectedAdventuresFrom(it);
-			if (type == EAT && is_unrestricted($item[special seasoning]))
+			int n = count(actions);
+			actions[n] = MakeConsumeAction(it);
+			if (obtain_mode == SL_OBTAIN_PULL)
 			{
-				adv[n] += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
+				// Is this a good estimate of how many adventures a pull is worth? I don't know!
+				// This could be a property, I don't know.
+				actions[n].desirability -= 7.0;
 			}
-			if (crafting)
+			if (type == SL_ORGAN_STOMACH && is_unrestricted($item[special seasoning]))
+			{
+				actions[n].desirability += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
+			}
+			if ((obtain_mode == SL_OBTAIN_PULL) && (i == 0) &&
+					((it == $item[Boris's key lime pie] && wantBorisPie) ||
+					(it == $item[Jarlsberg's key lime pie] && wantJarlsbergPie) ||
+					(it == $item[Sneaky Pete's key lime pie] && wantPetePie)))
+			{
+				print("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
+				actions[n].desirability += 25;
+			}
+			if (obtain_mode == SL_OBTAIN_CRAFT)
 			{
 				int turns_to_craft = creatable_turns(it, i + 1, false) - creatable_turns(it, i, false);
-				adv[n] -= turns_to_craft;
+				actions[n].desirability -= turns_to_craft;
 			}
-			item_backmap[n] = it;
+			actions[n].howToGet = obtain_mode;
 		}
 	}
 
+	foreach it, howmany in pullables
+	{
+		add(it, SL_OBTAIN_PULL, howmany);
+	}
 	foreach it, howmany in small_owned
 	{
-		add(it, false, howmany);
+		add(it, SL_OBTAIN_NULL, howmany);
 	}
 	foreach it, howmany in buyables
 	{
-		add(it, false, howmany);
+		add(it, SL_OBTAIN_BUY, howmany);
 	}
 	foreach it, howmany in large_owned
 	{
-		add(it, false, howmany);
+		add(it, SL_OBTAIN_NULL, howmany);
 	}
 	foreach it, howmany in craftables
 	{
-		add(it, true, howmany);
+		add(it, SL_OBTAIN_CRAFT, howmany);
 	}
 
 	// Now, to load cafe consumables. This has some TCRS-specific code.
 
-	if(type == DRINK && !gnomads_available()) return false;
-	if(type == EAT && !canadia_available()) return false;
+	if(type == SL_ORGAN_LIVER && !gnomads_available()) return false;
+	if(type == SL_ORGAN_STOMACH && !canadia_available()) return false;
 
 	// Add daily special
 	if (daily_special() != $item[none] && canConsume(daily_special()))
@@ -1699,29 +1860,28 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 		int daily_special_limit = 1 + min(my_meat()/(3*min(35, autosell_price(daily_special()))), organLeft()/organCost(daily_special()));
 		for (int i=0; i < daily_special_limit; i++)
 		{
-			int n = count(space);
-			space[n] = organCost(daily_special());
-			adv[n] = expectedAdventuresFrom(daily_special());
-			cafe_backmap[n] = daily_special().to_int();
+			int n = count(actions);
+			actions[n] = MakeConsumeAction(daily_special());
+			actions[n].cafeId = daily_special().to_int();
+			actions[n].it = $item[none];
 		}
 	}
 
 	if(!in_tcrs()) 
 	{
 		// write in hard-coded adventure values for IPA, the best one
-		if(type == DRINK)
+		if(type == SL_ORGAN_LIVER)
 		{
 			// Gnomish Microbrewery has a single best drink
 			int limit = 1 + min(my_meat()/100, inebriety_left()/3);
 			for (int i=0; i < limit; i++)
 			{
-				int n = count(space);
-				space[n] = 3;
-				adv[n] = 11.0/3.0;
-				cafe_backmap[n] = -3;
+				int size = 3;
+				float adv = 11.0/3.0;
+				actions[count(actions)] = new ConsumeAction($item[none], -3, size, adv, adv, SL_ORGAN_LIVER, SL_OBTAIN_NULL);
 			}
 		}
-		if(type == EAT)
+		if(type == SL_ORGAN_STOMACH)
 		{
 			// Chez Snootee does not have a single best food
 
@@ -1729,30 +1889,27 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 			int limit = 1 + min(my_meat()/50, fullness_left()/3);
 			for (int i=0; i < limit; i++)
 			{
-				int n = count(space);
-				space[n] = 3;
-				adv[n] = 3.5;
-				cafe_backmap[n] = -1;
+				int size = 3;
+				float adv = 3.5;
+				actions[count(actions)] = new ConsumeAction($item[none], -1, size, adv, adv, SL_ORGAN_LIVER, SL_OBTAIN_NULL);
 			}
 
 			// As Jus Gezund Heit
 			limit = 1 + min(my_meat()/75, fullness_left()/4);
 			for (int i=0; i < limit; i++)
 			{
-				int n = count(space);
-				space[n] = 4;
-				adv[n] = 5.0;
-				cafe_backmap[n] = -2;
+				int size = 4;
+				float adv = 5.0;
+				actions[count(actions)] = new ConsumeAction($item[none], -2, size, adv, adv, SL_ORGAN_LIVER, SL_OBTAIN_NULL);
 			}
 
 			// As Jus Gezund Heit
 			limit = 1 + min(my_meat()/100, fullness_left()/4);
 			for (int i=0; i < limit; i++)
 			{
-				int n = count(space);
-				space[n] = 5;
-				adv[n] = 7.0;
-				cafe_backmap[n] = -3;
+				int size = 5;
+				float adv = 7.0;
+				actions[count(actions)] = new ConsumeAction($item[none], -3, size, adv, adv, SL_ORGAN_LIVER, SL_OBTAIN_NULL);
 			}
 		}
 		return true;
@@ -1766,9 +1923,9 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 
 	_CAFE_CONSUMABLE_TYPE [int] cafe_stuff;
 	string filename = "";
-	if (type == DRINK)
+	if (type == SL_ORGAN_LIVER)
 		filename = "TCRS_" + my_class().to_string().replace_string(" ", "_") + "_" + my_sign() + "_cafe_booze.txt";
-	else if (type == EAT)
+	else if (type == SL_ORGAN_STOMACH)
 		filename = "TCRS_" + my_class().to_string().replace_string(" ", "_") + "_" + my_sign() + "_cafe_food.txt";
 
 	print("Loading " + filename, "blue");
@@ -1785,10 +1942,9 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 			int limit = 1 + min(my_meat()/100, organLeft()/r.space);
 			for (int j=0; j<limit; j++)
 			{
-				int n = count(space);
-				space[n] = r.space;
-				adv[n] = r.space * tcrs_expectedAdvPerFill(r.quality);
-				cafe_backmap[n] = i;
+				int size = r.space;
+				float adv = r.space * tcrs_expectedAdvPerFill(r.quality);
+				actions[count(actions)] = new ConsumeAction($item[none], -3, size, adv, adv, SL_ORGAN_LIVER, SL_OBTAIN_NULL);
 			}
 		}
 	}
@@ -1797,91 +1953,58 @@ boolean loadConsumables(string _type, item[int] item_backmap, int[int] cafe_back
 
 void sl_autoDrinkNightcap(boolean simulate)
 {
-	int[int] inebriety;
-	float[int] adv;
-	item[int] item_backmap;
-	int[int] cafe_backmap;
-
-	loadConsumables("drink", item_backmap, cafe_backmap, adv, inebriety);
+	ConsumeAction[int] actions;
+	loadConsumables("drink", actions);
 
 	boolean have_ode = sl_have_skill($skill[The Ode to Booze]);
-	float advs_from(int i)
+	float desirability(int i)
 	{
-		float ret = adv[i];
-		if (have_ode) ret += inebriety[i];
+		float ret = actions[i].desirability;
+		if (have_ode) ret += actions[i].size;
 		return ret;
 	}
 
 	int best = 0;
-	int n = count(item_backmap);
-	for (int i=1; i < n; i++)
+	for (int i=1; i < count(actions); i++)
 	{
-		if (advs_from(i) > advs_from(best)) best = i;
+		if (desirability(i) > desirability(best)) best = i;
 	}
 
-	string name = (cafe_backmap contains best) ? cafeDrinkName(cafe_backmap[best]) : item_backmap[best];
-	print("Nightcap is a " + name + " for " + advs_from(best) + " adventures.");
+	print("Nightcap is: " + to_pretty_string(actions[best]), "blue");
 
 	if (simulate) return;
 
-	if (item_backmap contains best)
-	{
-		slDrink(1, item_backmap[best]);
-	}
-	else
-	{
-		buffMaintain($effect[Ode to Booze], 20, 1, inebriety[best]);
-		slDrinkCafe(1, cafe_backmap[best]);
-	}
+	slConsume(actions[best]);
 }
 
 boolean sl_autoDrinkOne(boolean simulate)
 {
 	if (inebriety_left() == 0) return false;
 
-	int[int] inebriety;
-	float[int] adv;
-
-	int [int] cafe_backmap;
-	item[int] item_backmap;
-	loadConsumables("drink", item_backmap, cafe_backmap, adv, inebriety);
-
-	int[item] normal_drinks;
-	int[int] cafe_drinks;
+	ConsumeAction[int] actions;
+	loadConsumables("drink", actions);
 
 	float best_adv_per_drunk = 0.0;
-	int best_index = -1;
-	int n = count(inebriety);
-	for (int i=0; i<n; i++)
+	int best = -1;
+	for (int i=0; i < count(actions); i++)
 	{
-		float tentative_adv_per_drunk = adv[i]/inebriety[i];
+		float tentative_adv_per_drunk = actions[i].desirability/actions[i].size;
 		if (tentative_adv_per_drunk > best_adv_per_drunk)
 		{
 			best_adv_per_drunk = tentative_adv_per_drunk;
-			best_index = i;
+			best = i;
 		}
 	}
 
+	print("sl_autoDrinkOne: Planning to execute " + to_pretty_string(actions[best]), "blue");
 
 	if(!simulate)
 	{
-		if (cafe_backmap contains best_index)
-		{
-			print("Drinking from the cafe...", "blue");
-			buffMaintain($effect[Ode to Booze], 20, 1, inebriety[best_index]);
-			return slDrinkCafe(1, cafe_backmap[best_index]);
-		}
-		else
-		{
-			print("Drinking a " + item_backmap[best_index] + "...", "blue");
-			retrieve_item(1, item_backmap[best_index]);
-			return slDrink(1, item_backmap[best_index]);
-		}
+		if (!slPrepConsume(actions[best])) return false;
+		return slConsume(actions[best]);
 	}
 	else
 	{
-		string name = (cafe_backmap contains best_index) ? cafeDrinkName(cafe_backmap[best_index]) : item_backmap[best_index];
-		print("Would have drunk a " + name + " for " + adv[best_index] + " adventures and " + inebriety[best_index] + " inebriety.", "blue");
 		return true;
 	}
 }
@@ -1899,53 +2022,52 @@ boolean sl_knapsackAutoConsume(string type, boolean simulate)
 	}
 	if (organLeft() == 0) return false;
 
-	if (item_amount($item[unremarkable duffel bag]) > 0)
-	{
-		use(item_amount($item[unremarkable duffel bag]), $item[unremarkable duffel bag]);
-	}
-	if (item_amount($item[van key]) > 0)
-	{
-		use(item_amount($item[van key]), $item[van key]);
-	}
+	ConsumeAction[int] actions;
+	loadConsumables(type, actions);
 
-	int[int] space;
-	float[int] adv;
-
-	int [int] cafe_backmap;
-	item[int] item_backmap;
-	loadConsumables(type, item_backmap, cafe_backmap, adv, space);
-
+	// Non-pulled, non-cafe consumables
 	int[item] normal_consumables;
 
 	int remaining_space = organLeft();
-	print("Space: " + remaining_space);
-	boolean[int] result = knapsack(remaining_space, count(space), space, adv);
 
-	print("Knapsack " + type + " plan:", "blue");
+	float[int] desirability;
+	int[int] space;
+	for (int i=0; i<count(actions); i++)
+	{
+		desirability[i] = actions[i].desirability;
+		space[i] = actions[i].size;
+	}
+
+	boolean[int] result = knapsack(remaining_space, count(space), space, desirability);
+
+	string organ_name = (type == "eat") ? "fullness" : "inebriety";
+	print("Knapsack " + type + " plan for " + remaining_space + " " + organ_name + ":", "blue");
 	float total_adv = 0.0;
 	int consumable_count = 0;
 	int sum_space = 0;
 	foreach i in result
 	{
-		string name;
-		if (cafe_backmap contains i)
+		string name = consumable_name(actions[i]);
+		if (actions[i].it != $item[none] && actions[i].howToGet != SL_OBTAIN_PULL)
 		{
-			name = (type == "eat") ? cafeFoodName(cafe_backmap[i]) : cafeDrinkName(cafe_backmap[i]);
-		}
-		else
-		{
-			name = to_string(item_backmap[i]);
-			normal_consumables[item_backmap[i]] += 1;
+			normal_consumables[actions[i].it] += 1;
 		}
 		consumable_count++;
-		sum_space += space[i];
-		string organ_name = (type == "eat") ? "fullness" : "inebriety";
-		print(adv[i] + " adventures from " + name + " (" + space[i] + " " + organ_name + ")", "blue");
-		total_adv += adv[i];
+		sum_space += actions[i].size;
+		print(to_pretty_string(actions[i]), "blue");
+		total_adv += actions[i].adventures;
 	}
 	if (type == "eat")
 	{
-		print("(including +" + min(item_amount($item[special seasoning]), consumable_count) + " from special seasoning ("+ item_amount($item[special seasoning]) + " available)", "blue");
+		int applicable_seasoning = min(item_amount($item[special seasoning]), consumable_count);
+		print("(+" + applicable_seasoning + " from special seasoning ("+ item_amount($item[special seasoning]) + " available)", "blue");
+		total_adv += applicable_seasoning;
+	}
+	if (type == "eat")
+	{
+		// TODO: and can obtain milk of magnesium? It's just logging...
+		print("(+" + sum_space + " from Got Milk)", "blue");
+		total_adv += sum_space;
 	}
 	if (type == "drink" && sl_have_skill($skill[The Ode to Booze]))
 	{
@@ -1970,9 +2092,12 @@ boolean sl_knapsackAutoConsume(string type, boolean simulate)
 
 	// Craft everything before getting Milk of Magnesium, since
 	// we might be using non-free crafting turns.
-	foreach it, howmany in normal_consumables
+	foreach i in result
 	{
-		retrieve_item(howmany, it);
+		if (!slPrepConsume(actions[i]))
+		{
+			abort("Unexpectedly couldn't prep " + to_debug_string(actions[i]));
+		}
 	}
 
 	if(type == "eat")
@@ -1983,33 +2108,22 @@ boolean sl_knapsackAutoConsume(string type, boolean simulate)
 			// TODO: Some folks have requested a setting to turn this off.
 			makeGenieWish($effect[Got Milk]);
 		}
-		else dealwithMilkOfMagnesium(true);
-	}
-
-	foreach i in result
-	{
-		if (cafe_backmap contains i)
-		{
-			int what = cafe_backmap[i];
-			if(type == "drink")
-			{
-				buffMaintain($effect[Ode to Booze], 20, 1, inebriety_left());
-				slDrinkCafe(1, what);
-			}
-			else if (type == "eat")
-			{
-				slEatCafe(1, what);
-			}
-		}
 		else
 		{
-			item what = item_backmap[i];
-			if (type == "drink")
-				slDrink(1, what);
-			else if (type == "eat")
-				slEat(1, what);
+			dealwithMilkOfMagnesium(true);
+			buffMaintain($effect[Got Milk], 0, 1, organLeft());
 		}
 	}
+
+	int pre_adventures = my_adventures();
+
+	print("Consuming " + count(result) + " things...", "blue");
+	foreach i in result
+	{
+		slConsume(actions[i]);
+	}
+
+	print("Expected " + total_adv + " adventures, got " + (my_adventures() - pre_adventures), "blue");
 	return true;
 }
 
