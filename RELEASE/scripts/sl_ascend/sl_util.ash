@@ -2380,6 +2380,10 @@ boolean isHermitAvailable()
 	{
 		return false;
 	}
+	if(sl_my_path() == "Kingdom of Exploathing")
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -4286,6 +4290,18 @@ string sl_my_path()
 	// Most of the time, it is just a pointless wrapper.
 	// This is only needed in mainline files, path specific files have already been supported.
 	return my_path();
+}
+
+void sl_visit_gnasir()
+{
+	if (in_koe())
+	{
+		visit_url("place.php?whichplace=exploathing_beach&action=expl_gnasir");
+	}
+	else
+	{
+		visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
+	}
 }
 
 boolean considerGrimstoneGolem(boolean bjornCrown)

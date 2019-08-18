@@ -235,6 +235,9 @@ boolean needOre();								//Defined in sl_ascend/sl_util.ash
 //Wrapper for my_path(), in case there are delays in Mafia translating path values
 string sl_my_path();							//Defined in sl_ascend/sl_util.ash
 
+//Visits gnasir, can change based on path
+void sl_visit_gnasir();
+
 //Item disambiguation functions
 boolean hasSpookyravenLibraryKey();				//Defined in sl_ascend/sl_util.ash
 boolean hasILoveMeVolI();						//Defined in sl_ascend/sl_util.ash
@@ -366,6 +369,7 @@ float tcrs_expectedAdvPerFill(string quality);				//Defined in sl_ascend/sl_tcrs
 boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety);	//Defined in sl_ascend/sl_tcrs.ash
 boolean tcrs_consumption();									//Defined in sl_ascend/sl_tcrs.ash
 boolean tcrs_maximize_with_items(string maximizerString);	//Defined in sl_ascend/sl_tcrs.ash
+boolean in_koe();											//Defined in sl_ascend/sl_koe.ash
 boolean boris_buySkills();									//Defined in sl_ascend/sl_boris.ash
 void boris_initializeDay(int day);							//Defined in sl_ascend/sl_boris.ash
 void boris_initializeSettings();							//Defined in sl_ascend/sl_boris.ash
