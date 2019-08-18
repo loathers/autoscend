@@ -615,7 +615,7 @@ boolean sl_canBeachCombHead(string name) {
 	{
 		if (to_string(head) == usedHead) { return false; }
 	}
-	return true;
+	return get_property("_freeBeachWalksUsed").to_int() < 11;
 }
 
 boolean sl_beachCombHead(string name)
@@ -628,6 +628,7 @@ boolean sl_beachCombHead(string name)
 
 boolean sl_beachUseFreeCombs() {
 	if(!sl_beachCombAvailable()) { return false; }
+	if(get_property("_freeBeachWalksUsed").to_int() >= 11) { return false; }
 	cli_execute("CombBeach free");
 	return true;
 }
