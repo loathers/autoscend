@@ -3978,6 +3978,8 @@ boolean useCocoon()
 		return true;
 	}
 
+	print("Considering using Cocoon at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+
 	int mpCost = 0;
 	int casts = 1;
 	skill cocoon = $skill[none];
