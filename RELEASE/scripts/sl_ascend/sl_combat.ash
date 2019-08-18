@@ -1502,7 +1502,7 @@ string sl_combatHandler(int round, string opp, string text)
 			return useSkill($skill[Sing Along]);
 		}
 
-		if(canUse($skill[Sing Along]) && canSurvive(2.5) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && stunnable(enemy))
+		if(canUse($skill[Sing Along]) && canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && stunnable(enemy))
 		{
 			return useSkill($skill[Sing Along]);
 		}

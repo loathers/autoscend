@@ -2085,7 +2085,7 @@ boolean ovenHandle()
 
 boolean isGhost(monster mon)
 {
-	boolean[monster] ghosts = $monsters[Ancient Ghost, Banshee Librarian, Battlie Knight Ghost, Bettie Barulio, Chalkdust Wraith, Claybender Sorcerer Ghost, Coaltergeist, Cold Ghost, Contemplative Ghost, Dusken Raider Ghost, Ghost, Ghost Actor, Ghost Miner, Ghost of Elizabeth Spookyraven, Hot Ghost, Hustled Spectre, Lovesick Ghost, Marcus Macurgeon, Marvin J. Sunny, Mayor Ghost, Mer-kin Specter, Model Skeleton, Mortimer Strauss, Plaid Ghost, Protector Spectre, Restless Ghost, Sexy Sorority Ghost, Sheet Ghost, Sleaze Ghost, Space Tourist Explorer Ghost, Spooky Ghost, Stench Ghost, The Ghost of Phil Bunion, The Unknown Accordion Thief, The Unknown Disco Bandit, The Unknown Pastamancer, The Unknown Sauceror, The Unknown Seal Clubber, The Unknown Turtle Tamer, Whatsian Commando Ghost, Wonderful Winifred Wongle];
+	boolean[monster] ghosts = $monsters[Ancient Ghost, Angry Ghost, Banshee Librarian, Battlie Knight Ghost, Bettie Barulio, Chalkdust Wraith, Claybender Sorcerer Ghost, Coaltergeist, Cold Ghost, Contemplative Ghost, Dusken Raider Ghost, Ghost, Ghost Actor, Ghost Miner, Ghost of Elizabeth Spookyraven, Hot Ghost, Hustled Spectre, Lovesick Ghost, Marcus Macurgeon, Marvin J. Sunny, Mayor Ghost, Mer-kin Specter, Model Skeleton, Mortimer Strauss, Plaid Ghost, Protector Spectre, Restless Ghost, Sexy Sorority Ghost, Sheet Ghost, Sleaze Ghost, Space Tourist Explorer Ghost, Spooky Ghost, Stench Ghost, The Ghost of Phil Bunion, The Unknown Accordion Thief, The Unknown Disco Bandit, The Unknown Pastamancer, The Unknown Sauceror, The Unknown Seal Clubber, The Unknown Turtle Tamer, Whatsian Commando Ghost, Wonderful Winifred Wongle];
 	if((ghosts contains mon) && !mon.boss)
 	{
 		return true;
@@ -2462,35 +2462,27 @@ boolean instakillable(monster mon)
 		return false;
 	}
 
-	boolean[monster] cyrptbosses = $monsters[conjoined zmombie, gargantulihc, giant skeelton, huge ghuol];
+	static boolean[monster] not_instakillable = $monsters[
+		// Cyrpt bosses
+		conjoined zmombie, gargantulihc, giant skeelton, huge ghuol,
 
-	boolean[monster] timeSpinner = $monsters[Ancient Skeleton with Skin still on it, Apathetic Tyrannosaurus, Assembly Elemental, Cro-Magnon Gnoll, Krakrox the Barbarian, Wooly Duck];
+		// time-spinner
+		Ancient Skeleton with Skin still on it, Apathetic Tyrannosaurus, Assembly Elemental, Cro-Magnon Gnoll, Krakrox the Barbarian, Wooly Duck,
 
-	boolean[monster] lovetunnel = $monsters[LOV Enforcer, LOV Engineer, LOV Equivocator];
+		// Love Tunnel
+		LOV Enforcer, LOV Engineer, LOV Equivocator,
 
-	boolean[monster] protectorspirits = $monsters[ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley)];
+		// ancient protector spirits
+		ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley),
 
-	if($monsters[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl, Eldritch Tentacle] contains mon)
-	{
-		return false;
-	}
+		// Voting monsters
+		slime blob, terrible mutant, government bureaucrat, angry ghost, annoyed snake,
 
-	if(cyrptbosses contains mon)
-	{
-		return false;
-	}
+		// Tentacles
+		Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl, Eldritch Tentacle
+	];
 
-	if(timeSpinner contains mon)
-	{
-		return false;
-	}
-
-	if(lovetunnel contains mon)
-	{
-		return false;
-	}
-
-	if(protectorspirits contains mon)
+	if(not_instakillable contains mon)
 	{
 		return false;
 	}
@@ -3985,6 +3977,8 @@ boolean useCocoon()
 	{
 		return true;
 	}
+
+	print("Considering using Cocoon at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
 
 	int mpCost = 0;
 	int casts = 1;

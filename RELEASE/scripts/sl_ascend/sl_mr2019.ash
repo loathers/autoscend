@@ -563,3 +563,72 @@ boolean sl_spoonTuneMoon()
 
 	return cantune;
 }
+
+boolean sl_beachCombAvailable()
+{
+	if(!is_unrestricted($item[Beach Comb Box]) || !possessEquipment($item[Beach Comb]))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+int sl_beachCombHeadNumFrom(string name)
+{
+	int head;
+	switch (name.to_lower_case())
+	{
+		case "hot":
+			head = 1; break;
+		case "cold":
+			head = 2; break;
+		case "stench":
+			head = 3; break;
+		case "spooky":
+			head = 4; break;
+		case "sleaze":
+			head = 5; break;
+		case "muscle":
+			head = 6; break;
+		case "mysticality":
+		case "myst":
+			head = 7; break;
+		case "moxie":
+			head = 8; break;
+		case "init":
+		case "initiative":
+			head = 9; break;
+		case "weight":
+		case "familiar":
+			head = 10; break;
+		case "exp":
+		case "stats":
+			head = 11; break;
+	}
+	return head;
+}
+
+boolean sl_canBeachCombHead(string name) {
+	int head = sl_beachCombHeadNumFrom(name);
+	foreach _, usedHead in (get_property("_beachHeadsUsed").split_string(","))
+	{
+		if (to_string(head) == usedHead) { return false; }
+	}
+	return get_property("_freeBeachWalksUsed").to_int() < 11;
+}
+
+boolean sl_beachCombHead(string name)
+{
+	if(!sl_beachCombAvailable())   return false;
+	if(!sl_canBeachCombHead(name)) return false;
+
+	return cli_execute("beach head " + sl_beachCombHeadNumFrom(name));
+}
+
+boolean sl_beachUseFreeCombs() {
+	if(!sl_beachCombAvailable()) { return false; }
+	if(get_property("_freeBeachWalksUsed").to_int() >= 11) { return false; }
+	cli_execute("CombBeach free");
+	return true;
+}

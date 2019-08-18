@@ -647,6 +647,10 @@ string sl_spoonGetDesiredSign();	// Defined in sl_ascend/sl_mr2019.ash
 void sl_spoonTuneConfirm();	// Defined in sl_ascend/sl_mr2019.ash
 boolean sl_spoonReadyToTuneMoon();	// Defined in sl_ascend/sl_mr2019.ash
 boolean sl_spoonTuneMoon();	// Defined in sl_ascend/sl_mr2019.ash
+boolean sl_beachCombAvailable();	// Defined in sl_ascend/sl_mr2019.ash
+boolean sl_canBeachCombHead(string name);	// Defined in sl_ascend/sl_mr2019.ash
+boolean sl_beachCombHead(string name);	// Defined in sl_ascend/sl_mr2019.ash
+boolean sl_beachUseFreeCombs();	// Defined in sl_ascend/sl_mr2019.ash
 boolean getSpaceJelly();									//Defined in sl_ascend/sl_mr2017.ash
 int horseCost();											//Defined in sl_ascend/sl_mr2017.ash
 string horseNormalize(string horseText); // Defined in sl_ascend/sl_mr2017.ash
