@@ -2112,6 +2112,8 @@ void initializeDay(int day)
 				temp = visit_url("peevpee.php?place=fight");
 				set_property("sl_breakstone", false);
 			}
+
+			sl_beachCombHead("exp");
 		}
 
 		if((get_property("lastCouncilVisit").to_int() < my_level()) && (sl_my_path() != "Community Service"))
@@ -2559,6 +2561,8 @@ boolean doBedtime()
 		}
 	}
 
+	cli_execute("CombBeach all");
+
 	# This does not check if we still want these buffs
 	if((my_hp() < (0.9 * my_maxhp())) && (get_property("_hotTubSoaks").to_int() < 5))
 	{
@@ -2963,6 +2967,8 @@ boolean doBedtime()
 			chateaumantegna_buyStuff($item[Artificial Skylight]);
 		}
 	}
+
+	sl_beachUseFreeCombs();
 
 	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
 	if((my_class() == $class[Gelatinous Noob]) || !can_drink() || out_of_blood)
@@ -11352,30 +11358,42 @@ boolean LX_handleSpookyravenFirstFloor()
 			int stench = elemental_resist($element[stench]);
 			int mpNeed = 0;
 			int hpNeed = 0;
-			if((hot < 9) && (stench < 9) && have_skill($skill[Astral Shell]) && (have_effect($effect[Astral Shell]) == 0))
+			if(((hot < 9) || (stench < 9)) && have_skill($skill[Astral Shell]) && (have_effect($effect[Astral Shell]) == 0))
 			{
 				hot += 1;
 				stench += 1;
 				mpNeed += mp_cost($skill[Astral Shell]);
 			}
-			if((hot < 9) && (stench < 9) && have_skill($skill[Elemental Saucesphere]) && (have_effect($effect[Elemental Saucesphere]) == 0))
+			if(((hot < 9) || (stench < 9)) && have_skill($skill[Elemental Saucesphere]) && (have_effect($effect[Elemental Saucesphere]) == 0))
 			{
 				hot += 2;
 				stench += 2;
 				mpNeed += mp_cost($skill[Elemental Saucesphere]);
 			}
-			if((hot < 9) && (stench < 9) && sl_have_skill($skill[Spectral Awareness]) && (have_effect($effect[Spectral Awareness]) == 0))
+			if(((hot < 9) || (stench < 9)) && sl_have_skill($skill[Spectral Awareness]) && (have_effect($effect[Spectral Awareness]) == 0))
 			{
 				hot += 2;
 				stench += 2;
 				hpNeed += hp_cost($skill[Spectral Awareness]);
 			}
+			if(hot < 9 && sl_canBeachCombHead("hot"))
+			{
+				hot += 2;
+			}
+			if(stench < 9 && sl_canBeachCombHead("stench"))
+			{
+				stench += 2;
+			}
+
 			if((my_mp() > mpNeed) && (my_hp() > hpNeed) && (hot >= 9) && (stench >= 9))
 			{
 				buffMaintain($effect[Astral Shell], mp_cost($skill[Astral Shell]), 1, 1);
 				buffMaintain($effect[Elemental Saucesphere], mp_cost($skill[Elemental Saucesphere]), 1, 1);
 				buffMaintain($effect[Spectral Awareness], hp_cost($skill[Spectral Awareness]), 1, 1);
+				if(elemental_resist($element[hot]) < 9) sl_beachCombHead("hot");
+				if(elemental_resist($element[stench]) < 9) sl_beachCombHead("stench");
 			}
+
 			if((elemental_resist($element[hot]) >= 9) && (elemental_resist($element[stench]) >= 9))
 			{
 				delayKitchen = false;
@@ -12037,6 +12055,12 @@ boolean L9_aBooPeak()
 		{
 			coldResist = coldResist + 1;
 		}
+		if(sl_canBeachCombHead("cold")) {
+			coldResist = coldResist + 3;
+		}
+		if(sl_canBeachCombHead("cold")) {
+			spookyResist = spookyResist + 3;
+		}
 
 		#Calculate how much boo peak damage does per unit resistance.
 		int estimatedCold = (13+25+50+125+250) * ((100.0 - elemental_resist_value(coldResist)) / 100.0);
@@ -12126,6 +12150,9 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Balls of Ectoplasm], 0, 1, 1);
 			buffMaintain($effect[Red Door Syndrome], 0, 1, 1);
 			buffMaintain($effect[Well-Oiled], 0, 1, 1);
+
+			sl_beachCombHead("cold");
+			sl_beachCombHead("spooky");
 
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
@@ -12957,6 +12984,7 @@ boolean L11_redZeppelin()
 	{
 		slMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
 	}
+	sl_beachCombHead("sleaze");
 	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
 	{
 		if(possessEquipment(it) && sl_can_equip(it) &&
@@ -13928,6 +13956,14 @@ boolean sl_tavern()
 			{
 				buffMaintain($effect[Dirge of Dreadfulness], 20, 1, 1);
 				buffMaintain($effect[Snarl of the Timberwolf], 20, 1, 1);
+			}
+		}
+
+		foreach element_type in $strings[Hot, Cold, Stench, Sleaze, Spooky]
+		{
+			if(numeric_modifier(element_type + " Damage") < 20.0)
+			{
+				sl_beachCombHead(element_type);
 			}
 		}
 
