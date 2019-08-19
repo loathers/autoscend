@@ -14731,7 +14731,7 @@ boolean doTasks()
 
 	if(in_koe())
 	{
-		if((get_property("hippiedDefeated").to_int() < 300) && (get_property("fratboysDefeated").to_int() < 300))
+		if((get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333))
 		{
 			handleFamiliar("item");
 			warOutfit(false);
