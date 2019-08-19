@@ -266,7 +266,7 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to charge a WineBomb but don't have one.");
 		}
-		slEquip($slot[acc3], $item[Unstable Fulminate]);
+		slEquip($slot[off-hand], $item[Unstable Fulminate]);
 	}
 
 	if(place == $location[The Black Forest])
