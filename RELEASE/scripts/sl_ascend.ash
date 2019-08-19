@@ -2561,7 +2561,7 @@ boolean doBedtime()
 		}
 	}
 
-	cli_execute("CombBeach all");
+	cli_execute("CombBeach free");
 
 	# This does not check if we still want these buffs
 	if((my_hp() < (0.9 * my_maxhp())) && (get_property("_hotTubSoaks").to_int() < 5))
