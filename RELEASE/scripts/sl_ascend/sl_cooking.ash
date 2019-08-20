@@ -71,6 +71,10 @@ float expectedAdventuresFrom(item it)
 {
 	if(it == $item[magical sausage]) return 1;
 
+	if ($items[campfire baked potato, campfire beans, campfire coffee, campfire hot dog, campfire s\'more, campfire stew] contains it) {
+		return 4.5; // I guess?
+	}
+
 	float parse()
 	{
 		if (!it.adventures.contains_text("-")) return it.adventures.to_int();

@@ -3079,6 +3079,8 @@ boolean basicAdjustML()
 
 boolean sl_change_mcd(int mcd)
 {
+	if (in_koe()) return false;
+
 	int best = 10;
 	if($strings[Mongoose, Vole, Wallaby] contains my_sign())
 	{
