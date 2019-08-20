@@ -2477,7 +2477,7 @@ boolean instakillable(monster mon)
 		LOV Enforcer, LOV Engineer, LOV Equivocator,
 
 		// ancient protector spirits
-		ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley),
+		Protector Spectre, ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley),
 
 		// Voting monsters
 		slime blob, terrible mutant, government bureaucrat, angry ghost, annoyed snake,
