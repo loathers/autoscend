@@ -635,10 +635,6 @@ void handlePostAdventure()
 
 		if(my_mp() > 80)
 		{
-			if((my_mp() > 95) && (my_maxhp() > my_hp()))
-			{
-				useCocoon();
-			}
 			buffMaintain($effect[Takin\' It Greasy], 50, 1, 5);
 			buffMaintain($effect[Intimidating Mien], 50, 1, 5);
 		}
@@ -850,10 +846,6 @@ void handlePostAdventure()
 
 		if(my_mp() > 80)
 		{
-			if((my_mp() > 95) && (my_maxhp() > my_hp()))
-			{
-				useCocoon();
-			}
 			buffMaintain($effect[Takin\' It Greasy], 50, 1, 5);
 			buffMaintain($effect[Intimidating Mien], 50, 1, 5);
 		}
