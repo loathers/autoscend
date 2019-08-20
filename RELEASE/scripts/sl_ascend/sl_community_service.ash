@@ -1201,10 +1201,7 @@ boolean LA_cs_communityService()
 					}
 					cli_execute("hatter 11");
 				}
-				if(get_property("spacegateVaccine2").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Broad-Spectrum Vaccine]) == 0) && get_property("spacegateAlways").to_boolean())
-				{
-					cli_execute("spacegate vaccine 2");
-				}
+				spacegateVaccine($effect[Broad-Spectrum Vaccine]);
 				if((get_property("puzzleChampBonus").to_int() == 20) && !get_property("_witchessBuff").to_boolean())
 				{
 					visit_url("campground.php?action=witchess");
@@ -1423,10 +1420,7 @@ boolean LA_cs_communityService()
 				cli_execute("crossstreams");
 			}
 
-			if(get_property("spacegateVaccine2").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Broad-Spectrum Vaccine]) == 0) && get_property("spacegateAlways").to_boolean())
-			{
-				cli_execute("spacegate vaccine 2");
-			}
+			spacegateVaccine($effect[Broad-Spectrum Vaccine]);
 
 			if(is_unrestricted($item[Colorful Plastic Ball]))
 			{
@@ -1635,10 +1629,7 @@ boolean LA_cs_communityService()
 				slDrink(1, $item[Bee's Knees]);
 			}
 
-			if(get_property("spacegateVaccine2").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Broad-Spectrum Vaccine]) == 0) && get_property("spacegateAlways").to_boolean() && (estimate_cs_questCost(curQuest) > 1))
-			{
-				cli_execute("spacegate vaccine 2");
-			}
+			spacegateVaccine($effect[Broad-Spectrum Vaccine]);
 
 			if(do_cs_quest(2))
 			{
@@ -1732,10 +1723,7 @@ boolean LA_cs_communityService()
 				slDrink(1, $item[Bee's Knees]);
 			}
 
-			if(get_property("spacegateVaccine2").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Broad-Spectrum Vaccine]) == 0) && get_property("spacegateAlways").to_boolean() && (estimate_cs_questCost(curQuest) > 1))
-			{
-				cli_execute("spacegate vaccine 2");
-			}
+			spacegateVaccine($effect[Broad-Spectrum Vaccine]);
 
 			if(do_cs_quest(3))
 			{
@@ -2794,10 +2782,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Berry Elemental], 0, 1, 1);
 			buffMaintain($effect[Amazing], 0, 1, 1);
 
-			if(get_property("spacegateVaccine1").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Rainbow Vaccine]) == 0) && get_property("spacegateAlways").to_boolean())
-			{
-				cli_execute("spacegate vaccine 1");
-			}
+			spacegateVaccine($effect[Rainbow Vaccine]);
 
 			int curCost = get_cs_questCost(curQuest);
 
