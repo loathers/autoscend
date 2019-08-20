@@ -229,6 +229,25 @@ void handlePreAdventure(location place)
 		acquireMP(32, true);
 	}
 
+	foreach i,mon in get_monsters(place)
+	{
+		if(sl_wantToYellowRay(mon, place))
+		{
+			adjustForYellowRayIfPossible(mon);
+		}
+
+		if(sl_wantToBanish(mon, place))
+		{
+			adjustForBanishIfPossible(mon, place);
+		}
+	}
+
+	if(sl_latteDropWanted(place))
+	{
+		print('We want to get the "' + sl_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
+		slEquip($item[latte lovers member's mug]);
+	}
+
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))
 	{
 		if(!possessEquipment($item[Continuum Transfunctioner]))
@@ -247,28 +266,18 @@ void handlePreAdventure(location place)
 		slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
+	if((place == $location[The Haunted Wine Cellar]) && (my_turncount() != 0) && (get_property("sl_winebomb") == "partial"))
+	{
+		if(!possessEquipment($item[Unstable Fulminate]))
+		{
+			abort("Tried to charge a WineBomb but don't have one.");
+		}
+		slEquip($slot[off-hand], $item[Unstable Fulminate]);
+	}
+
 	if(place == $location[The Black Forest])
 	{
 		slEquip($slot[acc3], $item[Blackberry Galoshes]);
-	}
-
-	if(sl_latteDropWanted(place))
-	{
-		print('We want to get the "' + sl_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
-		slEquip($item[latte lovers member's mug]);
-	}
-
-	foreach i,mon in get_monsters(place)
-	{
-		if(sl_wantToYellowRay(mon, place))
-		{
-			adjustForYellowRayIfPossible(mon);
-		}
-
-		if(sl_wantToBanish(mon, place))
-		{
-			adjustForBanishIfPossible(mon, place);
-		}
 	}
 
 	bat_formPreAdventure();
