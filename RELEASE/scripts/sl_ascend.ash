@@ -2809,6 +2809,9 @@ boolean doBedtime()
 		}
 	}
 
+	// Is +50% to all stats the best choice here? I don't know!
+	spacegateVaccine($effect[Broad-Spectrum Vaccine]);
+
 	zataraSeaside("item");
 
 	if(is_unrestricted($item[Source Terminal]) && (get_campground() contains $item[Source Terminal]))
