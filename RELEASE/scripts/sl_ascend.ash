@@ -49,6 +49,7 @@ import <sl_ascend/sl_majora.ash>
 import <sl_ascend/sl_glover.ash>
 import <sl_ascend/sl_batpath.ash>
 import <sl_ascend/sl_tcrs.ash>
+import <sl_ascend/sl_koe.ash>
 import <sl_ascend/sl_monsterparts.ash>
 import <sl_ascend/sl_theSource.ash>
 import <sl_ascend/sl_optionals.ash>
@@ -1259,6 +1260,22 @@ boolean warAdventure()
 		handleFamiliar($familiar[Space Jellyfish]);
 	}
 
+	if(in_koe())
+	{
+		if(!slAdv(1, 533.to_location()))
+		{
+			if(!get_property("sl_hippyInstead").to_boolean())
+			{
+				set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 2);
+			}
+			else
+			{
+				set_property("fratboysDefeated", get_property("fratboysDefeated").to_int() + 2);
+			}
+		}
+		return true;
+	}
+
 	if(!get_property("sl_hippyInstead").to_boolean())
 	{
 		if(!slAdv(1, $location[The Battlefield (Frat Uniform)]))
@@ -1280,7 +1297,7 @@ boolean warAdventure()
 
 boolean doThemtharHills()
 {
-	if(sl_my_path() == "Two Crazy Random Summer")
+	if(sl_my_path() == "Two Crazy Random Summer" || in_koe())
 	{
 		set_property("sl_nuns", "finished"); // if only :(
 		return false;
@@ -3594,6 +3611,10 @@ boolean L11_aridDesert()
 	{
 		failDesert = false;
 	}
+	if(in_koe())
+	{
+		failDesert = false;
+	}
 
 	if(failDesert)
 	{
@@ -3725,7 +3746,7 @@ boolean L11_aridDesert()
 		if(get_property("sl_gnasirUnlocked").to_boolean() && (item_amount($item[Stone Rose]) > 0) && ((get_property("gnasirProgress").to_int() & 1) != 1))
 		{
 			print("Returning the stone rose", "blue");
-			visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
+			sl_visit_gnasir();
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
 			visit_url("choice.php?whichchoice=805&option=2&pwd=");
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
@@ -3761,7 +3782,7 @@ boolean L11_aridDesert()
 			{
 				buyUpTo(1, $item[Can of Black Paint]);
 				print("Returning the Can of Black Paint", "blue");
-				visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
+				sl_visit_gnasir();
 				visit_url("choice.php?whichchoice=805&option=1&pwd=");
 				visit_url("choice.php?whichchoice=805&option=2&pwd=");
 				visit_url("choice.php?whichchoice=805&option=1&pwd=");
@@ -3798,7 +3819,7 @@ boolean L11_aridDesert()
 		if(get_property("sl_gnasirUnlocked").to_boolean() && (item_amount($item[Killing Jar]) > 0) && ((get_property("gnasirProgress").to_int() & 4) != 4))
 		{
 			print("Returning the killing jar", "blue");
-			visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
+			sl_visit_gnasir();
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
 			visit_url("choice.php?whichchoice=805&option=2&pwd=");
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
@@ -3825,7 +3846,7 @@ boolean L11_aridDesert()
 		if((item_amount($item[Worm-Riding Manual Page]) >= 15) && ((get_property("gnasirProgress").to_int() & 8) != 8))
 		{
 			print("Returning the worm-riding manual pages", "blue");
-			visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
+			sl_visit_gnasir();
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
 			visit_url("choice.php?whichchoice=805&option=2&pwd=");
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
@@ -3866,7 +3887,7 @@ boolean L11_aridDesert()
 			if(item_amount($item[Killing Jar]) > 0)
 			{
 				print("Secondary killing jar handler", "blue");
-				visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
+				sl_visit_gnasir();
 				visit_url("choice.php?whichchoice=805&option=1&pwd=");
 				visit_url("choice.php?whichchoice=805&option=2&pwd=");
 				visit_url("choice.php?whichchoice=805&option=1&pwd=");
@@ -5742,7 +5763,7 @@ boolean L11_hiddenCity()
 					L11_hiddenTavernUnlock(true);
 					while(have_effect($effect[Thrice-Cursed]) == 0)
 					{
-						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs())
+						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs() && !in_koe())
 						{
 							buyUpTo(1, $item[Cursed Punch]);
 							if(item_amount($item[Cursed Punch]) == 0)
@@ -5803,7 +5824,7 @@ boolean L11_hiddenCity()
 		{
 			print("The idden [sic] bowling alley!", "blue");
 			L11_hiddenTavernUnlock(true);
-			if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+			if(my_ascensions() == get_property("hiddenTavernUnlock").to_int() && !in_koe())
 			{
 				if(item_amount($item[Bowl Of Scorpions]) == 0)
 				{
@@ -7143,7 +7164,15 @@ boolean L11_unlockPyramid()
 			abort("Failed making Staff of Ed (2325) via CLI. Please do it manually and rerun.");
 		}
 
-		visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
+		if (in_koe())
+		{
+			visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
+			set_property("questL11Pyramid", "started");
+		}
+		else
+		{
+			visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
+		}
 
 		if(get_property("questL11Pyramid") == "unstarted")
 		{
@@ -7638,6 +7667,10 @@ boolean L12_sonofaPrefix()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		return false;
+	}
 
 	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Lobsterfrogman])
 	{
@@ -7693,6 +7726,11 @@ boolean L12_sonofaPrefix()
 	}
 
 	if((my_class() == $class[Ed]) && (item_amount($item[Talisman of Horus]) == 0))
+	{
+		return false;
+	}
+
+	if(in_koe())
 	{
 		return false;
 	}
@@ -8065,7 +8103,12 @@ boolean L12_finalizeWar()
 	print("Let's fight the boss!", "blue");
 
 	location bossFight = $location[The Battlefield (Frat Uniform)];
-	if(get_property("sl_hippyInstead").to_boolean())
+
+	if (in_koe())
+	{
+		bossFight = 533.to_location();
+	}
+	else if(get_property("sl_hippyInstead").to_boolean())
 	{
 		bossFight = $location[The Battlefield (Hippy Uniform)];
 	}
@@ -8076,9 +8119,12 @@ boolean L12_finalizeWar()
 		handleFamiliar($familiar[Machine Elf]);
 	}
 	string[int] pages;
-	pages[0] = "bigisland.php?place=camp&whichcamp=1";
-	pages[1] = "bigisland.php?place=camp&whichcamp=2";
-	pages[2] = "bigisland.php?action=bossfight&pwd";
+	if (!in_koe())
+	{
+		pages[0] = "bigisland.php?place=camp&whichcamp=1";
+		pages[1] = "bigisland.php?place=camp&whichcamp=2";
+		pages[2] = "bigisland.php?action=bossfight&pwd";
+	}
 	if(!slAdvBypass(0, pages, bossFight, ""))
 	{
 		print("Boss already defeated, ignoring", "red");
@@ -9875,6 +9921,10 @@ boolean L9_leafletQuest()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		return false;
+	}
 	if(sl_get_campground() contains $item[Frobozz Real-Estate Company Instant House (TM)])
 	{
 		return false;
@@ -10931,6 +10981,11 @@ boolean LX_desertAlternate()
 
 boolean LX_islandAccess()
 {
+	if(in_koe())
+	{
+		return false;
+	}
+
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
 
 	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (item_amount($item[Dingy Dinghy]) == 0) && (my_meat() >= 400) && isGeneralStoreAvailable())
@@ -11650,6 +11705,11 @@ boolean L12_startWar()
 	}
 
 	if((my_basestat($stat[Muscle]) < 70) || (my_basestat($stat[Mysticality]) < 70) || (my_basestat($stat[Moxie]) < 70))
+	{
+		return false;
+	}
+
+	if(in_koe())
 	{
 		return false;
 	}
@@ -14664,18 +14724,22 @@ boolean doTasks()
 		}
 	}
 
+
 	if(L11_hiddenCity())				return true;
 	if(L11_palindome())					return true;
 	if(L11_unlockPyramid())				return true;
 	if(L11_unlockEd())					return true;
 	if(L11_defeatEd())					return true;
-	if(L12_gremlins())					return true;
-	if(L12_gremlinStart())				return true;
-	if(L12_sonofaFinish())				return true;
-	if(L12_sonofaBeach())				return true;
-	if(L12_orchardStart())				return true;
-	if(L12_filthworms())				return true;
-	if(L12_orchardFinalize())			return true;
+	if (!in_koe())
+	{
+		if(L12_gremlins())					return true;
+		if(L12_gremlinStart())				return true;
+		if(L12_sonofaFinish())				return true;
+		if(L12_sonofaBeach())				return true;
+		if(L12_orchardStart())				return true;
+		if(L12_filthworms())				return true;
+		if(L12_orchardFinalize())			return true;
+	}
 
 	if((my_level() >= 12) && ((get_property("hippiesDefeated").to_int() >= 192) || get_property("sl_hippyInstead").to_boolean()) && (get_property("sl_nuns") == ""))
 	{
@@ -14699,46 +14763,58 @@ boolean doTasks()
 		}
 	}
 
-	if((get_property("hippiesDefeated").to_int() < 64) && (get_property("fratboysDefeated").to_int() < 64) && (my_level() >= 12) && (get_property("sl_prewar") == "started") && (get_property("sl_war") != "finished"))
+	if(in_koe())
 	{
-		print("First 64 combats. To orchard/lighthouse", "blue");
-		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
+		if((get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333))
 		{
-			cli_execute("make 1 stuffing fluffer");
+			handleFamiliar("item");
+			warOutfit(false);
+			return warAdventure();
 		}
-		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cornucopia]) > 0) && glover_usable($item[Cornucopia]))
+	}
+	else
+	{
+		if((get_property("hippiesDefeated").to_int() < 64) && (get_property("fratboysDefeated").to_int() < 64) && (my_level() >= 12) && (get_property("sl_prewar") == "started") && (get_property("sl_war") != "finished"))
 		{
-			use(1, $item[Cornucopia]);
+			print("First 64 combats. To orchard/lighthouse", "blue");
 			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
 			{
 				cli_execute("make 1 stuffing fluffer");
 			}
-			return true;
+			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cornucopia]) > 0) && glover_usable($item[Cornucopia]))
+			{
+				use(1, $item[Cornucopia]);
+				if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
+				{
+					cli_execute("make 1 stuffing fluffer");
+				}
+				return true;
+			}
+			if(item_amount($item[Stuffing Fluffer]) > 0)
+			{
+				use(1, $item[Stuffing Fluffer]);
+				return true;
+			}
+			handleFamiliar("item");
+			warOutfit(false);
+			return warAdventure();
 		}
-		if(item_amount($item[Stuffing Fluffer]) > 0)
+
+		if((get_property("hippiesDefeated").to_int() < 192) && (get_property("fratboysDefeated").to_int() < 192) && (my_level() >= 12) && (get_property("sl_prewar") != ""))
 		{
-			use(1, $item[Stuffing Fluffer]);
-			return true;
+			print("Getting to the nunnery/junkyard", "blue");
+			handleFamiliar("item");
+			warOutfit(false);
+			return warAdventure();
 		}
-		handleFamiliar("item");
-		warOutfit(false);
-		return warAdventure();
-	}
 
-	if((get_property("hippiesDefeated").to_int() < 192) && (get_property("fratboysDefeated").to_int() < 192) && (my_level() >= 12) && (get_property("sl_prewar") != ""))
-	{
-		print("Getting to the nunnery/junkyard", "blue");
-		handleFamiliar("item");
-		warOutfit(false);
-		return warAdventure();
-	}
-
-	if(((get_property("sl_nuns") == "finished") || (get_property("sl_nuns") == "done")) && ((get_property("hippiesDefeated").to_int() < 1000) && (get_property("fratboysDefeated").to_int() < 1000)) && (my_level() >= 12))
-	{
-		print("Doing the wars.", "blue");
-		handleFamiliar("item");
-		warOutfit(false);
-		return warAdventure();
+		if(((get_property("sl_nuns") == "finished") || (get_property("sl_nuns") == "done")) && ((get_property("hippiesDefeated").to_int() < 1000) && (get_property("fratboysDefeated").to_int() < 1000)) && (my_level() >= 12))
+		{
+			print("Doing the wars.", "blue");
+			handleFamiliar("item");
+			warOutfit(false);
+			return warAdventure();
+		}
 	}
 
 	if(L13_towerNSEntrance())			return true;
