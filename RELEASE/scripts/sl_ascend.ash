@@ -2561,8 +2561,6 @@ boolean doBedtime()
 		}
 	}
 
-	cli_execute("CombBeach free");
-
 	# This does not check if we still want these buffs
 	if((my_hp() < (0.9 * my_maxhp())) && (get_property("_hotTubSoaks").to_int() < 5))
 	{
@@ -2810,6 +2808,9 @@ boolean doBedtime()
 			enhances -= 2;
 		}
 	}
+
+	// Is +50% to all stats the best choice here? I don't know!
+	spacegateVaccine($effect[Broad-Spectrum Vaccine]);
 
 	zataraSeaside("item");
 
@@ -9347,10 +9348,7 @@ boolean L7_crypt()
 
 		slEquip($item[Gravy Boat]);
 
-		if(get_property("spacegateVaccine3").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Emotional Vaccine]) == 0) && get_property("spacegateAlways").to_boolean())
-		{
-			cli_execute("spacegate vaccine 3");
-		}
+		spacegateVaccine($effect[Emotional Vaccine]);
 
 		if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{

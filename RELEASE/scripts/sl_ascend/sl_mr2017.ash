@@ -1754,3 +1754,56 @@ boolean makeGeniePocket()
 	return true;
 }
 
+boolean spacegateVaccineAvailable()
+{
+	if(my_path() == "Kingdom of Exploathing") return false;
+
+	if(!get_property("spacegateAlways").to_boolean() || get_property("_spacegateToday").to_boolean())
+	{
+		return false;
+	}
+	if(!is_unrestricted($item[Spacegate access badge]))
+	{
+		return false;
+	}
+	if(get_property("_spacegateVaccine").to_boolean())
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean spacegateVaccineAvailable(effect ef)
+{
+	if(!spacegateVaccineAvailable()) return false;
+	switch (ef)
+	{
+	case $effect[Rainbow Vaccine]:
+		return get_property("spacegateVaccine1").to_boolean();
+	case $effect[Broad-Spectrum Vaccine]:
+		return get_property("spacegateVaccine2").to_boolean();
+	case $effect[Emotional Vaccine]:
+		return get_property("spacegateVaccine3").to_boolean();
+	}
+	abort("sl_ascend: bad effect passed to spacegateVaccineAvailable:" + ef);
+	return false;
+}
+
+boolean spacegateVaccine(effect ef)
+{
+	if(!spacegateVaccineAvailable(ef)) return false;
+	if (have_effect(ef) > 0) return false;
+
+	int i = 0;
+	switch (ef)
+	{
+	case $effect[Rainbow Vaccine]:
+		i = 1; break;
+	case $effect[Broad-Spectrum Vaccine]:
+		i = 2; break;
+	case $effect[Emotional Vaccine]:
+		i = 3; break;
+	}
+	cli_execute("spacegate vaccine " + i);
+	return true;
+}
