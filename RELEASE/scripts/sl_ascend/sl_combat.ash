@@ -1338,6 +1338,11 @@ string sl_combatHandler(int round, string opp, string text)
 	{
 		doWeaksauce = true;
 	}
+	// if(enemy == $monster[invader bullet]) // TODO: on version bump
+	if(enemy.to_string().to_lower_case() == "invader bullet")
+	{
+		doWeaksauce = false;
+	}
 
 	if(canUse($skill[Curse of Weaksauce]) && have_skill($skill[Itchy Curse Finger]) && (my_mp() >= 60) && doWeaksauce)
 	{
@@ -1350,6 +1355,12 @@ string sl_combatHandler(int round, string opp, string text)
 	}
 
 	if(enemy == $monster[Eldritch Tentacle])
+	{
+		mcd = 151;
+	}
+
+	// if(enemy == $monster[invader bullet]) // TODO: on version bump
+	if(enemy.to_string().to_lower_case() == "invader bullet")
 	{
 		mcd = 151;
 	}

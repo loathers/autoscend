@@ -900,10 +900,10 @@ item[monster] catBurglarHeistDesires()
 			wannaHeists[$monster[Burly Sidekick]] = $item[Mohawk wig];
 	}
 
-	foreach mon, it in wannaHeists
-	{
-		sl_debug_print("catBurglarHeistDesires(): Want to heist a " + it + " from a " + mon);
-	}
+	// foreach mon, it in wannaHeists
+	// {
+	//	sl_debug_print("catBurglarHeistDesires(): Want to heist a " + it + " from a " + mon);
+	// }
 	return wannaHeists;
 }
 
@@ -1262,6 +1262,7 @@ boolean warAdventure()
 
 	if(in_koe())
 	{
+		// TODO: When version bumped, change to $location[The Exploaded Battlefield]
 		if(!slAdv(1, 533.to_location()))
 		{
 			if(!get_property("sl_hippyInstead").to_boolean())
@@ -2497,16 +2498,6 @@ boolean doBedtime()
 		}
 	}
 
-	restoreAllSettings();
-	restoreSetting("autoSatisfyWithCoinmasters");
-	restoreSetting("autoSatisfyWithNPCs");
-	restoreSetting("removeMalignantEffects");
-	restoreSetting("kingLiberatedScript");
-	restoreSetting("afterAdventureScript");
-	restoreSetting("betweenAdventureScript");
-	restoreSetting("betweenBattleScript");
-	restoreSetting("counterScript");
-
 	if(get_property("sl_priorCharpaneMode").to_int() == 1)
 	{
 		print("Resuming Compact Character Mode.");
@@ -2911,7 +2902,7 @@ boolean doBedtime()
 	}
 	if(possessEquipment($item[Kremlin\'s Greatest Briefcase]) && (get_property("_kgbClicksUsed").to_int() < 24))
 	{
-		kgbWasteClicks();
+		// kgbWasteClicks();
 		int clicks = 22 - get_property("_kgbClicksUsed").to_int();
 		if(clicks > 0)
 		{
@@ -3341,6 +3332,7 @@ boolean questOverride()
 	if((get_property("questL11MacGuffin") == "finished") && (get_property("sl_mcmuffin") != "finished"))
 	{
 		print("Found completed McMuffin (11)");
+		visit_url("diary.php?whichpage=1");
 		set_property("sl_mcmuffin", "finished");
 	}
 
@@ -4013,7 +4005,9 @@ boolean L11_palindome()
 		visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 	}
 
-	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()))
+	boolean slow_acquire_stew = in_koe();
+
+	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()) && !slow_acquire_stew)
 	{
 		if(item_amount($item[Wet Stunt Nut Stew]) == 0)
 		{
@@ -8241,6 +8235,7 @@ boolean LX_malware()
 
 boolean LX_getDigitalKey()
 {
+	if(in_koe()) { return false; }
 	if(contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
 	{
 		return false;
@@ -12738,7 +12733,7 @@ boolean L9_oilPeak()
 
 boolean LX_loggingHatchet()
 {
-	if (!canadia_available() || in_koe())
+	if (!canadia_available())
 	{
 		return false;
 	}
@@ -14797,7 +14792,7 @@ boolean doTasks()
 
 	if(in_koe())
 	{
-		if((get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333))
+		if(get_property("sl_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333))
 		{
 			handleFamiliar("item");
 			warOutfit(false);
