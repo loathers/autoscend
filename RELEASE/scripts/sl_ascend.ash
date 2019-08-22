@@ -15049,6 +15049,35 @@ void print_help_text()
 	print_html("");
 }
 
+void safe_preference_reset_wrapper(int level)
+{
+	if(level <= 0)
+	{
+		sl_begin();
+	}
+	else
+	{
+		boolean succeeded;
+		try
+		{
+			safe_preference_reset_wrapper(level-1);
+			succeeded = true;
+		}
+		finally
+		{
+			restoreAllSettings();
+			restoreSetting("autoSatisfyWithCoinmasters");
+			restoreSetting("autoSatisfyWithNPCs");
+			restoreSetting("removeMalignantEffects");
+			restoreSetting("kingLiberatedScript");
+			restoreSetting("afterAdventureScript");
+			restoreSetting("betweenAdventureScript");
+			restoreSetting("betweenBattleScript");
+			restoreSetting("counterScript");
+		}
+	}
+}
+
 void main()
 {
 	print_help_text();
@@ -15058,6 +15087,6 @@ void main()
 	}
 	finally
 	{
-		sl_begin();
+		safe_preference_reset_wrapper(4);
 	}
 }
