@@ -2673,7 +2673,7 @@ boolean doBedtime()
 		print("In TCRS: Items are variable, skipping End Of Day crafting", "red");
 		print("Consider manually using your "+freeCrafts()+" free crafts", "red");
 	}
-	else if((my_daycount() <= 2) && (freeCrafts() > 0))
+	else if((my_daycount() <= 2) && (freeCrafts() > 0) && my_adventures() > 0)
 	{
 		// Check for rapid prototyping
 		while((freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && (item_amount($item[Cranberries]) > 0) && (item_amount($item[Cranberry Cordial]) < 2) && have_skill($skill[Advanced Saucecrafting]))
@@ -2902,7 +2902,7 @@ boolean doBedtime()
 	}
 	if(possessEquipment($item[Kremlin\'s Greatest Briefcase]) && (get_property("_kgbClicksUsed").to_int() < 24))
 	{
-		// kgbWasteClicks();
+		kgbWasteClicks();
 		int clicks = 22 - get_property("_kgbClicksUsed").to_int();
 		if(clicks > 0)
 		{
@@ -8784,11 +8784,6 @@ boolean L10_airship()
 	{
 		return false;
 	}
-	if(in_koe())
-	{
-		set_property("sl_airship", "finished");
-		return false;
-	}
 
 	visit_url("clan_viplounge.php?preaction=goswimming&subaction=submarine");
 	print("Fantasy Airship Fly Fly time", "blue");
@@ -9181,8 +9176,6 @@ boolean L0_handleRainDoh()
 
 boolean LX_ornateDowsingRod()
 {
-	if (in_koe()) return false;
-
 	if(!get_property("sl_grimstoneOrnateDowsingRod").to_boolean())
 	{
 		return false;
@@ -13680,7 +13673,7 @@ boolean L8_trapperGroar()
 		canGroar = true;
 	}
 
-	// TODO: remove this when killing Sharonna updates quest status
+	// Just in case
 	cli_execute("refresh quests");
 
 	//What is our potential +Combat score.
