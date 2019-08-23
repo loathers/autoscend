@@ -263,6 +263,7 @@ void initializeSettings()
 	glover_initializeSettings();
 	bat_initializeSettings();
 	tcrs_initializeSettings();
+	koe_initializeSettings();
 
 	set_property("sl_doneInitialize", my_ascensions());
 }
