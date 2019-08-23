@@ -15055,14 +15055,6 @@ void safe_preference_reset_wrapper(int level)
 		finally
 		{
 			restoreAllSettings();
-			restoreSetting("autoSatisfyWithCoinmasters");
-			restoreSetting("autoSatisfyWithNPCs");
-			restoreSetting("removeMalignantEffects");
-			restoreSetting("kingLiberatedScript");
-			restoreSetting("afterAdventureScript");
-			restoreSetting("betweenAdventureScript");
-			restoreSetting("betweenBattleScript");
-			restoreSetting("counterScript");
 		}
 	}
 }
