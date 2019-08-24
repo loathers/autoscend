@@ -1704,6 +1704,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		abort("We shouldn't be calling loadConsumables() in Dark Gyffte. Please report this.");
 	}
 
+	cli_execute("refresh inv");
+
 	if ((item_amount($item[unremarkable duffel bag]) > 0) && (pulls_remaining() != -1))
 	{
 		use(item_amount($item[unremarkable duffel bag]), $item[unremarkable duffel bag]);
@@ -1769,7 +1771,13 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				large_owned[it] = min(max(item_amount(it) - sl_reserveAmount(it), 0), howmany);
 			}
-			if (creatable_amount(it) > 0)
+			boolean[item] CRAFTABLE_BLACKLIST = $items[
+					// If we have 2 sticks of firewood, the current knapsack-solver
+					// tries to get one of everything. So we blacklist everything other
+					// than the 'campfire hot dog'
+				campfire beans, campfire coffee, campfire baked potato, campfire stew, campfire s'more,
+			];
+			if (!(CRAFTABLE_BLACKLIST contains it) && creatable_amount(it) > 0)
 			{
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - sl_reserveCraftAmount(it)));
 			}
