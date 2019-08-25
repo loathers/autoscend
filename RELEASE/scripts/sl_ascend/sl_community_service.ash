@@ -942,7 +942,7 @@ boolean LA_cs_communityService()
 					{
 						backupSetting("choiceAdventure1115", 6);
 					}
-				
+
 					slAdv(1, $location[VYKEA], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[hot]))
@@ -2906,7 +2906,7 @@ boolean cs_witchess()
 		{
 			if(my_mp() > 100)
 			{
-				goal = "shield"; 
+				goal = "shield";
 			}
 		}
 */
@@ -3393,7 +3393,7 @@ boolean cs_eat_spleen()
 	}
 
 	int oldSpleenUse = my_spleen_use();
-	while((my_spleen_use() < 12) && ((item_amount($item[Unconscious Collective Dream Jar]) + item_amount($item[Grim Fairy Tale]) + item_amount($item[Powdered Gold]) + item_amount($item[Groose Grease]) + item_amount($item[Agua De Vida])) > 0))
+	while((my_spleen_use() < 12) && ((item_amount($item[Unconscious Collective Dream Jar]) + item_amount($item[Grim Fairy Tale]) + item_amount($item[Powdered Gold]) + item_amount($item[Groose Grease])) > 0 || (item_amount($item[Agua De Vida]) > 0 && my_level() >= 4 )))
 	{
 		if((item_amount($item[Agua De Vida]) > 0) && (my_level() >= 4))
 		{
@@ -3543,7 +3543,7 @@ boolean cs_eat_stuff(int quest)
 			}
 
 			int questCost = get_cs_questCost(quest);
-			
+
 			if((fullness_left() >= 2) && (questCost > 20))
 			{
 				eatFancyDog("junkyard dog");
@@ -4933,4 +4933,3 @@ boolean cs_preTurnStuff(int curQuest)
 
 	return false;
 }
-
