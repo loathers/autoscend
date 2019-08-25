@@ -2483,6 +2483,9 @@ boolean instakillable(monster mon)
 		// ancient protector spirits
 		Protector Spectre, ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley),
 
+		// Macguffin snakes
+		Batsnake, Frozen Solid Snake, Burning Snake of Fire, The Snake With Like Ten Heads, The Frattlesnake, Snakeleton,
+
 		// Voting monsters
 		slime blob, terrible mutant, government bureaucrat, angry ghost, annoyed snake,
 

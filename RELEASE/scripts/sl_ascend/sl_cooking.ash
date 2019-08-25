@@ -71,8 +71,13 @@ float expectedAdventuresFrom(item it)
 {
 	if(it == $item[magical sausage]) return 1;
 
-	if ($items[campfire baked potato, campfire beans, campfire coffee, campfire hot dog, campfire s\'more, campfire stew] contains it) {
+	if ($items[campfire baked potato, campfire beans, campfire coffee] contains it)
+	{
 		return 4.5; // I guess?
+	}
+	if ($items[campfire hot dog, campfire s\'more, campfire stew] contains it)
+	{
+		return 3.5; // I guess?
 	}
 
 	float parse()
@@ -1775,7 +1780,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 					// If we have 2 sticks of firewood, the current knapsack-solver
 					// tries to get one of everything. So we blacklist everything other
 					// than the 'campfire hot dog'
-				campfire beans, campfire coffee, campfire baked potato, campfire stew, campfire s'more,
+				campfire hot dog, campfire beans, campfire coffee, campfire stew, campfire s'more,
 			];
 			if (!(CRAFTABLE_BLACKLIST contains it) && creatable_amount(it) > 0)
 			{
