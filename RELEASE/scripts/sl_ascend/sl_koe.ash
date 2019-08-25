@@ -9,7 +9,7 @@ boolean koe_initializeSettings()
 {
 	if(in_koe())
 	{
-		set_property("sl_getStarKey", false);
+		set_property("sl_getStarKey", true);
 		set_property("sl_day1_cobb", "finished");
 		set_property("sl_bean", true);
 		set_property("sl_airship", "finished");
