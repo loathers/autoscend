@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19482; // potion of temporary gr8ness rename
+since r19506; // 'Refactor Tower Door quest script', but really for KoE support
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
@@ -1263,8 +1263,7 @@ boolean warAdventure()
 
 	if(in_koe())
 	{
-		// TODO: When version bumped, change to $location[The Exploaded Battlefield]
-		if(!slAdv(1, 533.to_location()))
+		if(!slAdv(1, $location[The Exploaded Battlefield]))
 		{
 			if(!get_property("sl_hippyInstead").to_boolean())
 			{
