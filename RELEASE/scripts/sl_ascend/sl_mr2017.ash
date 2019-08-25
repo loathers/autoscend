@@ -1374,7 +1374,7 @@ boolean asdonAutoFeed(int goal)
 	}
 
 	int meat_cutoff = 7000;
-	if((get_fuel() < goal) && (my_meat() > meat_cutoff) && isGeneralStoreAvailable())
+	if((get_fuel() < goal) && (my_meat() > meat_cutoff) && isGeneralStoreAvailable() && !in_koe())
 	{
 		int want = ((goal + 5) - get_fuel()) / 6;
 		want = min(3 + ((my_meat() - meat_cutoff) / 1000), want);
@@ -1388,7 +1388,7 @@ boolean asdonAutoFeed(int goal)
 		}
 	}
 
-	if((get_fuel() < goal) && (my_meat() > 3500) && (npc_price($item[wad of dough]) != 0) && isGeneralStoreAvailable())
+	if((get_fuel() < goal) && (my_meat() > 3500) && (npc_price($item[wad of dough]) != 0) && isGeneralStoreAvailable() && !in_koe())
 	{
 		int want = ((goal + 5) - get_fuel()) / 6;
 		if(want > 0)

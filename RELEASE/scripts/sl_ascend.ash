@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19482; // potion of temporary gr8ness rename
+since r19506; // 'Refactor Tower Door quest script', but really for KoE support
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
@@ -263,6 +263,7 @@ void initializeSettings()
 	glover_initializeSettings();
 	bat_initializeSettings();
 	tcrs_initializeSettings();
+	koe_initializeSettings();
 
 	set_property("sl_doneInitialize", my_ascensions());
 }
@@ -900,10 +901,10 @@ item[monster] catBurglarHeistDesires()
 			wannaHeists[$monster[Burly Sidekick]] = $item[Mohawk wig];
 	}
 
-	foreach mon, it in wannaHeists
-	{
-		sl_debug_print("catBurglarHeistDesires(): Want to heist a " + it + " from a " + mon);
-	}
+	// foreach mon, it in wannaHeists
+	// {
+	//	sl_debug_print("catBurglarHeistDesires(): Want to heist a " + it + " from a " + mon);
+	// }
 	return wannaHeists;
 }
 
@@ -1262,7 +1263,7 @@ boolean warAdventure()
 
 	if(in_koe())
 	{
-		if(!slAdv(1, 533.to_location()))
+		if(!slAdv(1, $location[The Exploaded Battlefield]))
 		{
 			if(!get_property("sl_hippyInstead").to_boolean())
 			{
@@ -1834,6 +1835,10 @@ int handlePulls(int day)
 
 boolean doVacation()
 {
+	if(in_koe())
+	{
+		return false;
+	}
 	if(my_primestat() == $stat[Muscle])
 	{
 		set_property("choiceAdventure793", "1");
@@ -2493,16 +2498,6 @@ boolean doBedtime()
 		}
 	}
 
-	restoreAllSettings();
-	restoreSetting("autoSatisfyWithCoinmasters");
-	restoreSetting("autoSatisfyWithNPCs");
-	restoreSetting("removeMalignantEffects");
-	restoreSetting("kingLiberatedScript");
-	restoreSetting("afterAdventureScript");
-	restoreSetting("betweenAdventureScript");
-	restoreSetting("betweenBattleScript");
-	restoreSetting("counterScript");
-
 	if(get_property("sl_priorCharpaneMode").to_int() == 1)
 	{
 		print("Resuming Compact Character Mode.");
@@ -2658,7 +2653,7 @@ boolean doBedtime()
 		{
 			need = 4;
 		}
-		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]))
+		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isGeneralStoreAvailable())
 		{
 			cli_execute("make " + $item[Chrome Sword]);
 		}
@@ -2678,7 +2673,7 @@ boolean doBedtime()
 		print("In TCRS: Items are variable, skipping End Of Day crafting", "red");
 		print("Consider manually using your "+freeCrafts()+" free crafts", "red");
 	}
-	else if((my_daycount() <= 2) && (freeCrafts() > 0))
+	else if((my_daycount() <= 2) && (freeCrafts() > 0) && my_adventures() > 0)
 	{
 		// Check for rapid prototyping
 		while((freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && (item_amount($item[Cranberries]) > 0) && (item_amount($item[Cranberry Cordial]) < 2) && have_skill($skill[Advanced Saucecrafting]))
@@ -3337,6 +3332,7 @@ boolean questOverride()
 	if((get_property("questL11MacGuffin") == "finished") && (get_property("sl_mcmuffin") != "finished"))
 	{
 		print("Found completed McMuffin (11)");
+		visit_url("diary.php?whichpage=1");
 		set_property("sl_mcmuffin", "finished");
 	}
 
@@ -4009,7 +4005,9 @@ boolean L11_palindome()
 		visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 	}
 
-	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()))
+	boolean slow_acquire_stew = in_koe();
+
+	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()) && !slow_acquire_stew)
 	{
 		if(item_amount($item[Wet Stunt Nut Stew]) == 0)
 		{
@@ -4214,7 +4212,13 @@ boolean L13_towerNSNagamar()
 		{
 			pullXWhenHaveY($item[Disassembled Clover], 1, 0);
 		}
-		if(cloversAvailable() > 0)
+		if(in_hardcore() && in_koe())
+		{
+			// TODO: Improve support
+			abort("In Kingdom of Exploathing: Please buy a Wand of Nagamar from the bazaar and re-run.");
+			return false;
+		}
+		else if(cloversAvailable() > 0)
 		{
 			cloverUsageInit();
 			slAdvBypass(322, $location[The Castle in the Clouds in the Sky (Basement)]);
@@ -8231,6 +8235,7 @@ boolean LX_malware()
 
 boolean LX_getDigitalKey()
 {
+	if(in_koe()) { return false; }
 	if(contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
 	{
 		return false;
@@ -8493,7 +8498,8 @@ boolean L10_topFloor()
 	}
 
 	print("Castle Top Floor", "blue");
-	set_property("choiceAdventure677", 1);
+	set_property("choiceAdventure677", 1); // Copper Feel: submit model airship
+	set_property("choiceAdventure680", 1); // Mercy adventure: Are you a Man or a Mouse?
 	if(item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
 	{
 		set_property("choiceAdventure675", 2);
@@ -8723,7 +8729,7 @@ boolean L10_basement()
 			pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
 			if(!possessEquipment($item[Amulet of Extreme Plot Significance]))
 			{
-				if($location[The Penultimate Fantasy Airship].turns_spent >= 45)
+				if($location[The Penultimate Fantasy Airship].turns_spent >= 45 || in_koe())
 				{
 					print("Well, we don't seem to be able to find an Amulet...", "red");
 					print("I suppose we will get the Massive Dumbbell... Beefcake!", "red");
@@ -10838,6 +10844,12 @@ boolean LX_bitchinMeatcar()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		print("The desert exploded, so no need to build a meatcar...");
+		set_property("lastDesertUnlock", my_ascensions());
+		return false;
+	}
 
 	int meatRequired = 100;
 	if(item_amount($item[Meat Stack]) > 0)
@@ -11629,6 +11641,8 @@ boolean LX_handleSpookyravenFirstFloor()
 
 boolean L5_getEncryptionKey()
 {
+	if (in_koe()) return false;
+
 	if(item_amount($item[11-inch knob sausage]) == 1)
 	{
 		visit_url("guild.php?place=challenge");
@@ -13366,10 +13380,16 @@ boolean L11_mcmuffinDiary()
 
 	print("Getting the McMuffin Diary", "blue");
 	doVacation();
-	use(item_amount($item[Your Father\'s Macguffin Diary]), $item[your father\'s macguffin diary]);
-	use(item_amount($item[Copy of a Jerk Adventurer\'s Father\'s Diary]), $item[Copy of a Jerk Adventurer\'s Father\'s Diary]);
-	set_property("sl_mcmuffin", "start");
-	return true;
+	foreach diary in $items[Your Father\'s Macguffin Diary, Copy of a Jerk Adventurer\'s Father\'s Diary]
+	{
+		if(item_amount(diary) > 0)
+		{
+			use(item_amount(diary), diary);
+			set_property("sl_mcmuffin", "start");
+			return true;
+		}
+	}
+	return false;
 }
 
 boolean L11_forgedDocuments()
@@ -13653,7 +13673,7 @@ boolean L8_trapperGroar()
 		canGroar = true;
 	}
 
-	// TODO: remove this when killing Sharonna updates quest status
+	// Just in case
 	cli_execute("refresh quests");
 
 	//What is our potential +Combat score.
@@ -14765,7 +14785,7 @@ boolean doTasks()
 
 	if(in_koe())
 	{
-		if((get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333))
+		if(get_property("sl_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333))
 		{
 			handleFamiliar("item");
 			warOutfit(false);
@@ -15017,6 +15037,27 @@ void print_help_text()
 	print_html("");
 }
 
+void safe_preference_reset_wrapper(int level)
+{
+	if(level <= 0)
+	{
+		sl_begin();
+	}
+	else
+	{
+		boolean succeeded;
+		try
+		{
+			safe_preference_reset_wrapper(level-1);
+			succeeded = true;
+		}
+		finally
+		{
+			restoreAllSettings();
+		}
+	}
+}
+
 void main()
 {
 	print_help_text();
@@ -15026,6 +15067,6 @@ void main()
 	}
 	finally
 	{
-		sl_begin();
+		safe_preference_reset_wrapper(4);
 	}
 }
