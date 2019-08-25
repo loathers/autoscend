@@ -2654,7 +2654,7 @@ boolean doBedtime()
 		{
 			need = 4;
 		}
-		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]))
+		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isGeneralStoreAvailable())
 		{
 			cli_execute("make " + $item[Chrome Sword]);
 		}

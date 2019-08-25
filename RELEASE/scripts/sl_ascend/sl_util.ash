@@ -2410,6 +2410,10 @@ boolean isGeneralStoreAvailable()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		return false;
+	}
 	return true;
 }
 
