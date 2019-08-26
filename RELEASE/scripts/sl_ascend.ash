@@ -4738,6 +4738,11 @@ boolean L13_towerNSTower()
 		cli_execute("scripts/postsool.ash");
 		doHottub();
 
+		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
+		if(n_healing_items < 5)
+		{
+			abort("We only have " + n_healing_items + "healing items, I'm not sure we can do the shadow.");
+		}
 		slAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;
 	}
