@@ -121,6 +121,7 @@ void initializeSettings()
 	set_property("sl_blackmap", "");
 	set_property("sl_boopeak", "");
 	set_property("sl_breakstone", get_property("sl_pvpEnable").to_boolean());
+	set_property("sl_bruteForcePalindome", true);
 	set_property("sl_cabinetsencountered", 0);
 	set_property("sl_castlebasement", "");
 	set_property("sl_castleground", "");
@@ -4005,9 +4006,7 @@ boolean L11_palindome()
 		visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 	}
 
-	boolean slow_acquire_stew = in_koe();
-
-	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()) && !slow_acquire_stew)
+	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()) && !get_property("sl_bruteForcePalindome").to_boolean())
 	{
 		if(item_amount($item[Wet Stunt Nut Stew]) == 0)
 		{
@@ -4150,12 +4149,21 @@ boolean L11_palindome()
 		}
 		if(internalQuestStatus("questL11Palindome") >= 2)
 		{
-			print("Palindome failure:", "red");
-			print("You probably just need to get a Mega Gem to fix this.", "red");
-			abort("We have made too much progress in the Palindome and should not be here.");
+			if(!get_property("sl_bruteForcePalindome").to_boolean())
+			{
+				print("Palindome failure:", "red");
+				print("You probably just need to get a Mega Gem to fix this.", "red");
+				abort("We have made too much progress in the Palindome and should not be here.");
+			}
+			else
+			{
+				print("We need wet stunt nut stew to get the Mega Gem, but I've been told to get it via the mercy adventure.", "red");
+				print("Set sl_bruteForcePalindome=false to try to get a stunt nut stew", "red");
+				print("(We typically only set this option in hardcore Kingdom of Exploathing, in which the White Forest isn't available)", "red");
+			}
 		}
 
-		if((have_effect($effect[On The Trail]) > 0) && !($monsters[Bob Racecar, Racecar Bob] contains get_property("olfactedMonster").to_monster()))
+		if((have_effect($effect[On The Trail]) > 0) && !($monsters[Bob Racecar, Racecar Bob] contains get_property("olfactedMonster").to_monster()) && internalQuestStatus("questL11Palindome") < 2)
 		{
 			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 			{

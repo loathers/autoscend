@@ -404,9 +404,14 @@ generic_t zone_combatMod(location loc)
 		value = 25;
 		break;
 	case $location[Inside the Palindome]:
-		if((item_amount($item[Photograph Of A Red Nugget]) == 0) || (item_amount($item[Photograph Of An Ostrich Egg]) == 0) || (item_amount($item[Photograph Of God]) == 0))
+		if(((item_amount($item[Photograph Of A Red Nugget]) == 0) || (item_amount($item[Photograph Of An Ostrich Egg]) == 0) || (item_amount($item[Photograph Of God]) == 0)) && internalQuestStatus("questL11Palindome") <= 2)
 		{
 			value = -70;
+		}
+		else if (internalQuestStatus("questL11Palindome") <= 4)
+		{
+			print("new code", "red");
+			value = 25;
 		}
 		break;
 	case $location[Whitey\'s Grove]:
