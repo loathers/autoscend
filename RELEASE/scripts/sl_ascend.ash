@@ -13081,7 +13081,7 @@ boolean L11_redZeppelin()
 		return slAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
 	}
 
-	if(cloversAvailable() > 0 && get_property("zeppelinProtestors").to_int() < 80)
+	if(cloversAvailable() > 0 && get_property("zeppelinProtestors").to_int() < 75)
 	{
 		if(cloversAvailable() >= 3 && get_property("sl_useWishes").to_boolean())
 		{
