@@ -7302,7 +7302,8 @@ boolean L11_defeatEd()
 		x = x + 1;
 		print("Hello Ed #" + x + " give me McMuffin please.", "blue");
 		slAdv(1, $location[The Lower Chambers]);
-		if(have_effect($effect[Beaten Up]) > 0)
+		item HOLY_MACGUFFIN = $item[2334];
+		if(have_effect($effect[Beaten Up]) > 0 && item_amount(HOLY_MACGUFFIN) == 0)
 		{
 			set_property("sl_disableAdventureHandling", false);
 			abort("Got Beaten Up by Ed the Undying - generally not safe to try to recover.");
