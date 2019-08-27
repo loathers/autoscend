@@ -1931,6 +1931,9 @@ boolean LA_cs_communityService()
 			{
 				currentCost = currentCost - 1;
 			}
+			if(canTrySaberTrickMeteorShower()){
+				currentCost = currentCost - 4;
+			}
 
 			int needCost = lastQuestCost + currentCost;
 
@@ -2021,6 +2024,9 @@ boolean LA_cs_communityService()
 			if(is_unrestricted($item[Clan Pool Table]) && (have_effect($effect[Billiards Belligerence]) == 0))
 			{
 				visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
+			}
+			if(canTrySaberTrickMeteorShower() && have_effect($effect[Meteor Showered]) == 0){
+				trySaberTrickMeteorShower();
 			}
 
 			familiar toFam = $familiar[Cocoabo];
@@ -2167,6 +2173,10 @@ boolean LA_cs_communityService()
 				}
 			}
 
+			if(canTrySaberTrickMeteorShower() && have_effect($effect[Meteor Showered]) == 0){
+				trySaberTrickMeteorShower();
+			}
+
 			if(do_cs_quest(6))
 			{
 				curQuest = 0;
@@ -2232,6 +2242,10 @@ boolean LA_cs_communityService()
 					restoreSetting("choiceAdventure1119");
 					set_property("choiceAdventure1119", "");
 					return true;
+				}
+
+				if(canTrySaberTrickMeteorShower() && have_effect($effect[Meteor Showered]) == 0){
+					trySaberTrickMeteorShower();
 				}
 
 				if((have_effect($effect[Half-Blooded]) > 0) || (have_effect($effect[Half-Drained]) > 0) || (have_effect($effect[Bruised]) > 0) || (have_effect($effect[Relaxed Muscles]) > 0) || (have_effect($effect[Hypnotized]) > 0) || (have_effect($effect[Bad Haircut]) > 0))
@@ -4932,4 +4946,26 @@ boolean cs_preTurnStuff(int curQuest)
 	LX_dolphinKingMap();
 
 	return false;
+}
+
+boolean canTrySaberTrickMeteorShower(){
+	if(sl_meteorShowersAvailable() == 0 || sl_saberChargesAvailable() == 0){
+		return false
+	}
+
+	return true;
+}
+
+// use meteor shower in combat, then cosplay saber to flee and keep the buff (+200% weapon/spell dmg and +20 lb familiar)
+boolean trySaberTrickMeteorShower(){
+	if(!canTrySaberTrickMeteorShower()){
+		return false
+	}
+
+	if(equipped_amount($item[Fourth of May Cosplay Saber]) == 0 && !slEquip($item[Fourth of May Cosplay Saber])){
+		return false
+	}
+
+	//saber should be equipped with use the force and meteorshower charges available
+	return slAdv(1, $location[The Dire Warren], "sl_saberTrickMeteorShowerCombatHandler");
 }

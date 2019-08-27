@@ -418,6 +418,7 @@ boolean sl_change_mcd(int mcd);								//Defined in sl_ascend/sl_util.ash
 string sl_combatHandler(int round, string opp, string text);//Defined in sl_ascend/sl_combat.ash
 boolean sl_doPrecinct();									//Defined in sl_ascend/sl_mr2016.ash
 string sl_edCombatHandler(int round, string opp, string text);//Defined in sl_ascend/sl_combat.ash
+string sl_saberTrickMeteorShowerCombatHandler(int round, string opp, string text); //Defined in sl_ascend/sl_combat.ash
 boolean sl_floundryAction();								//Defined in sl_ascend/sl_clan.ash
 boolean sl_floundryUse();									//Defined in sl_ascend/sl_clan.ash
 boolean sl_floundryAction(item it);							//Defined in sl_ascend/sl_clan.ash
@@ -483,6 +484,8 @@ boolean do_cs_quest(int quest);								//Defined in sl_ascend/sl_community_servi
 boolean do_cs_quest(string quest);							//Defined in sl_ascend/sl_community_service.ash
 boolean cs_preTurnStuff(int curQuest);						//Defined in sl_ascend/sl_community_service.ash
 void set_cs_questListFast(int[int] fast);					//Defined in sl_ascend/sl_community_service.ash
+boolean canTrySaberTrickMeteorShower();           //Defined in sl_ascend/sl_community_service.ash
+boolean trySaberTrickMeteorShower();              //Defined in sl_ascend/sl_community_service.ash
 
 boolean dealWithMilkOfMagnesium(boolean useAdv);			//Defined in sl_ascend/sl_cooking.ash
 void debugMaximize(string req, int meat);					//Defined in sl_ascend/sl_util.ash
@@ -700,6 +703,11 @@ boolean makeGeniePocket();									//Defined in sl_ascend/sl_mr2017.ash
 boolean spacegateVaccineAvailable();						//Defined in sl_ascend/sl_mr2017.ash
 boolean spacegateVaccineAvailable(effect ef);				//Defined in sl_ascend/sl_mr2017.ash
 boolean spacegateVaccine(effect ef);						//Defined in sl_ascend/sl_mr2017.ash
+int sl_meteorShowersUsed();                     //Defined in sl_ascend/sl_mr2017.ash
+int sl_meteorShowersAvailable();                //Defined in sl_ascend/sl_mr2017.ash
+int sl_macroMeteoritesUsed();                   //Defined in sl_ascend/sl_mr2017.ash
+int sl_macrometeoritesAvailable();              //Defined in sl_ascend/sl_mr2017.ash
+int sl_meteoriteAdesUsed()();                   //Defined in sl_ascend/sl_mr2017.ash
 boolean handleBarrelFullOfBarrels(boolean daily);			//Defined in sl_ascend/sl_util.ash
 boolean handleCopiedMonster(item itm);						//Defined in sl_ascend/sl_util.ash
 boolean handleCopiedMonster(item itm, string option);		//Defined in sl_ascend/sl_util.ash
@@ -1092,4 +1100,3 @@ location[int] zones_available();							//Defined in sl_ascend/sl_zone.ash
 monster[int] mobs_available();								//Defined in sl_ascend/sl_zone.ash
 item[int] drops_available();								//Defined in sl_ascend/sl_zone.ash
 item[int] hugpocket_available();							//Defined in sl_ascend/sl_zone.ash
-

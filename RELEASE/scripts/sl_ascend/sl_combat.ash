@@ -747,7 +747,7 @@ string sl_combatHandler(int round, string opp, string text)
 			return "item " + $item[Power Pill];
 		}
 	}
-	
+
 	if((my_familiar() == $familiar[Pair of Stomping Boots]) && (get_property("_bootStomps").to_int()) < 7 && instakillable(enemy) && get_property("bootsCharged").to_boolean())
 	{
 		if(!($monsters[Dairy Goat, Lobsterfrogman, Writing Desk] contains enemy) && !($locations[The Laugh Floor, Infernal Rackets Backstage] contains my_location())  )
@@ -3339,7 +3339,16 @@ string sl_edCombatHandler(int round, string opp, string text)
 	return "skill " + $skill[Mild Curse];
 }
 
-
+string sl_saberTrickMeteorShowerCombatHandler(int round, string opp, string text){
+	if(canUse($skill[Use the Force]) && sl_saberChargesAvailable() > 0 && sl_have_skill($skill[Meteor Lore])){
+		if(canUse($skill[Meteor Shower])){
+			return useSkill($skill[Meteor Shower]));
+		} else {
+			return sl_combatSaberYR();
+		}
+	}
+	abort("Unable to perform saber trick (meteor shower)");
+}
 
 monster ocrs_helper(string page)
 {
