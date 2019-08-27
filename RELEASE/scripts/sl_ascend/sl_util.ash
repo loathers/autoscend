@@ -5240,6 +5240,12 @@ location solveDelayZone()
 			index--;
 		}
 	}
+
+	// These are locations that aren't 1:1 turn savings, but can still be useful
+	if(zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
+	{
+		burnZone = $location[The Arid\, Extra-Dry Desert];
+	}
 	return burnZone;
 }
 

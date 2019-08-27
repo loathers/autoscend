@@ -674,6 +674,9 @@ boolean basicFamiliarOverrides()
 boolean LX_burnDelay()
 {
 	location burnZone = solveDelayZone();
+	boolean wannaVote = sl_voteMonster(true);
+	boolean wannaDigitize = isOverdueDigitize();
+	boolean wannaSausage = sl_sausageGoblin();
 	if(burnZone != $location[none])
 	{
 		if(sl_voteMonster(true))
@@ -700,6 +703,12 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
+	}
+	else if(wannaVote || wannaDigitize || wannaSausage)
+	{
+		if(wannaVote) print("Had overdue voting monster but couldn't find a zone to burn delay", "red");
+		if(wannaDigitize) print("Had overdue digitize but couldn't find a zone to burn delay", "red");
+		if(wannaSausage) print("Had overdue sausage but couldn't find a zone to burn delay", "red");
 	}
 	return false;
 }
