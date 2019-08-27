@@ -8512,27 +8512,43 @@ boolean L10_topFloor()
 	}
 
 	print("Castle Top Floor", "blue");
-	set_property("choiceAdventure677", 1); // Copper Feel: submit model airship
 	set_property("choiceAdventure680", 1); // Mercy adventure: Are you a Man or a Mouse?
 	if(item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
 	{
+		print("We have a drum 'n' bass record and are willing to use it!", "green");
+		// Copper Feel: Move to Mellon Collie
+		set_property("choiceAdventure677", "4");
+		// Mellon Collie: Turn in record, complete quest
 		set_property("choiceAdventure675", 2);
 	}
 	else
 	{
+		// Mellon Collie: Move to Gimme Steam
 		set_property("choiceAdventure675", 4);
+		// Copper feel: Turn in airship (will fight otherwise)
+		set_property("choiceAdventure677", "1");
 	}
-	set_property("choiceAdventure676", 4);
-
-	//3 is Only available after completing Giant Trash Quest? We only get choices 1, 2, 4(676)
-	set_property("choiceAdventure678", 3);
-
 	if((item_amount($item[mohawk wig]) == 0) && !in_hardcore())
 	{
 		pullXWhenHaveY($item[Mohawk Wig], 1, 0);
 	}
 
-	set_property("choiceAdventure678", 1);
+	if(!possessEquipment($item[mohawk wig]) && 0 == item_amount($item[drum 'n' bass 'n' drum 'n' bass record]))
+	{
+		print("We don't have a mohawk wig, let's try to get a drum 'n' bass record...", "green");
+		// Yeah, You're for Me, Punk Rock Giant: Move to Flavor of a Raver (676)
+		set_property("choiceAdventure678", 4);
+		// Floor of a Raver: Acquire drum 'n' bass 'n' drum 'n' bass record
+		set_property("choiceAdventure676", 3);
+	}
+	else
+	{
+		// Floor of a Raver: Move to "Yeah, You're for Me, Punk Rock Giant (678)"
+		set_property("choiceAdventure676", 4);
+		// Yeah, You're for Me, Punk Rock Giant: Get the Punk's Attention, complete quest
+		set_property("choiceAdventure678", 1);
+	}
+
 	if(my_class() == $class[Ed])
 	{
 		set_property("choiceAdventure679", 2);
@@ -8553,11 +8569,12 @@ boolean L10_topFloor()
 		set_property("sl_castletop", "finished");
 		council();
 	}
-	if(contains_text(get_property("lastEncounter"), "Copper Feel"))
+	if(possessEquipment($item[mohawk wig]) && contains_text(get_property("lastEncounter"), "Copper Feel"))
 	{
 		set_property("sl_castletop", "finished");
 		council();
 	}
+
 	return true;
 }
 
