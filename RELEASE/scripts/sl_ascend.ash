@@ -121,7 +121,7 @@ void initializeSettings()
 	set_property("sl_blackmap", "");
 	set_property("sl_boopeak", "");
 	set_property("sl_breakstone", get_property("sl_pvpEnable").to_boolean());
-	set_property("sl_bruteForcePalindome", true);
+	set_property("sl_bruteForcePalindome", false);
 	set_property("sl_cabinetsencountered", 0);
 	set_property("sl_castlebasement", "");
 	set_property("sl_castleground", "");
@@ -7325,8 +7325,7 @@ boolean L11_defeatEd()
 		x = x + 1;
 		print("Hello Ed #" + x + " give me McMuffin please.", "blue");
 		slAdv(1, $location[The Lower Chambers]);
-		item HOLY_MACGUFFIN = $item[2334];
-		if(have_effect($effect[Beaten Up]) > 0 && item_amount(HOLY_MACGUFFIN) == 0)
+		if(have_effect($effect[Beaten Up]) > 0 && item_amount($item[[2334]Holy MacGuffin]) == 0)
 		{
 			set_property("sl_disableAdventureHandling", false);
 			abort("Got Beaten Up by Ed the Undying - generally not safe to try to recover.");
@@ -8535,7 +8534,7 @@ boolean L10_topFloor()
 	{
 		print("We have a drum 'n' bass record and are willing to use it!", "green");
 		// Copper Feel: Move to Mellon Collie
-		set_property("choiceAdventure677", "4");
+		set_property("choiceAdventure677", 4);
 		// Mellon Collie: Turn in record, complete quest
 		set_property("choiceAdventure675", 2);
 	}
@@ -8544,7 +8543,7 @@ boolean L10_topFloor()
 		// Mellon Collie: Move to Gimme Steam
 		set_property("choiceAdventure675", 4);
 		// Copper feel: Turn in airship (will fight otherwise)
-		set_property("choiceAdventure677", "1");
+		set_property("choiceAdventure677", 1);
 	}
 	if((item_amount($item[mohawk wig]) == 0) && !in_hardcore())
 	{
