@@ -1707,7 +1707,7 @@ boolean makeGenieCombat(monster mon, string option)
 
 	slAdvBypass(5, pages, $location[Noob Cave], option);
 
-	if(get_property("lastEncounter") != mon)
+	if(get_property("lastEncounter") != mon && get_property("lastEncounter") != "Using the Force")
 	{
 		print("Wish: '" + wish + "' failed", "red");
 		return false;
