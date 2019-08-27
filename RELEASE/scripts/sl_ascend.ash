@@ -3976,6 +3976,14 @@ boolean L11_palindome()
 		return true;
 	}
 
+	// TODO: Mafia doesn't believe you can adventure in the Palindome in KoE
+	// until questL11Palindome is not 'unstarted'. This is a filthy hack to
+	// bypass this that SHOULD BE REMOVED WHEN MAFIA SORTS THIS OUT.
+	if(in_koe() && get_property("questL11Palindome") == "unstarted")
+	{
+		set_property("questL11Palindome", "started");
+	}
+
 	if(!possessEquipment($item[Talisman O\' Namsilat]))
 	{
 		return false;
