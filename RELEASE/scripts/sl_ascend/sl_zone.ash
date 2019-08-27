@@ -408,9 +408,8 @@ generic_t zone_combatMod(location loc)
 		{
 			value = -70;
 		}
-		else if (internalQuestStatus("questL11Palindome") <= 4)
+		else if (3 <= internalQuestStatus("questL11Palindome") && internalQuestStatus("questL11Palindome") <= 4)
 		{
-			print("new code", "red");
 			value = 25;
 		}
 		break;
