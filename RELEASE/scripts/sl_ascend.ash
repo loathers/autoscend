@@ -2283,6 +2283,7 @@ boolean dailyEvents()
 	while(sl_doPrecinct());
 	handleBarrelFullOfBarrels(true);
 
+	sl_campawayGrabBuffs();
 	kgb_getMartini();
 	fightClubNap();
 	fightClubStats();

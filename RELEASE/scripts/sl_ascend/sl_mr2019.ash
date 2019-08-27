@@ -632,3 +632,23 @@ boolean sl_beachUseFreeCombs() {
 	cli_execute("CombBeach free");
 	return true;
 }
+
+boolean sl_campawayAvailable()
+{
+	return get_property("getawayCampsiteUnlocked").to_boolean();
+}
+
+boolean sl_campawayGrabBuffs()
+{
+	if(!sl_campawayAvailable())
+	{
+		return false;
+	}
+
+	int lim = 4 - get_property("_campAwaySmileBuffs").to_int();
+	for (int i=0; i < lim; i++)
+	{
+		visit_url("place.php?whichplace=campaway&action=campaway_sky");
+	}
+	return true;
+}
