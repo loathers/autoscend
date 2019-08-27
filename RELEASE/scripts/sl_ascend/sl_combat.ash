@@ -503,7 +503,7 @@ string sl_combatHandler(int round, string opp, string text)
 		{
 			return "item " + $item[Rain-Doh Indigo Cup];
 		}
-		return "skill something I don't have, I just want to abort";
+		abort("Uh oh, I ran out of gauze garters and filthy poultices");
 	}
 
 	if(enemy == $monster[Wall Of Meat])
