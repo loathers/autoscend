@@ -4175,7 +4175,7 @@ boolean L11_palindome()
 
 		slEquip($slot[acc3], $item[Talisman o' Namsilat]);
 		slAdv(1, $location[Inside the Palindome]);
-		if(($location[Inside the Palindome].turns_spent > 30) && (sl_my_path() != "Pocket Familiars") && (sl_my_path() != "G-Lover"))
+		if(($location[Inside the Palindome].turns_spent > 30) && (sl_my_path() != "Pocket Familiars") && (sl_my_path() != "G-Lover") && !in_koe())
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}
