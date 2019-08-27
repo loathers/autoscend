@@ -4950,7 +4950,7 @@ boolean cs_preTurnStuff(int curQuest)
 
 boolean canTrySaberTrickMeteorShower(){
 	if(sl_meteorShowersAvailable() == 0 || sl_saberChargesAvailable() == 0){
-		return false
+		return false;
 	}
 
 	return true;
@@ -4959,11 +4959,11 @@ boolean canTrySaberTrickMeteorShower(){
 // use meteor shower in combat, then cosplay saber to flee and keep the buff (+200% weapon/spell dmg and +20 lb familiar)
 boolean trySaberTrickMeteorShower(){
 	if(!canTrySaberTrickMeteorShower()){
-		return false
+		return false;
 	}
 
 	if(equipped_amount($item[Fourth of May Cosplay Saber]) == 0 && !slEquip($item[Fourth of May Cosplay Saber])){
-		return false
+		return false;
 	}
 
 	//saber should be equipped with use the force and meteorshower charges available

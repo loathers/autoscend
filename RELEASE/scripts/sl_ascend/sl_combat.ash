@@ -3342,12 +3342,13 @@ string sl_edCombatHandler(int round, string opp, string text)
 string sl_saberTrickMeteorShowerCombatHandler(int round, string opp, string text){
 	if(canUse($skill[Use the Force]) && sl_saberChargesAvailable() > 0 && sl_have_skill($skill[Meteor Lore])){
 		if(canUse($skill[Meteor Shower])){
-			return useSkill($skill[Meteor Shower]));
+			return useSkill($skill[Meteor Shower]);
 		} else {
 			return sl_combatSaberYR();
 		}
 	}
 	abort("Unable to perform saber trick (meteor shower)");
+	return "";
 }
 
 monster ocrs_helper(string page)

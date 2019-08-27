@@ -707,7 +707,7 @@ int sl_meteorShowersUsed();                     //Defined in sl_ascend/sl_mr2017
 int sl_meteorShowersAvailable();                //Defined in sl_ascend/sl_mr2017.ash
 int sl_macroMeteoritesUsed();                   //Defined in sl_ascend/sl_mr2017.ash
 int sl_macrometeoritesAvailable();              //Defined in sl_ascend/sl_mr2017.ash
-int sl_meteoriteAdesUsed()();                   //Defined in sl_ascend/sl_mr2017.ash
+int sl_meteoriteAdesUsed();                   //Defined in sl_ascend/sl_mr2017.ash
 boolean handleBarrelFullOfBarrels(boolean daily);			//Defined in sl_ascend/sl_util.ash
 boolean handleCopiedMonster(item itm);						//Defined in sl_ascend/sl_util.ash
 boolean handleCopiedMonster(item itm, string option);		//Defined in sl_ascend/sl_util.ash
