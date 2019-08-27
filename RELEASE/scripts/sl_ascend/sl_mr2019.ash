@@ -645,7 +645,7 @@ boolean sl_campawayGrabBuffs()
 		return false;
 	}
 
-	int lim = 4 - get_property("_campAwaySmileBuffs").to_int();
+	int lim = 4 - get_property("_campAwaySmileBuffs").to_int() - get_property("_campAwayCloudBuffs").to_int();
 	for (int i=0; i < lim; i++)
 	{
 		visit_url("place.php?whichplace=campaway&action=campaway_sky");
