@@ -599,7 +599,14 @@ generic_t zone_delay(location loc)
 		value = 4 - loc.turns_spent;
 		break;
 	case $location[The Outskirts of Cobb\'s Knob]:
-		value = 10 - loc.turns_spent;
+		if(get_property("sl_day1_cobb") != "finished")
+		{
+			value = 10 - loc.turns_spent;
+		}
+		else
+		{
+			retval._error = true;
+		}
 		break;
 	case $location[The Penultimate Fantasy Airship]:
 		if(get_property("questL10Garbage") == "step2")
