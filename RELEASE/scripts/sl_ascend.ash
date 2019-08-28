@@ -14837,7 +14837,13 @@ boolean doTasks()
 		{
 			handleFamiliar("item");
 			warOutfit(false);
-			return warAdventure();
+			boolean ret = warAdventure();
+			if(item_amount($item[solid gold bowling ball]) > 0)
+			{
+				set_property("sl_war", "finished");
+				council();
+			}
+			return ret;
 		}
 	}
 	else
