@@ -645,8 +645,6 @@ boolean sl_campawayGrabBuffs()
 		return false;
 	}
 
-	/*
-	// TODO: This code still needs end-to-end testing
 	if(!get_property("_sl_contributedCampaway").to_boolean() && item_amount($item[campfire smoke]) + creatable_amount($item[campfire smoke]) > 0)
 	{
 		if(item_amount($item[campfire smoke]) == 0)
@@ -658,7 +656,6 @@ boolean sl_campawayGrabBuffs()
 		temp = visit_url("choice.php?pwd=&whichchoice=1394&option=1&message=" + message);
 		set_property("_sl_contributedCampaway", true);
 	}
-	*/
 
 	int lim = 4 - get_property("_campAwaySmileBuffs").to_int() - get_property("_campAwayCloudBuffs").to_int();
 	for (int i=0; i < lim; i++)
