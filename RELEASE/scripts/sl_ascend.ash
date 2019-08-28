@@ -9347,9 +9347,12 @@ boolean L7_crypt()
 		set_property("sl_waitingArrowAlcove", 50);
 	}
 
-	if((spleen_left() > 0) && (item_amount($item[Nightmare Fuel]) > 0) && !is_unrestricted($item[Powdered Gold]))
+	void useNightmareFuelIfPossible()
 	{
-		slChew(1, $item[Nightmare Fuel]);
+		if((spleen_left() > 0) && (item_amount($item[Nightmare Fuel]) > 0) && !is_unrestricted($item[Powdered Gold]))
+		{
+			slChew(1, $item[Nightmare Fuel]);
+		}
 	}
 
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("sl_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && canGroundhog($location[The Defiled Alcove]))
@@ -9374,6 +9377,11 @@ boolean L7_crypt()
 		buffMaintain($effect[Song of Slowness], 110, 1, 1);
 		buffMaintain($effect[Your Fifteen Minutes], 90, 1, 1);
 		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
+		buffMaintain($effect[Nearly Silent Hunting], 0, 1, 1);
+		buffMaintain($effect[Soulerskates], 0, 1, 1);
+		buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
+
+		sl_beachCombHead("init");
 
 		if(have_effect($effect[init.enh]) == 0)
 		{
@@ -9399,6 +9407,11 @@ boolean L7_crypt()
 
 		addToMaximize("100initiative 850max");
 
+		if(get_property("cyrptAlcoveEvilness").to_int() >= 28)
+		{
+			useNightmareFuelIfPossible();
+		}
+
 		print("The Alcove! (" + initiative_modifier() + ")", "blue");
 		slAdv(1, $location[The Defiled Alcove]);
 		handleFamiliar("item");
@@ -9423,10 +9436,15 @@ boolean L7_crypt()
 			slEquip($item[broken champagne bottle]);
 		}
 
-		slAdv(1, $location[The Defiled Nook]);
-		if((item_amount($item[Evil Eye]) > 0) && (sl_my_path() != "G-Lover"))
+		if(get_property("cyrptNookEvilness").to_int() >= 28)
 		{
-			use(item_amount($item[Evil Eye]), $item[Evil Eye]);
+			useNightmareFuelIfPossible();
+		}
+
+		slAdv(1, $location[The Defiled Nook]);
+		while((item_amount($item[Evil Eye]) > 0) && sl_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
+		{
+			use(1, $item[Evil Eye]);
 		}
 		return true;
 	}
@@ -9442,6 +9460,11 @@ boolean L7_crypt()
 		if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
 			handleFamiliar($familiar[Space Jellyfish]);
+		}
+
+		if(get_property("cyrptNicheEvilness").to_int() >= 28)
+		{
+			useNightmareFuelIfPossible();
 		}
 
 		print("The Niche!", "blue");
@@ -9470,6 +9493,12 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
+		if(get_property("cyrptCrannyEvilness").to_int() >= 28)
+		{
+			useNightmareFuelIfPossible();
+		}
+
+		// In Dark Gyffte: Each dieting pill gives about 23 adventures of turngen
 		if(have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
 		{
 			int desired_pills = in_hardcore() ? 6 : 4;
