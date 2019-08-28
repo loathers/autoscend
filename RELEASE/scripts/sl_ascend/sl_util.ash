@@ -5242,10 +5242,22 @@ location solveDelayZone()
 	}
 
 	// These are locations that aren't 1:1 turn savings, but can still be useful
+
+	// Shorten the time before finding Gnasir, so that we can start acquiring desert pages sooner
 	if(zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
 	{
 		burnZone = $location[The Arid\, Extra-Dry Desert];
 	}
+
+	// Shorten the time until the first "burn a food or drink" noncombat
+	// There's some opportunity to be clever here, but this is probably good enough.
+	// If we didn't check turns_spent we'd have to be careful to equip the war outfit,
+	// just in case the noncombat shows up.
+	if(in_koe() && $location[The Exploaded Battlefield].turns_spent < 5)
+	{
+		burnZone = $location[The Exploaded Battlefield];
+	}
+
 	return burnZone;
 }
 
