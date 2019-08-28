@@ -943,6 +943,7 @@ void maximize_hedge()
 	element third = ns_hedge3();
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
+		uneffect($effect[Flared Nostrils]);
 		if(useMaximizeToEquip())
 		{
 			addToMaximize("200all res");
@@ -954,6 +955,10 @@ void maximize_hedge()
 	}
 	else
 	{
+		if ($element[stench] == first || $element[stench] == second || $element[stench] == third)
+		{
+			uneffect($effect[Flared Nostrils]);
+		}
 		if(useMaximizeToEquip())
 		{
 			addToMaximize("200" + first + " res,200" + second + " res,200" + third + " res");
