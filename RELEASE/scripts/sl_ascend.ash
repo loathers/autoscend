@@ -2408,6 +2408,14 @@ boolean dailyEvents()
 
 	while(zataraClanmate(""));
 
+	if(item_amount($item[Genie Bottle]) > 0 && sl_is_valid($item[pocket wish]))
+	{
+		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
+		{
+			makeGeniePocket();
+		}
+	}
+
 	return true;
 }
 
