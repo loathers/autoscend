@@ -64,9 +64,11 @@ sniff	11	Blooper	loc:8-Bit Realm
 sniff	12	Bob Racecar	!sniffed:Racecar Bob
 sniff	13	Racecar Bob	!sniffed:Bob Racecar
 sniff	14	Government Scientist	class:Ed
-sniff	15	Green Ops Soldier
-sniff	16	Possessed Wine Rack
-sniff	17	Blue Oyster cultist
+sniff	15	Green Ops Soldier	!path:Kingdom of Exploathing
+sniff	16	War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
+sniff	17	War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
+sniff	18	Possessed Wine Rack
+sniff	19	Blue Oyster cultist
 
 # Gotta get that wig
 yellowray	0	Burly Sidekick	item:Mohawk Wig<1

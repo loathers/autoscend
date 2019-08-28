@@ -632,3 +632,35 @@ boolean sl_beachUseFreeCombs() {
 	cli_execute("CombBeach free");
 	return true;
 }
+
+boolean sl_campawayAvailable()
+{
+	return is_unrestricted($item[Distant Woods Getaway Brochure]) && get_property("getawayCampsiteUnlocked").to_boolean();
+}
+
+boolean sl_campawayGrabBuffs()
+{
+	if(!sl_campawayAvailable())
+	{
+		return false;
+	}
+
+	if(!get_property("_sl_contributedCampaway").to_boolean() && item_amount($item[campfire smoke]) + creatable_amount($item[campfire smoke]) > 0)
+	{
+		if(item_amount($item[campfire smoke]) == 0)
+		{
+			create(1, $item[campfire smoke]);
+		}
+		string message = "why is my computer on fire?";
+		string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=" + $item[campfire smoke].to_int());
+		temp = visit_url("choice.php?pwd=&whichchoice=1394&option=1&message=" + message);
+		set_property("_sl_contributedCampaway", true);
+	}
+
+	int lim = 4 - get_property("_campAwaySmileBuffs").to_int() - get_property("_campAwayCloudBuffs").to_int();
+	for (int i=0; i < lim; i++)
+	{
+		visit_url("place.php?whichplace=campaway&action=campaway_sky");
+	}
+	return true;
+}

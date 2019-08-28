@@ -404,9 +404,13 @@ generic_t zone_combatMod(location loc)
 		value = 25;
 		break;
 	case $location[Inside the Palindome]:
-		if((item_amount($item[Photograph Of A Red Nugget]) == 0) || (item_amount($item[Photograph Of An Ostrich Egg]) == 0) || (item_amount($item[Photograph Of God]) == 0))
+		if(((item_amount($item[Photograph Of A Red Nugget]) == 0) || (item_amount($item[Photograph Of An Ostrich Egg]) == 0) || (item_amount($item[Photograph Of God]) == 0)) && internalQuestStatus("questL11Palindome") <= 2)
 		{
 			value = -70;
+		}
+		else if (3 <= internalQuestStatus("questL11Palindome") && internalQuestStatus("questL11Palindome") <= 4)
+		{
+			value = 25;
 		}
 		break;
 	case $location[Whitey\'s Grove]:
@@ -595,7 +599,14 @@ generic_t zone_delay(location loc)
 		value = 4 - loc.turns_spent;
 		break;
 	case $location[The Outskirts of Cobb\'s Knob]:
-		value = 10 - loc.turns_spent;
+		if(get_property("sl_day1_cobb") != "finished")
+		{
+			value = 10 - loc.turns_spent;
+		}
+		else
+		{
+			retval._error = true;
+		}
 		break;
 	case $location[The Penultimate Fantasy Airship]:
 		if(get_property("questL10Garbage") == "step2")

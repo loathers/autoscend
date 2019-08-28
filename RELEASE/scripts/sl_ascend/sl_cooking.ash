@@ -1791,7 +1791,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				pullables[it] = min(howmany, min(pulls_remaining(), storage_amount(it)));
 			}
 			boolean[item] KEY_LIME_PIES = $items[Boris's key lime pie, Jarlsberg's key lime pie, Sneaky Pete's key lime pie];
-			if ((KEY_LIME_PIES contains it) && !(pullables contains it))
+			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore())
 			{
 				pullables[it] = 1;
 			}

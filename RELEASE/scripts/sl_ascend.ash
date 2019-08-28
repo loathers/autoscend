@@ -121,6 +121,7 @@ void initializeSettings()
 	set_property("sl_blackmap", "");
 	set_property("sl_boopeak", "");
 	set_property("sl_breakstone", get_property("sl_pvpEnable").to_boolean());
+	set_property("sl_bruteForcePalindome", false);
 	set_property("sl_cabinetsencountered", 0);
 	set_property("sl_castlebasement", "");
 	set_property("sl_castleground", "");
@@ -673,6 +674,9 @@ boolean basicFamiliarOverrides()
 boolean LX_burnDelay()
 {
 	location burnZone = solveDelayZone();
+	boolean wannaVote = sl_voteMonster(true);
+	boolean wannaDigitize = isOverdueDigitize();
+	boolean wannaSausage = sl_sausageGoblin();
 	if(burnZone != $location[none])
 	{
 		if(sl_voteMonster(true))
@@ -699,6 +703,12 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
+	}
+	else if(wannaVote || wannaDigitize || wannaSausage)
+	{
+		if(wannaVote) print("Had overdue voting monster but couldn't find a zone to burn delay", "red");
+		if(wannaDigitize) print("Had overdue digitize but couldn't find a zone to burn delay", "red");
+		if(wannaSausage) print("Had overdue sausage but couldn't find a zone to burn delay", "red");
 	}
 	return false;
 }
@@ -933,6 +943,7 @@ void maximize_hedge()
 	element third = ns_hedge3();
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
+		uneffect($effect[Flared Nostrils]);
 		if(useMaximizeToEquip())
 		{
 			addToMaximize("200all res");
@@ -944,6 +955,10 @@ void maximize_hedge()
 	}
 	else
 	{
+		if ($element[stench] == first || $element[stench] == second || $element[stench] == third)
+		{
+			uneffect($effect[Flared Nostrils]);
+		}
 		if(useMaximizeToEquip())
 		{
 			addToMaximize("200" + first + " res,200" + second + " res,200" + third + " res");
@@ -2282,6 +2297,7 @@ boolean dailyEvents()
 	while(sl_doPrecinct());
 	handleBarrelFullOfBarrels(true);
 
+	sl_campawayGrabBuffs();
 	kgb_getMartini();
 	fightClubNap();
 	fightClubStats();
@@ -3965,6 +3981,14 @@ boolean L11_palindome()
 		return true;
 	}
 
+	// TODO: Mafia doesn't believe you can adventure in the Palindome in KoE
+	// until questL11Palindome is not 'unstarted'. This is a filthy hack to
+	// bypass this that SHOULD BE REMOVED WHEN MAFIA SORTS THIS OUT.
+	if(in_koe() && get_property("questL11Palindome") == "unstarted")
+	{
+		set_property("questL11Palindome", "started");
+	}
+
 	if(!possessEquipment($item[Talisman O\' Namsilat]))
 	{
 		return false;
@@ -4005,9 +4029,7 @@ boolean L11_palindome()
 		visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 	}
 
-	boolean slow_acquire_stew = in_koe();
-
-	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()) && !slow_acquire_stew)
+	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()) && !get_property("sl_bruteForcePalindome").to_boolean())
 	{
 		if(item_amount($item[Wet Stunt Nut Stew]) == 0)
 		{
@@ -4150,12 +4172,21 @@ boolean L11_palindome()
 		}
 		if(internalQuestStatus("questL11Palindome") >= 2)
 		{
-			print("Palindome failure:", "red");
-			print("You probably just need to get a Mega Gem to fix this.", "red");
-			abort("We have made too much progress in the Palindome and should not be here.");
+			if(!get_property("sl_bruteForcePalindome").to_boolean())
+			{
+				print("Palindome failure:", "red");
+				print("You probably just need to get a Mega Gem to fix this.", "red");
+				abort("We have made too much progress in the Palindome and should not be here.");
+			}
+			else
+			{
+				print("We need wet stunt nut stew to get the Mega Gem, but I've been told to get it via the mercy adventure.", "red");
+				print("Set sl_bruteForcePalindome=false to try to get a stunt nut stew", "red");
+				print("(We typically only set this option in hardcore Kingdom of Exploathing, in which the White Forest isn't available)", "red");
+			}
 		}
 
-		if((have_effect($effect[On The Trail]) > 0) && !($monsters[Bob Racecar, Racecar Bob] contains get_property("olfactedMonster").to_monster()))
+		if((have_effect($effect[On The Trail]) > 0) && !($monsters[Bob Racecar, Racecar Bob] contains get_property("olfactedMonster").to_monster()) && internalQuestStatus("questL11Palindome") < 2)
 		{
 			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 			{
@@ -4166,7 +4197,7 @@ boolean L11_palindome()
 
 		slEquip($slot[acc3], $item[Talisman o' Namsilat]);
 		slAdv(1, $location[Inside the Palindome]);
-		if(($location[Inside the Palindome].turns_spent > 30) && (sl_my_path() != "Pocket Familiars") && (sl_my_path() != "G-Lover"))
+		if(($location[Inside the Palindome].turns_spent > 30) && (sl_my_path() != "Pocket Familiars") && (sl_my_path() != "G-Lover") && !in_koe())
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}
@@ -4730,6 +4761,11 @@ boolean L13_towerNSTower()
 		cli_execute("scripts/postsool.ash");
 		doHottub();
 
+		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
+		if(n_healing_items < 5)
+		{
+			abort("We only have " + n_healing_items + "healing items, I'm not sure we can do the shadow.");
+		}
 		slAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;
 	}
@@ -7294,7 +7330,7 @@ boolean L11_defeatEd()
 		x = x + 1;
 		print("Hello Ed #" + x + " give me McMuffin please.", "blue");
 		slAdv(1, $location[The Lower Chambers]);
-		if(have_effect($effect[Beaten Up]) > 0)
+		if(have_effect($effect[Beaten Up]) > 0 && item_amount($item[[2334]Holy MacGuffin]) == 0)
 		{
 			set_property("sl_disableAdventureHandling", false);
 			abort("Got Beaten Up by Ed the Undying - generally not safe to try to recover.");
@@ -8498,27 +8534,43 @@ boolean L10_topFloor()
 	}
 
 	print("Castle Top Floor", "blue");
-	set_property("choiceAdventure677", 1); // Copper Feel: submit model airship
 	set_property("choiceAdventure680", 1); // Mercy adventure: Are you a Man or a Mouse?
 	if(item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
 	{
+		print("We have a drum 'n' bass record and are willing to use it!", "green");
+		// Copper Feel: Move to Mellon Collie
+		set_property("choiceAdventure677", 4);
+		// Mellon Collie: Turn in record, complete quest
 		set_property("choiceAdventure675", 2);
 	}
 	else
 	{
+		// Mellon Collie: Move to Gimme Steam
 		set_property("choiceAdventure675", 4);
+		// Copper feel: Turn in airship (will fight otherwise)
+		set_property("choiceAdventure677", 1);
 	}
-	set_property("choiceAdventure676", 4);
-
-	//3 is Only available after completing Giant Trash Quest? We only get choices 1, 2, 4(676)
-	set_property("choiceAdventure678", 3);
-
 	if((item_amount($item[mohawk wig]) == 0) && !in_hardcore())
 	{
 		pullXWhenHaveY($item[Mohawk Wig], 1, 0);
 	}
 
-	set_property("choiceAdventure678", 1);
+	if(!possessEquipment($item[mohawk wig]) && 0 == item_amount($item[drum 'n' bass 'n' drum 'n' bass record]))
+	{
+		print("We don't have a mohawk wig, let's try to get a drum 'n' bass record...", "green");
+		// Yeah, You're for Me, Punk Rock Giant: Move to Flavor of a Raver (676)
+		set_property("choiceAdventure678", 4);
+		// Floor of a Raver: Acquire drum 'n' bass 'n' drum 'n' bass record
+		set_property("choiceAdventure676", 3);
+	}
+	else
+	{
+		// Floor of a Raver: Move to "Yeah, You're for Me, Punk Rock Giant (678)"
+		set_property("choiceAdventure676", 4);
+		// Yeah, You're for Me, Punk Rock Giant: Get the Punk's Attention, complete quest
+		set_property("choiceAdventure678", 1);
+	}
+
 	if(my_class() == $class[Ed])
 	{
 		set_property("choiceAdventure679", 2);
@@ -8539,11 +8591,12 @@ boolean L10_topFloor()
 		set_property("sl_castletop", "finished");
 		council();
 	}
-	if(contains_text(get_property("lastEncounter"), "Copper Feel"))
+	if(possessEquipment($item[mohawk wig]) && contains_text(get_property("lastEncounter"), "Copper Feel"))
 	{
 		set_property("sl_castletop", "finished");
 		council();
 	}
+
 	return true;
 }
 
@@ -10640,7 +10693,7 @@ boolean adventureFailureHandler()
 	if(my_location().turns_spent > 52)
 	{
 		boolean tooManyAdventures = false;
-		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Deep Dark Jungle, Hippy Camp, The Neverending Party, Noob Cave, Oil Peak, Pirates of the Garbage Barges, The Secret Government Laboratory, Sloppy Seconds Diner, The SMOOCH Army HQ, Super Villain\'s Lair, Uncle Gator\'s Country Fun-Time Liquid Waste Sluice, VYKEA, The X-32-F Combat Training Snowman] contains my_location()) == false)
+		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Deep Dark Jungle, Hippy Camp, The Neverending Party, Noob Cave, Oil Peak, Pirates of the Garbage Barges, The Secret Government Laboratory, Sloppy Seconds Diner, The SMOOCH Army HQ, Super Villain\'s Lair, Uncle Gator\'s Country Fun-Time Liquid Waste Sluice, VYKEA, The X-32-F Combat Training Snowman, The Exploaded Battlefield] contains my_location()) == false)
 		{
 			tooManyAdventures = true;
 		}
@@ -13072,7 +13125,7 @@ boolean L11_redZeppelin()
 		return slAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
 	}
 
-	if(cloversAvailable() > 0 && get_property("zeppelinProtestors").to_int() < 80)
+	if(cloversAvailable() > 0 && get_property("zeppelinProtestors").to_int() < 75)
 	{
 		if(cloversAvailable() >= 3 && get_property("sl_useWishes").to_boolean())
 		{
@@ -13677,9 +13730,9 @@ boolean L8_trapperGroar()
 	cli_execute("refresh quests");
 
 	//What is our potential +Combat score.
-	//Use that instead of the Avatar/Hound Dog checks.
+	//TODO: Use that instead of the Avatar/Hound Dog checks.
 
-	if(!canGroar && in_hardcore() && ((sl_my_path() == "Avatar of Sneaky Pete") || !(sl_have_familiar($familiar[Jumpsuited Hound Dog]) && is100FamiliarRun($familiar[Jumpsuited Hound Dog]))))
+	if(!canGroar && in_hardcore() && ((sl_my_path() == "Avatar of Sneaky Pete") || !sl_have_familiar($familiar[Jumpsuited Hound Dog]) || is100FamiliarRun($familiar[Jumpsuited Hound Dog])))
 	{
 		if(L8_trapperExtreme())
 		{
@@ -14789,7 +14842,13 @@ boolean doTasks()
 		{
 			handleFamiliar("item");
 			warOutfit(false);
-			return warAdventure();
+			boolean ret = warAdventure();
+			if(item_amount($item[solid gold bowling ball]) > 0)
+			{
+				set_property("sl_war", "finished");
+				council();
+			}
+			return ret;
 		}
 	}
 	else
