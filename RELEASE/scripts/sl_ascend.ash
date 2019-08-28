@@ -15119,6 +15119,7 @@ void safe_preference_reset_wrapper(int level)
 
 void main()
 {
+	backupSetting("printStackOnAbort", true);
 	print_help_text();
 	try
 	{
@@ -15126,6 +15127,6 @@ void main()
 	}
 	finally
 	{
-		safe_preference_reset_wrapper(4);
+		safe_preference_reset_wrapper(3);
 	}
 }
