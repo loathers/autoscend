@@ -14,6 +14,7 @@ boolean koe_initializeSettings()
 		set_property("sl_day1_cobb", "finished");
 		set_property("sl_bean", true);
 		set_property("sl_airship", "finished");
+		set_property("sl_holeinthesky", false);
 		set_property("sl_grimstoneOrnateDowsingRod", "false");
 	}
 	return false;
