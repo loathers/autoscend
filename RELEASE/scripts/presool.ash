@@ -335,6 +335,13 @@ void handlePreAdventure(location place)
 		useCocoon();
 	}
 
+	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
+	if(wasted_mp > 0 && my_mp() > 400)
+	{
+		print("Burning " + wasted_mp + " MP...");
+		cli_execute("burn " + wasted_mp);
+	}
+
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{
 		print("Warning, we don't have a lot of MP but we are chugging along anyway", "red");

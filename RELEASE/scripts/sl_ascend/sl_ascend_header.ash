@@ -1056,6 +1056,7 @@ boolean executeFlavour(); // Defined in sl_ascend/sl_util.ash
 boolean autoFlavour(location place); // Defined in sl_ascend/sl_util.ash
 int sl_reserveAmount(item it); // Defined in sl_ascend/sl_util.ash
 int sl_reserveCraftAmount(item it); // Defined in sl_ascend/sl_util.ash
+float mp_regen(); // Defined in sl_ascend/sl_util.ash
 
 //Record from sl_ascend/sl_zone.ash
 record generic_t

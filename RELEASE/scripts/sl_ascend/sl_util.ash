@@ -6048,3 +6048,8 @@ int sl_reserveCraftAmount(item orig_it)
 	}
 	return inner(orig_it);
 }
+
+float mp_regen()
+{
+	return 0.5 * (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max"));
+}
