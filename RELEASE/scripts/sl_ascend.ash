@@ -1278,22 +1278,6 @@ boolean warAdventure()
 		handleFamiliar($familiar[Space Jellyfish]);
 	}
 
-	if(in_koe())
-	{
-		if(!slAdv(1, $location[The Exploaded Battlefield]))
-		{
-			if(!get_property("sl_hippyInstead").to_boolean())
-			{
-				set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 2);
-			}
-			else
-			{
-				set_property("fratboysDefeated", get_property("fratboysDefeated").to_int() + 2);
-			}
-		}
-		return true;
-	}
-
 	if(!get_property("sl_hippyInstead").to_boolean())
 	{
 		if(!slAdv(1, $location[The Battlefield (Frat Uniform)]))
@@ -14884,13 +14868,62 @@ boolean doTasks()
 			{
 				warOutfit(false);
 			}
-			boolean ret = warAdventure();
+
+			item warKillDoubler = get_property("sl_hippyInstead").to_boolean() ? $item[Jacob's rung] : $item[Haunted paddle-ball];
+			pullXWhenHaveY(warKillDoubler, 1, 0);
+			if(possessEquipment(warKillDoubler))
+			{
+				slEquip($slot[weapon], warKillDoubler);
+			}
+
+			item food_item = $item[none];
+			foreach it in $items[space chowder, ghuol guolash]
+			{
+				if(item_amount(it) > 0)
+				{
+					food_item = it;
+					break;
+				}
+			}
+			if(food_item == $item[none])
+			{
+				if(creatable_amount($item[space chowder]) > 6)
+				{
+					create(1, $item[space chowder]);
+					food_item = $item[space chowder];
+				}
+				else
+				{
+					abort("Couldn't find a good food item for the war.");
+				}
+			}
+
+			// TODO: Mafia should really be tracking this.
+			if(slAdvBypass("adventure.php?snarfblat=533", $location[The Exploaded Battlefield]) && have_equipped(warKillDoubler))
+			{
+				if(!get_property("sl_hippyInstead").to_boolean())
+				{
+					set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 1);
+				}
+				else
+				{
+					set_property("fratboysDefeated", get_property("fratboysDefeated").to_int() + 1);
+				}
+			}
+			else
+			{
+				if(get_property("lastEncounter") == "Rationing out Destruction")
+				{
+					visit_url("choice.php?whichchoice=1391&option=1&tossid=" + food_item.to_int() + "&pwd=" + my_hash(), true);
+				}
+			}
+
 			if(item_amount($item[solid gold bowling ball]) > 0)
 			{
 				set_property("sl_war", "finished");
 				council();
 			}
-			return ret;
+			return true;
 		}
 	}
 	else
