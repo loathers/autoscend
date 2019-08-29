@@ -2106,8 +2106,12 @@ void initializeDay(int day)
 			}
 			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
-				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
+				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
 					buyUpTo(1, $item[Toy Accordion]);
+				else if(in_koe() && creatable_amount($item[Antique Accordion]) > 0)
+				{
+					retrieve_item(1, $item[Antique Accordion]);
+				}
 
 				if(!possessEquipment($item[Turtle Totem]))
 				{
@@ -2663,7 +2667,7 @@ boolean doBedtime()
 		{
 			need = 4;
 		}
-		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isGeneralStoreAvailable())
+		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable())
 		{
 			cli_execute("make " + $item[Chrome Sword]);
 		}
@@ -9098,7 +9102,7 @@ boolean LX_dolphinKingMap()
 {
 	if(item_amount($item[Dolphin King\'s Map]) > 0)
 	{
-		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isGeneralStoreAvailable())) 
+		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isArmoryAvailable())) 
 		{
 			buyUpTo(1, $item[Snorkel]);
 			item oldHat = equipped_item($slot[hat]);

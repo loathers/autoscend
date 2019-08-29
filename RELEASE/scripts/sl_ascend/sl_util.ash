@@ -34,6 +34,7 @@ boolean acquireGumItem(item it);
 boolean acquireHermitItem(item it);
 boolean isHermitAvailable();
 boolean isGeneralStoreAvailable();
+boolean isArmoryAvailable();
 boolean isGalaktikAvailable();
 boolean isUnclePAvailable();
 boolean isFreeMonster(monster mon);
@@ -2401,6 +2402,19 @@ boolean isGalaktikAvailable()
 }
 
 boolean isGeneralStoreAvailable()
+{
+	if(sl_my_path() == "Nuclear Autumn")
+	{
+		return false;
+	}
+	if(sl_my_path() == "Zombie Master")
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean isArmoryAvailable()
 {
 	if(sl_my_path() == "Nuclear Autumn")
 	{

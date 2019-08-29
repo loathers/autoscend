@@ -764,6 +764,7 @@ boolean isExpectingArrow();									//Defined in sl_ascend/sl_util.ash
 boolean isFreeMonster(monster mon);							//Defined in sl_ascend/sl_util.ash
 boolean isGalaktikAvailable();								//Defined in sl_ascend/sl_util.ash
 boolean isGeneralStoreAvailable();							//Defined in sl_ascend/sl_util.ash
+boolean isArmoryAvailable();								//Defined in sl_ascend/sl_util.ash
 boolean isGhost(monster mon);								//Defined in sl_ascend/sl_util.ash
 boolean isGuildClass();										//Defined in sl_ascend/sl_util.ash
 boolean hasTorso();											//Defined in sl_ascend/sl_util.ash
