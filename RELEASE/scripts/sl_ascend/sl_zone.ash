@@ -1095,7 +1095,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[The Hole in the Sky]:
-		if(item_amount($item[Steam-Powered Model Rocketship]) > 0)
+		if(item_amount($item[Steam-Powered Model Rocketship]) > 0 || in_koe())
 		{
 			retval._boolean = true;
 		}
