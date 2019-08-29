@@ -4488,7 +4488,7 @@ boolean L13_towerNSTower()
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
 			use_familiar($familiar[Warbear Drone]);
-			cli_execute("presool");
+			cli_execute("presool"); // TODO: can we remove this?
 			if(!possessEquipment($item[Warbear Drone Codes]))
 			{
 				pullXWhenHaveY($item[warbear drone codes], 1, 0);
@@ -4581,7 +4581,7 @@ boolean L13_towerNSTower()
 			{
 				useCocoon();
 			}
-			slAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Noob Cave]);
+			slAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 			if(internalQuestStatus("questL13Final") < 7)
 			{
 				set_property("sl_getBeehive", true);
@@ -4983,7 +4983,6 @@ boolean L13_towerNSContests()
 				if(crowd1Insufficient()) buffMaintain($effect[Soulerskates], 0, 1, 1);
 				if(crowd1Insufficient()) asdonBuff($effect[Driving Quickly]);
 
-				cli_execute("presool");
 				if(crowd1Insufficient())
 				{
 					if(get_property("sl_secondPlaceOrBust").to_boolean())
