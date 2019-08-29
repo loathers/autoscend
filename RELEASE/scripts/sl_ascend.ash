@@ -14676,6 +14676,10 @@ boolean doTasks()
 	else if((my_level() >= 9) && (my_hp() > 0))
 	{
 		fightScienceTentacle();
+		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
+		{
+			evokeEldritchHorror();
+		}
 	}
 
 	if(LX_catBurglarHeist())			return true;
