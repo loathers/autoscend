@@ -194,11 +194,11 @@ void handlePreAdventure(location place)
 	{
 		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
 		{
-			acquireCombatMods(zone_combatMod(place)._int, false);
+			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
 		}
 		if(place == $location[Sonofa Beach] && !sl_voteMonster())
 		{
-			acquireCombatMods(zone_combatMod(place)._int, false);
+			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
 		}
 
 		if($locations[Whitey\'s Grove] contains place)
@@ -208,7 +208,7 @@ void handlePreAdventure(location place)
 
 		if($locations[A Maze of Sewer Tunnels, The Castle in the Clouds in the Sky (Basement), The Castle in the Clouds in the Sky (Ground Floor), The Castle in the Clouds in the Sky (Top Floor), The Dark Elbow of the Woods, The Dark Heart of the Woods, The Dark Neck of the Woods, The Defiled Alcove, The Defiled Cranny, The Extreme Slope, The Haunted Ballroom, The Haunted Bathroom, The Haunted Billiards Room, The Haunted Gallery, The Hidden Hospital, The Hidden Park, The Ice Hotel, Inside the Palindome, The Obligatory Pirate\'s Cove, The Penultimate Fantasy Airship, The Poop Deck, The Spooky Forest, Super Villain\'s Lair, Twin Peak, The Upper Chamber, Wartime Hippy Camp, Wartime Hippy Camp (Frat Disguise)] contains place)
 		{
-			acquireCombatMods(zone_combatMod(place)._int, false);
+			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
 		}
 	}
 	else
