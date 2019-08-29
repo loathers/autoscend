@@ -14971,6 +14971,8 @@ boolean doTasks()
 		}
 	}
 
+	if(LX_koeInvaderHandler())			return true;
+
 	if(L13_towerNSEntrance())			return true;
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;

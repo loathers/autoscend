@@ -330,7 +330,7 @@ void handlePreAdventure(location place)
 	executeFlavour();
 
 	// After maximizing equipment, we might not be at full HP
-	if ($locations[Tower Level 1] contains place)
+	if ($locations[Tower Level 1, The Invader] contains place)
 	{
 		useCocoon();
 	}
