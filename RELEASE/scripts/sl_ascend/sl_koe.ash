@@ -26,6 +26,10 @@ boolean LX_koeInvaderHandler()
 	{
 		return false;
 	}
+	if(get_property("sl_invaderKilled").to_boolean())
+	{
+		return false;
+	}
 
 	if(have_effect($effect[Flared Nostrils]) > 0)
 		doHottub();
@@ -82,6 +86,7 @@ boolean LX_koeInvaderHandler()
 			{
 				abort("We died to the invader. Do it manually please?");
 			}
+			set_property("sl_invaderKilled", true);
 			return ret;
 		}
 	}
