@@ -15060,8 +15060,15 @@ void sl_begin()
 	}
 	if(get_auto_attack() != 0)
 	{
-		print("You have an auto attack enabled. This may cause issues. We will try anyway.", "blue");
-		wait(10);
+		boolean shouldUnset = user_confirm("You have an auto attack enabled. This can cause issues. Would you like us to disable it? Will default to 'No' in 30 seconds.", 30000, false);
+		if(shouldUnset)
+		{
+			set_auto_attack(0);
+		}
+		else
+		{
+			print("Okay, but the warranty is off.", "red");
+		}
 	}
 
 	//This also should set our path too.
