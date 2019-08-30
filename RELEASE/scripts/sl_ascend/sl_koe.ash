@@ -29,8 +29,6 @@ boolean LX_koeInvaderHandler()
 
 	buffMaintain($effect[Astral Shell], 10, 1, 1);
 	buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
-	buffMaintain($effect[Hide of Sobek], 10, 1, 1);
-	buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 	buffMaintain($effect[Scarysauce], 10, 1, 1);
 
 	resetMaximize();
