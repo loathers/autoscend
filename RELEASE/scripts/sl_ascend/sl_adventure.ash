@@ -199,6 +199,10 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	{
 		return false;
 	}
+	if(get_property("lastEncounter") == "Rationing out Destruction")
+	{
+		return false;
+	}
 	if(sl_my_path() == "G-Lover")
 	{
 		if(get_property("lastEncounter") == "The Hidden Heart of the Hidden Temple")

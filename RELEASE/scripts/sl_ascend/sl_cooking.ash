@@ -1747,6 +1747,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
+	boolean[item] KEY_LIME_PIES = $items[Boris's key lime pie, Jarlsberg's key lime pie, Sneaky Pete's key lime pie];
 	foreach it in $items[]
 	{
 		if (
@@ -1754,7 +1755,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			(organCost(it) > 0) &&
 			(it.fullness == 0 || it.inebriety == 0) &&
 			is_unrestricted(it) &&
-			historical_price(it) <= 20000)
+			(historical_price(it) <= 20000 || (KEY_LIME_PIES contains it && historical_price(it) < 40000)))
 		{
 			if((it == $item[astral pilsner] || it == $item[Cold One]) && my_level() < 11) continue;
 			if((it == $item[astral hot dog] || it == $item[Spaghetti Breakfast]) && my_level() < 11) continue;
@@ -1790,7 +1791,6 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				pullables[it] = min(howmany, min(pulls_remaining(), storage_amount(it)));
 			}
-			boolean[item] KEY_LIME_PIES = $items[Boris's key lime pie, Jarlsberg's key lime pie, Sneaky Pete's key lime pie];
 			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore())
 			{
 				pullables[it] = 1;

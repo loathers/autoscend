@@ -13,6 +13,11 @@ void handlePreAdventure(location place)
 		abort("Familiar has no equipment, WTF");
 	}
 
+	if(get_property("customCombatScript") != "null")
+	{
+		abort("customCombatScript is set to unrecognized '" + get_property("customCombatScript") + "', should be 'null'");
+	}
+
 #	set_location doesn't help us to resolve this, just let it infinite and fail in that exotic case that was propbably due to a bad user.
 #	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
 #	{
@@ -194,11 +199,11 @@ void handlePreAdventure(location place)
 	{
 		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
 		{
-			acquireCombatMods(zone_combatMod(place)._int, false);
+			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
 		}
 		if(place == $location[Sonofa Beach] && !sl_voteMonster())
 		{
-			acquireCombatMods(zone_combatMod(place)._int, false);
+			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
 		}
 
 		if($locations[Whitey\'s Grove] contains place)
@@ -208,7 +213,7 @@ void handlePreAdventure(location place)
 
 		if($locations[A Maze of Sewer Tunnels, The Castle in the Clouds in the Sky (Basement), The Castle in the Clouds in the Sky (Ground Floor), The Castle in the Clouds in the Sky (Top Floor), The Dark Elbow of the Woods, The Dark Heart of the Woods, The Dark Neck of the Woods, The Defiled Alcove, The Defiled Cranny, The Extreme Slope, The Haunted Ballroom, The Haunted Bathroom, The Haunted Billiards Room, The Haunted Gallery, The Hidden Hospital, The Hidden Park, The Ice Hotel, Inside the Palindome, The Obligatory Pirate\'s Cove, The Penultimate Fantasy Airship, The Poop Deck, The Spooky Forest, Super Villain\'s Lair, Twin Peak, The Upper Chamber, Wartime Hippy Camp, Wartime Hippy Camp (Frat Disguise)] contains place)
 		{
-			acquireCombatMods(zone_combatMod(place)._int, false);
+			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
 		}
 	}
 	else
@@ -330,9 +335,16 @@ void handlePreAdventure(location place)
 	executeFlavour();
 
 	// After maximizing equipment, we might not be at full HP
-	if ($locations[Tower Level 1] contains place)
+	if ($locations[Tower Level 1, The Invader] contains place)
 	{
 		useCocoon();
+	}
+
+	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
+	if(wasted_mp > 0 && my_mp() > 400)
+	{
+		print("Burning " + wasted_mp + " MP...");
+		cli_execute("burn " + wasted_mp);
 	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))

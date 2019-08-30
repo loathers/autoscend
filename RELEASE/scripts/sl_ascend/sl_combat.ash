@@ -583,6 +583,11 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 	}
 
+	if(enemy.to_string() == "the invader" && sl_have_skill($skill[Weapon of the Pastalord]))
+	{
+		return useSkill($skill[Weapon of the Pastalord], false);
+	}
+
 	if(canUse($skill[Use the Force]) && (sl_saberChargesAvailable() > 0) && (enemy != sl_saberCurrentMonster()))
 	{
 		if(enemy == $monster[Blooper] && needDigitalKey())

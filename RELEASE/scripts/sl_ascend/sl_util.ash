@@ -34,6 +34,7 @@ boolean acquireGumItem(item it);
 boolean acquireHermitItem(item it);
 boolean isHermitAvailable();
 boolean isGeneralStoreAvailable();
+boolean isArmoryAvailable();
 boolean isGalaktikAvailable();
 boolean isUnclePAvailable();
 boolean isFreeMonster(monster mon);
@@ -1421,7 +1422,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 
 	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
 
-	if((inCombat ? sl_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member's mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
+	if((inCombat ? sl_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member's mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent") && get_property("_sl_maximize_equip_off-hand") != "")
 	{
 		return "skill " + $skill[Throw Latte on Opponent];
 	}
@@ -2401,6 +2402,19 @@ boolean isGalaktikAvailable()
 }
 
 boolean isGeneralStoreAvailable()
+{
+	if(sl_my_path() == "Nuclear Autumn")
+	{
+		return false;
+	}
+	if(sl_my_path() == "Zombie Master")
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean isArmoryAvailable()
 {
 	if(sl_my_path() == "Nuclear Autumn")
 	{
@@ -5242,10 +5256,22 @@ location solveDelayZone()
 	}
 
 	// These are locations that aren't 1:1 turn savings, but can still be useful
+
+	// Shorten the time before finding Gnasir, so that we can start acquiring desert pages sooner
 	if(zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
 	{
 		burnZone = $location[The Arid\, Extra-Dry Desert];
 	}
+
+	// Shorten the time until the first "burn a food or drink" noncombat
+	// There's some opportunity to be clever here, but this is probably good enough.
+	// If we didn't check turns_spent we'd have to be careful to equip the war outfit,
+	// just in case the noncombat shows up.
+	if(in_koe() && $location[The Exploaded Battlefield].turns_spent < 5)
+	{
+		burnZone = $location[The Exploaded Battlefield];
+	}
+
 	return burnZone;
 }
 
@@ -6035,4 +6061,9 @@ int sl_reserveCraftAmount(item orig_it)
 		return reserve;
 	}
 	return inner(orig_it);
+}
+
+float mp_regen()
+{
+	return 0.5 * (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max"));
 }

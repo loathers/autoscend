@@ -943,6 +943,8 @@ void maximize_hedge()
 	element third = ns_hedge3();
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
+		if(have_effect($effect[Flared Nostrils]) > 0)
+			doHottub();
 		uneffect($effect[Flared Nostrils]);
 		if(useMaximizeToEquip())
 		{
@@ -957,6 +959,7 @@ void maximize_hedge()
 	{
 		if ($element[stench] == first || $element[stench] == second || $element[stench] == third)
 		{
+			doHottub();
 			uneffect($effect[Flared Nostrils]);
 		}
 		if(useMaximizeToEquip())
@@ -1274,22 +1277,6 @@ boolean warAdventure()
 	if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 	{
 		handleFamiliar($familiar[Space Jellyfish]);
-	}
-
-	if(in_koe())
-	{
-		if(!slAdv(1, $location[The Exploaded Battlefield]))
-		{
-			if(!get_property("sl_hippyInstead").to_boolean())
-			{
-				set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 2);
-			}
-			else
-			{
-				set_property("fratboysDefeated", get_property("fratboysDefeated").to_int() + 2);
-			}
-		}
-		return true;
 	}
 
 	if(!get_property("sl_hippyInstead").to_boolean())
@@ -2120,8 +2107,12 @@ void initializeDay(int day)
 			}
 			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
-				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isGeneralStoreAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
+				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
 					buyUpTo(1, $item[Toy Accordion]);
+				else if(in_koe() && creatable_amount($item[Antique Accordion]) > 0)
+				{
+					retrieve_item(1, $item[Antique Accordion]);
+				}
 
 				if(!possessEquipment($item[Turtle Totem]))
 				{
@@ -2408,6 +2399,14 @@ boolean dailyEvents()
 
 	while(zataraClanmate(""));
 
+	if(item_amount($item[Genie Bottle]) > 0 && sl_is_valid($item[pocket wish]))
+	{
+		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
+		{
+			makeGeniePocket();
+		}
+	}
+
 	return true;
 }
 
@@ -2669,7 +2668,7 @@ boolean doBedtime()
 		{
 			need = 4;
 		}
-		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isGeneralStoreAvailable())
+		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable())
 		{
 			cli_execute("make " + $item[Chrome Sword]);
 		}
@@ -4490,7 +4489,7 @@ boolean L13_towerNSTower()
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
 			use_familiar($familiar[Warbear Drone]);
-			cli_execute("presool");
+			cli_execute("presool"); // TODO: can we remove this?
 			if(!possessEquipment($item[Warbear Drone Codes]))
 			{
 				pullXWhenHaveY($item[warbear drone codes], 1, 0);
@@ -4583,7 +4582,7 @@ boolean L13_towerNSTower()
 			{
 				useCocoon();
 			}
-			slAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Noob Cave]);
+			slAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 			if(internalQuestStatus("questL13Final") < 7)
 			{
 				set_property("sl_getBeehive", true);
@@ -4922,6 +4921,24 @@ boolean L13_towerNSContests()
 		return true;
 	}
 
+	boolean crowd1Insufficient()
+	{
+		return numeric_modifier("Initiative") < 400.0;
+	}
+
+	stat crowd_stat = ns_crowd2();
+
+	boolean crowd2Insufficient()
+	{
+		return my_buffedstat(crowd_stat) < 600;
+	}
+
+	element challenge = ns_crowd3();
+	boolean crowd3Insufficient()
+	{
+		return numeric_modifier(challenge + " Damage") + numeric_modifier(challenge + " Spell Damage") < 100;
+	}
+
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_01_contestbooth"))
 	{
 		if(get_property("nsContestants1").to_int() == -1)
@@ -4941,18 +4958,6 @@ boolean L13_towerNSContests()
 				{
 					doRest();
 				}
-				foreach eff in $effects[Adorable Lookout, Alacri Tea, All Fired Up, Bone Springs, Bow-Legged Swagger, Fishy\, Oily, The Glistening, Human-Machine Hybrid, Patent Alacrity, Provocative Perkiness, Sepia Tan, Sugar Rush, Ticking Clock, Well-Swabbed Ear, Your Fifteen Minutes]
-				{
-					buffMaintain(eff, 0, 1, 1);
-				}
-
-				buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
-				buffMaintain($effect[Suspicious Gaze], 10, 1, 1);
-				buffMaintain($effect[Springy Fusilli], 10, 1, 1);
-				buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
-				buffMaintain($effect[Song of Slowness], 100, 1, 1);
-				buffMaintain($effect[Soulerskates], 0, 1, 1);
-				asdonBuff($effect[Driving Quickly]);
 
 				if(is100FamiliarRun())
 				{
@@ -4966,7 +4971,27 @@ boolean L13_towerNSContests()
 
 				bat_formBats();
 
-				cli_execute("presool");
+				foreach eff in $effects[Adorable Lookout, Alacri Tea, All Fired Up, Bone Springs, Bow-Legged Swagger, Fishy\, Oily, The Glistening, Human-Machine Hybrid, Patent Alacrity, Provocative Perkiness, Sepia Tan, Sugar Rush, Ticking Clock, Well-Swabbed Ear, Your Fifteen Minutes]
+				{
+					if(crowd1Insufficient()) buffMaintain(eff, 0, 1, 1);
+				}
+
+				if(crowd1Insufficient()) buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
+				if(crowd1Insufficient()) buffMaintain($effect[Suspicious Gaze], 10, 1, 1);
+				if(crowd1Insufficient()) buffMaintain($effect[Springy Fusilli], 10, 1, 1);
+				if(crowd1Insufficient()) buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
+				if(crowd1Insufficient()) buffMaintain($effect[Song of Slowness], 100, 1, 1);
+				if(crowd1Insufficient()) buffMaintain($effect[Soulerskates], 0, 1, 1);
+				if(crowd1Insufficient()) asdonBuff($effect[Driving Quickly]);
+				if(crowd1Insufficient()) sl_beachCombHead("init");
+
+				if(crowd1Insufficient())
+				{
+					if(get_property("sl_secondPlaceOrBust").to_boolean())
+						abort("Not enough initiative for the initiative test, aborting since sl_secondPlaceOrBust=true");
+					else
+						print("Not enough initiative for the initiative test, but continuing since sl_secondPlaceOrBust=false", "red");
+				}
 				break;
 			}
 
@@ -4976,12 +5001,15 @@ boolean L13_towerNSContests()
 		}
 		if(get_property("nsContestants2").to_int() == -1)
 		{
+			if(!get_property("_lyleFavored").to_boolean())
+			{
+				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
+			}
 			while((my_mp() < 150) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{
 				doRest();
 			}
 			buffMaintain($effect[Big], 15, 1, 1);
-			stat crowd_stat = ns_crowd2();
 			if (my_class() == $class[Vampyre])
 			{
 				if(crowd_stat == $stat[muscle] && !have_skill($skill[Preternatural Strength]))
@@ -5000,56 +5028,76 @@ boolean L13_towerNSContests()
 			switch(crowd_stat)
 			{
 			case $stat[moxie]:
+				slMaximize("moxie -equip snow suit", 1500, 0, false);
+
 				foreach eff in $effects[Almost Cool, Busy Bein\' Delicious, Butt-Rock Hair, Funky Coal Patina, Impeccable Coiffure, Liquidy Smoky, Locks Like the Raven, Lycanthropy\, Eh?, Memories of Puppy Love, Newt Gets In Your Eyes, Notably Lovely, Oiled Skin, Pill Power, Radiating Black Body&trade;, Seriously Mutated,  Spiky Hair, Sugar Rush, Standard Issue Bravery, Superhuman Sarcasm, Tomato Power, Vital]
 				{
-					buffMaintain(eff, 0, 1, 1);
+					if(crowd2Insufficient()) buffMaintain(eff, 0, 1, 1);
 				}
 
-				buffMaintain($effect[The Moxious Madrigal], 10, 1, 1);
-				buffMaintain($effect[Disco Smirk], 10, 1, 1);
-				buffMaintain($effect[Song of Bravado], 100, 1, 1);
-				buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[The Moxious Madrigal], 10, 1, 1);
+				if(crowd2Insufficient()) {
+					if(sl_have_skill($skill[Quiet Desperation]))
+						buffMaintain($effect[Quiet Desperation], 10, 1, 1);
+					else
+						buffMaintain($effect[Disco Smirk], 10, 1, 1);
+				}
+				if(crowd2Insufficient()) buffMaintain($effect[Song of Bravado], 100, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd1Insufficient()) sl_beachCombHead("moxie");
 				if(have_effect($effect[Ten out of Ten]) == 0)
 				{
-					fightClubSpa($effect[Ten out of Ten]);
+					if(crowd2Insufficient()) fightClubSpa($effect[Ten out of Ten]);
 				}
-				slMaximize("moxie -equip snow suit", 1500, 0, false);
 				break;
 			case $stat[muscle]:
+				slMaximize("muscle -equip snow suit", 1500, 0, false);
+
 				foreach eff in $effects[Browbeaten, Extra Backbone, Extreme Muscle Relaxation, Feroci Tea, Fishy Fortification, Football Eyes, Go Get \'Em\, Tiger!, Human-Human Hybrid, Industrial Strength Starch, Juiced and Loose, Lycanthropy\, Eh?, Marinated, Phorcefullness, Pill Power, Rainy Soul Miasma, Savage Beast Inside, Seriously Mutated, Slightly Larger Than Usual, Standard Issue Bravery, Steroid Boost, Spiky Hair, Sugar Rush, Superheroic, Temporary Lycanthropy, Tomato Power, Truly Gritty, Vital, Woad Warrior]
 				{
-					buffMaintain(eff, 0, 1, 1);
+					if(crowd2Insufficient()) buffMaintain(eff, 0, 1, 1);
 				}
 
-				buffMaintain($effect[Power Ballad of the Arrowsmith], 10, 1, 1);
-				buffMaintain($effect[Song of Bravado], 100, 1, 1);
-				buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Quiet Determination], 10, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Power Ballad of the Arrowsmith], 10, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Song of Bravado], 100, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd1Insufficient()) sl_beachCombHead("muscle");
 				if(have_effect($effect[Muddled]) == 0)
 				{
-					fightClubSpa($effect[Muddled]);
+					if(crowd2Insufficient()) fightClubSpa($effect[Muddled]);
 				}
-				slMaximize("muscle -equip snow suit", 1500, 0, false);
 				break;
 			case $stat[mysticality]:
+				slMaximize("myst -equip snow suit", 1500, 0, false);
+
 				# Gothy may have given us a strange bug during one ascension, removing it for now.
 				foreach eff in $effects[Baconstoned, Erudite, Far Out, Glittering Eyelashes, Industrial Strength Starch, Liquidy Smoky, Marinated, Mind Vision, Mutated, Mystically Oiled, OMG WTF, Pill Power, Rainy Soul Miasma, Ready to Snap, Rosewater Mark, Seeing Colors, Slightly Larger Than Usual, Standard Issue Bravery, Sweet\, Nuts, Tomato Power, Vital]
 				{
-					buffMaintain(eff, 0, 1, 1);
+					if(crowd2Insufficient()) buffMaintain(eff, 0, 1, 1);
 				}
 
-				buffMaintain($effect[The Magical Mojomuscular Melody], 10, 1, 1);
-				buffMaintain($effect[Song of Bravado], 100, 1, 1);
-				buffMaintain($effect[Pasta Oneness], 1, 1, 1);
-				buffMaintain($effect[Saucemastery], 1, 1, 1);
-				buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Quiet Judgement], 10, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[The Magical Mojomuscular Melody], 10, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Song of Bravado], 100, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Pasta Oneness], 1, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Saucemastery], 1, 1, 1);
+				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd1Insufficient()) sl_beachCombHead("mysticality");
 				if(have_effect($effect[Uncucumbered]) == 0)
 				{
-					fightClubSpa($effect[Uncucumbered]);
+					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
 				}
-				slMaximize("myst -equip snow suit", 1500, 0, false);
 				break;
 			}
 
+			if(crowd2Insufficient())
+			{
+				if(get_property("sl_secondPlaceOrBust").to_boolean())
+					abort("Not enough " + crowd_stat + " for the stat test, aborting since sl_secondPlaceOrBust=true");
+				else
+					print("Not enough " + crowd_stat + " for the stat test, but continuing since sl_secondPlaceOrBust=false", "red");
+			}
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
 			visit_url("choice.php?pwd=&whichchoice=1003&option=2", true);
 			visit_url("main.php");
@@ -5060,62 +5108,62 @@ boolean L13_towerNSContests()
 			{
 				doRest();
 			}
-			buffMaintain($effect[All Glory To the Toad], 0, 1, 1);
-			buffMaintain($effect[Bendin\' Hell], 120, 1, 1);
-			element challenge = ns_crowd3();
-			switch(challenge)
-			{
-			case $element[cold]:
-				buffMaintain($effect[Cold Hard Skin], 0, 1, 1);
-				buffMaintain($effect[Frostbeard], 15, 1, 1);
-				buffMaintain($effect[Icy Glare], 10, 1, 1);
-				buffMaintain($effect[Song of the North], 100, 1, 1);
-				break;
-			case $element[hot]:
-				buffMaintain($effect[Song of Sauce], 100, 1, 1);
-				buffMaintain($effect[Flamibili Tea], 0, 1, 1);
-				buffMaintain($effect[Flaming Weapon], 0, 1, 1);
-				buffMaintain($effect[Human-Demon Hybrid], 0, 1, 1);
-				buffMaintain($effect[Lit Up], 0, 1, 1);
-				buffMaintain($effect[Fire Inside], 0, 1, 1);
-				buffMaintain($effect[Pyromania], 15, 1, 1);
-				buffMaintain($effect[Your Fifteen Minutes], 50, 1, 1);
-				break;
-			case $element[sleaze]:
-				buffMaintain($effect[Takin\' It Greasy], 15, 1, 1);
-				buffMaintain($effect[Blood-Gorged], 0, 1, 1);
-				buffMaintain($effect[Greasy Peasy], 0, 1, 1);
-				break;
-			case $element[stench]:
-				buffMaintain($effect[Drenched With Filth], 0, 1, 1);
-				buffMaintain($effect[Musky], 0, 1, 1);
-				buffMaintain($effect[Stinky Hands], 0, 1, 1);
-				buffMaintain($effect[Stinky Weapon], 0, 1, 1);
-				buffMaintain($effect[Rotten Memories], 15, 1, 1);
-				break;
-			case $element[spooky]:
-				buffMaintain($effect[Spooky Hands], 0, 1, 1);
-				buffMaintain($effect[Spooky Weapon], 0, 1, 1);
-				buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
-				buffMaintain($effect[Intimidating Mien], 15, 1, 1);
-				buffMaintain($effect[Snarl of the Timberwolf], 10, 1, 1);
-				break;
-			}
 
 			if(challenge != $element[none])
 			{
 				slMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
 			}
 
-			float score = numeric_modifier(challenge + " damage ");
-			score += numeric_modifier(challenge + " spell damage ");
+			if(crowd3Insufficient()) buffMaintain($effect[All Glory To the Toad], 0, 1, 1);
+			if(crowd3Insufficient()) buffMaintain($effect[Bendin\' Hell], 120, 1, 1);
+			switch(challenge)
+			{
+			case $element[cold]:
+				if(crowd3Insufficient()) buffMaintain($effect[Cold Hard Skin], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Frostbeard], 15, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Icy Glare], 10, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Song of the North], 100, 1, 1);
+				break;
+			case $element[hot]:
+				if(crowd3Insufficient()) buffMaintain($effect[Song of Sauce], 100, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Flamibili Tea], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Flaming Weapon], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Human-Demon Hybrid], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Lit Up], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Fire Inside], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Pyromania], 15, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Your Fifteen Minutes], 50, 1, 1);
+				break;
+			case $element[sleaze]:
+				if(crowd3Insufficient()) buffMaintain($effect[Takin\' It Greasy], 15, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Blood-Gorged], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Greasy Peasy], 0, 1, 1);
+				break;
+			case $element[stench]:
+				if(crowd3Insufficient()) buffMaintain($effect[Drenched With Filth], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Musky], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Stinky Hands], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Stinky Weapon], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Rotten Memories], 15, 1, 1);
+				break;
+			case $element[spooky]:
+				if(crowd3Insufficient()) buffMaintain($effect[Spooky Hands], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Spooky Weapon], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Intimidating Mien], 15, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Snarl of the Timberwolf], 10, 1, 1);
+				break;
+			}
+
+			float score = numeric_modifier(challenge + " damage");
+			score += numeric_modifier(challenge + " spell damage");
 			if((score > 20.0) && (score < 85.0))
 			{
 				buffMaintain($effect[Bendin\' Hell], 100, 1, 1);
 			}
 
-			score = numeric_modifier(challenge + " damage ");
-			score += numeric_modifier(challenge + " spell damage ");
+			score = numeric_modifier(challenge + " damage");
+			score += numeric_modifier(challenge + " spell damage");
 			if((score < 80) && get_property("sl_useWishes").to_boolean())
 			{
 				switch(challenge)
@@ -5136,6 +5184,14 @@ boolean L13_towerNSContests()
 					makeGenieWish($effect[You\'re Back...]);
 					break;
 				}
+			}
+
+			if(crowd3Insufficient())
+			{
+				if(get_property("sl_secondPlaceOrBust").to_boolean())
+					abort("Not enough " + challenge + " for the elemental test, aborting since sl_secondPlaceOrBust=true");
+				else
+					print("Not enough " + challenge + " for the elemental test, but continuing since sl_secondPlaceOrBust=false", "red");
 			}
 
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
@@ -9104,7 +9160,7 @@ boolean LX_dolphinKingMap()
 {
 	if(item_amount($item[Dolphin King\'s Map]) > 0)
 	{
-		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isGeneralStoreAvailable())) 
+		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isArmoryAvailable())) 
 		{
 			buyUpTo(1, $item[Snorkel]);
 			item oldHat = equipped_item($slot[hat]);
@@ -9337,9 +9393,12 @@ boolean L7_crypt()
 		set_property("sl_waitingArrowAlcove", 50);
 	}
 
-	if((spleen_left() > 0) && (item_amount($item[Nightmare Fuel]) > 0) && !is_unrestricted($item[Powdered Gold]))
+	void useNightmareFuelIfPossible()
 	{
-		slChew(1, $item[Nightmare Fuel]);
+		if((spleen_left() > 0) && (item_amount($item[Nightmare Fuel]) > 0) && !is_unrestricted($item[Powdered Gold]))
+		{
+			slChew(1, $item[Nightmare Fuel]);
+		}
 	}
 
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("sl_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && canGroundhog($location[The Defiled Alcove]))
@@ -9364,6 +9423,11 @@ boolean L7_crypt()
 		buffMaintain($effect[Song of Slowness], 110, 1, 1);
 		buffMaintain($effect[Your Fifteen Minutes], 90, 1, 1);
 		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
+		buffMaintain($effect[Nearly Silent Hunting], 0, 1, 1);
+		buffMaintain($effect[Soulerskates], 0, 1, 1);
+		buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
+
+		sl_beachCombHead("init");
 
 		if(have_effect($effect[init.enh]) == 0)
 		{
@@ -9389,6 +9453,11 @@ boolean L7_crypt()
 
 		addToMaximize("100initiative 850max");
 
+		if(get_property("cyrptAlcoveEvilness").to_int() >= 28)
+		{
+			useNightmareFuelIfPossible();
+		}
+
 		print("The Alcove! (" + initiative_modifier() + ")", "blue");
 		slAdv(1, $location[The Defiled Alcove]);
 		handleFamiliar("item");
@@ -9413,10 +9482,15 @@ boolean L7_crypt()
 			slEquip($item[broken champagne bottle]);
 		}
 
-		slAdv(1, $location[The Defiled Nook]);
-		if((item_amount($item[Evil Eye]) > 0) && (sl_my_path() != "G-Lover"))
+		if(get_property("cyrptNookEvilness").to_int() >= 28)
 		{
-			use(item_amount($item[Evil Eye]), $item[Evil Eye]);
+			useNightmareFuelIfPossible();
+		}
+
+		slAdv(1, $location[The Defiled Nook]);
+		while((item_amount($item[Evil Eye]) > 0) && sl_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
+		{
+			use(1, $item[Evil Eye]);
 		}
 		return true;
 	}
@@ -9432,6 +9506,11 @@ boolean L7_crypt()
 		if(sl_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
 			handleFamiliar($familiar[Space Jellyfish]);
+		}
+
+		if(get_property("cyrptNicheEvilness").to_int() >= 28)
+		{
+			useNightmareFuelIfPossible();
 		}
 
 		print("The Niche!", "blue");
@@ -9460,6 +9539,12 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
+		if(get_property("cyrptCrannyEvilness").to_int() >= 28)
+		{
+			useNightmareFuelIfPossible();
+		}
+
+		// In Dark Gyffte: Each dieting pill gives about 23 adventures of turngen
 		if(have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
 		{
 			int desired_pills = in_hardcore() ? 6 : 4;
@@ -13619,7 +13704,7 @@ boolean L10_holeInTheSky()
 	{
 		return false;
 	}
-	if(item_amount($item[Steam-Powered Model Rocketship]) == 0)
+	if(item_amount($item[Steam-Powered Model Rocketship]) == 0 && !in_koe())
 	{
 		return false;
 	}
@@ -14649,6 +14734,10 @@ boolean doTasks()
 	else if((my_level() >= 9) && (my_hp() > 0))
 	{
 		fightScienceTentacle();
+		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
+		{
+			evokeEldritchHorror();
+		}
 	}
 
 	if(LX_catBurglarHeist())			return true;
@@ -14838,17 +14927,69 @@ boolean doTasks()
 
 	if(in_koe())
 	{
-		if(get_property("sl_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333))
+		if(get_property("sl_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333) && can_equip($item[Distressed denim pants]) && can_equip($item[beer helmet]))
 		{
 			handleFamiliar("item");
-			warOutfit(false);
-			boolean ret = warAdventure();
+			if(haveWarOutfit())
+			{
+				warOutfit(false);
+			}
+
+			item warKillDoubler = get_property("sl_hippyInstead").to_boolean() ? $item[Jacob's rung] : $item[Haunted paddle-ball];
+			pullXWhenHaveY(warKillDoubler, 1, 0);
+			if(possessEquipment(warKillDoubler))
+			{
+				slEquip($slot[weapon], warKillDoubler);
+			}
+
+			item food_item = $item[none];
+			foreach it in $items[space chowder, ghuol guolash]
+			{
+				if(item_amount(it) > 0)
+				{
+					food_item = it;
+					break;
+				}
+			}
+			if(food_item == $item[none])
+			{
+				if(creatable_amount($item[space chowder]) > 6)
+				{
+					create(1, $item[space chowder]);
+					food_item = $item[space chowder];
+				}
+				else
+				{
+					abort("Couldn't find a good food item for the war.");
+				}
+			}
+
+			// TODO: Mafia should really be tracking this.
+			if(slAdvBypass("adventure.php?snarfblat=533", $location[The Exploaded Battlefield]) && have_equipped(warKillDoubler))
+			{
+				if(!get_property("sl_hippyInstead").to_boolean())
+				{
+					set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 1);
+				}
+				else
+				{
+					set_property("fratboysDefeated", get_property("fratboysDefeated").to_int() + 1);
+				}
+			}
+			else
+			{
+				if(get_property("lastEncounter") == "Rationing out Destruction")
+				{
+					visit_url("choice.php?whichchoice=1391&option=1&tossid=" + food_item.to_int() + "&pwd=" + my_hash(), true);
+				}
+			}
+
 			if(item_amount($item[solid gold bowling ball]) > 0)
 			{
 				set_property("sl_war", "finished");
 				council();
 			}
-			return ret;
+			return true;
 		}
 	}
 	else
@@ -14896,6 +15037,8 @@ boolean doTasks()
 		}
 	}
 
+	if(LX_koeInvaderHandler())			return true;
+
 	if(L13_towerNSEntrance())			return true;
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
@@ -14926,8 +15069,15 @@ void sl_begin()
 	}
 	if(get_auto_attack() != 0)
 	{
-		print("You have an auto attack enabled. This may cause issues. We will try anyway.", "blue");
-		wait(10);
+		boolean shouldUnset = user_confirm("You have an auto attack enabled. This can cause issues. Would you like us to disable it? Will default to 'No' in 30 seconds.", 30000, false);
+		if(shouldUnset)
+		{
+			set_auto_attack(0);
+		}
+		else
+		{
+			print("Okay, but the warranty is off.", "red");
+		}
 	}
 
 	//This also should set our path too.
@@ -15119,6 +15269,7 @@ void safe_preference_reset_wrapper(int level)
 
 void main()
 {
+	backupSetting("printStackOnAbort", true);
 	print_help_text();
 	try
 	{
@@ -15126,6 +15277,6 @@ void main()
 	}
 	finally
 	{
-		safe_preference_reset_wrapper(4);
+		safe_preference_reset_wrapper(3);
 	}
 }
