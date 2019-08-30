@@ -13,6 +13,11 @@ void handlePreAdventure(location place)
 		abort("Familiar has no equipment, WTF");
 	}
 
+	if(get_property("customCombatScript") != "null")
+	{
+		abort("customCombatScript is set to unrecognized '" + get_property("customCombatScript") + "', should be 'null'");
+	}
+
 #	set_location doesn't help us to resolve this, just let it infinite and fail in that exotic case that was propbably due to a bad user.
 #	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
 #	{
