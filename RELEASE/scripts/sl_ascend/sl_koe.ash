@@ -16,6 +16,7 @@ boolean koe_initializeSettings()
 		set_property("sl_airship", "finished");
 		set_property("sl_holeinthesky", false);
 		set_property("sl_grimstoneOrnateDowsingRod", "false");
+		set_property("sl_invaderKilled", false);
 	}
 	return false;
 }
