@@ -4983,6 +4983,7 @@ boolean L13_towerNSContests()
 				if(crowd1Insufficient()) buffMaintain($effect[Song of Slowness], 100, 1, 1);
 				if(crowd1Insufficient()) buffMaintain($effect[Soulerskates], 0, 1, 1);
 				if(crowd1Insufficient()) asdonBuff($effect[Driving Quickly]);
+				if(crowd1Insufficient()) sl_beachCombHead("init");
 
 				if(crowd1Insufficient())
 				{
@@ -5039,6 +5040,7 @@ boolean L13_towerNSContests()
 				}
 				if(crowd2Insufficient()) buffMaintain($effect[Song of Bravado], 100, 1, 1);
 				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd1Insufficient()) sl_beachCombHead("moxie");
 				if(have_effect($effect[Ten out of Ten]) == 0)
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Ten out of Ten]);
@@ -5056,6 +5058,7 @@ boolean L13_towerNSContests()
 				if(crowd2Insufficient()) buffMaintain($effect[Power Ballad of the Arrowsmith], 10, 1, 1);
 				if(crowd2Insufficient()) buffMaintain($effect[Song of Bravado], 100, 1, 1);
 				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd1Insufficient()) sl_beachCombHead("muscle");
 				if(have_effect($effect[Muddled]) == 0)
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Muddled]);
@@ -5076,6 +5079,7 @@ boolean L13_towerNSContests()
 				if(crowd2Insufficient()) buffMaintain($effect[Pasta Oneness], 1, 1, 1);
 				if(crowd2Insufficient()) buffMaintain($effect[Saucemastery], 1, 1, 1);
 				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
+				if(crowd1Insufficient()) sl_beachCombHead("mysticality");
 				if(have_effect($effect[Uncucumbered]) == 0)
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
