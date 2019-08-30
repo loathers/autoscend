@@ -108,6 +108,13 @@ void handlePostAdventure()
 		return;
 	}
 
+	if((my_location() == $location[The Invader]))
+	{
+		// Just so the "are we beaten up?" check in sl_koe works properly
+		print("Postadventure skipped for The Invader!", "green");
+		return;
+	}
+
 	ocrs_postHelper();
 	if(last_monster().random_modifiers["clingy"])
 	{
