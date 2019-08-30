@@ -13704,7 +13704,7 @@ boolean L10_holeInTheSky()
 	{
 		return false;
 	}
-	if(item_amount($item[Steam-Powered Model Rocketship]) == 0)
+	if(item_amount($item[Steam-Powered Model Rocketship]) == 0 && !in_koe())
 	{
 		return false;
 	}
