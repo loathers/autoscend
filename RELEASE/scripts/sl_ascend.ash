@@ -5155,15 +5155,15 @@ boolean L13_towerNSContests()
 				break;
 			}
 
-			float score = numeric_modifier(challenge + " damage ");
-			score += numeric_modifier(challenge + " spell damage ");
+			float score = numeric_modifier(challenge + " damage");
+			score += numeric_modifier(challenge + " spell damage");
 			if((score > 20.0) && (score < 85.0))
 			{
 				buffMaintain($effect[Bendin\' Hell], 100, 1, 1);
 			}
 
-			score = numeric_modifier(challenge + " damage ");
-			score += numeric_modifier(challenge + " spell damage ");
+			score = numeric_modifier(challenge + " damage");
+			score += numeric_modifier(challenge + " spell damage");
 			if((score < 80) && get_property("sl_useWishes").to_boolean())
 			{
 				switch(challenge)
