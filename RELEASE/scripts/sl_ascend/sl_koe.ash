@@ -27,6 +27,15 @@ boolean LX_koeInvaderHandler()
 		return false;
 	}
 
+	if(have_effect($effect[Flared Nostrils]) > 0)
+		doHottub();
+	uneffect($effect[Flared Nostrils]);
+	if(have_effect($effect[Flared Nostrils]) > 0)
+	{
+		// Delay until after the rest of the tower, I suppose
+		return false;
+	}
+
 	buffMaintain($effect[Astral Shell], 10, 1, 1);
 	buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 	buffMaintain($effect[Scarysauce], 10, 1, 1);
