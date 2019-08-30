@@ -5001,6 +5001,10 @@ boolean L13_towerNSContests()
 		}
 		if(get_property("nsContestants2").to_int() == -1)
 		{
+			if(!get_property("_lyleFavored").to_boolean())
+			{
+				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
+			}
 			while((my_mp() < 150) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{
 				doRest();
