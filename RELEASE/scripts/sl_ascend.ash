@@ -2109,10 +2109,6 @@ void initializeDay(int day)
 			{
 				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
 					buyUpTo(1, $item[Toy Accordion]);
-				else if(in_koe() && creatable_amount($item[Antique Accordion]) > 0)
-				{
-					retrieve_item(1, $item[Antique Accordion]);
-				}
 
 				if(!possessEquipment($item[Turtle Totem]))
 				{
@@ -10658,6 +10654,11 @@ boolean LX_craftAcquireItems()
 	if(knoll_available() && (have_skill($skill[Torso Awaregness]) || have_skill($skill[Best Dressed])) && (item_amount($item[Demon Skin]) > 0) && !possessEquipment($item[Demonskin Jacket]))
 	{
 		//Demonskin Jacket, requires an adventure, knoll available doesn\'t matter here...
+	}
+
+	if(in_koe() && creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion]))
+	{
+		retrieve_item(1, $item[Antique Accordion]);
 	}
 
 	LX_dolphinKingMap();
