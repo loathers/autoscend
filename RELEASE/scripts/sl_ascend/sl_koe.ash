@@ -18,6 +18,12 @@ boolean koe_initializeSettings()
 		set_property("sl_grimstoneOrnateDowsingRod", "false");
 		set_property("sl_invaderKilled", false);
 		set_property("sl_paranoia", 3);
+
+		// The Hidden Temple is originally unlocked
+		set_property("sl_spookyfertilizer", "finished");
+		set_property("sl_spookymap", "finished");
+		set_property("sl_treecoin", "finished");
+		set_property("sl_spookysapling", "finished");
 	}
 	return false;
 }
