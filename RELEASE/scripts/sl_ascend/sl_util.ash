@@ -2221,6 +2221,14 @@ int cloversAvailable()
 		retval -= item_amount($item[Disassembled Clover]);
 	}
 
+	if(in_koe() && canChew($item[lucky pill]))
+	{
+		int pills = item_amount($item[rare Meat isotope])/20 - 1;
+		pills = max(0, pills);
+		pills = min(spleen_left(), pills);
+		retval += pills;
+	}
+
 	return retval;
 }
 
@@ -2246,6 +2254,13 @@ boolean cloverUsageInit()
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
 		return true;
+	}
+
+	if(in_koe() && spleen_left() > 1 && canChew($item[lucky pill]) && item_amount($item[rare Meat isotope]) >= 50)
+	{
+		retrieve_item(1, $item[lucky pill]);
+		slChew(1, $item[lucky pill]);
+		use(1, $item[Disassembled Clover]);
 	}
 
 	if(closet_amount($item[Ten-Leaf Clover]) > 0)
