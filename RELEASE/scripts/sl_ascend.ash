@@ -14933,7 +14933,7 @@ boolean doTasks()
 
 	if(in_koe())
 	{
-		if(get_property("sl_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333) && can_equip($item[Distressed denim pants]) && can_equip($item[beer helmet]))
+		if(get_property("sl_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333) && can_equip($item[Distressed denim pants]) && can_equip($item[beer helmet]) && can_equip($item[bejeweled pledge pin]))
 		{
 			handleFamiliar("item");
 			if(haveWarOutfit())
