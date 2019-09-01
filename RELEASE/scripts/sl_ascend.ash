@@ -7369,6 +7369,11 @@ boolean L11_defeatEd()
 			slEquip($item[beer helmet]);
 		}
 	}
+	if(in_koe())
+	{
+		retrieve_item(1, $item[low-pressure oxygen tank]);
+		slForceEquip($item[low-pressure oxygen tank]);
+	}
 
 	useCocoon();
 	print("Time to waste all of Ed's Ka Coins :(", "blue");
