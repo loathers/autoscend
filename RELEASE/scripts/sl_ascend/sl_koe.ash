@@ -88,6 +88,11 @@ boolean LX_koeInvaderHandler()
 			}
 			// Meteorb is going to add +hot, so remove that
 			setFlavour($element[cold]);
+			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
+			buffMaintain($effect[Song of Sauce], 150, 1, 1);
+			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
+			acquireMP(100, true);
+
 			set_property("choiceAdventure1393", 1); // Take care of it...
 			boolean ret = slAdv(1, $location[The Invader]);
 			if(have_effect($effect[Beaten Up]) > 0)

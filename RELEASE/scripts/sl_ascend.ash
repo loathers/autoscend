@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19506; // 'Refactor Tower Door quest script', but really for KoE support
+since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battlefield
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
@@ -4679,6 +4679,7 @@ boolean L13_towerNSTower()
 			acquireMP(216, true);
 
 			buffMaintain($effect[Song of Sauce], 0, 1, 1);
+			buffMaintain($effect[Carol of the Hells], 0, 1, 1);
 			if(item_amount($item[Electric Boning Knife]) == 0)
 			{
 				if(useMaximizeToEquip())
@@ -14971,18 +14972,7 @@ boolean doTasks()
 			}
 
 			// TODO: Mafia should really be tracking this.
-			if(slAdvBypass("adventure.php?snarfblat=533", $location[The Exploaded Battlefield]) && have_equipped(warKillDoubler))
-			{
-				if(!get_property("sl_hippyInstead").to_boolean())
-				{
-					set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 1);
-				}
-				else
-				{
-					set_property("fratboysDefeated", get_property("fratboysDefeated").to_int() + 1);
-				}
-			}
-			else
+			if(!slAdvBypass("adventure.php?snarfblat=533", $location[The Exploaded Battlefield]))
 			{
 				if(get_property("lastEncounter") == "Rationing out Destruction")
 				{
