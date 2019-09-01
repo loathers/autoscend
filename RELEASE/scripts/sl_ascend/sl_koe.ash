@@ -17,6 +17,7 @@ boolean koe_initializeSettings()
 		set_property("sl_holeinthesky", false);
 		set_property("sl_grimstoneOrnateDowsingRod", "false");
 		set_property("sl_invaderKilled", false);
+		set_property("sl_paranoia", 3);
 	}
 	return false;
 }
