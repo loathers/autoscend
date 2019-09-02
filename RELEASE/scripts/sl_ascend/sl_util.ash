@@ -2221,6 +2221,14 @@ int cloversAvailable()
 		retval -= item_amount($item[Disassembled Clover]);
 	}
 
+	if(in_koe() && canChew($item[lucky pill]))
+	{
+		int pills = item_amount($item[rare Meat isotope])/20 - 2;
+		pills = max(0, pills);
+		pills = min(spleen_left(), pills);
+		retval += pills;
+	}
+
 	return retval;
 }
 
@@ -2246,6 +2254,13 @@ boolean cloverUsageInit()
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
 		return true;
+	}
+
+	if(in_koe() && spleen_left() > 1 && canChew($item[lucky pill]) && item_amount($item[rare Meat isotope]) >= 60)
+	{
+		retrieve_item(1, $item[lucky pill]);
+		slChew(1, $item[lucky pill]);
+		use(1, $item[Disassembled Clover]);
 	}
 
 	if(closet_amount($item[Ten-Leaf Clover]) > 0)
@@ -4277,16 +4292,17 @@ void shrugAT(effect anticipated)
 	{
 		maxSongs += 1;
 	}
-	if(have_skill($skill[Mariachi Memory]))
+	if(sl_have_skill($skill[Mariachi Memory]))
 	{
 		maxSongs += 1;
 	}
 
-
 	int count = 1;
 	#Put these in priority of keeping.
-	boolean[effect] songs = $effects[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, Polka of Plenty, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
+	#This needs to be a comprehensive list
+	boolean[effect] songs = $effects[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, Polka of Plenty, Paul\'s Passionate Pop Song, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
 
+	effect last = $effect[none];
 	foreach song in songs
 	{
 		if(have_effect(song) > 0)
@@ -4294,11 +4310,14 @@ void shrugAT(effect anticipated)
 			count += 1;
 			if(count > maxSongs)
 			{
+				print("Shrugging song: " + song, "blue");
 				uneffect(song);
 			}
 		}
 	}
+	print("I think we're good to go to apply " + anticipated, "blue");
 }
+
 
 string sl_my_path()
 {
@@ -5253,6 +5272,11 @@ location solveDelayZone()
 			}
 			index--;
 		}
+	}
+
+	if(burnZone != $location[none])
+	{
+		return burnZone;
 	}
 
 	// These are locations that aren't 1:1 turn savings, but can still be useful

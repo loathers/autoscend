@@ -1,6 +1,6 @@
 script "sl_ascend.ash";
 notify soolar the second;
-since r19506; // 'Refactor Tower Door quest script', but really for KoE support
+since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battlefield
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
@@ -2109,10 +2109,6 @@ void initializeDay(int day)
 			{
 				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
 					buyUpTo(1, $item[Toy Accordion]);
-				else if(in_koe() && creatable_amount($item[Antique Accordion]) > 0)
-				{
-					retrieve_item(1, $item[Antique Accordion]);
-				}
 
 				if(!possessEquipment($item[Turtle Totem]))
 				{
@@ -4683,6 +4679,7 @@ boolean L13_towerNSTower()
 			acquireMP(216, true);
 
 			buffMaintain($effect[Song of Sauce], 0, 1, 1);
+			buffMaintain($effect[Carol of the Hells], 0, 1, 1);
 			if(item_amount($item[Electric Boning Knife]) == 0)
 			{
 				if(useMaximizeToEquip())
@@ -7373,6 +7370,11 @@ boolean L11_defeatEd()
 			slEquip($item[beer helmet]);
 		}
 	}
+	if(in_koe())
+	{
+		retrieve_item(1, $item[low-pressure oxygen tank]);
+		slForceEquip($item[low-pressure oxygen tank]);
+	}
 
 	useCocoon();
 	print("Time to waste all of Ed's Ka Coins :(", "blue");
@@ -7395,7 +7397,7 @@ boolean L11_defeatEd()
 		{
 			abort("Trying to fight too many Eds, leave the poor dude alone!");
 		}
-		if(sl_my_path() == "Pocket Familiars")
+		if(sl_my_path() == "Pocket Familiars" || in_koe())
 		{
 			cli_execute("refresh inv");
 		}
@@ -10658,6 +10660,11 @@ boolean LX_craftAcquireItems()
 	if(knoll_available() && (have_skill($skill[Torso Awaregness]) || have_skill($skill[Best Dressed])) && (item_amount($item[Demon Skin]) > 0) && !possessEquipment($item[Demonskin Jacket]))
 	{
 		//Demonskin Jacket, requires an adventure, knoll available doesn\'t matter here...
+	}
+
+	if(in_koe() && creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion]))
+	{
+		retrieve_item(1, $item[Antique Accordion]);
 	}
 
 	LX_dolphinKingMap();
@@ -14927,7 +14934,7 @@ boolean doTasks()
 
 	if(in_koe())
 	{
-		if(get_property("sl_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333) && can_equip($item[Distressed denim pants]) && can_equip($item[beer helmet]))
+		if(get_property("sl_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333) && can_equip($item[Distressed denim pants]) && can_equip($item[beer helmet]) && can_equip($item[bejeweled pledge pin]))
 		{
 			handleFamiliar("item");
 			if(haveWarOutfit())
@@ -14965,18 +14972,7 @@ boolean doTasks()
 			}
 
 			// TODO: Mafia should really be tracking this.
-			if(slAdvBypass("adventure.php?snarfblat=533", $location[The Exploaded Battlefield]) && have_equipped(warKillDoubler))
-			{
-				if(!get_property("sl_hippyInstead").to_boolean())
-				{
-					set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 1);
-				}
-				else
-				{
-					set_property("fratboysDefeated", get_property("fratboysDefeated").to_int() + 1);
-				}
-			}
-			else
+			if(!slAdvBypass("adventure.php?snarfblat=533", $location[The Exploaded Battlefield]))
 			{
 				if(get_property("lastEncounter") == "Rationing out Destruction")
 				{

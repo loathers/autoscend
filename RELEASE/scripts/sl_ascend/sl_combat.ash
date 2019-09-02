@@ -588,6 +588,21 @@ string sl_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Weapon of the Pastalord], false);
 	}
 
+	if(enemy.to_string() == "skeleton astronaut")
+	{
+		int dmg = 0;
+		foreach el in $elements[hot, cold, sleaze, spooky, stench]
+		{
+			dmg += min(10, numeric_modifier(el.to_string() + " Damage"));
+		}
+		if(dmg >= 10 && buffed_hit_stat() >= 120 + monster_level_adjustment())
+			return "attack with weapon";
+		else if(canUse($skill[Saucestorm], false))
+		{
+			return useSkill($skill[Saucestorm], false);
+		}
+	}
+
 	if(canUse($skill[Use the Force]) && (sl_saberChargesAvailable() > 0) && (enemy != sl_saberCurrentMonster()))
 	{
 		if(enemy == $monster[Blooper] && needDigitalKey())

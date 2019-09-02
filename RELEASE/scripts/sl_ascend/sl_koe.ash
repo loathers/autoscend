@@ -18,6 +18,12 @@ boolean koe_initializeSettings()
 		set_property("sl_grimstoneOrnateDowsingRod", "false");
 		set_property("sl_invaderKilled", false);
 		set_property("sl_paranoia", 3);
+
+		// The Hidden Temple is originally unlocked
+		set_property("sl_spookyfertilizer", "finished");
+		set_property("sl_spookymap", "finished");
+		set_property("sl_treecoin", "finished");
+		set_property("sl_spookysapling", "finished");
 	}
 	return false;
 }
@@ -47,7 +53,7 @@ boolean LX_koeInvaderHandler()
 	buffMaintain($effect[Scarysauce], 10, 1, 1);
 
 	resetMaximize();
-	addToMaximize("200 all res 30 max");
+	addToMaximize("200 all res");
 
 	if(!possessEquipment($item[meteorb]))
 		retrieve_item(1, $item[meteorb]);
@@ -82,6 +88,11 @@ boolean LX_koeInvaderHandler()
 			}
 			// Meteorb is going to add +hot, so remove that
 			setFlavour($element[cold]);
+			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
+			buffMaintain($effect[Song of Sauce], 150, 1, 1);
+			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
+			acquireMP(100, true);
+
 			set_property("choiceAdventure1393", 1); // Take care of it...
 			boolean ret = slAdv(1, $location[The Invader]);
 			if(have_effect($effect[Beaten Up]) > 0)
