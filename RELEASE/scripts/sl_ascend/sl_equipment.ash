@@ -288,6 +288,57 @@ void equipMaximizedGear()
 	maximize(get_property("sl_maximize_current"), 2500, 0, false);
 }
 
+void equipOverrides()
+{
+	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc]
+	{
+		string overrides = get_property("sl_equipment_override_" + slot_str);
+		if(overrides == "")
+		{
+			continue;
+		}
+
+		slot s;
+		if(slot_str == "acc")
+		{
+			s = $slot[acc1];
+		}
+		else
+		{
+			s = slot_str.to_slot();
+		}
+
+		string [int] overrides_split = overrides.split_string(";");
+		foreach i,item_str in overrides_split
+		{
+			item it = item_str.to_item();
+			if(it == $item[none])
+			{
+				print('"' + item_str + '" does not properly convert to an item (found in sl_equipment_override_' + slot_str + ')', "red");
+				continue;
+			}
+			if(slEquip(s, it))
+			{
+				// if equipping to accessories, now move on to the next slot
+				// otherwise, stop equipping, since items are listed from highest
+				// to lowest priority
+				if(s == $slot[acc1])
+				{
+					s = $slot[acc2];
+				}
+				else if(s == $slot[acc2])
+				{
+					s = $slot[acc3];
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+	}
+}
+
 void equipBaselineGear()
 {
 	if(useMaximizeToEquip())

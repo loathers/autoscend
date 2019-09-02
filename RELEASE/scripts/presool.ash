@@ -253,6 +253,8 @@ void handlePreAdventure(location place)
 		slEquip($item[latte lovers member's mug]);
 	}
 
+	equipOverrides();
+
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))
 	{
 		if(!possessEquipment($item[Continuum Transfunctioner]))
