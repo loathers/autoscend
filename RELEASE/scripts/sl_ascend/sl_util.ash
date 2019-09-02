@@ -2223,7 +2223,7 @@ int cloversAvailable()
 
 	if(in_koe() && canChew($item[lucky pill]))
 	{
-		int pills = item_amount($item[rare Meat isotope])/20 - 1;
+		int pills = item_amount($item[rare Meat isotope])/20 - 2;
 		pills = max(0, pills);
 		pills = min(spleen_left(), pills);
 		retval += pills;
@@ -2256,7 +2256,7 @@ boolean cloverUsageInit()
 		return true;
 	}
 
-	if(in_koe() && spleen_left() > 1 && canChew($item[lucky pill]) && item_amount($item[rare Meat isotope]) >= 50)
+	if(in_koe() && spleen_left() > 1 && canChew($item[lucky pill]) && item_amount($item[rare Meat isotope]) >= 60)
 	{
 		retrieve_item(1, $item[lucky pill]);
 		slChew(1, $item[lucky pill]);
