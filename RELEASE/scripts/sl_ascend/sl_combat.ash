@@ -597,7 +597,7 @@ string sl_combatHandler(int round, string opp, string text)
 		}
 		if(dmg >= 10 && buffed_hit_stat() >= 120 + monster_level_adjustment())
 			return "attack with weapon";
-		else if(canUse($skill[Saucestorm], false]))
+		else if(canUse($skill[Saucestorm], false))
 		{
 			return useSkill($skill[Saucestorm], false);
 		}

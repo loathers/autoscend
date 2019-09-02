@@ -53,7 +53,7 @@ boolean LX_koeInvaderHandler()
 	buffMaintain($effect[Scarysauce], 10, 1, 1);
 
 	resetMaximize();
-	addToMaximize("200 all res 30 max");
+	addToMaximize("200 all res");
 
 	if(!possessEquipment($item[meteorb]))
 		retrieve_item(1, $item[meteorb]);

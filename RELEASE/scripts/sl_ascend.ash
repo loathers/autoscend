@@ -7397,7 +7397,7 @@ boolean L11_defeatEd()
 		{
 			abort("Trying to fight too many Eds, leave the poor dude alone!");
 		}
-		if(sl_my_path() == "Pocket Familiars")
+		if(sl_my_path() == "Pocket Familiars" || in_koe())
 		{
 			cli_execute("refresh inv");
 		}
