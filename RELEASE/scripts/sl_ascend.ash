@@ -15242,6 +15242,11 @@ void print_help_text()
 	print_html("");
 }
 
+void sad_times()
+{
+	print_html('Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. The KoL community is amazing, and we love it, but we no longer want to contribute to the game in the way that we have until now. We wish you all the best in the future. Please see the readme on the <a href="https://github.com/soolar/sl_ascend">github</a> page for more information.');
+}
+
 void safe_preference_reset_wrapper(int level)
 {
 	if(level <= 0)
@@ -15259,6 +15264,10 @@ void safe_preference_reset_wrapper(int level)
 		finally
 		{
 			restoreAllSettings();
+			if(level == 1)
+			{
+				sad_times();
+			}
 		}
 	}
 }
@@ -15267,6 +15276,7 @@ void main()
 {
 	backupSetting("printStackOnAbort", true);
 	print_help_text();
+	sad_times();
 	try
 	{
 		cli_execute("refresh all");

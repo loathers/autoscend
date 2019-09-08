@@ -1,3 +1,29 @@
+# NOTICE
+
+sl\_ascend is no longer being maintained as of September 7th 2019.
+The developer and the most active contributor have agreed that neither of us wish to support
+the game in the way that we have any longer.
+
+This is because of the [actions of Jick and some of the other developers](https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/)
+that have recently come to light.
+
+On the off chance that the above linked reddit thread is no longer available for some reason or
+another, here is a [direct link](https://docs.google.com/document/d/1WLNbjQD2V9uVUPBDu0q7Ox6zC03-BVSBgI_0t7tpUxo/edit) to a google doc containing the relevant information.
+
+I still love KoL, and the KoL community as a whole, but I do not wish to support the game with
+scripts any longer. In my case, and the case of many others, the game would not be nearly as
+enjoyable without the scripting community. In that sense, creating scripts contributes to the game's
+success. I cannot personally rationalize supporting a game that belongs almost solely to one person
+when I would never want to support that person.
+
+## The future
+
+Obviously sl\_ascend itself will no longer be receiving updates. But anyone is free to fork
+sl\_ascend and resume development. The only request I make is that you rename the script itself and
+the script files to no longer start with sl\_. Also, please rename all the preferences used by the
+script to not start with sl\_ as well. I'd also appreciate it if you renamed the functions used by
+the script that start with sl or sl\_ in a like fashion, but I'm not going to insist on it.
+
 # sl\_ascend
 
 sl\_ascend is a script that will play through an entire ascension for you in the Kingdom of Loathing.
