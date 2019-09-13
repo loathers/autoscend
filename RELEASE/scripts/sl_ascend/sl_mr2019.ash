@@ -189,7 +189,7 @@ boolean sl_sausageGoblin(location loc, string option)
 		return false;
 	}
 
-	// My (Malibu Stacey) and Ezandora's spading appears to guarantee the first 
+	// My (Malibu Stacey) and Ezandora's spading appears to guarantee the first
 	// 7 sausage goblins using a formula of 3n+1 adventures since the previous.
 	// After that, you're on your own (hey it's better than nothing).
 	// Also that doesn't apply to the first goblin, it's always 100%.
@@ -624,6 +624,13 @@ boolean sl_beachCombHead(string name)
 	if(!sl_canBeachCombHead(name)) return false;
 
 	return cli_execute("beach head " + sl_beachCombHeadNumFrom(name));
+}
+
+int sl_beachCombFreeUsesLeft(){
+	if(!sl_beachCombAvailable() || get_property("_freeBeachWalksUsed").to_int() >= 11){
+		return 0;
+	}
+	return 11 - get_property("_freeBeachWalksUsed").to_int();
 }
 
 boolean sl_beachUseFreeCombs() {

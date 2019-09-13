@@ -1603,6 +1603,12 @@ boolean LA_cs_communityService()
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Gr8tness], 0, 1, 1);
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power], 0, 1, 1);
 
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power], 0, 1, 1);
+
+			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
+
 			int grapeCost = 1;
 			if(item_amount($item[Green Mana]) > 0)
 			{
@@ -1691,6 +1697,10 @@ boolean LA_cs_communityService()
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Magic Of LOV], 0, 1, 1);
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Seriously Mutated], 0, 1, 1);
+
+			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
 
 			int grapeCost = 1;
 			if(item_amount($item[Green Mana]) > 0)
@@ -1794,6 +1804,10 @@ boolean LA_cs_communityService()
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Moxie Of LOV], 0, 1, 1);
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Seriously Mutated], 0, 1, 1);
 
+			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
+
 			int grapeCost = 1;
 			if(item_amount($item[Green Mana]) > 0)
 			{
@@ -1896,6 +1910,10 @@ boolean LA_cs_communityService()
 				lastQuestCost = lastQuestCost - 3;
 			}
 
+			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
+
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
@@ -1903,6 +1921,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Loyal Tea], 0, 1, 1);
 			buffMaintain($effect[Blood Bond], 0, 1, 1);
+
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Joy]) > 0) && (have_effect($effect[Joy]) == 0))
 			{
 				slChew(1, $item[Abstraction: Joy]);
@@ -2809,6 +2828,10 @@ boolean LA_cs_communityService()
 			if(curCost >= 3)
 			{
 				buffMaintain($effect[Spiro Gyro], 0, 1, 1);
+			}
+
+			if(curCost > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
 			}
 
 			cs_eat_stuff(curQuest);
@@ -4971,4 +4994,66 @@ boolean trySaberTrickMeteorShower(){
 	boolean ret = slAdv(1, $location[The Dire Warren], "sl_saberTrickMeteorShowerCombatHandler");
 	resetMaximize();
 	return ret;
+}
+
+int beachHeadTurnSavings(int quest){
+	int buffed_stat_savings(stat s){
+		return floor(((my_basestat(s) * 1.5) - my_basestat(s))/30);
+	}
+
+	if(!sl_beachCombAvailable() || !($int[2, 3, 4, 5, 10] contains quest)){
+		return 0;
+	}
+
+	int adv_cost = 0;
+	if(sl_beachCombFreeUsesLeft() == 0){
+		adv_cost = 1;
+	}
+
+	int adv_savings = 0;
+	switch(quest){
+	case 2: // every 30 bonus muscle saves 1 turn.
+		if(sl_canBeachCombHead("muscle")){
+			adv_savings = buffed_stat_savings($stat[muscle]);
+		}
+		break;
+	case 3: // every 30 bonus mysticality saves 1 turn
+		if(sl_canBeachCombHead("mysticality")){
+			adv_savings = buffed_stat_savings($stat[mysticality]);
+		}
+		break;
+	case 4: // every 30 bonus moxie saves 1 turn.
+		if(sl_canBeachCombHead("moxie")){
+			adv_savings = buffed_stat_savings($stat[moxie]);
+		}
+		break;
+	case 5: // every 5 lbs saves 1 turn
+		if(sl_canBeachCombHead("familiar")){
+			adv_savings = 1;
+		}
+		break;
+	case 10: // every point of hot resistance saves 1 turn
+		if(sl_canBeachCombHead("hot")){
+			adv_savings = 3;
+		}
+		break;
+	}
+
+	return adv_savings - adv_cost;
+}
+
+boolean tryBeachHeadBuff(int quest){
+	switch(quest){
+	case 2: // every 30 bonus muscle saves 1 turn.
+		return sl_beachCombHead("muscle");
+	case 3: // every 30 bonus mysticality saves 1 turn
+		return sl_beachCombHead("mysticality");
+	case 4: // every 30 bonus moxie saves 1 turn.
+		return sl_beachCombHead("moxie");
+	case 5: // every 5 lbs saves 1 turn
+		return sl_beachCombHead("familiar");
+	case 10: // every point of hot resistance saves 1 turn
+		return sl_beachCombHead("hot");
+	}
+	return false;
 }
