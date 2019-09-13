@@ -4962,10 +4962,13 @@ boolean trySaberTrickMeteorShower(){
 		return false;
 	}
 
-	if(equipped_amount($item[Fourth of May Cosplay Saber]) == 0 && !slEquip($item[Fourth of May Cosplay Saber])){
+	// force equip so maximizer in presool doesnt accidentally remove it
+	if(!slForceEquip($item[Fourth of May Cosplay Saber])){
 		return false;
 	}
 
 	//saber should be equipped with use the force and meteorshower charges available
-	return slAdv(1, $location[The Dire Warren], "sl_saberTrickMeteorShowerCombatHandler");
+	boolean ret = slAdv(1, $location[The Dire Warren], "sl_saberTrickMeteorShowerCombatHandler");
+	resetMaximize();
+	return ret;
 }
