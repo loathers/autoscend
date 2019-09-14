@@ -5043,17 +5043,29 @@ int beachHeadTurnSavings(int quest){
 }
 
 boolean tryBeachHeadBuff(int quest){
+	boolean success = false;
 	switch(quest){
 	case 2: // every 30 bonus muscle saves 1 turn.
-		return sl_beachCombHead("muscle");
+		success = sl_beachCombHead("muscle");
+		break;
 	case 3: // every 30 bonus mysticality saves 1 turn
-		return sl_beachCombHead("mysticality");
+		success = sl_beachCombHead("mysticality");
+		break;
 	case 4: // every 30 bonus moxie saves 1 turn.
-		return sl_beachCombHead("moxie");
+		success = sl_beachCombHead("moxie");
+		break;
 	case 5: // every 5 lbs saves 1 turn
-		return sl_beachCombHead("familiar");
+		success = sl_beachCombHead("familiar");
+		break;
 	case 10: // every point of hot resistance saves 1 turn
-		return sl_beachCombHead("hot");
+		success = sl_beachCombHead("hot");
+		break;
 	}
-	return false;
+	
+	if(success){
+		print("Got beach head buff, estimate savings " + beachHeadTurnSavings(quest) + " turns");
+	} else{
+		print("Wasnt able to get beach head buff.", "red");
+	}
+	return success;
 }
