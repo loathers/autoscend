@@ -658,7 +658,7 @@ boolean sl_spoonTuneMoon();	// Defined in sl_ascend/sl_mr2019.ash
 boolean sl_beachCombAvailable();	// Defined in sl_ascend/sl_mr2019.ash
 boolean sl_canBeachCombHead(string name);	// Defined in sl_ascend/sl_mr2019.ash
 boolean sl_beachCombHead(string name);	// Defined in sl_ascend/sl_mr2019.ash
-int sl_beachCombFreeUsesLeft()	// Defined in sl_ascend/sl_mr2019.ash
+int sl_beachCombFreeUsesLeft();	// Defined in sl_ascend/sl_mr2019.ash
 boolean sl_beachUseFreeCombs();	// Defined in sl_ascend/sl_mr2019.ash
 boolean sl_campawayAvailable();	// Defined in sl_ascend/sl_mr2019.ash
 boolean sl_campawayGrabBuffs();	// Defined in sl_ascend/sl_mr2019.ash
