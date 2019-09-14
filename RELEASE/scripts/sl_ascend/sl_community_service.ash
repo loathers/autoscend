@@ -5001,7 +5001,7 @@ int beachHeadTurnSavings(int quest){
 		return floor(((my_basestat(s) * 1.5) - my_basestat(s))/30);
 	}
 
-	if(!sl_beachCombAvailable() || !($int[2, 3, 4, 5, 10] contains quest)){
+	if(!sl_beachCombAvailable() || !($ints[2, 3, 4, 5, 10] contains quest)){
 		return 0;
 	}
 

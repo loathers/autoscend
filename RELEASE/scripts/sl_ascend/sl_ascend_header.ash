@@ -486,6 +486,8 @@ boolean cs_preTurnStuff(int curQuest);						//Defined in sl_ascend/sl_community_
 void set_cs_questListFast(int[int] fast);					//Defined in sl_ascend/sl_community_service.ash
 boolean canTrySaberTrickMeteorShower();           //Defined in sl_ascend/sl_community_service.ash
 boolean trySaberTrickMeteorShower();              //Defined in sl_ascend/sl_community_service.ash
+int beachHeadTurnSavings(int quest);							//Defined in sl_ascend/sl_community_service.ash
+boolean tryBeachHeadBuff(int quest);							//Defined in sl_ascend/sl_community_service.ash
 
 boolean dealWithMilkOfMagnesium(boolean useAdv);			//Defined in sl_ascend/sl_cooking.ash
 void debugMaximize(string req, int meat);					//Defined in sl_ascend/sl_util.ash
