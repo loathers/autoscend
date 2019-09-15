@@ -2817,6 +2817,10 @@ boolean LA_cs_communityService()
 
 			spacegateVaccine($effect[Rainbow Vaccine]);
 
+			if(get_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
+
 			int curCost = get_cs_questCost(curQuest);
 
 			if((have_effect($effect[Synthesis: Hot]) == 0) && (curCost >= 6))
@@ -2830,9 +2834,7 @@ boolean LA_cs_communityService()
 				buffMaintain($effect[Spiro Gyro], 0, 1, 1);
 			}
 
-			if(curCost > 1 && beachHeadTurnSavings(curQuest) > 0){
-				tryBeachHeadBuff(curQuest);
-			}
+
 
 			cs_eat_stuff(curQuest);
 
@@ -4443,11 +4445,11 @@ int estimate_cs_questCost(int quest)
 	int retval = 60;
 	switch(quest)
 	{
-	case 1:		retval = 60 - ((my_maxhp() - (my_buffedstat($stat[Muscle]) + 3)) / 30);	break;
-	case 2:		retval = 60 - ((my_buffedstat($stat[Muscle]) - my_basestat($stat[Muscle])) / 30);	break;
-	case 3:		retval = 60 - ((my_buffedstat($stat[Mysticality]) - my_basestat($stat[Mysticality])) / 30);	break;
-	case 4:		retval = 60 - ((my_buffedstat($stat[Moxie]) - my_basestat($stat[Moxie])) / 30);	break;
-	case 5:		retval = 60 - ((weight_adjustment() + familiar_weight(my_familiar())) / 5);	break;
+	case 1:		retval = 60 - floor((my_maxhp() - (my_buffedstat($stat[Muscle]) + 3)) / 30);	break;
+	case 2:		retval = 60 - floor((my_buffedstat($stat[Muscle]) - my_basestat($stat[Muscle])) / 30);	break;
+	case 3:		retval = 60 - floor((my_buffedstat($stat[Mysticality]) - my_basestat($stat[Mysticality])) / 30);	break;
+	case 4:		retval = 60 - floor((my_buffedstat($stat[Moxie]) - my_basestat($stat[Moxie])) / 30);	break;
+	case 5:		retval = 60 - floor((weight_adjustment() + familiar_weight(my_familiar())) / 5);	break;
 	case 6:
 		if(have_effect($effect[Bow-Legged Swagger]) > 0)
 		{
@@ -5013,29 +5015,19 @@ int beachHeadTurnSavings(int quest){
 	int adv_savings = 0;
 	switch(quest){
 	case 2: // every 30 bonus muscle saves 1 turn.
-		if(sl_canBeachCombHead("muscle")){
-			adv_savings = buffed_stat_savings($stat[muscle]);
-		}
+		adv_savings = buffed_stat_savings($stat[muscle]);
 		break;
 	case 3: // every 30 bonus mysticality saves 1 turn
-		if(sl_canBeachCombHead("mysticality")){
-			adv_savings = buffed_stat_savings($stat[mysticality]);
-		}
+		adv_savings = buffed_stat_savings($stat[mysticality]);
 		break;
 	case 4: // every 30 bonus moxie saves 1 turn.
-		if(sl_canBeachCombHead("moxie")){
-			adv_savings = buffed_stat_savings($stat[moxie]);
-		}
+		adv_savings = buffed_stat_savings($stat[moxie]);
 		break;
 	case 5: // every 5 lbs saves 1 turn
-		if(sl_canBeachCombHead("familiar")){
-			adv_savings = 1;
-		}
+		adv_savings = 1;
 		break;
 	case 10: // every point of hot resistance saves 1 turn
-		if(sl_canBeachCombHead("hot")){
-			adv_savings = 3;
-		}
+		adv_savings = 3;
 		break;
 	}
 
@@ -5061,7 +5053,7 @@ boolean tryBeachHeadBuff(int quest){
 		success = sl_beachCombHead("hot");
 		break;
 	}
-	
+
 	if(success){
 		print("Got beach head buff, estimate savings " + beachHeadTurnSavings(quest) + " turns");
 	} else{
