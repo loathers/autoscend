@@ -3,6 +3,19 @@ script "sl_community_service.ash"
 #	Some details derived some yojimbos_law's forum post:
 #	http://forums.kingdomofloathing.com/vb/showpost.php?p=4769933&postcount=345
 
+# TODO:
+#   - blood bond + completing CS quest can cause HP to drop to 0 and break the script
+#		- add power leveling at NEP (free fights) to reach level 4 for agua de vida
+#		- add run NEP (free fights) when low on meat to afford hot dogs/speakeasy drinks
+#		- add beach comb (free) for meat (some sea vegetables sell for 350 each)
+# 	- get cloud buff before power leveling/NEP
+#		- free rests at campsite
+#		- add flag to ignore that damn fortune cookie counter
+#		- early level combat can sometimes get stuck from low mp (free camp site rests might help)
+#		- saving emergency marg message end of day 1 is misleading (says to overdrink then cast simmer)
+#		- fill stomach/spleen/liver at the end of day 1
+#		- day 2, try to get pokefam +10 lb weight item from grass with extra pokegrow fertilizer
+
 static int[int] sl_cs_fastQuestList;
 
 boolean LA_cs_communityService()
@@ -5038,24 +5051,29 @@ boolean tryBeachHeadBuff(int quest){
 	boolean success = false;
 	switch(quest){
 	case 2: // every 30 bonus muscle saves 1 turn.
-		success = sl_beachCombHead("muscle");
+		sl_beachCombHead("muscle");
+		success = have_effect($effect[Lack of Body-Building]) > 0;
 		break;
 	case 3: // every 30 bonus mysticality saves 1 turn
-		success = sl_beachCombHead("mysticality");
+		sl_beachCombHead("mysticality");
+		success = have_effect($effect[We're All Made of Starfish]) > 0;
 		break;
 	case 4: // every 30 bonus moxie saves 1 turn.
-		success = sl_beachCombHead("moxie");
+		sl_beachCombHead("moxie");
+		success = have_effect($effect[Pomp & Circumsands]) > 0;
 		break;
 	case 5: // every 5 lbs saves 1 turn
-		success = sl_beachCombHead("familiar");
+		sl_beachCombHead("familiar");
+		success = have_effect($effect[Do I Know You From Somewhere?]) > 0;
 		break;
 	case 10: // every point of hot resistance saves 1 turn
-		success = sl_beachCombHead("hot");
+		sl_beachCombHead("hot");
+		success = have_effect($effect[Hot-Headed]) > 0;
 		break;
 	}
 
 	if(success){
-		print("Got beach head buff, estimate savings " + beachHeadTurnSavings(quest) + " turns");
+		print("Have beach head buff, estimate savings " + beachHeadTurnSavings(quest) + " turns");
 	} else{
 		print("Wasnt able to get beach head buff.", "red");
 	}
