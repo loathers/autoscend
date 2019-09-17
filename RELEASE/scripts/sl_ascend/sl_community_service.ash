@@ -5062,6 +5062,7 @@ int beachHeadTurnSavings(int quest){
 	return adv_savings - adv_cost;
 }
 
+# Note: sl_beachCombHead will only work if free walks are available, may want to change
 boolean tryBeachHeadBuff(int quest){
 	boolean success = false;
 	switch(quest){
