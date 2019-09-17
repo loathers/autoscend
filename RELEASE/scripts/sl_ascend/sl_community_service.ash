@@ -5029,18 +5029,33 @@ int beachHeadTurnSavings(int quest){
 	switch(quest){
 	case 2: // every 30 bonus muscle saves 1 turn.
 		adv_savings = buffed_stat_savings($stat[muscle]);
+		if(have_effect($effect[Lack of Body-Building]) > 0){
+			adv_cost = 0;
+		}
 		break;
 	case 3: // every 30 bonus mysticality saves 1 turn
 		adv_savings = buffed_stat_savings($stat[mysticality]);
+		if(have_effect($effect[We're All Made of Starfish]) > 0){
+			adv_cost = 0;
+		}
 		break;
 	case 4: // every 30 bonus moxie saves 1 turn.
 		adv_savings = buffed_stat_savings($stat[moxie]);
+		if(have_effect($effect[Pomp & Circumsands]) > 0){
+			adv_cost = 0;
+		}
 		break;
 	case 5: // every 5 lbs saves 1 turn
 		adv_savings = 1;
+		if(have_effect($effect[Do I Know You From Somewhere?]) > 0){
+			adv_cost = 0;
+		}
 		break;
 	case 10: // every point of hot resistance saves 1 turn
 		adv_savings = 3;
+		if(have_effect($effect[Hot-Headed]) > 0){
+			adv_cost = 0;
+		}
 		break;
 	}
 
