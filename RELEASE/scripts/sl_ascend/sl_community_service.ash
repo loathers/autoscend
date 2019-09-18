@@ -473,7 +473,7 @@ boolean LA_cs_communityService()
 				}
 
 				buffMaintain($effect[Musk of the Moose], 10, 1, 1);
-				if(!cs_mpMaintain() || !cs_healthMaintain()){
+				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
 				slAdv(1, loc, "cs_combatNormal");
@@ -500,7 +500,7 @@ boolean LA_cs_communityService()
 				{
 					slEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 				}
-				if(!cs_mpMaintain() || !cs_healthMaintain()){
+				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
 				slAdv(1, $location[The Haunted Pantry], "cs_combatNormal");
@@ -543,7 +543,7 @@ boolean LA_cs_communityService()
 					}
 				}
 				set_property("choiceAdventure1060", 2);
-				if(!cs_mpMaintain() || !cs_healthMaintain()){
+				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
 				slAdv(1, $location[The Skeleton Store], "cs_combatNormal");
@@ -1013,7 +1013,7 @@ boolean LA_cs_communityService()
 				}
 				else
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
+					if(!cs_mpMaintain(30) || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
 					slAdv(1, $location[The Thinknerd Warehouse], "cs_combatNormal");
@@ -1082,7 +1082,7 @@ boolean LA_cs_communityService()
 				}
 				else
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
+					if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
 					slAdv(1, $location[The Haunted Kitchen], "cs_combatNormal");
@@ -1195,7 +1195,7 @@ boolean LA_cs_communityService()
 
 			if(!get_property("sl_hccsNoConcludeDay").to_boolean())
 			{
-				uneffect($effect[Ode To Booze]);
+				//uneffect($effect[Ode To Booze]);
 				zataraSeaside(my_primestat());
 				buffMaintain($effect[Polka Of Plenty], 30, 1, 10 - get_property("_neverendingPartyFreeTurns").to_int());
 				songboomSetting($item[Gathered Meat-Clip]);
@@ -1310,7 +1310,7 @@ boolean LA_cs_communityService()
 				{
 					if(item_amount(it) > 0)
 					{
-						cs_mpMaintain();
+						cs_mpMaintain(50);
 						slDrink(1, it);
 						break;
 					}
@@ -1327,7 +1327,7 @@ boolean LA_cs_communityService()
 				if((inebriety_left() == 0) && have_familiar($familiar[Stooper])){
 					stooperDrink();
 				}
-				cs_mpMaintain();
+				cs_mpMaintain(100);
 				buffMaintain($effect[Ode to Booze], 50, 1, 10);
 				slOverdrink(1, $item[Emergency Margarita]);
 			}
@@ -2622,7 +2622,7 @@ boolean LA_cs_communityService()
 					{
 						handleFamiliar($familiar[Pair of Stomping Boots]);
 						backupSetting("choiceAdventure297", "3");
-						if(!cs_mpMaintain() || !cs_healthMaintain()){
+						if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 							abort("Wasnt to maintain health and mp.");
 						}
 						slAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
@@ -2641,7 +2641,7 @@ boolean LA_cs_communityService()
 				else if(have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
 				{
 					backupSetting("choiceAdventure297", "3");
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
+					if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
 					boolean result = slAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
@@ -5087,7 +5087,7 @@ boolean cs_preTurnStuff(int curQuest)
 }
 
 boolean cs_healthMaintain(){
-	int target = floor(my_maxhp() * .3;
+	int target = floor(my_maxhp() * .3);
 	if(my_maxhp() < 50){
 		target = floor(my_maxhp() * .5);
 	}
@@ -5098,24 +5098,26 @@ boolean cs_healthMaintain(int target){
 	if(target > my_maxhp()){
 		target = my_maxhp();
 	}
-	
+
+	print("CS: attempting to maintain target hp " + target);
+
 	while(my_hp() < target){
+		print("attempting to heal");
 		if(!useCocoon()){
+			print("I'm in here now");
 			//cocoon failed, try a free rest to restore some hp/mp and try again
-			if((chateaumantegna_available() || sl_campawayAvailable())){
-				if(doFreeRest()){
-					continue;
-				}
+			if((chateaumantegna_available() || sl_campawayAvailable()) && doFreeRest()){
+				continue;
 			}
 
 			// try to gain MP through conventional means before trying to heal again
 			int minMP = 0;
-			if(my_maxhp() <= 40 && sl_have_skill($skill[Tongue of the Walrus])){
+			if(my_maxhp() <= 70 && sl_have_skill($skill[Tongue of the Walrus])){
 				minMP = mp_cost($skill[Tongue of the Walrus]);
 			} else if(sl_have_skill($skill[Cannelloni Cocoon])){
 				minMP = mp_cost($skill[Cannelloni Cocoon]);
 			}
-			if(!cs_mpMaintain(minMP)){
+			if(minMP == 0 || !cs_mpMaintain(minMP)){
 				break; // cant reasonably restore mp, break out.
 			}
 		}
@@ -5135,9 +5137,15 @@ boolean cs_mpMaintain(){
 }
 
 boolean cs_mpMaintain(int target){
+	if(target > my_maxmp()){
+		target = my_maxmp();
+	}
+	print("CS: attempting to maintain target mp " + target);
+
 	if(chateaumantegna_available() || sl_campawayAvailable()){
 		while(my_mp() < target && doFreeRest());
 	}
+
 	boolean shouldBuy = false;
 	if(my_meat() > 3000){
 		shouldBuy = true;

@@ -487,7 +487,7 @@ void set_cs_questListFast(int[int] fast);					//Defined in sl_ascend/sl_communit
 boolean cs_healthMaintain();											//Defined in sl_ascend/sl_community_service.ash
 boolean cs_healthMaintain(int target);						//Defined in sl_ascend/sl_community_service.ash
 boolean cs_mpMaintain();													//Defined in sl_ascend/sl_community_service.ash
-boolean cs_mpMaintain(int target)									//Defined in sl_ascend/sl_community_service.ash
+boolean cs_mpMaintain(int target);								//Defined in sl_ascend/sl_community_service.ash
 boolean canTrySaberTrickMeteorShower();           //Defined in sl_ascend/sl_community_service.ash
 boolean trySaberTrickMeteorShower();              //Defined in sl_ascend/sl_community_service.ash
 int beachHeadTurnSavings(int quest);							//Defined in sl_ascend/sl_community_service.ash

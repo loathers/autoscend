@@ -4024,7 +4024,7 @@ string beerPong(string page)
 
 boolean useCocoon()
 {
-	if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue Of The Walrus]) && my_mp() >= mp_cost($skill[Tongue Of The Walrus]))
+	if((have_effect($effect[Beaten Up]) > 0 || my_maxhp() <= 70) && have_skill($skill[Tongue Of The Walrus]) && my_mp() >= mp_cost($skill[Tongue Of The Walrus]))
 	{
 		use_skill(1, $skill[Tongue Of The Walrus]);
 	}
@@ -4067,7 +4067,7 @@ boolean useCocoon()
 		int hpNeed = ceil((my_maxhp() - my_hp()) / 1000.0);
 		int maxCasts = my_mp() / mpCost;
 		casts = min(hpNeed, maxCasts);
-		if(sl_beta() && blood_skill != $skill[none])
+		if(sl_beta() && blood_skill != $skill[none] && casts > 0)
 		{
 			int healto = my_hp() + 1000 * casts;
 			int wasted = min(max(healto - my_maxhp(), 0), my_hp() - 1);
@@ -4094,7 +4094,7 @@ boolean useCocoon()
 	{
 		return false;
 	}
-	if(my_mp() >= (mpCost * casts))
+	if(casts > 0 && my_mp() >= (mpCost * casts))
 	{
 		use_skill(casts, cocoon);
 		return true;
