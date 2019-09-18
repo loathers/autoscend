@@ -1963,10 +1963,7 @@ boolean LA_cs_communityService()
 
 	case 5:		#Familiar Weight
 		{
-			while((my_mp() < 50) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			while((my_mp() < 50) && doFreeRest());
 
 			int lastQuestCost = 36;
 			if(have_skill($skill[Smooth Movement]))
@@ -2858,10 +2855,7 @@ boolean LA_cs_communityService()
 			asdonBuff($effect[Driving Safely]);
 			getHorse("resistance");
 
-			while((my_mp() < 37) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			while((my_mp() < 37) && doFreeRest());
 
 			boolean [item] toSmash = $items[asparagus knife, dirty hobo gloves, dirty rigging rope, heavy-duty clipboard, Microplushie: Sororitrate, plastic nunchaku, Ratty Knitted Cap, sewage-clogged pistol, Spookyraven Signet, Staff of the Headmaster\'s Victuals];
 			foreach it in toSmash
@@ -5093,26 +5087,62 @@ boolean cs_preTurnStuff(int curQuest)
 }
 
 boolean cs_healthMaintain(){
-	while(my_hp() < my_maxhp()*.4){
+	int target = floor(my_maxhp() * .3;
+	if(my_maxhp() < 50){
+		target = floor(my_maxhp() * .5);
+	}
+	return cs_healthMaintain(target);
+}
+
+boolean cs_healthMaintain(int target){
+	if(target > my_maxhp()){
+		target = my_maxhp();
+	}
+	
+	while(my_hp() < target){
 		if(!useCocoon()){
 			//cocoon failed, try a free rest to restore some hp/mp and try again
-			if((chateaumantegna_available() || sl_campawayAvailable()) && !doFreeRest()){
-				break;
+			if((chateaumantegna_available() || sl_campawayAvailable())){
+				if(doFreeRest()){
+					continue;
+				}
+			}
+
+			// try to gain MP through conventional means before trying to heal again
+			int minMP = 0;
+			if(my_maxhp() <= 40 && sl_have_skill($skill[Tongue of the Walrus])){
+				minMP = mp_cost($skill[Tongue of the Walrus]);
+			} else if(sl_have_skill($skill[Cannelloni Cocoon])){
+				minMP = mp_cost($skill[Cannelloni Cocoon]);
+			}
+			if(!cs_mpMaintain(minMP)){
+				break; // cant reasonably restore mp, break out.
 			}
 		}
 	}
-	return my_hp() >= my_maxhp()*.3;
+
+	return my_hp() >= target;
 }
 
 boolean cs_mpMaintain(){
-	if(chateaumantegna_available() || sl_campawayAvailable()){
-		if(my_maxmp() >= 120){
-			while((my_mp() < 120) && doFreeRest());
-		} else{
-			while(my_mp() < my_maxmp()*.3 && doFreeRest());
-		}
+	int target = floor(my_maxmp()*.3);
+	if(my_maxmp() < 30){
+		target = 0;
+	} else if(my_maxmp() >= 120){
+		target = 120;
 	}
-	return my_mp() >= 120 || my_mp() >= my_maxmp()*.3;
+	return cs_mpMaintain(target);
+}
+
+boolean cs_mpMaintain(int target){
+	if(chateaumantegna_available() || sl_campawayAvailable()){
+		while(my_mp() < target && doFreeRest());
+	}
+	boolean shouldBuy = false;
+	if(my_meat() > 3000){
+		shouldBuy = true;
+	}
+	return acquireMP(target, shouldBuy);
 }
 
 boolean canTrySaberTrickMeteorShower(){
