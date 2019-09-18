@@ -5093,7 +5093,7 @@ boolean cs_preTurnStuff(int curQuest)
 }
 
 boolean cs_healthMaintain(){
-	while(my_hp() < my_maxhp()*.3 || ((my_hp() < 200) && ((my_hp()+30) < my_maxhp()))){
+	while(my_hp() < my_maxhp()*.4){
 		if(!useCocoon()){
 			//cocoon failed, try a free rest to restore some hp/mp and try again
 			if((chateaumantegna_available() || sl_campawayAvailable()) && !doFreeRest()){
@@ -5135,7 +5135,7 @@ boolean trySaberTrickMeteorShower(){
 	}
 
 	//saber should be equipped with use the force and meteorshower charges available
-	if(!cs_mpMaintain() || !cs_healthMaintain()){
+	if(!cs_healthMaintain()){
 		abort("Wasnt to maintain health and mp.");
 	}
 	boolean ret = slAdv(1, $location[The Dire Warren], "sl_saberTrickMeteorShowerCombatHandler");
