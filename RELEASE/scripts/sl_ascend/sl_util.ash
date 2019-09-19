@@ -28,6 +28,8 @@ boolean set_property_ifempty(string setting, string change);
 boolean restore_property(string setting, string source);
 boolean clear_property_if(string setting, string cond);
 int doRest();
+boolean haveFreeRestAvailable();
+boolean doFreeRest();
 boolean acquireMP(int goal);
 boolean acquireMP(int goal, boolean buyIt);
 boolean acquireGumItem(item it);
@@ -1977,6 +1979,18 @@ int doRest()
 		set_property("restUsingChateau", true);
 	}
 	return get_property("timesRested").to_int();
+}
+
+boolean haveFreeRestAvailable(){
+	return get_property("timesRested").to_int() < total_free_rests();
+}
+
+boolean doFreeRest(){
+	if(haveFreeRestAvailable()){
+		int rest_count = get_property("timesRested").to_int();
+		return doRest() > rest_count;
+	}
+	return false;
 }
 
 boolean buyableMaintain(item toMaintain, int howMany)
@@ -4010,7 +4024,7 @@ string beerPong(string page)
 
 boolean useCocoon()
 {
-	if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue Of The Walrus]) && my_mp() >= mp_cost($skill[Tongue Of The Walrus]))
+	if((have_effect($effect[Beaten Up]) > 0 || my_maxhp() <= 70) && have_skill($skill[Tongue Of The Walrus]) && my_mp() >= mp_cost($skill[Tongue Of The Walrus]))
 	{
 		use_skill(1, $skill[Tongue Of The Walrus]);
 	}
@@ -4053,7 +4067,7 @@ boolean useCocoon()
 		int hpNeed = ceil((my_maxhp() - my_hp()) / 1000.0);
 		int maxCasts = my_mp() / mpCost;
 		casts = min(hpNeed, maxCasts);
-		if(sl_beta() && blood_skill != $skill[none])
+		if(sl_beta() && blood_skill != $skill[none] && casts > 0)
 		{
 			int healto = my_hp() + 1000 * casts;
 			int wasted = min(max(healto - my_maxhp(), 0), my_hp() - 1);
@@ -4080,7 +4094,7 @@ boolean useCocoon()
 	{
 		return false;
 	}
-	if(my_mp() >= (mpCost * casts))
+	if(casts > 0 && my_mp() >= (mpCost * casts))
 	{
 		use_skill(casts, cocoon);
 		return true;
@@ -4179,7 +4193,7 @@ boolean careAboutDrops(monster mon)
 
 /*
 pygmy bowler
-pygmy witch accountant 
+pygmy witch accountant
 white lion
 white snake
 
@@ -4201,7 +4215,7 @@ sassy pirate
 smarmy pirate
 swarthy pirate
 tetchy pirate
-toothy pirate 
+toothy pirate
 tipsy pirate
 chatty pirate
 cleanly pirate
@@ -4215,19 +4229,19 @@ smut orc jacker
 smut orc nailer
 smut orc pervert
 smut orc pipelayer
-smut orc screwer 
+smut orc screwer
 Whatsian Commando Ghost
-Space Tourist Explorer Ghost 
-Dusken Raider Ghost 
-Claybender Sorcerer Ghost 
-Battlie Knight Ghost 
+Space Tourist Explorer Ghost
+Dusken Raider Ghost
+Claybender Sorcerer Ghost
+Battlie Knight Ghost
 bearpig topiary animal
-elephant (meatcar?) topiary animal 
-spider (duck?) topiary animal 
+elephant (meatcar?) topiary animal
+spider (duck?) topiary animal
 oil cartel
-oil baron 
+oil baron
 oil tycoon
-Burly Sidekick 
+Burly Sidekick
 Quiet Healer
 lobsterfrogman
 possessed wine rack

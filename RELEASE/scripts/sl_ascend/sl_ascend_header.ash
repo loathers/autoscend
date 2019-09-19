@@ -484,6 +484,10 @@ boolean do_cs_quest(int quest);								//Defined in sl_ascend/sl_community_servi
 boolean do_cs_quest(string quest);							//Defined in sl_ascend/sl_community_service.ash
 boolean cs_preTurnStuff(int curQuest);						//Defined in sl_ascend/sl_community_service.ash
 void set_cs_questListFast(int[int] fast);					//Defined in sl_ascend/sl_community_service.ash
+boolean cs_healthMaintain();											//Defined in sl_ascend/sl_community_service.ash
+boolean cs_healthMaintain(int target);						//Defined in sl_ascend/sl_community_service.ash
+boolean cs_mpMaintain();													//Defined in sl_ascend/sl_community_service.ash
+boolean cs_mpMaintain(int target);								//Defined in sl_ascend/sl_community_service.ash
 boolean canTrySaberTrickMeteorShower();           //Defined in sl_ascend/sl_community_service.ash
 boolean trySaberTrickMeteorShower();              //Defined in sl_ascend/sl_community_service.ash
 int beachHeadTurnSavings(int quest);							//Defined in sl_ascend/sl_community_service.ash
@@ -512,6 +516,8 @@ int doNumberology(string goal, boolean doIt);				//Defined in sl_ascend/sl_util.
 int doNumberology(string goal, boolean doIt, string option);//Defined in sl_ascend/sl_util.ash
 int doNumberology(string goal, string option);				//Defined in sl_ascend/sl_util.ash
 int doRest();												//Defined in sl_ascend/sl_util.ash
+boolean haveFreeRestAvailable();		//Defined in sl_ascend/sl_util.ash
+boolean doFreeRest();										//Defined in sl_ascend/sl_util.ash
 boolean doTasks();											//Defined in sl_ascend.ash
 boolean keepOnTruckin();									//Defined in sl_ascend/sl_cooking.ash
 boolean doThemtharHills();									//Defined in sl_ascend.ash

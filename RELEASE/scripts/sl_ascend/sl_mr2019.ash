@@ -640,6 +640,7 @@ boolean sl_beachUseFreeCombs() {
 	return true;
 }
 
+// place.php?whichplace=campaway
 boolean sl_campawayAvailable()
 {
 	return is_unrestricted($item[Distant Woods Getaway Brochure]) && get_property("getawayCampsiteUnlocked").to_boolean();
