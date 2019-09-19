@@ -3,6 +3,19 @@ script "sl_community_service.ash"
 #	Some details derived some yojimbos_law's forum post:
 #	http://forums.kingdomofloathing.com/vb/showpost.php?p=4769933&postcount=345
 
+# TODO:
+#   - blood bond + completing CS quest can cause HP to drop to 0 and break the script
+#		- add power leveling at NEP (free fights) to reach level 4 for agua de vida
+#		- add run NEP (free fights) when low on meat to afford hot dogs/speakeasy drinks
+#		- add beach comb (free) for meat (some sea vegetables sell for 350 each)
+# 	- get cloud buff before power leveling/NEP
+#		- free rests at campsite
+#		- add flag to ignore that damn fortune cookie counter
+#		- early level combat can sometimes get stuck from low mp (free camp site rests might help)
+#		- saving emergency marg message end of day 1 is misleading (says to overdrink then cast simmer)
+#		- fill stomach/spleen/liver at the end of day 1
+#		- day 2, try to get pokefam +10 lb weight item from grass with extra pokegrow fertilizer
+
 static int[int] sl_cs_fastQuestList;
 
 boolean LA_cs_communityService()
@@ -1603,6 +1616,12 @@ boolean LA_cs_communityService()
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Gr8tness], 0, 1, 1);
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power], 0, 1, 1);
 
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power], 0, 1, 1);
+
+			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
+
 			int grapeCost = 1;
 			if(item_amount($item[Green Mana]) > 0)
 			{
@@ -1691,6 +1710,10 @@ boolean LA_cs_communityService()
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Magic Of LOV], 0, 1, 1);
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Seriously Mutated], 0, 1, 1);
+
+			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
 
 			int grapeCost = 1;
 			if(item_amount($item[Green Mana]) > 0)
@@ -1794,6 +1817,10 @@ boolean LA_cs_communityService()
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Moxie Of LOV], 0, 1, 1);
 			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Seriously Mutated], 0, 1, 1);
 
+			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
+
 			int grapeCost = 1;
 			if(item_amount($item[Green Mana]) > 0)
 			{
@@ -1896,6 +1923,10 @@ boolean LA_cs_communityService()
 				lastQuestCost = lastQuestCost - 3;
 			}
 
+			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
+
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
@@ -1903,6 +1934,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Loyal Tea], 0, 1, 1);
 			buffMaintain($effect[Blood Bond], 0, 1, 1);
+
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Joy]) > 0) && (have_effect($effect[Joy]) == 0))
 			{
 				slChew(1, $item[Abstraction: Joy]);
@@ -2798,6 +2830,10 @@ boolean LA_cs_communityService()
 
 			spacegateVaccine($effect[Rainbow Vaccine]);
 
+			if(get_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
+				tryBeachHeadBuff(curQuest);
+			}
+
 			int curCost = get_cs_questCost(curQuest);
 
 			if((have_effect($effect[Synthesis: Hot]) == 0) && (curCost >= 6))
@@ -2810,6 +2846,8 @@ boolean LA_cs_communityService()
 			{
 				buffMaintain($effect[Spiro Gyro], 0, 1, 1);
 			}
+
+
 
 			cs_eat_stuff(curQuest);
 
@@ -4420,11 +4458,11 @@ int estimate_cs_questCost(int quest)
 	int retval = 60;
 	switch(quest)
 	{
-	case 1:		retval = 60 - ((my_maxhp() - (my_buffedstat($stat[Muscle]) + 3)) / 30);	break;
-	case 2:		retval = 60 - ((my_buffedstat($stat[Muscle]) - my_basestat($stat[Muscle])) / 30);	break;
-	case 3:		retval = 60 - ((my_buffedstat($stat[Mysticality]) - my_basestat($stat[Mysticality])) / 30);	break;
-	case 4:		retval = 60 - ((my_buffedstat($stat[Moxie]) - my_basestat($stat[Moxie])) / 30);	break;
-	case 5:		retval = 60 - ((weight_adjustment() + familiar_weight(my_familiar())) / 5);	break;
+	case 1:		retval = 60 - floor((my_maxhp() - (my_buffedstat($stat[Muscle]) + 3)) / 30);	break;
+	case 2:		retval = 60 - floor((my_buffedstat($stat[Muscle]) - my_basestat($stat[Muscle])) / 30);	break;
+	case 3:		retval = 60 - floor((my_buffedstat($stat[Mysticality]) - my_basestat($stat[Mysticality])) / 30);	break;
+	case 4:		retval = 60 - floor((my_buffedstat($stat[Moxie]) - my_basestat($stat[Moxie])) / 30);	break;
+	case 5:		retval = 60 - floor((weight_adjustment() + familiar_weight(my_familiar())) / 5);	break;
 	case 6:
 		if(have_effect($effect[Bow-Legged Swagger]) > 0)
 		{
@@ -4971,4 +5009,89 @@ boolean trySaberTrickMeteorShower(){
 	boolean ret = slAdv(1, $location[The Dire Warren], "sl_saberTrickMeteorShowerCombatHandler");
 	resetMaximize();
 	return ret;
+}
+
+int beachHeadTurnSavings(int quest){
+	int buffed_stat_savings(stat s){
+		return floor(((my_basestat(s) * 1.5) - my_basestat(s))/30);
+	}
+
+	if(!sl_beachCombAvailable() || !($ints[2, 3, 4, 5, 10] contains quest)){
+		return 0;
+	}
+
+	int adv_cost = 0;
+	if(sl_beachCombFreeUsesLeft() == 0){
+		adv_cost = 1;
+	}
+
+	int adv_savings = 0;
+	switch(quest){
+	case 2: // every 30 bonus muscle saves 1 turn.
+		adv_savings = buffed_stat_savings($stat[muscle]);
+		if(have_effect($effect[Lack of Body-Building]) > 0){
+			adv_cost = 0;
+		}
+		break;
+	case 3: // every 30 bonus mysticality saves 1 turn
+		adv_savings = buffed_stat_savings($stat[mysticality]);
+		if(have_effect($effect[We're All Made of Starfish]) > 0){
+			adv_cost = 0;
+		}
+		break;
+	case 4: // every 30 bonus moxie saves 1 turn.
+		adv_savings = buffed_stat_savings($stat[moxie]);
+		if(have_effect($effect[Pomp & Circumsands]) > 0){
+			adv_cost = 0;
+		}
+		break;
+	case 5: // every 5 lbs saves 1 turn
+		adv_savings = 1;
+		if(have_effect($effect[Do I Know You From Somewhere?]) > 0){
+			adv_cost = 0;
+		}
+		break;
+	case 10: // every point of hot resistance saves 1 turn
+		adv_savings = 3;
+		if(have_effect($effect[Hot-Headed]) > 0){
+			adv_cost = 0;
+		}
+		break;
+	}
+
+	return adv_savings - adv_cost;
+}
+
+# Note: sl_beachCombHead will only work if free walks are available, may want to change
+boolean tryBeachHeadBuff(int quest){
+	boolean success = false;
+	switch(quest){
+	case 2: // every 30 bonus muscle saves 1 turn.
+		sl_beachCombHead("muscle");
+		success = have_effect($effect[Lack of Body-Building]) > 0;
+		break;
+	case 3: // every 30 bonus mysticality saves 1 turn
+		sl_beachCombHead("mysticality");
+		success = have_effect($effect[We're All Made of Starfish]) > 0;
+		break;
+	case 4: // every 30 bonus moxie saves 1 turn.
+		sl_beachCombHead("moxie");
+		success = have_effect($effect[Pomp & Circumsands]) > 0;
+		break;
+	case 5: // every 5 lbs saves 1 turn
+		sl_beachCombHead("familiar");
+		success = have_effect($effect[Do I Know You From Somewhere?]) > 0;
+		break;
+	case 10: // every point of hot resistance saves 1 turn
+		sl_beachCombHead("hot");
+		success = have_effect($effect[Hot-Headed]) > 0;
+		break;
+	}
+
+	if(success){
+		print("Have beach head buff, estimate savings " + beachHeadTurnSavings(quest) + " turns");
+	} else{
+		print("Wasnt able to get beach head buff.", "red");
+	}
+	return success;
 }
