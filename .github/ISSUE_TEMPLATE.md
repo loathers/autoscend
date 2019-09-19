@@ -5,7 +5,7 @@ Please answer the following questions for yourself before submitting an issue. *
 - [ ] I have permed Saucestorm and Cannelloni Cocoon which ASScend rely heavily upon.
 - [ ] I checked to make sure that this issue has not already been filed
 - [ ] I checked the [list of common problems, solutions, and tips document](https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns)
-- [ ] I asked for help in the [#sl\_ascend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3)
+- [ ] I asked for help in the [ASScend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3)
 - [ ] I have the KoLMafia session log to attach to this issue.
 
 # Context
