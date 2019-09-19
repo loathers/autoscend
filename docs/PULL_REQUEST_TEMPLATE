@@ -1,0 +1,18 @@
+# Description
+
+Please include a summary of the change. Pull requests should generally be against the [beta branch](https://github.com/Loathing-Associates-Scripting-Society/ASScend/tree/beta) which will eventually be merged into master once beta changes are sufficiently vetted.
+
+If it addresses a particular issue, please put the issue numbers below (see also [Closing Issues Using Keywords](https://help.github.com/en/articles/closing-issues-using-keywords)).
+
+Fixes # (issue)
+
+## How Has This Been Tested?
+
+Testing ASH scripts is tricky and generally involves you doing multiple runs with a change to see how it performs. If you did any particular tests, or have particular tests you would like to do but cant (e.g. need to test with an expensive item you dont have access to) please mention that here. Relevant Mafia session logs may also be helpful.
+
+## Checklist:
+
+- [ ] My code follows the style guidelines of this project.
+- [ ] I have performed a self-review of my own code.
+- [ ] I have commented my code, particularly in hard-to-understand areas.
+- [ ] I have based by pull request against the [beta branch](https://github.com/Loathing-Associates-Scripting-Society/ASScend/tree/beta) or have a good reason not to.
