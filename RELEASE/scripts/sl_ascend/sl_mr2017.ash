@@ -1807,3 +1807,31 @@ boolean spacegateVaccine(effect ef)
 	cli_execute("spacegate vaccine " + i);
 	return true;
 }
+
+int sl_meteorShowersUsed(){
+	return get_property("_meteorShowerUses").to_int();
+}
+
+int sl_meteorShowersAvailable(){
+	if(!is_unrestricted($skill[Meteor Lore]) || !have_skill($skill[Meteor Lore])){
+		return 0;
+	}
+
+	return 5 - sl_meteorShowersUsed();
+}
+
+int sl_macroMeteoritesUsed(){
+	return get_property("_macrometeoriteUses").to_int();
+}
+
+int sl_macrometeoritesAvailable(){
+	if(!is_unrestricted($skill[Meteor Lore]) || !have_skill($skill[Meteor Lore])){
+		return 0;
+	}
+
+	return 10 - sl_macroMeteoritesUsed();
+}
+
+int sl_meteoriteAdesUsed(){
+	return get_property("_meteoriteAdesUsed").to_int();
+}
