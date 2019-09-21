@@ -1,6 +1,6 @@
 # Description
 
-Please include a summary of the change. Pull requests should generally be against the [beta branch](https://github.com/Loathing-Associates-Scripting-Society/ASScend/tree/beta) which will eventually be merged into master once beta changes are sufficiently vetted.
+Please include a summary of the change. Pull requests should generally be against the [beta branch](https://github.com/Loathing-Associates-Scripting-Society/autoscend/tree/beta) which will eventually be merged into master once beta changes are sufficiently vetted.
 
 If it addresses a particular issue, please put the issue numbers below (see also [Closing Issues Using Keywords](https://help.github.com/en/articles/closing-issues-using-keywords)).
 
@@ -15,4 +15,4 @@ Testing ASH scripts is tricky and generally involves you doing multiple runs wit
 - [ ] My code follows the style guidelines of this project.
 - [ ] I have performed a self-review of my own code.
 - [ ] I have commented my code, particularly in hard-to-understand areas.
-- [ ] I have based by pull request against the [beta branch](https://github.com/Loathing-Associates-Scripting-Society/ASScend/tree/beta) or have a good reason not to.
+- [ ] I have based by pull request against the [beta branch](https://github.com/Loathing-Associates-Scripting-Society/autoscend/tree/beta) or have a good reason not to.

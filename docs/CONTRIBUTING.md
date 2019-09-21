@@ -1,6 +1,6 @@
 # Contributing Guide
 
-ASScend is a community project and we welcome contributions. There are many ways to contribute, including submitting bug reports, improving documentation, submitting feature requests, reviewing new submissions, or contributing code that can be incorporated into the project.
+autoscend is a community project and we welcome contributions. There are many ways to contribute, including submitting bug reports, improving documentation, submitting feature requests, reviewing new submissions, or contributing code that can be incorporated into the project.
 
 This document describes our development process. Following these guidelines shows that you respect the time and effort of the developers managing this project. In return, you will be shown respect in addressing your issue, reviewing your changes, and incorporating your contributions.
 
@@ -25,18 +25,18 @@ That covers a surprising number of bases.
 
 ## Important Resources
 
-* [ASScend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3)
+* [autoscend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3)
 * [KoLMafia Ash Function Reference](https://wiki.kolmafia.us/index.php?title=Ash_Functions)
 * [KoLMafia Basic Scripting](http://kolmafia.sourceforge.net/scripting.html)
 * [KoLMafia Advanced Scripting](http://kolmafia.sourceforge.net/advanced.html)
 
 ## Questions
 
-The best place to ask questions is the [ASScend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3).
+The best place to ask questions is the [autoscend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3).
 
 ## Reporting Bugs and Feature Requests
 
-Before submitting bugs or feature request please ask for help in the [ASScend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3) and search through the [issues page](https://github.com/Loathing-Associates-Scripting-Society/ASScend/issues) to see if it is already reported. If you find a similar issue to yours feel free to add extra details or just a +1 to it.
+Before submitting bugs or feature request please ask for help in the [autoscend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3) and search through the [issues page](https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues) to see if it is already reported. If you find a similar issue to yours feel free to add extra details or just a +1 to it.
 
 Finally, if no one on discord can help your you cant find a similar issue, read and fill out the [issue template](./ISSUE_TEMPLATE.md) that appears when you open a new issue.
 
@@ -55,7 +55,7 @@ Working on your first open source project or pull request? Her are some helpful 
 You can request access to the project which will let you push working branches to the project, but you can also just (or even prefer) to fork the repository and submit pull requests from your fork.
 
 **master** branch:
-The master branch is the current "release" of ASScend. When someone does `svn checkout https://github.com/Loathing-Associates-Scripting-Society/ASScend/trunk/RELEASE/` in KoLMafia, they are getting the master branch scripts.
+The master branch is the current "release" of autoscend. When someone does `svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/trunk/RELEASE/` in KoLMafia, they are getting the master branch scripts.
 
 **beta** branch:
 The `beta` branch is the sort of latest and greatest where people can use to get experimental or less tested features. Once features are vetted the beta branch can be merged to master, or specific features can be cherry-picked in.
@@ -67,7 +67,7 @@ For all of our sanity a good git work flow is something like this:
 2. `git pull`
 3. `git checkout -b my-cool-new-feature`
 4. change code, add and commit files with [good commit messages][5]
-5. when ready, submit a [pull request](https://github.com/Loathing-Associates-Scripting-Society/ASScend/compare/beta...Loathing-Associates-Scripting-Society:master) for your `my-cool-new-feature` branch against the `beta` branch
+5. when ready, submit a [pull request](https://github.com/Loathing-Associates-Scripting-Society/autoscend/compare/beta...Loathing-Associates-Scripting-Society:master) for your `my-cool-new-feature` branch against the `beta` branch
 
 ### Merging Pull Requests
 When closing pull requests, please use the "Squash and Merge" option when merging the branch. This creates much cleaner git commit histories and make it much easier to cherry-pick features from one branch to another (for example if we only want to release a couple features in the beta branch and not everything). After the merge its also good practice to delete the branch from the remote, again trying to keep the repository clean.

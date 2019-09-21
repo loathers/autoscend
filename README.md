@@ -1,31 +1,31 @@
 # NOTICE
 
-ASScend (formerly [sl_ascend](https://github.com/soolar/sl_ascend); formerly, formally cc_ascend) is under new managment. The previous developers decided they could no longer continue supporting the script or Kingdom of Loathing after [actions of Jick and some of the other developers](https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/) were made public.
+autoscend (formerly [sl_ascend](https://github.com/soolar/sl_ascend); formerly, formally cc_ascend) is under new managment. The previous developers decided they could no longer continue supporting the script or Kingdom of Loathing after [actions of Jick and some of the other developers](https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/) were made public.
 
 The script was moved to this more communal location and has tentative support from some much less experienced developers. Basic support is expected to continue but fixes and enhancements will likely be slow. Large feature support (such as new challenge paths) will probably not happen without more support from the community. Feel free to [pitch in](./docs/CONTRIBUTING.md).
 
 Seriously, we need and want the help. Want to learn how to code? Or maybe you know how to code but want to check out KoLMafia's ash scripting langauge? We are very friendly and happy to teach.
 
-# ASScend
+# autoscend
 
-ASScend is a script that will play through an entire ascension for you in the Kingdom of Loathing.
+autoscend is a script that will play through an entire ascension for you in the Kingdom of Loathing.
 It is built up from sl\_ascend and cc\_ascend before it.
 
 ## Installation
 
 Run this command in the graphical CLI:
 ```
-svn checkout https://github.com/Loathing-Associates-Scripting-Society/ASScend/trunk/RELEASE/
+svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/trunk/RELEASE/
 ```
 Will require [a recent build of KoLMafia](http://builds.kolmafia.us/job/Kolmafia/lastSuccessfulBuild/).
 
-### ASScend Beta
+### autoscend Beta
 If you would like to try the newest feature you can checkout the beta branch:
 ```
-svn checkout https://github.com/Loathing-Associates-Scripting-Society/ASScend/branches/beta/RELEASE/
+svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/branches/beta/RELEASE/
 ```
 
-Note: you may need to delete KoLMafia's svn cache if you want to switch between the master and beta branches. It can be found in `<mafia dir>/svn/Loathing-Associates-Scripting-Society-ASScend-trunk-RELEASE` and `<mafia dir>/svn/Loathing-Associates-Scripting-Society-ASScend-branches-beta-RELEASE` respectively
+Note: you may need to delete KoLMafia's svn cache if you want to switch between the master and beta branches. It can be found in `<mafia dir>/svn/Loathing-Associates-Scripting-Society-autoscend-trunk-RELEASE` and `<mafia dir>/svn/Loathing-Associates-Scripting-Society-autoscend-branches-beta-RELEASE` respectively
 
 ## Usage
 
