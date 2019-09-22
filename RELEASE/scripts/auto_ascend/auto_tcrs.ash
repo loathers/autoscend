@@ -52,12 +52,12 @@ boolean tcrs_consumption()
 		if((inebriety_left() >= 4) && canDesert && (my_meat() >= 75))
 		{
 			buffMaintain($effect[Ode to Booze], 20, 1, 4);
-			slDrinkCafe(1, -2); // Scrawny Stout;
+			autoDrinkCafe(1, -2); // Scrawny Stout;
 		}
 		if((my_adventures() <= 1) && (inebriety_left() == 3) && (my_meat() >= npc_price($item[used beer])))
 		{
 			buyUpTo(1, $item[used beer]);
-			slDrink(1, $item[used beer]);
+			autoDrink(1, $item[used beer]);
 		}
 		if((my_adventures() <= 1 || item_amount($item[glass of goat's milk]) > 0) && fullness_left() == 15)
 		{
@@ -67,16 +67,16 @@ boolean tcrs_consumption()
 			}
 			buy(1, $item[fortune cookie]);
 			buy(6, $item[pickled egg]);
-			slEat(1, $item[fortune cookie]);
-			slEat(6, $item[pickled egg]);
+			autoEat(1, $item[fortune cookie]);
+			autoEat(6, $item[pickled egg]);
 			if(item_amount($item[glass of goat's milk]) > 0)
 			{
-				slEat(1, $item[glass of goat's milk]);
+				autoEat(1, $item[glass of goat's milk]);
 			}
 			else	 // 1 adventure left, better than wasting the Milk charge?
 			{
 				acquireHermitItem($item[Ketchup]);
-				slEat(1, $item[Ketchup]);
+				autoEat(1, $item[Ketchup]);
 			}
 		}
 	}

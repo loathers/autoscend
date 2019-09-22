@@ -113,7 +113,7 @@ boolean LM_digimon()
 	return false;
 }
 
-boolean digimon_slAdv(int num, location loc, string option)
+boolean digimon_autoAdv(int num, location loc, string option)
 {
 	if(auto_my_path() != "Pocket Familiars")
 	{

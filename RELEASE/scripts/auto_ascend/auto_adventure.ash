@@ -1,13 +1,13 @@
 script "auto_adventure.ash"
 
 # num is not handled properly anyway, so we'll just reject it.
-boolean slAdv(location loc, string option)
+boolean autoAdv(location loc, string option)
 {
-	return slAdv(1, loc, option);
+	return autoAdv(1, loc, option);
 }
 
 # num is not handled properly anyway, so we'll just reject it.
-boolean slAdv(int num, location loc, string option)
+boolean autoAdv(int num, location loc, string option)
 {
 	set_property("auto_combatHandler", "");
 	set_property("auto_diag_round", 0);
@@ -18,11 +18,11 @@ boolean slAdv(int num, location loc, string option)
 	}
 	if(auto_my_path() == "Actually Ed the Undying")
 	{
-		return ed_slAdv(num, loc, option);
+		return ed_autoAdv(num, loc, option);
 	}
 	if(auto_my_path() == "Pocket Familiars")
 	{
-		return digimon_slAdv(num, loc, option);
+		return digimon_autoAdv(num, loc, option);
 	}
 
 
@@ -50,7 +50,7 @@ boolean slAdv(int num, location loc, string option)
 		if(last_monster().random_modifiers["clingy"])
 		{
 			int oldDesert = get_property("desertExploration").to_int();
-			retval = slAdv(num, loc, option);
+			retval = autoAdv(num, loc, option);
 			if(my_location() == $location[The Arid\, Extra-Dry Desert])
 			{
 				set_property("desertExploration", oldDesert);
@@ -64,48 +64,48 @@ boolean slAdv(int num, location loc, string option)
 	return retval;
 }
 
-boolean slAdv(int num, location loc)
+boolean autoAdv(int num, location loc)
 {
-	return slAdv(num, loc, "");
+	return autoAdv(num, loc, "");
 }
 
-boolean slAdv()
+boolean autoAdv()
 {
 	if(my_location() == $location[none])
 	{
-		return slAdv(1, $location[Noob Cave], "");
+		return autoAdv(1, $location[Noob Cave], "");
 	}
-	return slAdv(1, my_location(), "");
+	return autoAdv(1, my_location(), "");
 }
 
-boolean slAdv(location loc)
+boolean autoAdv(location loc)
 {
-	return slAdv(1, loc, "");
+	return autoAdv(1, loc, "");
 }
 
-boolean slAdvBypass(string url, location loc)
+boolean autoAdvBypass(string url, location loc)
 {
-	return slAdvBypass(url, loc, "");
+	return autoAdvBypass(url, loc, "");
 }
 
-#boolean slAdvBypass(string[int] url, location loc)
+#boolean autoAdvBypass(string[int] url, location loc)
 #{
-#	return slAdvBypass(url, loc, "");
+#	return autoAdvBypass(url, loc, "");
 #}
 
-boolean slAdvBypass(string url, location loc, string option)
+boolean autoAdvBypass(string url, location loc, string option)
 {
 	string[int] urlConvert;
 	urlConvert[0] = url;
-	return slAdvBypass(0, urlConvert, loc, option);
+	return autoAdvBypass(0, urlConvert, loc, option);
 }
 
 # Preserved to remind us of this issue.
-#boolean slAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option)
+#boolean autoAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option)
 #
 #	urlGetFlags allows us to force visit_url(X, false). It is a bit field.
 #
-boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
+boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
 	set_property("nextAdventure", loc);
 	cli_execute("auto_pre_adv");
@@ -141,10 +141,10 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 		print("Uh oh! Died when starting a combat indirectly.", "red");
 		if(my_class() == $class[Ed])
 		{
-			return ed_slAdv(1, loc, option, true);
+			return ed_autoAdv(1, loc, option, true);
 		}
 		#Can we just return true here?
-		abort("slAdvBypass override abort");
+		abort("autoAdvBypass override abort");
 	}
 
 	string combatPage = "<b>Combat";
@@ -154,7 +154,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	}
 	if(contains_text(page, combatPage))
 	{
-		print("slAdvBypass has encountered a combat! (param: '" + option + "')", "green");
+		print("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 
 		if(option != "null") // && (option != ""))
 		{
@@ -162,7 +162,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 			{
 				if((inebriety_left() >= 0) || (equipped_item($slot[off-hand]) == $item[Drunkula\'s Wineglass]))
 				{
-					return slAdv(1, loc, option);
+					return autoAdv(1, loc, option);
 				}
 				else
 				{
@@ -243,7 +243,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 			boolean retval = true;
 			if((inebriety_left() >= 0) || (equipped_item($slot[off-hand]) == $item[Drunkula\'s Wineglass]))
 			{
-				retval = slAdv(1, loc, option);
+				retval = autoAdv(1, loc, option);
 			}
 			else
 			{
@@ -263,40 +263,40 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	return false;
 }
 
-boolean slAdvBypass(int snarfblat, location loc)
+boolean autoAdvBypass(int snarfblat, location loc)
 {
 	string page = "adventure.php?snarfblat=" + snarfblat;
-	return slAdvBypass(page, loc);
+	return autoAdvBypass(page, loc);
 }
-boolean slAdvBypass(int snarfblat, location loc, string option)
+boolean autoAdvBypass(int snarfblat, location loc, string option)
 {
 	string page = "adventure.php?snarfblat=" + snarfblat;
-	return slAdvBypass(page, loc, option);
+	return autoAdvBypass(page, loc, option);
 }
 
-boolean slAdvBypass(int snarfblat)
+boolean autoAdvBypass(int snarfblat)
 {
-	return slAdvBypass(snarfblat, $location[Noob Cave]);
+	return autoAdvBypass(snarfblat, $location[Noob Cave]);
 }
-boolean slAdvBypass(string url)
+boolean autoAdvBypass(string url)
 {
-	return slAdvBypass(url, $location[Noob Cave]);
+	return autoAdvBypass(url, $location[Noob Cave]);
 }
-#boolean slAdvBypass(string[int] url)
+#boolean autoAdvBypass(string[int] url)
 #{
-#	return slAdvBypass(url, $location[Noob Cave]);
+#	return autoAdvBypass(url, $location[Noob Cave]);
 #}
-boolean slAdvBypass(int snarfblat, string option)
+boolean autoAdvBypass(int snarfblat, string option)
 {
-	return slAdvBypass(snarfblat, $location[Noob Cave], option);
+	return autoAdvBypass(snarfblat, $location[Noob Cave], option);
 }
-boolean slAdvBypass(string url, string option)
+boolean autoAdvBypass(string url, string option)
 {
-	return slAdvBypass(url, $location[Noob Cave], option);
+	return autoAdvBypass(url, $location[Noob Cave], option);
 }
-#boolean slAdvBypass(string[int] url, string option)
+#boolean autoAdvBypass(string[int] url, string option)
 #{
-#	return slAdvBypass(url, $location[Noob Cave], option);
+#	return autoAdvBypass(url, $location[Noob Cave], option);
 #}
 
 

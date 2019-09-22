@@ -155,23 +155,23 @@ boolean questOverride();
 //	Note that, as of at least Mafia r16560, we can not use run_combat(<combat filter>).
 //	Don\'t even try it, it requires a custom modification that we can not really do an ASH workaround for.
 //	They are all defined in auto_ascend/auto_adventure.ash
-boolean slAdv();
-boolean slAdv(location loc);								//num is ignored
-boolean slAdv(int num, location loc);						//num is ignored
-boolean slAdv(int num, location loc, string option);		//num is ignored
-boolean slAdv(location loc, string option);
-boolean slAdvBypass(string url);
-boolean slAdvBypass(string url, string option);
-boolean slAdvBypass(string url, location loc);
-boolean slAdvBypass(string url, location loc, string option);
-#boolean slAdvBypass(string[int] url);
-#boolean slAdvBypass(string[int] url, string option);
-#boolean slAdvBypass(string[int] url, location loc);
-boolean slAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option);
-boolean slAdvBypass(int snarfblat);
-boolean slAdvBypass(int snarfblat, string option);
-boolean slAdvBypass(int snarfblat, location loc);
-boolean slAdvBypass(int snarfblat, location loc, string option);
+boolean autoAdv();
+boolean autoAdv(location loc);								//num is ignored
+boolean autoAdv(int num, location loc);						//num is ignored
+boolean autoAdv(int num, location loc, string option);		//num is ignored
+boolean autoAdv(location loc, string option);
+boolean autoAdvBypass(string url);
+boolean autoAdvBypass(string url, string option);
+boolean autoAdvBypass(string url, location loc);
+boolean autoAdvBypass(string url, location loc, string option);
+#boolean autoAdvBypass(string[int] url);
+#boolean autoAdvBypass(string[int] url, string option);
+#boolean autoAdvBypass(string[int] url, location loc);
+boolean autoAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option);
+boolean autoAdvBypass(int snarfblat);
+boolean autoAdvBypass(int snarfblat, string option);
+boolean autoAdvBypass(int snarfblat, location loc);
+boolean autoAdvBypass(int snarfblat, location loc, string option);
 
 //
 //	Secondary adventuring functions
@@ -384,25 +384,25 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin);//Defined in 
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);//Defined in auto_ascend/auto_util.ash
 boolean canYellowRay(monster target); //Defined in auto_ascend/auto_util.ash
 boolean canYellowRay();										//Defined in auto_ascend/auto_util.ash
-boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in auto_ascend/auto_adventure.ash
-boolean slChew(int howMany, item toChew);					//Defined in auto_ascend/auto_cooking.ash
+boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in auto_ascend/auto_adventure.ash
+boolean autoChew(int howMany, item toChew);					//Defined in auto_ascend/auto_cooking.ash
 float expectedAdventuresFrom(item it);						//Defined in auto_ascend/auto_cooking.ash
-int slCraft(string mode, int count, item item1, item item2);//Defined in auto_ascend/auto_util.ash
+int autoCraft(string mode, int count, item item1, item item2);//Defined in auto_ascend/auto_util.ash
 boolean canOde(item toDrink); //Defined in auto_ascend/auto_cooking.ash
 boolean canSimultaneouslyAcquire(int[item] needed);			//Defined in auto_ascend/auto_util.ash
 boolean clear_property_if(string setting, string cond);		//Defined in auto_ascend/auto_util.ash
-boolean slDrink(int howMany, item toDrink);					//Defined in auto_ascend/auto_cooking.ash
-boolean slEat(int howMany, item toEat);						//Defined in auto_ascend/auto_cooking.ash
-boolean slEat(int howMany, item toEat, boolean silent);		//Defined in auto_ascend/auto_cooking.ash
+boolean autoDrink(int howMany, item toDrink);					//Defined in auto_ascend/auto_cooking.ash
+boolean autoEat(int howMany, item toEat);						//Defined in auto_ascend/auto_cooking.ash
+boolean autoEat(int howMany, item toEat, boolean silent);		//Defined in auto_ascend/auto_cooking.ash
 boolean auto_knapsackAutoConsume(string type, boolean simulate);	//Defined in auto_ascend/auto_cooking.ash
 boolean loadConsumables(item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] inebriety);	 //Defined in auto_ascend/auto_cooking.ash
 void auto_autoDrinkNightcap(boolean simulate);				//Defined in auto_ascend/auto_cooking.ash
 boolean auto_autoDrinkOne(boolean simulate);					//Defined in auto_ascend/auto_cooking.ash
 boolean saucemavenApplies(item it);							//Defined in auto_ascend/auto_cooking.ash
-boolean slMaximize(string req, boolean simulate);			//Defined in auto_ascend/auto_util.ash
-boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in auto_ascend/auto_util.ash
-aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);//Defined in auto_ascend/auto_util.ash
-boolean slOverdrink(int howMany, item toOverdrink);			//Defined in auto_ascend/auto_cooking.ash
+boolean autoMaximize(string req, boolean simulate);			//Defined in auto_ascend/auto_util.ash
+boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in auto_ascend/auto_util.ash
+aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);//Defined in auto_ascend/auto_util.ash
+boolean autoOverdrink(int howMany, item toOverdrink);			//Defined in auto_ascend/auto_cooking.ash
 boolean canDrink(item toDrink);								//Defined in auto_ascend/auto_cooking.ash
 boolean canEat(item toEat);									//Defined in auto_ascend/auto_cooking.ash
 boolean canChew(item toChew); //Defined in auto_ascend/auto_cooking.ash
@@ -530,8 +530,8 @@ boolean zataraClanmate(string who);							//Defined in auto_ascend/auto_clan.ash
 boolean zataraSeaside(string who);							//Defined in auto_ascend/auto_clan.ash
 float edMeatBonus();										//Defined in auto_ascend/auto_edTheUndying.ash
 boolean ed_buySkills();										//Defined in auto_ascend/auto_edTheUndying.ash
-boolean ed_slAdv(int num, location loc, string option);		//Defined in auto_ascend/auto_edTheUndying.ash
-boolean ed_slAdv(int num, location loc, string option, boolean skipFirstLife);//Defined in auto_ascend/auto_edTheUndying.ash
+boolean ed_autoAdv(int num, location loc, string option);		//Defined in auto_ascend/auto_edTheUndying.ash
+boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife);//Defined in auto_ascend/auto_edTheUndying.ash
 boolean ed_doResting();										//Defined in auto_ascend/auto_edTheUndying.ash
 boolean ed_eatStuff();										//Defined in auto_ascend/auto_edTheUndying.ash
 boolean ed_handleAdventureServant(int num, location loc, string option);//Defined in auto_ascend/auto_edTheUndying.ash
@@ -552,10 +552,10 @@ float elemental_resist_value(int resistance);				//Defined in auto_ascend/auto_u
 void ensureSealClubs();										//Defined in auto_ascend/auto_equipment.ash
 string getMaximizeSlotPref(slot s); //Defined in auto_ascend/auto_equipment.ash
 item getTentativeMaximizeEquip(slot s); //Defined in auto_ascend/auto_equipment.ash
-boolean slEquip(slot s, item it); //Defined in auto_ascend/auto_equipment.ash
-boolean slEquip(item it); //Defined in auto_ascend/auto_equipment.ash
-boolean slForceEquip(slot s, item it); //Defined in auto_ascend/auto_equipment.ash
-boolean slForceEquip(item it); //Defined in auto_ascend/auto_equipment.ash
+boolean autoEquip(slot s, item it); //Defined in auto_ascend/auto_equipment.ash
+boolean autoEquip(item it); //Defined in auto_ascend/auto_equipment.ash
+boolean autoForceEquip(slot s, item it); //Defined in auto_ascend/auto_equipment.ash
+boolean autoForceEquip(item it); //Defined in auto_ascend/auto_equipment.ash
 boolean tryAddItemToMaximize(slot s, item it); //Defined in auto_ascend/auto_equipment.ash
 boolean useMaximizeToEquip(); //Defined in auto_ascend/auto_equipment.ash
 string defaultMaximizeStatement(); //Defined in auto_ascend/auto_equipment.ash
@@ -1027,7 +1027,7 @@ void digimon_initializeSettings();							//Defined in auto_ascend/auto_digimon.a
 void digimon_initializeDay(int day);						//Defined in auto_ascend/auto_digimon.ash
 boolean digimon_makeTeam();									//Defined in auto_ascend/auto_digimon.ash
 boolean LM_digimon();										//Defined in auto_ascend/auto_digimon.ash
-boolean digimon_slAdv(int num, location loc, string option);//Defined in auto_ascend/auto_digimon.ash
+boolean digimon_autoAdv(int num, location loc, string option);//Defined in auto_ascend/auto_digimon.ash
 
 void glover_initializeSettings();							//Defined in auto_ascend/auto_glover.ash
 void glover_initializeDay(int day);							//Defined in auto_ascend/auto_glover.ash

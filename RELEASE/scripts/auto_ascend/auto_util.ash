@@ -2,9 +2,9 @@ script "auto_util.ash";
 
 // Public Prototypes
 void debugMaximize(string req, int meat);			//This function will be removed.
-boolean slMaximize(string req, boolean simulate);
-boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate);
-aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);
+boolean autoMaximize(string req, boolean simulate);
+boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate);
+aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);
 int doNumberology(string goal);
 int doNumberology(string goal, string option);
 int doNumberology(string goal, boolean doIt);
@@ -15,7 +15,7 @@ string yellowRayCombatString(monster target);
 string yellowRayCombatString();
 int solveCookie();
 boolean use_barrels();
-int slCraft(string mode, int count, item item1, item item2);
+int autoCraft(string mode, int count, item item1, item item2);
 int[item] auto_get_campground();
 int towerKeyCount();
 boolean haveSpleenFamiliar();
@@ -174,7 +174,7 @@ location provideAdvPHPZone();
 // Function Definitions
 
 
-boolean slMaximize(string req, boolean simulate)
+boolean autoMaximize(string req, boolean simulate)
 {
 	if(!simulate)
 	{
@@ -185,7 +185,7 @@ boolean slMaximize(string req, boolean simulate)
 	return maximize(req, simulate);
 }
 
-boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
+boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 {
 	if(!simulate)
 	{
@@ -196,7 +196,7 @@ boolean slMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 	return maximize(req, maxPrice, priceLevel, simulate);
 }
 
-aggregate slMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip)
+aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip)
 {
 	if(!simulate)
 	{
@@ -898,7 +898,7 @@ boolean setAdvPHPFlag()
 	{
 		return false;
 	}
-	slAdv(toAdv);
+	autoAdv(toAdv);
 	return true;
 
 }
@@ -1012,7 +1012,7 @@ boolean is_avatar_potion(item it)
 	return (avatar != "");
 }
 
-int slCraft(string mode, int count, item item1, item item2)
+int autoCraft(string mode, int count, item item1, item item2)
 {
 	if((mode == "combine") && !knoll_available())
 	{
@@ -1571,19 +1571,19 @@ boolean adjustForBanish(string combat_string)
 {
 	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
 	{
-		return slEquip($item[latte lovers member's mug]);
+		return autoEquip($item[latte lovers member's mug]);
 	}
 	if(combat_string == "skill " + $skill[Give Your Opponent The Stinkeye])
 	{
-		return slEquip($item[stinky cheese eye]);
+		return autoEquip($item[stinky cheese eye]);
 	}
 	if(combat_string == "skill " + $skill[Creepy Grin])
 	{
-		return slEquip($item[V for Vivala mask]);
+		return autoEquip($item[V for Vivala mask]);
 	}
 	if(combat_string == "skill " + $skill[Show Them Your Ring])
 	{
-		return slEquip($item[Mafia middle finger ring]);
+		return autoEquip($item[Mafia middle finger ring]);
 	}
 	if(combat_string == "skill " + $skill[Batter Up!])
 	{
@@ -1593,21 +1593,21 @@ boolean adjustForBanish(string combat_string)
 	}
 	if(combat_string == "skill " + $skill[Talk About Politics])
 	{
-		return slEquip($item[Pantsgiving]);
+		return autoEquip($item[Pantsgiving]);
 	}
 	if(combat_string == "skill " + $skill[Reflex Hammer])
 	{
-		return slEquip($item[Lil' Doctor&trade; bag]);
+		return autoEquip($item[Lil' Doctor&trade; bag]);
 	}
 	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
 	{
-		return slEquip($item[Kremlin's Greatest Briefcase]);
+		return autoEquip($item[Kremlin's Greatest Briefcase]);
 	}
 	if(combat_string == "skill " + $skill[Beancannon])
 	{
 		foreach beancan in $items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork 'n' Pork 'n' Pork 'n' Beans, Shrub's Premium Baked Beans, Tesla's Electroplated Beans, Trader Olaf's Exotic Stinkbeans, World's Blackest-Eyed Peas]
 		{
-			if(slEquip(beancan))
+			if(autoEquip(beancan))
 			{
 				return true;
 			}
@@ -1709,7 +1709,7 @@ boolean adjustForYellowRay(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
-		return slEquip($slot[weapon], $item[Fourth of May cosplay saber]);
+		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
 	}
 	return true;
 }
@@ -2273,7 +2273,7 @@ boolean cloverUsageInit()
 	if(in_koe() && spleen_left() > 1 && canChew($item[lucky pill]) && item_amount($item[rare Meat isotope]) >= 60)
 	{
 		retrieve_item(1, $item[lucky pill]);
-		slChew(1, $item[lucky pill]);
+		autoChew(1, $item[lucky pill]);
 		use(1, $item[Disassembled Clover]);
 	}
 
@@ -2857,7 +2857,7 @@ boolean handleCopiedMonster(item itm, string option)
 	}
 	if(id != 0)
 	{
-		return slAdvBypass("inv_use.php?pwd&which=3&whichitem=" + id, $location[Noob Cave], option);
+		return autoAdvBypass("inv_use.php?pwd&which=3&whichitem=" + id, $location[Noob Cave], option);
 	}
 	return false;
 }
@@ -2962,7 +2962,7 @@ boolean providePlusCombat(int amt, boolean doEquips)
 			{
 				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
 				{
-					slEquip($slot[Back], $item[Buddy Bjorn]);
+					autoEquip($slot[Back], $item[Buddy Bjorn]);
 				}
 				handleBjornify($familiar[Grim Brother]);
 			}
@@ -3053,7 +3053,7 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 			{
 				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
 				{
-					slEquip($slot[Back], $item[Buddy Bjorn]);
+					autoEquip($slot[Back], $item[Buddy Bjorn]);
 				}
 				handleBjornify($familiar[Grimstone Golem]);
 			}
@@ -3193,7 +3193,7 @@ boolean evokeEldritchHorror(string option)
 
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd=&targetplayer" + my_id() + "&quantity=1&whichskill=168";
-	return slAdvBypass(0, pages, $location[Noob Cave], option);
+	return autoAdvBypass(0, pages, $location[Noob Cave], option);
 }
 
 boolean evokeEldritchHorror()
@@ -3232,7 +3232,7 @@ boolean fightScienceTentacle(string option)
 	string[int] pages;
 	pages[0] = "place.php?whichplace=forestvillage&action=fv_scientist";
 	pages[1] = "choice.php?whichchoice=1201&pwd=&option=1";
-	return slAdvBypass(0, pages, $location[Noob Cave], option);
+	return autoAdvBypass(0, pages, $location[Noob Cave], option);
 
 }
 
@@ -3266,7 +3266,7 @@ boolean handleSealNormal(item it, string option)
 	if((get_property("_sealsSummoned").to_int() < maxSealSummons()) && (item_amount(it) > 0) && (item_amount($item[seal-blubber candle]) >= candles) && (my_level() >= level))
 	{
 		ensureSealClubs();
-		return slAdvBypass("inv_use.php?pwd=&whichitem=" + to_int(it) + "&checked=1", $location[Noob Cave], option);
+		return autoAdvBypass("inv_use.php?pwd=&whichitem=" + to_int(it) + "&checked=1", $location[Noob Cave], option);
 	}
 	else
 	{
@@ -3282,7 +3282,7 @@ boolean handleSealAncient(string option)
 {
 	if((get_property("_sealsSummoned").to_int() < maxSealSummons()) && (item_amount($item[figurine of an ancient seal]) > 0) && (item_amount($item[seal-blubber candle]) >= 3))
 	{
-		return slAdvBypass("inv_use.php?pwd=&whichitem=3905&checked=1", $location[Noob Cave], option);
+		return autoAdvBypass("inv_use.php?pwd=&whichitem=3905&checked=1", $location[Noob Cave], option);
 	}
 	else
 	{
@@ -3317,7 +3317,7 @@ boolean handleSealElement(element flavor, string option)
 	{
 		page = "inv_use.php?pwd=&whichitem=3908&checked=1";
 	}
-	return slAdvBypass(page, $location[Noob Cave], option);
+	return autoAdvBypass(page, $location[Noob Cave], option);
 }
 
 int towerKeyCount()
@@ -3432,7 +3432,7 @@ boolean forceEquip(slot sl, item it)
 	{
 		return true;
 	}
-	slEquip(sl, it);
+	autoEquip(sl, it);
 	return true;
 }
 
@@ -3682,7 +3682,7 @@ int doNumberology(string goal, boolean doIt, string option)
 				string[int] pages;
 				pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
 				pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + i;
-				slAdvBypass(0, pages, $location[Noob Cave], option);
+				autoAdvBypass(0, pages, $location[Noob Cave], option);
 				handleTracker($monster[War Frat 151st Infantryman], $skill[Calculate the Universe], "auto_copies");
 			}
 			else

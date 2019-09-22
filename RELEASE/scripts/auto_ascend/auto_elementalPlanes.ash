@@ -290,7 +290,7 @@ boolean volcano_lavaDogs()
 
 		//If we have instant kill effects, we do not want to use them. They are just wasted here.
 		//Or if we have free wanderers....
-		slAdv($location[The Bubblin\' Caldera]);
+		autoAdv($location[The Bubblin\' Caldera]);
 
 		if(get_property("lastAdventure") == "Lava Dogs")
 		{

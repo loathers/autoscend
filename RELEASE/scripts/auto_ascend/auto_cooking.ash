@@ -8,11 +8,11 @@ void consumeStuff();
 boolean makePerfectBooze();
 item getAvailablePerfectBooze();
 boolean dealWithMilkOfMagnesium(boolean useAdv);
-boolean slEat(int howMany, item toEat);
-boolean slEat(int howMany, item toEat, boolean silent);
-boolean slDrink(int howMany, item toDrink);
-boolean slOverdrink(int howMany, item toOverdrink);
-boolean slChew(int howMany, item toChew);
+boolean autoEat(int howMany, item toEat);
+boolean autoEat(int howMany, item toEat, boolean silent);
+boolean autoDrink(int howMany, item toDrink);
+boolean autoOverdrink(int howMany, item toOverdrink);
+boolean autoChew(int howMany, item toChew);
 boolean tryPantsEat();
 boolean tryCookies();
 boolean canDrink(item toDrink);
@@ -262,7 +262,7 @@ boolean tryCookies()
 			use(1, $item[Mayoflex]);
 		}
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
-		slEat(1, $item[Fortune Cookie]);
+		autoEat(1, $item[Fortune Cookie]);
 		cookie = get_counters("Fortune Cookie", 0, 200);
 		if(contains_text(cookie, "Fortune Cookie"))
 		{
@@ -307,7 +307,7 @@ boolean tryPantsEat()
 					}
 				}
 				buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
-				slEat(1, it);
+				autoEat(1, it);
 				return true;
 			}
 		}
@@ -329,7 +329,7 @@ boolean canOde(item toDrink)
 	return true;
 }
 
-boolean slDrink(int howMany, item toDrink)
+boolean autoDrink(int howMany, item toDrink)
 {
 	if((toDrink == $item[none]) || (howMany <= 0))
 	{
@@ -401,7 +401,7 @@ boolean slDrink(int howMany, item toDrink)
 	return retval;
 }
 
-boolean slOverdrink(int howMany, item toOverdrink)
+boolean autoOverdrink(int howMany, item toOverdrink)
 {
 	if(!canDrink(toOverdrink))
 	{
@@ -421,7 +421,7 @@ string cafeFoodName(int id)
 	case -1: return "Peche a la Frog";
 	case -2: return "As Jus Gezund Heit";
 	case -3: return "Bouillabaise Coucher Avec Moi";
-	default: abort("slDrinkCafe does not recognize item id: " + id);
+	default: abort("autoDrinkCafe does not recognize item id: " + id);
 	}
 	return "";
 }
@@ -437,12 +437,12 @@ string cafeDrinkName(int id)
 	case -1: return "Petite Porter";
 	case -2: return "Scrawny Stout";
 	case -3: return "Infinitesimal IPA";
-	default: abort("slDrinkCafe does not recognize item id: " + id);
+	default: abort("autoDrinkCafe does not recognize item id: " + id);
 	}
 	return "";
 }
 
-boolean slDrinkCafe(int howmany, int id)
+boolean autoDrinkCafe(int howmany, int id)
 {
 	// Note that caller is responsible for calling Ode to Booze,
 	// since we might be in TCRS and not know how many adventures
@@ -460,7 +460,7 @@ boolean slDrinkCafe(int howmany, int id)
 	return true;
 }
 
-boolean slEatCafe(int howmany, int id)
+boolean autoEatCafe(int howmany, int id)
 {
 	if(!canadia_available()) return false;
 
@@ -475,7 +475,7 @@ boolean slEatCafe(int howmany, int id)
 	return true;
 }
 
-boolean slChew(int howMany, item toChew)
+boolean autoChew(int howMany, item toChew)
 {
 	if(!canChew(toChew))
 	{
@@ -503,12 +503,12 @@ boolean slChew(int howMany, item toChew)
 	return retval;
 }
 
-boolean slEat(int howMany, item toEat)
+boolean autoEat(int howMany, item toEat)
 {
-	return slEat(howMany, toEat, true);
+	return autoEat(howMany, toEat, true);
 }
 
-boolean slEat(int howMany, item toEat, boolean silent)
+boolean autoEat(int howMany, item toEat, boolean silent)
 {
 	if((toEat == $item[none]) || (howMany <= 0))
 	{
@@ -773,7 +773,7 @@ void consumeStuff()
 			}
 			if(item_amount($item[Pixel Lemon]) > 0)
 			{
-				slEat(1, $item[Pixel Lemon]);
+				autoEat(1, $item[Pixel Lemon]);
 			}
 		}
 	}
@@ -786,7 +786,7 @@ void consumeStuff()
 			item booze = getAvailablePerfectBooze();
 			if(booze != $item[none])
 			{
-				slDrink(1, booze);
+				autoDrink(1, booze);
 			}
 		}
 
@@ -845,7 +845,7 @@ void consumeStuff()
 		{
 			if(item_amount($item[Sacramento Wine]) > 0)
 			{
-				slDrink(min(item_amount($item[Sacramento Wine]), have_effect($effect[Ode to Booze])), $item[Sacramento Wine]);
+				autoDrink(min(item_amount($item[Sacramento Wine]), have_effect($effect[Ode to Booze])), $item[Sacramento Wine]);
 			}
 		}
 		if((inebriety_left() >= 2) && (my_mp() >= mpForOde) && is_unrestricted($item[Yellow Puck]) && canDrink($item[Pixel Daiquiri]))
@@ -856,7 +856,7 @@ void consumeStuff()
 			}
 			if(item_amount($item[Pixel Daiquiri]) > 0)
 			{
-				slDrink(1, $item[Pixel Daiquiri]);
+				autoDrink(1, $item[Pixel Daiquiri]);
 			}
 		}
 		if((inebriety_left() >= 2) && (my_mp() >= mpForOde) && is_unrestricted($item[Basking Robin]) && canDrink($item[Robin Nog]))
@@ -867,7 +867,7 @@ void consumeStuff()
 			}
 			if(item_amount($item[Robin Nog]) > 0)
 			{
-				slDrink(1, $item[Robin Nog]);
+				autoDrink(1, $item[Robin Nog]);
 			}
 		}
 	}
@@ -899,14 +899,14 @@ void consumeStuff()
 
 		if((inebriety_left() >= 4) && (my_mp() >= mpForOde) && (item_amount($item[Hacked Gibson]) > 0) && (my_level() >= 4) && is_unrestricted($item[Source Terminal]) && canDrink($item[Hacked Gibson]))
 		{
-			slDrink(1, $item[Hacked Gibson]);
+			autoDrink(1, $item[Hacked Gibson]);
 		}
 	}
 
 	if((fullness_left() >= 4) && (my_level() >= 4) && is_unrestricted($item[Browser Cookie]) && canEat($item[Browser Cookie]))
 	{
 		int browserCookies = min(fullness_left()/4, item_amount($item[Browser Cookie]));
-		slEat(browserCookies, $item[Browser Cookie]);
+		autoEat(browserCookies, $item[Browser Cookie]);
 	}
 
 
@@ -914,13 +914,13 @@ void consumeStuff()
 	{
 		if((my_spleen_use() == 0) && (item_amount($item[Grim Fairy Tale]) > 0))
 		{
-			slChew(1, $item[Grim Fairy Tale]);
+			autoChew(1, $item[Grim Fairy Tale]);
 		}
 
 		if(!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie") && (my_turncount() < 70) && (fullness_left() > 0) && (my_meat() >= npc_price($item[Fortune Cookie])) && (item_amount($item[Deck of Every Card]) == 0) && (item_amount($item[Stone Wool]) < 2) && !(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
 		{
 			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
-			slEat(1, $item[Fortune Cookie]);
+			autoEat(1, $item[Fortune Cookie]);
 		}
 
 		//	Try to drink more on day 1 please!
@@ -932,20 +932,20 @@ void consumeStuff()
 
 		if((inebriety_left() >= 2) && (my_mp() >= mpForOde) && (item_amount($item[Agitated Turkey]) >= 2) && is_unrestricted($item[Fist Turkey Outline]) && canDrink($item[Agitated Turkey]))
 		{
-			slDrink(2, $item[Agitated Turkey]);
+			autoDrink(2, $item[Agitated Turkey]);
 		}
 
 		if((inebriety_left() >= 1) && (my_mp() >= mpForOde) && (item_amount($item[Cold One]) >= 1) && (my_level() >= 11) && canDrink($item[Cold One]))
 		{
-			slDrink(1, $item[Cold One]);
+			autoDrink(1, $item[Cold One]);
 		}
 
 		if((my_mp() > mpForOde) && (my_level() >= 3) && (item_amount($item[Paint a Vulgar Pitcher]) > 0) && ((my_inebriety() + 2) <= inebriety_limit()) && is_unrestricted($item[The Smith\'s Tome]) && canDrink($item[Paint A Vulgar Pitcher]))
 		{
-			slDrink(1, $item[Paint A Vulgar Pitcher]);
+			autoDrink(1, $item[Paint A Vulgar Pitcher]);
 			if((item_amount($item[Paint A Vulgar Pitcher]) > 0) && ((my_inebriety() + 2) <= inebriety_limit()))
 			{
-				slDrink(1, $item[Paint A Vulgar Pitcher]);
+				autoDrink(1, $item[Paint A Vulgar Pitcher]);
 			}
 		}
 
@@ -953,7 +953,7 @@ void consumeStuff()
 		{
 			if(inebriety_left() >= 1)
 			{
-				slDrink(1, $item[Lucky Lindy]);
+				autoDrink(1, $item[Lucky Lindy]);
 			}
 
 			if((inebriety_left() >= 4) && canDrink($item[Ice Island Long Tea]))
@@ -961,32 +961,32 @@ void consumeStuff()
 				pullXWhenHaveY($item[Ice Island Long Tea], 1, 0);
 				if(item_amount($item[Ice Island Long Tea]) > 0)
 				{
-					slDrink(1, $item[Ice Island Long Tea]);
+					autoDrink(1, $item[Ice Island Long Tea]);
 				}
 			}
 		}
 
 		if((my_mp() > mpForOde) && is100FamiliarRun() && (my_inebriety() == 13) && (item_amount($item[Cold One]) > 0) && (my_level() >= 10) && canDrink($item[Cold One]))
 		{
-			slDrink(1, $item[Cold One]);
+			autoDrink(1, $item[Cold One]);
 		}
 
 		if((my_mp() > mpForOde) && (amountTurkeyBooze() >= 2) && (my_inebriety() == 0) && (my_meat() >= 500) && (item_amount($item[Clan VIP Lounge Key]) > 0) && is_unrestricted($item[Fist Turkey Outline]) && canDrink($item[Friendly Turkey]))
 		{
-			slDrink(1, $item[Lucky Lindy]);
+			autoDrink(1, $item[Lucky Lindy]);
 			while((amountTurkeyBooze() > 0) && (my_inebriety() < 3) && (inebriety_left() > 0))
 			{
 				if((item_amount($item[Friendly Turkey]) > 0) && (inebriety_left() >= 1))
 				{
-					slDrink(1, $item[Friendly Turkey]);
+					autoDrink(1, $item[Friendly Turkey]);
 				}
 				else if((item_amount($item[Agitated Turkey]) > 0) && (inebriety_left() >= 1))
 				{
-					slDrink(1, $item[Agitated Turkey]);
+					autoDrink(1, $item[Agitated Turkey]);
 				}
 				else if((item_amount($item[Ambitious Turkey]) > 0) && (inebriety_left() >= 1))
 				{
-					slDrink(1, $item[Ambitious Turkey]);
+					autoDrink(1, $item[Ambitious Turkey]);
 				}
 			}
 		}
@@ -997,15 +997,15 @@ void consumeStuff()
 			{
 				if((item_amount($item[Friendly Turkey]) > 0) && (inebriety_left() >= 1))
 				{
-					slDrink(1, $item[Friendly Turkey]);
+					autoDrink(1, $item[Friendly Turkey]);
 				}
 				else if((item_amount($item[Agitated Turkey]) > 0) && (inebriety_left() >= 1))
 				{
-					slDrink(1, $item[Agitated Turkey]);
+					autoDrink(1, $item[Agitated Turkey]);
 				}
 				else if((item_amount($item[Ambitious Turkey]) > 0) && (inebriety_left() >= 1))
 				{
-					slDrink(1, $item[Ambitious Turkey]);
+					autoDrink(1, $item[Ambitious Turkey]);
 				}
 			}
 		}
@@ -1014,7 +1014,7 @@ void consumeStuff()
 		{
 			if(item_amount($item[Clan VIP Lounge Key]) > 0)
 			{
-				slDrink(1, $item[Sockdollager]);
+				autoDrink(1, $item[Sockdollager]);
 			}
 			while(acquireHermitItem($item[Ten-leaf Clover]));
 		}
@@ -1026,7 +1026,7 @@ void consumeStuff()
 			{
 				buffMaintain($effect[Got Milk], 0, 1, 1);
 				buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
-				slEat(1, $item[Spaghetti Breakfast]);
+				autoEat(1, $item[Spaghetti Breakfast]);
 			}
 			if((fullness_left() >= 10) && canEat(whatHiMein()))
 			{
@@ -1036,13 +1036,13 @@ void consumeStuff()
 			{
 				buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
 				buffMaintain($effect[Got Milk], 0, 1, 1);
-				slEat(2, whatHiMein());
+				autoEat(2, whatHiMein());
 			}
 			if((item_amount($item[Digital Key Lime Pie]) > 0) && (fullness_left() >= 4) && canEat($item[Digital Key Lime Pie]))
 			{
 				buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
 				buffMaintain($effect[Got Milk], 0, 1, 1);
-				slEat(1, $item[Digital Key Lime Pie]);
+				autoEat(1, $item[Digital Key Lime Pie]);
 				tryPantsEat();
 			}
 			else
@@ -1054,7 +1054,7 @@ void consumeStuff()
 					{
 						buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
 						buffMaintain($effect[Got Milk], 0, 1, 1);
-						slEat(1, whatHiMein());
+						autoEat(1, whatHiMein());
 					}
 				}
 				else if((fullness_left() >= 4) && canEat($item[Digital Key Lime Pie]))
@@ -1064,7 +1064,7 @@ void consumeStuff()
 					{
 						buffMaintain($effect[Got Milk], 0, 1, 1);
 						buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
-						slEat(1, $item[Digital Key Lime Pie]);
+						autoEat(1, $item[Digital Key Lime Pie]);
 					}
 				}
 			}
@@ -1116,24 +1116,24 @@ void consumeStuff()
 					haveToEat = haveToEat + 1;
 					if((item_amount($item[Bubblin\' Crude]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Dry Noodles], $item[Bubblin\' Crude]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Bubblin\' Crude]);
 					}
 					else if((item_amount($item[Goat Cheese]) > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Goat Cheese], $item[Scrumptious Reagent]);
-						slCraft("cook", 1, $item[Dry Noodles], $item[Fancy Schmancy Cheese Sauce]);
+						autoCraft("cook", 1, $item[Goat Cheese], $item[Scrumptious Reagent]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Fancy Schmancy Cheese Sauce]);
 					}
 					else if((item_amount($item[Ectoplasmic Orbs]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Dry Noodles], $item[Ectoplasmic Orbs]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Ectoplasmic Orbs]);
 					}
 					else if((item_amount($item[Pestopiary]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Dry Noodles], $item[Pestopiary]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Pestopiary]);
 					}
 					else if((item_amount($item[Salacious Crumbs]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Dry Noodles], $item[Salacious Crumbs]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Salacious Crumbs]);
 					}
 				}
 				dealWithMilkOfMagnesium(!in_hardcore());
@@ -1143,7 +1143,7 @@ void consumeStuff()
 					{
 						buffMaintain($effect[Got Milk], 0, 1, 1);
 						buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
-						slEat(1, it);
+						autoEat(1, it);
 						canEat = canEat - 1;
 					}
 				}
@@ -1155,9 +1155,9 @@ void consumeStuff()
 			dealWithMilkOfMagnesium(true);
 			buffMaintain($effect[Got Milk], 0, 1, 1);
 			buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
-			slEat(1, $item[Boris\'s Key Lime Pie]);
-			slEat(1, $item[Jarlsberg\'s Key Lime Pie]);
-			slEat(1, $item[Sneaky Pete\'s Key Lime Pie]);
+			autoEat(1, $item[Boris\'s Key Lime Pie]);
+			autoEat(1, $item[Jarlsberg\'s Key Lime Pie]);
+			autoEat(1, $item[Sneaky Pete\'s Key Lime Pie]);
 			tryPantsEat();
 			tryPantsEat();
 			tryPantsEat();
@@ -1175,22 +1175,22 @@ void consumeStuff()
 		if((my_spleen_use() == 4) && (spleen_left() == 11) && (item_amount($item[carrot nose]) > 0))
 		{
 			use(1, $item[carrot nose]);
-			slChew(1, $item[carrot juice]);
+			autoChew(1, $item[carrot juice]);
 		}
 
 		if(in_hardcore())
 		{
 			while((spleen_left() >= 4) && (item_amount($item[Unconscious Collective Dream Jar]) > 0))
 			{
-				slChew(1, $item[Unconscious Collective Dream Jar]);
+				autoChew(1, $item[Unconscious Collective Dream Jar]);
 			}
 			while((spleen_left() >= 4) && (item_amount($item[Powdered Gold]) > 0))
 			{
-				slChew(1, $item[Powdered Gold]);
+				autoChew(1, $item[Powdered Gold]);
 			}
 			while((spleen_left() >= 4) && (item_amount($item[Grim Fairy Tale]) > 0))
 			{
-				slChew(1, $item[Grim Fairy Tale]);
+				autoChew(1, $item[Grim Fairy Tale]);
 			}
 		}
 	}
@@ -1206,7 +1206,7 @@ void consumeStuff()
 				{
 					buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
 					buffMaintain($effect[Got Milk], 0, 1, 1);
-					slEat(3, whatHiMein());
+					autoEat(3, whatHiMein());
 				}
 			}
 			if(get_property("auto_useCubeling").to_boolean())
@@ -1226,7 +1226,7 @@ void consumeStuff()
 						{
 							use(1, $item[Mayoflex]);
 						}
-						slEat(1, $item[Spaghetti Breakfast]);
+						autoEat(1, $item[Spaghetti Breakfast]);
 					}
 					if((fullness_left() >= 4) && canEat($item[Boris\'s Key Lime Pie]))
 					{
@@ -1240,7 +1240,7 @@ void consumeStuff()
 						{
 							use(1, $item[Mayoflex]);
 						}
-						slEat(1, $item[Boris\'s Key Lime Pie]);
+						autoEat(1, $item[Boris\'s Key Lime Pie]);
 					}
 					if((fullness_left() >= 10) && canEat(whatHiMein()))
 					{
@@ -1254,7 +1254,7 @@ void consumeStuff()
 						{
 							use(1, $item[Mayoflex]);
 						}
-						slEat(1, whatHiMein());
+						autoEat(1, whatHiMein());
 					}
 					if((item_amount(whatHiMein()) > 0) && (fullness_left() >= 5) && canEat(whatHiMein()))
 					{
@@ -1264,7 +1264,7 @@ void consumeStuff()
 						{
 							use(1, $item[Mayoflex]);
 						}
-						slEat(1, whatHiMein());
+						autoEat(1, whatHiMein());
 					}
 				}
 			}
@@ -1277,15 +1277,15 @@ void consumeStuff()
 				}
 				if((item_amount($item[Boris\'s Key Lime Pie]) > 0) && (fullness_left() >= 4) && canEat($item[Boris\'s Key Lime Pie]))
 				{
-					slEat(1, $item[Boris\'s Key Lime Pie]);
+					autoEat(1, $item[Boris\'s Key Lime Pie]);
 				}
 				if((item_amount($item[Jarlsberg\'s Key Lime Pie]) > 0) && (fullness_left() >= 4) && canEat($item[Jarlsberg\'s Key Lime Pie]))
 				{
-					slEat(1, $item[Jarlsberg\'s Key Lime Pie]);
+					autoEat(1, $item[Jarlsberg\'s Key Lime Pie]);
 				}
 				if((item_amount($item[Sneaky Pete\'s Key Lime Pie]) > 0) && (fullness_left() >= 4) && canEat($item[Sneaky Pete\'s Key Lime Pie]))
 				{
-					slEat(1, $item[Sneaky Pete\'s Key Lime Pie]);
+					autoEat(1, $item[Sneaky Pete\'s Key Lime Pie]);
 				}
 				#cli_execute("eat 1 video games hot dog");
 				if(fullness_left() > 0)
@@ -1337,24 +1337,24 @@ void consumeStuff()
 					haveToEat = haveToEat + 1;
 					if((item_amount($item[Bubblin\' Crude]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Dry Noodles], $item[Bubblin\' Crude]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Bubblin\' Crude]);
 					}
 					else if((item_amount($item[Goat Cheese]) > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Goat Cheese], $item[Scrumptious Reagent]);
-						slCraft("cook", 1, $item[Dry Noodles], $item[Fancy Schmancy Cheese Sauce]);
+						autoCraft("cook", 1, $item[Goat Cheese], $item[Scrumptious Reagent]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Fancy Schmancy Cheese Sauce]);
 					}
 					else if((item_amount($item[Ectoplasmic Orbs]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Dry Noodles], $item[Ectoplasmic Orbs]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Ectoplasmic Orbs]);
 					}
 					else if((item_amount($item[Pestopiary]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Dry Noodles], $item[Pestopiary]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Pestopiary]);
 					}
 					else if((item_amount($item[Salacious Crumbs]) > 0) && (item_amount($item[Dry Noodles]) > 0))
 					{
-						slCraft("cook", 1, $item[Dry Noodles], $item[Salacious Crumbs]);
+						autoCraft("cook", 1, $item[Dry Noodles], $item[Salacious Crumbs]);
 					}
 				}
 				dealWithMilkOfMagnesium(true);
@@ -1364,7 +1364,7 @@ void consumeStuff()
 					{
 						buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
 						buffMaintain($effect[Got Milk], 0, 1, 1);
-						slEat(1, it);
+						autoEat(1, it);
 						canEat = canEat - 1;
 					}
 				}
@@ -1383,13 +1383,13 @@ void consumeStuff()
 		if((my_inebriety() == 0) && (my_mp() >= mpForOde) && (my_meat() > 300) && (item_amount($item[Handful of Smithereens]) >= 2) && (internalQuestStatus("questL03Rat") >= 0) && canDrink($item[Paint A Vulgar Pitcher]))
 		{
 			cli_execute("make 2 " + $item[Paint A Vulgar Pitcher]);
-			slDrink(2, $item[Paint A Vulgar Pitcher]);
+			autoDrink(2, $item[Paint A Vulgar Pitcher]);
 		}
 
 		if((my_inebriety() == 4) && (my_mp() >= mpForOde) && (my_meat() > 150) && (item_amount($item[Handful of Smithereens]) >= 1) && (internalQuestStatus("questL03Rat") >= 0) && canDrink($item[Paint A Vulgar Pitcher]))
 		{
 			cli_execute("make 1 " + $item[Paint A Vulgar Pitcher]);
-			slDrink(1, $item[Paint A Vulgar Pitcher]);
+			autoDrink(1, $item[Paint A Vulgar Pitcher]);
 		}
 
 		if((inebriety_left() >= 5) && (my_adventures() < 10) && (my_meat() > 150) && (my_mp() >= mpForOde) && (auto_my_path() != "KOLHS") && (auto_my_path() != "Nuclear Autumn"))
@@ -1399,27 +1399,27 @@ void consumeStuff()
 				if((item_amount($item[Handful Of Smithereens]) > 0) && canDrink($item[Paint A Vulgar Pitcher]))
 				{
 					cli_execute("make 1 " + $item[Paint A Vulgar Pitcher]);
-					slDrink(1, $item[Paint A Vulgar Pitcher]);
+					autoDrink(1, $item[Paint A Vulgar Pitcher]);
 				}
 				else if((my_meat() > 35000) && is_unrestricted($item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 				{
-					slDrink(1, $item[Flivver]);
+					autoDrink(1, $item[Flivver]);
 				}
 			}
 		}
 
 		if(in_hardcore() && (my_mp() > mpForOde) && (item_amount($item[Pixel Daiquiri]) > 0) && (inebriety_left() >= 2) && is_unrestricted($item[Yellow Puck]) && canDrink($item[Pixel Daiquiri]))
 		{
-			slDrink(1, $item[Pixel Daiquiri]);
+			autoDrink(1, $item[Pixel Daiquiri]);
 		}
 		if(in_hardcore() && (my_mp() > mpForOde) && (item_amount($item[Dinsey Whinskey]) > 0) && (inebriety_left() >= 2) && is_unrestricted($item[Airplane Charter: Dinseylandfill]) && canDrink($item[Dinsey Whinskey]))
 		{
-			slDrink(1, $item[Dinsey Whinskey]);
+			autoDrink(1, $item[Dinsey Whinskey]);
 		}
 
 		if((my_level() >= 11) && (my_mp() > mpForOde) && (item_amount($item[Cold One]) > 1) && (inebriety_left() >= 2) && canDrink($item[Cold One]))
 		{
-			slDrink(2, $item[Cold One]);
+			autoDrink(2, $item[Cold One]);
 		}
 
 		if((my_inebriety() >= 6) && (my_inebriety() <= 11) && (get_property("auto_orchard") == "finished") && (my_mp() >= mpForOde) && is_unrestricted($item[Fist Turkey Outline]))
@@ -1428,20 +1428,20 @@ void consumeStuff()
 			{
 				if((item_amount($item[Ambitious Turkey]) > 0) && canDrink($item[Ambitious Turkey]))
 				{
-					slDrink(1, $item[Ambitious Turkey]);
+					autoDrink(1, $item[Ambitious Turkey]);
 				}
 			}
 		}
 
 		if((auto_my_path() == "Picky") && (my_mp() > mpForOde) && (my_meat() > 150) && (item_amount($item[Paint A Vulgar Pitcher]) > 0) && ((my_inebriety() + 2) <= inebriety_limit()) && canDrink($item[Paint A Vulgar Pitcher]))
 		{
-			slDrink(1, $item[Paint A Vulgar Pitcher]);
+			autoDrink(1, $item[Paint A Vulgar Pitcher]);
 		}
 
 
 		if((auto_my_path() == "Picky") && (my_mp() > mpForOde) && (my_meat() > 150) && (item_amount($item[Ambitious Turkey]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && canDrink($item[Ambitious Turkey]))
 		{
-			slDrink(1, $item[Ambitious Turkey]);
+			autoDrink(1, $item[Ambitious Turkey]);
 		}
 
 		if((auto_my_path() == "Picky") && (my_mp() > mpForOde) && (inebriety_left() > 0) && (my_meat() > 500) && (get_property("_speakeasyDrinksDrunk").to_int() < 3) && (item_amount($item[Clan VIP Lounge Key]) > 0))
@@ -1462,20 +1462,20 @@ void consumeStuff()
 
 			if(toDrink != $item[none])
 			{
-				slDrink(1, toDrink);
+				autoDrink(1, toDrink);
 			}
 		}
 
 /*****	This section needs to merge into a "Standard equivalent"		*****/
 		if((auto_my_path() == "Standard") && (my_mp() >= mpForOde) && (my_meat() > 150) && (item_amount($item[Paint A Vulgar Pitcher]) > 0) && ((my_inebriety() + 2) <= inebriety_limit()) && is_unrestricted($item[The Smith\'s Tome]) && canDrink($item[Paint A Vulgar Pitcher]))
 		{
-			slDrink(1, $item[Paint A Vulgar Pitcher]);
+			autoDrink(1, $item[Paint A Vulgar Pitcher]);
 		}
 
 
 		if((auto_my_path() == "Standard") && (my_mp() >= mpForOde) && (item_amount($item[Ambitious Turkey]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && is_unrestricted($item[Fist Turkey Outline]) && canDrink($item[Ambitious Turkey]))
 		{
-			slDrink(1, $item[Ambitious Turkey]);
+			autoDrink(1, $item[Ambitious Turkey]);
 		}
 
 		if((auto_my_path() == "Standard") && (my_mp() >= mpForOde) && (my_inebriety() <= inebriety_limit()) && (my_meat() > 500) && (get_property("_speakeasyDrinksDrunk").to_int() < 3))
@@ -1520,7 +1520,7 @@ void consumeStuff()
 			{
 				buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
 				buffMaintain($effect[Got Milk], 0, 1, 1);
-				slEat(3, $item[Star Key Lime Pie]);
+				autoEat(3, $item[Star Key Lime Pie]);
 				tryPantsEat();
 				tryPantsEat();
 				tryPantsEat();
@@ -1535,7 +1535,7 @@ void consumeStuff()
 				{
 					buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
 					buffMaintain($effect[Got Milk], 0, 1, 1);
-					slEat(3, whatHiMein());
+					autoEat(3, whatHiMein());
 				}
 			}
 		}
@@ -1547,12 +1547,12 @@ void consumeStuff()
 
 		if((auto_my_path() == "Picky") && (my_mp() > mpForOde) && (item_amount($item[Paint A Vulgar Pitcher]) > 0) && ((my_inebriety() + 2) <= inebriety_limit()) && canDrink($item[Paint A Vulgar Pitcher]))
 		{
-			slDrink(1, $item[Paint A Vulgar Pitcher]);
+			autoDrink(1, $item[Paint A Vulgar Pitcher]);
 		}
 
 		if((auto_my_path() == "Picky") && (my_mp() > mpForOde) && (item_amount($item[Ambitious Turkey]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && canDrink($item[Ambitious Turkey]))
 		{
-			slDrink(1, $item[Ambitious Turkey]);
+			autoDrink(1, $item[Ambitious Turkey]);
 		}
 	}
 }
@@ -1675,22 +1675,22 @@ boolean slConsume(ConsumeAction action)
 	{
 		if (action.organ == SL_ORGAN_LIVER)
 		{
-			return slDrinkCafe(1, action.cafeId);
+			return autoDrinkCafe(1, action.cafeId);
 		}
 		else if (action.organ == SL_ORGAN_STOMACH)
 		{
-			return slEatCafe(1, action.cafeId);
+			return autoEatCafe(1, action.cafeId);
 		}
 	}
 	else if(action.it != $item[none])
 	{
 		if (action.organ == SL_ORGAN_LIVER)
 		{
-			return slDrink(1, action.it);
+			return autoDrink(1, action.it);
 		}
 		else if (action.organ == SL_ORGAN_STOMACH)
 		{
-			return slEat(1, action.it);
+			return autoEat(1, action.it);
 		}
 		else
 		{

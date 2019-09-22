@@ -58,7 +58,7 @@ boolean auto_dailyDungeon()
 	equip($slot[acc2], $item[ring of detect boring doors]);
 	while((get_property("_lastDailyDungeonRoom").to_int() != 15) && (my_adventures() > 0) && (item_amount($item[eleven-foot pole]) > 0) && (item_amount($item[pick-o-matic lockpicks]) > 0))
 	{
-		slAdv(1, $location[The Daily Dungeon]);
+		autoAdv(1, $location[The Daily Dungeon]);
 	}
 	equip($slot[acc2], lastequip);
 	return true;
@@ -77,7 +77,7 @@ boolean auto_sloppySecondsDiner()
 
 	while((my_adventures() > 0) && (get_property("_sloppyDinerBeachBucks").to_int() < 4))
 	{
-		slAdv(1, $location[Sloppy Seconds Diner]);
+		autoAdv(1, $location[Sloppy Seconds Diner]);
 	}
 	return true;
 }
@@ -98,7 +98,7 @@ boolean auto_fingernail()
 	}
 	while((get_property("fingernailsClipped").to_int() < 23) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[The Mansion of Dr. Weirdeaux]);
+		autoAdv(1, $location[The Mansion of Dr. Weirdeaux]);
 	}
 	return true;
 }
@@ -115,7 +115,7 @@ boolean auto_packOfSmokes()
 	}
 	while((item_amount($item[pack of smokes]) < 10) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[The Deep Dark Jungle]);
+		autoAdv(1, $location[The Deep Dark Jungle]);
 	}
 	return true;
 }
@@ -140,7 +140,7 @@ boolean auto_goreBucket()
 	}
 	while((get_property("goreCollected").to_int() < 100) && (my_adventures() > 0))
 	{
-		if(!slAdv(1, $location[The Secret Government Laboratory]))
+		if(!autoAdv(1, $location[The Secret Government Laboratory]))
 		{
 			abort("Could not adventure in the lab, aborting");
 		}
@@ -168,7 +168,7 @@ boolean auto_junglePuns()
 	}
 	while((get_property("junglePuns").to_int() < 11) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[The Deep Dark Jungle]);
+		autoAdv(1, $location[The Deep Dark Jungle]);
 	}
 	return true;
 }
@@ -185,7 +185,7 @@ boolean auto_sexismReduction()
 	}
 	while((get_property("dinseySocialJusticeIProgress").to_int() < 15) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[Pirates of the Garbage Barges]);
+		autoAdv(1, $location[Pirates of the Garbage Barges]);
 	}
 	return true;
 }
@@ -202,7 +202,7 @@ boolean auto_racismReduction()
 	}
 	while((get_property("dinseySocialJusticeIIProgress").to_int() < 15) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+		autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 	}
 	return true;
 }
@@ -220,7 +220,7 @@ boolean auto_nastyBears()
 	}
 	while((get_property("dinseyNastyBearsDefeated").to_int() < 8) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+		autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 	}
 	return true;
 }
@@ -239,7 +239,7 @@ boolean auto_toxicGlobules()
 	}
 	while((item_amount($item[Toxic Globule]) < 20) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[The Toxic Teacups]);
+		autoAdv(1, $location[The Toxic Teacups]);
 	}
 	return true;
 }
@@ -266,7 +266,7 @@ boolean auto_toxicMascot()
 	}
 	while((get_property("dinseyFunProgress").to_int() < 15) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[The Toxic Teacups]);
+		autoAdv(1, $location[The Toxic Teacups]);
 	}
 	return true;
 }
@@ -291,7 +291,7 @@ boolean auto_trashNet()
 	}
 	while((get_property("dinseyFilthLevel").to_int() > 0) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[Pirates of the Garbage Barges]);
+		autoAdv(1, $location[Pirates of the Garbage Barges]);
 	}
 	return true;
 }
@@ -316,7 +316,7 @@ boolean auto_lubeBarfMountain()
 		{
 			return true;
 		}
-		slAdv(1, $location[Barf Mountain]);
+		autoAdv(1, $location[Barf Mountain]);
 	}
 	return true;
 }
@@ -327,19 +327,19 @@ boolean auto_acquireKeycards()
 	{
 		if(item_amount($item[Keycard &delta;]) == 0)
 		{
-			slAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+			autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 		}
 		else if(item_amount($item[Keycard &alpha;]) == 0)
 		{
-			slAdv(1, $location[Barf Mountain]);
+			autoAdv(1, $location[Barf Mountain]);
 		}
 		else if(item_amount($item[Keycard &beta;]) == 0)
 		{
-			slAdv(1, $location[Pirates of the Garbage Barges]);
+			autoAdv(1, $location[Pirates of the Garbage Barges]);
 		}
 		else if(item_amount($item[Keycard &gamma;]) == 0)
 		{
-			slAdv(1, $location[The Toxic Teacups]);
+			autoAdv(1, $location[The Toxic Teacups]);
 		}
 		else
 		{
@@ -361,7 +361,7 @@ boolean auto_jungleSandwich()
 	}
 	while((item_amount($item[Project T. L. B.]) == 0) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[The Deep Dark Jungle]);
+		autoAdv(1, $location[The Deep Dark Jungle]);
 	}
 	return true;
 }
@@ -378,7 +378,7 @@ boolean auto_mtMolehill()
 	}
 	while((have_effect($effect[Shape of...Mole!]) > 0) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[Mt. Molehill]);
+		autoAdv(1, $location[Mt. Molehill]);
 	}
 	return true;
 }
@@ -486,7 +486,7 @@ boolean auto_doWalford()
 	}
 	while((get_property("walfordBucketProgress").to_int() < 100) && (my_adventures() > 0))
 	{
-		if(!slAdv(1, $location[The Ice Hole]))
+		if(!autoAdv(1, $location[The Ice Hole]))
 		{
 			abort("Could not adventure in the Ice Hole, aborting");
 		}
@@ -542,7 +542,7 @@ boolean auto_guildUnlock()
 		visit_url("guild.php?place=challenge");
 		while((item_amount($item[11-inch Knob Sausage]) == 0) && (my_adventures() > 0))
 		{
-			slAdv(1, $location[The Outskirts of Cobb\'s Knob]);
+			autoAdv(1, $location[The Outskirts of Cobb\'s Knob]);
 		}
 		visit_url("guild.php?place=challenge");
 		return true;
@@ -596,7 +596,7 @@ boolean auto_guildClown()
 	visit_url("guild.php?place=scg");
 	while((item_amount(toGet) == 0) && (my_adventures() > 0))
 	{
-		slAdv(1, $location[The \"Fun\" House]);
+		autoAdv(1, $location[The \"Fun\" House]);
 	}
 
 	item toMake = auto_guildEpicWeapon();
@@ -676,7 +676,7 @@ boolean auto_nemesisCave()
 		{
 			break;
 		}
-#		if(!slAdv(1, $location[Nemesis Cave]))
+#		if(!autoAdv(1, $location[Nemesis Cave]))
 #		{
 			abort("Can not access area, aborting.");
 #		}
@@ -684,7 +684,7 @@ boolean auto_nemesisCave()
 	equip(auto_guildEpicWeapon());
 	visit_url("cave.php?pwd=action=door4");
 	abort("Currently, must handle password manually, big sad");
-#	slAdv(1, $location[Noob Cave]);
+#	autoAdv(1, $location[Noob Cave]);
 
 	visit_url("guild.php?place=scg");
 	equipBaseline();
@@ -734,7 +734,7 @@ boolean auto_nemesisIsland()
 		{
 			break;
 		}
-		if(!slAdv(1, nemesisArea))
+		if(!autoAdv(1, nemesisArea))
 		{
 			abort("Can not access area, aborting.");
 		}
@@ -948,7 +948,7 @@ boolean auto_cheesePostCS(int leave)
 
 		if(isOverdueDigitize())
 		{
-			slAdv($location[The Ice Hotel]);
+			autoAdv($location[The Ice Hotel]);
 			if(get_property("_sourceTerminalDigitizeMonsterCount").to_int() != 2)
 			{
 				print("Did digitize tracking get mixed up?", "red");
@@ -956,7 +956,7 @@ boolean auto_cheesePostCS(int leave)
 		}
 		if(isOverdueArrow())
 		{
-			slAdv($location[The Ice Hotel]);
+			autoAdv($location[The Ice Hotel]);
 			if(get_property("_romanticFightsLeft").to_int() == 2)
 			{
 				print("Probably got confused about an arrow fight, adjusting", "red");
@@ -998,14 +998,14 @@ boolean auto_cheesePostCS(int leave)
 			setAdvPHPFlag();
 			if(!didWePlantHere($location[Barf Mountain]) && florist_available() && (my_adventures() > 0) && (inebriety_left() >= 0) && ($location[Barf Mountain].turns_spent == 0))
 			{
-				slAdv(1, $location[Barf Mountain]);
+				autoAdv(1, $location[Barf Mountain]);
 				cli_execute("florist plant stealing magnolia");
 				cli_execute("florist plant pitcher plant");
 				cli_execute("florist plant aloe guv'nor");
 			}
 			else
 			{
-				slAdv($location[The Ice Hotel]);
+				autoAdv($location[The Ice Hotel]);
 			}
 		}
 		while(item_amount($item[Rain-Doh Box Full Of Monster]) > 0)
@@ -1023,7 +1023,7 @@ boolean auto_cheesePostCS(int leave)
 		{
 			string temp = visit_url("place.php?whichplace=spacegate&action=sg_Terminal");
 			temp = visit_url("choice.php?pwd=&whichchoice=1235&option=2&word=" + get_property("auto_digitizePlanet"));
-			slAdv($location[Through The Spacegate]);
+			autoAdv($location[Through The Spacegate]);
 			set_property("_spacegateTurnsLeft", 20);
 		}
 
@@ -1041,7 +1041,7 @@ boolean auto_cheesePostCS(int leave)
 			if(isOverdueDigitize())
 			{
 				set_property("auto_combatDirective", "start;skill curse of weaksauce;item rain-doh black box, time-spinner;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls");
-				slAdv($location[The Ice Hotel]);
+				autoAdv($location[The Ice Hotel]);
 			}
 
 			if(get_property("_sourceTerminalDigitizeMonsterCount").to_int() > 0)
@@ -1056,7 +1056,7 @@ boolean auto_cheesePostCS(int leave)
 				}
 			}
 
-			if(!slAdv($location[Through The Spacegate]))
+			if(!autoAdv($location[Through The Spacegate]))
 			{
 				string temp = visit_url("place.php?whichplace=spacegate&action=sg_Terminal");
 				break;
@@ -1077,19 +1077,19 @@ boolean auto_cheesePostCS(int leave)
 				{
 					string old = get_property("choiceAdventure1215");
 					set_property("choiceAdventure1215", 1);
-					slAdv($location[Gingerbread Civic Center]);
+					autoAdv($location[Gingerbread Civic Center]);
 					set_property("choiceAdventure1215", old);
 				}
 				while(get_property("_gingerbreadCityTurns").to_int() < 4)
 				{
 					set_property("auto_combatDirective", "start;skill KGB tranquilizer dart");
-					slAdv($location[Gingerbread Upscale Retail District]);
+					autoAdv($location[Gingerbread Upscale Retail District]);
 				}
 				if(get_property("_gingerbreadCityTurns").to_int() == 4)
 				{
 					string old = get_property("choiceAdventure1204");
 					set_property("choiceAdventure1204", 1);
-					slAdv($location[Gingerbread Train Station]);
+					autoAdv($location[Gingerbread Train Station]);
 					set_property("choiceAdventure1204", old);
 				}
 			}
@@ -1111,7 +1111,7 @@ boolean auto_cheesePostCS(int leave)
 
 	if(!didWePlantHere($location[Barf Mountain]) && florist_available() && (my_adventures() > 0) && (inebriety_left() >= 0))
 	{
-		slAdv(1, $location[Barf Mountain]);
+		autoAdv(1, $location[Barf Mountain]);
 		cli_execute("florist plant stealing magnolia");
 		cli_execute("florist plant pitcher plant");
 		cli_execute("florist plant aloe guv'nor");
@@ -1175,30 +1175,30 @@ boolean auto_cheesePostCS(int leave)
 	while((fullness_left() >= 5) && (item_amount($item[Cold Hi Mein]) > 0) && (my_level() >= 13))
 	{
 		buffMaintain($effect[Got Milk], 0, 1, 5);
-		slEat(1, $item[Cold Hi Mein]);
+		autoEat(1, $item[Cold Hi Mein]);
 	}
 
 	while((inebriety_left() >= 1) && (item_amount($item[Astral Pilsner]) > 0))
 	{
-		slDrink(1, $item[Astral Pilsner]);
+		autoDrink(1, $item[Astral Pilsner]);
 	}
 
 	if(!get_property("_mimeArmyShotglassUsed").to_boolean() && (item_amount($item[Mime Army Shotglass]) > 0))
 	{
 		if(item_amount($item[Sacramento Wine]) > 0)
 		{
-			slDrink(1, $item[Sacramento Wine]);
+			autoDrink(1, $item[Sacramento Wine]);
 		}
 	}
 
 	while((inebriety_left() >= 8) && (item_amount($item[Sacramento Wine]) > 4))
 	{
-		slDrink(4, $item[Sacramento Wine]);
+		autoDrink(4, $item[Sacramento Wine]);
 	}
 
 	while((inebriety_left() >= 4) && (item_amount($item[Hacked Gibson]) > 0))
 	{
-		slDrink(1, $item[Hacked Gibson]);
+		autoDrink(1, $item[Hacked Gibson]);
 	}
 	while((inebriety_left() >= 1) && (item_amount($item[Sacramento Wine]) > 0))
 	{
@@ -1207,7 +1207,7 @@ boolean auto_cheesePostCS(int leave)
 		{
 			equip($slot[Acc3], $item[Mafia Pinky Ring]);
 		}
-		slDrink(1, $item[Sacramento Wine]);
+		autoDrink(1, $item[Sacramento Wine]);
 		if(equipped_item($slot[Acc3]) != it)
 		{
 			equip($slot[Acc3], it);
@@ -1216,22 +1216,22 @@ boolean auto_cheesePostCS(int leave)
 
 	while((spleen_left() >= 4) && (item_amount($item[Agua de Vida]) > 0))
 	{
-		slChew(1, $item[Agua de Vida]);
+		autoChew(1, $item[Agua de Vida]);
 	}
 	while((spleen_left() >= 4) && (item_amount($item[Unconscious Collective Dream Jar]) > 0))
 	{
-		slChew(1, $item[Unconscious Collective Dream Jar]);
+		autoChew(1, $item[Unconscious Collective Dream Jar]);
 	}
 	while((spleen_left() >= 3) && (item_amount($item[Carrot Juice]) > 0))
 	{
-		slChew(1, $item[Carrot Juice]);
+		autoChew(1, $item[Carrot Juice]);
 	}
 
 	if(!get_property("_didMining").to_boolean() && (my_daycount() == 2) && have_skill($skill[Unaccompanied Miner]))
 	{
 		if(item_amount($item[High-Temperature Mining Drill]) > 0)
 		{
-			slMaximize("hot res, equip high-temperature mining drill, -equip snow suit", 0, 0, false);
+			autoMaximize("hot res, equip high-temperature mining drill, -equip snow suit", 0, 0, false);
 			#equip($item[High-Temperature Mining Drill]);
 			if(elemental_resist($element[hot]) >= 15)
 			{
@@ -1533,11 +1533,11 @@ boolean auto_cheesePostCS(int leave)
 
 		if((loc == $location[Barf Mountain]) && ((get_property("sourceTerminalEducate1") == "extract.edu") || (get_property("sourceTerminalEducate2")  == "extract.edu")) && have_skill($skill[Curse Of Weaksauce]) && have_skill($skill[Meteor Lore]) && have_equipped($item[Pantsgiving]) && (item_amount($item[Rain-Doh Indigo Cup]) > 0) && get_property("lovebugsUnlocked").to_boolean() && (item_amount($item[Time-Spinner]) > 0) && have_skill($skill[Candyblast]) && have_skill($skill[Stuffed Mortar Shell]) && (get_property("_shatteringPunchUsed").to_int() >= 3) && get_property("_gingerbreadMobHitUsed").to_boolean() && (get_property("_usedReplicaBatoomerang").to_int() >= 3) && (my_mp() >= 40))
 		{
-			slAdv(1, loc, "if hasskill extract; skill extract; endif; if hasskill Sing Along; skill Sing Along; endif; skill weaksauce; if hasskill extract jelly; skill extract jelly; endif; skill pocket crumbs; skill micrometeorite; skill air dirty laundry; use rain-doh indigo cup, rain-doh blue balls; skill summon love mosquito; use time-spinner; skill candyblast; skill stuffed mortar shell; skill summon love stinkbug; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm");
+			autoAdv(1, loc, "if hasskill extract; skill extract; endif; if hasskill Sing Along; skill Sing Along; endif; skill weaksauce; if hasskill extract jelly; skill extract jelly; endif; skill pocket crumbs; skill micrometeorite; skill air dirty laundry; use rain-doh indigo cup, rain-doh blue balls; skill summon love mosquito; use time-spinner; skill candyblast; skill stuffed mortar shell; skill summon love stinkbug; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm");
 		}
 		else
 		{
-			slAdv(1, loc);
+			autoAdv(1, loc);
 		}
 		LX_ghostBusting();
 
@@ -1634,7 +1634,7 @@ boolean auto_cheesePostCS(int leave)
 			print("Could not buy 5-Hour Acrimony, price too high", "red");
 			break;
 		}
-		slDrink(1, $item[5-Hour Acrimony]);
+		autoDrink(1, $item[5-Hour Acrimony]);
 	}
 
 
@@ -1645,7 +1645,7 @@ boolean auto_cheesePostCS(int leave)
 			print("Could not buy Beery Blood, price too high", "red");
 			break;
 		}
-		slDrink(1, $item[Beery Blood]);
+		autoDrink(1, $item[Beery Blood]);
 	}
 
 	if(fullness_left() > 0)
@@ -1670,7 +1670,7 @@ boolean auto_cheesePostCS(int leave)
 			buffMaintain($effect[Leisurely Amblin\'], 50, 1, 1);
 			buffMaintain($effect[How to Scam Tourists], 0, 1, 1);
 		}
-		slAdv(1, loc);
+		autoAdv(1, loc);
 	}
 
 	if(fullness_left() > 0)
@@ -1695,7 +1695,7 @@ boolean auto_cheesePostCS(int leave)
 			buffMaintain($effect[Leisurely Amblin\'], 50, 1, 1);
 			buffMaintain($effect[How to Scam Tourists], 0, 1, 1);
 		}
-		slAdv(1, loc);
+		autoAdv(1, loc);
 		if((item_amount($item[License To Chill]) > 0) && !get_property("_licenseToChillUsed").to_boolean())
 		{
 			use(1, $item[License To Chill]);
@@ -1725,7 +1725,7 @@ boolean auto_cheesePostCS(int leave)
 			buffMaintain($effect[Leisurely Amblin\'], 50, 1, 1);
 			buffMaintain($effect[How to Scam Tourists], 0, 1, 1);
 		}
-		slAdv(1, loc);
+		autoAdv(1, loc);
 	}
 	#use_barrels();
 
@@ -1763,7 +1763,7 @@ boolean auto_cheesePostCS(int leave)
 	{
 		if((item_amount($item[5-hour acrimony]) > 0) && (my_inebriety() <= inebriety_limit()))
 		{
-			slOverdrink(1, $item[5-hour acrimony]);
+			autoOverdrink(1, $item[5-hour acrimony]);
 		}
 		if(get_property("auto_pvpOutfit") != "")
 		{

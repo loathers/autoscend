@@ -309,7 +309,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 
 	if(enforcer)
 	{
-		slAdvBypass("choice.php?pwd=&whichchoice=1223&option=1", option);
+		autoAdvBypass("choice.php?pwd=&whichchoice=1223&option=1", option);
 	}
 	else
 	{
@@ -357,7 +357,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 
 	if(engineer)
 	{
-		slAdvBypass("choice.php?pwd=&whichchoice=1225&option=1", option);
+		autoAdvBypass("choice.php?pwd=&whichchoice=1225&option=1", option);
 	}
 	else
 	{
@@ -372,7 +372,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 
 	if(equivocator)
 	{
-		slAdvBypass("choice.php?pwd=&whichchoice=1227&option=1", option);
+		autoAdvBypass("choice.php?pwd=&whichchoice=1227&option=1", option);
 	}
 	else
 	{
@@ -1705,7 +1705,7 @@ boolean makeGenieCombat(monster mon, string option)
 	pages[1] = "choice.php?pwd=" + my_hash() + "&whichchoice=1267&option=1&wish=" + wish;
 	pages[2] = "main.php";
 
-	slAdvBypass(5, pages, $location[Noob Cave], option);
+	autoAdvBypass(5, pages, $location[Noob Cave], option);
 
 	if(get_property("lastEncounter") != mon && get_property("lastEncounter") != "Using the Force")
 	{

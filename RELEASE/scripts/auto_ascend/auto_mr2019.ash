@@ -210,8 +210,8 @@ boolean auto_sausageGoblin(location loc, string option)
 		return true;
 	}
 
-	slEquip($item[Kramco Sausage-o-Matic&trade;]);
-	return slAdv(1, loc, option);
+	autoEquip($item[Kramco Sausage-o-Matic&trade;]);
+	return autoAdv(1, loc, option);
 }
 
 boolean pirateRealmAvailable()

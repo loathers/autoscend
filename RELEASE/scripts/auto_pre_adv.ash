@@ -250,7 +250,7 @@ void handlePreAdventure(location place)
 	if(auto_latteDropWanted(place))
 	{
 		print('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
-		slEquip($item[latte lovers member's mug]);
+		autoEquip($item[latte lovers member's mug]);
 	}
 
 	equipOverrides();
@@ -261,7 +261,7 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to be retro but lacking the Continuum Transfunctioner.");
 		}
-		slEquip($slot[acc3], $item[Continuum Transfunctioner]);
+		autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
 	}
 
 	if((place == $location[Inside The Palindome]) && (my_turncount() != 0))
@@ -270,7 +270,7 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to go to The Palindome but don't have the Namsilat");
 		}
-		slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
+		autoEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
 	if((place == $location[The Haunted Wine Cellar]) && (my_turncount() != 0) && (get_property("auto_winebomb") == "partial"))
@@ -279,12 +279,12 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to charge a WineBomb but don't have one.");
 		}
-		slEquip($slot[off-hand], $item[Unstable Fulminate]);
+		autoEquip($slot[off-hand], $item[Unstable Fulminate]);
 	}
 
 	if(place == $location[The Black Forest])
 	{
-		slEquip($slot[acc3], $item[Blackberry Galoshes]);
+		autoEquip($slot[acc3], $item[Blackberry Galoshes]);
 	}
 
 	bat_formPreAdventure();

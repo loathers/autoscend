@@ -406,7 +406,7 @@ boolean LM_bond()
 		{
 			set_property("choiceAdventure1261", 1);
 		}
-		boolean retval = slAdv($location[Super Villain\'s Lair]);
+		boolean retval = autoAdv($location[Super Villain\'s Lair]);
 		if(!retval)
 		{
 			set_property("_auto_bondBriefing", "finished");
@@ -453,19 +453,19 @@ boolean LM_bond()
 				}
 				string old = get_property("choiceAdventure1215");
 				set_property("choiceAdventure1215", 1);
-				slAdv($location[Gingerbread Civic Center]);
+				autoAdv($location[Gingerbread Civic Center]);
 				set_property("choiceAdventure1215", old);
 				return true;
 			}
 			if(get_property("_gingerbreadCityTurns").to_int() < 4)
 			{
-				return slAdv($location[Gingerbread Upscale Retail District]);
+				return autoAdv($location[Gingerbread Upscale Retail District]);
 			}
 			if(get_property("_gingerbreadCityTurns").to_int() == 4)
 			{
 				string old = get_property("choiceAdventure1204");
 				set_property("choiceAdventure1204", 1);
-				slAdv($location[Gingerbread Train Station]);
+				autoAdv($location[Gingerbread Train Station]);
 				set_property("choiceAdventure1204", old);
 				if(item_amount($item[Ultra Mega Sour Ball]) > 0)
 				{
@@ -506,11 +506,11 @@ boolean LM_bond()
 				{
 					if(item_amount($item[Splendid Martini]) >= inebriety_left())
 					{
-						slDrink(inebriety_left(), $item[Splendid Martini]);
+						autoDrink(inebriety_left(), $item[Splendid Martini]);
 					}
 					else
 					{
-						slDrink(inebriety_left(), $item[Improved Martini]);
+						autoDrink(inebriety_left(), $item[Improved Martini]);
 					}
 				}
 			}
@@ -520,22 +520,22 @@ boolean LM_bond()
 				{
 					if(item_amount($item[Splendid Martini]) >= 10)
 					{
-						slDrink(10, $item[Splendid Martini]);
+						autoDrink(10, $item[Splendid Martini]);
 					}
 					else
 					{
-						slDrink(10, $item[Improved Martini]);
+						autoDrink(10, $item[Improved Martini]);
 					}
 				}
 				else if(inebriety_left() >= 3)
 				{
 					if(item_amount($item[Splendid Martini]) >= 3)
 					{
-						slDrink(3, $item[Splendid Martini]);
+						autoDrink(3, $item[Splendid Martini]);
 					}
 					else
 					{
-						slDrink(3, $item[Improved Martini]);
+						autoDrink(3, $item[Improved Martini]);
 					}
 				}
 			}
@@ -568,7 +568,7 @@ boolean LM_bond()
 				while(acquireHermitItem($item[Ten-Leaf Clover]));
 				use(1, $item[Disassembled Clover]);
 				backupSetting("cloverProtectActive", false);
-				slAdvBypass(270, $location[Itznotyerzitz Mine]);
+				autoAdvBypass(270, $location[Itznotyerzitz Mine]);
 				restoreSetting("cloverProtectActive");
 				return true;
 			}
@@ -608,7 +608,7 @@ boolean LM_bond()
 					equip($slot[acc2], $item[Continuum Transfunctioner]);
 					auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 					set_property("auto_digitizeDirective", $monster[Blooper]);
-					slAdv(1, $location[8-bit Realm]);
+					autoAdv(1, $location[8-bit Realm]);
 					set_property("auto_digitizeDirective", "");
 					return true;
 				}
@@ -663,7 +663,7 @@ boolean LM_bond()
 					abort("Can not restore MP in order to disintegrate a filthworm. Please YR the filthworm we can access next. Thank you.");
 				}
 				set_property("auto_combatDirective", "start;" + yellowRayCombatString());
-				boolean retval = slAdv(loc);
+				boolean retval = autoAdv(loc);
 				set_property("auto_combatDirective", "");
 				return retval;
 			}
@@ -693,7 +693,7 @@ boolean LM_bond()
 				{
 					if(item_amount($item[Star Chart]) == 0)
 					{
-						return slAdv($location[The Hole In The Sky]);
+						return autoAdv($location[The Hole In The Sky]);
 					}
 				}
 			}
@@ -723,11 +723,11 @@ boolean LM_bond()
 					timeSpinnerCombat($monster[Animated Ornate Nightstand]);
 					if(contains_text(visit_url("main.php"), "choice.php"))
 					{
-						slAdv($location[The Haunted Bedroom]);
+						autoAdv($location[The Haunted Bedroom]);
 					}
 					if(contains_text(visit_url("main.php"), "Combat"))
 					{
-						slAdv($location[The Haunted Bedroom]);
+						autoAdv($location[The Haunted Bedroom]);
 					}
 					set_property("auto_disableAdventureHandling", false);
 				}

@@ -500,7 +500,7 @@ boolean auto_advWitchess(string target, string option)
 	pages[2] = "choice.php?pwd=" + my_hash() + "&whichchoice=1182&option=1&piece=" + goal;
 
 	// We use 4 to cause pages[2] to use GET.
-	return slAdvBypass(4, pages, $location[Noob Cave], option);
+	return autoAdvBypass(4, pages, $location[Noob Cave], option);
 }
 
 
@@ -1126,7 +1126,7 @@ boolean LX_ghostBusting()
 			if(equipped_item($slot[acc3]) != $item[Talisman O\' Namsilat])
 			{
 				replaceAcc3 = equipped_item($slot[acc3]);
-				slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
+				autoEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 			}
 		}
 
@@ -1141,14 +1141,14 @@ boolean LX_ghostBusting()
 
 		if((equipped_item($slot[Back]) != $item[Protonic Accelerator Pack]) && can_equip($item[Protonic Accelerator Pack]))
 		{
-			slEquip($slot[Back], $item[Protonic Accelerator Pack]);
+			autoEquip($slot[Back], $item[Protonic Accelerator Pack]);
 		}
 
 		print("Time to bust some ghosts!!!", "green");
-		boolean advVal = slAdv(goal);
+		boolean advVal = autoAdv(goal);
 		if(replaceAcc3 != $item[none])
 		{
-			slEquip($slot[acc3], replaceAcc3);
+			autoEquip($slot[acc3], replaceAcc3);
 		}
 		if(have_effect($effect[Beaten Up]) == 0)
 		{
@@ -1239,7 +1239,7 @@ boolean timeSpinnerAdventure(string option)
 			string[int] pages;
 			pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
 			pages[1] = "choice.php?pwd=&whichchoice=1195&option=3";
-			if(slAdvBypass(0, pages, $location[Noob Cave], option)) {}
+			if(autoAdvBypass(0, pages, $location[Noob Cave], option)) {}
 			return true;
 		}
 	}
@@ -1263,7 +1263,7 @@ boolean timeSpinnerCombat(monster goal, string option)
 			pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
 			pages[1] = "choice.php?pwd=&whichchoice=1195&option=1";
 			pages[2] = "choice.php?pwd=&whichchoice=1196&option=1&monid=" + goal.id;
-			if(slAdvBypass(0, pages, $location[Noob Cave], option))
+			if(autoAdvBypass(0, pages, $location[Noob Cave], option))
 			{
 				handleTracker(goal, $item[Time-Spinner], "auto_copies");
 			}

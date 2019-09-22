@@ -27,7 +27,7 @@ boolean hr_handleFamiliar(familiar fam)
 {
 	if((my_path() == "Heavy Rains") && (equipped_item($slot[familiar]) != $item[miniature life preserver]) && (my_familiar() != $familiar[none]))
 	{
-		slEquip($slot[familiar], $item[miniature life preserver]);
+		autoEquip($slot[familiar], $item[miniature life preserver]);
 		return true;
 	}
 	return false;
@@ -500,12 +500,12 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1";
 	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" + mId + "&option=1&choice2=and+Fight%21";
-	slAdvBypass(0, pages, $location[Noob Cave], option);
+	autoAdvBypass(0, pages, $location[Noob Cave], option);
 
 #	handlePreAdventure($location[Noob Cave]);
 #	visit_url("runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1", true);
 #	visit_url("choice.php?pwd&whichchoice=970&whichmonster=" + mId + "&option=1&choice2=and+Fight%21");
-#	slAdv(1, $location[Noob Cave]);
+#	autoAdv(1, $location[Noob Cave]);
 
 	if(wink == true)
 	{

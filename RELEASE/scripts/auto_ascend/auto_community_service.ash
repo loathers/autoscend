@@ -146,7 +146,7 @@ boolean LA_cs_communityService()
 			if(!cs_mpMaintain() || !cs_healthMaintain()){
 				abort("Wasnt to maintain health and mp.");
 			}
-			slAdv(1, $location[Barf Mountain], "cs_combatNormal");
+			autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 			set_property("auto_combatDirective", "");
 		}
 	}
@@ -258,7 +258,7 @@ boolean LA_cs_communityService()
 		{
 			if((my_inebriety() == 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500))
 			{
-				slDrink(1, $item[Lucky Lindy]);
+				autoDrink(1, $item[Lucky Lindy]);
 				if(my_inebriety() != 1)
 				{
 					if(auto_get_clan_lounge() contains $item[Lucky Lindy])
@@ -296,28 +296,28 @@ boolean LA_cs_communityService()
 				{
 					if(hippy_stone_broken())
 					{
-						slDrink(min(item_amount($item[Shot of Kardashian Gin]), (inebriety_left() - 9)), $item[Shot of Kardashian Gin]);
+						autoDrink(min(item_amount($item[Shot of Kardashian Gin]), (inebriety_left() - 9)), $item[Shot of Kardashian Gin]);
 					}
 					else
 					{
-						slOverdrink(min(item_amount($item[Shot of Kardashian Gin]), (inebriety_left() - 9)), $item[Shot of Kardashian Gin]);
+						autoOverdrink(min(item_amount($item[Shot of Kardashian Gin]), (inebriety_left() - 9)), $item[Shot of Kardashian Gin]);
 					}
 				}
 				if(item_amount($item[Sacramento Wine]) > 0)
 				{
-					slDrink(min(item_amount($item[Sacramento Wine]), (inebriety_left() - 9)), $item[Sacramento Wine]);
+					autoDrink(min(item_amount($item[Sacramento Wine]), (inebriety_left() - 9)), $item[Sacramento Wine]);
 				}
 				else if(item_amount($item[Ice Island Long Tea]) > 0)
 				{
-					slDrink(1, $item[Ice Island Long Tea]);
+					autoDrink(1, $item[Ice Island Long Tea]);
 				}
 				else if((item_amount($item[Splendid Martini]) > 0) && canDrink($item[Splendid Martini]))
 				{
-					slDrink(min(item_amount($item[Splendid Martini]), (inebriety_left() - 9)), $item[Splendid Martini]);
+					autoDrink(min(item_amount($item[Splendid Martini]), (inebriety_left() - 9)), $item[Splendid Martini]);
 				}
 				else if(item_amount($item[Meadeorite]) > 0)
 				{
-					slDrink(min(item_amount($item[Meadeorite]), (inebriety_left() - 9)), $item[Meadeorite]);
+					autoDrink(min(item_amount($item[Meadeorite]), (inebriety_left() - 9)), $item[Meadeorite]);
 				}
 
 			}
@@ -476,7 +476,7 @@ boolean LA_cs_communityService()
 				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
-				slAdv(1, loc, "cs_combatNormal");
+				autoAdv(1, loc, "cs_combatNormal");
 				return true;
 			}
 
@@ -498,12 +498,12 @@ boolean LA_cs_communityService()
 				buffMaintain($effect[Musk of the Moose], 10, 1, 1);
 				if(possessEquipment($item[Latte Lovers Member\'s Mug]) && !get_property("_latteBanishUsed").to_boolean())
 				{
-					slEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
+					autoEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 				}
 				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
-				slAdv(1, $location[The Haunted Pantry], "cs_combatNormal");
+				autoAdv(1, $location[The Haunted Pantry], "cs_combatNormal");
 				return true;
 			}
 
@@ -532,7 +532,7 @@ boolean LA_cs_communityService()
 						string url = "choice.php?pwd=&whichchoice=1329&option=1&l1=" + opt1 + "&l2=" + opt2 + "&l3=" + opt3;
 						page = visit_url(url);
 					}
-					slEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
+					autoEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 				}
 
 				if(item_amount($item[skeleton key]) == 0)
@@ -546,7 +546,7 @@ boolean LA_cs_communityService()
 				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
-				slAdv(1, $location[The Skeleton Store], "cs_combatNormal");
+				autoAdv(1, $location[The Skeleton Store], "cs_combatNormal");
 				return true;
 			}
 
@@ -560,7 +560,7 @@ boolean LA_cs_communityService()
 				if(!cs_mpMaintain() || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
-				slAdv(1, $location[Pirates of the Garbage Barges], "cs_combatNormal");
+				autoAdv(1, $location[Pirates of the Garbage Barges], "cs_combatNormal");
 				return true;
 			}
 
@@ -585,7 +585,7 @@ boolean LA_cs_communityService()
 				if(!cs_mpMaintain() || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
-				slAdv(1, $location[The Bubblin\' Caldera], "cs_combatNormal");
+				autoAdv(1, $location[The Bubblin\' Caldera], "cs_combatNormal");
 				if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue of the Walrus]) && (my_mp() > (3 * mp_cost($skill[Tongue of the Walrus]))))
 				{
 					if(contains_text(get_property("auto_combatHandler"), "(DNA)"))
@@ -614,13 +614,13 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[Barf Mountain], "cs_combatNormal");
+					autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 					return true;
 				}
 
 				if(item_amount($item[Personal Ventilation Unit]) > 0)
 				{
-					slEquip($slot[acc1], $item[Personal Ventilation Unit]);
+					autoEquip($slot[acc1], $item[Personal Ventilation Unit]);
 				}
 				int turns_max = 10;
 				if(have_skill($skill[CLEESH]))
@@ -642,13 +642,13 @@ boolean LA_cs_communityService()
 
 					if(possessEquipment($item[Latte Lovers Member\'s Mug]) && !get_property("_latteCopyUsed").to_boolean())
 					{
-						slEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
+						autoEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 					}
 
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
+					autoAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
 					return true;
 				}
 			}
@@ -665,29 +665,29 @@ boolean LA_cs_communityService()
 			{
 				if(item_amount($item[Astral Pilsner]) > 0)
 				{
-					slDrink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
+					autoDrink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
 				}
 				else if(item_amount($item[Sacramento Wine]) > 0)
 				{
-					slDrink(1, $item[Sacramento Wine]);
+					autoDrink(1, $item[Sacramento Wine]);
 				}
 				else if(item_amount($item[Iced Plum Wine]) > 0)
 				{
-					slDrink(1, $item[Iced Plum Wine]);
+					autoDrink(1, $item[Iced Plum Wine]);
 				}
 				else if(item_amount($item[Meadeorite]) > 0)
 				{
-					slDrink(1, $item[Meadeorite]);
+					autoDrink(1, $item[Meadeorite]);
 				}
 				else if((auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 				{
-					slDrink(1, $item[cup of &quot;tea&quot;]);
+					autoDrink(1, $item[cup of &quot;tea&quot;]);
 				}
 			}
 
 			if((my_spleen_use() == 12) && (item_amount($item[Abstraction: Category]) > 0))
 			{
-				slChew(1, $item[Abstraction: Category]);
+				autoChew(1, $item[Abstraction: Category]);
 			}
 			if(!get_property("_aprilShower").to_boolean())
 			{
@@ -705,7 +705,7 @@ boolean LA_cs_communityService()
 				if(!cs_mpMaintain() || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
-				slAdv(1, $location[Barf Mountain], "cs_combatNormal");
+				autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 				return true;
 			}
 
@@ -718,7 +718,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Deep Machine Tunnels]);
+					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
 					set_property("choiceAdventure1119", "");
 					return true;
@@ -731,7 +731,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Deep Machine Tunnels]);
+					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
 					set_property("choiceAdventure1119", "");
 					return true;
@@ -751,7 +751,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatYR");
+					autoAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatYR");
 					return true;
 				}
 			}
@@ -766,7 +766,7 @@ boolean LA_cs_communityService()
 
 			if(!turnSave && (item_amount($item[Black Pixel]) < 2) && (item_amount($item[Pixel Star]) == 0) && (have_familiar($familiar[Puck Man]) || have_familiar($familiar[Ms. Puck Man])) && knoll_available())
 			{
-				slEquip($slot[acc1], $item[Continuum Transfunctioner]);
+				autoEquip($slot[acc1], $item[Continuum Transfunctioner]);
 
 				if(get_property("auto_tryPowerLevel").to_boolean())
 				{
@@ -779,7 +779,7 @@ boolean LA_cs_communityService()
 				if(!cs_mpMaintain() || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
-				slAdv(1, $location[8-bit Realm], "cs_combatNormal");
+				autoAdv(1, $location[8-bit Realm], "cs_combatNormal");
 				return true;
 			}
 
@@ -960,7 +960,7 @@ boolean LA_cs_communityService()
 							if(!cs_mpMaintain() || !cs_healthMaintain()){
 								abort("Wasnt to maintain health and mp.");
 							}
-							slAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice], "cs_combatNormal");
+							autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice], "cs_combatNormal");
 							return true;
 						}
 					}
@@ -968,18 +968,18 @@ boolean LA_cs_communityService()
 
 #				if((elementalPlanes_access($element[hot])) && (item_amount($item[New Age Healing Crystal]) < 2))
 #				{
-#					slAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
+#					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
 #				}
 				if(get_property("controlPanel9").to_boolean())
 				{
 					if(item_amount($item[Personal Ventilation Unit]) > 0)
 					{
-						slEquip($slot[acc1], $item[Personal Ventilation Unit]);
+						autoEquip($slot[acc1], $item[Personal Ventilation Unit]);
 					}
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
+					autoAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[cold]))
 				{
@@ -995,28 +995,28 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[VYKEA], "cs_combatNormal");
+					autoAdv(1, $location[VYKEA], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[hot]))
 				{
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
+					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
 				}
 				else if(knoll_available())
 				{
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[8-bit Realm], "cs_combatNormal");
+					autoAdv(1, $location[8-bit Realm], "cs_combatNormal");
 				}
 				else
 				{
 					if(!cs_mpMaintain(30) || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Thinknerd Warehouse], "cs_combatNormal");
+					autoAdv(1, $location[The Thinknerd Warehouse], "cs_combatNormal");
 				}
 				return true;
 			}
@@ -1057,35 +1057,35 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
+					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[stench]))
 				{
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice], "cs_combatNormal");
+					autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[spooky]))
 				{
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Deep Dark Jungle], "cs_combatNormal");
+					autoAdv(1, $location[The Deep Dark Jungle], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[sleaze]))
 				{
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[Sloppy Seconds Diner], "cs_combatNormal");
+					autoAdv(1, $location[Sloppy Seconds Diner], "cs_combatNormal");
 				}
 				else
 				{
 					if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Haunted Kitchen], "cs_combatNormal");
+					autoAdv(1, $location[The Haunted Kitchen], "cs_combatNormal");
 				}
 				if(item_amount($item[Yellow Pixel]) >= 15)
 				{
@@ -1123,7 +1123,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Velvet / Gold Mine], "cs_combatXO");
+					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatXO");
 					return true;
 				}
 				if(!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants]))
@@ -1132,7 +1132,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatXO");
+					autoAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatXO");
 					return true;
 				}
 			}
@@ -1217,7 +1217,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The X-32-F Combat Training Snowman]);
+					autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 					handleFamiliar(oldFam);
 					return true;
 				}
@@ -1250,23 +1250,23 @@ boolean LA_cs_communityService()
 
 				if((spleen_left() >= 3) && (item_amount($item[Handful of Smithereens]) > 0))
 				{
-					slChew(1, $item[Handful of Smithereens]);
+					autoChew(1, $item[Handful of Smithereens]);
 				}
 				if((spleen_left() >= 2) && (item_amount($item[Handful of Smithereens]) > 1))
 				{
-					slChew(1, $item[Handful of Smithereens]);
+					autoChew(1, $item[Handful of Smithereens]);
 				}
 				while((spleen_left() >= 2) && (item_amount($item[cuppa Activi tea]) > 0))
 				{
-					slChew(1, $item[cuppa Activi tea]);
+					autoChew(1, $item[cuppa Activi tea]);
 				}
 				while((spleen_left() >= 2) && (item_amount($item[Nasty Snuff]) > 0))
 				{
-					slChew(1, $item[Nasty Snuff]);
+					autoChew(1, $item[Nasty Snuff]);
 				}
 				if((item_amount($item[Astral Pilsner]) > 0) && (inebriety_left() > 0) && (my_level() >= 11))
 				{
-					slDrink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
+					autoDrink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
 				}
 
 				if((item_amount($item[CSA fire-starting kit]) > 0) && !get_property("_fireStartingKitUsed").to_boolean() && (get_property("choiceAdventure595").to_int() == 1) && hippy_stone_broken())
@@ -1311,7 +1311,7 @@ boolean LA_cs_communityService()
 					if(item_amount(it) > 0)
 					{
 						cs_mpMaintain(50);
-						slDrink(1, it);
+						autoDrink(1, it);
 						break;
 					}
 				}
@@ -1329,7 +1329,7 @@ boolean LA_cs_communityService()
 				}
 				cs_mpMaintain(100);
 				buffMaintain($effect[Ode to Booze], 50, 1, 10);
-				slOverdrink(1, $item[Emergency Margarita]);
+				autoOverdrink(1, $item[Emergency Margarita]);
 			}
 			else
 			{
@@ -1509,7 +1509,7 @@ boolean LA_cs_communityService()
 			}
 			if((item_amount($item[Ancient Medicinal Herbs]) > 0) && (have_effect($effect[Ancient Fortitude]) == 0))
 			{
-				slChew(1, $item[Ancient Medicinal Herbs]);
+				autoChew(1, $item[Ancient Medicinal Herbs]);
 			}
 
 			if(!get_property("_madTeaParty").to_boolean())
@@ -1547,12 +1547,12 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Action]) > 0) && (have_effect($effect[Action]) == 0))
 			{
-				slChew(1, $item[Abstraction: Action]);
+				autoChew(1, $item[Abstraction: Action]);
 			}
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (get_cs_questCost(curQuest) < 20))
 			{
-				slDrink(1, $item[Bee's Knees]);
+				autoDrink(1, $item[Bee's Knees]);
 			}
 
 			if(item_amount($item[Pulled Orange Taffy]) > 5)
@@ -1707,12 +1707,12 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Action]) > 0) && (have_effect($effect[Action]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				slChew(1, $item[Abstraction: Action]);
+				autoChew(1, $item[Abstraction: Action]);
 			}
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				slDrink(1, $item[Bee's Knees]);
+				autoDrink(1, $item[Bee's Knees]);
 			}
 
 			spacegateVaccine($effect[Broad-Spectrum Vaccine]);
@@ -1805,12 +1805,12 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Thought]) > 0) && (have_effect($effect[Thought]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				slChew(1, $item[Abstraction: Thought]);
+				autoChew(1, $item[Abstraction: Thought]);
 			}
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				slDrink(1, $item[Bee's Knees]);
+				autoDrink(1, $item[Bee's Knees]);
 			}
 
 			spacegateVaccine($effect[Broad-Spectrum Vaccine]);
@@ -1916,7 +1916,7 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Sensation]) > 0) && (have_effect($effect[Sensation]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				slChew(1, $item[Abstraction: Sensation]);
+				autoChew(1, $item[Abstraction: Sensation]);
 			}
 
 			if(get_cs_questCost(curQuest) > 5)
@@ -1927,7 +1927,7 @@ boolean LA_cs_communityService()
 
 			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
-				slDrink(1, $item[Bee's Knees]);
+				autoDrink(1, $item[Bee's Knees]);
 			}
 
 #			At this point, we are probably only saving 1.75 turns or so, do not bother.
@@ -2001,7 +2001,7 @@ boolean LA_cs_communityService()
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Joy]) > 0) && (have_effect($effect[Joy]) == 0))
 			{
-				slChew(1, $item[Abstraction: Joy]);
+				autoChew(1, $item[Abstraction: Joy]);
 			}
 
 			if((get_property("puzzleChampBonus").to_int() == 20) && !get_property("_witchessBuff").to_boolean())
@@ -2079,34 +2079,34 @@ boolean LA_cs_communityService()
 					{
 						if((item_amount($item[Sacramento Wine]) >= 4) && (inebriety_left() >= 4))
 						{
-							slDrink(4, $item[Sacramento Wine]);
+							autoDrink(4, $item[Sacramento Wine]);
 						}
 						if((item_amount($item[Sacramento Wine]) >= 1) && (inebriety_left() >= 1))
 						{
-							slDrink(1, $item[Sacramento Wine]);
+							autoDrink(1, $item[Sacramento Wine]);
 						}
 						if((item_amount($item[Iced Plum Wine]) >= 1) && (inebriety_left() >= 1))
 						{
-							slDrink(1, $item[Iced Plum Wine]);
+							autoDrink(1, $item[Iced Plum Wine]);
 						}
 
 						if((my_meat() > 5000) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (inebriety_left() >= 3) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]))
 						{
-							slDrink(1, $item[Hot Socks]);
+							autoDrink(1, $item[Hot Socks]);
 						}
 						if((item_amount($item[Asbestos Thermos]) > 0) && (inebriety_left() >= 4))
 						{
-							slDrink(1, $item[Asbestos Thermos]);
+							autoDrink(1, $item[Asbestos Thermos]);
 						}
 						if((item_amount($item[Cold One]) > 0) && (inebriety_left() >= 1))
 						{
-							slDrink(1, $item[Cold One]);
+							autoDrink(1, $item[Cold One]);
 						}
 
 					}
 					else if ((item_amount($item[Vintage Smart Drink]) > 0) && !get_property("auto_saveVintage").to_boolean())
 					{
-						slDrink(1, $item[Vintage Smart Drink]);
+						autoDrink(1, $item[Vintage Smart Drink]);
 					}
 				}
 			}
@@ -2182,7 +2182,7 @@ boolean LA_cs_communityService()
 			//This needs to be cleaned up.
 			if(((my_inebriety() == 5) || (my_inebriety() == 11)) && (have_effect($effect[In A Lather]) == 0))
 			{
-				slDrink(1, $item[Sockdollager]);
+				autoDrink(1, $item[Sockdollager]);
 			}
 
 //			januaryToteAcquire($item[Broken Champagne Bottle]);
@@ -2250,22 +2250,22 @@ boolean LA_cs_communityService()
 
 			if((item_amount($item[Astral Pilsner]) > 0) && (inebriety_left() > 0) && (my_adventures() < get_cs_questCost(curQuest)))
 			{
-				slDrink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
+				autoDrink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
 			}
 
 			if((my_adventures() < get_cs_questCost(curQuest)) && ((my_inebriety() == 7) || (my_inebriety() == 13)))
 			{
 				if(item_amount($item[Iced Plum Wine]) > 0)
 				{
-					slDrink(1, $item[Iced Plum Wine]);
+					autoDrink(1, $item[Iced Plum Wine]);
 				}
 				else if(item_amount($item[Sacramento Wine]) > 0)
 				{
-					slDrink(1, $item[Sacramento Wine]);
+					autoDrink(1, $item[Sacramento Wine]);
 				}
 				else if((auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 				{
-					slDrink(1, $item[cup of &quot;tea&quot;]);
+					autoDrink(1, $item[cup of &quot;tea&quot;]);
 				}
 			}
 
@@ -2324,7 +2324,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[Barf Mountain], "cs_combatNormal");
+					autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 					return true;
 				}
 
@@ -2333,7 +2333,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The X-32-F Combat Training Snowman]);
+					autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 					return true;
 				}
 				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 2) && !is100FamiliarRun($familiar[Machine Elf]))
@@ -2343,7 +2343,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain() || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					slAdv(1, $location[The Deep Machine Tunnels]);
+					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
 					set_property("choiceAdventure1119", "");
 					return true;
@@ -2566,7 +2566,7 @@ boolean LA_cs_communityService()
 				equip($slot[off-hand], $item[none]);
 				pulverizeThing($item[A Light That Never Goes Out]);
 				pulverizeThing($item[Vicar\'s Tutu]);
-				slChew(item_amount($item[Handful of Smithereens]), $item[Handful of Smithereens]);
+				autoChew(item_amount($item[Handful of Smithereens]), $item[Handful of Smithereens]);
 			}
 
 			if((my_adventures() < questCost) || (auto_mall_price($item[Pocket Wish]) < 35000))
@@ -2605,7 +2605,7 @@ boolean LA_cs_communityService()
 				if(!cs_mpMaintain() || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
 				}
-				slAdv(1, $location[Barf Mountain], "cs_combatNormal");
+				autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 				return true;
 			}
 
@@ -2625,7 +2625,7 @@ boolean LA_cs_communityService()
 						if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 							abort("Wasnt to maintain health and mp.");
 						}
-						slAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
+						autoAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
 						restoreSetting("choiceAdventure297");
 						if($monsters[Ancient Insane Monk, Ferocious Bugbear, Gelatinous Cube, Knob Goblin Poseur] contains last_monster())
 						{
@@ -2644,7 +2644,7 @@ boolean LA_cs_communityService()
 					if(!cs_mpMaintain(0) || !cs_healthMaintain()){
 						abort("Wasnt to maintain health and mp.");
 					}
-					boolean result = slAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
+					boolean result = autoAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
 					restoreSetting("choiceAdventure297");
 					return result;
 				}
@@ -2676,7 +2676,7 @@ boolean LA_cs_communityService()
 			{
 				if(item_amount($item[Sacramento Wine]) > 0)
 				{
-					slDrink(1, $item[Sacramento Wine]);
+					autoDrink(1, $item[Sacramento Wine]);
 				}
 			}
 
@@ -2719,7 +2719,7 @@ boolean LA_cs_communityService()
 			}
 			if((have_effect($effect[Certainty]) == 0) && (spleen_left() > 0) && (item_amount($item[Abstraction: Certainty]) > 0))
 			{
-				slChew(1, $item[Abstraction: Certainty]);
+				autoChew(1, $item[Abstraction: Certainty]);
 			}
 
 			if(!get_property("_incredibleSelfEsteemCast").to_boolean() && (my_mp() > mp_cost($skill[Incredible Self-Esteem])) && have_skill($skill[Incredible Self-Esteem]))
@@ -2747,7 +2747,7 @@ boolean LA_cs_communityService()
 
 			if((item_amount($item[Astral Pilsner]) > 0) && (inebriety_left() > 0) && (my_adventures() < get_cs_questCost(curQuest)))
 			{
-				slDrink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
+				autoDrink(min(inebriety_left(), item_amount($item[Astral Pilsner])), $item[Astral Pilsner]);
 			}
 
 			if(get_cs_questCost(curQuest) > 7)
@@ -2792,7 +2792,7 @@ boolean LA_cs_communityService()
 						if(!cs_mpMaintain() || !cs_healthMaintain()){
 							abort("Wasnt to maintain health and mp.");
 						}
-						slAdv(1, $location[The Velvet / Gold Mine], "cs_combatYR");
+						autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatYR");
 						return true;
 					}
 				}
@@ -3531,14 +3531,14 @@ boolean cs_eat_spleen()
 	{
 		if((item_amount($item[Agua De Vida]) > 0) && (my_level() >= 4))
 		{
-			slChew(1, $item[Agua De Vida]);
+			autoChew(1, $item[Agua De Vida]);
 			continue;
 		}
 		foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease]
 		{
 			if(item_amount(it) > 0)
 			{
-				slChew(1, it);
+				autoChew(1, it);
 				break;
 			}
 		}
@@ -3579,7 +3579,7 @@ boolean cs_eat_stuff(int quest)
 
 			if(item_amount($item[Browser Cookie]) > 0)
 			{
-				slEat(1, $item[Browser Cookie]);
+				autoEat(1, $item[Browser Cookie]);
 			}
 			else
 			{
@@ -3615,7 +3615,7 @@ boolean cs_eat_stuff(int quest)
 			{
 				use(1, $item[Milk of Magnesium]);
 			}
-			slEat(1, $item[Weird Gazelle Steak]);
+			autoEat(1, $item[Weird Gazelle Steak]);
 
 			if(get_property("auto_noSleepingDog").to_boolean())
 			{
@@ -3629,7 +3629,7 @@ boolean cs_eat_stuff(int quest)
 
 				if((item_amount($item[Browser Cookie]) > 0) && (fullness_left() >= 4))
 				{
-					slEat(1, $item[Browser Cookie]);
+					autoEat(1, $item[Browser Cookie]);
 				}
 				else
 				{
@@ -4448,7 +4448,7 @@ boolean cs_giant_growth()
 		if(!cs_mpMaintain() || !cs_healthMaintain()){
 			abort("Wasnt to maintain health and mp.");
 		}
-		slAdv(1, $location[Barf Mountain], "cs_combatLTB");
+		autoAdv(1, $location[Barf Mountain], "cs_combatLTB");
 		if(have_effect($effect[Giant Growth]) > 0)
 		{
 			return true;
@@ -4493,17 +4493,17 @@ boolean cs_giant_growth()
 		if(!cs_mpMaintain() || !cs_healthMaintain()){
 			abort("Wasnt to maintain health and mp.");
 		}
-		slAdv(1, $location[The Deep Machine Tunnels], "cs_combatLTB");
+		autoAdv(1, $location[The Deep Machine Tunnels], "cs_combatLTB");
 		restoreSetting("choiceAdventure1119");
 		set_property("choiceAdventure1119", "");
 	}
 	else if(!godLobsterCombat($item[none], 3, "cs_combatLTB"))
 	{
-#		slAdv(1, $location[8-bit Realm], "cs_combatLTB");
+#		autoAdv(1, $location[8-bit Realm], "cs_combatLTB");
 		if(!cs_mpMaintain() || !cs_healthMaintain()){
 			abort("Wasnt to maintain health and mp.");
 		}
-		slAdv(1, $location[The Thinknerd Warehouse], "cs_combatLTB");
+		autoAdv(1, $location[The Thinknerd Warehouse], "cs_combatLTB");
 	}
 #	print("Ending LTBs: " + item_amount($item[Louder Than Bomb]), "blue");
 #	cli_execute("refresh inv");
@@ -4679,16 +4679,16 @@ boolean do_cs_quest(int quest)
 
 	switch(quest)
 	{
-	case 1:		slMaximize("hp, -equip snow suit", 1500, 0, false);					break;
-	case 2:		slMaximize("muscle, -equip snow suit", 1500, 0, false);				break;
-	case 3:		slMaximize("myst, -equip snow suit", 1500, 0, false);				break;
-	case 4:		slMaximize("moxie, -equip snow suit", 1500, 0, false);				break;
-	case 5:		slMaximize("familiar weight, -equip snow suit", 1500, 0, false);	break;
-	case 6:		slMaximize("weapon damage, -equip snow suit", 1500, 0, false);		break;
-	case 7:		slMaximize("spell damage, -equip snow suit", 1500, 0, false);		break;
-	case 8:		slMaximize("-combat, -equip snow suit", 1500, 0, false);			break;
-	case 9:		slMaximize("item, -equip snow suit, -equip broken champagne bottle", 1500, 0, false);				break;
-	case 10:	slMaximize("hot res, -equip snow suit", 1500, 0, false);			break;
+	case 1:		autoMaximize("hp, -equip snow suit", 1500, 0, false);					break;
+	case 2:		autoMaximize("muscle, -equip snow suit", 1500, 0, false);				break;
+	case 3:		autoMaximize("myst, -equip snow suit", 1500, 0, false);				break;
+	case 4:		autoMaximize("moxie, -equip snow suit", 1500, 0, false);				break;
+	case 5:		autoMaximize("familiar weight, -equip snow suit", 1500, 0, false);	break;
+	case 6:		autoMaximize("weapon damage, -equip snow suit", 1500, 0, false);		break;
+	case 7:		autoMaximize("spell damage, -equip snow suit", 1500, 0, false);		break;
+	case 8:		autoMaximize("-combat, -equip snow suit", 1500, 0, false);			break;
+	case 9:		autoMaximize("item, -equip snow suit, -equip broken champagne bottle", 1500, 0, false);				break;
+	case 10:	autoMaximize("hot res, -equip snow suit", 1500, 0, false);			break;
 	}
 
 	int [int] questList = get_cs_questList();
@@ -5168,7 +5168,7 @@ boolean trySaberTrickMeteorShower(){
 	}
 
 	// force equip so maximizer in auto_pre_adv doesnt accidentally remove it
-	if(!slForceEquip($item[Fourth of May Cosplay Saber])){
+	if(!autoForceEquip($item[Fourth of May Cosplay Saber])){
 		return false;
 	}
 
@@ -5176,7 +5176,7 @@ boolean trySaberTrickMeteorShower(){
 	if(!cs_healthMaintain()){
 		abort("Wasnt to maintain health and mp.");
 	}
-	boolean ret = slAdv(1, $location[The Dire Warren], "auto_saberTrickMeteorShowerCombatHandler");
+	boolean ret = autoAdv(1, $location[The Dire Warren], "auto_saberTrickMeteorShowerCombatHandler");
 	resetMaximize();
 	return ret;
 }

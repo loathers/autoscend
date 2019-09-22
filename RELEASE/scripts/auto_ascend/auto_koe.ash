@@ -59,7 +59,7 @@ boolean LX_koeInvaderHandler()
 		retrieve_item(1, $item[meteorb]);
 	// Maybe you don't have the IOTM? Seems worth it, whatever
 	pullXWhenHaveY($item[meteorb], 1, 0);
-	slEquip($slot[off-hand], $item[meteorb]);
+	autoEquip($slot[off-hand], $item[meteorb]);
 
 	simMaximize();
 
@@ -94,7 +94,7 @@ boolean LX_koeInvaderHandler()
 			acquireMP(100, true);
 
 			set_property("choiceAdventure1393", 1); // Take care of it...
-			boolean ret = slAdv(1, $location[The Invader]);
+			boolean ret = autoAdv(1, $location[The Invader]);
 			if(have_effect($effect[Beaten Up]) > 0)
 			{
 				abort("We died to the invader. Do it manually please?");

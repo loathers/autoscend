@@ -17,7 +17,7 @@ item getTentativeMaximizeEquip(slot s)
 	return get_property(getMaximizeSlotPref(s)).to_item();
 }
 
-boolean slEquip(slot s, item it)
+boolean autoEquip(slot s, item it)
 {
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
@@ -36,15 +36,15 @@ boolean slEquip(slot s, item it)
 	}
 }
 
-boolean slEquip(item it)
+boolean autoEquip(item it)
 {
-	return slEquip(it.to_slot(), it);
+	return autoEquip(it.to_slot(), it);
 }
 
 // specifically intended for forcing something in to a specific slot,
 // instead of just forcing it to be equipped in general
 // made for Antique Machete, mainly
-boolean slForceEquip(slot s, item it)
+boolean autoForceEquip(slot s, item it)
 {
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
@@ -59,9 +59,9 @@ boolean slForceEquip(slot s, item it)
 	return false;
 }
 
-boolean slForceEquip(item it)
+boolean autoForceEquip(item it)
 {
-	return slForceEquip(it.to_slot(), it);
+	return autoForceEquip(it.to_slot(), it);
 }
 
 boolean slOutfit(string toWear)
@@ -76,7 +76,7 @@ boolean slOutfit(string toWear)
 		boolean pass = true;
 		foreach i,it in outfit_pieces(toWear)
 		{
-			pass = pass && slEquip(it);
+			pass = pass && autoEquip(it);
 		}
 		return pass;
 	}
@@ -257,7 +257,7 @@ boolean simMaximize()
 {
 	string backup = get_property("auto_maximize_current");
 	finalizeMaximize();
-	boolean res = slMaximize(get_property("auto_maximize_current"), true);
+	boolean res = autoMaximize(get_property("auto_maximize_current"), true);
 	set_property("auto_maximize_current", backup);
 	return res;
 }
@@ -317,7 +317,7 @@ void equipOverrides()
 				print('"' + item_str + '" does not properly convert to an item (found in auto_equipment_override_' + slot_str + ')', "red");
 				continue;
 			}
-			if(slEquip(s, it))
+			if(autoEquip(s, it))
 			{
 				// if equipping to accessories, now move on to the next slot
 				// otherwise, stop equipping, since items are listed from highest
@@ -477,58 +477,58 @@ void makeStartingSmiths()
 	case $class[Seal Clubber]:
 		if(!possessEquipment($item[Meat Tenderizer is Murder]))
 		{
-			slCraft("smith", 1, $item[lump of Brituminous coal], $item[seal-clubbing club]);
+			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[seal-clubbing club]);
 		}
 		if(!possessEquipment($item[Vicar\'s Tutu]) && (item_amount($item[Lump of Brituminous Coal]) > 0) && knoll_available())
 		{
 			buy(1, $item[Frilly Skirt]);
-			slCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Frilly Skirt]);
+			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Frilly Skirt]);
 		}
 		break;
 	case $class[Turtle Tamer]:
 		if(!possessEquipment($item[Work is a Four Letter Sword]))
 		{
 			buyUpTo(1, $item[Sword Hilt]);
-			slCraft("smith", 1, $item[lump of Brituminous coal], $item[sword hilt]);
+			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[sword hilt]);
 		}
 		if(!possessEquipment($item[Ouija Board\, Ouija Board]))
 		{
-			slCraft("smith", 1, $item[lump of Brituminous coal], $item[turtle totem]);
+			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[turtle totem]);
 		}
 		break;
 	case $class[Sauceror]:
 		if(!possessEquipment($item[Saucepanic]))
 		{
-			slCraft("smith", 1, $item[lump of Brituminous coal], $item[Saucepan]);
+			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[Saucepan]);
 		}
 		if(!possessEquipment($item[A Light that Never Goes Out]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 		{
-			slCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Third-hand Lantern]);
+			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Third-hand Lantern]);
 		}
 		break;
 	case $class[Pastamancer]:
 		if(!possessEquipment($item[Hand That Rocks the Ladle]))
 		{
-			slCraft("smith", 1, $item[lump of Brituminous coal], $item[Pasta Spoon]);
+			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[Pasta Spoon]);
 		}
 		break;
 	case $class[Disco Bandit]:
 		if(!possessEquipment($item[Frankly Mr. Shank]))
 		{
-			slCraft("smith", 1, $item[lump of Brituminous coal], $item[Disco Ball]);
+			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[Disco Ball]);
 		}
 		break;
 	case $class[Accordion Thief]:
 		if(!possessEquipment($item[Shakespeare\'s Sister\'s Accordion]))
 		{
-			slCraft("smith", 1, $item[lump of Brituminous coal], $item[Stolen Accordion]);
+			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[Stolen Accordion]);
 		}
 		break;
 	}
 
 	if(knoll_available() && !possessEquipment($item[Hairpiece on Fire]) && (item_amount($item[lump of Brituminous Coal]) > 0))
 	{
-		slCraft("smith", 1, $item[lump of Brituminous coal], $item[maiden wig]);
+		autoCraft("smith", 1, $item[lump of Brituminous coal], $item[maiden wig]);
 	}
 	buffMaintain($effect[Merry Smithsness], 0, 1, 10);
 }
@@ -647,13 +647,13 @@ void equipBaseline()
 
 	if(get_property("auto_diceMode").to_boolean())
 	{
-		slEquip($slot[acc1], $item[Dice Ring]);
-		slEquip($slot[acc2], $item[Dice Belt Buckle]);
-		slEquip($slot[acc3], $item[Dice Sunglasses]);
-		slEquip($slot[hat], $item[Dice-Print Do-Rag]);
-		slEquip($slot[back], $item[Dice-Shaped Backpack]);
-		slEquip($slot[pants], $item[Dice-Print Pajama Pants]);
-		slEquip($slot[familiar], $item[Kill Screen]);
+		autoEquip($slot[acc1], $item[Dice Ring]);
+		autoEquip($slot[acc2], $item[Dice Belt Buckle]);
+		autoEquip($slot[acc3], $item[Dice Sunglasses]);
+		autoEquip($slot[hat], $item[Dice-Print Do-Rag]);
+		autoEquip($slot[back], $item[Dice-Shaped Backpack]);
+		autoEquip($slot[pants], $item[Dice-Print Pajama Pants]);
+		autoEquip($slot[familiar], $item[Kill Screen]);
 	}
 }
 
@@ -666,7 +666,7 @@ void ensureSealClubs()
 		{
 			if(possessEquipment(club))
 			{
-				slForceEquip(club);
+				autoForceEquip(club);
 				return;
 			}
 		}

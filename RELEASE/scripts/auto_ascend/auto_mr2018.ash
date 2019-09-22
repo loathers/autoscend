@@ -195,7 +195,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 	}
 	else
 	{
-		slAdv(1, $location[Noob Cave], option);
+		autoAdv(1, $location[Noob Cave], option);
 		temp = visit_url("main.php");
 
 		string search = "I'd like part of your regalia.";
@@ -317,12 +317,12 @@ boolean fantasyRealmToken()
 
 	if(possessEquipment($item[FantasyRealm G. E. M.]))
 	{
-		slEquip($slot[acc3], $item[FantasyRealm G. E. M.]);
+		autoEquip($slot[acc3], $item[FantasyRealm G. E. M.]);
 	}
 
 	//This does not appear to check that we no longer need to adventure there...
 
-	slAdv(1, $location[The Bandit Crossroads]);
+	autoAdv(1, $location[The Bandit Crossroads]);
 	return true;
 }
 
@@ -788,12 +788,12 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	item shirt = equipped_item($slot[shirt]);
 	if(hardmode)
 	{
-		slEquip($slot[shirt], $item[PARTY HARD T-shirt]);
+		autoEquip($slot[shirt], $item[PARTY HARD T-shirt]);
 	}
 	else if (januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
 	{
 		januaryToteAcquire($item[Makeshift Garbage Shirt]);
-		slEquip($slot[shirt], $item[Makeshift Garbage Shirt]);
+		autoEquip($slot[shirt], $item[Makeshift Garbage Shirt]);
 	}
 
 	boolean retval;
@@ -802,11 +802,11 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	{
 		string[int] pages;
 		pages[0] = "choice.php?pwd&whichchoice=1324&option=" + get_property("choiceAdventure1324");
-		retval = slAdvBypass(0, pages, $location[The Neverending Party], option);
+		retval = autoAdvBypass(0, pages, $location[The Neverending Party], option);
 	}
 	else
 	{
-		retval = slAdv(1, $location[The Neverending Party], option);
+		retval = autoAdv(1, $location[The Neverending Party], option);
 	}
 
 	if(retval)
@@ -1186,9 +1186,9 @@ boolean auto_voteMonster(boolean freeMon, location loc, string option)
 		{
 			return false;
 		}
-		slEquip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
+		autoEquip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
 	}
-	return slAdv(1, loc, option);
+	return autoAdv(1, loc, option);
 }
 
 boolean fightClubNap()

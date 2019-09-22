@@ -33,7 +33,7 @@ void handlePostAdventure()
 					print("Post combat time caused up to be Beaten Up!", "red");
 					return;
 				}
-				slAdv(my_location());
+				autoAdv(my_location());
 				return;
 			}
 		}
