@@ -1,11 +1,11 @@
-script "sl_mr2017.ash"
+script "auto_mr2017.ash"
 
 #	This is meant for items that have a date of 2017.
 
 boolean mummifyFamiliar(familiar fam, string bonus)
 {
 	bonus = to_lower_case(bonus);
-	if(sl_my_path() == "Pocket Familiars")
+	if(auto_my_path() == "Pocket Familiars")
 	{
 		return false;
 	}
@@ -276,11 +276,11 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		loveEffect = 3;
 	}
-	if((sl_my_path() == "Actually Ed the Undying") && ((my_mp() < 20) || (my_turncount() < 10)))
+	if((auto_my_path() == "Actually Ed the Undying") && ((my_mp() < 20) || (my_turncount() < 10)))
 	{
 		return false;
 	}
-//	set_property("_sl_loveTunnelDone", true);
+//	set_property("_auto_loveTunnelDone", true);
 
 	string temp = visit_url("place.php?whichplace=town_wrong");
 	if(!(contains_text(temp, "townwrong_tunnel")))
@@ -304,7 +304,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 
 	if(enforcer || engineer || equivocator)
 	{
-		set_property("sl_disableAdventureHandling", true);
+		set_property("auto_disableAdventureHandling", true);
 	}
 
 	if(enforcer)
@@ -389,7 +389,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 #7		Nothing
 	if(enforcer || engineer || equivocator)
 	{
-		set_property("sl_disableAdventureHandling", false);
+		set_property("auto_disableAdventureHandling", false);
 		cli_execute("postsool");
 	}
 	if(item_amount($item[LOV Extraterrestrial Chocolate]) > 0)
@@ -425,7 +425,7 @@ boolean kgbWasteClicks()
 	{
 		foreach ef in $effects[Items Are Forever, A View To Some Meat, Light!, The Spy Who Loved XP, Initiative And Let Die, The Living Hitpoints, License To Punch, Goldentongue, Thunderspell]
 		{
-			if(contains_text(get_property("sl_kgbTracker"), ":" + to_int(ef)))
+			if(contains_text(get_property("auto_kgbTracker"), ":" + to_int(ef)))
 			{
 				kgbTryEffect(ef);
 				clicked++;
@@ -449,16 +449,16 @@ boolean kgbWasteClicks()
 
 string kgbKnownEffects()
 {
-	if(get_property("sl_kgbTracker") == "")
+	if(get_property("auto_kgbTracker") == "")
 	{
-		set_property("sl_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
+		set_property("auto_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
 	}
-	string[int] tracker = split_string(get_property("sl_kgbTracker"), ":");
+	string[int] tracker = split_string(get_property("auto_kgbTracker"), ":");
 	if((count(tracker) < 13) || (tracker[0] != my_ascensions()))
 	{
-		set_property("sl_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
+		set_property("auto_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
 	}
-	tracker = split_string(get_property("sl_kgbTracker"), ":");
+	tracker = split_string(get_property("auto_kgbTracker"), ":");
 
 	string retval;
 
@@ -494,16 +494,16 @@ boolean kgbTryEffect(effect ef)
 		return false;
 	}
 
-	if(get_property("sl_kgbTracker") == "")
+	if(get_property("auto_kgbTracker") == "")
 	{
-		set_property("sl_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
+		set_property("auto_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
 	}
-	string[int] tracker = split_string(get_property("sl_kgbTracker"), ":");
+	string[int] tracker = split_string(get_property("auto_kgbTracker"), ":");
 	if((count(tracker) < 13) || (tracker[0] != my_ascensions()))
 	{
-		set_property("sl_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
+		set_property("auto_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
 	}
-	tracker = split_string(get_property("sl_kgbTracker"), ":");
+	tracker = split_string(get_property("auto_kgbTracker"), ":");
 
 	for(int i=1; i<13; i++)
 	{
@@ -532,16 +532,16 @@ boolean kgbDiscovery()
 		return false;
 	}
 
-	if(get_property("sl_kgbTracker") == "")
+	if(get_property("auto_kgbTracker") == "")
 	{
-		set_property("sl_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
+		set_property("auto_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
 	}
-	string[int] tracker = split_string(get_property("sl_kgbTracker"), ":");
+	string[int] tracker = split_string(get_property("auto_kgbTracker"), ":");
 	if((count(tracker) < 13) || (tracker[0] != my_ascensions()))
 	{
-		set_property("sl_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
+		set_property("auto_kgbTracker", my_ascensions() + ":0:0:0:0:0:0:0:0:0:0:0:0");
 	}
-	tracker = split_string(get_property("sl_kgbTracker"), ":");
+	tracker = split_string(get_property("auto_kgbTracker"), ":");
 
 	string page = visit_url("place.php?whichplace=kgb", false);
 	matcher tabCount = create_matcher("kgb_tab(\\d)(?:.*?)otherimages/kgb/tab(\\d+).gif", page);
@@ -580,7 +580,7 @@ boolean kgbDiscovery()
 			{
 				newTracker += ":" + tracker[i];
 			}
-			set_property("sl_kgbTracker", newTracker);
+			set_property("auto_kgbTracker", newTracker);
 			return true;
 		}
 	}
@@ -637,7 +637,7 @@ boolean kgbSetup()
 		return false;
 	}
 
-	if(get_property("_sl_kgbSetup").to_boolean())
+	if(get_property("_auto_kgbSetup").to_boolean())
 	{
 		return false;
 	}
@@ -647,7 +647,7 @@ boolean kgbSetup()
 		return false;
 	}
 
-	set_property("_sl_kgbSetup", true);
+	set_property("_auto_kgbSetup", true);
 
 	string page = visit_url("place.php?whichplace=kgb");
 	if(contains_text(page, "kgb_drawer") || contains_text(page, "kgb_crank") || contains_text(page, "kgb_button"))
@@ -749,8 +749,8 @@ boolean kgbSetup()
 			break;
 		}
 	}
-	set_property("sl_kgbAscension", my_ascensions());
-	set_property("sl_kgbButton100", button);
+	set_property("auto_kgbAscension", my_ascensions());
+	set_property("auto_kgbButton100", button);
 
 	if(!kgb_getMartini(page))
 	{
@@ -786,12 +786,12 @@ boolean kgb_getMartini(string page, boolean dontCare)
 		return false;
 	}
 
-	if(!get_property("_sl_kgbSetup").to_boolean())
+	if(!get_property("_auto_kgbSetup").to_boolean())
 	{
 		kgbSetup();
 	}
 
-	if(get_property("sl_kgbAscension").to_int() != my_ascensions())
+	if(get_property("auto_kgbAscension").to_int() != my_ascensions())
 	{
 		if(!dontCare)
 		{
@@ -856,7 +856,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 		return false;
 	}
 
-	int button = get_property("sl_kgbButton100").to_int();
+	int button = get_property("auto_kgbButton100").to_int();
 
 	while((get_property("_kgbDispenserUses").to_int() < 3) && (get_property("_kgbClicksUsed").to_int() < 22))
 	{
@@ -962,9 +962,9 @@ boolean solveKGBMastermind()
 	{
 		return false;
 	}
-	if(contains_text(get_property("_sl_kgbScoresLeft"), "3 0"))
+	if(contains_text(get_property("_auto_kgbScoresLeft"), "3 0"))
 	{
-		if(contains_text(get_property("_sl_kgbScoresRight"), "3 0"))
+		if(contains_text(get_property("_auto_kgbScoresRight"), "3 0"))
 		{
 			return false;
 		}
@@ -1018,13 +1018,13 @@ boolean solveKGBMastermind()
 			guess[3] = to_int(digits[count(digits)-1]);
 		}
 
-		string prop = "_sl_kgbScoresLeft";
+		string prop = "_auto_kgbScoresLeft";
 		int dialOffset = 0;
 		string action = "1";
 
-		if(contains_text(get_property("_sl_kgbScoresLeft"), "3 0"))
+		if(contains_text(get_property("_auto_kgbScoresLeft"), "3 0"))
 		{
-			prop = "_sl_kgbScoresRight";
+			prop = "_auto_kgbScoresRight";
 			dialOffset = 3;
 			string action = "2";
 		}
@@ -1212,7 +1212,7 @@ boolean asdonBuff(string goal)
 
 boolean asdonBuff(effect goal)
 {
-	if(!(sl_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
 	{
 		return false;
 	}
@@ -1280,7 +1280,7 @@ boolean asdonAutoFeed(int goal)
 	{
 		return false;
 	}
-	if(!(sl_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
 	{
 		return false;
 	}
@@ -1359,9 +1359,9 @@ boolean asdonAutoFeed(int goal)
 		if(item_amount(it) > 0)
 		{
 			int toFeed = min(10, item_amount(it));
-			if(get_property("sl_ashtonLimit") != "")
+			if(get_property("auto_ashtonLimit") != "")
 			{
-				int limit = get_property("sl_ashtonLimit").to_int();
+				int limit = get_property("auto_ashtonLimit").to_int();
 				toFeed = max(0, toFeed - limit);
 			}
 			asdonFeed(it, toFeed);
@@ -1409,7 +1409,7 @@ boolean asdonAutoFeed(int goal)
 
 boolean asdonFeed(item it, int qty)
 {
-	if(!(sl_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
 	{
 		return false;
 	}
@@ -1437,7 +1437,7 @@ boolean asdonFeed(item it)
 
 boolean asdonCanMissile()
 {
-	return (sl_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
+	return (auto_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
 }
 
 int horseCost()
@@ -1513,14 +1513,14 @@ boolean getHorse(string type)
 	}
 
 	int choice = -1;
-	if((horseNormalize(type) == "normal") || (get_property("sl_beatenUpCount").to_int() >= 20))
+	if((horseNormalize(type) == "normal") || (get_property("auto_beatenUpCount").to_int() >= 20))
 	{
 		if(get_property("_horsery") == "normal horse")
 		{
 			return false;
 		}
 		choice = 1;
-		set_property("sl_desiredHorse", "normal");
+		set_property("auto_desiredHorse", "normal");
 
 	}
 	else if(horseNormalize(type) == "dark")
@@ -1530,7 +1530,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 2;
-		set_property("sl_desiredHorse", "dark");
+		set_property("auto_desiredHorse", "dark");
 	}
 	else if(horseNormalize(type) == "crazy")
 	{
@@ -1539,7 +1539,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 3;
-		set_property("sl_desiredHorse", "crazy");
+		set_property("auto_desiredHorse", "crazy");
 	}
 	else if(horseNormalize(type) == "pale")
 	{
@@ -1548,7 +1548,7 @@ boolean getHorse(string type)
 			return false;
 		}
 		choice = 4;
-		set_property("sl_desiredHorse", "pale");
+		set_property("auto_desiredHorse", "pale");
 	}
 	else if(horseNormalize(type) == "return")
 	{
@@ -1558,7 +1558,7 @@ boolean getHorse(string type)
 		}
 		choice = 5;
 		set_property("_horsery", "");
-		set_property("sl_desiredHorse", "return");
+		set_property("auto_desiredHorse", "return");
 	}
 
 	if(choice == -1)
@@ -1576,42 +1576,42 @@ boolean getHorse(string type)
 
 void horseDefault()
 {
-	set_property("sl_desiredHorse", "");
+	set_property("auto_desiredHorse", "");
 }
 
 void horseMaintain()
 {
-	set_property("sl_desiredHorse", horseNormalize(get_property("_horsery")));
+	set_property("auto_desiredHorse", horseNormalize(get_property("_horsery")));
 }
 
 void horseNone()
 {
-	set_property("sl_desiredHorse", "return");
+	set_property("auto_desiredHorse", "return");
 }
 
 void horseNormal()
 {
-	set_property("sl_desiredHorse", "normal");
+	set_property("auto_desiredHorse", "normal");
 }
 
 void horseDark()
 {
-	set_property("sl_desiredHorse", "dark");
+	set_property("auto_desiredHorse", "dark");
 }
 
 void horseCrazy()
 {
-	set_property("sl_desiredHorse", "crazy");
+	set_property("auto_desiredHorse", "crazy");
 }
 
 void horsePale()
 {
-	set_property("sl_desiredHorse", "pale");
+	set_property("auto_desiredHorse", "pale");
 }
 
 boolean horsePreAdventure()
 {
-	string desiredHorse = get_property("sl_desiredHorse");
+	string desiredHorse = get_property("auto_desiredHorse");
 	if (desiredHorse == "")
 	{
 		desiredHorse = "dark";
@@ -1623,8 +1623,8 @@ boolean horsePreAdventure()
 	    && desiredHorse != "pale"
 	    && desiredHorse != "return")
 	{
-		print("sl_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
-		set_property("sl_desiredHorse", "");
+		print("auto_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
+		set_property("auto_desiredHorse", "");
 		return false;
 	}
 	return getHorse(desiredHorse);
@@ -1662,7 +1662,7 @@ boolean makeGenieWish(effect eff)
 		print("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
-	handleTracker(to_item(wish_provider), wish, "sl_wishes");
+	handleTracker(to_item(wish_provider), wish, "auto_wishes");
 	return true;
 }
 
@@ -1712,8 +1712,8 @@ boolean makeGenieCombat(monster mon, string option)
 		print("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
-	handleTracker(mon, to_item(wish_provider), "sl_copies");
-	handleTracker(to_item(wish_provider), wish, "sl_wishes");
+	handleTracker(mon, to_item(wish_provider), "auto_copies");
+	handleTracker(to_item(wish_provider), wish, "auto_wishes");
 	return true;
 }
 
@@ -1750,7 +1750,7 @@ boolean makeGeniePocket()
 		return false;
 	}
 
-	handleTracker($item[Genie Bottle], "for more wishes", "sl_wishes");
+	handleTracker($item[Genie Bottle], "for more wishes", "auto_wishes");
 	return true;
 }
 
@@ -1785,7 +1785,7 @@ boolean spacegateVaccineAvailable(effect ef)
 	case $effect[Emotional Vaccine]:
 		return get_property("spacegateVaccine3").to_boolean();
 	}
-	abort("sl_ascend: bad effect passed to spacegateVaccineAvailable:" + ef);
+	abort("auto_ascend: bad effect passed to spacegateVaccineAvailable:" + ef);
 	return false;
 }
 
@@ -1808,30 +1808,30 @@ boolean spacegateVaccine(effect ef)
 	return true;
 }
 
-int sl_meteorShowersUsed(){
+int auto_meteorShowersUsed(){
 	return get_property("_meteorShowerUses").to_int();
 }
 
-int sl_meteorShowersAvailable(){
+int auto_meteorShowersAvailable(){
 	if(!is_unrestricted($skill[Meteor Lore]) || !have_skill($skill[Meteor Lore])){
 		return 0;
 	}
 
-	return 5 - sl_meteorShowersUsed();
+	return 5 - auto_meteorShowersUsed();
 }
 
-int sl_macroMeteoritesUsed(){
+int auto_macroMeteoritesUsed(){
 	return get_property("_macrometeoriteUses").to_int();
 }
 
-int sl_macrometeoritesAvailable(){
+int auto_macrometeoritesAvailable(){
 	if(!is_unrestricted($skill[Meteor Lore]) || !have_skill($skill[Meteor Lore])){
 		return 0;
 	}
 
-	return 10 - sl_macroMeteoritesUsed();
+	return 10 - auto_macroMeteoritesUsed();
 }
 
-int sl_meteoriteAdesUsed(){
+int auto_meteoriteAdesUsed(){
 	return get_property("_meteoriteAdesUsed").to_int();
 }

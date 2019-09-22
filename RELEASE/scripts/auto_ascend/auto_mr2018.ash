@@ -1,4 +1,4 @@
-script "sl_mr2018.ash"
+script "auto_mr2018.ash"
 
 #	This is meant for items that have a date of 2018.
 
@@ -90,7 +90,7 @@ boolean januaryToteAcquire(item it)
 
 	if(choice == 2)
 	{
-		if((sl_my_path() == "Way of the Surprising Fist") || (my_class() == $class[Avatar Of Boris]))
+		if((auto_my_path() == "Way of the Surprising Fist") || (my_class() == $class[Avatar Of Boris]))
 		{
 			return false;
 		}
@@ -186,7 +186,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 		equip($slot[familiar], it);
 	}
 
-	set_property("sl_disableAdventureHandling", true);
+	set_property("auto_disableAdventureHandling", true);
 
 	string temp = visit_url("main.php?fightgodlobster=1");
 	if(contains_text(temp, "You can't challenge your God Lobster anymore"))
@@ -221,7 +221,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 		restoreSetting("choiceAdventure1310");
 	}
 
-	set_property("sl_disableAdventureHandling", false);
+	set_property("auto_disableAdventureHandling", false);
 	if(my_familiar() != last)
 	{
 		use_familiar(last);
@@ -308,11 +308,11 @@ boolean fantasyRealmToken()
 	}
 
 	// If we're not allowed to adventure without a familiar
-	if(is100familiarRun() && sl_have_familiar($familiar[Mosquito]))
+	if(is100familiarRun() && auto_have_familiar($familiar[Mosquito]))
 	{
 		return false;
 	}
-	set_property("sl_familiarChoice", "none");
+	set_property("auto_familiarChoice", "none");
 	use_familiar($familiar[none]);
 
 	if(possessEquipment($item[FantasyRealm G. E. M.]))
@@ -437,7 +437,7 @@ boolean songboomSetting(int option)
 
 int catBurglarHeistsLeft()
 {
-	if (!have_familiar($familiar[Cat Burglar]) || !sl_is_valid($familiar[Cat Burglar]))
+	if (!have_familiar($familiar[Cat Burglar]) || !auto_is_valid($familiar[Cat Burglar]))
 	{
 		return 0;
 	}
@@ -702,9 +702,9 @@ boolean neverendingPartyAvailable()
 	{
 		return false;
 	}
-	if(get_property("sl_skipNEPOverride").to_boolean())
+	if(get_property("auto_skipNEPOverride").to_boolean())
 	{
-		print("NEP access disabled. This can be turned on in the Relay by setting sl_skipNEPOverride = false", "red");
+		print("NEP access disabled. This can be turned on in the Relay by setting auto_skipNEPOverride = false", "red");
 		return false;
 	}
 
@@ -839,7 +839,7 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	return retval;
 }
 
-string sl_latteDropName(location l)
+string auto_latteDropName(location l)
 {
 	switch(l)
 	{
@@ -898,23 +898,23 @@ string sl_latteDropName(location l)
 	}
 }
 
-boolean sl_latteDropAvailable(location l)
+boolean auto_latteDropAvailable(location l)
 {
 	// obviously no latte drops are available if you don't HAVE a latte
 	if(available_amount($item[latte lovers member's mug]) == 0)
 		return false;
-	string latteDrop = sl_latteDropName(l);
+	string latteDrop = auto_latteDropName(l);
 	if(latteDrop == "")
 		return false;
 	return !get_property("latteUnlocks").contains_text(latteDrop);
 }
 
-boolean sl_latteDropWanted(location l)
+boolean auto_latteDropWanted(location l)
 {
-	return sl_latteDropAvailable(l) && !($locations[Noob Cave, The Haunted Boiler Room, The Arid\, Extra-Dry Desert] contains l);
+	return auto_latteDropAvailable(l) && !($locations[Noob Cave, The Haunted Boiler Room, The Arid\, Extra-Dry Desert] contains l);
 }
 
-string sl_latteTranslate(string ingredient)
+string auto_latteTranslate(string ingredient)
 {
 	switch(ingredient.to_lower_case())
 	{
@@ -937,7 +937,7 @@ string sl_latteTranslate(string ingredient)
 	return ingredient.to_lower_case();
 }
 
-boolean sl_latteRefill(string want1, string want2, string want3, boolean force)
+boolean auto_latteRefill(string want1, string want2, string want3, boolean force)
 {
 	if(available_amount($item[latte lovers member's mug]) == 0)
 		return false;
@@ -956,9 +956,9 @@ boolean sl_latteRefill(string want1, string want2, string want3, boolean force)
 		unlocked[s] = true;
 	}
 
-	want1 = sl_latteTranslate(want1);
-	want2 = sl_latteTranslate(want2);
-	want3 = sl_latteTranslate(want3);
+	want1 = auto_latteTranslate(want1);
+	want2 = auto_latteTranslate(want2);
+	want3 = auto_latteTranslate(want3);
 
 	string [int] wants;
 	if(want1 != "")
@@ -982,7 +982,7 @@ boolean sl_latteRefill(string want1, string want2, string want3, boolean force)
 
 	boolean haveWant(string want)
 	{
-		want = sl_latteTranslate(want);
+		want = auto_latteTranslate(want);
 		foreach i,s in wants
 		{
 			if(s == want)
@@ -995,7 +995,7 @@ boolean sl_latteRefill(string want1, string want2, string want3, boolean force)
 	{
 		if(wants.count() >= 3 || haveWant(want))
 			return false;
-		want = sl_latteTranslate(want);
+		want = auto_latteTranslate(want);
 		if(!unlocked[want])
 			return false;
 
@@ -1032,47 +1032,47 @@ boolean sl_latteRefill(string want1, string want2, string want3, boolean force)
 	return true;
 }
 
-boolean sl_latteRefill(string want1, string want2, string want3)
+boolean auto_latteRefill(string want1, string want2, string want3)
 {
-	return sl_latteRefill(want1, want2, want3, false);
+	return auto_latteRefill(want1, want2, want3, false);
 }
 
-boolean sl_latteRefill(string want1, string want2, boolean force)
+boolean auto_latteRefill(string want1, string want2, boolean force)
 {
-	return sl_latteRefill(want1, want2, "", force);
+	return auto_latteRefill(want1, want2, "", force);
 }
 
-boolean sl_latteRefill(string want1, string want2)
+boolean auto_latteRefill(string want1, string want2)
 {
-	return sl_latteRefill(want1, want2, false);
+	return auto_latteRefill(want1, want2, false);
 }
 
-boolean sl_latteRefill(string want1, boolean force)
+boolean auto_latteRefill(string want1, boolean force)
 {
-	return sl_latteRefill(want1, "", force);
+	return auto_latteRefill(want1, "", force);
 }
 
-boolean sl_latteRefill(string want1)
+boolean auto_latteRefill(string want1)
 {
-	return sl_latteRefill(want1, false);
+	return auto_latteRefill(want1, false);
 }
 
-boolean sl_latteRefill()
+boolean auto_latteRefill()
 {
-	return sl_latteRefill("");
+	return auto_latteRefill("");
 }
 
-boolean sl_voteSetup()
+boolean auto_voteSetup()
 {
-	return sl_voteSetup(0,0,0);
+	return auto_voteSetup(0,0,0);
 }
 
-boolean sl_voteSetup(int candidate)
+boolean auto_voteSetup(int candidate)
 {
-	return sl_voteSetup(candidate,0,0);
+	return auto_voteSetup(candidate,0,0);
 }
 
-boolean sl_voteSetup(int candidate, int first, int second)
+boolean auto_voteSetup(int candidate, int first, int second)
 {
 	if((candidate < 0) || (candidate > 2))
 	{
@@ -1129,22 +1129,22 @@ boolean sl_voteSetup(int candidate, int first, int second)
 	return true;
 }
 
-boolean sl_voteMonster()
+boolean auto_voteMonster()
 {
-	return sl_voteMonster(false);
+	return auto_voteMonster(false);
 }
 
-boolean sl_voteMonster(boolean freeMon)
+boolean auto_voteMonster(boolean freeMon)
 {
-	return sl_voteMonster(freeMon, $location[none], "");
+	return auto_voteMonster(freeMon, $location[none], "");
 }
 
-boolean sl_voteMonster(boolean freeMon, location loc)
+boolean auto_voteMonster(boolean freeMon, location loc)
 {
-	return sl_voteMonster(freeMon, loc, "");
+	return auto_voteMonster(freeMon, loc, "");
 }
 
-boolean sl_voteMonster(boolean freeMon, location loc, string option)
+boolean auto_voteMonster(boolean freeMon, location loc, string option)
 {
 	if(!get_property("_voteToday").to_boolean() && !get_property("voteAlways").to_boolean())
 	{

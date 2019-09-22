@@ -1,4 +1,4 @@
-script "sl_jellonewbie.ash"
+script "auto_jellonewbie.ash"
 
 void jello_initializeSettings();
 string[item] jello_lister();
@@ -12,9 +12,9 @@ void jello_initializeSettings()
 {
 	if(my_path() == "Gelatinous Noob")
 	{
-		set_property("sl_cubeItems", false);
-		set_property("sl_getStarKey", true);
-		set_property("sl_holeinthesky", true);
+		set_property("auto_cubeItems", false);
+		set_property("auto_getStarKey", true);
+		set_property("auto_holeinthesky", true);
 	}
 }
 
@@ -99,12 +99,12 @@ boolean jello_buySkills()
 					continue;
 				}
 
-				sort possible by sl_mall_price(value);
+				sort possible by auto_mall_price(value);
 
 				print("Trying to acquire skill " + sk + " and considering: " , "green");
 				for(int i=0; i<bound; i++)
 				{
-					print(possible[i] + ": " + sl_mall_price(possible[i]), "blue");
+					print(possible[i] + ": " + auto_mall_price(possible[i]), "blue");
 				}
 
 				for(int i=0; (i<bound) && !have_skill(sk); i++)

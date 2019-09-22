@@ -1,43 +1,43 @@
-script "sl_aftercore.ash"
-import <sl_ascend.ash>
+script "auto_aftercore.ash"
+import <auto_ascend.ash>
 
 #Prototypes
-boolean sl_sloppySecondsDiner();
-boolean sl_fingernail();
-boolean sl_packOfSmokes();
-boolean sl_goreBucket();
-boolean sl_junglePuns();
-boolean sl_jungleSandwich();
-boolean sl_toxicMascot();
-boolean sl_nastyBears();
-boolean sl_toxicGlobules();
-boolean sl_sexismReduction();
-boolean sl_racismReduction();
-boolean sl_lubeBarfMountain();
-boolean sl_trashNet();
-boolean sl_doWalford();
-boolean sl_mtMolehill();
-boolean sl_acquireKeycards();
-boolean sl_dailyDungeon();
-item sl_guildEpicWeapon();
-boolean sl_guildUnlock();
-boolean sl_guildClown();
-boolean sl_nemesisCave();
-boolean sl_nemesisIsland();
-boolean sl_cheesePostCS();
-boolean sl_cheesePostCS(int leave);
-boolean sl_cheeseAftercore(int leave);
-boolean sl_aftercore();
-boolean sl_aftercore(int leave);
-boolean sl_ascendIntoCS();
-boolean sl_ascendIntoCS(class cl);
-boolean sl_ascendIntoBond();
-boolean sl_doCS();
-boolean sl_customMafiaAddress();
+boolean auto_sloppySecondsDiner();
+boolean auto_fingernail();
+boolean auto_packOfSmokes();
+boolean auto_goreBucket();
+boolean auto_junglePuns();
+boolean auto_jungleSandwich();
+boolean auto_toxicMascot();
+boolean auto_nastyBears();
+boolean auto_toxicGlobules();
+boolean auto_sexismReduction();
+boolean auto_racismReduction();
+boolean auto_lubeBarfMountain();
+boolean auto_trashNet();
+boolean auto_doWalford();
+boolean auto_mtMolehill();
+boolean auto_acquireKeycards();
+boolean auto_dailyDungeon();
+item auto_guildEpicWeapon();
+boolean auto_guildUnlock();
+boolean auto_guildClown();
+boolean auto_nemesisCave();
+boolean auto_nemesisIsland();
+boolean auto_cheesePostCS();
+boolean auto_cheesePostCS(int leave);
+boolean auto_cheeseAftercore(int leave);
+boolean auto_aftercore();
+boolean auto_aftercore(int leave);
+boolean auto_ascendIntoCS();
+boolean auto_ascendIntoCS(class cl);
+boolean auto_ascendIntoBond();
+boolean auto_doCS();
+boolean auto_customMafiaAddress();
 
 
 #Definitons here
-void sl_combatTest()
+void auto_combatTest()
 {
 	string macro = "skill toss; repeat";
 	visit_url("fight.php?action=macro&macrotext=" + url_encode(macro), true, true);
@@ -52,7 +52,7 @@ string simpleCombatFilter(int round, string opp, string text)
 	return "\"item seal tooth; repeat\"";
 }
 
-boolean sl_dailyDungeon()
+boolean auto_dailyDungeon()
 {
 	item lastequip = equipped_item($slot[acc2]);
 	equip($slot[acc2], $item[ring of detect boring doors]);
@@ -64,7 +64,7 @@ boolean sl_dailyDungeon()
 	return true;
 }
 
-boolean sl_sloppySecondsDiner()
+boolean auto_sloppySecondsDiner()
 {
 	if(get_property("_sloppyDinerBeachBucks").to_int() >= 4)
 	{
@@ -82,7 +82,7 @@ boolean sl_sloppySecondsDiner()
 	return true;
 }
 
-boolean sl_fingernail()
+boolean auto_fingernail()
 {
 	if(get_property("fingernailsClipped").to_int() >= 23)
 	{
@@ -103,7 +103,7 @@ boolean sl_fingernail()
 	return true;
 }
 
-boolean sl_packOfSmokes()
+boolean auto_packOfSmokes()
 {
 	if(item_amount($item[pack of smokes]) >= 10)
 	{
@@ -120,7 +120,7 @@ boolean sl_packOfSmokes()
 	return true;
 }
 
-boolean sl_goreBucket()
+boolean auto_goreBucket()
 {
 	if(!possessEquipment($item[Gore Bucket]))
 	{
@@ -148,7 +148,7 @@ boolean sl_goreBucket()
 	return true;
 }
 
-boolean sl_junglePuns()
+boolean auto_junglePuns()
 {
 	if(!possessEquipment($item[Encrypted Micro-Cassette Recorder]))
 	{
@@ -173,7 +173,7 @@ boolean sl_junglePuns()
 	return true;
 }
 
-boolean sl_sexismReduction()
+boolean auto_sexismReduction()
 {
 	if(my_adventures() == 0)
 	{
@@ -190,7 +190,7 @@ boolean sl_sexismReduction()
 	return true;
 }
 
-boolean sl_racismReduction()
+boolean auto_racismReduction()
 {
 	if(my_adventures() == 0)
 	{
@@ -208,7 +208,7 @@ boolean sl_racismReduction()
 }
 
 
-boolean sl_nastyBears()
+boolean auto_nastyBears()
 {
 	if(my_adventures() == 0)
 	{
@@ -227,7 +227,7 @@ boolean sl_nastyBears()
 
 
 
-boolean sl_toxicGlobules()
+boolean auto_toxicGlobules()
 {
 	if(my_adventures() == 0)
 	{
@@ -246,7 +246,7 @@ boolean sl_toxicGlobules()
 
 
 
-boolean sl_toxicMascot()
+boolean auto_toxicMascot()
 {
 	if(!possessEquipment($item[Dinsey Mascot Mask]))
 	{
@@ -271,7 +271,7 @@ boolean sl_toxicMascot()
 	return true;
 }
 
-boolean sl_trashNet()
+boolean auto_trashNet()
 {
 	if(!possessEquipment($item[Trash Net]))
 	{
@@ -296,7 +296,7 @@ boolean sl_trashNet()
 	return true;
 }
 
-boolean sl_lubeBarfMountain()
+boolean auto_lubeBarfMountain()
 {
 	if(!possessEquipment($item[lube-shoes]))
 	{
@@ -321,7 +321,7 @@ boolean sl_lubeBarfMountain()
 	return true;
 }
 
-boolean sl_acquireKeycards()
+boolean auto_acquireKeycards()
 {
 	while(my_adventures() > 0)
 	{
@@ -349,7 +349,7 @@ boolean sl_acquireKeycards()
 	return false;
 }
 
-boolean sl_jungleSandwich()
+boolean auto_jungleSandwich()
 {
 	if(item_amount($item[Project T. L. B.]) != 0)
 	{
@@ -366,7 +366,7 @@ boolean sl_jungleSandwich()
 	return true;
 }
 
-boolean sl_mtMolehill()
+boolean auto_mtMolehill()
 {
 	if(have_effect($effect[Shape of...Mole!]) == 0)
 	{
@@ -383,7 +383,7 @@ boolean sl_mtMolehill()
 	return true;
 }
 
-boolean sl_doWalford()
+boolean auto_doWalford()
 {
 	if(!get_property("_walfordQuestStartedToday").to_boolean())
 	{
@@ -408,9 +408,9 @@ boolean sl_doWalford()
 	}
 	getDiscoStyle(7);
 
-	if(get_property("sl_dinseyGarbageMoney").to_int() < my_daycount())
+	if(get_property("auto_dinseyGarbageMoney").to_int() < my_daycount())
 	{
-		set_property("sl_dinseyGarbageMoney", my_daycount());
+		set_property("auto_dinseyGarbageMoney", my_daycount());
 		visit_url("place.php?whichplace=airport_stench&action=airport3_tunnels");
 		visit_url("choice.php?pwd=&whichchoice=1067&option=6",true);
 		visit_url("main.php");
@@ -509,7 +509,7 @@ boolean sl_doWalford()
 }
 
 
-item sl_guildEpicWeapon()
+item auto_guildEpicWeapon()
 {
 	item toMake = $item[none];
 	switch(my_class())
@@ -524,7 +524,7 @@ item sl_guildEpicWeapon()
 	return toMake;
 }
 
-boolean sl_guildUnlock()
+boolean auto_guildUnlock()
 {
 	if(get_property("lastGuildStoreOpen").to_int() >= my_ascensions())
 	{
@@ -558,7 +558,7 @@ boolean sl_guildUnlock()
 	return false;
 }
 
-boolean sl_guildClown()
+boolean auto_guildClown()
 {
 	if(get_property("lastGuildStoreOpen").to_int() < my_ascensions())
 	{
@@ -599,7 +599,7 @@ boolean sl_guildClown()
 		slAdv(1, $location[The \"Fun\" House]);
 	}
 
-	item toMake = sl_guildEpicWeapon();
+	item toMake = auto_guildEpicWeapon();
 	if(toMake == $item[none])
 	{
 		abort("Somehow started the guild Clown sequence but we have nothing to make.");
@@ -611,7 +611,7 @@ boolean sl_guildClown()
 	return true;
 }
 
-boolean sl_nemesisCave()
+boolean auto_nemesisCave()
 {
 	if(get_property("lastGuildStoreOpen").to_int() < my_ascensions())
 	{
@@ -621,7 +621,7 @@ boolean sl_nemesisCave()
 	{
 		return false;
 	}
-	if(!possessEquipment(sl_guildEpicWeapon()))
+	if(!possessEquipment(auto_guildEpicWeapon()))
 	{
 		return false;
 	}
@@ -681,7 +681,7 @@ boolean sl_nemesisCave()
 			abort("Can not access area, aborting.");
 #		}
 	}
-	equip(sl_guildEpicWeapon());
+	equip(auto_guildEpicWeapon());
 	visit_url("cave.php?pwd=action=door4");
 	abort("Currently, must handle password manually, big sad");
 #	slAdv(1, $location[Noob Cave]);
@@ -692,7 +692,7 @@ boolean sl_nemesisCave()
 }
 
 
-boolean sl_nemesisIsland()
+boolean auto_nemesisIsland()
 {
 	if(get_property("lastGuildStoreOpen").to_int() < my_ascensions())
 	{
@@ -702,7 +702,7 @@ boolean sl_nemesisIsland()
 	{
 		return false;
 	}
-	if(!possessEquipment(sl_guildEpicWeapon()))
+	if(!possessEquipment(auto_guildEpicWeapon()))
 	{
 		return false;
 	}
@@ -742,11 +742,11 @@ boolean sl_nemesisIsland()
 	return true;
 }
 
-boolean sl_ascendIntoBond()
+boolean auto_ascendIntoBond()
 {
 	if(!get_property("_workshedItemUsed").to_boolean())
 	{
-		if(!(sl_get_campground() contains $item[Asdon Martin Keyfob]))
+		if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
 		{
 			if(item_amount($item[Asdon Martin Keyfob]) > 0)
 			{
@@ -807,12 +807,12 @@ boolean sl_ascendIntoBond()
 }
 
 
-boolean sl_ascendIntoCS()
+boolean auto_ascendIntoCS()
 {
-	return sl_ascendIntoCS($class[Sauceror]);
+	return auto_ascendIntoCS($class[Sauceror]);
 }
 
-boolean sl_ascendIntoCS(class cl)
+boolean auto_ascendIntoCS(class cl)
 {
 	if(my_inebriety() <= inebriety_limit())
 	{
@@ -873,28 +873,28 @@ boolean sl_ascendIntoCS(class cl)
 	return true;
 }
 
-boolean sl_aftercore()
+boolean auto_aftercore()
 {
-	return sl_cheeseAftercore(0);
+	return auto_cheeseAftercore(0);
 }
-boolean sl_aftercore(int leave)
+boolean auto_aftercore(int leave)
 {
-	return sl_cheeseAftercore(leave);
-}
-
-boolean sl_cheeseAftercore(int leave)
-{
-	return sl_cheesePostCS(leave);
+	return auto_cheeseAftercore(leave);
 }
 
-boolean sl_cheesePostCS()
+boolean auto_cheeseAftercore(int leave)
 {
-	return sl_cheesePostCS(0);
+	return auto_cheesePostCS(leave);
 }
 
-boolean sl_cheesePostCS(int leave)
+boolean auto_cheesePostCS()
 {
-	set_property("sl_disableAdventureHandling", false);
+	return auto_cheesePostCS(0);
+}
+
+boolean auto_cheesePostCS(int leave)
+{
+	set_property("auto_disableAdventureHandling", false);
 	int startMeat = get_property("_todayMeat").to_int();
 	if(startMeat == 0)
 	{
@@ -902,9 +902,9 @@ boolean sl_cheesePostCS(int leave)
 		set_property("_todayMeat", my_meat());
 	}
 
-	sl_sourceTerminalEnhance("meat");
-	sl_sourceTerminalEnhance("meat");
-	sl_sourceTerminalEnhance("items");
+	auto_sourceTerminalEnhance("meat");
+	auto_sourceTerminalEnhance("meat");
+	auto_sourceTerminalEnhance("items");
 	zataraSeaside("meatsmith");
 	if(item_amount($item[Special Seasoning]) < 1000)
 	{
@@ -917,10 +917,10 @@ boolean sl_cheesePostCS(int leave)
 	horseDark();
 	dailyEvents();
 
-	if(((my_daycount() == 2) && isOverdueDigitize()) || get_property("_sl_specialAftercore").to_boolean())
+	if(((my_daycount() == 2) && isOverdueDigitize()) || get_property("_auto_specialAftercore").to_boolean())
 	{
 		cli_execute("/aa none");
-		set_property("_sl_specialAftercore", false);
+		set_property("_auto_specialAftercore", false);
 		if(my_fullness() == 10)
 		{
 			use(1, $item[Milk Of Magnesium]);
@@ -928,7 +928,7 @@ boolean sl_cheesePostCS(int leave)
 			eat(1, $item[Jumping Horseradish]);
 		}
 
-		sl_sourceTerminalEducate($skill[Digitize], $skill[Turbo]);
+		auto_sourceTerminalEducate($skill[Digitize], $skill[Turbo]);
 		if(have_familiar($familiar[Garbage Fire]))
 		{
 			enthrone_familiar($familiar[Garbage Fire]);
@@ -978,11 +978,11 @@ boolean sl_cheesePostCS(int leave)
 			if(get_property("_badlyRomanticArrows").to_int() == 0)
 			{
 				use_familiar($familiar[Reanimated Reanimator]);
-				set_property("sl_combatDirective", "start;skill curse of weaksauce;skill digitize; skill wink at; item rain-doh black box, spooky putty sheet;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm");
+				set_property("auto_combatDirective", "start;skill curse of weaksauce;skill digitize; skill wink at; item rain-doh black box, spooky putty sheet;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm");
 			}
 			else
 			{
-				set_property("sl_combatDirective", "start;skill curse of weaksauce;skill digitize; item rain-doh black box, spooky putty sheet;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm");
+				set_property("auto_combatDirective", "start;skill curse of weaksauce;skill digitize; item rain-doh black box, spooky putty sheet;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm; skill saucestorm");
 			}
 #			if((get_property("_shatteringPunchUsed").to_int() >= 3) && get_property("_gingerbreadMobHitUsed").to_boolean() && (get_property("_usedReplicaBatoomerang").to_int() >= 3))
 #			{
@@ -1010,19 +1010,19 @@ boolean sl_cheesePostCS(int leave)
 		}
 		while(item_amount($item[Rain-Doh Box Full Of Monster]) > 0)
 		{
-			set_property("sl_combatDirective", "start;skill curse of weaksauce;item rain-doh black box, time-spinner;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls");
+			set_property("auto_combatDirective", "start;skill curse of weaksauce;item rain-doh black box, time-spinner;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls");
 			handleCopiedMonster($item[Rain-Doh Box Full Of Monster]);
 		}
 		while(item_amount($item[Spooky Putty Monster]) > 0)
 		{
-			set_property("sl_combatDirective", "start;skill curse of weaksauce;item rain-doh black box, time-spinner;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls");
+			set_property("auto_combatDirective", "start;skill curse of weaksauce;item rain-doh black box, time-spinner;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls");
 			handleCopiedMonster($item[Spooky Putty Monster]);
 		}
 
-		if((get_property("sl_digitizePlanet") != "") && (get_property("_spacegateCoordinates") == ""))
+		if((get_property("auto_digitizePlanet") != "") && (get_property("_spacegateCoordinates") == ""))
 		{
 			string temp = visit_url("place.php?whichplace=spacegate&action=sg_Terminal");
-			temp = visit_url("choice.php?pwd=&whichchoice=1235&option=2&word=" + get_property("sl_digitizePlanet"));
+			temp = visit_url("choice.php?pwd=&whichchoice=1235&option=2&word=" + get_property("auto_digitizePlanet"));
 			slAdv($location[Through The Spacegate]);
 			set_property("_spacegateTurnsLeft", 20);
 		}
@@ -1040,7 +1040,7 @@ boolean sl_cheesePostCS(int leave)
 			}
 			if(isOverdueDigitize())
 			{
-				set_property("sl_combatDirective", "start;skill curse of weaksauce;item rain-doh black box, time-spinner;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls");
+				set_property("auto_combatDirective", "start;skill curse of weaksauce;item rain-doh black box, time-spinner;skill stuffed mortar shell;item rain-doh indigo cup, rain-doh blue balls");
 				slAdv($location[The Ice Hotel]);
 			}
 
@@ -1082,7 +1082,7 @@ boolean sl_cheesePostCS(int leave)
 				}
 				while(get_property("_gingerbreadCityTurns").to_int() < 4)
 				{
-					set_property("sl_combatDirective", "start;skill KGB tranquilizer dart");
+					set_property("auto_combatDirective", "start;skill KGB tranquilizer dart");
 					slAdv($location[Gingerbread Upscale Retail District]);
 				}
 				if(get_property("_gingerbreadCityTurns").to_int() == 4)
@@ -1164,7 +1164,7 @@ boolean sl_cheesePostCS(int leave)
 
 	while((get_property("_sourceTerminalExtrudes").to_int() < 3) && contains_text(get_property("sourceTerminalExtrudeKnown"),"booze.ext") && (item_amount($item[Source Essence]) >= 10))
 	{
-		sl_sourceTerminalExtrude($item[Hacked Gibson]);
+		auto_sourceTerminalExtrude($item[Hacked Gibson]);
 	}
 	while((my_mp() < 100) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (inebriety_left() > 0))
 	{
@@ -1250,24 +1250,24 @@ boolean sl_cheesePostCS(int leave)
 
 
 
-	boolean oldGarbage = get_property("sl_getDinseyGarbageMoney").to_boolean();
-	set_property("sl_getDinseyGarbageMoney", true);
+	boolean oldGarbage = get_property("auto_getDinseyGarbageMoney").to_boolean();
+	set_property("auto_getDinseyGarbageMoney", true);
 	dinseylandfill_garbageMoney();
-	set_property("sl_getDinseyGarbageMoney", oldGarbage);
+	set_property("auto_getDinseyGarbageMoney", oldGarbage);
 
 	getDiscoStyle(7);
 	volcano_bunkerJob();
-	sl_change_mcd(0);
+	auto_change_mcd(0);
 
-	sl_sourceTerminalEducate($skill[Extract], $skill[Turbo]);
+	auto_sourceTerminalEducate($skill[Extract], $skill[Turbo]);
 
 	if((item_amount($item[Confusing LED Clock]) > 0) && hippy_stone_broken() && (my_adventures() >= 6) && !get_property("_confusingLEDClockUsed").to_boolean())
 	{
 		use(1, $item[Confusing LED Clock]);
-		if(sl_get_campground() contains $item[Confusing LED Clock])
+		if(auto_get_campground() contains $item[Confusing LED Clock])
 		{
 			visit_url("campground.php?action=rest");
-			if(sl_get_campground() contains $item[Confusing LED Clock])
+			if(auto_get_campground() contains $item[Confusing LED Clock])
 			{
 				print("Was unable to use Confusing LED Clock", "red");
 			}
@@ -1364,7 +1364,7 @@ boolean sl_cheesePostCS(int leave)
 		asdonBuff($effect[Driving Observantly]);
 		if(have_effect($effect[meat.enh]) == 0)
 		{
-			sl_sourceTerminalEnhance("meat");
+			auto_sourceTerminalEnhance("meat");
 		}
 		if((my_mp() > 100) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 		{
@@ -1381,7 +1381,7 @@ boolean sl_cheesePostCS(int leave)
 			use(1, $item[License To Chill]);
 		}
 
-		sl_interruptCheck();
+		auto_interruptCheck();
 
 		if((fullness_left() > 0) && (item_amount($item[Jumping Horseradish]) > 0))
 		{
@@ -1627,7 +1627,7 @@ boolean sl_cheesePostCS(int leave)
 	}
 
 
-	while((inebriety_left() >= 5) && get_property("sl_breakstone").to_boolean())
+	while((inebriety_left() >= 5) && get_property("auto_breakstone").to_boolean())
 	{
 		if(!buyUpTo(1, $item[5-Hour Acrimony], 5000))
 		{
@@ -1638,7 +1638,7 @@ boolean sl_cheesePostCS(int leave)
 	}
 
 
-	while((inebriety_left() >= 2) && get_property("sl_breakstone").to_boolean())
+	while((inebriety_left() >= 2) && get_property("auto_breakstone").to_boolean())
 	{
 		if(!buyUpTo(1, $item[Beery Blood], 500))
 		{
@@ -1765,42 +1765,42 @@ boolean sl_cheesePostCS(int leave)
 		{
 			slOverdrink(1, $item[5-hour acrimony]);
 		}
-		if(get_property("sl_pvpOutfit") != "")
+		if(get_property("auto_pvpOutfit") != "")
 		{
 			cli_execute("pull outfit pvp");
 			cli_execute("pull kiwi beak");
 			cli_execute("pull jam band");
 			cli_execute("pull pail");
-			cli_execute("/outfit " + get_property("sl_pvpOutfit"));
-			cli_execute(get_property("sl_pvpCommands"));
+			cli_execute("/outfit " + get_property("auto_pvpOutfit"));
+			cli_execute(get_property("auto_pvpCommands"));
 		}
 		int stance = 6;
-		if(get_property("sl_pvpStance") != "")
+		if(get_property("auto_pvpStance") != "")
 		{
-			stance = get_property("sl_pvpStance").to_int();
+			stance = get_property("auto_pvpStance").to_int();
 		}
 		cli_execute("pvp loot " + stance);
 	}
 	int endMeat = my_meat();
 	int gainedMeat = endMeat - startMeat;
 	print("Meat gained:  " + gainedMeat, "blue");
-	cli_execute("sl_ascend");
+	cli_execute("auto_ascend");
 	print("Meat gained:  " + gainedMeat, "blue");
 	return true;
 }
 
-boolean sl_customMafiaAddress()
+boolean auto_customMafiaAddress()
 {
 	print_html("<a href=\"http://cheesellc.com/kol/KoLmafia-" + get_revision() + "M.jar\" target=\"_blank\">Link to possible copy of Cheesecookie\'s Custom Mafia build.</a>");
 	print("http://cheesellc.com/kol/KoLmafia-" + get_revision() + "M.jar");
 	return true;
 }
 
-boolean sl_doCS()
+boolean auto_doCS()
 {
-	cli_execute("sl_ascend");
-	sl_aftercore();
-	sl_ascendIntoCS();
-	cli_execute("sl_ascend");
+	cli_execute("auto_ascend");
+	auto_aftercore();
+	auto_ascendIntoCS();
+	cli_execute("auto_ascend");
 	return true;
 }

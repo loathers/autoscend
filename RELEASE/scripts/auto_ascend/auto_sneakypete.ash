@@ -1,18 +1,18 @@
-script "sl_sneakypete.ash"
+script "auto_sneakypete.ash"
 
 void pete_initializeSettings()
 {
 	if(my_path() == "Avatar of Sneaky Pete")
 	{
-		set_property("sl_100familiar", $familiar[Egg Benedict]);
-		set_property("sl_ballroomsong", "finished");
-		set_property("sl_peteSkills", -1);
-		set_property("sl_cubeItems", false);
-		set_property("sl_getStarKey", true);
-		set_property("sl_grimstoneOrnateDowsingRod", false);
-		set_property("sl_holeinthesky", true);
-		set_property("sl_useCubeling", false);
-		set_property("sl_wandOfNagamar", false);
+		set_property("auto_100familiar", $familiar[Egg Benedict]);
+		set_property("auto_ballroomsong", "finished");
+		set_property("auto_peteSkills", -1);
+		set_property("auto_cubeItems", false);
+		set_property("auto_getStarKey", true);
+		set_property("auto_grimstoneOrnateDowsingRod", false);
+		set_property("auto_holeinthesky", true);
+		set_property("auto_useCubeling", false);
+		set_property("auto_wandOfNagamar", false);
 	}
 }
 
@@ -28,10 +28,10 @@ void pete_initializeDay(int day)
 		equipBaseline();
 		ovenHandle();
 
-		if(get_property("sl_day_init").to_int() < 2)
+		if(get_property("auto_day_init").to_int() < 2)
 		{
 
-			if(get_property("sl_dickstab").to_boolean() && chateaumantegna_available())
+			if(get_property("auto_dickstab").to_boolean() && chateaumantegna_available())
 			{
 				boolean[item] furniture = chateaumantegna_decorations();
 				if(!furniture[$item[Ceiling Fan]])
@@ -57,18 +57,18 @@ void pete_initializeDay(int day)
 	}
 	else if(day == 3)
 	{
-		if(get_property("sl_day_init").to_int() < 3)
+		if(get_property("auto_day_init").to_int() < 3)
 		{
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("sl_day_init", 3);
+			set_property("auto_day_init", 3);
 		}
 	}
 	else if(day == 4)
 	{
-		if(get_property("sl_day_init").to_int() < 4)
+		if(get_property("auto_day_init").to_int() < 4)
 		{
 			while(acquireHermitItem($item[Ten-leaf Clover]));
-			set_property("sl_day_init", 4);
+			set_property("auto_day_init", 4);
 		}
 	}
 }
@@ -79,7 +79,7 @@ boolean pete_buySkills()
 	{
 		return false;
 	}
-	if(my_level() <= get_property("sl_peteSkills").to_int())
+	if(my_level() <= get_property("auto_peteSkills").to_int())
 	{
 		return false;
 	}
@@ -296,7 +296,7 @@ boolean pete_buySkills()
 		my_cyclePoints = create_matcher("Upping Your Grade", page);
 	}
 
-	set_property("sl_peteSkills", my_level());
+	set_property("auto_peteSkills", my_level());
 	return true;
 }
 

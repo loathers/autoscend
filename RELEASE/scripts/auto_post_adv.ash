@@ -1,5 +1,5 @@
 script "postsool.ash";
-import<sl_ascend.ash>
+import<auto_ascend.ash>
 
 void handlePostAdventure()
 {
@@ -21,7 +21,7 @@ void handlePostAdventure()
 	//We need to do this early, and even if postAdventure handling is done.
 	if(my_path() == "The Source")
 	{
-		if(get_property("sl_diag_round").to_int() == 0)
+		if(get_property("auto_diag_round").to_int() == 0)
 		{
 			monster last = last_monster();
 			string temp = visit_url("main.php");
@@ -46,12 +46,12 @@ void handlePostAdventure()
 		run_choice(1);
 	}
 
-	if((get_property("lastEncounter") == "Daily Briefing") && (sl_my_path() == "License to Adventure"))
+	if((get_property("lastEncounter") == "Daily Briefing") && (auto_my_path() == "License to Adventure"))
 	{
-		set_property("_sl_bondBriefing", "started");
+		set_property("_auto_bondBriefing", "started");
 	}
 
-	if((get_property("_villainLairProgress").to_int() < 999) && ((get_property("_villainLairColor") != "") || get_property("_villainLairColorChoiceUsed").to_boolean()) && (sl_my_path() == "License to Adventure") && (my_location() == $location[Super Villain\'s Lair]))
+	if((get_property("_villainLairProgress").to_int() < 999) && ((get_property("_villainLairColor") != "") || get_property("_villainLairColorChoiceUsed").to_boolean()) && (auto_my_path() == "License to Adventure") && (my_location() == $location[Super Villain\'s Lair]))
 	{
 		if(item_amount($item[Can Of Minions-Be-Gone]) > 0)
 		{
@@ -59,7 +59,7 @@ void handlePostAdventure()
 		}
 	}
 
-	if(get_property("sl_disableAdventureHandling").to_boolean())
+	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		print("Postadventure skipped by standard adventure handler.", "green");
 		return;
@@ -110,7 +110,7 @@ void handlePostAdventure()
 
 	if((my_location() == $location[The Invader]))
 	{
-		// Just so the "are we beaten up?" check in sl_koe works properly
+		// Just so the "are we beaten up?" check in auto_koe works properly
 		print("Postadventure skipped for The Invader!", "green");
 		return;
 	}
@@ -124,7 +124,7 @@ void handlePostAdventure()
 
 	if(have_effect($effect[Cunctatitis]) > 0)
 	{
-		if((my_mp() >= 12) && sl_have_skill($skill[Disco Nap]))
+		if((my_mp() >= 12) && auto_have_skill($skill[Disco Nap]))
 		{
 			use_skill(1, $skill[Disco Nap]);
 		}
@@ -145,7 +145,7 @@ void handlePostAdventure()
 	{
 		buffMaintain($effect[All Revved Up], 25, 1, 10);
 		buffMaintain($effect[Of Course It Looks Great], 55, 1, 10);
-		if(sl_have_skill($skill[Throw Party]) && !get_property("_petePartyThrown").to_boolean())
+		if(auto_have_skill($skill[Throw Party]) && !get_property("_petePartyThrown").to_boolean())
 		{
 			int threshold = 50;
 			if(!possessEquipment($item[Sneaky Pete\'s Leather Jacket]) && !possessEquipment($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]))
@@ -157,7 +157,7 @@ void handlePostAdventure()
 				use_skill(1, $skill[Throw Party]);
 			}
 		}
-		if(sl_have_skill($skill[Incite Riot]) && !get_property("_peteRiotIncited").to_boolean())
+		if(auto_have_skill($skill[Incite Riot]) && !get_property("_peteRiotIncited").to_boolean())
 		{
 			int threshold = -50;
 			if(!possessEquipment($item[Sneaky Pete\'s Leather Jacket]) && !possessEquipment($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]))
@@ -254,7 +254,7 @@ void handlePostAdventure()
 			}
 		}
 
-		if((my_level() < 13) && (my_level() > 3) && !get_property("sl_needLegs").to_boolean() && (get_property("edPoints").to_int() > 15) && !($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()))
+		if((my_level() < 13) && (my_level() > 3) && !get_property("auto_needLegs").to_boolean() && (get_property("edPoints").to_int() > 15) && !($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()))
 		{
 			buffMaintain($effect[Blessing of Serqet], 50, 1, 1);
 		}
@@ -285,14 +285,14 @@ void handlePostAdventure()
 	}
 	if(poisoned)
 	{
-		if((my_mp() > 12) && sl_have_skill($skill[Disco Nap]) && sl_have_skill($skill[Adventurer of Leisure]))
+		if((my_mp() > 12) && auto_have_skill($skill[Disco Nap]) && auto_have_skill($skill[Adventurer of Leisure]))
 		{
 			use_skill(1, $skill[Disco Nap]);
 		}
 		else if(isGeneralStoreAvailable())
 		{
 			buyUpTo(1, $item[Anti-Anti-Antidote], 30);
-			if(sl_my_path() != "G-Lover")
+			if(auto_my_path() != "G-Lover")
 			{
 				use(1, $item[Anti-Anti-Antidote]);
 			}
@@ -320,11 +320,11 @@ void handlePostAdventure()
 
 	if(my_path() == "Community Service")
 	{
-		if(sl_have_skill($skill[Summon BRICKOs]) && (get_property("_brickoEyeSummons").to_int() < 3))
+		if(auto_have_skill($skill[Summon BRICKOs]) && (get_property("_brickoEyeSummons").to_int() < 3))
 		{
 			libram = $skill[Summon BRICKOs];
 		}
-		else if(sl_have_skill($skill[Summon Taffy]))
+		else if(auto_have_skill($skill[Summon Taffy]))
 		{
 			libram = $skill[Summon Taffy];
 		}
@@ -352,7 +352,7 @@ void handlePostAdventure()
 
 		foreach sk in toCast
 		{
-			if(is_unrestricted(sk) && sl_have_skill(sk) && (my_mp() >= mp_cost(sk)))
+			if(is_unrestricted(sk) && auto_have_skill(sk) && (my_mp() >= mp_cost(sk)))
 			{
 				use_skill(1, sk);
 			}
@@ -370,7 +370,7 @@ void handlePostAdventure()
 		return;
 	}
 
-	if(sl_my_path() == "The Source")
+	if(auto_my_path() == "The Source")
 	{
 		if((get_property("sourceInterval").to_int() > 0) && (get_property("sourceInterval").to_int() <= 600) && (get_property("sourceAgentsDefeated").to_int() >= 9))
 		{
@@ -383,7 +383,7 @@ void handlePostAdventure()
 
 	if(my_class() == $class[Sauceror])
 	{
-		if((my_level() >= 6) && (have_effect($effect[[1458]Blood Sugar Sauce Magic]) == 0) && sl_have_skill($skill[Blood Sugar Sauce Magic]) && !in_hardcore())
+		if((my_level() >= 6) && (have_effect($effect[[1458]Blood Sugar Sauce Magic]) == 0) && auto_have_skill($skill[Blood Sugar Sauce Magic]) && !in_hardcore())
 		{
 			use_skill(1, $skill[Blood Sugar Sauce Magic]);
 		}
@@ -425,7 +425,7 @@ void handlePostAdventure()
 	}
 
 
-	if(sl_have_skill($skill[Thunderheart]) && (my_thunder() >= 90) && ((my_turncount() - get_property("sl_lastthunderturn").to_int()) >= 9))
+	if(auto_have_skill($skill[Thunderheart]) && (my_thunder() >= 90) && ((my_turncount() - get_property("auto_lastthunderturn").to_int()) >= 9))
 	{
 		use_skill(1, $skill[Thunderheart]);
 	}
@@ -449,12 +449,12 @@ void handlePostAdventure()
 		}
 	}
 
-	if(sl_have_skill($skill[Demand Sandwich]) && (my_mp() > 85) && (my_level() >= 9) && (get_property("_demandSandwich").to_int() < 3))
+	if(auto_have_skill($skill[Demand Sandwich]) && (my_mp() > 85) && (my_level() >= 9) && (get_property("_demandSandwich").to_int() < 3))
 	{
 		use_skill(1, $skill[Demand Sandwich]);
 	}
 
-	if(sl_have_skill($skill[Summon Smithsness]) && (my_mp() > 20))
+	if(auto_have_skill($skill[Summon Smithsness]) && (my_mp() > 20))
 	{
 		use_skill(1, $skill[Summon Smithsness]);
 	}
@@ -479,7 +479,7 @@ void handlePostAdventure()
 
 		foreach sk in toCast
 		{
-			if(is_unrestricted(sk) && sl_have_skill(sk) && ((my_mp() - 40) >= mp_cost(sk)))
+			if(is_unrestricted(sk) && auto_have_skill(sk) && ((my_mp() - 40) >= mp_cost(sk)))
 			{
 				use_skill(1, sk);
 			}
@@ -535,7 +535,7 @@ void handlePostAdventure()
 
 		foreach sk in toCast
 		{
-			if(is_unrestricted(sk) && sl_have_skill(sk) && ((my_mp() - 50) >= mp_cost(sk)))
+			if(is_unrestricted(sk) && auto_have_skill(sk) && ((my_mp() - 50) >= mp_cost(sk)))
 			{
 				use_skill(1, sk);
 			}
@@ -594,7 +594,7 @@ void handlePostAdventure()
 
 		foreach sk in toCast
 		{
-			if(is_unrestricted(sk) && sl_have_skill(sk) && ((my_mp() - 90) >= mp_cost(sk)))
+			if(is_unrestricted(sk) && auto_have_skill(sk) && ((my_mp() - 90) >= mp_cost(sk)))
 			{
 				use_skill(1, sk);
 			}
@@ -672,10 +672,10 @@ void handlePostAdventure()
 		{
 			doML = false;
 		}
-		if(((get_property("flyeredML").to_int() > 9999) || get_property("sl_hippyInstead").to_boolean() || (get_property("sl_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && (my_level() >= 13))
+		if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && (my_level() >= 13))
 		{
 			doML = false;
-			#sl_change_mcd(0);
+			#auto_change_mcd(0);
 		}
 		if((my_mp() > 150) && (my_maxhp() > 300) && (my_hp() < 140))
 		{
@@ -710,7 +710,7 @@ void handlePostAdventure()
 
 		foreach sk in toCast
 		{
-			if(is_unrestricted(sk) && sl_have_skill(sk) && ((my_mp() - 85) >= mp_cost(sk)))
+			if(is_unrestricted(sk) && auto_have_skill(sk) && ((my_mp() - 85) >= mp_cost(sk)))
 			{
 				use_skill(1, sk);
 			}
@@ -824,23 +824,23 @@ void handlePostAdventure()
 
 		if(get_property("kingLiberated").to_boolean())
 		{
-			if((sl_have_skill($skill[Summon Rad Libs])) && (my_mp() > 6))
+			if((auto_have_skill($skill[Summon Rad Libs])) && (my_mp() > 6))
 			{
 				use_skill(3, $skill[Summon Rad Libs]);
 			}
-			if((sl_have_skill($skill[Summon Geeky Gifts])) && (my_mp() > 5))
+			if((auto_have_skill($skill[Summon Geeky Gifts])) && (my_mp() > 5))
 			{
 				use_skill(1, $skill[Summon Geeky Gifts]);
 			}
-			if((sl_have_skill($skill[Summon Stickers])) && (my_mp() > 6))
+			if((auto_have_skill($skill[Summon Stickers])) && (my_mp() > 6))
 			{
 				use_skill(3, $skill[Summon Stickers]);
 			}
-			if((sl_have_skill($skill[Summon Sugar Sheets])) && (my_mp() > 6))
+			if((auto_have_skill($skill[Summon Sugar Sheets])) && (my_mp() > 6))
 			{
 				use_skill(3, $skill[Summon Sugar Sheets]);
 			}
-			if(sl_have_skill($skill[Rainbow Gravitation]))
+			if(auto_have_skill($skill[Rainbow Gravitation]))
 			{
 				use_skill(3, $skill[Rainbow Gravitation]);
 			}
@@ -879,11 +879,11 @@ void handlePostAdventure()
 		Spice Ghost			250			10+1 Item		Spices			Stun Increase
 */
 
-		if((my_mp() >= (1.2 * mp_cost($skill[Bind Vermincelli]))) && (cur == $thrall[none]) && sl_have_skill($skill[Bind Vermincelli]))
+		if((my_mp() >= (1.2 * mp_cost($skill[Bind Vermincelli]))) && (cur == $thrall[none]) && auto_have_skill($skill[Bind Vermincelli]))
 		{
 			consider = $thrall[Vermincelli];
 		}
-		if((my_mp() >= (1.2 * mp_cost($skill[Bind Spice Ghost]))) && sl_have_skill($skill[Bind Spice Ghost]) && (my_daycount() > 1) && (numeric_modifier("MP Regen Min").to_int() > 9))
+		if((my_mp() >= (1.2 * mp_cost($skill[Bind Spice Ghost]))) && auto_have_skill($skill[Bind Spice Ghost]) && (my_daycount() > 1) && (numeric_modifier("MP Regen Min").to_int() > 9))
 		{
 			consider = $thrall[Spice Ghost];
 		}
@@ -905,9 +905,9 @@ void handlePostAdventure()
 		}
 	}
 
-	if(get_property("sl_cubeItems").to_boolean() && (item_amount($item[Ring Of Detect Boring Doors]) == 1) && (item_amount($item[Eleven-Foot Pole]) == 1) && (item_amount($item[Pick-O-Matic Lockpicks]) == 1))
+	if(get_property("auto_cubeItems").to_boolean() && (item_amount($item[Ring Of Detect Boring Doors]) == 1) && (item_amount($item[Eleven-Foot Pole]) == 1) && (item_amount($item[Pick-O-Matic Lockpicks]) == 1))
 	{
-		set_property("sl_cubeItems", false);
+		set_property("auto_cubeItems", false);
 	}
 
 	if(!get_property("kingLiberated").to_boolean())
@@ -980,7 +980,7 @@ void handlePostAdventure()
 
 	buyableMaintain($item[Turtle Pheromones], 1, 800, my_class() == $class[Turtle Tamer]);
 
-	if((get_property("sl_beatenUpCount").to_int() <= 10) && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && sl_have_skill($skill[Tongue of the Walrus]))
+	if((get_property("auto_beatenUpCount").to_int() <= 10) && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
 	{
 		print("Owwie, was beaten up but trying to recover", "red");
 		if(my_location() == $location[The X-32-F Combat Training Snowman])
@@ -988,13 +988,13 @@ void handlePostAdventure()
 			print("At the snojo, let's not keep going there and dying....", "red");
 			set_property("_snojoFreeFights", 10);
 		}
-		set_property("sl_beatenUpCount", get_property("sl_beatenUpCount").to_int() + 1);
+		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 		use_skill(1, $skill[Tongue of the Walrus]);
 	}
 
 
 	# We only do this in aftercore because we don't want a spiralling death loop in-run.
-	if(get_property("kingLiberated").to_boolean() && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && sl_have_skill($skill[Tongue of the Walrus]))
+	if(get_property("kingLiberated").to_boolean() && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
 	{
 		print("Owwie, was beaten up but trying to recover", "red");
 		use_skill(1, $skill[Tongue of the Walrus]);
@@ -1007,17 +1007,17 @@ void handlePostAdventure()
 	}
 	if((last_monster() == $monster[Modern Zmobie]) && (get_property("lastEncounter") == $monster[Modern Zmobie]) && (have_effect($effect[Beaten Up]) == 0))
 	{
-		set_property("sl_modernzmobiecount", "" + (get_property("sl_modernzmobiecount").to_int() + 1));
-		print("Fought " + get_property("sl_modernzmobiecount") + " modern zmobies.", "blue");
+		set_property("auto_modernzmobiecount", "" + (get_property("auto_modernzmobiecount").to_int() + 1));
+		print("Fought " + get_property("auto_modernzmobiecount") + " modern zmobies.", "blue");
 	}
 
 	if(have_effect($effect[Disavowed]) > 0)
 	{
-		if(get_property("_sl_bondBriefing") != "finished")
+		if(get_property("_auto_bondBriefing") != "finished")
 		{
-			set_property("_sl_bondBriefing", "started");
+			set_property("_auto_bondBriefing", "started");
 		}
-		if(sl_have_skill($skill[Disco Nap]) && (my_mp() > mp_cost($skill[Disco Nap])))
+		if(auto_have_skill($skill[Disco Nap]) && (my_mp() > mp_cost($skill[Disco Nap])))
 		{
 			print("We have been disavowed...", "red");
 			use_skill(1, $skill[Disco Nap]);
@@ -1028,12 +1028,12 @@ void handlePostAdventure()
 		}
 	}
 
-	set_property("sl_combatDirective", "");
-	set_property("sl_digitizeDirective", "");
+	set_property("auto_combatDirective", "");
+	set_property("auto_digitizeDirective", "");
 
 	if(have_effect($effect[Beaten Up]) > 0)
 	{
-		set_property("sl_beatenUpCount", get_property("sl_beatenUpCount").to_int() + 1);
+		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 	}
 
 	print("Post Adventure done, beep.", "purple");

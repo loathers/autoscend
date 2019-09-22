@@ -1,4 +1,4 @@
-script "sl_tcrs.ash"
+script "auto_tcrs.ash"
 
 boolean in_tcrs()
 {
@@ -9,10 +9,10 @@ boolean tcrs_initializeSettings()
 {
 	if(in_tcrs())
 	{
-		set_property("sl_spookyfertilizer", "");
-		set_property("sl_getStarKey", true);
-		set_property("sl_holeinthesky", true);
-		set_property("sl_wandOfNagamar", true);
+		set_property("auto_spookyfertilizer", "");
+		set_property("auto_getStarKey", true);
+		set_property("auto_holeinthesky", true);
+		set_property("auto_wandOfNagamar", true);
 	}
 	return true;
 }
@@ -36,13 +36,13 @@ boolean tcrs_consumption()
 	if(!in_tcrs())
 		return false;
 
-	if(get_property("sl_legacyConsumeStuff").to_boolean())
+	if(get_property("auto_legacyConsumeStuff").to_boolean())
 	{
-		// print("Using a hard-coded consumption strategy for TCRS. 'set sl_legacyConsumeStuff=false' to use the new, cool automatic consumption strategy.", "red");
+		// print("Using a hard-coded consumption strategy for TCRS. 'set auto_legacyConsumeStuff=false' to use the new, cool automatic consumption strategy.", "red");
 	}
 	else
 	{
-		sl_maximizedConsumeStuff();
+		auto_maximizedConsumeStuff();
 		return true;
 	}
 
@@ -61,7 +61,7 @@ boolean tcrs_consumption()
 		}
 		if((my_adventures() <= 1 || item_amount($item[glass of goat's milk]) > 0) && fullness_left() == 15)
 		{
-			if(get_property("sl_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
+			if(get_property("auto_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
 			{
 				makeGenieWish($effect[Got Milk]); // +15 adv is worth it for daycount
 			}

@@ -1,4 +1,4 @@
-script "sl_glover.ash"
+script "auto_glover.ash"
 
 
 void glover_initializeDay(int day)
@@ -17,25 +17,25 @@ void glover_initializeDay(int day)
 
 void glover_initializeSettings()
 {
-	if(sl_my_path() == "G-Lover")
+	if(auto_my_path() == "G-Lover")
 	{
-//		set_property("sl_ballroomsong", "finished");
-		set_property("sl_getBeehive", true);
-		set_property("sl_getBoningKnife", true);
-		set_property("sl_cubeItems", true);
-		set_property("sl_dakotaFanning", true);
-		set_property("sl_getStarKey", true);
-		set_property("sl_grimstoneOrnateDowsingRod", false);
-		set_property("sl_holeinthesky", true);
-		set_property("sl_ignoreFlyer", true);
-		set_property("sl_shenCopperhead", true);
-		set_property("sl_spookyfertilizer", "finished");
-		set_property("sl_spookymap", "finished");
-		set_property("sl_spookysapling", "finished");
-		set_property("sl_swordfish", "finished");
-		set_property("sl_treecoin", "finished");
-		set_property("sl_useCubeling", true);
-		set_property("sl_wandOfNagamar", true);
+//		set_property("auto_ballroomsong", "finished");
+		set_property("auto_getBeehive", true);
+		set_property("auto_getBoningKnife", true);
+		set_property("auto_cubeItems", true);
+		set_property("auto_dakotaFanning", true);
+		set_property("auto_getStarKey", true);
+		set_property("auto_grimstoneOrnateDowsingRod", false);
+		set_property("auto_holeinthesky", true);
+		set_property("auto_ignoreFlyer", true);
+		set_property("auto_shenCopperhead", true);
+		set_property("auto_spookyfertilizer", "finished");
+		set_property("auto_spookymap", "finished");
+		set_property("auto_spookysapling", "finished");
+		set_property("auto_swordfish", "finished");
+		set_property("auto_treecoin", "finished");
+		set_property("auto_useCubeling", true);
+		set_property("auto_wandOfNagamar", true);
 		set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 16);
 
 		//Buy Crude Oil Congealer and um... A-Boo Glues.
@@ -53,7 +53,7 @@ void glover_initializeSettings()
 
 boolean glover_usable(string it)
 {
-	if(sl_my_path() != "G-Lover")
+	if(auto_my_path() != "G-Lover")
 	{
 		return true;
 	}
@@ -70,7 +70,7 @@ boolean glover_usable(string it)
 
 boolean LM_glover()
 {
-	if(sl_my_path() != "G-Lover")
+	if(auto_my_path() != "G-Lover")
 	{
 		return false;
 	}

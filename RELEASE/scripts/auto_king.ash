@@ -1,15 +1,15 @@
 script "kingsool.ash";
-import <sl_ascend.ash>
+import <auto_ascend.ash>
 
 void handleKingLiberation()
 {
 	restoreAllSettings();
-	if(get_property("kingLiberated").to_boolean() && (get_property("sl_snapshot") == ""))
+	if(get_property("kingLiberated").to_boolean() && (get_property("auto_snapshot") == ""))
 	{
 		print("Yay! The King is saved. I suppose you should do stuff.");
-		if(!get_property("sl_kingLiberation").to_boolean())
+		if(!get_property("auto_kingLiberation").to_boolean())
 		{
-			set_property("sl_snapshot", "aborted");
+			set_property("auto_snapshot", "aborted");
 			return;
 		}
 		visit_url("storage.php?action=takemeat&pwd&amt=" + my_storage_meat());
@@ -17,7 +17,7 @@ void handleKingLiberation()
 
 		if(my_familiar() != $familiar[Black Cat])
 		{
-			set_property("sl_100familiar", $familiar[none]);
+			set_property("auto_100familiar", $familiar[none]);
 		}
 
 		// Some items don\'t get pulled, notably, Stench Wad but some others as well (fat loot token, holiday fun, box of sunshine).
@@ -73,7 +73,7 @@ void handleKingLiberation()
 		visit_url("clan_rumpus.php?action=click&spot=4&furni=2");
 		visit_url("clan_rumpus.php?action=click&spot=9&furni=3");
 
-		if(get_property("sl_borrowedTimeOnLiberation").to_boolean() && (get_property("_borrowedTimeUsed") == "false"))
+		if(get_property("auto_borrowedTimeOnLiberation").to_boolean() && (get_property("_borrowedTimeUsed") == "false"))
 		{
 			if(get_property("_clipartSummons").to_int() < 3)
 			{
@@ -87,7 +87,7 @@ void handleKingLiberation()
 
 		visit_url("campground.php?action=workshed");
 
-		if(get_property("sl_snapshot") == "")
+		if(get_property("auto_snapshot") == "")
 		{
 			if(svn_info("bumcheekascend-snapshot").last_changed_rev > 0)
 			{
@@ -97,7 +97,7 @@ void handleKingLiberation()
 			{
 				cli_execute("cc_snapshot");
 			}
-			set_property("sl_snapshot", "done");
+			set_property("auto_snapshot", "done");
 		}
 
 		visit_url("place.php?whichplace=town_wrong&action=townwrong_precinct");
@@ -113,7 +113,7 @@ void handleKingLiberation()
 		}
 	}
 
-	if((get_property("kingLiberated") == "true") && !get_property("sl_aftercore").to_boolean())
+	if((get_property("kingLiberated") == "true") && !get_property("auto_aftercore").to_boolean())
 	{
 //		buy_item($item[4-d camera], 1, 10000);
 //		buy_item($item[mojo filter], 2, 3500);
@@ -134,7 +134,7 @@ void handleKingLiberation()
 //		buy_item($item[hand in glove], 1, 5000);
 
 
-		if(get_property("sl_dickstab").to_boolean())
+		if(get_property("auto_dickstab").to_boolean())
 		{
 			while(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
 			{
@@ -146,10 +146,10 @@ void handleKingLiberation()
 		{
 			use_skill(1, $skill[Iron Palm Technique]);
 		}
-		set_property("sl_aftercore", true);
+		set_property("auto_aftercore", true);
 	}
 
-	if(get_property("sl_clearCombatScripts").to_boolean())
+	if(get_property("auto_clearCombatScripts").to_boolean())
 	{
 		restoreSetting("kingLiberatedScript");
 		restoreSetting("afterAdventureScript");
@@ -163,7 +163,7 @@ void handleKingLiberation()
 
 boolean pullPVPJunk()
 {
-	if(!get_property("sl_pullPVPJunk").to_boolean())
+	if(!get_property("auto_pullPVPJunk").to_boolean())
 	{
 		return false;
 	}

@@ -1,8 +1,8 @@
-script "sl_deprecation.ash"
+script "auto_deprecation.ash"
 
 /****
 
-Functions in here are defined in sl_ascend/sl_ascend_header.ash
+Functions in here are defined in auto_ascend/auto_ascend_header.ash
 
 These functions exist to handle outdated configuartions of the script. These would have been removed but we might as well keep them (in case we need to do any new configuration mangling) and they might actually help recover a long-forgotten ascension.
 
@@ -51,134 +51,134 @@ boolean settingFixer()
 		Maybe it won\t. It doesn't really need to be I guess.
 		Backwards compatibility forever!!!
 	***/
-	trackingSplitterFixer("sl_banishes_day1", 1, "sl_banishes");
-	trackingSplitterFixer("sl_banishes_day2", 2, "sl_banishes");
-	trackingSplitterFixer("sl_banishes_day3", 3, "sl_banishes");
-	trackingSplitterFixer("sl_banishes_day4", 4, "sl_banishes");
-	trackingSplitterFixer("sl_yellowRay_day1", 1, "sl_yellowRays");
-	trackingSplitterFixer("sl_yellowRay_day2", 2, "sl_yellowRays");
-	trackingSplitterFixer("sl_yellowRay_day3", 3, "sl_yellowRays");
-	trackingSplitterFixer("sl_yellowRay_day4", 4, "sl_yellowRays");
-	trackingSplitterFixer("sl_lashes_day1", 1, "sl_lashes");
-	trackingSplitterFixer("sl_lashes_day2", 2, "sl_lashes");
-	trackingSplitterFixer("sl_lashes_day3", 3, "sl_lashes");
-	trackingSplitterFixer("sl_lashes_day4", 4, "sl_lashes");
-	trackingSplitterFixer("sl_renenutet_day1", 1, "sl_renenutet");
-	trackingSplitterFixer("sl_renenutet_day2", 2, "sl_renenutet");
-	trackingSplitterFixer("sl_renenutet_day3", 3, "sl_renenutet");
-	trackingSplitterFixer("sl_renenutet_day4", 4, "sl_renenutet");
+	trackingSplitterFixer("auto_banishes_day1", 1, "auto_banishes");
+	trackingSplitterFixer("auto_banishes_day2", 2, "auto_banishes");
+	trackingSplitterFixer("auto_banishes_day3", 3, "auto_banishes");
+	trackingSplitterFixer("auto_banishes_day4", 4, "auto_banishes");
+	trackingSplitterFixer("auto_yellowRay_day1", 1, "auto_yellowRays");
+	trackingSplitterFixer("auto_yellowRay_day2", 2, "auto_yellowRays");
+	trackingSplitterFixer("auto_yellowRay_day3", 3, "auto_yellowRays");
+	trackingSplitterFixer("auto_yellowRay_day4", 4, "auto_yellowRays");
+	trackingSplitterFixer("auto_lashes_day1", 1, "auto_lashes");
+	trackingSplitterFixer("auto_lashes_day2", 2, "auto_lashes");
+	trackingSplitterFixer("auto_lashes_day3", 3, "auto_lashes");
+	trackingSplitterFixer("auto_lashes_day4", 4, "auto_lashes");
+	trackingSplitterFixer("auto_renenutet_day1", 1, "auto_renenutet");
+	trackingSplitterFixer("auto_renenutet_day2", 2, "auto_renenutet");
+	trackingSplitterFixer("auto_renenutet_day3", 3, "auto_renenutet");
+	trackingSplitterFixer("auto_renenutet_day4", 4, "auto_renenutet");
 
-	if(get_property("sl_delayTimer") == "")
+	if(get_property("auto_delayTimer") == "")
 	{
-		set_property("sl_delayTimer", 1);
+		set_property("auto_delayTimer", 1);
 	}
-	if(get_property("sl_100familiar") == "yes")
+	if(get_property("auto_100familiar") == "yes")
 	{
-		set_property("sl_100familiar", true);
+		set_property("auto_100familiar", true);
 	}
-	if(get_property("sl_100familiar") == "no")
+	if(get_property("auto_100familiar") == "no")
 	{
-		set_property("sl_100familiar", false);
+		set_property("auto_100familiar", false);
 	}
-	if(get_property("sl_100familiar") == "true")
+	if(get_property("auto_100familiar") == "true")
 	{
-		set_property("sl_100familiar", $familiar[Egg Benedict]);
+		set_property("auto_100familiar", $familiar[Egg Benedict]);
 	}
-	if(get_property("sl_100familiar") == "false")
+	if(get_property("auto_100familiar") == "false")
 	{
-		set_property("sl_100familiar", $familiar[none]);
+		set_property("auto_100familiar", $familiar[none]);
 	}
-	if(get_property("sl_ballroomsong") == "set")
+	if(get_property("auto_ballroomsong") == "set")
 	{
-		set_property("sl_ballroomsong", "finished");
+		set_property("auto_ballroomsong", "finished");
 	}
-	if(get_property("sl_killingjar") == "done")
+	if(get_property("auto_killingjar") == "done")
 	{
-		set_property("sl_killingjar", "finished");
+		set_property("auto_killingjar", "finished");
 	}
-	if(get_property("sl_castleground") == "done")
+	if(get_property("auto_castleground") == "done")
 	{
-		set_property("sl_castleground", "finished");
+		set_property("auto_castleground", "finished");
 	}
-	if(get_property("sl_useCubeling") == "yes")
+	if(get_property("auto_useCubeling") == "yes")
 	{
-		set_property("sl_useCubeling", true);
+		set_property("auto_useCubeling", true);
 	}
-	if((get_property("sl_gremlinclap") == "used") && !contains_text("sl_gremlinBanishes", "(" + $skill[Thunder Clap] + ")"))
+	if((get_property("auto_gremlinclap") == "used") && !contains_text("auto_gremlinBanishes", "(" + $skill[Thunder Clap] + ")"))
 	{
-		set_property("sl_gremlinBanishes", get_property("sl_gremlinBanishes") + "(" + $skill[Thunder Clap] + ")");
-		set_property("sl_gremlinclap", "");
+		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $skill[Thunder Clap] + ")");
+		set_property("auto_gremlinclap", "");
 	}
-	if((get_property("sl_gremlinbatter") == "used") && !contains_text("sl_gremlinBanishes", "(" + $skill[Batter Up!] + ")"))
+	if((get_property("auto_gremlinbatter") == "used") && !contains_text("auto_gremlinBanishes", "(" + $skill[Batter Up!] + ")"))
 	{
-		set_property("sl_gremlinBanishes", get_property("sl_gremlinBanishes") + "(" + $skill[Batter Up!] + ")");
-		set_property("sl_gremlinbatter", "");
+		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $skill[Batter Up!] + ")");
+		set_property("auto_gremlinbatter", "");
 	}
-	if((get_property("sl_gremlinlouder") == "used") && !contains_text("sl_gremlinBanishes", "(" + $item[Louder Than Bomb] + ")"))
+	if((get_property("auto_gremlinlouder") == "used") && !contains_text("auto_gremlinBanishes", "(" + $item[Louder Than Bomb] + ")"))
 	{
-		set_property("sl_gremlinBanishes", get_property("sl_gremlinBanishes") + "(" + $item[Louder Than Bomb] + ")");
-		set_property("sl_gremlinlouder", "");
+		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $item[Louder Than Bomb] + ")");
+		set_property("auto_gremlinlouder", "");
 	}
-	if((get_property("sl_gremlinpants") == "used") && !contains_text("sl_gremlinBanishes", "(" + $skill[Talk About Politics] + ")"))
+	if((get_property("auto_gremlinpants") == "used") && !contains_text("auto_gremlinBanishes", "(" + $skill[Talk About Politics] + ")"))
 	{
-		set_property("sl_gremlinBanishes", get_property("sl_gremlinBanishes") + "(" + $skill[Talk About Politics] + ")");
-		set_property("sl_gremlinpants", "");
+		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $skill[Talk About Politics] + ")");
+		set_property("auto_gremlinpants", "");
 	}
-	if((get_property("sl_gremlintennis") == "used") && !contains_text("sl_gremlinBanishes", "(" + $item[Tennis Ball] + ")"))
+	if((get_property("auto_gremlintennis") == "used") && !contains_text("auto_gremlinBanishes", "(" + $item[Tennis Ball] + ")"))
 	{
-		set_property("sl_gremlinBanishes", get_property("sl_gremlinBanishes") + "(" + $item[Tennis Ball] + ")");
-		set_property("sl_gremlintennis", "");
+		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $item[Tennis Ball] + ")");
+		set_property("auto_gremlintennis", "");
 	}
-	if(get_property("sl_sonata") == "finished")
+	if(get_property("auto_sonata") == "finished")
 	{
-		set_property("sl_sonofa", "finished");
-		set_property("sl_sonata", "");
+		set_property("auto_sonofa", "finished");
+		set_property("auto_sonata", "");
 	}
 
-	if(get_property("sl_useCubeling") == "no")
+	if(get_property("auto_useCubeling") == "no")
 	{
-		set_property("sl_useCubeling", false);
+		set_property("auto_useCubeling", false);
 	}
-	if(get_property("sl_wandOfNagamar") == "yes")
+	if(get_property("auto_wandOfNagamar") == "yes")
 	{
-		set_property("sl_wandOfNagamar", true);
+		set_property("auto_wandOfNagamar", true);
 	}
-	if(get_property("sl_wandOfNagamar") == "no")
+	if(get_property("auto_wandOfNagamar") == "no")
 	{
-		set_property("sl_wandOfNagamar", false);
+		set_property("auto_wandOfNagamar", false);
 	}
-	if(get_property("sl_chasmBusted") == "yes")
+	if(get_property("auto_chasmBusted") == "yes")
 	{
-		set_property("sl_chasmBusted", true);
+		set_property("auto_chasmBusted", true);
 	}
-	if(get_property("sl_chasmBusted") == "no")
+	if(get_property("auto_chasmBusted") == "no")
 	{
-		set_property("sl_chasmBusted", false);
+		set_property("auto_chasmBusted", false);
 	}
-	if(get_property("sl_ballroomflat") == "organ")
+	if(get_property("auto_ballroomflat") == "organ")
 	{
-		set_property("sl_ballroomflat", "finished");
+		set_property("auto_ballroomflat", "finished");
 	}
-	if(get_property("sl_edDelayTimer") != "")
+	if(get_property("auto_edDelayTimer") != "")
 	{
-		set_property("sl_delayTimer", get_property("sl_edDelayTimer"));
-		set_property("sl_edDelayTimer", "");
+		set_property("auto_delayTimer", get_property("auto_edDelayTimer"));
+		set_property("auto_edDelayTimer", "");
 	}
-	if(get_property("sl_grimstoneFancyOilPainting") == "need")
+	if(get_property("auto_grimstoneFancyOilPainting") == "need")
 	{
-		set_property("sl_grimstoneFancyOilPainting", true);
+		set_property("auto_grimstoneFancyOilPainting", true);
 	}
-	if(get_property("sl_grimstoneFancyOilPainting") == "no")
+	if(get_property("auto_grimstoneFancyOilPainting") == "no")
 	{
-		set_property("sl_grimstoneFancyOilPainting", false);
+		set_property("auto_grimstoneFancyOilPainting", false);
 	}
-	if(get_property("sl_grimstoneOrnateDowsingRod") == "need")
+	if(get_property("auto_grimstoneOrnateDowsingRod") == "need")
 	{
-		set_property("sl_grimstoneOrnateDowsingRod", true);
+		set_property("auto_grimstoneOrnateDowsingRod", true);
 	}
-	if(get_property("sl_grimstoneOrnateDowsingRod") == "no")
+	if(get_property("auto_grimstoneOrnateDowsingRod") == "no")
 	{
-		set_property("sl_grimstoneOrnateDowsingRod", false);
+		set_property("auto_grimstoneOrnateDowsingRod", false);
 	}
 
 	if(get_property("kingLiberatedScript") == "scripts/kingLiberated.ash")
@@ -198,54 +198,54 @@ boolean settingFixer()
 		set_property("betweenBattleScript", "presool.ash");
 	}
 
-	if(get_property("sl_abooclover") == "")
+	if(get_property("auto_abooclover") == "")
 	{
-		set_property("sl_abooclover", true);
+		set_property("auto_abooclover", true);
 	}
-	if(get_property("sl_abooclover") == "used")
+	if(get_property("auto_abooclover") == "used")
 	{
-		set_property("sl_abooclover", false);
+		set_property("auto_abooclover", false);
 	}
-	if(get_property("sl_aftercore") == "")
+	if(get_property("auto_aftercore") == "")
 	{
-		set_property("sl_aftercore", false);
+		set_property("auto_aftercore", false);
 	}
-	if(get_property("sl_aftercore") == "done")
+	if(get_property("auto_aftercore") == "done")
 	{
-		set_property("sl_aftercore", true);
+		set_property("auto_aftercore", true);
 	}
-	if(get_property("sl_bean") == "")
+	if(get_property("auto_bean") == "")
 	{
-		set_property("sl_bean", false);
+		set_property("auto_bean", false);
 	}
-	if(get_property("sl_bean") == "plant")
+	if(get_property("auto_bean") == "plant")
 	{
-		set_property("sl_bean", true);
-	}
-
-
-	if(get_property("sl_cubeItems") == "")
-	{
-		set_property("sl_cubeItems", true);
-	}
-	if(get_property("sl_cubeItems") == "done")
-	{
-		set_property("sl_cubeItems", false);
+		set_property("auto_bean", true);
 	}
 
-	if(get_property("sl_gunpowder") == "done")
+
+	if(get_property("auto_cubeItems") == "")
 	{
-		set_property("sl_gunpowder", "finished");
+		set_property("auto_cubeItems", true);
+	}
+	if(get_property("auto_cubeItems") == "done")
+	{
+		set_property("auto_cubeItems", false);
 	}
 
-	if(get_property("sl_mistypeak") == "done")
+	if(get_property("auto_gunpowder") == "done")
 	{
-		set_property("sl_mistypeak", "finished");
+		set_property("auto_gunpowder", "finished");
 	}
 
-	if(get_property("sl_xiblaxianChoice") == "")
+	if(get_property("auto_mistypeak") == "done")
 	{
-		set_property("sl_xiblaxianChoice", $item[Xiblaxian Ultraburrito]);
+		set_property("auto_mistypeak", "finished");
+	}
+
+	if(get_property("auto_xiblaxianChoice") == "")
+	{
+		set_property("auto_xiblaxianChoice", $item[Xiblaxian Ultraburrito]);
 	}
 
 	if(get_property("lastPlusSignUnlock") == "true")
@@ -259,31 +259,31 @@ boolean settingFixer()
 		set_property("lastTempleUnlock", my_ascensions());
 	}
 
-	if(property_exists("sl_day1_init"))
+	if(property_exists("auto_day1_init"))
 	{
 		print("Found old day initialization trackers, removing...", "red");
-		remove_property("sl_day1_init");
-		remove_property("sl_day2_init");
-		remove_property("sl_day3_init");
-		remove_property("sl_day4_init");
+		remove_property("auto_day1_init");
+		remove_property("auto_day2_init");
+		remove_property("auto_day3_init");
+		remove_property("auto_day4_init");
 	}
 
-	if(property_exists("sl_gaudy"))
+	if(property_exists("auto_gaudy"))
 	{
 		print("Some lingering stuff from when gaudy pirates mattered is still here, let's get rid of it...", "red");
-		remove_property("sl_gaudy");
+		remove_property("auto_gaudy");
 	}
 
-	if(get_property("sl_paranoia") == "")
+	if(get_property("auto_paranoia") == "")
 	{
 		print("No paranoia value, we probably don't want to be paranoid...", "red");
-		set_property("sl_paranoia", -1);
+		set_property("auto_paranoia", -1);
 	}
 
-	if(get_property("sl_helpMeMafiaIsSuperBrokenAaah") == "")
+	if(get_property("auto_helpMeMafiaIsSuperBrokenAaah") == "")
 	{
 		print("Mafia probably isn't super broken, so let's set it that way...", "red");
-		set_property("sl_helpMeMafiaIsSuperBrokenAaah", false);
+		set_property("auto_helpMeMafiaIsSuperBrokenAaah", false);
 	}
 
 	return true;

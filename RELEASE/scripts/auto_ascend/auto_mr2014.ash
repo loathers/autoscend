@@ -1,4 +1,4 @@
-script "sl_mr2014.ash"
+script "auto_mr2014.ash"
 
 #	This is meant for items that have a date of 2014.
 #	Handling: Little Geneticist DNA-Splicing Lab, Xi-Receiver Unit
@@ -27,7 +27,7 @@ boolean dna_startAcquire()
 	{
 		return false;
 	}
-	if((get_property("sl_day1_dna") == "finished") || (my_daycount() != 1))
+	if((get_property("auto_day1_dna") == "finished") || (my_daycount() != 1))
 	{
 		return false;
 	}
@@ -71,7 +71,7 @@ boolean dna_startAcquire()
 			cli_execute("camp dnainject");
 		}
 	}
-	set_property("sl_day1_dna", "finished");
+	set_property("auto_day1_dna", "finished");
 	if(have_effect($effect[Human-Weird Thing Hybrid]) != 2147483647)
 	{
 		print("DNA Hybridization failed, perhaps it was due to ML which is annoying us right now.", "red");
@@ -92,7 +92,7 @@ boolean dna_generic()
 
 	boolean[phylum] potion;
 
-	if(sl_my_path() == "Standard")
+	if(auto_my_path() == "Standard")
 	{
 		switch(my_daycount())
 		{
@@ -102,7 +102,7 @@ boolean dna_generic()
 		default:		potion = $phylums[humanoid, construct, dude];		break;
 		}
 	}
-	else if(sl_my_path() == "Heavy Rains")
+	else if(auto_my_path() == "Heavy Rains")
 	{
 		switch(my_daycount())
 		{
@@ -112,7 +112,7 @@ boolean dna_generic()
 		default:		potion = $phylums[humanoid, construct, dude];		break;
 		}
 	}
-	else if(sl_my_path() == "Community Service")
+	else if(auto_my_path() == "Community Service")
 	{
 		switch(my_daycount())
 		{
@@ -227,7 +227,7 @@ boolean xiblaxian_makeStuff()
 {
 	if((my_daycount() >= 2) && possessEquipment($item[Xiblaxian holo-wrist-puter]))
 	{
-		item toMake = to_item(get_property("sl_xiblaxianChoice"));
+		item toMake = to_item(get_property("auto_xiblaxianChoice"));
 
 		boolean canMake = false;
 		if((toMake == $item[Xiblaxian Ultraburrito]) && (fullness_left() >= 4) && (item_amount($item[Xiblaxian Circuitry]) >= 1) && (item_amount($item[Xiblaxian Polymer]) >= 1) && (item_amount($item[Xiblaxian Alloy]) >= 3))

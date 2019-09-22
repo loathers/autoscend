@@ -5,7 +5,7 @@
 # Second column is just a number needed to make this load nicely
 # Third column is what item, preceded by how many if necessary
 # Fourth column (optional) is conditions for that item to be considered
-# See sl_check_conditions for information on valid conditionals
+# See auto_check_conditions for information on valid conditionals
 # An item can be listed multiple times (presumably with different conditionals)
 
 

@@ -133,11 +133,11 @@ void main()
 	writeln("<html><head><title>soolascend Crapulent Manager</title>");
 	writeln("</head><body><h1>soolascend Manager</h1>");
 
-	file_to_map("sl_ascend_settings.txt", s);
+	file_to_map("auto_ascend_settings.txt", s);
 
 	boolean dickstab = false;
 	writeln("<form action='' method='post'>");
-	writeln("<input type='hidden' name='sl_interrupt' value='true'/>");
+	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
 	writeln("<input type='submit' name='' value='Interrupt Script'/></form>");
 
 
@@ -165,9 +165,9 @@ void main()
 #				writeln("Property " + x + " had: " + oldSetting + " now: " + fields[x] + "<br>");
 #			}
 
-			if(x == "sl_dickstab")
+			if(x == "auto_dickstab")
 			{
-				if((fields[x] != get_property("sl_dickstab")) && (fields[x] == "true"))
+				if((fields[x] != get_property("auto_dickstab")) && (fields[x] == "true"))
 				{
 					dickstab = true;
 				}
@@ -182,29 +182,29 @@ void main()
 
 	if(dickstab)
 	{
-		writeln("sl_dickstab was just set to true<br>");
+		writeln("auto_dickstab was just set to true<br>");
 		writeln("Your warranty has been declared void.<br>");
-		set_property("sl_voidWarranty", "rekt");
-		writeln("Togging incompatible settings. You can re-enabled them here if you so desire. This resetting only takes effect upon setting sl_dickstab to true.<br><br>");
-#		if(get_property("sl_getDinseyGarbageMoney").to_boolean())
+		set_property("auto_voidWarranty", "rekt");
+		writeln("Togging incompatible settings. You can re-enabled them here if you so desire. This resetting only takes effect upon setting auto_dickstab to true.<br><br>");
+#		if(get_property("auto_getDinseyGarbageMoney").to_boolean())
 #		{
-#			set_property("sl_getDinseyGarbageMoney", false);
-#			writeln("Disabled sl_getDinseyGarbageMoney.<br>");
+#			set_property("auto_getDinseyGarbageMoney", false);
+#			writeln("Disabled auto_getDinseyGarbageMoney.<br>");
 #		}
-		if(get_property("sl_hippyInstead").to_boolean())
+		if(get_property("auto_hippyInstead").to_boolean())
 		{
-			set_property("sl_hippyInstead", false);
-			writeln("Disabled sl_hippyInstead.<br>");
+			set_property("auto_hippyInstead", false);
+			writeln("Disabled auto_hippyInstead.<br>");
 		}
-		if(get_property("sl_ignoreFlyer").to_boolean())
+		if(get_property("auto_ignoreFlyer").to_boolean())
 		{
-			set_property("sl_ignoreFlyer", false);
-			writeln("Disabled sl_ignoreFlyer.<br>");
+			set_property("auto_ignoreFlyer", false);
+			writeln("Disabled auto_ignoreFlyer.<br>");
 		}
-		if(!get_property("sl_delayHauntedKitchen").to_boolean())
+		if(!get_property("auto_delayHauntedKitchen").to_boolean())
 		{
-			set_property("sl_delayHauntedKitchen", true);
-			writeln("Enabled sl_delayHauntedKitchen.<br>");
+			set_property("auto_delayHauntedKitchen", true);
+			writeln("Enabled auto_delayHauntedKitchen.<br>");
 		}
 	}
 
@@ -229,7 +229,7 @@ void main()
 	}
 	foreach x in s["sharing"]
 	{
-		if(get_property("sl_allowSharingData").to_boolean())
+		if(get_property("auto_allowSharingData").to_boolean())
 		{
 			handleSetting("sharing", x);
 		}
@@ -241,7 +241,7 @@ void main()
 	writeln("<tr bgcolor=#ffff00><td>Pre: This setting takes effect on the next run that is started with the script.</td></tr>");
 	writeln("<tr bgcolor=#00ff00><td>Post: This setting is set by the first run of the script but can be overrode after that. Translation: Run script on day 1, after first adventure, set these however you like.</td></tr>");
 	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
-	if(get_property("sl_allowSharingData").to_boolean())
+	if(get_property("auto_allowSharingData").to_boolean())
 	{
 		writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data. This causes something to immediately (or when reasonable) happen.</td></tr>");
 	}
@@ -250,59 +250,59 @@ void main()
 	writeln("<br>Handle <a href=\"slascend_quests.php\">Quest Tracker</a><br>");
 
 	writeln("<h2>Banishes</h2>");
-	generateTrackingData("sl_banishes", true);
+	generateTrackingData("auto_banishes", true);
 
 	writeln("<h2>Yellow Rays <img src=\"images/itemimages/eyes.gif\"></h2>");
-	generateTrackingData("sl_yellowRays", true);
+	generateTrackingData("auto_yellowRays", true);
 
 	writeln("<h2>Sniffing</h2>");
-	generateTrackingData("sl_sniffs", true);
+	generateTrackingData("auto_sniffs", true);
 
 	writeln("<h2>Copies</h2>");
-	generateTrackingData("sl_copies", true);
+	generateTrackingData("auto_copies", true);
 
 	writeln("<h2>Instakills</h2>");
-	generateTrackingData("sl_instakill", true);
+	generateTrackingData("auto_instakill", true);
 
 	writeln("<h2>Eated</h2>");
-	generateTrackingData("sl_eaten", false);
+	generateTrackingData("auto_eaten", false);
 
 	writeln("<h2>Drinkenated</h2>");
-	generateTrackingData("sl_drunken", false);
+	generateTrackingData("auto_drunken", false);
 
 	writeln("<h2>Chewed</h2>");
-	generateTrackingData("sl_chewed", false);
+	generateTrackingData("auto_chewed", false);
 
 	// Don't want to show if they can't make wishes, but maybe they can with pocket wishes
-	if(get_property("sl_wishes") != "" || item_amount($item[genie bottle]) > 0)
+	if(get_property("auto_wishes") != "" || item_amount($item[genie bottle]) > 0)
 	{
 		writeln("<h2>Wishes</h2>");
-		generateTrackingData("sl_wishes", true);
+		generateTrackingData("auto_wishes", true);
 	}
 
 	if(my_class() == $class[Ed])
 	{
 		writeln("<h2>Lash of the Cobra <img src=\"images/itemimages/cobrahead.gif\"></h2>");
-		generateTrackingData("sl_lashes", false);
+		generateTrackingData("auto_lashes", false);
 
 		writeln("<h2>Talisman of Renenutet <img src=\"images/itemimages/tal_r.gif\"></h2>");
-		generateTrackingData("sl_renenutet", false);
+		generateTrackingData("auto_renenutet", false);
 	}
 
 	if(my_path() == "One Crazy Random Summer")
 	{
 		writeln("<h2>One Crazy Random Summer Fun-o-meter!</h2>");
-		generateTrackingData("sl_funTracker", true);
+		generateTrackingData("auto_funTracker", true);
 	}
 
 	if(!in_hardcore())
 	{
 		writeln("<h2>Pulls</h2>");
-		generateTrackingData("sl_pulls", false);
+		generateTrackingData("auto_pulls", false);
 	}
 
 	writeln("<h2>Other Stuff</h2>");
-	generateTrackingData("sl_otherstuff", true);
+	generateTrackingData("auto_otherstuff", true);
 
 
 	writeln("<h2>Info</h2>");
@@ -312,10 +312,10 @@ void main()
 	writeln("Tavern: " + get_property("tavernLayout") + "<br>");
 	if(my_class() == $class[Ed])
 	{
-		writeln("Combats: " + get_property("sl_edCombatCount") + "<br>");
-		writeln("Combat Rounds: " + get_property("sl_edCombatRoundCount") + "<br>");
+		writeln("Combats: " + get_property("auto_edCombatCount") + "<br>");
+		writeln("Combat Rounds: " + get_property("auto_edCombatRoundCount") + "<br>");
 	}
-	writeln("Version (sl_ascend): " + svn_info("soolar-sl_ascend-trunk-RELEASE").last_changed_rev + "<br>");
+	writeln("Version (auto_ascend): " + svn_info("soolar-auto_ascend-trunk-RELEASE").last_changed_rev + "<br>");
 
 	writeln("</body></html>");
 }

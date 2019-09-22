@@ -1,25 +1,25 @@
-script "sl_mr2016.ash"
+script "auto_mr2016.ash"
 
 #	This is meant for items that have a date of 2016.
 #	Handling: Witchess Set, Snojo, Source Terminal, Protonic Accelerator Pack
 #			Time-Spinner
 
 boolean snojoFightAvailable();
-boolean sl_advWitchess(string target);
-boolean sl_advWitchess(string target, string option);
+boolean auto_advWitchess(string target);
+boolean auto_advWitchess(string target, string option);
 
-boolean sl_haveWitchess();
-boolean sl_haveSourceTerminal();
-boolean sl_sourceTerminalRequest(string request);
-boolean sl_sourceTerminalEnhance(string request);
-int sl_sourceTerminalEnhanceLeft();
-boolean sl_sourceTerminalExtrude(string request);
-int sl_sourceTerminalExtrudeLeft();
-int[string] sl_sourceTerminalStatus();
-boolean sl_doPrecinct();
-item sl_bestBadge();
-boolean sl_sourceTerminalEducate(skill first);
-boolean sl_sourceTerminalEducate(skill first, skill second);
+boolean auto_haveWitchess();
+boolean auto_haveSourceTerminal();
+boolean auto_sourceTerminalRequest(string request);
+boolean auto_sourceTerminalEnhance(string request);
+int auto_sourceTerminalEnhanceLeft();
+boolean auto_sourceTerminalExtrude(string request);
+int auto_sourceTerminalExtrudeLeft();
+int[string] auto_sourceTerminalStatus();
+boolean auto_doPrecinct();
+item auto_bestBadge();
+boolean auto_sourceTerminalEducate(skill first);
+boolean auto_sourceTerminalEducate(skill first, skill second);
 boolean LX_ghostBusting();
 boolean expectGhostReport();
 boolean haveGhostReport();
@@ -36,7 +36,7 @@ boolean rethinkingCandy(effect acquire, boolean simulate);
 boolean rethinkingCandyList();
 
 //Supplemental
-int sl_advWitchessTargets(string target);
+int auto_advWitchessTargets(string target);
 
 
 
@@ -126,27 +126,27 @@ boolean snojoFightAvailable()
 }
 
 
-boolean sl_haveSourceTerminal()
+boolean auto_haveSourceTerminal()
 {
 	if(!is_unrestricted($item[Source Terminal]))
 	{
 		return false;
 	}
 	static boolean didCheck = false;
-	if((sl_my_path() == "Nuclear Autumn") && !didCheck)
+	if((auto_my_path() == "Nuclear Autumn") && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
 		if(contains_text(temp, "Source Terminal"))
 		{
-			set_property("sl_haveSourceTerminal", true);
+			set_property("auto_haveSourceTerminal", true);
 		}
 	}
 
-	return (sl_get_campground() contains $item[Source Terminal]);
+	return (auto_get_campground() contains $item[Source Terminal]);
 }
 
-boolean sl_sourceTerminalRequest(string request)
+boolean auto_sourceTerminalRequest(string request)
 {
 	//enhance <effect>.enh		[meat|items|init|critical]
 	//enquiry <effect>.enq		[familiar|monsters]
@@ -157,9 +157,9 @@ boolean sl_sourceTerminalRequest(string request)
 
 
 	//"campground.php?action=terminal&hack=enhance items.enh"
-	if(sl_haveSourceTerminal())
+	if(auto_haveSourceTerminal())
 	{
-		if(sl_my_path() == "Nuclear Autumn")
+		if(auto_my_path() == "Nuclear Autumn")
 		{
 			string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
 		}
@@ -175,13 +175,13 @@ boolean sl_sourceTerminalRequest(string request)
 	return false;
 }
 
-boolean sl_sourceTerminalExtrude(string request)
+boolean auto_sourceTerminalExtrude(string request)
 {
-	if(!sl_haveSourceTerminal())
+	if(!auto_haveSourceTerminal())
 	{
 		return false;
 	}
-	if(sl_sourceTerminalExtrudeLeft() == 0)
+	if(auto_sourceTerminalExtrudeLeft() == 0)
 	{
 		return false;
 	}
@@ -201,25 +201,25 @@ boolean sl_sourceTerminalExtrude(string request)
 	default:			return false;
 	}
 
-	return sl_sourceTerminalRequest("extrude -f " + actual + ".ext");
+	return auto_sourceTerminalRequest("extrude -f " + actual + ".ext");
 }
 
-int sl_sourceTerminalExtrudeLeft()
+int auto_sourceTerminalExtrudeLeft()
 {
-	if(sl_haveSourceTerminal())
+	if(auto_haveSourceTerminal())
 	{
 		return 3 - get_property("_sourceTerminalExtrudes").to_int();
 	}
 	return 0;
 }
 
-boolean sl_sourceTerminalEnhance(string request)
+boolean auto_sourceTerminalEnhance(string request)
 {
-	if(!sl_haveSourceTerminal())
+	if(!auto_haveSourceTerminal())
 	{
 		return false;
 	}
-	if(sl_sourceTerminalEnhanceLeft() == 0)
+	if(auto_sourceTerminalEnhanceLeft() == 0)
 	{
 		return false;
 	}
@@ -245,13 +245,13 @@ boolean sl_sourceTerminalEnhance(string request)
 
 	if(contains_text(get_property("sourceTerminalEnhanceKnown"), actual + ".enh"))
 	{
-		return sl_sourceTerminalRequest("enhance " + actual + ".enh");
+		return auto_sourceTerminalRequest("enhance " + actual + ".enh");
 	}
 	return false;
 }
-int sl_sourceTerminalEnhanceLeft()
+int auto_sourceTerminalEnhanceLeft()
 {
-	if(sl_haveSourceTerminal())
+	if(auto_haveSourceTerminal())
 	{
 		int used = get_property("_sourceTerminalEnhanceUses").to_int();
 
@@ -273,7 +273,7 @@ int sl_sourceTerminalEnhanceLeft()
 	return 0;
 }
 
-int[string] sl_sourceTerminalMissing()
+int[string] auto_sourceTerminalMissing()
 {
 	int[string] status;
 
@@ -321,7 +321,7 @@ int[string] sl_sourceTerminalMissing()
 	status["substats.enh"] = 1;
 	status["tram.ext"] = 1;
 	status["turbo.edu"] = 1;
-	int[string] have = sl_sourceTerminalStatus();
+	int[string] have = auto_sourceTerminalStatus();
 	foreach thing in have
 	{
 		status[thing] -= have[thing];
@@ -329,10 +329,10 @@ int[string] sl_sourceTerminalMissing()
 	return status;
 }
 
-int[string] sl_sourceTerminalStatus()
+int[string] auto_sourceTerminalStatus()
 {
 	int[string] status;
-	if(sl_haveSourceTerminal())
+	if(auto_haveSourceTerminal())
 	{
 		string temp = visit_url("campground.php?action=terminal");
 		temp = visit_url("choice.php?pwd=&whichchoice=1191&option=1&input=reset");
@@ -371,13 +371,13 @@ int[string] sl_sourceTerminalStatus()
 	return status;
 }
 
-boolean sl_sourceTerminalEducate(skill first, skill second)
+boolean auto_sourceTerminalEducate(skill first, skill second)
 {
-	if(!sl_haveSourceTerminal())
+	if(!auto_haveSourceTerminal())
 	{
 		return false;
 	}
-	if(sl_my_path() == "Pocket Familiars")
+	if(auto_my_path() == "Pocket Familiars")
 	{
 		return false;
 	}
@@ -408,36 +408,36 @@ boolean sl_sourceTerminalEducate(skill first, skill second)
 		}
 	}
 
-	sl_sourceTerminalRequest("educate " + firstSkill);
+	auto_sourceTerminalRequest("educate " + firstSkill);
 	if(secondSkill != "none.edu")
 	{
-		sl_sourceTerminalRequest("educate " + secondSkill);
+		auto_sourceTerminalRequest("educate " + secondSkill);
 	}
 	return true;
 }
 
-boolean sl_sourceTerminalEducate(skill first)
+boolean auto_sourceTerminalEducate(skill first)
 {
-	return sl_sourceTerminalEducate(first, $skill[none]);
+	return auto_sourceTerminalEducate(first, $skill[none]);
 }
 
-boolean sl_haveWitchess()
+boolean auto_haveWitchess()
 {
 	if(!is_unrestricted($item[Witchess Set]))
 	{
 		return false;
 	}
-	return (sl_get_campground() contains $item[Witchess Set]);
+	return (auto_get_campground() contains $item[Witchess Set]);
 }
 
-boolean sl_advWitchess(string target)
+boolean auto_advWitchess(string target)
 {
-	return sl_advWitchess(target, "");
+	return auto_advWitchess(target, "");
 }
 
-boolean sl_advWitchess(string target, string option)
+boolean auto_advWitchess(string target, string option)
 {
-	if(!sl_haveWitchess())
+	if(!auto_haveWitchess())
 	{
 		return false;
 	}
@@ -447,13 +447,13 @@ boolean sl_advWitchess(string target, string option)
 		return false;
 	}
 
-	int goal = sl_advWitchessTargets(target);
+	int goal = auto_advWitchessTargets(target);
 	if(goal == 0)
 	{
 		return false;
 	}
 
-	if(get_property("_sl_witchessBattles").to_int() >= 5)
+	if(get_property("_auto_witchessBattles").to_int() >= 5)
 	{
 		return false;
 	}
@@ -463,18 +463,18 @@ boolean sl_advWitchess(string target, string option)
 #		return false;
 #	}
 
-#	if(get_property("_witchessFights").to_int() > get_property("_sl_witchessBattles").to_int())
+#	if(get_property("_witchessFights").to_int() > get_property("_auto_witchessBattles").to_int())
 #	{
 #		print("_witchessFights is greater than our tracking, it is probably more accurate at this point (assuming manual Witchess combats).", "red");
-#		set_property("_sl_witchessBattles", get_property("_witchessFights"));
+#		set_property("_auto_witchessBattles", get_property("_witchessFights"));
 #	}
 
-	set_property("_sl_witchessBattles", get_property("_sl_witchessBattles").to_int() + 1);
+	set_property("_auto_witchessBattles", get_property("_auto_witchessBattles").to_int() + 1);
 
 	string temp = visit_url("campground.php?action=witchess");
 	if(!contains_text(temp, "Examine the shrink ray"))
 	{
-		set_property("_sl_witchessBattles", 5);
+		set_property("_auto_witchessBattles", 5);
 		return false;
 	}
 	temp = visit_url("choice.php?whichchoice=1181&pwd=&option=1");
@@ -482,14 +482,14 @@ boolean sl_advWitchess(string target, string option)
 	if(witchessMatcher.find())
 	{
 		int consider = (5 - witchessMatcher.group(1).to_int()) + 1;
-		if(consider > get_property("_sl_witchessBattles").to_int())
+		if(consider > get_property("_auto_witchessBattles").to_int())
 		{
-			set_property("_sl_witchessBattles", consider);
+			set_property("_auto_witchessBattles", consider);
 		}
 	}
 	else
 	{
-		set_property("_sl_witchessBattles", 5);
+		set_property("_auto_witchessBattles", 5);
 		return false;
 	}
 	temp = visit_url("choice.php?pwd=&option=2&whichchoice=1182");
@@ -504,7 +504,7 @@ boolean sl_advWitchess(string target, string option)
 }
 
 
-int sl_advWitchessTargets(string target)
+int auto_advWitchessTargets(string target)
 {
 	target = to_lower_case(target);
 	if((target == "knight") || (target == "meat") || (target == "food"))
@@ -524,7 +524,7 @@ int sl_advWitchessTargets(string target)
 		return 1938;
 	}
 
-	if((target == 1942) && (sl_my_path() == "Teetotaler"))
+	if((target == 1942) && (auto_my_path() == "Teetotaler"))
 	{
 		return 1936;
 	}
@@ -553,7 +553,7 @@ int sl_advWitchessTargets(string target)
 }
 
 
-item sl_bestBadge()
+item auto_bestBadge()
 {
 	item retval = $item[none];
 	foreach it in $items[Plastic Detective Badge, Bronze Detective Badge, Silver Detective Badge, Gold Detective Badge]
@@ -567,7 +567,7 @@ item sl_bestBadge()
 	return retval;
 }
 
-boolean sl_doPrecinct()
+boolean auto_doPrecinct()
 {
 	if(!is_unrestricted($item[Detective School Application]))
 	{
@@ -588,9 +588,9 @@ boolean sl_doPrecinct()
 		return true;
 	}
 
-	if(get_property("sl_eggDetective") != "")
+	if(get_property("auto_eggDetective") != "")
 	{
-		set_property("sl_eggDetective", "");
+		set_property("auto_eggDetective", "");
 	}
 
 
@@ -643,9 +643,9 @@ boolean sl_doPrecinct()
 		return false;
 	}
 
-	while(!contains_text(get_property("sl_eggDetective"), "solved"))
+	while(!contains_text(get_property("auto_eggDetective"), "solved"))
 	{
-		string[int] eggData = split_string(get_property("sl_eggDetective"), ",");
+		string[int] eggData = split_string(get_property("auto_eggDetective"), ",");
 		int i=1;
 		while(i<=9)
 		{
@@ -700,13 +700,13 @@ boolean sl_doPrecinct()
 						print("Jerkwad '" + person + "' won't say anything!", "blue");
 						generated += ":liar";
 					}
-					set_property("sl_eggDetective", generated + "," + get_property("sl_eggDetective"));
+					set_property("auto_eggDetective", generated + "," + get_property("auto_eggDetective"));
 				}
 			}
 			i += 1;
 		}
 
-		eggData = split_string(get_property("sl_eggDetective"), ",");
+		eggData = split_string(get_property("auto_eggDetective"), ",");
 		print("Generating goals...", "blue");
 		//At this point we\'ve visited every place and queried everyone. Now we need to determine who is identifying a killer.
 
@@ -768,10 +768,10 @@ boolean sl_doPrecinct()
 					replaceString = subEgg[4];
 				}
 
-				string temp = get_property("sl_eggDetective");
+				string temp = get_property("auto_eggDetective");
 				temp = replace_string(temp, oldValue, replaceString);
-				set_property("sl_eggDetective", temp);
-				eggData = split_string(get_property("sl_eggDetective"), ",");
+				set_property("auto_eggDetective", temp);
+				eggData = split_string(get_property("auto_eggDetective"), ",");
 				subEgg[4] = replaceString;
 			}
 			if(subEgg[4] != "liar")
@@ -905,14 +905,14 @@ boolean sl_doPrecinct()
 						{
 							print("Received a pension of " + pensionMatcher.group(1) + " cop dollars.", "green");
 						}
-						set_property("sl_eggDetective", "");
+						set_property("auto_eggDetective", "");
 						return true;
 					}
 				}
 			}
 		}
 
-		set_property("sl_eggDetective", get_property("sl_eggDetective") + "solved");
+		set_property("auto_eggDetective", get_property("auto_eggDetective") + "solved");
 		return false;
 	}
 
@@ -985,7 +985,7 @@ boolean LX_ghostBusting()
 
 	if((goal != $location[none]) && canAttempt)
 	{
-		if((sl_my_path() == "Community Service") && (my_daycount() == 1) && (goal == $location[The Spooky Forest]))
+		if((auto_my_path() == "Community Service") && (my_daycount() == 1) && (goal == $location[The Spooky Forest]))
 		{
 			return false;
 		}
@@ -1077,17 +1077,17 @@ boolean LX_ghostBusting()
 			return false;
 		}
 
-		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("sl_trapper") != "yeti") && (get_property("sl_trapper") != "finished")))
+		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("auto_trapper") != "yeti") && (get_property("auto_trapper") != "finished")))
 		{
 			return false;
 		}
-		if((goal == $location[The VERY Unquiet Garves]) && (get_property("sl_crypt") != "finished"))
+		if((goal == $location[The VERY Unquiet Garves]) && (get_property("auto_crypt") != "finished"))
 		{
 			return false;
 		}
 		if(goal == $location[The Castle in the Clouds in the Sky (Top Floor)])
 		{
-			if(get_property("sl_castleground") != "finished")
+			if(get_property("auto_castleground") != "finished")
 			{
 				return false;
 			}
@@ -1111,7 +1111,7 @@ boolean LX_ghostBusting()
 		{
 			return false;
 		}
-		if((goal == $location[The Hidden Park]) && (get_property("sl_hiddenunlock") == "finished"))
+		if((goal == $location[The Hidden Park]) && (get_property("auto_hiddenunlock") == "finished"))
 		{
 			return false;
 		}
@@ -1265,7 +1265,7 @@ boolean timeSpinnerCombat(monster goal, string option)
 			pages[2] = "choice.php?pwd=&whichchoice=1196&option=1&monid=" + goal.id;
 			if(slAdvBypass(0, pages, $location[Noob Cave], option))
 			{
-				handleTracker(goal, $item[Time-Spinner], "sl_copies");
+				handleTracker(goal, $item[Time-Spinner], "auto_copies");
 			}
 			else
 			{
@@ -1322,16 +1322,16 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 	}
 
 	int maxprice = 2500;
-	if(get_property("sl_maxCandyPrice").to_int() != 0)
+	if(get_property("auto_maxCandyPrice").to_int() != 0)
 	{
-		maxprice = get_property("sl_maxCandyPrice").to_int();
+		maxprice = get_property("auto_maxCandyPrice").to_int();
 	}
 
 	item[int] simpleList;
 	item[int] complexList;
 	foreach it in $items[]
 	{
-		if(it.candy && (item_amount(it) > 0) && (sl_mall_price(it) <= maxprice) && it.tradeable)
+		if(it.candy && (item_amount(it) > 0) && (auto_mall_price(it) <= maxprice) && it.tradeable)
 		{
 			if(it.candy_type == "simple")
 			{
@@ -1344,19 +1344,19 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 		}
 	}
 
-	sort simpleList by sl_mall_price(value);
-	sort complexList by sl_mall_price(value);
+	sort simpleList by auto_mall_price(value);
+	sort complexList by auto_mall_price(value);
 	item[int] simple = List(simpleList);
 	item[int] complex = List(complexList);
 
 #	foreach idx, it in simple
 #	{
-#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + sl_mall_price(it), "blue");
+#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + auto_mall_price(it), "blue");
 #	}
 #
 #	foreach idx, it in complex
 #	{
-#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + sl_mall_price(it), "blue");
+#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + auto_mall_price(it), "blue");
 #	}
 
 	int bestCost = 2 * maxprice;
@@ -1382,9 +1382,9 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 					{
 						print("Possible: " + simple[i] + ", " + simple[j], "blue");
 					}
-					if((sl_mall_price(simple[i]) + sl_mall_price(simple[j])) < bestCost)
+					if((auto_mall_price(simple[i]) + auto_mall_price(simple[j])) < bestCost)
 					{
-						bestCost = sl_mall_price(simple[i]) + sl_mall_price(simple[j]);
+						bestCost = auto_mall_price(simple[i]) + auto_mall_price(simple[j]);
 						bestFirst = simple[i];
 						bestSecond = simple[j];
 					}
@@ -1407,9 +1407,9 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 					{
 						print("Possible: " + simple[i] + ", " + complex[j], "blue");
 					}
-					if((sl_mall_price(simple[i]) + sl_mall_price(complex[j])) < bestCost)
+					if((auto_mall_price(simple[i]) + auto_mall_price(complex[j])) < bestCost)
 					{
-						bestCost = sl_mall_price(simple[i]) + sl_mall_price(complex[j]);
+						bestCost = auto_mall_price(simple[i]) + auto_mall_price(complex[j]);
 						bestFirst = simple[i];
 						bestSecond = complex[j];
 					}
@@ -1437,9 +1437,9 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 					{
 						print("Possible: " + complex[i] + ", " + complex[j], "blue");
 					}
-					if((sl_mall_price(complex[i]) + sl_mall_price(complex[j])) < bestCost)
+					if((auto_mall_price(complex[i]) + auto_mall_price(complex[j])) < bestCost)
 					{
-						bestCost = sl_mall_price(complex[i]) + sl_mall_price(complex[j]);
+						bestCost = auto_mall_price(complex[i]) + auto_mall_price(complex[j]);
 						bestFirst = complex[i];
 						bestSecond = complex[j];
 					}

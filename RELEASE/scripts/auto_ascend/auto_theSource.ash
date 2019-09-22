@@ -1,4 +1,4 @@
-script "sl_theSource.ash"
+script "auto_theSource.ash"
 
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();
@@ -10,11 +10,11 @@ boolean theSource_initializeSettings()
 {
 	if(my_path() == "The Source")
 	{
-#		set_property("sl_lastSpoon", 0);
-		set_property("sl_getBeehive", true);
-		set_property("sl_getStarKey", true);
-		set_property("sl_holeinthesky", true);
-		set_property("sl_wandOfNagamar", false);
+#		set_property("auto_lastSpoon", 0);
+		set_property("auto_getBeehive", true);
+		set_property("auto_getStarKey", true);
+		set_property("auto_holeinthesky", true);
+		set_property("auto_wandOfNagamar", false);
 	}
 	return false;
 }
@@ -94,7 +94,7 @@ boolean LX_theSource()
 
 	if((my_daycount() <= 2) && (have_effect($effect[Substats.enh]) == 0) && (my_level() < 13))
 	{
-		sl_sourceTerminalEnhance("substats");
+		auto_sourceTerminalEnhance("substats");
 	}
 
 	location goal = get_property("sourceOracleTarget").to_location();
@@ -169,17 +169,17 @@ boolean LX_theSource()
 			return false;
 		}
 
-		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("sl_trapper") != "yeti") && (get_property("sl_trapper") != "finished")))
+		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("auto_trapper") != "yeti") && (get_property("auto_trapper") != "finished")))
 		{
 			return false;
 		}
-		if((goal == $location[The VERY Unquiet Garves]) && (get_property("sl_crypt") != "finished"))
+		if((goal == $location[The VERY Unquiet Garves]) && (get_property("auto_crypt") != "finished"))
 		{
 			return false;
 		}
 		if(goal == $location[The Castle in the Clouds in the Sky (Top Floor)])
 		{
-			if(get_property("sl_castleground") != "finished")
+			if(get_property("auto_castleground") != "finished")
 			{
 				return false;
 			}
@@ -203,7 +203,7 @@ boolean LX_theSource()
 		{
 			return false;
 		}
-		if((goal == $location[The Hidden Park]) && (get_property("sl_hiddenunlock") == "finished"))
+		if((goal == $location[The Hidden Park]) && (get_property("auto_hiddenunlock") == "finished"))
 		{
 			return false;
 		}

@@ -1,4 +1,4 @@
-script "sl_eudora.ash"
+script "auto_eudora.ash"
 
 boolean eudora_available()
 {

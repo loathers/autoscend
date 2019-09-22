@@ -1,4 +1,4 @@
-script "sl_list.ash"
+script "auto_list.ash"
 
 # familiar, int, item, effect, location defined. Define the rest at some point.
 

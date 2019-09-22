@@ -1,4 +1,4 @@
-script "sl_heavyrains.ash"
+script "auto_heavyrains.ash"
 
 boolean rainManSummon(string monsterName, boolean copy, boolean wink);
 
@@ -7,19 +7,19 @@ void hr_initializeSettings()
 	if(my_path() == "Heavy Rains")
 	{
 		#Rain Man (Heavy Rains) Related settings
-		set_property("sl_holeinthesky", false);
-		set_property("sl_mountainmen", "");
-		set_property("sl_ninjasnowmanassassin", "");
-		set_property("sl_orcishfratboyspy", "");
+		set_property("auto_holeinthesky", false);
+		set_property("auto_mountainmen", "");
+		set_property("auto_ninjasnowmanassassin", "");
+		set_property("auto_orcishfratboyspy", "");
 
-		set_property("sl_lastthunder", "100");
-		set_property("sl_lastthunderturn", "0");
+		set_property("auto_lastthunder", "100");
+		set_property("auto_lastthunderturn", "0");
 
-		set_property("sl_wandOfNagamar", false);
-		set_property("sl_writingDeskSummon", true);
+		set_property("auto_wandOfNagamar", false);
+		set_property("auto_writingDeskSummon", true);
 
-		set_property("sl_day1_desk", "");
-		set_property("sl_day1_skills", "");
+		set_property("auto_day1_desk", "");
+		set_property("auto_day1_skills", "");
 	}
 }
 
@@ -35,30 +35,30 @@ boolean hr_handleFamiliar(familiar fam)
 
 boolean routineRainManHandler()
 {
-	if(!have_skill($skill[Rain Man]) || (sl_my_path() != "Heavy Rains"))
+	if(!have_skill($skill[Rain Man]) || (auto_my_path() != "Heavy Rains"))
 	{
 		return false;
 	}
 #	if(my_rain() > (92 - (12 * my_daycount())))
 	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0))
 	{
-		if(get_property("sl_mountainmen") == "")
+		if(get_property("auto_mountainmen") == "")
 		{
-			set_property("sl_mountainmen", "1");
+			set_property("auto_mountainmen", "1");
 			return rainManSummon("mountain man", true, false);
 		}
 
-		if(get_property("sl_trapper") == "start")
+		if(get_property("auto_trapper") == "start")
 		{
 			return rainManSummon("mountain man", false, false);
 		}
 
-		if(get_property("sl_ninjasnowmanassassin") == "")
+		if(get_property("auto_ninjasnowmanassassin") == "")
 		{
 			return rainManSummon("ninja snowman assassin", true, false);
 		}
 
-		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("sl_orcishfratboyspy") == ""))
+		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == ""))
 		{
 			return rainManSummon("orcish frat boy spy", false, false);
 		}
@@ -80,7 +80,7 @@ boolean routineRainManHandler()
 		}
 		if(needDigitalKey())
 		{
-			if((get_property("sl_nuns") == "done") || (my_rain() > 92))
+			if((get_property("auto_nuns") == "done") || (my_rain() > 92))
 			{
 				if((item_amount($item[white pixel]) < 30) && (item_amount($item[digital key]) == 0))
 				{
@@ -103,7 +103,7 @@ void hr_initializeDay(int day)
 {
 	if(my_path() == "Heavy Rains")
 	{
-		if((day == 1) && (get_property("sl_day1_skills") != "finished"))
+		if((day == 1) && (get_property("auto_day1_skills") != "finished"))
 		{
 			set_property("choiceAdventure967", "1");
 			set_property("choiceAdventure968", "1");
@@ -140,7 +140,7 @@ void hr_initializeDay(int day)
 			{
 				buyUpTo(1, $item[miniature life preserver]);
 			}
-			set_property("sl_day1_skills", "finished");
+			set_property("auto_day1_skills", "finished");
 			visit_url("main.php");
 		}
 		else if((day == 2) && (my_rain() > 80))
@@ -306,7 +306,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		return false;
 	}
 
-	# Some of the logic here has been lost due to sl_combat.ash
+	# Some of the logic here has been lost due to auto_combat.ash
 	# It will probably never be updated since it just slows down the script and has no actual damage.
 
 	if(my_rain() < 50)
@@ -408,7 +408,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		#already have the subgoal, don't summon
 		return false;
 	}
-	if(((get_property("sl_gunpowder") == "finished") || (item_amount($item[barrel of gunpowder]) >= 5)) && (monsterName == "lobsterfrogman"))
+	if(((get_property("auto_gunpowder") == "finished") || (item_amount($item[barrel of gunpowder]) >= 5)) && (monsterName == "lobsterfrogman"))
 	{
 		#already have the subgoal, don't summon
 		return false;
@@ -421,13 +421,13 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		count = count + min(item_amount($item[ninja carabiner]), 1);
 		if(count == 3)
 		{
-			set_property("sl_ninjasnowmanassassin", "1");
+			set_property("auto_ninjasnowmanassassin", "1");
 			#already have all ninja gear
 			return false;
 		}
 		if(count == 2)
 		{
-			set_property("sl_ninjasnowmanassassin", "1");
+			set_property("auto_ninjasnowmanassassin", "1");
 			copy = false;
 		}
 		wink = false;
@@ -435,7 +435,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 
 	if(monsterName == "orcish frat boy spy")
 	{
-		set_property("sl_orcishfratboyspy", "done");
+		set_property("auto_orcishfratboyspy", "done");
 		if((item_amount($item[beer helmet]) > 0) || (item_amount($item[bejeweled pledge pin]) > 0) || (item_amount($item[distressed denim pants]) > 0))
 		{
 			return false;
@@ -493,7 +493,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 
 	if(copy)
 	{
-		set_property("sl_doCombatCopy", "yes");
+		set_property("auto_doCombatCopy", "yes");
 	}
 	print("Looking to summon: " + monsterName, "blue");
 

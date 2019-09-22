@@ -5,7 +5,7 @@
 # Second column is priority number
 # Third column is what familiar
 # Fourth column (optional) is conditions for that item to be considered
-# See sl_check_conditions for information on valid conditionals
+# See auto_check_conditions for information on valid conditionals
 # A familiar can be listed multiple times (presumably with different conditionals)
 # First familiar found that is available, can be used, and meets its conditions (if any) will be used
 
@@ -34,7 +34,7 @@ init	3	Happy Medium
 item	0	XO Skeleton	path:Zombie Master;prop:_xoHugsUsed<11
 item	1	Reagnimated Gnome	path:Zombie Master
 # Do we wanna grab cubeling drops? Usually yes.
-item	2	Gelatinous Cubeling	prop:sl_useCubeling=true;prop:sl_cubeItems=true
+item	2	Gelatinous Cubeling	prop:auto_useCubeling=true;prop:auto_cubeItems=true
 # Cheerleader isn't subject to weight restrictions in KOLHS, so let's just use it before almost anything to be safee
 item	3	Steam-Powered Cheerleader	path:KOLHS
 # Wanna get that jar
@@ -189,7 +189,7 @@ meat	39	Leprechaun
 # Whelps on average restore .375*(weight+5)
 # Superwhelps up this to 0.75*(weight+5)
 # But starfish restore roughly 0.25*weight PER TURN
-# and average combat length looks to be ~6 rounds in sl_ascend, so that's 1.5*weight on average
+# and average combat length looks to be ~6 rounds in auto_ascend, so that's 1.5*weight on average
 # Not even bothering with cocoabos
 # Ash is nice
 regen	0	Galloping Grill	prop:_hotAshesDrops<5

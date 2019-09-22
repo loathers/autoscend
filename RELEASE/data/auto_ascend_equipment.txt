@@ -5,7 +5,7 @@
 # Second column is priority number
 # Third column is what item
 # Fourth column (optional) is conditions for that item to be considered
-# See sl_check_conditions for information on valid conditionals
+# See auto_check_conditions for information on valid conditionals
 # An item can be listed multiple times (presumably with different conditionals)
 # First item found that is available, can be equipped, and meets its conditions (if any) will be used
 

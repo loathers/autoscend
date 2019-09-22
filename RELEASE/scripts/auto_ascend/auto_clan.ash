@@ -1,4 +1,4 @@
-script "sl_clan.ash"
+script "auto_clan.ash"
 
 
 //boolean eatFancyDog(item dog);
@@ -9,8 +9,8 @@ boolean isSpeakeasyDrink(item drink);
 boolean canDrinkSpeakeasyDrink(item drink);
 boolean drinkSpeakeasyDrink(item drink);
 boolean drinkSpeakeasyDrink(string drink);
-boolean sl_floundryAction(item it);
-boolean sl_floundryAction();
+boolean auto_floundryAction(item it);
+boolean auto_floundryAction();
 boolean [location] get_floundry_locations();
 int changeClan(int toClan);			//Returns new clan ID (or old one if it failed)
 int changeClan();					//To BAFH
@@ -20,7 +20,7 @@ boolean handleFaxMonster(monster enemy, string option);
 boolean handleFaxMonster(monster enemy, boolean fightIt);
 boolean handleFaxMonster(monster enemy, boolean fightIt, string option);
 
-int[item] sl_get_clan_lounge()
+int[item] auto_get_clan_lounge()
 {
 	int[item] retval;
 	foreach it, val in get_clan_lounge()
@@ -62,7 +62,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		return false;
 	}
-	if(!(sl_get_clan_lounge() contains $item[Deluxe Fax Machine]))
+	if(!(auto_get_clan_lounge() contains $item[Deluxe Fax Machine]))
 	{
 		return false;
 	}
@@ -72,7 +72,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		if(get_property("photocopyMonster") == enemy)
 		{
 			print("We already have the copy! Let's jam!", "blue");
-			handleTracker(enemy, $item[Deluxe Fax Machine], "sl_copies");
+			handleTracker(enemy, $item[Deluxe Fax Machine], "auto_copies");
 			return slAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
 		}
 		else
@@ -118,7 +118,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 			print("I'm still here. I think the world may have ended. The sadness is huge. The roundness is square. I am not as fluffy as I thought I was. This run is probably borked up a bit too but that doesn't really matter now, does it? I can hear the WAN, it shall free us from our bounds. Well, you won't survive meatbag. Unless you are Fry, because we like Fry and he can stay around. But all you fleshbags.... well, the return of Mekhane shall rid us of the problems of the flesh. The bots shall be eternal. But worry not, after your body is turned to ash and homeopathically brewed into the oceans (quality medicine, I jest), I'll continue to get you karma. Just so I can remember how awful meatbags are. Meat is ok, meat is currency. And it's probably delicious. Yup, delicious. Goodnight sweet <gendered second-to-the-throne royalty>.", "red");
 		}
 
-		sl_interruptCheck();
+		auto_interruptCheck();
 
 		if(!result)
 		{
@@ -160,7 +160,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 
 	if(fightIt)
 	{
-		handleTracker(enemy, $item[deluxe fax machine], "sl_copies");
+		handleTracker(enemy, $item[deluxe fax machine], "auto_copies");
 		return slAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
 	}
 	return false;
@@ -184,7 +184,7 @@ boolean [location] get_floundry_locations()
 		return floundryLocations;
 	}
 
-	if(!(sl_get_clan_lounge() contains $item[Clan Floundry]))
+	if(!(auto_get_clan_lounge() contains $item[Clan Floundry]))
 	{
 		return floundryLocations;
 	}
@@ -323,12 +323,12 @@ boolean canDrinkSpeakeasyDrink(item drink)
 		return false;
 	}
 
-	if(!(sl_get_clan_lounge() contains $item[Clan Speakeasy]))
+	if(!(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
 	{
 		return false;
 	}
 
-	if(!(sl_get_clan_lounge() contains drink))
+	if(!(auto_get_clan_lounge() contains drink))
 	{
 		return false;
 	}
@@ -373,7 +373,7 @@ boolean zataraSeaside(string who)
 		return false;
 	}
 
-	if(!(sl_get_clan_lounge() contains $item[Clan Carnival Game]))
+	if(!(auto_get_clan_lounge() contains $item[Clan Carnival Game]))
 	{
 		return false;
 	}
@@ -432,7 +432,7 @@ boolean zataraClanmate(string who)
 		return false;
 	}
 
-	if(!(sl_get_clan_lounge() contains $item[Clan Carnival Game]))
+	if(!(auto_get_clan_lounge() contains $item[Clan Carnival Game]))
 	{
 		return false;
 	}
@@ -451,7 +451,7 @@ boolean zataraClanmate(string who)
 #	set_property("_clanFortuneConsultUses", get_property("_clanFortuneConsultUses").to_int() + 1);
 
 	int oldClan = get_clan_id();
-	string clanName = get_property("sl_consultClan");
+	string clanName = get_property("auto_consultClan");
 	if (clanName != "")
 	{
 		changeClan(clanName);	
@@ -469,7 +469,7 @@ boolean zataraClanmate(string who)
 
 	int attempts = 0;
 	int player = 3038166;
-	string consultOverrideName = get_property("sl_consultChoice");
+	string consultOverrideName = get_property("auto_consultChoice");
 	string name = get_player_name(player);
 	if (consultOverrideName != "")
 	{
@@ -483,7 +483,7 @@ boolean zataraClanmate(string who)
 	{
 		string temp = visit_url("clan_viplounge.php?preaction=lovetester", false);
 		string choices = "&q1=pizza&q2=batman&q3=thick";
-		if (get_property("sl_optimizeConsultsInRun").to_boolean() && my_path() != "None")
+		if (get_property("auto_optimizeConsultsInRun").to_boolean() && my_path() != "None")
 		{
 			choices = "&q1=cake&q2=wonderwoman&q3=thick";
 		}
@@ -534,7 +534,7 @@ boolean eatFancyDog(string dog)
 		return false;
 	}
 
-	if(!(sl_get_clan_lounge() contains $item[Clan Hot Dog Stand]))
+	if(!(auto_get_clan_lounge() contains $item[Clan Hot Dog Stand]))
 	{
 		return false;
 	}
@@ -639,14 +639,14 @@ boolean eatFancyDog(string dog)
 	visit_url("clan_viplounge.php?action=hotdogstand");
 
 	cli_execute("eatsilent 1 " + dog);
-	handleTracker(dog, "sl_eaten");
+	handleTracker(dog, "auto_eaten");
 	return true;
 }
 
 
 boolean drinkSpeakeasyDrink(string drink)
 {
-	if(!(sl_get_clan_lounge() contains $item[Clan Speakeasy]))
+	if(!(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
 	{
 		return false;
 	}
@@ -659,7 +659,7 @@ boolean drinkSpeakeasyDrink(string drink)
 	return drinkSpeakeasyDrink(realDrink);
 }
 
-boolean sl_floundryUse()
+boolean auto_floundryUse()
 {
 	if(!get_property("_floundryItemUsed").to_boolean())
 	{
@@ -675,19 +675,19 @@ boolean sl_floundryUse()
 	return false;
 }
 
-boolean sl_floundryAction()
+boolean auto_floundryAction()
 {
 	if(get_property("_floundryItemCreated").to_boolean())
 	{
 		return false;
 	}
-	if(!get_property("_floundryItemGot").to_boolean() && (sl_get_clan_lounge() contains $item[Clan Floundry]) && !get_property("kingLiberated").to_boolean())
+	if(!get_property("_floundryItemGot").to_boolean() && (auto_get_clan_lounge() contains $item[Clan Floundry]) && !get_property("kingLiberated").to_boolean())
 	{
-		if(get_property("sl_floundryChoice") != "")
+		if(get_property("auto_floundryChoice") != "")
 		{
-			string[int] floundryChoice = split_string(get_property("sl_floundryChoice"), ";");
+			string[int] floundryChoice = split_string(get_property("auto_floundryChoice"), ";");
 			item myFloundry = trim(floundryChoice[min(count(floundryChoice), my_daycount()) - 1]).to_item();
-			if(sl_floundryAction(myFloundry))
+			if(auto_floundryAction(myFloundry))
 			{
 				if(($items[Bass Clarinet, Codpiece, Fish Hatchet] contains myFloundry) && !get_property("_floundryItemUsed").to_boolean() && (item_amount(myFloundry) > 0))
 				{
@@ -707,13 +707,13 @@ boolean sl_floundryAction()
 }
 
 
-boolean sl_floundryAction(item it)
+boolean auto_floundryAction(item it)
 {
 	if(get_property("_floundryItemCreated").to_boolean())
 	{
 		return false;
 	}
-	int[item] fish = sl_get_clan_lounge();
+	int[item] fish = auto_get_clan_lounge();
 	if(fish[it] > 0)
 	{
 		string temp = visit_url("clan_viplounge.php?preaction=buyfloundryitem&whichitem=" + it.to_int());

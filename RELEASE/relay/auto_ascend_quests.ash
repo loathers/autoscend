@@ -131,7 +131,7 @@ void main()
 	writeln("<html><head><title>soolascend Crapulent Quest Manager of Questing</title>");
 	writeln("</head><body><h1>soolascend Quest Manager</h1>");
 
-	file_to_map("sl_ascend_quests.txt", s);
+	file_to_map("auto_ascend_quests.txt", s);
 
 	boolean dickstab = false;
 
@@ -204,7 +204,7 @@ void main()
 		{
 			continue;
 		}
-		if(get_property("sl_allowSharingData").to_boolean())
+		if(get_property("auto_allowSharingData").to_boolean())
 		{
 			handleSetting(x);
 		}
@@ -216,7 +216,7 @@ void main()
 	writeln("<tr bgcolor=#ffff00><td>Pre: This setting takes effect on the next run that is started with the script.</td></tr>");
 	writeln("<tr bgcolor=#00ff00><td>Post: This setting is set by the first run of the script but can be overrode after that. Translation: Run script on day 1, after first adventure, set these however you like.</td></tr>");
 	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
-	if(get_property("sl_allowSharingData").to_boolean())
+	if(get_property("auto_allowSharingData").to_boolean())
 	{
 		writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data. This causes something to immediately (or when reasonable) happen.</td></tr>");
 	}

@@ -1,11 +1,11 @@
-script "sl_mr2015.ash"
+script "auto_mr2015.ash"
 
 #	This is meant for items that have a date of 2015
 #	Handling: shrine to the Barrel God, Chateau Mantegna Room Key, Deck of Every Card
 #
 
-boolean sl_barrelPrayers();
-boolean sl_mayoItems();
+boolean auto_barrelPrayers();
+boolean auto_mayoItems();
 
 boolean chateaumantegna_available();
 void chateaumantegna_useDesk();
@@ -33,14 +33,14 @@ boolean mayo_acquireMayo(item it)
 	{
 		return false;
 	}
-	if(!(sl_get_campground() contains $item[Portable Mayo Clinic]))
+	if(!(auto_get_campground() contains $item[Portable Mayo Clinic]))
 	{
 		return false;
 	}
 	return true;
 }
 
-boolean sl_barrelPrayers()
+boolean auto_barrelPrayers()
 {
 	if(!is_unrestricted($item[Shrine to the Barrel God]))
 	{
@@ -206,7 +206,7 @@ boolean sl_barrelPrayers()
 }
 
 
-boolean sl_mayoItems()
+boolean auto_mayoItems()
 {
 	if(!is_unrestricted($item[Portable Mayo Clinic]))
 	{
@@ -220,7 +220,7 @@ boolean sl_mayoItems()
 	{
 		return false;
 	}
-	if(!(sl_get_campground() contains $item[Portable Mayo Clinic]))
+	if(!(auto_get_campground() contains $item[Portable Mayo Clinic]))
 	{
 		return false;
 	}
@@ -817,7 +817,7 @@ boolean deck_useScheme(string action)
 	else if(action == "turns")
 	{
 		cards = $strings[Ancestral Recall, Island];
-		if((get_property("sl_trapper") == "") || (get_property("sl_trapper") == "start"))
+		if((get_property("auto_trapper") == "") || (get_property("auto_trapper") == "start"))
 		{
 			cards = $strings[Ancestral Recall, Island, Mine];
 		}
@@ -1031,7 +1031,7 @@ boolean deck_useScheme(string action)
 		{
 			if(my_daycount() == 1)
 			{
-				set_property("sl_cubeItems", false);
+				set_property("auto_cubeItems", false);
 			}
 			if(towerKeyCount() >= 3)
 			{
@@ -1074,7 +1074,7 @@ boolean deck_useScheme(string action)
 
 	if((action == "") && (my_meat() < 10000))
 	{
-		sl_autosell(min(1, item_amount($item[1952 Mickey Mantle Card])), $item[1952 Mickey Mantle Card]);
+		auto_autosell(min(1, item_amount($item[1952 Mickey Mantle Card])), $item[1952 Mickey Mantle Card]);
 	}
 
 	if((action == "farming") || (action == "turns"))

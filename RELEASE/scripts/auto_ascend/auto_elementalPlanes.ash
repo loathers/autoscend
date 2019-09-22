@@ -1,4 +1,4 @@
-script "sl_elementalPlanes.ash"
+script "auto_elementalPlanes.ash"
 
 boolean getDiscoStyle();
 boolean getDiscoStyle(int choice);
@@ -187,7 +187,7 @@ boolean dinseylandfill_garbageMoney()
 	{
 		return false;
 	}
-	if(!get_property("sl_getDinseyGarbageMoney").to_boolean())
+	if(!get_property("auto_getDinseyGarbageMoney").to_boolean())
 	{
 		return false;
 	}
@@ -269,7 +269,7 @@ boolean volcano_lavaDogs()
 	{
 		return false;
 	}
-	if(!(sl_get_campground() contains $item[Haunted Doghouse]))
+	if(!(auto_get_campground() contains $item[Haunted Doghouse]))
 	{
 		return false;
 	}
@@ -317,7 +317,7 @@ boolean volcano_bunkerJob()
 		string temp = visit_url("place.php?whichplace=airport_hot&action=airport4_questhub");
 	}
 
-	int ticketValue = sl_mall_price($item[One-Day Ticket To That 70s Volcano]) / 3;
+	int ticketValue = auto_mall_price($item[One-Day Ticket To That 70s Volcano]) / 3;
 	int option = 0;
 	int optionCost = 999999999;
 
@@ -328,15 +328,15 @@ boolean volcano_bunkerJob()
 		int currentCost = 999999999;
 		if($items[Gooey Lava Globs, New Age Healing Crystal, SMOOCH Bottlecap, Superduperheated Metal] contains it)
 		{
-			currentCost = sl_mall_price(it) * get_property("_volcanoItemCount" + index).to_int();
+			currentCost = auto_mall_price(it) * get_property("_volcanoItemCount" + index).to_int();
 		}
 		else if(it == $item[Smooth Velvet Bra])
 		{
-			currentCost = 3 * sl_mall_price($item[Unsmoothed Velvet]) * get_property("_volcanoItemCount" + index).to_int();
+			currentCost = 3 * auto_mall_price($item[Unsmoothed Velvet]) * get_property("_volcanoItemCount" + index).to_int();
 		}
 		else if(it == $item[SMOOCH Bracers])
 		{
-			currentCost = 5 * sl_mall_price($item[Superheated Metal]) * get_property("_volcanoItemCount" + index).to_int();
+			currentCost = 5 * auto_mall_price($item[Superheated Metal]) * get_property("_volcanoItemCount" + index).to_int();
 		}
 
 		if(currentCost < optionCost)
@@ -352,16 +352,16 @@ boolean volcano_bunkerJob()
 		item it = to_item(get_property("_volcanoItem" + option).to_int());
 		if($items[Gooey Lava Globs, New Age Healing Crystal, SMOOCH Bottlecap, Superduperheated Metal] contains it)
 		{
-			buy(get_property("_volcanoItemCount" + option).to_int(), it, sl_mall_price(it)*2);
+			buy(get_property("_volcanoItemCount" + option).to_int(), it, auto_mall_price(it)*2);
 		}
 		else if(it == $item[Smooth Velvet Bra])
 		{
-			buy(get_property("_volcanoItemCount" + option).to_int() * 3, $item[Unsmoothed Velvet], sl_mall_price($item[Unsmoothed Velvet])*2);
+			buy(get_property("_volcanoItemCount" + option).to_int() * 3, $item[Unsmoothed Velvet], auto_mall_price($item[Unsmoothed Velvet])*2);
 			cli_execute("make 3 " + it);
 		}
 		else if(it == $item[SMOOCH Bracers])
 		{
-			buy(get_property("_volcanoItemCount" + option).to_int() * 5, $item[Superheated Metal], sl_mall_price($item[Superheated Metal])*2);
+			buy(get_property("_volcanoItemCount" + option).to_int() * 5, $item[Superheated Metal], auto_mall_price($item[Superheated Metal])*2);
 			cli_execute("make 3 " + it);
 		}
 

@@ -1,9 +1,9 @@
-script "sl_mr2012.ash"
+script "auto_mr2012.ash"
 
-boolean sl_reagnimatedGetPart()
+boolean auto_reagnimatedGetPart()
 {
 	// UNTESTED, DON'T ACTUALLY CALL UNTIL TESTED
-	if(!sl_have_familiar($familiar[Reagnimated Gnome]))
+	if(!auto_have_familiar($familiar[Reagnimated Gnome]))
 	{
 		return false;
 	}

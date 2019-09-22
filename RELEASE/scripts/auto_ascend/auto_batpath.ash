@@ -1,4 +1,4 @@
-script "sl_batpath.ash"
+script "auto_batpath.ash"
 
 void bat_startAscension()
 {
@@ -11,16 +11,16 @@ void bat_initializeSettings()
 {
 	if(my_path() == "Dark Gyffte")
 	{
-		set_property("sl_100familiar", $familiar[Egg Benedict]);
-		set_property("sl_cubeItems", false);
-		set_property("sl_getSteelOrgan", false);
-		set_property("sl_grimstoneFancyOilPainting", false);
-		set_property("sl_grimstoneOrnateDowsingRod", false);
-		set_property("sl_paranoia", 10);
-		set_property("sl_useCubeling", false);
-		set_property("sl_wandOfNagamar", false);
-		set_property("sl_getStarKey", true);
-		set_property("sl_bat_desiredForm", "");
+		set_property("auto_100familiar", $familiar[Egg Benedict]);
+		set_property("auto_cubeItems", false);
+		set_property("auto_getSteelOrgan", false);
+		set_property("auto_grimstoneFancyOilPainting", false);
+		set_property("auto_grimstoneOrnateDowsingRod", false);
+		set_property("auto_paranoia", 10);
+		set_property("auto_useCubeling", false);
+		set_property("auto_wandOfNagamar", false);
+		set_property("auto_getStarKey", true);
+		set_property("auto_bat_desiredForm", "");
 	}
 }
 
@@ -35,7 +35,7 @@ boolean bat_wantHowl(location loc)
 	{
 		return false;
 	}
-	if(sl_banishesUsedAt(loc) contains "baleful howl")
+	if(auto_banishesUsedAt(loc) contains "baleful howl")
 	{
 		return false;
 	}
@@ -43,7 +43,7 @@ boolean bat_wantHowl(location loc)
 	monster[int] monsters = get_monsters(loc);
 	foreach i in monsters
 	{
-		if (!(banished contains monsters[i]) && (sl_wantToBanish(monsters[i], loc))) {
+		if (!(banished contains monsters[i]) && (auto_wantToBanish(monsters[i], loc))) {
 			return true;
 		}
 	}
@@ -53,30 +53,30 @@ boolean bat_wantHowl(location loc)
 void bat_formNone()
 {
 	if(my_class() != $class[Vampyre]) return;
-	if(get_property("sl_bat_desiredForm") != "")
+	if(get_property("auto_bat_desiredForm") != "")
 	{
-		set_property("sl_bat_desiredForm", "");
+		set_property("auto_bat_desiredForm", "");
 	}
 }
 
 void bat_formWolf()
 {
 	if(my_class() != $class[Vampyre]) return;
-	set_property("sl_bat_desiredForm", "wolf");
+	set_property("auto_bat_desiredForm", "wolf");
 	bat_switchForm($effect[Wolf Form]);
 }
 
 void bat_formMist()
 {
 	if(my_class() != $class[Vampyre]) return;
-	set_property("sl_bat_desiredForm", "mist");
+	set_property("auto_bat_desiredForm", "mist");
 	bat_switchForm($effect[Mist Form]);
 }
 
 void bat_formBats()
 {
 	if(my_class() != $class[Vampyre]) return;
-	set_property("sl_bat_desiredForm", "bats");
+	set_property("auto_bat_desiredForm", "bats");
 	bat_switchForm($effect[Bats Form]);
 }
 
@@ -110,7 +110,7 @@ boolean bat_formPreAdventure()
 {
 	if(my_class() != $class[Vampyre]) return false;
 
-	string desiredForm = get_property("sl_bat_desiredForm");
+	string desiredForm = get_property("auto_bat_desiredForm");
 	effect form;
 	switch(desiredForm)
 	{
@@ -124,8 +124,8 @@ boolean bat_formPreAdventure()
 		bat_clearForms();
 		return true;
 	default:
-		print("sl_bat_desiredForm was set to bad value: '" + desiredForm + "'. Should be '', 'wolf', 'mist', or 'bats'.", "red");
-		set_property("sl_bat_desiredForm", "");
+		print("auto_bat_desiredForm was set to bad value: '" + desiredForm + "'. Should be '', 'wolf', 'mist', or 'bats'.", "red");
+		set_property("auto_bat_desiredForm", "");
 		return false;
 	}
 }
@@ -134,8 +134,8 @@ void bat_initializeSession()
 {
 	if(my_class() == $class[Vampyre])
 	{
-		set_property("sl_mpAutoRecovery", get_property("mpAutoRecovery"));
-		set_property("sl_mpAutoRecoveryTarget", get_property("mpAutoRecoveryTarget"));
+		set_property("auto_mpAutoRecovery", get_property("mpAutoRecovery"));
+		set_property("auto_mpAutoRecoveryTarget", get_property("mpAutoRecoveryTarget"));
 		set_property("mpAutoRecovery", -0.05);
 		set_property("mpAutoRecoveryTarget", 0.0);
 	}
@@ -145,10 +145,10 @@ void bat_terminateSession()
 {
 	if(my_class() == $class[Vampyre])
 	{
-		set_property("mpAutoRecovery", get_property("sl_mpAutoRecovery"));
-		set_property("sl_mpAutoRecovery", 0.0);
-		set_property("mpAutoRecoveryTarget", get_property("sl_mpAutoRecoveryTarget"));
-		set_property("sl_mpAutoRecoveryTarget", 0.0);
+		set_property("mpAutoRecovery", get_property("auto_mpAutoRecovery"));
+		set_property("auto_mpAutoRecovery", 0.0);
+		set_property("mpAutoRecoveryTarget", get_property("auto_mpAutoRecoveryTarget"));
+		set_property("auto_mpAutoRecoveryTarget", 0.0);
 	}
 }
 
@@ -159,11 +159,11 @@ void bat_initializeDay(int day)
 		return;
 	}
 
-	if(get_property("sl_day_init").to_int() < day)
+	if(get_property("auto_day_init").to_int() < day)
 	{
-		set_property("_sl_bat_bloodBank", 0); // 0: no blood yet, 1: base blood, 2: intimidating blood
-		set_property("sl_bat_ensorcels", 0);
-		set_property("sl_bat_soulmonster", "");
+		set_property("_auto_bat_bloodBank", 0); // 0: no blood yet, 1: base blood, 2: intimidating blood
+		set_property("auto_bat_ensorcels", 0);
+		set_property("auto_bat_soulmonster", "");
 		bat_tryBloodBank();
 		if (bat_shouldPickSkills(20))
 		{
@@ -224,7 +224,7 @@ int bat_remainingBaseHP()
 	int baseHP = bat_baseHP();
 	foreach sk in $skills[]
 	{
-		// important that this uses have_skill and not sl_have_skill, as sl_have_skill would
+		// important that this uses have_skill and not auto_have_skill, as auto_have_skill would
 		// report incorrectly if any form intrinsics are active
 		if(have_skill(sk))
 			baseHP -= bat_maxHPCost(sk);
@@ -244,7 +244,7 @@ boolean[skill] bat_desiredSkills(int hpLeft, boolean[skill] forcedPicks)
 	int baseHP = bat_baseHP();
 	boolean[skill] picks;
 
-	if(get_property("_sl_bat_bloodBank") != "2")
+	if(get_property("_auto_bat_bloodBank") != "2")
 	{
 		forcedPicks[$skill[Intimidating Aura]] = true;
 	}
@@ -347,7 +347,7 @@ boolean bat_shouldPickSkills(int hpLeft)
 
 boolean bat_shouldEnsorcel(monster m)
 {
-	if(my_class() != $class[Vampyre] || !sl_have_skill($skill[Ensorcel]))
+	if(my_class() != $class[Vampyre] || !auto_have_skill($skill[Ensorcel]))
 		return false;
 
 	// until we have a way to tell what we already have as an ensorcelee, just ensorcel goblins
@@ -564,11 +564,11 @@ boolean bat_skillValid(skill sk)
 
 boolean bat_tryBloodBank()
 {
-	int bloodBank = get_property("_sl_bat_bloodBank").to_int();
+	int bloodBank = get_property("_auto_bat_bloodBank").to_int();
 	if(bloodBank == 0 || (bloodBank == 1 && have_skill($skill[Intimidating Aura])))
 	{
 		visit_url("place.php?whichplace=town_right&action=town_bloodbank");
-		set_property("_sl_bat_bloodBank", (have_skill($skill[Intimidating Aura]) ? 2 : 1));
+		set_property("_auto_bat_bloodBank", (have_skill($skill[Intimidating Aura]) ? 2 : 1));
 		return true;
 	}
 

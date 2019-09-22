@@ -1,6 +1,6 @@
-script "sl_test.ash"
+script "auto_test.ash"
 
-import <sl_ascend.ash>
+import <auto_ascend.ash>
 
 boolean passed;
 
@@ -39,8 +39,8 @@ void testLoadConsumables()
 
 void testKnapsackAutoConsume()
 {
-	sl_knapsackAutoConsume("eat", true);
-	sl_knapsackAutoConsume("drink", true);
+	auto_knapsackAutoConsume("eat", true);
+	auto_knapsackAutoConsume("drink", true);
 }
 
 void main()

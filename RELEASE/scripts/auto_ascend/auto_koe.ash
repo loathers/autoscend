@@ -1,4 +1,4 @@
-script "sl_koe.ash"
+script "auto_koe.ash"
 
 boolean in_koe()
 {
@@ -9,21 +9,21 @@ boolean koe_initializeSettings()
 {
 	if(in_koe())
 	{
-		set_property("sl_getStarKey", true);
-		set_property("sl_bruteForcePalindome", in_hardcore());
-		set_property("sl_day1_cobb", "finished");
-		set_property("sl_bean", true);
-		set_property("sl_airship", "finished");
-		set_property("sl_holeinthesky", false);
-		set_property("sl_grimstoneOrnateDowsingRod", "false");
-		set_property("sl_invaderKilled", false);
-		set_property("sl_paranoia", 3);
+		set_property("auto_getStarKey", true);
+		set_property("auto_bruteForcePalindome", in_hardcore());
+		set_property("auto_day1_cobb", "finished");
+		set_property("auto_bean", true);
+		set_property("auto_airship", "finished");
+		set_property("auto_holeinthesky", false);
+		set_property("auto_grimstoneOrnateDowsingRod", "false");
+		set_property("auto_invaderKilled", false);
+		set_property("auto_paranoia", 3);
 
 		// The Hidden Temple is originally unlocked
-		set_property("sl_spookyfertilizer", "finished");
-		set_property("sl_spookymap", "finished");
-		set_property("sl_treecoin", "finished");
-		set_property("sl_spookysapling", "finished");
+		set_property("auto_spookyfertilizer", "finished");
+		set_property("auto_spookymap", "finished");
+		set_property("auto_treecoin", "finished");
+		set_property("auto_spookysapling", "finished");
 	}
 	return false;
 }
@@ -34,7 +34,7 @@ boolean LX_koeInvaderHandler()
 	{
 		return false;
 	}
-	if(get_property("sl_invaderKilled").to_boolean())
+	if(get_property("auto_invaderKilled").to_boolean())
 	{
 		return false;
 	}
@@ -67,7 +67,7 @@ boolean LX_koeInvaderHandler()
 	float baseDamage = 1.0 - 0.1 * my_daycount();
 	foreach el in $elements[cold, hot, sleaze, spooky, stench]
 	{
-		float offset = sl_canBeachCombHead(el) ? 3.0 : 0.0;
+		float offset = auto_canBeachCombHead(el) ? 3.0 : 0.0;
 		damagePerRound += baseDamage * (100.0 - elemental_resist_value(offset + simValue(el + " Resistance")))/100.0;
 	}
 	print("The Invader: Expecting to take " + damagePerRound + " damage per round", "blue");
@@ -76,7 +76,7 @@ boolean LX_koeInvaderHandler()
 	int damageCap = 100 * my_daycount();
 
 	// How many damage sources do we need?
-	if(have_skill($skill[Weapon of the Pastalord]) && sl_is_valid($skill[Weapon of the Pastalord]))
+	if(have_skill($skill[Weapon of the Pastalord]) && auto_is_valid($skill[Weapon of the Pastalord]))
 	{
 		int sources = 2;
 		if(possessEquipment($item[meteorb])) sources++;
@@ -84,7 +84,7 @@ boolean LX_koeInvaderHandler()
 		{
 			foreach el in $elements[cold, hot, sleaze, spooky, stench]
 			{
-				sl_beachCombHead(el);
+				auto_beachCombHead(el);
 			}
 			// Meteorb is going to add +hot, so remove that
 			setFlavour($element[cold]);
@@ -99,7 +99,7 @@ boolean LX_koeInvaderHandler()
 			{
 				abort("We died to the invader. Do it manually please?");
 			}
-			set_property("sl_invaderKilled", true);
+			set_property("auto_invaderKilled", true);
 			return ret;
 		}
 	}

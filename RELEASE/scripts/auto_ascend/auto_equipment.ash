@@ -1,4 +1,4 @@
-script "sl_ascend/sl_equipment.ash";
+script "auto_ascend/auto_equipment.ash";
 
 void equipBaseline();
 void equipRollover();
@@ -9,7 +9,7 @@ int equipmentAmount(item equipment);
 
 string getMaximizeSlotPref(slot s)
 {
-	return "_sl_maximize_equip_" + s.to_string();
+	return "_auto_maximize_equip_" + s.to_string();
 }
 
 item getTentativeMaximizeEquip(slot s)
@@ -19,12 +19,12 @@ item getTentativeMaximizeEquip(slot s)
 
 boolean slEquip(slot s, item it)
 {
-	if(!possessEquipment(it) || !sl_can_equip(it))
+	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
 		return false;
 	}
 
-	sl_debug_print("Equipping " + it + " to slot " + s, "gold");
+	auto_debug_print("Equipping " + it + " to slot " + s, "gold");
 
 	if(useMaximizeToEquip())
 	{
@@ -46,7 +46,7 @@ boolean slEquip(item it)
 // made for Antique Machete, mainly
 boolean slForceEquip(slot s, item it)
 {
-	if(!possessEquipment(it) || !sl_can_equip(it))
+	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
 		return false;
 	}
@@ -72,7 +72,7 @@ boolean slOutfit(string toWear)
 	if(useMaximizeToEquip())
 	{
 		// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
-		sl_debug_print('Adding outfit "' + toWear + '" to maximizer statement', "gold");
+		auto_debug_print('Adding outfit "' + toWear + '" to maximizer statement', "gold");
 		boolean pass = true;
 		foreach i,it in outfit_pieces(toWear)
 		{
@@ -90,7 +90,7 @@ boolean tryAddItemToMaximize(slot s, item it)
 {
 	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
 	{
-		sl_debug_print("But " + s + " is an invalid equip slot... What?", "red");
+		auto_debug_print("But " + s + " is an invalid equip slot... What?", "red");
 		return false;
 	}
 	switch(s)
@@ -120,7 +120,7 @@ boolean tryAddItemToMaximize(slot s, item it)
 
 boolean useMaximizeToEquip()
 {
-	return get_property("sl_maximize_baseline").to_lower_case() != "disabled";
+	return get_property("auto_maximize_baseline").to_lower_case() != "disabled";
 }
 
 string defaultMaximizeStatement()
@@ -128,7 +128,7 @@ string defaultMaximizeStatement()
 	string res = "5item,meat";
 
 	// combat is completely different in pokefam, so most stuff doesn't matter there
-	if(sl_my_path() != "Pocket Familiars")
+	if(auto_my_path() != "Pocket Familiars")
 	{
 		res += ",0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
 		if(my_class() == $class[Vampyre])
@@ -150,7 +150,7 @@ string defaultMaximizeStatement()
 			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
 		}
 
-		if(sl_have_familiar($familiar[mosquito]))
+		if(auto_have_familiar($familiar[mosquito]))
 		{
 			res += ",2familiar weight";
 			if(my_familiar().familiar_weight() < 20)
@@ -170,7 +170,7 @@ string defaultMaximizeStatement()
 
 void resetMaximize()
 {
-	string res = get_property("sl_maximize_baseline");
+	string res = get_property("auto_maximize_baseline");
 	if(res == "" || res.to_lower_case() == "default")
 	{
 		res = defaultMaximizeStatement();
@@ -185,8 +185,8 @@ void resetMaximize()
 		// spoon breaks mafia, and the others have limited charges
 		res += "-equip " + it;
 	}
-	set_property("sl_maximize_current", res);
-	sl_debug_print("Resetting sl_maximize_current to " + res, "gold");
+	set_property("auto_maximize_current", res);
+	auto_debug_print("Resetting auto_maximize_current to " + res, "gold");
 
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
@@ -214,8 +214,8 @@ void finalizeMaximize()
 
 void addToMaximize(string add)
 {
-	sl_debug_print('Adding "' + add + '" to current maximizer statement', "gold");
-	string res = get_property("sl_maximize_current");
+	auto_debug_print('Adding "' + add + '" to current maximizer statement', "gold");
+	string res = get_property("auto_maximize_current");
 	boolean addHasComma = add.starts_with(",");
 	if(res != "" && !addHasComma)
 	{
@@ -227,13 +227,13 @@ void addToMaximize(string add)
 		add = add.substring(1);
 	}
 	res += add;
-	set_property("sl_maximize_current", res);
+	set_property("auto_maximize_current", res);
 }
 
 void removeFromMaximize(string rem)
 {
-	sl_debug_print('Removing "' + rem + '" from current maximizer statement', "gold");
-	string res = get_property("sl_maximize_current");
+	auto_debug_print('Removing "' + rem + '" from current maximizer statement', "gold");
+	string res = get_property("auto_maximize_current");
 	res = res.replace_string(rem, "");
 	// let's be safe here
 	res = res.replace_string(",,", ",");
@@ -245,27 +245,27 @@ void removeFromMaximize(string rem)
 	{
 		res = res.substring(1);
 	}
-	set_property("sl_maximize_current", res);
+	set_property("auto_maximize_current", res);
 }
 
 boolean maximizeContains(string check)
 {
-	return get_property("sl_maximize_current").contains_text(check);
+	return get_property("auto_maximize_current").contains_text(check);
 }
 
 boolean simMaximize()
 {
-	string backup = get_property("sl_maximize_current");
+	string backup = get_property("auto_maximize_current");
 	finalizeMaximize();
-	boolean res = slMaximize(get_property("sl_maximize_current"), true);
-	set_property("sl_maximize_current", backup);
+	boolean res = slMaximize(get_property("auto_maximize_current"), true);
+	set_property("auto_maximize_current", backup);
 	return res;
 }
 
 boolean simMaximizeWith(string add)
 {
 	addToMaximize(add);
-	sl_debug_print("Simulating: " + get_property("sl_maximize_current"), "gold");
+	auto_debug_print("Simulating: " + get_property("auto_maximize_current"), "gold");
 	boolean res = simMaximize();
 	removeFromMaximize(add);
 	return res;
@@ -284,15 +284,15 @@ void equipMaximizedGear()
 	}
 
 	finalizeMaximize();
-	print("Maximizing: " + get_property("sl_maximize_current"), "blue");
-	maximize(get_property("sl_maximize_current"), 2500, 0, false);
+	print("Maximizing: " + get_property("auto_maximize_current"), "blue");
+	maximize(get_property("auto_maximize_current"), 2500, 0, false);
 }
 
 void equipOverrides()
 {
 	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc]
 	{
-		string overrides = get_property("sl_equipment_override_" + slot_str);
+		string overrides = get_property("auto_equipment_override_" + slot_str);
 		if(overrides == "")
 		{
 			continue;
@@ -314,7 +314,7 @@ void equipOverrides()
 			item it = item_str.to_item();
 			if(it == $item[none])
 			{
-				print('"' + item_str + '" does not properly convert to an item (found in sl_equipment_override_' + slot_str + ')', "red");
+				print('"' + item_str + '" does not properly convert to an item (found in auto_equipment_override_' + slot_str + ')', "red");
 				continue;
 			}
 			if(slEquip(s, it))
@@ -347,8 +347,8 @@ void equipBaselineGear()
 	}
 
 	string [string,int,string] equipment_text;
-	if(!file_to_map("sl_ascend_equipment.txt", equipment_text))
-		print("Could not load sl_ascend_equipment.txt. This is bad!", "red");
+	if(!file_to_map("auto_ascend_equipment.txt", equipment_text))
+		print("Could not load auto_ascend_equipment.txt. This is bad!", "red");
 	item [slot] [int] equipment;
 	boolean considerGearOption(string item_str, string slot_str, string conds)
 	{
@@ -366,14 +366,14 @@ void equipBaselineGear()
 				abort('"' + eq_slot + '" could not be properly converted to a slot!');
 		}
 		// might as well make sure we can even equip it before looking at conditions
-		if(!sl_can_equip(it, eq_slot))
+		if(!auto_can_equip(it, eq_slot))
 			return false;
 		// also we need to have it for it to be equippable, obviously
 		if(equipmentAmount(it) == 0)
 			return false;
 
-		string ignore = get_property("sl_ignoreCombat");
-		if(get_property("sl_beatenUpCount").to_int() >= 7)
+		string ignore = get_property("auto_ignoreCombat");
+		if(get_property("auto_beatenUpCount").to_int() >= 7)
 			ignore += "(ml)";
 		if(ignore != "")
 		{
@@ -387,7 +387,7 @@ void equipBaselineGear()
 				return false;
 		}
 
-		if(!sl_check_conditions(conds))
+		if(!auto_check_conditions(conds))
 			return false;
 		// The item is approved! In to the list it goes.
 		equipment[eq_slot][equipment[eq_slot].count()] = it;
@@ -396,7 +396,7 @@ void equipBaselineGear()
 	boolean [string] ignore_slots;
 	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc]
 	{
-		string override = get_property("sl_equipment_override_" + slot_str);
+		string override = get_property("auto_equipment_override_" + slot_str);
 		if(override == "")
 			continue;
 		ignore_slots[slot_str] = true;
@@ -453,7 +453,7 @@ void equipBaselineGear()
 
 void makeStartingSmiths()
 {
-	if(!sl_have_skill($skill[Summon Smithsness]))
+	if(!auto_have_skill($skill[Summon Smithsness]))
 	{
 		return;
 	}
@@ -645,7 +645,7 @@ void equipBaseline()
 		handleBjornify($familiar[El Vibrato Megadrone]);
 	}
 
-	if(get_property("sl_diceMode").to_boolean())
+	if(get_property("auto_diceMode").to_boolean())
 	{
 		slEquip($slot[acc1], $item[Dice Ring]);
 		slEquip($slot[acc2], $item[Dice Belt Buckle]);
@@ -673,10 +673,10 @@ void ensureSealClubs()
 	}
 	else
 	{
-		string ignore = get_property("sl_ignoreCombat");
-		set_property("sl_ignoreCombat", ignore + "(seal)");
+		string ignore = get_property("auto_ignoreCombat");
+		set_property("auto_ignoreCombat", ignore + "(seal)");
 		equipBaseline();
-		set_property("sl_ignoreCombat", ignore);
+		set_property("auto_ignoreCombat", ignore);
 	}
 }
 
@@ -688,10 +688,10 @@ void removeNonCombat()
 	}
 	else
 	{
-		string ignore = get_property("sl_ignoreCombat");
-		set_property("sl_ignoreCombat", ignore + "(noncombat)");
+		string ignore = get_property("auto_ignoreCombat");
+		set_property("auto_ignoreCombat", ignore + "(noncombat)");
 		equipBaseline();
-		set_property("sl_ignoreCombat", ignore);
+		set_property("auto_ignoreCombat", ignore);
 	}
 }
 
@@ -703,10 +703,10 @@ void removeCombat()
 	}
 	else
 	{
-		string ignore = get_property("sl_ignoreCombat");
-		set_property("sl_ignoreCombat", ignore + "(combat)");
+		string ignore = get_property("auto_ignoreCombat");
+		set_property("auto_ignoreCombat", ignore + "(combat)");
 		equipBaseline();
-		set_property("sl_ignoreCombat", ignore);
+		set_property("auto_ignoreCombat", ignore);
 	}
 }
 
@@ -717,7 +717,7 @@ void equipRollover()
 		return;
 	}
 
-	if(sl_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li'l Unicorn Costume])) && sl_is_valid($item[Li'l Unicorn Costume]) && sl_my_path() != "Pocket Familiars")
+	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li'l Unicorn Costume])) && auto_is_valid($item[Li'l Unicorn Costume]) && auto_my_path() != "Pocket Familiars")
 	{
 		cli_execute("buy Li'l Unicorn Costume");
 	}
@@ -727,7 +727,7 @@ void equipRollover()
 	string to_max = "-tie,adv";
 	if(hippy_stone_broken())
 		to_max += ",0.3fites";
-	if(sl_have_familiar($familiar[Trick-or-Treating Tot]))
+	if(auto_have_familiar($familiar[Trick-or-Treating Tot]))
 		to_max += ",switch Trick-or-Treating Tot";
 	
 	maximize(to_max, false);

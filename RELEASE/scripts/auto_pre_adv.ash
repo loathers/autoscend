@@ -1,5 +1,5 @@
 script "presool.ash";
-import<sl_ascend.ash>
+import<auto_ascend.ash>
 
 void handlePreAdventure()
 {
@@ -8,7 +8,7 @@ void handlePreAdventure()
 
 void handlePreAdventure(location place)
 {
-	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (sl_my_path() == "Heavy Rains"))
+	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (auto_my_path() == "Heavy Rains"))
 	{
 		abort("Familiar has no equipment, WTF");
 	}
@@ -21,14 +21,14 @@ void handlePreAdventure(location place)
 #	set_location doesn't help us to resolve this, just let it infinite and fail in that exotic case that was propbably due to a bad user.
 #	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
 #	{
-#		if(!sl_have_familiar($familiar[Machine Elf]))
+#		if(!auto_have_familiar($familiar[Machine Elf]))
 #		{
 #			abort("Massive failure, we don't use snowglobes.");
 #		}
 #		print("Somehow we are considering the DMT without a Machine Elf...", "red");
 #	}
 
-	if(get_property("sl_disableAdventureHandling").to_boolean())
+	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		print("Preadventure skipped by standard adventure handler.", "green");
 		return;
@@ -47,10 +47,10 @@ void handlePreAdventure(location place)
 	}
 
 	print("Starting preadventure script...", "green");
-	sl_debug_print("Adventuring at " + place.to_string(), "green");
+	auto_debug_print("Adventuring at " + place.to_string(), "green");
 
-	familiar famChoice = to_familiar(get_property("sl_familiarChoice"));
-	if(sl_my_path() == "Pocket Familiars")
+	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
+	if(auto_my_path() == "Pocket Familiars")
 	{
 		famChoice = $familiar[none];
 	}
@@ -64,7 +64,7 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if(sl_have_familiar($familiar[cat burglar]))
+	if(auto_have_familiar($familiar[cat burglar]))
 	{
 		item[monster] heistDesires = catBurglarHeistDesires();
 		boolean wannaHeist = false;
@@ -74,7 +74,7 @@ void handlePreAdventure(location place)
 			{
 				if(mmon == mon)
 				{
-					sl_debug_print("Using cat burglar because we want to burgle a " + it + " from " + mon);
+					auto_debug_print("Using cat burglar because we want to burgle a " + it + " from " + mon);
 					wannaHeist = true;
 				}
 			}
@@ -87,7 +87,7 @@ void handlePreAdventure(location place)
 
 	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
 	{
-		if(!sl_have_familiar($familiar[Machine Elf]))
+		if(!auto_have_familiar($familiar[Machine Elf]))
 		{
 			abort("Massive failure, we don't use snowglobes.");
 		}
@@ -154,7 +154,7 @@ void handlePreAdventure(location place)
 				buffMaintain($effect[Song of Accompaniment], 10, 1, 1);
 			}
 		}
-		else if((place.turns_spent > 1) && (place != get_property("sl_priorLocation").to_location()))
+		else if((place.turns_spent > 1) && (place != get_property("auto_priorLocation").to_location()))
 		{
 			//When do we consider Song of Cockiness?
 			buffMaintain($effect[Song of Fortune], 10, 1, 1);
@@ -167,7 +167,7 @@ void handlePreAdventure(location place)
 
 	if(my_class() == $class[Ed])
 	{
-		if((zone_combatMod(place)._int < combat_rate_modifier()) && (have_effect($effect[Shelter Of Shed]) == 0) && sl_have_skill($skill[Shelter Of Shed]))
+		if((zone_combatMod(place)._int < combat_rate_modifier()) && (have_effect($effect[Shelter Of Shed]) == 0) && auto_have_skill($skill[Shelter Of Shed]))
 		{
 			acquireMP(25, false);
 		}
@@ -199,11 +199,11 @@ void handlePreAdventure(location place)
 	{
 		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
 		{
-			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
+			acquireCombatMods(zone_combatMod(place)._int, auto_beta());
 		}
-		if(place == $location[Sonofa Beach] && !sl_voteMonster())
+		if(place == $location[Sonofa Beach] && !auto_voteMonster())
 		{
-			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
+			acquireCombatMods(zone_combatMod(place)._int, auto_beta());
 		}
 
 		if($locations[Whitey\'s Grove] contains place)
@@ -213,7 +213,7 @@ void handlePreAdventure(location place)
 
 		if($locations[A Maze of Sewer Tunnels, The Castle in the Clouds in the Sky (Basement), The Castle in the Clouds in the Sky (Ground Floor), The Castle in the Clouds in the Sky (Top Floor), The Dark Elbow of the Woods, The Dark Heart of the Woods, The Dark Neck of the Woods, The Defiled Alcove, The Defiled Cranny, The Extreme Slope, The Haunted Ballroom, The Haunted Bathroom, The Haunted Billiards Room, The Haunted Gallery, The Hidden Hospital, The Hidden Park, The Ice Hotel, Inside the Palindome, The Obligatory Pirate\'s Cove, The Penultimate Fantasy Airship, The Poop Deck, The Spooky Forest, Super Villain\'s Lair, Twin Peak, The Upper Chamber, Wartime Hippy Camp, Wartime Hippy Camp (Frat Disguise)] contains place)
 		{
-			acquireCombatMods(zone_combatMod(place)._int, sl_beta());
+			acquireCombatMods(zone_combatMod(place)._int, auto_beta());
 		}
 	}
 	else
@@ -236,20 +236,20 @@ void handlePreAdventure(location place)
 
 	foreach i,mon in get_monsters(place)
 	{
-		if(sl_wantToYellowRay(mon, place))
+		if(auto_wantToYellowRay(mon, place))
 		{
 			adjustForYellowRayIfPossible(mon);
 		}
 
-		if(sl_wantToBanish(mon, place))
+		if(auto_wantToBanish(mon, place))
 		{
 			adjustForBanishIfPossible(mon, place);
 		}
 	}
 
-	if(sl_latteDropWanted(place))
+	if(auto_latteDropWanted(place))
 	{
-		print('We want to get the "' + sl_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
+		print('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
 		slEquip($item[latte lovers member's mug]);
 	}
 
@@ -273,7 +273,7 @@ void handlePreAdventure(location place)
 		slEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
-	if((place == $location[The Haunted Wine Cellar]) && (my_turncount() != 0) && (get_property("sl_winebomb") == "partial"))
+	if((place == $location[The Haunted Wine Cellar]) && (my_turncount() != 0) && (get_property("auto_winebomb") == "partial"))
 	{
 		if(!possessEquipment($item[Unstable Fulminate]))
 		{
@@ -355,7 +355,7 @@ void handlePreAdventure(location place)
 	}
 	groundhogAbort(place);
 	if(my_inebriety() > inebriety_limit()) abort("You are overdrunk. Stop it.");
-	set_property("sl_priorLocation", place);
+	set_property("auto_priorLocation", place);
 	print("Pre Adventure at " + place + " done, beep.", "blue");
 }
 

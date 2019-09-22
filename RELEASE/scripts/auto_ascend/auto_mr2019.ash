@@ -1,38 +1,38 @@
-script "sl_mr2019.ash"
+script "auto_mr2019.ash"
 
 # This is meant for items that have a date of 2019
 
-int sl_sausageEaten()
+int auto_sausageEaten()
 {
 	return get_property("_sausagesEaten").to_int();
 }
 
-int sl_sausageLeftToday()
+int auto_sausageLeftToday()
 {
-	return 23 - sl_sausageEaten();
+	return 23 - auto_sausageEaten();
 }
 
-int sl_sausageUnitsNeededForSausage(int numSaus)
+int auto_sausageUnitsNeededForSausage(int numSaus)
 {
 	return 111 * numSaus;
 }
 
-int sl_sausageMeatPasteNeededForSausage(int numSaus)
+int auto_sausageMeatPasteNeededForSausage(int numSaus)
 {
-	return ceil(sl_sausageUnitsNeededForSausage(numSaus).to_float() / 10.0);
+	return ceil(auto_sausageUnitsNeededForSausage(numSaus).to_float() / 10.0);
 }
 
-int sl_sausageFightsToday()
+int auto_sausageFightsToday()
 {
 	return get_property("_sausageFights").to_int();
 }
 
-boolean sl_sausageGrind(int numSaus)
+boolean auto_sausageGrind(int numSaus)
 {
-	return sl_sausageGrind(numSaus, false);
+	return auto_sausageGrind(numSaus, false);
 }
 
-boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
+boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 {
 	// Some paths are pretty meat-intensive early. Just in case...
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
@@ -64,12 +64,12 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	int pastesNeeded = 0;
 	int pastesAvail = item_amount($item[meat paste]);
 	int meatToSave = 5000;
-	if(sl_my_path() == "Community Service")
+	if(auto_my_path() == "Community Service")
 		meatToSave = 500;
 	for i from 1 to numSaus
 	{
 		int sausNum = i + sausMade;
-		int pastesForThisSaus = sl_sausageMeatPasteNeededForSausage(sausNum);
+		int pastesForThisSaus = auto_sausageMeatPasteNeededForSausage(sausNum);
 		if((pastesNeeded + pastesForThisSaus - pastesAvail) * 10 + meatToSave > my_meat())
 		{
 			if(failIfCantMakeAll)
@@ -97,7 +97,7 @@ boolean sl_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	return true;
 }
 
-boolean sl_sausageEatEmUp(int maxToEat)
+boolean auto_sausageEatEmUp(int maxToEat)
 {
 	if(in_tcrs()) return false;
 
@@ -111,17 +111,17 @@ boolean sl_sausageEatEmUp(int maxToEat)
 	int sausage_reserve_size = noMP ? 0 : 3;
 	if (maxToEat == 0)
 	{
-		maxToEat = sl_sausageLeftToday();
+		maxToEat = auto_sausageLeftToday();
 	}
 	else
 	{
 		sausage_reserve_size = 0;
 	}
 
-	if(item_amount($item[magical sausage]) <= sausage_reserve_size || get_property("sl_saveMagicalSausage").to_boolean())
+	if(item_amount($item[magical sausage]) <= sausage_reserve_size || get_property("auto_saveMagicalSausage").to_boolean())
 		return false;
 
-	if(sl_sausageLeftToday() <= 0)
+	if(auto_sausageLeftToday() <= 0)
 		return false;
 
 	int originalMp = my_maxmp();
@@ -135,7 +135,7 @@ boolean sl_sausageEatEmUp(int maxToEat)
 	// but meh.
 	while(maxToEat > 0 && item_amount($item[magical sausage]) > sausage_reserve_size)
 	{
-		if(sl_sausageLeftToday() <= 0)
+		if(auto_sausageLeftToday() <= 0)
 			break;
 		if(!noMP)
 		{
@@ -164,21 +164,21 @@ boolean sl_sausageEatEmUp(int maxToEat)
 	return true;
 }
 
-boolean sl_sausageEatEmUp() {
-	return sl_sausageEatEmUp(0);
+boolean auto_sausageEatEmUp() {
+	return auto_sausageEatEmUp(0);
 }
 
-boolean sl_sausageGoblin()
+boolean auto_sausageGoblin()
 {
-	return sl_sausageGoblin($location[none], "");
+	return auto_sausageGoblin($location[none], "");
 }
 
-boolean sl_sausageGoblin(location loc)
+boolean auto_sausageGoblin(location loc)
 {
-	return sl_sausageGoblin(loc, "");
+	return auto_sausageGoblin(loc, "");
 }
 
-boolean sl_sausageGoblin(location loc, string option)
+boolean auto_sausageGoblin(location loc, string option)
 {
 	// Sausage Goblins have super low encounter priority so they will be overriden
 	// by all sorts stuff like superlikelies, wanderers and semi-rares.
@@ -237,7 +237,7 @@ boolean LX_unlockPirateRealm()
 	return true;
 }
 
-boolean sl_saberChoice(string choice)
+boolean auto_saberChoice(string choice)
 {
 	if(!is_unrestricted($item[Fourth of May Cosplay Saber]))
 	{
@@ -280,26 +280,26 @@ boolean sl_saberChoice(string choice)
 	return true;
 }
 
-boolean sl_saberDailyUpgrade(int day)
+boolean auto_saberDailyUpgrade(int day)
 {
 	if(my_class() == $class[Ed])
 	{
-		return sl_saberChoice("mp");
+		return auto_saberChoice("mp");
 	}
 
 	if(day == 1)
 	{
-		return sl_saberChoice("ml");
+		return auto_saberChoice("ml");
 	}
 	else
 	{
-		return sl_saberChoice("res");
+		return auto_saberChoice("res");
 	}
 
 	return false;
 }
 
-monster sl_saberCurrentMonster()
+monster auto_saberCurrentMonster()
 {
 	if (get_property("_saberForceMonsterCount") == "0")
 	{
@@ -310,7 +310,7 @@ monster sl_saberCurrentMonster()
 
 /* Out-of-combat Saber check: doesn't check that it's equipped
  */
-int sl_saberChargesAvailable()
+int auto_saberChargesAvailable()
 {
 	if(!is_unrestricted($item[Fourth of May cosplay saber kit]))
 	{
@@ -323,27 +323,27 @@ int sl_saberChargesAvailable()
 	return (5 - get_property("_saberForceUses").to_int());
 }
 
-string sl_combatSaberBanish()
+string auto_combatSaberBanish()
 {
-	set_property("_sl_saberChoice", 1);
+	set_property("_auto_saberChoice", 1);
 	return "skill " + $skill[Use the Force];
 }
 
-string sl_combatSaberCopy()
+string auto_combatSaberCopy()
 {
-	set_property("_sl_saberChoice", 2);
+	set_property("_auto_saberChoice", 2);
 	return "skill " + $skill[Use the Force];
 }
 
-string sl_combatSaberYR()
+string auto_combatSaberYR()
 {
-	set_property("_sl_saberChoice", 3);
+	set_property("_auto_saberChoice", 3);
 	return "skill " + $skill[Use the Force];
 }
 
-string sl_spoonGetDesiredSign()
+string auto_spoonGetDesiredSign()
 {
-	string spoonsign = get_property("sl_spoonsign").to_lower_case();
+	string spoonsign = get_property("auto_spoonsign").to_lower_case();
 
 	string statSign(string musc, string myst, string mox)
 	{
@@ -398,20 +398,20 @@ string sl_spoonGetDesiredSign()
 	}
 }
 
-void sl_spoonTuneConfirm()
+void auto_spoonTuneConfirm()
 {
-	if(!possessEquipment($item[hewn moon-rune spoon]) || !sl_is_valid($item[hewn moon-rune spoon]))
+	if(!possessEquipment($item[hewn moon-rune spoon]) || !auto_is_valid($item[hewn moon-rune spoon]))
 	{
 		// couldn't change signs if we wanted to
 		return;
 	}
 
-	if(get_property("sl_spoonconfirmed").to_int() == my_ascensions())
+	if(get_property("auto_spoonconfirmed").to_int() == my_ascensions())
 	{
 		return;
 	}
 
-	string spoonsign = sl_spoonGetDesiredSign();
+	string spoonsign = auto_spoonGetDesiredSign();
 	if(spoonsign == "")
 	{
 		// the user doesn't want to change signs
@@ -420,24 +420,24 @@ void sl_spoonTuneConfirm()
 
 	if(user_confirm("You're currently set to change signs to " + spoonsign + " after wrapping up your business in your current sign. Do you want to interrupt the script to go change that? Will default to 'No' in 15 seconds.", 15000, false))
 	{
-		abort("Alright, please go change sl_spoonsign via the soolascend relay script and then rerun.");
+		abort("Alright, please go change auto_spoonsign via the soolascend relay script and then rerun.");
 	}
 	else
 	{
-		set_property("sl_spoonconfirmed", my_ascensions());
+		set_property("auto_spoonconfirmed", my_ascensions());
 	}
 }
 
-boolean sl_spoonReadyToTuneMoon()
+boolean auto_spoonReadyToTuneMoon()
 {
-	if(!possessEquipment($item[hewn moon-rune spoon]) || !sl_is_valid($item[hewn moon-rune spoon]))
+	if(!possessEquipment($item[hewn moon-rune spoon]) || !auto_is_valid($item[hewn moon-rune spoon]))
 	{
 		// need a valid spoon to change moon signs
 		return false;
 	}
 
 	string currsign = my_sign().to_lower_case();
-	string spoonsign = sl_spoonGetDesiredSign();
+	string spoonsign = auto_spoonGetDesiredSign();
 
 	if(spoonsign == "")
 	{
@@ -461,7 +461,7 @@ boolean sl_spoonReadyToTuneMoon()
 
 	if(!toKnoll && !toCanadia && !toGnomad)
 	{
-		abort("Something weird is going on with sl_spoonsign. It's not an invalid/blank value, but also not a knoll, canadia, or gnomad sign? This is impossible.");
+		abort("Something weird is going on with auto_spoonsign. It's not an invalid/blank value, but also not a knoll, canadia, or gnomad sign? This is impossible.");
 	}
 
 	if(my_sign() == "Vole" && (get_property("cyrptAlcoveEvilness") > 26 || get_property("questL07Cyrptic") == "unstarted"))
@@ -477,7 +477,7 @@ boolean sl_spoonReadyToTuneMoon()
 			// we want to get the meatcar via the knoll store
 			return false;
 		}
-		if((sl_get_campground() contains $item[Asdon Martin Keyfob]) && is_unrestricted($item[Asdon Martin Keyfob]))
+		if((auto_get_campground() contains $item[Asdon Martin Keyfob]) && is_unrestricted($item[Asdon Martin Keyfob]))
 		{
 			// we want to get the bugbear outfit before switching away for easy bread access
 			if(!buyUpTo(1, $item[bugbear beanie]) || !buyUpTo(1, $item[bugbear bungguard]))
@@ -493,7 +493,7 @@ boolean sl_spoonReadyToTuneMoon()
 		return false;
 	}
 
-	if(isGnomad && !toGnomad && sl_is_valid($skill[Torso Awaregness]) && !sl_have_skill($skill[Torso Awaregness]))
+	if(isGnomad && !toGnomad && auto_is_valid($skill[Torso Awaregness]) && !auto_have_skill($skill[Torso Awaregness]))
 	{
 		// we want to know about our torso before swapping away from gnomad signs
 		return false;
@@ -514,9 +514,9 @@ boolean sl_spoonReadyToTuneMoon()
 	return true;
 }
 
-boolean sl_spoonTuneMoon()
+boolean auto_spoonTuneMoon()
 {
-	if(!sl_spoonReadyToTuneMoon())
+	if(!auto_spoonReadyToTuneMoon())
 	{
 		return false;
 	}
@@ -532,7 +532,7 @@ boolean sl_spoonTuneMoon()
 		}
 	}
 
-	string spoonsign = sl_spoonGetDesiredSign();
+	string spoonsign = auto_spoonGetDesiredSign();
 	int signnum = 0;
 	foreach sign in $strings[mongoose, wallaby, vole, platypus, opossum, marmot, wombat, blender, packrat]
 	{
@@ -564,7 +564,7 @@ boolean sl_spoonTuneMoon()
 	return cantune;
 }
 
-boolean sl_beachCombAvailable()
+boolean auto_beachCombAvailable()
 {
 	if(!is_unrestricted($item[Beach Comb Box]) || !possessEquipment($item[Beach Comb]))
 	{
@@ -574,7 +574,7 @@ boolean sl_beachCombAvailable()
 	return true;
 }
 
-int sl_beachCombHeadNumFrom(string name)
+int auto_beachCombHeadNumFrom(string name)
 {
 	int head;
 	switch (name.to_lower_case())
@@ -609,8 +609,8 @@ int sl_beachCombHeadNumFrom(string name)
 	return head;
 }
 
-boolean sl_canBeachCombHead(string name) {
-	int head = sl_beachCombHeadNumFrom(name);
+boolean auto_canBeachCombHead(string name) {
+	int head = auto_beachCombHeadNumFrom(name);
 	foreach _, usedHead in (get_property("_beachHeadsUsed").split_string(","))
 	{
 		if (to_string(head) == usedHead) { return false; }
@@ -618,42 +618,42 @@ boolean sl_canBeachCombHead(string name) {
 	return get_property("_freeBeachWalksUsed").to_int() < 11;
 }
 
-boolean sl_beachCombHead(string name)
+boolean auto_beachCombHead(string name)
 {
-	if(!sl_beachCombAvailable())   return false;
-	if(!sl_canBeachCombHead(name)) return false;
+	if(!auto_beachCombAvailable())   return false;
+	if(!auto_canBeachCombHead(name)) return false;
 
-	return cli_execute("beach head " + sl_beachCombHeadNumFrom(name));
+	return cli_execute("beach head " + auto_beachCombHeadNumFrom(name));
 }
 
-int sl_beachCombFreeUsesLeft(){
-	if(!sl_beachCombAvailable() || get_property("_freeBeachWalksUsed").to_int() >= 11){
+int auto_beachCombFreeUsesLeft(){
+	if(!auto_beachCombAvailable() || get_property("_freeBeachWalksUsed").to_int() >= 11){
 		return 0;
 	}
 	return 11 - get_property("_freeBeachWalksUsed").to_int();
 }
 
-boolean sl_beachUseFreeCombs() {
-	if(!sl_beachCombAvailable()) { return false; }
+boolean auto_beachUseFreeCombs() {
+	if(!auto_beachCombAvailable()) { return false; }
 	if(get_property("_freeBeachWalksUsed").to_int() >= 11) { return false; }
 	cli_execute("CombBeach free");
 	return true;
 }
 
 // place.php?whichplace=campaway
-boolean sl_campawayAvailable()
+boolean auto_campawayAvailable()
 {
 	return is_unrestricted($item[Distant Woods Getaway Brochure]) && get_property("getawayCampsiteUnlocked").to_boolean();
 }
 
-boolean sl_campawayGrabBuffs()
+boolean auto_campawayGrabBuffs()
 {
-	if(!sl_campawayAvailable())
+	if(!auto_campawayAvailable())
 	{
 		return false;
 	}
 
-	if(!get_property("_sl_contributedCampaway").to_boolean() && item_amount($item[campfire smoke]) + creatable_amount($item[campfire smoke]) > 0)
+	if(!get_property("_auto_contributedCampaway").to_boolean() && item_amount($item[campfire smoke]) + creatable_amount($item[campfire smoke]) > 0)
 	{
 		if(item_amount($item[campfire smoke]) == 0)
 		{
@@ -662,7 +662,7 @@ boolean sl_campawayGrabBuffs()
 		string message = "why is my computer on fire?";
 		string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=" + $item[campfire smoke].to_int());
 		temp = visit_url("choice.php?pwd=&whichchoice=1394&option=1&message=" + message);
-		set_property("_sl_contributedCampaway", true);
+		set_property("_auto_contributedCampaway", true);
 	}
 
 	int lim = 4 - get_property("_campAwaySmileBuffs").to_int() - get_property("_campAwayCloudBuffs").to_int();

@@ -1,4 +1,4 @@
-script "sl_community_service.ash"
+script "auto_community_service.ash"
 
 #	Some details derived some yojimbos_law's forum post:
 #	http://forums.kingdomofloathing.com/vb/showpost.php?p=4769933&postcount=345
@@ -14,7 +14,7 @@ script "sl_community_service.ash"
 #		- day 2, try to get pokefam +10 lb weight item from grass with extra pokegrow fertilizer
 #		- maybe wish for got milk?
 
-static int[int] sl_cs_fastQuestList;
+static int[int] auto_cs_fastQuestList;
 
 boolean LA_cs_communityService()
 {
@@ -51,7 +51,7 @@ boolean LA_cs_communityService()
 
 	cs_eat_spleen();
 
-	if(sl_voteMonster(true, $location[Barf Mountain], "cs_combatNormal"))
+	if(auto_voteMonster(true, $location[Barf Mountain], "cs_combatNormal"))
 	{
 		return true;
 	}
@@ -78,9 +78,9 @@ boolean LA_cs_communityService()
 	}
 
 	int[familiar] blacklist;
-	if(get_property("sl_blacklistFamiliar") != "")
+	if(get_property("auto_blacklistFamiliar") != "")
 	{
-		string[int] noFams = split_string(get_property("sl_blacklistFamiliar"), ";");
+		string[int] noFams = split_string(get_property("auto_blacklistFamiliar"), ";");
 		foreach index, fam in noFams
 		{
 			blacklist[to_familiar(trim(fam))] = 1;
@@ -89,7 +89,7 @@ boolean LA_cs_communityService()
 
 	handleFamiliar("item");
 	#familiar toFam = $familiar[Cocoabo];
-	familiar toFam = get_property("sl_familiarChoice").to_familiar();
+	familiar toFam = get_property("auto_familiarChoice").to_familiar();
 	foreach fam in useFam
 	{
 		if(have_familiar(fam) && !(blacklist contains fam))
@@ -141,13 +141,13 @@ boolean LA_cs_communityService()
 		if((get_property("_sourceTerminalDigitizeUses").to_int() > 0) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3))
 		{
 			print("A Wanderer event is expected now, we want to re-digitize", "blue");
-			sl_sourceTerminalEducate($skill[Digitize], $skill[Extract]);
-			set_property("sl_combatDirective", "start;skill digitize");
+			auto_sourceTerminalEducate($skill[Digitize], $skill[Extract]);
+			set_property("auto_combatDirective", "start;skill digitize");
 			if(!cs_mpMaintain() || !cs_healthMaintain()){
 				abort("Wasnt to maintain health and mp.");
 			}
 			slAdv(1, $location[Barf Mountain], "cs_combatNormal");
-			set_property("sl_combatDirective", "");
+			set_property("auto_combatDirective", "");
 		}
 	}
 
@@ -161,18 +161,18 @@ boolean LA_cs_communityService()
 
 	//Quest order on Day 1: 11, 6, 9 (Coiling Wire, Weapon Damage, Item)
 	//Day 2: 7, 10, 1, 2, 3, 4, 5, 8
-	if((my_daycount() == 2) && sl_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore])) && !possessEquipment($item[Dented Scepter]) && (get_property("_sl_witchessBattles").to_int() < 5) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
+	if((my_daycount() == 2) && auto_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore])) && !possessEquipment($item[Dented Scepter]) && (get_property("_auto_witchessBattles").to_int() < 5) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
 	{
 		if(!cs_mpMaintain() || !cs_healthMaintain()){
 			abort("Wasnt to maintain health and mp.");
 		}
 		handleFamiliar($familiar[Galloping Grill]);
-		sl_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
-		boolean result = sl_advWitchess("king", "cs_combatKing");
-		sl_sourceTerminalEducate($skill[Compress], $skill[Extract]);
+		auto_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
+		boolean result = auto_advWitchess("king", "cs_combatKing");
+		auto_sourceTerminalEducate($skill[Compress], $skill[Extract]);
 		return result;
 	}
-	if((my_daycount() == 2) && sl_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore]))  && possessEquipment($item[Dented Scepter]) && !possessEquipment($item[Battle Broom]) && (get_property("_sl_witchessBattles").to_int() < 5) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
+	if((my_daycount() == 2) && auto_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore]))  && possessEquipment($item[Dented Scepter]) && !possessEquipment($item[Battle Broom]) && (get_property("_auto_witchessBattles").to_int() < 5) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
 	{
 		while((my_mp() < 120) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 		{
@@ -184,7 +184,7 @@ boolean LA_cs_communityService()
 		}
 		if(equipped_item($slot[acc3]) == $item[none])
 		{
-			equip($slot[acc3], sl_bestBadge());
+			equip($slot[acc3], auto_bestBadge());
 		}
 
 		handleFamiliar($familiar[Galloping Grill]);
@@ -204,9 +204,9 @@ boolean LA_cs_communityService()
 		buffMaintain($effect[Big], 50, 1, 1);
 		useCocoon();
 
-		sl_sourceTerminalEducate($skill[Compress], $skill[Extract]);
-		boolean result = sl_advWitchess("witch", "cs_combatWitch");
-		sl_sourceTerminalEducate($skill[Extract], $skill[Turbo]);
+		auto_sourceTerminalEducate($skill[Compress], $skill[Extract]);
+		boolean result = auto_advWitchess("witch", "cs_combatWitch");
+		auto_sourceTerminalEducate($skill[Extract], $skill[Turbo]);
 		return result;
 	}
 	if((my_daycount() == 2) && (my_ascensions() > 200))
@@ -256,18 +256,18 @@ boolean LA_cs_communityService()
 		print("Beginning early quest actions (" + curQuest + ")", "green");
 		if(curQuest != 7)
 		{
-			if((my_inebriety() == 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500))
+			if((my_inebriety() == 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500))
 			{
 				slDrink(1, $item[Lucky Lindy]);
 				if(my_inebriety() != 1)
 				{
-					if(sl_get_clan_lounge() contains $item[Lucky Lindy])
+					if(auto_get_clan_lounge() contains $item[Lucky Lindy])
 					{
 						print("Confused!! Mafia reports Lucky Lindy but we couldn't drink it?", "red");
 					}
 					print("Mafia knows we have a speakeasy but could not drink a Lucky Lindy", "red");
 					string temp = visit_url("clan_viplounge.php?whichfloor=2&action=speakeasy");
-					if(sl_get_clan_lounge() contains $item[Lucky Lindy])
+					if(auto_get_clan_lounge() contains $item[Lucky Lindy])
 					{
 						print("Mafia now knows we have a Lucky Lindy", "green");
 						return true;
@@ -280,7 +280,7 @@ boolean LA_cs_communityService()
 				solveCookie();
 			}
 
-			if((my_inebriety() == 0) && !(sl_get_clan_lounge() contains $item[Clan Speakeasy]))
+			if((my_inebriety() == 0) && !(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
 			{
 				abort("Your clan does not have a Clan Speakeasy or mafia doesn't understand that you do. Change clans and try again");
 			}
@@ -322,7 +322,7 @@ boolean LA_cs_communityService()
 
 			}
 
-			if(get_property("sl_csDoWheel").to_boolean() && do_chateauGoat())
+			if(get_property("auto_csDoWheel").to_boolean() && do_chateauGoat())
 			{
 				return true;
 			}
@@ -332,7 +332,7 @@ boolean LA_cs_communityService()
 				use(1, $item[A Ten-Percent Bonus]);
 			}
 
-			if((curQuest == 11) && ((my_turncount() + 60) < get_property("sl_cookie").to_int()) && (my_adventures() > 65))
+			if((curQuest == 11) && ((my_turncount() + 60) < get_property("auto_cookie").to_int()) && (my_adventures() > 65))
 			{
 				if(do_cs_quest(11))
 				{
@@ -348,12 +348,12 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			if((curQuest != 11) && (have_effect($effect[substats.enh]) == 0) && (sl_sourceTerminalEnhanceLeft() >= 1))
+			if((curQuest != 11) && (have_effect($effect[substats.enh]) == 0) && (auto_sourceTerminalEnhanceLeft() >= 1))
 			{
-				sl_sourceTerminalEnhance("substats");
+				auto_sourceTerminalEnhance("substats");
 			}
 
-			if(get_property("_sl_witchessBattles").to_int() <= 2)
+			if(get_property("_auto_witchessBattles").to_int() <= 2)
 			{
 				if(cs_witchess())
 				{
@@ -361,14 +361,14 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			if(get_property("_sl_witchessBattles").to_int() == 3)
+			if(get_property("_auto_witchessBattles").to_int() == 3)
 			{
-				if((my_mp() >= 120) && sl_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse Of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore])) && !possessEquipment($item[Dented Scepter]) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
+				if((my_mp() >= 120) && auto_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse Of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore])) && !possessEquipment($item[Dented Scepter]) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
 				{
 					handleFamiliar($familiar[Galloping Grill]);
-					sl_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
-					boolean retval = sl_advWitchess("king", "cs_combatKing");
-					sl_sourceTerminalEducate($skill[Compress], $skill[Extract]);
+					auto_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
+					boolean retval = auto_advWitchess("king", "cs_combatKing");
+					auto_sourceTerminalEducate($skill[Compress], $skill[Extract]);
 					return retval;
 				}
 			}
@@ -481,7 +481,7 @@ boolean LA_cs_communityService()
 			}
 
 			int tomatoGoal = 2;
-			if(get_property("sl_hccsNoConcludeDay").to_boolean())
+			if(get_property("auto_hccsNoConcludeDay").to_boolean())
 			{
 				tomatoGoal = 1;
 			}
@@ -588,13 +588,13 @@ boolean LA_cs_communityService()
 				slAdv(1, $location[The Bubblin\' Caldera], "cs_combatNormal");
 				if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue of the Walrus]) && (my_mp() > (3 * mp_cost($skill[Tongue of the Walrus]))))
 				{
-					if(contains_text(get_property("sl_combatHandler"), "(DNA)"))
+					if(contains_text(get_property("auto_combatHandler"), "(DNA)"))
 					{
 						use_skill(2, $skill[Tongue of the Walrus]);
 					}
 					else
 					{
-						set_property("sl_beatenUpCount", get_property("sl_beatenUpCount").to_int() + 1);
+						set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 					}
 				}
 				return true;
@@ -605,8 +605,8 @@ boolean LA_cs_communityService()
 				doHottub();
 			}
 
-#			if(((get_property("_g9Effect").to_int() > 125) || (item_amount($item[Airborne Mutagen]) == 0)) && (((curQuest == 9) || (my_turncount() < get_property("sl_cookie").to_int())) && elementalPlanes_access($element[spooky])))
-			if(((curQuest == 9) || (my_turncount() < get_property("sl_cookie").to_int())) && elementalPlanes_access($element[spooky]))
+#			if(((get_property("_g9Effect").to_int() > 125) || (item_amount($item[Airborne Mutagen]) == 0)) && (((curQuest == 9) || (my_turncount() < get_property("auto_cookie").to_int())) && elementalPlanes_access($element[spooky])))
+			if(((curQuest == 9) || (my_turncount() < get_property("auto_cookie").to_int())) && elementalPlanes_access($element[spooky]))
 			{
 				if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 				{
@@ -656,9 +656,9 @@ boolean LA_cs_communityService()
 		else if((curQuest == 7) && (item_amount($item[Emergency Margarita]) > 0))
 		{
 			buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
-			if((have_effect($effect[substats.enh]) == 0) && (sl_sourceTerminalEnhanceLeft() >= 1))
+			if((have_effect($effect[substats.enh]) == 0) && (auto_sourceTerminalEnhanceLeft() >= 1))
 			{
-				sl_sourceTerminalEnhance("substats");
+				auto_sourceTerminalEnhance("substats");
 			}
 
 			if((inebriety_left() > 0) && (my_adventures() <= 2))
@@ -679,7 +679,7 @@ boolean LA_cs_communityService()
 				{
 					slDrink(1, $item[Meadeorite]);
 				}
-				else if((sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0))
+				else if((auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 				{
 					slDrink(1, $item[cup of &quot;tea&quot;]);
 				}
@@ -698,9 +698,9 @@ boolean LA_cs_communityService()
 				string temp = visit_url("curse.php?action=use&pwd=&whichitem=3274&targetplayer=" + get_player_id(my_name()));
 			}
 
-			if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]) && (get_property("_sl_margaritaWanderer") != my_turncount()))
+			if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]) && (get_property("_auto_margaritaWanderer") != my_turncount()))
 			{
-				set_property("_sl_margaritaWanderer", my_turncount());
+				set_property("_auto_margaritaWanderer", my_turncount());
 				print("A Wanderer event is expected now, diverting... (Status: 7 with Margarita)", "blue");
 				if(!cs_mpMaintain() || !cs_healthMaintain()){
 					abort("Wasnt to maintain health and mp.");
@@ -709,7 +709,7 @@ boolean LA_cs_communityService()
 				return true;
 			}
 
-			if(!get_property("sl_hccsNoConcludeDay").to_boolean())
+			if(!get_property("auto_hccsNoConcludeDay").to_boolean())
 			{
 				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun($familiar[Machine Elf]))
 				{
@@ -756,7 +756,7 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			boolean turnSave = get_property("sl_hccsTurnSave").to_boolean() || !in_hardcore();
+			boolean turnSave = get_property("auto_hccsTurnSave").to_boolean() || !in_hardcore();
 
 			if((my_meat() > 100) && (item_amount($item[Hot Ashes]) > 0) && (item_amount($item[Ash Soda]) == 0))
 			{
@@ -768,7 +768,7 @@ boolean LA_cs_communityService()
 			{
 				slEquip($slot[acc1], $item[Continuum Transfunctioner]);
 
-				if(get_property("sl_tryPowerLevel").to_boolean())
+				if(get_property("auto_tryPowerLevel").to_boolean())
 				{
 					buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 62, 1, 1);
 					buffMaintain($effect[Pride of the Puffin], 62, 1, 1);
@@ -783,7 +783,7 @@ boolean LA_cs_communityService()
 				return true;
 			}
 
-			if(!(sl_get_campground() contains $item[Dramatic&trade; Range]))
+			if(!(auto_get_campground() contains $item[Dramatic&trade; Range]))
 			{
 				if(my_meat() > npc_price($item[Dramatic&trade; Range]))
 				{
@@ -792,7 +792,7 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			if(have_skill($skill[Advanced Saucecrafting]) && (sl_get_campground() contains $item[Dramatic&trade; Range]))
+			if(have_skill($skill[Advanced Saucecrafting]) && (auto_get_campground() contains $item[Dramatic&trade; Range]))
 			{
 				int tomatoCheck = 4;
 				int tomatoMake = 6;
@@ -801,7 +801,7 @@ boolean LA_cs_communityService()
 					tomatoCheck = 2;
 					tomatoMake = 2;
 				}
-				if(get_property("sl_hccsNoConcludeDay").to_boolean())
+				if(get_property("auto_hccsNoConcludeDay").to_boolean())
 				{
 					tomatoCheck = 1;
 					tomatoMake = 1;
@@ -841,9 +841,9 @@ boolean LA_cs_communityService()
 			}
 
 			boolean doFarm = false;
-			if(!have_familiar($familiar[Puck Man]) && !have_familiar($familiar[Ms. Puck Man]) && (get_property("sl_csPuckCounter").to_int() > 0))
+			if(!have_familiar($familiar[Puck Man]) && !have_familiar($familiar[Ms. Puck Man]) && (get_property("auto_csPuckCounter").to_int() > 0))
 			{
-				set_property("sl_csPuckCounter", get_property("sl_csPuckCounter").to_int() - 1);
+				set_property("auto_csPuckCounter", get_property("auto_csPuckCounter").to_int() - 1);
 				doFarm = true;
 			}
 			if(((item_amount($item[Power Pill]) < 2) || (item_amount($item[Yellow Pixel]) < pixelsNeed)) && (have_familiar($familiar[Puck Man]) || have_familiar($familiar[Ms. Puck Man])))
@@ -890,14 +890,14 @@ boolean LA_cs_communityService()
 
 			if(doFarm)
 			{
-				if(get_property("sl_tryPowerLevel").to_boolean())
+				if(get_property("auto_tryPowerLevel").to_boolean())
 				{
-					print("Trying to powerlevel, since sl_tryPowerLevel=true", "blue");
+					print("Trying to powerlevel, since auto_tryPowerLevel=true", "blue");
 					if(elementalPlanes_access($element[stench]) && (my_hp() > 100))
 					{
 						if(current_mcd() < 10)
 						{
-							sl_change_mcd(11);
+							auto_change_mcd(11);
 						}
 						if(item_amount($item[Astral Statuette]) > 0)
 						{
@@ -1021,9 +1021,9 @@ boolean LA_cs_communityService()
 				return true;
 			}
 
-			if(!get_property("sl_tryPowerLevel").to_boolean())
+			if(!get_property("auto_tryPowerLevel").to_boolean())
 			{
-				sl_change_mcd(0);
+				auto_change_mcd(0);
 			}
 
 			int missing = 0;
@@ -1106,13 +1106,13 @@ boolean LA_cs_communityService()
 					combatString = "cs_combatNormal";
 				}
 
-				sl_sourceTerminalEducate($skill[Duplicate], $skill[Extract]);
+				auto_sourceTerminalEducate($skill[Duplicate], $skill[Extract]);
 				useCocoon();
 				if(handleFaxMonster($monster[Sk8 gnome], combatString))
 				{
 					return true;
 				}
-				sl_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
+				auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 			}
 
 			if(elementalPlanes_access($element[hot]) && have_skills($skills[Meteor Lore, Snokebomb]) && have_familiar($familiar[XO Skeleton]) && (my_mp() > mp_cost($skill[Snokebomb])) && (get_property("_snokebombUsed").to_int() < 3) && (get_property("_macrometeoriteUses").to_int() < 10) && (get_property("_xoHugsUsed").to_int() < 11) && !is100FamiliarRun($familiar[XO Skeleton]))
@@ -1137,7 +1137,7 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			if(have_skill($skill[Advanced Saucecrafting]) && (sl_get_campground() contains $item[Dramatic&trade; Range]))
+			if(have_skill($skill[Advanced Saucecrafting]) && (auto_get_campground() contains $item[Dramatic&trade; Range]))
 			{
 				int tomatoMake = 6;
 				int tomatoCheck = 4;
@@ -1148,7 +1148,7 @@ boolean LA_cs_communityService()
 					tomatoCheck = 2;
 					expertiseCheck = 1;
 				}
-				if(get_property("sl_hccsNoConcludeDay").to_boolean())
+				if(get_property("auto_hccsNoConcludeDay").to_boolean())
 				{
 					tomatoCheck = 1;
 					tomatoMake = 1;
@@ -1193,7 +1193,7 @@ boolean LA_cs_communityService()
 //				evokeEldritchHorror();
 //			}
 
-			if(!get_property("sl_hccsNoConcludeDay").to_boolean())
+			if(!get_property("auto_hccsNoConcludeDay").to_boolean())
 			{
 				//uneffect($effect[Ode To Booze]);
 				zataraSeaside(my_primestat());
@@ -1317,11 +1317,11 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			if(!get_property("sl_saveMargarita").to_boolean() && (inebriety_left() == 0))
+			if(!get_property("auto_saveMargarita").to_boolean() && (inebriety_left() == 0))
 			{
 				if((my_adventures() > 160) || (my_daycount() > 1))
 				{
-					abort("We have an emergency margarita but it seems really dumb to drink it right now (consider closeting the margarita and set sl_saveMargarita = true)...");
+					abort("We have an emergency margarita but it seems really dumb to drink it right now (consider closeting the margarita and set auto_saveMargarita = true)...");
 				}
 				buffMaintain($effect[Simmering], 0, 1, 1);
 				if((inebriety_left() == 0) && have_familiar($familiar[Stooper])){
@@ -1336,7 +1336,7 @@ boolean LA_cs_communityService()
 				put_closet(item_amount($item[Emergency Margarita]), $item[Emergency Margarita]);
 				if((item_amount($item[Hacked Gibson]) == 0) && (inebriety_left() == 0))
 				{
-					sl_sourceTerminalExtrude($item[Hacked Gibson]);
+					auto_sourceTerminalExtrude($item[Hacked Gibson]);
 				}
 
 				if(!in_hardcore())
@@ -1348,7 +1348,7 @@ boolean LA_cs_communityService()
 					stooperDrink();
 				}
 
-				set_property("sl_familiarChoice", "");
+				set_property("auto_familiarChoice", "");
 				abort("Saving Emergency Margarita, forcing abort, done with day. Cast simmer, overdrink, and run again.");
 			}
 
@@ -1550,7 +1550,7 @@ boolean LA_cs_communityService()
 				slChew(1, $item[Abstraction: Action]);
 			}
 
-			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (get_cs_questCost(curQuest) < 20))
+			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (get_cs_questCost(curQuest) < 20))
 			{
 				slDrink(1, $item[Bee's Knees]);
 			}
@@ -1600,7 +1600,7 @@ boolean LA_cs_communityService()
 
 			if(get_cs_questCost(curQuest) > 1)
 			{
-				if(sl_csHandleGrapes())
+				if(auto_csHandleGrapes())
 				{
 					return true;
 				}
@@ -1696,7 +1696,7 @@ boolean LA_cs_communityService()
 			}
 			if(get_cs_questCost(curQuest) > grapeCost)
 			{
-				if(sl_csHandleGrapes())
+				if(auto_csHandleGrapes())
 				{
 					return true;
 				}
@@ -1710,7 +1710,7 @@ boolean LA_cs_communityService()
 				slChew(1, $item[Abstraction: Action]);
 			}
 
-			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
+			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
 				slDrink(1, $item[Bee's Knees]);
 			}
@@ -1793,7 +1793,7 @@ boolean LA_cs_communityService()
 			}
 			if(get_cs_questCost(curQuest) > grapeCost)
 			{
-				if(sl_csHandleGrapes())
+				if(auto_csHandleGrapes())
 				{
 					return true;
 				}
@@ -1808,7 +1808,7 @@ boolean LA_cs_communityService()
 				slChew(1, $item[Abstraction: Thought]);
 			}
 
-			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
+			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
 				slDrink(1, $item[Bee's Knees]);
 			}
@@ -1900,7 +1900,7 @@ boolean LA_cs_communityService()
 
 			if(get_cs_questCost(curQuest) > grapeCost)
 			{
-				if(sl_csHandleGrapes())
+				if(auto_csHandleGrapes())
 				{
 					return true;
 				}
@@ -1925,7 +1925,7 @@ boolean LA_cs_communityService()
 			}
 
 
-			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
+			if((inebriety_left() >= 12) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (have_effect($effect[On The Trolley]) == 0) && (estimate_cs_questCost(curQuest) > 1))
 			{
 				slDrink(1, $item[Bee's Knees]);
 			}
@@ -2011,7 +2011,7 @@ boolean LA_cs_communityService()
 				visit_url("choice.php?whichchoice=1183&pwd=&option=2");
 			}
 
-			if((have_effect($effect[Puzzle Champ]) == 0) && get_property("sl_pauseForWitchess").to_boolean())
+			if((have_effect($effect[Puzzle Champ]) == 0) && get_property("auto_pauseForWitchess").to_boolean())
 			{
 				user_confirm("Get the Witchess Familiar Buff and then click this away. Beep boop.");
 			}
@@ -2090,7 +2090,7 @@ boolean LA_cs_communityService()
 							slDrink(1, $item[Iced Plum Wine]);
 						}
 
-						if((my_meat() > 5000) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (inebriety_left() >= 3) && (sl_get_clan_lounge() contains $item[Clan Speakeasy]))
+						if((my_meat() > 5000) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (inebriety_left() >= 3) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]))
 						{
 							slDrink(1, $item[Hot Socks]);
 						}
@@ -2104,7 +2104,7 @@ boolean LA_cs_communityService()
 						}
 
 					}
-					else if ((item_amount($item[Vintage Smart Drink]) > 0) && !get_property("sl_saveVintage").to_boolean())
+					else if ((item_amount($item[Vintage Smart Drink]) > 0) && !get_property("auto_saveVintage").to_boolean())
 					{
 						slDrink(1, $item[Vintage Smart Drink]);
 					}
@@ -2233,7 +2233,7 @@ boolean LA_cs_communityService()
 
 			if((my_level() < 8) && !get_property("_fancyHotDogEaten").to_boolean() && (fullness_left() >= 12))
 			{
-				if(get_property("sl_noSleepingDog").to_boolean() || have_skill($skill[Dog Tired]))
+				if(get_property("auto_noSleepingDog").to_boolean() || have_skill($skill[Dog Tired]))
 				{
 					eatFancyDog("savage macho dog");
 				}
@@ -2263,7 +2263,7 @@ boolean LA_cs_communityService()
 				{
 					slDrink(1, $item[Sacramento Wine]);
 				}
-				else if((sl_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0))
+				else if((auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 				{
 					slDrink(1, $item[cup of &quot;tea&quot;]);
 				}
@@ -2550,11 +2550,11 @@ boolean LA_cs_communityService()
 			{
 				buffMaintain($effect[Throwing Some Shade], 0, 1, 1);
 			}
-			if((sl_mall_price($item[Shady Shades]) < 20000) && (questCost > 12))
+			if((auto_mall_price($item[Shady Shades]) < 20000) && (questCost > 12))
 			{
 				buffMaintain($effect[Throwing Some Shade], 0, 1, 1);
 			}
-			if((sl_mall_price($item[Squeaky Toy Rose]) < 20000) && (questCost > 12))
+			if((auto_mall_price($item[Squeaky Toy Rose]) < 20000) && (questCost > 12))
 			{
 				buffMaintain($effect[A Rose by Any Other Material], 0, 1, 1);
 			}
@@ -2569,7 +2569,7 @@ boolean LA_cs_communityService()
 				slChew(item_amount($item[Handful of Smithereens]), $item[Handful of Smithereens]);
 			}
 
-			if((my_adventures() < questCost) || (sl_mall_price($item[Pocket Wish]) < 35000))
+			if((my_adventures() < questCost) || (auto_mall_price($item[Pocket Wish]) < 35000))
 			{
 				foreach eff in $effects[Chocolatesphere, Disquiet Riot, Patent Invisibility]
 				{
@@ -2659,7 +2659,7 @@ boolean LA_cs_communityService()
 
 			if(have_effect($effect[items.enh]) == 0)
 			{
-				sl_sourceTerminalEnhance("items");
+				auto_sourceTerminalEnhance("items");
 			}
 
 			buffMaintain($effect[Singer\'s Faithful Ocelot], 15, 1, 1);
@@ -2740,7 +2740,7 @@ boolean LA_cs_communityService()
 				run_choice(3);
 			}
 
-			if((get_property("sl_csDoWheel").to_boolean()) && (get_cs_questCost(curQuest) > 7))
+			if((get_property("auto_csDoWheel").to_boolean()) && (get_cs_questCost(curQuest) > 7))
 			{
 				deck_cheat("items");
 			}
@@ -2887,7 +2887,7 @@ boolean LA_cs_communityService()
 				cli_execute("make " + $item[Lotion Of Stench]);
 			}
 
-			if(!get_property("_mayoTankSoaked").to_boolean() && (sl_get_campground() contains $item[Portable Mayo Clinic]) && is_unrestricted($item[Portable Mayo Clinic]))
+			if(!get_property("_mayoTankSoaked").to_boolean() && (auto_get_campground() contains $item[Portable Mayo Clinic]) && is_unrestricted($item[Portable Mayo Clinic]))
 			{
 				string temp = visit_url("shop.php?action=bacta&whichshop=mayoclinic");
 			}
@@ -2988,12 +2988,12 @@ boolean cs_witchess()
 	{
 		return false;
 	}
-	if(!sl_haveWitchess())
+	if(!auto_haveWitchess())
 	{
 		return false;
 	}
 
-	if(get_property("_sl_witchessBattles").to_int() >= 5)
+	if(get_property("_auto_witchessBattles").to_int() >= 5)
 	{
 		return false;
 	}
@@ -3012,19 +3012,19 @@ boolean cs_witchess()
 	{
 		handleFamiliar($familiar[Obtuse Angel]);
 	}
-	else if(have_familiar($familiar[Galloping Grill]) && sl_haveSourceTerminal())
+	else if(have_familiar($familiar[Galloping Grill]) && auto_haveSourceTerminal())
 	{
 		handleFamiliar($familiar[Galloping Grill]);
 	}
 
 	if(get_property("_sourceTerminalDigitizeUses").to_int() == 0)
 	{
-		sl_sourceTerminalEducate($skill[Digitize], $skill[Extract]);
+		auto_sourceTerminalEducate($skill[Digitize], $skill[Extract]);
 	}
 	boolean result;
 	if((my_daycount() == 1) && (item_amount($item[Greek Fire]) == 0) && !have_skill($skill[Digitize]))
 	{
-		result = sl_advWitchess("rook", "cs_combatNormal");
+		result = auto_advWitchess("rook", "cs_combatNormal");
 	}
 	else
 	{
@@ -3045,9 +3045,9 @@ boolean cs_witchess()
 		}
 */
 
-		result = sl_advWitchess(goal, "cs_combatNormal");
+		result = auto_advWitchess(goal, "cs_combatNormal");
 	}
-	sl_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
+	auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
 	return result;
 }
 
@@ -3068,12 +3068,12 @@ void cs_initializeDay(int day)
 
 	if(day == 1)
 	{
-		if(get_property("sl_day_init").to_int() < 1)
+		if(get_property("auto_day_init").to_int() < 1)
 		{
-			set_property("sl_day1_dna", "finished");
+			set_property("auto_day1_dna", "finished");
 			if(!have_familiar($familiar[Puck Man]) && !have_familiar($familiar[Ms. Puck Man]))
 			{
-				set_property("sl_csPuckCounter", 20);
+				set_property("auto_csPuckCounter", 20);
 			}
 			if(item_amount($item[transmission from planet Xi]) > 0)
 			{
@@ -3099,25 +3099,25 @@ void cs_initializeDay(int day)
 			use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
 			tootGetMeat();
 
-			sl_sourceTerminalEducate($skill[Extract], $skill[Turbo]);
+			auto_sourceTerminalEducate($skill[Extract], $skill[Turbo]);
 
 			if(contains_text(get_property("sourceTerminalEnquiryKnown"), "stats.enq"))
 			{
-				sl_sourceTerminalRequest("enquiry stats.enq");
+				auto_sourceTerminalRequest("enquiry stats.enq");
 			}
 			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "protect.enq"))
 			{
-				sl_sourceTerminalRequest("enquiry protect.enq");
+				auto_sourceTerminalRequest("enquiry protect.enq");
 			}
 			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq"))
 			{
-				sl_sourceTerminalRequest("enquiry familiar.enq");
+				auto_sourceTerminalRequest("enquiry familiar.enq");
 			}
 
 			equipBaseline();
 			visit_url("guild.php?place=challenge");
 
-			if(get_property("sl_csDoWheel").to_boolean())
+			if(get_property("auto_csDoWheel").to_boolean())
 			{
 				if((get_property("spookyAirportAlways").to_boolean()) && !get_property("_controlPanelUsed").to_boolean())
 				{
@@ -3126,7 +3126,7 @@ void cs_initializeDay(int day)
 				}
 			}
 
-			if(!get_property("sl_csDoWheel").to_boolean())
+			if(!get_property("auto_csDoWheel").to_boolean())
 			{
 				deck_cheat(my_primestat() + " stat");
 			}
@@ -3171,11 +3171,11 @@ void cs_initializeDay(int day)
 				}
 			}
 
-			if(!(sl_get_campground() contains $item[Packet Of Tall Grass Seeds]))
+			if(!(auto_get_campground() contains $item[Packet Of Tall Grass Seeds]))
 			{
 				cli_execute("garden pick");
 			}
-			if(!sl_haveWitchess())
+			if(!auto_haveWitchess())
 			{
 				if((item_amount($item[Ice Harvest]) >= 3) && (item_amount($item[Snow Berries]) >= 1))
 				{
@@ -3204,13 +3204,13 @@ void cs_initializeDay(int day)
 				handleBarrelFullOfBarrels(true);
 			}
 
-			if(get_property("sl_breakstone").to_boolean())
+			if(get_property("auto_breakstone").to_boolean())
 			{
 				string temp = visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
 				temp = visit_url("peevpee.php?place=fight");
-				set_property("sl_breakstone", false);
+				set_property("auto_breakstone", false);
 			}
-			set_property("sl_day_init", 1);
+			set_property("auto_day_init", 1);
 			try
 			{
 				visit_url("council.php");
@@ -3223,7 +3223,7 @@ void cs_initializeDay(int day)
 	}
 	else if(day == 2)
 	{
-		if(get_property("sl_day_init").to_int() < 2)
+		if(get_property("auto_day_init").to_int() < 2)
 		{
 			equipBaseline();
 
@@ -3259,7 +3259,7 @@ void cs_initializeDay(int day)
 				acquireHermitItem($item[Seal Tooth]);
 			}
 
-			if(!(sl_get_campground() contains $item[Packet Of Tall Grass Seeds]))
+			if(!(auto_get_campground() contains $item[Packet Of Tall Grass Seeds]))
 			{
 				cli_execute("garden pick");
 			}
@@ -3275,7 +3275,7 @@ void cs_initializeDay(int day)
 				doRest();
 			}
 
-			set_property("sl_day_init", 2);
+			set_property("auto_day_init", 2);
 		}
 	}
 }
@@ -3295,7 +3295,7 @@ boolean do_chateauGoat()
 			buffMaintain(eff, mp_cost(to_skill(eff)), 1, 1);
 		}
 
-		sl_sourceTerminalEducate($skill[Compress], $skill[Turbo]);
+		auto_sourceTerminalEducate($skill[Compress], $skill[Turbo]);
 
 		if(canYellowRay())
 		{
@@ -3318,7 +3318,7 @@ boolean do_chateauGoat()
 			}
 			cli_execute("make " + $item[Milk Of Magnesium]);
 		}
-		sl_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 		return true;
 	}
 	return false;
@@ -3363,7 +3363,7 @@ void cs_make_stuff(int curQuest)
 
 	if(my_daycount() == 1)
 	{
-		if(!possessEquipment($item[Hairpiece on Fire]) && (item_amount($item[Lump of Brituminous Coal]) > 0) && !get_property("sl_hccsNoConcludeDay").to_boolean())
+		if(!possessEquipment($item[Hairpiece on Fire]) && (item_amount($item[Lump of Brituminous Coal]) > 0) && !get_property("auto_hccsNoConcludeDay").to_boolean())
 		{
 			if(knoll_available() || (item_amount($item[Maiden Wig]) > 0))
 			{
@@ -3556,7 +3556,7 @@ boolean cs_eat_stuff(int quest)
 
 	if((quest == 0) && (my_fullness() == 0))
 	{
-		if(sl_haveSourceTerminal())
+		if(auto_haveSourceTerminal())
 		{
 			if((item_amount($item[Source Essence]) < 10) && (item_amount($item[Browser Cookie]) == 0))
 			{
@@ -3567,13 +3567,13 @@ boolean cs_eat_stuff(int quest)
 		{
 			use(1, $item[Milk of Magnesium]);
 		}
-		if(get_property("sl_noSleepingDog").to_boolean() || have_skill($skill[Dog Tired]))
+		if(get_property("auto_noSleepingDog").to_boolean() || have_skill($skill[Dog Tired]))
 		{
-			if(sl_sourceTerminalExtrudeLeft() > 0)
+			if(auto_sourceTerminalExtrudeLeft() > 0)
 			{
 				if(item_amount($item[Browser Cookie]) == 0)
 				{
-					sl_sourceTerminalExtrude($item[Browser Cookie]);
+					auto_sourceTerminalExtrude($item[Browser Cookie]);
 				}
 			}
 
@@ -3617,13 +3617,13 @@ boolean cs_eat_stuff(int quest)
 			}
 			slEat(1, $item[Weird Gazelle Steak]);
 
-			if(get_property("sl_noSleepingDog").to_boolean())
+			if(get_property("auto_noSleepingDog").to_boolean())
 			{
-				if(sl_sourceTerminalExtrudeLeft() > 0)
+				if(auto_sourceTerminalExtrudeLeft() > 0)
 				{
 					if((item_amount($item[Browser Cookie]) == 0) && (fullness_left() >= 4))
 					{
-						sl_sourceTerminalExtrude($item[Browser Cookie]);
+						auto_sourceTerminalExtrude($item[Browser Cookie]);
 					}
 				}
 
@@ -3659,7 +3659,7 @@ boolean cs_eat_stuff(int quest)
 	}
 	else if(quest == 10)
 	{
-		if((item_amount($item[Sausage Without A Cause]) > 0) && !get_property("sl_saveSausage").to_boolean())
+		if((item_amount($item[Sausage Without A Cause]) > 0) && !get_property("auto_saveSausage").to_boolean())
 		{
 			if(item_amount($item[Milk of Magnesium]) > 0)
 			{
@@ -3705,25 +3705,25 @@ string cs_combatNormal(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("sl_combatHandler: " + round, "brown");
-		set_property("sl_combatHandler", "");
+		print("auto_combatHandler: " + round, "brown");
+		set_property("auto_combatHandler", "");
 	}
 
-	set_property("sl_diag_round", round);
-	if(get_property("sl_diag_round").to_int() > 60)
+	set_property("auto_diag_round", round);
+	if(get_property("auto_diag_round").to_int() > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
 	monster enemy = to_monster(opp);
-	string combatState = get_property("sl_combatHandler");
+	string combatState = get_property("auto_combatHandler");
 
 	phylum current = to_phylum(get_property("dnaSyringe"));
 	phylum type = monster_phylum(enemy);
 
 	if(!contains_text(combatState, "lattegulp") && !have_skill($skill[Turbo]) && ((3 * my_mp()) < my_maxmp()) && (my_maxmp() >= 300) && !get_property("_latteDrinkUsed").to_boolean() && have_skill($skill[Gulp Latte]) && !($monsters[LOV Enforcer, LOV Engineer, LOV Equivocator] contains enemy))
 	{
-		set_property("sl_combatHandler", combatState + "(lattegulp)");
+		set_property("auto_combatHandler", combatState + "(lattegulp)");
 		return "skill " + $skill[Gulp Latte];
 	}
 
@@ -3731,8 +3731,8 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 		if($monsters[Flame-Broiled Meat Blob, Overdone Flame-Broiled Meat Blob, Swarm of Skulls] contains enemy)
 		{
-			set_property("sl_combatHandler", combatState + "(Snokebomb)");
-			handleTracker(enemy, $skill[Snokebomb], "sl_banishes");
+			set_property("auto_combatHandler", combatState + "(Snokebomb)");
+			handleTracker(enemy, $skill[Snokebomb], "auto_banishes");
 			return "skill " + $skill[Snokebomb];
 		}
 	}
@@ -3741,8 +3741,8 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 		if($monsters[Undead Elbow Macaroni, Factory-Irregular Skeleton, Octorok] contains enemy)
 		{
-			set_property("sl_combatHandler", combatState + "(throwlatte)");
-			handleTracker(enemy, $skill[Throw Latte On Opponent], "sl_banishes");
+			set_property("auto_combatHandler", combatState + "(throwlatte)");
+			handleTracker(enemy, $skill[Throw Latte On Opponent], "auto_banishes");
 			return "skill " + $skill[Throw Latte On Opponent];
 		}
 	}
@@ -3751,8 +3751,8 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 		if($monsters[Flame-Broiled Meat Blob, Keese, Overdone Flame-Broiled Meat Blob, Remaindered Skeleton] contains enemy)
 		{
-			set_property("sl_combatHandler", combatState + "(" + $skill[KGB Tranquilizer Dart] + ")");
-			handleTracker(enemy, $skill[KGB Tranquilizer Dart], "sl_banishes");
+			set_property("auto_combatHandler", combatState + "(" + $skill[KGB Tranquilizer Dart] + ")");
+			handleTracker(enemy, $skill[KGB Tranquilizer Dart], "auto_banishes");
 			return "skill " + $skill[KGB Tranquilizer Dart];
 		}
 	}
@@ -3784,7 +3784,7 @@ string cs_combatNormal(int round, string opp, string text)
 	if((my_location() == $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]) && !contains_text(combatState, "love gnats"))
 	{
 		combatState = combatState + "(love gnats)(love stinkbug)(love mosquito)";
-		set_property("sl_combatHandler", combatState);
+		set_property("auto_combatHandler", combatState);
 	}
 
 	if((enemy == $monster[LOV Enforcer]) && (my_familiar() == $familiar[Nosy Nose]))
@@ -3798,13 +3798,13 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 #		if(!contains_text(combatState, "weaksauce") && (have_skill($skill[Curse Of Weaksauce])) && (my_mp() >= 32))
 #		{
-#			set_property("sl_combatHandler", combatState + "(weaksauce)");
+#			set_property("auto_combatHandler", combatState + "(weaksauce)");
 #			return "skill " + $skill[Curse Of Weaksauce];
 #		}
 
 		if(!contains_text(combatState, "(candyblast)") && have_skill($skill[Candyblast]) && (my_mp() > (mp_cost($skill[Candyblast]) * 3)) && (my_class() != $class[Sauceror]))
 		{
-			set_property("sl_combatHandler", combatState + "(candyblast)");
+			set_property("auto_combatHandler", combatState + "(candyblast)");
 			return "skill " + $skill[Candyblast];
 		}
 
@@ -3816,7 +3816,7 @@ string cs_combatNormal(int round, string opp, string text)
 
 	if(!contains_text(combatState, "love gnats") && have_skill($skill[Summon Love Gnats]))
 	{
-		set_property("sl_combatHandler", combatState + "(love gnats)");
+		set_property("auto_combatHandler", combatState + "(love gnats)");
 		return "skill " + $skill[Summon Love Gnats];
 	}
 
@@ -3840,17 +3840,17 @@ string cs_combatNormal(int round, string opp, string text)
 		{
 			if(!contains_text(combatState, "weaksauce") && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 72))
 			{
-				set_property("sl_combatHandler", combatState + "(weaksauce)");
+				set_property("auto_combatHandler", combatState + "(weaksauce)");
 				return "skill " + $skill[Curse Of Weaksauce];
 			}
 			if(!contains_text(combatState, "soulbubble") && have_skill($skill[Soul Saucery]) && (my_soulsauce() >= soulsauce_cost($skill[Soul Bubble])))
 			{
-				set_property("sl_combatHandler", combatState + "(soulbubble)");
+				set_property("auto_combatHandler", combatState + "(soulbubble)");
 				return "skill " + $skill[Soul Bubble];
 			}
 
-			set_property("sl_combatHandler", combatState + "(olfaction)");
-			handleTracker(enemy, $skill[Transcendent Olfaction], "sl_sniffs");
+			set_property("auto_combatHandler", combatState + "(olfaction)");
+			handleTracker(enemy, $skill[Transcendent Olfaction], "auto_sniffs");
 			return "skill " + $skill[Transcendent Olfaction];
 		}
 	}
@@ -3861,17 +3861,17 @@ string cs_combatNormal(int round, string opp, string text)
 		{
 			if((!contains_text(combatState, "weaksauce")) && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 72))
 			{
-				set_property("sl_combatHandler", combatState + "(weaksauce)");
+				set_property("auto_combatHandler", combatState + "(weaksauce)");
 				return "skill " + $skill[Curse Of Weaksauce];
 			}
 			if(!contains_text(combatState, "soulbubble") && have_skill($skill[Soul Saucery]) && (my_soulsauce() >= soulsauce_cost($skill[Soul Bubble])))
 			{
-				set_property("sl_combatHandler", combatState + "(soulbubble)");
+				set_property("auto_combatHandler", combatState + "(soulbubble)");
 				return "skill " + $skill[Soul Bubble];
 			}
 
-			set_property("sl_combatHandler", combatState + "(lattesniff)");
-			handleTracker(enemy, $skill[Offer Latte To Opponent], "sl_sniffs");
+			set_property("auto_combatHandler", combatState + "(lattesniff)");
+			handleTracker(enemy, $skill[Offer Latte To Opponent], "auto_sniffs");
 			return "skill " + $skill[Offer Latte To Opponent];
 		}
 	}
@@ -3882,17 +3882,17 @@ string cs_combatNormal(int round, string opp, string text)
 		{
 			if((!contains_text(combatState, "weaksauce")) && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 72))
 			{
-				set_property("sl_combatHandler", combatState + "(weaksauce)");
+				set_property("auto_combatHandler", combatState + "(weaksauce)");
 				return "skill " + $skill[Curse Of Weaksauce];
 			}
 			if(!contains_text(combatState, "soulbubble") && have_skill($skill[Soul Saucery]) && (my_soulsauce() >= soulsauce_cost($skill[Soul Bubble])))
 			{
-				set_property("sl_combatHandler", combatState + "(soulbubble)");
+				set_property("auto_combatHandler", combatState + "(soulbubble)");
 				return "skill " + $skill[Soul Bubble];
 			}
 
-			set_property("sl_combatHandler", combatState + "(matingcall)");
-			handleTracker(enemy, $skill[Gallapagosian Mating Call], "sl_sniffs");
+			set_property("auto_combatHandler", combatState + "(matingcall)");
+			handleTracker(enemy, $skill[Gallapagosian Mating Call], "auto_sniffs");
 			return "skill " + $skill[Gallapagosian Mating Call];
 		}
 	}
@@ -3900,7 +3900,7 @@ string cs_combatNormal(int round, string opp, string text)
 
 	if(!contains_text(combatState, "cleesh") && have_skill($skill[Cleesh]) && (my_mp() > mp_cost($skill[Cleesh])) && ((enemy == $monster[creepy little girl]) || (enemy == $monster[lab monkey]) || (enemy == $monster[super-sized cola wars soldier])) && (item_amount($item[Experimental Serum G-9]) < 2))
 	{
-		set_property("sl_combatHandler", combatState + "(cleesh)");
+		set_property("auto_combatHandler", combatState + "(cleesh)");
 		return "skill " + $skill[CLEESH];
 	}
 
@@ -3908,7 +3908,7 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 		if(type != current)
 		{
-			set_property("sl_combatHandler", combatState + "(DNA)");
+			set_property("auto_combatHandler", combatState + "(DNA)");
 			return "item " + $item[DNA Extraction Syringe];
 		}
 	}
@@ -3917,7 +3917,7 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 		if($monsters[Witchess Bishop, Witchess Knight] contains enemy)
 		{
-			set_property("sl_combatHandler", combatState + "(winkat)");
+			set_property("auto_combatHandler", combatState + "(winkat)");
 			if((get_property("_badlyRomanticArrows").to_int() == 1) && (get_property("romanticTarget") != enemy))
 			{
 				abort("Have animator out but can not arrow");
@@ -3930,7 +3930,7 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 		if($monsters[Witchess Bishop, Witchess Knight] contains enemy)
 		{
-			set_property("sl_combatHandler", combatState + "(badlyromanticarrow)");
+			set_property("auto_combatHandler", combatState + "(badlyromanticarrow)");
 			if((get_property("_badlyRomanticArrows").to_int() == 1) && (get_property("romanticTarget") != enemy))
 			{
 				abort("Have angel out but can not arrow");
@@ -3948,13 +3948,13 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 		if(!contains_text(combatState, "weaksauce") && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 32))
 		{
-			set_property("sl_combatHandler", combatState + "(weaksauce)");
+			set_property("auto_combatHandler", combatState + "(weaksauce)");
 			return "skill " + $skill[Curse Of Weaksauce];
 		}
 
 		if((!contains_text(combatState, "conspiratorialwhispers")) && (have_skill($skill[Conspiratorial Whispers])) && (my_mp() >= 49))
 		{
-			set_property("sl_combatHandler", combatState + "(conspiratorialwhispers)");
+			set_property("auto_combatHandler", combatState + "(conspiratorialwhispers)");
 			return "skill " + $skill[Conspiratorial Whispers];
 		}
 		danger = true;
@@ -3962,63 +3962,63 @@ string cs_combatNormal(int round, string opp, string text)
 
 	if(!contains_text(combatState, "love stinkbug") && get_property("lovebugsUnlocked").to_boolean() && !danger)
 	{
-		set_property("sl_combatHandler", combatState + "(love stinkbug)");
+		set_property("auto_combatHandler", combatState + "(love stinkbug)");
 		return "skill " + $skill[Summon Love Stinkbug];
 	}
 
 	if(!contains_text(combatState, "(digitize)") && have_skill($skill[Digitize]) && (my_mp() > (mp_cost($skill[Digitize]) * 2)) && ($monsters[Witchess Bishop, Witchess Knight] contains enemy))
 	{
-		set_property("sl_combatHandler", combatState + "(digitize)");
+		set_property("auto_combatHandler", combatState + "(digitize)");
 		return "skill " + $skill[Digitize];
 	}
 
 	if(!contains_text(combatState, "(extract)") && have_skill($skill[Extract]) && (my_mp() > (mp_cost($skill[Extract]) * 3)) && !danger)
 	{
-		set_property("sl_combatHandler", combatState + "(extract)");
+		set_property("auto_combatHandler", combatState + "(extract)");
 		return "skill " + $skill[Extract];
 	}
 
 	if((!contains_text(combatState, "shattering punch")) && have_skill($skill[Shattering Punch]) && ((my_mp() / 2) > mp_cost($skill[Shattering Punch])) && !isFreeMonster(enemy) && !enemy.boss && (get_property("_shatteringPunchUsed").to_int() < 3))
 	{
-		set_property("sl_combatHandler", combatState + "(shattering punch)");
-		handleTracker(enemy, $skill[shattering punch], "sl_instakill");
+		set_property("auto_combatHandler", combatState + "(shattering punch)");
+		handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 		return "skill " + $skill[shattering punch];
 	}
 
 	if(!contains_text(combatState, "gingerbread mob hit") && have_skill($skill[Gingerbread Mob Hit]) && ((my_mp() / 2) > mp_cost($skill[Gingerbread Mob Hit])) && !isFreeMonster(enemy) && !enemy.boss && !get_property("_gingerbreadMobHitUsed").to_boolean())
 	{
-		set_property("sl_combatHandler", combatState + "(gingerbread mob hit)");
-		handleTracker(enemy, $skill[Gingerbread Mob Hit], "sl_instakill");
+		set_property("auto_combatHandler", combatState + "(gingerbread mob hit)");
+		handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 		return "skill " + $skill[Gingerbread Mob Hit];
 	}
 
 	if(!contains_text(combatState, "weaksauce") && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 32))
 	{
-		set_property("sl_combatHandler", combatState + "(weaksauce)");
+		set_property("auto_combatHandler", combatState + "(weaksauce)");
 		return "skill " + $skill[Curse Of Weaksauce];
 	}
 
 	if(!contains_text(combatState, "(candyblast)") && have_skill($skill[Candyblast]) && (my_mp() > (mp_cost($skill[Candyblast]) * 3)) && !danger && (my_class() != $class[Sauceror]))
 	{
-		set_property("sl_combatHandler", combatState + "(candyblast)");
+		set_property("auto_combatHandler", combatState + "(candyblast)");
 		return "skill " + $skill[Candyblast];
 	}
 
 	if(!contains_text(combatState, "love mosquito") && get_property("lovebugsUnlocked").to_boolean())
 	{
-		set_property("sl_combatHandler", combatState + "(love mosquito)");
+		set_property("auto_combatHandler", combatState + "(love mosquito)");
 		return "skill " + $skill[Summon Love Mosquito];
 	}
 
 	if(!contains_text(combatState, "cowboy kick") && have_skill($skill[Cowboy Kick]) && (monster_level_adjustment() <= 150))
 	{
-		set_property("sl_combatHandler", combatState + "(cowboy kick)");
+		set_property("auto_combatHandler", combatState + "(cowboy kick)");
 		return "skill " + $skill[Cowboy Kick];
 	}
 
 	if(!contains_text(combatState, "(time-spinner)") && (item_amount($item[Time-Spinner]) > 0))
 	{
-		set_property("sl_combatHandler", combatState + "(time-spinner)");
+		set_property("auto_combatHandler", combatState + "(time-spinner)");
 		return "item " + $item[Time-Spinner];
 	}
 
@@ -4029,7 +4029,7 @@ string cs_combatNormal(int round, string opp, string text)
 
 	if(!contains_text(combatState, "entangling noodles") && have_skill($skill[Entangling Noodles]) && (my_mp() >= (mp_cost($skill[Entangling Noodles]) + (2 * mp_cost($skill[Saucestorm])))) && (monster_level_adjustment() <= 150))
 	{
-		set_property("sl_combatHandler", combatState + "(entangling noodles)");
+		set_property("auto_combatHandler", combatState + "(entangling noodles)");
 		return "skill " + $skill[Entangling Noodles];
 	}
 
@@ -4050,12 +4050,12 @@ string cs_combatXO(int round, string opp, string text)
 	# This assumes we have Volcano Charter, Meteor Love [sic], Snokebomb, XO Skeleton (not blocked by 100% run), and 50 MP, anything else and it probably fails
 	if(round == 0)
 	{
-		print("sl_combatHandler: " + round, "brown");
-		set_property("sl_combatHandler", "");
+		print("auto_combatHandler: " + round, "brown");
+		set_property("auto_combatHandler", "");
 	}
 
-	set_property("sl_diag_round", round);
-	if(get_property("sl_diag_round").to_int() > 60)
+	set_property("auto_diag_round", round);
+	if(get_property("auto_diag_round").to_int() > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
@@ -4066,7 +4066,7 @@ string cs_combatXO(int round, string opp, string text)
 	}
 
 	monster enemy = to_monster(opp);
-	string combatState = get_property("sl_combatHandler");
+	string combatState = get_property("auto_combatHandler");
 
 
 	if(my_location() == $location[LavaCo&trade; Lamp Factory])
@@ -4075,12 +4075,12 @@ string cs_combatXO(int round, string opp, string text)
 		{
 			if(!contains_text(combatState, "hugpocket") && (get_property("_xoHugsUsed").to_int() < 11))
 			{
-				set_property("sl_combatHandler", combatState + "(hugpocket)");
+				set_property("auto_combatHandler", combatState + "(hugpocket)");
 				return "skill " + $skill[Hugs And Kisses!];
 			}
 			if(contains_text(combatState, "hugpocket") && (get_property("_macrometeoriteUses").to_int() < 10))
 			{
-				set_property("sl_combatHandler", "");
+				set_property("auto_combatHandler", "");
 				return "skill " + $skill[Macrometeorite];
 			}
 		}
@@ -4092,12 +4092,12 @@ string cs_combatXO(int round, string opp, string text)
 		{
 			if(!contains_text(combatState, "hugpocket") && (get_property("_xoHugsUsed").to_int() < 11))
 			{
-				set_property("sl_combatHandler", combatState + "(hugpocket)");
+				set_property("auto_combatHandler", combatState + "(hugpocket)");
 				return "skill " + $skill[Hugs And Kisses!];
 			}
 			if(contains_text(combatState, "hugpocket") && (get_property("_macrometeoriteUses").to_int() < 10))
 			{
-				set_property("sl_combatHandler", "");
+				set_property("auto_combatHandler", "");
 				return "skill " + $skill[Macrometeorite];
 			}
 		}
@@ -4108,7 +4108,7 @@ string cs_combatXO(int round, string opp, string text)
 		abort("Can not snoke that fire thing. We should probably smoke it instead.");
 	}
 
-	handleTracker(enemy, $skill[Snokebomb], "sl_banishes");
+	handleTracker(enemy, $skill[Snokebomb], "auto_banishes");
 	return "skill " + $skill[Snokebomb];
 }
 
@@ -4116,18 +4116,18 @@ string cs_combatYR(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("sl_combatHandler: " + round, "brown");
-		set_property("sl_combatHandler", "");
+		print("auto_combatHandler: " + round, "brown");
+		set_property("auto_combatHandler", "");
 	}
 
-	set_property("sl_diag_round", round);
-	if(get_property("sl_diag_round").to_int() > 60)
+	set_property("auto_diag_round", round);
+	if(get_property("auto_diag_round").to_int() > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
 	monster enemy = to_monster(opp);
-	string combatState = get_property("sl_combatHandler");
+	string combatState = get_property("auto_combatHandler");
 
 	phylum current = to_phylum(get_property("dnaSyringe"));
 	phylum type = monster_phylum(enemy);
@@ -4138,7 +4138,7 @@ string cs_combatYR(int round, string opp, string text)
 		{
 			if((!contains_text(combatState, "(" + action + ")")) && have_skill(action) && (my_mp() > mp_cost(action)))
 			{
-				set_property("sl_combatHandler", combatState + "(" + action + ")");
+				set_property("auto_combatHandler", combatState + "(" + action + ")");
 				return "skill " + action;
 			}
 		}
@@ -4146,14 +4146,14 @@ string cs_combatYR(int round, string opp, string text)
 
 	if((!contains_text(combatState, "summon love gnats")) && have_skill($skill[Summon Love Gnats]))
 	{
-		set_property("sl_combatHandler", combatState + "(summon love gnats)");
+		set_property("auto_combatHandler", combatState + "(summon love gnats)");
 		return "skill summon love gnats";
 	}
 	if((!contains_text(combatState, "DNA")) && (item_amount($item[DNA Extraction Syringe]) > 0))
 	{
 		if(type != current)
 		{
-			set_property("sl_combatHandler", combatState + "(DNA)");
+			set_property("auto_combatHandler", combatState + "(DNA)");
 			return "item DNA extraction syringe";
 		}
 	}
@@ -4192,12 +4192,12 @@ string cs_combatYR(int round, string opp, string text)
 	{
 		if(!contains_text(combatState, "lattegulp") && !get_property("_latteDrinkUsed").to_boolean() && have_skill($skill[Gulp Latte]) && (my_mp() > mp_cost($skill[Gulp Latte])))
 		{
-			set_property("sl_combatHandler", combatState + "(lattegulp)");
+			set_property("auto_combatHandler", combatState + "(lattegulp)");
 			return "skill " + $skill[Gulp Latte];
 		}
 		if(!contains_text(combatState, "turbo") && have_skill($skill[Turbo]) && (my_mp() > mp_cost($skill[Turbo])))
 		{
-			set_property("sl_combatHandler", combatState + "(turbo)");
+			set_property("auto_combatHandler", combatState + "(turbo)");
 			return "skill " + $skill[Turbo];
 		}
 	}
@@ -4209,21 +4209,21 @@ string cs_combatYR(int round, string opp, string text)
 		{
 			if(have_skill($skill[Disintegrate]) && (my_mp() > mp_cost($skill[Disintegrate])) && (have_effect($effect[Everything Looks Yellow]) == 0))
 			{
-				set_property("sl_combatHandler", combatState + "(yellowray)");
-				handleTracker(enemy, $skill[Disintegrate], "sl_yellowRays");
+				set_property("auto_combatHandler", combatState + "(yellowray)");
+				handleTracker(enemy, $skill[Disintegrate], "auto_yellowRays");
 				return "skill " + $skill[Disintegrate];
 			}
 			string combatAction = yellowRayCombatString();
 			if(combatAction != "")
 			{
-				set_property("sl_combatHandler", combatState + "(yellowray)");
+				set_property("auto_combatHandler", combatState + "(yellowray)");
 				if(index_of(combatAction, "skill") == 0)
 				{
-					handleTracker(enemy, to_skill(substring(combatAction, 6)), "sl_yellowRays");
+					handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_yellowRays");
 				}
 				else if(index_of(combatAction, "item") == 0)
 				{
-					handleTracker(enemy, to_item(substring(combatAction, 5)), "sl_yellowRays");
+					handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_yellowRays");
 				}
 				else
 				{
@@ -4240,22 +4240,22 @@ string cs_combatYR(int round, string opp, string text)
 
 	if((!contains_text(combatState, "summon love stinkbug")) && get_property("lovebugsUnlocked").to_boolean())
 	{
-		set_property("sl_combatHandler", combatState + "(summon love stinkbug)");
+		set_property("auto_combatHandler", combatState + "(summon love stinkbug)");
 		return "skill summon love stinkbug";
 	}
 	if((!contains_text(combatState, "(extract)")) && have_skill($skill[Extract]) && (my_mp() > (mp_cost($skill[Extract]) * 3)))
 	{
-		set_property("sl_combatHandler", combatState + "(extract)");
+		set_property("auto_combatHandler", combatState + "(extract)");
 		return "skill " + $skill[Extract];
 	}
 	if((!contains_text(combatState, "(time-spinner)")) && (item_amount($item[Time-Spinner]) > 0))
 	{
-		set_property("sl_combatHandler", combatState + "(time-spinner)");
+		set_property("auto_combatHandler", combatState + "(time-spinner)");
 		return "item " + $item[Time-Spinner];
 	}
 	if((!contains_text(combatState, "summon love mosquito")) && get_property("lovebugsUnlocked").to_boolean())
 	{
-		set_property("sl_combatHandler", combatState + "(summon love mosquito)");
+		set_property("auto_combatHandler", combatState + "(summon love mosquito)");
 		return "skill summon love mosquito";
 	}
 	if(have_skill($skill[Salsaball]) && (my_mp() >= mp_cost($skill[Salsaball])))
@@ -4269,18 +4269,18 @@ string cs_combatKing(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("sl_combatHandler: " + round, "brown");
-		set_property("sl_combatHandler", "");
+		print("auto_combatHandler: " + round, "brown");
+		set_property("auto_combatHandler", "");
 	}
 
-	set_property("sl_diag_round", round);
-	if(get_property("sl_diag_round").to_int() > 60)
+	set_property("auto_diag_round", round);
+	if(get_property("auto_diag_round").to_int() > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
 	monster enemy = to_monster(opp);
-	string combatState = get_property("sl_combatHandler");
+	string combatState = get_property("auto_combatHandler");
 
 	if(enemy != $monster[Witchess King])
 	{
@@ -4291,7 +4291,7 @@ string cs_combatKing(int round, string opp, string text)
 	{
 		if((!contains_text(combatState, "(" + action + ")")) && have_skill(action) && (my_mp() > mp_cost(action)))
 		{
-			set_property("sl_combatHandler", combatState + "(" + action + ")");
+			set_property("auto_combatHandler", combatState + "(" + action + ")");
 			return "skill " + action;
 		}
 	}
@@ -4303,18 +4303,18 @@ string cs_combatWitch(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("sl_combatHandler: " + round, "brown");
-		set_property("sl_combatHandler", "");
+		print("auto_combatHandler: " + round, "brown");
+		set_property("auto_combatHandler", "");
 	}
 
-	set_property("sl_diag_round", round);
-	if(get_property("sl_diag_round").to_int() > 60)
+	set_property("auto_diag_round", round);
+	if(get_property("auto_diag_round").to_int() > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
 	monster enemy = to_monster(opp);
-	string combatState = get_property("sl_combatHandler");
+	string combatState = get_property("auto_combatHandler");
 
 	if(enemy != $monster[Witchess Witch])
 	{
@@ -4324,7 +4324,7 @@ string cs_combatWitch(int round, string opp, string text)
 	{
 		if((!contains_text(combatState, "(" + action + ")")) && have_skill(action) && (my_mp() > mp_cost(action)))
 		{
-			set_property("sl_combatHandler", combatState + "(" + action + ")");
+			set_property("auto_combatHandler", combatState + "(" + action + ")");
 			return "skill " + action;
 		}
 	}
@@ -4344,22 +4344,22 @@ string cs_combatLTB(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("sl_combatHandler: " + round, "brown");
-		set_property("sl_combatHandler", "");
+		print("auto_combatHandler: " + round, "brown");
+		set_property("auto_combatHandler", "");
 	}
 
-	set_property("sl_diag_round", round);
-	if(get_property("sl_diag_round").to_int() > 60)
+	set_property("auto_diag_round", round);
+	if(get_property("auto_diag_round").to_int() > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
 	monster enemy = to_monster(opp);
-	string combatState = get_property("sl_combatHandler");
+	string combatState = get_property("auto_combatHandler");
 
 #	if(!contains_text(combatState, "love gnats") && have_skill($skill[Summon Love Gnats]))
 #	{
-#		set_property("sl_combatHandler", combatState + "(love gnats)");
+#		set_property("auto_combatHandler", combatState + "(love gnats)");
 #		return "skill " + $skill[Summon Love Gnats];
 #	}
 	if(!contains_text(combatState, "giant growth") && have_skill($skill[Giant Growth]))
@@ -4368,7 +4368,7 @@ string cs_combatLTB(int round, string opp, string text)
 		{
 			abort("We do not have a Green Mana, we should not have gotten here!");
 		}
-		set_property("sl_combatHandler", combatState + "(giant growth)");
+		set_property("auto_combatHandler", combatState + "(giant growth)");
 		return "skill " + $skill[Giant Growth];
 	}
 
@@ -4385,14 +4385,14 @@ string cs_combatLTB(int round, string opp, string text)
 
 	if(!contains_text(combatState, "shattering punch") && have_skill($skill[Shattering Punch]) && (my_mp() >= mp_cost($skill[Shattering Punch])) && !isFreeMonster(enemy) && !enemy.boss && (get_property("_shatteringPunchUsed").to_int() < 3))
 	{
-		set_property("sl_combatHandler", combatState + "(shattering punch)");
-		handleTracker(enemy, $skill[shattering punch], "sl_instakill");
+		set_property("auto_combatHandler", combatState + "(shattering punch)");
+		handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 		return "skill " + $skill[shattering punch];
 	}
 
 	if(!contains_text(combatState, "louder than bomb") && (item_amount($item[Louder Than Bomb]) > 0))
 	{
-		set_property("sl_combatHandler", combatState + "(louder than bomb)");
+		set_property("auto_combatHandler", combatState + "(louder than bomb)");
 
 		if((item_amount($item[Seal Tooth]) > 0) && have_skill($skill[Ambidextrous Funkslinging]))
 		{
@@ -4402,7 +4402,7 @@ string cs_combatLTB(int round, string opp, string text)
 	}
 	if(!contains_text(combatState, "tennis ball") && (item_amount($item[Tennis Ball]) > 0))
 	{
-		set_property("sl_combatHandler", combatState + "(tennis ball)");
+		set_property("auto_combatHandler", combatState + "(tennis ball)");
 
 		if((item_amount($item[Seal Tooth]) > 0) && have_skill($skill[Ambidextrous Funkslinging]))
 		{
@@ -4414,7 +4414,7 @@ string cs_combatLTB(int round, string opp, string text)
 
 	if(!contains_text(combatState, "power pill") && (item_amount($item[Power Pill]) > 0))
 	{
-		set_property("sl_combatHandler", combatState + "(power pill)");
+		set_property("auto_combatHandler", combatState + "(power pill)");
 
 		if((item_amount($item[Seal Tooth]) > 0) && have_skill($skill[Ambidextrous Funkslinging]))
 		{
@@ -4517,7 +4517,7 @@ boolean cs_giant_growth()
 	return cs_giant_growth();
 }
 
-boolean sl_csHandleGrapes()
+boolean auto_csHandleGrapes()
 {
 	if(item_amount($item[Potion of Temporary Gr8ness]) > 0)
 	{
@@ -4532,7 +4532,7 @@ boolean sl_csHandleGrapes()
 		useCocoon();
 		handleFaxMonster($monster[Sk8 gnome], "cs_combatYR");
 	}
-	if((item_amount($item[Gr8ps]) > 0) && (item_amount($item[Potion of Temporary Gr8ness]) == 0) && (have_effect($effect[Gr8tness]) == 0) && (npc_price($item[Delectable Catalyst]) < my_meat()) && (freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && have_skill($skill[Advanced Saucecrafting]) && ($classes[Pastamancer, Sauceror] contains my_class()) && have_skill($skill[The Way of Sauce]) && (sl_get_campground() contains $item[Dramatic&trade; Range]))
+	if((item_amount($item[Gr8ps]) > 0) && (item_amount($item[Potion of Temporary Gr8ness]) == 0) && (have_effect($effect[Gr8tness]) == 0) && (npc_price($item[Delectable Catalyst]) < my_meat()) && (freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && have_skill($skill[Advanced Saucecrafting]) && ($classes[Pastamancer, Sauceror] contains my_class()) && have_skill($skill[The Way of Sauce]) && (auto_get_campground() contains $item[Dramatic&trade; Range]))
 	{
 		if(!have_skills($skills[Expert Corner-Cutter, Rapid Prototyping]) && have_skill($skill[Inigo\'s Incantation of Inspiration]))
 		{
@@ -4717,9 +4717,9 @@ boolean do_cs_quest(int quest)
 		}
 		else
 		{
-			if(get_property("sl_stayInRun").to_boolean())
+			if(get_property("auto_stayInRun").to_boolean())
 			{
-				abort("User wanted to stay in run (sl_stayInRun), we are done.");
+				abort("User wanted to stay in run (auto_stayInRun), we are done.");
 			}
 			visit_url("choice.php?pwd&whichchoice=1089&option=30");
 			print("Community Service Completed. Beep boop.", "blue");
@@ -4815,10 +4815,10 @@ int get_cs_questNum(string input)
 void set_cs_questListFast(int[int] fast)
 {
 	int[int] empty;
-	sl_cs_fastQuestList = empty;
+	auto_cs_fastQuestList = empty;
 	foreach idx, val in fast
 	{
-		sl_cs_fastQuestList[val] = val;
+		auto_cs_fastQuestList[val] = val;
 	}
 }
 
@@ -4829,16 +4829,16 @@ boolean cs_preTurnStuff(int curQuest)
 		return false;
 	}
 
-	int[int] questsLeft = sl_cs_fastQuestList;
+	int[int] questsLeft = auto_cs_fastQuestList;
 
 	if(my_inebriety() > inebriety_limit())
 	{
 		abort("Too drunk, not sure if not aborting is safe yet");
 	}
 
-	if((sl_get_campground() contains $item[Packet Of Tall Grass Seeds]))
+	if((auto_get_campground() contains $item[Packet Of Tall Grass Seeds]))
 	{
-		int[item] camp = sl_get_campground();
+		int[item] camp = auto_get_campground();
 		if(camp[$item[Packet Of Tall Grass Seeds]] > 0)
 		{
 			cli_execute("garden pick");
@@ -4922,7 +4922,7 @@ boolean cs_preTurnStuff(int curQuest)
 	{
 		if((my_familiar() != $familiar[Puck Man]) && (my_familiar() != $familiar[Ms. Puck Man]))
 		{
-			print("100% familiar is dangerous, to disable: set sl_100familiar=none", "red");
+			print("100% familiar is dangerous, to disable: set auto_100familiar=none", "red");
 			string thing = "meatbag";
 			if(my_name() == "Cheesecookie")
 			{
@@ -4944,8 +4944,8 @@ boolean cs_preTurnStuff(int curQuest)
 	cs_dnaPotions();
 	use_barrels();
 	cs_make_stuff(curQuest);
-	sl_mayoItems();
-	sl_voteSetup(0, 1, 3);
+	auto_mayoItems();
+	auto_voteSetup(0, 1, 3);
 
 	if((item_amount($item[Gold Nuggets]) > 0) && (item_amount($item[Gold Nuggets]) <= 3))
 	{
@@ -5022,7 +5022,7 @@ boolean cs_preTurnStuff(int curQuest)
 
 	if(item_amount($item[Cashew]) > 0)
 	{
-		if((item_amount($item[Cashew]) >= 1) && !possessEquipment($item[Glass Casserole Dish]) && ((item_amount($item[January\'s Garbage Tote]) == 0) || (get_property("sl_beatenUpCount").to_int() >= 3)))
+		if((item_amount($item[Cashew]) >= 1) && !possessEquipment($item[Glass Casserole Dish]) && ((item_amount($item[January\'s Garbage Tote]) == 0) || (get_property("auto_beatenUpCount").to_int() >= 3)))
 		{
 			cli_execute("make " + $item[Glass Casserole Dish]);
 		}
@@ -5106,15 +5106,15 @@ boolean cs_healthMaintain(int target){
 		if(!useCocoon()){
 			print("I'm in here now");
 			//cocoon failed, try a free rest to restore some hp/mp and try again
-			if((chateaumantegna_available() || sl_campawayAvailable()) && doFreeRest()){
+			if((chateaumantegna_available() || auto_campawayAvailable()) && doFreeRest()){
 				continue;
 			}
 
 			// try to gain MP through conventional means before trying to heal again
 			int minMP = 0;
-			if(my_maxhp() <= 70 && sl_have_skill($skill[Tongue of the Walrus])){
+			if(my_maxhp() <= 70 && auto_have_skill($skill[Tongue of the Walrus])){
 				minMP = mp_cost($skill[Tongue of the Walrus]);
-			} else if(sl_have_skill($skill[Cannelloni Cocoon])){
+			} else if(auto_have_skill($skill[Cannelloni Cocoon])){
 				minMP = mp_cost($skill[Cannelloni Cocoon]);
 			}
 			if(minMP == 0 || !cs_mpMaintain(minMP)){
@@ -5142,7 +5142,7 @@ boolean cs_mpMaintain(int target){
 	}
 	print("CS: attempting to maintain target mp " + target);
 
-	if(chateaumantegna_available() || sl_campawayAvailable()){
+	if(chateaumantegna_available() || auto_campawayAvailable()){
 		while(my_mp() < target && doFreeRest());
 	}
 
@@ -5154,7 +5154,7 @@ boolean cs_mpMaintain(int target){
 }
 
 boolean canTrySaberTrickMeteorShower(){
-	if(sl_meteorShowersAvailable() == 0 || sl_saberChargesAvailable() == 0){
+	if(auto_meteorShowersAvailable() == 0 || auto_saberChargesAvailable() == 0){
 		return false;
 	}
 
@@ -5176,7 +5176,7 @@ boolean trySaberTrickMeteorShower(){
 	if(!cs_healthMaintain()){
 		abort("Wasnt to maintain health and mp.");
 	}
-	boolean ret = slAdv(1, $location[The Dire Warren], "sl_saberTrickMeteorShowerCombatHandler");
+	boolean ret = slAdv(1, $location[The Dire Warren], "auto_saberTrickMeteorShowerCombatHandler");
 	resetMaximize();
 	return ret;
 }
@@ -5186,12 +5186,12 @@ int beachHeadTurnSavings(int quest){
 		return floor(((my_basestat(s) * 1.5) - my_basestat(s))/30);
 	}
 
-	if(!sl_beachCombAvailable() || !($ints[2, 3, 4, 5, 10] contains quest)){
+	if(!auto_beachCombAvailable() || !($ints[2, 3, 4, 5, 10] contains quest)){
 		return 0;
 	}
 
 	int adv_cost = 0;
-	if(sl_beachCombFreeUsesLeft() == 0){
+	if(auto_beachCombFreeUsesLeft() == 0){
 		adv_cost = 1;
 	}
 
@@ -5232,28 +5232,28 @@ int beachHeadTurnSavings(int quest){
 	return adv_savings - adv_cost;
 }
 
-# Note: sl_beachCombHead will only work if free walks are available, may want to change
+# Note: auto_beachCombHead will only work if free walks are available, may want to change
 boolean tryBeachHeadBuff(int quest){
 	boolean success = false;
 	switch(quest){
 	case 2: // every 30 bonus muscle saves 1 turn.
-		sl_beachCombHead("muscle");
+		auto_beachCombHead("muscle");
 		success = have_effect($effect[Lack of Body-Building]) > 0;
 		break;
 	case 3: // every 30 bonus mysticality saves 1 turn
-		sl_beachCombHead("mysticality");
+		auto_beachCombHead("mysticality");
 		success = have_effect($effect[We're All Made of Starfish]) > 0;
 		break;
 	case 4: // every 30 bonus moxie saves 1 turn.
-		sl_beachCombHead("moxie");
+		auto_beachCombHead("moxie");
 		success = have_effect($effect[Pomp & Circumsands]) > 0;
 		break;
 	case 5: // every 5 lbs saves 1 turn
-		sl_beachCombHead("familiar");
+		auto_beachCombHead("familiar");
 		success = have_effect($effect[Do I Know You From Somewhere?]) > 0;
 		break;
 	case 10: // every point of hot resistance saves 1 turn
-		sl_beachCombHead("hot");
+		auto_beachCombHead("hot");
 		success = have_effect($effect[Hot-Headed]) > 0;
 		break;
 	}

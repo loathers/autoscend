@@ -1,4 +1,4 @@
-script "sl_adventure.ash"
+script "auto_adventure.ash"
 
 # num is not handled properly anyway, so we'll just reject it.
 boolean slAdv(location loc, string option)
@@ -9,18 +9,18 @@ boolean slAdv(location loc, string option)
 # num is not handled properly anyway, so we'll just reject it.
 boolean slAdv(int num, location loc, string option)
 {
-	set_property("sl_combatHandler", "");
-	set_property("sl_diag_round", 0);
+	set_property("auto_combatHandler", "");
+	set_property("auto_diag_round", 0);
 	set_property("nextAdventure", loc);
 	if(option == "")
 	{
-		option = "sl_combatHandler";
+		option = "auto_combatHandler";
 	}
-	if(sl_my_path() == "Actually Ed the Undying")
+	if(auto_my_path() == "Actually Ed the Undying")
 	{
 		return ed_slAdv(num, loc, option);
 	}
-	if(sl_my_path() == "Pocket Familiars")
+	if(auto_my_path() == "Pocket Familiars")
 	{
 		return digimon_slAdv(num, loc, option);
 	}
@@ -45,7 +45,7 @@ boolean slAdv(int num, location loc, string option)
 	{
 		retval = adv1(loc, 0, option);
 	}
-	if(sl_my_path() == "One Crazy Random Summer")
+	if(auto_my_path() == "One Crazy Random Summer")
 	{
 		if(last_monster().random_modifiers["clingy"])
 		{
@@ -59,7 +59,7 @@ boolean slAdv(int num, location loc, string option)
 	}
 	if(get_property("lastEncounter") == "Using the Force")
 	{
-		run_choice(get_property("_sl_saberChoice").to_int());
+		run_choice(get_property("_auto_saberChoice").to_int());
 	}
 	return retval;
 }
@@ -112,7 +112,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 #	handlePreAdventure(loc);
 	if(option == "")
 	{
-		option = "sl_combatHandler";
+		option = "auto_combatHandler";
 	}
 	if(my_class() == $class[Ed])
 	{
@@ -148,7 +148,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	}
 
 	string combatPage = "<b>Combat";
-	if(sl_my_path() == "Pocket Familiars")
+	if(auto_my_path() == "Pocket Familiars")
 	{
 		combatPage = "<b>Fight!";
 	}
@@ -203,7 +203,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 	{
 		return false;
 	}
-	if(sl_my_path() == "G-Lover")
+	if(auto_my_path() == "G-Lover")
 	{
 		if(get_property("lastEncounter") == "The Hidden Heart of the Hidden Temple")
 		{
@@ -239,7 +239,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 		}
 		else
 		{
-			set_property("sl_disableAdventureHandling", true);
+			set_property("auto_disableAdventureHandling", true);
 			boolean retval = true;
 			if((inebriety_left() >= 0) || (equipped_item($slot[off-hand]) == $item[Drunkula\'s Wineglass]))
 			{
@@ -249,7 +249,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 			{
 				run_combat(option);
 			}
-			set_property("sl_disableAdventureHandling", false);
+			set_property("auto_disableAdventureHandling", false);
 			cli_execute("postsool");
 		}
 		return retval;
@@ -309,7 +309,7 @@ boolean preAdvXiblaxian(location loc)
 	{
 		string area = loc.environment;
 		# This is an attempt to farm Xiblaxian food/booze stuff.
-		item toMake = to_item(get_property("sl_xiblaxianChoice"));
+		item toMake = to_item(get_property("auto_xiblaxianChoice"));
 		if(toMake == $item[none])
 		{
 			toMake = $item[Xiblaxian Ultraburrito];

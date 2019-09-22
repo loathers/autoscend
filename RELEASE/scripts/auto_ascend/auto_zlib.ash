@@ -1,7 +1,7 @@
-script "sl_zlib.ash"
+script "auto_zlib.ash"
 
 /*
-	This is a snippet of the zlib script, to provide the process_kmail function only (as sl_process_kmail to avoid conflicts)
+	This is a snippet of the zlib script, to provide the process_kmail function only (as auto_process_kmail to avoid conflicts)
 */
 
 
@@ -19,7 +19,7 @@ script "sl_zlib.ash"
 ******************************************************************************/
 
 /*
-//Now defined in sl_ascend_header.ash
+//Now defined in auto_ascend_header.ash
 record kmailObject
 {
 	int id;                   // message id
@@ -33,7 +33,7 @@ record kmailObject
 	string localtime;         // your local time according to your KoL account, human-readable string
 };
 */
-void sl_process_kmail(string functionname)
+void auto_process_kmail(string functionname)
 {
 	// calls a function designed to parse a kmail.  It must accept a single kmailObject parameter,
 	// and return a boolean -- true if it wants the kmail to be deleted afterwards

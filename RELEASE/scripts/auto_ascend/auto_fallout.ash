@@ -1,20 +1,20 @@
-script "sl_fallout.ash"
+script "auto_fallout.ash"
 
 void fallout_initializeSettings()
 {
 	if(my_path() == "Nuclear Autumn")
 	{
-		set_property("sl_cubeItems", false);
-		set_property("sl_getBeehive", true);
-		set_property("sl_getStarKey", true);
-		set_property("sl_grimstoneOrnateDowsingRod", true);
-		set_property("sl_holeinthesky", true);
-		set_property("sl_useCubeling", true);
-		set_property("sl_wandOfNagamar", true);
+		set_property("auto_cubeItems", false);
+		set_property("auto_getBeehive", true);
+		set_property("auto_getStarKey", true);
+		set_property("auto_grimstoneOrnateDowsingRod", true);
+		set_property("auto_holeinthesky", true);
+		set_property("auto_useCubeling", true);
+		set_property("auto_wandOfNagamar", true);
 
 		if(item_amount($item[Deck of Every Card]) > 0)
 		{
-			set_property("sl_useCubeling", false);
+			set_property("auto_useCubeling", false);
 		}
 	}
 }
@@ -39,11 +39,11 @@ void fallout_initializeDay(int day)
 
 	if((my_daycount() % 2) == 1)
 	{
-		sl_sourceTerminalRequest("enquiry stats.enq");
+		auto_sourceTerminalRequest("enquiry stats.enq");
 	}
 	else
 	{
-		sl_sourceTerminalRequest("enquiry familiar.enq");
+		auto_sourceTerminalRequest("enquiry familiar.enq");
 	}
 
 	if(day == 2)
@@ -51,10 +51,10 @@ void fallout_initializeDay(int day)
 		equipBaseline();
 		ovenHandle();
 
-		if(get_property("sl_day_init").to_int() < 2)
+		if(get_property("auto_day_init").to_int() < 2)
 		{
 
-			if(get_property("sl_dickstab").to_boolean() && chateaumantegna_available())
+			if(get_property("auto_dickstab").to_boolean() && chateaumantegna_available())
 			{
 				boolean[item] furniture = chateaumantegna_decorations();
 				if(!furniture[$item[Ceiling Fan]])
@@ -80,18 +80,18 @@ void fallout_initializeDay(int day)
 	}
 	else if(day == 3)
 	{
-		if(get_property("sl_day_init").to_int() < 3)
+		if(get_property("auto_day_init").to_int() < 3)
 		{
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			set_property("sl_day_init", 3);
+			set_property("auto_day_init", 3);
 		}
 	}
 	else if(day == 4)
 	{
-		if(get_property("sl_day_init").to_int() < 4)
+		if(get_property("auto_day_init").to_int() < 4)
 		{
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			set_property("sl_day_init", 4);
+			set_property("auto_day_init", 4);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-script "sl_floristfriar.ash"
+script "auto_floristfriar.ash"
 
 void florist_initializeSettings()
 {
