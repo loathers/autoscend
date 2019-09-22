@@ -1,6 +1,6 @@
 script "auto_optionals.ash"
 
-// All prototypes for this code described in auto_ascend_header.ash
+// All prototypes for this code described in autoscend_header.ash
 
 boolean LX_artistQuest()
 {

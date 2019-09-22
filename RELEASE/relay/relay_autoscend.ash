@@ -1,4 +1,4 @@
-script "relay_auto_ascend.ash";
+script "relay_autoscend.ash";
 
 // Thanks to relay_cheeseascend.ash for a starting point here.
 
@@ -133,7 +133,7 @@ void main()
 	writeln("<html><head><title>autoscend Crapulent Manager</title>");
 	writeln("</head><body><h1>autoscend Manager</h1>");
 
-	file_to_map("auto_ascend_settings.txt", s);
+	file_to_map("autoscend_settings.txt", s);
 
 	boolean dickstab = false;
 	writeln("<form action='' method='post'>");
@@ -315,7 +315,7 @@ void main()
 		writeln("Combats: " + get_property("auto_edCombatCount") + "<br>");
 		writeln("Combat Rounds: " + get_property("auto_edCombatRoundCount") + "<br>");
 	}
-	writeln("Version (auto_ascend): " + svn_info("soolar-auto_ascend-trunk-RELEASE").last_changed_rev + "<br>");
+	writeln("Version (autoscend): " + svn_info("soolar-autoscend-trunk-RELEASE").last_changed_rev + "<br>");
 
 	writeln("</body></html>");
 }

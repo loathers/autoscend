@@ -1,5 +1,5 @@
 script "auto_pre_adv.ash";
-import<auto_ascend.ash>
+import<autoscend.ash>
 
 void handlePreAdventure()
 {

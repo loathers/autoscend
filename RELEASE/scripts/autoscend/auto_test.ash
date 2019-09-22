@@ -1,6 +1,6 @@
 script "auto_test.ash"
 
-import <auto_ascend.ash>
+import <autoscend.ash>
 
 boolean passed;
 

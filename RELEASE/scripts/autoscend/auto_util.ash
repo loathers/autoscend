@@ -5449,7 +5449,7 @@ boolean auto_check_conditions(string conds)
 		{
 			// data: The text name of the class, as used by to_class()
 			// You must be the given class
-			// As a precaution, auto_ascend aborts if to_class returns $class[none]
+			// As a precaution, autoscend aborts if to_class returns $class[none]
 			case "class":
 				class req_class = to_class(condition_data);
 				if(req_class == $class[none])
@@ -5457,7 +5457,7 @@ boolean auto_check_conditions(string conds)
 				return req_class == my_class();
 			// data: The text name of the mainstat, as used by to_stat()
 			// Your mainstat must be the given stat
-			// As a precaution, auto_ascend aborts if to_stat returns $stat[none]
+			// As a precaution, autoscend aborts if to_stat returns $stat[none]
 			case "mainstat":
 				stat req_mainstat = to_stat(condition_data);
 				if(req_mainstat == $stat[none])
@@ -5470,7 +5470,7 @@ boolean auto_check_conditions(string conds)
 				return condition_data == auto_my_path();
 			// data: Text name of the skill, as used by to_skill()
 			// You must have the given skill
-			// As a precaution, auto_ascend aborts if to_skill returns $skill[none]
+			// As a precaution, autoscend aborts if to_skill returns $skill[none]
 			case "skill":
 				skill req_skill = to_skill(condition_data);
 				if(req_skill == $skill[none])
@@ -5478,7 +5478,7 @@ boolean auto_check_conditions(string conds)
 				return auto_have_skill(req_skill);
 			// data: Text name of the effect, as used by to_effect()
 			// You must have at least one turn of the given effect
-			// As a precaution, auto_ascend aborts if to_effect returns $effect[none]
+			// As a precaution, autoscend aborts if to_effect returns $effect[none]
 			case "effect":
 				effect req_effect = to_effect(condition_data);
 				if(req_effect == $effect[none])
@@ -5486,7 +5486,7 @@ boolean auto_check_conditions(string conds)
 				return have_effect(req_effect) > 0;
 			// data: <item name><comparison operator><value>
 			// The number of that item you have must compare properly
-			// As a precaution, auto_ascend aborts if to_item returns $item[none]
+			// As a precaution, autoscend aborts if to_item returns $item[none]
 			case "item":
 				matcher m5 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
 				if(!m5.find())
@@ -5502,7 +5502,7 @@ boolean auto_check_conditions(string conds)
 				return have_outfit(condition_data);
 			// data: Text name of the familiar, as used by to_familiar()
 			// You must be currently using this familiar
-			// As a precaution, auto_ascend aborts if to_familiar returns $familiar[none]
+			// As a precaution, autoscend aborts if to_familiar returns $familiar[none]
 			// Unless the text is literall "none" (case sensitive)
 			case "familiar":
 				familiar req_familiar = to_familiar(condition_data);
@@ -5511,7 +5511,7 @@ boolean auto_check_conditions(string conds)
 				return my_familiar() == req_familiar;
 			// data: Text name of the familiar, as used by to_familiar()
 			// You must own this familiar, and it must be legal
-			// As a precaution, auto_ascend aborts if to_familiar returns $familiar[none]
+			// As a precaution, autoscend aborts if to_familiar returns $familiar[none]
 			case "havefamiliar":
 				familiar havefamiliar = to_familiar(condition_data);
 				if(havefamiliar == $familiar[none])
@@ -5519,7 +5519,7 @@ boolean auto_check_conditions(string conds)
 				return auto_have_familiar(havefamiliar);
 			// data: Text name of the location, as used by to_location()
 			// You must be in this location (if you want to check for elsewhere, temporarily set_location)
-			// As a precaution, auto_ascend aborts if to_location returns $location[none]
+			// As a precaution, autoscend aborts if to_location returns $location[none]
 			case "loc":
 				location req_loc = to_location(condition_data);
 				if(req_loc == $location[none])
@@ -5547,7 +5547,7 @@ boolean auto_check_conditions(string conds)
 				return compare_numbers(quest_state, compare_to, m3.group(2));
 			// data: Text name of the monster, as used by to_monster()
 			// True if that monster has been sniffed by any olfaction-like
-			// As a precaution, auto_ascend will abort if to_monster returns $monster[none]
+			// As a precaution, autoscend will abort if to_monster returns $monster[none]
 			case "sniffed":
 				monster check_sniffed = to_monster(condition_data);
 				if(check_sniffed == $monster[none])
@@ -5619,8 +5619,8 @@ boolean [monster] auto_getMonsters(string category)
 {
 	boolean [monster] res;
 	string [string,int,string] monsters_text;
-	if(!file_to_map("auto_ascend_monsters.txt", monsters_text))
-		print("Could not load auto_ascend_monsters.txt. This is bad!", "red");
+	if(!file_to_map("autoscend_monsters.txt", monsters_text))
+		print("Could not load autoscend_monsters.txt. This is bad!", "red");
 	foreach i,name,conds in monsters_text[category]
 	{
 		monster thisMonster = name.to_monster();
@@ -6035,8 +6035,8 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 int auto_reserveAmount(item it)
 {
 	string [string,int,string] itemdata;
-	if(!file_to_map("auto_ascend_items.txt", itemdata))
-		print("Could not load auto_ascend_items.txt! This is bad!", "red");
+	if(!file_to_map("autoscend_items.txt", itemdata))
+		print("Could not load autoscend_items.txt! This is bad!", "red");
 	foreach i,counteditem,conds in itemdata["reserve"]
 	{
 		matcher m = create_matcher("(\\-?\\d+) (.+)", counteditem);

@@ -2,7 +2,7 @@ script "auto_deprecation.ash"
 
 /****
 
-Functions in here are defined in auto_ascend/auto_ascend_header.ash
+Functions in here are defined in autoscend/autoscend_header.ash
 
 These functions exist to handle outdated configuartions of the script. These would have been removed but we might as well keep them (in case we need to do any new configuration mangling) and they might actually help recover a long-forgotten ascension.
 

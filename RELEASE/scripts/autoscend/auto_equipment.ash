@@ -1,4 +1,4 @@
-script "auto_ascend/auto_equipment.ash";
+script "autoscend/auto_equipment.ash";
 
 void equipBaseline();
 void equipRollover();
@@ -347,8 +347,8 @@ void equipBaselineGear()
 	}
 
 	string [string,int,string] equipment_text;
-	if(!file_to_map("auto_ascend_equipment.txt", equipment_text))
-		print("Could not load auto_ascend_equipment.txt. This is bad!", "red");
+	if(!file_to_map("autoscend_equipment.txt", equipment_text))
+		print("Could not load autoscend_equipment.txt. This is bad!", "red");
 	item [slot] [int] equipment;
 	boolean considerGearOption(string item_str, string slot_str, string conds)
 	{

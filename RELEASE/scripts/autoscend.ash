@@ -1,60 +1,60 @@
-script "auto_ascend.ash";
+script "autoscend.ash";
 since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battlefield
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
 
-	auto_ascend_header.ash must be first import
+	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
 
-	Accessory scripts can import auto_ascend.ash
+	Accessory scripts can import autoscend.ash
 
 ***/
 
 
-import <auto_ascend/auto_ascend_header.ash>
-import <auto_ascend/auto_util.ash>
-import <auto_ascend/auto_deprecation.ash>
-import <auto_ascend/auto_combat.ash>
-import <auto_ascend/auto_floristfriar.ash>
-import <auto_ascend/auto_equipment.ash>
-import <auto_ascend/auto_eudora.ash>
-import <auto_ascend/auto_elementalPlanes.ash>
-import <auto_ascend/auto_clan.ash>
-import <auto_ascend/auto_cooking.ash>
-import <auto_ascend/auto_adventure.ash>
-import <auto_ascend/auto_mr2012.ash>
-import <auto_ascend/auto_mr2014.ash>
-import <auto_ascend/auto_mr2015.ash>
-import <auto_ascend/auto_mr2016.ash>
-import <auto_ascend/auto_mr2017.ash>
-import <auto_ascend/auto_mr2018.ash>
-import <auto_ascend/auto_mr2019.ash>
+import <autoscend/autoscend_header.ash>
+import <autoscend/auto_util.ash>
+import <autoscend/auto_deprecation.ash>
+import <autoscend/auto_combat.ash>
+import <autoscend/auto_floristfriar.ash>
+import <autoscend/auto_equipment.ash>
+import <autoscend/auto_eudora.ash>
+import <autoscend/auto_elementalPlanes.ash>
+import <autoscend/auto_clan.ash>
+import <autoscend/auto_cooking.ash>
+import <autoscend/auto_adventure.ash>
+import <autoscend/auto_mr2012.ash>
+import <autoscend/auto_mr2014.ash>
+import <autoscend/auto_mr2015.ash>
+import <autoscend/auto_mr2016.ash>
+import <autoscend/auto_mr2017.ash>
+import <autoscend/auto_mr2018.ash>
+import <autoscend/auto_mr2019.ash>
 
-import <auto_ascend/auto_boris.ash>
-import <auto_ascend/auto_jellonewbie.ash>
-import <auto_ascend/auto_fallout.ash>
-import <auto_ascend/auto_community_service.ash>
-import <auto_ascend/auto_sneakypete.ash>
-import <auto_ascend/auto_heavyrains.ash>
-import <auto_ascend/auto_picky.ash>
-import <auto_ascend/auto_standard.ash>
-import <auto_ascend/auto_edTheUndying.ash>
-import <auto_ascend/auto_summerfun.ash>
-import <auto_ascend/auto_awol.ash>
-import <auto_ascend/auto_bondmember.ash>
-import <auto_ascend/auto_groundhog.ash>
-import <auto_ascend/auto_digimon.ash>
-import <auto_ascend/auto_majora.ash>
-import <auto_ascend/auto_glover.ash>
-import <auto_ascend/auto_batpath.ash>
-import <auto_ascend/auto_tcrs.ash>
-import <auto_ascend/auto_koe.ash>
-import <auto_ascend/auto_monsterparts.ash>
-import <auto_ascend/auto_theSource.ash>
-import <auto_ascend/auto_optionals.ash>
-import <auto_ascend/auto_list.ash>
-import <auto_ascend/auto_zlib.ash>
-import <auto_ascend/auto_zone.ash>
+import <autoscend/auto_boris.ash>
+import <autoscend/auto_jellonewbie.ash>
+import <autoscend/auto_fallout.ash>
+import <autoscend/auto_community_service.ash>
+import <autoscend/auto_sneakypete.ash>
+import <autoscend/auto_heavyrains.ash>
+import <autoscend/auto_picky.ash>
+import <autoscend/auto_standard.ash>
+import <autoscend/auto_edTheUndying.ash>
+import <autoscend/auto_summerfun.ash>
+import <autoscend/auto_awol.ash>
+import <autoscend/auto_bondmember.ash>
+import <autoscend/auto_groundhog.ash>
+import <autoscend/auto_digimon.ash>
+import <autoscend/auto_majora.ash>
+import <autoscend/auto_glover.ash>
+import <autoscend/auto_batpath.ash>
+import <autoscend/auto_tcrs.ash>
+import <autoscend/auto_koe.ash>
+import <autoscend/auto_monsterparts.ash>
+import <autoscend/auto_theSource.ash>
+import <autoscend/auto_optionals.ash>
+import <autoscend/auto_list.ash>
+import <autoscend/auto_zlib.ash>
+import <autoscend/auto_zone.ash>
 
 
 void initializeSettings()
@@ -303,8 +303,8 @@ boolean handleFamiliar(string type)
 		}
 
 		string [string,int,string] familiars_text;
-		if(!file_to_map("auto_ascend_familiars.txt", familiars_text))
-			print("Could not load auto_ascend_familiars.txt. This is bad!", "red");
+		if(!file_to_map("autoscend_familiars.txt", familiars_text))
+			print("Could not load autoscend_familiars.txt. This is bad!", "red");
 		foreach i,name,conds in familiars_text[type]
 		{
 			familiar thisFamiliar = name.to_familiar();
@@ -4285,7 +4285,7 @@ boolean L13_towerNSFinal()
 	}
 	else
 	{
-		cli_execute("scripts/auto_post_adv.ash");
+		cli_execute("scripts/autoscend/auto_post_adv.ash");
 	}
 	if(my_class() == $class[Turtle Tamer])
 	{
@@ -4335,7 +4335,7 @@ boolean L13_towerNSFinal()
 
 	if(internalQuestStatus("questL13Final") < 13)
 	{
-		cli_execute("scripts/auto_pre_adv.ash");
+		cli_execute("scripts/autoscend/auto_pre_adv.ash");
 		set_property("auto_disableAdventureHandling", true);
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
 		if(have_effect($effect[Beaten Up]) > 0)
@@ -4753,7 +4753,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Strong Grip], 0, 1, 1);
 			buffMaintain($effect[Spiky Hair], 0, 1, 1);
 		}
-		cli_execute("scripts/auto_post_adv.ash");
+		cli_execute("scripts/autoscend/auto_post_adv.ash");
 		doHottub();
 
 		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
@@ -5360,7 +5360,7 @@ boolean L13_towerNSEntrance()
 			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
 			{
 				doRest();
-				cli_execute("scripts/auto_post_adv.ash");
+				cli_execute("scripts/autoscend/auto_post_adv.ash");
 				loopHandlerDelayAll();
 				return true;
 			}
@@ -14762,7 +14762,7 @@ boolean doTasks()
 		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
 		{
 			doRest();
-			cli_execute("scripts/auto_post_adv.ash");
+			cli_execute("scripts/autoscend/auto_post_adv.ash");
 			return true;
 		}
 	}
@@ -15110,7 +15110,7 @@ void auto_begin()
 	}
 
 	print("Hello " + my_name() + ", time to explode!");
-	print("This is version: " + svn_info("auto_ascend").last_changed_rev + " Mafia: " + get_revision());
+	print("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
 	print("This is day " + my_daycount() + ".");
 	print("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	print("Current Ascension: " + auto_my_path());
@@ -15131,10 +15131,10 @@ void auto_begin()
 	backupSetting("removeMalignantEffects", false);
 	backupSetting("autoAntidote", 0);
 
-	backupSetting("kingLiberatedScript", "scripts/auto_king.ash");
-	backupSetting("afterAdventureScript", "scripts/auto_post_adv.ash");
-	backupSetting("betweenAdventureScript", "scripts/auto_pre_adv.ash");
-	backupSetting("betweenBattleScript", "scripts/auto_pre_adv.ash");
+	backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
+	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
+	backupSetting("betweenAdventureScript", "scripts/autoscend/auto_pre_adv.ash");
+	backupSetting("betweenBattleScript", "scripts/autoscend/auto_pre_adv.ash");
 
 	backupSetting("hpAutoRecovery", -1);
 	backupSetting("hpAutoRecoveryTarget", -1);
@@ -15233,7 +15233,7 @@ void auto_begin()
 
 void print_help_text()
 {
-	print_html("Thank you for using auto_ascend!");
+	print_html("Thank you for using autoscend!");
 	print_html("If you need to configure or interrupt the script, choose <b>autoscend</b> from the drop-down \"run script\" menu in your browser.");
 	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues\">on Github</a>");
 	print_html("A FAQ with common issues (and tips for a great bug report) <a href=\"https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns\">can be found here</a>");
@@ -15243,7 +15243,7 @@ void print_help_text()
 
 void sad_times()
 {
-	print_html('Soolar (the maintainer of auto_ascend) and Jeparo (the most active contributor) have decided to cease development of auto_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. The KoL community is amazing, and we love it, but we no longer want to contribute to the game in the way that we have until now. We wish you all the best in the future. Please see the readme on the <a href="https://github.com/Loathing-Associates-Scripting-Society/autoscend">github</a> page for more information.');
+	print_html('Soolar (the maintainer of autoscend) and Jeparo (the most active contributor) have decided to cease development of autoscend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. The KoL community is amazing, and we love it, but we no longer want to contribute to the game in the way that we have until now. We wish you all the best in the future. Please see the readme on the <a href="https://github.com/Loathing-Associates-Scripting-Society/autoscend">github</a> page for more information.');
 }
 
 void safe_preference_reset_wrapper(int level)

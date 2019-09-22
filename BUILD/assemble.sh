@@ -6,7 +6,7 @@ HEADER="# EDITTING THIS FILE DIRECTLY IS NOT RECOMMENDED
 for DIR in ./*/; do
 	DIR_STRIP_LEAD=${DIR#*/}
 	DIR_CLEAN=${DIR_STRIP_LEAD%/}
-	OUT="../RELEASE/data/auto_ascend_${DIR_CLEAN}.txt"
+	OUT="../RELEASE/data/autoscend_${DIR_CLEAN}.txt"
 	echo "$HEADER" > $OUT
 	cat $DIR/header.txt >> $OUT
 	for FILENAME in ${DIR}*.dat; do

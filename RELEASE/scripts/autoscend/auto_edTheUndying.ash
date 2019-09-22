@@ -206,7 +206,7 @@ boolean L13_ed_towerHandler()
 		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 		{
 			doRest();
-			cli_execute("scripts/auto_post_adv.ash");
+			cli_execute("scripts/autoscend/auto_post_adv.ash");
 			return true;
 		}
 		print("Please check your quests, but you might just not be at level 13 yet in order to continue.", "red");
@@ -1778,7 +1778,7 @@ boolean LM_edTheUndying()
 		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 		{
 			doRest();
-			cli_execute("scripts/auto_post_adv.ash");
+			cli_execute("scripts/autoscend/auto_post_adv.ash");
 			return true;
 		}
 	}
@@ -1841,7 +1841,7 @@ boolean LM_edTheUndying()
 			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{
 				doRest();
-				cli_execute("scripts/auto_post_adv.ash");
+				cli_execute("scripts/autoscend/auto_post_adv.ash");
 				return true;
 			}
 		}

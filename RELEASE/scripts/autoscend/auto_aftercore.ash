@@ -1,5 +1,5 @@
 script "auto_aftercore.ash"
-import <auto_ascend.ash>
+import <autoscend.ash>
 
 #Prototypes
 boolean auto_sloppySecondsDiner();
@@ -29,9 +29,9 @@ boolean auto_cheesePostCS(int leave);
 boolean auto_cheeseAftercore(int leave);
 boolean auto_aftercore();
 boolean auto_aftercore(int leave);
-boolean auto_ascendIntoCS();
-boolean auto_ascendIntoCS(class cl);
-boolean auto_ascendIntoBond();
+boolean autoscendIntoCS();
+boolean autoscendIntoCS(class cl);
+boolean autoscendIntoBond();
 boolean auto_doCS();
 boolean auto_customMafiaAddress();
 
@@ -742,7 +742,7 @@ boolean auto_nemesisIsland()
 	return true;
 }
 
-boolean auto_ascendIntoBond()
+boolean autoscendIntoBond()
 {
 	if(!get_property("_workshedItemUsed").to_boolean())
 	{
@@ -807,12 +807,12 @@ boolean auto_ascendIntoBond()
 }
 
 
-boolean auto_ascendIntoCS()
+boolean autoscendIntoCS()
 {
-	return auto_ascendIntoCS($class[Sauceror]);
+	return autoscendIntoCS($class[Sauceror]);
 }
 
-boolean auto_ascendIntoCS(class cl)
+boolean autoscendIntoCS(class cl)
 {
 	if(my_inebriety() <= inebriety_limit())
 	{
@@ -1784,7 +1784,7 @@ boolean auto_cheesePostCS(int leave)
 	int endMeat = my_meat();
 	int gainedMeat = endMeat - startMeat;
 	print("Meat gained:  " + gainedMeat, "blue");
-	cli_execute("auto_ascend");
+	cli_execute("autoscend");
 	print("Meat gained:  " + gainedMeat, "blue");
 	return true;
 }
@@ -1798,9 +1798,9 @@ boolean auto_customMafiaAddress()
 
 boolean auto_doCS()
 {
-	cli_execute("auto_ascend");
+	cli_execute("autoscend");
 	auto_aftercore();
-	auto_ascendIntoCS();
-	cli_execute("auto_ascend");
+	autoscendIntoCS();
+	cli_execute("autoscend");
 	return true;
 }

@@ -19,7 +19,7 @@ script "auto_zlib.ash"
 ******************************************************************************/
 
 /*
-//Now defined in auto_ascend_header.ash
+//Now defined in autoscend_header.ash
 record kmailObject
 {
 	int id;                   // message id

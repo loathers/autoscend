@@ -1,6 +1,6 @@
 # NOTICE
 
-autoscend (formerly [auto_ascend](https://github.com/soolar/auto_ascend); formerly, formally cc_ascend) is under new managment. The previous developers decided they could no longer continue supporting the script or Kingdom of Loathing after [actions of Jick and some of the other developers](https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/) were made public.
+autoscend (formerly [autoscend](https://github.com/soolar/autoscend); formerly, formally cc_ascend) is under new managment. The previous developers decided they could no longer continue supporting the script or Kingdom of Loathing after [actions of Jick and some of the other developers](https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/) were made public.
 
 The script was moved to this more communal location and has tentative support from some much less experienced developers. Basic support is expected to continue but fixes and enhancements will likely be slow. Large feature support (such as new challenge paths) will probably not happen without more support from the community. Feel free to [pitch in](./docs/CONTRIBUTING.md).
 

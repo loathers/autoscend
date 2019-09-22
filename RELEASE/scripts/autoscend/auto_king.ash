@@ -1,5 +1,5 @@
 script "auto_king.ash";
-import <auto_ascend.ash>
+import <autoscend.ash>
 
 void handleKingLiberation()
 {

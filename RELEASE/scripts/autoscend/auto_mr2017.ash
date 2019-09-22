@@ -1785,7 +1785,7 @@ boolean spacegateVaccineAvailable(effect ef)
 	case $effect[Emotional Vaccine]:
 		return get_property("spacegateVaccine3").to_boolean();
 	}
-	abort("auto_ascend: bad effect passed to spacegateVaccineAvailable:" + ef);
+	abort("autoscend: bad effect passed to spacegateVaccineAvailable:" + ef);
 	return false;
 }
 
