@@ -1632,35 +1632,35 @@ ConsumeAction MakeConsumeAction(item it)
 	return new ConsumeAction(it, 0, size, adv, adv, organ, SL_OBTAIN_NULL);
 }
 
-boolean slPrepConsume(ConsumeAction action)
+boolean autoPrepConsume(ConsumeAction action)
 {
 	print(to_debug_string(action));
 	if(action.howToGet == SL_OBTAIN_PULL)
 	{
-		print("slPrepConsume: Pulling a " + action.it, "blue");
+		print("autoPrepConsume: Pulling a " + action.it, "blue");
 		action.howToGet = SL_OBTAIN_NULL;
 		return pullXWhenHaveY(action.it, 1, item_amount(action.it));
 	}
 	else if(action.howToGet == SL_OBTAIN_CRAFT)
 	{
-		print("slPrepConsume: Crafting a " + action.it, "blue");
+		print("autoPrepConsume: Crafting a " + action.it, "blue");
 		action.howToGet = SL_OBTAIN_NULL;
 		return create(1, action.it);
 	}
 	else if(action.howToGet == SL_OBTAIN_BUY)
 	{
-		print("slPrepConsume: Buying a " + action.it, "blue");
+		print("autoPrepConsume: Buying a " + action.it, "blue");
 		action.howToGet = SL_OBTAIN_NULL;
 		return buy(1, action.it);
 	}
 	else if (action.howToGet == SL_OBTAIN_NULL)
 	{
-		print("slPrepConsume: Doing nothing to get a " + action.it, "blue");
+		print("autoPrepConsume: Doing nothing to get a " + action.it, "blue");
 	}
 	return true;
 }
 
-boolean slConsume(ConsumeAction action)
+boolean autoConsume(ConsumeAction action)
 {
 	if (action.howToGet != SL_OBTAIN_NULL)
 	{
@@ -1694,10 +1694,10 @@ boolean slConsume(ConsumeAction action)
 		}
 		else
 		{
-			abort("slConsume: Unrecognized organ " + action.organ);
+			abort("autoConsume: Unrecognized organ " + action.organ);
 		}
 	}
-	abort("slConsume: exited with nothing");
+	abort("autoConsume: exited with nothing");
 	return false;
 }
 
@@ -1991,7 +1991,7 @@ void auto_autoDrinkNightcap(boolean simulate)
 
 	if (simulate) return;
 
-	slConsume(actions[best]);
+	autoConsume(actions[best]);
 }
 
 boolean auto_autoDrinkOne(boolean simulate)
@@ -2017,8 +2017,8 @@ boolean auto_autoDrinkOne(boolean simulate)
 
 	if(!simulate)
 	{
-		if (!slPrepConsume(actions[best])) return false;
-		return slConsume(actions[best]);
+		if (!autoPrepConsume(actions[best])) return false;
+		return autoConsume(actions[best]);
 	}
 	else
 	{
@@ -2111,7 +2111,7 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 	// we might be using non-free crafting turns.
 	foreach i in result
 	{
-		if (!slPrepConsume(actions[i]))
+		if (!autoPrepConsume(actions[i]))
 		{
 			abort("Unexpectedly couldn't prep " + to_debug_string(actions[i]));
 		}
@@ -2137,7 +2137,7 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 	print("Consuming " + count(result) + " things...", "blue");
 	foreach i in result
 	{
-		slConsume(actions[i]);
+		autoConsume(actions[i]);
 	}
 
 	print("Expected " + total_adv + " adventures, got " + (my_adventures() - pre_adventures), "blue");

@@ -1208,7 +1208,7 @@ boolean warOutfit(boolean immediate)
 		}
 		else
 		{
-			return slOutfit(toWear);
+			return autoOutfit(toWear);
 		}
 	}
 
@@ -10327,7 +10327,7 @@ boolean L5_goblinKing()
 	}
 
 	print("Death to the gobbo!!", "blue");
-	if(!slOutfit("knob goblin harem girl disguise"))
+	if(!autoOutfit("knob goblin harem girl disguise"))
 	{
 		abort("Could not put on Knob Goblin Harem Girl Disguise, aborting");
 	}
@@ -11873,7 +11873,7 @@ boolean L12_startWar()
 	}
 
 	print("Must save the ferret!!", "blue");
-	slOutfit("frat warrior fatigues");
+	autoOutfit("frat warrior fatigues");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
@@ -11944,7 +11944,7 @@ boolean L12_getOutfit()
 
 	if(get_property("auto_prehippy") == "firstOutfit")
 	{
-		slOutfit("filthy hippy disguise");
+		autoOutfit("filthy hippy disguise");
 		if(my_lightning() >= 5)
 		{
 			autoAdv(1, $location[Wartime Frat House]);
@@ -13940,7 +13940,7 @@ boolean L8_trapperExtreme()
 
 	if(have_outfit("eXtreme Cold-Weather Gear"))
 	{
-		if(slOutfit("eXtreme Cold-Weather Gear"))
+		if(autoOutfit("eXtreme Cold-Weather Gear"))
 		{
 			set_property("choiceAdventure575", "3");
 			autoAdv(1, $location[The eXtreme Slope]);

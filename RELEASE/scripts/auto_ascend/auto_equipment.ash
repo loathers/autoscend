@@ -64,7 +64,7 @@ boolean autoForceEquip(item it)
 	return autoForceEquip(it.to_slot(), it);
 }
 
-boolean slOutfit(string toWear)
+boolean autoOutfit(string toWear)
 {
 	if(!have_outfit(toWear))
 		return false;
