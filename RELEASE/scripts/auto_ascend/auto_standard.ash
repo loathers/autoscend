@@ -5,7 +5,7 @@ import<sl_util.ash>
 
 void standard_dnaPotions()
 {
-	if(my_path() == "Standard")
+	if(sl_my_path() == "Standard")
 	{
 		return;
 	}
@@ -65,7 +65,7 @@ void standard_dnaPotions()
 
 void standard_initializeSettings()
 {
-	if(my_path() == "Standard")
+	if(sl_my_path() == "Standard")
 	{
 		set_property("sl_getStarKey", true);
 		set_property("sl_holeinthesky", true);
@@ -76,7 +76,7 @@ void standard_initializeSettings()
 
 void standard_pulls()
 {
-	if(my_path() == "Standard")
+	if(sl_my_path() == "Standard")
 	{
 		if(my_daycount() == 3)
 		{
