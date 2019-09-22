@@ -1,4 +1,4 @@
-script "relay_soolascend.ash";
+script "relay_auto_ascend.ash";
 
 // Thanks to relay_cheeseascend.ash for a starting point here.
 
@@ -130,8 +130,8 @@ void generateTrackingData(string tracked, boolean hasSkill)
 void main()
 {
 	write_styles();
-	writeln("<html><head><title>soolascend Crapulent Manager</title>");
-	writeln("</head><body><h1>soolascend Manager</h1>");
+	writeln("<html><head><title>autoscend Crapulent Manager</title>");
+	writeln("</head><body><h1>autoscend Manager</h1>");
 
 	file_to_map("auto_ascend_settings.txt", s);
 

@@ -420,7 +420,7 @@ void auto_spoonTuneConfirm()
 
 	if(user_confirm("You're currently set to change signs to " + spoonsign + " after wrapping up your business in your current sign. Do you want to interrupt the script to go change that? Will default to 'No' in 15 seconds.", 15000, false))
 	{
-		abort("Alright, please go change auto_spoonsign via the soolascend relay script and then rerun.");
+		abort("Alright, please go change auto_spoonsign via the autoscend relay script and then rerun.");
 	}
 	else
 	{

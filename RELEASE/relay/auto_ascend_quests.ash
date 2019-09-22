@@ -128,8 +128,8 @@ void generateTrackingData(string tracked, boolean hasSkill)
 void main()
 {
 	write_styles();
-	writeln("<html><head><title>soolascend Crapulent Quest Manager of Questing</title>");
-	writeln("</head><body><h1>soolascend Quest Manager</h1>");
+	writeln("<html><head><title>autoscend Crapulent Quest Manager of Questing</title>");
+	writeln("</head><body><h1>autoscend Quest Manager</h1>");
 
 	file_to_map("auto_ascend_quests.txt", s);
 

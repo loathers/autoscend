@@ -42,7 +42,7 @@ Finally, if no one on discord can help your you cant find a similar issue, read 
 
 ## Contributing Code
 
-When writing code to contribute please take notice of the general style of the code you are working with and attempt to mimic it as best as possible. For example if the variables are camel case (`someVariable`) dont use snake case variable names (`some_variable`). If you are adding a new function you need to be sure to add the function signature in [auto_ascend_header.ash](../RELEASE/scripts/auto_ascend/auto_ascend_header.ash).
+When writing code to contribute please take notice of the general style of the code you are working with and attempt to mimic it as best as possible. For example if the variables are camel case (`someVariable`) dont use snake case variable names (`some_variable`). If you are adding a new function you need to be sure to add the function signature in [auto_ascend_header.ash](../RELEASE/scripts/autoscend/auto_ascend_header.ash).
 
 Working on your first open source project or pull request? Her are some helpful tutorials:
 

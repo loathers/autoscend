@@ -1,5 +1,4 @@
 script "auto_ascend.ash";
-notify soolar the second;
 since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battlefield
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
@@ -1881,7 +1880,7 @@ boolean fortuneCookieEvent()
 			goal = $location[The Limerick Dungeon];
 		}
 
-		#(internalQuestStatus("questL10Garbage") < 9) 
+		#(internalQuestStatus("questL10Garbage") < 9)
 		if((goal == $location[The Limerick Dungeon]) && ((item_amount($item[Cyclops Eyedrops]) > 0) || (get_property("auto_orchard") == "start") || (get_property("auto_orchard") == "done") || (get_property("auto_orchard") == "finished") || (get_property("semirareLocation") == goal) || (get_property("lastFilthClearance").to_int() >= my_ascensions()) || (get_property("sidequestOrchardCompleted") != "none") || (get_property("currentHippyStore") != "none")))
 		{
 			goal = $location[The Haunted Pantry];
@@ -2492,7 +2491,7 @@ boolean doBedtime()
 				handleSealNormal($item[Figurine of a Cute Baby Seal]);
 				summoned = true;
 			}
-			else 
+			else
 			{
 				buyUpTo(1, $item[figurine of a Wretched-Looking Seal]);
 				buyUpTo(1, $item[seal-blubber candle]);
@@ -9162,7 +9161,7 @@ boolean LX_dolphinKingMap()
 {
 	if(item_amount($item[Dolphin King\'s Map]) > 0)
 	{
-		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isArmoryAvailable())) 
+		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isArmoryAvailable()))
 		{
 			buyUpTo(1, $item[Snorkel]);
 			item oldHat = equipped_item($slot[hat]);
@@ -11555,7 +11554,7 @@ boolean LX_handleSpookyravenFirstFloor()
 			if(my_class() == $class[Ed])
 			{
 				// this should be false if we have the 3rd resist upgrade (max available for Ed) and true if we don't!
-				delayKitchen = !have_skill($skill[Even More Elemental Wards]); 
+				delayKitchen = !have_skill($skill[Even More Elemental Wards]);
 			}
 		}
 		else
@@ -15152,7 +15151,7 @@ void auto_begin()
 
 	if(get_property("counterScript") != "")
 	{
-		backupSetting("counterScript", "scripts/auto_ascend/soolCounter.ash");
+		backupSetting("counterScript", "scripts/autoscend/auto_counter.ash");
 	}
 
 	string charpane = visit_url("charpane.php");
@@ -15235,8 +15234,8 @@ void auto_begin()
 void print_help_text()
 {
 	print_html("Thank you for using auto_ascend!");
-	print_html("If you need to configure or interrupt the script, choose <b>soolascend</b> from the drop-down \"run script\" menu in your browser.");
-	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/soolar/auto_ascend/issues\">on Github</a>");
+	print_html("If you need to configure or interrupt the script, choose <b>autoscend</b> from the drop-down \"run script\" menu in your browser.");
+	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues\">on Github</a>");
 	print_html("A FAQ with common issues (and tips for a great bug report) <a href=\"https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns\">can be found here</a>");
 	print_html("The developers also hang around <a href=\"https://discord.gg/96xZxv3\">on the Ascension Speed Society discord server</a>");
 	print_html("");
@@ -15244,7 +15243,7 @@ void print_help_text()
 
 void sad_times()
 {
-	print_html('Soolar (the maintainer of auto_ascend) and Jeparo (the most active contributor) have decided to cease development of auto_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. The KoL community is amazing, and we love it, but we no longer want to contribute to the game in the way that we have until now. We wish you all the best in the future. Please see the readme on the <a href="https://github.com/soolar/auto_ascend">github</a> page for more information.');
+	print_html('Soolar (the maintainer of auto_ascend) and Jeparo (the most active contributor) have decided to cease development of auto_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. The KoL community is amazing, and we love it, but we no longer want to contribute to the game in the way that we have until now. We wish you all the best in the future. Please see the readme on the <a href="https://github.com/Loathing-Associates-Scripting-Society/autoscend">github</a> page for more information.');
 }
 
 void safe_preference_reset_wrapper(int level)
