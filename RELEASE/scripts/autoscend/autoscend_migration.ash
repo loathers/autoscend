@@ -1,9 +1,10 @@
 script "autoscend_migration.ash"
 
 static string __autoscend_version = "1.0.0";
-static string __remove_sl_ascend_confirmation = "Looks like you have the old sl_ascend project installed as well. Would you like to remove it? (it is no longer maintained)";
-static string __migrate_sl_ascend_properties_confirmation = "Looks like you may be migrating from sl_ascend. Starting with a fresh run using autoscend is adviable but we can try to migrate all the sl_ascend properties (results may vary).";
-static string __migrate_sl_ascend_properties_remove_confirmation = "Would you like to clean up old sl_ascend properties after migrating them?";
+static int __autoscend_confirm_timeoutMS = 10000;
+static string __remove_sl_ascend_confirmation = "Looks like you have the old sl_ascend project installed as well. Would you like to remove it? (it is no longer maintained). Will default to false in 10 seconds.";
+static string __migrate_sl_ascend_properties_confirmation = "Looks like you may be migrating from sl_ascend. Starting with a fresh run using autoscend is adviable but we can try to migrate all the sl_ascend properties (results may vary). Will default to true in 10 seconds.";
+static string __migrate_sl_ascend_properties_remove_confirmation = "Would you like to clean up old sl_ascend properties after migrating them? Will default to false in 10 seconds.";
 
 string autoscend_current_version(){
   if(!property_exists("auto_current_version")){
@@ -14,19 +15,20 @@ string autoscend_current_version(){
 
 string autoscend_previous_version(){
   if(!property_exists("auto_prev_version")){
-    return "";
-  } else{
-    return get_property("auto_prev_version");
+    set_property("auto_prev_version", "0.0.0");
   }
+  return get_property("auto_prev_version");
 }
 
 boolean autoscend_needs_update(){
-  if(autoscend_current_version() != __autoscend_version){
-    set_property("auto_prev_version", get_property("auto_current_version"));
+  if(autoscend_previous_version() == "0.0.0" || autoscend_current_version() != __autoscend_version){
+    if(autoscend_previous_version() != "0.0.0"){
+      set_property("auto_prev_version", get_property("auto_current_version"));
+    }
     set_property("auto_current_version", __autoscend_version);
     set_property("auto_need_update", true);
   }
-  return get_property("auto_need_update");
+  return get_property("auto_need_update").to_boolean();
 }
 
 boolean autoscend_migrate(){
@@ -38,7 +40,7 @@ boolean autoscend_migrate(){
     return svn_exists(repo) || svn_info(repo).url != "";
   }
 
-  boolean repo_name(string repo){
+  string repo_name(string repo){
     if(svn_exists(repo)){
       return repo;
     }
@@ -57,6 +59,7 @@ boolean autoscend_migrate(){
       string old_prop = replace_string(p ,"auto_" , "sl_");
       if(property_exists(old_prop)){
         if(property_exists(p) && property_exists(old_prop) && get_property(p) != get_property(old_prop)){
+          print("Conflict: " + old_prop + " ("+get_property(old_prop)+") != " + p + " ("+get_property(p)+")");
           prop_conflicts++;
         }
       }
@@ -77,11 +80,11 @@ boolean autoscend_migrate(){
    * property values.
    */
   boolean autoscend_migrate_properties(){
-    if(!user_confirm(__migrate_sl_ascend_properties_confirmation, 10000, true)){
+    if(!user_confirm(__migrate_sl_ascend_properties_confirmation, __autoscend_confirm_timeoutMS, true)){
       return false;
     }
 
-    boolean cleanup = user_confirm(__migrate_sl_ascend_properties_remove_confirmation, 10000, false);
+    boolean cleanup = user_confirm(__migrate_sl_ascend_properties_remove_confirmation, __autoscend_confirm_timeoutMS, false);
 
     int prop_conflicts = 0;
     foreach _, p in props{
@@ -91,6 +94,7 @@ boolean autoscend_migrate(){
           print("Migrating " + old_prop + " => " + p + " ("+get_property(old_prop)+")");
           set_property(p, get_property(old_prop));
         } else if(get_property(old_prop) != get_property(p)){
+          print("Conflict: " + old_prop + " ("+get_property(old_prop)+") != " + p + " ("+get_property(p)+")");
           prop_conflicts++;
         }
         if(cleanup) remove_property(old_prop);
@@ -112,7 +116,7 @@ boolean autoscend_migrate(){
    */
   boolean remove_sl_ascend_repos(){
     if(repo_present("sl_ascend")){
-      if(user_confirm(__remove_sl_ascend_confirmation, 10000, false)){
+      if(user_confirm(__remove_sl_ascend_confirmation, __autoscend_confirm_timeoutMS, false)){
         cli_execute("svn delete " + repo_name("sl_ascend"));
       }
     }
@@ -121,7 +125,8 @@ boolean autoscend_migrate(){
 
   boolean all_good = true;
   if(autoscend_needs_update()){
-    if(sl_ascend_present()){
+    print("Migrating from " + autoscend_previous_version() + " to " + autoscend_current_version());
+    if(repo_present("sl_ascend")){
       all_good = autoscend_migrate_properties() && remove_sl_ascend_repos();
     }
     set_property("auto_need_update", false);
