@@ -1,5 +1,7 @@
 script "relay_autoscend.ash";
 
+import <autoscend/autoscend_migration.ash>
+
 // Thanks to relay_cheeseascend.ash for a starting point here.
 
 record setting {
@@ -317,7 +319,7 @@ void main()
 	}
 
 	//TODO: need way to track version independent of svn branch since you can have different branches checked out
-	writeln("Version (autoscend): " + svn_info("Loathing-Associates-Scripting-Society-autoscend-trunk-RELEASE").last_changed_rev + "<br>");
+	writeln("Version (autoscend): " autoscend_current_version() + "<br>");
 
 	writeln("</body></html>");
 }

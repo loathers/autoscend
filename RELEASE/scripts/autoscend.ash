@@ -12,6 +12,7 @@ since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battl
 
 
 import <autoscend/autoscend_header.ash>
+import <autoscend/autoscend_migration.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_deprecation.ash>
 import <autoscend/auto_combat.ash>
@@ -15282,6 +15283,9 @@ void main()
 	}
 	finally
 	{
+		if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue?", 10000, true)){
+			abort("User ended scripts.");
+		}
 		safe_preference_reset_wrapper(3);
 	}
 }

@@ -149,6 +149,10 @@ boolean L13_ed_councilWarehouse();
 boolean L13_ed_towerHandler();
 boolean questOverride();
 
+string autoscend_current_version();
+string autoscend_previous_version();
+boolean autoscend_needs_update();
+boolean autoscend_migrate();
 
 //
 //	Primary adventuring functions, we need additonal functionality over adv1, so we do it here.
