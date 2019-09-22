@@ -108,7 +108,7 @@ boolean slAdvBypass(string url, location loc, string option)
 boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
 	set_property("nextAdventure", loc);
-	cli_execute("presool");
+	cli_execute("auto_pre_adv");
 #	handlePreAdventure(loc);
 	if(option == "")
 	{
@@ -167,21 +167,21 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 				else
 				{
 					string temp = run_combat(option);
-					cli_execute("postsool");
+					cli_execute("auto_post_adv");
 					return true;
 				}
 			}
 			else
 			{
 				string temp = run_combat();
-				cli_execute("postsool");
+				cli_execute("auto_post_adv");
 				return true;
 			}
 		}
 		else
 		{
 			string temp = run_combat();
-			cli_execute("postsool");
+			cli_execute("auto_post_adv");
 			return true;
 		}
 	}
@@ -234,7 +234,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 		if(!retval)
 		{
 			run_choice(get_property("choiceAdventure" + choice).to_int());
-			cli_execute("postsool");
+			cli_execute("auto_post_adv");
 			//We can no longer return an adventure return value here... is false acceptable?
 		}
 		else
@@ -250,7 +250,7 @@ boolean slAdvBypass(int urlGetFlags, string[int] url, location loc, string optio
 				run_combat(option);
 			}
 			set_property("auto_disableAdventureHandling", false);
-			cli_execute("postsool");
+			cli_execute("auto_post_adv");
 		}
 		return retval;
 	}

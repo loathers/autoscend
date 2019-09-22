@@ -1,4 +1,4 @@
-script "kingsool.ash";
+script "auto_king.ash";
 import <auto_ascend.ash>
 
 void handleKingLiberation()

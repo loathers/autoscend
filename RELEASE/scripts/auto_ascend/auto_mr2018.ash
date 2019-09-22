@@ -231,7 +231,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 		equip($slot[familiar], lastGear);
 	}
 
-	cli_execute("postsool");
+	cli_execute("auto_post_adv");
 
 	# r18906 seems to lose track of the astral pet sweater. Ugh.
 	cli_execute("refresh all");

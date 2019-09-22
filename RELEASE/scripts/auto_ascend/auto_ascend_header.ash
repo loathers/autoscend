@@ -970,13 +970,13 @@ boolean [monster] auto_getMonsters(string category); //Defined in auto_ascend/au
 boolean auto_badassBelt(); //Defined in auto_ascend/auto_util.ash
 
 //Dump from accessory scripts.
-void handlePreAdventure();									//Defined in presool.ash
-void handlePreAdventure(location place);					//Defined in presool.ash
+void handlePreAdventure();									//Defined in auto_pre_adv.ash
+void handlePreAdventure(location place);					//Defined in auto_pre_adv.ash
 
-void handlePostAdventure();									//Defined in postsool.ash
+void handlePostAdventure();									//Defined in auto_post_adv.ash
 
-void handleKingLiberation();								//Defined in kingsool.ash
-boolean pullPVPJunk();										//Defined in kingsool.ash
+void handleKingLiberation();								//Defined in auto_king.ash
+boolean pullPVPJunk();										//Defined in auto_king.ash
 
 boolean auto_acquireKeycards();								//Defined in auto_ascend/auto_aftercore.ash
 boolean auto_aftercore();										//Defined in auto_ascend/auto_aftercore.ash

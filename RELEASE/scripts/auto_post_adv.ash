@@ -1,4 +1,4 @@
-script "postsool.ash";
+script "auto_post_adv.ash";
 import<auto_ascend.ash>
 
 void handlePostAdventure()

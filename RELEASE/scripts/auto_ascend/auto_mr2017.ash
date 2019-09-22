@@ -290,7 +290,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 
 	#string temp = visit_url("place.php?whichplace=town_wrong&action=townwrong_tunnel");
 	set_location($location[The Tunnel of L.O.V.E.]);
-	cli_execute("presool");
+	cli_execute("auto_pre_adv");
 	temp = visit_url("place.php?whichplace=town_wrong&action=townwrong_tunnel");
 	if(contains_text(temp, "Come back tomorrow!"))
 	{
@@ -390,7 +390,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	if(enforcer || engineer || equivocator)
 	{
 		set_property("auto_disableAdventureHandling", false);
-		cli_execute("postsool");
+		cli_execute("auto_post_adv");
 	}
 	if(item_amount($item[LOV Extraterrestrial Chocolate]) > 0)
 	{

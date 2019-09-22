@@ -206,7 +206,7 @@ boolean L13_ed_towerHandler()
 		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 		{
 			doRest();
-			cli_execute("scripts/postsool.ash");
+			cli_execute("scripts/auto_post_adv.ash");
 			return true;
 		}
 		print("Please check your quests, but you might just not be at level 13 yet in order to continue.", "red");
@@ -1337,7 +1337,7 @@ boolean ed_slAdv(int num, location loc, string option, boolean skipFirstLife)
 		{
 			print("This fight and " + num + " more left.", "blue");
 		}
-		cli_execute("presool");
+		cli_execute("auto_pre_adv");
 		set_property("auto_disableAdventureHandling", true);
 		set_property("auto_edCombatHandler", "");
 
@@ -1374,7 +1374,7 @@ boolean ed_slAdv(int num, location loc, string option, boolean skipFirstLife)
 				print("Monster defeated in initialization, aborting attempt.", "red");
 				set_property("auto_edCombatStage", 0);
 				set_property("auto_disableAdventureHandling", false);
-				cli_execute("postsool.ash");
+				cli_execute("auto_post_adv.ash");
 				return true;
 			}
 
@@ -1405,7 +1405,7 @@ boolean ed_slAdv(int num, location loc, string option, boolean skipFirstLife)
 					print("Monster defeated in initialization, aborting attempt.", "red");
 					set_property("auto_edCombatStage", 0);
 					set_property("auto_disableAdventureHandling", false);
-					cli_execute("postsool.ash");
+					cli_execute("auto_post_adv.ash");
 					return true;
 				}
 
@@ -1424,7 +1424,7 @@ boolean ed_slAdv(int num, location loc, string option, boolean skipFirstLife)
 			abort("Manually forcing edDefeatAborts. We can't handle the battle.");
 		}
 
-		cli_execute("postsool.ash");
+		cli_execute("auto_post_adv.ash");
 	}
 	return status;
 }
@@ -1532,7 +1532,7 @@ boolean L1_ed_island(int dickstabOverride)
 		int need = min(4, (my_maxmp() - my_mp()) / 10);
 		buyUpTo(need, $item[Doc Galaktik\'s Invigorating Tonic]);
 		use(need, $item[Doc Galaktik\'s Invigorating Tonic]);
-		cli_execute("postsool");
+		cli_execute("auto_post_adv");
 	}
 
 	buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
@@ -1778,7 +1778,7 @@ boolean LM_edTheUndying()
 		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 		{
 			doRest();
-			cli_execute("scripts/postsool.ash");
+			cli_execute("scripts/auto_post_adv.ash");
 			return true;
 		}
 	}
@@ -1841,7 +1841,7 @@ boolean LM_edTheUndying()
 			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{
 				doRest();
-				cli_execute("scripts/postsool.ash");
+				cli_execute("scripts/auto_post_adv.ash");
 				return true;
 			}
 		}

@@ -179,7 +179,7 @@ boolean digimon_slAdv(int num, location loc, string option)
 				use(1, $item[Evilometer]);
 			}
 		}
-		cli_execute("postsool");
+		cli_execute("auto_post_adv");
 		return true;
 	}
 
@@ -244,6 +244,6 @@ boolean digimon_slAdv(int num, location loc, string option)
 			use(1, $item[Evilometer]);
 		}
 	}
-	cli_execute("postsool");
+	cli_execute("auto_post_adv");
 	return true;
 }

@@ -338,7 +338,7 @@ boolean LA_cs_communityService()
 				{
 					use(1, $item[A Ten-Percent Bonus]);
 					curQuest = 0;
-					cli_execute("postsool");
+					cli_execute("auto_post_adv");
 					return true;
 				}
 				else
@@ -1375,7 +1375,7 @@ boolean LA_cs_communityService()
 			{
 				if(do_cs_quest(30))
 				{
-					cli_execute("call kingsool");
+					cli_execute("call auto_king");
 					return true;
 				}
 				else
@@ -1389,7 +1389,7 @@ boolean LA_cs_communityService()
 				wait(5);
 				if(get_property("kingLiberated").to_boolean())
 				{
-					cli_execute("call kingsool");
+					cli_execute("call auto_king");
 					return true;
 				}
 				else
@@ -1420,7 +1420,7 @@ boolean LA_cs_communityService()
 
 			while(((total_free_rests() - get_property("timesRested").to_int()) > 4) && chateaumantegna_available())
 			{
-				cli_execute("postsool");
+				cli_execute("auto_post_adv");
 				doRest();
 			}
 
@@ -2228,7 +2228,7 @@ boolean LA_cs_communityService()
 			while((my_level() < 8) && (restsLeft > 0) && chateaumantegna_available() && ((my_basestat(my_primestat()) + restsLeft) >= 53))
 			{
 				doRest();
-				cli_execute("postsool");
+				cli_execute("auto_post_adv");
 			}
 
 			if((my_level() < 8) && !get_property("_fancyHotDogEaten").to_boolean() && (fullness_left() >= 12))
@@ -3268,7 +3268,7 @@ void cs_initializeDay(int day)
 				acquireGumItem($item[Saucepan]);
 			}
 
-			cli_execute("postsool");
+			cli_execute("auto_post_adv");
 
 			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{
@@ -3288,7 +3288,7 @@ boolean do_chateauGoat()
 		{
 			buffMaintain(eff, mp_cost(to_skill(eff)), 1, 1);
 		}
-		cli_execute("postsool");
+		cli_execute("auto_post_adv");
 		doRest();
 		foreach eff in $effects[Astral Shell, Ghostly Shell, Blubbered Up, Springy Fusilli, The Moxious Madrigal, Cletus\'s Canticle of Celerity, Walberg\'s Dim Bulb]
 		{
@@ -5167,7 +5167,7 @@ boolean trySaberTrickMeteorShower(){
 		return false;
 	}
 
-	// force equip so maximizer in presool doesnt accidentally remove it
+	// force equip so maximizer in auto_pre_adv doesnt accidentally remove it
 	if(!slForceEquip($item[Fourth of May Cosplay Saber])){
 		return false;
 	}

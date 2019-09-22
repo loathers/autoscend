@@ -1,4 +1,4 @@
-script "presool.ash";
+script "auto_pre_adv.ash";
 import<auto_ascend.ash>
 
 void handlePreAdventure()

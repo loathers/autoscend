@@ -183,19 +183,19 @@ boolean settingFixer()
 
 	if(get_property("kingLiberatedScript") == "scripts/kingLiberated.ash")
 	{
-		set_property("kingLiberatedScript", "kingsool.ash");
+		set_property("kingLiberatedScript", "auto_king.ash");
 	}
 	if(get_property("afterAdventureScript") == "scripts/postadventure.ash")
 	{
-		set_property("afterAdventureScript", "postsool.ash");
+		set_property("afterAdventureScript", "auto_post_adv.ash");
 	}
 	if(get_property("betweenAdventureScript") == "scripts/preadventure.ash")
 	{
-		set_property("betweenAdventureScript", "presool.ash");
+		set_property("betweenAdventureScript", "auto_pre_adv.ash");
 	}
 	if(get_property("betweenBattleScript") == "scripts/preadventure.ash")
 	{
-		set_property("betweenBattleScript", "presool.ash");
+		set_property("betweenBattleScript", "auto_pre_adv.ash");
 	}
 
 	if(get_property("auto_abooclover") == "")

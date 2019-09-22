@@ -860,7 +860,7 @@ boolean LX_witchess()
 
 item[monster] catBurglarHeistDesires()
 {
-	/* Note that this is called from presool.ash - WE WILL OVERRIDE FAMILIAR IN
+	/* Note that this is called from auto_pre_adv.ash - WE WILL OVERRIDE FAMILIAR IN
 	 * PREADVENTURE IF WE NEED THE BURGLE.
 	 */
 	item[monster] wannaHeists;
@@ -4286,7 +4286,7 @@ boolean L13_towerNSFinal()
 	}
 	else
 	{
-		cli_execute("scripts/postsool.ash");
+		cli_execute("scripts/auto_post_adv.ash");
 	}
 	if(my_class() == $class[Turtle Tamer])
 	{
@@ -4336,7 +4336,7 @@ boolean L13_towerNSFinal()
 
 	if(internalQuestStatus("questL13Final") < 13)
 	{
-		cli_execute("scripts/presool.ash");
+		cli_execute("scripts/auto_pre_adv.ash");
 		set_property("auto_disableAdventureHandling", true);
 		slAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
 		if(have_effect($effect[Beaten Up]) > 0)
@@ -4485,7 +4485,7 @@ boolean L13_towerNSTower()
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
 			use_familiar($familiar[Warbear Drone]);
-			cli_execute("presool"); // TODO: can we remove this?
+			cli_execute("auto_pre_adv"); // TODO: can we remove this?
 			if(!possessEquipment($item[Warbear Drone Codes]))
 			{
 				pullXWhenHaveY($item[warbear drone codes], 1, 0);
@@ -4754,7 +4754,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Strong Grip], 0, 1, 1);
 			buffMaintain($effect[Spiky Hair], 0, 1, 1);
 		}
-		cli_execute("scripts/postsool.ash");
+		cli_execute("scripts/auto_post_adv.ash");
 		doHottub();
 
 		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
@@ -4817,7 +4817,7 @@ boolean L13_towerNSHedge()
 	set_property("choiceAdventure1013", "1");			# Masel Tov!
 
 	maximize_hedge();
-	cli_execute("presool");
+	cli_execute("auto_pre_adv");
 	useCocoon();
 	visit_url("place.php?whichplace=nstower&action=ns_03_hedgemaze");
 	if(get_property("lastEncounter") == "This Maze is... Mazelike...")
@@ -5361,7 +5361,7 @@ boolean L13_towerNSEntrance()
 			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
 			{
 				doRest();
-				cli_execute("scripts/postsool.ash");
+				cli_execute("scripts/auto_post_adv.ash");
 				loopHandlerDelayAll();
 				return true;
 			}
@@ -14763,7 +14763,7 @@ boolean doTasks()
 		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
 		{
 			doRest();
-			cli_execute("scripts/postsool.ash");
+			cli_execute("scripts/auto_post_adv.ash");
 			return true;
 		}
 	}
@@ -15132,10 +15132,10 @@ void auto_begin()
 	backupSetting("removeMalignantEffects", false);
 	backupSetting("autoAntidote", 0);
 
-	backupSetting("kingLiberatedScript", "scripts/kingsool.ash");
-	backupSetting("afterAdventureScript", "scripts/postsool.ash");
-	backupSetting("betweenAdventureScript", "scripts/presool.ash");
-	backupSetting("betweenBattleScript", "scripts/presool.ash");
+	backupSetting("kingLiberatedScript", "scripts/auto_king.ash");
+	backupSetting("afterAdventureScript", "scripts/auto_post_adv.ash");
+	backupSetting("betweenAdventureScript", "scripts/auto_pre_adv.ash");
+	backupSetting("betweenBattleScript", "scripts/auto_pre_adv.ash");
 
 	backupSetting("hpAutoRecovery", -1);
 	backupSetting("hpAutoRecoveryTarget", -1);
