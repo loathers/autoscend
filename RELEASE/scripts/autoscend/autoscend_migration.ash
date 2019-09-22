@@ -34,8 +34,21 @@ boolean autoscend_migrate(){
   static string[int] props;
   file_to_map("autoscend_properties.txt", props);
 
-  boolean sl_ascend_present(){
-    return svn_exists("sl_ascend") || svn_info("sl_ascend").url != "";
+  boolean repo_present(string repo){
+    return svn_exists(repo) || svn_info(repo).url != "";
+  }
+
+  boolean repo_name(string repo){
+    if(svn_exists(repo)){
+      return repo;
+    }
+
+    // the svn ash functions dont seem very reliable in my experience
+    // construct mafia's repo naming from the repo url
+    string name = replace_string(svn_info(repo).url, "https://github.com/", "");
+    name = replace_string(name, "http://github.com/", "");
+    name = replace_string(name, "/", "-");
+    return name;
   }
 
   boolean sanity_check_sl_ascend_autoscend_properties(){
@@ -98,12 +111,12 @@ boolean autoscend_migrate(){
    * present.
    */
   boolean remove_sl_ascend_repos(){
-    if(sl_ascend_present()){
+    if(repo_present("sl_ascend")){
       if(user_confirm(__remove_sl_ascend_confirmation, 10000, false)){
-        cli_execute("svn delete " + svn_info("sl_ascend").url);
+        cli_execute("svn delete " + repo_name("sl_ascend"));
       }
     }
-    return !sl_ascend_present();
+    return !repo_present("sl_ascend");
   }
 
   boolean all_good = true;
@@ -112,7 +125,7 @@ boolean autoscend_migrate(){
       all_good = autoscend_migrate_properties() && remove_sl_ascend_repos();
     }
     set_property("auto_need_update", false);
-  } else if(sl_ascend_present()){
+  } else if(repo_present("sl_ascend")){
     all_good = sanity_check_sl_ascend_autoscend_properties();
   }
   return all_good;
