@@ -315,7 +315,9 @@ void main()
 		writeln("Combats: " + get_property("auto_edCombatCount") + "<br>");
 		writeln("Combat Rounds: " + get_property("auto_edCombatRoundCount") + "<br>");
 	}
-	writeln("Version (autoscend): " + svn_info("soolar-autoscend-trunk-RELEASE").last_changed_rev + "<br>");
+
+	//TODO: need way to track version independent of svn branch since you can have different branches checked out
+	writeln("Version (autoscend): " + svn_info("Loathing-Associates-Scripting-Society-autoscend-trunk-RELEASE").last_changed_rev + "<br>");
 
 	writeln("</body></html>");
 }

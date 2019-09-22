@@ -1,6 +1,6 @@
 # NOTICE
 
-autoscend (formerly [autoscend](https://github.com/soolar/autoscend); formerly, formally cc_ascend) is under new managment. The previous developers decided they could no longer continue supporting the script or Kingdom of Loathing after [actions of Jick and some of the other developers](https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/) were made public.
+autoscend (formerly [sl_ascend](https://github.com/soolar/sl_ascend); formerly, formally cc_ascend) is under new managment. The previous developers decided they could no longer continue supporting the script or Kingdom of Loathing after [actions of Jick and some of the other developers](https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/) were made public.
 
 The script was moved to this more communal location and has tentative support from some much less experienced developers. Basic support is expected to continue but fixes and enhancements will likely be slow. Large feature support (such as new challenge paths) will probably not happen without more support from the community. Feel free to [pitch in](./docs/CONTRIBUTING.md).
 
@@ -29,14 +29,14 @@ Note: you may need to delete KoLMafia's svn cache if you want to switch between 
 
 ## Usage
 
-Just type sl\_ascend in the gCLI! You can configure sl\_ascend in the relay browser via the relay
-script soolascend. If you ever want to interrupt the script, please use the interrupt button in
-the soolascend relay script rather than terminating via mafia with escape. Otherwise certain settings
+Just type auto\_ascend in the gCLI! You can configure autoscend in the relay browser via the relay
+script autoscend. If you ever want to interrupt the script, please use the interrupt button in
+the autoscend relay script rather than terminating via mafia with escape. Otherwise certain settings
 may not be restored properly to their pre-run values.
 
 ## Requirements
 
-There are a couple specific requirements to run sl\_ascend effectively. If you run in to issues in
+There are a couple specific requirements to run autoscend effectively. If you run in to issues in
 a path that allows access to your normally permed skills, don't report them if you don't have these
 skills permed:
 
@@ -56,7 +56,7 @@ requirements section. Other classes should work as well, but Sauceror works best
 
 ## Two Crazy Random Summer
 
-The recommended class/sign combination for running sl\_ascend in TCRS is Sauceror/Blender.
+The recommended class/sign combination for running autoscend in TCRS is Sauceror/Blender.
 Other signs should work okay too, but they won't have any special support (like automatic diet,
 or using certain nice cheap potions).
 
@@ -71,7 +71,7 @@ Your ascension may or may not break in spectacular ways! Sorry in advance if tha
 Please do create github issues for any problems you run in to. I make no promises about how fast
 I'll be to handle them, but I'll try to fix reasonable problems in a reasonable timeframe.
 
-You can also come discuss problems with the script on the [#sl\_ascend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3), or just discuss the script in general!
+You can also come discuss problems with the script on the [#autoscend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3), or just discuss the script in general!
 
 Some people maintain a list of common problems, solutions, and tips on writing a bug report [in this document](https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns).
 
