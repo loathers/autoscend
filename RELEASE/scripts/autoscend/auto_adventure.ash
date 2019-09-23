@@ -156,7 +156,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	{
 		print("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 
-		if(option != "null") // && (option != ""))
+		if(option != "autoscend_null") // && (option != ""))
 		{
 			if(get_auto_attack() == 0)
 			{

@@ -15145,7 +15145,7 @@ void auto_begin()
 	backupSetting("manaBurningThreshold", -1);
 
 	backupSetting("currentMood", "apathetic");
-	backupSetting("customCombatScript", "null");
+	backupSetting("customCombatScript", "autoscend_null");
 	backupSetting("battleAction", "custom combat script");
 
 	backupSetting("choiceAdventure1107", 1);
@@ -15244,7 +15244,7 @@ void print_help_text()
 
 void sad_times()
 {
-	print_html('Soolar (the maintainer of autoscend) and Jeparo (the most active contributor) have decided to cease development of autoscend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. The KoL community is amazing, and we love it, but we no longer want to contribute to the game in the way that we have until now. We wish you all the best in the future. Please see the readme on the <a href="https://github.com/Loathing-Associates-Scripting-Society/autoscend">github</a> page for more information.');
+	print_html('autoscend (formerly sl_ascend) is under new management. Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. New developers have taken over maintenance and rebranded sl_ascend to autoscend as per Soolar's request. Please be patient with us during this transition period. Please see the readme on the <a href="https://github.com/Loathing-Associates-Scripting-Society/autoscend">github</a> page for more information.');
 }
 
 void safe_preference_reset_wrapper(int level)
@@ -15283,8 +15283,8 @@ void main()
 	}
 	finally
 	{
-		if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue?", 10000, true)){
-			abort("User ended scripts.");
+		if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){
+			abort("User aborted script after failed migration.");
 		}
 		safe_preference_reset_wrapper(3);
 	}
