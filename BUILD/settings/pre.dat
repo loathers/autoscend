@@ -1,2 +1,2 @@
-sl_pvpEnable	boolean	Automatically participate in PvP?
-sl_alwaysGetSteelOrgan	boolean	If true, get the Steel Organ in the next ascension.
+auto_pvpEnable	boolean	Automatically participate in PvP?
+auto_alwaysGetSteelOrgan	boolean	If true, get the Steel Organ in the next ascension.

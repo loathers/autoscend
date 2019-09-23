@@ -2,7 +2,7 @@
 XO Skeleton	path:Zombie Master;prop:_xoHugsUsed<11
 Reagnimated Gnome	path:Zombie Master
 # Do we wanna grab cubeling drops? Usually yes.
-Gelatinous Cubeling	prop:sl_useCubeling=true;prop:sl_cubeItems=true
+Gelatinous Cubeling	prop:auto_useCubeling=true;prop:auto_cubeItems=true
 # Cheerleader isn't subject to weight restrictions in KOLHS, so let's just use it before almost anything to be safee
 Steam-Powered Cheerleader	path:KOLHS
 # Wanna get that jar
