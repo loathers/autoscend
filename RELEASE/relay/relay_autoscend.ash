@@ -319,7 +319,7 @@ void main()
 	}
 
 	//TODO: need way to track version independent of svn branch since you can have different branches checked out
-	writeln("Version (autoscend): " autoscend_current_version() + "<br>");
+	writeln("Version (autoscend): " + autoscend_current_version() + "<br>");
 
 	writeln("</body></html>");
 }
