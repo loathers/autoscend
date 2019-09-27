@@ -27,17 +27,18 @@ War Frat Wartender	!outfit:Frat Warrior Fatigues
 War Pledge	!outfit:Frat Warrior Fatigues
 # We also want to dress up like a filthy hippy to get frat warrior fatigues
 business hippy	!outfit:Filthy Hippy Disguise
-crusty hippy	!outfit:Filthy Hippy Disguise
-crusty hippy Vegan chef	!outfit:Filthy Hippy Disguise
-crusty hippy jewelry maker	!outfit:Filthy Hippy Disguise
-dirty hippy	!outfit:Filthy Hippy Disguise
-dirty hippy Vegan chef	!outfit:Filthy Hippy Disguise
-dirty hippy jewelry maker	!outfit:Filthy Hippy Disguise
-filthy hippy	!outfit:Filthy Hippy Disguise
-filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise
-filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise
+crusty hippy	!outfit:Filthy Hippy Disguise;!class:Ed
+crusty hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
+crusty hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
+dirty hippy	!outfit:Filthy Hippy Disguise;!class:Ed
+dirty hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
+dirty hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
+filthy hippy	!outfit:Filthy Hippy Disguise;!class:Ed
+filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
+filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
 zombie hippy	!outfit:Filthy Hippy Disguise
 # And we want filthworm glands, but not if we're gonna hugpocket them
-larval filthworm	!familiar:XO Skeleton
-filthworm drone	!familiar:XO Skeleton
-filthworm royal guard	!familiar:XO Skeleton
+larval filthworm	!familiar:XO Skeleton;!class:Ed
+filthworm drone	!familiar:XO Skeleton;!class:Ed
+filthworm royal guard	!familiar:XO Skeleton;!class:Ed
+Knight (Snake)	class:Ed

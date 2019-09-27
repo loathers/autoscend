@@ -138,7 +138,7 @@ string defaultMaximizeStatement()
 		else
 		{
 			res += ",0.4hp,0.2mp 1000max";
-			res += (my_class() == $class[Ed]) ? ",6mp regen" : ",3mp regen";
+			res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 		}
 
 		if(my_primestat() == $stat[Mysticality])
@@ -177,13 +177,16 @@ void resetMaximize()
 	}
 	foreach it in $items[hewn moon-rune spoon, makeshift garbage shirt, broken champagne bottle, snow suit]
 	{
-		if(res != "")
+		if (possessEquipment(it))
 		{
-			res += ",";
+			if(res != "")
+			{
+				res += ",";
+			}
+			// don't want to equip these items automatically
+			// spoon breaks mafia, and the others have limited charges
+			res += "-equip " + it;
 		}
-		// don't want to equip these items automatically
-		// spoon breaks mafia, and the others have limited charges
-		res += "-equip " + it;
 	}
 	set_property("auto_maximize_current", res);
 	auto_debug_print("Resetting auto_maximize_current to " + res, "gold");
@@ -541,6 +544,11 @@ int equipmentAmount(item equipment)
 	}
 
 	int amount = item_amount(equipment) + equipped_amount(equipment);
+
+	if (get_related($item[broken champagne bottle], "fold") contains equipment)
+	{
+		amount = item_amount($item[January\'s Garbage Tote]);
+	}
 
 	if(item_type(equipment) == "familiar equipment")
 	{

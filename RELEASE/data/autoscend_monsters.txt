@@ -6,28 +6,28 @@ banish	0	A.M.C. Gremlin
 banish	1	Animated Mahogany Nightstand
 banish	2	Animated Possessions
 banish	3	Animated Rustic Nightstand
-banish	4	Bubblemint Twins
+banish	4	Bubblemint Twins	!class:Ed
 banish	5	Bullet Bill
 banish	6	Burly Sidekick	item:Mohawk Wig>0
-banish	7	Chatty Pirate
-banish	8	Clingy Pirate (Female)
-banish	9	Clingy Pirate (Male)
-banish	10	Coaltergeist
-banish	11	Crusty Pirate
-banish	12	Doughbat
-banish	13	Drunk Goat
-banish	14	Evil Olive
-banish	15	Flock Of Stab-Bats
-banish	16	Gluttonous Ghuol	class:Vampyre
-banish	17	Knob Goblin Harem Guard
-banish	18	Knob Goblin Madam	item:Knob Goblin Perfume>0
-banish	19	Mad Wino
+banish	7	Coaltergeist
+banish	8	Doughbat
+banish	9	Drunk Goat
+banish	10	Eagle	class:Ed
+banish	11	Evil Olive
+banish	12	Empty suit of armor	class:Ed
+banish	13	Flock Of Stab-Bats
+banish	14	Gluttonous Ghuol	class:Vampyre
+banish	15	Knob Goblin Harem Guard
+banish	16	Knob Goblin Madam	item:Knob Goblin Perfume>0
+banish	17	Mad Wino	!class:Ed
+banish	18	MagiMechTech MechaMech	class:Ed
+banish	19	Mob Penguin Capo	class:Ed
 banish	20	Mismatched Twins
 banish	21	Natural Spider
 banish	22	Plaid Ghost
 banish	23	Possessed Laundry Press
 banish	24	Procrastination Giant
-banish	25	Protagonist
+banish	25	Protagonist	!class:Ed
 banish	26	Pygmy Headhunter
 banish	27	Pygmy Janitor	tavern:true
 banish	28	Pygmy Orderlies
@@ -40,14 +40,17 @@ banish	34	Senile Lihc	loc:The Defiled Niche
 banish	35	Slick Lihc	loc:The Defiled Niche
 banish	36	Skeletal Sommelier
 banish	37	Snow Queen
-banish	38	Steam Elemental
-banish	39	Taco Cat
-banish	40	Tan Gnat
-banish	41	Tomb Asp
-banish	42	Tomb Servant
-banish	43	Wardr&ouml;b Nightstand
-banish	44	Warehouse Janitor
-banish	45	Upgraded Ram
+banish	38	Spooky mummy	class:Ed
+banish	39	Spooky vampire	class:Ed
+banish	40	Steam Elemental
+banish	41	Taco Cat
+banish	42	Tan Gnat
+banish	43	Tomb Asp
+banish	44	Tomb Servant
+banish	45	Triffid	class:Ed
+banish	46	Wardr&ouml;b Nightstand
+banish	47	Warehouse Janitor
+banish	48	Upgraded Ram
 
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;sgeea:3;!effect:Thrice-Cursed
 sniff	1	Gurgle the Turgle
@@ -99,18 +102,19 @@ yellowray	19	War Frat Wartender	!outfit:Frat Warrior Fatigues
 yellowray	20	War Pledge	!outfit:Frat Warrior Fatigues
 # We also want to dress up like a filthy hippy to get frat warrior fatigues
 yellowray	21	business hippy	!outfit:Filthy Hippy Disguise
-yellowray	22	crusty hippy	!outfit:Filthy Hippy Disguise
-yellowray	23	crusty hippy Vegan chef	!outfit:Filthy Hippy Disguise
-yellowray	24	crusty hippy jewelry maker	!outfit:Filthy Hippy Disguise
-yellowray	25	dirty hippy	!outfit:Filthy Hippy Disguise
-yellowray	26	dirty hippy Vegan chef	!outfit:Filthy Hippy Disguise
-yellowray	27	dirty hippy jewelry maker	!outfit:Filthy Hippy Disguise
-yellowray	28	filthy hippy	!outfit:Filthy Hippy Disguise
-yellowray	29	filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise
-yellowray	30	filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise
+yellowray	22	crusty hippy	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	23	crusty hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	24	crusty hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	25	dirty hippy	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	26	dirty hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	27	dirty hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	28	filthy hippy	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	29	filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	30	filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
 yellowray	31	zombie hippy	!outfit:Filthy Hippy Disguise
 # And we want filthworm glands, but not if we're gonna hugpocket them
-yellowray	32	larval filthworm	!familiar:XO Skeleton
-yellowray	33	filthworm drone	!familiar:XO Skeleton
-yellowray	34	filthworm royal guard	!familiar:XO Skeleton
+yellowray	32	larval filthworm	!familiar:XO Skeleton;!class:Ed
+yellowray	33	filthworm drone	!familiar:XO Skeleton;!class:Ed
+yellowray	34	filthworm royal guard	!familiar:XO Skeleton;!class:Ed
+yellowray	35	Knight (Snake)	class:Ed
 

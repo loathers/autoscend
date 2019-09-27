@@ -282,7 +282,7 @@ boolean auto_saberChoice(string choice)
 
 boolean auto_saberDailyUpgrade(int day)
 {
-	if(my_class() == $class[Ed])
+	if (isActuallyEd())
 	{
 		return auto_saberChoice("mp");
 	}
@@ -610,6 +610,10 @@ int auto_beachCombHeadNumFrom(string name)
 }
 
 boolean auto_canBeachCombHead(string name) {
+	if (!auto_beachCombAvailable())
+	{
+	   return false;
+	}
 	int head = auto_beachCombHeadNumFrom(name);
 	foreach _, usedHead in (get_property("_beachHeadsUsed").split_string(","))
 	{
