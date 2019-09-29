@@ -1660,7 +1660,7 @@ boolean LM_edTheUndying()
 		}
 	}
 
-	if(L1_ed_island() || l1_ed_islandFallback())
+	if(L1_ed_island() || L1_ed_islandFallback())
 	{
 		return true;
 	}
@@ -1675,9 +1675,9 @@ boolean LM_edTheUndying()
 		return true;
 	}
 
-	if (closet_amount($item[Filthy Corduroys]) > 0)
+	if (maximizeContains("-outfit Filthy Hippy Disguise"))
 	{
-		take_closet(closet_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+		removeFromMaximize("-outfit Filthy Hippy Disguise");
 	}
 
 	if (!get_property("breakfastCompleted").to_boolean())
