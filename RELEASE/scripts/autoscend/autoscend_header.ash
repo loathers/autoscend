@@ -530,8 +530,6 @@ boolean eatFancyDog(string dog);							//Defined in autoscend/auto_clan.ash
 boolean zataraClanmate(string who);							//Defined in autoscend/auto_clan.ash
 boolean zataraSeaside(string who);							//Defined in autoscend/auto_clan.ash
 boolean isActuallyEd();										//Defined in auto_ascend/auto_edTheUndying.ash
-float edMeatBonus();										//Defined in autoscend/auto_edTheUndying.ash
-boolean ed_buySkills();										//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_autoAdv(int num, location loc, string option);		//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife);//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_doResting();										//Defined in autoscend/auto_edTheUndying.ash
@@ -540,13 +538,8 @@ void ed_handleAdventureServant(location loc);//Defined in auto_ascend/auto_edThe
 void ed_initializeDay(int day);								//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeSession();								//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeSettings();								//Defined in autoscend/auto_edTheUndying.ash
-skill ed_nextUpgrade();										//Defined in auto_ascend/auto_edTheUndying.ash
-int ed_KaCost(skill upgrade);										//Defined in auto_ascend/auto_edTheUndying.ash
-int ed_skillID(skill upgrade);										//Defined in auto_ascend/auto_edTheUndying.ash
 boolean ed_needShop();										//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_preAdv(int num, location loc, string option);	//Defined in autoscend/auto_edTheUndying.ash
-boolean ed_shopping();										//Defined in autoscend/auto_edTheUndying.ash
-int ed_spleen_limit();										//Defined in autoscend/auto_edTheUndying.ash
 void ed_terminateSession();									//Defined in autoscend/auto_edTheUndying.ash
 effect[int] effectList();									//Defined in autoscend/auto_list.ash
 boolean elementalPlanes_access(element ele);				//Defined in autoscend/auto_elementalPlanes.ash
@@ -943,7 +936,6 @@ boolean zoneNonCombat(location loc);						//Defined in autoscend/auto_util.ash
 boolean declineTrades();									//Defined in autoscend/auto_util.ash
 boolean auto_beta(); //Defined in autoscend/auto_util.ash
 void auto_interruptCheck(); //Defined in autoscend/auto_util.ash
-void auto_abort(string message); //Defined in auto_ascend/auto_util.ash
 
 //From Zlib Stuff
 record kmailObject {

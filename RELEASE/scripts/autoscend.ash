@@ -13842,9 +13842,9 @@ boolean L8_trapperGroar()
 			}
 
 			print("Time to take out Gargle, sure, Gargle (Groar)", "blue");
-			if((item_amount($item[Groar\'s Fur]) == 0) && (item_amount($item[Winged Yeti Fur]) == 0))
+			if (item_amount($item[Groar\'s Fur]) == 0 && item_amount($item[Winged Yeti Fur]) == 0)
 			{
-				addToMaximize("5meat");
+				addToMaximize("5meat 2000cold res 5 max");
 				//If this returns false, we might have finished already, can we check this?
 				autoAdv(1, $location[Mist-shrouded Peak]);
 			}
@@ -14680,6 +14680,10 @@ boolean doTasks()
 	{
 		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0))
 		{
+			if (!handleServant($servant[Scribe]))
+			{
+				handleServant($servant[Cat]);
+			}
 			fightScienceTentacle();
 			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
 			{
@@ -14689,6 +14693,7 @@ boolean doTasks()
 	}
 	else if((my_level() >= 9) && (my_hp() > 0))
 	{
+		handleServant($servant[Scribe]);
 		fightScienceTentacle();
 		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
 		{

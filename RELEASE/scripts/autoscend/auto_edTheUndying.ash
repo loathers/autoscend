@@ -340,19 +340,6 @@ boolean adjustEdHat(string goal)
 	return false;
 }
 
-float edMeatBonus()
-{
-	if (!isActuallyEd())
-	{
-		return 0.0;
-	}
-	if(have_skill($skill[Curse of Fortune]) && (item_amount($item[Ka Coin]) > 0))
-	{
-		return 200.0;
-	}
-	return 0.0;
-}
-
 boolean handleServant(servant who)
 {
 	if (!isActuallyEd())
@@ -767,7 +754,7 @@ boolean ed_eatStuff()
 
 	if (!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
 	{
-		if (item_amount($item[Clan VIP Lounge Key]) > 0 && my_meat() >= 500 && inebriety_limit() == 4 && (my_inebriety() == 0 || my_inebriety() == 3) && auto_get_clan_lounge() contains $item[Clan Speakeasy])
+		if((item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500) && (inebriety_limit() == 4) && ((my_inebriety() == 0) || (my_inebriety() == 3)) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]))
 		{
 			autoDrink(1, $item[Lucky Lindy]);
 		}
@@ -782,11 +769,6 @@ boolean ed_eatStuff()
 
 skill ed_nextUpgrade()
 {
-	if (!isActuallyEd())
-	{
-		return $skill[none];
-	}
-
 	int coins = item_amount($item[Ka Coin]);
 	int canEat = (spleen_limit() - my_spleen_use()) / 5;
 
@@ -883,124 +865,34 @@ skill ed_nextUpgrade()
 
 int ed_KaCost(skill upgrade)
 {
-	if (!isActuallyEd())
+	static int[skill] kaNeeded = {
+		$skill[Extra Spleen]: 5,
+   	$skill[Another Extra Spleen]: 10,
+		$skill[Upgraded Legs]: 10,
+		$skill[Tougher Skin]: 10,
+		$skill[Armor Plating]: 10,
+ 		$skill[Healing Scarabs]: 10,
+ 		$skill[Elemental Wards]: 10,
+ 		$skill[Yet Another Extra Spleen]: 15,
+ 		$skill[Still Another Extra Spleen]: 20,
+ 		$skill[More Legs]: 20,
+		$skill[Upgraded Arms]: 20,
+ 		$skill[Upgraded Spine]: 20,
+ 		$skill[Bone Spikes]: 20,
+ 		$skill[Arm Blade]: 20,
+ 		$skill[More Elemental Wards]: 20,
+ 		$skill[Just One More Extra Spleen]: 25,
+ 		$skill[Replacement Stomach]: 30,
+ 		$skill[Replacement Liver]: 30,
+		$skill[Okay Seriously, This is the Last Spleen]: 30,
+ 		$skill[Even More Elemental Wards]: 30
+		};
+  if (kaNeeded contains upgrade)
 	{
+		return kaNeeded[upgrade];
+	} else {
 		return -1;
 	}
-
-	int returnCost = -1;
-	switch (upgrade)
-	{
-  case $skill[Extra Spleen]:
-		returnCost = 5;
-  	break;
-  case $skill[Another Extra Spleen]:
-  case $skill[Upgraded Legs]:
-	case $skill[Tougher Skin]:
-	case $skill[Armor Plating]:
-  case $skill[Healing Scarabs]:
-  case $skill[Elemental Wards]:
-		returnCost = 10;
-    break;
-  case $skill[Yet Another Extra Spleen]:
-		returnCost = 15;
-    break;
-  case $skill[Still Another Extra Spleen]:
-  case $skill[More Legs]:
-	case $skill[Upgraded Arms]:
-  case $skill[Upgraded Spine]:
-  case $skill[Bone Spikes]:
-  case $skill[Arm Blade]:
-  case $skill[More Elemental Wards]:
-		returnCost = 20;
-    break;
-  case $skill[Just One More Extra Spleen]:
-		returnCost = 25;
-    break;
-  case $skill[Replacement Stomach]:
-  case $skill[Replacement Liver]:
-	case $skill[Okay Seriously, This is the Last Spleen]:
-  case $skill[Even More Elemental Wards]:
-		returnCost = 30;
-    break;
-  default:
-	}
-	return returnCost;
-}
-
-int ed_skillID(skill upgrade)
-{
-	if (!isActuallyEd())
-	{
-		return -1;
-	}
-
-	int skillID = -1;
-	switch (upgrade)
-	{
-  case $skill[Replacement Stomach]:
-		skillID = 28;
-  	break;
-  case $skill[Replacement Liver]:
-		skillID = 29;
-  	break;
-  case $skill[Extra Spleen]:
-		skillID = 30;
-  	break;
-  case $skill[Another Extra Spleen]:
-		skillID = 31;
-  	break;
-  case $skill[Yet Another Extra Spleen]:
-		skillID = 32;
-    break;
-  case $skill[Still Another Extra Spleen]:
-		skillID = 33;
-  	break;
-  case $skill[Just One More Extra Spleen]:
-		skillID = 34;
-    break;
-	case $skill[Okay Seriously, This is the Last Spleen]:
-		skillID = 35;
-  	break;
-  case $skill[Upgraded Legs]:
-		skillID = 36;
-  	break;
-	case $skill[Upgraded Arms]:
-		skillID = 37;
-  	break;
-  case $skill[Upgraded Spine]:
-		skillID = 38;
-  	break;
-	case $skill[Tougher Skin]:
-		skillID = 39;
-  	break;
-	case $skill[Armor Plating]:
-		skillID = 40;
-  	break;
-  case $skill[Bone Spikes]:
-		skillID = 41;
-  	break;
-  case $skill[Arm Blade]:
-		skillID = 42;
-  	break;
-  case $skill[Healing Scarabs]:
-		skillID = 43;
-  	break;
-  case $skill[Elemental Wards]:
-		skillID = 44;
-    break;
-  case $skill[More Elemental Wards]:
-		skillID = 45;
-    break;
-  case $skill[Even More Elemental Wards]:
-		skillID = 46;
-    break;
-  case $skill[More Legs]:
-		skillID = 48;
-  	break;
-  default:
-	}
-	return skillID;
 }
 
 boolean ed_needShop()
@@ -1083,6 +975,39 @@ boolean ed_needShop()
 
 boolean ed_shopping()
 {
+
+	int ed_skillID(skill upgrade)
+	{
+		static int[skill] skillIDs = {
+  		$skill[Replacement Stomach]: 28, 
+  		$skill[Replacement Liver]: 29, 
+  		$skill[Extra Spleen]: 30,
+  		$skill[Another Extra Spleen]: 31,
+  		$skill[Yet Another Extra Spleen]: 32,
+  		$skill[Still Another Extra Spleen]: 33,
+  		$skill[Just One More Extra Spleen]: 34,
+			$skill[Okay Seriously, This is the Last Spleen]: 35,
+  		$skill[Upgraded Legs]: 36,
+			$skill[Upgraded Arms]: 37,
+  		$skill[Upgraded Spine]: 38,
+			$skill[Tougher Skin]:  39,
+			$skill[Armor Plating]: 40,
+  		$skill[Bone Spikes]: 41,
+  		$skill[Arm Blade]: 42,
+  		$skill[Healing Scarabs]: 43,
+  		$skill[Elemental Wards]: 44,
+  		$skill[More Elemental Wards]: 45,
+  		$skill[Even More Elemental Wards]: 46,
+  		$skill[More Legs]: 48
+			};
+  	if (skillIDs contains upgrade)
+		{
+			return skillIDs[upgrade];
+		} else {
+			return -1;
+		}
+	}
+
 	if (!isActuallyEd())
 	{
 		return false;
@@ -1146,7 +1071,7 @@ boolean ed_shopping()
 		if (requiredKa != -1 && coins >= requiredKa)
 		{
 			print("Buying " + nextUpgrade.to_string() + " (" + requiredKa.to_string() + " Ka).", "green");
-			int skillBuy = ed_SkillID(nextUpgrade);
+			int skillBuy = ed_skillID(nextUpgrade);
 			if (skillBuy != 0)
 			{
 				visit_url("place.php?whichplace=edunder&action=edunder_bodyshop");
@@ -1408,7 +1333,7 @@ boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
 
 		if(get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int())
 		{
-			auto_abort("Manually forcing edDefeatAborts. We can't handle the battle.");
+			abort("Manually forcing edDefeatAborts. We can't handle the battle.");
 		}
 
 		cli_execute("auto_post_adv.ash");
@@ -1632,31 +1557,14 @@ boolean L1_ed_islandFallback()
 
 	if (have_skill($skill[Upgraded Legs]) || item_amount($item[Ka coin]) >= 10)
 	{
-		if(have_outfit("Filthy Hippy Disguise") && is_wearing_outfit("Filthy Hippy Disguise"))
-		{
-			equip($slot[Pants], $item[None]);
-			put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
-			equipBaseline();
-		}
 		buffMaintain($effect[Wisdom Of Thoth], 20, 1, 1);
 		if (have_skill($skill[More Legs]) && maximizeContains("-10ml"))
 		{
 			removeFromMaximize("-10ml");
 		}
 		auto_change_mcd(11);
-		boolean retVal = autoAdv(1, $location[Hippy Camp]);
-		if (item_amount($item[Filthy Corduroys]) > 0)
-		{
-			if (closet_amount($item[Filthy Corduroys]) > 0)
-			{
-				autosell(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
-			}
-			else
-			{
-				put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
-			}
-		}
-		return retVal;
+		addToMaximize("-outfit Filthy Hippy Disguise");
+		return autoAdv(1, $location[Hippy Camp]);
 	}
 	set_property("auto_needLegs", true);
 	if (!maximizeContains("-10ml"))

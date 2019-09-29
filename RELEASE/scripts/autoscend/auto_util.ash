@@ -5710,12 +5710,6 @@ void auto_interruptCheck()
 	}
 }
 
-void auto_abort(string message)
-{
-	restoreAllSettings();
-	abort(message);
-}
-
 element currentFlavour()
 {
 	if(have_effect($effect[Spirit of Peppermint]) != 0)

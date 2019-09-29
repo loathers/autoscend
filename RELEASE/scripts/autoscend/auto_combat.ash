@@ -2494,9 +2494,9 @@ string auto_edCombatHandler(int round, string opp, string text)
 		{
 			foreach it in $items[Holy Spring Water, Spirit Beer, Sacramental Wine]
 			{
-				if(item_amount(it) > 0)
+				if (canUse(it))
 				{
-					return "item " + it;
+					return useItem(it);
 				}
 			}
 		}
@@ -2720,7 +2720,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if(!contains_text(combatState, "flyers") && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
 	{
-		if((item_amount($item[Rock Band Flyers]) > 0) && (get_property("flyeredML").to_int() < 10000))
+		if (canUse($item[Rock Band Flyers]) && get_property("flyeredML").to_int() < 10000)
 		{
 			set_property("auto_combatHandler", combatState + "(flyers)");
 			if (get_property("_edDefeats").to_int() < 3 && get_property("auto_edStatus") == "dying")
@@ -2728,9 +2728,9 @@ string auto_edCombatHandler(int round, string opp, string text)
 				set_property("auto_edStatus", "UNDYING!");
 				// abuse the ability to flyer the same monster multiple times (optimal!)
 			}
-			return "item " + $item[Rock Band Flyers];
+			return useItem($item[Rock Band Flyers]);
 		}
-		if((item_amount($item[Jam Band Flyers]) > 0) && (get_property("flyeredML").to_int() < 10000))
+		if (canUse($item[Jam Band Flyers]) && get_property("flyeredML").to_int() < 10000)
 		{
 			set_property("auto_combatHandler", combatState + "(flyers)");
 			if (get_property("_edDefeats").to_int() < 3 && get_property("auto_edStatus") == "dying")
@@ -2738,7 +2738,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 				set_property("auto_edStatus", "UNDYING!");
 				// abuse the ability to flyer the same monster multiple times (optimal!)
 			}
-			return "item " + $item[Jam Band Flyers];
+			return useItem($item[Jam Band Flyers]);
 		}
 	}
 
@@ -2860,7 +2860,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(auto_have_skill($skill[Curse Of Vacation]) && (my_mp() >= mp_cost($skill[Curse Of Vacation])))
+	if (auto_have_skill($skill[Curse Of Vacation]) && my_mp() >= mp_cost($skill[Curse Of Vacation]) && get_property("auto_edStatus") == "dying")
 	{
 		if (auto_wantToBanish(enemy, my_location()) && !(auto_banishesUsedAt(my_location()) contains "curse of vacation"))
 		{
@@ -2870,16 +2870,13 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(item_amount($item[Disposable Instant Camera]) > 0)
+	if (canUse($item[Disposable Instant Camera]) && $monsters[Bob Racecar, Racecar Bob] contains enemy)
 	{
-		if($monsters[Bob Racecar, Racecar Bob] contains enemy)
-		{
-			set_property("auto_combatHandler", combatState + "(disposable instant camera)");
-			return "item " + $item[Disposable Instant Camera];
-		}
+		set_property("auto_combatHandler", combatState + "(disposable instant camera)");
+		return useItem($item[Disposable Instant Camera]);
 	}
 
-	if((my_location() == $location[Oil Peak]) && (item_amount($item[Duskwalker Syringe]) > 0))
+	if (my_location() == $location[Oil Peak] && canUse($item[Duskwalker Syringe]))
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean wantCrude = ((oilProgress & 4) == 0);
@@ -2890,19 +2887,23 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 		if(wantCrude)
 		{
-			return "item " + $item[Duskwalker Syringe];
+			return useItem($item[Duskwalker Syringe]);
 		}
 	}
 
-	if(my_location() == $location[A Mob Of Zeppelin Protesters] && item_amount($item[cigarette lighter]) > 0)
+	if (canUse($item[Cigarette Lighter]) && my_location() == $location[A Mob Of Zeppelin Protesters] && get_property("questL11Ron") == "step1" && get_property("auto_edStatus") == "dying")
 	{
-		string res = "item " + $item[cigarette lighter];
-		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
-		{
-			res += ", none";
-		}
-		return res;
+		return useItem($item[Cigarette Lighter]);
 		// insta-kills protestors and removes an additional 5-7 (optimal!)
+	}
+
+	if (canUse($item[Glark Cable]) && my_location() == $location[The Red Zeppelin] && get_property("questL11Ron") == "step3" && get_property("_glarkCableUses").to_int() < 5 && get_property("auto_edStatus") == "dying")
+	{
+		if($monsters[Man With The Red Buttons, Red Butler, Red Fox, Red Skeleton] contains enemy)
+		{
+			return useItem($item[Glark Cable]);
+			// free insta-kill (optimal!)
+		}
 	}
 
 	if (!get_property("edUsedLash").to_boolean() && auto_have_skill($skill[Lash of the Cobra]) && my_mp() >= mp_cost($skill[Lash of the Cobra]))
@@ -3054,16 +3055,16 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if((item_amount($item[Tattered Scrap of Paper]) > 0) && !contains_text(combatState, "tatters"))
+	if(canUse($item[Tattered Scrap of Paper]) && !contains_text(combatState, "tatters"))
 	{
 		if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, W imp] contains enemy)
 		{
 			set_property("auto_combatHandler", combatState + "(tatters)");
-			return "item " + $item[Tattered Scrap Of Paper];
+			return useItem($item[Tattered Scrap Of Paper]);
 		}
 	}
 
-	if(!contains_text(edCombatState, "talismanofrenenutet") && (item_amount($item[Talisman of Renenutet]) > 0))
+	if (!contains_text(edCombatState, "talismanofrenenutet") && canUse($item[Talisman of Renenutet]))
 	{
 		boolean doRenenutet = false;
 		if((enemy == $monster[Cabinet of Dr. Limpieza]) && ($location[The Haunted Laundry Room].turns_spent > 2))
@@ -3114,13 +3115,13 @@ string auto_edCombatHandler(int round, string opp, string text)
 			set_property("auto_edCombatHandler", edCombatState + "(talismanofrenenutet)");
 			handleTracker(enemy, "auto_renenutet");
 			set_property("auto_edStatus", "dying");
-			return "item " + $item[Talisman Of Renenutet];
+			return useItem($item[Talisman Of Renenutet]);
 		}
 	}
 
-	if((enemy == $monster[Pygmy Orderlies]) && (item_amount($item[Short Writ of Habeas Corpus]) > 0))
+	if(enemy == $monster[Pygmy Orderlies] && canUse($item[Short Writ of Habeas Corpus]))
 	{
-		return "item short writ of habeas corpus";
+		return useItem($item[Short Writ of Habeas Corpus]);
 	}
 
 	if(get_property("auto_edStatus") == "UNDYING!")
