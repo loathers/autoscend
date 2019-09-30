@@ -165,16 +165,16 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if(my_class() == $class[Ed])
+	if (isActuallyEd())
 	{
 		if((zone_combatMod(place)._int < combat_rate_modifier()) && (have_effect($effect[Shelter Of Shed]) == 0) && auto_have_skill($skill[Shelter Of Shed]))
 		{
 			acquireMP(25, false);
 		}
-		acquireMP(20, false);
+		acquireMP(40, false);
 		if(my_meat() > 1000)
 		{
-			acquireMP(20, true);
+			acquireMP(40, true);
 		}
 	}
 
@@ -187,7 +187,7 @@ void handlePreAdventure(location place)
 				buyUpTo(1, $item[hair spray]);
 				use(1, $item[hair spray]);
 			}
-			if (0 == have_effect($effect[Minerva's Zen]))
+			if (0 == have_effect($effect[Minerva\'s Zen]))
 			{
 				buyUpTo(1, $item[glittery mascara]);
 				use(1, $item[glittery mascara]);
@@ -250,7 +250,7 @@ void handlePreAdventure(location place)
 	if(auto_latteDropWanted(place))
 	{
 		print('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
-		autoEquip($item[latte lovers member's mug]);
+		autoEquip($item[latte lovers member\'s mug]);
 	}
 
 	equipOverrides();
@@ -306,11 +306,11 @@ void handlePreAdventure(location place)
 		}
 		if(itemDrop < itemNeed._float)
 		{
-			if(buffMaintain($effect[Fat Leon's Phat Loot Lyric], 20, 1, 10))
+			if (buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 20, 1, 10))
 			{
 				itemDrop += 20.0;
 			}
-			if(buffMaintain($effect[Singer's Faithful Ocelot], 35, 1, 10))
+			if (buffMaintain($effect[Singer\'s Faithful Ocelot], 35, 1, 10))
 			{
 				itemDrop += 10.0;
 			}

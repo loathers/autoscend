@@ -190,7 +190,7 @@ void handlePostAdventure()
 		}
 	}
 
-	if(my_path() == "Actually Ed the Undying")
+	if (isActuallyEd())
 	{
 		int maxBuff = max(5, 660 - my_turncount());
 		if(spleen_limit() < 35)
@@ -201,62 +201,40 @@ void handlePostAdventure()
 		{
 			maxBuff = 5;
 		}
-		if(my_level() < 13)
-		{
-			buffMaintain($effect[Prayer of Seshat], 5, 1, maxBuff);
-		}
-		if(my_location() == $location[The Secret Government Laboratory])
-		{
-			buffMaintain($effect[Wisdom of Thoth], 5, 1, maxBuff);
-			buffMaintain($effect[Power of Heka], 10, 1, maxBuff);
-		}
-		else
-		{
-			buffMaintain($effect[Wisdom of Thoth], 150, 1, maxBuff);
-			buffMaintain($effect[Power of Heka], 100, 1, maxBuff);
-		}
 
-		if(get_property("edPoints").to_int() <= 6)
+		if ($location[The Shore\, Inc. Travel Agency] != my_location())
 		{
-			buffMaintain($effect[Wisdom of Thoth], 5, 1, 10);
-			buffMaintain($effect[Power of Heka], 10, 1, 10);
-		}
-
-		buffMaintain($effect[Hide of Sobek], 200, 1, maxBuff);
-		if(my_location() == $location[Hippy Camp])
-		{
-			buffMaintain($effect[Hide of Sobek], 20, 1, maxBuff);
-		}
-
-		if(!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, Pirates of the Garbage Barges, The Secret Government Laboratory] contains my_location()))
-		{
-			buffMaintain($effect[Bounty of Renenutet], 20, 1, maxBuff);
-		}
-
-		if((my_servant() == $servant[Priest]) && ($servant[Priest].experience < 196) && ($servant[Priest].experience >= 81))
-		{
-			buffMaintain($effect[Purr of the Feline], 10, 1, maxBuff);
-		}
-		if(my_servant() == $servant[Cat])
-		{
-			buffMaintain($effect[Purr of the Feline], 10, 1, maxBuff);
-		}
-		if((my_servant() == $servant[Belly-Dancer]) && ($servant[Belly-Dancer].experience < 196) && ($servant[Belly-Dancer].experience >= 81))
-		{
-			buffMaintain($effect[Purr of the Feline], 10, 1, maxBuff);
-		}
-
-		foreach ef in $effects[Prayer Of Seshat, Wisdom Of Thoth, Hide Of Sobek, Bounty Of Renenutet]
-		{
-			if(my_mp() > 100)
+			if (my_servant() != $servant[none] && my_servant().experience < 196)
 			{
-				buffMaintain(ef, 20, 1, maxBuff);
+				buffMaintain($effect[Purr of the Feline], 20, 1, 10);
 			}
-		}
 
-		if((my_level() < 13) && (my_level() > 3) && !get_property("auto_needLegs").to_boolean() && (get_property("edPoints").to_int() > 15) && !($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()))
-		{
-			buffMaintain($effect[Blessing of Serqet], 50, 1, 1);
+			if (my_level() < 13)
+			{
+				buffMaintain($effect[Prayer of Seshat], 5, 1, 10);
+			}
+
+			buffMaintain($effect[Wisdom of Thoth], 20, 1, 10);
+			buffMaintain($effect[Power of Heka], 20, 1, 10);
+			buffMaintain($effect[Hide of Sobek], 20, 1, 10);
+
+			if(!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, Pirates of the Garbage Barges, The Secret Government Laboratory] contains my_location()))
+			{
+				buffMaintain($effect[Bounty of Renenutet], 20, 1, 10);
+			}
+
+			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])))
+			{
+				buffMaintain($effect[Blessing of Serqet], 20, 1, 10);
+			}
+
+			foreach ef in $effects[Prayer Of Seshat, Wisdom Of Thoth, Power of Heka, Hide Of Sobek, Bounty Of Renenutet]
+			{
+				if(my_mp() > 100)
+				{
+					buffMaintain(ef, 20, 1, 20);
+				}
+			}
 		}
 
 		if((my_mp() + 100) < my_maxmp())

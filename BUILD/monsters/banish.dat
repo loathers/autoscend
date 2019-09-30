@@ -2,28 +2,28 @@ A.M.C. Gremlin
 Animated Mahogany Nightstand
 Animated Possessions
 Animated Rustic Nightstand
-Bubblemint Twins
+Bubblemint Twins	!class:Ed
 Bullet Bill
 Burly Sidekick	item:Mohawk Wig>0
-Chatty Pirate
-Clingy Pirate (Female)
-Clingy Pirate (Male)
 Coaltergeist
-Crusty Pirate
 Doughbat
 Drunk Goat
+Eagle	class:Ed
 Evil Olive
+Empty suit of armor	class:Ed
 Flock Of Stab-Bats
 Gluttonous Ghuol	class:Vampyre
 Knob Goblin Harem Guard
 Knob Goblin Madam	item:Knob Goblin Perfume>0
-Mad Wino
+Mad Wino	!class:Ed
+MagiMechTech MechaMech	class:Ed
+Mob Penguin Capo	class:Ed
 Mismatched Twins
 Natural Spider
 Plaid Ghost
 Possessed Laundry Press
 Procrastination Giant
-Protagonist
+Protagonist	!class:Ed
 Pygmy Headhunter
 Pygmy Janitor	tavern:true
 Pygmy Orderlies
@@ -36,11 +36,14 @@ Senile Lihc	loc:The Defiled Niche
 Slick Lihc	loc:The Defiled Niche
 Skeletal Sommelier
 Snow Queen
+Spooky mummy	class:Ed
+Spooky vampire	class:Ed
 Steam Elemental
 Taco Cat
 Tan Gnat
 Tomb Asp
 Tomb Servant
+Triffid	class:Ed
 Wardr&ouml;b Nightstand
 Warehouse Janitor
 Upgraded Ram

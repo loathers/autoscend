@@ -1755,7 +1755,7 @@ boolean isGuildClass()
 float elemental_resist_value(int resistance)
 {
 	float bonus = 0;
-	if((my_class() == $class[Pastamancer]) || (my_class() == $class[Sauceror]) || (my_class() == $class[Ed]))
+	if (my_class() == $class[Pastamancer] || my_class() == $class[Sauceror] || isActuallyEd())
 	{
 		bonus = 5;
 	}
@@ -2078,7 +2078,7 @@ boolean ovenHandle()
 {
 	if((auto_get_campground() contains $item[Dramatic&trade; range]) && !get_property("auto_haveoven").to_boolean())
 	{
-		if((auto_get_campground() contains $item[Certificate of Participation]) && (my_class() == $class[Ed]))
+		if (auto_get_campground() contains $item[Certificate of Participation] && isActuallyEd())
 		{
 			print("Mafia reports we have an oven but we do not. Logging back in will resolve this.", "red");
 		}
@@ -2253,6 +2253,7 @@ boolean cloverUsageInit()
 		abort("Called cloverUsageInit but have no clovers");
 	}
 
+	backupSetting("cloverProtectActive", false); // maybe set this before we return?
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
 		return true;
@@ -2286,7 +2287,6 @@ boolean cloverUsageInit()
 		return true;
 	}
 	abort("We tried to initialize clover usage but do not appear to have a Ten-Leaf Clover");
-	backupSetting("cloverProtectActive", false);
 	return false;
 }
 
@@ -3327,7 +3327,7 @@ int towerKeyCount()
 
 int towerKeyCount(boolean effective)
 {
-	if(my_class() == $class[Ed])
+	if (isActuallyEd())
 	{
 		return 3;
 	}
@@ -4034,13 +4034,13 @@ boolean useCocoon()
 		return true;
 	}
 
-	print("Considering using Cocoon at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
-
 	int mpCost = 0;
 	int casts = 1;
 	skill cocoon = $skill[none];
 	if(have_skill($skill[Cannelloni Cocoon]))
 	{
+		print("Considering using Cocoon at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+
 		boolean canUseFamiliars = have_familiar($familiar[Mosquito]);
 		skill blood_skill = $skill[none];
 		if(auto_have_skill($skill[Blood Bubble]) && auto_have_skill($skill[Blood Bond]))
@@ -5578,7 +5578,7 @@ boolean auto_check_conditions(string conds)
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions
 			// True if the hidden tavern has been unlocked this ascension
 			case "tavern":
-				return get_property("hiddenTavernUnlock").to_int() < my_ascensions();
+				return get_property("hiddenTavernUnlock").to_int() >= my_ascensions();
 			// data: The number of sgeeas you want to have
 			// True if you have at least that many sgeeas at your disposal
 			case "sgeea":

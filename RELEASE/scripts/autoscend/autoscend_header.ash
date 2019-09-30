@@ -25,8 +25,6 @@ boolean LX_fancyOilPainting();
 boolean LX_setBallroomSong();
 boolean LX_fcle();
 boolean LX_ornateDowsingRod();
-boolean LX_getDictionary();
-boolean LX_dictionary();
 boolean LX_nastyBooty();
 boolean LX_spookyravenSecond();
 boolean LX_spookyBedroomCombat();
@@ -80,7 +78,6 @@ boolean L5_goblinKing();
 boolean L5_getEncryptionKey();
 boolean L6_dakotaFanning();
 boolean L6_friarsGetParts();
-boolean L6_friarsHotWing();
 boolean L8_trapperStart();
 boolean L7_crypt();
 boolean L8_trapperGround();
@@ -532,20 +529,17 @@ boolean drinkSpeakeasyDrink(string drink);					//Defined in autoscend/auto_clan.
 boolean eatFancyDog(string dog);							//Defined in autoscend/auto_clan.ash
 boolean zataraClanmate(string who);							//Defined in autoscend/auto_clan.ash
 boolean zataraSeaside(string who);							//Defined in autoscend/auto_clan.ash
-float edMeatBonus();										//Defined in autoscend/auto_edTheUndying.ash
-boolean ed_buySkills();										//Defined in autoscend/auto_edTheUndying.ash
+boolean isActuallyEd();										//Defined in auto_ascend/auto_edTheUndying.ash
 boolean ed_autoAdv(int num, location loc, string option);		//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife);//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_doResting();										//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_eatStuff();										//Defined in autoscend/auto_edTheUndying.ash
-boolean ed_handleAdventureServant(int num, location loc, string option);//Defined in autoscend/auto_edTheUndying.ash
+void ed_handleAdventureServant(location loc);//Defined in auto_ascend/auto_edTheUndying.ash
 void ed_initializeDay(int day);								//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeSession();								//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeSettings();								//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_needShop();										//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_preAdv(int num, location loc, string option);	//Defined in autoscend/auto_edTheUndying.ash
-boolean ed_shopping();										//Defined in autoscend/auto_edTheUndying.ash
-int ed_spleen_limit();										//Defined in autoscend/auto_edTheUndying.ash
 void ed_terminateSession();									//Defined in autoscend/auto_edTheUndying.ash
 effect[int] effectList();									//Defined in autoscend/auto_list.ash
 boolean elementalPlanes_access(element ele);				//Defined in autoscend/auto_elementalPlanes.ash
