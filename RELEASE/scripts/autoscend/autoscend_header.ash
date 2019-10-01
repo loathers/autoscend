@@ -343,6 +343,7 @@ boolean [location] get_floundry_locations();				//Defined in autoscend/auto_clan
 int[item] auto_get_clan_lounge();								//Defined in autoscend/auto_clan.ash
 boolean acquireMP(int goal);								//Defined in autoscend/auto_util.ash
 boolean acquireMP(int goal, boolean buyIt);					//Defined in autoscend/auto_util.ash
+boolean acquireMP(int goal, boolean buyIt, boolean freeRest);  //Defined in autoscend/auto_util.ash
 boolean acquireGumItem(item it);							//Defined in autoscend/auto_util.ash
 boolean acquireHermitItem(item it);							//Defined in autoscend/auto_util.ash
 int cloversAvailable();									//Defined in autoscend/auto_util.ash
@@ -517,7 +518,9 @@ int doNumberology(string goal, boolean doIt);				//Defined in autoscend/auto_uti
 int doNumberology(string goal, boolean doIt, string option);//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, string option);				//Defined in autoscend/auto_util.ash
 int doRest();												//Defined in autoscend/auto_util.ash
+boolean doRest(float hp_threshold, float mp_threshold, boolean freeOnly);  //Defined in autoscend/auto_util.ash
 boolean haveFreeRestAvailable();		//Defined in autoscend/auto_util.ash
+boolean haveAnyIotmAlternateCampsight()  //Defined in autoscend/auto_util.ash
 boolean doFreeRest();										//Defined in autoscend/auto_util.ash
 boolean doTasks();											//Defined in autoscend.ash
 boolean keepOnTruckin();									//Defined in autoscend/auto_cooking.ash
