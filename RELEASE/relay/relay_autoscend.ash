@@ -249,7 +249,7 @@ void main()
 	}
 	writeln("</table>");
 
-	writeln("<br>Handle <a href=\"slascend_quests.php\">Quest Tracker</a><br>");
+	writeln("<br>Handle <a href=\"autoscend_quests.php\">Quest Tracker</a><br>");
 
 	writeln("<h2>Banishes</h2>");
 	generateTrackingData("auto_banishes", true);
