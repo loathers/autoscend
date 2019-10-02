@@ -5664,7 +5664,8 @@ boolean LX_attemptPowerLevel()
 	else
 	{
 		// burn all spare clovers after level 12 if we need to powerlevel.
-		if (my_level() >= 12 && get_property("questL12War") == "finished" && cloversAvailable() > 0)
+		int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
+		if (my_level() >= 12 && get_property("questL12War") == "finished" && cloversAvailable() > cloverLimit)
 		{
 			//Determine where to go for clover stats, do not worry about clover failures
 			location whereTo = $location[none];
