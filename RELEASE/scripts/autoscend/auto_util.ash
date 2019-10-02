@@ -32,7 +32,16 @@ boolean haveFreeRestAvailable();
 boolean doFreeRest();
 boolean acquireMP(int goal);
 boolean acquireMP(int goal, boolean buyIt);
-boolean acquireMP(int goal, boolean buyItm boolean freeRest);
+boolean acquireMP(int goal, boolean buyItm, boolean freeRest);
+boolean acquireMP(float goalPercent);
+boolean acquireMP(float goalPercent, boolean buyIt);
+boolean acquireMP(float goalPercent, boolean buyItm, boolean freeRest);
+boolean acquireHP(int goal);
+boolean acquireHP(int goal, boolean buyIt);
+boolean acquireHP(int goal, boolean buyItm, boolean freeRest);
+boolean acquireHP(float goalPercent);
+boolean acquireHP(float goalPercent, boolean buyIt);
+boolean acquireHP(float goalPercent, boolean buyItm, boolean freeRest);
 boolean acquireGumItem(item it);
 boolean acquireHermitItem(item it);
 boolean isHermitAvailable();
@@ -2028,7 +2037,8 @@ boolean doRest(float hp_threshold, float mp_threshold, boolean freeOnly){
 		if(freeOnly){
 			return doFreeRest();
 		} else{
-			return doRest();
+			int rest_count = get_property("timesRested").to_int();
+			return doRest() > rest_count;
 		}
 	}
 	return false;
@@ -2189,7 +2199,7 @@ boolean acquireMP(int goal, boolean buyIt, boolean freeRest)
 	if(freeRest){
 		while(haveFreeRestAvailable() && my_mp() < goal){
 			// dont waste free IotM rests since they are pretty valuable
-			if((chateaumantegna_available() || auto_campawayAvailable()) && (my_maxmp() - my_mp() < 100 || have_effect)){
+			if((chateaumantegna_available() || auto_campawayAvailable()) && my_maxmp() - my_mp() < 100){
 				break;
 			}
 			doFreeRest();
@@ -2277,6 +2287,56 @@ boolean acquireMP(int goal, boolean buyIt, boolean freeRest)
 	}
 
 	return (my_mp() >= goal);
+}
+
+
+boolean acquireMP(float goalPercent){
+	return acquireMP(goalPercent, false);
+}
+
+boolean acquireMP(float goalPercent, boolean buyIt){
+	return acquireMP(goalPercent, buyIt, false);
+}
+
+boolean acquireMP(float goalPercent, boolean buyItm, boolean freeRest){
+	int goal = my_maxmp();
+	if(goalPercent > 1.0){
+		goal = ceil((goalPercent/100.0) * my_maxmp());
+	} else{
+		goal = ceil(goalPercent*my_maxmp());
+	}
+	return acquireMP(goal.to_int(), buyItm, freeRest);
+}
+
+boolean acquireHP(int goal){
+	return acquireHP(goal, false);
+}
+
+boolean acquireHP(int goal, boolean buyIt){
+	return acquireHP(goal, buyIt, false);
+}
+
+// TODO: not actually implemented yet
+boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
+	return useCocoon();
+}
+
+boolean acquireHP(float goalPercent){
+	return acquireHP(goalPercent, false);
+}
+
+boolean acquireHP(float goalPercent, boolean buyItm){
+	return acquireHP(goalPercent, buyItm, false);
+}
+
+boolean acquireHP(float goalPercent, boolean buyItm, boolean freeRest){
+	int goal = my_maxhp();
+	if(goalPercent > 1.0){
+		goal = ceil((goalPercent/100.0) * my_maxhp());
+	} else{
+		goal = ceil(goalPercent*my_maxhp());
+	}
+	return acquireHP(goal.to_int(), buyItm, freeRest);
 }
 
 int cloversAvailable()
@@ -4077,6 +4137,10 @@ string beerPong(string page)
 	return page;
 }
 
+boolean acquireHP(){
+	return useCocoon();
+}
+
 boolean useCocoon(){
 
 	static int mp_cost_multiplier = 3;
@@ -4105,7 +4169,7 @@ boolean useCocoon(){
 		if(blood == $skill[none]){
 			return hp_waste * -1;
 		} else{
-			int casts = floor(hp_waste / hp_cost(blood))
+			int casts = floor(hp_waste / hp_cost(blood));
 			return hp_waste - (hp_cost(blood) * casts);
 		}
 	}
@@ -4122,7 +4186,7 @@ boolean useCocoon(){
 		if(mp_cost(s) > my_mp()){
 			value -= mp_cost_multiplier * (mp_cost(s) - my_mp());
 		} else{
-			value -= potential_mp_used;
+			value -= mp_cost(s);
 		}
 		return value;
 	}
@@ -4134,8 +4198,8 @@ boolean useCocoon(){
 			$item[Giant Pilgrim Hat]: 15,
 			$item[Barskin Tent]: 20,
 			$item[Cottage]: 30,
-			$item[Pyramid]: 35,
-			$item[House]: 40,
+			$item[BRICKO pyramid]: 35,
+			$item[Frobozz Real-Estate Company Instant House (TM)]: 40,
 			$item[Sandcastle]: 50,
 			$item[Ginormous Pumpkin]: 50,
 			$item[Giant Faraday Cage]: 50,
@@ -4143,8 +4207,8 @@ boolean useCocoon(){
 			$item[Elevent]: 50,
 			$item[House of Twigs and Spit]: 60,
 			$item[Gingerbread House]: 70,
-			$item[Hobo Fortress]: 85,
-			$item[Residence-Cude]: 100
+			$item[hobo fortress blueprints]: 85,
+			$item[Xiblaxian residence-cube]: 100
 		};
 
 		int value = 0;
@@ -4182,10 +4246,10 @@ boolean useCocoon(){
 
 	boolean[int] allEffectivenessValues(){
 		boolean[int] values;
-		values[0] = restEffectivenessValue();
+		values[restEffectivenessValue()] = true;
 
 		foreach s, _ in hp_per_cast {
-			values[count(values)] = effectiveness(s);
+			values[effectiveness(s)] = true;
 		}
 
 		return values;
@@ -4196,7 +4260,7 @@ boolean useCocoon(){
 		print("Rest effectivenes calculated at: " + value);
 
 		foreach v in allEffectivenessValues(){
-			if(val < v){
+			if(value < v){
 				return false;
 			}
 		}
@@ -4224,7 +4288,7 @@ boolean useCocoon(){
 		}
 
 		while(my_hp() - hp_cost(blood) > 0 && hp_waste - hp_cost(blood) > 0){
-			use(1, blood);
+			use_skill(1, blood);
 			hp_waste -= hp_cost(blood);
 			blood = hp_waste_blood_skill();
 		}
@@ -4256,7 +4320,7 @@ boolean useCocoon(){
 			print("Using rest (effectiveness value: "+ restEffectivenessValue() +", free: " + haveFreeRestAvailable() + ")");
 			doRest();
 		} else if(healing != $skill[none]){
-			print("Using " + healing + " (effectiveness value: " + effectiveness(healing) + ")")
+			print("Using " + healing + " (effectiveness value: " + effectiveness(healing) + ")");
 			use_healing_skill(healing);
 		} else{
 			print("Uh, couldnt determine an effective healing mechanism. Sorry.", "red");

@@ -520,7 +520,7 @@ int doNumberology(string goal, string option);				//Defined in autoscend/auto_ut
 int doRest();												//Defined in autoscend/auto_util.ash
 boolean doRest(float hp_threshold, float mp_threshold, boolean freeOnly);  //Defined in autoscend/auto_util.ash
 boolean haveFreeRestAvailable();		//Defined in autoscend/auto_util.ash
-boolean haveAnyIotmAlternateCampsight()  //Defined in autoscend/auto_util.ash
+boolean haveAnyIotmAlternateCampsight();  //Defined in autoscend/auto_util.ash
 boolean doFreeRest();										//Defined in autoscend/auto_util.ash
 boolean doTasks();											//Defined in autoscend.ash
 boolean keepOnTruckin();									//Defined in autoscend/auto_cooking.ash
