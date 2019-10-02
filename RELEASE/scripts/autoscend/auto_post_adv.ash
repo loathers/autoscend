@@ -642,6 +642,10 @@ void handlePostAdventure()
 		}
 
 		boolean doML = true;
+		boolean removeML = false;
+			// removeML MUST be true for purgeML to be used. This is only used for -ML locations like Smut Orc, and you must have 5+ SGEAs to use.
+			boolean purgeML = false;
+
 		if(get_property("kingLiberated").to_boolean())
 		{
 			doML = false;
@@ -649,12 +653,24 @@ void handlePostAdventure()
 		if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
 		{
 			doML = false;
+			removeML = true;
 		}
-		if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && (my_level() >= 13))
+		if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() >= 13) && (my_location() != $location[Oil Peak]) && (my_location() != $location[The Typical Tavern Cellar]) && (my_location() != $location[The Haunted Boiler Room])))
 		{
 			doML = false;
-			#auto_change_mcd(0);
 		}
+		if(my_location() == $location[The Smut Orc Logging Camp])
+		{
+			doML = false;
+			removeML = true;
+			purgeML = true;
+		}
+		if((my_location() == $location[Oil Peak]) || (my_location() == $location[The Typical Tavern Cellar]) || (my_location() == $location[The Haunted Boiler Room]))
+		{
+			doML = true;
+			removeML = false;
+		}
+
 		if((my_mp() > 150) && (my_maxhp() > 300) && (my_hp() < 140))
 		{
 			useCocoon();
@@ -718,6 +734,25 @@ void handlePostAdventure()
 		buffMaintain($effect[Singer\'s Faithful Ocelot], 280, 1, 10);
 		if(doML)
 		{
+			auto_change_mcd(11);
+
+			// Catch when we leave Smut Orc, allow for being "side tracked" buy delay burning
+			if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
+			{
+				print("No Reason to delay Asdon Usage");
+				uneffect($effect[Driving Intimidatingly]);
+				set_property("auto_debuffAsdonDelay", 0);
+			}
+			else if((have_effect($effect[Driving Intimidatingly]).to_int() == 0)  && (get_property("auto_debuffAsdonDelay") >= 0))
+			{
+				set_property("auto_debuffAsdonDelay", 0);
+			}
+			else
+			{
+				set_property("auto_debuffAsdonDelay", get_property("auto_debuffAsdonDelay").to_int() + 1);
+				print("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
+			}
+
 			if((monster_level_adjustment() + (2 * my_level())) <= 150)
 			{
 				buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 80, 1, 10);
@@ -735,6 +770,38 @@ void handlePostAdventure()
 				buffMaintain($effect[Ceaseless Snarling], 0, 1, 10);
 			}
 		}
+
+		// If we are in some state where we do not want +ML (Level 13 or Smut Orc) make sure ML is removed
+		if(removeML)
+		{
+			auto_change_mcd(0);
+
+			if(have_effect($effect[Driving Recklessly]) > 0)
+			{
+				uneffect($effect[Driving Recklessly]);
+			}
+			if(0 < have_effect($effect[Ur-Kel\'s Aria of Annoyance]))
+			{
+				uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
+			}
+
+			if((purgeML) && item_amount($item[soft green echo eyedrop antidote]) > 5)
+			{
+				if(0 < have_effect($effect[Drescher\'s Annoying Noise]))
+				{
+					uneffect($effect[Drescher\'s Annoying Noise]);
+				}
+				if(0 < have_effect($effect[Pride of the Puffin]))
+				{
+					uneffect($effect[Pride of the Puffin]);
+				}
+				if(0 < have_effect($effect[Ceaseless Snarling]))
+				{
+					uneffect($effect[Ceaseless Snarling]);
+				}
+			}
+		}
+
 		buffMaintain($effect[Big], 100, 1, 10);
 		buffMaintain($effect[Rage of the Reindeer], 80, 1, 10);
 		buffMaintain($effect[Astral Shell], 80, 1, 10);

@@ -1445,9 +1445,33 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 		}
 
-		if(my_location() == $location[The Smut Orc Logging Camp] && canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0 && canSurvive(1.0))
+		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0))
 		{
-			return useSkill($skill[Stuffed Mortar Shell]);
+			// Listed from Most to Least Damaging to hopefully cause Death on the turn when the Shell hits.
+			if(canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0)
+			{
+				return useSkill($skill[Stuffed Mortar Shell]);
+			}
+			else if(canUse($skill[Saucegeyser], false))
+			{
+				return useSkill($skill[Saucegeyser], false);
+			}
+			else if(canUse($skill[Saucecicle], false))
+			{
+				return useSkill($skill[Saucecicle], false);
+			}
+			else if(canUse($skill[Cannelloni Cannon], false) && have_effect($effect[Spirit of Peppermint]) != 0)
+			{
+				return useSkill($skill[Cannelloni Cannon], false);
+			}
+			else if(canUse($skill[Northern Explosion], false))
+			{
+				return useSkill($skill[Northern Explosion], false);
+			}
+			else
+			{
+				print("None of our preferred skills available. Engaging in Fisticuffs.", "red");
+			}
 		}
 
 		if(my_location() == $location[The Haunted Kitchen] && equipped_amount($item[vampyric cloake]) > 0 && get_property("_vampyreCloakeFormUses").to_int() < 10)
