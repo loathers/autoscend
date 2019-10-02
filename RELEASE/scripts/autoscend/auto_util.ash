@@ -29,6 +29,7 @@ boolean restore_property(string setting, string source);
 boolean clear_property_if(string setting, string cond);
 int doRest();
 boolean haveFreeRestAvailable();
+int freeRestsRemaining();
 boolean doFreeRest();
 boolean acquireMP(int goal);
 boolean acquireMP(int goal, boolean buyIt);
@@ -36,6 +37,7 @@ boolean acquireMP(int goal, boolean buyItm, boolean freeRest);
 boolean acquireMP(float goalPercent);
 boolean acquireMP(float goalPercent, boolean buyIt);
 boolean acquireMP(float goalPercent, boolean buyItm, boolean freeRest);
+boolean acquireHP();
 boolean acquireHP(int goal);
 boolean acquireHP(int goal, boolean buyIt);
 boolean acquireHP(int goal, boolean buyItm, boolean freeRest);
@@ -2003,6 +2005,10 @@ boolean haveFreeRestAvailable(){
 	return get_property("timesRested").to_int() < total_free_rests();
 }
 
+int freeRestsRemaining(){
+	return max(0, total_free_rests() - get_property("timesRested").to_int());
+}
+
 boolean haveAnyIotmAlternateCampsight(){
 	return chateaumantegna_available() || auto_campawayAvailable();
 }
@@ -2169,13 +2175,17 @@ boolean isProtonGhost(monster mon)
 	return false;
 }
 
+boolean acquireMP(){
+	return acquireMP(my_maxmp());
+}
+
 boolean acquireMP(int goal)
 {
 	return acquireMP(goal, false);
 }
 
 boolean acquireMP(int goal, boolean buyIt){
-	return acquireMP(goal, buyIt, false);
+	return acquireMP(goal, buyIt, freeRestsRemaining() > 2);
 }
 
 boolean acquireMP(int goal, boolean buyIt, boolean freeRest)
@@ -2200,7 +2210,11 @@ boolean acquireMP(int goal, boolean buyIt, boolean freeRest)
 		while(haveFreeRestAvailable() && my_mp() < goal){
 			// dont waste free IotM rests since they are pretty valuable
 			if((chateaumantegna_available() || auto_campawayAvailable()) && my_maxmp() - my_mp() < 100){
-				break;
+				int mp_waste = 125 - min(125, my_maxmp() - my_mp());
+				int hp_waste = 250 - min(250, my_maxhp() - my_hp());
+				if(mp_waste > 80 && hp_waste > 200){
+					break;
+				}
 			}
 			doFreeRest();
 		}
@@ -2289,13 +2303,12 @@ boolean acquireMP(int goal, boolean buyIt, boolean freeRest)
 	return (my_mp() >= goal);
 }
 
-
 boolean acquireMP(float goalPercent){
 	return acquireMP(goalPercent, false);
 }
 
 boolean acquireMP(float goalPercent, boolean buyIt){
-	return acquireMP(goalPercent, buyIt, false);
+	return acquireMP(goalPercent, buyIt, freeRestsRemaining() > 2);
 }
 
 boolean acquireMP(float goalPercent, boolean buyItm, boolean freeRest){
@@ -2308,6 +2321,10 @@ boolean acquireMP(float goalPercent, boolean buyItm, boolean freeRest){
 	return acquireMP(goal.to_int(), buyItm, freeRest);
 }
 
+boolean acquireHP(){
+	return acquireHP(my_maxhp());
+}
+
 boolean acquireHP(int goal){
 	return acquireHP(goal, false);
 }
@@ -2318,7 +2335,208 @@ boolean acquireHP(int goal, boolean buyIt){
 
 // TODO: not actually implemented yet
 boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
-	return useCocoon();
+
+	static int mp_cost_multiplier = 3;
+
+	int[skill] hp_per_cast = {
+		$skill[Tongue of the Walrus]: 35,
+		$skill[Cannelloni Cocoon]: 1000,
+		$skill[Shake it Off]: my_maxhp(),
+		$skill[Gelatinous Reconstruction]: 13
+	};
+
+	skill hp_waste_blood_skill(){
+		boolean canUseFamiliars = have_familiar($familiar[Mosquito]);
+		skill blood_skill = $skill[none];
+		if(auto_have_skill($skill[Blood Bubble]) && have_effect($effect[Blood Bond]) > have_effect($effect[Blood Bubble])){
+			blood_skill = $skill[Blood Bubble];
+		} else if(auto_have_skill($skill[Blood Bond]) && canUseFamiliars){
+			blood_skill = $skill[Blood Bond];
+		}
+
+		return blood_skill;
+	}
+
+	int hp_waste_value(int hp_waste){
+		skill blood = hp_waste_blood_skill();
+		if(blood == $skill[none]){
+			return hp_waste * -1;
+		} else{
+			int casts = floor(hp_waste / hp_cost(blood));
+			return hp_waste - (hp_cost(blood) * casts);
+		}
+	}
+
+	int effectiveness(skill s, int goal){
+		if(my_hp() >= goal || !auto_have_skill(s) || !(hp_per_cast contains s)){
+			return 0;
+		}
+
+		int potential_hp_restored = min(goal - my_hp(), hp_per_cast[s]);
+		int hp_wasted = hp_per_cast[s] - potential_hp_restored;
+		int value = potential_hp_restored - hp_waste_value(hp_wasted);
+
+		if(mp_cost(s) > my_mp()){
+			value -= mp_cost_multiplier * (mp_cost(s) - my_mp());
+		} else{
+			value -= mp_cost(s);
+		}
+
+		// consider how many casts it would take to fully heal to goal
+		value = value / ceil((goal - my_hp()) / hp_per_cast[s]);
+
+		return value.to_int();
+	}
+
+	int restEffectivenessValue(int goal, boolean freeRest){
+		static int[item] restored_from_dwelling = {
+			$item[big rock]: 5,
+			$item[Newbiesport&trade; tent]: 10,
+			$item[Giant Pilgrim Hat]: 15,
+			$item[Barskin Tent]: 20,
+			$item[Cottage]: 30,
+			$item[BRICKO pyramid]: 35,
+			$item[Frobozz Real-Estate Company Instant House (TM)]: 40,
+			$item[Sandcastle]: 50,
+			$item[Ginormous Pumpkin]: 50,
+			$item[Giant Faraday Cage]: 50,
+			$item[Snow Fort]: 50,
+			$item[Elevent]: 50,
+			$item[House of Twigs and Spit]: 60,
+			$item[Gingerbread House]: 70,
+			$item[hobo fortress blueprints]: 85,
+			$item[Xiblaxian residence-cube]: 100
+		};
+
+		if(haveFreeRestAvailable() && !freeRest){
+			return 0;
+		}
+
+		int value = 0;
+		int potential_hp_restored = restored_from_dwelling[get_dwelling()];
+		int potential_mp_restored = potential_hp_restored;
+
+		if(haveAnyIotmAlternateCampsight()){
+			potential_hp_restored = 250;
+			potential_mp_restored = 125;
+
+			if(!have_skill($skill[Tongue of the Walrus])){
+				value += 1000; // this is about the only way the player can remove beaten up in this case
+			}
+			if(have_effect($effect[Beaten Up]) == 0){
+				value -= 50; // slight preference to saving until we are beaten up
+			}
+		}
+
+		int max_hp_restorable = min(potential_hp_restored, goal-my_hp());
+		int max_mp_restorable = min(potential_mp_restored, goal-my_mp());
+
+		value += max_hp_restorable;
+		value += max_mp_restorable * mp_cost_multiplier; // mp is pretty valuable
+
+		// remove waste hp/mp from the value
+		value -= hp_waste_value(potential_hp_restored - max_hp_restorable);
+		value -= (potential_mp_restored - max_mp_restorable) * mp_cost_multiplier; // like I said, mp is pretty valuable
+
+		if(!haveFreeRestAvailable()){
+			value -= 2000; // and adventure is extremely valuable
+		}
+
+		return value;
+	}
+
+	int[int] allEffectivenessValues(int goal, boolean buyItm, boolean freeRest){
+		int[string] values;
+		values["rest"] = restEffectivenessValue(goal, freeRest);
+
+		foreach s, _ in hp_per_cast {
+			values[s.to_string()] = effectiveness(s, goal, buyItm);
+		}
+
+		return values;
+	}
+
+	boolean restingIsMostEffective(int goal, boolean buyItm, boolean freeRest){
+		int value = restEffectivenessValue();
+		print("Rest effectivenes calculated at: " + value);
+
+		int[int] effectiveness = allEffectivenessValues()
+		foreach s, v in effectiveness{
+			if(v > effectiveness["rest"]){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	skill mostEffectiveSkill(int goal){
+		skill best = $skill[none];
+		int value = 0;
+
+		foreach s, _ in hp_per_cast {
+			int e = effectiveness(s, goal, buyItm);
+			if(best == $skill[none] && e > value){
+				best = s;
+				value = e;
+			}
+		}
+		return best;
+	}
+
+	boolean use_blood_skill(int hp_waste){
+		skill blood = hp_waste_blood_skill();
+
+		if(blood == $skill[none]){
+			return false;
+		}
+
+		while(my_hp() - hp_cost(blood) > 0 && hp_waste - hp_cost(blood) > 0){
+			use_skill(1, blood);
+			hp_waste -= hp_cost(blood);
+			blood = hp_waste_blood_skill();
+		}
+		return true;
+	}
+
+	boolean use_healing_skill(skill s, int goal, boolean buyItm){
+		if(my_hp() >= goal || s == $skill[none] || !have_skill(s) || !(hp_per_cast contains s)){
+			return false;
+		}
+
+		if(my_my() < mp_cost(s) && !acquireMP(mp_cost(s)-my_my(), buyItm, false)){
+			print("Couldnt acquire enough mp to cast " + s);
+			return false;
+		}
+
+		int potential_hp_restored = min(goal - my_hp(), hp_per_cast[s]);
+		use_blood_skill(hp_per_cast[s] - potential_hp_restored);
+		return use_skill(1, s);
+	}
+
+	// let mafia figure out how to best remove beaten up
+	print("Ouch, you got beaten up. Lets get you patched up, if we can.");
+	uneffect($effect[Beaten Up]);
+
+	if(have_effect($Effect[Beaten Up]) > 0){
+		print("Well, you're still beaten up, thats probably not great...", "red");
+	}
+
+	print("Considering healing options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+	while(my_hp() < my_maxhp()){
+		skill healing = mostEffectiveSkill(goal);
+		if(restingIsMostEffective(goal, buyItm, freeRest)){
+			print("Using rest (effectiveness value: "+ restEffectivenessValue(goal, freeRest) +", free: " + haveFreeRestAvailable() + ")");
+			doRest();
+		} else if(healing != $skill[none]){
+			print("Using " + healing + " (effectiveness value: " + effectiveness(healing, goal) + ")");
+			use_healing_skill(healing, goal, buyItm);
+		} else{
+			print("Uh, couldnt determine an effective healing mechanism. Sorry.", "red");
+			return false;
+		}
+	}
+
+	return true;
 }
 
 boolean acquireHP(float goalPercent){
@@ -2326,6 +2544,7 @@ boolean acquireHP(float goalPercent){
 }
 
 boolean acquireHP(float goalPercent, boolean buyItm){
+	if(haveFreeRestAvailable() && )
 	return acquireHP(goalPercent, buyItm, false);
 }
 
@@ -4135,200 +4354,6 @@ string beerPong(string page)
 
 	print("You won a thrilling game of Insult Beer Pong!", "lime");
 	return page;
-}
-
-boolean acquireHP(){
-	return useCocoon();
-}
-
-boolean useCocoon(){
-
-	static int mp_cost_multiplier = 3;
-
-	int[skill] hp_per_cast = {
-		$skill[Tongue of the Walrus]: 35,
-		$skill[Cannelloni Cocoon]: 1000,
-		$skill[Shake it Off]: my_maxhp(),
-		$skill[Gelatinous Reconstruction]: 13
-	};
-
-	skill hp_waste_blood_skill(){
-		boolean canUseFamiliars = have_familiar($familiar[Mosquito]);
-		skill blood_skill = $skill[none];
-		if(auto_have_skill($skill[Blood Bubble]) && have_effect($effect[Blood Bond]) > have_effect($effect[Blood Bubble])){
-			blood_skill = $skill[Blood Bubble];
-		} else if(auto_have_skill($skill[Blood Bond]) && canUseFamiliars){
-			blood_skill = $skill[Blood Bond];
-		}
-
-		return blood_skill;
-	}
-
-	int hp_waste_value(int hp_waste){
-		skill blood = hp_waste_blood_skill();
-		if(blood == $skill[none]){
-			return hp_waste * -1;
-		} else{
-			int casts = floor(hp_waste / hp_cost(blood));
-			return hp_waste - (hp_cost(blood) * casts);
-		}
-	}
-
-	int effectiveness(skill s){
-		if(my_hp() >= my_maxhp() || !auto_have_skill(s) || !(hp_per_cast contains s)){
-			return 0;
-		}
-
-		int potential_hp_restored = min(my_maxhp() - my_hp(), hp_per_cast[s]);
-		int hp_wasted = hp_per_cast[s] - potential_hp_restored;
-		int value = potential_hp_restored - hp_waste_value(hp_wasted);
-
-		if(mp_cost(s) > my_mp()){
-			value -= mp_cost_multiplier * (mp_cost(s) - my_mp());
-		} else{
-			value -= mp_cost(s);
-		}
-		return value;
-	}
-
-	int restEffectivenessValue(){
-		static int[item] restored_from_dwelling = {
-			$item[big rock]: 5,
-			$item[Newbiesport&trade; tent]: 10,
-			$item[Giant Pilgrim Hat]: 15,
-			$item[Barskin Tent]: 20,
-			$item[Cottage]: 30,
-			$item[BRICKO pyramid]: 35,
-			$item[Frobozz Real-Estate Company Instant House (TM)]: 40,
-			$item[Sandcastle]: 50,
-			$item[Ginormous Pumpkin]: 50,
-			$item[Giant Faraday Cage]: 50,
-			$item[Snow Fort]: 50,
-			$item[Elevent]: 50,
-			$item[House of Twigs and Spit]: 60,
-			$item[Gingerbread House]: 70,
-			$item[hobo fortress blueprints]: 85,
-			$item[Xiblaxian residence-cube]: 100
-		};
-
-		int value = 0;
-		int potential_hp_restored = restored_from_dwelling[get_dwelling()];
-		int potential_mp_restored = potential_hp_restored;
-
-		if(haveAnyIotmAlternateCampsight()){
-			potential_hp_restored = 250;
-			potential_mp_restored = 125;
-
-			if(!have_skill($skill[Tongue of the Walrus])){
-				value += 1000; // this is about the only way the player can remove beaten up in this case
-			}
-			if(have_effect($effect[Beaten Up]) == 0){
-				value -= 50; // slight preference to saving until we are beaten up
-			}
-		}
-
-		int max_hp_restorable = min(potential_hp_restored, my_maxhp()-my_hp());
-		int max_mp_restorable = min(potential_mp_restored, my_maxmp()-my_mp());
-
-		value += max_hp_restorable;
-		value += max_mp_restorable * mp_cost_multiplier; // mp is pretty valuable
-
-		// remove waste hp/mp from the value
-		value -= hp_waste_value(potential_hp_restored - max_hp_restorable);
-		value -= (potential_mp_restored - max_mp_restorable) * mp_cost_multiplier; // like I said, mp is pretty valuable
-
-		if(!haveFreeRestAvailable()){
-			value -= 2000; // and adventure is extremely valuable
-		}
-
-		return value;
-	}
-
-	boolean[int] allEffectivenessValues(){
-		boolean[int] values;
-		values[restEffectivenessValue()] = true;
-
-		foreach s, _ in hp_per_cast {
-			values[effectiveness(s)] = true;
-		}
-
-		return values;
-	}
-
-	boolean restingIsMostEffective(){
-		int value = restEffectivenessValue();
-		print("Rest effectivenes calculated at: " + value);
-
-		foreach v in allEffectivenessValues(){
-			if(value < v){
-				return false;
-			}
-		}
-		return true;
-	}
-
-	skill mostEffectiveSkill(){
-		skill best = $skill[none];
-		int value = 0;
-
-		foreach s, _ in hp_per_cast {
-			if(best == $skill[none] && effectiveness(s) > value){
-				best = s;
-				value = effectiveness(s);
-			}
-		}
-		return best;
-	}
-
-	boolean use_blood_skill(int hp_waste){
-		skill blood = hp_waste_blood_skill();
-
-		if(blood == $skill[none]){
-			return false;
-		}
-
-		while(my_hp() - hp_cost(blood) > 0 && hp_waste - hp_cost(blood) > 0){
-			use_skill(1, blood);
-			hp_waste -= hp_cost(blood);
-			blood = hp_waste_blood_skill();
-		}
-		return true;
-	}
-
-	boolean use_healing_skill(skill s){
-		if(my_hp() >= my_maxhp() || s == $skill[none] || !have_skill(s) || !(hp_per_cast contains s)){
-			return false;
-		}
-
-		int potential_hp_restored = min(my_maxhp() - my_hp(), hp_per_cast[s]);
-		use_blood_skill(hp_per_cast[s] - potential_hp_restored);
-		return use_skill(1, s);
-	}
-
-	// let mafia figure out how to best remove beaten up
-	print("Ouch, you got beaten up. Lets get you patched up, if we can.");
-	uneffect($effect[Beaten Up]);
-
-	if(have_effect($Effect[Beaten Up]) > 0){
-		print("Well, you're still beaten up, thats probably not great...", "red");
-	}
-
-	print("Considering healing options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
-	while(my_hp() < my_maxhp()){
-		skill healing = mostEffectiveSkill();
-		if(restingIsMostEffective()){
-			print("Using rest (effectiveness value: "+ restEffectivenessValue() +", free: " + haveFreeRestAvailable() + ")");
-			doRest();
-		} else if(healing != $skill[none]){
-			print("Using " + healing + " (effectiveness value: " + effectiveness(healing) + ")");
-			use_healing_skill(healing);
-		} else{
-			print("Uh, couldnt determine an effective healing mechanism. Sorry.", "red");
-			return false;
-		}
-	}
-
-	return true;
 }
 
 int howLongBeforeHoloWristDrop()

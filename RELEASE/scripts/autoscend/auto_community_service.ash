@@ -5060,29 +5060,12 @@ boolean cs_healthMaintain(){
 }
 
 boolean cs_healthMaintain(int target){
-	if(target > my_maxhp()){
-		target = my_maxhp();
+	boolean shouldBuy = false;
+	if(my_meat() > 3000){
+		shouldBuy = true;
 	}
 
-	print("CS: attempting to maintain target hp " + target);
-
-	while(my_hp() < target){
-		print("attempting to heal");
-		if(!useCocoon()){
-			// try to gain MP through conventional means before trying to heal again
-			int minMP = 0;
-			if(my_maxhp() <= 70 && auto_have_skill($skill[Tongue of the Walrus])){
-				minMP = mp_cost($skill[Tongue of the Walrus]);
-			} else if(auto_have_skill($skill[Cannelloni Cocoon])){
-				minMP = mp_cost($skill[Cannelloni Cocoon]);
-			}
-			if(minMP == 0 || !cs_mpMaintain(minMP)){
-				break; // cant reasonably restore mp, break out.
-			}
-		}
-	}
-
-	return my_hp() >= target;
+	return acquireHP(target, shouldBuy, true);
 }
 
 boolean cs_mpMaintain(){
@@ -5096,11 +5079,6 @@ boolean cs_mpMaintain(){
 }
 
 boolean cs_mpMaintain(int target){
-	if(target > my_maxmp()){
-		target = my_maxmp();
-	}
-	print("CS: attempting to maintain target mp " + target);
-
 	boolean shouldBuy = false;
 	if(my_meat() > 3000){
 		shouldBuy = true;

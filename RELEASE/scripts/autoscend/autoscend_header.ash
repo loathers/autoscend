@@ -341,9 +341,23 @@ boolean adventureFailureHandler();							//Defined in autoscend.ash
 boolean councilMaintenance();								//Defined in autoscend.ash
 boolean [location] get_floundry_locations();				//Defined in autoscend/auto_clan.ash
 int[item] auto_get_clan_lounge();								//Defined in autoscend/auto_clan.ash
-boolean acquireMP(int goal);								//Defined in autoscend/auto_util.ash
-boolean acquireMP(int goal, boolean buyIt);					//Defined in autoscend/auto_util.ash
-boolean acquireMP(int goal, boolean buyIt, boolean freeRest);  //Defined in autoscend/auto_util.ash
+boolean acquireMP();																										//Defined in autoscend/auto_util.ash
+boolean acquireMP(int goal);																						//Defined in autoscend/auto_util.ash
+boolean acquireMP(int goal, boolean buyIt);															//Defined in autoscend/auto_util.ash
+boolean acquireMP(int goal, boolean buyIt, boolean freeRest);  					//Defined in autoscend/auto_util.ash
+boolean acquireMP(int goal);																						//Defined in autoscend/auto_util.ash
+boolean acquireMP(int goal, boolean buyIt);															//Defined in autoscend/auto_util.ash
+boolean acquireMP(int goal, boolean buyItm, boolean freeRest);				  //Defined in autoscend/auto_util.ash
+boolean acquireMP(float goalPercent);																		//Defined in autoscend/auto_util.ash
+boolean acquireMP(float goalPercent, boolean buyIt);										//Defined in autoscend/auto_util.ash
+boolean acquireMP(float goalPercent, boolean buyItm, boolean freeRest);	//Defined in autoscend/auto_util.ash
+boolean acquireHP();																										//Defined in autoscend/auto_util.ash
+boolean acquireHP(int goal);																						//Defined in autoscend/auto_util.ash
+boolean acquireHP(int goal, boolean buyIt);															//Defined in autoscend/auto_util.ash
+boolean acquireHP(int goal, boolean buyItm, boolean freeRest);					//Defined in autoscend/auto_util.ash
+boolean acquireHP(float goalPercent);																		//Defined in autoscend/auto_util.ash
+boolean acquireHP(float goalPercent, boolean buyIt);										//Defined in autoscend/auto_util.ash
+boolean acquireHP(float goalPercent, boolean buyItm, boolean freeRest); //Defined in autoscend/auto_util.ash
 boolean acquireGumItem(item it);							//Defined in autoscend/auto_util.ash
 boolean acquireHermitItem(item it);							//Defined in autoscend/auto_util.ash
 int cloversAvailable();									//Defined in autoscend/auto_util.ash
@@ -520,6 +534,7 @@ int doNumberology(string goal, string option);				//Defined in autoscend/auto_ut
 int doRest();												//Defined in autoscend/auto_util.ash
 boolean doRest(float hp_threshold, float mp_threshold, boolean freeOnly);  //Defined in autoscend/auto_util.ash
 boolean haveFreeRestAvailable();		//Defined in autoscend/auto_util.ash
+int freeRestsRemaining();		//Defined in autoscend/auto_util.ash
 boolean haveAnyIotmAlternateCampsight();  //Defined in autoscend/auto_util.ash
 boolean doFreeRest();										//Defined in autoscend/auto_util.ash
 boolean doTasks();											//Defined in autoscend.ash
@@ -904,7 +919,7 @@ boolean tryCookies();										//Defined in autoscend/auto_cooking.ash
 boolean tryPantsEat();										//Defined in autoscend/auto_cooking.ash
 int turkeyBooze();											//Defined in autoscend/auto_util.ash
 boolean uneffect(effect toRemove);							//Defined in autoscend/auto_util.ash
-boolean useCocoon();										//Defined in autoscend/auto_util.ash
+boolean useCocoon();										//Defined in autoscend/auto_deprecation.ash
 boolean use_barrels();										//Defined in autoscend/auto_util.ash
 boolean needStarKey();										//Defined in autoscend/auto_util.ash
 boolean needDigitalKey();									//Defined in autoscend/auto_util.ash
