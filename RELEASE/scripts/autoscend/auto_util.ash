@@ -2445,22 +2445,22 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 		return value;
 	}
 
-	int[int] allEffectivenessValues(int goal, boolean buyItm, boolean freeRest){
+	int[string] allEffectivenessValues(int goal, boolean buyItm, boolean freeRest){
 		int[string] values;
 		values["rest"] = restEffectivenessValue(goal, freeRest);
 
 		foreach s, _ in hp_per_cast {
-			values[s.to_string()] = effectiveness(s, goal, buyItm);
+			values[s.to_string()] = effectiveness(s, goal);
 		}
 
 		return values;
 	}
 
 	boolean restingIsMostEffective(int goal, boolean buyItm, boolean freeRest){
-		int value = restEffectivenessValue();
+		int value = restEffectivenessValue(goal, freeRest);
 		print("Rest effectivenes calculated at: " + value);
 
-		int[int] effectiveness = allEffectivenessValues()
+		int[string] effectiveness = allEffectivenessValues(goal, buyItm, freeRest);
 		foreach s, v in effectiveness{
 			if(v > effectiveness["rest"]){
 				return false;
@@ -2474,7 +2474,7 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 		int value = 0;
 
 		foreach s, _ in hp_per_cast {
-			int e = effectiveness(s, goal, buyItm);
+			int e = effectiveness(s, goal);
 			if(best == $skill[none] && e > value){
 				best = s;
 				value = e;
@@ -2503,7 +2503,7 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 			return false;
 		}
 
-		if(my_my() < mp_cost(s) && !acquireMP(mp_cost(s)-my_my(), buyItm, false)){
+		if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s)-my_mp(), buyItm, false)){
 			print("Couldnt acquire enough mp to cast " + s);
 			return false;
 		}
@@ -2544,8 +2544,7 @@ boolean acquireHP(float goalPercent){
 }
 
 boolean acquireHP(float goalPercent, boolean buyItm){
-	if(haveFreeRestAvailable() && )
-	return acquireHP(goalPercent, buyItm, false);
+	return acquireHP(goalPercent, buyItm, freeRestsRemaining() > 2);
 }
 
 boolean acquireHP(float goalPercent, boolean buyItm, boolean freeRest){

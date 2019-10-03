@@ -3590,6 +3590,15 @@ boolean cs_eat_stuff(int quest)
 					{
 						auto_sourceTerminalExtrude($item[Browser Cookie]);
 					}
+					dealWithMilkOfMagnesium(false);
+				} else if(get_property("auto_useWishes").to_boolean() && wishMilk){
+					print("CS: Wishing for Got Milk");
+					if(!makeGenieWish($effect[Got Milk])){
+						print("CS: Something went wrong wishing for Got Milk, continuing on.");
+						break;
+					}
+				} else{
+					break;
 				}
 
 				if((item_amount($item[Browser Cookie]) > 0) && (fullness_left() >= 4))
