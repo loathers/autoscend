@@ -13736,6 +13736,13 @@ boolean L8_trapperGroar()
 		return false;
 	}
   
+	if (internalQuestStatus("questL08Trapper") < 2)
+	{
+		// if we haven't returned the goat cheese and ore 
+		// to the trapper yet, don't try to ascend the peak.
+		return false;
+	}
+
 	if(get_property("auto_trapper") == "finished")
 	{
 		return false;
@@ -14681,10 +14688,6 @@ boolean doTasks()
 	{
 		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0))
 		{
-			if (!handleServant($servant[Scribe]))
-			{
-				handleServant($servant[Cat]);
-			}
 			fightScienceTentacle();
 			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
 			{
@@ -14694,7 +14697,6 @@ boolean doTasks()
 	}
 	else if((my_level() >= 9) && (my_hp() > 0))
 	{
-		handleServant($servant[Scribe]);
 		fightScienceTentacle();
 		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
 		{
