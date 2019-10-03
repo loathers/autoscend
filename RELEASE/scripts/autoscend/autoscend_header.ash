@@ -422,7 +422,7 @@ boolean autoOverdrink(int howMany, item toOverdrink);			//Defined in autoscend/a
 boolean canDrink(item toDrink);								//Defined in autoscend/auto_cooking.ash
 boolean canEat(item toEat);									//Defined in autoscend/auto_cooking.ash
 boolean canChew(item toChew); //Defined in autoscend/auto_cooking.ash
-boolean auto_have_familiar(familiar fam);						//Defined in autoscend/auto_cooking.ash
+boolean auto_have_familiar(familiar fam);						//Defined in autoscend/auto_util.ash
 boolean auto_advWitchess(string target);						//Defined in autoscend/auto_mr2016.ash
 boolean auto_advWitchess(string target, string option);		//Defined in autoscend/auto_mr2016.ash
 int auto_advWitchessTargets(string target);					//Defined in autoscend/auto_mr2016.ash
@@ -1092,6 +1092,7 @@ boolean autoFlavour(location place); // Defined in autoscend/auto_util.ash
 int auto_reserveAmount(item it); // Defined in autoscend/auto_util.ash
 int auto_reserveCraftAmount(item it); // Defined in autoscend/auto_util.ash
 float mp_regen(); // Defined in autoscend/auto_util.ash
+float hp_regen(); // Defined in autoscend/auto_util.ash
 
 //Record from autoscend/auto_zone.ash
 record generic_t

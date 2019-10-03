@@ -3630,6 +3630,41 @@ boolean cs_eat_stuff(int quest)
 			}
 
 		}
+<<<<<<< HEAD
+=======
+		return "";
+	}
+
+	if(my_path() != "Community Service" || shouldDelay(quest)){
+		return false;
+	}
+
+	print("CS: trying to eat some stuff.");
+
+	string hotdog = pick_a_hotdog(quest);
+	item[int] menu;
+	int milkThreshold = 10;
+
+
+	if(quest == get_cs_questNum("weapon damage")){
+		menu[count(menu)] = $item[glass of raw eggs];
+	} else if(quest == get_cs_questNum("spell damage")){
+		menu[count(menu)] = $item[glass of raw eggs];
+	} else if(quest == get_cs_questNum("item")){
+		menu[count(menu)] = $item[Weird Gazelle Steak];
+	} else if(quest == get_cs_questNum("hot")){
+		menu[count(menu)] = $item[Weird Gazelle Steak];
+	}
+
+	if(count(menu) == 0 && hotdog == ""){
+		return false;
+	}
+
+	int fullness = potential_fullness(hotdog, menu);
+	if(fullness > fullness_left()){
+		print("CS: I cant eat all of that");
+		return false;
+>>>>>>> 949f84d... tweaking hp effectiveness algorithms
 	}
 	else if(quest == 10)
 	{
@@ -5074,7 +5109,9 @@ boolean cs_healthMaintain(int target){
 		shouldBuy = true;
 	}
 
-	return acquireHP(target, shouldBuy, true);
+	acquireHP(target, shouldBuy, true);
+
+	return my_hp() >= target;
 }
 
 boolean cs_mpMaintain(){
@@ -5092,7 +5129,9 @@ boolean cs_mpMaintain(int target){
 	if(my_meat() > 3000){
 		shouldBuy = true;
 	}
-	return acquireMP(target, shouldBuy, true);
+	acquireMP(target, shouldBuy, true);
+
+	return my_mp() >= target;
 }
 
 boolean canTrySaberTrickMeteorShower(){

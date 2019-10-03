@@ -2345,30 +2345,51 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 		$skill[Gelatinous Reconstruction]: 13
 	};
 
-	skill hp_waste_blood_skill(){
-		boolean canUseFamiliars = have_familiar($familiar[Mosquito]);
+	//kind of arbitrary, blood bubble helps survivability and blood bond consumes hp per adventure so i put blood bubble higher
+	int[skill] blood_skill_value = {
+		$skill[Blood Bubble]: 10,
+		$skill[Blood Bond]: 1
+	};
+
+	skill hp_waste_blood_skill(int goal){
+		int blood_bond_cost = hp_cost($skill[Blood Bond]) + ((9-hp_regen())*10);
+
+		boolean canUseFamiliars = auto_have_familiar($familiar[Mosquito]);
+		boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
+			auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
+			my_maxhp() > hp_cost($skill[Blood Bond]) &&
+			goal > blood_bond_cost/3; // blood bond drains hp after combat, make sure we dont accidentally kill the player
+		boolean bloodBubbleAvailable = auto_have_skill($skill[Blood Bubble]) &&
+			my_maxhp() > hp_cost($skill[Blood Bubble]);
+
 		skill blood_skill = $skill[none];
-		if(auto_have_skill($skill[Blood Bubble]) && have_effect($effect[Blood Bond]) > have_effect($effect[Blood Bubble])){
-			blood_skill = $skill[Blood Bubble];
-		} else if(auto_have_skill($skill[Blood Bond]) && canUseFamiliars){
+
+		if(bloodBondAvailable && bloodBubbleAvailable){
+			if(have_effect($effect[Blood Bond]) > have_effect($effect[Blood Bubble])){
+				blood_skill = $effect[Blood Bubble];
+			} else{
+				blood_skill = $effect[Blood Bond];
+			}
+		} else if(bloodBondAvailable){
 			blood_skill = $skill[Blood Bond];
+		} else if(bloodBubbleAvailable){
+			blood_skill = $skill[Blood Bubble];
 		}
 
 		return blood_skill;
 	}
 
-	int hp_waste_value(int hp_waste){
-		skill blood = hp_waste_blood_skill();
-		if(blood == $skill[none]){
-			return hp_waste * -1;
-		} else{
+	int hp_waste_value(int goal, int hp_waste){
+		skill blood = hp_waste_blood_skill(goal);
+		if(blood != $skill[none]){
 			int casts = floor(hp_waste / hp_cost(blood));
-			return hp_waste - (hp_cost(blood) * casts);
+			hp_waste -= (hp_cost(blood) * casts);
 		}
+		return hp_waste
 	}
 
 	int effectiveness(skill s, int goal){
-		if(my_hp() >= goal || !auto_have_skill(s) || !(hp_per_cast contains s)){
+		if(my_hp() >= goal || !auto_have_skill(s) || !(hp_per_cast contains s) || mp_cost(s) > my_maxmp()){
 			return 0;
 		}
 
@@ -2376,14 +2397,19 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 		int hp_wasted = hp_per_cast[s] - potential_hp_restored;
 		int value = potential_hp_restored - hp_waste_value(hp_wasted);
 
-		if(mp_cost(s) > my_mp()){
-			value -= mp_cost_multiplier * (mp_cost(s) - my_mp());
+		// consider how many casts it would take to fully heal to goal
+		int casts_to_max = ceil((goal - my_hp()) / hp_per_cast[s]);
+		int mp_to_max = mp_cost(s)*casts_to_max;
+
+		if(mp_to_max > my_mp()){
+			// we will have to acquire extra mp somehow, which is expensive
+			value -= mp_cost_multiplier * (mp_to_max-my_mp());
+			value -= my_mp();
 		} else{
-			value -= mp_cost(s);
+			value -= mp_to_max;
 		}
 
-		// consider how many casts it would take to fully heal to goal
-		value = value / ceil((goal - my_hp()) / hp_per_cast[s]);
+		value += mp_regen(); // we get some mp back for free, which is valuable.
 
 		return value.to_int();
 	}
@@ -2408,7 +2434,7 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 			$item[Xiblaxian residence-cube]: 100
 		};
 
-		if(haveFreeRestAvailable() && !freeRest){
+		if(haveFreeRestAvailable() || !freeRest){
 			return 0;
 		}
 
@@ -2420,27 +2446,30 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 			potential_hp_restored = 250;
 			potential_mp_restored = 125;
 
-			if(!have_skill($skill[Tongue of the Walrus])){
-				value += 1000; // this is about the only way the player can remove beaten up in this case
-			}
-			if(have_effect($effect[Beaten Up]) == 0){
-				value -= 50; // slight preference to saving until we are beaten up
+			if(have_effect($effect[Beaten Up]) > 0){
+				if(!have_skill($skill[Tongue of the Walrus])){
+					value += 1000; // this is about the only way the player can remove beaten up in this case
+				} else{
+					value += mp_cost($skill[Tongue of the Walrus]);
+				}
+			} else if(!have_skill($skill[Tongue of the Walrus])){
+				// try to save campground for when beaten up
+				value -= 100;
+			} else{
+				// only a slight preference to save if they have tongue of the walrus
+				value -= mp_cost($skill[Tongue of the Walrus]);
 			}
 		}
 
-		int max_hp_restorable = min(potential_hp_restored, goal-my_hp());
-		int max_mp_restorable = min(potential_mp_restored, goal-my_mp());
+		int desired_max_hp_restorable = min(potential_hp_restored, goal-my_hp());
+		int max_mp_restorable = min(potential_mp_restored, my_maxmp()-my_mp());
 
-		value += max_hp_restorable;
+		value += desired_max_hp_restorable;
 		value += max_mp_restorable * mp_cost_multiplier; // mp is pretty valuable
 
 		// remove waste hp/mp from the value
-		value -= hp_waste_value(potential_hp_restored - max_hp_restorable);
+		value -= hp_waste_value(potential_hp_restored - desired_max_hp_restorable);
 		value -= (potential_mp_restored - max_mp_restorable) * mp_cost_multiplier; // like I said, mp is pretty valuable
-
-		if(!haveFreeRestAvailable()){
-			value -= 2000; // and adventure is extremely valuable
-		}
 
 		return value;
 	}
@@ -2483,8 +2512,8 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 		return best;
 	}
 
-	boolean use_blood_skill(int hp_waste){
-		skill blood = hp_waste_blood_skill();
+	boolean use_blood_skill(int goal, int hp_waste){
+		skill blood = hp_waste_blood_skill(goal);
 
 		if(blood == $skill[none]){
 			return false;
@@ -2493,7 +2522,7 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 		while(my_hp() - hp_cost(blood) > 0 && hp_waste - hp_cost(blood) > 0){
 			use_skill(1, blood);
 			hp_waste -= hp_cost(blood);
-			blood = hp_waste_blood_skill();
+			blood = hp_waste_blood_skill(goal);
 		}
 		return true;
 	}
@@ -2509,20 +2538,26 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 		}
 
 		int potential_hp_restored = min(goal - my_hp(), hp_per_cast[s]);
-		use_blood_skill(hp_per_cast[s] - potential_hp_restored);
+		use_blood_skill(goal, hp_per_cast[s] - potential_hp_restored);
 		return use_skill(1, s);
 	}
 
-	// let mafia figure out how to best remove beaten up
-	print("Ouch, you got beaten up. Lets get you patched up, if we can.");
-	uneffect($effect[Beaten Up]);
-
-	if(have_effect($Effect[Beaten Up]) > 0){
-		print("Well, you're still beaten up, thats probably not great...", "red");
+	if(goal > my_maxhp()){
+		goal = my_maxhp();
 	}
 
-	print("Considering healing options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
-	while(my_hp() < my_maxhp()){
+	// let mafia figure out how to best remove beaten up
+	if(have_effect($effect[Beaten Up]) > 0){
+		print("Ouch, you got beaten up. Lets get you patched up, if we can.");
+		uneffect($effect[Beaten Up]);
+
+		if(have_effect($Effect[Beaten Up]) > 0){
+			print("Well, you're still beaten up, thats probably not great...", "red");
+		}
+	}
+
+	print("Target HP => "+goal+" - Considering healing options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+	while(my_hp() < goal){
 		skill healing = mostEffectiveSkill(goal);
 		if(restingIsMostEffective(goal, buyItm, freeRest)){
 			print("Using rest (effectiveness value: "+ restEffectivenessValue(goal, freeRest) +", free: " + haveFreeRestAvailable() + ")");
@@ -5610,7 +5645,8 @@ boolean auto_is_valid(item it)
 
 boolean auto_is_valid(familiar fam)
 {
-	return bees_hate_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
+	familiar hundo = to_familiar(get_property("auto_100familiar"));
+	return bees_hate_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam) && (hundo == $familiar[none] || hundo == fam);
 }
 
 boolean auto_is_valid(skill sk)
@@ -6357,4 +6393,9 @@ int auto_reserveCraftAmount(item orig_it)
 float mp_regen()
 {
 	return 0.5 * (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max"));
+}
+
+float hp_regen()
+{
+	return 0.5 * (numeric_modifier("HP Regen Min") + numeric_modifier("HP Regen Max"));
 }
