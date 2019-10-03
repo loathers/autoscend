@@ -2366,9 +2366,9 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 
 		if(bloodBondAvailable && bloodBubbleAvailable){
 			if(have_effect($effect[Blood Bond]) > have_effect($effect[Blood Bubble])){
-				blood_skill = $effect[Blood Bubble];
+				blood_skill = $skill[Blood Bubble];
 			} else{
-				blood_skill = $effect[Blood Bond];
+				blood_skill = $skill[Blood Bond];
 			}
 		} else if(bloodBondAvailable){
 			blood_skill = $skill[Blood Bond];
@@ -2385,7 +2385,7 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 			int casts = floor(hp_waste / hp_cost(blood));
 			hp_waste -= (hp_cost(blood) * casts);
 		}
-		return hp_waste
+		return hp_waste;
 	}
 
 	int effectiveness(skill s, int goal){
@@ -2395,7 +2395,7 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 
 		int potential_hp_restored = min(goal - my_hp(), hp_per_cast[s]);
 		int hp_wasted = hp_per_cast[s] - potential_hp_restored;
-		int value = potential_hp_restored - hp_waste_value(hp_wasted);
+		int value = potential_hp_restored - hp_waste_value(goal, hp_wasted);
 
 		// consider how many casts it would take to fully heal to goal
 		int casts_to_max = ceil((goal - my_hp()) / hp_per_cast[s]);
@@ -2468,7 +2468,7 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 		value += max_mp_restorable * mp_cost_multiplier; // mp is pretty valuable
 
 		// remove waste hp/mp from the value
-		value -= hp_waste_value(potential_hp_restored - desired_max_hp_restorable);
+		value -= hp_waste_value(goal, potential_hp_restored - desired_max_hp_restorable);
 		value -= (potential_mp_restored - max_mp_restorable) * mp_cost_multiplier; // like I said, mp is pretty valuable
 
 		return value;

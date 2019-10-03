@@ -3219,11 +3219,8 @@ void cs_initializeDay(int day)
 				acquireHermitItem($item[Seal Tooth]);
 			}
 
-			cli_execute("garden pick");
-
-			static boolean[item] poketFamGear = $items[amulet coin, luck incense, muscle band, razor fang, shell bell, smoke ball];
-			while(!haveAny(poketFamGear) && (auto_get_campground() contains $item[Packet Of Tall Grass Seeds]) && item_amount($item[Pok&eacute;-Gro fertilizer]) > 0){
-				use(1, $item[Pok&eacute;-Gro fertilizer]);
+			if(!(auto_get_campground() contains $item[Packet Of Tall Grass Seeds]))
+			{
 				cli_execute("garden pick");
 			}
 
@@ -3590,15 +3587,6 @@ boolean cs_eat_stuff(int quest)
 					{
 						auto_sourceTerminalExtrude($item[Browser Cookie]);
 					}
-					dealWithMilkOfMagnesium(false);
-				} else if(get_property("auto_useWishes").to_boolean() && wishMilk){
-					print("CS: Wishing for Got Milk");
-					if(!makeGenieWish($effect[Got Milk])){
-						print("CS: Something went wrong wishing for Got Milk, continuing on.");
-						break;
-					}
-				} else{
-					break;
 				}
 
 				if((item_amount($item[Browser Cookie]) > 0) && (fullness_left() >= 4))
@@ -3630,41 +3618,6 @@ boolean cs_eat_stuff(int quest)
 			}
 
 		}
-<<<<<<< HEAD
-=======
-		return "";
-	}
-
-	if(my_path() != "Community Service" || shouldDelay(quest)){
-		return false;
-	}
-
-	print("CS: trying to eat some stuff.");
-
-	string hotdog = pick_a_hotdog(quest);
-	item[int] menu;
-	int milkThreshold = 10;
-
-
-	if(quest == get_cs_questNum("weapon damage")){
-		menu[count(menu)] = $item[glass of raw eggs];
-	} else if(quest == get_cs_questNum("spell damage")){
-		menu[count(menu)] = $item[glass of raw eggs];
-	} else if(quest == get_cs_questNum("item")){
-		menu[count(menu)] = $item[Weird Gazelle Steak];
-	} else if(quest == get_cs_questNum("hot")){
-		menu[count(menu)] = $item[Weird Gazelle Steak];
-	}
-
-	if(count(menu) == 0 && hotdog == ""){
-		return false;
-	}
-
-	int fullness = potential_fullness(hotdog, menu);
-	if(fullness > fullness_left()){
-		print("CS: I cant eat all of that");
-		return false;
->>>>>>> 949f84d... tweaking hp effectiveness algorithms
 	}
 	else if(quest == 10)
 	{
