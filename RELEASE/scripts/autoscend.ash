@@ -13,6 +13,7 @@ since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battl
 
 import <autoscend/autoscend_header.ash>
 import <autoscend/autoscend_migration.ash>
+import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_deprecation.ash>
 import <autoscend/auto_combat.ash>
@@ -5676,7 +5677,7 @@ boolean LX_attemptPowerLevel()
 					whereTo = $location[The Haunted Gallery];
 					break;
 				case $stat[Mysticality]:
-					whereTo = $location[The Haunted Bathroom];			
+					whereTo = $location[The Haunted Bathroom];
 					break;
 				case $stat[Moxie]:
 					whereTo = $location[The Haunted Ballroom];
@@ -13769,10 +13770,10 @@ boolean L8_trapperGroar()
 	{
 		return false;
 	}
-  
+
 	if (internalQuestStatus("questL08Trapper") < 2)
 	{
-		// if we haven't returned the goat cheese and ore 
+		// if we haven't returned the goat cheese and ore
 		// to the trapper yet, don't try to ascend the peak.
 		return false;
 	}
@@ -13925,7 +13926,7 @@ boolean L8_trapperExtreme()
 	//Lucky Pill:	"Look in the side Pocket"
 	//set_property("choiceAdventure575", "2");
 
-	if (possessEquipment($item[extreme mittens]) && possessEquipment($item[extreme scarf]) && possessEquipment($item[snowboarder pants]))	
+	if (possessEquipment($item[extreme mittens]) && possessEquipment($item[extreme scarf]) && possessEquipment($item[snowboarder pants]))
 	{
 		if (my_basestat($stat[moxie]) >= 35 && my_basestat($stat[mysticality]) >= 35 && autoOutfit("eXtreme Cold-Weather Gear"))
 		{

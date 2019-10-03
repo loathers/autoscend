@@ -199,7 +199,7 @@ boolean LA_cs_communityService()
 		buffMaintain($effect[Pyromania], 130, 1, 1);
 		buffMaintain($effect[Rotten Memories], 130, 1, 1);
 		buffMaintain($effect[Big], 50, 1, 1);
-		useCocoon();
+		cs_healthMaintain();
 
 		auto_sourceTerminalEducate($skill[Compress], $skill[Extract]);
 		boolean result = auto_advWitchess("witch", "cs_combatWitch");
@@ -208,10 +208,7 @@ boolean LA_cs_communityService()
 	}
 	if((my_daycount() == 2) && (my_ascensions() > 200))
 	{
-		if(((my_hp() * 5) < my_maxhp()) && (my_mp() > 100))
-		{
-			useCocoon();
-		}
+		cs_healthMaintain();
 		if((my_hp() / 0.8) > my_maxhp())
 		{
 			if(fightScienceTentacle())
@@ -830,10 +827,7 @@ boolean LA_cs_communityService()
 			{
 				buffMaintain($effect[Tomato Power], 0, 1, 1);
 			}
-			if(((my_hp() + 50) < my_maxhp()) && (my_mp() > 100))
-			{
-				useCocoon();
-			}
+			cs_healthMaintain();
 
 			boolean doFarm = false;
 			if(!have_familiar($familiar[Puck Man]) && !have_familiar($familiar[Ms. Puck Man]) && (get_property("auto_csPuckCounter").to_int() > 0))
@@ -1102,7 +1096,7 @@ boolean LA_cs_communityService()
 				}
 
 				auto_sourceTerminalEducate($skill[Duplicate], $skill[Extract]);
-				useCocoon();
+				cs_healthMaintain();
 				if(handleFaxMonster($monster[Sk8 gnome], combatString))
 				{
 					return true;
@@ -2351,10 +2345,10 @@ boolean LA_cs_communityService()
 						buffMaintain($effect[Astral Shell], 110, 1, 1);
 						buffMaintain($effect[Elemental Saucesphere], 110, 1, 1);
 					}
-					useCocoon();
+					cs_healthMaintain();
 					buffMaintain($effect[Visions of the Deep Dark Deeps], 100, 1, 1);
 
-					useCocoon();
+					cs_healthMaintain();
 				}
 
 				cs_mpMaintain(250);
@@ -4491,7 +4485,7 @@ boolean auto_csHandleGrapes()
 		{
 			handleFamiliar("yellowray");
 		}
-		useCocoon();
+		cs_healthMaintain();
 		handleFaxMonster($monster[Sk8 gnome], "cs_combatYR");
 	}
 	if((item_amount($item[Gr8ps]) > 0) && (item_amount($item[Potion of Temporary Gr8ness]) == 0) && (have_effect($effect[Gr8tness]) == 0) && (npc_price($item[Delectable Catalyst]) < my_meat()) && (freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && have_skill($skill[Advanced Saucecrafting]) && ($classes[Pastamancer, Sauceror] contains my_class()) && have_skill($skill[The Way of Sauce]) && (auto_get_campground() contains $item[Dramatic&trade; Range]))
@@ -5049,16 +5043,16 @@ boolean cs_preTurnStuff(int curQuest)
 }
 
 boolean cs_healthMaintain(){
-	int target = floor(my_maxhp() * .3);
+	int target = floor(my_maxhp() * .4);
 	if(my_maxhp() < 50){
-		target = floor(my_maxhp() * .5);
+		target = floor(my_maxhp() * .8);
 	}
 	return cs_healthMaintain(target);
 }
 
 boolean cs_healthMaintain(int target){
 	boolean shouldBuy = false;
-	if(my_meat() > 3000){
+	if(my_meat() > 2500){
 		shouldBuy = true;
 	}
 
@@ -5079,7 +5073,7 @@ boolean cs_mpMaintain(){
 
 boolean cs_mpMaintain(int target){
 	boolean shouldBuy = false;
-	if(my_meat() > 3000){
+	if(my_meat() > 2500){
 		shouldBuy = true;
 	}
 	acquireMP(target, shouldBuy, true);
