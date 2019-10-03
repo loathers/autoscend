@@ -1,0 +1,63 @@
+1	scented massage oil	item	ALL	0	none	none
+2	extra-strength red potion	item	200	0	none	Healthy Red Glow
+3	plaid bandage	item	135	0	none	none
+4	red pixel potion	item	110	0	none	none
+5	gauze garter	item	100	0	none	none
+6	filthy poultice	item	100	0	none	none
+7	red potion	item	95	0	none	Healthy Red Glow
+8	green pixel potion	item	50	35	none	none
+9	cartoon heart	item	50	0	none	Healthy Red Glow
+10	Texas tea	item	30	30	none	Texas Elegance
+11	Doc Galaktik's Homeopathic Elixir	item	19	0	none	none
+12	cast	item	15	0	none	none
+13	Doc Galaktik's Restorative Balm	item	14	0	none	none
+14	Doc Galaktik's Ailment Ointment	item	9	0	none	none
+15	forest tears	item	7	0	Beaten Up	none
+16	Doc Galaktik's Pungent Unguent	item	4	0	none	none
+17	palm-frond fan	item	40	40	none	none
+18	pixel orb	item	ALL	ALL	none	none
+19	scroll of drastic healing	item	ALL	0	none	none
+20	warm El Vibrato drone	item	ALL	0	none	Well-preserved
+21	Camp Scout pup tent	item	1000	0	none	none
+22	really thick bandage	item	110	0	none	none
+23	bottle of Vangoghbitussin	item	100	100	none	The 'Tussin
+24	ancient turtle shell powder	item	90	0	none	none
+25	cotton candy bale	item	61	61	none	none
+26	ancient Magi-Wipes	item	55	55	none	none
+27	cotton candy pillow	item	51	51	none	none
+28	phonics down	item	48	48	none	Tingly Wrists,Tingly Biceps,Tingly Elbows
+29	cotton candy cone	item	39	39	none	none
+30	honey-dipped locust	item	35	35	none	none
+31	cotton candy plug	item	28	28	none	none
+32	comfy pillow	item	25	25	none	none
+33	cotton candy skoshe	item	22	22	none	none
+34	tiny house	item	22	22	Beaten Up,Confused,Embarrassed,Hardly Poisoned at All,Sleepy,Sunburned,Wussiness	none
+35	cotton candy smidgen	item	17	17	none	none
+36	dueling turtle	item	15	15	none	none
+37	sugar shard	item	15	7	none	none
+38	cotton candy pinch	item	11	11	none	none
+39	pixellated candy heart	item	4	0	none	none
+40	Tongue of the Walrus	skill	35	0	Beaten Up	none
+41	Cannelloni Cocoon	skill	1000	0	none	none
+42	Shake it Off	skill	ALL	0	All Negative	none
+43	Gelatinous Reconstruction	skill	13	0	Beaten Up	none
+44	Disco Nap	skill	20	0	none	none
+46	Lasagna Bandages	skill	15	0	none	none
+47	big rock	dwelling	0	0	none	none
+48	Newbiesport&trade; tent	dwelling	0	0	none	none
+49	Giant Pilgrim Hat	dwelling	0	0	none	none
+50	Barskin Tent	dwelling	0	0	none	none
+51	Cottage	dwelling	0	0	none	none
+52	BRICKO pyramid	dwelling	0	0	none	none
+53	Frobozz Real-Estate Company Instant House (TM)	dwelling	0	0	none	none
+54	Sandcastle	dwelling	0	0	none	none
+55	Ginormous Pumpkin	dwelling	0	0	none	none
+56	Giant Faraday Cage	dwelling	0	0	none	none
+57	Snow Fort	dwelling	0	0	none	none
+58	Elevent	dwelling	0	0	none	none
+59	House of Twigs and Spit	dwelling	0	0	none	none
+60	Gingerbread House	dwelling	0	0	none	none
+61	hobo fortress blueprints	dwelling	0	0	none	none
+62	Xiblaxian residence-cube	dwelling	0	0	none	none
+63	Distant Woods Getaway Brochure	dwelling	0	0	none	none
+64	Chateau Mantegna room key	dwelling	0	0	none	none

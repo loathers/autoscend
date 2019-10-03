@@ -1,5 +1,249 @@
 script "auto_restore.ash";
 
+import <autoscend/autoscend_header.ash>;
+
+/**
+ * Private Interface
+ */
+record Restoration{
+  string name;
+  string type;
+  int hp_restored;
+  boolean restores_all_hp;
+  int mp_restored;
+  boolean restores_all_mp;
+  boolean removes_beaten_up;
+  boolean[effect] removes_effects;
+  boolean[effect] gives_effects;
+};
+
+static boolean[effect] __all_negative_effects;
+
+Restoration[string] __load_restoration_file(){
+  record __intermediate_record{
+    string name;
+    string type;
+    string hp_restored;
+    string mp_restored;
+    string removes_effects;
+    string gives_effects;
+  };
+
+  __intermediate_record[int] raw_records;
+  file_to_map("autoscend_restoration.txt", raw_records);
+
+  Restoration[string] parsed_records;
+
+  foreach i, r in raw_records{
+    Restoration parsed;
+    parsed.name = r.name;
+    parsed.type = r.type;
+
+    parsed.hp_restored = 0;
+    parsed.restores_all_hp = false;
+    if(r.hp_restored.to_lower_case() != "all"){
+      parsed.hp_restored = to_int(r.hp_restored);
+    } else{
+      parsed.restores_all_hp = true;
+    }
+
+    parsed.mp_restored = 0;
+    parsed.restores_all_mp = false;
+    if(r.mp_restored.to_lower_case() != "all"){
+      parsed.mp_restored = to_int(r.mp_restored);
+    } else{
+      parsed.restores_all_mp = true;
+    }
+
+    parsed.removes_beaten_up = false;
+    if(r.removes_effects.to_lower_case() != "none"){
+      if(r.removes_effects.to_lower_case() == "all negative"){
+        parsed.removes_effects = __all_negative_effects;
+        parsed.removes_beaten_up = true;
+      } else{
+        foreach i, s in split_string(r.removes_effects, ","){
+          effect e = to_effect(s);
+          parsed.removes_effects[e] = true;
+          if(e == $effect[Beaten Up]){
+            parsed.removes_beaten_up = true;
+          }
+        }
+      }
+    }
+
+    if(r.gives_effects.to_lower_case() != "none"){
+      foreach i, s in split_string(r.gives_effects, ","){
+        effect e = to_effect(s);
+        parsed.gives_effects[e] = true;
+      }
+    }
+
+    parsed_records[parsed.name] = parsed;
+  }
+
+  return parsed_records;
+}
+
+boolean[item] __load_dwellings_keyset(Restoration[string] source){
+  boolean[item] dwellings;
+  foreach name, r in source {
+    if(r.type == "dwelling"){
+      dwellings[to_item(name)] = true;
+    }
+  }
+  return dwellings;
+}
+
+boolean[item] __load_restoration_items_keyset(Restoration[string] source){
+  boolean[item] restores;
+  foreach name, r in source {
+    if(r.type == "item"){
+      restores[to_item(name)] = true;
+    }
+  }
+  return restores;
+}
+
+boolean[skill] __load_skills_keyset(Restoration[string] source){
+  boolean[skill] restores;
+  foreach name, r in source {
+    if(r.type == "skill"){
+      restores[to_skill(name)] = true;
+    }
+  }
+  return restores;
+}
+
+static Restoration[string] __restoration_sources = __load_restoration_file();
+static boolean[item] __dwellings = __load_dwellings_keyset(__restoration_sources);
+static boolean[item] __restoration_items = __load_restoration_items_keyset(__restoration_sources);
+static boolean[skill __restoration_skills = __load_skills_keyset(__restoration_sources);
+
+string to_string(Restoration r){
+  string list_to_string(boolean[effect] e_list){
+    string s = "[";
+    boolean first = true;
+    foreach e in e_list{
+      if(!first){
+        s += ", ";
+        first = false;
+      }
+      s += e.to_string();
+    }
+    s += "]";
+    return s;
+  }
+
+  string removes_effects_str = list_to_string(r.removes_effects);
+  string gives_effects_str = list_to_string(r.gives_effects);
+  return "Restoration("+r.name+", "+r.type+", "+r.hp_restored+", "+r.restores_all_hp+", "+r.mp_restored+", "+r.restores_all_mp+", "+r.removes_beaten_up+", "+removes_effects_str+", "+gives_effects_str+")";
+}
+
+int __amount_restored(string name, string resource){
+  if(__restoration_sources contains name){
+    Restoration r = __restoration_sources[name];
+    if(resource == "hp"){
+      if(r.restores_all_hp){
+        return my_max_hp();
+      } else{
+        return r.hp_restored;
+      }
+    } else if(resource == "mp"){
+      if(r.restores_all_mp){
+        return my_max_mp();
+      } else{
+        return r.mp_restored;
+      }
+    } else{
+      print("Unknown resource type requested " + resource);
+    }
+  }
+  return 0;
+}
+
+boolean[effect] __restoration_effects(string name, string give_or_remove){
+  boolean[effect] effects;
+  if(__restoration_sources contains name){
+    Restoration r = __restoration_sources[name];
+    if(give_or_remove == "give"){
+      effects = r.gives_effects
+    } else if(resource == "remove"){
+      effects = r.removes_effects
+    } else{
+      print("Unknown restoration effects requested " + give_or_remove);
+    }
+  }
+  return effects;
+}
+
+int __hp_restored_per_use(skill s){
+  return __amount_restored(s.to_string(), "hp");
+}
+
+int __hp_restored_per_use(item i){
+  return __amount_restored(s.to_string(), "hp");
+}
+
+int __mp_restored_per_use(skill s){
+  return __amount_restored(s.to_string(), "mp");
+}
+
+int __mp_restored_per_use(item i){
+  return __amount_restored(s.to_string(), "mp");
+}
+
+boolean __removes_effect(skill s, effect e){
+  return __restoration_effects(s.to_string(), "remove") contains e;
+}
+
+boolean __removes_effect(item i, effect e){
+  return __restoration_effects(i.to_string(), "remove") contains e;
+}
+
+boolean __gives_effect(skill s, effect e){
+  return __restoration_effects(s.to_string(), "give") contains e;
+}
+
+boolean __gives_effect(item i, effect e){
+  return __restoration_effects(i.to_string(), "give") contains e;
+}
+
+int __hp_waste(int restore_to_goal, skill s){
+  int max_restore_potential = __hp_restored_per_use(s);
+
+  int potential_hp_restored = min(restore_to_goal - my_hp(), max_restore_potential);
+
+  return max_restore_potential - potential_hp_restored;
+}
+
+int __hp_waste(int restore_to_goal, item i){
+  int max_restore_potential = __hp_restored_per_use(i);
+
+  int potential_hp_restored = min(restore_to_goal - my_hp(), max_restore_potential);
+
+  return max_restore_potential - potential_hp_restored;
+}
+
+int __mp_waste(int restore_to_goal, skill s){
+  int max_restore_potential = __mp_restored_per_use(s);
+
+  int potential_mp_restored = min(restore_to_goal - my_mp(), max_restore_potential);
+
+  return max_restore_potential - potential_mp_restored;
+}
+
+int __mp_waste(int restore_to_goal, item i){
+  int max_restore_potential = __mp_restored_per_use(i);
+
+  int potential_mp_restored = min(restore_to_goal - my_mp(), max_restore_potential);
+
+  return max_restore_potential - potential_mp_restored;
+}
+
+/**
+ * Public Interface
+ */
+
 boolean acquireMP(){
 	return acquireMP(my_maxmp());
 }
@@ -162,19 +406,6 @@ boolean acquireHP(int goal, boolean buyIt){
 boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 
 	static int mp_cost_multiplier = 3;
-
-	int[skill] hp_per_cast = {
-		$skill[Tongue of the Walrus]: 35,
-		$skill[Cannelloni Cocoon]: 1000,
-		$skill[Shake it Off]: my_maxhp(),
-		$skill[Gelatinous Reconstruction]: 13
-	};
-
-	//kind of arbitrary, blood bubble helps survivability and blood bond consumes hp per adventure so i put blood bubble higher
-	int[skill] blood_skill_value = {
-		$skill[Blood Bubble]: 10,
-		$skill[Blood Bond]: 1
-	};
 
 	skill hp_waste_blood_skill(int goal){
 		int blood_bond_cost = hp_cost($skill[Blood Bond]) + ((9-hp_regen())*10);
@@ -684,4 +915,12 @@ boolean useCocoon()
 		return true;
 	}
 	return false;
+}
+
+void main(){
+  print("hello");
+  __restoration_sources = __load_restoration_file();
+  foreach s, r in __restoration_sources{
+    print(to_string(r));
+  }
 }
