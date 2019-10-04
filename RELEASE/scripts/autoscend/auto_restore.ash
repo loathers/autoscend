@@ -1,11 +1,11 @@
 script "auto_restore.ash";
 
-import <autoscend/autoscend_header.ash>;
+import<autoscend.ash>
 
 /**
  * Private Interface
  */
-record Restoration{
+record __RestorationMetadata{
   string name;
   string type;
   int hp_restored;
@@ -17,109 +17,29 @@ record Restoration{
   boolean[effect] gives_effects;
 };
 
-static boolean[effect] __all_negative_effects;
-
-Restoration[string] __load_restoration_file(){
-  record __intermediate_record{
-    string name;
-    string type;
-    string hp_restored;
-    string mp_restored;
-    string removes_effects;
-    string gives_effects;
-  };
-
-  __intermediate_record[int] raw_records;
-  file_to_map("autoscend_restoration.txt", raw_records);
-
-  Restoration[string] parsed_records;
-
-  foreach i, r in raw_records{
-    Restoration parsed;
-    parsed.name = r.name;
-    parsed.type = r.type;
-
-    parsed.hp_restored = 0;
-    parsed.restores_all_hp = false;
-    if(r.hp_restored.to_lower_case() != "all"){
-      parsed.hp_restored = to_int(r.hp_restored);
-    } else{
-      parsed.restores_all_hp = true;
-    }
-
-    parsed.mp_restored = 0;
-    parsed.restores_all_mp = false;
-    if(r.mp_restored.to_lower_case() != "all"){
-      parsed.mp_restored = to_int(r.mp_restored);
-    } else{
-      parsed.restores_all_mp = true;
-    }
-
-    parsed.removes_beaten_up = false;
-    if(r.removes_effects.to_lower_case() != "none"){
-      if(r.removes_effects.to_lower_case() == "all negative"){
-        parsed.removes_effects = __all_negative_effects;
-        parsed.removes_beaten_up = true;
-      } else{
-        foreach i, s in split_string(r.removes_effects, ","){
-          effect e = to_effect(s);
-          parsed.removes_effects[e] = true;
-          if(e == $effect[Beaten Up]){
-            parsed.removes_beaten_up = true;
-          }
-        }
-      }
-    }
-
-    if(r.gives_effects.to_lower_case() != "none"){
-      foreach i, s in split_string(r.gives_effects, ","){
-        effect e = to_effect(s);
-        parsed.gives_effects[e] = true;
-      }
-    }
-
-    parsed_records[parsed.name] = parsed;
-  }
-
-  return parsed_records;
+record __RestorationEffectiveness{
+  int hp_goal;
+  int starting_hp;
+  int mp_goal;
+  int starting_mp;
+  int hp_restored_per_use;
+  int mp_restored_per_use;
+  int uses_available;
+  int uses_to_hp_goal;
+  int uses_to_mp_goal;
+  int mp_cost_per_use;
+  int meat_cost_per_use;
+  int hp_effectiveness_value;
+  int hp_effectiveness_cost_modifier;
+  int mp_effectiveness_value;
+  int mp_effectiveness_cost_modifier;
+  int total_uses_needed;
+  int total_mp_restored;
+  int total_meat_spent;
+  int total_value;
 }
 
-boolean[item] __load_dwellings_keyset(Restoration[string] source){
-  boolean[item] dwellings;
-  foreach name, r in source {
-    if(r.type == "dwelling"){
-      dwellings[to_item(name)] = true;
-    }
-  }
-  return dwellings;
-}
-
-boolean[item] __load_restoration_items_keyset(Restoration[string] source){
-  boolean[item] restores;
-  foreach name, r in source {
-    if(r.type == "item"){
-      restores[to_item(name)] = true;
-    }
-  }
-  return restores;
-}
-
-boolean[skill] __load_skills_keyset(Restoration[string] source){
-  boolean[skill] restores;
-  foreach name, r in source {
-    if(r.type == "skill"){
-      restores[to_skill(name)] = true;
-    }
-  }
-  return restores;
-}
-
-static Restoration[string] __restoration_sources = __load_restoration_file();
-static boolean[item] __dwellings = __load_dwellings_keyset(__restoration_sources);
-static boolean[item] __restoration_items = __load_restoration_items_keyset(__restoration_sources);
-static boolean[skill __restoration_skills = __load_skills_keyset(__restoration_sources);
-
-string to_string(Restoration r){
+string to_string(__RestorationMetadata r){
   string list_to_string(boolean[effect] e_list){
     string s = "[";
     boolean first = true;
@@ -136,108 +56,379 @@ string to_string(Restoration r){
 
   string removes_effects_str = list_to_string(r.removes_effects);
   string gives_effects_str = list_to_string(r.gives_effects);
-  return "Restoration("+r.name+", "+r.type+", "+r.hp_restored+", "+r.restores_all_hp+", "+r.mp_restored+", "+r.restores_all_mp+", "+r.removes_beaten_up+", "+removes_effects_str+", "+gives_effects_str+")";
+  return "__RestorationMetadata("+r.name+", "+r.type+", "+r.hp_restored+", "+r.restores_all_hp+", "+r.mp_restored+", "+r.restores_all_mp+", "+r.removes_beaten_up+", "+removes_effects_str+", "+gives_effects_str+")";
 }
 
-int __amount_restored(string name, string resource){
-  if(__restoration_sources contains name){
-    Restoration r = __restoration_sources[name];
-    if(resource == "hp"){
-      if(r.restores_all_hp){
-        return my_max_hp();
-      } else{
-        return r.hp_restored;
+// Note: these data structures may hold skills/items/effects that are not available to the player, up to caller to check auto_is_valid
+static boolean[effect] __all_negative_effects;
+static __RestorationMetadata[string] __known_restoration_sources;
+static __RestorationMetadata[item] __known_dwellings;
+static __RestorationMetadata[item] __known_items;
+static __RestorationMetadata[skill] __known_skills;
+static __RestorationMetadata __NO_RESTORATION_METADATA = new __RestorationMetadata("", "", 0, false, 0, false, false, {},{});
+static __RestorationEffectiveness __NO_EFFECTIVENESS = new __RestorationEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+static int __mp_cost_multiplier = 3;
+
+void __init_restoration_metadata(){
+  static string resotration_filename = "autoscend_restoration.txt";
+
+  boolean[item] load_known_dwellings(__RestorationMetadata[string] source){
+    boolean[item] dwellings;
+    foreach name, r in source {
+      if(r.type == "dwelling"){
+        dwellings[to_item(name)] = true;
       }
-    } else if(resource == "mp"){
-      if(r.restores_all_mp){
-        return my_max_mp();
-      } else{
-        return r.mp_restored;
+    }
+    return dwellings;
+  }
+
+  boolean[item] load_known_items(__RestorationMetadata[string] source){
+    boolean[item] restores;
+    foreach name, r in source {
+      if(r.type == "item"){
+        restores[to_item(name)] = true;
       }
+    }
+    return restores;
+  }
+
+  boolean[skill] load_known_skills(__RestorationMetadata[string] source){
+    boolean[skill] restores;
+    foreach name, r in source {
+      if(r.type == "skill"){
+        restores[to_skill(name)] = true;
+      }
+    }
+    return restores;
+  }
+
+  boolean[effect] parse_effects(string name, string effects_list){
+    effects_list = effects_list.to_lower_case();
+    boolean[effect] parsed_effects;
+
+    if(effects_list == "all negative"){
+      parsed_effects = __all_negative_effects;
+    } else if(effects_list != "none" && effects_list != ""){
+      foreach _, s in split_string(effects_list, ","){
+        effect e = to_effect(s);
+        if(e != $effect[none]){
+          parsed_effects[e] = true;
+        } else{
+          print("Unknown effect found parsing restoration metadata: " + name + " removes effect: " + s);
+        }
+      }
+    }
+
+    return parsed_effects;
+  }
+
+  int parse_restored_amount(string restored_str){
+    restored_str = restored_str.to_lower_case();
+    if(restored_str == "all"){
+      return 0;
     } else{
-      print("Unknown resource type requested " + resource);
+      return to_int(restored_str);
     }
   }
-  return 0;
-}
 
-boolean[effect] __restoration_effects(string name, string give_or_remove){
-  boolean[effect] effects;
-  if(__restoration_sources contains name){
-    Restoration r = __restoration_sources[name];
-    if(give_or_remove == "give"){
-      effects = r.gives_effects
-    } else if(resource == "remove"){
-      effects = r.removes_effects
-    } else{
-      print("Unknown restoration effects requested " + give_or_remove);
+  boolean parse_restores_all(string restored_str){
+    restored_str = restored_str.to_lower_case();
+    return restored_str == "all";
+  }
+
+  void init(){
+    record intermediate_record{
+      string name;
+      string type;
+      string hp_restored;
+      string mp_restored;
+      string removes_effects;
+      string gives_effects;
+    };
+
+    intermediate_record[int] raw_records;
+    file_to_map(resotration_filename, raw_records);
+
+    __RestorationMetadata[string] parsed_records;
+
+    foreach i, r in raw_records{
+      __RestorationMetadata parsed;
+      parsed.name = r.name.to_lower_case();
+      parsed.type = r.type.to_lower_case();
+      parsed.hp_restored = parse_restored_amount(r.hp_restored);
+      parsed.restores_all_hp = parse_restores_all(r.hp_restored);
+      parsed.mp_restored = parse_restored_amount(r.mp_restored);
+      parsed.restores_all_mp = parse_restores_all(r.mp_restored);
+      parsed.removes_effects = parse_effects(parsed.name, r.removes_effects);
+      parsed.removes_beaten_up = (parsed.removes_effects contains $effect[Beaten Up]);
+      parsed.gives_effects = parse_effects(parsed.name, r.gives_effects);
+
+      __known_restoration_sources[parsed.name] = parsed;
+
+      if(parsed.type == "skill"){
+        if(to_skill(parsed.name) != $skill[none]){
+          __known_skills[to_skill(parsed.name)] = parsed;
+        } else{
+          print("Unknown skill encountered parsing restoration metadata: " + parsed.name);
+        }
+      } else if(parsed.type == "dwelling"){
+        if(to_item(parsed.name) != $item[none]){
+          __known_dwellings[to_item(parsed.name)] = parsed;
+        } else{
+          print("Unknown dwelling encountered parsing restoration metadata: " + parsed.name);
+        }
+      } else if(parsed.type == "item"){
+        if(to_item(parsed.name) != $item[none]){
+          __known_items[to_item(parsed.name)] = parsed;
+        } else{
+          print("Unknown item encountered parsing restoration metadata: " + parsed.name);
+        }
+      } else{
+        print("Unexpected type " + parsed.type + " encountered parsing restoration metadata: " + parsed.name);
+      }
     }
   }
-  return effects;
+
+  init();
 }
 
-int __hp_restored_per_use(skill s){
-  return __amount_restored(s.to_string(), "hp");
+void __init_restoration_metadata(boolean reload){
+  if(reload){
+    clear(__known_restoration_sources);
+    clear(__known_dwellings);
+    clear(__known_items);
+    clear(__known_skills);
+  }
+  __init_restoration_metadata();
 }
 
-int __hp_restored_per_use(item i){
-  return __amount_restored(s.to_string(), "hp");
+__RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp, int mp_goal, int starting_mp, __RestorationMetadata metadata){
+
+  int uses_on_hand(){
+    if(metadata.type == "dwelling"){
+      return freeRestsRemaining();
+    } else if(metadata.type == "item"){
+      return available_amount(to_item(metadata.name));
+    } else if(metadata.type == "skill"){
+      return floor(starting_mp / mp_cost(to_skill(metadata.name)));
+    }
+    return 0;
+  }
+
+  int hp_restored_per(){
+    int restored_amount = metadata.hp_restored;
+    if(metadata.restores_all_hp){
+      restored_amount = my_maxhp();
+    }
+
+    return restored_amount;
+  }
+
+  int mp_restored_per(){
+    int restored_amount = metadata.mp_restored;
+    if(metadata.restores_all_mp){
+      restored_amount = my_maxmp();
+    }
+
+    return restored_amount;
+  }
+
+  int hp_wasted_by(int starting_hp){
+    int needed = hp_goal - starting_hp;
+    int wasted = hp_restored_per() - needed;
+
+    // negative waste means we are short of goal, no waste
+    return max(0, wasted);
+  }
+
+  int mp_wasted_by(int starting_mp){
+    int needed = mp_goal - starting_mp;
+    int wasted = mp_restored_per() - needed;
+
+    // negative waste means we are short of goal, no waste
+    return max(0, wasted);
+  }
+
+  int uses_needed_to_reach_hp_goal(){
+    if(hp_restored() < 1){
+      return -1;
+    }
+    return max(1, floor((hp_goal - starting_hp) / hp_restored()));
+  }
+
+  int uses_needed_to_reach_mp_goal(){
+    if(mp_restored() < 1){
+      return -1;
+    }
+    return max(1, floor((mp_goal - starting_mp) / mp_restored()));
+  }
+
+  int mp_cost_per(){
+    if(metadata.type == "skill"){
+      return mp_cost(to_skill(metadata.name));
+    }
+    return 0;
+  }
+
+  int meat_cost_per(){
+    if(metadata.type == "item"){
+      return npc_price(to_item(metadata.name));
+    }
+    return 0;
+  }
+
+  void hp_effectiveness(__RestorationEffectiveness effectiveness){
+    if(effectiveness.uses_to_hp_goal == -1){
+      effectiveness.hp_effectiveness_value = 0;
+      effectivenes.hp_effectiveness_cost_modifier = 0;
+      effectiveness.total_hp_restored = 0;
+      return;
+    }
+
+    int hp_effectiveness_value = 0;
+    int hp_effectiveness_cost_modifier = 0;
+
+    if(effectiveness.mp_cost_per_use > 0){
+      int mp_to_max = effectiveness.mp_cost_per_use * effectiveness.total_uses_needed;
+      if(mp_to_max > effectiveness.starting_mp){
+        hp_effectiveness_cost_modifier = effectiveness.starting_mp + (__mp_cost_multiplier * (mp_to_max - effectiveness.starting_mp));
+      } else{
+        hp_effectiveness_cost_modifier = mp_to_max;
+      }
+      hp_effectiveness_cost_modifier -= mp_regen(); // we get some mp back for free, which is valuable.
+    }
+
+    if(effectiveness.total_uses_needed > 1){
+      hp_effectiveness_value = effectiveness.hp_restored_per_use * (effectiveness.uses_to_hp_goal - 1);
+      int wasted_on_last_use = hp_wasted_by(starting_hp + hp_effectiveness_value);
+      hp_effectiveness_value += effectiveness.hp_restored_per_use - wasted_on_last_use;
+      hp_effectiveness_cost_modifier -= wasted_on_last_use;
+    } else{
+      hp_effectiveness_value = effectiveness.hp_restored_per_use - hp_wasted_by(starting_hp);
+      hp_effectiveness_cost_modifier -= hp_wasted_by(starting_hp);
+    }
+
+    //case when using hp+mp restore with a higher mp goal than hp, calculate extra uses as wasteful
+    hp_effectiveness_cost_modifier -= (effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal) * effectiveness.hp_restored_per_use;
+
+    effectiveness.hp_effectiveness_value = hp_effectiveness_value;
+    effectivenes.hp_effectiveness_cost_modifier = hp_effectiveness_cost_modifier;
+    effectiveness.total_hp_restored = effectiveness.hp_restored_per_use * effectiveness.uses_to_hp_goal;
+  }
+
+  void mp_effectiveness(__RestorationEffectiveness effectiveness){
+    if(effectiveness.uses_to_mp_goal == -1 || effectiveness.mp_cost_per_use > 0){
+      effectiveness.mp_effectiveness_value = 0;
+      effectivenes.mp_effectiveness_cost_modifier = 0;
+      effectiveness.total_mp_restored = 0;
+      return;
+    }
+
+    int mp_effectiveness_value = 0;
+    int mp_effectiveness_cost_modifier = 0;
+
+    if(effectiveness.total_uses_needed > 1){
+      mp_effectiveness_value = effectiveness.mp_restored_per_use * (effectiveness.uses_to_mp_goal - 1);
+      int wasted_on_last_use = mp_wasted_by(starting_mp + mp_effectiveness_value);
+      mp_effectiveness_value += effectiveness.mp_restored_per_use - wasted_on_last_use;
+      mp_effectiveness_cost_modifier -= wasted_on_last_use;
+    } else{
+      mp_effectiveness_value = effectiveness.mp_restored_per_use - mp_wasted_by(starting_mp);
+      mp_effectiveness_cost_modifier -= mp_wasted_by(starting_mp);
+    }
+
+    //case when using hp+mp restore with a higher hp goal than mp, calculate extra uses as wasteful
+    mp_effectiveness_cost_modifier -= (effectiveness.total_uses_needed - effectiveness.uses_to_mp_goal) * effectiveness.mp_restored_per_use;
+
+    effectiveness.mp_effectiveness_value = mp_effectiveness_value;
+    effectivenes.mp_effectiveness_cost_modifier = mp_effectiveness_cost_modifier;
+    effectiveness.total_mp_restored = effectiveness.mp_restored_per_use * effectiveness.uses_to_mp_goal;
+  }
+
+  __RestorationEffectiveness effectiveness;
+  effectiveness.hp_goal = hp_goal;
+  effectiveness.starting_hp = starting_hp;
+  effectiveness.mp_goal = mp_goal;
+  effectiveness.starting_mp = starting_mp;
+  effectiveness.hp_restored_per_use = hp_restored_per();
+  effectiveness.hp_restored_per_use = mp_restored_per();
+  effectiveness.uses_available = uses_on_hand();
+  effectiveness.uses_to_hp_goal = uses_needed_to_reach_hp_goal();
+  effectiveness.uses_to_mp_goal = uses_needed_to_reach_mp_goal();
+  effectiveness.total_uses_needed = max(effectiveness.uses_to_hp_goal, effectiveness.uses_to_mp_goal);
+  effectiveness.mp_cost_per_use = mp_cost_per();
+  effectiveness.meat_cost_per_use = meat_cost_per();
+  hp_effectiveness(effectiveness);
+  mp_effectiveness(effectiveness);
+  effectiveness.total_meat_spent = effectiveness.meat_cost_per_use * max(effectiveness.total_uses_needed - effectiveness.uses_available, 0);
+  effectiveness.total_value = (effectiveness.mp_effectiveness_value + effectiveness.hp_effectiveness_value) - (effectivenes.mp_effectiveness_cost_modifier + effectivenes.hp_effectiveness_cost_modifier);
+  return effectivenes;
 }
 
-int __mp_restored_per_use(skill s){
-  return __amount_restored(s.to_string(), "mp");
+boolean __is_useable(__RestorationMetadata metadata){
+  if(metadata == __NO_RESTORATION_METADATA){
+    return false;
+  }
+  if(metadata.type == "item"){
+    return auto_is_valid(to_item(metadata.name));
+  }
+  if(metadata.type == "skill"){
+    return auto_is_valid(to_skill(metadata.name));
+  }
 }
 
-int __mp_restored_per_use(item i){
-  return __amount_restored(s.to_string(), "mp");
+__RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int goal_mp, int starting_mp, boolean buyItems, boolean useFreeRests){
+
+  __RestorationMetadata best = __NO_RESTORATION_METADATA;
+  __RestorationEffectiveness best_effectiveness = __NO_EFFECTIVENESS;
+
+  foreach name, metadata in __known_restoration_sources {
+    //cant use this skill/item in current path
+    if(!__is_useable(metadata)){
+      continue;
+    }
+
+    //caller doesnt want to rest (or is out of free rests)
+    if(metadata.type == "dwelling" && (!useFreeRests ||
+      (to_item(metadata.name) == $item[Chateau Mantegna Room Key] && !chateaumantegna_available()) ||
+      (to_item(metadata.name) == $item[Distant Woods Getaway Brochure] && !auto_campawayAvailable()) ||
+      get_dwelling() != to_item(metadata.name)))){
+      continue;
+    }
+
+    __RestorationEffectiveness effectiveness = __determin_effectiveness(goal_hp, starting_hp, goal_mp, starting_mp, metadata);
+
+    //dont have enough items on hand
+    if(metadata.type == "item" && !buyItems && effectiveness.uses_available < effectiveness.total_uses_needed){
+      continue
+    }
+
+    if(effectiveness.total_value > best_effectiveness.total_value){
+      best_effectiveness = effectivenes;
+      best = metadata;
+    }
+  }
+
+  return best;
 }
 
-boolean __removes_effect(skill s, effect e){
-  return __restoration_effects(s.to_string(), "remove") contains e;
-}
+boolean __use_restore(int count, __RestorationMetadata metadata){
+  if(metadata == __NO_RESTORATION_METADATA){
+    return false;
+  }
 
-boolean __removes_effect(item i, effect e){
-  return __restoration_effects(i.to_string(), "remove") contains e;
-}
+  print("Using " + metadata.type + " " + metadata.name + " as restore.");
+  if(metadata.type == "item"){
+    return use(count, to_item(metadata.name));
+  }
 
-boolean __gives_effect(skill s, effect e){
-  return __restoration_effects(s.to_string(), "give") contains e;
-}
+  if(metadata.type == "dwelling"){
+    return doFreeRest();
+  }
 
-boolean __gives_effect(item i, effect e){
-  return __restoration_effects(i.to_string(), "give") contains e;
-}
-
-int __hp_waste(int restore_to_goal, skill s){
-  int max_restore_potential = __hp_restored_per_use(s);
-
-  int potential_hp_restored = min(restore_to_goal - my_hp(), max_restore_potential);
-
-  return max_restore_potential - potential_hp_restored;
-}
-
-int __hp_waste(int restore_to_goal, item i){
-  int max_restore_potential = __hp_restored_per_use(i);
-
-  int potential_hp_restored = min(restore_to_goal - my_hp(), max_restore_potential);
-
-  return max_restore_potential - potential_hp_restored;
-}
-
-int __mp_waste(int restore_to_goal, skill s){
-  int max_restore_potential = __mp_restored_per_use(s);
-
-  int potential_mp_restored = min(restore_to_goal - my_mp(), max_restore_potential);
-
-  return max_restore_potential - potential_mp_restored;
-}
-
-int __mp_waste(int restore_to_goal, item i){
-  int max_restore_potential = __mp_restored_per_use(i);
-
-  int potential_mp_restored = min(restore_to_goal - my_mp(), max_restore_potential);
-
-  return max_restore_potential - potential_mp_restored;
+  if(metadata.type == "skill"){
+    return use_skill(count, to_skill(metadata.name));
+  }
 }
 
 /**
@@ -403,200 +594,7 @@ boolean acquireHP(int goal, boolean buyIt){
 }
 
 // TODO: not actually implemented yet
-boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
-
-	static int mp_cost_multiplier = 3;
-
-	skill hp_waste_blood_skill(int goal){
-		int blood_bond_cost = hp_cost($skill[Blood Bond]) + ((9-hp_regen())*10);
-
-		boolean canUseFamiliars = auto_have_familiar($familiar[Mosquito]);
-		boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
-			auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
-			my_maxhp() > hp_cost($skill[Blood Bond]) &&
-			goal > blood_bond_cost/3; // blood bond drains hp after combat, make sure we dont accidentally kill the player
-		boolean bloodBubbleAvailable = auto_have_skill($skill[Blood Bubble]) &&
-			my_maxhp() > hp_cost($skill[Blood Bubble]);
-
-		skill blood_skill = $skill[none];
-
-		if(bloodBondAvailable && bloodBubbleAvailable){
-			if(have_effect($effect[Blood Bond]) > have_effect($effect[Blood Bubble])){
-				blood_skill = $skill[Blood Bubble];
-			} else{
-				blood_skill = $skill[Blood Bond];
-			}
-		} else if(bloodBondAvailable){
-			blood_skill = $skill[Blood Bond];
-		} else if(bloodBubbleAvailable){
-			blood_skill = $skill[Blood Bubble];
-		}
-
-		return blood_skill;
-	}
-
-	int hp_waste_value(int goal, int hp_waste){
-		skill blood = hp_waste_blood_skill(goal);
-		if(blood != $skill[none]){
-			int casts = floor(hp_waste / hp_cost(blood));
-			hp_waste -= (hp_cost(blood) * casts);
-		}
-		return hp_waste;
-	}
-
-	int effectiveness(skill s, int goal){
-		if(my_hp() >= goal || !auto_have_skill(s) || !(hp_per_cast contains s) || mp_cost(s) > my_maxmp()){
-			return 0;
-		}
-
-		int potential_hp_restored = min(goal - my_hp(), hp_per_cast[s]);
-		int hp_wasted = hp_per_cast[s] - potential_hp_restored;
-		int value = potential_hp_restored - hp_waste_value(goal, hp_wasted);
-
-		// consider how many casts it would take to fully heal to goal
-		int casts_to_max = ceil((goal - my_hp()) / hp_per_cast[s]);
-		int mp_to_max = mp_cost(s)*casts_to_max;
-
-		if(mp_to_max > my_mp()){
-			// we will have to acquire extra mp somehow, which is expensive
-			value -= mp_cost_multiplier * (mp_to_max-my_mp());
-			value -= my_mp();
-		} else{
-			value -= mp_to_max;
-		}
-
-		value += mp_regen(); // we get some mp back for free, which is valuable.
-
-		return value.to_int();
-	}
-
-	int restEffectivenessValue(int goal, boolean freeRest){
-		static int[item] restored_from_dwelling = {
-			$item[big rock]: 5,
-			$item[Newbiesport&trade; tent]: 10,
-			$item[Giant Pilgrim Hat]: 15,
-			$item[Barskin Tent]: 20,
-			$item[Cottage]: 30,
-			$item[BRICKO pyramid]: 35,
-			$item[Frobozz Real-Estate Company Instant House (TM)]: 40,
-			$item[Sandcastle]: 50,
-			$item[Ginormous Pumpkin]: 50,
-			$item[Giant Faraday Cage]: 50,
-			$item[Snow Fort]: 50,
-			$item[Elevent]: 50,
-			$item[House of Twigs and Spit]: 60,
-			$item[Gingerbread House]: 70,
-			$item[hobo fortress blueprints]: 85,
-			$item[Xiblaxian residence-cube]: 100
-		};
-
-		if(haveFreeRestAvailable() || !freeRest){
-			return 0;
-		}
-
-		int value = 0;
-		int potential_hp_restored = restored_from_dwelling[get_dwelling()];
-		int potential_mp_restored = potential_hp_restored;
-
-		if(haveAnyIotmAlternateCampsight()){
-			potential_hp_restored = 250;
-			potential_mp_restored = 125;
-
-			if(have_effect($effect[Beaten Up]) > 0){
-				if(!have_skill($skill[Tongue of the Walrus])){
-					value += 1000; // this is about the only way the player can remove beaten up in this case
-				} else{
-					value += mp_cost($skill[Tongue of the Walrus]);
-				}
-			} else if(!have_skill($skill[Tongue of the Walrus])){
-				// try to save campground for when beaten up
-				value -= 100;
-			} else{
-				// only a slight preference to save if they have tongue of the walrus
-				value -= mp_cost($skill[Tongue of the Walrus]);
-			}
-		}
-
-		int desired_max_hp_restorable = min(potential_hp_restored, goal-my_hp());
-		int max_mp_restorable = min(potential_mp_restored, my_maxmp()-my_mp());
-
-		value += desired_max_hp_restorable;
-		value += max_mp_restorable * mp_cost_multiplier; // mp is pretty valuable
-
-		// remove waste hp/mp from the value
-		value -= hp_waste_value(goal, potential_hp_restored - desired_max_hp_restorable);
-		value -= (potential_mp_restored - max_mp_restorable) * mp_cost_multiplier; // like I said, mp is pretty valuable
-
-		return value;
-	}
-
-	int[string] allEffectivenessValues(int goal, boolean buyItm, boolean freeRest){
-		int[string] values;
-		values["rest"] = restEffectivenessValue(goal, freeRest);
-
-		foreach s, _ in hp_per_cast {
-			values[s.to_string()] = effectiveness(s, goal);
-		}
-
-		return values;
-	}
-
-	boolean restingIsMostEffective(int goal, boolean buyItm, boolean freeRest){
-		int value = restEffectivenessValue(goal, freeRest);
-		print("Rest effectivenes calculated at: " + value);
-
-		int[string] effectiveness = allEffectivenessValues(goal, buyItm, freeRest);
-		foreach s, v in effectiveness{
-			if(v > effectiveness["rest"]){
-				return false;
-			}
-		}
-		return true;
-	}
-
-	skill mostEffectiveSkill(int goal){
-		skill best = $skill[none];
-		int value = 0;
-
-		foreach s, _ in hp_per_cast {
-			int e = effectiveness(s, goal);
-			if(best == $skill[none] && e > value){
-				best = s;
-				value = e;
-			}
-		}
-		return best;
-	}
-
-	boolean use_blood_skill(int goal, int hp_waste){
-		skill blood = hp_waste_blood_skill(goal);
-
-		if(blood == $skill[none]){
-			return false;
-		}
-
-		while(my_hp() - hp_cost(blood) > 0 && hp_waste - hp_cost(blood) > 0){
-			use_skill(1, blood);
-			hp_waste -= hp_cost(blood);
-			blood = hp_waste_blood_skill(goal);
-		}
-		return true;
-	}
-
-	boolean use_healing_skill(skill s, int goal, boolean buyItm){
-		if(my_hp() >= goal || s == $skill[none] || !have_skill(s) || !(hp_per_cast contains s)){
-			return false;
-		}
-
-		if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s)-my_mp(), buyItm, false)){
-			print("Couldnt acquire enough mp to cast " + s);
-			return false;
-		}
-
-		int potential_hp_restored = min(goal - my_hp(), hp_per_cast[s]);
-		use_blood_skill(goal, hp_per_cast[s] - potential_hp_restored);
-		return use_skill(1, s);
-	}
+boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
 
 	if(goal > my_maxhp()){
 		goal = my_maxhp();
@@ -614,6 +612,12 @@ boolean acquireHP(int goal, boolean buyItm, boolean freeRest){
 
 	print("Target HP => "+goal+" - Considering healing options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
 	while(my_hp() < goal){
+    __RestorationMetadata best_restore = __most_effective_restore(goal, my_hp(), 0, my_mp(), buyItems, useFreeRests);
+    if(!__use_restore(best_restore)){
+			print("Uh, couldnt determine an effective healing mechanism. Sorry.", "red");
+			return false;
+    }
+
 		skill healing = mostEffectiveSkill(goal);
 		if(restingIsMostEffective(goal, buyItm, freeRest)){
 			print("Using rest (effectiveness value: "+ restEffectivenessValue(goal, freeRest) +", free: " + haveFreeRestAvailable() + ")");
@@ -917,10 +921,11 @@ boolean useCocoon()
 	return false;
 }
 
-void main(){
-  print("hello");
-  __restoration_sources = __load_restoration_file();
-  foreach s, r in __restoration_sources{
-    print(to_string(r));
+boolean main(string type, int amount) {
+  if(type == "MP"){
+    acquireMP(amount);
+  } else if(type == "HP"){
+    acquireHP(amount);
   }
+	return true;	// This ensures that mafia does not attempt to heal with resources that are being conserved.
 }
