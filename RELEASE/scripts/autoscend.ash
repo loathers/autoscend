@@ -9541,7 +9541,7 @@ boolean L7_crypt()
 		use(1, $item[Evil Eye]);
 	}
 
-	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12War") == "finished";
+	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12War") != "finished";
 
 	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]) && !skip_in_koe)
 	{
@@ -9569,6 +9569,10 @@ boolean L7_crypt()
 
 		autoAdv(1, $location[The Defiled Nook]);
 		return true;
+	}
+	else if(skip_in_koe)
+	{
+		auto_debug_print("In Exploathing, skipping Defiled Nook until we get more evil eyes.");
 	}
 
 	if((get_property("cyrptNicheEvilness").to_int() > 0) && canGroundhog($location[The Defiled Niche]))
