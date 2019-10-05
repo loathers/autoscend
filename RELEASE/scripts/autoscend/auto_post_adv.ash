@@ -641,102 +641,52 @@ void handlePostAdventure()
 			didOutfit = true;
 		}
 
+
+		// ML adjustment zone section
 		boolean doML = true;
 		boolean removeML = false;
 			// removeML MUST be true for purgeML to be used. This is only used for -ML locations like Smut Orc, and you must have 5+ SGEAs to use.
 			boolean purgeML = false;
 
+		boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room];
+		boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
+
+		// Generic Conditions
 		if(get_property("kingLiberated").to_boolean())
 		{
 			doML = false;
 		}
+		if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() >= 13)))
+		{
+			doML = false;
+		}
+
+		// Item specific Conditions
 		if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
 		{
 			doML = false;
 			removeML = true;
 		}
-		if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() >= 13) && (my_location() != $location[Oil Peak]) && (my_location() != $location[The Typical Tavern Cellar]) && (my_location() != $location[The Haunted Boiler Room])))
-		{
-			doML = false;
-		}
-		if(my_location() == $location[The Smut Orc Logging Camp])
+
+		// Location Specific Conditions
+		if(lowMLZones contains my_location())
 		{
 			doML = false;
 			removeML = true;
 			purgeML = true;
 		}
-		if((my_location() == $location[Oil Peak]) || (my_location() == $location[The Typical Tavern Cellar]) || (my_location() == $location[The Haunted Boiler Room]))
+		if(highMLZones contains my_location())
 		{
 			doML = true;
 			removeML = false;
 		}
 
-		if((my_mp() > 150) && (my_maxhp() > 300) && (my_hp() < 140))
-		{
-			useCocoon();
-		}
-		if((my_mp() > 100) && (my_maxhp() > 500) && (my_hp() < 250))
-		{
-			useCocoon();
-		}
-		if((my_mp() > 75) && (my_maxhp() > 500) && (my_hp() < 200))
-		{
-			useCocoon();
-		}
-		if((my_mp() > 75) && (my_maxhp() > 700) && (my_hp() < 300))
-		{
-			useCocoon();
-		}
-		if((my_mp() > 75) && ((my_hp() == 0) || ((my_maxhp()/my_hp()) > 3)))
-		{
-			useCocoon();
-		}
-
-		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 250, 1, 10);
-
-		if(my_level() < 13)
-		{
-			buffMaintain(whatStatSmile(), 40, 1, 10);
-		}
-
-		buffMaintain($effect[Empathy], 50, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 35, 1, 10);
-
-		foreach sk in toCast
-		{
-			if(is_unrestricted(sk) && auto_have_skill(sk) && ((my_mp() - 85) >= mp_cost(sk)))
-			{
-				use_skill(1, sk);
-			}
-		}
-
-		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 32))
-		{
-			print("Mymp: " + my_mp() + " of " + my_maxmp() + " and cost: " + mp_cost(libram), "blue");
-			boolean temp = false;
-			try
-			{
-				#if(use_skill(1, libram)) {}
-				temp = use_skill(1, libram);
-			}
-			finally
-			{
-				if(!temp)
-				{
-					print("No longer have enough MP and failed.", "red");
-					print("Mymp: " + my_mp() + " of " + my_maxmp() + " and cost: " + mp_cost(libram), "blue");
-				}
-			}
-		}
-
-#		buffMaintain($effect[Prayer of Seshat], 5, 1, 10);
-
-		buffMaintain($effect[Singer\'s Faithful Ocelot], 280, 1, 10);
+		// Act on ML settings
 		if(doML)
 		{
 			auto_change_mcd(11);
 
-			// Catch when we leave Smut Orc, allow for being "side tracked" buy delay burning
+			// Catch when we leave lowMLZone, allow for being "side tracked" buy delay burning
 			if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
 			{
 				print("No Reason to delay Asdon Usage");
@@ -801,6 +751,69 @@ void handlePostAdventure()
 				}
 			}
 		}
+
+
+		if((my_mp() > 150) && (my_maxhp() > 300) && (my_hp() < 140))
+		{
+			useCocoon();
+		}
+		if((my_mp() > 100) && (my_maxhp() > 500) && (my_hp() < 250))
+		{
+			useCocoon();
+		}
+		if((my_mp() > 75) && (my_maxhp() > 500) && (my_hp() < 200))
+		{
+			useCocoon();
+		}
+		if((my_mp() > 75) && (my_maxhp() > 700) && (my_hp() < 300))
+		{
+			useCocoon();
+		}
+		if((my_mp() > 75) && ((my_hp() == 0) || ((my_maxhp()/my_hp()) > 3)))
+		{
+			useCocoon();
+		}
+
+		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 250, 1, 10);
+
+		if(my_level() < 13)
+		{
+			buffMaintain(whatStatSmile(), 40, 1, 10);
+		}
+
+		buffMaintain($effect[Empathy], 50, 1, 10);
+		buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+
+		foreach sk in toCast
+		{
+			if(is_unrestricted(sk) && auto_have_skill(sk) && ((my_mp() - 85) >= mp_cost(sk)))
+			{
+				use_skill(1, sk);
+			}
+		}
+
+		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 32))
+		{
+			print("Mymp: " + my_mp() + " of " + my_maxmp() + " and cost: " + mp_cost(libram), "blue");
+			boolean temp = false;
+			try
+			{
+				#if(use_skill(1, libram)) {}
+				temp = use_skill(1, libram);
+			}
+			finally
+			{
+				if(!temp)
+				{
+					print("No longer have enough MP and failed.", "red");
+					print("Mymp: " + my_mp() + " of " + my_maxmp() + " and cost: " + mp_cost(libram), "blue");
+				}
+			}
+		}
+
+#		buffMaintain($effect[Prayer of Seshat], 5, 1, 10);
+
+		buffMaintain($effect[Singer\'s Faithful Ocelot], 280, 1, 10);
 
 		buffMaintain($effect[Big], 100, 1, 10);
 		buffMaintain($effect[Rage of the Reindeer], 80, 1, 10);
