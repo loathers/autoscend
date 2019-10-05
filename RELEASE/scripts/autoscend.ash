@@ -1,4 +1,4 @@
-rscript "autoscend.ash";
+script "autoscend.ash";
 since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battlefield
 /***
 	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
