@@ -9504,7 +9504,17 @@ boolean L7_crypt()
 		return true;
 	}
 
-	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]))
+	// In KoE, skeleton astronauts are random encounters that drop Evil Eyes.
+	// We might be able to reach the Nook boss without adventuring.
+
+	while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
+	{
+		use(1, $item[Evil Eye]);
+	}
+
+	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12War") == "finished";
+
+	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]) && !skip_in_koe)
 	{
 		print("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
@@ -9512,8 +9522,9 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 
 		bat_formBats();
+
 		januaryToteAcquire($item[broken champagne bottle]);
-		if(useMaximizeToEquip())
+		if(useMaximizeToEquip() && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
 			removeFromMaximize("-equip " + $item[broken champagne bottle]);
 		}
@@ -9528,10 +9539,6 @@ boolean L7_crypt()
 		}
 
 		autoAdv(1, $location[The Defiled Nook]);
-		while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
-		{
-			use(1, $item[Evil Eye]);
-		}
 		return true;
 	}
 
