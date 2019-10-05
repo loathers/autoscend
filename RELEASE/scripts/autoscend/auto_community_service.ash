@@ -1269,11 +1269,10 @@ boolean LA_cs_communityService()
 				}
 				if(!get_property("_madTeaParty").to_boolean())
 				{
-					if(!possessEquipment($item[Mariachi Hat]))
+					if(!possessEquipment($item[Mariachi Hat]) && acquireGumItem($item[Mariachi Hat]))
 					{
-						acquireGumItem($item[Mariachi Hat]);
+						cli_execute("hatter 11");
 					}
-					cli_execute("hatter 11");
 				}
 				spacegateVaccine($effect[Broad-Spectrum Vaccine]);
 				if((get_property("puzzleChampBonus").to_int() == 20) && !get_property("_witchessBuff").to_boolean())
@@ -1282,8 +1281,12 @@ boolean LA_cs_communityService()
 					visit_url("choice.php?whichchoice=1181&pwd=&option=3");
 					visit_url("choice.php?whichchoice=1183&pwd=&option=2");
 				}
-				while(cs_witchess());
-				while(godLobsterCombat());
+				while(cs_witchess()){
+					cs_healthMaintain();
+				}
+				while(godLobsterCombat()){
+					cs_healthMaintain();
+				};
 
 				if((get_property("frAlways").to_boolean() || get_property("_frToday").to_boolean()) && !possessEquipment($item[FantasyRealm G. E. M.]))
 				{
