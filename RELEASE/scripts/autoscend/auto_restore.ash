@@ -1,7 +1,5 @@
 script "auto_restore.ash";
 
-import<autoscend.ash>
-
 /**
  * Private Interface
  */
@@ -9,9 +7,9 @@ record __RestorationMetadata{
   string name;
   string type;
   int hp_restored;
-  boolean restores_all_hp;
+  string restores_variable_hp;
   int mp_restored;
-  boolean restores_all_mp;
+  string restores_variable_mp;
   boolean removes_beaten_up;
   boolean[effect] removes_effects;
   boolean[effect] gives_effects;
@@ -34,10 +32,11 @@ record __RestorationEffectiveness{
   int mp_effectiveness_value;
   int mp_effectiveness_cost_modifier;
   int total_uses_needed;
+  int total_hp_restored;
   int total_mp_restored;
   int total_meat_spent;
   int total_value;
-}
+};
 
 string to_string(__RestorationMetadata r){
   string list_to_string(boolean[effect] e_list){
@@ -56,7 +55,7 @@ string to_string(__RestorationMetadata r){
 
   string removes_effects_str = list_to_string(r.removes_effects);
   string gives_effects_str = list_to_string(r.gives_effects);
-  return "__RestorationMetadata("+r.name+", "+r.type+", "+r.hp_restored+", "+r.restores_all_hp+", "+r.mp_restored+", "+r.restores_all_mp+", "+r.removes_beaten_up+", "+removes_effects_str+", "+gives_effects_str+")";
+  return "__RestorationMetadata("+r.name+", "+r.type+", "+r.hp_restored+", "+r.restores_variable_hp+", "+r.mp_restored+", "+r.restores_variable_mp+", "+r.removes_beaten_up+", "+removes_effects_str+", "+gives_effects_str+")";
 }
 
 // Note: these data structures may hold skills/items/effects that are not available to the player, up to caller to check auto_is_valid
@@ -66,8 +65,10 @@ static __RestorationMetadata[item] __known_dwellings;
 static __RestorationMetadata[item] __known_items;
 static __RestorationMetadata[skill] __known_skills;
 static __RestorationMetadata __NO_RESTORATION_METADATA = new __RestorationMetadata("", "", 0, false, 0, false, false, {},{});
-static __RestorationEffectiveness __NO_EFFECTIVENESS = new __RestorationEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+static __RestorationEffectiveness __NO_EFFECTIVENESS = new __RestorationEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 static int __mp_cost_multiplier = 3;
+static string __RESTORE_ALL = "all";
+static string __RESTORE_HALF = "half";
 
 void __init_restoration_metadata(){
   static string resotration_filename = "autoscend_restoration.txt";
@@ -131,9 +132,15 @@ void __init_restoration_metadata(){
     }
   }
 
-  boolean parse_restores_all(string restored_str){
+  string parse_restores_variable(string restored_str){
     restored_str = restored_str.to_lower_case();
-    return restored_str == "all";
+    if(restored_str == "all"){
+      return __RESTORE_ALL;
+    } else if(restored_str == "half"){
+      return __RESTORE_HALF;
+    } else {
+      return "";
+    }
   }
 
   void init(){
@@ -156,9 +163,9 @@ void __init_restoration_metadata(){
       parsed.name = r.name.to_lower_case();
       parsed.type = r.type.to_lower_case();
       parsed.hp_restored = parse_restored_amount(r.hp_restored);
-      parsed.restores_all_hp = parse_restores_all(r.hp_restored);
+      parsed.restores_variable_hp = parse_restores_variable(r.hp_restored);
       parsed.mp_restored = parse_restored_amount(r.mp_restored);
-      parsed.restores_all_mp = parse_restores_all(r.mp_restored);
+      parsed.restores_variable_mp = parse_restores_variable(r.mp_restored);
       parsed.removes_effects = parse_effects(parsed.name, r.removes_effects);
       parsed.removes_beaten_up = (parsed.removes_effects contains $effect[Beaten Up]);
       parsed.gives_effects = parse_effects(parsed.name, r.gives_effects);
@@ -217,8 +224,10 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
 
   int hp_restored_per(){
     int restored_amount = metadata.hp_restored;
-    if(metadata.restores_all_hp){
+    if(metadata.restores_variable_hp == __RESTORE_ALL){
       restored_amount = my_maxhp();
+    } else if(metadata.restores_variable_hp == __RESTORE_HALF){
+      return floor(my_maxhp() / 2);
     }
 
     return restored_amount;
@@ -226,8 +235,10 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
 
   int mp_restored_per(){
     int restored_amount = metadata.mp_restored;
-    if(metadata.restores_all_mp){
+    if(metadata.restores_variable_mp == __RESTORE_ALL){
       restored_amount = my_maxmp();
+    } else if(metadata.restores_variable_mp == __RESTORE_HALF){
+      return floor(my_maxmp() / 2);
     }
 
     return restored_amount;
@@ -250,17 +261,17 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
   }
 
   int uses_needed_to_reach_hp_goal(){
-    if(hp_restored() < 1){
+    if(hp_restored_per() < 1){
       return -1;
     }
-    return max(1, floor((hp_goal - starting_hp) / hp_restored()));
+    return max(1, floor((hp_goal - starting_hp) / hp_restored_per()));
   }
 
   int uses_needed_to_reach_mp_goal(){
-    if(mp_restored() < 1){
+    if(mp_restored_per() < 1){
       return -1;
     }
-    return max(1, floor((mp_goal - starting_mp) / mp_restored()));
+    return max(1, floor((mp_goal - starting_mp) / mp_restored_per()));
   }
 
   int mp_cost_per(){
@@ -280,7 +291,7 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
   void hp_effectiveness(__RestorationEffectiveness effectiveness){
     if(effectiveness.uses_to_hp_goal == -1){
       effectiveness.hp_effectiveness_value = 0;
-      effectivenes.hp_effectiveness_cost_modifier = 0;
+      effectiveness.hp_effectiveness_cost_modifier = 0;
       effectiveness.total_hp_restored = 0;
       return;
     }
@@ -312,14 +323,14 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     hp_effectiveness_cost_modifier -= (effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal) * effectiveness.hp_restored_per_use;
 
     effectiveness.hp_effectiveness_value = hp_effectiveness_value;
-    effectivenes.hp_effectiveness_cost_modifier = hp_effectiveness_cost_modifier;
+    effectiveness.hp_effectiveness_cost_modifier = hp_effectiveness_cost_modifier;
     effectiveness.total_hp_restored = effectiveness.hp_restored_per_use * effectiveness.uses_to_hp_goal;
   }
 
   void mp_effectiveness(__RestorationEffectiveness effectiveness){
     if(effectiveness.uses_to_mp_goal == -1 || effectiveness.mp_cost_per_use > 0){
       effectiveness.mp_effectiveness_value = 0;
-      effectivenes.mp_effectiveness_cost_modifier = 0;
+      effectiveness.mp_effectiveness_cost_modifier = 0;
       effectiveness.total_mp_restored = 0;
       return;
     }
@@ -341,7 +352,7 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     mp_effectiveness_cost_modifier -= (effectiveness.total_uses_needed - effectiveness.uses_to_mp_goal) * effectiveness.mp_restored_per_use;
 
     effectiveness.mp_effectiveness_value = mp_effectiveness_value;
-    effectivenes.mp_effectiveness_cost_modifier = mp_effectiveness_cost_modifier;
+    effectiveness.mp_effectiveness_cost_modifier = mp_effectiveness_cost_modifier;
     effectiveness.total_mp_restored = effectiveness.mp_restored_per_use * effectiveness.uses_to_mp_goal;
   }
 
@@ -361,30 +372,32 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
   hp_effectiveness(effectiveness);
   mp_effectiveness(effectiveness);
   effectiveness.total_meat_spent = effectiveness.meat_cost_per_use * max(effectiveness.total_uses_needed - effectiveness.uses_available, 0);
-  effectiveness.total_value = (effectiveness.mp_effectiveness_value + effectiveness.hp_effectiveness_value) - (effectivenes.mp_effectiveness_cost_modifier + effectivenes.hp_effectiveness_cost_modifier);
-  return effectivenes;
-}
-
-boolean __is_useable(__RestorationMetadata metadata){
-  if(metadata == __NO_RESTORATION_METADATA){
-    return false;
-  }
-  if(metadata.type == "item"){
-    return auto_is_valid(to_item(metadata.name));
-  }
-  if(metadata.type == "skill"){
-    return auto_is_valid(to_skill(metadata.name));
-  }
+  effectiveness.total_value = (effectiveness.mp_effectiveness_value + effectiveness.hp_effectiveness_value) - (effectiveness.mp_effectiveness_cost_modifier + effectiveness.hp_effectiveness_cost_modifier);
+  return effectiveness;
 }
 
 __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int goal_mp, int starting_mp, boolean buyItems, boolean useFreeRests){
 
+  boolean is_useable(__RestorationMetadata metadata){
+    if(metadata == __NO_RESTORATION_METADATA){
+      return false;
+    }
+    if(metadata.type == "item"){
+      return auto_is_valid(to_item(metadata.name));
+    }
+    if(metadata.type == "skill"){
+      return auto_is_valid(to_skill(metadata.name));
+    }
+    return false;
+  }
+
+  print("Calculating restore options (current hp: "+starting_hp+", hp goal: "+goal_hp+", current mp: "+starting_mp+", mp goal: "+goal_mp+")");
   __RestorationMetadata best = __NO_RESTORATION_METADATA;
   __RestorationEffectiveness best_effectiveness = __NO_EFFECTIVENESS;
 
   foreach name, metadata in __known_restoration_sources {
     //cant use this skill/item in current path
-    if(!__is_useable(metadata)){
+    if(!is_useable(metadata)){
       continue;
     }
 
@@ -392,7 +405,7 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
     if(metadata.type == "dwelling" && (!useFreeRests ||
       (to_item(metadata.name) == $item[Chateau Mantegna Room Key] && !chateaumantegna_available()) ||
       (to_item(metadata.name) == $item[Distant Woods Getaway Brochure] && !auto_campawayAvailable()) ||
-      get_dwelling() != to_item(metadata.name)))){
+      get_dwelling() != to_item(metadata.name))){
       continue;
     }
 
@@ -400,26 +413,29 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
 
     //dont have enough items on hand
     if(metadata.type == "item" && !buyItems && effectiveness.uses_available < effectiveness.total_uses_needed){
-      continue
+      continue;
     }
 
+    print(best.name + " ("+best_effectiveness.total_value+") vs " + name + " ("+effectiveness.total_value+")");
     if(effectiveness.total_value > best_effectiveness.total_value){
-      best_effectiveness = effectivenes;
+      best_effectiveness = effectiveness;
       best = metadata;
     }
   }
 
+  print("Best restore option: " + best.type + " " + best.name + " (effectiveness: "+best_effectiveness.total_value+")", "blue");
   return best;
 }
 
-boolean __use_restore(int count, __RestorationMetadata metadata){
+boolean __use_restore(__RestorationMetadata metadata, boolean buyItems, boolean useFreeRests){
   if(metadata == __NO_RESTORATION_METADATA){
     return false;
   }
 
   print("Using " + metadata.type + " " + metadata.name + " as restore.");
   if(metadata.type == "item"){
-    return use(count, to_item(metadata.name));
+    item i = to_item(metadata.name);
+    return retrieve_item(1, i) && use(1, i);
   }
 
   if(metadata.type == "dwelling"){
@@ -427,8 +443,15 @@ boolean __use_restore(int count, __RestorationMetadata metadata){
   }
 
   if(metadata.type == "skill"){
-    return use_skill(count, to_skill(metadata.name));
+    skill s = to_skill(metadata.name);
+    if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), buyItems, useFreeRests)){
+      print("Couldnt acquire enough MP to cast " + s);
+      return false;
+    }
+    return use_skill(1, s);
   }
+
+  return false;
 }
 
 /**
@@ -448,7 +471,7 @@ boolean acquireMP(int goal, boolean buyIt){
 	return acquireMP(goal, buyIt, freeRestsRemaining() > 2);
 }
 
-boolean acquireMP(int goal, boolean buyIt, boolean freeRest)
+boolean acquireMP(int goal, boolean buyItems, boolean useFreeRests)
 {
 	if(goal > my_maxmp())
 	{
@@ -461,104 +484,20 @@ boolean acquireMP(int goal, boolean buyIt, boolean freeRest)
 	}
 
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
-	if(my_maxmp() - my_mp() > 300)
-	{
+	if(my_maxmp() - my_mp() > 300){
 		auto_sausageEatEmUp(1);
 	}
 
-	if(freeRest){
-		while(haveFreeRestAvailable() && my_mp() < goal){
-			// dont waste free IotM rests since they are pretty valuable
-			if((chateaumantegna_available() || auto_campawayAvailable()) && my_maxmp() - my_mp() < 100){
-				int mp_waste = 125 - min(125, my_maxmp() - my_mp());
-				int hp_waste = 250 - min(250, my_maxhp() - my_hp());
-				if(mp_waste > 80 && hp_waste > 200){
-					break;
-				}
-			}
-			doFreeRest();
-		}
+  print("Target MP => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+	while(my_mp() < goal){
+    __RestorationMetadata best_restore = __most_effective_restore(0, my_hp(), goal, my_mp(), buyItems, useFreeRests);
+    if(!__use_restore(best_restore, buyItems, useFreeRests)){
+			print("Target MP => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
+			return false;
+    }
 	}
 
-	item[int] recovers = List($items[Holy Spring Water, Spirit Beer, Sacramental Wine, Magical Mystery Juice, Black Cherry Soda, Doc Galaktik\'s Invigorating Tonic, Carbonated Soy Milk, Natural Fennel Soda, Grogpagne, Bottle Of Monsieur Bubble, Tiny House, Marquis De Poivre Soda, Cloaca-Cola, Phonics Down, Psychokinetic Energy Blob]);
-	int at = 0;
-	while((at < count(recovers)) && (my_mp() < goal))
-	{
-		item it = recovers[at];
-		int expectedMP = (it.minmp + it.maxmp) / 2;
-		int overage = (my_mp() + expectedMP) - goal;
-		if(overage > 0)
-		{
-			float waste = overage / expectedMP;
-			if(waste > 0.35)
-			{
-				at++;
-				continue;
-			}
-		}
-
-		if(!glover_usable(it))
-		{
-			at++;
-			continue;
-		}
-
-		if(item_amount(it) > 0)
-		{
-			int count = item_amount(it);
-			use(1, it);
-			if(count == item_amount(it))
-			{
-				print("Failed using item " + it + "!", "red");
-				return false;
-			}
-			continue;
-		}
-		at++;
-	}
-
-	while(buyIt && (my_mp() < goal))
-	{
-		boolean gLoverBlock = (auto_my_path() == "G-Lover");
-		item goal = $item[none];
-
-		if(($classes[Pastamancer, Sauceror] contains my_class()) && guild_store_available() && (my_level() >= 5))
-		{
-			goal = $item[Magical Mystery Juice];
-		}
-		else if((get_property("questM24Doc") == "finished") && isGeneralStoreAvailable() && (my_meat() > npc_price($item[Doc Galaktik\'s Invigorating Tonic])))
-		{
-			goal = $item[Doc Galaktik\'s Invigorating Tonic];
-		}
-		else if(black_market_available() && (my_meat() > npc_price($item[Black Cherry Soda])) && !gLoverBlock)
-		{
-			goal = $item[Black Cherry Soda];
-		}
-		else if(isGeneralStoreAvailable() && (my_meat() > npc_price($item[Doc Galaktik\'s Invigorating Tonic])))
-		{
-			goal = $item[Doc Galaktik\'s Invigorating Tonic];
-		}
-
-		if(goal != $item[none])
-		{
-			buyUpTo(1, goal, 100);
-		}
-
-		if(item_amount(goal) > 0)
-		{
-			int have = item_amount(goal);
-			use(1, goal);
-			if(have == item_amount(goal))
-			{
-				print("Failed using item " + goal + "!", "red");
-				return false;
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
+	//item[int] recovers = List($items[Holy Spring Water, Spirit Beer, Sacramental Wine, Magical Mystery Juice, Black Cherry Soda, Doc Galaktik\'s Invigorating Tonic, Carbonated Soy Milk, Natural Fennel Soda, Grogpagne, Bottle Of Monsieur Bubble, Tiny House, Marquis De Poivre Soda, Cloaca-Cola, Phonics Down, Psychokinetic Energy Blob]);
 
 	return (my_mp() >= goal);
 }
@@ -593,12 +532,17 @@ boolean acquireHP(int goal, boolean buyIt){
 	return acquireHP(goal, buyIt, false);
 }
 
-// TODO: not actually implemented yet
 boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
 
 	if(goal > my_maxhp()){
 		goal = my_maxhp();
 	}
+
+  foreach e in $effects[Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned, Toad In The Hole]{
+    if(have_effect(e) > 0){
+      uneffect(e);
+    }
+  }
 
 	// let mafia figure out how to best remove beaten up
 	if(have_effect($effect[Beaten Up]) > 0){
@@ -610,25 +554,13 @@ boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
 		}
 	}
 
-	print("Target HP => "+goal+" - Considering healing options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+	print("Target HP => "+goal+" - Considering restoration options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
 	while(my_hp() < goal){
     __RestorationMetadata best_restore = __most_effective_restore(goal, my_hp(), 0, my_mp(), buyItems, useFreeRests);
-    if(!__use_restore(best_restore)){
-			print("Uh, couldnt determine an effective healing mechanism. Sorry.", "red");
+    if(!__use_restore(best_restore, buyItems, useFreeRests)){
+      print("Target HP => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
 			return false;
     }
-
-		skill healing = mostEffectiveSkill(goal);
-		if(restingIsMostEffective(goal, buyItm, freeRest)){
-			print("Using rest (effectiveness value: "+ restEffectivenessValue(goal, freeRest) +", free: " + haveFreeRestAvailable() + ")");
-			doRest();
-		} else if(healing != $skill[none]){
-			print("Using " + healing + " (effectiveness value: " + effectiveness(healing, goal) + ")");
-			use_healing_skill(healing, goal, buyItm);
-		} else{
-			print("Uh, couldnt determine an effective healing mechanism. Sorry.", "red");
-			return false;
-		}
 	}
 
 	return true;
