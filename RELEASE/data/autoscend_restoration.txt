@@ -59,45 +59,42 @@
 60	Gingerbread House	dwelling	0	0	none	none
 61	hobo fortress blueprints	dwelling	0	0	none	none
 62	Xiblaxian residence-cube	dwelling	0	0	none	none
-63	Distant Woods Getaway Brochure	dwelling	0	0	none	none
-64	Chateau Mantegna room key	dwelling	0	0	none	none
-65	your own black heart	ALL	ALL	Beaten	Up	none
-66	Egnaro berry	0	HALF	none	Berry Experiential
-67	CSA all purpose soap	0	1000	All Negative	none
-68	Wolfman Nardz	0	250	none	none
-69	high pressure seltzer bottle	0	175	none	none
-70	Cloaca Cola Polar	0	150	none	Polar Express
-71	New Cloaca Cola	0	150	none	none
-72	natural fennel soda	0	100	none	none
-73	can of CRIMBCOLA	0	90	none	none
-74	Monstar energy beverage	0	75	none	none
-75	carbonated soy milk	0	75	none	none
-76	carbonated water lily	0	65	none	none
-77	blue pixel potion	0	65	none	none
-78	Nardz energy beverage	0	60	none	none
-79	bottle of Monsieur Bubble	0	55	none	none
-80	unrefined Mountain Stream syrup	0	55	none	none
-81	banana spritzer	0	70	none	none
-82	elven magi pack	0	45	none	none
-83	myrrh soaked\, chocolate covered bacon bath ball	0	37	none	Pork Power,Chocolate Reign,Incensed
-84	creepy ginger ale	0	40	none	none
-85	grogpagne	0	40	none	none
-86	tonic water	0	40	none	none
-87	Marquis de Poivre soda	0	35	none	none
-88	Mountain Stream soda	0	35	none	none
-89	Knob Goblin superseltzer	0	27	none	none
-90	Blatantly Canadian	0	27	none	none
-91	beer scented teddy bear	0	17	none	none
-92	Cloaca Cola	0	12	none	none
-93	Dyspepsi Cola	0	12	none	none
-94	Knob Goblin seltzer	0	10	none	none
-95	black cherry soda	0	10	none	none
-96	Doc Galaktik\'s Invigorating	Tonic	0	10	none	none
-97	Cherry Cloaca Cola	0	8	none	none
-98	Diet Cloaca Cola	0	8	none	none
-99	Regular Cloaca Cola	0	8	none	none
-100	natto marble soda	0	7	none	none
-101	tobiko marble soda	0	7	none	none
-102	wasabi marble soda	0	7	none	none
-103	soda water	0	4	none	none
-104	Wint-O-Fresh mint	0	4	none	none
+63	Distant Woods Getaway Brochure	dwelling	250	125	none	none
+64	Chateau Mantegna room key	dwelling	250	125	none	none
+65	your own black heart	item	ALL	ALL	Beaten Up	none
+66	Egnaro berry	item	0	HALF	none	Berry Experiential
+67	CSA all purpose soap	item	0	1000	All Negative	none
+68	Wolfman Nardz	item	0	250	none	none
+69	high pressure seltzer bottle	item	0	175	none	none
+70	Cloaca Cola Polar	item	0	150	none	Polar Express
+72	natural fennel soda	item	0	100	none	none
+73	can of CRIMBCOLA	item	0	90	none	none
+74	Monstar energy beverage	item	0	75	none	none
+75	carbonated soy milk	item	0	75	none	none
+76	carbonated water lily	item	0	65	none	none
+77	blue pixel potion	item	0	65	none	none
+78	Nardz energy beverage	item	0	60	none	none
+79	bottle of Monsieur Bubble	item	0	55	none	none
+80	unrefined Mountain Stream syrup	item	0	55	none	none
+81	banana spritzer	item	0	70	none	none
+82	elven magi pack	item	0	45	none	none
+83	myrrh soaked\, chocolate covered bacon bath ball	item	0	37	none	Pork Power,[800]Chocolate Reign,Incensed
+84	creepy ginger ale	item	0	40	none	none
+85	grogpagne	item	0	40	none	none
+86	tonic water	item	0	40	none	none
+87	Marquis de Poivre soda	item	0	35	none	none
+88	Mountain Stream soda	item	0	35	none	none
+89	Knob Goblin superseltzer	item	0	27	none	none
+90	Blatantly Canadian	item	0	27	none	none
+91	beer scented teddy bear	item	0	17	none	none
+94	Knob Goblin seltzer	item	0	10	none	none
+95	black cherry soda	item	0	10	none	none
+96	Doc Galaktik\'s Invigorating Tonic	item	0	10	none	none
+97	Cherry Cloaca Cola	item	0	8	none	none
+98	Diet Cloaca Cola	item	0	8	none	none
+99	Regular Cloaca Cola	item	0	8	none	none
+100	natto marble soda	item	0	7	none	none
+101	tobiko marble soda	item	0	7	none	none
+102	wasabi marble soda	item	0	7	none	none
+103	soda water	item	0	4	none	none
+104	Wint-O-Fresh mint	item	0	4	none	none

@@ -55,7 +55,33 @@ string to_string(__RestorationMetadata r){
 
   string removes_effects_str = list_to_string(r.removes_effects);
   string gives_effects_str = list_to_string(r.gives_effects);
-  return "__RestorationMetadata("+r.name+", "+r.type+", "+r.hp_restored+", "+r.restores_variable_hp+", "+r.mp_restored+", "+r.restores_variable_mp+", "+r.removes_beaten_up+", "+removes_effects_str+", "+gives_effects_str+")";
+  return "__RestorationMetadata(name: "+r.name+", type: "+r.type+", hp_restored: "+r.hp_restored+", restores_variable_hp: "+r.restores_variable_hp+", mp_restored: "+r.mp_restored+", restores_variable_mp: "+r.restores_variable_mp+", removes_beaten_up: "+r.removes_beaten_up+", removes_effects: "+removes_effects_str+", gives_effects: "+gives_effects_str+")";
+}
+
+string to_string(__RestorationEffectiveness e){
+  string val = "__RestorationEffectiveness(";
+  val += "hp_goal: " + e.hp_goal;
+  val += ", starting_hp: " + e.starting_hp;
+  val += ", mp_goal: " + e.mp_goal;
+  val += ", starting_mp: " + e.starting_mp;
+  val += ", hp_restored_per_use: " + e.hp_restored_per_use;
+  val += ", mp_restored_per_use: " + e.mp_restored_per_use;
+  val += ", uses_available: " + e.uses_available;
+  val += ", uses_to_hp_goal: " + e.uses_to_hp_goal;
+  val += ", uses_to_mp_goal: " + e.uses_to_mp_goal;
+  val += ", mp_cost_per_use: " + e.mp_cost_per_use;
+  val += ", meat_cost_per_use: " + e.meat_cost_per_use;
+  val += ", hp_effectiveness_value: " + e.hp_effectiveness_value;
+  val += ", hp_effectiveness_cost_modifier: " + e.hp_effectiveness_cost_modifier;
+  val += ", mp_effectiveness_value: " + e.mp_effectiveness_value;
+  val += ", mp_effectiveness_cost_modifier: " + e.mp_effectiveness_cost_modifier;
+  val += ", total_uses_needed: " + e.total_uses_needed;
+  val += ", total_hp_restored: " + e.total_hp_restored;
+  val += ", total_mp_restored: " + e.total_mp_restored;
+  val += ", total_meat_spent: " + e.total_meat_spent;
+  val += ", total_value: " + e.total_value;
+  val += ")";
+  return val;
 }
 
 // Note: these data structures may hold skills/items/effects that are not available to the player, up to caller to check auto_is_valid
@@ -125,7 +151,7 @@ void __init_restoration_metadata(){
 
   int parse_restored_amount(string restored_str){
     restored_str = restored_str.to_lower_case();
-    if(restored_str == "all"){
+    if(restored_str == "all" || restored_str == "half"){
       return 0;
     } else{
       return to_int(restored_str);
@@ -196,6 +222,7 @@ void __init_restoration_metadata(){
     }
   }
 
+  print("Loading restoration data.");
   init();
 }
 
@@ -207,6 +234,11 @@ void __init_restoration_metadata(boolean reload){
     clear(__known_skills);
   }
   __init_restoration_metadata();
+}
+
+__RestorationMetadata[string] __restoration_methods(){
+  __init_restoration_metadata(true);
+  return __known_restoration_sources;
 }
 
 __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp, int mp_goal, int starting_mp, __RestorationMetadata metadata){
@@ -227,7 +259,7 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     if(metadata.restores_variable_hp == __RESTORE_ALL){
       restored_amount = my_maxhp();
     } else if(metadata.restores_variable_hp == __RESTORE_HALF){
-      return floor(my_maxhp() / 2);
+      restored_amount = floor(my_maxhp() / 2);
     }
 
     return restored_amount;
@@ -238,7 +270,7 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     if(metadata.restores_variable_mp == __RESTORE_ALL){
       restored_amount = my_maxmp();
     } else if(metadata.restores_variable_mp == __RESTORE_HALF){
-      return floor(my_maxmp() / 2);
+      restored_amount = floor(my_maxmp() / 2);
     }
 
     return restored_amount;
@@ -264,14 +296,14 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     if(hp_restored_per() < 1){
       return -1;
     }
-    return max(1, floor((hp_goal - starting_hp) / hp_restored_per()));
+    return ceil((hp_goal - starting_hp) / hp_restored_per())+1;
   }
 
   int uses_needed_to_reach_mp_goal(){
     if(mp_restored_per() < 1){
       return -1;
     }
-    return max(1, floor((mp_goal - starting_mp) / mp_restored_per()));
+    return ceil((mp_goal - starting_mp) / mp_restored_per())+1;
   }
 
   int mp_cost_per(){
@@ -308,23 +340,27 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
       }
       hp_effectiveness_cost_modifier -= mp_regen(); // we get some mp back for free, which is valuable.
     }
+    if(effectiveness.meat_cost_per_use > 0){
+      hp_effectiveness_cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_available) * effectiveness.meat_cost_per_use;
+    }
 
+    hp_effectiveness_value = effectiveness.hp_restored_per_use * effectiveness.total_uses_needed;
     if(effectiveness.total_uses_needed > 1){
-      hp_effectiveness_value = effectiveness.hp_restored_per_use * (effectiveness.uses_to_hp_goal - 1);
-      int wasted_on_last_use = hp_wasted_by(starting_hp + hp_effectiveness_value);
-      hp_effectiveness_value += effectiveness.hp_restored_per_use - wasted_on_last_use;
-      hp_effectiveness_cost_modifier -= wasted_on_last_use;
+      int pre_goal_starting_hp = starting_hp + (effectiveness.hp_restored_per_use * (effectiveness.uses_to_hp_goal - 1));
+      int waste_by_last_needed_cast = hp_wasted_by(pre_goal_starting_hp);
+      int past_goal_casts = effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal;
+      int wasted_by_overcast = past_goal_casts * hp_wasted_by(pre_goal_starting_hp + effectiveness.hp_restored_per_use);
+      hp_effectiveness_cost_modifier += waste_by_last_needed_cast + wasted_by_overcast;
     } else{
-      hp_effectiveness_value = effectiveness.hp_restored_per_use - hp_wasted_by(starting_hp);
-      hp_effectiveness_cost_modifier -= hp_wasted_by(starting_hp);
+      hp_effectiveness_cost_modifier += hp_wasted_by(starting_hp);
     }
 
     //case when using hp+mp restore with a higher mp goal than hp, calculate extra uses as wasteful
-    hp_effectiveness_cost_modifier -= (effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal) * effectiveness.hp_restored_per_use;
+    hp_effectiveness_cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal) * effectiveness.hp_restored_per_use;
 
     effectiveness.hp_effectiveness_value = hp_effectiveness_value;
     effectiveness.hp_effectiveness_cost_modifier = hp_effectiveness_cost_modifier;
-    effectiveness.total_hp_restored = effectiveness.hp_restored_per_use * effectiveness.uses_to_hp_goal;
+    effectiveness.total_hp_restored = effectiveness.hp_restored_per_use * effectiveness.total_uses_needed;
   }
 
   void mp_effectiveness(__RestorationEffectiveness effectiveness){
@@ -338,22 +374,28 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     int mp_effectiveness_value = 0;
     int mp_effectiveness_cost_modifier = 0;
 
+    if(effectiveness.meat_cost_per_use > 0){
+      mp_effectiveness_cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_available) * effectiveness.meat_cost_per_use;
+    }
+
+    mp_effectiveness_value = effectiveness.mp_restored_per_use * effectiveness.uses_to_mp_goal;
+
     if(effectiveness.total_uses_needed > 1){
-      mp_effectiveness_value = effectiveness.mp_restored_per_use * (effectiveness.uses_to_mp_goal - 1);
-      int wasted_on_last_use = mp_wasted_by(starting_mp + mp_effectiveness_value);
-      mp_effectiveness_value += effectiveness.mp_restored_per_use - wasted_on_last_use;
-      mp_effectiveness_cost_modifier -= wasted_on_last_use;
+      int pre_goal_starting_mp = starting_mp + (effectiveness.mp_restored_per_use * (effectiveness.uses_to_mp_goal - 1));
+      int waste_by_last_needed_cast = mp_wasted_by(pre_goal_starting_mp);
+      int past_goal_casts = effectiveness.total_uses_needed - effectiveness.uses_to_mp_goal;
+      int wasted_by_overcast = past_goal_casts * mp_wasted_by(pre_goal_starting_mp + effectiveness.mp_restored_per_use);
+      mp_effectiveness_cost_modifier += waste_by_last_needed_cast + wasted_by_overcast;
     } else{
-      mp_effectiveness_value = effectiveness.mp_restored_per_use - mp_wasted_by(starting_mp);
-      mp_effectiveness_cost_modifier -= mp_wasted_by(starting_mp);
+      mp_effectiveness_cost_modifier += mp_wasted_by(starting_mp);
     }
 
     //case when using hp+mp restore with a higher hp goal than mp, calculate extra uses as wasteful
-    mp_effectiveness_cost_modifier -= (effectiveness.total_uses_needed - effectiveness.uses_to_mp_goal) * effectiveness.mp_restored_per_use;
+    mp_effectiveness_cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_to_mp_goal) * effectiveness.mp_restored_per_use;
 
     effectiveness.mp_effectiveness_value = mp_effectiveness_value;
     effectiveness.mp_effectiveness_cost_modifier = mp_effectiveness_cost_modifier;
-    effectiveness.total_mp_restored = effectiveness.mp_restored_per_use * effectiveness.uses_to_mp_goal;
+    effectiveness.total_mp_restored = effectiveness.mp_restored_per_use * effectiveness.total_uses_needed;
   }
 
   __RestorationEffectiveness effectiveness;
@@ -362,7 +404,7 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
   effectiveness.mp_goal = mp_goal;
   effectiveness.starting_mp = starting_mp;
   effectiveness.hp_restored_per_use = hp_restored_per();
-  effectiveness.hp_restored_per_use = mp_restored_per();
+  effectiveness.mp_restored_per_use = mp_restored_per();
   effectiveness.uses_available = uses_on_hand();
   effectiveness.uses_to_hp_goal = uses_needed_to_reach_hp_goal();
   effectiveness.uses_to_mp_goal = uses_needed_to_reach_mp_goal();
@@ -373,20 +415,29 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
   mp_effectiveness(effectiveness);
   effectiveness.total_meat_spent = effectiveness.meat_cost_per_use * max(effectiveness.total_uses_needed - effectiveness.uses_available, 0);
   effectiveness.total_value = (effectiveness.mp_effectiveness_value + effectiveness.hp_effectiveness_value) - (effectiveness.mp_effectiveness_cost_modifier + effectiveness.hp_effectiveness_cost_modifier);
+
+  print(to_string(metadata));
+  print(metadata.name + " effectiveness - " + to_string(effectiveness));
   return effectiveness;
 }
 
 __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int goal_mp, int starting_mp, boolean buyItems, boolean useFreeRests){
 
+  //filters out most of the stuff that is obviously not available
   boolean is_useable(__RestorationMetadata metadata){
-    if(metadata == __NO_RESTORATION_METADATA){
-      return false;
-    }
     if(metadata.type == "item"){
-      return auto_is_valid(to_item(metadata.name));
+      item i = to_item(metadata.name);
+      return auto_is_valid(i) && (available_amount(i) > 0 || (buyItems && npc_price(i) > 0));
     }
     if(metadata.type == "skill"){
-      return auto_is_valid(to_skill(metadata.name));
+      skill s = to_skill(metadata.name);
+      return auto_is_valid(s) && auto_have_skill(s) && my_maxmp() >= mp_cost(s);
+    }
+    if(metadata.type == "dwelling" && useFreeRests){
+      item d = to_item(metadata.name);
+      return (d == $item[Chateau Mantegna Room Key] && chateaumantegna_available()) ||
+        (d == $item[Distant Woods Getaway Brochure] && auto_campawayAvailable()) ||
+        (d == get_dwelling() && !haveAnyIotmAlternateCampsight());
     }
     return false;
   }
@@ -395,31 +446,40 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
   __RestorationMetadata best = __NO_RESTORATION_METADATA;
   __RestorationEffectiveness best_effectiveness = __NO_EFFECTIVENESS;
 
-  foreach name, metadata in __known_restoration_sources {
+  foreach name, metadata in __restoration_methods() {
     //cant use this skill/item in current path
     if(!is_useable(metadata)){
       continue;
     }
 
-    //caller doesnt want to rest (or is out of free rests)
-    if(metadata.type == "dwelling" && (!useFreeRests ||
-      (to_item(metadata.name) == $item[Chateau Mantegna Room Key] && !chateaumantegna_available()) ||
-      (to_item(metadata.name) == $item[Distant Woods Getaway Brochure] && !auto_campawayAvailable()) ||
-      get_dwelling() != to_item(metadata.name))){
+    __RestorationEffectiveness effectiveness = __determin_effectiveness(goal_hp, starting_hp, goal_mp, starting_mp, metadata);
+
+    //dont have enough items/mp on hand
+    if(!buyItems && effectiveness.uses_available < effectiveness.total_uses_needed){
+      print(name + " not enough available. have "+effectiveness.uses_available+" uses, need "+effectiveness.total_uses_needed+".");
       continue;
     }
 
-    __RestorationEffectiveness effectiveness = __determin_effectiveness(goal_hp, starting_hp, goal_mp, starting_mp, metadata);
+    if(goal_hp > starting_hp && effectiveness.total_hp_restored == 0){
+      print(name + " wont restore any hp.");
+      continue;
+    }
 
-    //dont have enough items on hand
-    if(metadata.type == "item" && !buyItems && effectiveness.uses_available < effectiveness.total_uses_needed){
+    if(goal_mp > starting_mp && effectiveness.total_mp_restored == 0){
+      print(name + " wont restore any mp.");
       continue;
     }
 
     print(best.name + " ("+best_effectiveness.total_value+") vs " + name + " ("+effectiveness.total_value+")");
-    if(effectiveness.total_value > best_effectiveness.total_value){
+    if(effectiveness.total_value > best_effectiveness.total_value || best.name == ""){
       best_effectiveness = effectiveness;
       best = metadata;
+    } else if(effectiveness.total_value == best_effectiveness.total_value){
+      if((effectiveness.mp_effectiveness_value > best_effectiveness.mp_effectiveness_value) ||
+        (effectiveness.hp_effectiveness_value > best_effectiveness.hp_effectiveness_value)){
+        best_effectiveness = effectiveness;
+        best = metadata;
+      }
     }
   }
 
@@ -428,7 +488,7 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
 }
 
 boolean __use_restore(__RestorationMetadata metadata, boolean buyItems, boolean useFreeRests){
-  if(metadata == __NO_RESTORATION_METADATA){
+  if(metadata.name == ""){
     return false;
   }
 
