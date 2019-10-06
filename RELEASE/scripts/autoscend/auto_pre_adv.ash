@@ -262,6 +262,7 @@ void handlePreAdventure(location place)
 			abort("Tried to be retro but lacking the Continuum Transfunctioner.");
 		}
 		autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
+		addToMaximize("+equip " + $item[Continuum Transfunctioner]);
 	}
 
 	if((place == $location[Inside The Palindome]) && (my_turncount() != 0))
@@ -271,6 +272,7 @@ void handlePreAdventure(location place)
 			abort("Tried to go to The Palindome but don't have the Namsilat");
 		}
 		autoEquip($slot[acc3], $item[Talisman O\' Namsilat]);
+		addToMaximize("+equip " + $item[Talisman O\' Namsilat]);
 	}
 
 	if((place == $location[The Haunted Wine Cellar]) && (my_turncount() != 0) && (get_property("auto_winebomb") == "partial"))
@@ -280,11 +282,19 @@ void handlePreAdventure(location place)
 			abort("Tried to charge a WineBomb but don't have one.");
 		}
 		autoEquip($slot[off-hand], $item[Unstable Fulminate]);
+		addToMaximize("+equip " + $item[Unstable Fulminate]);
 	}
 
-	if(place == $location[The Black Forest])
+	if((place == $location[The Black Forest]) && (my_turncount() != 0)
 	{
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);
+		addToMaximize("+equip " + $item[Blackberry Galoshes]);
+	}
+
+	if((place == $location[The Arid\, Extra-Dry Desert]) && (my_turncount() != 0)
+	{
+		autoEquip($slot[acc3], $item[UV-resistant compass]);
+		addToMaximize("+equip " + $item[UV-resistant compass]);
 	}
 
 	bat_formPreAdventure();
