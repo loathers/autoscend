@@ -7153,7 +7153,7 @@ boolean L11_unlockEd()
 
 		// Forcing Tavern.
 		set_property("auto_forceTavern", true);
-		if (L3_Tavern()) return true;
+		return false;
 	}
 
 	print("In the pyramid (W:" + item_amount($item[crumbling wooden wheel]) + ") (R:" + item_amount($item[tomb ratchet]) + ") (U:" + get_property("controlRoomUnlock") + ")", "blue");
@@ -12966,29 +12966,29 @@ boolean L9_chasmBuild()
 	asdonBuff($effect[Driving Intimidatingly]);
 
 	// Check our Load out to see if spells are the best option for Orc-Thumping
-	skill useSpellsInOrcCamp = $skill[none];
+	boolean useSpellsInOrcCamp = false;
 	if(setFlavour($element[cold]) && canUse($skill[Stuffed Mortar Shell]))
 	{
-		useSpellsInOrcCamp = $skill[Stuffed Mortar Shell];
+		useSpellsInOrcCamp = true;
 	}
 
 	if(setFlavour($element[cold]) && canUse($skill[Cannelloni Cannon], false))
 	{
-		useSpellsInOrcCamp = $skill[Cannelloni Cannon];
+		useSpellsInOrcCamp = true;
 	}
 	
 	if(canUse($skill[Saucegeyser], false))
 	{
-		useSpellsInOrcCamp = $skill[Saucegeyser];
+		useSpellsInOrcCamp = true;
 	}
 	
 	if(canUse($skill[Saucecicle], false))
 	{
-		useSpellsInOrcCamp = $skill[Saucecicle];
+		useSpellsInOrcCamp = true;
 	}
 
 	// Always Maximize and choose our default Non-Com First, in case we are wrong about the non-com we MAY have some gear still equipped to help us.
-	if(useSpellsInOrcCamp != $skill[none])
+	if(useSpellsInOrcCamp != false)
 	{
 		print("Preparing to Blast Orcs with Cold Spells!", "blue");
 		addToMaximize("myst,40spell damage,80spell damage percent,40cold spell damage,-1000 ml");
