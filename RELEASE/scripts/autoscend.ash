@@ -12989,7 +12989,7 @@ boolean L9_chasmBuild()
 	}
 
 	// Always Maximize and choose our default Non-Com First, in case we are wrong about the non-com we MAY have some gear still equipped to help us.
-	if(useSpellsInOrcCamp != false)
+	if(useSpellsInOrcCamp == true)
 	{
 		print("Preparing to Blast Orcs with Cold Spells!", "blue");
 		addToMaximize("myst,40spell damage,80spell damage percent,40cold spell damage,-1000 ml");
