@@ -1557,14 +1557,31 @@ boolean L1_ed_islandFallback()
 
 	if (have_skill($skill[Upgraded Legs]) || item_amount($item[Ka coin]) >= 10)
 	{
+		if(have_outfit("Filthy Hippy Disguise") && is_wearing_outfit("Filthy Hippy Disguise"))	
+		{	
+			equip($slot[Pants], $item[None]);	
+			put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);	
+			equipBaseline();	
+		}
 		buffMaintain($effect[Wisdom Of Thoth], 20, 1, 1);
 		if (have_skill($skill[More Legs]) && maximizeContains("-10ml"))
 		{
 			removeFromMaximize("-10ml");
 		}
 		auto_change_mcd(11);
-		addToMaximize("-outfit Filthy Hippy Disguise");
-		return autoAdv(1, $location[Hippy Camp]);
+		boolean retVal = autoAdv(1, $location[Hippy Camp]);
+		if (item_amount($item[Filthy Corduroys]) > 0)
+		{	
+			if (closet_amount($item[Filthy Corduroys]) > 0)	
+			{	
+				autosell(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);	
+			}	
+			else	
+			{	
+				put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);	
+			}	
+		}	
+		return retVal;
 	}
 	set_property("auto_needLegs", true);
 	if (!maximizeContains("-10ml"))
@@ -1675,9 +1692,9 @@ boolean LM_edTheUndying()
 		return true;
 	}
 
-	if (maximizeContains("-outfit Filthy Hippy Disguise"))
+	if (closet_amount($item[Filthy Corduroys]) > 0)
 	{
-		removeFromMaximize("-outfit Filthy Hippy Disguise");
+		take_closet(closet_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
 	}
 
 	if (!get_property("breakfastCompleted").to_boolean())
@@ -1727,13 +1744,13 @@ boolean LM_edTheUndying()
 	{
 		return true;
 	}
-	// Bats are 1 Ka and the rewards are useful
-	if (L4_batCave())
+	// Goblins are 1 Ka and the rewards are useful
+	if (L5_haremOutfit() || L5_goblinKing())
 	{
 		return true;
 	}
-	// Goblins are 1 Ka and the rewards are useful
-	if (L5_haremOutfit() || L5_goblinKing())
+	// Bats are 1 Ka and the rewards are useful
+	if (L4_batCave())
 	{
 		return true;
 	}
