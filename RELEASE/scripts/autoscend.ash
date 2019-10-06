@@ -5666,7 +5666,8 @@ boolean LX_attemptPowerLevel()
 	else
 	{
 		// burn all spare clovers after level 12 if we need to powerlevel.
-		if (my_level() >= 12 && get_property("questL12War") == "finished" && cloversAvailable() > 0)
+		int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
+		if (my_level() >= 12 && get_property("questL12War") == "finished" && cloversAvailable() > cloverLimit)
 		{
 			//Determine where to go for clover stats, do not worry about clover failures
 			location whereTo = $location[none];
@@ -13813,6 +13814,13 @@ boolean L8_trapperGroar()
 		return false;
 	}
   
+	if (internalQuestStatus("questL08Trapper") < 2)
+	{
+		// if we haven't returned the goat cheese and ore 
+		// to the trapper yet, don't try to ascend the peak.
+		return false;
+	}
+
 	if(get_property("auto_trapper") == "finished")
 	{
 		return false;
@@ -14149,7 +14157,8 @@ boolean auto_tavern()
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
 	// Infrequent compunding issue, reset maximizer
-	resetMaximize()
+
+	resetMaximize();
 
 	boolean maximized = false;
 	foreach loc in locations
@@ -14781,10 +14790,6 @@ boolean doTasks()
 	{
 		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0))
 		{
-			if (!handleServant($servant[Scribe]))
-			{
-				handleServant($servant[Cat]);
-			}
 			fightScienceTentacle();
 			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
 			{
@@ -14794,7 +14799,6 @@ boolean doTasks()
 	}
 	else if((my_level() >= 9) && (my_hp() > 0))
 	{
-		handleServant($servant[Scribe]);
 		fightScienceTentacle();
 		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
 		{
