@@ -590,13 +590,20 @@ string auto_combatHandler(int round, string opp, string text)
 
 	if(enemy.to_string() == "skeleton astronaut")
 	{
+		if(my_daycount() == 1 && item_amount($item[Exploding cigar]) > 0){
+			return "item " + $item[Exploding cigar];
+		}
 		int dmg = 0;
 		foreach el in $elements[hot, cold, sleaze, spooky, stench]
 		{
 			dmg += min(10, numeric_modifier(el.to_string() + " Damage"));
 		}
+		// 10 physical + 10 prismatic is enough to be better than Saucestorm.
+		// Otherwise, saucestorm deals 20 damage/round.
 		if(dmg >= 10 && buffed_hit_stat() >= 120 + monster_level_adjustment())
+		{
 			return "attack with weapon";
+		}
 		else if(canUse($skill[Saucestorm], false))
 		{
 			return useSkill($skill[Saucestorm], false);
