@@ -101,3 +101,8 @@
 105	magical mystery juice	item	0	scaling	none	none
 106	generic mana potion	item	0	scaling	none	none
 107	A Relaxing Hot Tub	clan	ALL	0	All Negative	none
+108	Psychokinetic Energy Blob	item	0	25	none	none
+109	Cloaca-Cola	item	0	12	none	none
+110	Holy Spring Water	item	0	50	none	Spiritually Awake
+111	Spirit Beer	item	0	90	none	Spiritually Aware
+112	Sacramental Wine	item	0	180	none	Spiritually Awash

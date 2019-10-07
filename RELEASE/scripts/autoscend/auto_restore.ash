@@ -110,6 +110,7 @@ static int __mp_cost_multiplier = 3;
 static string __RESTORE_ALL = "all";
 static string __RESTORE_HALF = "half";
 static string __RESTORE_SCALING = "scaling";
+static string __HOT_TUB = "a relaxing hot tub";
 
 /**
  * Parse autoscend_restoration.txt into __known_restoration_sources.
@@ -230,7 +231,7 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
       return available_amount(to_item(metadata.name));
     } else if(metadata.type == "skill"){
       return floor(starting_mp / mp_cost(to_skill(metadata.name)));
-    } else if(metadata.name == "A Relaxing Hot Tub"){
+    } else if(metadata.name == __HOT_TUB){
       return hotTubSoaksRemaining();
     }
     return 0;
@@ -459,7 +460,7 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
         (d == $item[Distant Woods Getaway Brochure] && auto_campawayAvailable()) ||
         (d == get_dwelling() && !haveAnyIotmAlternateCampsight());
     }
-    if(metadata.name == "A Relaxing Hot Tub"){
+    if(metadata.name == __HOT_TUB){
       return canUseHotTub();
     }
     return false;
@@ -527,7 +528,7 @@ boolean __use_restore(__RestorationMetadata metadata, boolean buyItems, boolean 
     return doFreeRest();
   }
 
-  if(metadata.name == "A Relaxing Hot Tub"){
+  if(metadata.name == __HOT_TUB){
     int pre_soaks = hotTubSoaksRemaining();
     return doHottub() == pre_soaks - 1;
   }
