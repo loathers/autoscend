@@ -98,3 +98,6 @@
 102	wasabi marble soda	item	0	7	none	none
 103	soda water	item	0	4	none	none
 104	Wint-O-Fresh mint	item	0	4	none	none
+105	magical mystery juice	item	0	scaling	none	none
+106	generic mana potion	item	0	scaling	none	none
+107	A Relaxing Hot Tub	clan	ALL	0	All Negative	none

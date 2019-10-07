@@ -276,7 +276,6 @@ boolean acquireHP(float goalPercent, boolean buyIt);
 boolean acquireHP(float goalPercent, boolean buyItm, boolean freeRest);
 float mp_regen();
 float hp_regen();
-boolean doRest(float hp_threshold, float mp_threshold, boolean freeOnly);
 int doRest();
 boolean doFreeRest();
 boolean haveFreeRestAvailable();
@@ -537,6 +536,8 @@ boolean doBedtime();										//Defined in autoscend.ash
 boolean doHRSkills();										//Defined in autoscend/auto_heavyrains.ash
 boolean doVacation();										//Defined in autoscend.ash
 int doHottub();												//Defined in autoscend/auto_clan.ash
+int hotTubSoaksRemaining();						//Defined in autoscend/auto_clan.ash
+boolean canUseHotTub();								//Defined in autoscend/auto_clan.ash
 int doNumberology(string goal);								//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, boolean doIt);				//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, boolean doIt, string option);//Defined in autoscend/auto_util.ash

@@ -1,8 +1,22 @@
 script "auto_restore.ash";
 
 /**
+ * Functions designed to deal with restoring hp/mp, removing status effects, etc.
+ *
+ * Bulk of the file is in determining what restoration method is optimal to use in a given situation. Restore methods are loaded from data/autoscend_restoration.txt, which can be updated to add new methods as needed. In general it should be as simple as adding a new line to that file with the appropriate values. For edge cases or special methods (e.g. clan hot tub) you may also need to add a bit of extra logic to the __determine_effectiveness function.
+ *
+ * Current hp/mp sources:
+ *    - dwelling (free rests only)
+ *    - chateau/campaway camp (free rests only)
+ *    - clan hot tub
+ *    - hp/mp items listed in autoscend_restoration.txt
+ */
+
+/**
  * Private Interface
  */
+
+// Loosely maps to autoscend_restoration.txt data, after a little parsing/coercing
 record __RestorationMetadata{
   string name;
   string type;
@@ -15,6 +29,7 @@ record __RestorationMetadata{
   boolean[effect] gives_effects;
 };
 
+// stores most of the intermediate and final values needed to determine efficiency, for clarity and so we dont have to keep recalculating them
 record __RestorationEffectiveness{
   int hp_goal;
   int starting_hp;
@@ -38,6 +53,7 @@ record __RestorationEffectiveness{
   int total_value;
 };
 
+// Real ugly to_string, probably only enable for debugging
 string to_string(__RestorationMetadata r){
   string list_to_string(boolean[effect] e_list){
     string s = "[";
@@ -58,6 +74,7 @@ string to_string(__RestorationMetadata r){
   return "__RestorationMetadata(name: "+r.name+", type: "+r.type+", hp_restored: "+r.hp_restored+", restores_variable_hp: "+r.restores_variable_hp+", mp_restored: "+r.mp_restored+", restores_variable_mp: "+r.restores_variable_mp+", removes_beaten_up: "+r.removes_beaten_up+", removes_effects: "+removes_effects_str+", gives_effects: "+gives_effects_str+")";
 }
 
+// Real ugly to_string, probably only enable for debugging
 string to_string(__RestorationEffectiveness e){
   string val = "__RestorationEffectiveness(";
   val += "hp_goal: " + e.hp_goal;
@@ -84,50 +101,23 @@ string to_string(__RestorationEffectiveness e){
   return val;
 }
 
-// Note: these data structures may hold skills/items/effects that are not available to the player, up to caller to check auto_is_valid
-static boolean[effect] __all_negative_effects;
+static boolean[effect] __all_negative_effects = $effects[Beaten Up];
 static __RestorationMetadata[string] __known_restoration_sources;
-static __RestorationMetadata[item] __known_dwellings;
-static __RestorationMetadata[item] __known_items;
-static __RestorationMetadata[skill] __known_skills;
-static __RestorationMetadata __NO_RESTORATION_METADATA = new __RestorationMetadata("", "", 0, false, 0, false, false, {},{});
-static __RestorationEffectiveness __NO_EFFECTIVENESS = new __RestorationEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 static int __mp_cost_multiplier = 3;
+
+// TODO: would be nice to replace this concept with just putting a simple formula in place of the hp/mp fields, e.g. ${my_level}*1.5
+// currently custom formulas need to be coded into an if statement
 static string __RESTORE_ALL = "all";
 static string __RESTORE_HALF = "half";
+static string __RESTORE_SCALING = "scaling";
 
+/**
+ * Parse autoscend_restoration.txt into __known_restoration_sources.
+ *
+ * Uses an intermediate record for the initial file_to_map, then parses it to make working with __RestorationMetadata friendlier.
+ */
 void __init_restoration_metadata(){
   static string resotration_filename = "autoscend_restoration.txt";
-
-  boolean[item] load_known_dwellings(__RestorationMetadata[string] source){
-    boolean[item] dwellings;
-    foreach name, r in source {
-      if(r.type == "dwelling"){
-        dwellings[to_item(name)] = true;
-      }
-    }
-    return dwellings;
-  }
-
-  boolean[item] load_known_items(__RestorationMetadata[string] source){
-    boolean[item] restores;
-    foreach name, r in source {
-      if(r.type == "item"){
-        restores[to_item(name)] = true;
-      }
-    }
-    return restores;
-  }
-
-  boolean[skill] load_known_skills(__RestorationMetadata[string] source){
-    boolean[skill] restores;
-    foreach name, r in source {
-      if(r.type == "skill"){
-        restores[to_skill(name)] = true;
-      }
-    }
-    return restores;
-  }
 
   boolean[effect] parse_effects(string name, string effects_list){
     effects_list = effects_list.to_lower_case();
@@ -151,7 +141,7 @@ void __init_restoration_metadata(){
 
   int parse_restored_amount(string restored_str){
     restored_str = restored_str.to_lower_case();
-    if(restored_str == "all" || restored_str == "half"){
+    if(restored_str == "all" || restored_str == "half" || restored_str == "scaling"){
       return 0;
     } else{
       return to_int(restored_str);
@@ -164,9 +154,10 @@ void __init_restoration_metadata(){
       return __RESTORE_ALL;
     } else if(restored_str == "half"){
       return __RESTORE_HALF;
-    } else {
-      return "";
+    } else if(restored_str == "scaling"){
+      return __RESTORE_SCALING;
     }
+    return "";
   }
 
   void init(){
@@ -197,28 +188,6 @@ void __init_restoration_metadata(){
       parsed.gives_effects = parse_effects(parsed.name, r.gives_effects);
 
       __known_restoration_sources[parsed.name] = parsed;
-
-      if(parsed.type == "skill"){
-        if(to_skill(parsed.name) != $skill[none]){
-          __known_skills[to_skill(parsed.name)] = parsed;
-        } else{
-          print("Unknown skill encountered parsing restoration metadata: " + parsed.name);
-        }
-      } else if(parsed.type == "dwelling"){
-        if(to_item(parsed.name) != $item[none]){
-          __known_dwellings[to_item(parsed.name)] = parsed;
-        } else{
-          print("Unknown dwelling encountered parsing restoration metadata: " + parsed.name);
-        }
-      } else if(parsed.type == "item"){
-        if(to_item(parsed.name) != $item[none]){
-          __known_items[to_item(parsed.name)] = parsed;
-        } else{
-          print("Unknown item encountered parsing restoration metadata: " + parsed.name);
-        }
-      } else{
-        print("Unexpected type " + parsed.type + " encountered parsing restoration metadata: " + parsed.name);
-      }
     }
   }
 
@@ -226,23 +195,34 @@ void __init_restoration_metadata(){
   init();
 }
 
-void __init_restoration_metadata(boolean reload){
-  if(reload){
-    clear(__known_restoration_sources);
-    clear(__known_dwellings);
-    clear(__known_items);
-    clear(__known_skills);
-  }
-  __init_restoration_metadata();
-}
-
+/**
+ * Safe way to access __known_restoration_sources, ensuring it is initialized if not already.
+ */
 __RestorationMetadata[string] __restoration_methods(){
-  __init_restoration_metadata(true);
+  if(count(__known_restoration_sources) == 0){
+    __init_restoration_metadata();
+  }
   return __known_restoration_sources;
 }
 
-__RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp, int mp_goal, int starting_mp, __RestorationMetadata metadata){
+/**
+ * Calculate the effectiveness of a restoration method given starting hp/mp and hp/mp targets.
+ *
+ * Effectiveness is roughly calculated as: (hp restored + mp restored) - (meat cost + mp cost + hp waste + mp waste)
+ *
+ * A little more detail on effectiveness calculation:
+ *  - hp/mp waste is considered over the goal hp/mp, not max hp/mp
+ *  - skills that would require us to get more mp have the extra mp needed weighted, mp is expensive and valuable and we want to avoid having to get more if we can.
+ *  - items on hand that would be consumed are not considered a "cost", only extras we would need to buy.
+ *  - a restore method could have a large negative value depending on cost/weight associated with it, but it can still be used (if it is the least negative)
+ *
+ * TODO:
+ *  - implement coinmasters
+ *  - give value/cost to effects
+ */
+__RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_hp, int mp_goal, int starting_mp, __RestorationMetadata metadata){
 
+  // How many times can we use the method currently
   int uses_on_hand(){
     if(metadata.type == "dwelling"){
       return freeRestsRemaining();
@@ -250,10 +230,13 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
       return available_amount(to_item(metadata.name));
     } else if(metadata.type == "skill"){
       return floor(starting_mp / mp_cost(to_skill(metadata.name)));
+    } else if(metadata.name == "A Relaxing Hot Tub"){
+      return hotTubSoaksRemaining();
     }
     return 0;
   }
 
+  // Determine how much hp is restored, working out scaling formulas if needed
   int hp_restored_per(){
     int restored_amount = metadata.hp_restored;
     if(metadata.restores_variable_hp == __RESTORE_ALL){
@@ -262,15 +245,30 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
       restored_amount = floor(my_maxhp() / 2);
     }
 
+    if(metadata.type == "dwelling"){
+      restored_amount += numeric_modifier("Bonus Resting HP");
+    }
+
     return restored_amount;
   }
 
+  // Determine how much mp is restored, working out scaling formulas if needed
   int mp_restored_per(){
     int restored_amount = metadata.mp_restored;
     if(metadata.restores_variable_mp == __RESTORE_ALL){
       restored_amount = my_maxmp();
     } else if(metadata.restores_variable_mp == __RESTORE_HALF){
       restored_amount = floor(my_maxmp() / 2);
+    } else if(metadata.restores_variable_mp == __RESTORE_SCALING){
+      if(metadata.name == "magical mystery juice"){
+        restored_amount = my_level() * 1.5 + 5;
+      } else if(metadata.name == "generic mana potion"){
+        restored_amount = my_level() * 2.5;
+      }
+    }
+
+    if(metadata.type == "dwelling"){
+      restored_amount += numeric_modifier("Bonus Resting MP");
     }
 
     return restored_amount;
@@ -292,6 +290,11 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     return max(0, wasted);
   }
 
+  /**
+   * How many times we would need to use the method to reach the hp goal.
+   *
+   * If the restoration method doesnt restore hp, -1 is returned
+   */
   int uses_needed_to_reach_hp_goal(){
     if(hp_restored_per() < 1){
       return -1;
@@ -299,6 +302,11 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     return ceil((hp_goal - starting_hp) / hp_restored_per())+1;
   }
 
+  /**
+   * How many times we would need to use the method to reach the hp goal.
+   *
+   * If the restoration method doesnt restore hp, -1 is returned
+   */
   int uses_needed_to_reach_mp_goal(){
     if(mp_restored_per() < 1){
       return -1;
@@ -306,6 +314,7 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     return ceil((mp_goal - starting_mp) / mp_restored_per())+1;
   }
 
+  // Gives the mp cost if the restoration is a skill, 0 otherwise
   int mp_cost_per(){
     if(metadata.type == "skill"){
       return mp_cost(to_skill(metadata.name));
@@ -313,6 +322,8 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     return 0;
   }
 
+  // Gives the npc meat price of an item, or 0 if not purchasable (which is all non-items by definition)
+  // TODO: mall accessible
   int meat_cost_per(){
     if(metadata.type == "item"){
       return npc_price(to_item(metadata.name));
@@ -320,8 +331,10 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
     return 0;
   }
 
+  // TODO: value overage between goal and max to be value (not cost) but less valuable (half?)
+  // TODO: handle case where we have N uses but need > N uses and cant make up the difference (weighted cost?)
   void hp_effectiveness(__RestorationEffectiveness effectiveness){
-    if(effectiveness.uses_to_hp_goal == -1){
+    if(effectiveness.uses_to_hp_goal <= 0 || effectiveness.hp_restored_per_use <= 0){
       effectiveness.hp_effectiveness_value = 0;
       effectiveness.hp_effectiveness_cost_modifier = 0;
       effectiveness.total_hp_restored = 0;
@@ -346,10 +359,10 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
 
     hp_effectiveness_value = effectiveness.hp_restored_per_use * effectiveness.total_uses_needed;
     if(effectiveness.total_uses_needed > 1){
-      int pre_goal_starting_hp = starting_hp + (effectiveness.hp_restored_per_use * (effectiveness.uses_to_hp_goal - 1));
-      int waste_by_last_needed_cast = hp_wasted_by(pre_goal_starting_hp);
+      int last_cast_starting_hp = starting_hp + (effectiveness.hp_restored_per_use * (effectiveness.uses_to_hp_goal - 1));
+      int waste_by_last_needed_cast = hp_wasted_by(last_cast_starting_hp);
       int past_goal_casts = effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal;
-      int wasted_by_overcast = past_goal_casts * hp_wasted_by(pre_goal_starting_hp + effectiveness.hp_restored_per_use);
+      int wasted_by_overcast = past_goal_casts * hp_wasted_by(last_cast_starting_hp + effectiveness.hp_restored_per_use);
       hp_effectiveness_cost_modifier += waste_by_last_needed_cast + wasted_by_overcast;
     } else{
       hp_effectiveness_cost_modifier += hp_wasted_by(starting_hp);
@@ -364,7 +377,7 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
   }
 
   void mp_effectiveness(__RestorationEffectiveness effectiveness){
-    if(effectiveness.uses_to_mp_goal == -1 || effectiveness.mp_cost_per_use > 0){
+    if(effectiveness.uses_to_mp_goal <= 0 || effectiveness.mp_restored_per_use <= 0 || effectiveness.mp_cost_per_use > 0){
       effectiveness.mp_effectiveness_value = 0;
       effectiveness.mp_effectiveness_cost_modifier = 0;
       effectiveness.total_mp_restored = 0;
@@ -421,6 +434,13 @@ __RestorationEffectiveness __determin_effectiveness(int hp_goal, int starting_hp
   return effectiveness;
 }
 
+/**
+ * Filters __known_restoration_sources down to what is currently accessible to the player, calls __determine_effectiveness to calculate how effective each of those options are, then returns the one that is best (generally the highest __RestorationEffectiveness.total_value)
+ *
+ * TODO:
+ *  - implement coinmasters
+ *  - give value/cost to effects
+ */
 __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int goal_mp, int starting_mp, boolean buyItems, boolean useFreeRests){
 
   //filters out most of the stuff that is obviously not available
@@ -439,20 +459,22 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
         (d == $item[Distant Woods Getaway Brochure] && auto_campawayAvailable()) ||
         (d == get_dwelling() && !haveAnyIotmAlternateCampsight());
     }
+    if(metadata.name == "A Relaxing Hot Tub"){
+      return canUseHotTub();
+    }
     return false;
   }
 
   print("Calculating restore options (current hp: "+starting_hp+", hp goal: "+goal_hp+", current mp: "+starting_mp+", mp goal: "+goal_mp+")");
-  __RestorationMetadata best = __NO_RESTORATION_METADATA;
-  __RestorationEffectiveness best_effectiveness = __NO_EFFECTIVENESS;
+  __RestorationMetadata best;
+  __RestorationEffectiveness best_effectiveness;
 
   foreach name, metadata in __restoration_methods() {
-    //cant use this skill/item in current path
     if(!is_useable(metadata)){
       continue;
     }
 
-    __RestorationEffectiveness effectiveness = __determin_effectiveness(goal_hp, starting_hp, goal_mp, starting_mp, metadata);
+    __RestorationEffectiveness effectiveness = __determine_effectiveness(goal_hp, starting_hp, goal_mp, starting_mp, metadata);
 
     //dont have enough items/mp on hand
     if(!buyItems && effectiveness.uses_available < effectiveness.total_uses_needed){
@@ -487,6 +509,9 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
   return best;
 }
 
+/**
+ * Actually use the restoration method. Will only do 1 use even if the method needs more than one use to achieve the desired goal. This allows you to do the effectiveness calculation in a loop in case a different method becomes more effective.
+ */
 boolean __use_restore(__RestorationMetadata metadata, boolean buyItems, boolean useFreeRests){
   if(metadata.name == ""){
     return false;
@@ -502,6 +527,11 @@ boolean __use_restore(__RestorationMetadata metadata, boolean buyItems, boolean 
     return doFreeRest();
   }
 
+  if(metadata.name == "A Relaxing Hot Tub"){
+    int pre_soaks = hotTubSoaksRemaining();
+    return doHottub() == pre_soaks - 1;
+  }
+
   if(metadata.type == "skill"){
     skill s = to_skill(metadata.name);
     if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), buyItems, useFreeRests)){
@@ -514,90 +544,7 @@ boolean __use_restore(__RestorationMetadata metadata, boolean buyItems, boolean 
   return false;
 }
 
-/**
- * Public Interface
- */
-
-boolean acquireMP(){
-	return acquireMP(my_maxmp());
-}
-
-boolean acquireMP(int goal)
-{
-	return acquireMP(goal, false);
-}
-
-boolean acquireMP(int goal, boolean buyIt){
-	return acquireMP(goal, buyIt, freeRestsRemaining() > 2);
-}
-
-boolean acquireMP(int goal, boolean buyItems, boolean useFreeRests)
-{
-	if(goal > my_maxmp())
-	{
-		return false;
-	}
-
-	if(my_mp() >= goal)
-	{
-		return true;
-	}
-
-	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
-	if(my_maxmp() - my_mp() > 300){
-		auto_sausageEatEmUp(1);
-	}
-
-  print("Target MP => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
-	while(my_mp() < goal){
-    __RestorationMetadata best_restore = __most_effective_restore(0, my_hp(), goal, my_mp(), buyItems, useFreeRests);
-    if(!__use_restore(best_restore, buyItems, useFreeRests)){
-			print("Target MP => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
-			return false;
-    }
-	}
-
-	//item[int] recovers = List($items[Holy Spring Water, Spirit Beer, Sacramental Wine, Magical Mystery Juice, Black Cherry Soda, Doc Galaktik\'s Invigorating Tonic, Carbonated Soy Milk, Natural Fennel Soda, Grogpagne, Bottle Of Monsieur Bubble, Tiny House, Marquis De Poivre Soda, Cloaca-Cola, Phonics Down, Psychokinetic Energy Blob]);
-
-	return (my_mp() >= goal);
-}
-
-boolean acquireMP(float goalPercent){
-	return acquireMP(goalPercent, false);
-}
-
-boolean acquireMP(float goalPercent, boolean buyIt){
-	return acquireMP(goalPercent, buyIt, freeRestsRemaining() > 2);
-}
-
-boolean acquireMP(float goalPercent, boolean buyItm, boolean freeRest){
-	int goal = my_maxmp();
-	if(goalPercent > 1.0){
-		goal = ceil((goalPercent/100.0) * my_maxmp());
-	} else{
-		goal = ceil(goalPercent*my_maxmp());
-	}
-	return acquireMP(goal.to_int(), buyItm, freeRest);
-}
-
-boolean acquireHP(){
-	return acquireHP(my_maxhp());
-}
-
-boolean acquireHP(int goal){
-	return acquireHP(goal, false);
-}
-
-boolean acquireHP(int goal, boolean buyIt){
-	return acquireHP(goal, buyIt, false);
-}
-
-boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
-
-	if(goal > my_maxhp()){
-		goal = my_maxhp();
-	}
-
+void __cure_bad_stuff(){
   foreach e in $effects[Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned, Toad In The Hole]{
     if(have_effect(e) > 0){
       uneffect(e);
@@ -613,10 +560,159 @@ boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
 			print("Well, you're still beaten up, thats probably not great...", "red");
 		}
 	}
+}
+
+/**
+ * Public Interface
+ */
+
+
+/**
+ * Try to acquire your max mp (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ *
+ * returns true if my_mp() >= my_maxmp() after attempting to restore.
+ */
+boolean acquireMP(){
+	return acquireMP(my_maxmp());
+}
+
+/**
+ * Try to acquire up to the mp goal (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ *
+ * returns true if my_mp() >= goal after attempting to restore.
+ */
+boolean acquireMP(int goal)
+{
+	return acquireMP(goal, pulls_remaining() == -1);
+}
+
+/**
+ * Try to acquire up to the mp goal, optionally buying items (useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ *
+ * returns true if my_mp() >= goal after attempting to restore.
+ */
+boolean acquireMP(int goal, boolean buyItems){
+	return acquireMP(goal, buyItems, true);
+}
+
+/**
+ * Try to acquire up to the mp goal, optionally buying items and using free rests. Will also cure poisoned and beaten up before restoring any mp.
+ *
+ * returns true if my_mp() >= goal after attempting to restore.
+ */
+boolean acquireMP(int goal, boolean buyItems, boolean useFreeRests)
+{
+
+  __cure_bad_stuff();
+
+	if(goal > my_maxmp())
+	{
+		return false;
+	}
+
+	if(my_mp() >= goal)
+	{
+		return true;
+	}
+
+	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
+  // TODO: move this to general effectiveness method
+	if(my_maxmp() - my_mp() > 300){
+		auto_sausageEatEmUp(1);
+	}
+
+  print("Target MP => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+	while(my_mp() < goal){
+    __RestorationMetadata best_restore = __most_effective_restore(my_hp(), my_hp(), goal, my_mp(), buyItems, useFreeRests);
+    if(!__use_restore(best_restore, buyItems, useFreeRests)){
+			print("Target MP => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
+			return false;
+    }
+	}
+
+	return (my_mp() >= goal);
+}
+
+/**
+ * Try to acquire up to the mp goal expressed as a percentage (out of either 1.0 or 100.0) (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ *
+ * returns true if my_mp() >= goalPercent after attempting to restore.
+ */
+boolean acquireMP(float goalPercent){
+	return acquireMP(goalPercent, pulls_remaining() == -1);
+}
+
+/**
+ * Try to acquire up to the mp goal expressed as a percentage, optionally buying items (useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ *
+ * returns true if my_mp() >= goalPercent after attempting to restore.
+ */
+boolean acquireMP(float goalPercent, boolean buyItems){
+	return acquireMP(goalPercent, buyItems, true);
+}
+
+/**
+ * Try to acquire up to the mp goal expressed as a percentage (out of either 1.0 or 100.0), optionally buying items and using free rests. Will also cure poisoned and beaten up before restoring any mp.
+ *
+ * returns true if my_mp() >= goalPercent after attempting to restore.
+ */
+boolean acquireMP(float goalPercent, boolean buyItems, boolean useFreeRests){
+	int goal = my_maxmp();
+	if(goalPercent > 1.0){
+		goal = ceil((goalPercent/100.0) * my_maxmp());
+	} else{
+		goal = ceil(goalPercent*my_maxmp());
+	}
+	return acquireMP(goal.to_int(), buyItems, useFreeRests);
+}
+
+/**
+ * Try to acquire your max hp (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ *
+ * returns true if my_hp() >= my_maxhp() after attempting to restore.
+ */
+boolean acquireHP(){
+	return acquireHP(my_maxhp());
+}
+
+/**
+ * Try to acquire up to the hp goal (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ *
+ * returns true if my_hp() >= goal after attempting to restore.
+ */
+boolean acquireHP(int goal){
+	return acquireHP(goal, pulls_remaining() == -1);
+}
+
+/**
+ * Try to acquire up to the hp goal, optionally buying items (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ *
+ * returns true if my_hp() >= goal after attempting to restore.
+ */
+boolean acquireHP(int goal, boolean buyItems){
+	return acquireHP(goal, buyItems, true);
+}
+
+ /**
+  * Try to acquire up to the hp goal, optionally buying items and using free rests. Will also cure poisoned and beaten up before restoring any hp.
+  *
+  * returns true if my_hp() >= goal after attempting to restore.
+  */
+boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
+
+  __cure_bad_stuff();
+
+  if(goal > my_maxhp()){
+		return false;
+	}
+
+	if(my_hp() >= goal){
+		return true;
+	}
 
 	print("Target HP => "+goal+" - Considering restoration options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
 	while(my_hp() < goal){
-    __RestorationMetadata best_restore = __most_effective_restore(goal, my_hp(), 0, my_mp(), buyItems, useFreeRests);
+    __RestorationMetadata best_restore = __most_effective_restore(goal, my_hp(), my_mp(), my_mp(), buyItems, useFreeRests);
     if(!__use_restore(best_restore, buyItems, useFreeRests)){
       print("Target HP => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
 			return false;
@@ -626,22 +722,37 @@ boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
 	return true;
 }
 
+/**
+ * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0) (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ *
+ * returns true if my_hp() >= goalPercent after attempting to restore.
+ */
 boolean acquireHP(float goalPercent){
-	return acquireHP(goalPercent, false);
+	return acquireHP(goalPercent, pulls_remaining() == -1);
 }
 
-boolean acquireHP(float goalPercent, boolean buyItm){
-	return acquireHP(goalPercent, buyItm, freeRestsRemaining() > 2);
+/**
+ * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0), optionally buying items (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ *
+ * returns true if my_hp() >= goalPercent after attempting to restore.
+ */
+boolean acquireHP(float goalPercent, boolean buyItems){
+	return acquireHP(goalPercent, buyItems, true);
 }
 
-boolean acquireHP(float goalPercent, boolean buyItm, boolean freeRest){
+/**
+ * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0), optionally buying items and using free rests. Will also cure poisoned and beaten up before restoring any hp.
+ *
+ * returns true if my_hp() >= goalPercent after attempting to restore.
+ */
+boolean acquireHP(float goalPercent, boolean buyItems, boolean useFreeRests){
 	int goal = my_maxhp();
 	if(goalPercent > 1.0){
 		goal = ceil((goalPercent/100.0) * my_maxhp());
 	} else{
 		goal = ceil(goalPercent*my_maxhp());
 	}
-	return acquireHP(goal.to_int(), buyItm, freeRest);
+	return acquireHP(goal.to_int(), buyItems, useFreeRests);
 }
 
 /*
@@ -766,30 +877,6 @@ boolean doFreeRest(){
 	return false;
 }
 
-/*
- * Do a rest if the conditions are met. If either hp or mp remaining is below
- * their respective thesholds, it will try to rest.
- *
- * hp_threshold is the percent of hp (out of 1.0, e.g. 0.8 = 80%) below which it will try to rest
- * mp_threshold is the percent of mp (out of 1.0, e.g. 0.8 = 80%) below which it will try to rest
- * freeOnly will only try to rest if it is free when set to true, otherwise will always rest if the above thesholds are met
- *
- * returns true if a rest was used, false if it wasnt (for any reason)
- */
-boolean doRest(float hp_threshold, float mp_threshold, boolean freeOnly){
-	float hp_percent = 1.0 - ((my_maxhp() - my_hp()) / my_maxhp());
-	float mp_percent = 1.0 - ((my_maxmp() - my_mp()) / my_maxmp());
-	if(hp_percent < hp_threshold || mp_percent < mp_threshold){
-		if(freeOnly){
-			return doFreeRest();
-		} else{
-			int rest_count = get_property("timesRested").to_int();
-			return doRest() > rest_count;
-		}
-	}
-	return false;
-}
-
 float mp_regen()
 {
 	return 0.5 * (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max"));
@@ -833,6 +920,7 @@ boolean uneffect(effect toRemove)
 	return false;
 }
 
+// Deprecated, please use acquireHP()
 boolean useCocoon()
 {
 	if((have_effect($effect[Beaten Up]) > 0 || my_maxhp() <= 70) && have_skill($skill[Tongue Of The Walrus]) && my_mp() >= mp_cost($skill[Tongue Of The Walrus]))

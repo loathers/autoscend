@@ -153,7 +153,7 @@ boolean LA_cs_communityService()
 
 	if((my_daycount() == 2) && have_skill($skill[Shattering Punch]))
 	{
-		if(godLobsterCombat())
+		if(cs_healthMaintain() && godLobsterCombat())
 		{
 			return true;
 		}
@@ -1281,12 +1281,8 @@ boolean LA_cs_communityService()
 					visit_url("choice.php?whichchoice=1181&pwd=&option=3");
 					visit_url("choice.php?whichchoice=1183&pwd=&option=2");
 				}
-				while(cs_witchess()){
-					cs_healthMaintain();
-				}
-				while(godLobsterCombat()){
-					cs_healthMaintain();
-				};
+				while(cs_healthMaintain()&& cs_witchess());
+				while(cs_healthMaintain() && godLobsterCombat());
 
 				if((get_property("frAlways").to_boolean() || get_property("_frToday").to_boolean()) && !possessEquipment($item[FantasyRealm G. E. M.]))
 				{
@@ -4456,12 +4452,9 @@ boolean cs_giant_growth()
 		restoreSetting("choiceAdventure1119");
 		set_property("choiceAdventure1119", "");
 	}
-	else if(!godLobsterCombat($item[none], 3, "cs_combatLTB"))
+	else if(cs_healthMaintain() && !godLobsterCombat($item[none], 3, "cs_combatLTB"))
 	{
 #		autoAdv(1, $location[8-bit Realm], "cs_combatLTB");
-		if(!cs_healthMaintain() || !cs_mpMaintain()){
-			abort("Wasnt to maintain health and mp.");
-		}
 		autoAdv(1, $location[The Thinknerd Warehouse], "cs_combatLTB");
 	}
 #	print("Ending LTBs: " + item_amount($item[Louder Than Bomb]), "blue");

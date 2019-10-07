@@ -287,6 +287,14 @@ int changeClan()
 }
 
 
+int hotTubSoaksRemaining(){
+	return 5 - get_property("_hotTubSoaks").to_int();
+}
+
+boolean canUseHotTub(){
+	return (item_amount($item[Clan VIP Lounge Key]) > 0) && is_unrestricted($item[Clan VIP Lounge Key]) && hotTubSoaksRemaining() > 0;
+}
+
 int doHottub()
 {
 	if((item_amount($item[Clan VIP Lounge Key]) == 0) || !is_unrestricted($item[Clan VIP Lounge Key]))
@@ -298,7 +306,7 @@ int doHottub()
 		cli_execute("hottub");
 	}
 
-	return 5 - get_property("_hotTubSoaks").to_int();
+	return hotTubSoaksRemaining();
 }
 
 boolean isSpeakeasyDrink(item drink)
@@ -454,7 +462,7 @@ boolean zataraClanmate(string who)
 	string clanName = get_property("auto_consultClan");
 	if (clanName != "")
 	{
-		changeClan(clanName);	
+		changeClan(clanName);
 	}
 	else
 	{
