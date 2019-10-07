@@ -6,10 +6,12 @@ script "auto_restore.ash";
  * Bulk of the file is in determining what restoration method is optimal to use in a given situation. Restore methods are loaded from data/autoscend_restoration.txt, which can be updated to add new methods as needed. In general it should be as simple as adding a new line to that file with the appropriate values. For edge cases or special methods (e.g. clan hot tub) you may also need to add a bit of extra logic to the __determine_effectiveness function.
  *
  * Current hp/mp sources:
- *    - dwelling (free rests only)
- *    - chateau/campaway camp (free rests only)
- *    - clan hot tub
- *    - hp/mp items listed in autoscend_restoration.txt
+ *  - dwelling (free rests only)
+ *  - chateau/campaway camp (free rests only)
+ *  - clan hot tub
+ *  - hp/mp items listed in autoscend_restoration.txt
+ *  - npc purchasable items (meat and coinmasters)
+ *  - mall purchasable items (out of ronin)
  */
 
 /**
@@ -42,14 +44,17 @@ record __RestorationEffectiveness{
   int uses_to_mp_goal;
   int mp_cost_per_use;
   int meat_cost_per_use;
+  int coinmaster_cost_per_use;
   int hp_effectiveness_value;
   int hp_effectiveness_cost_modifier;
   int mp_effectiveness_value;
   int mp_effectiveness_cost_modifier;
+  int general_cost_modifier;
   int total_uses_needed;
   int total_hp_restored;
   int total_mp_restored;
   int total_meat_spent;
+  int total_coinmaster_tokens_spent;
   int total_value;
 };
 
@@ -88,14 +93,17 @@ string to_string(__RestorationEffectiveness e){
   val += ", uses_to_mp_goal: " + e.uses_to_mp_goal;
   val += ", mp_cost_per_use: " + e.mp_cost_per_use;
   val += ", meat_cost_per_use: " + e.meat_cost_per_use;
+  val += ", coinmaster_cost_per_use: " + e.coinmaster_cost_per_use;
   val += ", hp_effectiveness_value: " + e.hp_effectiveness_value;
   val += ", hp_effectiveness_cost_modifier: " + e.hp_effectiveness_cost_modifier;
   val += ", mp_effectiveness_value: " + e.mp_effectiveness_value;
   val += ", mp_effectiveness_cost_modifier: " + e.mp_effectiveness_cost_modifier;
+  val += ", general_cost_modifier: " + e.general_cost_modifier;
   val += ", total_uses_needed: " + e.total_uses_needed;
   val += ", total_hp_restored: " + e.total_hp_restored;
   val += ", total_mp_restored: " + e.total_mp_restored;
   val += ", total_meat_spent: " + e.total_meat_spent;
+  val += ", total_coinmaster_tokens_spent: " + e.total_coinmaster_tokens_spent;
   val += ", total_value: " + e.total_value;
   val += ")";
   return val;
@@ -104,6 +112,7 @@ string to_string(__RestorationEffectiveness e){
 static boolean[effect] __all_negative_effects = $effects[Beaten Up];
 static __RestorationMetadata[string] __known_restoration_sources;
 static int __mp_cost_multiplier = 3;
+static int __coinmaster_cost_multiplier = 10;
 
 // TODO: would be nice to replace this concept with just putting a simple formula in place of the hp/mp fields, e.g. ${my_level}*1.5
 // currently custom formulas need to be coded into an if statement
@@ -218,8 +227,8 @@ __RestorationMetadata[string] __restoration_methods(){
  *  - a restore method could have a large negative value depending on cost/weight associated with it, but it can still be used (if it is the least negative)
  *
  * TODO:
- *  - implement coinmasters
  *  - give value/cost to effects
+ *  - variable weights for coinmasters (probably move cost modifier weight to data file)
  */
 __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_hp, int mp_goal, int starting_mp, __RestorationMetadata metadata){
 
@@ -228,7 +237,7 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
     if(metadata.type == "dwelling"){
       return freeRestsRemaining();
     } else if(metadata.type == "item"){
-      return available_amount(to_item(metadata.name));
+      return available_amount(to_item(metadata.name)); //I believe this will take coinmasters into consideration for us
     } else if(metadata.type == "skill"){
       return floor(starting_mp / mp_cost(to_skill(metadata.name)));
     } else if(metadata.name == __HOT_TUB){
@@ -323,13 +332,37 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
     return 0;
   }
 
-  // Gives the npc meat price of an item, or 0 if not purchasable (which is all non-items by definition)
-  // TODO: mall accessible
+  // Gives the npc/mall meat price of an item, or 0 if not purchasable (which is all non-items by definition)
   int meat_cost_per(){
     if(metadata.type == "item"){
-      return npc_price(to_item(metadata.name));
+      item i = to_item(metadata.name);
+      if(pulls_remaining == -1){
+        return min(npc_price(i), auto_mall_price(i));
+      }
+      return npc_price(i);
     }
     return 0;
+  }
+
+  int coinmaster_cost_per(){
+    if(metadata.type == "item"){
+      item i = to_item(metadata.name);
+      if(i.seller != $coinmaster[none]){
+        return sell_price(i.seller , i);
+      }
+    }
+    return 0;
+  }
+
+  int general_cost_modifier(__RestorationEffectiveness effectiveness){
+    int cost_modifier = 0;
+    if(effectiveness.meat_cost_per_use > 0){
+      cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_available) * effectiveness.meat_cost_per_use;
+    }
+    if(effectiveness.coinmaster_cost_per_use > 0){
+      cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_available) * effectiveness.coinmaster_cost_per_use * __coinmaster_cost_multiplier;
+    }
+    return cost_modifier;
   }
 
   // TODO: value overage between goal and max to be value (not cost) but less valuable (half?)
@@ -354,9 +387,7 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
       }
       hp_effectiveness_cost_modifier -= mp_regen(); // we get some mp back for free, which is valuable.
     }
-    if(effectiveness.meat_cost_per_use > 0){
-      hp_effectiveness_cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_available) * effectiveness.meat_cost_per_use;
-    }
+
 
     hp_effectiveness_value = effectiveness.hp_restored_per_use * effectiveness.total_uses_needed;
     if(effectiveness.total_uses_needed > 1){
@@ -427,11 +458,13 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
   effectiveness.meat_cost_per_use = meat_cost_per();
   hp_effectiveness(effectiveness);
   mp_effectiveness(effectiveness);
+  effectiveness.general_cost_modifier = general_cost_modifier(effectiveness);
   effectiveness.total_meat_spent = effectiveness.meat_cost_per_use * max(effectiveness.total_uses_needed - effectiveness.uses_available, 0);
-  effectiveness.total_value = (effectiveness.mp_effectiveness_value + effectiveness.hp_effectiveness_value) - (effectiveness.mp_effectiveness_cost_modifier + effectiveness.hp_effectiveness_cost_modifier);
+  effectiveness.total_coinmaster_tokens_spent = effectiveness.coinmaster_cost_per_use * max(effectiveness.total_uses_needed - effectiveness.uses_available, 0);
+  effectiveness.total_value = (effectiveness.mp_effectiveness_value + effectiveness.hp_effectiveness_value) - (effectiveness.mp_effectiveness_cost_modifier + effectiveness.hp_effectiveness_cost_modifier + effectiveness.general_cost_modifier);
 
-  print(to_string(metadata));
-  print(metadata.name + " effectiveness - " + to_string(effectiveness));
+  logprint(to_string(metadata));
+  logprint(metadata.name + " effectiveness - " + to_string(effectiveness));
   return effectiveness;
 }
 
@@ -439,7 +472,6 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
  * Filters __known_restoration_sources down to what is currently accessible to the player, calls __determine_effectiveness to calculate how effective each of those options are, then returns the one that is best (generally the highest __RestorationEffectiveness.total_value)
  *
  * TODO:
- *  - implement coinmasters
  *  - give value/cost to effects
  */
 __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int goal_mp, int starting_mp, boolean buyItems, boolean useFreeRests){
@@ -448,7 +480,10 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
   boolean is_useable(__RestorationMetadata metadata){
     if(metadata.type == "item"){
       item i = to_item(metadata.name);
-      return auto_is_valid(i) && (available_amount(i) > 0 || (buyItems && npc_price(i) > 0));
+      boolean npc_buyable = npc_price(i) > 0 || (i.seller != $coinmaster[none] && inaccessible_reason(i.seller) == "");
+      boolean mall_buyable = pulls_remaining() == -1 && auto_mall_price(i) > 0;
+      boolean can_buy = buyItems && (npc_buyable || mall_buyable);
+      return auto_is_valid(i) && (available_amount(i) > 0 || can_buy);
     }
     if(metadata.type == "skill"){
       skill s = to_skill(metadata.name);
@@ -478,18 +513,32 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
     __RestorationEffectiveness effectiveness = __determine_effectiveness(goal_hp, starting_hp, goal_mp, starting_mp, metadata);
 
     //dont have enough items/mp on hand
-    if(!buyItems && effectiveness.uses_available < effectiveness.total_uses_needed){
-      print(name + " not enough available. have "+effectiveness.uses_available+" uses, need "+effectiveness.total_uses_needed+".");
-      continue;
+    if(effectiveness.uses_available < effectiveness.total_uses_needed){
+      if((effectiveness.coinmaster_cost_per_use > 0 || effectiveness.meat_cost_per_use > 0) && !buyItems){
+        print(name + " removed from consideration: caller requested not to buy items.");
+        continue;
+      }
+      if(effectiveness.coinmaster_cost_per_use > 0 && !get_property("autoSatisfyWithCoinmasters").to_boolean()){
+        print(name + " removed from consideration: coinmaster item with 'autoSatisfyWithCoinmasters' property set to false.");
+        continue;
+      }
+      if(my_meat() < effectiveness.total_meat_spent){
+        print(name + " removed from consideration: not enough meat.");
+        continue;
+      }
+      if(effectiveness.coinmaster_cost_per_use > 0 && effectiveness.total_coinmaster_tokens_spent < $coinmaster[to_item(name).seller].available_tokens){
+        print(name + " removed from consideration: not enough tokens to purchase needed quantity.");
+        continue;
+      }
     }
 
     if(goal_hp > starting_hp && effectiveness.total_hp_restored == 0){
-      print(name + " wont restore any hp.");
+      print(name + " removed from consideration: doesnt restore any hp.");
       continue;
     }
 
     if(goal_mp > starting_mp && effectiveness.total_mp_restored == 0){
-      print(name + " wont restore any mp.");
+      print(name + " removed from consideration: doesnt restore any mp.");
       continue;
     }
 
@@ -1002,6 +1051,11 @@ boolean useCocoon()
 	return false;
 }
 
+/**
+ * we could in theory set this as our restore script, but autoscend is not currently designed to heal this way and changing this now would probably break assumptions people have anticipated in their code, causing undefined behavior. I assume this is why we have the warning about autoscend not playing well with restore scripts and disabling them when it starts.
+ *
+ * Additionally this script would require some number of imports of other methods (mostly auto_util.ash) which may or may not be easy to do. I did try once by just importing autoscend, but I ended up with an infinite loop. So for now this is just here for posterity.
+ */
 boolean main(string type, int amount) {
   if(type == "MP"){
     acquireMP(amount);
