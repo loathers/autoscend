@@ -481,7 +481,7 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
     if(metadata.type == "item"){
       item i = to_item(metadata.name);
       boolean npc_buyable = npc_price(i) > 0 || (i.seller != $coinmaster[none] && inaccessible_reason(i.seller) == "");
-      boolean mall_buyable = pulls_remaining() == -1 && auto_mall_price(i) > 0;
+      boolean mall_buyable = can_interact() && auto_mall_price(i) > 0;
       boolean can_buy = buyItems && (npc_buyable || mall_buyable);
       return auto_is_valid(i) && (available_amount(i) > 0 || can_buy);
     }
@@ -633,7 +633,7 @@ boolean acquireMP(){
  */
 boolean acquireMP(int goal)
 {
-	return acquireMP(goal, pulls_remaining() == -1);
+	return acquireMP(goal, can_interact());
 }
 
 /**
@@ -689,7 +689,7 @@ boolean acquireMP(int goal, boolean buyItems, boolean useFreeRests)
  * returns true if my_mp() >= goalPercent after attempting to restore.
  */
 boolean acquireMP(float goalPercent){
-	return acquireMP(goalPercent, pulls_remaining() == -1);
+	return acquireMP(goalPercent, can_interact());
 }
 
 /**
@@ -731,7 +731,7 @@ boolean acquireHP(){
  * returns true if my_hp() >= goal after attempting to restore.
  */
 boolean acquireHP(int goal){
-	return acquireHP(goal, pulls_remaining() == -1);
+	return acquireHP(goal, can_interact());
 }
 
 /**
@@ -778,7 +778,7 @@ boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
  * returns true if my_hp() >= goalPercent after attempting to restore.
  */
 boolean acquireHP(float goalPercent){
-	return acquireHP(goalPercent, pulls_remaining() == -1);
+	return acquireHP(goalPercent, can_interact());
 }
 
 /**
