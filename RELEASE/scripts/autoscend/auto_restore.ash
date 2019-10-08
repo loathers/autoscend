@@ -475,6 +475,10 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
  */
 __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int goal_mp, int starting_mp, boolean buyItems, boolean useFreeRests){
 
+  boolean haveAnyIotmAlternateCampsight(){
+  	return chateaumantegna_available() || auto_campawayAvailable();
+  }
+
   //filters out most of the stuff that is obviously not available
   boolean is_useable(__RestorationMetadata metadata){
     if(metadata.type == "item"){
@@ -495,7 +499,7 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
         (d == get_dwelling() && !haveAnyIotmAlternateCampsight());
     }
     if(metadata.name == __HOT_TUB){
-      return canUseHotTub();
+      return isHotTubAvailable();
     }
     return false;
   }
@@ -931,10 +935,6 @@ int freeRestsRemaining(){
 	return max(0, total_free_rests() - get_property("timesRested").to_int());
 }
 
-boolean haveAnyIotmAlternateCampsight(){
-	return chateaumantegna_available() || auto_campawayAvailable();
-}
-
 /*
  * Try to use a free rest.
  *
@@ -1000,7 +1000,7 @@ boolean useCocoon()
 /**
  * we could in theory set this as our restore script, but autoscend is not currently designed to heal this way and changing this now would probably break assumptions people have anticipated in their code, causing undefined behavior. I assume this is why we have the warning about autoscend not playing well with restore scripts and disabling them when it starts.
  *
- * Additionally this script would require some number of imports of other methods (mostly auto_util.ash) which may or may not be easy to do. I did try once by just importing autoscend, but I ended up with an infinite loop. So for now this is just here for posterity.
+ * Additionally this script would require some number of imports of other methods (mostly auto_util.ash) which may or may not be easy to do. I did try once by just importing autoscend, but I ended up with an infinite loop. At least thats what it seemed like, I didnt try very hard to make it work. My understanding of ash leads me to believe it should work and I was just doing something stupid. So for now this is just here for posterity.
  */
 boolean main(string type, int amount) {
   if(type == "MP"){

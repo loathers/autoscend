@@ -291,20 +291,17 @@ int hotTubSoaksRemaining(){
 	return 5 - get_property("_hotTubSoaks").to_int();
 }
 
-boolean canUseHotTub(){
+boolean isHotTubAvailable(){
 	return (item_amount($item[Clan VIP Lounge Key]) > 0) && is_unrestricted($item[Clan VIP Lounge Key]) && hotTubSoaksRemaining() > 0;
 }
 
 int doHottub()
 {
-	if((item_amount($item[Clan VIP Lounge Key]) == 0) || !is_unrestricted($item[Clan VIP Lounge Key]))
+	if(!isHotTubAvailable())
 	{
 		return 0;
 	}
-	if(get_property("_hotTubSoaks").to_int() < 5)
-	{
-		cli_execute("hottub");
-	}
+	cli_execute("hottub");
 
 	return hotTubSoaksRemaining();
 }
