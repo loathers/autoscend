@@ -33,6 +33,7 @@ record __RestorationMetadata{
 
 // stores most of the intermediate and final values needed to determine efficiency, for clarity and so we dont have to keep recalculating them
 record __RestorationEffectiveness{
+  __RestorationMetadata effect_metadata;
   int hp_goal;
   int starting_hp;
   int mp_goal;
@@ -82,6 +83,7 @@ string to_string(__RestorationMetadata r){
 // Real ugly to_string, probably only enable for debugging
 string to_string(__RestorationEffectiveness e){
   string val = "__RestorationEffectiveness(";
+  val += "effect_metadata: " + e.effect_metadata.name;
   val += "hp_goal: " + e.hp_goal;
   val += ", starting_hp: " + e.starting_hp;
   val += ", mp_goal: " + e.mp_goal;
@@ -303,11 +305,11 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
   /**
    * How many times we would need to use the method to reach the hp goal.
    *
-   * If the restoration method doesnt restore hp, -1 is returned
+   * If the restoration method doesnt restore hp, 0 is returned
    */
   int uses_needed_to_reach_hp_goal(){
     if(hp_restored_per() < 1){
-      return -1;
+      return 0;
     }
     return ceil((hp_goal - starting_hp) / hp_restored_per())+1;
   }
@@ -315,11 +317,11 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
   /**
    * How many times we would need to use the method to reach the hp goal.
    *
-   * If the restoration method doesnt restore hp, -1 is returned
+   * If the restoration method doesnt restore hp, 0 is returned
    */
   int uses_needed_to_reach_mp_goal(){
     if(mp_restored_per() < 1){
-      return -1;
+      return 0;
     }
     return ceil((mp_goal - starting_mp) / mp_restored_per())+1;
   }
@@ -336,7 +338,7 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
   int meat_cost_per(){
     if(metadata.type == "item"){
       item i = to_item(metadata.name);
-      if(pulls_remaining == -1){
+      if(can_interact()){
         return min(npc_price(i), auto_mall_price(i));
       }
       return npc_price(i);
@@ -368,7 +370,7 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
   // TODO: value overage between goal and max to be value (not cost) but less valuable (half?)
   // TODO: handle case where we have N uses but need > N uses and cant make up the difference (weighted cost?)
   void hp_effectiveness(__RestorationEffectiveness effectiveness){
-    if(effectiveness.uses_to_hp_goal <= 0 || effectiveness.hp_restored_per_use <= 0){
+    if(effectiveness.hp_restored_per_use <= 0){
       effectiveness.hp_effectiveness_value = 0;
       effectiveness.hp_effectiveness_cost_modifier = 0;
       effectiveness.total_hp_restored = 0;
@@ -385,31 +387,33 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
       } else{
         hp_effectiveness_cost_modifier = mp_to_max;
       }
-      hp_effectiveness_cost_modifier -= mp_regen(); // we get some mp back for free, which is valuable.
+      hp_effectiveness_cost_modifier -= (__mp_cost_multiplier * mp_regen());
     }
 
 
     hp_effectiveness_value = effectiveness.hp_restored_per_use * effectiveness.total_uses_needed;
+
+    int past_goal_waste = hp_wasted_by(starting_hp) - hp_wasted_by(my_maxhp());
+    int past_max_waste = hp_wasted_by(my_maxhp());
     if(effectiveness.total_uses_needed > 1){
-      int last_cast_starting_hp = starting_hp + (effectiveness.hp_restored_per_use * (effectiveness.uses_to_hp_goal - 1));
-      int waste_by_last_needed_cast = hp_wasted_by(last_cast_starting_hp);
-      int past_goal_casts = effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal;
-      int wasted_by_overcast = past_goal_casts * hp_wasted_by(last_cast_starting_hp + effectiveness.hp_restored_per_use);
-      hp_effectiveness_cost_modifier += waste_by_last_needed_cast + wasted_by_overcast;
-    } else{
-      hp_effectiveness_cost_modifier += hp_wasted_by(starting_hp);
+      int last_use_starting_hp = starting_hp + (effectiveness.hp_restored_per_use * effectiveness.uses_to_hp_goal);
+      past_goal_waste = hp_wasted_by(last_use_starting_hp) - hp_wasted_by(my_maxhp());
+      past_max_waste = (effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal) * hp_wasted_by(my_maxhp());
     }
 
-    //case when using hp+mp restore with a higher mp goal than hp, calculate extra uses as wasteful
-    hp_effectiveness_cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_to_hp_goal) * effectiveness.hp_restored_per_use;
+    // consider extra hp between goal and max hp as reduced cost and any past max hp as full cost
+    hp_effectiveness_cost_modifier += floor(past_goal_waste / 4);
+    hp_effectiveness_cost_modifier += past_max_waste;
 
     effectiveness.hp_effectiveness_value = hp_effectiveness_value;
     effectiveness.hp_effectiveness_cost_modifier = hp_effectiveness_cost_modifier;
-    effectiveness.total_hp_restored = effectiveness.hp_restored_per_use * effectiveness.total_uses_needed;
+
+
+    effectiveness.total_hp_restored = min(effectiveness.hp_restored_per_use * effectiveness.total_uses_needed, my_maxhp()-starting_hp);
   }
 
   void mp_effectiveness(__RestorationEffectiveness effectiveness){
-    if(effectiveness.uses_to_mp_goal <= 0 || effectiveness.mp_restored_per_use <= 0 || effectiveness.mp_cost_per_use > 0){
+    if(effectiveness.mp_restored_per_use <= 0){
       effectiveness.mp_effectiveness_value = 0;
       effectiveness.mp_effectiveness_cost_modifier = 0;
       effectiveness.total_mp_restored = 0;
@@ -419,24 +423,18 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
     int mp_effectiveness_value = 0;
     int mp_effectiveness_cost_modifier = 0;
 
-    if(effectiveness.meat_cost_per_use > 0){
-      mp_effectiveness_cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_available) * effectiveness.meat_cost_per_use;
-    }
-
-    mp_effectiveness_value = effectiveness.mp_restored_per_use * effectiveness.uses_to_mp_goal;
+    mp_effectiveness_value = effectiveness.mp_restored_per_use * effectiveness.total_uses_needed;
+    int past_goal_waste = mp_wasted_by(starting_mp) - mp_wasted_by(my_maxmp());
+    int past_max_waste = mp_wasted_by(my_maxmp());
 
     if(effectiveness.total_uses_needed > 1){
-      int pre_goal_starting_mp = starting_mp + (effectiveness.mp_restored_per_use * (effectiveness.uses_to_mp_goal - 1));
-      int waste_by_last_needed_cast = mp_wasted_by(pre_goal_starting_mp);
-      int past_goal_casts = effectiveness.total_uses_needed - effectiveness.uses_to_mp_goal;
-      int wasted_by_overcast = past_goal_casts * mp_wasted_by(pre_goal_starting_mp + effectiveness.mp_restored_per_use);
-      mp_effectiveness_cost_modifier += waste_by_last_needed_cast + wasted_by_overcast;
-    } else{
-      mp_effectiveness_cost_modifier += mp_wasted_by(starting_mp);
+      int last_use_starting_mp = starting_mp + (effectiveness.mp_restored_per_use * effectiveness.uses_to_mp_goal);
+      past_goal_waste = mp_wasted_by(last_use_starting_mp) - mp_wasted_by(my_maxmp());
+      past_max_waste = (effectiveness.total_uses_needed - effectiveness.uses_to_mp_goal) * mp_wasted_by(my_maxmp());
     }
 
-    //case when using hp+mp restore with a higher hp goal than mp, calculate extra uses as wasteful
-    mp_effectiveness_cost_modifier += (effectiveness.total_uses_needed - effectiveness.uses_to_mp_goal) * effectiveness.mp_restored_per_use;
+    mp_effectiveness_cost_modifier += floor(past_goal_waste / 2);
+    mp_effectiveness_cost_modifier += past_max_waste;
 
     effectiveness.mp_effectiveness_value = mp_effectiveness_value;
     effectiveness.mp_effectiveness_cost_modifier = mp_effectiveness_cost_modifier;
@@ -444,6 +442,7 @@ __RestorationEffectiveness __determine_effectiveness(int hp_goal, int starting_h
   }
 
   __RestorationEffectiveness effectiveness;
+  effectiveness.effect_metadata = metadata;
   effectiveness.hp_goal = hp_goal;
   effectiveness.starting_hp = starting_hp;
   effectiveness.mp_goal = mp_goal;
@@ -501,8 +500,40 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
     return false;
   }
 
+  __RestorationEffectiveness pick_best(__RestorationEffectiveness a, __RestorationEffectiveness b){
+    print(a.effect_metadata.name + " ("+a.total_value+") vs " + b.effect_metadata.name + " ("+b.total_value+")");
+    boolean wants_hp = goal_hp > starting_hp;
+    boolean wants_mp = goal_mp > starting_mp;
+
+    __RestorationEffectiveness best;
+
+    if(a.effect_metadata.name == ""){
+      return b;
+    } else if(b.effect_metadata.name == ""){
+      return a;
+    } else if(b.uses_available < b.total_uses_needed){
+      return a; //prioritize methods that dont require obtaining resources
+    } else if(a.total_value > b.total_value){
+      return a;
+    } else if(a.total_value < b.total_value){
+      return b;
+    } else if(!wants_mp){
+      if((a.mp_effectiveness_value + a.mp_effectiveness_cost_modifier) < (b.mp_effectiveness_value + b.mp_effectiveness_cost_modifier)){
+        return a; //prefer wasting as little mp as possible
+      } else if((a.mp_effectiveness_value + a.mp_effectiveness_cost_modifier) > (b.mp_effectiveness_value + b.mp_effectiveness_cost_modifier)){
+        return b; //prefer wasting as little mp as possible
+      }
+    } else if(!wants_hp){
+      if((a.hp_effectiveness_value + a.hp_effectiveness_cost_modifier) < (b.hp_effectiveness_value + b.hp_effectiveness_cost_modifier)){
+        return a; // prefer wasting as little hp as possible
+      } else if((a.hp_effectiveness_value + a.hp_effectiveness_cost_modifier) > (b.hp_effectiveness_value + b.hp_effectiveness_cost_modifier)){
+        return b; // prefer wasting as little hp as possible
+      }
+    }
+    return a; // all things being equal...
+  }
+
   print("Calculating restore options (current hp: "+starting_hp+", hp goal: "+goal_hp+", current mp: "+starting_mp+", mp goal: "+goal_mp+")");
-  __RestorationMetadata best;
   __RestorationEffectiveness best_effectiveness;
 
   foreach name, metadata in __restoration_methods() {
@@ -526,7 +557,7 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
         print(name + " removed from consideration: not enough meat.");
         continue;
       }
-      if(effectiveness.coinmaster_cost_per_use > 0 && effectiveness.total_coinmaster_tokens_spent < $coinmaster[to_item(name).seller].available_tokens){
+      if(effectiveness.coinmaster_cost_per_use > 0 && effectiveness.total_coinmaster_tokens_spent < to_item(name).seller.available_tokens){
         print(name + " removed from consideration: not enough tokens to purchase needed quantity.");
         continue;
       }
@@ -542,21 +573,11 @@ __RestorationMetadata __most_effective_restore(int goal_hp, int starting_hp, int
       continue;
     }
 
-    print(best.name + " ("+best_effectiveness.total_value+") vs " + name + " ("+effectiveness.total_value+")");
-    if(effectiveness.total_value > best_effectiveness.total_value || best.name == ""){
-      best_effectiveness = effectiveness;
-      best = metadata;
-    } else if(effectiveness.total_value == best_effectiveness.total_value){
-      if((effectiveness.mp_effectiveness_value > best_effectiveness.mp_effectiveness_value) ||
-        (effectiveness.hp_effectiveness_value > best_effectiveness.hp_effectiveness_value)){
-        best_effectiveness = effectiveness;
-        best = metadata;
-      }
-    }
+    best_effectiveness = pick_best(best_effectiveness, effectiveness);
   }
 
-  print("Best restore option: " + best.type + " " + best.name + " (effectiveness: "+best_effectiveness.total_value+")", "blue");
-  return best;
+  print("Best restore option: " + best_effectiveness.effect_metadata.type + " " + best_effectiveness.effect_metadata.name + " (effectiveness: "+best_effectiveness.total_value+")", "blue");
+  return best_effectiveness.effect_metadata;
 }
 
 /**
