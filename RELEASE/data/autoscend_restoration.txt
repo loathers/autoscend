@@ -43,22 +43,22 @@
 43	Gelatinous Reconstruction	skill	13	0	Beaten Up	none
 44	Disco Nap	skill	20	0	none	none
 46	Lasagna Bandages	skill	15	0	none	none
-47	big rock	dwelling	0	0	none	none
-48	Newbiesport&trade; tent	dwelling	0	0	none	none
-49	Giant Pilgrim Hat	dwelling	0	0	none	none
-50	Barskin Tent	dwelling	0	0	none	none
-51	Cottage	dwelling	0	0	none	none
-52	BRICKO pyramid	dwelling	0	0	none	none
-53	Frobozz Real-Estate Company Instant House (TM)	dwelling	0	0	none	none
-54	Sandcastle	dwelling	0	0	none	none
-55	Ginormous Pumpkin	dwelling	0	0	none	none
-56	Giant Faraday Cage	dwelling	0	0	none	none
-57	Snow Fort	dwelling	0	0	none	none
-58	Elevent	dwelling	0	0	none	none
-59	House of Twigs and Spit	dwelling	0	0	none	none
-60	Gingerbread House	dwelling	0	0	none	none
-61	hobo fortress blueprints	dwelling	0	0	none	none
-62	Xiblaxian residence-cube	dwelling	0	0	none	none
+47	big rock	dwelling	4	5	none	none
+48	Newbiesport&trade; tent	dwelling	9	10	none	none
+49	Giant Pilgrim Hat	dwelling	14	15	none	Pyramid Power
+50	Barskin Tent	dwelling	19	20	none	none
+51	Cottage	dwelling	29	30	none	none
+52	BRICKO pyramid	dwelling	34	35	none	none
+53	Frobozz Real-Estate Company Instant House (TM)	dwelling	39	40	none	none
+54	Sandcastle	dwelling	49	50	none	none
+55	Ginormous Pumpkin	dwelling	49	50	none	Juiced and Jacked
+56	Giant Faraday Cage	dwelling	49	50	none	Uncaged Power
+57	Snow Fort	dwelling	49	50	none	Snow Fortified
+58	Elevent	dwelling	49	50	none	It's Ridiculous
+59	House of Twigs and Spit	dwelling	59	60	none	none
+60	Gingerbread House	dwelling	69	70	none	Holiday Bliss
+61	hobo fortress blueprints	dwelling	84	85	none	Hobonic
+62	Xiblaxian residence-cube	dwelling	99	100	none	Hypercubed
 63	Distant Woods Getaway Brochure	dwelling	250	125	none	none
 64	Chateau Mantegna room key	dwelling	250	125	none	none
 65	your own black heart	item	ALL	ALL	Beaten Up	none
