@@ -292,12 +292,12 @@ int hotTubSoaksRemaining(){
 }
 
 boolean isHotTubAvailable(){
-	return (item_amount($item[Clan VIP Lounge Key]) > 0) && is_unrestricted($item[Clan VIP Lounge Key]) && hotTubSoaksRemaining() > 0;
+	return (item_amount($item[Clan VIP Lounge Key]) > 0) && is_unrestricted($item[Clan VIP Lounge Key]);
 }
 
 int doHottub()
 {
-	if(!isHotTubAvailable())
+	if(!(isHotTubAvailable() && hotTubSoaksRemaining() > 0))
 	{
 		return 0;
 	}

@@ -66,6 +66,7 @@ void initializeSettings()
 		return;
 	}
 	set_location($location[none]);
+	invalidateRestoreOptionCache();
 
 	set_property("auto_useCubeling", true);
 	set_property("auto_100familiar", $familiar[none]);
@@ -1926,6 +1927,8 @@ void initializeDay(int day)
 	{
 		return;
 	}
+
+	invalidateRestoreOptionCache();
 
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))
 	{

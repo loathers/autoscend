@@ -260,6 +260,7 @@ record questRecord
 
 // Restoration (hp/mp) functions
 // Defined in autoscend/auto_restore.ash
+void invalidateRestoreOptionCache();
 boolean acquireMP();
 boolean acquireMP(int goal);
 boolean acquireMP(int goal, boolean buyIt);
