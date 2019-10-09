@@ -665,7 +665,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
   }
 
   __RestorationOptimization[int] ranked_weighted_optimization(__RestorationOptimization[int] p, int[string] minima){
-    auto_debug_print("Beginning restoration optimization of "+count(ranked)+" options (minimize costs and waste)");
+    auto_debug_print("Beginning restoration optimization of "+count(p)+" options (minimize costs and waste)");
     if(count(p) == 0){
       return p;
     }
