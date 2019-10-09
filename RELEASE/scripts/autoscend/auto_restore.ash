@@ -29,35 +29,18 @@ record __RestorationMetadata{
   boolean removes_beaten_up;
   boolean[effect] removes_effects;
   boolean[effect] gives_effects;
+  int[string] maxima_values;
 };
 
-// stores most of the intermediate and final values needed to determine efficiency, for clarity and so we dont have to keep recalculating them
-record __RestorationEffectiveness{
+
+record __RestorationOptimization{
   __RestorationMetadata effect_metadata;
-  int hp_goal;
-  int starting_hp;
-  int mp_goal;
-  int starting_mp;
-  int hp_restored_per_use;
-  int mp_restored_per_use;
-  int uses_available;
-  int uses_to_hp_goal;
-  int uses_to_mp_goal;
-  int mp_cost_per_use;
-  int meat_cost_per_use;
-  int coinmaster_cost_per_use;
-  int hp_effectiveness_value;
-  int hp_effectiveness_cost_modifier;
-  int mp_effectiveness_value;
-  int mp_effectiveness_cost_modifier;
-  int general_cost_modifier;
-  int total_uses_needed;
-  int total_hp_restored;
-  int total_mp_restored;
-  int total_meat_spent;
-  int total_coinmaster_tokens_spent;
-  int total_value;
-};
+  int[string] constrains;
+  int[string] maxima_values;
+  int[string] maxima_weights;
+  int[string] minima_values;
+  int[string] minima_weights;
+}
 
 // Real ugly to_string, probably only enable for debugging
 string to_string(__RestorationMetadata r){
@@ -80,41 +63,31 @@ string to_string(__RestorationMetadata r){
   return "__RestorationMetadata(name: "+r.name+", type: "+r.type+", hp_restored: "+r.hp_restored+", restores_variable_hp: "+r.restores_variable_hp+", mp_restored: "+r.mp_restored+", restores_variable_mp: "+r.restores_variable_mp+", removes_beaten_up: "+r.removes_beaten_up+", removes_effects: "+removes_effects_str+", gives_effects: "+gives_effects_str+")";
 }
 
-// Real ugly to_string, probably only enable for debugging
-string to_string(__RestorationEffectiveness e){
-  string val = "__RestorationEffectiveness(";
-  val += "effect_metadata: " + e.effect_metadata.name;
-  val += "hp_goal: " + e.hp_goal;
-  val += ", starting_hp: " + e.starting_hp;
-  val += ", mp_goal: " + e.mp_goal;
-  val += ", starting_mp: " + e.starting_mp;
-  val += ", hp_restored_per_use: " + e.hp_restored_per_use;
-  val += ", mp_restored_per_use: " + e.mp_restored_per_use;
-  val += ", uses_available: " + e.uses_available;
-  val += ", uses_to_hp_goal: " + e.uses_to_hp_goal;
-  val += ", uses_to_mp_goal: " + e.uses_to_mp_goal;
-  val += ", mp_cost_per_use: " + e.mp_cost_per_use;
-  val += ", meat_cost_per_use: " + e.meat_cost_per_use;
-  val += ", coinmaster_cost_per_use: " + e.coinmaster_cost_per_use;
-  val += ", hp_effectiveness_value: " + e.hp_effectiveness_value;
-  val += ", hp_effectiveness_cost_modifier: " + e.hp_effectiveness_cost_modifier;
-  val += ", mp_effectiveness_value: " + e.mp_effectiveness_value;
-  val += ", mp_effectiveness_cost_modifier: " + e.mp_effectiveness_cost_modifier;
-  val += ", general_cost_modifier: " + e.general_cost_modifier;
-  val += ", total_uses_needed: " + e.total_uses_needed;
-  val += ", total_hp_restored: " + e.total_hp_restored;
-  val += ", total_mp_restored: " + e.total_mp_restored;
-  val += ", total_meat_spent: " + e.total_meat_spent;
-  val += ", total_coinmaster_tokens_spent: " + e.total_coinmaster_tokens_spent;
-  val += ", total_value: " + e.total_value;
-  val += ")";
-  return val;
+string to_string(__RestorationOptimization o){
+  string list_to_string(int[string] values){
+    string s = "{";
+    boolean first = true;
+    foreach k, v in values{
+      if(!first){
+        s += ", ";
+        first = false;
+      }
+      s += k + ": " + v;
+    }
+    s += "}";
+    return s;
+  }
+
+  string constrains_str = list_to_string(o.constrains);
+  string maxima_values_str = list_to_string(o.maxima_values);
+  string minima_values_str = list_to_string(o.minima_values);
+  string maxima_weights_str = list_to_string(o.maxima_weights);
+  string mminima_weights_str = list_to_string(o.minima_weights);
+  return "__RestorationOptimization(name: "+o.metadata.name+", constrains: "+constrains_str+", maxima_values: "+maxima_values_str+", maxima_weights: "+maxima_weights_str+", minima_values: "+minima_values+", minima_weights: "+mminima_weights_str+")";
 }
 
 static boolean[effect] __all_negative_effects = $effects[Beaten Up];
 static __RestorationMetadata[string] __known_restoration_sources;
-static int __mp_cost_multiplier = 3;
-static int __coinmaster_cost_multiplier = 10;
 
 // TODO: would be nice to replace this concept with just putting a simple formula in place of the hp/mp fields, e.g. ${my_level}*1.5
 // currently custom formulas need to be coded into an if statement
@@ -216,6 +189,410 @@ __RestorationMetadata[string] __restoration_methods(){
   }
   return __known_restoration_sources;
 }
+
+/**
+ *  Maximize:
+ *    1. hp restored
+ *    2. mp restored
+ *
+ *  Minimize:
+ *    1. mp wasted
+ *    2. hp wasted
+ *    3. meat spent
+ *    4. coinmaster tokens spent
+ *    5. mp used
+ *
+ *  Constraints:
+ *    1. currently useable
+ *    2. have enough mp or can acquire it
+ *    3. have enough items on hand or can purchase (meat, coin master)
+ */
+static boolean[string] __MAXIMIZE_VALUES = $strings["total_uses_available", "hp_total_restored", "mp_total_restored"];
+static boolean[string] __MINIMIZE_VALUES = $strings["total_uses_needed","hp_total_wasted","hp_total_short","mp_total_wasted","mp_total_short","total_mp_used","total_meat_used","total_coinmaster_tokens_used"];
+static boolean[string] __CONSTRAINT_VALUES = $strings["hp_goal",hp_goal,"hp_starting","hp_max","hp_restored_per_use","hp_uses_needed_for_goal","mp_goal","mp_starting","mp_max","mp_restored_per_use","mp_uses_needed_for_goal"];
+static int[string] __WEIGHTS = {
+  "total_uses_needed": 1,
+  "total_uses_available": 4,
+  "hp_total_restored": 2,
+  "hp_total_wasted": 3,
+  "hp_total_short": 3,
+  "mp_total_restored": 2,
+  "mp_total_wasted": 4,
+  "mp_total_short": 4,
+  "total_mp_used": 2,
+  "total_meat_used": 2,
+  "total_coinmaster_tokens_used": 5
+};
+static int[int] __RANK_ORDERED_WEIGHTS = {
+  0: 5, 1: 4, 2: 3, 3: 2, 4: 1
+};
+
+__RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal, __RestorationMetadata metadata){
+  __RestorationOptimization optimization_parameters;
+
+  void set_value(name, int value, int weight){
+    if(__MAXIMIZE_VALUES contains name){
+      optimization_parameters.maxima_values[name] = value;
+      optimization_parameters.maxima_weights[name] = __WEIGHTS[name];
+    } else if(__MINIMIZE_VALUES contains name){
+      optimization_parameters.minima_values[name] = value;
+      optimization_parameters.minima_weights[name] =  __WEIGHTS[name];
+    } else if(__CONSTRAINT_VALUES contains name){
+      optimization_parameters.constraints[name] = value;
+    }
+  }
+
+  void set_value(name, int value){
+    set_value(name, value, 0);
+  }
+
+  int get_value(string name){
+    if(__MAXIMIZE_VALUES contains name){
+      return optimization_parameters.maxima_values[name];
+    } else if(__MINIMIZE_VALUES contains name){
+      return optimization_parameters.minima_values[name];
+    } else if(__CONSTRAINT_VALUES contains name){
+      return optimization_parameters.constraints[name];
+    }
+    return 0;
+  }
+
+  int get_value(string resource_type, string name){
+    return get_value(resource_type + "_" + name);
+  }
+
+  // Determine how much hp is restored, working out scaling formulas if needed
+  int hp_restored_per_use(){
+    int restored_amount = metadata.hp_restored;
+    if(metadata.restores_variable_hp == __RESTORE_ALL){
+      restored_amount = my_maxhp();
+    } else if(metadata.restores_variable_hp == __RESTORE_HALF){
+      restored_amount = floor(my_maxhp() / 2);
+    }
+
+    if(metadata.type == "dwelling"){
+      restored_amount += numeric_modifier("Bonus Resting HP");
+    }
+
+    return restored_amount;
+  }
+
+  int mp_restored_per_use(){
+    int restored_amount = metadata.mp_restored;
+    if(metadata.restores_variable_mp == __RESTORE_ALL){
+      restored_amount = my_maxmp();
+    } else if(metadata.restores_variable_mp == __RESTORE_HALF){
+      restored_amount = floor(my_maxmp() / 2);
+    } else if(metadata.restores_variable_mp == __RESTORE_SCALING){
+    if(metadata.name == "magical mystery juice"){
+      restored_amount = my_level() * 1.5 + 5;
+    } else if(metadata.name == "generic mana potion"){
+      restored_amount = my_level() * 2.5;
+    }
+    return restored_amount;
+  }
+
+  if(metadata.type == "dwelling"){
+  restored_amount += numeric_modifier("Bonus Resting MP");
+  }
+
+  return restored_amount;
+  }
+
+  int uses_needed_to_reach_goal(string resource_type){
+    int goal = get_value(resource_type, "goal");
+    int starting = get_value(resource_type, "starting");
+    int per_use = get_value(resource_type, "restored_per_use");
+
+    if(per_use < 1){
+      return 0;
+    }
+    return max(ceil((goal - starting) / per_use), 1);
+  }
+
+  int total_uses_needed(){
+    return max(get_value("hp", "uses_needed_for_goal"), get_value("mp", "uses_needed_for_goal"));
+  }
+
+  int total_uses_available(){
+    if(metadata.type == "dwelling"){
+      return freeRestsRemaining();
+    } else if(metadata.type == "item"){
+      return available_amount(to_item(metadata.name)); //I believe this will take coinmasters into consideration for us
+    } else if(metadata.type == "skill"){
+      return floor(get_value("mp_starting") / mp_cost(to_skill(metadata.name)));
+    } else if(metadata.name == __HOT_TUB){
+      return hotTubSoaksRemaining();
+    }
+    return 0;
+  }
+
+  int total_restored(string resource_type){
+    int uses = min(get_value("total_uses_needed"), get_value("total_uses_available"));
+    return uses * get_value(resource_type, "restored_per_use");
+  }
+
+  int total_wasted(string resource_type){
+    int restorable = get_value(resource_type, "max") - get_value(resource_type, "starting");
+    int restored = get_value(resource_type, "total_restored");
+    return max(0, restored-restorable);
+  }
+
+  int total_short(string resource_type){
+    int restorable = get_value(resource_type, "goal") - get_value(resource_type, "starting");
+    int restored = get_value(resource_type, "total_restored");
+    if(restored >= restorable){
+      return 0;
+    }
+    return restorable - restored;
+  }
+
+  int total_mp_used(){
+    if(metadata.type != "skill"){
+      return 0;
+    }
+    return total_uses_needed() * mp_cost(to_skill(metadata.name));
+  }
+
+  int total_meat_used(){
+    if(metadata.type != "item"){
+      return 0;
+    }
+    item i = to_item(metadata.name);
+    int needed = max(0, total_uses_needed() - item_amount(i));
+    int price = npc_price(i);
+    if(can_interact()){
+      price = min(price, auto_mall_price(i));
+    }
+    return price * needed;
+  }
+
+  int total_coinmaster_tokens_used(){
+    if(metadata.type != "item"){
+      return 0;
+    }
+    item i = to_item(metadata.name);
+
+    if(i.seller != $coinmaster[none]){
+      return 0;
+    }
+
+    int needed = max(0, total_uses_needed() - item_amount(i));
+    int price = sell_price(i.seller, i);
+
+    return needed * price;
+  }
+
+
+  __RestorationOptimization optimization_parameters;
+  optimization_parameters.metadata = metadata;
+  set_value("hp_goal", hp_goal);
+  set_value("hp_starting", my_hp());
+  set_value("hp_max", my_maxhp());
+  set_value("hp_restored_per_use", hp_restored_per_use());
+  set_value("hp_uses_needed_for_goal", uses_needed_to_reach_goal("hp"));
+  set_value("mp_goal", mp_goal);
+  set_value("mp_starting", my_mp());
+  set_value("mp_max", my_maxmp());
+  set_value("mp_restored_per_use", mp_restored_per_use());
+  set_value("mp_uses_needed_for_goal", uses_needed_to_reach_goal("mp"));
+  set_value("total_uses_needed", total_uses_needed());
+  set_value("total_uses_available", total_uses_on_available());
+  set_value("hp_total_restored", total_restored("hp"));
+  set_value("hp_total_wasted", total_wasted("hp"));
+  set_value("hp_total_short", total_short("hp"));
+  set_value("mp_total_restored", total_restored("mp"));
+  set_value("mp_total_wasted", total_wasted("mp"));
+  set_value("mp_total_short", total_short("mp"));
+  set_value("total_mp_used", total_mp_used());
+  set_value("total_meat_used", total_meat_used());
+  set_value("total_coinmaster_tokens_used", total_coinmaster_tokens_used());
+}
+
+__RestorationMetadata[int] __optimize(int hp_goal, int mp_goal, __RestorationMetadata[string] restore_options){
+
+  // returns a sublist of p from [start, stop)
+  __RestorationMetadata[int] slice(__RestorationOptimization[int] p, int start, int stop){
+    __RestorationOptimization[int] subset;
+    if(start >= 0 && start < count(p) && stop > start && stop <= count(p)){
+      int i = start;
+      while(i < stop){
+        subset[count(subset)] = p[i];
+        i++;
+      }
+    }
+    return subset;
+  }
+
+  __RestorationMetadata[int] copy(__RestorationOptimization[int] p){
+    return slice(p, 0, count(p));
+  }
+
+  __RestorationMetadata[int] combine(__RestorationOptimization[int] left, __RestorationMetadata[int] right){
+    int i = 0;
+    while(i < count(right)){
+      left[count(left)] = right[i];
+      i++;
+    }
+    return left;
+  }
+
+  int weighted_sum(__RestorationOptimization o, boolean[string] maxima){
+    int sum = 0;
+    for s in maxima{
+      sum += o.maxima_values[s] * o.weights[s];
+    }
+    return sum;
+  }
+
+  int weighted_value(__RestorationOptimization o, boolean[string] maxima){
+    return o.maxima_values[s] * o.weights[s];
+  }
+
+  __RestorationOptimization[int] non_dominated_set(__RestorationOptimization[int] T, __RestorationOptimization[int] B, boolean[string] minima, int weight){
+    __RestorationMetadata[int] M;
+    int Ti = 0;
+    int Bi = 0;
+
+    while(Ti < count(T)){
+      Bi = 0;
+      while(Bi < count(B)){
+        int
+        for maxima in minimize_maxima {
+          if(T[Ti].maxima_values[maxima] >= B[Bi].maxima_values[maxima]){
+
+          }
+        }
+      }
+    }
+
+    while(Bi < count(B)){
+      Ti = 0;
+      boolean dominated = false;
+      while(Ti < count(T)){
+
+        for maxima in secondary_maxima{
+
+        }
+        if(maxima in maximize && T[Ti].maxima_values[maxima] > B[Bi].maxima_values[maxima]){
+          dominated = true;
+          break;
+        } else if(maxima in minimize && T[Ti].maxima_values[maxima] < B[Bi].maxima_values[maxima]){
+
+        }
+        Ti++;
+      }
+      if(!dominated){
+        M[count(M)] = B[Bi];
+      }
+      Bi++;
+    }
+    return M;
+  }
+
+  __RestorationOptimization[int] ranked_weighted_sort(__RestorationOptimization[int] p, boolean[string] minima, int weight){
+    if(count(p) == 1){
+      return p;
+    } else{
+      int mid = floor(count(p)/2);
+      __RestorationOptimization[int] T = non_dominated_set(slice(p, 0, mid), maxima);
+      __RestorationOptimization[int] B = non_dominated_set(slice(p, mid+1, count(p)), maxima);
+      return filter(T, B, maxima);
+    }
+  }
+
+  __RestorationOptimization[int] ranked_weighted_sort(__RestorationOptimization[int] p, boolean[string] minima){
+    __RestorationOptimization[int] ranked = copy(p);
+    foreach _, weight in __RANK_ORDERED_WEIGHTS {
+      ranked_weighted_sort(ranked, minima, weight);
+    }
+    return ranked;
+  }
+
+  int partition(__RestorationOptimization[int] p, boolean[string] primary_maxima, int left_index, int right_index){
+    int pivot_value = weighted_sum(p[left_index], primary_maxima);
+    int l = left_index + 1;
+    int r = right_index;
+    boolean done = false;
+    __RestorationMetadata swap;
+
+    while(!done){
+      while(l <= r){
+        if(maximize_primary && weighted_sum(p[l], primary_maxima) >= pivot_value){
+          l++;
+        } else if(!maximize_primary && weighted_sum(p[l], primary_maxima) <= pivot_value){
+          l++;
+        } else{
+          break;
+        }
+      }
+
+      while(r >= l){
+        if(maximize_primary && weighted_sum(p[r], primary_maxima) <= pivot_value){
+          r--;
+        } else if(!maximize_primary && weighted_sum(p[r], primary_maxima) >= pivot_value){
+          r--;
+        } else{
+          break;
+        }
+      }
+
+      if(r < l){
+        done = true;
+      } else{
+        swap = p[l];
+        p[l] = p[r];
+        p[r] = swap;
+      }
+    }
+
+    swap = p[left_index];
+    p[left_index] = p[r];
+    p[r] = swap;
+
+    return r;
+  }
+
+  __RestorationMetadata[int] quick_sort(__RestorationOptimization[int] p, boolean[string] primary_maxima, int left_index, int right_index){
+    if(left_index < right_index){
+      int pivot = partition(p, maxima, left_index, right_index);
+      quick_sort(p, maxima, left_index, pivot-1);
+      quick_sort(p, maxima, pivot+1, right_index);
+    }
+    return p;
+  }
+
+  __RestorationMetadata[int] quick_sort(__RestorationOptimization[int] p, boolean[string] primary_maxima){
+    return quick_sort(p, primary_maxima, 0, count(p)-1);
+  }
+
+  __RestorationOptimization[int] calculate_objective_values(){
+    __RestorationOptimization[int] p;
+    foreach name, metadata in restore_options{
+      p[count(p)] = calculate_objective_values(hp_goal, mp_goal, restore_options);
+    }
+    return p;
+  }
+
+  __RestorationOptimization[int] optimized = __calculate_objective_values()
+  quick_sort(optimized, __MAXIMIZE_VALUES);
+
+
+
+  foreach maxima in maximize{
+    optimized = sort(optimized, maxima);
+    auto_debug_print("Optimized restore options on (max) " + maxima);
+  }
+
+  foreach maxima in minimize{
+    optimized = sort(optimized, maxima);
+    auto_debug_print("Optimized restore options on (min) " + maxima);
+  }
+
+  return optimized;
+}
+
+
 
 /**
  * Calculate the effectiveness of a restoration method given starting hp/mp and hp/mp targets.

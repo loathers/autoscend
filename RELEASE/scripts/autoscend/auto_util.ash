@@ -5048,6 +5048,8 @@ boolean auto_debug_print(string s, string color)
 	{
 		print(s, color);
 		return true;
+	} else{
+		logprint(s);
 	}
 	return false;
 }
