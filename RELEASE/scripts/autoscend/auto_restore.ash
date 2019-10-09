@@ -235,14 +235,19 @@ int[string] __MAXIMIZE_VALUES ={
 };
 int[string] __MINIMIZE_VALUES = {
   "total_uses_needed": 1,
-  "hp_total_wasted": 2,
-  "hp_total_short": 1,
-  "mp_total_wasted": 3,
-  "mp_total_short": 1,
-  "total_mp_used": 4,
+  "hp_total_wasted_goal": 1,
+  "hp_total_short_goal": 1,
+  "mp_total_wasted_goal": 1,
+  "mp_total_short_goal": 1,
+  "hp_total_wasted_max": 2,
+  "hp_total_short_max": 2,
+  "mp_total_wasted_max": 3,
+  "mp_total_short_max": 3,
+  "total_mp_used": 3,
   "total_meat_used": 4,
   "total_coinmaster_tokens_used": 5
 };
+
 int[string] __VARS_VALUES = {
   "hp_goal": 0, // the "weight" here is mostly for posterity, not actually used
   "hp_starting": 0,
@@ -371,23 +376,15 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   }
 
   int total_restored(string resource_type){
-    int uses = min(get_value("total_uses_needed"), get_value("total_uses_available"));
-    return uses * get_value(resource_type, "restored_per_use");
+    return get_value("total_uses_needed") * get_value(resource_type, "restored_per_use");
   }
 
-  int total_wasted(string resource_type){
-    int restorable = get_value(resource_type, "max") - get_value(resource_type, "starting");
-    int restored = get_value(resource_type, "total_restored");
-    return max(0, restored-restorable);
+  int total_wasted(string resource_type, int goal){
+    return max(0, get_value(resource_type, "starting") + get_value(resource_type, "total_restored") - goal);
   }
 
-  int total_short(string resource_type){
-    int restorable = get_value(resource_type, "goal") - get_value(resource_type, "starting");
-    int restored = get_value(resource_type, "total_restored");
-    if(restored >= restorable){
-      return 0;
-    }
-    return restorable - restored;
+  int total_short(string resource_type, int goal){
+    return max(0, goal - (get_value(resource_type, "starting") + get_value(resource_type, "total_restored")));
   }
 
   int total_mp_used(){
@@ -458,7 +455,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       return auto_have_skill(to_skill(metadata.name));
     }
     if(metadata.type == "dwelling"){
-      return useFreeRests;
+      return useFreeRests && haveFreeRestAvailable();
+    }
+    if(metadata.name == __HOT_TUB){
+      return hotTubSoaksRemaining() > 0;
     }
     return true;
   }
@@ -470,13 +470,15 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     if(get_value("total_mp_used") > 0){
       return true; //could maybe be smarter about determining if its possible to acquire extra mp or not, for now just assume we have mp available
     }
-    if(get_value("total_meat_used") > my_meat()){
-      return false;
+    if(get_value("total_uses_available") < get_value("total_uses_needed")){
+      if(get_value("total_meat_used") > my_meat()){
+        return false;
+      }
+      if(get_value("total_coinmaster_tokens_used") > 0 && get_value("total_coinmaster_tokens_used") > to_item(metadata.name).seller.available_tokens){
+        return false;
+      }
     }
-    if(get_value("total_coinmaster_tokens_used") > 0 && get_value("total_coinmaster_tokens_used") > to_item(metadata.name).seller.available_tokens){
-      return false;
-    }
-    return get_value("total_uses_needed") >= get_value("total_uses_needed");
+    return true;
   }
 
   boolean restores_needed_resources(){
@@ -503,11 +505,15 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("total_uses_needed", total_uses_needed());
   set_value("total_uses_available", total_uses_available());
   set_value("hp_total_restored", total_restored("hp"));
-  set_value("hp_total_wasted", total_wasted("hp"));
-  set_value("hp_total_short", total_short("hp"));
+  set_value("hp_total_wasted_goal", total_wasted("hp", hp_goal));
+  set_value("hp_total_short_goal", total_short("hp", hp_goal));
+  set_value("hp_total_wasted_max", total_wasted("hp", my_maxhp()));
+  set_value("hp_total_short_max", total_short("hp", my_maxhp()));
   set_value("mp_total_restored", total_restored("mp"));
-  set_value("mp_total_wasted", total_wasted("mp"));
-  set_value("mp_total_short", total_short("mp"));
+  set_value("mp_total_wasted_goal", total_wasted("mp", mp_goal));
+  set_value("mp_total_short_goal", total_short("mp", mp_goal));
+  set_value("mp_total_wasted_max", total_wasted("mp", my_maxmp()));
+  set_value("mp_total_short_max", total_short("mp", my_maxmp()));
   set_value("total_mp_used", total_mp_used());
   set_value("total_meat_used", total_meat_used());
   set_value("total_coinmaster_tokens_used", total_coinmaster_tokens_used());
@@ -732,7 +738,9 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 
   void quick_sort_maximize(__RestorationOptimization[int] p, int[string] maxima){
     auto_debug_print("Sorting "+count(p)+" options by maximization objectives.");
-    quick_sort_maximize(p, maxima, 0, count(p)-1);
+    if(count(p) > 1){
+      quick_sort_maximize(p, maxima, 0, count(p)-1);
+    }
   }
 
   __RestorationOptimization[int] apply_constraints(__RestorationOptimization[int] p, boolean[string] constraints){
@@ -754,7 +762,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
       }
     }
 
-    auto_debug_print("Removed  "+(c-count(constrained))+" objective values from consideration.");
+    auto_debug_print("Removed  "+(c-count(constrained))+" restore options from consideration.");
 
     return constrained;
   }
