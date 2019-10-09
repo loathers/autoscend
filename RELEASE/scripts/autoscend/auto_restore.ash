@@ -239,7 +239,7 @@ int[string] __MINIMIZE_VALUES = {
   "hp_total_short_goal": 1,
   "mp_total_wasted_goal": 1,
   "mp_total_short_goal": 1,
-  "hp_total_wasted_max": 2,
+  "hp_total_wasted_max": 3,
   "hp_total_short_max": 2,
   "mp_total_wasted_max": 3,
   "mp_total_short_max": 3,
@@ -258,7 +258,9 @@ int[string] __VARS_VALUES = {
   "mp_starting": 0,
   "mp_max": 0,
   "mp_restored_per_use": 0,
-  "mp_uses_needed_for_goal": 0
+  "mp_uses_needed_for_goal": 0,
+  "blood_skill_opportunity_casts_goal": 0,
+  "blood_skill_opportunity_casts_max": 0
 };
 boolean[string] __CONSTRAINT_VALUES = {
   "is_ever_useable": true,
@@ -383,6 +385,35 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     return max(0, get_value(resource_type, "starting") + get_value(resource_type, "total_restored") - goal);
   }
 
+  int blood_skill_opportunity_casts(int goal){
+    boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
+      auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
+      my_maxhp() > hp_cost($skill[Blood Bond]);
+
+    boolean bloodBubbleAvailable = auto_have_skill($skill[Blood Bubble]) &&
+      my_maxhp() > hp_cost($skill[Blood Bubble]);
+
+    int waste = total_wasted("hp", goal);
+    int blood_cost = hp_cost($skill[Blood Bond]);
+    if(total_wasted("hp", goal) <= blood_cost || !(bloodBubbleAvailable || bloodBondAvailable)){
+      return 0;
+    }
+
+    int hp_to_burn = min(my_hp()-1, waste);
+    return floor(hp_to_burn / blood_cost);
+  }
+
+  int blood_adjusted_waste(int goal){
+    int blood_cost = hp_cost($skill[Blood Bond]);
+    int casts = blood_skill_opportunity_casts(goal);
+    int waste = total_wasted("hp", goal);
+    if(casts < 1){
+      return waste;
+    } else{
+      return waste - (casts * hp_cost($skill[Blood Bond]));
+    }
+  }
+
   int total_short(string resource_type, int goal){
     return max(0, goal - (get_value(resource_type, "starting") + get_value(resource_type, "total_restored")));
   }
@@ -505,9 +536,9 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("total_uses_needed", total_uses_needed());
   set_value("total_uses_available", total_uses_available());
   set_value("hp_total_restored", total_restored("hp"));
-  set_value("hp_total_wasted_goal", total_wasted("hp", hp_goal));
+  set_value("hp_total_wasted_goal", blood_adjusted_waste(hp_goal));
   set_value("hp_total_short_goal", total_short("hp", hp_goal));
-  set_value("hp_total_wasted_max", total_wasted("hp", my_maxhp()));
+  set_value("hp_total_wasted_max", blood_adjusted_waste(my_maxhp()));
   set_value("hp_total_short_max", total_short("hp", my_maxhp()));
   set_value("mp_total_restored", total_restored("mp"));
   set_value("mp_total_wasted_goal", total_wasted("mp", mp_goal));
@@ -521,7 +552,8 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("is_currently_useable", is_currently_useable());
   set_value("have_required_resources", have_required_resources());
   set_value("restores_needed_resources", restores_needed_resources());
-
+  set_value("blood_skill_opportunity_casts_goal", blood_skill_opportunity_casts(hp_goal));
+  set_value("blood_skill_opportunity_casts_max", blood_skill_opportunity_casts(my_maxhp()));
 
   return optimization_parameters;
 }
@@ -820,6 +852,51 @@ boolean __restore(string resource_type, int goal, boolean buyItems, boolean useF
     }
   }
 
+  skill pick_blood_skill(){
+    int conservative_blood_bond_cost = hp_cost($skill[Blood Bond]) + ((9-hp_regen())*10);
+    boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
+      auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
+      my_maxhp() > hp_cost($skill[Blood Bond]) &&
+      my_maxhp() > blood_bond_cost/3; // blood bond drains hp after combat, make sure we dont accidentally kill the player
+
+    boolean bloodBubbleAvailable = auto_have_skill($skill[Blood Bubble]) &&
+      my_maxhp() > hp_cost($skill[Blood Bubble]);
+
+    skill blood_skill = $skill[none];
+    if(bloodBondAvailable && bloodBubbleAvailable){
+      if(have_effect($effect[Blood Bond]) > have_effect($effect[Blood Bubble])){
+        blood_skill = $skill[Blood Bubble];
+      } else{
+        blood_skill = $skill[Blood Bond];
+      }
+    } else if(bloodBondAvailable){
+      blood_skill = $skill[Blood Bond];
+    } else if(bloodBubbleAvailable){
+      blood_skill = $skill[Blood Bubble];
+    }
+    return blood_skill;
+  }
+
+  boolean use_opportunity_blood_skills(int hp_restored_per_use){
+    int success = true;
+    while(true){
+      skill blood_skill = pick_blood_skill();
+      if(blood_skill != $skill[none]){
+        int restored = my_hp() + hp_restored_per_use;
+        int waste = min(my_hp()-1, restored-my_maxhp());
+        int casts = floor(waste / hp_cost(blood_skill));
+        if(casts > 0){
+          success &= use_skill(1, blood_skill);
+        } else{
+          break;
+        }
+      } else{
+        break;
+      }
+    }
+    return success;
+  }
+
   boolean use_restore(__RestorationMetadata metadata, boolean buyItems, boolean useFreeRests){
     if(metadata.name == ""){
       return false;
@@ -863,6 +940,7 @@ boolean __restore(string resource_type, int goal, boolean buyItems, boolean useF
 
     boolean success = false;
     foreach i, o in options{
+      use_opportunity_blood_skills(o.vars["hp_restored_per_use"]);
       success = use_restore(o.metadata, buyItems, useFreeRests);
       if(success){
         break;
