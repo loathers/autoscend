@@ -144,7 +144,7 @@ boolean LA_cs_communityService()
 			auto_sourceTerminalEducate($skill[Digitize], $skill[Extract]);
 			set_property("auto_combatDirective", "start;skill digitize");
 			if(!cs_healthMaintain() || !cs_mpMaintain()){
-				abort("Wasnt to maintain health and mp.");
+				abort("Wasnt able to maintain health and mp.");
 			}
 			autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 			set_property("auto_combatDirective", "");
@@ -164,7 +164,7 @@ boolean LA_cs_communityService()
 	if((my_daycount() == 2) && auto_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore])) && !possessEquipment($item[Dented Scepter]) && (get_property("_auto_witchessBattles").to_int() < 5) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
 	{
 		if(!cs_healthMaintain() || !cs_mpMaintain()){
-			abort("Wasnt to maintain health and mp.");
+			abort("Wasnt able to maintain health and mp.");
 		}
 		handleFamiliar($familiar[Galloping Grill]);
 		auto_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
@@ -466,7 +466,7 @@ boolean LA_cs_communityService()
 
 				buffMaintain($effect[Musk of the Moose], 10, 1, 1);
 				if(!cs_healthMaintain()){
-					abort("Wasnt to maintain health.");
+					abort("Wasnt able to maintain health.");
 				}
 				autoAdv(1, loc, "cs_combatNormal");
 				return true;
@@ -493,7 +493,7 @@ boolean LA_cs_communityService()
 					autoEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 				}
 				if(!cs_healthMaintain()){
-					abort("Wasnt to maintain health.");
+					abort("Wasnt able to maintain health.");
 				}
 				autoAdv(1, $location[The Haunted Pantry], "cs_combatNormal");
 				return true;
@@ -536,7 +536,7 @@ boolean LA_cs_communityService()
 				}
 				set_property("choiceAdventure1060", 2);
 				if(!cs_healthMaintain()){
-					abort("Wasnt to maintain health.");
+					abort("Wasnt able to maintain health.");
 				}
 				autoAdv(1, $location[The Skeleton Store], "cs_combatNormal");
 				return true;
@@ -550,7 +550,7 @@ boolean LA_cs_communityService()
 			if((item_amount($item[Gene Tonic: Pirate]) == 0) && (get_property("_dnaPotionsMade").to_int() < 3) && (item_amount($item[DNA Extraction Syringe]) > 0) && elementalPlanes_access($element[stench]))
 			{
 				if(!cs_healthMaintain() || !cs_mpMaintain()){
-					abort("Wasnt to maintain health and mp.");
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[Pirates of the Garbage Barges], "cs_combatNormal");
 				return true;
@@ -575,7 +575,7 @@ boolean LA_cs_communityService()
 				buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
 
 				if(!cs_healthMaintain() || !cs_mpMaintain()){
-					abort("Wasnt to maintain health and mp.");
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[The Bubblin\' Caldera], "cs_combatNormal");
 				if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue of the Walrus]) && (my_mp() > (3 * mp_cost($skill[Tongue of the Walrus]))))
@@ -604,7 +604,7 @@ boolean LA_cs_communityService()
 				{
 					print("A Wanderer event is expected now.", "blue");
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 					return true;
@@ -638,7 +638,7 @@ boolean LA_cs_communityService()
 					}
 
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
 					return true;
@@ -695,7 +695,7 @@ boolean LA_cs_communityService()
 				set_property("_auto_margaritaWanderer", my_turncount());
 				print("A Wanderer event is expected now, diverting... (Status: 7 with Margarita)", "blue");
 				if(!cs_healthMaintain() || !cs_mpMaintain()){
-					abort("Wasnt to maintain health and mp.");
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 				return true;
@@ -708,7 +708,7 @@ boolean LA_cs_communityService()
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
@@ -721,7 +721,7 @@ boolean LA_cs_communityService()
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
@@ -741,7 +741,7 @@ boolean LA_cs_communityService()
 				{
 					print("Adventuring in LavaCo using the yellow ray source: " + yellowRay, "blue");
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatYR");
 					return true;
@@ -769,7 +769,7 @@ boolean LA_cs_communityService()
 				}
 
 				if(!cs_healthMaintain() || !cs_mpMaintain()){
-					abort("Wasnt to maintain health and mp.");
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[8-bit Realm], "cs_combatNormal");
 				return true;
@@ -947,7 +947,7 @@ boolean LA_cs_communityService()
 						if(elementalPlanes_access($element[stench]))
 						{
 							if(!cs_healthMaintain() || !cs_mpMaintain()){
-								abort("Wasnt to maintain health and mp.");
+								abort("Wasnt able to maintain health and mp.");
 							}
 							autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice], "cs_combatNormal");
 							return true;
@@ -966,7 +966,7 @@ boolean LA_cs_communityService()
 						autoEquip($slot[acc1], $item[Personal Ventilation Unit]);
 					}
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
 				}
@@ -982,28 +982,28 @@ boolean LA_cs_communityService()
 					}
 
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[VYKEA], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[hot]))
 				{
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
 				}
 				else if(knoll_available())
 				{
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[8-bit Realm], "cs_combatNormal");
 				}
 				else
 				{
 					if(!cs_healthMaintain() || !cs_mpMaintain(30)){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Thinknerd Warehouse], "cs_combatNormal");
 				}
@@ -1044,35 +1044,35 @@ boolean LA_cs_communityService()
 				if(elementalPlanes_access($element[hot]))
 				{
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[stench]))
 				{
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[spooky]))
 				{
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Deep Dark Jungle], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[sleaze]))
 				{
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[Sloppy Seconds Diner], "cs_combatNormal");
 				}
 				else
 				{
 					if(!cs_healthMaintain()){
-						abort("Wasnt to maintain health.");
+						abort("Wasnt able to maintain health.");
 					}
 					autoAdv(1, $location[The Haunted Kitchen], "cs_combatNormal");
 				}
@@ -1110,7 +1110,7 @@ boolean LA_cs_communityService()
 				{
 					handleFamiliar($familiar[XO Skeleton]);
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatXO");
 					return true;
@@ -1119,7 +1119,7 @@ boolean LA_cs_communityService()
 				{
 					handleFamiliar($familiar[XO Skeleton]);
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatXO");
 					return true;
@@ -1204,7 +1204,7 @@ boolean LA_cs_communityService()
 						handleFamiliar($familiar[Optimistic Candle]);
 					}
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 					handleFamiliar(oldFam);
@@ -2287,7 +2287,7 @@ boolean LA_cs_communityService()
 				{
 					print("A Wanderer event is expected now, diverting... (Status: 7 End)", "blue");
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 					return true;
@@ -2296,7 +2296,7 @@ boolean LA_cs_communityService()
 				if(snojoFightAvailable() && (my_adventures() > 0))
 				{
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 					return true;
@@ -2306,7 +2306,7 @@ boolean LA_cs_communityService()
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
-						abort("Wasnt to maintain health and mp.");
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
@@ -2559,7 +2559,7 @@ boolean LA_cs_communityService()
 			{
 				print("A Wanderer event is expected now.", "blue");
 				if(!cs_healthMaintain() || !cs_mpMaintain()){
-					abort("Wasnt to maintain health and mp.");
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 				return true;
@@ -2579,7 +2579,7 @@ boolean LA_cs_communityService()
 						handleFamiliar($familiar[Pair of Stomping Boots]);
 						backupSetting("choiceAdventure297", "3");
 						if(!cs_healthMaintain()){
-							abort("Wasnt to maintain health.");
+							abort("Wasnt able to maintain health.");
 						}
 						autoAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
 						restoreSetting("choiceAdventure297");
@@ -2598,7 +2598,7 @@ boolean LA_cs_communityService()
 				{
 					backupSetting("choiceAdventure297", "3");
 					if(!cs_healthMaintain()){
-						abort("Wasnt to maintain health.");
+						abort("Wasnt able to maintain health.");
 					}
 					boolean result = autoAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
 					restoreSetting("choiceAdventure297");
@@ -2743,7 +2743,7 @@ boolean LA_cs_communityService()
 							handleFamiliar("yellowray");
 						}
 						if(!cs_healthMaintain() || !cs_mpMaintain()){
-							abort("Wasnt to maintain health and mp.");
+							abort("Wasnt able to maintain health and mp.");
 						}
 						autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatYR");
 						return true;
@@ -4401,7 +4401,7 @@ boolean cs_giant_growth()
 	{
 		print("A Wanderer event is expected now and we want giant growth, diverting.... (Status: cs_giant_growth handler)", "blue");
 		if(!cs_healthMaintain() || !cs_mpMaintain()){
-			abort("Wasnt to maintain health and mp.");
+			abort("Wasnt able to maintain health and mp.");
 		}
 		autoAdv(1, $location[Barf Mountain], "cs_combatLTB");
 		if(have_effect($effect[Giant Growth]) > 0)
@@ -4446,7 +4446,7 @@ boolean cs_giant_growth()
 		backupSetting("choiceAdventure1119", 1);
 		handleFamiliar($familiar[Machine Elf]);
 		if(!cs_healthMaintain() || !cs_mpMaintain()){
-			abort("Wasnt to maintain health and mp.");
+			abort("Wasnt able to maintain health and mp.");
 		}
 		autoAdv(1, $location[The Deep Machine Tunnels], "cs_combatLTB");
 		restoreSetting("choiceAdventure1119");
@@ -5098,7 +5098,7 @@ boolean trySaberTrickMeteorShower(){
 
 	//saber should be equipped with use the force and meteorshower charges available
 	if(!cs_healthMaintain()){
-		abort("Wasnt to maintain health and mp.");
+		abort("Wasnt able to maintain health and mp.");
 	}
 	boolean ret = autoAdv(1, $location[The Dire Warren], "auto_saberTrickMeteorShowerCombatHandler");
 	resetMaximize();

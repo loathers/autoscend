@@ -3712,9 +3712,9 @@ boolean L11_aridDesert()
 			buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
 		}
 
-		if((my_mp() > 30) && ((my_hp()*2) < (my_maxhp()*1)))
+		if(my_mp() > 30 && my_hp() < (my_maxhp()*0.5))
 		{
-			useCocoon();
+			acquireHP();
 		}
 
 #		if(in_hardcore() && isGuildClass() && (item_amount($item[Worm-Riding Hooks]) > 0) && (get_property("desertExploration").to_int() <= (100 - (5 * progress))) && ((get_property("gnasirProgress").to_int() & 16) != 16))
@@ -4591,7 +4591,7 @@ boolean L13_towerNSTower()
 		{
 			if(item_amount($item[Beehive]) == 0)
 			{
-				useCocoon();
+				acquireHP();
 			}
 			autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 			if(internalQuestStatus("questL13Final") < 7)
@@ -4659,14 +4659,7 @@ boolean L13_towerNSTower()
 			autoEquip($item[Meat Tenderizer is Murder]);
 		}
 
-		if(my_mp() >= 20)
-		{
-			useCocoon();
-		}
-		else if(my_hp() < (0.9 * my_maxhp()))
-		{
-			doHottub();
-		}
+		acquireHP();
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
 		return true;
 	}
@@ -4714,7 +4707,7 @@ boolean L13_towerNSTower()
 				}
 			}
 
-			useCocoon();
+			acquireHP();
 			boolean[item] famDamage = $items[Tiny Bowler, Ant Hoe, Ant Pick, Ant Rake, Ant Pitchfork, Ant Sickle, Kill Screen, Little Box of Fireworks, Filthy Child Leash, Plastic Pumpkin Bucket, Moveable Feast, Ittah Bittah Hookah];
 			if(famDamage contains equipped_item($slot[Familiar]))
 			{
@@ -4833,7 +4826,7 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
-	useCocoon();
+	acquireHP();
 	visit_url("place.php?whichplace=nstower&action=ns_03_hedgemaze");
 	if(get_property("lastEncounter") == "This Maze is... Mazelike...")
 	{
@@ -6023,7 +6016,7 @@ boolean L11_hiddenCity()
 			}
 
 			print("Fighting the out-of-work spirit", "blue");
-			useCocoon();
+			acquireHP();
 
 			try
 			{
@@ -6800,10 +6793,7 @@ boolean L11_mauriceSpookyraven()
 	if((get_property("auto_winebomb") == "finished") || get_property("auto_masonryWall").to_boolean() || (internalQuestStatus("questL11Manor") >= 3))
 	{
 		print("Down with the tyrant of Spookyraven!", "blue");
-		if(my_mp() >= 20)
-		{
-			useCocoon();
-		}
+		acquireHP();
 		buffMaintain($effect[Astral Shell], 10, 1, 1);
 		buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 
@@ -7412,7 +7402,7 @@ boolean L11_defeatEd()
 		autoForceEquip($item[low-pressure oxygen tank]);
 	}
 
-	useCocoon();
+	acquireHP();
 	print("Time to waste all of Ed's Ka Coins :(", "blue");
 
 	set_property("choiceAdventure976", "1");
@@ -7607,7 +7597,7 @@ boolean L12_gremlins()
 			equip($item[astral shield]);
 		}
 	}
-	useCocoon();
+	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
 		bat_formMist();
@@ -8234,12 +8224,7 @@ boolean L12_finalizeWar()
 	}
 	warOutfit(false);
 #	cli_execute("refresh equip");
-	if(my_hp() < my_maxhp())
-	{
-		print("My hp is: " + my_hp());
-		print("My max hp is: " + my_maxhp());
-		useCocoon();
-	}
+	acquireHP();
 	print("Let's fight the boss!", "blue");
 
 	location bossFight = $location[The Battlefield (Frat Uniform)];
@@ -9620,7 +9605,7 @@ boolean L7_crypt()
 			buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
 		}
 
-		useCocoon();
+		acquireHP();
 		set_property("choiceAdventure527", 1);
 		if(auto_have_familiar($familiar[Machine Elf]))
 		{
@@ -10840,81 +10825,19 @@ boolean adventureFailureHandler()
 	return false;
 }
 
-boolean beatenUpResolution()
-{
-	if((have_effect($effect[Beaten Up]) > 0) && (auto_my_path() == "Community Service") && (last_monster() != $monster[X-32-F Combat Training Snowman]))
-	{
-		if((my_mp() > 100) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
+boolean beatenUpResolution(){
+
+	if(have_effect($effect[Beaten Up]) > 0){
+		if(get_property("auto_beatenUpCount").to_int() > 10){
+			abort("We are getting beaten up too much, this is not good. Aborting.");
 		}
-		else
-		{
-			doHottub();
-		}
-	}
-	if((have_effect($effect[Beaten Up]) > 0) && (auto_my_path() == "The Source") && (last_monster() == $monster[Source Agent]))
-	{
-		if((my_mp() > 100) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
-		}
-		else
-		{
-			doHottub();
-		}
-	}
-	if((have_effect($effect[Beaten Up]) > 0) && (last_monster() == $monster[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl]))
-	{
-		if((my_mp() > 40) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
-		}
-		else
-		{
-			doHottub();
-		}
+		acquireHP();
 	}
 
-	if(have_effect($effect[Beaten Up]) > 0)
-	{
-		if(have_effect($effect[Temporary Amnesia]) > 0)
-		{
-			doHottub();
-		}
-		else if((my_mp() > 20) && ((my_hp() * 1.2) >= my_maxhp()) && have_skill($skill[Tongue of the Walrus]))
-		{
-			if(get_property("auto_beatenUpCount").to_int() > 10)
-			{
-				abort("We are getting beaten up too much, this is not good. Aborting.");
-			}
-			use_skill(1, $skill[Tongue of the Walrus]);
-		}
-		if(have_effect($effect[Beaten Up]) > 0)
-		{
-			if(get_property("auto_beatenUpCount").to_int() < 10)
-			{
-				doRest();
-				if(have_effect($effect[Beaten Up]) > 0)
-				{
-					print("Resting did not remove Beaten Up!", "red");
-					cli_execute("refresh all");
-					if(have_effect($effect[Beaten Up]) > 0)
-					{
-						abort("Still beaten up... the sadness.");
-					}
-				}
-			}
-			else
-			{
-				abort("Got beaten up, please fix me");
-			}
-		}
+	if(have_effect($effect[Beaten Up]) > 0){
+		cli_execute("refresh all");
 	}
-	return false;
+	return have_effect($effect[Beaten Up]) > 0;
 }
 
 boolean LX_meatMaid()
@@ -12364,7 +12287,7 @@ boolean L9_aBooPeak()
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
 			{
-				useCocoon();
+				acquireHP();
 			}
 			if(get_property("auto_aboopending").to_int() == 0)
 			{
@@ -12396,7 +12319,7 @@ boolean L9_aBooPeak()
 					set_property("auto_aboopending", 0);
 				}
 			}
-			useCocoon();
+			acquireHP();
 			if (isActuallyEd() && my_hp() == 0)
 			{
 				use(1, $item[Linen Bandages]);
@@ -14742,7 +14665,7 @@ boolean doTasks()
 
 	if(((my_hp() * 5) < my_maxhp()) && (my_mp() > 100))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	if(my_daycount() == 1)
