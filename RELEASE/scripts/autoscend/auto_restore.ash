@@ -296,10 +296,14 @@ int[string] __OBJECTIVE_RANKS = {
   "hp_total_restored": 1,
   "mp_total_restored": 1,
   "negative_status_effects_remaining": 1,
-  "hp_total_short_max": 2,
-  "mp_total_short_max": 2,
-  "mp_total_wasted_max": 3,
-  "hp_total_wasted_max": 3,
+  "hp_total_short_goal": 2,
+  "mp_total_short_goal": 2,
+  "mp_total_wasted_max": 2,
+  "hp_total_wasted_max": 2,
+  "hp_total_short_max": 3,
+  "mp_total_short_max": 3,
+  "mp_total_wasted_goal": 3,
+  "hp_total_wasted_goal": 3,
   "total_meat_used": 4,
   "total_mp_used": 4,
   "total_coinmaster_tokens_used": 4,
@@ -308,30 +312,28 @@ int[string] __OBJECTIVE_RANKS = {
   "hp_per_coinmaster_token_spent": 5,
   "mp_per_coinmaster_token_spent": 5,
   "total_uses_available": 6,
-  "hp_total_short_goal": 7,
-  "mp_total_short_goal": 7,
-  "mp_total_wasted_goal": 8,
-  "hp_total_wasted_goal": 8,
-  "total_uses_needed": 9,
+  "total_uses_needed": 7,
 };
 
 // describes what each ranking in __OBJECTIVE_RANKS is attempting to optimize for
 string[int] __RANKED_GOAL_DESCRIPTIONS = {
   1: "remove negative status effects",
-  2: "minimize hp/mp shortage under max",
-  3: "minimize wasted hp/mp over max",
+  2: "eliminate options not good enough (to goal) and too wasteful (to max)",
+  3: "eliminate options not good enough (to max) and too wasteful (to goal)", // hopefully by now we have options that
   4: "avoid spending resources (meat, mp, coinmaster tokens)",
   5: "maximize hp/mp restored per resource spent (if we have to spend resources)",
   6: "use options we have more available uses of",
-  7: "minimize hp/mp shortage under goal (not necessarily max)",
-  8: "minimize wasted hp/mp over goal (not necessarily max)",
-  9: "minimize number of uses needed to reach goal"
+  7: "minimize number of uses needed to reach goal"
 };
 
 /**
  * Precalculate values we will later use to narrow down our restoration options to the most effective and least costly.
  *
  * Most future work adding new restore methods should hopefully just need to add new fields to __MAXIMIZE_KEYS, __MINIMIZE_KEYS or __CONSTRAINT_KEYS and set them appropriately here. It is also important to add new values to __OBJECTIVE_RANKS so they are considered at the right time to be effective. The optimization algorithm itself shouldnt need to be changed.
+ *
+ * TODO:
+ *  - add mana burn potential
+ *  - improve blood burn potential calculations
  */
 __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal, boolean buyItems, boolean useFreeRests, __RestorationMetadata metadata){
   __RestorationOptimization optimization_parameters;
@@ -435,6 +437,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     return max(0.0, get_value(resource_type, "starting") + get_value(resource_type, "total_restored") - goal);
   }
 
+  // TODO: doesnt account properly for multiuse situations where we could have more blood skill casts and less waste than this formula suggests
   float blood_skill_opportunity_casts(float goal){
     boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
       auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
@@ -1223,12 +1226,14 @@ boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
     goal = my_maxhp(); //in case max rose after curing the bad stuff
   } else if(goal > my_maxhp()){
 		return false;
-	} else if(my_hp() >= goal){
+	} else if(my_hp() >= goal*0.95){
 		return true;
 	}
 
   __restore("hp", goal, buyItems, useFreeRests);
-
+  if(!user_confirm("Did it work right?")){
+    abort("It didnt work right.");
+  }
 	return my_hp() >= goal;
 }
 
