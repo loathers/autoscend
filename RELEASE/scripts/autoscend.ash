@@ -7031,7 +7031,7 @@ boolean L13_sorceressDoor()
 		}
 	}
 
-	if((item_amount($item[white pixel]) >= 30) && (item_amount($item[Digital Key]) == 0))
+	if((item_amount($item[white pixel]) >= 30) && (item_amount($item[Digital Key]) == 0) && !in_koe())
 	{
 		cli_execute("make digital key");
 		set_property("auto_crackpotjar", "finished");
@@ -7064,7 +7064,12 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Boris\'s Key]) == 0)
 		{
-			boolean temp = cli_execute("make Boris's Key");
+			if(in_koe() && item_amount($item[fat loot token]) > 0) {
+				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1093&pwd", true);
+			}
+			else {
+				cli_execute("make Boris's Key");
+			}
 		}
 		if(item_amount($item[Boris\'s Key]) == 0)
 		{
@@ -7076,7 +7081,12 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Jarlsberg\'s Key]) == 0)
 		{
-			boolean temp = cli_execute("make Jarlsberg's Key");
+			if(in_koe() && item_amount($item[fat loot token]) > 0) {
+				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1094&pwd", true);
+			}
+			else {
+				cli_execute("make Jarlsberg's Key");
+			}
 		}
 		if(item_amount($item[Jarlsberg\'s Key]) == 0)
 		{
@@ -7088,7 +7098,12 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Sneaky Pete\'s Key]) == 0)
 		{
-			boolean temp = cli_execute("make Sneaky Pete's Key");
+			if(in_koe() && item_amount($item[fat loot token]) > 0) {
+				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1095&pwd", true);
+			}
+			else {
+				cli_execute("make Sneaky Pete's Key");
+			}
 		}
 		if(item_amount($item[Sneaky Pete\'s Key]) == 0)
 		{
@@ -7114,7 +7129,21 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Digital Key]) == 0)
 		{
-			boolean temp = cli_execute("make digital key");
+			if(item_amount($item[white pixel]) < 30)
+			{
+				int pulls_needed = 30 - item_amount($item[white pixel]);
+				// Save 5 pulls for later, just in case.
+				if(pulls_remaining() - pulls_needed >= 5)
+				{
+					pullXWhenHaveY($item[white pixel], pulls_needed, item_amount($item[white pixel]));
+				}
+			}
+			if(in_koe() && item_amount($item[white pixel]) >= 30) {
+				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1090&pwd", true);
+			}
+			else {
+				cli_execute("make digital key");
+			}
 		}
 		if(item_amount($item[Digital Key]) == 0)
 		{
@@ -9493,7 +9522,17 @@ boolean L7_crypt()
 		return true;
 	}
 
-	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]))
+	// In KoE, skeleton astronauts are random encounters that drop Evil Eyes.
+	// We might be able to reach the Nook boss without adventuring.
+
+	while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
+	{
+		use(1, $item[Evil Eye]);
+	}
+
+	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12War") != "finished";
+
+	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]) && !skip_in_koe)
 	{
 		print("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
@@ -9501,8 +9540,9 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 
 		bat_formBats();
+
 		januaryToteAcquire($item[broken champagne bottle]);
-		if(useMaximizeToEquip())
+		if(useMaximizeToEquip() && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
 			removeFromMaximize("-equip " + $item[broken champagne bottle]);
 		}
@@ -9517,11 +9557,11 @@ boolean L7_crypt()
 		}
 
 		autoAdv(1, $location[The Defiled Nook]);
-		while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
-		{
-			use(1, $item[Evil Eye]);
-		}
 		return true;
+	}
+	else if(skip_in_koe)
+	{
+		auto_debug_print("In Exploathing, skipping Defiled Nook until we get more evil eyes.");
 	}
 
 	if((get_property("cyrptNicheEvilness").to_int() > 0) && canGroundhog($location[The Defiled Niche]))
