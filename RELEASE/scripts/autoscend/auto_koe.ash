@@ -103,6 +103,6 @@ boolean LX_koeInvaderHandler()
 			return ret;
 		}
 	}
-	abort("I'm not really sure how to kill this Invader guy. Do it manually?");
+	print("I don't think we're ready to kill the invader yet.", "blue");
 	return false;
 }
