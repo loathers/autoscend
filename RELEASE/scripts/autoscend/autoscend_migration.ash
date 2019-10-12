@@ -130,9 +130,9 @@ boolean autoscend_migrate(){
 
   boolean all_good = true;
   if(autoscend_needs_update()){
-    print("Migrating from " + autoscend_previous_version() + " to " + autoscend_current_version(), "blue");
+    print("Migrating from " + autoscend_previous_version() + " to " + __autoscend_version, "blue");
     if(autoscend_previous_version() == "0.0.0" && repo_present("sl_ascend")){
-      all_good = autoscend_migrate_properties() && remove_sl_ascend_repos();  
+      all_good = autoscend_migrate_properties() && remove_sl_ascend_repos();
     }
     finalize_update();
   } else if(repo_present("sl_ascend")){
