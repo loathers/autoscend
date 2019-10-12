@@ -1152,7 +1152,7 @@ void invalidateRestoreOptionCache(){
 
 
 /**
- * Try to acquire your max mp (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire your max mp (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= my_maxmp() after attempting to restore.
  */
@@ -1161,7 +1161,7 @@ boolean acquireMP(){
 }
 
 /**
- * Try to acquire up to the mp goal (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire up to the mp goal (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= goal after attempting to restore.
  */
@@ -1210,7 +1210,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 }
 
 /**
- * Try to acquire up to the mp goal expressed as a percentage (out of either 1.0 or 100.0) (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire up to the mp goal expressed as a percentage (out of either 1.0 or 100.0) (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= goalPercent after attempting to restore.
  */
@@ -1244,7 +1244,7 @@ boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests){
 }
 
 /**
- * Try to acquire your max hp (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire your max hp (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= my_maxhp() after attempting to restore.
  */
@@ -1253,7 +1253,7 @@ boolean acquireHP(){
 }
 
 /**
- * Try to acquire up to the hp goal (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire up to the hp goal (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= goal after attempting to restore.
  */
@@ -1291,14 +1291,11 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 	}
 
   __restore("hp", goal, meat_reserve, useFreeRests);
-  if(!user_confirm("Did it work right?")){
-    abort("It didnt work right.");
-  }
 	return my_hp() >= goal;
 }
 
 /**
- * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0) (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0) (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= goalPercent after attempting to restore.
  */
