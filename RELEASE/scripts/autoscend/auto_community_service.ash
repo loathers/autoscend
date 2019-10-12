@@ -5048,11 +5048,8 @@ boolean cs_healthMaintain(){
 
 boolean cs_healthMaintain(int target){
 	boolean shouldBuy = false;
-	if(my_meat() > 2500){
-		shouldBuy = true;
-	}
 
-	acquireHP(target, shouldBuy, true);
+	acquireHP(target, 2500, true);
 
 	return my_hp() >= target;
 }
@@ -5069,10 +5066,7 @@ boolean cs_mpMaintain(){
 
 boolean cs_mpMaintain(int target){
 	boolean shouldBuy = false;
-	if(my_meat() > 2500){
-		shouldBuy = true;
-	}
-	acquireMP(target, shouldBuy, true);
+	acquireMP(target, 1500, true);
 
 	return my_mp() >= target;
 }

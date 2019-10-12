@@ -4296,7 +4296,7 @@ boolean L13_towerNSFinal()
 	{
 		if(auto_my_path() == "The Source")
 		{
-			acquireMP(200, true);
+			acquireMP(200, 0);
 		}
 	}
 	else
@@ -4449,7 +4449,7 @@ boolean L13_towerNSTower()
 	{
 		print("Time to fight the Wall of Skins!", "blue");
 		auto_change_mcd(0);
-		acquireMP(120, true);
+		acquireMP(120, 0);
 
 		int sources = 0;
 		if(autoEquip($item[astral shirt]))
@@ -4684,7 +4684,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[OMG WTF], 0, 1, 1);
 			buffMaintain($effect[There is a Spoon], 0, 1, 1);
 			boolean keepTrying = true;
-			acquireMP(216, true);
+			acquireMP(216, 0);
 
 			buffMaintain($effect[Song of Sauce], 0, 1, 1);
 			buffMaintain($effect[Carol of the Hells], 0, 1, 1);

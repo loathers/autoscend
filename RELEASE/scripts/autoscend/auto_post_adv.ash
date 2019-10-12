@@ -239,7 +239,7 @@ void handlePostAdventure()
 
 		if((my_mp() + 100) < my_maxmp())
 		{
-			acquireMP(100, false);
+			acquireMP(100, my_meat());
 		}
 		return;
 	}

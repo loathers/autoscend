@@ -274,7 +274,10 @@ boolean[string] __VARS_KEYS = {
   "mp_restored_per_use": true,
   "mp_uses_needed_for_goal": true,
   "blood_skill_opportunity_casts_goal": true,
-  "blood_skill_opportunity_casts_max": true
+  "blood_skill_opportunity_casts_max": true,
+  "amount_creatable": true,
+  "amount_buyable": true,
+  "meat_per_use": true
 };
 
 // values used to constrain or quickly eliminate methods as not options (e.g. skill not available in a path)
@@ -296,14 +299,10 @@ int[string] __OBJECTIVE_RANKS = {
   "hp_total_restored": 1,
   "mp_total_restored": 1,
   "negative_status_effects_remaining": 1,
-  "hp_total_short_goal": 2,
-  "mp_total_short_goal": 2,
-  "mp_total_wasted_max": 2,
-  "hp_total_wasted_max": 2,
-  "hp_total_short_max": 3,
-  "mp_total_short_max": 3,
-  "mp_total_wasted_goal": 3,
-  "hp_total_wasted_goal": 3,
+  "hp_total_short_max": 2,
+  "mp_total_short_max": 2,
+  "mp_total_wasted_max": 3,
+  "hp_total_wasted_max": 3,
   "total_meat_used": 4,
   "total_mp_used": 4,
   "total_coinmaster_tokens_used": 4,
@@ -312,18 +311,24 @@ int[string] __OBJECTIVE_RANKS = {
   "hp_per_coinmaster_token_spent": 5,
   "mp_per_coinmaster_token_spent": 5,
   "total_uses_available": 6,
-  "total_uses_needed": 7,
+  "hp_total_short_goal": 7,
+  "mp_total_short_goal": 7,
+  "mp_total_wasted_goal": 8,
+  "hp_total_wasted_goal": 8,
+  "total_uses_needed": 9,
 };
 
 // describes what each ranking in __OBJECTIVE_RANKS is attempting to optimize for
 string[int] __RANKED_GOAL_DESCRIPTIONS = {
   1: "remove negative status effects",
-  2: "eliminate options not good enough (to goal) and too wasteful (to max)",
-  3: "eliminate options not good enough (to max) and too wasteful (to goal)", // hopefully by now we have options that
+  2: "minimize hp/mp shortage under max",
+  3: "minimize wasted hp/mp over max",
   4: "avoid spending resources (meat, mp, coinmaster tokens)",
   5: "maximize hp/mp restored per resource spent (if we have to spend resources)",
   6: "use options we have more available uses of",
-  7: "minimize number of uses needed to reach goal"
+  7: "minimize hp/mp shortage under goal (not necessarily max)",
+  8: "minimize wasted hp/mp over goal (not necessarily max)",
+  9: "minimize number of uses needed to reach goal"
 };
 
 /**
@@ -334,8 +339,11 @@ string[int] __RANKED_GOAL_DESCRIPTIONS = {
  * TODO:
  *  - add mana burn potential
  *  - improve blood burn potential calculations
+ *  - add april shower
+ *  - integrate with https://sourceforge.net/p/kolmafia/code/HEAD/tree/src/data/restores.txt
+ *  - add meat reserve limit
  */
-__RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal, boolean buyItems, boolean useFreeRests, __RestorationMetadata metadata){
+__RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal, int meat_reserve, boolean useFreeRests, __RestorationMetadata metadata){
   __RestorationOptimization optimization_parameters;
 
   void set_value(string name, float value){
@@ -416,11 +424,64 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     return max(get_value("hp", "uses_needed_for_goal"), get_value("mp", "uses_needed_for_goal"));
   }
 
+  float meat_per_use(){
+    if(metadata.type != "item"){
+      return 0.0;
+    }
+    item i = to_item(metadata.name);
+    int price = npc_price(i);
+    if(can_interact()){
+      price = min(price, auto_mall_price(i));
+    }
+    return price;
+  }
+
+  float tokens_per_use(){
+    if(metadata.type != "item"){
+      return 0.0;
+    }
+    item i = to_item(metadata.name);
+    if(i.seller != $coinmaster[none]){
+      return sell_price(i.seller, i);
+    }
+    return 0.0;
+  }
+
+  float total_creatable(){
+    if(metadata.type != "item"){
+      return 0.0;
+    }
+    return creatable_amount(to_item(metadata.name));
+  }
+
+  float total_buyable(){
+    if(metadata.type != "item"){
+      return 0.0;
+    }
+
+    float price_per = 0.0;
+    float currency_available = 0.0;
+
+    if(get_value("meat_per_use") > 0.0){
+      price_per = get_value("meat_per_use");
+      currency_available = max(0, my_meat() - meat_reserve);
+    } else if(get_value("tokens_per_use") > 0.0){
+      price_per = get_value("tokens_per_use");
+      currency_available = to_item(metadata.name).seller.available_tokens;
+    }
+
+    if(currency_available == 0){
+      return 0.0;
+    }
+
+    return floor(price_per / currency_available);
+  }
+
   float total_uses_available(){
     if(metadata.type == "dwelling"){
       return freeRestsRemaining()*1.0;
     } else if(metadata.type == "item"){
-      return available_amount(to_item(metadata.name)); //I believe this will take coinmasters into consideration for us
+      return item_amount(to_item(metadata.name)) + get_value("total_buyable") + get_value("total_creatable");
     } else if(metadata.type == "skill"){
       return floor(get_value("mp_starting") / mp_cost(to_skill(metadata.name)))*1.0;
     } else if(metadata.name == __HOT_TUB){
@@ -566,7 +627,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       item i = to_item(metadata.name);
       boolean npc_buyable = npc_price(i) > 0 || (i.seller != $coinmaster[none] && is_accessible(i.seller) && get_property("autoSatisfyWithCoinmasters").to_boolean());
       boolean mall_buyable = can_interact() && auto_mall_price(i) > 0;
-      boolean can_buy = buyItems && (npc_buyable || mall_buyable);
+      boolean can_buy = meat_reserve > my_meat() && (npc_buyable || mall_buyable);
       return (available_amount(i) > 0 || can_buy);
     }
     if(metadata.type == "skill"){
@@ -620,7 +681,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("mp_max", my_maxmp());
   set_value("mp_restored_per_use", mp_restored_per_use());
   set_value("mp_uses_needed_for_goal", uses_needed_to_reach_goal("mp"));
+  set_value("meat_per_use", meat_per_use());
+  set_value("tokens_per_use", tokens_per_use());
   set_value("total_uses_needed", total_uses_needed());
+  set_value("total_buyable", total_buyable());
+  set_value("total_creatable", total_creatable());
   set_value("total_uses_available", total_uses_available());
   set_value("hp_total_restored", total_restored("hp"));
   set_value("hp_total_wasted_goal", blood_adjusted_waste(hp_goal));
@@ -669,7 +734,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
  *  https://www.youtube.com/watch?v=xLjfa8NXQD8
  *  https://www.youtube.com/watch?v=Hm2LK4vJzRw
  */
-__RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_goal, boolean buyItems, boolean useFreeRests){
+__RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_goal, int meat_reserve, boolean useFreeRests){
 
   // returns a sublist of p from [start, stop)
   __RestorationOptimization[int] slice(__RestorationOptimization[int] p, int start, int stop){
@@ -767,18 +832,10 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
           }
         }
         if(T_dominance > B_dominance){
-          print(T[Ti].metadata.name + " dominated " + B[Bi].metadata.name, "green");
-          print(to_string(T[Ti], false));
-          print(to_string(B[Bi], false));
           dominated[B[Bi].metadata.name] = true;
         } else if(B_dominance > T_dominance){
-          print(B[Bi].metadata.name + " dominated " + T[Ti].metadata.name, "green");
-          print(to_string(T[Ti], false));
-          print(to_string(B[Bi], false));
           dominated[T[Ti].metadata.name] = true;
           break;
-        } else{
-          print(T[Ti].metadata.name + " and " + B[Bi].metadata.name + " are non-dominated", "green");
         }
         Bi++;
       }
@@ -913,12 +970,12 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
       auto_debug_print("Recalculating cached restore objective values.");
       foreach i, o in __restore_maximizer_cache{
          __RestorationOptimization recalculated =
-         __restore_maximizer_cache[i] = __calculate_objective_values(hp_goal, mp_goal, buyItems, useFreeRests, o.metadata);
+         __restore_maximizer_cache[i] = __calculate_objective_values(hp_goal, mp_goal, meat_reserve, useFreeRests, o.metadata);
       }
     } else{
       auto_debug_print("Calculating restore objective values.");
       foreach name, metadata in __restoration_methods(){
-        __RestorationOptimization o = __calculate_objective_values(hp_goal, mp_goal, buyItems, useFreeRests, metadata);
+        __RestorationOptimization o = __calculate_objective_values(hp_goal, mp_goal, meat_reserve, useFreeRests, metadata);
         if(o.constraints["is_ever_useable"]){
           __restore_maximizer_cache[count(__restore_maximizer_cache)] = o;
         }
@@ -934,7 +991,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
   return ranked_optimization(optimized, __OBJECTIVE_RANKS, __MAXIMIZE_KEYS, __MINIMIZE_KEYS);
 }
 
-boolean __restore(string resource_type, int goal, boolean buyItems, boolean useFreeRests){
+boolean __restore(string resource_type, int goal, int meat_reserve, boolean useFreeRests){
 
   int current_resource(){
     if(resource_type == "hp"){
@@ -1006,7 +1063,7 @@ boolean __restore(string resource_type, int goal, boolean buyItems, boolean useF
     return success;
   }
 
-  boolean use_restore(__RestorationMetadata metadata, boolean buyItems, boolean useFreeRests){
+  boolean use_restore(__RestorationMetadata metadata, int meat_reserve, boolean useFreeRests){
     if(metadata.name == ""){
       return false;
     }
@@ -1028,7 +1085,7 @@ boolean __restore(string resource_type, int goal, boolean buyItems, boolean useF
 
     if(metadata.type == "skill"){
       skill s = to_skill(metadata.name);
-      if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), buyItems, useFreeRests)){
+      if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), meat_reserve, useFreeRests)){
         print("Couldnt acquire enough MP to cast " + s, "red");
         return false;
       }
@@ -1041,7 +1098,7 @@ boolean __restore(string resource_type, int goal, boolean buyItems, boolean useF
   print("Target "+resource_type+" => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
 
   while(current_resource() < goal){
-    __RestorationOptimization[int] options = __maximize_restore_options(hp_target(), mp_target(), buyItems, useFreeRests);
+    __RestorationOptimization[int] options = __maximize_restore_options(hp_target(), mp_target(), meat_reserve, useFreeRests);
     if(count(options) == 0){
       print("Target "+resource_type+" => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
       return false;
@@ -1050,7 +1107,7 @@ boolean __restore(string resource_type, int goal, boolean buyItems, boolean useF
     boolean success = false;
     foreach i, o in options{
       use_opportunity_blood_skills(o.vars["hp_restored_per_use"]);
-      success = use_restore(o.metadata, buyItems, useFreeRests);
+      success = use_restore(o.metadata, meat_reserve, useFreeRests);
       if(success){
         break;
       } else{
@@ -1095,7 +1152,7 @@ void invalidateRestoreOptionCache(){
 
 
 /**
- * Try to acquire your max mp (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire your max mp (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= my_maxmp() after attempting to restore.
  */
@@ -1104,13 +1161,14 @@ boolean acquireMP(){
 }
 
 /**
- * Try to acquire up to the mp goal (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire up to the mp goal (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= goal after attempting to restore.
  */
 boolean acquireMP(int goal)
 {
-	return acquireMP(goal, can_interact());
+  int meat_reserve = can_interact() ? 0 : my_meat();
+	return acquireMP(goal, meat_reserve);
 }
 
 /**
@@ -1118,8 +1176,8 @@ boolean acquireMP(int goal)
  *
  * returns true if my_mp() >= goal after attempting to restore.
  */
-boolean acquireMP(int goal, boolean buyItems){
-	return acquireMP(goal, buyItems, true);
+boolean acquireMP(int goal, int meat_reserve){
+	return acquireMP(goal, meat_reserve, true);
 }
 
 /**
@@ -1127,7 +1185,7 @@ boolean acquireMP(int goal, boolean buyItems){
  *
  * returns true if my_mp() >= goal after attempting to restore.
  */
-boolean acquireMP(int goal, boolean buyItems, boolean useFreeRests)
+boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 {
 
   boolean isMax = (goal == my_maxmp());
@@ -1147,17 +1205,18 @@ boolean acquireMP(int goal, boolean buyItems, boolean useFreeRests)
 	if(my_maxmp() - my_mp() > 300){
 		auto_sausageEatEmUp(1);
 	}
-  __restore("mp", goal, buyItems, useFreeRests);
+  __restore("mp", goal, meat_reserve, useFreeRests);
 	return (my_mp() >= goal);
 }
 
 /**
- * Try to acquire up to the mp goal expressed as a percentage (out of either 1.0 or 100.0) (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire up to the mp goal expressed as a percentage (out of either 1.0 or 100.0) (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= goalPercent after attempting to restore.
  */
 boolean acquireMP(float goalPercent){
-	return acquireMP(goalPercent, can_interact());
+  int meat_reserve = can_interact() ? 0 : my_meat();
+	return acquireMP(goalPercent, meat_reserve);
 }
 
 /**
@@ -1165,8 +1224,8 @@ boolean acquireMP(float goalPercent){
  *
  * returns true if my_mp() >= goalPercent after attempting to restore.
  */
-boolean acquireMP(float goalPercent, boolean buyItems){
-	return acquireMP(goalPercent, buyItems, true);
+boolean acquireMP(float goalPercent, int meat_reserve){
+	return acquireMP(goalPercent, meat_reserve, true);
 }
 
 /**
@@ -1174,18 +1233,18 @@ boolean acquireMP(float goalPercent, boolean buyItems){
  *
  * returns true if my_mp() >= goalPercent after attempting to restore.
  */
-boolean acquireMP(float goalPercent, boolean buyItems, boolean useFreeRests){
+boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests){
 	int goal = my_maxmp();
 	if(goalPercent > 1.0){
 		goal = ceil((goalPercent/100.0) * my_maxmp());
 	} else{
 		goal = ceil(goalPercent*my_maxmp());
 	}
-	return acquireMP(goal.to_int(), buyItems, useFreeRests);
+	return acquireMP(goal.to_int(), meat_reserve, useFreeRests);
 }
 
 /**
- * Try to acquire your max hp (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire your max hp (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= my_maxhp() after attempting to restore.
  */
@@ -1194,12 +1253,13 @@ boolean acquireHP(){
 }
 
 /**
- * Try to acquire up to the hp goal (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire up to the hp goal (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= goal after attempting to restore.
  */
 boolean acquireHP(int goal){
-	return acquireHP(goal, can_interact());
+  int meat_reserve = can_interact() ? 0 : my_meat();
+	return acquireHP(goal, meat_reserve);
 }
 
 /**
@@ -1207,8 +1267,8 @@ boolean acquireHP(int goal){
  *
  * returns true if my_hp() >= goal after attempting to restore.
  */
-boolean acquireHP(int goal, boolean buyItems){
-	return acquireHP(goal, buyItems, true);
+boolean acquireHP(int goal, int meat_reserve){
+	return acquireHP(goal, meat_reserve, true);
 }
 
  /**
@@ -1216,7 +1276,7 @@ boolean acquireHP(int goal, boolean buyItems){
   *
   * returns true if my_hp() >= goal after attempting to restore.
   */
-boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
+boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 
   boolean isMax = (goal == my_maxhp());
 
@@ -1230,7 +1290,7 @@ boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
 		return true;
 	}
 
-  __restore("hp", goal, buyItems, useFreeRests);
+  __restore("hp", goal, meat_reserve, useFreeRests);
   if(!user_confirm("Did it work right?")){
     abort("It didnt work right.");
   }
@@ -1238,12 +1298,13 @@ boolean acquireHP(int goal, boolean buyItems, boolean useFreeRests){
 }
 
 /**
- * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0) (buyItems: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0) (meat_reserve: false, useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= goalPercent after attempting to restore.
  */
 boolean acquireHP(float goalPercent){
-	return acquireHP(goalPercent, can_interact());
+  int meat_reserve = can_interact() ? 0 : my_meat();
+	return acquireHP(goalPercent, meat_reserve);
 }
 
 /**
@@ -1251,8 +1312,8 @@ boolean acquireHP(float goalPercent){
  *
  * returns true if my_hp() >= goalPercent after attempting to restore.
  */
-boolean acquireHP(float goalPercent, boolean buyItems){
-	return acquireHP(goalPercent, buyItems, true);
+boolean acquireHP(float goalPercent, int meat_reserve){
+	return acquireHP(goalPercent, meat_reserve, true);
 }
 
 /**
@@ -1260,14 +1321,14 @@ boolean acquireHP(float goalPercent, boolean buyItems){
  *
  * returns true if my_hp() >= goalPercent after attempting to restore.
  */
-boolean acquireHP(float goalPercent, boolean buyItems, boolean useFreeRests){
+boolean acquireHP(float goalPercent, int meat_reserve, boolean useFreeRests){
 	int goal = my_maxhp();
 	if(goalPercent > 1.0){
 		goal = ceil((goalPercent/100.0) * my_maxhp());
 	} else{
 		goal = ceil(goalPercent*my_maxhp());
 	}
-	return acquireHP(goal.to_int(), buyItems, useFreeRests);
+	return acquireHP(goal.to_int(), meat_reserve, useFreeRests);
 }
 
 /*
