@@ -1,0 +1,111 @@
+1	scented massage oil	item	ALL	0	none	none
+2	extra-strength red potion	item	200	0	none	Healthy Red Glow
+3	plaid bandage	item	135	0	none	none
+4	red pixel potion	item	110	0	none	none
+5	gauze garter	item	100	0	none	none
+6	filthy poultice	item	100	0	none	none
+7	red potion	item	95	0	none	Healthy Red Glow
+8	green pixel potion	item	50	35	none	none
+9	cartoon heart	item	50	0	none	Healthy Red Glow
+10	Texas tea	item	30	30	none	Texas Elegance
+11	Doc Galaktik's Homeopathic Elixir	item	19	0	none	none
+12	cast	item	15	0	none	none
+13	Doc Galaktik's Restorative Balm	item	14	0	none	none
+14	Doc Galaktik's Ailment Ointment	item	9	0	none	none
+15	forest tears	item	7	0	Beaten Up	none
+16	Doc Galaktik's Pungent Unguent	item	4	0	none	none
+17	palm-frond fan	item	40	40	none	none
+18	pixel orb	item	ALL	ALL	none	none
+19	scroll of drastic healing	item	ALL	0	none	none
+20	warm El Vibrato drone	item	ALL	0	none	Well-preserved
+21	Camp Scout pup tent	item	1000	0	none	none
+22	really thick bandage	item	110	0	none	none
+23	bottle of Vangoghbitussin	item	100	100	none	The 'Tussin
+24	ancient turtle shell powder	item	90	0	none	none
+25	cotton candy bale	item	61	61	none	none
+26	ancient Magi-Wipes	item	55	55	none	none
+27	cotton candy pillow	item	51	51	none	none
+28	phonics down	item	48	48	none	Tingly Wrists,Tingly Biceps,Tingly Elbows
+29	cotton candy cone	item	39	39	none	none
+30	honey-dipped locust	item	35	35	none	none
+31	cotton candy plug	item	28	28	none	none
+32	comfy pillow	item	25	25	none	none
+33	cotton candy skoshe	item	22	22	none	none
+34	tiny house	item	22	22	Beaten Up,Confused,Embarrassed,Hardly Poisoned at All,Sleepy,Sunburned,Wussiness	none
+35	cotton candy smidgen	item	17	17	none	none
+36	dueling turtle	item	15	15	none	none
+37	sugar shard	item	15	7	none	none
+38	cotton candy pinch	item	11	11	none	none
+39	pixellated candy heart	item	4	0	none	none
+40	Tongue of the Walrus	skill	35	0	Beaten Up	none
+41	Cannelloni Cocoon	skill	1000	0	none	none
+42	Shake it Off	skill	ALL	0	All Negative	none
+43	Gelatinous Reconstruction	skill	13	0	Beaten Up	none
+44	Disco Nap	skill	20	0	none	none
+46	Lasagna Bandages	skill	15	0	none	none
+47	big rock	dwelling	4	5	none	none
+48	Newbiesport&trade; tent	dwelling	9	10	none	none
+49	Giant Pilgrim Hat	dwelling	14	15	none	Pyramid Power
+50	Barskin Tent	dwelling	19	20	none	none
+51	Cottage	dwelling	29	30	none	none
+52	BRICKO pyramid	dwelling	34	35	none	none
+53	Frobozz Real-Estate Company Instant House (TM)	dwelling	39	40	none	none
+54	Sandcastle	dwelling	49	50	none	none
+55	Ginormous Pumpkin	dwelling	49	50	none	Juiced and Jacked
+56	Giant Faraday Cage	dwelling	49	50	none	Uncaged Power
+57	Snow Fort	dwelling	49	50	none	Snow Fortified
+58	Elevent	dwelling	49	50	none	It's Ridiculous
+59	House of Twigs and Spit	dwelling	59	60	none	none
+60	Gingerbread House	dwelling	69	70	none	Holiday Bliss
+61	hobo fortress blueprints	dwelling	84	85	none	Hobonic
+62	Xiblaxian residence-cube	dwelling	99	100	none	Hypercubed
+63	Distant Woods Getaway Brochure	dwelling	250	125	none	none
+64	Chateau Mantegna room key	dwelling	250	125	none	none
+65	your own black heart	item	ALL	ALL	Beaten Up	none
+66	Egnaro berry	item	0	HALF	none	Berry Experiential
+67	CSA all purpose soap	item	0	1000	All Negative	none
+68	Wolfman Nardz	item	0	250	none	none
+69	high pressure seltzer bottle	item	0	175	none	none
+70	Cloaca Cola Polar	item	0	150	none	Polar Express
+72	natural fennel soda	item	0	100	none	none
+73	can of CRIMBCOLA	item	0	90	none	none
+74	Monstar energy beverage	item	0	75	none	none
+75	carbonated soy milk	item	0	75	none	none
+76	carbonated water lily	item	0	65	none	none
+77	blue pixel potion	item	0	65	none	none
+78	Nardz energy beverage	item	0	60	none	none
+79	bottle of Monsieur Bubble	item	0	55	none	none
+80	unrefined Mountain Stream syrup	item	0	55	none	none
+81	banana spritzer	item	0	70	none	none
+82	elven magi pack	item	0	45	none	none
+83	myrrh soaked\, chocolate covered bacon bath ball	item	0	37	none	Pork Power,[800]Chocolate Reign,Incensed
+84	creepy ginger ale	item	0	40	none	none
+85	grogpagne	item	0	40	none	none
+86	tonic water	item	0	40	none	none
+87	Marquis de Poivre soda	item	0	35	none	none
+88	Mountain Stream soda	item	0	35	none	none
+89	Knob Goblin superseltzer	item	0	27	none	none
+90	Blatantly Canadian	item	0	27	none	none
+91	beer scented teddy bear	item	0	17	none	none
+94	Knob Goblin seltzer	item	0	10	none	none
+95	black cherry soda	item	0	10	none	none
+96	Doc Galaktik\'s Invigorating Tonic	item	0	10	none	none
+97	Cherry Cloaca Cola	item	0	8	none	none
+98	Diet Cloaca Cola	item	0	8	none	none
+99	Regular Cloaca Cola	item	0	8	none	none
+100	natto marble soda	item	0	7	none	none
+101	tobiko marble soda	item	0	7	none	none
+102	wasabi marble soda	item	0	7	none	none
+103	soda water	item	0	4	none	none
+104	Wint-O-Fresh mint	item	0	4	none	none
+105	magical mystery juice	item	0	scaling	none	none
+106	generic mana potion	item	0	scaling	none	none
+107	A Relaxing Hot Tub	clan	ALL	0	All Negative	none
+108	Psychokinetic Energy Blob	item	0	25	none	none
+109	Cloaca-Cola	item	0	12	none	none
+110	Holy Spring Water	item	0	50	none	Spiritually Awake
+111	Spirit Beer	item	0	90	none	Spiritually Aware
+112	Sacramental Wine	item	0	180	none	Spiritually Awash
+113	linen bandages	item	30	0	none	none
+114	cotton bandages	item	60	0	none	none
+115	silk bandages	item	120	0	none	none

@@ -482,7 +482,7 @@ boolean LM_bond()
 			{
 				if((my_level() > 8) && (my_adventures() < 10) && (my_mp() <= 60) && (inebriety_left() > 0))
 				{
-					acquireMP(61, true);
+					acquireMP(61, 0);
 				}
 			}
 
@@ -658,7 +658,7 @@ boolean LM_bond()
 					loc = $location[The Feeding Chamber];
 				}
 
-				if(!acquireMP(150, true))
+				if(!acquireMP(150, 0))
 				{
 					abort("Can not restore MP in order to disintegrate a filthworm. Please YR the filthworm we can access next. Thank you.");
 				}
@@ -770,7 +770,7 @@ boolean LM_bond()
 					{
 						doRest();
 					}
-					if(!acquireMP(160, true))
+					if(!acquireMP(160, 0))
 					{
 						abort("Can not restore MP for a Harem Girl disintegrate. Her whorish ways shall continue unabated!");
 					}

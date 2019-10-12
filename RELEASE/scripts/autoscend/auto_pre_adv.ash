@@ -169,13 +169,9 @@ void handlePreAdventure(location place)
 	{
 		if((zone_combatMod(place)._int < combat_rate_modifier()) && (have_effect($effect[Shelter Of Shed]) == 0) && auto_have_skill($skill[Shelter Of Shed]))
 		{
-			acquireMP(25, false);
+			acquireMP(25, my_meat());
 		}
-		acquireMP(40, false);
-		if(my_meat() > 1000)
-		{
-			acquireMP(40, true);
-		}
+		acquireMP(40, 1000);
 	}
 
 	if(my_path() == "Two Crazy Random Summer")
@@ -224,14 +220,14 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if((monster_level_adjustment() > 120) && ((my_hp() * 10) < (my_maxhp() * 8)) && (my_mp() >= 20))
+	if(monster_level_adjustment() > 120)
 	{
-		useCocoon();
+		acquireHP(80.0);
 	}
 
-	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32) && (my_maxmp() >= 32) && (my_meat() > 2500))
+	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32) && (my_maxmp() >= 32))
 	{
-		acquireMP(32, true);
+		acquireMP(32, 2500);
 	}
 
 	foreach i,mon in get_monsters(place)
