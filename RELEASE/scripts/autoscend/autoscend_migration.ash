@@ -1,6 +1,6 @@
 script "autoscend_migration.ash"
 
-static string __autoscend_version = "1.0.0";
+static string __autoscend_version = "1.1.0";
 static int __autoscend_confirm_timeoutMS = 10000;
 static string __remove_sl_ascend_confirmation = "Looks like you have the old sl_ascend project installed as well. Would you like to remove it? (it is no longer maintained). Will default to false in 10 seconds.";
 static string __migrate_sl_ascend_properties_confirmation = "Looks like you may be migrating from sl_ascend. Starting with a fresh run using autoscend is adviable but we can try to migrate all the sl_ascend properties (results may vary). Will default to true in 10 seconds.";
@@ -130,8 +130,8 @@ boolean autoscend_migrate(){
 
   boolean all_good = true;
   if(autoscend_needs_update()){
-    print("Migrating from " + autoscend_previous_version() + " to " + autoscend_current_version(), "blue");
-    if(repo_present("sl_ascend")){
+    print("Migrating from " + autoscend_previous_version() + " to " + __autoscend_version, "blue");
+    if(autoscend_previous_version() == "0.0.0" && repo_present("sl_ascend")){
       all_good = autoscend_migrate_properties() && remove_sl_ascend_repos();
     }
     finalize_update();
