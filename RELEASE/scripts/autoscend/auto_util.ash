@@ -5792,3 +5792,39 @@ int auto_reserveCraftAmount(item orig_it)
 	}
 	return inner(orig_it);
 }
+
+float mp_regen()
+{
+	return 0.5 * (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max"));
+}
+
+boolean auto_canForceNextNoncombat()
+{
+	return auto_pillKeeperAvailable()
+	|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
+	|| (item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && spleen_left() < $item[stench jelly].spleen);
+}
+
+boolean auto_forceNextNoncombat()
+{
+	// Use stench jelly or other item to set the combat rate to zero until the next noncombat.
+	// There's no way of knowing if we've already used one, so the caller needs to be careful.
+
+	if(auto_pillKeeperFreeUseAvailable())
+	{
+		return auto_pillKeeper("noncombat");
+	}
+	if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
+	{
+		use(1, $item[Clara\'s Bell]);
+	}
+	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]))
+	{
+		return autoChew(1, $item[stench jelly]);
+	}
+	else if(auto_pillKeeperAvailable())
+	{
+		return auto_pillKeeper("noncombat");
+	}
+	return false;
+}
