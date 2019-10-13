@@ -679,7 +679,7 @@ boolean auto_campawayGrabBuffs()
 
 int auto_pillKeeperUses()
 {
-	if (0 == item_amount($item[Eight Days a Week Pill Keeper])
+	if (0 == equipmentAmount($item[Eight Days a Week Pill Keeper])
 		|| (!is_unrestricted($item[Unopened Eight Days a Week Pill Keeper])))
 	{
 		return 0;
