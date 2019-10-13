@@ -676,3 +676,69 @@ boolean auto_campawayGrabBuffs()
 	}
 	return true;
 }
+
+int auto_pillKeeperUses()
+{
+	if (0 == item_amount($item[Eight Days a Week Pill Keeper])
+		|| (!is_unrestricted($item[Unopened Eight Days a Week Pill Keeper])))
+	{
+		return 0;
+	}
+	return spleen_left()/3 + 1 - get_property("_freePillKeeperUsed").to_boolean().to_int();
+}
+
+boolean auto_pillKeeperFreeUseAvailable()
+{
+	return get_property("_freePillKeeperUsed").to_boolean();
+}
+
+boolean auto_pillKeeperAvailable()
+{
+	return auto_pillKeeperUses() > 0;
+}
+
+boolean auto_pillKeeper(int pill)
+{
+	if(auto_pillKeeperUses() == 0) return false;
+	print("Using pill keeper: consuming pill #" + pill, "blue");
+	string page = visit_url("main.php?eowkeeper=1", false);
+	page = visit_url("choice.php?pwd=&whichchoice=1395&pwd&option=" + pill, true);
+	return true;
+}
+
+/* How to use this?
+	 * Drink 3x cursed punch + pill in Haunted Apartment
+	 * 
+	 * [other] Battlefield NC
+ */
+
+boolean auto_pillKeeper(string pill)
+{
+	int pillId;
+	switch(pill.to_lower_case())
+	{
+	case "yr":
+	case "yellow ray":
+		pillID = 1; break;
+	case "potion":
+		pillID = 2; break;
+	case "noncombat":
+	case "bell":
+		pillID = 3; break;
+	case "resistance":
+		pillID = 4; break;
+	case "stat":
+		pillID = 5; break;
+	case "weight":
+	case "fam weight":
+		pillID = 6; break;
+	case "semirare":
+		pillID = 7; break;
+	case "random":
+		pillID = 8; break;
+	default:
+		abort("invalid argument to auto_pillKeeper: \"" + pill + "\"");
+	}
+
+	return auto_pillKeeper(pillId);
+}
