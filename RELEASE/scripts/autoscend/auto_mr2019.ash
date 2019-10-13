@@ -706,12 +706,6 @@ boolean auto_pillKeeper(int pill)
 	return true;
 }
 
-/* How to use this?
-	 * Drink 3x cursed punch + pill in Haunted Apartment
-	 * 
-	 * [other] Battlefield NC
- */
-
 boolean auto_pillKeeper(string pill)
 {
 	int pillId;

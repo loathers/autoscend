@@ -5805,7 +5805,7 @@ boolean auto_canForceNextNoncombat()
 	|| (item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && spleen_left() < $item[stench jelly].spleen);
 }
 
-boolean auto_forceNextNoncombat()
+boolean _auto_forceNextNoncombat()
 {
 	// Use stench jelly or other item to set the combat rate to zero until the next noncombat.
 	// There's no way of knowing if we've already used one, so the caller needs to be careful.
@@ -5816,7 +5816,7 @@ boolean auto_forceNextNoncombat()
 	}
 	if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
 	{
-		use(1, $item[Clara\'s Bell]);
+		return use(1, $item[Clara\'s Bell]);
 	}
 	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]))
 	{
@@ -5825,6 +5825,15 @@ boolean auto_forceNextNoncombat()
 	else if(auto_pillKeeperAvailable())
 	{
 		return auto_pillKeeper("noncombat");
+	}
+	return false;
+}
+
+boolean auto_forceNextNoncombat() {
+	if (_auto_forceNextNoncombat())
+	{
+		print("Next noncombat adventure has been forced...", "blue");
+		return true;
 	}
 	return false;
 }

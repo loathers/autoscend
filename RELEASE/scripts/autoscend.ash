@@ -3592,7 +3592,7 @@ boolean L11_aridDesert()
 	{
 		return false;
 	}
-	if((get_property("auto_hiddenapartment") != "finished") && (get_property("auto_hiddenapartment") != "0"))
+	if((get_property("auto_hiddenapartment") != "finished") && (0 < have_effect($effect[Once-Cursed]) + have_effect($effect[Twice-Cursed]) + have_effect($effect[Thrice-Cursed])))
 	{
 		return false;
 	}
@@ -5713,9 +5713,14 @@ boolean L11_hiddenTavernUnlock()
 
 boolean L11_hiddenTavernUnlock(boolean force)
 {
-	if(auto_my_path() == "G-Lover")
+	if(!auto_is_valid($item[Book of Matches]))
 	{
 		return false;
+	}
+
+	if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+	{
+		return true;
 	}
 
 	if(force)
@@ -5827,20 +5832,26 @@ boolean L11_hiddenCity()
 			int current = get_property("auto_hiddenapartment").to_int() + 1;
 			set_property("auto_hiddenapartment", current);
 
-			if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
+			if(auto_canForceNextNoncombat())
 			{
-				use(1, $item[Clara\'s Bell]);
+				L11_hiddenTavernUnlock(true);
 
-				if(auto_my_path() == "Pocket Familiars")
+				if(my_ascensions() == get_property("hiddenTavernUnlock").to_int()
+					|| (0 != have_effect($effect[Thrice-Cursed])) && current <= 3)
 				{
-					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+					auto_forceNextNoncombat();
+
+					if(auto_my_path() == "Pocket Familiars")
 					{
-						set_property("choiceAdventure780", "3");
-						autoAdv(1, $location[The Hidden Apartment Building]);
-						return true;
+						if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+						{
+							set_property("choiceAdventure780", "3");
+							autoAdv(1, $location[The Hidden Apartment Building]);
+							return true;
+						}
 					}
+					current = 9;
 				}
-				current = 9;
 			}
 
 			if(current <= 8)
@@ -8614,7 +8625,10 @@ boolean L10_holeInTheSkyUnlock()
 	{
 		handleFamiliar($familiar[Puck Man]);
 	}
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
 
@@ -8686,7 +8700,10 @@ boolean L10_topFloor()
 	}
 
 	handleFamiliar("initSuggest");
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	autoEquip($item[mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
@@ -8830,7 +8847,10 @@ boolean L10_basement()
 	{
 		handleFamiliar($familiar[Puck Man]);
 	}
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Bendable Knees]) && (item_amount($item[Bottle of Gregnadigne]) == 0))
