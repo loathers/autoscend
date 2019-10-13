@@ -5047,11 +5047,7 @@ boolean cs_healthMaintain(){
 }
 
 boolean cs_healthMaintain(int target){
-	boolean shouldBuy = false;
-
-	acquireHP(target, 2500, true);
-
-	return my_hp() >= target;
+	return acquireHP(target, 2500, true);
 }
 
 boolean cs_mpMaintain(){
@@ -5065,10 +5061,7 @@ boolean cs_mpMaintain(){
 }
 
 boolean cs_mpMaintain(int target){
-	boolean shouldBuy = false;
-	acquireMP(target, 1500, true);
-
-	return my_mp() >= target;
+	return acquireMP(target, 1500, true);
 }
 
 boolean canTrySaberTrickMeteorShower(){

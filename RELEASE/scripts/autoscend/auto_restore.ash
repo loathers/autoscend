@@ -481,7 +481,14 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     if(metadata.type == "dwelling"){
       return freeRestsRemaining()*1.0;
     } else if(metadata.type == "item"){
-      return item_amount(to_item(metadata.name)) + get_value("total_buyable") + get_value("total_creatable");
+      int shadow_reserve = 0;
+      item i = to_item(metadata.name);
+      int n = item_amount(i) + get_value("total_buyable") + get_value("total_creatable");
+
+      if(i == $item[gauze garter] || i == $item[filthy poultice]){
+        n = max(0, n - 5); // save for shadow
+      }
+      return n;
     } else if(metadata.type == "skill"){
       return floor(get_value("mp_starting") / mp_cost(to_skill(metadata.name)))*1.0;
     } else if(metadata.name == __HOT_TUB){
@@ -877,7 +884,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
     foreach _, rank in ranks {
       string desc = (__RANKED_GOAL_DESCRIPTIONS contains rank) ?  __RANKED_GOAL_DESCRIPTIONS[rank] : "whoops, someone changed things and didnt update the descriptions. Bad dev.";
       auto_debug_print("Rank " + rank + " optimization, prefer to... " + desc);
-      auto_debug_print(count(ranked)+" options: " + to_string(ranked, true));
+      auto_debug_print(count(ranked)+" options: " + to_string(ranked, false));
       if(count(ranked) <= 1){
         break;
       }
