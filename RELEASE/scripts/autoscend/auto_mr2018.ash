@@ -358,7 +358,6 @@ boolean songboomSetting(string goal)
 	return songboomSetting(option);
 }
 
-
 boolean songboomSetting(int option)
 {
 	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
@@ -711,7 +710,6 @@ boolean neverendingPartyAvailable()
 	return true;
 
 }
-
 
 boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, boolean powerlevelling)
 {
@@ -1222,8 +1220,6 @@ boolean fightClubNap()
 	return true;
 }
 
-
-
 boolean fightClubSpa()
 {
 	int option = 4;
@@ -1235,7 +1231,6 @@ boolean fightClubSpa()
 	}
 	return fightClubSpa(option);
 }
-
 
 boolean fightClubSpa(effect eff)
 {
@@ -1255,7 +1250,6 @@ boolean fightClubSpa(effect eff)
 	}
 	return fightClubSpa(option);
 }
-
 
 boolean fightClubSpa(int option)
 {
@@ -1328,4 +1322,39 @@ boolean fightClubStats()
 	page = visit_url("choice.php?pwd=&whichchoice=1334&option=4");
 
 	return true;
+}
+
+boolean isTallGrassAvailable(){
+	static item tallGrass = $item[Packet Of Tall Grass Seeds];
+	return auto_is_valid(tallGrass) && auto_get_campground()[tallGrass] > 0;
+}
+
+int pokeFertilizerAmountAvailable(){
+	static item fertilizer = $item[Pok&eacute;-Gro fertilizer];
+	if(!auto_is_valid(fertilizer)){
+		return 0;
+	}
+	return item_amount(fertilizer);
+}
+
+boolean isPokeFertilizerAvailable(){
+	return isTallGrassAvailable() && pokeFertilizerAmountAvailable() > 0;
+}
+
+boolean haveAnyPokeFamiliarEquipment(){
+	static boolean[item] poke_fam_equipment = $items[amulet coin, luck incense, muscle band, razor fang, shell bell, smoke ball];
+	foreach i, _ in poke_fam_equipment{
+		if(equipmentAmount(i) > 0){
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean pokeFertilizeAndHarvest(){
+	if(!isPokeFertilizerAvailable()){
+		return false;
+	}
+
+	return use(1, $item[Pok&eacute;-Gro fertilizer]) && cli_execute("garden pick");
 }
