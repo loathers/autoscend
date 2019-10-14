@@ -5793,47 +5793,101 @@ int auto_reserveCraftAmount(item orig_it)
 	return inner(orig_it);
 }
 
-float mp_regen()
-{
-	return 0.5 * (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max"));
-}
-
 boolean auto_canForceNextNoncombat()
 {
 	return auto_pillKeeperAvailable()
-	|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
+	|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]))
 	|| (item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && spleen_left() < $item[stench jelly].spleen);
 }
 
 boolean _auto_forceNextNoncombat()
 {
 	// Use stench jelly or other item to set the combat rate to zero until the next noncombat.
-	// There's no way of knowing if we've already used one, so the caller needs to be careful.
 
+	boolean ret = false;
 	if(auto_pillKeeperFreeUseAvailable())
 	{
-		return auto_pillKeeper("noncombat");
+		ret = auto_pillKeeper("noncombat");
+		if(ret) {
+			set_property("auto_forceNonCombatSource", "pillkeeper");
+		}
 	}
-	if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
+	else if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
 	{
-		return use(1, $item[Clara\'s Bell]);
+		ret = use(1, $item[Clara\'s Bell]);
+		if(ret) {
+			set_property("auto_forceNonCombatSource", "clara's bell");
+		}
 	}
 	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]))
 	{
-		return autoChew(1, $item[stench jelly]);
+		ret = autoChew(1, $item[stench jelly]);
+		if(ret) {
+			set_property("auto_forceNonCombatSource", "stench jelly");
+		}
 	}
 	else if(auto_pillKeeperAvailable())
 	{
-		return auto_pillKeeper("noncombat");
+		ret = auto_pillKeeper("noncombat");
+		if(ret) {
+			set_property("auto_forceNonCombatSource", "pillkeeper");
+		}
 	}
-	return false;
+
+	if(ret)
+	{
+		set_property("auto_forceNonCombatTurn", my_turncount());
+	}
+	return ret;
 }
 
-boolean auto_forceNextNoncombat() {
+boolean auto_forceNextNoncombat()
+{
+	if(auto_haveQueuedForcedNonCombat())
+	{
+		print("Trying to force a noncombat adventure, but I think we've already forced one...", "red");
+		return true;
+	}
 	if (_auto_forceNextNoncombat())
 	{
 		print("Next noncombat adventure has been forced...", "blue");
 		return true;
 	}
 	return false;
+}
+
+boolean auto_haveQueuedForcedNonCombat()
+{
+	// This isn't always reset properly: see __MONSTERS_FOLLOWING_NONCOMBATS in auto_post_adv.ash
+	return get_property("auto_forceNonCombatSource") != "";
+}
+
+boolean is_superlikely(string encounterName)
+{
+	static boolean[string] __SUPERLIKELIES = $strings[
+		Code Red,
+		Screwdriver\, wider than a mile.,
+		The Manor in Which You're Accustomed
+		That's your cue
+		Polo Tombstone,
+		The Oracle Will See You Now,
+		A Man in Black,
+		Fitting In,
+		You\, M.D.,
+		We'll All Be Flat,
+		Rod Nevada\, Vendor,
+		Last Egg Gets Al,
+		Do Geese See God?,
+		Drawn Onward,
+		Mr. Alarm\, I Presarm,
+		Mega Gem,
+		Dr. Awkward,
+		Whee!,
+		Adventurer\, $1.99,
+		They Tried and Pailed,
+		Brushed Off...,
+		Shoe of Many Colors,
+		Highway to Hey Deze,
+	];
+	return __SUPERLIKELIES contains encounterName;
 }

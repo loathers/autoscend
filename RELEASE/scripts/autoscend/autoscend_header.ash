@@ -1100,9 +1100,10 @@ boolean executeFlavour(); // Defined in autoscend/auto_util.ash
 boolean autoFlavour(location place); // Defined in autoscend/auto_util.ash
 int auto_reserveAmount(item it); // Defined in autoscend/auto_util.ash
 int auto_reserveCraftAmount(item it); // Defined in autoscend/auto_util.ash
-float mp_regen(); // Defined in autoscend/auto_util.ash
 boolean auto_canForceNextNoncombat();  // Defined in autoscend/auto_util.ash
 boolean auto_forceNextNoncombat(); // Defined in autoscend/auto_util.ash
+boolean auto_haveQueuedForcedNonCombat(); // Defined in autoscend/auto_util.ash
+boolean is_superlikely(string encounterName); // Defined in autoscend/auto_util.ash
 
 //Record from autoscend/auto_zone.ash
 record generic_t

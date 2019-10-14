@@ -2289,6 +2289,8 @@ void initializeDay(int day)
 		cli_execute("garden pick");
 	}
 
+	set_property("auto_forceNonCombatSource", "");
+
 	set_property("auto_day_init", day);
 }
 
@@ -5836,8 +5838,8 @@ boolean L11_hiddenCity()
 			{
 				L11_hiddenTavernUnlock(true);
 
-				if(my_ascensions() == get_property("hiddenTavernUnlock").to_int()
-					|| (0 != have_effect($effect[Thrice-Cursed])) && current <= 3)
+				if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= 3*$item[Cursed Punch].inebriety) && !in_tcrs())
+					|| (0 != have_effect($effect[Thrice-Cursed]) && current <= 4))
 				{
 					auto_forceNextNoncombat();
 
@@ -5872,7 +5874,7 @@ boolean L11_hiddenCity()
 					L11_hiddenTavernUnlock(true);
 					while(have_effect($effect[Thrice-Cursed]) == 0)
 					{
-						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs() && !in_koe())
+						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs())
 						{
 							buyUpTo(1, $item[Cursed Punch]);
 							if(item_amount($item[Cursed Punch]) == 0)
@@ -6698,6 +6700,7 @@ boolean LX_spookyravenSecond()
 
 			auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
+			auto_forceNextNoncombat();
 			autoAdv(1, $location[The Haunted Bathroom]);
 
 			handleFamiliar("item");
