@@ -1324,19 +1324,17 @@ boolean fightClubStats()
 	return true;
 }
 
-static boolean[item] __poke_fam_equipment = $items[amulet coin, luck incense, muscle band, razor fang, shell bell, smoke ball];
-static item __fertilizer = $item[Pok&eacute;-Gro fertilizer];
-static item __tallGrass = $item[Packet Of Tall Grass Seeds];
-
 boolean isTallGrassAvailable(){
-	return auto_is_valid(__tallGrass) && auto_get_campground()[__tallGrass] > 0;
+	static item tallGrass = $item[Packet Of Tall Grass Seeds];
+	return auto_is_valid(tallGrass) && auto_get_campground()[tallGrass] > 0;
 }
 
 int pokeFertilizerAmountAvailable(){
-	if(!auto_is_valid(__fertilizer)){
+	static item fertilizer = $item[Pok&eacute;-Gro fertilizer];
+	if(!auto_is_valid(fertilizer)){
 		return 0;
 	}
-	return item_amount(__fertilizer);
+	return item_amount(fertilizer);
 }
 
 boolean isPokeFertilizerAvailable(){
@@ -1344,7 +1342,8 @@ boolean isPokeFertilizerAvailable(){
 }
 
 boolean haveAnyPokeFamiliarEquipment(){
-	foreach i, _ in __poke_fam_equipment{
+	static boolean[item] poke_fam_equipment = $items[amulet coin, luck incense, muscle band, razor fang, shell bell, smoke ball];
+	foreach i, _ in poke_fam_equipment{
 		if(equipmentAmount(i) > 0){
 			return true;
 		}
@@ -1357,5 +1356,5 @@ boolean pokeFertilizeAndHarvest(){
 		return false;
 	}
 
-	return use(1, __fertilizer) && cli_execute("garden pick");
+	return use(1, $item[Pok&eacute;-Gro fertilizer]) && cli_execute("garden pick");
 }
