@@ -3212,9 +3212,12 @@ void cs_initializeDay(int day)
 				acquireHermitItem($item[Seal Tooth]);
 			}
 
-			if(!(auto_get_campground() contains $item[Packet Of Tall Grass Seeds]))
-			{
-				cli_execute("garden pick");
+			cli_execute("garden pick");
+			if(auto_get_campground() contains $item[Packet Of Tall Grass Seeds]){
+				// get +10 lb familiar equipment if we need it
+				while(isPokeFertilizerAvailable() && !haveAnyPokeFamiliarEquipment() && equipmentAmount($item[astral pet sweater]) == 0){
+					pokeFertilizeAndHarvest();
+				}
 			}
 
 			if(!possessEquipment($item[Saucepan]))
