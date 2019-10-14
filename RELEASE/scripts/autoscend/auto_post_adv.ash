@@ -726,29 +726,14 @@ void handlePostAdventure()
 		{
 			auto_change_mcd(0);
 
-			if(have_effect($effect[Driving Recklessly]) > 0)
-			{
-				uneffect($effect[Driving Recklessly]);
-			}
-			if(0 < have_effect($effect[Ur-Kel\'s Aria of Annoyance]))
-			{
-				uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
-			}
+			uneffect($effect[Driving Recklessly]);
+			uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
 
 			if((purgeML) && item_amount($item[soft green echo eyedrop antidote]) > 5)
 			{
-				if(0 < have_effect($effect[Drescher\'s Annoying Noise]))
-				{
-					uneffect($effect[Drescher\'s Annoying Noise]);
-				}
-				if(0 < have_effect($effect[Pride of the Puffin]))
-				{
-					uneffect($effect[Pride of the Puffin]);
-				}
-				if(0 < have_effect($effect[Ceaseless Snarling]))
-				{
-					uneffect($effect[Ceaseless Snarling]);
-				}
+				uneffect($effect[Drescher\'s Annoying Noise]);
+				uneffect($effect[Pride of the Puffin]);
+				uneffect($effect[Ceaseless Snarling]);
 			}
 		}
 
