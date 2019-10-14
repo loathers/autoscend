@@ -6152,24 +6152,7 @@ boolean L11_hiddenCityZones()
 		}
 
 		// Try to get the NC so that we can relocate Janitors and get items quickly
-                addToMaximize("-500combat");
-
-		asdonBuff($effect[Driving Stealthily]);
-		buffMaintain($effect[Smooth Movements], 0, 1, 1);
-		buffMaintain($effect[The Sonata of Sneakiness], 0, 1, 1);
-
-		if(0 >= have_effect($effect[Fresh Scent]))
-		{
-			if(item_amount($item[chunk of rock salt]) > 0)
-			{
-				use(1, $item[chunk of rock salt]);
-			}
-			else if(item_amount($item[deodorant]) > 0))
-			{
-				use(1, $item[deodorant]);
-			}		
-
-		}
+		providePlusNonCombat(25, true);
 
 		autoAdv(1, $location[The Hidden Park]);
 		return true;
