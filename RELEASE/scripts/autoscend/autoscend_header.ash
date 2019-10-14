@@ -258,6 +258,32 @@ record questRecord
 	string func;					// autoscend function that attempts this quest.
 };
 
+// Restoration (hp/mp) functions
+// Defined in autoscend/auto_restore.ash
+void invalidateRestoreOptionCache();
+boolean acquireMP();
+boolean acquireMP(int goal);
+boolean acquireMP(int goal, int meat_reserve);
+boolean acquireMP(int goal, int meat_reserve, boolean freeRest);
+boolean acquireMP(float goalPercent);
+boolean acquireMP(float goalPercent, int meat_reserve);
+boolean acquireMP(float goalPercent, int meat_reserve, boolean freeRest);
+boolean acquireHP();
+boolean acquireHP(int goal);
+boolean acquireHP(int goal, int meat_reserve);
+boolean acquireHP(int goal, int meat_reserve, boolean freeRest);
+boolean acquireHP(float goalPercent);
+boolean acquireHP(float goalPercent, int meat_reserve);
+boolean acquireHP(float goalPercent, int meat_reserve, boolean freeRest);
+float mp_regen();
+float hp_regen();
+int doRest();
+boolean doFreeRest();
+boolean haveFreeRestAvailable();
+int freeRestsRemaining();
+boolean uneffect(effect toRemove);
+boolean useCocoon();
+
 
 //Large pile dump.
 boolean L11_ed_mauriceSpookyraven();						//Defined in autoscend/auto_edTheUndying.ash
@@ -341,8 +367,6 @@ boolean adventureFailureHandler();							//Defined in autoscend.ash
 boolean councilMaintenance();								//Defined in autoscend.ash
 boolean [location] get_floundry_locations();				//Defined in autoscend/auto_clan.ash
 int[item] auto_get_clan_lounge();								//Defined in autoscend/auto_clan.ash
-boolean acquireMP(int goal);								//Defined in autoscend/auto_util.ash
-boolean acquireMP(int goal, boolean buyIt);					//Defined in autoscend/auto_util.ash
 boolean acquireGumItem(item it);							//Defined in autoscend/auto_util.ash
 boolean acquireHermitItem(item it);							//Defined in autoscend/auto_util.ash
 int cloversAvailable();									//Defined in autoscend/auto_util.ash
@@ -407,7 +431,7 @@ boolean autoOverdrink(int howMany, item toOverdrink);			//Defined in autoscend/a
 boolean canDrink(item toDrink);								//Defined in autoscend/auto_cooking.ash
 boolean canEat(item toEat);									//Defined in autoscend/auto_cooking.ash
 boolean canChew(item toChew); //Defined in autoscend/auto_cooking.ash
-boolean auto_have_familiar(familiar fam);						//Defined in autoscend/auto_cooking.ash
+boolean auto_have_familiar(familiar fam);						//Defined in autoscend/auto_util.ash
 boolean auto_advWitchess(string target);						//Defined in autoscend/auto_mr2016.ash
 boolean auto_advWitchess(string target, string option);		//Defined in autoscend/auto_mr2016.ash
 int auto_advWitchessTargets(string target);					//Defined in autoscend/auto_mr2016.ash
@@ -512,13 +536,12 @@ boolean doBedtime();										//Defined in autoscend.ash
 boolean doHRSkills();										//Defined in autoscend/auto_heavyrains.ash
 boolean doVacation();										//Defined in autoscend.ash
 int doHottub();												//Defined in autoscend/auto_clan.ash
+int hotTubSoaksRemaining();						//Defined in autoscend/auto_clan.ash
+boolean isHotTubAvailable();								//Defined in autoscend/auto_clan.ash
 int doNumberology(string goal);								//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, boolean doIt);				//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, boolean doIt, string option);//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, string option);				//Defined in autoscend/auto_util.ash
-int doRest();												//Defined in autoscend/auto_util.ash
-boolean haveFreeRestAvailable();		//Defined in autoscend/auto_util.ash
-boolean doFreeRest();										//Defined in autoscend/auto_util.ash
 boolean doTasks();											//Defined in autoscend.ash
 boolean keepOnTruckin();									//Defined in autoscend/auto_cooking.ash
 boolean doThemtharHills();									//Defined in autoscend.ash
@@ -900,8 +923,6 @@ string tryBeerPong();										//Defined in autoscend/auto_util.ash
 boolean tryCookies();										//Defined in autoscend/auto_cooking.ash
 boolean tryPantsEat();										//Defined in autoscend/auto_cooking.ash
 int turkeyBooze();											//Defined in autoscend/auto_util.ash
-boolean uneffect(effect toRemove);							//Defined in autoscend/auto_util.ash
-boolean useCocoon();										//Defined in autoscend/auto_util.ash
 boolean use_barrels();										//Defined in autoscend/auto_util.ash
 boolean needStarKey();										//Defined in autoscend/auto_util.ash
 boolean needDigitalKey();									//Defined in autoscend/auto_util.ash
@@ -1073,7 +1094,6 @@ boolean executeFlavour(); // Defined in autoscend/auto_util.ash
 boolean autoFlavour(location place); // Defined in autoscend/auto_util.ash
 int auto_reserveAmount(item it); // Defined in autoscend/auto_util.ash
 int auto_reserveCraftAmount(item it); // Defined in autoscend/auto_util.ash
-float mp_regen(); // Defined in autoscend/auto_util.ash
 
 //Record from autoscend/auto_zone.ash
 record generic_t

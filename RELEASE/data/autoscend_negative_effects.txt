@@ -1,0 +1,33 @@
+Beaten Up	true
+Grilled	true
+Corroded Weapon	true
+Majorly Poisoned	true
+Apathy	true
+A Little Bit Poisoned	true
+Hardly Poisoned at All	true
+Really Quite Poisoned	true
+Half-Eaten Brain	true
+Socialismydia	true
+Axe Wound	true
+"The Disease"	true
+Beer in Your Shoes	true
+Tetanus	true
+Temporary Blindness	true
+Toad In The Hole	true
+Light-Headed	true
+The Colors...	true
+Somewhat Poisoned	true
+Confused	true
+Konked on the Head	true
+Flattened	true
+Partially Paralyzed	true
+Webbed	true
+Strangulated	true
+Cunctatitis	true
+Temporary Amnesia	true
+Tangled Up	true
+Teleportitis	true
+Skunkulated	true
+Easily Embarrassed	true
+All Covered In Whatsit	true
+Flared Nostrils	true

@@ -13,6 +13,7 @@ since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battl
 
 import <autoscend/autoscend_header.ash>
 import <autoscend/autoscend_migration.ash>
+import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_deprecation.ash>
 import <autoscend/auto_combat.ash>
@@ -65,6 +66,7 @@ void initializeSettings()
 		return;
 	}
 	set_location($location[none]);
+	invalidateRestoreOptionCache();
 
 	set_property("auto_useCubeling", true);
 	set_property("auto_100familiar", $familiar[none]);
@@ -145,6 +147,7 @@ void initializeSettings()
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", $familiar[none]);
 	set_property("auto_fcle", "");
+	set_property("auto_forceTavern", false);
 	set_property("auto_friars", "");
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
@@ -1924,6 +1927,8 @@ void initializeDay(int day)
 	{
 		return;
 	}
+
+	invalidateRestoreOptionCache();
 
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))
 	{
@@ -3707,9 +3712,9 @@ boolean L11_aridDesert()
 			buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
 		}
 
-		if((my_mp() > 30) && ((my_hp()*2) < (my_maxhp()*1)))
+		if(my_mp() > 30 && my_hp() < (my_maxhp()*0.5))
 		{
-			useCocoon();
+			acquireHP();
 		}
 
 #		if(in_hardcore() && isGuildClass() && (item_amount($item[Worm-Riding Hooks]) > 0) && (get_property("desertExploration").to_int() <= (100 - (5 * progress))) && ((get_property("gnasirProgress").to_int() & 16) != 16))
@@ -4291,7 +4296,7 @@ boolean L13_towerNSFinal()
 	{
 		if(auto_my_path() == "The Source")
 		{
-			acquireMP(200, true);
+			acquireMP(200, 0);
 		}
 	}
 	else
@@ -4444,7 +4449,7 @@ boolean L13_towerNSTower()
 	{
 		print("Time to fight the Wall of Skins!", "blue");
 		auto_change_mcd(0);
-		acquireMP(120, true);
+		acquireMP(120, 0);
 
 		int sources = 0;
 		if(autoEquip($item[astral shirt]))
@@ -4586,7 +4591,7 @@ boolean L13_towerNSTower()
 		{
 			if(item_amount($item[Beehive]) == 0)
 			{
-				useCocoon();
+				acquireHP();
 			}
 			autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 			if(internalQuestStatus("questL13Final") < 7)
@@ -4654,14 +4659,7 @@ boolean L13_towerNSTower()
 			autoEquip($item[Meat Tenderizer is Murder]);
 		}
 
-		if(my_mp() >= 20)
-		{
-			useCocoon();
-		}
-		else if(my_hp() < (0.9 * my_maxhp()))
-		{
-			doHottub();
-		}
+		acquireHP();
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
 		return true;
 	}
@@ -4686,7 +4684,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[OMG WTF], 0, 1, 1);
 			buffMaintain($effect[There is a Spoon], 0, 1, 1);
 			boolean keepTrying = true;
-			acquireMP(216, true);
+			acquireMP(216, 0);
 
 			buffMaintain($effect[Song of Sauce], 0, 1, 1);
 			buffMaintain($effect[Carol of the Hells], 0, 1, 1);
@@ -4709,7 +4707,7 @@ boolean L13_towerNSTower()
 				}
 			}
 
-			useCocoon();
+			acquireHP();
 			boolean[item] famDamage = $items[Tiny Bowler, Ant Hoe, Ant Pick, Ant Rake, Ant Pitchfork, Ant Sickle, Kill Screen, Little Box of Fireworks, Filthy Child Leash, Plastic Pumpkin Bucket, Moveable Feast, Ittah Bittah Hookah];
 			if(famDamage contains equipped_item($slot[Familiar]))
 			{
@@ -4828,7 +4826,7 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
-	useCocoon();
+	acquireHP();
 	visit_url("place.php?whichplace=nstower&action=ns_03_hedgemaze");
 	if(get_property("lastEncounter") == "This Maze is... Mazelike...")
 	{
@@ -5664,7 +5662,8 @@ boolean LX_attemptPowerLevel()
 	else
 	{
 		// burn all spare clovers after level 12 if we need to powerlevel.
-		if (my_level() >= 12 && get_property("questL12War") == "finished" && cloversAvailable() > 0)
+		int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
+		if (my_level() >= 12 && get_property("questL12War") == "finished" && cloversAvailable() > cloverLimit)
 		{
 			//Determine where to go for clover stats, do not worry about clover failures
 			location whereTo = $location[none];
@@ -5674,7 +5673,7 @@ boolean LX_attemptPowerLevel()
 					whereTo = $location[The Haunted Gallery];
 					break;
 				case $stat[Mysticality]:
-					whereTo = $location[The Haunted Bathroom];			
+					whereTo = $location[The Haunted Bathroom];
 					break;
 				case $stat[Moxie]:
 					whereTo = $location[The Haunted Ballroom];
@@ -6017,7 +6016,7 @@ boolean L11_hiddenCity()
 			}
 
 			print("Fighting the out-of-work spirit", "blue");
-			useCocoon();
+			acquireHP();
 
 			try
 			{
@@ -6794,10 +6793,7 @@ boolean L11_mauriceSpookyraven()
 	if((get_property("auto_winebomb") == "finished") || get_property("auto_masonryWall").to_boolean() || (internalQuestStatus("questL11Manor") >= 3))
 	{
 		print("Down with the tyrant of Spookyraven!", "blue");
-		if(my_mp() >= 20)
-		{
-			useCocoon();
-		}
+		acquireHP();
 		buffMaintain($effect[Astral Shell], 10, 1, 1);
 		buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 
@@ -6977,7 +6973,13 @@ boolean L11_mauriceSpookyraven()
 			buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
 		}
 
-		addToMaximize("100ml 82max");
+		// Maximize Asdon usage
+		if(monster_level_adjustment() <= 81)
+		{
+			asdonBuff($effect[Driving Recklessly]);
+		}
+
+		addToMaximize("500ml 82max");
 
 		autoAdv(1, $location[The Haunted Boiler Room]);
 
@@ -7029,7 +7031,7 @@ boolean L13_sorceressDoor()
 		}
 	}
 
-	if((item_amount($item[white pixel]) >= 30) && (item_amount($item[Digital Key]) == 0))
+	if((item_amount($item[white pixel]) >= 30) && (item_amount($item[Digital Key]) == 0) && !in_koe())
 	{
 		cli_execute("make digital key");
 		set_property("auto_crackpotjar", "finished");
@@ -7062,7 +7064,12 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Boris\'s Key]) == 0)
 		{
-			boolean temp = cli_execute("make Boris's Key");
+			if(in_koe() && item_amount($item[fat loot token]) > 0) {
+				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1093&pwd", true);
+			}
+			else {
+				cli_execute("make Boris's Key");
+			}
 		}
 		if(item_amount($item[Boris\'s Key]) == 0)
 		{
@@ -7074,7 +7081,12 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Jarlsberg\'s Key]) == 0)
 		{
-			boolean temp = cli_execute("make Jarlsberg's Key");
+			if(in_koe() && item_amount($item[fat loot token]) > 0) {
+				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1094&pwd", true);
+			}
+			else {
+				cli_execute("make Jarlsberg's Key");
+			}
 		}
 		if(item_amount($item[Jarlsberg\'s Key]) == 0)
 		{
@@ -7086,7 +7098,12 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Sneaky Pete\'s Key]) == 0)
 		{
-			boolean temp = cli_execute("make Sneaky Pete's Key");
+			if(in_koe() && item_amount($item[fat loot token]) > 0) {
+				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1095&pwd", true);
+			}
+			else {
+				cli_execute("make Sneaky Pete's Key");
+			}
 		}
 		if(item_amount($item[Sneaky Pete\'s Key]) == 0)
 		{
@@ -7112,7 +7129,21 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Digital Key]) == 0)
 		{
-			boolean temp = cli_execute("make digital key");
+			if(item_amount($item[white pixel]) < 30)
+			{
+				int pulls_needed = 30 - item_amount($item[white pixel]);
+				// Save 5 pulls for later, just in case.
+				if(pulls_remaining() - pulls_needed >= 5)
+				{
+					pullXWhenHaveY($item[white pixel], pulls_needed, item_amount($item[white pixel]));
+				}
+			}
+			if(in_koe() && item_amount($item[white pixel]) >= 30) {
+				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1090&pwd", true);
+			}
+			else {
+				cli_execute("make digital key");
+			}
 		}
 		if(item_amount($item[Digital Key]) == 0)
 		{
@@ -7142,6 +7173,10 @@ boolean L11_unlockEd()
 	if(get_property("auto_tavern") != "finished")
 	{
 		print("Uh oh, didn\'t do the tavern and we are at the pyramid....", "red");
+
+		// Forcing Tavern.
+		set_property("auto_forceTavern", true);
+		if (L3_Tavern()) return true;
 	}
 
 	print("In the pyramid (W:" + item_amount($item[crumbling wooden wheel]) + ") (R:" + item_amount($item[tomb ratchet]) + ") (U:" + get_property("controlRoomUnlock") + ")", "blue");
@@ -7396,7 +7431,7 @@ boolean L11_defeatEd()
 		autoForceEquip($item[low-pressure oxygen tank]);
 	}
 
-	useCocoon();
+	acquireHP();
 	print("Time to waste all of Ed's Ka Coins :(", "blue");
 
 	set_property("choiceAdventure976", "1");
@@ -7591,7 +7626,7 @@ boolean L12_gremlins()
 			equip($item[astral shield]);
 		}
 	}
-	useCocoon();
+	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
 		bat_formMist();
@@ -8218,12 +8253,7 @@ boolean L12_finalizeWar()
 	}
 	warOutfit(false);
 #	cli_execute("refresh equip");
-	if(my_hp() < my_maxhp())
-	{
-		print("My hp is: " + my_hp());
-		print("My max hp is: " + my_maxhp());
-		useCocoon();
-	}
+	acquireHP();
 	print("Let's fight the boss!", "blue");
 
 	location bossFight = $location[The Battlefield (Frat Uniform)];
@@ -9492,7 +9522,17 @@ boolean L7_crypt()
 		return true;
 	}
 
-	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]))
+	// In KoE, skeleton astronauts are random encounters that drop Evil Eyes.
+	// We might be able to reach the Nook boss without adventuring.
+
+	while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
+	{
+		use(1, $item[Evil Eye]);
+	}
+
+	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12War") != "finished";
+
+	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]) && !skip_in_koe)
 	{
 		print("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
@@ -9500,8 +9540,9 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 
 		bat_formBats();
+
 		januaryToteAcquire($item[broken champagne bottle]);
-		if(useMaximizeToEquip())
+		if(useMaximizeToEquip() && (get_property("cyrptNookEvilness").to_int() > 26))
 		{
 			removeFromMaximize("-equip " + $item[broken champagne bottle]);
 		}
@@ -9516,11 +9557,11 @@ boolean L7_crypt()
 		}
 
 		autoAdv(1, $location[The Defiled Nook]);
-		while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
-		{
-			use(1, $item[Evil Eye]);
-		}
 		return true;
+	}
+	else if(skip_in_koe)
+	{
+		auto_debug_print("In Exploathing, skipping Defiled Nook until we get more evil eyes.");
 	}
 
 	if((get_property("cyrptNicheEvilness").to_int() > 0) && canGroundhog($location[The Defiled Niche]))
@@ -9604,7 +9645,7 @@ boolean L7_crypt()
 			buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
 		}
 
-		useCocoon();
+		acquireHP();
 		set_property("choiceAdventure527", 1);
 		if(auto_have_familiar($familiar[Machine Elf]))
 		{
@@ -10824,81 +10865,19 @@ boolean adventureFailureHandler()
 	return false;
 }
 
-boolean beatenUpResolution()
-{
-	if((have_effect($effect[Beaten Up]) > 0) && (auto_my_path() == "Community Service") && (last_monster() != $monster[X-32-F Combat Training Snowman]))
-	{
-		if((my_mp() > 100) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
+boolean beatenUpResolution(){
+
+	if(have_effect($effect[Beaten Up]) > 0){
+		if(get_property("auto_beatenUpCount").to_int() > 10){
+			abort("We are getting beaten up too much, this is not good. Aborting.");
 		}
-		else
-		{
-			doHottub();
-		}
-	}
-	if((have_effect($effect[Beaten Up]) > 0) && (auto_my_path() == "The Source") && (last_monster() == $monster[Source Agent]))
-	{
-		if((my_mp() > 100) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
-		}
-		else
-		{
-			doHottub();
-		}
-	}
-	if((have_effect($effect[Beaten Up]) > 0) && (last_monster() == $monster[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl]))
-	{
-		if((my_mp() > 40) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
-		}
-		else
-		{
-			doHottub();
-		}
+		acquireHP();
 	}
 
-	if(have_effect($effect[Beaten Up]) > 0)
-	{
-		if(have_effect($effect[Temporary Amnesia]) > 0)
-		{
-			doHottub();
-		}
-		else if((my_mp() > 20) && ((my_hp() * 1.2) >= my_maxhp()) && have_skill($skill[Tongue of the Walrus]))
-		{
-			if(get_property("auto_beatenUpCount").to_int() > 10)
-			{
-				abort("We are getting beaten up too much, this is not good. Aborting.");
-			}
-			use_skill(1, $skill[Tongue of the Walrus]);
-		}
-		if(have_effect($effect[Beaten Up]) > 0)
-		{
-			if(get_property("auto_beatenUpCount").to_int() < 10)
-			{
-				doRest();
-				if(have_effect($effect[Beaten Up]) > 0)
-				{
-					print("Resting did not remove Beaten Up!", "red");
-					cli_execute("refresh all");
-					if(have_effect($effect[Beaten Up]) > 0)
-					{
-						abort("Still beaten up... the sadness.");
-					}
-				}
-			}
-			else
-			{
-				abort("Got beaten up, please fix me");
-			}
-		}
+	if(have_effect($effect[Beaten Up]) > 0){
+		cli_execute("refresh all");
 	}
-	return false;
+	return have_effect($effect[Beaten Up]) > 0;
 }
 
 boolean LX_meatMaid()
@@ -12348,7 +12327,7 @@ boolean L9_aBooPeak()
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
 			{
-				useCocoon();
+				acquireHP();
 			}
 			if(get_property("auto_aboopending").to_int() == 0)
 			{
@@ -12380,7 +12359,7 @@ boolean L9_aBooPeak()
 					set_property("auto_aboopending", 0);
 				}
 			}
-			useCocoon();
+			acquireHP();
 			if (isActuallyEd() && my_hp() == 0)
 			{
 				use(1, $item[Linen Bandages]);
@@ -12753,8 +12732,6 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	print("Oil Peak with ML: " + monster_level_adjustment(), "blue");
-
 	if(contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
@@ -12790,6 +12767,19 @@ boolean L9_oilPeak()
 	buffMaintain($effect[Tortious], 0, 1, 1);
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	handleFamiliar("initSuggest");
+
+	// Force MCD usage
+	auto_change_mcd(11);
+
+	// Maximize Asdon usage
+	if(((monster_level_adjustment() >= 75) && (monster_level_adjustment() <= 99)) || ((monster_level_adjustment() >= 25) && (monster_level_adjustment() <= 49)) || (monster_level_adjustment() <= 11))
+	{
+		asdonBuff($effect[Driving Recklessly]);
+	}
+	else
+	{
+		asdonBuff($effect[Driving Wastefully]);
+	}
 
 	if (isActuallyEd() && get_property("auto_dickstab").to_boolean())
 	{
@@ -12827,10 +12817,22 @@ boolean L9_oilPeak()
 		}
 	}
 	addToMaximize("1000ml 100max");
+
+	print("Oil Peak with ML: " + monster_level_adjustment(), "blue");
+
 	autoAdv(1, $location[Oil Peak]);
-	if(get_property("lastAdventure") == "Unimpressed with Pressure")
+	if(get_property("lastEncounter") == "Unimpressed with Pressure")
 	{
 		set_property("oilPeakProgress", 0.0);
+
+		// Brute Force grouping with tavern (if not done) to maximize tangles while we have a high ML.
+		print("Checking to see if we should do the tavern while we are running high ML.", "green");
+		set_property("auto_forceTavern", true);
+		// Remove Driving Wastefully if we had it
+		if (0 < have_effect($effect[Driving Wastefully]))
+		{
+			uneffect($effect[Driving Wastefully]);
+		}
 	}
 	handleFamiliar("item");
 	return true;
@@ -13734,7 +13736,14 @@ boolean L8_trapperGroar()
 	{
 		return false;
 	}
-  
+
+	if (internalQuestStatus("questL08Trapper") < 2)
+	{
+		// if we haven't returned the goat cheese and ore
+		// to the trapper yet, don't try to ascend the peak.
+		return false;
+	}
+
 	if(get_property("auto_trapper") == "finished")
 	{
 		return false;
@@ -13883,7 +13892,7 @@ boolean L8_trapperExtreme()
 	//Lucky Pill:	"Look in the side Pocket"
 	//set_property("choiceAdventure575", "2");
 
-	if (possessEquipment($item[extreme mittens]) && possessEquipment($item[extreme scarf]) && possessEquipment($item[snowboarder pants]))	
+	if (possessEquipment($item[extreme mittens]) && possessEquipment($item[extreme scarf]) && possessEquipment($item[snowboarder pants]))
 	{
 		if (my_basestat($stat[moxie]) >= 35 && my_basestat($stat[mysticality]) >= 35 && autoOutfit("eXtreme Cold-Weather Gear"))
 		{
@@ -14069,6 +14078,10 @@ boolean auto_tavern()
 	}
 	print("In the tavern! Layout: " + tavern, "blue");
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
+
+	// Infrequent compunding issue, reset maximizer
+	resetMaximize();
+
 	boolean maximized = false;
 	foreach loc in locations
 	{
@@ -14131,6 +14144,19 @@ boolean auto_tavern()
 			}
 		}
 
+		if((my_path() != "Actually Ed the Undying") && (monster_level_adjustment() <= 299))
+		{
+			// Maximize ML First by using equipment
+			// Asdon usage increases Rat King chance by 8.3%
+			if(monster_level_adjustment() <= 299)
+			{
+				asdonBuff($effect[Driving Recklessly]);
+			}
+		}
+
+		//Turn up the MCD
+		auto_change_mcd(11);
+
 		foreach element_type in $strings[Hot, Cold, Stench, Sleaze, Spooky]
 		{
 			if(numeric_modifier(element_type + " Damage") < 20.0)
@@ -14141,7 +14167,8 @@ boolean auto_tavern()
 
 		if(!maximized)
 		{
-			addToMaximize("200cold damage 20max,200hot damage 20max,200spooky damage 20max,200stench damage 20max,100ml 149max");
+			// Tails are a better time saving investment
+			addToMaximize("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml 150max");
 			simMaximize();
 			maximized = true;
 		}
@@ -14238,7 +14265,7 @@ boolean L3_tavern()
 	{
 		return false;
 	}
-	if(my_adventures() < 5)
+	if(my_adventures() < 10)
 	{
 		return false;
 	}
@@ -14278,6 +14305,11 @@ boolean L3_tavern()
 		}
 	}
 	if(my_level() == get_property("auto_powerLevelLastLevel").to_int())
+	{
+		delayTavern = false;
+	}
+
+	if(get_property("auto_forceTavern").to_boolean())
 	{
 		delayTavern = false;
 	}
@@ -14673,17 +14705,13 @@ boolean doTasks()
 
 	if(((my_hp() * 5) < my_maxhp()) && (my_mp() > 100))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	if(my_daycount() == 1)
 	{
 		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0))
 		{
-			if (!handleServant($servant[Scribe]))
-			{
-				handleServant($servant[Cat]);
-			}
 			fightScienceTentacle();
 			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
 			{
@@ -14693,7 +14721,6 @@ boolean doTasks()
 	}
 	else if((my_level() >= 9) && (my_hp() > 0))
 	{
-		handleServant($servant[Scribe]);
 		fightScienceTentacle();
 		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
 		{

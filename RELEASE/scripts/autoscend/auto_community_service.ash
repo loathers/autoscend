@@ -143,8 +143,8 @@ boolean LA_cs_communityService()
 			print("A Wanderer event is expected now, we want to re-digitize", "blue");
 			auto_sourceTerminalEducate($skill[Digitize], $skill[Extract]);
 			set_property("auto_combatDirective", "start;skill digitize");
-			if(!cs_mpMaintain() || !cs_healthMaintain()){
-				abort("Wasnt to maintain health and mp.");
+			if(!cs_healthMaintain() || !cs_mpMaintain()){
+				abort("Wasnt able to maintain health and mp.");
 			}
 			autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 			set_property("auto_combatDirective", "");
@@ -153,7 +153,7 @@ boolean LA_cs_communityService()
 
 	if((my_daycount() == 2) && have_skill($skill[Shattering Punch]))
 	{
-		if(godLobsterCombat())
+		if(cs_healthMaintain() && godLobsterCombat())
 		{
 			return true;
 		}
@@ -163,8 +163,8 @@ boolean LA_cs_communityService()
 	//Day 2: 7, 10, 1, 2, 3, 4, 5, 8
 	if((my_daycount() == 2) && auto_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore])) && !possessEquipment($item[Dented Scepter]) && (get_property("_auto_witchessBattles").to_int() < 5) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
 	{
-		if(!cs_mpMaintain() || !cs_healthMaintain()){
-			abort("Wasnt to maintain health and mp.");
+		if(!cs_healthMaintain() || !cs_mpMaintain()){
+			abort("Wasnt able to maintain health and mp.");
 		}
 		handleFamiliar($familiar[Galloping Grill]);
 		auto_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
@@ -174,10 +174,7 @@ boolean LA_cs_communityService()
 	}
 	if((my_daycount() == 2) && auto_haveWitchess() && have_skills($skills[Conspiratorial Whispers, Curse of Weaksauce, Sauceshell, Shell Up, Silent Slam]) && (have_skill($skill[Tattle]) || have_skill($skill[Meteor Lore]))  && possessEquipment($item[Dented Scepter]) && !possessEquipment($item[Battle Broom]) && (get_property("_auto_witchessBattles").to_int() < 5) && have_familiar($familiar[Galloping Grill]) && (my_ascensions() >= 100))
 	{
-		while((my_mp() < 120) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-		{
-			doRest();
-		}
+		cs_mpMaintain(120);
 		if(equipped_item($slot[weapon]) != $item[Dented Scepter])
 		{
 			equip($slot[weapon], $item[Dented Scepter]);
@@ -202,7 +199,7 @@ boolean LA_cs_communityService()
 		buffMaintain($effect[Pyromania], 130, 1, 1);
 		buffMaintain($effect[Rotten Memories], 130, 1, 1);
 		buffMaintain($effect[Big], 50, 1, 1);
-		useCocoon();
+		cs_healthMaintain();
 
 		auto_sourceTerminalEducate($skill[Compress], $skill[Extract]);
 		boolean result = auto_advWitchess("witch", "cs_combatWitch");
@@ -211,10 +208,7 @@ boolean LA_cs_communityService()
 	}
 	if((my_daycount() == 2) && (my_ascensions() > 200))
 	{
-		if(((my_hp() * 5) < my_maxhp()) && (my_mp() > 100))
-		{
-			useCocoon();
-		}
+		cs_healthMaintain();
 		if((my_hp() / 0.8) > my_maxhp())
 		{
 			if(fightScienceTentacle())
@@ -421,13 +415,11 @@ boolean LA_cs_communityService()
 
 			cs_eat_stuff(0);
 
+			// TODO: verify the placement (was below buffMaintains that come next) and need for this
+			cs_mpMaintain(40);
+
 			buffMaintain($effect[Singer\'s Faithful Ocelot], 15, 1, 1);
 			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 11, 1, 1);
-
-			while((my_mp() < 40) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
 
 			if((internalQuestStatus("questG07Myst") == 1) || (internalQuestStatus("questG08Moxie") == 1) || (internalQuestStatus("questG09Muscle") == 1))
 			{
@@ -473,8 +465,8 @@ boolean LA_cs_communityService()
 				}
 
 				buffMaintain($effect[Musk of the Moose], 10, 1, 1);
-				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
-					abort("Wasnt to maintain health and mp.");
+				if(!cs_healthMaintain()){
+					abort("Wasnt able to maintain health.");
 				}
 				autoAdv(1, loc, "cs_combatNormal");
 				return true;
@@ -500,8 +492,8 @@ boolean LA_cs_communityService()
 				{
 					autoEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 				}
-				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
-					abort("Wasnt to maintain health and mp.");
+				if(!cs_healthMaintain()){
+					abort("Wasnt able to maintain health.");
 				}
 				autoAdv(1, $location[The Haunted Pantry], "cs_combatNormal");
 				return true;
@@ -543,8 +535,8 @@ boolean LA_cs_communityService()
 					}
 				}
 				set_property("choiceAdventure1060", 2);
-				if(!cs_mpMaintain(0) || !cs_healthMaintain()){
-					abort("Wasnt to maintain health and mp.");
+				if(!cs_healthMaintain()){
+					abort("Wasnt able to maintain health.");
 				}
 				autoAdv(1, $location[The Skeleton Store], "cs_combatNormal");
 				return true;
@@ -557,8 +549,8 @@ boolean LA_cs_communityService()
 
 			if((item_amount($item[Gene Tonic: Pirate]) == 0) && (get_property("_dnaPotionsMade").to_int() < 3) && (item_amount($item[DNA Extraction Syringe]) > 0) && elementalPlanes_access($element[stench]))
 			{
-				if(!cs_mpMaintain() || !cs_healthMaintain()){
-					abort("Wasnt to maintain health and mp.");
+				if(!cs_healthMaintain() || !cs_mpMaintain()){
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[Pirates of the Garbage Barges], "cs_combatNormal");
 				return true;
@@ -582,8 +574,8 @@ boolean LA_cs_communityService()
 				buffMaintain($effect[Cletus\'s Canticle of Celerity], 4, 1, 1);
 				buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
 
-				if(!cs_mpMaintain() || !cs_healthMaintain()){
-					abort("Wasnt to maintain health and mp.");
+				if(!cs_healthMaintain() || !cs_mpMaintain()){
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[The Bubblin\' Caldera], "cs_combatNormal");
 				if((have_effect($effect[Beaten Up]) > 0) && have_skill($skill[Tongue of the Walrus]) && (my_mp() > (3 * mp_cost($skill[Tongue of the Walrus]))))
@@ -611,8 +603,8 @@ boolean LA_cs_communityService()
 				if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 				{
 					print("A Wanderer event is expected now.", "blue");
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 					return true;
@@ -645,8 +637,8 @@ boolean LA_cs_communityService()
 						autoEquip($slot[Off-Hand], $item[Latte Lovers Member\'s Mug]);
 					}
 
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
 					return true;
@@ -702,8 +694,8 @@ boolean LA_cs_communityService()
 			{
 				set_property("_auto_margaritaWanderer", my_turncount());
 				print("A Wanderer event is expected now, diverting... (Status: 7 with Margarita)", "blue");
-				if(!cs_mpMaintain() || !cs_healthMaintain()){
-					abort("Wasnt to maintain health and mp.");
+				if(!cs_healthMaintain() || !cs_mpMaintain()){
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 				return true;
@@ -715,8 +707,8 @@ boolean LA_cs_communityService()
 				{
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
@@ -728,8 +720,8 @@ boolean LA_cs_communityService()
 				{
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
@@ -748,8 +740,8 @@ boolean LA_cs_communityService()
 				if((!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants])) && $location[LavaCo&trade; Lamp Factory].turns_spent < 10)
 				{
 					print("Adventuring in LavaCo using the yellow ray source: " + yellowRay, "blue");
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatYR");
 					return true;
@@ -776,8 +768,8 @@ boolean LA_cs_communityService()
 					buffMaintain(whatStatSmile(), 42, 1, 1);
 				}
 
-				if(!cs_mpMaintain() || !cs_healthMaintain()){
-					abort("Wasnt to maintain health and mp.");
+				if(!cs_healthMaintain() || !cs_mpMaintain()){
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[8-bit Realm], "cs_combatNormal");
 				return true;
@@ -835,10 +827,7 @@ boolean LA_cs_communityService()
 			{
 				buffMaintain($effect[Tomato Power], 0, 1, 1);
 			}
-			if(((my_hp() + 50) < my_maxhp()) && (my_mp() > 100))
-			{
-				useCocoon();
-			}
+			cs_healthMaintain();
 
 			boolean doFarm = false;
 			if(!have_familiar($familiar[Puck Man]) && !have_familiar($familiar[Ms. Puck Man]) && (get_property("auto_csPuckCounter").to_int() > 0))
@@ -957,8 +946,8 @@ boolean LA_cs_communityService()
 
 						if(elementalPlanes_access($element[stench]))
 						{
-							if(!cs_mpMaintain() || !cs_healthMaintain()){
-								abort("Wasnt to maintain health and mp.");
+							if(!cs_healthMaintain() || !cs_mpMaintain()){
+								abort("Wasnt able to maintain health and mp.");
 							}
 							autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice], "cs_combatNormal");
 							return true;
@@ -976,8 +965,8 @@ boolean LA_cs_communityService()
 					{
 						autoEquip($slot[acc1], $item[Personal Ventilation Unit]);
 					}
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Secret Government Laboratory], "cs_combatNormal");
 				}
@@ -992,29 +981,29 @@ boolean LA_cs_communityService()
 						backupSetting("choiceAdventure1115", 6);
 					}
 
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[VYKEA], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[hot]))
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
 				}
 				else if(knoll_available())
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[8-bit Realm], "cs_combatNormal");
 				}
 				else
 				{
-					if(!cs_mpMaintain(30) || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain(30)){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Thinknerd Warehouse], "cs_combatNormal");
 				}
@@ -1054,36 +1043,36 @@ boolean LA_cs_communityService()
 			{
 				if(elementalPlanes_access($element[hot]))
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[stench]))
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[spooky]))
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Deep Dark Jungle], "cs_combatNormal");
 				}
 				else if(elementalPlanes_access($element[sleaze]))
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[Sloppy Seconds Diner], "cs_combatNormal");
 				}
 				else
 				{
-					if(!cs_mpMaintain(0) || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain()){
+						abort("Wasnt able to maintain health.");
 					}
 					autoAdv(1, $location[The Haunted Kitchen], "cs_combatNormal");
 				}
@@ -1107,7 +1096,7 @@ boolean LA_cs_communityService()
 				}
 
 				auto_sourceTerminalEducate($skill[Duplicate], $skill[Extract]);
-				useCocoon();
+				cs_healthMaintain();
 				if(handleFaxMonster($monster[Sk8 gnome], combatString))
 				{
 					return true;
@@ -1120,8 +1109,8 @@ boolean LA_cs_communityService()
 				if((!possessEquipment($item[Fireproof Megaphone]) && !possessEquipment($item[Meteorite Guard])) || !possessEquipment($item[High-Temperature Mining Mask]))
 				{
 					handleFamiliar($familiar[XO Skeleton]);
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatXO");
 					return true;
@@ -1129,8 +1118,8 @@ boolean LA_cs_communityService()
 				if(!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants]))
 				{
 					handleFamiliar($familiar[XO Skeleton]);
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[LavaCo&trade; Lamp Factory], "cs_combatXO");
 					return true;
@@ -1214,8 +1203,8 @@ boolean LA_cs_communityService()
 					{
 						handleFamiliar($familiar[Optimistic Candle]);
 					}
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 					handleFamiliar(oldFam);
@@ -1280,11 +1269,10 @@ boolean LA_cs_communityService()
 				}
 				if(!get_property("_madTeaParty").to_boolean())
 				{
-					if(!possessEquipment($item[Mariachi Hat]))
+					if(!possessEquipment($item[Mariachi Hat]) && acquireGumItem($item[Mariachi Hat]))
 					{
-						acquireGumItem($item[Mariachi Hat]);
+						cli_execute("hatter 11");
 					}
-					cli_execute("hatter 11");
 				}
 				spacegateVaccine($effect[Broad-Spectrum Vaccine]);
 				if((get_property("puzzleChampBonus").to_int() == 20) && !get_property("_witchessBuff").to_boolean())
@@ -1293,8 +1281,8 @@ boolean LA_cs_communityService()
 					visit_url("choice.php?whichchoice=1181&pwd=&option=3");
 					visit_url("choice.php?whichchoice=1183&pwd=&option=2");
 				}
-				while(cs_witchess());
-				while(godLobsterCombat());
+				while(cs_healthMaintain()&& cs_witchess());
+				while(cs_healthMaintain() && godLobsterCombat());
 
 				if((get_property("frAlways").to_boolean() || get_property("_frToday").to_boolean()) && !possessEquipment($item[FantasyRealm G. E. M.]))
 				{
@@ -1418,11 +1406,11 @@ boolean LA_cs_communityService()
 				buyUpTo(1, $item[Ben-Gal&trade; Balm], 25);
 			}
 
-			while(((total_free_rests() - get_property("timesRested").to_int()) > 4) && chateaumantegna_available())
-			{
-				cli_execute("auto_post_adv");
-				doRest();
-			}
+			// why is it doing this? it seems wasteful...
+			//if((chateaumantegna_available() || auto_campawayAvailable()) && (total_free_rests() - get_property("timesRested").to_int()) > 4){
+			//	cli_execute("auto_post_adv");
+			//	doFreeRest();
+			//}
 
 			if((item_amount($item[lemon]) > 0) && (item_amount($item[philter of phorce]) == 0) && (have_effect($effect[Phorcefullness]) == 0) && (freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && have_skill($skill[Advanced Saucecrafting]))
 			{
@@ -1434,9 +1422,8 @@ boolean LA_cs_communityService()
 				cli_execute("make " + $item[Philter Of Phorce]);
 			}
 
-			while((my_mp() < 125) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
+			if(my_maxmp() >= 125){
+				cs_mpMaintain(125);
 			}
 
 			if(!get_property("_lyleFavored").to_boolean())
@@ -1640,15 +1627,7 @@ boolean LA_cs_communityService()
 
 			buyUpTo(1, $item[Ben-Gal&trade; Balm]);
 
-			while((my_mp() < 50) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
-
-			while((my_mp() < 125) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			cs_mpMaintain(125);
 			buffMaintain($effect[Quiet Determination], 10, 1, 1);
 			buffMaintain($effect[Big], 15, 1, 1);
 			buffMaintain($effect[Song of Bravado], 100, 1, 1);
@@ -1740,10 +1719,7 @@ boolean LA_cs_communityService()
 				equip($slot[off-hand], $item[Saucepanic]);
 			}
 
-			while((my_mp() < 133) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			cs_mpMaintain(133);
 			buffMaintain($effect[Quiet Judgement], 10, 1, 1);
 			buffMaintain($effect[Big], 15, 1, 1);
 			buffMaintain($effect[Song of Bravado], 100, 1, 1);
@@ -1833,10 +1809,7 @@ boolean LA_cs_communityService()
 			januaryToteAcquire($item[Wad Of Used Tape]);
 			buyUpTo(1, $item[Hair Spray]);
 
-			while((my_mp() < 142) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			cs_mpMaintain(142);
 
 			if(have_skill($skill[Quiet Desperation]))
 			{
@@ -1963,7 +1936,7 @@ boolean LA_cs_communityService()
 
 	case 5:		#Familiar Weight
 		{
-			while((my_mp() < 50) && doFreeRest());
+			cs_mpMaintain(50);
 
 			int lastQuestCost = 36;
 			if(have_skill($skill[Smooth Movement]))
@@ -2111,10 +2084,7 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			while((my_mp() < 27) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			cs_mpMaintain(27);
 			buffMaintain($effect[Empathy], 15, 1, 1);
 			buffMaintain($effect[Leash of Linguini], 12, 1, 1);
 			if(is_unrestricted($item[Clan Pool Table]) && (have_effect($effect[Billiards Belligerence]) == 0))
@@ -2174,10 +2144,7 @@ boolean LA_cs_communityService()
 
 	case 6:		#Weapon Damage
 		{
-			while((my_mp() < 50) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			cs_mpMaintain(50);
 
 			//This needs to be cleaned up.
 			if(((my_inebriety() == 5) || (my_inebriety() == 11)) && (have_effect($effect[In A Lather]) == 0))
@@ -2187,11 +2154,8 @@ boolean LA_cs_communityService()
 
 //			januaryToteAcquire($item[Broken Champagne Bottle]);
 
-			while((my_mp() < 207) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
-
+			// TODO: everywhere we do this free rest + buff maintain can be abstracted and made smarter
+			cs_mpMaintain(207);
 			buffMaintain($effect[Song of the North], 100, 1, 1);
 			buffMaintain($effect[Bow-Legged Swagger], 100, 1, 1);
 			buffMaintain($effect[Jackasses\' Symphony of Destruction], 9, 1, 1);
@@ -2224,6 +2188,7 @@ boolean LA_cs_communityService()
 				cli_execute("grim damage");
 			}
 
+			// TODO: what the hell is this for?
 			int restsLeft = total_free_rests() - get_property("timesRested").to_int();
 			while((my_level() < 8) && (restsLeft > 0) && chateaumantegna_available() && ((my_basestat(my_primestat()) + restsLeft) >= 53))
 			{
@@ -2321,8 +2286,8 @@ boolean LA_cs_communityService()
 				if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 				{
 					print("A Wanderer event is expected now, diverting... (Status: 7 End)", "blue");
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 					return true;
@@ -2330,8 +2295,8 @@ boolean LA_cs_communityService()
 
 				if(snojoFightAvailable() && (my_adventures() > 0))
 				{
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 					return true;
@@ -2340,8 +2305,8 @@ boolean LA_cs_communityService()
 				{
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
-					if(!cs_mpMaintain() || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain() || !cs_mpMaintain()){
+						abort("Wasnt able to maintain health and mp.");
 					}
 					autoAdv(1, $location[The Deep Machine Tunnels]);
 					restoreSetting("choiceAdventure1119");
@@ -2358,10 +2323,7 @@ boolean LA_cs_communityService()
 					doHottub();
 				}
 
-				while((my_mp() < 250) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-				{
-					doRest();
-				}
+				cs_mpMaintain(250);
 				if(possessEquipment($item[Staff of the Headmaster\'s Victuals]) && can_equip($item[Staff of the Headmaster\'s Victuals]) && have_skill($skill[Spirit of Rigatoni]))
 				{
 					equip($slot[weapon], $item[Staff of the Headmaster\'s Victuals]);
@@ -2382,16 +2344,13 @@ boolean LA_cs_communityService()
 						buffMaintain($effect[Astral Shell], 110, 1, 1);
 						buffMaintain($effect[Elemental Saucesphere], 110, 1, 1);
 					}
-					useCocoon();
+					cs_healthMaintain();
 					buffMaintain($effect[Visions of the Deep Dark Deeps], 100, 1, 1);
 
-					useCocoon();
+					cs_healthMaintain();
 				}
 
-				while((my_mp() < 250) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-				{
-					doRest();
-				}
+				cs_mpMaintain(250);
 
 				if(possessEquipment($item[Astral Statuette]))
 				{
@@ -2463,10 +2422,7 @@ boolean LA_cs_communityService()
 
 	case 8:			#Non-Combat
 		{
-			while((my_mp() < 30) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			cs_mpMaintain(30);
 			buffMaintain($effect[Smooth Movements], 10, 1, 1);
 			buffMaintain($effect[The Sonata of Sneakiness], 20, 1, 1);
 			uneffect($effect[Dog Breath]);
@@ -2602,8 +2558,8 @@ boolean LA_cs_communityService()
 			if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 			{
 				print("A Wanderer event is expected now.", "blue");
-				if(!cs_mpMaintain() || !cs_healthMaintain()){
-					abort("Wasnt to maintain health and mp.");
+				if(!cs_healthMaintain() || !cs_mpMaintain()){
+					abort("Wasnt able to maintain health and mp.");
 				}
 				autoAdv(1, $location[Barf Mountain], "cs_combatNormal");
 				return true;
@@ -2622,8 +2578,8 @@ boolean LA_cs_communityService()
 					{
 						handleFamiliar($familiar[Pair of Stomping Boots]);
 						backupSetting("choiceAdventure297", "3");
-						if(!cs_mpMaintain(0) || !cs_healthMaintain()){
-							abort("Wasnt to maintain health and mp.");
+						if(!cs_healthMaintain()){
+							abort("Wasnt able to maintain health.");
 						}
 						autoAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
 						restoreSetting("choiceAdventure297");
@@ -2641,8 +2597,8 @@ boolean LA_cs_communityService()
 				else if(have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
 				{
 					backupSetting("choiceAdventure297", "3");
-					if(!cs_mpMaintain(0) || !cs_healthMaintain()){
-						abort("Wasnt to maintain health and mp.");
+					if(!cs_healthMaintain()){
+						abort("Wasnt able to maintain health.");
 					}
 					boolean result = autoAdv(1, $location[The Haiku Dungeon], "cs_combatNormal");
 					restoreSetting("choiceAdventure297");
@@ -2652,10 +2608,7 @@ boolean LA_cs_communityService()
 
 			cs_eat_stuff(curQuest);
 
-			while((my_mp() < 154) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			cs_mpMaintain(154);
 
 			if(have_effect($effect[items.enh]) == 0)
 			{
@@ -2789,8 +2742,8 @@ boolean LA_cs_communityService()
 						{
 							handleFamiliar("yellowray");
 						}
-						if(!cs_mpMaintain() || !cs_healthMaintain()){
-							abort("Wasnt to maintain health and mp.");
+						if(!cs_healthMaintain() || !cs_mpMaintain()){
+							abort("Wasnt able to maintain health and mp.");
 						}
 						autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatYR");
 						return true;
@@ -2855,7 +2808,7 @@ boolean LA_cs_communityService()
 			asdonBuff($effect[Driving Safely]);
 			getHorse("resistance");
 
-			while((my_mp() < 37) && doFreeRest());
+			cs_mpMaintain(37);
 
 			boolean [item] toSmash = $items[asparagus knife, dirty hobo gloves, dirty rigging rope, heavy-duty clipboard, Microplushie: Sororitrate, plastic nunchaku, Ratty Knitted Cap, sewage-clogged pistol, Spookyraven Signet, Staff of the Headmaster\'s Victuals];
 			foreach it in toSmash
@@ -3263,6 +3216,7 @@ void cs_initializeDay(int day)
 			{
 				cli_execute("garden pick");
 			}
+
 			if(!possessEquipment($item[Saucepan]))
 			{
 				acquireGumItem($item[Saucepan]);
@@ -3270,6 +3224,7 @@ void cs_initializeDay(int day)
 
 			cli_execute("auto_post_adv");
 
+			// TODO: again, this seems kind of wasteful
 			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
 			{
 				doRest();
@@ -4445,8 +4400,8 @@ boolean cs_giant_growth()
 	if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 	{
 		print("A Wanderer event is expected now and we want giant growth, diverting.... (Status: cs_giant_growth handler)", "blue");
-		if(!cs_mpMaintain() || !cs_healthMaintain()){
-			abort("Wasnt to maintain health and mp.");
+		if(!cs_healthMaintain() || !cs_mpMaintain()){
+			abort("Wasnt able to maintain health and mp.");
 		}
 		autoAdv(1, $location[Barf Mountain], "cs_combatLTB");
 		if(have_effect($effect[Giant Growth]) > 0)
@@ -4490,19 +4445,16 @@ boolean cs_giant_growth()
 	{
 		backupSetting("choiceAdventure1119", 1);
 		handleFamiliar($familiar[Machine Elf]);
-		if(!cs_mpMaintain() || !cs_healthMaintain()){
-			abort("Wasnt to maintain health and mp.");
+		if(!cs_healthMaintain() || !cs_mpMaintain()){
+			abort("Wasnt able to maintain health and mp.");
 		}
 		autoAdv(1, $location[The Deep Machine Tunnels], "cs_combatLTB");
 		restoreSetting("choiceAdventure1119");
 		set_property("choiceAdventure1119", "");
 	}
-	else if(!godLobsterCombat($item[none], 3, "cs_combatLTB"))
+	else if(cs_healthMaintain() && !godLobsterCombat($item[none], 3, "cs_combatLTB"))
 	{
 #		autoAdv(1, $location[8-bit Realm], "cs_combatLTB");
-		if(!cs_mpMaintain() || !cs_healthMaintain()){
-			abort("Wasnt to maintain health and mp.");
-		}
 		autoAdv(1, $location[The Thinknerd Warehouse], "cs_combatLTB");
 	}
 #	print("Ending LTBs: " + item_amount($item[Louder Than Bomb]), "blue");
@@ -4529,7 +4481,7 @@ boolean auto_csHandleGrapes()
 		{
 			handleFamiliar("yellowray");
 		}
-		useCocoon();
+		cs_healthMaintain();
 		handleFaxMonster($monster[Sk8 gnome], "cs_combatYR");
 	}
 	if((item_amount($item[Gr8ps]) > 0) && (item_amount($item[Potion of Temporary Gr8ness]) == 0) && (have_effect($effect[Gr8tness]) == 0) && (npc_price($item[Delectable Catalyst]) < my_meat()) && (freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && have_skill($skill[Advanced Saucecrafting]) && ($classes[Pastamancer, Sauceror] contains my_class()) && have_skill($skill[The Way of Sauce]) && (auto_get_campground() contains $item[Dramatic&trade; Range]))
@@ -5087,43 +5039,15 @@ boolean cs_preTurnStuff(int curQuest)
 }
 
 boolean cs_healthMaintain(){
-	int target = floor(my_maxhp() * .3);
+	int target = floor(my_maxhp() * .4);
 	if(my_maxhp() < 50){
-		target = floor(my_maxhp() * .5);
+		target = floor(my_maxhp() * .8);
 	}
 	return cs_healthMaintain(target);
 }
 
 boolean cs_healthMaintain(int target){
-	if(target > my_maxhp()){
-		target = my_maxhp();
-	}
-
-	print("CS: attempting to maintain target hp " + target);
-
-	while(my_hp() < target){
-		print("attempting to heal");
-		if(!useCocoon()){
-			print("I'm in here now");
-			//cocoon failed, try a free rest to restore some hp/mp and try again
-			if((chateaumantegna_available() || auto_campawayAvailable()) && doFreeRest()){
-				continue;
-			}
-
-			// try to gain MP through conventional means before trying to heal again
-			int minMP = 0;
-			if(my_maxhp() <= 70 && auto_have_skill($skill[Tongue of the Walrus])){
-				minMP = mp_cost($skill[Tongue of the Walrus]);
-			} else if(auto_have_skill($skill[Cannelloni Cocoon])){
-				minMP = mp_cost($skill[Cannelloni Cocoon]);
-			}
-			if(minMP == 0 || !cs_mpMaintain(minMP)){
-				break; // cant reasonably restore mp, break out.
-			}
-		}
-	}
-
-	return my_hp() >= target;
+	return acquireHP(target, 2500, true);
 }
 
 boolean cs_mpMaintain(){
@@ -5137,20 +5061,7 @@ boolean cs_mpMaintain(){
 }
 
 boolean cs_mpMaintain(int target){
-	if(target > my_maxmp()){
-		target = my_maxmp();
-	}
-	print("CS: attempting to maintain target mp " + target);
-
-	if(chateaumantegna_available() || auto_campawayAvailable()){
-		while(my_mp() < target && doFreeRest());
-	}
-
-	boolean shouldBuy = false;
-	if(my_meat() > 3000){
-		shouldBuy = true;
-	}
-	return acquireMP(target, shouldBuy);
+	return acquireMP(target, 1500, true);
 }
 
 boolean canTrySaberTrickMeteorShower(){
@@ -5174,7 +5085,7 @@ boolean trySaberTrickMeteorShower(){
 
 	//saber should be equipped with use the force and meteorshower charges available
 	if(!cs_healthMaintain()){
-		abort("Wasnt to maintain health and mp.");
+		abort("Wasnt able to maintain health and mp.");
 	}
 	boolean ret = autoAdv(1, $location[The Dire Warren], "auto_saberTrickMeteorShowerCombatHandler");
 	resetMaximize();

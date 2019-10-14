@@ -370,7 +370,7 @@ boolean autoDrink(int howMany, item toDrink)
 	{
 		shrugAT($effect[Ode to Booze]);
 		// get enough turns of ode
-		while(acquireMP(mp_cost($skill[The Ode to Booze]), true) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
+		while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
 			/*do nothing, the loop condition is doing the work*/;
 	}
 
@@ -1884,7 +1884,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		}
 	}
 
-	if(!in_tcrs()) 
+	if(!in_tcrs())
 	{
 		// write in hard-coded adventure values for IPA, the best one
 		if(type == SL_ORGAN_LIVER)

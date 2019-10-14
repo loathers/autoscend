@@ -91,7 +91,7 @@ boolean LX_koeInvaderHandler()
 			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
 			buffMaintain($effect[Song of Sauce], 150, 1, 1);
 			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
-			acquireMP(100, true);
+			acquireMP(100, 0);
 
 			set_property("choiceAdventure1393", 1); // Take care of it...
 			boolean ret = autoAdv(1, $location[The Invader]);
