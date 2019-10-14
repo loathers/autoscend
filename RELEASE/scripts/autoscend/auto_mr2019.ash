@@ -689,7 +689,7 @@ int auto_pillKeeperUses()
 
 boolean auto_pillKeeperFreeUseAvailable()
 {
-	return get_property("_freePillKeeperUsed").to_boolean();
+	return !get_property("_freePillKeeperUsed").to_boolean();
 }
 
 boolean auto_pillKeeperAvailable()
