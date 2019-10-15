@@ -151,7 +151,11 @@ boolean auto_debug_print(string s);
 boolean auto_can_equip(item it);
 boolean auto_can_equip(item it, slot s);
 boolean auto_badassBelt();
-
+int auto_remainingMLToCap();
+int auto_convertDesiredML(int DML);
+boolean auto_setMCDToCap();
+boolean UrKelCheck(int UToML, int UUL, int ULL);
+boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
@@ -5778,4 +5782,130 @@ int auto_reserveCraftAmount(item orig_it)
 		return reserve;
 	}
 	return inner(orig_it);
+}
+
+
+// This just does the math for comparing vs. the Cap. If no cap is set then ML is virtually unlimited.
+int remainingMLToCap()
+{
+	int MLToCap = 0;
+
+	if(get_property("auto_MLSafetyLimit") == "")
+	{
+		MLToCap = 999999;
+	}
+	else if(monster_level_adjustment() < get_property("auto_MLSafetyLimit"))
+	{
+		MLToCap = get_property("auto_MLSafetyLimit") - monster_level_adjustment();
+	}
+
+	return MLToCap;
+}
+
+// Gives us the number we need when comparing to a desired ML or entering a value into a maximizer string.
+int auto_convertDesiredML(int DML)
+{
+
+	int DesiredML = get_property("auto_MLSafetyLimit");
+
+	if((get_property("auto_MLSafetyLimit") == "") || (DML < get_property("auto_MLSafetyLimit")))
+	{
+		DesiredML = DML;
+	}
+		
+	return DesiredML;
+}
+
+// Uses MCD in the constraints of a Cap
+boolean auto_setMCDToCap()
+{
+	if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingToMLCap()))
+	{
+		auto_change_mcd(11);
+	}
+	else if(10 <= remainingToMLCap())
+	{
+		auto_change_mcd(10);
+	}
+	else if(10 > remainingToMLCap())
+	{
+		auto_change_mcd(remainingToMLCap());
+	}
+
+	return true;
+}
+
+// We use this function to determine the suitability of using Ur-Kel's
+boolean UrKelCheck(int UToML, int UUL, int ULL)
+{
+	if((have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0) && ((monster_level_adjustment() + (2 * my_level())) <= auto_convertDesiredML(UToML)))                           
+	{
+		if((get_property("auto_MLSafetyLimit") == "") || (((2 * my_level()) <= UUL) && ((2 * my_level()) >= ULL))
+		{
+			buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 80, 1, 10);
+		}
+	}
+
+	return true;
+}
+
+
+// Handle intelligently increasing ML for both post-adv and in Quests
+//	doAltML is a variable that will be referenced when increasing ML via alternative methods such as Asdon Martin, they should be entered in their respective order
+//		Ur-kel's may need new entries in this case due to its variance
+boolean auto_MaxMLToCap(int ToML, boolean doAltML)
+{
+
+// Turn Off MCD first, so we can maximize our ML within constraints.
+	auto_change_mcd(0);
+
+
+// ToML >= U >= 30
+	UrKelCheck(ToML, auto_convertDesiredML(ToML), 30);
+
+
+// 30
+	// Start with the biggest and drill down for max ML  
+	if((monster_level_adjustment() + 30) <= auto_convertDesiredML(ToML))
+	{
+		buffMaintain($effect[Ceaseless Snarling], 0, 1, 10);
+	}
+
+
+// 29 >= U >= 25
+	UrKelCheck(ToML, 29, 25);
+
+
+// 25
+	if((doAltML) && ((monster_level_adjustment() + 25) <= auto_convertDesiredML(ToML)))
+	{
+		asdonBuff($effect[Driving Recklessly]);
+	}
+
+
+// 24 >= U >= 10
+	UrKelCheck(ToML, 24, 10);
+
+
+// 10
+	if((monster_level_adjustment() + 10) <= auto_convertDesiredML(ToML))
+	{
+		buffMaintain($effect[Pride of the Puffin], 80, 1, 10);
+	}
+
+	if((monster_level_adjustment() + 10) <= auto_convertDesiredML(ToML))
+	{
+		buffMaintain($effect[Drescher\'s Annoying Noise], 80, 1, 10);
+	}
+
+
+// <10
+	UrKelCheck(ToML, 9, 2);
+
+
+// Customizable - For variable effects that we can use to fill in the corners
+	// Fill in the remainder with MCD
+	auto_setMCDToCap();
+
+	return true;
 }

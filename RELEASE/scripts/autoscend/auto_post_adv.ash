@@ -684,8 +684,6 @@ void handlePostAdventure()
 		// Act on ML settings
 		if(doML)
 		{
-			auto_change_mcd(11);
-
 			// Catch when we leave lowMLZone, allow for being "side tracked" buy delay burning
 			if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
 			{
@@ -703,22 +701,7 @@ void handlePostAdventure()
 				print("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
 			}
 
-			if((monster_level_adjustment() + (2 * my_level())) <= 150)
-			{
-				buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 10) <= 150)
-			{
-				buffMaintain($effect[Drescher\'s Annoying Noise], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 10) <= 150)
-			{
-				buffMaintain($effect[Pride of the Puffin], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 30) <= 150)
-			{
-				buffMaintain($effect[Ceaseless Snarling], 0, 1, 10);
-			}
+			auto_MaxMLToCap(150, false);
 		}
 
 		// If we are in some state where we do not want +ML (Level 13 or Smut Orc) make sure ML is removed

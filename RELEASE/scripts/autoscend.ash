@@ -6974,13 +6974,9 @@ boolean L11_mauriceSpookyraven()
 			buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
 		}
 
-		// Maximize Asdon usage
-		if(monster_level_adjustment() <= 81)
-		{
-			asdonBuff($effect[Driving Recklessly]);
-		}
+		auto_MaxMLToCap(auto_convertDesiredML(82), true);
 
-		addToMaximize("500ml 82max");
+		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
 
 		autoAdv(1, $location[The Haunted Boiler Room]);
 
@@ -9629,9 +9625,12 @@ boolean L7_crypt()
 				set_property("choiceAdventure523", "5");
 			}
 		}
-		buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
+
+		auto_MaxMLToCap(149, true);
+
 		providePlusNonCombat(25);
-		addToMaximize("200ml 149max");
+
+		addToMaximize("200ml " + auto_convertDesiredML(149) + "max");
 		autoAdv(1, $location[The Defiled Cranny]);
 		return true;
 	}
@@ -10603,7 +10602,7 @@ boolean LX_craftAcquireItems()
 	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() > 300) && (auto_my_path() != "G-Lover"))
 	{
 		buyUpTo(1, $item[Detuned Radio]);
-		auto_change_mcd(11);
+		auto_setMCDToCap();
 		visit_url("choice.php?pwd&whichchoice=835&option=2", true);
 	}
 
@@ -12769,8 +12768,7 @@ boolean L9_oilPeak()
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	handleFamiliar("initSuggest");
 
-	// Force MCD usage
-	auto_change_mcd(11);
+	auto_MaxMLToCap(100, false);
 
 	// Maximize Asdon usage
 	if(((monster_level_adjustment() >= 75) && (monster_level_adjustment() <= 99)) || ((monster_level_adjustment() >= 25) && (monster_level_adjustment() <= 49)) || (monster_level_adjustment() <= 11))
@@ -12798,10 +12796,6 @@ boolean L9_oilPeak()
 	{
 		buffMaintain($effect[Punchable Face], 50, 1, 1);
 	}
-	if(monster_level_adjustment() < 60)
-	{
-		buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
-	}
 	if((monster_level_adjustment() < 60))
 	{
 		if (item_amount($item[Dress Pants]) > 0)
@@ -12817,7 +12811,8 @@ boolean L9_oilPeak()
 			}
 		}
 	}
-	addToMaximize("1000ml 100max");
+
+	addToMaximize("1000ml " + auto_convertDesiredML(100) + "max");
 
 	print("Oil Peak with ML: " + monster_level_adjustment(), "blue");
 
@@ -14191,16 +14186,12 @@ boolean auto_tavern()
 
 		if((my_path() != "Actually Ed the Undying") && (monster_level_adjustment() <= 299))
 		{
-			// Maximize ML First by using equipment
-			// Asdon usage increases Rat King chance by 8.3%
-			if(monster_level_adjustment() <= 299)
-			{
-				asdonBuff($effect[Driving Recklessly]);
-			}
+			auto_MaxMLToCap(150, true);
 		}
-
-		//Turn up the MCD
-		auto_change_mcd(11);
+		else
+		{
+			auto_MaxMLToCap(150, false);
+		}
 
 		foreach element_type in $strings[Hot, Cold, Stench, Sleaze, Spooky]
 		{
@@ -14213,7 +14204,7 @@ boolean auto_tavern()
 		if(!maximized)
 		{
 			// Tails are a better time saving investment
-			addToMaximize("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml 150max");
+			addToMaximize("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max");
 			simMaximize();
 			maximized = true;
 		}
@@ -14375,7 +14366,7 @@ boolean L3_tavern()
 	buffMaintain($effect[Smooth Movements], 10, 1, 1);
 	buffMaintain($effect[Tortious], 0, 1, 1);
 	buffMaintain($effect[Litterbug], 0, 1, 1);
-	auto_change_mcd(11);
+	auto_setMCDToCap();
 
 	if(get_property("questL03Rat") == "unstarted")
 	{
