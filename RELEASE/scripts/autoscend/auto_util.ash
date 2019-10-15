@@ -2796,7 +2796,7 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	}
 
 	// We can get these during normal game, may as well use them!
-	if(0 >= have_effect($effect[Fresh Scent]))
+	if(0 == have_effect($effect[Fresh Scent]))
 	{
 		if(item_amount($item[chunk of rock salt]) > 0)
 		{
