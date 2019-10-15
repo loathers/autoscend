@@ -1569,7 +1569,7 @@ boolean auto_cheesePostCS(int leave)
 				equip($slot[acc3], acc3);
 			}
 		}
-		
+
 		doNumberology("fites3");
 
 		if(have_effect($effect[How to Scam Tourists]) == 2)
@@ -1577,7 +1577,8 @@ boolean auto_cheesePostCS(int leave)
 			while((my_adventures() > 0) && volcano_lavaDogs());
 			if(have_effect($effect[Drenched in Lava]) > 0)
 			{
-				doHottub();
+				uneffect($effect[Drenched in Lava]);
+				acquireHP();
 			}
 		}
 

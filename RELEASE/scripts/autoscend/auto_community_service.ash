@@ -592,10 +592,7 @@ boolean LA_cs_communityService()
 				return true;
 			}
 
-			if(have_effect($effect[Drenched in Lava]) > 0)
-			{
-				doHottub();
-			}
+			uneffect($effect[Drenched in Lava]);
 
 #			if(((get_property("_g9Effect").to_int() > 125) || (item_amount($item[Airborne Mutagen]) == 0)) && (((curQuest == 9) || (my_turncount() < get_property("auto_cookie").to_int())) && elementalPlanes_access($element[spooky])))
 			if(((curQuest == 9) || (my_turncount() < get_property("auto_cookie").to_int())) && elementalPlanes_access($element[spooky]))
@@ -1030,9 +1027,8 @@ boolean LA_cs_communityService()
 			}
 			missing = min(2, missing);
 
-			if((have_effect($effect[Half-Blooded]) > 0) || (have_effect($effect[Half-Drained]) > 0) || (have_effect($effect[Bruised]) > 0) || (have_effect($effect[Relaxed Muscles]) > 0) || (have_effect($effect[Hypnotized]) > 0) || (have_effect($effect[Bad Haircut]) > 0))
-			{
-				doHottub();
+			foreach e in $effects[Half-Blooded, Half-Drained, Bruised, Relaxed Muscles, Hypnotized, Bad Haircut]{
+				uneffect(e);
 			}
 
 			if(turnSave)
@@ -1212,10 +1208,7 @@ boolean LA_cs_communityService()
 				}
 
 				//Consider checking for all Snojo debuffs.
-				if(have_effect($effect[Hypnotized]) > 0)
-				{
-					doHottub();
-				}
+				uneffect($effect[Hypnotized]);
 
 				if(neverendingPartyAvailable() && (my_adventures() > 0))
 				{
@@ -2318,9 +2311,8 @@ boolean LA_cs_communityService()
 					trySaberTrickMeteorShower();
 				}
 
-				if((have_effect($effect[Half-Blooded]) > 0) || (have_effect($effect[Half-Drained]) > 0) || (have_effect($effect[Bruised]) > 0) || (have_effect($effect[Relaxed Muscles]) > 0) || (have_effect($effect[Hypnotized]) > 0) || (have_effect($effect[Bad Haircut]) > 0))
-				{
-					doHottub();
+				foreach e in $effects[Half-Blooded, Half-Drained, Bruised, Relaxed Muscles, Hypnotized, Bad Haircut]{
+					uneffect(e);
 				}
 
 				cs_mpMaintain(250);
@@ -2550,10 +2542,7 @@ boolean LA_cs_communityService()
 
 	case 9:		#item/booze drops
 		{
-			if(have_effect($effect[Drenched in Lava]) > 0)
-			{
-				doHottub();
-			}
+			uneffect($effect[Drenched in Lava]);
 
 			if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 			{

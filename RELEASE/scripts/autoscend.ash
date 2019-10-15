@@ -944,8 +944,6 @@ void maximize_hedge()
 	element third = ns_hedge3();
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
-		if(have_effect($effect[Flared Nostrils]) > 0)
-			doHottub();
 		uneffect($effect[Flared Nostrils]);
 		if(useMaximizeToEquip())
 		{
@@ -960,7 +958,6 @@ void maximize_hedge()
 	{
 		if ($element[stench] == first || $element[stench] == second || $element[stench] == third)
 		{
-			doHottub();
 			uneffect($effect[Flared Nostrils]);
 		}
 		if(useMaximizeToEquip())
@@ -2601,7 +2598,7 @@ boolean doBedtime()
 	}
 
 	# This does not check if we still want these buffs
-	if((my_hp() < (0.9 * my_maxhp())) && (get_property("_hotTubSoaks").to_int() < 5))
+	if((my_hp() < (0.9 * my_maxhp())) && hotTubSoaksRemaining() > 0)
 	{
 		boolean doTub = true;
 		foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
@@ -4112,7 +4109,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				print("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
-				doHottub();
+				acquireHP();
 				bat_reallyPickSkills(20);
 			}
 			if (equipped_amount($item[Talisman o\' Namsilat]) == 0)
@@ -4719,7 +4716,7 @@ boolean L13_towerNSTower()
 			if(internalQuestStatus("questL13Final") < 9)
 			{
 				print("Could not towerkill Wall of Bones, reverting to Boning Knife", "red");
-				doHottub();
+				acquireHP();
 				set_property("auto_getBoningKnife", true);
 			}
 			else
@@ -4764,7 +4761,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Spiky Hair], 0, 1, 1);
 		}
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
-		doHottub();
+		acquireHP();
 
 		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
 		if(n_healing_items < 5)
@@ -5789,11 +5786,7 @@ boolean L11_hiddenCity()
 		if((get_property("auto_hiddenapartment") == "finished") || (item_amount($item[Moss-Covered Stone Sphere]) > 0))
 		{
 			set_property("auto_hiddenapartment", "finished");
-			if(have_effect($effect[Thrice-Cursed]) > 0)
-			{
-				print("Ewww, time to wash off this pygmy stench.", "blue");
-				doHottub();
-			}
+			uneffect($effect[Thrice-Cursed]);
 			if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Shaman]))
 			{
 				if(item_amount($item[soft green echo eyedrop antidote]) > 0)
@@ -12944,12 +12937,12 @@ boolean L9_chasmBuild()
 	{
 		useSpellsInOrcCamp = true;
 	}
-	
+
 	if(canUse($skill[Saucegeyser], false))
 	{
 		useSpellsInOrcCamp = true;
 	}
-	
+
 	if(canUse($skill[Saucecicle], false))
 	{
 		useSpellsInOrcCamp = true;
@@ -12972,7 +12965,7 @@ boolean L9_chasmBuild()
 		print("Preparing to Ice-Punch Orcs!", "blue");
 		addToMaximize("muscle,40weapon damage,60weapon damage percent,40cold damage,-1000 ml");
 		buffMaintain($effect[Carol of the Bulls], 50, 1, 1);
-		buffMaintain($effect[Song of The North], 150, 1, 1);	
+		buffMaintain($effect[Song of The North], 150, 1, 1);
 
 		print("Beta Testing Off: If we encounter Blech House when we are not expecting it we will stop.", "blue");
 		print("Currently setup for Muscle/Weapon Damage, option 1: Kick it down", "blue");
