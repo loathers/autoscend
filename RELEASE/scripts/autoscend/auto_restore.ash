@@ -26,6 +26,8 @@ record __RestorationMetadata{
   string restores_variable_hp;
   int mp_restored;
   string restores_variable_mp;
+  int soft_reserve_limit;
+  int hard_reserve_limit;
   boolean removes_beaten_up;
   boolean[effect] removes_effects;
   boolean[effect] gives_effects;
@@ -186,6 +188,8 @@ void __init_restoration_metadata(){
       string type;
       string hp_restored;
       string mp_restored;
+      string soft_reserve_limit;
+      string hard_reserve_limit;
       string removes_effects;
       string gives_effects;
     };
@@ -204,6 +208,8 @@ void __init_restoration_metadata(){
       parsed.restores_variable_hp = parse_restores_variable(r.hp_restored);
       parsed.mp_restored = parse_restored_amount(r.mp_restored);
       parsed.restores_variable_mp = parse_restores_variable(r.mp_restored);
+      parsed.soft_reserve_limit = to_int(r.soft_reserve_limit);
+      parsed.hard_reserve_limit = to_int(r.hard_reserve_limit);
       parsed.removes_effects = parse_effects(parsed.name, r.removes_effects);
       parsed.removes_beaten_up = (parsed.removes_effects contains $effect[Beaten Up]);
       parsed.gives_effects = parse_effects(parsed.name, r.gives_effects);
@@ -258,7 +264,8 @@ boolean[string] __MINIMIZE_KEYS = {
   "total_mp_used": true,
   "total_meat_used": true,
   "total_coinmaster_tokens_used": true,
-  "negative_status_effects_remaining": true
+  "negative_status_effects_remaining": true,
+  "soft_reserve_limit_uses": true,
 };
 
 // Not used for much, mostly a cache so we dont have to keep recalculating values
@@ -277,7 +284,9 @@ boolean[string] __VARS_KEYS = {
   "blood_skill_opportunity_casts_max": true,
   "amount_creatable": true,
   "amount_buyable": true,
-  "meat_per_use": true
+  "meat_per_use": true,
+  "reserve_limit_hard": true,
+  "total_uses_remaining": true
 };
 
 // values used to constrain or quickly eliminate methods as not options (e.g. skill not available in a path)
@@ -285,7 +294,8 @@ boolean[string] __CONSTRAINT_KEYS = {
   "is_ever_useable": true,
   "is_currently_useable": true,
   "have_required_resources": true,
-  "restores_needed_resources": true
+  "restores_needed_resources": true,
+  "meets_hard_reserve_limit": true
 };
 
 /**
@@ -298,37 +308,39 @@ boolean[string] __CONSTRAINT_KEYS = {
 int[string] __OBJECTIVE_RANKS = {
   "hp_total_restored": 1,
   "mp_total_restored": 1,
-  "negative_status_effects_remaining": 1,
-  "hp_total_short_max": 2,
-  "mp_total_short_max": 2,
-  "mp_total_wasted_max": 3,
-  "hp_total_wasted_max": 3,
-  "total_meat_used": 4,
-  "total_mp_used": 4,
-  "total_coinmaster_tokens_used": 4,
-  "hp_per_mp_spent": 5,
-  "mp_per_meat_spent": 5,
-  "hp_per_coinmaster_token_spent": 5,
-  "mp_per_coinmaster_token_spent": 5,
-  "total_uses_available": 6,
-  "hp_total_short_goal": 7,
-  "mp_total_short_goal": 7,
-  "mp_total_wasted_goal": 8,
-  "hp_total_wasted_goal": 8,
-  "total_uses_needed": 9,
+  "soft_reserve_limit_uses": 1,
+  "negative_status_effects_remaining": 2,
+  "hp_total_short_max": 3,
+  "mp_total_short_max": 3,
+  "mp_total_wasted_max": 4,
+  "hp_total_wasted_max": 4,
+  "total_meat_used": 5,
+  "total_mp_used": 5,
+  "total_coinmaster_tokens_used": 5,
+  "hp_per_mp_spent": 6,
+  "mp_per_meat_spent": 6,
+  "hp_per_coinmaster_token_spent": 6,
+  "mp_per_coinmaster_token_spent": 6,
+  "total_uses_available": 7,
+  "hp_total_short_goal": 8,
+  "mp_total_short_goal": 8,
+  "mp_total_wasted_goal": 9,
+  "hp_total_wasted_goal": 9,
+  "total_uses_needed": 10,
 };
 
 // describes what each ranking in __OBJECTIVE_RANKS is attempting to optimize for
 string[int] __RANKED_GOAL_DESCRIPTIONS = {
-  1: "remove negative status effects",
-  2: "minimize hp/mp shortage under max",
-  3: "minimize wasted hp/mp over max",
-  4: "avoid spending resources (meat, mp, coinmaster tokens)",
-  5: "maximize hp/mp restored per resource spent (if we have to spend resources)",
-  6: "use options we have more available uses of",
-  7: "minimize hp/mp shortage under goal (not necessarily max)",
-  8: "minimize wasted hp/mp over goal (not necessarily max)",
-  9: "minimize number of uses needed to reach goal"
+  1: "maintain soft reserve limit (keep at least N on hand if possible)",
+  2: "remove negative status effects",
+  3: "minimize hp/mp shortage under max",
+  4: "minimize wasted hp/mp over max",
+  5: "avoid spending resources (meat, mp, coinmaster tokens)",
+  6: "maximize hp/mp restored per resource spent (if we have to spend resources)",
+  7: "use options we have more available uses of",
+  8: "minimize hp/mp shortage under goal (not necessarily max)",
+  9: "minimize wasted hp/mp over goal (not necessarily max)",
+  10: "minimize number of uses needed to reach goal"
 };
 
 /**
@@ -478,23 +490,25 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   }
 
   float total_uses_available(){
+    float available = 0.0;
     if(metadata.type == "dwelling"){
-      return freeRestsRemaining()*1.0;
+      available = freeRestsRemaining();
     } else if(metadata.type == "item"){
-      int shadow_reserve = 0;
-      item i = to_item(metadata.name);
-      int n = item_amount(i) + get_value("total_buyable") + get_value("total_creatable");
-
-      if(i == $item[gauze garter] || i == $item[filthy poultice]){
-        n = max(0, n - 5); // save for shadow
-      }
-      return n;
+      available = item_amount(to_item(metadata.name)) + get_value("total_buyable") + get_value("total_creatable");
     } else if(metadata.type == "skill"){
-      return floor(get_value("mp_starting") / mp_cost(to_skill(metadata.name)))*1.0;
+      available = floor(get_value("mp_starting") / mp_cost(to_skill(metadata.name)));
     } else if(metadata.name == __HOT_TUB){
-      return hotTubSoaksRemaining()*1.0;
+      available = hotTubSoaksRemaining();
     }
-    return 0.0;
+    return max(0.0, available);
+  }
+
+  float total_uses_remaining(){
+    return max(0.0, get_value("total_uses_available") - get_value("total_uses_needed"));
+  }
+
+  float soft_reserve_limit_uses(){
+    return max(0.0, get_value("soft_reserve_limit") - get_value("total_uses_remaining"));
   }
 
   float total_restored(string resource_type){
@@ -677,6 +691,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     return true;
   }
 
+  boolean meets_hard_reserve_limit(){
+    return get_value("total_uses_remaining") >= get_value("hard_reserve_limit");
+  }
+
   optimization_parameters.metadata = metadata;
   set_value("hp_goal", hp_goal);
   set_value("hp_starting", my_hp());
@@ -693,7 +711,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("total_uses_needed", total_uses_needed());
   set_value("total_buyable", total_buyable());
   set_value("total_creatable", total_creatable());
+  set_value("soft_reserve_limit", metadata.soft_reserve_limit);
+  set_value("hard_reserve_limit", metadata.hard_reserve_limit);
   set_value("total_uses_available", total_uses_available());
+  set_value("total_uses_remaining", total_uses_remaining());
+  set_value("soft_reserve_limit_uses", soft_reserve_limit_uses());
   set_value("hp_total_restored", total_restored("hp"));
   set_value("hp_total_wasted_goal", blood_adjusted_waste(hp_goal));
   set_value("hp_total_short_goal", total_short("hp", hp_goal));
@@ -716,6 +738,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("is_currently_useable", is_currently_useable());
   set_value("have_required_resources", have_required_resources());
   set_value("restores_needed_resources", restores_needed_resources());
+  set_value("meets_hard_reserve_limit", meets_hard_reserve_limit());
   set_value("blood_skill_opportunity_casts_goal", blood_skill_opportunity_casts(hp_goal));
   set_value("blood_skill_opportunity_casts_max", blood_skill_opportunity_casts(my_maxhp()));
   set_value("negative_status_effects_remaining", negative_status_effects_remaining());
