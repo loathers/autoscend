@@ -12968,7 +12968,7 @@ boolean L9_chasmBuild()
 		set_property("choiceAdventure1345", 0);
 	}
 	else
-	}
+	{
 		print("Preparing to Ice-Punch Orcs!", "blue");
 		addToMaximize("muscle,40weapon damage,60weapon damage percent,40cold damage,-1000 ml");
 		buffMaintain($effect[Carol of the Bulls], 50, 1, 1);
