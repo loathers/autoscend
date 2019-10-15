@@ -288,7 +288,9 @@ boolean[string] __VARS_KEYS = {
   "reserve_limit_hard": true,
   "total_uses_remaining": true,
   "soft_reserve_limit": true,
-  "hard_reserve_limit": true
+  "hard_reserve_limit": true,
+  "hp_max_restorable": true,
+  "mp_max_restorable": true
 };
 
 // values used to constrain or quickly eliminate methods as not options (e.g. skill not available in a path)
@@ -515,12 +517,12 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     return max(0.0, get_value("soft_reserve_limit") - get_value("total_uses_remaining"));
   }
 
-  float total_restored(string resource_type){
+  float max_restorable(string resource_type){
     return get_value("total_uses_needed") * get_value(resource_type, "restored_per_use");
   }
 
   float total_wasted(string resource_type, float goal){
-    return max(0.0, get_value(resource_type, "starting") + get_value(resource_type, "total_restored") - goal);
+    return max(0.0, get_value(resource_type, "starting") + get_value(resource_type, "max_restorable") - goal);
   }
 
   // TODO: doesnt account properly for multiuse situations where we could have more blood skill casts and less waste than this formula suggests
@@ -538,7 +540,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       return 0;
     }
 
-    float hp_to_burn = min(my_hp()-1, waste);
+    float hp_to_burn = 0.0;
+    if(my_hp() > 0) {
+      hp_to_burn = min(my_hp()-1, waste);
+    }
     return floor(hp_to_burn / blood_cost);
   }
 
@@ -554,7 +559,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   }
 
   float total_short(string resource_type, float goal){
-    return max(0.0, goal - (get_value(resource_type, "starting") + get_value(resource_type, "total_restored")));
+    return max(0.0, goal - (get_value(resource_type, "starting") + get_value(resource_type, "max_restorable")));
   }
 
   float total_mp_used(){
@@ -625,6 +630,21 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     }
 
     return get_value("hp_total_restored") / get_value("total_mp_used");
+  }
+
+  float total_restored(string resource_type){
+    float starting = get_value(resource_type, "starting");
+    float goal = min(get_value(resource_type, "max_restorable") + starting, get_value(resource_type, "max"));
+
+    if(resource_type == "hp" && goal > starting){
+      float blood_cost = hp_cost($skill[Blood Bond]);
+      float casts = blood_skill_opportunity_casts(goal);
+      if(casts > 0.0){
+        starting = max(starting - casts * blood_cost, 0.0);
+      }
+    }
+
+    return goal - starting;
   }
 
   boolean is_ever_useable(){
@@ -720,11 +740,13 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("total_uses_available", total_uses_available());
   set_value("total_uses_remaining", total_uses_remaining());
   set_value("soft_reserve_limit_uses", soft_reserve_limit_uses());
+  set_value("hp_max_restorable", max_restorable("hp"));
   set_value("hp_total_restored", total_restored("hp"));
   set_value("hp_total_wasted_goal", blood_adjusted_waste(hp_goal));
   set_value("hp_total_short_goal", total_short("hp", hp_goal));
   set_value("hp_total_wasted_max", blood_adjusted_waste(my_maxhp()));
   set_value("hp_total_short_max", total_short("hp", my_maxhp()));
+  set_value("mp_max_restorable", max_restorable("mp"));
   set_value("mp_total_restored", total_restored("mp"));
   set_value("mp_total_wasted_goal", total_wasted("mp", mp_goal));
   set_value("mp_total_short_goal", total_short("mp", mp_goal));
