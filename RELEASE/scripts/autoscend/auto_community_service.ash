@@ -2182,10 +2182,9 @@ boolean LA_cs_communityService()
 			}
 
 			// TODO: what the hell is this for?
-			int restsLeft = total_free_rests() - get_property("timesRested").to_int();
-			while((my_level() < 8) && (restsLeft > 0) && chateaumantegna_available() && ((my_basestat(my_primestat()) + restsLeft) >= 53))
+			while((my_level() < 8) && haveFreeRestAvailable() && chateaumantegna_available() && ((my_basestat(my_primestat()) + freeRestsRemaining()) >= 53))
 			{
-				doRest();
+				doFreeRest();
 				cli_execute("auto_post_adv");
 			}
 
@@ -3202,9 +3201,10 @@ void cs_initializeDay(int day)
 			}
 
 			cli_execute("garden pick");
-			if(auto_get_campground() contains $item[Packet Of Tall Grass Seeds]){
+			if(isTallGrassAvailable()){
 				// get +10 lb familiar equipment if we need it
 				while(isPokeFertilizerAvailable() && !haveAnyPokeFamiliarEquipment() && equipmentAmount($item[astral pet sweater]) == 0){
+					auto_debug_print("Trying to acquire +10 lb familiar equipment from Tall Grass.");
 					pokeFertilizeAndHarvest();
 				}
 			}
@@ -3215,12 +3215,6 @@ void cs_initializeDay(int day)
 			}
 
 			cli_execute("auto_post_adv");
-
-			// TODO: again, this seems kind of wasteful
-			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
 
 			set_property("auto_day_init", 2);
 		}
@@ -3281,10 +3275,7 @@ boolean cs_spendRests()
 	{
 		return false;
 	}
-	while((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-	{
-		doRest();
-	}
+	while(haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest());
 	return true;
 }
 

@@ -286,7 +286,9 @@ boolean[string] __VARS_KEYS = {
   "amount_buyable": true,
   "meat_per_use": true,
   "reserve_limit_hard": true,
-  "total_uses_remaining": true
+  "total_uses_remaining": true,
+  "soft_reserve_limit": true,
+  "hard_reserve_limit": true
 };
 
 // values used to constrain or quickly eliminate methods as not options (e.g. skill not available in a path)
@@ -635,7 +637,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       item d = to_item(metadata.name);
       return (d == $item[Chateau Mantegna Room Key] && chateaumantegna_available()) ||
         (d == $item[Distant Woods Getaway Brochure] && auto_campawayAvailable()) ||
-        (d == get_dwelling() && !(chateaumantegna_available() || auto_campawayAvailable()));
+        (d == get_dwelling() && !haveAnyIotmAlternativeRestSiteAvailable());
     }
     if(metadata.name == __HOT_TUB){
       return isHotTubAvailable();
@@ -1461,6 +1463,10 @@ boolean haveFreeRestAvailable(){
 
 int freeRestsRemaining(){
 	return max(0, total_free_rests() - get_property("timesRested").to_int());
+}
+
+boolean haveAnyIotmAlternativeRestSiteAvailable(){
+  return chateaumantegna_available() || auto_campawayAvailable();
 }
 
 /*

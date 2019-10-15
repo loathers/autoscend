@@ -2629,9 +2629,9 @@ boolean doBedtime()
 	skill libram = preferredLibram();
 	if(libram != $skill[none])
 	{
-		while((get_property("timesRested").to_int() < total_free_rests()) && (mp_cost(libram) <= my_maxmp()))
+		while(haveFreeRestAvailable() && (mp_cost(libram) <= my_maxmp()))
 		{
-			doRest();
+			doFreeRest();
 			while(my_mp() > mp_cost(libram))
 			{
 				use_skill(1, libram);
@@ -4957,10 +4957,7 @@ boolean L13_towerNSContests()
 			switch(ns_crowd1())
 			{
 			case 1:
-				while((my_mp() < 160) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-				{
-					doRest();
-				}
+				acquireMP(160); // only uses free rests or items on hand by default
 
 				if(is100FamiliarRun())
 				{
@@ -5008,10 +5005,7 @@ boolean L13_towerNSContests()
 			{
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
-			while((my_mp() < 150) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			acquireMP(150); // only uses free rests or items on hand by default
 			buffMaintain($effect[Big], 15, 1, 1);
 			if (my_class() == $class[Vampyre])
 			{
@@ -5107,10 +5101,7 @@ boolean L13_towerNSContests()
 		}
 		if(get_property("nsContestants3").to_int() == -1)
 		{
-			while((my_mp() < 125) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			acquireMP(125); // only uses free rests or items on hand by default
 
 			if(challenge != $element[none])
 			{
@@ -5364,9 +5355,9 @@ boolean L13_towerNSEntrance()
 			}
 			wait(delay);
 
-			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
+			if(haveAnyIotmAlternativeRestSiteAvailable() && haveFreeRestAvailable() && auto_my_path() != "The Source")
 			{
-				doRest();
+				doFreeRest();
 				cli_execute("scripts/autoscend/auto_post_adv.ash");
 				loopHandlerDelayAll();
 				return true;
@@ -8239,6 +8230,8 @@ boolean L12_finalizeWar()
 
 	if(my_mp() < 40)
 	{
+		// fyi https://kol.coldfront.net/thekolwiki/index.php/Chateau_Mantegna states you wont get pantsgiving benefits resting there (presumably campsite as well)
+		// so not sure this is doing much
 		if(possessEquipment($item[Pantsgiving]))
 		{
 			equip($item[pantsgiving]);
@@ -14775,14 +14768,13 @@ boolean doTasks()
 	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
 
-	if (!isActuallyEd() && my_level() >= 9 && my_daycount() == 1)
+	// TODO: not sure what this is for, seems wasteful...
+	if (!isActuallyEd() && auto_my_path() != "The Source" &&
+		my_level() >= 9 && my_daycount() == 1 &&
+		haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest())
 	{
-		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
-		{
-			doRest();
-			cli_execute("scripts/autoscend/auto_post_adv.ash");
-			return true;
-		}
+		cli_execute("scripts/autoscend/auto_post_adv.ash");
+		return true;
 	}
 
 	if(snojoFightAvailable() && (my_daycount() == 2) && (get_property("snojoMoxieWins").to_int() == 10))

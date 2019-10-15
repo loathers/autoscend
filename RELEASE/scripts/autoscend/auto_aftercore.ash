@@ -1166,10 +1166,8 @@ boolean auto_cheesePostCS(int leave)
 	{
 		auto_sourceTerminalExtrude($item[Hacked Gibson]);
 	}
-	while((my_mp() < 100) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (inebriety_left() > 0))
-	{
-		doRest();
-	}
+
+	while(my_mp() < 100 && inebriety_left() > 0 && haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest());
 
 	take_storage(storage_amount($item[Cold Hi Mein]), $item[Cold Hi Mein]);
 	while((fullness_left() >= 5) && (item_amount($item[Cold Hi Mein]) > 0) && (my_level() >= 13))
