@@ -359,7 +359,6 @@ string[int] __RANKED_GOAL_DESCRIPTIONS = {
  *  - improve blood burn potential calculations
  *  - add april shower
  *  - integrate with https://sourceforge.net/p/kolmafia/code/HEAD/tree/src/data/restores.txt
- *  - add meat reserve limit
  */
 __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal, int meat_reserve, boolean useFreeRests, __RestorationMetadata metadata){
   __RestorationOptimization optimization_parameters;
