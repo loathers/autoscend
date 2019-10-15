@@ -314,21 +314,22 @@ int[string] __OBJECTIVE_RANKS = {
   "negative_status_effects_remaining": 2,
   "hp_total_short_max": 3,
   "mp_total_short_max": 3,
-  "mp_total_wasted_max": 4,
-  "hp_total_wasted_max": 4,
-  "total_meat_used": 5,
+  "total_coinmaster_tokens_used": 4,
+  "hp_per_coinmaster_token_spent": 4,
+  "mp_per_coinmaster_token_spent": 4,
   "total_mp_used": 5,
-  "total_coinmaster_tokens_used": 5,
-  "hp_per_mp_spent": 6,
+  "hp_per_mp_spent": 5,
+  "total_meat_used": 6,
+  "hp_per_meat_spent": 6,
   "mp_per_meat_spent": 6,
-  "hp_per_coinmaster_token_spent": 6,
-  "mp_per_coinmaster_token_spent": 6,
-  "total_uses_available": 7,
-  "hp_total_short_goal": 8,
-  "mp_total_short_goal": 8,
-  "mp_total_wasted_goal": 9,
-  "hp_total_wasted_goal": 9,
-  "total_uses_needed": 10,
+  "mp_total_wasted_max": 7,
+  "hp_total_wasted_max": 7,
+  "total_uses_available": 8,
+  "hp_total_short_goal": 9,
+  "mp_total_short_goal": 9,
+  "mp_total_wasted_goal": 10,
+  "hp_total_wasted_goal": 10,
+  "total_uses_needed": 11,
 };
 
 // describes what each ranking in __OBJECTIVE_RANKS is attempting to optimize for
@@ -336,13 +337,14 @@ string[int] __RANKED_GOAL_DESCRIPTIONS = {
   1: "maintain soft reserve limit (keep at least N on hand if possible)",
   2: "remove negative status effects",
   3: "minimize hp/mp shortage under max",
-  4: "minimize wasted hp/mp over max",
-  5: "avoid spending resources (meat, mp, coinmaster tokens)",
-  6: "maximize hp/mp restored per resource spent (if we have to spend resources)",
-  7: "use options we have more available uses of",
-  8: "minimize hp/mp shortage under goal (not necessarily max)",
-  9: "minimize wasted hp/mp over goal (not necessarily max)",
-  10: "minimize number of uses needed to reach goal"
+  4: "try not to spend coinmaster tokens, maximizing hp/mp restored per token spent if we must spend",
+  5: "try to spend less mp, maximizing hp restored per mp spent if we must spend",
+  6: "try not to spend meat, maximizing hp/mp restored per meat spent if we must spend",
+  7: "minimize wasted hp/mp over max",
+  8: "use options we have more available uses of",
+  9: "minimize hp/mp shortage under goal (not necessarily max)",
+  10: "minimize wasted hp/mp over goal (not necessarily max)",
+  11: "minimize number of uses needed to reach goal"
 };
 
 /**
@@ -602,24 +604,24 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   }
 
   float resource_value_per_meat_spent(string resource_type){
-    if(get_value(resource_type, "restored_per_use") <= 0.0 || get_value("total_meat_used") <= 0.0){
-      return 0.0;
+    if(get_value("total_meat_used") <= 0.0){
+      return get_value(resource_type, "total_restored");
     }
 
     return get_value(resource_type, "total_restored") / get_value("total_meat_used");
   }
 
   float resource_value_per_coinmaster_token_spent(string resource_type){
-    if(get_value(resource_type, "restored_per_use") <= 0.0 || get_value("total_coinmaster_tokens_used") <= 0.0){
-      return 0.0;
+    if(get_value("total_coinmaster_tokens_used") <= 0.0){
+      return get_value(resource_type, "total_restored");
     }
 
     return get_value(resource_type, "total_restored") / get_value("total_coinmaster_tokens_used");
   }
 
   float hp_per_mp_spent(){
-    if(get_value("hp_restored_per_use") <= 0.0 || get_value("total_mp_used") <= 0.0){
-      return 0.0;
+    if(get_value("total_mp_used") <= 0.0){
+      return get_value("hp_total_restored");
     }
 
     return get_value("hp_total_restored") / get_value("total_mp_used");
