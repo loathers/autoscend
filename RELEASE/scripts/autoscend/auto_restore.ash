@@ -472,7 +472,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
     if(get_value("meat_per_use") > 0.0){
       price_per = get_value("meat_per_use");
-      currency_available = max(0, my_meat() - meat_reserve);
+      currency_available = max(0.0, my_meat() - meat_reserve);
     } else if(get_value("tokens_per_use") > 0.0){
       price_per = get_value("tokens_per_use");
       currency_available = to_item(metadata.name).seller.available_tokens;
@@ -604,7 +604,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
   float resource_value_per_meat_spent(string resource_type){
     if(get_value("total_meat_used") <= 0.0){
-      return get_value(resource_type, "total_restored");
+      return get_value(resource_type, "max");
     }
 
     return get_value(resource_type, "total_restored") / get_value("total_meat_used");
@@ -612,7 +612,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
   float resource_value_per_coinmaster_token_spent(string resource_type){
     if(get_value("total_coinmaster_tokens_used") <= 0.0){
-      return get_value(resource_type, "total_restored");
+      return get_value(resource_type, "max");
     }
 
     return get_value(resource_type, "total_restored") / get_value("total_coinmaster_tokens_used");
@@ -620,7 +620,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
   float hp_per_mp_spent(){
     if(get_value("total_mp_used") <= 0.0){
-      return get_value("hp_total_restored");
+      return get_value("hp", "max");
     }
 
     return get_value("hp_total_restored") / get_value("total_mp_used");
@@ -689,14 +689,14 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       }
     }
     if(get_value("total_uses_available") < get_value("total_uses_needed")){
-      if(get_value("total_meat_used") > 0 && get_value("total_meat_used") <= my_meat()){
+      if(get_value("total_meat_used") > 0.0 && get_value("total_meat_used") <= my_meat()-meat_reserve){
         return true;
       }
-      if(get_value("total_coinmaster_tokens_used") > 0 && get_value("total_coinmaster_tokens_used") < to_item(metadata.name).seller.available_tokens){
+      if(get_value("total_coinmaster_tokens_used") > 0.0 && get_value("total_coinmaster_tokens_used") < to_item(metadata.name).seller.available_tokens){
         return true;
       }
     }
-    return get_value("total_uses_available") > 0 && get_value("total_uses_available") >= get_value("total_uses_needed");
+    return get_value("total_uses_available") > 0.0 && get_value("total_uses_available") >= get_value("total_uses_needed");
   }
 
   boolean restores_needed_resources(){
