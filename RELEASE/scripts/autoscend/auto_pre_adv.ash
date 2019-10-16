@@ -408,6 +408,7 @@ void handlePreAdventure(location place)
 	// Here we enforce our ML restrictions if +/-ML is not specifically called in the current maximizer string
 	enforceMLInPreAdv();
 
+// EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
 	if(useMaximizeToEquip())
 	{
@@ -421,9 +422,12 @@ void handlePreAdventure(location place)
 	}
 	else
 	{
-		// Last minute MCD alterations
-		auto_change_mcd(0);
-		auto_setMCDToCap();
+		// Last minute MCD alterations if Limit set, otherwise trust maximizer
+		if(get_property("auto_MLSafetyLimit") != "")
+		{
+			auto_change_mcd(0);
+			auto_setMCDToCap();
+		}
 
 		auto_debug_print("Going into High or Standard ML Zone with ML: " + monster_level_adjustment());
 	}	
