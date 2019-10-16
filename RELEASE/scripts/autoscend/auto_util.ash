@@ -4506,7 +4506,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Go Get \'Em\, Tiger!]:			useItem = $item[Ben-gal&trade; Balm];			break;
 	case $effect[Got Milk]:						useItem = $item[Milk of Magnesium];				break;
 	case $effect[Gothy]:						useItem = $item[Spooky Eyeliner];				break;
-	case $effect[Gr8tness]:						useItem = $item[Potion of Temporary Gr8ness];	break;
+	case $effect[Gr8ness]:						useItem = $item[Potion of Temporary Gr8ness];	break;
 	case $effect[Graham Crackling]:				useItem = $item[Heather Graham Cracker];		break;
 	case $effect[Greasy Peasy]:					useItem = $item[Robot Grease];					break;
 	case $effect[Greedy Resolve]:				useItem = $item[Resolution: Be Wealthier];		break;
