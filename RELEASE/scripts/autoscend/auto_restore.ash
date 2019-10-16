@@ -312,41 +312,32 @@ boolean[string] __CONSTRAINT_KEYS = {
 int[string] __OBJECTIVE_RANKS = {
   "hp_total_restored": 1,
   "mp_total_restored": 1,
-  "soft_reserve_limit_uses": 1,
-  "negative_status_effects_remaining": 2,
-  "hp_total_short_max": 3,
-  "mp_total_short_max": 3,
-  "total_coinmaster_tokens_used": 4,
-  "hp_per_coinmaster_token_spent": 4,
-  "mp_per_coinmaster_token_spent": 4,
-  "total_meat_used": 5,
-  "hp_per_meat_spent": 5,
-  "mp_per_meat_spent": 5,
+  "negative_status_effects_remaining": 1,
+  "soft_reserve_limit_uses": 2,
+  "total_coinmaster_tokens_used": 3,
+  "hp_per_coinmaster_token_spent": 3,
+  "mp_per_coinmaster_token_spent": 3,
+  "total_meat_used": 4,
+  "hp_per_meat_spent": 4,
+  "mp_per_meat_spent": 4,
+  "hp_total_short_goal": 5,
+  "mp_total_short_goal": 5,
+  "mp_total_wasted_max": 5,
+  "hp_total_wasted_max": 5,
   "total_mp_used": 6,
   "hp_per_mp_spent": 6,
-  "mp_total_wasted_max": 7,
-  "hp_total_wasted_max": 7,
-  "total_uses_available": 8,
-  "hp_total_short_goal": 9,
-  "mp_total_short_goal": 9,
-  "mp_total_wasted_goal": 10,
-  "hp_total_wasted_goal": 10,
-  "total_uses_needed": 11,
+  "total_uses_needed": 7,
 };
 
 // describes what each ranking in __OBJECTIVE_RANKS is attempting to optimize for
 string[int] __RANKED_GOAL_DESCRIPTIONS = {
-  1: "maintain soft reserve limit (keep at least N on hand if possible)",
-  2: "remove negative status effects",
-  3: "minimize hp/mp shortage under max",
-  4: "try not to spend coinmaster tokens, maximizing hp/mp restored per token spent if we must spend",
-  5: "try not to spend meat, maximizing hp/mp restored per meat spent if we must spend",
+  1: "remove negative status effects",
+  2: "maintain soft reserve limit (keep at least N on hand if possible)",
+  3: "try not to spend coinmaster tokens, maximizing hp/mp restored per token spent if we must spend",
+  4: "try not to spend meat, maximizing hp/mp restored per meat spent if we must spend",
+  5: "minimize hp/mp shortage to goal and wasted hp/mp over max",
   6: "try to spend less mp, maximizing hp restored per mp spent if we must spend",
-  7: "minimize wasted hp/mp over max",
-  8: "use options we have more available uses of",
-  9: "minimize hp/mp shortage under goal (not necessarily max)",
-  10: "minimize wasted hp/mp over goal (not necessarily max)",
-  11: "minimize number of uses needed to reach goal"
+  7: "minimize number of uses needed to reach goal"
 };
 
 /**
@@ -434,7 +425,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     if(per_use < 1.0){
       return 0.0;
     }
-    return max(ceil((goal - starting) / per_use), 1);
+    return max(ceil((goal - starting) / per_use), 1.0);
   }
 
   float total_uses_needed(){
@@ -521,6 +512,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   }
 
   float total_wasted(string resource_type, float goal){
+    if((resource_type == "hp" && metadata.restores_variable_hp == __RESTORE_ALL) ||
+       (resource_type == "mp" && metadata.restores_variable_mp == __RESTORE_ALL)){
+      return 0.0;
+    }
     return max(0.0, get_value(resource_type, "starting") + get_value(resource_type, "max_restorable") - goal);
   }
 
@@ -536,7 +531,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     float waste = total_wasted("hp", goal);
     float blood_cost = hp_cost($skill[Blood Bond]);
     if(waste <= blood_cost || !(bloodBubbleAvailable || bloodBondAvailable)){
-      return 0;
+      return 0.0;
     }
 
     float hp_to_burn = 0.0;
@@ -737,20 +732,20 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("soft_reserve_limit", metadata.soft_reserve_limit);
   set_value("hard_reserve_limit", metadata.hard_reserve_limit);
   set_value("total_uses_available", total_uses_available());
-  set_value("total_uses_remaining", total_uses_remaining());
+  set_value("total_uses_remaining", total_uses_remaining()); // candidate for removal
   set_value("soft_reserve_limit_uses", soft_reserve_limit_uses());
   set_value("hp_max_restorable", max_restorable("hp"));
   set_value("hp_total_restored", total_restored("hp"));
-  set_value("hp_total_wasted_goal", blood_adjusted_waste(hp_goal));
+  set_value("hp_total_wasted_goal", blood_adjusted_waste(hp_goal)); // candidate for removal
   set_value("hp_total_short_goal", total_short("hp", hp_goal));
   set_value("hp_total_wasted_max", blood_adjusted_waste(my_maxhp()));
-  set_value("hp_total_short_max", total_short("hp", my_maxhp()));
+  set_value("hp_total_short_max", total_short("hp", my_maxhp())); // candidate for removal
   set_value("mp_max_restorable", max_restorable("mp"));
   set_value("mp_total_restored", total_restored("mp"));
-  set_value("mp_total_wasted_goal", total_wasted("mp", mp_goal));
+  set_value("mp_total_wasted_goal", total_wasted("mp", mp_goal)); // candidate for removal
   set_value("mp_total_short_goal", total_short("mp", mp_goal));
   set_value("mp_total_wasted_max", total_wasted("mp", my_maxmp()));
-  set_value("mp_total_short_max", total_short("mp", my_maxmp()));
+  set_value("mp_total_short_max", total_short("mp", my_maxmp())); // candidate for removal
   set_value("total_mp_used", total_mp_used());
   set_value("total_meat_used", total_meat_used());
   set_value("total_coinmaster_tokens_used", total_coinmaster_tokens_used());
@@ -774,10 +769,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 /**
  * Given a set of hp/mp goals and restoration options, determine which options are available to us and sort them from best to worst. Returns a set of options that the algorithm has determined are "equivalent" in value. Generally this should lead to an obvious best choice but when options are limited you may get several back.
  *
- * Implements a muli-objective optimization algorithm known as Kung's algorithm (not steps 1 and 2 are mostly handled by ):
+ * Implements a muli-objective optimization algorithm known as Kung's algorithm (not steps 1 and 2 are mostly handled by __calculate_objective_values above):
  *  1) apply a set of functions to each __RestorationMetadata which measure goals we want to minimize or maximize (e.g. total hp restored, mp cost, etc. see __calculate_objective_values)
  *  2) apply a set of constraint functions to remove any __RestorationMetadata which fail to meet baseline criteria (e.g. inaccessible in this path. see __calculate_objective_values)
- *  3) sort the set of available __RestorationMetadata by goals we want to maximize (see __MAXIMIZE_KEYS) from largest to smallest
+ *  3) sort the set of available __RestorationMetadata by primary goals we want to maximize (see __PRIMARY_SORT_KEYS) from largest to smallest
  *  4) For each ranking, process the sorted set of __RestorationMetadata removing any dominated options based on the objective values for that rank until we are down to 1 option or a set of "equivalent" options
  *
  * Each value has a rank associated with it which you will find in the __OBJECTIVE_RANKS map. For step 3, the maximization sort, the value is calculated as a simple weighted sum and makes the algorithm in step 4 more efficient. For step 4, determining dominated options, each rank is its own pass over the set of options. This lets us weed out any options that are grossly outmatched in a category we care more about early on so we dont end up with an option that, say, minimizes mp use but ends up spending all your meat buying items. Each pass narrows down our options until we are left only with options that should be more or less equivalent, sorted from most maximized to least maximized (due to the first maximization sort).
@@ -1150,7 +1145,33 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     return false;
   }
 
+  string list_to_string(int[effect] e_list){
+    string s = "[";
+    boolean first = true;
+    foreach e in e_list{
+      if(first){
+        first = false;
+      } else{
+        s += ", ";
+      }
+      s += e.to_string();
+    }
+    s += "]";
+    return s;
+  }
+
+  boolean[effect] negative_effects(){
+    boolean[effect] negative;
+    foreach e, _ in my_effects(){
+      if(__all_negative_effects contains e){
+        negative[e] = true;
+      }
+    }
+    return negative;
+  }
+
   print("Target "+resource_type+" => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+  print("Active Negative Effects => " list_to_string(negative_effects()));
 
   while(current_resource() < goal){
     __RestorationOptimization[int] options = __maximize_restore_options(hp_target(), mp_target(), meat_reserve, useFreeRests);
