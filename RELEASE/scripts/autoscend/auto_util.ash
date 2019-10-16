@@ -2802,7 +2802,7 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		{
 			use(1, $item[chunk of rock salt]);
 		}
-		else if(item_amount($item[deodorant]) > 0))
+		else if(item_amount($item[deodorant]) > 0)
 		{
 			use(1, $item[deodorant]);
 		}
