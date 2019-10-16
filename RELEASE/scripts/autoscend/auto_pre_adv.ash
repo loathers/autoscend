@@ -325,6 +325,9 @@ void handlePreAdventure(location place)
 		}
 	}
 
+	// Here we enforce our ML restrictions if +/-ML is not specifically called in the current maximizer string
+	enforceMLInPreAdv();
+
 	equipMaximizedGear();
 	if(useMaximizeToEquip())
 	{

@@ -156,6 +156,7 @@ int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
 boolean UrKelCheck(int UToML, int UUL, int ULL);
 boolean auto_MaxMLToCap(int ToML, boolean doAltML);
+boolean enforceMLInPreAdv();
 
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
@@ -5906,6 +5907,17 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // Customizable - For variable effects that we can use to fill in the corners
 	// Fill in the remainder with MCD
 	auto_setMCDToCap();
+
+	return true;
+}
+
+// Called in PreAdv right before equipping to make sure that any ML Limit we have specified is in the maximize string IF +/-ML is not in string already
+boolean enforceMLInPreAdv()
+{
+	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
+	{
+		addToMaximize("ml " + get_property("auto_MLSafetyLimit") + "max");
+	}
 
 	return true;
 }
