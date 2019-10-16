@@ -648,7 +648,7 @@ void handlePostAdventure()
 			// removeML MUST be true for purgeML to be used. This is only used for -ML locations like Smut Orc, and you must have 5+ SGEAs to use.
 			boolean purgeML = false;
 
-		boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room];
+		boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, Defiled Cranny];
 		boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
 
 		// Generic Conditions

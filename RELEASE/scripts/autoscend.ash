@@ -6135,6 +6135,10 @@ boolean L11_hiddenCityZones()
 		{
 			set_property("choiceAdventure789", "2");
 		}
+
+		// Try to get the NC so that we can relocate Janitors and get items quickly
+		providePlusNonCombat(25, true);
+
 		autoAdv(1, $location[The Hidden Park]);
 		return true;
 	}
