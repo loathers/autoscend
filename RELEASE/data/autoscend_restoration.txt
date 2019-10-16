@@ -40,7 +40,7 @@
 39	pixellated candy heart	item	4	0	0	0	none	none
 40	Tongue of the Walrus	skill	35	0	0	0	Beaten Up	none
 41	Cannelloni Cocoon	skill	1000	0	0	0	none	none
-42	Shake it Off	skill	ALL	0	All	0	0 Negative	none
+42	Shake it Off	skill	ALL	0	0	0	All Negative	none
 43	Gelatinous Reconstruction	skill	13	0	0	0	Beaten Up	none
 44	Disco Nap	skill	20	0	0	0	none	none
 46	Lasagna Bandages	skill	15	0	0	0	none	none
