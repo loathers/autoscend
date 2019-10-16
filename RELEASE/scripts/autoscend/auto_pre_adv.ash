@@ -341,7 +341,7 @@ void handlePreAdventure(location place)
 		doML = false;
 	}
 
-	if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none"$
+	if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() >= 13)))
 	{
 		doML = false;
 	}
@@ -354,13 +354,13 @@ void handlePreAdventure(location place)
 	}
 
 	// Location Specific Conditions
-	if(lowMLZones contains my_location())
+	if(lowMLZones contains place)
 	{
 		doML = false;
 		removeML = true;
 		purgeML = true;
 	}
-	if(highMLZones contains my_location())
+	if(highMLZones contains place)
 	{
 		doML = true;
 		removeML = false;
@@ -416,7 +416,7 @@ void handlePreAdventure(location place)
 	}
 
 	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
-	if(lowMLZones contains my_location())
+	if(lowMLZones contains place)
 	{
 		auto_debug_print("Going into a LOW ML ZONE with ML: " + monster_level_adjustment());
 	}
