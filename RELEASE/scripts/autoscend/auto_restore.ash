@@ -1171,7 +1171,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
   }
 
   print("Target "+resource_type+" => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
-  print("Active Negative Effects => " list_to_string(negative_effects()));
+  print("Active Negative Effects => " + list_to_string(negative_effects()));
 
   while(current_resource() < goal){
     __RestorationOptimization[int] options = __maximize_restore_options(hp_target(), mp_target(), meat_reserve, useFreeRests);
