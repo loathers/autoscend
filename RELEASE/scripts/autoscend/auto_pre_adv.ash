@@ -339,6 +339,8 @@ void handlePreAdventure(location place)
 	if(get_property("kingLiberated").to_boolean())
 	{
 		doML = false;
+		removeML=false;
+		purgeML=false;
 	}
 
 		// NOTE: If we aren't quits before we pass L13, let us gain stats.
@@ -346,6 +348,15 @@ void handlePreAdventure(location place)
 	{
 		doML = false;
 		removeML = true;
+		purgeML=false;
+	}
+
+	// Allow user settable option to override the above settings to not slack off ML
+	if(get_property("auto_ignoreL13Slowdown"))
+	{
+		doML = true;
+		removeML = false;
+		purgeML=false;
 	}
 
 	// Item specific Conditions
@@ -353,6 +364,7 @@ void handlePreAdventure(location place)
 	{
 		doML = false;
 		removeML = true;
+		purgeML=false;
 	}
 
 	// Location Specific Conditions
@@ -366,6 +378,7 @@ void handlePreAdventure(location place)
 	{
 		doML = true;
 		removeML = false;
+		purgeML=false;
 	}
 
 	// Act on ML settings
