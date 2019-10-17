@@ -171,6 +171,9 @@ boolean bond_initializeDay(int day)
 			if(get_property("auto_dickstab").to_boolean() && !possessEquipment($item[Dented Scepter]) && is_unrestricted($item[Witchess Set]) && get_property("lovebugsUnlocked").to_boolean() && possessEquipment($item[Your Cowboy Boots]) && have_skills($skills[Curse of Weaksauce, Shell Up, Lunging Thrust-Smack, Sauceshell, Itchy Curse Finger]) && is_unrestricted($item[Source Terminal]) && (auto_get_campground() contains $item[Witchess Set]) && (auto_get_campground() contains $item[Source Terminal]) && (get_property("_witchessFights").to_int() < 5))
 			{
 				auto_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
+
+				// TODO: not sure why we cant just use acquireMP instead
+				// acquireMP(55);
 				if(my_mp() < 55)
 				{
 					doRest();
@@ -379,6 +382,9 @@ boolean LM_bond()
 		if(get_property("auto_dickstab").to_boolean() && !possessEquipment($item[Dented Scepter]) && is_unrestricted($item[Witchess Set]) && get_property("lovebugsUnlocked").to_boolean() && possessEquipment($item[Your Cowboy Boots]) && have_skills($skills[Curse of Weaksauce, Shell Up, Lunging Thrust-Smack, Sauceshell, Itchy Curse Finger]) && is_unrestricted($item[Source Terminal]) && (auto_get_campground() contains $item[Witchess Set]) && (auto_get_campground() contains $item[Source Terminal]) && (get_property("_witchessFights").to_int() < 5))
 		{
 			auto_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
+			
+			// TODO: not sure why we cant just use acquireMP instead
+			// acquireMP(55);
 			if(my_mp() < 55)
 			{
 				doRest();
@@ -634,10 +640,6 @@ boolean LM_bond()
 		{
 			if((item_amount($item[Filthworm Royal Guard Scent Gland]) == 0) && (item_amount($item[Heart Of The Filthworm Queen]) == 0) && canYellowRay())
 			{
-				while((get_property("timesRested").to_int() < total_free_rests()) && (my_mp() < mp_cost($skill[Disintegrate])))
-				{
-					doRest();
-				}
 				location loc = $location[The Hatching Chamber];
 				if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
 				{
@@ -766,10 +768,6 @@ boolean LM_bond()
 
 				if(!have_outfit("Knob Goblin Harem Girl Disguise"))
 				{
-					while((my_mp() < 160) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-					{
-						doRest();
-					}
 					if(!acquireMP(160, 0))
 					{
 						abort("Can not restore MP for a Harem Girl disintegrate. Her whorish ways shall continue unabated!");
