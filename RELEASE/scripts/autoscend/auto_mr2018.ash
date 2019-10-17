@@ -1326,7 +1326,7 @@ boolean fightClubStats()
 
 boolean isTallGrassAvailable(){
 	static item tallGrass = $item[Packet Of Tall Grass Seeds];
-	return auto_is_valid(tallGrass) && auto_get_campground()[tallGrass] > 0;
+	return auto_is_valid(tallGrass) && auto_get_campground() contains tallGrass;
 }
 
 int pokeFertilizerAmountAvailable(){
@@ -1345,6 +1345,7 @@ boolean haveAnyPokeFamiliarEquipment(){
 	static boolean[item] poke_fam_equipment = $items[amulet coin, luck incense, muscle band, razor fang, shell bell, smoke ball];
 	foreach i, _ in poke_fam_equipment{
 		if(equipmentAmount(i) > 0){
+			auto_debug_print("Found Tall Grass familiar equipment: " + i);
 			return true;
 		}
 	}
@@ -1356,5 +1357,6 @@ boolean pokeFertilizeAndHarvest(){
 		return false;
 	}
 
+	print("sew and reap.");
 	return use(1, $item[Pok&eacute;-Gro fertilizer]) && cli_execute("garden pick");
 }

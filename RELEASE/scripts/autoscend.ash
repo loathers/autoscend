@@ -944,8 +944,6 @@ void maximize_hedge()
 	element third = ns_hedge3();
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
-		if(have_effect($effect[Flared Nostrils]) > 0)
-			doHottub();
 		uneffect($effect[Flared Nostrils]);
 		if(useMaximizeToEquip())
 		{
@@ -960,7 +958,6 @@ void maximize_hedge()
 	{
 		if ($element[stench] == first || $element[stench] == second || $element[stench] == third)
 		{
-			doHottub();
 			uneffect($effect[Flared Nostrils]);
 		}
 		if(useMaximizeToEquip())
@@ -2601,7 +2598,7 @@ boolean doBedtime()
 	}
 
 	# This does not check if we still want these buffs
-	if((my_hp() < (0.9 * my_maxhp())) && (get_property("_hotTubSoaks").to_int() < 5))
+	if((my_hp() < (0.9 * my_maxhp())) && hotTubSoaksRemaining() > 0)
 	{
 		boolean doTub = true;
 		foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
@@ -2632,9 +2629,9 @@ boolean doBedtime()
 	skill libram = preferredLibram();
 	if(libram != $skill[none])
 	{
-		while((get_property("timesRested").to_int() < total_free_rests()) && (mp_cost(libram) <= my_maxmp()))
+		while(haveFreeRestAvailable() && (mp_cost(libram) <= my_maxmp()))
 		{
-			doRest();
+			doFreeRest();
 			while(my_mp() > mp_cost(libram))
 			{
 				use_skill(1, libram);
@@ -4112,7 +4109,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				print("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
-				doHottub();
+				acquireHP();
 				bat_reallyPickSkills(20);
 			}
 			if (equipped_amount($item[Talisman o\' Namsilat]) == 0)
@@ -4719,7 +4716,7 @@ boolean L13_towerNSTower()
 			if(internalQuestStatus("questL13Final") < 9)
 			{
 				print("Could not towerkill Wall of Bones, reverting to Boning Knife", "red");
-				doHottub();
+				acquireHP();
 				set_property("auto_getBoningKnife", true);
 			}
 			else
@@ -4764,7 +4761,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Spiky Hair], 0, 1, 1);
 		}
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
-		doHottub();
+		acquireHP();
 
 		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
 		if(n_healing_items < 5)
@@ -4960,10 +4957,7 @@ boolean L13_towerNSContests()
 			switch(ns_crowd1())
 			{
 			case 1:
-				while((my_mp() < 160) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-				{
-					doRest();
-				}
+				acquireMP(160); // only uses free rests or items on hand by default
 
 				if(is100FamiliarRun())
 				{
@@ -5011,10 +5005,7 @@ boolean L13_towerNSContests()
 			{
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
-			while((my_mp() < 150) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			acquireMP(150); // only uses free rests or items on hand by default
 			buffMaintain($effect[Big], 15, 1, 1);
 			if (my_class() == $class[Vampyre])
 			{
@@ -5110,10 +5101,7 @@ boolean L13_towerNSContests()
 		}
 		if(get_property("nsContestants3").to_int() == -1)
 		{
-			while((my_mp() < 125) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			acquireMP(125); // only uses free rests or items on hand by default
 
 			if(challenge != $element[none])
 			{
@@ -5367,9 +5355,9 @@ boolean L13_towerNSEntrance()
 			}
 			wait(delay);
 
-			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
+			if(haveAnyIotmAlternativeRestSiteAvailable() && haveFreeRestAvailable() && auto_my_path() != "The Source")
 			{
-				doRest();
+				doFreeRest();
 				cli_execute("scripts/autoscend/auto_post_adv.ash");
 				loopHandlerDelayAll();
 				return true;
@@ -5789,11 +5777,7 @@ boolean L11_hiddenCity()
 		if((get_property("auto_hiddenapartment") == "finished") || (item_amount($item[Moss-Covered Stone Sphere]) > 0))
 		{
 			set_property("auto_hiddenapartment", "finished");
-			if(have_effect($effect[Thrice-Cursed]) > 0)
-			{
-				print("Ewww, time to wash off this pygmy stench.", "blue");
-				doHottub();
-			}
+			uneffect($effect[Thrice-Cursed]);
 			if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Shaman]))
 			{
 				if(item_amount($item[soft green echo eyedrop antidote]) > 0)
@@ -8250,6 +8234,8 @@ boolean L12_finalizeWar()
 
 	if(my_mp() < 40)
 	{
+		// fyi https://kol.coldfront.net/thekolwiki/index.php/Chateau_Mantegna states you wont get pantsgiving benefits resting there (presumably campsite as well)
+		// so not sure this is doing much
 		if(possessEquipment($item[Pantsgiving]))
 		{
 			equip($item[pantsgiving]);
@@ -12948,12 +12934,12 @@ boolean L9_chasmBuild()
 	{
 		useSpellsInOrcCamp = true;
 	}
-	
+
 	if(canUse($skill[Saucegeyser], false))
 	{
 		useSpellsInOrcCamp = true;
 	}
-	
+
 	if(canUse($skill[Saucecicle], false))
 	{
 		useSpellsInOrcCamp = true;
@@ -12976,7 +12962,7 @@ boolean L9_chasmBuild()
 		print("Preparing to Ice-Punch Orcs!", "blue");
 		addToMaximize("muscle,40weapon damage,60weapon damage percent,40cold damage,-1000 ml");
 		buffMaintain($effect[Carol of the Bulls], 50, 1, 1);
-		buffMaintain($effect[Song of The North], 150, 1, 1);	
+		buffMaintain($effect[Song of The North], 150, 1, 1);
 
 		print("Beta Testing Off: If we encounter Blech House when we are not expecting it we will stop.", "blue");
 		print("Currently setup for Muscle/Weapon Damage, option 1: Kick it down", "blue");
@@ -14786,14 +14772,13 @@ boolean doTasks()
 	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
 
-	if (!isActuallyEd() && my_level() >= 9 && my_daycount() == 1)
+	// TODO: not sure what this is for, seems wasteful...
+	if (!isActuallyEd() && auto_my_path() != "The Source" &&
+		my_level() >= 9 && my_daycount() == 1 &&
+		haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest())
 	{
-		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
-		{
-			doRest();
-			cli_execute("scripts/autoscend/auto_post_adv.ash");
-			return true;
-		}
+		cli_execute("scripts/autoscend/auto_post_adv.ash");
+		return true;
 	}
 
 	if(snojoFightAvailable() && (my_daycount() == 2) && (get_property("snojoMoxieWins").to_int() == 10))

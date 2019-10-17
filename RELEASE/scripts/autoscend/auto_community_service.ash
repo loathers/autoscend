@@ -592,10 +592,7 @@ boolean LA_cs_communityService()
 				return true;
 			}
 
-			if(have_effect($effect[Drenched in Lava]) > 0)
-			{
-				doHottub();
-			}
+			uneffect($effect[Drenched in Lava]);
 
 #			if(((get_property("_g9Effect").to_int() > 125) || (item_amount($item[Airborne Mutagen]) == 0)) && (((curQuest == 9) || (my_turncount() < get_property("auto_cookie").to_int())) && elementalPlanes_access($element[spooky])))
 			if(((curQuest == 9) || (my_turncount() < get_property("auto_cookie").to_int())) && elementalPlanes_access($element[spooky]))
@@ -1030,9 +1027,8 @@ boolean LA_cs_communityService()
 			}
 			missing = min(2, missing);
 
-			if((have_effect($effect[Half-Blooded]) > 0) || (have_effect($effect[Half-Drained]) > 0) || (have_effect($effect[Bruised]) > 0) || (have_effect($effect[Relaxed Muscles]) > 0) || (have_effect($effect[Hypnotized]) > 0) || (have_effect($effect[Bad Haircut]) > 0))
-			{
-				doHottub();
+			foreach e in $effects[Half-Blooded, Half-Drained, Bruised, Relaxed Muscles, Hypnotized, Bad Haircut]{
+				uneffect(e);
 			}
 
 			if(turnSave)
@@ -1212,10 +1208,7 @@ boolean LA_cs_communityService()
 				}
 
 				//Consider checking for all Snojo debuffs.
-				if(have_effect($effect[Hypnotized]) > 0)
-				{
-					doHottub();
-				}
+				uneffect($effect[Hypnotized]);
 
 				if(neverendingPartyAvailable() && (my_adventures() > 0))
 				{
@@ -2189,10 +2182,9 @@ boolean LA_cs_communityService()
 			}
 
 			// TODO: what the hell is this for?
-			int restsLeft = total_free_rests() - get_property("timesRested").to_int();
-			while((my_level() < 8) && (restsLeft > 0) && chateaumantegna_available() && ((my_basestat(my_primestat()) + restsLeft) >= 53))
+			while((my_level() < 8) && haveFreeRestAvailable() && chateaumantegna_available() && ((my_basestat(my_primestat()) + freeRestsRemaining()) >= 53))
 			{
-				doRest();
+				doFreeRest();
 				cli_execute("auto_post_adv");
 			}
 
@@ -2318,9 +2310,8 @@ boolean LA_cs_communityService()
 					trySaberTrickMeteorShower();
 				}
 
-				if((have_effect($effect[Half-Blooded]) > 0) || (have_effect($effect[Half-Drained]) > 0) || (have_effect($effect[Bruised]) > 0) || (have_effect($effect[Relaxed Muscles]) > 0) || (have_effect($effect[Hypnotized]) > 0) || (have_effect($effect[Bad Haircut]) > 0))
-				{
-					doHottub();
+				foreach e in $effects[Half-Blooded, Half-Drained, Bruised, Relaxed Muscles, Hypnotized, Bad Haircut]{
+					uneffect(e);
 				}
 
 				cs_mpMaintain(250);
@@ -2550,10 +2541,7 @@ boolean LA_cs_communityService()
 
 	case 9:		#item/booze drops
 		{
-			if(have_effect($effect[Drenched in Lava]) > 0)
-			{
-				doHottub();
-			}
+			uneffect($effect[Drenched in Lava]);
 
 			if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 			{
@@ -3213,9 +3201,10 @@ void cs_initializeDay(int day)
 			}
 
 			cli_execute("garden pick");
-			if(auto_get_campground() contains $item[Packet Of Tall Grass Seeds]){
+			if(isTallGrassAvailable()){
 				// get +10 lb familiar equipment if we need it
 				while(isPokeFertilizerAvailable() && !haveAnyPokeFamiliarEquipment() && equipmentAmount($item[astral pet sweater]) == 0){
+					auto_debug_print("Trying to acquire +10 lb familiar equipment from Tall Grass.");
 					pokeFertilizeAndHarvest();
 				}
 			}
@@ -3226,12 +3215,6 @@ void cs_initializeDay(int day)
 			}
 
 			cli_execute("auto_post_adv");
-
-			// TODO: again, this seems kind of wasteful
-			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
 
 			set_property("auto_day_init", 2);
 		}
@@ -3292,10 +3275,7 @@ boolean cs_spendRests()
 	{
 		return false;
 	}
-	while((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-	{
-		doRest();
-	}
+	while(haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest());
 	return true;
 }
 

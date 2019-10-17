@@ -278,6 +278,7 @@ boolean acquireHP(float goalPercent, int meat_reserve, boolean freeRest);
 float mp_regen();
 float hp_regen();
 int doRest();
+boolean haveAnyIotmAlternativeRestSiteAvailable();
 boolean doFreeRest();
 boolean haveFreeRestAvailable();
 int freeRestsRemaining();
