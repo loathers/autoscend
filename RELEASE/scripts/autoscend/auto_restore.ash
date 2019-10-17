@@ -253,14 +253,14 @@ boolean[string] __MAXIMIZE_KEYS = {
 // values we want to minimize when optimizing
 boolean[string] __MINIMIZE_KEYS = {
   "total_uses_needed": true,
-  "hp_total_wasted_goal": true,
+  "hp_total_wasted_goal": true, // candidate for removal
   "hp_total_short_goal": true,
-  "mp_total_wasted_goal": true,
+  "mp_total_wasted_goal": true, // candidate for removal
   "mp_total_short_goal": true,
   "hp_total_wasted_max": true,
-  "hp_total_short_max": true,
+  "hp_total_short_max": true, // candidate for removal
   "mp_total_wasted_max": true,
-  "mp_total_short_max": true,
+  "mp_total_short_max": true, // candidate for removal
   "total_mp_used": true,
   "total_meat_used": true,
   "total_coinmaster_tokens_used": true,
@@ -286,11 +286,12 @@ boolean[string] __VARS_KEYS = {
   "amount_buyable": true,
   "meat_per_use": true,
   "reserve_limit_hard": true,
-  "total_uses_remaining": true,
+  "total_uses_remaining": true, // candidate for removal
   "soft_reserve_limit": true,
   "hard_reserve_limit": true,
   "hp_max_restorable": true,
-  "mp_max_restorable": true
+  "mp_max_restorable": true,
+  "meat_available_to_spend": true
 };
 
 // values used to constrain or quickly eliminate methods as not options (e.g. skill not available in a path)
@@ -576,6 +577,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     return price * needed;
   }
 
+  float meat_available_to_spend(){
+    return max(0.0, my_meat()-meat_reserve);
+  }
+
   float total_coinmaster_tokens_used(){
     if(metadata.type != "item"){
       return 0.0;
@@ -689,7 +694,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       }
     }
     if(get_value("total_uses_available") < get_value("total_uses_needed")){
-      if(get_value("total_meat_used") > 0.0 && get_value("total_meat_used") <= my_meat()-meat_reserve){
+      if(get_value("total_meat_used") > 0.0 && get_value("total_meat_used") <= get_value("meat_available_to_spend")){
         return true;
       }
       if(get_value("total_coinmaster_tokens_used") > 0.0 && get_value("total_coinmaster_tokens_used") < to_item(metadata.name).seller.available_tokens){
@@ -748,6 +753,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   set_value("mp_total_short_max", total_short("mp", my_maxmp())); // candidate for removal
   set_value("total_mp_used", total_mp_used());
   set_value("total_meat_used", total_meat_used());
+  set_value("meat_available_to_spend", meat_available_to_spend());
   set_value("total_coinmaster_tokens_used", total_coinmaster_tokens_used());
   set_value("hp_per_meat_spent", resource_value_per_meat_spent("hp"));
   set_value("hp_per_coinmaster_token_spent", resource_value_per_coinmaster_token_spent("hp"));
