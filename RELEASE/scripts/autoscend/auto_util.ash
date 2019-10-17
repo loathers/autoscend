@@ -151,7 +151,6 @@ boolean auto_debug_print(string s);
 boolean auto_can_equip(item it);
 boolean auto_can_equip(item it, slot s);
 boolean auto_badassBelt();
-int auto_remainingMLToCap();
 int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
 boolean UrKelCheck(int UToML, int UUL, int ULL);
@@ -5799,30 +5798,13 @@ int auto_reserveCraftAmount(item orig_it)
 }
 
 
-// This just does the math for comparing vs. the Cap. If no cap is set then ML is virtually unlimited.
-int remainingMLToCap()
-{
-	int MLToCap = 0;
-
-	if(get_property("auto_MLSafetyLimit") == "")
-	{
-		MLToCap = 999999;
-	}
-	else if(monster_level_adjustment() < get_property("auto_MLSafetyLimit"))
-	{
-		MLToCap = get_property("auto_MLSafetyLimit") - monster_level_adjustment();
-	}
-
-	return MLToCap;
-}
 
 // Gives us the number we need when comparing to a desired ML or entering a value into a maximizer string.
 int auto_convertDesiredML(int DML)
 {
+	int DesiredML = get_property("auto_MLSafetyLimit").to_int();
 
-	int DesiredML = get_property("auto_MLSafetyLimit");
-
-	if((get_property("auto_MLSafetyLimit") == "") || (DML < get_property("auto_MLSafetyLimit")))
+	if((get_property("auto_MLSafetyLimit") == "") || (DML < get_property("auto_MLSafetyLimit").to_int()))
 	{
 		DesiredML = DML;
 	}
@@ -5833,6 +5815,25 @@ int auto_convertDesiredML(int DML)
 // Uses MCD in the constraints of a Cap
 boolean auto_setMCDToCap()
 {
+
+	// This just does the math for comparing vs. the Cap. If no cap is set then ML is virtually unlimited.
+	int remainingMLToCap()
+	{
+		int MLToCap = 0;
+
+		if(get_property("auto_MLSafetyLimit") == "")
+		{
+			MLToCap = 999999;
+		}
+		else if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int())
+		{
+			MLToCap = get_property("auto_MLSafetyLimit").to_int() - monster_level_adjustment();
+		}
+
+		return MLToCap;
+	}
+
+
 	if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingToMLCap()))
 	{
 		auto_change_mcd(11);
@@ -5850,13 +5851,13 @@ boolean auto_setMCDToCap()
 }
 
 // We use this function to determine the suitability of using Ur-Kel's
-boolean UrKelCheck(int UToML, int UUL, int ULL)
+boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 {
-	if((have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0) && ((monster_level_adjustment() + (2 * my_level())) <= auto_convertDesiredML(UToML)))                           
+	if((have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0) && ((monster_level_adjustment() + (2 * my_level())) <= auto_convertDesiredML(UrKelToML)))                           
 	{
-		if((get_property("auto_MLSafetyLimit") == "") || (((2 * my_level()) <= UUL) && ((2 * my_level()) >= ULL))
+		if((get_property("auto_MLSafetyLimit") == "") || (((2 * my_level()) <= UrKelUpperLimit) && ((2 * my_level()) >= UrKelLowerLimit))
 		{
-			buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 80, 1, 10);
+			buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 0, 1, 10);
 		}
 	}
 
@@ -5864,7 +5865,7 @@ boolean UrKelCheck(int UToML, int UUL, int ULL)
 }
 
 
-// Handle intelligently increasing ML for both post-adv and in Quests
+// Handle intelligently increasing ML for both pre-adv and in Quests
 //	doAltML is a variable that will be referenced when increasing ML via alternative methods such as Asdon Martin, they should be entered in their respective order
 //		Ur-kel's may need new entries in this case due to its variance
 boolean auto_MaxMLToCap(int ToML, boolean doAltML)
@@ -5904,12 +5905,12 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // 10
 	if((monster_level_adjustment() + 10) <= auto_convertDesiredML(ToML))
 	{
-		buffMaintain($effect[Pride of the Puffin], 80, 1, 10);
+		buffMaintain($effect[Pride of the Puffin], 0, 1, 10);
 	}
 
 	if((monster_level_adjustment() + 10) <= auto_convertDesiredML(ToML))
 	{
-		buffMaintain($effect[Drescher\'s Annoying Noise], 80, 1, 10);
+		buffMaintain($effect[Drescher\'s Annoying Noise], 0, 1, 10);
 	}
 
 
@@ -5929,7 +5930,7 @@ boolean enforceMLInPreAdv()
 {
 	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
 	{
-		addToMaximize("ml " + get_property("auto_MLSafetyLimit") + "max");
+		addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
 	}
 
 	return true;

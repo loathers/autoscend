@@ -332,7 +332,7 @@ void handlePreAdventure(location place)
 		// removeML MUST be true for purgeML to be used. This is only used for -ML locations like Smut Orc, and you must have 5+ SGEAs to use.
 		boolean purgeML = false;
 
-	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room];
+	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
 	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
 
 	// Generic Conditions
@@ -341,9 +341,11 @@ void handlePreAdventure(location place)
 		doML = false;
 	}
 
-	if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() >= 13)))
+		// NOTE: If we aren't quits before we pass L13, let us gain stats.
+	if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() == 13)))
 	{
 		doML = false;
+		removeML = true;
 	}
 
 	// Item specific Conditions
@@ -369,7 +371,7 @@ void handlePreAdventure(location place)
 	// Act on ML settings
 	if(doML)
 	{
-		// Catch when we leave lowMLZone, allow for being "side tracked" buy delay burning
+		// Catch when we leave lowMLZone, allow for being "side tracked" by delay burning
 		if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
 		{
 			print("No Reason to delay Asdon Usage");
