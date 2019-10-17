@@ -13,6 +13,7 @@ since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battl
 
 import <autoscend/autoscend_header.ash>
 import <autoscend/autoscend_migration.ash>
+import <canadv.ash>
 import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_deprecation.ash>
