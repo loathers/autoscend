@@ -2289,6 +2289,8 @@ void initializeDay(int day)
 		cli_execute("garden pick");
 	}
 
+	set_property("auto_forceNonCombatSource", "");
+
 	set_property("auto_day_init", day);
 }
 
@@ -3592,7 +3594,7 @@ boolean L11_aridDesert()
 	{
 		return false;
 	}
-	if((get_property("auto_hiddenapartment") != "finished") && (get_property("auto_hiddenapartment") != "0"))
+	if((get_property("auto_hiddenapartment") != "finished") && (0 < have_effect($effect[Once-Cursed]) + have_effect($effect[Twice-Cursed]) + have_effect($effect[Thrice-Cursed])))
 	{
 		return false;
 	}
@@ -5713,9 +5715,14 @@ boolean L11_hiddenTavernUnlock()
 
 boolean L11_hiddenTavernUnlock(boolean force)
 {
-	if(auto_my_path() == "G-Lover")
+	if(!auto_is_valid($item[Book of Matches]))
 	{
 		return false;
+	}
+
+	if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+	{
+		return true;
 	}
 
 	if(force)
@@ -5827,20 +5834,26 @@ boolean L11_hiddenCity()
 			int current = get_property("auto_hiddenapartment").to_int() + 1;
 			set_property("auto_hiddenapartment", current);
 
-			if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
+			if(auto_canForceNextNoncombat())
 			{
-				use(1, $item[Clara\'s Bell]);
+				L11_hiddenTavernUnlock(true);
 
-				if(auto_my_path() == "Pocket Familiars")
+				if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= 3*$item[Cursed Punch].inebriety) && !in_tcrs())
+					|| (0 != have_effect($effect[Thrice-Cursed]) && current <= 4))
 				{
-					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+					auto_forceNextNoncombat();
+
+					if(auto_my_path() == "Pocket Familiars")
 					{
-						set_property("choiceAdventure780", "3");
-						autoAdv(1, $location[The Hidden Apartment Building]);
-						return true;
+						if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+						{
+							set_property("choiceAdventure780", "3");
+							autoAdv(1, $location[The Hidden Apartment Building]);
+							return true;
+						}
 					}
+					current = 9;
 				}
-				current = 9;
 			}
 
 			if(current <= 8)
@@ -5861,7 +5874,7 @@ boolean L11_hiddenCity()
 					L11_hiddenTavernUnlock(true);
 					while(have_effect($effect[Thrice-Cursed]) == 0)
 					{
-						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs() && !in_koe())
+						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs())
 						{
 							buyUpTo(1, $item[Cursed Punch]);
 							if(item_amount($item[Cursed Punch]) == 0)
@@ -6687,6 +6700,7 @@ boolean LX_spookyravenSecond()
 
 			auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
+			auto_forceNextNoncombat();
 			autoAdv(1, $location[The Haunted Bathroom]);
 
 			handleFamiliar("item");
@@ -8614,7 +8628,10 @@ boolean L10_holeInTheSkyUnlock()
 	{
 		handleFamiliar($familiar[Puck Man]);
 	}
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
 
@@ -8686,7 +8703,10 @@ boolean L10_topFloor()
 	}
 
 	handleFamiliar("initSuggest");
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	autoEquip($item[mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
@@ -8830,7 +8850,10 @@ boolean L10_basement()
 	{
 		handleFamiliar($familiar[Puck Man]);
 	}
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Bendable Knees]) && (item_amount($item[Bottle of Gregnadigne]) == 0))
@@ -10560,33 +10583,37 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if((item_amount($item[snow berries]) == 3) && (my_daycount() == 1) && get_property("auto_grimstoneFancyOilPainting").to_boolean())
+	// Snow Berries can be acquired out of standard by using Van Keys from NEP. We need to check to make sure they are usable.
+	if(auto_is_valid($item[snow berries]))
 	{
-		cli_execute("make 1 snow cleats");
-	}
-
-	if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= 30) && (my_level() >= 9))
-	{
-		visit_url("place.php?whichplace=orc_chasm");
-		if(get_property("chasmBridgeProgress").to_int() >= 30)
+		if((item_amount($item[snow berries]) == 3) && (my_daycount() == 1) && get_property("auto_grimstoneFancyOilPainting").to_boolean())
 		{
-			#if(in_hardcore() && isGuildClass())
-			if(isGuildClass())
-			{
-				if((item_amount($item[Snow Berries]) >= 3) && (item_amount($item[Ice Harvest]) >= 3) && (item_amount($item[Unfinished Ice Sculpture]) == 0))
-				{
-					cli_execute("make 1 Unfinished Ice Sculpture");
-				}
-				if((item_amount($item[Snow Berries]) >= 2) && (item_amount($item[Snow Crab]) == 0))
-				{
-					cli_execute("make 1 Snow Crab");
-				}
-			}
-			#cli_execute("make " + item_amount($item[snow berries]) + " snow cleats");
+			cli_execute("make 1 snow cleats");
 		}
-		else
+
+		if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= 30) && (my_level() >= 9))
 		{
-			abort("Bridge progress came up as >= 30 but is no longer after viewing the page.");
+			visit_url("place.php?whichplace=orc_chasm");
+			if(get_property("chasmBridgeProgress").to_int() >= 30)
+			{
+				#if(in_hardcore() && isGuildClass())
+				if(isGuildClass())
+				{
+					if((item_amount($item[Snow Berries]) >= 3) && (item_amount($item[Ice Harvest]) >= 3) && (item_amount($item[Unfinished Ice Sculpture]) == 0))
+					{
+						cli_execute("make 1 Unfinished Ice Sculpture");
+					}
+					if((item_amount($item[Snow Berries]) >= 2) && (item_amount($item[Snow Crab]) == 0))
+					{
+						cli_execute("make 1 Snow Crab");
+					}
+				}
+				#cli_execute("make " + item_amount($item[snow berries]) + " snow cleats");
+			}
+			else
+			{
+				abort("Bridge progress came up as >= 30 but is no longer after viewing the page.");
+			}
 		}
 	}
 
