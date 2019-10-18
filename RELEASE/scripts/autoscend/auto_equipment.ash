@@ -73,10 +73,21 @@ boolean autoOutfit(string toWear)
 	{
 		// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
 		auto_debug_print('Adding outfit "' + toWear + '" to maximizer statement', "gold");
+
+		// Accessory items from outfits we commonly wear
+		boolean[item] CommonOutfitAccessories = $items[eXtreme mittens, bejeweled pledge pin, round purple sunglasses];
+
 		boolean pass = true;
 		foreach i,it in outfit_pieces(toWear)
 		{
-			pass = pass && autoEquip(it);
+			if(CommonOutfitAccessories contains $item(it))
+			{
+				pass = pass && autoEquip(acc3, it);
+			}
+			else
+			{
+				pass = pass && autoEquip(it);
+			}
 		}
 		return pass;
 	}
