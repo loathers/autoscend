@@ -10560,33 +10560,36 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if((item_amount($item[snow berries]) == 3) && (my_daycount() == 1) && get_property("auto_grimstoneFancyOilPainting").to_boolean())
+	if(is_unrestricted($item[snow berries]))
 	{
-		cli_execute("make 1 snow cleats");
-	}
-
-	if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= 30) && (my_level() >= 9))
-	{
-		visit_url("place.php?whichplace=orc_chasm");
-		if(get_property("chasmBridgeProgress").to_int() >= 30)
+		if((item_amount($item[snow berries]) == 3) && (my_daycount() == 1) && get_property("auto_grimstoneFancyOilPainting").to_boolean())
 		{
-			#if(in_hardcore() && isGuildClass())
-			if(isGuildClass())
-			{
-				if((item_amount($item[Snow Berries]) >= 3) && (item_amount($item[Ice Harvest]) >= 3) && (item_amount($item[Unfinished Ice Sculpture]) == 0))
-				{
-					cli_execute("make 1 Unfinished Ice Sculpture");
-				}
-				if((item_amount($item[Snow Berries]) >= 2) && (item_amount($item[Snow Crab]) == 0))
-				{
-					cli_execute("make 1 Snow Crab");
-				}
-			}
-			#cli_execute("make " + item_amount($item[snow berries]) + " snow cleats");
+			cli_execute("make 1 snow cleats");
 		}
-		else
+
+		if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= 30) && (my_level() >= 9))
 		{
-			abort("Bridge progress came up as >= 30 but is no longer after viewing the page.");
+			visit_url("place.php?whichplace=orc_chasm");
+			if(get_property("chasmBridgeProgress").to_int() >= 30)
+			{
+				#if(in_hardcore() && isGuildClass())
+				if(isGuildClass())
+				{
+					if((item_amount($item[Snow Berries]) >= 3) && (item_amount($item[Ice Harvest]) >= 3) && (item_amount($item[Unfinished Ice Sculpture]) == 0))
+					{
+						cli_execute("make 1 Unfinished Ice Sculpture");
+					}
+					if((item_amount($item[Snow Berries]) >= 2) && (item_amount($item[Snow Crab]) == 0))
+					{
+						cli_execute("make 1 Snow Crab");
+					}
+				}
+				#cli_execute("make " + item_amount($item[snow berries]) + " snow cleats");
+			}
+			else
+			{
+				abort("Bridge progress came up as >= 30 but is no longer after viewing the page.");
+			}
 		}
 	}
 
