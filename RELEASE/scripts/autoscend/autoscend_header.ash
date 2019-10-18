@@ -278,6 +278,7 @@ boolean acquireHP(float goalPercent, int meat_reserve, boolean freeRest);
 float mp_regen();
 float hp_regen();
 int doRest();
+boolean haveAnyIotmAlternativeRestSiteAvailable();
 boolean doFreeRest();
 boolean haveFreeRestAvailable();
 int freeRestsRemaining();
@@ -691,7 +692,12 @@ int auto_beachCombFreeUsesLeft();	// Defined in autoscend/auto_mr2019.ash
 boolean auto_beachUseFreeCombs();	// Defined in autoscend/auto_mr2019.ash
 boolean auto_campawayAvailable();	// Defined in autoscend/auto_mr2019.ash
 boolean auto_campawayGrabBuffs();	// Defined in autoscend/auto_mr2019.ash
-boolean getSpaceJelly();									//Defined in autoscend/auto_mr2017.ash
+int auto_pillKeeperUses();						//Defined in autoscend/auto_mr2019.ash
+boolean auto_pillKeeperFreeUseAvailable();	//Defined in autoscend/auto_mr2019.ash
+boolean auto_pillKeeperAvailable();			//Defined in autoscend/auto_mr2019.ash
+boolean auto_pillKeeper(int pill);			//Defined in autoscend/auto_mr2019.ash
+boolean auto_pillKeeper(string pill);		//Defined in autoscend/auto_mr2019.ash
+boolean getSpaceJelly();					//Defined in autoscend/auto_mr2017.ash
 int horseCost();											//Defined in autoscend/auto_mr2017.ash
 string horseNormalize(string horseText); // Defined in autoscend/auto_mr2017.ash
 boolean getHorse(string type);								//Defined in autoscend/auto_mr2017.ash
@@ -1094,6 +1100,10 @@ boolean executeFlavour(); // Defined in autoscend/auto_util.ash
 boolean autoFlavour(location place); // Defined in autoscend/auto_util.ash
 int auto_reserveAmount(item it); // Defined in autoscend/auto_util.ash
 int auto_reserveCraftAmount(item it); // Defined in autoscend/auto_util.ash
+boolean auto_canForceNextNoncombat();  // Defined in autoscend/auto_util.ash
+boolean auto_forceNextNoncombat(); // Defined in autoscend/auto_util.ash
+boolean auto_haveQueuedForcedNonCombat(); // Defined in autoscend/auto_util.ash
+boolean is_superlikely(string encounterName); // Defined in autoscend/auto_util.ash
 
 //Record from autoscend/auto_zone.ash
 record generic_t

@@ -93,7 +93,7 @@ void ed_initializeDay(int day)
 	}
 
 	set_property("auto_renenutetBought", 0);
-  
+
 	if (!get_property("breakfastCompleted").to_boolean() && day != 1)
 	{
 		cli_execute("breakfast");
@@ -189,9 +189,8 @@ boolean L13_ed_towerHandler()
 	}
 	else
 	{
-		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
+		if(haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest())
 		{
-			doRest();
 			cli_execute("scripts/autoscend/auto_post_adv.ash");
 			return true;
 		}
@@ -409,9 +408,8 @@ boolean ed_doResting()
 	if (isActuallyEd())
 	{
 		int maxBuff = 675 - my_turncount();
-		while((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
+		while(haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest())
 		{
-			doRest();
 			buffMaintain($effect[Purr of the Feline], 30, 3, maxBuff);
 			buffMaintain($effect[Hide of Sobek], 30, 3, maxBuff);
 			buffMaintain($effect[Bounty of Renenutet], 30, 3, maxBuff);
@@ -913,7 +911,7 @@ boolean ed_needShop()
 	{
 		return true;
 	}
- 
+
 	// check if we need mummified beef haunches
 	int canEat = (spleen_limit() - my_spleen_use()) / 5;
 	canEat = max(0, canEat - item_amount($item[Mummified Beef Haunch]));
@@ -979,8 +977,8 @@ boolean ed_shopping()
 	int ed_skillID(skill upgrade)
 	{
 		static int[skill] skillIDs = {
-  		$skill[Replacement Stomach]: 28, 
-  		$skill[Replacement Liver]: 29, 
+  		$skill[Replacement Stomach]: 28,
+  		$skill[Replacement Liver]: 29,
   		$skill[Extra Spleen]: 30,
   		$skill[Another Extra Spleen]: 31,
   		$skill[Yet Another Extra Spleen]: 32,
@@ -1054,7 +1052,7 @@ boolean ed_shopping()
 		coins -= 15;
 		canEat--;
 	}
-	
+
 	// buy emergency MP restores.
 	if (!get_property("lovebugsUnlocked").to_boolean() && coins >= 1 && item_amount($item[Holy Spring Water]) == 0 && my_mp() < mp_cost($skill[Storm Of The Scarab]))
 	{
@@ -1143,7 +1141,7 @@ void ed_handleAdventureServant(location loc)
 
 	// Default to the Priest as we need Ka to get upgrades and fill spleen (and other miscellanea)
 	servant myServant = $servant[Priest];
-	
+
 	if (my_spleen_use() == 35 && have_skill($skill[Even More Elemental Wards]) && my_level() < 13 && have_servant($servant[Scribe]))
 	{
 		// Ka is less important when we have a full spleen and all the skills we need
@@ -1218,7 +1216,7 @@ void ed_handleAdventureServant(location loc)
 			myServant = $servant[Scribe];
 		}
 	}
-	
+
 	handleServant(myServant);
 }
 
@@ -1557,11 +1555,11 @@ boolean L1_ed_islandFallback()
 
 	if (have_skill($skill[Upgraded Legs]) || item_amount($item[Ka coin]) >= 10)
 	{
-		if(have_outfit("Filthy Hippy Disguise") && is_wearing_outfit("Filthy Hippy Disguise"))	
-		{	
-			equip($slot[Pants], $item[None]);	
-			put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);	
-			equipBaseline();	
+		if(have_outfit("Filthy Hippy Disguise") && is_wearing_outfit("Filthy Hippy Disguise"))
+		{
+			equip($slot[Pants], $item[None]);
+			put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+			equipBaseline();
 		}
 		buffMaintain($effect[Wisdom Of Thoth], 20, 1, 1);
 		if (have_skill($skill[More Legs]) && maximizeContains("-10ml"))
@@ -1571,16 +1569,16 @@ boolean L1_ed_islandFallback()
 		auto_change_mcd(11);
 		boolean retVal = autoAdv(1, $location[Hippy Camp]);
 		if (item_amount($item[Filthy Corduroys]) > 0)
-		{	
-			if (closet_amount($item[Filthy Corduroys]) > 0)	
-			{	
-				autosell(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);	
-			}	
-			else	
-			{	
-				put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);	
-			}	
-		}	
+		{
+			if (closet_amount($item[Filthy Corduroys]) > 0)
+			{
+				autosell(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+			}
+			else
+			{
+				put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+			}
+		}
 		return retVal;
 	}
 	set_property("auto_needLegs", true);
@@ -1709,9 +1707,8 @@ boolean LM_edTheUndying()
 
 	if (my_level() >= 9)
 	{
-		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
+		if(haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest())
 		{
-			doRest();
 			cli_execute("scripts/autoscend/auto_post_adv.ash");
 			return true;
 		}

@@ -8,6 +8,41 @@ void handlePostAdventure()
 		return;
 	}
 
+	/* This tracks noncombat-forcers like Clara's Bell and stench jelly, which
+	 * set our noncombat rate to maximum until we encounter a noncombat.
+	 * Superlikelies do not reset this effect. There's some complexity here -
+	 * since some noncombats precede a combat encounter (for example, the
+	 * Cosmetics Wraith in the Haunted Bathroom), and we SHOULD reset the
+	 * noncombat-forcer in those cases.
+	 *
+	 * Current solution: Have a list of monsters that can only be encountered
+	 * via noncombats. Have a list of semirare encounters.
+	 */
+
+	static boolean[monster] __MONSTERS_FOLLOWING_NONCOMBATS = $monsters[
+		// These monsters follow noncombats, so we should reset the noncombat-forcing tracker when we fight one.
+		Protector Spectre, ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley), Cosmetics wraith,
+
+		// If |lastEncounter| was a noncombat adventure,
+		// it'll to_monster() to $monster[none].
+		none
+	];
+
+	if(get_property("auto_forceNonCombatSource") != "" && (__MONSTERS_FOLLOWING_NONCOMBATS contains get_property("lastEncounter").to_monster() && !is_superlikely(get_property("lastEncounter"))))
+	{
+		print("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
+		set_property("auto_forceNonCombatSource", "");
+		set_property("auto_forceNonCombatTurn", -1);
+	}
+
+	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatSource").to_int() > my_turncount() - 10)
+	{
+		print("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
+			"), am going to assume it happened but we missed it.", "blue");
+		set_property("auto_forceNonCombatSource", "");
+		set_property("auto_forceNonCombatTurn", 0);
+	}
+
 	if(have_effect($effect[Eldritch Attunement]) > 0)
 	{
 		if(last_monster() != $monster[Eldritch Tentacle])
