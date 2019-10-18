@@ -5797,6 +5797,8 @@ int auto_reserveCraftAmount(item orig_it)
 	return inner(orig_it);
 }
 
+
+
 // ML MANAGEMENT FUNCTIONS
 // Gives us the number we need when comparing to a desired ML or entering a value into a maximizer string.
 int auto_convertDesiredML(int DML)
@@ -5933,8 +5935,10 @@ boolean enforceMLInPreAdv()
 	}
 
 	return true;
+}
 
-  
+
+
 // ADVENTURE FORCING FUNCTIONS
 boolean auto_canForceNextNoncombat()
 {
