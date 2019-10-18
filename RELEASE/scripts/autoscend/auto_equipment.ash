@@ -80,6 +80,7 @@ boolean autoOutfit(string toWear)
 		boolean pass = true;
 		foreach i,it in outfit_pieces(toWear)
 		{
+			// Keep required accessories in acc3 slot to preserve our format
 			if(CommonOutfitAccessories contains $item(it))
 			{
 				pass = pass && autoEquip(acc3, it);
