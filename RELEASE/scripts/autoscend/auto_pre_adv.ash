@@ -352,7 +352,7 @@ void handlePreAdventure(location place)
 	}
 
 	// Allow user settable option to override the above settings to not slack off ML
-	if(get_property("auto_ignoreL13Slowdown"))
+	if(get_property("auto_auto_disregardInstantKarma"))
 	{
 		doML = true;
 		removeML = false;
