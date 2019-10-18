@@ -10560,6 +10560,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
+	// Snow Berries can be acquired out of standard by using Van Keys from NEP. We need to check to make sure they are usable.
 	if(is_unrestricted($item[snow berries]))
 	{
 		if((item_amount($item[snow berries]) == 3) && (my_daycount() == 1) && get_property("auto_grimstoneFancyOilPainting").to_boolean())
