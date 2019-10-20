@@ -25,7 +25,7 @@ boolean autoEquip(slot s, item it)
 	}
 
 	// This logic lets us force the equipping of multiple accessories with minimal conflict
-	if(item_type($item[it]) == "accessory") && (s == $slot[acc3]) && (contains_text(get_property("auto_maximize_current"), "acc3")))
+	if((item_type(it) == "accessory") && (s == $slot[acc3]) && (contains_text(get_property("auto_maximize_current"), "acc3")))
 	{
 		if(!contains_text(get_property("auto_maximize_current"), "acc2"))
 		{
@@ -101,9 +101,9 @@ boolean autoOutfit(string toWear)
 		foreach i,it in outfit_pieces(toWear)
 		{
 			// Keep required accessories in acc3 slot to preserve our format
-			if(CommonOutfitAccessories contains $item(it))
+			if(CommonOutfitAccessories contains it)
 			{
-				pass = pass && autoEquip(acc3, it);
+				pass = pass && autoEquip("acc3", it);
 			}
 			else
 			{
