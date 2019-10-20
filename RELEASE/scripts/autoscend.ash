@@ -7180,7 +7180,6 @@ boolean L11_unlockEd()
 		// Forcing Tavern.
 		set_property("auto_forceTavern", true);
 		return false;
-		if (L3_Tavern()) return true;
 	}
 
 	print("In the pyramid (W:" + item_amount($item[crumbling wooden wheel]) + ") (R:" + item_amount($item[tomb ratchet]) + ") (U:" + get_property("controlRoomUnlock") + ")", "blue");
