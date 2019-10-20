@@ -416,21 +416,21 @@ boolean songboomSetting(int option)
 	}
 	else
 	{
-		print("Could not find how many songs we have left...", "red");
+		auto_log_warning("Could not find how many songs we have left...", "red");
 		option = 6;
 	}
 
 	page = visit_url("choice.php?whichchoice=1312&option=" + option);
 	if(contains_text(page, "don\'t want to break this thing"))
 	{
-		print("Unable to change BoomBoxen songen!", "red");
+		auto_log_warning("Unable to change BoomBoxen songen!", "red");
 		return false;
 	}
 	if(option != 6)
 	{
 		boomsLeft--;
 	}
-	print("Change successful to " + get_property("boomBoxSong") + "We have " + boomsLeft + " SongBoom BoomBoxen songens left!", "green");
+	auto_log_info("Change successful to " + get_property("boomBoxSong") + "We have " + boomsLeft + " SongBoom BoomBoxen songens left!", "green");
 	return true;
 }
 
@@ -460,7 +460,7 @@ boolean catBurglarHeist(item it)
 	 */
 	if (0 == catBurglarHeistsLeft()) return false;
 
-	print("Trying to heist a " + it, "blue");
+	auto_log_info("Trying to heist a " + it, "blue");
 	familiar backup_familiar = my_familiar();
 	try
 	{
@@ -475,7 +475,7 @@ boolean catBurglarHeist(item it)
 			page = visit_url(url);
 			return true;
 		}
-		print("We don't seem to be able to heist a " + it + ". Maybe we didn't fight it with the Cat Burglar?", "red");
+		auto_log_warning("We don't seem to be able to heist a " + it + ". Maybe we didn't fight it with the Cat Burglar?", "red");
 		return false;
 	}
 	finally {
@@ -703,7 +703,7 @@ boolean neverendingPartyAvailable()
 	}
 	if(get_property("auto_skipNEPOverride").to_boolean())
 	{
-		print("NEP access disabled. This can be turned on in the Relay by setting auto_skipNEPOverride = false", "red");
+		auto_log_warning("NEP access disabled. This can be turned on in the Relay by setting auto_skipNEPOverride = false", "red");
 		return false;
 	}
 
@@ -1345,7 +1345,7 @@ boolean haveAnyPokeFamiliarEquipment(){
 	static boolean[item] poke_fam_equipment = $items[amulet coin, luck incense, muscle band, razor fang, shell bell, smoke ball];
 	foreach i, _ in poke_fam_equipment{
 		if(equipmentAmount(i) > 0){
-			auto_debug_print("Found Tall Grass familiar equipment: " + i);
+			auto_log_debug("Found Tall Grass familiar equipment: " + i);
 			return true;
 		}
 	}
@@ -1357,6 +1357,6 @@ boolean pokeFertilizeAndHarvest(){
 		return false;
 	}
 
-	print("sew and reap.");
+	auto_log_debug("sew and reap.");
 	return use(1, $item[Pok&eacute;-Gro fertilizer]) && cli_execute("garden pick");
 }

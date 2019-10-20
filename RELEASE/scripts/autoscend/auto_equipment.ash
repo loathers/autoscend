@@ -24,7 +24,7 @@ boolean autoEquip(slot s, item it)
 		return false;
 	}
 
-	auto_debug_print("Equipping " + it + " to slot " + s, "gold");
+	auto_log_debug("Equipping " + it + " to slot " + s, "gold");
 
 	if(useMaximizeToEquip())
 	{
@@ -72,7 +72,7 @@ boolean autoOutfit(string toWear)
 	if(useMaximizeToEquip())
 	{
 		// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
-		auto_debug_print('Adding outfit "' + toWear + '" to maximizer statement', "gold");
+		auto_log_debug('Adding outfit "' + toWear + '" to maximizer statement', "gold");
 		boolean pass = true;
 		foreach i,it in outfit_pieces(toWear)
 		{
@@ -90,7 +90,7 @@ boolean tryAddItemToMaximize(slot s, item it)
 {
 	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
 	{
-		auto_debug_print("But " + s + " is an invalid equip slot... What?", "red");
+		auto_log_error("But " + s + " is an invalid equip slot... What?", "red");
 		return false;
 	}
 	switch(s)
@@ -189,7 +189,7 @@ void resetMaximize()
 		}
 	}
 	set_property("auto_maximize_current", res);
-	auto_debug_print("Resetting auto_maximize_current to " + res, "gold");
+	auto_log_debug("Resetting auto_maximize_current to " + res, "gold");
 
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
@@ -217,7 +217,7 @@ void finalizeMaximize()
 
 void addToMaximize(string add)
 {
-	auto_debug_print('Adding "' + add + '" to current maximizer statement', "gold");
+	auto_log_debug('Adding "' + add + '" to current maximizer statement', "gold");
 	string res = get_property("auto_maximize_current");
 	boolean addHasComma = add.starts_with(",");
 	if(res != "" && !addHasComma)
@@ -235,7 +235,7 @@ void addToMaximize(string add)
 
 void removeFromMaximize(string rem)
 {
-	auto_debug_print('Removing "' + rem + '" from current maximizer statement', "gold");
+	auto_log_debug('Removing "' + rem + '" from current maximizer statement', "gold");
 	string res = get_property("auto_maximize_current");
 	res = res.replace_string(rem, "");
 	// let's be safe here
@@ -268,7 +268,7 @@ boolean simMaximize()
 boolean simMaximizeWith(string add)
 {
 	addToMaximize(add);
-	auto_debug_print("Simulating: " + get_property("auto_maximize_current"), "gold");
+	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
 	boolean res = simMaximize();
 	removeFromMaximize(add);
 	return res;
@@ -287,7 +287,7 @@ void equipMaximizedGear()
 	}
 
 	finalizeMaximize();
-	print("Maximizing: " + get_property("auto_maximize_current"), "blue");
+	auto_log_info("Maximizing: " + get_property("auto_maximize_current"), "blue");
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
 }
 
@@ -317,7 +317,7 @@ void equipOverrides()
 			item it = item_str.to_item();
 			if(it == $item[none])
 			{
-				print('"' + item_str + '" does not properly convert to an item (found in auto_equipment_override_' + slot_str + ')', "red");
+				auto_log_warning('"' + item_str + '" does not properly convert to an item (found in auto_equipment_override_' + slot_str + ')', "red");
 				continue;
 			}
 			if(autoEquip(s, it))
@@ -351,7 +351,7 @@ void equipBaselineGear()
 
 	string [string,int,string] equipment_text;
 	if(!file_to_map("autoscend_equipment.txt", equipment_text))
-		print("Could not load autoscend_equipment.txt. This is bad!", "red");
+		auto_log_critical("Could not load autoscend_equipment.txt. This is bad!", "red");
 	item [slot] [int] equipment;
 	boolean considerGearOption(string item_str, string slot_str, string conds)
 	{
@@ -465,7 +465,7 @@ void makeStartingSmiths()
 	{
 		if(my_mp() < (3 * mp_cost($skill[Summon Smithsness])))
 		{
-			print("You don't have enough MP for initialization, it might be ok but probably not.", "red");
+			auto_log_warning("You don't have enough MP for initialization, it might be ok but probably not.", "red");
 		}
 		use_skill(3, $skill[Summon Smithsness]);
 	}
@@ -730,18 +730,18 @@ void equipRollover()
 		cli_execute("buy Li'l Unicorn Costume");
 	}
 
-	print("Putting on pajamas...", "blue");
+	auto_log_info("Putting on pajamas...", "blue");
 
 	string to_max = "-tie,adv";
 	if(hippy_stone_broken())
 		to_max += ",0.3fites";
 	if(auto_have_familiar($familiar[Trick-or-Treating Tot]))
 		to_max += ",switch Trick-or-Treating Tot";
-	
+
 	maximize(to_max, false);
 
 	if(!in_hardcore())
 	{
-		print("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
+		auto_log_info("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
 	}
 }

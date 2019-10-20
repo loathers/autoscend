@@ -175,7 +175,7 @@ boolean L13_ed_towerHandler()
 	council();
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_10_sorcfight"))
 	{
-		print("We found the jerkwad!! Revenge!!!!!", "blue");
+		auto_log_info("We found the jerkwad!! Revenge!!!!!", "blue");
 
 		string page = "place.php?whichplace=nstower&action=ns_10_sorcfight";
 		autoAdvBypass(page, $location[Noob Cave]);
@@ -194,7 +194,7 @@ boolean L13_ed_towerHandler()
 			cli_execute("scripts/autoscend/auto_post_adv.ash");
 			return true;
 		}
-		print("Please check your quests, but you might just not be at level 13 yet in order to continue.", "red");
+		auto_log_warning("Please check your quests, but you might just not be at level 13 yet in order to continue.", "red");
 		if((my_level() < 13) && elementalPlanes_access($element[spooky]))
 		{
 			boolean tryJungle = false;
@@ -239,7 +239,7 @@ boolean L13_ed_towerHandler()
 		}
 		else
 		{
-			print("We must be missing a sidequest. We can't find the jerk adventurer. Must pretend we are alive...", "blue");
+			auto_log_info("We must be missing a sidequest. We can't find the jerk adventurer. Must pretend we are alive...", "blue");
 		}
 	}
 
@@ -274,9 +274,9 @@ boolean L13_ed_councilWarehouse()
 	if(get_property("lastEncounter") == "You Found It!")
 	{
 		council();
-		print("McMuffin is found!", "blue");
-		print("Ed Combats: " + get_property("auto_edCombatCount"), "blue");
-		print("Ed Combat Rounds: " + get_property("auto_edCombatRoundCount"), "blue");
+		auto_log_info("McMuffin is found!", "blue");
+		auto_log_info("Ed Combats: " + get_property("auto_edCombatCount"), "blue");
+		auto_log_info("Ed Combat Rounds: " + get_property("auto_edCombatRoundCount"), "blue");
 
 		return false;
 	}
@@ -439,7 +439,7 @@ boolean ed_buySkills()
 	if(my_skillPoints.find())
 	{
 		int skillPoints = to_int(my_skillPoints.group(1));
-		print("Skill points found: " + skillPoints);
+		auto_log_info("Skill points found: " + skillPoints);
 		possEdPoints = skillPoints - 1;
 		if(have_skill($skill[Bounty of Renenutet]) && have_skill($skill[Wrath of Ra]) && have_skill($skill[Curse of Stench]))
 		{
@@ -540,7 +540,7 @@ boolean ed_buySkills()
 	if(my_imbuePoints.find())
 	{
 		imbuePoints = to_int(my_imbuePoints.group(1));
-		print("Imbuement points found: " + imbuePoints);
+		auto_log_info("Imbuement points found: " + imbuePoints);
 	}
 	possEdPoints += imbuePoints;
 
@@ -554,7 +554,7 @@ boolean ed_buySkills()
 	if(my_servantPoints.find())
 	{
 		int servantPoints = to_int(my_servantPoints.group(1));
-		print("Servants points found: " + servantPoints);
+		auto_log_info("Servants points found: " + servantPoints);
 		while(servantPoints > 0)
 		{
 			servantPoints -= 1;
@@ -673,7 +673,7 @@ boolean ed_buySkills()
 			{
 				if(handleServant(tryImbue))
 				{
-					print("Trying to imbue " + tryImbue + " with glorious wisdom!!", "green");
+					auto_log_info("Trying to imbue " + tryImbue + " with glorious wisdom!!", "green");
 					visit_url("choice.php?whichchoice=1053&option=5&pwd=");
 				}
 			}
@@ -1010,7 +1010,7 @@ boolean ed_shopping()
 	{
 		return false;
 	}
-	print("Time to shop!", "red");
+	auto_log_info("Time to shop!", "red");
 	wait(1);
 	visit_url("choice.php?pwd=&whichchoice=1023&option=1", true);
 
@@ -1028,7 +1028,7 @@ boolean ed_shopping()
 	{
 		if (coins >= 10)
 		{
-			print("Buying Upgraded Legs", "green");
+			auto_log_info("Buying Upgraded Legs", "green");
 			set_property("auto_needLegs", false);
 			visit_url("place.php?whichplace=edunder&action=edunder_bodyshop");
 			visit_url("choice.php?pwd&skillid=36&option=1&whichchoice=1052", true);
@@ -1048,7 +1048,7 @@ boolean ed_shopping()
 	while (coins >= 15 && canEat > 0)
 	{
 		visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=428", true);
-		print("Buying a mummified beef haunch!", "green");
+		auto_log_info("Buying a mummified beef haunch!", "green");
 		coins -= 15;
 		canEat--;
 	}
@@ -1056,7 +1056,7 @@ boolean ed_shopping()
 	// buy emergency MP restores.
 	if (!get_property("lovebugsUnlocked").to_boolean() && coins >= 1 && item_amount($item[Holy Spring Water]) == 0 && my_mp() < mp_cost($skill[Storm Of The Scarab]))
 	{
-		print("Buying Holy Spring Water", "green");
+		auto_log_info("Buying Holy Spring Water", "green");
 		visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=436", true);
 		coins -= 1;
 	}
@@ -1068,7 +1068,7 @@ boolean ed_shopping()
 		int requiredKa = ed_KaCost(nextUpgrade);
 		if (requiredKa != -1 && coins >= requiredKa)
 		{
-			print("Buying " + nextUpgrade.to_string() + " (" + requiredKa.to_string() + " Ka).", "green");
+			auto_log_info("Buying " + nextUpgrade.to_string() + " (" + requiredKa.to_string() + " Ka).", "green");
 			int skillBuy = ed_skillID(nextUpgrade);
 			if (skillBuy != 0)
 			{
@@ -1082,44 +1082,44 @@ boolean ed_shopping()
 		{
 			while (item_amount($item[Talisman of Renenutet]) < 7 && get_property("auto_renenutetBought").to_int() < 7 && coins >= 1)
 		{
-			print("Buying Talisman of Renenutet", "green");
+			auto_log_info("Buying Talisman of Renenutet", "green");
 			visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=439", true);
 			set_property("auto_renenutetBought", 1 + get_property("auto_renenutetBought").to_int());
 				coins -= 1;
 			}
 			while (item_amount($item[Linen Bandages]) < 4 && coins >= 1)
 			{
-				print("Buying Linen Bandages", "green");
+				auto_log_info("Buying Linen Bandages", "green");
 				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=429", true);
 				coins -= 1;
 			}
 			if (item_amount($item[Holy Spring Water]) == 0 && coins >= 1)
 			{
-				print("Buying Holy Spring Water", "green");
+				auto_log_info("Buying Holy Spring Water", "green");
 				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=436", true);
 				coins -= 1;
 			}
 			while (item_amount($item[Talisman of Horus]) < 2 && coins >= 5)
 			{
-				print("Buying Talisman of Horus", "green");
+				auto_log_info("Buying Talisman of Horus", "green");
 				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=693", true);
 				coins -= 5;
 			}
 			if (item_amount($item[Spirit Beer]) == 0 && coins >= 30)
 			{
-				print("Buying Spirit Beer", "green");
+				auto_log_info("Buying Spirit Beer", "green");
 				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=432", true);
 				coins -= 2;
 			}
 			if ((item_amount($item[Soft Green Echo Eyedrop Antidote]) + item_amount($item[Ancient Cure-All])) < 2 && coins >= 30)
 			{
-				print("Buying Ancient Cure-all", "green");
+				auto_log_info("Buying Ancient Cure-all", "green");
 				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=435", true);
 				coins -= 3;
 			}
 			if (item_amount($item[Sacramental Wine]) == 0 && coins >= 30)
 			{
-				print("Buying Sacramental Wine", "green");
+				auto_log_info("Buying Sacramental Wine", "green");
 				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=433", true);
 				coins -= 3;
 			}
@@ -1240,7 +1240,7 @@ boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
 
 	if((my_hp() == 0) || (get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int()))
 	{
-		print("Defeats detected: " + get_property("_edDefeats") + ", Defeat threshold: " + get_property("edDefeatAbort"), "green");
+		auto_log_critical("Defeats detected: " + get_property("_edDefeats") + ", Defeat threshold: " + get_property("edDefeatAbort"), "green");
 		abort("How are you here? You can't be here. Bloody Limit Mode (probably, maybe?)!!");
 	}
 
@@ -1251,7 +1251,7 @@ boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
 		num = num - 1;
 		if(num > 1)
 		{
-			print("This fight and " + num + " more left.", "blue");
+			auto_log_info("This fight and " + num + " more left.", "blue");
 		}
 		cli_execute("auto_pre_adv");
 		set_property("auto_disableAdventureHandling", true);
@@ -1259,7 +1259,7 @@ boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
 
 		if(!skipFirstLife)
 		{
-			print("Starting Ed Battle at " + loc, "blue");
+			auto_log_info("Starting Ed Battle at " + loc, "blue");
 			status = adv1(loc, 0, option);
 			if(!status && (get_property("lastEncounter") == "Like a Bat Into Hell"))
 			{
@@ -1275,17 +1275,17 @@ boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
 		string page = visit_url("main.php");
 		if(contains_text(page, "whichchoice value=1023"))
 		{
-			print("Ed has UNDYING once!" , "blue");
+			auto_log_info("Ed has UNDYING once!" , "blue");
 			if(!ed_shopping())
 			{
 				#If this visit_url results in the enemy dying, we don't want to continue
 				visit_url("choice.php?pwd=&whichchoice=1023&option=2", true);
 			}
-			print("Ed returning to battle Stage 1", "blue");
+			auto_log_info("Ed returning to battle Stage 1", "blue");
 
 			if(get_property("_edDefeats").to_int() == 0)
 			{
-				print("Monster defeated in initialization, aborting attempt.", "red");
+				auto_log_warning("Monster defeated in initialization, aborting attempt.", "red");
 				set_property("auto_disableAdventureHandling", false);
 				cli_execute("auto_post_adv.ash");
 				return true;
@@ -1304,17 +1304,17 @@ boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
 			page = visit_url("main.php");
 			if(contains_text(page, "whichchoice value=1023"))
 			{
-				print("Ed has UNDYING twice! Time to kick ass!" , "blue");
+				auto_log_info("Ed has UNDYING twice! Time to kick ass!" , "blue");
 				if(!ed_shopping())
 				{
 					#If this visit_url results in the enemy dying, we don't want to continue
 					visit_url("choice.php?pwd=&whichchoice=1023&option=2", true);
 				}
-				print("Ed returning to battle Stage 2", "blue");
+				auto_log_info("Ed returning to battle Stage 2", "blue");
 
 				if(get_property("_edDefeats").to_int() == 0)
 				{
-					print("Monster defeated in initialization, aborting attempt.", "red");
+					auto_log_warning("Monster defeated in initialization, aborting attempt.", "red");
 					set_property("auto_disableAdventureHandling", false);
 					cli_execute("auto_post_adv.ash");
 					return true;
@@ -1594,7 +1594,7 @@ boolean L9_ed_chasmStart()
 {
 	if (isActuallyEd() && !get_property("auto_chasmBusted").to_boolean())
 	{
-		print("It's a troll on a bridge!!!!", "blue");
+		auto_log_info("It's a troll on a bridge!!!!", "blue");
 
 		string page = visit_url("place.php?whichplace=orc_chasm&action=bridge_done");
 		autoAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
@@ -1609,7 +1609,7 @@ boolean L9_ed_chasmBuild()
 {
 	if (isActuallyEd() && !get_property("auto_chasmBusted").to_boolean())
 	{
-		print("What a nice bridge over here...." , "green");
+		auto_log_info("What a nice bridge over here...." , "green");
 
 		string page = visit_url("place.php?whichplace=orc_chasm&action=bridge_done");
 		autoAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
@@ -1629,7 +1629,7 @@ boolean L9_ed_chasmBuildClover(int need)
 		autoAdvBypass("adventure.php?snarfblat=295", $location[The Smut Orc Logging Camp]);
 		if(item_amount($item[Ten-Leaf Clover]) > 0)
 		{
-			print("Wandering adventure in The Smut Orc Logging Camp, boo. Gonna have to do this again.");
+			auto_log_info("Wandering adventure in The Smut Orc Logging Camp, boo. Gonna have to do this again.");
 			use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
 			restoreSetting("cloverProtectActive");
 			return true;
