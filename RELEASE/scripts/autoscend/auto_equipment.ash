@@ -103,7 +103,7 @@ boolean autoOutfit(string toWear)
 			// Keep required accessories in acc3 slot to preserve our format
 			if(CommonOutfitAccessories contains it)
 			{
-				pass = pass && autoEquip("acc3", it);
+				pass = pass && autoEquip($slot[acc3], it);
 			}
 			else
 			{
