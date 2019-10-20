@@ -67,7 +67,9 @@ boolean autoForceEquip(item it)
 boolean autoOutfit(string toWear)
 {
 	if(!have_outfit(toWear))
+	{
 		return false;
+	}
 
 	if(useMaximizeToEquip())
 	{
@@ -75,7 +77,7 @@ boolean autoOutfit(string toWear)
 		auto_debug_print('Adding outfit "' + toWear + '" to maximizer statement', "gold");
 
 		// Accessory items from outfits we commonly wear
-		boolean[item] CommonOutfitAccessories = $items[eXtreme mittens, bejeweled pledge pin, round purple sunglasses];
+		boolean[item] CommonOutfitAccessories = $items[eXtreme mittens, bejeweled pledge pin, round purple sunglasses, Oscus\'s pelt, Stuffed Shoulder Parrot];
 
 		boolean pass = true;
 		foreach i,it in outfit_pieces(toWear)
