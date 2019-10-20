@@ -101,7 +101,7 @@
 104	Wint-O-Fresh mint	item	0	4	0	0	none	none
 105	magical mystery juice	item	0	scaling	0	0	none	none
 106	generic mana potion	item	0	scaling	0	0	none	none
-107	A Relaxing Hot Tub	clan	ALL	0	2	0	All Negative	none
+107	A Relaxing Hot Tub	clan	ALL	0	5	2	All Negative	none
 108	Psychokinetic Energy Blob	item	0	25	0	0	none	none
 109	Cloaca-Cola	item	0	12	0	0	none	none
 110	Holy Spring Water	item	0	50	0	0	none	Spiritually Awake
