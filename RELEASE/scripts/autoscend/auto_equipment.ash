@@ -24,6 +24,24 @@ boolean autoEquip(slot s, item it)
 		return false;
 	}
 
+	// This logic lets us force the equipping of multiple accessories with minimal conflict
+	if(item_type($item[it]) == "accessory") && (s == $slot[acc3]) && (contains_text(get_property("auto_maximize_current"), "acc3")))
+	{
+		if(!contains_text(get_property("auto_maximize_current"), "acc2"))
+		{
+			slot s = $slot[acc2];
+		}
+		else if(!contains_text(get_property("auto_maximize_current"), "acc1"))
+		{
+			slot s = $slot[acc1];
+		}
+		else
+		{
+			print("We can not equip " + it + " because our slots are all full.", "red");
+			return false;
+		}
+	}
+
 	auto_debug_print("Equipping " + it + " to slot " + s, "gold");
 
 	if(useMaximizeToEquip())
