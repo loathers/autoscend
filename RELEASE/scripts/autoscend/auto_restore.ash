@@ -98,7 +98,7 @@ string to_string(__RestorationOptimization o, boolean simple){
   }
 
   if(simple){
-    return "("+o.metadata.name + ", hp: " + o.objective_values["hp_total_restored"] + ", mp: " + o.objective_values["mp_total_restored"] + ")";
+    return "("+o.metadata.name + ", hp: " + o.objective_values["hp_total_restored"] + ", mp: " + o.objective_values["mp_total_restored"] + ", negative effects remaining: "+o.objective_values["negative_status_effects_remaining"]+")";
   }
 
   string vars_str = list_to_string(o.vars);
@@ -897,6 +897,8 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
       }
       if(!(dominated contains T[Ti].metadata.name)){
         M[count(M)] = T[Ti];
+      } else{
+        auto_log_debug("Removed from consideration: " + to_string(T[Ti], true));
       }
       Ti++;
     }
@@ -905,6 +907,8 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
     while(Bi < count(B)){
       if(!(dominated contains B[Bi].metadata.name)){
         M[count(M)] = B[Bi];
+      } else{
+        auto_log_debug("Removed from consideration: " + to_string(B[Bi], true));
       }
       Bi++;
     }
@@ -930,10 +934,10 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 
     __RestorationOptimization[int] ranked = copy(p);
     int[int] ranks = ordered_ranks(value_ranks);
+    auto_log_debug(count(ranked)+" options before optimization: " + to_string(ranked, false));
     foreach _, rank in ranks {
       string desc = (__RANKED_GOAL_DESCRIPTIONS contains rank) ?  __RANKED_GOAL_DESCRIPTIONS[rank] : "whoops, someone changed things and didnt update the descriptions. Bad dev.";
       auto_log_debug("Rank " + rank + " optimization, prefer to... " + desc);
-      auto_log_trace(count(ranked)+" options: " + to_string(ranked, false));
       if(count(ranked) <= 1){
         break;
       }
