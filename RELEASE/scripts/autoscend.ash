@@ -7180,6 +7180,7 @@ boolean L11_unlockEd()
 		// Forcing Tavern.
 		set_property("auto_forceTavern", true);
 		return false;
+		if (L3_Tavern()) return true;
 	}
 
 	print("In the pyramid (W:" + item_amount($item[crumbling wooden wheel]) + ") (R:" + item_amount($item[tomb ratchet]) + ") (U:" + get_property("controlRoomUnlock") + ")", "blue");
@@ -14141,7 +14142,6 @@ boolean auto_tavern()
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
 	// Infrequent compunding issue, reset maximizer
-
 	resetMaximize();
 
 	boolean maximized = false;
