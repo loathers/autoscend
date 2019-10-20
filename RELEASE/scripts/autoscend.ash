@@ -14141,7 +14141,6 @@ boolean auto_tavern()
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
 	// Infrequent compunding issue, reset maximizer
-
 	resetMaximize();
 
 	boolean maximized = false;
