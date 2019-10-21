@@ -24,7 +24,25 @@ boolean autoEquip(slot s, item it)
 		return false;
 	}
 
-	auto_log_debug("Equipping " + it + " to slot " + s, "gold");
+	// This logic lets us force the equipping of multiple accessories with minimal conflict
+	if((item_type(it) == "accessory") && (s == $slot[acc3]) && (contains_text(get_property("auto_maximize_current"), "acc3")))
+	{
+		if(!contains_text(get_property("auto_maximize_current"), "acc2"))
+		{
+			slot s = $slot[acc2];
+		}
+		else if(!contains_text(get_property("auto_maximize_current"), "acc1"))
+		{
+			slot s = $slot[acc1];
+		}
+		else
+		{
+			auto_log_warning("We can not equip " + it + " because our slots are all full.", "red");
+			return false;
+		}
+	}
+
+	auto_log_info("Equipping " + it + " to slot " + s, "gold");
 
 	if(useMaximizeToEquip())
 	{
@@ -67,16 +85,30 @@ boolean autoForceEquip(item it)
 boolean autoOutfit(string toWear)
 {
 	if(!have_outfit(toWear))
+	{
 		return false;
+	}
 
 	if(useMaximizeToEquip())
 	{
 		// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
 		auto_log_debug('Adding outfit "' + toWear + '" to maximizer statement', "gold");
+
+		// Accessory items from outfits we commonly wear
+		boolean[item] CommonOutfitAccessories = $items[eXtreme mittens, bejeweled pledge pin, round purple sunglasses, Oscus\'s pelt, Stuffed Shoulder Parrot];
+
 		boolean pass = true;
 		foreach i,it in outfit_pieces(toWear)
 		{
-			pass = pass && autoEquip(it);
+			// Keep required accessories in acc3 slot to preserve our format
+			if(CommonOutfitAccessories contains it)
+			{
+				pass = pass && autoEquip($slot[acc3], it);
+			}
+			else
+			{
+				pass = pass && autoEquip(it);
+			}
 		}
 		return pass;
 	}
