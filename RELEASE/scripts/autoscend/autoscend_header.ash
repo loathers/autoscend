@@ -982,8 +982,23 @@ boolean auto_is_valid(item it); //Defined in autoscend/auto_util.ash
 boolean auto_is_valid(familiar fam); //Defined in autoscend/auto_util.ash
 boolean auto_is_valid(skill sk); //Defined in autoscend/auto_util.ash
 
-boolean auto_debug_print(string s, string color); //Defined in autoscend/auto_util.ash
-boolean auto_debug_print(string s); //Defined in autoscend/auto_util.ash
+// Logging
+// Defined in autoscend/auto_util.ash
+string auto_log_level_threshold();
+int auto_log_level(string level);
+boolean auto_log(string s, string color, string log_level);
+boolean auto_log_critical(string s, string color);
+boolean auto_log_critical(string s);
+boolean auto_log_error(string s, string color);
+boolean auto_log_error(string s);
+boolean auto_log_warning(string s, string color);
+boolean auto_log_warning(string s);
+boolean auto_log_info(string s, string color);
+boolean auto_log_info(string s);
+boolean auto_log_debug(string s, string color);
+boolean auto_log_debug(string s);
+boolean auto_log_trace(string s, string color);
+boolean auto_log_trace(string s);
 
 boolean auto_can_equip(item it); //Defined in autoscend/auto_util.ash
 boolean auto_can_equip(item it, slot s); //Defined in autoscend/auto_util.ash

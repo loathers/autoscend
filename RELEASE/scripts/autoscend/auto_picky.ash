@@ -27,10 +27,10 @@ void picky_pulls()
 
 void picky_startAscension()
 {
-	print("In Being Picky Adventure", "blue");
+	auto_log_info("In Being Picky Adventure", "blue");
 	if((my_class() == $class[Turtle Tamer]) || (my_class() == $class[Seal Clubber]))
 	{
-		print("Selecting skills", "blue");
+		auto_log_info("Selecting skills", "blue");
 		string page = visit_url("choice.php?pwd&whichchoice=995&pwd=&option=1&familiar=188", true);
 		if(contains_text(page, "<option value=\"165\""))
 		{
@@ -40,14 +40,6 @@ void picky_startAscension()
 		{
 			visit_url("choice.php?pwd&whichchoice=995&pwd=&option=1&familiar=140", true);
 		}
-#		if(!have_familiar($familiar[Angry Jung Man]))
-#		{
-#			visit_url("choice.php?pwd&whichchoice=995&pwd=&option=1&familiar=140", true);
-#		}
-#		else
-#		{
-#			visit_url("choice.php?pwd&whichchoice=995&pwd=&option=1&familiar=165", true);
-#		}
 		visit_url("choice.php?pwd&whichchoice=995&pwd=&option=1&familiar=178", true);
 
 		# Olfaction, Torso

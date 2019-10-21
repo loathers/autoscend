@@ -34,7 +34,7 @@ boolean LX_artistQuest()
 		}
 		else
 		{
-			print("Failed starting artist quest, rejecting completely.", "red");
+			auto_log_warning("Failed starting artist quest, rejecting completely.", "red");
 			set_property("auto_doArtistQuest", false);
 			return false;
 		}
@@ -78,4 +78,3 @@ boolean LX_dinseylandfillFunbucks()
 	autoAdv(1, $location[Barf Mountain]);
 	return true;
 }
-

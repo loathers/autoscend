@@ -233,14 +233,13 @@ string getStallString(monster enemy)
 
 string auto_combatHandler(int round, string opp, string text)
 {
-	#print("auto_combatHandler: " + round, "brown");
 	#Yes, round 0, really.
 	monster enemy = to_monster(opp);
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
 	int damageReceived = 0;
 	if(round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 
 		switch(enemy)
 		{
@@ -261,43 +260,6 @@ string auto_combatHandler(int round, string opp, string text)
 		set_property("auto_combatHandlerThunderBird", "0");
 		set_property("auto_combatHandlerFingernailClippers", "0");
 		set_property("auto_combatHP", my_hp());
-
-/*
-		if(my_location() == $location[The Deep Machine Tunnels])
-		{
-			if(!($monsters[Perceiver of Sensations, Performer of Actions, Thinker of Thoughts] contains enemy))
-			{
-				print("In The Deep Machine Tunnels and did not encounter expected monster....", "red");
-				//Digitize happens first, yay for someone asking!
-				//We need to remove Corresponding Counter.
-				if(isOverdueDigitize())
-				{
-					set_property("_sourceTerminalDigitizeMonsterCount", get_property("_sourceTerminalDigitizeMonsterCount").to_int() + 1);
-					print("Looks like a digitize monster, adjusting monster count but can not restore tracker", "red");
-				}
-				else if(isExpectingArrow() || isOverdueArrow())
-				{
-					print("Probably an arrow encounter... trying to adjust...", "red");
-					if(to_monster(get_property("romanticTarget")) == enemy)
-					{
-						if(get_property("_romanticFightsLeft").to_int() == 0)
-						{
-							print("Have a romantic target but no fights left... can not fix wanderers", "red");
-						}
-						else
-						{
-							set_property("_romanticFightsLeft", get_property("_romanticFightsLeft").to_int() - 1);
-							print("Attempted to decrement romantic fights left, can not restore counter.", "red");
-						}
-					}
-					else
-					{
-						print("Not an arrow encounter... can not fix wanderers...", "red");
-					}
-				}
-			}
-		}
-*/
 	}
 	else
 	{
@@ -343,7 +305,7 @@ string auto_combatHandler(int round, string opp, string text)
 			majora = maskMatch.group(1).to_int();
 			if(round == 0)
 			{
-				print("Found mask: " + majora, "green");
+				auto_log_info("Found mask: " + majora, "green");
 			}
 		}
 		if((majora == 7) && canUse($skill[Swap Mask]))
@@ -878,7 +840,7 @@ string auto_combatHandler(int round, string opp, string text)
 			handleTracker(enemy, $item[Rain-Doh black box], "auto_copies");
 			return "item " + $item[Rain-Doh black box];
 		}
-		print("Can not issue copy directive because we have no copies left", "red");
+		auto_log_warning("Can not issue copy directive because we have no copies left", "red");
 	}
 
 	if(get_property("auto_doCombatCopy") == "yes")
@@ -1052,7 +1014,7 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 			else
 			{
-				print("Unable to track yellow ray behavior: " + combatAction, "red");
+				auto_log_warning("Unable to track yellow ray behavior: " + combatAction, "red");
 			}
 			if(combatAction == useSkill($skill[Asdon Martin: Missile Launcher], false))
 			{
@@ -1062,7 +1024,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		else
 		{
-			print("Wanted a yellow ray but we can not find one.", "red");
+			auto_log_warning("Wanted a yellow ray but we can not find one.", "red");
 		}
 	}
 
@@ -1129,7 +1091,7 @@ string auto_combatHandler(int round, string opp, string text)
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
 		{
-			print("Looking at banishAction: " + banishAction, "green");
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
 			#abort("Banisher considered here. Weee");
 			#wait(10);
 			#banishAction = "";
@@ -1147,7 +1109,7 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 			else
 			{
-				print("Unable to track banisher behavior: " + banishAction, "red");
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
 			}
 			return banishAction;
 		}
@@ -1262,7 +1224,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		if(!contains_text(combatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(combatState, "shootghost3"))
 		{
-			print("Busting makes me feel good!!", "green");
+			auto_log_info("Busting makes me feel good!!", "green");
 			set_property("auto_combatHandler", combatState + "(trapghost)");
 			return useSkill($skill[Trap Ghost], false);
 		}
@@ -1477,7 +1439,7 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 			else
 			{
-				print("None of our preferred skills available. Engaging in Fisticuffs.", "red");
+				auto_log_warning("None of our preferred skills available. Engaging in Fisticuffs.", "red");
 			}
 		}
 
@@ -2129,13 +2091,13 @@ string auto_combatHandler(int round, string opp, string text)
 				if(canSurvive(1.4))
 				{
 					set_property("auto_combatHandler", combatState + "(last attempt)");
-					print("Uh oh, I'm having trouble in combat.", "red");
+					auto_log_warning("Uh oh, I'm having trouble in combat.", "red");
 				}
 				return attackMajor;
 			}
 			if(canSurvive(2.5))
 			{
-				print("Hmmm, I don't really know what to do in this combat but it looks like I'll live.", "red");
+				auto_log_warning("Hmmm, I don't really know what to do in this combat but it looks like I'll live.", "red");
 				if(my_mp() >= costMajor)
 				{
 					return attackMajor;
@@ -2242,7 +2204,7 @@ string findBanisher(int round, string opp, string text)
 	string banishAction = banisherCombatString(enemy, my_location(), true);
 	if(banishAction != "")
 	{
-		print("Looking at banishAction: " + banishAction, "green");
+		auto_log_info("Looking at banishAction: " + banishAction, "green");
 		if(index_of(banishAction, "skill") == 0)
 		{
 			handleTracker(enemy, to_skill(substring(banishAction, 6)), "auto_banishes");
@@ -2253,7 +2215,7 @@ string findBanisher(int round, string opp, string text)
 		}
 		else
 		{
-			print("Unable to track banisher behavior: " + banishAction, "red");
+			auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
 		}
 		return banishAction;
 	}
@@ -2285,13 +2247,13 @@ string ccsJunkyard(int round, string opp, string text)
 
 	if(round == 0)
 	{
-		print("ccsJunkyard: " + round, "brown");
+		auto_log_info("ccsJunkyard: " + round, "brown");
 		set_property("auto_gremlinMoly", true);
 		set_property("auto_combatHandler", "");
 	}
 	else
 	{
-		print("auto_Junkyard: " + round, "brown");
+		auto_log_info("auto_Junkyard: " + round, "brown");
 	}
 	string combatState = get_property("auto_combatHandler");
 	string edCombatState = get_property("auto_edCombatHandler");
@@ -2496,7 +2458,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if (round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 		if (get_property("_edDefeats").to_int() == 0)
 		{
@@ -2651,7 +2613,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 		if(!contains_text(edCombatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(edCombatState, "shootghost3"))
 		{
-			print("Busting makes me feel good!!", "green");
+			auto_log_info("Busting makes me feel good!!", "green");
 			set_property("auto_edCombatHandler", edCombatState + "(trapghost)");
 			return "skill " + $skill[Trap Ghost];
 		}
@@ -2733,7 +2695,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 	}
 	else
 	{
-		print("Ed combat state does not exist, winging it....", "red");
+		auto_log_warning("Ed combat state does not exist, winging it....", "red");
 	}
 
 
@@ -2877,7 +2839,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 			}
 			else
 			{
-				print("Unable to track yellow ray behavior: " + combatAction, "red");
+				auto_log_warning("Unable to track yellow ray behavior: " + combatAction, "red");
 			}
 			if(combatAction == ("skill " + $skill[Asdon Martin: Missile Launcher]))
 			{
@@ -2887,7 +2849,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 		else
 		{
-			print("Wanted a yellow ray but we can not find one.", "red");
+			auto_log_warning("Wanted a yellow ray but we can not find one.", "red");
 		}
 	}
 
@@ -3248,12 +3210,12 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if(round >= 29)
 	{
-		print("About to UNDYING too much but have no other combat resolution. Please report this.", "red");
+		auto_log_error("About to UNDYING too much but have no other combat resolution. Please report this.", "red");
 	}
 
 	if((fightStat > monster_defense()) && (round < 20) && canSurvive(1.1) && (get_property("auto_edStatus") == "dying"))
 	{
-		print("Attacking with weapon because we don't have enough MP. Expected damage: " + expected_damage() + ", current hp: " + my_hp(), "red");
+		auto_log_warning("Attacking with weapon because we don't have enough MP. Expected damage: " + expected_damage() + ", current hp: " + my_hp(), "red");
 		return "attack with weapon";
 	}
 
@@ -3311,7 +3273,7 @@ monster ocrs_helper(string page)
 	{
 		if(contains_text(page, "makes the most annoying noise you've ever heard, stopping you in your tracks."))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		set_property("auto_funCombatHandler", get_property("auto_combatHandler"));
@@ -3321,17 +3283,17 @@ monster ocrs_helper(string page)
 	{
 		if(contains_text(page, "moves out of the way"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		if(contains_text(page, "quickly moves out of the way"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		if(contains_text(page, "will have moved by the time"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 
@@ -3342,7 +3304,7 @@ monster ocrs_helper(string page)
 	{
 		if(contains_text(page, "blinks out of existence before"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		set_property("auto_funCombatHandler", get_property("auto_combatHandler"));
@@ -3352,7 +3314,7 @@ monster ocrs_helper(string page)
 	{
 		if(contains_text(page, "cartwheels out of the way"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		set_property("auto_funCombatHandler", get_property("auto_combatHandler"));

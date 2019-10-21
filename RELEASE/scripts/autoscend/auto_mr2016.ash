@@ -119,7 +119,7 @@ boolean snojoFightAvailable()
 
 	if(get_property("snojoSetting") == "NONE")
 	{
-		print("Snojo not set, attempting to set to " + my_primestat(), "blue");
+		auto_log_info("Snojo not set, attempting to set to " + my_primestat(), "blue");
 		visit_url("place.php?whichplace=snojo&action=snojo_controller");
 	}
 	return (get_property("_snojoFreeFights").to_int() < 10);
@@ -153,7 +153,7 @@ boolean auto_sourceTerminalRequest(string request)
 	//educate <skill>.edu		[digitize|extract]
 	//extrude <item>.ext		[food|booze|goggles]
 
-	print("Source Terminal request: " + request, "green");
+	auto_log_info("Source Terminal request: " + request, "green");
 
 
 	//"campground.php?action=terminal&hack=enhance items.enh"
@@ -458,17 +458,6 @@ boolean auto_advWitchess(string target, string option)
 		return false;
 	}
 
-#	if(get_property("_witchessFights").to_int() >= 5)
-#	{
-#		return false;
-#	}
-
-#	if(get_property("_witchessFights").to_int() > get_property("_auto_witchessBattles").to_int())
-#	{
-#		print("_witchessFights is greater than our tracking, it is probably more accurate at this point (assuming manual Witchess combats).", "red");
-#		set_property("_auto_witchessBattles", get_property("_witchessFights"));
-#	}
-
 	set_property("_auto_witchessBattles", get_property("_auto_witchessBattles").to_int() + 1);
 
 	string temp = visit_url("campground.php?action=witchess");
@@ -608,7 +597,7 @@ boolean auto_doPrecinct()
 		if(precinctMatcher.find())
 		{
 			casesLeft = to_int(precinctMatcher.group(1));
-			print("We have " + casesLeft + " case(s) leftover!", "green");
+			auto_log_info("We have " + casesLeft + " case(s) leftover!", "green");
 		}
 
 		if(casesLeft == 0)
@@ -618,7 +607,7 @@ boolean auto_doPrecinct()
 			{
 				return false;
 			}
-			print("Trying to resume case....", "red");
+			auto_log_info("Trying to resume case....", "red");
 		}
 
 		page = visit_url("choice.php?pwd=&whichchoice=1193&option=1");
@@ -628,18 +617,18 @@ boolean auto_doPrecinct()
 		{
 			if(!eggMatcher.find())
 			{
-				print("Someone was not murdered with an egg.... that's sad." + page, "red");
+				auto_log_info("Someone was not murdered with an egg.... that's sad." + page, "red");
 				return false;
 			}
 		}
-		print("Murdered with an egg! I love Egg!!", "green");
+		auto_log_info("Murdered with an egg! I love Egg!!", "green");
 		page = visit_url("wham.php", false);
 	}
 
 	eggMatcher = create_matcher("You have been on this case for (\\d+) minute(?:s?)", page);
 	if(!eggMatcher.find())
 	{
-		print("I can not resolve my case situation....", "red");
+		auto_log_info("I can not resolve my case situation....", "red");
 		return false;
 	}
 
@@ -652,7 +641,6 @@ boolean auto_doPrecinct()
 			boolean visited = false;
 			foreach index in eggData
 			{
-				//print("Subegg: " + eggData[index], "blue");
 				string[int] subEgg = split_string(eggData[index], ":");
 				if(subEgg[0].to_int() == i)
 				{
@@ -663,7 +651,7 @@ boolean auto_doPrecinct()
 
 			if(!visited)
 			{
-				print("Going to visit room: " + i, "green");
+				auto_log_info("Going to visit room: " + i, "green");
 				page = visit_url("wham.php?visit=" + i, false);
 				matcher personMatcher = create_matcher("<td align=center width=200>(?:\\s+)<img src=[\"](?:[a-z0-9/_.:]+?)[.]gif[\"]>(?:\\s+)<br>(?:\\s+)<b>([a-zA-Z ]+?)</b>(?:\\s+?)<br>(?:\\s+?)([a-zA-Z -]+)(?:\\s+?)<p>(?:\\s+?)[(]([a-zA-Z ']+?)[)]", page);
 				if(personMatcher.find())
@@ -671,9 +659,9 @@ boolean auto_doPrecinct()
 					string person = personMatcher.group(1);
 					string job = personMatcher.group(2);
 					string room = personMatcher.group(3);
-					print("Found " + personMatcher.group(1), "green");
-					print("Found " + personMatcher.group(2), "green");
-					print("Found " + personMatcher.group(3), "green");
+					auto_log_info("Found " + personMatcher.group(1), "green");
+					auto_log_info("Found " + personMatcher.group(2), "green");
+					auto_log_info("Found " + personMatcher.group(3), "green");
 					string generated = "" + i + ":" + room + ":" + person + ":" + job;
 
 					//Get killer response as well.
@@ -697,7 +685,7 @@ boolean auto_doPrecinct()
 					}
 					else
 					{
-						print("Jerkwad '" + person + "' won't say anything!", "blue");
+						auto_log_info("Jerkwad '" + person + "' won't say anything!", "blue");
 						generated += ":liar";
 					}
 					set_property("auto_eggDetective", generated + "," + get_property("auto_eggDetective"));
@@ -707,7 +695,7 @@ boolean auto_doPrecinct()
 		}
 
 		eggData = split_string(get_property("auto_eggDetective"), ",");
-		print("Generating goals...", "blue");
+		auto_log_info("Generating goals...", "blue");
 		//At this point we\'ve visited every place and queried everyone. Now we need to determine who is identifying a killer.
 
 		//Extract names and jobs
@@ -726,10 +714,9 @@ boolean auto_doPrecinct()
 			locationGoals[subEgg[1]] = true;
 		}
 
-		print("Verifications....", "blue");
+		auto_log_info("Verifications....", "blue");
 		foreach index in eggData
 		{
-			//print("Subegg: " + eggData[index], "blue");
 			string[int] subEgg = split_string(eggData[index], ":");
 			if(count(subEgg) < 4)
 			{
@@ -776,7 +763,7 @@ boolean auto_doPrecinct()
 			}
 			if(subEgg[4] != "liar")
 			{
-				print(subEgg[2] + " is accusing: " + subEgg[4], "blue");
+				auto_log_info(subEgg[2] + " is accusing: " + subEgg[4], "blue");
 				//Now we need to determine if they are lying or not.
 				int currentLocation = to_int(subEgg[0]);
 				page = visit_url("wham.php?visit=" + currentLocation, false);
@@ -819,7 +806,7 @@ boolean auto_doPrecinct()
 							{
 								if(goal != currentEgg[3])
 								{
-									print("Asked about " + currentEgg[2] + "," + currentEgg[3] + " and was told: " + goal, "red");
+									auto_log_info("Asked about " + currentEgg[2] + "," + currentEgg[3] + " and was told: " + goal, "red");
 									count += 1;
 								}
 								else
@@ -842,7 +829,7 @@ boolean auto_doPrecinct()
 							{
 								if(goal != currentEgg[1])
 								{
-									print("Asked about " + currentEgg[2] + "," + currentEgg[1] + " and was told: " + goal, "red");
+									auto_log_info("Asked about " + currentEgg[2] + "," + currentEgg[1] + " and was told: " + goal, "red");
 									count += 1;
 								}
 								else
@@ -857,10 +844,10 @@ boolean auto_doPrecinct()
 							{
 								if(corrupted)
 								{
-									print("Doubly corrupted possible truth teller. This person is probably correct.", "blue");
+									auto_log_info("Doubly corrupted possible truth teller. This person is probably correct.", "blue");
 									return false;
 								}
-								print("Corrupted truth teller? Going to retry....", "red");
+								auto_log_info("Corrupted truth teller? Going to retry....", "red");
 								corrupted = true;
 								continue;
 							}
@@ -881,7 +868,7 @@ boolean auto_doPrecinct()
 			}
 			if(isTruth)
 			{
-				print(subEgg[2] + " is accusing: " + subEgg[4] + " and may be telling the truth!", "blue");
+				auto_log_info(subEgg[2] + " is accusing: " + subEgg[4] + " and may be telling the truth!", "blue");
 				//Find person they are accusing and do it.
 
 				string[int] currentEgg;
@@ -890,20 +877,20 @@ boolean auto_doPrecinct()
 					string[int] subsubEgg = split_string(eggData[index], ":");
 					if((subsubEgg[2] == subEgg[4]) || (subsubEgg[3] == subEgg[4]))
 					{
-						print("Accusation against: " + subsubEgg[2], "blue");
+						auto_log_info("Accusation against: " + subsubEgg[2], "blue");
 						page = visit_url("wham.php?visit=" + subsubEgg[0], false);
 
 						eggMatcher = create_matcher("You have been on this case for (\\d+) minute(?:s?)", page);
 						if(eggMatcher.find())
 						{
-							print("On the case for " + eggMatcher.group(1) + " minutes...", "green");
+							auto_log_info("On the case for " + eggMatcher.group(1) + " minutes...", "green");
 						}
 
 						page = visit_url("wham.php?visit=" + subsubEgg[0] + "&accuse=" + subsubEgg[0], false);
 						matcher pensionMatcher = create_matcher("been awarded (\\d+) cop dollars", page);
 						if(pensionMatcher.find())
 						{
-							print("Received a pension of " + pensionMatcher.group(1) + " cop dollars.", "green");
+							auto_log_info("Received a pension of " + pensionMatcher.group(1) + " cop dollars.", "green");
 						}
 						set_property("auto_eggDetective", "");
 						return true;
@@ -991,7 +978,7 @@ boolean LX_ghostBusting()
 		}
 
 		useCocoon();
-		print("Ghost busting time! At: " + get_property("ghostLocation"), "blue");
+		auto_log_info("Ghost busting time! At: " + get_property("ghostLocation"), "blue");
 		boolean newbieFail = false;
 		if(goal == $location[The Skeleton Store])
 		{
@@ -1132,7 +1119,7 @@ boolean LX_ghostBusting()
 
 		if(newbieFail)
 		{
-			print("Can't bust that ghost, we don't feel good!!", "blue");
+			auto_log_critical("Can't bust that ghost, we don't feel good!!", "blue");
 			abort("Ghost busting failure, this should not happen");
 			set_property("questPAGhost", "unstarted");
 			set_property("ghostLocation", "");
@@ -1144,7 +1131,7 @@ boolean LX_ghostBusting()
 			autoEquip($slot[Back], $item[Protonic Accelerator Pack]);
 		}
 
-		print("Time to bust some ghosts!!!", "green");
+		auto_log_info("Time to bust some ghosts!!!", "green");
 		boolean advVal = autoAdv(goal);
 		if(replaceAcc3 != $item[none])
 		{
@@ -1279,7 +1266,7 @@ boolean timeSpinnerCombat(monster goal, string option)
 				}
 				return false;
 			}
-			
+
 			return true;
 		}
 	}
@@ -1291,7 +1278,7 @@ boolean rethinkingCandyList()
 	boolean[effect] synthesis = $effects[Synthesis: Hot, Synthesis: Cold, Synthesis: Pungent, Synthesis: Scary, Synthesis: Greasy, Synthesis: Strong, Synthesis: Smart, Synthesis: Cool, Synthesis: Hardy, Synthesis: Energy, Synthesis: Greed, Synthesis: Collection, Synthesis: Movement, Synthesis: Learning, Synthesis: Style];
 	foreach eff in synthesis
 	{
-		print("Trying effect: " + eff + ": " + string_modifier(eff, "Modifiers") , "orange");
+		auto_log_info("Trying effect: " + eff + ": " + string_modifier(eff, "Modifiers") , "orange");
 		rethinkingCandy(eff, true);
 	}
 	return true;
@@ -1349,16 +1336,6 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 	item[int] simple = List(simpleList);
 	item[int] complex = List(complexList);
 
-#	foreach idx, it in simple
-#	{
-#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + auto_mall_price(it), "blue");
-#	}
-#
-#	foreach idx, it in complex
-#	{
-#		print(it + ": " + item_amount(it) + " (" + to_int(it) + "): " + it.candy_type + " Cost: " + auto_mall_price(it), "blue");
-#	}
-
 	int bestCost = 2 * maxprice;
 	item bestFirst = $item[none];
 	item bestSecond = $item[none];
@@ -1380,7 +1357,7 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 				{
 					if(simulate)
 					{
-						print("Possible: " + simple[i] + ", " + simple[j], "blue");
+						auto_log_info("Possible: " + simple[i] + ", " + simple[j], "blue");
 					}
 					if((auto_mall_price(simple[i]) + auto_mall_price(simple[j])) < bestCost)
 					{
@@ -1405,7 +1382,7 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 				{
 					if(simulate)
 					{
-						print("Possible: " + simple[i] + ", " + complex[j], "blue");
+						auto_log_info("Possible: " + simple[i] + ", " + complex[j], "blue");
 					}
 					if((auto_mall_price(simple[i]) + auto_mall_price(complex[j])) < bestCost)
 					{
@@ -1435,7 +1412,7 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 				{
 					if(simulate)
 					{
-						print("Possible: " + complex[i] + ", " + complex[j], "blue");
+						auto_log_info("Possible: " + complex[i] + ", " + complex[j], "blue");
 					}
 					if((auto_mall_price(complex[i]) + auto_mall_price(complex[j])) < bestCost)
 					{
@@ -1454,7 +1431,7 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 
 	if(bestFirst != $item[none])
 	{
-		print("Best case: " + bestFirst + ", " + bestSecond + ": " + bestCost, "green");
+		auto_log_info("Best case: " + bestFirst + ", " + bestSecond + ": " + bestCost, "green");
 		if(!simulate)
 		{
 			int prior = have_effect(acquire);
@@ -1471,7 +1448,7 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 	}
 	else if(simulate)
 	{
-		print("Could not find a possible candy combination", "red");
+		auto_log_warning("Could not find a possible candy combination", "red");
 	}
 	else
 	{

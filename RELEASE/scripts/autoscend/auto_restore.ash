@@ -98,7 +98,7 @@ string to_string(__RestorationOptimization o, boolean simple){
   }
 
   if(simple){
-    return "("+o.metadata.name + ", hp: " + o.objective_values["hp_total_restored"] + ", mp: " + o.objective_values["mp_total_restored"] + ")";
+    return "("+o.metadata.name + ", hp: " + o.objective_values["hp_total_restored"] + ", mp: " + o.objective_values["mp_total_restored"] + ", negative effects remaining: "+o.objective_values["negative_status_effects_remaining"]+")";
   }
 
   string vars_str = list_to_string(o.vars);
@@ -153,7 +153,7 @@ void __init_restoration_metadata(){
         if(e != $effect[none]){
           parsed_effects[e] = true;
         } else{
-          print("Unknown effect found parsing restoration metadata: " + name + " removes effect: " + s);
+          auto_log_warning("Unknown effect found parsing restoration metadata: " + name + " removes effect: " + s);
         }
       }
     }
@@ -219,7 +219,7 @@ void __init_restoration_metadata(){
 
   }
 
-  print("Loading restoration data.");
+  auto_log_info("Loading restoration data.");
   init();
   clear(__restore_maximizer_cache);
 }
@@ -268,7 +268,7 @@ boolean[string] __MINIMIZE_KEYS = {
   "soft_reserve_limit_uses": true,
 };
 
-// Not used for much, mostly a cache so we dont have to keep recalculating values
+// Not used for much, mostly a cache so we dont have to keep recalculating values and print out for debugging
 boolean[string] __VARS_KEYS = {
   "hp_goal": true,
   "hp_starting": true,
@@ -897,6 +897,8 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
       }
       if(!(dominated contains T[Ti].metadata.name)){
         M[count(M)] = T[Ti];
+      } else{
+        auto_log_debug("Removed from consideration: " + to_string(T[Ti], true));
       }
       Ti++;
     }
@@ -905,6 +907,8 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
     while(Bi < count(B)){
       if(!(dominated contains B[Bi].metadata.name)){
         M[count(M)] = B[Bi];
+      } else{
+        auto_log_debug("Removed from consideration: " + to_string(B[Bi], true));
       }
       Bi++;
     }
@@ -923,17 +927,17 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
   }
 
   __RestorationOptimization[int] ranked_optimization(__RestorationOptimization[int] p, int[string] value_ranks, boolean[string] maximize_keys, boolean[string] minimize_keys){
-    auto_debug_print("Beginning optimization of "+count(p)+" restoration options.");
+    auto_log_debug("Beginning optimization of "+count(p)+" restoration options.");
     if(count(p) == 0){
       return p;
     }
 
     __RestorationOptimization[int] ranked = copy(p);
     int[int] ranks = ordered_ranks(value_ranks);
+    auto_log_debug(count(ranked)+" options before optimization: " + to_string(ranked, false));
     foreach _, rank in ranks {
       string desc = (__RANKED_GOAL_DESCRIPTIONS contains rank) ?  __RANKED_GOAL_DESCRIPTIONS[rank] : "whoops, someone changed things and didnt update the descriptions. Bad dev.";
-      auto_debug_print("Rank " + rank + " optimization, prefer to... " + desc);
-      auto_debug_print(count(ranked)+" options: " + to_string(ranked, false));
+      auto_log_debug("Rank " + rank + " optimization, prefer to... " + desc);
       if(count(ranked) <= 1){
         break;
       }
@@ -991,7 +995,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
   }
 
   void quick_sort_maximize(__RestorationOptimization[int] p, boolean[string] sort_keys, int[string] value_ranks){
-    auto_debug_print("Sorting "+count(p)+" options by primary objectives.");
+    auto_log_debug("Sorting "+count(p)+" options by primary objectives.");
     if(count(p) > 1){
       quick_sort_maximize(p, sort_keys, value_ranks, 0, count(p)-1);
     }
@@ -999,7 +1003,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 
   __RestorationOptimization[int] apply_constraints(__RestorationOptimization[int] p, boolean[string] constraint_keys){
     int c = count(p);
-    auto_debug_print("Applying constraints to "+c+" objective values.");
+    auto_log_debug("Applying constraints to "+c+" objective values.");
 
     __RestorationOptimization[int] constrained;
 
@@ -1016,20 +1020,20 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
       }
     }
 
-    auto_debug_print("Removed  "+(c-count(constrained))+" restore options from consideration.");
+    auto_log_debug("Removed  "+(c-count(constrained))+" restore options from consideration.");
 
     return constrained;
   }
 
   __RestorationOptimization[int] calculate_objective_values(){
     if(count(__restore_maximizer_cache) > 0){
-      auto_debug_print("Recalculating cached restore objective values.");
+      auto_log_debug("Recalculating cached restore objective values.");
       foreach i, o in __restore_maximizer_cache{
          __RestorationOptimization recalculated =
          __restore_maximizer_cache[i] = __calculate_objective_values(hp_goal, mp_goal, meat_reserve, useFreeRests, o.metadata);
       }
     } else{
-      auto_debug_print("Calculating restore objective values.");
+      auto_log_debug("Calculating restore objective values.");
       foreach name, metadata in __restoration_methods(){
         __RestorationOptimization o = __calculate_objective_values(hp_goal, mp_goal, meat_reserve, useFreeRests, metadata);
         if(o.constraints["is_ever_useable"]){
@@ -1124,7 +1128,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
       return false;
     }
 
-    print("Using " + metadata.type + " " + metadata.name + " as restore.", "blue");
+    auto_log_info("Using " + metadata.type + " " + metadata.name + " as restore.", "blue");
     if(metadata.type == "item"){
       item i = to_item(metadata.name);
       return retrieve_item(1, i) && use(1, i);
@@ -1142,7 +1146,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     if(metadata.type == "skill"){
       skill s = to_skill(metadata.name);
       if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), meat_reserve, useFreeRests)){
-        print("Couldnt acquire enough MP to cast " + s, "red");
+        auto_log_warning("Couldnt acquire enough MP to cast " + s, "red");
         return false;
       }
       return use_skill(1, s);
@@ -1176,13 +1180,13 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     return negative;
   }
 
-  print("Target "+resource_type+" => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
-  print("Active Negative Effects => " + list_to_string(negative_effects()));
+  auto_log_info("Target "+resource_type+" => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
+  auto_log_info("Active Negative Effects => " + list_to_string(negative_effects()));
 
   while(current_resource() < goal){
     __RestorationOptimization[int] options = __maximize_restore_options(hp_target(), mp_target(), meat_reserve, useFreeRests);
     if(count(options) == 0){
-      print("Target "+resource_type+" => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
+      auto_log_warning("Target "+resource_type+" => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
       return false;
     }
 
@@ -1193,12 +1197,12 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
       if(success){
         break;
       } else{
-        auto_debug_print("Target "+resource_type+" => " + goal + " option " + o.metadata.name + " failed. Trying next option (if available).");
+        auto_log_warning("Target "+resource_type+" => " + goal + " option " + o.metadata.name + " failed. Trying next option (if available).");
       }
     }
 
     if(!success){
-      print("Target "+resource_type+" => " + goal + " - Uh oh. All restore options tried ("+count(options)+") failed. Sorry.", "red");
+      auto_log_warning("Target "+resource_type+" => " + goal + " - Uh oh. All restore options tried ("+count(options)+") failed. Sorry.", "red");
       return false;
     }
 	}
@@ -1214,11 +1218,11 @@ void __cure_bad_stuff(){
 
 	// let mafia figure out how to best remove beaten up
 	if(have_effect($effect[Beaten Up]) > 0){
-		print("Ouch, you got beaten up. Lets get you patched up, if we can.");
+		auto_log_info("Ouch, you got beaten up. Lets get you patched up, if we can.");
 		uneffect($effect[Beaten Up]);
 
 		if(have_effect($Effect[Beaten Up]) > 0){
-			print("Well, you're still beaten up, thats probably not great...", "red");
+			auto_log_warning("Well, you're still beaten up, thats probably not great...", "red");
 		}
 	}
 }
@@ -1563,13 +1567,13 @@ boolean uneffect(effect toRemove)
 	if(item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0)
 	{
 		visit_url("uneffect.php?pwd=&using=Yep.&whicheffect=" + to_int(toRemove));
-		print("Effect removed by Soft Green Echo Eyedrop Antidote.", "blue");
+		auto_log_info("Effect removed by Soft Green Echo Eyedrop Antidote.", "blue");
 		return true;
 	}
 	else if(item_amount($item[Ancient Cure-All]) > 0)
 	{
 		visit_url("uneffect.php?pwd=&using=Yep.&whicheffect=" + to_int(toRemove));
-		print("Effect removed by Ancient Cure-All.", "blue");
+		auto_log_info("Effect removed by Ancient Cure-All.", "blue");
 		return true;
 	}
 	return false;

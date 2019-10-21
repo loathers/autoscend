@@ -86,10 +86,10 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 		pastesNeeded += pastesForThisSaus;
 	}
 
-	print("Let's grind some sausage!", "blue");
+	auto_log_info("Let's grind some sausage!", "blue");
 	if(!create(numSaus, $item[magical sausage]))
 	{
-		print("Something went wrong while grinding sausage...", "red");
+		auto_log_warning("Something went wrong while grinding sausage...", "red");
 		return false;
 	}
 	loopHandlerDelayAll();
@@ -127,7 +127,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 	int originalMp = my_maxmp();
 	if(!noMP)
 	{
-		print("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
+		auto_log_info("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
 		cli_execute("checkpoint");
 		maximize("mp,-tie", false);
 	}
@@ -146,7 +146,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 		}
 		if(!eat(1, $item[magical sausage]))
 		{
-			print("Somehow failed to eat a sausage! What??", "red");
+			auto_log_warning("Somehow failed to eat a sausage! What??", "red");
 			return false;
 		}
 		maxToEat--;
@@ -547,13 +547,13 @@ boolean auto_spoonTuneMoon()
 	boolean cantune = (res.index_of("You can't figure out the angle to see the moon's reflection in the spoon anymore.") == -1);
 	if(cantune)
 	{
-		print("Changing signs to " + spoonsign + ", sign #" + signnum, "blue");
+		auto_log_info("Changing signs to " + spoonsign + ", sign #" + signnum, "blue");
 		visit_url('inv_use.php?whichitem=10254&pwd&doit=96&whichsign=' + signnum, true);
 		cli_execute("refresh all");
 	}
 	else
 	{
-		print("Tried to change signs to " + spoonsign + ", but moon has already been tuned", "red");
+		auto_log_warning("Tried to change signs to " + spoonsign + ", but moon has already been tuned", "red");
 	}
 
 	if(wasspoon != $slot[none])
@@ -700,7 +700,7 @@ boolean auto_pillKeeperAvailable()
 boolean auto_pillKeeper(int pill)
 {
 	if(auto_pillKeeperUses() == 0) return false;
-	print("Using pill keeper: consuming pill #" + pill, "blue");
+	auto_log_info("Using pill keeper: consuming pill #" + pill, "blue");
 	string page = visit_url("main.php?eowkeeper=1", false);
 	page = visit_url("choice.php?pwd=&whichchoice=1395&pwd&option=" + pill, true);
 	return true;

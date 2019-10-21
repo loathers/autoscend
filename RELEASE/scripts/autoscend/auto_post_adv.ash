@@ -30,14 +30,14 @@ void handlePostAdventure()
 
 	if(get_property("auto_forceNonCombatSource") != "" && (__MONSTERS_FOLLOWING_NONCOMBATS contains get_property("lastEncounter").to_monster() && !is_superlikely(get_property("lastEncounter"))))
 	{
-		print("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
+		auto_log_info("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatTurn", -1);
 	}
 
 	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatSource").to_int() > my_turncount() - 10)
 	{
-		print("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
+		auto_log_warning("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
 			"), am going to assume it happened but we missed it.", "blue");
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatTurn", 0);
@@ -47,10 +47,10 @@ void handlePostAdventure()
 	{
 		if(last_monster() != $monster[Eldritch Tentacle])
 		{
-			print("Expected Tentacle, uh oh!", "red");
+			auto_log_warning("Expected Tentacle, uh oh!", "red");
 			return;
 		}
-		print("No Tentacle expected this time!", "green");
+		auto_log_info("No Tentacle expected this time!", "green");
 	}
 
 	//We need to do this early, and even if postAdventure handling is done.
@@ -62,10 +62,10 @@ void handlePostAdventure()
 			string temp = visit_url("main.php");
 			if(last != last_monster())
 			{
-				print("Interrupted battle detected at post combat time", "red");
+				auto_log_warning("Interrupted battle detected at post combat time", "red");
 				if(have_effect($effect[Beaten Up]) > 0)
 				{
-					print("Post combat time caused up to be Beaten Up!", "red");
+					auto_log_warning("Post combat time caused up to be Beaten Up!", "red");
 					return;
 				}
 				autoAdv(my_location());
@@ -96,7 +96,7 @@ void handlePostAdventure()
 
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
-		print("Postadventure skipped by standard adventure handler.", "green");
+		auto_log_info("Postadventure skipped by standard adventure handler.", "green");
 		return;
 	}
 
@@ -107,14 +107,14 @@ void handlePostAdventure()
 		switch(last_choice())
 		{
 			case 1340: // Is There A Doctor In The House?
-				print("Accepting doctor quest, it's our job!");
+				auto_log_info("Accepting doctor quest, it's our job!");
 				run_choice(1);
 				break;
 			case 1342: // Torpor
 				bat_reallyPickSkills(20);
 				break;
 			default:
-				print("Unrecognized unhandled choice after combat " + last_choice(), "red");
+				auto_log_warning("Unrecognized unhandled choice after combat " + last_choice(), "red");
 				break;
 		}
 	}
@@ -139,21 +139,21 @@ void handlePostAdventure()
 
 	if((my_location() == $location[The Lower Chambers]) && (item_amount($item[[2334]Holy MacGuffin]) == 0))
 	{
-		print("Postadventure skipped by Ed the Undying!", "green");
+		auto_log_info("Postadventure skipped by Ed the Undying!", "green");
 		return;
 	}
 
 	if((my_location() == $location[The Invader]))
 	{
 		// Just so the "are we beaten up?" check in auto_koe works properly
-		print("Postadventure skipped for The Invader!", "green");
+		auto_log_info("Postadventure skipped for The Invader!", "green");
 		return;
 	}
 
 	ocrs_postHelper();
 	if(last_monster().random_modifiers["clingy"])
 	{
-		print("Postadventure skipped by clingy modifier.", "green");
+		auto_log_info("Postadventure skipped by clingy modifier.", "green");
 		return;
 	}
 
@@ -671,7 +671,7 @@ void handlePostAdventure()
 			#outfit does not... damn it.
 			if(!autoOutfit("Vile Vagrant Vestments"))
 			{
-				print("Could not wear Vile Vagrant Outfit for some raisin", "red");
+				auto_log_warning("Could not wear Vile Vagrant Outfit for some raisin", "red");
 			}
 			didOutfit = true;
 		}
@@ -724,7 +724,7 @@ void handlePostAdventure()
 			// Catch when we leave lowMLZone, allow for being "side tracked" buy delay burning
 			if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
 			{
-				print("No Reason to delay Asdon Usage");
+				auto_log_info("No Reason to delay Asdon Usage");
 				uneffect($effect[Driving Intimidatingly]);
 				set_property("auto_debuffAsdonDelay", 0);
 			}
@@ -735,7 +735,7 @@ void handlePostAdventure()
 			else
 			{
 				set_property("auto_debuffAsdonDelay", get_property("auto_debuffAsdonDelay").to_int() + 1);
-				print("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
+				auto_log_info("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
 			}
 
 			if((monster_level_adjustment() + (2 * my_level())) <= 150)
@@ -814,7 +814,7 @@ void handlePostAdventure()
 
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 32))
 		{
-			print("Mymp: " + my_mp() + " of " + my_maxmp() + " and cost: " + mp_cost(libram), "blue");
+			auto_log_info("Mymp: " + my_mp() + " of " + my_maxmp() + " and cost: " + mp_cost(libram), "blue");
 			boolean temp = false;
 			try
 			{
@@ -825,8 +825,8 @@ void handlePostAdventure()
 			{
 				if(!temp)
 				{
-					print("No longer have enough MP and failed.", "red");
-					print("Mymp: " + my_mp() + " of " + my_maxmp() + " and cost: " + mp_cost(libram), "blue");
+					auto_log_warning("No longer have enough MP and failed.", "red");
+					auto_log_info("Mymp: " + my_mp() + " of " + my_maxmp() + " and cost: " + mp_cost(libram), "blue");
 				}
 			}
 		}
@@ -978,7 +978,7 @@ void handlePostAdventure()
 			}
 			else
 			{
-				print("Thrall handler error. Could not generate appropriate skill.", "red");
+				auto_log_warning("Thrall handler error. Could not generate appropriate skill.", "red");
 			}
 		}
 	}
@@ -1006,19 +1006,19 @@ void handlePostAdventure()
 
 	if(my_path() == "Heavy Rains")
 	{
-		print("Post adventure done: Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
+		auto_log_info("Post adventure done: Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}
 
 	if((item_amount($item[The Big Book of Pirate Insults]) > 0) && ((my_location() == $location[Barrrney\'s Barrr]) || (my_location() == $location[The Obligatory Pirate\'s Cove])))
 	{
-		print("Have " + numPirateInsults() + " insults.", "green");
+		auto_log_info("Have " + numPirateInsults() + " insults.", "green");
 	}
 
 	if(my_location() == $location[The Broodling Grounds])
 	{
-		print("Have " + item_amount($item[Hellseal Brain]) + " brain(s).", "green");
-		print("Have " + item_amount($item[Hellseal Hide]) + " hide(s).", "green");
-		print("Have " + item_amount($item[Hellseal Sinew]) + " sinew(s).", "green");
+		auto_log_info("Have " + item_amount($item[Hellseal Brain]) + " brain(s).", "green");
+		auto_log_info("Have " + item_amount($item[Hellseal Hide]) + " hide(s).", "green");
+		auto_log_info("Have " + item_amount($item[Hellseal Sinew]) + " sinew(s).", "green");
 	}
 
 	if((my_location() == $location[The Hidden Bowling Alley]) && get_property("kingLiberated").to_boolean())
@@ -1060,10 +1060,10 @@ void handlePostAdventure()
 
 	if((get_property("auto_beatenUpCount").to_int() <= 10) && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
 	{
-		print("Owwie, was beaten up but trying to recover", "red");
+		auto_log_warning("Owwie, was beaten up but trying to recover", "red");
 		if(my_location() == $location[The X-32-F Combat Training Snowman])
 		{
-			print("At the snojo, let's not keep going there and dying....", "red");
+			auto_log_info("At the snojo, let's not keep going there and dying....", "red");
 			set_property("_snojoFreeFights", 10);
 		}
 		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
@@ -1074,19 +1074,19 @@ void handlePostAdventure()
 	# We only do this in aftercore because we don't want a spiralling death loop in-run.
 	if(get_property("kingLiberated").to_boolean() && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
 	{
-		print("Owwie, was beaten up but trying to recover", "red");
+		auto_log_warning("Owwie, was beaten up but trying to recover", "red");
 		use_skill(1, $skill[Tongue of the Walrus]);
 	}
 
 	#Should we create a separate function to track these? How many are we going to track?
 	if((last_monster() == $monster[Writing Desk]) && (get_property("lastEncounter") == $monster[Writing Desk]) && (have_effect($effect[Beaten Up]) == 0))
 	{
-		print("Fought " + get_property("writingDesksDefeated") + " writing desks.", "blue");
+		auto_log_info("Fought " + get_property("writingDesksDefeated") + " writing desks.", "blue");
 	}
 	if((last_monster() == $monster[Modern Zmobie]) && (get_property("lastEncounter") == $monster[Modern Zmobie]) && (have_effect($effect[Beaten Up]) == 0))
 	{
 		set_property("auto_modernzmobiecount", "" + (get_property("auto_modernzmobiecount").to_int() + 1));
-		print("Fought " + get_property("auto_modernzmobiecount") + " modern zmobies.", "blue");
+		auto_log_info("Fought " + get_property("auto_modernzmobiecount") + " modern zmobies.", "blue");
 	}
 
 	if(have_effect($effect[Disavowed]) > 0)
@@ -1097,7 +1097,7 @@ void handlePostAdventure()
 		}
 		if(auto_have_skill($skill[Disco Nap]) && (my_mp() > mp_cost($skill[Disco Nap])))
 		{
-			print("We have been disavowed...", "red");
+			auto_log_warning("We have been disavowed...", "red");
 			use_skill(1, $skill[Disco Nap]);
 		}
 		else
@@ -1114,7 +1114,7 @@ void handlePostAdventure()
 		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 	}
 
-	print("Post Adventure done, beep.", "purple");
+	auto_log_info("Post Adventure done, beep.", "purple");
 }
 
 void main()
