@@ -8,7 +8,7 @@ void assertTrue(boolean val, string message)
 {
 	if (!val)
 	{
-		print("Assertion failed: " + message, "red");
+		auto_log_warning("Assertion failed: " + message, "red");
 	}
 	passed &= val;
 }
@@ -33,8 +33,6 @@ void testLoadConsumables()
 	{
 		assertContains($item[catsup], "hermit items should be present");
 	}
-	// if (canadia_available()) assertTrue(0 < count(cafe_backmap), "In Canadia moonsign: Cafe items should be loaded");
-	// if (!canadia_available()) assertTrue(0 == count(cafe_backmap), "Not in Canadia moonsign: Cafe items should not be loaded");
 }
 
 void testKnapsackAutoConsume()
@@ -51,7 +49,7 @@ void main()
 		call void name();
 		string color = passed ? "green" : "red";
 		string sstatus = passed ? "PASS" : "FAIL";
-		print(name + ": " + sstatus, color);
+		auto_log_info(name + ": " + sstatus, color);
 	}
 	runTest("testLoadConsumables");
 	runTest("testKnapsackAutoConsume");

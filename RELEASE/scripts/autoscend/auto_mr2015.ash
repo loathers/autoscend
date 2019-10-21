@@ -577,7 +577,7 @@ boolean chateaumantegna_nightstandSet()
 	{
 		return false;
 	}
-	print("We have the wrong Chateau Nightstand item, replacing.", "blue");
+	auto_log_info("We have the wrong Chateau Nightstand item, replacing.", "blue");
 	chateaumantegna_buyStuff(need);
 	return true;
 }
@@ -747,7 +747,7 @@ boolean deck_cheat(string cheat)
 	{
 		if(to_int(cheat) == card)
 		{
-			print("Already cheated this card, failing gracefully.", "red");
+			auto_log_warning("Already cheated this card, failing gracefully.", "red");
 			return false;
 		}
 	}
@@ -1067,7 +1067,7 @@ boolean deck_useScheme(string action)
 		}
 		else
 		{
-			print("Could not draw card for some reason, we may be stuck in a choice adventure.");
+			auto_log_critical("Could not draw card for some reason, we may be stuck in a choice adventure.");
 			abort("Failure when drawing cards, if any were drawn, the rest will NOT be drawn. Draw them and resume.");
 		}
 	}

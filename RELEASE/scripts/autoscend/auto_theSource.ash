@@ -208,7 +208,7 @@ boolean LX_theSource()
 			return false;
 		}
 
-		print("Not searching for a spoon, not at all...", "green");
+		auto_log_info("Not searching for a spoon, not at all...", "green");
 		return autoAdv(goal);
 	}
 	return false;
