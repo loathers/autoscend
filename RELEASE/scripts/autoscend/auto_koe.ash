@@ -53,7 +53,6 @@ boolean LX_koeInvaderHandler()
 	buffMaintain($effect[Scarysauce], 10, 1, 1);
 
 	resetMaximize();
-	addToMaximize("200 all res");
 
 	if(!possessEquipment($item[meteorb]))
 		retrieve_item(1, $item[meteorb]);
@@ -61,7 +60,7 @@ boolean LX_koeInvaderHandler()
 	pullXWhenHaveY($item[meteorb], 1, 0);
 	autoEquip($slot[off-hand], $item[meteorb]);
 
-	simMaximize();
+	simMaximizeWith("200 all res");
 
 	float damagePerRound = 0.0;
 	float baseDamage = 1.0 - 0.1 * my_daycount();
@@ -92,6 +91,9 @@ boolean LX_koeInvaderHandler()
 			buffMaintain($effect[Song of Sauce], 150, 1, 1);
 			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
 			acquireMP(100, 0);
+
+			// Use maximizer now that we are for sure fighting the Invader
+			addToMaximize("200 all res");
 
 			set_property("choiceAdventure1393", 1); // Take care of it...
 			boolean ret = autoAdv(1, $location[The Invader]);
