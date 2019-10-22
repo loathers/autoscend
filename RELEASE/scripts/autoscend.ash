@@ -12263,11 +12263,11 @@ boolean L9_aBooPeak()
 			}
 			if(useMaximizeToEquip())
 			{
-				addToMaximize("1000spooky res,1000 cold res,10hp" + parrot);
+				addToMaximize("1000spooky res,1000cold res,10000hp " + (mp_need + 10) + "max," + parrot);
 			}
 			else
 			{
-				autoMaximize("spooky res, cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
+				autoMaximize("spooky res,cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
 			}
 			adjustEdHat("ml");
 
