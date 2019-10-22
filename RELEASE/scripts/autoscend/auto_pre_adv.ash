@@ -378,7 +378,7 @@ void handlePreAdventure(location place)
 		// Catch when we leave lowMLZone, allow for being "side tracked" by delay burning
 		if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
 		{
-			print("No Reason to delay Asdon Usage");
+			auto_log_debug("No Reason to delay Asdon Usage");
 			uneffect($effect[Driving Intimidatingly]);
 			set_property("auto_debuffAsdonDelay", 0);
 		}
@@ -389,7 +389,7 @@ void handlePreAdventure(location place)
 		else
 		{
 			set_property("auto_debuffAsdonDelay", get_property("auto_debuffAsdonDelay").to_int() + 1);
-			print("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
+			auto_log_debug("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
 		}
 
 		auto_MaxMLToCap(150, false);
@@ -424,7 +424,7 @@ void handlePreAdventure(location place)
 	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
 	if(lowMLZones contains place)
 	{
-		auto_debug_print("Going into a LOW ML ZONE with ML: " + monster_level_adjustment());
+		auto_log_debug("Going into a LOW ML ZONE with ML: " + monster_level_adjustment());
 	}
 	else
 	{
@@ -435,7 +435,7 @@ void handlePreAdventure(location place)
 			auto_setMCDToCap();
 		}
 
-		auto_debug_print("Going into High or Standard ML Zone with ML: " + monster_level_adjustment());
+		auto_log_debug("Going into High or Standard ML Zone with ML: " + monster_level_adjustment());
 	}	
 
 	executeFlavour();
