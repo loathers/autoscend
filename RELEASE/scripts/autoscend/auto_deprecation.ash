@@ -51,6 +51,10 @@ boolean settingFixer()
 		Maybe it won\t. It doesn't really need to be I guess.
 		Backwards compatibility forever!!!
 	***/
+	if(get_property("auto_debug") == "true"){
+		set_property("auto_logLevel", "debug");
+	}
+
 	trackingSplitterFixer("auto_banishes_day1", 1, "auto_banishes");
 	trackingSplitterFixer("auto_banishes_day2", 2, "auto_banishes");
 	trackingSplitterFixer("auto_banishes_day3", 3, "auto_banishes");
@@ -250,18 +254,18 @@ boolean settingFixer()
 
 	if(get_property("lastPlusSignUnlock") == "true")
 	{
-		print("lastPlusSignUnlock was changed to a boolean, fixing...", "red");
+		auto_log_debug("lastPlusSignUnlock was changed to a boolean, fixing...", "red");
 		set_property("lastPlusSignUnlock", my_ascensions());
 	}
 	if(get_property("lastTempleUnlock") == "true")
 	{
-		print("lastTempleUnlock was changed to a boolean, fixing...", "red");
+		auto_log_debug("lastTempleUnlock was changed to a boolean, fixing...", "red");
 		set_property("lastTempleUnlock", my_ascensions());
 	}
 
 	if(property_exists("auto_day1_init"))
 	{
-		print("Found old day initialization trackers, removing...", "red");
+		auto_log_debug("Found old day initialization trackers, removing...", "red");
 		remove_property("auto_day1_init");
 		remove_property("auto_day2_init");
 		remove_property("auto_day3_init");
@@ -270,19 +274,19 @@ boolean settingFixer()
 
 	if(property_exists("auto_gaudy"))
 	{
-		print("Some lingering stuff from when gaudy pirates mattered is still here, let's get rid of it...", "red");
+		auto_log_debug("Some lingering stuff from when gaudy pirates mattered is still here, let's get rid of it...", "red");
 		remove_property("auto_gaudy");
 	}
 
 	if(get_property("auto_paranoia") == "")
 	{
-		print("No paranoia value, we probably don't want to be paranoid...", "red");
+		auto_log_debug("No paranoia value, we probably don't want to be paranoid...", "red");
 		set_property("auto_paranoia", -1);
 	}
 
 	if(get_property("auto_helpMeMafiaIsSuperBrokenAaah") == "")
 	{
-		print("Mafia probably isn't super broken, so let's set it that way...", "red");
+		auto_log_debug("Mafia probably isn't super broken, so let's set it that way...", "red");
 		set_property("auto_helpMeMafiaIsSuperBrokenAaah", false);
 	}
 

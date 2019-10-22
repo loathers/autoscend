@@ -70,7 +70,7 @@ boolean LX_koeInvaderHandler()
 		float offset = auto_canBeachCombHead(el) ? 3.0 : 0.0;
 		damagePerRound += baseDamage * (100.0 - elemental_resist_value(offset + simValue(el + " Resistance")))/100.0;
 	}
-	print("The Invader: Expecting to take " + damagePerRound + " damage per round", "blue");
+	auto_log_info("The Invader: Expecting to take " + damagePerRound + " damage per round", "blue");
 	int turns = ceil(0.95 / damagePerRound);
 
 	int damageCap = 100 * my_daycount();
@@ -103,6 +103,6 @@ boolean LX_koeInvaderHandler()
 			return ret;
 		}
 	}
-	print("I don't think we're ready to kill the invader yet.", "blue");
+	auto_log_warning("I don't think we're ready to kill the invader yet.", "blue");
 	return false;
 }

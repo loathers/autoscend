@@ -146,8 +146,6 @@ boolean basicAdjustML();
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
 boolean auto_is_valid(skill sk);
-boolean auto_debug_print(string s, string color);
-boolean auto_debug_print(string s);
 boolean auto_can_equip(item it);
 boolean auto_can_equip(item it, slot s);
 boolean auto_badassBelt();
@@ -156,6 +154,22 @@ boolean auto_setMCDToCap();
 boolean UrKelCheck(int UToML, int UUL, int ULL);
 boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean enforceMLInPreAdv();
+string auto_log_level_threshold();
+int auto_log_level(string level);
+boolean auto_log(string s, string color, string log_level);
+boolean auto_log_critical(string s, string color);
+boolean auto_log_critical(string s);
+boolean auto_log_error(string s, string color);
+boolean auto_log_error(string s);
+boolean auto_log_warning(string s, string color);
+boolean auto_log_warning(string s);
+boolean auto_log_info(string s, string color);
+boolean auto_log_info(string s);
+boolean auto_log_debug(string s, string color);
+boolean auto_log_debug(string s);
+boolean auto_log_trace(string s, string color);
+boolean auto_log_trace(string s);
+
 
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
@@ -209,9 +223,9 @@ void debugMaximize(string req, int meat)
 	if(req.index_of("-tie") == -1)
 	{
 		req = req + " -tie";
-		print("Added -tie to maximize", "red");
+		auto_log_debug("Added -tie to maximize", "red");
 	}
-	print("Desired maximize: " + req, "blue");
+	auto_log_info("Desired maximize: " + req, "blue");
 	string situation = " " + my_class() + " " + my_path() + " " + my_sign();
 	if(in_hardcore())
 	{
@@ -409,8 +423,8 @@ void debugMaximize(string req, int meat)
 			output = "REJECT: " + output;
 			tableDont += "<tr>" + curTable + "</tr>";
 		}
-		print(output, "blue");
-		print(display, "green");
+		auto_log_info(output, "blue");
+		auto_log_info(display, "green");
 	}
 
 	tableDo += "</table>";
@@ -420,16 +434,15 @@ void debugMaximize(string req, int meat)
 
 	if(get_property("auto_shareMaximizer").to_boolean() && get_property("auto_allowSharingData").to_boolean())
 	{
-		print("Sharing Maximizer data.", "blue");
-		#print("http://cheesellc.com/kol/sharing.php?type=maximizer&data="+url_encode(tableDo + tableDont), "red");
+		auto_log_info("Sharing Maximizer data.", "blue");
 		string temp = visit_url("http://cheesellc.com/kol/sharing.php?type=maximizer&data="+url_encode(tableDo + tableDont));
 		if(contains_text(temp, "success"))
 		{
-			print("Data shared successfully", "green");
+			auto_log_info("Data shared successfully", "green");
 		}
 		else
 		{
-			print("Data share failed", "green");
+			auto_log_warning("Data share failed", "green");
 		}
 	}
 
@@ -573,7 +586,6 @@ boolean backupSetting(string setting, string newValue)
 		{
 			found = 1;
 			oldValue = get_property(name);
-			#print(domain + " " + name + " " + value);
 		}
 	}
 
@@ -1015,7 +1027,7 @@ int autoCraft(string mode, int count, item item1, item item2)
 	{
 		if(my_meat() < (10 * count))
 		{
-			print("Count not combine " + item1 + " and " + item2 + " due to lack of meat paste.", "red");
+			auto_log_warning("Count not combine " + item1 + " and " + item2 + " due to lack of meat paste.", "red");
 			return 0;
 		}
 		int need = max(0, count - item_amount($item[Meat Paste]));
@@ -1392,7 +1404,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "";
 
 	if(inCombat)
-		print("Finding a banisher to use on " + enemy + " at " + loc, "green");
+		auto_log_info("Finding a banisher to use on " + enemy + " at " + loc, "green");
 
 	//src/net/sourceforge/kolmafia/session/BanishManager.java
 	boolean[string] used = auto_banishesUsedAt(loc);
@@ -1779,7 +1791,7 @@ int ns_crowd1()
 {
 	if(get_property("nsContestants1").to_int() != 0)
 	{
-		print("Default Test: Initiative", "red");
+		auto_log_info("Default Test: Initiative", "red");
 	}
 	return 1;
 }
@@ -1787,7 +1799,7 @@ stat ns_crowd2()
 {
 	if(get_property("nsContestants2").to_int() != 0)
 	{
-		print("Off-Stat Test: " + get_property("nsChallenge1"), "red");
+		auto_log_info("Off-Stat Test: " + get_property("nsChallenge1"), "red");
 	}
 	return to_stat(get_property("nsChallenge1"));
 }
@@ -1795,23 +1807,23 @@ element ns_crowd3()
 {
 	if(get_property("nsContestants3").to_int() != 0)
 	{
-		print("Elemental Test: " + get_property("nsChallenge2"), "red");
+		auto_log_info("Elemental Test: " + get_property("nsChallenge2"), "red");
 	}
 	return to_element(get_property("nsChallenge2"));
 }
 element ns_hedge1()
 {
-	print("Hedge Maze 1: " + get_property("nsChallenge3"), "red");
+	auto_log_info("Hedge Maze 1: " + get_property("nsChallenge3"), "red");
 	return to_element(get_property("nsChallenge3"));
 }
 element ns_hedge2()
 {
-	print("Hedge Maze 2: " + get_property("nsChallenge4"), "red");
+	auto_log_info("Hedge Maze 2: " + get_property("nsChallenge4"), "red");
 	return to_element(get_property("nsChallenge4"));
 }
 element ns_hedge3()
 {
-	print("Hedge Maze 3: " + get_property("nsChallenge5"), "red");
+	auto_log_info("Hedge Maze 3: " + get_property("nsChallenge5"), "red");
 	return to_element(get_property("nsChallenge5"));
 }
 
@@ -1943,11 +1955,11 @@ boolean ovenHandle()
 	{
 		if (auto_get_campground() contains $item[Certificate of Participation] && isActuallyEd())
 		{
-			print("Mafia reports we have an oven but we do not. Logging back in will resolve this.", "red");
+			auto_log_error("Mafia reports we have an oven but we do not. Logging back in will resolve this.", "red");
 		}
 		else
 		{
-			print("Oven found! We can cook!", "blue");
+			auto_log_info("Oven found! We can cook!", "blue");
 			set_property("auto_haveoven", true);
 		}
 	}
@@ -2052,7 +2064,7 @@ boolean cloverUsageFinish()
 	restoreSetting("cloverProtectActive");
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
-		print("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
+		auto_log_debug("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
 		if(auto_my_path() == "G-Lover")
 		{
 			put_closet(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
@@ -2076,7 +2088,7 @@ boolean acquireGumItem(item it)
 	}
 
 	int have = item_amount(it);
-	print("Gum acquistion of: " + it, "green");
+	auto_log_info("Gum acquistion of: " + it, "green");
 	while((have == item_amount(it)) && (my_meat() >= npc_price($item[Chewing Gum on a String])))
 	{
 		buyUpTo(1, $item[Chewing Gum on a String]);
@@ -2117,7 +2129,7 @@ boolean acquireHermitItem(item it)
 		return false;
 	}
 	int have = item_amount(it);
-	print("Hermit acquistion of: " + it, "green");
+	auto_log_info("Hermit acquistion of: " + it, "green");
 	while((have == item_amount(it)) && ((my_meat() >= npc_price($item[Chewing Gum on a String])) || ((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)))
 	{
 		if((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)
@@ -2142,7 +2154,7 @@ boolean acquireHermitItem(item it)
 				}
 				else
 				{
-					print("Invalid clover count from hermit behavior, reporting failure.", "red");
+					auto_log_warning("Invalid clover count from hermit behavior, reporting failure.", "red");
 					return false;
 				}
 			}
@@ -2500,7 +2512,7 @@ boolean declineTrades()
 	}
 	if(count > 0)
 	{
-		print("Declined " + count + " trades.", "blue");
+		auto_log_info("Declined " + count + " trades.", "blue");
 		return true;
 	}
 	return false;
@@ -3155,7 +3167,7 @@ boolean handleBarrelFullOfBarrels(boolean daily)
 
 		if(mimic != "")
 		{
-			print("Found mimic in slot: " + slotID, "red");
+			auto_log_warning("Found mimic in slot: " + slotID, "red");
 		}
 		else if(label == "A barrel")
 		{
@@ -3441,7 +3453,7 @@ int doNumberology(string goal, boolean doIt, string option)
 		int current = (score + (melancholy * i)) % 100;
 		if(numberwang[current] == goal)
 		{
-			print("Found option for Numberology: " + current + " (" + goal + ")" , "blue");
+			auto_log_info("Found option for Numberology: " + current + " (" + goal + ")" , "blue");
 			if(!doIt)
 			{
 				return i;
@@ -3572,7 +3584,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 			}
 			if (curPrice >= 30000)
 			{
-				print(it + " is too expensive at " + curPrice + " meat, we're gonna skip buying one in the mall.", "red");
+				auto_log_warning(it + " is too expensive at " + curPrice + " meat, we're gonna skip buying one in the mall.", "red");
 				break;
 			}
 			if((curPrice <= oldPrice) && (curPrice < 30000) && (meat >= curPrice))
@@ -3590,14 +3602,14 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 			{
 				if(curPrice > oldPrice)
 				{
-					print("Price of " + it + " may have been mall manipulated. Expected to pay at most: " + oldPrice, "red");
+					auto_log_warning("Price of " + it + " may have been mall manipulated. Expected to pay at most: " + oldPrice, "red");
 				}
 				if(my_storage_meat() < curPrice)
 				{
-					print("Do not have enough meat in Hagnk's to buy " + it + ". Need " + curPrice + " have " + my_storage_meat() + ".", "blue");
+					auto_log_warning("Do not have enough meat in Hagnk's to buy " + it + ". Need " + curPrice + " have " + my_storage_meat() + ".", "blue");
 					if(curPrice > 10000000)
 					{
-						print("You must be a poor meatbag.", "green");
+						auto_log_warning("You must be a poor meatbag.", "green");
 					}
 				}
 			}
@@ -3610,15 +3622,15 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 
 		if(storage_amount(it) < howMany)
 		{
-			print("Can not pull what we don't have. Sorry");
+			auto_log_warning("Can not pull what we don't have. Sorry");
 			return false;
 		}
 
-		print("Trying to pull " + howMany + " of " + it, "blue");
+		auto_log_info("Trying to pull " + howMany + " of " + it, "blue");
 		boolean retval = take_storage(howMany, it);
 		if(item_amount(it) != (howMany + whenHave))
 		{
-			print("Failed pulling " + howMany + " of " + it, "red");
+			auto_log_warning("Failed pulling " + howMany + " of " + it, "red");
 		}
 		else
 		{
@@ -3701,7 +3713,7 @@ boolean buy_item(item it, int quantity, int maxprice)
 		}
 		if(buy(1, it, maxprice) == 0)
 		{
-			print("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
+			auto_log_info("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
 			return false;
 		}
 	}
@@ -3709,7 +3721,7 @@ boolean buy_item(item it, int quantity, int maxprice)
 	{
 		if(auto_mall_price(it) >= maxprice)
 		{
-			print("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
+			auto_log_info("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
 		}
 		return false;
 	}
@@ -3753,7 +3765,7 @@ string beerPong(string page)
 
 		if(page.contains_text("Phooey"))
 		{
-			print("Looks like something went wrong and you lost.", "lime");
+			auto_log_info("Looks like something went wrong and you lost.", "lime");
 			return page;
 		}
 
@@ -3763,17 +3775,17 @@ string beerPong(string page)
 			{
 				if(page.contains_text(insults[i].retort))
 				{
-					print("Found appropriate retort for insult.", "lime");
-					print("Insult: " + insults[i].insult, "lime");
-					print("Retort: " + insults[i].retort, "lime");
+					auto_log_info("Found appropriate retort for insult.", "lime");
+					auto_log_debug("Insult: " + insults[i].insult, "lime");
+					auto_log_debug("Retort: " + insults[i].retort, "lime");
 					page = visit_url("beerpong.php?value=Retort!&response=" + i);
 					break;
 				}
 				else
 				{
-					print("Looks like you needed a retort you haven't learned.", "red");
-					print("Insult: " + insults[i].insult, "lime");
-					print("Retort: " + insults[i].retort, "lime");
+					auto_log_info("Looks like you needed a retort you haven't learned.", "red");
+					auto_log_debug("Insult: " + insults[i].insult, "lime");
+					auto_log_debug("Retort: " + insults[i].retort, "lime");
 
 					// Give a bad retort
 					page = visit_url("beerpong.php?value=Retort!&response=9");
@@ -3788,7 +3800,7 @@ string beerPong(string page)
 		}
 	}
 
-	print("You won a thrilling game of Insult Beer Pong!", "lime");
+	auto_log_info("You won a thrilling game of Insult Beer Pong!", "lime");
 	return page;
 }
 
@@ -4014,12 +4026,12 @@ void shrugAT(effect anticipated)
 			count += 1;
 			if(count > maxSongs)
 			{
-				print("Shrugging song: " + song, "blue");
+				auto_log_info("Shrugging song: " + song, "blue");
 				uneffect(song);
 			}
 		}
 	}
-	print("I think we're good to go to apply " + anticipated, "blue");
+	auto_log_info("I think we're good to go to apply " + anticipated, "blue");
 }
 
 
@@ -4243,7 +4255,7 @@ boolean buyUpTo(int num, item it, int maxprice)
 		buy(num, it, maxprice);
 		if(item_amount(it) < orig)
 		{
-			print("Could not buyUpTo(" + orig + ") of " + it + ". Maxprice: " + maxprice, "red");
+			auto_log_warning("Could not buyUpTo(" + orig + ") of " + it + ". Maxprice: " + maxprice, "red");
 		}
 	}
 	return (item_amount(it) >= orig);
@@ -5049,7 +5061,7 @@ boolean auto_is_valid(familiar fam)
 {
 	familiar hundo = to_familiar(get_property("auto_100familiar"));
 	if(hundo != $familiar[none] && hundo != fam){
-		auto_debug_print(fam + " isnt valid, player is in a 100% familiar run with " + hundo);
+		auto_log_warning(fam + " isnt valid, player is in a 100% familiar run with " + hundo);
 	}
 	return bees_hate_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam) && (hundo == $familiar[none] || hundo == fam);
 }
@@ -5059,26 +5071,91 @@ boolean auto_is_valid(skill sk)
 	return ((glover_usable(sk.to_string()) && bees_hate_usable(sk.to_string())) || sk.passive) && bat_skillValid(sk) && is_unrestricted(sk);
 }
 
-boolean auto_debug_print(string s, string color)
-{
-	if(get_property("auto_debug").to_boolean())
-	{
-		print(s, color);
-		return true;
+string auto_log_level_threshold(){
+	static string logging_property = "auto_logLevel";
+	if(!property_exists(logging_property)){
+		set_property(logging_property, "info");
+	}
+	return get_property(logging_property);
+}
+
+int auto_log_level(string level){
+	static int[string] log_levels = {
+		"critical": 1,
+		"crit": 1,
+		"error": 2,
+		"err": 2,
+		"warning": 3,
+		"warn": 3,
+		"info": 4,
+		"debug": 5,
+		"trace": 6
+	};
+
+	level = level.to_lower_case();
+	if(log_levels contains level){
+		return log_levels[level];
 	} else{
-		logprint(s);
+		return log_levels["info"];
+	}
+}
+
+boolean auto_log(string s, string color, string log_level){
+	int threshold = auto_log_level(auto_log_level_threshold());
+	int level = auto_log_level(log_level);
+	if(level <= threshold){
+		print("["+log_level.to_upper_case()+"] - " + s, color);
+		return true;
 	}
 	return false;
 }
 
-boolean auto_debug_print(string s)
-{
-	if(get_property("auto_debug").to_boolean())
-	{
-		print(s);
-		return true;
-	}
-	return false;
+boolean auto_log_critical(string s, string color){
+	return auto_log(s, color, "critical");
+}
+
+boolean auto_log_critical(string s){
+	return auto_log(s, "red", "critical");
+}
+
+boolean auto_log_error(string s, string color){
+	return auto_log(s, color, "critical");
+}
+
+boolean auto_log_error(string s){
+	return auto_log(s, "red", "error");
+}
+
+boolean auto_log_warning(string s, string color){
+	return auto_log(s, color, "warning");
+}
+
+boolean auto_log_warning(string s){
+	return auto_log(s, "orange", "warning");
+}
+
+boolean auto_log_info(string s, string color){
+	return auto_log(s, color, "info");
+}
+
+boolean auto_log_info(string s){
+	return auto_log(s, "blue", "info");
+}
+
+boolean auto_log_debug(string s, string color){
+	return auto_log(s, color, "debug");
+}
+
+boolean auto_log_debug(string s){
+	return auto_log(s, "black", "debug");
+}
+
+boolean auto_log_trace(string s, string color){
+	return auto_log(s, color, "trace");
+}
+
+boolean auto_log_trace(string s){
+	return auto_log(s, "black", "trace");
 }
 
 boolean auto_can_equip(item it)
@@ -5316,13 +5393,13 @@ boolean [monster] auto_getMonsters(string category)
 	boolean [monster] res;
 	string [string,int,string] monsters_text;
 	if(!file_to_map("autoscend_monsters.txt", monsters_text))
-		print("Could not load autoscend_monsters.txt. This is bad!", "red");
+		auto_log_error("Could not load autoscend_monsters.txt. This is bad!", "red");
 	foreach i,name,conds in monsters_text[category]
 	{
 		monster thisMonster = name.to_monster();
 		if(thisMonster == $monster[none])
 		{
-			print('"' + name + '" does not convert to a monster properly!', "red");
+			auto_log_warning('"' + name + '" does not convert to a monster properly!', "red");
 			continue;
 		}
 		if(!auto_check_conditions(conds))
@@ -5632,7 +5709,7 @@ boolean canSimultaneouslyAcquire(int[item] needed)
 			if (count(get_ingredients(toAdd)) == 0 && npc_price(toAdd) == 0 && buy_price($coinmaster[hermit], toAdd) == 0)
 			{
 				// not craftable
-				auto_debug_print("canSimultaneouslyAcquire failing on " + toAdd, "red");
+				auto_log_warning("canSimultaneouslyAcquire failing on " + toAdd, "red");
 				failed = true;
 			}
 			else if (npc_price(toAdd) > 0)
@@ -5674,7 +5751,7 @@ boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val)
 
 	if(n*maxw >= 100000)
 	{
-		print("Solving a Knapsack instance with " + n + " elements and " + maxw + " total weight, this might be slow and memory-intensive.");
+		auto_log_warning("Solving a Knapsack instance with " + n + " elements and " + maxw + " total weight, this might be slow and memory-intensive.");
 	}
 
 	/* V[i][w] is "with only the first i items, what is the maximum
@@ -5732,19 +5809,19 @@ int auto_reserveAmount(item it)
 {
 	string [string,int,string] itemdata;
 	if(!file_to_map("autoscend_items.txt", itemdata))
-		print("Could not load autoscend_items.txt! This is bad!", "red");
+		auto_log_error("Could not load autoscend_items.txt! This is bad!", "red");
 	foreach i,counteditem,conds in itemdata["reserve"]
 	{
 		matcher m = create_matcher("(\\-?\\d+) (.+)", counteditem);
 		if(!m.find())
 		{
-			print('"' + counteditem + '" is not in the format "# itemname"!', "red");
+			auto_log_warning('"' + counteditem + '" is not in the format "# itemname"!', "red");
 			continue;
 		}
 		item curr = m.group(2).to_item();
 		if(curr == $item[none])
 		{
-			print('"' + m.group(2) + '" does not convert to an item properly!', "red");
+			auto_log_warning('"' + m.group(2) + '" does not convert to an item properly!', "red");
 			continue;
 		}
 		if(curr != it)
@@ -5765,11 +5842,11 @@ int auto_reserveCraftAmount(item orig_it)
 	{
 		if (its contains it)
 		{
-			print("Found dependency loop involving " + it + " when trying to craft " + orig_it + ", consider adding to reserve list.", "red");
-			print("Dependencies (in no particular order):", "red");
+			auto_log_warning("Found dependency loop involving " + it + " when trying to craft " + orig_it + ", consider adding to reserve list.", "red");
+			auto_log_warning("Dependencies (in no particular order):", "red");
 			foreach iit in its
 			{
-				print("> " + iit, "red");
+				auto_log_warning("> " + iit, "red");
 			}
 			return 9999999;
 		}
@@ -5992,12 +6069,12 @@ boolean auto_forceNextNoncombat()
 {
 	if(auto_haveQueuedForcedNonCombat())
 	{
-		print("Trying to force a noncombat adventure, but I think we've already forced one...", "red");
+		auto_log_warning("Trying to force a noncombat adventure, but I think we've already forced one...", "red");
 		return true;
 	}
 	if (_auto_forceNextNoncombat())
 	{
-		print("Next noncombat adventure has been forced...", "blue");
+		auto_log_info("Next noncombat adventure has been forced...", "blue");
 		return true;
 	}
 	return false;

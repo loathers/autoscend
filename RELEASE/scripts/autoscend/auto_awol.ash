@@ -160,7 +160,7 @@ boolean awol_buySkills()
 		if(my_skillPoints.find())
 		{
 			int skillPoints = to_int(my_skillPoints.group(1));
-			print("Cow points found: " + skillPoints);
+			auto_log_info("Cow points found: " + skillPoints);
 			while(skillPoints > 0)
 			{
 				if(my_class() == $class[Cow Puncher])
@@ -264,7 +264,7 @@ boolean awol_buySkills()
 		if(my_skillPoints.find())
 		{
 			int skillPoints = to_int(my_skillPoints.group(1));
-			print("Bean points found: " + skillPoints);
+			auto_log_info("Bean points found: " + skillPoints);
 			while(skillPoints > 0)
 			{
 				if(my_class() == $class[Beanslinger])
@@ -368,7 +368,7 @@ boolean awol_buySkills()
 		if(my_skillPoints.find())
 		{
 			int skillPoints = to_int(my_skillPoints.group(1));
-			print("Snake points found: " + skillPoints);
+			auto_log_info("Snake points found: " + skillPoints);
 			while(skillPoints > 0)
 			{
 				if(my_class() == $class[Snake Oiler])

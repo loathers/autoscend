@@ -23,7 +23,7 @@ string autoscend_previous_version(){
 boolean autoscend_needs_update(){
   if(autoscend_previous_version() == "0.0.0" || autoscend_current_version() != __autoscend_version){
     if(get_property("auto_need_update").to_boolean()){
-      print("Forcing migration (partially complete migration or user set flag): auto_need_update => true");
+      auto_log_info("Forcing migration (partially complete migration or user set flag): auto_need_update => true");
     }
     set_property("auto_need_update", true);
   }
@@ -58,14 +58,14 @@ boolean autoscend_migrate(){
       string old_prop = replace_string(p ,"auto_" , "sl_");
       if(property_exists(old_prop)){
         if(property_exists(p) && property_exists(old_prop) && get_property(p) != get_property(old_prop)){
-          print("Conflict: " + old_prop + " ("+get_property(old_prop)+") != " + p + " ("+get_property(p)+")");
+          auto_log_warning("Conflict: " + old_prop + " ("+get_property(old_prop)+") != " + p + " ("+get_property(p)+")");
           prop_conflicts++;
         }
       }
     }
 
     if(prop_conflicts > 0){
-      print("Found " + prop_conflicts + " conflicting property values while migrating from sl_ascend properties to autoscend properties. Old property value will be ignored. Please do not use sl_ascend and autoscend at the same time.", "red");
+      auto_log_error("Found " + prop_conflicts + " conflicting property values while migrating from sl_ascend properties to autoscend properties. Old property value will be ignored. Please do not use sl_ascend and autoscend at the same time.", "red");
       return false;
     }
     return true;
@@ -90,10 +90,10 @@ boolean autoscend_migrate(){
       string old_prop = replace_string(p ,"auto_" , "sl_");
       if(property_exists(old_prop)){
         if(!property_exists(p)){
-          print("Migrating " + old_prop + " => " + p + " ("+get_property(old_prop)+")");
+          auto_log_info("Migrating " + old_prop + " => " + p + " ("+get_property(old_prop)+")");
           set_property(p, get_property(old_prop));
         } else if(get_property(old_prop) != get_property(p)){
-          print("Conflict: " + old_prop + " ("+get_property(old_prop)+") != " + p + " ("+get_property(p)+")", "red");
+          auto_log_warning("Conflict: " + old_prop + " ("+get_property(old_prop)+") != " + p + " ("+get_property(p)+")", "red");
           prop_conflicts++;
         }
         if(cleanup) remove_property(old_prop);
@@ -101,7 +101,7 @@ boolean autoscend_migrate(){
     }
 
     if(prop_conflicts > 0){
-      print("Found " + prop_conflicts + " conflicting property values while migrating from sl_ascend properties to autoscend properties. Old property value will be ignored. Please do not use sl_ascend and autoscend at the same time.", "red");
+      auto_log_error("Found " + prop_conflicts + " conflicting property values while migrating from sl_ascend properties to autoscend properties. Old property value will be ignored. Please do not use sl_ascend and autoscend at the same time.", "red");
       return false;
     }
     return true;
@@ -130,7 +130,7 @@ boolean autoscend_migrate(){
 
   boolean all_good = true;
   if(autoscend_needs_update()){
-    print("Migrating from " + autoscend_previous_version() + " to " + __autoscend_version, "blue");
+    auto_log_info("Migrating from " + autoscend_previous_version() + " to " + __autoscend_version, "blue");
     if(autoscend_previous_version() == "0.0.0" && repo_present("sl_ascend")){
       all_good = autoscend_migrate_properties() && remove_sl_ascend_repos();
     }

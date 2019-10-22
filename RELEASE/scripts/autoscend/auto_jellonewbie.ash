@@ -22,12 +22,12 @@ void jello_startAscension(string page)
 {
 	if(contains_text(page, "Welcome to the Kingdom, Gelatinous Noob"))
 	{
-		print("In starting Jello Adventure", "blue");
+		auto_log_info("In starting Jello Adventure", "blue");
 		matcher my_skillPoints = create_matcher("You can pick <span class=\"num\">(\\d\+)</span> more skill", page);
 		if(my_skillPoints.find())
 		{
 			int skillPoints = to_int(my_skillPoints.group(1));
-			print("Found " + skillPoints + " skillpoints", "blue");
+			auto_log_info("Found " + skillPoints + " skillpoints", "blue");
 			boolean [int] skills = $ints[50, 49, 48, 47, 46, 55, 45, 70, 60, 69, 30, 29, 95, 54, 105, 75, 35, 10, 20, 68, 53, 52, 51, 44, 43, 42, 85, 83, 93, 34, 58, 28, 57, 84, 8, 56, 6, 18, 17, 37, 7, 9, 67, 59, 39, 74, 73, 72, 40, 66, 77, 78, 38];
 
 			string goal = "";
@@ -101,10 +101,10 @@ boolean jello_buySkills()
 
 				sort possible by auto_mall_price(value);
 
-				print("Trying to acquire skill " + sk + " and considering: " , "green");
+				auto_log_info("Trying to acquire skill " + sk + " and considering: " , "green");
 				for(int i=0; i<bound; i++)
 				{
-					print(possible[i] + ": " + auto_mall_price(possible[i]), "blue");
+					auto_log_info(possible[i] + ": " + auto_mall_price(possible[i]), "blue");
 				}
 
 				for(int i=0; (i<bound) && !have_skill(sk); i++)
@@ -170,13 +170,6 @@ string[item] jello_lister(string goal)
 			}
 			if(contains_text(result, goal))
 			{
-//				string color = "green";
-//				if((output % 2) == 1)
-//				{
-//					color = "blue";
-//				}
-//				print(it + ": " + result, color);
-//				output++;
 				retval[it] = result;
 			}
 		}
@@ -208,4 +201,3 @@ boolean LM_jello()
 	jello_buySkills();
 	return false;
 }
-

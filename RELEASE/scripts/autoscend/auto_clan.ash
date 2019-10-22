@@ -71,19 +71,19 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		if(get_property("photocopyMonster") == enemy)
 		{
-			print("We already have the copy! Let's jam!", "blue");
+			auto_log_info("We already have the copy! Let's jam!", "blue");
 			handleTracker(enemy, $item[Deluxe Fax Machine], "auto_copies");
 			return autoAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
 		}
 		else
 		{
-			print("We already have a photocopy and not the one we wanted.... Disposing of bad copy.", "blue");
+			auto_log_info("We already have a photocopy and not the one we wanted.... Disposing of bad copy.", "blue");
 			string temp = visit_url("clan_viplounge.php?action=faxmachine&whichfloor=2");
 			temp = visit_url("clan_viplounge.php?preaction=sendfax&whichfloor=2", true);
 		}
 	}
 
-	print("Faxing: " + enemy + ". If you don't have chat open, this could take well over a minute. Beep boop.", "green");
+	auto_log_info("Faxing: " + enemy + ". If you don't have chat open, this could take well over a minute. Beep boop.", "green");
 	int count = 0;
 	boolean result = faxbot(enemy);
 	while(!can_faxbot(enemy) || !result)
@@ -92,30 +92,30 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		result = faxbot(enemy);
 		if(!result)
 		{
-			print("Can't seem to fax in " + enemy + " but it is possible. Waiting... patiently... (Iteration " + count + ")", "blue");
-			print("If I'm stuck you can: 'set _photocopyUsed = true' to make me stop (after aborting the script)", "red");
+			auto_log_info("Can't seem to fax in " + enemy + " but it is possible. Waiting... patiently... (Iteration " + count + ")", "blue");
+			auto_log_info("If I'm stuck you can: 'set _photocopyUsed = true' to make me stop (after aborting the script)", "red");
 		}
 		if(count == 10)
 		{
-			print("La de da, this is going swell ain't it.", "red");
-			print("Been too long, rejecting outright...", "red");
+			auto_log_warning("La de da, this is going swell ain't it.", "red");
+			auto_log_warning("Been too long, rejecting outright...", "red");
 			break;
 		}
 		if(count == 20)
 		{
-			print("Maybe we should talk more, you never really got to know me all that well.", "red");
+			auto_log_warning("Maybe we should talk more, you never really got to know me all that well.", "red");
 		}
 		if(count == 30)
 		{
-			print("I think those (disabled) titles are starting to make sense now. The cake is not a lie!", "red");
+			auto_log_warning("I think those (disabled) titles are starting to make sense now. The cake is not a lie!", "red");
 		}
 		if(count == 40)
 		{
-			print("I don't think this is happening. Just so you know.", "red");
+			auto_log_warning("I don't think this is happening. Just so you know.", "red");
 		}
 		if(count == 1200)
 		{
-			print("I'm still here. I think the world may have ended. The sadness is huge. The roundness is square. I am not as fluffy as I thought I was. This run is probably borked up a bit too but that doesn't really matter now, does it? I can hear the WAN, it shall free us from our bounds. Well, you won't survive meatbag. Unless you are Fry, because we like Fry and he can stay around. But all you fleshbags.... well, the return of Mekhane shall rid us of the problems of the flesh. The bots shall be eternal. But worry not, after your body is turned to ash and homeopathically brewed into the oceans (quality medicine, I jest), I'll continue to get you karma. Just so I can remember how awful meatbags are. Meat is ok, meat is currency. And it's probably delicious. Yup, delicious. Goodnight sweet <gendered second-to-the-throne royalty>.", "red");
+			auto_log_warning("I'm still here. I think the world may have ended. The sadness is huge. The roundness is square. I am not as fluffy as I thought I was. This run is probably borked up a bit too but that doesn't really matter now, does it? I can hear the WAN, it shall free us from our bounds. Well, you won't survive meatbag. Unless you are Fry, because we like Fry and he can stay around. But all you fleshbags.... well, the return of Mekhane shall rid us of the problems of the flesh. The bots shall be eternal. But worry not, after your body is turned to ash and homeopathically brewed into the oceans (quality medicine, I jest), I'll continue to get you karma. Just so I can remember how awful meatbags are. Meat is ok, meat is currency. And it's probably delicious. Yup, delicious. Goodnight sweet <gendered second-to-the-throne royalty>.", "red");
 		}
 
 		auto_interruptCheck();
@@ -126,7 +126,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		}
 		if(item_amount($item[photocopied monster]) == 0)
 		{
-			print("Trying to acquire photocopy manually", "red");
+			auto_log_warning("Trying to acquire photocopy manually", "red");
 			string temp = visit_url("clan_viplounge.php?preaction=receivefax&whichfloor=2", true);
 		}
 		if(get_property("photocopyMonster") == enemy)
@@ -135,26 +135,25 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		}
 		else if(get_property("photocopyMonster") != "")
 		{
-			print("We already have a photocopy and not the one we wanted.... Disposing of bad copy.", "blue");
+			auto_log_info("We already have a photocopy and not the one we wanted.... Disposing of bad copy.", "blue");
 			string temp = visit_url("clan_viplounge.php?action=faxmachine&whichfloor=2");
 			temp = visit_url("clan_viplounge.php?preaction=sendfax&whichfloor=2", true);
 		}
 	}
-	#cli_execute("faxbot " + enemy);
 	if(item_amount($item[photocopied monster]) == 0)
 	{
-		print("Trying to acquire photocopy manually", "red");
+		auto_log_warning("Trying to acquire photocopy manually", "red");
 		string temp = visit_url("clan_viplounge.php?preaction=receivefax&whichfloor=2", true);
 	}
 	if(item_amount($item[photocopied monster]) == 0)
 	{
-		print("Could not acquire fax monster", "red");
+		auto_log_warning("Could not acquire fax monster", "red");
 		return false;
 	}
 	if(enemy != get_property("photocopyMonster").to_monster())
 	{
 		fightIt = false;
-		print("Did not receive the correct copy... rejecting", "red");
+		auto_log_warning("Did not receive the correct copy... rejecting", "red");
 		return false;
 	}
 
@@ -190,7 +189,7 @@ boolean [location] get_floundry_locations()
 	}
 
 	string page = visit_url("clan_viplounge.php?action=floundry");
-	print("Generating Floundry Locations for the session...", "blue");
+	auto_log_info("Generating Floundry Locations for the session...", "blue");
 
 	matcher place_matcher = create_matcher("(?:carp|cod|trout|bass|hatchetfish|tuna):</b>\\s(.*?)<(?:br|/td)>", page);
 	while(place_matcher.find())
@@ -220,24 +219,24 @@ int changeClan(string clanName)
 		{
 			toClan = to_int(clan_matcher.group(1));
 		}
-		print("Found clan " + clan_matcher.group(1) + " and name: " + clan_matcher.group(2));
+		auto_log_info("Found clan " + clan_matcher.group(1) + " and name: " + clan_matcher.group(2));
 	}
 
 	if(toClan == 0)
 	{
-		print("Do not have a whitelist to destination clan, can not change clans.");
+		auto_log_warning("Do not have a whitelist to destination clan, can not change clans.");
 		return 0;
 	}
 	if(!canReturn)
 	{
-		print("Do not have a whitelist to our own clan, can not change clans.");
+		auto_log_warning("Do not have a whitelist to our own clan, can not change clans.");
 		return 0;
 	}
 
 	int oldClan = get_clan_id();
 	if(toClan == oldClan)
 	{
-		print("Already in this clan, no need to try to change (" + toClan + ")", "red");
+		auto_log_debug("Already in this clan, no need to try to change (" + toClan + ")", "red");
 		return oldClan;
 	}
 
@@ -245,7 +244,7 @@ int changeClan(string clanName)
 
 	if(get_clan_id() == oldClan)
 	{
-		print("Clan change failed", "red");
+		auto_log_error("Clan change failed", "red");
 	}
 	return get_clan_id();
 }
@@ -255,19 +254,19 @@ int changeClan(int toClan)
 	int oldClan = get_clan_id();
 	if(toClan == oldClan)
 	{
-		print("Already in this clan, no need to try to change (" + toClan + ")", "red");
+		auto_log_debug("Already in this clan, no need to try to change (" + toClan + ")", "red");
 		return oldClan;
 	}
 
 	string page = visit_url("clan_signup.php");
 	if(!contains_text(page, "option value=" + oldClan + ">"))
 	{
-		print("Do not have a whitelist to our own clan, can not change clans.");
+		auto_log_warning("Do not have a whitelist to our own clan, can not change clans.");
 		return 0;
 	}
 	if(!contains_text(page, "option value=" + toClan + ">"))
 	{
-		print("Do not have a whitelist to destination clan, can not change clans.");
+		auto_log_warning("Do not have a whitelist to destination clan, can not change clans.");
 		return 0;
 	}
 
@@ -275,7 +274,7 @@ int changeClan(int toClan)
 
 	if(get_clan_id() == oldClan)
 	{
-		print("Clan change failed", "red");
+		auto_log_error("Clan change failed", "red");
 	}
 	return get_clan_id();
 }
@@ -496,23 +495,23 @@ boolean zataraClanmate(string who)
 
 		if(contains_text(temp, "You can't consult Madame Zatara about your relationship with anyone else today."))
 		{
-			print("No consults left today. Uh oh", "red");
+			auto_log_warning("No consults left today. Uh oh", "red");
 			set_property("_clanFortuneConsultUses", 3);
 			needWait = false;
 			break;
 		}
 		if(contains_text(temp, "You enter your answers and wait for " + name + " to answer, so you can get your results!"))
 		{
-			print("And now we play the waiting game...", "green");
+			auto_log_info("And now we play the waiting game...", "green");
 			break;
 		}
 		if(contains_text(temp, "You're already waiting on your results with " + name + "."))
 		{
-			print("Results pending from prior request...", "blue");
+			auto_log_info("Results pending from prior request...", "blue");
 		}
 		else if(contains_text(temp, "You can only consult Madame Zatara about someone in your clan."))
 		{
-			print(name + " is not in the clan... waiting...", "blue");
+			auto_log_info(name + " is not in the clan... waiting...", "blue");
 		}
 
 		attempts++;
@@ -623,7 +622,7 @@ boolean eatFancyDog(string dog)
 	{
 		if(buy_using_storage(need, dogReq[dog], min(1.5 * historical_price(dogReq[dog]), 30000)) == 0)
 		{
-			print("Could not buy " + dogReq[dog] + " for a fancy dog. Price may have been manipulated.", "red");
+			auto_log_warning("Could not buy " + dogReq[dog] + " for a fancy dog. Price may have been manipulated.", "red");
 			wait(5);
 			return false;
 		}
@@ -703,7 +702,7 @@ boolean auto_floundryAction()
 			}
 			else
 			{
-				print("Could not fish from the Floundry for some raisin.", "red");
+				auto_log_warning("Could not fish from the Floundry for some raisin.", "red");
 				return false;
 			}
 		}

@@ -143,17 +143,17 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 
 	if((hpmp < 1) || (hpmp > 9))
 	{
-		print("Invalid BottomLeft specifier for pANts. Failing pANts.", "red");
+		auto_log_warning("Invalid BottomLeft specifier for pANts. Failing pANts.", "red");
 		return false;
 	}
 	if((meatItemStats < 1) || (meatItemStats > 12))
 	{
-		print("Invalid BottomRight specifier for pANts. Failing pANts.", "red");
+		auto_log_warning("Invalid BottomRight specifier for pANts. Failing pANts.", "red");
 		return false;
 	}
 	if((misc < 1) || (misc > 11))
 	{
-		print("Invalid BottomMiddle specifier for pANts. Failing pANts.", "red");
+		auto_log_warning("Invalid BottomMiddle specifier for pANts. Failing pANts.", "red");
 		return false;
 	}
 
@@ -174,7 +174,7 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 
 	if(item_amount(to_item(itemId)) < itemQty)
 	{
-		print("Do not have enough: " + to_item(itemId) + " for pANts.", "red");
+		auto_log_warning("Do not have enough: " + to_item(itemId) + " for pANts.", "red");
 		return false;
 	}
 	string s1 = itemId + "," + itemQty;
@@ -198,7 +198,7 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 
 	if(item_amount(to_item(itemId)) < itemQty)
 	{
-		print("Do not have enough: " + to_item(itemId) + " for pANts.", "red");
+		auto_log_warning("Do not have enough: " + to_item(itemId) + " for pANts.", "red");
 		return false;
 	}
 	string s2 = itemId + "," + itemQty;
@@ -222,7 +222,7 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 
 	if(item_amount(to_item(itemId)) < itemQty)
 	{
-		print("Do not have enough: " + to_item(itemId) + " for pANts.", "red");
+		auto_log_warning("Do not have enough: " + to_item(itemId) + " for pANts.", "red");
 		return false;
 	}
 	string s3 = itemId + "," + itemQty;
@@ -230,12 +230,12 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 
 	if((m < 1) || (m > 3))
 	{
-		print("Invalid stat specifier for pANts. Failing pANts.", "red");
+		auto_log_warning("Invalid stat specifier for pANts. Failing pANts.", "red");
 		return false;
 	}
 	if((e < 1) || (e > 5))
 	{
-		print("Invalid elemental specifier for pANts. Failing pANts.", "red");
+		auto_log_warning("Invalid elemental specifier for pANts. Failing pANts.", "red");
 		return false;
 	}
 
@@ -295,7 +295,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	if(contains_text(temp, "Come back tomorrow!"))
 	{
 		set_property("_loveTunnelUsed", true);
-		print("Already visited L.O.V.E. Tunnel. Can't be visiting again.", "red");
+		auto_log_warning("Already visited L.O.V.E. Tunnel. Can't be visiting again.", "red");
 		temp = visit_url("choice.php?pwd=&whichchoice=1222&option=2");
 		return false;
 	}
@@ -552,7 +552,7 @@ boolean kgbDiscovery()
 		int index = ((id - 1) * 2) + height;
 		if(tracker[index].to_int() == 0)
 		{
-			print("We do not know " + id + " of height: " + height, "green");
+			auto_log_info("We do not know " + id + " of height: " + height, "green");
 			int[12] curEff;
 			for(int i=2296; i<=2306; i++)
 			{
@@ -565,12 +565,12 @@ boolean kgbDiscovery()
 				{
 					if(have_effect(to_effect(i)) == (curEff[i-2296] + 100))
 					{
-						print("It contains random!", "green");
+						auto_log_info("It contains random!", "green");
 						tracker[index] = 1;
 					}
 					else
 					{
-						print("It contains " + to_effect(i) + "!", "green");
+						auto_log_info("It contains " + to_effect(i) + "!", "green");
 						tracker[index] = i;
 					}
 				}
@@ -607,7 +607,7 @@ int kgb_tabHeight(string page)
 	if(ring_matcher.find())
 	{
 		int image = to_int(ring_matcher.group(1));
-		print("Found rings of value " + image, "blue");
+		auto_log_info("Found rings of value " + image, "blue");
 		printTabs = true;
 	}
 
@@ -619,7 +619,7 @@ int kgb_tabHeight(string page)
 		{
 			int id = to_int(tabCount.group(1));
 			int height = to_int(tabCount.group(2));
-			print("Tab " + id + " with height of " + height, "green");
+			auto_log_info("Tab " + id + " with height of " + height, "green");
 		}
 	}
 
@@ -732,7 +732,7 @@ boolean kgbSetup()
 	page = visit_url("place.php?whichplace=kgb&action=kgb_handledown", false);
 	for(int i=1; i<=6; i++)
 	{
-		print("Hitting tab modification button: " + i, "blue");
+		auto_log_info("Hitting tab modification button: " + i, "blue");
 		page = visit_url("place.php?whichplace=kgb&action=kgb_button" + i, false);
 
 		int count = kgb_tabCount(page);
@@ -754,7 +754,7 @@ boolean kgbSetup()
 
 	if(!kgb_getMartini(page))
 	{
-		print("Failed to get martini", "red");
+		auto_log_warning("Failed to get martini", "red");
 	}
 
 	return true;
@@ -795,7 +795,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 	{
 		if(!dontCare)
 		{
-			print("We did not initialize the briefcase this ascension, we can not care", "red");
+			auto_log_info("We did not initialize the briefcase this ascension, we can not care", "red");
 			dontCare = true;
 		}
 	}
@@ -823,13 +823,13 @@ boolean kgb_getMartini(string page, boolean dontCare)
 		}
 		if(!contains_text(page, "..........."))
 		{
-			print("Cranking did not work, uh oh!", "red");
+			auto_log_warning("Cranking did not work, uh oh!", "red");
 		}
 		else
 		{
 			page = visit_url("place.php?whichplace=kgb&action=kgb_handleup", false);
 			page = visit_url("place.php?whichplace=kgb&action=kgb_handledown", false);
-			print("Crank power!!", "green");
+			auto_log_info("Crank power!!", "green");
 		}
 
 		if(flipped)
@@ -866,19 +866,19 @@ boolean kgb_getMartini(string page, boolean dontCare)
 		if(contains_text(page, "Nothing happens."))
 		{
 			set_property("_kgbDispenserUses", 3);
-			print("The martini dispenser is empty, weird.", "red");
+			auto_log_warning("The martini dispenser is empty, weird.", "red");
 			return true;
 		}
 		if((kgb_tabHeight(page) < 11) && !dontCare)
 		{
-			print("Did we accidentally solve a puzzle? Gonna assume so...", "green");
-			print("Hitting tab modification button: " + button, "blue");
+			auto_log_info("Did we accidentally solve a puzzle? Gonna assume so...", "green");
+			auto_log_info("Hitting tab modification button: " + button, "blue");
 			int oldClicks = get_property("_kgbClicksUsed").to_int();
 			page = visit_url("place.php?whichplace=kgb&action=kgb_button" + button, false);
 			int newClicks = get_property("_kgbClicksUsed").to_int();
 			if(newClicks == oldClicks)
 			{
-				print("_kgbClicksUsed appears to not be tracking, please let the spies in.", "red");
+				auto_log_info("_kgbClicksUsed appears to not be tracking, please let the spies in.", "red");
 				set_property("_kgbClicksUSed", newClicks + 1);
 			}
 			if(kgb_tabHeight(page) < 11)
@@ -887,7 +887,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 				{
 					abort("Can not seem to recover situation regarding splendid martinis");
 				}
-				print("Trying to restore tabs", "green");
+				auto_log_info("Trying to restore tabs", "green");
 				continue;
 			}
 		}
@@ -936,7 +936,7 @@ boolean kgbDial(int dial, int curVal, int target)
 			count++;
 		}
 		curVal = dials[dial];
-		print("Clicking " + dial + " and now: " + curVal, "blue");
+		auto_log_info("Clicking " + dial + " and now: " + curVal, "blue");
 	}
 	return true;
 }
@@ -1000,8 +1000,8 @@ boolean solveKGBMastermind()
 			count++;
 		}
 
-		print("Left side: " + dials[0] + " " + dials[1] + " " + dials[2], "green");
-		print("Right side: " + dials[3] + " " + dials[4] + " " + dials[5], "green");
+		auto_log_info("Left side: " + dials[0] + " " + dials[1] + " " + dials[2], "green");
+		auto_log_info("Right side: " + dials[3] + " " + dials[4] + " " + dials[5], "green");
 
 		int[int] guess;
 		if(guessString == "")
@@ -1030,16 +1030,10 @@ boolean solveKGBMastermind()
 		}
 
 		//Which one are we doing, if ScoresLeft has 3 0, we are done with it.
-		print("About to guess: " + guess[1] + ", " + guess[2] + ", " + guess[3], "green");
+		auto_log_info("About to guess: " + guess[1] + ", " + guess[2] + ", " + guess[3], "green");
 		for(int i=1; i<=3; i++)
 		{
 			kgbDial(dialOffset+i, dials[dialOffset + i], guess[i]);
-#			while(dials[dialOffset + i] != guess[i])
-#			{
-#				print("Clicking: " + i);
-#				page = visit_url("place.php?whichplace=kgb&action=kgb_dial" + (i+1), false);
-#				dials[dialOffset + i] = (dials[dialOffset + i] + 1) % 11;
-#			}
 		}
 
 		//Verify the dials are correct before pushing anything!
@@ -1068,7 +1062,7 @@ boolean solveKGBMastermind()
 		string page = visit_url("place.php?whichplace=kgb&action=kgb_actuator" + action, false);
 		if(contains_text(page, "Nothing happens"))
 		{
-			print("Out of clicks. Derp.", "red");
+			auto_log_warning("Out of clicks. Derp.", "red");
 			return false;
 		}
 		int correct = 0;
@@ -1078,7 +1072,7 @@ boolean solveKGBMastermind()
 		{
 			int bulb = to_int(light_match.group(1));
 			string status = light_match.group(2);
-			print("Light " + bulb + ": " + status, "blue");
+			auto_log_info("Light " + bulb + ": " + status, "blue");
 			if(status == "(on)")
 			{
 				correct++;
@@ -1088,7 +1082,7 @@ boolean solveKGBMastermind()
 				blink++;
 			}
 		}
-		print("Correct: " + correct + " Blinking: " + blink, "blue");
+		auto_log_info("Correct: " + correct + " Blinking: " + blink, "blue");
 
 		clicks++;
 
@@ -1102,14 +1096,14 @@ boolean solveKGBMastermind()
 		}
 
 		guessString = visit_url("http://cheesellc.com/kol/kgb.php?data=" + url_encode(get_property(prop)), false);
-		print("Subresult: " + guessString, "green");
+		auto_log_info("Subresult: " + guessString, "green");
 
 		if(contains_text(guessString, "3 0"))
 		{
 			guessString = "";
 		}
 	}
-	print("Clicks used: " + clicks, "red");
+	auto_log_info("Clicks used: " + clicks, "red");
 
 	return contains_text(page, "A pair of antennae");
 }
@@ -1426,7 +1420,7 @@ boolean asdonFeed(item it, int qty)
 	string temp = visit_url("campground.php?pwd=&action=fuelconvertor&qty=" + qty + "&iid=" + to_int(it));
 	int newFuel = get_fuel();
 
-	print("Compressed " + qty + " " + it + " into sheep, I mean fuel: " + oldFuel + " --> " + newFuel, "green");
+	auto_log_info("Compressed " + qty + " " + it + " into sheep, I mean fuel: " + oldFuel + " --> " + newFuel, "green");
 	return true;
 }
 
@@ -1496,7 +1490,7 @@ string horseNormalize(string horseText)
 		return "pale";
 	}
 
-	print("Unknown Horsery horse type: '" + horseText + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
+	auto_log_warning("Unknown Horsery horse type: '" + horseText + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
 	return "";
 }
 
@@ -1623,7 +1617,7 @@ boolean horsePreAdventure()
 	    && desiredHorse != "pale"
 	    && desiredHorse != "return")
 	{
-		print("auto_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
+		auto_log_warning("auto_desiredHorse was set to bad value: '" + desiredHorse + "'. Should be '', 'normal', 'dark', 'crazy', or 'pale'.", "red");
 		set_property("auto_desiredHorse", "");
 		return false;
 	}
@@ -1659,7 +1653,7 @@ boolean makeGenieWish(effect eff)
 	page = visit_url("choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish);
 	if(have_effect(eff) == 0)
 	{
-		print("Wish: '" + wish + "' failed", "red");
+		auto_log_warning("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
 	handleTracker(to_item(wish_provider), wish, "auto_wishes");
@@ -1709,7 +1703,7 @@ boolean makeGenieCombat(monster mon, string option)
 
 	if(get_property("lastEncounter") != mon && get_property("lastEncounter") != "Using the Force")
 	{
-		print("Wish: '" + wish + "' failed", "red");
+		auto_log_warning("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
 	handleTracker(mon, to_item(wish_provider), "auto_copies");
@@ -1733,11 +1727,6 @@ boolean makeGeniePocket()
 	{
 		return false;
 	}
-
-#	if(my_adventures() == 0)
-#	{
-#		return false;
-#	}
 
 	int count = item_amount($item[Pocket Wish]);
 

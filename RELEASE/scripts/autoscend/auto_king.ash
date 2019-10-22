@@ -6,7 +6,7 @@ void handleKingLiberation()
 	restoreAllSettings();
 	if(get_property("kingLiberated").to_boolean() && (get_property("auto_snapshot") == ""))
 	{
-		print("Yay! The King is saved. I suppose you should do stuff.");
+		auto_log_info("Yay! The King is saved. I suppose you should do stuff.");
 		if(!get_property("auto_kingLiberation").to_boolean())
 		{
 			set_property("auto_snapshot", "aborted");
@@ -31,7 +31,7 @@ void handleKingLiberation()
 			{
 				if(item_amount(it) > 0)
 				{
-					print("Displaying " + item_amount(it) + " " + it, "green");
+					auto_log_info("Displaying " + item_amount(it) + " " + it, "green");
 				}
 				put_display(item_amount(it), it);
 			}
@@ -42,7 +42,7 @@ void handleKingLiberation()
 		{
 			if(storage_amount(it) > 0)
 			{
-				print("Pulling " + storage_amount(it) + " " + it, "green");
+				auto_log_info("Pulling " + storage_amount(it) + " " + it, "green");
 			}
 			pullAll(it);
 		}
@@ -52,7 +52,7 @@ void handleKingLiberation()
 		{
 			if(storage_amount(it) > 0)
 			{
-				print("Pulling/Using " + storage_amount(it) + " " + it, "green");
+				auto_log_info("Pulling/Using " + storage_amount(it) + " " + it, "green");
 			}
 			pullAndUse(it, 1);
 		}
@@ -108,7 +108,7 @@ void handleKingLiberation()
 			visit_url("place.php?whichplace=arcade&action=arcade_plumber", false);
 			if(item_amount($item[Defective Game Grid Token]) > oldToken)
 			{
-				print("Woohoo!!! You got a game grid tokON!!", "green");
+				auto_log_info("Woohoo!!! You got a game grid tokON!!", "green");
 			}
 		}
 	}
@@ -157,7 +157,7 @@ void handleKingLiberation()
 		restoreSetting("betweenBattleScript");
 		restoreSetting("counterScript");
 	}
-	print("King Liberation Complete. Thank you for playing", "blue");
+	auto_log_info("King Liberation Complete. Thank you for playing", "blue");
 }
 
 

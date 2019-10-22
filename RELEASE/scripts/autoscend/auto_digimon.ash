@@ -88,8 +88,7 @@ boolean digimon_makeTeam()
 			front = $familiar[Levitating Potato];
 		}
 
-		print("I choose you! " + front.name + " the " + front + "!!!!", "green");
-#		temp = visit_url("famteam.php?slot=1&fam=" + to_int($familiar[El Vibrato Megadrone]) + "&pwd&action=slot");
+		auto_log_info("I choose you! " + front.name + " the " + front + "!!!!", "green");
 		temp = visit_url("famteam.php?slot=1&fam=" + to_int(front) + "&pwd&action=slot");
 		if(get_property("_digimonFront").to_familiar() != front)
 		{
@@ -133,12 +132,12 @@ boolean digimon_autoAdv(int num, location loc, string option)
 		temp = visit_url(to_url(loc) + "a", false);
 	}
 
-	print("[Insert Punch Out music here]", "green");
+	auto_log_info("[Insert Punch Out music here]", "green");
 	temp = visit_url("fambattle.php");
 	int choiceLimiter = 0;
 	while(contains_text(temp, "whichchoice value=") || contains_text(temp, "whichchoice="))
 	{
-		print("Digimon hit a choice adventure (" + loc + "), trying....", "red");
+		auto_log_warning("Digimon hit a choice adventure (" + loc + "), trying....", "red");
 		matcher choice_matcher = create_matcher("(?:whichchoice value=(\\d+))|(?:whichchoice=(\\d+))", temp);
 		if(choice_matcher.find())
 		{
@@ -170,7 +169,7 @@ boolean digimon_autoAdv(int num, location loc, string option)
 
 	if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
 	{
-		print("Consulting the Helix Fossil....", "green");
+		auto_log_info("Consulting the Helix Fossil....", "green");
 		boolean ignore = cli_execute("ashq import 'Pocket Familiars'; buffer temp = PocketFamiliarsFight();");
 		if($locations[The Defiled Alcove, The Defiled Cranny, The Defiled Niche, The Defiled Nook] contains my_location())
 		{
@@ -214,7 +213,7 @@ boolean digimon_autoAdv(int num, location loc, string option)
 		temp = visit_url("fambattle.php?pwd&famaction[backstab-" + to_int(blastFam) + "]=Backstab");
 	}
 	int action = 1;
-	
+
 
 	while(!contains_text(temp, "<!--WINWINWIN-->"))
 	{

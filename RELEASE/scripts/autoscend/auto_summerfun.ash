@@ -31,7 +31,7 @@ boolean ocrs_postCombatResolve()
 			contains_text(get_property("auto_funPrefix"), "restless") ||
 			contains_text(get_property("auto_funPrefix"), "ticking"))
 		{
-			print("Probably beaten up by FUN! Trying to recover instead of aborting", "red");
+			auto_log_warning("Probably beaten up by FUN! Trying to recover instead of aborting", "red");
 			handleTracker(last_monster(), get_property("auto_funPrefix"), "auto_funTracker");
 			acquireHP();
 		}
