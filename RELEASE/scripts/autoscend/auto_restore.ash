@@ -321,12 +321,11 @@ int[string] __OBJECTIVE_RANKS = {
   "total_meat_used": 4,
   "hp_per_meat_spent": 4,
   "mp_per_meat_spent": 4,
-  "hp_total_short_goal": 5,
-  "mp_total_short_goal": 5,
-  "mp_total_wasted_max": 5,
-  "hp_total_wasted_max": 5,
-  "total_mp_used": 6,
-  "hp_per_mp_spent": 6,
+  "hp_per_mp_spent": 5,
+  "hp_total_short_goal": 6,
+  "mp_total_short_goal": 6,
+  "mp_total_wasted_max": 6,
+  "hp_total_wasted_max": 6,
   "total_uses_needed": 7,
 };
 
@@ -336,8 +335,8 @@ string[int] __RANKED_GOAL_DESCRIPTIONS = {
   2: "maintain soft reserve limit (keep at least N on hand if possible)",
   3: "try not to spend coinmaster tokens, maximizing hp/mp restored per token spent if we must spend",
   4: "try not to spend meat, maximizing hp/mp restored per meat spent if we must spend",
-  5: "minimize hp/mp shortage to goal and wasted hp/mp over max",
-  6: "try to spend less mp, maximizing hp restored per mp spent if we must spend",
+  5: "try to spend less mp, maximizing hp restored per mp spent if we must spend",
+  6: "minimize hp/mp shortage to goal and wasted hp/mp over max",
   7: "minimize number of uses needed to reach goal"
 };
 
@@ -559,20 +558,24 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
   float total_mp_used(){
     if(metadata.type != "skill"){
-      return 0.0;
+      return -1.0;
     }
     return total_uses_needed() * mp_cost(to_skill(metadata.name));
   }
 
   float total_meat_used(){
     if(metadata.type != "item"){
-      return 0.0;
+      return -1.0;
     }
     item i = to_item(metadata.name);
     float needed = max(0.0, total_uses_needed() - item_amount(i));
     int price = npc_price(i);
     if(can_interact()){
       price = min(price, auto_mall_price(i));
+    }
+
+    if(price == 0){
+      return -1.0;
     }
     return price * needed;
   }
@@ -583,12 +586,12 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
   float total_coinmaster_tokens_used(){
     if(metadata.type != "item"){
-      return 0.0;
+      return -1.0;
     }
     item i = to_item(metadata.name);
 
     if(i.seller != $coinmaster[none]){
-      return 0.0;
+      return -1.0;
     }
 
     float needed = max(0.0, total_uses_needed() - item_amount(i));
@@ -609,7 +612,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
   float resource_value_per_meat_spent(string resource_type){
     if(get_value("total_meat_used") <= 0.0){
-      return get_value(resource_type, "max");
+      return -1.0;
     }
 
     return get_value(resource_type, "total_restored") / get_value("total_meat_used");
@@ -617,7 +620,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
   float resource_value_per_coinmaster_token_spent(string resource_type){
     if(get_value("total_coinmaster_tokens_used") <= 0.0){
-      return get_value(resource_type, "max");
+      return -1.0;
     }
 
     return get_value(resource_type, "total_restored") / get_value("total_coinmaster_tokens_used");
@@ -625,7 +628,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
   float hp_per_mp_spent(){
     if(get_value("total_mp_used") <= 0.0){
-      return get_value("hp", "max");
+      return -1.0;
     }
 
     return get_value("hp_total_restored") / get_value("total_mp_used");
@@ -671,7 +674,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       item i = to_item(metadata.name);
       boolean npc_buyable = npc_price(i) > 0 || (i.seller != $coinmaster[none] && is_accessible(i.seller) && get_property("autoSatisfyWithCoinmasters").to_boolean());
       boolean mall_buyable = can_interact() && auto_mall_price(i) > 0;
-      boolean can_buy = meat_reserve < my_meat() && (npc_buyable || mall_buyable);
+      boolean can_buy = meat_reserve > my_meat() && (npc_buyable || mall_buyable);
       return (available_amount(i) > 0 || can_buy);
     }
     if(metadata.type == "skill"){
@@ -878,6 +881,9 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
         int B_dominance = 0;
         foreach key, r in value_ranks {
           if(r == rank){
+            if(T[Ti].objective_values[key] == -1.0 || B[Bi].objective_values[key] == -1.0){
+              continue; // -1.0 means the key is not applicable to an option, e.g. hp_per_mp_spent on free rests which dont cost mp
+            }
             if(T[Ti].objective_values[key] < B[Bi].objective_values[key]){
               if(maximize_keys contains key){ B_dominance++; }
               else if(minimize_keys contains key){ T_dominance++;}
