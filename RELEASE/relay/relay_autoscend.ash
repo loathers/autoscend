@@ -1,6 +1,6 @@
 script "relay_autoscend.ash";
 
-import <autoscend/autoscend_migration.ash>
+import <autoscend.ash>
 
 // Thanks to relay_cheeseascend.ash for a starting point here.
 
