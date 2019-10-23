@@ -64,6 +64,7 @@ any	55	auto_beta_test	boolean	Occasionally I might need to make big changes, but
 any	56	auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
 any	57	auto_legacyConsumeStuff	boolean	When true, use the old heuristic-based consumption strategy instead of the new solver that tries to pack as many adventures into your organs as possible. Not used in CS or Ed.
 any	58	auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
+any	59	auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
 
 post	0	auto_getBeehive	boolean	Go for the beehive?
 post	1	auto_getStarKey	boolean	Get Richard's Star Key?
@@ -78,4 +79,3 @@ pre	0	auto_pvpEnable	boolean	Automatically participate in PvP?
 pre	1	auto_alwaysGetSteelOrgan	boolean	If true, get the Steel Organ in the next ascension.
 
 sharing	0	auto_shareMaximizer	boolean	Share maximzer data. This includes the maximzer string, class, path, softcore/hardcore and moon sign.
-
