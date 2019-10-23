@@ -1906,7 +1906,12 @@ boolean fortuneCookieEvent()
 			goal = $location[The Haunted Pantry];
 		}
 
-		return autoAdv(goal);
+		boolean retval = autoAdv(goal);
+		if (item_amount($item[Knob Goblin lunchbox]) > 0)
+		{
+			use(item_amount($item[Knob Goblin lunchbox]), $item[Knob Goblin lunchbox]);
+		}
+		return retval;
 	}
 	return false;
 }
@@ -5441,44 +5446,40 @@ boolean LX_attemptFlyering()
 {
 	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]))
 	{
-		autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 	}
 	else if(elementalPlanes_access($element[spooky]))
 	{
-		autoAdv(1, $location[The Deep Dark Jungle]);
+		return autoAdv(1, $location[The Deep Dark Jungle]);
 	}
 	else if(elementalPlanes_access($element[cold]))
 	{
-		autoAdv(1, $location[VYKEA]);
+		return autoAdv(1, $location[VYKEA]);
 	}
 	else if(elementalPlanes_access($element[stench]))
 	{
-		autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 	}
 	else if(elementalPlanes_access($element[sleaze]))
 	{
-		autoAdv(1, $location[Sloppy Seconds Diner]);
+		return autoAdv(1, $location[Sloppy Seconds Diner]);
 	}
 	else if(neverendingPartyAvailable())
 	{
-		neverendingPartyPowerlevel();
+		return neverendingPartyPowerlevel();
 	}
 	else
 	{
-		if((my_level() >= 11) && (get_property("auto_hiddenzones") == "finished"))
+		int flyer = get_property("flyeredML").to_int();
+		boolean retval = autoAdv($location[Near an Abandoned Refrigerator]);
+		if (flyer == get_property("flyeredML").to_int())
 		{
-			int flyer = get_property("flyeredML").to_int();
-			autoAdv($location[The Hidden Hospital]);
-			if(flyer == get_property("flyeredML").to_int())
-			{
-				abort("Trying to flyer but failed to flyer");
-			}
-			set_property("auto_newbieOverride", true);
-			return true;
+			abort("Trying to flyer but failed to flyer");
 		}
-		return false;
+		set_property("auto_newbieOverride", true);
+		return retval;
 	}
-	return true;
+	return false;
 }
 
 boolean powerLevelAdjustment()
@@ -5523,6 +5524,7 @@ boolean LX_attemptPowerLevel()
 		autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 		return true;
 	}
+
 	if(LX_freeCombats())
 	{
 		return true;
@@ -5615,13 +5617,13 @@ boolean LX_attemptPowerLevel()
 	{
 		autoAdv(1, $location[VYKEA]);
 	}
-	else if((elementalPlanes_access($element[sleaze])) && (my_level() < 11))
-	{
-		autoAdv(1, $location[Sloppy Seconds Diner]);
-	}
 	else if(elementalPlanes_access($element[sleaze]))
 	{
 		autoAdv(1, $location[Sloppy Seconds Diner]);
+	}
+	else if (elementalPlanes_access($element[hot]))
+	{
+		autoAdv(1, $location[The SMOOCH Army HQ]);
 	}
 	else
 	{
@@ -7603,25 +7605,25 @@ boolean L12_gremlins()
 	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
-		autoAdv(1, $location[Next to that barrel with something burning in it], "ccsJunkyard");
+		autoAdv(1, $location[Next to that barrel with something burning in it], "auto_Junkyard");
 		return true;
 	}
 
 	if(item_amount($item[molybdenum screwdriver]) == 0)
 	{
-		autoAdv(1, $location[Out by that rusted-out car], "ccsJunkyard");
+		autoAdv(1, $location[Out by that rusted-out car], "auto_Junkyard");
 		return true;
 	}
 
 	if(item_amount($item[molybdenum crescent wrench]) == 0)
 	{
-		autoAdv(1, $location[over where the old tires are], "ccsJunkyard");
+		autoAdv(1, $location[over where the old tires are], "auto_Junkyard");
 		return true;
 	}
 
 	if(item_amount($item[Molybdenum Pliers]) == 0)
 	{
-		autoAdv(1, $location[near an abandoned refrigerator], "ccsJunkyard");
+		autoAdv(1, $location[near an abandoned refrigerator], "auto_Junkyard");
 		return true;
 	}
 	handleFamiliar("item");
@@ -7693,7 +7695,7 @@ boolean L12_sonofaBeach()
 		}
 	}
 
-	if (isActuallyEd() && item_amount($item[Talisman of Horus]) == 0)
+	if (isActuallyEd() && item_amount($item[Talisman of Horus]) == 0 && have_effect($effect[Taunt of Horus]) == 0)
 	{
 		return false;
 	}
@@ -7846,7 +7848,7 @@ boolean L12_sonofaPrefix()
 		return false;
 	}
 
-	if (isActuallyEd() && item_amount($item[Talisman of Horus]) == 0)
+	if (isActuallyEd() && item_amount($item[Talisman of Horus]) == 0 && have_effect($effect[Taunt of Horus]) == 0)
 	{
 		return false;
 	}
@@ -9459,6 +9461,31 @@ boolean L7_crypt()
 		buffMaintain($effect[Soulerskates], 0, 1, 1);
 		buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
 
+		if (isActuallyEd() && monster_attack($monster[modern zmobie]) >= my_maxhp())
+		{
+			// Need to be able to tank a hit from the modern zmobies as Ed
+			// as we'll never get the jump because their initiative is ridiculous.
+			// Otherwise we'll just die repeatedly.
+			if (get_property("telescopeUpgrades").to_int() > 0 && !get_property("telescopeLookedHigh").to_boolean())
+			{
+				cli_execute("telescope high");
+			}
+			if (!get_property("_lyleFavored").to_boolean())
+			{
+				cli_execute("monorail");
+			}
+			if (have_effect($effect[Butt-Rock Hair]) == 0)
+			{
+				buyUpTo(1, $item[Hair Spray]);
+				buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
+			}
+			if (have_effect($effect[Go Get \'Em, Tiger!]) == 0)
+			{
+				buyUpTo(1, $item[Ben-Gal&trade; Balm]);
+				buffMaintain($effect[Go Get \'Em, Tiger!], 0, 1, 1);
+			}
+		}
+
 		auto_beachCombHead("init");
 
 		if(have_effect($effect[init.enh]) == 0)
@@ -9624,6 +9651,10 @@ boolean L7_crypt()
 		if(auto_have_familiar($familiar[Machine Elf]))
 		{
 			handleFamiliar($familiar[Machine Elf]);
+		}
+		if (isActuallyEd())
+		{
+			auto_change_mcd(10); // get vertebra to make the necklace.
 		}
 		boolean tryBoner = autoAdv(1, $location[Haert of the Cyrpt]);
 		council();
@@ -10305,7 +10336,7 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
-	if (my_level() < 8 && get_property("auto_powerLevelAdvCount").to_int() < 9 && !isActuallyEd())
+	if (my_level() < 8 && get_property("auto_powerLevelAdvCount").to_int() < 9)
 	{
 		return false;
 	}
@@ -10390,6 +10421,7 @@ boolean L4_batCave()
 	if((item_amount($item[Sonar-In-A-Biscuit]) > 0) && (batStatus < 3))
 	{
 		use(1, $item[Sonar-In-A-Biscuit]);
+		visit_url("place.php?whichplace=bathole"); // ensure quest status is updated.
 		return true;
 	}
 
@@ -10410,6 +10442,10 @@ boolean L4_batCave()
 		bat_formWolf();
 		addToMaximize("10meat");
 		int batskinBelt = item_amount($item[Batskin Belt]);
+		if (isActuallyEd())
+		{
+			auto_change_mcd(4); // get the pants from the Boss Bat.
+		}
 		autoAdv(1, $location[The Boss Bat\'s Lair]);
 		# DIGIMON remove once mafia tracks this
 		if(item_amount($item[Batskin Belt]) != batskinBelt)
@@ -12324,10 +12360,6 @@ boolean L9_aBooPeak()
 				}
 			}
 			acquireHP();
-			if (isActuallyEd() && my_hp() == 0)
-			{
-				use(1, $item[Linen Bandages]);
-			}
 			if ((my_hp() * 4) < my_maxhp() && item_amount($item[Scroll of Drastic Healing]) > 0 && (!isActuallyEd() || my_class() != $class[Vampyre]))
 			{
 				use(1, $item[Scroll of Drastic Healing]);
@@ -12342,7 +12374,7 @@ boolean L9_aBooPeak()
 		handleFamiliar("item");
 		handleBjornify(priorBjorn);
 	}
-	else if(get_property("auto_abooclover").to_boolean() && (get_property("booPeakProgress").to_int() >= 40) && booCloversOk)
+	else if(get_property("auto_abooclover").to_boolean() && (get_property("booPeakProgress").to_int() >= 30) && booCloversOk)
 	{
 		cloverUsageInit();
 		autoAdvBypass(296, $location[A-Boo Peak]);
@@ -12937,7 +12969,7 @@ boolean L9_chasmBuild()
 		buffMaintain($effect[Carol of the Bulls], 50, 1, 1);
 		buffMaintain($effect[Song of The North], 150, 1, 1);
 
-		auto_log_info("Beta Testing Off: If we encounter Blech House when we are not expecting it we will stop.", "blue");
+		auto_log_info("If we encounter Blech House when we are not expecting it we will stop.", "blue");
 		auto_log_info("Currently setup for Muscle/Weapon Damage, option 1: Kick it down", "blue");
 		set_property("choiceAdventure1345", 0);
 	}

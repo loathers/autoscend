@@ -1364,6 +1364,12 @@ boolean acquireHP(int goal, int meat_reserve){
   */
 boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 
+  if (isActuallyEd() && my_hp() > 0)
+  {
+    // Ed doesn't need to heal outside of combat unless on 0 hp
+    return false;
+  }
+  
   boolean isMax = (goal == my_maxhp());
 
   __cure_bad_stuff();

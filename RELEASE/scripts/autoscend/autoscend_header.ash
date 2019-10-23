@@ -58,10 +58,6 @@ boolean Lsc_flyerSeals();
 
 boolean L0_handleRainDoh();
 
-boolean L1_ed_island();							//Defined in autoscend/auto_edTheUndying.ash
-boolean L1_ed_dinsey();							//Defined in autoscend/auto_edTheUndying.ash
-boolean L1_ed_island(int dickstabOverride);		//Defined in autoscend/auto_edTheUndying.ash
-boolean L1_ed_islandFallback();					//Defined in autoscend/auto_edTheUndying.ash
 boolean L1_dnaAcquire();
 boolean L2_mosquito();
 boolean L2_treeCoin();
@@ -373,7 +369,7 @@ boolean acquireHermitItem(item it);							//Defined in autoscend/auto_util.ash
 int cloversAvailable();									//Defined in autoscend/auto_util.ash
 boolean cloverUsageInit();									//Defined in autoscend/auto_util.ash
 boolean cloverUsageFinish();								//Defined in autoscend/auto_util.ash
-boolean adjustEdHat(string goal);							//Defined in autoscend/auto_edTheUndying.ash
+boolean adjustEdHat(string goal);							//Defined in autoscend/auto_mr2015.ash
 int amountTurkeyBooze();									//Defined in autoscend/auto_util.ash
 boolean awol_buySkills();									//Defined in autoscend/auto_awol.ash
 void awol_helper(string page);								//Defined in autoscend/auto_combat.ash
@@ -463,7 +459,7 @@ int[string] auto_sourceTerminalMissing();						//Defined in autoscend/auto_mr201
 boolean auto_sourceTerminalRequest(string request);			//Defined in autoscend/auto_mr2016.ash
 int[string] auto_sourceTerminalStatus();						//Defined in autoscend/auto_mr2016.ash
 boolean auto_tavern();										//Defined in autoscend.ash
-string ccsJunkyard(int round, string opp, string text);		//Defined in autoscend/auto_combat.ash
+string auto_Junkyard(int round, string opp, string text);		//Defined in autoscend/auto_combat.ash
 int changeClan();											//Defined in autoscend/auto_clan.ash
 int changeClan(int toClan);									//Defined in autoscend/auto_clan.ash
 int changeClan(string clanName);							//Defined in autoscend/auto_clan.ash
@@ -558,7 +554,6 @@ boolean ed_autoAdv(int num, location loc, string option);		//Defined in autoscen
 boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife);//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_doResting();										//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_eatStuff();										//Defined in autoscend/auto_edTheUndying.ash
-void ed_handleAdventureServant(location loc);//Defined in auto_ascend/auto_edTheUndying.ash
 void ed_initializeDay(int day);								//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeSession();								//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeSettings();								//Defined in autoscend/auto_edTheUndying.ash
