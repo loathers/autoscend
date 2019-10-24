@@ -1089,3 +1089,59 @@ boolean deck_useScheme(string action)
 
 	return true;
 }
+
+boolean adjustEdHat(string goal)
+{
+	if(!possessEquipment($item[The Crown of Ed the Undying]))
+	{
+		return false;
+	}
+	int option = -1;
+	goal = to_lower_case(goal);
+	if(((goal == "muscle") || (goal == "bear")) && (get_property("edPiece") != "bear"))
+	{
+		option = 1;
+	}
+	else if(((goal == "myst") || (goal == "mysticality") || (goal == "owl")) && (get_property("edPiece") != "owl"))
+	{
+		option = 2;
+	}
+	else if(((goal == "moxie") || (goal == "puma")) && (get_property("edPiece") != "puma"))
+	{
+		option = 3;
+	}
+	else if(((goal == "ml") || (goal == "hyena")) && (get_property("edPiece") != "hyena"))
+	{
+		option = 4;
+	}
+	else if(((goal == "meat") || (goal == "item") || (goal == "items") || (goal == "drops") || (goal == "mouse")) && (get_property("edPiece") != "mouse"))
+	{
+		option = 5;
+	}
+	else if(((goal == "regen") || (goal == "regenerate") || (goal == "miss") || (goal == "dodge") || (goal == "weasel")) && (get_property("edPiece") != "weasel"))
+	{
+		option = 6;
+	}
+	else if(((goal == "breathe") || (goal == "underwater") || (goal == "fish")) && (get_property("edPiece") != "fish"))
+	{
+		option = 7;
+	}
+
+	item oldHat = equipped_item($slot[hat]);
+
+	if(option != -1)
+	{
+		if(oldHat != $item[The Crown of Ed the Undying])
+		{
+			equip($slot[hat], $item[The Crown of Ed the Undying]);
+		}
+		visit_url("inventory.php?action=activateedhat");
+		visit_url("choice.php?pwd=&whichchoice=1063&option=" + option, true);
+		if(oldHat != $item[The Crown of Ed the Undying])
+		{
+			equip($slot[hat], oldHat);
+		}
+		return true;
+	}
+	return false;
+}

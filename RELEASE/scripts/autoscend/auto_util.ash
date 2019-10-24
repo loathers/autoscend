@@ -1428,7 +1428,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 
 	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
 
-	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member's mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent") && get_property("_auto_maximize_equip_off-hand") != "")
+	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent") && get_property("_auto_maximize_equip_off-hand") != "")
 	{
 		return "skill " + $skill[Throw Latte on Opponent];
 	}
@@ -1491,11 +1491,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil' Doctor&trade; bag])) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
+	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil\' Doctor&trade; bag])) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
-	if((inCombat ? auto_have_skill($skill[KGB Tranquilizer Dart]) : possessEquipment($item[Kremlin's Greatest Briefcase])) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
+	if((inCombat ? auto_have_skill($skill[KGB Tranquilizer Dart]) : possessEquipment($item[Kremlin\'s Greatest Briefcase])) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
 	{
 		boolean useIt = true;
 		if((get_property("auto_gremlins") == "finished") && (my_daycount() >= 2) && (get_property("_kgbTranquilizerDartUses").to_int() >= 2))
@@ -1575,7 +1575,7 @@ boolean adjustForBanish(string combat_string)
 {
 	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
 	{
-		return autoEquip($item[latte lovers member's mug]);
+		return autoEquip($item[latte lovers member\'s mug]);
 	}
 	if(combat_string == "skill " + $skill[Give Your Opponent The Stinkeye])
 	{
@@ -1601,11 +1601,11 @@ boolean adjustForBanish(string combat_string)
 	}
 	if(combat_string == "skill " + $skill[Reflex Hammer])
 	{
-		return autoEquip($item[Lil' Doctor&trade; bag]);
+		return autoEquip($item[Lil\' Doctor&trade; bag]);
 	}
 	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
 	{
-		return autoEquip($item[Kremlin's Greatest Briefcase]);
+		return autoEquip($item[Kremlin\'s Greatest Briefcase]);
 	}
 	if(combat_string == "skill " + $skill[Beancannon])
 	{
@@ -2983,6 +2983,11 @@ boolean fightScienceTentacle(string option)
 	if(get_property("_eldritchTentacleFought").to_boolean())
 	{
 		return false;
+	}
+
+	if (!handleServant($servant[Scribe]))
+	{
+		handleServant($servant[Cat]);
 	}
 
 	string temp = visit_url("place.php?whichplace=forestvillage&action=fv_scientist");

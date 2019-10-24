@@ -283,62 +283,6 @@ boolean L13_ed_councilWarehouse()
 	return true;
 }
 
-boolean adjustEdHat(string goal)
-{
-	if(!possessEquipment($item[The Crown of Ed the Undying]))
-	{
-		return false;
-	}
-	int option = -1;
-	goal = to_lower_case(goal);
-	if(((goal == "muscle") || (goal == "bear")) && (get_property("edPiece") != "bear"))
-	{
-		option = 1;
-	}
-	else if(((goal == "myst") || (goal == "mysticality") || (goal == "owl")) && (get_property("edPiece") != "owl"))
-	{
-		option = 2;
-	}
-	else if(((goal == "moxie") || (goal == "puma")) && (get_property("edPiece") != "puma"))
-	{
-		option = 3;
-	}
-	else if(((goal == "ml") || (goal == "hyena")) && (get_property("edPiece") != "hyena"))
-	{
-		option = 4;
-	}
-	else if(((goal == "meat") || (goal == "item") || (goal == "items") || (goal == "drops") || (goal == "mouse")) && (get_property("edPiece") != "mouse"))
-	{
-		option = 5;
-	}
-	else if(((goal == "regen") || (goal == "regenerate") || (goal == "miss") || (goal == "dodge") || (goal == "weasel")) && (get_property("edPiece") != "weasel"))
-	{
-		option = 6;
-	}
-	else if(((goal == "breathe") || (goal == "underwater") || (goal == "fish")) && (get_property("edPiece") != "fish"))
-	{
-		option = 7;
-	}
-
-	item oldHat = equipped_item($slot[hat]);
-
-	if(option != -1)
-	{
-		if(oldHat != $item[The Crown of Ed the Undying])
-		{
-			equip($slot[hat], $item[The Crown of Ed the Undying]);
-		}
-		visit_url("inventory.php?action=activateedhat");
-		visit_url("choice.php?pwd=&whichchoice=1063&option=" + option, true);
-		if(oldHat != $item[The Crown of Ed the Undying])
-		{
-			equip($slot[hat], oldHat);
-		}
-		return true;
-	}
-	return false;
-}
-
 boolean handleServant(servant who)
 {
 	if (!isActuallyEd())
@@ -692,76 +636,46 @@ boolean ed_eatStuff()
 	{
 		return false;
 	}
-	int canEat = (spleen_limit() - my_spleen_use()) / 5;
-	canEat = min(canEat, item_amount($item[Mummified Beef Haunch]));
-	if(canEat > 0)
+
+	// fill up on Mummified Beef Haunches as they are Ed's main source of turn-gen
+	int canEat = min((spleen_left() / 5), item_amount($item[Mummified Beef Haunch]));
+	if (canEat > 0)
 	{
 		autoChew(canEat, $item[Mummified Beef Haunch]);
 	}
-	xiblaxian_makeStuff();
 
-	if((item_amount($item[Limp Broccoli]) > 0) && (my_level() >= 5) && ((my_fullness() == 0) || (my_fullness() == 3)) && (fullness_limit() >= 2))
-	{
-		autoEat(1, $item[Limp Broccoli]);
-	}
-	if((item_amount($item[Limp Broccoli]) > 0) && (my_level() >= 5) && (my_fullness() == 2) && (fullness_limit() >= 5) && (item_amount($item[Astral Hot Dog]) == 0))
-	{
-		autoEat(1, $item[Limp Broccoli]);
-	}
-	if((item_amount($item[Xiblaxian Ultraburrito]) > 0) && (my_fullness() == 0) && (fullness_limit() >= 4) && (item_amount($item[Astral Hot Dog]) == 0))
-	{
-		autoEat(1, $item[Xiblaxian Ultraburrito]);
-	}
-	if((my_level() >= 11) && ((my_fullness() + 3) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) > 0))
-	{
-		autoEat(1, $item[Astral Hot Dog]);
-	}
-	if((my_level() >= 9) && ((my_fullness() + 3) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) > 0) && (my_adventures() < 4))
-	{
-		autoEat(1, $item[Astral Hot Dog]);
-	}
-	if(!get_property("_fancyHotDogEaten").to_boolean() && (my_daycount() == 1) && (my_level() >= 9) && ((my_fullness() + 3) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) == 0) && (my_adventures() < 10) && (item_amount($item[Clan VIP Lounge Key]) > 0))
-	{
-		eatFancyDog("video games hot dog");
-	}
-	if(get_property("auto_dickstab").to_boolean() && !get_property("_fancyHotDogEaten").to_boolean() && (my_daycount() == 1) && ((my_fullness() + 2) <= fullness_limit()) && (item_amount($item[Astral Hot Dog]) == 0) && (item_amount($item[Clan VIP Lounge Key]) > 0) && chateaumantegna_available())
-	{
-		eatFancyDog("sleeping dog");
-	}
-	if((my_daycount() >= 3) && (my_inebriety() == 0) && (inebriety_limit() == 4) && (item_amount($item[Xiblaxian Space-Whiskey]) > 0) && (my_adventures() < 10))
-	{
-		autoDrink(1, $item[Xiblaxian Space-Whiskey]);
-	}
-	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 11))
-	{
-		autoDrink(1, $item[Astral Pilsner]);
-	}
-	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 10) && (my_adventures() < 3))
-	{
-		autoDrink(1, $item[Astral Pilsner]);
-	}
-	if((item_amount($item[Astral Pilsner]) > 0) && ((my_inebriety() + 1) <= inebriety_limit()) && (my_level() >= 9) && (my_adventures() < 3) && (my_fullness() >= fullness_limit()))
-	{
-		autoDrink(1, $item[Astral Pilsner]);
-	}
-	if((item_amount($item[Coinspiracy]) >= 6) && ((my_inebriety() + 3) <= inebriety_limit()) && (my_adventures() < 3) && (item_amount($item[Astral Pilsner]) == 0))
-	{
-		buyUpTo(1, $item[Highest Bitter]);
-		autoDrink(1, $item[Highest Bitter]);
-	}
+	// ideally, we should only need the above in this function as the code below 
+	// should be handled by consumeStuff();
 
+	// expose semi-rare counters
 	if (!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
 	{
-		if((item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500) && (inebriety_limit() == 4) && ((my_inebriety() == 0) || (my_inebriety() == 3)) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]))
+		boolean shouldEatCookie = (my_meat() >= npc_price($item[Fortune Cookie]) && fullness_left() > 0 && my_level() < 12);
+		if (inebriety_left() > 0)
 		{
-			autoDrink(1, $item[Lucky Lindy]);
+			shouldEatCookie = (shouldEatCookie && !autoDrink(1, $item[Lucky Lindy]));
 		}
-		else if (my_meat() >= npc_price($item[Fortune Cookie]) && fullness_left() > 0 && my_level() < 12)
+		if (shouldEatCookie)
 		{
 			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
 			autoEat(1, $item[Fortune Cookie]);
 		}
 	}
+
+	// use knapsack algorithm implementation to fill stomach and liver
+	// once we have less than 3 adventures left and a full spleen (and all spleen upgrades)
+	if (spleen_limit() == 35 && spleen_left() == 0 && my_adventures() < 3)
+	{
+		if (fullness_left() > 0)
+		{
+			return auto_knapsackAutoConsume("eat", false);
+		}
+		if (inebriety_left() > 0)
+		{
+			return auto_knapsackAutoConsume("drink", false);
+		}
+	}
+
 	return true;
 }
 
@@ -865,27 +779,27 @@ int ed_KaCost(skill upgrade)
 {
 	static int[skill] kaNeeded = {
 		$skill[Extra Spleen]: 5,
-   	$skill[Another Extra Spleen]: 10,
+		$skill[Another Extra Spleen]: 10,
 		$skill[Upgraded Legs]: 10,
 		$skill[Tougher Skin]: 10,
 		$skill[Armor Plating]: 10,
- 		$skill[Healing Scarabs]: 10,
- 		$skill[Elemental Wards]: 10,
- 		$skill[Yet Another Extra Spleen]: 15,
- 		$skill[Still Another Extra Spleen]: 20,
- 		$skill[More Legs]: 20,
+		$skill[Healing Scarabs]: 10,
+		$skill[Elemental Wards]: 10,
+		$skill[Yet Another Extra Spleen]: 15,
+		$skill[Still Another Extra Spleen]: 20,
+		$skill[More Legs]: 20,
 		$skill[Upgraded Arms]: 20,
- 		$skill[Upgraded Spine]: 20,
- 		$skill[Bone Spikes]: 20,
- 		$skill[Arm Blade]: 20,
- 		$skill[More Elemental Wards]: 20,
- 		$skill[Just One More Extra Spleen]: 25,
- 		$skill[Replacement Stomach]: 30,
- 		$skill[Replacement Liver]: 30,
+		$skill[Upgraded Spine]: 20,
+		$skill[Bone Spikes]: 20,
+		$skill[Arm Blade]: 20,
+		$skill[More Elemental Wards]: 20,
+		$skill[Just One More Extra Spleen]: 25,
+		$skill[Replacement Stomach]: 30,
+		$skill[Replacement Liver]: 30,
 		$skill[Okay Seriously, This is the Last Spleen]: 30,
- 		$skill[Even More Elemental Wards]: 30
-		};
-  if (kaNeeded contains upgrade)
+		$skill[Even More Elemental Wards]: 30
+	};
+	if (kaNeeded contains upgrade)
 	{
 		return kaNeeded[upgrade];
 	} else {
@@ -977,28 +891,28 @@ boolean ed_shopping()
 	int ed_skillID(skill upgrade)
 	{
 		static int[skill] skillIDs = {
-  		$skill[Replacement Stomach]: 28,
-  		$skill[Replacement Liver]: 29,
-  		$skill[Extra Spleen]: 30,
-  		$skill[Another Extra Spleen]: 31,
-  		$skill[Yet Another Extra Spleen]: 32,
-  		$skill[Still Another Extra Spleen]: 33,
-  		$skill[Just One More Extra Spleen]: 34,
+			$skill[Replacement Stomach]: 28,
+			$skill[Replacement Liver]: 29,
+			$skill[Extra Spleen]: 30,
+			$skill[Another Extra Spleen]: 31,
+			$skill[Yet Another Extra Spleen]: 32,
+			$skill[Still Another Extra Spleen]: 33,
+			$skill[Just One More Extra Spleen]: 34,
 			$skill[Okay Seriously, This is the Last Spleen]: 35,
-  		$skill[Upgraded Legs]: 36,
+			$skill[Upgraded Legs]: 36,
 			$skill[Upgraded Arms]: 37,
-  		$skill[Upgraded Spine]: 38,
+			$skill[Upgraded Spine]: 38,
 			$skill[Tougher Skin]:  39,
 			$skill[Armor Plating]: 40,
-  		$skill[Bone Spikes]: 41,
-  		$skill[Arm Blade]: 42,
-  		$skill[Healing Scarabs]: 43,
-  		$skill[Elemental Wards]: 44,
-  		$skill[More Elemental Wards]: 45,
-  		$skill[Even More Elemental Wards]: 46,
-  		$skill[More Legs]: 48
-			};
-  	if (skillIDs contains upgrade)
+			$skill[Bone Spikes]: 41,
+			$skill[Arm Blade]: 42,
+			$skill[Healing Scarabs]: 43,
+			$skill[Elemental Wards]: 44,
+			$skill[More Elemental Wards]: 45,
+			$skill[Even More Elemental Wards]: 46,
+			$skill[More Legs]: 48
+		};
+		if (skillIDs contains upgrade)
 		{
 			return skillIDs[upgrade];
 		} else {
@@ -1006,10 +920,6 @@ boolean ed_shopping()
 		}
 	}
 
-	if (!isActuallyEd())
-	{
-		return false;
-	}
 	auto_log_info("Time to shop!", "red");
 	wait(1);
 	visit_url("choice.php?pwd=&whichchoice=1023&option=1", true);
@@ -1133,6 +1043,11 @@ boolean ed_shopping()
 
 void ed_handleAdventureServant(location loc)
 {
+	if (loc == $location[Noob Cave])
+	{
+		return;
+	}
+	
 	// the order servants are unlocked is
 	// level 3 - Priest (extra Ka)
 	// level 6 - Cat (item drops)
@@ -1167,7 +1082,7 @@ void ed_handleAdventureServant(location loc)
 	}
 
 	// Locations where item drop is required for quest furthering purposes but we don't want to miss out on Ka if needed.
-	if ($locations[The eXtreme Slope, The Batrat and Ratbat Burrow, Cobb's Knob Harem, Twin Peak, The Black Forest, The Hidden Bowling Alley, The Copperhead Club, A Mob of Zeppelin Protesters, The Red Zeppelin] contains loc)
+	if ($locations[The Goatlet, The eXtreme Slope, The Batrat and Ratbat Burrow, Cobb's Knob Harem, Twin Peak, The Black Forest, The Hidden Bowling Alley, The Copperhead Club, A Mob of Zeppelin Protesters, The Red Zeppelin] contains loc)
 	{
 		if (my_spleen_use() == 35 && have_skill($skill[Even More Elemental Wards]))
 		{
@@ -1346,41 +1261,6 @@ boolean ed_autoAdv(int num, location loc, string option)
 
 boolean L1_ed_island()
 {
-	return L1_ed_island(0);
-}
-
-boolean L1_ed_dinsey()
-{
-	if (!isActuallyEd())
-	{
-		return false;
-	}
-	if(!elementalPlanes_access($element[stench]))
-	{
-		return false;
-	}
-	if(my_level() < 6)
-	{
-		return false;
-	}
-	if(!get_property("auto_dickstab").to_boolean())
-	{
-		return false;
-	}
-	if(possessEquipment($item[Sewage-Clogged Pistol]) && possessEquipment($item[Perfume-Soaked Bandana]))
-	{
-		return false;
-	}
-	autoAdv(1, $location[Pirates of the Garbage Barges]);
-	return true;
-}
-
-boolean L1_ed_island(int dickstabOverride)
-{
-	if (!isActuallyEd())
-	{
-		return false;
-	}
 	if(!elementalPlanes_access($element[spooky]))
 	{
 		return false;
@@ -1391,12 +1271,7 @@ boolean L1_ed_island(int dickstabOverride)
 	{
 		if(turns_played() > 22)
 		{
-			blocker = $skill[Replacement Liver];
-			blocker = $skill[Okay Seriously, This is the Last Spleen];
-			if((dickstabOverride == 0) || (my_level() >= dickstabOverride))
-			{
-				return false;
-			}
+			return false;
 		}
 	}
 
@@ -1454,13 +1329,8 @@ boolean L1_ed_island(int dickstabOverride)
 	return true;
 }
 
-
 boolean L1_ed_islandFallback()
 {
-	if (!isActuallyEd())
-	{
-		return false;
-	}
 	if(elementalPlanes_access($element[spooky]))
 	{
 		return false;
@@ -1548,11 +1418,25 @@ boolean L1_ed_islandFallback()
 		return true;
 	}
 
+	if (my_session_adv() == 0 && my_mp() >= mp_cost($skill[Wisdom Of Thoth]) && have_skill($skill[Wisdom Of Thoth]))
+	{
+		// use our free starting 5 mp to get Wisdom of Thoth to increase our max MP 
+		// as we'll regen some when adventuring at the shore.
+		use_skill(1, $skill[Wisdom Of Thoth]);
+	}
+
 	if(LX_islandAccess())
 	{
 		return true;
 	}
 
+	if (my_servant() == $servant[Priest] && my_servant().experience < 196)
+	{
+		// make sure we have a level 15 Priest if possible
+		// so we get the extra Ka from Hippies and Goblins.
+		buffMaintain($effect[Purr of the Feline], 10, 1, 10);
+	}
+	
 	if (have_skill($skill[Upgraded Legs]) || item_amount($item[Ka coin]) >= 10)
 	{
 		if(have_outfit("Filthy Hippy Disguise") && is_wearing_outfit("Filthy Hippy Disguise"))
@@ -1561,7 +1445,6 @@ boolean L1_ed_islandFallback()
 			put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
 			equipBaseline();
 		}
-		buffMaintain($effect[Wisdom Of Thoth], 20, 1, 1);
 		if (have_skill($skill[More Legs]) && maximizeContains("-10ml"))
 		{
 			removeFromMaximize("-10ml");
@@ -1736,6 +1619,11 @@ boolean LM_edTheUndying()
 	{
 		return true;
 	}
+	// Smut Orcs are 1 Ka so build the bridge.
+	if (L9_chasmStart() || L9_chasmBuild())
+	{
+		return true;
+	}
 	// L8 quest is all 1 Ka zones for Ed (unlikely to survive Ninja Snowmen Assassins so they don't count)
 	if (L8_trapperStart() || L8_trapperGround() || L8_trapperGroar())
 	{
@@ -1758,11 +1646,6 @@ boolean LM_edTheUndying()
 	}
 	// should probably complete the tavern for drinking purposes (and rats are 1 Ka).
 	if (L3_tavern())
-	{
-		return true;
-	}
-	// Smut Orcs are 1 Ka so build the bridge.
-	if (L9_chasmStart() || L9_chasmBuild())
 	{
 		return true;
 	}
