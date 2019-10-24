@@ -170,7 +170,7 @@ void handlePreAdventure(location place)
 			// the game doesn't let you adventure if you have no HP even though Ed
 			// gets a full heal when he goes to the underworld
 			// only necessary if a non-combat puts you on 0 HP.
-			acquireHP();
+			acquireHP(1);
 		}
 	}
 
