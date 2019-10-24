@@ -459,7 +459,7 @@ int[string] auto_sourceTerminalMissing();						//Defined in autoscend/auto_mr201
 boolean auto_sourceTerminalRequest(string request);			//Defined in autoscend/auto_mr2016.ash
 int[string] auto_sourceTerminalStatus();						//Defined in autoscend/auto_mr2016.ash
 boolean auto_tavern();										//Defined in autoscend.ash
-string auto_Junkyard(int round, string opp, string text);		//Defined in autoscend/auto_combat.ash
+string auto_JunkyardCombatHandler(int round, string opp, string text);		//Defined in autoscend/auto_combat.ash
 int changeClan();											//Defined in autoscend/auto_clan.ash
 int changeClan(int toClan);									//Defined in autoscend/auto_clan.ash
 int changeClan(string clanName);							//Defined in autoscend/auto_clan.ash

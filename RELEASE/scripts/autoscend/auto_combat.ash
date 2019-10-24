@@ -2225,7 +2225,7 @@ string findBanisher(int round, string opp, string text)
 	return auto_combatHandler(round, opp, text);
 }
 
-string auto_Junkyard(int round, string opp, string text)
+string auto_JunkyardCombatHandler(int round, string opp, string text)
 {
 	monster enemy = to_monster(opp);
 
@@ -2238,7 +2238,7 @@ string auto_Junkyard(int round, string opp, string text)
 		return auto_combatHandler(round, opp, text);
 	}
 
-	auto_log_info("auto_Junkyard: " + round, "brown");
+	auto_log_info("auto_JunkyardCombatHandler: " + round, "brown");
 	if(round == 0)
 	{
 		set_property("auto_gremlinMoly", true);

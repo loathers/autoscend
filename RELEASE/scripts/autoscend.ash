@@ -7605,25 +7605,25 @@ boolean L12_gremlins()
 	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
-		autoAdv(1, $location[Next to that barrel with something burning in it], "auto_Junkyard");
+		autoAdv(1, $location[Next to that barrel with something burning in it], "auto_JunkyardCombatHandler");
 		return true;
 	}
 
 	if(item_amount($item[molybdenum screwdriver]) == 0)
 	{
-		autoAdv(1, $location[Out by that rusted-out car], "auto_Junkyard");
+		autoAdv(1, $location[Out by that rusted-out car], "auto_JunkyardCombatHandler");
 		return true;
 	}
 
 	if(item_amount($item[molybdenum crescent wrench]) == 0)
 	{
-		autoAdv(1, $location[over where the old tires are], "auto_Junkyard");
+		autoAdv(1, $location[over where the old tires are], "auto_JunkyardCombatHandler");
 		return true;
 	}
 
 	if(item_amount($item[Molybdenum Pliers]) == 0)
 	{
-		autoAdv(1, $location[near an abandoned refrigerator], "auto_Junkyard");
+		autoAdv(1, $location[near an abandoned refrigerator], "auto_JunkyardCombatHandler");
 		return true;
 	}
 	handleFamiliar("item");
