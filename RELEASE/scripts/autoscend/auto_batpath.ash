@@ -100,7 +100,7 @@ boolean bat_switchForm(effect form)
 	}
 	if (my_hp() <= 10)
 	{
-		print("We don't have enough HP to switch form to " + form + "!", "red");
+		auto_log_warning("We don't have enough HP to switch form to " + form + "!", "red");
 		return false;
 	}
 	return use_skill(1, form.to_skill());
@@ -124,7 +124,7 @@ boolean bat_formPreAdventure()
 		bat_clearForms();
 		return true;
 	default:
-		print("auto_bat_desiredForm was set to bad value: '" + desiredForm + "'. Should be '', 'wolf', 'mist', or 'bats'.", "red");
+		auto_log_error("auto_bat_desiredForm was set to bad value: '" + desiredForm + "'. Should be '', 'wolf', 'mist', or 'bats'.", "red");
 		set_property("auto_bat_desiredForm", "");
 		return false;
 	}
@@ -337,7 +337,7 @@ boolean bat_shouldPickSkills(int hpLeft)
 
 		if ((picks contains sk) != have_skill(sk))
 		{
-			print("We'd like to make a skill change for " + sk.to_string() + ", which we " + (picks contains sk ? "want" : "don't want") + " but " + (have_skill(sk) ? "have" : "don't have"), "blue");
+			auto_log_info("We'd like to make a skill change for " + sk.to_string() + ", which we " + (picks contains sk ? "want" : "don't want") + " but " + (have_skill(sk) ? "have" : "don't have"), "blue");
 			return true;
 		}
 	}
@@ -383,7 +383,7 @@ int bat_creatable_amount(item desired)
 		case $item[vampagne]:
 			return min(item_amount($item[blood bag]), total_items($items[carbonated soy milk, monstar energy beverage]));
 	}
-	print("Hmm, " + desired + " isn't a Vampyre consumable", "red");
+	auto_log_warning("Hmm, " + desired + " isn't a Vampyre consumable", "red");
 	return 0;
 }
 
@@ -431,7 +431,7 @@ boolean bat_cook(item desired)
 		case $item[vampagne]:
 			return bat_multicraft("cocktail", $items[carbonated soy milk, monstar energy beverage]);
 	}
-	print("Hmm, " + desired + " isn't a Vampyre consumable", "red");
+	auto_log_warning("Hmm, " + desired + " isn't a Vampyre consumable", "red");
 	return false;
 }
 
@@ -471,7 +471,7 @@ boolean bat_consumption()
 					autoChew(1, it);
 				else
 				{
-					print("Woah, I made a " + it + " to consume, but you can't consume that?", "red");
+					auto_log_warning("Woah, I made a " + it + " to consume, but you can't consume that?", "red");
 					return false;
 				}
 				return true;
@@ -582,7 +582,7 @@ boolean LM_batpath()
 
 	if(bat_remainingBaseHP() >= 70 && bat_shouldPickSkills(20))
 	{
-		print("Let's swap out some skills", "blue");
+		auto_log_info("Let's swap out some skills", "blue");
 		bat_reallyPickSkills(20);
 		return true;
 	}

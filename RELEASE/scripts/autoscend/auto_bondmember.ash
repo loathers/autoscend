@@ -171,6 +171,9 @@ boolean bond_initializeDay(int day)
 			if(get_property("auto_dickstab").to_boolean() && !possessEquipment($item[Dented Scepter]) && is_unrestricted($item[Witchess Set]) && get_property("lovebugsUnlocked").to_boolean() && possessEquipment($item[Your Cowboy Boots]) && have_skills($skills[Curse of Weaksauce, Shell Up, Lunging Thrust-Smack, Sauceshell, Itchy Curse Finger]) && is_unrestricted($item[Source Terminal]) && (auto_get_campground() contains $item[Witchess Set]) && (auto_get_campground() contains $item[Source Terminal]) && (get_property("_witchessFights").to_int() < 5))
 			{
 				auto_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
+
+				// TODO: not sure why we cant just use acquireMP instead
+				// acquireMP(55);
 				if(my_mp() < 55)
 				{
 					doRest();
@@ -217,7 +220,7 @@ boolean bond_buySkills()
 	if(bondPoints.find())
 	{
 		points = to_int(bondPoints.group(1));
-		print("Found " + points + " pound(s) of social capital husks.", "green");
+		auto_log_info("Found " + points + " pound(s) of social capital husks.", "green");
 	}
 
 	while(points > 0)
@@ -227,7 +230,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 3)
 			{
-				print("Getting bondSymbols", "blue");
+				auto_log_info("Getting bondSymbols", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=10&w=s");
 				points -= 3;
 			}
@@ -236,7 +239,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 3)
 			{
-				print("Getting bondJetpack", "blue");
+				auto_log_info("Getting bondJetpack", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=12&w=s");
 				points -= 3;
 			}
@@ -245,7 +248,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 3)
 			{
-				print("Getting bondDrunk2", "blue");
+				auto_log_info("Getting bondDrunk2", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=11&w=s");
 				points -= 3;
 			}
@@ -254,7 +257,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 2)
 			{
-				print("Getting bondDrunk1", "blue");
+				auto_log_info("Getting bondDrunk1", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=8&w=s");
 				points -= 2;
 			}
@@ -263,7 +266,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 3)
 			{
-				print("Getting bondMartiniPlus", "blue");
+				auto_log_info("Getting bondMartiniPlus", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=13&w=p");
 				points -= 3;
 			}
@@ -272,7 +275,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 1)
 			{
-				print("Getting bondMartiniTurn", "blue");
+				auto_log_info("Getting bondMartiniTurn", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=1&w=p");
 				points -= 1;
 			}
@@ -289,7 +292,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 3)
 			{
-				print("Getting bondBridge", "blue");
+				auto_log_info("Getting bondBridge", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=14&w=s");
 				points -= 3;
 			}
@@ -298,7 +301,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 4)
 			{
-				print("Getting bondSpleen", "blue");
+				auto_log_info("Getting bondSpleen", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=17&w=s");
 				points -= 4;
 			}
@@ -307,7 +310,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 5)
 			{
-				print("Getting bondDesert", "blue");
+				auto_log_info("Getting bondDesert", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=18&w=s");
 				points -= 5;
 			}
@@ -316,7 +319,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 1)
 			{
-				print("Getting bondMeat", "blue");
+				auto_log_info("Getting bondMeat", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=2&w=p");
 				points -= 1;
 			}
@@ -325,7 +328,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 1)
 			{
-				print("Getting bondItem1", "blue");
+				auto_log_info("Getting bondItem1", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=3&w=p");
 				points -= 1;
 			}
@@ -334,7 +337,7 @@ boolean bond_buySkills()
 		{
 			if(points >= 2)
 			{
-				print("Getting bondItem2", "blue");
+				auto_log_info("Getting bondItem2", "blue");
 				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=6&w=s");
 				points -= 2;
 			}
@@ -379,6 +382,9 @@ boolean LM_bond()
 		if(get_property("auto_dickstab").to_boolean() && !possessEquipment($item[Dented Scepter]) && is_unrestricted($item[Witchess Set]) && get_property("lovebugsUnlocked").to_boolean() && possessEquipment($item[Your Cowboy Boots]) && have_skills($skills[Curse of Weaksauce, Shell Up, Lunging Thrust-Smack, Sauceshell, Itchy Curse Finger]) && is_unrestricted($item[Source Terminal]) && (auto_get_campground() contains $item[Witchess Set]) && (auto_get_campground() contains $item[Source Terminal]) && (get_property("_witchessFights").to_int() < 5))
 		{
 			auto_sourceTerminalEducate($skill[Turbo], $skill[Compress]);
+
+			// TODO: not sure why we cant just use acquireMP instead
+			// acquireMP(55);
 			if(my_mp() < 55)
 			{
 				doRest();
@@ -427,15 +433,15 @@ boolean LM_bond()
 		{
 			if(item_amount($item[Disposable Instant Camera]) == 0)
 			{
-				print("Can you time spin an Animated Ornate Nightstand?", "red");
+				auto_log_warning("Can you time spin an Animated Ornate Nightstand?", "red");
 			}
 			if(item_amount($item[Knob Goblin Firecracker]) == 0)
 			{
-				print("Can you time spin a Sub-Assistant Knob Mad Scientist?", "red");
+				auto_log_warning("Can you time spin a Sub-Assistant Knob Mad Scientist?", "red");
 			}
 			if(item_amount($item[Knob Goblin Harem Veil]) == 0)
 			{
-				print("Can you YR (or equivalent) a Knob Goblin Harem Girl?", "red");
+				auto_log_warning("Can you YR (or equivalent) a Knob Goblin Harem Girl?", "red");
 			}
 		}
 
@@ -482,7 +488,7 @@ boolean LM_bond()
 			{
 				if((my_level() > 8) && (my_adventures() < 10) && (my_mp() <= 60) && (inebriety_left() > 0))
 				{
-					acquireMP(61, true);
+					acquireMP(61, 0);
 				}
 			}
 
@@ -634,10 +640,6 @@ boolean LM_bond()
 		{
 			if((item_amount($item[Filthworm Royal Guard Scent Gland]) == 0) && (item_amount($item[Heart Of The Filthworm Queen]) == 0) && canYellowRay())
 			{
-				while((get_property("timesRested").to_int() < total_free_rests()) && (my_mp() < mp_cost($skill[Disintegrate])))
-				{
-					doRest();
-				}
 				location loc = $location[The Hatching Chamber];
 				if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
 				{
@@ -658,7 +660,7 @@ boolean LM_bond()
 					loc = $location[The Feeding Chamber];
 				}
 
-				if(!acquireMP(150, true))
+				if(!acquireMP(150, 0))
 				{
 					abort("Can not restore MP in order to disintegrate a filthworm. Please YR the filthworm we can access next. Thank you.");
 				}
@@ -766,11 +768,7 @@ boolean LM_bond()
 
 				if(!have_outfit("Knob Goblin Harem Girl Disguise"))
 				{
-					while((my_mp() < 160) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-					{
-						doRest();
-					}
-					if(!acquireMP(160, true))
+					if(!acquireMP(160, 0))
 					{
 						abort("Can not restore MP for a Harem Girl disintegrate. Her whorish ways shall continue unabated!");
 					}

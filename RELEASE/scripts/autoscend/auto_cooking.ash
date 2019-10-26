@@ -292,7 +292,7 @@ boolean tryPantsEat()
 				cli_execute("refresh inv");
 				if(item_amount(it) == 0)
 				{
-					print("Error, mafia thought you had " + it + " but you didn't....", "red");
+					auto_log_warning("Error, mafia thought you had " + it + " but you didn't....", "red");
 					return false;
 				}
 				if((get_property("mayoInMouth") == "") && (auto_get_campground() contains $item[Portable Mayo Clinic]))
@@ -370,7 +370,7 @@ boolean autoDrink(int howMany, item toDrink)
 	{
 		shrugAT($effect[Ode to Booze]);
 		// get enough turns of ode
-		while(acquireMP(mp_cost($skill[The Ode to Booze]), true) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
+		while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
 			/*do nothing, the loop condition is doing the work*/;
 	}
 
@@ -751,10 +751,6 @@ void consumeStuff()
 	{
 		auto_maximizedConsumeStuff();
 		return;
-	}
-	else
-	{
-		// print("Using old hard-coded consumption strategies. 'set auto_legacyConsumeStuff=false' to use the knapsack-solver consumption strategy.", "red");
 	}
 
 	int mpForOde = mp_cost($skill[The Ode to Booze]);
@@ -1478,36 +1474,6 @@ void consumeStuff()
 			autoDrink(1, $item[Ambitious Turkey]);
 		}
 
-		if((auto_my_path() == "Standard") && (my_mp() >= mpForOde) && (my_inebriety() <= inebriety_limit()) && (my_meat() > 500) && (get_property("_speakeasyDrinksDrunk").to_int() < 3))
-		{
-			# We could check for good drinks here but I don't know what would be good checks
-#			int canDrink = inebriety_limit() - my_inebriety();
-
-			#Consider Ish Kabibble for A-Boo Peak (2)
-#			visit_url("clan_viplounge.php?action=speakeasy");
-
-			#item toDrink = $item[none];
-#			string toDrink = "";
-#			if(canDrink >= 2)
-#			{
-#				toDrink = "Bee's Knees";
-#			}
-#			else if(canDrink >= 1)
-#			{
-#				toDrink = "glass of \"milk\"";
-#			}
-
-			#if(toDrink != $item[none])
-#			if(toDrink != "")
-#			{
-#				shrugAT($effect[Ode to Booze]);
-#				buffMaintain($effect[Ode to Booze], 50, 1, 4);
-#				cli_execute("drink 1 " + toDrink);
-#				print("drink 1 " + toDrink);
-#			}
-		}
-
-
 /*****	End of Standard equivalent secton								*****/
 	}
 	else if(my_daycount() == 3)
@@ -1634,28 +1600,28 @@ ConsumeAction MakeConsumeAction(item it)
 
 boolean autoPrepConsume(ConsumeAction action)
 {
-	print(to_debug_string(action));
+	auto_log_info(to_debug_string(action));
 	if(action.howToGet == SL_OBTAIN_PULL)
 	{
-		print("autoPrepConsume: Pulling a " + action.it, "blue");
+		auto_log_info("autoPrepConsume: Pulling a " + action.it, "blue");
 		action.howToGet = SL_OBTAIN_NULL;
 		return pullXWhenHaveY(action.it, 1, item_amount(action.it));
 	}
 	else if(action.howToGet == SL_OBTAIN_CRAFT)
 	{
-		print("autoPrepConsume: Crafting a " + action.it, "blue");
+		auto_log_info("autoPrepConsume: Crafting a " + action.it, "blue");
 		action.howToGet = SL_OBTAIN_NULL;
 		return create(1, action.it);
 	}
 	else if(action.howToGet == SL_OBTAIN_BUY)
 	{
-		print("autoPrepConsume: Buying a " + action.it, "blue");
+		auto_log_info("autoPrepConsume: Buying a " + action.it, "blue");
 		action.howToGet = SL_OBTAIN_NULL;
 		return buy(1, action.it);
 	}
 	else if (action.howToGet == SL_OBTAIN_NULL)
 	{
-		print("autoPrepConsume: Doing nothing to get a " + action.it, "blue");
+		auto_log_info("autoPrepConsume: Doing nothing to get a " + action.it, "blue");
 	}
 	return true;
 }
@@ -1804,11 +1770,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 
 	if(towerKeyCount() < 3)
 	{
-		if(item_amount($item[Boris's key]) == 0 && item_amount($item[fat loot token]) < 3)
+		if(item_amount($item[Boris\'s key]) == 0 && item_amount($item[fat loot token]) < 3)
 			wantBorisPie = true;
-		if(item_amount($item[Jarlsberg's key]) == 0 && item_amount($item[fat loot token]) < 2)
+		if(item_amount($item[Jarlsberg\'s key]) == 0 && item_amount($item[fat loot token]) < 2)
 			wantJarlsbergPie = true;
-		if(item_amount($item[Sneaky Pete's key]) == 0 && item_amount($item[fat loot token]) < 1)
+		if(item_amount($item[Sneaky Pete\'s key]) == 0 && item_amount($item[fat loot token]) < 1)
 			wantPetePie = true;
 	}
 
@@ -1829,11 +1795,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				actions[n].desirability += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
 			}
 			if ((obtain_mode == SL_OBTAIN_PULL) && (i == 0) &&
-					((it == $item[Boris's key lime pie] && wantBorisPie) ||
-					(it == $item[Jarlsberg's key lime pie] && wantJarlsbergPie) ||
-					(it == $item[Sneaky Pete's key lime pie] && wantPetePie)))
+					((it == $item[Boris\'s key lime pie] && wantBorisPie) ||
+					(it == $item[Jarlsberg\'s key lime pie] && wantJarlsbergPie) ||
+					(it == $item[Sneaky Pete\'s key lime pie] && wantPetePie)))
 			{
-				print("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
+				auto_log_info("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
 				actions[n].desirability += 25;
 			}
 			if (obtain_mode == SL_OBTAIN_CRAFT)
@@ -1884,7 +1850,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		}
 	}
 
-	if(!in_tcrs()) 
+	if(!in_tcrs())
 	{
 		// write in hard-coded adventure values for IPA, the best one
 		if(type == SL_ORGAN_LIVER)
@@ -1945,10 +1911,10 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	else if (type == SL_ORGAN_STOMACH)
 		filename = "TCRS_" + my_class().to_string().replace_string(" ", "_") + "_" + my_sign() + "_cafe_food.txt";
 
-	print("Loading " + filename, "blue");
+	auto_log_info("Loading " + filename, "blue");
 	if(!file_to_map(filename, cafe_stuff))
 	{
-		print("Something went wrong while trying to load " + filename + ". Maybe run 'tcrs load'?", "red");
+		auto_log_error("Something went wrong while trying to load " + filename + ". Maybe run 'tcrs load'?", "red");
 		abort();
 	}
 	foreach i, r in cafe_stuff
@@ -1987,7 +1953,7 @@ void auto_autoDrinkNightcap(boolean simulate)
 		if (desirability(i) > desirability(best)) best = i;
 	}
 
-	print("Nightcap is: " + to_pretty_string(actions[best]), "blue");
+	auto_log_info("Nightcap is: " + to_pretty_string(actions[best]), "blue");
 
 	if (simulate) return;
 
@@ -2013,7 +1979,7 @@ boolean auto_autoDrinkOne(boolean simulate)
 		}
 	}
 
-	print("auto_autoDrinkOne: Planning to execute " + to_pretty_string(actions[best]), "blue");
+	auto_log_info("auto_autoDrinkOne: Planning to execute " + to_pretty_string(actions[best]), "blue");
 
 	if(!simulate)
 	{
@@ -2058,7 +2024,7 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 	boolean[int] result = knapsack(remaining_space, count(space), space, desirability);
 
 	string organ_name = (type == "eat") ? "fullness" : "inebriety";
-	print("Knapsack " + type + " plan for " + remaining_space + " " + organ_name + ":", "blue");
+	auto_log_info("Knapsack " + type + " plan for " + remaining_space + " " + organ_name + ":", "blue");
 	float total_adv = 0.0;
 	int consumable_count = 0;
 	int sum_space = 0;
@@ -2071,37 +2037,37 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 		}
 		consumable_count++;
 		sum_space += actions[i].size;
-		print(to_pretty_string(actions[i]), "blue");
+		auto_log_info(to_pretty_string(actions[i]), "blue");
 		total_adv += actions[i].adventures;
 	}
 	if (type == "eat")
 	{
 		int applicable_seasoning = min(item_amount($item[special seasoning]), consumable_count);
-		print("(+" + applicable_seasoning + " from special seasoning ("+ item_amount($item[special seasoning]) + " available)", "blue");
+		auto_log_info("(+" + applicable_seasoning + " from special seasoning ("+ item_amount($item[special seasoning]) + " available)", "blue");
 		total_adv += applicable_seasoning;
 	}
 	if (type == "eat")
 	{
 		// TODO: and can obtain milk of magnesium? It's just logging...
-		print("(+" + sum_space + " from Got Milk)", "blue");
+		auto_log_info("(+" + sum_space + " from Got Milk)", "blue");
 		total_adv += sum_space;
 	}
 	if (type == "drink" && auto_have_skill($skill[The Ode to Booze]))
 	{
-		print("(+" + sum_space + " from Ode to Booze)", "blue");
+		auto_log_info("(+" + sum_space + " from Ode to Booze)", "blue");
 		total_adv += sum_space;
 	}
-	print("For a total of: " + total_adv + " adventures.", "blue");
+	auto_log_info("For a total of: " + total_adv + " adventures.", "blue");
 
 	if(count(result) == 0)
 	{
-		print("Couldn't find a way of finishing off our " + type + " space exactly.", "red");
+		auto_log_warning("Couldn't find a way of finishing off our " + type + " space exactly.", "red");
 		return false;
 	}
 
 	if(!canSimultaneouslyAcquire(normal_consumables))
 	{
-		print("It looks like I can't simultaneously get everything that I want to " + type + ". I'll wait and see if I get unconfused - otherwise, please " + type + " manually.", "red");
+		auto_log_warning("It looks like I can't simultaneously get everything that I want to " + type + ". I'll wait and see if I get unconfused - otherwise, please " + type + " manually.", "red");
 		return false;
 	}
 
@@ -2134,13 +2100,13 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 
 	int pre_adventures = my_adventures();
 
-	print("Consuming " + count(result) + " things...", "blue");
+	auto_log_info("Consuming " + count(result) + " things...", "blue");
 	foreach i in result
 	{
 		autoConsume(actions[i]);
 	}
 
-	print("Expected " + total_adv + " adventures, got " + (my_adventures() - pre_adventures), "blue");
+	auto_log_info("Expected " + total_adv + " adventures, got " + (my_adventures() - pre_adventures), "blue");
 	return true;
 }
 

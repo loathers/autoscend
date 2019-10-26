@@ -13,6 +13,7 @@ since r19516; // haunted paddle-ball and Jacob's rug help in the exploaded battl
 
 import <autoscend/autoscend_header.ash>
 import <autoscend/autoscend_migration.ash>
+import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_deprecation.ash>
 import <autoscend/auto_combat.ash>
@@ -65,6 +66,7 @@ void initializeSettings()
 		return;
 	}
 	set_location($location[none]);
+	invalidateRestoreOptionCache();
 
 	set_property("auto_useCubeling", true);
 	set_property("auto_100familiar", $familiar[none]);
@@ -96,8 +98,8 @@ void initializeSettings()
 		int sharkCountMax = ceil((curSkill + 1) * (curSkill + 1) / 4);
 		if(get_property("poolSharkCount").to_int() < sharkCountMin || get_property("poolSharkCount").to_int() >= sharkCountMax)
 		{
-			print("poolSharkCount set to incorrect value.", "red");
-			print("You can \"set poolSharkCount="+sharkCountMin+"\" to use the least optimistic value consistent with your pool skill.", "blue");
+			auto_log_warning("poolSharkCount set to incorrect value.", "red");
+			auto_log_info("You can \"set poolSharkCount="+sharkCountMin+"\" to use the least optimistic value consistent with your pool skill.", "blue");
 		}
 	}
 
@@ -139,6 +141,7 @@ void initializeSettings()
 	set_property("auto_day_init", 0);
 	set_property("auto_day1_cobb", "");
 	set_property("auto_day1_dna", "");
+	set_property("auto_debuffAsdonDelay", 0);
 	set_property("auto_disableAdventureHandling", false);
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_drunken", "");
@@ -303,14 +306,14 @@ boolean handleFamiliar(string type)
 
 		string [string,int,string] familiars_text;
 		if(!file_to_map("autoscend_familiars.txt", familiars_text))
-			print("Could not load autoscend_familiars.txt. This is bad!", "red");
+			auto_log_critical("Could not load autoscend_familiars.txt. This is bad!", "red");
 		foreach i,name,conds in familiars_text[type]
 		{
 			familiar thisFamiliar = name.to_familiar();
 			if(thisFamiliar == $familiar[none] && name != "none")
 			{
-				print('"' + name + '" does not convert to a familiar properly!', "red");
-				print(type + "; " + i + "; " + conds, "red");
+				auto_log_error('"' + name + '" does not convert to a familiar properly!', "red");
+				auto_log_error(type + "; " + i + "; " + conds, "red");
 				continue;
 			}
 			if(!auto_check_conditions(conds))
@@ -425,13 +428,9 @@ boolean handleFamiliar(string type)
 
 		int index = 0;
 		while(index < count(fams))
-#		foreach fam in $familiars[Rockin\' Robin, Grimstone Golem, Angry Jung Man, Intergnat, Bloovian Groose, Fist Turkey, Slimeling, Jumpsuited Hound Dog, Adventurous Spelunker, Gelatinous Cubeling, Baby Gravy Fairy, Obtuse Angel, Pair of Stomping Boots, Jack-in-the-Box, Syncopated Turtle]
 		{
-			#if(auto_have_familiar(fam) && !(blacklist contains fam))
-			#print("Looking for " + fams[index] + " at: " + index, "blue");
 			if(auto_have_familiar(fams[index]) && !(blacklist contains fams[index]))
 			{
-#				return handleFamiliar(fam);
 				return handleFamiliar(fams[index]);
 			}
 			index = index + 1;
@@ -679,7 +678,7 @@ boolean LX_burnDelay()
 	{
 		if(auto_voteMonster(true))
 		{
-			print("Burn some delay somewhere (voting), if we found a place!", "green");
+			auto_log_info("Burn some delay somewhere (voting), if we found a place!", "green");
 			if(auto_voteMonster(true, burnZone, ""))
 			{
 				return true;
@@ -687,7 +686,7 @@ boolean LX_burnDelay()
 		}
 		if(isOverdueDigitize())
 		{
-			print("Burn some delay somewhere (digitize), if we found a place!", "green");
+			auto_log_info("Burn some delay somewhere (digitize), if we found a place!", "green");
 			if(autoAdv(burnZone))
 			{
 				return true;
@@ -695,7 +694,7 @@ boolean LX_burnDelay()
 		}
 		if(auto_sausageGoblin())
 		{
-			print("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
+			auto_log_info("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
 			if(auto_sausageGoblin(burnZone, ""))
 			{
 				return true;
@@ -704,9 +703,9 @@ boolean LX_burnDelay()
 	}
 	else if(wannaVote || wannaDigitize || wannaSausage)
 	{
-		if(wannaVote) print("Had overdue voting monster but couldn't find a zone to burn delay", "red");
-		if(wannaDigitize) print("Had overdue digitize but couldn't find a zone to burn delay", "red");
-		if(wannaSausage) print("Had overdue sausage but couldn't find a zone to burn delay", "red");
+		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
+		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
+		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
 	}
 	return false;
 }
@@ -909,10 +908,6 @@ item[monster] catBurglarHeistDesires()
 			wannaHeists[$monster[Burly Sidekick]] = $item[Mohawk wig];
 	}
 
-	// foreach mon, it in wannaHeists
-	// {
-	//	auto_debug_print("catBurglarHeistDesires(): Want to heist a " + it + " from a " + mon);
-	// }
 	return wannaHeists;
 }
 
@@ -941,8 +936,6 @@ void maximize_hedge()
 	element third = ns_hedge3();
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
-		if(have_effect($effect[Flared Nostrils]) > 0)
-			doHottub();
 		uneffect($effect[Flared Nostrils]);
 		if(useMaximizeToEquip())
 		{
@@ -957,7 +950,6 @@ void maximize_hedge()
 	{
 		if ($element[stench] == first || $element[stench] == second || $element[stench] == third)
 		{
-			doHottub();
 			uneffect($effect[Flared Nostrils]);
 		}
 		if(useMaximizeToEquip())
@@ -1051,7 +1043,7 @@ int pullsNeeded(string data)
 		ns_hedge2();
 		ns_hedge3();
 
-		print("Hedge time of 4 adventures. (Up to 10 without Elemental Resistances)", "red");
+		auto_log_warning("Hedge time of 4 adventures. (Up to 10 without Elemental Resistances)", "red");
 		adv = adv + 4;
 	}
 
@@ -1059,10 +1051,10 @@ int pullsNeeded(string data)
 	{
 		if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) == 0))
 		{
-			print("Need star chart", "red");
+			auto_log_warning("Need star chart", "red");
 			if((auto_my_path() == "Heavy Rains") && (my_rain() >= 50))
 			{
-				print("You should rain man a star chart", "blue");
+				auto_log_info("You should rain man a star chart", "blue");
 			}
 			else
 			{
@@ -1077,19 +1069,19 @@ int pullsNeeded(string data)
 
 			if(stars < 8)
 			{
-				print("Need " + (8-stars) + " stars.", "red");
+				auto_log_warning("Need " + (8-stars) + " stars.", "red");
 				count = count + (8-stars);
 			}
 			if(lines < 7)
 			{
-				print("Need " + (7-lines) + " lines.", "red");
+				auto_log_warning("Need " + (7-lines) + " lines.", "red");
 				count = count + (7-lines);
 			}
 		}
 
 		if((item_amount($item[Digital Key]) == 0) && (item_amount($item[White Pixel]) < 30))
 		{
-			print("Need " + (30-item_amount($item[white pixel])) + " white pixels.", "red");
+			auto_log_warning("Need " + (30-item_amount($item[white pixel])) + " white pixels.", "red");
 			count = count + (30 - item_amount($item[white pixel]));
 		}
 
@@ -1102,7 +1094,7 @@ int pullsNeeded(string data)
 		}
 		if(item_amount($item[skeleton key]) == 0)
 		{
-			print("Need a skeleton key or the ingredients (skeleton bone, loose teeth) for it.");
+			auto_log_warning("Need a skeleton key or the ingredients (skeleton bone, loose teeth) for it.");
 		}
 	}
 
@@ -1111,22 +1103,22 @@ int pullsNeeded(string data)
 		adv = adv + 6;
 		if(get_property("auto_wandOfNagamar").to_boolean() && (item_amount($item[Wand Of Nagamar]) == 0) && (cloversAvailable() == 0))
 		{
-			print("Need a wand of nagamar (can be clovered).", "red");
+			auto_log_warning("Need a wand of nagamar (can be clovered).", "red");
 			count = count + 1;
 		}
 	}
 
 	if(adv > 0)
 	{
-		print("Estimated adventure need (tower) is: " + adv + ".", "orange");
+		auto_log_info("Estimated adventure need (tower) is: " + adv + ".", "orange");
 		if(!in_hardcore())
 		{
-			print("You need " + count + " pulls.", "orange");
+			auto_log_info("You need " + count + " pulls.", "orange");
 		}
 	}
 	if(pulls_remaining() > 0)
 	{
-		print("You have " + pulls_remaining() + " pulls.", "orange");
+		auto_log_info("You have " + pulls_remaining() + " pulls.", "orange");
 	}
 	return count;
 }
@@ -1189,7 +1181,7 @@ boolean tophatMaker()
 		return false;
 	}
 
-	print("Mark Steam-Hat upgraded!", "blue");
+	auto_log_info("Mark Steam-Hat upgraded!", "blue");
 	if(reEquip != $item[none])
 	{
 		equip($slot[hat], reEquip);
@@ -1321,7 +1313,7 @@ boolean doThemtharHills()
 
 	if(get_property("auto_hippyInstead").to_boolean() || (get_property("hippiesDefeated").to_int() >= 192))
 	{
-		print("Themthar Nuns!", "blue");
+		auto_log_info("Themthar Nuns!", "blue");
 	}
 
 	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
@@ -1352,7 +1344,7 @@ boolean doThemtharHills()
 			visit_url("charsheet.php");
 			if(have_skill($skill[Gift of the Maid]))
 			{
-				print("Gift of the Maid not properly detected until charsheet refresh.", "red");
+				auto_log_warning("Gift of the Maid not properly detected until charsheet refresh.", "red");
 			}
 		}
 	}
@@ -1460,11 +1452,11 @@ boolean doThemtharHills()
 	}
 	if(meatDropHave < meat_need)
 	{
-		print("Meat drop (" + meatDropHave+ ") is pretty low, (we want: " + meat_need + ") probably not worth it to try this.", "red");
+		auto_log_warning("Meat drop (" + meatDropHave+ ") is pretty low, (we want: " + meat_need + ") probably not worth it to try this.", "red");
 
 		float minget = 800.00 * (meatDropHave / 100.0);
 		int meatneed = 100000 - get_property("currentNunneryMeat").to_int();
-		print("The min we expect is: " + minget + " and we need: " + meatneed, "blue");
+		auto_log_info("The min we expect is: " + minget + " and we need: " + meatneed, "blue");
 
 		if(minget < meatneed)
 		{
@@ -1479,7 +1471,7 @@ boolean doThemtharHills()
 				float needPerAdv = needMeat / advLeft;
 				if(minget > needPerAdv)
 				{
-					print("We don't have the desired +meat but should be able to complete the nuns to our advantage", "green");
+					auto_log_info("We don't have the desired +meat but should be able to complete the nuns to our advantage", "green");
 					failNuns = false;
 				}
 			}
@@ -1493,7 +1485,7 @@ boolean doThemtharHills()
 		}
 		else
 		{
-			print("The min should be enough! Doing it!!", "purple");
+			auto_log_info("The min should be enough! Doing it!!", "purple");
 		}
 	}
 
@@ -1518,7 +1510,7 @@ boolean doThemtharHills()
 
 		int lastMeat = get_property("currentNunneryMeat").to_int();
 		int myLastMeat = my_meat();
-		print("Meat drop to start: " + meat_drop_modifier(), "blue");
+		auto_log_info("Meat drop to start: " + meat_drop_modifier(), "blue");
 		if(!autoAdv(1, $location[The Themthar Hills]))
 		{
 			//Maybe we passed it!
@@ -1545,7 +1537,7 @@ boolean doThemtharHills()
 		int diffMeat = curMeat - lastMeat;
 		int needMeat = 100000 - curMeat;
 		int average = curMeat / advs;
-		print("Cur Meat: " + curMeat + " Average: " + average, "blue");
+		auto_log_info("Cur Meat: " + curMeat + " Average: " + average, "blue");
 
 		diffMeat = diffMeat * 1.2;
 		average = average * 1.2;
@@ -1583,7 +1575,7 @@ int handlePulls(int day)
 		# Do starting pulls:
 		if((pulls_remaining() != 20) && !in_hardcore() && (my_turncount() > 0))
 		{
-			print("I assume you've handled your pulls yourself... who knows.");
+			auto_log_info("I assume you've handled your pulls yourself... who knows.");
 			return 0;
 		}
 
@@ -1794,7 +1786,7 @@ int handlePulls(int day)
 
 		if(my_class() == $class[Vampyre])
 		{
-			print("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
+			auto_log_info("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
 			if((storage_amount($item[mime army shotglass]) > 0) && is_unrestricted($item[mime army shotglass]))
 			{
 				pullXWhenHaveY($item[mime army shotglass], 1, 0);
@@ -1857,7 +1849,7 @@ boolean fortuneCookieEvent()
 {
 	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
 	{
-		print("Semi rare time!", "blue");
+		auto_log_info("Semi rare time!", "blue");
 		cli_execute("counters");
 		cli_execute("counters clear");
 
@@ -1910,11 +1902,16 @@ boolean fortuneCookieEvent()
 
 		if((goal == $location[The Outskirts of Cobb\'s Knob]) && (get_property("semirareLocation") == goal))
 		{
-			print("Do we not have access to either The Haunted Pantry or The Sleazy Back Alley?", "red");
+			auto_log_warning("Do we not have access to either The Haunted Pantry or The Sleazy Back Alley?", "red");
 			goal = $location[The Haunted Pantry];
 		}
 
-		return autoAdv(goal);
+		boolean retval = autoAdv(goal);
+		if (item_amount($item[Knob Goblin lunchbox]) > 0)
+		{
+			use(item_amount($item[Knob Goblin lunchbox]), $item[Knob Goblin lunchbox]);
+		}
+		return retval;
 	}
 	return false;
 }
@@ -1925,6 +1922,8 @@ void initializeDay(int day)
 	{
 		return;
 	}
+
+	invalidateRestoreOptionCache();
 
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))
 	{
@@ -1953,7 +1952,7 @@ void initializeDay(int day)
 
 	if(item_amount($item[Telegram From Lady Spookyraven]) > 0)
 	{
-		print("Lady Spookyraven quest not detected as started should have been auto-started. Starting it. If you are not in an Ed run, report this. Otherwise, it is expected.", "red");
+		auto_log_warning("Lady Spookyraven quest not detected as started should have been auto-started. Starting it. If you are not in an Ed run, report this. Otherwise, it is expected.", "red");
 		use(1, $item[Telegram From Lady Spookyraven]);
 		set_property("questM20Necklace", "started");
 	}
@@ -1962,12 +1961,12 @@ void initializeDay(int day)
 	{
 		if(item_amount($item[Telegram From Lady Spookyraven]) > 0)
 		{
-			print("Lady Spookyraven quest not started and we have a Telegram so let us use it.", "red");
+			auto_log_warning("Lady Spookyraven quest not started and we have a Telegram so let us use it.", "red");
 			boolean temp = use(1, $item[Telegram From Lady Spookyraven]);
 		}
 		else
 		{
-			print("Lady Spookyraven quest not detected as started but we don't have the telegram, assuming it is... If you are not in an Ed run, report this. Otherwise, it is expected.", "red");
+			auto_log_warning("Lady Spookyraven quest not detected as started but we don't have the telegram, assuming it is... If you are not in an Ed run, report this. Otherwise, it is expected.", "red");
 			set_property("questM20Necklace", "started");
 		}
 	}
@@ -2287,6 +2286,8 @@ void initializeDay(int day)
 		cli_execute("garden pick");
 	}
 
+	set_property("auto_forceNonCombatSource", "");
+
 	set_property("auto_day_init", day);
 }
 
@@ -2419,7 +2420,7 @@ boolean dailyEvents()
 
 boolean doBedtime()
 {
-	print("Starting bedtime: Pulls Left: " + pulls_remaining(), "blue");
+	auto_log_info("Starting bedtime: Pulls Left: " + pulls_remaining(), "blue");
 
 	if(get_property("lastEncounter") == "Like a Bat Into Hell")
 	{
@@ -2522,7 +2523,7 @@ boolean doBedtime()
 
 	if(get_property("auto_priorCharpaneMode").to_int() == 1)
 	{
-		print("Resuming Compact Character Mode.");
+		auto_log_info("Resuming Compact Character Mode.");
 		set_property("auto_priorCharpaneMode", 0);
 		visit_url("account.php?am=1&pwd=&action=flag_compactchar&value=1&ajax=0", true);
 	}
@@ -2538,30 +2539,30 @@ boolean doBedtime()
 		{
 			if(item_amount($item[Rain-Doh Indigo Cup]) > 0)
 			{
-				print("Copies left: " + (5 - get_property("_raindohCopiesMade").to_int()), "olive");
+				auto_log_info("Copies left: " + (5 - get_property("_raindohCopiesMade").to_int()), "olive");
 			}
 			if(!in_hardcore())
 			{
-				print("Pulls remaining: " + pulls_remaining(), "olive");
+				auto_log_info("Pulls remaining: " + pulls_remaining(), "olive");
 			}
 			if(item_amount($item[beer helmet]) == 0)
 			{
-				print("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
+				auto_log_info("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 				if(canYellowRay())
 				{
-					print("Make sure to Ball Lightning the spy!!", "red");
+					auto_log_info("Make sure to Ball Lightning the spy!!", "red");
 				}
 			}
 			else
 			{
-				print("If you have the Frat Warrior Fatigues, rain man an Astronomer? Skinflute?", "blue");
+				auto_log_info("If you have the Frat Warrior Fatigues, rain man an Astronomer? Skinflute?", "blue");
 			}
 		}
 		if(auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (inebriety_left() >= 0) && (my_adventures() > 0))
 		{
-			print("You have " + (5 - get_property("_machineTunnelsAdv").to_int()) + " fights in The Deep Machine Tunnels that you should use!", "blue");
+			auto_log_info("You have " + (5 - get_property("_machineTunnelsAdv").to_int()) + " fights in The Deep Machine Tunnels that you should use!", "blue");
 		}
-		print("You have a rain man to cast, please do so before overdrinking and run me again.", "red");
+		auto_log_info("You have a rain man to cast, please do so before overdrinking and run me again.", "red");
 		return false;
 	}
 
@@ -2580,7 +2581,7 @@ boolean doBedtime()
 	}
 	if(canGenieCombat() && item_amount($item[beer helmet]) == 0)
 	{
-		print("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
+		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
@@ -2596,7 +2597,7 @@ boolean doBedtime()
 	}
 
 	# This does not check if we still want these buffs
-	if((my_hp() < (0.9 * my_maxhp())) && (get_property("_hotTubSoaks").to_int() < 5))
+	if((my_hp() < (0.9 * my_maxhp())) && hotTubSoaksRemaining() > 0)
 	{
 		boolean doTub = true;
 		foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
@@ -2627,9 +2628,9 @@ boolean doBedtime()
 	skill libram = preferredLibram();
 	if(libram != $skill[none])
 	{
-		while((get_property("timesRested").to_int() < total_free_rests()) && (mp_cost(libram) <= my_maxmp()))
+		while(haveFreeRestAvailable() && (mp_cost(libram) <= my_maxmp()))
 		{
-			doRest();
+			doFreeRest();
 			while(my_mp() > mp_cost(libram))
 			{
 				use_skill(1, libram);
@@ -2692,8 +2693,8 @@ boolean doBedtime()
 	// If in TCRS skip using freecrafts but alert user of how many they can manually use.
 	if((in_tcrs()) && (freeCrafts() > 0))
 	{
-		print("In TCRS: Items are variable, skipping End Of Day crafting", "red");
-		print("Consider manually using your "+freeCrafts()+" free crafts", "red");
+		auto_log_warning("In TCRS: Items are variable, skipping End Of Day crafting", "red");
+		auto_log_warning("Consider manually using your "+freeCrafts()+" free crafts", "red");
 	}
 	else if((my_daycount() <= 2) && (freeCrafts() > 0) && my_adventures() > 0)
 	{
@@ -2885,42 +2886,42 @@ boolean doBedtime()
 		int extrudeLeft = 3 - get_property("_sourceTerminalExtrudes").to_int();
 		if((extrudeLeft > 0) && (auto_my_path() != "Pocket Familiars") && (item_amount($item[Source Essence]) >= 10))
 		{
-			print("You still have " + extrudeLeft + " Source Extrusions left", "blue");
+			auto_log_info("You still have " + extrudeLeft + " Source Extrusions left", "blue");
 		}
 	}
 
 	if(item_amount($item[Rain-Doh Indigo Cup]) > 0)
 	{
-		print("Copies left: " + (5 - get_property("_raindohCopiesMade").to_int()), "olive");
+		auto_log_info("Copies left: " + (5 - get_property("_raindohCopiesMade").to_int()), "olive");
 	}
 	if(!in_hardcore())
 	{
-		print("Pulls remaining: " + pulls_remaining(), "olive");
+		auto_log_info("Pulls remaining: " + pulls_remaining(), "olive");
 	}
 
 	if(have_skill($skill[Inigo\'s Incantation of Inspiration]))
 	{
 		int craftingLeft = 5 - get_property("_inigosCasts").to_int();
-		print("Free Inigo\'s craftings left: " + craftingLeft, "blue");
+		auto_log_info("Free Inigo\'s craftings left: " + craftingLeft, "blue");
 	}
 	if(item_amount($item[Loathing Legion Jackhammer]) > 0)
 	{
 		int craftingLeft = 3 - get_property("_legionJackhammerCrafting").to_int();
-		print("Free Loathing Legion Jackhammer craftings left: " + craftingLeft, "blue");
+		auto_log_info("Free Loathing Legion Jackhammer craftings left: " + craftingLeft, "blue");
 	}
 	if(item_amount($item[Thor\'s Pliers]) > 0)
 	{
 		int craftingLeft = 10 - get_property("_thorsPliersCrafting").to_int();
-		print("Free Thor's Pliers craftings left: " + craftingLeft, "blue");
+		auto_log_info("Free Thor's Pliers craftings left: " + craftingLeft, "blue");
 	}
 	if(freeCrafts() > 0)
 	{
-		print("Free craftings left: " + freeCrafts(), "blue");
+		auto_log_info("Free craftings left: " + freeCrafts(), "blue");
 	}
 	if(get_property("timesRested").to_int() < total_free_rests())
 	{
 		cs_spendRests();
-		print("You have " + (total_free_rests() - get_property("timesRested").to_int()) + " free rests remaining.", "blue");
+		auto_log_info("You have " + (total_free_rests() - get_property("timesRested").to_int()) + " free rests remaining.", "blue");
 	}
 	if(possessEquipment($item[Kremlin\'s Greatest Briefcase]) && (get_property("_kgbClicksUsed").to_int() < 24))
 	{
@@ -2928,16 +2929,16 @@ boolean doBedtime()
 		int clicks = 22 - get_property("_kgbClicksUsed").to_int();
 		if(clicks > 0)
 		{
-			print("You have some KGB clicks (" + clicks + ") left!", "green");
+			auto_log_info("You have some KGB clicks (" + clicks + ") left!", "green");
 		}
 	}
 	if((get_property("sidequestNunsCompleted") == "fratboy") && (get_property("nunsVisits").to_int() < 3))
 	{
-		print("You have " + (3 - get_property("nunsVisits").to_int()) + " nuns visits left.", "blue");
+		auto_log_info("You have " + (3 - get_property("nunsVisits").to_int()) + " nuns visits left.", "blue");
 	}
 	if(get_property("libramSummons").to_int() > 0)
 	{
-		print("Total Libram Summons: " + get_property("libramSummons"), "blue");
+		auto_log_info("Total Libram Summons: " + get_property("libramSummons"), "blue");
 	}
 
 	int smiles = (5 * (item_amount($item[Golden Mr. Accessory]) + storage_amount($item[Golden Mr. Accessory]) + closet_amount($item[Golden Mr. Accessory]))) - get_property("_smilesOfMrA").to_int();
@@ -2953,21 +2954,21 @@ boolean doBedtime()
 		}
 		else
 		{
-			print("You have " + smiles + " smiles of Mr. A remaining.", "blue");
+			auto_log_info("You have " + smiles + " smiles of Mr. A remaining.", "blue");
 		}
 	}
 
 	if((item_amount($item[CSA Fire-Starting Kit]) > 0) && (!get_property("_fireStartingKitUsed").to_boolean()))
 	{
-		print("Still have a CSA Fire-Starting Kit you can use!", "blue");
+		auto_log_info("Still have a CSA Fire-Starting Kit you can use!", "blue");
 	}
 	if((item_amount($item[Glenn\'s Golden Dice]) > 0) && (!get_property("_glennGoldenDiceUsed").to_boolean()))
 	{
-		print("Still have some of Glenn's Golden Dice that you can use!", "blue");
+		auto_log_info("Still have some of Glenn's Golden Dice that you can use!", "blue");
 	}
 	if((item_amount($item[License to Chill]) > 0) && (!get_property("_licenseToChillUsed").to_boolean()))
 	{
-		print("You are still licensed enough to be able to chill.", "blue");
+		auto_log_info("You are still licensed enough to be able to chill.", "blue");
 	}
 
 	if((item_amount($item[School of Hard Knocks Diploma]) > 0) && (!get_property("_hardKnocksDiplomaUsed").to_boolean()))
@@ -3015,35 +3016,35 @@ boolean doBedtime()
 	}
 	if(!done)
 	{
-		print("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");
+		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");
 		if(auto_have_familiar($familiar[Stooper]) && (inebriety_left() == 0) && (my_familiar() != $familiar[Stooper]) && (auto_my_path() != "Pocket Familiars"))
 		{
-			print("You have a Stooper, you can increase liver by 1!", "blue");
+			auto_log_info("You have a Stooper, you can increase liver by 1!", "blue");
 			use_familiar($familiar[Stooper]);
 		}
 		if(auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5))
 		{
-			print("You have " + (5 - get_property("_machineTunnelsAdv").to_int()) + " fights in The Deep Machine Tunnels that you should use!", "blue");
+			auto_log_info("You have " + (5 - get_property("_machineTunnelsAdv").to_int()) + " fights in The Deep Machine Tunnels that you should use!", "blue");
 		}
 		if((my_inebriety() <= inebriety_limit()) && (my_rain() >= 50) && (my_adventures() >= 1))
 		{
 			if(item_amount($item[beer helmet]) == 0)
 			{
-				print("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
+				auto_log_info("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 				if(canYellowRay())
 				{
-					print("Make sure to Ball Lightning the spy!!", "red");
+					auto_log_info("Make sure to Ball Lightning the spy!!", "red");
 				}
 			}
 			else
 			{
-				print("If you have the Frat Warrior Fatigues, rain man an Astronomer? Skinflute?", "blue");
+				auto_log_info("If you have the Frat Warrior Fatigues, rain man an Astronomer? Skinflute?", "blue");
 			}
-			print("You have a rain man to cast, please do so before overdrinking and then run me again.", "red");
+			auto_log_info("You have a rain man to cast, please do so before overdrinking and then run me again.", "red");
 			return false;
 		}
 		auto_autoDrinkNightcap(true); // simulate;
-		print("You need to overdrink and then run me again. Beep.", "red");
+		auto_log_warning("You need to overdrink and then run me again. Beep.", "red");
 		if(have_skill($skill[The Ode to Booze]))
 		{
 			shrugAT($effect[Ode to Booze]);
@@ -3055,12 +3056,12 @@ boolean doBedtime()
 	{
 		if(!get_property("kingLiberated").to_boolean())
 		{
-			print(get_property("auto_banishes_day" + my_daycount()));
-			print(get_property("auto_yellowRay_day" + my_daycount()));
+			auto_log_info(get_property("auto_banishes_day" + my_daycount()));
+			auto_log_info(get_property("auto_yellowRay_day" + my_daycount()));
 			pullsNeeded("evaluate");
 			if(!get_property("_photocopyUsed").to_boolean() && (is_unrestricted($item[Deluxe Fax Machine])) && (my_adventures() > 0) && !($classes[Avatar of Boris, Avatar of Sneaky Pete] contains my_class()) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 			{
-				print("You may have a fax that you can use. Check it out!", "blue");
+				auto_log_info("You may have a fax that you can use. Check it out!", "blue");
 			}
 			if((pulls_remaining() > 0) && (my_daycount() == 1))
 			{
@@ -3085,33 +3086,33 @@ boolean doBedtime()
 						}
 					}
 				}
-				print("You still have pulls, consider: " + consider + "?", "red");
+				auto_log_warning("You still have pulls, consider: " + consider + "?", "red");
 			}
 		}
 
 		if(have_skill($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
 		{
-			print("You can still Calculate the Universe!", "blue");
+			auto_log_info("You can still Calculate the Universe!", "blue");
 		}
 
 		if(is_unrestricted($item[Deck of Every Card]) && (item_amount($item[Deck of Every Card]) > 0) && (get_property("_deckCardsDrawn").to_int() < 15))
 		{
-			print("You have a Deck of Every Card and " + (15 - get_property("_deckCardsDrawn").to_int()) + " draws remaining!", "blue");
+			auto_log_info("You have a Deck of Every Card and " + (15 - get_property("_deckCardsDrawn").to_int()) + " draws remaining!", "blue");
 		}
 
 		if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() < 10) && glover_usable($item[Time-Spinner]))
 		{
-			print("You have " + (10 - get_property("_timeSpinnerMinutesUsed").to_int()) + " minutes left to Time-Spinner!", "blue");
+			auto_log_info("You have " + (10 - get_property("_timeSpinnerMinutesUsed").to_int()) + " minutes left to Time-Spinner!", "blue");
 		}
 
 		if(is_unrestricted($item[Chateau Mantegna Room Key]) && !get_property("_chateauMonsterFought").to_boolean() && get_property("chateauAvailable").to_boolean())
 		{
-			print("You can still fight a Chateau Mangtegna Painting today.", "blue");
+			auto_log_info("You can still fight a Chateau Mangtegna Painting today.", "blue");
 		}
 
 		if(stills_available() > 0)
 		{
-			print("You have " + stills_available() + " uses of Nash Crosby's Still left.", "blue");
+			auto_log_info("You have " + stills_available() + " uses of Nash Crosby's Still left.", "blue");
 		}
 
 		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]))
@@ -3121,28 +3122,28 @@ boolean doBedtime()
 
 		if(is_unrestricted($item[shrine to the Barrel God]) && !get_property("_barrelPrayer").to_boolean() && get_property("barrelShrineUnlocked").to_boolean())
 		{
-			print("You can still worship the barrel god today.", "blue");
+			auto_log_info("You can still worship the barrel god today.", "blue");
 		}
 		if(is_unrestricted($item[Airplane Charter: Dinseylandfill]) && !get_property("_dinseyGarbageDisposed").to_boolean() && elementalPlanes_access($element[stench]))
 		{
 			if((item_amount($item[bag of park garbage]) > 0) || (pulls_remaining() > 0))
 			{
-				print("You can still dispose of Garbage in Dinseyland.", "blue");
+				auto_log_info("You can still dispose of Garbage in Dinseyland.", "blue");
 			}
 		}
 		if(is_unrestricted($item[Airplane Charter: That 70s Volcano]) && !get_property("_infernoDiscoVisited").to_boolean() && elementalPlanes_access($element[hot]))
 		{
 			if((item_amount($item[Smooth Velvet Hat]) > 0) || (item_amount($item[Smooth Velvet Shirt]) > 0) || (item_amount($item[Smooth Velvet Pants]) > 0) || (item_amount($item[Smooth Velvet Hanky]) > 0) || (item_amount($item[Smooth Velvet Pocket Square]) > 0) || (item_amount($item[Smooth Velvet Socks]) > 0))
 			{
-				print("You can still disco inferno at the Inferno Disco.", "blue");
+				auto_log_info("You can still disco inferno at the Inferno Disco.", "blue");
 			}
 		}
 		if(is_unrestricted($item[Potted Tea Tree]) && !get_property("_pottedTeaTreeUsed").to_boolean() && (auto_get_campground() contains $item[Potted Tea Tree]))
 		{
-			print("You have a tea tree to shake!", "blue");
+			auto_log_info("You have a tea tree to shake!", "blue");
 		}
 
-		print("You are probably done for today, beep.", "blue");
+		auto_log_info("You are probably done for today, beep.", "blue");
 		return true;
 	}
 	return false;
@@ -3163,80 +3164,72 @@ boolean questOverride()
 	// Visiting the campground doesn\'t work.... grrr...
 	//	visit_url("campground.php");
 
-#	if(!get_property("auto_haveoven").to_boolean())
-#	{
-#		if(auto_get_campground() contains $item[Dramatic&trade; range])
-#		{
-#			set_property("auto_haveoven", true);
-#		}
-#	}
-
 	if((get_property("lastTempleUnlock").to_int() == my_ascensions()) && (get_property("auto_treecoin") != "finished"))
 	{
-		print("Found Unlocked Hidden Temple but unaware of tree-holed coin (2)");
+		auto_log_info("Found Unlocked Hidden Temple but unaware of tree-holed coin (2)");
 		set_property("auto_treecoin", "finished");
 	}
 	if((get_property("lastTempleUnlock").to_int() == my_ascensions()) && (get_property("auto_spookymap") != "finished"))
 	{
-		print("Found Unlocked Hidden Temple but unaware of spooky map (2)");
+		auto_log_info("Found Unlocked Hidden Temple but unaware of spooky map (2)");
 		set_property("auto_spookymap", "finished");
 	}
 	if((get_property("lastTempleUnlock").to_int() == my_ascensions()) && (get_property("auto_spookyfertilizer") != "finished"))
 	{
-		print("Found Unlocked Hidden Temple but unaware of spooky fertilizer (2)");
+		auto_log_info("Found Unlocked Hidden Temple but unaware of spooky fertilizer (2)");
 		set_property("auto_spookyfertilizer", "finished");
 	}
 	if((get_property("lastTempleUnlock").to_int() == my_ascensions()) && (get_property("auto_spookysapling") != "finished"))
 	{
-		print("Found Unlocked Hidden Temple but unaware of spooky sapling (2)");
+		auto_log_info("Found Unlocked Hidden Temple but unaware of spooky sapling (2)");
 		set_property("auto_spookysapling", "finished");
 	}
 
 	if((get_property("questL02Larva") == "finished") && (get_property("auto_mosquito") != "finished"))
 	{
-		print("Found completed Mosquito Larva (2)");
+		auto_log_info("Found completed Mosquito Larva (2)");
 		set_property("auto_mosquito", "finished");
 	}
 	if((get_property("questL03Rat") == "finished") && (get_property("auto_tavern") != "finished"))
 	{
-		print("Found completed Tavern (3)");
+		auto_log_info("Found completed Tavern (3)");
 		set_property("auto_tavern", "finished");
 	}
 	if((get_property("questL04Bat") == "finished") && (get_property("auto_bat") != "finished"))
 	{
-		print("Found completed Bat Cave (4)");
+		auto_log_info("Found completed Bat Cave (4)");
 		set_property("auto_bat", "finished");
 	}
 	if((get_property("questL05Goblin") == "finished") && (get_property("auto_goblinking") != "finished"))
 	{
-		print("Found completed Goblin King (5)");
+		auto_log_info("Found completed Goblin King (5)");
 		set_property("auto_day1_cobb", "finished");
 		set_property("auto_goblinking", "finished");
 	}
 	if((get_property("questL06Friar") == "finished") && (get_property("auto_friars") != "done") && (get_property("auto_friars") != "finished"))
 	{
-		print("Found completed Friars (6)");
+		auto_log_info("Found completed Friars (6)");
 		set_property("auto_friars", "done");
 	}
 	if((get_property("questL07Cyrptic") == "finished") && (get_property("auto_crypt") != "finished"))
 	{
-		print("Found completed Cyrpt (7)");
+		auto_log_info("Found completed Cyrpt (7)");
 		set_property("auto_crypt", "finished");
 	}
 	if((get_property("questL08Trapper") == "step2") && (get_property("auto_trapper") != "yeti"))
 	{
-		print("Found Trapper partially completed (8: Ores/Cheese)");
+		auto_log_info("Found Trapper partially completed (8: Ores/Cheese)");
 		set_property("auto_trapper", "yeti");
 	}
 	if((get_property("questL08Trapper") == "finished") && (get_property("auto_trapper") != "finished"))
 	{
-		print("Found completed Trapper (8)");
+		auto_log_info("Found completed Trapper (8)");
 		set_property("auto_trapper", "finished");
 	}
 
 	if((get_property("questL09Topping") == "finished") && (get_property("auto_highlandlord") != "finished"))
 	{
-		print("Found completed Highland Lord (9)");
+		auto_log_info("Found completed Highland Lord (9)");
 		set_property("auto_highlandlord", "finished");
 		set_property("auto_boopeak", "finished");
 		set_property("auto_oilpeak", "finished");
@@ -3244,7 +3237,7 @@ boolean questOverride()
 	}
 	if((get_property("questL10Garbage") == "finished") && (get_property("auto_castletop") != "finished"))
 	{
-		print("Found completed Castle in the Clouds in the Sky with some Pie (10)");
+		auto_log_info("Found completed Castle in the Clouds in the Sky with some Pie (10)");
 		set_property("auto_castletop", "finished");
 		set_property("auto_castleground", "finished");
 		set_property("auto_castlebasement", "finished");
@@ -3253,34 +3246,28 @@ boolean questOverride()
 	}
 	if((internalQuestStatus("questL10Garbage") >= 9) && (get_property("auto_castleground") != "finished"))
 	{
-		print("Found completed Castle Ground Floor (10)");
+		auto_log_info("Found completed Castle Ground Floor (10)");
 		set_property("auto_castleground", "finished");
 	}
 	if((internalQuestStatus("questL10Garbage") >= 8) && (get_property("auto_castlebasement") != "finished"))
 	{
-		print("Found completed Castle Basement (10)");
+		auto_log_info("Found completed Castle Basement (10)");
 		set_property("auto_castlebasement", "finished");
 	}
 	if((internalQuestStatus("questL10Garbage") >= 7) && (get_property("auto_airship") != "finished"))
 	{
-		print("Found completed Airship (10)");
+		auto_log_info("Found completed Airship (10)");
 		set_property("auto_airship", "finished");
 	}
 	if((internalQuestStatus("questL10Garbage") >= 2) && !get_property("auto_bean").to_boolean())
 	{
-		print("Found completed Planted Beanstalk (10)");
+		auto_log_info("Found completed Planted Beanstalk (10)");
 		set_property("auto_bean", true);
 	}
 
-#	if((get_property("lastSecondFloorUnlock").to_int() >= my_ascensions()) && (get_property("auto_spookyravennecklace") != "done"))
-#	{
-#		print("Found completed Spookyraven Necklace Sequence (M20)");
-#		set_property("auto_spookyravennecklace", "done");
-#	}
-
 	if((internalQuestStatus("questL11Manor") >= 11) && (get_property("auto_ballroom") != "finished"))
 	{
-		print("Found completed Spookyraven Manor (11)");
+		auto_log_info("Found completed Spookyraven Manor (11)");
 		set_property("auto_ballroom", "finished");
 		set_property("auto_winebomb", "finished");
 		set_property("auto_ballroomflat", "finished");
@@ -3288,7 +3275,7 @@ boolean questOverride()
 
 	if((internalQuestStatus("questL11Manor") >= 3) && (get_property("auto_winebomb") != "finished"))
 	{
-		print("Found completed Spookyraven Manor Organ Music (11)");
+		auto_log_info("Found completed Spookyraven Manor Organ Music (11)");
 		set_property("auto_winebomb", "finished");
 		set_property("auto_masonryWall", true);
 		set_property("auto_ballroomflat", "finished");
@@ -3296,71 +3283,66 @@ boolean questOverride()
 
 	if((internalQuestStatus("questL11Manor") >= 1) && (get_property("auto_ballroomflat") != "finished"))
 	{
-		print("Found completed Spookyraven Manor Organ Music (11)");
+		auto_log_info("Found completed Spookyraven Manor Organ Music (11)");
 		set_property("auto_ballroomflat", "finished");
 	}
 
 	if((internalQuestStatus("questL11Worship") >= 3) && (get_property("auto_hiddenunlock") != "finished"))
 	{
-		print("Found unlocked Hidden City (11)");
+		auto_log_info("Found unlocked Hidden City (11)");
 		set_property("auto_hiddenunlock", "finished");
 	}
 
 	if((internalQuestStatus("questL11Black") >= 2) && (get_property("auto_blackmap") == ""))
 	{
-		print("Found an unexpected Black Market (11 - via questL11Black)");
+		auto_log_info("Found an unexpected Black Market (11 - via questL11Black)");
 		set_property("auto_blackmap", "document");
 	}
 	if((get_property("blackForestProgress") >= 5) && (get_property("auto_blackmap") == ""))
 	{
-		print("Found an unexpected Black Market (11 - via blackForestProgress)");
+		auto_log_info("Found an unexpected Black Market (11 - via blackForestProgress)");
 		set_property("auto_blackmap", "document");
 	}
 
 	if((get_property("questL11Black") == "finished") && (get_property("auto_blackmap") != "finished"))
 	{
-		print("Found completed Black Market (11 - via questL11Black)");
+		auto_log_info("Found completed Black Market (11 - via questL11Black)");
 		set_property("auto_blackmap", "finished");
 	}
 	if((internalQuestStatus("questL11MacGuffin") >= 2) && (get_property("auto_blackmap") != "finished"))
 	{
-		print("Found completed Black Market (11 - via questL11MacGuffin)");
+		auto_log_info("Found completed Black Market (11 - via questL11MacGuffin)");
 		set_property("auto_blackmap", "finished");
 	}
 
 	if((internalQuestStatus("questL11MacGuffin") >= 2) && (get_property("auto_mcmuffin") == ""))
 	{
-		print("Found started McMuffin quest (11)");
+		auto_log_info("Found started McMuffin quest (11)");
 		set_property("auto_mcmuffin", "start");
 	}
 
 	if((get_property("questL11Palindome") == "finished") && (get_property("auto_palindome") != "finished"))
 	{
-		print("Found completed Palindome (11)");
+		auto_log_info("Found completed Palindome (11)");
 		set_property("auto_palindome", "finished");
 	}
 
 	if(get_property("pyramidBombUsed").to_boolean() && (get_property("auto_mcmuffin") == "pyramid"))
 	{
-		print("Found Ed in the Pyramid (11)");
+		auto_log_info("Found Ed in the Pyramid (11)");
 		set_property("auto_mcmuffin", "ed");
 	}
 
-//	if((get_property("questL11Pyramid") == "finished") && (get_property("auto_mcmuffin") != "finished"))
-//	{
-//		print("Found completed Pyramid (11)");
-//		set_property("auto_mcmuffin", "finished");
-//	}
 	if((get_property("questL11MacGuffin") == "finished") && (get_property("auto_mcmuffin") != "finished"))
 	{
-		print("Found completed McMuffin (11)");
+		auto_log_info("Found completed McMuffin (11)");
 		visit_url("diary.php?whichpage=1");
 		set_property("auto_mcmuffin", "finished");
 	}
 
 	if((get_property("questL11Business") == "finished") && (get_property("auto_hiddenoffice") != "finished"))
 	{
-		print("Found completed Hidden Office Building (11)");
+		auto_log_info("Found completed Hidden Office Building (11)");
 		set_property("auto_hiddenoffice", "finished");
 		if((get_property("auto_hiddenzones") != "finished") && (get_property("auto_hiddenzones").to_int() < 3))
 		{
@@ -3369,7 +3351,7 @@ boolean questOverride()
 	}
 	if((get_property("questL11Curses") == "finished") && (get_property("auto_hiddenapartment") != "finished"))
 	{
-		print("Found completed Hidden Apartment Building (11)");
+		auto_log_info("Found completed Hidden Apartment Building (11)");
 		set_property("auto_hiddenapartment", "finished");
 		if((get_property("auto_hiddenzones") != "finished") && (get_property("auto_hiddenzones").to_int() < 2))
 		{
@@ -3378,7 +3360,7 @@ boolean questOverride()
 	}
 	if((get_property("questL11Spare") == "finished") && (get_property("auto_hiddenbowling") != "finished"))
 	{
-		print("Found completed Hidden Bowling Alley (11)");
+		auto_log_info("Found completed Hidden Bowling Alley (11)");
 		set_property("auto_hiddenbowling", "finished");
 		if((get_property("auto_hiddenzones") != "finished") && (get_property("auto_hiddenzones").to_int() < 5))
 		{
@@ -3387,7 +3369,7 @@ boolean questOverride()
 	}
 	if((get_property("questL11Doctor") == "finished") && (get_property("auto_hiddenhospital") != "finished"))
 	{
-		print("Found completed Hidden Hopickle (11)");
+		auto_log_info("Found completed Hidden Hopickle (11)");
 		set_property("auto_hiddenhospital", "finished");
 		if((get_property("auto_hiddenzones") != "finished") && (get_property("auto_hiddenzones").to_int() < 4))
 		{
@@ -3396,14 +3378,14 @@ boolean questOverride()
 	}
 	if((get_property("questL11Worship") == "finished") && (get_property("auto_hiddencity") != "finished"))
 	{
-		print("Found completed Hidden City (11)");
+		auto_log_info("Found completed Hidden City (11)");
 		set_property("auto_hiddencity", "finished");
 		set_property("auto_hiddenzones", "finished");
 		set_property("auto_hiddenunlock", "finished");
 	}
 	if((internalQuestStatus("questL11Worship") >= 3) && (get_property("auto_hiddenunlock") != "finished"))
 	{
-		print("Found completed unlocked Hidden City (11)");
+		auto_log_info("Found completed unlocked Hidden City (11)");
 		set_property("auto_hiddenunlock", "finished");
 	}
 
@@ -3411,7 +3393,7 @@ boolean questOverride()
 	{
 		if(get_property("flyeredML").to_int() < 10000)
 		{
-			print("Found completed Island War Arena but flyeredML does not match (12)");
+			auto_log_info("Found completed Island War Arena but flyeredML does not match (12)");
 			set_property("flyeredML", 10000);
 		}
 	}
@@ -3420,19 +3402,19 @@ boolean questOverride()
 	{
 		if(get_property("auto_orchard") != "finished")
 		{
-			print("Found completed Orchard (12)");
+			auto_log_info("Found completed Orchard (12)");
 			set_property("auto_orchard", "finished");
 		}
 	}
 
 	if((get_property("sidequestLighthouseCompleted") != "none") && (get_property("auto_sonofa") != "finished"))
 	{
-		print("Found completed Lighthouse (12)");
+		auto_log_info("Found completed Lighthouse (12)");
 		set_property("auto_sonofa", "finished");
 	}
 	if((get_property("sidequestJunkyardCompleted") != "none") && (get_property("auto_gremlins") != "finished"))
 	{
-		print("Found completed Junkyard (12)");
+		auto_log_info("Found completed Junkyard (12)");
 		set_property("auto_gremlins", "finished");
 	}
 
@@ -3440,65 +3422,65 @@ boolean questOverride()
 	{
 		if(get_property("auto_gremlins") != "finished")
 		{
-			print("Found completed Junkyard (12)");
+			auto_log_info("Found completed Junkyard (12)");
 			set_property("auto_gremlins", "finished");
 		}
 
 		if(get_property("auto_sonofa") != "finished")
 		{
-			print("Found completed Lighthouse (12)");
+			auto_log_info("Found completed Lighthouse (12)");
 			set_property("auto_sonofa", "finished");
 		}
 
 		if(get_property("auto_orchard") != "finished")
 		{
-			print("Found completed Orchard (12)");
+			auto_log_info("Found completed Orchard (12)");
 			set_property("auto_orchard", "finished");
 		}
 
 		if((get_property("auto_nuns") != "done") && (get_property("auto_nuns") != "finished"))
 		{
-			print("Found completed Nuns (12)");
+			auto_log_info("Found completed Nuns (12)");
 			set_property("auto_nuns", "finished");
 		}
 	}
 
 	if((get_property("sidequestOrchardCompleted") != "none") && (get_property("auto_orchard") != "finished"))
 	{
-		print("Found completed Orchard (12)");
+		auto_log_info("Found completed Orchard (12)");
 		set_property("auto_orchard", "finished");
 	}
 
 
 	if((get_property("sidequestNunsCompleted") != "none") && (get_property("auto_nuns") != "done") && (get_property("auto_nuns") != "finished"))
 	{
-		print("Found completed Nuns (12)");
+		auto_log_info("Found completed Nuns (12)");
 		set_property("auto_nuns", "finished");
 	}
 
 	if((get_property("sideDefeated") != "neither") && (get_property("auto_war") != "finished"))
 	{
-		print("Found completed Island War (12)");
+		auto_log_info("Found completed Island War (12)");
 		set_property("auto_war", "finished");
 		council();
 	}
 
 	if((internalQuestStatus("questL12War") >= 1)  && (get_property("auto_prewar") != "started"))
 	{
-		print("Found Started Island War (12)");
+		auto_log_info("Found Started Island War (12)");
 		set_property("auto_prewar", "started");
 	}
 
 	if((internalQuestStatus("questL12War") >= 2)  && (get_property("auto_war") != "finished"))
 	{
-		print("Found completed Island War (12)");
+		auto_log_info("Found completed Island War (12)");
 		set_property("auto_war", "finished");
 		council();
 	}
 
 	if((internalQuestStatus("questL13Final") >= 13) && (get_property("auto_sorceress") != "finished"))
 	{
-		print("Found completed Prism Recovery (13)");
+		auto_log_info("Found completed Prism Recovery (13)");
 		set_property("auto_sorceress", "finished");
 		if (isActuallyEd())
 		{
@@ -3510,7 +3492,7 @@ boolean questOverride()
 	{
 		if(get_property("auto_pirateoutfit") == "")
 		{
-			print("Pirate Quest already started but we don't know that, fixing...");
+			auto_log_info("Pirate Quest already started but we don't know that, fixing...");
 			set_property("auto_pirateoutfit", "insults");
 		}
 	}
@@ -3519,7 +3501,7 @@ boolean questOverride()
 	{
 		if((get_property("auto_pirateoutfit") == "insults") || (get_property("auto_pirateoutfit") == "blueprint"))
 		{
-			print("Pirate Quest got enough insults and did the blueprint, fixing...");
+			auto_log_info("Pirate Quest got enough insults and did the blueprint, fixing...");
 			set_property("auto_pirateoutfit", "almost");
 		}
 	}
@@ -3528,7 +3510,7 @@ boolean questOverride()
 	{
 		if(get_property("auto_pirateoutfit") != "finished")
 		{
-			print("Completed Beer Pong but we were not aware, fixing...");
+			auto_log_info("Completed Beer Pong but we were not aware, fixing...");
 			set_property("auto_pirateoutfit", "finished");
 		}
 	}
@@ -3537,19 +3519,19 @@ boolean questOverride()
 	{
 		if(get_property("auto_pirateoutfit") != "finished")
 		{
-			print("Found Pirate Fledges and incomplete pirate outfit, fixing...");
+			auto_log_info("Found Pirate Fledges and incomplete pirate outfit, fixing...");
 			set_property("auto_pirateoutfit", "finished");
 		}
 		if(get_property("auto_fcle") != "finished")
 		{
-			print("Found Pirate Fledges and incomplete F\'C\'le, fixing...");
+			auto_log_info("Found Pirate Fledges and incomplete F\'C\'le, fixing...");
 			set_property("auto_fcle", "finished");
 		}
 	}
 
 	if((get_property("lastQuartetAscension").to_int() >= my_ascensions()) && (get_property("auto_ballroomsong") != "finished"))
 	{
-		print("Found Ballroom Quarter Song set (X).");
+		auto_log_info("Found Ballroom Quarter Song set (X).");
 		set_property("auto_ballroomsong", "finished");
 	}
 
@@ -3590,7 +3572,7 @@ boolean L11_aridDesert()
 	{
 		return false;
 	}
-	if((get_property("auto_hiddenapartment") != "finished") && (get_property("auto_hiddenapartment") != "0"))
+	if((get_property("auto_hiddenapartment") != "finished") && (0 < have_effect($effect[Once-Cursed]) + have_effect($effect[Twice-Cursed]) + have_effect($effect[Thrice-Cursed])))
 	{
 		return false;
 	}
@@ -3638,7 +3620,7 @@ boolean L11_aridDesert()
 	{
 		if((my_level() >= 12) && !in_hardcore())
 		{
-			print("Do you actually have a UV-resistant compass? Try 'refresh inv' in the CLI! If possible, pull a Grimstone mask and rerun, we may have missed that somehow.", "green");
+			auto_log_warning("Do you actually have a UV-resistant compass? Try 'refresh inv' in the CLI! If possible, pull a Grimstone mask and rerun, we may have missed that somehow.", "green");
 			if(is_unrestricted($item[Hibernating Grimstone Golem]) && have_familiar($familiar[Grimstone Golem]))
 			{
 				abort("I can't do the Oasis without an Ornate Dowsing Rod. You can manually get a UV-resistant compass and I'll use that if you really hate me that much.");
@@ -3672,7 +3654,7 @@ boolean L11_aridDesert()
 		}
 		else
 		{
-			print("Skipping desert, don't have a rod or a compass.");
+			auto_log_warning("Skipping desert, don't have a rod or a compass.");
 			set_property("auto_skipDesert", my_turncount());
 		}
 		return false;
@@ -3680,7 +3662,7 @@ boolean L11_aridDesert()
 
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
 	{
-		print("Searching for the pyramid", "blue");
+		auto_log_info("Searching for the pyramid", "blue");
 		if(auto_my_path() == "Heavy Rains")
 		{
 			autoEquip($item[Thor\'s Pliers]);
@@ -3708,22 +3690,21 @@ boolean L11_aridDesert()
 			buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
 		}
 
-		if((my_mp() > 30) && ((my_hp()*2) < (my_maxhp()*1)))
+		if(my_mp() > 30 && my_hp() < (my_maxhp()*0.5))
 		{
-			useCocoon();
+			acquireHP();
 		}
 
-#		if(in_hardcore() && isGuildClass() && (item_amount($item[Worm-Riding Hooks]) > 0) && (get_property("desertExploration").to_int() <= (100 - (5 * progress))) && ((get_property("gnasirProgress").to_int() & 16) != 16))
 		if((in_hardcore() || (pulls_remaining() == 0)) && (item_amount($item[Worm-Riding Hooks]) > 0) && (get_property("desertExploration").to_int() <= (100 - (5 * progress))) && ((get_property("gnasirProgress").to_int() & 16) != 16) && (item_amount($item[Stone Rose]) == 0))
 		{
 			if(item_amount($item[Drum Machine]) > 0)
 			{
-				print("Found the drums, now we use them!", "blue");
+				auto_log_info("Found the drums, now we use them!", "blue");
 				use(1, $item[Drum Machine]);
 			}
 			else
 			{
-				print("Off to find the drums!", "blue");
+				auto_log_info("Off to find the drums!", "blue");
 				autoAdv(1, $location[The Oasis]);
 			}
 			return true;
@@ -3734,12 +3715,12 @@ boolean L11_aridDesert()
 			int expectedOasisTurns = 8 - $location[The Oasis].turns_spent;
 			int equivProgress = expectedOasisTurns * progress;
 			int need = 100 - get_property("desertExploration").to_int();
-			print("expectedOasis: " + expectedOasisTurns, "brown");
-			print("equivProgress: " + equivProgress, "brown");
-			print("need: " + need, "brown");
+			auto_log_info("expectedOasis: " + expectedOasisTurns, "brown");
+			auto_log_info("equivProgress: " + equivProgress, "brown");
+			auto_log_info("need: " + need, "brown");
 			if((need <= 15) && (15 >= equivProgress) && (item_amount($item[Stone Rose]) == 0))
 			{
-				print("It seems raisinable to hunt a Stone Rose. Beep", "blue");
+				auto_log_info("It seems raisinable to hunt a Stone Rose. Beep", "blue");
 				autoAdv(1, $location[The Oasis]);
 				return true;
 			}
@@ -3752,18 +3733,18 @@ boolean L11_aridDesert()
 		handleFamiliar("initSuggest");
 		set_property("choiceAdventure805", 1);
 		int need = 100 - get_property("desertExploration").to_int();
-		print("Need for desert: " + need, "blue");
-		print("Worm riding: " + item_amount($item[Worm-Riding Manual Page]), "blue");
+		auto_log_info("Need for desert: " + need, "blue");
+		auto_log_info("Worm riding: " + item_amount($item[Worm-Riding Manual Page]), "blue");
 
 		if(!get_property("auto_gnasirUnlocked").to_boolean() && ($location[The Arid\, Extra-Dry Desert].turns_spent > 10) && (get_property("desertExploration").to_int() > 10))
 		{
-			print("Did not appear to notice that Gnasir unlocked, assuming so at this point.", "green");
+			auto_log_info("Did not appear to notice that Gnasir unlocked, assuming so at this point.", "green");
 			set_property("auto_gnasirUnlocked", true);
 		}
 
 		if(get_property("auto_gnasirUnlocked").to_boolean() && (item_amount($item[Stone Rose]) > 0) && ((get_property("gnasirProgress").to_int() & 1) != 1))
 		{
-			print("Returning the stone rose", "blue");
+			auto_log_info("Returning the stone rose", "blue");
 			auto_visit_gnasir();
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
 			visit_url("choice.php?whichchoice=805&option=2&pwd=");
@@ -3779,7 +3760,7 @@ boolean L11_aridDesert()
 				{
 					if((get_property("gnasirProgress").to_int() & 1) != 1)
 					{
-						print("Mafia did not track gnasir Stone Rose (0x1). Fixing.", "red");
+						auto_log_warning("Mafia did not track gnasir Stone Rose (0x1). Fixing.", "red");
 						set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 1);
 					}
 				}
@@ -3799,7 +3780,7 @@ boolean L11_aridDesert()
 			if((item_amount($item[Can of Black Paint]) > 0) || ((my_meat() >= 1000) && canBuyPaint))
 			{
 				buyUpTo(1, $item[Can of Black Paint]);
-				print("Returning the Can of Black Paint", "blue");
+				auto_log_info("Returning the Can of Black Paint", "blue");
 				auto_visit_gnasir();
 				visit_url("choice.php?whichchoice=805&option=1&pwd=");
 				visit_url("choice.php?whichchoice=805&option=2&pwd=");
@@ -3811,7 +3792,7 @@ boolean L11_aridDesert()
 					{
 						if(item_amount($item[Can Of Black Paint]) == 0)
 						{
-							print("Mafia did not track gnasir Can of Black Paint (0x2). Fixing.", "red");
+							auto_log_warning("Mafia did not track gnasir Can of Black Paint (0x2). Fixing.", "red");
 							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 2);
 							return true;
 						}
@@ -3824,7 +3805,7 @@ boolean L11_aridDesert()
 					{
 						if((get_property("gnasirProgress").to_int() & 2) != 2)
 						{
-							print("Mafia did not track gnasir Can of Black Paint (0x2). Fixing.", "red");
+							auto_log_warning("Mafia did not track gnasir Can of Black Paint (0x2). Fixing.", "red");
 							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 2);
 						}
 					}
@@ -3836,7 +3817,7 @@ boolean L11_aridDesert()
 
 		if(get_property("auto_gnasirUnlocked").to_boolean() && (item_amount($item[Killing Jar]) > 0) && ((get_property("gnasirProgress").to_int() & 4) != 4))
 		{
-			print("Returning the killing jar", "blue");
+			auto_log_info("Returning the killing jar", "blue");
 			auto_visit_gnasir();
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
 			visit_url("choice.php?whichchoice=805&option=2&pwd=");
@@ -3852,7 +3833,7 @@ boolean L11_aridDesert()
 				{
 					if((get_property("gnasirProgress").to_int() & 4) != 4)
 					{
-						print("Mafia did not track gnasir Killing Jar (0x4). Fixing.", "red");
+						auto_log_warning("Mafia did not track gnasir Killing Jar (0x4). Fixing.", "red");
 						set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 4);
 					}
 				}
@@ -3863,22 +3844,23 @@ boolean L11_aridDesert()
 
 		if((item_amount($item[Worm-Riding Manual Page]) >= 15) && ((get_property("gnasirProgress").to_int() & 8) != 8))
 		{
-			print("Returning the worm-riding manual pages", "blue");
+			auto_log_info("Returning the worm-riding manual pages", "blue");
 			auto_visit_gnasir();
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
 			visit_url("choice.php?whichchoice=805&option=2&pwd=");
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
 			if(item_amount($item[Worm-Riding Hooks]) == 0)
 			{
+				auto_log_critical("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
 				abort("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
 			}
 			if(item_amount($item[Worm-Riding Manual Page]) >= 15)
 			{
-				print("Mafia doesn't realize that we've returned the worm-riding manual pages... fixing", "red");
+				auto_log_warning("Mafia doesn't realize that we've returned the worm-riding manual pages... fixing", "red");
 				cli_execute("refresh all");
 				if((get_property("gnasirProgress").to_int() & 8) != 8)
 				{
-					print("Mafia did not track gnasir Worm-Riding Manual Pages (0x8). Fixing.", "red");
+					auto_log_warning("Mafia did not track gnasir Worm-Riding Manual Pages (0x8). Fixing.", "red");
 					set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 8);
 				}
 			}
@@ -3891,7 +3873,7 @@ boolean L11_aridDesert()
 			pullXWhenHaveY($item[Drum Machine], 1, 0);
 			if(item_amount($item[Drum Machine]) > 0)
 			{
-				print("Drum machine desert time!", "blue");
+				auto_log_info("Drum machine desert time!", "blue");
 				use(1, $item[Drum Machine]);
 				return true;
 			}
@@ -3904,7 +3886,7 @@ boolean L11_aridDesert()
 			pullXWhenHaveY($item[Killing Jar], 1, 0);
 			if(item_amount($item[Killing Jar]) > 0)
 			{
-				print("Secondary killing jar handler", "blue");
+				auto_log_info("Secondary killing jar handler", "blue");
 				auto_visit_gnasir();
 				visit_url("choice.php?whichchoice=805&option=1&pwd=");
 				visit_url("choice.php?whichchoice=805&option=2&pwd=");
@@ -3920,7 +3902,7 @@ boolean L11_aridDesert()
 					{
 						if((get_property("gnasirProgress").to_int() & 4) != 4)
 						{
-							print("Mafia did not track gnasir Killing Jar (0x4). Fixing.", "red");
+							auto_log_warning("Mafia did not track gnasir Killing Jar (0x4). Fixing.", "red");
 							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 4);
 						}
 					}
@@ -3935,7 +3917,7 @@ boolean L11_aridDesert()
 
 		if(contains_text(get_property("lastEncounter"), "A Sietch in Time"))
 		{
-			print("We've found the gnome!! Sightseeing pamphlets for everyone!", "green");
+			auto_log_info("We've found the gnome!! Sightseeing pamphlets for everyone!", "green");
 			set_property("auto_gnasirUnlocked", true);
 		}
 
@@ -3949,11 +3931,11 @@ boolean L11_aridDesert()
 	else
 	{
 		int need = 100 - get_property("desertExploration").to_int();
-		print("Getting some ultrahydrated, I suppose. Desert left: " + need, "blue");
+		auto_log_info("Getting some ultrahydrated, I suppose. Desert left: " + need, "blue");
 
 		if((need > (5 * progress)) && (cloversAvailable() > 2) && !get_property("lovebugsUnlocked").to_boolean())
 		{
-			print("Gonna clover this, yeah, it only saves 2 adventures. So?", "green");
+			auto_log_info("Gonna clover this, yeah, it only saves 2 adventures. So?", "green");
 			cloverUsageInit();
 			autoAdvBypass("adventure.php?snarfblat=122", $location[The Oasis]);
 			cloverUsageFinish();
@@ -3962,7 +3944,7 @@ boolean L11_aridDesert()
 		{
 			if(!autoAdv(1, $location[The Oasis]))
 			{
-				print("Could not visit the Oasis for some raisin, assuming desertExploration is incorrect.", "red");
+				auto_log_warning("Could not visit the Oasis for some raisin, assuming desertExploration is incorrect.", "red");
 				set_property("desertExploration", 0);
 			}
 		}
@@ -4014,7 +3996,7 @@ boolean L11_palindome()
 		lovemeDone = lovemeDone || contains_text(palindomeCheck, "pal_drlabel");
 	}
 
-	print("In the palindome : emodnilap eht nI", "blue");
+	auto_log_info("In the palindome : emodnilap eht nI", "blue");
 	#
 	#	In hardcore, guild-class, the right side of the or doesn't happen properly due us farming the
 	#	Mega Gem within the if, with pulls, it works fine. Need to fix this. This is bad.
@@ -4053,8 +4035,8 @@ boolean L11_palindome()
 
 					if(get_property("lastGuildStoreOpen").to_int() < my_ascensions())
 					{
-						print("This is probably no longer needed as of r16907. Please remove me", "blue");
-						print("Going to pretend we have unlocked the Guild because Mafia will assume we need to do that before going to Whitey's Grove and screw up us. We'll fix it afterwards.", "red");
+						auto_log_warning("This is probably no longer needed as of r16907. Please remove me", "blue");
+						auto_log_warning("Going to pretend we have unlocked the Guild because Mafia will assume we need to do that before going to Whitey's Grove and screw up us. We'll fix it afterwards.", "red");
 					}
 					backupSetting("lastGuildStoreOpen", my_ascensions());
 					string[int] pages;
@@ -4066,12 +4048,12 @@ boolean L11_palindome()
 				}
 				// +item is nice to get that food
 				bat_formBats();
-				print("Off to the grove for some doofy food!", "blue");
+				auto_log_info("Off to the grove for some doofy food!", "blue");
 				autoAdv(1, $location[Whitey\'s Grove]);
 			}
 			else if(item_amount($item[Stunt Nuts]) == 0)
 			{
-				print("We got no nuts!! :O", "Blue");
+				auto_log_info("We got no nuts!! :O", "Blue");
 				autoEquip($slot[acc3], $item[Talisman o\' Namsilat]);
 				autoAdv(1, $location[Inside the Palindome]);
 			}
@@ -4106,8 +4088,8 @@ boolean L11_palindome()
 			if(item_amount($item[&quot;2 Love Me\, Vol. 2&quot;]) > 0)
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
-				print("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
-				doHottub();
+				auto_log_info("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
+				acquireHP();
 				bat_reallyPickSkills(20);
 			}
 			if (equipped_amount($item[Talisman o\' Namsilat]) == 0)
@@ -4149,7 +4131,7 @@ boolean L11_palindome()
 
 		if(!possessEquipment($item[Mega Gem]))
 		{
-			print("No mega gem for us. Well, no raisin to go further here....", "red");
+			auto_log_warning("No mega gem for us. Well, no raisin to go further here....", "red");
 			return false;
 		}
 		autoEquip($slot[acc2], $item[Mega Gem]);
@@ -4157,7 +4139,7 @@ boolean L11_palindome()
 		int palinChoice = random(3) + 1;
 		set_property("choiceAdventure131", palinChoice);
 
-		print("War sir is raw!!", "blue");
+		auto_log_info("War sir is raw!!", "blue");
 
 		string[int] pages;
 		pages[0] = "place.php?whichplace=palindome&action=pal_drlabel";
@@ -4180,15 +4162,15 @@ boolean L11_palindome()
 		{
 			if(!get_property("auto_bruteForcePalindome").to_boolean())
 			{
-				print("Palindome failure:", "red");
-				print("You probably just need to get a Mega Gem to fix this.", "red");
+				auto_log_critical("Palindome failure:", "red");
+				auto_log_critical("You probably just need to get a Mega Gem to fix this.", "red");
 				abort("We have made too much progress in the Palindome and should not be here.");
 			}
 			else
 			{
-				print("We need wet stunt nut stew to get the Mega Gem, but I've been told to get it via the mercy adventure.", "red");
-				print("Set auto_bruteForcePalindome=false to try to get a stunt nut stew", "red");
-				print("(We typically only set this option in hardcore Kingdom of Exploathing, in which the White Forest isn't available)", "red");
+				auto_log_critical("We need wet stunt nut stew to get the Mega Gem, but I've been told to get it via the mercy adventure.", "red");
+				auto_log_critical("Set auto_bruteForcePalindome=false to try to get a stunt nut stew", "red");
+				auto_log_critical("(We typically only set this option in hardcore Kingdom of Exploathing, in which the White Forest isn't available)", "red");
 			}
 		}
 
@@ -4196,7 +4178,7 @@ boolean L11_palindome()
 		{
 			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 			{
-				print("Gotta hunt down them Naskar boys.", "blue");
+				auto_log_info("Gotta hunt down them Naskar boys.", "blue");
 				uneffect($effect[On The Trail]);
 			}
 		}
@@ -4284,7 +4266,7 @@ boolean L13_towerNSFinal()
 	}
 	if(get_property("auto_wandOfNagamar").to_boolean())
 	{
-		print("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
+		auto_log_warning("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
 	}
 
 	//Only if the final boss does not unbuff us...
@@ -4292,7 +4274,7 @@ boolean L13_towerNSFinal()
 	{
 		if(auto_my_path() == "The Source")
 		{
-			acquireMP(200, true);
+			acquireMP(200, 0);
 		}
 	}
 	else
@@ -4352,7 +4334,7 @@ boolean L13_towerNSFinal()
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
 		if(have_effect($effect[Beaten Up]) > 0)
 		{
-			print("Sorceress beat us up. Wahhh.", "red");
+			auto_log_warning("Sorceress beat us up. Wahhh.", "red");
 			set_property("auto_disableAdventureHandling", false);
 			return true;
 		}
@@ -4361,7 +4343,7 @@ boolean L13_towerNSFinal()
 			autoAdv(1, $location[Noob Cave]);
 			if(have_effect($effect[Beaten Up]) > 0)
 			{
-				print("Blobbage Sorceress beat us up. Wahhh.", "red");
+				auto_log_warning("Blobbage Sorceress beat us up. Wahhh.", "red");
 				set_property("auto_disableAdventureHandling", true);
 				return true;
 			}
@@ -4382,7 +4364,7 @@ boolean L13_towerNSFinal()
 					}
 					return true;
 				}
-				print("We got beat up by a sausage....", "red");
+				auto_log_warning("We got beat up by a sausage....", "red");
 				set_property("auto_disableAdventureHandling", false);
 				return true;
 			}
@@ -4439,13 +4421,13 @@ boolean L13_towerNSTower()
 		return false;
 	}
 
-	print("Scaling the mighty NStower...", "green");
+	auto_log_info("Scaling the mighty NStower...", "green");
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_05_monster1"))
 	{
-		print("Time to fight the Wall of Skins!", "blue");
+		auto_log_info("Time to fight the Wall of Skins!", "blue");
 		auto_change_mcd(0);
-		acquireMP(120, true);
+		acquireMP(120, 0);
 
 		int sources = 0;
 		if(autoEquip($item[astral shirt]))
@@ -4578,7 +4560,7 @@ boolean L13_towerNSTower()
 		{
 			sourceNeed -= 2;
 		}
-		print("I think I have " + sources + " sources of damage, let's do this!", "blue");
+		auto_log_info("I think I have " + sources + " sources of damage, let's do this!", "blue");
 		if(auto_my_path() == "Pocket Familiars")
 		{
 			sources = 9999;
@@ -4587,13 +4569,13 @@ boolean L13_towerNSTower()
 		{
 			if(item_amount($item[Beehive]) == 0)
 			{
-				useCocoon();
+				acquireHP();
 			}
 			autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 			if(internalQuestStatus("questL13Final") < 7)
 			{
 				set_property("auto_getBeehive", true);
-				print("I probably failed the Wall of Skin, I assume that I tried without a beehive. Well, I'm going back to get it.", "red");
+				auto_log_warning("I probably failed the Wall of Skin, I assume that I tried without a beehive. Well, I'm going back to get it.", "red");
 			}
 			else
 			{
@@ -4603,7 +4585,7 @@ boolean L13_towerNSTower()
 		else
 		{
 			set_property("auto_getBeehive", true);
-			print("Need a beehive, buzz buzz. Only have " + sources + " damage sources and we want " + sourceNeed, "red");
+			auto_log_warning("Need a beehive, buzz buzz. Only have " + sources + " damage sources and we want " + sourceNeed, "red");
 		}
 		return true;
 	}
@@ -4655,14 +4637,7 @@ boolean L13_towerNSTower()
 			autoEquip($item[Meat Tenderizer is Murder]);
 		}
 
-		if(my_mp() >= 20)
-		{
-			useCocoon();
-		}
-		else if(my_hp() < (0.9 * my_maxhp()))
-		{
-			doHottub();
-		}
+		acquireHP();
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
 		return true;
 	}
@@ -4687,7 +4662,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[OMG WTF], 0, 1, 1);
 			buffMaintain($effect[There is a Spoon], 0, 1, 1);
 			boolean keepTrying = true;
-			acquireMP(216, true);
+			acquireMP(216, 0);
 
 			buffMaintain($effect[Song of Sauce], 0, 1, 1);
 			buffMaintain($effect[Carol of the Hells], 0, 1, 1);
@@ -4710,7 +4685,7 @@ boolean L13_towerNSTower()
 				}
 			}
 
-			useCocoon();
+			acquireHP();
 			boolean[item] famDamage = $items[Tiny Bowler, Ant Hoe, Ant Pick, Ant Rake, Ant Pitchfork, Ant Sickle, Kill Screen, Little Box of Fireworks, Filthy Child Leash, Plastic Pumpkin Bucket, Moveable Feast, Ittah Bittah Hookah];
 			if(famDamage contains equipped_item($slot[Familiar]))
 			{
@@ -4720,8 +4695,8 @@ boolean L13_towerNSTower()
 			autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 			if(internalQuestStatus("questL13Final") < 9)
 			{
-				print("Could not towerkill Wall of Bones, reverting to Boning Knife", "red");
-				doHottub();
+				auto_log_warning("Could not towerkill Wall of Bones, reverting to Boning Knife", "red");
+				acquireHP();
 				set_property("auto_getBoningKnife", true);
 			}
 			else
@@ -4735,7 +4710,7 @@ boolean L13_towerNSTower()
 		}
 		else if(canGroundhog($location[The Castle in the Clouds in the Sky (Ground Floor)]))
 		{
-			print("Backfarming an Electric Boning Knife", "green");
+			auto_log_info("Backfarming an Electric Boning Knife", "green");
 			set_property("choiceAdventure1026", "2");
 			autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]);
 		}
@@ -4766,7 +4741,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Spiky Hair], 0, 1, 1);
 		}
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
-		doHottub();
+		acquireHP();
 
 		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
 		if(n_healing_items < 5)
@@ -4804,13 +4779,13 @@ boolean L13_towerNSHedge()
 		set_property("questL13Final", "step4");
 		if((have_effect($effect[Beaten Up]) > 0) || (my_hp() < 150))
 		{
-			print("Hedge maze not solved, the mysteries are still there (correcting step5 -> step4)", "red");
+			auto_log_critical("Hedge maze not solved, the mysteries are still there (correcting step5 -> step4)", "red");
 			abort("Heal yourself and try again...");
 		}
 	}
 	if(internalQuestStatus("questL13Final") >= 5)
 	{
-		print("Should already be past the hedge maze but did not see the door", "red");
+		auto_log_warning("Should already be past the hedge maze but did not see the door", "red");
 		set_property("auto_sorceress", "door");
 		return false;
 	}
@@ -4829,7 +4804,7 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
-	useCocoon();
+	acquireHP();
 	visit_url("place.php?whichplace=nstower&action=ns_03_hedgemaze");
 	if(get_property("lastEncounter") == "This Maze is... Mazelike...")
 	{
@@ -4886,20 +4861,20 @@ boolean L13_towerNSContests()
 		ns_hedge3();
 		if(get_property("auto_trytower") == "stop")
 		{
-			print("Manual handling for the start of challenges still required. Then run me again. Beep", "blue");
+			auto_log_critical("Manual handling for the start of challenges still required. Then run me again. Beep", "blue");
 			set_property("choiceAdventure1003", 3);
 			abort("Can't handle this optimally just yet, damn it");
 		}
 		else if(get_property("auto_trytower") == "pause")
 		{
 			set_property("auto_trytower", "");
-			print("Start the tower challenges and then run me again and I'll take care of the rest");
+			auto_log_critical("Start the tower challenges and then run me again and I'll take care of the rest");
 			abort("Run again once all three challenges have been started. We will assume they have been");
 			set_property("choiceAdventure1003", 3);
 		}
 		else
 		{
-			print("Manual handling for the start of challenges still required. Then run me again. Beep");
+			auto_log_critical("Manual handling for the start of challenges still required. Then run me again. Beep");
 			set_property("choiceAdventure1003", 3);
 			abort("Can't handle this optimally just yet, damn it");
 		}
@@ -4962,10 +4937,7 @@ boolean L13_towerNSContests()
 			switch(ns_crowd1())
 			{
 			case 1:
-				while((my_mp() < 160) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-				{
-					doRest();
-				}
+				acquireMP(160); // only uses free rests or items on hand by default
 
 				if(is100FamiliarRun())
 				{
@@ -4998,7 +4970,7 @@ boolean L13_towerNSContests()
 					if(get_property("auto_secondPlaceOrBust").to_boolean())
 						abort("Not enough initiative for the initiative test, aborting since auto_secondPlaceOrBust=true");
 					else
-						print("Not enough initiative for the initiative test, but continuing since auto_secondPlaceOrBust=false", "red");
+						auto_log_warning("Not enough initiative for the initiative test, but continuing since auto_secondPlaceOrBust=false", "red");
 				}
 				break;
 			}
@@ -5013,10 +4985,7 @@ boolean L13_towerNSContests()
 			{
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
-			while((my_mp() < 150) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			acquireMP(150); // only uses free rests or items on hand by default
 			buffMaintain($effect[Big], 15, 1, 1);
 			if (my_class() == $class[Vampyre])
 			{
@@ -5024,7 +4993,7 @@ boolean L13_towerNSContests()
 				{
 					boolean[skill] requirements;
 					requirements[$skill[Preternatural Strength]] = true;
-					print("Torporing, since we want to get Preternatural Strength.", "blue");
+					auto_log_info("Torporing, since we want to get Preternatural Strength.", "blue");
 					bat_reallyPickSkills(20, requirements);
 				}
 				// This could be generalized for stat equalizer potions, but that seems marginal
@@ -5104,7 +5073,7 @@ boolean L13_towerNSContests()
 				if(get_property("auto_secondPlaceOrBust").to_boolean())
 					abort("Not enough " + crowd_stat + " for the stat test, aborting since auto_secondPlaceOrBust=true");
 				else
-					print("Not enough " + crowd_stat + " for the stat test, but continuing since auto_secondPlaceOrBust=false", "red");
+					auto_log_warning("Not enough " + crowd_stat + " for the stat test, but continuing since auto_secondPlaceOrBust=false", "red");
 			}
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
 			visit_url("choice.php?pwd=&whichchoice=1003&option=2", true);
@@ -5112,10 +5081,7 @@ boolean L13_towerNSContests()
 		}
 		if(get_property("nsContestants3").to_int() == -1)
 		{
-			while((my_mp() < 125) && (get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available())
-			{
-				doRest();
-			}
+			acquireMP(125); // only uses free rests or items on hand by default
 
 			if(challenge != $element[none])
 			{
@@ -5199,7 +5165,7 @@ boolean L13_towerNSContests()
 				if(get_property("auto_secondPlaceOrBust").to_boolean())
 					abort("Not enough " + challenge + " for the elemental test, aborting since auto_secondPlaceOrBust=true");
 				else
-					print("Not enough " + challenge + " for the elemental test, but continuing since auto_secondPlaceOrBust=false", "red");
+					auto_log_warning("Not enough " + challenge + " for the elemental test, but continuing since auto_secondPlaceOrBust=false", "red");
 			}
 
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
@@ -5210,7 +5176,7 @@ boolean L13_towerNSContests()
 		set_property("choiceAdventure1003",  4);
 		if((get_property("nsContestants1").to_int() == 0) && (get_property("nsContestants2").to_int() == 0) && (get_property("nsContestants3").to_int() == 0))
 		{
-			print("The NS Challenges are over! Victory is ours!", "blue");
+			auto_log_info("The NS Challenges are over! Victory is ours!", "blue");
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
 			visit_url("choice.php?pwd=&whichchoice=1003&option=4", true);
 			visit_url("main.php");
@@ -5222,18 +5188,18 @@ boolean L13_towerNSContests()
 					{
 						//As of r17048, encountering a Source Agent on the Challenge line results in nsContestants being decremented twice.
 						//Since we were using Mafia\'s tracking here, we have to compensate for when it fails...
-						print("Probably encountered a Source Agent during the NS Contestants and Mafia's tracking fails on this. Let's try to correct it...", "red");
+						auto_log_warning("Probably encountered a Source Agent during the NS Contestants and Mafia's tracking fails on this. Let's try to correct it...", "red");
 						set_property("questL13Final", "step1");
 					}
 					else
 					{
-						print("Error not recoverable (as not antipicipated) outside of The Source (Source Agents during NS Challenges), aborting.", "red");
+						auto_log_critical("Error not recoverable (as not antipicipated) outside of The Source (Source Agents during NS Challenges), aborting.", "red");
 						abort("questL13Final error in unexpected path.");
 					}
 				}
 				else
 				{
-					print("Unresolvable error: Mafia thinks the NS challenges are complete but something is very wrong.", "red");
+					auto_log_critical("Unresolvable error: Mafia thinks the NS challenges are complete but something is very wrong.", "red");
 					abort("Unknown questL13Final/auto_sorceress state.");
 				}
 			}
@@ -5285,7 +5251,7 @@ boolean L13_towerNSContests()
 		autoAdv(1, toCompete);
 		return true;
 	}
-	print("No challenges left!", "green");
+	auto_log_info("No challenges left!", "green");
 	if(auto_my_path() == "Pocket Familiars")
 	{
 		if(get_property("nsContestants1").to_int() == 0)
@@ -5321,7 +5287,7 @@ boolean L13_towerNSEntrance()
 	{
 		if(my_level() < 13)
 		{
-			print("I seem to need to power level, or something... waaaa.", "red");
+			auto_log_warning("I seem to need to power level, or something... waaaa.", "red");
 			# lx_attemptPowerLevel is before. We need to merge all of this into that....
 			set_property("auto_newbieOverride", true);
 
@@ -5369,9 +5335,9 @@ boolean L13_towerNSEntrance()
 			}
 			wait(delay);
 
-			if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
+			if(haveAnyIotmAlternativeRestSiteAvailable() && haveFreeRestAvailable() && auto_my_path() != "The Source")
 			{
-				doRest();
+				doFreeRest();
 				cli_execute("scripts/autoscend/auto_post_adv.ash");
 				loopHandlerDelayAll();
 				return true;
@@ -5381,7 +5347,7 @@ boolean L13_towerNSEntrance()
 			{
 				if(get_property("auto_powerLevelAdvCount").to_int() >= 10)
 				{
-					print("The following error message is probably wrong, you just need to powerlevel to 13 most likely.", "red");
+					auto_log_warning("The following error message is probably wrong, you just need to powerlevel to 13 most likely.", "red");
 					if((item_amount($item[Rock Band Flyers]) > 0) || (item_amount($item[Jam Band Flyers]) > 0))
 					{
 						abort("Need more flyer ML but don't know where to go :(");
@@ -5399,7 +5365,7 @@ boolean L13_towerNSEntrance()
 			#need a wand (or substitute a key lime for food earlier)
 			if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
 			{
-				print("Hmmm, we need to stop being so feisty about quests...", "red");
+				auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
 				set_property("auto_powerLevelLastLevel", my_level());
 				return true;
 			}
@@ -5437,7 +5403,7 @@ boolean L12_lastDitchFlyer()
 		return false;
 	}
 
-	print("Not enough flyer ML but we are ready for the war... uh oh", "blue");
+	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
 	boolean doHoleInTheSky = needStarKey();
 
 	if(doHoleInTheSky)
@@ -5466,7 +5432,7 @@ boolean L12_lastDitchFlyer()
 	}
 	else
 	{
-		print("Should not have so little flyer ML at this point", "red");
+		auto_log_warning("Should not have so little flyer ML at this point", "red");
 		wait(1);
 		if(!LX_attemptFlyering())
 		{
@@ -5480,44 +5446,40 @@ boolean LX_attemptFlyering()
 {
 	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]))
 	{
-		autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 	}
 	else if(elementalPlanes_access($element[spooky]))
 	{
-		autoAdv(1, $location[The Deep Dark Jungle]);
+		return autoAdv(1, $location[The Deep Dark Jungle]);
 	}
 	else if(elementalPlanes_access($element[cold]))
 	{
-		autoAdv(1, $location[VYKEA]);
+		return autoAdv(1, $location[VYKEA]);
 	}
 	else if(elementalPlanes_access($element[stench]))
 	{
-		autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
 	}
 	else if(elementalPlanes_access($element[sleaze]))
 	{
-		autoAdv(1, $location[Sloppy Seconds Diner]);
+		return autoAdv(1, $location[Sloppy Seconds Diner]);
 	}
 	else if(neverendingPartyAvailable())
 	{
-		neverendingPartyPowerlevel();
+		return neverendingPartyPowerlevel();
 	}
 	else
 	{
-		if((my_level() >= 11) && (get_property("auto_hiddenzones") == "finished"))
+		int flyer = get_property("flyeredML").to_int();
+		boolean retval = autoAdv($location[Near an Abandoned Refrigerator]);
+		if (flyer == get_property("flyeredML").to_int())
 		{
-			int flyer = get_property("flyeredML").to_int();
-			autoAdv($location[The Hidden Hospital]);
-			if(flyer == get_property("flyeredML").to_int())
-			{
-				abort("Trying to flyer but failed to flyer");
-			}
-			set_property("auto_newbieOverride", true);
-			return true;
+			abort("Trying to flyer but failed to flyer");
 		}
-		return false;
+		set_property("auto_newbieOverride", true);
+		return retval;
 	}
-	return true;
+	return false;
 }
 
 boolean powerLevelAdjustment()
@@ -5562,6 +5524,7 @@ boolean LX_attemptPowerLevel()
 		autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 		return true;
 	}
+
 	if(LX_freeCombats())
 	{
 		return true;
@@ -5654,13 +5617,13 @@ boolean LX_attemptPowerLevel()
 	{
 		autoAdv(1, $location[VYKEA]);
 	}
-	else if((elementalPlanes_access($element[sleaze])) && (my_level() < 11))
-	{
-		autoAdv(1, $location[Sloppy Seconds Diner]);
-	}
 	else if(elementalPlanes_access($element[sleaze]))
 	{
 		autoAdv(1, $location[Sloppy Seconds Diner]);
+	}
+	else if (elementalPlanes_access($element[hot]))
+	{
+		autoAdv(1, $location[The SMOOCH Army HQ]);
 	}
 	else
 	{
@@ -5676,7 +5639,7 @@ boolean LX_attemptPowerLevel()
 					whereTo = $location[The Haunted Gallery];
 					break;
 				case $stat[Mysticality]:
-					whereTo = $location[The Haunted Bathroom];			
+					whereTo = $location[The Haunted Bathroom];
 					break;
 				case $stat[Moxie]:
 					whereTo = $location[The Haunted Ballroom];
@@ -5727,9 +5690,14 @@ boolean L11_hiddenTavernUnlock()
 
 boolean L11_hiddenTavernUnlock(boolean force)
 {
-	if(auto_my_path() == "G-Lover")
+	if(!auto_is_valid($item[Book of Matches]))
 	{
 		return false;
+	}
+
+	if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+	{
+		return true;
 	}
 
 	if(force)
@@ -5791,16 +5759,12 @@ boolean L11_hiddenCity()
 		if((get_property("auto_hiddenapartment") == "finished") || (item_amount($item[Moss-Covered Stone Sphere]) > 0))
 		{
 			set_property("auto_hiddenapartment", "finished");
-			if(have_effect($effect[Thrice-Cursed]) > 0)
-			{
-				print("Ewww, time to wash off this pygmy stench.", "blue");
-				doHottub();
-			}
+			uneffect($effect[Thrice-Cursed]);
 			if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Shaman]))
 			{
 				if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 				{
-					print("They stink so much!", "blue");
+					auto_log_info("They stink so much!", "blue");
 					uneffect($effect[On The Trail]);
 				}
 			}
@@ -5812,7 +5776,7 @@ boolean L11_hiddenCity()
 			{
 				if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 				{
-					print("No more accountants to hunt!", "blue");
+					auto_log_info("No more accountants to hunt!", "blue");
 					uneffect($effect[On The Trail]);
 				}
 			}
@@ -5824,7 +5788,7 @@ boolean L11_hiddenCity()
 			{
 				if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 				{
-					print("No more stinky bowling shoes to worry about!", "blue");
+					auto_log_info("No more stinky bowling shoes to worry about!", "blue");
 					uneffect($effect[On The Trail]);
 				}
 			}
@@ -5840,30 +5804,36 @@ boolean L11_hiddenCity()
 	}
 	if((get_property("auto_hiddenapartment") != "finished") && (get_counters("Fortune Cookie", 0, 9) != "Fortune Cookie") && (my_adventures() >= (9 - get_property("auto_hiddenapartment").to_int())) && (have_effect($effect[Ancient Fortitude]) == 0))
 		{
-			print("The idden [sic] apartment!", "blue");
+			auto_log_info("The idden [sic] apartment!", "blue");
 
 			int current = get_property("auto_hiddenapartment").to_int() + 1;
 			set_property("auto_hiddenapartment", current);
 
-			if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
+			if(auto_canForceNextNoncombat())
 			{
-				use(1, $item[Clara\'s Bell]);
+				L11_hiddenTavernUnlock(true);
 
-				if(auto_my_path() == "Pocket Familiars")
+				if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= 3*$item[Cursed Punch].inebriety) && !in_tcrs())
+					|| (0 != have_effect($effect[Thrice-Cursed]) && current <= 4))
 				{
-					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+					auto_forceNextNoncombat();
+
+					if(auto_my_path() == "Pocket Familiars")
 					{
-						set_property("choiceAdventure780", "3");
-						autoAdv(1, $location[The Hidden Apartment Building]);
-						return true;
+						if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+						{
+							set_property("choiceAdventure780", "3");
+							autoAdv(1, $location[The Hidden Apartment Building]);
+							return true;
+						}
 					}
+					current = 9;
 				}
-				current = 9;
 			}
 
 			if(current <= 8)
 			{
-				print("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
+				auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
 				autoAdv(1, $location[The Hidden Apartment Building]);
 				if(lastAdventureSpecialNC())
 				{
@@ -5879,7 +5849,7 @@ boolean L11_hiddenCity()
 					L11_hiddenTavernUnlock(true);
 					while(have_effect($effect[Thrice-Cursed]) == 0)
 					{
-						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs() && !in_koe())
+						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs())
 						{
 							buyUpTo(1, $item[Cursed Punch]);
 							if(item_amount($item[Cursed Punch]) == 0)
@@ -5895,14 +5865,14 @@ boolean L11_hiddenCity()
 						}
 					}
 				}
-				print("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
+				auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
 				autoAdv(1, $location[The Hidden Apartment Building]);
 				return true;
 			}
 		}
 		if((get_property("auto_hiddenoffice") != "finished") && (my_adventures() >= 11))
 		{
-			print("The idden [sic] office!", "blue");
+			auto_log_info("The idden [sic] office!", "blue");
 
 			if((item_amount($item[Boring Binder Clip]) == 1) && (item_amount($item[McClusky File (Page 5)]) == 1))
 			{
@@ -5924,7 +5894,7 @@ boolean L11_hiddenCity()
 				set_property("choiceAdventure786", "3");
 			}
 
-			print("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
+			auto_log_info("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
 			if(considerGrimstoneGolem(true))
 			{
 				handleBjornify($familiar[Grimstone Golem]);
@@ -5938,7 +5908,7 @@ boolean L11_hiddenCity()
 
 		if(get_property("auto_hiddenbowling") != "finished")
 		{
-			print("The idden [sic] bowling alley!", "blue");
+			auto_log_info("The idden [sic] bowling alley!", "blue");
 			L11_hiddenTavernUnlock(true);
 			if(my_ascensions() == get_property("hiddenTavernUnlock").to_int() && !in_koe())
 			{
@@ -5959,16 +5929,8 @@ boolean L11_hiddenCity()
 			}
 
 			buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-			print("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
-//			if(have_familiar($familiar[Cat Burglar]))
-//			{
-//				handleFamiliar($familiar[Cat Burglar]);
-//			}
+			auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
 			autoAdv(1, $location[The Hidden Bowling Alley]);
-//			if(last_monster() == $monster[Pygmy Bowler])
-//			{
-//				abort("Pygmy!");
-//			}
 
 			return true;
 		}
@@ -5980,7 +5942,7 @@ boolean L11_hiddenCity()
 				set_property("auto_hiddenhospital", "finished");
 				return true;
 			}
-			print("The idden osptial!! [sic]", "blue");
+			auto_log_info("The idden osptial!! [sic]", "blue");
 			set_property("choiceAdventure784", "1");
 
 			autoEquip($item[bloodied surgical dungarees]);
@@ -5988,7 +5950,7 @@ boolean L11_hiddenCity()
 			autoEquip($item[surgical apron]);
 			autoEquip($slot[acc3], $item[head mirror]);
 			autoEquip($slot[acc2], $item[surgical mask]);
-			print("Hidden Hospital Progress: " + get_property("hiddenHospitalProgress"), "blue");
+			auto_log_info("Hidden Hospital Progress: " + get_property("hiddenHospitalProgress"), "blue");
 			if((my_mp() > 60) || considerGrimstoneGolem(true))
 			{
 				handleBjornify($familiar[Grimstone Golem]);
@@ -5999,7 +5961,7 @@ boolean L11_hiddenCity()
 		}
 		if((get_property("auto_hiddenapartment") == "finished") && (get_property("auto_hiddenoffice") == "finished") && (get_property("auto_hiddenbowling") == "finished") && (get_property("auto_hiddenhospital") == "finished"))
 		{
-			print("Getting the stone triangles", "blue");
+			auto_log_info("Getting the stone triangles", "blue");
 			set_property("choiceAdventure791", "1");
 			while(item_amount($item[stone triangle]) < 1)
 			{
@@ -6018,8 +5980,8 @@ boolean L11_hiddenCity()
 				autoAdv(1, $location[An Overgrown Shrine (Southeast)]);
 			}
 
-			print("Fighting the out-of-work spirit", "blue");
-			useCocoon();
+			auto_log_info("Fighting the out-of-work spirit", "blue");
+			acquireHP();
 
 			try
 			{
@@ -6032,7 +5994,7 @@ boolean L11_hiddenCity()
 			}
 			finally
 			{
-				print("If I stopped, just run me again, beep!", "red");
+				auto_log_warning("If I stopped, just run me again, beep!", "red");
 			}
 
 			if(item_amount($item[2180]) == 1)
@@ -6070,7 +6032,7 @@ boolean L11_hiddenCityZones()
 
 	if(get_property("auto_hiddenzones") == "")
 	{
-		print("Machete the hidden zones!", "blue");
+		auto_log_info("Machete the hidden zones!", "blue");
 		set_property("choiceAdventure791", "6");
 		set_property("auto_hiddenzones", "0");
 	}
@@ -6153,6 +6115,10 @@ boolean L11_hiddenCityZones()
 		{
 			set_property("choiceAdventure789", "2");
 		}
+
+		// Try to get the NC so that we can relocate Janitors and get items quickly
+		providePlusNonCombat(25, true);
+
 		autoAdv(1, $location[The Hidden Park]);
 		return true;
 	}
@@ -6332,24 +6298,24 @@ boolean L11_wishForBaaBaaBuran()
 {
 	if(!get_property("auto_useWishes").to_boolean() && canGenieCombat())
 	{
-		print("Skipping wishing for Baa'baa'bu'ran because auto_useWishes=false", "red");
+		auto_log_warning("Skipping wishing for Baa'baa'bu'ran because auto_useWishes=false", "red");
 	}
 	if (get_property("auto_useWishes").to_boolean() && canGenieCombat())
 	{
-		print("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
+		auto_log_info("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
 		handleFamiliar("item");
 		if((numeric_modifier("item drop") >= 100))
 		{
 			if (!makeGenieCombat($monster[Baa\'baa\'bu\'ran]) || item_amount($item[Stone Wool]) == 0)
 			{
-				print("Wishing for stone wool failed.", "red");
+				auto_log_warning("Wishing for stone wool failed.", "red");
 				return false;
 			}
 			return true;
 		}
 		else
 		{
-			print("Never mind, we couldn't get a mere +100% item for the Baa'baa'bu'ran wish.", "red");
+			auto_log_warning("Never mind, we couldn't get a mere +100% item for the Baa'baa'bu'ran wish.", "red");
 		}
 	}
 	return false;
@@ -6388,7 +6354,7 @@ boolean L11_unlockHiddenCity()
 		backupSetting("choiceAdventure579", 3);
 	}
 
-	print("Searching for the Hidden City", "blue");
+	auto_log_info("Searching for the Hidden City", "blue");
 	if(useStoneWool)
 	{
 		if((item_amount($item[Stone Wool]) == 0) && (have_effect($effect[Stone-Faced]) == 0))
@@ -6418,7 +6384,7 @@ boolean L11_unlockHiddenCity()
 	{
 		if(bypassResult)
 		{
-			print("Wandering monster interrupted our attempt at the Hidden City", "red");
+			auto_log_warning("Wandering monster interrupted our attempt at the Hidden City", "red");
 			return true;
 		}
 		if(get_property("lastEncounter") != "Fitting In")
@@ -6439,7 +6405,7 @@ boolean L11_unlockHiddenCity()
 	visit_url("choice.php");
 	cli_execute("dvorak");
 	visit_url("choice.php?whichchoice=125&option=3&pwd");
-	print("Hidden Temple Unlocked");
+	auto_log_info("Hidden Temple Unlocked");
 	set_property("auto_hiddenunlock", "finished");
 	if(!possessEquipment($item[Antique Machete]) && !in_hardcore())
 	{
@@ -6475,7 +6441,7 @@ boolean L11_nostrilOfTheSerpent()
 		return false;
 	}
 
-	print("Must get a snake nose.", "blue");
+	auto_log_info("Must get a snake nose.", "blue");
 	boolean useStoneWool = true;
 
 	if(auto_my_path() == "G-Lover" || auto_my_path() == "Two Crazy Random Summer")
@@ -6518,7 +6484,7 @@ boolean L11_nostrilOfTheSerpent()
 					visit_url("choice.php");
 					cli_execute("dvorak");
 					visit_url("choice.php?whichchoice=125&option=3&pwd");
-					print("Hidden Temple Unlocked");
+					auto_log_info("Hidden Temple Unlocked");
 					set_property("auto_hiddenunlock", "finished");
 				}
 				else
@@ -6554,12 +6520,12 @@ boolean LX_spookyBedroomCombat()
 	autoAdv(1, $location[The Haunted Bedroom]);
 	if(contains_text(visit_url("main.php"), "choice.php"))
 	{
-		print("Bedroom choice adventure get!", "green");
+		auto_log_info("Bedroom choice adventure get!", "green");
 		autoAdv(1, $location[The Haunted Bedroom]);
 	}
 	else if(contains_text(visit_url("main.php"), "Combat"))
 	{
-		print("Bedroom post-combat super combat get!", "green");
+		auto_log_info("Bedroom post-combat super combat get!", "green");
 		autoAdv(1, $location[The Haunted Bedroom]);
 	}
 	set_property("auto_disableAdventureHandling", false);
@@ -6583,13 +6549,13 @@ boolean LX_spookyravenSecond()
 
 	if(internalQuestStatus("questM21Dance") < 1)
 	{
-		print("Invalid questM21Dance detected. Trying to override", "red");
+		auto_log_warning("Invalid questM21Dance detected. Trying to override", "red");
 		set_property("questM21Dance", "step1");
 	}
 
 	if((item_amount($item[Lady Spookyraven\'s Powder Puff]) == 1) && (item_amount($item[Lady Spookyraven\'s Dancing Shoes]) == 1) && (item_amount($item[Lady Spookyraven\'s Finest Gown]) == 1))
 	{
-		print("Finished Spookyraven, just dancing with the lady.", "blue");
+		auto_log_info("Finished Spookyraven, just dancing with the lady.", "blue");
 		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 		set_property("auto_ballroomopen", "open");
@@ -6654,15 +6620,15 @@ boolean LX_spookyravenSecond()
 	{
 		if(needSpectacles)
 		{
-			print("Need Spectacles, damn it.", "blue");
+			auto_log_info("Need Spectacles, damn it.", "blue");
 			LX_spookyBedroomCombat();
-			print("Finished 1 Spookyraven Bedroom Spectacle Sequence", "blue");
+			auto_log_info("Finished 1 Spookyraven Bedroom Spectacle Sequence", "blue");
 		}
 		else if(needCamera)
 		{
-			print("Need Disposable Instant Camera, damn it.", "blue");
+			auto_log_info("Need Disposable Instant Camera, damn it.", "blue");
 			LX_spookyBedroomCombat();
-			print("Finished 1 Spookyraven Bedroom Disposable Instant Camera Sequence", "blue");
+			auto_log_info("Finished 1 Spookyraven Bedroom Disposable Instant Camera Sequence", "blue");
 		}
 		else
 		{
@@ -6674,16 +6640,16 @@ boolean LX_spookyravenSecond()
 	{
 		if((item_amount($item[Lady Spookyraven\'s Finest Gown]) == 0) && !contains_text(get_counters("Fortune Cookie", 0, 10), "Fortune Cookie"))
 		{
-			print("Spookyraven: Bedroom, rummaging through nightstands looking for naughty meatbag trinkets.", "blue");
+			auto_log_info("Spookyraven: Bedroom, rummaging through nightstands looking for naughty meatbag trinkets.", "blue");
 			LX_spookyBedroomCombat();
-			print("Finished 1 Spookyraven Bedroom Sequence", "blue");
+			auto_log_info("Finished 1 Spookyraven Bedroom Sequence", "blue");
 			return true;
 		}
 		if(item_amount($item[Lady Spookyraven\'s Dancing Shoes]) == 0)
 		{
 			set_property("louvreGoal", "7");
 			set_property("louvreDesiredGoal", "7");
-			print("Spookyraven: Gallery", "blue");
+			auto_log_info("Spookyraven: Gallery", "blue");
 
 			auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
@@ -6696,11 +6662,12 @@ boolean LX_spookyravenSecond()
 			{
 				handleFamiliar($familiar[Artistic Goth Kid]);
 			}
-			print("Spookyraven: Bathroom", "blue");
+			auto_log_info("Spookyraven: Bathroom", "blue");
 			set_property("choiceAdventure892", "1");
 
 			auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
+			auto_forceNextNoncombat();
 			autoAdv(1, $location[The Haunted Bathroom]);
 
 			handleFamiliar("item");
@@ -6738,7 +6705,7 @@ boolean L11_mauriceSpookyraven()
 
 	if(get_property("auto_ballroomflat") == "")
 	{
-		print("Searching for the basement of Spookyraven", "blue");
+		auto_log_info("Searching for the basement of Spookyraven", "blue");
 		if(!cangroundHog($location[The Haunted Ballroom]))
 		{
 			return false;
@@ -6765,7 +6732,7 @@ boolean L11_mauriceSpookyraven()
 		if(!autoAdv(1, $location[The Haunted Ballroom]))
 		{
 			visit_url("place.php?whichplace=manor2");
-			print("If 'That Area is not available', mafia isn't recognizing it without a visit to manor2, not sure why.", "red");
+			auto_log_warning("If 'That Area is not available', mafia isn't recognizing it without a visit to manor2, not sure why.", "red");
 		}
 		handleFamiliar("item");
 		if(contains_text(get_property("lastEncounter"), "We\'ll All Be Flat"))
@@ -6795,11 +6762,8 @@ boolean L11_mauriceSpookyraven()
 
 	if((get_property("auto_winebomb") == "finished") || get_property("auto_masonryWall").to_boolean() || (internalQuestStatus("questL11Manor") >= 3))
 	{
-		print("Down with the tyrant of Spookyraven!", "blue");
-		if(my_mp() >= 20)
-		{
-			useCocoon();
-		}
+		auto_log_info("Down with the tyrant of Spookyraven!", "blue");
+		acquireHP();
 		buffMaintain($effect[Astral Shell], 10, 1, 1);
 		buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 
@@ -6835,7 +6799,7 @@ boolean L11_mauriceSpookyraven()
 
 	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || (my_class() == $class[Avatar of Boris]) || (auto_my_path() == "Way of the Surprising Fist") || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
 	{
-		print("Alternate fulminate pathway... how sad :(", "red");
+		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.
 		if(item_amount($item[Loosening Powder]) == 0)
 		{
@@ -6885,14 +6849,14 @@ boolean L11_mauriceSpookyraven()
 
 	if((item_amount($item[blasting soda]) == 1) && (item_amount($item[bottle of Chateau de Vinegar]) == 1))
 	{
-		print("Time to cook up something explosive! Science fair unstable fulminate time!", "green");
+		auto_log_info("Time to cook up something explosive! Science fair unstable fulminate time!", "green");
 		ovenHandle();
 		autoCraft("cook", 1, $item[bottle of Chateau de Vinegar], $item[blasting soda]);
 		set_property("auto_winebomb", "partial");
 		if(item_amount($item[Unstable Fulminate]) == 0)
 		{
-			print("We could not make an Unstable Fulminate but we think we have an oven. Do this manually and resume?", "red");
-			print("Speculating that get_campground() was incorrect at ascension start...", "red");
+			auto_log_warning("We could not make an Unstable Fulminate but we think we have an oven. Do this manually and resume?", "red");
+			auto_log_warning("Speculating that get_campground() was incorrect at ascension start...", "red");
 			// This issue is valid as of mafia r16799
 			set_property("auto_haveoven", false);
 			ovenHandle();
@@ -6901,7 +6865,7 @@ boolean L11_mauriceSpookyraven()
 			{
 				if(auto_my_path() == "Nuclear Autumn")
 				{
-					print("Could not make an Unstable Fulminate, assuming we have no oven for realz...", "red");
+					auto_log_warning("Could not make an Unstable Fulminate, assuming we have no oven for realz...", "red");
 					return true;
 				}
 				else
@@ -6924,7 +6888,7 @@ boolean L11_mauriceSpookyraven()
 
 	if((item_amount($item[bottle of Chateau de Vinegar]) == 0) && (get_property("auto_winebomb") == ""))
 	{
-		print("Searching for vinegar", "blue");
+		auto_log_info("Searching for vinegar", "blue");
 		if(considerGrimstoneGolem(true))
 		{
 			handleBjornify($familiar[Grimstone Golem]);
@@ -6939,7 +6903,7 @@ boolean L11_mauriceSpookyraven()
 	}
 	if((item_amount($item[blasting soda]) == 0) && (get_property("auto_winebomb") == ""))
 	{
-		print("Searching for baking soda, I mean, blasting pop.", "blue");
+		auto_log_info("Searching for baking soda, I mean, blasting pop.", "blue");
 		if(considerGrimstoneGolem(true))
 		{
 			handleBjornify($familiar[Grimstone Golem]);
@@ -6961,7 +6925,7 @@ boolean L11_mauriceSpookyraven()
 				autoEquip($slot[weapon], $item[none]);
 			}
 		}
-		print("Now we mix and heat it up.", "blue");
+		auto_log_info("Now we mix and heat it up.", "blue");
 
 		if((auto_my_path() == "Picky") && (item_amount($item[gumshoes]) > 0))
 		{
@@ -7015,7 +6979,7 @@ boolean L13_sorceressDoor()
 
 	if(internalQuestStatus("questL13Final") >= 6)
 	{
-		print("Should already be past the tower door but did not see the First wall.", "red");
+		auto_log_warning("Should already be past the tower door but did not see the First wall.", "red");
 		set_property("auto_sorceress", "tower");
 		return false;
 	}
@@ -7178,14 +7142,14 @@ boolean L11_unlockEd()
 
 	if(get_property("auto_tavern") != "finished")
 	{
-		print("Uh oh, didn\'t do the tavern and we are at the pyramid....", "red");
+		auto_log_warning("Uh oh, didn\'t do the tavern and we are at the pyramid....", "red");
 
 		// Forcing Tavern.
 		set_property("auto_forceTavern", true);
-		if (L3_Tavern()) return true;
+		return false;
 	}
 
-	print("In the pyramid (W:" + item_amount($item[crumbling wooden wheel]) + ") (R:" + item_amount($item[tomb ratchet]) + ") (U:" + get_property("controlRoomUnlock") + ")", "blue");
+	auto_log_info("In the pyramid (W:" + item_amount($item[crumbling wooden wheel]) + ") (R:" + item_amount($item[tomb ratchet]) + ") (U:" + get_property("controlRoomUnlock") + ")", "blue");
 
 	if(!get_property("middleChamberUnlock").to_boolean())
 	{
@@ -7301,7 +7265,7 @@ boolean L11_unlockPyramid()
 
 	if((item_amount($item[[2325]Staff Of Ed]) > 0) || ((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2268]Staff Of Fats]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0)))
 	{
-		print("Reveal the pyramid", "blue");
+		auto_log_info("Reveal the pyramid", "blue");
 		if(item_amount($item[[2325]Staff Of Ed]) == 0)
 		{
 			if((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0))
@@ -7330,10 +7294,10 @@ boolean L11_unlockPyramid()
 
 		if(get_property("questL11Pyramid") == "unstarted")
 		{
-			print("No burning Ed's model now!", "blue");
+			auto_log_info("No burning Ed's model now!", "blue");
 			if((auto_my_path() == "One Crazy Random Summer") && (get_property("desertExploration").to_int() == 100))
 			{
-				print("We might have had an issue due to OCRS and the Desert, please finish the desert (and only the desert) manually and run again.", "red");
+				auto_log_warning("We might have had an issue due to OCRS and the Desert, please finish the desert (and only the desert) manually and run again.", "red");
 				string page = visit_url("place.php?whichplace=desertbeach");
 				matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
 				if(desert_matcher.find())
@@ -7351,13 +7315,13 @@ boolean L11_unlockPyramid()
 				}
 				else
 				{
-					print("Incorrectly had exploration value of 100 however, this was correctable. Trying to resume.", "blue");
+					auto_log_info("Incorrectly had exploration value of 100 however, this was correctable. Trying to resume.", "blue");
 					return false;
 				}
 			}
 			if(my_turncount() == get_property("auto_skipDesert").to_int())
 			{
-				print("Did not have an Arid Desert Item and the Pyramid is next. Must backtrack and recover", "red");
+				auto_log_warning("Did not have an Arid Desert Item and the Pyramid is next. Must backtrack and recover", "red");
 				if((my_adventures() >= 3) && (my_meat() >= 500))
 				{
 					doVacation();
@@ -7437,8 +7401,8 @@ boolean L11_defeatEd()
 		autoForceEquip($item[low-pressure oxygen tank]);
 	}
 
-	useCocoon();
-	print("Time to waste all of Ed's Ka Coins :(", "blue");
+	acquireHP();
+	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 
 	set_property("choiceAdventure976", "1");
 
@@ -7447,7 +7411,7 @@ boolean L11_defeatEd()
 	while(item_amount($item[[2334]Holy MacGuffin]) == 0)
 	{
 		x = x + 1;
-		print("Hello Ed #" + x + " give me McMuffin please.", "blue");
+		auto_log_info("Hello Ed #" + x + " give me McMuffin please.", "blue");
 		autoAdv(1, $location[The Lower Chambers]);
 		if(have_effect($effect[Beaten Up]) > 0 && item_amount($item[[2334]Holy MacGuffin]) == 0)
 		{
@@ -7517,7 +7481,7 @@ boolean L12_gremlinStart()
 	{
 		return false;
 	}
-	print("Gremlin prep", "blue");
+	auto_log_info("Gremlin prep", "blue");
 	if(get_property("auto_hippyInstead").to_boolean())
 	{
 		if(!possessEquipment($item[Reinforced Beaded Headband]))
@@ -7612,7 +7576,7 @@ boolean L12_gremlins()
 	}
 
 	#Put a different shield in here.
-	print("Doing them gremlins", "blue");
+	auto_log_info("Doing them gremlins", "blue");
 	if(useMaximizeToEquip())
 	{
 		addToMaximize("20dr,1da 1000max,3hp,-3ml");
@@ -7632,7 +7596,7 @@ boolean L12_gremlins()
 			equip($item[astral shield]);
 		}
 	}
-	useCocoon();
+	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
 		bat_formMist();
@@ -7641,25 +7605,25 @@ boolean L12_gremlins()
 	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
-		autoAdv(1, $location[Next to that barrel with something burning in it], "ccsJunkyard");
+		autoAdv(1, $location[Next to that barrel with something burning in it], "auto_JunkyardCombatHandler");
 		return true;
 	}
 
 	if(item_amount($item[molybdenum screwdriver]) == 0)
 	{
-		autoAdv(1, $location[Out by that rusted-out car], "ccsJunkyard");
+		autoAdv(1, $location[Out by that rusted-out car], "auto_JunkyardCombatHandler");
 		return true;
 	}
 
 	if(item_amount($item[molybdenum crescent wrench]) == 0)
 	{
-		autoAdv(1, $location[over where the old tires are], "ccsJunkyard");
+		autoAdv(1, $location[over where the old tires are], "auto_JunkyardCombatHandler");
 		return true;
 	}
 
 	if(item_amount($item[Molybdenum Pliers]) == 0)
 	{
-		autoAdv(1, $location[near an abandoned refrigerator], "ccsJunkyard");
+		autoAdv(1, $location[near an abandoned refrigerator], "auto_JunkyardCombatHandler");
 		return true;
 	}
 	handleFamiliar("item");
@@ -7731,7 +7695,7 @@ boolean L12_sonofaBeach()
 		}
 	}
 
-	if (isActuallyEd() && item_amount($item[Talisman of Horus]) == 0)
+	if (isActuallyEd() && item_amount($item[Talisman of Horus]) == 0 && have_effect($effect[Taunt of Horus]) == 0)
 	{
 		return false;
 	}
@@ -7750,7 +7714,7 @@ boolean L12_sonofaBeach()
 	{
 		if(!providePlusCombat(25, true))
 		{
-			print("Failure in +Combat acquisition or -Combat shrugging (lobsterfrogman), delaying", "red");
+			auto_log_warning("Failure in +Combat acquisition or -Combat shrugging (lobsterfrogman), delaying", "red");
 			equipBaseline();
 			return false;
 		}
@@ -7781,7 +7745,7 @@ boolean L12_sonofaBeach()
 
 		if(numeric_modifier("Combat Rate") < 0.0)
 		{
-			print("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
+			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
 			equipBaseline();
 			return false;
 		}
@@ -7884,7 +7848,7 @@ boolean L12_sonofaPrefix()
 		return false;
 	}
 
-	if (isActuallyEd() && item_amount($item[Talisman of Horus]) == 0)
+	if (isActuallyEd() && item_amount($item[Talisman of Horus]) == 0 && have_effect($effect[Taunt of Horus]) == 0)
 	{
 		return false;
 	}
@@ -7908,7 +7872,7 @@ boolean L12_sonofaPrefix()
 	{
 		if(!providePlusCombat(25))
 		{
-			print("Failure in +Combat acquisition or -Combat shrugging (lobsterfrogman), delaying", "red");
+			auto_log_warning("Failure in +Combat acquisition or -Combat shrugging (lobsterfrogman), delaying", "red");
 			return false;
 		}
 
@@ -7936,7 +7900,7 @@ boolean L12_sonofaPrefix()
 		}
 		if(numeric_modifier("Combat Rate") < 0.0)
 		{
-			print("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
+			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
 			equipBaseline();
 			return false;
 		}
@@ -8006,7 +7970,7 @@ boolean L12_filthworms()
 	{
 		return false;
 	}
-	print("Doing the orchard.", "blue");
+	auto_log_info("Doing the orchard.", "blue");
 
 	if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
 	{
@@ -8144,7 +8108,7 @@ boolean L12_finalizeWar()
 
 	if(have_outfit("War Hippy Fatigues"))
 	{
-		print("Getting dimes.", "blue");
+		auto_log_info("Getting dimes.", "blue");
 		foreach it in $items[padl phone, red class ring, blue class ring, white class ring]
 		{
 			sell(it.buyer, item_amount(it), it);
@@ -8163,7 +8127,7 @@ boolean L12_finalizeWar()
 	}
 	if(have_outfit("Frat Warrior Fatigues"))
 	{
-		print("Getting quarters.", "blue");
+		auto_log_info("Getting quarters.", "blue");
 		foreach it in $items[pink clay bead, purple clay bead, green clay bead, communications windchimes]
 		{
 			sell(it.buyer, item_amount(it), it);
@@ -8251,6 +8215,8 @@ boolean L12_finalizeWar()
 
 	if(my_mp() < 40)
 	{
+		// fyi https://kol.coldfront.net/thekolwiki/index.php/Chateau_Mantegna states you wont get pantsgiving benefits resting there (presumably campsite as well)
+		// so not sure this is doing much
 		if(possessEquipment($item[Pantsgiving]))
 		{
 			equip($item[pantsgiving]);
@@ -8258,14 +8224,8 @@ boolean L12_finalizeWar()
 		doRest();
 	}
 	warOutfit(false);
-#	cli_execute("refresh equip");
-	if(my_hp() < my_maxhp())
-	{
-		print("My hp is: " + my_hp());
-		print("My max hp is: " + my_maxhp());
-		useCocoon();
-	}
-	print("Let's fight the boss!", "blue");
+	acquireHP();
+	auto_log_info("Let's fight the boss!", "blue");
 
 	location bossFight = $location[The Battlefield (Frat Uniform)];
 
@@ -8292,7 +8252,7 @@ boolean L12_finalizeWar()
 	}
 	if(!autoAdvBypass(0, pages, bossFight, ""))
 	{
-		print("Boss already defeated, ignoring", "red");
+		auto_log_warning("Boss already defeated, ignoring", "red");
 	}
 
 	if(auto_my_path() == "Pocket Familiars")
@@ -8436,18 +8396,14 @@ boolean LX_getDigitalKey()
 			set_property("auto_crackpotjar", "done");
 		}
 	}
-	print("Getting white pixels: Have " + item_amount($item[white pixel]), "blue");
-	#if(item_amount($item[white pixel]) >= 27)
-	#{
-	#	abort("Can we pull any pixels?");
-	#}
+	auto_log_info("Getting white pixels: Have " + item_amount($item[white pixel]), "blue");
 	if(get_property("auto_crackpotjar") == "done")
 	{
 		set_property("choiceAdventure644", 3);
 		autoAdv(1, $location[Fear Man\'s Level]);
 		if(have_effect($effect[Consumed By Fear]) == 0)
 		{
-			print("Well, we don't seem to have further access to the Fear Man area so... abort that plan", "red");
+			auto_log_warning("Well, we don't seem to have further access to the Fear Man area so... abort that plan", "red");
 			set_property("auto_crackpotjar", "fail");
 		}
 	}
@@ -8476,13 +8432,13 @@ boolean L11_getBeehive()
 	}
 	if((internalQuestStatus("questL13Final") >= 7) || (item_amount($item[Beehive]) > 0))
 	{
-		print("Nevermind, wall of skin already defeated (or we already have a beehiven). We do not need a beehive. Bloop.", "blue");
+		auto_log_info("Nevermind, wall of skin already defeated (or we already have a beehiven). We do not need a beehive. Bloop.", "blue");
 		set_property("auto_getBeehive", false);
 		return false;
 	}
 
 
-	print("Must find a beehive!", "blue");
+	auto_log_info("Must find a beehive!", "blue");
 
 	set_property("choiceAdventure923", "1");
 	set_property("choiceAdventure924", "3");
@@ -8564,11 +8520,11 @@ boolean L10_plantThatBean()
 	}
 
 	council();
-	print("Planting me magic bean!", "blue");
+	auto_log_info("Planting me magic bean!", "blue");
 	string page = visit_url("place.php?whichplace=plains");
 	if(contains_text(page, "place.php?whichplace=beanstalk"))
 	{
-		print("I have no bean but I see a stalk here. Okies. I'm ok with that", "blue");
+		auto_log_warning("I have no bean but I see a stalk here. Okies. I'm ok with that", "blue");
 		set_property("auto_bean", true);
 		visit_url("place.php?whichplace=beanstalk");
 		return true;
@@ -8587,7 +8543,7 @@ boolean L10_plantThatBean()
 
 	if(internalQuestStatus("questL04Bat") >= 0)
 	{
-		print("I don't have a magic bean! Travesty!!", "blue");
+		auto_log_info("I don't have a magic bean! Travesty!!", "blue");
 		return autoAdv($location[The Beanbat Chamber]);
 	}
 	return false;
@@ -8620,7 +8576,7 @@ boolean L10_holeInTheSkyUnlock()
 		return false;
 	}
 
-	print("Castle Top Floor - Opening the Hole in the Sky", "blue");
+	auto_log_info("Castle Top Floor - Opening the Hole in the Sky", "blue");
 	set_property("choiceAdventure677", 2);
 	set_property("choiceAdventure675", 4);
 	set_property("choiceAdventure678", 3);
@@ -8634,7 +8590,10 @@ boolean L10_holeInTheSkyUnlock()
 	{
 		handleFamiliar($familiar[Puck Man]);
 	}
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
 
@@ -8658,11 +8617,11 @@ boolean L10_topFloor()
 		return false;
 	}
 
-	print("Castle Top Floor", "blue");
+	auto_log_info("Castle Top Floor", "blue");
 	set_property("choiceAdventure680", 1); // Mercy adventure: Are you a Man or a Mouse?
 	if(item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
 	{
-		print("We have a drum 'n' bass record and are willing to use it!", "green");
+		auto_log_info("We have a drum 'n' bass record and are willing to use it!", "green");
 		// Copper Feel: Move to Mellon Collie
 		set_property("choiceAdventure677", 4);
 		// Mellon Collie: Turn in record, complete quest
@@ -8682,7 +8641,7 @@ boolean L10_topFloor()
 
 	if(!possessEquipment($item[mohawk wig]) && 0 == item_amount($item[drum 'n' bass 'n' drum 'n' bass record]))
 	{
-		print("We don't have a mohawk wig, let's try to get a drum 'n' bass record...", "green");
+		auto_log_info("We don't have a mohawk wig, let's try to get a drum 'n' bass record...", "green");
 		// Yeah, You're for Me, Punk Rock Giant: Move to Flavor of a Raver (676)
 		set_property("choiceAdventure678", 4);
 		// Floor of a Raver: Acquire drum 'n' bass 'n' drum 'n' bass record
@@ -8706,7 +8665,10 @@ boolean L10_topFloor()
 	}
 
 	handleFamiliar("initSuggest");
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	autoEquip($item[mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
@@ -8750,7 +8712,7 @@ boolean L10_ground()
 		return false;
 	}
 
-	print("Castle Ground Floor, boring!", "blue");
+	auto_log_info("Castle Ground Floor, boring!", "blue");
 	set_property("choiceAdventure672", 3);
 	set_property("choiceAdventure673", 3);
 	set_property("choiceAdventure674", 3);
@@ -8814,7 +8776,7 @@ boolean L10_basement()
 	{
 		return false;
 	}
-	print("Basement Search", "blue");
+	auto_log_info("Basement Search", "blue");
 	set_property("choiceAdventure670", "5");
 	if(item_amount($item[Massive Dumbbell]) > 0)
 	{
@@ -8850,7 +8812,10 @@ boolean L10_basement()
 	{
 		handleFamiliar($familiar[Puck Man]);
 	}
-	providePlusNonCombat(25);
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Bendable Knees]) && (item_amount($item[Bottle of Gregnadigne]) == 0))
@@ -8864,12 +8829,12 @@ boolean L10_basement()
 
 	if(contains_text(get_property("lastEncounter"), "Out in the Open Source") && (get_property("choiceAdventure671").to_int() == 1))
 	{
-		print("Dumbbell + Dumbwaiter means we fly!", "green");
+		auto_log_info("Dumbbell + Dumbwaiter means we fly!", "green");
 		set_property("auto_castlebasement", "finished");
 	}
 	else if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 	{
-		print("We was fast and furry-ous!", "blue");
+		auto_log_info("We was fast and furry-ous!", "blue");
 		autoEquip($item[Titanium Assault Umbrella]);
 		set_property("choiceAdventure669", "1");
 		autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
@@ -8879,16 +8844,16 @@ boolean L10_basement()
 		}
 		else
 		{
-			print("Got interrupted trying to unlock the Ground Floor of the Castle", "red");
+			auto_log_warning("Got interrupted trying to unlock the Ground Floor of the Castle", "red");
 		}
 	}
 	else if(contains_text(get_property("lastEncounter"), "You Don\'t Mess Around with Gym"))
 	{
-		print("Just messed with Gym", "blue");
+		auto_log_info("Just messed with Gym", "blue");
 		if(!can_equip($item[Amulet of Extreme Plot Significance]) || (item_amount($item[Massive Dumbbell]) > 0))
 		{
-			print("Can't equip an Amulet of Extreme Plot Signifcance...", "red");
-			print("I suppose we will try the Massive Dumbbell... Beefcake!", "red");
+			auto_log_warning("Can't equip an Amulet of Extreme Plot Signifcance...", "red");
+			auto_log_warning("I suppose we will try the Massive Dumbbell... Beefcake!", "red");
 			if(item_amount($item[Massive Dumbbell]) == 0)
 			{
 				set_property("choiceAdventure670", "1");
@@ -8909,8 +8874,8 @@ boolean L10_basement()
 			{
 				if($location[The Penultimate Fantasy Airship].turns_spent >= 45 || in_koe())
 				{
-					print("Well, we don't seem to be able to find an Amulet...", "red");
-					print("I suppose we will get the Massive Dumbbell... Beefcake!", "red");
+					auto_log_warning("Well, we don't seem to be able to find an Amulet...", "red");
+					auto_log_warning("I suppose we will get the Massive Dumbbell... Beefcake!", "red");
 					if(item_amount($item[Massive Dumbbell]) == 0)
 					{
 						set_property("choiceAdventure670", "1");
@@ -8923,7 +8888,7 @@ boolean L10_basement()
 				}
 				else
 				{
-					print("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
+					auto_log_warning("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
 					autoAdv(1, $location[The Penultimate Fantasy Airship]);
 				}
 				return true;
@@ -8942,7 +8907,7 @@ boolean L10_basement()
 		}
 		else
 		{
-			print("Got interrupted trying to unlock the Ground Floor of the Castle", "red");
+			auto_log_warning("Got interrupted trying to unlock the Ground Floor of the Castle", "red");
 		}
 	}
 	return true;
@@ -8964,7 +8929,7 @@ boolean L10_airship()
 	}
 
 	visit_url("clan_viplounge.php?preaction=goswimming&subaction=submarine");
-	print("Fantasy Airship Fly Fly time", "blue");
+	auto_log_info("Fantasy Airship Fly Fly time", "blue");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
@@ -8982,7 +8947,7 @@ boolean L10_airship()
 
 	if((my_daycount() == 1) && (get_property("_hipsterAdv").to_int() < 7) && is_unrestricted($familiar[Artistic Goth Kid]) && auto_have_familiar($familiar[Artistic Goth Kid]))
 	{
-		print("Hipster Adv: " + get_property("_hipsterAdv"), "blue");
+		auto_log_info("Hipster Adv: " + get_property("_hipsterAdv"), "blue");
 		handleFamiliar($familiar[Artistic Goth Kid]);
 	}
 
@@ -9258,7 +9223,7 @@ boolean L0_handleRainDoh()
 	}
 
 	monster enemy = to_monster(get_property("rainDohMonster"));
-	print("Black boxing: " + enemy, "blue");
+	auto_log_info("Black boxing: " + enemy, "blue");
 
 	if(enemy == $monster[Ninja Snowman Assassin])
 	{
@@ -9365,13 +9330,13 @@ boolean LX_ornateDowsingRod()
 	}
 	if(possessEquipment($item[UV-resistant compass]))
 	{
-		print("You have a UV-resistant compass for some raisin, I assume you don't want an Ornate Dowsing Rod.", "red");
+		auto_log_warning("You have a UV-resistant compass for some raisin, I assume you don't want an Ornate Dowsing Rod.", "red");
 		set_property("auto_grimstoneOrnateDowsingRod", false);
 		return false;
 	}
 	if(possessEquipment($item[Ornate Dowsing Rod]))
 	{
-		print("Hey, we have the dowsing rod already, yippie!", "blue");
+		auto_log_info("Hey, we have the dowsing rod already, yippie!", "blue");
 		set_property("auto_grimstoneOrnateDowsingRod", false);
 		return false;
 	}
@@ -9393,7 +9358,7 @@ boolean LX_ornateDowsingRod()
 	}
 
 	#Need to make sure we get our grimstone mask
-	print("Acquiring a Dowsing Rod!", "blue");
+	auto_log_info("Acquiring a Dowsing Rod!", "blue");
 	set_property("choiceAdventure829", "1");
 	use(1, $item[grimstone mask]);
 
@@ -9496,6 +9461,31 @@ boolean L7_crypt()
 		buffMaintain($effect[Soulerskates], 0, 1, 1);
 		buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
 
+		if (isActuallyEd() && monster_attack($monster[modern zmobie]) >= my_maxhp())
+		{
+			// Need to be able to tank a hit from the modern zmobies as Ed
+			// as we'll never get the jump because their initiative is ridiculous.
+			// Otherwise we'll just die repeatedly.
+			if (get_property("telescopeUpgrades").to_int() > 0 && !get_property("telescopeLookedHigh").to_boolean())
+			{
+				cli_execute("telescope high");
+			}
+			if (!get_property("_lyleFavored").to_boolean())
+			{
+				cli_execute("monorail");
+			}
+			if (have_effect($effect[Butt-Rock Hair]) == 0)
+			{
+				buyUpTo(1, $item[Hair Spray]);
+				buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
+			}
+			if (have_effect($effect[Go Get \'Em, Tiger!]) == 0)
+			{
+				buyUpTo(1, $item[Ben-Gal&trade; Balm]);
+				buffMaintain($effect[Go Get \'Em, Tiger!], 0, 1, 1);
+			}
+		}
+
 		auto_beachCombHead("init");
 
 		if(have_effect($effect[init.enh]) == 0)
@@ -9527,7 +9517,7 @@ boolean L7_crypt()
 			useNightmareFuelIfPossible();
 		}
 
-		print("The Alcove! (" + initiative_modifier() + ")", "blue");
+		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
 		autoAdv(1, $location[The Defiled Alcove]);
 		handleFamiliar("item");
 		return true;
@@ -9545,7 +9535,7 @@ boolean L7_crypt()
 
 	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]) && !skip_in_koe)
 	{
-		print("The Nook!", "blue");
+		auto_log_info("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
 		handleFamiliar("item");
 		autoEquip($item[Gravy Boat]);
@@ -9572,7 +9562,7 @@ boolean L7_crypt()
 	}
 	else if(skip_in_koe)
 	{
-		auto_debug_print("In Exploathing, skipping Defiled Nook until we get more evil eyes.");
+		auto_log_debug("In Exploathing, skipping Defiled Nook until we get more evil eyes.");
 	}
 
 	if((get_property("cyrptNicheEvilness").to_int() > 0) && canGroundhog($location[The Defiled Niche]))
@@ -9593,7 +9583,7 @@ boolean L7_crypt()
 			useNightmareFuelIfPossible();
 		}
 
-		print("The Niche!", "blue");
+		auto_log_info("The Niche!", "blue");
 		autoAdv(1, $location[The Defiled Niche]);
 
 		handleFamiliar("item");
@@ -9602,7 +9592,7 @@ boolean L7_crypt()
 
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
-		print("The Cranny!", "blue");
+		auto_log_info("The Cranny!", "blue");
 		set_property("choiceAdventure523", "4");
 
 		if(my_mp() > 60)
@@ -9629,7 +9619,7 @@ boolean L7_crypt()
 		{
 			int desired_pills = in_hardcore() ? 6 : 4;
 			desired_pills -= my_fullness()/2;
-			print("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
+			auto_log_info("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
 			if(item_amount($item[dieting pill]) < desired_pills)
 			{
 				if(!bat_wantHowl($location[The Defiled Cranny]))
@@ -9656,11 +9646,15 @@ boolean L7_crypt()
 			buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
 		}
 
-		useCocoon();
+		acquireHP();
 		set_property("choiceAdventure527", 1);
 		if(auto_have_familiar($familiar[Machine Elf]))
 		{
 			handleFamiliar($familiar[Machine Elf]);
+		}
+		if (isActuallyEd())
+		{
+			auto_change_mcd(10); // get vertebra to make the necklace.
 		}
 		boolean tryBoner = autoAdv(1, $location[Haert of the Cyrpt]);
 		council();
@@ -9673,12 +9667,12 @@ boolean L7_crypt()
 		}
 		else if(get_property("questL07Cyrptic") == "finished")
 		{
-			print("Looks like we don't have the chest of the bonerdagon but KoLmafia marked Cyrpt quest as finished anyway. Probably some weird path shenanigans.", "red");
+			auto_log_warning("Looks like we don't have the chest of the bonerdagon but KoLmafia marked Cyrpt quest as finished anyway. Probably some weird path shenanigans.", "red");
 			set_property("auto_crypt", "finished");
 		}
 		else if(!tryBoner)
 		{
-			print("We tried to kill the Bonerdagon because the cyrpt was defiled but couldn't adventure there and the chest of the bonerdagon is gone so we can't check that. Anyway, we are going to assume the cyrpt is done now.", "red");
+			auto_log_warning("We tried to kill the Bonerdagon because the cyrpt was defiled but couldn't adventure there and the chest of the bonerdagon is gone so we can't check that. Anyway, we are going to assume the cyrpt is done now.", "red");
 			set_property("auto_crypt", "finished");
 		}
 		else
@@ -9797,24 +9791,24 @@ boolean L6_friarsGetParts()
 
 	if(item_amount($item[box of birthday candles]) == 0)
 	{
-		print("Getting Box of Birthday Candles", "blue");
+		auto_log_info("Getting Box of Birthday Candles", "blue");
 		autoAdv(1, $location[The Dark Heart of the Woods]);
 		return true;
 	}
 
 	if(item_amount($item[dodecagram]) == 0)
 	{
-		print("Getting Dodecagram", "blue");
+		auto_log_info("Getting Dodecagram", "blue");
 		autoAdv(1, $location[The Dark Neck of the Woods]);
 		return true;
 	}
 	if(item_amount($item[eldritch butterknife]) == 0)
 	{
-		print("Getting Eldritch Butterknife", "blue");
+		auto_log_info("Getting Eldritch Butterknife", "blue");
 		autoAdv(1, $location[The Dark Elbow of the Woods]);
 		return true;
 	}
-	print("Finishing friars", "blue");
+	auto_log_info("Finishing friars", "blue");
 	visit_url("friars.php?action=ritual&pwd");
 	council();
 	set_property("auto_friars", "finished"); # used to be done, but no longer need hot wings
@@ -9837,13 +9831,13 @@ boolean LX_steelOrgan()
 	}
 	if($classes[Ed, Gelatinous Noob, Vampyre] contains my_class())
 	{
-		print(my_class() + " can not use a Steel Organ, turning off setting.", "blue");
+		auto_log_info(my_class() + " can not use a Steel Organ, turning off setting.", "blue");
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
 	if((auto_my_path() == "Nuclear Autumn") || (auto_my_path() == "License to Adventure"))
 	{
-		print("You could get a Steel Organ for aftercore, but why? We won't help with this deviant and perverse behavior. Turning off setting.", "blue");
+		auto_log_info("You could get a Steel Organ for aftercore, but why? We won't help with this deviant and perverse behavior. Turning off setting.", "blue");
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
@@ -9858,13 +9852,13 @@ boolean LX_steelOrgan()
 
 	if(have_skill($skill[Liver of Steel]) || have_skill($skill[Stomach of Steel]) || have_skill($skill[Spleen of Steel]))
 	{
-		print("We have a steel organ, turning off the setting." ,"blue");
+		auto_log_info("We have a steel organ, turning off the setting." ,"blue");
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
 	if(get_property("questM10Azazel") != "finished")
 	{
-		print("I am hungry for some steel.", "blue");
+		auto_log_info("I am hungry for some steel.", "blue");
 	}
 
 	if(have_effect($effect[items.enh]) == 0)
@@ -10016,14 +10010,14 @@ boolean LX_steelOrgan()
 		}
 		else
 		{
-			print("Stuck in the Steel Organ quest and can't continue, moving on.", "red");
+			auto_log_warning("Stuck in the Steel Organ quest and can't continue, moving on.", "red");
 			set_property("auto_getSteelOrgan", false);
 		}
 		return true;
 	}
 	else if(get_property("questM10Azazel") == "finished")
 	{
-		print("Considering Steel Organ consumption.....", "blue");
+		auto_log_info("Considering Steel Organ consumption.....", "blue");
 		if((item_amount($item[Steel Lasagna]) > 0) && (fullness_left() >= $item[Steel Lasagna].fullness))
 		{
 			eatsilent(1, $item[Steel Lasagna]);
@@ -10065,7 +10059,7 @@ boolean LX_fancyOilPainting()
 	{
 		return false;
 	}
-	print("Acquiring a Fancy Oil Painting!", "blue");
+	auto_log_info("Acquiring a Fancy Oil Painting!", "blue");
 	set_property("choiceAdventure829", "1");
 	use(1, $item[grimstone mask]);
 	set_property("choiceAdventure823", "1");
@@ -10112,7 +10106,7 @@ boolean L9_leafletQuest()
 	{
 		return false;
 	}
-	print("Got a leaflet to do", "blue");
+	auto_log_info("Got a leaflet to do", "blue");
 	council();
 	cli_execute("leaflet");
 	use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
@@ -10126,12 +10120,11 @@ boolean L8_trapperGround()
 		return false;
 	}
 
-	#print("Starting Trapper Collection", "blue");
 	item oreGoal = to_item(get_property("trapperOre"));
 
 	if((item_amount(oreGoal) >= 3) && (item_amount($item[Goat Cheese]) >= 3))
 	{
-		print("Giving Trapper goat cheese and " + oreGoal, "blue");
+		auto_log_info("Giving Trapper goat cheese and " + oreGoal, "blue");
 		set_property("auto_trapper", "yeti");
 		visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
 		return true;
@@ -10139,7 +10132,7 @@ boolean L8_trapperGround()
 
 	if(item_amount($item[Goat Cheese]) < 3)
 	{
-		print("Yay for goat cheese!", "blue");
+		auto_log_info("Yay for goat cheese!", "blue");
 		handleFamiliar("item");
 		if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
 		{
@@ -10154,12 +10147,12 @@ boolean L8_trapperGround()
 	{
 		if(item_amount($item[Goat Cheese]) >= 3)
 		{
-			print("Giving Trapper goat cheese and " + oreGoal, "blue");
+			auto_log_info("Giving Trapper goat cheese and " + oreGoal, "blue");
 			set_property("auto_trapper", "yeti");
 			visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
 			return true;
 		}
-		print("Yay for goat cheese!", "blue");
+		auto_log_info("Yay for goat cheese!", "blue");
 		handleFamiliar("item");
 		if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
 		{
@@ -10171,14 +10164,14 @@ boolean L8_trapperGround()
 	}
 	else if((my_rain() > 50) && (have_effect($effect[Ultrahydrated]) == 0) && (auto_my_path() == "Heavy Rains") && have_skill($skill[Rain Man]))
 	{
-		print("Trying to summon a mountain man", "blue");
+		auto_log_info("Trying to summon a mountain man", "blue");
 		set_property("auto_mountainmen", "1");
 		return rainManSummon("mountain man", false, false);
 	}
 	else if(auto_my_path() == "Heavy Rains")
 	{
 		#Do pulls instead if we don't possess rain man?
-		print("Need Ore but not enough rain", "blue");
+		auto_log_info("Need Ore but not enough rain", "blue");
 		return false;
 	}
 	else if(!in_hardcore())
@@ -10190,7 +10183,7 @@ boolean L8_trapperGround()
 	}
 	else if (canGenieCombat() && (get_property("auto_useWishes").to_boolean()) && (catBurglarHeistsLeft() >= 2))
 	{
-		print("Trying to wish for a mountain man, which the cat will then burgle, hopefully.");
+		auto_log_info("Trying to wish for a mountain man, which the cat will then burgle, hopefully.");
 		handleFamiliar("item");
 		handleFamiliar($familiar[cat burglar]);
 		return makeGenieCombat($monster[mountain man]);
@@ -10245,7 +10238,7 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	print("Let's unlock the guild.", "green");
+	auto_log_info("Let's unlock the guild.", "green");
 
 	string pref;
 	location loc = $location[None];
@@ -10295,7 +10288,7 @@ boolean LX_guildUnlock()
 		}
 		if(internalQuestStatus(pref) < 0)
 		{
-			print("Visiting the guild failed to set guild quest.", "red");
+			auto_log_warning("Visiting the guild failed to set guild quest.", "red");
 			return false;
 		}
 
@@ -10316,7 +10309,7 @@ boolean L8_trapperStart()
 		return false;
 	}
 	council();
-	print("Let's meet the trapper.", "blue");
+	auto_log_info("Let's meet the trapper.", "blue");
 
 	visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
 	set_property("auto_trapper", "start");
@@ -10343,7 +10336,7 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
-	if (my_level() < 8 && get_property("auto_powerLevelAdvCount").to_int() < 9 && !isActuallyEd())
+	if (my_level() < 8 && get_property("auto_powerLevelAdvCount").to_int() < 9)
 	{
 		return false;
 	}
@@ -10360,7 +10353,7 @@ boolean L5_goblinKing()
 		return false;
 	}
 
-	print("Death to the gobbo!!", "blue");
+	auto_log_info("Death to the gobbo!!", "blue");
 	if(!autoOutfit("knob goblin harem girl disguise"))
 	{
 		abort("Could not put on Knob Goblin Harem Girl Disguise, aborting");
@@ -10417,7 +10410,7 @@ boolean L4_batCave()
 		return false;
 	}
 
-	print("In the bat hole!", "blue");
+	auto_log_info("In the bat hole!", "blue");
 	if(considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
@@ -10428,6 +10421,7 @@ boolean L4_batCave()
 	if((item_amount($item[Sonar-In-A-Biscuit]) > 0) && (batStatus < 3))
 	{
 		use(1, $item[Sonar-In-A-Biscuit]);
+		visit_url("place.php?whichplace=bathole"); // ensure quest status is updated.
 		return true;
 	}
 
@@ -10448,6 +10442,10 @@ boolean L4_batCave()
 		bat_formWolf();
 		addToMaximize("10meat");
 		int batskinBelt = item_amount($item[Batskin Belt]);
+		if (isActuallyEd())
+		{
+			auto_change_mcd(4); // get the pants from the Boss Bat.
+		}
 		autoAdv(1, $location[The Boss Bat\'s Lair]);
 		# DIGIMON remove once mafia tracks this
 		if(item_amount($item[Batskin Belt]) != batskinBelt)
@@ -10499,7 +10497,7 @@ boolean L4_batCave()
 					autoAdv(1, $location[The Bat Hole Entrance]);
 					return true;
 				}
-				print("I can nae handle the stench of the Guano Junction!", "green");
+				auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
 				return false;
 			}
 		}
@@ -10512,7 +10510,7 @@ boolean L4_batCave()
 			}
 			else
 			{
-				print("I can nae handle the stench of the Guano Junction!", "green");
+				auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
 				return false;
 			}
 		}
@@ -10550,7 +10548,7 @@ boolean LX_craftAcquireItems()
 	if((get_property("lastGoofballBuy").to_int() != my_ascensions()) && (internalQuestStatus("questL03Rat") >= 0))
 	{
 		visit_url("place.php?whichplace=woods");
-		print("Gotginb Goofballs", "blue");
+		auto_log_info("Gotginb Goofballs", "blue");
 		visit_url("tavern.php?place=susguy&action=buygoofballs", true);
 		put_closet(item_amount($item[Bottle of Goofballs]), $item[Bottle of Goofballs]);
 	}
@@ -10580,33 +10578,37 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if((item_amount($item[snow berries]) == 3) && (my_daycount() == 1) && get_property("auto_grimstoneFancyOilPainting").to_boolean())
+	// Snow Berries can be acquired out of standard by using Van Keys from NEP. We need to check to make sure they are usable.
+	if(auto_is_valid($item[snow berries]))
 	{
-		cli_execute("make 1 snow cleats");
-	}
-
-	if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= 30) && (my_level() >= 9))
-	{
-		visit_url("place.php?whichplace=orc_chasm");
-		if(get_property("chasmBridgeProgress").to_int() >= 30)
+		if((item_amount($item[snow berries]) == 3) && (my_daycount() == 1) && get_property("auto_grimstoneFancyOilPainting").to_boolean())
 		{
-			#if(in_hardcore() && isGuildClass())
-			if(isGuildClass())
-			{
-				if((item_amount($item[Snow Berries]) >= 3) && (item_amount($item[Ice Harvest]) >= 3) && (item_amount($item[Unfinished Ice Sculpture]) == 0))
-				{
-					cli_execute("make 1 Unfinished Ice Sculpture");
-				}
-				if((item_amount($item[Snow Berries]) >= 2) && (item_amount($item[Snow Crab]) == 0))
-				{
-					cli_execute("make 1 Snow Crab");
-				}
-			}
-			#cli_execute("make " + item_amount($item[snow berries]) + " snow cleats");
+			cli_execute("make 1 snow cleats");
 		}
-		else
+
+		if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= 30) && (my_level() >= 9))
 		{
-			abort("Bridge progress came up as >= 30 but is no longer after viewing the page.");
+			visit_url("place.php?whichplace=orc_chasm");
+			if(get_property("chasmBridgeProgress").to_int() >= 30)
+			{
+				#if(in_hardcore() && isGuildClass())
+				if(isGuildClass())
+				{
+					if((item_amount($item[Snow Berries]) >= 3) && (item_amount($item[Ice Harvest]) >= 3) && (item_amount($item[Unfinished Ice Sculpture]) == 0))
+					{
+						cli_execute("make 1 Unfinished Ice Sculpture");
+					}
+					if((item_amount($item[Snow Berries]) >= 2) && (item_amount($item[Snow Crab]) == 0))
+					{
+						cli_execute("make 1 Snow Crab");
+					}
+				}
+				#cli_execute("make " + item_amount($item[snow berries]) + " snow cleats");
+			}
+			else
+			{
+				abort("Bridge progress came up as >= 30 but is no longer after viewing the page.");
+			}
 		}
 	}
 
@@ -10735,7 +10737,7 @@ boolean LX_craftAcquireItems()
 		use(1, $item[Letter For Melvign The Gnome]);
 		if(get_property("questM22Shirt") == "unstarted")
 		{
-			print("Mafia did not register using the Melvign letter...", "red");
+			auto_log_warning("Mafia did not register using the Melvign letter...", "red");
 			cli_execute("refresh inv");
 			set_property("questM22Shirt", "started");
 		}
@@ -10848,11 +10850,11 @@ boolean adventureFailureHandler()
 			if(get_property("auto_newbieOverride").to_boolean())
 			{
 				set_property("auto_newbieOverride", false);
-				print("We have spent " + my_location().turns_spent + " turns at '" + my_location() + "' and that is bad... override accepted.", "red");
+				auto_log_warning("We have spent " + my_location().turns_spent + " turns at '" + my_location() + "' and that is bad... override accepted.", "red");
 			}
 			else
 			{
-				print("You can set auto_newbieOverride = true to bypass this once.", "blue");
+				auto_log_critical("You can set auto_newbieOverride = true to bypass this once.", "blue");
 				abort("We have spent " + my_location().turns_spent + " turns at '" + my_location() + "' and that is bad... aborting.");
 			}
 		}
@@ -10876,81 +10878,19 @@ boolean adventureFailureHandler()
 	return false;
 }
 
-boolean beatenUpResolution()
-{
-	if((have_effect($effect[Beaten Up]) > 0) && (auto_my_path() == "Community Service") && (last_monster() != $monster[X-32-F Combat Training Snowman]))
-	{
-		if((my_mp() > 100) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
+boolean beatenUpResolution(){
+
+	if(have_effect($effect[Beaten Up]) > 0){
+		if(get_property("auto_beatenUpCount").to_int() > 10){
+			abort("We are getting beaten up too much, this is not good. Aborting.");
 		}
-		else
-		{
-			doHottub();
-		}
-	}
-	if((have_effect($effect[Beaten Up]) > 0) && (auto_my_path() == "The Source") && (last_monster() == $monster[Source Agent]))
-	{
-		if((my_mp() > 100) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
-		}
-		else
-		{
-			doHottub();
-		}
-	}
-	if((have_effect($effect[Beaten Up]) > 0) && (last_monster() == $monster[Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl]))
-	{
-		if((my_mp() > 40) && have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]))
-		{
-			use_skill($skill[Tongue of the Walrus]);
-			useCocoon();
-		}
-		else
-		{
-			doHottub();
-		}
+		acquireHP();
 	}
 
-	if(have_effect($effect[Beaten Up]) > 0)
-	{
-		if(have_effect($effect[Temporary Amnesia]) > 0)
-		{
-			doHottub();
-		}
-		else if((my_mp() > 20) && ((my_hp() * 1.2) >= my_maxhp()) && have_skill($skill[Tongue of the Walrus]))
-		{
-			if(get_property("auto_beatenUpCount").to_int() > 10)
-			{
-				abort("We are getting beaten up too much, this is not good. Aborting.");
-			}
-			use_skill(1, $skill[Tongue of the Walrus]);
-		}
-		if(have_effect($effect[Beaten Up]) > 0)
-		{
-			if(get_property("auto_beatenUpCount").to_int() < 10)
-			{
-				doRest();
-				if(have_effect($effect[Beaten Up]) > 0)
-				{
-					print("Resting did not remove Beaten Up!", "red");
-					cli_execute("refresh all");
-					if(have_effect($effect[Beaten Up]) > 0)
-					{
-						abort("Still beaten up... the sadness.");
-					}
-				}
-			}
-			else
-			{
-				abort("Got beaten up, please fix me");
-			}
-		}
+	if(have_effect($effect[Beaten Up]) > 0){
+		cli_execute("refresh all");
 	}
-	return false;
+	return have_effect($effect[Beaten Up]) > 0;
 }
 
 boolean LX_meatMaid()
@@ -10966,7 +10906,7 @@ boolean LX_meatMaid()
 
 	if((item_amount($item[Smart Skull]) > 0) && (item_amount($item[Disembodied Brain]) > 0))
 	{
-		print("Got a brain, trying to make and use a meat maid now.", "blue");
+		auto_log_info("Got a brain, trying to make and use a meat maid now.", "blue");
 		cli_execute("make meat maid");
 		use(1, $item[meat maid]);
 		return true;
@@ -10980,7 +10920,7 @@ boolean LX_meatMaid()
 	{
 		return false;
 	}
-	print("Well, we could make a Meat Maid and that seems raisinable.", "blue");
+	auto_log_info("Well, we could make a Meat Maid and that seems raisinable.", "blue");
 
 	if((item_amount($item[Brainy Skull]) == 0) && (item_amount($item[Disembodied Brain]) == 0))
 	{
@@ -10989,7 +10929,7 @@ boolean LX_meatMaid()
 		cloverUsageFinish();
 		if(get_property("lastEncounter") == "Rolling the Bones")
 		{
-			print("Got a brain, trying to make and use a meat maid now.", "blue");
+			auto_log_info("Got a brain, trying to make and use a meat maid now.", "blue");
 			cli_execute("make " + $item[Meat Maid]);
 			use(1, $item[Meat Maid]);
 		}
@@ -11014,7 +10954,7 @@ boolean LX_bitchinMeatcar()
 	}
 	if(in_koe())
 	{
-		print("The desert exploded, so no need to build a meatcar...");
+		auto_log_info("The desert exploded, so no need to build a meatcar...");
 		set_property("lastDesertUnlock", my_ascensions());
 		return false;
 	}
@@ -11046,14 +10986,14 @@ boolean LX_bitchinMeatcar()
 	{
 		if((my_meat() >= 6000) && isGeneralStoreAvailable())
 		{
-			print("We're rich, let's take the bus instead of building a car.", "blue");
+			auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
 			buyUpTo(1, $item[Desert Bus Pass]);
 			if(item_amount($item[Desert Bus Pass]) > 0)
 			{
 				return true;
 			}
 		}
-		print("Farming for a Bitchin' Meatcar", "blue");
+		auto_log_info("Farming for a Bitchin' Meatcar", "blue");
 		if(get_property("questM01Untinker") == "unstarted")
 		{
 			visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
@@ -11198,7 +11138,7 @@ boolean LX_islandAccess()
 			}
 			if(!reallyUnlocked)
 			{
-				print("lastIslandUnlock is incorrect, you have no way to get to the Island. Unless you barrel smashed when that was allowed. Did you barrel smash? Well, correcting....", "red");
+				auto_log_warning("lastIslandUnlock is incorrect, you have no way to get to the Island. Unless you barrel smashed when that was allowed. Did you barrel smash? Well, correcting....", "red");
 				set_property("lastIslandUnlock", my_ascensions() - 1);
 				return true;
 			}
@@ -11221,7 +11161,7 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-	print("At the shore, la de da!", "blue");
+	auto_log_info("At the shore, la de da!", "blue");
 	if(item_amount($item[Dinghy Plans]) > 0)
 	{
 		abort("Dude, we got Dinghy Plans... we should not be here....");
@@ -11232,7 +11172,7 @@ boolean LX_islandAccess()
 	}
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
 	{
-		print("Failed to get enough Shore Scrip for some raisin, continuing...", "red");
+		auto_log_warning("Failed to get enough Shore Scrip for some raisin, continuing...", "red");
 		return false;
 	}
 
@@ -11278,7 +11218,7 @@ boolean LX_phatLootToken()
 		}
 	}
 
-	print("Phat Loot Token Get!", "blue");
+	auto_log_info("Phat Loot Token Get!", "blue");
 	set_property("choiceAdventure691", "2");
 	autoEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
 
@@ -11428,7 +11368,7 @@ boolean L2_treeCoin()
 		return false;
 	}
 
-	print("Time for a tree-holed coin", "blue");
+	auto_log_info("Time for a tree-holed coin", "blue");
 	set_property("choiceAdventure502", "2");
 	set_property("choiceAdventure505", "2");
 	autoAdv(1, $location[The Spooky Forest]);
@@ -11441,7 +11381,7 @@ boolean L2_spookyMap()
 	{
 		return false;
 	}
-	print("Need a spooky map now", "blue");
+	auto_log_info("Need a spooky map now", "blue");
 	set_property("choiceAdventure502", "3");
 	set_property("choiceAdventure506", "3");
 	set_property("choiceAdventure507", "1");
@@ -11465,7 +11405,7 @@ boolean L2_spookyFertilizer()
 		set_property("auto_spookyfertilizer", "finished");
 		return false;
 	}
-	print("Need some poop, I mean fertilizer now", "blue");
+	auto_log_info("Need some poop, I mean fertilizer now", "blue");
 	set_property("choiceAdventure502", "3");
 	set_property("choiceAdventure506", "2");
 	autoAdv(1, $location[The Spooky Forest]);
@@ -11482,7 +11422,7 @@ boolean L2_spookySapling()
 	{
 		return false;
 	}
-	print("And a spooky sapling!", "blue");
+	auto_log_info("And a spooky sapling!", "blue");
 	set_property("choiceAdventure502", "1");
 	set_property("choiceAdventure503", "3");
 	set_property("choiceAdventure504", "3");
@@ -11495,12 +11435,12 @@ boolean L2_spookySapling()
 		}
 		if(contains_text(get_property("lastEncounter"), "Blaaargh! Blaaargh!"))
 		{
-			print("Ewww, fake blood semirare. Worst. Day. Ever.", "red");
+			auto_log_warning("Ewww, fake blood semirare. Worst. Day. Ever.", "red");
 			return true;
 		}
 		if(lastAdventureSpecialNC())
 		{
-			print("Special Non-combat interrupted us, no worries...", "green");
+			auto_log_info("Special Non-combat interrupted us, no worries...", "green");
 			return true;
 		}
 		visit_url("choice.php?whichchoice=502&option=1&pwd");
@@ -11539,7 +11479,7 @@ boolean L2_mosquito()
 
 	buffMaintain($effect[Snow Shoes], 0, 1, 1);
 
-	print("Trying to find a mosquito.", "blue");
+	auto_log_info("Trying to find a mosquito.", "blue");
 	set_property("choiceAdventure502", "2");
 	set_property("choiceAdventure505", "1");
 	autoAdv(1, $location[The Spooky Forest]);
@@ -11652,23 +11592,10 @@ boolean LX_handleSpookyravenFirstFloor()
 		abort("Have Lady Spookyraven's Necklace but did not give it to her....");
 	}
 
-#	if((get_property("_sourceTerminalDigitizeMonster") == $monster[Writing Desk]) && (get_property("writingDesksDefeated").to_int() < 5))
-#	{
-#		if(loopHandler("_auto_digitizeDeskTurn", "_auto_digitizeDeskCounter", "Potentially unable to do anything while waiting on digitized writing desks.", 10))
-#		{
-#			print("Have a digitized Writing Desk, let's not bother with the Spooky First Floor", "blue");
-#		}
-#		if((get_property("auto_war") != "finished") && (get_property("auto_powerLevelAdvCount").to_int() < 5) && (get_property("_auto_digitizeDeskCounter").to_int() < 5))
-#		{
-#			return false;
-#		}
-#	}
-
 	if(hasSpookyravenLibraryKey())
 	{
-		print("Well, we need writing desks", "blue");
-		print("Going to the liberry!", "blue");
-#			cli_execute("olfact writing desk");
+		auto_log_info("Well, we need writing desks", "blue");
+		auto_log_info("Going to the liberry!", "blue");
 		set_property("choiceAdventure888", "4");
 		set_property("choiceAdventure889", "5");
 		set_property("choiceAdventure163", "4");
@@ -11721,7 +11648,7 @@ boolean LX_handleSpookyravenFirstFloor()
 
 		if(!possessEquipment($item[Pool Cue]) && !possessEquipment(staffOfFats) && !possessEquipment(staffOfFatsEd) && !possessEquipment(staffOfEd) && !in_tcrs())
 		{
-			print("Well, I need a pool cueball...", "blue");
+			auto_log_info("Well, I need a pool cueball...", "blue");
 			backupSetting("choiceAdventure330", 1);
 			providePlusNonCombat(25, true);
 			autoAdv(1, $location[The Haunted Billiards Room]);
@@ -11729,29 +11656,29 @@ boolean LX_handleSpookyravenFirstFloor()
 			return true;
 		}
 
-		print("Looking at the billiards room: 14 <= " + expectPool + " <= 18", "green");
+		auto_log_info("Looking at the billiards room: 14 <= " + expectPool + " <= 18", "green");
 		if((my_inebriety() < 8) && ((my_inebriety() + 2) < inebriety_limit()))
 		{
 			if(expectPool < 18)
 			{
-				print("Not quite boozed up for the billiards room... we'll be back.", "green");
+				auto_log_info("Not quite boozed up for the billiards room... we'll be back.", "green");
 				if(get_property("auto_powerLevelAdvCount").to_int() < 5)
 				{
 					return false;
 				}
 			}
 
-			print("Well, maybe I'll just deal with not being drunk enough, punk", "blue");
+			auto_log_info("Well, maybe I'll just deal with not being drunk enough, punk", "blue");
 		}
 		if((my_inebriety() > 12) && (expectPool < 16))
 		{
 			if(in_hardcore() && (my_daycount() <= 2))
 			{
-				print("Ok, I'm too boozed up for the billards room, I'll be back.", "green");
+				auto_log_info("Ok, I'm too boozed up for the billards room, I'll be back.", "green");
 			}
 			if(!in_hardcore() && (my_daycount() <= 1))
 			{
-				print("I'm too drunk for pool, at least it is only " + format_date_time("yyyyMMdd", today_to_string(), "EEEE"), "green");
+				auto_log_info("I'm too drunk for pool, at least it is only " + format_date_time("yyyyMMdd", today_to_string(), "EEEE"), "green");
 			}
 			return false;
 		}
@@ -11770,7 +11697,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		autoEquip(staffOfFatsEd);
 		autoEquip(staffOfEd);
 
-		print("It's billiards time!", "blue");
+		auto_log_info("It's billiards time!", "blue");
 		backupSetting("choiceAdventure330", 1);
 		providePlusNonCombat(25, true);
 		autoAdv(1, $location[The Haunted Billiards Room]);
@@ -11778,7 +11705,7 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	else
 	{
-		print("Looking for the Billards Room key (Hot/Stench:" + elemental_resist($element[hot]) + "/" + elemental_resist($element[stench]) + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
+		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + elemental_resist($element[hot]) + "/" + elemental_resist($element[stench]) + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
 		handleFamiliar($familiar[Exotic Parrot]);
 		if(is100FamiliarRun())
 		{
@@ -11792,7 +11719,7 @@ boolean LX_handleSpookyravenFirstFloor()
 			cli_execute("refresh inv");
 			if(item_amount($item[Spookyraven Billiards Room Key]) == 0)
 			{
-				print("We think you've opened enough drawers in the kitchen but you don't have the Billiards Room Key.");
+				auto_log_warning("We think you've opened enough drawers in the kitchen but you don't have the Billiards Room Key.");
 				wait(10);
 			}
 		}
@@ -11842,7 +11769,7 @@ boolean L5_getEncryptionKey()
 		}
 	}
 
-	print("Looking for the knob.", "blue");
+	auto_log_info("Looking for the knob.", "blue");
 	autoAdv(1, $location[The Outskirts of Cobb\'s Knob]);
 	return true;
 }
@@ -11854,7 +11781,7 @@ boolean LX_handleSpookyravenNecklace()
 		return false;
 	}
 
-	print("Starting Spookyraven Second Floor.", "blue");
+	auto_log_info("Starting Spookyraven Second Floor.", "blue");
 	visit_url("place.php?whichplace=manor1&action=manor1_ladys");
 	visit_url("main.php");
 	visit_url("place.php?whichplace=manor2&action=manor2_ladys");
@@ -11901,7 +11828,7 @@ boolean L12_startWar()
 		return false;
 	}
 
-	print("Must save the ferret!!", "blue");
+	auto_log_info("Must save the ferret!!", "blue");
 	autoOutfit("frat warrior fatigues");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
@@ -12053,7 +11980,7 @@ boolean L12_preOutfit()
 	{
 		return false;
 	}
-	print("Trying to acquire a filthy hippy outfit", "blue");
+	auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
 
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
@@ -12088,7 +12015,7 @@ boolean L12_flyerFinish()
 	{
 		if(get_property("sidequestArenaCompleted") != "none")
 		{
-			print("Sidequest Arena detected as completed but flyeredML is not appropriate, fixing.", "red");
+			auto_log_warning("Sidequest Arena detected as completed but flyeredML is not appropriate, fixing.", "red");
 			set_property("flyeredML", 10000);
 		}
 		else
@@ -12100,7 +12027,7 @@ boolean L12_flyerFinish()
 	{
 		return false;
 	}
-	print("Done with this Flyer crap", "blue");
+	auto_log_info("Done with this Flyer crap", "blue");
 	warOutfit(true);
 	visit_url("bigisland.php?place=concert&pwd");
 
@@ -12110,7 +12037,7 @@ boolean L12_flyerFinish()
 		auto_change_mcd(0);
 		return true;
 	}
-	print("We thought we had enough flyeredML, but we don't. Big sadness, let's try that again.", "red");
+	auto_log_warning("We thought we had enough flyeredML, but we don't. Big sadness, let's try that again.", "red");
 	set_property("flyeredML", 9999);
 	return false;
 }
@@ -12155,7 +12082,7 @@ boolean L9_highLandlord()
 
 	if((get_property("twinPeakProgress").to_int() == 15) && (get_property("auto_oilpeak") == "finished") && (get_property("auto_boopeak") == "finished"))
 	{
-		print("Highlord Done", "blue");
+		auto_log_info("Highlord Done", "blue");
 		visit_url("place.php?whichplace=highlands&action=highlands_dude");
 		council();
 		set_property("auto_highlandlord", "finished");
@@ -12185,7 +12112,7 @@ boolean L9_aBooPeak()
 
 	if (get_property("booPeakProgress").to_int() > 90)
 	{
-		print("A-Boo Peak (initial): " + get_property("booPeakProgress"), "blue");
+		auto_log_info("A-Boo Peak (initial): " + get_property("booPeakProgress"), "blue");
 
 		if (clueAmt < 3 && item_amount($item[January\'s Garbage Tote]) > 0)
 		{
@@ -12220,7 +12147,7 @@ boolean L9_aBooPeak()
 		}
 	}
 
-	print("A-Boo Peak: " + get_property("booPeakProgress"), "blue");
+	auto_log_info("A-Boo Peak: " + get_property("booPeakProgress"), "blue");
 	boolean clueCheck = ((clueAmt > 0) || (get_property("auto_aboopending").to_int() != 0));
 	if(clueCheck && (get_property("booPeakProgress").to_int() > 2))
 	{
@@ -12308,9 +12235,9 @@ boolean L9_aBooPeak()
 		#Calculate how much boo peak damage does per unit resistance.
 		int estimatedCold = (13+25+50+125+250) * ((100.0 - elemental_resist_value(coldResist)) / 100.0);
 		int estimatedSpooky = (13+25+50+125+250) * ((100.0 - elemental_resist_value(spookyResist)) / 100.0);
-		print("Current HP: " + my_hp() + "/" + my_maxhp(), "blue");
-		print("Expected cold damage: " + estimatedCold + " Expected spooky damage: " + estimatedSpooky, "blue");
-		print("Expected Cold Resist: " + coldResist + " Expected Spooky Resist: " + spookyResist + " Expected HP Difference: " + hpDifference, "blue");
+		auto_log_info("Current HP: " + my_hp() + "/" + my_maxhp(), "blue");
+		auto_log_info("Expected cold damage: " + estimatedCold + " Expected spooky damage: " + estimatedSpooky, "blue");
+		auto_log_info("Expected Cold Resist: " + coldResist + " Expected Spooky Resist: " + spookyResist + " Expected HP Difference: " + hpDifference, "blue");
 		int totalDamage = estimatedCold + estimatedSpooky;
 
 		if(get_property("booPeakProgress").to_int() <= 6)
@@ -12334,9 +12261,9 @@ boolean L9_aBooPeak()
 
 		if(get_property("booPeakProgress").to_int() <= 20)
 		{
-			print("Don't need a full A-Boo Clue, adjusting values:", "blue");
-			print("Expected cold damage: " + estimatedCold + " Expected spooky damage: " + estimatedSpooky, "blue");
-			print("Expected Cold Resist: " + coldResist + " Expected Spooky Resist: " + spookyResist + " Expected HP Difference: " + hpDifference, "blue");
+			auto_log_info("Don't need a full A-Boo Clue, adjusting values:", "blue");
+			auto_log_info("Expected cold damage: " + estimatedCold + " Expected spooky damage: " + estimatedSpooky, "blue");
+			auto_log_info("Expected Cold Resist: " + coldResist + " Expected Spooky Resist: " + spookyResist + " Expected HP Difference: " + hpDifference, "blue");
 		}
 
 		int considerHP = my_maxhp() + hpDifference;
@@ -12400,7 +12327,7 @@ boolean L9_aBooPeak()
 			set_property("choiceAdventure611", "1");
 			if((my_hp() - 50) < totalDamage)
 			{
-				useCocoon();
+				acquireHP();
 			}
 			if(get_property("auto_aboopending").to_int() == 0)
 			{
@@ -12424,7 +12351,7 @@ boolean L9_aBooPeak()
 			{
 				if(get_property("lastEncounter") != "The Horror...")
 				{
-					print("Wandering adventure interrupt of A-Boo Peak, refreshing inventory.", "red");
+					auto_log_warning("Wandering adventure interrupt of A-Boo Peak, refreshing inventory.", "red");
 					cli_execute("refresh inv");
 				}
 				else
@@ -12432,11 +12359,7 @@ boolean L9_aBooPeak()
 					set_property("auto_aboopending", 0);
 				}
 			}
-			useCocoon();
-			if (isActuallyEd() && my_hp() == 0)
-			{
-				use(1, $item[Linen Bandages]);
-			}
+			acquireHP();
 			if ((my_hp() * 4) < my_maxhp() && item_amount($item[Scroll of Drastic Healing]) > 0 && (!isActuallyEd() || my_class() != $class[Vampyre]))
 			{
 				use(1, $item[Scroll of Drastic Healing]);
@@ -12446,12 +12369,12 @@ boolean L9_aBooPeak()
 			return true;
 		}
 
-		print("Nevermind, that peak is too scary!", "green");
+		auto_log_info("Nevermind, that peak is too scary!", "green");
 		equipBaseline();
 		handleFamiliar("item");
 		handleBjornify(priorBjorn);
 	}
-	else if(get_property("auto_abooclover").to_boolean() && (get_property("booPeakProgress").to_int() >= 40) && booCloversOk)
+	else if(get_property("auto_abooclover").to_boolean() && (get_property("booPeakProgress").to_int() >= 30) && booCloversOk)
 	{
 		cloverUsageInit();
 		autoAdvBypass(296, $location[A-Boo Peak]);
@@ -12498,7 +12421,7 @@ boolean L9_twinPeak()
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	if(get_property("auto_twinpeakprogress").to_int() == 0)
 	{
-		print("Twin Peak", "blue");
+		auto_log_info("Twin Peak", "blue");
 		set_property("choiceAdventure604", "1");
 		set_property("choiceAdventure618", "2");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
@@ -12711,15 +12634,15 @@ boolean L9_twinPeak()
 		{
 			abort("Tried using a rusty hedge trimmer but that didn't seem to work");
 		}
-		print("Hedge trimming situation: " + attemptNum, "green");
+		auto_log_info("Hedge trimming situation: " + attemptNum, "green");
 		string page = visit_url("main.php");
 		if((contains_text(page, "choice.php")) && (!contains_text(page, "Really Sticking Her Neck Out")) && (!contains_text(page, "It Came from Beneath the Sewer?")))
 		{
-			print("Inside of a Rusty Hedge Trimmer sequence.", "blue");
+			auto_log_info("Inside of a Rusty Hedge Trimmer sequence.", "blue");
 		}
 		else
 		{
-			print("Rusty Hedge Trimmer Sequence completed itself.", "blue");
+			auto_log_info("Rusty Hedge Trimmer Sequence completed itself.", "blue");
 			return true;
 		}
 	}
@@ -12739,7 +12662,7 @@ boolean L9_twinPeak()
 		return true;
 	}
 
-	print("Backwards Twin Peak Handler, can this be removed? (As of 2016/04/17, no)", "red");
+	auto_log_warning("Backwards Twin Peak Handler, can this be removed? (As of 2016/04/17, no)", "red");
 	string page = visit_url("main.php");
 	if((contains_text(page, "choice.php")) && (!contains_text(page, "Really Sticking Her Neck Out")) && (!contains_text(page, "It Came from Beneath the Sewer?")))
 	{
@@ -12833,7 +12756,7 @@ boolean L9_oilPeak()
 			set_property("auto_oilpeak", "finished");
 			return true;
 		}
-		print("Oil Peak is finished but we need more crude!", "blue");
+		auto_log_info("Oil Peak is finished but we need more crude!", "blue");
 	}
 
 	buffMaintain($effect[Litterbug], 0, 1, 1);
@@ -12891,7 +12814,7 @@ boolean L9_oilPeak()
 	}
 	addToMaximize("1000ml 100max");
 
-	print("Oil Peak with ML: " + monster_level_adjustment(), "blue");
+	auto_log_info("Oil Peak with ML: " + monster_level_adjustment(), "blue");
 
 	autoAdv(1, $location[Oil Peak]);
 	if(get_property("lastEncounter") == "Unimpressed with Pressure")
@@ -12899,7 +12822,7 @@ boolean L9_oilPeak()
 		set_property("oilPeakProgress", 0.0);
 
 		// Brute Force grouping with tavern (if not done) to maximize tangles while we have a high ML.
-		print("Checking to see if we should do the tavern while we are running high ML.", "green");
+		auto_log_info("Checking to see if we should do the tavern while we are running high ML.", "green");
 		set_property("auto_forceTavern", true);
 		// Remove Driving Wastefully if we had it
 		if (0 < have_effect($effect[Driving Wastefully]))
@@ -12930,14 +12853,14 @@ boolean LX_loggingHatchet()
 		return false;
 	}
 
-	print("Acquiring the logging hatchet from Camp Logging Camp", "blue");
+	auto_log_info("Acquiring the logging hatchet from Camp Logging Camp", "blue");
 	autoAdv(1, $location[Camp Logging Camp]);
 	return true;
 }
 
 void L9_chasmMaximizeForNoncombat()
 {
-	print("Let's assess our scores for blech house", "blue");
+	auto_log_info("Let's assess our scores for blech house", "blue");
 	string best = "mus";
 	string mustry = "100muscle,100weapon damage,1000weapon damage percent";
 	string mystry = "100mysticality,100spell damage,1000 spell damage percent";
@@ -12947,13 +12870,13 @@ void L9_chasmMaximizeForNoncombat()
 	float musflat = simValue("Weapon Damage");
 	float musperc = simValue("Weapon Damage Percent");
 	int musscore = floor(square_root((musmus + musflat)/15*(1+musperc/100)));
-	print("Muscle score: " + musscore, "blue");
+	auto_log_info("Muscle score: " + musscore, "blue");
 	simMaximizeWith(mystry);
 	float mysmys = simValue("Buffed Mysticality");
 	float mysflat = simValue("Spell Damage");
 	float mysperc = simValue("Spell Damage Percent");
 	int mysscore = floor(square_root((mysmys + mysflat)/15*(1+mysperc/100)));
-	print("Mysticality score: " + mysscore, "blue");
+	auto_log_info("Mysticality score: " + mysscore, "blue");
 	if(mysscore > musscore)
 	{
 		best = "mys";
@@ -12962,7 +12885,7 @@ void L9_chasmMaximizeForNoncombat()
 	float moxmox = simValue("Buffed Moxie");
 	float moxres = simValue("Sleaze Resistance");
 	int moxscore = floor(square_root(moxmox/30*(1+moxres*0.69)));
-	print("Moxie score: " + moxscore, "blue");
+	auto_log_info("Moxie score: " + moxscore, "blue");
 	if(moxscore > mysscore && moxscore > musscore)
 	{
 		best = "mox";
@@ -12990,7 +12913,7 @@ boolean L9_chasmBuild()
 		return false;
 	}
 
-	print("Chasm time", "blue");
+	auto_log_info("Chasm time", "blue");
 
 	if(item_amount($item[fancy oil painting]) > 0)
 	{
@@ -13002,9 +12925,61 @@ boolean L9_chasmBuild()
 		return true;
 	}
 
+	// -Combat is useless here since NC is triggered by killing Orcs...So we kill orcs better!
+	asdonBuff($effect[Driving Intimidatingly]);
+
+	// Check our Load out to see if spells are the best option for Orc-Thumping
+	boolean useSpellsInOrcCamp = false;
+	if(setFlavour($element[cold]) && canUse($skill[Stuffed Mortar Shell]))
+	{
+		useSpellsInOrcCamp = true;
+	}
+
+	if(setFlavour($element[cold]) && canUse($skill[Cannelloni Cannon], false))
+	{
+		useSpellsInOrcCamp = true;
+	}
+
+	if(canUse($skill[Saucegeyser], false))
+	{
+		useSpellsInOrcCamp = true;
+	}
+
+	if(canUse($skill[Saucecicle], false))
+	{
+		useSpellsInOrcCamp = true;
+	}
+
+	// Always Maximize and choose our default Non-Com First, in case we are wrong about the non-com we MAY have some gear still equipped to help us.
+	if(useSpellsInOrcCamp == true)
+	{
+		auto_log_info("Preparing to Blast Orcs with Cold Spells!", "blue");
+		addToMaximize("myst,40spell damage,80spell damage percent,40cold spell damage,-1000 ml");
+		buffMaintain($effect[Carol of the Hells], 50, 1, 1);
+		buffMaintain($effect[Song of Sauce], 150, 1, 1);
+
+		auto_log_info("If we encounter Blech House when we are not expecting it we will stop.", "blue");
+		auto_log_info("Currently setup for Myst/Spell Damage, option 2: Blast it down with a spell", "blue");
+		set_property("choiceAdventure1345", 0);
+	}
+	else
+	{
+		auto_log_info("Preparing to Ice-Punch Orcs!", "blue");
+		addToMaximize("muscle,40weapon damage,60weapon damage percent,40cold damage,-1000 ml");
+		buffMaintain($effect[Carol of the Bulls], 50, 1, 1);
+		buffMaintain($effect[Song of The North], 150, 1, 1);
+
+		auto_log_info("If we encounter Blech House when we are not expecting it we will stop.", "blue");
+		auto_log_info("Currently setup for Muscle/Weapon Damage, option 1: Kick it down", "blue");
+		set_property("choiceAdventure1345", 0);
+	}
+
 	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
 	{
-		print("The smut orc noncombat is about to hit...");
+		// If we think the non-com will hit NOW we clear maximizer to keep previous settings from carrying forward
+		resetMaximize();
+
+		auto_log_info("The smut orc noncombat is about to hit...");
 		// This is a hardcoded patch for Dark Gyffte
 		// TODO: once explicit formulas are spaded, use simulated maximizer
 		// to determine best approach.
@@ -13040,15 +13015,6 @@ boolean L9_chasmBuild()
 		}
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
 		return true;
-	}
-	else
-	{
-		if(setFlavour($element[cold]) && auto_have_skill($skill[Stuffed Mortar Shell]))
-		{
-			addToMaximize("20spell damage,80spell damage percent,20cold spell damage,-10ml");
-			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
-			buffMaintain($effect[Song of Sauce], 150, 1, 1);
-		}
 	}
 
 	if(in_hardcore())
@@ -13242,9 +13208,9 @@ boolean L11_redZeppelin()
 				lynyrd_protestors += 5;
 			}
 		}
-		print("Hiding in the bushes: " + lynyrd_protestors, "blue");
-		print("Going to a bench: " + sleaze_protestors, "blue");
-		print("Heading towards the flames" + fire_protestors, "blue");
+		auto_log_info("Hiding in the bushes: " + lynyrd_protestors, "blue");
+		auto_log_info("Going to a bench: " + sleaze_protestors, "blue");
+		auto_log_info("Heading towards the flames" + fire_protestors, "blue");
 		float best_protestors = max(fire_protestors, max(sleaze_protestors, lynyrd_protestors));
 		if(best_protestors >= 10)
 		{
@@ -13537,7 +13503,7 @@ boolean L11_mcmuffinDiary()
 		return false;
 	}
 
-	print("Getting the McMuffin Diary", "blue");
+	auto_log_info("Getting the McMuffin Diary", "blue");
 	doVacation();
 	foreach diary in $items[Your Father\'s Macguffin Diary, Copy of a Jerk Adventurer\'s Father\'s Diary]
 	{
@@ -13571,11 +13537,11 @@ boolean L11_forgedDocuments()
 	}
 	if(my_meat() < 5000)
 	{
-		print("Could not buy Forged Identification Documents, can not steal identities!", "red");
+		auto_log_warning("Could not buy Forged Identification Documents, can not steal identities!", "red");
 		return false;
 	}
 
-	print("Getting the McMuffin Book", "blue");
+	auto_log_info("Getting the McMuffin Book", "blue");
 	if(auto_my_path() == "Way of the Surprising Fist")
 	{
 		L11_fistDocuments();
@@ -13587,7 +13553,7 @@ boolean L11_forgedDocuments()
 		handleFamiliar("item");
 		return true;
 	}
-	print("Could not buy Forged Identification Documents, can't get booze now!", "red");
+	auto_log_warning("Could not buy Forged Identification Documents, can't get booze now!", "red");
 	return false;
 }
 
@@ -13634,7 +13600,7 @@ boolean L11_blackMarket()
 	}
 	if($location[The Black Forest].turns_spent > 12)
 	{
-		print("We have spent a bit many adventures in The Black Forest... manually checking", "red");
+		auto_log_warning("We have spent a bit many adventures in The Black Forest... manually checking", "red");
 		visit_url("place.php?whichplace=woods");
 		visit_url("woods.php");
 		if($location[The Black Forest].turns_spent > 30)
@@ -13643,7 +13609,7 @@ boolean L11_blackMarket()
 		}
 	}
 
-	print("Must find the Black Market: " + get_property("blackForestProgress"), "blue");
+	auto_log_info("Must find the Black Market: " + get_property("blackForestProgress"), "blue");
 	if(get_property("auto_blackfam").to_boolean())
 	{
 		council();
@@ -13736,7 +13702,7 @@ boolean L10_holeInTheSky()
 	}
 	if(!zone_isAvailable($location[The Hole In The Sky]))
 	{
-		print("The Hole In The Sky is not available, we have to do something else...", "red");
+		auto_log_warning("The Hole In The Sky is not available, we have to do something else...", "red");
 		return false;
 	}
 
@@ -13797,7 +13763,7 @@ boolean L5_haremOutfit()
 	}
 	bat_formBats();
 
-	print("Looking for some sexy lingerie!", "blue");
+	auto_log_info("Looking for some sexy lingerie!", "blue");
 	autoAdv(1, $location[Cobb\'s Knob Harem]);
 	handleFamiliar("item");
 	return true;
@@ -13809,10 +13775,10 @@ boolean L8_trapperGroar()
 	{
 		return false;
 	}
-  
+
 	if (internalQuestStatus("questL08Trapper") < 2)
 	{
-		// if we haven't returned the goat cheese and ore 
+		// if we haven't returned the goat cheese and ore
 		// to the trapper yet, don't try to ascend the peak.
 		return false;
 	}
@@ -13923,7 +13889,7 @@ boolean L8_trapperGroar()
 				set_property("auto_mistypeak", "finished");
 			}
 
-			print("Time to take out Gargle, sure, Gargle (Groar)", "blue");
+			auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 			if (item_amount($item[Groar\'s Fur]) == 0 && item_amount($item[Winged Yeti Fur]) == 0)
 			{
 				addToMaximize("5meat 2000cold res 5 max");
@@ -13965,7 +13931,7 @@ boolean L8_trapperExtreme()
 	//Lucky Pill:	"Look in the side Pocket"
 	//set_property("choiceAdventure575", "2");
 
-	if (possessEquipment($item[extreme mittens]) && possessEquipment($item[extreme scarf]) && possessEquipment($item[snowboarder pants]))	
+	if (possessEquipment($item[extreme mittens]) && possessEquipment($item[extreme scarf]) && possessEquipment($item[snowboarder pants]))
 	{
 		if (my_basestat($stat[moxie]) >= 35 && my_basestat($stat[mysticality]) >= 35 && autoOutfit("eXtreme Cold-Weather Gear"))
 		{
@@ -13975,12 +13941,12 @@ boolean L8_trapperExtreme()
 		}
 		else
 		{
-			print("I can not wear the eXtreme Gear, I'm just not awesome enough :(", "red");
+			auto_log_warning("I can not wear the eXtreme Gear, I'm just not awesome enough :(", "red");
 			return false;
 		}
 	}
 
-	print("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
+	auto_log_info("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
 	if(possessEquipment($item[extreme mittens]))
 	{
 		set_property("choiceAdventure15", "2");
@@ -14060,7 +14026,7 @@ boolean L8_trapperYeti()
 	{
 		if(loopHandler("_auto_digitizeAssassinTurn", "_auto_digitizeAssassinCounter", "Potentially unable to do anything while waiting on digitized Ninja Snowman Assassin.", 10))
 		{
-			print("Have a digitized Ninja Snowman Assassin, let's put off the Ninja Snowman Lair", "blue");
+			auto_log_info("Have a digitized Ninja Snowman Assassin, let's put off the Ninja Snowman Lair", "blue");
 		}
 		return false;
 	}
@@ -14091,7 +14057,7 @@ boolean L8_trapperYeti()
 		asdonBuff($effect[Driving Obnoxiously]);
 		if(!providePlusCombat(25))
 		{
-			print("Could not uneffect for ninja snowmen, delaying", "red");
+			auto_log_warning("Could not uneffect for ninja snowmen, delaying", "red");
 			return false;
 		}
 
@@ -14107,14 +14073,14 @@ boolean L8_trapperYeti()
 
 		if(numeric_modifier("Combat Rate") <= 0.0)
 		{
-			print("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Ninja Snowmen.", "red");
+			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Ninja Snowmen.", "red");
 			equipBaseline();
 			return false;
 		}
 
 		if(!autoAdv(1, $location[Lair of the Ninja Snowmen]))
 		{
-			print("Seems like we failed the Ninja Snowmen unlock, reverting trapper setting", "red");
+			auto_log_warning("Seems like we failed the Ninja Snowmen unlock, reverting trapper setting", "red");
 			set_property("auto_trapper", "start");
 		}
 		return true;
@@ -14149,7 +14115,7 @@ boolean auto_tavern()
 		set_property("auto_tavern", "finished");
 		return true;
 	}
-	print("In the tavern! Layout: " + tavern, "blue");
+	auto_log_info("In the tavern! Layout: " + tavern, "blue");
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
 	// Infrequent compunding issue, reset maximizer
@@ -14286,17 +14252,17 @@ boolean auto_tavern()
 			if(contains_text(page, "You've already explored that spot."))
 			{
 				needReset = true;
-				print("tavernLayout is not reporting places we've been to.", "red");
+				auto_log_warning("tavernLayout is not reporting places we've been to.", "red");
 			}
 			if(contains_text(page, "Darkness (5,5)"))
 			{
 				needReset = true;
-				print("tavernLayout is reporting too many places as visited.", "red");
+				auto_log_warning("tavernLayout is reporting too many places as visited.", "red");
 			}
 
 			if(contains_text(page, "whichchoice value=") || contains_text(page, "whichchoice="))
 			{
-				print("Tavern handler: You are RL drunk, you should not be here.", "red");
+				auto_log_warning("Tavern handler: You are RL drunk, you should not be here.", "red");
 				autoAdv(1, $location[Noob Cave]);
 			}
 			if(last_monster() == $monster[Crate])
@@ -14317,16 +14283,16 @@ boolean auto_tavern()
 
 			if(needReset)
 			{
-				print("We attempted a tavern adventure but the tavern layout was not maintained properly.", "red");
-				print("Attempting to reset this issue...", "red");
+				auto_log_warning("We attempted a tavern adventure but the tavern layout was not maintained properly.", "red");
+				auto_log_warning("Attempting to reset this issue...", "red");
 				set_property("tavernLayout", "0000100000000000000000000");
 				visit_url("cellar.php");
 			}
 			return true;
 		}
 	}
-	print("We found no valid location to tavern, something went wrong...", "red");
-	print("Attempting to reset this issue...", "red");
+	auto_log_warning("We found no valid location to tavern, something went wrong...", "red");
+	auto_log_warning("Attempting to reset this issue...", "red");
 	set_property("tavernLayout", "0000100000000000000000000");
 	wait(5);
 	return true;
@@ -14392,7 +14358,7 @@ boolean L3_tavern()
 		return false;
 	}
 
-	print("Doing Tavern", "blue");
+	auto_log_info("Doing Tavern", "blue");
 
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
@@ -14536,44 +14502,44 @@ void print_header()
 	}
 	if(in_hardcore())
 	{
-		print("Turn(" + my_turncount() + "): Starting with " + my_adventures() + " left at Level: " + my_level(), "cyan");
+		auto_log_info("Turn(" + my_turncount() + "): Starting with " + my_adventures() + " left at Level: " + my_level(), "cyan");
 	}
 	else
 	{
-		print("Turn(" + my_turncount() + "): Starting with " + my_adventures() + " left and " + pulls_remaining() + " pulls left at Level: " + my_level(), "cyan");
+		auto_log_info("Turn(" + my_turncount() + "): Starting with " + my_adventures() + " left and " + pulls_remaining() + " pulls left at Level: " + my_level(), "cyan");
 	}
 	if(((item_amount($item[Rock Band Flyers]) == 1) || (item_amount($item[Jam Band Flyers]) == 1)) && (get_property("flyeredML").to_int() < 10000) && !get_property("auto_ignoreFlyer").to_boolean())
 	{
-		print("Still flyering: " + get_property("flyeredML"), "blue");
+		auto_log_info("Still flyering: " + get_property("flyeredML"), "blue");
 	}
-	print("Encounter: " + combat_rate_modifier() + "   Exp Bonus: " + experience_bonus(), "blue");
-	print("Meat Drop: " + meat_drop_modifier() + "	 Item Drop: " + item_drop_modifier(), "blue");
-	print("HP: " + my_hp() + "/" + my_maxhp() + ", MP: " + my_mp() + "/" + my_maxmp(), "blue");
-	print("Tummy: " + my_fullness() + "/" + fullness_limit() + " Liver: " + my_inebriety() + "/" + inebriety_limit() + " Spleen: " + my_spleen_use() + "/" + spleen_limit(), "blue");
-	print("ML: " + monster_level_adjustment() + " control: " + current_mcd(), "blue");
+	auto_log_info("Encounter: " + combat_rate_modifier() + "   Exp Bonus: " + experience_bonus(), "blue");
+	auto_log_info("Meat Drop: " + meat_drop_modifier() + "	 Item Drop: " + item_drop_modifier(), "blue");
+	auto_log_info("HP: " + my_hp() + "/" + my_maxhp() + ", MP: " + my_mp() + "/" + my_maxmp(), "blue");
+	auto_log_info("Tummy: " + my_fullness() + "/" + fullness_limit() + " Liver: " + my_inebriety() + "/" + inebriety_limit() + " Spleen: " + my_spleen_use() + "/" + spleen_limit(), "blue");
+	auto_log_info("ML: " + monster_level_adjustment() + " control: " + current_mcd(), "blue");
 	if(my_class() == $class[Sauceror])
 	{
-		print("Soulsauce: " + my_soulsauce(), "blue");
+		auto_log_info("Soulsauce: " + my_soulsauce(), "blue");
 	}
 	if((have_effect($effect[Ultrahydrated]) > 0) && (get_property("desertExploration").to_int() < 100))
 	{
-		print("Ultrahydrated: " + have_effect($effect[Ultrahydrated]), "violet");
+		auto_log_info("Ultrahydrated: " + have_effect($effect[Ultrahydrated]), "violet");
 	}
 	if(have_effect($effect[Everything Looks Yellow]) > 0)
 	{
-		print("Everything Looks Yellow: " + have_effect($effect[Everything Looks Yellow]), "blue");
+		auto_log_info("Everything Looks Yellow: " + have_effect($effect[Everything Looks Yellow]), "blue");
 	}
 	if(equipped_item($slot[familiar]) == $item[Snow Suit])
 	{
-		print("Snow suit usage: " + get_property("_snowSuitCount") + " carrots: " + get_property("_carrotNoseDrops"), "blue");
+		auto_log_info("Snow suit usage: " + get_property("_snowSuitCount") + " carrots: " + get_property("_carrotNoseDrops"), "blue");
 	}
 	if(auto_my_path() == "Heavy Rains")
 	{
-		print("Post adventure done: Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
+		auto_log_info("Post adventure done: Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}
 	if (isActuallyEd())
 	{
-		print("Ka Coins: " + item_amount($item[Ka Coin]) + " Lashes used: " + get_property("_edLashCount"), "green");
+		auto_log_info("Ka Coins: " + item_amount($item[Ka Coin]) + " Lashes used: " + get_property("_edLashCount"), "green");
 	}
 }
 
@@ -14581,7 +14547,7 @@ boolean doTasks()
 {
 	if(get_property("_casualAscension").to_int() >= my_ascensions())
 	{
-		print("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
+		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
 		return false;
 	}
 
@@ -14598,7 +14564,7 @@ boolean doTasks()
 	int delay = get_property("auto_delayTimer").to_int();
 	if(delay != 0)
 	{
-		print("Delay between adventures... beep boop... ", "blue");
+		auto_log_info("Delay between adventures... beep boop... ", "blue");
 		wait(delay);
 	}
 
@@ -14608,8 +14574,8 @@ boolean doTasks()
 		int paranoia_counter = get_property("auto_paranoia_counter").to_int();
 		if(paranoia_counter >= paranoia)
 		{
-			print("I think I'm paranoid and complicated", "blue");
-			print("I think I'm paranoid, manipulated", "blue");
+			auto_log_info("I think I'm paranoid and complicated", "blue");
+			auto_log_info("I think I'm paranoid, manipulated", "blue");
 			cli_execute("refresh quests");
 			set_property("auto_paranoia_counter", 0);
 		}
@@ -14778,7 +14744,7 @@ boolean doTasks()
 
 	if(((my_hp() * 5) < my_maxhp()) && (my_mp() > 100))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	if(my_daycount() == 1)
@@ -14810,14 +14776,13 @@ boolean doTasks()
 	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
 
-	if (!isActuallyEd() && my_level() >= 9 && my_daycount() == 1)
+	// TODO: not sure what this is for, seems wasteful...
+	if (!isActuallyEd() && auto_my_path() != "The Source" &&
+		my_level() >= 9 && my_daycount() == 1 &&
+		haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest())
 	{
-		if((get_property("timesRested").to_int() < total_free_rests()) && chateaumantegna_available() && (auto_my_path() != "The Source"))
-		{
-			doRest();
-			cli_execute("scripts/autoscend/auto_post_adv.ash");
-			return true;
-		}
+		cli_execute("scripts/autoscend/auto_post_adv.ash");
+		return true;
 	}
 
 	if(snojoFightAvailable() && (my_daycount() == 2) && (get_property("snojoMoxieWins").to_int() == 10))
@@ -15035,7 +15000,7 @@ boolean doTasks()
 	{
 		if((get_property("hippiesDefeated").to_int() < 64) && (get_property("fratboysDefeated").to_int() < 64) && (my_level() >= 12) && (get_property("auto_prewar") == "started") && (get_property("auto_war") != "finished"))
 		{
-			print("First 64 combats. To orchard/lighthouse", "blue");
+			auto_log_info("First 64 combats. To orchard/lighthouse", "blue");
 			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
 			{
 				cli_execute("make 1 stuffing fluffer");
@@ -15061,7 +15026,7 @@ boolean doTasks()
 
 		if((get_property("hippiesDefeated").to_int() < 192) && (get_property("fratboysDefeated").to_int() < 192) && (my_level() >= 12) && (get_property("auto_prewar") != ""))
 		{
-			print("Getting to the nunnery/junkyard", "blue");
+			auto_log_info("Getting to the nunnery/junkyard", "blue");
 			handleFamiliar("item");
 			warOutfit(false);
 			return warAdventure();
@@ -15069,7 +15034,7 @@ boolean doTasks()
 
 		if(((get_property("auto_nuns") == "finished") || (get_property("auto_nuns") == "done")) && ((get_property("hippiesDefeated").to_int() < 1000) && (get_property("fratboysDefeated").to_int() < 1000)) && (my_level() >= 12))
 		{
-			print("Doing the wars.", "blue");
+			auto_log_info("Doing the wars.", "blue");
 			handleFamiliar("item");
 			warOutfit(false);
 			return warAdventure();
@@ -15095,7 +15060,7 @@ boolean doTasks()
 		return true;
 	}
 
-	print("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");
+	auto_log_info("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");
 	return false;
 }
 
@@ -15115,7 +15080,7 @@ void auto_begin()
 		}
 		else
 		{
-			print("Okay, but the warranty is off.", "red");
+			auto_log_warning("Okay, but the warranty is off.", "red");
 		}
 	}
 
@@ -15141,23 +15106,22 @@ void auto_begin()
 	}
 	else if(contains_text(page, "<b>Torpor</b>") && contains_text(page, "Madness of Untold Aeons") && contains_text(page, "Rest for untold Millenia"))
 	{
-		print("Torporing, since I think we're already in torpor.", "blue");
+		auto_log_info("Torporing, since I think we're already in torpor.", "blue");
 		bat_reallyPickSkills(20);
 	}
 
-#	if(my_class() == $class[Astral Spirit])
 	if(to_string(my_class()) == "Astral Spirit")
 	{
 		# my_class() can report Astral Spirit even though it is not a valid class....
-		print("We think we are an Astral Spirit, if you actually are that's bad!", "red");
+		auto_log_warning("We think we are an Astral Spirit, if you actually are that's bad!", "red");
 		cli_execute("refresh all");
 	}
 
-	print("Hello " + my_name() + ", time to explode!");
-	print("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
-	print("This is day " + my_daycount() + ".");
-	print("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
-	print("Current Ascension: " + auto_my_path());
+	auto_log_info("Hello " + my_name() + ", time to explode!");
+	auto_log_info("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
+	auto_log_info("This is day " + my_daycount() + ".");
+	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
+	auto_log_info("Current Ascension: " + auto_my_path());
 
 	set_property("auto_disableAdventureHandling", false);
 
@@ -15201,7 +15165,7 @@ void auto_begin()
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))
 	{
-		print("Switching off Compact Character Mode, will resume during bedtime");
+		auto_log_info("Switching off Compact Character Mode, will resume during bedtime");
 		set_property("auto_priorCharpaneMode", 1);
 		visit_url("account.php?am=1&pwd=&action=flag_compactchar&value=0&ajax=0", true);
 	}
@@ -15217,7 +15181,7 @@ void auto_begin()
 
 	if(my_familiar() == $familiar[Stooper])
 	{
-		print("Avoiding stooper stupor...", "blue");
+		auto_log_info("Avoiding stooper stupor...", "blue");
 		use_familiar($familiar[none]);
 	}
 	dailyEvents();
@@ -15271,7 +15235,7 @@ void auto_begin()
 
 	if(doBedtime())
 	{
-		print("Done for today (" + my_daycount() + "), beep boop");
+		auto_log_info("Done for today (" + my_daycount() + "), beep boop");
 	}
 }
 

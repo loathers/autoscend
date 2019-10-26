@@ -358,7 +358,6 @@ boolean songboomSetting(string goal)
 	return songboomSetting(option);
 }
 
-
 boolean songboomSetting(int option)
 {
 	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
@@ -417,21 +416,21 @@ boolean songboomSetting(int option)
 	}
 	else
 	{
-		print("Could not find how many songs we have left...", "red");
+		auto_log_warning("Could not find how many songs we have left...", "red");
 		option = 6;
 	}
 
 	page = visit_url("choice.php?whichchoice=1312&option=" + option);
 	if(contains_text(page, "don\'t want to break this thing"))
 	{
-		print("Unable to change BoomBoxen songen!", "red");
+		auto_log_warning("Unable to change BoomBoxen songen!", "red");
 		return false;
 	}
 	if(option != 6)
 	{
 		boomsLeft--;
 	}
-	print("Change successful to " + get_property("boomBoxSong") + "We have " + boomsLeft + " SongBoom BoomBoxen songens left!", "green");
+	auto_log_info("Change successful to " + get_property("boomBoxSong") + "We have " + boomsLeft + " SongBoom BoomBoxen songens left!", "green");
 	return true;
 }
 
@@ -461,7 +460,7 @@ boolean catBurglarHeist(item it)
 	 */
 	if (0 == catBurglarHeistsLeft()) return false;
 
-	print("Trying to heist a " + it, "blue");
+	auto_log_info("Trying to heist a " + it, "blue");
 	familiar backup_familiar = my_familiar();
 	try
 	{
@@ -476,7 +475,7 @@ boolean catBurglarHeist(item it)
 			page = visit_url(url);
 			return true;
 		}
-		print("We don't seem to be able to heist a " + it + ". Maybe we didn't fight it with the Cat Burglar?", "red");
+		auto_log_warning("We don't seem to be able to heist a " + it + ". Maybe we didn't fight it with the Cat Burglar?", "red");
 		return false;
 	}
 	finally {
@@ -704,14 +703,13 @@ boolean neverendingPartyAvailable()
 	}
 	if(get_property("auto_skipNEPOverride").to_boolean())
 	{
-		print("NEP access disabled. This can be turned on in the Relay by setting auto_skipNEPOverride = false", "red");
+		auto_log_warning("NEP access disabled. This can be turned on in the Relay by setting auto_skipNEPOverride = false", "red");
 		return false;
 	}
 
 	return true;
 
 }
-
 
 boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, boolean powerlevelling)
 {
@@ -1222,8 +1220,6 @@ boolean fightClubNap()
 	return true;
 }
 
-
-
 boolean fightClubSpa()
 {
 	int option = 4;
@@ -1235,7 +1231,6 @@ boolean fightClubSpa()
 	}
 	return fightClubSpa(option);
 }
-
 
 boolean fightClubSpa(effect eff)
 {
@@ -1255,7 +1250,6 @@ boolean fightClubSpa(effect eff)
 	}
 	return fightClubSpa(option);
 }
-
 
 boolean fightClubSpa(int option)
 {
@@ -1328,4 +1322,41 @@ boolean fightClubStats()
 	page = visit_url("choice.php?pwd=&whichchoice=1334&option=4");
 
 	return true;
+}
+
+boolean isTallGrassAvailable(){
+	static item tallGrass = $item[Packet Of Tall Grass Seeds];
+	return auto_is_valid(tallGrass) && auto_get_campground() contains tallGrass;
+}
+
+int pokeFertilizerAmountAvailable(){
+	static item fertilizer = $item[Pok&eacute;-Gro fertilizer];
+	if(!auto_is_valid(fertilizer)){
+		return 0;
+	}
+	return item_amount(fertilizer);
+}
+
+boolean isPokeFertilizerAvailable(){
+	return isTallGrassAvailable() && pokeFertilizerAmountAvailable() > 0;
+}
+
+boolean haveAnyPokeFamiliarEquipment(){
+	static boolean[item] poke_fam_equipment = $items[amulet coin, luck incense, muscle band, razor fang, shell bell, smoke ball];
+	foreach i, _ in poke_fam_equipment{
+		if(equipmentAmount(i) > 0){
+			auto_log_debug("Found Tall Grass familiar equipment: " + i);
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean pokeFertilizeAndHarvest(){
+	if(!isPokeFertilizerAvailable()){
+		return false;
+	}
+
+	auto_log_debug("sew and reap.");
+	return use(1, $item[Pok&eacute;-Gro fertilizer]) && cli_execute("garden pick");
 }

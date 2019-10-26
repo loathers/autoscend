@@ -31,17 +31,9 @@ boolean ocrs_postCombatResolve()
 			contains_text(get_property("auto_funPrefix"), "restless") ||
 			contains_text(get_property("auto_funPrefix"), "ticking"))
 		{
-			print("Probably beaten up by FUN! Trying to recover instead of aborting", "red");
+			auto_log_warning("Probably beaten up by FUN! Trying to recover instead of aborting", "red");
 			handleTracker(last_monster(), get_property("auto_funPrefix"), "auto_funTracker");
-			if(have_skill($skill[Tongue of the Walrus]) && have_skill($skill[Cannelloni Cocoon]) && (my_mp() >= 30))
-			{
-				use_skill(1, $skill[Tongue of the Walrus]);
-				useCocoon();
-			}
-			else
-			{
-				doHottub();
-			}
+			acquireHP();
 		}
 	}
 

@@ -18,36 +18,26 @@ void handlePreAdventure(location place)
 		abort("customCombatScript is set to unrecognized '" + get_property("customCombatScript") + "', should be 'autoscend_null'");
 	}
 
-#	set_location doesn't help us to resolve this, just let it infinite and fail in that exotic case that was propbably due to a bad user.
-#	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
-#	{
-#		if(!auto_have_familiar($familiar[Machine Elf]))
-#		{
-#			abort("Massive failure, we don't use snowglobes.");
-#		}
-#		print("Somehow we are considering the DMT without a Machine Elf...", "red");
-#	}
-
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
-		print("Preadventure skipped by standard adventure handler.", "green");
+		auto_log_info("Preadventure skipped by standard adventure handler.", "green");
 		return;
 	}
 
 	if(last_monster().random_modifiers["clingy"])
 	{
-		print("Preadventure skipped by clingy modifier.", "green");
+		auto_log_info("Preadventure skipped by clingy modifier.", "green");
 		return;
 	}
 
 	if(place == $location[The Lower Chambers])
 	{
-		print("Preadventure skipped by Ed the Undying!", "green");
+		auto_log_info("Preadventure skipped by Ed the Undying!", "green");
 		return;
 	}
 
-	print("Starting preadventure script...", "green");
-	auto_debug_print("Adventuring at " + place.to_string(), "green");
+	auto_log_info("Starting preadventure script...", "green");
+	auto_log_debug("Adventuring at " + place.to_string(), "green");
 
 	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
 	if(auto_my_path() == "Pocket Familiars")
@@ -59,7 +49,7 @@ void handlePreAdventure(location place)
 	{
 		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
 		{
-#			print("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
+#			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
 			use_familiar(famChoice);
 		}
 	}
@@ -74,7 +64,7 @@ void handlePreAdventure(location place)
 			{
 				if(mmon == mon)
 				{
-					auto_debug_print("Using cat burglar because we want to burgle a " + it + " from " + mon);
+					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
 					wannaHeist = true;
 				}
 			}
@@ -89,9 +79,10 @@ void handlePreAdventure(location place)
 	{
 		if(!auto_have_familiar($familiar[Machine Elf]))
 		{
+			auto_log_critical("Massive failure, we don't use snowglobes.");
 			abort("Massive failure, we don't use snowglobes.");
 		}
-		print("Somehow we are going to the DMT without a Machine Elf...", "red");
+		auto_log_error("Somehow we are going to the DMT without a Machine Elf...", "red");
 		use_familiar($familiar[Machine Elf]);
 	}
 
@@ -167,14 +158,19 @@ void handlePreAdventure(location place)
 
 	if (isActuallyEd())
 	{
-		if((zone_combatMod(place)._int < combat_rate_modifier()) && (have_effect($effect[Shelter Of Shed]) == 0) && auto_have_skill($skill[Shelter Of Shed]))
+		// make sure we have enough MP to cast our most expensive spells
+		// Wrath of Ra (yellow ray) is 40 MP, Curse of Stench (sniff) is 35 MP & Curse of Vacation (banish) is 30 MP.
+		acquireMP(40, 1000);
+		// ensure we can cast at least Fist of the Mummy or Storm of the Scarab.
+		// so we don't waste adventures when we can't actually kill a monster.
+		acquireMP(8, 0);
+
+		if (my_hp() == 0)
 		{
-			acquireMP(25, false);
-		}
-		acquireMP(40, false);
-		if(my_meat() > 1000)
-		{
-			acquireMP(40, true);
+			// the game doesn't let you adventure if you have no HP even though Ed
+			// gets a full heal when he goes to the underworld
+			// only necessary if a non-combat puts you on 0 HP.
+			acquireHP(1);
 		}
 	}
 
@@ -224,14 +220,14 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if((monster_level_adjustment() > 120) && ((my_hp() * 10) < (my_maxhp() * 8)) && (my_mp() >= 20))
+	if(monster_level_adjustment() > 120)
 	{
-		useCocoon();
+		acquireHP(80.0);
 	}
 
-	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32) && (my_maxmp() >= 32) && (my_meat() > 2500))
+	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32) && (my_maxmp() >= 32))
 	{
-		acquireMP(32, true);
+		acquireMP(32, 2500);
 	}
 
 	foreach i,mon in get_monsters(place)
@@ -249,7 +245,7 @@ void handlePreAdventure(location place)
 
 	if(auto_latteDropWanted(place))
 	{
-		print('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
+		auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
 		autoEquip($item[latte lovers member\'s mug]);
 	}
 
@@ -325,7 +321,7 @@ void handlePreAdventure(location place)
 		}
 		if(itemDrop < itemNeed._float)
 		{
-			print("We can't cap this drop bear!", "purple");
+			auto_log_debug("We can't cap this drop bear!", "purple");
 		}
 	}
 
@@ -345,18 +341,18 @@ void handlePreAdventure(location place)
 	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
 	if(wasted_mp > 0 && my_mp() > 400)
 	{
-		print("Burning " + wasted_mp + " MP...");
+		auto_log_info("Burning " + wasted_mp + " MP...");
 		cli_execute("burn " + wasted_mp);
 	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{
-		print("Warning, we don't have a lot of MP but we are chugging along anyway", "red");
+		auto_log_warning("We don't have a lot of MP but we are chugging along anyway", "red");
 	}
 	groundhogAbort(place);
 	if(my_inebriety() > inebriety_limit()) abort("You are overdrunk. Stop it.");
 	set_property("auto_priorLocation", place);
-	print("Pre Adventure at " + place + " done, beep.", "blue");
+	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
 }
 
 void main()

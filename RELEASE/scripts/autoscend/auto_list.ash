@@ -75,8 +75,6 @@ familiar[int] List(familiar[int] data)
 	{
 		temp[idx] = el;
 	}
-#	print(ListOutput(data), "red");
-#	print(ListOutput(temp), "gray");
 	sort temp by index;
 
 	int index = 0;
@@ -122,8 +120,6 @@ familiar[int] ListRemove(familiar[int] list, familiar what)
 familiar[int] ListRemove(familiar[int] list, familiar what, int idx)
 {
 	familiar[int] retval = List(list);
-#	print(ListOutput(list), "red");
-#	print(ListOutput(retval), "gray");
 	foreach at, el in retval
 	{
 		if((el == what) && (at >= idx))
@@ -137,8 +133,6 @@ familiar[int] ListRemove(familiar[int] list, familiar what, int idx)
 familiar[int] ListErase(familiar[int] list, int index)
 {
 	familiar[int] retval = List(list);
-#	print(ListOutput(list), "red");
-#	print(ListOutput(retval), "gray");
 	remove retval[index];
 	return List(retval);
 }
@@ -222,51 +216,51 @@ void main()
 	boolean[familiar] test = $familiars[Slimeling, Puck Man, Baby Gravy Fairy, Intergnat, Mosquito];
 	familiar[int] list = List(test);
 
-	print("First list", "green");
-	print(ListOutput(list), "blue");
+	auto_log_info("First list", "green");
+	auto_log_info(ListOutput(list), "blue");
 
-	print("Deleting Baby Gravy Fairy, (2)", "green");
+	auto_log_info("Deleting Baby Gravy Fairy, (2)", "green");
 	list = ListRemove(list, $familiar[Baby Gravy Fairy]);
-	print(ListOutput(list), "blue");
+	auto_log_info(ListOutput(list), "blue");
 
-	print("Deleting Element 1 (Puck Man)", "green");
+	auto_log_info("Deleting Element 1 (Puck Man)", "green");
 	list = ListErase(list, 1);
-	print(ListOutput(list), "blue");
+	auto_log_info(ListOutput(list), "blue");
 
-	print("Inserting at Front (Exotic Parrot)", "green");
+	auto_log_info("Inserting at Front (Exotic Parrot)", "green");
 	list = ListInsertFront(list, $familiar[Exotic Parrot]);
-	print(ListOutput(list), "blue");
+	auto_log_info(ListOutput(list), "blue");
 
-	print("Inserting at End (Leprechaun)", "green");
+	auto_log_info("Inserting at End (Leprechaun)", "green");
 	list = ListInsert(list, $familiar[Leprechaun]);
-	print(ListOutput(list), "blue");
+	auto_log_info(ListOutput(list), "blue");
 
-	print("Inserting at 2 (Artistic Goth Kid)", "green");
+	auto_log_info("Inserting at 2 (Artistic Goth Kid)", "green");
 	list = ListInsertAt(list, $familiar[Artistic Goth Kid], 2);
-	print(ListOutput(list), "blue");
+	auto_log_info(ListOutput(list), "blue");
 
-	print("Inserting at 0 (Artistic Goth Kid)", "green");
+	auto_log_info("Inserting at 0 (Artistic Goth Kid)", "green");
 	list = ListInsertAt(list, $familiar[Artistic Goth Kid], 0);
-	print(ListOutput(list), "blue");
+	auto_log_info(ListOutput(list), "blue");
 
-	print("Inserting inorder weirdness (Bulky Buddy Box)", "green");
+	auto_log_info("Inserting inorder weirdness (Bulky Buddy Box)", "green");
 	list = ListInsertInorder(list, $familiar[Bulky Buddy Box]);
-	print(ListOutput(list), "blue");
+	auto_log_info(ListOutput(list), "blue");
 
-	print("Inserting inorder weirdness (Xiblaxian Holo-Companion)", "green");
+	auto_log_info("Inserting inorder weirdness (Xiblaxian Holo-Companion)", "green");
 	list = ListInsertInorder(list, $familiar[Xiblaxian Holo-Companion]);
-	print(ListOutput(list), "blue");
+	auto_log_info(ListOutput(list), "blue");
 
 	int index = 0;
 	while(index < count(list))
 	{
-		print(index + ": " + list[index] + ": " + ListFind(list, list[index]), "blue");
+		auto_log_info(index + ": " + list[index] + ": " + ListFind(list, list[index]), "blue");
 		index = index + 1;
 	}
-	print(3 + ": " + list[3] + ": " + list.ListFind(list[3], 1), "blue");
-	print(3 + ": " + list[3] + ": " + list.ListFind(list[3], 2), "blue");
-	print(3 + ": " + list[3] + ": " + list.ListFind(list[3], 3), "blue");
-	print(3 + ": " + list[3] + ": " + list.ListFind(list[3], 4), "blue");
+	auto_log_info(3 + ": " + list[3] + ": " + list.ListFind(list[3], 1), "blue");
+	auto_log_info(3 + ": " + list[3] + ": " + list.ListFind(list[3], 2), "blue");
+	auto_log_info(3 + ": " + list[3] + ": " + list.ListFind(list[3], 3), "blue");
+	auto_log_info(3 + ": " + list[3] + ": " + list.ListFind(list[3], 4), "blue");
 }
 
 // start of int[int]

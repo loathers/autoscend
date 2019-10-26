@@ -32,7 +32,7 @@ boolean elementalPlanes_initializeSettings()
 		temp = visit_url("place.php?whichplace=airport_sleaze&intro=1");
 		if(contains_text(temp, "you take a short, turbulence-free flight to Spring Break Beach."))
 		{
-			print("We have access to Spring Break Beach. Woo.", "green");
+			auto_log_info("We have access to Spring Break Beach. Woo.", "green");
 			set_property("sleazeAirportAlways", true);
 		}
 	}
@@ -42,7 +42,7 @@ boolean elementalPlanes_initializeSettings()
 		temp = visit_url("place.php?whichplace=airport_spooky&intro=1");
 		if(contains_text(temp, "Your flight to Conspiracy Island is nasty, brutish and short."))
 		{
-			print("We have access to Conspiracy Island. Boo.", "green");
+			auto_log_info("We have access to Conspiracy Island. Boo.", "green");
 			set_property("spookyAirportAlways", true);
 		}
 	}
@@ -52,7 +52,7 @@ boolean elementalPlanes_initializeSettings()
 		temp = visit_url("place.php?whichplace=airport_stench&intro=1");
 		if(contains_text(temp, "You get in line with the thousands of other passengers bound for Dinseylandfill."))
 		{
-			print("We have access to Dinseylandfill. Eww.", "green");
+			auto_log_info("We have access to Dinseylandfill. Eww.", "green");
 			set_property("stenchAirportAlways", true);
 		}
 	}
@@ -62,7 +62,7 @@ boolean elementalPlanes_initializeSettings()
 		temp = visit_url("place.php?whichplace=airport_hot&intro=1");
 		if(contains_text(temp, "After a convenient, comfortable and dignified ticketing and boarding process"))
 		{
-			print("We have access to That 70s Volcano. Groovy.", "green");
+			auto_log_info("We have access to That 70s Volcano. Groovy.", "green");
 			set_property("hotAirportAlways", true);
 		}
 	}
@@ -72,7 +72,7 @@ boolean elementalPlanes_initializeSettings()
 		temp = visit_url("place.php?whichplace=airport_cold&intro=1");
 		if(contains_text(temp, "The local temperature is about a million degrees below zero"))
 		{
-			print("We can go to The Glaciest. Great prices everyday!", "green");
+			auto_log_info("We can go to The Glaciest. Great prices everyday!", "green");
 			set_property("coldAirportAlways", true);
 		}
 	}
@@ -114,13 +114,13 @@ boolean elementalPlanes_takeJob(element ele)
 
 		if(sustenance != -1)
 		{
-			print("Trying to avoid Guest Sustenance Assurance Dinseylandfill job.", "blue");
+			auto_log_info("Trying to avoid Guest Sustenance Assurance Dinseylandfill job.", "blue");
 			foreach job in jobs
 			{
 				int newAt = index_of(page, job, at);
 				if(newAt != -1)
 				{
-					print("Found new job option: " + job, "blue");
+					auto_log_info("Found new job option: " + job, "blue");
 					if(newAt < sustenance)
 					{
 						choice = 1;
@@ -155,14 +155,14 @@ boolean elementalPlanes_takeJob(element ele)
 		while(bucket.find())
 		{
 			at = at + 1;
-			print("Found bucket " + bucket.group(1) + ".", "blue");
+			auto_log_info("Found bucket " + bucket.group(1) + ".", "blue");
 			int i = 0;
 			foreach job in jobs
 			{
 				i = i + 1;
 				if((bucket.group(1) == job) && (i > best))
 				{
-					print("Considering job " + job, "blue");
+					auto_log_info("Considering job " + job, "blue");
 					best = i;
 					choice = at;
 				}
@@ -276,7 +276,7 @@ boolean volcano_lavaDogs()
 
 	if($location[The Bubblin\' Caldera].turns_spent >= 15)
 	{
-		print("Could not find Caldera Volcoino... uh oh...", "red");
+		auto_log_warning("Could not find Caldera Volcoino... uh oh...", "red");
 		return false;
 	}
 
@@ -372,7 +372,3 @@ boolean volcano_bunkerJob()
 	}
 	return false;
 }
-
-
-
-

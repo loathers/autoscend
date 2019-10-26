@@ -103,7 +103,7 @@ boolean boris_buySkills()
 	if(my_skillPoints.find())
 	{
 		int skillPoints = to_int(my_skillPoints.group(1));
-		print("Skill points found: " + skillPoints);
+		auto_log_info("Skill points found: " + skillPoints);
 		possBorisPoints = skillPoints - 1;
 
 		while(skillPoints > 0)

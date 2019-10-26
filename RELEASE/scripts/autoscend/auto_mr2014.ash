@@ -74,7 +74,7 @@ boolean dna_startAcquire()
 	set_property("auto_day1_dna", "finished");
 	if(have_effect($effect[Human-Weird Thing Hybrid]) != 2147483647)
 	{
-		print("DNA Hybridization failed, perhaps it was due to ML which is annoying us right now.", "red");
+		auto_log_warning("DNA Hybridization failed, perhaps it was due to ML which is annoying us right now.", "red");
 	}
 	return true;
 }

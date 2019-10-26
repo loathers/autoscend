@@ -93,7 +93,7 @@ boolean pete_buySkills()
 	if(my_skillPoints.find())
 	{
 		int skillPoints = to_int(my_skillPoints.group(1));
-		print("Skill points found: " + skillPoints);
+		auto_log_info("Skill points found: " + skillPoints);
 
 		while(skillPoints > 0)
 		{
@@ -230,7 +230,7 @@ boolean pete_buySkills()
 	matcher my_cyclePoints = create_matcher("Upping Your Grade", page);
 	while(my_cyclePoints.find())
 	{
-		print("Found Upping Your Grade", "blue");
+		auto_log_info("Found Upping Your Grade", "blue");
 		int firstChoice = -1;
 		int secondChoice = -1;
 		if(get_property("peteMotorbikeCowling") == "")
@@ -272,20 +272,6 @@ boolean pete_buySkills()
 
 		page = visit_url("choice.php?pwd=&whichchoice=859&option=" + firstChoice);
 
-		/*
-		//As of r18887, mafia can not handle this. run_choice() does not work properly.
-		run_choice(firstChoice);
-		if(last_choice() == 859)
-		{
-			print("Ugh, mafia did not update what choice we are on, let's try to fix this", "red");
-			string temp = visit_url("main.php");
-			if(last_choice() == 859)
-			{
-				abort("Could not trick mafia into realizing that we changed our choice");
-			}
-		}
-		run_choice(secondChoice);
-		*/
 		if(last_choice() == 859)
 		{
 			abort("Mafia is not handling this correctly, sorry");
