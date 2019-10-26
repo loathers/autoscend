@@ -130,11 +130,7 @@ boolean autoscend_migrate(){
 
   boolean all_good = true;
   if(autoscend_needs_update()){
-<<<<<<< HEAD
     auto_log_info("Migrating from " + autoscend_previous_version() + " to " + __autoscend_version, "blue");
-=======
-    print("Migrating from " + autoscend_previous_version() + " to " + __autoscend_version, "blue");
->>>>>>> master
     if(autoscend_previous_version() == "0.0.0" && repo_present("sl_ascend")){
       all_good = autoscend_migrate_properties() && remove_sl_ascend_repos();
     }
