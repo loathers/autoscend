@@ -325,11 +325,128 @@ void handlePreAdventure(location place)
 		}
 	}
 
+
+	// ML adjustment zone section
+	boolean doML = true;
+	boolean removeML = false;
+		// removeML MUST be true for purgeML to be used. This is only used for -ML locations like Smut Orc, and you must have 5+ SGEAs to use.
+		boolean purgeML = false;
+
+	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
+	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
+
+	// Generic Conditions
+	if(get_property("kingLiberated").to_boolean())
+	{
+		doML = false;
+		removeML=false;
+		purgeML=false;
+	}
+
+		// NOTE: If we aren't quits before we pass L13, let us gain stats.
+	if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() == 13)))
+	{
+		doML = false;
+		removeML = true;
+		purgeML=false;
+	}
+
+	// Allow user settable option to override the above settings to not slack off ML
+	if(get_property("auto_auto_disregardInstantKarma"))
+	{
+		doML = true;
+		removeML = false;
+		purgeML=false;
+	}
+
+	// Item specific Conditions
+	if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
+	{
+		doML = false;
+		removeML = true;
+		purgeML=false;
+	}
+
+	// Location Specific Conditions
+	if(lowMLZones contains place)
+	{
+		doML = false;
+		removeML = true;
+		purgeML = true;
+	}
+	if(highMLZones contains place)
+	{
+		doML = true;
+		removeML = false;
+		purgeML=false;
+	}
+
+	// Act on ML settings
+	if(doML)
+	{
+		// Catch when we leave lowMLZone, allow for being "side tracked" by delay burning
+		if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
+		{
+			auto_log_debug("No Reason to delay Asdon Usage");
+			uneffect($effect[Driving Intimidatingly]);
+			set_property("auto_debuffAsdonDelay", 0);
+		}
+		else if((have_effect($effect[Driving Intimidatingly]).to_int() == 0)  && (get_property("auto_debuffAsdonDelay") >= 0))
+		{
+			set_property("auto_debuffAsdonDelay", 0);
+		}
+		else
+		{
+			set_property("auto_debuffAsdonDelay", get_property("auto_debuffAsdonDelay").to_int() + 1);
+			auto_log_debug("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
+		}
+
+		auto_MaxMLToCap(150, false);
+	}
+
+	// If we are in some state where we do not want +ML (Level 13 or Smut Orc) make sure ML is removed
+	if(removeML)
+	{
+		auto_change_mcd(0);
+
+		uneffect($effect[Driving Recklessly]);
+		uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
+
+		if((purgeML) && item_amount($item[soft green echo eyedrop antidote]) > 5)
+		{
+			uneffect($effect[Drescher\'s Annoying Noise]);
+			uneffect($effect[Pride of the Puffin]);
+			uneffect($effect[Ceaseless Snarling]);
+		}
+	}
+
+	// Here we enforce our ML restrictions if +/-ML is not specifically called in the current maximizer string
+	enforceMLInPreAdv();
+
+// EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
 	if(useMaximizeToEquip())
 	{
 		cli_execute("checkpoint clear");
 	}
+
+	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
+	if(lowMLZones contains place)
+	{
+		auto_log_debug("Going into a LOW ML ZONE with ML: " + monster_level_adjustment());
+	}
+	else
+	{
+		// Last minute MCD alterations if Limit set, otherwise trust maximizer
+		if(get_property("auto_MLSafetyLimit") != "")
+		{
+			auto_change_mcd(0);
+			auto_setMCDToCap();
+		}
+
+		auto_log_debug("Going into High or Standard ML Zone with ML: " + monster_level_adjustment());
+	}	
+
 	executeFlavour();
 
 	// After maximizing equipment, we might not be at full HP
