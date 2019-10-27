@@ -8566,8 +8566,10 @@ boolean L10_holeInTheSkyUnlock()
 		set_property("auto_holeinthesky", false);
 		return false;
 	}
-	if(!needStarKey())
+	if (!needStarKey() && !isActuallyEd())
 	{
+		// we force auto_holeinthesky to true in L11_shenCopperhead() as Ed if Shen sends us to the Hole in the Sky
+		// as otherwise the zone isn't required at all for Ed.
 		set_property("auto_holeinthesky", false);
 		return false;
 	}
