@@ -5917,17 +5917,17 @@ boolean auto_setMCDToCap()
 	}
 
 
-	if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingToMLCap()))
+	if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
 	{
 		auto_change_mcd(11);
 	}
-	else if(10 <= remainingToMLCap())
+	else if(10 <= remainingMLToCap())
 	{
 		auto_change_mcd(10);
 	}
-	else if(10 > remainingToMLCap())
+	else if(10 > remainingMLToCap())
 	{
-		auto_change_mcd(remainingToMLCap());
+		auto_change_mcd(remainingMLToCap());
 	}
 
 	return true;
@@ -5938,7 +5938,7 @@ boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 {
 	if((have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0) && ((monster_level_adjustment() + (2 * my_level())) <= auto_convertDesiredML(UrKelToML)))                           
 	{
-		if((get_property("auto_MLSafetyLimit") == "") || (((2 * my_level()) <= UrKelUpperLimit) && ((2 * my_level()) >= UrKelLowerLimit))
+		if((get_property("auto_MLSafetyLimit") == "") || (((2 * my_level()) <= UrKelUpperLimit) && ((2 * my_level()) >= UrKelLowerLimit)))
 		{
 			buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 0, 1, 10);
 		}
