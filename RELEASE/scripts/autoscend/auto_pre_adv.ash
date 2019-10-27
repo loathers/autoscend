@@ -352,7 +352,7 @@ void handlePreAdventure(location place)
 	}
 
 	// Allow user settable option to override the above settings to not slack off ML
-	if(get_property("auto_auto_disregardInstantKarma"))
+	if (get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		doML = true;
 		removeML = false;
