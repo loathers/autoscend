@@ -9628,7 +9628,7 @@ boolean L7_crypt()
 			}
 		}
 
-		auto_MaxMLToCap(149, true);
+		auto_MaxMLToCap(auto_convertDesiredML(149), true);
 
 		providePlusNonCombat(25);
 
@@ -12765,17 +12765,7 @@ boolean L9_oilPeak()
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	handleFamiliar("initSuggest");
 
-	auto_MaxMLToCap(100, false);
-
-	// Maximize Asdon usage
-	if(((monster_level_adjustment() >= 75) && (monster_level_adjustment() <= 99)) || ((monster_level_adjustment() >= 25) && (monster_level_adjustment() <= 49)) || (monster_level_adjustment() <= 11))
-	{
-		asdonBuff($effect[Driving Recklessly]);
-	}
-	else
-	{
-		asdonBuff($effect[Driving Wastefully]);
-	}
+	auto_MaxMLToCap(auto_convertDesiredML(100), false);
 
 	if (isActuallyEd() && get_property("auto_dickstab").to_boolean())
 	{
@@ -12807,6 +12797,16 @@ boolean L9_oilPeak()
 				autoEquip($item[tinsel tights]);
 			}
 		}
+	}
+
+	// Maximize Asdon usage
+	if((((simMaximizeWith("1000ml 75min")) && (!simMaximizeWith("1000ml 99min"))) || ((simMaximizeWith("1000ml 25min")) && (!simMaximizeWith("1000ml 49min"))) || (!simMaximizeWith("1000ml 11min"))) && (have_effect($effect[Driving Wastefully]) == 0))
+	{
+		asdonBuff($effect[Driving Recklessly]);
+	}
+	else if(have_effect($effect[Driving Recklessly]) == 0)
+	{
+		asdonBuff($effect[Driving Wastefully]);
 	}
 
 	addToMaximize("1000ml " + auto_convertDesiredML(100) + "max");
@@ -14182,11 +14182,11 @@ boolean auto_tavern()
 
 		if((my_path() != "Actually Ed the Undying") && (monster_level_adjustment() <= 299))
 		{
-			auto_MaxMLToCap(150, true);
+			auto_MaxMLToCap(auto_convertDesiredML(150), true);
 		}
 		else
 		{
-			auto_MaxMLToCap(150, false);
+			auto_MaxMLToCap(auto_convertDesiredML(150), false);
 		}
 
 		foreach element_type in $strings[Hot, Cold, Stench, Sleaze, Spooky]

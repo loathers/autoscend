@@ -5887,7 +5887,7 @@ int auto_convertDesiredML(int DML)
 {
 	int DesiredML = get_property("auto_MLSafetyLimit").to_int();
 
-	if((get_property("auto_MLSafetyLimit") == "") || (DML < get_property("auto_MLSafetyLimit").to_int()))
+	if(get_property("auto_MLSafetyLimit") == "")
 	{
 		DesiredML = DML;
 	}
