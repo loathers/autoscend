@@ -29,7 +29,7 @@ Note: you may need to delete KoLMafia's svn cache if you want to switch between 
 
 ## Usage
 
-Just type auto\_ascend in the gCLI! You can configure autoscend in the relay browser via the relay
+Just type autoscend in the gCLI! You can configure autoscend in the relay browser via the relay
 script autoscend. If you ever want to interrupt the script, please use the interrupt button in
 the autoscend relay script rather than terminating via mafia with escape. Otherwise certain settings
 may not be restored properly to their pre-run values.
@@ -59,6 +59,14 @@ requirements section. Other classes should work as well, but Sauceror works best
 The recommended class/sign combination for running autoscend in TCRS is Sauceror/Blender.
 Other signs should work okay too, but they won't have any special support (like automatic diet,
 or using certain nice cheap potions).
+
+## Actually Ed the Undying
+
+The recommended choices in Valhalla for Actually Ed the Undying are 
+
+* Astral Pilsners.
+* Astral Ring if you have less than 20 skill points, Astral Belt otherwise.
+* Opossum moon sign
 
 ## Warning
 

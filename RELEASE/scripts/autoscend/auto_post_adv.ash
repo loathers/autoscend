@@ -227,40 +227,31 @@ void handlePostAdventure()
 
 	if (isActuallyEd())
 	{
-		int maxBuff = max(5, 660 - my_turncount());
-		if(spleen_limit() < 35)
-		{
-			maxBuff = min(maxBuff, spleen_limit());
-		}
-		if(my_mp() < 40)
-		{
-			maxBuff = 5;
-		}
-
 		if ($location[The Shore\, Inc. Travel Agency] != my_location())
 		{
 			if (my_servant() != $servant[none] && my_servant().experience < 196)
 			{
-				buffMaintain($effect[Purr of the Feline], 20, 1, 10);
+				buffMaintain($effect[Purr of the Feline], 10, 1, 10);
 			}
+
+			buffMaintain($effect[Wisdom of Thoth], 10, 1, 10);
 
 			if (my_level() < 13)
 			{
-				buffMaintain($effect[Prayer of Seshat], 5, 1, 10);
+				buffMaintain($effect[Prayer of Seshat], 10, 1, 10);
 			}
 
-			buffMaintain($effect[Wisdom of Thoth], 20, 1, 10);
-			buffMaintain($effect[Power of Heka], 20, 1, 10);
-			buffMaintain($effect[Hide of Sobek], 20, 1, 10);
+			buffMaintain($effect[Power of Heka], 10, 1, 10);
+			buffMaintain($effect[Hide of Sobek], 10, 1, 10);
 
 			if(!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, Pirates of the Garbage Barges, The Secret Government Laboratory] contains my_location()))
 			{
-				buffMaintain($effect[Bounty of Renenutet], 20, 1, 10);
+				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}
 
 			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])))
 			{
-				buffMaintain($effect[Blessing of Serqet], 20, 1, 10);
+				buffMaintain($effect[Blessing of Serqet], 10, 1, 10);
 			}
 
 			foreach ef in $effects[Prayer Of Seshat, Wisdom Of Thoth, Power of Heka, Hide Of Sobek, Bounty Of Renenutet]
@@ -270,6 +261,10 @@ void handlePostAdventure()
 					buffMaintain(ef, 20, 1, 20);
 				}
 			}
+		}
+		else
+		{
+			buffMaintain($effect[Wisdom of Thoth], 10, 1, 10);
 		}
 
 		if((my_mp() + 100) < my_maxmp())
@@ -674,102 +669,6 @@ void handlePostAdventure()
 				auto_log_warning("Could not wear Vile Vagrant Outfit for some raisin", "red");
 			}
 			didOutfit = true;
-		}
-
-
-		// ML adjustment zone section
-		boolean doML = true;
-		boolean removeML = false;
-			// removeML MUST be true for purgeML to be used. This is only used for -ML locations like Smut Orc, and you must have 5+ SGEAs to use.
-			boolean purgeML = false;
-
-		boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, Defiled Cranny];
-		boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
-
-		// Generic Conditions
-		if(get_property("kingLiberated").to_boolean())
-		{
-			doML = false;
-		}
-		if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() >= 13)))
-		{
-			doML = false;
-		}
-
-		// Item specific Conditions
-		if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
-		{
-			doML = false;
-			removeML = true;
-		}
-
-		// Location Specific Conditions
-		if(lowMLZones contains my_location())
-		{
-			doML = false;
-			removeML = true;
-			purgeML = true;
-		}
-		if(highMLZones contains my_location())
-		{
-			doML = true;
-			removeML = false;
-		}
-
-		// Act on ML settings
-		if(doML)
-		{
-			auto_change_mcd(11);
-
-			// Catch when we leave lowMLZone, allow for being "side tracked" buy delay burning
-			if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
-			{
-				auto_log_info("No Reason to delay Asdon Usage");
-				uneffect($effect[Driving Intimidatingly]);
-				set_property("auto_debuffAsdonDelay", 0);
-			}
-			else if((have_effect($effect[Driving Intimidatingly]).to_int() == 0)  && (get_property("auto_debuffAsdonDelay") >= 0))
-			{
-				set_property("auto_debuffAsdonDelay", 0);
-			}
-			else
-			{
-				set_property("auto_debuffAsdonDelay", get_property("auto_debuffAsdonDelay").to_int() + 1);
-				auto_log_info("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
-			}
-
-			if((monster_level_adjustment() + (2 * my_level())) <= 150)
-			{
-				buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 10) <= 150)
-			{
-				buffMaintain($effect[Drescher\'s Annoying Noise], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 10) <= 150)
-			{
-				buffMaintain($effect[Pride of the Puffin], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 30) <= 150)
-			{
-				buffMaintain($effect[Ceaseless Snarling], 0, 1, 10);
-			}
-		}
-
-		// If we are in some state where we do not want +ML (Level 13 or Smut Orc) make sure ML is removed
-		if(removeML)
-		{
-			auto_change_mcd(0);
-
-			uneffect($effect[Driving Recklessly]);
-			uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
-
-			if((purgeML) && item_amount($item[soft green echo eyedrop antidote]) > 5)
-			{
-				uneffect($effect[Drescher\'s Annoying Noise]);
-				uneffect($effect[Pride of the Puffin]);
-				uneffect($effect[Ceaseless Snarling]);
-			}
 		}
 
 

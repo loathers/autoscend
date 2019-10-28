@@ -1770,11 +1770,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 
 	if(towerKeyCount() < 3)
 	{
-		if(item_amount($item[Boris's key]) == 0 && item_amount($item[fat loot token]) < 3)
+		if(item_amount($item[Boris\'s key]) == 0 && item_amount($item[fat loot token]) < 3)
 			wantBorisPie = true;
-		if(item_amount($item[Jarlsberg's key]) == 0 && item_amount($item[fat loot token]) < 2)
+		if(item_amount($item[Jarlsberg\'s key]) == 0 && item_amount($item[fat loot token]) < 2)
 			wantJarlsbergPie = true;
-		if(item_amount($item[Sneaky Pete's key]) == 0 && item_amount($item[fat loot token]) < 1)
+		if(item_amount($item[Sneaky Pete\'s key]) == 0 && item_amount($item[fat loot token]) < 1)
 			wantPetePie = true;
 	}
 
@@ -1795,9 +1795,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				actions[n].desirability += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
 			}
 			if ((obtain_mode == SL_OBTAIN_PULL) && (i == 0) &&
-					((it == $item[Boris's key lime pie] && wantBorisPie) ||
-					(it == $item[Jarlsberg's key lime pie] && wantJarlsbergPie) ||
-					(it == $item[Sneaky Pete's key lime pie] && wantPetePie)))
+					((it == $item[Boris\'s key lime pie] && wantBorisPie) ||
+					(it == $item[Jarlsberg\'s key lime pie] && wantJarlsbergPie) ||
+					(it == $item[Sneaky Pete\'s key lime pie] && wantPetePie)))
 			{
 				auto_log_info("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
 				actions[n].desirability += 25;
