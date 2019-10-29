@@ -5898,7 +5898,6 @@ int auto_convertDesiredML(int DML)
 // Uses MCD in the constraints of a Cap
 boolean auto_setMCDToCap()
 {
-
 	// This just does the math for comparing vs. the Cap. If no cap is set then ML is virtually unlimited.
 	int remainingMLToCap()
 	{
@@ -5916,21 +5915,25 @@ boolean auto_setMCDToCap()
 		return MLToCap;
 	}
 
+	// Don't try to set the MCD is in KoE
+	if(!in_koe())
+	{
 
-	if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
-	{
-		change_mcd(11);
-	}
-	else if(10 <= remainingMLToCap())
-	{
-		change_mcd(10);
-	}
-	else if(10 > remainingMLToCap())
-	{
-		change_mcd(remainingMLToCap());
-	}
+		if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
+		{
+			change_mcd(11);
+		}
+		else if(10 <= remainingMLToCap())
+		{
+			change_mcd(10);
+		}
+		else if(10 > remainingMLToCap())
+		{
+			change_mcd(remainingMLToCap());
+		}
 
-	return true;
+		return true;
+	}
 }
 
 // We use this function to determine the suitability of using Ur-Kel's
@@ -5954,9 +5957,11 @@ boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 {
 
-// Turn Off MCD first, so we can maximize our ML within constraints.
-	auto_change_mcd(0);
-
+// Turn Off MCD first if not in KoE, so we can maximize our ML within constraints.
+	if(!in_koe())
+	{
+		change_mcd(0);
+	}
 
 // ToML >= U >= 30
 	UrKelCheck(ToML, auto_convertDesiredML(ToML), 30);
