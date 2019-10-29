@@ -292,60 +292,41 @@ boolean handleFamiliar(string type)
 		}
 	}
 
-	if(auto_beta())
+	boolean suggest = type.ends_with("Suggest");
+	if(suggest)
 	{
-		boolean suggest = type.ends_with("Suggest");
-		if(suggest)
+		type = type.substring(0, type.length() - length("Suggest"));
+		if(familiar_weight(my_familiar()) < 20)
 		{
-			type = type.substring(0, type.length() - length("Suggest"));
-			if(familiar_weight(my_familiar()) < 20)
-			{
-				return false;
-			}
-		}
-
-		string [string,int,string] familiars_text;
-		if(!file_to_map("autoscend_familiars.txt", familiars_text))
-			auto_log_critical("Could not load autoscend_familiars.txt. This is bad!", "red");
-		foreach i,name,conds in familiars_text[type]
-		{
-			familiar thisFamiliar = name.to_familiar();
-			if(thisFamiliar == $familiar[none] && name != "none")
-			{
-				auto_log_error('"' + name + '" does not convert to a familiar properly!', "red");
-				auto_log_error(type + "; " + i + "; " + conds, "red");
-				continue;
-			}
-			if(!auto_check_conditions(conds))
-				continue;
-			if(!auto_have_familiar(thisFamiliar))
-				continue;
-			if(blacklist contains thisFamiliar)
-				continue;
-			return handleFamiliar(thisFamiliar);
-		}
-		return false;
-	}
-
-/*
-	if((type == "item") && (get_property("auto_beatenUpCount").to_int() > 5))
-	{
-		generic_t itemNeed = zone_needItem(place);
-		if(itemNeed._boolean && (item_drop_modifier() > itemNeed._float))
-		{
-			type = "regen";
+			return false;
 		}
 	}
-*/
+	
+	string [string,int,string] familiars_text;
+	if(!file_to_map("autoscend_familiars.txt", familiars_text))
+		auto_log_critical("Could not load autoscend_familiars.txt. This is bad!", "red");
+	foreach i,name,conds in familiars_text[type]
+	{
+		familiar thisFamiliar = name.to_familiar();
+		if(thisFamiliar == $familiar[none] && name != "none")
+		{
+			auto_log_error('"' + name + '" does not convert to a familiar properly!', "red");
+			auto_log_error(type + "; " + i + "; " + conds, "red");
+			continue;
+		}
+		if(!auto_check_conditions(conds))
+			continue;
+		if(!auto_have_familiar(thisFamiliar))
+			continue;
+		if(blacklist contains thisFamiliar)
+			continue;
+		return handleFamiliar(thisFamiliar);
+	}
+	return false;
 
 	if(type == "meat")
 	{
 		familiar[int] fams = List($familiars[Adventurous Spelunker, Grimstone Golem, Angry Jung Man, Bloovian Groose, Hobo Monkey, Cat Burglar, Piano Cat, Leprechaun]);
-
-#		if(available_amount($item[Li\'l Pirate Costume]) > 0)
-#		{
-#			fams = ListInsertFront(fams, $familiar[Trick-or-Treating Tot]);
-#		}
 
 		int index = 0;
 		while(index < count(fams))
@@ -4296,22 +4277,7 @@ boolean L13_towerNSFinal()
 
 	autoEquip($slot[Off-Hand], $item[Oscus\'s Garbage Can Lid]);
 
-	if(auto_beta())
-	{
-		handleFamiliar("boss");
-	}
-	else
-	{
-		handleFamiliar($familiar[warbear drone]);
-		if(!auto_have_familiar($familiar[Warbear Drone]))
-		{
-			handleFamiliar($familiar[Fist Turkey]);
-		}
-		if(auto_have_familiar($familiar[Machine Elf]))
-		{
-			handleFamiliar($familiar[Machine Elf]);
-		}
-	}
+	handleFamiliar("boss");
 
 	if(!useMaximizeToEquip())
 	{
@@ -7597,7 +7563,7 @@ boolean L12_gremlins()
 	{
 		bat_formMist();
 	}
-	handleFamiliar(auto_beta() ? "gremlins" : "init");
+	handleFamiliar("gremlins");
 	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{

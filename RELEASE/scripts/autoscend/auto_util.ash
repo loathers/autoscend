@@ -5473,10 +5473,7 @@ boolean auto_badassBelt()
 	}
 }
 
-boolean auto_beta()
-{
-	return get_property("auto_beta_test").to_boolean();
-}
+
 
 void auto_interruptCheck()
 {
@@ -5536,7 +5533,7 @@ boolean executeFlavour()
 		return false;
 	}
 
-	if(get_property("_auto_tunedElement") == "" && auto_beta())
+	if(get_property("_auto_tunedElement") == "")
 	{
 		autoFlavour(my_location());
 	}

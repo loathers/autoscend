@@ -86,45 +86,46 @@ item	28	Rockin' Robin
 # More BACON, why not
 item	29	Intergnat
 # Fairywhelps
-item	30	XO Skeleton
-item	31	Garbage Fire
-item	32	Dandy Lion
+item	30	Pocket Professor
+item	31	XO Skeleton
+item	32	Garbage Fire
+item	33	Dandy Lion
 # Fairychauns
-item	33	Cat Burglar
-item	34	Angry Jung Man
-item	35	Adventurous Spelunker
-item	36	Blavious Kloop
-item	37	Hippo Ballerina
-item	38	Dancing Frog
-item	39	Coffee Pixie
-item	40	Attention-Deficit Demon
-item	41	Jitterbug
-item	42	Casagnova Gnome
-item	43	Psychedelic Bear
-item	44	Piano Cat
+item	34	Cat Burglar
+item	35	Angry Jung Man
+item	36	Adventurous Spelunker
+item	37	Blavious Kloop
+item	38	Hippo Ballerina
+item	39	Dancing Frog
+item	40	Coffee Pixie
+item	41	Attention-Deficit Demon
+item	42	Jitterbug
+item	43	Casagnova Gnome
+item	44	Psychedelic Bear
+item	45	Piano Cat
 # Slightly special fairies
-item	45	Pair of Stomping Boots
-item	46	Gelatinous Cubeling
-item	47	Steam-Powered Cheerleader
-item	48	Obtuse Angel
-item	49	Green Pixie
+item	46	Pair of Stomping Boots
+item	47	Gelatinous Cubeling
+item	48	Steam-Powered Cheerleader
+item	49	Obtuse Angel
+item	50	Green Pixie
 #Mutant Fire Ant	grimdark:2
 # Let's bowl 300!
-item	50	Bowlet
+item	51	Bowlet
 # Elemental fairies
-item	51	Sleazy Gravy Fairy
-item	52	Stinky Gravy Fairy
-item	53	Flaming Gravy Fairy
-item	54	Frozen Gravy Fairy
-item	55	Spooky Gravy Fairy
+item	52	Sleazy Gravy Fairy
+item	53	Stinky Gravy Fairy
+item	54	Flaming Gravy Fairy
+item	55	Frozen Gravy Fairy
+item	56	Spooky Gravy Fairy
 # Barely special fairies
-item	56	Mechanical Songbird
-item	57	Grouper Groupie
-item	58	Peppermint Rhino
+item	57	Mechanical Songbird
+item	58	Grouper Groupie
+item	59	Peppermint Rhino
 # Turtles are cute
-item	59	Syncopated Turtle
+item	60	Syncopated Turtle
 # The original
-item	60	Baby Gravy Fairy
+item	61	Baby Gravy Fairy
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
