@@ -5919,15 +5919,15 @@ boolean auto_setMCDToCap()
 
 	if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
 	{
-		auto_change_mcd(11);
+		change_mcd(11);
 	}
 	else if(10 <= remainingMLToCap())
 	{
-		auto_change_mcd(10);
+		change_mcd(10);
 	}
 	else if(10 > remainingMLToCap())
 	{
-		auto_change_mcd(remainingMLToCap());
+		change_mcd(remainingMLToCap());
 	}
 
 	return true;
