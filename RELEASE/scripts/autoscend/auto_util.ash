@@ -4964,8 +4964,17 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 
 	if(useItem != $item[none])
 	{
-		return buffMaintain(useItem, buff, casts, turns);
+		if(in_tcrs())
+		{
+			auto_log_debug("We want to use " + useItem + " but are in 2CRS.", "blue");
+			return false;
+		}
+		else
+		{
+			return buffMaintain(useItem, buff, casts, turns);
+		}
 	}
+
 	if((useSkill != $skill[none]) && auto_have_skill(useSkill))
 	{
 		return buffMaintain(useSkill, buff, mp_min, casts, turns);
