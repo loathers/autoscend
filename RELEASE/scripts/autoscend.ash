@@ -292,223 +292,35 @@ boolean handleFamiliar(string type)
 		}
 	}
 
-	if(auto_beta())
+	boolean suggest = type.ends_with("Suggest");
+	if(suggest)
 	{
-		boolean suggest = type.ends_with("Suggest");
-		if(suggest)
+		type = type.substring(0, type.length() - length("Suggest"));
+		if(familiar_weight(my_familiar()) < 20)
 		{
-			type = type.substring(0, type.length() - length("Suggest"));
-			if(familiar_weight(my_familiar()) < 20)
-			{
-				return false;
-			}
-		}
-
-		string [string,int,string] familiars_text;
-		if(!file_to_map("autoscend_familiars.txt", familiars_text))
-			auto_log_critical("Could not load autoscend_familiars.txt. This is bad!", "red");
-		foreach i,name,conds in familiars_text[type]
-		{
-			familiar thisFamiliar = name.to_familiar();
-			if(thisFamiliar == $familiar[none] && name != "none")
-			{
-				auto_log_error('"' + name + '" does not convert to a familiar properly!', "red");
-				auto_log_error(type + "; " + i + "; " + conds, "red");
-				continue;
-			}
-			if(!auto_check_conditions(conds))
-				continue;
-			if(!auto_have_familiar(thisFamiliar))
-				continue;
-			if(blacklist contains thisFamiliar)
-				continue;
-			return handleFamiliar(thisFamiliar);
-		}
-		return false;
-	}
-
-/*
-	if((type == "item") && (get_property("auto_beatenUpCount").to_int() > 5))
-	{
-		generic_t itemNeed = zone_needItem(place);
-		if(itemNeed._boolean && (item_drop_modifier() > itemNeed._float))
-		{
-			type = "regen";
+			return false;
 		}
 	}
-*/
-
-	if(type == "meat")
+	
+	string [string,int,string] familiars_text;
+	if(!file_to_map("autoscend_familiars.txt", familiars_text))
+		auto_log_critical("Could not load autoscend_familiars.txt. This is bad!", "red");
+	foreach i,name,conds in familiars_text[type]
 	{
-		familiar[int] fams = List($familiars[Adventurous Spelunker, Grimstone Golem, Angry Jung Man, Bloovian Groose, Hobo Monkey, Cat Burglar, Piano Cat, Leprechaun]);
-
-#		if(available_amount($item[Li\'l Pirate Costume]) > 0)
-#		{
-#			fams = ListInsertFront(fams, $familiar[Trick-or-Treating Tot]);
-#		}
-
-		int index = 0;
-		while(index < count(fams))
+		familiar thisFamiliar = name.to_familiar();
+		if(thisFamiliar == $familiar[none] && name != "none")
 		{
-			if(auto_have_familiar(fams[index]) && !(blacklist contains fams[index]))
-			{
-				return handleFamiliar(fams[index]);
-			}
-			index = index + 1;
+			auto_log_error('"' + name + '" does not convert to a familiar properly!', "red");
+			auto_log_error(type + "; " + i + "; " + conds, "red");
+			continue;
 		}
-	}
-	else if(type == "item")
-	{
-		familiar[int] fams = List($familiars[Rockin\' Robin, Garbage Fire, Optimistic Candle, Grimstone Golem, Angry Jung Man, Intergnat, XO Skeleton, Bloovian Groose, Fist Turkey, Cat Burglar, Slimeling, Jumpsuited Hound Dog, Adventurous Spelunker, Gelatinous Cubeling, Baby Gravy Fairy, Obtuse Angel, Pair of Stomping Boots, Jack-in-the-Box, Peppermint Rhino, Syncopated Turtle]);
-		if((my_daycount() == 1) && ($familiar[Angry Jung Man].drops_today == 0) && (get_property("auto_crackpotjar") == ""))
-		{
-			fams = ListRemove(fams, $familiar[Angry Jung Man]);
-			fams = ListInsertAt(fams, $familiar[Angry Jung Man], 0);
-		}
-		if((get_property("_catBurglarCharge").to_int() < 30) && (estimatedTurnsLeft() > (30 - get_property("_catBurglarCharge").to_int())))
-		{
-			fams = ListRemove(fams, $familiar[Cat Burglar]);
-			fams = ListInsertAt(fams, $familiar[Cat Burglar], fams.ListFind($familiar[XO Skeleton]));
-		}
-
-		if((my_ascensions() > ascensionThreshold) && (get_property("rockinRobinProgress").to_int() < 20))
-		{
-			fams = ListRemove(fams, $familiar[Rockin\' Robin]);
-			fams = ListInsertAt(fams, $familiar[Rockin\' Robin], fams.ListFind($familiar[Gelatinous Cubeling]));
-		}
-		if((my_ascensions() > ascensionThreshold) && (get_property("garbageFireProgress").to_int() < 20))
-		{
-			fams = ListRemove(fams, $familiar[Garbage Fire]);
-			fams = ListInsertAt(fams, $familiar[Garbage Fire], fams.ListFind($familiar[Gelatinous Cubeling]));
-		}
-		if((my_ascensions() > ascensionThreshold) && (get_property("optimisticCandleProgress").to_int() < 20))
-		{
-			fams = ListRemove(fams, $familiar[Optimistic Candle]);
-			fams = ListInsertAt(fams, $familiar[Optimistic Candle], fams.ListFind($familiar[Gelatinous Cubeling]));
-		}
-		if((my_ascensions() > ascensionThreshold) && ((!get_property("auto_grimstoneFancyOilPainting").to_boolean() && !get_property("auto_grimstoneOrnateDowsingRod").to_boolean()) || possessEquipment($item[Buddy Bjorn]) || ($familiar[Grimstone Golem].drops_today == 1)))
-		{
-			fams = ListRemove(fams, $familiar[Grimstone Golem]);
-			fams = ListInsertAt(fams, $familiar[Grimstone Golem], fams.ListFind($familiar[Gelatinous Cubeling]));
-		}
-		if((my_ascensions() > ascensionThreshold) && ((get_property("auto_crackpotjar") != "") || ($familiar[Angry Jung Man].drops_today == 1)))
-		{
-			fams = ListRemove(fams, $familiar[Angry Jung Man]);
-			fams = ListInsertAt(fams, $familiar[Angry Jung Man], fams.ListFind($familiar[Gelatinous Cubeling]));
-		}
-		if(item_amount($item[BACON]) > 350)
-		{
-			fams = ListRemove(fams, $familiar[Intergnat]);
-			fams = ListInsertAt(fams, $familiar[Intergnat], fams.ListFind($familiar[Gelatinous Cubeling]));
-		}
-		if(auto_have_familiar($familiar[Pair of Stomping Boots]) && get_property("_bootStomps").to_int() < 7)
-		{
-			fams = ListInsertAt(fams, $familiar[Pair of Stomping Boots], 0);
-		}
-		if($familiar[Bloovian Groose].drops_today >= $familiar[Bloovian Groose].drops_limit)
-		{
-			fams = ListRemove(fams, $familiar[Bloovian Groose]);
-			fams = ListInsertAt(fams, $familiar[Bloovian Groose], fams.ListFind($familiar[Gelatinous Cubeling]));
-		}
-		if(($familiar[Fist Turkey].drops_today >= $familiar[Fist Turkey].drops_limit) && (auto_my_path() != "Teetotaler"))
-		{
-			fams = ListRemove(fams, $familiar[Fist Turkey]);
-			fams = ListInsertAt(fams, $familiar[Fist Turkey], fams.ListFind($familiar[Gelatinous Cubeling]));
-		}
-
-		if((item_amount($item[Yellow Pixel]) < 30) && auto_have_familiar($familiar[Ms. Puck Man]))
-		{
-			fams = ListInsertAt(fams, $familiar[Ms. Puck Man], 0);
-		}
-		else if((item_amount($item[Yellow Pixel]) < 30) && auto_have_familiar($familiar[Puck Man]))
-		{
-			fams = ListInsertAt(fams, $familiar[Puck Man], 0);
-		}
-
-
-		int index = 0;
-		while(index < count(fams))
-		{
-			if(auto_have_familiar(fams[index]) && !(blacklist contains fams[index]))
-			{
-				return handleFamiliar(fams[index]);
-			}
-			index = index + 1;
-		}
-	}
-	else if(type == "stat")
-	{
-		if(monster_level_adjustment() > 120)
-		{
-			foreach fam in $familiars[Galloping Grill, Rockin\' Robin, Hovering Sombrero, Baby Sandworm]
-			{
-				if(auto_have_familiar(fam) && !(blacklist contains fam))
-				{
-					return handleFamiliar(fam);
-				}
-			}
-		}
-		foreach fam in $familiars[Grim Brother, Rockin\' Robin, Golden Monkey, Reanimated Reanimator, Unconscious Collective, Bloovian Groose, Lil\' Barrel Mimic, Artistic Goth Kid, Happy Medium, Baby Z-Rex, Li\'l Xenomorph, Smiling Rat, Dramatic Hedgehog, Grinning Turtle, Frumious Bandersnatch, Blood-Faced Volleyball]
-		{
-			if(auto_have_familiar(fam) && !(blacklist contains fam))
-			{
-				return handleFamiliar(fam);
-			}
-		}
-	}
-	else if(type == "regen")
-	{
-		familiar[int] fams = List($familiars[Galloping Grill, XO Skeleton, Mini-Hipster, Ms. Puck Man, Puck Man, Rogue Program, Stocking Mimic, Twitching Space Critter, Lil\' Barrel Mimic, Helix Fossil, Adorable Space Buddy, Cuddlefish, Personal Raincloud, Cocoabo, Midget Clownfish, Choctopus, Wild Hare, Snow Angel, Ghuol Whelp, Star Starfish]);
-		foreach idx, fam in fams
-		{
-			if($familiar[Galloping Grill].drops_today >= $familiar[Galloping Grill].drops_limit)
-			{
-				fams = ListRemove(fams, $familiar[Galloping Grill]);
-				fams = ListInsertAt(fams, $familiar[Galloping Grill], fams.ListFind($familiar[Rogue Program]));
-			}
-			if(auto_have_familiar(fam) && !(blacklist contains fam))
-			{
-				return handleFamiliar(fam);
-			}
-		}
-	}
-	else if(type == "init")
-	{
-		foreach fam in $familiars[Happy Medium, Xiblaxian Holo-Companion, Oily Woim, Cute Meteor]
-		{
-			if(auto_have_familiar(fam) && !(blacklist contains fam))
-			{
-				return handleFamiliar(fam);
-			}
-		}
-	}
-	else if(type == "initSuggest")
-	{
-		if(familiar_weight(my_familiar()) == 20)
-		{
-			foreach fam in $familiars[Happy Medium, Xiblaxian Holo-Companion, Oily Woim]
-			{
-				if(auto_have_familiar(fam) && !(blacklist contains fam))
-				{
-					return handleFamiliar(fam);
-				}
-			}
-		}
-	}
-	else if(type == "yellowray")
-	{
-#		foreach fam in $familiars[Crimbo Shrub, Nanorhino, He-Boulder]
-		foreach fam in $familiars[Crimbo Shrub]
-		{
-			if(auto_have_familiar(fam))
-			{
-				return handleFamiliar(fam);
-			}
-		}
-		if(!get_property("_internetViralVideoBought").to_boolean() && (item_amount($item[BACON]) >= 20) && glover_usable($item[Viral Video]))
-		{
-			cli_execute("make " + $item[Viral Video]);
-		}
+		if(!auto_check_conditions(conds))
+			continue;
+		if(!auto_have_familiar(thisFamiliar))
+			continue;
+		if(blacklist contains thisFamiliar)
+			continue;
+		return handleFamiliar(thisFamiliar);
 	}
 	return false;
 }
@@ -4296,22 +4108,7 @@ boolean L13_towerNSFinal()
 
 	autoEquip($slot[Off-Hand], $item[Oscus\'s Garbage Can Lid]);
 
-	if(auto_beta())
-	{
-		handleFamiliar("boss");
-	}
-	else
-	{
-		handleFamiliar($familiar[warbear drone]);
-		if(!auto_have_familiar($familiar[Warbear Drone]))
-		{
-			handleFamiliar($familiar[Fist Turkey]);
-		}
-		if(auto_have_familiar($familiar[Machine Elf]))
-		{
-			handleFamiliar($familiar[Machine Elf]);
-		}
-	}
+	handleFamiliar("boss");
 
 	if(!useMaximizeToEquip())
 	{
@@ -7597,7 +7394,7 @@ boolean L12_gremlins()
 	{
 		bat_formMist();
 	}
-	handleFamiliar(auto_beta() ? "gremlins" : "init");
+	handleFamiliar("gremlins");
 	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
