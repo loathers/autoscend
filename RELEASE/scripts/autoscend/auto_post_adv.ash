@@ -756,7 +756,7 @@ void handlePostAdventure()
 			buffMaintain($effect[Flimsy Shield of the Pastalord], 180, 1, 10);
 		}
 		buffMaintain($effect[Blubbered Up], 200, 1, 10);
-		if(my_level() < 13)
+		if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 		{
 			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 150, 1, 10);
 		}

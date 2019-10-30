@@ -9048,7 +9048,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(my_level() < 13 && godLobsterCombat())
+	if(((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()) && godLobsterCombat())
 	{
 		return true;
 	}

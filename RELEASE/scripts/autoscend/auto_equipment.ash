@@ -192,7 +192,7 @@ string defaultMaximizeStatement()
 		}
 	}
 
-	if(my_level() < 13)
+	if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
 		res += ",10exp,5" + my_primestat() + " experience percent";
 	}
