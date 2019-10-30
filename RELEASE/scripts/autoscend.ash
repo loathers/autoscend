@@ -11605,7 +11605,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		// Prevent the needless equipping of Cues if we don't need it.
 		boolean usePoolEquips = true;
 
-		if(expectPool < 18)
+		if((expectPool < 18) && (!in_tcrs())
 		{
 			if(possessEquipment(staffOfFats) || possessEquipment(staffOfFatsEd) || possessEquipment(staffOfEd))
 			{
@@ -11615,6 +11615,11 @@ boolean LX_handleSpookyravenFirstFloor()
 			{
 				expectPool += 3;
 			}
+		}
+		else if(in_tcrs())
+		{
+				auto_log_info("During this Crazy Summer Pool Cues are used differently.", "blue");
+				boolean usePoolEquips = false;
 		}
 		else
 		{
