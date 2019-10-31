@@ -12118,7 +12118,7 @@ boolean L9_aBooPeak()
 			}
 			if(useMaximizeToEquip())
 			{
-				addToMaximize("1000spooky res,1000 cold res,10hp" + parrot);
+				addToMaximize("1000spooky res,1000cold res,10hp" + parrot);
 			}
 			else
 			{
