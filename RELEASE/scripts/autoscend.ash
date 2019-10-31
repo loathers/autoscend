@@ -11415,14 +11415,6 @@ boolean LX_handleSpookyravenFirstFloor()
 		item staffOfFats = $item[2268];
 		item staffOfFatsEd = $item[7964];
 		item staffOfEd = $item[7961];
-		if(possessEquipment(staffOfFats) || possessEquipment(staffOfFatsEd) || possessEquipment(staffOfEd))
-		{
-			expectPool += 5;
-		}
-		else if(possessEquipment($item[Pool Cue]))
-		{
-			expectPool += 3;
-		}
 		if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
 		{
 			expectPool += 3;
@@ -11442,6 +11434,31 @@ boolean LX_handleSpookyravenFirstFloor()
 		if(have_effect($effect[Swimming with Sharks]) > 0)
 		{
 			expectPool += 3;
+		}
+
+		// Prevent the needless equipping of Cues if we don't need it.
+		boolean usePoolEquips = true;
+
+		if((expectPool < 18) && (!in_tcrs())
+		{
+			if(possessEquipment(staffOfFats) || possessEquipment(staffOfFatsEd) || possessEquipment(staffOfEd))
+			{
+				expectPool += 5;
+			}
+			else if(possessEquipment($item[Pool Cue]))
+			{
+				expectPool += 3;
+			}
+		}
+		else if(in_tcrs())
+		{
+				auto_log_info("During this Crazy Summer Pool Cues are used differently.", "blue");
+				boolean usePoolEquips = false;
+		}
+		else
+		{
+				auto_log_info("I don't need to equip a cue to beat this ghostie.", "blue");
+				boolean usePoolEquips = false;
 		}
 
 		if(!possessEquipment($item[Pool Cue]) && !possessEquipment(staffOfFats) && !possessEquipment(staffOfFatsEd) && !possessEquipment(staffOfEd) && !in_tcrs())
@@ -11486,14 +11503,18 @@ boolean LX_handleSpookyravenFirstFloor()
 		{
 			set_property("choiceAdventure875", "2");
 		}
-		if(possessEquipment($item[Pool Cue]))
+
+		if(usePoolEquips)
 		{
-			buffMaintain($effect[Chalky Hand], 0, 1, 1);
+			if(possessEquipment($item[Pool Cue]))
+			{
+				buffMaintain($effect[Chalky Hand], 0, 1, 1);
+			}
+			autoEquip($slot[weapon], $item[Pool Cue]);
+			autoEquip(staffOfFats);
+			autoEquip(staffOfFatsEd);
+			autoEquip(staffOfEd);
 		}
-		autoEquip($slot[weapon], $item[Pool Cue]);
-		autoEquip(staffOfFats);
-		autoEquip(staffOfFatsEd);
-		autoEquip(staffOfEd);
 
 		auto_log_info("It's billiards time!", "blue");
 		backupSetting("choiceAdventure330", 1);
@@ -12101,7 +12122,7 @@ boolean L9_aBooPeak()
 			}
 			else
 			{
-				autoMaximize("spooky res, cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
+				autoMaximize("spooky res,cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
 			}
 			adjustEdHat("ml");
 
