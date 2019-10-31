@@ -4644,6 +4644,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Patent Sallowness]:			useItem = $item[Patent Sallowness Tonic];		break;
 	case $effect[Patience of the Tortoise]:		useSkill = $skill[Patience of the Tortoise];	break;
 	case $effect[Patient Smile]:				useSkill = $skill[Patient Smile];				break;
+	case $effect[Paul\'s Passionate Pop Song]:				useSkill = $skill[Paul\'s Passionate Pop Song];				break;
 	case $effect[Penne Fedora]:					useSkill = $skill[none];						break;
 	case $effect[Peppermint Bite]:				useItem = $item[Crimbo Peppermint Bark];		break;
 	case $effect[Peppermint Twisted]:			useItem = $item[Peppermint Twist];				break;
@@ -6030,6 +6031,11 @@ boolean enforceMLInPreAdv()
 // ADVENTURE FORCING FUNCTIONS
 boolean auto_canForceNextNoncombat()
 {
+	if (isActuallyEd())
+	{
+		return auto_pillKeeperFreeUseAvailable()
+		|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]));
+	}
 	return auto_pillKeeperAvailable()
 	|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]))
 	|| (item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && spleen_left() < $item[stench jelly].spleen);
@@ -6061,7 +6067,7 @@ boolean _auto_forceNextNoncombat()
 			set_property("auto_forceNonCombatSource", "stench jelly");
 		}
 	}
-	else if(auto_pillKeeperAvailable())
+	else if(auto_pillKeeperAvailable() && !isActuallyEd()) // don't use Spleen as Ed, it's his main source of adventures.
 	{
 		ret = auto_pillKeeper("noncombat");
 		if(ret) {
