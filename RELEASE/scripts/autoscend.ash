@@ -12800,13 +12800,19 @@ boolean L9_oilPeak()
 	}
 
 	// Maximize Asdon usage
-	if((((simMaximizeWith("1000ml 75min")) && (!simMaximizeWith("1000ml 99min"))) || ((simMaximizeWith("1000ml 25min")) && (!simMaximizeWith("1000ml 49min"))) || (!simMaximizeWith("1000ml 11min"))) && (have_effect($effect[Driving Wastefully]) == 0))
+	if((((simMaximizeWith("1000ml 75min")) && (!simMaximizeWith("1000ml 100min"))) || ((simMaximizeWith("1000ml 25min")) && (!simMaximizeWith("1000ml 50min"))) || (!simMaximizeWith("1000ml 11min"))) && (have_effect($effect[Driving Wastefully]) == 0))
 	{
 		asdonBuff($effect[Driving Recklessly]);
 	}
 	else if(have_effect($effect[Driving Recklessly]) == 0)
 	{
 		asdonBuff($effect[Driving Wastefully]);
+	}
+	
+	// Help protect ourselves against not getting enough crudes if tackling cartels
+	if(simMaximizeWith("1000ml 100min"))
+	{
+		addToMaximize("120item");
 	}
 
 	addToMaximize("1000ml " + auto_convertDesiredML(100) + "max");
