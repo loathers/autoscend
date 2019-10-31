@@ -169,7 +169,7 @@ boolean auto_log_debug(string s, string color);
 boolean auto_log_debug(string s);
 boolean auto_log_trace(string s, string color);
 boolean auto_log_trace(string s);
-
+boolean auto_faceCheck(effect face); //Checks to see if we are already wearing an expression. If an expression is REQUIRED just use buffMaintain to force it.
 
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
@@ -4970,6 +4970,34 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	{
 		return buffMaintain(useSkill, buff, mp_min, casts, turns);
 	}
+	return true;
+}
+
+// Checks to see if we are already wearing a facial expression before using buffMaintain
+//	if an expression is REQUIRED force it using buffMaintain
+boolean auto_faceCheck(effect face)
+{
+	boolean[effect] FacialExpressions = $effects[Snarl of the Timberwolf, Scowl of the Auk, Stiff Upper Lip, Patient Smile, Quiet Determination, Arched Eyebrow of the Archmage, Wizard Squint, Quiet Judgement, Icy Glare, Wry Smile, Disco Leer, Disco Smirk, Suspicious Gaze, Knowing Smile, Quiet Desperation, Inscrutable Gaze];
+	boolean CanEmote = true;
+
+	foreach FExp in FacialExpressions
+	{
+		if(have_effect(FExp) > 0)
+		{
+			CanEmote = false;
+		}
+	}
+
+	if(CanEmote)
+	{
+		buffMaintain($effect[to_effect(face)], 0, 1, 1);
+	}
+	else
+	{
+		auto_log_debug("Can not get " + face + " expression as we are already emoting.");
+		return false;
+	}
+
 	return true;
 }
 
