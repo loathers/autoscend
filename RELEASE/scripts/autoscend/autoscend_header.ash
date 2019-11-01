@@ -956,7 +956,6 @@ boolean zoneItem(location loc);								//Defined in autoscend/auto_util.ash
 boolean zoneMeat(location loc);								//Defined in autoscend/auto_util.ash
 boolean zoneNonCombat(location loc);						//Defined in autoscend/auto_util.ash
 boolean declineTrades();									//Defined in autoscend/auto_util.ash
-boolean auto_beta(); //Defined in autoscend/auto_util.ash
 void auto_interruptCheck(); //Defined in autoscend/auto_util.ash
 
 //From Zlib Stuff

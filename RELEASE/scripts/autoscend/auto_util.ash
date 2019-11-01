@@ -4966,8 +4966,17 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 
 	if(useItem != $item[none])
 	{
-		return buffMaintain(useItem, buff, casts, turns);
+		if(in_tcrs())
+		{
+			auto_log_debug("We want to use " + useItem + " but are in 2CRS.", "blue");
+			return false;
+		}
+		else
+		{
+			return buffMaintain(useItem, buff, casts, turns);
+		}
 	}
+
 	if((useSkill != $skill[none]) && auto_have_skill(useSkill))
 	{
 		return buffMaintain(useSkill, buff, mp_min, casts, turns);
@@ -5503,10 +5512,7 @@ boolean auto_badassBelt()
 	}
 }
 
-boolean auto_beta()
-{
-	return get_property("auto_beta_test").to_boolean();
-}
+
 
 void auto_interruptCheck()
 {
@@ -5566,7 +5572,7 @@ boolean executeFlavour()
 		return false;
 	}
 
-	if(get_property("_auto_tunedElement") == "" && auto_beta())
+	if(get_property("_auto_tunedElement") == "")
 	{
 		autoFlavour(my_location());
 	}
