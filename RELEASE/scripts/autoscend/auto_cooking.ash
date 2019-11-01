@@ -747,7 +747,7 @@ void consumeStuff()
 		return;
 	}
 
-	if (auto_beta() && !get_property("auto_legacyConsumeStuff").to_boolean())
+	if (!get_property("auto_legacyConsumeStuff").to_boolean())
 	{
 		auto_maximizedConsumeStuff();
 		return;
