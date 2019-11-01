@@ -11439,7 +11439,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		// Prevent the needless equipping of Cues if we don't need it.
 		boolean usePoolEquips = true;
 
-		if((expectPool < 18) && (!in_tcrs())
+		if((expectPool < 18) && (!in_tcrs()))
 		{
 			if(possessEquipment(staffOfFats) || possessEquipment(staffOfFatsEd) || possessEquipment(staffOfEd))
 			{
