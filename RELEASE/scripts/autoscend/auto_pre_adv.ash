@@ -401,7 +401,7 @@ void handlePreAdventure(location place)
 			auto_log_debug("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
 		}
 
-		auto_MaxMLToCap(150, false);
+		auto_MaxMLToCap(auto_convertDesiredML(150), false);
 	}
 
 	// If we are in some state where we do not want +ML (Level 13 or Smut Orc) make sure ML is removed

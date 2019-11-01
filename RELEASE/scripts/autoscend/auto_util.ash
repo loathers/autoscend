@@ -170,6 +170,7 @@ boolean auto_log_debug(string s);
 boolean auto_log_trace(string s, string color);
 boolean auto_log_trace(string s);
 boolean auto_faceCheck(effect face); //Checks to see if we are already wearing an expression. If an expression is REQUIRED just use buffMaintain to force it.
+int auto_predictAccordionTurns();
 
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
@@ -4021,7 +4022,7 @@ void shrugAT(effect anticipated)
 	int count = 1;
 	#Put these in priority of keeping.
 	#This needs to be a comprehensive list
-	boolean[effect] songs = $effects[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, Polka of Plenty, Paul\'s Passionate Pop Song, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
+	boolean[effect] songs = $effects[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, Polka of Plenty, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
 
 	effect last = $effect[none];
 	foreach song in songs
@@ -4644,6 +4645,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Patent Sallowness]:			useItem = $item[Patent Sallowness Tonic];		break;
 	case $effect[Patience of the Tortoise]:		useSkill = $skill[Patience of the Tortoise];	break;
 	case $effect[Patient Smile]:				useSkill = $skill[Patient Smile];				break;
+	case $effect[Paul\'s Passionate Pop Song]:				useSkill = $skill[Paul\'s Passionate Pop Song];				break;
 	case $effect[Penne Fedora]:					useSkill = $skill[none];						break;
 	case $effect[Peppermint Bite]:				useItem = $item[Crimbo Peppermint Bark];		break;
 	case $effect[Peppermint Twisted]:			useItem = $item[Peppermint Twist];				break;
@@ -4975,7 +4977,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 
 // Checks to see if we are already wearing a facial expression before using buffMaintain
 //	if an expression is REQUIRED force it using buffMaintain
-boolean auto_faceCheck(effect face)
+boolean auto_faceCheck(string face)
 {
 	boolean[effect] FacialExpressions = $effects[Snarl of the Timberwolf, Scowl of the Auk, Stiff Upper Lip, Patient Smile, Quiet Determination, Arched Eyebrow of the Archmage, Wizard Squint, Quiet Judgement, Icy Glare, Wry Smile, Disco Leer, Disco Smirk, Suspicious Gaze, Knowing Smile, Quiet Desperation, Inscrutable Gaze];
 	boolean CanEmote = true;
@@ -4990,7 +4992,7 @@ boolean auto_faceCheck(effect face)
 
 	if(CanEmote)
 	{
-		buffMaintain($effect[to_effect(face)], 0, 1, 1);
+		buffMaintain(to_effect(face), 0, 1, 1);
 	}
 	else
 	{
@@ -5959,9 +5961,9 @@ boolean auto_setMCDToCap()
 		{
 			change_mcd(remainingMLToCap());
 		}
-
-		return true;
 	}
+
+	return true;
 }
 
 // We use this function to determine the suitability of using Ur-Kel's
@@ -6031,8 +6033,11 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 
 // <10
-	UrKelCheck(ToML, 9, 2);
-
+	//If we can't get 10 turns of Ur-Kel's, and we aren't being forced to pile on the ML, it probably isn't worth it.
+	if((doAltML) || (auto_predictAccordionTurns() >= 10))
+	{
+		UrKelCheck(ToML, 9, 2);
+	}
 
 // Customizable - For variable effects that we can use to fill in the corners
 	// Fill in the remainder with MCD
@@ -6153,4 +6158,62 @@ boolean is_superlikely(string encounterName)
 	];
 	return __SUPERLIKELIES contains encounterName;
 
+}
+
+
+// Function to Predict how many turns we will get from an AT buff
+int auto_predictAccordionTurns()
+{
+	boolean[item] accordions = $items[accord ion, accordion file, Accordion of Jordion, Aerogel accordion, Antique accordion, accordionoid rocca, alarm accordion, autocalliope, bal-musette accordion, baritone accordion, beer-battered accordion, bone bandoneon, cajun accordion, calavera concertina, ghost accordion, guancertina, mama\'s squeezebox, non-Euclidean non-accordion, peace accordion, pentatonic accordion, pygmy concertinette, quirky accordion, Rock and Roll Legend, Shakespeare\'s Sister\'s Accordion, skipper\'s accordion, squeezebox of the ages, stolen accordion, the trickster\'s trikitixa, toy accordion, warbear exhaust manifold, zombie accordion];
+	int expTurns = 0;
+	int CurrentBestTurns = 0;
+
+	foreach squeezebox in accordions
+	{
+		if(item_amount(squeezebox) > 0)
+		{
+			switch(squeezebox)
+			{
+			case $item[accord ion]:					expTurns = 10;		break;
+			case $item[accordion file]:				expTurns = 10;		break;
+			case $item[Accordion of Jordion]:			expTurns = 14;		break;
+			case $item[Aerogel accordion]:				expTurns = 10;		break;
+			case $item[Antique accordion]:				expTurns = 10;		break;
+			case $item[accordionoid rocca]:				expTurns = 18;		break;
+			case $item[alarm accordion]:				expTurns = 20;		break;
+			case $item[autocalliope]:				expTurns = 15;		break;
+			case $item[bal-musette accordion]:			expTurns = 10;		break;
+			case $item[baritone accordion]:				expTurns = 7;		break;
+			case $item[beer-battered accordion]:			expTurns = 6;		break;
+			case $item[bone bandoneon]:				expTurns = 11;		break;
+			case $item[cajun accordion]:				expTurns = 10;		break;
+			case $item[calavera concertina]:			expTurns = 7;		break;
+			case $item[ghost accordion]:				expTurns = 16;		break;
+			case $item[guancertina]:				expTurns = 9;		break;
+			case $item[mama\'s squeezebox]:				expTurns = 8;		break;
+			case $item[non-Euclidean non-accordion]:		expTurns = 15;		break;
+			case $item[peace accordion]:				expTurns = 19;		break;
+			case $item[pentatonic accordion]:			expTurns = 12;		break;
+			case $item[pygmy concertinette]:			expTurns = 17;		break;
+			case $item[quirky accordion]:				expTurns = 10;		break;
+			case $item[Rock and Roll Legend]:			expTurns = 10;		break;
+			case $item[Shakespeare\'s Sister\'s Accordion]:		expTurns = 15;		break;
+			case $item[skipper\'s accordion]:			expTurns = 10;		break;
+			case $item[squeezebox of the ages]:			expTurns = 15;		break;
+			case $item[stolen accordion]:				expTurns = 5;		break;
+			case $item[the trickster\'s trikitixa]:			expTurns = 20;		break;
+			case $item[toy accordion]:				expTurns = 5;		break;
+			case $item[warbear exhaust manifold]:			expTurns = 10;		break;
+			case $item[zombie accordion]:				expTurns = 20;		break;
+			default: auto_log_info("No Accordion Found to cast Songs.");
+			}
+
+			if(expTurns > CurrentBestTurns)
+			{
+				CurrentBestTurns = expTurns;
+			}
+		}
+	}
+
+	return CurrentBestTurns;
 }

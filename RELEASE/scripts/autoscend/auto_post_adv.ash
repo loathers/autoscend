@@ -169,6 +169,12 @@ void handlePostAdventure()
 		}
 	}
 
+	// Only cast Paul's pop song if we expect it to more than pay for its own casting.
+	if(auto_predictAccordionTurns() >= 8)
+	{
+		buffMaintain($effect[Paul\'s Passionate Pop Song], 0, 1, 1);
+	}
+
 	float regen = numeric_modifier("MP Regen Min").to_float() * 2.0;
 	regen += numeric_modifier("MP Regen Max").to_float();
 	regen = regen / 3.0;
@@ -467,6 +473,8 @@ void handlePostAdventure()
 		use_skill(1, $skill[Summon Smithsness]);
 	}
 
+
+
 	# This is the list of castables that all MP sequences will use.
 	boolean [skill] toCast = $skills[Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Communism!, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
 
@@ -756,41 +764,6 @@ void handlePostAdventure()
 			buffMaintain($effect[Flimsy Shield of the Pastalord], 180, 1, 10);
 		}
 		buffMaintain($effect[Blubbered Up], 200, 1, 10);
-
-
-
-		// Experience and Powerlevelling Section
-		if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
-		{
-			// Generic +Stat Buffs
-			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 150, 1, 10);
-			buffMaintain($effect[Carol of the Thrills], 150, 1, 10);
-
-			// +Stat expressions based on mainstat
-			if(my_primestat() == $stat[Muscle])
-			{
-				auto_faceCheck(Patient Smile);
-			}
-			if(my_primestat() == $stat[Moxie])
-			{
-				auto_faceCheck(Knowing Smile);
-			}
-			if(my_primestat() == $stat[Mysticality])
-			{
-				// If Gaze succeeds Smile will fail the check and vice versa
-				auto_faceCheck(Inscrutable Gaze);
-				auto_faceCheck(Wry Smile);
-			}
-
-			// Catch-all Expressions in decending order of importance (in case we could not get a stat specific one)
-			auto_faceCheck(Inscrutable Gaze);
-			auto_faceCheck(Wry Smile);
-			auto_faceCheck(Patient Smile);
-			auto_faceCheck(Knowing Smile);
-		}
-
-
-
 		buffMaintain($effect[Tenacity of the Snapper], 200, 1, 10);
 		buffMaintain($effect[Reptilian Fortitude], 200, 1, 10);
 		if(regen > 20.0)
@@ -870,6 +843,42 @@ void handlePostAdventure()
 			cli_execute("outfit Backup");
 		}
 	}
+
+	// Experience and Powerlevelling Section
+	if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
+	{
+		// +Stat expressions based on mainstat
+		if(my_primestat() == $stat[Muscle])
+		{
+			auto_faceCheck("Patient Smile");
+		}
+		if(my_primestat() == $stat[Moxie])
+		{
+			auto_faceCheck("Knowing Smile");
+		}
+		if(my_primestat() == $stat[Mysticality])
+		{
+			// If Gaze succeeds Smile will fail the check and vice versa
+			auto_faceCheck("Inscrutable Gaze");
+			auto_faceCheck("Wry Smile");
+		}
+
+		// Catch-all Expressions in decending order of importance (in case we could not get a stat specific one)
+		auto_faceCheck("Inscrutable Gaze");
+		auto_faceCheck("Wry Smile");
+		auto_faceCheck("Patient Smile");
+		auto_faceCheck("Knowing Smile");
+
+		// Generic +Stat Buffs
+		buffMaintain($effect[Carol of the Thrills], 30, 1, 1);
+
+		if((40 / regen) < auto_predictAccordionTurns())
+		{
+			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 40, 1, 1);
+		}
+	}
+
+
 
 	if(my_class() == $class[Pastamancer])
 	{
