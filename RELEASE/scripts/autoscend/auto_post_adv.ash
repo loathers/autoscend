@@ -169,18 +169,10 @@ void handlePostAdventure()
 		}
 	}
 
-	// Only cast Paul's pop song if we expect it to more than pay for its own casting.
-	if(auto_predictAccordionTurns() >= 8)
-	{
-		buffMaintain($effect[Paul\'s Passionate Pop Song], 0, 1, 1);
-	}
 
 	float regen = numeric_modifier("MP Regen Min").to_float() * 2.0;
 	regen += numeric_modifier("MP Regen Max").to_float();
 	regen = regen / 3.0;
-
-
-
 
 	if(my_class() == $class[Avatar of Sneaky Pete])
 	{
