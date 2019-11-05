@@ -2735,7 +2735,7 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			if(Lx_resolveSixthDMT())
+			if(resolveSixthDMT())
 			{
 				return true;
 			}

@@ -1146,7 +1146,7 @@ boolean auto_cheesePostCS(int leave)
 		}
 	}
 
-	while(lx_witchess());
+	while(witchessFights());
 	if(possessEquipment($item[PARTY HARD T-Shirt]))
 	{
 		put_closet(item_amount($item[PARTY HARD T-Shirt]), $item[PARTY HARD T-Shirt]);

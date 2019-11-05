@@ -21,10 +21,10 @@ boolean LX_handleSpookyravenNecklace();
 boolean LX_handleSpookyravenFirstFloor();
 boolean LX_phatLootToken();
 boolean LX_islandAccess();
-boolean LX_fancyOilPainting();
+boolean fancyOilPainting();
 boolean LX_setBallroomSong();
 boolean LX_fcle();
-boolean LX_ornateDowsingRod();
+boolean ornateDowsingRod();
 boolean LX_nastyBooty();
 boolean LX_spookyravenSecond();
 boolean LX_spookyBedroomCombat();
@@ -40,9 +40,9 @@ boolean LX_craftAcquireItems();
 boolean LX_freeCombats();
 boolean LX_dolphinKingMap();
 boolean LX_steelOrgan();
-boolean Lx_resolveSixthDMT();
-boolean LX_witchess();
-boolean LX_chateauPainting();
+boolean resolveSixthDMT();
+boolean witchessFights();
+boolean chateauPainting();
 boolean LX_faxing();
 boolean LX_universeFrat();
 boolean LX_burnDelay();
@@ -56,7 +56,7 @@ boolean LX_dinseylandfillFunbucks();
 
 boolean Lsc_flyerSeals();
 
-boolean L0_handleRainDoh();
+boolean handleRainDoh();
 
 boolean L1_dnaAcquire();
 boolean L2_mosquito();
@@ -77,10 +77,9 @@ boolean L6_friarsGetParts();
 boolean L8_trapperStart();
 boolean L7_crypt();
 boolean L8_trapperGround();
-boolean L8_trapperYeti();
+boolean L8_trapperNinjaLair();
 boolean L8_trapperExtreme();
 boolean L8_trapperGroar();
-boolean L9_chasmStart();
 boolean L9_chasmBuild();
 boolean L9_highLandlord();
 boolean L9_aBooPeak();
@@ -94,7 +93,7 @@ boolean L10_basement();
 boolean L10_ground();
 boolean L10_topFloor();
 boolean L10_holeInTheSkyUnlock();
-boolean L10_holeInTheSky();
+boolean LX_getStarKey();
 boolean L11_palindome();
 boolean L11_hiddenCity();
 boolean L11_hiddenTavernUnlock();
@@ -224,7 +223,7 @@ int towerKeyCount();							//Defined in autoscend/auto_util.ash
 
 
 //Uses Daily Dungeon Malware to get Phat Loot.
-boolean LX_malware();							//Defined in autoscend.ash
+boolean useMalware();							//Defined in autoscend.ash
 
 //Determines if we need ore for the trapper or not.
 boolean needOre();								//Defined in autoscend/auto_util.ash
@@ -240,19 +239,8 @@ boolean hasSpookyravenLibraryKey();				//Defined in autoscend/auto_util.ash
 boolean hasILoveMeVolI();						//Defined in autoscend/auto_util.ash
 boolean useILoveMeVolI();						//Defined in autoscend/auto_util.ash
 
-
 //Are we expecting a Protonic Accelerator Pack ghost report?
 boolean expectGhostReport();					//Defined in autoscend/auto_mr2016.ash
-
-
-//Quest Object information, meant for "normal" runs but could technically be expanded or altered.
-record questRecord
-{
-	string prop;					// autoscend property reflecting the quest
-	string mprop;					// Mafia property reflecting the quest, if applicable
-	int type;						// 0 = main line quest, 1 = side quest (allowing for other options)
-	string func;					// autoscend function that attempts this quest.
-};
 
 // Restoration (hp/mp) functions
 // Defined in autoscend/auto_restore.ash
@@ -285,7 +273,6 @@ boolean useCocoon();
 //Large pile dump.
 boolean L11_ed_mauriceSpookyraven();						//Defined in autoscend/auto_edTheUndying.ash
 boolean L12_sonofaPrefix();									//Defined in autoscend.ash
-boolean L9_ed_chasmBuild();									//Defined in autoscend/auto_edTheUndying.ash
 boolean L9_ed_chasmBuildClover(int need);					//Defined in autoscend/auto_edTheUndying.ash
 boolean L9_ed_chasmStart();									//Defined in autoscend/auto_edTheUndying.ash
 boolean LM_boris();											//Defined in autoscend/auto_boris.ash
@@ -620,6 +607,7 @@ boolean fantasyRealmToken();								//Defined in autoscend/auto_mr2018.ash
 boolean fantasyRealmAvailable();							//Defined in autoscend/auto_mr2018.ash
 boolean songboomSetting(string goal);						//Defined in autoscend/auto_mr2018.ash
 boolean songboomSetting(int choice);						//Defined in autoscend/auto_mr2018.ash
+void auto_setSongboom();						//Defined in autoscend/auto_mr2018.ash
 int catBurglarHeistsLeft();									//Defined in autoscend/auto_mr2018.ash
 boolean catBurglarHeist(item it);							//Defined in autoscend/auto_mr2018.ash
 boolean fightClubNap();										//Defined in autoscend/auto_mr2018.ash
@@ -793,9 +781,6 @@ boolean stunnable(monster mon);								//Defined in autoscend/auto_util.ash
 boolean instakillable(monster mon);							//Defined in autoscend/auto_util.ash
 int[int] intList();											//Defined in autoscend/auto_list.ash
 int internalQuestStatus(string prop);						//Defined in autoscend/auto_util.ash
-questRecord questRecord();									//Defined in autoscend/auto_util.ash
-questRecord[int] questDatabase();							//Defined in autoscend/auto_util.ash
-int questsLeft();											//Defined in autoscend/auto_util.ash
 int freeCrafts();											//Defined in autoscend/auto_util.ash
 boolean is100FamiliarRun();									//Defined in autoscend/auto_util.ash
 boolean is100FamiliarRun(familiar thisOne);					//Defined in autoscend/auto_util.ash

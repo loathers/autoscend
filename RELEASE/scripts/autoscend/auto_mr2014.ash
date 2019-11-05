@@ -273,3 +273,131 @@ boolean xiblaxian_makeStuff()
 	}
 	return false;
 }
+
+boolean ornateDowsingRod()
+{
+	if(!get_property("auto_grimstoneOrnateDowsingRod").to_boolean())
+	{
+		return false;
+	}
+	if(!is_unrestricted($item[Grimstone Mask]))
+	{
+		set_property("auto_grimstoneOrnateDowsingRod", false);
+		return false;
+	}
+	if(possessEquipment($item[UV-resistant compass]))
+	{
+		auto_log_warning("You have a UV-resistant compass for some raisin, I assume you don't want an Ornate Dowsing Rod.", "red");
+		set_property("auto_grimstoneOrnateDowsingRod", false);
+		return false;
+	}
+	if(possessEquipment($item[Ornate Dowsing Rod]))
+	{
+		auto_log_info("Hey, we have the dowsing rod already, yippie!", "blue");
+		set_property("auto_grimstoneOrnateDowsingRod", false);
+		return false;
+	}
+	if(my_adventures() <= 6)
+	{
+		return false;
+	}
+	if(item_amount($item[Grimstone Mask]) == 0)
+	{
+		return false;
+	}
+	if(my_daycount() < 2)
+	{
+		return false;
+	}
+	if(get_counters("", 0, 6) != "")
+	{
+		return false;
+	}
+
+	#Need to make sure we get our grimstone mask
+	auto_log_info("Acquiring a Dowsing Rod!", "blue");
+	set_property("choiceAdventure829", "1");
+	use(1, $item[grimstone mask]);
+
+	set_property("choiceAdventure822", "1");
+	set_property("choiceAdventure823", "1");
+	set_property("choiceAdventure824", "1");
+	set_property("choiceAdventure825", "1");
+	set_property("choiceAdventure826", "1");
+	while(item_amount($item[odd silver coin]) < 1)
+	{
+		autoAdv(1, $location[The Prince\'s Balcony]);
+	}
+	while(item_amount($item[odd silver coin]) < 2)
+	{
+		autoAdv(1, $location[The Prince\'s Dance Floor]);
+	}
+	while(item_amount($item[odd silver coin]) < 3)
+	{
+		autoAdv(1, $location[The Prince\'s Lounge]);
+	}
+	while(item_amount($item[odd silver coin]) < 4)
+	{
+		autoAdv(1, $location[The Prince\'s Kitchen]);
+	}
+	while(item_amount($item[odd silver coin]) < 5)
+	{
+		autoAdv(1, $location[The Prince\'s Restroom]);
+	}
+
+	cli_execute("make ornate dowsing rod");
+	set_property("auto_grimstoneOrnateDowsingRod", false);
+	set_property("choiceAdventure805", "1");
+	return true;
+}
+
+boolean fancyOilPainting()
+{
+	if(get_property("chasmBridgeProgress").to_int() >= 30)
+	{
+		return false;
+	}
+	if(my_adventures() <= 4)
+	{
+		return false;
+	}
+	if(item_amount($item[Grimstone Mask]) == 0)
+	{
+		return false;
+	}
+	if(!get_property("auto_grimstoneFancyOilPainting").to_boolean())
+	{
+		return false;
+	}
+	if(get_counters("", 0, 6) != "")
+	{
+		return false;
+	}
+	auto_log_info("Acquiring a Fancy Oil Painting!", "blue");
+	set_property("choiceAdventure829", "1");
+	use(1, $item[grimstone mask]);
+	set_property("choiceAdventure823", "1");
+	set_property("choiceAdventure824", "1");
+	set_property("choiceAdventure825", "1");
+	set_property("choiceAdventure826", "1");
+
+	while(item_amount($item[odd silver coin]) < 1)
+	{
+		autoAdv(1, $location[The Prince\'s Balcony]);
+	}
+	while(item_amount($item[odd silver coin]) < 2)
+	{
+		autoAdv(1, $location[The Prince\'s Dance Floor]);
+	}
+	while(item_amount($item[odd silver coin]) < 3)
+	{
+		autoAdv(1, $location[The Prince\'s Lounge]);
+	}
+	while(item_amount($item[odd silver coin]) < 4)
+	{
+		autoAdv(1, $location[The Prince\'s Kitchen]);
+	}
+	cli_execute("make fancy oil painting");
+	set_property("auto_grimstoneFancyOilPainting", false);
+	return true;
+}
