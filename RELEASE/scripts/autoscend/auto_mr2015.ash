@@ -582,6 +582,44 @@ boolean chateaumantegna_nightstandSet()
 	return true;
 }
 
+boolean chateauPainting()
+{
+	consumeStuff();
+	int paintingLevel = 8;
+	if(auto_my_path() == "One Crazy Random Summer")
+	{
+		paintingLevel = 9;
+	}
+	if (my_level() >= paintingLevel && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && isActuallyEd() && my_daycount() <= 3)
+	{
+		if(canYellowRay())
+		{
+			auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+			if(chateaumantegna_usePainting())
+			{
+				return true;
+			}
+		}
+	}
+
+	if (organsFull() && my_adventures() < 10 && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && my_daycount() == 1 && !isActuallyEd())
+	{
+		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+		if(chateaumantegna_usePainting())
+		{
+			return true;
+		}
+	}
+	if (my_level() >= 8 && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && my_daycount() == 2 && !isActuallyEd())
+	{
+		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+		if(chateaumantegna_usePainting())
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 
 boolean deck_available()
@@ -1141,6 +1179,38 @@ boolean adjustEdHat(string goal)
 		{
 			equip($slot[hat], oldHat);
 		}
+		return true;
+	}
+	return false;
+}
+
+boolean resolveSixthDMT()
+{
+	if(auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 10) && !is100FamiliarRun() && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_daycount() == 2))
+	{
+		if(get_property("auto_choice1119") != "")
+		{
+			set_property("choiceAdventure1119", get_property("auto_choice1119"));
+		}
+		set_property("auto_choice1119", get_property("choiceAdventure1119"));
+		set_property("choiceAdventure1119", 1);
+
+
+		familiar bjorn = my_bjorned_familiar();
+		if(bjorn == $familiar[Machine Elf])
+		{
+			handleBjornify($familiar[Grinning Turtle]);
+		}
+		handleFamiliar($familiar[Machine Elf]);
+		autoAdv(1, $location[The Deep Machine Tunnels]);
+		if(bjorn == $familiar[Machine Elf])
+		{
+			handleBjornify(bjorn);
+		}
+
+		set_property("choiceAdventure1119", get_property("auto_choice1119"));
+		set_property("auto_choice1119", "");
+		handleFamiliar("item");
 		return true;
 	}
 	return false;

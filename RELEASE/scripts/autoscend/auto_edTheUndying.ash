@@ -1488,20 +1488,7 @@ boolean L9_ed_chasmStart()
 	return false;
 }
 
-boolean L9_ed_chasmBuild()
-{
-	if (isActuallyEd() && !get_property("auto_chasmBusted").to_boolean())
-	{
-		auto_log_info("What a nice bridge over here...." , "green");
 
-		string page = visit_url("place.php?whichplace=orc_chasm&action=bridge_done");
-		autoAdvBypass("place.php?whichplace=orc_chasm&action=bridge_done", $location[The Smut Orc Logging Camp]);
-
-		set_property("auto_chasmBusted", true);
-		return true;
-	}
-	return false;
-}
 
 boolean L9_ed_chasmBuildClover(int need)
 {
@@ -1637,7 +1624,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// Smut Orcs are 1 Ka so build the bridge.
-	if (L9_chasmStart() || L9_chasmBuild())
+	if (L9_ed_chasmStart() || L9_chasmBuild())
 	{
 		return true;
 	}

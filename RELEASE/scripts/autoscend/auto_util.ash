@@ -2243,39 +2243,6 @@ boolean isUnclePAvailable()
 	return true;
 }
 
-questRecord questRecord(string prop, string mprop, int type, string func)
-{
-	questRecord retval;
-	retval.prop = prop;
-	retval.mprop = mprop;
-	retval.type = type;
-	retval.func = func;
-	return retval;
-}
-
-questRecord[int] questDatabase()
-{
-	questRecord[int] retval;
-	retval[0] = questRecord("auto_mosquito", "questL02Larva", 0, "L2_mosquito");
-	retval[1] = questRecord("auto_tavern", "questL03Rat", 0, "L3_tavern");
-	retval[2] = questRecord("auto_bat", "questL04Bat", 0, "L4_batCave");
-	return retval;
-}
-
-int questsLeft()
-{
-	int retval = 0;
-	foreach idx, quest in questDatabase()
-	{
-		if((quest.type == 0) && (get_property(quest.prop) != "finished"))
-		{
-			retval++;
-		}
-	}
-	return retval;
-}
-
-
 boolean instakillable(monster mon)
 {
 	if(mon.boss)
@@ -2822,6 +2789,10 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		else if(item_amount($item[deodorant]) > 0)
 		{
 			use(1, $item[deodorant]);
+		}
+		if (numeric_modifier("Combat Rate").to_int() <= amt)
+		{
+			return true;
 		}
 	}
 
