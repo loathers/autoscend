@@ -1382,7 +1382,7 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 		}
 
-		if(canUse($skill[Curse Of Weaksauce]) && (my_class() == $class[Sauceror]) && (my_mp() >= 20))
+		if(canUse($skill[Curse Of Weaksauce]) && (my_class() == $class[Sauceror]) && (my_mp() >= 20) && doWeaksauce)
 		{
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
@@ -1626,7 +1626,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(canUse($skill[Curse Of Weaksauce]) && (my_class() == $class[Sauceror]) && (my_mp() >= 32 || haveUsed($skill[Stuffed Mortar Shell])))
+	if(canUse($skill[Curse Of Weaksauce]) && (my_class() == $class[Sauceror]) && (my_mp() >= 32 || haveUsed($skill[Stuffed Mortar Shell])) && doWeaksauce)
 	{
 		return useSkill($skill[Curse Of Weaksauce]);
 	}
