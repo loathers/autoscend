@@ -169,7 +169,6 @@ void handlePostAdventure()
 		}
 	}
 
-
 	float regen = numeric_modifier("MP Regen Min").to_float() * 2.0;
 	regen += numeric_modifier("MP Regen Max").to_float();
 	regen = regen / 3.0;
