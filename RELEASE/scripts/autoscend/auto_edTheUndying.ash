@@ -1558,6 +1558,23 @@ boolean LM_edTheUndying()
 		}
 	}
 
+	if (auto_campawayAvailable())
+	{
+		// keep enough firewood on hand to fill stomach and liver with campfire food
+		if (!possessEquipment($item[whittled tiara]) && item_amount($item[Stick of Firewood]) > 14)
+		{
+			buy($coinmaster[Your Campfire], 1, $item[whittled tiara])
+		}
+		if (!possessEquipment($item[whittled shorts]) && item_amount($item[Stick of Firewood]) > 14)
+		{
+			buy($coinmaster[Your Campfire], 1, $item[whittled shorts])
+		}
+		if (!possessEquipment($item[whittled owl figurine]) && item_amount($item[Stick of Firewood]) > 19)
+		{
+			buy($coinmaster[Your Campfire], 1, $item[whittled owl figurine])
+		}
+	}
+
 	if(L1_ed_island() || L1_ed_islandFallback())
 	{
 		return true;

@@ -6068,6 +6068,11 @@ boolean enforceMLInPreAdv()
 // ADVENTURE FORCING FUNCTIONS
 boolean auto_canForceNextNoncombat()
 {
+	if (isActuallyEd())
+	{
+		return auto_pillKeeperFreeUseAvailable()
+		|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]));
+	}
 	return auto_pillKeeperAvailable()
 	|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]))
 	|| (item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && spleen_left() < $item[stench jelly].spleen);
@@ -6099,7 +6104,7 @@ boolean _auto_forceNextNoncombat()
 			set_property("auto_forceNonCombatSource", "stench jelly");
 		}
 	}
-	else if(auto_pillKeeperAvailable())
+	else if(auto_pillKeeperAvailable() && !isActuallyEd()) // don't use Spleen as Ed, it's his main source of adventures.
 	{
 		ret = auto_pillKeeper("noncombat");
 		if(ret) {
