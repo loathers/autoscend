@@ -6170,54 +6170,24 @@ boolean is_superlikely(string encounterName)
 // Function to Predict how many turns we will get from an AT buff
 int auto_predictAccordionTurns()
 {
-	boolean[item] accordions = $items[accord ion, accordion file, Accordion of Jordion, Aerogel accordion, Antique accordion, accordionoid rocca, alarm accordion, autocalliope, bal-musette accordion, baritone accordion, beer-battered accordion, bone bandoneon, cajun accordion, calavera concertina, ghost accordion, guancertina, mama\'s squeezebox, non-Euclidean non-accordion, peace accordion, pentatonic accordion, pygmy concertinette, quirky accordion, Rock and Roll Legend, Shakespeare\'s Sister\'s Accordion, skipper\'s accordion, squeezebox of the ages, stolen accordion, the trickster\'s trikitixa, toy accordion, warbear exhaust manifold, zombie accordion];
+	// List of all Accordions for AT usage
+	boolean[item] All_Accordions = $items[accord ion, accordion file, Accordion of Jordion, Aerogel accordion, Antique accordion, accordionoid rocca, alarm accordion, autocalliope, bal-musette accordion, baritone accordion, beer-battered accordion, bone bandoneon, cajun accordion, calavera concertina, ghost accordion, guancertina, mama\'s squeezebox, non-Euclidean non-accordion, peace accordion, pentatonic accordion, pygmy concertinette, quirky accordion, Rock and Roll Legend, Shakespeare\'s Sister\'s Accordion, skipper\'s accordion, squeezebox of the ages, stolen accordion, the trickster\'s trikitixa, toy accordion, warbear exhaust manifold, zombie accordion];
+	// List of Accordions that Non-AT classes can use
+	boolean[item] NonAT_Accordions = $items[Aerogel accordion, Antique accordion, toy accordion];
+	// Choose list to use based on Class
+	boolean[item] accordions = (my_class() == $class[accordion thief]) ? All_Accordions : NonAT_Accordions;
+
 	int expTurns = 0;
-	boolean MustBeAT = true;
 	int CurrentBestTurns = 0;
 
 	foreach squeezebox in accordions
 	{
-		if(item_amount(squeezebox) > 0)
+		// Verify that we have the accordion and that it is allowed to be use in path
+		if((item_amount(squeezebox) > 0) && (auto_is_valid(squeezebox)))
 		{
-			switch(squeezebox)
-			{
-			case $item[accord ion]:					MustBeAT = true;	break;
-			case $item[accordion file]:				MustBeAT = true;	break;
-			case $item[Accordion of Jordion]:			MustBeAT = true;	break;
-			case $item[Aerogel accordion]:				MustBeAT = false;	break;
-			case $item[Antique accordion]:				MustBeAT = false;	break;
-			case $item[accordionoid rocca]:				MustBeAT = true;	break;
-			case $item[alarm accordion]:				MustBeAT = true;	break;
-			case $item[autocalliope]:				MustBeAT = true;	break;
-			case $item[bal-musette accordion]:			MustBeAT = true;	break;
-			case $item[baritone accordion]:				MustBeAT = true;	break;
-			case $item[beer-battered accordion]:			MustBeAT = true;	break;
-			case $item[bone bandoneon]:				MustBeAT = true;	break;
-			case $item[cajun accordion]:				MustBeAT = true;	break;
-			case $item[calavera concertina]:			MustBeAT = true;	break;
-			case $item[ghost accordion]:				MustBeAT = true;	break;
-			case $item[guancertina]:				MustBeAT = true;	break;
-			case $item[mama\'s squeezebox]:				MustBeAT = true;	break;
-			case $item[non-Euclidean non-accordion]:		MustBeAT = true;	break;
-			case $item[peace accordion]:				MustBeAT = true;	break;
-			case $item[pentatonic accordion]:			MustBeAT = true;	break;
-			case $item[pygmy concertinette]:			MustBeAT = true;	break;
-			case $item[quirky accordion]:				MustBeAT = true;	break;
-			case $item[Rock and Roll Legend]:			MustBeAT = true;	break;
-			case $item[Shakespeare\'s Sister\'s Accordion]:		MustBeAT = true;	break;
-			case $item[skipper\'s accordion]:			MustBeAT = true;	break;
-			case $item[squeezebox of the ages]:			MustBeAT = true;	break;
-			case $item[stolen accordion]:				MustBeAT = true;	break;
-			case $item[the trickster\'s trikitixa]:			MustBeAT = true;	break;
-			case $item[toy accordion]:				MustBeAT = false;	break;
-			case $item[warbear exhaust manifold]:			MustBeAT = true;	break;
-			case $item[zombie accordion]:				MustBeAT = true;	break;
-			default: auto_log_info("No Accordion Found to cast Songs.");
-			}
-
 			expTurns = numeric_modifier(squeezebox, "Song Duration");
 
-			if((expTurns > CurrentBestTurns) && ((!MustBeAT) || ((my_class() == ($class[accordion thief])) && (MustBeAT))))
+			if(expTurns > CurrentBestTurns)
 			{
 				CurrentBestTurns = expTurns;
 			}
