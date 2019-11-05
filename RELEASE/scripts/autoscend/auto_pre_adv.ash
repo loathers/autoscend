@@ -326,6 +326,13 @@ void handlePreAdventure(location place)
 	}
 
 
+	// Only cast Paul's pop song if we expect it to more than pay for its own casting.
+	//	Casting before ML variation ensures that this, the more important buff, is cast before ML.
+	if(auto_predictAccordionTurns() >= 8)
+	{
+		buffMaintain($effect[Paul\'s Passionate Pop Song], 0, 1, 1);
+	}
+
 	// ML adjustment zone section
 	boolean doML = true;
 	boolean removeML = false;
@@ -401,7 +408,7 @@ void handlePreAdventure(location place)
 			auto_log_debug("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
 		}
 
-		auto_MaxMLToCap(150, false);
+		auto_MaxMLToCap(auto_convertDesiredML(150), false);
 	}
 
 	// If we are in some state where we do not want +ML (Level 13 or Smut Orc) make sure ML is removed

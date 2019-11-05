@@ -169,7 +169,8 @@ boolean auto_log_debug(string s, string color);
 boolean auto_log_debug(string s);
 boolean auto_log_trace(string s, string color);
 boolean auto_log_trace(string s);
-
+boolean auto_faceCheck(effect face); //Checks to see if we are already wearing an expression. If an expression is REQUIRED just use buffMaintain to force it.
+int auto_predictAccordionTurns();
 
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
@@ -2897,7 +2898,7 @@ boolean basicAdjustML()
 	}
 	else
 	{
-		if(((get_property("flyeredML").to_int() >= 10000) || get_property("auto_ignoreFlyer").to_boolean()) && (my_level() >= 13))
+		if(((get_property("flyeredML").to_int() >= 10000) || get_property("auto_ignoreFlyer").to_boolean()) && (my_level() >= 13) && (!get_property("auto_disregardInstantKarma").to_boolean()))
 		{
 			auto_change_mcd(0);
 		}
@@ -2942,7 +2943,7 @@ boolean auto_change_mcd(int mcd)
 	}
 
 	int handicap = best - get_property("auto_beatenUpCount").to_int();
-	if(my_level() >= 13)
+	if((my_level() >= 13) || (!get_property("auto_disregardInstantKarma").to_boolean()))
 	{
 		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("auto_ignoreFlyer").to_boolean())
 		{
@@ -4021,7 +4022,7 @@ void shrugAT(effect anticipated)
 	int count = 1;
 	#Put these in priority of keeping.
 	#This needs to be a comprehensive list
-	boolean[effect] songs = $effects[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, Polka of Plenty, Paul\'s Passionate Pop Song, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
+	boolean[effect] songs = $effects[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, Polka of Plenty, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
 
 	effect last = $effect[none];
 	foreach song in songs
@@ -4644,6 +4645,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Patent Sallowness]:			useItem = $item[Patent Sallowness Tonic];		break;
 	case $effect[Patience of the Tortoise]:		useSkill = $skill[Patience of the Tortoise];	break;
 	case $effect[Patient Smile]:				useSkill = $skill[Patient Smile];				break;
+	case $effect[Paul\'s Passionate Pop Song]:				useSkill = $skill[Paul\'s Passionate Pop Song];				break;
 	case $effect[Penne Fedora]:					useSkill = $skill[none];						break;
 	case $effect[Peppermint Bite]:				useItem = $item[Crimbo Peppermint Bark];		break;
 	case $effect[Peppermint Twisted]:			useItem = $item[Peppermint Twist];				break;
@@ -4979,6 +4981,34 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	{
 		return buffMaintain(useSkill, buff, mp_min, casts, turns);
 	}
+	return true;
+}
+
+// Checks to see if we are already wearing a facial expression before using buffMaintain
+//	if an expression is REQUIRED force it using buffMaintain
+boolean auto_faceCheck(string face)
+{
+	boolean[effect] FacialExpressions = $effects[Snarl of the Timberwolf, Scowl of the Auk, Stiff Upper Lip, Patient Smile, Quiet Determination, Arched Eyebrow of the Archmage, Wizard Squint, Quiet Judgement, Icy Glare, Wry Smile, Disco Leer, Disco Smirk, Suspicious Gaze, Knowing Smile, Quiet Desperation, Inscrutable Gaze];
+	boolean CanEmote = true;
+
+	foreach FExp in FacialExpressions
+	{
+		if(have_effect(FExp) > 0)
+		{
+			CanEmote = false;
+		}
+	}
+
+	if(CanEmote)
+	{
+		buffMaintain(to_effect(face), 0, 1, 1);
+	}
+	else
+	{
+		auto_log_debug("Can not get " + face + " expression as we are already emoting.");
+		return false;
+	}
+
 	return true;
 }
 
@@ -5893,7 +5923,7 @@ int auto_convertDesiredML(int DML)
 {
 	int DesiredML = get_property("auto_MLSafetyLimit").to_int();
 
-	if((get_property("auto_MLSafetyLimit") == "") || (DML < get_property("auto_MLSafetyLimit").to_int()))
+	if(get_property("auto_MLSafetyLimit") == "")
 	{
 		DesiredML = DML;
 	}
@@ -5904,7 +5934,6 @@ int auto_convertDesiredML(int DML)
 // Uses MCD in the constraints of a Cap
 boolean auto_setMCDToCap()
 {
-
 	// This just does the math for comparing vs. the Cap. If no cap is set then ML is virtually unlimited.
 	int remainingMLToCap()
 	{
@@ -5922,18 +5951,22 @@ boolean auto_setMCDToCap()
 		return MLToCap;
 	}
 
+	// Don't try to set the MCD is in KoE
+	if(!in_koe())
+	{
 
-	if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
-	{
-		auto_change_mcd(11);
-	}
-	else if(10 <= remainingMLToCap())
-	{
-		auto_change_mcd(10);
-	}
-	else if(10 > remainingMLToCap())
-	{
-		auto_change_mcd(remainingMLToCap());
+		if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
+		{
+			change_mcd(11);
+		}
+		else if(10 <= remainingMLToCap())
+		{
+			change_mcd(10);
+		}
+		else if(10 > remainingMLToCap())
+		{
+			change_mcd(remainingMLToCap());
+		}
 	}
 
 	return true;
@@ -5960,9 +5993,11 @@ boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 {
 
-// Turn Off MCD first, so we can maximize our ML within constraints.
-	auto_change_mcd(0);
-
+// Turn Off MCD first if not in KoE, so we can maximize our ML within constraints.
+	if(!in_koe())
+	{
+		change_mcd(0);
+	}
 
 // ToML >= U >= 30
 	UrKelCheck(ToML, auto_convertDesiredML(ToML), 30);
@@ -6004,8 +6039,11 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 
 // <10
-	UrKelCheck(ToML, 9, 2);
-
+	//If we can't get 10 turns of Ur-Kel's, and we aren't being forced to pile on the ML, it probably isn't worth it.
+	if((doAltML) || (auto_predictAccordionTurns() >= 10))
+	{
+		UrKelCheck(ToML, 9, 2);
+	}
 
 // Customizable - For variable effects that we can use to fill in the corners
 	// Fill in the remainder with MCD
@@ -6126,4 +6164,35 @@ boolean is_superlikely(string encounterName)
 	];
 	return __SUPERLIKELIES contains encounterName;
 
+}
+
+
+// Function to Predict how many turns we will get from an AT buff
+int auto_predictAccordionTurns()
+{
+	// List of all Accordions for AT usage
+	boolean[item] All_Accordions = $items[accord ion, accordion file, Accordion of Jordion, Aerogel accordion, Antique accordion, accordionoid rocca, alarm accordion, autocalliope, bal-musette accordion, baritone accordion, beer-battered accordion, bone bandoneon, cajun accordion, calavera concertina, ghost accordion, guancertina, mama\'s squeezebox, non-Euclidean non-accordion, peace accordion, pentatonic accordion, pygmy concertinette, quirky accordion, Rock and Roll Legend, Shakespeare\'s Sister\'s Accordion, skipper\'s accordion, squeezebox of the ages, stolen accordion, the trickster\'s trikitixa, toy accordion, warbear exhaust manifold, zombie accordion];
+	// List of Accordions that Non-AT classes can use
+	boolean[item] NonAT_Accordions = $items[Aerogel accordion, Antique accordion, toy accordion];
+	// Choose list to use based on Class
+	boolean[item] accordions = (my_class() == $class[accordion thief]) ? All_Accordions : NonAT_Accordions;
+
+	int expTurns = 0;
+	int CurrentBestTurns = 0;
+
+	foreach squeezebox in accordions
+	{
+		// Verify that we have the accordion and that it is allowed to be use in path
+		if((item_amount(squeezebox) > 0) && (auto_is_valid(squeezebox)))
+		{
+			expTurns = numeric_modifier(squeezebox, "Song Duration");
+
+			if(expTurns > CurrentBestTurns)
+			{
+				CurrentBestTurns = expTurns;
+			}
+		}
+	}
+
+	return CurrentBestTurns;
 }
