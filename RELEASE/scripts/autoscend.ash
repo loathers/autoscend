@@ -8971,7 +8971,7 @@ boolean Lsc_flyerSeals()
 		}
 		if((item_amount($item[bad-ass club]) == 0) && (item_amount($item[ingot of seal-iron]) > 0) && have_skill($skill[Super-Advanced Meatsmithing]))
 		{
-			if((item_amount($item[Tenderizing Hammer]) == 0) && (my_meat() >= npc_price($item[Tenderizing Hammer])))
+			if((item_amount($item[Tenderizing Hammer]) == 0) && (my_meat() >= (npc_price($item[Tenderizing Hammer]) * 2)))
 			{
 				buyUpTo(1, $item[Tenderizing Hammer]);
 			}
