@@ -1550,15 +1550,15 @@ boolean LM_edTheUndying()
 		// keep enough firewood on hand to fill stomach and liver with campfire food
 		if (!possessEquipment($item[whittled tiara]) && item_amount($item[Stick of Firewood]) > 14)
 		{
-			buy($coinmaster[Your Campfire], 1, $item[whittled tiara])
+			buy($coinmaster[Your Campfire], 1, $item[whittled tiara]);
 		}
 		if (!possessEquipment($item[whittled shorts]) && item_amount($item[Stick of Firewood]) > 14)
 		{
-			buy($coinmaster[Your Campfire], 1, $item[whittled shorts])
+			buy($coinmaster[Your Campfire], 1, $item[whittled shorts]);
 		}
 		if (!possessEquipment($item[whittled owl figurine]) && item_amount($item[Stick of Firewood]) > 19)
 		{
-			buy($coinmaster[Your Campfire], 1, $item[whittled owl figurine])
+			buy($coinmaster[Your Campfire], 1, $item[whittled owl figurine]);
 		}
 	}
 

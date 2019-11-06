@@ -25,6 +25,7 @@ import <autoscend/auto_clan.ash>
 import <autoscend/auto_cooking.ash>
 import <autoscend/auto_adventure.ash>
 import <autoscend/auto_mr2012.ash>
+import <autoscend/auto_mr2013.ash>
 import <autoscend/auto_mr2014.ash>
 import <autoscend/auto_mr2015.ash>
 import <autoscend/auto_mr2016.ash>
