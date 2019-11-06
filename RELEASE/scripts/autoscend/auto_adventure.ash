@@ -113,13 +113,12 @@ boolean autoAdvBypass(string url, location loc, string option)
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
 	if(!zone_isAvailable(loc, true)){
-		print("Cant get to " + loc + " right now.", "red");
+		auto_log_warning("Cant get to " + loc + " right now.", "red");
 		return false;
 	}
 
 	set_property("nextAdventure", loc);
 	cli_execute("auto_pre_adv");
-  #	handlePreAdventure(loc);
 	if(option == "")
 	{
 		option = "auto_combatHandler";
