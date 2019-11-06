@@ -1624,16 +1624,45 @@ boolean horsePreAdventure()
 	return getHorse(desiredHorse);
 }
 
+boolean shouldUseWishes(){
+	return get_property("auto_useWishes").to_boolean();
+}
+
+int wishesAvailable(){
+	if(item_amount($item[Genie Bottle]) == 0 || !auto_is_valid($item[Genie Bottle]))
+	{
+		return 0;
+	}
+
+	return (3 - get_property("_genieWishesUsed").to_int()) + item_amount($item[pocket wish]);
+}
+
+boolean makeGenieWish(string wish){
+	int starting_wishes = wishesAvailable();
+	if(starting_wishes < 1){
+		return false;
+	}
+
+	int wish_provider = $item[genie bottle].to_int();
+
+	if (item_amount($item[pocket wish]) > 0){
+		wish_provider = $item[pocket wish].to_int();
+	}
+
+	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider, false);
+	page = visit_url("choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish);
+
+	if(wishesAvailable() == starting_wishes){
+		auto_log_warning("Wish: '" + wish + "' failed", "red");
+		return false;
+	}
+
+	handleTracker(to_item(wish_provider), wish, "auto_wishes");
+	return true;
+}
+
 boolean makeGenieWish(effect eff)
 {
-	if(item_amount($item[Genie Bottle]) == 0)
-	{
-		return false;
-	}
-	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
-	{
-		return false;
-	}
 	if(have_effect(eff) > 0)
 	{
 		return false;
@@ -1643,21 +1672,7 @@ boolean makeGenieWish(effect eff)
 		return false;
 	}
 
-	string wish = "to be " + eff;
-	int wish_provider = $item[genie bottle].to_int();
-	if (item_amount($item[pocket wish]) > 0)
-	{
-		wish_provider = $item[pocket wish].to_int();
-	}
-	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider, false);
-	page = visit_url("choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish);
-	if(have_effect(eff) == 0)
-	{
-		auto_log_warning("Wish: '" + wish + "' failed", "red");
-		return false;
-	}
-	handleTracker(to_item(wish_provider), wish, "auto_wishes");
-	return true;
+	return makeGenieWish("to be " + eff) || have_effect(eff) > 0;
 }
 
 boolean canGenieCombat()

@@ -1,34 +1,5 @@
 script "auto_adventure.ash"
 
-// just a wrapper around https://svn.code.sf.net/p/therazekolmafia/canadv/code/ for now, but gives a single point of change if we need to change how we determine this
-boolean autoCanAdv(location loc){
-
-	static boolean[item] craftable_shirts = $items[barskin cloak, bat-ass leather jacket, clownskin harness, demonskin jacket, gnauga hide vest, hipposkin poncho, lynyrdskin tunic, tuxedo shirt, white snakeskin duster, yak anorak];
-
-	boolean acquire_a_shirt(){
-		if(isjanuaryToteAvailable() && januaryToteAcquire($item[Makeshift Garbage Shirt])){
-			return true;
-		}
-		if(auto_have_skill($skill[Torso Awaregness]) && auto_have_skill($skill[Armorcraftiness])){
-			foreach shirt in craftable_shirts{
-				if(creatable_amount(shirt) > 0 && create(1, shirt)){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	if(!can_adv(loc)){
-		if(loc == $location[The Thinknerd Warehouse] && !acquire_a_shirt()){
-			print("Wasnt able to acquire a shirt to open " + loc, "red");
-		}
-		return can_adv(loc);
-	} else{
-		return true;
-	}
-}
-
 # num is not handled properly anyway, so we'll just reject it.
 boolean autoAdv(location loc, string option)
 {
@@ -38,8 +9,8 @@ boolean autoAdv(location loc, string option)
 # num is not handled properly anyway, so we'll just reject it.
 boolean autoAdv(int num, location loc, string option)
 {
-	if(!autoCanAdv(loc)){
-		print("Cant get to " + loc + " right now.", "red");
+	if(!zone_isAvailable(loc, true)){
+		auto_log_warning("Cant get to " + loc + " right now.", "red");
 		return false;
 	}
 
@@ -141,7 +112,7 @@ boolean autoAdvBypass(string url, location loc, string option)
 #
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
-	if(!autoCanAdv(loc)){
+	if(!zone_isAvailable(loc, true)){
 		print("Cant get to " + loc + " right now.", "red");
 		return false;
 	}
