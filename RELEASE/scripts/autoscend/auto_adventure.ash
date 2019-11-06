@@ -158,13 +158,13 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		ed_preAdv(1, loc, option);
 	}
 
-	print("About to start a combat indirectly at " + loc + "... (" + count(url) + ") accesses required.", "blue");
+	auto_log_info("About to start a combat indirectly at " + loc + "... (" + count(url) + ") accesses required.", "blue");
 	string page;
 	foreach idx, it in url
 	{
 		if((urlGetFlags & 1) == 1)
 		{
-			#print("Visit_url(" + it + ") override to false", "red");
+			#auto_log_warning("Visit_url(" + it + ") override to false", "red");
 			//When using this, you may have to add my_hash yourself.
 			//We can probably do this (but is it possible that a search for "pwd" can cause false positives?)
 			page = visit_url(it, false);
@@ -177,7 +177,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	}
 	if((my_hp() == 0) || (get_property("_edDefeats").to_int() == 1) || (have_effect($effect[Beaten Up]) > 0))
 	{
-		print("Uh oh! Died when starting a combat indirectly.", "red");
+		auto_log_warning("Uh oh! Died when starting a combat indirectly.", "red");
 		if(my_class() == $class[Ed])
 		{
 			return ed_autoAdv(1, loc, option, true);
@@ -193,7 +193,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	}
 	if(contains_text(page, combatPage))
 	{
-		print("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
+		auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 
 		if(option != "autoscend_null") // && (option != ""))
 		{
@@ -255,7 +255,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	boolean inChoice = false;
 	if(contains_text(page, "whichchoice value=") || contains_text(page, "whichchoice="))
 	{
-		print("Override hit a choice adventure (" + loc + "), trying....", "red");
+		auto_log_warning("Override hit a choice adventure (" + loc + "), trying....", "red");
 		inChoice = true;
 	}
 
@@ -359,7 +359,7 @@ boolean preAdvXiblaxian(location loc)
 		{
 			if(contains_text(visit_url("main.php"), "Combat"))
 			{
-				print("As Ed, I was not bypassed into this combat correctly (but it'll be ok)", "red");
+				auto_log_warning("As Ed, I was not bypassed into this combat correctly (but it'll be ok)", "red");
 				return false;
 			}
 		}
@@ -388,7 +388,7 @@ boolean preAdvXiblaxian(location loc)
 			}
 			else
 			{
-				print("We should be getting a Xiblaxian wotsit this combat. Beep boop.", "green");
+				auto_log_info("We should be getting a Xiblaxian wotsit this combat. Beep boop.", "green");
 			}
 		}
 		else if(toMake == $item[Xiblaxian Space-Whiskey])
@@ -407,7 +407,7 @@ boolean preAdvXiblaxian(location loc)
 			}
 			else
 			{
-				print("We should be getting a Xiblaxian wotsit this combat. Beep boop.", "green");
+				auto_log_info("We should be getting a Xiblaxian wotsit this combat. Beep boop.", "green");
 			}
 		}
 	}

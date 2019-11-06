@@ -78,7 +78,7 @@ void auto_process_kmail(string functionname)
 	//delete successfully processed mail
 	if(count(processed) > 0)
 	{
-		print("Deleting processed mail...", "blue");
+		auto_log_info("Deleting processed mail...", "blue");
 		string del = "messages.php?the_action=delete&box=Inbox&pwd";
 		foreach k in processed
 		{
@@ -87,11 +87,11 @@ void auto_process_kmail(string functionname)
 		del = visit_url(del);
 		if(contains_text(del,count(processed)+" message"+(count(processed) > 1 ? "s" : "")+" deleted."))
 		{
-			print(count(processed)+" message"+(count(processed) > 1 ? "s" : "")+" deleted.", "blue");
+			auto_log_info(count(processed)+" message"+(count(processed) > 1 ? "s" : "")+" deleted.", "blue");
 		}
 		else
 		{
-			print("There was a problem deleting the processed mail.  Check your inbox.", "red");
+			auto_log_warning("There was a problem deleting the processed mail.  Check your inbox.", "red");
 		}
 	}
 }

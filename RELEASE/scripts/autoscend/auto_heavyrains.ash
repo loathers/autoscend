@@ -91,7 +91,7 @@ boolean routineRainManHandler()
 
 		if(my_daycount() < 3)
 		{
-			print("I have nothing left to rain man, maybe we are getting ready for make it rain?");
+			auto_log_info("I have nothing left to rain man, maybe we are getting ready for make it rain?");
 		}
 	}
 	return false;
@@ -182,7 +182,7 @@ boolean doHRSkills()
 	{
 		if(item_amount($item[thunder thigh]) > 0)
 		{
-			print("Trying to use a thunder thigh", "blue");
+			auto_log_info("Trying to use a thunder thigh", "blue");
 			string page = visit_url("inv_use.php?which=3&whichitem=7648&pwd");
 			runChoice(page);
 			if(get_property("choiceAdventure967") == "1")
@@ -219,7 +219,7 @@ boolean doHRSkills()
 
 		if(item_amount($item[aquaconda brain]) > 0)
 		{
-			print("Trying to use a aquaconda brain", "blue");
+			auto_log_info("Trying to use a aquaconda brain", "blue");
 			string page = visit_url("inv_use.php?which=3&whichitem=7647&pwd");
 			runChoice(page);
 			if(get_property("choiceAdventure968") == "1")
@@ -256,7 +256,7 @@ boolean doHRSkills()
 
 		if(item_amount($item[lightning milk]) > 0)
 		{
-			print("Trying to use a lightning milk", "blue");
+			auto_log_info("Trying to use a lightning milk", "blue");
 			string page = visit_url("inv_use.php?which=3&whichitem=7646&pwd");
 			runChoice(page);
 			if(get_property("choiceAdventure969") == "3")
@@ -495,7 +495,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	{
 		set_property("auto_doCombatCopy", "yes");
 	}
-	print("Looking to summon: " + monsterName, "blue");
+	auto_log_info("Looking to summon: " + monsterName, "blue");
 
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1";

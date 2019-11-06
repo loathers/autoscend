@@ -577,11 +577,49 @@ boolean chateaumantegna_nightstandSet()
 	{
 		return false;
 	}
-	print("We have the wrong Chateau Nightstand item, replacing.", "blue");
+	auto_log_info("We have the wrong Chateau Nightstand item, replacing.", "blue");
 	chateaumantegna_buyStuff(need);
 	return true;
 }
 
+boolean chateauPainting()
+{
+	consumeStuff();
+	int paintingLevel = 8;
+	if(auto_my_path() == "One Crazy Random Summer")
+	{
+		paintingLevel = 9;
+	}
+	if (my_level() >= paintingLevel && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && isActuallyEd() && my_daycount() <= 3)
+	{
+		if(canYellowRay())
+		{
+			auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+			if(chateaumantegna_usePainting())
+			{
+				return true;
+			}
+		}
+	}
+
+	if (organsFull() && my_adventures() < 10 && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && my_daycount() == 1 && !isActuallyEd())
+	{
+		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+		if(chateaumantegna_usePainting())
+		{
+			return true;
+		}
+	}
+	if (my_level() >= 8 && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && my_daycount() == 2 && !isActuallyEd())
+	{
+		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+		if(chateaumantegna_usePainting())
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 
 boolean deck_available()
@@ -747,7 +785,7 @@ boolean deck_cheat(string cheat)
 	{
 		if(to_int(cheat) == card)
 		{
-			print("Already cheated this card, failing gracefully.", "red");
+			auto_log_warning("Already cheated this card, failing gracefully.", "red");
 			return false;
 		}
 	}
@@ -1067,7 +1105,7 @@ boolean deck_useScheme(string action)
 		}
 		else
 		{
-			print("Could not draw card for some reason, we may be stuck in a choice adventure.");
+			auto_log_critical("Could not draw card for some reason, we may be stuck in a choice adventure.");
 			abort("Failure when drawing cards, if any were drawn, the rest will NOT be drawn. Draw them and resume.");
 		}
 	}
@@ -1088,4 +1126,92 @@ boolean deck_useScheme(string action)
 	}
 
 	return true;
+}
+
+boolean adjustEdHat(string goal)
+{
+	if(!possessEquipment($item[The Crown of Ed the Undying]))
+	{
+		return false;
+	}
+	int option = -1;
+	goal = to_lower_case(goal);
+	if(((goal == "muscle") || (goal == "bear")) && (get_property("edPiece") != "bear"))
+	{
+		option = 1;
+	}
+	else if(((goal == "myst") || (goal == "mysticality") || (goal == "owl")) && (get_property("edPiece") != "owl"))
+	{
+		option = 2;
+	}
+	else if(((goal == "moxie") || (goal == "puma")) && (get_property("edPiece") != "puma"))
+	{
+		option = 3;
+	}
+	else if(((goal == "ml") || (goal == "hyena")) && (get_property("edPiece") != "hyena"))
+	{
+		option = 4;
+	}
+	else if(((goal == "meat") || (goal == "item") || (goal == "items") || (goal == "drops") || (goal == "mouse")) && (get_property("edPiece") != "mouse"))
+	{
+		option = 5;
+	}
+	else if(((goal == "regen") || (goal == "regenerate") || (goal == "miss") || (goal == "dodge") || (goal == "weasel")) && (get_property("edPiece") != "weasel"))
+	{
+		option = 6;
+	}
+	else if(((goal == "breathe") || (goal == "underwater") || (goal == "fish")) && (get_property("edPiece") != "fish"))
+	{
+		option = 7;
+	}
+
+	item oldHat = equipped_item($slot[hat]);
+
+	if(option != -1)
+	{
+		if(oldHat != $item[The Crown of Ed the Undying])
+		{
+			equip($slot[hat], $item[The Crown of Ed the Undying]);
+		}
+		visit_url("inventory.php?action=activateedhat");
+		visit_url("choice.php?pwd=&whichchoice=1063&option=" + option, true);
+		if(oldHat != $item[The Crown of Ed the Undying])
+		{
+			equip($slot[hat], oldHat);
+		}
+		return true;
+	}
+	return false;
+}
+
+boolean resolveSixthDMT()
+{
+	if(auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 10) && !is100FamiliarRun() && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_daycount() == 2))
+	{
+		if(get_property("auto_choice1119") != "")
+		{
+			set_property("choiceAdventure1119", get_property("auto_choice1119"));
+		}
+		set_property("auto_choice1119", get_property("choiceAdventure1119"));
+		set_property("choiceAdventure1119", 1);
+
+
+		familiar bjorn = my_bjorned_familiar();
+		if(bjorn == $familiar[Machine Elf])
+		{
+			handleBjornify($familiar[Grinning Turtle]);
+		}
+		handleFamiliar($familiar[Machine Elf]);
+		autoAdv(1, $location[The Deep Machine Tunnels]);
+		if(bjorn == $familiar[Machine Elf])
+		{
+			handleBjornify(bjorn);
+		}
+
+		set_property("choiceAdventure1119", get_property("auto_choice1119"));
+		set_property("auto_choice1119", "");
+		handleFamiliar("item");
+		return true;
+	}
+	return false;
 }

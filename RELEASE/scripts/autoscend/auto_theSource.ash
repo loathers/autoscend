@@ -192,7 +192,7 @@ boolean LX_theSource()
 		{
 			if((item_amount($item[Ninja Rope]) == 0) || (item_amount($item[Ninja Carabiner]) == 0) || (item_amount($item[Ninja Crampons]) == 0))
 			{
-				if(L8_trapperYeti())
+				if(L8_trapperNinjaLair())
 				{
 					return true;
 				}
@@ -208,7 +208,7 @@ boolean LX_theSource()
 			return false;
 		}
 
-		print("Not searching for a spoon, not at all...", "green");
+		auto_log_info("Not searching for a spoon, not at all...", "green");
 		return autoAdv(goal);
 	}
 	return false;

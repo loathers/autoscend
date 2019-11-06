@@ -410,22 +410,65 @@ boolean songboomSetting(int option)
 	}
 	else
 	{
-		print("Could not find how many songs we have left...", "red");
+		auto_log_warning("Could not find how many songs we have left...", "red");
 		option = 6;
 	}
 
 	page = visit_url("choice.php?whichchoice=1312&option=" + option);
 	if(contains_text(page, "don\'t want to break this thing"))
 	{
-		print("Unable to change BoomBoxen songen!", "red");
+		auto_log_warning("Unable to change BoomBoxen songen!", "red");
 		return false;
 	}
 	if(option != 6)
 	{
 		boomsLeft--;
 	}
-	print("Change successful to " + get_property("boomBoxSong") + "We have " + boomsLeft + " SongBoom BoomBoxen songens left!", "green");
+	auto_log_info("Change successful to " + get_property("boomBoxSong") + "We have " + boomsLeft + " SongBoom BoomBoxen songens left!", "green");
 	return true;
+}
+
+void auto_setSongboom()
+{
+	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
+	{
+		return;
+	}
+	if(item_amount($item[SongBoom&trade; BoomBox]) == 0)
+	{
+		return;
+	}
+	if(get_property("auto_beatenUpCount").to_int() > 5)
+	{
+		songboomSetting("dr");
+	}
+	else if ((get_property("auto_prewar") == "started") && (get_property("auto_war") != "finished"))
+	{
+		// Once we've started the war, we want to be able to micromanage songs
+		// for Gremlins and Nuns. Don't break this for them.
+	}
+	else if (!isActuallyEd() && get_property("auto_crypt") != "finished" && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
+	{
+		songboomSetting("nightmare");
+	}
+	else
+	{
+		if((my_fullness() == 0) || (item_amount($item[Special Seasoning]) < 4))
+		{
+			songboomSetting("food");
+		}
+		else
+		{
+			if((auto_my_path() == "G-Lover") && (my_meat() > 10000))
+			{
+				songboomSetting("dr");
+			}
+			else
+			{
+				songboomSetting("meat");
+			}
+		}
+	}
 }
 
 int catBurglarHeistsLeft()
@@ -454,7 +497,7 @@ boolean catBurglarHeist(item it)
 	 */
 	if (0 == catBurglarHeistsLeft()) return false;
 
-	print("Trying to heist a " + it, "blue");
+	auto_log_info("Trying to heist a " + it, "blue");
 	familiar backup_familiar = my_familiar();
 	try
 	{
@@ -469,12 +512,90 @@ boolean catBurglarHeist(item it)
 			page = visit_url(url);
 			return true;
 		}
-		print("We don't seem to be able to heist a " + it + ". Maybe we didn't fight it with the Cat Burglar?", "red");
+		auto_log_warning("We don't seem to be able to heist a " + it + ". Maybe we didn't fight it with the Cat Burglar?", "red");
 		return false;
 	}
 	finally {
 		use_familiar(backup_familiar);
 	}
+}
+
+item[monster] catBurglarHeistDesires()
+{
+	/* Note that this is called from auto_pre_adv.ash - WE WILL OVERRIDE FAMILIAR IN
+	 * PREADVENTURE IF WE NEED THE BURGLE.
+	 */
+	item[monster] wannaHeists;
+
+	item oreGoal = to_item(get_property("trapperOre"));
+	if (oreGoal != $item[none] && item_amount(oreGoal) < 3 && internalQuestStatus("questL08Trapper") < 2 && in_hardcore())
+	{
+		wannaHeists[$monster[mountain man]] = oreGoal;
+	}
+
+	if((item_amount($item[killing jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) == 0) && in_hardcore())
+		wannaHeists[$monster[banshee librarian]] = $item[killing jar];
+
+	if((my_level() >= 11) && !possessEquipment($item[Mega Gem]) && in_hardcore() && (item_amount($item[wet stew]) == 0) && (item_amount($item[wet stunt nut stew]) == 0))
+	{
+		if(item_amount($item[bird rib]) == 0)
+			wannaHeists[$monster[whitesnake]] = $item[bird rib];
+		if(item_amount($item[lion oil]) == 0)
+			wannaHeists[$monster[white lion]] = $item[lion oil];
+	}
+
+	int twinPeakProgress = get_property("twinPeakProgress").to_int();
+	boolean needStench = ((twinPeakProgress & 1) == 0);
+	boolean needFood = ((twinPeakProgress & 2) == 0);
+	boolean needJar = ((twinPeakProgress & 4) == 0);
+	boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
+	int neededTrimmers = -item_amount($item[rusty hedge trimmers]);
+	if(needStench) neededTrimmers++;
+	if(needFood) neededTrimmers++;
+	if(needJar) neededTrimmers++;
+	if(needInit) neededTrimmers++;
+	if ((my_level() >= 8) && (catBurglarHeistsLeft() >= 2) && (neededTrimmers > 0))
+	{
+		wannaHeists[$monster[bearpig topiary animal]] = $item[rusty hedge trimmers];
+		wannaHeists[$monster[elephant (meatcar?) topiary animal]] = $item[rusty hedge trimmers];
+		wannaHeists[$monster[spider (duck?) topiary animal]] = $item[rusty hedge trimmers];
+	}
+
+	if(get_property("questL11Shen") == "finished" && internalQuestStatus("questL11Ron") == 1 && catBurglarHeistsLeft() >= 2)
+	{
+		wannaHeists[$monster[Blue Oyster cultist]] = $item[cigarette lighter];
+	}
+
+	// 18 is a totally arbitrary cutoff here, but it's probably fine.
+	if($location[The Penultimate Fantasy Airship].turns_spent >= 18)
+	{
+		if (!possessEquipment($item[amulet of extreme plot significance]) && internalQuestStatus("questL10Garbage") < 8)
+		{
+			wannaHeists[$monster[Quiet Healer]] = $item[amulet of extreme plot significance];
+		}
+		if (!possessEquipment($item[Mohawk wig]) && internalQuestStatus("questL10Garbage") < 10)
+		{
+			wannaHeists[$monster[Burly Sidekick]] = $item[Mohawk wig];
+		}
+	}
+
+	return wannaHeists;
+}
+
+boolean catBurglarHeist()
+{
+	if (catBurglarHeistsLeft() == 0) return false;
+
+	// We can't know what's burgleable without checking the burgle noncombat,
+	// and that's expensive to do repeatedly. So we burgle only if we want
+	// to burgle the last monster. This is bad if you're about to leave a zone.
+	item[monster] wannaHeists = catBurglarHeistDesires();
+
+	if (wannaHeists contains last_monster())
+	{
+		return catBurglarHeist(wannaHeists[last_monster()]);
+	}
+	return false;
 }
 
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
@@ -697,7 +818,7 @@ boolean neverendingPartyAvailable()
 	}
 	if(get_property("auto_skipNEPOverride").to_boolean())
 	{
-		print("NEP access disabled. This can be turned on in the Relay by setting auto_skipNEPOverride = false", "red");
+		auto_log_warning("NEP access disabled. This can be turned on in the Relay by setting auto_skipNEPOverride = false", "red");
 		return false;
 	}
 
@@ -1339,7 +1460,7 @@ boolean haveAnyPokeFamiliarEquipment(){
 	static boolean[item] poke_fam_equipment = $items[amulet coin, luck incense, muscle band, razor fang, shell bell, smoke ball];
 	foreach i, _ in poke_fam_equipment{
 		if(equipmentAmount(i) > 0){
-			auto_debug_print("Found Tall Grass familiar equipment: " + i);
+			auto_log_debug("Found Tall Grass familiar equipment: " + i);
 			return true;
 		}
 	}
@@ -1351,6 +1472,6 @@ boolean pokeFertilizeAndHarvest(){
 		return false;
 	}
 
-	print("sew and reap.");
+	auto_log_debug("sew and reap.");
 	return use(1, $item[Pok&eacute;-Gro fertilizer]) && cli_execute("garden pick");
 }

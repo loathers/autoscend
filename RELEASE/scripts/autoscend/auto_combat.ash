@@ -2,7 +2,6 @@ script "auto_combat.ash"
 
 monster ocrs_helper(string page);
 void awol_helper(string page);
-string ccsJunkyard(int round, string opp, string text);
 string auto_edCombatHandler(int round, string opp, string text);
 string auto_combatHandler(int round, string opp, string text);
 
@@ -233,14 +232,13 @@ string getStallString(monster enemy)
 
 string auto_combatHandler(int round, string opp, string text)
 {
-	#print("auto_combatHandler: " + round, "brown");
 	#Yes, round 0, really.
 	monster enemy = to_monster(opp);
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
 	int damageReceived = 0;
 	if(round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 
 		switch(enemy)
 		{
@@ -261,43 +259,6 @@ string auto_combatHandler(int round, string opp, string text)
 		set_property("auto_combatHandlerThunderBird", "0");
 		set_property("auto_combatHandlerFingernailClippers", "0");
 		set_property("auto_combatHP", my_hp());
-
-/*
-		if(my_location() == $location[The Deep Machine Tunnels])
-		{
-			if(!($monsters[Perceiver of Sensations, Performer of Actions, Thinker of Thoughts] contains enemy))
-			{
-				print("In The Deep Machine Tunnels and did not encounter expected monster....", "red");
-				//Digitize happens first, yay for someone asking!
-				//We need to remove Corresponding Counter.
-				if(isOverdueDigitize())
-				{
-					set_property("_sourceTerminalDigitizeMonsterCount", get_property("_sourceTerminalDigitizeMonsterCount").to_int() + 1);
-					print("Looks like a digitize monster, adjusting monster count but can not restore tracker", "red");
-				}
-				else if(isExpectingArrow() || isOverdueArrow())
-				{
-					print("Probably an arrow encounter... trying to adjust...", "red");
-					if(to_monster(get_property("romanticTarget")) == enemy)
-					{
-						if(get_property("_romanticFightsLeft").to_int() == 0)
-						{
-							print("Have a romantic target but no fights left... can not fix wanderers", "red");
-						}
-						else
-						{
-							set_property("_romanticFightsLeft", get_property("_romanticFightsLeft").to_int() - 1);
-							print("Attempted to decrement romantic fights left, can not restore counter.", "red");
-						}
-					}
-					else
-					{
-						print("Not an arrow encounter... can not fix wanderers...", "red");
-					}
-				}
-			}
-		}
-*/
 	}
 	else
 	{
@@ -343,7 +304,7 @@ string auto_combatHandler(int round, string opp, string text)
 			majora = maskMatch.group(1).to_int();
 			if(round == 0)
 			{
-				print("Found mask: " + majora, "green");
+				auto_log_info("Found mask: " + majora, "green");
 			}
 		}
 		if((majora == 7) && canUse($skill[Swap Mask]))
@@ -878,7 +839,7 @@ string auto_combatHandler(int round, string opp, string text)
 			handleTracker(enemy, $item[Rain-Doh black box], "auto_copies");
 			return "item " + $item[Rain-Doh black box];
 		}
-		print("Can not issue copy directive because we have no copies left", "red");
+		auto_log_warning("Can not issue copy directive because we have no copies left", "red");
 	}
 
 	if(get_property("auto_doCombatCopy") == "yes")
@@ -1052,7 +1013,7 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 			else
 			{
-				print("Unable to track yellow ray behavior: " + combatAction, "red");
+				auto_log_warning("Unable to track yellow ray behavior: " + combatAction, "red");
 			}
 			if(combatAction == useSkill($skill[Asdon Martin: Missile Launcher], false))
 			{
@@ -1062,7 +1023,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		else
 		{
-			print("Wanted a yellow ray but we can not find one.", "red");
+			auto_log_warning("Wanted a yellow ray but we can not find one.", "red");
 		}
 	}
 
@@ -1129,7 +1090,7 @@ string auto_combatHandler(int round, string opp, string text)
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
 		{
-			print("Looking at banishAction: " + banishAction, "green");
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
 			#abort("Banisher considered here. Weee");
 			#wait(10);
 			#banishAction = "";
@@ -1147,7 +1108,7 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 			else
 			{
-				print("Unable to track banisher behavior: " + banishAction, "red");
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
 			}
 			return banishAction;
 		}
@@ -1262,7 +1223,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		if(!contains_text(combatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(combatState, "shootghost3"))
 		{
-			print("Busting makes me feel good!!", "green");
+			auto_log_info("Busting makes me feel good!!", "green");
 			set_property("auto_combatHandler", combatState + "(trapghost)");
 			return useSkill($skill[Trap Ghost], false);
 		}
@@ -1477,7 +1438,7 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 			else
 			{
-				print("None of our preferred skills available. Engaging in Fisticuffs.", "red");
+				auto_log_warning("None of our preferred skills available. Engaging in Fisticuffs.", "red");
 			}
 		}
 
@@ -2129,13 +2090,13 @@ string auto_combatHandler(int round, string opp, string text)
 				if(canSurvive(1.4))
 				{
 					set_property("auto_combatHandler", combatState + "(last attempt)");
-					print("Uh oh, I'm having trouble in combat.", "red");
+					auto_log_warning("Uh oh, I'm having trouble in combat.", "red");
 				}
 				return attackMajor;
 			}
 			if(canSurvive(2.5))
 			{
-				print("Hmmm, I don't really know what to do in this combat but it looks like I'll live.", "red");
+				auto_log_warning("Hmmm, I don't really know what to do in this combat but it looks like I'll live.", "red");
 				if(my_mp() >= costMajor)
 				{
 					return attackMajor;
@@ -2242,7 +2203,7 @@ string findBanisher(int round, string opp, string text)
 	string banishAction = banisherCombatString(enemy, my_location(), true);
 	if(banishAction != "")
 	{
-		print("Looking at banishAction: " + banishAction, "green");
+		auto_log_info("Looking at banishAction: " + banishAction, "green");
 		if(index_of(banishAction, "skill") == 0)
 		{
 			handleTracker(enemy, to_skill(substring(banishAction, 6)), "auto_banishes");
@@ -2253,46 +2214,37 @@ string findBanisher(int round, string opp, string text)
 		}
 		else
 		{
-			print("Unable to track banisher behavior: " + banishAction, "red");
+			auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
 		}
 		return banishAction;
 	}
-
-//	if(auto_have_skill($skill[Lunging Thrust-Smack]) && (my_mp() >= mp_cost($skill[Lunging Thrust-Smack])))
-//	{
-//		return "skill lunging thrust-smack";
-//	}
-	if(auto_have_skill($skill[Storm of the Scarab]) && (my_mp() >= mp_cost($skill[Storm of the Scarab])))
+	if (canUse($skill[Storm of the Scarab]))
 	{
-		return "skill Storm of the Scarab";
+		return useSkill($skill[Storm of the Scarab], false);
 	}
 	return auto_combatHandler(round, opp, text);
-//	if(auto_have_skill($skill[Lunge Smack]) && (my_mp() >= mp_cost($skill[Lunge Smack])) && (weapon_type(equipped_item($slot[weapon])) == $stat[Muscle]))
-//	{
-//		return "skill lunge smack";
-//	}
-//	return "attack with weapon";
 }
 
-string ccsJunkyard(int round, string opp, string text)
+string auto_JunkyardCombatHandler(int round, string opp, string text)
 {
 	monster enemy = to_monster(opp);
 
 	if(!($monsters[A.M.C. gremlin, batwinged gremlin, erudite gremlin, spider gremlin, vegetable gremlin] contains enemy))
 	{
+		if (isActuallyEd())
+		{
+			return auto_edCombatHandler(round, opp, text);
+		}
 		return auto_combatHandler(round, opp, text);
 	}
 
+	auto_log_info("auto_JunkyardCombatHandler: " + round, "brown");
 	if(round == 0)
 	{
-		print("ccsJunkyard: " + round, "brown");
 		set_property("auto_gremlinMoly", true);
 		set_property("auto_combatHandler", "");
 	}
-	else
-	{
-		print("auto_Junkyard: " + round, "brown");
-	}
+
 	string combatState = get_property("auto_combatHandler");
 	string edCombatState = get_property("auto_edCombatHandler");
 
@@ -2361,81 +2313,69 @@ string ccsJunkyard(int round, string opp, string text)
 
 	if(round >= 28)
 	{
-		if(auto_have_skill($skill[Lunging Thrust-Smack]) && (my_mp() >= 8))
+		if (canUse($skill[Storm of the Scarab]))
 		{
-			return "skill " + $skill[Lunging Thrust-Smack];
+			return useSkill($skill[Storm of the Scarab], false);
+		}
+		else if (canUse($skill[Lunging Thrust-Smack]))
+		{
+			return useSkill($skill[Lunging Thrust-Smack], false);
 		}
 		return "attack with weapon";
 	}
 
 	if(contains_text(text, "It whips out a hammer") || contains_text(text, "He whips out a crescent") || contains_text(text, "It whips out a pair") || contains_text(text, "It whips out a screwdriver"))
 	{
-		return "item " + $item[Molybdenum Magnet];
+		return useItem($item[Molybdenum Magnet]);
 	}
 
-	if(!contains_text(combatState, "weaksauce") && auto_have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= mp_cost($skill[Curse Of Weaksauce])))
+	if (canUse($skill[Curse Of Weaksauce]))
 	{
-		set_property("auto_combatHandler", combatState + "(weaksauce)");
-		return "skill " + $skill[Curse Of Weaksauce];
+		return useSkill($skill[Curse Of Weaksauce]);
 	}
 
-	if(!contains_text(combatState, "marshmallow") && auto_have_skill($skill[Curse Of The Marshmallow]) && (my_mp() > mp_cost($skill[Curse Of The Marshmallow])))
+	if (canUse($skill[Curse Of The Marshmallow]))
 	{
-		set_property("auto_combatHandler", combatState + "(marshmallow)");
-		return "skill " + $skill[Curse Of The Marshmallow];
-	}
-	if(!contains_text(combatState, "love scarab") && auto_have_skill($skill[Summon Love Scarabs]))
-	{
-		set_property("auto_combatHandler", combatState + "(love scarab)");
-		return "skill " + $skill[Summon Love Scarabs];
-	}
-	if(!contains_text(combatState, "love gnats") && auto_have_skill($skill[Summon Love Gnats]))
-	{
-		set_property("auto_combatHandler", combatState + "(love gnats)");
-		return "skill " + $skill[Summon Love Gnats];
+		return useSkill($skill[Curse Of The Marshmallow]);
 	}
 
-	if(!contains_text(combatState, "badMedicine") && auto_have_skill($skill[Bad Medicine]) && (my_mp() >= mp_cost($skill[Bad Medicine])))
+	if (canUse($skill[Summon Love Scarabs]))
 	{
-		set_property("auto_combatHandler", combatState + "(badMedicine)");
-		return "skill " + $skill[Bad Medicine];
+		return useSkill($skill[Summon Love Scarabs]);
 	}
 
-	if(!contains_text(combatState, "goodMedicine") && auto_have_skill($skill[Good Medicine]) && (my_mp() >= mp_cost($skill[Good Medicine])) && canSurvive(2.1))
+	if (canUse($skill[Summon Love Gnats]))
 	{
-		set_property("auto_combatHandler", combatState + "(goodMedicine)");
-		return "skill " + $skill[Good Medicine];
+		return useSkill($skill[Summon Love Gnats]);
 	}
 
-	if (!get_property("auto_gremlinMoly").to_boolean() && isActuallyEd())
+	if(canUse($skill[Bad Medicine]))
 	{
-		if (get_property("_edDefeats").to_int() >= 2 || get_property("auto_edStatus") == "dying")
+		return useSkill($skill[Bad Medicine]);
+	}
+
+	if(canUse($skill[Good Medicine]) && canSurvive(2.1))
+	{
+		return useSkill($skill[Good Medicine]);
+	}
+
+	if (my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
+	{
+		if (canUse($item[Rock Band Flyers]) && get_property("flyeredML").to_int() < 10000)
 		{
-			string banisher = findBanisher(round, opp, text);
-			if(banisher != "attack with weapon")
+			if (isActuallyEd())
 			{
-				return banisher;
+				set_property("auto_edStatus", "UNDYING!");
 			}
-			else if((my_mp() >= 8) && auto_have_skill($skill[Storm Of The Scarab]))
+			return useItem($item[Rock Band Flyers]);
+		}
+		if(canUse($item[Jam Band Flyers]) && get_property("flyeredML").to_int() < 10000)
+		{
+			if (isActuallyEd())
 			{
-				return "skill " + $skill[Storm Of The Scarab];
+				set_property("auto_edStatus", "UNDYING!");
 			}
-			return banisher;
-		}
-	}
-
-
-	if(!contains_text(combatState, "flyers") && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
-	{
-		if((item_amount($item[Rock Band Flyers]) > 0) && (get_property("flyeredML").to_int() < 10000))
-		{
-			set_property("auto_combatHandler", combatState + "(flyers)");
-			return "item " + $item[Rock Band Flyers];
-		}
-		if((item_amount($item[Jam Band Flyers]) > 0) && (get_property("flyeredML").to_int() < 10000))
-		{
-			set_property("auto_combatHandler", combatState + "(flyers)");
-			return "item " + $item[Jam Band Flyers];
+			return useItem($item[Jam Band Flyers]);
 		}
 	}
 
@@ -2443,13 +2383,13 @@ string ccsJunkyard(int round, string opp, string text)
 	{
 		if (isActuallyEd())
 		{
-			if (get_property("_edDefeats").to_int() >= 2 || get_property("auto_edStatus") == "dying")
+			if (get_property("_edDefeats").to_int() >= 2)
 			{
 				return findBanisher(round, opp, text);
 			}
-			else if(item_amount($item[Seal Tooth]) > 0)
+			else if (canUse($item[Seal Tooth]) && get_property("auto_edStatus") == "UNDYING!")
 			{
-				return "item " + $item[Seal Tooth];
+				return useItem($item[Seal Tooth], false);
 			}
 		}
 		else
@@ -2458,29 +2398,17 @@ string ccsJunkyard(int round, string opp, string text)
 		}
 	}
 
-
-	if(!get_property("auto_gremlinMoly").to_boolean())
-	{
-		foreach sk in $skills[Lunging Thrust-Smack, Storm Of The Scarab, Lunge Smack]
-		{
-			if(auto_have_skill(sk) && (my_mp() >= mp_cost(sk)))
-			{
-				return "skill " + sk;
-			}
-		}
-		return "attack with weapon";
-	}
-
 	foreach it in $items[Seal Tooth, Spectre Scepter, Doc Galaktik\'s Pungent Unguent]
 	{
-		if((item_amount(it) > 0) && glover_usable(it))
+		if(canUse(it) && glover_usable(it))
 		{
-			return "item " + it;
+			return useItem(it, false);
 		}
 	}
-	if(auto_have_skill($skill[Toss]) && (my_mp() >= mp_cost($skill[Toss])))
+
+	if (canUse($skill[Toss]))
 	{
-		return "skill " + $skill[Toss];
+		return useSkill($skill[Toss], false);
 	}
 	return "attack with weapon";
 }
@@ -2496,7 +2424,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if (round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 		if (get_property("_edDefeats").to_int() == 0)
 		{
@@ -2527,7 +2455,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 			{
 				if (canUse(it))
 				{
-					return useItem(it);
+					return useItem(it, false);
 				}
 			}
 		}
@@ -2562,51 +2490,44 @@ string auto_edCombatHandler(int round, string opp, string text)
 		return "attack with weapon";
 	}
 
-	if(!contains_text(combatState, "pocket crumbs") && auto_have_skill($skill[Pocket Crumbs]))
+	if (canUse($skill[Pocket Crumbs]))
 	{
-		set_property("auto_combatHandler", combatState + "(pocket crumbs)");
-		return "skill " + $skill[Pocket Crumbs];
+		return useSkill($skill[Pocket Crumbs]);
 	}
 
-	if(!contains_text(combatState, "micrometeorite") && auto_have_skill($skill[Micrometeorite]))
+	if (canUse($skill[Micrometeorite]))
 	{
-		set_property("auto_combatHandler", combatState + "(micrometeorite)");
-		return "skill " + $skill[Micrometeorite];
+		return useSkill($skill[Micrometeorite]);
 	}
 
-	if(!contains_text(combatState, "air dirty laundry") && auto_have_skill($skill[Air Dirty Laundry]))
+	if (canUse($skill[Air Dirty Laundry]))
 	{
-		set_property("auto_combatHandler", combatState + "(air dirty laundry)");
-		return "skill " + $skill[Air Dirty Laundry];
+		return useSkill($skill[Air Dirty Laundry]);
 	}
 
-	if(!contains_text(combatState, "love scarab") && auto_have_skill($skill[Summon Love Scarabs]))
+	if (canUse($skill[Summon Love Scarabs]))
 	{
-		set_property("auto_combatHandler", combatState + "(love scarab)");
-		return "skill " + $skill[Summon Love Scarabs];
+		return useSkill($skill[Summon Love Scarabs]);
 	}
 
-	if(!contains_text(combatState, "(time-spinner)") && (item_amount($item[Time-Spinner]) > 0))
+	if (canUse($item[Time-Spinner]))
 	{
-		set_property("auto_combatHandler", combatState + "(time-spinner)");
-		return "item " + $item[Time-Spinner];
+		return useItem($item[Time-Spinner]);
 	}
 
-	if(!contains_text(combatState, "(sing along)") && auto_have_skill($skill[Sing Along]) && (my_mp() > (mp_cost($skill[Sing Along]))))
+	if (canUse($skill[Sing Along]))
 	{
 		if((get_property("boomBoxSong") == "Remainin\' Alive") || ((get_property("boomBoxSong") == "Total Eclipse of Your Meat") && canSurvive(2.0)))
 		{
-			set_property("auto_combatHandler", combatState + "(sing along)");
-			return "skill " + $skill[Sing Along];
+			return useSkill($skill[Sing Along]);
 		}
 	}
 
 	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy))
 	{
-		if(!contains_text(combatState, "love gnats") && auto_have_skill($skill[Summon Love Gnats]))
+		if(canUse($skill[Summon Love Gnats]))
 		{
-			set_property("auto_combatHandler", combatState + "(love gnats)");
-			return "skill " + $skill[Summon Love Gnats];
+			return useSkill($skill[Summon Love Gnats]);
 		}
 
 		if(auto_have_skill($skill[Shoot Ghost]) && (my_mp() > mp_cost($skill[Shoot Ghost])) && !contains_text(edCombatState, "shootghost3") && !contains_text(edCombatState, "trapghost"))
@@ -2651,7 +2572,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 		if(!contains_text(edCombatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(edCombatState, "shootghost3"))
 		{
-			print("Busting makes me feel good!!", "green");
+			auto_log_info("Busting makes me feel good!!", "green");
 			set_property("auto_edCombatHandler", edCombatState + "(trapghost)");
 			return "skill " + $skill[Trap Ghost];
 		}
@@ -2698,19 +2619,14 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if(get_property("auto_edStatus") == "UNDYING!")
 	{
-		if(!contains_text(combatState, "love gnats") && auto_have_skill($skill[Summon Love Gnats]))
+		if (canUse($skill[Summon Love Gnats]))
 		{
-			set_property("auto_combatHandler", combatState + "(love gnats)");
-			return "skill " + $skill[Summon Love Gnats];
+			return useSkill($skill[Summon Love Gnats]);
 		}
 
-		if((item_amount($item[Ka Coin]) > 200) && auto_have_skill($skill[Curse of Fortune]))
+		if (item_amount($item[Ka Coin]) > 200 && canUse($skill[Curse of Fortune]))
 		{
-			if(!contains_text(combatState, "curse of fortune"))
-			{
-				set_property("auto_combatHandler", combatState + "(curse of fortune)");
-				return "skill " + $skill[Curse of Fortune];
-			}
+			return useSkill($skill[Curse of Fortune]);
 		}
 	}
 	else if(get_property("auto_edStatus") == "dying")
@@ -2724,23 +2640,20 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 		if(doStunner)
 		{
-			if(!contains_text(combatState, "love gnats") && auto_have_skill($skill[Summon Love Gnats]))
+			if (canUse($skill[Summon Love Gnats]))
 			{
-				set_property("auto_combatHandler", combatState + "(love gnats)");
-				return "skill " + $skill[Summon Love Gnats];
+				return useSkill($skill[Summon Love Gnats]);
 			}
 		}
 	}
 	else
 	{
-		print("Ed combat state does not exist, winging it....", "red");
+		auto_log_warning("Ed combat state does not exist, winging it....", "red");
 	}
 
-
-	if(!contains_text(combatState, "sewage pistol") && auto_have_skill($skill[Fire Sewage Pistol]))
+	if (canUse($skill[Fire Sewage Pistol]))
 	{
-		set_property("auto_combatHandler", combatState + "(sewage pistol)");
-		return "skill " + $skill[Fire Sewage Pistol];
+		return useSkill($skill[Fire Sewage Pistol]);
 	}
 
 	if(enemy == $monster[Protagonist])
@@ -2748,13 +2661,11 @@ string auto_edCombatHandler(int round, string opp, string text)
 		set_property("auto_edStatus", "dying");
 	}
 
-
-	if(!contains_text(combatState, "flyers") && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
+	if (my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
 	{
 		if (canUse($item[Rock Band Flyers]) && get_property("flyeredML").to_int() < 10000)
 		{
-			set_property("auto_combatHandler", combatState + "(flyers)");
-			if (get_property("_edDefeats").to_int() < 3 && get_property("auto_edStatus") == "dying")
+			if (get_property("_edDefeats").to_int() < 2 && get_property("auto_edStatus") == "dying")
 			{
 				set_property("auto_edStatus", "UNDYING!");
 				// abuse the ability to flyer the same monster multiple times (optimal!)
@@ -2763,8 +2674,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 		if (canUse($item[Jam Band Flyers]) && get_property("flyeredML").to_int() < 10000)
 		{
-			set_property("auto_combatHandler", combatState + "(flyers)");
-			if (get_property("_edDefeats").to_int() < 3 && get_property("auto_edStatus") == "dying")
+			if (get_property("_edDefeats").to_int() < 2 && get_property("auto_edStatus") == "dying")
 			{
 				set_property("auto_edStatus", "UNDYING!");
 				// abuse the ability to flyer the same monster multiple times (optimal!)
@@ -2775,27 +2685,27 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if((enemy == $monster[dirty thieving brigand]) && !contains_text(edCombatState, "curse of fortune"))
 	{
-		if((item_amount($item[Ka Coin]) > 0) && (auto_have_skill($skill[Curse Of Fortune])))
+		if (item_amount($item[Ka Coin]) > 0 && canUse($skill[Curse Of Fortune]))
 		{
 			set_property("auto_edCombatHandler", edCombatState + "(curse of fortune)");
 			set_property("auto_edStatus", "dying");
-			return "skill " + $skill[Curse Of Fortune];
+			return useSkill($skill[Curse Of Fortune]);
 		}
 	}
 
-	if (!contains_text(edCombatState, "curseofstench") && auto_have_skill($skill[Curse Of Stench]) && my_mp() >= mp_cost($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+	if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
 	{
 		if(auto_wantToSniff(enemy, my_location()))
 		{
 			set_property("auto_edCombatHandler", combatState + "(curseofstench)");
 			handleTracker(enemy, $skill[Curse Of Stench], "auto_sniffs");
-			return "skill " + $skill[Curse Of Stench];
+			return useSkill($skill[Curse Of Stench]);
 		}
 	}
 
 	if(my_location() == $location[The Secret Council Warehouse])
 	{
-		if (!contains_text(edCombatState, "curseofstench") && auto_have_skill($skill[Curse Of Stench]) && my_mp() >= mp_cost($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			#	Rememeber, we are looking to see if we have enough of the opposite item here.
@@ -2822,15 +2732,14 @@ string auto_edCombatHandler(int round, string opp, string text)
 			{
 				set_property("auto_edCombatHandler", combatState + "(curseofstench)");
 				handleTracker(enemy, $skill[Curse of Stench], "auto_sniffs");
-				return "skill " + $skill[Curse Of Stench];
+				return useSkill($skill[Curse Of Stench]);
 			}
 		}
 	}
 
-
 	if(my_location() == $location[The Smut Orc Logging Camp])
 	{
-		if (!contains_text(edCombatState, "curseofstench") && auto_have_skill($skill[Curse Of Stench]) && my_mp() >= mp_cost($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			string stenched = to_lower_case(get_property("stenchCursedMonster"));
@@ -2856,12 +2765,12 @@ string auto_edCombatHandler(int round, string opp, string text)
 			{
 				set_property("auto_edCombatHandler", combatState + "(curseofstench)");
 				handleTracker(enemy, $skill[Curse of Stench], "auto_sniffs");
-				return "skill " + $skill[Curse Of Stench];
+				return useSkill($skill[Curse Of Stench]);
 			}
 		}
 	}
 
-	if(!contains_text(combatState, "yellowray") && auto_wantToYellowRay(enemy, my_location()))
+	if (!contains_text(combatState, "yellowray") && canYellowRay(enemy) && auto_wantToYellowRay(enemy, my_location()))
 	{
 		string combatAction = yellowRayCombatString(enemy, true);
 		if(combatAction != "")
@@ -2877,7 +2786,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 			}
 			else
 			{
-				print("Unable to track yellow ray behavior: " + combatAction, "red");
+				auto_log_warning("Unable to track yellow ray behavior: " + combatAction, "red");
 			}
 			if(combatAction == ("skill " + $skill[Asdon Martin: Missile Launcher]))
 			{
@@ -2887,23 +2796,21 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 		else
 		{
-			print("Wanted a yellow ray but we can not find one.", "red");
+			auto_log_warning("Wanted a yellow ray but we can not find one.", "red");
 		}
 	}
 
-	if (auto_have_skill($skill[Curse Of Vacation]) && my_mp() >= mp_cost($skill[Curse Of Vacation]) && get_property("auto_edStatus") == "dying")
+	if (canUse($skill[Curse Of Vacation]) && get_property("auto_edStatus") == "dying")
 	{
 		if (auto_wantToBanish(enemy, my_location()) && !(auto_banishesUsedAt(my_location()) contains "curse of vacation"))
 		{
-			set_property("auto_combatHandler", combatState + "(curse of vacation)");
 			handleTracker(enemy, $skill[Curse of Vacation], "auto_banishes");
-			return "skill " + $skill[Curse Of Vacation];
+			return useSkill($skill[Curse Of Vacation]);
 		}
 	}
 
 	if (canUse($item[Disposable Instant Camera]) && $monsters[Bob Racecar, Racecar Bob] contains enemy)
 	{
-		set_property("auto_combatHandler", combatState + "(disposable instant camera)");
 		return useItem($item[Disposable Instant Camera]);
 	}
 
@@ -2937,7 +2844,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if (!get_property("edUsedLash").to_boolean() && auto_have_skill($skill[Lash of the Cobra]) && my_mp() >= mp_cost($skill[Lash of the Cobra]))
+	if (!get_property("edUsedLash").to_boolean() && canUse($skill[Lash of the Cobra]) && get_property("_edLashCount").to_int() < 30)
 	{
 		boolean doLash = false;
 
@@ -3079,19 +2986,18 @@ string auto_edCombatHandler(int round, string opp, string text)
 			doLash = true;
 		}
 
-		if (doLash && get_property("_edLashCount").to_int() < 30)
+		if (doLash)
 		{
 			handleTracker(enemy, "auto_lashes");
-			return "skill " + $skill[Lash Of The Cobra];
+			return useSkill($skill[Lash Of The Cobra]);
 		}
 	}
 
-	if(canUse($item[Tattered Scrap of Paper]) && !contains_text(combatState, "tatters"))
+	if (canUse($item[Tattered Scrap of Paper]))
 	{
 		if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, W imp] contains enemy)
 		{
-			set_property("auto_combatHandler", combatState + "(tatters)");
-			return useItem($item[Tattered Scrap Of Paper]);
+			return useItem($item[Tattered Scrap Of Paper], false);
 		}
 	}
 
@@ -3138,10 +3044,10 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 		if(doRenenutet)
 		{
-			if(!contains_text(edCombatState, "curseofindecision") && auto_have_skill($skill[Curse Of Indecision]) && (my_mp() > mp_cost($skill[Curse Of Indecision])))
+			if (!contains_text(edCombatState, "curseofindecision") && canUse($skill[Curse Of Indecision]))
 			{
 				set_property("auto_edCombatHandler", edCombatState + "(curseofindecision)");
-				return "skill " + $skill[Curse Of Indecision];
+				return useSkill($skill[Curse Of Indecision]);
 			}
 			set_property("auto_edCombatHandler", edCombatState + "(talismanofrenenutet)");
 			handleTracker(enemy, "auto_renenutet");
@@ -3169,40 +3075,36 @@ string auto_edCombatHandler(int round, string opp, string text)
 			}
 		}
 
-		if((item_amount($item[Ka Coin]) > 200) && auto_have_skill($skill[Curse of Fortune]))
+		if (item_amount($item[Ka Coin]) > 200 && canUse($skill[Curse of Fortune]))
 		{
-			if(!contains_text(combatState, "curse of fortune"))
-			{
-				set_property("auto_combatHandler", combatState + "(curse of fortune)");
-				return "skill " + $skill[Curse of Fortune];
-			}
+			return useSkill($skill[Curse of Fortune]);
 		}
 
-		if(item_amount($item[Seal Tooth]) > 0)
+		if (canUse($item[Seal Tooth]))
 		{
-			return "item " + $item[Seal Tooth];
+			return useItem($item[Seal Tooth], false);
 		}
 
-		return "skill " + $skill[Mild Curse];
+		return useSkill($skill[Mild Curse], false);
 	}
 
-	if((my_mp() >= mp_cost($skill[Roar of the Lion])) && (my_location() == $location[The Secret Government Laboratory]) && auto_have_skill($skill[Roar of the Lion]))
+	if (my_location() == $location[The Secret Government Laboratory] && canUse($skill[Roar of the Lion]))
 	{
-		if(auto_have_skill($skill[Storm Of The Scarab]) && (my_buffedstat($stat[Mysticality]) >= 60))
+		if (canUse($skill[Storm Of The Scarab]) && my_buffedstat($stat[Mysticality]) >= 60)
 		{
-			return "skill " + $skill[Storm Of The Scarab];
+			return useSkill($skill[Storm Of The Scarab], false);
 		}
-		return "skill " + $skill[Roar Of The Lion];
+		return useSkill($skill[Roar Of The Lion], false);
 	}
 
-	if((my_mp() >= mp_cost($skill[Storm Of The Scarab])) && ($locations[Pirates of the Garbage Barges, The SMOOCH Army HQ, VYKEA] contains my_location()) && auto_have_skill($skill[Storm of the Scarab]))
+	if ($locations[Pirates of the Garbage Barges, The SMOOCH Army HQ, VYKEA] contains my_location() && canUse($skill[Storm of the Scarab]))
 	{
-		return "skill " + $skill[Storm Of The Scarab];
+		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
-	if (my_mp() >= mp_cost($skill[Fist Of The Mummy]) && $locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location() && auto_have_skill($skill[Fist Of The Mummy]))
+	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location() && canUse($skill[Fist Of The Mummy]))
 	{
-		return "skill " + $skill[Fist Of The Mummy];
+		return useSkill($skill[Fist Of The Mummy], false);
 	}
 
 	int fightStat = my_buffedstat(weapon_type(equipped_item($slot[weapon]))) - 20;
@@ -3211,27 +3113,26 @@ string auto_edCombatHandler(int round, string opp, string text)
 		return "attack with weapon";
 	}
 
-	if(!contains_text(combatState, "cowboy kick") && auto_have_skill($skill[Cowboy Kick]))
+	if (canUse($skill[Cowboy Kick]))
 	{
-		set_property("auto_combatHandler", combatState + "(cowboy kick)");
-		return "skill " + $skill[Cowboy Kick];
+		return useSkill($skill[Cowboy Kick]);
 	}
 
-	if((item_amount($item[Ice-Cold Cloaca Zero]) > 0) && (my_mp() < 15) && (my_maxmp() > 200))
+	if (canUse($item[Ice-Cold Cloaca Zero]) && my_mp() < 15 && my_maxmp() > 200)
 	{
-		return "item " + $item[Ice-Cold Cloaca Zero];
+		return useItem($item[Ice-Cold Cloaca Zero]);
 	}
 
-	if(my_mp() >= mp_cost($skill[Storm Of The Scarab]) && auto_have_skill($skill[Storm Of The Scarab]) && my_buffedstat($stat[Mysticality]) > 35)
+	if (canUse($skill[Storm Of The Scarab]) && my_buffedstat($stat[Mysticality]) > 35)
 	{
-		return "skill " + $skill[Storm Of The Scarab];
+		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
 	if((enemy.physical_resistance >= 100) || (round >= 25) || canSurvive(1.25))
 	{
-		if(my_mp() >= mp_cost($skill[Fist Of The Mummy]) && auto_have_skill($skill[Fist Of The Mummy]))
+		if (canUse($skill[Fist Of The Mummy]))
 		{
-			return "skill " + $skill[Fist Of The Mummy];
+			return useSkill($skill[Fist Of The Mummy], false);
 		}
 	}
 
@@ -3239,25 +3140,25 @@ string auto_edCombatHandler(int round, string opp, string text)
 	{
 		foreach it in $items[Holy Spring Water, Spirit Beer, Sacramental Wine]
 		{
-			if(item_amount(it) > 0)
+			if(canUse(it))
 			{
-				return "item " + it;
+				return useItem(it, false);
 			}
 		}
 	}
 
 	if(round >= 29)
 	{
-		print("About to UNDYING too much but have no other combat resolution. Please report this.", "red");
+		auto_log_error("About to UNDYING too much but have no other combat resolution. Please report this.", "red");
 	}
 
 	if((fightStat > monster_defense()) && (round < 20) && canSurvive(1.1) && (get_property("auto_edStatus") == "dying"))
 	{
-		print("Attacking with weapon because we don't have enough MP. Expected damage: " + expected_damage() + ", current hp: " + my_hp(), "red");
+		auto_log_warning("Attacking with weapon because we don't have enough MP. Expected damage: " + expected_damage() + ", current hp: " + my_hp(), "red");
 		return "attack with weapon";
 	}
 
-	return "skill " + $skill[Mild Curse];
+	return useSkill($skill[Mild Curse], false);
 }
 
 string auto_saberTrickMeteorShowerCombatHandler(int round, string opp, string text){
@@ -3311,7 +3212,7 @@ monster ocrs_helper(string page)
 	{
 		if(contains_text(page, "makes the most annoying noise you've ever heard, stopping you in your tracks."))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		set_property("auto_funCombatHandler", get_property("auto_combatHandler"));
@@ -3321,17 +3222,17 @@ monster ocrs_helper(string page)
 	{
 		if(contains_text(page, "moves out of the way"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		if(contains_text(page, "quickly moves out of the way"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		if(contains_text(page, "will have moved by the time"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 
@@ -3342,7 +3243,7 @@ monster ocrs_helper(string page)
 	{
 		if(contains_text(page, "blinks out of existence before"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		set_property("auto_funCombatHandler", get_property("auto_combatHandler"));
@@ -3352,7 +3253,7 @@ monster ocrs_helper(string page)
 	{
 		if(contains_text(page, "cartwheels out of the way"))
 		{
-			print("Last action failed, uh oh! Trying to undo!", "olive");
+			auto_log_warning("Last action failed, uh oh! Trying to undo!", "olive");
 			set_property("auto_combatHandler", get_property("auto_funCombatHandler"));
 		}
 		set_property("auto_funCombatHandler", get_property("auto_combatHandler"));

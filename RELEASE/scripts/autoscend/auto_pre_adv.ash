@@ -18,36 +18,26 @@ void handlePreAdventure(location place)
 		abort("customCombatScript is set to unrecognized '" + get_property("customCombatScript") + "', should be 'autoscend_null'");
 	}
 
-#	set_location doesn't help us to resolve this, just let it infinite and fail in that exotic case that was propbably due to a bad user.
-#	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
-#	{
-#		if(!auto_have_familiar($familiar[Machine Elf]))
-#		{
-#			abort("Massive failure, we don't use snowglobes.");
-#		}
-#		print("Somehow we are considering the DMT without a Machine Elf...", "red");
-#	}
-
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
-		print("Preadventure skipped by standard adventure handler.", "green");
+		auto_log_info("Preadventure skipped by standard adventure handler.", "green");
 		return;
 	}
 
 	if(last_monster().random_modifiers["clingy"])
 	{
-		print("Preadventure skipped by clingy modifier.", "green");
+		auto_log_info("Preadventure skipped by clingy modifier.", "green");
 		return;
 	}
 
 	if(place == $location[The Lower Chambers])
 	{
-		print("Preadventure skipped by Ed the Undying!", "green");
+		auto_log_info("Preadventure skipped by Ed the Undying!", "green");
 		return;
 	}
 
-	print("Starting preadventure script...", "green");
-	auto_debug_print("Adventuring at " + place.to_string(), "green");
+	auto_log_info("Starting preadventure script...", "green");
+	auto_log_debug("Adventuring at " + place.to_string(), "green");
 
 	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
 	if(auto_my_path() == "Pocket Familiars")
@@ -59,7 +49,7 @@ void handlePreAdventure(location place)
 	{
 		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
 		{
-#			print("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
+#			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
 			use_familiar(famChoice);
 		}
 	}
@@ -74,7 +64,7 @@ void handlePreAdventure(location place)
 			{
 				if(mmon == mon)
 				{
-					auto_debug_print("Using cat burglar because we want to burgle a " + it + " from " + mon);
+					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
 					wannaHeist = true;
 				}
 			}
@@ -89,9 +79,10 @@ void handlePreAdventure(location place)
 	{
 		if(!auto_have_familiar($familiar[Machine Elf]))
 		{
+			auto_log_critical("Massive failure, we don't use snowglobes.");
 			abort("Massive failure, we don't use snowglobes.");
 		}
-		print("Somehow we are going to the DMT without a Machine Elf...", "red");
+		auto_log_error("Somehow we are going to the DMT without a Machine Elf...", "red");
 		use_familiar($familiar[Machine Elf]);
 	}
 
@@ -167,11 +158,20 @@ void handlePreAdventure(location place)
 
 	if (isActuallyEd())
 	{
-		if((zone_combatMod(place)._int < combat_rate_modifier()) && (have_effect($effect[Shelter Of Shed]) == 0) && auto_have_skill($skill[Shelter Of Shed]))
-		{
-			acquireMP(25, my_meat());
-		}
+		// make sure we have enough MP to cast our most expensive spells
+		// Wrath of Ra (yellow ray) is 40 MP, Curse of Stench (sniff) is 35 MP & Curse of Vacation (banish) is 30 MP.
 		acquireMP(40, 1000);
+		// ensure we can cast at least Fist of the Mummy or Storm of the Scarab.
+		// so we don't waste adventures when we can't actually kill a monster.
+		acquireMP(8, 0);
+
+		if (my_hp() == 0)
+		{
+			// the game doesn't let you adventure if you have no HP even though Ed
+			// gets a full heal when he goes to the underworld
+			// only necessary if a non-combat puts you on 0 HP.
+			acquireHP(1);
+		}
 	}
 
 	if(my_path() == "Two Crazy Random Summer")
@@ -195,11 +195,11 @@ void handlePreAdventure(location place)
 	{
 		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
 		{
-			acquireCombatMods(zone_combatMod(place)._int, auto_beta());
+			acquireCombatMods(zone_combatMod(place)._int, true);
 		}
 		if(place == $location[Sonofa Beach] && !auto_voteMonster())
 		{
-			acquireCombatMods(zone_combatMod(place)._int, auto_beta());
+			acquireCombatMods(zone_combatMod(place)._int, true);
 		}
 
 		if($locations[Whitey\'s Grove] contains place)
@@ -209,7 +209,7 @@ void handlePreAdventure(location place)
 
 		if($locations[A Maze of Sewer Tunnels, The Castle in the Clouds in the Sky (Basement), The Castle in the Clouds in the Sky (Ground Floor), The Castle in the Clouds in the Sky (Top Floor), The Dark Elbow of the Woods, The Dark Heart of the Woods, The Dark Neck of the Woods, The Defiled Alcove, The Defiled Cranny, The Extreme Slope, The Haunted Ballroom, The Haunted Bathroom, The Haunted Billiards Room, The Haunted Gallery, The Hidden Hospital, The Hidden Park, The Ice Hotel, Inside the Palindome, The Obligatory Pirate\'s Cove, The Penultimate Fantasy Airship, The Poop Deck, The Spooky Forest, Super Villain\'s Lair, Twin Peak, The Upper Chamber, Wartime Hippy Camp, Wartime Hippy Camp (Frat Disguise)] contains place)
 		{
-			acquireCombatMods(zone_combatMod(place)._int, auto_beta());
+			acquireCombatMods(zone_combatMod(place)._int, true);
 		}
 	}
 	else
@@ -245,7 +245,7 @@ void handlePreAdventure(location place)
 
 	if(auto_latteDropWanted(place))
 	{
-		print('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
+		auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
 		autoEquip($item[latte lovers member\'s mug]);
 	}
 
@@ -321,15 +321,139 @@ void handlePreAdventure(location place)
 		}
 		if(itemDrop < itemNeed._float)
 		{
-			print("We can't cap this drop bear!", "purple");
+			auto_log_debug("We can't cap this drop bear!", "purple");
 		}
 	}
 
+
+	// Only cast Paul's pop song if we expect it to more than pay for its own casting.
+	//	Casting before ML variation ensures that this, the more important buff, is cast before ML.
+	if(auto_predictAccordionTurns() >= 8)
+	{
+		buffMaintain($effect[Paul\'s Passionate Pop Song], 0, 1, 1);
+	}
+
+	// ML adjustment zone section
+	boolean doML = true;
+	boolean removeML = false;
+		// removeML MUST be true for purgeML to be used. This is only used for -ML locations like Smut Orc, and you must have 5+ SGEAs to use.
+		boolean purgeML = false;
+
+	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
+	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
+
+	// Generic Conditions
+	if(get_property("kingLiberated").to_boolean())
+	{
+		doML = false;
+		removeML=false;
+		purgeML=false;
+	}
+
+		// NOTE: If we aren't quits before we pass L13, let us gain stats.
+	if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() == 13)))
+	{
+		doML = false;
+		removeML = true;
+		purgeML=false;
+	}
+
+	// Allow user settable option to override the above settings to not slack off ML
+	if (get_property("auto_disregardInstantKarma").to_boolean())
+	{
+		doML = true;
+		removeML = false;
+		purgeML=false;
+	}
+
+	// Item specific Conditions
+	if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
+	{
+		doML = false;
+		removeML = true;
+		purgeML=false;
+	}
+
+	// Location Specific Conditions
+	if(lowMLZones contains place)
+	{
+		doML = false;
+		removeML = true;
+		purgeML = true;
+	}
+	if(highMLZones contains place)
+	{
+		doML = true;
+		removeML = false;
+		purgeML=false;
+	}
+
+	// Act on ML settings
+	if(doML)
+	{
+		// Catch when we leave lowMLZone, allow for being "side tracked" by delay burning
+		if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
+		{
+			auto_log_debug("No Reason to delay Asdon Usage");
+			uneffect($effect[Driving Intimidatingly]);
+			set_property("auto_debuffAsdonDelay", 0);
+		}
+		else if((have_effect($effect[Driving Intimidatingly]).to_int() == 0)  && (get_property("auto_debuffAsdonDelay") >= 0))
+		{
+			set_property("auto_debuffAsdonDelay", 0);
+		}
+		else
+		{
+			set_property("auto_debuffAsdonDelay", get_property("auto_debuffAsdonDelay").to_int() + 1);
+			auto_log_debug("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
+		}
+
+		auto_MaxMLToCap(auto_convertDesiredML(150), false);
+	}
+
+	// If we are in some state where we do not want +ML (Level 13 or Smut Orc) make sure ML is removed
+	if(removeML)
+	{
+		auto_change_mcd(0);
+
+		uneffect($effect[Driving Recklessly]);
+		uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
+
+		if((purgeML) && item_amount($item[soft green echo eyedrop antidote]) > 5)
+		{
+			uneffect($effect[Drescher\'s Annoying Noise]);
+			uneffect($effect[Pride of the Puffin]);
+			uneffect($effect[Ceaseless Snarling]);
+		}
+	}
+
+	// Here we enforce our ML restrictions if +/-ML is not specifically called in the current maximizer string
+	enforceMLInPreAdv();
+
+// EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
 	if(useMaximizeToEquip())
 	{
 		cli_execute("checkpoint clear");
 	}
+
+	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
+	if(lowMLZones contains place)
+	{
+		auto_log_debug("Going into a LOW ML ZONE with ML: " + monster_level_adjustment());
+	}
+	else
+	{
+		// Last minute MCD alterations if Limit set, otherwise trust maximizer
+		if(get_property("auto_MLSafetyLimit") != "")
+		{
+			auto_change_mcd(0);
+			auto_setMCDToCap();
+		}
+
+		auto_log_debug("Going into High or Standard ML Zone with ML: " + monster_level_adjustment());
+	}	
+
 	executeFlavour();
 
 	// After maximizing equipment, we might not be at full HP
@@ -341,18 +465,18 @@ void handlePreAdventure(location place)
 	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
 	if(wasted_mp > 0 && my_mp() > 400)
 	{
-		print("Burning " + wasted_mp + " MP...");
+		auto_log_info("Burning " + wasted_mp + " MP...");
 		cli_execute("burn " + wasted_mp);
 	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{
-		print("Warning, we don't have a lot of MP but we are chugging along anyway", "red");
+		auto_log_warning("We don't have a lot of MP but we are chugging along anyway", "red");
 	}
 	groundhogAbort(place);
 	if(my_inebriety() > inebriety_limit()) abort("You are overdrunk. Stop it.");
 	set_property("auto_priorLocation", place);
-	print("Pre Adventure at " + place + " done, beep.", "blue");
+	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
 }
 
 void main()

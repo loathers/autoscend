@@ -53,7 +53,6 @@ boolean LX_koeInvaderHandler()
 	buffMaintain($effect[Scarysauce], 10, 1, 1);
 
 	resetMaximize();
-	addToMaximize("200 all res");
 
 	if(!possessEquipment($item[meteorb]))
 		retrieve_item(1, $item[meteorb]);
@@ -61,7 +60,7 @@ boolean LX_koeInvaderHandler()
 	pullXWhenHaveY($item[meteorb], 1, 0);
 	autoEquip($slot[off-hand], $item[meteorb]);
 
-	simMaximize();
+	simMaximizeWith("200 all res");
 
 	float damagePerRound = 0.0;
 	float baseDamage = 1.0 - 0.1 * my_daycount();
@@ -70,7 +69,7 @@ boolean LX_koeInvaderHandler()
 		float offset = auto_canBeachCombHead(el) ? 3.0 : 0.0;
 		damagePerRound += baseDamage * (100.0 - elemental_resist_value(offset + simValue(el + " Resistance")))/100.0;
 	}
-	print("The Invader: Expecting to take " + damagePerRound + " damage per round", "blue");
+	auto_log_info("The Invader: Expecting to take " + damagePerRound + " damage per round", "blue");
 	int turns = ceil(0.95 / damagePerRound);
 
 	int damageCap = 100 * my_daycount();
@@ -93,6 +92,9 @@ boolean LX_koeInvaderHandler()
 			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
 			acquireMP(100, 0);
 
+			// Use maximizer now that we are for sure fighting the Invader
+			addToMaximize("200 all res");
+
 			set_property("choiceAdventure1393", 1); // Take care of it...
 			boolean ret = autoAdv(1, $location[The Invader]);
 			if(have_effect($effect[Beaten Up]) > 0)
@@ -103,6 +105,6 @@ boolean LX_koeInvaderHandler()
 			return ret;
 		}
 	}
-	print("I don't think we're ready to kill the invader yet.", "blue");
+	auto_log_warning("I don't think we're ready to kill the invader yet.", "blue");
 	return false;
 }

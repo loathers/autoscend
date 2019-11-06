@@ -47,7 +47,7 @@ boolean LA_cs_communityService()
 		}
 	}
 
-	print(what_cs_quest(curQuest), "blue");
+	auto_log_info(what_cs_quest(curQuest), "blue");
 
 	cs_eat_spleen();
 
@@ -139,7 +139,7 @@ boolean LA_cs_communityService()
 	{
 		if((get_property("_sourceTerminalDigitizeUses").to_int() > 0) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3))
 		{
-			print("A Wanderer event is expected now, we want to re-digitize", "blue");
+			auto_log_info("A Wanderer event is expected now, we want to re-digitize", "blue");
 			auto_sourceTerminalEducate($skill[Digitize], $skill[Extract]);
 			set_property("auto_combatDirective", "start;skill digitize");
 			if(!cs_healthMaintain() || !cs_mpMaintain()){
@@ -228,7 +228,7 @@ boolean LA_cs_communityService()
 
 	if(get_property("_tempRelayCounters") != "")
 	{
-		print("Setting wanderer flags", "green");
+		auto_log_info("Setting wanderer flags", "green");
 		setAdvPHPFlag();
 	}
 	asdonAutoFeed(37);
@@ -245,7 +245,7 @@ boolean LA_cs_communityService()
 
 	if((curQuest == 11) || (curQuest == 6) || (curQuest == 9) || (curQuest == 7))
 	{
-		print("Beginning early quest actions (" + curQuest + ")", "green");
+		auto_log_info("Beginning early quest actions (" + curQuest + ")", "green");
 		if(curQuest != 7)
 		{
 			if((my_inebriety() == 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500))
@@ -255,13 +255,13 @@ boolean LA_cs_communityService()
 				{
 					if(auto_get_clan_lounge() contains $item[Lucky Lindy])
 					{
-						print("Confused!! Mafia reports Lucky Lindy but we couldn't drink it?", "red");
+						auto_log_warning("Confused!! Mafia reports Lucky Lindy but we couldn't drink it?", "red");
 					}
-					print("Mafia knows we have a speakeasy but could not drink a Lucky Lindy", "red");
+					auto_log_warning("Mafia knows we have a speakeasy but could not drink a Lucky Lindy", "red");
 					string temp = visit_url("clan_viplounge.php?whichfloor=2&action=speakeasy");
 					if(auto_get_clan_lounge() contains $item[Lucky Lindy])
 					{
-						print("Mafia now knows we have a Lucky Lindy", "green");
+						auto_log_info("Mafia now knows we have a Lucky Lindy", "green");
 						return true;
 					}
 					else
@@ -595,7 +595,7 @@ boolean LA_cs_communityService()
 			{
 				if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 				{
-					print("A Wanderer event is expected now.", "blue");
+					auto_log_info("A Wanderer event is expected now.", "blue");
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
@@ -686,7 +686,7 @@ boolean LA_cs_communityService()
 			if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]) && (get_property("_auto_margaritaWanderer") != my_turncount()))
 			{
 				set_property("_auto_margaritaWanderer", my_turncount());
-				print("A Wanderer event is expected now, diverting... (Status: 7 with Margarita)", "blue");
+				auto_log_info("A Wanderer event is expected now, diverting... (Status: 7 with Margarita)", "blue");
 				if(!cs_healthMaintain() || !cs_mpMaintain()){
 					abort("Wasnt able to maintain health and mp.");
 				}
@@ -732,7 +732,7 @@ boolean LA_cs_communityService()
 				}
 				if((!possessEquipment($item[Heat-Resistant Necktie]) || !possessEquipment($item[Heat-Resistant Gloves]) || !possessEquipment($item[Lava-Proof Pants])) && $location[LavaCo&trade; Lamp Factory].turns_spent < 10)
 				{
-					print("Adventuring in LavaCo using the yellow ray source: " + yellowRay, "blue");
+					auto_log_info("Adventuring in LavaCo using the yellow ray source: " + yellowRay, "blue");
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
@@ -874,7 +874,7 @@ boolean LA_cs_communityService()
 			{
 				if(get_property("auto_tryPowerLevel").to_boolean())
 				{
-					print("Trying to powerlevel, since auto_tryPowerLevel=true", "blue");
+					auto_log_info("Trying to powerlevel, since auto_tryPowerLevel=true", "blue");
 					if(elementalPlanes_access($element[stench]) && (my_hp() > 100))
 					{
 						if(current_mcd() < 10)
@@ -1310,11 +1310,11 @@ boolean LA_cs_communityService()
 		}
 	}
 
-	print("Past early quest actions, considering completing a service...", "green");
+	auto_log_info("Past early quest actions, considering completing a service...", "green");
 	int checkQuest = expected_next_cs_quest();
 	if(checkQuest != curQuest)
 	{
-		print("Quest data error detected, trying to resolve. Please don't do quests manually, it hurts me!", "red");
+		auto_log_warning("Quest data error detected, trying to resolve. Please don't do quests manually, it hurts me!", "red");
 		curQuest = checkQuest;
 		return true;
 	}
@@ -1324,7 +1324,7 @@ boolean LA_cs_communityService()
 	{
 	case 0:
 		{
-			print("Service Complete, finishing finish...", "blue");
+			auto_log_info("Service Complete, finishing finish...", "blue");
 			try
 			{
 				if(do_cs_quest(30))
@@ -1339,7 +1339,7 @@ boolean LA_cs_communityService()
 			}
 			finally
 			{
-				print("Waiting a few seconds, please hold.", "red");
+				auto_log_warning("Waiting a few seconds, please hold.", "red");
 				wait(5);
 				if(get_property("kingLiberated").to_boolean())
 				{
@@ -2221,14 +2221,14 @@ boolean LA_cs_communityService()
 		{
 			if(my_daycount() == 1)
 			{
-				print("We don't try to do this quest on Day 1. Hmmm...", "red");
+				auto_log_warning("We don't try to do this quest on Day 1. Hmmm...", "red");
 				abort("Probably saved margarita and re-ran without overdrinking. oops!");
 			}
 			if(my_daycount() > 1)
 			{
 				if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 				{
-					print("A Wanderer event is expected now, diverting... (Status: 7 End)", "blue");
+					auto_log_info("A Wanderer event is expected now, diverting... (Status: 7 End)", "blue");
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
@@ -2496,7 +2496,7 @@ boolean LA_cs_communityService()
 
 			if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 			{
-				print("A Wanderer event is expected now.", "blue");
+				auto_log_info("A Wanderer event is expected now.", "blue");
 				if(!cs_healthMaintain() || !cs_mpMaintain()){
 					abort("Wasnt able to maintain health and mp.");
 				}
@@ -2682,7 +2682,7 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			if(Lx_resolveSixthDMT())
+			if(resolveSixthDMT())
 			{
 				return true;
 			}
@@ -2881,7 +2881,8 @@ boolean cs_witchess()
 	{
 		return false;
 	}
-	print("Let's do a Witchess combat!", "green");
+
+	auto_log_info("Let's do a Witchess combat!", "green");
 
 	if((get_property("_badlyRomanticArrows").to_int() != 1) && have_familiar($familiar[Reanimated Reanimator]))
 	{
@@ -3084,7 +3085,7 @@ void cs_initializeDay(int day)
 			}
 			finally
 			{
-				print("Visited Council for first time, if you manually visited the council before running, this might have aborted, just run again.", "red");
+				auto_log_warning("Visited Council for first time, if you manually visited the council before running, this might have aborted, just run again.", "red");
 			}
 		}
 	}
@@ -3130,7 +3131,7 @@ void cs_initializeDay(int day)
 			if(isTallGrassAvailable()){
 				// get +10 lb familiar equipment if we need it
 				while(isPokeFertilizerAvailable() && !haveAnyPokeFamiliarEquipment() && equipmentAmount($item[astral pet sweater]) == 0){
-					auto_debug_print("Trying to acquire +10 lb familiar equipment from Tall Grass.");
+					auto_log_debug("Trying to acquire +10 lb familiar equipment from Tall Grass.");
 					pokeFertilizeAndHarvest();
 				}
 			}
@@ -3569,7 +3570,7 @@ string cs_combatNormal(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 	}
 
@@ -3638,7 +3639,7 @@ string cs_combatNormal(int round, string opp, string text)
 	{
 		if($monsters[Ancient Insane Monk, Ferocious Bugbear, Gelatinous Cube, Knob Goblin Poseur] contains enemy)
 		{
-			print("Macrometeoring: " + enemy, "green");
+			auto_log_info("Macrometeoring: " + enemy, "green");
 			set_property("_macrometeoriteUses", 1 + get_property("_macrometeoriteUses").to_int());
 			return "skill " + $skill[Macrometeorite];
 		}
@@ -3908,7 +3909,7 @@ string cs_combatXO(int round, string opp, string text)
 	# This assumes we have Volcano Charter, Meteor Love [sic], Snokebomb, XO Skeleton (not blocked by 100% run), and 50 MP, anything else and it probably fails
 	if(round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 	}
 
@@ -3974,7 +3975,7 @@ string cs_combatYR(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 	}
 
@@ -4085,7 +4086,7 @@ string cs_combatYR(int round, string opp, string text)
 				}
 				else
 				{
-					print("Unable to track yellow ray behavior: " + combatAction, "red");
+					auto_log_warning("Unable to track yellow ray behavior: " + combatAction, "red");
 				}
 				return combatAction;
 			}
@@ -4127,7 +4128,7 @@ string cs_combatKing(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 	}
 
@@ -4161,7 +4162,7 @@ string cs_combatWitch(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 	}
 
@@ -4202,7 +4203,7 @@ string cs_combatLTB(int round, string opp, string text)
 {
 	if(round == 0)
 	{
-		print("auto_combatHandler: " + round, "brown");
+		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 	}
 
@@ -4226,7 +4227,7 @@ string cs_combatLTB(int round, string opp, string text)
 
 	if(!contains_text(combatState, "giant growth"))
 	{
-		print("In cs_combatLTB handler, should have used giant growth but didn't!! WTF!! (" + have_skill($skill[Giant Growth]) + ")", "red");
+		auto_log_warning("In cs_combatLTB handler, should have used giant growth but didn't!! WTF!! (" + have_skill($skill[Giant Growth]) + ")", "red");
 	}
 
 
@@ -4296,7 +4297,7 @@ boolean cs_giant_growth()
 
 	if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
 	{
-		print("A Wanderer event is expected now and we want giant growth, diverting.... (Status: cs_giant_growth handler)", "blue");
+		auto_log_info("A Wanderer event is expected now and we want giant growth, diverting.... (Status: cs_giant_growth handler)", "blue");
 		if(!cs_healthMaintain() || !cs_mpMaintain()){
 			abort("Wasnt able to maintain health and mp.");
 		}
@@ -4335,6 +4336,9 @@ boolean cs_giant_growth()
 	{
 		return false;
 	}
+
+#	auto_log_info("Starting LTBs: " + item_amount($item[Louder Than Bomb]), "blue");
+
 	if(my_familiar() == $familiar[Machine Elf])
 	{
 		backupSetting("choiceAdventure1119", 1);
@@ -4433,7 +4437,7 @@ int [int] get_cs_questList()
 
 		if(adv != estimate_cs_questCost(found))
 		{
-			print("Incorrectly predicted quest " + found + " as " + estimate_cs_questCost(found) + ". Was: " + adv, "red");
+			auto_log_warning("Incorrectly predicted quest " + found + " as " + estimate_cs_questCost(found) + ". Was: " + adv, "red");
 		}
 	}
 
@@ -4453,17 +4457,17 @@ int expected_next_cs_quest()
 	{
 		switch(retval)
 		{
-		case 1:		print("Community Service Quest  1: HP", "blue");								break;
-		case 2:		print("Community Service Quest  2: Muscle", "blue");							break;
-		case 3:		print("Community Service Quest  3: Mysticality", "blue");						break;
-		case 4:		print("Community Service Quest  4: Moxie", "blue");								break;
-		case 5:		print("Community Service Quest  5: Familiar Weight", "blue");					break;
-		case 6:		print("Community Service Quest  6: Melee Damage", "blue");						break;
-		case 7:		print("Community Service Quest  7: Spell Damage", "blue");						break;
-		case 8:		print("Community Service Quest  8: Monsters Less Attracted to You", "blue");	break;
-		case 9:		print("Community Service Quest  9: Item/Booze Drops", "blue");					break;
-		case 10:	print("Community Service Quest 10: Hot Protection", "blue");					break;
-		case 11:	print("Community Service Quest 11: Coiling Wire", "blue");						break;
+		case 1:		auto_log_info("Community Service Quest  1: HP", "blue");								break;
+		case 2:		auto_log_info("Community Service Quest  2: Muscle", "blue");							break;
+		case 3:		auto_log_info("Community Service Quest  3: Mysticality", "blue");						break;
+		case 4:		auto_log_info("Community Service Quest  4: Moxie", "blue");								break;
+		case 5:		auto_log_info("Community Service Quest  5: Familiar Weight", "blue");					break;
+		case 6:		auto_log_info("Community Service Quest  6: Melee Damage", "blue");						break;
+		case 7:		auto_log_info("Community Service Quest  7: Spell Damage", "blue");						break;
+		case 8:		auto_log_info("Community Service Quest  8: Monsters Less Attracted to You", "blue");	break;
+		case 9:		auto_log_info("Community Service Quest  9: Item/Booze Drops", "blue");					break;
+		case 10:	auto_log_info("Community Service Quest 10: Hot Protection", "blue");					break;
+		case 11:	auto_log_info("Community Service Quest 11: Coiling Wire", "blue");						break;
 		}
 	}
 	return retval;
@@ -4551,7 +4555,7 @@ boolean do_cs_quest(int quest)
 				check_health_after = true;
 			}
 			temp = run_choice(quest);
-			print(what_cs_quest(quest) + " completed for " + questList[quest] + " adventures.", "blue");
+			auto_log_info(what_cs_quest(quest) + " completed for " + questList[quest] + " adventures.", "blue");
 			if(check_health_after && !cs_healthMaintain()){
 				abort("Completed quest but Blood Bond probably killed you and could not recover automatically.");
 			}
@@ -4563,7 +4567,7 @@ boolean do_cs_quest(int quest)
 				abort("User wanted to stay in run (auto_stayInRun), we are done.");
 			}
 			visit_url("choice.php?pwd&whichchoice=1089&option=30");
-			print("Community Service Completed. Beep boop.", "blue");
+			auto_log_info("Community Service Completed. Beep boop.", "blue");
 		}
 		return true;
 	}
@@ -4763,17 +4767,17 @@ boolean cs_preTurnStuff(int curQuest)
 	{
 		if((my_familiar() != $familiar[Puck Man]) && (my_familiar() != $familiar[Ms. Puck Man]))
 		{
-			print("100% familiar is dangerous, to disable: set auto_100familiar=none", "red");
+			auto_log_warning("100% familiar is dangerous, to disable: set auto_100familiar=none", "red");
 			string thing = "meatbag";
 			if(my_name() == "Cheesecookie")
 			{
 				thing = "my robotic overlord";
 			}
-			print("I'm going to keep going anyway because, whatevs, your problem " + thing + ".", "red");
+			auto_log_warning("I'm going to keep going anyway because, whatevs, your problem " + thing + ".", "red");
 		}
 		else
 		{
-			print("In 100% familiar mode with a Puck Person... well, good luck!", "red");
+			auto_log_warning("In 100% familiar mode with a Puck Person... well, good luck!", "red");
 		}
 	}
 
@@ -4875,11 +4879,11 @@ boolean cs_preTurnStuff(int curQuest)
 
 	if(isOverdueDigitize())
 	{
-		print("A Digitize event is expected now.", "blue");
+		auto_log_info("A Digitize event is expected now.", "blue");
 	}
 	if(isOverdueArrow())
 	{
-		print("An Arrow event is expected now.", "blue");
+		auto_log_info("An Arrow event is expected now.", "blue");
 	}
 
 
@@ -5059,9 +5063,9 @@ boolean tryBeachHeadBuff(int quest){
 	}
 
 	if(success){
-		print("Have beach head buff, estimate savings " + beachHeadTurnSavings(quest) + " turns");
+		auto_log_debug("Have beach head buff, estimate savings " + beachHeadTurnSavings(quest) + " turns");
 	} else{
-		print("Wasnt able to get beach head buff.", "red");
+		auto_log_warning("Wasnt able to get beach head buff.", "red");
 	}
 	return success;
 }

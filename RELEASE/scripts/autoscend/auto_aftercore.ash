@@ -45,10 +45,7 @@ void auto_combatTest()
 
 string simpleCombatFilter(int round, string opp, string text)
 {
-	#throw_item($item[Seal Tooth]);
-	#return "item seal tooth";
-	print("I've been called at on round: " + round, "green");
-	#return url_encode("\"item seal tooth; repeat\"");
+	auto_log_debug("I've been called at on round: " + round, "green");
 	return "\"item seal tooth; repeat\"";
 }
 
@@ -765,7 +762,7 @@ boolean autoscendIntoBond()
 	string temp = visit_url("ascend.php?pwd=&confirm=on&confirm2=on&action=ascend&submit=Ascend", true);
 	if(contains_text(temp, "You may not enter the Astral Gash again until tomorrow."))
 	{
-		print("Could not ascend, refractory period required.", "red");
+		auto_log_error("Could not ascend, refractory period required.", "red");
 		return false;
 	}
 	temp = visit_url("afterlife.php?action=pearlygates");
@@ -951,7 +948,7 @@ boolean auto_cheesePostCS(int leave)
 			autoAdv($location[The Ice Hotel]);
 			if(get_property("_sourceTerminalDigitizeMonsterCount").to_int() != 2)
 			{
-				print("Did digitize tracking get mixed up?", "red");
+				auto_log_warning("Did digitize tracking get mixed up?", "red");
 			}
 		}
 		if(isOverdueArrow())
@@ -959,7 +956,7 @@ boolean auto_cheesePostCS(int leave)
 			autoAdv($location[The Ice Hotel]);
 			if(get_property("_romanticFightsLeft").to_int() == 2)
 			{
-				print("Probably got confused about an arrow fight, adjusting", "red");
+				auto_log_warning("Probably got confused about an arrow fight, adjusting", "red");
 				set_property("_romanticFightsLeft", 1);
 			}
 		}
@@ -1149,7 +1146,7 @@ boolean auto_cheesePostCS(int leave)
 		}
 	}
 
-	while(lx_witchess());
+	while(witchessFights());
 	if(possessEquipment($item[PARTY HARD T-Shirt]))
 	{
 		put_closet(item_amount($item[PARTY HARD T-Shirt]), $item[PARTY HARD T-Shirt]);
@@ -1267,7 +1264,7 @@ boolean auto_cheesePostCS(int leave)
 			visit_url("campground.php?action=rest");
 			if(auto_get_campground() contains $item[Confusing LED Clock])
 			{
-				print("Was unable to use Confusing LED Clock", "red");
+				auto_log_warning("Was unable to use Confusing LED Clock", "red");
 			}
 			else
 			{
@@ -1276,7 +1273,7 @@ boolean auto_cheesePostCS(int leave)
 		}
 		else
 		{
-			print("Could not place a Confusing LED Clock", "red");
+			auto_log_warning("Could not place a Confusing LED Clock", "red");
 		}
 	}
 
@@ -1355,7 +1352,7 @@ boolean auto_cheesePostCS(int leave)
 
 	while((my_adventures() > leave) && (inebriety_left() >= 0))
 	{
-		print("Have " + my_adventures() + " with target of " + leave + " adventures.", "orange");
+		auto_log_info("Have " + my_adventures() + " with target of " + leave + " adventures.", "orange");
 		buffMaintain($effect[Polka of Plenty], 10, 1, 1);
 		buffMaintain($effect[Leisurely Amblin\'], 50, 1, 1);
 		buffMaintain($effect[How to Scam Tourists], 0, 1, 1);
@@ -1630,7 +1627,7 @@ boolean auto_cheesePostCS(int leave)
 	{
 		if(!buyUpTo(1, $item[5-Hour Acrimony], 5000))
 		{
-			print("Could not buy 5-Hour Acrimony, price too high", "red");
+			auto_log_warning("Could not buy 5-Hour Acrimony, price too high", "red");
 			break;
 		}
 		autoDrink(1, $item[5-Hour Acrimony]);
@@ -1641,7 +1638,7 @@ boolean auto_cheesePostCS(int leave)
 	{
 		if(!buyUpTo(1, $item[Beery Blood], 500))
 		{
-			print("Could not buy Beery Blood, price too high", "red");
+			auto_log_warning("Could not buy Beery Blood, price too high", "red");
 			break;
 		}
 		autoDrink(1, $item[Beery Blood]);
@@ -1742,7 +1739,7 @@ boolean auto_cheesePostCS(int leave)
 
 	if((my_adventures() > 0) && (my_inebriety() <= inebriety_limit()))
 	{
-		print("Adventures are leftover, not finishing overdrinking and PVP", "red");
+		auto_log_warning("Adventures are leftover, not finishing overdrinking and PVP", "red");
 		return true;
 	}
 
@@ -1755,7 +1752,7 @@ boolean auto_cheesePostCS(int leave)
 	{
 		if(!buyUpTo(1, $item[5-Hour Acrimony], 5000))
 		{
-			print("Could not buy 5-Hour Acrimony, price too high", "red");
+			auto_log_warning("Could not buy 5-Hour Acrimony, price too high", "red");
 		}
 	}
 	if(hippy_stone_broken())
@@ -1782,16 +1779,16 @@ boolean auto_cheesePostCS(int leave)
 	}
 	int endMeat = my_meat();
 	int gainedMeat = endMeat - startMeat;
-	print("Meat gained:  " + gainedMeat, "blue");
+	auto_log_info("Meat gained:  " + gainedMeat, "blue");
 	cli_execute("autoscend");
-	print("Meat gained:  " + gainedMeat, "blue");
+	auto_log_info("Meat gained:  " + gainedMeat, "blue");
 	return true;
 }
 
 boolean auto_customMafiaAddress()
 {
 	print_html("<a href=\"http://cheesellc.com/kol/KoLmafia-" + get_revision() + "M.jar\" target=\"_blank\">Link to possible copy of Cheesecookie\'s Custom Mafia build.</a>");
-	print("http://cheesellc.com/kol/KoLmafia-" + get_revision() + "M.jar");
+	auto_log_info("http://cheesellc.com/kol/KoLmafia-" + get_revision() + "M.jar");
 	return true;
 }
 
