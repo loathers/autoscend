@@ -1929,7 +1929,7 @@ void initializeDay(int day)
 			}
 			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
-				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
+				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
 				{
 					buyUpTo(1, $item[Toy Accordion]);
 				}
@@ -1994,7 +1994,7 @@ void initializeDay(int day)
 				pulverizeThing($item[Vicar\'s Tutu]);
 			}
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && !($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()) && (auto_my_path() != "G-Lover"))
+			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (auto_predictAccordionTurns() < 10) && !($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()) && (auto_my_path() != "G-Lover"))
 			{
 				buyUpTo(1, $item[Antique Accordion]);
 			}
@@ -10420,7 +10420,7 @@ boolean LX_craftAcquireItems()
 	}
 
 	#Can we have some other way to check that we have AT skills? Checking all skills just to be sure.
-	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() >= npc_price($item[Antique Accordion])) && (my_class() != $class[Accordion Thief]) && (auto_my_path() != "G-Lover"))
+	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() >= npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && (auto_my_path() != "G-Lover"))
 	{
 		boolean buyAntiqueAccordion = false;
 		boolean[skill] songs = $skills[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, The Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, The Polka of Plenty, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, The Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, The Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
@@ -10502,7 +10502,7 @@ boolean LX_craftAcquireItems()
 		//Demonskin Jacket, requires an adventure, knoll available doesn\'t matter here...
 	}
 
-	if(in_koe() && creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion]))
+	if((in_koe() && creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10))
 	{
 		retrieve_item(1, $item[Antique Accordion]);
 	}
