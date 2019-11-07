@@ -6422,7 +6422,7 @@ boolean L11_unlockHiddenCity()
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
 		// If we failed pull other Machete
-		if(!possessEquipment($item[Antique Machete])
+		if(!possessEquipment($item[Antique Machete]))
 		{
 			pullXWhenHaveY($item[Muculent Machete], 1, 0);
 		}
