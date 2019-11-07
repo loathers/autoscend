@@ -1739,11 +1739,19 @@ void initializeDay(int day)
 			{
 				acquireGumItem($item[disco ball]);
 			}
-			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
+			if(!($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
-				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
+				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && (my_meat() > npc_price($item[Toy Accordion])))
 				{
-					buyUpTo(1, $item[Toy Accordion]);
+					//Try to get Antique Accordion early if we possibly can.
+					if(isUnclePAvailable() && (my_meat() > npc_price($item[Antique Accordion])) && (auto_my_path() != "G-Lover"))
+					{
+						buyUpTo(1, $item[Antique Accordion]);
+					}
+					else if(isArmoryAvailable())
+					{
+						buyUpTo(1, $item[Toy Accordion]);
+					}
 				}
 				if(!possessEquipment($item[Turtle Totem]))
 				{
@@ -1806,7 +1814,7 @@ void initializeDay(int day)
 				pulverizeThing($item[Vicar\'s Tutu]);
 			}
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (auto_predictAccordionTurns() < 10) && !($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()) && (auto_my_path() != "G-Lover"))
+			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() > npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()) && (auto_my_path() != "G-Lover"))
 			{
 				buyUpTo(1, $item[Antique Accordion]);
 			}
