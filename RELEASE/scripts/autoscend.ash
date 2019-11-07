@@ -2807,9 +2807,14 @@ boolean doBedtime()
 	{
 		if((pulls_remaining() > 1) && !possessEquipment($item[antique machete]) && (my_class() != $class[Avatar of Boris]) && (auto_my_path() != "Way of the Surprising Fist") && (auto_my_path() != "Pocket Familiars"))
 		{
-			if(item_amount($item[Antique Machete]) == 0)
+			if((item_amount($item[Antique Machete]) == 0) && (item_amount($item[Muculent Machete]) == 0))
 			{
 				pullXWhenHaveY($item[Antique Machete], 1, 0);
+				// If pull failed, try the other machete
+				if(item_amount($item[Antique Machete]) == 0)
+				{
+					pullXWhenHaveY($item[Muculent Machete], 1, 0);
+				}
 			}
 		}
 		if((pulls_remaining() > 1) && (get_property("auto_palindome") != "finished") )
@@ -3068,7 +3073,7 @@ boolean doBedtime()
 				string consider = "";
 				boolean[item] cList;
 				cList = $items[Antique Machete, wet stew, blackberry galoshes, drum machine, killing jar];
-				if(my_class() == $class[Avatar of Boris])
+				if((my_class() == $class[Avatar of Boris]) || (item_amount($item[Muculent Machete]) != 0))
 				{
 					cList = $items[wet stew, blackberry galoshes, drum machine, killing jar];
 				}
@@ -6039,7 +6044,7 @@ boolean L11_hiddenCityZones()
 
 	if(get_property("auto_hiddenzones") == "0")
 	{
-		boolean needMachete = !possessEquipment($item[Antique Machete]);
+		boolean needMachete = ((!possessEquipment($item[Antique Machete])) && (!possessEquipment($item[Muculent Machete])));
 		boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 		boolean needMatches = (get_property("hiddenTavernUnlock").to_int() != my_ascensions());
 
@@ -6078,7 +6083,7 @@ boolean L11_hiddenCityZones()
 		}
 
 /*
-		if(possessEquipment($item[Antique Machete]))
+		if((possessEquipment($item[Antique Machete]) || (possessEquipment($item[Muculent Machete]))
 		{
 			if(!in_hardcore() || (get_property("hiddenTavernUnlock").to_int() == my_ascensions()))
 			{
@@ -6130,7 +6135,15 @@ boolean L11_hiddenCityZones()
 			set_property("auto_hiddenzones", "2");
 			return true;
 		}
-		autoForceEquip($item[Antique Machete]);
+		if(item_amount($item[Antique Machete]) != 0)
+		{
+			autoForceEquip($item[Antique Machete]);
+		}
+		else if (item_amount($item[Muculent Machete]) != 0)
+		{
+			autoForceEquip($item[Muculent Machete]);
+		}			
+
 		# Add provision for Golden Monkey, or even more so, "Do we need spleen item"
 		if(($familiar[Unconscious Collective].drops_today < 1) && auto_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -6164,7 +6177,15 @@ boolean L11_hiddenCityZones()
 			set_property("auto_hiddenzones", "3");
 			return true;
 		}
-		autoForceEquip($item[Antique Machete]);
+		if(item_amount($item[Antique Machete]) != 0)
+		{
+			autoForceEquip($item[Antique Machete]);
+		}
+		else if (item_amount($item[Muculent Machete]) != 0)
+		{
+			autoForceEquip($item[Muculent Machete]);
+		}			
+
 		if(($familiar[Unconscious Collective].drops_today < 1) && auto_have_familiar($familiar[Unconscious Collective]))
 		{
 			handleFamiliar($familiar[Unconscious Collective]);
@@ -6197,7 +6218,14 @@ boolean L11_hiddenCityZones()
 			set_property("auto_hiddenzones", "4");
 			return true;
 		}
-		autoForceEquip($item[Antique Machete]);
+		if(item_amount($item[Antique Machete]) != 0)
+		{
+			autoForceEquip($item[Antique Machete]);
+		}
+		else if (item_amount($item[Muculent Machete]) != 0)
+		{
+			autoForceEquip($item[Muculent Machete]);
+		}			
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && auto_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -6231,7 +6259,14 @@ boolean L11_hiddenCityZones()
 			set_property("auto_hiddenzones", "5");
 			return true;
 		}
-		autoForceEquip($item[Antique Machete]);
+		if(item_amount($item[Antique Machete]) != 0)
+		{
+			autoForceEquip($item[Antique Machete]);
+		}
+		else if (item_amount($item[Muculent Machete]) != 0)
+		{
+			autoForceEquip($item[Muculent Machete]);
+		}			
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && auto_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -6260,7 +6295,14 @@ boolean L11_hiddenCityZones()
 
 	if(get_property("auto_hiddenzones") == "5")
 	{
-		autoForceEquip($item[Antique Machete]);
+		if(item_amount($item[Antique Machete]) != 0)
+		{
+			autoForceEquip($item[Antique Machete]);
+		}
+		else if (item_amount($item[Muculent Machete]) != 0)
+		{
+			autoForceEquip($item[Muculent Machete]);
+		}			
 
 		handleFamiliar($familiar[Fist Turkey]);
 		handleBjornify($familiar[Grinning Turtle]);
@@ -6407,9 +6449,14 @@ boolean L11_unlockHiddenCity()
 	visit_url("choice.php?whichchoice=125&option=3&pwd");
 	auto_log_info("Hidden Temple Unlocked");
 	set_property("auto_hiddenunlock", "finished");
-	if(!possessEquipment($item[Antique Machete]) && !in_hardcore())
+	if((!possessEquipment($item[Antique Machete]) || (!possessEquipment($item[Muculent Machete])) && !in_hardcore())
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
+		// If we failed pull other Machete
+		if(!possessEquipment($item[Antique Machete])
+		{
+			pullXWhenHaveY($item[Muculent Machete], 1, 0);
+		}
 	}
 
 	restoreSetting("choiceAdventure579");
