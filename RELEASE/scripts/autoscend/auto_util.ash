@@ -91,6 +91,7 @@ boolean pulverizeThing(item it);
 boolean buy_item(item it, int quantity, int maxprice);
 string tryBeerPong();
 boolean hasShieldEquipped();
+boolean[skill] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
 boolean buyUpTo(int num, item it);
@@ -3985,6 +3986,13 @@ boolean beehiveConsider()
 	return true;
 }
 
+boolean[skill] ATSongList()
+{
+	// This List contains ALL AT songs in order from Most to Least Important as to determine what effect to shrug off.
+	boolean[skill] songs = $skills[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, The Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Fat Leon\'s Phat Loot Lyric, The Polka of Plenty, Aloysius\' Antiphon of Aptitude, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, The Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, The Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
+
+	return songs;
+}
 
 void shrugAT()
 {
@@ -4020,19 +4028,17 @@ void shrugAT(effect anticipated)
 	}
 
 	int count = 1;
-	// This List contains ALL AT songs (as their effects) in order from Most to Least Important as to determine what effect to shrug off.
-	boolean[effect] songs = $effects[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Fat Leon\'s Phat Loot Lyric, Polka of Plenty, Aloysius\' Antiphon of Aptitude, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
 
 	effect last = $effect[none];
-	foreach song in songs
+	foreach ATsong in ATSongList()
 	{
-		if(have_effect(song) > 0)
+		if(have_effect(to_effect(ATsong)) > 0)
 		{
 			count += 1;
 			if(count > maxSongs)
 			{
-				auto_log_info("Shrugging song: " + song, "blue");
-				uneffect(song);
+				auto_log_info("Shrugging song: " + ATsong, "blue");
+				uneffect(to_effect(ATsong));
 			}
 		}
 	}
