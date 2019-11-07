@@ -303,7 +303,7 @@ boolean handleFamiliar(string type)
 			return false;
 		}
 	}
-	
+
 	string [string,int,string] familiars_text;
 	if(!file_to_map("autoscend_familiars.txt", familiars_text))
 		auto_log_critical("Could not load autoscend_familiars.txt. This is bad!", "red");
@@ -1741,9 +1741,10 @@ void initializeDay(int day)
 			}
 			if(!($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
-				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
+				if ((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && isArmoryAvailable() && (my_meat() > npc_price($item[Toy Accordion])))
+				{
 					buyUpTo(1, $item[Toy Accordion]);
-
+				}
 				if(!possessEquipment($item[Turtle Totem]))
 				{
 					acquireGumItem($item[Turtle Totem]);
@@ -1805,7 +1806,7 @@ void initializeDay(int day)
 				pulverizeThing($item[Vicar\'s Tutu]);
 			}
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && !($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()) && (auto_my_path() != "G-Lover"))
+			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (auto_predictAccordionTurns() < 10) && !($classes[Accordion Thief, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()) && (auto_my_path() != "G-Lover"))
 			{
 				buyUpTo(1, $item[Antique Accordion]);
 			}
@@ -3401,7 +3402,7 @@ boolean L11_aridDesert()
 				canBuyPaint = false;
 			}
 
-			if((item_amount($item[Can of Black Paint]) > 0) || ((my_meat() >= 1000) && canBuyPaint))
+			if((item_amount($item[Can of Black Paint]) > 0) || ((my_meat() >= npc_price($item[Can of Black Paint])) && canBuyPaint))
 			{
 				buyUpTo(1, $item[Can of Black Paint]);
 				auto_log_info("Returning the Can of Black Paint", "blue");
@@ -8650,7 +8651,7 @@ boolean Lsc_flyerSeals()
 		}
 		if((item_amount($item[bad-ass club]) == 0) && (item_amount($item[ingot of seal-iron]) > 0) && have_skill($skill[Super-Advanced Meatsmithing]))
 		{
-			if((item_amount($item[Tenderizing Hammer]) == 0) && (my_meat() > 10000))
+			if((item_amount($item[Tenderizing Hammer]) == 0) && (my_meat() >= (npc_price($item[Tenderizing Hammer]) * 2)))
 			{
 				buyUpTo(1, $item[Tenderizing Hammer]);
 			}
@@ -9463,13 +9464,6 @@ boolean L8_trapperGround()
 
 boolean LX_guildUnlock()
 {
-	if(!in_hardcore())
-	{
-		if(my_ascensions() >= 125)
-		{
-			return false;
-		}
-	}
 	if(!isGuildClass() || guild_store_available())
 	{
 		return false;
@@ -9852,7 +9846,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() > 300) && (auto_my_path() != "G-Lover"))
+	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && (auto_my_path() != "G-Lover"))
 	{
 		buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
@@ -9867,10 +9861,23 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	#Can we have some other way to check that we have AT skills?
-	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() > 12500) && (have_skill($skill[The Ode to Booze])) && (my_class() != $class[Accordion Thief]) && (auto_my_path() != "G-Lover"))
+	#Can we have some other way to check that we have AT skills? Checking all skills just to be sure.
+	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() >= npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && (auto_my_path() != "G-Lover"))
 	{
-		buyUpTo(1, $item[Antique Accordion]);
+		boolean buyAntiqueAccordion = false;
+
+	foreach SongCheck in ATSongList()
+		{
+			if(have_skill(SongCheck))
+			{
+				buyAntiqueAccordion = true;
+			}
+		}
+
+		if(buyAntiqueAccordion)
+		{
+			buyUpTo(1, $item[Antique Accordion]);
+		}
 	}
 
 	if((my_meat() > 7500) && (item_amount($item[Seal Tooth]) == 0))
@@ -9893,12 +9900,12 @@ boolean LX_craftAcquireItems()
 			// Make Spiky Turtle Shield - Requires an Adventure
 		}
 	}
-	if((get_power(equipped_item($slot[pants])) < 70) && !possessEquipment($item[Demonskin Trousers]) && (my_meat() > 350) && (item_amount($item[Demon Skin]) > 0) && (item_amount($item[Tenderizing Hammer]) > 0) && knoll_available())
+	if((get_power(equipped_item($slot[pants])) < 70) && !possessEquipment($item[Demonskin Trousers]) && (my_meat() >= npc_price($item[Pants Kit])) && (item_amount($item[Demon Skin]) > 0) && (item_amount($item[Tenderizing Hammer]) > 0) && knoll_available())
 	{
 		buyUpTo(1, $item[Pants Kit]);
 		autoCraft("smith", 1, $item[Pants Kit], $item[Demon Skin]);
 	}
-	if(!possessEquipment($item[Tighty Whiteys]) && (my_meat() > 350) && (item_amount($item[White Snake Skin]) > 0) && (item_amount($item[Tenderizing Hammer]) > 0) && knoll_available())
+	if(!possessEquipment($item[Tighty Whiteys]) && (my_meat() >= npc_price($item[Pants Kit])) && (item_amount($item[White Snake Skin]) > 0) && (item_amount($item[Tenderizing Hammer]) > 0) && knoll_available())
 	{
 		buyUpTo(1, $item[Pants Kit]);
 		autoCraft("smith", 1, $item[Pants Kit], $item[White Snake Skin]);
@@ -9937,7 +9944,7 @@ boolean LX_craftAcquireItems()
 		//Demonskin Jacket, requires an adventure, knoll available doesn\'t matter here...
 	}
 
-	if(in_koe() && creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion]))
+	if((in_koe() && creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10))
 	{
 		retrieve_item(1, $item[Antique Accordion]);
 	}
@@ -10224,7 +10231,7 @@ boolean LX_bitchinMeatcar()
 	}
 	else
 	{
-		if((my_meat() >= 6000) && isGeneralStoreAvailable())
+		if((my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000)) && isGeneralStoreAvailable())
 		{
 			auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
 			buyUpTo(1, $item[Desert Bus Pass]);
@@ -10328,7 +10335,7 @@ boolean LX_desertAlternate()
 	{
 		return false;
 	}
-	if((my_meat() >= 5000) && isGeneralStoreAvailable())
+	if((my_meat() >= npc_price($item[Desert Bus Pass])) && isGeneralStoreAvailable())
 	{
 		buyUpTo(1, $item[Desert Bus Pass]);
 		if(item_amount($item[Desert Bus Pass]) > 0)
@@ -10348,7 +10355,7 @@ boolean LX_islandAccess()
 
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
 
-	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (item_amount($item[Dingy Dinghy]) == 0) && (my_meat() >= 400) && isGeneralStoreAvailable())
+	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (item_amount($item[Dingy Dinghy]) == 0) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
 		buyUpTo(1, $item[dingy planks]);
@@ -10416,7 +10423,7 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-	if((my_meat() >= 400) && (item_amount($item[Dinghy Plans]) == 0) && isGeneralStoreAvailable())
+	if((my_meat() >= npc_price($item[dingy planks])) && (item_amount($item[Dinghy Plans]) == 0) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
 		buyUpTo(1, $item[dingy planks]);
@@ -11442,7 +11449,7 @@ boolean L9_aBooPeak()
 
 		//	Do we need to manually adjust for the parrot?
 
-		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= 1000))
+		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])))
 		{
 			buyUpTo(1, $item[Can of Black Paint]);
 			coldResist += 2;
@@ -12071,7 +12078,7 @@ boolean L9_oilPeak()
 			asdonBuff($effect[Driving Wastefully]);
 		}
 	}
-	
+
 	// Help protect ourselves against not getting enough crudes if tackling cartels
 	if(simMaximizeWith("1000ml 100min"))
 	{
@@ -14112,11 +14119,12 @@ boolean doTasks()
 	}
 
 	if(LX_loggingHatchet())				return true;
+	if(LX_guildUnlock())				return true;
 	if(knoll_available() && get_property("auto_spoonconfirmed").to_int() == my_ascensions())
 	{
 		if(LX_bitchinMeatcar())			return true;
 	}
-	if(LX_guildUnlock())				return true;
+	if(LX_bitchinMeatcar())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_handleSpookyravenNecklace())	return true;
 	if(LX_unlockPirateRealm())			return true;
@@ -14140,7 +14148,6 @@ boolean doTasks()
 	if(L5_haremOutfit())				return true;
 	if(LX_phatLootToken())				return true;
 	if(L5_goblinKing())					return true;
-	if(LX_bitchinMeatcar())				return true;
 	if(LX_islandAccess())				return true;
 
 	if(in_hardcore() && isGuildClass())
