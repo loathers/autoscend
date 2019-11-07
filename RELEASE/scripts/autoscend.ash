@@ -6092,21 +6092,6 @@ boolean L11_hiddenCityZones()
 			}
 		}
 
-		boolean EquipMachetes()
-		{
-			if(possessEquipment($item[Antique Machete]))
-			{
-				autoForceEquip($item[Antique Machete]);
-			}
-			else if(possessEquipment($item[Muculent Machete]))
-			{
-				autoForceEquip($item[Muculent Machete]);
-			}
-
-			return true;
-		}
-
-
 		if(((my_class() == $class[Avatar of Boris]) || (auto_my_path() == "Way of the Surprising Fist") || (auto_my_path() == "Pocket Familiars")) && (get_property("relocatePygmyJanitor").to_int() == my_ascensions()))
 		{
 			if(!in_hardcore() || (get_property("hiddenTavernUnlock").to_int() == my_ascensions()))
