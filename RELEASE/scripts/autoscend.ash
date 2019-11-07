@@ -301,7 +301,7 @@ boolean handleFamiliar(string type)
 			return false;
 		}
 	}
-	
+
 	string [string,int,string] familiars_text;
 	if(!file_to_map("autoscend_familiars.txt", familiars_text))
 		auto_log_critical("Could not load autoscend_familiars.txt. This is bad!", "red");
@@ -10423,6 +10423,7 @@ boolean LX_craftAcquireItems()
 	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() >= npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && (auto_my_path() != "G-Lover"))
 	{
 		boolean buyAntiqueAccordion = false;
+		// This List contains ALL AT songs (as their skill names) in an unorganized list.
 		boolean[skill] songs = $skills[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, The Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, The Polka of Plenty, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, The Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, The Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
 		foreach SongCheck in songs
 		{
@@ -12636,7 +12637,7 @@ boolean L9_oilPeak()
 			asdonBuff($effect[Driving Wastefully]);
 		}
 	}
-	
+
 	// Help protect ourselves against not getting enough crudes if tackling cartels
 	if(simMaximizeWith("1000ml 100min"))
 	{
