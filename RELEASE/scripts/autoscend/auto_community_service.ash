@@ -2697,6 +2697,11 @@ boolean LA_cs_communityService()
 				}
 				forceEquip($slot[familiar], $item[Li\'l Candy Corn Costume]);
 			}
+			else if(have_familiar($familiar[Mu]))
+			{
+				use_familiar($familiar[Mu]);
+				forceEquip($slot[familiar], $item[Astral Pet Sweater]);
+			}
 			else if(have_familiar($familiar[Exotic Parrot]))
 			{
 				use_familiar($familiar[Exotic Parrot]);
@@ -2779,7 +2784,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Protection from Bad Stuff], 0, 1, 1);
 			buffMaintain($effect[Human-Elemental Hybrid], 0, 1, 1);
 			buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
-			if(my_familiar() == $familiar[Exotic Parrot])
+			if((my_familiar() == $familiar[Exotic Parrot]) || (my_familiar() == $familiar[Mu]))
 			{
 				buffMaintain($effect[Leash of Linguini], 12, 1, 1);
 				buffMaintain($effect[Empathy], 15, 1, 1);
