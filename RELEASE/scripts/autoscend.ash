@@ -1741,10 +1741,10 @@ void initializeDay(int day)
 			}
 			if(!($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
 			{
-				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && (my_meat() > npc_price($item[Toy Accordion])))
+				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
 					//Try to get Antique Accordion early if we possibly can.
-					if(isUnclePAvailable() && (my_meat() > npc_price($item[Antique Accordion])) && (auto_my_path() != "G-Lover"))
+					if(isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_my_path() != "G-Lover"))
 					{
 						buyUpTo(1, $item[Antique Accordion]);
 					}
@@ -1814,7 +1814,7 @@ void initializeDay(int day)
 				pulverizeThing($item[Vicar\'s Tutu]);
 			}
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() > npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()) && (auto_my_path() != "G-Lover"))
+			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()) && (auto_my_path() != "G-Lover"))
 			{
 				buyUpTo(1, $item[Antique Accordion]);
 			}
@@ -7124,7 +7124,7 @@ boolean L12_gremlinStart()
 			acquireGumItem($item[Turtle Totem]);
 		}
 	}
-	if((item_amount($item[louder than bomb]) == 0) && (item_amount($item[Handful of Smithereens]) > 0) && (my_meat() > npc_price($item[Ben-Gal&trade; Balm])))
+	if((item_amount($item[louder than bomb]) == 0) && (item_amount($item[Handful of Smithereens]) > 0) && ((my_meat() > npc_price($item[Ben-Gal&trade; Balm])) && (npc_price($item[Ben-Gal&trade; Balm]) != 0)))
 	{
 		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
 		cli_execute("make louder than bomb");
@@ -8659,7 +8659,7 @@ boolean Lsc_flyerSeals()
 		}
 		if((item_amount($item[bad-ass club]) == 0) && (item_amount($item[ingot of seal-iron]) > 0) && have_skill($skill[Super-Advanced Meatsmithing]))
 		{
-			if((item_amount($item[Tenderizing Hammer]) == 0) && (my_meat() >= (npc_price($item[Tenderizing Hammer]) * 2)))
+			if((item_amount($item[Tenderizing Hammer]) == 0) && ((my_meat() >= (npc_price($item[Tenderizing Hammer]) * 2)) && (npc_price($item[Tenderizing Hammer]) != 0)))
 			{
 				buyUpTo(1, $item[Tenderizing Hammer]);
 			}
