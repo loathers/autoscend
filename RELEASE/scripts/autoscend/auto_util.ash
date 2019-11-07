@@ -91,6 +91,7 @@ boolean pulverizeThing(item it);
 boolean buy_item(item it, int quantity, int maxprice);
 string tryBeerPong();
 boolean hasShieldEquipped();
+boolean[skill] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
 boolean buyUpTo(int num, item it);
@@ -1965,7 +1966,7 @@ boolean ovenHandle()
 		}
 	}
 
-	if(!get_property("auto_haveoven").to_boolean() && (my_meat() > 4000) && isGeneralStoreAvailable())
+	if(!get_property("auto_haveoven").to_boolean() && (my_meat() >= (npc_price($item[Dramatic&trade; range]) + 1000)) && isGeneralStoreAvailable())
 	{
 		buyUpTo(1, $item[Dramatic&trade; range]);
 		use(1, $item[Dramatic&trade; range]);
@@ -3956,6 +3957,13 @@ boolean beehiveConsider()
 	return true;
 }
 
+boolean[skill] ATSongList()
+{
+	// This List contains ALL AT songs in order from Most to Least Important as to determine what effect to shrug off.
+	boolean[skill] songs = $skills[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, The Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Fat Leon\'s Phat Loot Lyric, The Polka of Plenty, Aloysius\' Antiphon of Aptitude, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, The Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, The Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
+
+	return songs;
+}
 
 void shrugAT()
 {
@@ -3991,20 +3999,17 @@ void shrugAT(effect anticipated)
 	}
 
 	int count = 1;
-	#Put these in priority of keeping.
-	#This needs to be a comprehensive list
-	boolean[effect] songs = $effects[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Aloysius\' Antiphon of Aptitude, Fat Leon\'s Phat Loot Lyric, Polka of Plenty, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
 
 	effect last = $effect[none];
-	foreach song in songs
+	foreach ATsong in ATSongList()
 	{
-		if(have_effect(song) > 0)
+		if(have_effect(to_effect(ATsong)) > 0)
 		{
 			count += 1;
 			if(count > maxSongs)
 			{
-				auto_log_info("Shrugging song: " + song, "blue");
-				uneffect(song);
+				auto_log_info("Shrugging song: " + ATsong, "blue");
+				uneffect(to_effect(ATsong));
 			}
 		}
 	}
@@ -5898,7 +5903,7 @@ int auto_convertDesiredML(int DML)
 	{
 		DesiredML = DML;
 	}
-		
+
 	return DesiredML;
 }
 
@@ -5946,7 +5951,7 @@ boolean auto_setMCDToCap()
 // We use this function to determine the suitability of using Ur-Kel's
 boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 {
-	if((have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0) && ((monster_level_adjustment() + (2 * my_level())) <= auto_convertDesiredML(UrKelToML)))                           
+	if((have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0) && ((monster_level_adjustment() + (2 * my_level())) <= auto_convertDesiredML(UrKelToML)))
 	{
 		if((get_property("auto_MLSafetyLimit") == "") || (((2 * my_level()) <= UrKelUpperLimit) && ((2 * my_level()) >= UrKelLowerLimit)))
 		{
@@ -5975,7 +5980,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 
 // 30
-	// Start with the biggest and drill down for max ML  
+	// Start with the biggest and drill down for max ML
 	if((monster_level_adjustment() + 30) <= auto_convertDesiredML(ToML))
 	{
 		buffMaintain($effect[Ceaseless Snarling], 0, 1, 10);
