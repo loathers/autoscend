@@ -6082,21 +6082,6 @@ boolean L11_hiddenCityZones()
 			needMatches = false;
 		}
 
-		boolean EquipMachetes()
-		{
-			if(possessEquipment($item[Antique Machete]))
-			{
-				autoForceEquip($item[Antique Machete]);
-			}
-			else if(possessEquipment($item[Muculent Machete]))
-			{
-				autoForceEquip($item[Muculent Machete]);
-			}
-
-			return true;
-		}
-
-
 /*
 		if((possessEquipment($item[Antique Machete])) || (possessEquipment($item[Muculent Machete])))
 		{
