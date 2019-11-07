@@ -13,6 +13,7 @@ since r19583; // Automatically recognize when KoL changes an effect name. Gr8tne
 
 import <autoscend/autoscend_header.ash>
 import <autoscend/autoscend_migration.ash>
+import <canadv.ash>
 import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_deprecation.ash>

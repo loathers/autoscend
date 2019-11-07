@@ -2,14 +2,13 @@ script "auto_mr2018.ash"
 
 #	This is meant for items that have a date of 2018.
 
+boolean isjanuaryToteAvailable(){
+	return item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[January\'s Garbage Tote]);
+}
+
 int januaryToteTurnsLeft(item it)
 {
-	if(item_amount($item[January\'s Garbage Tote]) == 0)
-	{
-		return 0;
-	}
-	if(!is_unrestricted($item[January\'s Garbage Tote]))
-	{
+	if(!isjanuaryToteAvailable()){
 		return 0;
 	}
 
@@ -68,12 +67,7 @@ boolean januaryToteAcquire(item it)
 			return false;
 		}
 	}
-	if(item_amount($item[January\'s Garbage Tote]) == 0)
-	{
-		return false;
-	}
-	if(!is_unrestricted($item[January\'s Garbage Tote]))
-	{
+	if(!isjanuaryToteAvailable()){
 		return false;
 	}
 

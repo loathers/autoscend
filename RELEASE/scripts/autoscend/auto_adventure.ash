@@ -9,6 +9,11 @@ boolean autoAdv(location loc, string option)
 # num is not handled properly anyway, so we'll just reject it.
 boolean autoAdv(int num, location loc, string option)
 {
+	if(!zone_isAvailable(loc, true)){
+		auto_log_warning("Cant get to " + loc + " right now.", "red");
+		return false;
+	}
+
 	set_property("auto_combatHandler", "");
 	set_property("auto_diag_round", 0);
 	set_property("nextAdventure", loc);
@@ -107,9 +112,13 @@ boolean autoAdvBypass(string url, location loc, string option)
 #
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
+	if(!zone_isAvailable(loc, true)){
+		auto_log_warning("Cant get to " + loc + " right now.", "red");
+		return false;
+	}
+
 	set_property("nextAdventure", loc);
 	cli_execute("auto_pre_adv");
-#	handlePreAdventure(loc);
 	if(option == "")
 	{
 		option = "auto_combatHandler";

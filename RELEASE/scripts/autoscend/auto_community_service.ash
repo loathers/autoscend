@@ -88,7 +88,6 @@ boolean LA_cs_communityService()
 	}
 
 	handleFamiliar("item");
-	#familiar toFam = $familiar[Cocoabo];
 	familiar toFam = get_property("auto_familiarChoice").to_familiar();
 	foreach fam in useFam
 	{
@@ -237,7 +236,6 @@ boolean LA_cs_communityService()
 	if(curQuest == 6)
 	{
 		cheeseWarMachine(0, 0, 3, 0);
-//		cheeseWarMachine(0, 1, 3, 0);
 		zataraSeaside(my_primestat());
 	}
 	else if(my_daycount() != 1)
@@ -367,7 +365,6 @@ boolean LA_cs_communityService()
 				}
 			}
 
-//			if((my_turncount() >= 60) && cs_witchess())
 			if(item_amount($item[Sacramento Wine]) == 0)
 			{
 				//This might end up getting food and we need to consider that....
@@ -594,7 +591,6 @@ boolean LA_cs_communityService()
 
 			uneffect($effect[Drenched in Lava]);
 
-#			if(((get_property("_g9Effect").to_int() > 125) || (item_amount($item[Airborne Mutagen]) == 0)) && (((curQuest == 9) || (my_turncount() < get_property("auto_cookie").to_int())) && elementalPlanes_access($element[spooky])))
 			if(((curQuest == 9) || (my_turncount() < get_property("auto_cookie").to_int())) && elementalPlanes_access($element[spooky]))
 			{
 				if((isOverdueDigitize() || isOverdueArrow()) && elementalPlanes_access($element[stench]))
@@ -922,16 +918,6 @@ boolean LA_cs_communityService()
 						buffMaintain($effect[Scarysauce], 42, 1, 1);
 						buffMaintain($effect[Disco Fever], 42, 1, 1);
 
-#						if((have_effect($effect[The Dinsey Look]) == 0) && (item_amount($item[FunFunds&trade;]) > 0))
-#						{
-#							cli_execute("make dinsey face paint");
-#						}
-#						buffMaintain($effect[The Dinsey Look], 0, 1, 1);
-#						buffMaintain($effect[Flexibili Tea], 0, 1, 1);
-						buffMaintain($effect[Neuroplastici Tea], 0, 1, 1);
-#						buffMaintain($effect[Physicali Tea], 0, 1, 1);
-
-
 						if((get_property("_hipsterAdv").to_int() < 1) && have_familiar($familiar[Artistic Goth Kid]))
 						{
 							handleFamiliar($familiar[Artistic Goth Kid]);
@@ -951,11 +937,6 @@ boolean LA_cs_communityService()
 						}
 					}
 				}
-
-#				if((elementalPlanes_access($element[hot])) && (item_amount($item[New Age Healing Crystal]) < 2))
-#				{
-#					autoAdv(1, $location[The Velvet / Gold Mine], "cs_combatNormal");
-#				}
 				if(get_property("controlPanel9").to_boolean())
 				{
 					if(item_amount($item[Personal Ventilation Unit]) > 0)
@@ -1171,16 +1152,8 @@ boolean LA_cs_communityService()
 					cli_execute("make " + $item[Salamander Slurry]);
 				}
 			}
-
-//			if(my_ascensions() > 200)
-//			{
-//				fightScienceTentacle();
-//				evokeEldritchHorror();
-//			}
-
 			if(!get_property("auto_hccsNoConcludeDay").to_boolean())
 			{
-				//uneffect($effect[Ode To Booze]);
 				zataraSeaside(my_primestat());
 				buffMaintain($effect[Polka Of Plenty], 30, 1, 10 - get_property("_neverendingPartyFreeTurns").to_int());
 				songboomSetting($item[Gathered Meat-Clip]);
@@ -1383,7 +1356,6 @@ boolean LA_cs_communityService()
 
 	case 1:		#HP Quest
 		{
-
 			if(possessEquipment($item[Barrel Lid]))
 			{
 				equip($item[Barrel Lid]);
@@ -1394,12 +1366,6 @@ boolean LA_cs_communityService()
 			{
 				buyUpTo(1, $item[Ben-Gal&trade; Balm], 25);
 			}
-
-			// why is it doing this? it seems wasteful...
-			//if((chateaumantegna_available() || auto_campawayAvailable()) && (total_free_rests() - get_property("timesRested").to_int()) > 4){
-			//	cli_execute("auto_post_adv");
-			//	doFreeRest();
-			//}
 
 			if((item_amount($item[lemon]) > 0) && (item_amount($item[philter of phorce]) == 0) && (have_effect($effect[Phorcefullness]) == 0) && (freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && have_skill($skill[Advanced Saucecrafting]))
 			{
@@ -1891,13 +1857,6 @@ boolean LA_cs_communityService()
 			{
 				autoDrink(1, $item[Bee's Knees]);
 			}
-
-#			At this point, we are probably only saving 1.75 turns or so, do not bother.
-#			if(get_property("spacegateVaccine2").to_boolean() && !get_property("_spacegateVaccine").to_boolean() && (have_effect($effect[Broad-Spectrum Vaccine]) == 0) && get_property("spacegateAlways").to_boolean())
-#			{
-#				cli_execute("spacegate vaccine 2");
-#			}
-
 			if(possessEquipment($item[Greatest American Pants]))
 			{
 				equip($item[Greatest American Pants]);
@@ -2104,7 +2063,6 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			#handleFamiliar(toFam);
 			use_familiar(toFam);
 			if(can_equip($item[Pet Rock &quot;Snooty&quot; Disguise]) && possessEquipment($item[Pet Rock &quot;Snooty&quot; Disguise]))
 			{
@@ -2140,9 +2098,6 @@ boolean LA_cs_communityService()
 			{
 				autoDrink(1, $item[Sockdollager]);
 			}
-
-//			januaryToteAcquire($item[Broken Champagne Bottle]);
-
 			// TODO: everywhere we do this free rest + buff maintain can be abstracted and made smarter
 			cs_mpMaintain(207);
 			buffMaintain($effect[Song of the North], 100, 1, 1);
@@ -2666,7 +2621,6 @@ boolean LA_cs_communityService()
 
 			if(get_cs_questCost(curQuest) > 7)
 			{
-#				makeGenieWish($effect[Frosty]);
 				makeGenieWish($effect[Infernal Thirst]);
 			}
 
@@ -2711,13 +2665,6 @@ boolean LA_cs_communityService()
 		{
 			if(canYellowRay())
 			{
-//				if(is_unrestricted($item[Deluxe Fax Machine]) && (item_amount($item[Potion of Temporary Gr8ness]) == 0) && ($classes[Pastamancer, Sauceror] contains my_class()))
-//				{
-//					if(handleFaxMonster($monster[Sk8 gnome], "cs_combatYR"))
-//					{
-//						return true;
-//					}
-//				}
 				if(elementalPlanes_access($element[hot]))
 				{
 					if((!possessEquipment($item[Fireproof Megaphone]) && !possessEquipment($item[Meteorite Guard])) || !possessEquipment($item[High-Temperature Mining Mask]))
@@ -2966,18 +2913,6 @@ boolean cs_witchess()
 		{
 			goal = "food";
 		}
-
-/*
-		//Ugh, this is an actual pain to handle. (Might be better if we use an attacking familiar)
-		if(!in_hardcore() && !possessEquipment($item[Ox-Head Shield]))
-		{
-			if(my_mp() > 100)
-			{
-				goal = "shield";
-			}
-		}
-*/
-
 		result = auto_advWitchess(goal, "cs_combatNormal");
 	}
 	auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
@@ -3726,12 +3661,6 @@ string cs_combatNormal(int round, string opp, string text)
 	}
 	if(enemy == $monster[LOV Engineer])
 	{
-#		if(!contains_text(combatState, "weaksauce") && (have_skill($skill[Curse Of Weaksauce])) && (my_mp() >= 32))
-#		{
-#			set_property("auto_combatHandler", combatState + "(weaksauce)");
-#			return "skill " + $skill[Curse Of Weaksauce];
-#		}
-
 		if(!contains_text(combatState, "(candyblast)") && have_skill($skill[Candyblast]) && (my_mp() > (mp_cost($skill[Candyblast]) * 3)) && (my_class() != $class[Sauceror]))
 		{
 			set_property("auto_combatHandler", combatState + "(candyblast)");
@@ -4286,12 +4215,6 @@ string cs_combatLTB(int round, string opp, string text)
 
 	monster enemy = to_monster(opp);
 	string combatState = get_property("auto_combatHandler");
-
-#	if(!contains_text(combatState, "love gnats") && have_skill($skill[Summon Love Gnats]))
-#	{
-#		set_property("auto_combatHandler", combatState + "(love gnats)");
-#		return "skill " + $skill[Summon Love Gnats];
-#	}
 	if(!contains_text(combatState, "giant growth") && have_skill($skill[Giant Growth]))
 	{
 		if(item_amount($item[Green Mana]) == 0)
@@ -4431,7 +4354,6 @@ boolean cs_giant_growth()
 	{
 		autoAdv(1, $location[The Thinknerd Warehouse], "cs_combatLTB");
 	}
-
 	if(have_effect($effect[Giant Growth]) > 0)
 	{
 		return true;

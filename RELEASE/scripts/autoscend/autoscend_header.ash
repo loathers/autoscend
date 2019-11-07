@@ -714,6 +714,9 @@ boolean asdonFeed(item it);									//Defined in autoscend/auto_mr2017.ash
 boolean asdonAutoFeed();									//Defined in autoscend/auto_mr2017.ash
 boolean asdonAutoFeed(int goal);							//Defined in autoscend/auto_mr2017.ash
 boolean asdonCanMissile();										//Defined in autoscend/auto_mr2017.ash
+boolean shouldUseWishes();										//Defined in autoscend/auto_mr2017.ash
+int wishesAvailable();										//Defined in autoscend/auto_mr2017.ash
+boolean makeGenieWish(string wish);							//Defined in autoscend/auto_mr2017.ash
 boolean makeGenieWish(effect eff);							//Defined in autoscend/auto_mr2017.ash
 boolean canGenieCombat();									//Defined in autoscend/auto_mr2017.ash
 boolean makeGenieCombat(monster mon, string option);		//Defined in autoscend/auto_mr2017.ash
@@ -1124,9 +1127,11 @@ generic_t zone_difficulty(location loc);					//Defined in autoscend/auto_zone.as
 generic_t zone_combatMod(location loc);						//Defined in autoscend/auto_zone.ash
 generic_t zone_delay(location loc);							//Defined in autoscend/auto_zone.ash
 generic_t zone_available(location loc);						//Defined in autoscend/auto_zone.ash
+boolean zone_unlock(location loc);
 location[int] zone_list();									//Defined in autoscend/auto_zone.ash
 int[location] zone_delayable();								//Defined in autoscend/auto_zone.ash
 boolean zone_isAvailable(location loc);						//Defined in autoscend/auto_zone.ash
+boolean zone_isAvailable(location loc, boolean unlockIfPossible);
 location[int] zones_available();							//Defined in autoscend/auto_zone.ash
 monster[int] mobs_available();								//Defined in autoscend/auto_zone.ash
 item[int] drops_available();								//Defined in autoscend/auto_zone.ash
