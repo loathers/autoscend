@@ -6101,7 +6101,7 @@ boolean L11_hiddenCityZones()
 			else if(possessEquipment($item[Muculent Machete]))
 			{
 				autoForceEquip($item[Muculent Machete]);
-			}			
+			}
 
 			return true;
 		}
@@ -6433,7 +6433,7 @@ boolean L11_unlockHiddenCity()
 	visit_url("choice.php?whichchoice=125&option=3&pwd");
 	auto_log_info("Hidden Temple Unlocked");
 	set_property("auto_hiddenunlock", "finished");
-	if(((!possessEquipment($item[Antique Machete])) || (!possessEquipment($item[Muculent Machete]))) && !in_hardcore())
+	if((!possessEquipment($item[Antique Machete]) || !possessEquipment($item[Muculent Machete])) && !in_hardcore())
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
 		// If we failed pull other Machete
