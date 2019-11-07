@@ -6082,21 +6082,6 @@ boolean L11_hiddenCityZones()
 			needMatches = false;
 		}
 
-		boolean EquipMachetes()
-		{
-			if(possessEquipment($item[Antique Machete]))
-			{
-				autoForceEquip($item[Antique Machete]);
-			}
-			else if(possessEquipment($item[Muculent Machete]))
-			{
-				autoForceEquip($item[Muculent Machete]);
-			}
-
-			return true;
-		}
-
-
 /*
 		if((possessEquipment($item[Antique Machete])) || (possessEquipment($item[Muculent Machete])))
 		{
@@ -6106,21 +6091,6 @@ boolean L11_hiddenCityZones()
 				return true;
 			}
 		}
-
-		boolean EquipMachetes()
-		{
-			if(possessEquipment($item[Antique Machete]))
-			{
-				autoForceEquip($item[Antique Machete]);
-			}
-			else if(possessEquipment($item[Muculent Machete]))
-			{
-				autoForceEquip($item[Muculent Machete]);
-			}
-
-			return true;
-		}
-
 
 		if(((my_class() == $class[Avatar of Boris]) || (auto_my_path() == "Way of the Surprising Fist") || (auto_my_path() == "Pocket Familiars")) && (get_property("relocatePygmyJanitor").to_int() == my_ascensions()))
 		{
