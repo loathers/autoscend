@@ -11820,11 +11820,11 @@ boolean L9_twinPeak()
 			{
 				if(auto_have_familiar($familiar[Mu])
 				{
-					handleFamiliar($familiar[Mu]);
+					resist = $familiar[Mu];
 				}
 				else if(auto_have_familiar($familiar[Exotic Parrot])
 				{
-					handleFamiliar($familiar[Exotic Parrot]);
+					resist = $familiar[Exotic Parrot];
 				}
 				if(auto_have_familiar($familiar[Trick-Or-Treating Tot]))
 				{
