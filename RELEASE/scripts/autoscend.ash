@@ -4296,11 +4296,10 @@ boolean L13_towerNSTower()
 			}
 
 			acquireHP();
-			boolean[item] famDamage = $items[Tiny Bowler, Ant Hoe, Ant Pick, Ant Rake, Ant Pitchfork, Ant Sickle, Kill Screen, Little Box of Fireworks, Filthy Child Leash, Plastic Pumpkin Bucket, Moveable Feast, Ittah Bittah Hookah];
-			if(famDamage contains equipped_item($slot[Familiar]))
-			{
-				equip($slot[Familiar], $item[none]);
-			}
+
+			// Go into the fight with No Familiar Equips since maximizer wants to force an equip
+			// this keeps us from accidentally dealing damage and killing ourselves
+			addToMaximize("-familiar");
 
 			autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 			if(internalQuestStatus("questL13Final") < 9)
@@ -7180,6 +7179,10 @@ boolean L12_gremlins()
 	{
 		abort("Do gremlins manually, sorry. Or set auto_gremlins=finished and we will just skip them");
 	}
+
+	// Go into the fight with No Familiar Equips since maximizer wants to force an equip
+	// this keeps us from accidentally killing gremlins
+	addToMaximize("-familiar");
 
 	#Put a different shield in here.
 	auto_log_info("Doing them gremlins", "blue");
