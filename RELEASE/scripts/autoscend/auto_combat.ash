@@ -2868,7 +2868,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		{
 			doLash = true;
 		}
-		if (enemy == $monster[Monstrous Boiler] && item_amount($item[Red Hot Boilermaker]) < 1 && get_property("booPeakProgress").to_int() > 0)
+		if (enemy == $monster[Monstrous Boiler] && item_amount($item[Red-Hot Boilermaker]) < 1 && get_property("booPeakProgress").to_int() > 0)
 		{
 			doLash = true;
 		}
