@@ -35,7 +35,7 @@ void handlePostAdventure()
 		set_property("auto_forceNonCombatTurn", -1);
 	}
 
-	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatSource").to_int() > my_turncount() - 10)
+	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatTurn").to_int() > my_turncount() - 10)
 	{
 		auto_log_warning("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
 			"), am going to assume it happened but we missed it.", "blue");
