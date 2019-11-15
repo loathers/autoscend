@@ -13361,13 +13361,23 @@ boolean auto_tavern()
 	{
 		abort("Quest not yet started, talk to Bart Ender and re-run.");
 	}
+
+	// Use Tavern Text to get the finished message instead of relying on Mafia
+	string temp = visit_url("tavern.php?place=barkeep");
+	if(contains_text(temp, "Thanks again for taking care of that rat problem"))
+	{
+		set_property("auto_tavern", "finished");
+		return true;
+	}
+
 	# Mafia usually fixes tavernLayout when we visit the cellar. However, it sometimes leaves it in a broken state so we can't guarantee this will actually help. However, it will result in no net change in tavernLayout so at least we can abort.
-	string tavern = get_property("tavernLayout");
+/*	string tavern = get_property("tavernLayout");
 	if(index_of(tavern, "3") != -1)
 	{
 		set_property("auto_tavern", "finished");
 		return true;
 	}
+*/
 	auto_log_info("In the tavern! Layout: " + tavern, "blue");
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
