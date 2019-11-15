@@ -1297,6 +1297,15 @@ generic_t zone_available(location loc)
 			retval._boolean = gnomads_available();
 		}
 		break;
+
+	// We go here to get the Logging Hatchet
+	case $location[Camp Logging Camp]:
+		if((!in_koe()) && (canadia_available()))
+		{
+			retval._boolean = true;
+		}
+		break;
+
 	case $location[The Thinknerd Warehouse]:
 		if(internalQuestStatus("questM22Shirt") >= 0)
 		{
