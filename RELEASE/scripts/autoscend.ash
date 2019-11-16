@@ -10985,11 +10985,11 @@ boolean LX_handleSpookyravenFirstFloor()
 	else
 	{
 		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + elemental_resist($element[hot]) + "/" + elemental_resist($element[stench]) + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
-		if(auto_have_familiar($familiar[Mu])
+		if(auto_have_familiar($familiar[Mu]))
 		{
 			handleFamiliar($familiar[Mu]);
 		}
-		else if(auto_have_familiar($familiar[Exotic Parrot])
+		else if(auto_have_familiar($familiar[Exotic Parrot]))
 		{
 			handleFamiliar($familiar[Exotic Parrot]);
 		}
@@ -11623,11 +11623,11 @@ boolean L9_aBooPeak()
 				}
 				set_property("auto_aboopending", my_turncount());
 			}
-			if(auto_have_familiar($familiar[Mu])
+			if(auto_have_familiar($familiar[Mu]))
 			{
 				handleFamiliar($familiar[Mu]);
 			}
-			else if(auto_have_familiar($familiar[Exotic Parrot])
+			else if(auto_have_familiar($familiar[Exotic Parrot]))
 			{
 				handleFamiliar($familiar[Exotic Parrot]);
 			}
@@ -11836,11 +11836,11 @@ boolean L9_twinPeak()
 			familiar resist = $familiar[none];
 			if((elemental_resist($element[stench]) < 4) && !is100FamiliarRun())
 			{
-				if(auto_have_familiar($familiar[Mu])
+				if(auto_have_familiar($familiar[Mu]))
 				{
 					resist = $familiar[Mu];
 				}
-				else if(auto_have_familiar($familiar[Exotic Parrot])
+				else if(auto_have_familiar($familiar[Exotic Parrot]))
 				{
 					resist = $familiar[Exotic Parrot];
 				}
