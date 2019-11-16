@@ -10977,7 +10977,14 @@ boolean LX_handleSpookyravenFirstFloor()
 	else
 	{
 		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + elemental_resist($element[hot]) + "/" + elemental_resist($element[stench]) + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
-		handleFamiliar($familiar[Exotic Parrot]);
+		if(auto_have_familiar($familiar[Mu])
+		{
+			handleFamiliar($familiar[Mu]);
+		}
+		else if(auto_have_familiar($familiar[Exotic Parrot])
+		{
+			handleFamiliar($familiar[Exotic Parrot]);
+		}
 		if(is100FamiliarRun())
 		{
 			if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && (available_amount($item[Li\'l Candy Corn Costume]) > 0))
@@ -11438,7 +11445,7 @@ boolean L9_aBooPeak()
 		{
 			lihcface = "-equip lihc face";
 		}
-		string parrot = ", switch exotic parrot, switch trick-or-treating tot";
+		string parrot = ", switch exotic parrot, switch mu, switch trick-or-treating tot";
 		if(is100FamiliarRun())
 		{
 			parrot = "";
@@ -11608,7 +11615,15 @@ boolean L9_aBooPeak()
 				}
 				set_property("auto_aboopending", my_turncount());
 			}
-			handleFamiliar($familiar[Exotic Parrot]);
+			if(auto_have_familiar($familiar[Mu])
+			{
+				handleFamiliar($familiar[Mu]);
+			}
+			else if(auto_have_familiar($familiar[Exotic Parrot])
+			{
+				handleFamiliar($familiar[Exotic Parrot]);
+			}
+
 			# When booPeakProgress <= 0, we want to leave this adventure. Can we?
 			# I can not figure out how to do this via ASH since the adventure completes itself?
 			# However, in mafia, (src/net/sourceforge/kolmafia/session/ChoiceManager.java)
@@ -11813,7 +11828,11 @@ boolean L9_twinPeak()
 			familiar resist = $familiar[none];
 			if((elemental_resist($element[stench]) < 4) && !is100FamiliarRun())
 			{
-				if(auto_have_familiar($familiar[Exotic Parrot]))
+				if(auto_have_familiar($familiar[Mu])
+				{
+					resist = $familiar[Mu];
+				}
+				else if(auto_have_familiar($familiar[Exotic Parrot])
 				{
 					resist = $familiar[Exotic Parrot];
 				}
