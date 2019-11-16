@@ -68,12 +68,12 @@ boolean zone_unlock(location loc){
 	if(loc == $location[The Thinknerd Warehouse]){
 		unlocked = unlock_thinknerd();
 	} else{
-		auto_log_warning("Dont know how to unlock " + loc);
+		auto_log_debug("Dont know how to unlock " + loc);
 		return false;
 	}
 
 	if(!unlocked){
-		auto_log_warning("Wasnt able to unlock " + loc);
+		auto_log_debug("Wasnt able to unlock " + loc);
 	}
 
 	return unlocked;
