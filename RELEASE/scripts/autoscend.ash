@@ -13370,14 +13370,6 @@ boolean auto_tavern()
 		return true;
 	}
 
-	# Mafia usually fixes tavernLayout when we visit the cellar. However, it sometimes leaves it in a broken state so we can't guarantee this will actually help. However, it will result in no net change in tavernLayout so at least we can abort.
-/*	string tavern = get_property("tavernLayout");
-	if(index_of(tavern, "3") != -1)
-	{
-		set_property("auto_tavern", "finished");
-		return true;
-	}
-*/
 	auto_log_info("In the tavern! Layout: " + tavern, "blue");
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
