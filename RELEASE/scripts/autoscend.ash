@@ -13370,6 +13370,7 @@ boolean auto_tavern()
 		return true;
 	}
 
+	string tavern = get_property("tavernLayout");
 	auto_log_info("In the tavern! Layout: " + tavern, "blue");
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
