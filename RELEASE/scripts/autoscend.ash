@@ -1748,7 +1748,8 @@ void initializeDay(int day)
 					{
 						buyUpTo(1, $item[Antique Accordion]);
 					}
-					else if(isArmoryAvailable())
+					// Removed "else". In some situations when mafia or supporting scripts are behaving wonky we may completely fail to get an accordion
+					if((isArmoryAvailable()) && (item_amount($item[Antique Accordion]) == 0))
 					{
 						buyUpTo(1, $item[Toy Accordion]);
 					}
