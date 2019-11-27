@@ -243,7 +243,9 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if(auto_latteDropWanted(place))
+	// Latte may conflict with certain quests. Ignore latte drops for the greater good.
+	boolean[location] IgnoreLatteDrop = $locations[The Haunted Boiler Room];
+	if((auto_latteDropWanted(place)) && (!(IgnoreLatteDrop contains place)))
 	{
 		auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
 		autoEquip($item[latte lovers member\'s mug]);
