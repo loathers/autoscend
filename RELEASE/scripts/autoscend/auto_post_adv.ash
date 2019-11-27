@@ -863,7 +863,8 @@ void handlePostAdventure()
 		// Generic +Stat Buffs
 		buffMaintain($effect[Carol of the Thrills], 30, 1, 1);
 
-		if((40 / regen) < auto_predictAccordionTurns())
+		// Aptitude is not worth it to maintain if we have Ur-Kel's
+		if(((40 / regen) < auto_predictAccordionTurns()) && (have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0))
 		{
 			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 40, 1, 1);
 		}
