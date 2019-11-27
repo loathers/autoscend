@@ -473,10 +473,14 @@ void handlePostAdventure()
 	{
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 15, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 20, 1, 10);
-		if(regen > 10.0)
+		// Only maintain skills in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 25, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
+			if(regen > 10.0)
+			{
+				buffMaintain($effect[Empathy], 25, 1, 10);
+			}
 		}
 		// TODO: 'Get Big' is a pretty good skill
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 25))
@@ -529,10 +533,14 @@ void handlePostAdventure()
 	{
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 20, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 30, 1, 10);
-		if(regen > 10.0)
+		// Only Maintain skills in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 35, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
+			if(regen > 10.0)
+			{
+				buffMaintain($effect[Empathy], 35, 1, 10);
+			}
 		}
 
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 32))
@@ -592,11 +600,14 @@ void handlePostAdventure()
 		{
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
-
-		buffMaintain($effect[Leash of Linguini], 35, 1, 10);
-		if(regen > 4.0)
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 50, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+			if(regen > 4.0)
+			{
+				buffMaintain($effect[Empathy], 50, 1, 10);
+			}
 		}
 
 		foreach sk in toCast
@@ -699,8 +710,12 @@ void handlePostAdventure()
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
 
-		buffMaintain($effect[Empathy], 50, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
+		{
+			buffMaintain($effect[Empathy], 50, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+		}
 
 		foreach sk in toCast
 		{
@@ -784,7 +799,12 @@ void handlePostAdventure()
 		{
 			buffMaintain($effect[Curiosity of Br\'er Tarrypin], 50, 1, 2);
 		}
-		buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);
+
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
+		{
+			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);
+		}
 		buffMaintain($effect[A Few Extra Pounds], 200, 1, 2);
 		buffMaintain($effect[Boon of the War Snapper], 200, 1, 5);
 		buffMaintain($effect[Boon of She-Who-Was], 200, 1, 5);
