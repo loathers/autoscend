@@ -1475,6 +1475,11 @@ boolean L1_ed_islandFallback()
 
 boolean L9_ed_chasmStart()
 {
+	if (internalQuestStatus("questL09Topping") < 0)
+	{
+		return false;
+	}
+
 	if (isActuallyEd() && !get_property("auto_chasmBusted").to_boolean())
 	{
 		auto_log_info("It's a troll on a bridge!!!!", "blue");

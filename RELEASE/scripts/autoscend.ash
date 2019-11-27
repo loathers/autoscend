@@ -1,8 +1,6 @@
 script "autoscend.ash";
-since r19583; // Automatically recognize when KoL changes an effect name. Gr8tness -> Gr8ness.
+since r19599; // In Kingdom of Exploathing, mark the Palindome quest as started as soon as you make the Talisman o' Namsilat.
 /***
-	Killing is wrong, and bad. There should be a new, stronger word for killing like badwrong or badong. YES, killing is badong. From this moment, I will stand for the opposite of killing, gnodab.
-
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
 
@@ -916,9 +914,9 @@ boolean warAdventure()
 	return true;
 }
 
-boolean doThemtharHills()
+boolean L12_ThemtharHills()
 {
-	if(auto_my_path() == "Two Crazy Random Summer" || in_koe())
+	if(in_tcrs() || in_koe())
 	{
 		set_property("auto_nuns", "finished"); // if only :(
 		return false;
@@ -1326,18 +1324,12 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[Numberwang], 1, 0);
 		}
-#		pullXWhenHaveY($item[milk of magnesium], 1, 0);
 		if(auto_my_path() == "Pocket Familiars")
 		{
 			pullXWhenHaveY($item[Ring Of Detect Boring Doors], 1, 0);
 			pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
 			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
 		}
-
-#		pullXWhenHaveY($item[thor\'s pliers], 1, 0);
-		#pullXWhenHaveY($item[the big book of pirate insults], 1, 0);
-#		pullXWhenHaveY($item[mojo filter], 1, 0);
-		#pullXWhenHaveY($item[camp scout backpack], 1, 0);
 
 		if((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer]))
 		{
@@ -1489,12 +1481,12 @@ boolean fortuneCookieEvent()
 			goal = $location[The Castle in the Clouds in the Sky (Top Floor)];
 		}
 
-		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || get_property("auto_nuns") == "done" || get_property("auto_nuns") == "finished" || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("auto_castleground") != "finished" || get_property("sidequestNunsCompleted") != "none"))
+		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || get_property("auto_nuns") == "done" || get_property("auto_nuns") == "finished" || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("auto_castleground") != "finished" || get_property("sidequestNunsCompleted") != "none" || in_koe()))
 		{
 			goal = $location[The Limerick Dungeon];
 		}
 
-		if (goal == $location[The Limerick Dungeon] && (get_property("semirareLocation") == goal || item_amount($item[Cyclops Eyedrops]) > 0 || get_property("auto_orchard") == "start" || get_property("auto_orchard") == "done" || get_property("auto_orchard") == "finished" || get_property("lastFilthClearance").to_int() >= my_ascensions() || get_property("sidequestOrchardCompleted") != "none" || get_property("currentHippyStore") != "none" || isActuallyEd()))
+		if (goal == $location[The Limerick Dungeon] && (get_property("semirareLocation") == goal || item_amount($item[Cyclops Eyedrops]) > 0 || get_property("auto_orchard") == "start" || get_property("auto_orchard") == "done" || get_property("auto_orchard") == "finished" || get_property("lastFilthClearance").to_int() >= my_ascensions() || get_property("sidequestOrchardCompleted") != "none" || get_property("currentHippyStore") != "none" || isActuallyEd() || in_koe()))
 		{
 			goal = $location[The Copperhead Club];
 		}
@@ -1708,6 +1700,10 @@ void initializeDay(int day)
 	{
 		if(get_property("auto_day_init").to_int() < 1)
 		{
+			if (item_amount($item[Newbiesport&trade; tent]) > 0)
+			{
+				use(1, $item[Newbiesport&trade; tent]);
+			}
 			kgbSetup();
 			if(item_amount($item[transmission from planet Xi]) > 0)
 			{
@@ -1748,7 +1744,8 @@ void initializeDay(int day)
 					{
 						buyUpTo(1, $item[Antique Accordion]);
 					}
-					else if(isArmoryAvailable())
+					// Removed "else". In some situations when mafia or supporting scripts are behaving wonky we may completely fail to get an accordion
+					if((isArmoryAvailable()) && (item_amount($item[Antique Accordion]) == 0))
 					{
 						buyUpTo(1, $item[Toy Accordion]);
 					}
@@ -1840,37 +1837,6 @@ void initializeDay(int day)
 			{
 				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
-			pullXWhenHaveY($item[hand in glove], 1, 0);
-			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
-			pullXWhenHaveY($item[wet stew], 1, 0);
-
-			if(!get_property("auto_useCubeling").to_boolean() && (towerKeyCount() == 0) && (fullness_left() >= 4))
-			{
-				if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
-				{
-					pullXWhenHaveY($item[Boris\'s Key Lime Pie], 1, 0);
-				}
-				if((item_amount($item[Sneaky Pete\'s Key]) == 0) && canEat($item[Sneaky Pete\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
-				{
-					pullXWhenHaveY($item[Sneaky Pete\'s Key Lime Pie], 1, 0);
-				}
-				if((item_amount($item[Jarlsberg\'s Key]) == 0) && canEat($item[Jarlsberg\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
-				{
-					pullXWhenHaveY($item[Jarlsberg\'s Key Lime Pie], 1, 0);
-				}
-			}
-			else if(fullness_left() >= 5)
-			{
-				if(canEat(whatHiMein()))
-				{
-					pullXWhenHaveY(whatHiMein(), 2, 0);
-				}
-			}
-
-#			if((item_amount($item[glass of goat\'s milk]) == 0) || (auto_my_path() == "Picky"))
-#			{
-#				pullXWhenHaveY($item[milk of magnesium], 1, 0);
-#			}
 		}
 		if (chateaumantegna_havePainting() && !isActuallyEd() && auto_my_path() != "Community Service")
 		{
@@ -2106,14 +2072,14 @@ boolean doBedtime()
 		if(!LX_freeCombats()) break;
 	}
 
-	if((my_class() == $class[Seal Clubber]) && guild_store_available() && isHermitAvailable() && (auto_my_path() != "G-Lover"))
+	if((my_class() == $class[Seal Clubber]) && guild_store_available() && (auto_my_path() != "G-Lover"))
 	{
 		handleFamiliar("stat");
 		int oldSeals = get_property("_sealsSummoned").to_int();
 		while((get_property("_sealsSummoned").to_int() < 5) && (!get_property("kingLiberated").to_boolean()) && (my_meat() > 4500))
 		{
 			boolean summoned = false;
-			if((my_daycount() == 1) && (my_level() >= 6))
+			if((my_daycount() == 1) && (my_level() >= 6) && isHermitAvailable())
 			{
 				cli_execute("make figurine of an ancient seal");
 				buyUpTo(3, $item[seal-blubber candle]);
@@ -2433,24 +2399,6 @@ boolean doBedtime()
 		if((item_amount($item[set of jacks]) > 0) && !get_property("_setOfJacksUsed").to_boolean())
 		{
 			use(1, $item[set of jacks]);
-		}
-	}
-
-	if(my_daycount() == 1)
-	{
-		if((pulls_remaining() > 1) && !possessEquipment($item[antique machete]) && (my_class() != $class[Avatar of Boris]) && (auto_my_path() != "Way of the Surprising Fist") && (auto_my_path() != "Pocket Familiars"))
-		{
-			if(item_amount($item[Antique Machete]) == 0)
-			{
-				pullXWhenHaveY($item[Antique Machete], 1, 0);
-			}
-		}
-		if((pulls_remaining() > 1) && (get_property("auto_palindome") != "finished") )
-		{
-			if(item_amount($item[wet stew]) == 0)
-			{
-				pullXWhenHaveY($item[wet stew], 1, 0);
-			}
 		}
 	}
 
@@ -3602,14 +3550,6 @@ boolean L11_palindome()
 		return true;
 	}
 
-	// TODO: Mafia doesn't believe you can adventure in the Palindome in KoE
-	// until questL11Palindome is not 'unstarted'. This is a filthy hack to
-	// bypass this that SHOULD BE REMOVED WHEN MAFIA SORTS THIS OUT.
-	if(in_koe() && get_property("questL11Palindome") == "unstarted")
-	{
-		set_property("questL11Palindome", "started");
-	}
-
 	if(!possessEquipment($item[Talisman O\' Namsilat]))
 	{
 		return false;
@@ -3645,8 +3585,8 @@ boolean L11_palindome()
 
 	if((item_amount($item[Wet Stunt Nut Stew]) > 0) && !possessEquipment($item[Mega Gem]))
 	{
-		if(equipped_amount($item[Talisman o' Namsilat]) == 0)
-			equip($slot[acc3], $item[Talisman o' Namsilat]);
+		if(equipped_amount($item[Talisman o\' Namsilat]) == 0)
+			equip($slot[acc3], $item[Talisman o\' Namsilat]);
 		visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 	}
 
@@ -3716,7 +3656,7 @@ boolean L11_palindome()
 
 
 		# is step 4 when we got the wet stunt nut stew?
-		if(get_property("questL11Palindome") != "step5")
+		if (internalQuestStatus("questL11Palindome") < 5)
 		{
 			if(item_amount($item[&quot;2 Love Me\, Vol. 2&quot;]) > 0)
 			{
@@ -3777,7 +3717,7 @@ boolean L11_palindome()
 		string[int] pages;
 		pages[0] = "place.php?whichplace=palindome&action=pal_drlabel";
 		pages[1] = "choice.php?pwd&whichchoice=131&option=" + palinChoice;
-		if(autoAdvBypass(0, pages, $location[Noob Cave], "")) {}
+		autoAdvBypass(0, pages, $location[Noob Cave], "");
 
 		if(item_amount($item[[2268]Staff Of Fats]) == 1)
 		{
@@ -3791,7 +3731,7 @@ boolean L11_palindome()
 		{
 			handleBjornify($familiar[Grimstone Golem]);
 		}
-		if(internalQuestStatus("questL11Palindome") >= 2)
+		if (internalQuestStatus("questL11Palindome") > 1)
 		{
 			if(!get_property("auto_bruteForcePalindome").to_boolean())
 			{
@@ -5021,25 +4961,16 @@ boolean L12_lastDitchFlyer()
 	}
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
-	boolean doHoleInTheSky = needStarKey();
 
-	if(doHoleInTheSky)
+	if (needStarKey())
 	{
-		if(item_amount($item[Steam-Powered Model Rocketship]) == 0)
+		if (!zone_isAvailable($location[The Hole in the Sky]))
 		{
-			set_property("choiceAdventure677", "2");
-			set_property("choiceAdventure678", "3");
-			handleFamiliar("initSuggest");
-			providePlusNonCombat(25);
-			autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
-			handleFamiliar("item");
+			return (L10_topFloor() || L10_holeInTheSkyUnlock());
 		}
 		else
 		{
-			if((item_amount($item[star]) < 8) || (item_amount($item[line]) < 7))
-			{
-				handleFamiliar("item");
-			}
+			handleFamiliar("item");
 			if(LX_getStarKey())
 			{
 				return true;
@@ -5246,7 +5177,7 @@ boolean LX_attemptPowerLevel()
 	{
 		// burn all spare clovers after level 12 if we need to powerlevel.
 		int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
-		if (my_level() >= 12 && get_property("questL12War") == "finished" && cloversAvailable() > cloverLimit)
+		if (my_level() >= 12 && internalQuestStatus("questL12War") > 1 && cloversAvailable() > cloverLimit)
 		{
 			//Determine where to go for clover stats, do not worry about clover failures
 			location whereTo = $location[none];
@@ -5960,7 +5891,7 @@ boolean L11_unlockHiddenCity()
 
 	boolean useStoneWool = true;
 
-	if(auto_my_path() == "G-Lover" || auto_my_path() == "Two Crazy Random Summer")
+	if (auto_my_path() == "G-Lover" || in_tcrs())
 	{
 		if(my_adventures() <= 3)
 		{
@@ -5988,7 +5919,7 @@ boolean L11_unlockHiddenCity()
 
 	boolean bypassResult = autoAdvBypass(280);
 
-	if(auto_my_path() == "G-Lover" || auto_my_path() == "Two Crazy Random Summer")
+	if (auto_my_path() == "G-Lover" || in_tcrs())
 	{
 		if(get_property("lastEncounter") != "The Hidden Heart of the Hidden Temple")
 		{
@@ -6024,10 +5955,6 @@ boolean L11_unlockHiddenCity()
 	visit_url("choice.php?whichchoice=125&option=3&pwd");
 	auto_log_info("Hidden Temple Unlocked");
 	set_property("auto_hiddenunlock", "finished");
-	if(!possessEquipment($item[Antique Machete]) && !in_hardcore())
-	{
-		pullXWhenHaveY($item[Antique Machete], 1, 0);
-	}
 
 	restoreSetting("choiceAdventure579");
 	restoreSetting("choiceAdventure581");
@@ -6061,7 +5988,7 @@ boolean L11_nostrilOfTheSerpent()
 	auto_log_info("Must get a snake nose.", "blue");
 	boolean useStoneWool = true;
 
-	if(auto_my_path() == "G-Lover" || auto_my_path() == "Two Crazy Random Summer")
+	if (auto_my_path() == "G-Lover" || in_tcrs())
 	{
 		if(my_adventures() <= 3)
 		{
@@ -6087,7 +6014,7 @@ boolean L11_nostrilOfTheSerpent()
 
 	set_property("choiceAdventure582", "1");
 	set_property("choiceAdventure579", "2");
-	if(auto_my_path() == "G-Lover" || auto_my_path() == "Two Crazy Random Summer")
+	if (auto_my_path() == "G-Lover" || in_tcrs())
 	{
 		if(!autoAdvBypass(280))
 		{
@@ -6898,14 +6825,14 @@ boolean L11_unlockPyramid()
 		if (in_koe())
 		{
 			visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
-			set_property("questL11Pyramid", "started");
+			cli_execute("refresh quests");
 		}
 		else
 		{
 			visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
 		}
 
-		if(get_property("questL11Pyramid") == "unstarted")
+		if (internalQuestStatus("questL11Pyramid") < 0)
 		{
 			auto_log_info("No burning Ed's model now!", "blue");
 			if((auto_my_path() == "One Crazy Random Summer") && (get_property("desertExploration").to_int() == 100))
@@ -7571,7 +7498,7 @@ boolean L12_filthworms()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Two Crazy Random Summer")
+	if (in_tcrs() || in_koe())
 	{
 		return false;
 	}
@@ -7875,7 +7802,10 @@ boolean L12_finalizeWar()
 
 boolean LX_getDigitalKey()
 {
-	if(in_koe()) { return false; }
+	if (in_koe())
+	{
+		return false;
+	}
 	if(contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
 	{
 		return false;
@@ -8155,12 +8085,12 @@ boolean L10_topFloor()
 		// Copper feel: Turn in airship (will fight otherwise)
 		set_property("choiceAdventure677", 1);
 	}
-	if((item_amount($item[mohawk wig]) == 0) && !in_hardcore())
+	if (!possessEquipment($item[mohawk wig]) && auto_can_equip($item[mohawk wig]) && !in_hardcore())
 	{
 		pullXWhenHaveY($item[Mohawk Wig], 1, 0);
 	}
 
-	if(!possessEquipment($item[mohawk wig]) && 0 == item_amount($item[drum 'n' bass 'n' drum 'n' bass record]))
+	if(!possessEquipment($item[mohawk wig]) && 0 == item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]))
 	{
 		auto_log_info("We don't have a mohawk wig, let's try to get a drum 'n' bass record...", "green");
 		// Yeah, You're for Me, Punk Rock Giant: Move to Flavor of a Raver (676)
@@ -8234,23 +8164,16 @@ boolean L10_ground()
 	}
 
 	auto_log_info("Castle Ground Floor, boring!", "blue");
-	set_property("choiceAdventure672", 3);
-	set_property("choiceAdventure673", 3);
-	set_property("choiceAdventure674", 3);
-	if (isActuallyEd())
+	set_property("choiceAdventure672", 3); // There's No Ability Like Possibility: Skip
+	set_property("choiceAdventure673", 1); // Putting Off Is Off-Putting: Very Overdue Library Book then Skip
+	set_property("choiceAdventure674", 3); // Huzzah!: Skip
+	if (isActuallyEd() || (auto_my_path() == "Pocket Familiars"))
 	{
-		set_property("choiceAdventure1026", 3);
+		set_property("choiceAdventure1026", 3); // Home on the Free Range: Skip
 	}
 	else
 	{
-		if((item_amount($item[Electric Boning Knife]) > 0) || (auto_my_path() == "Pocket Familiars"))
-		{
-			set_property("choiceAdventure1026", 3);
-		}
-		else
-		{
-			set_property("choiceAdventure1026", 2);
-		}
+		set_property("choiceAdventure1026", 2); // Home on the Free Range: Get Electric Boning Knife then Skip
 	}
 
 	if(auto_have_familiar($familiar[Ms. Puck Man]))
@@ -8298,14 +8221,14 @@ boolean L10_basement()
 		return false;
 	}
 	auto_log_info("Basement Search", "blue");
-	set_property("choiceAdventure670", "5");
+	set_property("choiceAdventure670", "5"); // You Don't Mess Around with Gym: Open Ground floor (with amulet)
 	if(item_amount($item[Massive Dumbbell]) > 0)
 	{
-		set_property("choiceAdventure671", "1");
+		set_property("choiceAdventure671", "1"); // Out in the Open Source: Open Ground floor
 	}
 	else
 	{
-		set_property("choiceAdventure671", "4");
+		set_property("choiceAdventure671", "4"); // Out in the Open Source: Go to Fitness Choice
 	}
 
 	if(my_primestat() == $stat[Muscle])
@@ -8318,11 +8241,11 @@ boolean L10_basement()
 
 	if(possessEquipment($item[Titanium Assault Umbrella]) && can_equip($item[Titanium Assault Umbrella]))
 	{
-		set_property("choiceAdventure669", "4");
+		set_property("choiceAdventure669", "4"); // The Fast and the Furry-ous: Skip (and ensure reoccurance)
 	}
 	else
 	{
-		set_property("choiceAdventure669", "1");
+		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella) or Neckbeard Choice
 	}
 
 	if(auto_have_familiar($familiar[Ms. Puck Man]))
@@ -8357,7 +8280,7 @@ boolean L10_basement()
 	{
 		auto_log_info("We was fast and furry-ous!", "blue");
 		autoEquip($item[Titanium Assault Umbrella]);
-		set_property("choiceAdventure669", "1");
+		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella)
 		autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 		if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 		{
@@ -8375,19 +8298,12 @@ boolean L10_basement()
 		{
 			auto_log_warning("Can't equip an Amulet of Extreme Plot Signifcance...", "red");
 			auto_log_warning("I suppose we will try the Massive Dumbbell... Beefcake!", "red");
-			if(item_amount($item[Massive Dumbbell]) == 0)
-			{
-				set_property("choiceAdventure670", "1");
-			}
-			else
-			{
-				set_property("choiceAdventure670", "2");
-			}
+			set_property("choiceAdventure670", "1"); // You Don't Mess Around with Gym: Get Massive Dumbbell then Skip
 			autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 			return true;
 		}
 
-		set_property("choiceAdventure670", "5");
+		set_property("choiceAdventure670", "5"); // You Don't Mess Around with Gym: Open Ground floor (with amulet)
 		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]))
 		{
 			pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
@@ -8397,14 +8313,7 @@ boolean L10_basement()
 				{
 					auto_log_warning("Well, we don't seem to be able to find an Amulet...", "red");
 					auto_log_warning("I suppose we will get the Massive Dumbbell... Beefcake!", "red");
-					if(item_amount($item[Massive Dumbbell]) == 0)
-					{
-						set_property("choiceAdventure670", "1");
-					}
-					else
-					{
-						set_property("choiceAdventure670", "2");
-					}
+					set_property("choiceAdventure670", "1"); // You Don't Mess Around with Gym: Get Massive Dumbbell then Skip
 					autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 				}
 				else
@@ -8415,7 +8324,7 @@ boolean L10_basement()
 				return true;
 			}
 		}
-		set_property("choiceAdventure670", "4");
+		set_property("choiceAdventure670", "4"); // You Don't Mess Around with Gym: Open Ground floor (with amulet)
 
 		if(!autoEquip($slot[acc3], $item[Amulet Of Extreme Plot Significance]))
 		{
@@ -8455,15 +8364,15 @@ boolean L10_airship()
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
-	set_property("choiceAdventure178", "2");
+	set_property("choiceAdventure178", "2"); // Hammering the Armory: Skip
 
 	if(item_amount($item[Model Airship]) == 0)
 	{
-		set_property("choiceAdventure182", "4");
+		set_property("choiceAdventure182", "4"); // Random Lack of an Encounter: Get Model Airship
 	}
 	else
 	{
-		set_property("choiceAdventure182", "1");
+		set_property("choiceAdventure182", "1"); // Random Lack of an Encounter: Fight!
 	}
 
 	if((my_daycount() == 1) && (get_property("_hipsterAdv").to_int() < 7) && is_unrestricted($familiar[Artistic Goth Kid]) && auto_have_familiar($familiar[Artistic Goth Kid]))
@@ -8831,7 +8740,7 @@ boolean L7_crypt()
 		use(1, $item[Evil Eye]);
 	}
 
-	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12War") != "finished";
+	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12HippyFrat") != "finished";
 
 	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]) && !skip_in_koe)
 	{
@@ -9059,10 +8968,6 @@ boolean L6_friarsGetParts()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 
-#	if((my_daycount() == 1) && (get_property("_hipsterAdv").to_int() < 7) && (item_amount($item[hot wing]) >= 3) && is_unrestricted($familiar[Artistic Goth Kid]))
-#	{
-#		handleFamiliar($familiar[Artistic Goth Kid]);
-#	}
 	buffMaintain($effect[Snow Shoes], 0, 1, 1);
 	buffMaintain($effect[Gummed Shoes], 0, 1, 1);
 
@@ -9431,6 +9336,7 @@ boolean L8_trapperGround()
 		if(pulls_remaining() >= (3 - item_amount(oreGoal)))
 		{
 			pullXWhenHaveY(oreGoal, 3 - item_amount(oreGoal), item_amount(oreGoal));
+			return true;
 		}
 	}
 	else if (canGenieCombat() && (get_property("auto_useWishes").to_boolean()) && (catBurglarHeistsLeft() >= 2))
@@ -9634,7 +9540,6 @@ boolean L5_goblinKing()
 	}
 
 	autoAdv(1, $location[Throne Room]);
-	cli_execute("refresh quests");
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished"))
 	{
@@ -9679,6 +9584,10 @@ boolean L4_batCave()
 		}
 		set_property("auto_bat", "finished");
 		council();
+		if (in_koe())
+		{
+			cli_execute("refresh quests");
+		}
 		return true;
 	}
 	if(batStatus >= 3)
@@ -9761,7 +9670,7 @@ boolean L4_batCave()
 		}
 	}
 
-	if (isActuallyEd() && cloversAvailable() > 0 && batStatus <= 1)
+	if (cloversAvailable() > 0 && batStatus <= 1)
 	{
 		cloverUsageInit();
 		autoAdvBypass(31, $location[Guano Junction]);
@@ -10048,7 +9957,7 @@ boolean LX_craftAcquireItems()
 
 boolean councilMaintenance()
 {
-	if(auto_my_path() == "Community Service")
+	if (auto_my_path() == "Community Service" || in_koe())
 	{
 		return false;
 	}
@@ -10728,7 +10637,10 @@ boolean L2_mosquito()
 	{
 		council();
 		set_property("auto_mosquito", "finished");
-		string temp = visit_url("tavern.php?place=barkeep");
+		if (in_koe())
+		{
+			cli_execute("refresh quests");
+		}
 	}
 	if(get_property("auto_mosquito") == "finished")
 	{
@@ -10736,10 +10648,11 @@ boolean L2_mosquito()
 	}
 
 	buffMaintain($effect[Snow Shoes], 0, 1, 1);
+	providePlusNonCombat(25);
 
 	auto_log_info("Trying to find a mosquito.", "blue");
-	set_property("choiceAdventure502", "2");
-	set_property("choiceAdventure505", "1");
+	set_property("choiceAdventure502", "2"); // Arboreal Respite: go to Consciousness of a Stream
+	set_property("choiceAdventure505", "1"); // Consciousness of a Stream: Acquire Mosquito Larva
 	autoAdv(1, $location[The Spooky Forest]);
 	return true;
 }
@@ -11104,7 +11017,7 @@ boolean L12_startWar()
 		return false;
 	}
 
-	if((my_basestat($stat[Muscle]) < 70) || (my_basestat($stat[Mysticality]) < 70) || (my_basestat($stat[Moxie]) < 70))
+	if (my_basestat($stat[Mysticality]) < 70 || my_basestat($stat[Moxie]) < 70)
 	{
 		return false;
 	}
@@ -11473,7 +11386,7 @@ boolean L9_aBooPeak()
 			coldResist += 2;
 			spookyResist += 2;
 		}
-		else if((get_property("auto_blackmap") == "finished") && (item_amount($item[Can of Black Paint]) > 0) && (have_effect($effect[Red Door Syndrome]) == 0))
+		else if (item_amount($item[Can of Black Paint]) > 0 && have_effect($effect[Red Door Syndrome]) == 0)
 		{
 			coldResist += 2;
 			spookyResist += 2;
@@ -11990,8 +11903,8 @@ boolean L9_twinPeak()
 	}
 	else
 	{
-		handleFamiliar("item"); // should probably call this before adventuring no?
 		autoAdv(1, $location[Twin Peak]);
+		handleFamiliar("item");
 	}
 	return true;
 }
@@ -12003,7 +11916,14 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	int expectedML = 10;
+	buffMaintain($effect[Drescher\'s Annoying Noise], 0, 1, 1);
+	buffMaintain($effect[Pride of the Puffin], 0, 1, 1);
+	buffMaintain($effect[Ur-kel\'s Aria of Annoyance], 0, 1, 1);
+	buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
+
+	int expectedML = 0;
+	auto_change_mcd(11);
+	expectedML = current_mcd();
 	if(have_skill($skill[Drescher\'s Annoying Noise]))
 	{
 		expectedML += 10;
@@ -12365,15 +12285,7 @@ boolean L9_chasmBuild()
 		}
 	}
 
-	need = 30 - get_property("chasmBridgeProgress").to_int();
-	if((need <= 3) && (need >= 1) && (cloversAvailable() > 0))
-	{
-		cloverUsageInit();
-		autoAdvBypass("adventure.php?snarfblat=295", $location[The Smut Orc Logging Camp]);
-		cloverUsageFinish();
-		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-	}
-	else
+	if (get_property("chasmBridgeProgress").to_int() < 30)
 	{
 		foreach it in $items[Loadstone, Logging Hatchet]
 		{
@@ -12391,11 +12303,6 @@ boolean L9_chasmBuild()
 		}
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		return true;
-	}
-	if(get_property("chasmBridgeProgress").to_int() < 30)
-	{
-		abort("Umm.... we failed the smut orcs. Sorry bro.");
-		abort("Our chasm bridge situation is borken. Beep boop.");
 	}
 	visit_url("place.php?whichplace=highlands&action=highlands_dude");
 	return true;
@@ -12472,7 +12379,7 @@ boolean L11_redZeppelin()
 			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
 			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
 		}
-		if(my_path() == "Two Crazy Random Summer")
+		if(in_tcrs())
 		{
 			if(my_class() == $class[Sauceror] && my_sign() == "Blender")
 			{
@@ -12734,11 +12641,6 @@ boolean L11_shenCopperhead()
 
 boolean L11_talismanOfNam()
 {
-	if(my_level() < 11)
-	{
-		return false;
-	}
-
 	if(L11_shenCopperhead() || L11_redZeppelin() || L11_ronCopperhead())
 	{
 		return true;
@@ -12776,16 +12678,9 @@ boolean L11_mcmuffinDiary()
 		set_property("auto_mcmuffin", "start");
 		return true;
 	}
-	if(my_adventures() < 4)
+	if (my_adventures() < 4 || my_meat() < 500 || item_amount($item[Forged Identification Documents]) == 0)
 	{
-		return false;
-	}
-	if(my_meat() < 500)
-	{
-		return false;
-	}
-	if(item_amount($item[Forged Identification Documents]) == 0)
-	{
+		auto_log_warning("Could not vacation at the shore to find your fathers diary!", "red");
 		return false;
 	}
 
@@ -12861,28 +12756,7 @@ boolean L11_blackMarket()
 	{
 		return false;
 	}
-#	Mafia probably handles this correctly now.
-#	if(auto_my_path() == "Pocket Familiars")
-#	{
-#		string temp = visit_url("woods.php", false);
-#	}
-	if(black_market_available())
-	{
-		set_property("auto_blackmap", "document");
-		if(auto_my_path() == "Way of the Surprising Fist")
-		{
-			L11_fistDocuments();
-		}
-		if(my_meat() >= 5000)
-		{
-			buyUpTo(1, $item[forged identification documents]);
-		}
-		if(item_amount($item[Forged Identification Documents]) > 0)
-		{
-			set_property("auto_blackmap", "finished");
-		}
-		return true;
-	}
+
 	if($location[The Black Forest].turns_spent > 12)
 	{
 		auto_log_warning("We have spent a bit many adventures in The Black Forest... manually checking", "red");
@@ -12890,7 +12764,7 @@ boolean L11_blackMarket()
 		visit_url("woods.php");
 		if($location[The Black Forest].turns_spent > 30)
 		{
-			abort("We have spent too many turns in The Black Forest and haven't found The Black Market. Something is wrong. (Find Black Forest, set auto_blackmap=document, do not buy Forged Identification Documents");
+			abort("We have spent too many turns in The Black Forest and haven't found The Black Market. Something is wrong. (try \"refresh quests\" on the cli)");
 		}
 	}
 
@@ -12898,12 +12772,12 @@ boolean L11_blackMarket()
 	if(get_property("auto_blackfam").to_boolean())
 	{
 		council();
-		if(!possessEquipment($item[Blackberry Galoshes]))
+		if (!possessEquipment($item[Blackberry Galoshes]) && auto_can_equip($item[Blackberry Galoshes]))
 		{
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 		}
 		set_property("auto_blackfam", false);
-		set_property("choiceAdventure923", "1");
+		set_property("choiceAdventure923", "1"); // All Over the Map: Head toward the blackberry patch
 	}
 
 	if(item_amount($item[beehive]) > 0)
@@ -12913,20 +12787,20 @@ boolean L11_blackMarket()
 
 	if(get_property("auto_getBeehive").to_boolean())
 	{
-		set_property("choiceAdventure924", "3");
-		set_property("choiceAdventure1018", "1");
-		set_property("choiceAdventure1019", "1");
+		set_property("choiceAdventure924", "3"); // You Found Your Thrill: Head toward the buzzing sound (get beehive step 1)
+		set_property("choiceAdventure1018", "1"); // Bee Persistent: Keep going (get beehive step 2)
+		set_property("choiceAdventure1019", "1"); // Bee Rewarded: Almost... there... (get beehive step 3)
 	}
 	else
 	{
-		if(!possessEquipment($item[Blackberry Galoshes]) && (item_amount($item[Blackberry]) >= 3) && !(my_class() == $class[Vampyre]))
+		if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && my_class() != $class[Vampyre])
 		{
-			set_property("choiceAdventure924", "2");
-			set_property("choiceAdventure928", "4");
+			set_property("choiceAdventure924", "2"); // You Found Your Thrill: Visit the cobbler's house
+			set_property("choiceAdventure928", "4"); // The Blackberry Cobbler: Make some galoshes
 		}
 		else
 		{
-			set_property("choiceAdventure924", "1");
+			set_property("choiceAdventure924", "1"); // You Found Your Thrill: Attack the bushes (fight blackberry bush)
 		}
 	}
 
@@ -13370,32 +13244,18 @@ boolean L8_trapperNinjaLair()
 
 boolean auto_tavern()
 {
-	if(get_property("auto_tavern") == "finished")
-	{
-		return false;
-	}
-	if(my_level() < 3)
+	if (internalQuestStatus("questL03Rat") < 1 || internalQuestStatus("questL03Rat") > 1)
 	{
 		return false;
 	}
 
-	if(internalQuestStatus("questL03Rat") < 1)
-	{
-		string temp = visit_url("tavern.php?place=barkeep");
-	}
 	string temp = visit_url("cellar.php");
 	if(contains_text(temp, "You should probably talk to the bartender before you go poking around in the cellar."))
 	{
 		abort("Quest not yet started, talk to Bart Ender and re-run.");
 	}
-	# Mafia usually fixes tavernLayout when we visit the cellar. However, it sometimes leaves it in a broken state so we can't guarantee this will actually help. However, it will result in no net change in tavernLayout so at least we can abort.
-	string tavern = get_property("tavernLayout");
-	if(index_of(tavern, "3") != -1)
-	{
-		set_property("auto_tavern", "finished");
-		return true;
-	}
-	auto_log_info("In the tavern! Layout: " + tavern, "blue");
+
+	auto_log_info("In the tavern! Layout: " + get_property("tavernLayout"), "blue");
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
 	// Infrequent compunding issue, reset maximizer
@@ -13504,8 +13364,12 @@ boolean auto_tavern()
 		{
 			providePlusNonCombat(25);
 		}
+		else
+		{
+			providePlusCombat(25);
+		}
 
-		tavern = get_property("tavernLayout");
+		string tavern = get_property("tavernLayout");
 		if(tavern == "0000000000000000000000000")
 		{
 			string temp = visit_url("cellar.php");
@@ -13576,17 +13440,14 @@ boolean auto_tavern()
 
 boolean L3_tavern()
 {
-	if(get_property("auto_tavern") == "finished")
+	if (internalQuestStatus("questL03Rat") < 0 || internalQuestStatus("questL03Rat") > 2)
 	{
 		return false;
 	}
-	if(my_adventures() < 10)
+
+	if (internalQuestStatus("questL03Rat") < 1)
 	{
-		return false;
-	}
-	if(get_counters("Fortune Cookie", 0, 10) == "Fortune Cookie")
-	{
-		return false;
+		visit_url("tavern.php?place=barkeep");
 	}
 
 	int mpNeed = 0;
@@ -13605,9 +13466,9 @@ boolean L3_tavern()
 
 	if (isActuallyEd())
 	{
-		set_property("choiceAdventure1000", "1");
-		set_property("choiceAdventure1001", "2");
-		if((my_mp() < 15) && have_skill($skill[Shelter of Shed]))
+		set_property("choiceAdventure1000", "1"); // Everything in Moderation: turn on the faucet (completes quest)
+		set_property("choiceAdventure1001", "2"); // Hot and Cold Dripping Rats: Leave it alone (don't fight a rat)
+		if (have_skill($skill[Shelter of Shed]) && my_mp() < mp_cost($skill[Shelter of Shed]))
 		{
 			delayTavern = true;
 		}
@@ -13619,6 +13480,7 @@ boolean L3_tavern()
 			delayTavern = true;
 		}
 	}
+
 	if(my_level() == get_property("auto_powerLevelLastLevel").to_int())
 	{
 		delayTavern = false;
@@ -13641,31 +13503,24 @@ boolean L3_tavern()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 
-	buffMaintain($effect[The Sonata of Sneakiness], 20, 1, 1);
-	buffMaintain($effect[Smooth Movements], 10, 1, 1);
 	buffMaintain($effect[Tortious], 0, 1, 1);
 	buffMaintain($effect[Litterbug], 0, 1, 1);
 	auto_setMCDToCap();
 
-	if(get_property("questL03Rat") == "unstarted")
+	if (auto_tavern())
 	{
-		string temp = visit_url("tavern.php?place=barkeep");
+		return true;
 	}
 
-	while(auto_tavern())
+	if (internalQuestStatus("questL03Rat") > 1)
 	{
-		if(my_adventures() <= 0)
-		{
-			abort("Ran out of adventures while doing the tavern.");
-		}
-		wait(4);
+		visit_url("tavern.php?place=barkeep");
+		set_property("auto_tavern", "finished");
+		council();
+		return true;
 	}
-	visit_url("tavern.php?place=barkeep");
-	set_property("auto_tavern", "finished");
-	council();
-	return true;
+	return false;
 }
-
 
 boolean LX_setBallroomSong()
 {
@@ -13732,7 +13587,7 @@ boolean L12_clearBattlefield()
 				warOutfit(false);
 			}
 
-			item warKillDoubler = get_property("auto_hippyInstead").to_boolean() ? $item[Jacob\'s rung] : $item[Haunted paddle-ball];
+			item warKillDoubler = my_primestat() == $stat[mysticality] ? $item[Jacob\'s rung] : $item[Haunted paddle-ball];
 			pullXWhenHaveY(warKillDoubler, 1, 0);
 			if(possessEquipment(warKillDoubler))
 			{
@@ -13740,7 +13595,7 @@ boolean L12_clearBattlefield()
 			}
 
 			item food_item = $item[none];
-			foreach it in $items[space chowder, ghuol guolash]
+			foreach it in $items[pie man was not meant to eat, spaghetti with Skullheads, gnocchetti di Nietzsche, Spaghetti con calaveras, space chowder, Spaghetti with ghost balls, Crudles, Agnolotti arboli, Shells a la shellfish, Linguini immondizia bianco, Fettucini Inconnu, ghuol guolash, suggestive strozzapreti, Fusilli marrownarrow]
 			{
 				if(item_amount(it) > 0)
 				{
@@ -13977,7 +13832,16 @@ boolean doTasks()
 
 	basicAdjustML();
 	powerLevelAdjustment();
-	handleFamiliar("item");
+	if (is100FamiliarRun())
+	{
+		// re-equip a familiar if it's a 100% run just in case something unequipped it
+		// looking at you auto_maximizedConsumeStuff()...
+		handleFamiliar(to_familiar(get_property("auto_100familiar")));
+	}
+	else
+	{
+		handleFamiliar("item");
+	}
 	basicFamiliarOverrides();
 
 	councilMaintenance();
@@ -14262,7 +14126,7 @@ boolean doTasks()
 
 	if((my_level() >= 12) && ((get_property("hippiesDefeated").to_int() >= 192) || get_property("auto_hippyInstead").to_boolean()) && (get_property("auto_nuns") == ""))
 	{
-		if(doThemtharHills())
+		if(L12_ThemtharHills())
 		{
 			return true;
 		}

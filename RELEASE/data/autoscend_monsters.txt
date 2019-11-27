@@ -72,6 +72,7 @@ sniff	16	War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filth
 sniff	17	War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
 sniff	18	Possessed Wine Rack
 sniff	19	Blue Oyster cultist
+sniff	20	Dirty Old Lihc	prop:cyrptNicheEvilness>28
 
 # Gotta get that wig
 yellowray	0	Burly Sidekick	item:Mohawk Wig<1

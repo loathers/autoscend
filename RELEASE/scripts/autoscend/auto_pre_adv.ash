@@ -174,7 +174,7 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if(my_path() == "Two Crazy Random Summer")
+	if(in_tcrs())
 	{
 		if(my_class() == $class[Sauceror] && my_sign() == "Blender")
 		{
@@ -269,7 +269,7 @@ void handlePreAdventure(location place)
 		autoEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
-	if((place == $location[The Haunted Wine Cellar]) && (my_turncount() != 0) && (get_property("auto_winebomb") == "partial"))
+	if((place == $location[The Haunted Boiler Room]) && (my_turncount() != 0) && (get_property("auto_winebomb") == "partial"))
 	{
 		if(!possessEquipment($item[Unstable Fulminate]))
 		{
