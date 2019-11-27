@@ -537,8 +537,9 @@ boolean eatFancyDog(string dog);							//Defined in autoscend/auto_clan.ash
 boolean zataraClanmate(string who);							//Defined in autoscend/auto_clan.ash
 boolean zataraSeaside(string who);							//Defined in autoscend/auto_clan.ash
 boolean isActuallyEd();										//Defined in auto_ascend/auto_edTheUndying.ash
-boolean ed_autoAdv(int num, location loc, string option);		//Defined in autoscend/auto_edTheUndying.ash
-boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife);//Defined in autoscend/auto_edTheUndying.ash
+void auto_runEdCombat(string option, boolean skipFirstFight);	//Defined in autoscend/auto_edTheUndying.ash
+void auto_runEdCombat(string option);	//Defined in autoscend/auto_edTheUndying.ash
+boolean autoEdAdv(int num, location loc, string option);		//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_doResting();										//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_eatStuff();										//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeDay(int day);								//Defined in autoscend/auto_edTheUndying.ash
