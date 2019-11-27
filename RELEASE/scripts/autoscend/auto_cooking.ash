@@ -2122,7 +2122,10 @@ boolean auto_maximizedConsumeStuff()
 		}
 		if(inebriety_left() > 0)
 		{
-			use_familiar($familiar[none]);
+			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper])
+			{
+				use_familiar($familiar[none]);
+			}
 			return auto_knapsackAutoConsume("drink", false);
 		}
 		if(fullness_left() > 0)

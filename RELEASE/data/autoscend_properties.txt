@@ -101,7 +101,6 @@
 100	auto_bat_soulmonster
 101	auto_beta_test
 102	auto_interrupt
-103	auto_invaderKilled
 104	auto_cabinetsencountered
 105	auto_wineracksencountered
 106	auto_aboopending

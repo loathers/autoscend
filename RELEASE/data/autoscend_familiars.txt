@@ -258,38 +258,39 @@ stat	8	Optimistic Candle	prop:optimisticCandleProgress>=25
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
 stat	9	Crimbo Shrub
 # Free car fuel, or meat, or food/booze if we're really desperate
-stat	10	Lil' Barrel Mimic
+stat	10	Party Mouse
+stat	11	Lil' Barrel Mimic
 # Volleyballs with a multiplier
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyballs
-stat	11	Elf Operative
-stat	12	Optimistic Candle
-stat	13	Rockin' Robin
+stat	12	Elf Operative
+stat	13	Optimistic Candle
+stat	14	Rockin' Robin
 # Volleychauns
-stat	14	Golden Monkey
-stat	15	Bloovian Groose
-stat	16	Unconscious Collective
-stat	17	Grim Brother
-stat	18	Dramatic Hedgehog
-stat	19	Chauvinist Pig
-stat	20	Uniclops
-stat	21	Hunchbacked Minion
-stat	22	Nervous Tick
-stat	23	Cymbal-Playing Monkey
-stat	24	Cheshire Bat
+stat	15	Golden Monkey
+stat	16	Bloovian Groose
+stat	17	Unconscious Collective
+stat	18	Grim Brother
+stat	19	Dramatic Hedgehog
+stat	20	Chauvinist Pig
+stat	21	Uniclops
+stat	22	Hunchbacked Minion
+stat	23	Nervous Tick
+stat	24	Cymbal-Playing Monkey
+stat	25	Cheshire Bat
 # Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
-stat	25	Frumious Bandersnatch
+stat	26	Frumious Bandersnatch
 # Fancy
-stat	26	Miniature Sword &amp; Martini Guy
+stat	27	Miniature Sword &amp; Martini Guy
 # Slightly special volleyballs
-stat	27	Reanimated Reanimator
-stat	28	God Lobster
+stat	28	Reanimated Reanimator
+stat	29	God Lobster
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	29	Grinning Turtle
+stat	30	Grinning Turtle
 # The original
-stat	30	Blood-Faced Volleyball
+stat	31	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work

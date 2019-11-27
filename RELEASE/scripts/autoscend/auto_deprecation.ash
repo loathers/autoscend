@@ -290,5 +290,17 @@ boolean settingFixer()
 		set_property("auto_helpMeMafiaIsSuperBrokenAaah", false);
 	}
 
+	if(property_exists("auto_beta_test"))
+	{
+		auto_log_debug("Beta testing features should be guarded behind their own individual properties...", "red");
+		remove_property("auto_beta_test");
+	}
+
+	if(property_exists("auto_invaderKilled"))
+	{
+		auto_log_debug("No longer need to track the invaders status ourselves as mafia does it now...", "red");
+		remove_property("auto_invaderKilled");
+	}
+
 	return true;
 }

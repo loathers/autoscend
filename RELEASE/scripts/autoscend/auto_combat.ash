@@ -295,9 +295,9 @@ string auto_combatHandler(int round, string opp, string text)
 
 	boolean doBanisher = !get_property("kingLiberated").to_boolean();
 
-	int majora = -1;
 	if(my_path() == "Disguises Delimit")
 	{
+		int majora = -1;
 		matcher maskMatch = create_matcher("mask(\\d+).png", text);
 		if(maskMatch.find())
 		{
@@ -313,10 +313,6 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		if(majora == 3)
 		{
-//			if((round > 10) && (my_mp() > mp_cost($skill[Swap Mask])))
-//			{
-//				return "skill " + $skill[Swap Mask];
-//			}
 			if(canSurvive(1.5))
 			{
 				return "attack with weapon";
@@ -481,11 +477,6 @@ string auto_combatHandler(int round, string opp, string text)
 		{
 			return "item " + $item[Beehive];
 		}
-#		if((!contains_text(combatState, "love stinkbug")) && auto_have_skill($skill[Summon Love Stinkbug]))
-#		{
-#			set_property("auto_combatHandler", combatState + "(love stinkbug)");
-#			return "skill summon love stinkbug";
-#		}
 
 		if(canUse($skill[Shell Up]) && (round >= 3))
 		{
@@ -544,15 +535,16 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(enemy.to_string() == "the invader" && auto_have_skill($skill[Weapon of the Pastalord]))
+	if (enemy == $monster[The Invader] && canUse($skill[Weapon of the Pastalord], false))
 	{
 		return useSkill($skill[Weapon of the Pastalord], false);
 	}
 
-	if(enemy.to_string() == "skeleton astronaut")
+	if (enemy == $monster[Skeleton astronaut])
 	{
-		if(my_daycount() == 1 && item_amount($item[Exploding cigar]) > 0){
-			return "item " + $item[Exploding cigar];
+		if(my_daycount() == 1 && canUse($item[Exploding cigar], false))
+		{
+			return useItem($item[Exploding cigar]);
 		}
 		int dmg = 0;
 		foreach el in $elements[hot, cold, sleaze, spooky, stench]
@@ -2193,7 +2185,6 @@ string auto_combatHandler(int round, string opp, string text)
 	}
 
 	return attackMinor;
-#	return get_ccs_action(round);
 }
 
 string findBanisher(int round, string opp, string text)
@@ -2218,7 +2209,7 @@ string findBanisher(int round, string opp, string text)
 		}
 		return banishAction;
 	}
-	if (canUse($skill[Storm of the Scarab]))
+	if (canUse($skill[Storm of the Scarab], false))
 	{
 		return useSkill($skill[Storm of the Scarab], false);
 	}
@@ -2313,11 +2304,11 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 
 	if(round >= 28)
 	{
-		if (canUse($skill[Storm of the Scarab]))
+		if (canUse($skill[Storm of the Scarab], false))
 		{
 			return useSkill($skill[Storm of the Scarab], false);
 		}
-		else if (canUse($skill[Lunging Thrust-Smack]))
+		else if (canUse($skill[Lunging Thrust-Smack], false))
 		{
 			return useSkill($skill[Lunging Thrust-Smack], false);
 		}
@@ -2387,7 +2378,7 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 			{
 				return findBanisher(round, opp, text);
 			}
-			else if (canUse($item[Seal Tooth]) && get_property("auto_edStatus") == "UNDYING!")
+			else if (canUse($item[Seal Tooth], false) && get_property("auto_edStatus") == "UNDYING!")
 			{
 				return useItem($item[Seal Tooth], false);
 			}
@@ -2400,13 +2391,13 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 
 	foreach it in $items[Seal Tooth, Spectre Scepter, Doc Galaktik\'s Pungent Unguent]
 	{
-		if(canUse(it) && glover_usable(it))
+		if(canUse(it, false) && glover_usable(it))
 		{
 			return useItem(it, false);
 		}
 	}
 
-	if (canUse($skill[Toss]))
+	if (canUse($skill[Toss], false))
 	{
 		return useSkill($skill[Toss], false);
 	}
@@ -2993,7 +2984,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if (canUse($item[Tattered Scrap of Paper]))
+	if (canUse($item[Tattered Scrap of Paper], false))
 	{
 		if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, W imp] contains enemy)
 		{
@@ -3056,7 +3047,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(enemy == $monster[Pygmy Orderlies] && canUse($item[Short Writ of Habeas Corpus]))
+	if(enemy == $monster[Pygmy Orderlies] && canUse($item[Short Writ of Habeas Corpus], false))
 	{
 		return useItem($item[Short Writ of Habeas Corpus]);
 	}
@@ -3080,7 +3071,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 			return useSkill($skill[Curse of Fortune]);
 		}
 
-		if (canUse($item[Seal Tooth]))
+		if (canUse($item[Seal Tooth], false))
 		{
 			return useItem($item[Seal Tooth], false);
 		}
@@ -3088,21 +3079,21 @@ string auto_edCombatHandler(int round, string opp, string text)
 		return useSkill($skill[Mild Curse], false);
 	}
 
-	if (my_location() == $location[The Secret Government Laboratory] && canUse($skill[Roar of the Lion]))
+	if (my_location() == $location[The Secret Government Laboratory] && canUse($skill[Roar of the Lion], false))
 	{
-		if (canUse($skill[Storm Of The Scarab]) && my_buffedstat($stat[Mysticality]) >= 60)
+		if (canUse($skill[Storm Of The Scarab], false) && my_buffedstat($stat[Mysticality]) >= 60)
 		{
 			return useSkill($skill[Storm Of The Scarab], false);
 		}
 		return useSkill($skill[Roar Of The Lion], false);
 	}
 
-	if ($locations[Pirates of the Garbage Barges, The SMOOCH Army HQ, VYKEA] contains my_location() && canUse($skill[Storm of the Scarab]))
+	if ($locations[Pirates of the Garbage Barges, The SMOOCH Army HQ, VYKEA] contains my_location() && canUse($skill[Storm of the Scarab], false))
 	{
 		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
-	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location() && canUse($skill[Fist Of The Mummy]))
+	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location() && canUse($skill[Fist Of The Mummy], false))
 	{
 		return useSkill($skill[Fist Of The Mummy], false);
 	}
@@ -3123,14 +3114,14 @@ string auto_edCombatHandler(int round, string opp, string text)
 		return useItem($item[Ice-Cold Cloaca Zero]);
 	}
 
-	if (canUse($skill[Storm Of The Scarab]) && my_buffedstat($stat[Mysticality]) > 35)
+	if (canUse($skill[Storm Of The Scarab], false) && my_buffedstat($stat[Mysticality]) > 35)
 	{
 		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
 	if((enemy.physical_resistance >= 100) || (round >= 25) || canSurvive(1.25))
 	{
-		if (canUse($skill[Fist Of The Mummy]))
+		if (canUse($skill[Fist Of The Mummy], false))
 		{
 			return useSkill($skill[Fist Of The Mummy], false);
 		}
