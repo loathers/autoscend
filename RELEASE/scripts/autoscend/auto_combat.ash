@@ -544,6 +544,16 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
+	// Unique Heavy Rains Enemy that Reflects Spells.
+	if(enemy.to_string() == "Gurgle")
+	{
+		if(canUse($skill[Summon Love Stinkbug], false))
+		{
+			return useSkill($skill[Summon Love Stinkbug], false);
+		}
+		return "attack with weapon";
+	}
+
 	if(enemy.to_string() == "the invader" && auto_have_skill($skill[Weapon of the Pastalord]))
 	{
 		return useSkill($skill[Weapon of the Pastalord], false);
