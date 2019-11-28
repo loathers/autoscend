@@ -1205,6 +1205,13 @@ boolean autoEdAdv(int num, location loc, string option)
 		{
 			auto_log_info("This fight and " + num + " more left.", "blue");
 		}
+		if (get_property("auto_disableAdventureHandling").to_boolean())
+		{
+			// remove this once LX_spookyBedroomCombat() has been rewritten
+			// needed until then or pre-adventure stuff won't happen and you'll
+			// run out of MP.
+			set_property("auto_disableAdventureHandling", false);
+		}
 		cli_execute("auto_pre_adv");
 		set_property("auto_disableAdventureHandling", true);
 		set_property("auto_edCombatHandler", "");

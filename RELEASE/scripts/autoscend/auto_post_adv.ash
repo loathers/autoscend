@@ -246,7 +246,7 @@ void handlePostAdventure()
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}
 
-			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Smut Orc Logging Camp] contains my_location()) || have_skill($skill[More Legs])))
+			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])) && my_location() != $location[The Smut Orc Logging Camp])
 			{
 				buffMaintain($effect[Blessing of Serqet], 10, 1, 10);
 			}
