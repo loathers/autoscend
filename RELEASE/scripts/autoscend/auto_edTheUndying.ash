@@ -1141,17 +1141,54 @@ boolean ed_preAdv(int num, location loc, string option)
 	return preAdvXiblaxian(loc);
 }
 
-boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
+void auto_runEdCombat(string option, boolean skipFirstFight)
 {
+	if (isActuallyEd())
+	{
+		if (option == "" || option == "auto_combatHandler")
+		{
+			option = "auto_edCombatHandler";
+		}
+		if (!skipFirstFight)
+		{
+			run_combat(option);
+		}
+		while (get_property("edDefeatAbort").to_int() >= get_property("_edDefeats").to_int() && visit_url("main.php").contains_text("whichchoice value=1023"))
+		{
+			// edDefeatAbort defaults to 2 so we should stop when _edDefeats = 3 (or greater)
+			auto_log_info("Ed died in combat " + get_property("_edDefeats").to_int() + " time(s)", "blue");
+			ed_shopping(); // "free" trip to the Underworld, may as well go shopping. Will also leave underworld
+			run_combat(option); // FIGHT!
+		}
+		if (get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int())
+		{
+			set_property("auto_disableAdventureHandling", false);
+			abort("Manually forcing edDefeatAborts. We can't handle the battle.");
+		}
+	}
+}
+
+void auto_runEdCombat(string option)
+{
+	auto_runEdCombat(option, true);
+}
+
+boolean autoEdAdv(int num, location loc, string option)
+{
+	if (!isActuallyEd())
+	{
+		return false;
+	}
+	if (loc == $location[Noob Cave])
+	{
+		abort("We don't do this any more. Bug report this with the call stack please.", "red");
+	}
 	if((option == "") || (option == "auto_combatHandler"))
 	{
 		option = "auto_edCombatHandler";
 	}
 
-	if(!skipFirstLife)
-	{
-		ed_preAdv(num, loc, option);
-	}
+	ed_preAdv(num, loc, option);
 
 	if((my_hp() == 0) || (get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int()))
 	{
@@ -1163,100 +1200,45 @@ boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
 	while(num > 0)
 	{
 		set_property("autoAbortThreshold", "-10.0");
-		num = num - 1;
-		if(num > 1)
+		num--;
+		if (num > 1)
 		{
 			auto_log_info("This fight and " + num + " more left.", "blue");
+		}
+		if (get_property("auto_disableAdventureHandling").to_boolean())
+		{
+			// remove this once LX_spookyBedroomCombat() has been rewritten
+			// needed until then or pre-adventure stuff won't happen and you'll
+			// run out of MP.
+			set_property("auto_disableAdventureHandling", false);
 		}
 		cli_execute("auto_pre_adv");
 		set_property("auto_disableAdventureHandling", true);
 		set_property("auto_edCombatHandler", "");
 
-		if(!skipFirstLife)
+		auto_log_info("Starting Ed Battle at " + loc, "blue");
+		status = adv1(loc, 0, option);
+		auto_runEdCombat(option);
+
+		if(get_property("lastEncounter") == "Using the Force")
 		{
-			auto_log_info("Starting Ed Battle at " + loc, "blue");
-			status = adv1(loc, 0, option);
-			if(!status && (get_property("lastEncounter") == "Like a Bat Into Hell"))
+			run_choice(get_property("_auto_saberChoice").to_int());
+		}
+		else if(contains_text(visit_url("main.php"), "choice.php"))
+		{
+			// in case we get a choice encounter from a fight (e.g. Haunted Bedroom)
+			run_choice(-1);
+			if(contains_text(visit_url("main.php"), "Combat"))
 			{
-				set_property("auto_disableAdventureHandling", false);
-				abort("Either a) We had a connection problem and lost track of the battle, or we were defeated multiple times beyond our usual UNDYING. Manually handle the fight and rerun.");
+				// if that choice then starts a combat (e.g. rustic nightstand), handle it normally (yeah this is getting ridiculous)
+				auto_runEdCombat(option);
 			}
 		}
-		if(last_monster() == $monster[Crate])
-		{
-			abort("We went to the Noob Cave for reals... uh oh");
-		}
 
-		string page = visit_url("main.php");
-		if(contains_text(page, "whichchoice value=1023"))
-		{
-			auto_log_info("Ed has UNDYING once!" , "blue");
-			if(!ed_shopping())
-			{
-				#If this visit_url results in the enemy dying, we don't want to continue
-				visit_url("choice.php?pwd=&whichchoice=1023&option=2", true);
-			}
-			auto_log_info("Ed returning to battle Stage 1", "blue");
-
-			if(get_property("_edDefeats").to_int() == 0)
-			{
-				auto_log_warning("Monster defeated in initialization, aborting attempt.", "red");
-				set_property("auto_disableAdventureHandling", false);
-				cli_execute("auto_post_adv.ash");
-				return true;
-			}
-
-			#Catch if we lose the jump after first revival.
-			if(get_property("_edDefeats").to_int() != 2)
-			{
-				status = adv1(loc, 0, option);
-				if(last_monster() == $monster[Crate])
-				{
-					abort("We went to the Noob Cave for reals... uh oh");
-				}
-			}
-
-			page = visit_url("main.php");
-			if(contains_text(page, "whichchoice value=1023"))
-			{
-				auto_log_info("Ed has UNDYING twice! Time to kick ass!" , "blue");
-				if(!ed_shopping())
-				{
-					#If this visit_url results in the enemy dying, we don't want to continue
-					visit_url("choice.php?pwd=&whichchoice=1023&option=2", true);
-				}
-				auto_log_info("Ed returning to battle Stage 2", "blue");
-
-				if(get_property("_edDefeats").to_int() == 0)
-				{
-					auto_log_warning("Monster defeated in initialization, aborting attempt.", "red");
-					set_property("auto_disableAdventureHandling", false);
-					cli_execute("auto_post_adv.ash");
-					return true;
-				}
-
-				status = adv1(loc, 0, option);
-				if(last_monster() == $monster[Crate])
-				{
-					abort("We went to the Noob Cave for reals... uh oh");
-				}
-			}
-		}
 		set_property("auto_disableAdventureHandling", false);
-
-		if(get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int())
-		{
-			abort("Manually forcing edDefeatAborts. We can't handle the battle.");
-		}
-
 		cli_execute("auto_post_adv.ash");
 	}
 	return status;
-}
-
-boolean ed_autoAdv(int num, location loc, string option)
-{
-	return ed_autoAdv(num, loc, option, false);
 }
 
 boolean L1_ed_island()
@@ -1492,8 +1474,6 @@ boolean L9_ed_chasmStart()
 	}
 	return false;
 }
-
-
 
 boolean L9_ed_chasmBuildClover(int need)
 {
