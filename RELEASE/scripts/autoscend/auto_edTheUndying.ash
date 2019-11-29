@@ -1181,7 +1181,7 @@ boolean autoEdAdv(int num, location loc, string option)
 	}
 	if (loc == $location[Noob Cave])
 	{
-		abort("We don't do this any more. Bug report this with the call stack please.", "red");
+		abort("We don't do this any more. Bug report this with the call stack please.");
 	}
 	if((option == "") || (option == "auto_combatHandler"))
 	{
