@@ -6,6 +6,7 @@ void ensureSealClubs();
 void makeStartingSmiths();
 void equipBaselineGear();
 int equipmentAmount(item equipment);
+boolean EquipMachetes();
 
 string getMaximizeSlotPref(slot s)
 {
@@ -702,7 +703,7 @@ void ensureSealClubs()
 	if(useMaximizeToEquip())
 	{
 		cli_execute("acquire 1 seal-clubbing club");
-		foreach club in $items[Meat Tenderizer Is Murder, Lead Pipe, Porcelain Police Baton, Stainless STeel Shillelagh, Frozen Seal Spine, Ghast Iron Cleaver, Oversized Pipe, Curmudgel, Elegant Nightstick, Maxwell's Silver Hammer, Red Hot Poker, Giant Foam Finger, Hilarious Comedy Prop, Infernal Toilet Brush, Mannequin Leg, Gnawed-Up Dog Bone, Severed Flipper, Spiked Femur, Corrupt Club of Corrupt Corruption, Kneecapping Stick, Orcish frat-paddle, Flaming Crutch, Corrupt Club of Corruption, Skeleton Bone, Remaindered Axe, Club of Corruption, Gnollish Flyswatter, Seal-Clubbing Club]
+		foreach club in $items[Meat Tenderizer Is Murder, Lead Pipe, Porcelain Police Baton, Stainless STeel Shillelagh, Frozen Seal Spine, Ghast Iron Cleaver, Oversized Pipe, Curmudgel, Elegant Nightstick, Maxwell's Silver Hammer, Red-Hot Poker, Giant Foam Finger, Hilarious Comedy Prop, Infernal Toilet Brush, Mannequin Leg, Gnawed-Up Dog Bone, Severed Flipper, Spiked Femur, Corrupt Club of Corrupt Corruption, Kneecapping Stick, Orcish frat-paddle, Flaming Crutch, Corrupt Club of Corruption, Skeleton Bone, Remaindered Axe, Club of Corruption, Gnollish Flyswatter, Seal-Clubbing Club]
 		{
 			if(possessEquipment(club))
 			{
@@ -757,7 +758,7 @@ void equipRollover()
 		return;
 	}
 
-	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li'l Unicorn Costume])) && auto_is_valid($item[Li'l Unicorn Costume]) && auto_my_path() != "Pocket Familiars")
+	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li\'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li\'l Unicorn Costume])) && auto_is_valid($item[Li\'l Unicorn Costume]) && auto_my_path() != "Pocket Familiars")
 	{
 		cli_execute("buy Li'l Unicorn Costume");
 	}
@@ -776,4 +777,18 @@ void equipRollover()
 	{
 		auto_log_info("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
 	}
+}
+
+boolean EquipMachetes()
+{
+	if(possessEquipment($item[Antique Machete]))
+	{
+		autoForceEquip($item[Antique Machete]);
+	}
+	else if(possessEquipment($item[Muculent Machete]))
+	{
+		autoForceEquip($item[Muculent Machete]);
+	}
+
+	return true;
 }
