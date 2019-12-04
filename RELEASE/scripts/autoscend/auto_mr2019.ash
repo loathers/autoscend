@@ -188,6 +188,18 @@ boolean auto_sausageGoblin(location loc, string option)
 	{
 		return false;
 	}
+	
+	// can't equip kramko sausage grinder during certain paths, return false in those paths just like if you didn't own kramko
+	
+	if(my_path() == "Way of the Surprising Fist")
+	{
+		return false;
+	}
+	
+	if(my_path() == "Avatar of Boris")
+	{
+		return false;
+	}
 
 	// My (Malibu Stacey) and Ezandora's spading appears to guarantee the first
 	// 7 sausage goblins using a formula of 3n+1 adventures since the previous.
