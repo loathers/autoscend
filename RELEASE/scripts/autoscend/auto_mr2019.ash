@@ -189,14 +189,9 @@ boolean auto_sausageGoblin(location loc, string option)
 		return false;
 	}
 	
-	// can't equip kramko sausage grinder during certain paths, return false in those paths just like if you didn't own kramko
+	// can't equip kramko sausage grinder during certain paths, return false in those paths
 	
-	if(my_path() == "Way of the Surprising Fist")
-	{
-		return false;
-	}
-	
-	if(my_path() == "Avatar of Boris")
+	if (auto_my_path() == "Way of the Surprising Fist" || auto_my_path() == "Avatar of Boris")
 	{
 		return false;
 	}
