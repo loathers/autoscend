@@ -2172,41 +2172,6 @@ boolean acquireTotem()
 		return true;
 	}
 	
-	//fishing in the sewer did not work for some reason. Check some path specific scenarios
-	//first path to check is Way of the Surprising Fist. For it, try to pull the best non quest totem available.
-	
-	if(my_path() == "Way of the Surprising Fist" && !in_hardcore() )
-	{
-		if(storage_amount($item[primitive alien totem]) > 0) 
-		{
-			if(take_storage(1 , $item[primitive alien totem]))
-			{
-				return true;
-			}
-		}
-		if(storage_amount($item[Mace of the Tortoise]) > 0) 
-		{
-			if(take_storage(1 , $item[Mace of the Tortoise]))
-			{
-				return true;
-			}
-		}
-		if(storage_amount($item[Ouija Board, Ouija Board]) > 0) 
-		{
-			if(take_storage(1 , $item[Ouija Board, Ouija Board]))
-			{
-				return true;
-			}
-		}
-		if(storage_amount($item[turtle totem]) > 0) 
-		{
-			if(take_storage(1 , $item[turtle totem]))
-			{
-				return true;
-			}
-		}
-	}
-	
 	//still could not get a totem. Give up
 	return false;
 }
