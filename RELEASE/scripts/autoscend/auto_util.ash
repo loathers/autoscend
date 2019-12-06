@@ -1088,7 +1088,7 @@ int solveCookie()
 
 boolean needOre()
 {
-	if((get_property("auto_trapper") == "yeti") || (get_property("auto_trapper") == "finished"))
+	if (internalQuestStatus("questL08Trapper") > 2)
 	{
 		return false;
 	}
@@ -1505,7 +1505,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if((inCombat ? auto_have_skill($skill[KGB Tranquilizer Dart]) : possessEquipment($item[Kremlin\'s Greatest Briefcase])) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
 	{
 		boolean useIt = true;
-		if((get_property("auto_gremlins") == "finished") && (my_daycount() >= 2) && (get_property("_kgbTranquilizerDartUses").to_int() >= 2))
+		if (get_property("sidequestJunkyardCompleted") != "none" && my_daycount() >= 2 && get_property("_kgbTranquilizerDartUses").to_int() >= 2)
 		{
 			useIt = false;
 		}
@@ -1547,7 +1547,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	int keep = 1;
-	if(get_property("auto_gremlins") == "finished")
+	if (get_property("sidequestJunkyardCompleted") != "none")
 	{
 		keep = 0;
 	}
@@ -2934,8 +2934,7 @@ boolean auto_change_mcd(int mcd)
 		best = 11;
 	}
 
-	int handicap = best - get_property("auto_beatenUpCount").to_int();
-	if((my_level() >= 13) || (!get_property("auto_disregardInstantKarma").to_boolean()))
+	if(my_level() >= 13 && !get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("auto_ignoreFlyer").to_boolean())
 		{
@@ -2943,7 +2942,7 @@ boolean auto_change_mcd(int mcd)
 		}
 	}
 	mcd = min(mcd, best);
-	int next = max(0,min(mcd, handicap));
+	int next = max(0, mcd);
 	if(next == current_mcd())
 	{
 		return true;
@@ -5947,21 +5946,20 @@ boolean auto_setMCDToCap()
 		return MLToCap;
 	}
 
-	// Don't try to set the MCD is in KoE
+	// Don't try to set the MCD if in KoE
 	if(!in_koe())
 	{
-
 		if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
 		{
-			change_mcd(11);
+			auto_change_mcd(11);
 		}
 		else if(10 <= remainingMLToCap())
 		{
-			change_mcd(10);
+			auto_change_mcd(10);
 		}
 		else if(10 > remainingMLToCap())
 		{
-			change_mcd(remainingMLToCap());
+			auto_change_mcd(remainingMLToCap());
 		}
 	}
 
@@ -5990,9 +5988,9 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 {
 
 // Turn Off MCD first if not in KoE, so we can maximize our ML within constraints.
-	if(!in_koe())
+	if(!in_koe() && !($locations[The Boss Bat\'s Lair, Haert of the Cyrpt, Throne Room] contains my_location()))
 	{
-		change_mcd(0);
+		auto_change_mcd(0);
 	}
 
 // ToML >= U >= 30
@@ -6043,7 +6041,10 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 // Customizable - For variable effects that we can use to fill in the corners
 	// Fill in the remainder with MCD
-	auto_setMCDToCap();
+	if (!($locations[The Boss Bat\'s Lair, Haert of the Cyrpt, Throne Room] contains my_location()))
+	{
+	  auto_setMCDToCap();
+	}
 
 	return true;
 }

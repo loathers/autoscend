@@ -22,7 +22,6 @@ boolean LX_handleSpookyravenFirstFloor();
 boolean LX_phatLootToken();
 boolean LX_islandAccess();
 boolean fancyOilPainting();
-boolean LX_setBallroomSong();
 boolean LX_fcle();
 boolean ornateDowsingRod();
 boolean LX_nastyBooty();
@@ -125,7 +124,6 @@ boolean L12_filthworms();
 boolean L12_sonofaBeach();
 boolean L12_sonofaFinish();
 boolean L12_gremlins();
-boolean L12_gremlinStart();
 boolean L12_orchardFinalize();
 boolean L12_orchardStart();
 boolean L12_finalizeWar();
@@ -135,7 +133,6 @@ boolean L13_towerNSContests();
 boolean L13_towerNSHedge();
 boolean L13_towerNSTower();
 boolean L13_towerNSNagamar();
-boolean L13_towerNSTransition();
 boolean L13_towerNSFinal();
 boolean L13_ed_councilWarehouse();
 boolean L13_ed_towerHandler();
@@ -271,7 +268,6 @@ boolean useCocoon();
 
 
 //Large pile dump.
-boolean L11_ed_mauriceSpookyraven();						//Defined in autoscend/auto_edTheUndying.ash
 boolean L12_sonofaPrefix();									//Defined in autoscend.ash
 boolean L9_ed_chasmBuildClover(int need);					//Defined in autoscend/auto_edTheUndying.ash
 boolean L9_ed_chasmStart();									//Defined in autoscend/auto_edTheUndying.ash
@@ -528,7 +524,7 @@ int doNumberology(string goal, boolean doIt, string option);//Defined in autosce
 int doNumberology(string goal, string option);				//Defined in autoscend/auto_util.ash
 boolean doTasks();											//Defined in autoscend.ash
 boolean keepOnTruckin();									//Defined in autoscend/auto_cooking.ash
-boolean L12_ThemtharHills();									//Defined in autoscend.ash
+boolean L12_themtharHills();									//Defined in autoscend.ash
 boolean isSpeakeasyDrink(item drink); //Defined in autoscend/auto_clan.ash
 boolean canDrinkSpeakeasyDrink(item drink); //Defined in autoscend/auto_clan.ash
 boolean drinkSpeakeasyDrink(item drink);					//Defined in autoscend/auto_clan.ash
@@ -890,7 +886,6 @@ boolean snojoFightAvailable();								//Defined in autoscend/auto_mr2016.ash
 int solveCookie();											//Defined in autoscend/auto_util.ash
 int spleen_left();											//Defined in autoscend/auto_util.ash
 void standard_initializeSettings();							//Defined in autoscend/auto_standard.ash
-void standard_pulls();										//Defined in autoscend/auto_standard.ash
 boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
 boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
 boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash

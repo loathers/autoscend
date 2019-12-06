@@ -675,7 +675,7 @@ generic_t zone_delay(location loc)
 		value = 4 - loc.turns_spent;
 		break;
 	case $location[The Outskirts of Cobb\'s Knob]:
-		if(get_property("auto_day1_cobb") != "finished")
+		if (internalQuestStatus("questL05Goblin") < 1)
 		{
 			value = 10 - loc.turns_spent;
 		}
@@ -1032,7 +1032,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[The Poop Deck]:
-		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (internalQuestStatus("questM12Pirate") >= 6) && (get_property("auto_mcmuffin") != ""))
+		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (internalQuestStatus("questM12Pirate") >= 6))
 		{
 			if((get_property("questL12War") == "unstarted") || (get_property("questL12War") == "finished"))
 			{
@@ -1041,7 +1041,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[Belowdecks]:
-		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (get_property("questM12Pirate") == "finished") && (get_property("auto_mcmuffin") != ""))
+		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (get_property("questM12Pirate") == "finished"))
 		{
 			if((get_property("questL12War") == "unstarted") || (get_property("questL12War") == "finished"))
 			{
@@ -1079,7 +1079,7 @@ generic_t zone_available(location loc)
 	case $location[Near an Abandoned Refrigerator]:
 	case $location[Over Where the Old Tires Are]:
 	case $location[Out by that Rusted-Out Car]:
-		if((internalQuestStatus("questL12War") >= 1) && (get_property("sidequestJunkyardCompleted") == "none") && (get_property("questL12War") != "finished"))
+		if((internalQuestStatus("questL12War") >= 1) && (get_property("sidequestJunkyardCompleted") == "none" || get_property("flyeredML").to_int() < 10000) && (get_property("questL12War") != "finished"))
 		{
 			retval._boolean = true;
 		}
