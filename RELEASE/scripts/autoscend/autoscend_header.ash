@@ -352,6 +352,7 @@ boolean councilMaintenance();								//Defined in autoscend.ash
 boolean [location] get_floundry_locations();				//Defined in autoscend/auto_clan.ash
 int[item] auto_get_clan_lounge();								//Defined in autoscend/auto_clan.ash
 boolean acquireGumItem(item it);							//Defined in autoscend/auto_util.ash
+boolean acquireTotem();										//Defined in autoscend/auto_util.ash
 boolean acquireHermitItem(item it);							//Defined in autoscend/auto_util.ash
 int cloversAvailable();									//Defined in autoscend/auto_util.ash
 boolean cloverUsageInit();									//Defined in autoscend/auto_util.ash
