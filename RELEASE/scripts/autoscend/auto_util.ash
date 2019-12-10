@@ -27,7 +27,6 @@ boolean set_property_ifempty(string setting, string change);
 boolean restore_property(string setting, string source);
 boolean clear_property_if(string setting, string cond);
 boolean acquireGumItem(item it);
-boolean acquireTotem();
 boolean acquireHermitItem(item it);
 boolean isHermitAvailable();
 boolean isGeneralStoreAvailable();
