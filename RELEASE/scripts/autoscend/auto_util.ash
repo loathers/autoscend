@@ -30,7 +30,6 @@ boolean acquireGumItem(item it);
 boolean acquireHermitItem(item it);
 boolean isHermitAvailable();
 boolean isGeneralStoreAvailable();
-boolean isMusGuildStoreAvailable();
 boolean isArmoryAvailable();
 boolean isGalaktikAvailable();
 boolean isUnclePAvailable();
