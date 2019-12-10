@@ -10165,7 +10165,7 @@ boolean L12_flyerFinish()
 
 boolean L9_highLandlord()
 {
-	if (internalQuestStatus("questL09Topping") < 1 || internalQuestStatus("questL09Topping") > 2)
+	if (internalQuestStatus("questL09Topping") < 1 || internalQuestStatus("questL09Topping") > 3)
 	{
 		return false;
 	}
