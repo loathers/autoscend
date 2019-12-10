@@ -2182,7 +2182,7 @@ boolean isHermitAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Kingdom of Exploathing")
+	if(in_koe())
 	{
 		return false;
 	}
@@ -2199,7 +2199,7 @@ boolean isGalaktikAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Kingdom of Exploathing")
+	if(in_koe())
 	{
 		return false;
 	}
@@ -2221,11 +2221,11 @@ boolean isGeneralStoreAvailable()
 
 boolean isMusGuildStoreAvailable()
 {
-	if(($classes[seal clubber, turtle tamer] contains my_class()) && guild_store_available())
+	if ($classes[seal clubber, turtle tamer] contains my_class() && guild_store_available())
 	{
 		return true;
 	}
-	if ((my_class() == $class[accordion thief]) && (my_level() >= 9) && guild_store_available())
+	if (my_class() == $class[accordion thief] && my_level() >= 9 && guild_store_available())
 	{
 		return true;
 	}
