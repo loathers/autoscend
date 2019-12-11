@@ -2104,67 +2104,23 @@ boolean acquireTotem()
 {
 	//this function checks if you have a valid totem for casting turtle tamer buffs with. Returning true if you do. If you don't, it will attempt to acquire one in a reasonable manner.
 
-	//first check if there is a valid totem in inventory or equipped, return true if there is.
+	//check if there is a valid totem in inventory or equipped, return true if there is.
+	//check the closet from best to worst. If found in closet, uncloset 1 and return true
 	
-	if ((0 < item_amount($item[primitive alien totem])) || (have_equipped($item[primitive alien totem])))
+	foreach totem in $items[primitive alien totem, flail of the seven aspects, chelonian morningstar, mace of the tortoise, ouija board\, ouija board, turtle totem]
 	{
-		return true;
+		if (possessEquipment(totem))
+		{
+			return true;
+		}
+		if (0 < closet_amount(totem))
+		{
+			take_closet(1, totem);
+			return true;
+		}
 	}
-	if ((0 < item_amount($item[Flail of the Seven Aspects])) || (have_equipped($item[Flail of the Seven Aspects])))
-	{
-		return true;
-	}
-	if ((0 < item_amount($item[Chelonian Morningstar])) || (have_equipped($item[Chelonian Morningstar])))
-	{
-		return true;
-	}
-	if ((0 < item_amount($item[Mace of the Tortoise])) || (have_equipped($item[Mace of the Tortoise])))
-	{
-		return true;
-	}
-	if ((0 < item_amount($item[Ouija Board, Ouija Board])) || (have_equipped($item[Ouija Board, Ouija Board])))
-	{
-		return true;
-	}
-	if ((0 < item_amount($item[turtle totem])) || (have_equipped($item[turtle totem])))
-	{
-		return true;
-	}
-	
-	//if no valid totems were found, check the closet for one, from best to worst. If found in closet, uncloset 1 and return true
-	
-	if (0 < closet_amount( $item[primitive alien totem] ))
-	{
-		take_closet( 1 , $item[primitive alien totem] );
-		return true;
-	}
-	if (0 < closet_amount( $item[Flail of the Seven Aspects] ))
-	{
-		take_closet( 1 , $item[turtle totem] );
-		return true;
-	}
-	if (0 < closet_amount( $item[Chelonian Morningstar] ))
-	{
-		take_closet( 1 , $item[turtle totem] );
-		return true;
-	}
-	if (0 < closet_amount( $item[Mace of the Tortoise] ))
-	{
-		take_closet( 1 , $item[turtle totem] );
-		return true;
-	}
-	if (0 < closet_amount( $item[Ouija Board, Ouija Board] ))
-	{
-		take_closet( 1 , $item[turtle totem] );
-		return true;
-	}
-	if (0 < closet_amount( $item[turtle totem] ))
-	{
-		take_closet( 1 , $item[turtle totem] );
-		return true;
-	}
-	
-	//if still not acquired, try fishing in the sewer for a turtle totem.
+
+	//try fishing in the sewer for a turtle totem
 	
 	if(acquireGumItem($item[turtle totem]))
 	{
