@@ -2181,7 +2181,7 @@ boolean isHermitAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Kingdom of Exploathing")
+	if(in_koe())
 	{
 		return false;
 	}
@@ -2195,6 +2195,10 @@ boolean isGalaktikAvailable()
 		return false;
 	}
 	if(auto_my_path() == "Zombie Master")
+	{
+		return false;
+	}
+	if(in_koe())
 	{
 		return false;
 	}
@@ -2212,6 +2216,19 @@ boolean isGeneralStoreAvailable()
 		return false;
 	}
 	return true;
+}
+
+boolean isMusGuildStoreAvailable()
+{
+	if ($classes[seal clubber, turtle tamer] contains my_class() && guild_store_available())
+	{
+		return true;
+	}
+	if (my_class() == $class[accordion thief] && my_level() >= 9 && guild_store_available())
+	{
+		return true;
+	}
+	return false;
 }
 
 boolean isArmoryAvailable()
@@ -4228,7 +4245,7 @@ boolean buyUpTo(int num, item it, int maxprice)
 	{
 		return false;
 	}
-	if(($items[Blood of the Wereseal, Cheap Wind-Up Clock, Turtle Pheromones] contains it) && !guild_store_available())
+	if(($items[Blood of the Wereseal, Cheap Wind-Up Clock, Turtle Pheromones] contains it) && !isMusGuildStoreAvailable())
 	{
 		return false;
 	}
