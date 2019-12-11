@@ -2100,6 +2100,37 @@ boolean acquireGumItem(item it)
 	return (have + 1) == item_amount(it);
 }
 
+boolean acquireTotem()
+{
+	//this function checks if you have a valid totem for casting turtle tamer buffs with. Returning true if you do. If you don't, it will attempt to acquire one in a reasonable manner.
+
+	//check if there is a valid totem in inventory or equipped, return true if there is.
+	//check the closet from best to worst. If found in closet, uncloset 1 and return true
+	
+	foreach totem in $items[primitive alien totem, flail of the seven aspects, chelonian morningstar, mace of the tortoise, ouija board\, ouija board, turtle totem]
+	{
+		if (possessEquipment(totem))
+		{
+			return true;
+		}
+		if (0 < closet_amount(totem))
+		{
+			take_closet(1, totem);
+			return true;
+		}
+	}
+
+	//try fishing in the sewer for a turtle totem
+	
+	if(acquireGumItem($item[turtle totem]))
+	{
+		return true;
+	}
+	
+	//still could not get a totem. Give up
+	return false;
+}
+
 boolean acquireHermitItem(item it)
 {
 	if(!isHermitAvailable())
@@ -4374,7 +4405,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Arched Eyebrow of the Archmage]:useSkill = $skill[Arched Eyebrow of the Archmage];break;
 	case $effect[Armor-Plated]:					useItem = $item[Bent Scrap Metal];				break;
 	case $effect[Ashen Burps]:					useItem = $item[ash soda];						break;
-	case $effect[Astral Shell]:					useSkill = $skill[Astral Shell];				break;
+	case $effect[Astral Shell]:
+		if(acquireTotem())
+		{
+			useSkill = $skill[Astral Shell];
+		}																						break;
 	case $effect[Baconstoned]:
 		if(item_amount($item[Vial of Baconstone Juice]) > 0)
 		{
@@ -4445,7 +4480,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Cold Hard Skin]:				useItem = $item[Frost-Rimed Seal Hide];			break;
 	case $effect[Contemptible Emanations]:		useItem = $item[Cologne of Contempt];			break;
 	case $effect[The Cupcake of Wrath]:			useItem = $item[Green-Frosted Astral Cupcake];	break;
-	case $effect[Curiosity of Br\'er Tarrypin]:	useSkill = $skill[Curiosity of Br\'er Tarrypin];break;
+	case $effect[Curiosity of Br\'er Tarrypin]:
+		if(acquireTotem())
+		{
+			useSkill = $skill[Curiosity of Br\'er Tarrypin];
+		}																						break;
 	case $effect[Dance of the Sugar Fairy]:		useItem = $item[Sugar Fairy];					break;
 	case $effect[Destructive Resolve]:			useItem = $item[Resolution: Be Feistier];		break;
 	case $effect[Dexteri Tea]:					useItem = $item[cuppa Dexteri tea];				break;
@@ -4470,7 +4509,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
 	case $effect[Empathy]:
-		if(have_familiar($familiar[Mosquito]))
+		if(have_familiar($familiar[Mosquito]) && acquireTotem())
 		{
 			useSkill = $skill[Empathy of the Newt];
 		}																						break;
@@ -4518,7 +4557,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Frown]:						useSkill = $skill[Frown Muscles];				break;
 	case $effect[Funky Coal Patina]:			useItem = $item[Coal Dust];						break;
 	case $effect[Gelded]:						useItem = $item[Chocolate Filthy Lucre];		break;
-	case $effect[Ghostly Shell]:				useSkill = $skill[Ghostly Shell];				break;
+	case $effect[Ghostly Shell]:
+		if(acquireTotem())
+		{
+			useSkill = $skill[Ghostly Shell];
+		}																						break;
 	case $effect[The Glistening]:				useItem = $item[Vial of the Glistening];		break;
 	case $effect[Glittering Eyelashes]:			useItem = $item[Glittery Mascara];				break;
 	case $effect[Go Get \'Em\, Tiger!]:			useItem = $item[Ben-gal&trade; Balm];			break;
@@ -4566,7 +4609,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Irresistible Resolve]:			useItem = $item[Resolution: Be Sexier];			break;
 	case $effect[Jackasses\' Symphony of Destruction]:useSkill = $skill[Jackasses\' Symphony of Destruction];	break;
 	case $effect[Jalape&ntilde;o Saucesphere]:	useSkill = $skill[Jalape&ntilde;o Saucesphere];	break;
-	case $effect[Jingle Jangle Jingle]:			useSkill = $skill[Jingle Bells];				break;
+	case $effect[Jingle Jangle Jingle]:
+		if(acquireTotem())
+		{
+			useSkill = $skill[Jingle Bells];
+		}																						break;
 	case $effect[Joyful Resolve]:				useItem = $item[Resolution: Be Happier];		break;
 	case $effect[Juiced and Jacked]:			useItem = $item[Pumpkin Juice];					break;
 	case $effect[Juiced and Loose]:				useSkill = $skill[Steroid Bladder];				break;
@@ -4701,7 +4748,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Record Hunger]:				useItem = $item[The Pigs Holo-Record];			break;
 	case $effect[Red Lettered]:					useItem = $item[Red Letter];					break;
 	case $effect[Red Door Syndrome]:			useItem = $item[Can of Black Paint];			break;
-	case $effect[Reptilian Fortitude]:			useSkill = $skill[Reptilian Fortitude];			break;
+	case $effect[Reptilian Fortitude]:
+		if(acquireTotem())
+		{
+			useSkill = $skill[Reptilian Fortitude];
+		}																						break;
 	case $effect[A Rose by Any Other Material]:	useItem = $item[Squeaky Toy Rose];				break;
 	case $effect[Rosewater Mark]:				useItem = $item[Old Rosewater Cream];			break;
 	case $effect[Rotten Memories]:				useSkill = $skill[Rotten Memories];				break;
@@ -4756,7 +4807,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Spectral Awareness]: useSkill = $skill[Spectral Awareness]; break;
 	case $effect[Spice Haze]:					useSkill = $skill[Bind Spice Ghost];			break;
 	case $effect[Spiky Hair]:					useItem = $item[Super-Spiky Hair Gel];			break;
-	case $effect[Spiky Shell]:					useSkill = $skill[Spiky Shell];					break;
+	case $effect[Spiky Shell]:
+		if(acquireTotem())
+		{
+			useSkill = $skill[Spiky Shell];
+		}																						break;
 	case $effect[Spiritually Awake]:			useItem = $item[Holy Spring Water];				break;
 	case $effect[Spiritually Aware]:			useItem = $item[Spirit Beer];					break;
 	case $effect[Spiritually Awash]:			useItem = $item[Sacramental Wine];				break;
@@ -4794,7 +4849,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Takin\' It Greasy]:			useSkill = $skill[Grease Up];					break;
 	case $effect[Taunt of Horus]:				useItem = $item[Talisman of Horus];				break;
 	case $effect[Temporary Lycanthropy]:		useItem = $item[Blood of the Wereseal];			break;
-	case $effect[Tenacity of the Snapper]:		useSkill = $skill[Tenacity of the Snapper];		break;
+	case $effect[Tenacity of the Snapper]:
+		if(acquireTotem())
+		{
+			useSkill = $skill[Tenacity of the Snapper];
+		}																						break;
 	case $effect[There is a Spoon]:				useItem = $item[Dented Spoon];					break;
 	case $effect[This is Where You\'re a Viking]:useItem = $item[VYKEA woadpaint];				break;
 	case $effect[Throwing Some Shade]:			useItem = $item[Shady Shades];					break;
