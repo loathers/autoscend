@@ -716,7 +716,7 @@ boolean LM_bond()
 
 		if(internalQuestStatus("questM21Dance") >= 4)
 		{
-			if((get_property("auto_swordfish") != "finished") && (item_amount($item[Disposable Instant Camera]) == 0))
+			if (item_amount($item[Disposable Instant Camera]) == 0)
 			{
 				if(contains_text($location[The Haunted Bedroom], $monster[Animated Ornate Nightstand]))
 				{

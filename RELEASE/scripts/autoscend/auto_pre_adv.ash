@@ -160,10 +160,13 @@ void handlePreAdventure(location place)
 	{
 		// make sure we have enough MP to cast our most expensive spells
 		// Wrath of Ra (yellow ray) is 40 MP, Curse of Stench (sniff) is 35 MP & Curse of Vacation (banish) is 30 MP.
-		acquireMP(40, 1000);
-		// ensure we can cast at least Fist of the Mummy or Storm of the Scarab.
-		// so we don't waste adventures when we can't actually kill a monster.
-		acquireMP(8, 0);
+		if (place != $location[The Shore, Inc. Travel Agency])
+		{
+			acquireMP(40, 1000);
+			// ensure we can cast at least Fist of the Mummy or Storm of the Scarab.
+			// so we don't waste adventures when we can't actually kill a monster.
+			acquireMP(8, 0);
+		}
 
 		if (my_hp() == 0)
 		{
@@ -225,11 +228,6 @@ void handlePreAdventure(location place)
 		acquireHP(80.0);
 	}
 
-	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32) && (my_maxmp() >= 32))
-	{
-		acquireMP(32, 2500);
-	}
-
 	foreach i,mon in get_monsters(place)
 	{
 		if(auto_wantToYellowRay(mon, place))
@@ -241,6 +239,11 @@ void handlePreAdventure(location place)
 		{
 			adjustForBanishIfPossible(mon, place);
 		}
+	}
+
+	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))
+	{
+		autoEquip($item[low-pressure oxygen tank]);
 	}
 
 	// Latte may conflict with certain quests. Ignore latte drops for the greater good.
@@ -271,7 +274,7 @@ void handlePreAdventure(location place)
 		autoEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
-	if((place == $location[The Haunted Boiler Room]) && (my_turncount() != 0) && (get_property("auto_winebomb") == "partial"))
+	if((place == $location[The Haunted Boiler Room]) && (my_turncount() != 0) && internalQuestStatus("questL11Manor") < 3)
 	{
 		if(!possessEquipment($item[Unstable Fulminate]))
 		{
@@ -348,24 +351,24 @@ void handlePreAdventure(location place)
 	if(get_property("kingLiberated").to_boolean())
 	{
 		doML = false;
-		removeML=false;
-		purgeML=false;
+		removeML = false;
+		purgeML = false;
 	}
 
 		// NOTE: If we aren't quits before we pass L13, let us gain stats.
-	if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() == 13)))
+	if ((get_property("flyeredML").to_int() > 9999 || internalQuestStatus("questL12War") > 1 || get_property("sidequestArenaCompleted") != "none") && my_level() > 12)
 	{
 		doML = false;
 		removeML = true;
-		purgeML=false;
+		purgeML = false;
 	}
 
 	// Allow user settable option to override the above settings to not slack off ML
-	if (get_property("auto_disregardInstantKarma").to_boolean())
+	if (my_level() > 12 && get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		doML = true;
 		removeML = false;
-		purgeML=false;
+		purgeML = false;
 	}
 
 	// Item specific Conditions
@@ -373,7 +376,7 @@ void handlePreAdventure(location place)
 	{
 		doML = false;
 		removeML = true;
-		purgeML=false;
+		purgeML = false;
 	}
 
 	// Location Specific Conditions
@@ -387,7 +390,7 @@ void handlePreAdventure(location place)
 	{
 		doML = true;
 		removeML = false;
-		purgeML=false;
+		purgeML = false;
 	}
 
 	// Act on ML settings
@@ -426,6 +429,7 @@ void handlePreAdventure(location place)
 			uneffect($effect[Drescher\'s Annoying Noise]);
 			uneffect($effect[Pride of the Puffin]);
 			uneffect($effect[Ceaseless Snarling]);
+			uneffect($effect[Blessing of Serqet]);
 		}
 	}
 
@@ -461,7 +465,7 @@ void handlePreAdventure(location place)
 	// After maximizing equipment, we might not be at full HP
 	if ($locations[Tower Level 1, The Invader] contains place)
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
@@ -470,6 +474,8 @@ void handlePreAdventure(location place)
 		auto_log_info("Burning " + wasted_mp + " MP...");
 		cli_execute("burn " + wasted_mp);
 	}
+
+	acquireMP(32, 1000);
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{

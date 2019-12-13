@@ -584,7 +584,6 @@ boolean chateaumantegna_nightstandSet()
 
 boolean chateauPainting()
 {
-	consumeStuff();
 	int paintingLevel = 8;
 	if(auto_my_path() == "One Crazy Random Summer")
 	{
@@ -855,7 +854,7 @@ boolean deck_useScheme(string action)
 	else if(action == "turns")
 	{
 		cards = $strings[Ancestral Recall, Island];
-		if((get_property("auto_trapper") == "") || (get_property("auto_trapper") == "start"))
+		if (needOre())
 		{
 			cards = $strings[Ancestral Recall, Island, Mine];
 		}

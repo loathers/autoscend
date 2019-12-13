@@ -5,7 +5,6 @@ void pete_initializeSettings()
 	if(my_path() == "Avatar of Sneaky Pete")
 	{
 		set_property("auto_100familiar", $familiar[Egg Benedict]);
-		set_property("auto_ballroomsong", "finished");
 		set_property("auto_peteSkills", -1);
 		set_property("auto_cubeItems", false);
 		set_property("auto_getStarKey", true);

@@ -106,40 +106,24 @@ void initializeSettings()
 	set_property("auto_abooclover", true);
 	set_property("auto_aboopending", 0);
 	set_property("auto_aftercore", false);
-	set_property("auto_airship", "");
-	set_property("auto_ballroom", "");
-	set_property("auto_ballroomflat", "");
-	set_property("auto_ballroomopen", "");
-	set_property("auto_ballroomsong", "");
 	set_property("auto_banishes", "");
-	set_property("auto_bat", "");
 	set_property("auto_batoomerangDay", 0);
-	set_property("auto_bean", false);
 	set_property("auto_beatenUpCount", 0);
 	set_property("auto_getBeehive", false);
-	set_property("auto_blackfam", true);
-	set_property("auto_blackmap", "");
-	set_property("auto_boopeak", "");
 	set_property("auto_breakstone", get_property("auto_pvpEnable").to_boolean());
 	set_property("auto_bruteForcePalindome", false);
 	set_property("auto_cabinetsencountered", 0);
-	set_property("auto_castlebasement", "");
-	set_property("auto_castleground", "");
-	set_property("auto_castletop", "");
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
 	set_property("auto_clanstuff", "0");
 	set_property("auto_combatHandler", "");
-	set_property("auto_consumption", "");
 	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
 	set_property("auto_copperhead", 0);
 	set_property("auto_crackpotjar", "");
-	set_property("auto_crypt", "");
 	set_property("auto_cubeItems", true);
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
-	set_property("auto_day1_cobb", "");
 	set_property("auto_day1_dna", "");
 	set_property("auto_debuffAsdonDelay", 0);
 	set_property("auto_disableAdventureHandling", false);
@@ -147,78 +131,36 @@ void initializeSettings()
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", $familiar[none]);
-	set_property("auto_fcle", "");
 	set_property("auto_forceTavern", false);
-	set_property("auto_friars", "");
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
 	set_property("auto_getStarKey", false);
 	set_property("auto_getSteelOrgan", get_property("auto_alwaysGetSteelOrgan").to_boolean());
 	set_property("auto_gnasirUnlocked", false);
-	set_property("auto_goblinking", "");
-	set_property("auto_gremlins", "");
-	set_property("auto_gremlinBanishes", "");
 	set_property("auto_grimstoneFancyOilPainting", true);
 	set_property("auto_grimstoneOrnateDowsingRod", true);
-	set_property("auto_gunpowder", "");
 	set_property("auto_haveoven", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
-	set_property("auto_hiddenapartment", "0");
-	set_property("auto_hiddenbowling", "");
-	set_property("auto_hiddencity", "");
-	set_property("auto_hiddenhospital", "");
-	set_property("auto_hiddenoffice", "");
-	set_property("auto_hiddenunlock", "");
-	set_property("auto_hiddenzones", "");
-	set_property("auto_highlandlord", "");
 	set_property("auto_hippyInstead", false);
 	set_property("auto_holeinthesky", true);
 	set_property("auto_ignoreCombat", "");
 	set_property("auto_ignoreFlyer", false);
 	set_property("auto_instakill", "");
-	set_property("auto_masonryWall", false);
-	set_property("auto_mcmuffin", "");
-	set_property("auto_mistypeak", "");
 	set_property("auto_modernzmobiecount", "");
-	set_property("auto_mosquito", "");
-	set_property("auto_nuns", "");
-	set_property("auto_oilpeak", "");
-	set_property("auto_orchard", "");
 	set_property("auto_otherstuff", "");
-	set_property("auto_palindome", "");
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);
-	set_property("auto_phatloot", "");
-	set_property("auto_prewar", "");
-	set_property("auto_prehippy", "");
-	set_property("auto_pirateoutfit", "");
 	set_property("auto_priorCharpaneMode", "0");
 	set_property("auto_powerLevelLastLevel", "0");
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
 	set_property("auto_pulls", "");
-	set_property("auto_shenCopperhead", true);
 	set_property("auto_skipDesert", 0);
 	set_property("auto_snapshot", "");
 	set_property("auto_sniffs", "");
-	set_property("auto_spookyfertilizer", "");
-	set_property("auto_spookymap", "");
-	set_property("auto_spookyravensecond", "");
-	set_property("auto_spookysapling", "");
-	set_property("auto_sonofa", "");
-	set_property("auto_sorceress", "");
-	set_property("auto_swordfish", "");
-	set_property("auto_tavern", "");
-	set_property("auto_trytower", "");
-	set_property("auto_trapper", "");
-	set_property("auto_treecoin", "");
-	set_property("auto_twinpeak", "");
-	set_property("auto_twinpeakprogress", "");
 	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
-	set_property("auto_war", "");
-	set_property("auto_winebomb", "");
 	set_property("auto_wineracksencountered", 0);
 	set_property("auto_wishes", "");
 	set_property("auto_writingDeskSummon", false);
@@ -610,19 +552,19 @@ int pullsNeeded(string data)
 	int adv = 0;
 
 	int progress = 0;
-	if(get_property("auto_sorceress") == "hedge")
+	if(internalQuestStatus("questL13Final	") == 4)
 	{
 		progress = 1;
 	}
-	if(get_property("auto_sorceress") == "door")
+	if(internalQuestStatus("questL13Final") == 5)
 	{
 		progress = 2;
 	}
-	if(get_property("auto_sorceress") == "tower")
+	if(internalQuestStatus("questL13Final") == 6)
 	{
 		progress = 3;
 	}
-	if(get_property("auto_sorceress") == "top")
+	if(internalQuestStatus("questL13Final") == 11)
 	{
 		progress = 4;
 	}
@@ -914,30 +856,23 @@ boolean warAdventure()
 	return true;
 }
 
-boolean L12_ThemtharHills()
+boolean L12_themtharHills()
 {
-	if(in_tcrs() || in_koe())
-	{
-		set_property("auto_nuns", "finished"); // if only :(
-		return false;
-	}
-	if(get_property("auto_nuns") == "done")
-	{
-		return false;
-	}
-	if((get_property("currentNunneryMeat").to_int() >= 100000) || (get_property("sidequestNunsCompleted") != "none") || (auto_my_path() == "Way of the Surprising Fist"))
-	{
-		handleBjornify($familiar[el vibrato megadrone]);
-		set_property("auto_nuns", "done");
-		return false;
-	}
-
-	if((get_property("hippiesDefeated").to_int() >= 1000) || (get_property("fratboysDefeated").to_int() >= 1000))
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestNunsCompleted") != "none")
 	{
 		return false;
 	}
 
-	if(get_property("auto_hippyInstead").to_boolean() || (get_property("hippiesDefeated").to_int() >= 192))
+	if (in_tcrs() || in_koe() || auto_my_path() == "Way of the Surprising Fist")
+	{
+		return false;
+	}
+
+	if (get_property("hippiesDefeated").to_int() < 192 && !get_property("auto_hippyInstead").to_boolean())
+	{
+		return false;
+	}
+	else
 	{
 		auto_log_info("Themthar Nuns!", "blue");
 	}
@@ -1070,6 +1005,7 @@ boolean L12_ThemtharHills()
 		meat_need = meat_need - 150;
 	}
 
+	use_familiar(to_familiar(get_property("auto_familiarChoice")));
 	float meatDropHave = meat_drop_modifier();
 
 	if (isActuallyEd() && have_skill($skill[Curse of Fortune]) && item_amount($item[Ka Coin]) > 0)
@@ -1104,7 +1040,6 @@ boolean L12_ThemtharHills()
 
 			if(failNuns)
 			{
-				set_property("auto_nuns", "done");
 				handleFamiliar("item");
 				return true;
 			}
@@ -1223,28 +1158,6 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
 		}
 
-		if(is_unrestricted($item[Pantsgiving]))
-		{
-			if((my_class() != $class[Avatar of Boris]) && glover_usable($item[Xiblaxian Stealth Cowl]))
-			{
-				pullXWhenHaveY($item[xiblaxian stealth cowl], 1, 0);
-			}
-			pullXWhenHaveY($item[Pantsgiving], 1, 0);
-		}
-		else
-		{
-			pullXWhenHaveY($item[The Crown Of Ed The Undying], 1, 0);
-			adjustEdHat("ml");
-			if(!possessEquipment($item[The Crown Of Ed The Undying]))
-			{
-				pullXWhenHaveY($item[Gravy Boat], 1, 0);
-			}
-			if(glover_usable($item[Xiblaxian Stealth Trousers]))
-			{
-				pullXWhenHaveY($item[Xiblaxian Stealth Trousers], 1, 0);
-			}
-		}
-
 		if(!possessEquipment($item[Astral Shirt]))
 		{
 			boolean getPeteShirt = true;
@@ -1257,6 +1170,10 @@ int handlePulls(int day)
 				getPeteShirt = false;
 			}
 			if(auto_my_path() == "G-Lover")
+			{
+				getPeteShirt = false;
+			}
+			if (storage_amount($item[Sneaky Pete\'s Leather Jacket]) == 0 && storage_amount($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]) == 0)
 			{
 				getPeteShirt = false;
 			}
@@ -1288,13 +1205,6 @@ int handlePulls(int day)
 			if((item_amount($item[Jarlsberg\'s Key]) == 0) && canEat($item[Jarlsberg\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
 			{
 				pullXWhenHaveY($item[Jarlsberg\'s Key Lime Pie], 1, 0);
-			}
-		}
-		else if(auto_my_path() == "Standard")
-		{
-			if(canEat(whatHiMein()))
-			{
-				pullXWhenHaveY(whatHiMein(), 3, 0);
 			}
 		}
 
@@ -1382,23 +1292,12 @@ int handlePulls(int day)
 		if(is_unrestricted($item[Bastille Battalion control rig]))
 		{
 			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
-			#pullXWhenHaveY($item[Bastille Battalion control rig], 1, 0);
 		}
 
 		if((auto_my_path() != "Pocket Familiars") && (auto_my_path() != "G-Lover"))
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
-
-		if (!auto_have_familiar($familiar[Grim Brother]) && !isActuallyEd() && glover_usable($item[Unconscious Collective Dream Jar]))
-		{
-			pullXWhenHaveY($item[Unconscious Collective Dream Jar], 1, 0);
-			if(item_amount($item[Unconscious Collective Dream Jar]) > 0)
-			{
-				autoChew(1, $item[Unconscious Collective Dream Jar]);
-			}
-		}
-
 
 		if(my_class() == $class[Vampyre])
 		{
@@ -1467,7 +1366,6 @@ boolean fortuneCookieEvent()
 	{
 		auto_log_info("Semi rare time!", "blue");
 		cli_execute("counters");
-		cli_execute("counters clear");
 
 		location goal = $location[The Hidden Temple];
 
@@ -1476,17 +1374,17 @@ boolean fortuneCookieEvent()
 			goal = $location[The Limerick Dungeon];
 		}
 
-		if (goal == $location[The Hidden Temple] && (get_property("semirareLocation") == goal || item_amount($item[stone wool]) >= 2 || get_property("auto_hiddenunlock") == "nose" || get_property("auto_hiddenunlock") == "finished" || internalQuestStatus("questL11Worship") >= 3 || get_property("lastTempleUnlock").to_int() < my_ascensions() || get_property("auto_spookysapling") != "finished"))
+		if (goal == $location[The Hidden Temple] && (get_property("semirareLocation") == goal || item_amount($item[stone wool]) >= 2 || internalQuestStatus("questL11Worship") >= 3 || get_property("lastTempleUnlock").to_int() < my_ascensions()))
 		{
 			goal = $location[The Castle in the Clouds in the Sky (Top Floor)];
 		}
 
-		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || get_property("auto_nuns") == "done" || get_property("auto_nuns") == "finished" || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("auto_castleground") != "finished" || get_property("sidequestNunsCompleted") != "none" || in_koe()))
+		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("sidequestNunsCompleted") != "none" || in_koe()))
 		{
 			goal = $location[The Limerick Dungeon];
 		}
 
-		if (goal == $location[The Limerick Dungeon] && (get_property("semirareLocation") == goal || item_amount($item[Cyclops Eyedrops]) > 0 || get_property("auto_orchard") == "start" || get_property("auto_orchard") == "done" || get_property("auto_orchard") == "finished" || get_property("lastFilthClearance").to_int() >= my_ascensions() || get_property("sidequestOrchardCompleted") != "none" || get_property("currentHippyStore") != "none" || isActuallyEd() || in_koe()))
+		if (goal == $location[The Limerick Dungeon] && (get_property("semirareLocation") == goal || item_amount($item[Cyclops Eyedrops]) > 0 || get_property("lastFilthClearance").to_int() >= my_ascensions() || get_property("sidequestOrchardCompleted") != "none" || get_property("currentHippyStore") != "none" || isActuallyEd() || in_koe()))
 		{
 			goal = $location[The Copperhead Club];
 		}
@@ -1855,8 +1753,6 @@ void initializeDay(int day)
 			while(acquireHermitItem($item[Ten-leaf Clover]));
 
 			picky_pulls();
-			standard_pulls();
-
 		}
 	}
 	else if(day == 4)
@@ -2247,7 +2143,7 @@ boolean doBedtime()
 	{
 		cli_execute("ballpit");
 	}
-	if((get_property("telescopeUpgrades").to_int() > 0) && (get_property("auto_sorceress") == ""))
+	if (get_property("telescopeUpgrades").to_int() > 0 && internalQuestStatus("questL13Final") < 0)
 	{
 		if(get_property("telescopeLookedHigh") == "false")
 		{
@@ -2297,6 +2193,7 @@ boolean doBedtime()
 	}
 	else if((my_daycount() <= 2) && (freeCrafts() > 0) && my_adventures() > 0)
 	{
+		backupSetting("requireBoxServants", "false");
 		// Check for rapid prototyping
 		while((freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && (item_amount($item[Cranberries]) > 0) && (item_amount($item[Cranberry Cordial]) < 2) && have_skill($skill[Advanced Saucecrafting]))
 		{
@@ -2307,6 +2204,7 @@ boolean doBedtime()
 		{
 			cli_execute("make " + $item[Milk Of Magnesium]);
 		}
+		restoreSetting("requireBoxServants");
 	}
 
 	dna_bedtime();
@@ -2740,388 +2638,6 @@ boolean questOverride()
 		}
 	}
 
-
-	// At the start of an ascension, auto_get_campground() displays the wrong info.
-	// Visiting the campground doesn\'t work.... grrr...
-	//	visit_url("campground.php");
-
-	if((get_property("lastTempleUnlock").to_int() == my_ascensions()) && (get_property("auto_treecoin") != "finished"))
-	{
-		auto_log_info("Found Unlocked Hidden Temple but unaware of tree-holed coin (2)");
-		set_property("auto_treecoin", "finished");
-	}
-	if((get_property("lastTempleUnlock").to_int() == my_ascensions()) && (get_property("auto_spookymap") != "finished"))
-	{
-		auto_log_info("Found Unlocked Hidden Temple but unaware of spooky map (2)");
-		set_property("auto_spookymap", "finished");
-	}
-	if((get_property("lastTempleUnlock").to_int() == my_ascensions()) && (get_property("auto_spookyfertilizer") != "finished"))
-	{
-		auto_log_info("Found Unlocked Hidden Temple but unaware of spooky fertilizer (2)");
-		set_property("auto_spookyfertilizer", "finished");
-	}
-	if((get_property("lastTempleUnlock").to_int() == my_ascensions()) && (get_property("auto_spookysapling") != "finished"))
-	{
-		auto_log_info("Found Unlocked Hidden Temple but unaware of spooky sapling (2)");
-		set_property("auto_spookysapling", "finished");
-	}
-
-	if((get_property("questL02Larva") == "finished") && (get_property("auto_mosquito") != "finished"))
-	{
-		auto_log_info("Found completed Mosquito Larva (2)");
-		set_property("auto_mosquito", "finished");
-	}
-	if((get_property("questL03Rat") == "finished") && (get_property("auto_tavern") != "finished"))
-	{
-		auto_log_info("Found completed Tavern (3)");
-		set_property("auto_tavern", "finished");
-	}
-	if((get_property("questL04Bat") == "finished") && (get_property("auto_bat") != "finished"))
-	{
-		auto_log_info("Found completed Bat Cave (4)");
-		set_property("auto_bat", "finished");
-	}
-	if((get_property("questL05Goblin") == "finished") && (get_property("auto_goblinking") != "finished"))
-	{
-		auto_log_info("Found completed Goblin King (5)");
-		set_property("auto_day1_cobb", "finished");
-		set_property("auto_goblinking", "finished");
-	}
-	if((get_property("questL06Friar") == "finished") && (get_property("auto_friars") != "done") && (get_property("auto_friars") != "finished"))
-	{
-		auto_log_info("Found completed Friars (6)");
-		set_property("auto_friars", "done");
-	}
-	if((get_property("questL07Cyrptic") == "finished") && (get_property("auto_crypt") != "finished"))
-	{
-		auto_log_info("Found completed Cyrpt (7)");
-		set_property("auto_crypt", "finished");
-	}
-	if((get_property("questL08Trapper") == "step2") && (get_property("auto_trapper") != "yeti"))
-	{
-		auto_log_info("Found Trapper partially completed (8: Ores/Cheese)");
-		set_property("auto_trapper", "yeti");
-	}
-	if((get_property("questL08Trapper") == "finished") && (get_property("auto_trapper") != "finished"))
-	{
-		auto_log_info("Found completed Trapper (8)");
-		set_property("auto_trapper", "finished");
-	}
-
-	if((get_property("questL09Topping") == "finished") && (get_property("auto_highlandlord") != "finished"))
-	{
-		auto_log_info("Found completed Highland Lord (9)");
-		set_property("auto_highlandlord", "finished");
-		set_property("auto_boopeak", "finished");
-		set_property("auto_oilpeak", "finished");
-		set_property("auto_twinpeak", "finished");
-	}
-	if((get_property("questL10Garbage") == "finished") && (get_property("auto_castletop") != "finished"))
-	{
-		auto_log_info("Found completed Castle in the Clouds in the Sky with some Pie (10)");
-		set_property("auto_castletop", "finished");
-		set_property("auto_castleground", "finished");
-		set_property("auto_castlebasement", "finished");
-		set_property("auto_airship", "finished");
-		set_property("auto_bean", true);
-	}
-	if((internalQuestStatus("questL10Garbage") >= 9) && (get_property("auto_castleground") != "finished"))
-	{
-		auto_log_info("Found completed Castle Ground Floor (10)");
-		set_property("auto_castleground", "finished");
-	}
-	if((internalQuestStatus("questL10Garbage") >= 8) && (get_property("auto_castlebasement") != "finished"))
-	{
-		auto_log_info("Found completed Castle Basement (10)");
-		set_property("auto_castlebasement", "finished");
-	}
-	if((internalQuestStatus("questL10Garbage") >= 7) && (get_property("auto_airship") != "finished"))
-	{
-		auto_log_info("Found completed Airship (10)");
-		set_property("auto_airship", "finished");
-	}
-	if((internalQuestStatus("questL10Garbage") >= 2) && !get_property("auto_bean").to_boolean())
-	{
-		auto_log_info("Found completed Planted Beanstalk (10)");
-		set_property("auto_bean", true);
-	}
-
-	if((internalQuestStatus("questL11Manor") >= 11) && (get_property("auto_ballroom") != "finished"))
-	{
-		auto_log_info("Found completed Spookyraven Manor (11)");
-		set_property("auto_ballroom", "finished");
-		set_property("auto_winebomb", "finished");
-		set_property("auto_ballroomflat", "finished");
-	}
-
-	if((internalQuestStatus("questL11Manor") >= 3) && (get_property("auto_winebomb") != "finished"))
-	{
-		auto_log_info("Found completed Spookyraven Manor Organ Music (11)");
-		set_property("auto_winebomb", "finished");
-		set_property("auto_masonryWall", true);
-		set_property("auto_ballroomflat", "finished");
-	}
-
-	if((internalQuestStatus("questL11Manor") >= 1) && (get_property("auto_ballroomflat") != "finished"))
-	{
-		auto_log_info("Found completed Spookyraven Manor Organ Music (11)");
-		set_property("auto_ballroomflat", "finished");
-	}
-
-	if((internalQuestStatus("questL11Worship") >= 3) && (get_property("auto_hiddenunlock") != "finished"))
-	{
-		auto_log_info("Found unlocked Hidden City (11)");
-		set_property("auto_hiddenunlock", "finished");
-	}
-
-	if((internalQuestStatus("questL11Black") >= 2) && (get_property("auto_blackmap") == ""))
-	{
-		auto_log_info("Found an unexpected Black Market (11 - via questL11Black)");
-		set_property("auto_blackmap", "document");
-	}
-	if((get_property("blackForestProgress") >= 5) && (get_property("auto_blackmap") == ""))
-	{
-		auto_log_info("Found an unexpected Black Market (11 - via blackForestProgress)");
-		set_property("auto_blackmap", "document");
-	}
-
-	if((get_property("questL11Black") == "finished") && (get_property("auto_blackmap") != "finished"))
-	{
-		auto_log_info("Found completed Black Market (11 - via questL11Black)");
-		set_property("auto_blackmap", "finished");
-	}
-	if((internalQuestStatus("questL11MacGuffin") >= 2) && (get_property("auto_blackmap") != "finished"))
-	{
-		auto_log_info("Found completed Black Market (11 - via questL11MacGuffin)");
-		set_property("auto_blackmap", "finished");
-	}
-
-	if((internalQuestStatus("questL11MacGuffin") >= 2) && (get_property("auto_mcmuffin") == ""))
-	{
-		auto_log_info("Found started McMuffin quest (11)");
-		set_property("auto_mcmuffin", "start");
-	}
-
-	if((get_property("questL11Palindome") == "finished") && (get_property("auto_palindome") != "finished"))
-	{
-		auto_log_info("Found completed Palindome (11)");
-		set_property("auto_palindome", "finished");
-	}
-
-	if(get_property("pyramidBombUsed").to_boolean() && (get_property("auto_mcmuffin") == "pyramid"))
-	{
-		auto_log_info("Found Ed in the Pyramid (11)");
-		set_property("auto_mcmuffin", "ed");
-	}
-
-	if((get_property("questL11MacGuffin") == "finished") && (get_property("auto_mcmuffin") != "finished"))
-	{
-		auto_log_info("Found completed McMuffin (11)");
-		visit_url("diary.php?whichpage=1");
-		set_property("auto_mcmuffin", "finished");
-	}
-
-	if((get_property("questL11Business") == "finished") && (get_property("auto_hiddenoffice") != "finished"))
-	{
-		auto_log_info("Found completed Hidden Office Building (11)");
-		set_property("auto_hiddenoffice", "finished");
-		if((get_property("auto_hiddenzones") != "finished") && (get_property("auto_hiddenzones").to_int() < 3))
-		{
-			set_property("auto_hiddenzones", 3);
-		}
-	}
-	if((get_property("questL11Curses") == "finished") && (get_property("auto_hiddenapartment") != "finished"))
-	{
-		auto_log_info("Found completed Hidden Apartment Building (11)");
-		set_property("auto_hiddenapartment", "finished");
-		if((get_property("auto_hiddenzones") != "finished") && (get_property("auto_hiddenzones").to_int() < 2))
-		{
-			set_property("auto_hiddenzones", 2);
-		}
-	}
-	if((get_property("questL11Spare") == "finished") && (get_property("auto_hiddenbowling") != "finished"))
-	{
-		auto_log_info("Found completed Hidden Bowling Alley (11)");
-		set_property("auto_hiddenbowling", "finished");
-		if((get_property("auto_hiddenzones") != "finished") && (get_property("auto_hiddenzones").to_int() < 5))
-		{
-			set_property("auto_hiddenzones", 5);
-		}
-	}
-	if((get_property("questL11Doctor") == "finished") && (get_property("auto_hiddenhospital") != "finished"))
-	{
-		auto_log_info("Found completed Hidden Hopickle (11)");
-		set_property("auto_hiddenhospital", "finished");
-		if((get_property("auto_hiddenzones") != "finished") && (get_property("auto_hiddenzones").to_int() < 4))
-		{
-			set_property("auto_hiddenzones", 4);
-		}
-	}
-	if((get_property("questL11Worship") == "finished") && (get_property("auto_hiddencity") != "finished"))
-	{
-		auto_log_info("Found completed Hidden City (11)");
-		set_property("auto_hiddencity", "finished");
-		set_property("auto_hiddenzones", "finished");
-		set_property("auto_hiddenunlock", "finished");
-	}
-	if((internalQuestStatus("questL11Worship") >= 3) && (get_property("auto_hiddenunlock") != "finished"))
-	{
-		auto_log_info("Found completed unlocked Hidden City (11)");
-		set_property("auto_hiddenunlock", "finished");
-	}
-
-	if(get_property("sidequestArenaCompleted") != "none")
-	{
-		if(get_property("flyeredML").to_int() < 10000)
-		{
-			auto_log_info("Found completed Island War Arena but flyeredML does not match (12)");
-			set_property("flyeredML", 10000);
-		}
-	}
-
-	if(get_property("sidequestOrchardCompleted") != "none")
-	{
-		if(get_property("auto_orchard") != "finished")
-		{
-			auto_log_info("Found completed Orchard (12)");
-			set_property("auto_orchard", "finished");
-		}
-	}
-
-	if((get_property("sidequestLighthouseCompleted") != "none") && (get_property("auto_sonofa") != "finished"))
-	{
-		auto_log_info("Found completed Lighthouse (12)");
-		set_property("auto_sonofa", "finished");
-	}
-	if((get_property("sidequestJunkyardCompleted") != "none") && (get_property("auto_gremlins") != "finished"))
-	{
-		auto_log_info("Found completed Junkyard (12)");
-		set_property("auto_gremlins", "finished");
-	}
-
-	if((get_property("fratboysDefeated").to_int() >= 1000) || (get_property("hippiesDefeated").to_int() >= 1000) || (get_property("questL12War") == "finished"))
-	{
-		if(get_property("auto_gremlins") != "finished")
-		{
-			auto_log_info("Found completed Junkyard (12)");
-			set_property("auto_gremlins", "finished");
-		}
-
-		if(get_property("auto_sonofa") != "finished")
-		{
-			auto_log_info("Found completed Lighthouse (12)");
-			set_property("auto_sonofa", "finished");
-		}
-
-		if(get_property("auto_orchard") != "finished")
-		{
-			auto_log_info("Found completed Orchard (12)");
-			set_property("auto_orchard", "finished");
-		}
-
-		if((get_property("auto_nuns") != "done") && (get_property("auto_nuns") != "finished"))
-		{
-			auto_log_info("Found completed Nuns (12)");
-			set_property("auto_nuns", "finished");
-		}
-	}
-
-	if((get_property("sidequestOrchardCompleted") != "none") && (get_property("auto_orchard") != "finished"))
-	{
-		auto_log_info("Found completed Orchard (12)");
-		set_property("auto_orchard", "finished");
-	}
-
-
-	if((get_property("sidequestNunsCompleted") != "none") && (get_property("auto_nuns") != "done") && (get_property("auto_nuns") != "finished"))
-	{
-		auto_log_info("Found completed Nuns (12)");
-		set_property("auto_nuns", "finished");
-	}
-
-	if((get_property("sideDefeated") != "neither") && (get_property("auto_war") != "finished"))
-	{
-		auto_log_info("Found completed Island War (12)");
-		set_property("auto_war", "finished");
-		council();
-	}
-
-	if((internalQuestStatus("questL12War") >= 1)  && (get_property("auto_prewar") != "started"))
-	{
-		auto_log_info("Found Started Island War (12)");
-		set_property("auto_prewar", "started");
-	}
-
-	if((internalQuestStatus("questL12War") >= 2)  && (get_property("auto_war") != "finished"))
-	{
-		auto_log_info("Found completed Island War (12)");
-		set_property("auto_war", "finished");
-		council();
-	}
-
-	if((internalQuestStatus("questL13Final") >= 13) && (get_property("auto_sorceress") != "finished"))
-	{
-		auto_log_info("Found completed Prism Recovery (13)");
-		set_property("auto_sorceress", "finished");
-		if (isActuallyEd())
-		{
-			council();
-		}
-	}
-
-	if(internalQuestStatus("questM12Pirate") >= 0)
-	{
-		if(get_property("auto_pirateoutfit") == "")
-		{
-			auto_log_info("Pirate Quest already started but we don't know that, fixing...");
-			set_property("auto_pirateoutfit", "insults");
-		}
-	}
-
-	if(internalQuestStatus("questM12Pirate") >= 3)
-	{
-		if((get_property("auto_pirateoutfit") == "insults") || (get_property("auto_pirateoutfit") == "blueprint"))
-		{
-			auto_log_info("Pirate Quest got enough insults and did the blueprint, fixing...");
-			set_property("auto_pirateoutfit", "almost");
-		}
-	}
-
-	if(internalQuestStatus("questM12Pirate") >= 5)
-	{
-		if(get_property("auto_pirateoutfit") != "finished")
-		{
-			auto_log_info("Completed Beer Pong but we were not aware, fixing...");
-			set_property("auto_pirateoutfit", "finished");
-		}
-	}
-
-	if(possessEquipment($item[Pirate Fledges]) || (internalQuestStatus("questM12Pirate") >= 6))
-	{
-		if(get_property("auto_pirateoutfit") != "finished")
-		{
-			auto_log_info("Found Pirate Fledges and incomplete pirate outfit, fixing...");
-			set_property("auto_pirateoutfit", "finished");
-		}
-		if(get_property("auto_fcle") != "finished")
-		{
-			auto_log_info("Found Pirate Fledges and incomplete F\'C\'le, fixing...");
-			set_property("auto_fcle", "finished");
-		}
-	}
-
-	if((get_property("lastQuartetAscension").to_int() >= my_ascensions()) && (get_property("auto_ballroomsong") != "finished"))
-	{
-		auto_log_info("Found Ballroom Quarter Song set (X).");
-		set_property("auto_ballroomsong", "finished");
-	}
-
-	if((get_property("auto_war") != "done") && (get_property("auto_war") != "finished") && ((get_property("hippiesDefeated").to_int() >= 1000) || (get_property("fratboysDefeated").to_int() >= 1000)))
-	{
-		set_property("auto_nuns", "finished");
-		set_property("auto_war", "done");
-	}
-
 	if(get_property("auto_hippyInstead").to_boolean())
 	{
 		set_property("auto_ignoreFlyer", true);
@@ -3132,28 +2648,18 @@ boolean questOverride()
 
 boolean L11_aridDesert()
 {
-	if(my_level() < 12)
+	if (internalQuestStatus("questL11Desert") < 0 || internalQuestStatus("questL11Desert") > 0)
 	{
-		if(get_property("auto_palindome") != "finished")
-		{
-			return false;
-		}
+		return false;
 	}
-#	Mafia probably handles this correctly (and probably has done so for a while). (failing again as of r19010)
+
+	// Mafia probably handles this correctly (and probably has done so for a while). (failing again as of r19010)
 	if(auto_my_path() == "Pocket Familiars")
 	{
 		string temp = visit_url("place.php?whichplace=desertbeach", false);
 	}
 
 	if(get_property("desertExploration").to_int() >= 100)
-	{
-		return false;
-	}
-	if(get_property("auto_mcmuffin") != "start")
-	{
-		return false;
-	}
-	if((get_property("auto_hiddenapartment") != "finished") && (0 < have_effect($effect[Once-Cursed]) + have_effect($effect[Twice-Cursed]) + have_effect($effect[Thrice-Cursed])))
 	{
 		return false;
 	}
@@ -3535,23 +3041,9 @@ boolean L11_aridDesert()
 
 boolean L11_palindome()
 {
-	if(get_property("auto_palindome") == "finished")
+	if (!possessEquipment($item[Talisman O\' Namsilat]) || internalQuestStatus("questL11Palindome") > 5)
 	{
-		return false;
-	}
-	if(get_property("auto_mcmuffin") != "start")
-	{
-		return false;
-	}
-
-	if(get_property("questL11Palindome") == "finished")
-	{
-		set_property("auto_palindome", "finished");
-		return true;
-	}
-
-	if(!possessEquipment($item[Talisman O\' Namsilat]))
-	{
+		// mafia doesn't set questL11Palindome to started until you adventure in the Palindome
 		return false;
 	}
 
@@ -3560,7 +3052,6 @@ boolean L11_palindome()
 	total = total + item_amount($item[Photograph Of An Ostrich Egg]);
 	total = total + item_amount($item[Photograph Of God]);
 	total = total + item_amount($item[Photograph Of A Dog]);
-
 
 	boolean lovemeDone = hasILoveMeVolI() || (internalQuestStatus("questL11Palindome") >= 1);
 	if(!lovemeDone && (get_property("palindomeDudesDefeated").to_int() >= 5))
@@ -3650,7 +3141,6 @@ boolean L11_palindome()
 
 		if (isActuallyEd())
 		{
-			set_property("auto_palindome", "finished");
 			return true;
 		}
 
@@ -3718,11 +3208,6 @@ boolean L11_palindome()
 		pages[0] = "place.php?whichplace=palindome&action=pal_drlabel";
 		pages[1] = "choice.php?pwd&whichchoice=131&option=" + palinChoice;
 		autoAdvBypass(0, pages, $location[Noob Cave], "");
-
-		if(item_amount($item[[2268]Staff Of Fats]) == 1)
-		{
-			set_property("auto_palindome", "finished");
-		}
 		return true;
 	}
 	else
@@ -3769,7 +3254,7 @@ boolean L11_palindome()
 
 boolean L13_towerNSNagamar()
 {
-	if(!get_property("auto_wandOfNagamar").to_boolean() && (get_property("questL13Final") != "step12"))
+	if (!get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") != 12)
 	{
 		return false;
 	}
@@ -3779,7 +3264,7 @@ boolean L13_towerNSNagamar()
 		set_property("auto_wandOfNagamar", false);
 		return false;
 	}
-	else if(get_property("questL13Final") == "step12")
+	else if (internalQuestStatus("questL13Final") == 12)
 	{
 		return autoAdv($location[The VERY Unquiet Garves]);
 	}
@@ -3822,18 +3307,9 @@ boolean L13_towerNSNagamar()
 	}
 }
 
-boolean L13_towerNSTransition()
-{
-	if(get_property("auto_sorceress") == "top")
-	{
-		set_property("auto_sorceress", "final");
-	}
-	return false;
-}
-
 boolean L13_towerNSFinal()
 {
-	if(get_property("auto_sorceress") != "final")
+	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 11)
 	{
 		return false;
 	}
@@ -3936,11 +3412,10 @@ boolean L13_towerNSFinal()
 			{
 				set_property("auto_disableAdventureHandling", false);
 				cli_execute("refresh quests");
-				if(get_property("auto_sorceress") == "finished" || get_property("questL13Final") == "finished")
+				if(internalQuestStatus("questL13Final") > 12)
 				{
 					abort("Freeing the king will result in a path change and we can barely handle The Sleazy Back Alley. Aborting, run the script again after selecting your aftercore path in order for it to clean up.");
 				}
-				set_property("auto_sorceress", "finished");
 				return true;
 			}
 			visit_url("place.php?whichplace=nstower&action=ns_11_prism");
@@ -3967,14 +3442,13 @@ boolean L13_towerNSFinal()
 	{
 		abort("Yeah, so, I'm done. You might be stuck at the shadow, or at the final boss, or just with a king in a prism. I don't know and quite frankly, after the last " + my_daycount() + " days, I don't give a damn. That's right, I said it. Bitches.");
 	}
-	set_property("auto_sorceress", "finished");
 	return true;
 }
 
 
 boolean L13_towerNSTower()
 {
-	if(get_property("auto_sorceress") != "tower")
+	if(internalQuestStatus("questL13Final") < 6 || internalQuestStatus("questL13Final") > 11)
 	{
 		return false;
 	}
@@ -4308,29 +3782,17 @@ boolean L13_towerNSTower()
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;
 	}
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_10_sorcfight"))
-	{
-		set_property("auto_sorceress", "top");
-		return true;
-	}
-
 	return false;
 }
 
 boolean L13_towerNSHedge()
 {
-	if(get_property("auto_sorceress") != "hedge")
+	if(internalQuestStatus("questL13Final") < 4 || internalQuestStatus("questL13Final") > 4)
 	{
 		return false;
 	}
-	string page = visit_url("place.php?whichplace=nstower");
-	if(contains_text(page, "nstower_door"))
-	{
-		set_property("auto_sorceress", "door");
-		return true;
-	}
-	if(contains_text(page, "hedgemaze"))
+
+	if(contains_text(visit_url("place.php?whichplace=nstower"), "hedgemaze"))
 	{
 		//If we got beaten up by the last hedgemaze, mafia might set questL13Final to step5 anyway. Fix that.
 		set_property("questL13Final", "step4");
@@ -4339,12 +3801,6 @@ boolean L13_towerNSHedge()
 			auto_log_critical("Hedge maze not solved, the mysteries are still there (correcting step5 -> step4)", "red");
 			abort("Heal yourself and try again...");
 		}
-	}
-	if(internalQuestStatus("questL13Final") >= 5)
-	{
-		auto_log_warning("Should already be past the hedge maze but did not see the door", "red");
-		set_property("auto_sorceress", "door");
-		return false;
 	}
 
 	# Set this so it aborts if not enough adventures. Otherwise, well, we end up in a loop.
@@ -4402,53 +3858,11 @@ boolean L13_towerNSHedge()
 
 boolean L13_towerNSContests()
 {
-	if(get_property("auto_sorceress") != "start")
+	if (internalQuestStatus("questL13Final") < 0 || internalQuestStatus("questL13Final") > 3)
 	{
 		return false;
 	}
 
-
-	if((get_property("auto_trytower") == "pause") || (get_property("auto_trytower") == "stop"))
-	{
-		ns_crowd1();
-		ns_crowd2();
-		ns_crowd3();
-		ns_hedge1();
-		ns_hedge2();
-		ns_hedge3();
-		if(get_property("auto_trytower") == "stop")
-		{
-			auto_log_critical("Manual handling for the start of challenges still required. Then run me again. Beep", "blue");
-			set_property("choiceAdventure1003", 3);
-			abort("Can't handle this optimally just yet, damn it");
-		}
-		else if(get_property("auto_trytower") == "pause")
-		{
-			set_property("auto_trytower", "");
-			auto_log_critical("Start the tower challenges and then run me again and I'll take care of the rest");
-			abort("Run again once all three challenges have been started. We will assume they have been");
-			set_property("choiceAdventure1003", 3);
-		}
-		else
-		{
-			auto_log_critical("Manual handling for the start of challenges still required. Then run me again. Beep");
-			set_property("choiceAdventure1003", 3);
-			abort("Can't handle this optimally just yet, damn it");
-		}
-		return true;
-	}
-
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "nstower_door"))
-	{
-		set_property("auto_sorceress", "door");
-		return true;
-	}
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_03_hedgemaze"))
-	{
-		set_property("auto_sorceress", "hedge");
-		return true;
-	}
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_02_coronation"))
 	{
 		set_property("choiceAdventure1020", "1");
@@ -4739,7 +4153,7 @@ boolean L13_towerNSContests()
 			visit_url("main.php");
 			if((get_property("nsContestants1").to_int() != 0) || (get_property("nsContestants2").to_int() != 0) || (get_property("nsContestants3").to_int() != 0))
 			{
-				if(get_property("questL13Final") == "step2")
+				if(internalQuestStatus("questL13Final") == 2)
 				{
 					if(auto_my_path() == "The Source")
 					{
@@ -4757,7 +4171,7 @@ boolean L13_towerNSContests()
 				else
 				{
 					auto_log_critical("Unresolvable error: Mafia thinks the NS challenges are complete but something is very wrong.", "red");
-					abort("Unknown questL13Final/auto_sorceress state.");
+					abort("Unknown questL13Final state.");
 				}
 			}
 			return true;
@@ -4825,22 +4239,8 @@ boolean L13_towerNSContests()
 
 boolean L13_towerNSEntrance()
 {
-	if(get_property("auto_sorceress") != "")
-	{
-		return false;
-	}
-
-	if(L13_ed_towerHandler())
-	{
-		return true;
-	}
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_01_contestbooth"))
-	{
-		set_property("auto_sorceress", "start");
-		set_property("choiceAdventure1003", 0);
-	}
-	else
+	// this function is exceptionally badly named. It powerlevels to 13 and nothing else. Should be refactored.
+	if(internalQuestStatus("questL13Final") < 0)
 	{
 		if(my_level() < 13)
 		{
@@ -4919,7 +4319,6 @@ boolean L13_towerNSEntrance()
 		}
 		else
 		{
-			#need a wand (or substitute a key lime for food earlier)
 			if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
 			{
 				auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
@@ -4939,19 +4338,7 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
-	if(my_level() < 12)
-	{
-		return false;
-	}
-	if(get_property("flyeredML").to_int() >= 10000)
-	{
-		return false;
-	}
-	if(get_property("sidequestArenaCompleted") != "none")
-	{
-		return false;
-	}
-	if(get_property("auto_war") == "finished")
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() >= 10000)
 	{
 		return false;
 	}
@@ -5066,6 +4453,7 @@ boolean LX_attemptPowerLevel()
 	set_property("auto_powerLevelLastAttempted", my_turncount());
 
 	handleFamiliar("stat");
+	addToMaximize("100 exp");
 
 	if(snojoFightAvailable() && (auto_my_path() == "Pocket Familiars"))
 	{
@@ -5089,7 +4477,7 @@ boolean LX_attemptPowerLevel()
 
 	if(auto_my_path() == "The Source")
 	{
-		if(get_property("auto_spookyravensecond") != "")
+		if (get_property("lastSecondFloorUnlock").to_int() == my_ascensions())
 		{
 			if(get_property("barrelShrineUnlocked").to_boolean())
 			{
@@ -5133,7 +4521,7 @@ boolean LX_attemptPowerLevel()
 				case $stat[Moxie]:			whereTo = $location[The Haunted Ballroom];				break;
 				}
 
-				if((whereTo == $location[The Haunted Ballroom]) && (get_property("auto_ballroomopen") != "open"))
+				if (whereTo == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") > 3)
 				{
 					use(item_amount($item[ten-leaf clover]), $item[ten-leaf clover]);
 					LX_spookyBedroomCombat();
@@ -5270,398 +4658,317 @@ boolean L11_hiddenTavernUnlock(boolean force)
 
 boolean L11_hiddenCity()
 {
-	if(get_property("auto_hiddencity") == "finished")
-	{
-		return false;
-	}
-
-	if(get_property("auto_hiddenzones") != "finished")
+	if (internalQuestStatus("questL11Worship") < 3 || internalQuestStatus("questL11Worship") > 4)
 	{
 		return false;
 	}
 
 	if(item_amount($item[[2180]Ancient Amulet]) == 1)
 	{
-		set_property("auto_hiddencity", "finished");
 		return true;
 	}
 	else if (item_amount($item[[7963]Ancient Amulet]) == 0 && isActuallyEd())
 	{
-		set_property("auto_hiddencity", "finished");
 		return true;
 	}
 
-	L11_hiddenTavernUnlock();
-
-	if(get_property("auto_hiddenzones") == "finished")
+	if((get_property("_nanorhinoBanishedMonster") == "") && (have_effect($effect[nanobrawny]) == 0) && auto_have_familiar($familiar[Nanorhino]))
 	{
-		if((get_property("_nanorhinoBanishedMonster") == "") && (have_effect($effect[nanobrawny]) == 0) && auto_have_familiar($familiar[Nanorhino]))
-		{
-			handleFamiliar($familiar[Nanorhino]);
-		}
-		else
-		{
-			handleFamiliar("item");
-		}
+		handleFamiliar($familiar[Nanorhino]);
+	}
+	else
+	{
+		handleFamiliar("item");
+	}
 
-		if((get_property("auto_hiddenapartment") == "finished") || (item_amount($item[Moss-Covered Stone Sphere]) > 0))
+	if (internalQuestStatus("questL11Curses") > 1 || item_amount($item[Moss-Covered Stone Sphere]) > 0)
+	{
+		uneffect($effect[Thrice-Cursed]);
+		if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Shaman]))
 		{
-			set_property("auto_hiddenapartment", "finished");
-			uneffect($effect[Thrice-Cursed]);
-			if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Shaman]))
+			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 			{
-				if(item_amount($item[soft green echo eyedrop antidote]) > 0)
-				{
-					auto_log_info("They stink so much!", "blue");
-					uneffect($effect[On The Trail]);
-				}
+				auto_log_info("They stink so much!", "blue");
+				uneffect($effect[On The Trail]);
 			}
 		}
-		if((get_property("auto_hiddenoffice") == "finished") || (item_amount($item[Crackling Stone Sphere]) > 0))
+	}
+
+	if (internalQuestStatus("questL11Business") > 1 || item_amount($item[Crackling Stone Sphere]) > 0)
+	{
+		if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Witch Accountant]))
 		{
-			set_property("auto_hiddenoffice", "finished");
-			if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Witch Accountant]))
+			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 			{
-				if(item_amount($item[soft green echo eyedrop antidote]) > 0)
-				{
-					auto_log_info("No more accountants to hunt!", "blue");
-					uneffect($effect[On The Trail]);
-				}
+				auto_log_info("No more accountants to hunt!", "blue");
+				uneffect($effect[On The Trail]);
 			}
 		}
-		if((get_property("auto_hiddenbowling") == "finished") || (item_amount($item[Scorched Stone Sphere]) > 0))
+	}
+
+	if (internalQuestStatus("questL11Spare") > 1 || item_amount($item[Scorched Stone Sphere]) > 0)
+	{
+		if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Bowler]))
 		{
-			set_property("auto_hiddenbowling", "finished");
-			if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Bowler]))
+			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
 			{
-				if(item_amount($item[soft green echo eyedrop antidote]) > 0)
-				{
-					auto_log_info("No more stinky bowling shoes to worry about!", "blue");
-					uneffect($effect[On The Trail]);
-				}
+				auto_log_info("No more stinky bowling shoes to worry about!", "blue");
+				uneffect($effect[On The Trail]);
 			}
 		}
+	}
 
-
-	if((item_amount($item[Moss-Covered Stone Sphere]) == 0) && (get_property("auto_hiddenapartment") != "finished"))
+	if (item_amount($item[Moss-Covered Stone Sphere]) == 0 && internalQuestStatus("questL11Business") < 1)
 	{
 		if(get_counters("Fortune Cookie", 0, 9) == "Fortune Cookie")
 		{
 			return false;
 		}
 	}
-	if((get_property("auto_hiddenapartment") != "finished") && (get_counters("Fortune Cookie", 0, 9) != "Fortune Cookie") && (my_adventures() >= (9 - get_property("auto_hiddenapartment").to_int())) && (have_effect($effect[Ancient Fortitude]) == 0))
+
+	if (internalQuestStatus("questL11Curses") < 2 && get_counters("Fortune Cookie", 0, 9) != "Fortune Cookie" && have_effect($effect[Ancient Fortitude]) == 0)
+	{
+		auto_log_info("The idden [sic] apartment!", "blue");
+
+		boolean elevatorAction = ($location[The Hidden Apartment Building].turns_spent > 0 && $location[The Hidden Apartment Building].turns_spent % 8 == 0);
+
+		if(auto_canForceNextNoncombat())
 		{
-			auto_log_info("The idden [sic] apartment!", "blue");
+			if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= 3*$item[Cursed Punch].inebriety) && !in_tcrs())
+				|| (0 != have_effect($effect[Thrice-Cursed]) && $location[The Hidden Apartment Building].turns_spent <= 4))
+			{
+				elevatorAction = auto_forceNextNoncombat();
 
-			int current = get_property("auto_hiddenapartment").to_int() + 1;
-			set_property("auto_hiddenapartment", current);
+				if(auto_my_path() == "Pocket Familiars")
+				{
+					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+					{
+						set_property("choiceAdventure780", "3"); // Action Elevator : Go down to the parking garage (relocate lawyers to park)
+						autoAdv(1, $location[The Hidden Apartment Building]);
+						return true;
+					}
+				}
+			}
+		}
 
-			if(auto_canForceNextNoncombat())
+		if(!elevatorAction)
+		{
+			auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
+			autoAdv(1, $location[The Hidden Apartment Building]);
+			return true;
+		}
+		else
+		{
+			set_property("choiceAdventure780", "1"); // Action Elevator : Go to the Thrice-Cursed Penthouse	(fight the spirit)
+			if(have_effect($effect[Thrice-Cursed]) == 0)
 			{
 				L11_hiddenTavernUnlock(true);
-
-				if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= 3*$item[Cursed Punch].inebriety) && !in_tcrs())
-					|| (0 != have_effect($effect[Thrice-Cursed]) && current <= 4))
+				while(have_effect($effect[Thrice-Cursed]) == 0)
 				{
-					auto_forceNextNoncombat();
-
-					if(auto_my_path() == "Pocket Familiars")
+					if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs())
 					{
-						if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+						buyUpTo(1, $item[Cursed Punch]);
+						if(item_amount($item[Cursed Punch]) == 0)
 						{
-							set_property("choiceAdventure780", "3");
-							autoAdv(1, $location[The Hidden Apartment Building]);
-							return true;
+							abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
 						}
+						autoDrink(1, $item[Cursed Punch]);
 					}
-					current = 9;
-				}
-			}
-
-			if(current <= 8)
-			{
-				auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
-				autoAdv(1, $location[The Hidden Apartment Building]);
-				if(lastAdventureSpecialNC())
-				{
-					set_property("auto_hiddenapartment", current - 1);
-				}
-				return true;
-			}
-			else
-			{
-				set_property("choiceAdventure780", "1");
-				if(have_effect($effect[Thrice-Cursed]) == 0)
-				{
-					L11_hiddenTavernUnlock(true);
-					while(have_effect($effect[Thrice-Cursed]) == 0)
+					else
 					{
-						if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs())
-						{
-							buyUpTo(1, $item[Cursed Punch]);
-							if(item_amount($item[Cursed Punch]) == 0)
-							{
-								abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
-							}
-							autoDrink(1, $item[Cursed Punch]);
-						}
-						else
-						{
-							set_property("choiceAdventure780", "2");
-							break;
-						}
-					}
-				}
-				auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
-				autoAdv(1, $location[The Hidden Apartment Building]);
-				return true;
-			}
-		}
-		if((get_property("auto_hiddenoffice") != "finished") && (my_adventures() >= 11))
-		{
-			auto_log_info("The idden [sic] office!", "blue");
-
-			if((item_amount($item[Boring Binder Clip]) == 1) && (item_amount($item[McClusky File (Page 5)]) == 1))
-			{
-				#cli_execute("make mcclusky file (complete)");
-				visit_url("inv_use.php?pwd=&which=3&whichitem=6694");
-				cli_execute("refresh inv");
-			}
-
-			if(item_amount($item[McClusky File (Complete)]) > 0)
-			{
-				set_property("choiceAdventure786", "1");
-			}
-			else if(item_amount($item[Boring Binder Clip]) == 0)
-			{
-				set_property("choiceAdventure786", "2");
-			}
-			else
-			{
-				set_property("choiceAdventure786", "3");
-			}
-
-			auto_log_info("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
-			if(considerGrimstoneGolem(true))
-			{
-				handleBjornify($familiar[Grimstone Golem]);
-			}
-
-			backupSetting("autoCraft", false);
-			autoAdv(1, $location[The Hidden Office Building]);
-			restoreSetting("autoCraft");
-			return true;
-		}
-
-		if(get_property("auto_hiddenbowling") != "finished")
-		{
-			auto_log_info("The idden [sic] bowling alley!", "blue");
-			L11_hiddenTavernUnlock(true);
-			if(my_ascensions() == get_property("hiddenTavernUnlock").to_int() && !in_koe())
-			{
-				if(item_amount($item[Bowl Of Scorpions]) == 0)
-				{
-					buyUpTo(1, $item[Bowl Of Scorpions]);
-					if(auto_my_path() == "One Crazy Random Summer")
-					{
-						buyUpTo(3, $item[Bowl Of Scorpions]);
+						set_property("choiceAdventure780", "2"); // Action Elevator : Go to the mezannine (get cursed)
+						break;
 					}
 				}
 			}
-			set_property("choiceAdventure788", "1");
-
-			if(item_amount($item[Airborne Mutagen]) > 1)
-			{
-				buffMaintain($effect[Heightened Senses], 0, 1, 1);
-			}
-
-			buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-			auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
-			autoAdv(1, $location[The Hidden Bowling Alley]);
-
+			auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
+			autoAdv(1, $location[The Hidden Apartment Building]);
 			return true;
 		}
+	}
 
-		if(get_property("auto_hiddenhospital") != "finished")
+	if (internalQuestStatus("questL11Business") < 2 && my_adventures() >= 11)
+	{
+		auto_log_info("The idden [sic] office!", "blue");
+
+		if((item_amount($item[Boring Binder Clip]) == 1) && (item_amount($item[McClusky File (Page 5)]) == 1))
 		{
-			if(item_amount($item[Dripping Stone Sphere]) > 0)
-			{
-				set_property("auto_hiddenhospital", "finished");
-				return true;
-			}
-			auto_log_info("The idden osptial!! [sic]", "blue");
-			set_property("choiceAdventure784", "1");
-
-			autoEquip($item[bloodied surgical dungarees]);
-			autoEquip($item[half-size scalpel]);
-			autoEquip($item[surgical apron]);
-			autoEquip($slot[acc3], $item[head mirror]);
-			autoEquip($slot[acc2], $item[surgical mask]);
-			auto_log_info("Hidden Hospital Progress: " + get_property("hiddenHospitalProgress"), "blue");
-			if((my_mp() > 60) || considerGrimstoneGolem(true))
-			{
-				handleBjornify($familiar[Grimstone Golem]);
-			}
-			autoAdv(1, $location[The Hidden Hospital]);
-
-			return true;
+			visit_url("inv_use.php?pwd=&which=3&whichitem=6694");
+			cli_execute("refresh inv");
 		}
-		if((get_property("auto_hiddenapartment") == "finished") && (get_property("auto_hiddenoffice") == "finished") && (get_property("auto_hiddenbowling") == "finished") && (get_property("auto_hiddenhospital") == "finished"))
+
+		if(item_amount($item[McClusky File (Complete)]) > 0)
 		{
-			auto_log_info("Getting the stone triangles", "blue");
-			set_property("choiceAdventure791", "1");
-			while(item_amount($item[stone triangle]) < 1)
-			{
-				autoAdv(1, $location[An Overgrown Shrine (Northwest)]);
-			}
-			while(item_amount($item[stone triangle]) < 2)
-			{
-				autoAdv(1, $location[An Overgrown Shrine (Northeast)]);
-			}
-			while(item_amount($item[stone triangle]) < 3)
-			{
-				autoAdv(1, $location[An Overgrown Shrine (Southwest)]);
-			}
-			while(item_amount($item[stone triangle]) < 4)
-			{
-				autoAdv(1, $location[An Overgrown Shrine (Southeast)]);
-			}
+			set_property("choiceAdventure786", "1"); // Working Holiday : Knock on the boss's office door	(fight the spirit)
+		}
+		else if(item_amount($item[Boring Binder Clip]) == 0)
+		{
+			set_property("choiceAdventure786", "2"); // Working Holiday : Raid the supply cabinet (get boring binder clip)
+		}
+		else
+		{
+			set_property("choiceAdventure786", "3"); // Working Holiday : Pick a fight with a cubicle drone	(fight an accountant)
+		}
 
-			auto_log_info("Fighting the out-of-work spirit", "blue");
-			acquireHP();
+		auto_log_info("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
+		if(considerGrimstoneGolem(true))
+		{
+			handleBjornify($familiar[Grimstone Golem]);
+		}
 
-			try
-			{
-				handleFamiliar("initSuggest");
-				string[int] pages;
-				pages[0] = "adventure.php?snarfblat=350";
-				pages[1] = "choice.php?pwd&whichchoice=791&option=1";
-				if(autoAdvBypass(0, pages, $location[A Massive Ziggurat], "")) {}
-				handleFamiliar("item");
-			}
-			finally
-			{
-				auto_log_warning("If I stopped, just run me again, beep!", "red");
-			}
+		backupSetting("autoCraft", false);
+		autoAdv(1, $location[The Hidden Office Building]);
+		restoreSetting("autoCraft");
+		return true;
+	}
 
-			if(item_amount($item[2180]) == 1)
+	if (internalQuestStatus("questL11Spare") < 2)
+	{
+		auto_log_info("The idden [sic] bowling alley!", "blue");
+		L11_hiddenTavernUnlock(true);
+		if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+		{
+			if(item_amount($item[Bowl Of Scorpions]) == 0)
 			{
-				set_property("auto_hiddencity", "finished");
+				buyUpTo(1, $item[Bowl Of Scorpions]);
+				if(auto_my_path() == "One Crazy Random Summer")
+				{
+					buyUpTo(3, $item[Bowl Of Scorpions]);
+				}
 			}
+		}
+		set_property("choiceAdventure788", "1"); // Life is Like a Cherry of Bowls : Let's roll (fight the spirit on 5th occurance)
 
+		if(item_amount($item[Airborne Mutagen]) > 1)
+		{
+			buffMaintain($effect[Heightened Senses], 0, 1, 1);
+		}
+
+		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
+		auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
+		autoAdv(1, $location[The Hidden Bowling Alley]);
+		return true;
+	}
+
+	if (internalQuestStatus("questL11Doctor") < 2)
+	{
+		if(item_amount($item[Dripping Stone Sphere]) > 0)
+		{
 			return true;
 		}
-		#abort("Should not have gotten here. Aborting");
+		auto_log_info("The idden osptial!! [sic]", "blue");
+		set_property("choiceAdventure784", "1"); // You, M. D. : Enter the Operating Theater (fight the spirit)
+
+		autoEquip($item[bloodied surgical dungarees]);
+		autoEquip($item[half-size scalpel]);
+		autoEquip($item[surgical apron]);
+		autoEquip($slot[acc3], $item[head mirror]);
+		autoEquip($slot[acc2], $item[surgical mask]);
+		auto_log_info("Hidden Hospital Progress: " + get_property("hiddenHospitalProgress"), "blue");
+		if((my_mp() > 60) || considerGrimstoneGolem(true))
+		{
+			handleBjornify($familiar[Grimstone Golem]);
+		}
+		autoAdv(1, $location[The Hidden Hospital]);
+		return true;
+	}
+
+	if (get_property("hiddenApartmentProgress").to_int() < 8 && get_property("hiddenOfficeProgress").to_int() < 8 && get_property("hiddenBowlingAlleyProgress").to_int() < 8 && get_property("hiddenHospitalProgress").to_int() < 8)
+	{
+		auto_log_info("Getting the stone triangles", "blue");
+		set_property("choiceAdventure791", "1"); // Legend of the Temple in the Hidden City : Open the door (Fight the spirit & complete the quest)
+		set_property("choiceAdventure781", "1"); // Earthbound and Down : Place the moss-covered sphere in the impression (get stone triangle)
+		set_property("choiceAdventure783", "1"); // Water You Dune : Place the dripping sphere in the impression (get stone triangle)
+		set_property("choiceAdventure785", "1"); // Air Apparent : Place the crackling sphere in the impression (get stone triangle)
+		set_property("choiceAdventure787", "1"); // Fire When Ready : Place the scorched sphere in the impression (get stone triangle)
+		while(item_amount($item[stone triangle]) < 1)
+		{
+			autoAdv(1, $location[An Overgrown Shrine (Northwest)]);
+		}
+		while(item_amount($item[stone triangle]) < 2)
+		{
+			autoAdv(1, $location[An Overgrown Shrine (Northeast)]);
+		}
+		while(item_amount($item[stone triangle]) < 3)
+		{
+			autoAdv(1, $location[An Overgrown Shrine (Southwest)]);
+		}
+		while(item_amount($item[stone triangle]) < 4)
+		{
+			autoAdv(1, $location[An Overgrown Shrine (Southeast)]);
+		}
+
+		auto_log_info("Fighting the out-of-work spirit", "blue");
+		acquireHP();
+
+		handleFamiliar("initSuggest");
+		string[int] pages;
+		pages[0] = "adventure.php?snarfblat=350";
+		pages[1] = "choice.php?pwd&whichchoice=791&option=1";
+		autoAdvBypass(0, pages, $location[A Massive Ziggurat], "");
+		handleFamiliar("item");
+		return true;
 	}
 	return false;
 }
 
 boolean L11_hiddenCityZones()
 {
+	if (internalQuestStatus("questL11Worship") < 3 || internalQuestStatus("questL11Worship") > 4)
+	{
+		return false;
+	}
+
+	boolean equipMachete()
+	{
+		if (auto_can_equip($item[Antique Machete]))
+		{
+			if (!possessEquipment($item[Antique Machete]))
+			{
+				pullXWhenHaveY($item[Antique Machete], 1, 0);
+			}
+			return autoForceEquip($item[Antique Machete]);
+		}
+		else
+		{
+			if (!possessEquipment($item[Muculent Machete]))
+			{
+				pullXWhenHaveY($item[Muculent Machete], 1, 0);
+			}
+			return autoForceEquip($item[Muculent Machete]);
+		}
+		return false;
+	}
+
 	L11_hiddenTavernUnlock();
 
-	if(my_level() < 11)
+	boolean needMachete = !possessEquipment($item[Antique Machete]);
+	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
+	boolean needMatches = (get_property("hiddenTavernUnlock").to_int() != my_ascensions());
+
+	if (!in_hardcore() || my_class() == $class[Avatar of Boris] || auto_my_path() == "Way of the Surprising Fist" || auto_my_path() == "Pocket Familiars")
 	{
-		return false;
-	}
-	if(get_property("auto_mcmuffin") != "start")
-	{
-		return false;
-	}
-	if(get_property("auto_hiddenunlock") != "finished")
-	{
-		return false;
-	}
-	if(get_property("auto_hiddenzones") == "finished")
-	{
-		return false;
+		needMachete = false;
 	}
 
-	if(get_property("auto_hiddenzones") == "")
+	if (!in_hardcore() || !needRelocate)
 	{
-		auto_log_info("Machete the hidden zones!", "blue");
-		set_property("choiceAdventure791", "6");
-		set_property("auto_hiddenzones", "0");
+		needMatches = false;
 	}
 
-	if(get_property("auto_hiddenzones") == "0")
+	if (needMachete || needRelocate || needMatches)
 	{
-		boolean needMachete = ((!possessEquipment($item[Antique Machete])) && (!possessEquipment($item[Muculent Machete])));
-		boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
-		boolean needMatches = (get_property("hiddenTavernUnlock").to_int() != my_ascensions());
-
-		if(!in_hardcore() || (my_class() == $class[Avatar of Boris]) || (auto_my_path() == "Way of the Surprising Fist") || (auto_my_path() == "Pocket Familiars"))
-		{
-			needMachete = false;
-		}
-
-		if(!needMatches)
-		{
-			needRelocate = false;
-		}
-
-		if(!in_hardcore())
-		{
-			needMatches = false;
-		}
-
-		int banishers = 0;
-		foreach sk in $skills[Batter Up!, Snokebomb]
-		{
-			if(have_skill(sk))
-			{
-				banishers++;
-			}
-		}
-
-		if(banishers >= 1)
-		{
-			needRelocate = false;
-		}
-
-		if(!needRelocate)
-		{
-			needMatches = false;
-		}
-
-/*
-		if((possessEquipment($item[Antique Machete])) || (possessEquipment($item[Muculent Machete])))
-		{
-			if(!in_hardcore() || (get_property("hiddenTavernUnlock").to_int() == my_ascensions()))
-			{
-				set_property("auto_hiddenzones", "1");
-				return true;
-			}
-		}
-
-		if(((my_class() == $class[Avatar of Boris]) || (auto_my_path() == "Way of the Surprising Fist") || (auto_my_path() == "Pocket Familiars")) && (get_property("relocatePygmyJanitor").to_int() == my_ascensions()))
-		{
-			if(!in_hardcore() || (get_property("hiddenTavernUnlock").to_int() == my_ascensions()))
-			{
-				set_property("auto_hiddenzones", "1");
-				return true;
-			}
-		}
-*/
-
-		if(!needMachete && !needRelocate && !needMatches)
-		{
-			set_property("auto_hiddenzones", "1");
-			return true;
-		}
-
 		if((my_mp() > 60) || considerGrimstoneGolem(true))
 		{
 			handleBjornify($familiar[Grimstone Golem]);
 		}
-		if(get_property("relocatePygmyJanitor").to_int() == my_ascensions())
+		if (!needRelocate)
 		{
-			set_property("choiceAdventure789", "1");
+			set_property("choiceAdventure789", "1"); // Where Does The Lone Ranger Take His Garbagester? : Get Hidden City zone items
 		}
 		else
 		{
-			set_property("choiceAdventure789", "2");
+			set_property("choiceAdventure789", "2"); // Where Does The Lone Ranger Take His Garbagester? : Relocate the Pygmy Janitor to the park
 		}
 
 		// Try to get the NC so that we can relocate Janitors and get items quickly
@@ -5671,16 +4978,9 @@ boolean L11_hiddenCityZones()
 		return true;
 	}
 
-	if(get_property("auto_hiddenzones") == "1")
+	if (get_property("hiddenApartmentProgress") == 0)
 	{
-		if(internalQuestStatus("questL11Curses") >= 0)
-		{
-			set_property("auto_hiddenzones", "2");
-			return true;
-		}
-
-		EquipMachetes();
-
+		equipMachete();
 		# Add provision for Golden Monkey, or even more so, "Do we need spleen item"
 		if(($familiar[Unconscious Collective].drops_today < 1) && auto_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -5701,21 +5001,14 @@ boolean L11_hiddenCityZones()
 		loopHandlerDelayAll();
 		if(contains_text(get_property("lastEncounter"), "Earthbound and Down"))
 		{
-			set_property("auto_hiddenzones", "2");
 			set_property("choiceAdventure781", 6);
 		}
 		return true;
 	}
 
-	if(get_property("auto_hiddenzones") == "2")
+	if (get_property("hiddenOfficeProgress") == 0)
 	{
-		if(internalQuestStatus("questL11Business") >= 0)
-		{
-			set_property("auto_hiddenzones", "3");
-			return true;
-		}
-
-		EquipMachetes();
+		equipMachete();
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && auto_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -5736,21 +5029,14 @@ boolean L11_hiddenCityZones()
 		loopHandlerDelayAll();
 		if(contains_text(get_property("lastEncounter"), "Air Apparent"))
 		{
-			set_property("auto_hiddenzones", "3");
 			set_property("choiceAdventure785", 6);
 		}
 		return true;
 	}
 
-	if(get_property("auto_hiddenzones") == "3")
+	if (get_property("hiddenHospitalProgress") == 0)
 	{
-		if(internalQuestStatus("questL11Doctor") >= 0)
-		{
-			set_property("auto_hiddenzones", "4");
-			return true;
-		}
-
-		EquipMachetes();
+		equipMachete();
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && auto_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -5771,21 +5057,14 @@ boolean L11_hiddenCityZones()
 		loopHandlerDelayAll();
 		if(contains_text(get_property("lastEncounter"), "Water You Dune"))
 		{
-			set_property("auto_hiddenzones", "4");
 			set_property("choiceAdventure783", 6);
 		}
 		return true;
 	}
 
-	if(get_property("auto_hiddenzones") == "4")
+	if (get_property("hiddenBowlingAlleyProgress") == 0)
 	{
-		if(internalQuestStatus("questL11Spare") >= 0)
-		{
-			set_property("auto_hiddenzones", "5");
-			return true;
-		}
-
-		EquipMachetes();
+		equipMachete();
 
 		if(($familiar[Unconscious Collective].drops_today < 1) && auto_have_familiar($familiar[Unconscious Collective]))
 		{
@@ -5806,15 +5085,14 @@ boolean L11_hiddenCityZones()
 		loopHandlerDelayAll();
 		if(contains_text(get_property("lastEncounter"), "Fire When Ready"))
 		{
-			set_property("auto_hiddenzones", "5");
 			set_property("choiceAdventure787", 6);
 		}
 		return true;
 	}
 
-	if(get_property("auto_hiddenzones") == "5")
+	if ($location[A Massive Ziggurat].turns_spent < 3)
 	{
-		EquipMachetes();
+		equipMachete();
 
 		handleFamiliar($familiar[Fist Turkey]);
 		handleBjornify($familiar[Grinning Turtle]);
@@ -5823,26 +5101,8 @@ boolean L11_hiddenCityZones()
 			handleBjornify($familiar[Grimstone Golem]);
 		}
 		autoAdv(1, $location[A Massive Ziggurat]);
-		if(contains_text(get_property("lastEncounter"), "Legend of the Temple in the Hidden City"))
-		{
-			set_property("choiceAdventure791", "1");
-			set_property("choiceAdventure781", "2");
-			set_property("choiceAdventure785", "2");
-			set_property("choiceAdventure783", "2");
-			set_property("choiceAdventure787", "2");
-			set_property("auto_hiddenzones", "finished");
-			handleFamiliar("item");
-			handleBjornify($familiar[El Vibrato Megadrone]);
-		}
-		if(contains_text(get_property("lastEncounter"), "Temple of the Legend in the Hidden City"))
-		{
-			set_property("choiceAdventure791", "1");
-			set_property("choiceAdventure781", "2");
-			set_property("choiceAdventure785", "2");
-			set_property("choiceAdventure783", "2");
-			set_property("choiceAdventure787", "2");
-			set_property("auto_hiddenzones", "finished");
-		}
+		handleFamiliar("item");
+		handleBjornify($familiar[El Vibrato Megadrone]);
 		return true;
 	}
 	return false;
@@ -5877,7 +5137,7 @@ boolean L11_wishForBaaBaaBuran()
 
 boolean L11_unlockHiddenCity()
 {
-	if(my_level() < 11)
+	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2)
 	{
 		return false;
 	}
@@ -5885,12 +5145,7 @@ boolean L11_unlockHiddenCity()
 	{
 		return false;
 	}
-	// Either we have the nostril of the serpent or were lucky and rolled Pikachu
-	if(get_property("auto_hiddenunlock") != "nose" && get_property("questL11Worship") != "step2")
-	{
-		return false;
-	}
-	if(get_property("auto_mcmuffin") != "start")
+	if (item_amount($item[The Nostril of the Serpent]) < 1)
 	{
 		return false;
 	}
@@ -5959,8 +5214,7 @@ boolean L11_unlockHiddenCity()
 	visit_url("choice.php");
 	cli_execute("dvorak");
 	visit_url("choice.php?whichchoice=125&option=3&pwd");
-	auto_log_info("Hidden Temple Unlocked");
-	set_property("auto_hiddenunlock", "finished");
+	auto_log_info("Hidden City Unlocked");
 
 	restoreSetting("choiceAdventure579");
 	restoreSetting("choiceAdventure581");
@@ -5970,23 +5224,11 @@ boolean L11_unlockHiddenCity()
 
 boolean L11_nostrilOfTheSerpent()
 {
-	if(get_property("questL11Worship") != "step1")
-	{
-		return false;
-	}
-#	if(get_property("lastTempleUnlock").to_int() != my_ascensions())
-#	{
-#		return false;
-#	}
-	if(get_property("auto_mcmuffin") != "start")
+	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2)
 	{
 		return false;
 	}
 	if(item_amount($item[The Nostril of the Serpent]) != 0)
-	{
-		return false;
-	}
-	if(get_property("auto_hiddenunlock") != "")
 	{
 		return false;
 	}
@@ -6034,8 +5276,7 @@ boolean L11_nostrilOfTheSerpent()
 					visit_url("choice.php");
 					cli_execute("dvorak");
 					visit_url("choice.php?whichchoice=125&option=3&pwd");
-					auto_log_info("Hidden Temple Unlocked");
-					set_property("auto_hiddenunlock", "finished");
+					auto_log_info("Hidden City Unlocked");
 				}
 				else
 				{
@@ -6056,7 +5297,6 @@ boolean L11_nostrilOfTheSerpent()
 	}
 	if(item_amount($item[The Nostril of the Serpent]) == 1)
 	{
-		set_property("auto_hiddenunlock", "nose");
 		set_property("choiceAdventure579", "0");
 	}
 	restoreSetting("choiceAdventure581");
@@ -6084,23 +5324,9 @@ boolean LX_spookyBedroomCombat()
 
 boolean LX_spookyravenSecond()
 {
-	if((get_property("auto_spookyravensecond") != "") || (get_property("lastSecondFloorUnlock").to_int() < my_ascensions()))
+	if (internalQuestStatus("questM21Dance") < 0 || internalQuestStatus("questM21Dance") > 3 || get_property("lastSecondFloorUnlock").to_int() < my_ascensions())
 	{
 		return false;
-	}
-
-	if(my_level() >= 7)
-	{
-		if((get_property("auto_beatenUpCount").to_int() > 7) && (get_property("auto_crypt") != "finished"))
-		{
-			return false;
-		}
-	}
-
-	if(internalQuestStatus("questM21Dance") < 1)
-	{
-		auto_log_warning("Invalid questM21Dance detected. Trying to override", "red");
-		set_property("questM21Dance", "step1");
 	}
 
 	if((item_amount($item[Lady Spookyraven\'s Powder Puff]) == 1) && (item_amount($item[Lady Spookyraven\'s Dancing Shoes]) == 1) && (item_amount($item[Lady Spookyraven\'s Finest Gown]) == 1))
@@ -6108,7 +5334,6 @@ boolean LX_spookyravenSecond()
 		auto_log_info("Finished Spookyraven, just dancing with the lady.", "blue");
 		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
-		set_property("auto_ballroomopen", "open");
 		autoAdv(1, $location[The Haunted Ballroom]);
 		#
 		#	Is it possible that some other adventure can interrupt us here? If so, we will need to fix that.
@@ -6135,8 +5360,8 @@ boolean LX_spookyravenSecond()
 	}
 
 	//Convert Spookyraven Spectacles to a toggle
-	boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0);
-	boolean needCamera = (item_amount($item[disposable instant camera]) == 0) && !get_property("auto_palindome").to_boolean();
+	boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
+	boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
 	if(my_class() == $class[Avatar of Boris])
 	{
 		needSpectacles = false;
@@ -6166,28 +5391,27 @@ boolean LX_spookyravenSecond()
 	}
 
 	set_property("choiceAdventure877", "1");
-	if((get_property("auto_ballroomopen") == "open") || (get_property("questM21Dance") == "finished") || (get_property("questM21Dance") == "step3"))
+	if(internalQuestStatus("questM21Dance") < 2)
 	{
-		if(needSpectacles)
+		if (item_amount($item[Lady Spookyraven\'s Finest Gown]) > 0)
 		{
-			auto_log_info("Need Spectacles, damn it.", "blue");
-			LX_spookyBedroomCombat();
-			auto_log_info("Finished 1 Spookyraven Bedroom Spectacle Sequence", "blue");
+			// got the Bedroom item but we might still need items for other parts
+			// of the macguffin quest if we got unlucky
+			if(needSpectacles)
+			{
+				auto_log_info("Need Spectacles, damn it.", "blue");
+				LX_spookyBedroomCombat();
+				auto_log_info("Finished 1 Spookyraven Bedroom Spectacle Sequence", "blue");
+				return true;
+			}
+			else if(needCamera)
+			{
+				auto_log_info("Need Disposable Instant Camera, damn it.", "blue");
+				LX_spookyBedroomCombat();
+				auto_log_info("Finished 1 Spookyraven Bedroom Disposable Instant Camera Sequence", "blue");
+				return true;
+			}
 		}
-		else if(needCamera)
-		{
-			auto_log_info("Need Disposable Instant Camera, damn it.", "blue");
-			LX_spookyBedroomCombat();
-			auto_log_info("Finished 1 Spookyraven Bedroom Disposable Instant Camera Sequence", "blue");
-		}
-		else
-		{
-			set_property("auto_spookyravensecond", "finished");
-		}
-		return true;
-	}
-	else if(get_property("questM21Dance") != "finished")
-	{
 		if((item_amount($item[Lady Spookyraven\'s Finest Gown]) == 0) && !contains_text(get_counters("Fortune Cookie", 0, 10), "Fortune Cookie"))
 		{
 			auto_log_info("Spookyraven: Bedroom, rummaging through nightstands looking for naughty meatbag trinkets.", "blue");
@@ -6229,31 +5453,17 @@ boolean LX_spookyravenSecond()
 
 boolean L11_mauriceSpookyraven()
 {
-	if(get_property("lastSecondFloorUnlock").to_int() < my_ascensions())
-	{
-		return false;
-	}
-	if(get_property("auto_mcmuffin") != "start")
-	{
-		return false;
-	}
-	if(get_property("auto_ballroom") != "")
+	if (internalQuestStatus("questL11Manor") < 0 || internalQuestStatus("questL11Manor") > 3 || internalQuestStatus("questM21Dance") < 4)
 	{
 		return false;
 	}
 
-	if(L11_ed_mauriceSpookyraven())
+	if ((isActuallyEd() && item_amount($item[7962]) == 0) || item_amount($item[2286]) > 0)
 	{
 		return true;
 	}
 
-	if(item_amount($item[2286]) > 0)
-	{
-		set_property("auto_ballroom", "finished");
-		return true;
-	}
-
-	if(get_property("auto_ballroomflat") == "")
+	if (internalQuestStatus("questL11Manor") < 1)
 	{
 		auto_log_info("Searching for the basement of Spookyraven", "blue");
 		if(!cangroundHog($location[The Haunted Ballroom]))
@@ -6267,6 +5477,7 @@ boolean L11_mauriceSpookyraven()
 			handleBjornify($familiar[Grimstone Golem]);
 		}
 		buffMaintain($effect[Snow Shoes], 0, 1, 1);
+		providePlusNonCombat(25);
 
 		handleFamiliar("initSuggest");
 		set_property("choiceAdventure106", "2");
@@ -6285,10 +5496,6 @@ boolean L11_mauriceSpookyraven()
 			auto_log_warning("If 'That Area is not available', mafia isn't recognizing it without a visit to manor2, not sure why.", "red");
 		}
 		handleFamiliar("item");
-		if(contains_text(get_property("lastEncounter"), "We\'ll All Be Flat"))
-		{
-			set_property("auto_ballroomflat", "finished");
-		}
 		return true;
 	}
 	if(item_amount($item[recipe: mortar-dissolving solution]) == 0)
@@ -6310,7 +5517,7 @@ boolean L11_mauriceSpookyraven()
 		set_property("choiceAdventure891", "1");
 	}
 
-	if((get_property("auto_winebomb") == "finished") || get_property("auto_masonryWall").to_boolean() || (internalQuestStatus("questL11Manor") >= 3))
+	if (internalQuestStatus("questL11Manor") > 2)
 	{
 		auto_log_info("Down with the tyrant of Spookyraven!", "blue");
 		acquireHP();
@@ -6327,11 +5534,6 @@ boolean L11_mauriceSpookyraven()
 		{
 			autoAdv($location[Summoning Chamber]);
 		}
-
-		if(internalQuestStatus("questL11Manor") >= 4)
-		{
-			set_property("auto_ballroom", "finished");
-		}
 		return true;
 	}
 
@@ -6342,7 +5544,6 @@ boolean L11_mauriceSpookyraven()
 
 	if(item_amount($item[wine bomb]) == 1)
 	{
-		set_property("auto_winebomb", "finished");
 		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
 		return true;
 	}
@@ -6393,7 +5594,6 @@ boolean L11_mauriceSpookyraven()
 		}
 
 		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
-		set_property("auto_masonryWall", true);
 		return true;
 	}
 
@@ -6402,7 +5602,6 @@ boolean L11_mauriceSpookyraven()
 		auto_log_info("Time to cook up something explosive! Science fair unstable fulminate time!", "green");
 		ovenHandle();
 		autoCraft("cook", 1, $item[bottle of Chateau de Vinegar], $item[blasting soda]);
-		set_property("auto_winebomb", "partial");
 		if(item_amount($item[Unstable Fulminate]) == 0)
 		{
 			auto_log_warning("We could not make an Unstable Fulminate but we think we have an oven. Do this manually and resume?", "red");
@@ -6431,12 +5630,7 @@ boolean L11_mauriceSpookyraven()
 		abort("Did not read Mortar Recipe with the Spookyraven glasses. We can't proceed.");
 	}
 
-	if(possessEquipment($item[Unstable Fulminate]))
-	{
-		set_property("auto_winebomb", "partial");
-	}
-
-	if((item_amount($item[bottle of Chateau de Vinegar]) == 0) && (get_property("auto_winebomb") == ""))
+	if (item_amount($item[bottle of Chateau de Vinegar]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
 		auto_log_info("Searching for vinegar", "blue");
 		if(considerGrimstoneGolem(true))
@@ -6451,7 +5645,7 @@ boolean L11_mauriceSpookyraven()
 		autoAdv(1, $location[The Haunted Wine Cellar]);
 		return true;
 	}
-	if((item_amount($item[blasting soda]) == 0) && (get_property("auto_winebomb") == ""))
+	if (item_amount($item[blasting soda]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
 		auto_log_info("Searching for baking soda, I mean, blasting pop.", "blue");
 		if(considerGrimstoneGolem(true))
@@ -6466,14 +5660,11 @@ boolean L11_mauriceSpookyraven()
 		return true;
 	}
 
-	if(get_property("auto_winebomb") == "partial")
+	if (possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
-		if(item_amount($item[unstable fulminate]) > 0)
+		if(weapon_hands(equipped_item($slot[weapon])) > 1)
 		{
-			if(weapon_hands(equipped_item($slot[weapon])) > 1)
-			{
-				autoEquip($slot[weapon], $item[none]);
-			}
+			autoEquip($slot[weapon], $item[none]);
 		}
 		auto_log_info("Now we mix and heat it up.", "blue");
 
@@ -6501,9 +5692,7 @@ boolean L11_mauriceSpookyraven()
 
 		if(item_amount($item[wine bomb]) == 1)
 		{
-			set_property("auto_winebomb", "finished");
 			visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
-			set_property("auto_masonryWall", true);
 		}
 		return true;
 	}
@@ -6513,24 +5702,12 @@ boolean L11_mauriceSpookyraven()
 
 boolean L13_sorceressDoor()
 {
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_05_monster1"))
-	{
-		set_property("auto_sorceress", "tower");
-		return false;
-	}
-	if(get_property("auto_sorceress") != "door")
+	if(internalQuestStatus("questL13Final") < 5 || internalQuestStatus("questL13Final") > 5)
 	{
 		return false;
 	}
 
-	if(internalQuestStatus("questL13Final") >= 6)
-	{
-		auto_log_warning("Should already be past the tower door but did not see the First wall.", "red");
-		set_property("auto_sorceress", "tower");
-		return false;
-	}
-
-	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) == 0))
+	if (item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
 		if(my_rain() < 50)
 		{
@@ -6547,9 +5724,16 @@ boolean L13_sorceressDoor()
 		}
 	}
 
-	if((item_amount($item[white pixel]) >= 30) && (item_amount($item[Digital Key]) == 0) && !in_koe())
+	if (item_amount($item[white pixel]) >= 30 && item_amount($item[Digital Key]) == 0)
 	{
-		cli_execute("make digital key");
+		if (in_koe())
+		{
+			buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Digital Key]);
+		}
+		else
+		{
+			cli_execute("make digital key");
+		}
 		set_property("auto_crackpotjar", "finished");
 	}
 
@@ -6580,8 +5764,9 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Boris\'s Key]) == 0)
 		{
-			if(in_koe() && item_amount($item[fat loot token]) > 0) {
-				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1093&pwd", true);
+			if(in_koe() && item_amount($item[fat loot token]) > 0)
+			{
+				buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Boris\'s Key]);
 			}
 			else {
 				cli_execute("make Boris's Key");
@@ -6597,10 +5782,12 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Jarlsberg\'s Key]) == 0)
 		{
-			if(in_koe() && item_amount($item[fat loot token]) > 0) {
-				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1094&pwd", true);
+			if(in_koe() && item_amount($item[fat loot token]) > 0)
+			{
+				buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Jarlsberg\'s Key]);
 			}
-			else {
+			else
+			{
 				cli_execute("make Jarlsberg's Key");
 			}
 		}
@@ -6614,10 +5801,12 @@ boolean L13_sorceressDoor()
 	{
 		if(item_amount($item[Sneaky Pete\'s Key]) == 0)
 		{
-			if(in_koe() && item_amount($item[fat loot token]) > 0) {
-				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1095&pwd", true);
+			if(in_koe() && item_amount($item[fat loot token]) > 0)
+			{
+				buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Sneaky Pete\'s Key]);
 			}
-			else {
+			else
+			{
 				cli_execute("make Sneaky Pete's Key");
 			}
 		}
@@ -6654,10 +5843,12 @@ boolean L13_sorceressDoor()
 					pullXWhenHaveY($item[white pixel], pulls_needed, item_amount($item[white pixel]));
 				}
 			}
-			if(in_koe() && item_amount($item[white pixel]) >= 30) {
-				visit_url("shop.php?whichshop=exploathing&action=buyitem&quantity=1&whichrow=1090&pwd", true);
+			if(in_koe() && item_amount($item[white pixel]) >= 30)
+			{
+				buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Digital Key]);
 			}
-			else {
+			else
+			{
 				cli_execute("make digital key");
 			}
 		}
@@ -6675,18 +5866,16 @@ boolean L13_sorceressDoor()
 
 boolean L11_unlockEd()
 {
-	if(get_property("auto_mcmuffin") != "pyramid")
+	if (internalQuestStatus("questL11Pyramid") < 0 || internalQuestStatus("questL11Pyramid") > 3 || get_property("pyramidBombUsed").to_boolean())
 	{
 		return false;
 	}
-
 	if (isActuallyEd())
 	{
-		set_property("auto_mcmuffin", "finished");
 		return true;
 	}
 
-	if(get_property("auto_tavern") != "finished")
+	if (internalQuestStatus("questL03Rat") < 2)
 	{
 		auto_log_warning("Uh oh, didn\'t do the tavern and we are at the pyramid....", "red");
 
@@ -6730,7 +5919,6 @@ boolean L11_unlockEd()
 				visit_url("place.php?whichplace=pyramid&action=pyramid_control");
 			}
 		}
-		set_property("auto_mcmuffin", "ed");
 		return true;
 	}
 	if(total < 10)
@@ -6784,29 +5972,13 @@ boolean L11_unlockEd()
 
 boolean L11_unlockPyramid()
 {
-	int pyramidLevel = 11;
-	if(get_property("auto_dickStab").to_boolean())
-	{
-		pyramidLevel = 12;
-	}
-
-	if(my_level() < pyramidLevel)
+  if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > 0)
 	{
 		return false;
 	}
 	if (isActuallyEd())
 	{
 		return false;
-	}
-	if(get_property("auto_mcmuffin") != "start")
-	{
-		return false;
-	}
-
-	if(get_property("questL11Pyramid") == "started")
-	{
-		set_property("auto_mcmuffin", "pyramid");
-		return true;
 	}
 
 	if((item_amount($item[[2325]Staff Of Ed]) > 0) || ((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2268]Staff Of Fats]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0)))
@@ -6889,10 +6061,6 @@ boolean L11_unlockPyramid()
 			abort("Tried to open the Pyramid but could not. Something went wrong :(");
 		}
 
-		set_property("auto_hiddencity", "finished");
-		set_property("auto_ballroom", "finished");
-		set_property("auto_palindome", "finished");
-		set_property("auto_mcmuffin", "pyramid");
 		buffMaintain($effect[Snow Shoes], 0, 1, 1);
 		autoAdv(1, $location[The Upper Chamber]);
 		return true;
@@ -6905,7 +6073,7 @@ boolean L11_unlockPyramid()
 
 boolean L11_defeatEd()
 {
-	if(get_property("auto_mcmuffin") != "ed")
+	if (internalQuestStatus("questL11Pyramid") < 3 || internalQuestStatus("questL11Pyramid") > 3 || !get_property("pyramidBombUsed").to_boolean())
 	{
 		return false;
 	}
@@ -6916,7 +6084,6 @@ boolean L11_defeatEd()
 
 	if(item_amount($item[[2334]Holy MacGuffin]) == 1)
 	{
-		set_property("auto_mcmuffin", "finished");
 		council();
 		return true;
 	}
@@ -6952,19 +6119,19 @@ boolean L11_defeatEd()
 
 	set_property("choiceAdventure976", "1");
 
-	int x = 0;
+	int edFights = 0;
 	set_property("auto_disableAdventureHandling", true);
 	while(item_amount($item[[2334]Holy MacGuffin]) == 0)
 	{
-		x = x + 1;
-		auto_log_info("Hello Ed #" + x + " give me McMuffin please.", "blue");
+		edFights++;
+		auto_log_info("Hello Ed #" + edFights + " give me McMuffin please.", "blue");
 		autoAdv(1, $location[The Lower Chambers]);
 		if(have_effect($effect[Beaten Up]) > 0 && item_amount($item[[2334]Holy MacGuffin]) == 0)
 		{
 			set_property("auto_disableAdventureHandling", false);
 			abort("Got Beaten Up by Ed the Undying - generally not safe to try to recover.");
 		}
-		if(x > 10)
+		if (edFights > 10)
 		{
 			abort("Trying to fight too many Eds, leave the poor dude alone!");
 		}
@@ -6977,7 +6144,6 @@ boolean L11_defeatEd()
 
 	if(item_amount($item[[2334]Holy MacGuffin]) != 0)
 	{
-		set_property("auto_mcmuffin", "finished");
 		council();
 	}
 	return true;
@@ -6985,7 +6151,11 @@ boolean L11_defeatEd()
 
 boolean L12_sonofaFinish()
 {
-	if(get_property("auto_sonofa") == "finished")
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
+	{
+		return false;
+	}
+	if (in_koe())
 	{
 		return false;
 	}
@@ -6993,14 +6163,6 @@ boolean L12_sonofaFinish()
 	{
 		return false;
 	}
-	if(my_level() < 12)
-	{
-		return false;
-	}
-#	if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 64))
-#	{
-#		return false;
-#	}
 	if(!haveWarOutfit())
 	{
 		return false;
@@ -7009,87 +6171,20 @@ boolean L12_sonofaFinish()
 	warOutfit(true);
 	visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
 	visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
-	set_property("auto_sonofa", "finished");
-	return true;
-}
-
-boolean L12_gremlinStart()
-{
-	if(my_level() < 12)
-	{
-		return false;
-	}
-	if(get_property("auto_prewar") != "started")
-	{
-		return false;
-	}
-	if(get_property("auto_gremlins") != "")
-	{
-		return false;
-	}
-	auto_log_info("Gremlin prep", "blue");
-	if(get_property("auto_hippyInstead").to_boolean())
-	{
-		if(!possessEquipment($item[Reinforced Beaded Headband]))
-		{
-			pullXWhenHaveY($item[Reinforced Beaded Headband], 1, 0);
-		}
-		if(!possessEquipment($item[Bullet-Proof Corduroys]))
-		{
-			pullXWhenHaveY($item[Bullet-Proof Corduroys], 1, 0);
-		}
-		if(!possessEquipment($item[Round Purple Sunglasses]))
-		{
-			pullXWhenHaveY($item[Round Purple Sunglasses], 1, 0);
-		}
-	}
-
-	if((!possessEquipment($item[Ouija Board\, Ouija Board])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
-	{
-		if(!possessEquipment($item[Turtle Totem]))
-		{
-			acquireGumItem($item[Turtle Totem]);
-		}
-		autoCraft("smith", 1, $item[lump of Brituminous coal], $item[turtle totem]);
-		if(!possessEquipment($item[Turtle Totem]))
-		{
-			acquireGumItem($item[Turtle Totem]);
-		}
-	}
-	if((item_amount($item[louder than bomb]) == 0) && (item_amount($item[Handful of Smithereens]) > 0) && ((my_meat() > npc_price($item[Ben-Gal&trade; Balm])) && (npc_price($item[Ben-Gal&trade; Balm]) != 0)))
-	{
-		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
-		cli_execute("make louder than bomb");
-#		autoCraft("paste", 1, $item[Ben-Gal&trade; Balm], $item[Handful of Smithereens]);
-	}
-	set_property("auto_gremlins", "start");
-	set_property("auto_gremlinBanishes", "");
 	return true;
 }
 
 boolean L12_gremlins()
 {
-	if(get_property("auto_prewar") != "started")
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestJunkyardCompleted") != "none")
 	{
 		return false;
 	}
-	if(get_property("auto_gremlins") != "start")
-	{
-		return false;
-	}
-	if(my_level() < 12)
-	{
-		return false;
-	}
-	if(get_property("sidequestJunkyardCompleted") != "none")
+	if (in_koe() || auto_my_path() == "Pocket Familiars")
 	{
 		return false;
 	}
 	if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 192))
-	{
-		return false;
-	}
-	if(auto_my_path() == "Pocket Familiars")
 	{
 		return false;
 	}
@@ -7118,7 +6213,7 @@ boolean L12_gremlins()
 
 	if(auto_my_path() == "Disguises Delimit")
 	{
-		abort("Do gremlins manually, sorry. Or set auto_gremlins=finished and we will just skip them");
+		abort("Do gremlins manually, sorry. Or set sidequestJunkyardCompleted=fratboy and we will just skip them");
 	}
 
 	// Go into the fight with No Familiar Equips since maximizer wants to force an equip
@@ -7179,36 +6274,26 @@ boolean L12_gremlins()
 	handleFamiliar("item");
 	warOutfit(true);
 	visit_url("bigisland.php?action=junkman&pwd");
-	set_property("auto_gremlins", "finished");
 	return true;
 }
 
 boolean L12_sonofaBeach()
 {
-	if(my_level() < 12)
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
 	{
 		return false;
 	}
-	if(get_property("auto_sonofa") == "finished")
-	{
-		return false;
-	}
-	if(get_property("auto_war") == "finished")
+	if (in_koe())
 	{
 		return false;
 	}
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
-		if(get_property("auto_gremlins") != "finished")
+		if (get_property("sidequestJunkyardCompleted") == "none")
 		{
 			return false;
 		}
 	}
-	#Removing for now, we probably can not delay this at this point
-#	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Lobsterfrogman])
-#	{
-#		return false;
-#	}
 	if((get_property("fratboysDefeated").to_int() < 64) && get_property("auto_hippyInstead").to_boolean())
 	{
 		return false;
@@ -7216,12 +6301,6 @@ boolean L12_sonofaBeach()
 	if(item_amount($item[barrel of gunpowder]) >= 5)
 	{
 		return false;
-	}
-
-	if(get_property("sidequestLighthouseCompleted") != "none")
-	{
-		set_property("auto_sonofa", "finished");
-		return true;
 	}
 
 	if(auto_my_path() == "Pocket Familiars")
@@ -7319,7 +6398,10 @@ boolean L12_sonofaBeach()
 
 boolean L12_sonofaPrefix()
 {
-	if(get_property("auto_prewar") != "started")
+	// this appears to be a copy & paste of L12_sonofaBeach() with some small changes
+	// for Vote Monster/Macrometeor shenanigans. Refactor this so only the relevant code remains.
+
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
 	{
 		return false;
 	}
@@ -7328,18 +6410,6 @@ boolean L12_sonofaPrefix()
 		return true;
 	}
 
-	if(my_level() < 12)
-	{
-		return false;
-	}
-	if(get_property("auto_sonofa") == "finished")
-	{
-		return false;
-	}
-	if(get_property("auto_war") == "finished")
-	{
-		return false;
-	}
 	if(in_koe())
 	{
 		return false;
@@ -7360,12 +6430,6 @@ boolean L12_sonofaPrefix()
 	if(item_amount($item[barrel of gunpowder]) >= 5)
 	{
 		return false;
-	}
-
-	if(get_property("sidequestLighthouseCompleted") != "none")
-	{
-		set_property("auto_sonofa", "finished");
-		return true;
 	}
 
 	if(chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && (get_property("chateauMonster") == $monster[Lobsterfrogman]))
@@ -7497,10 +6561,9 @@ boolean L12_sonofaPrefix()
 	return true;
 }
 
-
 boolean L12_filthworms()
 {
-	if(my_level() < 12)
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestOrchardCompleted") != "none")
 	{
 		return false;
 	}
@@ -7510,16 +6573,9 @@ boolean L12_filthworms()
 	}
 	if(item_amount($item[Heart of the Filthworm Queen]) > 0)
 	{
-		set_property("auto_orchard", "done");
-	}
-	if(get_property("auto_orchard") != "start")
-	{
 		return false;
 	}
-	if(get_property("auto_prewar") == "")
-	{
-		return false;
-	}
+
 	auto_log_info("Doing the orchard.", "blue");
 
 	if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
@@ -7539,10 +6595,6 @@ boolean L12_filthworms()
 	{
 		handleFamiliar("meat");
 		autoAdv(1, $location[The Filthworm Queen\'s Chamber]);
-		if(item_amount($item[Heart of the Filthworm Queen]) > 0)
-		{
-			set_property("auto_orchard", "done");
-		}
 		return true;
 	}
 
@@ -7632,11 +6684,12 @@ boolean L12_filthworms()
 
 boolean L12_finalizeWar()
 {
-	if(get_property("auto_war") != "done")
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1)
 	{
 		return false;
 	}
-	if(my_level() < 12)
+
+	if (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratsDefeated").to_int() < 1000)
 	{
 		return false;
 	}
@@ -7762,18 +6815,13 @@ boolean L12_finalizeWar()
 	acquireHP();
 	auto_log_info("Let's fight the boss!", "blue");
 
-	location bossFight = $location[The Battlefield (Frat Uniform)];
+	location bossFight = $location[Noob Cave];
 
 	if (in_koe())
 	{
 		bossFight = 533.to_location();
 	}
-	else if(get_property("auto_hippyInstead").to_boolean())
-	{
-		bossFight = $location[The Battlefield (Hippy Uniform)];
-	}
 
-#	handlePreAdventure(bossFight);
 	if(auto_have_familiar($familiar[Machine Elf]))
 	{
 		handleFamiliar($familiar[Machine Elf]);
@@ -7797,12 +6845,11 @@ boolean L12_finalizeWar()
 	}
 
 	cli_execute("refresh quests");
-	if(get_property("questL12War") != "finished")
+	if (internalQuestStatus("questL12War") == 1)
 	{
 		abort("Failing to complete the war.");
 	}
 	council();
-	set_property("auto_war", "finished");
 	return true;
 }
 
@@ -7816,7 +6863,7 @@ boolean LX_getDigitalKey()
 	{
 		return false;
 	}
-	if(((get_property("auto_war") != "finished") && (get_property("auto_war") != "")) && (item_amount($item[Rock Band Flyers]) == 0) && (item_amount($item[Jam Band Flyers]) == 0) && (get_property("auto_powerLevelAdvCount").to_int() < 9))
+	if (internalQuestStatus("questL12War") == 1 && get_property("sidequestArenaCompleted") != "none" && get_property("auto_powerLevelAdvCount").to_int() < 9)
 	{
 		return false;
 	}
@@ -7877,11 +6924,7 @@ boolean LX_getDigitalKey()
 
 boolean L11_getBeehive()
 {
-	if(my_level() < 11)
-	{
-		return false;
-	}
-	if(!get_property("auto_getBeehive").to_boolean())
+	if (!black_market_available() || !get_property("auto_getBeehive").to_boolean())
 	{
 		return false;
 	}
@@ -7892,7 +6935,6 @@ boolean L11_getBeehive()
 		return false;
 	}
 
-
 	auto_log_info("Must find a beehive!", "blue");
 
 	set_property("choiceAdventure923", "1");
@@ -7901,8 +6943,7 @@ boolean L11_getBeehive()
 	set_property("choiceAdventure1019", "1");
 
 	handleBjornify($familiar[Grimstone Golem]);
-	buffMaintain($effect[The Sonata of Sneakiness], 20, 1, 1);
-	buffMaintain($effect[Smooth Movements], 10, 1, 1);
+	providePlusNonCombat(25);
 
 	autoAdv(1, $location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
@@ -7914,19 +6955,11 @@ boolean L11_getBeehive()
 
 boolean L12_orchardStart()
 {
-	if((get_property("auto_orchard") == "finished") && (get_property("sidequestOrchardCompleted") == "none"))
-	{
-		if((get_property("hippiesDefeated").to_int() < 1000) && (get_property("fratboysDefeated").to_int() < 1000))
-		{
-			abort("The script thinks we completed the orchard but mafia doesn't, return the heart?");
-		}
-	}
-
-	if(my_level() < 12)
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestOrchardCompleted") != "none")
 	{
 		return false;
 	}
-	if(get_property("auto_orchard") != "")
+	if (in_tcrs() || in_koe())
 	{
 		return false;
 	}
@@ -7936,63 +6969,56 @@ boolean L12_orchardStart()
 	}
 
 	warOutfit(true);
-	visit_url("bigisland.php?place=orchard&action=stand&pwd");
-	set_property("auto_orchard", "start");
+	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
 	return true;
 }
 
 boolean L12_orchardFinalize()
 {
-	if(get_property("auto_orchard") != "done")
+	if (get_property("hippiesDefeated").to_int() < 64 && !get_property("auto_hippyInstead").to_boolean())
 	{
 		return false;
 	}
-	if(!get_property("auto_hippyInstead").to_boolean() && (get_property("hippiesDefeated").to_int() < 64))
+	if (get_property("sidequestOrchardCompleted") != "none" || item_amount($item[Heart of the Filthworm Queen]) == 0)
 	{
 		return false;
 	}
-	set_property("auto_orchard", "finished");
 	if(item_amount($item[A Light that Never Goes Out]) == 1)
 	{
 		pulverizeThing($item[A Light that Never Goes Out]);
 	}
 	warOutfit(true);
-	string temp = visit_url("bigisland.php?place=orchard&action=stand&pwd");
-	temp = visit_url("bigisland.php?place=orchard&action=stand&pwd");
+	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
+	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
 	return true;
 }
 
-
 boolean L10_plantThatBean()
 {
-	if(my_level() < 10)
-	{
-		return false;
-	}
-	if(get_property("auto_bean").to_boolean())
+	if (internalQuestStatus("questL10Garbage") < 0 || internalQuestStatus("questL10Garbage") > 0)
 	{
 		return false;
 	}
 
-	council();
+	if (isActuallyEd())
+	{
+		// no bean needed as Ed, just climb the beanstalk to progress the quest
+		visit_url("place.php?whichplace=beanstalk");
+		cli_execute("refresh quests");
+		return true;
+	}
+
 	auto_log_info("Planting me magic bean!", "blue");
 	string page = visit_url("place.php?whichplace=plains");
 	if(contains_text(page, "place.php?whichplace=beanstalk"))
 	{
 		auto_log_warning("I have no bean but I see a stalk here. Okies. I'm ok with that", "blue");
-		set_property("auto_bean", true);
 		visit_url("place.php?whichplace=beanstalk");
 		return true;
 	}
 	if(item_amount($item[Enchanted Bean]) > 0)
 	{
 		use(1, $item[Enchanted Bean]);
-		set_property("auto_bean", true);
-		return true;
-	}
-	else if (isActuallyEd())
-	{
-		set_property("auto_bean", true);
 		return true;
 	}
 
@@ -8002,20 +7028,14 @@ boolean L10_plantThatBean()
 		return autoAdv($location[The Beanbat Chamber]);
 	}
 	return false;
-
 }
 
 boolean L10_holeInTheSkyUnlock()
 {
-	if(my_level() < 10)
+	if (internalQuestStatus("questL10Garbage") < 9)
 	{
 		return false;
 	}
-	if(get_property("auto_castleground") != "finished")
-	{
-		return false;
-	}
-
 	if(!get_property("auto_holeinthesky").to_boolean())
 	{
 		return false;
@@ -8059,17 +7079,12 @@ boolean L10_holeInTheSkyUnlock()
 
 boolean L10_topFloor()
 {
-	if(my_level() < 10)
+	if (internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL10Garbage") > 10)
 	{
 		return false;
 	}
 
-	if(get_property("auto_castleground") != "finished")
-	{
-		return false;
-	}
-
-	if(get_property("auto_castletop") != "")
+	if (possessEquipment($item[mohawk wig]) && !auto_can_equip($item[Mohawk Wig]))
 	{
 		return false;
 	}
@@ -8130,15 +7145,13 @@ boolean L10_topFloor()
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 	handleFamiliar("item");
 
-	if(contains_text(get_property("lastEncounter"), "Keep On Turnin\' the Wheel in the Sky"))
+	if (internalQuestStatus("questL10Garbage") > 9)
 	{
-		set_property("auto_castletop", "finished");
 		council();
-	}
-	if(possessEquipment($item[mohawk wig]) && contains_text(get_property("lastEncounter"), "Copper Feel"))
-	{
-		set_property("auto_castletop", "finished");
-		council();
+		if (in_koe())
+		{
+			cli_execute("refresh quests");
+		}
 	}
 
 	return true;
@@ -8146,24 +7159,11 @@ boolean L10_topFloor()
 
 boolean L10_ground()
 {
-	if(my_level() < 10)
-	{
-		return false;
-	}
-	if(internalQuestStatus("questL10Garbage") > 8)
-	{
-		set_property("auto_castleground", "finished");
-	}
-
-	if(get_property("auto_castlebasement") != "finished")
+	if (internalQuestStatus("questL10Garbage") < 8 || internalQuestStatus("questL10Garbage") > 8)
 	{
 		return false;
 	}
 
-	if(get_property("auto_castleground") != "")
-	{
-		return false;
-	}
 	if(!canGroundhog($location[The Castle in the Clouds in the Sky (Ground Floor)]))
 	{
 		return false;
@@ -8204,28 +7204,26 @@ boolean L10_ground()
 
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]);
 	handleFamiliar("item");
-
-	if(contains_text(get_property("lastEncounter"), "Top of the Castle, Ma"))
-	{
-		set_property("auto_castleground", "finished");
-	}
 	return true;
 }
 
 boolean L10_basement()
 {
-	if(my_level() < 10)
+	if (internalQuestStatus("questL10Garbage") < 7 || internalQuestStatus("questL10Garbage") > 7)
 	{
 		return false;
 	}
-	if(get_property("auto_castlebasement") != "")
+
+	if (possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
 	{
 		return false;
 	}
-	if(my_adventures() < 3)
+
+	if (possessEquipment($item[Amulet of Extreme Plot Significance]) && !auto_can_equip($item[Amulet of Extreme Plot Significance]))
 	{
 		return false;
 	}
+
 	auto_log_info("Basement Search", "blue");
 	set_property("choiceAdventure670", "5"); // You Don't Mess Around with Gym: Open Ground floor (with amulet)
 	if(item_amount($item[Massive Dumbbell]) > 0)
@@ -8277,22 +7275,13 @@ boolean L10_basement()
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 	handleFamiliar("item");
 
-	if(contains_text(get_property("lastEncounter"), "Out in the Open Source") && (get_property("choiceAdventure671").to_int() == 1))
-	{
-		auto_log_info("Dumbbell + Dumbwaiter means we fly!", "green");
-		set_property("auto_castlebasement", "finished");
-	}
-	else if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
+	if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 	{
 		auto_log_info("We was fast and furry-ous!", "blue");
 		autoEquip($item[Titanium Assault Umbrella]);
 		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella)
 		autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
-		if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
-		{
-			set_property("auto_castlebasement", "finished");
-		}
-		else
+		if(!contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 		{
 			auto_log_warning("Got interrupted trying to unlock the Ground Floor of the Castle", "red");
 		}
@@ -8337,34 +7326,17 @@ boolean L10_basement()
 			abort("Unable to equip the Amulet when we wanted to...");
 		}
 		autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
-		if(contains_text(get_property("lastEncounter"), "You Don\'t Mess Around with Gym"))
-		{
-			set_property("auto_castlebasement", "finished");
-		}
-		else
-		{
-			auto_log_warning("Got interrupted trying to unlock the Ground Floor of the Castle", "red");
-		}
 	}
 	return true;
 }
 
 boolean L10_airship()
 {
-	if(my_level() < 10)
-	{
-		return false;
-	}
-	if(item_amount($item[S.O.C.K.]) == 1)
-	{
-		set_property("auto_airship", "finished");
-	}
-	if(get_property("auto_airship") != "")
+	if (internalQuestStatus("questL10Garbage") < 1 || internalQuestStatus("questL10Garbage") > 6)
 	{
 		return false;
 	}
 
-	visit_url("clan_viplounge.php?preaction=goswimming&subaction=submarine");
 	auto_log_info("Fantasy Airship Fly Fly time", "blue");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
@@ -8408,7 +7380,7 @@ boolean L10_airship()
 
 boolean L12_flyerBackup()
 {
-	if(get_property("auto_prewar") != "started")
+	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
 	}
@@ -8504,7 +7476,7 @@ boolean Lsc_flyerSeals()
 	{
 		return false;
 	}
-	if(get_property("auto_prewar") != "started")
+	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
 	}
@@ -8611,13 +7583,12 @@ boolean LX_dolphinKingMap()
 
 boolean L7_crypt()
 {
-	if((my_level() < 7) || (get_property("auto_crypt") != ""))
+	if (internalQuestStatus("questL07Cyrptic") < 0 || internalQuestStatus("questL07Cyrptic") > 0)
 	{
 		return false;
 	}
 	if(item_amount($item[chest of the bonerdagon]) == 1)
 	{
-		set_property("auto_crypt", "finished");
 		use(1, $item[chest of the bonerdagon]);
 		return false;
 	}
@@ -8870,28 +7841,22 @@ boolean L7_crypt()
 		{
 			handleFamiliar($familiar[Machine Elf]);
 		}
-		if (isActuallyEd())
-		{
-			auto_change_mcd(10); // get vertebra to make the necklace.
-		}
+		auto_change_mcd(10); // get vertebra to make the necklace.
 		boolean tryBoner = autoAdv(1, $location[Haert of the Cyrpt]);
 		council();
 		cli_execute("refresh quests");
 		if(item_amount($item[chest of the bonerdagon]) == 1)
 		{
-			set_property("auto_crypt", "finished");
 			use(1, $item[chest of the bonerdagon]);
 			auto_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
 		}
 		else if(get_property("questL07Cyrptic") == "finished")
 		{
 			auto_log_warning("Looks like we don't have the chest of the bonerdagon but KoLmafia marked Cyrpt quest as finished anyway. Probably some weird path shenanigans.", "red");
-			set_property("auto_crypt", "finished");
 		}
 		else if(!tryBoner)
 		{
 			auto_log_warning("We tried to kill the Bonerdagon because the cyrpt was defiled but couldn't adventure there and the chest of the bonerdagon is gone so we can't check that. Anyway, we are going to assume the cyrpt is done now.", "red");
-			set_property("auto_crypt", "finished");
 		}
 		else
 		{
@@ -8945,7 +7910,7 @@ boolean LX_hardcoreFoodFarm()
 		return false;
 	}
 
-	if((my_level() >= 9) && ((get_property("auto_highlandlord") == "start") || (get_property("auto_highlandlord") == "finished")))
+	if (internalQuestStatus("questL09Topping") > 2)
 	{
 		autoAdv(1, $location[Oil Peak]);
 		return true;
@@ -8965,7 +7930,7 @@ boolean LX_hardcoreFoodFarm()
 
 boolean L6_friarsGetParts()
 {
-	if((my_level() < 6) || (get_property("auto_friars") != "") || (my_adventures() == 0))
+	if (internalQuestStatus("questL06Friar") < 0 || internalQuestStatus("questL06Friar") > 2)
 	{
 		return false;
 	}
@@ -9016,16 +7981,17 @@ boolean L6_friarsGetParts()
 		autoAdv(1, $location[The Dark Neck of the Woods]);
 		return true;
 	}
+
 	if(item_amount($item[eldritch butterknife]) == 0)
 	{
 		auto_log_info("Getting Eldritch Butterknife", "blue");
 		autoAdv(1, $location[The Dark Elbow of the Woods]);
 		return true;
 	}
+
 	auto_log_info("Finishing friars", "blue");
 	visit_url("friars.php?action=ritual&pwd");
 	council();
-	set_property("auto_friars", "finished"); # used to be done, but no longer need hot wings
 	return true;
 }
 
@@ -9035,7 +8001,7 @@ boolean LX_steelOrgan()
 	{
 		return false;
 	}
-	if((get_property("auto_friars") != "done") && (get_property("auto_friars") != "finished"))
+	if (get_property("questL06Friar") != "finished")
 	{
 		return false;
 	}
@@ -9278,7 +8244,7 @@ boolean L9_leafletQuest()
 
 boolean L8_trapperGround()
 {
-	if(get_property("auto_trapper") != "start")
+	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 1)
 	{
 		return false;
 	}
@@ -9288,7 +8254,6 @@ boolean L8_trapperGround()
 	if((item_amount(oreGoal) >= 3) && (item_amount($item[Goat Cheese]) >= 3))
 	{
 		auto_log_info("Giving Trapper goat cheese and " + oreGoal, "blue");
-		set_property("auto_trapper", "yeti");
 		visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
 		return true;
 	}
@@ -9311,7 +8276,6 @@ boolean L8_trapperGround()
 		if(item_amount($item[Goat Cheese]) >= 3)
 		{
 			auto_log_info("Giving Trapper goat cheese and " + oreGoal, "blue");
-			set_property("auto_trapper", "yeti");
 			visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
 			return true;
 		}
@@ -9461,21 +8425,24 @@ boolean LX_guildUnlock()
 
 boolean L8_trapperStart()
 {
-	if((my_level() < 8) || (get_property("auto_trapper") != ""))
+	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 0)
 	{
 		return false;
 	}
-	council();
+
 	auto_log_info("Let's meet the trapper.", "blue");
 
 	visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
-	set_property("auto_trapper", "start");
 	return true;
 }
 
 boolean L5_findKnob()
 {
-	if((my_level() >= 5) && (item_amount($item[Knob Goblin Encryption Key]) == 1))
+	if (internalQuestStatus("questL05Goblin") < 0 || internalQuestStatus("questL05Goblin") > 0)
+	{
+		return false;
+	}
+	if (item_amount($item[Knob Goblin Encryption Key]) == 1)
 	{
 		if(item_amount($item[Cobb\'s Knob Map]) == 0)
 		{
@@ -9489,7 +8456,7 @@ boolean L5_findKnob()
 
 boolean L5_goblinKing()
 {
-	if(get_property("auto_goblinking") == "finished")
+	if (internalQuestStatus("questL05Goblin") < 0 || internalQuestStatus("questL05Goblin") > 1)
 	{
 		return false;
 	}
@@ -9545,11 +8512,11 @@ boolean L5_goblinKing()
 		autoEquip($slot[acc2], $item[none]);
 	}
 
+	auto_change_mcd(10); // get the Crown from the Goblin King.
 	autoAdv(1, $location[Throne Room]);
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished"))
 	{
-		set_property("auto_goblinking", "finished");
 		council();
 	}
 	return true;
@@ -9557,16 +8524,13 @@ boolean L5_goblinKing()
 
 boolean L4_batCave()
 {
-	if(get_property("auto_bat") == "finished")
-	{
-		return false;
-	}
-	if(my_level() < 4)
+	if (internalQuestStatus("questL04Bat") < 0 || internalQuestStatus("questL04Bat") > 4)
 	{
 		return false;
 	}
 
 	auto_log_info("In the bat hole!", "blue");
+	visit_url("place.php?whichplace=bathole"); // ensure quest status is updated.
 	if(considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
@@ -9577,18 +8541,16 @@ boolean L4_batCave()
 	if((item_amount($item[Sonar-In-A-Biscuit]) > 0) && (batStatus < 3))
 	{
 		use(1, $item[Sonar-In-A-Biscuit]);
-		visit_url("place.php?whichplace=bathole"); // ensure quest status is updated.
 		return true;
 	}
 
 	if(batStatus >= 4)
 	{
-		if (item_amount($item[Enchanted Bean]) == 0 && !get_property("auto_bean").to_boolean() && !isActuallyEd())
+		if (item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2 && !isActuallyEd())
 		{
 			autoAdv(1, $location[The Beanbat Chamber]);
 			return true;
 		}
-		set_property("auto_bat", "finished");
 		council();
 		if (in_koe())
 		{
@@ -9596,21 +8558,18 @@ boolean L4_batCave()
 		}
 		return true;
 	}
+	
 	if(batStatus >= 3)
 	{
 		buffMaintain($effect[Polka of Plenty], 15, 1, 1);
 		bat_formWolf();
 		addToMaximize("10meat");
 		int batskinBelt = item_amount($item[Batskin Belt]);
-		if (isActuallyEd())
-		{
-			auto_change_mcd(4); // get the pants from the Boss Bat.
-		}
+		auto_change_mcd(4); // get the pants from the Boss Bat.
 		autoAdv(1, $location[The Boss Bat\'s Lair]);
 		# DIGIMON remove once mafia tracks this
 		if(item_amount($item[Batskin Belt]) != batskinBelt)
 		{
-			set_property("auto_bat", "finished");
 			auto_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
 		}
 		return true;
@@ -9618,7 +8577,7 @@ boolean L4_batCave()
 	if(batStatus >= 2)
 	{
 		bat_formBats();
-		if (item_amount($item[Enchanted Bean]) == 0 && !get_property("auto_bean").to_boolean() && !isActuallyEd())
+		if (item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2 && !isActuallyEd())
 		{
 			autoAdv(1, $location[The Beanbat Chamber]);
 			return true;
@@ -9870,9 +8829,16 @@ boolean LX_craftAcquireItems()
 		//Demonskin Jacket, requires an adventure, knoll available doesn\'t matter here...
 	}
 
-	if((in_koe() && creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10))
+	if (in_koe())
 	{
-		retrieve_item(1, $item[Antique Accordion]);
+		if ((creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion])) && auto_predictAccordionTurns() < 10)
+		{
+			retrieve_item(1, $item[Antique Accordion]);
+		}
+		if(creatable_amount($item[low-pressure oxygen tank]) > 0 && !possessEquipment($item[low-pressure oxygen tank]))
+		{
+			retrieve_item(1, $item[low-pressure oxygen tank]);
+		}
 	}
 
 	LX_dolphinKingMap();
@@ -10072,7 +9038,7 @@ boolean LX_meatMaid()
 	{
 		return false;
 	}
-	if(!knoll_available() || (my_daycount() != 1) || (get_property("auto_crypt") != "finished"))
+	if (!knoll_available() || my_daycount() != 1 || get_property("questL07Cyrptic") != "finished")
 	{
 		return false;
 	}
@@ -10361,24 +9327,19 @@ boolean LX_islandAccess()
 
 boolean LX_phatLootToken()
 {
-	if(get_property("auto_phatloot").to_int() >= my_daycount())
-	{
-		return false;
-	}
 	if(towerKeyCount(false) >= 3)
 	{
 		return false;
 	}
-	if(my_adventures() <= 15 - get_property("_lastDailyDungeonRoom").to_int())
+	if (get_property("dailyDungeonDone").to_boolean())
 	{
+		if (fantasyRealmToken())
+		{
+			return true;
+		}
 		return false;
 	}
-
-	if(fantasyRealmToken())
-	{
-		return true;
-	}
-	if(fantasyRealmAvailable() && get_property("auto_sorceress") != "door")
+	if(my_adventures() <= 15 - get_property("_lastDailyDungeonRoom").to_int())
 	{
 		return false;
 	}
@@ -10451,10 +9412,6 @@ boolean LX_phatLootToken()
 	{
 		cli_execute("unequip acc3");
 	}
-	if(get_property("_lastDailyDungeonRoom").to_int() == 15)
-	{
-		set_property("auto_phatloot", "" + my_daycount());
-	}
 	restoreSetting("choiceAdventure690");
 	restoreSetting("choiceAdventure691");
 	restoreSetting("choiceAdventure692");
@@ -10465,23 +9422,18 @@ boolean LX_phatLootToken()
 
 boolean L6_dakotaFanning()
 {
-	if(!get_property("auto_dakotaFanning").to_boolean())
+	if (!get_property("auto_dakotaFanning").to_boolean() || hidden_temple_unlocked())
 	{
 		return false;
 	}
-	if(get_property("questM16Temple") == "unstarted")
+	if (internalQuestStatus("questM16Temple") < 0)
 	{
 		if(my_basestat(my_primestat()) < 35)
 		{
 			return false;
 		}
-		string temp = visit_url("place.php?whichplace=woods&action=woods_dakota_anim");
+		visit_url("place.php?whichplace=woods&action=woods_dakota_anim");
 		return true;
-	}
-	if(get_property("questM16Temple") == "finished")
-	{
-		set_property("auto_dakotaFanning", true);
-		return false;
 	}
 
 	if(item_amount($item[Pellet Of Plant Food]) == 0)
@@ -10492,7 +9444,7 @@ boolean L6_dakotaFanning()
 
 	if(item_amount($item[Heavy-Duty Bendy Straw]) == 0)
 	{
-		if((get_property("auto_friars") != "finished") && (get_property("auto_friars") != "done"))
+		if (get_property("questL06Friar") != "finished")
 		{
 			autoAdv(1, $location[The Dark Heart of the Woods]);
 		}
@@ -10516,27 +9468,21 @@ boolean L6_dakotaFanning()
 		return true;
 	}
 
-	string temp = visit_url("place.php?whichplace=woods&action=woods_dakota");
+	visit_url("place.php?whichplace=woods&action=woods_dakota");
 	if(get_property("questM16Temple") != "finished")
 	{
 		abort("Elle FanninG quest gnot satisfied.");
 	}
-	set_property("auto_dakotaFanning", false);
 	return true;
 }
 
-
 boolean L2_treeCoin()
 {
-	if(item_amount($item[Tree-Holed Coin]) == 1)
+	if (hidden_temple_unlocked())
 	{
-		set_property("auto_treecoin", "finished");
+		return false;
 	}
-	if(item_amount($item[Spooky Temple Map]) == 1)
-	{
-		set_property("auto_treecoin", "finished");
-	}
-	if(get_property("auto_treecoin") == "finished")
+	if (item_amount($item[Tree-Holed Coin]) > 0 || item_amount($item[spooky temple map]) > 0)
 	{
 		return false;
 	}
@@ -10550,32 +9496,32 @@ boolean L2_treeCoin()
 
 boolean L2_spookyMap()
 {
-	if(get_property("auto_spookymap") == "finished")
+	if (hidden_temple_unlocked())
 	{
 		return false;
 	}
+	if (item_amount($item[spooky temple map]) > 0)
+	{
+		return false;
+	}
+
 	auto_log_info("Need a spooky map now", "blue");
 	set_property("choiceAdventure502", "3");
 	set_property("choiceAdventure506", "3");
 	set_property("choiceAdventure507", "1");
 	autoAdv(1, $location[The Spooky Forest]);
-	if(item_amount($item[spooky temple map]) == 1)
-	{
-		set_property("auto_spookymap", "finished");
-	}
 	return true;
 }
 
 boolean L2_spookyFertilizer()
 {
-	if(get_property("auto_spookyfertilizer") == "finished")
+	if (hidden_temple_unlocked())
 	{
 		return false;
 	}
 	pullXWhenHaveY($item[Spooky-Gro Fertilizer], 1, 0);
 	if(item_amount($item[Spooky-Gro Fertilizer]) > 0)
 	{
-		set_property("auto_spookyfertilizer", "finished");
 		return false;
 	}
 	auto_log_info("Need some poop, I mean fertilizer now", "blue");
@@ -10587,7 +9533,7 @@ boolean L2_spookyFertilizer()
 
 boolean L2_spookySapling()
 {
-	if(get_property("auto_spookysapling") == "finished")
+	if (hidden_temple_unlocked())
 	{
 		return false;
 	}
@@ -10626,7 +9572,6 @@ boolean L2_spookySapling()
 		visit_url("choice.php?whichchoice=504&option=4&pwd");
 		if(item_amount($item[Spooky Sapling]) > 0)
 		{
-			set_property("auto_spookysapling", "finished");
 			use(1, $item[Spooky Temple Map]);
 		}
 		else
@@ -10639,16 +9584,7 @@ boolean L2_spookySapling()
 
 boolean L2_mosquito()
 {
-	if(get_property("auto_mosquito") != "finished" && item_amount($item[mosquito larva]) > 0)
-	{
-		council();
-		set_property("auto_mosquito", "finished");
-		if (in_koe())
-		{
-			cli_execute("refresh quests");
-		}
-	}
-	if(get_property("auto_mosquito") == "finished")
+	if (internalQuestStatus("questL02Larva") < 0 || internalQuestStatus("questL02Larva") > 1)
 	{
 		return false;
 	}
@@ -10660,6 +9596,14 @@ boolean L2_mosquito()
 	set_property("choiceAdventure502", "2"); // Arboreal Respite: go to Consciousness of a Stream
 	set_property("choiceAdventure505", "1"); // Consciousness of a Stream: Acquire Mosquito Larva
 	autoAdv(1, $location[The Spooky Forest]);
+	if (internalQuestStatus("questL02Larva") > 0 || item_amount($item[mosquito larva]) > 0)
+	{
+		council();
+		if (in_koe())
+		{
+			cli_execute("refresh quests");
+		}
+	}
 	return true;
 }
 
@@ -10941,29 +9885,15 @@ boolean LX_handleSpookyravenFirstFloor()
 
 boolean L5_getEncryptionKey()
 {
-	if (in_koe()) return false;
+	if (internalQuestStatus("questL05Goblin") > 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
+	{
+		return false;
+	}
 
 	if(item_amount($item[11-inch knob sausage]) == 1)
 	{
 		visit_url("guild.php?place=challenge");
 		return true;
-	}
-	if(item_amount($item[Knob Goblin Encryption Key]) == 1)
-	{
-		set_property("auto_day1_cobb", "finished");
-		if(my_level() >= 5)
-		{
-			council();
-		}
-	}
-	if(get_property("auto_day1_cobb") == "finished")
-	{
-		return false;
-	}
-	if(internalQuestStatus("questL05Goblin") >= 1)
-	{
-		set_property("auto_day1_cobb", "finished");
-		return false;
 	}
 
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
@@ -11013,34 +9943,30 @@ boolean LX_handleSpookyravenNecklace()
 
 boolean L12_startWar()
 {
-	if(get_property("auto_prewar") != "")
+	if (internalQuestStatus("questL12War") < 0 || internalQuestStatus("questL12War") > 0)
 	{
 		return false;
 	}
 
-	if (my_level() < 12)
+	if (in_koe())
 	{
 		return false;
 	}
 
-	if (my_basestat($stat[Mysticality]) < 70 || my_basestat($stat[Moxie]) < 70)
-	{
-		return false;
-	}
-
-	if(in_koe())
+	if (!haveWarOutfit() || my_basestat($stat[Mysticality]) < 70 || my_basestat($stat[Moxie]) < 70)
 	{
 		return false;
 	}
 
 	auto_log_info("Must save the ferret!!", "blue");
-	autoOutfit("frat warrior fatigues");
+	warOutfit(false);
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 	buffMaintain($effect[Snow Shoes], 0, 1, 1);
 	buffMaintain($effect[Become Superficially Interested], 0, 1, 1);
+	providePlusNonCombat(25);
 
 	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
@@ -11051,14 +9977,12 @@ boolean L12_startWar()
 	set_property("choiceAdventure142", "3");
 	if(contains_text(get_property("lastEncounter"), "Blockin\' Out the Scenery"))
 	{
-		set_property("auto_prewar", "started");
-		visit_url("bigisland.php?action=junkman&pwd");
 		if(!get_property("auto_hippyInstead").to_boolean())
 		{
+			visit_url("bigisland.php?action=junkman&pwd");
 			visit_url("bigisland.php?place=concert&pwd");
 			visit_url("bigisland.php?place=lighthouse&action=pyro&pwd=");
 			visit_url("bigisland.php?place=lighthouse&action=pyro&pwd=");
-			set_property("auto_gunpowder", "finished");
 		}
 	}
 	return true;
@@ -11066,11 +9990,12 @@ boolean L12_startWar()
 
 boolean L12_getOutfit()
 {
-	if(get_property("auto_prehippy") == "done")
+	if (internalQuestStatus("questL12War") < 0 || internalQuestStatus("questL12War") > 0)
 	{
 		return false;
 	}
-	if(my_level() < 12)
+
+	if (haveWarOutfit())
 	{
 		return false;
 	}
@@ -11098,12 +10023,10 @@ boolean L12_getOutfit()
 	{
 		set_property("choiceAdventure139", "3");
 		set_property("choiceAdventure140", "3");
-		set_property("auto_prehippy", "done");
-		visit_url("clan_viplounge.php?preaction=goswimming&subaction=submarine");
 		return true;
 	}
 
-	if(get_property("auto_prehippy") == "firstOutfit")
+	if (possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
 	{
 		autoOutfit("filthy hippy disguise");
 		if(my_lightning() >= 5)
@@ -11158,19 +10081,13 @@ boolean L12_preOutfit()
 	{
 		return false;
 	}
-	if(get_property("auto_prehippy") != "")
+	if (possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
 	{
 		return false;
 	}
-	if(have_outfit("Filthy Hippy Disguise"))
+	if(haveWarOutfit())
 	{
-		set_property("auto_prehippy", "firstOutfit");
-		return true;
-	}
-	if(possessEquipment($item[Beer Helmet]) && possessEquipment($item[Distressed Denim Pants]) && possessEquipment($item[Bejeweled Pledge Pin]))
-	{
-		set_property("auto_prehippy", "firstOutfit");
-		return true;
+		return false;
 	}
 
 	if (isActuallyEd())
@@ -11208,7 +10125,7 @@ boolean L12_preOutfit()
 
 boolean L12_flyerFinish()
 {
-	if(get_property("auto_war") == "finished")
+	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1)
 	{
 		return false;
 	}
@@ -11239,7 +10156,6 @@ boolean L12_flyerFinish()
 	cli_execute("refresh inv");
 	if((item_amount($item[Rock Band Flyers]) == 0) && (item_amount($item[Jam Band Flyers]) == 0))
 	{
-		auto_change_mcd(0);
 		return true;
 	}
 	auto_log_warning("We thought we had enough flyeredML, but we don't. Big sadness, let's try that again.", "red");
@@ -11249,7 +10165,7 @@ boolean L12_flyerFinish()
 
 boolean L9_highLandlord()
 {
-	if(my_level() < 9)
+	if (internalQuestStatus("questL09Topping") < 1 || internalQuestStatus("questL09Topping") > 3)
 	{
 		return false;
 	}
@@ -11257,40 +10173,28 @@ boolean L9_highLandlord()
 	{
 		return false;
 	}
-	if(get_property("auto_highlandlord") == "finished")
-	{
-		return false;
-	}
-
 	if (isActuallyEd() && !get_property("auto_chasmBusted").to_boolean())
 	{
 		return false;
 	}
 
-	if(get_property("auto_highlandlord") == "")
+	if (internalQuestStatus("questL09Topping") < 2)
 	{
 		visit_url("place.php?whichplace=highlands&action=highlands_dude");
-		set_property("choiceAdventure296", "1");
-		set_property("auto_highlandlord", "start");
 		set_property("auto_grimstoneFancyOilPainting", false);
 		return true;
-	}
-
-	if(contains_text(visit_url("place.php?whichplace=highlands"), "fire1.gif"))
-	{
-		set_property("auto_boopeak", "finished");
 	}
 
 	if(L9_twinPeak())			return true;
 	if(L9_aBooPeak())			return true;
 	if(L9_oilPeak())			return true;
 
-	if((get_property("twinPeakProgress").to_int() == 15) && (get_property("auto_oilpeak") == "finished") && (get_property("auto_boopeak") == "finished"))
+	buffer peaks = visit_url("place.php?whichplace=highlands");
+	if (peaks.contains_text("fire1.gif") && peaks.contains_text("fire2.gif") && peaks.contains_text("fire3.gif"))
 	{
 		auto_log_info("Highlord Done", "blue");
 		visit_url("place.php?whichplace=highlands&action=highlands_dude");
 		council();
-		set_property("auto_highlandlord", "finished");
 		return true;
 	}
 
@@ -11299,7 +10203,12 @@ boolean L9_highLandlord()
 
 boolean L9_aBooPeak()
 {
-	if(get_property("auto_boopeak") == "finished")
+	if (internalQuestStatus("questL09Topping") < 2 || internalQuestStatus("questL09Topping") > 3)
+	{
+		return false;
+	}
+	
+	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire1.gif"))
 	{
 		return false;
 	}
@@ -11615,10 +10524,6 @@ boolean L9_aBooPeak()
 		autoAdv(1, $location[A-Boo Peak]);
 		set_property("auto_aboopending", 0);
 
-		if(get_property("lastEncounter") == "Come On Ghosty, Light My Pyre")
-		{
-			set_property("auto_boopeak", "finished");
-		}
 		return true;
 	}
 	return false;
@@ -11626,13 +10531,23 @@ boolean L9_aBooPeak()
 
 boolean L9_twinPeak()
 {
+	if (internalQuestStatus("questL09Topping") < 2 || internalQuestStatus("questL09Topping") > 3)
+	{
+		return false;
+	}
+
+	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire2.gif"))
+	{
+		return false;
+	}
+
 	if(get_property("twinPeakProgress").to_int() >= 15)
 	{
 		return false;
 	}
 
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-	if(get_property("auto_twinpeakprogress").to_int() == 0)
+	if(get_property("twinPeakProgress").to_int() == 0)
 	{
 		auto_log_info("Twin Peak", "blue");
 		set_property("choiceAdventure604", "1");
@@ -11643,7 +10558,6 @@ boolean L9_twinPeak()
 		{
 			visit_url("choice.php?pwd&whichchoice=604&option=1&choiceform1=Continue...");
 			visit_url("choice.php?pwd&whichchoice=604&option=1&choiceform1=Everything+goes+black.");
-			set_property("auto_twinpeakprogress", "1");
 			set_property("choiceAdventure606", "2");
 			set_property("choiceAdventure608", "1");
 		}
@@ -11917,7 +10831,7 @@ boolean L9_twinPeak()
 
 boolean L9_oilPeak()
 {
-	if(get_property("auto_oilpeak") != "")
+	if (internalQuestStatus("questL09Topping") < 2 || internalQuestStatus("questL09Topping") > 3)
 	{
 		return false;
 	}
@@ -11971,14 +10885,12 @@ boolean L9_oilPeak()
 			{
 				cli_execute("make " + $item[Jar Of Oil]);
 			}
-			set_property("auto_oilpeak", "finished");
 			return true;
 		}
 
 		if((item_amount($item[Jar Of Oil]) > 0) || !needJar)
 		{
-			set_property("auto_oilpeak", "finished");
-			return true;
+			return false;
 		}
 		auto_log_info("Oil Peak is finished but we need more crude!", "blue");
 	}
@@ -12138,7 +11050,7 @@ void L9_chasmMaximizeForNoncombat()
 
 boolean L9_chasmBuild()
 {
-	if (my_level() < 9 || get_property("chasmBridgeProgress").to_int() >= 30 || internalQuestStatus("questL09Topping") >= 1)
+	if (internalQuestStatus("questL09Topping") < 0 || get_property("chasmBridgeProgress").to_int() >= 30 || internalQuestStatus("questL09Topping") > 0)
 	{
 		return false;
 	}
@@ -12298,7 +11210,6 @@ boolean L9_chasmBuild()
 			autoEquip(it);
 		}
 
-		auto_change_mcd(0);
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
 		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
 		{
@@ -12316,15 +11227,12 @@ boolean L9_chasmBuild()
 
 boolean L11_redZeppelin()
 {
-	if(my_level() < 11)
+	if (internalQuestStatus("questL11Shen") < 8)
 	{
 		return false;
 	}
-	if(get_property("questL11Shen") != "finished")
-	{
-		return false;
-	}
-	if(internalQuestStatus("questL11Ron") >= 2)
+
+	if (internalQuestStatus("questL11Ron") < 0 || internalQuestStatus("questL11Ron") > 1)
 	{
 		return false;
 	}
@@ -12459,24 +11367,13 @@ boolean L11_redZeppelin()
 
 boolean L11_ronCopperhead()
 {
-	if(my_level() < 11)
-	{
-		return false;
-	}
-	if(internalQuestStatus("questL11Shen") < 0)
-	{
-		return false;
-	}
-	if(internalQuestStatus("questL11Ron") < 2)
-	{
-		return false;
-	}
-	if(get_property("questL11Ron") == "finished")
+	if (internalQuestStatus("questL11Ron") < 2 || internalQuestStatus("questL11Ron") > 4)
 	{
 		return false;
 	}
 
-	if((internalQuestStatus("questL11Ron") == 2) || (internalQuestStatus("questL11Ron") == 3) || (internalQuestStatus("questL11Ron") == 4))
+
+	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
 	{
 		if (item_amount($item[Red Zeppelin Ticket]) < 1)
 		{
@@ -12502,7 +11399,7 @@ boolean L11_ronCopperhead()
 		return retval;
 	}
 
-	if(get_property("questL11Ron") != "finished")
+	if (internalQuestStatus("questL11Ron") < 5)
 	{
 		abort("Ron should be done with but tracking is not complete!");
 	}
@@ -12513,15 +11410,7 @@ boolean L11_ronCopperhead()
 
 boolean L11_shenCopperhead()
 {
-	if(my_level() < 11)
-	{
-		return false;
-	}
-	if(internalQuestStatus("questL11Shen") < 0)
-	{
-		return false;
-	}
-	if(get_property("questL11Shen") == "finished")
+	if (internalQuestStatus("questL11Shen") < 0 || internalQuestStatus("questL11Shen") > 7)
 	{
 		return false;
 	}
@@ -12636,7 +11525,7 @@ boolean L11_shenCopperhead()
 		}
 	}
 
-	if(get_property("questL11Shen") != "finished")
+	if (internalQuestStatus("questL11Shen") < 8)
 	{
 		abort("Shen should be done with but tracking is not complete! Status: " + get_property("questL11Shen"));
 	}
@@ -12664,24 +11553,22 @@ boolean L11_talismanOfNam()
 
 boolean L11_mcmuffinDiary()
 {
-	if(my_level() < 11)
+	if (internalQuestStatus("questL11MacGuffin") < 1 || internalQuestStatus("questL11MacGuffin") > 1 || internalQuestStatus("questL11Black") < 2)
 	{
 		return false;
 	}
-	if(get_property("auto_mcmuffin") != "")
+	if (in_koe() && item_amount($item[Forged Identification Documents]) > 0)
 	{
-		return false;
+		council(); // Shore doesn't exist in Exploathing so we acquire diary from the council
 	}
 	if(item_amount($item[Your Father\'s Macguffin Diary]) > 0)
 	{
 		use(item_amount($item[Your Father\'s Macguffin Diary]), $item[Your Father\'s Macguffin Diary]);
-		set_property("auto_mcmuffin", "start");
 		return true;
 	}
 	if(item_amount($item[Copy of a Jerk Adventurer\'s Father\'s Diary]) > 0)
 	{
 		use(item_amount($item[Copy of a Jerk Adventurer\'s Father\'s Diary]), $item[Copy of a Jerk Adventurer\'s Father\'s Diary]);
-		set_property("auto_mcmuffin", "start");
 		return true;
 	}
 	if (my_adventures() < 4 || my_meat() < 500 || item_amount($item[Forged Identification Documents]) == 0)
@@ -12697,7 +11584,6 @@ boolean L11_mcmuffinDiary()
 		if(item_amount(diary) > 0)
 		{
 			use(item_amount(diary), diary);
-			set_property("auto_mcmuffin", "start");
 			return true;
 		}
 	}
@@ -12706,23 +11592,15 @@ boolean L11_mcmuffinDiary()
 
 boolean L11_forgedDocuments()
 {
-	if(my_level() < 11)
+	if (internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 2 || !black_market_available())
 	{
 		return false;
 	}
-	if(!black_market_available())
+	if (item_amount($item[Forged Identification Documents]) > 0)
 	{
 		return false;
 	}
-	if(get_property("auto_blackmap") != "document")
-	{
-		return false;
-	}
-	if(item_amount($item[Forged Identification Documents]) != 0)
-	{
-		return false;
-	}
-	if(my_meat() < 5000)
+	if (my_meat() < npc_price($item[Forged Identification Documents]))
 	{
 		auto_log_warning("Could not buy Forged Identification Documents, can not steal identities!", "red");
 		return false;
@@ -12736,7 +11614,6 @@ boolean L11_forgedDocuments()
 	buyUpTo(1, $item[Forged Identification Documents]);
 	if(item_amount($item[Forged Identification Documents]) > 0)
 	{
-		set_property("auto_blackmap", "finished");
 		handleFamiliar("item");
 		return true;
 	}
@@ -12754,11 +11631,11 @@ boolean L11_fistDocuments()
 
 boolean L11_blackMarket()
 {
-	if(my_level() < 11)
+	if (internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 1 || black_market_available())
 	{
 		return false;
 	}
-	if(get_property("auto_blackmap") != "")
+	if ((possessEquipment($item[Blackberry Galoshes]) && !auto_can_equip($item[Blackberry Galoshes])) && my_level() != get_property("auto_powerLevelLastLevel").to_int())
 	{
 		return false;
 	}
@@ -12775,14 +11652,13 @@ boolean L11_blackMarket()
 	}
 
 	auto_log_info("Must find the Black Market: " + get_property("blackForestProgress"), "blue");
-	if(get_property("auto_blackfam").to_boolean())
+	if (internalQuestStatus("questL11Black") == 0)
 	{
 		council();
 		if (!possessEquipment($item[Blackberry Galoshes]) && auto_can_equip($item[Blackberry Galoshes]))
 		{
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 		}
-		set_property("auto_blackfam", false);
 		set_property("choiceAdventure923", "1"); // All Over the Map: Head toward the blackberry patch
 	}
 
@@ -12844,11 +11720,7 @@ boolean L11_blackMarket()
 
 boolean LX_getStarKey()
 {
-	if(get_property("auto_castleground") != "finished")
-	{
-		return false;
-	}
-	if(my_level() < 10)
+	if (internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL11Shen") < 7)
 	{
 		return false;
 	}
@@ -12901,11 +11773,7 @@ boolean LX_getStarKey()
 
 boolean L5_haremOutfit()
 {
-	if(my_level() < 5)
-	{
-		return false;
-	}
-	if(get_property("questL05Goblin") == "finished")
+	if (internalQuestStatus("questL05Goblin") < 0 || internalQuestStatus("questL05Goblin") > 1)
 	{
 		return false;
 	}
@@ -12936,20 +11804,10 @@ boolean L5_haremOutfit()
 
 boolean L8_trapperGroar()
 {
-	if(my_level() < 8)
-	{
-		return false;
-	}
-
-	if (internalQuestStatus("questL08Trapper") < 2)
+	if (internalQuestStatus("questL08Trapper") < 2 || internalQuestStatus("questL08Trapper") > 5)
 	{
 		// if we haven't returned the goat cheese and ore
 		// to the trapper yet, don't try to ascend the peak.
-		return false;
-	}
-
-	if(get_property("auto_trapper") == "finished")
-	{
 		return false;
 	}
 
@@ -13003,7 +11861,6 @@ boolean L8_trapperGroar()
 		{
 			auto_autosell(5, $item[Dense Meat Stack]);
 		}
-		set_property("auto_trapper", "finished");
 		council();
 		return true;
 	}
@@ -13046,12 +11903,11 @@ boolean L8_trapperGroar()
 
 		if(elemental_resist($element[cold]) >= 5)
 		{
-			if(get_property("auto_mistypeak") == "")
+			if (internalQuestStatus("questL08Trapper") == 2)
 			{
 				set_property("auto_ninjasnowmanassassin", "1");
 				visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
 				visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");
-				set_property("auto_mistypeak", "finished");
 			}
 
 			auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
@@ -13065,7 +11921,6 @@ boolean L8_trapperGroar()
 			{
 				visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
 				auto_autosell(5, $item[dense meat stack]);
-				set_property("auto_trapper", "finished");
 				council();
 			}
 			return true;
@@ -13080,7 +11935,7 @@ boolean L8_trapperExtreme()
 	{
 		return false;
 	}
-	if(internalQuestStatus("questL08Trapper") >= 3)
+	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 2)
 	{
 		return false;
 	}
@@ -13159,12 +12014,7 @@ boolean L8_trapperExtreme()
 
 boolean L8_trapperNinjaLair()
 {
-	if(get_property("auto_trapper") != "yeti")
-	{
-		return false;
-	}
-
-	if (internalQuestStatus("questL08Trapper") >= 3)
+	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 2)
 	{
 		return false;
 	}
@@ -13193,10 +12043,6 @@ boolean L8_trapperNinjaLair()
 
 	if(in_hardcore())
 	{
-		if(get_property("questL08Trapper") == "step1")
-		{
-			set_property("questL08Trapper", "step2");
-		}
 		if (isActuallyEd())
 		{
 			if(item_amount($item[Talisman of Horus]) == 0)
@@ -13241,7 +12087,6 @@ boolean L8_trapperNinjaLair()
 		if(!autoAdv(1, $location[Lair of the Ninja Snowmen]))
 		{
 			auto_log_warning("Seems like we failed the Ninja Snowmen unlock, reverting trapper setting", "red");
-			set_property("auto_trapper", "start");
 		}
 		return true;
 	}
@@ -13521,71 +12366,17 @@ boolean L3_tavern()
 	if (internalQuestStatus("questL03Rat") > 1)
 	{
 		visit_url("tavern.php?place=barkeep");
-		set_property("auto_tavern", "finished");
 		council();
 		return true;
 	}
 	return false;
 }
 
-boolean LX_setBallroomSong()
-{
-	if((get_property("auto_ballroomopen") != "open") || (get_property("auto_ballroomsong") == "finished"))
-	{
-		return false;
-	}
-	if(get_property("lastQuartetRequest").to_int() != 0)
-	{
-		set_property("auto_ballroomsong", "finished");
-		return false;
-	}
-	if (isActuallyEd())
-	{
-		return false;
-	}
-	if(!cangroundHog($location[The Haunted Ballroom]))
-	{
-		return false;
-	}
-
-	if((my_mp() > 60) || considerGrimstoneGolem(true))
-	{
-		handleBjornify($familiar[Grimstone Golem]);
-	}
-	set_property("choiceAdventure90", "3");
-
-	set_property("choiceAdventure106", "2");
-	if($classes[Avatar of Boris, Avatar of Sneaky Pete, Ed] contains my_class())
-	{
-		set_property("choiceAdventure106", "3");
-	}
-	if(auto_my_path() == "Nuclear Autumn")
-	{
-		set_property("choiceAdventure106", "3");
-	}
-
-
-	autoAdv(1, $location[The Haunted Ballroom]);
-	if(contains_text(get_property("lastEncounter"), "Strung-Up Quartet"))
-	{
-		set_property("auto_ballroomsong", "finished");
-	}
-	if(contains_text(get_property("lastEncounter"), "We\'ll All Be Flat"))
-	{
-		set_property("auto_ballroomflat", "finished");
-		if (isActuallyEd())
-		{
-			set_property("auto_ballroomsong", "finished");
-		}
-	}
-	return true;
-}
-
 boolean L12_clearBattlefield()
 {
 	if(in_koe())
 	{
-		if(get_property("auto_war") != "finished" && (get_property("hippiedDefeated").to_int() < 333) && (get_property("fratboysDefeated").to_int() < 333) && can_equip($item[Distressed denim pants]) && can_equip($item[beer helmet]) && can_equip($item[bejeweled pledge pin]))
+		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiedDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && can_equip($item[Distressed denim pants]) && can_equip($item[beer helmet]) && can_equip($item[bejeweled pledge pin]))
 		{
 			handleFamiliar("item");
 			if(haveWarOutfit())
@@ -13633,7 +12424,6 @@ boolean L12_clearBattlefield()
 
 			if(item_amount($item[solid gold bowling ball]) > 0)
 			{
-				set_property("auto_war", "finished");
 				council();
 			}
 			return true;
@@ -13642,7 +12432,7 @@ boolean L12_clearBattlefield()
 	}
 	else
 	{
-		if((get_property("hippiesDefeated").to_int() < 64) && (get_property("fratboysDefeated").to_int() < 64) && (my_level() >= 12) && (get_property("auto_prewar") == "started") && (get_property("auto_war") != "finished"))
+		if (get_property("hippiesDefeated").to_int() < 64 && get_property("fratboysDefeated").to_int() < 64 && internalQuestStatus("questL12War") == 1)
 		{
 			auto_log_info("First 64 combats. To orchard/lighthouse", "blue");
 			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
@@ -13668,7 +12458,7 @@ boolean L12_clearBattlefield()
 			return warAdventure();
 		}
 
-		if((get_property("hippiesDefeated").to_int() < 192) && (get_property("fratboysDefeated").to_int() < 192) && (my_level() >= 12) && (get_property("auto_prewar") != ""))
+		if (get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192 && internalQuestStatus("questL12War") == 1)
 		{
 			auto_log_info("Getting to the nunnery/junkyard", "blue");
 			handleFamiliar("item");
@@ -13676,7 +12466,7 @@ boolean L12_clearBattlefield()
 			return warAdventure();
 		}
 
-		if(((get_property("auto_nuns") == "finished") || (get_property("auto_nuns") == "done")) && ((get_property("hippiesDefeated").to_int() < 1000) && (get_property("fratboysDefeated").to_int() < 1000)) && (my_level() >= 12))
+		if (get_property("sidequestNunsCompleted") != "none" && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
 		{
 			auto_log_info("Doing the wars.", "blue");
 			handleFamiliar("item");
@@ -13838,11 +12628,12 @@ boolean doTasks()
 
 	basicAdjustML();
 	powerLevelAdjustment();
-	if (is100FamiliarRun())
+	if (is100FamiliarRun() && my_familiar() == $familiar[none])
 	{
 		// re-equip a familiar if it's a 100% run just in case something unequipped it
 		// looking at you auto_maximizedConsumeStuff()...
 		handleFamiliar(to_familiar(get_property("auto_100familiar")));
+		auto_log_debug("Re-equipped your " + get_property("auto_100familiar") + " as something had unequipped it. This is bad and should be investigated.");
 	}
 	else
 	{
@@ -14009,15 +12800,10 @@ boolean doTasks()
 	if(resolveSixthDMT())			return true;
 	if(LX_dinseylandfillFunbucks())		return true;
 	if(L12_flyerFinish())				return true;
-
-	if((my_level() >= 12) && (item_amount($item[Rock Band Flyers]) == 0) && (item_amount($item[Jam Band Flyers]) == 0) && (get_property("flyeredML").to_int() < 10000) && ((get_property("auto_hiddenapartment") == "0") || (get_property("auto_hiddenapartment") == "finished")) && ((have_effect($effect[Ultrahydrated]) == 0) || (get_property("desertExploration").to_int() >= 100)))
+	if(L12_getOutfit() || L12_startWar())
 	{
-		if(L12_getOutfit() || L12_startWar())
-		{
-			return true;
-		}
+		return true;
 	}
-
 	if(LX_loggingHatchet())				return true;
 	if(LX_guildUnlock())				return true;
 	if(knoll_available() && get_property("auto_spoonconfirmed").to_int() == my_ascensions())
@@ -14059,7 +12845,6 @@ boolean doTasks()
 	}
 
 	if(LX_spookyravenSecond())			return true;
-	if(LX_setBallroomSong())			return true;
 	if(L3_tavern())						return true;
 	if(L6_friarsGetParts())				return true;
 	if(LX_hardcoreFoodFarm())			return true;
@@ -14104,7 +12889,7 @@ boolean doTasks()
 	if(ornateDowsingRod())			return true;
 	if(L11_aridDesert())				return true;
 
-	if((get_property("auto_nuns") == "done") && (item_amount($item[Half A Purse]) == 1))
+	if (get_property("sidequestNunsCompleted") != "none" && item_amount($item[Half A Purse]) == 1)
 	{
 		pulverizeThing($item[Half A Purse]);
 		if(item_amount($item[Handful of Smithereens]) > 0)
@@ -14119,25 +12904,13 @@ boolean doTasks()
 	if(L11_unlockPyramid())				return true;
 	if(L11_unlockEd())					return true;
 	if(L11_defeatEd())					return true;
-	if (!in_koe())
-	{
-		if(L12_gremlins())					return true;
-		if(L12_gremlinStart())				return true;
-		if(L12_sonofaFinish())				return true;
-		if(L12_sonofaBeach())				return true;
-		if(L12_orchardStart())				return true;
-		if(L12_filthworms())				return true;
-		if(L12_orchardFinalize())			return true;
-	}
-
-	if((my_level() >= 12) && ((get_property("hippiesDefeated").to_int() >= 192) || get_property("auto_hippyInstead").to_boolean()) && (get_property("auto_nuns") == ""))
-	{
-		if(L12_ThemtharHills())
-		{
-			return true;
-		}
-	}
-
+	if(L12_gremlins())					return true;
+	if(L12_sonofaFinish())			return true;
+	if(L12_sonofaBeach())				return true;
+	if(L12_orchardStart())			return true;
+	if(L12_filthworms())				return true;
+	if(L12_orchardFinalize())		return true;
+	if(L12_themtharHills())			return true;
 	if(L11_getBeehive())				return true;
 	if(L12_finalizeWar())				return true;
 	if(LX_getDigitalKey())				return true;
@@ -14161,9 +12934,7 @@ boolean doTasks()
 	if(L13_sorceressDoor())				return true;
 	if(L13_towerNSTower())				return true;
 	if(L13_towerNSNagamar())			return true;
-	if(L13_towerNSTransition())		return true;
 	if(L13_towerNSFinal())				return true;
-	if(L13_ed_councilWarehouse())	return true;
 
 	if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
 	{

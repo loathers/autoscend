@@ -471,6 +471,7 @@ void handlePostAdventure()
 
 	if(my_maxmp() < 50)
 	{
+		buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 15, 1, 10);
 		// Only maintain skills in path with familiars
@@ -531,6 +532,7 @@ void handlePostAdventure()
 	}
 	else if(my_maxmp() < 80)
 	{
+		buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 20, 1, 10);
 		// Only Maintain skills in path with familiars

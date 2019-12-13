@@ -6,7 +6,6 @@ void ensureSealClubs();
 void makeStartingSmiths();
 void equipBaselineGear();
 int equipmentAmount(item equipment);
-boolean EquipMachetes();
 
 string getMaximizeSlotPref(slot s)
 {
@@ -777,18 +776,4 @@ void equipRollover()
 	{
 		auto_log_info("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
 	}
-}
-
-boolean EquipMachetes()
-{
-	if(possessEquipment($item[Antique Machete]))
-	{
-		autoForceEquip($item[Antique Machete]);
-	}
-	else if(possessEquipment($item[Muculent Machete]))
-	{
-		autoForceEquip($item[Muculent Machete]);
-	}
-
-	return true;
 }

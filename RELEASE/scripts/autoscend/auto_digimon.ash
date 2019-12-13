@@ -10,18 +10,15 @@ void digimon_initializeSettings()
 {
 	if(auto_my_path() == "Pocket Familiars")
 	{
-		set_property("auto_ballroomsong", "finished");
+		set_property("auto_100familiar", $familiar[Egg Benedict]);
 		set_property("auto_getBeehive", false);
 		set_property("auto_getBoningKnife", false);
 		set_property("auto_cubeItems", false);
 		set_property("auto_getStarKey", true);
-		set_property("auto_gremlins", "finished");
 		set_property("auto_grimstoneOrnateDowsingRod", false);
 		set_property("auto_hippyInstead", true);
 		set_property("auto_holeinthesky", true);
 		set_property("auto_ignoreFlyer", true);
-		set_property("auto_shenCopperhead", true);
-		set_property("auto_swordfish", "finished");
 		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);
 	}
@@ -127,7 +124,7 @@ boolean digimon_autoAdv(int num, location loc, string option)
 #	boolean retval = adv1(loc, 0, option);
 	string temp = visit_url(to_url(loc), false);
 
-	if((get_property("auto_mcmuffin") == "ed") && (auto_my_path() == "Pocket Familiars") && (loc == $location[The Lower Chambers]))
+	if (get_property("pyramidBombUsed").to_boolean() && auto_my_path() == "Pocket Familiars" && loc == $location[The Lower Chambers])
 	{
 		temp = visit_url(to_url(loc) + "a", false);
 	}
