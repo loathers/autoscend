@@ -11,18 +11,9 @@ boolean koe_initializeSettings()
 	{
 		set_property("auto_getStarKey", true);
 		set_property("auto_bruteForcePalindome", in_hardcore());
-		set_property("auto_day1_cobb", "finished");
-		set_property("auto_bean", true);
-		set_property("auto_airship", "finished");
 		set_property("auto_holeinthesky", false);
 		set_property("auto_grimstoneOrnateDowsingRod", "false");
 		set_property("auto_paranoia", 3);
-
-		// The Hidden Temple is originally unlocked
-		set_property("auto_spookyfertilizer", "finished");
-		set_property("auto_spookymap", "finished");
-		set_property("auto_treecoin", "finished");
-		set_property("auto_spookysapling", "finished");
 		return true;
 	}
 	return false;

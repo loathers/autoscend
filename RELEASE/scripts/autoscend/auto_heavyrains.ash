@@ -48,7 +48,7 @@ boolean routineRainManHandler()
 			return rainManSummon("mountain man", true, false);
 		}
 
-		if(get_property("auto_trapper") == "start")
+		if (internalQuestStatus("questL08Trapper") < 2)
 		{
 			return rainManSummon("mountain man", false, false);
 		}
@@ -80,7 +80,7 @@ boolean routineRainManHandler()
 		}
 		if(needDigitalKey())
 		{
-			if((get_property("auto_nuns") == "done") || (my_rain() > 92))
+			if (get_property("sidequestNunsCompleted") != "none" && my_rain() > 92)
 			{
 				if((item_amount($item[white pixel]) < 30) && (item_amount($item[digital key]) == 0))
 				{
@@ -408,7 +408,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		#already have the subgoal, don't summon
 		return false;
 	}
-	if(((get_property("auto_gunpowder") == "finished") || (item_amount($item[barrel of gunpowder]) >= 5)) && (monsterName == "lobsterfrogman"))
+	if ((get_property("sidequestLighthouseCompleted") != "none" || item_amount($item[barrel of gunpowder]) >= 5) && monsterName == "lobsterfrogman")
 	{
 		#already have the subgoal, don't summon
 		return false;

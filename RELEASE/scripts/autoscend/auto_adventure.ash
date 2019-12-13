@@ -112,6 +112,14 @@ boolean autoAdvBypass(string url, location loc, string option)
 #
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
+	if(!zone_isAvailable(loc, true))
+	{
+		// reinstate this check for now. Didn't fix the War boss fight outside of Ed & KoE,
+		// will work around that by passing Noob Cave as location until this is refactored.
+		auto_log_warning("Cant get to " + loc + " right now.", "red");	
+		return false;	
+	}
+	
 	set_property("nextAdventure", loc);
 	cli_execute("auto_pre_adv");
 	if(option == "")

@@ -758,7 +758,7 @@ string auto_combatHandler(int round, string opp, string text)
 
 	if((my_location() == $location[The Battlefield (Frat Uniform)]) && (enemy == $monster[gourmet gourami]))
 	{
-		if((item_amount($item[Louder Than Bomb]) > 0) && (get_property("auto_gremlins") == "finished"))
+		if (item_amount($item[Louder Than Bomb]) > 0 && get_property("sidequestJunkyardCompleted") != "none")
 		{
 			handleTracker(enemy, $item[Louder Than Bomb], "auto_banishes");
 			return "item " + $item[Louder Than Bomb];
@@ -2830,13 +2830,13 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if (canUse($item[Cigarette Lighter]) && my_location() == $location[A Mob Of Zeppelin Protesters] && get_property("questL11Ron") == "step1" && get_property("auto_edStatus") == "dying")
+	if (canUse($item[Cigarette Lighter]) && my_location() == $location[A Mob Of Zeppelin Protesters] && internalQuestStatus("questL11Ron") == 1 && get_property("auto_edStatus") == "dying")
 	{
 		return useItem($item[Cigarette Lighter]);
 		// insta-kills protestors and removes an additional 5-7 (optimal!)
 	}
 
-	if (canUse($item[Glark Cable]) && my_location() == $location[The Red Zeppelin] && get_property("questL11Ron") == "step3" && get_property("_glarkCableUses").to_int() < 5 && get_property("auto_edStatus") == "dying")
+	if (canUse($item[Glark Cable]) && my_location() == $location[The Red Zeppelin] && internalQuestStatus("questL11Ron") == 3 && get_property("_glarkCableUses").to_int() < 5 && get_property("auto_edStatus") == "dying")
 	{
 		if($monsters[Man With The Red Buttons, Red Butler, Red Fox, Red Skeleton] contains enemy)
 		{

@@ -19,7 +19,6 @@ void glover_initializeSettings()
 {
 	if(auto_my_path() == "G-Lover")
 	{
-//		set_property("auto_ballroomsong", "finished");
 		set_property("auto_getBeehive", true);
 		set_property("auto_getBoningKnife", true);
 		set_property("auto_cubeItems", true);
@@ -28,12 +27,6 @@ void glover_initializeSettings()
 		set_property("auto_grimstoneOrnateDowsingRod", false);
 		set_property("auto_holeinthesky", true);
 		set_property("auto_ignoreFlyer", true);
-		set_property("auto_shenCopperhead", true);
-		set_property("auto_spookyfertilizer", "finished");
-		set_property("auto_spookymap", "finished");
-		set_property("auto_spookysapling", "finished");
-		set_property("auto_swordfish", "finished");
-		set_property("auto_treecoin", "finished");
 		set_property("auto_useCubeling", true);
 		set_property("auto_wandOfNagamar", true);
 		set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 16);

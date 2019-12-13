@@ -77,7 +77,7 @@ sniff	20	Dirty Old Lihc	prop:cyrptNicheEvilness>28
 # Gotta get that wig
 yellowray	0	Burly Sidekick	item:Mohawk Wig<1
 # We also want an amulet, but not badly enough to yellow ray it unless we're backtracking to get it
-yellowray	1	Quiet Healer	item:amulet of extreme plot significance<1;prop:auto_airship=finished
+yellowray	1	Quiet Healer	item:amulet of extreme plot significance<1;quest:questL10Garbage>6
 # Dressing up as a harem girl because we have no shame
 yellowray	2	Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise
 # We don't want to yellow ray a mountain man if we already turned in ore

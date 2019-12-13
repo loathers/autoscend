@@ -5,9 +5,7 @@ void boris_initializeSettings()
 	if(my_path() == "Avatar of Boris")
 	{
 		set_property("auto_100familiar", $familiar[Egg Benedict]);
-		set_property("auto_ballroomsong", "finished");
 		set_property("auto_borisSkills", -1);
-#		set_property("auto_crackpotjar", "done");
 		set_property("auto_cubeItems", false);
 		set_property("auto_getStarKey", true);
 		set_property("auto_grimstoneOrnateDowsingRod", false);

@@ -161,13 +161,12 @@ boolean L13_ed_towerHandler()
 	{
 		return false;
 	}
-	if(get_property("auto_sorceress") != "")
+	if (internalQuestStatus("questL13Final") < 0 || internalQuestStatus("questL13Final") > 11)
 	{
 		return false;
 	}
 	if(item_amount($item[Thwaitgold Scarab Beetle Statuette]) > 0)
 	{
-		set_property("auto_sorceress", "finished");
 		council();
 		return true;
 	}
@@ -182,7 +181,6 @@ boolean L13_ed_towerHandler()
 
 		if(item_amount($item[Thwaitgold Scarab Beetle Statuette]) > 0)
 		{
-			set_property("auto_sorceress", "finished");
 			council();
 		}
 		return true;
@@ -252,7 +250,7 @@ boolean L13_ed_councilWarehouse()
 	{
 		return false;
 	}
-	if(get_property("auto_sorceress") != "finished")
+	if (internalQuestStatus("questL13Warehouse") < 0 || internalQuestStatus("questL13Warehouse") > 0)
 	{
 		return false;
 	}
@@ -1427,10 +1425,6 @@ boolean L1_ed_islandFallback()
 			put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
 			equipBaseline();
 		}
-		if (have_skill($skill[More Legs]) && maximizeContains("-10ml"))
-		{
-			removeFromMaximize("-10ml");
-		}
 		auto_change_mcd(11);
 		boolean retVal = autoAdv(1, $location[Hippy Camp]);
 		if (item_amount($item[Filthy Corduroys]) > 0)
@@ -1492,19 +1486,6 @@ boolean L9_ed_chasmBuildClover(int need)
 		restoreSetting("cloverProtectActive");
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		return true;
-	}
-	return false;
-}
-
-boolean L11_ed_mauriceSpookyraven()
-{
-	if (isActuallyEd())
-	{
-		if(item_amount($item[7962]) == 0)
-		{
-			set_property("auto_ballroom", "finished");
-			return true;
-		}
 	}
 	return false;
 }
@@ -1643,6 +1624,15 @@ boolean LM_edTheUndying()
 	{
 		return true;
 	}
-
+	// Crush the jackass adventurer!
+	if (L13_ed_towerHandler())
+	{
+		return true;
+	}
+	// Back to square frigging one, I guess.
+	if (L13_ed_councilWarehouse())
+	{
+		return true;
+	}
 	return false;
 }

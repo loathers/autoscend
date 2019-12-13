@@ -442,12 +442,12 @@ void auto_setSongboom()
 	{
 		songboomSetting("dr");
 	}
-	else if ((get_property("auto_prewar") == "started") && (get_property("auto_war") != "finished"))
+	else if (internalQuestStatus("questL12War") > 0 && internalQuestStatus("questL12War") < 2)
 	{
 		// Once we've started the war, we want to be able to micromanage songs
 		// for Gremlins and Nuns. Don't break this for them.
 	}
-	else if (!isActuallyEd() && get_property("auto_crypt") != "finished" && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
+	else if (!isActuallyEd() && internalQuestStatus("questL07Cyrptic") < 1 && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
 	{
 		songboomSetting("nightmare");
 	}
