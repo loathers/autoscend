@@ -104,28 +104,29 @@ item	43	Casagnova Gnome
 item	44	Psychedelic Bear
 item	45	Piano Cat
 # Slightly special fairies
-item	46	Pair of Stomping Boots
-item	47	Gelatinous Cubeling
-item	48	Steam-Powered Cheerleader
-item	49	Obtuse Angel
-item	50	Green Pixie
+item	46	Red-Nosed Snapper
+item	47	Pair of Stomping Boots
+item	48	Gelatinous Cubeling
+item	49	Steam-Powered Cheerleader
+item	50	Obtuse Angel
+item	51	Green Pixie
 #Mutant Fire Ant	grimdark:2
 # Let's bowl 300!
-item	51	Bowlet
+item	52	Bowlet
 # Elemental fairies
-item	52	Sleazy Gravy Fairy
-item	53	Stinky Gravy Fairy
-item	54	Flaming Gravy Fairy
-item	55	Frozen Gravy Fairy
-item	56	Spooky Gravy Fairy
+item	53	Sleazy Gravy Fairy
+item	54	Stinky Gravy Fairy
+item	55	Flaming Gravy Fairy
+item	56	Frozen Gravy Fairy
+item	57	Spooky Gravy Fairy
 # Barely special fairies
-item	57	Mechanical Songbird
-item	58	Grouper Groupie
-item	59	Peppermint Rhino
+item	58	Mechanical Songbird
+item	59	Grouper Groupie
+item	60	Peppermint Rhino
 # Turtles are cute
-item	60	Syncopated Turtle
+item	61	Syncopated Turtle
 # The original
-item	61	Baby Gravy Fairy
+item	62	Baby Gravy Fairy
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
