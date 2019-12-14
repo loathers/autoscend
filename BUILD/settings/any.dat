@@ -34,7 +34,8 @@ auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are i
 auto_blacklistFamiliar	string	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
 auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
 auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
-auto_limitConsume	boolean	When false, pull cheapish food/booze when we run low so we can continue.
+auto_limitConsume	boolean	When false, will not eat or drink anything automatically.
+auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
 auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat. If you set it to "disabled" it will revert to the old equipment system, for now.
 auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
 auto_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
@@ -56,6 +57,5 @@ auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after
 auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle.
 auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
 auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
-auto_legacyConsumeStuff	boolean	When true, use the old heuristic-based consumption strategy instead of the new solver that tries to pack as many adventures into your organs as possible. Not used in CS or Ed.
 auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
 auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.

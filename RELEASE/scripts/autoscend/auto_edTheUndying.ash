@@ -641,39 +641,6 @@ boolean ed_eatStuff()
 	{
 		autoChew(canEat, $item[Mummified Beef Haunch]);
 	}
-
-	// ideally, we should only need the above in this function as the code below 
-	// should be handled by consumeStuff();
-
-	// expose semi-rare counters
-	if (!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
-	{
-		boolean shouldEatCookie = (my_meat() >= npc_price($item[Fortune Cookie]) && fullness_left() > 0 && my_level() < 12);
-		if (inebriety_left() > 0)
-		{
-			shouldEatCookie = (shouldEatCookie && !autoDrink(1, $item[Lucky Lindy]));
-		}
-		if (shouldEatCookie)
-		{
-			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
-			autoEat(1, $item[Fortune Cookie]);
-		}
-	}
-
-	// use knapsack algorithm implementation to fill stomach and liver
-	// once we have less than 3 adventures left and a full spleen (and all spleen upgrades)
-	if (spleen_limit() == 35 && spleen_left() == 0 && my_adventures() < 3)
-	{
-		if (fullness_left() > 0)
-		{
-			return auto_knapsackAutoConsume("eat", false);
-		}
-		if (inebriety_left() > 0)
-		{
-			return auto_knapsackAutoConsume("drink", false);
-		}
-	}
-
 	return true;
 }
 

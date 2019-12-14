@@ -475,5 +475,11 @@ boolean settingFixer()
 		remove_property("auto_winebomb");
 	}
 
+	if (property_exists("auto_legacyConsumeStuff"))
+	{
+		auto_log_debug("Knapsack consumption algorithm is now for everyone!", "red");
+		remove_property("auto_legacyConsumeStuff");
+	}
+
 	return true;
 }
