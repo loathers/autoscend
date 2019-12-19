@@ -373,7 +373,6 @@ boolean in_tcrs();											//Defined in autoscend/auto_tcrs.ash
 boolean tcrs_initializeSettings();							//Defined in autoscend/auto_tcrs.ash
 float tcrs_expectedAdvPerFill(string quality);				//Defined in autoscend/auto_tcrs.ash
 boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety);	//Defined in autoscend/auto_tcrs.ash
-boolean tcrs_consumption();									//Defined in autoscend/auto_tcrs.ash
 boolean tcrs_maximize_with_items(string maximizerString);	//Defined in autoscend/auto_tcrs.ash
 boolean in_koe();											//Defined in autoscend/auto_koe.ash
 boolean boris_buySkills();									//Defined in autoscend/auto_boris.ash
@@ -431,7 +430,6 @@ boolean auto_floundryAction(item it);							//Defined in autoscend/auto_clan.ash
 boolean auto_haveSourceTerminal();							//Defined in autoscend/auto_mr2016.ash
 boolean auto_haveWitchess();									//Defined in autoscend/auto_mr2016.ash
 boolean auto_mayoItems();										//Defined in autoscend/auto_mr2015.ash
-boolean auto_maximizedConsumeStuff();							//Defined in autoscend/auto_cooking.ash
 void auto_process_kmail(string functionname);					//Defined in autoscend/auto_zlib.ash
 boolean auto_sourceTerminalEducate(skill first);				//Defined in autoscend/auto_mr2016.ash
 boolean auto_sourceTerminalEducate(skill first, skill second);//Defined in autoscend/auto_mr2016.ash
@@ -524,7 +522,6 @@ int doNumberology(string goal, boolean doIt);				//Defined in autoscend/auto_uti
 int doNumberology(string goal, boolean doIt, string option);//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, string option);				//Defined in autoscend/auto_util.ash
 boolean doTasks();											//Defined in autoscend.ash
-boolean keepOnTruckin();									//Defined in autoscend/auto_cooking.ash
 boolean L12_themtharHills();									//Defined in autoscend.ash
 boolean isSpeakeasyDrink(item drink); //Defined in autoscend/auto_clan.ash
 boolean canDrinkSpeakeasyDrink(item drink); //Defined in autoscend/auto_clan.ash
@@ -590,7 +587,6 @@ void florist_initializeSettings();							//Defined in autoscend/auto_floristfria
 boolean forceEquip(slot sl, item it);						//Defined in autoscend/auto_util.ash
 int fullness_left();										//Defined in autoscend/auto_util.ash
 location solveDelayZone();									//Defined in autoscend/auto_util.ash
-item getAvailablePerfectBooze();							//Defined in autoscend/auto_cooking.ash
 item[element] getCharterIndexable();						//Defined in autoscend/auto_elementalPlanes.ash
 boolean getDiscoStyle();									//Defined in autoscend/auto_elementalPlanes.ash
 boolean getDiscoStyle(int choice);							//Defined in autoscend/auto_elementalPlanes.ash
@@ -821,7 +817,6 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 boolean pantogramPants();									//Defined in autoscend/auto_mr2017.ash
 boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int misc);//Defined in autoscend/auto_mr2017.ash
 int lumberCount();											//Defined in autoscend/auto_util.ash
-boolean makePerfectBooze();									//Defined in autoscend/auto_cooking.ash
 void makeStartingSmiths();									//Defined in autoscend/auto_equipment.ash
 int maxSealSummons();										//Defined in autoscend/auto_util.ash
 void maximize_hedge();										//Defined in autoscend.ash
@@ -907,7 +902,6 @@ boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);//D
 void trickMafiaAboutFlorist();								//Defined in autoscend/auto_floristfriar.ash
 string trim(string input);									//Defined in autoscend/auto_util.ash
 string tryBeerPong();										//Defined in autoscend/auto_util.ash
-boolean tryCookies();										//Defined in autoscend/auto_cooking.ash
 boolean tryPantsEat();										//Defined in autoscend/auto_cooking.ash
 int turkeyBooze();											//Defined in autoscend/auto_util.ash
 boolean use_barrels();										//Defined in autoscend/auto_util.ash

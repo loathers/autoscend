@@ -170,6 +170,7 @@ void initializeSettings()
 	set_property("auto_wishes", "");
 	set_property("auto_writingDeskSummon", false);
 	set_property("auto_yellowRays", "");
+	set_property("auto_consumeKeyLimePies", true);
 
 	set_property("choiceAdventure1003", 0);
 	beehiveConsider();
@@ -6340,7 +6341,6 @@ void auto_begin()
 		use_familiar($familiar[none]);
 	}
 	dailyEvents();
-	consumeStuff();
 	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
 	{
 		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
@@ -6348,10 +6348,7 @@ void auto_begin()
 			abort("Manually handle, because we have fortune cookie and rain man colliding at the end of our day and we don't know quite what to do here");
 		}
 		#We save the last adventure for a rain man, damn it.
-		if((my_adventures() == 1) && !get_property("auto_limitConsume").to_boolean())
-		{
-			keepOnTruckin();
-		}
+		consumeStuff();
 	}
 
 	if(get_property("kingLiberated").to_boolean())
