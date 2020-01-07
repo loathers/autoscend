@@ -1074,11 +1074,15 @@ boolean bat_consumption(); // Defined in autoscend/auto_batpath.ash
 boolean bat_skillValid(skill sk); // Defined in autoscend/auto_batpath.ash
 boolean bat_tryBloodBank(); // Defined in autoscend/auto_batpath.ash
 boolean bat_wantHowl(location loc); // Defined in autoscend/auto_batpath.ash
-void bat_formNone(); // Defined in autoscend/auto_batpath.ash
-void bat_formWolf(); // Defined in autoscend/auto_batpath.ash
-void bat_formMist(); // Defined in autoscend/auto_batpath.ash
-void bat_formBats(); // Defined in autoscend/auto_batpath.ash
+boolean bat_formNone(); // Defined in autoscend/auto_batpath.ash
+boolean bat_formWolf(boolean speculative); // Defined in autoscend/auto_batpath.ash
+boolean bat_formWolf(); // Defined in autoscend/auto_batpath.ash
+boolean bat_formMist(boolean speculative); // Defined in autoscend/auto_batpath.ash
+boolean bat_formMist(); // Defined in autoscend/auto_batpath.ash
+boolean bat_formBats(boolean speculative); // Defined in autoscend/auto_batpath.ash
+boolean bat_formBats(); // Defined in autoscend/auto_batpath.ash
 void bat_clearForms(); // Defined in autoscend/auto_batpath.ash
+boolean bat_switchForm(effect form, boolean speculative); // Defined in autoscend/auto_batpath.ash
 boolean bat_switchForm(effect form); // Defined in autoscend/auto_batpath.ash
 boolean bat_formPreAdventure(); // Defined in autoscend/auto_batpath.ash
 boolean LM_batpath(); // Defined in autoscend/auto_batpath.ash

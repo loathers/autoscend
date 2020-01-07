@@ -50,34 +50,50 @@ boolean bat_wantHowl(location loc)
 	return false;
 }
 
-void bat_formNone()
+boolean bat_formNone()
 {
-	if(my_class() != $class[Vampyre]) return;
+	if(my_class() != $class[Vampyre]) return false;
 	if(get_property("auto_bat_desiredForm") != "")
 	{
 		set_property("auto_bat_desiredForm", "");
 	}
+	return true;
 }
 
-void bat_formWolf()
+boolean bat_formWolf(boolean speculative)
 {
-	if(my_class() != $class[Vampyre]) return;
+	if(my_class() != $class[Vampyre]) return false;
 	set_property("auto_bat_desiredForm", "wolf");
-	bat_switchForm($effect[Wolf Form]);
+	return bat_switchForm($effect[Wolf Form], speculative);
 }
 
-void bat_formMist()
+boolean bat_formWolf()
 {
-	if(my_class() != $class[Vampyre]) return;
+	return bat_formWolf(false);
+}
+
+boolean bat_formMist(boolean speculative)
+{
+	if(my_class() != $class[Vampyre]) return false;
 	set_property("auto_bat_desiredForm", "mist");
-	bat_switchForm($effect[Mist Form]);
+	return bat_switchForm($effect[Mist Form], speculative);
 }
 
-void bat_formBats()
+boolean bat_formMist()
 {
-	if(my_class() != $class[Vampyre]) return;
+	return bat_formMist(false);
+}
+
+boolean bat_formBats(boolean speculative)
+{
+	if(my_class() != $class[Vampyre]) return false;
 	set_property("auto_bat_desiredForm", "bats");
-	bat_switchForm($effect[Bats Form]);
+	return bat_switchForm($effect[Bats Form], speculative);
+}
+
+boolean bat_formBats()
+{
+	return bat_formBats(false);
 }
 
 void bat_clearForms()
@@ -90,7 +106,7 @@ void bat_clearForms()
 	}
 }
 
-boolean bat_switchForm(effect form)
+boolean bat_switchForm(effect form, boolean speculative)
 {
 	if (0 != have_effect(form)) return true;
 	if(!have_skill(form.to_skill()))
@@ -100,10 +116,18 @@ boolean bat_switchForm(effect form)
 	}
 	if (my_hp() <= 10)
 	{
-		auto_log_warning("We don't have enough HP to switch form to " + form + "!", "red");
+		if(!speculative)
+			auto_log_warning("We don't have enough HP to switch form to " + form + "!", "red");
 		return false;
 	}
+	if(speculative)
+		return true;
 	return use_skill(1, form.to_skill());
+}
+
+boolean bat_switchForm(effect form)
+{
+	return bat_switchForm(form, false);
 }
 
 boolean bat_formPreAdventure()
