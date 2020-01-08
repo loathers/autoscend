@@ -2966,7 +2966,7 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 	if(pass())
 		return result();
 
-	if(doEquip && auto_have_familiar($familiar[Grim Brother]) && (have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff").to_boolean() == false))
+	if(doEquips && auto_have_familiar($familiar[Grim Brother]) && (have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff").to_boolean() == false))
 	{
 		if(speculative)
 			handleEffect($effect[Soles of Glass]);
