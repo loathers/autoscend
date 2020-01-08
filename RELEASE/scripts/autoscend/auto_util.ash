@@ -2886,6 +2886,137 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	return true;
 }
 
+float provideInitiative(int amt, boolean doEquips, boolean speculative)
+{
+	auto_log_info("Trying to provide " + amt + " initiative, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	float delta = 0;
+	if(doEquips)
+	{
+		if(useMaximizeToEquip())
+		{
+			string max = "500initiative " + amt + "max";
+			if(speculative)
+			{
+				simMaximizeWith(max);
+			}
+			else
+			{
+				addToMaximize("500initiative " + amt + "max");
+				simMaximize();
+			}
+			delta = simValue("Initiative") - numeric_modifier("Initiative");
+		}
+
+		if(!speculative)
+			handleFamiliar("init");
+	}
+
+	float result()
+	{
+		return numeric_modifier("Initiative") + delta;
+	}
+
+	boolean pass()
+	{
+		return result() >= amt;
+	}
+
+	if(pass())
+		return result();
+
+	void handleEffect(effect eff)
+	{
+		delta += numeric_modifier(eff, "Initiative");
+	}
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+				handleEffect(eff);
+			if(pass())
+				return true;
+		}
+		return false;
+	}
+
+	if(tryEffects($effects[Cletus's Canticle of Celerity, Springy Fusilli, Soulerskates, Walberg's Dim Bulb, Song of Slowness, Your Fifteen Minutes, Suspicious Gaze, Bone Springs, Living Fast]))
+		return result();
+
+	if(speculative)
+	{
+		if(canAsdonBuff($effect[Driving Quickly]))
+		{
+			delta += numeric_modifier($effect[Driving Quickly], "Initiative");
+		}
+	}
+	else
+	{
+		asdonBuff($effect[Driving Quickly]);
+	}
+	if(pass())
+		return result();
+
+	if(bat_formBats(speculative) && speculative)
+	{
+		handleEffect($effect[Bats Form]);
+	}
+	if(pass())
+		return result();
+
+	if(doEquip && auto_have_familiar($familiar[Grim Brother]) && (have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff").to_boolean() == false))
+	{
+		if(speculative)
+			handleEffect($effect[Soles of Glass]);
+		else
+			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
+		if(pass())
+			return result();
+	}
+
+	if(tryEffects($effects[Adorable Lookout, Alacri Tea, All Fired Up, Fishy\, Oily, The Glistening, Human-Machine Hybrid, Patent Alacrity, Provocative Perkiness, Sepia Tan, Sugar Rush, Ticking Clock, Well-Swabbed Ear]))
+		return result();
+
+	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0)
+	{
+		if(speculative)
+			handleEffect($effect[init.enh]);
+		else
+			auto_sourceTerminalEnhance("init");
+		if(pass())
+			return result();
+	}
+
+	if(doEquips && auto_canBeachCombHead("init"))
+	{
+		if(speculative)
+			handleEffect(auto_beachCombHeadEffect("init"));
+		else
+			auto_beachCombHead("init");
+	}
+	if(pass())
+		return result();
+
+	if(doEquips && amt >= 400)
+	{
+		if(buffMaintain($effect[Bow-Legged Swagger], 0, 1, 1, speculative) && speculative)
+		{
+			delta += delta + numeric_modifier("Initiative");
+		}
+		if(pass())
+			return result();
+	}
+
+	return result();
+}
+
+boolean provideInitiative(int amt, boolean doEquips)
+{
+	return provideInitiative(amt, doEquips, false) >= amt;
+}
+
 boolean auto_have_familiar(familiar fam)
 {
 	if(auto_my_path() == "License to Adventure")
