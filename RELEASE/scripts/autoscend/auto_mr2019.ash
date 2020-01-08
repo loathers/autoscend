@@ -583,39 +583,39 @@ boolean auto_beachCombAvailable()
 
 int auto_beachCombHeadNumFrom(string name)
 {
-	int head;
 	switch (name.to_lower_case())
 	{
 		case "hot":
-			head = 1; break;
+			return 1;
 		case "cold":
-			head = 2; break;
+			return 2;
 		case "stench":
-			head = 3; break;
+			return 3;
 		case "spooky":
-			head = 4; break;
+			return 4;
 		case "sleaze":
-			head = 5; break;
+			return 5;
 		case "muscle":
 		case "musc":
-			head = 6; break;
+			return 6;
 		case "mysticality":
 		case "myst":
-			head = 7; break;
+			return 7;
 		case "moxie":
 		case "mox":
-			head = 8; break;
+			return 8;
 		case "init":
 		case "initiative":
-			head = 9; break;
+			return 9;
 		case "weight":
 		case "familiar":
-			head = 10; break;
+			return 10;
 		case "exp":
 		case "stats":
-			head = 11; break;
+			return 11;
 	}
-	return head;
+	auto_log_error("Invalid string " + name + "provided to auto_beachCombHeadNumFrom");
+	return -1;
 }
 
 effect auto_beachCombHeadEffectFromNum(int num)
