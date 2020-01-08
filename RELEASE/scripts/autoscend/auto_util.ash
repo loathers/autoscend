@@ -96,6 +96,7 @@ void shrugAT();
 void shrugAT(effect anticipated);
 boolean buyUpTo(int num, item it);
 boolean buyUpTo(int num, item it, int maxprice);
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
 effect effectNeededFirstGate(string data);
 boolean buyableMaintain(item toMaintain, int howMany);
@@ -4293,7 +4294,7 @@ boolean buyUpTo(int num, item it, int maxprice)
 	return (item_amount(it) >= orig);
 }
 
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns)
+boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative)
 {
 	if(!glover_usable(buff))
 	{
@@ -4333,11 +4334,12 @@ boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns
 	{
 		return false;
 	}
-	use_skill(casts, source);
+	if(!speculative)
+		use_skill(casts, source);
 	return true;
 }
 
-boolean buffMaintain(item source, effect buff, int uses, int turns)
+boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative)
 {
 	if(in_tcrs())
 	{
@@ -4372,11 +4374,12 @@ boolean buffMaintain(item source, effect buff, int uses, int turns)
 	{
 		return false;
 	}
-	use(uses, source);
+	if(!speculative)
+		use(uses, source);
 	return true;
 }
 
-boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative)
 {
 	skill useSkill = $skill[none];
 	item useItem = $item[none];
@@ -5027,15 +5030,19 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 		}
 		else
 		{
-			return buffMaintain(useItem, buff, casts, turns);
+			return buffMaintain(useItem, buff, casts, turns, speculative);
 		}
 	}
-
 	if((useSkill != $skill[none]) && auto_have_skill(useSkill))
 	{
-		return buffMaintain(useSkill, buff, mp_min, casts, turns);
+		return buffMaintain(useSkill, buff, mp_min, casts, turns, speculative);
 	}
 	return true;
+}
+
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
+{
+	return buffMaintain(buff, mp_min, casts, turns, false);
 }
 
 // Checks to see if we are already wearing a facial expression before using buffMaintain

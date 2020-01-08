@@ -378,9 +378,10 @@ boolean in_koe();											//Defined in autoscend/auto_koe.ash
 boolean boris_buySkills();									//Defined in autoscend/auto_boris.ash
 void boris_initializeDay(int day);							//Defined in autoscend/auto_boris.ash
 void boris_initializeSettings();							//Defined in autoscend/auto_boris.ash
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);//Defined in autoscend/auto_util.ash
-boolean buffMaintain(item source, effect buff, int uses, int turns);//Defined in autoscend/auto_util.ash
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns);//Defined in autoscend/auto_util.ash
+boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
+boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
 boolean buyUpTo(int num, item it);							//Defined in autoscend/auto_util.ash
 boolean buyUpTo(int num, item it, int maxprice);			//Defined in autoscend/auto_util.ash
 boolean buy_item(item it, int quantity, int maxprice);		//Defined in autoscend/auto_util.ash
