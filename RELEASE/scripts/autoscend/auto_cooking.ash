@@ -788,7 +788,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				small_owned[it] = min(max(item_amount(it) - auto_reserveAmount(it), 0), howmany);
 			}
-			if (npc_price(it) > 0)
+			// don't add speakeasy drinks, because they can't actually be bought as items
+			if (npc_price(it) > 0 && !isSpeakeasyDrink(it))
 			{
 				buyables[it] = min(howmany, my_meat() / npc_price(it));
 			}
