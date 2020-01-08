@@ -111,7 +111,8 @@ boolean bat_switchForm(effect form, boolean speculative)
 	if (0 != have_effect(form)) return true;
 	if(!have_skill(form.to_skill()))
 	{
-		bat_clearForms();
+		if(!speculative)
+			bat_clearForms();
 		return false;
 	}
 	if (my_hp() <= 10)
