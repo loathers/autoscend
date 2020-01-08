@@ -854,6 +854,8 @@ boolean acquireCombatMods(int amt);							//Defined in autoscend/auto_util.ash
 boolean acquireCombatMods(int amt, boolean doEquips);		//Defined in autoscend/auto_util.ash
 float provideInitiative(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
 boolean provideInitiative(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideResistances(int [element] amt, boolean doEquips); //Defined in autoscend/auto_util.ash
 void pullAll(item it);										//Defined in autoscend/auto_util.ash
 void pullAndUse(item it, int uses);							//Defined in autoscend/auto_util.ash
 boolean pullXWhenHaveY(item it, int howMany, int whenHave);	//Defined in autoscend/auto_util.ash

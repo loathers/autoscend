@@ -3017,6 +3017,187 @@ boolean provideInitiative(int amt, boolean doEquips)
 	return provideInitiative(amt, doEquips, false) >= amt;
 }
 
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative)
+{
+	string debugprint = "Trying to provide ";
+	foreach ele,goal in amt
+	{
+		debugprint += goal;
+		debugprint += " ";
+		debugprint += ele;
+		debugprint += " resistance, ";
+	}
+	debugprint += (doEquips ? "with equipment" : "without equipment");
+	auto_log_info(debugprint, "blue");
+
+	int [element] delta;
+
+	void handleEffect(effect eff)
+	{
+		foreach ele in amt
+		{
+			delta[ele] += numeric_modifier(eff, ele + " Resistance");
+		}
+	}
+
+	int result(element ele)
+	{
+		return numeric_modifier(ele + " Resistance") + delta[ele];
+	}
+
+	boolean pass(element ele)
+	{
+		return result(ele) >= amt[ele];
+	}
+
+	int [element] result()
+	{
+		int [element] res;
+		foreach ele in amt
+		{
+			res[ele] = result(ele);
+		}
+		return res;
+	}
+
+	boolean pass()
+	{
+		foreach ele in amt
+		{
+			if(!pass(ele))
+				return false;
+		}
+		return true;
+	}
+
+	if(doEquips)
+	{
+		if(useMaximizeToEquip())
+		{
+			if(speculative)
+			{
+				string max = "";
+				foreach ele,goal in amt
+				{
+					if(max.length() > 0)
+					{
+						max += ",";
+					}
+					max += "2000" + ele + " resistance " + goal + "max";
+				}
+				simMaximizeWith(max);
+			}
+			else
+			{
+				foreach ele,goal in amt
+				{
+					addToMaximize("2000" + ele + " resistance " + goal + "max");
+				}
+				simMaximize();
+			}
+			foreach ele in amt
+			{
+				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
+			}
+		}
+	}
+
+	if(pass())
+		return result();
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+			{
+				handleEffect(eff);
+			}
+			if(pass())
+				return true;
+		}
+		return false;
+	}
+
+	boolean buffElement(element ele, boolean [effect] effects)
+	{
+		if(!pass(ele))
+		{
+			return tryEffects(effects);
+		}
+		return true;
+	}
+
+	// effects from skills
+	if(tryEffects($effects[Elemental Saucesphere, Astral Shell, Hide of Sobek, Spectral Awareness, Scarysauce]))
+		return result();
+
+	if(bat_formMist(speculative) && speculative)
+		handleEffect($effect[Mist Form]);
+	if(pass())
+		return result();
+
+	if(doEquips && !is100FamiliarRun())
+	{
+		familiar resfam = $familiar[none];
+		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot]
+		{
+			if(auto_have_familiar(fam))
+			{
+				resfam = fam;
+				break;
+			}
+		}
+		if(resfam != $familiar[none])
+		{
+			// need to use now so maximizer will see it
+			use_familiar(resfam);
+			handleFamiliar(resfam);
+			if(resfam == $familiar[Trick-or-Treating Tot])
+			{
+				cli_execute("acquire 1 li'l candy corn costume");
+			}
+			if(useMaximizeToEquip())
+			{
+				// update maximizer scores with familiar
+				simMaximize();
+				foreach ele in amt
+				{
+					delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
+				}
+			}
+		}
+		if(pass())
+			return result();
+	}
+
+	if(doEquips)
+	{
+		// effects from items that we'd have to buy or have found
+		if(tryEffects($effects[Red Door Syndrome, Well-Oiled, Oiled-Up, Egged On]))
+			return result();
+		// element specific effects
+		buffElement($element[hot], $effects[Flame-Retardant Trousers, Fireproof Lips]);
+		buffElement($element[cold], $effects[Insulated Trousers, Fever From the Flavor]);
+		buffElement($element[stench], $effects[Smelly Pants, Neutered Nostrils, Can't Smell Nothin']);
+		buffElement($element[spooky], $effects[Spookypants, Balls of Ectoplasm, Hyphemariffic]);
+		buffElement($element[sleaze], $effects[Sleaze-Resistant Trousers, Hyperoffended]);
+	}
+
+	return result();
+}
+
+boolean provideResistances(int [element] amt, boolean doEquips)
+{
+	int [element] res = provideResistances(amt, doEquips, false);
+	foreach ele, i in amt
+	{
+		if(res[ele] < i)
+			return false;
+	}
+	return true;
+}
+
 boolean auto_have_familiar(familiar fam)
 {
 	if(auto_my_path() == "License to Adventure")
