@@ -702,6 +702,7 @@ boolean kgb_getMartini(string page);						//Defined in autoscend/auto_mr2017.ash
 boolean kgb_getMartini(string page, boolean dontCare);		//Defined in autoscend/auto_mr2017.ash
 boolean kgbModifiers(string mod);							//Defined in autoscend/auto_mr2017.ash
 boolean haveAsdonBuff();											//Defined in autoscend/auto_mr2017.ash
+boolean canAsdonBuff(effect goal);						//Defined in autoscend/auto_mr2017.ash
 boolean asdonBuff(effect goal);								//Defined in autoscend/auto_mr2017.ash
 boolean asdonBuff(string goal);								//Defined in autoscend/auto_mr2017.ash
 boolean asdonFeed(item it, int qty);						//Defined in autoscend/auto_mr2017.ash
