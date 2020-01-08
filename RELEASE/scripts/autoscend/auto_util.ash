@@ -3198,6 +3198,102 @@ boolean provideResistances(int [element] amt, boolean doEquips)
 	return true;
 }
 
+// WILL NOT GO OVER 150 ML
+float provideML(int amt, boolean doEquips, boolean speculative)
+{
+	auto_log_info("Trying to provide " + amt + " ML, " + (doEquips ? "with" : "without") + " equipment", "blue");
+	if(!speculative)
+	{
+		// so we can fill in the rest afterwards, to avoid giving up early due to barely going over 150
+		auto_change_mcd(0);
+	}
+	float delta = 0;
+	if(doEquips)
+	{
+		if(useMaximizeToEquip())
+		{
+			string max = "200ml " + amt + "max";
+			if(speculative)
+			{
+				simMaximizeWith(max);
+			}
+			else
+			{
+				addToMaximize(max);
+				simMaximize();
+			}
+			delta = simValue("Monster Level") - numeric_modifier("Monster Level");
+		}
+	}
+	if(speculative)
+	{
+		delta -= current_mcd();
+	}
+
+	float result()
+	{
+		return numeric_modifier("Monster Level") + delta;
+	}
+
+	boolean pass()
+	{
+		return result() >= amt;
+	}
+
+	float finish()
+	{
+		int adjustTo = max(min(150 - to_int(numeric_modifier("Monster Level") + delta), 11), 0);
+		if(!speculative)
+		{
+			auto_change_mcd(adjustTo);
+		}
+		else
+		{
+			delta += adjustTo;
+		}
+		return result();
+	}
+
+	if(pass())
+		return finish();
+
+	void handleEffect(effect eff)
+	{
+		delta += numeric_modifier(eff, "Monster Level");
+	}
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(numeric_modifier("Monster Level") + delta + numeric_modifier(eff, "Monster Level") <= 150)
+			{
+				if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+					handleEffect(eff);
+				if(pass())
+					return true;
+			}
+		}
+		return false;
+	}
+
+	if(tryEffects($effects[Ur-Kel's Aria of Annoyance, Drescher's Annoying Noise, Pride of the Puffin, Ceaseless Snarling, Punchable Face]))
+		return finish();
+
+	if(doEquips)
+	{
+		if(tryEffects($effects[Litterbug, Tortious, Sweetbreads Flamb&eacute;, The Dinsey Look]))
+			return finish();
+	}
+
+	return finish();
+}
+
+boolean provideML(int amt, boolean doEquips)
+{
+	return provideML(amt, doEquips, false) >= amt;
+}
+
 boolean auto_have_familiar(familiar fam)
 {
 	if(auto_my_path() == "License to Adventure")
