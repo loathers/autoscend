@@ -597,11 +597,13 @@ int auto_beachCombHeadNumFrom(string name)
 		case "sleaze":
 			head = 5; break;
 		case "muscle":
+		case "musc":
 			head = 6; break;
 		case "mysticality":
 		case "myst":
 			head = 7; break;
 		case "moxie":
+		case "mox":
 			head = 8; break;
 		case "init":
 		case "initiative":
@@ -614,6 +616,31 @@ int auto_beachCombHeadNumFrom(string name)
 			head = 11; break;
 	}
 	return head;
+}
+
+effect auto_beachCombHeadEffectFromNum(int num)
+{
+	switch(num)
+	{
+		case 1: return $effect[Hot-Headed];
+		case 2: return $effect[Cold as Nice];
+		case 3: return $effect[A Brush with Grossness];
+		case 4: return $effect[Does It Have a Skull In There??];
+		case 5: return $effect[Oiled, Slick];
+		case 6: return $effect[Lack of Body-Building];
+		case 7: return $effect[We're All Made of Starfish];
+		case 8: return $effect[Pomp & Circumsands];
+		case 9: return $effect[Resting Beach Face];
+		case 10: return $effect[Do I Know You From Somewhere?];
+		case 11: return $effect[You Learned Something Maybe!];
+	}
+	auto_log_error("Invalid number " + num + " provided to auto_beachCombHeadEffectFromNum");
+	return $effect[none];
+}
+
+effect auto_beachCombHeadEffect(string name)
+{
+	return auto_beachCombHeadEffectFromNum(auto_beachCombHeadNumFrom(name));
 }
 
 boolean auto_canBeachCombHead(string name) {

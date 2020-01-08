@@ -668,6 +668,7 @@ boolean auto_canBeachCombHead(string name);	// Defined in autoscend/auto_mr2019.
 boolean auto_beachCombHead(string name);	// Defined in autoscend/auto_mr2019.ash
 int auto_beachCombFreeUsesLeft();	// Defined in autoscend/auto_mr2019.ash
 boolean auto_beachUseFreeCombs();	// Defined in autoscend/auto_mr2019.ash
+effect auto_beachCombHeadEffect(string name); // Defined in autoscend/auto_mr2019.ash
 boolean auto_campawayAvailable();	// Defined in autoscend/auto_mr2019.ash
 boolean auto_campawayGrabBuffs();	// Defined in autoscend/auto_mr2019.ash
 int auto_pillKeeperUses();						//Defined in autoscend/auto_mr2019.ash
