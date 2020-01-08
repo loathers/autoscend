@@ -859,6 +859,14 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 boolean provideResistances(int [element] amt, boolean doEquips); //Defined in autoscend/auto_util.ash
 float provideML(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
 boolean provideML(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideStats(int [stat] amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+float provideMuscle(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideMuscle(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+float provideMysticality(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideMysticality(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+float provideMoxie(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideMoxie(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
 void pullAll(item it);										//Defined in autoscend/auto_util.ash
 void pullAndUse(item it, int uses);							//Defined in autoscend/auto_util.ash
 boolean pullXWhenHaveY(item it, int howMany, int whenHave);	//Defined in autoscend/auto_util.ash

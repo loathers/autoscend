@@ -3294,6 +3294,212 @@ boolean provideML(int amt, boolean doEquips)
 	return provideML(amt, doEquips, false) >= amt;
 }
 
+float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
+{
+	string debugprint = "Trying to provide ";
+	foreach st,goal in amt
+	{
+		debugprint += goal;
+		debugprint += " ";
+		debugprint += st;
+		debugprint += ", ";
+	}
+	debugprint += (doEquips ? "with equipment" : "without equipment");
+	auto_log_info(debugprint, "blue");
+
+	float [stat] delta;
+
+	void handleEffect(effect eff)
+	{
+		foreach st in amt
+		{
+			delta[st] += numeric_modifier(eff, st);
+			delta[st] += numeric_modifier(eff, st + " Percent") * my_basestat(st) / 100.0;
+		}
+	}
+
+	float result(stat st)
+	{
+		return my_buffedstat(st) + delta[st];
+	}
+
+	boolean pass(stat st)
+	{
+		return result(st) >= amt[st];
+	}
+
+	float [stat] result()
+	{
+		float [stat] res;
+		foreach st in amt
+		{
+			res[st] = result(st);
+		}
+		return res;
+	}
+
+	boolean pass()
+	{
+		foreach st in amt
+		{
+			if(!pass(st))
+				return false;
+		}
+		return true;
+	}
+
+	if(doEquips)
+	{
+		if(useMaximizeToEquip())
+		{
+			if(speculative)
+			{
+				string max = "";
+				foreach st,goal in amt
+				{
+					if(max.length() > 0)
+					{
+						max += ",";
+					}
+					max += "200" + st + " " + goal + "max";
+				}
+				simMaximizeWith(max);
+			}
+			else
+			{
+				foreach st,goal in amt
+				{
+					addToMaximize("200" + st + " " + goal + "max");
+				}
+				simMaximize();
+			}
+			foreach st in amt
+			{
+				delta[st] = simValue(st) - my_buffedstat(st);
+			}
+		}
+	}
+
+	if(pass())
+		return result();
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+			{
+				handleEffect(eff);
+			}
+			if(pass())
+				return true;
+		}
+		return false;
+	}
+
+	boolean buffStat(stat st, boolean [effect] effects)
+	{
+		if(!pass(st))
+		{
+			foreach eff in effects
+			{
+				if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+				{
+					handleEffect(eff);
+				}
+				if(pass(st))
+					return true;
+			}
+		}
+		return pass(st);
+	}
+
+	buffStat($stat[muscle], $effects[Juiced and Loose, Quiet Determination, Power Ballad of the Arrowsmith, Seal Clubbing Frenzy, Patience of the Tortoise]);
+	buffStat($stat[mysticality], $effects[Mind Vision, Quiet Judgement, The Magical Mojomuscular Melody, Pasta Oneness, Saucemastery]);
+	buffStat($stat[moxie], $effects[Impeccable Coiffure, Quiet Desperation, Disco Smirk, Song of Bravado, Disco State of Mind, Mariachi Mood]);
+	if(pass())
+		return result();
+
+	if(tryEffects($effects[Song of Bravado, Stevedave's Shanty of Superiority]))
+		return result();
+
+	// buffs from items
+	if(doEquips)
+	{
+		buffStat($stat[muscle], $effects[Browbeaten, Extra Backbone, Extreme Muscle Relaxation, Feroci Tea, Fishy Fortification, Football Eyes, Go Get \'Em\, Tiger!, Lycanthropy\, Eh?, Marinated, Phorcefullness, Rainy Soul Miasma, Savage Beast Inside, Steroid Boost, Spiky Hair, Sugar Rush, Superheroic, Temporary Lycanthropy, Truly Gritty, Vital, Woad Warrior]);
+		buffStat($stat[mysticality], $effects[Baconstoned, Erudite, Far Out, Glittering Eyelashes, Liquidy Smoky, Marinated, Mystically Oiled, OMG WTF, Rainy Soul Miasma, Ready to Snap, Rosewater Mark, Seeing Colors, Sweet\, Nuts]);
+		buffStat($stat[moxie], $effects[Almost Cool, Busy Bein' Delicious, Butt-Rock Hair, Funky Coal Patina, Liquidy Smoky, Locks Like the Raven, Lycanthropy\, Eh?, Memories of Puppy Love, Newt Gets In Your Eyes, Notably Lovely, Oiled Skin, Radiating Black Body&trade;, Spiky Hair, Sugar Rush, Superhuman Sarcasm]);
+		tryEffects($effects[Human-Human Hybrid, Industrial Strength Starch, Mutated, Seriously Mutated, Pill Power, Slightly Larger Than Usual, Standard Issue Bravery, Tomato Power, Vital]);
+
+		foreach st in amt
+		{
+			if(!pass(st) && auto_canBeachCombHead(st.to_string()))
+			{
+				if(speculative)
+					handleEffect(auto_beachCombHeadEffect(st.to_string()));
+				else
+					auto_beachCombHead(st.to_string());
+			}
+		}
+		if(pass())
+			return result();
+	}
+
+	return result();
+}
+
+boolean provideStats(int [stat] amt, boolean doEquips)
+{
+	float [stat] res = provideStats(amt, doEquips, false);
+	foreach st, i in amt
+	{
+		if(res[st] < i)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+float provideMuscle(int amt, boolean doEquips, boolean speculative)
+{
+	int [stat] statsNeeded;
+	statsNeeded[$stat[muscle]] = amt;
+	float [stat] res = provideStats(statsNeeded, doEquips, speculative);
+	return res[$stat[muscle]];
+}
+
+boolean provideMuscle(int amt, boolean doEquips)
+{
+	return provideMuscle(amt, doEquips, false) >= amt;
+}
+
+float provideMysticality(int amt, boolean doEquips, boolean speculative)
+{
+	int [stat] statsNeeded;
+	statsNeeded[$stat[mysticality]] = amt;
+	float [stat] res = provideStats(statsNeeded, doEquips, speculative);
+	return res[$stat[mysticality]];
+}
+
+boolean provideMysticality(int amt, boolean doEquips)
+{
+	return provideMysticality(amt, doEquips, false) >= amt;
+}
+
+float provideMoxie(int amt, boolean doEquips, boolean speculative)
+{
+	int [stat] statsNeeded;
+	statsNeeded[$stat[moxie]] = amt;
+	float [stat] res = provideStats(statsNeeded, doEquips, speculative);
+	return res[$stat[moxie]];
+}
+
+boolean provideMoxie(int amt, boolean doEquips)
+{
+	return provideMoxie(amt, doEquips, false) >= amt;
+}
+
 boolean auto_have_familiar(familiar fam)
 {
 	if(auto_my_path() == "License to Adventure")
