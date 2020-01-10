@@ -54,31 +54,7 @@ boolean L13_towerNSContests()
 			case 1:
 				acquireMP(160); // only uses free rests or items on hand by default
 
-				if(is100FamiliarRun())
-				{
-					autoMaximize("init, -equip snow suit", 1500, 0, false);
-				}
-				else
-				{
-					autoMaximize("init, switch xiblaxian holo-companion, switch oily woim, switch happy medium,switch cute meteor", 1500, 0, false);
-					handleFamiliar(my_familiar());
-				}
-
-				bat_formBats();
-
-				foreach eff in $effects[Adorable Lookout, Alacri Tea, All Fired Up, Bone Springs, Bow-Legged Swagger, Fishy\, Oily, The Glistening, Human-Machine Hybrid, Patent Alacrity, Provocative Perkiness, Sepia Tan, Sugar Rush, Ticking Clock, Well-Swabbed Ear, Your Fifteen Minutes]
-				{
-					if(crowd1Insufficient()) buffMaintain(eff, 0, 1, 1);
-				}
-
-				if(crowd1Insufficient()) buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Suspicious Gaze], 10, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Springy Fusilli], 10, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Song of Slowness], 100, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Soulerskates], 0, 1, 1);
-				if(crowd1Insufficient()) asdonBuff($effect[Driving Quickly]);
-				if(crowd1Insufficient()) auto_beachCombHead("init");
+				provideInitiative(400, true);
 
 				if(crowd1Insufficient())
 				{

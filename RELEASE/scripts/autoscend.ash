@@ -3174,22 +3174,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Reanimated Reanimator]);
 		}
 
-		buffMaintain($effect[Sepia Tan], 0, 1, 1);
-		buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
-		buffMaintain($effect[Bone Springs], 40, 1, 1);
-		buffMaintain($effect[Springy Fusilli], 10, 1, 1);
-		buffMaintain($effect[Patent Alacrity], 0, 1, 1);
-		if((my_class() == $class[Seal Clubber]) || (my_class() == $class[Turtle Tamer]))
-		{
-			buyUpTo(1, $item[Cheap Wind-up Clock]);
-			buffMaintain($effect[Ticking Clock], 0, 1, 1);
-		}
-		buffMaintain($effect[Song of Slowness], 110, 1, 1);
-		buffMaintain($effect[Your Fifteen Minutes], 90, 1, 1);
-		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
-		buffMaintain($effect[Nearly Silent Hunting], 0, 1, 1);
-		buffMaintain($effect[Soulerskates], 0, 1, 1);
-		buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
+		provideInitiative(850, true);
 
 		if (isActuallyEd() && monster_attack($monster[modern zmobie]) >= my_maxhp())
 		{
@@ -3216,29 +3201,12 @@ boolean L7_crypt()
 			}
 		}
 
-		auto_beachCombHead("init");
-
-		if(have_effect($effect[init.enh]) == 0)
-		{
-			int enhances = auto_sourceTerminalEnhanceLeft();
-			if(enhances > 0)
-			{
-				auto_sourceTerminalEnhance("init");
-			}
-		}
-
-		if((have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff") == false))
-		{
-			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
-		}
-
 		autoEquip($item[Gravy Boat]);
 
 		if(!useMaximizeToEquip() && (get_property("cyrptAlcoveEvilness").to_int() > 26))
 		{
 			autoEquip($item[The Nuge\'s Favorite Crossbow]);
 		}
-		bat_formBats();
 
 		addToMaximize("100initiative 850max");
 
