@@ -2942,7 +2942,18 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 		return false;
 	}
 
-	if(tryEffects($effects[Cletus's Canticle of Celerity, Springy Fusilli, Soulerskates, Walberg's Dim Bulb, Song of Slowness, Your Fifteen Minutes, Suspicious Gaze, Bone Springs, Living Fast]))
+	if(tryEffects($effects[
+		Cletus's Canticle of Celerity,
+		Springy Fusilli,
+		Soulerskates,
+		Walberg's Dim Bulb,
+		Song of Slowness,
+		Your Fifteen Minutes,
+		Suspicious Gaze,
+		Bone Springs,
+		Living Fast,
+		Nearly Silent Hunting,
+	]))
 		return result();
 
 	if(speculative)
@@ -2976,7 +2987,20 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 			return result();
 	}
 
-	if(tryEffects($effects[Adorable Lookout, Alacri Tea, All Fired Up, Fishy\, Oily, The Glistening, Human-Machine Hybrid, Patent Alacrity, Provocative Perkiness, Sepia Tan, Sugar Rush, Ticking Clock, Well-Swabbed Ear]))
+	if(tryEffects($effects[
+		Adorable Lookout,
+		Alacri Tea,
+		All Fired Up,
+		Fishy\, Oily,
+		The Glistening,
+		Human-Machine Hybrid,
+		Patent Alacrity,
+		Provocative Perkiness,
+		Sepia Tan,
+		Sugar Rush,
+		Ticking Clock,
+		Well-Swabbed Ear,
+	]))
 		return result();
 
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0)
@@ -3129,7 +3153,13 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	}
 
 	// effects from skills
-	if(tryEffects($effects[Elemental Saucesphere, Astral Shell, Hide of Sobek, Spectral Awareness, Scarysauce]))
+	if(tryEffects($effects[
+		Elemental Saucesphere,
+		Astral Shell,
+		Hide of Sobek,
+		Spectral Awareness,
+		Scarysauce,
+	]))
 		return result();
 
 	if(bat_formMist(speculative) && speculative)
@@ -3174,14 +3204,36 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	if(doEquips)
 	{
 		// effects from items that we'd have to buy or have found
-		if(tryEffects($effects[Red Door Syndrome, Well-Oiled, Oiled-Up, Egged On]))
+		if(tryEffects($effects[
+			Red Door Syndrome,
+			Well-Oiled,
+			Oiled-Up,
+			Egged On
+		]))
 			return result();
 		// element specific effects
-		buffElement($element[hot], $effects[Flame-Retardant Trousers, Fireproof Lips]);
-		buffElement($element[cold], $effects[Insulated Trousers, Fever From the Flavor]);
-		buffElement($element[stench], $effects[Smelly Pants, Neutered Nostrils, Can't Smell Nothin']);
-		buffElement($element[spooky], $effects[Spookypants, Balls of Ectoplasm, Hyphemariffic]);
-		buffElement($element[sleaze], $effects[Sleaze-Resistant Trousers, Hyperoffended]);
+		buffElement($element[hot], $effects[
+			Flame-Retardant Trousers,
+			Fireproof Lip,
+		]);
+		buffElement($element[cold], $effects[
+			Insulated Trousers,
+			Fever From the Flavor,
+		]);
+		buffElement($element[stench], $effects[
+			Smelly Pants,
+			Neutered Nostrils,
+			Can't Smell Nothin',
+		]);
+		buffElement($element[spooky], $effects[
+			Spookypants,
+			Balls of Ectoplasm,
+			Hyphemariffic,
+		]);
+		buffElement($element[sleaze], $effects[
+			Sleaze-Resistant Trousers,
+			Hyperoffended,
+		]);
 	}
 
 	return result();
@@ -3277,12 +3329,23 @@ float provideML(int amt, boolean doEquips, boolean speculative)
 		return false;
 	}
 
-	if(tryEffects($effects[Ur-Kel's Aria of Annoyance, Drescher's Annoying Noise, Pride of the Puffin, Ceaseless Snarling, Punchable Face]))
+	if(tryEffects($effects[
+		Ur-Kel's Aria of Annoyance,
+		Drescher's Annoying Noise,
+		Pride of the Puffin,
+		Ceaseless Snarling,
+		Punchable Face,
+	]))
 		return finish();
 
 	if(doEquips)
 	{
-		if(tryEffects($effects[Litterbug, Tortious, Sweetbreads Flamb&eacute;, The Dinsey Look]))
+		if(tryEffects($effects[
+			Litterbug,
+			Tortious,
+			Sweetbreads Flamb&eacute;,
+			The Dinsey Look,
+		]))
 			return finish();
 	}
 
@@ -3414,22 +3477,105 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		return pass(st);
 	}
 
-	buffStat($stat[muscle], $effects[Juiced and Loose, Quiet Determination, Power Ballad of the Arrowsmith, Seal Clubbing Frenzy, Patience of the Tortoise]);
-	buffStat($stat[mysticality], $effects[Mind Vision, Quiet Judgement, The Magical Mojomuscular Melody, Pasta Oneness, Saucemastery]);
-	buffStat($stat[moxie], $effects[Impeccable Coiffure, Quiet Desperation, Disco Smirk, Song of Bravado, Disco State of Mind, Mariachi Mood]);
+	buffStat($stat[muscle], $effects[
+		Juiced and Loose,
+		Quiet Determination,
+		Power Ballad of the Arrowsmith,
+		Seal Clubbing Frenzy,
+		Patience of the Tortoise,
+	]);
+	buffStat($stat[mysticality], $effects[
+		Mind Vision,
+		Quiet Judgement,
+		The Magical Mojomuscular Melody,
+		Pasta Oneness,
+		Saucemastery,
+	]);
+	buffStat($stat[moxie], $effects[
+		Impeccable Coiffure,
+		Quiet Desperation,
+		Disco Smirk,
+		Song of Bravado,
+		Disco State of Mind,
+		Mariachi Mood,
+	]);
 	if(pass())
 		return result();
 
-	if(tryEffects($effects[Song of Bravado, Stevedave's Shanty of Superiority]))
+	if(tryEffects($effects[
+		Song of Bravado,
+		Stevedave's Shanty of Superiority,
+	]))
 		return result();
 
 	// buffs from items
 	if(doEquips)
 	{
-		buffStat($stat[muscle], $effects[Browbeaten, Extra Backbone, Extreme Muscle Relaxation, Feroci Tea, Fishy Fortification, Football Eyes, Go Get \'Em\, Tiger!, Lycanthropy\, Eh?, Marinated, Phorcefullness, Rainy Soul Miasma, Savage Beast Inside, Steroid Boost, Spiky Hair, Sugar Rush, Superheroic, Temporary Lycanthropy, Truly Gritty, Vital, Woad Warrior]);
-		buffStat($stat[mysticality], $effects[Baconstoned, Erudite, Far Out, Glittering Eyelashes, Liquidy Smoky, Marinated, Mystically Oiled, OMG WTF, Rainy Soul Miasma, Ready to Snap, Rosewater Mark, Seeing Colors, Sweet\, Nuts]);
-		buffStat($stat[moxie], $effects[Almost Cool, Busy Bein' Delicious, Butt-Rock Hair, Funky Coal Patina, Liquidy Smoky, Locks Like the Raven, Lycanthropy\, Eh?, Memories of Puppy Love, Newt Gets In Your Eyes, Notably Lovely, Oiled Skin, Radiating Black Body&trade;, Spiky Hair, Sugar Rush, Superhuman Sarcasm]);
-		tryEffects($effects[Human-Human Hybrid, Industrial Strength Starch, Mutated, Seriously Mutated, Pill Power, Slightly Larger Than Usual, Standard Issue Bravery, Tomato Power, Vital]);
+		buffStat($stat[muscle], $effects[
+			Browbeaten,
+			Extra Backbone,
+			Extreme Muscle Relaxation,
+			Feroci Tea,
+			Fishy Fortification,
+			Football Eyes,
+			Go Get \'Em\, Tiger!,
+			Lycanthropy\, Eh?,
+			Marinated,
+			Phorcefullness,
+			Rainy Soul Miasma,
+			Savage Beast Inside,
+			Steroid Boost,
+			Spiky Hair,
+			Sugar Rush,
+			Superheroic,
+			Temporary Lycanthropy,
+			Truly Gritty,
+			Vital,
+			Woad Warrior
+		]);
+		buffStat($stat[mysticality], $effects[
+			Baconstoned,
+			Erudite,
+			Far Out,
+			Glittering Eyelashes,
+			Liquidy Smoky,
+			Marinated,
+			Mystically Oiled,
+			OMG WTF,
+			Rainy Soul Miasma,
+			Ready to Snap,
+			Rosewater Mark,
+			Seeing Colors,
+			Sweet\, Nuts,
+		]);
+		buffStat($stat[moxie], $effects[
+			Almost Cool,
+			Busy Bein' Delicious,
+			Butt-Rock Hair,
+			Funky Coal Patina,
+			Liquidy Smoky,
+			Locks Like the Raven,
+			Lycanthropy\, Eh?,
+			Memories of Puppy Love,
+			Newt Gets In Your Eyes,
+			Notably Lovely,
+			Oiled Skin,
+			Radiating Black Body&trade;,
+			Spiky Hair,
+			Sugar Rush,
+			Superhuman Sarcasm,
+		]);
+		tryEffects($effects[
+			Human-Human Hybrid,
+			Industrial Strength Starch,
+			Mutated,
+			Seriously Mutated,
+			Pill Power,
+			Slightly Larger Than Usual,
+			Standard Issue Bravery,
+			Tomato Power,
+			Vital,
+		]);
 
 		foreach st in amt
 		{
