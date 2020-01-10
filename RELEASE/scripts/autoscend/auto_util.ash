@@ -3214,7 +3214,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		// element specific effects
 		buffElement($element[hot], $effects[
 			Flame-Retardant Trousers,
-			Fireproof Lip,
+			Fireproof Lips,
 		]);
 		buffElement($element[cold], $effects[
 			Insulated Trousers,
