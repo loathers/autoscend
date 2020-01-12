@@ -3984,11 +3984,10 @@ boolean L4_batCave()
 		return true;
 	}
 
-	buffMaintain($effect[Hide of Sobek], 10, 1, 1);
-	buffMaintain($effect[Astral Shell], 10, 1, 1);
-	buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
-	buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-	if(elemental_resist($element[stench]) < 1)
+	int [element] resGoal;
+	resGoal[$element[stench]] = 1;
+	// try to get the stench res without equipment, but use equipment if we must
+	if(!provideResistances(resGoal, false) && !provideResistances(resGoal, true))
 	{
 		if(!useMaximizeToEquip())
 		{
@@ -4014,16 +4013,8 @@ boolean L4_batCave()
 		}
 		else
 		{
-			boolean success = simMaximizeWith("stench res 1max 1min");
-			if(success)
-			{
-				addToMaximize("stench res 1max 1min");
-			}
-			else
-			{
-				auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
-				return false;
-			}
+			auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
+			return false;
 		}
 	}
 
@@ -5017,73 +5008,20 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	if(delayKitchen)
 	{
-		boolean haveRes = (elemental_resist($element[hot]) >= 9 || elemental_resist($element[stench]) >= 9);
-		if(useMaximizeToEquip())
-		{
-			simMaximizeWith("1000hot res 9 max,1000stench res 9 max");
-			if(simValue("Hot Resistance") >= 9 && simValue("Stench Resistance") >= 9)
-			{
-				haveRes = true;
-			}
-		}
-		if(!haveRes)
+		int [element] resGoals;
+		resGoals[$element[hot]] = 9;
+		resGoals[$element[stench]] = 9;
+		// check to see if we can acquire sufficient hot and stench res for the kitchen
+		int [element] resPossible = provideResistances(resGoals, true, true);
+		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
+		if(delayKitchen)
 		{
 			if (isActuallyEd())
 			{
-				// this should be false if we have the 3rd resist upgrade (max available for Ed) and true if we don't!
+				// If we already have all the elemental wards as ed we're probably not going to get any better, so might as well get it over with
 				delayKitchen = !have_skill($skill[Even More Elemental Wards]);
 			}
-		}
-		else
-		{
-			delayKitchen = false;
-		}
-		if(delayKitchen)
-		{
-			int hot = elemental_resist($element[hot]);
-			int stench = elemental_resist($element[stench]);
-			int mpNeed = 0;
-			int hpNeed = 0;
-			if(((hot < 9) || (stench < 9)) && have_skill($skill[Astral Shell]) && (have_effect($effect[Astral Shell]) == 0))
-			{
-				hot += 1;
-				stench += 1;
-				mpNeed += mp_cost($skill[Astral Shell]);
-			}
-			if(((hot < 9) || (stench < 9)) && have_skill($skill[Elemental Saucesphere]) && (have_effect($effect[Elemental Saucesphere]) == 0))
-			{
-				hot += 2;
-				stench += 2;
-				mpNeed += mp_cost($skill[Elemental Saucesphere]);
-			}
-			if(((hot < 9) || (stench < 9)) && auto_have_skill($skill[Spectral Awareness]) && (have_effect($effect[Spectral Awareness]) == 0))
-			{
-				hot += 2;
-				stench += 2;
-				hpNeed += hp_cost($skill[Spectral Awareness]);
-			}
-			if(hot < 9 && auto_canBeachCombHead("hot"))
-			{
-				hot += 2;
-			}
-			if(stench < 9 && auto_canBeachCombHead("stench"))
-			{
-				stench += 2;
-			}
-
-			if((my_mp() > mpNeed) && (my_hp() > hpNeed) && (hot >= 9) && (stench >= 9))
-			{
-				buffMaintain($effect[Astral Shell], mp_cost($skill[Astral Shell]), 1, 1);
-				buffMaintain($effect[Elemental Saucesphere], mp_cost($skill[Elemental Saucesphere]), 1, 1);
-				buffMaintain($effect[Spectral Awareness], hp_cost($skill[Spectral Awareness]), 1, 1);
-				if(elemental_resist($element[hot]) < 9) auto_beachCombHead("hot");
-				if(elemental_resist($element[stench]) < 9) auto_beachCombHead("stench");
-			}
-
-			if((elemental_resist($element[hot]) >= 9) && (elemental_resist($element[stench]) >= 9))
-			{
-				delayKitchen = false;
-			}
+			// if we're at the point where we need to level up to get more quests other than this, we might as well just do this instead
 			if((get_property("auto_powerLevelAdvCount").to_int() > 7) && (get_property("auto_powerLevelLastLevel").to_int() == my_level()))
 			{
 				delayKitchen = false;
@@ -5239,22 +5177,11 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	else
 	{
-		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + elemental_resist($element[hot]) + "/" + elemental_resist($element[stench]) + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
-		if(auto_have_familiar($familiar[Mu]))
-		{
-			handleFamiliar($familiar[Mu]);
-		}
-		else if(auto_have_familiar($familiar[Exotic Parrot]))
-		{
-			handleFamiliar($familiar[Exotic Parrot]);
-		}
-		if(is100FamiliarRun())
-		{
-			if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && (available_amount($item[Li\'l Candy Corn Costume]) > 0))
-			{
-				handleFamiliar($familiar[Trick-or-Treating Tot]);
-			}
-		}
+		int [element] resGoal;
+		resGoal[$element[hot]] = 9;
+		resGoal[$element[stench]] = 9;
+		int [element] resPossible = provideResistances(resGoal, true, false);
+		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + resPossible[$element[hot]] + "/" + resPossible[$element[stench]] + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
 		if(get_property("manorDrawerCount").to_int() >= 24)
 		{
 			cli_execute("refresh inv");
@@ -5264,11 +5191,7 @@ boolean LX_handleSpookyravenFirstFloor()
 				wait(10);
 			}
 		}
-		buffMaintain($effect[Hide of Sobek], 10, 1, 1);
-		buffMaintain($effect[Patent Prevention], 0, 1, 1);
-		bat_formMist();
 
-		addToMaximize("1000hot resistance 9 max,1000 stench resistance 9 max");
 		autoAdv(1, $location[The Haunted Kitchen]);
 		handleFamiliar("item");
 	}

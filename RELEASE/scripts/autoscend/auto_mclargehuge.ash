@@ -349,41 +349,10 @@ boolean L8_trapperGroar()
 
 	if(canGroar)
 	{
-		if(elemental_resist($element[cold]) < 5)
-		{
-			buffMaintain($effect[Astral Shell], 10, 1, 1);
-			buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
-			buffMaintain($effect[Hide of Sobek], 10, 1, 1);
-			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-			if(elemental_resist($element[cold]) < 5)
-			{
-				bat_formMist();
-			}
-		}
-		string lihcface = "";
-		if (isActuallyEd() && possessEquipment($item[The Crown of Ed the Undying]))
-		{
-			lihcface = "-equip lihc face";
-		}
-
-		if((elemental_resist($element[cold]) < 5) && (my_level() == get_property("auto_powerLevelLastLevel").to_int()))
-		{
-			autoMaximize("cold res 5 max,-tie,-equip snow suit", 0, 0, true);
-			int coldResist = simValue("Cold Resistance");
-			if(coldResist >= 5)
-			{
-				if(useMaximizeToEquip())
-				{
-					addToMaximize("2000cold res 5 max");
-				}
-				else
-				{
-					autoMaximize("cold res,-tie,-equip snow suit,-weapon", 0, 0, false);
-				}
-			}
-		}
-
-		if(elemental_resist($element[cold]) >= 5)
+		int [element] resGoal;
+		resGoal[$element[cold]] = 5;
+		// try getting resistance without equipment before bothering to change gear
+		if(provideResistances(resGoal, false) || provideResistances(resGoal, true))
 		{
 			if (internalQuestStatus("questL08Trapper") == 2)
 			{
@@ -395,7 +364,7 @@ boolean L8_trapperGroar()
 			auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 			if (item_amount($item[Groar\'s Fur]) == 0 && item_amount($item[Winged Yeti Fur]) == 0)
 			{
-				addToMaximize("5meat 2000cold res 5 max");
+				addToMaximize("5meat");
 				//If this returns false, we might have finished already, can we check this?
 				autoAdv(1, $location[Mist-shrouded Peak]);
 			}
