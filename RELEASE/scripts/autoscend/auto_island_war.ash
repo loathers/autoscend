@@ -1182,7 +1182,7 @@ boolean L12_themtharHills()
 			if(failNuns)
 			{
 				handleFamiliar("item");
-				return true;
+				return false;
 			}
 		}
 		else

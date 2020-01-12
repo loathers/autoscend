@@ -3165,6 +3165,10 @@ boolean L7_crypt()
 		}
 	}
 
+	// make sure quest status is correct before we attempt to adventure.
+	visit_url("crypt.php");
+	use(1, $item[Evilometer]);
+
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && canGroundhog($location[The Defiled Alcove]))
 	{
 		handleFamiliar("init");
@@ -6222,11 +6226,6 @@ boolean doTasks()
 
 void auto_begin()
 {
-	if((svn_info("mafiarecovery").last_changed_rev > 0) && (get_property("recoveryScript") != ""))
-	{
-		user_confirm("Recovery scripts do not play nicely with this script. I am going to disable the recovery script. It will make me less grumpy. I will restore it if I terminate gracefully. Probably.");
-		backupSetting("recoveryScript", "");
-	}
 	if(get_auto_attack() != 0)
 	{
 		boolean shouldUnset = user_confirm("You have an auto attack enabled. This can cause issues. Would you like us to disable it? Will default to 'No' in 30 seconds.", 30000, false);
@@ -6289,7 +6288,9 @@ void auto_begin()
 	handlePulls(my_daycount());
 	initializeDay(my_daycount());
 
+	backupSetting("recoveryScript", "");
 	backupSetting("trackLightsOut", false);
+	backupSetting("autoSatisfyWithCloset", false);
 	backupSetting("autoSatisfyWithCoinmasters", true);
 	backupSetting("autoSatisfyWithNPCs", true);
 	backupSetting("removeMalignantEffects", false);
