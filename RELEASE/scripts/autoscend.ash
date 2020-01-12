@@ -508,39 +508,30 @@ void maximize_hedge()
 	element first = ns_hedge1();
 	element second = ns_hedge2();
 	element third = ns_hedge3();
+	int [element] resGoal;
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
-		uneffect($effect[Flared Nostrils]);
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("200all res");
-		}
-		else
+		if(!useMaximizeToEquip())
 		{
 			autoMaximize("all res -equip snow suit", 2500, 0, false);
+		}
+		foreach ele in $elements[hot, cold, stench, sleaze, spooky]
+		{
+			resGoal[ele] = 9;
 		}
 	}
 	else
 	{
-		if ($element[stench] == first || $element[stench] == second || $element[stench] == third)
-		{
-			uneffect($effect[Flared Nostrils]);
-		}
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("200" + first + " res,200" + second + " res,200" + third + " res");
-		}
-		else
+		if(!useMaximizeToEquip())
 		{
 			autoMaximize(to_string(first) + " res, " + to_string(second) + " res, " + to_string(third) + " res -equip snow suit", 2500, 0, false);
 		}
+		resGoal[first] = 9;
+		resGoal[second] = 9;
+		resGoal[third] = 9;
 	}
 
-	bat_formMist();
-	foreach eff in $effects[Egged On, Patent Prevention, Spectral Awareness]
-	{
-		buffMaintain(eff, 0, 1, 1);
-	}
+	provideResistances(resGoal, true);
 }
 
 int pullsNeeded(string data)
