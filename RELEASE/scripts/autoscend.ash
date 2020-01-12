@@ -5615,8 +5615,6 @@ boolean L3_tavern()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 
-	buffMaintain($effect[Tortious], 0, 1, 1);
-	buffMaintain($effect[Litterbug], 0, 1, 1);
 	auto_setMCDToCap();
 
 	if (auto_tavern())

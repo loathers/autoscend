@@ -783,32 +783,9 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	buffMaintain($effect[Drescher\'s Annoying Noise], 0, 1, 1);
-	buffMaintain($effect[Pride of the Puffin], 0, 1, 1);
-	buffMaintain($effect[Ur-kel\'s Aria of Annoyance], 0, 1, 1);
-	buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
+	auto_MaxMLToCap(auto_convertDesiredML(100), false);
 
-	int expectedML = 0;
-	auto_change_mcd(11);
-	expectedML = current_mcd();
-	if(have_skill($skill[Drescher\'s Annoying Noise]))
-	{
-		expectedML += 10;
-	}
-	if(have_skill($skill[Pride of the Puffin]))
-	{
-		expectedML += 10;
-	}
-	if(have_skill($skill[Ur-kel\'s Aria of Annoyance]))
-	{
-		expectedML += (2 * my_level());
-	}
-	if(have_skill($skill[Ceaseless Snarl]))
-	{
-		expectedML += 30;
-	}
-
-	if((monster_level_adjustment() < expectedML) && (my_level() < 12))
+	if((monster_level_adjustment() < 50) && (my_level() < 12))
 	{
 		return false;
 	}
@@ -842,12 +819,10 @@ boolean L9_oilPeak()
 		auto_log_info("Oil Peak is finished but we need more crude!", "blue");
 	}
 
-	buffMaintain($effect[Litterbug], 0, 1, 1);
-	buffMaintain($effect[Tortious], 0, 1, 1);
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	handleFamiliar("initSuggest");
 
-	auto_MaxMLToCap(auto_convertDesiredML(100), false);
+	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 
 	if (isActuallyEd() && get_property("auto_dickstab").to_boolean())
 	{
@@ -856,14 +831,6 @@ boolean L9_oilPeak()
 	if(monster_level_adjustment() < 50)
 	{
 		buffMaintain($effect[The Dinsey Look], 0, 1, 1);
-	}
-	if(monster_level_adjustment() < 100)
-	{
-		buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
-	}
-	if(monster_level_adjustment() < 60)
-	{
-		buffMaintain($effect[Punchable Face], 50, 1, 1);
 	}
 	if((monster_level_adjustment() < 60))
 	{
