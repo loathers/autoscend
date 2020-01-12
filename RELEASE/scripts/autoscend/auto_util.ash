@@ -3498,12 +3498,14 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 	]);
 	buffStat($stat[moxie], $effects[
 		Impeccable Coiffure,
-		Quiet Desperation,
-		Disco Smirk,
 		Song of Bravado,
 		Disco State of Mind,
 		Mariachi Mood,
 	]);
+	if(auto_have_skill($skill[Quiet Desperation]))
+		buffStat($stat[moxie], $effects[Quiet Desperation]);
+	else
+		buffStat($stat[moxie], $effects[Disco Smirk]);
 	if(pass())
 		return result();
 
