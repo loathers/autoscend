@@ -3255,113 +3255,6 @@ boolean provideResistances(int [element] amt, boolean doEquips)
 	return true;
 }
 
-// WILL NOT GO OVER 150 ML
-float provideML(int amt, boolean doEquips, boolean speculative)
-{
-	auto_log_info("Trying to provide " + amt + " ML, " + (doEquips ? "with" : "without") + " equipment", "blue");
-	if(!speculative)
-	{
-		// so we can fill in the rest afterwards, to avoid giving up early due to barely going over 150
-		auto_change_mcd(0);
-	}
-	float delta = 0;
-	if(doEquips)
-	{
-		if(useMaximizeToEquip())
-		{
-			string max = "200ml " + amt + "max";
-			if(speculative)
-			{
-				simMaximizeWith(max);
-			}
-			else
-			{
-				addToMaximize(max);
-				simMaximize();
-			}
-			delta = simValue("Monster Level") - numeric_modifier("Monster Level");
-		}
-	}
-	if(speculative)
-	{
-		delta -= current_mcd();
-	}
-
-	float result()
-	{
-		return numeric_modifier("Monster Level") + delta;
-	}
-
-	boolean pass()
-	{
-		return result() >= amt;
-	}
-
-	float finish()
-	{
-		int adjustTo = max(min(150 - to_int(numeric_modifier("Monster Level") + delta), 11), 0);
-		if(!speculative)
-		{
-			auto_change_mcd(adjustTo);
-		}
-		else
-		{
-			delta += adjustTo;
-		}
-		return result();
-	}
-
-	if(pass())
-		return finish();
-
-	void handleEffect(effect eff)
-	{
-		delta += numeric_modifier(eff, "Monster Level");
-	}
-
-	boolean tryEffects(boolean [effect] effects)
-	{
-		foreach eff in effects
-		{
-			if(numeric_modifier("Monster Level") + delta + numeric_modifier(eff, "Monster Level") <= 150)
-			{
-				if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
-					handleEffect(eff);
-				if(pass())
-					return true;
-			}
-		}
-		return false;
-	}
-
-	if(tryEffects($effects[
-		Ur-Kel's Aria of Annoyance,
-		Drescher's Annoying Noise,
-		Pride of the Puffin,
-		Ceaseless Snarling,
-		Punchable Face,
-	]))
-		return finish();
-
-	if(doEquips)
-	{
-		if(tryEffects($effects[
-			Litterbug,
-			Tortious,
-			Sweetbreads Flamb&eacute;,
-			The Dinsey Look,
-		]))
-			return finish();
-	}
-
-	return finish();
-}
-
-boolean provideML(int amt, boolean doEquips)
-{
-	return provideML(amt, doEquips, false) >= amt;
-}
-
 float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 {
 	string debugprint = "Trying to provide ";
@@ -6826,17 +6719,23 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 		auto_change_mcd(0);
 	}
 
+	void tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(monster_level_adjustment() + numeric_modifier(eff, "Monster Level") <= auto_convertDesiredML(ToML))
+			{
+				buffMaintain(eff, 0, 1, 1);
+			}
+		}
+	}
+
 // ToML >= U >= 30
 	UrKelCheck(ToML, auto_convertDesiredML(ToML), 30);
 
-
 // 30
 	// Start with the biggest and drill down for max ML
-	if((monster_level_adjustment() + 30) <= auto_convertDesiredML(ToML))
-	{
-		buffMaintain($effect[Ceaseless Snarling], 0, 1, 10);
-	}
-
+	tryEffects($effects[Ceaseless Snarling, Punchable Face]);
 
 // 29 >= U >= 25
 	UrKelCheck(ToML, 29, 25);
@@ -6847,6 +6746,10 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 	{
 		asdonBuff($effect[Driving Recklessly]);
 	}
+	if(doAltML)
+	{
+		tryEffects($effects[Litterbug, Sweetbreads Flamb&eacute;]);
+	}
 
 
 // 24 >= U >= 10
@@ -6854,16 +6757,11 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 
 // 10
-	if((monster_level_adjustment() + 10) <= auto_convertDesiredML(ToML))
+	tryEffects($effects[Pride of the Puffin, Drescher's Annoying Noise]);
+	if(doAltML)
 	{
-		buffMaintain($effect[Pride of the Puffin], 0, 1, 10);
+		tryEffects($effects[Tortious]);
 	}
-
-	if((monster_level_adjustment() + 10) <= auto_convertDesiredML(ToML))
-	{
-		buffMaintain($effect[Drescher\'s Annoying Noise], 0, 1, 10);
-	}
-
 
 // <10
 	//If we can't get 10 turns of Ur-Kel's, and we aren't being forced to pile on the ML, it probably isn't worth it.
