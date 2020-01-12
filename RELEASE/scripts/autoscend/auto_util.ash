@@ -3054,6 +3054,11 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	debugprint += (doEquips ? "with equipment" : "without equipment");
 	auto_log_info(debugprint, "blue");
 
+	if(amt[$element[stench]] > 0)
+	{
+		uneffect($effect[Flared Nostrils]);
+	}
+
 	int [element] delta;
 
 	void handleEffect(effect eff)
