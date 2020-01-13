@@ -171,7 +171,7 @@ void initializeSettings()
 	set_property("auto_writingDeskSummon", false);
 	set_property("auto_yellowRays", "");
 	set_property("auto_consumeKeyLimePies", true);
-
+	set_property("auto_skipNuns", "false");
 	set_property("choiceAdventure1003", 0);
 	beehiveConsider();
 

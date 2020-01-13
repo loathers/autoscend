@@ -1017,7 +1017,7 @@ boolean L12_themtharHills()
 		return false;
 	}
 
-	if (get_property("hippiesDefeated").to_int() < 192 && !get_property("auto_hippyInstead").to_boolean())
+	if ((get_property("hippiesDefeated").to_int() < 192 && !get_property("auto_hippyInstead").to_boolean()) || get_property("auto_skipNuns").to_boolean())
 	{
 		return false;
 	}
@@ -1182,6 +1182,7 @@ boolean L12_themtharHills()
 			if(failNuns)
 			{
 				handleFamiliar("item");
+				set_property("auto_skipNuns", "true");
 				return false;
 			}
 		}
@@ -1342,7 +1343,7 @@ boolean L12_clearBattlefield()
 			return warAdventure();
 		}
 
-		if (get_property("sidequestNunsCompleted") != "none" && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
+		if ((get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean()) && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
 		{
 			auto_log_info("Doing the wars.", "blue");
 			handleFamiliar("item");
