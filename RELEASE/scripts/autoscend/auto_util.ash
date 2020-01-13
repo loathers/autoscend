@@ -4671,7 +4671,33 @@ boolean beehiveConsider()
 boolean[skill] ATSongList()
 {
 	// This List contains ALL AT songs in order from Most to Least Important as to determine what effect to shrug off.
-	boolean[skill] songs = $skills[Inigo\'s Incantation of Inspiration, The Ballad of Richie Thingfinder, Chorale of Companionship, The Ode to Booze, Ur-Kel\'s Aria of Annoyance, Carlweather\'s Cantata of Confrontation, The Sonata of Sneakiness, Paul\'s Passionate Pop Song, Fat Leon\'s Phat Loot Lyric, The Polka of Plenty, Aloysius\' Antiphon of Aptitude, Donho\'s Bubbly Ballad, Prelude of Precision, Elron\'s Explosive Etude, Benetton\'s Medley of Diversity, Dirge of Dreadfulness, Stevedave\'s Shanty of Superiority, The Psalm of Pointiness, Brawnee\'s Anthem of Absorption, Jackasses\' Symphony of Destruction, The Power Ballad of the Arrowsmith, Cletus\'s Canticle of Celerity, Cringle\'s Curative Carol, The Magical Mojomuscular Melody, The Moxious Madrigal];
+	boolean[skill] songs = $skills[
+		Inigo\'s Incantation of Inspiration,
+		The Ballad of Richie Thingfinder,
+		Chorale of Companionship,
+		The Ode to Booze,
+		Ur-Kel\'s Aria of Annoyance,
+		Carlweather\'s Cantata of Confrontation,
+		The Sonata of Sneakiness,
+		Fat Leon\'s Phat Loot Lyric,
+		The Polka of Plenty,
+		Aloysius\' Antiphon of Aptitude,
+		Paul\'s Passionate Pop Song,
+		Donho\'s Bubbly Ballad,
+		Prelude of Precision,
+		Elron\'s Explosive Etude,
+		Benetton\'s Medley of Diversity,
+		Dirge of Dreadfulness,
+		Stevedave\'s Shanty of Superiority,
+		The Psalm of Pointiness,
+		Brawnee\'s Anthem of Absorption,
+		Jackasses\' Symphony of Destruction,
+		The Power Ballad of the Arrowsmith,
+		Cletus\'s Canticle of Celerity,
+		Cringle\'s Curative Carol,
+		The Magical Mojomuscular Melody,
+		The Moxious Madrigal,
+	];
 
 	return songs;
 }
