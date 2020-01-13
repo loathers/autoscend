@@ -6699,6 +6699,7 @@ boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 	{
 		if((get_property("auto_MLSafetyLimit") == "") || (((2 * my_level()) <= UrKelUpperLimit) && ((2 * my_level()) >= UrKelLowerLimit)))
 		{
+			shrugAT($effect[Ur-Kel\'s Aria of Annoyance]);
 			buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 0, 1, 10);
 		}
 	}
