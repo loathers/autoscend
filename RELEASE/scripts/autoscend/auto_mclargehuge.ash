@@ -126,7 +126,7 @@ boolean L8_trapperExtreme()
 	{
 		return false;
 	}
-	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 2)
+	if (internalQuestStatus("questL08Trapper") != 2)
 	{
 		return false;
 	}
@@ -205,7 +205,7 @@ boolean L8_trapperExtreme()
 
 boolean L8_trapperNinjaLair()
 {
-	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 2)
+	if (internalQuestStatus("questL08Trapper") != 2)
 	{
 		return false;
 	}

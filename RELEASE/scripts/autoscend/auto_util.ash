@@ -4542,7 +4542,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Flaming Weapon]:				useItem = $item[Hot Nuggets];					break;
 	case $effect[Flamibili Tea]:				useItem = $item[cuppa Flamibili Tea];			break;
 	case $effect[Flexibili Tea]:				useItem = $item[cuppa Flexibili Tea];			break;
-	case $effect[Flimsy Shield of the Pastalord]:useSkill = $skill[Shield of the Pastalord];	break;
+	case $effect[Flimsy Shield of the Pastalord]:
+		useSkill = $skill[Shield of the Pastalord];
+		if(my_class() == $class[Pastamancer])
+		{
+			buff = $effect[Shield of the Pastalord];
+		}
+		break;
 	case $effect[Florid Cheeks]:				useItem = $item[Henna Face Paint];				break;
 	case $effect[Football Eyes]:				useItem = $item[Black Facepaint];				break;
 	case $effect[Fortunate Resolve]:			useItem = $item[Resolution: Be Luckier];		break;
@@ -4773,7 +4779,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	case $effect[Sepia Tan]:					useItem = $item[Old Bronzer];					break;
 	case $effect[Serendipi Tea]:				useItem = $item[cuppa Serendipi tea];			break;
 	case $effect[Seriously Mutated]:			useItem = $item[Extra-Potent Gremlin Mutagen];	break;
-	case $effect[Shield of the Pastalord]:		useSkill = $skill[Shield of the Pastalord];		break;
+	case $effect[Shield of the Pastalord]:
+		useSkill = $skill[Shield of the Pastalord];
+		if(my_class() != $class[Pastamancer])
+		{
+			buff = $effect[Flimsy Shield of the Pastalord];
+		}
+		break;
 	case $effect[Shelter of Shed]:				useSkill = $skill[Shelter of Shed];				break;
 	case $effect[Shrieking Weasel]:				useItem = $item[Shrieking Weasel Holo-Record];	break;
 	case $effect[Simmering]:					useSkill = $skill[Simmer];						break;
