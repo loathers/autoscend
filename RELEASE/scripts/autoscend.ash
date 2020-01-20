@@ -1224,7 +1224,7 @@ void initializeDay(int day)
 	}
 
 	auto_doPrecinct();
-	if((item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
+	if(!in_koe() && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
 	{
 		boolean temp = cli_execute("make shoe gum");
 	}
@@ -2944,7 +2944,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun())
+	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun())
 	{
 		if(get_property("auto_choice1119") != "")
 		{

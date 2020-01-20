@@ -4,7 +4,8 @@ script "auto_cooking.ash"
 #	Handler for in-run consumption
 #
 
-boolean dealWithMilkOfMagnesium(boolean useAdv);
+boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);
+boolean consumeMilkOfMagnesiumIfUnused(boolean useAdv);
 boolean autoEat(int howMany, item toEat);
 boolean autoEat(int howMany, item toEat, boolean silent);
 boolean autoDrink(int howMany, item toDrink);
@@ -323,15 +324,8 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	}
 
 	int expectedFullness = toEat.fullness * howMany;
-	if(expectedFullness >= 15)
-	{
-		dealwithMilkOfMagnesium(true);
-	}
-
-	if(expectedFullness >= 10)
-	{
-		buffMaintain($effect[Got Milk], 0, 1, expectedFullness);
-	}
+	acquireMilkOfMagnesiumIfUnused(true);
+	consumeMilkOfMagnesiumIfUnused();
 
 	if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
@@ -368,7 +362,9 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	return retval;
 }
 
-boolean dealWithMilkOfMagnesium(boolean useAdv)
+
+
+boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 {
 	if(in_tcrs())
 	{
@@ -376,6 +372,10 @@ boolean dealWithMilkOfMagnesium(boolean useAdv)
 	}
 
 	if(item_amount($item[Milk Of Magnesium]) > 0)
+	{
+		return true;
+	}
+	if(get_property("_milkOfMagnesiumUsed").to_boolean())
 	{
 		return true;
 	}
@@ -409,6 +409,15 @@ boolean dealWithMilkOfMagnesium(boolean useAdv)
 	}
 	pullXWhenHaveY($item[Milk Of Magnesium], 1, 0);
 	return true;
+}
+
+boolean consumeMilkOfMagnesiumIfUnused()
+{
+	if(get_property("_milkOfMagnesiumUsed").to_boolean())
+	{
+		return false;
+	}
+	return use(1, $item[Milk of Magnesium]);
 }
 
 boolean canDrink(item toDrink)
@@ -1107,8 +1116,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 	if (type == "eat")
 	{
 		// TODO: and can obtain milk of magnesium? It's just logging...
-		auto_log_info("(+" + sum_space + " from Got Milk)", "blue");
-		total_adv += sum_space;
+		auto_log_info("(+" + 5 + " from Milk of Magnesium)", "blue");
+		total_adv += 5;
 	}
 	if (type == "drink" && auto_have_skill($skill[The Ode to Booze]))
 	{
@@ -1143,17 +1152,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 
 	if(type == "eat")
 	{
-		if (in_tcrs() && get_property("auto_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
-		{
-			// +15 adv is worth it for daycount
-			// TODO: Some folks have requested a setting to turn this off.
-			makeGenieWish($effect[Got Milk]);
-		}
-		else
-		{
-			dealwithMilkOfMagnesium(true);
-			buffMaintain($effect[Got Milk], 0, 1, organLeft());
-		}
+		acquireMilkOfMagnesiumIfUnused(true);
+		consumeMilkOfMagnesiumIfUnused();
 	}
 
 	int pre_adventures = my_adventures();
