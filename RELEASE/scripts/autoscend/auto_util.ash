@@ -3034,7 +3034,7 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 
 	if(doEquips && amt >= 400)
 	{
-		if(buffMaintain($effect[Bow-Legged Swagger], 0, 1, 1, speculative))
+		if(!get_property("_bowleggedSwaggerUsed").to_boolean() && buffMaintain($effect[Bow-Legged Swagger], 0, 1, 1, speculative))
 		{
 			if(speculative)
 				delta += delta + numeric_modifier("Initiative");
