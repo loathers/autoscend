@@ -378,9 +378,10 @@ boolean in_koe();											//Defined in autoscend/auto_koe.ash
 boolean boris_buySkills();									//Defined in autoscend/auto_boris.ash
 void boris_initializeDay(int day);							//Defined in autoscend/auto_boris.ash
 void boris_initializeSettings();							//Defined in autoscend/auto_boris.ash
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);//Defined in autoscend/auto_util.ash
-boolean buffMaintain(item source, effect buff, int uses, int turns);//Defined in autoscend/auto_util.ash
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns);//Defined in autoscend/auto_util.ash
+boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
+boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
 boolean buyUpTo(int num, item it);							//Defined in autoscend/auto_util.ash
 boolean buyUpTo(int num, item it, int maxprice);			//Defined in autoscend/auto_util.ash
 boolean buy_item(item it, int quantity, int maxprice);		//Defined in autoscend/auto_util.ash
@@ -667,6 +668,7 @@ boolean auto_canBeachCombHead(string name);	// Defined in autoscend/auto_mr2019.
 boolean auto_beachCombHead(string name);	// Defined in autoscend/auto_mr2019.ash
 int auto_beachCombFreeUsesLeft();	// Defined in autoscend/auto_mr2019.ash
 boolean auto_beachUseFreeCombs();	// Defined in autoscend/auto_mr2019.ash
+effect auto_beachCombHeadEffect(string name); // Defined in autoscend/auto_mr2019.ash
 boolean auto_campawayAvailable();	// Defined in autoscend/auto_mr2019.ash
 boolean auto_campawayGrabBuffs();	// Defined in autoscend/auto_mr2019.ash
 int auto_pillKeeperUses();						//Defined in autoscend/auto_mr2019.ash
@@ -701,6 +703,7 @@ boolean kgb_getMartini(string page);						//Defined in autoscend/auto_mr2017.ash
 boolean kgb_getMartini(string page, boolean dontCare);		//Defined in autoscend/auto_mr2017.ash
 boolean kgbModifiers(string mod);							//Defined in autoscend/auto_mr2017.ash
 boolean haveAsdonBuff();											//Defined in autoscend/auto_mr2017.ash
+boolean canAsdonBuff(effect goal);						//Defined in autoscend/auto_mr2017.ash
 boolean asdonBuff(effect goal);								//Defined in autoscend/auto_mr2017.ash
 boolean asdonBuff(string goal);								//Defined in autoscend/auto_mr2017.ash
 boolean asdonFeed(item it, int qty);						//Defined in autoscend/auto_mr2017.ash
@@ -850,6 +853,18 @@ boolean providePlusNonCombat(int amt);						//Defined in autoscend/auto_util.ash
 boolean providePlusNonCombat(int amt, boolean doEquips);	//Defined in autoscend/auto_util.ash
 boolean acquireCombatMods(int amt);							//Defined in autoscend/auto_util.ash
 boolean acquireCombatMods(int amt, boolean doEquips);		//Defined in autoscend/auto_util.ash
+float provideInitiative(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideInitiative(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideResistances(int [element] amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideStats(int [stat] amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+float provideMuscle(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideMuscle(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+float provideMysticality(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideMysticality(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+float provideMoxie(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
+boolean provideMoxie(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
 void pullAll(item it);										//Defined in autoscend/auto_util.ash
 void pullAndUse(item it, int uses);							//Defined in autoscend/auto_util.ash
 boolean pullXWhenHaveY(item it, int howMany, int whenHave);	//Defined in autoscend/auto_util.ash
@@ -1074,11 +1089,15 @@ boolean bat_consumption(); // Defined in autoscend/auto_batpath.ash
 boolean bat_skillValid(skill sk); // Defined in autoscend/auto_batpath.ash
 boolean bat_tryBloodBank(); // Defined in autoscend/auto_batpath.ash
 boolean bat_wantHowl(location loc); // Defined in autoscend/auto_batpath.ash
-void bat_formNone(); // Defined in autoscend/auto_batpath.ash
-void bat_formWolf(); // Defined in autoscend/auto_batpath.ash
-void bat_formMist(); // Defined in autoscend/auto_batpath.ash
-void bat_formBats(); // Defined in autoscend/auto_batpath.ash
+boolean bat_formNone(); // Defined in autoscend/auto_batpath.ash
+boolean bat_formWolf(boolean speculative); // Defined in autoscend/auto_batpath.ash
+boolean bat_formWolf(); // Defined in autoscend/auto_batpath.ash
+boolean bat_formMist(boolean speculative); // Defined in autoscend/auto_batpath.ash
+boolean bat_formMist(); // Defined in autoscend/auto_batpath.ash
+boolean bat_formBats(boolean speculative); // Defined in autoscend/auto_batpath.ash
+boolean bat_formBats(); // Defined in autoscend/auto_batpath.ash
 void bat_clearForms(); // Defined in autoscend/auto_batpath.ash
+boolean bat_switchForm(effect form, boolean speculative); // Defined in autoscend/auto_batpath.ash
 boolean bat_switchForm(effect form); // Defined in autoscend/auto_batpath.ash
 boolean bat_formPreAdventure(); // Defined in autoscend/auto_batpath.ash
 boolean LM_batpath(); // Defined in autoscend/auto_batpath.ash

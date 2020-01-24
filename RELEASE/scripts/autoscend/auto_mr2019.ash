@@ -583,37 +583,64 @@ boolean auto_beachCombAvailable()
 
 int auto_beachCombHeadNumFrom(string name)
 {
-	int head;
 	switch (name.to_lower_case())
 	{
 		case "hot":
-			head = 1; break;
+			return 1;
 		case "cold":
-			head = 2; break;
+			return 2;
 		case "stench":
-			head = 3; break;
+			return 3;
 		case "spooky":
-			head = 4; break;
+			return 4;
 		case "sleaze":
-			head = 5; break;
+			return 5;
 		case "muscle":
-			head = 6; break;
+		case "musc":
+			return 6;
 		case "mysticality":
 		case "myst":
-			head = 7; break;
+			return 7;
 		case "moxie":
-			head = 8; break;
+		case "mox":
+			return 8;
 		case "init":
 		case "initiative":
-			head = 9; break;
+			return 9;
 		case "weight":
 		case "familiar":
-			head = 10; break;
+			return 10;
 		case "exp":
 		case "stats":
-			head = 11; break;
+			return 11;
 	}
-	return head;
+	auto_log_error("Invalid string " + name + "provided to auto_beachCombHeadNumFrom");
+	return -1;
+}
+
+effect auto_beachCombHeadEffectFromNum(int num)
+{
+	switch(num)
+	{
+		case 1: return $effect[Hot-Headed];
+		case 2: return $effect[Cold as Nice];
+		case 3: return $effect[A Brush with Grossness];
+		case 4: return $effect[Does It Have a Skull In There??];
+		case 5: return $effect[Oiled, Slick];
+		case 6: return $effect[Lack of Body-Building];
+		case 7: return $effect[We're All Made of Starfish];
+		case 8: return $effect[Pomp & Circumsands];
+		case 9: return $effect[Resting Beach Face];
+		case 10: return $effect[Do I Know You From Somewhere?];
+		case 11: return $effect[You Learned Something Maybe!];
+	}
+	auto_log_error("Invalid number " + num + " provided to auto_beachCombHeadEffectFromNum");
+	return $effect[none];
+}
+
+effect auto_beachCombHeadEffect(string name)
+{
+	return auto_beachCombHeadEffectFromNum(auto_beachCombHeadNumFrom(name));
 }
 
 boolean auto_canBeachCombHead(string name) {

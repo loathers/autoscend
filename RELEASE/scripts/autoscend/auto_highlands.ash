@@ -662,91 +662,13 @@ boolean L9_twinPeak()
 
 	if(!attempt && needStench)
 	{
-		buffMaintain($effect[Astral Shell], 10, 1, 1);
-		buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
-		buffMaintain($effect[Hide of Sobek], 10, 1, 1);
-		buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-		int possibleGain = 0;
-		if(item_amount($item[Polysniff Perfume]) > 0)
+		int [element] resGoal;
+		resGoal[$element[stench]] = 4;
+		// check if we can get enough stench res before we start applying anything
+		int [element] resPossible = provideResistances(resGoal, true, true);
+		if(resPossible[$element[stench]] >= 4)
 		{
-			possibleGain += 2;
-		}
-		if(item_amount($item[Pec Oil]) > 0)
-		{
-			possibleGain += 2;
-		}
-		if(item_amount($item[Oil of Parrrlay]) > 0)
-		{
-			possibleGain += 1;
-		}
-		if(item_amount($item[Can Of Black Paint]) > 0)
-		{
-			possibleGain += 2;
-		}
-
-		if(elemental_resist($element[stench]) < 4 && !useMaximizeToEquip())
-		{
-			if(possessEquipment($item[Training Legwarmers]) && glover_usable($item[Training Legwarmers]))
-			{
-				autoEquip($slot[acc3], $item[Training Legwarmers]);
-			}
-
-			familiar resist = $familiar[none];
-			if((elemental_resist($element[stench]) < 4) && !is100FamiliarRun())
-			{
-				if(auto_have_familiar($familiar[Mu]))
-				{
-					resist = $familiar[Mu];
-				}
-				else if(auto_have_familiar($familiar[Exotic Parrot]))
-				{
-					resist = $familiar[Exotic Parrot];
-				}
-				if(auto_have_familiar($familiar[Trick-Or-Treating Tot]))
-				{
-					if (possessEquipment($item[li\'l candy corn costume]) && auto_is_valid($item[li\'l candy corn costume]))
-					{
-						resist = $familiar[Trick-Or-Treating Tot];
-					}
-				}
-				if(resist != $familiar[none])
-				{
-					handleFamiliar(resist);
-					if(resist == $familiar[Trick-Or-Treating Tot])
-					{
-						autoEquip($slot[familiar], $item[li\'l candy corn costume]);
-					}
-				}
-			}
-
-			if((elemental_resist($element[stench]) < 4) && ((elemental_resist($element[stench]) + possibleGain) >= 4))
-			{
-				foreach ef in $effects[Neutered Nostrils, Oiled-Up, Well-Oiled, Red Door Syndrome]
-				{
-					if(elemental_resist($element[stench]) < 4)
-					{
-						buffMaintain(ef, 0, 1, 1);
-					}
-				}
-			}
-		}
-		else
-		{
-			addToMaximize("1000stench res 4max");
-		}
-
-		if(elemental_resist($element[stench]) < 4)
-		{
-			bat_formMist();
-		}
-
-		if(useMaximizeToEquip())
-		{
-			simMaximize();
-		}
-
-		if((useMaximizeToEquip() ? simValue("Stench Resistance") : elemental_resist($element[stench])) >= 4)
-		{
+			provideResistances(resGoal, true);
 			attemptNum = 1;
 			attempt = true;
 		}
@@ -861,32 +783,9 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	buffMaintain($effect[Drescher\'s Annoying Noise], 0, 1, 1);
-	buffMaintain($effect[Pride of the Puffin], 0, 1, 1);
-	buffMaintain($effect[Ur-kel\'s Aria of Annoyance], 0, 1, 1);
-	buffMaintain($effect[Ceaseless Snarling], 0, 1, 1);
+	auto_MaxMLToCap(auto_convertDesiredML(100), false);
 
-	int expectedML = 0;
-	auto_change_mcd(11);
-	expectedML = current_mcd();
-	if(have_skill($skill[Drescher\'s Annoying Noise]))
-	{
-		expectedML += 10;
-	}
-	if(have_skill($skill[Pride of the Puffin]))
-	{
-		expectedML += 10;
-	}
-	if(have_skill($skill[Ur-kel\'s Aria of Annoyance]))
-	{
-		expectedML += (2 * my_level());
-	}
-	if(have_skill($skill[Ceaseless Snarl]))
-	{
-		expectedML += 30;
-	}
-
-	if((monster_level_adjustment() < expectedML) && (my_level() < 12))
+	if((monster_level_adjustment() < 50) && (my_level() < 12))
 	{
 		return false;
 	}
@@ -920,12 +819,10 @@ boolean L9_oilPeak()
 		auto_log_info("Oil Peak is finished but we need more crude!", "blue");
 	}
 
-	buffMaintain($effect[Litterbug], 0, 1, 1);
-	buffMaintain($effect[Tortious], 0, 1, 1);
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	handleFamiliar("initSuggest");
 
-	auto_MaxMLToCap(auto_convertDesiredML(100), false);
+	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 
 	if (isActuallyEd() && get_property("auto_dickstab").to_boolean())
 	{
@@ -934,14 +831,6 @@ boolean L9_oilPeak()
 	if(monster_level_adjustment() < 50)
 	{
 		buffMaintain($effect[The Dinsey Look], 0, 1, 1);
-	}
-	if(monster_level_adjustment() < 100)
-	{
-		buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
-	}
-	if(monster_level_adjustment() < 60)
-	{
-		buffMaintain($effect[Punchable Face], 50, 1, 1);
 	}
 	if((monster_level_adjustment() < 60))
 	{

@@ -171,7 +171,7 @@ void initializeSettings()
 	set_property("auto_writingDeskSummon", false);
 	set_property("auto_yellowRays", "");
 	set_property("auto_consumeKeyLimePies", true);
-
+	set_property("auto_skipNuns", "false");
 	set_property("choiceAdventure1003", 0);
 	beehiveConsider();
 
@@ -508,39 +508,30 @@ void maximize_hedge()
 	element first = ns_hedge1();
 	element second = ns_hedge2();
 	element third = ns_hedge3();
+	int [element] resGoal;
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
-		uneffect($effect[Flared Nostrils]);
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("200all res");
-		}
-		else
+		if(!useMaximizeToEquip())
 		{
 			autoMaximize("all res -equip snow suit", 2500, 0, false);
+		}
+		foreach ele in $elements[hot, cold, stench, sleaze, spooky]
+		{
+			resGoal[ele] = 9;
 		}
 	}
 	else
 	{
-		if ($element[stench] == first || $element[stench] == second || $element[stench] == third)
-		{
-			uneffect($effect[Flared Nostrils]);
-		}
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("200" + first + " res,200" + second + " res,200" + third + " res");
-		}
-		else
+		if(!useMaximizeToEquip())
 		{
 			autoMaximize(to_string(first) + " res, " + to_string(second) + " res, " + to_string(third) + " res -equip snow suit", 2500, 0, false);
 		}
+		resGoal[first] = 9;
+		resGoal[second] = 9;
+		resGoal[third] = 9;
 	}
 
-	bat_formMist();
-	foreach eff in $effects[Egged On, Patent Prevention, Spectral Awareness]
-	{
-		buffMaintain(eff, 0, 1, 1);
-	}
+	provideResistances(resGoal, true);
 }
 
 int pullsNeeded(string data)
@@ -3165,6 +3156,10 @@ boolean L7_crypt()
 		}
 	}
 
+	// make sure quest status is correct before we attempt to adventure.
+	visit_url("crypt.php");
+	use(1, $item[Evilometer]);
+
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && canGroundhog($location[The Defiled Alcove]))
 	{
 		handleFamiliar("init");
@@ -3174,22 +3169,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Reanimated Reanimator]);
 		}
 
-		buffMaintain($effect[Sepia Tan], 0, 1, 1);
-		buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
-		buffMaintain($effect[Bone Springs], 40, 1, 1);
-		buffMaintain($effect[Springy Fusilli], 10, 1, 1);
-		buffMaintain($effect[Patent Alacrity], 0, 1, 1);
-		if((my_class() == $class[Seal Clubber]) || (my_class() == $class[Turtle Tamer]))
-		{
-			buyUpTo(1, $item[Cheap Wind-up Clock]);
-			buffMaintain($effect[Ticking Clock], 0, 1, 1);
-		}
-		buffMaintain($effect[Song of Slowness], 110, 1, 1);
-		buffMaintain($effect[Your Fifteen Minutes], 90, 1, 1);
-		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
-		buffMaintain($effect[Nearly Silent Hunting], 0, 1, 1);
-		buffMaintain($effect[Soulerskates], 0, 1, 1);
-		buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
+		provideInitiative(850, true);
 
 		if (isActuallyEd() && monster_attack($monster[modern zmobie]) >= my_maxhp())
 		{
@@ -3216,29 +3196,12 @@ boolean L7_crypt()
 			}
 		}
 
-		auto_beachCombHead("init");
-
-		if(have_effect($effect[init.enh]) == 0)
-		{
-			int enhances = auto_sourceTerminalEnhanceLeft();
-			if(enhances > 0)
-			{
-				auto_sourceTerminalEnhance("init");
-			}
-		}
-
-		if((have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff") == false))
-		{
-			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
-		}
-
 		autoEquip($item[Gravy Boat]);
 
 		if(!useMaximizeToEquip() && (get_property("cyrptAlcoveEvilness").to_int() > 26))
 		{
 			autoEquip($item[The Nuge\'s Favorite Crossbow]);
 		}
-		bat_formBats();
 
 		addToMaximize("100initiative 850max");
 
@@ -4016,11 +3979,10 @@ boolean L4_batCave()
 		return true;
 	}
 
-	buffMaintain($effect[Hide of Sobek], 10, 1, 1);
-	buffMaintain($effect[Astral Shell], 10, 1, 1);
-	buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
-	buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-	if(elemental_resist($element[stench]) < 1)
+	int [element] resGoal;
+	resGoal[$element[stench]] = 1;
+	// try to get the stench res without equipment, but use equipment if we must
+	if(!provideResistances(resGoal, false) && !provideResistances(resGoal, true))
 	{
 		if(!useMaximizeToEquip())
 		{
@@ -4046,16 +4008,8 @@ boolean L4_batCave()
 		}
 		else
 		{
-			boolean success = simMaximizeWith("stench res 1max 1min");
-			if(success)
-			{
-				addToMaximize("stench res 1max 1min");
-			}
-			else
-			{
-				auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
-				return false;
-			}
+			auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
+			return false;
 		}
 	}
 
@@ -5049,73 +5003,20 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	if(delayKitchen)
 	{
-		boolean haveRes = (elemental_resist($element[hot]) >= 9 || elemental_resist($element[stench]) >= 9);
-		if(useMaximizeToEquip())
-		{
-			simMaximizeWith("1000hot res 9 max,1000stench res 9 max");
-			if(simValue("Hot Resistance") >= 9 && simValue("Stench Resistance") >= 9)
-			{
-				haveRes = true;
-			}
-		}
-		if(!haveRes)
+		int [element] resGoals;
+		resGoals[$element[hot]] = 9;
+		resGoals[$element[stench]] = 9;
+		// check to see if we can acquire sufficient hot and stench res for the kitchen
+		int [element] resPossible = provideResistances(resGoals, true, true);
+		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
+		if(delayKitchen)
 		{
 			if (isActuallyEd())
 			{
-				// this should be false if we have the 3rd resist upgrade (max available for Ed) and true if we don't!
+				// If we already have all the elemental wards as ed we're probably not going to get any better, so might as well get it over with
 				delayKitchen = !have_skill($skill[Even More Elemental Wards]);
 			}
-		}
-		else
-		{
-			delayKitchen = false;
-		}
-		if(delayKitchen)
-		{
-			int hot = elemental_resist($element[hot]);
-			int stench = elemental_resist($element[stench]);
-			int mpNeed = 0;
-			int hpNeed = 0;
-			if(((hot < 9) || (stench < 9)) && have_skill($skill[Astral Shell]) && (have_effect($effect[Astral Shell]) == 0))
-			{
-				hot += 1;
-				stench += 1;
-				mpNeed += mp_cost($skill[Astral Shell]);
-			}
-			if(((hot < 9) || (stench < 9)) && have_skill($skill[Elemental Saucesphere]) && (have_effect($effect[Elemental Saucesphere]) == 0))
-			{
-				hot += 2;
-				stench += 2;
-				mpNeed += mp_cost($skill[Elemental Saucesphere]);
-			}
-			if(((hot < 9) || (stench < 9)) && auto_have_skill($skill[Spectral Awareness]) && (have_effect($effect[Spectral Awareness]) == 0))
-			{
-				hot += 2;
-				stench += 2;
-				hpNeed += hp_cost($skill[Spectral Awareness]);
-			}
-			if(hot < 9 && auto_canBeachCombHead("hot"))
-			{
-				hot += 2;
-			}
-			if(stench < 9 && auto_canBeachCombHead("stench"))
-			{
-				stench += 2;
-			}
-
-			if((my_mp() > mpNeed) && (my_hp() > hpNeed) && (hot >= 9) && (stench >= 9))
-			{
-				buffMaintain($effect[Astral Shell], mp_cost($skill[Astral Shell]), 1, 1);
-				buffMaintain($effect[Elemental Saucesphere], mp_cost($skill[Elemental Saucesphere]), 1, 1);
-				buffMaintain($effect[Spectral Awareness], hp_cost($skill[Spectral Awareness]), 1, 1);
-				if(elemental_resist($element[hot]) < 9) auto_beachCombHead("hot");
-				if(elemental_resist($element[stench]) < 9) auto_beachCombHead("stench");
-			}
-
-			if((elemental_resist($element[hot]) >= 9) && (elemental_resist($element[stench]) >= 9))
-			{
-				delayKitchen = false;
-			}
+			// if we're at the point where we need to level up to get more quests other than this, we might as well just do this instead
 			if((get_property("auto_powerLevelAdvCount").to_int() > 7) && (get_property("auto_powerLevelLastLevel").to_int() == my_level()))
 			{
 				delayKitchen = false;
@@ -5271,22 +5172,11 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	else
 	{
-		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + elemental_resist($element[hot]) + "/" + elemental_resist($element[stench]) + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
-		if(auto_have_familiar($familiar[Mu]))
-		{
-			handleFamiliar($familiar[Mu]);
-		}
-		else if(auto_have_familiar($familiar[Exotic Parrot]))
-		{
-			handleFamiliar($familiar[Exotic Parrot]);
-		}
-		if(is100FamiliarRun())
-		{
-			if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && (available_amount($item[Li\'l Candy Corn Costume]) > 0))
-			{
-				handleFamiliar($familiar[Trick-or-Treating Tot]);
-			}
-		}
+		int [element] resGoal;
+		resGoal[$element[hot]] = 9;
+		resGoal[$element[stench]] = 9;
+		int [element] resPossible = provideResistances(resGoal, true, false);
+		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + resPossible[$element[hot]] + "/" + resPossible[$element[stench]] + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
 		if(get_property("manorDrawerCount").to_int() >= 24)
 		{
 			cli_execute("refresh inv");
@@ -5296,11 +5186,7 @@ boolean LX_handleSpookyravenFirstFloor()
 				wait(10);
 			}
 		}
-		buffMaintain($effect[Hide of Sobek], 10, 1, 1);
-		buffMaintain($effect[Patent Prevention], 0, 1, 1);
-		bat_formMist();
 
-		addToMaximize("1000hot resistance 9 max,1000 stench resistance 9 max");
 		autoAdv(1, $location[The Haunted Kitchen]);
 		handleFamiliar("item");
 	}
@@ -5733,8 +5619,6 @@ boolean L3_tavern()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 
-	buffMaintain($effect[Tortious], 0, 1, 1);
-	buffMaintain($effect[Litterbug], 0, 1, 1);
 	auto_setMCDToCap();
 
 	if (auto_tavern())
@@ -6222,11 +6106,6 @@ boolean doTasks()
 
 void auto_begin()
 {
-	if((svn_info("mafiarecovery").last_changed_rev > 0) && (get_property("recoveryScript") != ""))
-	{
-		user_confirm("Recovery scripts do not play nicely with this script. I am going to disable the recovery script. It will make me less grumpy. I will restore it if I terminate gracefully. Probably.");
-		backupSetting("recoveryScript", "");
-	}
 	if(get_auto_attack() != 0)
 	{
 		boolean shouldUnset = user_confirm("You have an auto attack enabled. This can cause issues. Would you like us to disable it? Will default to 'No' in 30 seconds.", 30000, false);
@@ -6289,7 +6168,9 @@ void auto_begin()
 	handlePulls(my_daycount());
 	initializeDay(my_daycount());
 
+	backupSetting("recoveryScript", "");
 	backupSetting("trackLightsOut", false);
+	backupSetting("autoSatisfyWithCloset", false);
 	backupSetting("autoSatisfyWithCoinmasters", true);
 	backupSetting("autoSatisfyWithNPCs", true);
 	backupSetting("removeMalignantEffects", false);

@@ -1314,9 +1314,12 @@ boolean L11_mauriceSpookyraven()
 	{
 		auto_log_info("Down with the tyrant of Spookyraven!", "blue");
 		acquireHP();
-		buffMaintain($effect[Astral Shell], 10, 1, 1);
-		buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
-
+		int [element] resGoal;
+		foreach ele in $elements[hot, cold, stench, sleaze, spooky]
+		{
+			resGoal[ele] = 3;
+		}
+		provideResistances(resGoal, false);
 
 		# The autoAdvBypass case is probably suitable for Ed but we'd need to verify it.
 		if (isActuallyEd())
