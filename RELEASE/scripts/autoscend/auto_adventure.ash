@@ -148,7 +148,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		}
 		urlGetFlags /= 2;
 	}
-	if((my_hp() == 0) || (get_property("_edDefeats").to_int() == 1) || (have_effect($effect[Beaten Up]) > 0))
+	if (my_hp() == 0 || have_effect($effect[Beaten Up]) > 0)
 	{
 		auto_log_warning("Uh oh! Died when starting a combat indirectly.", "red");
 		#Can we just return true here?

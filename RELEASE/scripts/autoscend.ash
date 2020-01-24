@@ -2358,13 +2358,6 @@ boolean L13_towerNSEntrance()
 			# lx_attemptPowerLevel is before. We need to merge all of this into that....
 			set_property("auto_newbieOverride", true);
 
-			if(snojoFightAvailable() && (auto_my_path() == "Pocket Familiars"))
-			{
-				autoAdv(1, $location[The X-32-F Combat Training Snowman]);
-				return true;
-			}
-
-
 			if(needDigitalKey())
 			{
 				woods_questStart();
@@ -2382,10 +2375,6 @@ boolean L13_towerNSEntrance()
 						return true;
 					}
 				}
-			}
-			if(neverendingPartyPowerlevel())
-			{
-				return true;
 			}
 			if(!hasTorso())
 			{
@@ -2585,6 +2574,10 @@ boolean LX_attemptPowerLevel()
 	else if (elementalPlanes_access($element[hot]))
 	{
 		autoAdv(1, $location[The SMOOCH Army HQ]);
+	}
+	else if (neverendingPartyAvailable())
+	{
+		neverendingPartyPowerlevel();
 	}
 	else
 	{
@@ -4349,7 +4342,7 @@ boolean adventureFailureHandler()
 			}
 		}
 
-		if (get_property("auto_powerLevelAdvCount").to_int() > 20 && my_level() < 13)
+		if (get_property("auto_powerLevelAdvCount").to_int() > 20)
 		{
 			if ($location[The Haunted Gallery] == my_location())
 			{
@@ -5584,10 +5577,6 @@ boolean L3_tavern()
 	{
 		set_property("choiceAdventure1000", "1"); // Everything in Moderation: turn on the faucet (completes quest)
 		set_property("choiceAdventure1001", "2"); // Hot and Cold Dripping Rats: Leave it alone (don't fight a rat)
-		if (have_skill($skill[Shelter of Shed]) && my_mp() < mp_cost($skill[Shelter of Shed]))
-		{
-			delayTavern = true;
-		}
 	}
 	else if(!enoughElement || (my_mp() < mpNeed))
 	{
@@ -6168,6 +6157,9 @@ void auto_begin()
 	handlePulls(my_daycount());
 	initializeDay(my_daycount());
 
+	backupSetting("promptAboutCrafting", 0);
+	backupSetting("requireBoxServants", false);
+	backupSetting("breakableHandling", 4);
 	backupSetting("recoveryScript", "");
 	backupSetting("trackLightsOut", false);
 	backupSetting("autoSatisfyWithCloset", false);
