@@ -2888,9 +2888,27 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 
 float provideInitiative(int amt, boolean doEquips, boolean speculative)
 {
-	auto_log_info("Trying to provide " + amt + " initiative, " + (doEquips ? "with" : "without") + " equipment", "blue");
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " initiative, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	float alreadyHave = numeric_modifier("Initiative");
+	float need = amt - alreadyHave;
+
+	if(need > 0)
+	{
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	}
+	else
+	{
+		auto_log_debug("We already have enough!");
+	}
 
 	float delta = 0;
+
+	float result()
+	{
+		return numeric_modifier("Initiative") + delta;
+	}
+
 	if(doEquips)
 	{
 		if(useMaximizeToEquip())
@@ -2906,15 +2924,11 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 				simMaximize();
 			}
 			delta = simValue("Initiative") - numeric_modifier("Initiative");
+			auto_log_debug("With gear we can get to " + result());
 		}
 
 		if(!speculative)
 			handleFamiliar("init");
-	}
-
-	float result()
-	{
-		return numeric_modifier("Initiative") + delta;
 	}
 
 	boolean pass()
@@ -2927,14 +2941,18 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 
 	void handleEffect(effect eff)
 	{
-		delta += numeric_modifier(eff, "Initiative");
+		if(speculative)
+		{
+			delta += numeric_modifier(eff, "Initiative");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
 	}
 
 	boolean tryEffects(boolean [effect] effects)
 	{
 		foreach eff in effects
 		{
-			if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+			if(buffMaintain(eff, 0, 1, 1, speculative))
 				handleEffect(eff);
 			if(pass())
 				return true;
@@ -2956,21 +2974,15 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 	]))
 		return result();
 
-	if(speculative)
+	if(canAsdonBuff($effect[Driving Quickly]))
 	{
-		if(canAsdonBuff($effect[Driving Quickly]))
-		{
-			delta += numeric_modifier($effect[Driving Quickly], "Initiative");
-		}
-	}
-	else
-	{
-		asdonBuff($effect[Driving Quickly]);
+		if(!speculative) asdonBuff($effect[Driving Quickly]);
+		handleEffect($effect[Driving Quickly]);
 	}
 	if(pass())
 		return result();
 
-	if(bat_formBats(speculative) && speculative)
+	if(bat_formBats(speculative))
 	{
 		handleEffect($effect[Bats Form]);
 	}
@@ -2979,10 +2991,9 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 
 	if(doEquips && auto_have_familiar($familiar[Grim Brother]) && (have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff").to_boolean() == false))
 	{
-		if(speculative)
-			handleEffect($effect[Soles of Glass]);
-		else
+		if(!speculative)
 			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
+		handleEffect($effect[Soles of Glass]);
 		if(pass())
 			return result();
 	}
@@ -3005,29 +3016,29 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0)
 	{
-		if(speculative)
-			handleEffect($effect[init.enh]);
-		else
+		if(!speculative)
 			auto_sourceTerminalEnhance("init");
+		handleEffect($effect[init.enh]);
 		if(pass())
 			return result();
 	}
 
 	if(doEquips && auto_canBeachCombHead("init"))
 	{
-		if(speculative)
-			handleEffect(auto_beachCombHeadEffect("init"));
-		else
+		if(!speculative)
 			auto_beachCombHead("init");
+		handleEffect(auto_beachCombHeadEffect("init"));
+		if(pass())
+			return result();
 	}
-	if(pass())
-		return result();
 
 	if(doEquips && amt >= 400)
 	{
-		if(buffMaintain($effect[Bow-Legged Swagger], 0, 1, 1, speculative) && speculative)
+		if(buffMaintain($effect[Bow-Legged Swagger], 0, 1, 1, speculative))
 		{
-			delta += delta + numeric_modifier("Initiative");
+			if(speculative)
+				delta += delta + numeric_modifier("Initiative");
+			auto_log_debug("With Bow-Legged Swagger we " + (speculative ? "can get to" : "now have") + " " + result());
 		}
 		if(pass())
 			return result();
