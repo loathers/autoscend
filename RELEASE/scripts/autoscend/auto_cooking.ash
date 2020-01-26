@@ -778,7 +778,51 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
+	boolean[item] craftable_blacklist;
+
+	// If we have 2 sticks of firewood, the current knapsack-solver
+	// tries to get one of everything. So we blacklist everything other
+	// than the 'campfire hot dog'
+	foreach it in $items[
+		campfire hot dog, campfire beans, campfire coffee, campfire stew, campfire s'more,
+	]
+	{
+		craftable_blacklist[it] = true;
+	}
+
+	// Blacklist all but the item we can make the most of.
+	// This is mostly a workaround for limitations in the knapsack solver.
+
+	// NB: This is obviously incorrect: what if you have 2 perfect ice
+	// cubes, but can only make 1 of each type of perfect drink? This
+	// optimizer will make 1 of exactly 1 drink type. Oh no. Suboptimal.
+	// I declare that bug Not My Problem.
+	void add_mutex_craftables(boolean[item] items)
+	{
+
+		item best_it = $item[none];
+		int best_amount = 0;
+		foreach it in items
+		{
+			if (creatable_amount(it) > best_amount)
+			{
+				best_it = it;
+				best_amount = max(0, creatable_amount(it) - auto_reserveCraftAmount(it));
+			}
+		}
+		foreach it in items
+		{
+			if (it != best_it)
+			{
+				craftable_blacklist[it] = true;
+			}
+		}
+	}
+
+	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
+
 	boolean[item] KEY_LIME_PIES = $items[Boris's key lime pie, Jarlsberg's key lime pie, Sneaky Pete's key lime pie];
+
 	foreach it in $items[]
 	{
 		if (
@@ -788,6 +832,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			is_unrestricted(it) &&
 			(historical_price(it) <= 20000 || (KEY_LIME_PIES contains it && historical_price(it) < 40000)))
 		{
+			if (it == $item[astral pilsner]) continue;
 			if((it == $item[astral pilsner] || it == $item[Cold One]) && my_level() < 11) continue;
 			if((it == $item[astral hot dog] || it == $item[Spaghetti Breakfast]) && my_level() < 11) continue;
 			if (it == $item[Cursed Punch]) continue;
@@ -810,13 +855,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				large_owned[it] = min(max(item_amount(it) - auto_reserveAmount(it), 0), howmany);
 			}
-			boolean[item] CRAFTABLE_BLACKLIST = $items[
-					// If we have 2 sticks of firewood, the current knapsack-solver
-					// tries to get one of everything. So we blacklist everything other
-					// than the 'campfire hot dog'
-				campfire hot dog, campfire beans, campfire coffee, campfire stew, campfire s'more,
-			];
-			if (!(CRAFTABLE_BLACKLIST contains it) && creatable_amount(it) > 0)
+			if (!(craftable_blacklist contains it) && creatable_amount(it) > 0)
 			{
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
