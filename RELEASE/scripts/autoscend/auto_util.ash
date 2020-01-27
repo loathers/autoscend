@@ -3293,23 +3293,9 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 
 	float [stat] delta;
 
-	void handleEffect(effect eff)
-	{
-		foreach st in amt
-		{
-			delta[st] += numeric_modifier(eff, st);
-			delta[st] += numeric_modifier(eff, st + " Percent") * my_basestat(st) / 100.0;
-		}
-	}
-
 	float result(stat st)
 	{
 		return my_buffedstat(st) + delta[st];
-	}
-
-	boolean pass(stat st)
-	{
-		return result(st) >= amt[st];
 	}
 
 	float [stat] result()
@@ -3320,6 +3306,38 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			res[st] = result(st);
 		}
 		return res;
+	}
+
+	string resultstring()
+	{
+		string s = "";
+		foreach st in amt
+		{
+			if(s != "")
+			{
+				s += ", ";
+			}
+			s += result(st) + " " + st.to_string();
+		}
+		return s;
+	}
+
+	void handleEffect(effect eff)
+	{
+		if(speculative)
+		{
+			foreach st in amt
+			{
+				delta[st] += numeric_modifier(eff, st);
+				delta[st] += numeric_modifier(eff, st + " Percent") * my_basestat(st) / 100.0;
+			}
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + resultstring());
+	}
+
+	boolean pass(stat st)
+	{
+		return result(st) >= amt[st];
 	}
 
 	boolean pass()
@@ -3361,6 +3379,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			{
 				delta[st] = simValue(st) - my_buffedstat(st);
 			}
+			auto_log_debug("With gear we can get to " + resultstring());
 		}
 	}
 
@@ -3371,7 +3390,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 	{
 		foreach eff in effects
 		{
-			if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+			if(buffMaintain(eff, 0, 1, 1, speculative))
 			{
 				handleEffect(eff);
 			}
@@ -3387,7 +3406,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		{
 			foreach eff in effects
 			{
-				if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+				if(buffMaintain(eff, 0, 1, 1, speculative))
 				{
 					handleEffect(eff);
 				}
@@ -3504,10 +3523,9 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		{
 			if(!pass(st) && auto_canBeachCombHead(st.to_string()))
 			{
-				if(speculative)
-					handleEffect(auto_beachCombHeadEffect(st.to_string()));
-				else
+				if(!speculative)
 					auto_beachCombHead(st.to_string());
+				handleEffect(auto_beachCombHeadEffect(st.to_string()));
 			}
 		}
 		if(pass())
