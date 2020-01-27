@@ -3072,22 +3072,9 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 
 	int [element] delta;
 
-	void handleEffect(effect eff)
-	{
-		foreach ele in amt
-		{
-			delta[ele] += numeric_modifier(eff, ele + " Resistance");
-		}
-	}
-
 	int result(element ele)
 	{
 		return numeric_modifier(ele + " Resistance") + delta[ele];
-	}
-
-	boolean pass(element ele)
-	{
-		return result(ele) >= amt[ele];
 	}
 
 	int [element] result()
@@ -3098,6 +3085,37 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			res[ele] = result(ele);
 		}
 		return res;
+	}
+
+	string resultstring()
+	{
+		string s = "";
+		foreach ele in amt
+		{
+			if(s != "")
+			{
+				s += ", ";
+			}
+			s += result(ele) + " " + ele.to_string() + " resistance";
+		}
+		return s;
+	}
+
+	void handleEffect(effect eff)
+	{
+		if(speculative)
+		{
+			foreach ele in amt
+			{
+				delta[ele] += numeric_modifier(eff, ele + " Resistance");
+			}
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + resultstring());
+	}
+
+	boolean pass(element ele)
+	{
+		return result(ele) >= amt[ele];
 	}
 
 	boolean pass()
@@ -3139,6 +3157,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
+			auto_log_debug("With gear we can get to " + resultstring());
 		}
 	}
 
@@ -3149,7 +3168,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	{
 		foreach eff in effects
 		{
-			if(buffMaintain(eff, 0, 1, 1, speculative) && speculative)
+			if(buffMaintain(eff, 0, 1, 1, speculative))
 			{
 				handleEffect(eff);
 			}
@@ -3178,7 +3197,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	]))
 		return result();
 
-	if(bat_formMist(speculative) && speculative)
+	if(bat_formMist(speculative))
 		handleEffect($effect[Mist Form]);
 	if(pass())
 		return result();
