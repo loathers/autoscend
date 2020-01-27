@@ -5734,7 +5734,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	{
 		return buffMaintain(useSkill, buff, mp_min, casts, turns, speculative);
 	}
-	return true;
+	return false;
 }
 
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
