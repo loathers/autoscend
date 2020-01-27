@@ -145,8 +145,6 @@ boolean auto_sausageEatEmUp(int maxToEat)
 				cli_execute("burn " + mpToBurn);
 		}
 
-        acquireMilkOfMagnesiumIfUnused(true);
-        consumeMilkOfMagnesiumIfUnused();
 		if(!eat(1, $item[magical sausage]))
 		{
 			auto_log_warning("Somehow failed to eat a sausage! What??", "red");

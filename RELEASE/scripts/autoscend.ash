@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19599; // In Kingdom of Exploathing, mark the Palindome quest as started as soon as you make the Talisman o' Namsilat.
+since r19696; // Do not worry about milk of magnesium for size 0 foods
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
