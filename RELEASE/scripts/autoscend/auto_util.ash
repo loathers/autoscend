@@ -3377,7 +3377,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			}
 			foreach st in amt
 			{
-				delta[st] = simValue(st) - my_buffedstat(st);
+				delta[st] = simValue("Buffed " + st) - my_buffedstat(st);
 			}
 			auto_log_debug("With gear we can get to " + resultstring());
 		}
