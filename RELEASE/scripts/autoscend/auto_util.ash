@@ -3168,6 +3168,19 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	{
 		foreach eff in effects
 		{
+			boolean effectMatters = false;
+			foreach ele in amt
+			{
+				if(!pass(ele) && numeric_modifier(eff, ele + " Resistance") > 0)
+				{
+					effectMatters = true;
+				}
+			}
+			if(!effectMatters)
+			{
+				auto_log_debug("Skipping effect " + eff + " because it has no relevant resists");
+				continue;
+			}
 			if(buffMaintain(eff, 0, 1, 1, speculative))
 			{
 				handleEffect(eff);
@@ -3176,15 +3189,6 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 				return true;
 		}
 		return false;
-	}
-
-	boolean buffElement(element ele, boolean [effect] effects)
-	{
-		if(!pass(ele))
-		{
-			return tryEffects(effects);
-		}
-		return true;
 	}
 
 	// effects from skills
@@ -3243,32 +3247,21 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			Red Door Syndrome,
 			Well-Oiled,
 			Oiled-Up,
-			Egged On
-		]))
-			return result();
-		// element specific effects
-		buffElement($element[hot], $effects[
+			Egged On,
 			Flame-Retardant Trousers,
 			Fireproof Lips,
-		]);
-		buffElement($element[cold], $effects[
 			Insulated Trousers,
 			Fever From the Flavor,
-		]);
-		buffElement($element[stench], $effects[
 			Smelly Pants,
 			Neutered Nostrils,
-			Can't Smell Nothin',
-		]);
-		buffElement($element[spooky], $effects[
+			Can't Smell Nothin\',
 			Spookypants,
 			Balls of Ectoplasm,
 			Hyphemariffic,
-		]);
-		buffElement($element[sleaze], $effects[
 			Sleaze-Resistant Trousers,
 			Hyperoffended,
-		]);
+		]))
+			return result();
 	}
 
 	return result();
