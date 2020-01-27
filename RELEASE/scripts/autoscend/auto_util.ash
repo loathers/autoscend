@@ -4998,7 +4998,7 @@ boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns
 		return false;
 	}
 
-	if(!have_skill(source) || (have_effect(buff) >= turns))
+	if(!auto_have_skill(source) || (have_effect(buff) >= turns))
 	{
 		return false;
 	}
@@ -5040,6 +5040,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 {
 	if(in_tcrs())
 	{
+		auto_log_debug("We want to use " + source + " but are in 2CRS.", "blue");
 		return false;
 	}
 
@@ -5047,7 +5048,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		return false;
 	}
-	if(!glover_usable(source))
+	if(!auto_is_valid(source))
 	{
 		return false;
 	}
@@ -5725,24 +5726,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 	}
 
-	if(!is_unrestricted(useItem))
-	{
-		return false;
-	}
-
 	if(useItem != $item[none])
 	{
-		if(in_tcrs())
-		{
-			auto_log_debug("We want to use " + useItem + " but are in 2CRS.", "blue");
-			return false;
-		}
-		else
-		{
-			return buffMaintain(useItem, buff, casts, turns, speculative);
-		}
+		return buffMaintain(useItem, buff, casts, turns, speculative);
 	}
-	if((useSkill != $skill[none]) && auto_have_skill(useSkill))
+	if(useSkill != $skill[none])
 	{
 		return buffMaintain(useSkill, buff, mp_min, casts, turns, speculative);
 	}
