@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19599; // In Kingdom of Exploathing, mark the Palindome quest as started as soon as you make the Talisman o' Namsilat.
+since r19696; // Do not worry about milk of magnesium for size 0 foods
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1224,7 +1224,7 @@ void initializeDay(int day)
 	}
 
 	auto_doPrecinct();
-	if((item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
+	if(!in_koe() && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
 	{
 		boolean temp = cli_execute("make shoe gum");
 	}
@@ -2944,7 +2944,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun())
+	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun())
 	{
 		if(get_property("auto_choice1119") != "")
 		{

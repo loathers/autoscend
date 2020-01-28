@@ -498,7 +498,9 @@ boolean trySaberTrickMeteorShower();              //Defined in autoscend/auto_co
 int beachHeadTurnSavings(int quest);							//Defined in autoscend/auto_community_service.ash
 boolean tryBeachHeadBuff(int quest);							//Defined in autoscend/auto_community_service.ash
 
-boolean dealWithMilkOfMagnesium(boolean useAdv);			//Defined in autoscend/auto_cooking.ash
+boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);			//Defined in autoscend/auto_cooking.ash
+boolean consumeMilkOfMagnesiumIfUnused();					//Defined in autoscend/auto_cooking.ash
+
 void debugMaximize(string req, int meat);					//Defined in autoscend/auto_util.ash
 boolean deck_available();									//Defined in autoscend/auto_mr2015.ash
 boolean deck_cheat(string cheat);							//Defined in autoscend/auto_mr2015.ash
