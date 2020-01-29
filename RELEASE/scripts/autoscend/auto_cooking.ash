@@ -778,6 +778,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
+	// Spaghetti breakfast is awkward since it has to be the first food consumed
+	// and we can only consume one. We don't handle this yet, so... blacklist!
+	boolean[item] blacklist = $items[spaghetti breakfast];
 	boolean[item] craftable_blacklist;
 
 	// If we have 2 sticks of firewood, the current knapsack-solver
@@ -826,6 +829,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	foreach it in $items[]
 	{
 		if (
+			!(blacklist contains it) &&
 			canConsume(it) &&
 			(organCost(it) > 0) &&
 			(it.fullness == 0 || it.inebriety == 0) &&
