@@ -2976,7 +2976,8 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 
 	if(canAsdonBuff($effect[Driving Quickly]))
 	{
-		if(!speculative) asdonBuff($effect[Driving Quickly]);
+		if(!speculative)
+			asdonBuff($effect[Driving Quickly]);
 		handleEffect($effect[Driving Quickly]);
 	}
 	if(pass())
