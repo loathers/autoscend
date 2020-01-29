@@ -4857,6 +4857,11 @@ boolean acquireTransfunctioner()
 
 int [item] auto_get_campground()
 {
+	if (isActuallyEd())
+	{
+		int [item] empty;
+		return empty;
+	}
 	int [item] campItems = get_campground();
 
 	if(campItems contains $item[Ice Harvest])
