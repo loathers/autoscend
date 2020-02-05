@@ -51,6 +51,10 @@ boolean snojoFightAvailable()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		return false;
+	}
 	if(my_inebriety() > inebriety_limit())
 	{
 		return false;

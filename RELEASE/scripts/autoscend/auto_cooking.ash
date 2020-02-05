@@ -4,7 +4,8 @@ script "auto_cooking.ash"
 #	Handler for in-run consumption
 #
 
-boolean dealWithMilkOfMagnesium(boolean useAdv);
+boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);
+boolean consumeMilkOfMagnesiumIfUnused(boolean useAdv);
 boolean autoEat(int howMany, item toEat);
 boolean autoEat(int howMany, item toEat, boolean silent);
 boolean autoDrink(int howMany, item toDrink);
@@ -323,15 +324,8 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	}
 
 	int expectedFullness = toEat.fullness * howMany;
-	if(expectedFullness >= 15)
-	{
-		dealwithMilkOfMagnesium(true);
-	}
-
-	if(expectedFullness >= 10)
-	{
-		buffMaintain($effect[Got Milk], 0, 1, expectedFullness);
-	}
+	acquireMilkOfMagnesiumIfUnused(true);
+	consumeMilkOfMagnesiumIfUnused();
 
 	if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
@@ -368,7 +362,9 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	return retval;
 }
 
-boolean dealWithMilkOfMagnesium(boolean useAdv)
+
+
+boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 {
 	if(in_tcrs())
 	{
@@ -376,6 +372,10 @@ boolean dealWithMilkOfMagnesium(boolean useAdv)
 	}
 
 	if(item_amount($item[Milk Of Magnesium]) > 0)
+	{
+		return true;
+	}
+	if(get_property("_milkOfMagnesiumUsed").to_boolean())
 	{
 		return true;
 	}
@@ -409,6 +409,15 @@ boolean dealWithMilkOfMagnesium(boolean useAdv)
 	}
 	pullXWhenHaveY($item[Milk Of Magnesium], 1, 0);
 	return true;
+}
+
+boolean consumeMilkOfMagnesiumIfUnused()
+{
+	if(get_property("_milkOfMagnesiumUsed").to_boolean())
+	{
+		return false;
+	}
+	return use(1, $item[Milk of Magnesium]);
 }
 
 boolean canDrink(item toDrink)
@@ -769,10 +778,58 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
+	// Spaghetti breakfast is awkward since it has to be the first food consumed
+	// and we can only consume one. We don't handle this yet, so... blacklist!
+	boolean[item] blacklist = $items[spaghetti breakfast];
+	boolean[item] craftable_blacklist;
+
+	// If we have 2 sticks of firewood, the current knapsack-solver
+	// tries to get one of everything. So we blacklist everything other
+	// than the 'campfire hot dog'
+	foreach it in $items[
+		campfire hot dog, campfire beans, campfire coffee, campfire stew, campfire s'more,
+	]
+	{
+		craftable_blacklist[it] = true;
+	}
+
+	// Blacklist all but the item we can make the most of.
+	// This is mostly a workaround for limitations in the knapsack solver.
+
+	// NB: This is obviously incorrect: what if you have 2 perfect ice
+	// cubes, but can only make 1 of each type of perfect drink? This
+	// optimizer will make 1 of exactly 1 drink type. Oh no. Suboptimal.
+	// I declare that bug Not My Problem.
+	void add_mutex_craftables(boolean[item] items)
+	{
+
+		item best_it = $item[none];
+		int best_amount = 0;
+		foreach it in items
+		{
+			if (creatable_amount(it) > best_amount)
+			{
+				best_it = it;
+				best_amount = max(0, creatable_amount(it) - auto_reserveCraftAmount(it));
+			}
+		}
+		foreach it in items
+		{
+			if (it != best_it)
+			{
+				craftable_blacklist[it] = true;
+			}
+		}
+	}
+
+	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
+
 	boolean[item] KEY_LIME_PIES = $items[Boris's key lime pie, Jarlsberg's key lime pie, Sneaky Pete's key lime pie];
+
 	foreach it in $items[]
 	{
 		if (
+			!(blacklist contains it) &&
 			canConsume(it) &&
 			(organCost(it) > 0) &&
 			(it.fullness == 0 || it.inebriety == 0) &&
@@ -801,13 +858,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				large_owned[it] = min(max(item_amount(it) - auto_reserveAmount(it), 0), howmany);
 			}
-			boolean[item] CRAFTABLE_BLACKLIST = $items[
-					// If we have 2 sticks of firewood, the current knapsack-solver
-					// tries to get one of everything. So we blacklist everything other
-					// than the 'campfire hot dog'
-				campfire hot dog, campfire beans, campfire coffee, campfire stew, campfire s'more,
-			];
-			if (!(CRAFTABLE_BLACKLIST contains it) && creatable_amount(it) > 0)
+			if (!(craftable_blacklist contains it) && creatable_amount(it) > 0)
 			{
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
@@ -1107,8 +1158,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 	if (type == "eat")
 	{
 		// TODO: and can obtain milk of magnesium? It's just logging...
-		auto_log_info("(+" + sum_space + " from Got Milk)", "blue");
-		total_adv += sum_space;
+		auto_log_info("(+" + 5 + " from Milk of Magnesium)", "blue");
+		total_adv += 5;
 	}
 	if (type == "drink" && auto_have_skill($skill[The Ode to Booze]))
 	{
@@ -1143,17 +1194,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 
 	if(type == "eat")
 	{
-		if (in_tcrs() && get_property("auto_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
-		{
-			// +15 adv is worth it for daycount
-			// TODO: Some folks have requested a setting to turn this off.
-			makeGenieWish($effect[Got Milk]);
-		}
-		else
-		{
-			dealwithMilkOfMagnesium(true);
-			buffMaintain($effect[Got Milk], 0, 1, organLeft());
-		}
+		acquireMilkOfMagnesiumIfUnused(true);
+		consumeMilkOfMagnesiumIfUnused();
 	}
 
 	int pre_adventures = my_adventures();

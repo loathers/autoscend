@@ -1169,7 +1169,7 @@ boolean auto_cheesePostCS(int leave)
 	take_storage(storage_amount($item[Cold Hi Mein]), $item[Cold Hi Mein]);
 	while((fullness_left() >= 5) && (item_amount($item[Cold Hi Mein]) > 0) && (my_level() >= 13))
 	{
-		buffMaintain($effect[Got Milk], 0, 1, 5);
+		consumeMilkOfMagnesiumIfUnused();
 		autoEat(1, $item[Cold Hi Mein]);
 	}
 

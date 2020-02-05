@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19599; // In Kingdom of Exploathing, mark the Palindome quest as started as soon as you make the Talisman o' Namsilat.
+since r19696; // Do not worry about milk of magnesium for size 0 foods
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1224,7 +1224,7 @@ void initializeDay(int day)
 	}
 
 	auto_doPrecinct();
-	if((item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
+	if(!in_koe() && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
 	{
 		boolean temp = cli_execute("make shoe gum");
 	}
@@ -2358,13 +2358,6 @@ boolean L13_towerNSEntrance()
 			# lx_attemptPowerLevel is before. We need to merge all of this into that....
 			set_property("auto_newbieOverride", true);
 
-			if(snojoFightAvailable() && (auto_my_path() == "Pocket Familiars"))
-			{
-				autoAdv(1, $location[The X-32-F Combat Training Snowman]);
-				return true;
-			}
-
-
 			if(needDigitalKey())
 			{
 				woods_questStart();
@@ -2382,10 +2375,6 @@ boolean L13_towerNSEntrance()
 						return true;
 					}
 				}
-			}
-			if(neverendingPartyPowerlevel())
-			{
-				return true;
 			}
 			if(!hasTorso())
 			{
@@ -2585,6 +2574,10 @@ boolean LX_attemptPowerLevel()
 	else if (elementalPlanes_access($element[hot]))
 	{
 		autoAdv(1, $location[The SMOOCH Army HQ]);
+	}
+	else if (neverendingPartyAvailable())
+	{
+		neverendingPartyPowerlevel();
 	}
 	else
 	{
@@ -2951,7 +2944,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun())
+	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun())
 	{
 		if(get_property("auto_choice1119") != "")
 		{
@@ -4349,7 +4342,7 @@ boolean adventureFailureHandler()
 			}
 		}
 
-		if (get_property("auto_powerLevelAdvCount").to_int() > 20 && my_level() < 13)
+		if (get_property("auto_powerLevelAdvCount").to_int() > 20)
 		{
 			if ($location[The Haunted Gallery] == my_location())
 			{
@@ -5584,10 +5577,6 @@ boolean L3_tavern()
 	{
 		set_property("choiceAdventure1000", "1"); // Everything in Moderation: turn on the faucet (completes quest)
 		set_property("choiceAdventure1001", "2"); // Hot and Cold Dripping Rats: Leave it alone (don't fight a rat)
-		if (have_skill($skill[Shelter of Shed]) && my_mp() < mp_cost($skill[Shelter of Shed]))
-		{
-			delayTavern = true;
-		}
 	}
 	else if(!enoughElement || (my_mp() < mpNeed))
 	{
@@ -6168,6 +6157,9 @@ void auto_begin()
 	handlePulls(my_daycount());
 	initializeDay(my_daycount());
 
+	backupSetting("promptAboutCrafting", 0);
+	backupSetting("requireBoxServants", false);
+	backupSetting("breakableHandling", 4);
 	backupSetting("recoveryScript", "");
 	backupSetting("trackLightsOut", false);
 	backupSetting("autoSatisfyWithCloset", false);

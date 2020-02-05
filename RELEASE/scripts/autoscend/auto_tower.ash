@@ -516,7 +516,14 @@ boolean L13_sorceressDoor()
 		}
 		if(item_amount($item[Richard\'s Star Key]) == 0)
 		{
-			abort("Need Richard's Star Key for the Sorceress door :(");
+			if(!get_property("auto_getStarKey").to_boolean())
+			{
+				abort("Need Richard's Star Key for the Sorceress door. Perhaps set auto_getStarKey=true ?");
+			}
+			else
+			{
+				abort("Need Richard's Star Key for the Sorceress door, but auto_getStarKey=true so I'm not sure why we haven't gotten it already. :(");
+			}
 		}
 		visit_url("place.php?whichplace=nstower_door&action=ns_lock4");
 	}

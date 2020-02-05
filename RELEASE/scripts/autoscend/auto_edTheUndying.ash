@@ -1312,24 +1312,9 @@ boolean L1_ed_islandFallback()
 		}
 	}
 
-	if(get_property("neverendingPartyAlways").to_boolean() || get_property("_neverendingPartyToday").to_boolean())
+	if (neverendingPartyAvailable())
 	{
-		backupSetting("choiceAdventure1322", 2);
-		if(have_effect($effect[Tomes of Opportunity]) == 0)
-		{
-			backupSetting("choiceAdventure1324", 1);
-			backupSetting("choiceAdventure1325", 2);
-		}
-		else
-		{
-			backupSetting("choiceAdventure1324", 5);
-		}
-
-		autoAdv(1, $location[The Neverending Party]);
-		restoreSetting("choiceAdventure1322");
-		restoreSetting("choiceAdventure1324");
-		restoreSetting("choiceAdventure1325");
-		return true;
+		return neverendingPartyPowerlevel();
 	}
 	if(elementalPlanes_access($element[stench]))
 	{
