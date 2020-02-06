@@ -5192,6 +5192,16 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Black Eyes]:					useItem = $item[Black Eye Shadow];				break;
 	case $effect[Blackberry Politeness]:		useItem = $item[Blackberry Polite];				break;
 	case $effect[Blessing of Serqet]:			useSkill = $skill[Blessing of Serqet];			break;
+	case $effect[Blessing of the Bird]:
+		if(auto_birdCanSeek())
+		{
+			useSkill = $skill[Seek Out a Bird];
+		}																						break;
+	case $effect[Blessing of Your Favorite Bird]:
+		if(auto_favoriteBirdCanSeek())
+		{
+			useSkill = $skill[Visit Your Favorite Bird];
+		}																						break;
 	case $effect[Blinking Belly]:				useSkill = $skill[Firefly Abdomen];				break;
 	case $effect[Blood-Gorged]:					useItem = $item[Vial Of Blood Simple Syrup];	break;
 	case $effect[Blood Bond]:					useSkill = $skill[Blood Bond];					break;
