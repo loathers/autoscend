@@ -5216,14 +5216,14 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Boon of the War Snapper]:		useSkill = $skill[Spirit Boon];					break;
 	case $effect[Bounty of Renenutet]:			useSkill = $skill[Bounty of Renenutet];			break;
 	case $effect[Bow-Legged Swagger]:			useSkill = $skill[Bow-Legged Swagger];			break;
-	case $effect[Bram's Bloody Bagatelle]:		useSkill = $skill[Bram's Bloody Bagatelle];		break;
+	case $effect[Bram\'s Bloody Bagatelle]:		useSkill = $skill[Bram\'s Bloody Bagatelle];		break;
 	case $effect[Brawnee\'s Anthem of Absorption]:useSkill = $skill[Brawnee\'s Anthem of Absorption];break;
 	case $effect[Brilliant Resolve]:			useItem = $item[Resolution: Be Smarter];		break;
 	case $effect[Brooding]:						useSkill = $skill[Brood];						break;
 	case $effect[Browbeaten]:					useItem = $item[Old Eyebrow Pencil];			break;
 	case $effect[Busy Bein\' Delicious]:		useItem = $item[Crimbo fudge];					break;
 	case $effect[Butt-Rock Hair]:				useItem = $item[Hair Spray];					break;
-	case $effect[Can't Smell Nothin']:	useItem = $item[Dogsgotnonoz pills];	break;
+	case $effect[Can\'t Smell Nothin\']:	useItem = $item[Dogsgotnonoz pills];	break;
 	case $effect[Carlweather\'s Cantata of Confrontation]:useSkill = $skill[Carlweather\'s Cantata of Confrontation];break;
 	case $effect[Carol Of The Bulls]: useSkill = $skill[Carol Of The Bulls]; break;
 	case $effect[Carol Of The Hells]: useSkill = $skill[Carol Of The Hells]; break;
