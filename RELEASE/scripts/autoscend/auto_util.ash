@@ -2990,6 +2990,18 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 	if(pass())
 		return result();
 
+	if(auto_birdModifier("Initiative") > 0)
+	{
+		if(tryEffects($effects[Blessing of the Bird]))
+			return result();
+	}
+
+	if(auto_favoriteBirdModifier("Initiative") > 0)
+	{
+		if(tryEffects($effects[Blessing of Your Favorite Bird]))
+			return result();
+	}
+
 	if(doEquips && auto_have_familiar($familiar[Grim Brother]) && (have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff").to_boolean() == false))
 	{
 		if(!speculative)

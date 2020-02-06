@@ -678,6 +678,13 @@ boolean auto_pillKeeperFreeUseAvailable();	//Defined in autoscend/auto_mr2019.as
 boolean auto_pillKeeperAvailable();			//Defined in autoscend/auto_mr2019.ash
 boolean auto_pillKeeper(int pill);			//Defined in autoscend/auto_mr2019.ash
 boolean auto_pillKeeper(string pill);		//Defined in autoscend/auto_mr2019.ash
+boolean auto_birdIsValid();					//Defined in autoscend/auto_mr2020.ash
+float auto_birdModifier(string mod);		//Defined in autoscend/auto_mr2020.ash
+float auto_favoriteBirdModifier(string mod);//Defined in autoscend/auto_mr2020.ash
+int auto_birdsSought();						//Defined in autoscend/auto_mr2020.ash
+int auto_birdsLeftToday();					//Defined in autoscend/auto_mr2020.ash
+boolean auto_birdCanSeek();					//Defined in autoscend/auto_mr2020.ash
+boolean auto_favoriteBirdCanSeek();			//Defined in autoscend/auto_mr2020.ash
 boolean getSpaceJelly();					//Defined in autoscend/auto_mr2017.ash
 int horseCost();											//Defined in autoscend/auto_mr2017.ash
 string horseNormalize(string horseText); // Defined in autoscend/auto_mr2017.ash
