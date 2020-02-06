@@ -3211,6 +3211,8 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		Hide of Sobek,
 		Spectral Awareness,
 		Scarysauce,
+		Blessing of the Bird,
+		Blessing of Your Favorite Bird,
 	]))
 		return result();
 
