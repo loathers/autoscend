@@ -3405,6 +3405,19 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 	{
 		foreach eff in effects
 		{
+			boolean effectMatters = false;
+			foreach st in amt
+			{
+				if(!pass(st) && (numeric_modifier(eff, st) > 0 || numeric_modifier(eff, st + " Percent") > 0))
+				{
+					effectMatters = true;
+				}
+			}
+			if(!effectMatters)
+			{
+				auto_log_debug("Skipping effect " + eff + " because it has no relevant stats");
+				continue;
+			}
 			if(buffMaintain(eff, 0, 1, 1, speculative))
 			{
 				handleEffect(eff);
@@ -3415,60 +3428,48 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		return false;
 	}
 
-	boolean buffStat(stat st, boolean [effect] effects)
-	{
-		if(!pass(st))
-		{
-			foreach eff in effects
-			{
-				if(buffMaintain(eff, 0, 1, 1, speculative))
-				{
-					handleEffect(eff);
-				}
-				if(pass(st))
-					return true;
-			}
-		}
-		return pass(st);
-	}
-
-	buffStat($stat[muscle], $effects[
+	if(tryEffects($effects[
+		// muscle effects
 		Juiced and Loose,
 		Quiet Determination,
 		Power Ballad of the Arrowsmith,
 		Seal Clubbing Frenzy,
 		Patience of the Tortoise,
-	]);
-	buffStat($stat[mysticality], $effects[
+		
+		// myst effects
 		Mind Vision,
 		Quiet Judgement,
 		The Magical Mojomuscular Melody,
 		Pasta Oneness,
 		Saucemastery,
-	]);
-	buffStat($stat[moxie], $effects[
+
+		// moxie effects
 		Impeccable Coiffure,
 		Song of Bravado,
 		Disco State of Mind,
 		Mariachi Mood,
-	]);
-	if(auto_have_skill($skill[Quiet Desperation]))
-		buffStat($stat[moxie], $effects[Quiet Desperation]);
-	else
-		buffStat($stat[moxie], $effects[Disco Smirk]);
-	if(pass())
-		return result();
 
-	if(tryEffects($effects[
+		// all-stat effects
 		Song of Bravado,
 		Stevedave's Shanty of Superiority,
+
+		// varying effects
+		Blessing of the Bird,
+		Blessing of Your Favorite Bird,
 	]))
+		return result();
+	if(auto_have_skill($skill[Quiet Desperation]))
+		tryEffects($effects[Quiet Desperation]);
+	else
+		tryEffects($effects[Disco Smirk]);
+	if(pass())
 		return result();
 
 	// buffs from items
 	if(doEquips)
 	{
-		buffStat($stat[muscle], $effects[
+		if(tryEffects($effects[
+			// muscle effects
 			Browbeaten,
 			Extra Backbone,
 			Extreme Muscle Relaxation,
@@ -3488,9 +3489,9 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Temporary Lycanthropy,
 			Truly Gritty,
 			Vital,
-			Woad Warrior
-		]);
-		buffStat($stat[mysticality], $effects[
+			Woad Warrior,
+
+			// myst effects
 			Baconstoned,
 			Erudite,
 			Far Out,
@@ -3504,8 +3505,8 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Rosewater Mark,
 			Seeing Colors,
 			Sweet\, Nuts,
-		]);
-		buffStat($stat[moxie], $effects[
+
+			// moxie effects
 			Almost Cool,
 			Busy Bein' Delicious,
 			Butt-Rock Hair,
@@ -3521,8 +3522,8 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Spiky Hair,
 			Sugar Rush,
 			Superhuman Sarcasm,
-		]);
-		tryEffects($effects[
+
+			// all-stat effects
 			Human-Human Hybrid,
 			Industrial Strength Starch,
 			Mutated,
@@ -3532,7 +3533,8 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Standard Issue Bravery,
 			Tomato Power,
 			Vital,
-		]);
+		]))
+			return result();
 
 		foreach st in amt
 		{
