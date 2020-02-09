@@ -3191,7 +3191,6 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			}
 			if(!effectMatters)
 			{
-				auto_log_debug("Skipping effect " + eff + " because it has no relevant resists");
 				continue;
 			}
 			if(buffMaintain(eff, 0, 1, 1, speculative))
@@ -3415,7 +3414,6 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			}
 			if(!effectMatters)
 			{
-				auto_log_debug("Skipping effect " + eff + " because it has no relevant stats");
 				continue;
 			}
 			if(buffMaintain(eff, 0, 1, 1, speculative))
