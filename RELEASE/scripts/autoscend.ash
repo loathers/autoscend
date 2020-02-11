@@ -31,6 +31,7 @@ import <autoscend/auto_mr2016.ash>
 import <autoscend/auto_mr2017.ash>
 import <autoscend/auto_mr2018.ash>
 import <autoscend/auto_mr2019.ash>
+import <autoscend/auto_mr2020.ash>
 
 import <autoscend/auto_boris.ash>
 import <autoscend/auto_jellonewbie.ash>
