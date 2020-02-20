@@ -685,6 +685,9 @@ int auto_birdsSought();						//Defined in autoscend/auto_mr2020.ash
 int auto_birdsLeftToday();					//Defined in autoscend/auto_mr2020.ash
 boolean auto_birdCanSeek();					//Defined in autoscend/auto_mr2020.ash
 boolean auto_favoriteBirdCanSeek();			//Defined in autoscend/auto_mr2020.ash
+boolean auto_hasPowerfulGlove();			//Defined in autoscend/auto_mr2020.ash
+int auto_powerfulGloveCharges();			//Defined in autoscend/auto_mr2020.ash
+boolean auto_powerfulGloveNoncombat();		//Defined in autoscend/auto_mr2020.ash
 boolean getSpaceJelly();					//Defined in autoscend/auto_mr2017.ash
 int horseCost();											//Defined in autoscend/auto_mr2017.ash
 string horseNormalize(string horseText); // Defined in autoscend/auto_mr2017.ash
