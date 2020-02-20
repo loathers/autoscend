@@ -83,13 +83,13 @@ boolean auto_favoriteBirdCanSeek()
 boolean auto_hasPowerfulGlove()
 {
 	return possessEquipment($item[Powerful Glove]) && 
-	 !auto_is_valid($item[mint-in-box Powerful Glove]);
+		auto_is_valid($item[mint-in-box Powerful Glove]);
 }
 
 int auto_powerfulGloveCharges()
 {
 	if (!auto_hasPowerfulGlove()) return 0;
-	return 100 - get_property("_powerfulGloveBatteryPowerUse").to_int();
+	return 100 - get_property("_powerfulGloveBatteryPowerUsed").to_int();
 }
 
 boolean auto_powerfulGloveNoncombat()
