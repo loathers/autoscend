@@ -79,3 +79,40 @@ boolean auto_favoriteBirdCanSeek()
 
 	return auto_have_skill($skill[Visit Your Favorite Bird]);
 }
+
+boolean auto_hasPowerfulGlove()
+{
+	return possessEquipment($item[Powerful Glove]) && 
+		auto_is_valid($item[mint-in-box Powerful Glove]);
+}
+
+int auto_powerfulGloveCharges()
+{
+	if (!auto_hasPowerfulGlove()) return 0;
+	return 100 - get_property("_powerfulGloveBatteryPowerUsed").to_int();
+}
+
+boolean auto_powerfulGloveNoncombat()
+{
+	if (!auto_hasPowerfulGlove()) return false;
+
+	if (auto_powerfulGloveCharges() < 5) return false;
+
+	if (0 < have_effect($effect[Invisible Avatar])) return false;
+
+	item old;
+	if (!have_equipped($item[Powerful Glove]))
+	{
+		old = equipped_item($slot[Acc3]);
+		equip($slot[Acc3], $item[Powerful Glove]);
+	}
+
+	boolean ret = use_skill(1, $skill[CHEAT CODE: Invisible Avatar]);
+
+	if (old != $item[none])
+	{
+		equip($slot[Acc3], old);
+	}
+
+	return ret;
+}

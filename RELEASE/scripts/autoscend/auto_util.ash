@@ -2879,6 +2879,11 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		getHorse("noncombat");
 	}
 
+	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
+	{
+		auto_powerfulGloveNoncombat();
+	}
+
 	if(numeric_modifier("Combat Rate").to_int() + equipDiff > amt)
 	{
 		asdonBuff($effect[Driving Stealthily]);

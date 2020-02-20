@@ -532,6 +532,7 @@ boolean drinkSpeakeasyDrink(item drink);					//Defined in autoscend/auto_clan.as
 boolean drinkSpeakeasyDrink(string drink);					//Defined in autoscend/auto_clan.ash
 boolean eatFancyDog(string dog);							//Defined in autoscend/auto_clan.ash
 boolean zataraClanmate(string who);							//Defined in autoscend/auto_clan.ash
+boolean zataraAvailable();									//Defined in autoscend/auto_clan.ash
 boolean zataraSeaside(string who);							//Defined in autoscend/auto_clan.ash
 boolean isActuallyEd();										//Defined in auto_ascend/auto_edTheUndying.ash
 void auto_runEdCombat(string option, boolean skipFirstFight);	//Defined in autoscend/auto_edTheUndying.ash
@@ -685,6 +686,9 @@ int auto_birdsSought();						//Defined in autoscend/auto_mr2020.ash
 int auto_birdsLeftToday();					//Defined in autoscend/auto_mr2020.ash
 boolean auto_birdCanSeek();					//Defined in autoscend/auto_mr2020.ash
 boolean auto_favoriteBirdCanSeek();			//Defined in autoscend/auto_mr2020.ash
+boolean auto_hasPowerfulGlove();			//Defined in autoscend/auto_mr2020.ash
+int auto_powerfulGloveCharges();			//Defined in autoscend/auto_mr2020.ash
+boolean auto_powerfulGloveNoncombat();		//Defined in autoscend/auto_mr2020.ash
 boolean getSpaceJelly();					//Defined in autoscend/auto_mr2017.ash
 int horseCost();											//Defined in autoscend/auto_mr2017.ash
 string horseNormalize(string horseText); // Defined in autoscend/auto_mr2017.ash
