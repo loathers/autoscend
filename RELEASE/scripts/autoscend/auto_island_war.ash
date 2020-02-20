@@ -1145,6 +1145,10 @@ boolean L12_themtharHills()
 	{
 		meat_need = meat_need - 150;
 	}
+	if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])))
+	{
+		meat_need = meat_need - 100;
+	}
 
 	use_familiar(to_familiar(get_property("auto_familiarChoice")));
 	float meatDropHave = meat_drop_modifier();
@@ -1207,6 +1211,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
 	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
 	bat_formWolf();
+	zataraSeaside("meat");
 
 	{
 		warOutfit(false);
