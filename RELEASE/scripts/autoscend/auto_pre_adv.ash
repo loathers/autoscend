@@ -254,6 +254,47 @@ void handlePreAdventure(location place)
 		autoEquip($item[latte lovers member\'s mug]);
 	}
 
+	if(in_zelda())
+	{
+		int pool_skill = speculative_pool_skill();
+		if (possessEquipment($item[Pool Cue]))
+		{
+			pool_skill += 3;
+		}
+		boolean skip_equipping_flower = place == $location[The Haunted Billiards Room] && 18 <= pool_skill;
+		if (is_ghost_in_zone(place) && !skip_equipping_flower)
+		{
+			if (possessEquipment($item[bonfire flower]))
+			{
+				autoEquip($item[bonfire flower]);
+			} else if (possessEquipment($item[[10462]fire flower]))
+			{
+				autoEquip($item[[10462]fire flower]);
+			}
+			/*
+			else if (item_amount($item[coin]) >= 20)
+			{
+				// 20 coins to avoid doing clever re-routing? I'm sold!
+				buy(1, $item[[10462]fire flower]);
+				autoEquip($item[[10462]fire flower]);
+			}
+			*/
+			else
+			{
+				abort("In Mario, we can't deal elemental damage without a flower. Please get me a flower.");
+			}
+		} else {
+			if (possessEquipment($item[fancy boots]))
+			{
+				autoEquip($item[fancy boots]);
+			} else if (possessEquipment($item[work boots]))
+			{
+				autoEquip($item[work boots]);
+			}
+		}
+
+	}
+
 	equipOverrides();
 
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))

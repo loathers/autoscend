@@ -786,7 +786,7 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Apprivoisez La Tortue], false);
 	}
 
-	if(canUse($skill[Gulp Latte]) && (get_property("_latteRefillsUsed").to_int() == 0) && !get_property("_latteDrinkUsed").to_boolean())
+	if(!in_zelda() && canUse($skill[Gulp Latte]) && (get_property("_latteRefillsUsed").to_int() == 0) && !get_property("_latteDrinkUsed").to_boolean())
 	{
 		return useSkill($skill[Gulp Latte]);
 	}
@@ -1662,6 +1662,41 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Saucestorm], false);
 	}
 
+	if (my_class() == $class[Plumber])
+	{
+		if (enemy.physical_resistance >= 80)
+		{
+			if (canUse($skill[Fireball Barrage], true))
+			{
+				return useSkill($skill[Fireball Barrage]);
+			}
+			if (canUse($skill[Beach Combo], true))
+			{
+				return useSkill($skill[Beach Combo]);
+			}
+			return useSkill($skill[Fireball Toss]);
+		}
+
+		if (canUse($skill[Multi-Bounce], true))
+		{
+			return useSkill($skill[Multi-Bounce]);
+		}
+		if (canUse($skill[Beach Combo], true))
+		{
+			return useSkill($skill[Beach Combo]);
+		}
+		if (canUse($skill[Jump Attack], false))
+		{
+			return useSkill($skill[Jump Attack]);
+		}
+
+		// Fallback, since maybe we only have fire flower equipped.
+		if (canUse($skill[Fireball Barrage], true))
+		{
+			return useSkill($skill[Fireball Barrage]);
+		}
+		return useSkill($skill[Fireball Toss]);
+	}
 
 	string attackMinor = "attack with weapon";
 	string attackMajor = "attack with weapon";

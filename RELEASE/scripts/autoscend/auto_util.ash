@@ -2799,7 +2799,6 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		string temp = visit_url("charsheet.php?pwd=&action=newyouinterest");
 	}
 
-
 	foreach eff in $effects[Carlweather\'s Cantata Of Confrontation, Driving Obnoxiously]
 	{
 		if(!uneffect(eff))
@@ -2883,6 +2882,15 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	{
 		auto_powerfulGloveNoncombat();
 	}
+
+	// TODO: And we have >400 coins. Or some cutoff.
+	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt) &&
+	   my_class() == $class[Plumber])
+	{
+		buyUpTo(1, $item[blooper ink]);
+		buffMaintain($effect[Blooper Inked], 0, 1, 1);
+	}
+
 
 	if(numeric_modifier("Combat Rate").to_int() + equipDiff > amt)
 	{
@@ -3632,6 +3640,12 @@ boolean auto_have_familiar(familiar fam)
 
 boolean basicAdjustML()
 {
+	if (in_zelda())
+	{
+		// We don't get many stats from combat - no point running ML.
+		auto_change_mcd(0);
+		return false;
+	}
 	if((monster_level_adjustment() > 150) && (monster_level_adjustment() <= 160))
 	{
 		int base = (monster_level_adjustment() - current_mcd());
@@ -5211,6 +5225,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Blood Bubble]:					useSkill = $skill[Blood Bubble];				break;
 	case $effect[Bloody Potato Bits]:			useSkill = $skill[none];						break;
 	case $effect[Bloodstain-Resistant]:			useItem = $item[Bloodstain Stick];				break;
+	case $effect[Blooper Inked]:				useItem = $item[Blooper Ink];					break;
 	case $effect[Blubbered Up]:					useSkill = $skill[Blubber Up];					break;
 	case $effect[Blue Swayed]:					useItem = $item[Pulled Blue Taffy];				break;
 	case $effect[Bone Springs]:					useSkill = $skill[Bone Springs];				break;

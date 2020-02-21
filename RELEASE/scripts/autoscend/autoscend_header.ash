@@ -375,6 +375,7 @@ float tcrs_expectedAdvPerFill(string quality);				//Defined in autoscend/auto_tc
 boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety);	//Defined in autoscend/auto_tcrs.ash
 boolean tcrs_maximize_with_items(string maximizerString);	//Defined in autoscend/auto_tcrs.ash
 boolean in_koe();											//Defined in autoscend/auto_koe.ash
+boolean in_zelda();											//Defined in autoscend/auto_zelda.ash
 boolean boris_buySkills();									//Defined in autoscend/auto_boris.ash
 void boris_initializeDay(int day);							//Defined in autoscend/auto_boris.ash
 void boris_initializeSettings();							//Defined in autoscend/auto_boris.ash

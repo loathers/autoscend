@@ -190,9 +190,13 @@ string defaultMaximizeStatement()
 				res += ",5familiar exp";
 			}
 		}
+		if (in_zelda())
+		{
+			res += ",hp regen,-ml";
+		}
 	}
 
-	if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
+	if(!in_zelda() && ((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean())))
 	{
 		res += ",10exp,5" + my_primestat() + " experience percent";
 	}
