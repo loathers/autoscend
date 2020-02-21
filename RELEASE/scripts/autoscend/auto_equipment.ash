@@ -192,7 +192,7 @@ string defaultMaximizeStatement()
 		}
 		if (in_zelda())
 		{
-			res += ",hp regen,-ml";
+			res += ",-ml";
 		}
 	}
 

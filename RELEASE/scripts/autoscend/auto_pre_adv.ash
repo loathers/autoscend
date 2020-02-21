@@ -267,7 +267,8 @@ void handlePreAdventure(location place)
 			if (possessEquipment($item[bonfire flower]))
 			{
 				autoEquip($item[bonfire flower]);
-			} else if (possessEquipment($item[[10462]fire flower]))
+			}
+			else if (possessEquipment($item[[10462]fire flower]))
 			{
 				autoEquip($item[[10462]fire flower]);
 			}
@@ -283,16 +284,18 @@ void handlePreAdventure(location place)
 			{
 				abort("In Mario, we can't deal elemental damage without a flower. Please get me a flower.");
 			}
-		} else {
+		}
+		else
+		{
 			if (possessEquipment($item[fancy boots]))
 			{
 				autoEquip($item[fancy boots]);
-			} else if (possessEquipment($item[work boots]))
+			}
+			else if (possessEquipment($item[work boots]))
 			{
 				autoEquip($item[work boots]);
 			}
 		}
-
 	}
 
 	equipOverrides();
