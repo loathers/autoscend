@@ -80,7 +80,8 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_lightning() < lightning_cost(sk) ||
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
-		my_soulsauce() < soulsauce_cost(sk)
+		my_soulsauce() < soulsauce_cost(sk) ||
+		zelda_ppCurr() < zelda_ppCost(sk)
 	)
 		return false;
 
@@ -1664,6 +1665,13 @@ string auto_combatHandler(int round, string opp, string text)
 
 	if (my_class() == $class[Plumber])
 	{
+		// note: Juggle Fireballs CAN be used multiple times, but it's only
+		// useful if you have level 3 fire and therefore get healed
+		if(zelda_ppCurr() > 2 && canUse($skill[Juggle Fireballs], true))
+		{
+			return useSkill($skill[Juggle Fireballs]);
+		}
+
 		if (enemy.physical_resistance >= 80)
 		{
 			if (canUse($skill[Fireball Barrage], true))

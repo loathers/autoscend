@@ -1115,6 +1115,20 @@ boolean bat_switchForm(effect form, boolean speculative); // Defined in autoscen
 boolean bat_switchForm(effect form); // Defined in autoscend/auto_batpath.ash
 boolean bat_formPreAdventure(); // Defined in autoscend/auto_batpath.ash
 boolean LM_batpath(); // Defined in autoscend/auto_batpath.ash
+
+boolean zelda_initializeSettings(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_haveHammer(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_haveFlower(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_equippedFlower(); // Defined in autoscend/auto_zelda.ash
+int zelda_numBadgesBought(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_buySkill(skill sk); // Defined in autoscend/auto_zelda.ash
+boolean zelda_buyEquipment(item it); // Defined in autoscend/auto_zelda.ash
+boolean zelda_buySkills(); // Defined in autoscend/auto_zelda.ash
+int zelda_ppMax(); // Defined in autoscend/auto_zelda.ash
+int zelda_ppCost(skill sk); // Defined in autoscend/auto_zelda.ash
+int zelda_ppCurr(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
+
 element currentFlavour(); // Defined in autoscend/auto_util.ash
 void resetFlavour(); // Defined in autoscend/auto_util.ash
 boolean setFlavour(element ele); // Defined in autoscend/auto_util.ash

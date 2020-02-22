@@ -437,9 +437,24 @@ boolean LX_burnDelay()
 	boolean wannaVote = auto_voteMonster(true);
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
+
+	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
+	// then a scaling monster is probably going to be a bad time
+	if(in_zelda() && !zelda_canDealScalingDamage())
+	{
+		// unless we can still kill it in like two hits or so, then it should probably be fine?
+		int predictedScalerHP = to_int(0.75 * (my_buffedstat($stat[Muscle]) + monster_level_adjustment()));
+		if(predictedScalerHP > 30)
+		{
+			auto_log_info("Want to burn delay with scaling wanderers, but we can't deal scaling damage yet and it would be too strong :(");
+			wannaVote = false;
+			wannaSausage = false;
+		}
+	}
+
 	if(burnZone != $location[none])
 	{
-		if(auto_voteMonster(true))
+		if(wannaVote)
 		{
 			auto_log_info("Burn some delay somewhere (voting), if we found a place!", "green");
 			if(auto_voteMonster(true, burnZone, ""))
@@ -447,7 +462,7 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
-		if(isOverdueDigitize())
+		if(wannaDigitize)
 		{
 			auto_log_info("Burn some delay somewhere (digitize), if we found a place!", "green");
 			if(autoAdv(burnZone))
@@ -455,7 +470,7 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
-		if(auto_sausageGoblin())
+		if(wannaSausage)
 		{
 			auto_log_info("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
 			if(auto_sausageGoblin(burnZone, ""))

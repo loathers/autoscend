@@ -14,7 +14,6 @@ boolean zelda_initializeSettings()
 		set_property("auto_holeinthesky", true);
 		set_property("auto_wandOfNagamar", false);
 		set_property("auto_useCubeling", true);
-		set_property("auto_useCubeling", true);
 		// TODO: Remove when quest handling is correct.
 		set_property("auto_paranoia", 1);
 	}
@@ -140,3 +139,91 @@ boolean zelda_buySkills()
 
 	return false;
 }
+
+int zelda_ppMax()
+{
+	int pp = 1;
+	if(auto_have_skill($skill[Power Plus]))
+	{
+		++pp;
+	}
+	if(have_equipped($item[power pants]))
+	{
+		++pp;
+	}
+	if(have_effect($effect[Fizzy Fizzy]) > 0)
+	{
+		++pp;
+	}
+	return pp;
+}
+
+int zelda_ppCost(skill sk)
+{
+	switch(sk)
+	{
+		case $skill[Hammer Throw]:
+		case $skill[Juggle Fireballs]:
+		case $skill[Spin Jump]:
+			return 1;
+		case $skill[Ultra Smash]:
+		case $skill[Fireball Barrage]:
+		case $skill[Multi-Bounce]:
+			return 2;
+		default:
+			return 0;
+	}
+}
+
+boolean [skill] zelda_combatSkills = $skills[
+	Hammer Throw,
+	Ultra Smash,
+	Juggle Fireballs,
+	Fireball Barrage,
+	Spin Jump,
+	Multi-Bounce,
+];
+
+// ACCURACY ONLY GUARANTEED DURING A FIGHT
+// Which is fine, because pp is always max outside of combat
+int zelda_ppCurr()
+{
+	if(!in_zelda())
+	{
+		return 0;
+	}
+
+	int pp = zelda_ppMax();
+	foreach sk in zelda_combatSkills
+	{
+		pp -= zelda_ppCost(sk) * usedCount(sk);
+	}
+	return pp;
+}
+
+boolean zelda_canDealScalingDamage()
+{
+	// TODO: When mafia tracks costumes, account for level 3 basic attacks
+	if(zelda_ppMax() < 2)
+	{
+		return false;
+	}
+
+	if(auto_have_skill($skill[Multi-Bounce]))
+	{
+		return true;
+	}
+
+	if(auto_have_skill($skill[Fireball Barrage]) && zelda_haveFlower())
+	{
+		return true;
+	}
+
+	if(auto_have_skill($skill[Ultra Smash]) && zelda_haveHammer())
+	{
+		return true;
+	}
+
+	return false;
+}
+

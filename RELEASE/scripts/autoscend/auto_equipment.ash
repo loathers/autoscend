@@ -173,13 +173,16 @@ string defaultMaximizeStatement()
 			res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 		}
 
-		if(my_primestat() == $stat[Mysticality])
+		if(!in_zelda())
 		{
-			res += ",0.25spell damage,1.75spell damage percent";
-		}
-		else
-		{
-			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			if(my_primestat() == $stat[Mysticality])
+			{
+				res += ",0.25spell damage,1.75spell damage percent";
+			}
+			else
+			{
+				res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			}
 		}
 
 		if(auto_have_familiar($familiar[mosquito]))
@@ -245,7 +248,7 @@ void finalizeMaximize()
 			addToMaximize("+equip " + toEquip);
 		}
 	}
-	if(get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
+	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		addToMaximize("effective");
 	}
