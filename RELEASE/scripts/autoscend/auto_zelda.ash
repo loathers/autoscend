@@ -92,7 +92,6 @@ boolean zelda_buySkill(skill sk)
 boolean zelda_buyEquipment(item it)
 {
 	// Seems like the coinmaster Mafia handling isn't quite there? TODO
-	/*
 	if (possessEquipment(it)) return false;
 
 	int coins = item_amount($item[coin]);
@@ -100,35 +99,26 @@ boolean zelda_buyEquipment(item it)
 	switch(it){
 		case $item[hammer]:
 			if (coins < 20) return false;
-			buy(1, it)
+			retrieve_item(1, it);
 			break;
 		case $item[heavy hammer]:
 			if (coins < 300) return false;
-			buy(1, it)
+			retrieve_item(1, it);
 			break;
 		case $item[[10462]fire flower]:
 			if (coins < 20) return false;
-			buy(1, it)
+			retrieve_item(1, it);
 			break;
 		case $item[bonfire flower]:
 			if (coins < 300) return false;
-			buy(1, it)
+			retrieve_item(1, it);
 			break;
 		case $item[fancy boots]:
 			if (coins < 300) return false;
-			buy(1, it)
-			break;
-		case $item[hammer]:
-			if (coins < 20) return false;
-			buy(1, it)
-			break;
-		case $item[hammer]:
-			if (coins < 20) return false;
-			buy(1, it)
+			retrieve_item(1, it);
 			break;
 	}
-	*/
-	return true; // TODO
+	return true;
 }
 
 boolean zelda_buySkills()
@@ -193,12 +183,7 @@ int zelda_ppCurr()
 		return 0;
 	}
 
-	int pp = zelda_ppMax();
-	foreach sk in zelda_combatSkills
-	{
-		pp -= zelda_ppCost(sk) * usedCount(sk);
-	}
-	return pp;
+	return my_pp();
 }
 
 boolean zelda_canDealScalingDamage()

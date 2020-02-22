@@ -529,6 +529,10 @@ void handlePreAdventure(location place)
 	if(my_inebriety() > inebriety_limit()) abort("You are overdrunk. Stop it.");
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
+	if (in_zelda())
+	{
+		cli_execute("refresh status");
+	}
 }
 
 void main()

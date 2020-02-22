@@ -149,6 +149,17 @@ string useSkill(skill sk, boolean mark)
 {
 	if(mark)
 		markAsUsed(sk);
+
+	// Terrible hack, Mafia is broken:
+	// https://kolmafia.us/showthread.php?24497-Spring-2020-Challenge-Path-Path-of-the-Plumber&p=155633&viewfull=1#post155633
+	switch(sk) {
+		case $skill[Hammer Throw]: return "skill 7329";
+		case $skill[Ultra Smash]: return "skill 7330";
+		case $skill[Juggle Fireballs]: return "skill 7332";
+		case $skill[Fireball Barrage]: return "skill 7333";
+		case $skill[Spin Jump]: return "skill 7335";
+		case $skill[Multi-Bounce]: return "skill 7336";
+	}
 	return "skill " + sk;
 }
 
@@ -1672,7 +1683,7 @@ string auto_combatHandler(int round, string opp, string text)
 			return useSkill($skill[Juggle Fireballs]);
 		}
 
-		if (enemy.physical_resistance >= 80)
+		if (enemy.physical_resistance >= 80 || enemy == $monster[Angry Ghost])
 		{
 			if (canUse($skill[Fireball Barrage], true))
 			{
@@ -1682,7 +1693,10 @@ string auto_combatHandler(int round, string opp, string text)
 			{
 				return useSkill($skill[Beach Combo]);
 			}
-			return useSkill($skill[Fireball Toss]);
+			if (canUse($skill[Fireball Toss], false))
+			{
+				return useSkill($skill[Fireball Toss], false);
+			}
 		}
 
 		if (canUse($skill[Multi-Bounce], true))
@@ -1695,7 +1709,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		if (canUse($skill[Jump Attack], false))
 		{
-			return useSkill($skill[Jump Attack]);
+			return useSkill($skill[Jump Attack], false);
 		}
 
 		// Fallback, since maybe we only have fire flower equipped.
@@ -1703,7 +1717,7 @@ string auto_combatHandler(int round, string opp, string text)
 		{
 			return useSkill($skill[Fireball Barrage]);
 		}
-		return useSkill($skill[Fireball Toss]);
+		return useSkill($skill[Fireball Toss], false);
 	}
 
 	string attackMinor = "attack with weapon";

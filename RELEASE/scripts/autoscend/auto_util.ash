@@ -2885,9 +2885,9 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 
 	// TODO: And we have >400 coins. Or some cutoff.
 	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt) &&
-	   my_class() == $class[Plumber])
+	   my_class() == $class[Plumber] && 0 == have_effect($effect[Blooper Inked]))
 	{
-		buyUpTo(1, $item[blooper ink]);
+		retrieve_item(1, $item[blooper ink]);
 		buffMaintain($effect[Blooper Inked], 0, 1, 1);
 	}
 
