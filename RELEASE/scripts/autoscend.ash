@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19767; // Fix usage of Plumber combat skills in CCS
+since r19769; // Kamek and King Boo are 100% physical resist
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

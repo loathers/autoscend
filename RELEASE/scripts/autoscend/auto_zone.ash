@@ -1750,11 +1750,6 @@ item[int] hugpocket_available()
 
 boolean is_ghost_in_zone(location loc)
 {
-	// TODO: $monster[King Boo] is not marked as having hella physical resist.
-	if (in_zelda() && loc == $location[Summoning Chamber])
-	{
-		return true;
-	}
 	foreach idx, mob in get_monsters(loc)
 	{
 		if (mob.physical_resistance >= 80)

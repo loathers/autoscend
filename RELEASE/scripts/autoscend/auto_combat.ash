@@ -1666,7 +1666,7 @@ string auto_combatHandler(int round, string opp, string text)
 
 	if (my_class() == $class[Plumber])
 	{
-		// note: Juggle Fireballs CAN be used multiple times, but it's only
+		// note: Juggle Fireballs CAN be used multiple times, but it is only
 		// useful if you have level 3 fire and therefore get healed
 		if(zelda_ppCurr() > 2 && canUse($skill[Juggle Fireballs], true))
 		{
