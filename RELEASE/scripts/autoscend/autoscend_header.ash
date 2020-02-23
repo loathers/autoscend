@@ -690,6 +690,9 @@ boolean auto_favoriteBirdCanSeek();			//Defined in autoscend/auto_mr2020.ash
 boolean auto_hasPowerfulGlove();			//Defined in autoscend/auto_mr2020.ash
 int auto_powerfulGloveCharges();			//Defined in autoscend/auto_mr2020.ash
 boolean auto_powerfulGloveNoncombat();		//Defined in autoscend/auto_mr2020.ash
+boolean auto_wantToEquipPowerfulGlove();	//Defined in autoscend/auto_mr2020.ash
+boolean auto_willEquipPowerfulGlove();		//Defined in autoscend/auto_mr2020.ash
+boolean auto_forceEquipPowerfulGlove();		//Defined in autoscend/auto_mr2020.ash
 boolean getSpaceJelly();					//Defined in autoscend/auto_mr2017.ash
 int horseCost();											//Defined in autoscend/auto_mr2017.ash
 string horseNormalize(string horseText); // Defined in autoscend/auto_mr2017.ash
@@ -1123,9 +1126,12 @@ boolean zelda_equippedFlower(); // Defined in autoscend/auto_zelda.ash
 int zelda_numBadgesBought(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_buySkill(skill sk); // Defined in autoscend/auto_zelda.ash
 boolean zelda_buyEquipment(item it); // Defined in autoscend/auto_zelda.ash
+boolean zelda_nothingToBuy(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_buyStuff(); // Defined in autoscend/auto_zelda.ash
 int zelda_ppCost(skill sk); // Defined in autoscend/auto_zelda.ash
+int zelda_ppCurr(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_skillValid(skill sk); // Defined in autoscend/auto_zelda.ash
 
 element currentFlavour(); // Defined in autoscend/auto_util.ash
 void resetFlavour(); // Defined in autoscend/auto_util.ash

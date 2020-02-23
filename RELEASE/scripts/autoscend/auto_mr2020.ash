@@ -116,3 +116,57 @@ boolean auto_powerfulGloveNoncombat()
 
 	return ret;
 }
+
+boolean auto_wantToEquipPowerfulGlove()
+{
+	if (!auto_hasPowerfulGlove()) return false;
+
+	if (in_zelda() && !zelda_nothingToBuy()) return true;
+
+	int pixels = item_amount($item[white pixel]);
+	pixels += min(item_amount($item[red pixel]), min(item_amount($item[blue pixel]), item_amount($item[green pixel])));
+	if (contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
+	{
+		pixels += 30;
+	}
+
+	return pixels < 30;
+}
+
+boolean auto_willEquipPowerfulGlove()
+{
+	foreach s in $slots[acc1, acc2, acc3]
+	{
+		string pref = getMaximizeSlotPref(s);
+		string toEquip = get_property(pref);
+		if(toEquip == $item[Powerful Glove])
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+boolean auto_forceEquipPowerfulGlove()
+{
+	if (!auto_hasPowerfulGlove()) return false;
+
+	if(auto_willEquipPowerfulGlove())
+	{
+		return true;
+	}
+
+	foreach s in $slots[acc1, acc2, acc3]
+	{
+		string pref = getMaximizeSlotPref(s);
+		string toEquip = get_property(pref);
+		if(toEquip == "")
+		{
+			return autoEquip(s, $item[Powerful Glove]);
+		}
+	}
+
+	return false;
+}
+

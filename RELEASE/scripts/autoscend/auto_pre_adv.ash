@@ -262,6 +262,22 @@ void handlePreAdventure(location place)
 			pool_skill += 3;
 		}
 		boolean skip_equipping_flower = place == $location[The Haunted Billiards Room] && 18 <= pool_skill;
+		// need to equip boots in ziggurat until lianas are cleared out
+		if(place == $location[A Massive Ziggurat])
+		{
+			int lianaFought = 0;
+			foreach i,s in place.combat_queue.split_string("; ")
+			{
+				if(s == "dense liana")
+				{
+					++lianaFought;
+				}
+			}
+			if(lianaFought < 3)
+			{
+				skip_equipping_flower = true;
+			}
+		}
 		if (is_ghost_in_zone(place) && !skip_equipping_flower)
 		{
 			if (possessEquipment($item[bonfire flower]))

@@ -81,7 +81,7 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
-		my_pp() < zelda_ppCost(sk)
+		zelda_ppCurr() < zelda_ppCost(sk)
 	)
 		return false;
 
@@ -150,17 +150,6 @@ string useSkill(skill sk, boolean mark)
 	if(mark)
 		markAsUsed(sk);
 
-	// TODO/FIXME
-	// Terrible hack, Mafia CCS currently does not support using skills with duplicate names:
-	// https://kolmafia.us/showthread.php?24497-Spring-2020-Challenge-Path-Path-of-the-Plumber&p=155633&viewfull=1#post155633
-	switch(sk) {
-		case $skill[Hammer Throw]: return "skill 7329";
-		case $skill[Ultra Smash]: return "skill 7330";
-		case $skill[Juggle Fireballs]: return "skill 7332";
-		case $skill[Fireball Barrage]: return "skill 7333";
-		case $skill[Spin Jump]: return "skill 7335";
-		case $skill[Multi-Bounce]: return "skill 7336";
-	}
 	return "skill " + sk;
 }
 
@@ -1679,7 +1668,7 @@ string auto_combatHandler(int round, string opp, string text)
 	{
 		// note: Juggle Fireballs CAN be used multiple times, but it's only
 		// useful if you have level 3 fire and therefore get healed
-		if(my_pp() > 2 && canUse($skill[Juggle Fireballs], true))
+		if(zelda_ppCurr() > 2 && canUse($skill[Juggle Fireballs], true))
 		{
 			return useSkill($skill[Juggle Fireballs]);
 		}

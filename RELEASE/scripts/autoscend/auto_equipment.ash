@@ -238,6 +238,10 @@ void resetMaximize()
 
 void finalizeMaximize()
 {
+	if(auto_wantToEquipPowerfulGlove())
+	{
+		auto_forceEquipPowerfulGlove();
+	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
 		string pref = getMaximizeSlotPref(s);

@@ -5950,7 +5950,7 @@ boolean auto_is_valid(familiar fam)
 
 boolean auto_is_valid(skill sk)
 {
-	return ((glover_usable(sk.to_string()) && bees_hate_usable(sk.to_string())) || sk.passive) && bat_skillValid(sk) && is_unrestricted(sk);
+	return ((glover_usable(sk.to_string()) && bees_hate_usable(sk.to_string())) || sk.passive) && bat_skillValid(sk) && zelda_skillValid(sk) && is_unrestricted(sk);
 }
 
 string auto_log_level_threshold(){

@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19766; // fix setPP to set current and max PP, not HP
+since r19767; // Fix usage of Plumber combat skills in CCS
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

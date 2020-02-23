@@ -25,6 +25,12 @@ boolean zelda_haveHammer()
 	return possessEquipment($item[hammer]) || possessEquipment($item[heavy hammer]);
 }
 
+boolean zelda_equippedHammer()
+{
+	return equipped_item($slot[weapon]) == $item[hammer]
+		|| equipped_item($slot[weapon]) == $item[heavy hammer];
+}
+
 boolean zelda_haveFlower()
 {
 	return possessEquipment($item[[10462]fire flower]) || possessEquipment($item[bonfire flower]);
@@ -34,6 +40,12 @@ boolean zelda_equippedFlower()
 {
 	return equipped_item($slot[weapon]) == $item[[10462]fire flower]
 		|| equipped_item($slot[weapon]) == $item[bonfire flower];
+}
+
+boolean zelda_equippedBoots()
+{
+	return have_equipped($item[work boots])
+		|| have_equipped($item[fancy boots]);
 }
 
 int zelda_numBadgesBought()
@@ -91,68 +103,149 @@ boolean zelda_buySkill(skill sk)
 
 boolean zelda_buyEquipment(item it)
 {
-	// Seems like the coinmaster Mafia handling is not quite there? TODO
 	if (possessEquipment(it)) return false;
 
 	int coins = item_amount($item[coin]);
 
 	switch(it){
 		case $item[hammer]:
-			if (coins < 20) return false;
-			retrieve_item(1, it);
-			break;
-		case $item[heavy hammer]:
-			if (coins < 300) return false;
-			retrieve_item(1, it);
-			break;
 		case $item[[10462]fire flower]:
 			if (coins < 20) return false;
-			retrieve_item(1, it);
 			break;
+		case $item[frosty button]:
+		case $item[back shell]:
+		case $item[spiky back shell]:
+		case $item[bony back shell]:
+			if (coins < 100) return false;
+			break;
+		case $item[cape]:
+			if (coins < 200) return false;
+			break;
+		case $item[heavy hammer]:
 		case $item[bonfire flower]:
-			if (coins < 300) return false;
-			retrieve_item(1, it);
-			break;
 		case $item[fancy boots]:
+		case $item[power pants]:
 			if (coins < 300) return false;
-			retrieve_item(1, it);
 			break;
+		default:
+			return false;
 	}
+	retrieve_item(1, it);
 	return true;
+}
+
+record zelda_buyable {
+	item it;
+	skill sk;
+};
+
+zelda_buyable zelda_buyableItem(item it)
+{
+	zelda_buyable res;
+	res.it = it;
+	return res;
+}
+
+zelda_buyable zelda_buyableSkill(skill sk)
+{
+	zelda_buyable res;
+	res.sk = sk;
+	return res;
+}
+
+boolean zelda_buyableIsNothing(zelda_buyable zb)
+{
+	return zb.it == $item[none] && zb.sk == $skill[none];
+}
+
+zelda_buyable zelda_nextBuyable()
+{
+	if (!have_skill($skill[Lucky Buckle]))
+	{
+		return zelda_buyableSkill($skill[Lucky Buckle]);
+	}
+	else if (!have_skill($skill[Secret Eye]))
+	{
+		return zelda_buyableSkill($skill[Secret Eye]);
+	}
+	else if (!have_skill($skill[Multi-Bounce]))
+	{
+		return zelda_buyableSkill($skill[Multi-Bounce]);
+	}
+	else if (!possessEquipment($item[fancy boots]))
+	{
+		return zelda_buyableItem($item[fancy boots]);
+	}
+	else if (!have_skill($skill[Lucky Pin]))
+	{
+		return zelda_buyableSkill($skill[Lucky Pin]);
+	}
+	else if (!have_skill($skill[Lucky Brooch]))
+	{
+		return zelda_buyableSkill($skill[Lucky Brooch]);
+	}
+	else if (!have_skill($skill[Lucky Insignia]))
+	{
+		return zelda_buyableSkill($skill[Lucky Insignia]);
+	}
+	else if (!have_skill($skill[Rainbow Shield]))
+	{
+		return zelda_buyableSkill($skill[Rainbow Shield]);
+	}
+	else if (!have_skill($skill[Power Plus]))
+	{
+		return zelda_buyableSkill($skill[Power Plus]);
+	}
+	else if (!have_skill($skill[Fireball Barrage]))
+	{
+		return zelda_buyableSkill($skill[Fireball Barrage]);
+	}
+	else if (!possessEquipment($item[frosty button]))
+	{
+		return zelda_buyableItem($item[frosty button]);
+	}
+	else if (!have_skill($skill[Health Symbol]))
+	{
+		return zelda_buyableSkill($skill[Health Symbol]);
+	}
+	else if (!have_skill($skill[Juggle Fireballs]))
+	{
+		return zelda_buyableSkill($skill[Juggle Fireballs]);
+	}
+	else if (!possessEquipment($item[cape]))
+	{
+		return zelda_buyableItem($item[cape]);
+	}
+	else if (!possessEquipment($item[bony back shell]))
+	{
+		return zelda_buyableItem($item[bony back shell]);
+	}
+
+	zelda_buyable nothing;
+	return nothing;
+}
+
+boolean zelda_nothingToBuy()
+{
+	zelda_buyable next = zelda_nextBuyable();
+	return zelda_buyableIsNothing(next);
 }
 
 boolean zelda_buyStuff()
 {
-	if (!have_skill($skill[Lucky Buckle]))
+	zelda_buyable next = zelda_nextBuyable();
+	if(next.sk != $skill[none])
 	{
-		zelda_buySkill($skill[Lucky Buckle]);
+		return zelda_buySkill(next.sk);
 	}
-	else if (!have_skill($skill[Secret Eye]))
+	else if(next.it != $item[none])
 	{
-		zelda_buySkill($skill[Secret Eye]);
+		return zelda_buyEquipment(next.it);
 	}
-	else if (!have_skill($skill[Multi-Bounce]))
+	else
 	{
-		zelda_buySkill($skill[Multi-Bounce]);
+		return false;
 	}
-	else if (!possessEquipment($item[fancy boots]))
-	{
-		retrieve_item(1, $item[fancy boots]);
-	}
-	else if (!have_skill($skill[Lucky Pin]))
-	{
-		zelda_buySkill($skill[Lucky Pin]);
-	}
-	else if (!have_skill($skill[Lucky Brooch]))
-	{
-		zelda_buySkill($skill[Lucky Brooch]);
-	}
-	else if (!have_skill($skill[Lucky Insignia]))
-	{
-		zelda_buySkill($skill[Lucky Insignia]);
-	}
-
-	return false;
 }
 
 int zelda_ppCost(skill sk)
@@ -181,6 +274,22 @@ boolean [skill] zelda_combatSkills = $skills[
 	Multi-Bounce,
 ];
 
+// TODO: Remove this function when my_pp() works
+int zelda_ppCurr()
+{
+	if(!in_zelda())
+	{
+		return 0;
+	}
+
+	int pp = my_maxpp();
+	foreach sk in zelda_combatSkills
+	{
+		pp -= zelda_ppCost(sk) * usedCount(sk);
+	}
+	return pp;
+}
+
 boolean zelda_canDealScalingDamage()
 {
 	// TODO: When mafia tracks costumes, account for level 3 basic attacks
@@ -205,5 +314,28 @@ boolean zelda_canDealScalingDamage()
 	}
 
 	return false;
+}
+
+boolean zelda_skillValid(skill sk)
+{
+	if(!in_zelda())
+	{
+		return true;
+	}
+
+	if($skills[Jump Attack, Spin Jump, Multi-Bounce] contains sk)
+	{
+		return zelda_equippedBoots();
+	}
+	else if($skills[Fireball Toss, Juggle Fireballs, Fireball Barrage] contains sk)
+	{
+		return zelda_equippedFlower();
+	}
+	else if($skills[Hammer Smash, Hammer Throw, Ultra Smash] contains sk)
+	{
+		return zelda_equippedHammer();
+	}
+
+	return true;
 }
 
