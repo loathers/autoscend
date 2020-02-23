@@ -312,6 +312,14 @@ void handlePreAdventure(location place)
 		}
 	}
 
+	// Use some instakills.
+	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
+	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19)
+	{
+		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
+		autoEquip(DOCTOR_BAG);
+	}
+
 	equipOverrides();
 
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))
