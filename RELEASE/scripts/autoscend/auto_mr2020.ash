@@ -157,16 +157,5 @@ boolean auto_forceEquipPowerfulGlove()
 		return true;
 	}
 
-	foreach s in $slots[acc1, acc2, acc3]
-	{
-		string pref = getMaximizeSlotPref(s);
-		string toEquip = get_property(pref);
-		if(toEquip == "")
-		{
-			return autoEquip(s, $item[Powerful Glove]);
-		}
-	}
-
-	return false;
+	return autoEquip($slot[acc3], $item[Powerful Glove]);
 }
-
