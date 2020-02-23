@@ -81,7 +81,7 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
-		zelda_ppCurr() < zelda_ppCost(sk)
+		my_pp() < zelda_ppCost(sk)
 	)
 		return false;
 
@@ -97,7 +97,7 @@ boolean canUse(skill sk, boolean onlyOnce)
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[Vampyric Cloake]), $skills[Become a Wolf, Become a Cloud of Mist, Become a Bat]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Shadow Noodles, Entangling Noodles]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Silent Slam, Silent Squirt, Silent Slice]);
-		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter's Bite Technique]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter\'s Bite Technique]);
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[bottle-rocket crossbow]), $skills[Fire Red Bottle-Rocket, Fire Blue Bottle-Rocket, Fire Orange Bottle-Rocket, Fire Purple Bottle-Rocket, Fire Black Bottle-Rocket]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Kodiak Moment, Grizzly Scene, Bear-Backrub, Bear-ly Legal, Bear Hug]);
 	}
@@ -150,7 +150,8 @@ string useSkill(skill sk, boolean mark)
 	if(mark)
 		markAsUsed(sk);
 
-	// Terrible hack, Mafia is broken:
+	// TODO/FIXME
+	// Terrible hack, Mafia CCS currently does not support using skills with duplicate names:
 	// https://kolmafia.us/showthread.php?24497-Spring-2020-Challenge-Path-Path-of-the-Plumber&p=155633&viewfull=1#post155633
 	switch(sk) {
 		case $skill[Hammer Throw]: return "skill 7329";
@@ -1678,14 +1679,14 @@ string auto_combatHandler(int round, string opp, string text)
 	{
 		// note: Juggle Fireballs CAN be used multiple times, but it's only
 		// useful if you have level 3 fire and therefore get healed
-		if(zelda_ppCurr() > 2 && canUse($skill[Juggle Fireballs], true))
+		if(my_pp() > 2 && canUse($skill[Juggle Fireballs], true))
 		{
 			return useSkill($skill[Juggle Fireballs]);
 		}
 
-		if (enemy.physical_resistance >= 80 || enemy == $monster[Angry Ghost])
+		if (enemy.physical_resistance >= 80)
 		{
-			if (canUse($skill[Fireball Barrage], true))
+			if (canUse($skill[Fireball Barrage], false))
 			{
 				return useSkill($skill[Fireball Barrage]);
 			}
@@ -1699,7 +1700,7 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 		}
 
-		if (canUse($skill[Multi-Bounce], true))
+		if (canUse($skill[Multi-Bounce], false))
 		{
 			return useSkill($skill[Multi-Bounce]);
 		}
@@ -1713,7 +1714,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 
 		// Fallback, since maybe we only have fire flower equipped.
-		if (canUse($skill[Fireball Barrage], true))
+		if (canUse($skill[Fireball Barrage], false))
 		{
 			return useSkill($skill[Fireball Barrage]);
 		}

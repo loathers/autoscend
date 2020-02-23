@@ -1392,7 +1392,6 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 	{
 		while (my_hp() < goal && my_hp() < my_maxhp() && item_amount($item[coin]) > 400)
 		{
-			cli_execute("refresh status");
       retrieve_item(1, $item[super deluxe mushroom]);
       use(1, $item[super deluxe mushroom]);
 		}

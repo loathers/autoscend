@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19757; // Handle commas in coin quality
+since r19766; // fix setPP to set current and max PP, not HP
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -5825,7 +5825,7 @@ boolean doTasks()
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();
-	// TODO: zelda_buySkills();
+	zelda_buyStuff();
 
 	oldPeoplePlantStuff();
 	use_barrels();

@@ -272,17 +272,15 @@ void handlePreAdventure(location place)
 			{
 				autoEquip($item[[10462]fire flower]);
 			}
-			/*
 			else if (item_amount($item[coin]) >= 20)
 			{
-				// 20 coins to avoid doing clever re-routing? I'm sold!
-				buy(1, $item[[10462]fire flower]);
+				// 20 coins to avoid doing clever re-routing? Yes please!
+				retrieve_item(1, $item[[10462]fire flower]);
 				autoEquip($item[[10462]fire flower]);
 			}
-			*/
 			else
 			{
-				abort("In Mario, we can't deal elemental damage without a flower. Please get me a flower.");
+				abort("I'm scared to adventure in a zone with ghosts without a fire flower. Please fight a bit and buy me a fire flower.");
 			}
 		}
 		else
@@ -529,10 +527,6 @@ void handlePreAdventure(location place)
 	if(my_inebriety() > inebriety_limit()) abort("You are overdrunk. Stop it.");
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
-	if (in_zelda())
-	{
-		cli_execute("refresh status");
-	}
 }
 
 void main()

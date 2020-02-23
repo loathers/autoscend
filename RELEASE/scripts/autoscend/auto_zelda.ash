@@ -91,7 +91,7 @@ boolean zelda_buySkill(skill sk)
 
 boolean zelda_buyEquipment(item it)
 {
-	// Seems like the coinmaster Mafia handling isn't quite there? TODO
+	// Seems like the coinmaster Mafia handling is not quite there? TODO
 	if (possessEquipment(it)) return false;
 
 	int coins = item_amount($item[coin]);
@@ -121,31 +121,38 @@ boolean zelda_buyEquipment(item it)
 	return true;
 }
 
-boolean zelda_buySkills()
+boolean zelda_buyStuff()
 {
-	if (zelda_buySkill($skill[Lucky Buckle])) return true;
-	if (zelda_buySkill($skill[Secret Eye])) return true;
-	if (zelda_buySkill($skill[Multi-Bounce])) return true;
+	if (!have_skill($skill[Lucky Buckle]))
+	{
+		zelda_buySkill($skill[Lucky Buckle]);
+	}
+	else if (!have_skill($skill[Secret Eye]))
+	{
+		zelda_buySkill($skill[Secret Eye]);
+	}
+	else if (!have_skill($skill[Multi-Bounce]))
+	{
+		zelda_buySkill($skill[Multi-Bounce]);
+	}
+	else if (!possessEquipment($item[fancy boots]))
+	{
+		retrieve_item(1, $item[fancy boots]);
+	}
+	else if (!have_skill($skill[Lucky Pin]))
+	{
+		zelda_buySkill($skill[Lucky Pin]);
+	}
+	else if (!have_skill($skill[Lucky Brooch]))
+	{
+		zelda_buySkill($skill[Lucky Brooch]);
+	}
+	else if (!have_skill($skill[Lucky Insignia]))
+	{
+		zelda_buySkill($skill[Lucky Insignia]);
+	}
 
 	return false;
-}
-
-int zelda_ppMax()
-{
-	int pp = 1;
-	if(auto_have_skill($skill[Power Plus]))
-	{
-		++pp;
-	}
-	if(have_equipped($item[power pants]))
-	{
-		++pp;
-	}
-	if(have_effect($effect[Fizzy Fizzy]) > 0)
-	{
-		++pp;
-	}
-	return pp;
 }
 
 int zelda_ppCost(skill sk)
@@ -174,22 +181,10 @@ boolean [skill] zelda_combatSkills = $skills[
 	Multi-Bounce,
 ];
 
-// ACCURACY ONLY GUARANTEED DURING A FIGHT
-// Which is fine, because pp is always max outside of combat
-int zelda_ppCurr()
-{
-	if(!in_zelda())
-	{
-		return 0;
-	}
-
-	return my_pp();
-}
-
 boolean zelda_canDealScalingDamage()
 {
 	// TODO: When mafia tracks costumes, account for level 3 basic attacks
-	if(zelda_ppMax() < 2)
+	if(my_maxpp() < 2)
 	{
 		return false;
 	}
