@@ -211,6 +211,10 @@ zelda_buyable zelda_nextBuyable()
 	{
 		return zelda_buyableSkill($skill[Multi-Bounce]);
 	}
+	else if (!have_skill($skill[Power Plus]))
+	{
+		return zelda_buyableSkill($skill[Power Plus]);
+	}
 	else if (!possessEquipment($item[fancy boots]))
 	{
 		return zelda_buyableItem($item[fancy boots]);
@@ -234,10 +238,6 @@ zelda_buyable zelda_nextBuyable()
 	else if (!have_skill($skill[Rainbow Shield]))
 	{
 		return zelda_buyableSkill($skill[Rainbow Shield]);
-	}
-	else if (!have_skill($skill[Power Plus]))
-	{
-		return zelda_buyableSkill($skill[Power Plus]);
 	}
 	else if (!have_skill($skill[Fireball Barrage]))
 	{
