@@ -24,6 +24,15 @@ boolean autoEquip(slot s, item it)
 		return false;
 	}
 
+	if(s == $slot[acc3] &&
+		(it.to_string() == get_property("_auto_maximize_equip_acc1")) ||
+		(it.to_string() == get_property("_auto_maximize_equip_acc2")) ||
+		(it.to_string() == get_property("_auto_maximize_equip_acc3")))
+	{
+		auto_log_warning("Ignoring duplicate equip of accessory " + it);
+		return true;
+	}
+
 	// This logic lets us force the equipping of multiple accessories with minimal conflict
 	boolean acc1_empty = ("" == get_property("_auto_maximize_equip_acc1")) && !contains_text(get_property("auto_maximize_current"), "acc1");
 	boolean acc2_empty = ("" == get_property("_auto_maximize_equip_acc2")) && !contains_text(get_property("auto_maximize_current"), "acc2");
