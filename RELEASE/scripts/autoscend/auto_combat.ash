@@ -435,6 +435,14 @@ string auto_combatHandler(int round, string opp, string text)
 
 	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob") || (opp == "Shadow Plumber"))
 	{
+		if(in_zelda())
+		{
+			if(item_amount($item[super deluxe mushroom]) > 0)
+			{
+				return "item " + $item[super deluxe mushroom];
+			}
+			abort("Oh no, I don't have any super deluxe mushrooms to deal with this shadow plumber :(");
+		}
 		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
 			if(item_amount($item[Gauze Garter]) >= 2)
