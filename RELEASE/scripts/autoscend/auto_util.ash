@@ -3484,6 +3484,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Browbeaten,
 			Extra Backbone,
 			Extreme Muscle Relaxation,
+			Faboooo,
 			Feroci Tea,
 			Fishy Fortification,
 			Football Eyes,
@@ -3511,6 +3512,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Marinated,
 			Mystically Oiled,
 			OMG WTF,
+			Paging Betty,
 			Rainy Soul Miasma,
 			Ready to Snap,
 			Rosewater Mark,
@@ -3519,6 +3521,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 
 			// moxie effects
 			Almost Cool,
+			Bandersnatched,
 			Busy Bein' Delicious,
 			Butt-Rock Hair,
 			Funky Coal Patina,
@@ -3533,6 +3536,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Spiky Hair,
 			Sugar Rush,
 			Superhuman Sarcasm,
+			Unrunnable Face,
 
 			// all-stat effects
 			Human-Human Hybrid,
