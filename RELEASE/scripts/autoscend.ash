@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19769; // Kamek and King Boo are 100% physical resist, add plumberCostumeCost
+since r19771; // Re-calculate PP less aggressively
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
