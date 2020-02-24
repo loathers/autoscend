@@ -134,9 +134,41 @@ boolean zelda_buyEquipment(item it)
 	return true;
 }
 
+stat zelda_costume()
+{
+	return get_property("plumberCostumeWorn").to_stat();
+}
+
+boolean zelda_buyCostume(stat st)
+{
+	if (zelda_costume() == st) return false;
+
+	visit_url("place.php?whichplace=mario&action=mush_costumeshop");
+
+	if (item_amount($item[coin]) < get_property("plumberCostumeCost").to_int())
+	{
+		return false;
+	}
+
+	switch(st)
+	{
+	case $stat[muscle]:
+		run_choice(1);
+		return true;
+	case $stat[mysticality]:
+		run_choice(2);
+		return true;
+	case $stat[moxie]:
+		run_choice(3);
+		return true;
+	}
+	return false;
+}
+
 record zelda_buyable {
 	item it;
 	skill sk;
+	stat costume;
 };
 
 zelda_buyable zelda_buyableItem(item it)
@@ -153,9 +185,16 @@ zelda_buyable zelda_buyableSkill(skill sk)
 	return res;
 }
 
+zelda_buyable zelda_buyableCostume(stat costume)
+{
+	zelda_buyable res;
+	res.costume = costume;
+	return res;
+}
+
 boolean zelda_buyableIsNothing(zelda_buyable zb)
 {
-	return zb.it == $item[none] && zb.sk == $skill[none];
+	return zb.it == $item[none] && zb.sk == $skill[none] && zb.costume == $stat[none];
 }
 
 zelda_buyable zelda_nextBuyable()
@@ -175,6 +214,10 @@ zelda_buyable zelda_nextBuyable()
 	else if (!possessEquipment($item[fancy boots]))
 	{
 		return zelda_buyableItem($item[fancy boots]);
+	}
+	else if (zelda_costume() != $stat[moxie])
+	{
+		return zelda_buyableCostume($stat[moxie]);
 	}
 	else if (!have_skill($skill[Lucky Pin]))
 	{
@@ -241,6 +284,10 @@ boolean zelda_buyStuff()
 	else if(next.it != $item[none])
 	{
 		return zelda_buyEquipment(next.it);
+	}
+	else if (next.costume != $stat[none])
+	{
+		return zelda_buyCostume(next.costume);
 	}
 	else
 	{
