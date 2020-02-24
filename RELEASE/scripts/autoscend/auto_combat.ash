@@ -433,7 +433,7 @@ string auto_combatHandler(int round, string opp, string text)
 		return "runaway";
 	}
 
-	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob"))
+	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob") || (opp == "Shadow Plumber"))
 	{
 		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
