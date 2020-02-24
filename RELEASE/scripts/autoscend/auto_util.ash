@@ -4784,6 +4784,11 @@ void shrugAT()
 
 void shrugAT(effect anticipated)
 {
+	if ($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class())
+	{
+		return;
+	}
+
 	//If you think we are handling song overages, you are cray cray....
 	if(have_effect(anticipated) > 0)
 	{
