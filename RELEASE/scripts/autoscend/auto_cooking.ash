@@ -1105,6 +1105,12 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 {
 	// TODO: does not consider mime army shotglass
 
+	if(in_zelda())
+	{
+		auto_log_warning("Skipping eating, you'll have to do this manually.", "red");
+		return false;
+	}
+
 	int organLeft()
 	{
 		if (type == "eat") return fullness_left();

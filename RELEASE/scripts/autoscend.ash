@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19696; // Do not worry about milk of magnesium for size 0 foods
+since r19771; // Re-calculate PP less aggressively
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -56,6 +56,7 @@ import <autoscend/auto_monsterparts.ash>
 import <autoscend/auto_theSource.ash>
 import <autoscend/auto_optionals.ash>
 import <autoscend/auto_list.ash>
+import <autoscend/auto_zelda.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
 import <autoscend/auto_mclargehuge.ash>
@@ -215,6 +216,7 @@ void initializeSettings()
 	bat_initializeSettings();
 	tcrs_initializeSettings();
 	koe_initializeSettings();
+	zelda_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -435,9 +437,24 @@ boolean LX_burnDelay()
 	boolean wannaVote = auto_voteMonster(true);
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
+
+	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
+	// then a scaling monster is probably going to be a bad time
+	if(in_zelda() && !zelda_canDealScalingDamage())
+	{
+		// unless we can still kill it in like two hits or so, then it should probably be fine?
+		int predictedScalerHP = to_int(0.75 * (my_buffedstat($stat[Muscle]) + monster_level_adjustment()));
+		if(predictedScalerHP > 30)
+		{
+			auto_log_info("Want to burn delay with scaling wanderers, but we can't deal scaling damage yet and it would be too strong :(");
+			wannaVote = false;
+			wannaSausage = false;
+		}
+	}
+
 	if(burnZone != $location[none])
 	{
-		if(auto_voteMonster(true))
+		if(wannaVote)
 		{
 			auto_log_info("Burn some delay somewhere (voting), if we found a place!", "green");
 			if(auto_voteMonster(true, burnZone, ""))
@@ -445,7 +462,7 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
-		if(isOverdueDigitize())
+		if(wannaDigitize)
 		{
 			auto_log_info("Burn some delay somewhere (digitize), if we found a place!", "green");
 			if(autoAdv(burnZone))
@@ -453,7 +470,7 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
-		if(auto_sausageGoblin())
+		if(wannaSausage)
 		{
 			auto_log_info("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
 			if(auto_sausageGoblin(burnZone, ""))
@@ -1280,7 +1297,7 @@ void initializeDay(int day)
 			{
 				acquireGumItem($item[disco ball]);
 			}
-			if(!($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre] contains my_class()))
+			if(!($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class()))
 			{
 				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
@@ -3893,10 +3910,14 @@ boolean L5_goblinKing()
 		autoEquip($slot[acc2], $item[none]);
 	}
 
-	auto_change_mcd(10); // get the Crown from the Goblin King.
+	// TODO: I died here, maybe we should heal a bit?
+	if (!in_zelda())
+	{
+		auto_change_mcd(10); // get the Crown from the Goblin King.
+	}
 	autoAdv(1, $location[Throne Room]);
 
-	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished"))
+	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_zelda())
 	{
 		council();
 	}
@@ -4504,6 +4525,7 @@ boolean LX_bitchinMeatcar()
 				return true;
 			}
 		}
+		if(in_zelda()) return false;
 		auto_log_info("Farming for a Bitchin' Meatcar", "blue");
 		if(get_property("questM01Untinker") == "unstarted")
 		{
@@ -4979,6 +5001,41 @@ boolean L2_mosquito()
 	return true;
 }
 
+int speculative_pool_skill()
+{
+	int expectPool = get_property("poolSkill").to_int();
+	expectPool += min(10,to_int(2 * square_root(get_property("poolSharkCount").to_int())));
+	if(my_inebriety() >= 10)
+	{
+		expectPool += (30 - (2 * my_inebriety()));
+	}
+	else
+	{
+		expectPool += my_inebriety();
+	}
+	if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
+	{
+		expectPool += 3;
+	}
+	if(have_effect($effect[Chalked Weapon]) > 0)
+	{
+		expectPool += 5;
+	}
+	if(have_effect($effect[Influence of Sphere]) > 0)
+	{
+		expectPool += 5;
+	}
+	if(have_effect($effect[Video... Games?]) > 0)
+	{
+		expectPool += 5;
+	}
+	if(have_effect($effect[Swimming with Sharks]) > 0)
+	{
+		expectPool += 3;
+	}
+	return expectPool;
+}
+
 boolean LX_handleSpookyravenFirstFloor()
 {
 	if(get_property("lastSecondFloorUnlock").to_int() >= my_ascensions())
@@ -5043,40 +5100,12 @@ boolean LX_handleSpookyravenFirstFloor()
 	}
 	else if(item_amount($item[Spookyraven Billiards Room Key]) == 1)
 	{
-		int expectPool = get_property("poolSkill").to_int();
-		expectPool += min(10,to_int(2 * square_root(get_property("poolSharkCount").to_int())));
-		if(my_inebriety() >= 10)
-		{
-			expectPool += (30 - (2 * my_inebriety()));
-		}
-		else
-		{
-			expectPool += my_inebriety();
-		}
+		int expectPool = speculative_pool_skill();
+
 		// Staff of Fats (non-Ed and Ed) and Staff of Ed (from Ed)
 		item staffOfFats = $item[2268];
 		item staffOfFatsEd = $item[7964];
 		item staffOfEd = $item[7961];
-		if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
-		{
-			expectPool += 3;
-		}
-		if(have_effect($effect[Chalked Weapon]) > 0)
-		{
-			expectPool += 5;
-		}
-		if(have_effect($effect[Influence of Sphere]) > 0)
-		{
-			expectPool += 5;
-		}
-		if(have_effect($effect[Video... Games?]) > 0)
-		{
-			expectPool += 5;
-		}
-		if(have_effect($effect[Swimming with Sharks]) > 0)
-		{
-			expectPool += 3;
-		}
 
 		// Prevent the needless equipping of Cues if we don't need it.
 		boolean usePoolEquips = true;
@@ -5796,6 +5825,7 @@ boolean doTasks()
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();
+	zelda_buyStuff();
 
 	oldPeoplePlantStuff();
 	use_barrels();

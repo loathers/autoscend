@@ -295,6 +295,12 @@ boolean auto_saberDailyUpgrade(int day)
 		return auto_saberChoice("mp");
 	}
 
+	// Maybe famweight is better, I don't know.
+	if (in_zelda())
+	{
+		return auto_saberChoice("res");
+	}
+
 	if(day == 1)
 	{
 		return auto_saberChoice("ml");
@@ -770,4 +776,125 @@ boolean auto_pillKeeper(string pill)
 	}
 
 	return auto_pillKeeper(pillId);
+}
+
+record PizzaPlan {
+	item ing1;
+	item ing2;
+	item ing3;
+	item ing4;
+};
+
+item[int] auto_pizza_ingredients(PizzaPlan plan)
+{
+	item[int] ret;
+	ret[0] = plan.ing1;
+	ret[1] = plan.ing2;
+	ret[2] = plan.ing3;
+	ret[3] = plan.ing4;
+	return ret;
+}
+
+// Note this doesn't clamp to 15 - that's enforced elsewhere.
+int auto_pizza_unclamped_advs(PizzaPlan plan)
+{
+	int char_sum = 0;
+	foreach i, ing in auto_pizza_ingredients(plan)
+	{
+		char_sum += length(ing.to_string());
+	}
+	int advs = round(char_sum/10.0);
+
+	return advs;
+}
+
+float[stat] auto_pizza_stats(PizzaPlan plan)
+{
+	float[stat] ret;
+	ret[$stat[muscle]] = 0.0;
+	ret[$stat[moxie]] = 0.0;
+	foreach i, ing in auto_pizza_ingredients(plan)
+	{
+		ret[$stat[muscle]] += 10 * ing.fullness;
+		ret[$stat[moxie]] += 10 * ing.inebriety;
+	}
+	return ret;
+}
+
+float auto_score_pizza(PizzaPlan plan)
+{
+	int unclamped_advs = auto_pizza_unclamped_advs(plan);
+	int advs = min(15, unclamped_advs);
+	int waste = max(0, 15 - unclamped_advs);
+	float total_stat = auto_pizza_stats(plan)[my_primestat()];
+
+	return 15 * advs + 0.1 * total_stat - 3 * waste;
+}
+
+void auto_deliberate_pizza()
+{
+	int [item] ingredients;
+
+	boolean[item] keep_one = $items[];
+
+	foreach it, i in get_inventory()
+	{
+		if (keep_one contains it) {
+			if (i > 1)
+			{
+				ingredients[it] = min(4, i - 1);
+			}
+		}
+		else
+		{
+			ingredients[it] = min(4, i);
+		}
+	}
+
+	item[int] ingredients_list;
+
+	foreach it, amount in ingredients
+	{
+		for (int i=0; i<amount; i++)
+		{
+			ingredients_list[count(ingredients_list)] = it;
+		}
+	}
+
+	if (count(ingredients_list) < 4)
+	{
+		auto_log_info("Skipping pizza planning, not enough ingredients.");
+		return;
+	}
+
+	PizzaPlan best_plan;
+	float best_score = 0.0;
+
+	for (int i=0; i<10000; i++)
+	{
+		int a = random(count(ingredients_list));
+		int b = random(count(ingredients_list));
+		int c = random(count(ingredients_list));
+		int d = random(count(ingredients_list));
+
+		if (a == b || a == c || a == d || b == c || b == d || c == d) continue;
+
+		PizzaPlan speculative_plan;
+		speculative_plan.ing1 = ingredients_list[a];
+		speculative_plan.ing2 = ingredients_list[b];
+		speculative_plan.ing3 = ingredients_list[c];
+		speculative_plan.ing4 = ingredients_list[d];
+
+		float score = auto_score_pizza(speculative_plan);
+		if (score > best_score)
+		{
+			best_plan = speculative_plan;
+		}
+	}
+	auto_log_info("Best plan:\n  " + 
+		to_string(best_plan.ing1) + "\n  " +
+		to_string(best_plan.ing2) + "\n  " +
+		to_string(best_plan.ing3) + "\n  " +
+		to_string(best_plan.ing4) + "\n  ");
+	auto_log_info("For " + auto_pizza_unclamped_advs(best_plan) + " adventures.");
 }

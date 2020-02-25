@@ -17,6 +17,7 @@ location[int] zones_available();
 monster[int] mobs_available();
 item[int] drops_available();
 item[int] hugpocket_available();
+boolean is_ghost_in_zone(location loc);
 
 boolean zone_unlock(location loc){
 	boolean unlock_thinknerd(){
@@ -734,12 +735,13 @@ generic_t zone_available(location loc)
 		{
 			retval._boolean = true;
 		}
+		break;
 	case $location[The Red Zeppelin]:
 		if(internalQuestStatus("questL11Ron") >= 2)
 		{
 			retval._boolean = true;
 		}
-
+		break;
 	case $location[Super Villain\'s Lair]:
 		if((auto_my_path() == "License to Adventure") && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
 		{
@@ -1744,6 +1746,18 @@ item[int] hugpocket_available()
 		retval[count(retval)] = it;
 	}
 	return retval;
+}
+
+boolean is_ghost_in_zone(location loc)
+{
+	foreach idx, mob in get_monsters(loc)
+	{
+		if (mob.physical_resistance >= 80)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 

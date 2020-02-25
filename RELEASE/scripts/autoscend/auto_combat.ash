@@ -80,7 +80,8 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_lightning() < lightning_cost(sk) ||
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
-		my_soulsauce() < soulsauce_cost(sk)
+		my_soulsauce() < soulsauce_cost(sk) ||
+		zelda_ppCurr() < zelda_ppCost(sk)
 	)
 		return false;
 
@@ -96,7 +97,7 @@ boolean canUse(skill sk, boolean onlyOnce)
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[Vampyric Cloake]), $skills[Become a Wolf, Become a Cloud of Mist, Become a Bat]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Shadow Noodles, Entangling Noodles]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Silent Slam, Silent Squirt, Silent Slice]);
-		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter's Bite Technique]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter\'s Bite Technique]);
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[bottle-rocket crossbow]), $skills[Fire Red Bottle-Rocket, Fire Blue Bottle-Rocket, Fire Orange Bottle-Rocket, Fire Purple Bottle-Rocket, Fire Black Bottle-Rocket]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Kodiak Moment, Grizzly Scene, Bear-Backrub, Bear-ly Legal, Bear Hug]);
 	}
@@ -148,6 +149,7 @@ string useSkill(skill sk, boolean mark)
 {
 	if(mark)
 		markAsUsed(sk);
+
 	return "skill " + sk;
 }
 
@@ -431,8 +433,16 @@ string auto_combatHandler(int round, string opp, string text)
 		return "runaway";
 	}
 
-	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob"))
+	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob") || (opp == "Shadow Plumber"))
 	{
+		if(in_zelda())
+		{
+			if(item_amount($item[super deluxe mushroom]) > 0)
+			{
+				return "item " + $item[super deluxe mushroom];
+			}
+			abort("Oh no, I don't have any super deluxe mushrooms to deal with this shadow plumber :(");
+		}
 		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
 			if(item_amount($item[Gauze Garter]) >= 2)
@@ -786,7 +796,7 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Apprivoisez La Tortue], false);
 	}
 
-	if(canUse($skill[Gulp Latte]) && (get_property("_latteRefillsUsed").to_int() == 0) && !get_property("_latteDrinkUsed").to_boolean())
+	if(!in_zelda() && canUse($skill[Gulp Latte]) && (get_property("_latteRefillsUsed").to_int() == 0) && !get_property("_latteDrinkUsed").to_boolean())
 	{
 		return useSkill($skill[Gulp Latte]);
 	}
@@ -1662,6 +1672,51 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Saucestorm], false);
 	}
 
+	if (my_class() == $class[Plumber])
+	{
+		// note: Juggle Fireballs CAN be used multiple times, but it is only
+		// useful if you have level 3 fire and therefore get healed
+		if(zelda_ppCurr() > 2 && canUse($skill[Juggle Fireballs], true))
+		{
+			return useSkill($skill[Juggle Fireballs]);
+		}
+
+		if (enemy.physical_resistance >= 80)
+		{
+			if (canUse($skill[Fireball Barrage], false))
+			{
+				return useSkill($skill[Fireball Barrage]);
+			}
+			if (canUse($skill[Beach Combo], true))
+			{
+				return useSkill($skill[Beach Combo]);
+			}
+			if (canUse($skill[Fireball Toss], false))
+			{
+				return useSkill($skill[Fireball Toss], false);
+			}
+		}
+
+		if (canUse($skill[Multi-Bounce], false))
+		{
+			return useSkill($skill[Multi-Bounce]);
+		}
+		if (canUse($skill[Beach Combo], true))
+		{
+			return useSkill($skill[Beach Combo]);
+		}
+		if (canUse($skill[Jump Attack], false))
+		{
+			return useSkill($skill[Jump Attack], false);
+		}
+
+		// Fallback, since maybe we only have fire flower equipped.
+		if (canUse($skill[Fireball Barrage], false))
+		{
+			return useSkill($skill[Fireball Barrage]);
+		}
+		return useSkill($skill[Fireball Toss], false);
+	}
 
 	string attackMinor = "attack with weapon";
 	string attackMajor = "attack with weapon";

@@ -24,16 +24,28 @@ boolean autoEquip(slot s, item it)
 		return false;
 	}
 
-	// This logic lets us force the equipping of multiple accessories with minimal conflict
-	if((item_type(it) == "accessory") && (s == $slot[acc3]) && (contains_text(get_property("auto_maximize_current"), "acc3")))
+	if(s == $slot[acc3] &&
+		(it.to_string() == get_property("_auto_maximize_equip_acc1")) ||
+		(it.to_string() == get_property("_auto_maximize_equip_acc2")) ||
+		(it.to_string() == get_property("_auto_maximize_equip_acc3")))
 	{
-		if(!contains_text(get_property("auto_maximize_current"), "acc2"))
+		auto_log_warning("Ignoring duplicate equip of accessory " + it);
+		return true;
+	}
+
+	// This logic lets us force the equipping of multiple accessories with minimal conflict
+	boolean acc1_empty = ("" == get_property("_auto_maximize_equip_acc1")) && !contains_text(get_property("auto_maximize_current"), "acc1");
+	boolean acc2_empty = ("" == get_property("_auto_maximize_equip_acc2")) && !contains_text(get_property("auto_maximize_current"), "acc2");
+	boolean acc3_empty = ("" == get_property("_auto_maximize_equip_acc3")) && !contains_text(get_property("auto_maximize_current"), "acc3");
+	if((item_type(it) == "accessory") && s == $slot[acc3] && !acc3_empty)
+	{
+		if(acc2_empty)
 		{
-			slot s = $slot[acc2];
+			s = $slot[acc2];
 		}
-		else if(!contains_text(get_property("auto_maximize_current"), "acc1"))
+		else if(acc1_empty)
 		{
-			slot s = $slot[acc1];
+			s = $slot[acc1];
 		}
 		else
 		{
@@ -173,13 +185,16 @@ string defaultMaximizeStatement()
 			res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 		}
 
-		if(my_primestat() == $stat[Mysticality])
+		if(!in_zelda())
 		{
-			res += ",0.25spell damage,1.75spell damage percent";
-		}
-		else
-		{
-			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			if(my_primestat() == $stat[Mysticality])
+			{
+				res += ",0.25spell damage,1.75spell damage percent";
+			}
+			else
+			{
+				res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			}
 		}
 
 		if(auto_have_familiar($familiar[mosquito]))
@@ -190,9 +205,13 @@ string defaultMaximizeStatement()
 				res += ",5familiar exp";
 			}
 		}
+		if (in_zelda())
+		{
+			res += ",-ml";
+		}
 	}
 
-	if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
+	if(!in_zelda() && ((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean())))
 	{
 		res += ",10exp,5" + my_primestat() + " experience percent";
 	}
@@ -231,6 +250,10 @@ void resetMaximize()
 
 void finalizeMaximize()
 {
+	if(auto_wantToEquipPowerfulGlove())
+	{
+		auto_forceEquipPowerfulGlove();
+	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
 		string pref = getMaximizeSlotPref(s);
@@ -241,7 +264,7 @@ void finalizeMaximize()
 			addToMaximize("+equip " + toEquip);
 		}
 	}
-	if(get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
+	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		addToMaximize("effective");
 	}

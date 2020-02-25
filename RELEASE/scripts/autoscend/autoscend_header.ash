@@ -375,6 +375,7 @@ float tcrs_expectedAdvPerFill(string quality);				//Defined in autoscend/auto_tc
 boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety);	//Defined in autoscend/auto_tcrs.ash
 boolean tcrs_maximize_with_items(string maximizerString);	//Defined in autoscend/auto_tcrs.ash
 boolean in_koe();											//Defined in autoscend/auto_koe.ash
+boolean in_zelda();											//Defined in autoscend/auto_zelda.ash
 boolean boris_buySkills();									//Defined in autoscend/auto_boris.ash
 void boris_initializeDay(int day);							//Defined in autoscend/auto_boris.ash
 void boris_initializeSettings();							//Defined in autoscend/auto_boris.ash
@@ -689,6 +690,9 @@ boolean auto_favoriteBirdCanSeek();			//Defined in autoscend/auto_mr2020.ash
 boolean auto_hasPowerfulGlove();			//Defined in autoscend/auto_mr2020.ash
 int auto_powerfulGloveCharges();			//Defined in autoscend/auto_mr2020.ash
 boolean auto_powerfulGloveNoncombat();		//Defined in autoscend/auto_mr2020.ash
+boolean auto_wantToEquipPowerfulGlove();	//Defined in autoscend/auto_mr2020.ash
+boolean auto_willEquipPowerfulGlove();		//Defined in autoscend/auto_mr2020.ash
+boolean auto_forceEquipPowerfulGlove();		//Defined in autoscend/auto_mr2020.ash
 boolean getSpaceJelly();					//Defined in autoscend/auto_mr2017.ash
 int horseCost();											//Defined in autoscend/auto_mr2017.ash
 string horseNormalize(string horseText); // Defined in autoscend/auto_mr2017.ash
@@ -1114,6 +1118,21 @@ boolean bat_switchForm(effect form, boolean speculative); // Defined in autoscen
 boolean bat_switchForm(effect form); // Defined in autoscend/auto_batpath.ash
 boolean bat_formPreAdventure(); // Defined in autoscend/auto_batpath.ash
 boolean LM_batpath(); // Defined in autoscend/auto_batpath.ash
+
+boolean zelda_initializeSettings(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_haveHammer(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_haveFlower(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_equippedFlower(); // Defined in autoscend/auto_zelda.ash
+int zelda_numBadgesBought(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_buySkill(skill sk); // Defined in autoscend/auto_zelda.ash
+boolean zelda_buyEquipment(item it); // Defined in autoscend/auto_zelda.ash
+boolean zelda_nothingToBuy(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_buyStuff(); // Defined in autoscend/auto_zelda.ash
+int zelda_ppCost(skill sk); // Defined in autoscend/auto_zelda.ash
+int zelda_ppCurr(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_skillValid(skill sk); // Defined in autoscend/auto_zelda.ash
+
 element currentFlavour(); // Defined in autoscend/auto_util.ash
 void resetFlavour(); // Defined in autoscend/auto_util.ash
 boolean setFlavour(element ele); // Defined in autoscend/auto_util.ash
