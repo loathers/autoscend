@@ -318,7 +318,19 @@ void handlePreAdventure(location place)
 				autoEquip($slot[acc3], $item[work boots]);
 			}
 		}
+
+		// It is dangerous out there! Take this!
+		int flyeredML = get_property("flyeredML").to_int();
+		boolean have_pill_keeper = (0 <equipmentAmount($item[Eight Days a Week Pill Keeper])) && 
+			(is_unrestricted($item[Unopened Eight Days a Week Pill Keeper]));
+
+		if(0 < flyeredML && flyeredML < 10000 && in_zelda() && have_pill_keeper)
+		{
+			auto_log_debug("I expect to be flyering, equipping Pill Keeper to skip the first hit.");
+			autoEquip($slot[acc3], $item[Eight Days a Week Pill Keeper]);
+		}
 	}
+
 	equipOverrides();
 
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))

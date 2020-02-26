@@ -151,6 +151,8 @@ boolean L10_basement()
 	}
 
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
+	resetMaximize();
+	
 	handleFamiliar("item");
 
 	if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))

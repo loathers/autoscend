@@ -1338,7 +1338,13 @@ boolean fightClubNap()
 boolean fightClubSpa()
 {
 	int option = 4;
-	switch(my_primestat())
+	stat st = my_primestat();
+	if (in_zelda())
+	{
+		// We deal 250% of our Moxie, so if our Muscle is too high we... die.
+		st = $stat[moxie];
+	}
+	switch(st)
 	{
 	case $stat[Muscle]:			option = 1;		break;
 	case $stat[Mysticality]:	option = 3;		break;
