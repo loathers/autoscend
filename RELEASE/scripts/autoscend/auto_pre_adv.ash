@@ -254,14 +254,6 @@ void handlePreAdventure(location place)
 		autoEquip($item[latte lovers member\'s mug]);
 	}
 
-	// Use some instakills.
-	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
-	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19)
-	{
-		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
-		autoEquip($slot[acc3], DOCTOR_BAG);
-	}
-
 	if(in_zelda())
 	{
 		int pool_skill = speculative_pool_skill();
@@ -329,6 +321,14 @@ void handlePreAdventure(location place)
 			auto_log_debug("I expect to be flyering, equipping Pill Keeper to skip the first hit.");
 			autoEquip($slot[acc3], $item[Eight Days a Week Pill Keeper]);
 		}
+	}
+
+	// Use some instakills.
+	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
+	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19)
+	{
+		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
+		autoEquip($slot[acc3], DOCTOR_BAG);
 	}
 
 	equipOverrides();
