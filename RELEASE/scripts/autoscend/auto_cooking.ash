@@ -6,6 +6,7 @@ script "auto_cooking.ash"
 
 boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);
 boolean consumeMilkOfMagnesiumIfUnused(boolean useAdv);
+int autoDailySpecialPrice();
 boolean autoEat(int howMany, item toEat);
 boolean autoEat(int howMany, item toEat, boolean silent);
 boolean autoDrink(int howMany, item toDrink);
@@ -258,6 +259,46 @@ boolean autoDrinkCafe(int howmany, int id)
 		handleTracker(name, "auto_drunken");
 	}
 	return true;
+}
+
+int autoDailySpecialPrice()
+{
+	//this function provides the purchase price for the daily special item in chez snootie or gnomish microbrewery.
+
+	//check for known items whose autosell price is hidden due to being marked nodiscard
+	switch(daily_special())
+	{
+		//chez snootie
+		case $item[banana]: return 3;
+		case $item[banana cream pie]: return 30;
+		case $item[fiery wing]: return 96;
+		case $item[forbidden sausage]: return 46;
+		case $item[ghost cucumber]: return 225;
+		case $item[laser-broiled pear]: return 465;
+		
+		//gnomish microbrewery
+		case $item[banana daiquiri]: return 30;
+		case $item[bungle in the jungle]: return 75;
+		case $item[especially salty dog]: return 462;
+	}
+
+	//if an item has an autosell price, the cost to buy it from chez snootie or gnomish microbrewery is 3 times the autosell value
+	if (autosell_price(daily_special()) > 0)
+	{
+		return 3*autosell_price(daily_special());
+	}
+	
+	//this function should not be called if you do not have access to a daily special (for example, knoll sign). But just in case
+	if (daily_special() == $item[none])
+	{
+		auto_log_warning("for some reason auto_cooking.ash called function autoDailySpecialPrice() even though no daily special item is available to you from chez snootie or gnomish microbrewery", "orange");
+		return 100;
+	}
+
+	//if an item does not have an autosell price and is not a known item, assume the price is 100 and print a warning asking the user to report this
+	auto_log_warning("Autoscend can not determine the price of the daily special at chez snnotie or gnomish microbrewery and will guess it costs 100 meat", "orange");
+	auto_log_warning("Please report this warning. file auto_cooking.ash function autoDailySpecialPrice() item " + daily_special(), "orange");
+	return 100;
 }
 
 boolean autoEatCafe(int howmany, int id)
@@ -949,7 +990,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	// Add daily special
 	if (daily_special() != $item[none] && canConsume(daily_special()))
 	{
-		int daily_special_limit = 1 + min(my_meat()/(3*min(35, autosell_price(daily_special()))), organLeft()/organCost(daily_special()));
+		int daily_special_limit = 1 + min(my_meat()/autoDailySpecialPrice(), organLeft()/organCost(daily_special()));
 		for (int i=0; i < daily_special_limit; i++)
 		{
 			int n = count(actions);
