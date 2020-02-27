@@ -399,6 +399,7 @@ boolean canOde(item toDrink); //Defined in autoscend/auto_cooking.ash
 boolean canSimultaneouslyAcquire(int[item] needed);			//Defined in autoscend/auto_util.ash
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
 boolean autoDrink(int howMany, item toDrink);					//Defined in autoscend/auto_cooking.ash
+int autoDailySpecialPrice();									//Defined in autoscend/auto_cooking.ash
 boolean autoEat(int howMany, item toEat);						//Defined in autoscend/auto_cooking.ash
 boolean autoEat(int howMany, item toEat, boolean silent);		//Defined in autoscend/auto_cooking.ash
 boolean auto_knapsackAutoConsume(string type, boolean simulate);	//Defined in autoscend/auto_cooking.ash
