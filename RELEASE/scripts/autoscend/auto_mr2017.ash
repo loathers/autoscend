@@ -1204,7 +1204,7 @@ boolean asdonBuff(string goal)
 	return false;
 }
 
-boolean asdonBuff(effect goal)
+boolean canAsdonBuff(effect goal)
 {
 	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
 	{
@@ -1227,6 +1227,15 @@ boolean asdonBuff(effect goal)
 		return false;
 	}
 	if(have_effect(goal) > 0)
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean asdonBuff(effect goal)
+{
+	if(!canAsdonBuff(goal))
 	{
 		return false;
 	}

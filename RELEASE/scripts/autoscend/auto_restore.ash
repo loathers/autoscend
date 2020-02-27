@@ -1388,7 +1388,19 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 		return true;
 	}
 
-  __restore("hp", goal, meat_reserve, useFreeRests);
+	if (my_class() == $class[Plumber])
+	{
+		while (my_hp() < goal && my_hp() < my_maxhp() && item_amount($item[coin]) > 400)
+		{
+      retrieve_item(1, $item[super deluxe mushroom]);
+      use(1, $item[super deluxe mushroom]);
+		}
+	}
+	else
+	{
+		__restore("hp", goal, meat_reserve, useFreeRests);
+	}
+
 	return my_hp() >= goal;
 }
 

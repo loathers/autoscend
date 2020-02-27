@@ -254,6 +254,83 @@ void handlePreAdventure(location place)
 		autoEquip($item[latte lovers member\'s mug]);
 	}
 
+	if(in_zelda())
+	{
+		int pool_skill = speculative_pool_skill();
+		if (possessEquipment($item[Pool Cue]))
+		{
+			pool_skill += 3;
+		}
+		boolean skip_equipping_flower = place == $location[The Haunted Billiards Room] && 18 <= pool_skill;
+		// need to equip boots in ziggurat until lianas are cleared out
+		if(place == $location[A Massive Ziggurat])
+		{
+			int lianaFought = 0;
+			foreach i,s in place.combat_queue.split_string("; ")
+			{
+				if(s == "dense liana")
+				{
+					++lianaFought;
+				}
+			}
+			if(lianaFought < 3)
+			{
+				skip_equipping_flower = true;
+			}
+		}
+		if (is_ghost_in_zone(place) && !skip_equipping_flower)
+		{
+			if (possessEquipment($item[bonfire flower]))
+			{
+				autoEquip($item[bonfire flower]);
+			}
+			else if (possessEquipment($item[[10462]fire flower]))
+			{
+				autoEquip($item[[10462]fire flower]);
+			}
+			else if (item_amount($item[coin]) >= 20)
+			{
+				// 20 coins to avoid doing clever re-routing? Yes please!
+				retrieve_item(1, $item[[10462]fire flower]);
+				autoEquip($item[[10462]fire flower]);
+			}
+			else
+			{
+				abort("I'm scared to adventure in a zone with ghosts without a fire flower. Please fight a bit and buy me a fire flower.");
+			}
+		}
+		else
+		{
+			if (possessEquipment($item[fancy boots]))
+			{
+				autoEquip($slot[acc3], $item[fancy boots]);
+			}
+			else if (possessEquipment($item[work boots]))
+			{
+				autoEquip($slot[acc3], $item[work boots]);
+			}
+		}
+
+		// It is dangerous out there! Take this!
+		int flyeredML = get_property("flyeredML").to_int();
+		boolean have_pill_keeper = (possessEquipment($item[Eight Days a Week Pill Keeper])) &&
+			(is_unrestricted($item[Unopened Eight Days a Week Pill Keeper]));
+
+		if(0 < flyeredML && flyeredML < 10000 && in_zelda() && have_pill_keeper)
+		{
+			auto_log_debug("I expect to be flyering, equipping Pill Keeper to skip the first hit.");
+			autoEquip($slot[acc3], $item[Eight Days a Week Pill Keeper]);
+		}
+	}
+
+	// Use some instakills.
+	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
+	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19)
+	{
+		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
+		autoEquip($slot[acc3], DOCTOR_BAG);
+	}
+
 	equipOverrides();
 
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))

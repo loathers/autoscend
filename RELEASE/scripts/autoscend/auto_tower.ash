@@ -54,31 +54,7 @@ boolean L13_towerNSContests()
 			case 1:
 				acquireMP(160); // only uses free rests or items on hand by default
 
-				if(is100FamiliarRun())
-				{
-					autoMaximize("init, -equip snow suit", 1500, 0, false);
-				}
-				else
-				{
-					autoMaximize("init, switch xiblaxian holo-companion, switch oily woim, switch happy medium,switch cute meteor", 1500, 0, false);
-					handleFamiliar(my_familiar());
-				}
-
-				bat_formBats();
-
-				foreach eff in $effects[Adorable Lookout, Alacri Tea, All Fired Up, Bone Springs, Bow-Legged Swagger, Fishy\, Oily, The Glistening, Human-Machine Hybrid, Patent Alacrity, Provocative Perkiness, Sepia Tan, Sugar Rush, Ticking Clock, Well-Swabbed Ear, Your Fifteen Minutes]
-				{
-					if(crowd1Insufficient()) buffMaintain(eff, 0, 1, 1);
-				}
-
-				if(crowd1Insufficient()) buffMaintain($effect[Cletus\'s Canticle of Celerity], 10, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Suspicious Gaze], 10, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Springy Fusilli], 10, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Song of Slowness], 100, 1, 1);
-				if(crowd1Insufficient()) buffMaintain($effect[Soulerskates], 0, 1, 1);
-				if(crowd1Insufficient()) asdonBuff($effect[Driving Quickly]);
-				if(crowd1Insufficient()) auto_beachCombHead("init");
+				provideInitiative(400, true);
 
 				if(crowd1Insufficient())
 				{
@@ -101,7 +77,6 @@ boolean L13_towerNSContests()
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
 			acquireMP(150); // only uses free rests or items on hand by default
-			buffMaintain($effect[Big], 15, 1, 1);
 			if (my_class() == $class[Vampyre])
 			{
 				if(crowd_stat == $stat[muscle] && !have_skill($skill[Preternatural Strength]))
@@ -117,26 +92,14 @@ boolean L13_towerNSContests()
 				if (crowd_stat == $stat[moxie] && have_skill($skill[Sinister Charm]))
 					crowd_stat = $stat[mysticality];
 			}
+			int [stat] statGoal;
+			statGoal[crowd_stat] = 600;
+			provideStats(statGoal, true);
 			switch(crowd_stat)
 			{
 			case $stat[moxie]:
 				autoMaximize("moxie -equip snow suit", 1500, 0, false);
 
-				foreach eff in $effects[Almost Cool, Busy Bein\' Delicious, Butt-Rock Hair, Funky Coal Patina, Impeccable Coiffure, Liquidy Smoky, Locks Like the Raven, Lycanthropy\, Eh?, Memories of Puppy Love, Newt Gets In Your Eyes, Notably Lovely, Oiled Skin, Pill Power, Radiating Black Body&trade;, Seriously Mutated,  Spiky Hair, Sugar Rush, Standard Issue Bravery, Superhuman Sarcasm, Tomato Power, Vital]
-				{
-					if(crowd2Insufficient()) buffMaintain(eff, 0, 1, 1);
-				}
-
-				if(crowd2Insufficient()) buffMaintain($effect[The Moxious Madrigal], 10, 1, 1);
-				if(crowd2Insufficient()) {
-					if(auto_have_skill($skill[Quiet Desperation]))
-						buffMaintain($effect[Quiet Desperation], 10, 1, 1);
-					else
-						buffMaintain($effect[Disco Smirk], 10, 1, 1);
-				}
-				if(crowd2Insufficient()) buffMaintain($effect[Song of Bravado], 100, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
-				if(crowd1Insufficient()) auto_beachCombHead("moxie");
 				if(have_effect($effect[Ten out of Ten]) == 0)
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Ten out of Ten]);
@@ -145,16 +108,6 @@ boolean L13_towerNSContests()
 			case $stat[muscle]:
 				autoMaximize("muscle -equip snow suit", 1500, 0, false);
 
-				foreach eff in $effects[Browbeaten, Extra Backbone, Extreme Muscle Relaxation, Feroci Tea, Fishy Fortification, Football Eyes, Go Get \'Em\, Tiger!, Human-Human Hybrid, Industrial Strength Starch, Juiced and Loose, Lycanthropy\, Eh?, Marinated, Phorcefullness, Pill Power, Rainy Soul Miasma, Savage Beast Inside, Seriously Mutated, Slightly Larger Than Usual, Standard Issue Bravery, Steroid Boost, Spiky Hair, Sugar Rush, Superheroic, Temporary Lycanthropy, Tomato Power, Truly Gritty, Vital, Woad Warrior]
-				{
-					if(crowd2Insufficient()) buffMaintain(eff, 0, 1, 1);
-				}
-
-				if(crowd2Insufficient()) buffMaintain($effect[Quiet Determination], 10, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[Power Ballad of the Arrowsmith], 10, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[Song of Bravado], 100, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
-				if(crowd1Insufficient()) auto_beachCombHead("muscle");
 				if(have_effect($effect[Muddled]) == 0)
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Muddled]);
@@ -163,19 +116,6 @@ boolean L13_towerNSContests()
 			case $stat[mysticality]:
 				autoMaximize("myst -equip snow suit", 1500, 0, false);
 
-				# Gothy may have given us a strange bug during one ascension, removing it for now.
-				foreach eff in $effects[Baconstoned, Erudite, Far Out, Glittering Eyelashes, Industrial Strength Starch, Liquidy Smoky, Marinated, Mind Vision, Mutated, Mystically Oiled, OMG WTF, Pill Power, Rainy Soul Miasma, Ready to Snap, Rosewater Mark, Seeing Colors, Slightly Larger Than Usual, Standard Issue Bravery, Sweet\, Nuts, Tomato Power, Vital]
-				{
-					if(crowd2Insufficient()) buffMaintain(eff, 0, 1, 1);
-				}
-
-				if(crowd2Insufficient()) buffMaintain($effect[Quiet Judgement], 10, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[The Magical Mojomuscular Melody], 10, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[Song of Bravado], 100, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[Pasta Oneness], 1, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[Saucemastery], 1, 1, 1);
-				if(crowd2Insufficient()) buffMaintain($effect[Stevedave\'s Shanty of Superiority], 30, 1, 1);
-				if(crowd1Insufficient()) auto_beachCombHead("mysticality");
 				if(have_effect($effect[Uncucumbered]) == 0)
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
@@ -576,7 +516,14 @@ boolean L13_sorceressDoor()
 		}
 		if(item_amount($item[Richard\'s Star Key]) == 0)
 		{
-			abort("Need Richard's Star Key for the Sorceress door :(");
+			if(!get_property("auto_getStarKey").to_boolean())
+			{
+				abort("Need Richard's Star Key for the Sorceress door. Perhaps set auto_getStarKey=true ?");
+			}
+			else
+			{
+				abort("Need Richard's Star Key for the Sorceress door, but auto_getStarKey=true so I'm not sure why we haven't gotten it already. :(");
+			}
 		}
 		visit_url("place.php?whichplace=nstower_door&action=ns_lock4");
 	}
@@ -943,6 +890,15 @@ boolean L13_towerNSTower()
 		acquireHP();
 
 		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
+		if(in_zelda())
+		{
+			n_healing_items = item_amount($item[super deluxe mushroom]);
+			if(n_healing_items < 5)
+			{
+				retrieve_item(5 - n_healing_items, $item[super deluxe mushroom]);
+				n_healing_items = item_amount($item[super deluxe mushroom]);
+			}
+		}
 		if(n_healing_items < 5)
 		{
 			abort("We only have " + n_healing_items + "healing items, I'm not sure we can do the shadow.");

@@ -144,6 +144,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 			if(mpToBurn > 0)
 				cli_execute("burn " + mpToBurn);
 		}
+
 		if(!eat(1, $item[magical sausage]))
 		{
 			auto_log_warning("Somehow failed to eat a sausage! What??", "red");
@@ -292,6 +293,12 @@ boolean auto_saberDailyUpgrade(int day)
 	if (isActuallyEd())
 	{
 		return auto_saberChoice("mp");
+	}
+
+	// Maybe famweight is better, I don't know.
+	if (in_zelda())
+	{
+		return auto_saberChoice("res");
 	}
 
 	if(day == 1)
@@ -583,37 +590,64 @@ boolean auto_beachCombAvailable()
 
 int auto_beachCombHeadNumFrom(string name)
 {
-	int head;
 	switch (name.to_lower_case())
 	{
 		case "hot":
-			head = 1; break;
+			return 1;
 		case "cold":
-			head = 2; break;
+			return 2;
 		case "stench":
-			head = 3; break;
+			return 3;
 		case "spooky":
-			head = 4; break;
+			return 4;
 		case "sleaze":
-			head = 5; break;
+			return 5;
 		case "muscle":
-			head = 6; break;
+		case "musc":
+			return 6;
 		case "mysticality":
 		case "myst":
-			head = 7; break;
+			return 7;
 		case "moxie":
-			head = 8; break;
+		case "mox":
+			return 8;
 		case "init":
 		case "initiative":
-			head = 9; break;
+			return 9;
 		case "weight":
 		case "familiar":
-			head = 10; break;
+			return 10;
 		case "exp":
 		case "stats":
-			head = 11; break;
+			return 11;
 	}
-	return head;
+	auto_log_error("Invalid string " + name + "provided to auto_beachCombHeadNumFrom");
+	return -1;
+}
+
+effect auto_beachCombHeadEffectFromNum(int num)
+{
+	switch(num)
+	{
+		case 1: return $effect[Hot-Headed];
+		case 2: return $effect[Cold as Nice];
+		case 3: return $effect[A Brush with Grossness];
+		case 4: return $effect[Does It Have a Skull In There??];
+		case 5: return $effect[Oiled, Slick];
+		case 6: return $effect[Lack of Body-Building];
+		case 7: return $effect[We're All Made of Starfish];
+		case 8: return $effect[Pomp & Circumsands];
+		case 9: return $effect[Resting Beach Face];
+		case 10: return $effect[Do I Know You From Somewhere?];
+		case 11: return $effect[You Learned Something Maybe!];
+	}
+	auto_log_error("Invalid number " + num + " provided to auto_beachCombHeadEffectFromNum");
+	return $effect[none];
+}
+
+effect auto_beachCombHeadEffect(string name)
+{
+	return auto_beachCombHeadEffectFromNum(auto_beachCombHeadNumFrom(name));
 }
 
 boolean auto_canBeachCombHead(string name) {
@@ -742,4 +776,125 @@ boolean auto_pillKeeper(string pill)
 	}
 
 	return auto_pillKeeper(pillId);
+}
+
+record PizzaPlan {
+	item ing1;
+	item ing2;
+	item ing3;
+	item ing4;
+};
+
+item[int] auto_pizza_ingredients(PizzaPlan plan)
+{
+	item[int] ret;
+	ret[0] = plan.ing1;
+	ret[1] = plan.ing2;
+	ret[2] = plan.ing3;
+	ret[3] = plan.ing4;
+	return ret;
+}
+
+// Note this doesn't clamp to 15 - that's enforced elsewhere.
+int auto_pizza_unclamped_advs(PizzaPlan plan)
+{
+	int char_sum = 0;
+	foreach i, ing in auto_pizza_ingredients(plan)
+	{
+		char_sum += length(ing.to_string());
+	}
+	int advs = round(char_sum/10.0);
+
+	return advs;
+}
+
+float[stat] auto_pizza_stats(PizzaPlan plan)
+{
+	float[stat] ret;
+	ret[$stat[muscle]] = 0.0;
+	ret[$stat[moxie]] = 0.0;
+	foreach i, ing in auto_pizza_ingredients(plan)
+	{
+		ret[$stat[muscle]] += 10 * ing.fullness;
+		ret[$stat[moxie]] += 10 * ing.inebriety;
+	}
+	return ret;
+}
+
+float auto_score_pizza(PizzaPlan plan)
+{
+	int unclamped_advs = auto_pizza_unclamped_advs(plan);
+	int advs = min(15, unclamped_advs);
+	int waste = max(0, 15 - unclamped_advs);
+	float total_stat = auto_pizza_stats(plan)[my_primestat()];
+
+	return 15 * advs + 0.1 * total_stat - 3 * waste;
+}
+
+void auto_deliberate_pizza()
+{
+	int [item] ingredients;
+
+	boolean[item] keep_one = $items[];
+
+	foreach it, i in get_inventory()
+	{
+		if (keep_one contains it) {
+			if (i > 1)
+			{
+				ingredients[it] = min(4, i - 1);
+			}
+		}
+		else
+		{
+			ingredients[it] = min(4, i);
+		}
+	}
+
+	item[int] ingredients_list;
+
+	foreach it, amount in ingredients
+	{
+		for (int i=0; i<amount; i++)
+		{
+			ingredients_list[count(ingredients_list)] = it;
+		}
+	}
+
+	if (count(ingredients_list) < 4)
+	{
+		auto_log_info("Skipping pizza planning, not enough ingredients.");
+		return;
+	}
+
+	PizzaPlan best_plan;
+	float best_score = 0.0;
+
+	for (int i=0; i<10000; i++)
+	{
+		int a = random(count(ingredients_list));
+		int b = random(count(ingredients_list));
+		int c = random(count(ingredients_list));
+		int d = random(count(ingredients_list));
+
+		if (a == b || a == c || a == d || b == c || b == d || c == d) continue;
+
+		PizzaPlan speculative_plan;
+		speculative_plan.ing1 = ingredients_list[a];
+		speculative_plan.ing2 = ingredients_list[b];
+		speculative_plan.ing3 = ingredients_list[c];
+		speculative_plan.ing4 = ingredients_list[d];
+
+		float score = auto_score_pizza(speculative_plan);
+		if (score > best_score)
+		{
+			best_plan = speculative_plan;
+		}
+	}
+	auto_log_info("Best plan:\n  " + 
+		to_string(best_plan.ing1) + "\n  " +
+		to_string(best_plan.ing2) + "\n  " +
+		to_string(best_plan.ing3) + "\n  " +
+		to_string(best_plan.ing4) + "\n  ");
+	auto_log_info("For " + auto_pizza_unclamped_advs(best_plan) + " adventures.");
 }
