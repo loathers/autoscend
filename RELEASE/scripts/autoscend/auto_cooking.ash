@@ -266,20 +266,17 @@ int autoDailySpecialPrice()
 	//this function provides the purchase price for the daily special item in chez snootie or gnomish microbrewery.
 
 	//check for known items whose autosell price is hidden due to being marked nodiscard
-	//check chez snootie
 	switch(daily_special())
 	{
+		//chez snootie
 		case $item[banana]: return 3;
 		case $item[banana cream pie]: return 30;
 		case $item[fiery wing]: return 96;
 		case $item[forbidden sausage]: return 46;
 		case $item[ghost cucumber]: return 225;
 		case $item[laser-broiled pear]: return 465;
-	}
-	
-	//check gnonish microbrewery
-	switch(daily_special())
-	{
+		
+		//gnomish microbrewery
 		case $item[banana daiquiri]: return 30;
 		case $item[bungle in the jungle]: return 75;
 		case $item[especially salty dog]: return 462;
