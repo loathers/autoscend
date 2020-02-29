@@ -856,6 +856,7 @@ boolean ocrs_postHelper();									//Defined in autoscend/auto_summerfun.ash
 void oldPeoplePlantStuff();									//Defined in autoscend/auto_floristfriar.ash
 boolean organsFull();										//Defined in autoscend/auto_util.ash
 boolean ovenHandle();										//Defined in autoscend/auto_util.ash
+boolean pathForbidsFamiliars();								//Defined in autoscend/auto_util.ash
 boolean pete_buySkills();									//Defined in autoscend/auto_sneakypete.ash
 void pete_initializeDay(int day);							//Defined in autoscend/auto_sneakypete.ash
 void pete_initializeSettings();								//Defined in autoscend/auto_sneakypete.ash

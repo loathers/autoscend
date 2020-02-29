@@ -152,6 +152,10 @@ boolean godLobsterCombat(item it, int goal, string option)
 	{
 		return false;
 	}
+	if(pathForbidsFamiliars())
+	{
+		return false;
+	}
 	if((goal < 1) || (goal > 3))
 	{
 		return false;
@@ -307,7 +311,8 @@ boolean fantasyRealmToken()
 		return false;
 	}
 	set_property("auto_familiarChoice", "none");
-	use_familiar($familiar[none]);
+	if(!pathForbidsFamiliars())			//check that path allows familiars at all, don't set familiar to none if path forbids familiars.
+		use_familiar($familiar[none]);
 
 	if(possessEquipment($item[FantasyRealm G. E. M.]))
 	{

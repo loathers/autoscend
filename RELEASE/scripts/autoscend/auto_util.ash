@@ -70,6 +70,7 @@ int amountTurkeyBooze();
 int numPirateInsults();
 int fastenerCount();
 int lumberCount();
+boolean pathForbidsFamiliars();
 skill preferredLibram();
 boolean playwith(item toy, string prop);
 boolean playwith(skill sk, string prop);
@@ -1828,6 +1829,17 @@ element ns_hedge3()
 {
 	auto_log_info("Hedge Maze 3: " + get_property("nsChallenge5"), "red");
 	return to_element(get_property("nsChallenge5"));
+}
+
+boolean pathForbidsFamiliars()
+{
+//this function checks if current path forbids familiars outright. To quickly disable certain functionality in such paths. Worth nothing that mafia's built in is_unrestricted(familiar) seems to be rather iffy. For example it does not report god lobster as being restricted in pokefam, even though no familiars are allowed in pokefam at all. Instead familiars can be equipped as pokefams, not as familiars.
+
+	if($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, License to Adventure, Pocket Familiars] contains auto_my_path())
+    {
+		return true;
+    }
+    return false;
 }
 
 skill preferredLibram()
