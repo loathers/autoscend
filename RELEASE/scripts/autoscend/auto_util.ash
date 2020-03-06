@@ -868,16 +868,17 @@ string reverse(string s)
 
 boolean is100FamiliarRun()
 {
-	// Answers the question "am I not allowed to change my familiar?"
-	// Returns true for paths with no familiars
-	if(get_property("auto_100familiar") == $familiar[Egg Benedict])
+	// Despite it's name, it actually answers the question "am I forbidden to change familiar?"
+	// an answer of true means you cannot change familiar, either due to path or due to being 100% run.
+	// an answer of false means you are allowed to change familiar
+	
+	// Specific path checking.
+	if($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, License to Adventure, Pocket Familiars, Dark Gyffte] contains auto_my_path())
 	{
-		if(have_familiar($familiar[Mosquito]))
-		{
-			return false;
-		}
+		return true;
 	}
-
+	
+	// if you are not in a path that forbids familiar, and your 100 familiar is specifically set to none or null then return false
 	if(get_property("auto_100familiar") == $familiar[none])
 	{
 		return false;
@@ -886,11 +887,17 @@ boolean is100FamiliarRun()
 	{
 		return false;
 	}
+	
+	// if you reached this line, then it means that 100familiar is set to some specific familiar.
 	return true;
 }
 
 boolean is100FamiliarRun(familiar thisOne)
 {
+	// Despite its name, this function answers the question of "am I forbidden to change familiar to thisOne"
+	// Returns false, you are allowed to change familiar if not in 100% run, or if in 100% run of familiar thisOne
+	// Returns true, you are forbidden to change, if in a 100% familiar run of any other familiar, or if in a path that forbids familiars
+
 	if(is100FamiliarRun())
 	{
 		if(get_property("auto_100familiar") == thisOne)

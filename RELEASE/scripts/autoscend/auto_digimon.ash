@@ -10,7 +10,6 @@ void digimon_initializeSettings()
 {
 	if(auto_my_path() == "Pocket Familiars")
 	{
-		set_property("auto_100familiar", $familiar[Egg Benedict]);
 		set_property("auto_getBeehive", false);
 		set_property("auto_getBoningKnife", false);
 		set_property("auto_cubeItems", false);

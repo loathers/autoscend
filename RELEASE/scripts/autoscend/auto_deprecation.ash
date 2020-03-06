@@ -76,22 +76,21 @@ boolean settingFixer()
 	{
 		set_property("auto_delayTimer", 1);
 	}
+	
+	//currently of the depreciated auto_100familiar options, none are in use anywhere
 	if(get_property("auto_100familiar") == "yes")
 	{
 		set_property("auto_100familiar", true);
 	}
 	if(get_property("auto_100familiar") == "no")
 	{
-		set_property("auto_100familiar", false);
-	}
-	if(get_property("auto_100familiar") == "true")
-	{
-		set_property("auto_100familiar", $familiar[Egg Benedict]);
+		set_property("auto_100familiar", $familiar[none]);
 	}
 	if(get_property("auto_100familiar") == "false")
 	{
 		set_property("auto_100familiar", $familiar[none]);
 	}
+	
 	if(get_property("auto_killingjar") == "done")
 	{
 		set_property("auto_killingjar", "finished");
