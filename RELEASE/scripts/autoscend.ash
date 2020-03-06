@@ -93,7 +93,7 @@ void initializeSettings()
 	if(!autoForbidFamiliarChange() && auto_have_familiar($familiar[Crimbo Shrub]))
 	{
 		use_familiar($familiar[Crimbo Shrub]);
-		use_familiar($familiar[none]);
+		autoUseFamiliar($familiar[none]);
 	}
 
 	string pool = visit_url("questlog.php?which=3");
@@ -6242,7 +6242,7 @@ void auto_begin()
 	if(my_familiar() == $familiar[Stooper])
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		use_familiar($familiar[none]);
+		autoUseFamiliar($familiar[none]);
 	}
 	dailyEvents();
 	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
