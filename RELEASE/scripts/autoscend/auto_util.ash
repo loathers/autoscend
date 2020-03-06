@@ -133,8 +133,8 @@ boolean loopHandler(string turnSetting, string counterSetting, string abortMessa
 boolean loopHandler(string turnSetting, string counterSetting, int threshold);
 boolean loopHandlerDelay(string counterSetting);
 boolean loopHandlerDelay(string counterSetting, int threshold);
-boolean is100FamiliarRun();
-boolean is100FamiliarRun(familiar thisOne);
+boolean autoForbidFamiliarChange();
+boolean autoForbidFamiliarChange(familiar thisOne);
 boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
@@ -866,7 +866,7 @@ string reverse(string s)
 	return ret;
 }
 
-boolean is100FamiliarRun()
+boolean autoForbidFamiliarChange()
 {
 	// Despite it's name, it actually answers the question "am I forbidden to change familiar?"
 	// an answer of true means you cannot change familiar, either due to path or due to being 100% run.
@@ -892,13 +892,13 @@ boolean is100FamiliarRun()
 	return true;
 }
 
-boolean is100FamiliarRun(familiar thisOne)
+boolean autoForbidFamiliarChange(familiar thisOne)
 {
 	// Despite its name, this function answers the question of "am I forbidden to change familiar to thisOne"
 	// Returns false, you are allowed to change familiar if not in 100% run, or if in 100% run of familiar thisOne
 	// Returns true, you are forbidden to change, if in a 100% familiar run of any other familiar, or if in a path that forbids familiars
 
-	if(is100FamiliarRun())
+	if(autoForbidFamiliarChange())
 	{
 		if(get_property("auto_100familiar") == thisOne)
 		{
@@ -1323,7 +1323,7 @@ boolean canYellowRay(monster target)
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
 	// first, do any necessary prep to use a yellow ray
-	if((my_familiar() == $familiar[Crimbo Shrub]) || (!is100FamiliarRun($familiar[Crimbo Shrub]) && auto_have_familiar($familiar[Crimbo Shrub])))
+	if((my_familiar() == $familiar[Crimbo Shrub]) || (!autoForbidFamiliarChange($familiar[Crimbo Shrub]) && auto_have_familiar($familiar[Crimbo Shrub])))
 	{
 		if(item_amount($item[box of old Crimbo decorations]) == 0)
 		{
@@ -3240,7 +3240,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	if(pass())
 		return result();
 
-	if(doEquips && !is100FamiliarRun())
+	if(doEquips && !autoForbidFamiliarChange())
 	{
 		familiar resfam = $familiar[none];
 		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot]
