@@ -41,6 +41,7 @@ boolean L13_towerNSContests()
 	{
 		if(get_property("nsContestants1").to_int() == -1)
 		{
+			resetMaximize();
 			if(!get_property("_grimBuff").to_boolean() && auto_have_familiar($familiar[Grim Brother]))
 			{
 				cli_execute("grim init");
@@ -54,7 +55,13 @@ boolean L13_towerNSContests()
 			case 1:
 				acquireMP(160); // only uses free rests or items on hand by default
 
+				if (auto_have_familiar($familiar[Oily Woim]))
+				{
+					use_familiar($familiar[Oily Woim]);
+				}
+
 				provideInitiative(400, true);
+				autoMaximize("initiative -equip snow suit", 1500, 0, false);
 
 				if(crowd1Insufficient())
 				{
@@ -72,6 +79,7 @@ boolean L13_towerNSContests()
 		}
 		if(get_property("nsContestants2").to_int() == -1)
 		{
+			resetMaximize();
 			if(!get_property("_lyleFavored").to_boolean())
 			{
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
@@ -136,6 +144,7 @@ boolean L13_towerNSContests()
 		}
 		if(get_property("nsContestants3").to_int() == -1)
 		{
+			resetMaximize();
 			acquireMP(125); // only uses free rests or items on hand by default
 
 			if(challenge != $element[none])
@@ -148,12 +157,14 @@ boolean L13_towerNSContests()
 			switch(challenge)
 			{
 			case $element[cold]:
+				if(crowd3Insufficient()) auto_beachCombHead("cold");
 				if(crowd3Insufficient()) buffMaintain($effect[Cold Hard Skin], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Frostbeard], 15, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Icy Glare], 10, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Song of the North], 100, 1, 1);
 				break;
 			case $element[hot]:
+				if(crowd3Insufficient()) auto_beachCombHead("hot");
 				if(crowd3Insufficient()) buffMaintain($effect[Song of Sauce], 100, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Flamibili Tea], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Flaming Weapon], 0, 1, 1);
@@ -164,11 +175,13 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) buffMaintain($effect[Your Fifteen Minutes], 50, 1, 1);
 				break;
 			case $element[sleaze]:
+				if(crowd3Insufficient()) auto_beachCombHead("sleaze");
 				if(crowd3Insufficient()) buffMaintain($effect[Takin\' It Greasy], 15, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Blood-Gorged], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Greasy Peasy], 0, 1, 1);
 				break;
 			case $element[stench]:
+				if(crowd3Insufficient()) auto_beachCombHead("stench");
 				if(crowd3Insufficient()) buffMaintain($effect[Drenched With Filth], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Musky], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Stinky Hands], 0, 1, 1);
@@ -176,6 +189,7 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) buffMaintain($effect[Rotten Memories], 15, 1, 1);
 				break;
 			case $element[spooky]:
+				if(crowd3Insufficient()) auto_beachCombHead("spooky");
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Hands], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Weapon], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
