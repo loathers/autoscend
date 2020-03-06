@@ -803,7 +803,7 @@ int freeCrafts();											//Defined in autoscend/auto_util.ash
 boolean autoUseFamiliar(familiar target);					//Defined in autoscend/auto_util.ash
 boolean is100FamiliarRun();									//Defined in autoscend/auto_util.ash
 boolean autoForbidFamiliarChange();							//Defined in autoscend/auto_util.ash
-boolean autoForbidFamiliarChange(familiar thisOne);			//Defined in autoscend/auto_util.ash
+boolean autoForbidFamiliarChange(familiar target);			//Defined in autoscend/auto_util.ash
 boolean isBanished(monster enemy);							//Defined in autoscend/auto_util.ash
 boolean isExpectingArrow();									//Defined in autoscend/auto_util.ash
 boolean isFreeMonster(monster mon);							//Defined in autoscend/auto_util.ash

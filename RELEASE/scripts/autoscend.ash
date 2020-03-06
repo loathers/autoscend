@@ -90,9 +90,11 @@ void initializeSettings()
 		}
 	}
 
-	if(!autoForbidFamiliarChange() && auto_have_familiar($familiar[Crimbo Shrub]))
+	if(!autoForbidFamiliarChange($familiar[Crimbo Shrub]))
 	{
-		use_familiar($familiar[Crimbo Shrub]);
+		//if it is a 100% crimbo shrub run it the follow two lines will do nothing and it will remain on crimbo shrub. otherwise it will switch to shrub and then switch to no familiar.
+		
+		autoUseFamiliar($familiar[Crimbo Shrub]);
 		autoUseFamiliar($familiar[none]);
 	}
 
@@ -2962,7 +2964,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !autoForbidFamiliarChange())
+	if(!in_koe() && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !autoForbidFamiliarChange($familiar[Machine Elf]))
 	{
 		if(get_property("auto_choice1119") != "")
 		{
@@ -4740,7 +4742,7 @@ boolean LX_phatLootToken()
 
 	if((!possessEquipment($item[Ring of Detect Boring Doors]) || (item_amount($item[Eleven-Foot Pole]) == 0) || (item_amount($item[Pick-O-Matic Lockpicks]) == 0)) && auto_have_familiar($familiar[Gelatinous Cubeling]))
 	{
-		if(!autoForbidFamiliarChange($familiar[Gelatinous Cubeling]) && (auto_my_path() != "Pocket Familiars"))
+		if(!autoForbidFamiliarChange($familiar[Gelatinous Cubeling]))
 		{
 			return false;
 		}
@@ -5805,7 +5807,7 @@ boolean doTasks()
 
 	basicAdjustML();
 	powerLevelAdjustment();
-	if (autoForbidFamiliarChange() && my_familiar() == $familiar[none])
+	if (is100FamiliarRun() && my_familiar() == $familiar[none])
 	{
 		// re-equip a familiar if it's a 100% run just in case something unequipped it
 		// looking at you auto_maximizedConsumeStuff()...

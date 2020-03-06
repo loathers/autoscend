@@ -136,7 +136,7 @@ boolean loopHandlerDelay(string counterSetting, int threshold);
 boolean autoUseFamiliar(familiar target);
 boolean is100FamiliarRun();
 boolean autoForbidFamiliarChange();
-boolean autoForbidFamiliarChange(familiar thisOne);
+boolean autoForbidFamiliarChange(familiar target);
 boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
@@ -930,14 +930,20 @@ boolean autoForbidFamiliarChange()
 	return is100FamiliarRun();
 }
 
-boolean autoForbidFamiliarChange(familiar thisOne)
+boolean autoForbidFamiliarChange(familiar target)
 {
-	// answers the question of "am I forbidden to change familiar to a familiar named thisOne"
-	// Returns false means you are allowed to change familiar to familiar thisOne. Yay for double negatives.
-	// Returns false means you are forbidden to change familiar to familiar thisOne
+	// answers the question of "am I forbidden to change familiar to a familiar named target"
+	// Returns false means you are allowed to change familiar to familiar target. Yay for double negatives.
+	// Returns true means you are forbidden to change familiar to familiar target
+
+	// if you don't have a familiar, you can't change to it. return true.
+	if(!auto_have_familiar(target))
+	{
+		return true;
+	}
 
 	// target familiar is the same as auto_100familiar, you are allowed to change it into itself, return false
-	if(get_property("auto_100familiar") == thisOne)
+	if(get_property("auto_100familiar") == target)
 	{
 		return false;
 	}

@@ -396,7 +396,7 @@ boolean L12_filthworms()
 
 	if(have_effect($effect[Filthworm Drone Stench]) > 0)
 	{
-		if(auto_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !autoForbidFamiliarChange($familiar[XO Skeleton]))
+		if((get_property("_xoHugsUsed").to_int() <= 10) && !autoForbidFamiliarChange($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
 		}
@@ -404,7 +404,7 @@ boolean L12_filthworms()
 	}
 	else if(have_effect($effect[Filthworm Larva Stench]) > 0)
 	{
-		if(auto_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !autoForbidFamiliarChange($familiar[XO Skeleton]))
+		if((get_property("_xoHugsUsed").to_int() <= 10) && !autoForbidFamiliarChange($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
 		}
@@ -412,7 +412,7 @@ boolean L12_filthworms()
 	}
 	else
 	{
-		if(auto_have_familiar($familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() <= 10) && !autoForbidFamiliarChange($familiar[XO Skeleton]))
+		if((get_property("_xoHugsUsed").to_int() <= 10) && !autoForbidFamiliarChange($familiar[XO Skeleton]))
 		{
 			handleFamiliar($familiar[XO Skeleton]);
 		}
@@ -1124,7 +1124,7 @@ boolean L12_themtharHills()
 
 
 	handleFamiliar("meat");
-	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && (available_amount($item[Li\'l Pirate Costume]) > 0) && !autoForbidFamiliarChange($familiar[Trick-or-Treating Tot]) && (auto_my_path() != "Heavy Rains"))
+	if((available_amount($item[Li\'l Pirate Costume]) > 0) && !autoForbidFamiliarChange($familiar[Trick-or-Treating Tot]) && (auto_my_path() != "Heavy Rains"))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
 		autoEquip($item[Li\'l Pirate Costume]);
