@@ -944,7 +944,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[The Boss Bat\'s Lair]:
-		if(internalQuestStatus("questL04Bat") >= 3)
+		if(internalQuestStatus("questL04Bat") == 3 )
 		{
 			retval._boolean = true;
 		}

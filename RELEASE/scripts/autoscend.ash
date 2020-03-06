@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19771; // Re-calculate PP less aggressively
+since r19810; // Make restore() on a closed checkpoint not restore equipment
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
