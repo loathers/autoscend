@@ -2036,6 +2036,8 @@ boolean doBedtime()
 		}
 	}
 
+	auto_burnPowerfulGloveCharges();
+
 	if(item_amount($item[Rain-Doh Indigo Cup]) > 0)
 	{
 		auto_log_info("Copies left: " + (5 - get_property("_raindohCopiesMade").to_int()), "olive");
