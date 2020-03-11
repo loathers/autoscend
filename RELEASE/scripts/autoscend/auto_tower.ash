@@ -60,8 +60,12 @@ boolean L13_towerNSContests()
 					use_familiar($familiar[Oily Woim]);
 				}
 
-				provideInitiative(400, true);
 				autoMaximize("initiative -equip snow suit", 1500, 0, false);
+
+				if(crowd1Insufficient())
+				{
+					cli_execute("concert White-boy Angst");
+				}
 
 				if(crowd1Insufficient())
 				{

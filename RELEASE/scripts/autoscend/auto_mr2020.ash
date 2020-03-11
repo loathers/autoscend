@@ -175,3 +175,11 @@ boolean auto_forceEquipPowerfulGlove()
 
 	return autoEquip($slot[acc3], $item[Powerful Glove]);
 }
+
+void auto_burnPowerfulGloveCharges()
+{
+	while (auto_powerfulGloveCharges() >= 10)
+	{
+		// auto_powergul
+	}
+}

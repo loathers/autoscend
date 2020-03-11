@@ -450,6 +450,8 @@ boolean LX_burnDelay()
 			auto_log_info("Want to burn delay with scaling wanderers, but we can't deal scaling damage yet and it would be too strong :(");
 			wannaVote = false;
 			wannaSausage = false;
+			addToMaximize("-equip Kramco Sausage O-Matic");
+			addToMaximize("-equip &quot;I Voted!&quot; sticker");
 		}
 	}
 
