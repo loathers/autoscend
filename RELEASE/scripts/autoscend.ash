@@ -1,5 +1,6 @@
 script "autoscend.ash";
 since r19861; // skill.name
+>>>>>>> Don't adjust for yellow ray unless we can numberology
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -500,7 +501,7 @@ boolean LX_universeFrat()
 		{
 			doNumberology("adventures3");
 		}
-		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]) && (doNumberology("battlefield", false) != -1))
+		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && (doNumberology("battlefield", false) != -1) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
 		{
 			doNumberology("battlefield");
 			return true;
