@@ -47,6 +47,12 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 
 	if(casingsOwned == 0)
 		return false;
+		
+	//it is actually possible to have a casing but not have the kramko grinder
+	if(!possessEquipment($item[Kramco Sausage-o-Matic&trade;]))
+	{
+		return false;
+	}
 
 	if(numSaus <= 0)
 		return false;
