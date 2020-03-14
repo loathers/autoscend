@@ -239,6 +239,11 @@ void handlePreAdventure(location place)
 		{
 			adjustForBanishIfPossible(mon, place);
 		}
+
+		if(auto_wantToReplace(mon, place))
+		{
+			adjustForReplaceIfPossible(mon);
+		}
 	}
 
 	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))

@@ -117,6 +117,20 @@ boolean auto_powerfulGloveNoncombat()
 	return ret;
 }
 
+int auto_powerfulGloveReplacesPossible()
+{
+	if (!auto_hasPowerfulGlove()) return 0;
+
+	return (auto_powerfulGloveCharges() / 10).to_int();
+}
+
+int auto_powerfulGloveReplacesAvailable()
+{
+	if (!have_equipped($item[Powerful Glove])) return 0;
+
+	return auto_powerfulGloveReplacesPossible();
+}
+
 boolean auto_wantToEquipPowerfulGlove()
 {
 	if (!auto_hasPowerfulGlove()) return false;

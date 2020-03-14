@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19810; // Make restore() on a closed checkpoint not restore equipment
+since r19861; // skill.name
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -172,6 +172,7 @@ void initializeSettings()
 	set_property("auto_wishes", "");
 	set_property("auto_writingDeskSummon", false);
 	set_property("auto_yellowRays", "");
+	set_property("auto_replaces", "");
 	set_property("auto_consumeKeyLimePies", true);
 	set_property("auto_skipNuns", "false");
 	set_property("choiceAdventure1003", 0);
@@ -442,9 +443,9 @@ boolean LX_burnDelay()
 	// then a scaling monster is probably going to be a bad time
 	if(in_zelda() && !zelda_canDealScalingDamage())
 	{
-		// unless we can still kill it in like two hits or so, then it should probably be fine?
+		// unless we can still kill it in one hit, then it should probably be fine?
 		int predictedScalerHP = to_int(0.75 * (my_buffedstat($stat[Muscle]) + monster_level_adjustment()));
-		if(predictedScalerHP > 30)
+		if(predictedScalerHP > 15)
 		{
 			auto_log_info("Want to burn delay with scaling wanderers, but we can't deal scaling damage yet and it would be too strong :(");
 			wannaVote = false;
