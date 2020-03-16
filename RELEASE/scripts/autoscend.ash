@@ -1,6 +1,5 @@
 script "autoscend.ash";
 since r19861; // skill.name
->>>>>>> Don't adjust for yellow ray unless we can numberology
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

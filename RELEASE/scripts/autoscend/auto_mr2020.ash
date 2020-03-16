@@ -188,7 +188,7 @@ boolean auto_forceEquipPowerfulGlove()
 
 void auto_burnPowerfulGloveCharges()
 {
-	while (auto_powerfulGloveCharges() >= 10)
+	while (auto_powerfulGloveCharges() >= 5)
 	{
 		auto_powerfulGloveStats();
 	}

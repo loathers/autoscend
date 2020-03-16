@@ -55,12 +55,10 @@ boolean L13_towerNSContests()
 			case 1:
 				acquireMP(160); // only uses free rests or items on hand by default
 
-				if (auto_have_familiar($familiar[Oily Woim]))
-				{
-					use_familiar($familiar[Oily Woim]);
-				}
 
 				autoMaximize("initiative -equip snow suit", 1500, 0, false);
+
+				provideInitiative(400, true);
 
 				if(crowd1Insufficient())
 				{
@@ -76,6 +74,9 @@ boolean L13_towerNSContests()
 				}
 				break;
 			}
+
+			// Adjust us to the initiative familiar selected in provideInitiative().
+			preAdvUpdateFamiliar($location[None]);
 
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
 			visit_url("choice.php?pwd=&whichchoice=1003&option=1", true);
