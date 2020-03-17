@@ -321,22 +321,6 @@ boolean [skill] zelda_combatSkills = $skills[
 	Multi-Bounce,
 ];
 
-// TODO: Remove this function when my_pp() works
-int zelda_ppCurr()
-{
-	if(!in_zelda())
-	{
-		return 0;
-	}
-
-	int pp = my_maxpp();
-	foreach sk in zelda_combatSkills
-	{
-		pp -= zelda_ppCost(sk) * usedCount(sk);
-	}
-	return pp;
-}
-
 boolean zelda_canDealScalingDamage()
 {
 	// TODO: When mafia tracks costumes, account for level 3 basic attacks
