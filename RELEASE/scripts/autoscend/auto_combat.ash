@@ -150,7 +150,7 @@ string useSkill(skill sk, boolean mark)
 	if(mark)
 		markAsUsed(sk);
 
-	return "skill " + sk;
+	return "skill " + sk.name;
 }
 
 string useSkill(skill sk)
@@ -1128,40 +1128,32 @@ string auto_combatHandler(int round, string opp, string text)
 		combatState += "(banishercheck)";
 	}
 
-	// have_skill($skill[Macrometeorite]) seems to always return false, so we can't use canUse
-	if(auto_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10) && (my_mp() > mp_cost($skill[Macrometeorite])) && (auto_my_path() != "G-Lover"))
+	if (!contains_text(combatState, "replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
 	{
-		boolean dometeor = false;
-		if((enemy == $monster[Banshee Librarian]) && (item_amount($item[Killing Jar]) > 0))
+		string combatAction = replaceMonsterCombatString(enemy, true);
+		if(combatAction != "")
 		{
-			dometeor = true;
+			set_property("auto_combatHandler", combatState + "(replacer)");
+			if(index_of(combatAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_replaces");
+			}
+			else if(index_of(combatAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+			}
+			else
+			{
+				auto_log_warning("Unable to track replacer behavior: " + combatAction, "red");
+			}
+			return combatAction;
 		}
-		if((enemy == $monster[Beefy Bodyguard Bat]) && ($location[The Boss Bat\'s Lair].turns_spent >= 4) && (my_location() == $location[The Boss Bat\'s Lair]))
+		else
 		{
-			dometeor = true;
+			auto_log_warning("Wanted a replacer but we can not find one.", "red");
 		}
-		if((enemy == $monster[Government Agent]) && (my_location() == $location[Sonofa Beach]))
-		{
-			dometeor = true;
-		}
-		if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) > 0))
-		{
-			dometeor = true;
-		}
-		if($monsters[Bookbat, Craven Carven Raven, Drunk Goat, Knight In White Satin, Knob Goblin Harem Guard, Mad Wino, Plaid Ghost, Possessed Laundry Press, Sabre-Toothed Goat, Senile Lihc, Skeletal Sommelier, Slick Lihc, White Chocolate Golem] contains enemy)
-		{
-			dometeor = true;
-		}
-		if((enemy == $monster[Stone Temple Pirate]) && possessEquipment($item[Eyepatch]))
-		{
-			dometeor = true;
-		}
-
-		if(dometeor)
-		{
-			handleTracker(enemy, $skill[Macrometeorite], "auto_otherstuff");
-			return useSkill($skill[Macrometeorite], false);
-		}
+		set_property("auto_combatHandler", combatState + "(replacercheck)");
+		combatState += "(replacercheck)";
 	}
 
 	if(canUse($item[Disposable Instant Camera]))

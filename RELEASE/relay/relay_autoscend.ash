@@ -93,6 +93,8 @@ void generateTrackingData(string tracked, boolean hasSkill)
 		tracking[x] = replace_all(paren, "");
 		matcher asdon = create_matcher("Asdon Martin:", tracking[x]);
 		tracking[x] = replace_all(asdon, "Asdon Martin -");
+		matcher cheat = create_matcher("CHEAT CODE:", tracking[x]);
+		tracking[x] = replace_all(cheat, "CHEAT CODE -");
 		string[int] current = split_string(tracking[x], ":");
 		int curDay = to_int(current[0]);
 		string enemy = current[1];
@@ -262,6 +264,9 @@ void main()
 
 	writeln("<h2>Copies</h2>");
 	generateTrackingData("auto_copies", true);
+
+	writeln("<h2>Replaces</h2>");
+	generateTrackingData("auto_replaces", true);
 
 	writeln("<h2>Instakills</h2>");
 	generateTrackingData("auto_instakill", true);
