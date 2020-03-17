@@ -1740,6 +1740,69 @@ boolean adjustForYellowRayIfPossible()
 	return adjustForYellowRayIfPossible($monster[none]);
 }
 
+string replaceMonsterCombatString(monster target, boolean inCombat)
+{
+	if (auto_macrometeoritesAvailable() > 0)
+	{
+		return "skill " + $skill[Macrometeorite];
+	}
+	if (auto_powerfulGloveReplacesAvailable(inCombat) > 0)
+	{
+		return "skill " + $skill[CHEAT CODE: Replace Enemy];
+	}
+	return "";
+}
+
+string replaceMonsterCombatString(monster target)
+{
+	return replaceMonsterCombatString(target, false);
+}
+
+string replaceMonsterCombatString()
+{
+	return replaceMonsterCombatString($monster[none]);
+}
+
+# Use this to determine if it is safe to enter a replace monster combat.
+boolean canReplace(monster target)
+{
+	return replaceMonsterCombatString(target) != "";
+}
+
+boolean canReplace()
+{
+	return canReplace($monster[none]);
+}
+
+/* Adjust equipment/familiars to have access to the desired replace monster
+ */
+boolean adjustForReplace(string combat_string)
+{
+	if(combat_string == ("skill " + $skill[Macrometeorite]))
+	{
+		return true;
+	}
+	if(combat_string == ("skill " + $skill[CHEAT CODE: Replace Enemy]))
+	{
+		return auto_forceEquipPowerfulGlove();
+	}
+	return false;
+}
+
+boolean adjustForReplaceIfPossible(monster target)
+{
+	if(canReplace(target))
+	{
+		return adjustForReplace(replaceMonsterCombatString(target));
+	}
+	return false;
+}
+
+boolean adjustForReplaceIfPossible()
+{
+	return adjustForReplaceIfPossible($monster[none]);
+}
+
 string statCard()
 {
 	switch(my_primestat())
@@ -6189,6 +6252,18 @@ boolean auto_check_conditions(string conds)
 				if(req_loc == $location[none])
 					abort('"' + condition_data + '" does not properly convert to a location!');
 				return my_location() == req_loc;
+			// data: <location><comparison operator><integer value>
+			// As a precaution, autoscend aborts if to_location returns $location[none]
+			case "turnsspent":
+				matcher m6 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
+				if(!m6.find())
+					abort('"' + condition_data + '" is not a proper turnsspent condition format!');
+				location loc = to_location(m6.group(1));
+				if(loc == $location[none])
+					abort('"' + condition_data + '" does not properly convert to a location!');
+				if(!($strings[=,==] contains m6.group(2)))
+					return compare_numbers(loc.turns_spent, m6.group(3).to_int(), m6.group(2));
+				return loc.turns_spent == m6.group(3).to_int();
 			// data: <propname><comparison operator><value>
 			// >/</>=/<= only supported for integer properties!
 			case "prop":
@@ -6316,6 +6391,15 @@ boolean auto_wantToYellowRay(monster enemy, location loc)
 	boolean [monster] toSniff = auto_getMonsters("yellowray");
 	set_location(locCache);
 	return toSniff[enemy];
+}
+
+boolean auto_wantToReplace(monster enemy, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] toReplace = auto_getMonsters("replace");
+	set_location(locCache);
+	return toReplace[enemy];
 }
 
 int total_items(boolean [item] items)
