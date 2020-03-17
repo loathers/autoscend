@@ -1144,7 +1144,6 @@ boolean zelda_buyEquipment(item it); // Defined in autoscend/auto_zelda.ash
 boolean zelda_nothingToBuy(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_buyStuff(); // Defined in autoscend/auto_zelda.ash
 int zelda_ppCost(skill sk); // Defined in autoscend/auto_zelda.ash
-int zelda_ppCurr(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_skillValid(skill sk); // Defined in autoscend/auto_zelda.ash
 
