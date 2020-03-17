@@ -1746,7 +1746,7 @@ string replaceMonsterCombatString(monster target, boolean inCombat)
 	{
 		return "skill " + $skill[Macrometeorite];
 	}
-	if (inCombat ? auto_powerfulGloveReplacesAvailable() > 0 : auto_powerfulGloveReplacesPossible() > 0)
+	if (auto_powerfulGloveReplacesAvailable(inCombat) > 0)
 	{
 		return "skill " + $skill[CHEAT CODE: Replace Enemy];
 	}

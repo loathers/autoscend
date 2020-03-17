@@ -117,18 +117,20 @@ boolean auto_powerfulGloveNoncombat()
 	return ret;
 }
 
-int auto_powerfulGloveReplacesPossible()
+// Returns if replaces are available, optionally only if the Powerful Glove is equipped
+int auto_powerfulGloveReplacesAvailable(boolean inCombat)
 {
 	if (!auto_hasPowerfulGlove()) return 0;
+
+	if (inCombat && !have_equipped($item[Powerful Glove])) return 0;
 
 	return (auto_powerfulGloveCharges() / 10).to_int();
 }
 
+// Returns if replaces are available if the Powerful Glove was equipped
 int auto_powerfulGloveReplacesAvailable()
 {
-	if (!have_equipped($item[Powerful Glove])) return 0;
-
-	return auto_powerfulGloveReplacesPossible();
+	return auto_powerfulGloveReplacesAvailable(false);
 }
 
 boolean auto_wantToEquipPowerfulGlove()

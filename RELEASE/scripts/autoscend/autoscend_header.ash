@@ -693,8 +693,7 @@ boolean auto_favoriteBirdCanSeek();			//Defined in autoscend/auto_mr2020.ash
 boolean auto_hasPowerfulGlove();			//Defined in autoscend/auto_mr2020.ash
 int auto_powerfulGloveCharges();			//Defined in autoscend/auto_mr2020.ash
 boolean auto_powerfulGloveNoncombat();		//Defined in autoscend/auto_mr2020.ash
-int auto_powerfulGloveReplacesPossible();	//Defined in autoscend/auto_mr2020.ash
-int auto_powerfulGloveReplacesAvailable();	//Defined in autoscend/auto_mr2020.ash
+int auto_powerfulGloveReplacesAvailable(boolean inCombat);	//Defined in autoscend/auto_mr2020.ash
 boolean auto_wantToEquipPowerfulGlove();	//Defined in autoscend/auto_mr2020.ash
 boolean auto_willEquipPowerfulGlove();		//Defined in autoscend/auto_mr2020.ash
 boolean auto_forceEquipPowerfulGlove();		//Defined in autoscend/auto_mr2020.ash
