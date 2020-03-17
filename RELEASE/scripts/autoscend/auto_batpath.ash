@@ -227,7 +227,7 @@ int bat_maxHPCost(skill sk)
 		case $skill[Spot Weakness]:
 			return 15;
 		case $skill[Savage Bite]:
-		case $skill[Ferocity]:
+		case $skill[[24017]Ferocity]:
 		case $skill[Chill of the Tomb]:
 		case $skill[Spectral Awareness]:
 			return 10;
@@ -304,7 +304,7 @@ boolean[skill] bat_desiredSkills(int hpLeft, boolean[skill] forcedPicks)
 		Mist Form,
 		Sanguine Magnetism,
 		Macabre Cunning,
-		Ferocity,
+		[24017]Ferocity,
 		Flesh Scent,
 		Wolf Form,
 		Spot Weakness,

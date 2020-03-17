@@ -222,7 +222,7 @@ boolean boris_buySkills()
 			{
 				tree = 1;
 			}
-			if(!have_skill($skill[Ferocity]))
+			if(!have_skill($skill[[11002]Ferocity]))
 			{
 				tree = 1;
 			}
