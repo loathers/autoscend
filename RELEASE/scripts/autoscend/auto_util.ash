@@ -1633,7 +1633,9 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 {
 	if(canBanish(enemy, loc))
 	{
-		return adjustForBanish(banisherCombatString(enemy, loc));
+		string banish_string = banisherCombatString(enemy, loc);
+		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
+		return adjustForBanish(banish_string);
 	}
 	return false;
 }
@@ -1730,7 +1732,9 @@ boolean adjustForYellowRayIfPossible(monster target)
 {
 	if(canYellowRay(target))
 	{
-		return adjustForYellowRay(yellowRayCombatString(target));
+		string yr_string = yellowRayCombatString(target);
+		auto_log_info("Adjusting to have YR available for " + target + ": " + yr_string, "blue");
+		return adjustForYellowRay(yr_string);
 	}
 	return false;
 }
@@ -1793,7 +1797,9 @@ boolean adjustForReplaceIfPossible(monster target)
 {
 	if(canReplace(target))
 	{
-		return adjustForReplace(replaceMonsterCombatString(target));
+		string rep_string = replaceMonsterCombatString(target);
+		auto_log_info("Adjusting to have replace available for " + target + ": " + rep_string, "blue");
+		return adjustForReplace(rep_string);
 	}
 	return false;
 }
