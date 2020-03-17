@@ -24,7 +24,7 @@ Angry Ghost	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouse
 Annoyed Snake	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 Sausage Goblin	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 # community service
-Lava Golem	path:Community Service;loc:LavaCo&trade; Lamp Factory
+Lava Golem	path:Community Service;loc:LavaCo Lamp Factory
 Healing Crystal Golem	path:Community Service;loc:The Velvet / Gold Mine
 Mine Worker (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
 Mine Worker (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
