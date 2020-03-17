@@ -6252,7 +6252,7 @@ boolean auto_check_conditions(string conds)
 				if(req_loc == $location[none])
 					abort('"' + condition_data + '" does not properly convert to a location!');
 				return my_location() == req_loc;
-			// data: <propname><comparison operator><integer value>
+			// data: <location><comparison operator><integer value>
 			// As a precaution, autoscend aborts if to_location returns $location[none]
 			case "turnsspent":
 				matcher m6 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
@@ -6264,7 +6264,7 @@ boolean auto_check_conditions(string conds)
 				if(!($strings[=,==] contains m6.group(2)))
 					return compare_numbers(loc.turns_spent, m6.group(3).to_int(), m6.group(2));
 				return loc.turns_spent == m6.group(3).to_int();
-			// data: <location><comparison operator><value>
+			// data: <propname><comparison operator><value>
 			// >/</>=/<= only supported for integer properties!
 			case "prop":
 				matcher m2 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
