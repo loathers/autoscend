@@ -92,7 +92,7 @@ int auto_powerfulGloveCharges()
 	return 100 - get_property("_powerfulGloveBatteryPowerUsed").to_int();
 }
 
-boolean auto_powerfulGloveNoncombat()
+boolean auto_powerfulGloveNoncombatSkill(skill sk)
 {
 	if (!auto_hasPowerfulGlove()) return false;
 
@@ -107,7 +107,7 @@ boolean auto_powerfulGloveNoncombat()
 		equip($slot[Acc3], $item[Powerful Glove]);
 	}
 
-	boolean ret = use_skill(1, $skill[CHEAT CODE: Invisible Avatar]);
+	boolean ret = use_skill(1, sk);
 
 	if (old != $item[none])
 	{
@@ -131,6 +131,16 @@ int auto_powerfulGloveReplacesAvailable(boolean inCombat)
 int auto_powerfulGloveReplacesAvailable()
 {
 	return auto_powerfulGloveReplacesAvailable(false);
+}
+
+boolean auto_powerfulGloveNoncombat()
+{
+	return auto_powerfulGloveNoncombatSkill($skill[CHEAT CODE: Invisible Avatar]);
+}
+
+boolean auto_powerfulGloveStats()
+{
+	return auto_powerfulGloveNoncombatSkill($skill[CHEAT CODE: Triple Size]);
 }
 
 boolean auto_wantToEquipPowerfulGlove()
@@ -174,4 +184,12 @@ boolean auto_forceEquipPowerfulGlove()
 	}
 
 	return autoEquip($slot[acc3], $item[Powerful Glove]);
+}
+
+void auto_burnPowerfulGloveCharges()
+{
+	while (auto_powerfulGloveCharges() >= 5)
+	{
+		auto_powerfulGloveStats();
+	}
 }

@@ -39,66 +39,7 @@ void handlePreAdventure(location place)
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " + place.to_string(), "green");
 
-	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
-	if(auto_my_path() == "Pocket Familiars")
-	{
-		famChoice = $familiar[none];
-	}
-
-	if((famChoice != $familiar[none]) && !is100FamiliarRun() && (internalQuestStatus("questL13Final") < 13))
-	{
-		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
-		{
-#			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
-			use_familiar(famChoice);
-		}
-	}
-
-	if(auto_have_familiar($familiar[cat burglar]))
-	{
-		item[monster] heistDesires = catBurglarHeistDesires();
-		boolean wannaHeist = false;
-		foreach mon, it in heistDesires
-		{
-			foreach i, mmon in get_monsters(place)
-			{
-				if(mmon == mon)
-				{
-					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
-					wannaHeist = true;
-				}
-			}
-		}
-		if(wannaHeist && (famChoice != $familiar[none]) && !is100FamiliarRun())
-		{
-			use_familiar($familiar[cat burglar]);
-		}
-	}
-
-	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
-	{
-		if(!auto_have_familiar($familiar[Machine Elf]))
-		{
-			auto_log_critical("Massive failure, we don't use snowglobes.");
-			abort("Massive failure, we don't use snowglobes.");
-		}
-		auto_log_error("Somehow we are going to the DMT without a Machine Elf...", "red");
-		use_familiar($familiar[Machine Elf]);
-	}
-
-	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
-	{
-		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
-		{
-			if(equipped_item($slot[Familiar]) != $item[Li\'l Candy Corn Costume])
-			{
-				if(item_amount($item[Li\'l Candy Corn Costume]) > 0)
-				{
-					equip($slot[Familiar], $item[Li\'l Candy Corn Costume]);
-				}
-			}
-		}
-	}
+	preAdvUpdateFamiliar(place);
 
 	preAdvXiblaxian(place);
 

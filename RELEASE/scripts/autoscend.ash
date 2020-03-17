@@ -450,6 +450,8 @@ boolean LX_burnDelay()
 			auto_log_info("Want to burn delay with scaling wanderers, but we can't deal scaling damage yet and it would be too strong :(");
 			wannaVote = false;
 			wannaSausage = false;
+			addToMaximize("-equip Kramco Sausage O-Matic");
+			addToMaximize("-equip &quot;I Voted!&quot; sticker");
 		}
 	}
 
@@ -498,7 +500,7 @@ boolean LX_universeFrat()
 		{
 			doNumberology("adventures3");
 		}
-		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]) && (doNumberology("battlefield", false) != -1))
+		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && (doNumberology("battlefield", false) != -1) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
 		{
 			doNumberology("battlefield");
 			return true;
@@ -2033,6 +2035,8 @@ boolean doBedtime()
 			auto_log_info("You still have " + extrudeLeft + " Source Extrusions left", "blue");
 		}
 	}
+
+	auto_burnPowerfulGloveCharges();
 
 	if(item_amount($item[Rain-Doh Indigo Cup]) > 0)
 	{

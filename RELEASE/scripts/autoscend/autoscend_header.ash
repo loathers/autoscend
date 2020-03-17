@@ -170,6 +170,8 @@ boolean autoAdvBypass(int snarfblat, location loc, string option);
 //	Secondary adventuring functions
 //	They are all defined in autoscend/auto_adventure.ash
 boolean preAdvXiblaxian(location loc);
+void preAdvUpdateFamiliar(location loc);
+
 
 
 // Log Handling/User Output
@@ -645,6 +647,7 @@ boolean auto_voteMonster();									//Defined in autoscend/auto_mr2018.ash
 boolean auto_voteMonster(boolean freeMon);					//Defined in autoscend/auto_mr2018.ash
 boolean auto_voteMonster(boolean freeMon, location loc);		//Defined in autoscend/auto_mr2018.ash
 boolean auto_voteMonster(boolean freeMon, location loc, string option);//Defined in autoscend/auto_mr2018.ash
+item[monster] catBurglarHeistDesires();							// Defined in autoscend/auto_mr2018.ash
 int auto_sausageEaten(); // Defined in autoscend/auto_mr2019.ash
 int auto_sausageLeftToday(); // Defined in autoscend/auto_mr2019.ash
 int auto_sausageUnitsNeededForSausage(int numSaus); // Defined in autoscend/auto_mr2019.ash
