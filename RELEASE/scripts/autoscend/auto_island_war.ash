@@ -687,10 +687,6 @@ boolean L12_sonofaPrefix()
 	{
 		return false;
 	}
-	if((get_property("fratboysDefeated").to_int() < 64) && get_property("auto_hippyInstead").to_boolean())
-	{
-		return false;
-	}
 	if(item_amount($item[barrel of gunpowder]) >= 4 && !auto_voteMonster())
 	{
 		return false;
@@ -712,19 +708,29 @@ boolean L12_sonofaPrefix()
 
 	if(!(auto_get_campground() contains $item[Source Terminal]))
 	{
-		if(possessEquipment($item[&quot;I voted!&quot; sticker]))
+		if((auto_voteMonster() || auto_sausageGoblin()) && adjustForReplaceIfPossible())
 		{
-			if(auto_voteMonster() && auto_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
+			try
 			{
 				if(item_amount($item[barrel of gunpowder]) < 4)
 				{
 					set_property("auto_doCombatCopy", "yes");
 				}
-				set_property("auto_combatDirective", "start;skill macrometeorite");
-				auto_voteMonster(false, $location[Sonofa Beach], "");
+				if (auto_voteMonster())
+				{
+					auto_voteMonster(false, $location[Sonofa Beach], "");
+					return true;
+				}
+				else if (auto_sausageGoblin())
+				{
+					auto_sausageGoblin($location[Sonofa Beach], "");
+					return true;
+				}
+			}
+			finally
+			{
 				set_property("auto_combatDirective", "");
 				set_property("auto_doCombatCopy", "no");
-				return true;
 			}
 		}
 		return false;
@@ -844,6 +850,10 @@ boolean L12_sonofaFinish()
 		return false;
 	}
 	if(!haveWarOutfit())
+	{
+		return false;
+	}
+	if((get_property("fratboysDefeated").to_int() < 64) && get_property("auto_hippyInstead").to_boolean())
 	{
 		return false;
 	}
