@@ -1110,21 +1110,38 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
   }
 
   boolean use_opportunity_blood_skills(int hp_restored_per_use){
+    int restored = my_hp() + hp_restored_per_use;
+    int waste = min(my_hp()-1, restored-my_maxhp());
+    if(waste <= 0) return true;
+    // both blood skills we care about cost 30
+    int casts_total = waste / 30;
+    if(casts_total <= 0) return true;
+    // ratio should be 1 / the number of turns of that effect per cast
+    float [skill] skill_ratios;
+    float total_ratio = 0.0;
+    if(auto_have_skill($skill[Blood Bubble])){
+      float bubble_ratio = 1.0 / 3.0;
+      skill_ratios[$skill[Blood Bubble]] = bubble_ratio;
+      total_ratio += bubble_ratio;
+    }
+    if(auto_have_skill($skill[Blood Bond])){
+      float bond_ratio = 1.0 / 10.0;
+      skill_ratios[$skill[Blood Bond]] = bond_ratio;
+      total_ratio += bond_ratio;
+    }
+    int casts_so_far;
+    int [skill] to_cast;
+    foreach sk, ratio in skill_ratios{
+      int times_to_cast = floor(casts_total * ratio / total_ratio);
+      to_cast[sk] = times_to_cast;
+      casts_so_far += times_to_cast;
+    }
+    if(casts_so_far < casts_total){
+      to_cast[pick_blood_skill()] += casts_total - casts_so_far;
+    }
     boolean success = true;
-    while(true){
-      skill blood_skill = pick_blood_skill();
-      if(blood_skill != $skill[none]){
-        int restored = my_hp() + hp_restored_per_use;
-        int waste = min(my_hp()-1, restored-my_maxhp());
-        int casts = floor(waste / hp_cost(blood_skill));
-        if(casts > 0){
-          success &= use_skill(1, blood_skill);
-        } else{
-          break;
-        }
-      } else{
-        break;
-      }
+    foreach sk, times in to_cast{
+      success &= use_skill(times, sk);
     }
     return success;
   }
