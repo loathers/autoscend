@@ -236,7 +236,7 @@ boolean L12_preOutfit()
 
 boolean L12_startWar()
 {
-	if (internalQuestStatus("questL12War") < 0 || internalQuestStatus("questL12War") > 0)
+	if (internalQuestStatus("questL12War") != 0)
 	{
 		return false;
 	}
@@ -247,6 +247,11 @@ boolean L12_startWar()
 	}
 
 	if (!haveWarOutfit() || my_basestat($stat[Mysticality]) < 70 || my_basestat($stat[Moxie]) < 70)
+	{
+		return false;
+	}
+
+	if(get_property("lastIslandUnlock").to_int() < my_ascensions())
 	{
 		return false;
 	}
