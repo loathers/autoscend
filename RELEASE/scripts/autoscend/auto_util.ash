@@ -3538,10 +3538,17 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		Blessing of Your Favorite Bird,
 	]))
 		return result();
+
 	if(auto_have_skill($skill[Quiet Desperation]))
 		tryEffects($effects[Quiet Desperation]);
 	else
 		tryEffects($effects[Disco Smirk]);
+
+	if (!pass() && (0 == have_effect($effect[Triple-Sized])))
+	{
+		auto_powerfulGloveStats();
+	}
+
 	if(pass())
 		return result();
 
