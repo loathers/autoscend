@@ -6235,6 +6235,14 @@ void auto_begin()
 		visit_url("account.php?am=1&pwd=&action=flag_compactchar&value=0&ajax=0", true);
 	}
 
+	if (!get_property("_canSeekBirds").to_boolean() &&
+		(0 < item_amount($item[Bird-a-Day calendar])) &&
+		(auto_is_valid($item[Bird-a-Day calendar])))
+	{
+		auto_log_info("What a beautiful morning! What's today's bird?");
+		use(1, $item[Bird-a-Day calendar]);
+	}
+
 	ed_initializeSession();
 	bat_initializeSession();
 	questOverride();
