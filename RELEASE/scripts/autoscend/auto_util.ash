@@ -3544,11 +3544,6 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 	else
 		tryEffects($effects[Disco Smirk]);
 
-	if (!pass() && (0 == have_effect($effect[Triple-Sized])))
-	{
-		auto_powerfulGloveStats();
-	}
-
 	if(pass())
 		return result();
 
@@ -3624,6 +3619,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Standard Issue Bravery,
 			Tomato Power,
 			Vital,
+			Triple-Sized,
 		]))
 			return result();
 
@@ -5739,6 +5735,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Toad in the Hole]:				useItem = $item[Anti-anti-antidote];			break;
 	case $effect[Tomato Power]:					useItem = $item[Tomato Juice of Powerful Power];break;
 	case $effect[Tortious]:						useItem = $item[Mocking Turtle];				break;
+	case $effect[Triple-Sized]:					useSkill = $skill[none];						break;
 	case $effect[Truly Gritty]:					useItem = $item[True Grit];						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
@@ -5862,6 +5859,18 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		case $effect[Disdain of the War Snapper]:
 			useSkill = $skill[Blessing of the War Snapper];
 			break;
+		}
+	}
+
+	if (buff == $effect[Triple-Sized])
+	{
+		if (speculative)
+		{
+			return auto_powerfulGloveCharges() >= 5;
+		}
+		else
+		{
+			return auto_powerfulGloveStats();
 		}
 	}
 
