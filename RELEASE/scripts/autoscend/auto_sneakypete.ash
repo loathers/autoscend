@@ -132,7 +132,7 @@ boolean pete_buySkills()
 			{
 				tree = 3;
 			}
-			if(!have_skill($skill[Hard Drinker]))
+			if(!have_skill($skill[[15025]Hard Drinker]))
 			{
 				tree = 3;
 			}

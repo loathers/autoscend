@@ -50,12 +50,12 @@ boolean zelda_equippedBoots()
 
 int zelda_numBadgesBought()
 {
-	return (have_skill($skill[Hammer Throw]).to_int() +
-		have_skill($skill[Ultra Smash]).to_int() +
-		have_skill($skill[Juggle Fireballs]).to_int() +
-		have_skill($skill[Fireball Barrage]).to_int() +
-		have_skill($skill[Spin Jump]).to_int() +
-		have_skill($skill[Multi-Bounce]).to_int() +
+	return (have_skill($skill[[25001]Hammer Throw]).to_int() +
+		have_skill($skill[[25002]Ultra Smash]).to_int() +
+		have_skill($skill[[25003]Juggle Fireballs]).to_int() +
+		have_skill($skill[[25004]Fireball Barrage]).to_int() +
+		have_skill($skill[[25005]Spin Jump]).to_int() +
+		have_skill($skill[[25006]Multi-Bounce]).to_int() +
 		have_skill($skill[Power Plus]).to_int() +
 		have_skill($skill[Secret Eye]).to_int() +
 		have_skill($skill[Lucky Buckle]).to_int() +
@@ -79,12 +79,12 @@ boolean zelda_buySkill(skill sk)
 	int idx = 0;
 	switch(sk)
 	{
-		case $skill[Hammer Throw]: idx=1; break;
-		case $skill[Ultra Smash]: idx=2; break;
-		case $skill[Juggle Fireballs]: idx=3; break;
-		case $skill[Fireball Barrage]: idx=4; break;
-		case $skill[Spin Jump]: idx=5; break;
-		case $skill[Multi-Bounce]: idx=6; break;
+		case $skill[[25001]Hammer Throw]: idx=1; break;
+		case $skill[[25002]Ultra Smash]: idx=2; break;
+		case $skill[[25003]Juggle Fireballs]: idx=3; break;
+		case $skill[[25004]Fireball Barrage]: idx=4; break;
+		case $skill[[25005]Spin Jump]: idx=5; break;
+		case $skill[[25006]Multi-Bounce]: idx=6; break;
 		case $skill[Power Plus]: idx=7; break;
 		case $skill[Secret Eye]: idx=8; break;
 		case $skill[Lucky Buckle]: idx=9; break;
@@ -207,9 +207,9 @@ zelda_buyable zelda_nextBuyable()
 	{
 		return zelda_buyableSkill($skill[Secret Eye]);
 	}
-	else if (!have_skill($skill[Multi-Bounce]))
+	else if (!have_skill($skill[[25006]Multi-Bounce]))
 	{
-		return zelda_buyableSkill($skill[Multi-Bounce]);
+		return zelda_buyableSkill($skill[[25006]Multi-Bounce]);
 	}
 	else if (!have_skill($skill[Power Plus]))
 	{
@@ -239,9 +239,9 @@ zelda_buyable zelda_nextBuyable()
 	{
 		return zelda_buyableSkill($skill[Rainbow Shield]);
 	}
-	else if (!have_skill($skill[Fireball Barrage]))
+	else if (!have_skill($skill[[25004]Fireball Barrage]))
 	{
-		return zelda_buyableSkill($skill[Fireball Barrage]);
+		return zelda_buyableSkill($skill[[25004]Fireball Barrage]);
 	}
 	else if (!possessEquipment($item[frosty button]))
 	{
@@ -251,9 +251,9 @@ zelda_buyable zelda_nextBuyable()
 	{
 		return zelda_buyableSkill($skill[Health Symbol]);
 	}
-	else if (!have_skill($skill[Juggle Fireballs]))
+	else if (!have_skill($skill[[25003]Juggle Fireballs]))
 	{
-		return zelda_buyableSkill($skill[Juggle Fireballs]);
+		return zelda_buyableSkill($skill[[25003]Juggle Fireballs]);
 	}
 	else if (!possessEquipment($item[cape]))
 	{
@@ -299,13 +299,13 @@ int zelda_ppCost(skill sk)
 {
 	switch(sk)
 	{
-		case $skill[Hammer Throw]:
-		case $skill[Juggle Fireballs]:
-		case $skill[Spin Jump]:
+		case $skill[[25001]Hammer Throw]:
+		case $skill[[25003]Juggle Fireballs]:
+		case $skill[[25005]Spin Jump]:
 			return 1;
-		case $skill[Ultra Smash]:
-		case $skill[Fireball Barrage]:
-		case $skill[Multi-Bounce]:
+		case $skill[[25002]Ultra Smash]:
+		case $skill[[25004]Fireball Barrage]:
+		case $skill[[25006]Multi-Bounce]:
 			return 2;
 		default:
 			return 0;
@@ -313,12 +313,12 @@ int zelda_ppCost(skill sk)
 }
 
 boolean [skill] zelda_combatSkills = $skills[
-	Hammer Throw,
-	Ultra Smash,
-	Juggle Fireballs,
-	Fireball Barrage,
-	Spin Jump,
-	Multi-Bounce,
+	[25001]Hammer Throw,
+	[25002]Ultra Smash,
+	[25003]Juggle Fireballs,
+	[25004]Fireball Barrage,
+	[25005]Spin Jump,
+	[25006]Multi-Bounce,
 ];
 
 boolean zelda_canDealScalingDamage()
@@ -329,17 +329,17 @@ boolean zelda_canDealScalingDamage()
 		return false;
 	}
 
-	if(auto_have_skill($skill[Multi-Bounce]))
+	if(auto_have_skill($skill[[25006]Multi-Bounce]))
 	{
 		return true;
 	}
 
-	if(auto_have_skill($skill[Fireball Barrage]) && zelda_haveFlower())
+	if(auto_have_skill($skill[[25004]Fireball Barrage]) && zelda_haveFlower())
 	{
 		return true;
 	}
 
-	if(auto_have_skill($skill[Ultra Smash]) && zelda_haveHammer())
+	if(auto_have_skill($skill[[25002]Ultra Smash]) && zelda_haveHammer())
 	{
 		return true;
 	}
@@ -354,15 +354,15 @@ boolean zelda_skillValid(skill sk)
 		return true;
 	}
 
-	if($skills[Jump Attack, Spin Jump, Multi-Bounce] contains sk)
+	if($skills[Jump Attack, [25005]Spin Jump, [25006]Multi-Bounce] contains sk)
 	{
 		return zelda_equippedBoots();
 	}
-	else if($skills[Fireball Toss, Juggle Fireballs, Fireball Barrage] contains sk)
+	else if($skills[Fireball Toss, [25003]Juggle Fireballs, [25004]Fireball Barrage] contains sk)
 	{
 		return zelda_equippedFlower();
 	}
-	else if($skills[Hammer Smash, Hammer Throw, Ultra Smash] contains sk)
+	else if($skills[Hammer Smash, [25001]Hammer Throw, [25002]Ultra Smash] contains sk)
 	{
 		return zelda_equippedHammer();
 	}
