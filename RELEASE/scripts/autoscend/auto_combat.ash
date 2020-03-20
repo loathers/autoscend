@@ -1674,17 +1674,19 @@ string auto_combatHandler(int round, string opp, string text)
 	{
 		// note: Juggle Fireballs CAN be used multiple times, but it is only
 		// useful if you have level 3 fire and therefore get healed
-		if(my_pp() > 2 && canUse($skill[Juggle Fireballs], true))
+
+    if(my_pp() > 2 && canUse($skill[[7332]Juggle Fireballs], true))
 		{
-			return useSkill($skill[Juggle Fireballs]);
+			return useSkill($skill[[7332]Juggle Fireballs]);
 		}
 
 		if (enemy.physical_resistance >= 80)
 		{
-			if (canUse($skill[Fireball Barrage], false))
+			if (canUse($skill[[7333]Fireball Barrage], false))
 			{
-				return useSkill($skill[Fireball Barrage]);
+				return useSkill($skill[[7333]Fireball Barrage]);
 			}
+			//this skill comes from the IOTM Beach Comb
 			if (canUse($skill[Beach Combo], true))
 			{
 				return useSkill($skill[Beach Combo]);
@@ -1695,10 +1697,11 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 		}
 
-		if (canUse($skill[Multi-Bounce], false))
+		if (canUse($skill[[7336]Multi-Bounce], false))
 		{
-			return useSkill($skill[Multi-Bounce]);
+			return useSkill($skill[[7336]Multi-Bounce]);
 		}
+		//this skill comes from the IOTM Beach Comb
 		if (canUse($skill[Beach Combo], true))
 		{
 			return useSkill($skill[Beach Combo]);
@@ -1709,9 +1712,9 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 
 		// Fallback, since maybe we only have fire flower equipped.
-		if (canUse($skill[Fireball Barrage], false))
+		if (canUse($skill[[7333]Fireball Barrage], false))
 		{
-			return useSkill($skill[Fireball Barrage]);
+			return useSkill($skill[[7333]Fireball Barrage]);
 		}
 		return useSkill($skill[Fireball Toss], false);
 	}
