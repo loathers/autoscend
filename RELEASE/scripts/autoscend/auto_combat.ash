@@ -1675,12 +1675,13 @@ string auto_combatHandler(int round, string opp, string text)
 		// note: Juggle Fireballs CAN be used multiple times, but it is only
 		// useful if you have level 3 fire and therefore get healed
 
-    if(my_pp() > 2 && canUse($skill[[7332]Juggle Fireballs], true))
+		if(my_pp() > 2 && canUse($skill[[7332]Juggle Fireballs], true))
 		{
 			return useSkill($skill[[7332]Juggle Fireballs]);
 		}
 
-		if (enemy.physical_resistance >= 80)
+		if ((enemy.physical_resistance >= 80) ||
+		    (my_location() == $location[The Smut Orc Logging Camp] && (0 < equipped_amount($item[frosty button]))))
 		{
 			if (canUse($skill[[7333]Fireball Barrage], false))
 			{

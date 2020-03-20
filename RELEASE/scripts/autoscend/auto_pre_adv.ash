@@ -207,8 +207,12 @@ void handlePreAdventure(location place)
 		{
 			pool_skill += 3;
 		}
+		// Even though there are ghosts in the Billiards Room, we want to equip
+		// the pool cue to finish up the quest.
 		boolean skip_equipping_flower = place == $location[The Haunted Billiards Room] && 18 <= pool_skill;
-		// need to equip boots in ziggurat until lianas are cleared out
+
+		// Ziggurat has a ghost BUT when clearing out lianas, we want to equip
+		// machete in mainhand and use boots.
 		if(place == $location[A Massive Ziggurat])
 		{
 			int lianaFought = 0;
@@ -224,7 +228,8 @@ void handlePreAdventure(location place)
 				skip_equipping_flower = true;
 			}
 		}
-		if (is_ghost_in_zone(place) && !skip_equipping_flower)
+		if ((is_ghost_in_zone(place) && !skip_equipping_flower)
+			|| (place == $location[The Smut Orc Camp] && possessEquipment($item[frosty button])))
 		{
 			if (possessEquipment($item[bonfire flower]))
 			{
