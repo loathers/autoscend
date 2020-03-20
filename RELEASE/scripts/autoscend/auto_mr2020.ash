@@ -98,8 +98,6 @@ boolean auto_powerfulGloveNoncombatSkill(skill sk)
 
 	if (auto_powerfulGloveCharges() < 5) return false;
 
-	if (0 < have_effect($effect[Invisible Avatar])) return false;
-
 	item old;
 	if (!have_equipped($item[Powerful Glove]))
 	{
@@ -135,6 +133,8 @@ int auto_powerfulGloveReplacesAvailable()
 
 boolean auto_powerfulGloveNoncombat()
 {
+	if (0 < have_effect($effect[Invisible Avatar])) return false;
+
 	return auto_powerfulGloveNoncombatSkill($skill[CHEAT CODE: Invisible Avatar]);
 }
 
