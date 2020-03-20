@@ -64,6 +64,7 @@ boolean L9_chasmBuild()
 	}
 
 	// -Combat is useless here since NC is triggered by killing Orcs...So we kill orcs better!
+	// -ML helps us deal more cold damage and trigger the NC faster.
 	asdonBuff($effect[Driving Intimidatingly]);
 
 	// Check our Load out to see if spells are the best option for Orc-Thumping
@@ -153,6 +154,11 @@ boolean L9_chasmBuild()
 		}
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
 		return true;
+	}
+
+	if (in_zelda() && possessEquipment($item[frosty button]))
+	{
+		autoEquip($item[frosty button]);
 	}
 
 	if(in_hardcore())
