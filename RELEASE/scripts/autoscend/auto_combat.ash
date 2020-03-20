@@ -1523,15 +1523,29 @@ string auto_combatHandler(int round, string opp, string text)
 		{
 			return useItem($item[Time-Spinner]);
 		}
-
-		if(canUse($skill[Sing Along]) && (get_property("boomBoxSong") == "Remainin\' Alive") && stunnable(enemy))
+		
+		if(canUse($skill[Sing Along]))
 		{
-			return useSkill($skill[Sing Along]);
-		}
-
-		if(canUse($skill[Sing Along]) && canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && stunnable(enemy))
-		{
-			return useSkill($skill[Sing Along]);
+			//15% devel, but no stun. 
+			
+			if(canSurvive(2.0) && (get_property("boomBoxSong") == "Remainin\' Alive"))
+			{
+				return useSkill($skill[Sing Along]);
+			}
+		
+			//this is for increasing meat income. gain +25 meat per monster, at the cost of letting it act once. If healing is too costly this can be a net loss of meat. until a full cost calculator is made, limit to under 10 HP damage and no more than 20% of your remaining HP.
+			
+			if(canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && (expected_damage() < 10) && (auto_my_path() != "Way of the Surprising Fist"))
+			{
+				return useSkill($skill[Sing Along]);
+			}
+		
+			//if doing nuns quest or wall of meat, disregard profit and only check if you can survive using sing along.
+			
+			if(canSurvive(3.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && $monsters[dirty thieving brigand, wall of meat] contains enemy)
+			{
+				return useSkill($skill[Sing Along]);
+			}
 		}
 	}
 
@@ -1551,14 +1565,6 @@ string auto_combatHandler(int round, string opp, string text)
 		if(canUse($skill[Summon Love Stinkbug]) && haveUsed($skill[Summon Love Gnats]) && !contains_text(text, "STUN RESIST"))
 		{
 			return useSkill($skill[Summon Love Stinkbug]);
-		}
-
-		if(canUse($skill[Sing Along]))
-		{
-			if((get_property("boomBoxSong") == "Remainin' Alive") || (get_property("boomBoxSong") == "Total Eclipse of Your Meat"))
-			{
-				return useSkill($skill[Sing Along]);
-			}
 		}
 	}
 
@@ -2568,6 +2574,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if (canUse($skill[Sing Along]))
 	{
+		//ed can easily survive singing along thanks to undying. and healing him is essentially free.
 		if((get_property("boomBoxSong") == "Remainin\' Alive") || ((get_property("boomBoxSong") == "Total Eclipse of Your Meat") && canSurvive(2.0)))
 		{
 			return useSkill($skill[Sing Along]);
