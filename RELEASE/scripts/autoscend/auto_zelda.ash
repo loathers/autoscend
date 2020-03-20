@@ -316,15 +316,6 @@ int zelda_ppCost(skill sk)
 	}
 }
 
-boolean [skill] zelda_combatSkills = $skills[
-	[25001]Hammer Throw,
-	[25002]Ultra Smash,
-	[25003]Juggle Fireballs,
-	[25004]Fireball Barrage,
-	[25005]Spin Jump,
-	[25006]Multi-Bounce,
-];
-
 boolean zelda_canDealScalingDamage()
 {
 	// TODO: When mafia tracks costumes, account for level 3 basic attacks
