@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19861; // skill.name
+since r19891; // Fix checking for duplicate function to do exact match on parameters
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

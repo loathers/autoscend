@@ -1178,7 +1178,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     return false;
   }
 
-  string list_to_string(int[effect] e_list){
+  string list_to_string(boolean[effect] e_list){
     string s = "[";
     boolean first = true;
     foreach e in e_list{
