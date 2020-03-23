@@ -1300,11 +1300,6 @@ boolean L11_mauriceSpookyraven()
 		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
 		use(1, $item[recipe: mortar-dissolving solution]);
 
-		if(!useMaximizeToEquip())
-		{
-			autoEquip($slot[acc3], $item[numberwang]);
-		}
-
 		#Cellar, laundry room Lights out ignore
 		set_property("choiceAdventure901", "2");
 		set_property("choiceAdventure891", "1");
@@ -1533,14 +1528,7 @@ boolean L11_redZeppelin()
 		backupSetting("choiceAdventure866", 2);
 	}
 
-	if(useMaximizeToEquip())
-	{
-		addToMaximize("100sleaze damage,100sleaze spell damage");
-	}
-	else
-	{
-		autoMaximize("sleaze dmg, sleaze spell dmg", 2500, 0, false);
-	}
+	addToMaximize("100sleaze damage,100sleaze spell damage");
 	auto_beachCombHead("sleaze");
 	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
 	{

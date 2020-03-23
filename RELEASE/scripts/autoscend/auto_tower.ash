@@ -770,33 +770,13 @@ boolean L13_towerNSTower()
 		{
 			cli_execute("concert 2");
 		}
-		if(!useMaximizeToEquip())
-		{
-			autoEquip($item[Silver Cow Creamer]);
-			autoEquip($item[Sneaky Pete\'s Leather Jacket]);
-		}
 		if(is100FamiliarRun())
 		{
-			if(useMaximizeToEquip())
-			{
-				addToMaximize("200meat drop");
-			}
-			else
-			{
-				autoMaximize("meat drop, -equip snow suit", 1500, 0, false);
-			}
+			addToMaximize("200meat drop");
 		}
 		else
 		{
-			if(useMaximizeToEquip())
-			{
-				addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconscious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
-			}
-			else
-			{
-				autoMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun,switch cat burglar", 1500, 0, false);
-				handleFamiliar(my_familiar());
-			}
+			addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconscious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
 		}
 		if(my_class() == $class[Seal Clubber])
 		{
@@ -834,14 +814,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Carol of the Hells], 0, 1, 1);
 			if(item_amount($item[Electric Boning Knife]) == 0)
 			{
-				if(useMaximizeToEquip())
-				{
-					addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
-				}
-				else
-				{
-					autoMaximize("myst -equip snow suit", 1500, 0, false);
-				}
+				addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
 			}
 			foreach s in $slots[acc1, acc2, acc3]
 			{
@@ -968,19 +941,8 @@ boolean L13_towerNSFinal()
 
 	handleFamiliar("boss");
 
-	if(!useMaximizeToEquip())
-	{
-		autoEquip($item[Beer Helmet]);
-		autoEquip($item[Misty Cloak]);
-		autoEquip($slot[acc1], $item[gumshoes]);
-		autoEquip($slot[acc3], $item[World\'s Best Adventurer Sash]);
-	}
-	else
-	{
-		addToMaximize("10dr,3moxie,0.5da 1000max,-5ml,1.5hp,0item,0meat");
-	}
+	addToMaximize("10dr,3moxie,0.5da 1000max,-5ml,1.5hp,0item,0meat");
 	autoEquip($slot[acc2], $item[Attorney\'s Badge]);
-
 
 	if(internalQuestStatus("questL13Final") < 13)
 	{

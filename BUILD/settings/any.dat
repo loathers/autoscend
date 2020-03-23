@@ -22,7 +22,7 @@ auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the ar
 auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
 auto_limitConsume	boolean	When false, will not eat or drink anything automatically.
 auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
-auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat. If you set it to "disabled" it will revert to the old equipment system, for now.
+auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
 auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
 auto_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
 auto_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.
