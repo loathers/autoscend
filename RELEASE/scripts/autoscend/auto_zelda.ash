@@ -199,7 +199,11 @@ boolean zelda_buyableIsNothing(zelda_buyable zb)
 
 zelda_buyable zelda_nextBuyable()
 {
-	if (!have_skill($skill[Lucky Buckle]))
+	if (!possessEquipment($item[[10462]fire flower]))
+	{
+		return zelda_buyableItem($item[[10462]fire flower]);
+	}
+	else if (!have_skill($skill[Lucky Buckle]))
 	{
 		return zelda_buyableSkill($skill[Lucky Buckle]);
 	}
@@ -311,15 +315,6 @@ int zelda_ppCost(skill sk)
 			return 0;
 	}
 }
-
-boolean [skill] zelda_combatSkills = $skills[
-	[25001]Hammer Throw,
-	[25002]Ultra Smash,
-	[25003]Juggle Fireballs,
-	[25004]Fireball Barrage,
-	[25005]Spin Jump,
-	[25006]Multi-Bounce,
-];
 
 boolean zelda_canDealScalingDamage()
 {
