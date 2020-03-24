@@ -229,7 +229,7 @@ void handlePreAdventure(location place)
 			}
 		}
 		if ((is_ghost_in_zone(place) && !skip_equipping_flower)
-			|| (place == $location[The Smut Orc Camp] && possessEquipment($item[frosty button])))
+			|| (place == $location[The Smut Orc Logging Camp] && possessEquipment($item[frosty button])))
 		{
 			if (possessEquipment($item[bonfire flower]))
 			{
