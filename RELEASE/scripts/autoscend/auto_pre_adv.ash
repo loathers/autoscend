@@ -39,7 +39,7 @@ void handlePreAdventure(location place)
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " + place.to_string(), "green");
 
-  preAdvUpdateFamiliar(place);
+	preAdvUpdateFamiliar(place);
 
 	preAdvXiblaxian(place);
 
