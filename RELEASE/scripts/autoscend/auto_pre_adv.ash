@@ -39,66 +39,7 @@ void handlePreAdventure(location place)
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " + place.to_string(), "green");
 
-	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
-	if(auto_my_path() == "Pocket Familiars")
-	{
-		famChoice = $familiar[none];
-	}
-
-	if((famChoice != $familiar[none]) && !autoForbidFamiliarChange() && (internalQuestStatus("questL13Final") < 13))
-	{
-		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
-		{
-#			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
-			use_familiar(famChoice);
-		}
-	}
-
-	if(auto_have_familiar($familiar[cat burglar]))
-	{
-		item[monster] heistDesires = catBurglarHeistDesires();
-		boolean wannaHeist = false;
-		foreach mon, it in heistDesires
-		{
-			foreach i, mmon in get_monsters(place)
-			{
-				if(mmon == mon)
-				{
-					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
-					wannaHeist = true;
-				}
-			}
-		}
-		if(wannaHeist && (famChoice != $familiar[none]) && !autoForbidFamiliarChange())
-		{
-			use_familiar($familiar[cat burglar]);
-		}
-	}
-
-	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
-	{
-		if(!auto_have_familiar($familiar[Machine Elf]))
-		{
-			auto_log_critical("Massive failure, we don't use snowglobes.");
-			abort("Massive failure, we don't use snowglobes.");
-		}
-		auto_log_error("Somehow we are going to the DMT without a Machine Elf...", "red");
-		use_familiar($familiar[Machine Elf]);
-	}
-
-	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
-	{
-		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
-		{
-			if(equipped_item($slot[Familiar]) != $item[Li\'l Candy Corn Costume])
-			{
-				if(item_amount($item[Li\'l Candy Corn Costume]) > 0)
-				{
-					equip($slot[Familiar], $item[Li\'l Candy Corn Costume]);
-				}
-			}
-		}
-	}
+  preAdvUpdateFamiliar(place);
 
 	preAdvXiblaxian(place);
 
@@ -239,6 +180,11 @@ void handlePreAdventure(location place)
 		{
 			adjustForBanishIfPossible(mon, place);
 		}
+
+		if(auto_wantToReplace(mon, place))
+		{
+			adjustForReplaceIfPossible(mon);
+		}
 	}
 
 	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))
@@ -261,8 +207,12 @@ void handlePreAdventure(location place)
 		{
 			pool_skill += 3;
 		}
+		// Even though there are ghosts in the Billiards Room, we want to equip
+		// the pool cue to finish up the quest.
 		boolean skip_equipping_flower = place == $location[The Haunted Billiards Room] && 18 <= pool_skill;
-		// need to equip boots in ziggurat until lianas are cleared out
+
+		// Ziggurat has a ghost BUT when clearing out lianas, we want to equip
+		// machete in mainhand and use boots.
 		if(place == $location[A Massive Ziggurat])
 		{
 			int lianaFought = 0;
@@ -278,7 +228,8 @@ void handlePreAdventure(location place)
 				skip_equipping_flower = true;
 			}
 		}
-		if (is_ghost_in_zone(place) && !skip_equipping_flower)
+		if ((is_ghost_in_zone(place) && !skip_equipping_flower)
+			|| (place == $location[The Smut Orc Logging Camp] && possessEquipment($item[frosty button])))
 		{
 			if (possessEquipment($item[bonfire flower]))
 			{
@@ -371,17 +322,9 @@ void handlePreAdventure(location place)
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean)
 	{
-		float itemDrop;
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("50item " + ceil(itemNeed._float) + "max");
-			simMaximize();
-			itemDrop = simValue("Item Drop");
-		}
-		else
-		{
-			itemDrop = numeric_modifier("Item Drop");
-		}
+		addToMaximize("50item " + ceil(itemNeed._float) + "max");
+		simMaximize();
+		float itemDrop = simValue("Item Drop");
 		if(itemDrop < itemNeed._float)
 		{
 			if (buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 20, 1, 10))
@@ -515,10 +458,7 @@ void handlePreAdventure(location place)
 
 // EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
-	if(useMaximizeToEquip())
-	{
-		cli_execute("checkpoint clear");
-	}
+	cli_execute("checkpoint clear");
 
 	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
 	if(lowMLZones contains place)

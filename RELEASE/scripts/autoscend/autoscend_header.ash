@@ -170,6 +170,8 @@ boolean autoAdvBypass(int snarfblat, location loc, string option);
 //	Secondary adventuring functions
 //	They are all defined in autoscend/auto_adventure.ash
 boolean preAdvXiblaxian(location loc);
+void preAdvUpdateFamiliar(location loc);
+
 
 
 // Log Handling/User Output
@@ -391,6 +393,8 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin);//Defined in 
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);//Defined in autoscend/auto_util.ash
 boolean canYellowRay(monster target); //Defined in autoscend/auto_util.ash
 boolean canYellowRay();										//Defined in autoscend/auto_util.ash
+boolean canReplace(monster target);	//Defined in autoscend/auto_util.ash
+boolean canReplace();				//Defined in autoscend/auto_util.ash
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in autoscend/auto_adventure.ash
 boolean autoChew(int howMany, item toChew);					//Defined in autoscend/auto_cooking.ash
 float expectedAdventuresFrom(item it);						//Defined in autoscend/auto_cooking.ash
@@ -562,7 +566,6 @@ boolean autoEquip(item it); //Defined in autoscend/auto_equipment.ash
 boolean autoForceEquip(slot s, item it); //Defined in autoscend/auto_equipment.ash
 boolean autoForceEquip(item it); //Defined in autoscend/auto_equipment.ash
 boolean tryAddItemToMaximize(slot s, item it); //Defined in autoscend/auto_equipment.ash
-boolean useMaximizeToEquip(); //Defined in autoscend/auto_equipment.ash
 string defaultMaximizeStatement(); //Defined in autoscend/auto_equipment.ash
 void resetMaximize(); //Defined in autoscend/auto_equipment.ash
 void finalizeMaximize(); //Defined in autoscend/auto_equipment.ash
@@ -643,6 +646,7 @@ boolean auto_voteMonster();									//Defined in autoscend/auto_mr2018.ash
 boolean auto_voteMonster(boolean freeMon);					//Defined in autoscend/auto_mr2018.ash
 boolean auto_voteMonster(boolean freeMon, location loc);		//Defined in autoscend/auto_mr2018.ash
 boolean auto_voteMonster(boolean freeMon, location loc, string option);//Defined in autoscend/auto_mr2018.ash
+item[monster] catBurglarHeistDesires();							// Defined in autoscend/auto_mr2018.ash
 int auto_sausageEaten(); // Defined in autoscend/auto_mr2019.ash
 int auto_sausageLeftToday(); // Defined in autoscend/auto_mr2019.ash
 int auto_sausageUnitsNeededForSausage(int numSaus); // Defined in autoscend/auto_mr2019.ash
@@ -691,6 +695,8 @@ boolean auto_favoriteBirdCanSeek();			//Defined in autoscend/auto_mr2020.ash
 boolean auto_hasPowerfulGlove();			//Defined in autoscend/auto_mr2020.ash
 int auto_powerfulGloveCharges();			//Defined in autoscend/auto_mr2020.ash
 boolean auto_powerfulGloveNoncombat();		//Defined in autoscend/auto_mr2020.ash
+boolean auto_powerfulGloveStats();		//Defined in autoscend/auto_mr2020.ash
+int auto_powerfulGloveReplacesAvailable(boolean inCombat);	//Defined in autoscend/auto_mr2020.ash
 boolean auto_wantToEquipPowerfulGlove();	//Defined in autoscend/auto_mr2020.ash
 boolean auto_willEquipPowerfulGlove();		//Defined in autoscend/auto_mr2020.ash
 boolean auto_forceEquipPowerfulGlove();		//Defined in autoscend/auto_mr2020.ash
@@ -740,11 +746,12 @@ boolean makeGeniePocket();									//Defined in autoscend/auto_mr2017.ash
 boolean spacegateVaccineAvailable();						//Defined in autoscend/auto_mr2017.ash
 boolean spacegateVaccineAvailable(effect ef);				//Defined in autoscend/auto_mr2017.ash
 boolean spacegateVaccine(effect ef);						//Defined in autoscend/auto_mr2017.ash
-int auto_meteorShowersUsed();                     //Defined in autoscend/auto_mr2017.ash
-int auto_meteorShowersAvailable();                //Defined in autoscend/auto_mr2017.ash
-int auto_macroMeteoritesUsed();                   //Defined in autoscend/auto_mr2017.ash
-int auto_macrometeoritesAvailable();              //Defined in autoscend/auto_mr2017.ash
-int auto_meteoriteAdesUsed();                   //Defined in autoscend/auto_mr2017.ash
+boolean auto_hasMeteorLore();								//Defined in autoscend/auto_mr2017.ash
+int auto_meteorShowersUsed();								//Defined in autoscend/auto_mr2017.ash
+int auto_meteorShowersAvailable();							//Defined in autoscend/auto_mr2017.ash
+int auto_macroMeteoritesUsed();								//Defined in autoscend/auto_mr2017.ash
+int auto_macrometeoritesAvailable();						//Defined in autoscend/auto_mr2017.ash
+int auto_meteoriteAdesUsed();								//Defined in autoscend/auto_mr2017.ash
 boolean handleBarrelFullOfBarrels(boolean daily);			//Defined in autoscend/auto_util.ash
 boolean handleCopiedMonster(item itm);						//Defined in autoscend/auto_util.ash
 boolean handleCopiedMonster(item itm, string option);		//Defined in autoscend/auto_util.ash
@@ -955,16 +962,23 @@ void woods_questStart();									//Defined in autoscend/auto_util.ash
 boolean xiblaxian_makeStuff();								//Defined in autoscend/auto_mr2014.ash
 string yellowRayCombatString(monster target, boolean inCombat); //Defined in autoscend/auto_util.ash
 string yellowRayCombatString(monster target);					//Defined in autoscend/auto_util.ash
-string yellowRayCombatString();								//Defined in autoscend/auto_util.ash
-boolean adjustForYellowRay(string combat_string); //Defined in autoscend/auto_util.ash
-boolean adjustForYellowRayIfPossible(monster target); //Defined in autoscend/auto_util.ash
-boolean adjustForYellowRayIfPossible(); //Defined in autoscend/auto_util.ash
+string yellowRayCombatString();									//Defined in autoscend/auto_util.ash
+boolean adjustForYellowRay(string combat_string); 				//Defined in autoscend/auto_util.ash
+boolean adjustForYellowRayIfPossible(monster target);			//Defined in autoscend/auto_util.ash
+boolean adjustForYellowRayIfPossible();							//Defined in autoscend/auto_util.ash
+string replaceMonsterCombatString(monster target, boolean inCombat);	//Defined in autoscend/auto_util.ash
+string replaceMonsterCombatString(monster target);						//Defined in autoscend/auto_util.ash
+string replaceMonsterCombatString();									//Defined in autoscend/auto_util.ash
+boolean adjustForReplace(string combat_string);					//Defined in autoscend/auto_util.ash
+boolean adjustForReplaceIfPossible(monster target);				//Defined in autoscend/auto_util.ash
+boolean adjustForReplaceIfPossible();							//Defined in autoscend/auto_util.ash
 string banisherCombatString(monster enemy, location loc, boolean inCombat); //Defined in autoscend/auto_util.ash
 string banisherCombatString(monster enemy, location loc);	//Defined in autoscend/auto_util.ash
 boolean[string] auto_banishesUsedAt(location loc); // Defined in autoscend/auto_util.ash
 boolean auto_wantToBanish(monster enemy, location loc); // Defined in autoscend/auto_util.ash
 boolean auto_wantToSniff(monster enemy, location loc); // Defined in autoscend/auto_util.ash
 boolean auto_wantToYellowRay(monster enemy, location loc); // Defined in autoscend/auto_util.ash
+boolean auto_wantToReplace(monster enemy, location loc); // Defined in autoscend/auto_util.ash
 int total_items(boolean [item] items); // Defined in autoscend/auto_util.ash
 boolean zoneCombat(location loc);							//Defined in autoscend/auto_util.ash
 boolean zoneItem(location loc);								//Defined in autoscend/auto_util.ash
@@ -1132,7 +1146,6 @@ boolean zelda_buyEquipment(item it); // Defined in autoscend/auto_zelda.ash
 boolean zelda_nothingToBuy(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_buyStuff(); // Defined in autoscend/auto_zelda.ash
 int zelda_ppCost(skill sk); // Defined in autoscend/auto_zelda.ash
-int zelda_ppCurr(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_skillValid(skill sk); // Defined in autoscend/auto_zelda.ash
 

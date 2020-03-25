@@ -1821,12 +1821,19 @@ boolean spacegateVaccine(effect ef)
 	return true;
 }
 
+boolean auto_hasMeteorLore()
+{
+	return have_skill($skill[Meteor Lore]) &&
+		auto_is_valid($item[Pocket Meteor Guide]) &&
+		auto_is_valid($skill[Meteor Lore]);
+}
+
 int auto_meteorShowersUsed(){
 	return get_property("_meteorShowerUses").to_int();
 }
 
 int auto_meteorShowersAvailable(){
-	if(!is_unrestricted($skill[Meteor Lore]) || !have_skill($skill[Meteor Lore])){
+	if(!auto_hasMeteorLore()){
 		return 0;
 	}
 
@@ -1838,7 +1845,7 @@ int auto_macroMeteoritesUsed(){
 }
 
 int auto_macrometeoritesAvailable(){
-	if(!is_unrestricted($skill[Meteor Lore]) || !have_skill($skill[Meteor Lore])){
+	if(!auto_hasMeteorLore()){
 		return 0;
 	}
 

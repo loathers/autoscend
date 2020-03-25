@@ -64,6 +64,7 @@ boolean L9_chasmBuild()
 	}
 
 	// -Combat is useless here since NC is triggered by killing Orcs...So we kill orcs better!
+	// -ML helps us deal more cold damage and trigger the NC faster.
 	asdonBuff($effect[Driving Intimidatingly]);
 
 	// Check our Load out to see if spells are the best option for Orc-Thumping
@@ -121,38 +122,14 @@ boolean L9_chasmBuild()
 		// This is a hardcoded patch for Dark Gyffte
 		// TODO: once explicit formulas are spaded, use simulated maximizer
 		// to determine best approach.
-		if (my_class() == $class[Vampyre] && have_skill($skill[Sinister Charm]) && !useMaximizeToEquip())
-		{
-			// Maximizing moxie (through equalizer) and sleaze res is good here
-			autoMaximize("myst, 50 sleaze res", 1000, 0, false);
-			bat_formMist();
-			buffMaintain($effect[Spectral Awareness], 10, 1, 1);
-			set_property("choiceAdventure1345", 3);
-		}
-		else
-		{
-			if(useMaximizeToEquip())
-			{
-				L9_chasmMaximizeForNoncombat();
-			}
-			else
-			{
-				switch(my_primestat())
-				{
-					case $stat[Muscle]:
-						set_property("choiceAdventure1345", 1);
-						break;
-					case $stat[Mysticality]:
-						set_property("choiceAdventure1345", 2);
-						break;
-					case $stat[Moxie]:
-						set_property("choiceAdventure1345", 3);
-						break;
-				}
-			}
-		}
+		L9_chasmMaximizeForNoncombat();
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
 		return true;
+	}
+
+	if (in_zelda() && possessEquipment($item[frosty button]))
+	{
+		autoEquip($item[frosty button]);
 	}
 
 	if(in_hardcore())
@@ -256,14 +233,7 @@ boolean L9_aBooPeak()
 		if (clueAmt < 3 && item_amount($item[January\'s Garbage Tote]) > 0)
 		{
 			januaryToteAcquire($item[Broken Champagne Bottle]);
-			if(!useMaximizeToEquip())
-			{
-				autoEquip($item[Broken Champagne Bottle]);
-			}
-			else
-			{
-				removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
-			}
+			removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
 		}
 
 		autoAdv(1, $location[A-Boo Peak]);
@@ -436,20 +406,9 @@ boolean L9_aBooPeak()
 			{
 				buffMaintain($effect[Spectral Awareness], 10, 1, 1);
 			}
-			if(useMaximizeToEquip())
-			{
-				addToMaximize("1000spooky res,1000cold res,10hp" + parrot);
-			}
-			else
-			{
-				autoMaximize("spooky res,cold res " + lihcface + " -equip snow suit" + parrot, 0, 0, false);
-			}
+			addToMaximize("1000spooky res,1000cold res,10hp" + parrot);
 			adjustEdHat("ml");
 
-			if(item_amount($item[ghost of a necklace]) > 0 && !useMaximizeToEquip())
-			{
-				equip($slot[acc2], $item[ghost of a necklace]);
-			}
 			buffMaintain($effect[Astral Shell], 10, 1, 1);
 			buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 			buffMaintain($effect[Scarysauce], 10, 1, 1);
@@ -536,14 +495,7 @@ boolean L9_aBooPeak()
 		if ($location[A-Boo Peak].turns_spent < 10 && item_amount($item[January\'s Garbage Tote]) > 0)
 		{
 			januaryToteAcquire($item[Broken Champagne Bottle]);
-			if(!useMaximizeToEquip())
-			{
-				autoEquip($item[Broken Champagne Bottle]);
-			}
-			else
-			{
-				removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
-			}
+			removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
 		}
 
 		autoAdv(1, $location[A-Boo Peak]);
@@ -841,10 +793,6 @@ boolean L9_oilPeak()
 		else
 		{
 			januaryToteAcquire($item[tinsel tights]);
-			if(!useMaximizeToEquip())
-			{
-				autoEquip($item[tinsel tights]);
-			}
 		}
 	}
 

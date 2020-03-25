@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19810; // Make restore() on a closed checkpoint not restore equipment
+since r19891; // Fix checking for duplicate function to do exact match on parameters
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -174,6 +174,7 @@ void initializeSettings()
 	set_property("auto_wishes", "");
 	set_property("auto_writingDeskSummon", false);
 	set_property("auto_yellowRays", "");
+	set_property("auto_replaces", "");
 	set_property("auto_consumeKeyLimePies", true);
 	set_property("auto_skipNuns", "false");
 	set_property("choiceAdventure1003", 0);
@@ -444,13 +445,15 @@ boolean LX_burnDelay()
 	// then a scaling monster is probably going to be a bad time
 	if(in_zelda() && !zelda_canDealScalingDamage())
 	{
-		// unless we can still kill it in like two hits or so, then it should probably be fine?
+		// unless we can still kill it in one hit, then it should probably be fine?
 		int predictedScalerHP = to_int(0.75 * (my_buffedstat($stat[Muscle]) + monster_level_adjustment()));
-		if(predictedScalerHP > 30)
+		if(predictedScalerHP > 15)
 		{
 			auto_log_info("Want to burn delay with scaling wanderers, but we can't deal scaling damage yet and it would be too strong :(");
 			wannaVote = false;
 			wannaSausage = false;
+			addToMaximize("-equip Kramco Sausage O-Matic");
+			addToMaximize("-equip &quot;I Voted!&quot; sticker");
 		}
 	}
 
@@ -499,7 +502,7 @@ boolean LX_universeFrat()
 		{
 			doNumberology("adventures3");
 		}
-		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]) && (doNumberology("battlefield", false) != -1))
+		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && (doNumberology("battlefield", false) != -1) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
 		{
 			doNumberology("battlefield");
 			return true;
@@ -531,10 +534,6 @@ void maximize_hedge()
 	int [element] resGoal;
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
-		if(!useMaximizeToEquip())
-		{
-			autoMaximize("all res -equip snow suit", 2500, 0, false);
-		}
 		foreach ele in $elements[hot, cold, stench, sleaze, spooky]
 		{
 			resGoal[ele] = 9;
@@ -542,10 +541,6 @@ void maximize_hedge()
 	}
 	else
 	{
-		if(!useMaximizeToEquip())
-		{
-			autoMaximize(to_string(first) + " res, " + to_string(second) + " res, " + to_string(third) + " res -equip snow suit", 2500, 0, false);
-		}
 		resGoal[first] = 9;
 		resGoal[second] = 9;
 		resGoal[third] = 9;
@@ -2035,6 +2030,8 @@ boolean doBedtime()
 		}
 	}
 
+	auto_burnPowerfulGloveCharges();
+
 	if(item_amount($item[Rain-Doh Indigo Cup]) > 0)
 	{
 		auto_log_info("Copies left: " + (5 - get_property("_raindohCopiesMade").to_int()), "olive");
@@ -3211,11 +3208,6 @@ boolean L7_crypt()
 
 		autoEquip($item[Gravy Boat]);
 
-		if(!useMaximizeToEquip() && (get_property("cyrptAlcoveEvilness").to_int() > 26))
-		{
-			autoEquip($item[The Nuge\'s Favorite Crossbow]);
-		}
-
 		addToMaximize("100initiative 850max");
 
 		if(get_property("cyrptAlcoveEvilness").to_int() >= 28)
@@ -3249,7 +3241,7 @@ boolean L7_crypt()
 		bat_formBats();
 
 		januaryToteAcquire($item[broken champagne bottle]);
-		if(useMaximizeToEquip() && (get_property("cyrptNookEvilness").to_int() > 26))
+		if(get_property("cyrptNookEvilness").to_int() > 26)
 		{
 			removeFromMaximize("-equip " + $item[broken champagne bottle]);
 		}
@@ -4001,33 +3993,8 @@ boolean L4_batCave()
 	// try to get the stench res without equipment, but use equipment if we must
 	if(!provideResistances(resGoal, false) && !provideResistances(resGoal, true))
 	{
-		if(!useMaximizeToEquip())
-		{
-			if(possessEquipment($item[Knob Goblin Harem Veil]))
-			{
-				equip($item[Knob Goblin Harem Veil]);
-			}
-			else if(item_amount($item[Pine-Fresh Air Freshener]) > 0)
-			{
-				equip($slot[Acc3], $item[Pine-Fresh Air Freshener]);
-			}
-			else
-			{
-				if(get_property("auto_powerLevelAdvCount").to_int() >= 5)
-				{
-					bat_formBats();
-					autoAdv(1, $location[The Bat Hole Entrance]);
-					return true;
-				}
-				auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
-				return false;
-			}
-		}
-		else
-		{
-			auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
-			return false;
-		}
+		auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
+		return false;
 	}
 
 	if (cloversAvailable() > 0 && batStatus <= 1)
@@ -4366,15 +4333,7 @@ boolean adventureFailureHandler()
 			}
 		}
 
-		if (get_property("auto_powerLevelAdvCount").to_int() > 20)
-		{
-			if ($location[The Haunted Gallery] == my_location())
-			{
-				tooManyAdventures = false;
-			}
-		}
-
-		if(($locations[The Hidden Hospital, The Penultimate Fantasy Airship] contains my_location()) && (my_location().turns_spent < 100))
+		if ($locations[The Haunted Gallery] contains my_location() && my_location().turns_spent < 100)
 		{
 			tooManyAdventures = false;
 		}
@@ -5150,7 +5109,7 @@ boolean LX_handleSpookyravenFirstFloor()
 			if(expectPool < 18)
 			{
 				auto_log_info("Not quite boozed up for the billiards room... we'll be back.", "green");
-				if(get_property("auto_powerLevelAdvCount").to_int() < 5)
+				if (my_level() != get_property("auto_powerLevelLastLevel").to_int())
 				{
 					return false;
 				}
@@ -5408,10 +5367,6 @@ boolean auto_tavern()
 		auto_interruptCheck();
 		//Sleaze is the only one we don't care about
 
-		if(!useMaximizeToEquip())
-		{
-			autoEquip($item[17-Ball]);
-		}
 		if (possessEquipment($item[Kremlin\'s Greatest Briefcase]))
 		{
 			string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
@@ -5431,11 +5386,6 @@ boolean auto_tavern()
 				{
 					page = visit_url("place.php?whichplace=kgb&action=kgb_handledown", false);
 				}
-			}
-			mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
-			if(contains_text(mod, "Hot Damage") && !useMaximizeToEquip())
-			{
-				autoEquip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
 			}
 		}
 
@@ -5497,7 +5447,7 @@ boolean auto_tavern()
 		int capped = 0;
 		foreach ele, choicenum in eleChoiceCombos
 		{
-			boolean passed = (useMaximizeToEquip() ? simValue(ele + " Damage") : numeric_modifier(ele + " Damage")) >= 20.0;
+			boolean passed = simValue(ele + " Damage") >= 20.0;
 			set_property("choiceAdventure" + choicenum, passed ? "2" : "1");
 			if(passed) ++capped;
 		}
@@ -6230,6 +6180,14 @@ void auto_begin()
 		auto_log_info("Switching off Compact Character Mode, will resume during bedtime");
 		set_property("auto_priorCharpaneMode", 1);
 		visit_url("account.php?am=1&pwd=&action=flag_compactchar&value=0&ajax=0", true);
+	}
+
+	if (!get_property("_canSeekBirds").to_boolean() &&
+		(0 < item_amount($item[Bird-a-Day calendar])) &&
+		(auto_is_valid($item[Bird-a-Day calendar])))
+	{
+		auto_log_info("What a beautiful morning! What's today's bird?");
+		use(1, $item[Bird-a-Day calendar]);
 	}
 
 	ed_initializeSession();

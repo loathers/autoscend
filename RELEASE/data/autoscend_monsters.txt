@@ -52,6 +52,45 @@ banish	46	Wardr&ouml;b Nightstand
 banish	47	Warehouse Janitor
 banish	48	Upgraded Ram
 
+replace	0	Banshee Librarian	item:Killing Jar>0
+replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4
+replace	2	Knob Goblin Madam	item:Knob Goblin Perfume>0
+replace	3	Bookbat
+replace	4	Craven Carven Raven
+replace	5	Drunk Goat
+replace	6	Knight In White Satin
+replace	7	Knob Goblin Harem Guard
+replace	8	Mad Wino
+replace	9	Plaid Ghost
+replace	10	Possessed Laundry Press
+replace	11	Sabre-Toothed Goat
+replace	12	Senile Lihc
+replace	13	Skeletal Sommelier
+replace	14	Slick Lihc
+replace	15	White Chocolate Golem
+replace	16	Stone Temple Pirate	item:Eyepatch>0
+# lobsterfrogman (todo: add more wanderers)
+replace	17	Government Agent	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+replace	18	Terrible Mutant	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+replace	19	Government Bureaucrat	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+replace	20	Slime Blob	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+replace	21	Angry Ghost	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+replace	22	Annoyed Snake	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+replace	23	Sausage Goblin	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+# community service
+replace	24	Lava Golem	path:Community Service;loc:LavaCo Lamp Factory
+replace	25	Healing Crystal Golem	path:Community Service;loc:The Velvet / Gold Mine
+replace	26	Mine Worker (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
+replace	27	Mine Worker (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
+replace	28	Mine Overseer (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask=0
+replace	29	Mine Overseer (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask=0
+replace	30	Factory-Irregular Skeleton	path:Community Service;loc:The Skeleton Store
+replace	31	Remaindered Skeleton	path:Community Service;loc:The Skeleton Store
+replace	32	Swarm of Skulls	path:Community Service;loc:The Skeleton Store
+replace	33	Ancient Insane Monk	path:Community Service;loc:The Haiku Dungeon
+replace	34	Ferocious Bugbear	path:Community Service;loc:The Haiku Dungeon
+replace	35	Gelatinous Cube	path:Community Service;loc:The Haiku Dungeon
+
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;sgeea:3;!effect:Thrice-Cursed
 sniff	1	Gurgle the Turgle
 sniff	2	Writing Desk	!prop:writingDesksDefeated=5

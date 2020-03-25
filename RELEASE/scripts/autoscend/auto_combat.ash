@@ -81,7 +81,7 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
-		zelda_ppCurr() < zelda_ppCost(sk)
+		my_pp() < zelda_ppCost(sk)
 	)
 		return false;
 
@@ -150,7 +150,7 @@ string useSkill(skill sk, boolean mark)
 	if(mark)
 		markAsUsed(sk);
 
-	return "skill " + sk;
+	return "skill " + sk.name;
 }
 
 string useSkill(skill sk)
@@ -1128,40 +1128,32 @@ string auto_combatHandler(int round, string opp, string text)
 		combatState += "(banishercheck)";
 	}
 
-	// have_skill($skill[Macrometeorite]) seems to always return false, so we can't use canUse
-	if(auto_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10) && (my_mp() > mp_cost($skill[Macrometeorite])) && (auto_my_path() != "G-Lover"))
+	if (!contains_text(combatState, "replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
 	{
-		boolean dometeor = false;
-		if((enemy == $monster[Banshee Librarian]) && (item_amount($item[Killing Jar]) > 0))
+		string combatAction = replaceMonsterCombatString(enemy, true);
+		if(combatAction != "")
 		{
-			dometeor = true;
+			set_property("auto_combatHandler", combatState + "(replacer)");
+			if(index_of(combatAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_replaces");
+			}
+			else if(index_of(combatAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+			}
+			else
+			{
+				auto_log_warning("Unable to track replacer behavior: " + combatAction, "red");
+			}
+			return combatAction;
 		}
-		if((enemy == $monster[Beefy Bodyguard Bat]) && ($location[The Boss Bat\'s Lair].turns_spent >= 4) && (my_location() == $location[The Boss Bat\'s Lair]))
+		else
 		{
-			dometeor = true;
+			auto_log_warning("Wanted a replacer but we can not find one.", "red");
 		}
-		if((enemy == $monster[Government Agent]) && (my_location() == $location[Sonofa Beach]))
-		{
-			dometeor = true;
-		}
-		if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) > 0))
-		{
-			dometeor = true;
-		}
-		if($monsters[Bookbat, Craven Carven Raven, Drunk Goat, Knight In White Satin, Knob Goblin Harem Guard, Mad Wino, Plaid Ghost, Possessed Laundry Press, Sabre-Toothed Goat, Senile Lihc, Skeletal Sommelier, Slick Lihc, White Chocolate Golem] contains enemy)
-		{
-			dometeor = true;
-		}
-		if((enemy == $monster[Stone Temple Pirate]) && possessEquipment($item[Eyepatch]))
-		{
-			dometeor = true;
-		}
-
-		if(dometeor)
-		{
-			handleTracker(enemy, $skill[Macrometeorite], "auto_otherstuff");
-			return useSkill($skill[Macrometeorite], false);
-		}
+		set_property("auto_combatHandler", combatState + "(replacercheck)");
+		combatState += "(replacercheck)";
 	}
 
 	if(canUse($item[Disposable Instant Camera]))
@@ -1531,15 +1523,29 @@ string auto_combatHandler(int round, string opp, string text)
 		{
 			return useItem($item[Time-Spinner]);
 		}
-
-		if(canUse($skill[Sing Along]) && (get_property("boomBoxSong") == "Remainin\' Alive") && stunnable(enemy))
+		
+		if(canUse($skill[Sing Along]))
 		{
-			return useSkill($skill[Sing Along]);
-		}
-
-		if(canUse($skill[Sing Along]) && canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && stunnable(enemy))
-		{
-			return useSkill($skill[Sing Along]);
+			//15% devel, but no stun. 
+			
+			if(canSurvive(2.0) && (get_property("boomBoxSong") == "Remainin\' Alive"))
+			{
+				return useSkill($skill[Sing Along]);
+			}
+		
+			//this is for increasing meat income. gain +25 meat per monster, at the cost of letting it act once. If healing is too costly this can be a net loss of meat. until a full cost calculator is made, limit to under 10 HP damage and no more than 20% of your remaining HP.
+			
+			if(canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && (expected_damage() < 10) && (auto_my_path() != "Way of the Surprising Fist"))
+			{
+				return useSkill($skill[Sing Along]);
+			}
+		
+			//if doing nuns quest or wall of meat, disregard profit and only check if you can survive using sing along.
+			
+			if(canSurvive(3.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && $monsters[dirty thieving brigand, wall of meat] contains enemy)
+			{
+				return useSkill($skill[Sing Along]);
+			}
 		}
 	}
 
@@ -1559,14 +1565,6 @@ string auto_combatHandler(int round, string opp, string text)
 		if(canUse($skill[Summon Love Stinkbug]) && haveUsed($skill[Summon Love Gnats]) && !contains_text(text, "STUN RESIST"))
 		{
 			return useSkill($skill[Summon Love Stinkbug]);
-		}
-
-		if(canUse($skill[Sing Along]))
-		{
-			if((get_property("boomBoxSong") == "Remainin' Alive") || (get_property("boomBoxSong") == "Total Eclipse of Your Meat"))
-			{
-				return useSkill($skill[Sing Along]);
-			}
 		}
 	}
 
@@ -1676,17 +1674,20 @@ string auto_combatHandler(int round, string opp, string text)
 	{
 		// note: Juggle Fireballs CAN be used multiple times, but it is only
 		// useful if you have level 3 fire and therefore get healed
-		if(zelda_ppCurr() > 2 && canUse($skill[Juggle Fireballs], true))
+
+		if(my_pp() > 2 && canUse($skill[[7332]Juggle Fireballs], true))
 		{
-			return useSkill($skill[Juggle Fireballs]);
+			return useSkill($skill[[7332]Juggle Fireballs]);
 		}
 
-		if (enemy.physical_resistance >= 80)
+		if ((enemy.physical_resistance >= 80) ||
+		    (my_location() == $location[The Smut Orc Logging Camp] && (0 < equipped_amount($item[frosty button]))))
 		{
-			if (canUse($skill[Fireball Barrage], false))
+			if (canUse($skill[[7333]Fireball Barrage], false))
 			{
-				return useSkill($skill[Fireball Barrage]);
+				return useSkill($skill[[7333]Fireball Barrage]);
 			}
+			//this skill comes from the IOTM Beach Comb
 			if (canUse($skill[Beach Combo], true))
 			{
 				return useSkill($skill[Beach Combo]);
@@ -1697,10 +1698,11 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 		}
 
-		if (canUse($skill[Multi-Bounce], false))
+		if (canUse($skill[[7336]Multi-Bounce], false))
 		{
-			return useSkill($skill[Multi-Bounce]);
+			return useSkill($skill[[7336]Multi-Bounce]);
 		}
+		//this skill comes from the IOTM Beach Comb
 		if (canUse($skill[Beach Combo], true))
 		{
 			return useSkill($skill[Beach Combo]);
@@ -1711,9 +1713,9 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 
 		// Fallback, since maybe we only have fire flower equipped.
-		if (canUse($skill[Fireball Barrage], false))
+		if (canUse($skill[[7333]Fireball Barrage], false))
 		{
-			return useSkill($skill[Fireball Barrage]);
+			return useSkill($skill[[7333]Fireball Barrage]);
 		}
 		return useSkill($skill[Fireball Toss], false);
 	}
@@ -2573,6 +2575,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if (canUse($skill[Sing Along]))
 	{
+		//ed can easily survive singing along thanks to undying. and healing him is essentially free.
 		if((get_property("boomBoxSong") == "Remainin\' Alive") || ((get_property("boomBoxSong") == "Total Eclipse of Your Meat") && canSurvive(2.0)))
 		{
 			return useSkill($skill[Sing Along]);

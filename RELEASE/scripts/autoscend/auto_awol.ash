@@ -177,7 +177,7 @@ boolean awol_buySkills()
 					{
 						page = visit_url("choice.php?pwd=&option=1&whichchoice=1177&whichskill=1", true);
 					}
-					else if(!have_skill($skill[Hard Drinker]) && cowSlang)
+					else if(!have_skill($skill[[18008]Hard Drinker]) && cowSlang)
 					{
 						page = visit_url("choice.php?pwd=&option=1&whichchoice=1177&whichskill=8", true);
 					}
@@ -208,7 +208,7 @@ boolean awol_buySkills()
 				}
 				else
 				{
-					if(!have_skill($skill[Hard Drinker]) && cowSlang)
+					if(!have_skill($skill[[18008]Hard Drinker]) && cowSlang)
 					{
 						page = visit_url("choice.php?pwd=&option=1&whichchoice=1177&whichskill=8", true);
 					}

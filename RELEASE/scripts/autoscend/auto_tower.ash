@@ -41,6 +41,7 @@ boolean L13_towerNSContests()
 	{
 		if(get_property("nsContestants1").to_int() == -1)
 		{
+			resetMaximize();
 			if(!get_property("_grimBuff").to_boolean() && auto_have_familiar($familiar[Grim Brother]))
 			{
 				cli_execute("grim init");
@@ -54,7 +55,15 @@ boolean L13_towerNSContests()
 			case 1:
 				acquireMP(160); // only uses free rests or items on hand by default
 
+
+				autoMaximize("initiative -equip snow suit", 1500, 0, false);
+
 				provideInitiative(400, true);
+
+				if(crowd1Insufficient())
+				{
+					cli_execute("concert White-boy Angst");
+				}
 
 				if(crowd1Insufficient())
 				{
@@ -66,12 +75,16 @@ boolean L13_towerNSContests()
 				break;
 			}
 
+			// Adjust us to the initiative familiar selected in provideInitiative().
+			preAdvUpdateFamiliar($location[None]);
+
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
 			visit_url("choice.php?pwd=&whichchoice=1003&option=1", true);
 			visit_url("main.php");
 		}
 		if(get_property("nsContestants2").to_int() == -1)
 		{
+			resetMaximize();
 			if(!get_property("_lyleFavored").to_boolean())
 			{
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
@@ -136,6 +149,7 @@ boolean L13_towerNSContests()
 		}
 		if(get_property("nsContestants3").to_int() == -1)
 		{
+			resetMaximize();
 			acquireMP(125); // only uses free rests or items on hand by default
 
 			if(challenge != $element[none])
@@ -148,12 +162,14 @@ boolean L13_towerNSContests()
 			switch(challenge)
 			{
 			case $element[cold]:
+				if(crowd3Insufficient()) auto_beachCombHead("cold");
 				if(crowd3Insufficient()) buffMaintain($effect[Cold Hard Skin], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Frostbeard], 15, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Icy Glare], 10, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Song of the North], 100, 1, 1);
 				break;
 			case $element[hot]:
+				if(crowd3Insufficient()) auto_beachCombHead("hot");
 				if(crowd3Insufficient()) buffMaintain($effect[Song of Sauce], 100, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Flamibili Tea], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Flaming Weapon], 0, 1, 1);
@@ -164,11 +180,13 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) buffMaintain($effect[Your Fifteen Minutes], 50, 1, 1);
 				break;
 			case $element[sleaze]:
+				if(crowd3Insufficient()) auto_beachCombHead("sleaze");
 				if(crowd3Insufficient()) buffMaintain($effect[Takin\' It Greasy], 15, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Blood-Gorged], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Greasy Peasy], 0, 1, 1);
 				break;
 			case $element[stench]:
+				if(crowd3Insufficient()) auto_beachCombHead("stench");
 				if(crowd3Insufficient()) buffMaintain($effect[Drenched With Filth], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Musky], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Stinky Hands], 0, 1, 1);
@@ -176,6 +194,7 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) buffMaintain($effect[Rotten Memories], 15, 1, 1);
 				break;
 			case $element[spooky]:
+				if(crowd3Insufficient()) auto_beachCombHead("spooky");
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Hands], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Weapon], 0, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
@@ -751,33 +770,13 @@ boolean L13_towerNSTower()
 		{
 			cli_execute("concert 2");
 		}
-		if(!useMaximizeToEquip())
-		{
-			autoEquip($item[Silver Cow Creamer]);
-			autoEquip($item[Sneaky Pete\'s Leather Jacket]);
-		}
 		if(autoForbidFamiliarChange())
 		{
-			if(useMaximizeToEquip())
-			{
-				addToMaximize("200meat drop");
-			}
-			else
-			{
-				autoMaximize("meat drop, -equip snow suit", 1500, 0, false);
-			}
+			addToMaximize("200meat drop");
 		}
 		else
 		{
-			if(useMaximizeToEquip())
-			{
-				addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconscious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
-			}
-			else
-			{
-				autoMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun,switch cat burglar", 1500, 0, false);
-				handleFamiliar(my_familiar());
-			}
+			addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconscious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
 		}
 		if(my_class() == $class[Seal Clubber])
 		{
@@ -815,14 +814,7 @@ boolean L13_towerNSTower()
 			buffMaintain($effect[Carol of the Hells], 0, 1, 1);
 			if(item_amount($item[Electric Boning Knife]) == 0)
 			{
-				if(useMaximizeToEquip())
-				{
-					addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
-				}
-				else
-				{
-					autoMaximize("myst -equip snow suit", 1500, 0, false);
-				}
+				addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
 			}
 			foreach s in $slots[acc1, acc2, acc3]
 			{
@@ -895,13 +887,13 @@ boolean L13_towerNSTower()
 			n_healing_items = item_amount($item[super deluxe mushroom]);
 			if(n_healing_items < 5)
 			{
-				retrieve_item(5 - n_healing_items, $item[super deluxe mushroom]);
+				retrieve_item(5, $item[super deluxe mushroom]);
 				n_healing_items = item_amount($item[super deluxe mushroom]);
 			}
 		}
 		if(n_healing_items < 5)
 		{
-			abort("We only have " + n_healing_items + "healing items, I'm not sure we can do the shadow.");
+			abort("We only have " + n_healing_items + " healing items, I'm not sure we can do the shadow.");
 		}
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;
@@ -949,19 +941,8 @@ boolean L13_towerNSFinal()
 
 	handleFamiliar("boss");
 
-	if(!useMaximizeToEquip())
-	{
-		autoEquip($item[Beer Helmet]);
-		autoEquip($item[Misty Cloak]);
-		autoEquip($slot[acc1], $item[gumshoes]);
-		autoEquip($slot[acc3], $item[World\'s Best Adventurer Sash]);
-	}
-	else
-	{
-		addToMaximize("10dr,3moxie,0.5da 1000max,-5ml,1.5hp,0item,0meat");
-	}
+	addToMaximize("10dr,3moxie,0.5da 1000max,-5ml,1.5hp,0item,0meat");
 	autoEquip($slot[acc2], $item[Attorney\'s Badge]);
-
 
 	if(internalQuestStatus("questL13Final") < 13)
 	{

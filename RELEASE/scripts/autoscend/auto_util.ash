@@ -1689,7 +1689,9 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 {
 	if(canBanish(enemy, loc))
 	{
-		return adjustForBanish(banisherCombatString(enemy, loc));
+		string banish_string = banisherCombatString(enemy, loc);
+		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
+		return adjustForBanish(banish_string);
 	}
 	return false;
 }
@@ -1786,7 +1788,9 @@ boolean adjustForYellowRayIfPossible(monster target)
 {
 	if(canYellowRay(target))
 	{
-		return adjustForYellowRay(yellowRayCombatString(target));
+		string yr_string = yellowRayCombatString(target);
+		auto_log_info("Adjusting to have YR available for " + target + ": " + yr_string, "blue");
+		return adjustForYellowRay(yr_string);
 	}
 	return false;
 }
@@ -1794,6 +1798,71 @@ boolean adjustForYellowRayIfPossible(monster target)
 boolean adjustForYellowRayIfPossible()
 {
 	return adjustForYellowRayIfPossible($monster[none]);
+}
+
+string replaceMonsterCombatString(monster target, boolean inCombat)
+{
+	if (auto_macrometeoritesAvailable() > 0)
+	{
+		return "skill " + $skill[Macrometeorite];
+	}
+	if (auto_powerfulGloveReplacesAvailable(inCombat) > 0)
+	{
+		return "skill " + $skill[CHEAT CODE: Replace Enemy];
+	}
+	return "";
+}
+
+string replaceMonsterCombatString(monster target)
+{
+	return replaceMonsterCombatString(target, false);
+}
+
+string replaceMonsterCombatString()
+{
+	return replaceMonsterCombatString($monster[none]);
+}
+
+# Use this to determine if it is safe to enter a replace monster combat.
+boolean canReplace(monster target)
+{
+	return replaceMonsterCombatString(target) != "";
+}
+
+boolean canReplace()
+{
+	return canReplace($monster[none]);
+}
+
+/* Adjust equipment/familiars to have access to the desired replace monster
+ */
+boolean adjustForReplace(string combat_string)
+{
+	if(combat_string == ("skill " + $skill[Macrometeorite]))
+	{
+		return true;
+	}
+	if(combat_string == ("skill " + $skill[CHEAT CODE: Replace Enemy]))
+	{
+		return auto_forceEquipPowerfulGlove();
+	}
+	return false;
+}
+
+boolean adjustForReplaceIfPossible(monster target)
+{
+	if(canReplace(target))
+	{
+		string rep_string = replaceMonsterCombatString(target);
+		auto_log_info("Adjusting to have replace available for " + target + ": " + rep_string, "blue");
+		return adjustForReplace(rep_string);
+	}
+	return false;
+}
+
+boolean adjustForReplaceIfPossible()
+{
+	return adjustForReplaceIfPossible($monster[none]);
 }
 
 string statCard()
@@ -2801,24 +2870,9 @@ boolean providePlusCombat(int amt, boolean doEquips)
 
 	if(doEquips)
 	{
-		if(!useMaximizeToEquip())
-		{
-			removeNonCombat();
-			if(have_familiar($familiar[Grim Brother]) && possessEquipment($item[Buddy Bjorn]))
-			{
-				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
-				{
-					autoEquip($slot[Back], $item[Buddy Bjorn]);
-				}
-				handleBjornify($familiar[Grim Brother]);
-			}
-		}
-		else
-		{
-			addToMaximize("200combat " + to_string(amt) + "max");
-			simMaximize();
-			equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
-		}
+		addToMaximize("200combat " + to_string(amt) + "max");
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(auto_have_familiar($familiar[Jumpsuited Hound Dog]))
 		{
 			handleFamiliar($familiar[Jumpsuited Hound Dog]);
@@ -2908,25 +2962,9 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 
 	if(doEquips)
 	{
-		if(!useMaximizeToEquip())
-		{
-			removeCombat();
-			if(have_familiar($familiar[Grimstone Golem]) && possessEquipment($item[Buddy Bjorn]))
-			{
-				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
-				{
-					autoEquip($slot[Back], $item[Buddy Bjorn]);
-				}
-				handleBjornify($familiar[Grimstone Golem]);
-			}
-		}
-		else
-		{
-			addToMaximize("-200combat " + to_string(-1 * amt) + "max");
-			simMaximize();
-			equipDiff = to_int(simValue("Combat Rate") -
-				numeric_modifier("Combat Rate"));
-		}
+		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 	}
 
 	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
@@ -2980,21 +3018,18 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 
 	if(doEquips)
 	{
-		if(useMaximizeToEquip())
+		string max = "500initiative " + amt + "max";
+		if(speculative)
 		{
-			string max = "500initiative " + amt + "max";
-			if(speculative)
-			{
-				simMaximizeWith(max);
-			}
-			else
-			{
-				addToMaximize("500initiative " + amt + "max");
-				simMaximize();
-			}
-			delta = simValue("Initiative") - numeric_modifier("Initiative");
-			auto_log_debug("With gear we can get to " + result());
+			simMaximizeWith(max);
 		}
+		else
+		{
+			addToMaximize("500initiative " + amt + "max");
+			simMaximize();
+		}
+		delta = simValue("Initiative") - numeric_modifier("Initiative");
+		auto_log_debug("With gear we can get to " + result());
 
 		if(!speculative)
 			handleFamiliar("init");
@@ -3212,35 +3247,32 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 
 	if(doEquips)
 	{
-		if(useMaximizeToEquip())
+		if(speculative)
 		{
-			if(speculative)
+			string max = "";
+			foreach ele,goal in amt
 			{
-				string max = "";
-				foreach ele,goal in amt
+				if(max.length() > 0)
 				{
-					if(max.length() > 0)
-					{
-						max += ",";
-					}
-					max += "2000" + ele + " resistance " + goal + "max";
+					max += ",";
 				}
-				simMaximizeWith(max);
+				max += "2000" + ele + " resistance " + goal + "max";
 			}
-			else
-			{
-				foreach ele,goal in amt
-				{
-					addToMaximize("2000" + ele + " resistance " + goal + "max");
-				}
-				simMaximize();
-			}
-			foreach ele in amt
-			{
-				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
-			}
-			auto_log_debug("With gear we can get to " + resultstring());
+			simMaximizeWith(max);
 		}
+		else
+		{
+			foreach ele,goal in amt
+			{
+				addToMaximize("2000" + ele + " resistance " + goal + "max");
+			}
+			simMaximize();
+		}
+		foreach ele in amt
+		{
+			delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
+		}
+		auto_log_debug("With gear we can get to " + resultstring());
 	}
 
 	if(pass())
@@ -3309,14 +3341,11 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				cli_execute("acquire 1 li'l candy corn costume");
 			}
-			if(useMaximizeToEquip())
+			// update maximizer scores with familiar
+			simMaximize();
+			foreach ele in amt
 			{
-				// update maximizer scores with familiar
-				simMaximize();
-				foreach ele in amt
-				{
-					delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
-				}
+				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
 		}
 		if(pass())
@@ -3435,35 +3464,32 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 
 	if(doEquips)
 	{
-		if(useMaximizeToEquip())
+		if(speculative)
 		{
-			if(speculative)
+			string max = "";
+			foreach st,goal in amt
 			{
-				string max = "";
-				foreach st,goal in amt
+				if(max.length() > 0)
 				{
-					if(max.length() > 0)
-					{
-						max += ",";
-					}
-					max += "200" + st + " " + goal + "max";
+					max += ",";
 				}
-				simMaximizeWith(max);
+				max += "200" + st + " " + goal + "max";
 			}
-			else
-			{
-				foreach st,goal in amt
-				{
-					addToMaximize("200" + st + " " + goal + "max");
-				}
-				simMaximize();
-			}
-			foreach st in amt
-			{
-				delta[st] = simValue("Buffed " + st) - my_buffedstat(st);
-			}
-			auto_log_debug("With gear we can get to " + resultstring());
+			simMaximizeWith(max);
 		}
+		else
+		{
+			foreach st,goal in amt
+			{
+				addToMaximize("200" + st + " " + goal + "max");
+			}
+			simMaximize();
+		}
+		foreach st in amt
+		{
+			delta[st] = simValue("Buffed " + st) - my_buffedstat(st);
+		}
+		auto_log_debug("With gear we can get to " + resultstring());
 	}
 
 	if(pass())
@@ -3525,10 +3551,12 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		Blessing of Your Favorite Bird,
 	]))
 		return result();
+
 	if(auto_have_skill($skill[Quiet Desperation]))
 		tryEffects($effects[Quiet Desperation]);
 	else
 		tryEffects($effects[Disco Smirk]);
+
 	if(pass())
 		return result();
 
@@ -3604,6 +3632,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			Standard Issue Bravery,
 			Tomato Power,
 			Vital,
+			Triple-Sized,
 		]))
 			return result();
 
@@ -5366,6 +5395,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Extreme Muscle Relaxation]:	useItem = $item[Mick\'s IcyVapoHotness Rub];	break;
 	case $effect[Everything Must Go!]:			useItem = $item[Violent Pastilles];				break;
 	case $effect[Eyes All Black]:				useItem = $item[Delicious Candy];				break;
+	case $effect[Faboooo]:						useItem = $item[Fabiotion];						break;
 	case $effect[Far Out]:						useItem = $item[Patchouli Incense Stick];		break;
 	case $effect[Fat Leon\'s Phat Loot Lyric]:	useSkill = $skill[Fat Leon\'s Phat Loot Lyric];	break;
 	case $effect[Feeling Punchy]:				useItem = $item[Punching Potion];				break;
@@ -5718,6 +5748,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Toad in the Hole]:				useItem = $item[Anti-anti-antidote];			break;
 	case $effect[Tomato Power]:					useItem = $item[Tomato Juice of Powerful Power];break;
 	case $effect[Tortious]:						useItem = $item[Mocking Turtle];				break;
+	case $effect[Triple-Sized]:					useSkill = $skill[none];						break;
 	case $effect[Truly Gritty]:					useItem = $item[True Grit];						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
@@ -5841,6 +5872,18 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		case $effect[Disdain of the War Snapper]:
 			useSkill = $skill[Blessing of the War Snapper];
 			break;
+		}
+	}
+
+	if (buff == $effect[Triple-Sized])
+	{
+		if (speculative)
+		{
+			return auto_powerfulGloveCharges() >= 5;
+		}
+		else
+		{
+			return auto_powerfulGloveStats();
 		}
 	}
 
@@ -6245,6 +6288,18 @@ boolean auto_check_conditions(string conds)
 				if(req_loc == $location[none])
 					abort('"' + condition_data + '" does not properly convert to a location!');
 				return my_location() == req_loc;
+			// data: <location><comparison operator><integer value>
+			// As a precaution, autoscend aborts if to_location returns $location[none]
+			case "turnsspent":
+				matcher m6 = create_matcher("([^=<>]+)([=<>]+)(.+)", condition_data);
+				if(!m6.find())
+					abort('"' + condition_data + '" is not a proper turnsspent condition format!');
+				location loc = to_location(m6.group(1));
+				if(loc == $location[none])
+					abort('"' + condition_data + '" does not properly convert to a location!');
+				if(!($strings[=,==] contains m6.group(2)))
+					return compare_numbers(loc.turns_spent, m6.group(3).to_int(), m6.group(2));
+				return loc.turns_spent == m6.group(3).to_int();
 			// data: <propname><comparison operator><value>
 			// >/</>=/<= only supported for integer properties!
 			case "prop":
@@ -6372,6 +6427,15 @@ boolean auto_wantToYellowRay(monster enemy, location loc)
 	boolean [monster] toSniff = auto_getMonsters("yellowray");
 	set_location(locCache);
 	return toSniff[enemy];
+}
+
+boolean auto_wantToReplace(monster enemy, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] toReplace = auto_getMonsters("replace");
+	set_location(locCache);
+	return toReplace[enemy];
 }
 
 int total_items(boolean [item] items)

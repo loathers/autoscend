@@ -1,0 +1,39 @@
+Banshee Librarian	item:Killing Jar>0
+Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4
+Knob Goblin Madam	item:Knob Goblin Perfume>0
+Bookbat
+Craven Carven Raven
+Drunk Goat
+Knight In White Satin
+Knob Goblin Harem Guard
+Mad Wino
+Plaid Ghost
+Possessed Laundry Press
+Sabre-Toothed Goat
+Senile Lihc
+Skeletal Sommelier
+Slick Lihc
+White Chocolate Golem
+Stone Temple Pirate	item:Eyepatch>0
+# lobsterfrogman (todo: add more wanderers)
+Government Agent	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+Terrible Mutant	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+Government Bureaucrat	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+Slime Blob	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+Angry Ghost	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+Annoyed Snake	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+Sausage Goblin	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
+# community service
+Lava Golem	path:Community Service;loc:LavaCo Lamp Factory
+Healing Crystal Golem	path:Community Service;loc:The Velvet / Gold Mine
+Mine Worker (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
+Mine Worker (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
+Mine Overseer (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask=0
+Mine Overseer (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask=0
+Factory-Irregular Skeleton	path:Community Service;loc:The Skeleton Store
+Remaindered Skeleton	path:Community Service;loc:The Skeleton Store
+Swarm of Skulls	path:Community Service;loc:The Skeleton Store
+Ancient Insane Monk	path:Community Service;loc:The Haiku Dungeon
+Ferocious Bugbear	path:Community Service;loc:The Haiku Dungeon
+Gelatinous Cube	path:Community Service;loc:The Haiku Dungeon
+Knob Goblin Poseur	path:Community Service;loc:The Haiku Dungeon

@@ -236,7 +236,7 @@ boolean L12_preOutfit()
 
 boolean L12_startWar()
 {
-	if (internalQuestStatus("questL12War") < 0 || internalQuestStatus("questL12War") > 0)
+	if (internalQuestStatus("questL12War") != 0)
 	{
 		return false;
 	}
@@ -247,6 +247,11 @@ boolean L12_startWar()
 	}
 
 	if (!haveWarOutfit() || my_basestat($stat[Mysticality]) < 70 || my_basestat($stat[Moxie]) < 70)
+	{
+		return false;
+	}
+
+	if(get_property("lastIslandUnlock").to_int() < my_ascensions())
 	{
 		return false;
 	}
@@ -438,7 +443,7 @@ boolean L12_orchardFinalize()
 	}
 	warOutfit(true);
 	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
-	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
+	visit_url("shop.php?whichshop=hippy");
 	return true;
 }
 
@@ -490,25 +495,7 @@ boolean L12_gremlins()
 
 	#Put a different shield in here.
 	auto_log_info("Doing them gremlins", "blue");
-	if(useMaximizeToEquip())
-	{
-		addToMaximize("20dr,1da 1000max,3hp,-3ml");
-	}
-	else
-	{
-		if(item_amount($item[Ouija Board\, Ouija Board]) > 0)
-		{
-			equip($item[Ouija Board\, Ouija Board]);
-		}
-		if(item_amount($item[Reinforced Beaded Headband]) > 0)
-		{
-			equip($item[Reinforced Beaded Headband]);
-		}
-		if (item_amount($item[astral shield]) > 0)
-		{
-			equip($item[astral shield]);
-		}
-	}
+	addToMaximize("20dr,1da 1000max,3hp,-3ml");
 	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
@@ -687,10 +674,6 @@ boolean L12_sonofaPrefix()
 	{
 		return false;
 	}
-	if((get_property("fratboysDefeated").to_int() < 64) && get_property("auto_hippyInstead").to_boolean())
-	{
-		return false;
-	}
 	if(item_amount($item[barrel of gunpowder]) >= 4 && !auto_voteMonster())
 	{
 		return false;
@@ -712,19 +695,29 @@ boolean L12_sonofaPrefix()
 
 	if(!(auto_get_campground() contains $item[Source Terminal]))
 	{
-		if(possessEquipment($item[&quot;I voted!&quot; sticker]))
+		if((auto_voteMonster() || auto_sausageGoblin()) && adjustForReplaceIfPossible())
 		{
-			if(auto_voteMonster() && auto_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10))
+			try
 			{
 				if(item_amount($item[barrel of gunpowder]) < 4)
 				{
 					set_property("auto_doCombatCopy", "yes");
 				}
-				set_property("auto_combatDirective", "start;skill macrometeorite");
-				auto_voteMonster(false, $location[Sonofa Beach], "");
+				if (auto_voteMonster())
+				{
+					auto_voteMonster(false, $location[Sonofa Beach], "");
+					return true;
+				}
+				else if (auto_sausageGoblin())
+				{
+					auto_sausageGoblin($location[Sonofa Beach], "");
+					return true;
+				}
+			}
+			finally
+			{
 				set_property("auto_combatDirective", "");
 				set_property("auto_doCombatCopy", "no");
-				return true;
 			}
 		}
 		return false;
@@ -844,6 +837,10 @@ boolean L12_sonofaFinish()
 		return false;
 	}
 	if(!haveWarOutfit())
+	{
+		return false;
+	}
+	if((get_property("fratboysDefeated").to_int() < 64) && get_property("auto_hippyInstead").to_boolean())
 	{
 		return false;
 	}
@@ -1063,25 +1060,11 @@ boolean L12_themtharHills()
 
 	if(autoForbidFamiliarChange())
 	{
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("200meat drop");
-		}
-		else
-		{
-			autoMaximize("meat drop, -equip snow suit", 1500, 0, false);
-		}
+		addToMaximize("200meat drop");
 	}
 	else
 	{
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("200meat drop,switch Hobo Monkey,switch rockin' robin,switch adventurous spelunker,switch Grimstone Golem,switch Fist Turkey,switch Unconscious Collective,switch Golden Monkey,switch Angry Jung Man,switch Leprechaun,switch cat burglar");
-		}
-		else
-		{
-			autoMaximize("meat drop, -equip snow suit, switch Hobo Monkey, switch rockin' robin, switch adventurous spelunker, switch Grimstone Golem, switch Fist Turkey, switch Unconscious Collective, switch Golden Monkey, switch Angry Jung Man, switch Leprechaun,switch cat burglar", 1500, 0, false);
-		}
+		addToMaximize("200meat drop,switch Hobo Monkey,switch rockin' robin,switch adventurous spelunker,switch Grimstone Golem,switch Fist Turkey,switch Unconscious Collective,switch Golden Monkey,switch Angry Jung Man,switch Leprechaun,switch cat burglar");
 		handleFamiliar(my_familiar());
 	}
 	int expectedMeat = simValue("Meat Drop");
