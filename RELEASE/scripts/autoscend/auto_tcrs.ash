@@ -9,7 +9,6 @@ boolean tcrs_initializeSettings()
 {
 	if(in_tcrs())
 	{
-		set_property("auto_spookyfertilizer", "");
 		set_property("auto_getStarKey", true);
 		set_property("auto_holeinthesky", true);
 		set_property("auto_wandOfNagamar", true);
@@ -29,62 +28,6 @@ float tcrs_expectedAdvPerFill(string quality)
 	default:        abort("could not calculate expected adventures for quality " + quality + " in 2CRS");
 	}
 	return -1; // makes the compiler shut up
-}
-
-boolean tcrs_consumption()
-{
-	if(!in_tcrs())
-		return false;
-
-	if(get_property("auto_legacyConsumeStuff").to_boolean())
-	{
-		// print("Using a hard-coded consumption strategy for TCRS. 'set auto_legacyConsumeStuff=false' to use the new, cool automatic consumption strategy.", "red");
-	}
-	else
-	{
-		auto_maximizedConsumeStuff();
-		return true;
-	}
-
-	if(my_class() == $class[Sauceror] && my_sign() == "Blender")
-	{
-		boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
-		if((inebriety_left() >= 4) && canDesert && (my_meat() >= 75))
-		{
-			buffMaintain($effect[Ode to Booze], 20, 1, 4);
-			autoDrinkCafe(1, -2); // Scrawny Stout;
-		}
-		if((my_adventures() <= 1) && (inebriety_left() == 3) && (my_meat() >= npc_price($item[used beer])))
-		{
-			buyUpTo(1, $item[used beer]);
-			autoDrink(1, $item[used beer]);
-		}
-		if((my_adventures() <= 1 || item_amount($item[glass of goat's milk]) > 0) && fullness_left() == 15)
-		{
-			if(get_property("auto_useWishes").to_boolean() && (0 == have_effect($effect[Got Milk])))
-			{
-				makeGenieWish($effect[Got Milk]); // +15 adv is worth it for daycount
-			}
-			buy(1, $item[fortune cookie]);
-			buy(6, $item[pickled egg]);
-			autoEat(1, $item[fortune cookie]);
-			autoEat(6, $item[pickled egg]);
-			if(item_amount($item[glass of goat's milk]) > 0)
-			{
-				autoEat(1, $item[glass of goat's milk]);
-			}
-			else	 // 1 adventure left, better than wasting the Milk charge?
-			{
-				acquireHermitItem($item[Ketchup]);
-				autoEat(1, $item[Ketchup]);
-			}
-		}
-	}
-	else
-	{
-		print("Not eating or drinking anything, since we don't know what's good...");
-	}
-	return true;
 }
 
 boolean tcrs_maximize_with_items(string maximizerString)

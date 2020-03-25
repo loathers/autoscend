@@ -9,6 +9,11 @@ boolean autoAdv(location loc, string option)
 # num is not handled properly anyway, so we'll just reject it.
 boolean autoAdv(int num, location loc, string option)
 {
+	if(!zone_isAvailable(loc, true)){
+		auto_log_warning("Cant get to " + loc + " right now.", "red");
+		return false;
+	}
+
 	set_property("auto_combatHandler", "");
 	set_property("auto_diag_round", 0);
 	set_property("nextAdventure", loc);
@@ -16,9 +21,9 @@ boolean autoAdv(int num, location loc, string option)
 	{
 		option = "auto_combatHandler";
 	}
-	if(auto_my_path() == "Actually Ed the Undying")
+	if (isActuallyEd())
 	{
-		return ed_autoAdv(num, loc, option);
+		return autoEdAdv(num, loc, option);
 	}
 	if(auto_my_path() == "Pocket Familiars")
 	{
@@ -107,14 +112,21 @@ boolean autoAdvBypass(string url, location loc, string option)
 #
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
+	if(!zone_isAvailable(loc, true))
+	{
+		// reinstate this check for now. Didn't fix the War boss fight outside of Ed & KoE,
+		// will work around that by passing Noob Cave as location until this is refactored.
+		auto_log_warning("Cant get to " + loc + " right now.", "red");	
+		return false;	
+	}
+	
 	set_property("nextAdventure", loc);
 	cli_execute("auto_pre_adv");
-#	handlePreAdventure(loc);
 	if(option == "")
 	{
 		option = "auto_combatHandler";
 	}
-	if(my_class() == $class[Ed])
+	if (isActuallyEd())
 	{
 		ed_preAdv(1, loc, option);
 	}
@@ -136,13 +148,9 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		}
 		urlGetFlags /= 2;
 	}
-	if((my_hp() == 0) || (get_property("_edDefeats").to_int() == 1) || (have_effect($effect[Beaten Up]) > 0))
+	if (my_hp() == 0 || have_effect($effect[Beaten Up]) > 0)
 	{
 		auto_log_warning("Uh oh! Died when starting a combat indirectly.", "red");
-		if(my_class() == $class[Ed])
-		{
-			return ed_autoAdv(1, loc, option, true);
-		}
 		#Can we just return true here?
 		abort("autoAdvBypass override abort");
 	}
@@ -156,6 +164,11 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	{
 		auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 
+		if (isActuallyEd())
+		{
+				auto_runEdCombat(option, false);
+				return true;
+		}
 		if(option != "autoscend_null") // && (option != ""))
 		{
 			if(get_auto_attack() == 0)
@@ -300,7 +313,69 @@ boolean autoAdvBypass(string url, string option)
 #}
 
 
+void preAdvUpdateFamiliar(location place)
+{
+	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
+	if(auto_my_path() == "Pocket Familiars")
+	{
+		famChoice = $familiar[none];
+	}
 
+	if((famChoice != $familiar[none]) && !is100FamiliarRun() && (internalQuestStatus("questL13Final") < 13))
+	{
+		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
+		{
+#			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
+			use_familiar(famChoice);
+		}
+	}
+
+	if(auto_have_familiar($familiar[cat burglar]))
+	{
+		item[monster] heistDesires = catBurglarHeistDesires();
+		boolean wannaHeist = false;
+		foreach mon, it in heistDesires
+		{
+			foreach i, mmon in get_monsters(place)
+			{
+				if(mmon == mon)
+				{
+					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
+					wannaHeist = true;
+				}
+			}
+		}
+		if(wannaHeist && (famChoice != $familiar[none]) && !is100FamiliarRun())
+		{
+			use_familiar($familiar[cat burglar]);
+		}
+	}
+
+	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
+	{
+		if(!auto_have_familiar($familiar[Machine Elf]))
+		{
+			auto_log_critical("Massive failure, we don't use snowglobes.");
+			abort("Massive failure, we don't use snowglobes.");
+		}
+		auto_log_error("Somehow we are going to the DMT without a Machine Elf...", "red");
+		use_familiar($familiar[Machine Elf]);
+	}
+
+	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
+	{
+		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
+		{
+			if(equipped_item($slot[Familiar]) != $item[Li\'l Candy Corn Costume])
+			{
+				if(item_amount($item[Li\'l Candy Corn Costume]) > 0)
+				{
+					equip($slot[Familiar], $item[Li\'l Candy Corn Costume]);
+				}
+			}
+		}
+	}
+}
 
 
 boolean preAdvXiblaxian(location loc)

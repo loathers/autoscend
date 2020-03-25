@@ -3,7 +3,6 @@ boolean ocrs_initializeSettings()
 {
 	if(my_path() == "One Crazy Random Summer")
 	{
-		set_property("auto_spookyfertilizer", "");
 		set_property("auto_getStarKey", true);
 		set_property("auto_holeinthesky", true);
 		set_property("auto_wandOfNagamar", true);

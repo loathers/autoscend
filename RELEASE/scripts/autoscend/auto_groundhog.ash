@@ -4,7 +4,6 @@ void groundhog_initializeSettings()
 {
 	if(auto_my_path() == "Live. Ascend. Repeat.")
 	{
-		set_property("auto_ballroomsong", "finished");
 		set_property("auto_cubeItems", true);
 		set_property("auto_getStarKey", true);
 		set_property("auto_grimstoneOrnateDowsingRod", false);

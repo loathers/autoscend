@@ -8,17 +8,94 @@ generic_t zone_difficulty(location loc);
 generic_t zone_combatMod(location loc);
 generic_t zone_delay(location loc);
 generic_t zone_available(location loc);
+boolean zone_unlock(location loc);
 location[int] zone_list();
 int[location] zone_delayable();
 boolean zone_isAvailable(location loc);
+boolean zone_isAvailable(location loc, boolean unlockIfPossible);
 location[int] zones_available();
 monster[int] mobs_available();
 item[int] drops_available();
 item[int] hugpocket_available();
+boolean is_ghost_in_zone(location loc);
+
+boolean zone_unlock(location loc){
+	boolean unlock_thinknerd(){
+		auto_log_debug("Attempting to open " + loc + " by acquiring/equipping a shirt.");
+
+		if(!auto_have_skill($skill[Torso Awaregness])){
+			return false;
+		}
+
+		item shirt = $item[none];
+		foreach i in get_inventory(){
+			if(to_slot(i) == $slot[shirt]){
+				shirt = i;
+				break;
+			}
+		}
+
+		if(shirt == $item[none] && isjanuaryToteAvailable() && januaryToteAcquire($item[Makeshift Garbage Shirt])){
+			shirt = $item[Makeshift Garbage Shirt];
+		}
+
+		if(shirt == $item[none] && shouldUseWishes() && wishesAvailable() > 0){
+			shirt = to_item("blessed rustproof +2 gray dragon scale mail");
+			makeGenieWish("for a " + shirt);
+			if(item_amount(shirt) == 0){
+				shirt = $item[none];
+			}
+		}
+
+		if(shirt == $item[none] && auto_have_skill($skill[Armorcraftiness])){
+			static boolean[item] craftable_shirts = $items[barskin cloak, bat-ass leather jacket, clownskin harness, demonskin jacket, gnauga hide vest, hipposkin poncho, lynyrdskin tunic, tuxedo shirt, white snakeskin duster, yak anorak];
+
+			foreach craftable in craftable_shirts{
+				if(creatable_amount(craftable) > 0 && create(1, craftable)){
+					shirt = craftable;
+					break;
+				}
+			}
+		}
+
+		if(shirt == $item[none] && neverendingPartyAvailable()){
+			auto_log_warning("Couldnt find a shirt to unlock Thinknerd. You may want to run NEP with +item to get a shirt");
+		}
+
+		return shirt != $item[none] && autoEquip($slot[shirt], shirt);
+	}
+
+	boolean unlocked = false;
+	if(loc == $location[The Thinknerd Warehouse]){
+		unlocked = unlock_thinknerd();
+	} else{
+		auto_log_debug("Dont know how to unlock " + loc);
+		return false;
+	}
+
+	if(!unlocked){
+		auto_log_debug("Wasnt able to unlock " + loc);
+	}
+
+	return unlocked;
+}
+
+boolean zone_isAvailable(location loc, boolean unlockIfPossible){
+
+	if(zone_available(loc)._boolean){
+		return true;
+	}
+
+	if(unlockIfPossible){
+		zone_unlock(loc);
+	}
+
+	return zone_available(loc)._boolean;
+}
 
 boolean zone_isAvailable(location loc)
 {
-	return zone_available(loc)._boolean;
+	return zone_isAvailable(loc, true);
 }
 
 int[location] zone_delayable()
@@ -599,7 +676,7 @@ generic_t zone_delay(location loc)
 		value = 4 - loc.turns_spent;
 		break;
 	case $location[The Outskirts of Cobb\'s Knob]:
-		if(get_property("auto_day1_cobb") != "finished")
+		if (internalQuestStatus("questL05Goblin") < 1)
 		{
 			value = 10 - loc.turns_spent;
 		}
@@ -658,12 +735,13 @@ generic_t zone_available(location loc)
 		{
 			retval._boolean = true;
 		}
+		break;
 	case $location[The Red Zeppelin]:
 		if(internalQuestStatus("questL11Ron") >= 2)
 		{
 			retval._boolean = true;
 		}
-
+		break;
 	case $location[Super Villain\'s Lair]:
 		if((auto_my_path() == "License to Adventure") && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
 		{
@@ -866,7 +944,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[The Boss Bat\'s Lair]:
-		if(internalQuestStatus("questL04Bat") >= 3)
+		if(internalQuestStatus("questL04Bat") == 3 )
 		{
 			retval._boolean = true;
 		}
@@ -956,7 +1034,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[The Poop Deck]:
-		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (internalQuestStatus("questM12Pirate") >= 6) && (get_property("auto_mcmuffin") != ""))
+		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (internalQuestStatus("questM12Pirate") >= 6))
 		{
 			if((get_property("questL12War") == "unstarted") || (get_property("questL12War") == "finished"))
 			{
@@ -965,7 +1043,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[Belowdecks]:
-		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (get_property("questM12Pirate") == "finished") && (get_property("auto_mcmuffin") != ""))
+		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (get_property("questM12Pirate") == "finished"))
 		{
 			if((get_property("questL12War") == "unstarted") || (get_property("questL12War") == "finished"))
 			{
@@ -1003,7 +1081,7 @@ generic_t zone_available(location loc)
 	case $location[Near an Abandoned Refrigerator]:
 	case $location[Over Where the Old Tires Are]:
 	case $location[Out by that Rusted-Out Car]:
-		if((internalQuestStatus("questL12War") >= 1) && (get_property("sidequestJunkyardCompleted") == "none") && (get_property("questL12War") != "finished"))
+		if((internalQuestStatus("questL12War") >= 1) && (get_property("sidequestJunkyardCompleted") == "none" || get_property("flyeredML").to_int() < 10000) && (get_property("questL12War") != "finished"))
 		{
 			retval._boolean = true;
 		}
@@ -1221,6 +1299,15 @@ generic_t zone_available(location loc)
 			retval._boolean = gnomads_available();
 		}
 		break;
+
+	// We go here to get the Logging Hatchet
+	case $location[Camp Logging Camp]:
+		if((!in_koe()) && (canadia_available()))
+		{
+			retval._boolean = true;
+		}
+		break;
+
 	case $location[The Thinknerd Warehouse]:
 		if(internalQuestStatus("questM22Shirt") >= 0)
 		{
@@ -1282,6 +1369,13 @@ generic_t zone_available(location loc)
 #	default:
 #		abort("Can't find " + loc);
 #		break;
+	}
+
+	// compare our result with canadv(https://svn.code.sf.net/p/therazekolmafia/canadv/code/), log a warning if theres a difference. Ideally we can see if there are any differences between our code and Bales, and if not remove all of ours in favor of the dependency
+	boolean canAdvRetval = can_adv(loc);
+	if(canAdvRetval != retval._boolean){
+		auto_log_warning("Uh oh, autoscend and canadv dont agree on whether we can adventure at " + loc + " (autoscend: "+retval._boolean+", canadv: "+canAdvRetval+"). Will assume locaiton available if either is true.");
+		retval._boolean = retval._boolean || canAdvRetval;
 	}
 
 	return retval;
@@ -1584,7 +1678,7 @@ location[int] zones_available()
 	location[int] retval;
 	foreach idx, loc in zone_list()
 	{
-		if(zone_isAvailable(loc))
+		if(zone_isAvailable(loc, false))
 		{
 			retval[count(retval)] = loc;
 		}
@@ -1652,6 +1746,25 @@ item[int] hugpocket_available()
 		retval[count(retval)] = it;
 	}
 	return retval;
+}
+
+boolean is_ghost_in_zone(location loc)
+{
+	foreach idx, mob in get_monsters(loc)
+	{
+		if (mob.physical_resistance >= 80)
+		{
+			return true;
+		}
+	}
+
+	// Special-case for King Boo.
+	if (in_zelda() && loc == $location[Summoning Chamber])
+	{
+		return true;
+	}
+
+	return false;
 }
 
 

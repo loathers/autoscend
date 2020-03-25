@@ -2,14 +2,13 @@ script "auto_mr2018.ash"
 
 #	This is meant for items that have a date of 2018.
 
+boolean isjanuaryToteAvailable(){
+	return item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[January\'s Garbage Tote]);
+}
+
 int januaryToteTurnsLeft(item it)
 {
-	if(item_amount($item[January\'s Garbage Tote]) == 0)
-	{
-		return 0;
-	}
-	if(!is_unrestricted($item[January\'s Garbage Tote]))
-	{
+	if(!isjanuaryToteAvailable()){
 		return 0;
 	}
 
@@ -68,12 +67,7 @@ boolean januaryToteAcquire(item it)
 			return false;
 		}
 	}
-	if(item_amount($item[January\'s Garbage Tote]) == 0)
-	{
-		return false;
-	}
-	if(!is_unrestricted($item[January\'s Garbage Tote]))
-	{
+	if(!isjanuaryToteAvailable()){
 		return false;
 	}
 
@@ -434,6 +428,49 @@ boolean songboomSetting(int option)
 	return true;
 }
 
+void auto_setSongboom()
+{
+	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
+	{
+		return;
+	}
+	if(item_amount($item[SongBoom&trade; BoomBox]) == 0)
+	{
+		return;
+	}
+	if(get_property("auto_beatenUpCount").to_int() > 5)
+	{
+		songboomSetting("dr");
+	}
+	else if (internalQuestStatus("questL12War") > 0 && internalQuestStatus("questL12War") < 2)
+	{
+		// Once we've started the war, we want to be able to micromanage songs
+		// for Gremlins and Nuns. Don't break this for them.
+	}
+	else if (!isActuallyEd() && internalQuestStatus("questL07Cyrptic") < 1 && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
+	{
+		songboomSetting("nightmare");
+	}
+	else
+	{
+		if((my_fullness() == 0) || (item_amount($item[Special Seasoning]) < 4))
+		{
+			songboomSetting("food");
+		}
+		else
+		{
+			if((auto_my_path() == "G-Lover") && (my_meat() > 10000))
+			{
+				songboomSetting("dr");
+			}
+			else
+			{
+				songboomSetting("meat");
+			}
+		}
+	}
+}
+
 int catBurglarHeistsLeft()
 {
 	if (!have_familiar($familiar[Cat Burglar]) || !auto_is_valid($familiar[Cat Burglar]))
@@ -481,6 +518,84 @@ boolean catBurglarHeist(item it)
 	finally {
 		use_familiar(backup_familiar);
 	}
+}
+
+item[monster] catBurglarHeistDesires()
+{
+	/* Note that this is called from auto_pre_adv.ash - WE WILL OVERRIDE FAMILIAR IN
+	 * PREADVENTURE IF WE NEED THE BURGLE.
+	 */
+	item[monster] wannaHeists;
+
+	item oreGoal = to_item(get_property("trapperOre"));
+	if (oreGoal != $item[none] && item_amount(oreGoal) < 3 && internalQuestStatus("questL08Trapper") < 2 && in_hardcore())
+	{
+		wannaHeists[$monster[mountain man]] = oreGoal;
+	}
+
+	if((item_amount($item[killing jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) == 0) && in_hardcore())
+		wannaHeists[$monster[banshee librarian]] = $item[killing jar];
+
+	if((my_level() >= 11) && !possessEquipment($item[Mega Gem]) && in_hardcore() && (item_amount($item[wet stew]) == 0) && (item_amount($item[wet stunt nut stew]) == 0))
+	{
+		if(item_amount($item[bird rib]) == 0)
+			wannaHeists[$monster[whitesnake]] = $item[bird rib];
+		if(item_amount($item[lion oil]) == 0)
+			wannaHeists[$monster[white lion]] = $item[lion oil];
+	}
+
+	int twinPeakProgress = get_property("twinPeakProgress").to_int();
+	boolean needStench = ((twinPeakProgress & 1) == 0);
+	boolean needFood = ((twinPeakProgress & 2) == 0);
+	boolean needJar = ((twinPeakProgress & 4) == 0);
+	boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
+	int neededTrimmers = -item_amount($item[rusty hedge trimmers]);
+	if(needStench) neededTrimmers++;
+	if(needFood) neededTrimmers++;
+	if(needJar) neededTrimmers++;
+	if(needInit) neededTrimmers++;
+	if ((my_level() >= 8) && (catBurglarHeistsLeft() >= 2) && (neededTrimmers > 0))
+	{
+		wannaHeists[$monster[bearpig topiary animal]] = $item[rusty hedge trimmers];
+		wannaHeists[$monster[elephant (meatcar?) topiary animal]] = $item[rusty hedge trimmers];
+		wannaHeists[$monster[spider (duck?) topiary animal]] = $item[rusty hedge trimmers];
+	}
+
+	if(get_property("questL11Shen") == "finished" && internalQuestStatus("questL11Ron") == 1 && catBurglarHeistsLeft() >= 2)
+	{
+		wannaHeists[$monster[Blue Oyster cultist]] = $item[cigarette lighter];
+	}
+
+	// 18 is a totally arbitrary cutoff here, but it's probably fine.
+	if($location[The Penultimate Fantasy Airship].turns_spent >= 18)
+	{
+		if (!possessEquipment($item[amulet of extreme plot significance]) && internalQuestStatus("questL10Garbage") < 8)
+		{
+			wannaHeists[$monster[Quiet Healer]] = $item[amulet of extreme plot significance];
+		}
+		if (!possessEquipment($item[Mohawk wig]) && internalQuestStatus("questL10Garbage") < 10)
+		{
+			wannaHeists[$monster[Burly Sidekick]] = $item[Mohawk wig];
+		}
+	}
+
+	return wannaHeists;
+}
+
+boolean catBurglarHeist()
+{
+	if (catBurglarHeistsLeft() == 0) return false;
+
+	// We can't know what's burgleable without checking the burgle noncombat,
+	// and that's expensive to do repeatedly. So we burgle only if we want
+	// to burgle the last monster. This is bad if you're about to leave a zone.
+	item[monster] wannaHeists = catBurglarHeistDesires();
+
+	if (wannaHeists contains last_monster())
+	{
+		return catBurglarHeist(wannaHeists[last_monster()]);
+	}
+	return false;
 }
 
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
@@ -818,11 +933,6 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	restoreSetting("choiceAdventure1326");
 	restoreSetting("choiceAdventure1327");
 	restoreSetting("choiceAdventure1328");
-
-	if(shirt != $item[none] && !useMaximizeToEquip())
-	{
-		equip($slot[shirt], shirt);
-	}
 
 	if(get_property("lastEncounter") == "Party\'s Over")
 	{
@@ -1223,7 +1333,13 @@ boolean fightClubNap()
 boolean fightClubSpa()
 {
 	int option = 4;
-	switch(my_primestat())
+	stat st = my_primestat();
+	if (in_zelda())
+	{
+		// We deal 250% of our Moxie, so if our Muscle is too high we... die.
+		st = $stat[moxie];
+	}
+	switch(st)
 	{
 	case $stat[Muscle]:			option = 1;		break;
 	case $stat[Mysticality]:	option = 3;		break;

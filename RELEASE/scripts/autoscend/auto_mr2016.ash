@@ -51,6 +51,10 @@ boolean snojoFightAvailable()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		return false;
+	}
 	if(my_inebriety() > inebriety_limit())
 	{
 		return false;
@@ -541,6 +545,65 @@ int auto_advWitchessTargets(string target)
 	return 0;
 }
 
+boolean witchessFights()
+{
+	if(my_path() == "Community Service")
+	{
+		return false;
+	}
+	if(cs_witchess())
+	{
+		return true;
+	}
+	if(!auto_haveWitchess())
+	{
+		return false;
+	}
+	if(my_turncount() < 20)
+	{
+		return false;
+	}
+
+	if(my_class() == $class[Gelatinous Noob])
+	{
+		return auto_advWitchess("ml");
+	}
+
+	if(auto_my_path() == "License to Adventure")
+	{
+		return auto_advWitchess("ml");
+	}
+
+	switch(my_daycount())
+	{
+	case 1:
+		if((item_amount($item[Greek Fire]) == 0) && (my_path() != "Community Service"))
+		{
+			return auto_advWitchess("ml");
+		}
+		return auto_advWitchess("booze");
+	case 2:
+		if((get_property("sidequestNunsCompleted") == "none") && (item_amount($item[Jumping Horseradish]) == 0))
+		{
+			return auto_advWitchess("meat");
+		}
+	case 3:
+		if((get_property("sidequestNunsCompleted") == "none") && (item_amount($item[Jumping Horseradish]) == 0))
+		{
+			return auto_advWitchess("meat");
+		}
+	case 4:
+		if((get_property("sidequestNunsCompleted") == "none") && (item_amount($item[Jumping Horseradish]) == 0))
+		{
+			return auto_advWitchess("meat");
+		}
+		return auto_advWitchess("booze");
+
+	default:
+		return auto_advWitchess("booze");
+	}
+	return false;
+}
 
 item auto_bestBadge()
 {
@@ -1064,17 +1127,17 @@ boolean LX_ghostBusting()
 			return false;
 		}
 
-		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("auto_trapper") != "yeti") && (get_property("auto_trapper") != "finished")))
+		if (goal == $location[Lair of the Ninja Snowmen] && internalQuestStatus("questL08Trapper") < 2)
 		{
 			return false;
 		}
-		if((goal == $location[The VERY Unquiet Garves]) && (get_property("auto_crypt") != "finished"))
+		if (goal == $location[The VERY Unquiet Garves] && get_property("questL07Cyrptic") != "finished")
 		{
 			return false;
 		}
 		if(goal == $location[The Castle in the Clouds in the Sky (Top Floor)])
 		{
-			if(get_property("auto_castleground") != "finished")
+			if (internalQuestStatus("questL10Garbage") < 9)
 			{
 				return false;
 			}
@@ -1087,7 +1150,7 @@ boolean LX_ghostBusting()
 		{
 			if((item_amount($item[Ninja Rope]) == 0) || (item_amount($item[Ninja Carabiner]) == 0) || (item_amount($item[Ninja Crampons]) == 0))
 			{
-				if(L8_trapperYeti())
+				if(L8_trapperNinjaLair())
 				{
 					return true;
 				}
@@ -1098,7 +1161,7 @@ boolean LX_ghostBusting()
 		{
 			return false;
 		}
-		if((goal == $location[The Hidden Park]) && (get_property("auto_hiddenunlock") == "finished"))
+		if (goal == $location[The Hidden Park] && internalQuestStatus("questL11Worship") > 3)
 		{
 			return false;
 		}
@@ -1455,4 +1518,88 @@ boolean rethinkingCandy(effect acquire, boolean simulate)
 		return false;
 	}
 	return false;
+}
+
+// this function is completely pointless. This should be handled in auto_combathandler
+// instead of writing a duplicate of our daily dungeon handling function.
+boolean useMalware()
+{
+	if(towerKeyCount() >= 3)
+	{
+		return false;
+	}
+
+	if(item_amount($item[Daily Dungeon Malware]) == 0)
+	{
+		return false;
+	}
+
+	if(get_property("_dailyDungeonMalwareUsed").to_boolean())
+	{
+		return false;
+	}
+
+	if(get_property("dailyDungeonDone").to_boolean())
+	{
+		return false;
+	}
+
+
+	backupSetting("choiceAdventure692", 4);
+	if(item_amount($item[Platinum Yendorian Express Card]) > 0)
+	{
+		backupSetting("choiceAdventure692", 7);
+	}
+	else if(item_amount($item[Pick-O-Matic Lockpicks]) > 0)
+	{
+		backupSetting("choiceAdventure692", 3);
+	}
+	else
+	{
+		int keysNeeded = 2;
+		if(contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key]))
+		{
+			keysNeeded = 1;
+		}
+
+		if((item_amount($item[Skeleton Key]) < keysNeeded) && (available_amount($item[Skeleton Key]) >= keysNeeded))
+		{
+			cli_execute("make 1 " + $item[Skeleton Key]);
+		}
+		if((item_amount($item[Skeleton Key]) < keysNeeded) && (available_amount($item[Skeleton Key]) >= keysNeeded))
+		{
+			cli_execute("make 1 " + $item[Skeleton Key]);
+		}
+		if(item_amount($item[Skeleton Key]) >= keysNeeded)
+		{
+			backupSetting("choiceAdventure692", 2);
+		}
+	}
+
+	if(item_amount($item[Eleven-Foot Pole]) > 0)
+	{
+		backupSetting("choiceAdventure693", 2);
+	}
+	else
+	{
+		backupSetting("choiceAdventure693", 1);
+	}
+	if(equipped_amount($item[Ring of Detect Boring Doors]) > 0)
+	{
+		backupSetting("choiceAdventure690", 2);
+	}
+	else
+	{
+		backupSetting("choiceAdventure690", 3);
+	}
+
+
+	//Wanderers may appear but they don\'t cause us to lose the malware.
+	set_property("auto_combatDirective", "start;item daily dungeon malware");
+	autoAdv($location[The Daily Dungeon]);
+	set_property("auto_combatDirective", "");
+	restoreSetting("choiceAdventure692");
+	restoreSetting("choiceAdventure693");
+	restoreSetting("choiceAdventure690");
+	return true;
 }

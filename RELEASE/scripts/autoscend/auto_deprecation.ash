@@ -92,50 +92,16 @@ boolean settingFixer()
 	{
 		set_property("auto_100familiar", $familiar[none]);
 	}
-	if(get_property("auto_ballroomsong") == "set")
-	{
-		set_property("auto_ballroomsong", "finished");
-	}
 	if(get_property("auto_killingjar") == "done")
 	{
 		set_property("auto_killingjar", "finished");
-	}
-	if(get_property("auto_castleground") == "done")
-	{
-		set_property("auto_castleground", "finished");
 	}
 	if(get_property("auto_useCubeling") == "yes")
 	{
 		set_property("auto_useCubeling", true);
 	}
-	if((get_property("auto_gremlinclap") == "used") && !contains_text("auto_gremlinBanishes", "(" + $skill[Thunder Clap] + ")"))
-	{
-		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $skill[Thunder Clap] + ")");
-		set_property("auto_gremlinclap", "");
-	}
-	if((get_property("auto_gremlinbatter") == "used") && !contains_text("auto_gremlinBanishes", "(" + $skill[Batter Up!] + ")"))
-	{
-		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $skill[Batter Up!] + ")");
-		set_property("auto_gremlinbatter", "");
-	}
-	if((get_property("auto_gremlinlouder") == "used") && !contains_text("auto_gremlinBanishes", "(" + $item[Louder Than Bomb] + ")"))
-	{
-		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $item[Louder Than Bomb] + ")");
-		set_property("auto_gremlinlouder", "");
-	}
-	if((get_property("auto_gremlinpants") == "used") && !contains_text("auto_gremlinBanishes", "(" + $skill[Talk About Politics] + ")"))
-	{
-		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $skill[Talk About Politics] + ")");
-		set_property("auto_gremlinpants", "");
-	}
-	if((get_property("auto_gremlintennis") == "used") && !contains_text("auto_gremlinBanishes", "(" + $item[Tennis Ball] + ")"))
-	{
-		set_property("auto_gremlinBanishes", get_property("auto_gremlinBanishes") + "(" + $item[Tennis Ball] + ")");
-		set_property("auto_gremlintennis", "");
-	}
 	if(get_property("auto_sonata") == "finished")
 	{
-		set_property("auto_sonofa", "finished");
 		set_property("auto_sonata", "");
 	}
 
@@ -159,10 +125,7 @@ boolean settingFixer()
 	{
 		set_property("auto_chasmBusted", false);
 	}
-	if(get_property("auto_ballroomflat") == "organ")
-	{
-		set_property("auto_ballroomflat", "finished");
-	}
+
 	if(get_property("auto_edDelayTimer") != "")
 	{
 		set_property("auto_delayTimer", get_property("auto_edDelayTimer"));
@@ -218,15 +181,6 @@ boolean settingFixer()
 	{
 		set_property("auto_aftercore", true);
 	}
-	if(get_property("auto_bean") == "")
-	{
-		set_property("auto_bean", false);
-	}
-	if(get_property("auto_bean") == "plant")
-	{
-		set_property("auto_bean", true);
-	}
-
 
 	if(get_property("auto_cubeItems") == "")
 	{
@@ -235,16 +189,6 @@ boolean settingFixer()
 	if(get_property("auto_cubeItems") == "done")
 	{
 		set_property("auto_cubeItems", false);
-	}
-
-	if(get_property("auto_gunpowder") == "done")
-	{
-		set_property("auto_gunpowder", "finished");
-	}
-
-	if(get_property("auto_mistypeak") == "done")
-	{
-		set_property("auto_mistypeak", "finished");
 	}
 
 	if(get_property("auto_xiblaxianChoice") == "")
@@ -288,6 +232,253 @@ boolean settingFixer()
 	{
 		auto_log_debug("Mafia probably isn't super broken, so let's set it that way...", "red");
 		set_property("auto_helpMeMafiaIsSuperBrokenAaah", false);
+	}
+
+	if(property_exists("auto_beta_test"))
+	{
+		auto_log_debug("Beta testing features should be guarded behind their own individual properties...", "red");
+		remove_property("auto_beta_test");
+	}
+
+	if(property_exists("auto_invaderKilled"))
+	{
+		auto_log_debug("No longer need to track the invaders status ourselves as mafia does it now...", "red");
+		remove_property("auto_invaderKilled");
+	}
+
+	if (property_exists("auto_airship"))
+	{
+		remove_property("auto_airship");
+	}
+	if (property_exists("auto_ballroom"))
+	{
+		remove_property("auto_ballroom");
+	}
+	if (property_exists("auto_ballroomflat"))
+	{
+		remove_property("auto_ballroomflat");
+	}
+	if (property_exists("auto_ballroomopen"))
+	{
+		remove_property("auto_ballroomopen");
+	}
+	if (property_exists("auto_ballroomsong"))
+	{
+		remove_property("auto_ballroomsong");
+	}
+	if (property_exists("auto_bat"))
+	{
+		remove_property("auto_bat");
+	}
+	if (property_exists("auto_bean"))
+	{
+		remove_property("auto_bean");
+	}
+	if (property_exists("auto_blackfam"))
+	{
+		remove_property("auto_blackfam");
+	}
+	if (property_exists("auto_blackmap"))
+	{
+		remove_property("auto_blackmap");
+	}
+	if (property_exists("auto_boopeak"))
+	{
+		remove_property("auto_boopeak");
+	}
+	if (property_exists("auto_castlebasement"))
+	{
+		remove_property("auto_castlebasement");
+	}
+	if (property_exists("auto_castleground"))
+	{
+		remove_property("auto_castleground");
+	}
+	if (property_exists("auto_castletop"))
+	{
+		remove_property("auto_castletop");
+	}
+	if (property_exists("auto_consumption"))
+	{
+		remove_property("auto_consumption");
+	}
+	if (property_exists("auto_crypt"))
+	{
+		remove_property("auto_crypt");
+	}
+	if (property_exists("auto_day1_cobb"))
+	{
+		remove_property("auto_day1_cobb");
+	}
+	if (property_exists("auto_fcle"))
+	{
+		remove_property("auto_fcle");
+	}
+	if (property_exists("auto_friars"))
+	{
+		remove_property("auto_friars");
+	}
+	if (property_exists("auto_goblinking"))
+	{
+		remove_property("auto_goblinking");
+	}
+	if (property_exists("auto_gremlins"))
+	{
+		remove_property("auto_gremlins");
+	}
+	if (property_exists("auto_gremlinBanishes"))
+	{
+		remove_property("auto_gremlinBanishes");
+	}
+	if (property_exists("auto_gunpowder"))
+	{
+		remove_property("auto_gunpowder");
+	}
+	if (property_exists("auto_hiddenapartment"))
+	{
+		remove_property("auto_hiddenapartment");
+	}
+	if (property_exists("auto_hiddenbowling"))
+	{
+		remove_property("auto_hiddenbowling");
+	}
+	if (property_exists("auto_hiddencity"))
+	{
+		remove_property("auto_hiddenhospital");
+	}
+	if (property_exists("auto_hiddenoffice"))
+	{
+		remove_property("auto_hiddenoffice");
+	}
+	if (property_exists("auto_hiddenunlock"))
+	{
+		remove_property("auto_hiddenunlock");
+	}
+	if (property_exists("auto_hiddenzones"))
+	{
+		remove_property("auto_hiddenzones");
+	}
+	if (property_exists("auto_highlandlord"))
+	{
+		remove_property("auto_highlandlord");
+	}
+	if (property_exists("auto_masonryWall"))
+	{
+		remove_property("auto_masonryWall");
+	}
+	if (property_exists("auto_mcmuffin"))
+	{
+		remove_property("auto_mcmuffin");
+	}
+	if (property_exists("auto_mistypeak"))
+	{
+		remove_property("auto_mistypeak");
+	}
+	if (property_exists("auto_mosquito"))
+	{
+		remove_property("auto_mosquito");
+	}
+	if (property_exists("auto_nuns"))
+	{
+		remove_property("auto_nuns");
+	}
+	if (property_exists("auto_oilpeak"))
+	{
+		remove_property("auto_oilpeak");
+	}
+	if (property_exists("auto_orchard"))
+	{
+		remove_property("auto_orchard");
+	}
+	if (property_exists("auto_palindome"))
+	{
+		remove_property("auto_palindome");
+	}
+	if (property_exists("auto_phatloot"))
+	{
+		remove_property("auto_phatloot");
+	}
+	if (property_exists("auto_prewar"))
+	{
+		remove_property("auto_prewar");
+	}
+	if (property_exists("auto_prehippy"))
+	{
+		remove_property("auto_prehippy");
+	}
+	if (property_exists("auto_pirateoutfit"))
+	{
+		remove_property("auto_pirateoutfit");
+	}
+	if (property_exists("auto_trytower"))
+	{
+		remove_property("auto_trytower");
+	}
+	if (property_exists("auto_shenCopperhead"))
+	{
+		remove_property("auto_shenCopperhead");
+	}
+	if (property_exists("auto_spookyfertilizer"))
+	{
+		remove_property("auto_spookyfertilizer");
+	}
+	if (property_exists("auto_spookymap"))
+	{
+		remove_property("auto_spookymap");
+	}
+	if (property_exists("auto_spookyravensecond"))
+	{
+		remove_property("auto_spookyravensecond");
+	}
+	if (property_exists("auto_spookysapling"))
+	{
+		remove_property("auto_spookysapling");
+	}
+	if (property_exists("auto_sonofa"))
+	{
+		remove_property("auto_sonofa");
+	}
+	if (property_exists("auto_sorceress"))
+	{
+		remove_property("auto_sorceress");
+	}
+	if (property_exists("auto_swordfish"))
+	{
+		remove_property("auto_swordfish");
+	}
+	if (property_exists("auto_tavern"))
+	{
+		remove_property("auto_tavern");
+	}
+	if (property_exists("auto_trapper"))
+	{
+		remove_property("auto_trapper");
+	}
+	if (property_exists("auto_treecoin"))
+	{
+		remove_property("auto_treecoin");
+	}
+	if (property_exists("auto_twinpeak"))
+	{
+		remove_property("auto_twinpeak");
+	}
+	if (property_exists("auto_twinpeakprogress"))
+	{
+		remove_property("auto_twinpeakprogress");
+	}
+	if (property_exists("auto_war"))
+	{
+		remove_property("auto_war");
+	}
+	if (property_exists("auto_winebomb"))
+	{
+		remove_property("auto_winebomb");
+	}
+
+	if (property_exists("auto_legacyConsumeStuff"))
+	{
+		auto_log_debug("Knapsack consumption algorithm is now for everyone!", "red");
+		remove_property("auto_legacyConsumeStuff");
 	}
 
 	return true;

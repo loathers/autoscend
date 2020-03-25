@@ -80,7 +80,8 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_lightning() < lightning_cost(sk) ||
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
-		my_soulsauce() < soulsauce_cost(sk)
+		my_soulsauce() < soulsauce_cost(sk) ||
+		my_pp() < zelda_ppCost(sk)
 	)
 		return false;
 
@@ -96,7 +97,7 @@ boolean canUse(skill sk, boolean onlyOnce)
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[Vampyric Cloake]), $skills[Become a Wolf, Become a Cloud of Mist, Become a Bat]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Shadow Noodles, Entangling Noodles]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Silent Slam, Silent Squirt, Silent Slice]);
-		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter's Bite Technique]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter\'s Bite Technique]);
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[bottle-rocket crossbow]), $skills[Fire Red Bottle-Rocket, Fire Blue Bottle-Rocket, Fire Orange Bottle-Rocket, Fire Purple Bottle-Rocket, Fire Black Bottle-Rocket]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Kodiak Moment, Grizzly Scene, Bear-Backrub, Bear-ly Legal, Bear Hug]);
 	}
@@ -148,7 +149,8 @@ string useSkill(skill sk, boolean mark)
 {
 	if(mark)
 		markAsUsed(sk);
-	return "skill " + sk;
+
+	return "skill " + sk.name;
 }
 
 string useSkill(skill sk)
@@ -295,9 +297,9 @@ string auto_combatHandler(int round, string opp, string text)
 
 	boolean doBanisher = !get_property("kingLiberated").to_boolean();
 
-	int majora = -1;
 	if(my_path() == "Disguises Delimit")
 	{
+		int majora = -1;
 		matcher maskMatch = create_matcher("mask(\\d+).png", text);
 		if(maskMatch.find())
 		{
@@ -313,10 +315,6 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		if(majora == 3)
 		{
-//			if((round > 10) && (my_mp() > mp_cost($skill[Swap Mask])))
-//			{
-//				return "skill " + $skill[Swap Mask];
-//			}
 			if(canSurvive(1.5))
 			{
 				return "attack with weapon";
@@ -435,8 +433,16 @@ string auto_combatHandler(int round, string opp, string text)
 		return "runaway";
 	}
 
-	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob"))
+	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob") || (opp == "Shadow Plumber"))
 	{
+		if(in_zelda())
+		{
+			if(item_amount($item[super deluxe mushroom]) > 0)
+			{
+				return "item " + $item[super deluxe mushroom];
+			}
+			abort("Oh no, I don't have any super deluxe mushrooms to deal with this shadow plumber :(");
+		}
 		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
 			if(item_amount($item[Gauze Garter]) >= 2)
@@ -481,11 +487,6 @@ string auto_combatHandler(int round, string opp, string text)
 		{
 			return "item " + $item[Beehive];
 		}
-#		if((!contains_text(combatState, "love stinkbug")) && auto_have_skill($skill[Summon Love Stinkbug]))
-#		{
-#			set_property("auto_combatHandler", combatState + "(love stinkbug)");
-#			return "skill summon love stinkbug";
-#		}
 
 		if(canUse($skill[Shell Up]) && (round >= 3))
 		{
@@ -544,15 +545,26 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(enemy.to_string() == "the invader" && auto_have_skill($skill[Weapon of the Pastalord]))
+	// Unique Heavy Rains Enemy that Reflects Spells.
+	if(enemy.to_string() == "Gurgle")
+	{
+		if(canUse($skill[Summon Love Stinkbug], false))
+		{
+			return useSkill($skill[Summon Love Stinkbug], false);
+		}
+		return "attack with weapon";
+	}
+
+	if (enemy == $monster[The Invader] && canUse($skill[Weapon of the Pastalord], false))
 	{
 		return useSkill($skill[Weapon of the Pastalord], false);
 	}
 
-	if(enemy.to_string() == "skeleton astronaut")
+	if (enemy == $monster[Skeleton astronaut])
 	{
-		if(my_daycount() == 1 && item_amount($item[Exploding cigar]) > 0){
-			return "item " + $item[Exploding cigar];
+		if(my_daycount() == 1 && canUse($item[Exploding cigar], false))
+		{
+			return useItem($item[Exploding cigar]);
 		}
 		int dmg = 0;
 		foreach el in $elements[hot, cold, sleaze, spooky, stench]
@@ -756,7 +768,7 @@ string auto_combatHandler(int round, string opp, string text)
 
 	if((my_location() == $location[The Battlefield (Frat Uniform)]) && (enemy == $monster[gourmet gourami]))
 	{
-		if((item_amount($item[Louder Than Bomb]) > 0) && (get_property("auto_gremlins") == "finished"))
+		if (item_amount($item[Louder Than Bomb]) > 0 && get_property("sidequestJunkyardCompleted") != "none")
 		{
 			handleTracker(enemy, $item[Louder Than Bomb], "auto_banishes");
 			return "item " + $item[Louder Than Bomb];
@@ -784,7 +796,7 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Apprivoisez La Tortue], false);
 	}
 
-	if(canUse($skill[Gulp Latte]) && (get_property("_latteRefillsUsed").to_int() == 0) && !get_property("_latteDrinkUsed").to_boolean())
+	if(!in_zelda() && canUse($skill[Gulp Latte]) && (get_property("_latteRefillsUsed").to_int() == 0) && !get_property("_latteDrinkUsed").to_boolean())
 	{
 		return useSkill($skill[Gulp Latte]);
 	}
@@ -1116,40 +1128,32 @@ string auto_combatHandler(int round, string opp, string text)
 		combatState += "(banishercheck)";
 	}
 
-	// have_skill($skill[Macrometeorite]) seems to always return false, so we can't use canUse
-	if(auto_have_skill($skill[Meteor Lore]) && (get_property("_macrometeoriteUses").to_int() < 10) && (my_mp() > mp_cost($skill[Macrometeorite])) && (auto_my_path() != "G-Lover"))
+	if (!contains_text(combatState, "replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
 	{
-		boolean dometeor = false;
-		if((enemy == $monster[Banshee Librarian]) && (item_amount($item[Killing Jar]) > 0))
+		string combatAction = replaceMonsterCombatString(enemy, true);
+		if(combatAction != "")
 		{
-			dometeor = true;
+			set_property("auto_combatHandler", combatState + "(replacer)");
+			if(index_of(combatAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_replaces");
+			}
+			else if(index_of(combatAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+			}
+			else
+			{
+				auto_log_warning("Unable to track replacer behavior: " + combatAction, "red");
+			}
+			return combatAction;
 		}
-		if((enemy == $monster[Beefy Bodyguard Bat]) && ($location[The Boss Bat\'s Lair].turns_spent >= 4) && (my_location() == $location[The Boss Bat\'s Lair]))
+		else
 		{
-			dometeor = true;
+			auto_log_warning("Wanted a replacer but we can not find one.", "red");
 		}
-		if((enemy == $monster[Government Agent]) && (my_location() == $location[Sonofa Beach]))
-		{
-			dometeor = true;
-		}
-		if((enemy == $monster[Knob Goblin Madam]) && (item_amount($item[Knob Goblin Perfume]) > 0))
-		{
-			dometeor = true;
-		}
-		if($monsters[Bookbat, Craven Carven Raven, Drunk Goat, Knight In White Satin, Knob Goblin Harem Guard, Mad Wino, Plaid Ghost, Possessed Laundry Press, Sabre-Toothed Goat, Senile Lihc, Skeletal Sommelier, Slick Lihc, White Chocolate Golem] contains enemy)
-		{
-			dometeor = true;
-		}
-		if((enemy == $monster[Stone Temple Pirate]) && possessEquipment($item[Eyepatch]))
-		{
-			dometeor = true;
-		}
-
-		if(dometeor)
-		{
-			handleTracker(enemy, $skill[Macrometeorite], "auto_otherstuff");
-			return useSkill($skill[Macrometeorite], false);
-		}
+		set_property("auto_combatHandler", combatState + "(replacercheck)");
+		combatState += "(replacercheck)";
 	}
 
 	if(canUse($item[Disposable Instant Camera]))
@@ -1519,15 +1523,29 @@ string auto_combatHandler(int round, string opp, string text)
 		{
 			return useItem($item[Time-Spinner]);
 		}
-
-		if(canUse($skill[Sing Along]) && (get_property("boomBoxSong") == "Remainin\' Alive") && stunnable(enemy))
+		
+		if(canUse($skill[Sing Along]))
 		{
-			return useSkill($skill[Sing Along]);
-		}
-
-		if(canUse($skill[Sing Along]) && canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && stunnable(enemy))
-		{
-			return useSkill($skill[Sing Along]);
+			//15% devel, but no stun. 
+			
+			if(canSurvive(2.0) && (get_property("boomBoxSong") == "Remainin\' Alive"))
+			{
+				return useSkill($skill[Sing Along]);
+			}
+		
+			//this is for increasing meat income. gain +25 meat per monster, at the cost of letting it act once. If healing is too costly this can be a net loss of meat. until a full cost calculator is made, limit to under 10 HP damage and no more than 20% of your remaining HP.
+			
+			if(canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && (expected_damage() < 10) && (auto_my_path() != "Way of the Surprising Fist"))
+			{
+				return useSkill($skill[Sing Along]);
+			}
+		
+			//if doing nuns quest or wall of meat, disregard profit and only check if you can survive using sing along.
+			
+			if(canSurvive(3.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && $monsters[dirty thieving brigand, wall of meat] contains enemy)
+			{
+				return useSkill($skill[Sing Along]);
+			}
 		}
 	}
 
@@ -1547,14 +1565,6 @@ string auto_combatHandler(int round, string opp, string text)
 		if(canUse($skill[Summon Love Stinkbug]) && haveUsed($skill[Summon Love Gnats]) && !contains_text(text, "STUN RESIST"))
 		{
 			return useSkill($skill[Summon Love Stinkbug]);
-		}
-
-		if(canUse($skill[Sing Along]))
-		{
-			if((get_property("boomBoxSong") == "Remainin' Alive") || (get_property("boomBoxSong") == "Total Eclipse of Your Meat"))
-			{
-				return useSkill($skill[Sing Along]);
-			}
 		}
 	}
 
@@ -1660,6 +1670,55 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Saucestorm], false);
 	}
 
+	if (my_class() == $class[Plumber])
+	{
+		// note: Juggle Fireballs CAN be used multiple times, but it is only
+		// useful if you have level 3 fire and therefore get healed
+
+		if(my_pp() > 2 && canUse($skill[[7332]Juggle Fireballs], true))
+		{
+			return useSkill($skill[[7332]Juggle Fireballs]);
+		}
+
+		if ((enemy.physical_resistance >= 80) ||
+		    (my_location() == $location[The Smut Orc Logging Camp] && (0 < equipped_amount($item[frosty button]))))
+		{
+			if (canUse($skill[[7333]Fireball Barrage], false))
+			{
+				return useSkill($skill[[7333]Fireball Barrage]);
+			}
+			//this skill comes from the IOTM Beach Comb
+			if (canUse($skill[Beach Combo], true))
+			{
+				return useSkill($skill[Beach Combo]);
+			}
+			if (canUse($skill[Fireball Toss], false))
+			{
+				return useSkill($skill[Fireball Toss], false);
+			}
+		}
+
+		if (canUse($skill[[7336]Multi-Bounce], false))
+		{
+			return useSkill($skill[[7336]Multi-Bounce]);
+		}
+		//this skill comes from the IOTM Beach Comb
+		if (canUse($skill[Beach Combo], true))
+		{
+			return useSkill($skill[Beach Combo]);
+		}
+		if (canUse($skill[Jump Attack], false))
+		{
+			return useSkill($skill[Jump Attack], false);
+		}
+
+		// Fallback, since maybe we only have fire flower equipped.
+		if (canUse($skill[[7333]Fireball Barrage], false))
+		{
+			return useSkill($skill[[7333]Fireball Barrage]);
+		}
+		return useSkill($skill[Fireball Toss], false);
+	}
 
 	string attackMinor = "attack with weapon";
 	string attackMajor = "attack with weapon";
@@ -2193,7 +2252,6 @@ string auto_combatHandler(int round, string opp, string text)
 	}
 
 	return attackMinor;
-#	return get_ccs_action(round);
 }
 
 string findBanisher(int round, string opp, string text)
@@ -2218,7 +2276,7 @@ string findBanisher(int round, string opp, string text)
 		}
 		return banishAction;
 	}
-	if (canUse($skill[Storm of the Scarab]))
+	if (canUse($skill[Storm of the Scarab], false))
 	{
 		return useSkill($skill[Storm of the Scarab], false);
 	}
@@ -2313,11 +2371,11 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 
 	if(round >= 28)
 	{
-		if (canUse($skill[Storm of the Scarab]))
+		if (canUse($skill[Storm of the Scarab], false))
 		{
 			return useSkill($skill[Storm of the Scarab], false);
 		}
-		else if (canUse($skill[Lunging Thrust-Smack]))
+		else if (canUse($skill[Lunging Thrust-Smack], false))
 		{
 			return useSkill($skill[Lunging Thrust-Smack], false);
 		}
@@ -2387,7 +2445,7 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 			{
 				return findBanisher(round, opp, text);
 			}
-			else if (canUse($item[Seal Tooth]) && get_property("auto_edStatus") == "UNDYING!")
+			else if (canUse($item[Seal Tooth], false) && get_property("auto_edStatus") == "UNDYING!")
 			{
 				return useItem($item[Seal Tooth], false);
 			}
@@ -2400,13 +2458,13 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 
 	foreach it in $items[Seal Tooth, Spectre Scepter, Doc Galaktik\'s Pungent Unguent]
 	{
-		if(canUse(it) && glover_usable(it))
+		if(canUse(it, false) && glover_usable(it))
 		{
 			return useItem(it, false);
 		}
 	}
 
-	if (canUse($skill[Toss]))
+	if (canUse($skill[Toss], false))
 	{
 		return useSkill($skill[Toss], false);
 	}
@@ -2517,6 +2575,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if (canUse($skill[Sing Along]))
 	{
+		//ed can easily survive singing along thanks to undying. and healing him is essentially free.
 		if((get_property("boomBoxSong") == "Remainin\' Alive") || ((get_property("boomBoxSong") == "Total Eclipse of Your Meat") && canSurvive(2.0)))
 		{
 			return useSkill($skill[Sing Along]);
@@ -2829,13 +2888,13 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if (canUse($item[Cigarette Lighter]) && my_location() == $location[A Mob Of Zeppelin Protesters] && get_property("questL11Ron") == "step1" && get_property("auto_edStatus") == "dying")
+	if (canUse($item[Cigarette Lighter]) && my_location() == $location[A Mob Of Zeppelin Protesters] && internalQuestStatus("questL11Ron") == 1 && get_property("auto_edStatus") == "dying")
 	{
 		return useItem($item[Cigarette Lighter]);
 		// insta-kills protestors and removes an additional 5-7 (optimal!)
 	}
 
-	if (canUse($item[Glark Cable]) && my_location() == $location[The Red Zeppelin] && get_property("questL11Ron") == "step3" && get_property("_glarkCableUses").to_int() < 5 && get_property("auto_edStatus") == "dying")
+	if (canUse($item[Glark Cable]) && my_location() == $location[The Red Zeppelin] && internalQuestStatus("questL11Ron") == 3 && get_property("_glarkCableUses").to_int() < 5 && get_property("auto_edStatus") == "dying")
 	{
 		if($monsters[Man With The Red Buttons, Red Butler, Red Fox, Red Skeleton] contains enemy)
 		{
@@ -2993,7 +3052,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if (canUse($item[Tattered Scrap of Paper]))
+	if (canUse($item[Tattered Scrap of Paper], false))
 	{
 		if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, W imp] contains enemy)
 		{
@@ -3056,7 +3115,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(enemy == $monster[Pygmy Orderlies] && canUse($item[Short Writ of Habeas Corpus]))
+	if(enemy == $monster[Pygmy Orderlies] && canUse($item[Short Writ of Habeas Corpus], false))
 	{
 		return useItem($item[Short Writ of Habeas Corpus]);
 	}
@@ -3080,7 +3139,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 			return useSkill($skill[Curse of Fortune]);
 		}
 
-		if (canUse($item[Seal Tooth]))
+		if (canUse($item[Seal Tooth], false))
 		{
 			return useItem($item[Seal Tooth], false);
 		}
@@ -3088,21 +3147,21 @@ string auto_edCombatHandler(int round, string opp, string text)
 		return useSkill($skill[Mild Curse], false);
 	}
 
-	if (my_location() == $location[The Secret Government Laboratory] && canUse($skill[Roar of the Lion]))
+	if (my_location() == $location[The Secret Government Laboratory] && canUse($skill[Roar of the Lion], false))
 	{
-		if (canUse($skill[Storm Of The Scarab]) && my_buffedstat($stat[Mysticality]) >= 60)
+		if (canUse($skill[Storm Of The Scarab], false) && my_buffedstat($stat[Mysticality]) >= 60)
 		{
 			return useSkill($skill[Storm Of The Scarab], false);
 		}
 		return useSkill($skill[Roar Of The Lion], false);
 	}
 
-	if ($locations[Pirates of the Garbage Barges, The SMOOCH Army HQ, VYKEA] contains my_location() && canUse($skill[Storm of the Scarab]))
+	if ($locations[Pirates of the Garbage Barges, The SMOOCH Army HQ, VYKEA] contains my_location() && canUse($skill[Storm of the Scarab], false))
 	{
 		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
-	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location() && canUse($skill[Fist Of The Mummy]))
+	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location() && canUse($skill[Fist Of The Mummy], false))
 	{
 		return useSkill($skill[Fist Of The Mummy], false);
 	}
@@ -3123,14 +3182,14 @@ string auto_edCombatHandler(int round, string opp, string text)
 		return useItem($item[Ice-Cold Cloaca Zero]);
 	}
 
-	if (canUse($skill[Storm Of The Scarab]) && my_buffedstat($stat[Mysticality]) > 35)
+	if (canUse($skill[Storm Of The Scarab], false) && my_buffedstat($stat[Mysticality]) > 35)
 	{
 		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
 	if((enemy.physical_resistance >= 100) || (round >= 25) || canSurvive(1.25))
 	{
-		if (canUse($skill[Fist Of The Mummy]))
+		if (canUse($skill[Fist Of The Mummy], false))
 		{
 			return useSkill($skill[Fist Of The Mummy], false);
 		}

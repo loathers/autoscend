@@ -2,109 +2,49 @@
 2	auto_aboocount	integer	ANY	(5 - Number of turns) left at A-Boo Peak before we consider using our Clues.
 3	auto_aboopending	integer	ANY	The last turn of a pending A-Boo Clue. 0 if no clue active.
 4	auto_aftercore	boolean	ANY	Do we think we are in aftercore?
-5	auto_airship	string	ANY	'finished' if we have access to the Castle in the Clouds (S.O.C.K. equivalence)
-6	auto_ballroom	string	ANY	-
-7	auto_ballroomflat	string	ANY	-
-8	auto_ballroomopen	string	ANY -
-9	auto_ballroomsong	string	ANY	-
-10	auto_bat	string	ANY 'finished' if we have completed the Bat Quest.
-11	auto_bean	boolean	ANY	Have we planted a beanstalk bean?
-12	auto_blackfam	boolean	ANY	True when we have not yet initialized The Black Forest. False once it has been set up.
-13	auto_blackmap	string	ANY	-
-14	auto_boopeak	string	ANY	'finished' is A-Boo Peak is completed.
-15	auto_castlebasement	string	ANY	'finished' if we have finished the Castle in the Clouds Basement.
-16	auto_castleground	string	ANY	'finished' if we have finished the Castle in the Clouds Ground Floor.
-17	auto_castletop	string	ANY	'finished' if we have finished the Castle in the Clouds Top Floor.
-18	auto_chasmBusted	boolean	ANY	Has the orc chasm bridge been 'trolled yet? Ed only.
-19	auto_clanstuff	string	ANY	What was the last day we did 'end of day' clan stuff.
-20	auto_cookie	integer	ANY	HCCS Only: Tracks fortune cookie.
-21	auto_crackpotjar	string	ANY	Status of Crackpot Mystic Jar of Psychoses
-22	auto_crypt	string	ANY	'finished' if the Bonerdagon (or equivalent) has been defeated.
-23	auto_cubeItems	boolean	ANY	Do we need to use the Gelatinous Cube for Phat Loot Tokens?
-24	auto_day1_cobb	string	ANY	'finished' if we have found the Knob Goblin Encryption Key.
-25	auto_day1_dna	string	ANY	'finished' if we have hybridized ourselves at the start of Ascension.
-29	auto_day_init	string	ANY	Current daycount if we finished initializing today.
-30	auto_disableAdventureHandling	string	ANY	When set this prevents post/preadventure behavior. This is necessary for multi-adventure situations and 'a choice follows this' situations.
-31	auto_familiarChoice	string	ANY	The current familiar we are planning to take. This changes a lot.
-32	auto_fcle	string	ANY	'finished' if we got the Pirate Fledges, or equivalent.
-33	auto_friars	string	ANY	'finished' if we completed the Friars Quest. Only 'done' if we don't/didn't have enough hot wings.
-34	auto_getBoningKnife	boolean	ANY	-
-35	auto_gnasirUnlocked	boolean	ANY	Have we found gnasir in the Desert?
-36	auto_goblinking	string	ANY	-
-37	auto_gremlins	string	ANY	-
-38	auto_grimstoneFancyOilPainting	boolean	ANY	-
-39	auto_grimstoneOrnateDowsingRod	boolean	ANY	-
-40	auto_gunpowder	string	ANY	Did we initiate the Sonofa Beach quest?
-41	auto_hedge	string	ANY	'fast' or 'slow', determining how quickly we want to finish the Hedge Maze.
-42	auto_hiddenapartment	string	ANY	-
-43	auto_hiddenbowling	string	ANY	-
-44	auto_hiddencity	string	ANY	-
-45	auto_hiddenhospital	string	ANY	-
-46	auto_hiddenoffice	string	ANY	-
-47	auto_hiddenunlock	string	ANY	-
-48	auto_hiddenzones	string	ANY	-
-49	auto_highlandlord	string	ANY	-
-50	auto_mcmuffin	string	ANY	-
-51	auto_mistypeak	string	ANY	-
-52	auto_mosquito	string	ANY	'finished' if we have completed the Mosquito Larva quest.
-53	auto_nuns	string	ANY	-
-54	auto_nunsTrick	string	ANY	Deprecated
-55	auto_nunsTrickActive	string	ANY	Deprecated
-56	auto_nunsTrickGland	string	ANY	Deprecated
-57	auto_nunsTrickCount	string	ANY	Deprecated
-58	auto_nunsTrickReady	string	ANY	Deprecated
-59	auto_oilpeak	string	ANY	'finished' if The Oil Peak is completed.
-60	auto_orchard	string	ANY	-
-61	auto_palindome	string	ANY	'finished' if the Palindome is finished.
-62	auto_phatloot	integer	ANY	Last day that we completed our Phat Loot Token handling.
-63	auto_prewar	string	ANY	-
-64	auto_prehippy	string	ANY	-
-65	auto_pirateoutfit	string	ANY	Pirate Sidequest Tracker: '', 'insults', 'blueprint', 'almost', 'finished'
-66	auto_powerLevelLastLevel	string	ANY	Last Level that we had nothing to do.
-67	auto_powerLevelAdvCount	string	ANY	Adventures count of times we had nothing to do.
-68	auto_powerLevelLastAttempted	string	ANY	Last adventure that we did nothing on.
-69	auto_skipDesert	string	ANY	Tracks last time we skipped the Desert.
-70	auto_spookyfertilizer	string	ANY	'finished' if we've dealt with the Spooky-Gro Fertilizer
-71	auto_spookyravensecond	string	ANY	-
-72	auto_spookysapling	string	ANY	'finished' if we've dealt with the Spooky Sapling
-73	auto_sonofa	string	ANY	'finished' if we've finished or skipped The Lighthouse side quest.
-73	auto_sorceress	string	ANY	Sorceress Tower tracker: '', 'start', 'hedge', 'door', 'tower', 'top', 'final', 'finished'
-75	auto_swordfish	string	ANY	'finished' if we've finished the Poop Deck. Heh, poop.
-76	auto_tavern	string	ANY	'finished' if we've completed the Tavern Quest
-77	auto_trytower	string	ANY	Deprecated, should be removed any day now...
-78	auto_trapper	string	ANY	Trapper Quest Tracker: '', 'start', 'yeti', 'finished'
-79	auto_treecoin	string	ANY	'finished' if we've dealt with the Tree-Holed Coin
-80	auto_twinpeak	string	ANY	'finished' if Twin Peak is completed. (Not really).
-81	auto_twinpeakprogress	string	ANY	-
-82	auto_waitingArrowAlcove	integer	ANY	If we arrowed a modern zmobie, this tells us when to return to the Alcove (cyrptAlcoveEvilness value).
-83	auto_war	string	ANY	'finished' is the war is done. 'done' if the battleground is empty but we still need to turn in items and fight the boss.
-84	auto_winebomb	string	ANY	'partial' if we have a fulminate, 'finished' if we've made it into a wine bomb
-85	auto_100familiar	string	PRE	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
-86	auto_borisSkills	integer	ANY	?? Number of Boris skills?
-87	auto_awolLastSkill	integer	PRE	Last level we handled AWOL skills
-88	auto_beatenUpCount	integer	PRE	?? Something to do with ML disabling?
-89	auto_bedroomHandler1	string	PRE	Part of Multi-adventure Bedroom handling
-90	auto_bedroomHandler2	string	PRE	Part of Multi-adventure Bedroom handling
-91	auto_dinseyGarbageMoney	string	PRE	Tracks when we last depositing a Bag of Park Garbage (can we remove this?)
-92	auto_doneInitialize	integer	PRE	Indicates last ascension that we initialized with the script.
-93	auto_lastABooConsider	integer	PRE	Last adventure that we considered A-Boo Peak.
-94	auto_lastABooCycleFix	integer	PRE	Duration of current A-Boo Peak cycle.
-95	auto_noSnakeOil	integer	PRE	Last day that we could no longer Extract Oil.
-96	auto_renenutetBought	integer	PRE	Number of Talisman of Renenutet's bought on last tracking.
-97	auto_batoomerangDay	integer	PRE	Part of Replica Bat-oomerang Tracker
-98	auto_batoomerangUse	integer	PRE	Part of Replica Bat-oomerang Tracker
-99	auto_longConMonster	string	PRE	Last Monster hit by Long Con
-100	auto_noSleepingDog	boolean	PRE	When true, do not eat a Sleeping Dog.
-100	auto_saveMargarita	boolean	PRE	Save Emergency Margarita in HCCS run.
-101	auto_masonryWall	boolean	ANY	If true, we've destroyed the Masonry Wall in Spookyraven Manor
-102	auto_csDoWheel	boolean	PRE	In HCCS: Use Wheel of Fortune instead of Myst Stats Deck Cheat
-103	_auto_lastABooConsider	integer	POST	Last turn that we considered doing A-Boo Peak
-104	_auto_lastABooCycleFix	integer	POST	Tracker to prevent us infinitely looping on A-Boo Peak
-105	_auto_witchessBattles	integer	POST	Tracker for Witchess Combats (yes, this is actually needed).
-106	auto_combatDirective	string	ANY	State of overloading of combat behaviors.
-107	auto_copperhead	integer	ANY	Tracks the first 3 choice options when being a waiter at Copperhead (1|2|4)
-108	auto_needLegs	boolean	PRE	In Ed, do we require getting legs before trying to Ka farm?
-109	auto_getSteelOrgan	boolean	ANY	Are we trying to get a Steel Organ this ascension?
-110	auto_hccsTurnSave	boolean	ANY	In HCCS: Should we ignore pixel farming?
-111	auto_maxCandyPrice	integer	ANY	Max allowable price per candy for Rethinking Candy (default 2500)
-112	auto_hccsNoConcludeDay	boolean	ANY	In HCCS: When true, reduce how many daily end-of-day things we do.
+5	auto_chasmBusted	boolean	ANY	Has the orc chasm bridge been 'trolled yet? Ed only.
+6	auto_clanstuff	string	ANY	What was the last day we did 'end of day' clan stuff.
+7	auto_cookie	integer	ANY	HCCS Only: Tracks fortune cookie.
+8	auto_crackpotjar	string	ANY	Status of Crackpot Mystic Jar of Psychoses
+9	auto_cubeItems	boolean	ANY	Do we need to use the Gelatinous Cube for Phat Loot Tokens?
+10	auto_day1_dna	string	ANY	'finished' if we have hybridized ourselves at the start of Ascension.
+11	auto_day_init	string	ANY	Current daycount if we finished initializing today.
+12	auto_disableAdventureHandling	string	ANY	When set this prevents post/preadventure behavior. This is necessary for multi-adventure situations and 'a choice follows this' situations.
+13	auto_familiarChoice	string	ANY	The current familiar we are planning to take. This changes a lot.
+14	auto_getBoningKnife	boolean	ANY	-
+15	auto_gnasirUnlocked	boolean	ANY	Have we found gnasir in the Desert?
+16	auto_grimstoneFancyOilPainting	boolean	ANY	-
+17	auto_grimstoneOrnateDowsingRod	boolean	ANY	-
+18	auto_hedge	string	ANY	'fast' or 'slow', determining how quickly we want to finish the Hedge Maze.
+19	auto_powerLevelLastLevel	string	ANY	Last Level that we had nothing to do.
+20	auto_powerLevelAdvCount	string	ANY	Adventures count of times we had nothing to do.
+21	auto_powerLevelLastAttempted	string	ANY	Last adventure that we did nothing on.
+22	auto_skipDesert	string	ANY	Tracks last time we skipped the Desert.
+23	auto_skipNuns	boolean	ANY	Are we skipping the Nuns Sidequest?
+24	auto_waitingArrowAlcove	integer	ANY	If we arrowed a modern zmobie, this tells us when to return to the Alcove (cyrptAlcoveEvilness value).
+25	auto_100familiar	string	PRE	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
+26	auto_borisSkills	integer	ANY	?? Number of Boris skills?
+27	auto_awolLastSkill	integer	PRE	Last level we handled AWOL skills
+28	auto_beatenUpCount	integer	PRE	?? Something to do with ML disabling?
+29	auto_dinseyGarbageMoney	string	PRE	Tracks when we last depositing a Bag of Park Garbage (can we remove this?)
+30	auto_doneInitialize	integer	PRE	Indicates last ascension that we initialized with the script.
+31	auto_lastABooConsider	integer	PRE	Last adventure that we considered A-Boo Peak.
+32	auto_lastABooCycleFix	integer	PRE	Duration of current A-Boo Peak cycle.
+33	auto_noSnakeOil	integer	PRE	Last day that we could no longer Extract Oil.
+34	auto_renenutetBought	integer	PRE	Number of Talisman of Renenutet's bought on last tracking.
+35	auto_batoomerangDay	integer	PRE	Part of Replica Bat-oomerang Tracker
+36	auto_batoomerangUse	integer	PRE	Part of Replica Bat-oomerang Tracker
+37	auto_longConMonster	string	PRE	Last Monster hit by Long Con
+38	auto_noSleepingDog	boolean	PRE	When true, do not eat a Sleeping Dog.
+39	auto_saveMargarita	boolean	PRE	Save Emergency Margarita in HCCS run.
+40	auto_csDoWheel	boolean	PRE	In HCCS: Use Wheel of Fortune instead of Myst Stats Deck Cheat
+41	_auto_lastABooConsider	integer	POST	Last turn that we considered doing A-Boo Peak
+42	_auto_lastABooCycleFix	integer	POST	Tracker to prevent us infinitely looping on A-Boo Peak
+43	_auto_witchessBattles	integer	POST	Tracker for Witchess Combats (yes, this is actually needed).
+44	auto_combatDirective	string	ANY	State of overloading of combat behaviors.
+45	auto_copperhead	integer	ANY	Tracks the first 3 choice options when being a waiter at Copperhead (1|2|4)
+46	auto_needLegs	boolean	PRE	In Ed, do we require getting legs before trying to Ka farm?
+47	auto_getSteelOrgan	boolean	ANY	Are we trying to get a Steel Organ this ascension?
+48	auto_hccsTurnSave	boolean	ANY	In HCCS: Should we ignore pixel farming?
+49	auto_maxCandyPrice	integer	ANY	Max allowable price per candy for Rethinking Candy (default 2500)
+50	auto_hccsNoConcludeDay	boolean	ANY	In HCCS: When true, reduce how many daily end-of-day things we do.

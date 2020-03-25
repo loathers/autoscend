@@ -11,19 +11,10 @@ boolean koe_initializeSettings()
 	{
 		set_property("auto_getStarKey", true);
 		set_property("auto_bruteForcePalindome", in_hardcore());
-		set_property("auto_day1_cobb", "finished");
-		set_property("auto_bean", true);
-		set_property("auto_airship", "finished");
 		set_property("auto_holeinthesky", false);
 		set_property("auto_grimstoneOrnateDowsingRod", "false");
-		set_property("auto_invaderKilled", false);
 		set_property("auto_paranoia", 3);
-
-		// The Hidden Temple is originally unlocked
-		set_property("auto_spookyfertilizer", "finished");
-		set_property("auto_spookymap", "finished");
-		set_property("auto_treecoin", "finished");
-		set_property("auto_spookysapling", "finished");
+		return true;
 	}
 	return false;
 }
@@ -34,8 +25,11 @@ boolean LX_koeInvaderHandler()
 	{
 		return false;
 	}
-	if(get_property("auto_invaderKilled").to_boolean())
+	if (internalQuestStatus("questL13Final") < 3 || get_property("spaceInvaderDefeated").to_boolean())
 	{
+		// invader drops 10 white pixels so fight it before we do the hedge maze
+		// as we need elemental resists for both and we may be able to get enough
+		// pixels for the digital key if we still require them.
 		return false;
 	}
 
@@ -101,7 +95,6 @@ boolean LX_koeInvaderHandler()
 			{
 				abort("We died to the invader. Do it manually please?");
 			}
-			set_property("auto_invaderKilled", true);
 			return ret;
 		}
 	}

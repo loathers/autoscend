@@ -35,7 +35,7 @@ void handlePostAdventure()
 		set_property("auto_forceNonCombatTurn", -1);
 	}
 
-	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatSource").to_int() > my_turncount() - 10)
+	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatTurn").to_int() > my_turncount() - 10)
 	{
 		auto_log_warning("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
 			"), am going to assume it happened but we missed it.", "blue");
@@ -173,9 +173,6 @@ void handlePostAdventure()
 	regen += numeric_modifier("MP Regen Max").to_float();
 	regen = regen / 3.0;
 
-
-
-
 	if(my_class() == $class[Avatar of Sneaky Pete])
 	{
 		buffMaintain($effect[All Revved Up], 25, 1, 10);
@@ -249,7 +246,7 @@ void handlePostAdventure()
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}
 
-			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])))
+			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])) && my_location() != $location[The Smut Orc Logging Camp])
 			{
 				buffMaintain($effect[Blessing of Serqet], 10, 1, 10);
 			}
@@ -467,17 +464,24 @@ void handlePostAdventure()
 		use_skill(1, $skill[Summon Smithsness]);
 	}
 
+
+
 	# This is the list of castables that all MP sequences will use.
 	boolean [skill] toCast = $skills[Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Communism!, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
 
 	if(my_maxmp() < 50)
 	{
+		buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 15, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 20, 1, 10);
-		if(regen > 10.0)
+		// Only maintain skills in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 25, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
+			if(regen > 10.0)
+			{
+				buffMaintain($effect[Empathy], 25, 1, 10);
+			}
 		}
 		// TODO: 'Get Big' is a pretty good skill
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 25))
@@ -528,12 +532,17 @@ void handlePostAdventure()
 	}
 	else if(my_maxmp() < 80)
 	{
+		buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 20, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 30, 1, 10);
-		if(regen > 10.0)
+		// Only Maintain skills in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 35, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
+			if(regen > 10.0)
+			{
+				buffMaintain($effect[Empathy], 35, 1, 10);
+			}
 		}
 
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 32))
@@ -593,11 +602,14 @@ void handlePostAdventure()
 		{
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
-
-		buffMaintain($effect[Leash of Linguini], 35, 1, 10);
-		if(regen > 4.0)
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 50, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+			if(regen > 4.0)
+			{
+				buffMaintain($effect[Empathy], 50, 1, 10);
+			}
 		}
 
 		foreach sk in toCast
@@ -672,102 +684,6 @@ void handlePostAdventure()
 		}
 
 
-		// ML adjustment zone section
-		boolean doML = true;
-		boolean removeML = false;
-			// removeML MUST be true for purgeML to be used. This is only used for -ML locations like Smut Orc, and you must have 5+ SGEAs to use.
-			boolean purgeML = false;
-
-		boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, Defiled Cranny];
-		boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
-
-		// Generic Conditions
-		if(get_property("kingLiberated").to_boolean())
-		{
-			doML = false;
-		}
-		if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() >= 13)))
-		{
-			doML = false;
-		}
-
-		// Item specific Conditions
-		if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
-		{
-			doML = false;
-			removeML = true;
-		}
-
-		// Location Specific Conditions
-		if(lowMLZones contains my_location())
-		{
-			doML = false;
-			removeML = true;
-			purgeML = true;
-		}
-		if(highMLZones contains my_location())
-		{
-			doML = true;
-			removeML = false;
-		}
-
-		// Act on ML settings
-		if(doML)
-		{
-			auto_change_mcd(11);
-
-			// Catch when we leave lowMLZone, allow for being "side tracked" buy delay burning
-			if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
-			{
-				auto_log_info("No Reason to delay Asdon Usage");
-				uneffect($effect[Driving Intimidatingly]);
-				set_property("auto_debuffAsdonDelay", 0);
-			}
-			else if((have_effect($effect[Driving Intimidatingly]).to_int() == 0)  && (get_property("auto_debuffAsdonDelay") >= 0))
-			{
-				set_property("auto_debuffAsdonDelay", 0);
-			}
-			else
-			{
-				set_property("auto_debuffAsdonDelay", get_property("auto_debuffAsdonDelay").to_int() + 1);
-				auto_log_info("Delaying debuffing Asdon: " + get_property("auto_debuffAsdonDelay"));
-			}
-
-			if((monster_level_adjustment() + (2 * my_level())) <= 150)
-			{
-				buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 10) <= 150)
-			{
-				buffMaintain($effect[Drescher\'s Annoying Noise], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 10) <= 150)
-			{
-				buffMaintain($effect[Pride of the Puffin], 80, 1, 10);
-			}
-			if((monster_level_adjustment() + 30) <= 150)
-			{
-				buffMaintain($effect[Ceaseless Snarling], 0, 1, 10);
-			}
-		}
-
-		// If we are in some state where we do not want +ML (Level 13 or Smut Orc) make sure ML is removed
-		if(removeML)
-		{
-			auto_change_mcd(0);
-
-			uneffect($effect[Driving Recklessly]);
-			uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
-
-			if((purgeML) && item_amount($item[soft green echo eyedrop antidote]) > 5)
-			{
-				uneffect($effect[Drescher\'s Annoying Noise]);
-				uneffect($effect[Pride of the Puffin]);
-				uneffect($effect[Ceaseless Snarling]);
-			}
-		}
-
-
 		if((my_mp() > 150) && (my_maxhp() > 300) && (my_hp() < 140))
 		{
 			useCocoon();
@@ -796,8 +712,12 @@ void handlePostAdventure()
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
 
-		buffMaintain($effect[Empathy], 50, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
+		{
+			buffMaintain($effect[Empathy], 50, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+		}
 
 		foreach sk in toCast
 		{
@@ -852,10 +772,6 @@ void handlePostAdventure()
 			buffMaintain($effect[Flimsy Shield of the Pastalord], 180, 1, 10);
 		}
 		buffMaintain($effect[Blubbered Up], 200, 1, 10);
-		if(my_level() < 13)
-		{
-			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 150, 1, 10);
-		}
 		buffMaintain($effect[Tenacity of the Snapper], 200, 1, 10);
 		buffMaintain($effect[Reptilian Fortitude], 200, 1, 10);
 		if(regen > 20.0)
@@ -885,7 +801,12 @@ void handlePostAdventure()
 		{
 			buffMaintain($effect[Curiosity of Br\'er Tarrypin], 50, 1, 2);
 		}
-		buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);
+
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
+		{
+			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);
+		}
 		buffMaintain($effect[A Few Extra Pounds], 200, 1, 2);
 		buffMaintain($effect[Boon of the War Snapper], 200, 1, 5);
 		buffMaintain($effect[Boon of She-Who-Was], 200, 1, 5);
@@ -935,6 +856,43 @@ void handlePostAdventure()
 			cli_execute("outfit Backup");
 		}
 	}
+
+	// Experience and Powerlevelling Section
+	if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
+	{
+		// +Stat expressions based on mainstat
+		if(my_primestat() == $stat[Muscle])
+		{
+			auto_faceCheck("Patient Smile");
+		}
+		if(my_primestat() == $stat[Moxie])
+		{
+			auto_faceCheck("Knowing Smile");
+		}
+		if(my_primestat() == $stat[Mysticality])
+		{
+			// If Gaze succeeds Smile will fail the check and vice versa
+			auto_faceCheck("Inscrutable Gaze");
+			auto_faceCheck("Wry Smile");
+		}
+
+		// Catch-all Expressions in decending order of importance (in case we could not get a stat specific one)
+		auto_faceCheck("Inscrutable Gaze");
+		auto_faceCheck("Wry Smile");
+		auto_faceCheck("Patient Smile");
+		auto_faceCheck("Knowing Smile");
+
+		// Generic +Stat Buffs
+		buffMaintain($effect[Carol of the Thrills], 30, 1, 1);
+
+		// Aptitude is not worth it to maintain if we have Ur-Kel's
+		if((40 < regen * auto_predictAccordionTurns()) && (have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0))
+		{
+			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 40, 1, 1);
+		}
+	}
+
+
 
 	if(my_class() == $class[Pastamancer])
 	{

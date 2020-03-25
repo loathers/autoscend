@@ -169,17 +169,17 @@ boolean LX_theSource()
 			return false;
 		}
 
-		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("auto_trapper") != "yeti") && (get_property("auto_trapper") != "finished")))
+		if (goal == $location[Lair of the Ninja Snowmen] && internalQuestStatus("questL08Trapper") < 2)
 		{
 			return false;
 		}
-		if((goal == $location[The VERY Unquiet Garves]) && (get_property("auto_crypt") != "finished"))
+		if (goal == $location[The VERY Unquiet Garves] && get_property("questL07Cyrptic") != "finished")
 		{
 			return false;
 		}
 		if(goal == $location[The Castle in the Clouds in the Sky (Top Floor)])
 		{
-			if(get_property("auto_castleground") != "finished")
+			if (internalQuestStatus("questL10Garbage") < 9)
 			{
 				return false;
 			}
@@ -192,7 +192,7 @@ boolean LX_theSource()
 		{
 			if((item_amount($item[Ninja Rope]) == 0) || (item_amount($item[Ninja Carabiner]) == 0) || (item_amount($item[Ninja Crampons]) == 0))
 			{
-				if(L8_trapperYeti())
+				if(L8_trapperNinjaLair())
 				{
 					return true;
 				}
@@ -203,7 +203,7 @@ boolean LX_theSource()
 		{
 			return false;
 		}
-		if((goal == $location[The Hidden Park]) && (get_property("auto_hiddenunlock") == "finished"))
+		if (goal == $location[The Hidden Park] && internalQuestStatus("questL11Worship") > 2)
 		{
 			return false;
 		}
