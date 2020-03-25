@@ -92,7 +92,8 @@ void initializeSettings()
 
 	if(!autoForbidFamiliarChange($familiar[Crimbo Shrub]))
 	{
-		//if it is a 100% crimbo shrub run it the follow two lines will do nothing and it will remain on crimbo shrub. otherwise it will switch to shrub and then switch to no familiar.
+		//if in 100% crimbo shrub run nothing will be done, it will remain on crimbo shrub.
+		//if not in 100% run and are allowed to switch to shrub then it will switch to shrub and then to none
 		
 		autoUseFamiliar($familiar[Crimbo Shrub]);
 		autoUseFamiliar($familiar[none]);
