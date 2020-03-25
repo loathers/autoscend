@@ -934,11 +934,6 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	restoreSetting("choiceAdventure1327");
 	restoreSetting("choiceAdventure1328");
 
-	if(shirt != $item[none] && !useMaximizeToEquip())
-	{
-		equip($slot[shirt], shirt);
-	}
-
 	if(get_property("lastEncounter") == "Party\'s Over")
 	{
 		set_property("_neverendingPartyOver", true);

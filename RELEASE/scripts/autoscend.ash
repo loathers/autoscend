@@ -532,10 +532,6 @@ void maximize_hedge()
 	int [element] resGoal;
 	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
 	{
-		if(!useMaximizeToEquip())
-		{
-			autoMaximize("all res -equip snow suit", 2500, 0, false);
-		}
 		foreach ele in $elements[hot, cold, stench, sleaze, spooky]
 		{
 			resGoal[ele] = 9;
@@ -543,10 +539,6 @@ void maximize_hedge()
 	}
 	else
 	{
-		if(!useMaximizeToEquip())
-		{
-			autoMaximize(to_string(first) + " res, " + to_string(second) + " res, " + to_string(third) + " res -equip snow suit", 2500, 0, false);
-		}
 		resGoal[first] = 9;
 		resGoal[second] = 9;
 		resGoal[third] = 9;
@@ -3214,11 +3206,6 @@ boolean L7_crypt()
 
 		autoEquip($item[Gravy Boat]);
 
-		if(!useMaximizeToEquip() && (get_property("cyrptAlcoveEvilness").to_int() > 26))
-		{
-			autoEquip($item[The Nuge\'s Favorite Crossbow]);
-		}
-
 		addToMaximize("100initiative 850max");
 
 		if(get_property("cyrptAlcoveEvilness").to_int() >= 28)
@@ -3252,7 +3239,7 @@ boolean L7_crypt()
 		bat_formBats();
 
 		januaryToteAcquire($item[broken champagne bottle]);
-		if(useMaximizeToEquip() && (get_property("cyrptNookEvilness").to_int() > 26))
+		if(get_property("cyrptNookEvilness").to_int() > 26)
 		{
 			removeFromMaximize("-equip " + $item[broken champagne bottle]);
 		}
@@ -4004,33 +3991,8 @@ boolean L4_batCave()
 	// try to get the stench res without equipment, but use equipment if we must
 	if(!provideResistances(resGoal, false) && !provideResistances(resGoal, true))
 	{
-		if(!useMaximizeToEquip())
-		{
-			if(possessEquipment($item[Knob Goblin Harem Veil]))
-			{
-				equip($item[Knob Goblin Harem Veil]);
-			}
-			else if(item_amount($item[Pine-Fresh Air Freshener]) > 0)
-			{
-				equip($slot[Acc3], $item[Pine-Fresh Air Freshener]);
-			}
-			else
-			{
-				if(get_property("auto_powerLevelAdvCount").to_int() >= 5)
-				{
-					bat_formBats();
-					autoAdv(1, $location[The Bat Hole Entrance]);
-					return true;
-				}
-				auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
-				return false;
-			}
-		}
-		else
-		{
-			auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
-			return false;
-		}
+		auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
+		return false;
 	}
 
 	if (cloversAvailable() > 0 && batStatus <= 1)
@@ -4369,15 +4331,7 @@ boolean adventureFailureHandler()
 			}
 		}
 
-		if (get_property("auto_powerLevelAdvCount").to_int() > 20)
-		{
-			if ($location[The Haunted Gallery] == my_location())
-			{
-				tooManyAdventures = false;
-			}
-		}
-
-		if(($locations[The Hidden Hospital, The Penultimate Fantasy Airship] contains my_location()) && (my_location().turns_spent < 100))
+		if ($locations[The Haunted Gallery] contains my_location() && my_location().turns_spent < 100)
 		{
 			tooManyAdventures = false;
 		}
@@ -5153,7 +5107,7 @@ boolean LX_handleSpookyravenFirstFloor()
 			if(expectPool < 18)
 			{
 				auto_log_info("Not quite boozed up for the billiards room... we'll be back.", "green");
-				if(get_property("auto_powerLevelAdvCount").to_int() < 5)
+				if (my_level() != get_property("auto_powerLevelLastLevel").to_int())
 				{
 					return false;
 				}
@@ -5411,10 +5365,6 @@ boolean auto_tavern()
 		auto_interruptCheck();
 		//Sleaze is the only one we don't care about
 
-		if(!useMaximizeToEquip())
-		{
-			autoEquip($item[17-Ball]);
-		}
 		if (possessEquipment($item[Kremlin\'s Greatest Briefcase]))
 		{
 			string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
@@ -5434,11 +5384,6 @@ boolean auto_tavern()
 				{
 					page = visit_url("place.php?whichplace=kgb&action=kgb_handledown", false);
 				}
-			}
-			mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
-			if(contains_text(mod, "Hot Damage") && !useMaximizeToEquip())
-			{
-				autoEquip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
 			}
 		}
 
@@ -5500,7 +5445,7 @@ boolean auto_tavern()
 		int capped = 0;
 		foreach ele, choicenum in eleChoiceCombos
 		{
-			boolean passed = (useMaximizeToEquip() ? simValue(ele + " Damage") : numeric_modifier(ele + " Damage")) >= 20.0;
+			boolean passed = simValue(ele + " Damage") >= 20.0;
 			set_property("choiceAdventure" + choicenum, passed ? "2" : "1");
 			if(passed) ++capped;
 		}
