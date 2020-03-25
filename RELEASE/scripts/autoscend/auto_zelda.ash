@@ -199,13 +199,13 @@ boolean zelda_buyableIsNothing(zelda_buyable zb)
 
 zelda_buyable zelda_nextBuyable()
 {
-	if (!possessEquipment($item[[10462]fire flower]))
-	{
-		return zelda_buyableItem($item[[10462]fire flower]);
-	}
-	else if (!have_skill($skill[Lucky Buckle]))
+	if (!have_skill($skill[Lucky Buckle]))
 	{
 		return zelda_buyableSkill($skill[Lucky Buckle]);
+	}
+	else if (!possessEquipment($item[[10462]fire flower]))
+	{
+		return zelda_buyableItem($item[[10462]fire flower]);
 	}
 	else if (!have_skill($skill[Secret Eye]))
 	{

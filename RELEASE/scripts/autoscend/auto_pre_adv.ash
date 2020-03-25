@@ -229,7 +229,7 @@ void handlePreAdventure(location place)
 			}
 		}
 		if ((is_ghost_in_zone(place) && !skip_equipping_flower)
-			|| (place == $location[The Smut Orc Camp] && possessEquipment($item[frosty button])))
+			|| (place == $location[The Smut Orc Logging Camp] && possessEquipment($item[frosty button])))
 		{
 			if (possessEquipment($item[bonfire flower]))
 			{
@@ -322,17 +322,9 @@ void handlePreAdventure(location place)
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean)
 	{
-		float itemDrop;
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("50item " + ceil(itemNeed._float) + "max");
-			simMaximize();
-			itemDrop = simValue("Item Drop");
-		}
-		else
-		{
-			itemDrop = numeric_modifier("Item Drop");
-		}
+		addToMaximize("50item " + ceil(itemNeed._float) + "max");
+		simMaximize();
+		float itemDrop = simValue("Item Drop");
 		if(itemDrop < itemNeed._float)
 		{
 			if (buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 20, 1, 10))
@@ -466,10 +458,7 @@ void handlePreAdventure(location place)
 
 // EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
-	if(useMaximizeToEquip())
-	{
-		cli_execute("checkpoint clear");
-	}
+	cli_execute("checkpoint clear");
 
 	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
 	if(lowMLZones contains place)

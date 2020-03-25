@@ -2814,24 +2814,9 @@ boolean providePlusCombat(int amt, boolean doEquips)
 
 	if(doEquips)
 	{
-		if(!useMaximizeToEquip())
-		{
-			removeNonCombat();
-			if(have_familiar($familiar[Grim Brother]) && possessEquipment($item[Buddy Bjorn]))
-			{
-				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
-				{
-					autoEquip($slot[Back], $item[Buddy Bjorn]);
-				}
-				handleBjornify($familiar[Grim Brother]);
-			}
-		}
-		else
-		{
-			addToMaximize("200combat " + to_string(amt) + "max");
-			simMaximize();
-			equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
-		}
+		addToMaximize("200combat " + to_string(amt) + "max");
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(auto_have_familiar($familiar[Jumpsuited Hound Dog]))
 		{
 			handleFamiliar($familiar[Jumpsuited Hound Dog]);
@@ -2921,25 +2906,9 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 
 	if(doEquips)
 	{
-		if(!useMaximizeToEquip())
-		{
-			removeCombat();
-			if(have_familiar($familiar[Grimstone Golem]) && possessEquipment($item[Buddy Bjorn]))
-			{
-				if(equipped_item($slot[back]) != $item[Buddy Bjorn])
-				{
-					autoEquip($slot[Back], $item[Buddy Bjorn]);
-				}
-				handleBjornify($familiar[Grimstone Golem]);
-			}
-		}
-		else
-		{
-			addToMaximize("-200combat " + to_string(-1 * amt) + "max");
-			simMaximize();
-			equipDiff = to_int(simValue("Combat Rate") -
-				numeric_modifier("Combat Rate"));
-		}
+		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 	}
 
 	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
@@ -2993,21 +2962,18 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 
 	if(doEquips)
 	{
-		if(useMaximizeToEquip())
+		string max = "500initiative " + amt + "max";
+		if(speculative)
 		{
-			string max = "500initiative " + amt + "max";
-			if(speculative)
-			{
-				simMaximizeWith(max);
-			}
-			else
-			{
-				addToMaximize("500initiative " + amt + "max");
-				simMaximize();
-			}
-			delta = simValue("Initiative") - numeric_modifier("Initiative");
-			auto_log_debug("With gear we can get to " + result());
+			simMaximizeWith(max);
 		}
+		else
+		{
+			addToMaximize("500initiative " + amt + "max");
+			simMaximize();
+		}
+		delta = simValue("Initiative") - numeric_modifier("Initiative");
+		auto_log_debug("With gear we can get to " + result());
 
 		if(!speculative)
 			handleFamiliar("init");
@@ -3225,35 +3191,32 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 
 	if(doEquips)
 	{
-		if(useMaximizeToEquip())
+		if(speculative)
 		{
-			if(speculative)
+			string max = "";
+			foreach ele,goal in amt
 			{
-				string max = "";
-				foreach ele,goal in amt
+				if(max.length() > 0)
 				{
-					if(max.length() > 0)
-					{
-						max += ",";
-					}
-					max += "2000" + ele + " resistance " + goal + "max";
+					max += ",";
 				}
-				simMaximizeWith(max);
+				max += "2000" + ele + " resistance " + goal + "max";
 			}
-			else
-			{
-				foreach ele,goal in amt
-				{
-					addToMaximize("2000" + ele + " resistance " + goal + "max");
-				}
-				simMaximize();
-			}
-			foreach ele in amt
-			{
-				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
-			}
-			auto_log_debug("With gear we can get to " + resultstring());
+			simMaximizeWith(max);
 		}
+		else
+		{
+			foreach ele,goal in amt
+			{
+				addToMaximize("2000" + ele + " resistance " + goal + "max");
+			}
+			simMaximize();
+		}
+		foreach ele in amt
+		{
+			delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
+		}
+		auto_log_debug("With gear we can get to " + resultstring());
 	}
 
 	if(pass())
@@ -3322,14 +3285,11 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				cli_execute("acquire 1 li'l candy corn costume");
 			}
-			if(useMaximizeToEquip())
+			// update maximizer scores with familiar
+			simMaximize();
+			foreach ele in amt
 			{
-				// update maximizer scores with familiar
-				simMaximize();
-				foreach ele in amt
-				{
-					delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
-				}
+				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
 		}
 		if(pass())
@@ -3448,35 +3408,32 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 
 	if(doEquips)
 	{
-		if(useMaximizeToEquip())
+		if(speculative)
 		{
-			if(speculative)
+			string max = "";
+			foreach st,goal in amt
 			{
-				string max = "";
-				foreach st,goal in amt
+				if(max.length() > 0)
 				{
-					if(max.length() > 0)
-					{
-						max += ",";
-					}
-					max += "200" + st + " " + goal + "max";
+					max += ",";
 				}
-				simMaximizeWith(max);
+				max += "200" + st + " " + goal + "max";
 			}
-			else
-			{
-				foreach st,goal in amt
-				{
-					addToMaximize("200" + st + " " + goal + "max");
-				}
-				simMaximize();
-			}
-			foreach st in amt
-			{
-				delta[st] = simValue("Buffed " + st) - my_buffedstat(st);
-			}
-			auto_log_debug("With gear we can get to " + resultstring());
+			simMaximizeWith(max);
 		}
+		else
+		{
+			foreach st,goal in amt
+			{
+				addToMaximize("200" + st + " " + goal + "max");
+			}
+			simMaximize();
+		}
+		foreach st in amt
+		{
+			delta[st] = simValue("Buffed " + st) - my_buffedstat(st);
+		}
+		auto_log_debug("With gear we can get to " + resultstring());
 	}
 
 	if(pass())

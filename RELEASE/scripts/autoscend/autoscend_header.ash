@@ -566,7 +566,6 @@ boolean autoEquip(item it); //Defined in autoscend/auto_equipment.ash
 boolean autoForceEquip(slot s, item it); //Defined in autoscend/auto_equipment.ash
 boolean autoForceEquip(item it); //Defined in autoscend/auto_equipment.ash
 boolean tryAddItemToMaximize(slot s, item it); //Defined in autoscend/auto_equipment.ash
-boolean useMaximizeToEquip(); //Defined in autoscend/auto_equipment.ash
 string defaultMaximizeStatement(); //Defined in autoscend/auto_equipment.ash
 void resetMaximize(); //Defined in autoscend/auto_equipment.ash
 void finalizeMaximize(); //Defined in autoscend/auto_equipment.ash
