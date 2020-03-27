@@ -29,7 +29,7 @@ boolean warOutfit(boolean immediate)
 			}
 		}
 	}
-	else
+	if(get_property("auto_hippyInstead").to_boolean())
 	{
 		if(!reallyWarOutfit("war hippy fatigues"))
 		{
@@ -251,6 +251,7 @@ boolean L12_preOutfit()
 	{
 		auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
 		if(internalQuestStatus("questL12War") > -1)
+
 		{
 			autoAdv(1, $location[Hippy Camp]);
 		}
@@ -337,7 +338,6 @@ boolean L12_startWar()
 		auto_log_info("Must save the goldfish!!", "blue");
 		autoAdv(1, $location[Wartime Frat House]);
 	}
-		
 	return true;
 }
 
