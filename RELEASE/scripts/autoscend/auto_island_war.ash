@@ -29,7 +29,7 @@ boolean warOutfit(boolean immediate)
 			}
 		}
 	}
-	else
+	if(get_property("auto_hippyInstead").to_boolean())
 	{
 		if(!reallyWarOutfit("war hippy fatigues"))
 		{
