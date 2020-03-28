@@ -1421,7 +1421,7 @@ boolean L12_finalizeWar()
 		return false;
 	}
 
-	if (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratsDefeated").to_int() < 1000)
+	if (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000)
 	{
 		return false;
 	}
