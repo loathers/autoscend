@@ -136,7 +136,6 @@ boolean L13_towerNSNagamar();
 boolean L13_towerNSFinal();
 boolean L13_ed_councilWarehouse();
 boolean L13_ed_towerHandler();
-boolean questOverride();
 
 string autoscend_current_version();
 string autoscend_previous_version();
