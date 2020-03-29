@@ -514,9 +514,28 @@ boolean L12_gremlins()
 		uneffect($effect[Curse of the Black Pearl Onion]);
 	}
 
+	//check if we have magnet, and if we do not try to acquire it
 	if(item_amount($item[molybdenum magnet]) == 0)
 	{
-		abort("We don't have the molybdenum magnet but should... please get it and rerun the script");
+		//if fighting for frat immediately grab it
+		if(!get_property("auto_hippyInstead").to_boolean())
+		{
+			warOutfit(true);
+			visit_url("bigisland.php?action=junkman&pwd");
+		}
+		
+		//if fighting for hippies grab magnet when possible
+		if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() >= 192))
+		{
+			warOutfit(true);
+			visit_url("bigisland.php?action=junkman&pwd");
+		}
+		//if still don't have magnet something went wrong
+		if(item_amount($item[molybdenum magnet]) == 0)
+		{
+			abort("We don't have the molybdenum magnet but should... please get it and rerun the script");
+		}
+		else return true;		//successfully acquired magnet
 	}
 
 	if(auto_my_path() == "Disguises Delimit")
