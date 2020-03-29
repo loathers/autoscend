@@ -2285,19 +2285,6 @@ boolean doBedtime()
 	return false;
 }
 
-boolean questOverride()
-{
-	if(get_property("semirareCounter").to_int() == 0)
-	{
-		if(get_property("semirareLocation") != "")
-		{
-			set_property("semirareLocation", "");
-		}
-	}
-
-	return false;
-}
-
 boolean L13_towerNSNagamar()
 {
 	if (!get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") != 12)
@@ -5733,7 +5720,6 @@ boolean doTasks()
 	}
 
 	print_header();
-	questOverride();
 
 	auto_interruptCheck();
 
@@ -6212,7 +6198,6 @@ void auto_begin()
 
 	ed_initializeSession();
 	bat_initializeSession();
-	questOverride();
 
 	if(my_daycount() > 1)
 	{
