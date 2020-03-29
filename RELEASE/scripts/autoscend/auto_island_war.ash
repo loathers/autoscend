@@ -341,26 +341,6 @@ boolean L12_startWar()
 	return true;
 }
 
-boolean L12_orchardStart()
-{
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestOrchardCompleted") != "none")
-	{
-		return false;
-	}
-	if (in_tcrs() || in_koe())
-	{
-		return false;
-	}
-	if((get_property("hippiesDefeated").to_int() < 64) && !get_property("auto_hippyInstead").to_boolean())
-	{
-		return false;
-	}
-
-	warOutfit(true);
-	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
-	return true;
-}
-
 boolean L12_filthworms()
 {
 	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestOrchardCompleted") != "none")
