@@ -60,7 +60,7 @@ boolean L13_towerNSContests()
 
 				provideInitiative(400, true);
 
-				if(crowd1Insufficient() && (get_property("sidequestArenaCompleted") == "fratboy"))
+				if(crowd1Insufficient())
 				{
 					cli_execute("concert White-boy Angst");
 				}
@@ -639,7 +639,7 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 		}
-		if((auto_have_familiar($familiar[warbear drone])) && !autoForbidFamiliarChange())
+		if((auto_have_familiar($familiar[warbear drone])) && !is100FamiliarRun())
 		{
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
@@ -655,12 +655,12 @@ boolean L13_towerNSTower()
 				sources = sources + 2;
 			}
 		}
-		else if((auto_have_familiar($familiar[Sludgepuppy])) && !autoForbidFamiliarChange())
+		else if((auto_have_familiar($familiar[Sludgepuppy])) && !is100FamiliarRun())
 		{
 			handleFamiliar($familiar[Sludgepuppy]);
 			sources = sources + 3;
 		}
-		else if((auto_have_familiar($familiar[Imitation Crab])) && !autoForbidFamiliarChange())
+		else if((auto_have_familiar($familiar[Imitation Crab])) && !is100FamiliarRun())
 		{
 			handleFamiliar($familiar[Imitation Crab]);
 			sources = sources + 2;
@@ -770,7 +770,7 @@ boolean L13_towerNSTower()
 		{
 			cli_execute("concert 2");
 		}
-		if(autoForbidFamiliarChange())
+		if(is100FamiliarRun())
 		{
 			addToMaximize("200meat drop");
 		}
