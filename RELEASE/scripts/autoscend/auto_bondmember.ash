@@ -4,7 +4,6 @@ void bond_initializeSettings()
 {
 	if(my_path() == "License to Adventure")
 	{
-		set_property("auto_100familiar", $familiar[Egg Benedict]);
 		set_property("auto_getBeehive", true);
 		set_property("auto_cubeItems", true);
 		set_property("auto_getStarKey", true);

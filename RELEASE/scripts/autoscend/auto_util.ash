@@ -133,8 +133,10 @@ boolean loopHandler(string turnSetting, string counterSetting, string abortMessa
 boolean loopHandler(string turnSetting, string counterSetting, int threshold);
 boolean loopHandlerDelay(string counterSetting);
 boolean loopHandlerDelay(string counterSetting, int threshold);
+boolean autoUseFamiliar(familiar target);
 boolean is100FamiliarRun();
-boolean is100FamiliarRun(familiar thisOne);
+boolean autoForbidFamiliarChange();
+boolean autoForbidFamiliarChange(familiar target);
 boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
@@ -866,18 +868,38 @@ string reverse(string s)
 	return ret;
 }
 
+boolean autoUseFamiliar(familiar target)
+{
+	// a replacement for mafias use_familiar function meant to prevent certain errors from cropping up.
+	
+	// if the target familiar is already in use, just return true without doing anything.
+	if (my_familiar() == target)
+	{
+		return true;
+	}
+	
+	// if we are forbidden to change to the target familiar because of path or 100% familiar restriction, return false
+	if (autoForbidFamiliarChange(target))
+	{
+		return false;
+	}
+	
+	// no blocks detected thus far, attempt to make the change and then verify it.
+	use_familiar(target);
+	if (my_familiar() == target)
+	{
+		return true;
+	}
+	
+	// if it reached this line, then something failed for some reason
+	auto_log_warning("autoUseFamiliar(target) in auto_util has failed to change familiar to " + target, "red");
+	return false;
+}
+
 boolean is100FamiliarRun()
 {
-	// Answers the question "am I not allowed to change my familiar?"
-	// Returns true for paths with no familiars
-	if(get_property("auto_100familiar") == $familiar[Egg Benedict])
-	{
-		if(have_familiar($familiar[Mosquito]))
-		{
-			return false;
-		}
-	}
-
+	// answers the question of "is this a 100% familiar run"
+	
 	if(get_property("auto_100familiar") == $familiar[none])
 	{
 		return false;
@@ -886,19 +908,53 @@ boolean is100FamiliarRun()
 	{
 		return false;
 	}
+	
+	// if you reached this line, then it means that auto_100familiar is set to some specific familiar.
 	return true;
 }
 
-boolean is100FamiliarRun(familiar thisOne)
+boolean autoForbidFamiliarChange()
 {
-	if(is100FamiliarRun())
+	// answers the question "am I forbidden to change familiar?"
+	// an answer of true means you cannot change familiar, either due to path or due to being 100% run.
+	// an answer of false means you are allowed to change familiar
+	
+	// Specific path checking.
+	if($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, License to Adventure, Pocket Familiars, Dark Gyffte] contains auto_my_path())
 	{
-		if(get_property("auto_100familiar") == thisOne)
-		{
-			return false;
-		}
 		return true;
 	}
+	
+	// If you are not in a specific path that forbids familiars, then the question is whether or not you are in a 100% run. If you are in such a run then changing familiar is forbidden.
+	
+	return is100FamiliarRun();
+}
+
+boolean autoForbidFamiliarChange(familiar target)
+{
+	// answers the question of "am I forbidden to change familiar to a familiar named target"
+	// Returns false means you are allowed to change familiar to familiar target. Yay for double negatives.
+	// Returns true means you are forbidden to change familiar to familiar target
+
+	// if you don't have a familiar, you can't change to it. return true.
+	if(!auto_have_familiar(target))
+	{
+		return true;
+	}
+
+	// target familiar is the same as auto_100familiar, you are allowed to change it into itself, return false
+	if(get_property("auto_100familiar") == target)
+	{
+		return false;
+	}
+	
+	// if you failed the previous if question, and are forbidden to change familiar either because of path or because it is 100% run, return true.
+	if(autoForbidFamiliarChange())
+	{
+		return true;
+	}
+	
+	// if you reached this point, then auto_100familiar must not be set to anything, you are allowed to change familiar. return false.
 	return false;
 }
 
@@ -1316,7 +1372,7 @@ boolean canYellowRay(monster target)
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
 	// first, do any necessary prep to use a yellow ray
-	if((my_familiar() == $familiar[Crimbo Shrub]) || (!is100FamiliarRun($familiar[Crimbo Shrub]) && auto_have_familiar($familiar[Crimbo Shrub])))
+	if((my_familiar() == $familiar[Crimbo Shrub]) || (!autoForbidFamiliarChange($familiar[Crimbo Shrub]) && auto_have_familiar($familiar[Crimbo Shrub])))
 	{
 		if(item_amount($item[box of old Crimbo decorations]) == 0)
 		{
@@ -3265,7 +3321,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	if(pass())
 		return result();
 
-	if(doEquips && !is100FamiliarRun())
+	if(doEquips && !autoForbidFamiliarChange())
 	{
 		familiar resfam = $familiar[none];
 		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot]

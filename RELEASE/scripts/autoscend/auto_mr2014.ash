@@ -46,7 +46,7 @@ boolean dna_startAcquire()
 	}
 	else
 	{
-		if((have_familiar($familiar[Machine Elf])) && is100FamiliarRun($familiar[Machine Elf]))
+		if(!autoForbidFamiliarChange($familiar[Machine Elf]))
 		{
 			familiar bjorn = my_bjorned_familiar();
 			if(bjorn == $familiar[Machine Elf])

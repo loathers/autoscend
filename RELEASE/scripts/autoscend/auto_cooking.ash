@@ -618,7 +618,7 @@ void consumeStuff()
 		{
 			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper])
 			{
-				use_familiar($familiar[none]);
+				autoUseFamiliar($familiar[none]);
 			}
 			auto_knapsackAutoConsume("drink", false);
 		}

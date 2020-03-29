@@ -277,7 +277,7 @@ boolean L9_aBooPeak()
 			lihcface = "-equip lihc face";
 		}
 		string parrot = ", switch exotic parrot, switch mu, switch trick-or-treating tot";
-		if(is100FamiliarRun())
+		if(autoForbidFamiliarChange())
 		{
 			parrot = "";
 		}

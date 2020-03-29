@@ -84,16 +84,19 @@ void initializeSettings()
 		{
 			set_property("auto_100familiar", my_familiar());
 		}
-		if(is100FamiliarRun())
+		if(autoForbidFamiliarChange())
 		{
 			set_property("auto_useCubeling", false);
 		}
 	}
 
-	if(!is100FamiliarRun() && auto_have_familiar($familiar[Crimbo Shrub]))
+	if(!autoForbidFamiliarChange($familiar[Crimbo Shrub]))
 	{
-		use_familiar($familiar[Crimbo Shrub]);
-		use_familiar($familiar[none]);
+		//if in 100% crimbo shrub run nothing will be done, it will remain on crimbo shrub.
+		//if not in 100% run and are allowed to switch to shrub then it will switch to shrub and then to none
+		
+		autoUseFamiliar($familiar[Crimbo Shrub]);
+		autoUseFamiliar($familiar[none]);
 	}
 
 	string pool = visit_url("questlog.php?which=3");
@@ -279,7 +282,7 @@ boolean handleFamiliar(string type)
 
 boolean handleFamiliar(familiar fam)
 {
-	if(is100FamiliarRun())
+	if(autoForbidFamiliarChange())
 	{
 		return true;
 	}
@@ -851,7 +854,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if(((auto_my_path() == "Picky") || is100FamiliarRun()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
+		if(((auto_my_path() == "Picky") || autoForbidFamiliarChange()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
 		{
 			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
 			{
@@ -1603,7 +1606,7 @@ boolean doBedtime()
 		return false;
 	}
 	int spleenlimit = spleen_limit();
-	if(is100FamiliarRun())
+	if(autoForbidFamiliarChange())
 	{
 		spleenlimit -= 3;
 	}
@@ -2959,7 +2962,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun())
+	if(!in_koe() && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !autoForbidFamiliarChange($familiar[Machine Elf]))
 	{
 		if(get_property("auto_choice1119") != "")
 		{
@@ -4699,7 +4702,7 @@ boolean LX_phatLootToken()
 
 	if((!possessEquipment($item[Ring of Detect Boring Doors]) || (item_amount($item[Eleven-Foot Pole]) == 0) || (item_amount($item[Pick-O-Matic Lockpicks]) == 0)) && auto_have_familiar($familiar[Gelatinous Cubeling]))
 	{
-		if(!is100FamiliarRun($familiar[Gelatinous Cubeling]) && (auto_my_path() != "Pocket Familiars"))
+		if(!autoForbidFamiliarChange($familiar[Gelatinous Cubeling]))
 		{
 			return false;
 		}
@@ -6200,7 +6203,7 @@ void auto_begin()
 	if(my_familiar() == $familiar[Stooper])
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		use_familiar($familiar[none]);
+		autoUseFamiliar($familiar[none]);
 	}
 	dailyEvents();
 	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())

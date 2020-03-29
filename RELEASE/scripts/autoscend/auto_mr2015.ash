@@ -1185,7 +1185,7 @@ boolean adjustEdHat(string goal)
 
 boolean resolveSixthDMT()
 {
-	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 10) && !is100FamiliarRun() && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_daycount() == 2))
+	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 10) && !autoForbidFamiliarChange($familiar[Machine Elf]) && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_daycount() == 2))
 	{
 		if(get_property("auto_choice1119") != "")
 		{

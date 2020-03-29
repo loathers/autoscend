@@ -696,7 +696,7 @@ boolean LA_cs_communityService()
 
 			if(!get_property("auto_hccsNoConcludeDay").to_boolean())
 			{
-				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun($familiar[Machine Elf]))
+				if((get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !autoForbidFamiliarChange($familiar[Machine Elf]))
 				{
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
@@ -709,7 +709,7 @@ boolean LA_cs_communityService()
 					return true;
 				}
 
-				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() == 5) && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_adventures() > 0) && !is100FamiliarRun($familiar[Machine Elf]))
+				if((get_property("_machineTunnelsAdv").to_int() == 5) && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_adventures() > 0) && !autoForbidFamiliarChange($familiar[Machine Elf]))
 				{
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
@@ -828,14 +828,9 @@ boolean LA_cs_communityService()
 				set_property("auto_csPuckCounter", get_property("auto_csPuckCounter").to_int() - 1);
 				doFarm = true;
 			}
-			if(((item_amount($item[Power Pill]) < 2) || (item_amount($item[Yellow Pixel]) < pixelsNeed)) && (have_familiar($familiar[Puck Man]) || have_familiar($familiar[Ms. Puck Man])))
+			if(((item_amount($item[Power Pill]) < 2) || (item_amount($item[Yellow Pixel]) < pixelsNeed)) && (!autoForbidFamiliarChange($familiar[Puck Man]) || !autoForbidFamiliarChange($familiar[Ms. Puck Man])))
 			{
-				if(is100familiarRun() && is100familiarRun($familiar[Puck Man]) && is100familiarRun($familiar[Ms. Puck Man]))
-				{}
-				else
-				{
-					doFarm = true;
-				}
+			doFarm = true;
 			}
 
 			if(possessEquipment($item[KoL Con 13 Snowglobe]) && (equipped_item($slot[Off-Hand]) == $item[A Light That Never Goes Out]))
@@ -1016,7 +1011,7 @@ boolean LA_cs_communityService()
 			{
 				missing = 0;
 			}
-			if((missing > (item_amount($item[Miniature Power Pill]) + item_amount($item[Power Pill]))) && (have_familiar($familiar[Puck Man]) || have_familiar($familiar[Ms. Puck Man])) && (!is100familiarRun() || !is100familiarRun($familiar[Puck Man]) || !is100familiarRun($familiar[Ms. Puck Man])))
+			if((missing > (item_amount($item[Miniature Power Pill]) + item_amount($item[Power Pill]))) && (!autoForbidFamiliarChange($familiar[Puck Man]) || !autoForbidFamiliarChange($familiar[Ms. Puck Man])))
 			{
 				if(elementalPlanes_access($element[hot]))
 				{
@@ -1081,7 +1076,7 @@ boolean LA_cs_communityService()
 				auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 			}
 
-			if(elementalPlanes_access($element[hot]) && have_skills($skills[Meteor Lore, Snokebomb]) && have_familiar($familiar[XO Skeleton]) && (my_mp() > mp_cost($skill[Snokebomb])) && (get_property("_snokebombUsed").to_int() < 3) && (get_property("_macrometeoriteUses").to_int() < 10) && (get_property("_xoHugsUsed").to_int() < 11) && !is100FamiliarRun($familiar[XO Skeleton]))
+			if(elementalPlanes_access($element[hot]) && have_skills($skills[Meteor Lore, Snokebomb]) && !autoForbidFamiliarChange($familiar[XO Skeleton]) && (my_mp() > mp_cost($skill[Snokebomb])) && (get_property("_snokebombUsed").to_int() < 3) && (get_property("_macrometeoriteUses").to_int() < 10) && (get_property("_xoHugsUsed").to_int() < 11))
 			{
 				if((!possessEquipment($item[Fireproof Megaphone]) && !possessEquipment($item[Meteorite Guard])) || !possessEquipment($item[High-Temperature Mining Mask]))
 				{
@@ -2244,7 +2239,7 @@ boolean LA_cs_communityService()
 					autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 					return true;
 				}
-				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 2) && !is100FamiliarRun($familiar[Machine Elf]))
+				if(!autoForbidFamiliarChange($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 2))
 				{
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
@@ -2410,7 +2405,7 @@ boolean LA_cs_communityService()
 			}
 			asdonBuff($effect[Driving Stealthily]);
 
-			if(!is100FamiliarRun($familiar[Disgeist]) && have_familiar($familiar[Disgeist]))
+			if(!autoForbidFamiliarChange($familiar[Disgeist]))
 			{
 				# Need 37-41 pounds to save 3 turns. (probably 40)
 				# 74 does not save 6 but 79 does.
@@ -3062,7 +3057,7 @@ void cs_initializeDay(int day)
 			{
 				familiar last = my_familiar();
 				int gift = 1;
-				if(is100FamiliarRun() && (my_familiar() != $familiar[Crimbo Shrub]))
+				if(autoForbidFamiliarChange() && (my_familiar() != $familiar[Crimbo Shrub]))
 				{
 					gift = 2;
 				}
@@ -3331,7 +3326,7 @@ void cs_make_stuff(int curQuest)
 			cli_execute("make " + $item[Staff of the Headmaster\'s Victuals]);
 		}
 
-		if(!have_familiar($familiar[Machine Elf]) && !is100FamiliarRun())
+		if(!have_familiar($familiar[Machine Elf]) && !autoForbidFamiliarChange())
 		{
 			if(item_amount($item[Handful of Smithereens]) >= 3)
 			{
@@ -4332,9 +4327,9 @@ boolean cs_giant_growth()
 	{
 		fail = false;
 	}
-	if(have_familiar($familiar[Machine Elf]) && !is100FamiliarRun())
+	if(!autoForbidFamiliarChange($familiar[Machine Elf]))
 	{
-		use_familiar($familiar[Machine Elf]);
+		autoUseFamiliar($familiar[Machine Elf]);
 		fail = false;
 	}
 	if(fail)

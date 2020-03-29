@@ -321,7 +321,7 @@ boolean L8_trapperGroar()
 	//What is our potential +Combat score.
 	//TODO: Use that instead of the Avatar/Hound Dog checks.
 
-	if(!canGroar && in_hardcore() && ((auto_my_path() == "Avatar of Sneaky Pete") || !auto_have_familiar($familiar[Jumpsuited Hound Dog]) || is100FamiliarRun($familiar[Jumpsuited Hound Dog])))
+	if(!canGroar && in_hardcore() && ((auto_my_path() == "Avatar of Sneaky Pete") || autoForbidFamiliarChange($familiar[Jumpsuited Hound Dog])))
 	{
 		if(L8_trapperExtreme())
 		{

@@ -148,7 +148,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 	{
 		return false;
 	}
-	if(is100FamiliarRun($familiar[God Lobster]))
+	if(autoForbidFamiliarChange($familiar[God Lobster]))
 	{
 		return false;
 	}
@@ -301,13 +301,13 @@ boolean fantasyRealmToken()
 		}
 	}
 
-	// If we're not allowed to adventure without a familiar
-	if(is100familiarRun() && auto_have_familiar($familiar[Mosquito]))
+	// If we're not allowed to adventure without a familiar due to being in a 100% familiar run.
+	if(is100FamiliarRun())
 	{
 		return false;
 	}
 	set_property("auto_familiarChoice", "none");
-	use_familiar($familiar[none]);
+	autoUseFamiliar($familiar[none]);
 
 	if(possessEquipment($item[FantasyRealm G. E. M.]))
 	{
