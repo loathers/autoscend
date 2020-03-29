@@ -535,7 +535,6 @@ boolean L12_gremlins()
 		{
 			abort("We don't have the molybdenum magnet but should... please get it and rerun the script");
 		}
-		else return true;		//successfully acquired magnet
 	}
 
 	if(auto_my_path() == "Disguises Delimit")
