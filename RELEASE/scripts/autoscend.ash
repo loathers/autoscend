@@ -5272,12 +5272,6 @@ boolean LX_getStarKey()
 		return false;
 	}
 	
-	//not hardcore, not yet at the door, have all key ingredients except star chart, then skip this function
-	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore() && internalQuestStatus("questL13Final") != 5)
-	{
-		return false;
-	}
-	
 	//pull a star chart when all following are true: not hardcore. at the door. no chart. no key. key not used.
 	if (!in_hardcore() && internalQuestStatus("questL13Final") == 5 && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
@@ -5299,6 +5293,12 @@ boolean LX_getStarKey()
 	if(!needStarKey())
 	{
 		set_property("auto_getStarKey", false);
+		return false;
+	}
+	
+	//skip so chart can be pulled at door if: not hardcore, not at the door, have lines, have stars
+	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore() && internalQuestStatus("questL13Final") != 5)
+	{
 		return false;
 	}
 	
