@@ -1,4 +1,4 @@
-tem_amount($item[Star]) >= 8) && (item_amount($item[Line])script "autoscend.ash";
+script "autoscend.ash";
 since r19891; // Fix checking for duplicate function to do exact match on parameters
 /***
 	autoscend_header.ash must be first import
