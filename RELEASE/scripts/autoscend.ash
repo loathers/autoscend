@@ -141,7 +141,7 @@ void initializeSettings()
 	set_property("auto_forceTavern", false);
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
-	set_property("auto_getStarKey", false);
+	set_property("auto_getStarKey", true);
 	set_property("auto_getSteelOrgan", get_property("auto_alwaysGetSteelOrgan").to_boolean());
 	set_property("auto_gnasirUnlocked", false);
 	set_property("auto_grimstoneFancyOilPainting", true);
@@ -5281,19 +5281,19 @@ boolean LX_getStarKey()
 		return false;
 	}
 
-	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7))
+	//softcore stop adventuring in hole in the sky if you have everything but the star chart. The chart will be pulled in auto_tower.ash
+	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore())
 	{
-		if(!in_hardcore())
-		{
-			set_property("auto_getStarKey", false);
-			return false;
-		}
+		set_property("auto_getStarKey", false);
+		return false;
 	}
-	else
+	
+	//if you don't have space jellyfish get an item boosting familiar. If you do then get the space jellyfish
+	if(!auto_have_familiar($familiar[Space Jellyfish])
 	{
 		handleFamiliar("item");
 	}
-	if(auto_have_familiar($familiar[Space Jellyfish]))
+	else
 	{
 		handleFamiliar($familiar[Space Jellyfish]);
 		if(item_amount($item[Star Chart]) == 0)
