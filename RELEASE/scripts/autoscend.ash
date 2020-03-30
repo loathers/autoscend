@@ -5289,7 +5289,7 @@ boolean LX_getStarKey()
 	}
 	
 	//if you don't have space jellyfish get an item boosting familiar. If you do then get the space jellyfish
-	if(!auto_have_familiar($familiar[Space Jellyfish])
+	if(!auto_have_familiar($familiar[Space Jellyfish]))
 	{
 		handleFamiliar("item");
 	}
