@@ -198,12 +198,9 @@ void initializeSettings()
 
 	eudora_initializeSettings();
 	hr_initializeSettings();
-	picky_initializeSettings();
 	awol_initializeSettings();
 	theSource_initializeSettings();
-	standard_initializeSettings();
 	florist_initializeSettings();
-	ocrs_initializeSettings();
 	ed_initializeSettings();
 	boris_initializeSettings();
 	jello_initializeSettings();
@@ -215,7 +212,6 @@ void initializeSettings()
 	majora_initializeSettings();
 	glover_initializeSettings();
 	bat_initializeSettings();
-	tcrs_initializeSettings();
 	koe_initializeSettings();
 	zelda_initializeSettings();
 

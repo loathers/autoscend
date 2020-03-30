@@ -61,15 +61,3 @@ void standard_dnaPotions()
 		}
 	}
 }
-
-
-void standard_initializeSettings()
-{
-	if(auto_my_path() == "Standard")
-	{
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_wandOfNagamar", true);
-		set_property("auto_useCubeling", true);
-	}
-}

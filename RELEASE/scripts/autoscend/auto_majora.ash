@@ -7,12 +7,7 @@ void majora_initializeSettings()
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_getBoningKnife", true);
-		set_property("auto_cubeItems", true);
-		set_property("auto_getStarKey", true);
 		set_property("auto_grimstoneOrnateDowsingRod", false);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_useCubeling", true);
-		set_property("auto_wandOfNagamar", true);
 	}
 }
 

@@ -14,10 +14,8 @@ void digimon_initializeSettings()
 		set_property("auto_getBeehive", false);
 		set_property("auto_getBoningKnife", false);
 		set_property("auto_cubeItems", false);
-		set_property("auto_getStarKey", true);
 		set_property("auto_grimstoneOrnateDowsingRod", false);
 		set_property("auto_hippyInstead", true);
-		set_property("auto_holeinthesky", true);
 		set_property("auto_ignoreFlyer", true);
 		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);

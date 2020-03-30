@@ -1,14 +1,4 @@
 script "auto_summerfun.ash"
-boolean ocrs_initializeSettings()
-{
-	if(my_path() == "One Crazy Random Summer")
-	{
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_wandOfNagamar", true);
-	}
-	return true;
-}
 
 boolean ocrs_postHelper()
 {

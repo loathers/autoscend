@@ -10,8 +10,6 @@ boolean zelda_initializeSettings()
 	if(in_zelda())
 	{
 		set_property("auto_getBeehive", true);
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
 		set_property("auto_wandOfNagamar", false);
 		set_property("auto_useCubeling", true);
 		// TODO: Remove when quest handling is correct.

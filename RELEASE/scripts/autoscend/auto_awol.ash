@@ -6,9 +6,6 @@ boolean awol_initializeSettings()
 	{
 		set_property("auto_awolLastSkill", 0);
 		set_property("auto_getBeehive", true);
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_wandOfNagamar", true);
 	}
 	return false;
 }

@@ -13,8 +13,6 @@ void jello_initializeSettings()
 	if(my_path() == "Gelatinous Noob")
 	{
 		set_property("auto_cubeItems", false);
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
 	}
 }
 

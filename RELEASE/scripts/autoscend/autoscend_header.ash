@@ -372,7 +372,6 @@ int estimatedTurnsLeft();									//Defined in autoscend/auto_util.ash
 boolean summonMonster();									//Defined in autoscend/auto_util.ash
 boolean summonMonster(string option);						//Defined in autoscend/auto_util.ash
 boolean in_tcrs();											//Defined in autoscend/auto_tcrs.ash
-boolean tcrs_initializeSettings();							//Defined in autoscend/auto_tcrs.ash
 float tcrs_expectedAdvPerFill(string quality);				//Defined in autoscend/auto_tcrs.ash
 boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety);	//Defined in autoscend/auto_tcrs.ash
 boolean tcrs_maximize_with_items(string maximizerString);	//Defined in autoscend/auto_tcrs.ash
@@ -857,7 +856,6 @@ element ns_hedge2();										//Defined in autoscend/auto_util.ash
 element ns_hedge3();										//Defined in autoscend/auto_util.ash
 int numPirateInsults();										//Defined in autoscend/auto_util.ash
 monster ocrs_helper(string page);							//Defined in autoscend/auto_combat.ash
-boolean ocrs_initializeSettings();							//Defined in autoscend/auto_summerfun.ash
 boolean ocrs_postCombatResolve();							//Defined in autoscend/auto_summerfun.ash
 boolean ocrs_postHelper();									//Defined in autoscend/auto_summerfun.ash
 void oldPeoplePlantStuff();									//Defined in autoscend/auto_floristfriar.ash
@@ -867,7 +865,6 @@ boolean pete_buySkills();									//Defined in autoscend/auto_sneakypete.ash
 void pete_initializeDay(int day);							//Defined in autoscend/auto_sneakypete.ash
 void pete_initializeSettings();								//Defined in autoscend/auto_sneakypete.ash
 boolean picky_buyskills();									//Defined in autoscend/auto_picky.ash
-void picky_initializeSettings();							//Defined in autoscend/auto_picky.ash
 void picky_pulls();											//Defined in autoscend/auto_picky.ash
 void picky_startAscension();								//Defined in autoscend/auto_picky.ash
 skill preferredLibram();									//Defined in autoscend/auto_util.ash
@@ -921,7 +918,6 @@ void shrugAT(effect anticipated);							//Defined in autoscend/auto_util.ash
 boolean snojoFightAvailable();								//Defined in autoscend/auto_mr2016.ash
 int solveCookie();											//Defined in autoscend/auto_util.ash
 int spleen_left();											//Defined in autoscend/auto_util.ash
-void standard_initializeSettings();							//Defined in autoscend/auto_standard.ash
 boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
 boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
 boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash
