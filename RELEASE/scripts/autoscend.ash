@@ -1,4 +1,4 @@
-script "autoscend.ash";
+tem_amount($item[Star]) >= 8) && (item_amount($item[Line])script "autoscend.ash";
 since r19891; // Fix checking for duplicate function to do exact match on parameters
 /***
 	autoscend_header.ash must be first import
@@ -5254,36 +5254,60 @@ boolean LX_loggingHatchet()
 
 boolean LX_getStarKey()
 {
-	if (internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL11Shen") < 7)
-	{
-		return false;
-	}
+	//if we don't want the star key then stop this function
 	if(!get_property("auto_getStarKey").to_boolean())
 	{
 		return false;
 	}
+	
+	//if we did not progress enough in garbage quest to be able to reach hole in the sky then stop this function
+	if (internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL11Shen") < 7)
+	{
+		return false;
+	}
+	
+	//kingdom of exploathing specific
 	if(item_amount($item[Steam-Powered Model Rocketship]) == 0 && !in_koe())
 	{
 		return false;
 	}
+	
+	//not hardcore, not yet at the door, have all key ingredients except star chart, then skip this function
+	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore() && internalQuestStatus("questL13Final") != 5)
+	{
+		return false;
+	}
+	
+	//pull a star chart when all following are true: not hardcore. at the door. no chart. no key. key not used.
+	if (!in_hardcore() && internalQuestStatus("questL13Final") == 5 && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	{
+		pullXWhenHaveY($item[Star Chart], 1, 0);
+	}
+	
+	//craft the star key if I have the ingredients for it
+	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	{
+		visit_url("shop.php?pwd&whichshop=starchart&action=buyitem&quantity=1&whichrow=141");
+		if(item_amount($item[Richard\'s Star Key]) == 0)
+		{
+			cli_execute("make richard's star key");
+		}
+		return true;
+	}
+	
+	//if has the key or already used it then change setting to indicate we don't want to run this function. saves a lot of ifs
 	if(!needStarKey())
 	{
 		set_property("auto_getStarKey", false);
 		return false;
 	}
+	
 	if(!zone_isAvailable($location[The Hole In The Sky]))
 	{
 		auto_log_warning("The Hole In The Sky is not available, we have to do something else...", "red");
 		return false;
 	}
 
-	//softcore stop adventuring in hole in the sky if you have everything but the star chart. The chart will be pulled in auto_tower.ash
-	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore())
-	{
-		set_property("auto_getStarKey", false);
-		return false;
-	}
-	
 	//if you don't have space jellyfish get an item boosting familiar. If you do then get the space jellyfish
 	if(!auto_have_familiar($familiar[Space Jellyfish]))
 	{
@@ -5301,6 +5325,8 @@ boolean LX_getStarKey()
 			set_property("choiceAdventure1221", 2 + (my_ascensions() % 2));
 		}
 	}
+	
+	//adventure in the hole in the sky to grab components of the star key
 	autoAdv(1, $location[The Hole In The Sky]);
 	return true;
 }
