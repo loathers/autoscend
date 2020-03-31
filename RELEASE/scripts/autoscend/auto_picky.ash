@@ -1,16 +1,6 @@
 script "picky.ash"
 # Code here is supplementary handlers and specialized handlers
 
-void picky_initializeSettings()
-{
-	if(my_path() == "Picky")
-	{
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_wandOfNagamar", true);
-	}
-}
-
 void picky_pulls()
 {
 	if(my_path() == "Picky")

@@ -19,7 +19,6 @@ void bat_initializeSettings()
 		set_property("auto_paranoia", 10);
 		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);
-		set_property("auto_getStarKey", true);
 		set_property("auto_bat_desiredForm", "");
 	}
 }

@@ -417,23 +417,6 @@ boolean L13_sorceressDoor()
 		return false;
 	}
 
-	if (item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
-	{
-		if(my_rain() < 50)
-		{
-			pullXWhenHaveY($item[Star Chart], 1, 0);
-		}
-	}
-
-	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7))
-	{
-		visit_url("shop.php?pwd&whichshop=starchart&action=buyitem&quantity=1&whichrow=141");
-		if(item_amount($item[Richard\'s Star Key]) == 0)
-		{
-			cli_execute("make richard's star key");
-		}
-	}
-
 	if (item_amount($item[white pixel]) >= 30 && item_amount($item[Digital Key]) == 0)
 	{
 		if (in_koe())

@@ -62,20 +62,16 @@ boolean routineRainManHandler()
 		{
 			return rainManSummon("orcish frat boy spy", false, false);
 		}
-
+		
 		if(needStarKey())
 		{
-			boolean result = rainManSummon("skinflute", true, false);
-			if(!result)
+			if(item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
 			{
-				if((item_amount($item[star chart]) == 0) && (item_amount($item[richard\'s star key]) == 0))
-				{
-					return rainManSummon("the astronomer", false, false);
-				}
+				return rainManSummon("skinflute", true, false);
 			}
-			else
+			else if((item_amount($item[star chart]) == 0))
 			{
-				return true;
+				return rainManSummon("the astronomer", false, false);
 			}
 		}
 		if(needDigitalKey())

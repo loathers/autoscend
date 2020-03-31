@@ -4625,11 +4625,6 @@ boolean needStarKey()
 	{
 		return false;
 	}
-	if((item_amount($item[Star Chart]) > 0) && (item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7))
-	{
-		return false;
-	}
-
 	return true;
 }
 

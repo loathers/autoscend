@@ -7,9 +7,7 @@ void pete_initializeSettings()
 		set_property("auto_100familiar", $familiar[Egg Benedict]);
 		set_property("auto_peteSkills", -1);
 		set_property("auto_cubeItems", false);
-		set_property("auto_getStarKey", true);
 		set_property("auto_grimstoneOrnateDowsingRod", false);
-		set_property("auto_holeinthesky", true);
 		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);
 	}

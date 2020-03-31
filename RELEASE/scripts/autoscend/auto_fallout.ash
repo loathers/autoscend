@@ -6,11 +6,7 @@ void fallout_initializeSettings()
 	{
 		set_property("auto_cubeItems", false);
 		set_property("auto_getBeehive", true);
-		set_property("auto_getStarKey", true);
 		set_property("auto_grimstoneOrnateDowsingRod", true);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_useCubeling", true);
-		set_property("auto_wandOfNagamar", true);
 
 		if(item_amount($item[Deck of Every Card]) > 0)
 		{

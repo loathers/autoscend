@@ -9,7 +9,6 @@ boolean koe_initializeSettings()
 {
 	if(in_koe())
 	{
-		set_property("auto_getStarKey", true);
 		set_property("auto_bruteForcePalindome", in_hardcore());
 		set_property("auto_holeinthesky", false);
 		set_property("auto_grimstoneOrnateDowsingRod", "false");

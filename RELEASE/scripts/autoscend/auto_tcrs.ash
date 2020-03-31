@@ -5,17 +5,6 @@ boolean in_tcrs()
 	return my_path() == "36" || my_path() == "Two Crazy Random Summer";
 }
 
-boolean tcrs_initializeSettings()
-{
-	if(in_tcrs())
-	{
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_wandOfNagamar", true);
-	}
-	return true;
-}
-
 float tcrs_expectedAdvPerFill(string quality)
 {
 	switch(quality)

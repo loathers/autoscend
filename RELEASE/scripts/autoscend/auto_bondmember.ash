@@ -6,11 +6,6 @@ void bond_initializeSettings()
 	{
 		set_property("auto_100familiar", $familiar[Egg Benedict]);
 		set_property("auto_getBeehive", true);
-		set_property("auto_cubeItems", true);
-		set_property("auto_getStarKey", true);
-		set_property("auto_grimstoneOrnateDowsingRod", true);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_useCubeling", true);
 		set_property("auto_wandOfNagamar", false);
 		set_property("choiceAdventure1258", 2);
 		set_property("choiceAdventure1261", 1);

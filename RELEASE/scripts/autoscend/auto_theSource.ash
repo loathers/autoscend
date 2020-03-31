@@ -12,8 +12,6 @@ boolean theSource_initializeSettings()
 	{
 #		set_property("auto_lastSpoon", 0);
 		set_property("auto_getBeehive", true);
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
 		set_property("auto_wandOfNagamar", false);
 	}
 	return false;
