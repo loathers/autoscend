@@ -5289,12 +5289,7 @@ boolean LX_getStarKey()
 	//craft the star key if I have the ingredients for it
 	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
-		visit_url("shop.php?pwd&whichshop=starchart&action=buyitem&quantity=1&whichrow=141");
-		if(item_amount($item[Richard\'s Star Key]) == 0)
-		{
-			cli_execute("make richard's star key");
-		}
-		return true;
+		return create(1, $item[Richard\'s Star Key]);
 	}
 	
 	//wait to pull star chart at the door if: not hardcore, not at the door, have lines, have stars
