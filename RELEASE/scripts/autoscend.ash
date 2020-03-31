@@ -5254,46 +5254,44 @@ boolean LX_loggingHatchet()
 
 boolean LX_getStarKey()
 {
-	//if we don't want the star key then skip this function
 	if(!get_property("auto_getStarKey").to_boolean())
 	{
 		return false;
 	}
 
-	//if already have the star key or already used it, then stop running this function.
+	//needStarKey() checks if you own or have used the star key
 	if(!needStarKey())
 	{
 		set_property("auto_getStarKey", false);
 		return false;
 	}
 	
-	//if we did not progress enough in giant garbage quest to reach hole in the sky then skip this function
-	//if shen quest is not far ahead enough also skip. because shen might send us there and it would be a waste of adventures if we already got the star key before he sends us there.
-	if (internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL11Shen") < 7)
+	bool hole_in_sky_unreachable = internalQuestStatus("questL10Garbage") < 9;
+	bool shen_might_request_hole = internalQuestStatus("questL11Shen") < 7;
+	if (hole_in_sky_unreachable || shen_might_request_hole)
 	{
 		return false;
 	}
 	
-	//can we reach the hole in the sky. need rocketship, except in kingdom of exploathing.
+	//kingdom of exploathing does not need rocketship to reach hole in the sky
 	if(item_amount($item[Steam-Powered Model Rocketship]) == 0 && !in_koe())
 	{
 		return false;
 	}
 	
-	//pull a star chart when all following are true: not hardcore. at the door. no chart. no key. key not used.
-	if (!in_hardcore() && internalQuestStatus("questL13Final") == 5 && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	bool at_tower_door = internalQuestStatus("questL13Final") == 5;
+	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
 		pullXWhenHaveY($item[Star Chart], 1, 0);
 	}
 	
-	//craft the star key if I have the ingredients for it
 	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
 		return create(1, $item[Richard\'s Star Key]);
 	}
 	
-	//wait to pull star chart at the door if: not hardcore, not at the door, have lines, have stars
-	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore() && internalQuestStatus("questL13Final") != 5)
+	//if only star chart is missing and you will pull it at tower door, then you are done for now.
+	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore() && !at_tower_door)
 	{
 		return false;
 	}
@@ -5304,7 +5302,6 @@ boolean LX_getStarKey()
 		return false;
 	}
 
-	//if you have space jellyfish use it, if you don't have it use the best +item familiar
 	if(auto_have_familiar($familiar[Space Jellyfish]))
 	{
 		handleFamiliar($familiar[Space Jellyfish]);
@@ -5322,9 +5319,7 @@ boolean LX_getStarKey()
 		handleFamiliar("item");
 	}
 	
-	//adventure in the hole in the sky to grab components of the star key
-	autoAdv(1, $location[The Hole In The Sky]);
-	return true;
+	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
 boolean L5_haremOutfit()
