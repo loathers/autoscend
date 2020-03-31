@@ -316,25 +316,55 @@ int zelda_ppCost(skill sk)
 
 boolean zelda_canDealScalingDamage()
 {
-	// TODO: When mafia tracks costumes, account for level 3 basic attacks
-	if(my_maxpp() < 2)
-	{
-		return false;
-	}
+	item[stat] items_lv1 = {
+		$stat[moxie]: $item[work boots],
+		$stat[mysticality]: $item[[10462]fire flower],
+		$stat[muscle]: $item[hammer],
+	};
 
-	if(auto_have_skill($skill[[25006]Multi-Bounce]))
-	{
-		return true;
-	}
+	item[stat] items_lv2 = {
+		$stat[moxie]: $item[fancy boots],
+		$stat[mysticality]: $item[bonfire flower],
+		$stat[muscle]: $item[heavy hammer],
+	};
 
-	if(auto_have_skill($skill[[25004]Fireball Barrage]) && zelda_haveFlower())
-	{
-		return true;
-	}
+	// These attacks deal scaling damage at level 1.
+	skill[stat] attacks_2pp = {
+		$stat[moxie]: $skill[[25006]Multi-Bounce],
+		$stat[mysticality]: $skill[[25004]Fireball Barrage],
+		$stat[muscle]: $skill[[25002]Ultra Smash],
+	};
 
-	if(auto_have_skill($skill[[25002]Ultra Smash]) && zelda_haveHammer())
+	// These attacks deal scaling damage at level 3.
+	skill[stat] attacks_free = {
+		$stat[moxie]: $skill[Jump Attack],
+		$stat[mysticality]: $skill[Fireball Toss],
+		$stat[muscle]: $skill[Hammer Smash],
+	};
+
+	// This is a pretty rough guesstimate.
+	int expected_scaler_hp = my_buffedstat(my_primestat());
+
+	foreach st in $stats[]
 	{
-		return true;
+		int level = 0;
+		if (possessEquipment(items_lv2[st]))
+		{
+			level = 2;
+		}
+		else if (possessEquipment(items_lv1[st]))
+		{
+			level = 1;
+		}
+		else continue;
+
+		// Discard stats that are wildly lower than our max stat.
+		if (expected_scaler_hp >= 2 * my_buffedstat(st)) continue;
+
+		level += to_int(zelda_costume() == st);
+
+		if ((my_maxpp() >= 2) && have_skill(attacks_2pp[st])) return true;
+		if (level >= 3 && have_skill(attacks_free[st])) return true;
 	}
 
 	return false;
