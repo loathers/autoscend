@@ -5254,13 +5254,20 @@ boolean LX_loggingHatchet()
 
 boolean LX_getStarKey()
 {
-	//if we don't want the star key then stop this function
+	//if we don't want the star key then skip this function
 	if(!get_property("auto_getStarKey").to_boolean())
 	{
 		return false;
 	}
+
+	//if already have the star key or already used it, then stop running this function.
+	if(!needStarKey())
+	{
+		set_property("auto_getStarKey", false);
+		return false;
+	}
 	
-	//if we did not progress enough in garbage quest to be able to reach hole in the sky then stop this function
+	//if we did not progress enough in giant garbage quest to reach hole in the sky then skip this function
 	if (internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL11Shen") < 7)
 	{
 		return false;
@@ -5289,14 +5296,7 @@ boolean LX_getStarKey()
 		return true;
 	}
 	
-	//if has the key or already used it then change setting to indicate we don't want to run this function. saves a lot of ifs
-	if(!needStarKey())
-	{
-		set_property("auto_getStarKey", false);
-		return false;
-	}
-	
-	//skip so chart can be pulled at door if: not hardcore, not at the door, have lines, have stars
+	//wait to pull star chart at the door if: not hardcore, not at the door, have lines, have stars
 	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore() && internalQuestStatus("questL13Final") != 5)
 	{
 		return false;
