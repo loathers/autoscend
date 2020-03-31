@@ -4450,26 +4450,11 @@ boolean LX_bitchinMeatcar()
 		return false;
 	}
 	
-	//craft meatcar if you have all the components. note that you also need 70 meat for 7 meat pastes if not in knoll sign
-	if(!knoll_available() && item_amount($item[Tires]) > 0 && item_amount($item[spring]) > 0 && item_amount($item[sprocket]) > 0 && item_amount($item[cog]) > 0 && item_amount($item[empty meat tank]) > 0)
-	{
-		if (my_meat() > 170 || (my_meat() > 70 && item_amount($item[Meat Stack]) > 0))
-		{
-			cli_execute("make bitch");
-			cli_execute("place.php?whichplace=desertbeach&action=db_nukehouse");
-			return true;
-		}
-		else
-		{
-			auto_log_info("I got all the parts but I do not have enough meat to build a meatcar... doing something else", "red");
-			return false;
-		}
-	}
-
-	//if in knoll sign and thus has access to knoll store, then buy the meatcar components and then craft the meatcar if you can afford it
+	//calculate meat costs of building your meatcar.
+	//if player manually partially assembled it then it will work, just think it costs slightly more meat than it actually does
+	int meatRequired = 0;
 	if(knoll_available())
 	{
-		int meatRequired = 0;
 		if(item_amount($item[Meat Stack]) == 0)
 		{
 			meatRequired += 100;
@@ -4481,17 +4466,21 @@ boolean LX_bitchinMeatcar()
 				meatRequired += npc_price(it);
 			}
 		}
-		if(my_meat() >= meatRequired)
-		{
-			cli_execute("make bitch");
-			cli_execute("place.php?whichplace=desertbeach&action=db_nukehouse");
-			return true;
-		}
-		else
-		{
-			auto_log_info("I do not have enough meat to build a meatcar... doing something else", "red");
-			return false;
-		}
+	}
+	if(!knoll_available())
+	{
+		//outside of knollsign you need to pay 70 meat for the meatpaste and buy [sweet rims]
+		meatRequired = 70 + npc_price($item[Sweet Rims]);
+	}
+	
+	if(creatable_amount($item[Bitchin\' Meatcar]) > 0)
+	{
+		return create(1, $item[Bitchin\' Meatcar]);
+	}
+	else if(my_meat() < meatRequired)
+	{
+		auto_log_info("I do not have enough meat to build a meatcar... doing something else", "red");
+		return false;
 	}
 	
 	//if rich then just buy the desert pass
@@ -4505,20 +4494,19 @@ boolean LX_bitchinMeatcar()
 		}
 	}
 	
-	//plumbers should just wait until they are rich enough to buy the desert pass
+	//plumbers should wait until they are rich enough to buy the desert pass
 	if(in_zelda())
 	{
 		return false;
 	}
 	
-	//open a toolbox if you got one since the last main loop occured
 	if(item_amount($item[Gnollish Toolbox]) > 0)
 	{
 		use(1, $item[Gnollish Toolbox]);
 		return true;
 	}
 	
-	//if you reached this point then it means you need to acquire more parts
+	//if you reached this point then it means you need to spend adventures to acquire more parts
 	auto_log_info("Farming for a Bitchin' Meatcar", "blue");
 	
 	//start untinker quest if possible to gain access to hostile dgrassi knoll
