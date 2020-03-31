@@ -5304,12 +5304,8 @@ boolean LX_getStarKey()
 		return false;
 	}
 
-	//if you don't have space jellyfish get an item boosting familiar. If you do then get the space jellyfish
-	if(!auto_have_familiar($familiar[Space Jellyfish]))
-	{
-		handleFamiliar("item");
-	}
-	else
+	//if you have space jellyfish use it, if you don't have it use the best +item familiar
+	if(auto_have_familiar($familiar[Space Jellyfish]))
 	{
 		handleFamiliar($familiar[Space Jellyfish]);
 		if(item_amount($item[Star Chart]) == 0)
@@ -5320,6 +5316,10 @@ boolean LX_getStarKey()
 		{
 			set_property("choiceAdventure1221", 2 + (my_ascensions() % 2));
 		}
+	}
+	else
+	{
+		handleFamiliar("item");
 	}
 	
 	//adventure in the hole in the sky to grab components of the star key
