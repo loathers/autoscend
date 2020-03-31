@@ -169,6 +169,12 @@ boolean godLobsterCombat(item it, int goal, string option)
 		return false;
 	}
 
+	// Avoid fighting the lobster when we are in our pajamas.
+	if (in_zelda() && !zelda_equippedHammer() && !zelda_equippedFlower() && !zelda_equippedBoots())
+	{
+		return false;
+	}
+
 	familiar last = my_familiar();
 	item lastGear = equipped_item($slot[familiar]);
 
@@ -180,6 +186,8 @@ boolean godLobsterCombat(item it, int goal, string option)
 		equip($slot[familiar], it);
 	}
 
+	// TODO: Disabling adventure handling means we do not swap out equipment,
+	// which means sometimes we fight the god lobster in our pajamas and die.
 	set_property("auto_disableAdventureHandling", true);
 
 	string temp = visit_url("main.php?fightgodlobster=1");

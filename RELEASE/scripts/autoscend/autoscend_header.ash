@@ -1131,7 +1131,9 @@ boolean LM_batpath(); // Defined in autoscend/auto_batpath.ash
 boolean zelda_initializeSettings(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_haveHammer(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_haveFlower(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_equippedHammer(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_equippedFlower(); // Defined in autoscend/auto_zelda.ash
+boolean zelda_equippedBoots(); // Defined in autoscend/auto_zelda.ash
 int zelda_numBadgesBought(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_buySkill(skill sk); // Defined in autoscend/auto_zelda.ash
 boolean zelda_buyEquipment(item it); // Defined in autoscend/auto_zelda.ash
