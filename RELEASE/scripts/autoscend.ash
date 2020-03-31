@@ -5268,12 +5268,13 @@ boolean LX_getStarKey()
 	}
 	
 	//if we did not progress enough in giant garbage quest to reach hole in the sky then skip this function
+	//if shen quest is not far ahead enough also skip. because shen might send us there and it would be a waste of adventures if we already got the star key before he sends us there.
 	if (internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL11Shen") < 7)
 	{
 		return false;
 	}
 	
-	//kingdom of exploathing specific
+	//can we reach the hole in the sky. need rocketship, except in kingdom of exploathing.
 	if(item_amount($item[Steam-Powered Model Rocketship]) == 0 && !in_koe())
 	{
 		return false;
