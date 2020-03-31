@@ -4445,77 +4445,85 @@ boolean LX_bitchinMeatcar()
 		set_property("lastDesertUnlock", my_ascensions());
 		return false;
 	}
-
-	int meatRequired = 100;
-	if(item_amount($item[Meat Stack]) > 0)
-	{
-		meatRequired = 0;
-	}
-	foreach it in $items[Spring, Sprocket, Cog, Empty Meat Tank, Tires, Sweet Rims]
-	{
-		if(item_amount(it) == 0)
-		{
-			meatRequired += npc_price(it);
-		}
-	}
-
+	
+	//calculate meat costs of building your meatcar.
+	//if player manually partially assembled it then it will work, just think it costs slightly more meat than it actually does
+	int meatRequired = 0;
 	if(knoll_available())
 	{
-		if(my_meat() >= meatRequired)
+		if(item_amount($item[Meat Stack]) == 0)
 		{
-			cli_execute("make bitch");
-			cli_execute("place.php?whichplace=desertbeach&action=db_nukehouse");
-			return true;
+			meatRequired += 100;
 		}
+		foreach it in $items[Spring, Sprocket, Cog, Empty Meat Tank, Tires, Sweet Rims]
+		{
+			if(item_amount(it) == 0)
+			{
+				meatRequired += npc_price(it);
+			}
+		}
+	}
+	if(!knoll_available())
+	{
+		//outside of knollsign you need to pay 70 meat for the meatpaste and buy [sweet rims]
+		meatRequired = 70 + npc_price($item[Sweet Rims]);
+	}
+	
+	if(creatable_amount($item[Bitchin\' Meatcar]) > 0)
+	{
+		return create(1, $item[Bitchin\' Meatcar]);
+	}
+	else if(my_meat() < meatRequired)
+	{
+		auto_log_info("I do not have enough meat to build a meatcar... doing something else", "red");
 		return false;
 	}
-	else
+	
+	//if rich then just buy the desert pass
+	if((my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000)) && isGeneralStoreAvailable())
 	{
-		if((my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000)) && isGeneralStoreAvailable())
+		auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
+		buyUpTo(1, $item[Desert Bus Pass]);
+		if(item_amount($item[Desert Bus Pass]) > 0)
 		{
-			auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
-			buyUpTo(1, $item[Desert Bus Pass]);
-			if(item_amount($item[Desert Bus Pass]) > 0)
-			{
-				return true;
-			}
-		}
-		if(in_zelda()) return false;
-		auto_log_info("Farming for a Bitchin' Meatcar", "blue");
-		if(get_property("questM01Untinker") == "unstarted")
-		{
-			visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
-		}
-		if((item_amount($item[Tires]) == 0) || (item_amount($item[empty meat tank]) == 0) || (item_amount($item[spring]) == 0) ||(item_amount($item[sprocket]) == 0) ||(item_amount($item[cog]) == 0))
-		{
-			if(!autoAdv(1, $location[The Degrassi Knoll Garage]))
-			{
-				if(guild_store_available())
-				{
-					visit_url("guild.php?place=paco");
-				}
-				else
-				{
-					abort("Need to farm a Bitchin' Meatcar but guild not available.");
-				}
-			}
-			if(item_amount($item[Gnollish Toolbox]) > 0)
-			{
-				use(1, $item[Gnollish Toolbox]);
-			}
-		}
-		else
-		{
-			if(my_meat() >= meatRequired)
-			{
-				cli_execute("make bitch");
-				cli_execute("place.php?whichplace=desertbeach&action=db_nukehouse");
-				return true;
-			}
-			return false;
+			return true;
 		}
 	}
-	return true;
+	
+	//plumbers should wait until they are rich enough to buy the desert pass
+	if(in_zelda())
+	{
+		return false;
+	}
+	
+	if(item_amount($item[Gnollish Toolbox]) > 0)
+	{
+		use(1, $item[Gnollish Toolbox]);
+		return true;
+	}
+	
+	//if you reached this point then it means you need to spend adventures to acquire more parts
+	auto_log_info("Farming for a Bitchin' Meatcar", "blue");
+	
+	//start untinker quest if possible to gain access to hostile dgrassi knoll
+	if(get_property("questM01Untinker") == "unstarted")
+	{
+		visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
+	}
+	
+	//attempt to adventure in degrassi knoll garage, if failed attempt to unlock it via guild
+	if(autoAdv(1, $location[The Degrassi Knoll Garage]))
+	{
+		return true;
+	}
+	else if(guild_store_available())
+	{
+		visit_url("guild.php?place=paco");
+		return true;
+	}
+	
+	//could not adventure in degrassi knoll garage and could not unlock it. you are probably too early in the run and need to come back to it later.
+	return false;
 }
 
 boolean LX_desertAlternate()
