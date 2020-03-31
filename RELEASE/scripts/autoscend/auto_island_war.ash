@@ -29,7 +29,7 @@ boolean warOutfit(boolean immediate)
 			}
 		}
 	}
-	if(get_property("auto_hippyInstead").to_boolean())
+	else
 	{
 		if(!reallyWarOutfit("war hippy fatigues"))
 		{
@@ -109,13 +109,11 @@ boolean L12_getOutfit()
 	set_property("choiceAdventure139", "3");	//fight a War Hippy (space) cadet for outfit pieces
 	set_property("choiceAdventure140", "3");	//fight a War Hippy drill sergeant for outfit pieces
 	set_property("choiceAdventure141", "1");	//if wearing [Frat Boy Ensemble] get 50 mysticality
-	set_property("choiceAdventure142", "3");	//if wearing [Frat Warrior Fatigues] start the war or skip adventure
 	
 	// noncombat when adventuring at Orcish Frat House (Verge of War)
 	set_property("choiceAdventure143", "3");	//fight a War Pledgefor outfit pieces
 	set_property("choiceAdventure144", "3");	//fight a Frat Warrior drill sergeant for outfit pieces
 	set_property("choiceAdventure145", "1");	//if wearing [Filthy Hippy Disguise] get 50 muscle
-	set_property("choiceAdventure146", "3");	//if wearing [War Hippy Fatigues] start the war or skip adventure
 
 	// if you already have the war outfit we don't need to do anything now
 	if (haveWarOutfit())
@@ -151,7 +149,7 @@ boolean L12_getOutfit()
 			pullXWhenHaveY($item[Round Purple Sunglasses], 1, 0);
 			pullXWhenHaveY($item[Bullet-proof Corduroys], 1, 0);			
 		}
-		if(!get_property("auto_hippyInstead").to_boolean())
+		else
 		{
 			pullXWhenHaveY($item[Beer Helmet], 1, 0);
 			pullXWhenHaveY($item[Bejeweled Pledge Pin], 1, 0);
@@ -175,16 +173,14 @@ boolean L12_getOutfit()
 	if (!get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
 	{
 		autoOutfit("filthy hippy disguise");
-		autoAdv(1, $location[Wartime Frat House]);
-		return true;
+		return autoAdv(1, $location[Wartime Frat House]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
 	if (get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[orcish baseball cap]) && possessEquipment($item[orcish frat-paddle]) && possessEquipment($item[orcish cargo shorts]))
 	{
 		autoOutfit("frat Boy Ensemble");
-		autoAdv(1, $location[Wartime Hippy Camp]);
-		return true;
+		return autoAdv(1, $location[Wartime Hippy Camp]);
 	}
 	
 	if(L12_preOutfit())
@@ -250,11 +246,11 @@ boolean L12_preOutfit()
 		}
 	}
 
-	// if we want to do war on the fratboy side, then we need to adventure in hippy camp for [filthy hippy disguise] outfit to then adventure in frat house for frat war outfit
+	// fighting for fratboys, adventure in hippy camp for [filthy hippy disguise] outfit to then adventure in frat house for frat war outfit
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
 		auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
-		if(my_level() < 12)
+		if(internalQuestStatus("questL12War") > -1)
 		{
 			autoAdv(1, $location[Hippy Camp]);
 		}
@@ -263,12 +259,11 @@ boolean L12_preOutfit()
 			autoAdv(1, $location[Wartime Hippy Camp]);
 		}
 	}
-
-	// if we want to do war on the hippy side, then we need to adventure in orcish frat house for [frat boy ensemble] outfit to then adventure in hippy camp for hippy war outfit
-	if(get_property("auto_hippyInstead").to_boolean())
+	// fighting for hippies, adventure in orcish frat house for [frat boy ensemble] outfit to then adventure in hippy camp for hippy war outfit
+	else
 	{
 		auto_log_info("Trying to acquire a frat boy ensemble", "blue");
-		if(my_level() < 12)
+		if(internalQuestStatus("questL12War") > -1)
 		{
 			autoAdv(1, $location[Frat House]);
 		}
@@ -308,8 +303,6 @@ boolean L12_startWar()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 	
-	buffMaintain($effect[Snow Shoes], 0, 1, 1);
-	buffMaintain($effect[Become Superficially Interested], 0, 1, 1);
 	providePlusNonCombat(25);
 
 	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
@@ -330,29 +323,19 @@ boolean L12_startWar()
 		auto_log_info("Must save the ferret!!", "blue");
 		autoAdv(1, $location[Wartime Hippy Camp]);
 		
-		//if war started accept side quests for junkyard, concert, and lighthouse
-		if(contains_text(get_property("lastEncounter"), "Blockin\' Out the Scenery"))
+		//if war started, accept flyer quest for fratboys.
+		//this is only started here and only for frat.
+		//move this to dedicated function that can start it for both sides as appropriate
+		if(internalQuestStatus("questL12War") == 1)
 		{
-			visit_url("bigisland.php?action=junkman&pwd");
-			visit_url("bigisland.php?place=concert&pwd");
-			visit_url("bigisland.php?place=lighthouse&action=pyro&pwd=");
-			visit_url("bigisland.php?place=lighthouse&action=pyro&pwd=");
+			visit_url("bigisland.php?place=concert&pwd");	
 		}
 	}
-	
 	// start the war when siding with hippies
-	if(get_property("auto_hippyInstead").to_boolean())
+	else
 	{
 		auto_log_info("Must save the goldfish!!", "blue");
 		autoAdv(1, $location[Wartime Frat House]);
-		
-		//if war started accept side quests for farm, nuns, and orchard
-		if(contains_text(get_property("lastEncounter"), "Fratacombs"))
-		{
-			visit_url("bigisland.php?place=farm&action=farmer&pwd=");
-			visit_url("bigisland.php?place=nunnery");
-			visit_url("bigisland.php?place=orchard&action=stand&pwd=");
-		}
 	}
 		
 	return true;
