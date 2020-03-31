@@ -11,6 +11,7 @@ void hr_initializeSettings()
 		set_property("auto_mountainmen", "");
 		set_property("auto_ninjasnowmanassassin", "");
 		set_property("auto_orcishfratboyspy", "");
+		set_property("auto_warhippyspy", "");
 
 		set_property("auto_lastthunder", "100");
 		set_property("auto_lastthunderturn", "0");
@@ -58,9 +59,14 @@ boolean routineRainManHandler()
 			return rainManSummon("ninja snowman assassin", true, false);
 		}
 
-		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == ""))
+		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == "") && !get_property("auto_hippyInstead").to_boolean())
 		{
 			return rainManSummon("orcish frat boy spy", false, false);
+		}
+		
+		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_warhippyspy") == "") && get_property("auto_hippyInstead").to_boolean())
+		{
+			return rainManSummon("war hippy spy", false, false);
 		}
 		
 		if(needStarKey())
@@ -330,6 +336,10 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	{
 		mId = 409;
 	}
+	if(monsterName == "war hippy spy")
+	{
+		mId = 419;
+	}
 	if(monsterName == "morbid skull")
 	{
 		mId = 1269;
@@ -433,6 +443,19 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	{
 		set_property("auto_orcishfratboyspy", "done");
 		if((item_amount($item[beer helmet]) > 0) || (item_amount($item[bejeweled pledge pin]) > 0) || (item_amount($item[distressed denim pants]) > 0))
+		{
+			return false;
+		}
+		if((have_effect($effect[everything looks yellow]) > 0) || (my_lightning() < 5))
+		{
+			return false;
+		}
+	}
+	
+	if(monsterName == "war hippy spy")
+	{
+		set_property("auto_warhippyspy", "done");
+		if((item_amount($item[reinforced beaded headband]) > 0) || (item_amount($item[round purple sunglasses]) > 0) || (item_amount($item[bullet-proof corduroys]) > 0))
 		{
 			return false;
 		}

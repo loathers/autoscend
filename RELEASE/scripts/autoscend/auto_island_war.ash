@@ -124,15 +124,15 @@ boolean L12_getOutfit()
 	//heavy rains softcore pull handling
 	if(!in_hardcore() && (auto_my_path() == "Heavy Rains"))
 	{
-		//TODO add hippies support here and in heavy rains file for copying hippy spy instead.
-		if(get_property("auto_hippyInstead").to_boolean())
+		// auto_warhippyspy indicates rainman was already used to copy a war hippy spy in heavy rains. if it failed to YR pull missing items
+		if(get_property("auto_warhippyspy") == "done" && get_property("auto_hippyInstead").to_boolean())
 		{
 			pullXWhenHaveY($item[Reinforced Beaded Headband], 1, 0);
 			pullXWhenHaveY($item[Round Purple Sunglasses], 1, 0);
 			pullXWhenHaveY($item[Bullet-proof Corduroys], 1, 0);			
 		}
-		// auto_orcishfratboyspy indicates that rainman was already used to copy an orcish frat boy in heavy rains. if it failed to YR pull missing items
-		if((get_property("auto_orcishfratboyspy") == "done") && !get_property("auto_hippyInstead").to_boolean())
+		// auto_orcishfratboyspy indicates rainman was already used to copy an orcish frat boy in heavy rains. if it failed to YR pull missing items
+		if(get_property("auto_orcishfratboyspy") == "done" && !get_property("auto_hippyInstead").to_boolean())
 		{
 			pullXWhenHaveY($item[Beer Helmet], 1, 0);
 			pullXWhenHaveY($item[Bejeweled Pledge Pin], 1, 0);
