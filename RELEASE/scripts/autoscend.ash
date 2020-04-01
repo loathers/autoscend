@@ -5745,7 +5745,13 @@ boolean doTasks()
 	}
 
 	int paranoia = get_property("auto_paranoia").to_int();
-	if(paranoia != -1)
+	boolean is_april_fools = today_to_string().substring(4) == "0401";
+	if (is_april_fools)
+	{
+		auto_log_info("Salad april fools, so we paranoid salad.");
+		cli_execute("refresh quests");
+	}
+	else if(paranoia != -1)
 	{
 		int paranoia_counter = get_property("auto_paranoia_counter").to_int();
 		if(paranoia_counter >= paranoia)
