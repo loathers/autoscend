@@ -6043,7 +6043,6 @@ boolean doTasks()
 	if(L12_gremlins())					return true;
 	if(L12_sonofaFinish())			return true;
 	if(L12_sonofaBeach())				return true;
-	if(L12_orchardStart())			return true;
 	if(L12_filthworms())				return true;
 	if(L12_orchardFinalize())		return true;
 	if(L12_themtharHills())			return true;
