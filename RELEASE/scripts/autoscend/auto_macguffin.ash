@@ -562,11 +562,15 @@ boolean L11_aridDesert()
 
 boolean L11_wishForBaaBaaBuran()
 {
-	if(!get_property("auto_useWishes").to_boolean() && canGenieCombat())
+	if (!canGenieCombat() || canEat($item[fortune cookie]))
+	{
+		return false;
+	}
+	if(!get_property("auto_useWishes").to_boolean())
 	{
 		auto_log_warning("Skipping wishing for Baa'baa'bu'ran because auto_useWishes=false", "red");
 	}
-	if (get_property("auto_useWishes").to_boolean() && canGenieCombat())
+	else
 	{
 		auto_log_info("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
 		handleFamiliar("item");
