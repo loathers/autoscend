@@ -2324,6 +2324,16 @@ boolean L13_towerNSNagamar()
 		return autoAdv($location[The VERY Unquiet Garves]);
 	}
 	
+	if(creatable_amount($item[WA]) > 0 && item_amount($item[WA]) == 0)
+	{	
+		pullXWhenHaveY($item[ND], 1, 0);
+		if(create(1, $item[WA]))
+		{
+			return true
+		}
+		else auto_log_warning("crafting [WA] failed even though it should have worked... skipping", "red");
+	}
+	
 	if(auto_my_path() == "G-Lover")
 	{
 		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
