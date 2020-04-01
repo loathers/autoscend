@@ -2324,56 +2324,6 @@ boolean L13_towerNSNagamar()
 		return autoAdv($location[The VERY Unquiet Garves]);
 	}
 	
-	//create items [WA] and [ND] if possible to make the pulls below be as optimal as possible
-	if(creatable_amount($item[WA]) > 0 && item_amount($item[WA]) == 0)
-	{
-		create(1, $item[WA]);
-	}
-	if(creatable_amount($item[ND]) > 0 && item_amount($item[ND]) == 0)
-	{
-		create(1, $item[ND]);
-	}
-	
-	//these pulls can fail if you have not prepared the right items ahead of time. Trying all permutations to get missing parts
-	//if they do fail, you would have a pull remaining for clover
-	if (internalQuestStatus("questL13Final") == 11 && !in_hardcore())
-	{
-		if(pulls_remaining() >= 4 && item_amount($item[WA]) == 0 && item_amount($item[ND]) == 0)
-		{
-			pullXWhenHaveY($item[ruby W], 1, 0);
-			pullXWhenHaveY($item[metallic A], 1, 0);
-			pullXWhenHaveY($item[lowercase N], 1, 0);
-			pullXWhenHaveY($item[heavy D], 1, 0);
-		}
-		if(pulls_remaining() >= 2)
-		{
-			pullXWhenHaveY($item[WA], 1, 0);
-			pullXWhenHaveY($item[ND], 1, 0);
-			if(item_amount($item[WA]) > 0 && item_amount($item[ND]) == 0)
-			{
-				pullXWhenHaveY($item[lowercase N], 1, 0);
-				pullXWhenHaveY($item[heavy D], 1, 0);
-			}
-			if(item_amount($item[WA]) == 0 && item_amount($item[ND]) > 0)
-			{
-				pullXWhenHaveY($item[ruby W], 1, 0);
-				pullXWhenHaveY($item[metallic A], 1, 0);
-			}
-		}
-		if(pulls_remaining() >= 1 && item_amount($item[WA]) > 0 && item_amount($item[ND]) == 0)
-		{
-			pullXWhenHaveY($item[ND], 1, 0);
-		}
-		if(pulls_remaining() >= 1 && item_amount($item[WA]) == 0 && item_amount($item[ND]) > 0)
-		{
-			pullXWhenHaveY($item[WA], 1, 0);
-		}
-	}
-	if(creatable_amount($item[Wand Of Nagamar]) > 0)
-	{
-		return create(1, $item[Wand Of Nagamar]);
-	}
-	
 	if(auto_my_path() == "G-Lover")
 	{
 		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
@@ -2382,10 +2332,11 @@ boolean L13_towerNSNagamar()
 	{
 		pullXWhenHaveY($item[Disassembled Clover], 1, 0);
 	}
+	
 	if(cloversAvailable() > 0)
 	{
 		cloverUsageInit();
-		autoAdvBypass(322, $location[The Castle in the Clouds in the Sky (Basement)]);
+		autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
 		cloverUsageFinish();
 		if(creatable_amount($item[Wand Of Nagamar]) > 0)
 		{
@@ -2396,11 +2347,9 @@ boolean L13_towerNSNagamar()
 			auto_log_warning("Clovering [The Castle in the Clouds in the Sky (Basement)] for wand parts failed for some reason", "red");
 		}
 	}
-	else if(in_hardcore() && in_koe())
+	else if(in_koe())
 	{
-		// TODO: Improve support
-		abort("In Kingdom of Exploathing: Please buy a Wand of Nagamar from the bazaar and re-run.");
-		return false;
+		return buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Wand of Nagamar]);
 	}
 	return false;
 }
