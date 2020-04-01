@@ -471,6 +471,10 @@ boolean canDrink(item toDrink)
 	{
 		return false;
 	}
+	if (my_class() == $class[Avatar of Jarlsberg])
+	{
+		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
+	}
 	if((auto_my_path() == "Nuclear Autumn") && (toDrink.inebriety != 1))
 	{
 		return false;
@@ -525,6 +529,10 @@ boolean canEat(item toEat)
 	if(!auto_is_valid(toEat))
 	{
 		return false;
+	}
+	if (my_class() == $class[Avatar of Jarlsberg])
+	{
+		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
 	if((auto_my_path() == "Nuclear Autumn") && (toEat.fullness != 1))
 	{
