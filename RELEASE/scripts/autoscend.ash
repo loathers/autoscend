@@ -2313,7 +2313,7 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
-	if(creatable_amount($item[Wand Of Nagamar]) == 0 && (creatable_amount($item[WA]) > 0 || item_amount($item[WA]) == 0))
+	if(creatable_amount($item[Wand Of Nagamar]) == 0 && (creatable_amount($item[WA]) > 0 || item_amount($item[WA]) > 0))
 	{	
 		pullXWhenHaveY($item[ND], 1, 0);
 	}
