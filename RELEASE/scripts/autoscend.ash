@@ -2329,7 +2329,7 @@ boolean L13_towerNSNagamar()
 		pullXWhenHaveY($item[ND], 1, 0);
 		if(create(1, $item[WA]))
 		{
-			return true
+			return true;
 		}
 		else auto_log_warning("crafting [WA] failed even though it should have worked... skipping", "red");
 	}
