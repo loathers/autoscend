@@ -2300,57 +2300,109 @@ boolean questOverride()
 
 boolean L13_towerNSNagamar()
 {
+	//status != 12 is an override in case auto_wandOfNagamar is incorrectly set to false
+	//status 11 means ready to fight sorceress, status 12 means you lost to her because you lacked a wand of nagamar
 	if (!get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") != 12)
 	{
 		return false;
 	}
-
+	
 	if(item_amount($item[Wand of Nagamar]) > 0)
 	{
 		set_property("auto_wandOfNagamar", false);
 		return false;
 	}
-	else if (internalQuestStatus("questL13Final") == 12)
+	
+	if(creatable_amount($item[Wand Of Nagamar]) > 0)
+	{
+		return create(1, $item[Wand Of Nagamar]);
+	}
+	
+	//hunt for bear verb orgy
+	if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12)
 	{
 		return autoAdv($location[The VERY Unquiet Garves]);
 	}
-	else if(pulls_remaining() >= 2)
+	
+	//create items [WA] and [ND] if possible to make the pulls below be as optimal as possible
+	if(creatable_amount($item[WA]) > 0 && item_amount($item[WA]) == 0)
 	{
-		if((item_amount($item[ruby w]) > 0) && (item_amount($item[metallic A]) > 0))
+		create(1, $item[WA]);
+	}
+	if(creatable_amount($item[ND]) > 0 && item_amount($item[ND]) == 0)
+	{
+		create(1, $item[ND]);
+	}
+	
+	//these pulls can fail if you have not prepared the right items ahead of time. Trying all permutations to get missing parts
+	//if they do fail, you would have a pull remaining for clover
+	if (internalQuestStatus("questL13Final") == 11 && !in_hardcore())
+	{
+		if(pulls_remaining() >= 4 && item_amount($item[WA]) == 0 && item_amount($item[ND]) == 0)
 		{
-			cli_execute("make " + $item[WA]);
+			pullXWhenHaveY($item[ruby W], 1, 0);
+			pullXWhenHaveY($item[metallic A], 1, 0);
+			pullXWhenHaveY($item[lowercase N], 1, 0);
+			pullXWhenHaveY($item[heavy D], 1, 0);
 		}
-		pullXWhenHaveY($item[WA], 1, 0);
-		pullXWhenHaveY($item[ND], 1, 0);
-		cli_execute("make " + $item[Wand Of Nagamar]);
-		return true;
+		if(pulls_remaining() >= 2)
+		{
+			pullXWhenHaveY($item[WA], 1, 0);
+			pullXWhenHaveY($item[ND], 1, 0);
+			if(item_amount($item[WA]) > 0 && item_amount($item[ND]) == 0)
+			{
+				pullXWhenHaveY($item[lowercase N], 1, 0);
+				pullXWhenHaveY($item[heavy D], 1, 0);
+			}
+			if(item_amount($item[WA]) == 0 && item_amount($item[ND]) > 0)
+			{
+				pullXWhenHaveY($item[ruby W], 1, 0);
+				pullXWhenHaveY($item[metallic A], 1, 0);
+			}
+		}
+		if(pulls_remaining() >= 1 && item_amount($item[WA]) > 0 && item_amount($item[ND]) == 0)
+		{
+			pullXWhenHaveY($item[ND], 1, 0);
+		}
+		if(pulls_remaining() >= 1 && item_amount($item[WA]) == 0 && item_amount($item[ND]) > 0)
+		{
+			pullXWhenHaveY($item[WA], 1, 0);
+		}
+	}
+	if(creatable_amount($item[Wand Of Nagamar]) > 0)
+	{
+		return create(1, $item[Wand Of Nagamar]);
+	}
+	
+	if(auto_my_path() == "G-Lover")
+	{
+		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
 	}
 	else
 	{
-		if(auto_my_path() == "G-Lover")
+		pullXWhenHaveY($item[Disassembled Clover], 1, 0);
+	}
+	if(cloversAvailable() > 0)
+	{
+		cloverUsageInit();
+		autoAdvBypass(322, $location[The Castle in the Clouds in the Sky (Basement)]);
+		cloverUsageFinish();
+		if(creatable_amount($item[Wand Of Nagamar]) > 0)
 		{
-			pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
+			return create(1, $item[Wand Of Nagamar]);
 		}
 		else
 		{
-			pullXWhenHaveY($item[Disassembled Clover], 1, 0);
+			auto_log_warning("Clovering [The Castle in the Clouds in the Sky (Basement)] for wand parts failed for some reason", "red");
 		}
-		if(in_hardcore() && in_koe())
-		{
-			// TODO: Improve support
-			abort("In Kingdom of Exploathing: Please buy a Wand of Nagamar from the bazaar and re-run.");
-			return false;
-		}
-		else if(cloversAvailable() > 0)
-		{
-			cloverUsageInit();
-			autoAdvBypass(322, $location[The Castle in the Clouds in the Sky (Basement)]);
-			cloverUsageFinish();
-			cli_execute("make " + $item[Wand Of Nagamar]);
-			return true;
-		}
+	}
+	else if(in_hardcore() && in_koe())
+	{
+		// TODO: Improve support
+		abort("In Kingdom of Exploathing: Please buy a Wand of Nagamar from the bazaar and re-run.");
 		return false;
 	}
+	return false;
 }
 
 boolean L13_towerNSEntrance()
