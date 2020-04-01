@@ -28,7 +28,6 @@ boolean warOutfit(boolean immediate)
 				return false;
 			}
 		}
-		return true;
 	}
 	else
 	{
@@ -44,8 +43,8 @@ boolean warOutfit(boolean immediate)
 				return false;
 			}
 		}
-		return true;
 	}
+	return true;
 }
 
 boolean haveWarOutfit()
@@ -101,79 +100,92 @@ boolean warAdventure()
 
 boolean L12_getOutfit()
 {
-	if (internalQuestStatus("questL12War") < 0 || internalQuestStatus("questL12War") > 0)
+	if (internalQuestStatus("questL12War") != 0)
 	{
 		return false;
 	}
 
+	// noncombat when adventuring at The Hippy Camp (Verge of War)
+	set_property("choiceAdventure139", "3");	//fight a War Hippy (space) cadet for outfit pieces
+	set_property("choiceAdventure140", "3");	//fight a War Hippy drill sergeant for outfit pieces
+	set_property("choiceAdventure141", "1");	//if wearing [Frat Boy Ensemble] get 50 mysticality
+	
+	// noncombat when adventuring at Orcish Frat House (Verge of War)
+	set_property("choiceAdventure143", "3");	//fight a War Pledgefor outfit pieces
+	set_property("choiceAdventure144", "3");	//fight a Frat Warrior drill sergeant for outfit pieces
+	set_property("choiceAdventure145", "1");	//if wearing [Filthy Hippy Disguise] get 50 muscle
+
+	// if you already have the war outfit we don't need to do anything now
 	if (haveWarOutfit())
 	{
 		return false;
 	}
-
-	set_property("choiceAdventure143", "3");
-	set_property("choiceAdventure144", "3");
-	set_property("choiceAdventure145", "1");
-	set_property("choiceAdventure146", "1");
-
-	if((get_property("auto_orcishfratboyspy") == "done") && !in_hardcore())
+	
+	//heavy rains softcore pull handling
+	if(!in_hardcore() && (auto_my_path() == "Heavy Rains"))
 	{
-		pullXWhenHaveY($item[Beer Helmet], 1, 0);
-		pullXWhenHaveY($item[Bejeweled Pledge Pin], 1, 0);
-		pullXWhenHaveY($item[Distressed Denim Pants], 1, 0);
-	}
-
-	if(!in_hardcore() && (auto_my_path() != "Heavy Rains"))
-	{
-		pullXWhenHaveY($item[Beer Helmet], 1, 0);
-		pullXWhenHaveY($item[Bejeweled Pledge Pin], 1, 0);
-		pullXWhenHaveY($item[Distressed Denim Pants], 1, 0);
-	}
-
-	if(possessEquipment($item[Beer Helmet]) && possessEquipment($item[Distressed Denim Pants]) && possessEquipment($item[Bejeweled Pledge Pin]))
-	{
-		set_property("choiceAdventure139", "3");
-		set_property("choiceAdventure140", "3");
-		return true;
-	}
-
-	if (possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
-	{
-		autoOutfit("filthy hippy disguise");
-		if(my_lightning() >= 5)
+		// auto_warhippyspy indicates rainman was already used to copy a war hippy spy in heavy rains. if it failed to YR pull missing items
+		if(get_property("auto_warhippyspy") == "done" && get_property("auto_hippyInstead").to_boolean())
 		{
-			autoAdv(1, $location[Wartime Frat House]);
-			return true;
+			pullXWhenHaveY($item[Reinforced Beaded Headband], 1, 0);
+			pullXWhenHaveY($item[Round Purple Sunglasses], 1, 0);
+			pullXWhenHaveY($item[Bullet-proof Corduroys], 1, 0);			
 		}
-
-		if(in_hardcore())
-		{
-			autoAdv(1, $location[Wartime Frat House]);
-			return true;
-		}
-
-		if(!canYellowRay())
+		// auto_orcishfratboyspy indicates rainman was already used to copy an orcish frat boy in heavy rains. if it failed to YR pull missing items
+		if(get_property("auto_orcishfratboyspy") == "done" && !get_property("auto_hippyInstead").to_boolean())
 		{
 			pullXWhenHaveY($item[Beer Helmet], 1, 0);
 			pullXWhenHaveY($item[Bejeweled Pledge Pin], 1, 0);
 			pullXWhenHaveY($item[Distressed Denim Pants], 1, 0);
-			return true;
 		}
+	}
 
-		//We should probably have some kind of backup solution here
+	//softcore pull handling for all other paths
+	if(!in_hardcore() && (auto_my_path() != "Heavy Rains"))
+	{
+		if(get_property("auto_hippyInstead").to_boolean())
+		{
+			pullXWhenHaveY($item[Reinforced Beaded Headband], 1, 0);
+			pullXWhenHaveY($item[Round Purple Sunglasses], 1, 0);
+			pullXWhenHaveY($item[Bullet-proof Corduroys], 1, 0);			
+		}
+		else
+		{
+			pullXWhenHaveY($item[Beer Helmet], 1, 0);
+			pullXWhenHaveY($item[Bejeweled Pledge Pin], 1, 0);
+			pullXWhenHaveY($item[Distressed Denim Pants], 1, 0);
+		}
+	}
+
+	// if you have war outfit now then you just pulled it. so this time we return true as something changed
+	if(haveWarOutfit())
+	{
+		return true;
+	}
+	// if you reached this point you are either in hardcore or are in softcore but ran out of pulls
+	// if really in softcore and out of pulls then returning false here lets you skip it until tomorrow
+	if(!in_hardcore())
+	{
 		return false;
 	}
-	else
+	
+	// if outfit could not be pulled and have a [Filthy Hippy Disguise] outfit then wear it and adventure in Frat House to get war outfit
+	if (!get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
 	{
-		if(!in_hardcore())
-		{
-			pullXWhenHaveY($item[Filthy Knitted Dread Sack], 1, 0);
-			pullXWhenHaveY($item[Filthy Corduroys], 1, 0);
-		}
-		if(L12_preOutfit())
-		{
-			return true;
-		}
+		autoOutfit("filthy hippy disguise");
+		return autoAdv(1, $location[Wartime Frat House]);
+	}
+	
+	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
+	if (get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[orcish baseball cap]) && possessEquipment($item[orcish frat-paddle]) && possessEquipment($item[orcish cargo shorts]))
+	{
+		autoOutfit("frat Boy Ensemble");
+		return autoAdv(1, $location[Wartime Hippy Camp]);
+	}
+	
+	if(L12_preOutfit())
+	{
+		return true;
 	}
 	return false;
 }
@@ -184,23 +196,35 @@ boolean L12_preOutfit()
 	{
 		return false;
 	}
+	
+	// in softcore you will pull the war outfit, no need to get pre outfit
 	if(!in_hardcore())
 	{
 		return false;
 	}
+	
 	if(my_level() < 9)
 	{
 		return false;
 	}
-	if (possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
-	{
-		return false;
-	}
+	
 	if(haveWarOutfit())
 	{
 		return false;
 	}
-
+	
+	// if siding with frat and already own [filthy hippy disguise] outfit needed to get the frat boy war outfit
+	if (!get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
+	{
+		return false;
+	}
+	
+	// if siding with hippies and already own [frat boy ensemble] outfit needed to get the hippy war outfit
+	if (get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[orcish baseball cap]) && possessEquipment($item[orcish frat-paddle]) && possessEquipment($item[orcish cargo shorts]))
+	{
+		return false;
+	}
+	
 	if (isActuallyEd())
 	{
 		if(!canYellowRay() && (my_level() < 12))
@@ -213,7 +237,6 @@ boolean L12_preOutfit()
 	{
 		return false;
 	}
-	auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
 
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
@@ -223,15 +246,34 @@ boolean L12_preOutfit()
 		}
 	}
 
-	if(my_level() < 12)
+	// fighting for fratboys, adventure in hippy camp for [filthy hippy disguise] outfit to then adventure in frat house for frat war outfit
+	if(!get_property("auto_hippyInstead").to_boolean())
 	{
-		autoAdv(1, $location[Hippy Camp]);
+		auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
+		if(internalQuestStatus("questL12War") > -1)
+		{
+			autoAdv(1, $location[Hippy Camp]);
+		}
+		else
+		{
+			autoAdv(1, $location[Wartime Hippy Camp]);
+		}
 	}
+	// fighting for hippies, adventure in orcish frat house for [frat boy ensemble] outfit to then adventure in hippy camp for hippy war outfit
 	else
 	{
-		autoAdv(1, $location[Wartime Hippy Camp]);
+		auto_log_info("Trying to acquire a frat boy ensemble", "blue");
+		if(internalQuestStatus("questL12War") > -1)
+		{
+			autoAdv(1, $location[Frat House]);
+		}
+		else
+		{
+			autoAdv(1, $location[Wartime Frat House]);
+		}
 	}
-	return true;
+	
+	return true;	//the above ifs cover all possibilities so we had to have adventured somewhere just now. either frat house or hippy camp
 }
 
 boolean L12_startWar()
@@ -256,14 +298,11 @@ boolean L12_startWar()
 		return false;
 	}
 
-	auto_log_info("Must save the ferret!!", "blue");
-	warOutfit(false);
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
-	buffMaintain($effect[Snow Shoes], 0, 1, 1);
-	buffMaintain($effect[Become Superficially Interested], 0, 1, 1);
+	
 	providePlusNonCombat(25);
 
 	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
@@ -271,18 +310,34 @@ boolean L12_startWar()
 		use_skill(1, $skill[Incredible Self-Esteem]);
 	}
 
-	autoAdv(1, $location[Wartime Hippy Camp]);
-	set_property("choiceAdventure142", "3");
-	if(contains_text(get_property("lastEncounter"), "Blockin\' Out the Scenery"))
+	// set noncombats to value needed to start the war
+	set_property("choiceAdventure142", "3");	//if wearing [Frat Warrior Fatigues] start the war or skip adventure
+	set_property("choiceAdventure146", "3");	//if wearing [War Hippy Fatigues] start the war or skip adventure
+
+	// wear the appropriate war outfit based on auto_hippyInstead
+	warOutfit(false);
+
+	// start the war when siding with frat boys
+	if(!get_property("auto_hippyInstead").to_boolean())
 	{
-		if(!get_property("auto_hippyInstead").to_boolean())
+		auto_log_info("Must save the ferret!!", "blue");
+		autoAdv(1, $location[Wartime Hippy Camp]);
+		
+		//if war started, accept flyer quest for fratboys.
+		//this is only started here and only for frat.
+		//move this to dedicated function that can start it for both sides as appropriate
+		if(internalQuestStatus("questL12War") == 1)
 		{
-			visit_url("bigisland.php?action=junkman&pwd");
-			visit_url("bigisland.php?place=concert&pwd");
-			visit_url("bigisland.php?place=lighthouse&action=pyro&pwd=");
-			visit_url("bigisland.php?place=lighthouse&action=pyro&pwd=");
+			visit_url("bigisland.php?place=concert&pwd");	
 		}
 	}
+	// start the war when siding with hippies
+	else
+	{
+		auto_log_info("Must save the goldfish!!", "blue");
+		autoAdv(1, $location[Wartime Frat House]);
+	}
+		
 	return true;
 }
 
@@ -1349,7 +1404,7 @@ boolean L12_finalizeWar()
 		return false;
 	}
 
-	if (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratsDefeated").to_int() < 1000)
+	if (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000)
 	{
 		return false;
 	}

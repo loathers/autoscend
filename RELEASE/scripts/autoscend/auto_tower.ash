@@ -60,7 +60,7 @@ boolean L13_towerNSContests()
 
 				provideInitiative(400, true);
 
-				if(crowd1Insufficient())
+				if(crowd1Insufficient() && (get_property("sidequestArenaCompleted") == "fratboy"))
 				{
 					cli_execute("concert White-boy Angst");
 				}
