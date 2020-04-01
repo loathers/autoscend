@@ -341,26 +341,6 @@ boolean L12_startWar()
 	return true;
 }
 
-boolean L12_orchardStart()
-{
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestOrchardCompleted") != "none")
-	{
-		return false;
-	}
-	if (in_tcrs() || in_koe())
-	{
-		return false;
-	}
-	if((get_property("hippiesDefeated").to_int() < 64) && !get_property("auto_hippyInstead").to_boolean())
-	{
-		return false;
-	}
-
-	warOutfit(true);
-	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
-	return true;
-}
-
 boolean L12_filthworms()
 {
 	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestOrchardCompleted") != "none")
@@ -536,7 +516,25 @@ boolean L12_gremlins()
 
 	if(item_amount($item[molybdenum magnet]) == 0)
 	{
-		abort("We don't have the molybdenum magnet but should... please get it and rerun the script");
+		//if fighting for frat immediately grab it
+		if(!get_property("auto_hippyInstead").to_boolean())
+		{
+			warOutfit(true);
+			visit_url("bigisland.php?action=junkman&pwd");
+		}
+		
+		//if fighting for hippies grab magnet when enough fratboys killed
+		if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() >= 192))
+		{
+			warOutfit(true);
+			visit_url("bigisland.php?action=junkman&pwd");
+		}
+		
+		//if still don't have magnet something went wrong
+		if(item_amount($item[molybdenum magnet]) == 0)
+		{
+			abort("We don't have the molybdenum magnet but should... please get it and rerun the script");
+		}
 	}
 
 	if(auto_my_path() == "Disguises Delimit")
