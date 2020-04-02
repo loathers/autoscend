@@ -650,12 +650,11 @@ boolean restoreSetting(string setting)
 
 boolean startArmorySubQuest()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_koe() || auto_my_path() == "Nuclear Autumn")
 	{
 		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
 		{
-			use(1, $item[Hypnotic Breadcrumbs]);
-			return true;
+			return use(1, $item[Hypnotic Breadcrumbs]);
 		}
 		return false;
 	}
@@ -665,7 +664,10 @@ boolean startArmorySubQuest()
 		string temp = visit_url("shop.php?whichshop=armory");
 		temp = visit_url("shop.php?whichshop=armory&action=talk");
 		temp = visit_url("choice.php?pwd=&whichchoice=1065&option=1");
-		return true;
+		if(internalQuestStatus("questM25Armorer") > -1)
+		{
+			return true;
+		}
 	}
 	return false;
 }

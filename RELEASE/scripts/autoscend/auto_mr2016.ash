@@ -1048,6 +1048,7 @@ boolean LX_ghostBusting()
 			startMeatsmithSubQuest();
 			if(internalQuestStatus("questM23Meatsmith") == -1)
 			{
+				auto_log_warning("Failed to unlock [The Skeleton Store] for ghostbusting", "red");
 				newbieFail = true;
 			}
 			else if(internalQuestStatus("questM23Meatsmith") == 0)
@@ -1077,6 +1078,7 @@ boolean LX_ghostBusting()
 			startArmorySubQuest();
 			if(internalQuestStatus("questM25Armorer") == -1)
 			{
+				auto_log_warning("Failed to unlock [Madness Bakery] for ghostbusting", "red");
 				newbieFail = true;
 			}
 			else if(internalQuestStatus("questM25Armorer") <= 1)
@@ -1100,6 +1102,7 @@ boolean LX_ghostBusting()
 			startGalaktikSubQuest();
 			if(internalQuestStatus("questM24Doc") == -1)
 			{
+				auto_log_warning("Failed to unlock [The Overgrown Lot] for ghostbusting", "red");
 				newbieFail = true;
 			}
 			else if(get_property("questM24Doc") != "finished")
@@ -1182,8 +1185,7 @@ boolean LX_ghostBusting()
 
 		if(newbieFail)
 		{
-			auto_log_critical("Can't bust that ghost, we don't feel good!!", "blue");
-			abort("Ghost busting failure, this should not happen");
+			auto_log_critical("Can't bust that ghost, we don't feel good!! skipping this ghost...", "red");
 			set_property("questPAGhost", "unstarted");
 			set_property("ghostLocation", "");
 			return false;

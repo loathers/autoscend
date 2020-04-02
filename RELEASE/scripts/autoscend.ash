@@ -2287,57 +2287,75 @@ boolean doBedtime()
 
 boolean L13_towerNSNagamar()
 {
+	// the first if check will skip getting a wand if autoscend configuration says we don't want one AND you are not on step12 of the quest
+	// if you are on step12 it will override the configuration and proceed to get a wand anyways
+	// quest step12 means you fought the sorceress and lost due to not having a wand.
+	// autoscend only reaches step12 of the quest if autoscend was incapable of acquiring a wand before the sorceress
+	// it then has to fallback to bear verb orgy, which itself cannot be done until step12
+	
 	if (!get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") != 12)
 	{
 		return false;
 	}
-
+	
 	if(item_amount($item[Wand of Nagamar]) > 0)
 	{
 		set_property("auto_wandOfNagamar", false);
 		return false;
 	}
-	else if (internalQuestStatus("questL13Final") == 12)
+	
+	if(in_koe() && item_amount($item[rare Meat Isotope]) >= 30)
 	{
-		return autoAdv($location[The VERY Unquiet Garves]);
-	}
-	else if(pulls_remaining() >= 2)
-	{
-		if((item_amount($item[ruby w]) > 0) && (item_amount($item[metallic A]) > 0))
+		buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Wand of Nagamar]);
+		if(item_amount($item[Wand of Nagamar]) > 0)
 		{
-			cli_execute("make " + $item[WA]);
-		}
-		pullXWhenHaveY($item[WA], 1, 0);
-		pullXWhenHaveY($item[ND], 1, 0);
-		cli_execute("make " + $item[Wand Of Nagamar]);
-		return true;
-	}
-	else
-	{
-		if(auto_my_path() == "G-Lover")
-		{
-			pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
+			return true;
 		}
 		else
 		{
-			pullXWhenHaveY($item[Disassembled Clover], 1, 0);
+			auto_log_warning("Buying [Wand of Nagamar] using rare Meat Isotopes failed even thought we had 30 isotopes... trying alternatives", "red");
 		}
-		if(in_hardcore() && in_koe())
-		{
-			// TODO: Improve support
-			abort("In Kingdom of Exploathing: Please buy a Wand of Nagamar from the bazaar and re-run.");
-			return false;
-		}
-		else if(cloversAvailable() > 0)
-		{
-			cloverUsageInit();
-			autoAdvBypass(322, $location[The Castle in the Clouds in the Sky (Basement)]);
-			cloverUsageFinish();
-			cli_execute("make " + $item[Wand Of Nagamar]);
-			return true;
-		}
-		return false;
 	}
+	
+	if(creatable_amount($item[Wand Of Nagamar]) == 0 && (creatable_amount($item[WA]) > 0 || item_amount($item[WA]) > 0))
+	{	
+		pullXWhenHaveY($item[ND], 1, 0);
+	}
+	if(creatable_amount($item[Wand Of Nagamar]) > 0)
+	{
+		return create(1, $item[Wand Of Nagamar]);
+	}
+	
+	//hunt for bear verb orgy
+	if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12)
+	{
+		return autoAdv($location[The VERY Unquiet Garves]);
+	}
+	
+	if(auto_my_path() == "G-Lover")
+	{
+		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
+	}
+	else
+	{
+		pullXWhenHaveY($item[Disassembled Clover], 1, 0);
+	}
+	
+	if(cloversAvailable() > 0)
+	{
+		cloverUsageInit();
+		autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
+		cloverUsageFinish();
+		if(creatable_amount($item[Wand Of Nagamar]) > 0)
+		{
+			return create(1, $item[Wand Of Nagamar]);
+		}
+		else
+		{
+			auto_log_warning("Clovering [The Castle in the Clouds in the Sky (Basement)] for wand parts failed for some reason", "red");
+		}
+	}
+	return false;
 }
 
 boolean L13_towerNSEntrance()
