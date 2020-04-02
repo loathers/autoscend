@@ -125,7 +125,6 @@ boolean L12_sonofaBeach();
 boolean L12_sonofaFinish();
 boolean L12_gremlins();
 boolean L12_orchardFinalize();
-boolean L12_orchardStart();
 boolean L12_finalizeWar();
 boolean L13_sorceressDoor();
 boolean L13_towerNSEntrance();
@@ -136,7 +135,6 @@ boolean L13_towerNSNagamar();
 boolean L13_towerNSFinal();
 boolean L13_ed_councilWarehouse();
 boolean L13_ed_towerHandler();
-boolean questOverride();
 
 string autoscend_current_version();
 string autoscend_previous_version();
