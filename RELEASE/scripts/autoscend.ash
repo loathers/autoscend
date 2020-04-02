@@ -2300,12 +2300,11 @@ boolean questOverride()
 
 boolean L13_towerNSNagamar()
 {
-	// the first if function will skip getting a wand if autoscend configuration says we don't want one AND you are not on step12 of the quest
+	// the first if check will skip getting a wand if autoscend configuration says we don't want one AND you are not on step12 of the quest
 	// if you are on step12 it will override the configuration and proceed to get a wand anyways
 	// quest step12 means you fought the sorceress and lost due to not having a wand.
-	// to reach step12, either autoscend was wrong about not wanting a wand
-	// or autoscend was incapable of acquiring one before the sorceress and has to fallback to bear verb orgy
-	// bear verb orgy is unlocked by losing to sorceress due to lack of wand.
+	// autoscend only reaches step12 of the quest if autoscend was incapable of acquiring a wand before the sorceress
+	// it then has to fallback to bear verb orgy, which itself cannot be done until step12
 	
 	if (!get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") != 12)
 	{
