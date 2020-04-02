@@ -2317,6 +2317,19 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
+	if(in_koe() && item_amount($item[Wand of Nagamar]) >= 30)
+	{
+		buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Wand of Nagamar]);
+		if(item_amount($item[Wand of Nagamar]) > 0)
+		{
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Buying [Wand of Nagamar] using rare Meat Isotopes failed... trying alternatives", "red");
+		}
+	}
+	
 	if(creatable_amount($item[Wand Of Nagamar]) == 0 && (creatable_amount($item[WA]) > 0 || item_amount($item[WA]) > 0))
 	{	
 		pullXWhenHaveY($item[ND], 1, 0);
@@ -2354,10 +2367,6 @@ boolean L13_towerNSNagamar()
 		{
 			auto_log_warning("Clovering [The Castle in the Clouds in the Sky (Basement)] for wand parts failed for some reason", "red");
 		}
-	}
-	else if(in_koe())
-	{
-		return buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Wand of Nagamar]);
 	}
 	return false;
 }
