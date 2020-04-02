@@ -2317,7 +2317,7 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
-	if(in_koe() && item_amount($item[Wand of Nagamar]) >= 30)
+	if(in_koe() && item_amount($item[rare Meat Isotope]) >= 30)
 	{
 		buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Wand of Nagamar]);
 		if(item_amount($item[Wand of Nagamar]) > 0)
@@ -2326,7 +2326,7 @@ boolean L13_towerNSNagamar()
 		}
 		else
 		{
-			auto_log_warning("Buying [Wand of Nagamar] using rare Meat Isotopes failed... trying alternatives", "red");
+			auto_log_warning("Buying [Wand of Nagamar] using rare Meat Isotopes failed even thought we had 30 isotopes... trying alternatives", "red");
 		}
 	}
 	
