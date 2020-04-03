@@ -2327,7 +2327,7 @@ boolean L13_towerNSNagamar()
 	}
 	
 	//hunt for bear verb orgy
-	if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12)
+	if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12 && !in_koe())
 	{
 		return autoAdv($location[The VERY Unquiet Garves]);
 	}
