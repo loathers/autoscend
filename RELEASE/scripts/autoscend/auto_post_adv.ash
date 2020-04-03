@@ -100,25 +100,6 @@ void handlePostAdventure()
 		return;
 	}
 
-	if(choice_follows_fight())
-	{
-		// make sure last_choice is updated
-		visit_url("main.php");
-		switch(last_choice())
-		{
-			case 1340: // Is There A Doctor In The House?
-				auto_log_info("Accepting doctor quest, it's our job!");
-				run_choice(1);
-				break;
-			case 1342: // Torpor
-				bat_reallyPickSkills(20);
-				break;
-			default:
-				auto_log_warning("Unrecognized unhandled choice after combat " + last_choice(), "red");
-				break;
-		}
-	}
-
 	if(!get_property("_ballInACupUsed").to_boolean() && (item_amount($item[Ball-In-A-Cup]) > 0))
 	{
 		use(1, $item[Ball-In-A-Cup]);

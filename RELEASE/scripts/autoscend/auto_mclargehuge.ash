@@ -364,9 +364,12 @@ boolean L8_trapperGroar()
 			auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 			if (item_amount($item[Groar\'s Fur]) == 0 && item_amount($item[Winged Yeti Fur]) == 0)
 			{
-				addToMaximize("5meat");
+				addToMaximize("2000cold resistance 5max");
+				// mafia bug screws us here if we don't already have the 5 cold res. auto_pre_adv will not be called and this will infinite loop
+				equipMaximizedGear(); // remove this once https://kolmafia.us/showthread.php?24764-betweenBattleScript-and-afterAdventureScrinever-gets-called is fixed.
 				//If this returns false, we might have finished already, can we check this?
 				autoAdv(1, $location[Mist-shrouded Peak]);
+				removeFromMaximize("2000cold resistance 5max");
 			}
 			else
 			{

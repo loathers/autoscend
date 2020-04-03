@@ -400,7 +400,6 @@ boolean canOde(item toDrink); //Defined in autoscend/auto_cooking.ash
 boolean canSimultaneouslyAcquire(int[item] needed);			//Defined in autoscend/auto_util.ash
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
 boolean autoDrink(int howMany, item toDrink);					//Defined in autoscend/auto_cooking.ash
-int autoDailySpecialPrice();									//Defined in autoscend/auto_cooking.ash
 boolean autoEat(int howMany, item toEat);						//Defined in autoscend/auto_cooking.ash
 boolean autoEat(int howMany, item toEat, boolean silent);		//Defined in autoscend/auto_cooking.ash
 boolean auto_knapsackAutoConsume(string type, boolean simulate);	//Defined in autoscend/auto_cooking.ash
@@ -538,16 +537,13 @@ boolean zataraClanmate(string who);							//Defined in autoscend/auto_clan.ash
 boolean zataraAvailable();									//Defined in autoscend/auto_clan.ash
 boolean zataraSeaside(string who);							//Defined in autoscend/auto_clan.ash
 boolean isActuallyEd();										//Defined in auto_ascend/auto_edTheUndying.ash
-void auto_runEdCombat(string option, boolean skipFirstFight);	//Defined in autoscend/auto_edTheUndying.ash
-void auto_runEdCombat(string option);	//Defined in autoscend/auto_edTheUndying.ash
-boolean autoEdAdv(int num, location loc, string option);		//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_doResting();										//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_eatStuff();										//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeDay(int day);								//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeSession();								//Defined in autoscend/auto_edTheUndying.ash
 void ed_initializeSettings();								//Defined in autoscend/auto_edTheUndying.ash
 boolean ed_needShop();										//Defined in autoscend/auto_edTheUndying.ash
-boolean ed_preAdv(int num, location loc, string option);	//Defined in autoscend/auto_edTheUndying.ash
+void ed_handleAdventureServant(location loc);	//Defined in autoscend/auto_edTheUndying.ash
 void ed_terminateSession();									//Defined in autoscend/auto_edTheUndying.ash
 effect[int] effectList();									//Defined in autoscend/auto_list.ash
 boolean elementalPlanes_access(element ele);				//Defined in autoscend/auto_elementalPlanes.ash

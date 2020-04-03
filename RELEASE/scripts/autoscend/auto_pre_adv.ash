@@ -470,7 +470,6 @@ void handlePreAdventure(location place)
 		// Last minute MCD alterations if Limit set, otherwise trust maximizer
 		if(get_property("auto_MLSafetyLimit") != "")
 		{
-			auto_change_mcd(0);
 			auto_setMCDToCap();
 		}
 

@@ -4,6 +4,7 @@
 # variable timing, number, variable name, variable type, description
 
 action	0	auto_interrupt	boolean	Cause script to stop before starting next turn action (instead of trying to abort midturn).
+action	1	auto_debugging	boolean	Will cause the script to stop after one adventure (by setting auto_interrupt = true).
 
 any	0	auto_skipNEPOverride	boolean	If true, will not use the Neverending Party even if mafia says it is available.
 any	1	auto_newbieOverride	boolean	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
@@ -29,7 +30,7 @@ any	20	auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If
 any	21	auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
 any	22	auto_limitConsume	boolean	When false, will not eat or drink anything automatically.
 any	23	auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
-any	24	auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat. If you set it to "disabled" it will revert to the old equipment system, for now.
+any	24	auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
 any	25	auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
 any	26	auto_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
 any	27	auto_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.

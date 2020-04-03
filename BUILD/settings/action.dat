@@ -1,1 +1,2 @@
 auto_interrupt	boolean	Cause script to stop before starting next turn action (instead of trying to abort midturn).
+auto_debugging	boolean	Will cause the script to stop after one adventure (by setting auto_interrupt = true).

@@ -1698,7 +1698,7 @@ boolean L11_shenCopperhead()
 			int behindtheStacheOption = 4;
 			if (item_amount($item[priceless diamond]) > 0 || item_amount($item[Red Zeppelin Ticket]) > 0 || (internalQuestStatus("questL11Shen") == 6 && item_amount($item[unnamed cocktail]) > 0))
 			{
-				if (get_property("auto_copperhead").to_int() != 3)
+				if (get_property("copperheadClubHazard") != "lantern")
 				{
 					// got priceless diamond or zeppelin ticket so lets burn the place down (and make Flamin' Whatsisnames)
 					behindtheStacheOption = 3;
@@ -1706,7 +1706,7 @@ boolean L11_shenCopperhead()
 			}
 			else
 			{
-				if (get_property("auto_copperhead").to_int() != 2)
+				if (get_property("copperheadClubHazard") != "ice")
 				{
 					// knock over the ice bucket & try for the priceless diamond.
 					behindtheStacheOption = 2;
@@ -1723,22 +1723,6 @@ boolean L11_shenCopperhead()
 		if (maximizeContains("-10ml"))
 		{
 			removeFromMaximize("-10ml");
-		}
-		if (get_property("lastEncounter") == "Behind the 'Stache")
-		{
-			// store which of the 3 zone changing options we have active so we don't waste Crappy Waiter Disguises
-			switch (get_property("choiceAdventure855").to_int())
-			{
-			case 1:
-				set_property("auto_copperhead", 1);
-				break;
-			case 2:
-				set_property("auto_copperhead", 2);
-				break;
-			case 3:
-				set_property("auto_copperhead", 3);
-				break;
-			}
 		}
 		return retval;
 	}

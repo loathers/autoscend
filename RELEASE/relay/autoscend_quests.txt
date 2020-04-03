@@ -42,9 +42,8 @@
 42	_auto_lastABooCycleFix	integer	POST	Tracker to prevent us infinitely looping on A-Boo Peak
 43	_auto_witchessBattles	integer	POST	Tracker for Witchess Combats (yes, this is actually needed).
 44	auto_combatDirective	string	ANY	State of overloading of combat behaviors.
-45	auto_copperhead	integer	ANY	Tracks the first 3 choice options when being a waiter at Copperhead (1|2|4)
-46	auto_needLegs	boolean	PRE	In Ed, do we require getting legs before trying to Ka farm?
-47	auto_getSteelOrgan	boolean	ANY	Are we trying to get a Steel Organ this ascension?
-48	auto_hccsTurnSave	boolean	ANY	In HCCS: Should we ignore pixel farming?
-49	auto_maxCandyPrice	integer	ANY	Max allowable price per candy for Rethinking Candy (default 2500)
-50	auto_hccsNoConcludeDay	boolean	ANY	In HCCS: When true, reduce how many daily end-of-day things we do.
+45	auto_needLegs	boolean	PRE	In Ed, do we require getting legs before trying to Ka farm?
+46	auto_getSteelOrgan	boolean	ANY	Are we trying to get a Steel Organ this ascension?
+47	auto_hccsTurnSave	boolean	ANY	In HCCS: Should we ignore pixel farming?
+48	auto_maxCandyPrice	integer	ANY	Max allowable price per candy for Rethinking Candy (default 2500)
+49	auto_hccsNoConcludeDay	boolean	ANY	In HCCS: When true, reduce how many daily end-of-day things we do.

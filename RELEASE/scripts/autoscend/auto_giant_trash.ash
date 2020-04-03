@@ -7,14 +7,6 @@ boolean L10_plantThatBean()
 		return false;
 	}
 
-	if (isActuallyEd())
-	{
-		// no bean needed as Ed, just climb the beanstalk to progress the quest
-		visit_url("place.php?whichplace=beanstalk");
-		cli_execute("refresh quests");
-		return true;
-	}
-
 	auto_log_info("Planting me magic bean!", "blue");
 	string page = visit_url("place.php?whichplace=plains");
 	if(contains_text(page, "place.php?whichplace=beanstalk"))
@@ -78,6 +70,13 @@ boolean L10_airship()
 		buffMaintain($effect[Snow Shoes], 0, 1, 1);
 		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
 		buffMaintain($effect[Gummed Shoes], 0, 1, 1);
+	}
+
+	if (isActuallyEd() && $location[The Penultimate Fantasy Airship].turns_spent < 1)
+	{
+		// temp workaround for mafia bug.
+		// see https://kolmafia.us/showthread.php?24767-Quest-tracking-preferences-change-request(s)&p=156733&viewfull=1#post156733
+		visit_url("place.php?whichplace=beanstalk");
 	}
 
 	autoAdv(1, $location[The Penultimate Fantasy Airship]);

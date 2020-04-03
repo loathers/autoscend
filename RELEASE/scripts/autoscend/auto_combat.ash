@@ -2507,7 +2507,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location())
 	{
-		if (my_mp() < mp_cost($skill[Fist Of The Mummy]))
+		if (my_mp() < mp_cost($skill[Fist Of The Mummy]) && get_property("_edDefeats").to_int() < 2)
 		{
 			foreach it in $items[Holy Spring Water, Spirit Beer, Sacramental Wine]
 			{

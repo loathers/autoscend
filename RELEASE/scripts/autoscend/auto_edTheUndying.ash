@@ -46,7 +46,9 @@ void ed_initializeSettings()
 		set_property("auto_edCombatRoundCount", 0);
 
 		set_property("choiceAdventure1002", 1);
-		set_property("choiceAdventure1023", "");
+		remove_property("choiceAdventure1023");
+		remove_property("choiceAdventure1024");
+		set_property("edDefeatAbort", "4"); // we have to set this stupidly high to stop mafia interrupting us.
 		set_property("desertExploration", 100);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
 		set_property("auto_delayHauntedKitchen", true);
@@ -886,8 +888,6 @@ boolean ed_shopping()
 	}
 
 	auto_log_info("Time to shop!", "red");
-	wait(1);
-	visit_url("choice.php?pwd=&whichchoice=1023&option=1", true);
 
 	if (get_property("auto_breakstone").to_boolean())
 	{
@@ -1000,9 +1000,6 @@ boolean ed_shopping()
 			}
 		}
 	}
-
-	visit_url("place.php?whichplace=edunder&action=edunder_leave");
-	visit_url("choice.php?pwd=&whichchoice=1024&option=1", true);
 	return true;
 }
 
@@ -1098,112 +1095,6 @@ void ed_handleAdventureServant(location loc)
 	}
 
 	handleServant(myServant);
-}
-
-boolean ed_preAdv(int num, location loc, string option)
-{
-	ed_handleAdventureServant(loc);
-	return preAdvXiblaxian(loc);
-}
-
-void auto_runEdCombat(string option, boolean skipFirstFight)
-{
-	if (isActuallyEd())
-	{
-		if (option == "" || option == "auto_combatHandler")
-		{
-			option = "auto_edCombatHandler";
-		}
-		if (!skipFirstFight)
-		{
-			run_combat(option);
-		}
-		while (get_property("edDefeatAbort").to_int() >= get_property("_edDefeats").to_int() && visit_url("main.php").contains_text("whichchoice value=1023"))
-		{
-			// edDefeatAbort defaults to 2 so we should stop when _edDefeats = 3 (or greater)
-			auto_log_info("Ed died in combat " + get_property("_edDefeats").to_int() + " time(s)", "blue");
-			ed_shopping(); // "free" trip to the Underworld, may as well go shopping. Will also leave underworld
-			run_combat(option); // FIGHT!
-		}
-		if (get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int())
-		{
-			set_property("auto_disableAdventureHandling", false);
-			abort("Manually forcing edDefeatAborts. We can't handle the battle.");
-		}
-	}
-}
-
-void auto_runEdCombat(string option)
-{
-	auto_runEdCombat(option, true);
-}
-
-boolean autoEdAdv(int num, location loc, string option)
-{
-	if (!isActuallyEd())
-	{
-		return false;
-	}
-	if (loc == $location[Noob Cave])
-	{
-		abort("We don't do this any more. Bug report this with the call stack please.");
-	}
-	if((option == "") || (option == "auto_combatHandler"))
-	{
-		option = "auto_edCombatHandler";
-	}
-
-	ed_preAdv(num, loc, option);
-
-	if((my_hp() == 0) || (get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int()))
-	{
-		auto_log_critical("Defeats detected: " + get_property("_edDefeats") + ", Defeat threshold: " + get_property("edDefeatAbort"), "green");
-		abort("How are you here? You can't be here. Bloody Limit Mode (probably, maybe?)!!");
-	}
-
-	boolean status = false;
-	while(num > 0)
-	{
-		set_property("autoAbortThreshold", "-10.0");
-		num--;
-		if (num > 1)
-		{
-			auto_log_info("This fight and " + num + " more left.", "blue");
-		}
-		if (get_property("auto_disableAdventureHandling").to_boolean())
-		{
-			// remove this once LX_spookyBedroomCombat() has been rewritten
-			// needed until then or pre-adventure stuff won't happen and you'll
-			// run out of MP.
-			set_property("auto_disableAdventureHandling", false);
-		}
-		cli_execute("auto_pre_adv");
-		set_property("auto_disableAdventureHandling", true);
-		set_property("auto_edCombatHandler", "");
-
-		auto_log_info("Starting Ed Battle at " + loc, "blue");
-		status = adv1(loc, 0, option);
-		auto_runEdCombat(option);
-
-		if(get_property("lastEncounter") == "Using the Force")
-		{
-			run_choice(get_property("_auto_saberChoice").to_int());
-		}
-		else if(contains_text(visit_url("main.php"), "choice.php"))
-		{
-			// in case we get a choice encounter from a fight (e.g. Haunted Bedroom)
-			run_choice(-1);
-			if(contains_text(visit_url("main.php"), "Combat"))
-			{
-				// if that choice then starts a combat (e.g. rustic nightstand), handle it normally (yeah this is getting ridiculous)
-				auto_runEdCombat(option);
-			}
-		}
-
-		set_property("auto_disableAdventureHandling", false);
-		cli_execute("auto_post_adv.ash");
-	}
-	return status;
 }
 
 boolean L1_ed_island()
