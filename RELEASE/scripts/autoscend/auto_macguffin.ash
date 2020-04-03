@@ -1479,15 +1479,22 @@ boolean L11_mauriceSpookyraven()
 
 		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
 
-		autoAdv(1, $location[The Haunted Boiler Room]);
-
-		if(item_amount($item[wine bomb]) == 1)
+		if(equipped_amount($item[Unstable Fulminate]) == 1)
 		{
-			visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
+			autoAdv(1, $location[The Haunted Boiler Room]);
 		}
-		return true;
+		else
+		{
+			abort("Tried to adventure in [Haunted Boiler Room] without an [Unstable Fulminate] equipped! Aborting to avoid wasting turns...");
+		}
 	}
 
+	if(item_amount($item[wine bomb]) == 1)
+	{
+		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
+		return true;
+	}
+	
 	return false;
 }
 
