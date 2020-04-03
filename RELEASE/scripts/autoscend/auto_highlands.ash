@@ -258,7 +258,17 @@ boolean L9_aBooPeak()
 
 	auto_log_info("A-Boo Peak: " + get_property("booPeakProgress"), "blue");
 	boolean clueCheck = ((clueAmt > 0) || (get_property("auto_aboopending").to_int() != 0));
-	if(clueCheck && (get_property("booPeakProgress").to_int() > 2))
+	if (get_property("auto_abooclover").to_boolean() && get_property("booPeakProgress").to_int() >= 30 && booCloversOk)
+	{
+		cloverUsageInit();
+		autoAdvBypass(296, $location[A-Boo Peak]);
+		if(cloverUsageFinish())
+		{
+			set_property("auto_abooclover", false);
+		}
+		return true;
+	}
+	else if (clueCheck && (get_property("booPeakProgress").to_int() > 2))
 	{
 		boolean doThisBoo = false;
 
@@ -479,16 +489,6 @@ boolean L9_aBooPeak()
 		equipBaseline();
 		handleFamiliar("item");
 		handleBjornify(priorBjorn);
-	}
-	else if(get_property("auto_abooclover").to_boolean() && (get_property("booPeakProgress").to_int() >= 30) && booCloversOk)
-	{
-		cloverUsageInit();
-		autoAdvBypass(296, $location[A-Boo Peak]);
-		if(cloverUsageFinish())
-		{
-			set_property("auto_abooclover", false);
-		}
-		return true;
 	}
 	else
 	{

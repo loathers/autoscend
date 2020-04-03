@@ -144,7 +144,7 @@ boolean digimon_autoAdv(int num, location loc, string option)
 
 			if($ints[89, 890, 891, 892, 893, 894, 895, 896, 897, 898, 899, 900, 901, 902, 903, 914] contains choice)
 			{
-				return adv1(loc, 0, option);
+				return adv1(loc, -1, option);
 			}
 
 			temp = visit_url("choice.php?pwd=" + my_hash() + "&whichchoice=" + choice + "&option=" + get_property("choiceAdventure" + choice).to_int());

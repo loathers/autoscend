@@ -6430,6 +6430,11 @@ void auto_interruptCheck()
 		restoreAllSettings();
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
 	}
+	else if (get_property("auto_debugging").to_boolean())
+	{
+		set_property("auto_interrupt", true);
+		auto_log_info("auto_debugging detected, auto_interrupt enabled.");
+	}
 }
 
 element currentFlavour()
@@ -6862,17 +6867,13 @@ boolean auto_setMCDToCap()
 	// Don't try to set the MCD if in KoE
 	if(!in_koe())
 	{
-		if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
-		{
-			auto_change_mcd(11);
-		}
-		else if(10 <= remainingMLToCap())
-		{
-			auto_change_mcd(10);
-		}
-		else if(10 > remainingMLToCap())
+		if (current_mcd() > remainingMLToCap())
 		{
 			auto_change_mcd(remainingMLToCap());
+		}
+		else
+		{
+			auto_change_mcd(11);
 		}
 	}
 
@@ -6900,13 +6901,6 @@ boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 //		Ur-kel's may need new entries in this case due to its variance
 boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 {
-
-// Turn Off MCD first if not in KoE, so we can maximize our ML within constraints.
-	if(!in_koe() && !($locations[The Boss Bat\'s Lair, Haert of the Cyrpt, Throne Room] contains my_location()))
-	{
-		auto_change_mcd(0);
-	}
-
 	void tryEffects(boolean [effect] effects)
 	{
 		foreach eff in effects

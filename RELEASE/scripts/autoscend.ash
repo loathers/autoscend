@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19891; // Fix checking for duplicate function to do exact match on parameters
+since r19953; // Detect when a fight follows a choice. WHen automating with adv1 or adventure, automate that fight.
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -126,7 +126,6 @@ void initializeSettings()
 	set_property("auto_combatHandler", "");
 	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
-	set_property("auto_copperhead", 0);
 	set_property("auto_crackpotjar", "");
 	set_property("auto_cubeItems", true);
 	set_property("auto_dakotaFanning", false);
@@ -5383,9 +5382,7 @@ boolean auto_tavern()
 	boolean maximized = false;
 	foreach loc in locations
 	{
-		auto_interruptCheck();
 		//Sleaze is the only one we don't care about
-
 		if (possessEquipment($item[Kremlin\'s Greatest Briefcase]))
 		{
 			string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
@@ -6177,7 +6174,7 @@ void auto_begin()
 
 	backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
-	backupSetting("betweenAdventureScript", "scripts/autoscend/auto_pre_adv.ash");
+	backupSetting("choiceAdventureScript", "scripts/autoscend/auto_choice_adv.ash");
 	backupSetting("betweenBattleScript", "scripts/autoscend/auto_pre_adv.ash");
 
 	backupSetting("hpAutoRecovery", -1);

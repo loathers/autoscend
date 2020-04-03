@@ -19,17 +19,23 @@ boolean autoAdv(int num, location loc, string option)
 	set_property("nextAdventure", loc);
 	if(option == "")
 	{
-		option = "auto_combatHandler";
+		if (isActuallyEd())
+		{
+			option = "auto_edCombatHandler";
+		} else {
+			option = "auto_combatHandler";
+		}
 	}
+
 	if (isActuallyEd())
 	{
-		return autoEdAdv(num, loc, option);
+		ed_handleAdventureServant(loc);
 	}
+
 	if(auto_my_path() == "Pocket Familiars")
 	{
 		return digimon_autoAdv(num, loc, option);
 	}
-
 
 	boolean retval = false;
 
@@ -48,7 +54,7 @@ boolean autoAdv(int num, location loc, string option)
 	}
 	else
 	{
-		retval = adv1(loc, 0, option);
+		retval = adv1(loc, -1, option);
 	}
 	if(auto_my_path() == "One Crazy Random Summer")
 	{
@@ -62,10 +68,7 @@ boolean autoAdv(int num, location loc, string option)
 			}
 		}
 	}
-	if(get_property("lastEncounter") == "Using the Force")
-	{
-		run_choice(get_property("_auto_saberChoice").to_int());
-	}
+
 	return retval;
 }
 
@@ -93,11 +96,6 @@ boolean autoAdvBypass(string url, location loc)
 	return autoAdvBypass(url, loc, "");
 }
 
-#boolean autoAdvBypass(string[int] url, location loc)
-#{
-#	return autoAdvBypass(url, loc, "");
-#}
-
 boolean autoAdvBypass(string url, location loc, string option)
 {
 	string[int] urlConvert;
@@ -124,11 +122,16 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	cli_execute("auto_pre_adv");
 	if(option == "")
 	{
-		option = "auto_combatHandler";
+		if (isActuallyEd())
+		{
+			option = "auto_edCombatHandler";
+		} else {
+			option = "auto_combatHandler";
+		}
 	}
 	if (isActuallyEd())
 	{
-		ed_preAdv(1, loc, option);
+		ed_handleAdventureServant(loc);
 	}
 
 	auto_log_info("About to start a combat indirectly at " + loc + "... (" + count(url) + ") accesses required.", "blue");
@@ -164,11 +167,6 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	{
 		auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 
-		if (isActuallyEd())
-		{
-				auto_runEdCombat(option, false);
-				return true;
-		}
 		if(option != "autoscend_null") // && (option != ""))
 		{
 			if(get_auto_attack() == 0)
