@@ -5910,9 +5910,10 @@ boolean doTasks()
 		acquireHP();
 	}
 
+	boolean weak_and_zelda = in_zelda() && !zelda_canDealScalingDamage();
 	if(my_daycount() == 1)
 	{
-		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0))
+		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0) && !weak_and_zelda)
 		{
 			fightScienceTentacle();
 			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
@@ -5921,7 +5922,7 @@ boolean doTasks()
 			}
 		}
 	}
-	else if((my_level() >= 9) && (my_hp() > 0))
+	else if((my_level() >= 9) && (my_hp() > 0) && !weak_and_zelda)
 	{
 		fightScienceTentacle();
 		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
