@@ -1440,9 +1440,9 @@ string auto_combatHandler(int round, string opp, string text)
 			{
 				return useSkill($skill[Northern Explosion], false);
 			}
-			else
+			else if($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class())
 			{
-				auto_log_warning("None of our preferred skills available. Engaging in Fisticuffs.", "red");
+				auto_log_warning("None of our preferred [cold] skills available against smut orcs. Engaging in Fisticuffs.", "red");
 			}
 		}
 
