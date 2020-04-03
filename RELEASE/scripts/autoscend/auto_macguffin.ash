@@ -1340,7 +1340,14 @@ boolean L11_mauriceSpookyraven()
 	if(item_amount($item[wine bomb]) == 1)
 	{
 		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
-		return true;
+		if (internalQuestStatus("questL11Manor") == 3)
+		{
+			return true;
+		}
+		else
+		{
+			abort("Tried to use the wine bomb but it somehow failed?");
+		}
 	}
 
 	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || (my_class() == $class[Avatar of Boris]) || (auto_my_path() == "Way of the Surprising Fist") || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
@@ -1486,19 +1493,13 @@ boolean L11_mauriceSpookyraven()
 		if(equipped_amount($item[Unstable Fulminate]) == 1)
 		{
 			autoAdv(1, $location[The Haunted Boiler Room]);
+			return true;
 		}
 		else
 		{
 			abort("Tried to adventure in [Haunted Boiler Room] without an [Unstable Fulminate] equipped! Aborting to avoid wasting turns...");
 		}
 	}
-
-	if(item_amount($item[wine bomb]) == 1)
-	{
-		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
-		return true;
-	}
-	
 	return false;
 }
 
