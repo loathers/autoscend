@@ -35,6 +35,7 @@ auto_optimizeConsultsInRun	boolean	When true, optimize our consults in run to ge
 auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
 auto_consultChoice	string	The name of the player you want to do Zatara consults with.
 auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
+auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
 auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
 auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
 auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.

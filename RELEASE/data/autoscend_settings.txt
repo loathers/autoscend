@@ -43,16 +43,17 @@ any	33	auto_optimizeConsultsInRun	boolean	When true, optimize our consults in ru
 any	34	auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
 any	35	auto_consultChoice	string	The name of the player you want to do Zatara consults with.
 any	36	auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
-any	37	auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
-any	38	auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
-any	39	auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
-any	40	auto_useWishes	boolean	When true, use the Genie Bottle to go faster in non-Community Service runs.
-any	41	auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
-any	42	auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle.
-any	43	auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
-any	44	auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
-any	45	auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
-any	46	auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
+any	37	auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
+any	38	auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
+any	39	auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
+any	40	auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
+any	41	auto_useWishes	boolean	When true, use the Genie Bottle to go faster in non-Community Service runs.
+any	42	auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
+any	43	auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle.
+any	44	auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
+any	45	auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
+any	46	auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
+any	47	auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
 
 post	0	auto_getBeehive	boolean	Go for the beehive?
 post	1	auto_getStarKey	boolean	Get Richard's Star Key?
