@@ -308,7 +308,10 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to charge a WineBomb but don't have one.");
 		}
-		autoEquip($slot[off-hand], $item[Unstable Fulminate]);
+		if(!autoForceEquip($slot[off-hand], $item[Unstable Fulminate]))
+		{
+			abort("Tried to adventure in [The Haunted Boiler Room] without an [Unstable Fulminate]");
+		}
 	}
 
 	if(place == $location[The Black Forest])

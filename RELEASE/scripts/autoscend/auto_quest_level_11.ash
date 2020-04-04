@@ -1495,33 +1495,23 @@ boolean L11_mauriceSpookyraven()
 
 	if (possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
-		if(weapon_hands(equipped_item($slot[weapon])) > 1)
-		{
-			autoEquip($slot[weapon], $item[none]);
-		}
-		auto_log_info("Now we mix and heat it up.", "blue");
+		auto_MaxMLToCap(auto_convertDesiredML(82), true);
+		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
 
 		if((auto_my_path() == "Picky") && (item_amount($item[gumshoes]) > 0))
 		{
 			auto_change_mcd(0);
 			autoEquip($slot[acc2], $item[gumshoes]);
 		}
-
-		if(!autoEquip($item[Unstable Fulminate]))
-		{
-			abort("Unstable Fulminate was not equipped. Please report this and include the following: Equipped items and if you have or don't have an Unstable Fulminate. For now, get the wine bomb manually, and run again.");
-		}
-
+		
 		if(monster_level_adjustment() < 57)
 		{
 			buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
 		}
-
-		auto_MaxMLToCap(auto_convertDesiredML(82), true);
-
-		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
-
-		return autoAdv(1, $location[The Haunted Boiler Room]);
+		
+		//unstable fulminate is being forcibly equipped in auto_pre_adv.ash
+		auto_log_info("Now we mix and heat it up.", "blue");
+		return autoAdv(1, $location[The Haunted Boiler Room]);	
 	}
 	return false;
 }
