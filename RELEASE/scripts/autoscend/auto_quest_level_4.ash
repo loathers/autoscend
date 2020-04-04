@@ -18,8 +18,15 @@ boolean L4_batCave()
 	int batStatus = internalQuestStatus("questL04Bat");
 	if((item_amount($item[Sonar-In-A-Biscuit]) > 0) && (batStatus < 3))
 	{
-		use(1, $item[Sonar-In-A-Biscuit]);
-		return true;
+		if(use(1, $item[Sonar-In-A-Biscuit]))
+		{
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Failed to use [Sonar-In-A-Biscuit] for some reason. refreshing inventory and skipping", "red");
+			cli_execute("refresh inv");
+		}
 	}
 
 	if(batStatus >= 4)
