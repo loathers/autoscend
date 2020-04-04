@@ -1,6 +1,6 @@
 script "auto_quest_level_13.ash"
 
-boolean L13_towerNSEntrance()
+boolean L13_powerLevel()
 {
 	// this function is exceptionally badly named. It powerlevels to 13 and nothing else. Should be refactored.
 	if(internalQuestStatus("questL13Final") < 0)
