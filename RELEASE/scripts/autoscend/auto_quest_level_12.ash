@@ -1,4 +1,4 @@
-script "auto_island_war.ash"
+script "auto_quest_level_12.ash"
 
 boolean warOutfit(boolean immediate)
 {

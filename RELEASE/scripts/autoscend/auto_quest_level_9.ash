@@ -1,4 +1,29 @@
-script "auto_highlands.ash"
+script "auto_quest_level_9.ash"
+
+boolean L9_leafletQuest()
+{
+	if((my_level() < 9) || possessEquipment($item[Giant Pinky Ring]))
+	{
+		return false;
+	}
+	if (isActuallyEd() || in_koe())
+	{
+		return false;
+	}
+	if(auto_get_campground() contains $item[Frobozz Real-Estate Company Instant House (TM)])
+	{
+		return false;
+	}
+	if(item_amount($item[Frobozz Real-Estate Company Instant House (TM)]) > 0)
+	{
+		return false;
+	}
+	auto_log_info("Got a leaflet to do", "blue");
+	council();
+	cli_execute("leaflet");
+	use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
+	return true;
+}
 
 void L9_chasmMaximizeForNoncombat()
 {

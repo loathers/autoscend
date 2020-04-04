@@ -1,4 +1,4 @@
-script "auto_giant_trash.ash"
+script "auto_quest_level_10.ash"
 
 boolean L10_plantThatBean()
 {
@@ -335,6 +335,53 @@ boolean L10_topFloor()
 			cli_execute("refresh quests");
 		}
 	}
+
+	return true;
+}
+
+boolean L10_holeInTheSkyUnlock()
+{
+	if (internalQuestStatus("questL10Garbage") < 9)
+	{
+		return false;
+	}
+	if(!get_property("auto_holeinthesky").to_boolean())
+	{
+		return false;
+	}
+	if(item_amount($item[Steam-Powered Model Rocketship]) > 0)
+	{
+		set_property("auto_holeinthesky", false);
+		return false;
+	}
+	if (!needStarKey() && !isActuallyEd())
+	{
+		// we force auto_holeinthesky to true in L11_shenCopperhead() as Ed if Shen sends us to the Hole in the Sky
+		// as otherwise the zone isn't required at all for Ed.
+		set_property("auto_holeinthesky", false);
+		return false;
+	}
+
+	auto_log_info("Castle Top Floor - Opening the Hole in the Sky", "blue");
+	set_property("choiceAdventure677", 2);
+	set_property("choiceAdventure675", 4);
+	set_property("choiceAdventure678", 3);
+	set_property("choiceAdventure676", 4);
+
+	if(auto_have_familiar($familiar[Ms. Puck Man]))
+	{
+		handleFamiliar($familiar[Ms. Puck Man]);
+	}
+	else if(auto_have_familiar($familiar[Puck Man]))
+	{
+		handleFamiliar($familiar[Puck Man]);
+	}
+	if(!auto_forceNextNoncombat())
+	{
+		providePlusNonCombat(25);
+	}
+	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
+	handleFamiliar("item");
 
 	return true;
 }

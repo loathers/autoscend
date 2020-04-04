@@ -1,4 +1,4 @@
-script "auto_macguffin.ash"
+script "auto_quest_level_11.ash"
 
 boolean L11_blackMarket()
 {
@@ -86,6 +86,37 @@ boolean L11_blackMarket()
 		create(1, $item[Reassembled Blackbird]);
 	}
 	handleFamiliar("item");
+	return true;
+}
+
+boolean L11_getBeehive()
+{
+	if (!black_market_available() || !get_property("auto_getBeehive").to_boolean())
+	{
+		return false;
+	}
+	if((internalQuestStatus("questL13Final") >= 7) || (item_amount($item[Beehive]) > 0))
+	{
+		auto_log_info("Nevermind, wall of skin already defeated (or we already have a beehiven). We do not need a beehive. Bloop.", "blue");
+		set_property("auto_getBeehive", false);
+		return false;
+	}
+
+	auto_log_info("Must find a beehive!", "blue");
+
+	set_property("choiceAdventure923", "1");
+	set_property("choiceAdventure924", "3");
+	set_property("choiceAdventure1018", "1");
+	set_property("choiceAdventure1019", "1");
+
+	handleBjornify($familiar[Grimstone Golem]);
+	providePlusNonCombat(25);
+
+	autoAdv(1, $location[The Black Forest]);
+	if(item_amount($item[beehive]) > 0)
+	{
+		set_property("auto_getBeehive", false);
+	}
 	return true;
 }
 
