@@ -1,4 +1,88 @@
-script "auto_tower.ash"
+script "auto_quest_level_13.ash"
+
+boolean L13_towerNSEntrance()
+{
+	// this function is exceptionally badly named. It powerlevels to 13 and nothing else. Should be refactored.
+	if(internalQuestStatus("questL13Final") < 0)
+	{
+		if(my_level() < 13)
+		{
+			auto_log_warning("I seem to need to power level, or something... waaaa.", "red");
+			# lx_attemptPowerLevel is before. We need to merge all of this into that....
+			set_property("auto_newbieOverride", true);
+
+			if(needDigitalKey())
+			{
+				woods_questStart();
+				if(LX_getDigitalKey())
+				{
+					return true;
+				}
+			}
+			if(needStarKey())
+			{
+				if(zone_isAvailable($location[The Hole In The Sky]))
+				{
+					if(LX_getStarKey())
+					{
+						return true;
+					}
+				}
+			}
+			if(!hasTorso())
+			{
+				if(LX_melvignShirt())
+				{
+					return true;
+				}
+			}
+
+			int delay = get_property("auto_powerLevelTimer").to_int();
+			if(delay == 0)
+			{
+				delay = 10;
+			}
+			wait(delay);
+
+			if(haveAnyIotmAlternativeRestSiteAvailable() && haveFreeRestAvailable() && auto_my_path() != "The Source")
+			{
+				doFreeRest();
+				cli_execute("scripts/autoscend/auto_post_adv.ash");
+				loopHandlerDelayAll();
+				return true;
+			}
+
+			if(!LX_attemptPowerLevel())
+			{
+				if(get_property("auto_powerLevelAdvCount").to_int() >= 10)
+				{
+					auto_log_warning("The following error message is probably wrong, you just need to powerlevel to 13 most likely.", "red");
+					if((item_amount($item[Rock Band Flyers]) > 0) || (item_amount($item[Jam Band Flyers]) > 0))
+					{
+						abort("Need more flyer ML but don't know where to go :(");
+					}
+					else
+					{
+						abort("I am lost, please forgive me. I feel underleveled.");
+					}
+				}
+			}
+			return true;
+		}
+		else
+		{
+			if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
+			{
+				auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
+				set_property("auto_powerLevelLastLevel", my_level());
+				return true;
+			}
+			council(); // Log council output
+			abort("Some sidequest is not done for some raisin. Some sidequest is missing, or something is missing, or something is not not something. We don't know what to do.");
+		}
+	}
+	return false;
+}
 
 boolean L13_towerNSContests()
 {
@@ -1009,4 +1093,77 @@ boolean L13_towerNSFinal()
 		abort("Yeah, so, I'm done. You might be stuck at the shadow, or at the final boss, or just with a king in a prism. I don't know and quite frankly, after the last " + my_daycount() + " days, I don't give a damn. That's right, I said it. Bitches.");
 	}
 	return true;
+}
+
+boolean L13_towerNSNagamar()
+{
+	// the first if check will skip getting a wand if autoscend configuration says we don't want one AND you are not on step12 of the quest
+	// if you are on step12 it will override the configuration and proceed to get a wand anyways
+	// quest step12 means you fought the sorceress and lost due to not having a wand.
+	// autoscend only reaches step12 of the quest if autoscend was incapable of acquiring a wand before the sorceress
+	// it then has to fallback to bear verb orgy, which itself cannot be done until step12
+	
+	if (!get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") != 12)
+	{
+		return false;
+	}
+	
+	if(item_amount($item[Wand of Nagamar]) > 0)
+	{
+		set_property("auto_wandOfNagamar", false);
+		return false;
+	}
+	
+	if(in_koe() && item_amount($item[rare Meat Isotope]) >= 30)
+	{
+		buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Wand of Nagamar]);
+		if(item_amount($item[Wand of Nagamar]) > 0)
+		{
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Buying [Wand of Nagamar] using rare Meat Isotopes failed even thought we had 30 isotopes... trying alternatives", "red");
+		}
+	}
+	
+	if(creatable_amount($item[Wand Of Nagamar]) == 0 && (creatable_amount($item[WA]) > 0 || item_amount($item[WA]) > 0))
+	{	
+		pullXWhenHaveY($item[ND], 1, 0);
+	}
+	if(creatable_amount($item[Wand Of Nagamar]) > 0)
+	{
+		return create(1, $item[Wand Of Nagamar]);
+	}
+	
+	//hunt for bear verb orgy
+	if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12 && !in_koe())
+	{
+		return autoAdv($location[The VERY Unquiet Garves]);
+	}
+	
+	if(auto_my_path() == "G-Lover")
+	{
+		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
+	}
+	else
+	{
+		pullXWhenHaveY($item[Disassembled Clover], 1, 0);
+	}
+	
+	if(cloversAvailable() > 0)
+	{
+		cloverUsageInit();
+		autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
+		cloverUsageFinish();
+		if(creatable_amount($item[Wand Of Nagamar]) > 0)
+		{
+			return create(1, $item[Wand Of Nagamar]);
+		}
+		else
+		{
+			auto_log_warning("Clovering [The Castle in the Clouds in the Sky (Basement)] for wand parts failed for some reason", "red");
+		}
+	}
+	return false;
 }

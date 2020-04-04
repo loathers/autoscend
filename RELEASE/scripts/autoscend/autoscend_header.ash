@@ -57,7 +57,6 @@ boolean Lsc_flyerSeals();
 
 boolean handleRainDoh();
 
-boolean L1_dnaAcquire();
 boolean L2_mosquito();
 boolean L2_treeCoin();
 boolean L2_spookyMap();
@@ -126,8 +125,8 @@ boolean L12_sonofaFinish();
 boolean L12_gremlins();
 boolean L12_orchardFinalize();
 boolean L12_finalizeWar();
+boolean L13_powerLevel();
 boolean L13_sorceressDoor();
-boolean L13_towerNSEntrance();
 boolean L13_towerNSContests();
 boolean L13_towerNSHedge();
 boolean L13_towerNSTower();
