@@ -1521,15 +1521,7 @@ boolean L11_mauriceSpookyraven()
 
 		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
 
-		if(equipped_amount($item[Unstable Fulminate]) == 1)
-		{
-			autoAdv(1, $location[The Haunted Boiler Room]);
-			return true;
-		}
-		else
-		{
-			abort("Tried to adventure in [Haunted Boiler Room] without an [Unstable Fulminate] equipped! Aborting to avoid wasting turns...");
-		}
+		return autoAdv(1, $location[The Haunted Boiler Room]);
 	}
 	return false;
 }

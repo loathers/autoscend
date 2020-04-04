@@ -108,6 +108,7 @@ boolean pantogramPants()
 {
 	return pantogramPants(my_primestat(), $element[cold], 1, 2, 1);
 }
+
 boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int misc)
 {
 	if(!is_unrestricted($item[Portable Pantogram]))
@@ -248,7 +249,6 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 
 }
 
-
 boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int loveEffect, boolean equivocator, int giftItem)
 {
 	return loveTunnelAcquire(enforcer, statItem, engineer, loveEffect, equivocator, giftItem, "");
@@ -280,7 +280,6 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-//	set_property("_auto_loveTunnelDone", true);
 
 	string temp = visit_url("place.php?whichplace=town_wrong");
 	if(!(contains_text(temp, "townwrong_tunnel")))
@@ -288,34 +287,16 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 		return false;
 	}
 
-	#string temp = visit_url("place.php?whichplace=town_wrong&action=townwrong_tunnel");
-	set_location($location[The Tunnel of L.O.V.E.]);
-	cli_execute("auto_pre_adv");
-	temp = visit_url("place.php?whichplace=town_wrong&action=townwrong_tunnel");
-	if(contains_text(temp, "Come back tomorrow!"))
-	{
-		set_property("_loveTunnelUsed", true);
-		auto_log_warning("Already visited L.O.V.E. Tunnel. Can't be visiting again.", "red");
-		temp = visit_url("choice.php?pwd=&whichchoice=1222&option=2");
-		return false;
-	}
-
-	temp = visit_url("choice.php?pwd=&whichchoice=1222&option=1");
-
-	if(enforcer || engineer || equivocator)
-	{
-		set_property("auto_disableAdventureHandling", true);
-	}
+	backupSetting("choiceAdventure1222", "1"); // The Tunnel of L.O.V.E.
 
 	if(enforcer)
 	{
-		autoAdvBypass("choice.php?pwd=&whichchoice=1223&option=1", option);
+		backupSetting("choiceAdventure1223", "1"); // L.O.V. Entrance - Fight Enforcer
 	}
 	else
 	{
-		string temp = visit_url("choice.php?pwd=&whichchoice=1223&option=2");
+		backupSetting("choiceAdventure1223", "2"); // L.O.V. Entrance - Skip Enforcer
 	}
-
 
 	int statValue = 4;
 	if(statItem == $stat[none])
@@ -348,55 +329,52 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 		}
 	}
 
-	temp = visit_url("choice.php?pwd=&whichchoice=1224&option=" + statValue);
-#1		Cardigan,			LOV Eardigan	Shirt - 25% Muscle Stats, 8-12HP Regen, +25ML, End of Day
-#2		Epaulettes,			LOV Epaulettes	Back  - 25% Myst Stats, 4-6MP Regen, -3MPCombatSkills, End of Day
-#3		Earrings			LOV Earrings	Acc   - 25% Moxie Stats, +3 PrismRes, +50% Meat, End of Day
-#4		Nothing
-
+	backupSetting("choiceAdventure1224", to_string(statValue)); // L.O.V. Equipment Room
+	#1		Cardigan,			LOV Eardigan	Shirt - 25% Muscle Stats, 8-12HP Regen, +25ML, End of Day
+	#2		Epaulettes,			LOV Epaulettes	Back  - 25% Myst Stats, 4-6MP Regen, -3MPCombatSkills, End of Day
+	#3		Earrings			LOV Earrings	Acc   - 25% Moxie Stats, +3 PrismRes, +50% Meat, End of Day
+	#4		Nothing
 
 	if(engineer)
 	{
-		autoAdvBypass("choice.php?pwd=&whichchoice=1225&option=1", option);
+		backupSetting("choiceAdventure1225", "1"); // L.O.V. Engine Room - Fight Engineer
 	}
 	else
 	{
-		string temp = visit_url("choice.php?pwd=&whichchoice=1225&option=2");
+		backupSetting("choiceAdventure1225", "2"); // L.O.V. Engine Room - Skip Engineer
 	}
 
-	temp = visit_url("choice.php?pwd=&whichchoice=1226&option=" + loveEffect);
-#1	Lovebotamy					+10 stats per fight
-#2	Open Heart Surgery			+10 familiar weight (50 adventures)
-#3	Wandering Eye Surgery		+50% item drops (50 adventures)
-#4	Nothing
+	backupSetting("choiceAdventure1226", to_string(loveEffect)); // L.O.V. Emergency Room
+	#1	Lovebotamy					+10 stats per fight
+	#2	Open Heart Surgery			+10 familiar weight (50 adventures)
+	#3	Wandering Eye Surgery		+50% item drops (50 adventures)
+	#4	Nothing
 
 	if(equivocator)
 	{
-		autoAdvBypass("choice.php?pwd=&whichchoice=1227&option=1", option);
+		backupSetting("choiceAdventure1227", "1"); // L.O.V. Elbow Room - Fight Equivocator
 	}
 	else
 	{
-		string temp = visit_url("choice.php?pwd=&whichchoice=1227&option=2");
+		backupSetting("choiceAdventure1227", "2"); // L.O.V. Elbow Room - Skip Equivocator
 	}
 
-	temp = visit_url("choice.php?pwd=&whichchoice=1228&option=" + giftItem);
-#1		Boomerang			LOV Enamorang (combat item) stagger, consumed (15 turn later copy?)
-#2		Toy Dart Gun		LOV Emotionizer (usable self/others)
-#3		Chocolate			LOV Extraterrestrial Chocolate (+3/2/1 advs, independent chocolate?)
-#4		Flowers				LOV Echinacea Bouquet (Spleen). (stats + small hp/mp, 1 toxicity)
-#5		Plush Elephant		LOV Elephant (Shield, DR+10)
-#6		Toast? Only with Space Jellyfish?
-#7		Nothing
-	if(enforcer || engineer || equivocator)
-	{
-		set_property("auto_disableAdventureHandling", false);
-		cli_execute("auto_post_adv");
-	}
+	backupSetting("choiceAdventure1228", to_string(giftItem));
+	#1		Boomerang			LOV Enamorang (combat item) stagger, consumed (15 turn later copy?)
+	#2		Toy Dart Gun		LOV Emotionizer (usable self/others)
+	#3		Chocolate			LOV Extraterrestrial Chocolate (+3/2/1 advs, independent chocolate?)
+	#4		Flowers				LOV Echinacea Bouquet (Spleen). (stats + small hp/mp, 1 toxicity)
+	#5		Plush Elephant		LOV Elephant (Shield, DR+10)
+	#6		Toast? Only with Space Jellyfish?
+	#7		Nothing
+
+	boolean retval = autoAdv($location[The Tunnel of L.O.V.E.]);
+
 	if(item_amount($item[LOV Extraterrestrial Chocolate]) > 0)
 	{
 		use(1, $item[LOV Extraterrestrial Chocolate]);
 	}
-	return true;
+	return retval;
 }
 
 boolean kgbWasteClicks()

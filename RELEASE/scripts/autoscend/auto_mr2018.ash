@@ -197,30 +197,8 @@ boolean godLobsterCombat(item it, int goal, string option)
 	}
 	else
 	{
+		set_property("_auto_lobsterChoice", to_string(goal));
 		autoAdv(1, $location[Noob Cave], option);
-		temp = visit_url("main.php");
-
-		string search = "I'd like part of your regalia.";
-		if(goal == 2)
-		{
-			search = "I'd like a blessing.";
-		}
-		else if(goal == 3)
-		{
-			search = "I'd like some experience.";
-		}
-
-		int choice = 0;
-		foreach idx, str in available_choice_options()
-		{
-			if(contains_text(str,search))
-			{
-				choice = idx;
-			}
-		}
-		backupSetting("choiceAdventure1310", choice);
-		temp = visit_url("choice.php?pwd=&whichchoice=1310&option=" + choice, true);
-		restoreSetting("choiceAdventure1310");
 	}
 
 	set_property("auto_disableAdventureHandling", false);

@@ -21,6 +21,28 @@ void main(int choice, string page)
 				set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 			}
 			break;
+		case 1310: // Granted a Boon (God Lobster)
+			int goal = get_property("_auto_lobsterChoice").to_int();
+			string search = "I'd like part of your regalia.";
+			if(goal == 2)
+			{
+				search = "I'd like a blessing.";
+			}
+			else if(goal == 3)
+			{
+				search = "I'd like some experience.";
+			}
+
+			int choice = 0;
+			foreach idx, str in available_choice_options()
+			{
+				if(contains_text(str,search))
+				{
+					choice = idx;
+				}
+			}
+			run_choice(choice);
+			break;
 		case 1340: // Is There A Doctor In The House? (Lil' Doctor Bag™)
 			auto_log_info("Accepting doctor quest, it's our job!");
 			run_choice(1);
