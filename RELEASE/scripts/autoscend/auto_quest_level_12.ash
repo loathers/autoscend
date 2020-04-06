@@ -1,5 +1,157 @@
 script "auto_quest_level_12.ash"
 
+string auto_warSide()
+{
+	//returns the side you are fighting for in the form of a string.
+	//this is used to check checking mafia's sidequest tracking, as they use these string values to indicate which side completed which quest.
+	if(get_property("auto_hippyInstead").to_boolean())
+	{
+		return "hippy";
+	}
+	else
+	{
+		return "fratboy";
+	}
+}
+
+int auto_warSideQuestsDone()
+{
+	//counts how many sidequests you have completed for the side for which you are fighting in the war.
+
+	int sidequests_done = 0;
+	
+	if(get_property("sidequestArenaCompleted") == auto_warSide())
+	{
+		sidequests_done++;
+	}
+	if(get_property("sidequestJunkyardCompleted") == auto_warSide())
+	{
+		sidequests_done++;
+	}
+	if(get_property("sidequestLighthouseCompleted") == auto_warSide())
+	{
+		sidequests_done++;
+	}
+	if(get_property("sidequestOrchardCompleted") == auto_warSide())
+	{
+		sidequests_done++;
+	}
+	if(get_property("sidequestNunsCompleted") == auto_warSide())
+	{
+		sidequests_done++;
+	}
+	if(get_property("sidequestFarmCompleted") == auto_warSide())
+	{
+		sidequests_done++;
+	}
+	
+	return sidequests_done;
+}
+
+int auto_warEnemiesRemaining()
+{
+	//how many enemies do you have left to defeat in the fratboy-hippy war
+	
+	int enemiesRemaining = 1000;
+	if(auto_my_path() == "Pocket Familiars")
+	{
+		//Pokefam only has 500 total to defeat with all 6 sidequests immediately accessible.
+		//TODO: find out if pokefam starts with 500 enemies defeated out of 1000 total. or 0 defeated out of 500 total
+		//current code assumes it starts with 0 defeated out of 500 total. this is a guess.
+		if(auto_warSide() == "hippy")
+		{
+			enemiesRemaining = 500 - get_property("fratboysDefeated").to_int();
+		}
+		else
+		{
+			enemiesRemaining = 500 - get_property("hippiesDefeated").to_int();
+		}
+	}
+	else
+	{
+		if(auto_warSide() == "hippy")
+		{
+			enemiesRemaining = 1000 - get_property("fratboysDefeated").to_int();
+		}
+		else
+		{
+			enemiesRemaining = 1000 - get_property("hippiesDefeated").to_int();
+		}
+	}
+	return enemiesRemaining;
+}
+
+int auto_warKillsPerBattle()
+{
+	//returns how many enemies you will kill per battle at hippy-fratboy war at your current number of sidequests done.
+	return auto_warKillsPerBattle(auto_warSideQuestsDone());
+}
+
+int auto_warKillsPerBattle(int sidequests)
+{
+	//returns how many enemies you will kill per battle at hippy-fratboy war at a specified number of sidequests done.
+	
+	int kills = 2**sidequests;
+		
+	//Avatar of Sneaky Pete specific check
+	//TODO find correct spelling of mafia property for Rocket Launcher, I am currently guessing its spelling
+	if(get_property("peteMotorbikeCowling") == "Rocket Launcher")
+	{
+		kills += 3;
+	}
+	
+	//License to Adventure Path specific check
+	//TODO add it. it deals +3 kills per battle
+	
+	return kills;
+}
+
+int auto_warTotalBattles(int plan, int remaining)
+{
+    // |plan| is a 6-bit bitmask where the lowest bit is a 1
+    // if we finish the first quest, etc.
+ 
+    // E.g. 39 is (32+0+0+4+2+1), meaning we are planning
+    // to finish quests 1, 2, 3, 6.
+ 
+    int total_battles = 0;
+    int completed_quests = 0;
+ 
+    void fightUntilRemaining(int target_remaining)
+    {
+        int to_kill = max(0, remaining-target_remaining);
+        int kills_per_battle = auto_warKillsPerBattle(completed_quests);
+        int battles = ceil(to_kill.to_float()/kills_per_battle);
+ 
+        total_battles += battles;
+        remaining -= battles * kills_per_battle;
+    }
+ 
+    // 3 quests are accessible simultaneously.
+    completed_quests += plan&1;
+    completed_quests += (plan>>1)&1;
+    completed_quests += (plan>>2)&1;
+ 
+    fightUntilRemaining(1000-64);
+ 
+    // Mark newly accessible quest completed, fight until next quest is available.
+    completed_quests += (plan>>3)&1;
+    fightUntilRemaining(1000-192);
+ 
+    completed_quests += (plan>>4)&1;
+    fightUntilRemaining(1000-458);
+ 
+    completed_quests += (plan>>5)&1;
+    fightUntilRemaining(0);
+ 
+    return total_battles;
+}
+ 
+int auto_warTotalBattles(int plan)
+{
+    return auto_warTotalBattles(plan, auto_warEnemiesRemaining());
+}
+
 boolean warOutfit(boolean immediate)
 {
 	boolean reallyWarOutfit(string toWear)
@@ -246,17 +398,18 @@ boolean L12_preOutfit()
 		}
 	}
 
+	boolean adventure_status = false;
 	// fighting for fratboys, adventure in hippy camp for [filthy hippy disguise] outfit to then adventure in frat house for frat war outfit
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
 		auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
 		if(internalQuestStatus("questL12War") == -1)
 		{
-			autoAdv(1, $location[Hippy Camp]);
+			adventure_status = autoAdv(1, $location[Hippy Camp]);
 		}
 		else
 		{
-			autoAdv(1, $location[Wartime Hippy Camp]);
+			adventure_status = autoAdv(1, $location[Wartime Hippy Camp]);
 		}
 	}
 	// fighting for hippies, adventure in orcish frat house for [frat boy ensemble] outfit to then adventure in hippy camp for hippy war outfit
@@ -265,15 +418,23 @@ boolean L12_preOutfit()
 		auto_log_info("Trying to acquire a frat boy ensemble", "blue");
 		if(internalQuestStatus("questL12War") == -1)
 		{
-			autoAdv(1, $location[Frat House]);
+			adventure_status = autoAdv(1, $location[Frat House]);
 		}
 		else
 		{
-			autoAdv(1, $location[Wartime Frat House]);
+			adventure_status = autoAdv(1, $location[Wartime Frat House]);
 		}
 	}
-	
-	return true;	//the above ifs cover all possibilities so we had to have adventured somewhere just now. either frat house or hippy camp
+	// We check the adventure status to avoid an infinite loop if we can't access any of these zones.
+	if(adventure_status)
+	{
+		return true;
+	}
+	else
+	{
+		auto_log_critical("Please report this. L12 war pre outfit acquisition mysteriously failed... skipping", "red");
+		return false;
+	}
 }
 
 boolean L12_startWar()
@@ -1288,6 +1449,200 @@ boolean L12_themtharHills()
 	}
 	handleFamiliar("item");
 	return true;
+}
+
+boolean L12_farm()
+{
+	if(get_property("auto_skipL12Farm").to_boolean())
+	{
+		return false;
+	}
+	if(get_property("sidequestFarmCompleted") != "none")
+	{
+		set_property("auto_skipL12Farm", "true");
+		return false;
+	}
+	if(internalQuestStatus("questL12War") != 1)
+	{
+		return false;
+	}
+	
+	//TODO verify this code works with pocket familiar as is. it might not due to weirdness in pokefam war handling.
+	if(auto_warSide() == "fratboy" && get_property("hippiesDefeated").to_int() < 458)
+	{
+		return false;
+	}
+	
+	//calculate if farm is worth doing.
+	int adv_needed = 40;
+	if(get_property("chaosButterflyThrown").to_boolean())
+	{
+		adv_needed -= 15;
+	}
+	//TODO does this count account for free fights in those zones? needs testing
+	adv_needed -= $location[McMillicancuddy's Barn].turns_spent;
+	adv_needed -= $location[McMillicancuddy's Pond].turns_spent;
+	adv_needed -= $location[McMillicancuddy's Back 40].turns_spent;
+	adv_needed -= $location[McMillicancuddy's Other Back 40].turns_spent;
+	
+
+	//adventures saved calculation.
+	int adv_saved = 0;
+	if(auto_my_path() == "Pocket Familiars")
+	{
+		//Pokefam starts with all 6 sidequests accessible to both sides, although arena and junkyard are impossible to complete
+		//calculation is simpler as you do not have to account for turns spent unlocking sidequests.
+		
+		adv_saved = ceil(auto_warEnemiesRemaining().to_float() / auto_warKillsPerBattle()) - ceil(auto_warEnemiesRemaining().to_float() / auto_warKillsPerBattle(auto_warSideQuestsDone()+1));
+	}
+	else
+	{
+		if(auto_warSide() == "hippy")
+		{
+			//hippies save 24 adv on a perfectly implemented flyering & all other sidequests done.
+			//currently they don't flyer at all. if they do all sidequests except arena and farm, then farm saves 32 adv, and costs 25.
+			//currently assuming worse case for hippies. TODO account for cases where other sidequests are skipped.
+			//fixing hippy flyering requires doing the war much sooner than it is currently done.
+			//if fixed you will lose 1 adv on doing the farm but gain early access to potentially useful food via the farm. So maybe do it anyways?
+			//are there paths in which nuns or orchard are unavailable? in such a path the savings for hippies are higher.
+			//TODO account for skipping nuns due to not having enough +meat
+			
+			adv_saved = 32;
+		}
+		else
+		{
+			//farm is the last sidequest to unlock for fratboys, with all sidequests unlcoked the calculation is simple
+			
+			adv_saved = ceil(auto_warEnemiesRemaining().to_float() / auto_warKillsPerBattle()) - ceil(auto_warEnemiesRemaining().to_float() / auto_warKillsPerBattle(auto_warSideQuestsDone()+1));
+		}
+	}
+	
+	//is it worth it to farm a chaos butterfly?
+	if(!get_property("chaosButterflyThrown").to_boolean() && item_amount($item[chaos butterfly]) == 0)
+	{
+		//softcore pull?
+		if(!in_hardcore() && adv_saved > adv_needed-15)
+		{
+			if(pullXWhenHaveY($item[chaos butterfly], 1, 0))
+			{
+				return true;
+			}
+		}
+		
+		//4 enemies in [The Castle in the Clouds in the Sky (Ground Floor)] mean there is a 25% chance to encounter the one we want.
+		//roughly estimate 4 turns per possibility giant encounter. at base drop this means ~20 adv needed.
+		if(is100FamiliarRun())
+		{
+			addToMaximize("200 item drop");
+		}
+		else
+		{
+			addToMaximize("200 item drop, switch Baby Gravy Fairy, switch Jumpsuited Hound Dog");
+		}
+		float expectedItemDropMulti = 1 + simValue("Item Drop")/100;
+		int adv_to_get_butterfly = ceil(20 / expectedItemDropMulti);
+		if(adv_saved > (adv_needed + adv_to_get_butterfly))
+		{
+			if(autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]))
+			{
+				return true;
+			}
+			else
+			{
+				auto_log_warning("For some reason failed to adventure in [The Castle in the Clouds in the Sky (Ground Floor)] for a [chaos butterfly]... skipping", "red");
+			}
+		}
+	}
+	
+	//if you just now acquired [chaos butterfly] and don't have anywhere to use it other than the barn or the war then use it in barn
+	//also contain code to account for being unable to use it for some reason
+	if(!get_property("chaosButterflyThrown").to_boolean() && item_amount($item[chaos butterfly]) > 0 && auto_my_path() != "Pocket Familiars")
+	{
+		if($location[McMillicancuddy's Barn].turns_spent > 0)
+		{
+			auto_log_warning("I seem to have spent turns in [McMillicancuddy's Barn] without using the [chaos butterfly] which I have. Something is not right...", "red");
+		}
+		else if(adv_saved > adv_needed-15)
+		{
+			auto_log_warning("Looks like I should use the [chaos butterfly] in [McMillicancuddy's Barn]", "blue");
+			if(autoAdv(1, $location[McMillicancuddy's Barn]))
+			{
+				return true;
+			}
+		}		
+	}
+	
+	//final check and then we can start doing the farm
+	if(adv_saved > adv_needed)
+	{
+		auto_log_info("Save McMillicancuddy's Farm from the Dooks", "blue");
+		set_property("choiceAdventure147", "3");	//open the pond
+		set_property("choiceAdventure148", "1");	//open the back 40
+		set_property("choiceAdventure149", "2");	//open the other back 40
+		
+		//there is no mafia tracking for stages of this sidequest
+		//because of free fights we can't rely on adventures spent count to see if a zone is clear
+		//instead we use the internal property auto_L12FarmStage to determine at what stage we are
+		
+		if(get_property("auto_L12FarmStage").to_int() == 0)
+		{
+			if(autoAdv(1, $location[McMillicancuddy's Barn]))
+			{
+				return true;
+			}
+			else
+			{
+				set_property("auto_L12FarmStage", "1");
+			}
+		}
+		if(get_property("auto_L12FarmStage").to_int() == 1)
+		{
+			if(autoAdv(1, $location[McMillicancuddy's Pond]))
+			{
+				return true;
+			}
+			else
+			{
+				set_property("auto_L12FarmStage", "2");
+			}
+		}
+		if(get_property("auto_L12FarmStage").to_int() == 2)
+		{
+			if(autoAdv(1, $location[McMillicancuddy's Back 40]))
+			{
+				return true;
+			}
+			else
+			{
+				set_property("auto_L12FarmStage", "3");
+			}
+		}
+		if(get_property("auto_L12FarmStage").to_int() == 3)
+		{
+			if(autoAdv(1, $location[McMillicancuddy's Other Back 40]))
+			{
+				return true;
+			}
+			else
+			{
+				set_property("auto_L12FarmStage", "4");
+			}
+		}
+		if(get_property("auto_L12FarmStage").to_int() == 4)
+		{
+			warOutfit(true);
+			visit_url("bigisland.php?place=farm&action=farmer&pwd");
+			if(get_property("sidequestFarmCompleted") != "none")
+			{
+				return true;
+			}
+			else
+			{
+				abort("Failed to turn in L12 Farm sidequest. please finish it manually and run me again");
+			}
+		}
+	}
+	return false;
 }
 
 boolean L12_clearBattlefield()

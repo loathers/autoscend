@@ -113,18 +113,31 @@ boolean L11_unlockEd();
 boolean L11_defeatEd();
 boolean L11_getBeehive();
 boolean L11_fistDocuments();
-boolean L12_lastDitchFlyer();
-boolean L12_flyerBackup();
-boolean L12_flyerFinish();
-boolean L12_preOutfit();
-boolean L12_getOutfit();
-boolean L12_startWar();
-boolean L12_filthworms();
-boolean L12_sonofaBeach();
-boolean L12_sonofaFinish();
-boolean L12_gremlins();
-boolean L12_orchardFinalize();
-boolean L12_finalizeWar();
+string auto_warSide();										//Defined in autoscend/auto_quest_level_12.ash
+int auto_warSideQuestsDone();								//Defined in autoscend/auto_quest_level_12.ash
+int auto_warEnemiesRemaining();								//Defined in autoscend/auto_quest_level_12.ash
+int auto_warKillsPerBattle();								//Defined in autoscend/auto_quest_level_12.ash
+int auto_warKillsPerBattle(int sidequests);					//Defined in autoscend/auto_quest_level_12.ash
+int auto_warTotalBattles(int plan, int remaining);			//Defined in autoscend/auto_quest_level_12.ash
+int auto_warTotalBattles(int plan);							//Defined in autoscend/auto_quest_level_12.ash
+boolean warAdventure();										//Defined in autoscend/auto_quest_level_12.ash
+boolean haveWarOutfit();									//Defined in autoscend/auto_quest_level_12.ash
+boolean warOutfit();										//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_sonofaPrefix();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_themtharHills();								//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_farm();											//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_lastDitchFlyer();								//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_flyerBackup();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_flyerFinish();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_preOutfit();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_getOutfit();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_startWar();										//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_filthworms();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_sonofaBeach();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_sonofaFinish();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_gremlins();										//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_orchardFinalize();								//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_finalizeWar();									//Defined in autoscend/auto_quest_level_12.ash
 boolean L13_powerLevel();
 boolean L13_sorceressDoor();
 boolean L13_towerNSContests();
@@ -267,7 +280,6 @@ boolean useCocoon();
 
 
 //Large pile dump.
-boolean L12_sonofaPrefix();									//Defined in autoscend.ash
 boolean L9_ed_chasmBuildClover(int need);					//Defined in autoscend/auto_edTheUndying.ash
 boolean L9_ed_chasmStart();									//Defined in autoscend/auto_edTheUndying.ash
 boolean LM_boris();											//Defined in autoscend/auto_boris.ash
@@ -526,7 +538,6 @@ int doNumberology(string goal, boolean doIt);				//Defined in autoscend/auto_uti
 int doNumberology(string goal, boolean doIt, string option);//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, string option);				//Defined in autoscend/auto_util.ash
 boolean doTasks();											//Defined in autoscend.ash
-boolean L12_themtharHills();									//Defined in autoscend.ash
 boolean isSpeakeasyDrink(item drink); //Defined in autoscend/auto_clan.ash
 boolean canDrinkSpeakeasyDrink(item drink); //Defined in autoscend/auto_clan.ash
 boolean drinkSpeakeasyDrink(item drink);					//Defined in autoscend/auto_clan.ash
@@ -940,9 +951,6 @@ int whitePixelCount();										//Defined in autoscend/auto_util.ash
 boolean careAboutDrops(monster mon);						//Defined in autoscend/auto_util.ash
 boolean volcano_bunkerJob();								//Defined in autoscend/auto_elementalPlanes.ash
 boolean volcano_lavaDogs();									//Defined in autoscend/auto_elementalPlanes.ash
-boolean warAdventure();										//Defined in autoscend.ash
-boolean haveWarOutfit();									//Defined in autoscend.ash
-boolean warOutfit();										//Defined in autoscend.ash
 item whatHiMein();											//Defined in autoscend/auto_util.ash
 effect whatStatSmile();										//Defined in autoscend/auto_util.ash
 void woods_questStart();									//Defined in autoscend/auto_util.ash
