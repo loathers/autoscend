@@ -8,7 +8,7 @@ boolean L4_batCave()
 	}
 
 	auto_log_info("In the bat hole!", "blue");
-	visit_url("place.php?whichplace=bathole"); // ensure quest status is updated.
+
 	if(considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
@@ -33,7 +33,7 @@ boolean L4_batCave()
 	{
 		if (item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2 && !isActuallyEd())
 		{
-			autoAdv(1, $location[The Beanbat Chamber]);
+			autoAdv($location[The Beanbat Chamber]);
 			return true;
 		}
 		council();
@@ -51,7 +51,7 @@ boolean L4_batCave()
 		addToMaximize("10meat");
 		int batskinBelt = item_amount($item[Batskin Belt]);
 		auto_change_mcd(4); // get the pants from the Boss Bat.
-		autoAdv(1, $location[The Boss Bat\'s Lair]);
+		autoAdv($location[The Boss Bat\'s Lair]);
 		# DIGIMON remove once mafia tracks this
 		if(item_amount($item[Batskin Belt]) != batskinBelt)
 		{
@@ -64,16 +64,16 @@ boolean L4_batCave()
 		bat_formBats();
 		if (item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2 && !isActuallyEd())
 		{
-			autoAdv(1, $location[The Beanbat Chamber]);
+			autoAdv($location[The Beanbat Chamber]);
 			return true;
 		}
-		autoAdv(1, $location[The Batrat and Ratbat Burrow]);
+		autoAdv($location[The Batrat and Ratbat Burrow]);
 		return true;
 	}
 	if(batStatus >= 1)
 	{
 		bat_formBats();
-		autoAdv(1, $location[The Batrat and Ratbat Burrow]);
+		autoAdv($location[The Batrat and Ratbat Burrow]);
 		return true;
 	}
 
@@ -95,6 +95,6 @@ boolean L4_batCave()
 	}
 
 	bat_formBats();
-	autoAdv(1, $location[Guano Junction]);
+	autoAdv($location[Guano Junction]);
 	return true;
 }

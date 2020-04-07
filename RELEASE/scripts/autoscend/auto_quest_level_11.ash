@@ -1825,9 +1825,8 @@ boolean L11_talismanOfNam()
 
 boolean L11_palindome()
 {
-	if (!possessEquipment($item[Talisman O\' Namsilat]) || internalQuestStatus("questL11Palindome") > 5)
+	if (internalQuestStatus("questL11Palindome") < 0 || internalQuestStatus("questL11Palindome") > 5)
 	{
-		// mafia doesn't set questL11Palindome to started until you adventure in the Palindome
 		return false;
 	}
 
