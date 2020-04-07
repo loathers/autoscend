@@ -1509,7 +1509,11 @@ boolean L11_mauriceSpookyraven()
 			buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
 		}
 		
-		//unstable fulminate is being forcibly equipped in auto_pre_adv.ash
+		if(!autoForceEquip($slot[off-hand], $item[Unstable Fulminate]))
+		{
+			abort("Unstable Fulminate was not equipped. Please report this and include the following: Equipped items and if you have or don't have an Unstable Fulminate. For now, get the wine bomb manually, and run again.");
+		}
+		
 		auto_log_info("Now we mix and heat it up.", "blue");
 		return autoAdv(1, $location[The Haunted Boiler Room]);	
 	}

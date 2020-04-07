@@ -308,9 +308,14 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to charge a WineBomb but don't have one.");
 		}
-		if(!autoForceEquip($slot[off-hand], $item[Unstable Fulminate]))
+		if(equipped_amount($item[Unstable Fulminate]) == 0)
 		{
-			abort("Tried to adventure in [The Haunted Boiler Room] without an [Unstable Fulminate]");
+			auto_log_warning("Tried to adventure in [The Haunted Boiler Room] without an [Unstable Fulminate]... correcting", "red");
+			autoForceEquip($slot[off-hand], $item[Unstable Fulminate]);
+			if(equipped_amount($item[Unstable Fulminate]) == 0)
+			{
+				abort("Correction failed, please report this. Manually get the [wine bomb] then run me again");
+			}
 		}
 	}
 
