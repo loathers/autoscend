@@ -65,12 +65,23 @@ boolean autoEquip(item it)
 
 // specifically intended for forcing something in to a specific slot,
 // instead of just forcing it to be equipped in general
-// made for Antique Machete, mainly
+// mostly for the Antique Machete and unstable fulminate
 boolean autoForceEquip(slot s, item it)
 {
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
 		return false;
+	}
+	if($slot[off-hand] == s)
+	{
+		if (weapon_hands(equipped_item($slot[weapon])) > 1)
+		{
+			removeFromMaximize("+equip " + equipped_item($slot[weapon]));
+			equip($slot[weapon], $item[none]);
+		}
+		removeFromMaximize("-equip " + it);
+		addToMaximize("-off-hand, 1hand");
+		return equip($slot[off-hand], it);
 	}
 	if(equip(s, it))
 	{
