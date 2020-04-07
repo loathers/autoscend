@@ -250,7 +250,7 @@ boolean L12_preOutfit()
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
 		auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
-		if(internalQuestStatus("questL12War") > -1)
+		if(internalQuestStatus("questL12War") == -1)
 		{
 			autoAdv(1, $location[Hippy Camp]);
 		}
@@ -263,7 +263,7 @@ boolean L12_preOutfit()
 	else
 	{
 		auto_log_info("Trying to acquire a frat boy ensemble", "blue");
-		if(internalQuestStatus("questL12War") > -1)
+		if(internalQuestStatus("questL12War") == -1)
 		{
 			autoAdv(1, $location[Frat House]);
 		}
