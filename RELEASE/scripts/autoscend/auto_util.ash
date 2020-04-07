@@ -2923,9 +2923,10 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		auto_powerfulGloveNoncombat();
 	}
 
-	// TODO: And we have >400 coins. Or some cutoff.
+	//blooper ink costs 15 coins without which it will error when trying to buy it, so that is the bare minimum we need to check for
+	//However we don't want to waste our early coins on it as they are precious. So require at least 400 coins before buying it.
 	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt) &&
-	   my_class() == $class[Plumber] && 0 == have_effect($effect[Blooper Inked]))
+	   my_class() == $class[Plumber] && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400)
 	{
 		retrieve_item(1, $item[blooper ink]);
 		buffMaintain($effect[Blooper Inked], 0, 1, 1);

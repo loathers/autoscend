@@ -2170,18 +2170,6 @@ boolean doBedtime()
 		}
 		if((my_inebriety() <= inebriety_limit()) && (my_rain() >= 50) && (my_adventures() >= 1))
 		{
-			if(item_amount($item[beer helmet]) == 0)
-			{
-				auto_log_info("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
-				if(canYellowRay())
-				{
-					auto_log_info("Make sure to Ball Lightning the spy!!", "red");
-				}
-			}
-			else
-			{
-				auto_log_info("If you have the Frat Warrior Fatigues, rain man an Astronomer? Skinflute?", "blue");
-			}
 			auto_log_info("You have a rain man to cast, please do so before overdrinking and then run me again.", "red");
 			return false;
 		}

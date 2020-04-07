@@ -265,6 +265,10 @@ zelda_buyable zelda_nextBuyable()
 	{
 		return zelda_buyableItem($item[bony back shell]);
 	}
+	else if (!possessEquipment($item[bonfire flower]))
+	{
+		return zelda_buyableItem($item[bonfire flower]);
+	}
 
 	zelda_buyable nothing;
 	return nothing;
