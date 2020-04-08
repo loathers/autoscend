@@ -72,13 +72,6 @@ boolean L10_airship()
 		buffMaintain($effect[Gummed Shoes], 0, 1, 1);
 	}
 
-	if (isActuallyEd() && $location[The Penultimate Fantasy Airship].turns_spent < 1)
-	{
-		// temp workaround for mafia bug.
-		// see https://kolmafia.us/showthread.php?24767-Quest-tracking-preferences-change-request(s)&p=156733&viewfull=1#post156733
-		visit_url("place.php?whichplace=beanstalk");
-	}
-
 	autoAdv(1, $location[The Penultimate Fantasy Airship]);
 	handleFamiliar("item");
 	return true;

@@ -25,10 +25,10 @@ any	15	auto_floundryChoice	string	Force floundry usage. Must use the item name (
 any	16	auto_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
 any	17	auto_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
 any	18	auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
-any	19	auto_blacklistFamiliar	string	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
+any	19	auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
 any	20	auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
-any	21	auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
-any	22	auto_limitConsume	boolean	When false, will not eat or drink anything automatically.
+any	21	auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
+any	22	auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
 any	23	auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
 any	24	auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
 any	25	auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.

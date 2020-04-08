@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19953; // Detect when a fight follows a choice. WHen automating with adv1 or adventure, automate that fight.
+since r19979; // If you can recover HP or MP with a restorative, it is not banned in your path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

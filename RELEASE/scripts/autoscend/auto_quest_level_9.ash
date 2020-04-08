@@ -235,7 +235,7 @@ boolean L9_aBooPeak()
 		return false;
 	}
 	
-	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire1.gif"))
+	if (get_property("booPeakLit").to_boolean())
 	{
 		return false;
 	}
@@ -538,12 +538,7 @@ boolean L9_twinPeak()
 		return false;
 	}
 
-	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire2.gif"))
-	{
-		return false;
-	}
-
-	if(get_property("twinPeakProgress").to_int() >= 15)
+	if (get_property("twinPeakProgress").to_int() >= 15)
 	{
 		return false;
 	}
@@ -767,7 +762,7 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	if(contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
+	if (get_property("oilPeakLit").to_boolean())
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean needJar = ((oilProgress & 4) == 0);
@@ -877,8 +872,9 @@ boolean L9_highLandlord()
 		return false;
 	}
 
-	if (internalQuestStatus("questL09Topping") < 2)
+	if (internalQuestStatus("questL09Topping") == 1)
 	{
+		auto_log_info("Visiting the Highland Lord's tower <ominous music plays>", "blue");
 		visit_url("place.php?whichplace=highlands&action=highlands_dude");
 		set_property("auto_grimstoneFancyOilPainting", false);
 		return true;
@@ -888,10 +884,9 @@ boolean L9_highLandlord()
 	if(L9_aBooPeak())			return true;
 	if(L9_oilPeak())			return true;
 
-	buffer peaks = visit_url("place.php?whichplace=highlands");
-	if (peaks.contains_text("fire1.gif") && peaks.contains_text("fire2.gif") && peaks.contains_text("fire3.gif"))
+	if (internalQuestStatus("questL09Topping") == 3)
 	{
-		auto_log_info("Highlord Done", "blue");
+		auto_log_info("Aw, sweet, dude! You totally lit all the signal fires!", "blue");
 		visit_url("place.php?whichplace=highlands&action=highlands_dude");
 		council();
 		return true;

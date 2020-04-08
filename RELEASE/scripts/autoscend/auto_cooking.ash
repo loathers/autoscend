@@ -413,7 +413,7 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 
 boolean consumeMilkOfMagnesiumIfUnused()
 {
-	if(get_property("_milkOfMagnesiumUsed").to_boolean())
+	if(get_property("_milkOfMagnesiumUsed").to_boolean() || item_amount($item[Milk Of Magnesium]) < 1)
 	{
 		return false;
 	}

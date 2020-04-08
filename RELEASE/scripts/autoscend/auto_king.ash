@@ -153,7 +153,6 @@ void handleKingLiberation()
 	{
 		restoreSetting("kingLiberatedScript");
 		restoreSetting("afterAdventureScript");
-		restoreSetting("betweenAdventureScript");
 		restoreSetting("betweenBattleScript");
 		restoreSetting("counterScript");
 	}
