@@ -46,9 +46,6 @@ void ed_initializeSettings()
 		set_property("auto_edCombatRoundCount", 0);
 
 		set_property("choiceAdventure1002", 1);
-		remove_property("choiceAdventure1023");
-		remove_property("choiceAdventure1024");
-		set_property("edDefeatAbort", "4"); // we have to set this stupidly high to stop mafia interrupting us.
 		set_property("desertExploration", 100);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
 		set_property("auto_delayHauntedKitchen", true);
@@ -68,6 +65,11 @@ void ed_initializeSession()
 			set_property("hpAutoRecovery", 0.0);
 			set_property("hpAutoRecoveryTarget", 0.1);
 		}
+		// the following settings will affect combat automation
+		// see auto_choice_adv.ash for where and how they are used.
+		backupSetting("choiceAdventure1023", "");
+		backupSetting("choiceAdventure1024", "");
+		backupSetting("edDefeatAbort", "3");
 	}
 }
 

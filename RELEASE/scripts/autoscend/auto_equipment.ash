@@ -561,35 +561,7 @@ boolean handleBjornify(familiar fam)
 
 void equipBaseline()
 {
-	if(my_daycount() == 1)
-	{
-		if(have_familiar($familiar[grimstone golem]))
-		{
-			if(get_property("_grimFairyTaleDropsCrown").to_int() >= 1)
-			{
-				handleBjornify($familiar[El Vibrato Megadrone]);
-			}
-		}
-		else
-		{
-			handleBjornify($familiar[El Vibrato Megadrone]);
-		}
-	}
-	if(my_daycount() == 2)
-	{
-		handleBjornify($familiar[El Vibrato Megadrone]);
-	}
-
-	if(get_property("auto_diceMode").to_boolean())
-	{
-		autoEquip($slot[acc1], $item[Dice Ring]);
-		autoEquip($slot[acc2], $item[Dice Belt Buckle]);
-		autoEquip($slot[acc3], $item[Dice Sunglasses]);
-		autoEquip($slot[hat], $item[Dice-Print Do-Rag]);
-		autoEquip($slot[back], $item[Dice-Shaped Backpack]);
-		autoEquip($slot[pants], $item[Dice-Print Pajama Pants]);
-		autoEquip($slot[familiar], $item[Kill Screen]);
-	}
+	equipMaximizedGear();
 }
 
 void ensureSealClubs()
