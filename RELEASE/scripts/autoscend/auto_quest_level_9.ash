@@ -235,7 +235,7 @@ boolean L9_aBooPeak()
 		return false;
 	}
 	
-	if (get_property("booPeakLit").to_boolean())
+	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire1.gif"))
 	{
 		return false;
 	}
@@ -762,7 +762,7 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	if (get_property("oilPeakLit").to_boolean())
+	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean needJar = ((oilProgress & 4) == 0);
