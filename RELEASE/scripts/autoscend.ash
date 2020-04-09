@@ -1006,6 +1006,12 @@ boolean doVacation()
 	{
 		return false;
 	}
+	if(in_zelda())
+	{
+		autoEquip($item[work boots]);
+		//maximizer is unreliable at that location for some reason.
+		equip($item[work boots]);
+	}
 	if(my_primestat() == $stat[Muscle])
 	{
 		set_property("choiceAdventure793", "1");
