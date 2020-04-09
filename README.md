@@ -101,6 +101,8 @@ cognificent (IGN: cognificent (#2313727))
 
 gausie (IGN: gausie (#1197090))
 
+taltamir (IGN: taltamir (#2195333))
+
 ## Special Thanks
 
 This script would obviously not be possible without the work of Cheesecookie and soolar.
