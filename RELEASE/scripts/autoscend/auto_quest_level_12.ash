@@ -1590,10 +1590,7 @@ boolean L12_farm()
 			{
 				return true;
 			}
-			else
-			{
-				set_property("auto_L12FarmStage", "1");
-			}
+			set_property("auto_L12FarmStage", "1");
 		}
 		if(get_property("auto_L12FarmStage").to_int() == 1)
 		{
@@ -1601,10 +1598,7 @@ boolean L12_farm()
 			{
 				return true;
 			}
-			else
-			{
-				set_property("auto_L12FarmStage", "2");
-			}
+			set_property("auto_L12FarmStage", "2");
 		}
 		if(get_property("auto_L12FarmStage").to_int() == 2)
 		{
@@ -1612,10 +1606,7 @@ boolean L12_farm()
 			{
 				return true;
 			}
-			else
-			{
-				set_property("auto_L12FarmStage", "3");
-			}
+			set_property("auto_L12FarmStage", "3");
 		}
 		if(get_property("auto_L12FarmStage").to_int() == 3)
 		{
@@ -1623,10 +1614,7 @@ boolean L12_farm()
 			{
 				return true;
 			}
-			else
-			{
-				set_property("auto_L12FarmStage", "4");
-			}
+			set_property("auto_L12FarmStage", "4");
 		}
 		if(get_property("auto_L12FarmStage").to_int() == 4)
 		{
@@ -1636,10 +1624,7 @@ boolean L12_farm()
 			{
 				return true;
 			}
-			else
-			{
-				abort("Failed to turn in L12 Farm sidequest. please finish it manually and run me again");
-			}
+			abort("Failed to turn in L12 Farm sidequest. please finish it manually and run me again");
 		}
 	}
 	return false;
