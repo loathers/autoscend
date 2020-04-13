@@ -181,6 +181,8 @@ void initializeSettings()
 	set_property("auto_replaces", "");
 	set_property("auto_consumeKeyLimePies", true);
 	set_property("auto_skipNuns", "false");
+	set_property("auto_skipL12Farm", "false");
+	set_property("auto_L12FarmStage", "0");
 	set_property("choiceAdventure1003", 0);
 	beehiveConsider();
 
@@ -4926,7 +4928,7 @@ boolean doTasks()
 
 	if(L9_leafletQuest())				return true;
 	if(L7_crypt())						return true;
-	if(fancyOilPainting())			return true;
+	if(fancyOilPainting())				return true;
 
 	if((my_level() >= 7) && (my_daycount() != 2) && LX_freeCombats())
 	{
@@ -4935,7 +4937,7 @@ boolean doTasks()
 
 	if(L8_trapperStart())				return true;
 	if(L8_trapperGround())				return true;
-	if(L8_trapperNinjaLair())				return true;
+	if(L8_trapperNinjaLair())			return true;
 	if(L8_trapperGroar())				return true;
 	if(LX_steelOrgan())					return true;
 	if(L10_plantThatBean())				return true;
@@ -4956,7 +4958,7 @@ boolean doTasks()
 	if(L11_nostrilOfTheSerpent())		return true;
 	if(L11_unlockHiddenCity())			return true;
 	if(L11_hiddenCityZones())			return true;
-	if(ornateDowsingRod())			return true;
+	if(ornateDowsingRod())				return true;
 	if(L11_aridDesert())				return true;
 
 	if (get_property("sidequestNunsCompleted") != "none" && item_amount($item[Half A Purse]) == 1)
@@ -4975,15 +4977,16 @@ boolean doTasks()
 	if(L11_unlockEd())					return true;
 	if(L11_defeatEd())					return true;
 	if(L12_gremlins())					return true;
-	if(L12_sonofaFinish())			return true;
+	if(L12_sonofaFinish())				return true;
 	if(L12_sonofaBeach())				return true;
 	if(L12_filthworms())				return true;
-	if(L12_orchardFinalize())		return true;
-	if(L12_themtharHills())			return true;
+	if(L12_orchardFinalize())			return true;
+	if(L12_themtharHills())				return true;
+	if(L12_farm())						return true;
 	if(L11_getBeehive())				return true;
 	if(L12_finalizeWar())				return true;
 	if(LX_getDigitalKey())				return true;
-	if(LX_getStarKey())				return true;
+	if(LX_getStarKey())					return true;
 	if(L12_lastDitchFlyer())			return true;
 
 	if(!get_property("kingLiberated").to_boolean() && (my_inebriety() < inebriety_limit()) && !get_property("_gardenHarvested").to_boolean())
@@ -4995,9 +4998,9 @@ boolean doTasks()
 		}
 	}
 
-	if (L12_clearBattlefield())		return true;
-	if(LX_koeInvaderHandler())		return true;
-	if(L13_powerLevel())			return true;
+	if (L12_clearBattlefield())			return true;
+	if(LX_koeInvaderHandler())			return true;
+	if(L13_powerLevel())				return true;
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
 	if(L13_sorceressDoor())				return true;

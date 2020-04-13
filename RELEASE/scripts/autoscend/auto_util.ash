@@ -80,6 +80,7 @@ int spleen_left();
 int stomach_left();
 int fullness_left();
 int inebriety_left();
+boolean canPull(item it);
 void pullAll(item it);
 void pullAndUse(item it, int uses);
 boolean pullXWhenHaveY(item it, int howMany, int whenHave);
@@ -4313,6 +4314,47 @@ boolean in_ronin()
 	return !can_interact();
 }
 
+boolean canPull(item it)
+{
+	if(in_hardcore())
+	{
+		return false;
+	}
+	if(it == $item[none])
+	{
+		return false;
+	}
+	if(!is_unrestricted(it))
+	{
+		return false;
+	}
+	if(pulls_remaining() == 0)
+	{
+		return false;
+	}
+	
+	if(storage_amount(it) > 0)
+	{
+		return true;
+	}
+
+	int meat = my_storage_meat();
+	if(can_interact())
+	{
+		meat = max(meat, my_meat() - 5000);
+	}
+	int curPrice = auto_mall_price(it);
+	if (curPrice >= 20000)
+	{
+		return false;
+	}
+	else if (curPrice < meat)
+	{
+		return true;
+	}
+	
+	return false;
+}
 
 void pullAll(item it)
 {
