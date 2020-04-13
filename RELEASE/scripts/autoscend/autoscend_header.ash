@@ -115,9 +115,13 @@ boolean L11_getBeehive();
 boolean L11_fistDocuments();
 string auto_warSide();										//Defined in autoscend/auto_quest_level_12.ash
 int auto_warSideQuestsDone();								//Defined in autoscend/auto_quest_level_12.ash
+int auto_warSideQuestsState();								//Defined in autoscend/auto_quest_level_12.ash
 int auto_warEnemiesRemaining();								//Defined in autoscend/auto_quest_level_12.ash
 int auto_warKillsPerBattle();								//Defined in autoscend/auto_quest_level_12.ash
 int auto_warKillsPerBattle(int sidequests);					//Defined in autoscend/auto_quest_level_12.ash
+int auto_warAdvReqCB();										//Defined in autoscend/auto_quest_level_12.ash
+int auto_warAdvReqFarm();									//Defined in autoscend/auto_quest_level_12.ash
+int auto_warPlan();											//Defined in autoscend/auto_quest_level_12.ash
 int auto_warTotalBattles(int plan, int remaining);			//Defined in autoscend/auto_quest_level_12.ash
 int auto_warTotalBattles(int plan);							//Defined in autoscend/auto_quest_level_12.ash
 boolean warAdventure();										//Defined in autoscend/auto_quest_level_12.ash
@@ -125,6 +129,7 @@ boolean haveWarOutfit();									//Defined in autoscend/auto_quest_level_12.ash
 boolean warOutfit();										//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_sonofaPrefix();									//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_themtharHills();								//Defined in autoscend/auto_quest_level_12.ash
+boolean LX_chaosButterfly();								//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_farm();											//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_lastDitchFlyer();								//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_flyerBackup();									//Defined in autoscend/auto_quest_level_12.ash
@@ -891,6 +896,7 @@ float provideMysticality(int amt, boolean doEquips, boolean speculative); //Defi
 boolean provideMysticality(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
 float provideMoxie(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
 boolean provideMoxie(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+boolean canPull(item it);									//Defined in autoscend/auto_util.ash
 void pullAll(item it);										//Defined in autoscend/auto_util.ash
 void pullAndUse(item it, int uses);							//Defined in autoscend/auto_util.ash
 boolean pullXWhenHaveY(item it, int howMany, int whenHave);	//Defined in autoscend/auto_util.ash
