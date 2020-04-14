@@ -251,7 +251,7 @@ boolean auto_unreservedAdvRemaining()
 
 	// automatically calculate adv to reserve at end of day
 	// free crafting require at least 1 adventure to do.
-	// free fights require 1 adv to do, losing costs an adv. so keep 2 adv for them to avoid wasting them.
+	// To enter free fights we need at least 1 adventure remaining. Dying costs an adventure, so we reserve 2 adventures so the user can manually complete the remaining fights even if we lose.
 	// cocktailcrafting and pasta cooking require 2 adventures.
 	
 	int reserveadv = 1;
