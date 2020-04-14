@@ -226,6 +226,68 @@ void initializeSettings()
 	set_property("auto_doneInitialize", my_ascensions());
 }
 
+boolean auto_unreservedAdvRemaining()
+{
+	// Calculates if we should continue to run the main loop based on how many adv we want to keep.
+	
+	// blank int does not work properly. blank should default to -1
+	if(get_property("auto_save_adv_override") == "")
+	{
+		set_property("auto_save_adv_override", -1);
+	}
+	
+	// if auto_save_adv_override value is not -1 then use the override
+	if(get_property("auto_save_adv_override") != -1)
+	{
+		if(my_adventures() > get_property("auto_save_adv_override").to_int())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	// automatically calculate adv to reserve at end of day
+	// free crafting require at least 1 adventure to do.
+	// To enter free fights we need at least 1 adventure remaining. Dying costs an adventure, so we reserve 2 adventures so the user can manually complete the remaining fights even if we lose.
+	// cocktailcrafting and pasta cooking require 2 adventures.
+	
+	int reserveadv = 1;
+	
+	if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && auto_freeCombatsRemaining() > 0)
+	{
+		reserveadv = max(2, reserveadv);
+	}
+	
+	if(freeCrafts() < 2)
+	{
+		//smallest Pasta dish that takes 2 adv to craft is 3 fullness.
+		//Pastamastery is required for all pasta and having it alone is enough to craft foods that take 2 adv to craft
+		if(can_eat() && my_fullness()+3 <= fullness_limit() && auto_have_skill($skill[Pastamastery]))
+		{
+			reserveadv = max(2, reserveadv);
+		}
+		
+		//Advanced Cocktailcrafting skill is enough to make drinks that cost 2 adv to craft
+		//because of nightcap, there is no point in checking your inebrity limits.
+		if(can_drink() && auto_have_skill($skill[Advanced Cocktailcrafting]))
+		{
+			reserveadv = max(2, reserveadv);
+		}
+	}
+	
+	if(my_adventures() > reserveadv)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 boolean handleFamiliar(string type)
 {
 	//Can this take zoneInfo into account?
@@ -2159,7 +2221,7 @@ boolean doBedtime()
 	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
 	if((my_class() == $class[Gelatinous Noob]) || !can_drink() || out_of_blood)
 	{
-		if((my_adventures() <= 1) || (internalQuestStatus("questL13Final") >= 14))
+		if((my_adventures() <= 2) || (internalQuestStatus("questL13Final") >= 14))
 		{
 			done = true;
 		}
@@ -2710,11 +2772,56 @@ boolean LX_getDigitalKey()
 	return true;
 }
 
+int auto_freeCombatsRemaining()
+{
+	int count = 0;
+	
+	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && !is100FamiliarRun())
+	{
+		count += 5-get_property("_machineTunnelsAdv").to_int();
+	}
+	if(snojoFightAvailable())
+	{
+		count += 10-get_property("_snojoFreeFights").to_int();
+	}
+	if(auto_have_familiar($familiar[God Lobster]) && !is100FamiliarRun())
+	{
+		count += 3-get_property("_godLobsterFights").to_int();
+	}
+	if(neverendingPartyAvailable())
+	{
+		count += 10-get_property("_neverendingPartyFreeTurns").to_int();
+	}
+	if(get_property("_eldritchTentacleFought").to_boolean() == false)
+	{
+		count++;
+	}
+	if(auto_have_skill($skill[Evoke Eldritch Horror]) && get_property("_eldritchHorrorEvoked").to_boolean() == false)
+	{
+		count++;
+	}
+	
+	return count;
+}
+
 boolean LX_freeCombats()
 {
 	if(my_inebriety() > inebriety_limit())
 	{
 		return false;
+	}
+	
+	if(my_adventures() == 0)
+	{
+		auto_log_warning("Could not use free combats because you are out of adventures", "red");
+		return false;
+	}
+	
+	if(my_adventures() < 2)
+	{
+		auto_log_warning("Too few adventures to safely automate free combats.", "red");
+		auto_log_warning("If we lose your last adv on a free combat the remaining free combats are wasted.", "red");
+		abort("Please perform the remaining free combats manually.");
 	}
 
 	if((auto_my_path() != "Disguises Delimit") && neverendingPartyCombat())
@@ -2722,7 +2829,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && !is100FamiliarRun())
+	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && !is100FamiliarRun())
 	{
 		if(get_property("auto_choice1119") != "")
 		{
@@ -2751,7 +2858,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(snojoFightAvailable() && (my_adventures() > 0))
+	if(snojoFightAvailable())
 	{
 		handleFamiliar($familiar[Ms. Puck Man]);
 		autoAdv(1, $location[The X-32-F Combat Training Snowman]);
@@ -5146,7 +5253,9 @@ void auto_begin()
 		use_familiar($familiar[none]);
 	}
 	dailyEvents();
-	while((my_adventures() > 1) && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
+	
+	// the main loop of autoscend is doTasks() which is actually called as part of the while.
+	while(auto_unreservedAdvRemaining() && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
 	{
 		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
 		{
