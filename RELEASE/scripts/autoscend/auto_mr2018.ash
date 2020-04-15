@@ -287,8 +287,8 @@ boolean fantasyRealmToken()
 		}
 	}
 
-	// If we're not allowed to adventure without a familiar
-	if(forbidFamChange() && auto_have_familiar($familiar[Mosquito]))
+	// If we're not allowed to adventure without a familiar due to being in a 100% familiar run.
+	if(is100FamRun())
 	{
 		return false;
 	}
