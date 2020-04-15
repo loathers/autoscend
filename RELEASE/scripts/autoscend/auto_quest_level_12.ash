@@ -50,8 +50,7 @@ int auto_warSideQuestsDone()
 
 WarPlan auto_warSideQuestsState()
 {
-	// returns a bitwise indicating current completion state of the war sidequests.
-	// The first quest is bit 0, the 6th quest is bit 5
+	// Returns a record indicating current completion state of the war sidequests.
 
 	WarPlan ret;
 	ret.do_arena = get_property("sidequestArenaCompleted") == auto_warSide();
@@ -65,7 +64,7 @@ WarPlan auto_warSideQuestsState()
 
 int auto_warEnemiesRemaining()
 {
-	//how many enemies do you have left to defeat in the fratboy-hippy war
+	// Returns the number of enemies left to defeat in the fratboy-hippy war.
 	
 	int enemiesRemaining = 1000;
 	if(auto_my_path() == "Pocket Familiars")
@@ -98,18 +97,18 @@ int auto_warEnemiesRemaining()
 
 int auto_warKillsPerBattle()
 {
-	//returns how many enemies you will kill per battle at hippy-fratboy war at your current number of sidequests done.
+	// returns how many enemies you will kill per battle at hippy-fratboy war at your current number of sidequests done.
 	return auto_warKillsPerBattle(auto_warSideQuestsDone());
 }
 
 int auto_warKillsPerBattle(int sidequests)
 {
-	//returns how many enemies you will kill per battle at hippy-fratboy war at a specified number of sidequests done.
+	// returns how many enemies you will kill per battle at hippy-fratboy war at a specified number of sidequests done.
 	
 	int kills = 2**sidequests;
 		
-	//Avatar of Sneaky Pete specific check
-	//TODO find correct spelling of mafia property for Rocket Launcher, I am currently guessing its spelling
+	// Avatar of Sneaky Pete has a motorbike mod that gives +3 kills/battle.
+	// TODO find correct spelling of mafia property for Rocket Launcher, I am currently guessing its spelling
 	if(get_property("peteMotorbikeCowling") == "Rocket Launcher")
 	{
 		kills += 3;
@@ -123,7 +122,7 @@ int auto_warKillsPerBattle(int sidequests)
 
 int auto_warAdvReqCB()
 {
-	//how many adventures should it take to acquire a chaos butterfly
+	// Returns an ESTIMATE of how manny adventures it will take to acquire a chaos butterfly.
 	
 	if(get_property("chaosButterflyThrown").to_boolean() || item_amount($item[chaos butterfly]) > 0)
 	{
