@@ -132,15 +132,33 @@ int auto_estimatedAdventuresForChaosButterfly()
 	{
 		return 0;
 	}
-	//4 enemies in [The Castle in the Clouds in the Sky (Ground Floor)] ~25% chance to encounter the one we want.
-	//roughly estimate 4 turns per possibility giant encounter. at base drop this means ~20 adv needed.
+	// 4 enemies in [The Castle in the Clouds in the Sky (Ground Floor)] ~25% chance to encounter the one we want.
+	// roughly estimate 4 turns per possibility giant encounter. at base drop this means ~20 adv needed.
+	int expected_turns_until_fight = 4;
 	if(canYellowRay())
 	{
-		return 4;
+		return expected_turns_until_fight;
 	}
-	
-	float expectedItemDropMulti = 1 + simValue("Item Drop")/100;
-	return 4*ceil(20.0 / expectedItemDropMulti);
+
+	// This function is called frequently (especially by auto_bestWarPlan), so
+	// to avoid adding a maximizer call to every single adventure at the war
+	// sidequests, estimate this value the first time this function is called
+	// during each execution of the script.
+
+	static float expectedItemDropMulti;
+	static {
+		auto_log_info("Estimating adventures needed to obtain chaos butterfly.", "green");
+		handleFamiliar("item");
+		simMaximizeWith("20 item");
+		expectedItemDropMulti = 1 + simValue("Item Drop")/100;
+	}
+
+	float butterfly_drop_rate = 0.2;
+	float expected_fights_until_drop = max(1.0, 1.0/(expectedItemDropMulti * butterfly_drop_rate));
+
+	int ret = ceil(expected_turns_until_fight * expected_fights_until_drop);
+	auto_log_info("I estimate it will take " + ret + " fights for a chaos butterfly to drop.", "green");
+	return ret;
 }
 
 int auto_estimatedAdventuresForDooks()
@@ -1539,8 +1557,6 @@ boolean L12_themtharHills()
 		addToMaximize("200meat drop,switch Hobo Monkey,switch rockin' robin,switch adventurous spelunker,switch Grimstone Golem,switch Fist Turkey,switch Unconscious Collective,switch Golden Monkey,switch Angry Jung Man,switch Leprechaun,switch cat burglar");
 		handleFamiliar(my_familiar());
 	}
-	int expectedMeat = simValue("Meat Drop");
-
 
 	if(get_property("auto_useWishes").to_boolean())
 	{
