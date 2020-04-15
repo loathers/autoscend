@@ -56,15 +56,6 @@ void ed_initializeSession()
 {
 	if (isActuallyEd())
 	{
-		if(get_property("hpAutoRecoveryItems") != "linen bandages")
-		{
-			set_property("auto_hpAutoRecoveryItems", get_property("hpAutoRecoveryItems"));
-			set_property("auto_hpAutoRecovery", get_property("hpAutoRecovery"));
-			set_property("auto_hpAutoRecoveryTarget", get_property("hpAutoRecoveryTarget"));
-			set_property("hpAutoRecoveryItems", "linen bandages");
-			set_property("hpAutoRecovery", 0.0);
-			set_property("hpAutoRecoveryTarget", 0.1);
-		}
 		// the following settings will affect combat automation
 		// see auto_choice_adv.ash for where and how they are used.
 		backupSetting("choiceAdventure1023", "");
@@ -77,15 +68,7 @@ void ed_terminateSession()
 {
 	if (isActuallyEd())
 	{
-		if(get_property("hpAutoRecoveryItems") == "linen bandages")
-		{
-			set_property("hpAutoRecoveryItems", get_property("auto_hpAutoRecoveryItems"));
-			set_property("hpAutoRecovery", get_property("auto_hpAutoRecovery"));
-			set_property("hpAutoRecoveryTarget", get_property("auto_hpAutoRecoveryTarget"));
-			set_property("auto_hpAutoRecoveryItems", "");
-			set_property("auto_hpAutoRecovery", 0.0);
-			set_property("auto_hpAutoRecoveryTarget", 0.0);
-		}
+		// do nothing.
 	}
 }
 
@@ -1283,6 +1266,30 @@ boolean L1_ed_islandFallback()
 				put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
 			}
 		}
+
+		// TODO: Malibu Stacey - move all this to a more central location after refactor
+		if (item_amount($item[filthy knitted dread sack]) > 1 && equipped_amount($item[filthy knitted dread sack]) == 0) {
+			// keep one for starting the war (and general wearing until we have something better)
+			auto_autosell(item_amount($item[filthy knitted dread sack]) - 1, $item[filthy knitted dread sack]);
+		} else if (item_amount($item[filthy knitted dread sack]) > 0 && equipped_amount($item[filthy knitted dread sack]) == 1) {
+			// have one equipped, just sell any others.
+			auto_autosell(item_amount($item[filthy knitted dread sack]), $item[filthy knitted dread sack]);
+		}
+
+		if (item_amount($item[hemp string]) > 1 && equipped_amount($item[hemp string]) == 0) {
+			// keep one for the Bonerdagon necklace.
+			auto_autosell(item_amount($item[hemp string]) - 1, $item[hemp string]);
+		} else if (item_amount($item[hemp string]) > 0 && equipped_amount($item[hemp string]) == 1) {
+			// have one equipped, just sell any others.
+			auto_autosell(item_amount($item[hemp string]), $item[hemp string]);
+		}
+
+		// autosell some other useless stuff as we can use the meat to buy MP from doc galaktik.
+		// Ed doesn't need any of this stuff as he starts with the Staff of Ed and can use it until the level 11 quest
+		foreach it in $items[hippy bongo, filthy pestle, double-barreled sling] {
+			auto_autosell(item_amount(it), it);
+		}
+
 		return retVal;
 	}
 	set_property("auto_needLegs", true);
