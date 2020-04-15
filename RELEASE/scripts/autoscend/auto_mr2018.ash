@@ -148,7 +148,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 	{
 		return false;
 	}
-	if(is100FamiliarRun($familiar[God Lobster]))
+	if(forbidFamChange($familiar[God Lobster]))
 	{
 		return false;
 	}
@@ -288,7 +288,7 @@ boolean fantasyRealmToken()
 	}
 
 	// If we're not allowed to adventure without a familiar
-	if(is100familiarRun() && auto_have_familiar($familiar[Mosquito]))
+	if(forbidFamChange() && auto_have_familiar($familiar[Mosquito]))
 	{
 		return false;
 	}

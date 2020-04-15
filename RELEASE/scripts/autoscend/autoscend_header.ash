@@ -817,8 +817,8 @@ boolean instakillable(monster mon);							//Defined in autoscend/auto_util.ash
 int[int] intList();											//Defined in autoscend/auto_list.ash
 int internalQuestStatus(string prop);						//Defined in autoscend/auto_util.ash
 int freeCrafts();											//Defined in autoscend/auto_util.ash
-boolean is100FamiliarRun();									//Defined in autoscend/auto_util.ash
-boolean is100FamiliarRun(familiar thisOne);					//Defined in autoscend/auto_util.ash
+boolean forbidFamChange();									//Defined in autoscend/auto_util.ash
+boolean forbidFamChange(familiar thisOne);					//Defined in autoscend/auto_util.ash
 boolean isBanished(monster enemy);							//Defined in autoscend/auto_util.ash
 boolean isExpectingArrow();									//Defined in autoscend/auto_util.ash
 boolean isFreeMonster(monster mon);							//Defined in autoscend/auto_util.ash

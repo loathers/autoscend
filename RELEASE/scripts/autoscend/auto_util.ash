@@ -134,8 +134,8 @@ boolean loopHandler(string turnSetting, string counterSetting, string abortMessa
 boolean loopHandler(string turnSetting, string counterSetting, int threshold);
 boolean loopHandlerDelay(string counterSetting);
 boolean loopHandlerDelay(string counterSetting, int threshold);
-boolean is100FamiliarRun();
-boolean is100FamiliarRun(familiar thisOne);
+boolean forbidFamChange();
+boolean forbidFamChange(familiar thisOne);
 boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
@@ -869,7 +869,7 @@ string reverse(string s)
 	return ret;
 }
 
-boolean is100FamiliarRun()
+boolean forbidFamChange()
 {
 	// Answers the question "am I not allowed to change my familiar?"
 	// Returns true for paths with no familiars
@@ -892,9 +892,9 @@ boolean is100FamiliarRun()
 	return true;
 }
 
-boolean is100FamiliarRun(familiar thisOne)
+boolean forbidFamChange(familiar thisOne)
 {
-	if(is100FamiliarRun())
+	if(forbidFamChange())
 	{
 		if(get_property("auto_100familiar") == thisOne)
 		{
@@ -1319,7 +1319,7 @@ boolean canYellowRay(monster target)
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
 	// first, do any necessary prep to use a yellow ray
-	if((my_familiar() == $familiar[Crimbo Shrub]) || (!is100FamiliarRun($familiar[Crimbo Shrub]) && auto_have_familiar($familiar[Crimbo Shrub])))
+	if((my_familiar() == $familiar[Crimbo Shrub]) || (!forbidFamChange($familiar[Crimbo Shrub]) && auto_have_familiar($familiar[Crimbo Shrub])))
 	{
 		if(item_amount($item[box of old Crimbo decorations]) == 0)
 		{
@@ -3269,7 +3269,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	if(pass())
 		return result();
 
-	if(doEquips && !is100FamiliarRun())
+	if(doEquips && !forbidFamChange())
 	{
 		familiar resfam = $familiar[none];
 		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot]
