@@ -2806,6 +2806,11 @@ int auto_freeCombatsRemaining()
 
 boolean LX_freeCombats()
 {
+	if(auto_freeCombatsRemaining() == 0)
+	{
+		return false;
+	}
+	
 	if(my_inebriety() > inebriety_limit())
 	{
 		return false;
