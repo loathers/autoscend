@@ -113,17 +113,32 @@ boolean L11_unlockEd();
 boolean L11_defeatEd();
 boolean L11_getBeehive();
 boolean L11_fistDocuments();
+
+// Used in autoscend/auto_quest_level_12.ash
+record WarPlan
+{
+	boolean do_arena;
+	boolean do_junkyard;
+	boolean do_lighthouse;
+	boolean do_orchard;
+	boolean do_nuns;
+	boolean do_farm;
+};
+
+WarPlan warplan_from_bitmask(int mask);					//Defined in autoscend/auto_quest_level_12.ash
+int bitmask_from_warplan(WarPlan plan);					//Defined in autoscend/auto_quest_level_12.ash
+
 string auto_warSide();										//Defined in autoscend/auto_quest_level_12.ash
 int auto_warSideQuestsDone();								//Defined in autoscend/auto_quest_level_12.ash
-int auto_warSideQuestsState();								//Defined in autoscend/auto_quest_level_12.ash
+WarPlan auto_warSideQuestsState();						//Defined in autoscend/auto_quest_level_12.ash
 int auto_warEnemiesRemaining();								//Defined in autoscend/auto_quest_level_12.ash
 int auto_warKillsPerBattle();								//Defined in autoscend/auto_quest_level_12.ash
 int auto_warKillsPerBattle(int sidequests);					//Defined in autoscend/auto_quest_level_12.ash
 int auto_warAdvReqCB();										//Defined in autoscend/auto_quest_level_12.ash
 int auto_warAdvReqFarm();									//Defined in autoscend/auto_quest_level_12.ash
-int auto_warPlan();											//Defined in autoscend/auto_quest_level_12.ash
-int auto_warTotalBattles(int plan, int remaining);			//Defined in autoscend/auto_quest_level_12.ash
-int auto_warTotalBattles(int plan);							//Defined in autoscend/auto_quest_level_12.ash
+WarPlan auto_warPlan();									//Defined in autoscend/auto_quest_level_12.ash
+int auto_warTotalBattles(WarPlan plan, int remaining);	//Defined in autoscend/auto_quest_level_12.ash
+int auto_warTotalBattles(WarPlan plan);					//Defined in autoscend/auto_quest_level_12.ash
 boolean warAdventure();										//Defined in autoscend/auto_quest_level_12.ash
 boolean haveWarOutfit();									//Defined in autoscend/auto_quest_level_12.ash
 boolean warOutfit();										//Defined in autoscend/auto_quest_level_12.ash
