@@ -22,8 +22,7 @@ boolean L5_getEncryptionKey()
 	}
 
 	auto_log_info("Looking for the knob.", "blue");
-	autoAdv(1, $location[The Outskirts of Cobb\'s Knob]);
-	return true;
+	return autoAdv($location[The Outskirts of Cobb\'s Knob]);
 }
 
 boolean L5_findKnob()
@@ -50,7 +49,7 @@ boolean L5_haremOutfit()
 	{
 		return false;
 	}
-	if(have_outfit("knob goblin harem girl disguise"))
+	if (possessOutfit("Knob Goblin Harem Girl Disguise"))
 	{
 		return false;
 	}
@@ -70,7 +69,7 @@ boolean L5_haremOutfit()
 	bat_formBats();
 
 	auto_log_info("Looking for some sexy lingerie!", "blue");
-	autoAdv(1, $location[Cobb\'s Knob Harem]);
+	autoAdv($location[Cobb\'s Knob Harem]);
 	handleFamiliar("item");
 	return true;
 }
@@ -93,23 +92,23 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
-	if(!have_outfit("Knob Goblin Harem Girl Disguise"))
+	if(!possessOutfit("Knob Goblin Harem Girl Disguise"))
 	{
 		return false;
 	}
 
 	auto_log_info("Death to the gobbo!!", "blue");
-	if(!autoOutfit("knob goblin harem girl disguise"))
+	if(!autoOutfit("Knob Goblin Harem Girl Disguise"))
 	{
 		abort("Could not put on Knob Goblin Harem Girl Disguise, aborting");
 	}
 	buffMaintain($effect[Knob Goblin Perfume], 0, 1, 1);
 	if(have_effect($effect[Knob Goblin Perfume]) == 0)
 	{
-		autoAdv(1, $location[Cobb\'s Knob Harem]);
+		autoAdv($location[Cobb\'s Knob Harem]);
 		if(contains_text(get_property("lastEncounter"), "Cobb's Knob lab key"))
 		{
-			autoAdv(1, $location[Cobb\'s Knob Harem]);
+			autoAdv($location[Cobb\'s Knob Harem]);
 		}
 		return true;
 	}
@@ -138,7 +137,7 @@ boolean L5_goblinKing()
 	{
 		auto_change_mcd(10); // get the Crown from the Goblin King.
 	}
-	autoAdv(1, $location[Throne Room]);
+	autoAdv($location[Throne Room]);
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_zelda())
 	{

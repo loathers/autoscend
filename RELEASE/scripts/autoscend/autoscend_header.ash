@@ -233,6 +233,8 @@ boolean dailyEvents();
 //Do we have a some item either equipped or in inventory (not closet or hagnk\'s.
 boolean possessEquipment(item equipment);		//Defined in autoscend/auto_equipment.ash
 int equipmentAmount(item equipment); // Defined in autoscend/auto_equipment.ash
+boolean possessOutfit(string outfit, boolean checkCanEquip); // Defined in autoscend/auto_equipment.ash
+boolean possessOutfit(string outfit); // Defined in autoscend/auto_equipment.ash
 
 //Do Bjorn stuff
 boolean handleBjornify(familiar fam);			//Defined in autoscend/auto_equipment.ash

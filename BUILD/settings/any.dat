@@ -7,7 +7,6 @@ auto_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liber
 auto_clearCombatScripts	boolean	Clear out the postAdventure, preAdventure and kingLiberated settings upon kingLiberation. These will return upon running the script in a new ascension.
 auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
 auto_pullPVPJunk	boolean	Pull various PVP junk when liberating the King? Mostly avatar potions but other stuff might get added.
-auto_diceMode	boolean	Equip all available Dice (OCRS) gear. This is probably not FUN.
 auto_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
 auto_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
 auto_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
@@ -44,5 +43,6 @@ auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after
 auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle.
 auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
 auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
+auto_mineForOres	boolean	BETA: If true, will attempt to acquire the Mining Gear and then mine in Itznotyerzitzmine for Ore during level 8 quest
 auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
 auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.

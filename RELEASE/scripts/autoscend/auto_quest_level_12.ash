@@ -444,30 +444,30 @@ boolean warOutfit(boolean immediate)
 
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
-		if(!reallyWarOutfit("frat warrior fatigues"));
+		if(!reallyWarOutfit("Frat Warrior Fatigues"));
 		{
 			foreach it in $items[Beer Helmet, Distressed Denim Pants, Bejeweled Pledge Pin]
 			{
 				take_closet(closet_amount(it), it);
 			}
-			if(!reallyWarOutfit("frat warrior fatigues"))
+			if(!reallyWarOutfit("Frat Warrior Fatigues"))
 			{
-				abort("Do not have frat warrior fatigues and don't know why....");
+				abort("Do not have Frat Warrior Fatigues and don't know why....");
 				return false;
 			}
 		}
 	}
 	else
 	{
-		if(!reallyWarOutfit("war hippy fatigues"))
+		if(!reallyWarOutfit("War Hippy Fatigues"))
 		{
 			foreach it in $items[Reinforced Beaded Headband, Bullet-proof Corduroys, Round Purple Sunglasses]
 			{
 				take_closet(closet_amount(it), it);
 			}
-			if(!reallyWarOutfit("war hippy fatigues"))
+			if(!reallyWarOutfit("War Hippy Fatigues"))
 			{
-				abort("Do not have war hippy fatigues and don't know why....");
+				abort("Do not have War Hippy Fatigues and don't know why....");
 				return false;
 			}
 		}
@@ -475,29 +475,21 @@ boolean warOutfit(boolean immediate)
 	return true;
 }
 
-boolean haveWarOutfit()
+boolean haveWarOutfit(boolean canWear)
 {
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
-		foreach it in $items[Beer Helmet, Distressed Denim Pants, Bejeweled Pledge Pin]
-		{
-			if(available_amount(it) == 0)
-			{
-				return false;
-			}
-		}
+		return possessOutfit("Frat Warrior Fatigues", canWear);
 	}
 	else
 	{
-		foreach it in $items[Reinforced Beaded Headband, Bullet-proof Corduroys, Round Purple Sunglasses]
-		{
-			if(available_amount(it) == 0)
-			{
-				return false;
-			}
-		}
+		return possessOutfit("War Hippy Fatigues", canWear);
 	}
 	return true;
+}
+
+boolean haveWarOutfit() {
+	return haveWarOutfit(false);
 }
 
 boolean warAdventure()
@@ -598,16 +590,16 @@ boolean L12_getOutfit()
 	}
 	
 	// if outfit could not be pulled and have a [Filthy Hippy Disguise] outfit then wear it and adventure in Frat House to get war outfit
-	if (!get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
+	if (!get_property("auto_hippyInstead").to_boolean() && possessOutfit("Filthy Hippy Disguise"))
 	{
-		autoOutfit("filthy hippy disguise");
+		autoOutfit("Filthy Hippy Disguise");
 		return autoAdv(1, $location[Wartime Frat House]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
-	if (get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[orcish baseball cap]) && possessEquipment($item[orcish frat-paddle]) && possessEquipment($item[orcish cargo shorts]))
+	if (get_property("auto_hippyInstead").to_boolean() && possessOutfit("Frat Boy Ensemble"))
 	{
-		autoOutfit("frat Boy Ensemble");
+		autoOutfit("Frat Boy Ensemble");
 		return autoAdv(1, $location[Wartime Hippy Camp]);
 	}
 	
@@ -641,14 +633,14 @@ boolean L12_preOutfit()
 		return false;
 	}
 	
-	// if siding with frat and already own [filthy hippy disguise] outfit needed to get the frat boy war outfit
-	if (!get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[filthy knitted dread sack]) && possessEquipment($item[filthy corduroys]))
+	// if siding with frat and already own [Filthy Hippy Disguise] outfit needed to get the frat boy war outfit
+	if (!get_property("auto_hippyInstead").to_boolean() && possessOutfit("Filthy Hippy Disguise"))
 	{
 		return false;
 	}
 	
-	// if siding with hippies and already own [frat boy ensemble] outfit needed to get the hippy war outfit
-	if (get_property("auto_hippyInstead").to_boolean() && possessEquipment($item[orcish baseball cap]) && possessEquipment($item[orcish frat-paddle]) && possessEquipment($item[orcish cargo shorts]))
+	// if siding with hippies and already own [Frat Boy Ensemble] outfit needed to get the hippy war outfit
+	if (get_property("auto_hippyInstead").to_boolean() && possessOutfit("Frat Boy Ensemble"))
 	{
 		return false;
 	}
@@ -688,7 +680,7 @@ boolean L12_preOutfit()
 			adventure_status = autoAdv(1, $location[Wartime Hippy Camp]);
 		}
 	}
-	// fighting for hippies, adventure in orcish frat house for [frat boy ensemble] outfit to then adventure in hippy camp for hippy war outfit
+	// fighting for hippies, adventure in orcish frat house for [Frat Boy Ensemble] outfit to then adventure in hippy camp for hippy war outfit
 	else
 	{
 		auto_log_info("Trying to acquire a frat boy ensemble", "blue");
@@ -725,7 +717,7 @@ boolean L12_startWar()
 		return false;
 	}
 
-	if (!haveWarOutfit() || my_basestat($stat[Mysticality]) < 70 || my_basestat($stat[Moxie]) < 70)
+	if (!haveWarOutfit(true))
 	{
 		return false;
 	}
@@ -1515,7 +1507,7 @@ boolean L12_themtharHills()
 
 	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 	{
-		outfit("frat warrior fatigues");
+		outfit("Frat Warrior Fatigues");
 		cli_execute("concert 2");
 	}
 
@@ -1883,7 +1875,7 @@ boolean L12_clearBattlefield()
 {
 	if(in_koe())
 	{
-		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiedDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && can_equip($item[Distressed denim pants]) && can_equip($item[beer helmet]) && can_equip($item[bejeweled pledge pin]))
+		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiedDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && possessOutfit("Frat Warrior Fatigues"))
 		{
 			handleFamiliar("item");
 			if(haveWarOutfit())
@@ -1996,7 +1988,7 @@ boolean L12_finalizeWar()
 		return false;
 	}
 
-	if(have_outfit("War Hippy Fatigues"))
+	if(possessOutfit("War Hippy Fatigues"))
 	{
 		auto_log_info("Getting dimes.", "blue");
 		foreach it in $items[padl phone, red class ring, blue class ring, white class ring]
@@ -2015,7 +2007,7 @@ boolean L12_finalizeWar()
 			}
 		}
 	}
-	if(have_outfit("Frat Warrior Fatigues"))
+	if(possessOutfit("Frat Warrior Fatigues"))
 	{
 		auto_log_info("Getting quarters.", "blue");
 		foreach it in $items[pink clay bead, purple clay bead, green clay bead, communications windchimes]
@@ -2071,7 +2063,7 @@ boolean L12_finalizeWar()
 		}
 	}
 
-	if(have_outfit("War Hippy Fatigues"))
+	if(possessOutfit("War Hippy Fatigues"))
 	{
 		while($coinmaster[Dimemaster].available_tokens >= 5)
 		{
@@ -2087,7 +2079,7 @@ boolean L12_finalizeWar()
 		}
 	}
 
-	if(have_outfit("Frat Warrior Fatigues"))
+	if(possessOutfit("Frat Warrior Fatigues"))
 	{
 		while($coinmaster[Quartersmaster].available_tokens >= 5)
 		{
