@@ -135,7 +135,7 @@ boolean loopHandler(string turnSetting, string counterSetting, int threshold);
 boolean loopHandlerDelay(string counterSetting);
 boolean loopHandlerDelay(string counterSetting, int threshold);
 boolean forbidFamChange();
-boolean forbidFamChange(familiar thisOne);
+boolean forbidFamChange(familiar target);
 boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
@@ -869,18 +869,10 @@ string reverse(string s)
 	return ret;
 }
 
-boolean forbidFamChange()
+boolean is100FamRun()
 {
-	// Answers the question "am I not allowed to change my familiar?"
-	// Returns true for paths with no familiars
-	if(get_property("auto_100familiar") == $familiar[Egg Benedict])
-	{
-		if(have_familiar($familiar[Mosquito]))
-		{
-			return false;
-		}
-	}
-
+	// answers the question of "is this a 100% familiar run"
+	
 	if(get_property("auto_100familiar") == $familiar[none])
 	{
 		return false;
@@ -889,22 +881,53 @@ boolean forbidFamChange()
 	{
 		return false;
 	}
+	
+	// if you reached this line, then it means that auto_100familiar is set to some specific familiar.
 	return true;
 }
 
-boolean forbidFamChange(familiar thisOne)
+boolean forbidFamChange()
 {
-	if(forbidFamChange())
+	// answers the question "am I forbidden to change familiar?"
+	// an answer of true means you cannot change familiar, either due to path or due to being 100% run.
+	// an answer of false means you are allowed to change familiar
+	
+	//paths in which you cannot use a familiar as a familiar (in pokefam familiars are used as something else)
+	if($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, License to Adventure, Pocket Familiars, Dark Gyffte] contains auto_my_path())
 	{
-		if(get_property("auto_100familiar") == thisOne)
-		{
-			return false;
-		}
 		return true;
 	}
-	return false;
+	
+	// If you are not in a specific path that forbids familiars, then the question is whether or not you are in a 100% run. If you are in such a run then changing familiar is forbidden.
+	return is100FamRun();
 }
 
+boolean forbidFamChange(familiar target)
+{
+	// answers the question of "am I forbidden to change familiar to a familiar named target"
+	// Returns false means you are allowed to change familiar to familiar target. because double negatives.
+	// Returns true means you are forbidden to change familiar to familiar target
+
+	// if you don't have a familiar, you can't change to it.
+	if(!auto_have_familiar(target))
+	{
+		return true;
+	}
+
+	// You are allowed to change to a familiar if it is also the goal of the current 100% run.
+	if(get_property("auto_100familiar") == target)
+	{
+		return false;
+	}
+	else if(forbidFamChange())
+	{
+		// checks path and 100% runs for diferent familiar than target
+		return true;
+	}
+	
+	// if you reached this point, then auto_100familiar must not be set to anything, you are allowed to change familiar.
+	return false;
+}
 
 boolean setAdvPHPFlag()
 {
