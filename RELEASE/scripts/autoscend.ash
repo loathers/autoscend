@@ -97,7 +97,7 @@ void initializeSettings()
 		}
 	}
 
-	if(!forbidFamChange() && auto_have_familiar($familiar[Crimbo Shrub]))
+	if(!forbidFamChange($familiar[Crimbo Shrub]))
 	{
 		use_familiar($familiar[Crimbo Shrub]);
 		use_familiar($familiar[none]);
