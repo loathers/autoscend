@@ -415,8 +415,8 @@ boolean possessOutfit(string outfitToCheck, boolean checkCanEquip) {
 	// it will only report true if you have all in inventory or are wearing the whole thing
 	// hence this now exists.
 	if (count(outfit_pieces(outfitToCheck)) == 0) {
-    auto_log_warning(outfitToCheck + " is not a valid outfit!");
-    return false;
+		auto_log_warning(outfitToCheck + " is not a valid outfit!");
+		return false;
 	}
 	
 	foreach key, piece in outfit_pieces(outfitToCheck) {
