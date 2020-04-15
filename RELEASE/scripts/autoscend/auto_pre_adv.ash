@@ -1,13 +1,10 @@
 script "auto_pre_adv.ash";
 import<autoscend.ash>
 
-void handlePreAdventure()
+void main()
 {
-	handlePreAdventure(my_location());
-}
 
-void handlePreAdventure(location place)
-{
+	location place = my_location();
 	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (auto_my_path() == "Heavy Rains"))
 	{
 		abort("Familiar has no equipment, WTF");
@@ -46,11 +43,6 @@ void handlePreAdventure(location place)
 	if(get_floundry_locations() contains place)
 	{
 		buffMaintain($effect[Baited Hook], 0, 1, 1);
-	}
-
-	if((my_mp() < 30) && ((my_mp()+20) < my_maxmp()) && (item_amount($item[Psychokinetic Energy Blob]) > 0))
-	{
-		use(1, $item[Psychokinetic Energy Blob]);
 	}
 
 	if((get_property("_bittycar") == "") && (item_amount($item[Bittycar Meatcar]) > 0))
@@ -319,6 +311,16 @@ void handlePreAdventure(location place)
 		}
 	}
 
+	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
+		equip($slot[Pants], $item[None]);
+		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+		if (is_wearing_outfit("Filthy Hippy Disguise")) {
+			abort("Tried to adventure in the Hippy Camp as Actually Ed the Undying wearing the Filthy Hippy Disguise (this is bad).");
+		} else {
+			auto_log_info("Took off the Filthy Hippy Disguise before adventuring in the Hippy Camp so we don't waste adventures on non-combats.");
+		}
+	}
+
 	if(place == $location[The Black Forest])
 	{
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);
@@ -452,11 +454,15 @@ void handlePreAdventure(location place)
 		uneffect($effect[Driving Recklessly]);
 		uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
 
-		if((purgeML) && item_amount($item[soft green echo eyedrop antidote]) > 5)
+		if(purgeML && item_amount($item[soft green echo eyedrop antidote]) > 5)
 		{
 			uneffect($effect[Drescher\'s Annoying Noise]);
 			uneffect($effect[Pride of the Puffin]);
 			uneffect($effect[Ceaseless Snarling]);
+			uneffect($effect[Blessing of Serqet]);
+		}
+		else if (purgeML && isActuallyEd() && (item_amount($item[ancient cure-all]) > 0 || item_amount($item[soft green echo eyedrop antidote]) > 0))
+		{
 			uneffect($effect[Blessing of Serqet]);
 		}
 	}
@@ -506,12 +512,9 @@ void handlePreAdventure(location place)
 		auto_log_warning("We don't have a lot of MP but we are chugging along anyway", "red");
 	}
 	groundhogAbort(place);
-	if(my_inebriety() > inebriety_limit()) abort("You are overdrunk. Stop it.");
+	if (my_inebriety() > inebriety_limit()) {
+		abort("You are overdrunk. Stop it.");
+	}
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
-}
-
-void main()
-{
-	handlePreAdventure();
 }

@@ -3179,7 +3179,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
-	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location() && canUse($skill[Fist Of The Mummy], false))
+	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest, The Batrat and Ratbat Burrow, The Boss Bat\'s Lair, Cobb\'s Knob Harem] contains my_location() && canUse($skill[Fist Of The Mummy], false))
 	{
 		return useSkill($skill[Fist Of The Mummy], false);
 	}

@@ -14,7 +14,7 @@ boolean autoAdv(int num, location loc, string option)
 		return false;
 	}
 
-	set_property("auto_combatHandler", "");
+	remove_property("auto_combatHandler");
 	set_property("auto_diag_round", 0);
 	set_property("nextAdventure", loc);
 	if(option == "")
@@ -22,6 +22,7 @@ boolean autoAdv(int num, location loc, string option)
 		if (isActuallyEd())
 		{
 			option = "auto_edCombatHandler";
+			remove_property("auto_edCombatHandler");
 		} else {
 			option = "auto_combatHandler";
 		}
@@ -151,7 +152,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		}
 		urlGetFlags /= 2;
 	}
-	if (my_hp() == 0 || have_effect($effect[Beaten Up]) > 0)
+	if ((my_hp() == 0 || have_effect($effect[Beaten Up]) > 0) && !isActuallyEd())
 	{
 		auto_log_warning("Uh oh! Died when starting a combat indirectly.", "red");
 		#Can we just return true here?

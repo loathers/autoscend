@@ -393,6 +393,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       restored_amount += numeric_modifier("Bonus Resting HP");
     }
 
+    if (isActuallyEd() && metadata.name != "linen bandages") {
+      restored_amount = 0;
+    }
+
     return restored_amount;
   }
 
@@ -1392,10 +1396,16 @@ boolean acquireHP(int goal, int meat_reserve){
   */
 boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 
-  if (isActuallyEd() && my_hp() > 0)
-  {
-    // Ed doesn't need to heal outside of combat unless on 0 hp
-    return false;
+  if (isActuallyEd()) {
+    if (my_hp() > 0) {
+      // Ed doesn't need to heal outside of combat unless on 0 hp
+      return false;
+    } else {
+      // handle situations where acquireHP() has been called and passed though to here
+      // so goal = my_maxhp(). This is exceptionally wasteful for Ed as it will burn all his linen bandages
+      // and then all his Ka replacing his linen bandages. Ed only needs 1 HP to adventure.
+      goal = 1;
+    }
   }
   
 	//vampyres can only be restored using blood bags, which are too valuable to waste on healing HP.
@@ -1424,7 +1434,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
       retrieve_item(1, $item[super deluxe mushroom]);
       use(1, $item[super deluxe mushroom]);
 		}
-	}
+  }
 	else
 	{
 		__restore("hp", goal, meat_reserve, useFreeRests);

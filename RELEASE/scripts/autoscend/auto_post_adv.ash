@@ -1,7 +1,7 @@
 script "auto_post_adv.ash";
 import<autoscend.ash>
 
-void handlePostAdventure()
+void main()
 {
 	if(limit_mode() == "spelunky")
 	{
@@ -227,7 +227,7 @@ void handlePostAdventure()
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}
 
-			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])) && my_location() != $location[The Smut Orc Logging Camp])
+			if ((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && !($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Smut Orc Logging Camp] contains my_location()))
 			{
 				buffMaintain($effect[Blessing of Serqet], 10, 1, 10);
 			}
@@ -1049,9 +1049,4 @@ void handlePostAdventure()
 	}
 
 	auto_log_info("Post Adventure done, beep.", "purple");
-}
-
-void main()
-{
-	handlePostAdventure();
 }

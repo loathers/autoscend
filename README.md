@@ -72,12 +72,12 @@ The recommended choices in Valhalla for Actually Ed the Undying are
 
 This code base has changed hands and evolved over years of development. Most of the code was written by people who are no longer playing the game or maintaining it. So, there may be mistakes and learning curves. Please be patient and understanding, this is a hobby for us.
 
-Your ascension may or may not break in spectacular ways! Sorry in advance if that happens! Also, at the moment you will probably have to handle the vast majority of your diet manually. At least, in hardcore standard, anyway.
+Your ascension may or may not break in spectacular ways! Sorry in advance if that happens!
 
 ## Issues?
 
-Please do create github issues for any problems you run in to. I make no promises about how fast
-I'll be to handle them, but I'll try to fix reasonable problems in a reasonable timeframe.
+Please do create github issues for any problems you run in to. We make no promises about how fast
+we'll be to handle them, but we'll try to fix reasonable problems in a reasonable timeframe.
 
 You can also come discuss problems with the script on the [#autoscend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3), or just discuss the script in general!
 

@@ -493,5 +493,18 @@ boolean settingFixer()
 		remove_property("auto_copperhead");
 	}
 
+	if (property_exists("auto_hpAutoRecoveryItems"))
+	{
+		remove_property("auto_hpAutoRecoveryItems");
+	}
+	if (property_exists("auto_hpAutoRecovery"))
+	{
+		remove_property("auto_hpAutoRecovery");
+	}
+	if (property_exists("auto_hpAutoRecoveryTarget"))
+	{
+		remove_property("auto_hpAutoRecoveryTarget");
+	}
+	
 	return true;
 }
