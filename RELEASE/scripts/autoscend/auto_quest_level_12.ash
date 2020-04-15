@@ -1862,11 +1862,11 @@ boolean L12_farm()
 	int want_to_farm = 0;
 	if(auto_warSide() == "hippy")
 	{
-		want_to_farm = (plan>>5)&1;
+		want_to_farm = (plan>>0)&1;
 	}
 	else
 	{
-		want_to_farm = (plan>>0)&1;
+		want_to_farm = (plan>>5)&1;
 	}
 	if(want_to_farm == 0)
 	{
