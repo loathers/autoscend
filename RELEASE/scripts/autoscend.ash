@@ -191,6 +191,7 @@ void initializeSettings()
 	set_property("auto_skipL12Farm", "false");
 	set_property("auto_L12FarmStage", "0");
 	set_property("choiceAdventure1003", 0);
+	remove_property("auto_minedCells");
 	beehiveConsider();
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);

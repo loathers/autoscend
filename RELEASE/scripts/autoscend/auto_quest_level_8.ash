@@ -13,54 +13,263 @@ boolean L8_trapperStart()
 	return true;
 }
 
-boolean L8_trapperGround()
+int getCellToMine(item oreGoal) {
+
+	// the mine is an 8*7 grid starting at 0,0 in the top left and each cell has an incrementing identifier starting at 0.
+	// however all of row 0, column 0 and column 7 cannot be mined (so it's really a 6*6 grid with really confusing cell ids).
+	// hence to translate from the grid to the cell we multiply the row by 8 and add the column
+	// e.g. 4,6 becomes 4 + (6 * 8) = 52
+
+	// trapper ores are predominantly found in the top 3 rows (1-3) and occasionally the 4th row.
+	// See https://kol.coldfront.net/thekolwiki/index.php/Inside_of_Itznotyerzitz_Mine
+
+	// the information we need is spread between the page (unmined sparkling cells) and the mineLayout1 property (what we got when mined the cell).
+
+	if (!is_wearing_outfit("Mining Gear"))
+	{
+		return 0;
+	}
+
+	item[int] parseMineLayout() {
+
+		string[int] splitted = split_string(get_property("mineLayout1").substring(1), "#");
+
+		item[int] minedCells;
+		foreach iter, str in splitted {
+			if (str.contains_text("asbestos ore")) {
+				minedCells[str.substring(0,2).to_int()] = $item[asbestos ore];
+			} else if (str.contains_text("chrome ore")) {
+				minedCells[str.substring(0,2).to_int()] = $item[chrome ore];
+			} else if (str.contains_text("linoleum ore")) {
+				minedCells[str.substring(0,2).to_int()] = $item[linoleum ore];
+			} else if (str.contains_text("loadstone")) {
+				minedCells[str.substring(0,2).to_int()] = $item[loadstone];
+			} else if (str.contains_text("lump of diamond")) {
+				minedCells[str.substring(0,2).to_int()] = $item[lump of diamond];
+			} else if (str.contains_text("meat stack")) {
+				minedCells[str.substring(0,2).to_int()] = $item[meat stack];
+			} else if (str.contains_text("stone of eXtreme power")) {
+				minedCells[str.substring(0,2).to_int()] = $item[stone of eXtreme power];
+			}
+		}
+		return minedCells;
+	}
+
+	int[int] findSparklingCells(string minePage) {
+		int[int] sparkles;
+		matcher mrSparkle = create_matcher("title='Promising Chunk of Wall \\((\\d),(\\d)\\)", minePage);
+		while (mrSparkle.find()) {
+			int sparkleCell = mrSparkle.group(1).to_int() + (mrSparkle.group(2).to_int() * 8);
+			sparkles[sparkleCell] = 1; // don't actually care about the value. Just want the cells as keys so we can use contains
+		}
+		return sparkles;
+	}
+
+	int[4] getOrthogonals(int cell) {
+		// starting at the cell above, going clockwise
+		int[4] orthogonals; 
+		orthogonals[0] = cell - 8;
+		orthogonals[1] = cell + 1;
+		orthogonals[2] = cell + 8;
+		orthogonals[3] = cell - 1;
+		return orthogonals;
+	}
+
+	boolean canMine(int cellToCheck, int rowLimit) {
+		// this is basically bounds checking for cells
+		// set rowLimit = 6 to not care about rows (there is no row 7)
+		int column = cellToCheck % 8;
+		if (column < 1 || column > 6 )
+		{
+			return false;
+		}
+		int row = cellToCheck / 8;
+		if (row < 1 || row > 6 || row > rowLimit) {
+			return false;
+		}
+		return true;
+	}
+
+	boolean isInSideColumn(int cellToCheck) {
+		int column = cellToCheck % 8;
+		if (column == 1 || column == 6)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	// - Simplest case, a fresh mine cavern
+	string mineLayout = visit_url("mining.php?mine=1");
+	if (get_property("auto_minedCells") == "") {
+		// pick a random column to start between 2-5
+		return 50 + random(4); // using 50 as we're in row 6 to start and random returns from 0 to range-1. Hence 6 * 8 + 2
+	}
+
+	// - If we have started mining a cavern, lets continue mining the same column upwards until row 3
+	string[int] previously_mined = split_string(get_property("auto_minedCells"), ",");
+	int num_prev_mined = count(previously_mined);
+	int lastCell = previously_mined[num_prev_mined - 1].to_int();
+	if (num_prev_mined < 4 && (lastCell > 32 && lastCell < 55)) {
+		// mine the square directly above it
+		return lastCell - 8;
+	}
+
+	// - If we've got to row 3 or above, start searching for ores.
+	item[int] minedCells = parseMineLayout();
+	int[int] oreSeen;
+	foreach oreCell, oreType in minedCells {
+		if (oreType == oreGoal) {
+			oreSeen[oreCell] = 1; // value doesn't matter, just want to count and iterate the keys
+		}
+	}
+	int[int] sparklingCells = findSparklingCells(mineLayout);
+	int[int] potentialCells;
+	int potentialCount = 0;
+	if (count(oreSeen) == 0) {
+		// - Not found any ore that we're looking for yet
+		if (lastCell > 24 && lastCell < 31) {
+			// get to row 2 as our probability of hitting ore we're looking for is higher.
+			return lastCell - 8;
+		}
+		// find all the sparkling tiles in the top n rows
+		// start from the top 2, if we haven't found any there,
+		// increase the search space by 1 row and check again until we max out at the 4th row
+		// avoid columns 1 and 6 as they limit the search space since we can't mine column 0 or 7.
+		// unless we run into a situation where we've mined all the other sparkling cells.
+		int rowLimit = 2;
+		boolean avoidSides = true;
+		while (count(potentialCells) == 0 && rowLimit < 5) {
+			foreach sparkleCell in sparklingCells {
+				if (canMine(sparkleCell, rowLimit)) {
+					if (!isInSideColumn(sparkleCell) || !avoidSides) {
+						potentialCells[potentialCount] = sparkleCell;
+						potentialCount++;
+					}
+				}
+			}
+			rowLimit++;
+			if (avoidSides && rowLimit == 5 && count(potentialCells) == 0) {
+				avoidSides = false;
+				rowLimit = 2;
+			}
+		}
+	} else {
+		// - Found at least one ore that we're looking for!
+		// search orthogonally from the cells we found our required ore in as ore is always contiguous
+		// limit our search to the top 3 rows to begin, if we don't find any cells that meet the criteria
+		// increase the limit to the top 4 rows and check again.
+		int rowLimit = 3;
+		while (count(potentialCells) == 0 && rowLimit < 5) {
+			foreach oreCell in oreSeen {
+				int[4] orthogonals = getOrthogonals(oreCell);
+				foreach orthoPos, orthoCell in orthogonals {
+					if (canMine(orthoCell, rowLimit) && sparklingCells contains orthoCell) {
+						potentialCells[potentialCount] = orthoCell;
+						potentialCount++;
+					}
+				}
+			}
+			rowLimit++;
+		}
+	}
+	// only found one potential, just return it
+	if (count(potentialCells) == 1) {
+		return potentialCells[0];
+	}
+	// found 2 or more potentials, return a random one of them
+	return potentialCells[random(count(potentialCells))];
+}
+
+void auto_testMining(item oreGoal) {
+	// use this to test in aftercore. Will mine 3 ores of whatever type you pass e.g.
+	// ash import <autoscend.ash> auto_testMining($item[linoleum ore]);
+	// I'd recommend equipping some HP regen stuff in slots not needed by the Mining Gear
+	// Shark Jumper & 1-3 Heart of the Volcano works well
+	if (!possessOutfit("Mining Gear"))
+	{
+		return;
+	}
+	outfit("Mining Gear");
+	int startingAmount = item_amount(oreGoal);
+	remove_property("auto_minedCells");
+
+	matcher openCheck = create_matcher("Open Cavern \\(\\d,6\\)", visit_url("mining.php?mine=1"));
+	if (openCheck.find()) {
+		auto_log_info("Resetting mine (doesn't cost an adventure)");
+		visit_url("mining.php?mine=1&reset=1&pwd");
+	}
+
+	int advCount = 0;
+	while (item_amount(oreGoal) < startingAmount + 3) {
+		int cell = getCellToMine(oreGoal);
+		if (cell != 0) {
+			set_property("auto_minedCells", get_property("auto_minedCells") + cell.to_string() + ",");
+			visit_url("mining.php?mine=1&which=" + cell.to_string() + "&pwd");
+			advCount++;
+			if (my_hp() == 0) {
+				acquireHP(1);
+			}
+		} else {
+			auto_log_info("Something went wrong.");
+			break;
+		}
+	}
+	auto_log_info("Found 3 " + oreGoal.to_string() + " in " + advCount.to_string() + "adventures.");
+}
+
+boolean L8_trapperAdvance()
+{
+	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 1)
+	{
+		return false;
+	}
+	if (item_amount(get_property("trapperOre").to_item()) >= 3 && item_amount($item[Goat Cheese]) >= 3)
+	{
+		auto_log_info("Giving Trapper goat cheese and " + get_property("trapperOre").to_item(), "blue");
+		visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
+		return true;
+	}
+	return false;
+}
+
+boolean L8_getGoatCheese()
 {
 	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 1)
 	{
 		return false;
 	}
 
-	item oreGoal = to_item(get_property("trapperOre"));
-
-	if((item_amount(oreGoal) >= 3) && (item_amount($item[Goat Cheese]) >= 3))
+	if(item_amount($item[Goat Cheese]) >= 3)
 	{
-		auto_log_info("Giving Trapper goat cheese and " + oreGoal, "blue");
-		visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
-		return true;
+		return false;
 	}
 
-	if(item_amount($item[Goat Cheese]) < 3)
+	auto_log_info("Yay for goat cheese!", "blue");
+	handleFamiliar("item");
+	if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
 	{
-		auto_log_info("Yay for goat cheese!", "blue");
-		handleFamiliar("item");
-		if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
-		{
-			auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
-		}
-		autoAdv(1, $location[The Goatlet]);
-		auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
-		return true;
+		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
+	}
+	boolean retval = autoAdv($location[The Goatlet]);
+	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
+	return retval;
+}
+
+boolean L8_getMineOres()
+{
+	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 1)
+	{
+		return false;
 	}
 
-	if(item_amount(oreGoal) >= 3)
-	{
-		if(item_amount($item[Goat Cheese]) >= 3)
-		{
-			auto_log_info("Giving Trapper goat cheese and " + oreGoal, "blue");
-			visit_url("place.php?whichplace=mclargehuge&action=trappercabin");
-			return true;
-		}
-		auto_log_info("Yay for goat cheese!", "blue");
-		handleFamiliar("item");
-		if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
-		{
-			auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
-		}
-		autoAdv(1, $location[The Goatlet]);
-		auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
-		return true;
+	item oreGoal = get_property("trapperOre").to_item();
+
+	if (item_amount(oreGoal) >= 3) {
+		return false;
 	}
-	else if((my_rain() > 50) && (have_effect($effect[Ultrahydrated]) == 0) && (auto_my_path() == "Heavy Rains") && have_skill($skill[Rain Man]))
+
+	if((my_rain() > 50) && (have_effect($effect[Ultrahydrated]) == 0) && (auto_my_path() == "Heavy Rains") && have_skill($skill[Rain Man]))
 	{
 		auto_log_info("Trying to summon a mountain man", "blue");
 		set_property("auto_mountainmen", "1");
@@ -116,6 +325,36 @@ boolean L8_trapperGround()
 			cloverUsageFinish();
 			return true;
 		}
+	} else if (get_property("auto_mineForOres").to_boolean()) {
+		if (!possessOutfit("Mining Gear")) {
+			auto_log_info("Getting Mining Gear.", "blue");
+			providePlusNonCombat(25);
+			handleFamiliar("item");
+			return autoAdv($location[Itznotyerzitz Mine]);
+		} else if (possessOutfit("Mining Gear", true)) {
+			outfit("Mining Gear");
+			auto_log_info("Mining in Itznotyerzitz Mine for Trapper ore", "blue");
+			int cell = getCellToMine(oreGoal);
+			if (cell != 0) {
+				set_property("auto_minedCells", get_property("auto_minedCells") + cell.to_string() + ",");
+				visit_url("mining.php?mine=1&which=" + cell.to_string() + "&pwd");
+				acquireHP(1);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+boolean L8_trapperGround()
+{
+	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 1)
+	{
+		return false;
+	}
+	if (L8_getGoatCheese() || L8_getMineOres() || L8_trapperAdvance())
+	{
+		return true;
 	}
 	return false;
 }
@@ -135,72 +374,17 @@ boolean L8_trapperExtreme()
 		return false;
 	}
 
-	//If choice 2 exists, we might want to take it, not that it is good in-run
-	//What are the choices now (13/06/2018)?
-	//Jar of frostigkraut:	"Dig deeper" (2?)
-	//Free:	"Scram"
-	//Lucky Pill:	"Look in the side Pocket"
-	//set_property("choiceAdventure575", "2");
-
-	if (possessEquipment($item[extreme mittens]) && possessEquipment($item[extreme scarf]) && possessEquipment($item[snowboarder pants]))
-	{
-		if (my_basestat($stat[moxie]) >= 35 && my_basestat($stat[mysticality]) >= 35 && autoOutfit("eXtreme Cold-Weather Gear"))
-		{
-			set_property("choiceAdventure575", "3");
-			autoAdv(1, $location[The eXtreme Slope]);
-			return true;
-		}
-		else
-		{
-			auto_log_warning("I can not wear the eXtreme Gear, I'm just not awesome enough :(", "red");
-			return false;
-		}
+	if (possessOutfit("eXtreme Cold-Weather Gear", true)) {
+		autoOutfit("eXtreme Cold-Weather Gear");
+	} else if (possessOutfit("eXtreme Cold-Weather Gear")) {
+		auto_log_warning("I can not wear the eXtreme Gear, I'm just not awesome enough :(", "red");
+		return false;
 	}
 
 	auto_log_info("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
-	if(possessEquipment($item[extreme mittens]))
-	{
-		set_property("choiceAdventure15", "2");
-		if(possessEquipment($item[extreme scarf]))
-		{
-			set_property("choiceAdventure15", "3");
-		}
-	}
-	else
-	{
-		set_property("choiceAdventure15", "1");
-	}
-
-	if(possessEquipment($item[snowboarder pants]))
-	{
-		set_property("choiceAdventure16", "2");
-		if(possessEquipment($item[extreme scarf]))
-		{
-			set_property("choiceAdventure16", "3");
-		}
-	}
-	else
-	{
-		set_property("choiceAdventure16", "1");
-	}
-
-	if(possessEquipment($item[extreme mittens]))
-	{
-		set_property("choiceAdventure17", "2");
-		if(possessEquipment($item[snowboarder pants]))
-		{
-			set_property("choiceAdventure17", "3");
-		}
-	}
-	else
-	{
-		set_property("choiceAdventure17", "1");
-	}
-
-	set_property("choiceAdventure575", "1");
-
-	autoAdv(1, $location[The eXtreme Slope]);
-	return true;
+	providePlusNonCombat(25);
+	handleFamiliar("item");
+	return autoAdv($location[The eXtreme Slope]);
 }
 
 boolean L8_trapperNinjaLair()
@@ -236,10 +420,6 @@ boolean L8_trapperNinjaLair()
 	{
 		if (isActuallyEd())
 		{
-			if(item_amount($item[Talisman of Horus]) == 0)
-			{
-				return false;
-			}
 			if((have_effect($effect[Taunt of Horus]) == 0) && (item_amount($item[Talisman of Horus]) == 0))
 			{
 				return false;
@@ -371,11 +551,10 @@ boolean L8_trapperGroar()
 			if (item_amount($item[Groar\'s Fur]) == 0 && item_amount($item[Winged Yeti Fur]) == 0)
 			{
 				addToMaximize("2000cold resistance 5max");
-				// mafia bug screws us here if we don't already have the 5 cold res. auto_pre_adv will not be called and this will infinite loop
-				equipMaximizedGear(); // remove this once https://kolmafia.us/showthread.php?24764-betweenBattleScript-and-afterAdventureScrinever-gets-called is fixed.
 				//If this returns false, we might have finished already, can we check this?
-				autoAdv(1, $location[Mist-shrouded Peak]);
+				boolean retval = autoAdv(1, $location[Mist-shrouded Peak]);
 				removeFromMaximize("2000cold resistance 5max");
+				return retval;
 			}
 			else
 			{
@@ -385,6 +564,18 @@ boolean L8_trapperGroar()
 			}
 			return true;
 		}
+	}
+	return false;
+}
+
+boolean L8_trapperQuest() {
+	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 5)
+	{
+		return false;
+	}
+	if (L8_trapperStart() || L8_getGoatCheese() || L8_getMineOres() || L8_trapperAdvance() || L8_trapperNinjaLair() || L8_trapperGroar())
+	{
+		return true;
 	}
 	return false;
 }
