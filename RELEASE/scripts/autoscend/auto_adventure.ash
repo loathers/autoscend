@@ -319,7 +319,7 @@ void preAdvUpdateFamiliar(location place)
 		famChoice = $familiar[none];
 	}
 
-	if((famChoice != $familiar[none]) && !is100FamiliarRun() && (internalQuestStatus("questL13Final") < 13))
+	if((famChoice != $familiar[none]) && !forbidFamChange() && (internalQuestStatus("questL13Final") < 13))
 	{
 		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
 		{
@@ -343,7 +343,7 @@ void preAdvUpdateFamiliar(location place)
 				}
 			}
 		}
-		if(wannaHeist && (famChoice != $familiar[none]) && !is100FamiliarRun())
+		if(wannaHeist && (famChoice != $familiar[none]) && !forbidFamChange())
 		{
 			use_familiar($familiar[cat burglar]);
 		}
