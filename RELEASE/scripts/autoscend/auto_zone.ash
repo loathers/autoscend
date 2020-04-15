@@ -17,6 +17,7 @@ location[int] zones_available();
 monster[int] mobs_available();
 item[int] drops_available();
 item[int] hugpocket_available();
+boolean is_ghost_in_zone(location loc);
 
 boolean zone_unlock(location loc){
 	boolean unlock_thinknerd(){
@@ -68,12 +69,12 @@ boolean zone_unlock(location loc){
 	if(loc == $location[The Thinknerd Warehouse]){
 		unlocked = unlock_thinknerd();
 	} else{
-		auto_log_warning("Dont know how to unlock " + loc);
+		auto_log_debug("Dont know how to unlock " + loc);
 		return false;
 	}
 
 	if(!unlocked){
-		auto_log_warning("Wasnt able to unlock " + loc);
+		auto_log_debug("Wasnt able to unlock " + loc);
 	}
 
 	return unlocked;
@@ -675,7 +676,7 @@ generic_t zone_delay(location loc)
 		value = 4 - loc.turns_spent;
 		break;
 	case $location[The Outskirts of Cobb\'s Knob]:
-		if(get_property("auto_day1_cobb") != "finished")
+		if (internalQuestStatus("questL05Goblin") < 1)
 		{
 			value = 10 - loc.turns_spent;
 		}
@@ -734,12 +735,13 @@ generic_t zone_available(location loc)
 		{
 			retval._boolean = true;
 		}
+		break;
 	case $location[The Red Zeppelin]:
 		if(internalQuestStatus("questL11Ron") >= 2)
 		{
 			retval._boolean = true;
 		}
-
+		break;
 	case $location[Super Villain\'s Lair]:
 		if((auto_my_path() == "License to Adventure") && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
 		{
@@ -942,7 +944,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[The Boss Bat\'s Lair]:
-		if(internalQuestStatus("questL04Bat") >= 3)
+		if(internalQuestStatus("questL04Bat") == 3 )
 		{
 			retval._boolean = true;
 		}
@@ -1032,7 +1034,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[The Poop Deck]:
-		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (internalQuestStatus("questM12Pirate") >= 6) && (get_property("auto_mcmuffin") != ""))
+		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (internalQuestStatus("questM12Pirate") >= 6))
 		{
 			if((get_property("questL12War") == "unstarted") || (get_property("questL12War") == "finished"))
 			{
@@ -1041,7 +1043,7 @@ generic_t zone_available(location loc)
 		}
 		break;
 	case $location[Belowdecks]:
-		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (get_property("questM12Pirate") == "finished") && (get_property("auto_mcmuffin") != ""))
+		if((have_outfit("swashbuckling getup") || possessEquipment($item[Pirate Fledges])) && (get_property("lastIslandUnlock").to_int() == my_ascensions()) && (get_property("questM12Pirate") == "finished"))
 		{
 			if((get_property("questL12War") == "unstarted") || (get_property("questL12War") == "finished"))
 			{
@@ -1079,7 +1081,7 @@ generic_t zone_available(location loc)
 	case $location[Near an Abandoned Refrigerator]:
 	case $location[Over Where the Old Tires Are]:
 	case $location[Out by that Rusted-Out Car]:
-		if((internalQuestStatus("questL12War") >= 1) && (get_property("sidequestJunkyardCompleted") == "none") && (get_property("questL12War") != "finished"))
+		if((internalQuestStatus("questL12War") >= 1) && (get_property("sidequestJunkyardCompleted") == "none" || get_property("flyeredML").to_int() < 10000) && (get_property("questL12War") != "finished"))
 		{
 			retval._boolean = true;
 		}
@@ -1297,6 +1299,15 @@ generic_t zone_available(location loc)
 			retval._boolean = gnomads_available();
 		}
 		break;
+
+	// We go here to get the Logging Hatchet
+	case $location[Camp Logging Camp]:
+		if((!in_koe()) && (canadia_available()))
+		{
+			retval._boolean = true;
+		}
+		break;
+
 	case $location[The Thinknerd Warehouse]:
 		if(internalQuestStatus("questM22Shirt") >= 0)
 		{
@@ -1735,6 +1746,25 @@ item[int] hugpocket_available()
 		retval[count(retval)] = it;
 	}
 	return retval;
+}
+
+boolean is_ghost_in_zone(location loc)
+{
+	foreach idx, mob in get_monsters(loc)
+	{
+		if (mob.physical_resistance >= 80)
+		{
+			return true;
+		}
+	}
+
+	// Special-case for King Boo.
+	if (in_zelda() && loc == $location[Summoning Chamber])
+	{
+		return true;
+	}
+
+	return false;
 }
 
 

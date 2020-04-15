@@ -30,7 +30,7 @@
 29	cotton candy cone	item	39	39	0	0	none	none
 30	honey-dipped locust	item	35	35	0	0	none	none
 31	cotton candy plug	item	28	28	0	0	none	none
-32	comfy pillow	item	25	25	0	0	none	none
+32	comfy pillow	item	25	0	0	0	none	none
 33	cotton candy skoshe	item	22	22	0	0	none	none
 34	tiny house	item	22	22	0	0	Beaten Up,Confused,Embarrassed,Hardly Poisoned at All,Sleepy,Sunburned,Wussiness	none
 35	cotton candy smidgen	item	17	17	0	0	none	none

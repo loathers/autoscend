@@ -11,6 +11,7 @@ void hr_initializeSettings()
 		set_property("auto_mountainmen", "");
 		set_property("auto_ninjasnowmanassassin", "");
 		set_property("auto_orcishfratboyspy", "");
+		set_property("auto_warhippyspy", "");
 
 		set_property("auto_lastthunder", "100");
 		set_property("auto_lastthunderturn", "0");
@@ -48,7 +49,7 @@ boolean routineRainManHandler()
 			return rainManSummon("mountain man", true, false);
 		}
 
-		if(get_property("auto_trapper") == "start")
+		if (internalQuestStatus("questL08Trapper") < 2)
 		{
 			return rainManSummon("mountain man", false, false);
 		}
@@ -58,29 +59,30 @@ boolean routineRainManHandler()
 			return rainManSummon("ninja snowman assassin", true, false);
 		}
 
-		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == ""))
+		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == "") && !get_property("auto_hippyInstead").to_boolean())
 		{
 			return rainManSummon("orcish frat boy spy", false, false);
 		}
-
+		
+		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_warhippyspy") == "") && get_property("auto_hippyInstead").to_boolean())
+		{
+			return rainManSummon("war hippy spy", false, false);
+		}
+		
 		if(needStarKey())
 		{
-			boolean result = rainManSummon("skinflute", true, false);
-			if(!result)
+			if(item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
 			{
-				if((item_amount($item[star chart]) == 0) && (item_amount($item[richard\'s star key]) == 0))
-				{
-					return rainManSummon("the astronomer", false, false);
-				}
+				return rainManSummon("skinflute", true, false);
 			}
-			else
+			else if((item_amount($item[star chart]) == 0))
 			{
-				return true;
+				return rainManSummon("the astronomer", false, false);
 			}
 		}
 		if(needDigitalKey())
 		{
-			if((get_property("auto_nuns") == "done") || (my_rain() > 92))
+			if (get_property("sidequestNunsCompleted") != "none" && my_rain() > 92)
 			{
 				if((item_amount($item[white pixel]) < 30) && (item_amount($item[digital key]) == 0))
 				{
@@ -334,6 +336,10 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	{
 		mId = 409;
 	}
+	if(monsterName == "war hippy spy")
+	{
+		mId = 419;
+	}
 	if(monsterName == "morbid skull")
 	{
 		mId = 1269;
@@ -408,7 +414,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		#already have the subgoal, don't summon
 		return false;
 	}
-	if(((get_property("auto_gunpowder") == "finished") || (item_amount($item[barrel of gunpowder]) >= 5)) && (monsterName == "lobsterfrogman"))
+	if ((get_property("sidequestLighthouseCompleted") != "none" || item_amount($item[barrel of gunpowder]) >= 5) && monsterName == "lobsterfrogman")
 	{
 		#already have the subgoal, don't summon
 		return false;
@@ -445,6 +451,19 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 			return false;
 		}
 	}
+	
+	if(monsterName == "war hippy spy")
+	{
+		set_property("auto_warhippyspy", "done");
+		if((item_amount($item[reinforced beaded headband]) > 0) || (item_amount($item[round purple sunglasses]) > 0) || (item_amount($item[bullet-proof corduroys]) > 0))
+		{
+			return false;
+		}
+		if((have_effect($effect[everything looks yellow]) > 0) || (my_lightning() < 5))
+		{
+			return false;
+		}
+	}
 
 	if(monsterName == "skinflute")
 	{
@@ -472,7 +491,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 
 	set_property("choiceAdventure970", "0");
 
-	if(is100FamiliarRun($familiar[Reanimated Reanimator]))
+	if(forbidFamChange($familiar[Reanimated Reanimator]))
 	{
 		wink = false;
 	}

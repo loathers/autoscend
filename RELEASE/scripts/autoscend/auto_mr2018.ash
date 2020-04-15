@@ -148,7 +148,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 	{
 		return false;
 	}
-	if(is100FamiliarRun($familiar[God Lobster]))
+	if(forbidFamChange($familiar[God Lobster]))
 	{
 		return false;
 	}
@@ -169,6 +169,12 @@ boolean godLobsterCombat(item it, int goal, string option)
 		return false;
 	}
 
+	// Avoid fighting the lobster when we are in our pajamas.
+	if (in_zelda() && !zelda_equippedHammer() && !zelda_equippedFlower() && !zelda_equippedBoots())
+	{
+		return false;
+	}
+
 	familiar last = my_familiar();
 	item lastGear = equipped_item($slot[familiar]);
 
@@ -180,6 +186,8 @@ boolean godLobsterCombat(item it, int goal, string option)
 		equip($slot[familiar], it);
 	}
 
+	// TODO: Disabling adventure handling means we do not swap out equipment,
+	// which means sometimes we fight the god lobster in our pajamas and die.
 	set_property("auto_disableAdventureHandling", true);
 
 	string temp = visit_url("main.php?fightgodlobster=1");
@@ -189,30 +197,8 @@ boolean godLobsterCombat(item it, int goal, string option)
 	}
 	else
 	{
+		set_property("_auto_lobsterChoice", to_string(goal));
 		autoAdv(1, $location[Noob Cave], option);
-		temp = visit_url("main.php");
-
-		string search = "I'd like part of your regalia.";
-		if(goal == 2)
-		{
-			search = "I'd like a blessing.";
-		}
-		else if(goal == 3)
-		{
-			search = "I'd like some experience.";
-		}
-
-		int choice = 0;
-		foreach idx, str in available_choice_options()
-		{
-			if(contains_text(str,search))
-			{
-				choice = idx;
-			}
-		}
-		backupSetting("choiceAdventure1310", choice);
-		temp = visit_url("choice.php?pwd=&whichchoice=1310&option=" + choice, true);
-		restoreSetting("choiceAdventure1310");
 	}
 
 	set_property("auto_disableAdventureHandling", false);
@@ -302,7 +288,7 @@ boolean fantasyRealmToken()
 	}
 
 	// If we're not allowed to adventure without a familiar
-	if(is100familiarRun() && auto_have_familiar($familiar[Mosquito]))
+	if(forbidFamChange() && auto_have_familiar($familiar[Mosquito]))
 	{
 		return false;
 	}
@@ -442,12 +428,12 @@ void auto_setSongboom()
 	{
 		songboomSetting("dr");
 	}
-	else if ((get_property("auto_prewar") == "started") && (get_property("auto_war") != "finished"))
+	else if (internalQuestStatus("questL12War") > 0 && internalQuestStatus("questL12War") < 2)
 	{
 		// Once we've started the war, we want to be able to micromanage songs
 		// for Gremlins and Nuns. Don't break this for them.
 	}
-	else if (!isActuallyEd() && get_property("auto_crypt") != "finished" && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
+	else if (!isActuallyEd() && internalQuestStatus("questL07Cyrptic") < 1 && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
 	{
 		songboomSetting("nightmare");
 	}
@@ -934,11 +920,6 @@ boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, bool
 	restoreSetting("choiceAdventure1327");
 	restoreSetting("choiceAdventure1328");
 
-	if(shirt != $item[none] && !useMaximizeToEquip())
-	{
-		equip($slot[shirt], shirt);
-	}
-
 	if(get_property("lastEncounter") == "Party\'s Over")
 	{
 		set_property("_neverendingPartyOver", true);
@@ -1338,7 +1319,13 @@ boolean fightClubNap()
 boolean fightClubSpa()
 {
 	int option = 4;
-	switch(my_primestat())
+	stat st = my_primestat();
+	if (in_zelda())
+	{
+		// We deal 250% of our Moxie, so if our Muscle is too high we... die.
+		st = $stat[moxie];
+	}
+	switch(st)
 	{
 	case $stat[Muscle]:			option = 1;		break;
 	case $stat[Mysticality]:	option = 3;		break;

@@ -4,7 +4,6 @@ void equipBaseline();
 void equipRollover();
 void ensureSealClubs();
 void makeStartingSmiths();
-void equipBaselineGear();
 int equipmentAmount(item equipment);
 
 string getMaximizeSlotPref(slot s)
@@ -24,16 +23,28 @@ boolean autoEquip(slot s, item it)
 		return false;
 	}
 
-	// This logic lets us force the equipping of multiple accessories with minimal conflict
-	if((item_type(it) == "accessory") && (s == $slot[acc3]) && (contains_text(get_property("auto_maximize_current"), "acc3")))
+	if(s == $slot[acc3] &&
+		(it.to_string() == get_property("_auto_maximize_equip_acc1")) ||
+		(it.to_string() == get_property("_auto_maximize_equip_acc2")) ||
+		(it.to_string() == get_property("_auto_maximize_equip_acc3")))
 	{
-		if(!contains_text(get_property("auto_maximize_current"), "acc2"))
+		auto_log_warning("Ignoring duplicate equip of accessory " + it);
+		return true;
+	}
+
+	// This logic lets us force the equipping of multiple accessories with minimal conflict
+	boolean acc1_empty = ("" == get_property("_auto_maximize_equip_acc1")) && !contains_text(get_property("auto_maximize_current"), "acc1");
+	boolean acc2_empty = ("" == get_property("_auto_maximize_equip_acc2")) && !contains_text(get_property("auto_maximize_current"), "acc2");
+	boolean acc3_empty = ("" == get_property("_auto_maximize_equip_acc3")) && !contains_text(get_property("auto_maximize_current"), "acc3");
+	if((item_type(it) == "accessory") && s == $slot[acc3] && !acc3_empty)
+	{
+		if(acc2_empty)
 		{
-			slot s = $slot[acc2];
+			s = $slot[acc2];
 		}
-		else if(!contains_text(get_property("auto_maximize_current"), "acc1"))
+		else if(acc1_empty)
 		{
-			slot s = $slot[acc1];
+			s = $slot[acc1];
 		}
 		else
 		{
@@ -44,14 +55,7 @@ boolean autoEquip(slot s, item it)
 
 	auto_log_info("Equipping " + it + " to slot " + s, "gold");
 
-	if(useMaximizeToEquip())
-	{
-		return tryAddItemToMaximize(s, it);
-	}
-	else
-	{
-		return equip(s, it);
-	}
+	return tryAddItemToMaximize(s, it);
 }
 
 boolean autoEquip(item it)
@@ -61,12 +65,23 @@ boolean autoEquip(item it)
 
 // specifically intended for forcing something in to a specific slot,
 // instead of just forcing it to be equipped in general
-// made for Antique Machete, mainly
+// mostly for the Antique Machete and unstable fulminate
 boolean autoForceEquip(slot s, item it)
 {
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
 		return false;
+	}
+	if($slot[off-hand] == s)
+	{
+		if (weapon_hands(equipped_item($slot[weapon])) > 1)
+		{
+			removeFromMaximize("+equip " + equipped_item($slot[weapon]));
+			equip($slot[weapon], $item[none]);
+		}
+		removeFromMaximize("-equip " + it);
+		addToMaximize("-off-hand, 1hand");
+		return equip($slot[off-hand], it);
 	}
 	if(equip(s, it))
 	{
@@ -89,33 +104,26 @@ boolean autoOutfit(string toWear)
 		return false;
 	}
 
-	if(useMaximizeToEquip())
+	// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
+	auto_log_debug('Adding outfit "' + toWear + '" to maximizer statement', "gold");
+
+	// Accessory items from outfits we commonly wear
+	boolean[item] CommonOutfitAccessories = $items[eXtreme mittens, bejeweled pledge pin, round purple sunglasses, Oscus\'s pelt, Stuffed Shoulder Parrot];
+
+	boolean pass = true;
+	foreach i,it in outfit_pieces(toWear)
 	{
-		// yes I could use +outfit instead here but this makes it simpler to avoid failed maximize calls
-		auto_log_debug('Adding outfit "' + toWear + '" to maximizer statement', "gold");
-
-		// Accessory items from outfits we commonly wear
-		boolean[item] CommonOutfitAccessories = $items[eXtreme mittens, bejeweled pledge pin, round purple sunglasses, Oscus\'s pelt, Stuffed Shoulder Parrot];
-
-		boolean pass = true;
-		foreach i,it in outfit_pieces(toWear)
+		// Keep required accessories in acc3 slot to preserve our format
+		if(CommonOutfitAccessories contains it)
 		{
-			// Keep required accessories in acc3 slot to preserve our format
-			if(CommonOutfitAccessories contains it)
-			{
-				pass = pass && autoEquip($slot[acc3], it);
-			}
-			else
-			{
-				pass = pass && autoEquip(it);
-			}
+			pass = pass && autoEquip($slot[acc3], it);
 		}
-		return pass;
+		else
+		{
+			pass = pass && autoEquip(it);
+		}
 	}
-	else
-	{
-		return outfit(toWear);
-	}
+	return pass;
 }
 
 boolean tryAddItemToMaximize(slot s, item it)
@@ -150,11 +158,6 @@ boolean tryAddItemToMaximize(slot s, item it)
 	return true;
 }
 
-boolean useMaximizeToEquip()
-{
-	return get_property("auto_maximize_baseline").to_lower_case() != "disabled";
-}
-
 string defaultMaximizeStatement()
 {
 	string res = "5item,meat";
@@ -173,13 +176,16 @@ string defaultMaximizeStatement()
 			res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 		}
 
-		if(my_primestat() == $stat[Mysticality])
+		if(!in_zelda())
 		{
-			res += ",0.25spell damage,1.75spell damage percent";
-		}
-		else
-		{
-			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			if(my_primestat() == $stat[Mysticality])
+			{
+				res += ",0.25spell damage,1.75spell damage percent";
+			}
+			else
+			{
+				res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			}
 		}
 
 		if(auto_have_familiar($familiar[mosquito]))
@@ -190,9 +196,13 @@ string defaultMaximizeStatement()
 				res += ",5familiar exp";
 			}
 		}
+		if (in_zelda())
+		{
+			res += ",-ml";
+		}
 	}
 
-	if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
+	if(!in_zelda() && ((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean())))
 	{
 		res += ",10exp,5" + my_primestat() + " experience percent";
 	}
@@ -203,7 +213,7 @@ string defaultMaximizeStatement()
 void resetMaximize()
 {
 	string res = get_property("auto_maximize_baseline");
-	if(res == "" || res.to_lower_case() == "default")
+	if (res == "" || res.to_lower_case() == "default" || res.to_lower_case() == "disabled")
 	{
 		res = defaultMaximizeStatement();
 	}
@@ -231,6 +241,10 @@ void resetMaximize()
 
 void finalizeMaximize()
 {
+	if(auto_wantToEquipPowerfulGlove())
+	{
+		auto_forceEquipPowerfulGlove();
+	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
 		string pref = getMaximizeSlotPref(s);
@@ -241,7 +255,7 @@ void finalizeMaximize()
 			addToMaximize("+equip " + toEquip);
 		}
 	}
-	if(get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
+	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		addToMaximize("effective");
 	}
@@ -313,11 +327,6 @@ float simValue(string modifier)
 
 void equipMaximizedGear()
 {
-	if(!useMaximizeToEquip())
-	{
-		return;
-	}
-
 	finalizeMaximize();
 	auto_log_info("Maximizing: " + get_property("auto_maximize_current"), "blue");
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
@@ -371,118 +380,6 @@ void equipOverrides()
 				}
 			}
 		}
-	}
-}
-
-void equipBaselineGear()
-{
-	if(useMaximizeToEquip())
-	{
-		return;
-	}
-
-	string [string,int,string] equipment_text;
-	if(!file_to_map("autoscend_equipment.txt", equipment_text))
-		auto_log_critical("Could not load autoscend_equipment.txt. This is bad!", "red");
-	item [slot] [int] equipment;
-	boolean considerGearOption(string item_str, string slot_str, string conds)
-	{
-		item it = to_item(item_str);
-		if(it == $item[none] && item_str != "none")
-			abort('"' + item_str + '" does not properly convert to an item!');
-
-		slot eq_slot = $slot[none];
-		if(slot_str == "acc")
-			eq_slot = $slot[acc1];
-		else
-		{
-			eq_slot = slot_str.to_slot();
-			if(eq_slot == $slot[none])
-				abort('"' + eq_slot + '" could not be properly converted to a slot!');
-		}
-		// might as well make sure we can even equip it before looking at conditions
-		if(!auto_can_equip(it, eq_slot))
-			return false;
-		// also we need to have it for it to be equippable, obviously
-		if(equipmentAmount(it) == 0)
-			return false;
-
-		string ignore = get_property("auto_ignoreCombat");
-		if(get_property("auto_beatenUpCount").to_int() >= 7)
-			ignore += "(ml)";
-		if(ignore != "")
-		{
-			if(contains_text(ignore, "(noncombat)") && (numeric_modifier(it, "Combat Rate") < 0))
-				return false;
-			if(contains_text(ignore, "(combat)") && (numeric_modifier(it, "Combat Rate") > 0))
-				return false;
-			if(contains_text(ignore, "(ml)") && (numeric_modifier(it, "Monster Level") > 0))
-				return false;
-			if(contains_text(ignore, "(seal)") && (eq_slot == $slot[weapon]) && (item_type(it) != "club"))
-				return false;
-		}
-
-		if(!auto_check_conditions(conds))
-			return false;
-		// The item is approved! In to the list it goes.
-		equipment[eq_slot][equipment[eq_slot].count()] = it;
-		return true;
-	}
-	boolean [string] ignore_slots;
-	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc]
-	{
-		string override = get_property("auto_equipment_override_" + slot_str);
-		if(override == "")
-			continue;
-		ignore_slots[slot_str] = true;
-		string [int] options = override.split_string(";");
-		foreach i,item_str in options
-			considerGearOption(item_str, slot_str, "");
-	}
-	foreach slot_str, pri, item_str, conds in equipment_text
-	{
-		if(!ignore_slots[slot_str])
-			considerGearOption(item_str, slot_str, conds);
-	}
-
-	item [slot] gear_to_equip;
-	int [item] amount_to_equip;
-	slot [int] slots_to_equip;
-	foreach sl in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3]
-		slots_to_equip[slots_to_equip.count()] = sl;
-	if(my_familiar() != $familiar[none])
-		slots_to_equip[slots_to_equip.count()] = $slot[familiar];
-	if($classes[Cow Puncher, Beanslinger, Snake Oiler] contains my_class())
-		slots_to_equip[slots_to_equip.count()] = $slot[holster];
-	foreach _,sl in slots_to_equip
-	{
-		slot list_slot = ($slots[acc2, acc3] contains sl) ? $slot[acc1] : sl;
-		foreach i,it in equipment[list_slot]
-		{
-			if(it == $item[none]) // for way of the surprising fist only so far...
-				break;
-			if(amount_to_equip[it] > 0 && it.boolean_modifier("Single Equip"))
-				continue;
-			if(amount_to_equip[it] >= equipmentAmount(it))
-				continue;
-			if(sl == $slot[off-hand])
-			{
-				if(gear_to_equip[$slot[weapon]].weapon_hands() > 1)
-					break;
-				if(gear_to_equip[$slot[weapon]].weapon_type() == $stat[Moxie] && !($stats[Moxie, none] contains it.weapon_type()))
-					continue;
-			}
-
-			gear_to_equip[sl] = it;
-			amount_to_equip[it]++;
-			break;
-		}
-	}
-
-	foreach _,sl in slots_to_equip
-	{
-		item to_equip = gear_to_equip[sl];
-		equip(sl, to_equip);
 	}
 }
 
@@ -613,7 +510,7 @@ boolean handleBjornify(familiar fam)
 		return false;
 	}
 
-	if(is100FamiliarRun() && (fam == my_familiar()))
+	if(forbidFamChange() && (fam == my_familiar()))
 	{
 		return false;
 	}
@@ -664,90 +561,30 @@ boolean handleBjornify(familiar fam)
 
 void equipBaseline()
 {
-	equipBaselineGear();
-
-	if(my_daycount() == 1)
-	{
-		if(have_familiar($familiar[grimstone golem]))
-		{
-			if(get_property("_grimFairyTaleDropsCrown").to_int() >= 1)
-			{
-				handleBjornify($familiar[El Vibrato Megadrone]);
-			}
-		}
-		else
-		{
-			handleBjornify($familiar[El Vibrato Megadrone]);
-		}
-	}
-	if(my_daycount() == 2)
-	{
-		handleBjornify($familiar[El Vibrato Megadrone]);
-	}
-
-	if(get_property("auto_diceMode").to_boolean())
-	{
-		autoEquip($slot[acc1], $item[Dice Ring]);
-		autoEquip($slot[acc2], $item[Dice Belt Buckle]);
-		autoEquip($slot[acc3], $item[Dice Sunglasses]);
-		autoEquip($slot[hat], $item[Dice-Print Do-Rag]);
-		autoEquip($slot[back], $item[Dice-Shaped Backpack]);
-		autoEquip($slot[pants], $item[Dice-Print Pajama Pants]);
-		autoEquip($slot[familiar], $item[Kill Screen]);
-	}
+	equipMaximizedGear();
 }
 
 void ensureSealClubs()
 {
-	if(useMaximizeToEquip())
+	cli_execute("acquire 1 seal-clubbing club");
+	foreach club in $items[Meat Tenderizer Is Murder, Lead Pipe, Porcelain Police Baton, Stainless STeel Shillelagh, Frozen Seal Spine, Ghast Iron Cleaver, Oversized Pipe, Curmudgel, Elegant Nightstick, Maxwell's Silver Hammer, Red-Hot Poker, Giant Foam Finger, Hilarious Comedy Prop, Infernal Toilet Brush, Mannequin Leg, Gnawed-Up Dog Bone, Severed Flipper, Spiked Femur, Corrupt Club of Corrupt Corruption, Kneecapping Stick, Orcish frat-paddle, Flaming Crutch, Corrupt Club of Corruption, Skeleton Bone, Remaindered Axe, Club of Corruption, Gnollish Flyswatter, Seal-Clubbing Club]
 	{
-		cli_execute("acquire 1 seal-clubbing club");
-		foreach club in $items[Meat Tenderizer Is Murder, Lead Pipe, Porcelain Police Baton, Stainless STeel Shillelagh, Frozen Seal Spine, Ghast Iron Cleaver, Oversized Pipe, Curmudgel, Elegant Nightstick, Maxwell's Silver Hammer, Red Hot Poker, Giant Foam Finger, Hilarious Comedy Prop, Infernal Toilet Brush, Mannequin Leg, Gnawed-Up Dog Bone, Severed Flipper, Spiked Femur, Corrupt Club of Corrupt Corruption, Kneecapping Stick, Orcish frat-paddle, Flaming Crutch, Corrupt Club of Corruption, Skeleton Bone, Remaindered Axe, Club of Corruption, Gnollish Flyswatter, Seal-Clubbing Club]
+		if(possessEquipment(club))
 		{
-			if(possessEquipment(club))
-			{
-				autoForceEquip(club);
-				return;
-			}
+			autoForceEquip(club);
+			return;
 		}
-	}
-	else
-	{
-		string ignore = get_property("auto_ignoreCombat");
-		set_property("auto_ignoreCombat", ignore + "(seal)");
-		equipBaseline();
-		set_property("auto_ignoreCombat", ignore);
 	}
 }
 
 void removeNonCombat()
 {
-	if(useMaximizeToEquip())
-	{
-		addToMaximize("-50combat");
-	}
-	else
-	{
-		string ignore = get_property("auto_ignoreCombat");
-		set_property("auto_ignoreCombat", ignore + "(noncombat)");
-		equipBaseline();
-		set_property("auto_ignoreCombat", ignore);
-	}
+	addToMaximize("-50combat");
 }
 
 void removeCombat()
 {
-	if(useMaximizeToEquip())
-	{
-		addToMaximize("50combat");
-	}
-	else
-	{
-		string ignore = get_property("auto_ignoreCombat");
-		set_property("auto_ignoreCombat", ignore + "(combat)");
-		equipBaseline();
-		set_property("auto_ignoreCombat", ignore);
-	}
+	addToMaximize("50combat");
 }
 
 void equipRollover()
@@ -757,7 +594,7 @@ void equipRollover()
 		return;
 	}
 
-	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li'l Unicorn Costume])) && auto_is_valid($item[Li'l Unicorn Costume]) && auto_my_path() != "Pocket Familiars")
+	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li\'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li\'l Unicorn Costume])) && auto_is_valid($item[Li\'l Unicorn Costume]) && auto_my_path() != "Pocket Familiars")
 	{
 		cli_execute("buy Li'l Unicorn Costume");
 	}

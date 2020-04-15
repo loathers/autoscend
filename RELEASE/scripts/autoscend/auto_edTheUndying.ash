@@ -46,7 +46,6 @@ void ed_initializeSettings()
 		set_property("auto_edCombatRoundCount", 0);
 
 		set_property("choiceAdventure1002", 1);
-		set_property("choiceAdventure1023", "");
 		set_property("desertExploration", 100);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
 		set_property("auto_delayHauntedKitchen", true);
@@ -66,6 +65,11 @@ void ed_initializeSession()
 			set_property("hpAutoRecovery", 0.0);
 			set_property("hpAutoRecoveryTarget", 0.1);
 		}
+		// the following settings will affect combat automation
+		// see auto_choice_adv.ash for where and how they are used.
+		backupSetting("choiceAdventure1023", "");
+		backupSetting("choiceAdventure1024", "");
+		backupSetting("edDefeatAbort", "3");
 	}
 }
 
@@ -161,13 +165,12 @@ boolean L13_ed_towerHandler()
 	{
 		return false;
 	}
-	if(get_property("auto_sorceress") != "")
+	if (internalQuestStatus("questL13Final") < 0 || internalQuestStatus("questL13Final") > 11)
 	{
 		return false;
 	}
 	if(item_amount($item[Thwaitgold Scarab Beetle Statuette]) > 0)
 	{
-		set_property("auto_sorceress", "finished");
 		council();
 		return true;
 	}
@@ -182,7 +185,6 @@ boolean L13_ed_towerHandler()
 
 		if(item_amount($item[Thwaitgold Scarab Beetle Statuette]) > 0)
 		{
-			set_property("auto_sorceress", "finished");
 			council();
 		}
 		return true;
@@ -252,7 +254,7 @@ boolean L13_ed_councilWarehouse()
 	{
 		return false;
 	}
-	if(get_property("auto_sorceress") != "finished")
+	if (internalQuestStatus("questL13Warehouse") < 0 || internalQuestStatus("questL13Warehouse") > 0)
 	{
 		return false;
 	}
@@ -643,39 +645,6 @@ boolean ed_eatStuff()
 	{
 		autoChew(canEat, $item[Mummified Beef Haunch]);
 	}
-
-	// ideally, we should only need the above in this function as the code below 
-	// should be handled by consumeStuff();
-
-	// expose semi-rare counters
-	if (!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
-	{
-		boolean shouldEatCookie = (my_meat() >= npc_price($item[Fortune Cookie]) && fullness_left() > 0 && my_level() < 12);
-		if (inebriety_left() > 0)
-		{
-			shouldEatCookie = (shouldEatCookie && !autoDrink(1, $item[Lucky Lindy]));
-		}
-		if (shouldEatCookie)
-		{
-			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
-			autoEat(1, $item[Fortune Cookie]);
-		}
-	}
-
-	// use knapsack algorithm implementation to fill stomach and liver
-	// once we have less than 3 adventures left and a full spleen (and all spleen upgrades)
-	if (spleen_limit() == 35 && spleen_left() == 0 && my_adventures() < 3)
-	{
-		if (fullness_left() > 0)
-		{
-			return auto_knapsackAutoConsume("eat", false);
-		}
-		if (inebriety_left() > 0)
-		{
-			return auto_knapsackAutoConsume("drink", false);
-		}
-	}
-
 	return true;
 }
 
@@ -921,8 +890,6 @@ boolean ed_shopping()
 	}
 
 	auto_log_info("Time to shop!", "red");
-	wait(1);
-	visit_url("choice.php?pwd=&whichchoice=1023&option=1", true);
 
 	if (get_property("auto_breakstone").to_boolean())
 	{
@@ -1035,9 +1002,6 @@ boolean ed_shopping()
 			}
 		}
 	}
-
-	visit_url("place.php?whichplace=edunder&action=edunder_leave");
-	visit_url("choice.php?pwd=&whichchoice=1024&option=1", true);
 	return true;
 }
 
@@ -1133,130 +1097,6 @@ void ed_handleAdventureServant(location loc)
 	}
 
 	handleServant(myServant);
-}
-
-boolean ed_preAdv(int num, location loc, string option)
-{
-	ed_handleAdventureServant(loc);
-	return preAdvXiblaxian(loc);
-}
-
-boolean ed_autoAdv(int num, location loc, string option, boolean skipFirstLife)
-{
-	if((option == "") || (option == "auto_combatHandler"))
-	{
-		option = "auto_edCombatHandler";
-	}
-
-	if(!skipFirstLife)
-	{
-		ed_preAdv(num, loc, option);
-	}
-
-	if((my_hp() == 0) || (get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int()))
-	{
-		auto_log_critical("Defeats detected: " + get_property("_edDefeats") + ", Defeat threshold: " + get_property("edDefeatAbort"), "green");
-		abort("How are you here? You can't be here. Bloody Limit Mode (probably, maybe?)!!");
-	}
-
-	boolean status = false;
-	while(num > 0)
-	{
-		set_property("autoAbortThreshold", "-10.0");
-		num = num - 1;
-		if(num > 1)
-		{
-			auto_log_info("This fight and " + num + " more left.", "blue");
-		}
-		cli_execute("auto_pre_adv");
-		set_property("auto_disableAdventureHandling", true);
-		set_property("auto_edCombatHandler", "");
-
-		if(!skipFirstLife)
-		{
-			auto_log_info("Starting Ed Battle at " + loc, "blue");
-			status = adv1(loc, 0, option);
-			if(!status && (get_property("lastEncounter") == "Like a Bat Into Hell"))
-			{
-				set_property("auto_disableAdventureHandling", false);
-				abort("Either a) We had a connection problem and lost track of the battle, or we were defeated multiple times beyond our usual UNDYING. Manually handle the fight and rerun.");
-			}
-		}
-		if(last_monster() == $monster[Crate])
-		{
-			abort("We went to the Noob Cave for reals... uh oh");
-		}
-
-		string page = visit_url("main.php");
-		if(contains_text(page, "whichchoice value=1023"))
-		{
-			auto_log_info("Ed has UNDYING once!" , "blue");
-			if(!ed_shopping())
-			{
-				#If this visit_url results in the enemy dying, we don't want to continue
-				visit_url("choice.php?pwd=&whichchoice=1023&option=2", true);
-			}
-			auto_log_info("Ed returning to battle Stage 1", "blue");
-
-			if(get_property("_edDefeats").to_int() == 0)
-			{
-				auto_log_warning("Monster defeated in initialization, aborting attempt.", "red");
-				set_property("auto_disableAdventureHandling", false);
-				cli_execute("auto_post_adv.ash");
-				return true;
-			}
-
-			#Catch if we lose the jump after first revival.
-			if(get_property("_edDefeats").to_int() != 2)
-			{
-				status = adv1(loc, 0, option);
-				if(last_monster() == $monster[Crate])
-				{
-					abort("We went to the Noob Cave for reals... uh oh");
-				}
-			}
-
-			page = visit_url("main.php");
-			if(contains_text(page, "whichchoice value=1023"))
-			{
-				auto_log_info("Ed has UNDYING twice! Time to kick ass!" , "blue");
-				if(!ed_shopping())
-				{
-					#If this visit_url results in the enemy dying, we don't want to continue
-					visit_url("choice.php?pwd=&whichchoice=1023&option=2", true);
-				}
-				auto_log_info("Ed returning to battle Stage 2", "blue");
-
-				if(get_property("_edDefeats").to_int() == 0)
-				{
-					auto_log_warning("Monster defeated in initialization, aborting attempt.", "red");
-					set_property("auto_disableAdventureHandling", false);
-					cli_execute("auto_post_adv.ash");
-					return true;
-				}
-
-				status = adv1(loc, 0, option);
-				if(last_monster() == $monster[Crate])
-				{
-					abort("We went to the Noob Cave for reals... uh oh");
-				}
-			}
-		}
-		set_property("auto_disableAdventureHandling", false);
-
-		if(get_property("_edDefeats").to_int() > get_property("edDefeatAbort").to_int())
-		{
-			abort("Manually forcing edDefeatAborts. We can't handle the battle.");
-		}
-
-		cli_execute("auto_post_adv.ash");
-	}
-	return status;
-}
-
-boolean ed_autoAdv(int num, location loc, string option)
-{
-	return ed_autoAdv(num, loc, option, false);
 }
 
 boolean L1_ed_island()
@@ -1365,24 +1205,9 @@ boolean L1_ed_islandFallback()
 		}
 	}
 
-	if(get_property("neverendingPartyAlways").to_boolean() || get_property("_neverendingPartyToday").to_boolean())
+	if (neverendingPartyAvailable())
 	{
-		backupSetting("choiceAdventure1322", 2);
-		if(have_effect($effect[Tomes of Opportunity]) == 0)
-		{
-			backupSetting("choiceAdventure1324", 1);
-			backupSetting("choiceAdventure1325", 2);
-		}
-		else
-		{
-			backupSetting("choiceAdventure1324", 5);
-		}
-
-		autoAdv(1, $location[The Neverending Party]);
-		restoreSetting("choiceAdventure1322");
-		restoreSetting("choiceAdventure1324");
-		restoreSetting("choiceAdventure1325");
-		return true;
+		return neverendingPartyPowerlevel();
 	}
 	if(elementalPlanes_access($element[stench]))
 	{
@@ -1445,10 +1270,6 @@ boolean L1_ed_islandFallback()
 			put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
 			equipBaseline();
 		}
-		if (have_skill($skill[More Legs]) && maximizeContains("-10ml"))
-		{
-			removeFromMaximize("-10ml");
-		}
 		auto_change_mcd(11);
 		boolean retVal = autoAdv(1, $location[Hippy Camp]);
 		if (item_amount($item[Filthy Corduroys]) > 0)
@@ -1475,6 +1296,11 @@ boolean L1_ed_islandFallback()
 
 boolean L9_ed_chasmStart()
 {
+	if (internalQuestStatus("questL09Topping") < 0)
+	{
+		return false;
+	}
+
 	if (isActuallyEd() && !get_property("auto_chasmBusted").to_boolean())
 	{
 		auto_log_info("It's a troll on a bridge!!!!", "blue");
@@ -1487,8 +1313,6 @@ boolean L9_ed_chasmStart()
 	}
 	return false;
 }
-
-
 
 boolean L9_ed_chasmBuildClover(int need)
 {
@@ -1507,19 +1331,6 @@ boolean L9_ed_chasmBuildClover(int need)
 		restoreSetting("cloverProtectActive");
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		return true;
-	}
-	return false;
-}
-
-boolean L11_ed_mauriceSpookyraven()
-{
-	if (isActuallyEd())
-	{
-		if(item_amount($item[7962]) == 0)
-		{
-			set_property("auto_ballroom", "finished");
-			return true;
-		}
 	}
 	return false;
 }
@@ -1658,6 +1469,15 @@ boolean LM_edTheUndying()
 	{
 		return true;
 	}
-
+	// Crush the jackass adventurer!
+	if (L13_ed_towerHandler())
+	{
+		return true;
+	}
+	// Back to square frigging one, I guess.
+	if (L13_ed_councilWarehouse())
+	{
+		return true;
+	}
 	return false;
 }

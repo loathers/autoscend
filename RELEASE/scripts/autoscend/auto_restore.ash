@@ -1111,22 +1111,40 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     return blood_skill;
   }
 
-  boolean use_opportunity_blood_skills(int hp_restored_per_use, int final_hp){
+  boolean use_opportunity_blood_skills(int hp_restored_per_use, int final_hp)
+  {
+    int restored = my_hp() + hp_restored_per_use;
+    int waste = min(my_hp()-1, restored-my_maxhp());
+    if(waste <= 0) return true;
+    // both blood skills we care about cost 30
+    int casts_total = waste / 30;
+    if(casts_total <= 0) return true;
+    // ratio should be 1 / the number of turns of that effect per cast
+    float [skill] skill_ratios;
+    float total_ratio = 0.0;
+    if(auto_have_skill($skill[Blood Bubble])){
+      float bubble_ratio = 1.0 / 3.0;
+      skill_ratios[$skill[Blood Bubble]] = bubble_ratio;
+      total_ratio += bubble_ratio;
+    }
+    if(auto_have_skill($skill[Blood Bond])){
+      float bond_ratio = 1.0 / 10.0;
+      skill_ratios[$skill[Blood Bond]] = bond_ratio;
+      total_ratio += bond_ratio;
+    }
+    int casts_so_far;
+    int [skill] to_cast;
+    foreach sk, ratio in skill_ratios{
+      int times_to_cast = floor(casts_total * ratio / total_ratio);
+      to_cast[sk] = times_to_cast;
+      casts_so_far += times_to_cast;
+    }
+    if(casts_so_far < casts_total){
+      to_cast[pick_blood_skill(final_hp)] += casts_total - casts_so_far;
+    }
     boolean success = true;
-    while(true){
-      skill blood_skill = pick_blood_skill(final_hp);
-      if(blood_skill != $skill[none]){
-        int restored = my_hp() + hp_restored_per_use;
-        int waste = min(my_hp()-1, restored-my_maxhp());
-        int casts = floor(waste / hp_cost(blood_skill));
-        if(casts > 0){
-          success &= use_skill(1, blood_skill);
-        } else{
-          break;
-        }
-      } else{
-        break;
-      }
+    foreach sk, times in to_cast{
+      success &= use_skill(times, sk);
     }
     return success;
   }
@@ -1163,7 +1181,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     return false;
   }
 
-  string list_to_string(int[effect] e_list){
+  string list_to_string(boolean[effect] e_list){
     string s = "[";
     boolean first = true;
     foreach e in e_list{
@@ -1281,6 +1299,11 @@ boolean acquireMP(int goal, int meat_reserve){
  */
 boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 {
+	//vampyres don't use MP
+	if(my_class() == $class[Vampyre])
+	{
+		return false;
+	}
 
   boolean isMax = (goal == my_maxmp());
 
@@ -1378,6 +1401,13 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
     return false;
   }
 
+	//vampyres can only be restored using blood bags, which are too valuable to waste on healing HP.
+	//better to make food/drink from them and then rest in your coffin
+	if(my_class() == $class[Vampyre])
+	{
+		return false;
+	}
+
   boolean isMax = (goal == my_maxhp());
 
   __cure_bad_stuff();
@@ -1390,7 +1420,19 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 		return true;
 	}
 
-  __restore("hp", goal, meat_reserve, useFreeRests);
+	if (my_class() == $class[Plumber])
+	{
+		while (my_hp() < goal && my_hp() < my_maxhp() && item_amount($item[coin]) > 400)
+		{
+      retrieve_item(1, $item[super deluxe mushroom]);
+      use(1, $item[super deluxe mushroom]);
+		}
+	}
+	else
+	{
+		__restore("hp", goal, meat_reserve, useFreeRests);
+	}
+
 	return my_hp() >= goal;
 }
 

@@ -51,6 +51,10 @@ boolean snojoFightAvailable()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		return false;
+	}
 	if(my_inebriety() > inebriety_limit())
 	{
 		return false;
@@ -1044,6 +1048,7 @@ boolean LX_ghostBusting()
 			startMeatsmithSubQuest();
 			if(internalQuestStatus("questM23Meatsmith") == -1)
 			{
+				auto_log_warning("Failed to unlock [The Skeleton Store] for ghostbusting", "red");
 				newbieFail = true;
 			}
 			else if(internalQuestStatus("questM23Meatsmith") == 0)
@@ -1073,6 +1078,7 @@ boolean LX_ghostBusting()
 			startArmorySubQuest();
 			if(internalQuestStatus("questM25Armorer") == -1)
 			{
+				auto_log_warning("Failed to unlock [Madness Bakery] for ghostbusting", "red");
 				newbieFail = true;
 			}
 			else if(internalQuestStatus("questM25Armorer") <= 1)
@@ -1096,6 +1102,7 @@ boolean LX_ghostBusting()
 			startGalaktikSubQuest();
 			if(internalQuestStatus("questM24Doc") == -1)
 			{
+				auto_log_warning("Failed to unlock [The Overgrown Lot] for ghostbusting", "red");
 				newbieFail = true;
 			}
 			else if(get_property("questM24Doc") != "finished")
@@ -1123,17 +1130,17 @@ boolean LX_ghostBusting()
 			return false;
 		}
 
-		if((goal == $location[Lair of the Ninja Snowmen]) && ((get_property("auto_trapper") != "yeti") && (get_property("auto_trapper") != "finished")))
+		if (goal == $location[Lair of the Ninja Snowmen] && internalQuestStatus("questL08Trapper") < 2)
 		{
 			return false;
 		}
-		if((goal == $location[The VERY Unquiet Garves]) && (get_property("auto_crypt") != "finished"))
+		if (goal == $location[The VERY Unquiet Garves] && get_property("questL07Cyrptic") != "finished")
 		{
 			return false;
 		}
 		if(goal == $location[The Castle in the Clouds in the Sky (Top Floor)])
 		{
-			if(get_property("auto_castleground") != "finished")
+			if (internalQuestStatus("questL10Garbage") < 9)
 			{
 				return false;
 			}
@@ -1157,7 +1164,7 @@ boolean LX_ghostBusting()
 		{
 			return false;
 		}
-		if((goal == $location[The Hidden Park]) && (get_property("auto_hiddenunlock") == "finished"))
+		if (goal == $location[The Hidden Park] && internalQuestStatus("questL11Worship") > 3)
 		{
 			return false;
 		}
@@ -1178,8 +1185,7 @@ boolean LX_ghostBusting()
 
 		if(newbieFail)
 		{
-			auto_log_critical("Can't bust that ghost, we don't feel good!!", "blue");
-			abort("Ghost busting failure, this should not happen");
+			auto_log_critical("Can't bust that ghost, we don't feel good!! skipping this ghost...", "red");
 			set_property("questPAGhost", "unstarted");
 			set_property("ghostLocation", "");
 			return false;

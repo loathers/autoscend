@@ -61,30 +61,3 @@ void standard_dnaPotions()
 		}
 	}
 }
-
-
-void standard_initializeSettings()
-{
-	if(auto_my_path() == "Standard")
-	{
-		set_property("auto_getStarKey", true);
-		set_property("auto_holeinthesky", true);
-		set_property("auto_wandOfNagamar", true);
-		set_property("auto_useCubeling", true);
-	}
-}
-
-void standard_pulls()
-{
-	if(auto_my_path() == "Standard")
-	{
-		if(my_daycount() == 3)
-		{
-			#pullXWhenHaveY($item[Wand of Nagamar], 1, 0);		//Pull made obsolete by Questificaton
-			#pullXWhenHaveY($item[Star Key Lime Pie], 3, 0);
-			pullXWhenHaveY($item[Boris\'s Key Lime Pie], 1, 0);
-			pullXWhenHaveY($item[Cold Hi Mein], 2, 0);
-		}
-
-	}
-}

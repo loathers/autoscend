@@ -1,18 +1,4 @@
-coldAirportAlways	boolean	Do you have access to The Glaciest?
-hotAirportAlways	boolean	Do you have access to That 70s Volcano?
-sleazeAirportAlways	boolean	Do you have access to Spring Break Beach?
-spookyAirportAlways	boolean	Do you have access to Conspiracy Island?
-stenchAirportAlways	boolean	Do you have access to DinseyLandfill?
-hasDetectiveSchool	boolean	Do you have access to the Detective School?
-barrelShrineUnlocked	boolean	Do you have access to the barrel shrine?
-gingerbreadCityAvailable	boolean	Do you have access to the Gingerbread City?
-spacegateAlways	boolean	[standard] Do you have access to Spacegate?
-frAlways	boolean	[standard] Do you have access to FantasyRealm?
-prAlways	boolean	[standard] Do you have access to PirateRealm?
-neverendingPartyAlways	boolean	[standard] Do you have access to the Neverending Party?
 auto_skipNEPOverride	boolean	If true, will not use the Neverending Party even if mafia says it is available.
-voteAlways	boolean	[standard] Do you have access to the Voting Booth?
-daycareOpen	boolean	[standard] Do you have access to the Boxing Daycare?
 auto_newbieOverride	boolean	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
 auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
 auto_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
@@ -31,11 +17,12 @@ auto_floundryChoice	string	Force floundry usage. Must use the item name (Use ; t
 auto_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
 auto_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
 auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
-auto_blacklistFamiliar	string	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
+auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
 auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
-auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
-auto_limitConsume	boolean	When false, pull cheapish food/booze when we run low so we can continue.
-auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat. If you set it to "disabled" it will revert to the old equipment system, for now.
+auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
+auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
+auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
+auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
 auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
 auto_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
 auto_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.
@@ -48,6 +35,7 @@ auto_optimizeConsultsInRun	boolean	When true, optimize our consults in run to ge
 auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
 auto_consultChoice	string	The name of the player you want to do Zatara consults with.
 auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
+auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
 auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
 auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
 auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
@@ -56,7 +44,6 @@ auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after
 auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle.
 auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
 auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
-auto_legacyConsumeStuff	boolean	When true, use the old heuristic-based consumption strategy instead of the new solver that tries to pack as many adventures into your organs as possible. Not used in CS or Ed.
 auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
 auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
 auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.

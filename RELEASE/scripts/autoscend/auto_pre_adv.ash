@@ -39,66 +39,7 @@ void handlePreAdventure(location place)
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " + place.to_string(), "green");
 
-	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
-	if(auto_my_path() == "Pocket Familiars")
-	{
-		famChoice = $familiar[none];
-	}
-
-	if((famChoice != $familiar[none]) && !is100FamiliarRun() && (internalQuestStatus("questL13Final") < 13))
-	{
-		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
-		{
-#			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
-			use_familiar(famChoice);
-		}
-	}
-
-	if(auto_have_familiar($familiar[cat burglar]))
-	{
-		item[monster] heistDesires = catBurglarHeistDesires();
-		boolean wannaHeist = false;
-		foreach mon, it in heistDesires
-		{
-			foreach i, mmon in get_monsters(place)
-			{
-				if(mmon == mon)
-				{
-					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
-					wannaHeist = true;
-				}
-			}
-		}
-		if(wannaHeist && (famChoice != $familiar[none]) && !is100FamiliarRun())
-		{
-			use_familiar($familiar[cat burglar]);
-		}
-	}
-
-	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
-	{
-		if(!auto_have_familiar($familiar[Machine Elf]))
-		{
-			auto_log_critical("Massive failure, we don't use snowglobes.");
-			abort("Massive failure, we don't use snowglobes.");
-		}
-		auto_log_error("Somehow we are going to the DMT without a Machine Elf...", "red");
-		use_familiar($familiar[Machine Elf]);
-	}
-
-	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
-	{
-		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
-		{
-			if(equipped_item($slot[Familiar]) != $item[Li\'l Candy Corn Costume])
-			{
-				if(item_amount($item[Li\'l Candy Corn Costume]) > 0)
-				{
-					equip($slot[Familiar], $item[Li\'l Candy Corn Costume]);
-				}
-			}
-		}
-	}
+	preAdvUpdateFamiliar(place);
 
 	preAdvXiblaxian(place);
 
@@ -160,10 +101,13 @@ void handlePreAdventure(location place)
 	{
 		// make sure we have enough MP to cast our most expensive spells
 		// Wrath of Ra (yellow ray) is 40 MP, Curse of Stench (sniff) is 35 MP & Curse of Vacation (banish) is 30 MP.
-		acquireMP(40, 1000);
-		// ensure we can cast at least Fist of the Mummy or Storm of the Scarab.
-		// so we don't waste adventures when we can't actually kill a monster.
-		acquireMP(8, 0);
+		if (place != $location[The Shore, Inc. Travel Agency])
+		{
+			acquireMP(40, 1000);
+			// ensure we can cast at least Fist of the Mummy or Storm of the Scarab.
+			// so we don't waste adventures when we can't actually kill a monster.
+			acquireMP(8, 0);
+		}
 
 		if (my_hp() == 0)
 		{
@@ -174,7 +118,7 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if(my_path() == "Two Crazy Random Summer")
+	if(in_tcrs())
 	{
 		if(my_class() == $class[Sauceror] && my_sign() == "Blender")
 		{
@@ -225,11 +169,6 @@ void handlePreAdventure(location place)
 		acquireHP(80.0);
 	}
 
-	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32) && (my_maxmp() >= 32))
-	{
-		acquireMP(32, 2500);
-	}
-
 	foreach i,mon in get_monsters(place)
 	{
 		if(auto_wantToYellowRay(mon, place))
@@ -241,12 +180,106 @@ void handlePreAdventure(location place)
 		{
 			adjustForBanishIfPossible(mon, place);
 		}
+
+		if(auto_wantToReplace(mon, place))
+		{
+			adjustForReplaceIfPossible(mon);
+		}
 	}
 
-	if(auto_latteDropWanted(place))
+	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))
+	{
+		autoEquip($item[low-pressure oxygen tank]);
+	}
+
+	// Latte may conflict with certain quests. Ignore latte drops for the greater good.
+	boolean[location] IgnoreLatteDrop = $locations[The Haunted Boiler Room];
+	if((auto_latteDropWanted(place)) && (!(IgnoreLatteDrop contains place)))
 	{
 		auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
 		autoEquip($item[latte lovers member\'s mug]);
+	}
+
+	if(in_zelda())
+	{
+		int pool_skill = speculative_pool_skill();
+		if (possessEquipment($item[Pool Cue]))
+		{
+			pool_skill += 3;
+		}
+		// Even though there are ghosts in the Billiards Room, we want to equip
+		// the pool cue to finish up the quest.
+		boolean skip_equipping_flower = place == $location[The Haunted Billiards Room] && 18 <= pool_skill;
+
+		// Ziggurat has a ghost BUT when clearing out lianas, we want to equip
+		// machete in mainhand and use boots.
+		if(place == $location[A Massive Ziggurat])
+		{
+			int lianaFought = 0;
+			foreach i,s in place.combat_queue.split_string("; ")
+			{
+				if(s == "dense liana")
+				{
+					++lianaFought;
+				}
+			}
+			if(lianaFought < 3)
+			{
+				skip_equipping_flower = true;
+			}
+		}
+		if ((is_ghost_in_zone(place) && !skip_equipping_flower)
+			|| (place == $location[The Smut Orc Logging Camp] && possessEquipment($item[frosty button])))
+		{
+			if (possessEquipment($item[bonfire flower]))
+			{
+				autoEquip($item[bonfire flower]);
+			}
+			else if (possessEquipment($item[[10462]fire flower]))
+			{
+				autoEquip($item[[10462]fire flower]);
+			}
+			else if (item_amount($item[coin]) >= 20)
+			{
+				// 20 coins to avoid doing clever re-routing? Yes please!
+				retrieve_item(1, $item[[10462]fire flower]);
+				autoEquip($item[[10462]fire flower]);
+			}
+			else
+			{
+				abort("I'm scared to adventure in a zone with ghosts without a fire flower. Please fight a bit and buy me a fire flower.");
+			}
+		}
+		else
+		{
+			if (possessEquipment($item[fancy boots]))
+			{
+				autoEquip($slot[acc3], $item[fancy boots]);
+			}
+			else if (possessEquipment($item[work boots]))
+			{
+				autoEquip($slot[acc3], $item[work boots]);
+			}
+		}
+
+		// It is dangerous out there! Take this!
+		int flyeredML = get_property("flyeredML").to_int();
+		boolean have_pill_keeper = (possessEquipment($item[Eight Days a Week Pill Keeper])) &&
+			(is_unrestricted($item[Unopened Eight Days a Week Pill Keeper]));
+
+		if(0 < flyeredML && flyeredML < 10000 && in_zelda() && have_pill_keeper)
+		{
+			auto_log_debug("I expect to be flyering, equipping Pill Keeper to skip the first hit.");
+			autoEquip($slot[acc3], $item[Eight Days a Week Pill Keeper]);
+		}
+	}
+
+	// Use some instakills.
+	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
+	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19)
+	{
+		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
+		autoEquip($slot[acc3], DOCTOR_BAG);
 	}
 
 	equipOverrides();
@@ -269,13 +302,21 @@ void handlePreAdventure(location place)
 		autoEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 
-	if((place == $location[The Haunted Wine Cellar]) && (my_turncount() != 0) && (get_property("auto_winebomb") == "partial"))
+	if((place == $location[The Haunted Boiler Room]) && (my_turncount() != 0) && internalQuestStatus("questL11Manor") < 3)
 	{
 		if(!possessEquipment($item[Unstable Fulminate]))
 		{
 			abort("Tried to charge a WineBomb but don't have one.");
 		}
-		autoEquip($slot[off-hand], $item[Unstable Fulminate]);
+		if(equipped_amount($item[Unstable Fulminate]) == 0)
+		{
+			auto_log_warning("Tried to adventure in [The Haunted Boiler Room] without an [Unstable Fulminate]... correcting", "red");
+			autoForceEquip($slot[off-hand], $item[Unstable Fulminate]);
+			if(equipped_amount($item[Unstable Fulminate]) == 0)
+			{
+				abort("Correction failed, please report this. Manually get the [wine bomb] then run me again");
+			}
+		}
 	}
 
 	if(place == $location[The Black Forest])
@@ -289,17 +330,9 @@ void handlePreAdventure(location place)
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean)
 	{
-		float itemDrop;
-		if(useMaximizeToEquip())
-		{
-			addToMaximize("50item " + ceil(itemNeed._float) + "max");
-			simMaximize();
-			itemDrop = simValue("Item Drop");
-		}
-		else
-		{
-			itemDrop = numeric_modifier("Item Drop");
-		}
+		addToMaximize("50item " + ceil(itemNeed._float) + "max");
+		simMaximize();
+		float itemDrop = simValue("Item Drop");
 		if(itemDrop < itemNeed._float)
 		{
 			if (buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 20, 1, 10))
@@ -346,24 +379,24 @@ void handlePreAdventure(location place)
 	if(get_property("kingLiberated").to_boolean())
 	{
 		doML = false;
-		removeML=false;
-		purgeML=false;
+		removeML = false;
+		purgeML = false;
 	}
 
 		// NOTE: If we aren't quits before we pass L13, let us gain stats.
-	if(((get_property("flyeredML").to_int() > 9999) || get_property("auto_hippyInstead").to_boolean() || (get_property("auto_war") == "finished") || (get_property("sidequestArenaCompleted") != "none")) && ((my_level() == 13)))
+	if ((get_property("flyeredML").to_int() > 9999 || internalQuestStatus("questL12War") > 1 || get_property("sidequestArenaCompleted") != "none") && my_level() > 12)
 	{
 		doML = false;
 		removeML = true;
-		purgeML=false;
+		purgeML = false;
 	}
 
 	// Allow user settable option to override the above settings to not slack off ML
-	if (get_property("auto_disregardInstantKarma").to_boolean())
+	if (my_level() > 12 && get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		doML = true;
 		removeML = false;
-		purgeML=false;
+		purgeML = false;
 	}
 
 	// Item specific Conditions
@@ -371,7 +404,7 @@ void handlePreAdventure(location place)
 	{
 		doML = false;
 		removeML = true;
-		purgeML=false;
+		purgeML = false;
 	}
 
 	// Location Specific Conditions
@@ -385,7 +418,7 @@ void handlePreAdventure(location place)
 	{
 		doML = true;
 		removeML = false;
-		purgeML=false;
+		purgeML = false;
 	}
 
 	// Act on ML settings
@@ -424,6 +457,7 @@ void handlePreAdventure(location place)
 			uneffect($effect[Drescher\'s Annoying Noise]);
 			uneffect($effect[Pride of the Puffin]);
 			uneffect($effect[Ceaseless Snarling]);
+			uneffect($effect[Blessing of Serqet]);
 		}
 	}
 
@@ -432,10 +466,7 @@ void handlePreAdventure(location place)
 
 // EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
-	if(useMaximizeToEquip())
-	{
-		cli_execute("checkpoint clear");
-	}
+	cli_execute("checkpoint clear");
 
 	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
 	if(lowMLZones contains place)
@@ -447,7 +478,6 @@ void handlePreAdventure(location place)
 		// Last minute MCD alterations if Limit set, otherwise trust maximizer
 		if(get_property("auto_MLSafetyLimit") != "")
 		{
-			auto_change_mcd(0);
 			auto_setMCDToCap();
 		}
 
@@ -459,7 +489,7 @@ void handlePreAdventure(location place)
 	// After maximizing equipment, we might not be at full HP
 	if ($locations[Tower Level 1, The Invader] contains place)
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
@@ -468,6 +498,8 @@ void handlePreAdventure(location place)
 		auto_log_info("Burning " + wasted_mp + " MP...");
 		cli_execute("burn " + wasted_mp);
 	}
+
+	acquireMP(32, 1000);
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{

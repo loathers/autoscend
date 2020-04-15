@@ -361,7 +361,7 @@ boolean drinkSpeakeasyDrink(item drink)
 }
 
 
-boolean zataraSeaside(string who)
+boolean zataraAvailable()
 {
 	if(item_amount($item[Clan VIP Lounge Key]) == 0)
 	{
@@ -381,6 +381,12 @@ boolean zataraSeaside(string who)
 	{
 		return false;
 	}
+	return true;
+}
+
+boolean zataraSeaside(string who)
+{
+	if(!zataraAvailable()) return false;
 
 	who = to_lower_case(who);
 

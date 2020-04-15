@@ -35,7 +35,7 @@ void handlePostAdventure()
 		set_property("auto_forceNonCombatTurn", -1);
 	}
 
-	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatSource").to_int() > my_turncount() - 10)
+	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatTurn").to_int() > my_turncount() - 10)
 	{
 		auto_log_warning("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
 			"), am going to assume it happened but we missed it.", "blue");
@@ -98,25 +98,6 @@ void handlePostAdventure()
 	{
 		auto_log_info("Postadventure skipped by standard adventure handler.", "green");
 		return;
-	}
-
-	if(choice_follows_fight())
-	{
-		// make sure last_choice is updated
-		visit_url("main.php");
-		switch(last_choice())
-		{
-			case 1340: // Is There A Doctor In The House?
-				auto_log_info("Accepting doctor quest, it's our job!");
-				run_choice(1);
-				break;
-			case 1342: // Torpor
-				bat_reallyPickSkills(20);
-				break;
-			default:
-				auto_log_warning("Unrecognized unhandled choice after combat " + last_choice(), "red");
-				break;
-		}
 	}
 
 	if(!get_property("_ballInACupUsed").to_boolean() && (item_amount($item[Ball-In-A-Cup]) > 0))
@@ -246,7 +227,7 @@ void handlePostAdventure()
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}
 
-			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])))
+			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])) && my_location() != $location[The Smut Orc Logging Camp])
 			{
 				buffMaintain($effect[Blessing of Serqet], 10, 1, 10);
 			}
@@ -471,12 +452,17 @@ void handlePostAdventure()
 
 	if(my_maxmp() < 50)
 	{
+		buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 15, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 20, 1, 10);
-		if(regen > 10.0)
+		// Only maintain skills in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 25, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
+			if(regen > 10.0)
+			{
+				buffMaintain($effect[Empathy], 25, 1, 10);
+			}
 		}
 		// TODO: 'Get Big' is a pretty good skill
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 25))
@@ -527,12 +513,17 @@ void handlePostAdventure()
 	}
 	else if(my_maxmp() < 80)
 	{
+		buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 20, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 30, 1, 10);
-		if(regen > 10.0)
+		// Only Maintain skills in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 35, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
+			if(regen > 10.0)
+			{
+				buffMaintain($effect[Empathy], 35, 1, 10);
+			}
 		}
 
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 32))
@@ -592,11 +583,14 @@ void handlePostAdventure()
 		{
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
-
-		buffMaintain($effect[Leash of Linguini], 35, 1, 10);
-		if(regen > 4.0)
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
 		{
-			buffMaintain($effect[Empathy], 50, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+			if(regen > 4.0)
+			{
+				buffMaintain($effect[Empathy], 50, 1, 10);
+			}
 		}
 
 		foreach sk in toCast
@@ -699,8 +693,12 @@ void handlePostAdventure()
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
 
-		buffMaintain($effect[Empathy], 50, 1, 10);
-		buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
+		{
+			buffMaintain($effect[Empathy], 50, 1, 10);
+			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+		}
 
 		foreach sk in toCast
 		{
@@ -784,7 +782,12 @@ void handlePostAdventure()
 		{
 			buffMaintain($effect[Curiosity of Br\'er Tarrypin], 50, 1, 2);
 		}
-		buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);
+
+		// Only maintain in path with familiars
+		if(auto_have_familiar($familiar[Mosquito]))
+		{
+			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);
+		}
 		buffMaintain($effect[A Few Extra Pounds], 200, 1, 2);
 		buffMaintain($effect[Boon of the War Snapper], 200, 1, 5);
 		buffMaintain($effect[Boon of She-Who-Was], 200, 1, 5);
@@ -863,7 +866,8 @@ void handlePostAdventure()
 		// Generic +Stat Buffs
 		buffMaintain($effect[Carol of the Thrills], 30, 1, 1);
 
-		if((40 / regen) < auto_predictAccordionTurns())
+		// Aptitude is not worth it to maintain if we have Ur-Kel's
+		if((40 < regen * auto_predictAccordionTurns()) && (have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0))
 		{
 			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 40, 1, 1);
 		}

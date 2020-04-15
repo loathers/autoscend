@@ -584,7 +584,6 @@ boolean chateaumantegna_nightstandSet()
 
 boolean chateauPainting()
 {
-	consumeStuff();
 	int paintingLevel = 8;
 	if(auto_my_path() == "One Crazy Random Summer")
 	{
@@ -855,7 +854,7 @@ boolean deck_useScheme(string action)
 	else if(action == "turns")
 	{
 		cards = $strings[Ancestral Recall, Island];
-		if((get_property("auto_trapper") == "") || (get_property("auto_trapper") == "start"))
+		if (needOre())
 		{
 			cards = $strings[Ancestral Recall, Island, Mine];
 		}
@@ -1186,7 +1185,7 @@ boolean adjustEdHat(string goal)
 
 boolean resolveSixthDMT()
 {
-	if(auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 10) && !is100FamiliarRun() && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_daycount() == 2))
+	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 10) && !forbidFamChange() && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_daycount() == 2))
 	{
 		if(get_property("auto_choice1119") != "")
 		{
