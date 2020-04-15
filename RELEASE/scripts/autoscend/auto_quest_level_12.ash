@@ -120,7 +120,7 @@ int auto_warKillsPerBattle(int sidequests)
 	return kills;
 }
 
-int auto_warAdvReqCB()
+int auto_estimatedAdventuresForChaosButterfly()
 {
 	// Returns an ESTIMATE of how manny adventures it will take to acquire a chaos butterfly.
 	
@@ -140,10 +140,10 @@ int auto_warAdvReqCB()
 	}
 	
 	float expectedItemDropMulti = 1 + simValue("Item Drop")/100;
-	return ceil(20.0 / expectedItemDropMulti);
+	return 4*ceil(20.0 / expectedItemDropMulti);
 }
 
-int auto_warAdvReqFarm()
+int auto_estimatedAdventuresForDooks()
 {
 	int advCost = 40;
 	
@@ -160,7 +160,7 @@ int auto_warAdvReqFarm()
 	}
 	
 	//chaos butterfly calculations
-	int advToGetCB = auto_warAdvReqCB();
+	int advToGetCB = auto_estimatedAdventuresForChaosButterfly();
 	if(get_property("chaosButterflyThrown").to_boolean() || item_amount($item[chaos butterfly]) > 0)
 	{
 		advCost -= 15;
@@ -221,11 +221,8 @@ int bitmask_from_warplan(WarPlan plan)
 	return bitmask;
 }
 
-WarPlan auto_warPlan()
+WarPlan auto_bestWarPlan()
 {
-	//returns a bitwise of what is the best sidequest plan for the current run.
-	//due to bitwise, the first sidequest is sidequest number 0 and the last (sixth) sidequest is sidequest number 5, etc.
-	
 	if(in_koe())
 	{
 		WarPlan do_nothing;
@@ -264,7 +261,7 @@ WarPlan auto_warPlan()
 	int advCostLighthouse = 10;	//placeholder estimate. TODO actual math
 	int advCostOrchard = 10;	//placeholder estimate. TODO actual math
 	int advCostNuns = 20;		//placeholder estimate. TODO actual math
-	int advCostFarm = auto_warAdvReqFarm();
+	int advCostFarm = auto_estimatedAdventuresForDooks();
 
 	// Start with the sidequests already completed.
 	// Greedily add the sidequest that saves the most adventures, breaking
@@ -1712,7 +1709,7 @@ boolean L12_themtharHills()
 	return true;
 }
 
-boolean LX_chaosButterfly()
+boolean LX_obtainChaosButterfly()
 {
 	if(auto_my_path() == "Bees Hate You" || auto_my_path() == "Pocket Familiars")
 	{
@@ -1745,7 +1742,7 @@ boolean LX_chaosButterfly()
 	}
 	
 	// Fight possibility giant for chaos butterfly if profitable.
-	if(!get_property("chaosButterflyThrown").to_boolean() && item_amount($item[chaos butterfly]) == 0 && auto_warAdvReqCB() < 15)
+	if(!get_property("chaosButterflyThrown").to_boolean() && item_amount($item[chaos butterfly]) == 0 && (auto_estimatedAdventuresForChaosButterfly() < 15))
 	{
 		if(autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]))
 		{
@@ -1800,14 +1797,14 @@ boolean L12_farm()
 		return false;
 	}
 	
-	WarPlan plan = auto_warPlan();
+	WarPlan plan = auto_bestWarPlan();
 	if(!plan.do_farm)
 	{
 		return false;
 	}
 		
 	// Acquire and use chaos butterfly if needed and desired
-	if(LX_chaosButterfly())
+	if(LX_obtainChaosButterfly())
 	{
 		return true;
 	}

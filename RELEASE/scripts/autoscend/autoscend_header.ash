@@ -130,21 +130,21 @@ int bitmask_from_warplan(WarPlan plan);					//Defined in autoscend/auto_quest_le
 
 string auto_warSide();										//Defined in autoscend/auto_quest_level_12.ash
 int auto_warSideQuestsDone();								//Defined in autoscend/auto_quest_level_12.ash
-WarPlan auto_warSideQuestsState();						//Defined in autoscend/auto_quest_level_12.ash
+WarPlan auto_warSideQuestsState();							//Defined in autoscend/auto_quest_level_12.ash
 int auto_warEnemiesRemaining();								//Defined in autoscend/auto_quest_level_12.ash
 int auto_warKillsPerBattle();								//Defined in autoscend/auto_quest_level_12.ash
 int auto_warKillsPerBattle(int sidequests);					//Defined in autoscend/auto_quest_level_12.ash
-int auto_warAdvReqCB();										//Defined in autoscend/auto_quest_level_12.ash
-int auto_warAdvReqFarm();									//Defined in autoscend/auto_quest_level_12.ash
-WarPlan auto_warPlan();									//Defined in autoscend/auto_quest_level_12.ash
-int auto_warTotalBattles(WarPlan plan, int remaining);	//Defined in autoscend/auto_quest_level_12.ash
-int auto_warTotalBattles(WarPlan plan);					//Defined in autoscend/auto_quest_level_12.ash
+int auto_estimatedAdventuresForChaosButterfly();			//Defined in autoscend/auto_quest_level_12.ash
+int auto_estimatedAdventuresForDooks();						//Defined in autoscend/auto_quest_level_12.ash
+WarPlan auto_bestWarPlan();									//Defined in autoscend/auto_quest_level_12.ash
+int auto_warTotalBattles(WarPlan plan, int remaining);		//Defined in autoscend/auto_quest_level_12.ash
+int auto_warTotalBattles(WarPlan plan);						//Defined in autoscend/auto_quest_level_12.ash
 boolean warAdventure();										//Defined in autoscend/auto_quest_level_12.ash
 boolean haveWarOutfit();									//Defined in autoscend/auto_quest_level_12.ash
 boolean warOutfit();										//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_sonofaPrefix();									//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_themtharHills();								//Defined in autoscend/auto_quest_level_12.ash
-boolean LX_chaosButterfly();								//Defined in autoscend/auto_quest_level_12.ash
+boolean LX_obtainChaosButterfly();							//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_farm();											//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_lastDitchFlyer();								//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_flyerBackup();									//Defined in autoscend/auto_quest_level_12.ash
@@ -158,6 +158,7 @@ boolean L12_sonofaFinish();									//Defined in autoscend/auto_quest_level_12.a
 boolean L12_gremlins();										//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_orchardFinalize();								//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_finalizeWar();									//Defined in autoscend/auto_quest_level_12.ash
+
 boolean L13_powerLevel();
 boolean L13_sorceressDoor();
 boolean L13_towerNSContests();
