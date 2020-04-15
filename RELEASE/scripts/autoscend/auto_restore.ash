@@ -393,7 +393,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       restored_amount += numeric_modifier("Bonus Resting HP");
     }
 
-    if (isActuallyEd() && metadata.name != "linen bandages") {
+    if (isActuallyEd() && !($items[linen bandages, silk bandages, cotton bandages] contains metadata.name.to_item())) {
       restored_amount = 0;
     }
 
@@ -1434,7 +1434,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
       retrieve_item(1, $item[super deluxe mushroom]);
       use(1, $item[super deluxe mushroom]);
 		}
-  }
+	}
 	else
 	{
 		__restore("hp", goal, meat_reserve, useFreeRests);
