@@ -760,7 +760,7 @@ boolean LM_bond()
 					temp = visit_url("place.php?whichplace=kgb&action=kgb_tab4", false);
 				}
 
-				if(!have_outfit("Knob Goblin Harem Girl Disguise"))
+				if(!possessOutfit("Knob Goblin Harem Girl Disguise"))
 				{
 					if(!acquireMP(160, 0))
 					{

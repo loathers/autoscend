@@ -74,13 +74,6 @@ void main()
 		}
 	}
 
-	//This has a post combat scenario, let us just handle it.
-	if(last_monster() == $monster[Cake Lord])
-	{
-		run_choice(1);
-		run_choice(1);
-	}
-
 	if((get_property("lastEncounter") == "Daily Briefing") && (auto_my_path() == "License to Adventure"))
 	{
 		set_property("_auto_bondBriefing", "started");
