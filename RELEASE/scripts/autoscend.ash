@@ -857,6 +857,11 @@ int handlePulls(int day)
 			return 0;
 		}
 
+		if((storage_amount($item[etched hourglass]) > 0) && auto_is_valid($item[etched hourglass]))
+		{
+			pullXWhenHaveY($item[etched hourglass], 1, 0);
+		}
+
 		if((storage_amount($item[can of rain-doh]) > 0) && glover_usable($item[Can Of Rain-Doh]) && (pullXWhenHaveY($item[can of Rain-doh], 1, 0)))
 		{
 			if(item_amount($item[Can of Rain-doh]) > 0)
@@ -1569,6 +1574,11 @@ boolean dailyEvents()
 	if((item_amount($item[Festive Warbear Bank]) > 0) && !get_property("_warbearBankUsed").to_boolean())
 	{
 		use(1, $item[Festive Warbear Bank]);
+	}
+
+	if((item_amount($item[etched hourglass]) > 0) && !get_property("_etchedHourglassUsed").to_boolean())
+	{
+		use(1, $item[etched hourglass]);
 	}
 
 	if((item_amount($item[Can of Rain-doh]) > 0) && (item_amount($item[Rain-Doh Red Wings]) == 0))
