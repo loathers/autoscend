@@ -873,7 +873,7 @@ boolean is100FamRun()
 {
 	// answers the question of "is this a 100% familiar run"
 	
-	if(get_property("auto_100familiar") == $familiar[none])
+	if(get_property("auto_100familiar").to_familiar() == $familiar[none])
 	{
 		return false;
 	}
