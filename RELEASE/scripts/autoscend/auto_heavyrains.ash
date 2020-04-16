@@ -40,8 +40,19 @@ boolean routineRainManHandler()
 	{
 		return false;
 	}
-#	if(my_rain() > (92 - (12 * my_daycount())))
+	
+	boolean want_to_rainman = false;
 	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0))
+	{
+		want_to_rainman = true;
+	}
+	//stomach and liver are full, and 1 adv is left before we are done for the day
+	if(my_adventures() == (1 + auto_advToReserve()) && my_rain() >= 50 && my_fullness() == fullness_limit() && my_inebriety() == inebriety_limit())
+	{
+		want_to_rainman = true;
+	}
+	
+	if(want_to_rainman)
 	{
 		if(get_property("auto_mountainmen") == "")
 		{

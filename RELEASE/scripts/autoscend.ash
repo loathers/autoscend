@@ -226,30 +226,23 @@ void initializeSettings()
 	set_property("auto_doneInitialize", my_ascensions());
 }
 
-boolean auto_unreservedAdvRemaining()
+int auto_advToReserve()
 {
-	// Calculates if we should continue to run the main loop based on how many adv we want to keep.
+	// Calculates how many adventures we should aim to keep in reserve
 	
-	// blank int does not work properly. blank should default to -1
-	if(get_property("auto_save_adv_override") == "")
+	// blank int value does not work. and values lower than -1 are not valid.
+	if(get_property("auto_save_adv_override") == "" || get_property("auto_save_adv_override").to_int() < -1)
 	{
 		set_property("auto_save_adv_override", -1);
 	}
 	
-	// if auto_save_adv_override value is not -1 then use the override
-	if(get_property("auto_save_adv_override") != -1)
+	// if auto_save_adv_override value is 0 or higher then use the override
+	if(get_property("auto_save_adv_override").to_int() > -1)
 	{
-		if(my_adventures() > get_property("auto_save_adv_override").to_int())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return get_property("auto_save_adv_override").to_int();
 	}
 
-	// automatically calculate adv to reserve at end of day
+	// automatically calculate how many adv to reserve at end of day
 	// free crafting require at least 1 adventure to do.
 	// To enter free fights we need at least 1 adventure remaining. Dying costs an adventure, so we reserve 2 adventures so the user can manually complete the remaining fights even if we lose.
 	// cocktailcrafting and pasta cooking require 2 adventures.
@@ -278,14 +271,17 @@ boolean auto_unreservedAdvRemaining()
 		}
 	}
 	
-	if(my_adventures() > reserveadv)
+	return reserveadv;
+}
+
+boolean auto_unreservedAdvRemaining()
+{
+	// should the main loop continue to run or not, based on how many adv we wish to reserve.
+	if(my_adventures() > auto_advToReserve())
 	{
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 boolean handleFamiliar(string type)
