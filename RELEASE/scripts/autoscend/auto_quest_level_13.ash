@@ -706,7 +706,7 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 		}
-		if((auto_have_familiar($familiar[warbear drone])) && !forbidFamChange())
+		if((auto_have_familiar($familiar[warbear drone])) && canChangeFamiliar())
 		{
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
@@ -722,12 +722,12 @@ boolean L13_towerNSTower()
 				sources = sources + 2;
 			}
 		}
-		else if((auto_have_familiar($familiar[Sludgepuppy])) && !forbidFamChange())
+		else if((auto_have_familiar($familiar[Sludgepuppy])) && canChangeFamiliar())
 		{
 			handleFamiliar($familiar[Sludgepuppy]);
 			sources = sources + 3;
 		}
-		else if((auto_have_familiar($familiar[Imitation Crab])) && !forbidFamChange())
+		else if((auto_have_familiar($familiar[Imitation Crab])) && canChangeFamiliar())
 		{
 			handleFamiliar($familiar[Imitation Crab]);
 			sources = sources + 2;
@@ -837,7 +837,7 @@ boolean L13_towerNSTower()
 		{
 			cli_execute("concert 2");
 		}
-		if(forbidFamChange())
+		if(!canChangeFamiliar())
 		{
 			addToMaximize("200meat drop");
 		}

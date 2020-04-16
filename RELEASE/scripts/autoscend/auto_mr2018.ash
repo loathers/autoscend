@@ -148,7 +148,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 	{
 		return false;
 	}
-	if(forbidFamChange($familiar[God Lobster]))
+	if(!canChangeToFamiliar($familiar[God Lobster]))
 	{
 		return false;
 	}

@@ -91,13 +91,13 @@ void initializeSettings()
 		{
 			set_property("auto_100familiar", my_familiar());
 		}
-		if(forbidFamChange())
+		if(!canChangeFamiliar())
 		{
 			set_property("auto_useCubeling", false);
 		}
 	}
 
-	if(!forbidFamChange($familiar[Crimbo Shrub]))
+	if(canChangeToFamiliar($familiar[Crimbo Shrub]))
 	{
 		use_familiar($familiar[Crimbo Shrub]);
 		use_familiar($familiar[none]);
@@ -345,7 +345,7 @@ boolean handleFamiliar(string type)
 
 boolean handleFamiliar(familiar fam)
 {
-	if(forbidFamChange())
+	if(!canChangeFamiliar())
 	{
 		return true;
 	}
@@ -917,7 +917,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if(((auto_my_path() == "Picky") || forbidFamChange()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
+		if(((auto_my_path() == "Picky") || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
 		{
 			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
 			{
@@ -1675,7 +1675,7 @@ boolean doBedtime()
 		return false;
 	}
 	int spleenlimit = spleen_limit();
-	if(forbidFamChange())
+	if(!canChangeFamiliar())
 	{
 		spleenlimit -= 3;
 	}
@@ -2776,7 +2776,7 @@ int auto_freeCombatsRemaining()
 {
 	int count = 0;
 	
-	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && !forbidFamChange())
+	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && canChangeFamiliar())
 	{
 		count += 5-get_property("_machineTunnelsAdv").to_int();
 	}
@@ -2784,7 +2784,7 @@ int auto_freeCombatsRemaining()
 	{
 		count += 10-get_property("_snojoFreeFights").to_int();
 	}
-	if(auto_have_familiar($familiar[God Lobster]) && !forbidFamChange())
+	if(auto_have_familiar($familiar[God Lobster]) && canChangeFamiliar())
 	{
 		count += 3-get_property("_godLobsterFights").to_int();
 	}
@@ -2834,7 +2834,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(!in_koe() && get_property("_machineTunnelsAdv").to_int() < 5 && !forbidFamChange($familiar[Machine Elf]))
+	if(!in_koe() && get_property("_machineTunnelsAdv").to_int() < 5 && canChangeToFamiliar($familiar[Machine Elf]))
 	{
 		if(get_property("auto_choice1119") != "")
 		{
@@ -4055,7 +4055,7 @@ boolean LX_phatLootToken()
 
 	if((!possessEquipment($item[Ring of Detect Boring Doors]) || (item_amount($item[Eleven-Foot Pole]) == 0) || (item_amount($item[Pick-O-Matic Lockpicks]) == 0)) && auto_have_familiar($familiar[Gelatinous Cubeling]))
 	{
-		if(!forbidFamChange($familiar[Gelatinous Cubeling]) && (auto_my_path() != "Pocket Familiars"))
+		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]) && (auto_my_path() != "Pocket Familiars"))
 		{
 			return false;
 		}
@@ -4810,7 +4810,7 @@ boolean doTasks()
 
 	basicAdjustML();
 	powerLevelAdjustment();
-	if (forbidFamChange() && my_familiar() == $familiar[none])
+	if (!canChangeFamiliar() && my_familiar() == $familiar[none])
 	{
 		// re-equip a familiar if it's a 100% run just in case something unequipped it
 		// looking at you auto_maximizedConsumeStuff()...
