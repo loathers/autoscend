@@ -289,7 +289,6 @@ string auto_combatHandler(int round, string opp, string text)
 	phylum current = to_phylum(get_property("dnaSyringe"));
 
 	string combatState = get_property("auto_combatHandler");
-	int thunderBirdsLeft = get_property("auto_combatHandlerThunderBird").to_int();
 	int fingernailClippersLeft = get_property("auto_combatHandlerFingernailClippers").to_int();
 
 	#Handle different path is monster_level_adjustment() > 150 (immune to staggers?)
@@ -764,25 +763,41 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(thunderBirdsLeft > 0)
+	//Heavy Rain Boss debuffing
+	if($monsters[Big Wisnaqua, The Aquaman, The Big Wisniewski, The Man, The Rain King] contains enemy)
 	{
-		thunderBirdsLeft = thunderBirdsLeft - 1;
-		set_property("auto_combatHandlerThunderBird", thunderBirdsLeft.to_string());
-		return useSkill($skill[Thunder Bird], false);
-	}
-
-	if(canUse($skill[Thunder Bird]) && (monster_level_adjustment() <= 150))
-	{
-		if($monsters[Big Wisnaqua, The Aquaman, The Big Wisniewski, The Man, The Rain King] contains enemy)
+		//Against bosses set how many [Thunder Bird] we want to cast during round 1
+		if(round == 1 && get_property("auto_combatHandlerThunderBird").to_int() == 0)
 		{
-			if(canUse($skill[Curse Of Weaksauce]) && (my_mp() >= 60) && auto_have_skill($skill[Itchy Curse Finger]))
+			int targetThunderBird = 3;
+			if(monster_level_adjustment() > 80)
 			{
-				return useSkill($skill[Curse Of Weaksauce]);
+				targetThunderBird++;
 			}
-
-			set_property("auto_combatHandlerThunderBird", "5");
-			return useSkill($skill[Thunderstrike]);
+			if(monster_level_adjustment() > 110)
+			{
+				targetThunderBird++;
+			}
+			if(monster_level_adjustment() > 150)
+			{
+				targetThunderBird++;
+			}
+			targetThunderBird = min(my_thunder(), targetThunderBird);
+			set_property("auto_combatHandlerThunderBird", targetThunderBird);
 		}
+	
+		//if enemy ML is too high then they cannot be staggered, and at that point curse of weaksauce is less useful as it reduces by a fixed amount.
+		if(canUse($skill[Curse Of Weaksauce]) && my_mp() >= 30 && auto_have_skill($skill[Itchy Curse Finger]) && monster_level_adjustment() <= 150)
+		{
+			return useSkill($skill[Curse Of Weaksauce]);
+		}
+	}
+	
+	// Heavy rain repeated debuffing over multiple combat rounds using [Thunder Bird] skill.
+	if(get_property("auto_combatHandlerThunderBird").to_int() > 0 && canUse($skill[Thunder Bird], false))
+	{
+		set_property("auto_combatHandlerThunderBird", get_property("auto_combatHandlerThunderBird").to_int() - 1);
+		return useSkill($skill[Thunder Bird], false);
 	}
 
 	if((my_location() == $location[The Battlefield (Frat Uniform)]) && (enemy == $monster[gourmet gourami]))
