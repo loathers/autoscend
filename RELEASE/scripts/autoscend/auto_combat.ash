@@ -548,9 +548,28 @@ string auto_combatHandler(int round, string opp, string text)
 	// Unique Heavy Rains Enemy that Reflects Spells.
 	if(enemy.to_string() == "Gurgle")
 	{
-		if(canUse($skill[Summon Love Stinkbug], false))
+		if(canUse($skill[Summon Love Stinkbug]))
 		{
-			return useSkill($skill[Summon Love Stinkbug], false);
+			return useSkill($skill[Summon Love Stinkbug]);
+		}
+		return "attack with weapon";
+	}
+	
+	// Unique Heavy Rains Enemy that reduces Spells damage to 1 and caps non spell damage at 39 per source and type
+	// Has low enough HP it can be defeated in 10 combat turns using simple melee attacks that deal only physical damage
+	if(enemy.to_string() == "Dr. Aquard")
+	{
+		if(canUse($skill[Curse of Weaksauce]))
+		{
+			return useSkill($skill[Curse of Weaksauce]);
+		}
+		if(canUse($skill[Micrometeorite]))
+		{
+			return useSkill($skill[Micrometeorite]);
+		}
+		if(canUse($skill[Summon Love Stinkbug]))
+		{
+			return useSkill($skill[Summon Love Stinkbug]);
 		}
 		return "attack with weapon";
 	}
