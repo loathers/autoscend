@@ -877,10 +877,6 @@ boolean is100FamRun()
 	{
 		return false;
 	}
-	if(get_property("auto_100familiar") == "")
-	{
-		return false;
-	}
 	
 	// if you reached this line, then it means that auto_100familiar is set to some specific familiar.
 	return true;
