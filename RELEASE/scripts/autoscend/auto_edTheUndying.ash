@@ -22,7 +22,6 @@ void ed_initializeSettings()
 {
 	if (isActuallyEd())
 	{
-		set_property("auto_100familiar", $familiar[Egg Benedict]);
 		set_property("auto_crackpotjar", "done");
 		set_property("auto_cubeItems", false);
 		set_property("auto_day1_dna", "finished");

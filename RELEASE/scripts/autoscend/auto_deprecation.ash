@@ -82,11 +82,7 @@ boolean settingFixer()
 	}
 	if(get_property("auto_100familiar") == "no")
 	{
-		set_property("auto_100familiar", false);
-	}
-	if(get_property("auto_100familiar") == "true")
-	{
-		set_property("auto_100familiar", $familiar[Egg Benedict]);
+		set_property("auto_100familiar", $familiar[none]);
 	}
 	if(get_property("auto_100familiar") == "false")
 	{

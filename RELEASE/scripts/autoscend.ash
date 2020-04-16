@@ -97,7 +97,7 @@ void initializeSettings()
 		}
 	}
 
-	if(!forbidFamChange() && auto_have_familiar($familiar[Crimbo Shrub]))
+	if(!forbidFamChange($familiar[Crimbo Shrub]))
 	{
 		use_familiar($familiar[Crimbo Shrub]);
 		use_familiar($familiar[none]);
@@ -2834,7 +2834,7 @@ boolean LX_freeCombats()
 		return true;
 	}
 
-	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && !forbidFamChange())
+	if(!in_koe() && get_property("_machineTunnelsAdv").to_int() < 5 && !forbidFamChange($familiar[Machine Elf]))
 	{
 		if(get_property("auto_choice1119") != "")
 		{
