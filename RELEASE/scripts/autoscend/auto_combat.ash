@@ -791,9 +791,11 @@ string auto_combatHandler(int round, string opp, string text)
 		{
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
+		//instead of calling the first [Thunder Bird] cast here it leaves it to the handler that immediately follows.
+		//othewise you would need a bunch of protective code testing its viability first to avoid risking infinite loop.
 	}
-	
-	// Heavy rain repeated debuffing over multiple combat rounds using [Thunder Bird] skill.
+	// The heavy rain boss debuffing above and [Thunder Bird] handler below this line rely on being in the current order. do not flip them.
+	// [Thunder Bird] skill handler for Heavy Rain path, perform repeated debuffing over multiple rounds.
 	if(get_property("auto_combatHandlerThunderBird").to_int() > 0 && canUse($skill[Thunder Bird], false))
 	{
 		set_property("auto_combatHandlerThunderBird", get_property("auto_combatHandlerThunderBird").to_int() - 1);
