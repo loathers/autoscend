@@ -970,11 +970,14 @@ boolean L13_towerNSTower()
 
 boolean L13_towerNSFinal()
 {
-	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 11)
+	//state 11 means ready to fight sorceress. state 12 means lost to her due to lack of wand thus unlocking bear verb orgy
+	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 12)
 	{
 		return false;
 	}
-	if(get_property("auto_wandOfNagamar").to_boolean())
+	//wand acquisition function is called before this function, it turns this propery to false once a wand is acquired.
+	//it is also false on all paths that don't want a wand. Thus if it is true it means we do want a wand but didn't get one yet.
+	if(get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") == 11)
 	{
 		auto_log_warning("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
 	}
