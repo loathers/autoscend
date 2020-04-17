@@ -2784,7 +2784,7 @@ int auto_freeCombatsRemaining()
 	{
 		count += 10-get_property("_snojoFreeFights").to_int();
 	}
-	if(auto_have_familiar($familiar[God Lobster]) && canChangeFamiliar())
+	if(canChangeFamiliar($familiar[God Lobster]))
 	{
 		count += 3-get_property("_godLobsterFights").to_int();
 	}
@@ -4055,7 +4055,7 @@ boolean LX_phatLootToken()
 
 	if((!possessEquipment($item[Ring of Detect Boring Doors]) || (item_amount($item[Eleven-Foot Pole]) == 0) || (item_amount($item[Pick-O-Matic Lockpicks]) == 0)) && auto_have_familiar($familiar[Gelatinous Cubeling]))
 	{
-		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]) && (auto_my_path() != "Pocket Familiars"))
+		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 		{
 			return false;
 		}
