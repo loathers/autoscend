@@ -2776,7 +2776,7 @@ int auto_freeCombatsRemaining()
 {
 	int count = 0;
 	
-	if(!in_koe() && auto_have_familiar($familiar[Machine Elf]) && canChangeFamiliar())
+	if(!in_koe() && canChangeToFamiliar($familiar[Machine Elf]))
 	{
 		count += 5-get_property("_machineTunnelsAdv").to_int();
 	}
