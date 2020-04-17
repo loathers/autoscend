@@ -491,7 +491,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 
 	set_property("choiceAdventure970", "0");
 
-	if(forbidFamChange($familiar[Reanimated Reanimator]))
+	if(!canChangeToFamiliar($familiar[Reanimated Reanimator]))
 	{
 		wink = false;
 	}

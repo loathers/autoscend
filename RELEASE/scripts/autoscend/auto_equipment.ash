@@ -510,7 +510,7 @@ boolean handleBjornify(familiar fam)
 		return false;
 	}
 
-	if(forbidFamChange() && (fam == my_familiar()))
+	if(!canChangeFamiliar() && (fam == my_familiar()))
 	{
 		return false;
 	}

@@ -1091,7 +1091,7 @@ boolean solveKGBMastermind()
 
 boolean getSpaceJelly()
 {
-	if(forbidFamChange($familiar[Space Jellyfish]))
+	if(!canChangeToFamiliar($familiar[Space Jellyfish]))
 	{
 		return false;
 	}
