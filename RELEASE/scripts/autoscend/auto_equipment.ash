@@ -606,6 +606,8 @@ void equipRollover()
 		to_max += ",0.3fites";
 	if(auto_have_familiar($familiar[Trick-or-Treating Tot]))
 		to_max += ",switch Trick-or-Treating Tot";
+	if(auto_have_familiar($familiar[Left-Hand Man]))
+		to_max += ",switch Left-Hand Man";
 
 	maximize(to_max, false);
 
