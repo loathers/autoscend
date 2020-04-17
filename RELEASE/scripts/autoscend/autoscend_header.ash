@@ -825,6 +825,7 @@ void hr_doBedtime();										//Defined in autoscend/auto_heavyrains.ash
 boolean hr_handleFamiliar(familiar fam);					//Defined in autoscend/auto_heavyrains.ash
 void hr_initializeDay(int day);								//Defined in autoscend/auto_heavyrains.ash
 void hr_initializeSettings();								//Defined in autoscend/auto_heavyrains.ash
+boolean L13_towerFinalHeavyRains();							//Defined in autoscend/auto_heavyrains.ash
 boolean in_ronin();											//Defined in autoscend/auto_util.ash
 int inebriety_left();										//Defined in autoscend/auto_util.ash
 void initializeDay(int day);								//Defined in autoscend.ash
@@ -1183,6 +1184,8 @@ boolean auto_canForceNextNoncombat();  // Defined in autoscend/auto_util.ash
 boolean auto_forceNextNoncombat(); // Defined in autoscend/auto_util.ash
 boolean auto_haveQueuedForcedNonCombat(); // Defined in autoscend/auto_util.ash
 boolean is_superlikely(string encounterName); // Defined in autoscend/auto_util.ash
+boolean hasTTBlessing();									 // Defined in autoscend/auto_util.ash
+void effectAblativeArmor(boolean passive_dmg_allowed);		 // Defined in autoscend/auto_util.ash
 
 //Record from autoscend/auto_zone.ash
 record generic_t
