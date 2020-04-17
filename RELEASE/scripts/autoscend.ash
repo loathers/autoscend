@@ -2784,7 +2784,7 @@ int auto_freeCombatsRemaining()
 	{
 		count += 10-get_property("_snojoFreeFights").to_int();
 	}
-	if(canChangeFamiliar($familiar[God Lobster]))
+	if(canChangeToFamiliar($familiar[God Lobster]))
 	{
 		count += 3-get_property("_godLobsterFights").to_int();
 	}
