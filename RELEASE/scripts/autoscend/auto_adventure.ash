@@ -344,7 +344,7 @@ void preAdvUpdateFamiliar(location place)
 				}
 			}
 		}
-		if(wannaHeist && (famChoice != $familiar[none]) && canChangeFamiliar())
+		if(wannaHeist && (famChoice != $familiar[none]) && canChangeToFamiliar($familiar[Cat Burglar]))
 		{
 			use_familiar($familiar[cat burglar]);
 		}
