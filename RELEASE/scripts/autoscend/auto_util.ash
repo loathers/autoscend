@@ -909,7 +909,7 @@ boolean canChangeToFamiliar(familiar target)
 	}
 
 	// You are allowed to change to a familiar if it is also the goal of the current 100% run.
-	if(get_property("auto_100familiar") == target)
+	if(get_property("auto_100familiar").to_familiar() == target)
 	{
 		return true;
 	}
