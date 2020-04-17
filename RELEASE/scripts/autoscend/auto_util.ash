@@ -1336,7 +1336,7 @@ boolean canYellowRay(monster target)
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
 	// first, do any necessary prep to use a yellow ray
-	if((my_familiar() == $familiar[Crimbo Shrub]) || (canChangeToFamiliar($familiar[Crimbo Shrub]) && auto_have_familiar($familiar[Crimbo Shrub])))
+	if(canChangeToFamiliar($familiar[Crimbo Shrub]))
 	{
 		if(item_amount($item[box of old Crimbo decorations]) == 0)
 		{

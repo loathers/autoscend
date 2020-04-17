@@ -706,7 +706,7 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 		}
-		if((auto_have_familiar($familiar[warbear drone])) && canChangeFamiliar())
+		if(canChangeToFamiliar($familiar[warbear drone]))
 		{
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
@@ -722,12 +722,12 @@ boolean L13_towerNSTower()
 				sources = sources + 2;
 			}
 		}
-		else if((auto_have_familiar($familiar[Sludgepuppy])) && canChangeFamiliar())
+		else if(canChangeToFamiliar($familiar[Sludgepuppy]))
 		{
 			handleFamiliar($familiar[Sludgepuppy]);
 			sources = sources + 3;
 		}
-		else if((auto_have_familiar($familiar[Imitation Crab])) && canChangeFamiliar())
+		else if(canChangeToFamiliar($familiar[Imitation Crab]))
 		{
 			handleFamiliar($familiar[Imitation Crab]);
 			sources = sources + 2;
