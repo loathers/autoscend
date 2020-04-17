@@ -828,14 +828,9 @@ boolean LA_cs_communityService()
 				set_property("auto_csPuckCounter", get_property("auto_csPuckCounter").to_int() - 1);
 				doFarm = true;
 			}
-			if(((item_amount($item[Power Pill]) < 2) || (item_amount($item[Yellow Pixel]) < pixelsNeed)) && (have_familiar($familiar[Puck Man]) || have_familiar($familiar[Ms. Puck Man])))
+			if(((item_amount($item[Power Pill]) < 2) || (item_amount($item[Yellow Pixel]) < pixelsNeed)) && (canChangeToFamiliar($familiar[Puck Man]) || canChangeToFamiliar($familiar[Ms. Puck Man])))
 			{
-				if(!canChangeFamiliar() && !canChangeToFamiliar($familiar[Puck Man]) && !canChangeToFamiliar($familiar[Ms. Puck Man]))
-				{}
-				else
-				{
-					doFarm = true;
-				}
+				doFarm = true;
 			}
 
 			if(possessEquipment($item[KoL Con 13 Snowglobe]) && (equipped_item($slot[Off-Hand]) == $item[A Light That Never Goes Out]))
@@ -1016,7 +1011,7 @@ boolean LA_cs_communityService()
 			{
 				missing = 0;
 			}
-			if((missing > (item_amount($item[Miniature Power Pill]) + item_amount($item[Power Pill]))) && (have_familiar($familiar[Puck Man]) || have_familiar($familiar[Ms. Puck Man])) && (canChangeFamiliar() || canChangeToFamiliar($familiar[Puck Man]) || canChangeToFamiliar($familiar[Ms. Puck Man])))
+			if((missing > (item_amount($item[Miniature Power Pill]) + item_amount($item[Power Pill]))) && (canChangeToFamiliar($familiar[Puck Man]) || canChangeToFamiliar($familiar[Ms. Puck Man])))
 			{
 				if(elementalPlanes_access($element[hot]))
 				{
@@ -2244,7 +2239,7 @@ boolean LA_cs_communityService()
 					autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 					return true;
 				}
-				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 2) && canChangeToFamiliar($familiar[Machine Elf]))
+				if(get_property("_machineTunnelsAdv").to_int() < 2 && canChangeToFamiliar($familiar[Machine Elf]))
 				{
 					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
@@ -2410,7 +2405,7 @@ boolean LA_cs_communityService()
 			}
 			asdonBuff($effect[Driving Stealthily]);
 
-			if(canChangeToFamiliar($familiar[Disgeist]) && have_familiar($familiar[Disgeist]))
+			if(canChangeToFamiliar($familiar[Disgeist]))
 			{
 				# Need 37-41 pounds to save 3 turns. (probably 40)
 				# 74 does not save 6 but 79 does.
@@ -4332,7 +4327,7 @@ boolean cs_giant_growth()
 	{
 		fail = false;
 	}
-	if(have_familiar($familiar[Machine Elf]) && canChangeFamiliar())
+	if(canChangeToFamiliar($familiar[Machine Elf]))
 	{
 		use_familiar($familiar[Machine Elf]);
 		fail = false;
