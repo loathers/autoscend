@@ -1095,6 +1095,11 @@ boolean L13_towerNSFinal()
 		abort("Freeing the king will result in a path change. Enjoy your immortality.");
 	}
 
+	if(my_class() == $class[Plumber] && (0 < item_amount($item[Thwaitgold buzzy beetle statuette])))
+	{
+		abort("Freeing the king will lose your extra stomach space. Enjoy the rest of your video game.");
+	}
+
 	visit_url("place.php?whichplace=nstower&action=ns_11_prism");
 	if(get_property("kingLiberated") == "false")
 	{
