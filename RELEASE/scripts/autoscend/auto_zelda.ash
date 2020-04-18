@@ -397,3 +397,34 @@ boolean zelda_skillValid(skill sk)
 	return true;
 }
 
+boolean zelda_equipTool(stat st)
+{
+	if (!in_zelda()) return false;
+
+	boolean equipWithFallback(item to_equip, item fallback_to_equip)
+	{
+		if (possessEquipment(to_equip) && autoEquip(to_equip))
+		{
+			return true;
+		}
+		else if (possessEquipment(fallback_to_equip))
+		{
+			return autoEquip(fallback_to_equip);
+		}
+		else if (item_amount($item[coin]) >= 20)
+		{
+			// 20 coins to avoid doing clever re-routing? Yes please!
+			retrieve_item(1, fallback_to_equip);
+			return autoEquip(fallback_to_equip);
+		}
+		return false;
+	}
+
+	switch (st)
+	{
+		case $stat[muscle]: return equipWithFallback($item[heavy hammer], $item[hammer]);
+		case $stat[mysticality]: return equipWithFallback($item[bonfire flower], $item[[10462]fire flower]);
+		case $stat[moxie]: return equipWithFallback($item[fancy boots], $item[work boots]);
+	}
+	return false;
+}

@@ -223,35 +223,14 @@ void main()
 		if ((is_ghost_in_zone(place) && !skip_equipping_flower)
 			|| (place == $location[The Smut Orc Logging Camp] && possessEquipment($item[frosty button])))
 		{
-			if (possessEquipment($item[bonfire flower]))
-			{
-				autoEquip($item[bonfire flower]);
-			}
-			else if (possessEquipment($item[[10462]fire flower]))
-			{
-				autoEquip($item[[10462]fire flower]);
-			}
-			else if (item_amount($item[coin]) >= 20)
-			{
-				// 20 coins to avoid doing clever re-routing? Yes please!
-				retrieve_item(1, $item[[10462]fire flower]);
-				autoEquip($item[[10462]fire flower]);
-			}
-			else
+			if(!zelda_equipTool($stat[mysticality]))
 			{
 				abort("I'm scared to adventure in a zone with ghosts without a fire flower. Please fight a bit and buy me a fire flower.");
 			}
 		}
 		else
 		{
-			if (possessEquipment($item[fancy boots]))
-			{
-				autoEquip($slot[acc3], $item[fancy boots]);
-			}
-			else if (possessEquipment($item[work boots]))
-			{
-				autoEquip($slot[acc3], $item[work boots]);
-			}
+			zelda_equipTool($stat[moxie]);
 		}
 
 		// It is dangerous out there! Take this!

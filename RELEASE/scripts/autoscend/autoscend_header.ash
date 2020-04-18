@@ -1172,6 +1172,7 @@ boolean zelda_buyStuff(); // Defined in autoscend/auto_zelda.ash
 int zelda_ppCost(skill sk); // Defined in autoscend/auto_zelda.ash
 boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_skillValid(skill sk); // Defined in autoscend/auto_zelda.ash
+boolean zelda_equipTool(stat st); // Defined in autoscend/auto_zelda.ash
 
 element currentFlavour(); // Defined in autoscend/auto_util.ash
 void resetFlavour(); // Defined in autoscend/auto_util.ash

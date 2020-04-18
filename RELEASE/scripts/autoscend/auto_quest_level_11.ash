@@ -2284,6 +2284,12 @@ boolean L11_defeatEd()
 		autoForceEquip($item[low-pressure oxygen tank]);
 	}
 
+	zelda_equipTool($stat[moxie]);
+
+	// When we disable adventure handling, we also disable the maximizer that
+	// would normally happen in pre-adventure.
+	equipMaximizedGear();
+
 	acquireHP();
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 
