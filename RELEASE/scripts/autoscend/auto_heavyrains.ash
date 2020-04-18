@@ -40,8 +40,19 @@ boolean routineRainManHandler()
 	{
 		return false;
 	}
-#	if(my_rain() > (92 - (12 * my_daycount())))
+	
+	boolean want_to_rainman = false;
 	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0))
+	{
+		want_to_rainman = true;
+	}
+	//stomach and liver are full, and 1 adv is left before we are done for the day
+	if(my_adventures() == (1 + auto_advToReserve()) && my_rain() >= 50 && my_fullness() == fullness_limit() && my_inebriety() == inebriety_limit())
+	{
+		want_to_rainman = true;
+	}
+	
+	if(want_to_rainman)
 	{
 		if(get_property("auto_mountainmen") == "")
 		{
@@ -542,4 +553,223 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 boolean rainManSummon(string monsterName, boolean copy, boolean wink)
 {
 	return rainManSummon(monsterName, copy, wink, "");
+}
+
+boolean L13_towerFinalHeavyRains()
+{
+	//Prepare for and defeat the final boss for Heavy Rains run. Which has special rules for engagement.
+	if (internalQuestStatus("questL13Final") != 11)
+	{
+		return false;
+	}
+	
+	//use a damage dealing familiar
+	if(canChangeToFamiliar($familiar[warbear drone]))			//old event item. still farmable. up to 6 attacks per round
+	{
+		use_familiar($familiar[Warbear Drone]);
+		//TODO does rain king stripping at begining of combat remove familiar equipment? if yes remove the part below
+		pullXWhenHaveY($item[warbear drone codes], 1, 0);
+		if(possessEquipment($item[warbear drone codes]))
+		{
+			equip($item[warbear drone codes]);
+		}
+	}
+	else if(canChangeToFamiliar($familiar[Sludgepuppy]))		//IOTM derivative, infinitely farmable. attacks 3 times per round
+	{
+		use_familiar($familiar[Sludgepuppy]);
+	}
+	else if(canChangeToFamiliar($familiar[Imitation Crab]))		//cheap, easily acquired. attacks 2 times per round
+	{
+		use_familiar($familiar[Imitation Crab]);
+	}
+	else if(canChangeToFamiliar($familiar[Angry Goat]))			//super cheap. high chance to attack each round.
+	{
+		use_familiar($familiar[Angry Goat]);
+	}
+	
+	//buff up before the boss
+	//buffMaintain($effect[Benetton's Medley of Diversity], 0, 1, 1);		//15 prismatic weapon dmg. TODO: implemented in buffMaintain
+	buffMaintain($effect[Dirge of Dreadfulness], 0, 1, 1);					//12 spooky weapon dmg
+	effectAblativeArmor(true);					//Unimportant effects protect your important one from being removed.
+	
+	//Calculate melee/ranged damage. Each element is capped at 40. assume you will be able to deal 40 physical damage.
+	cli_execute("outfit Birthday Suit");			//Need to get naked so we can check our stats properly.
+	maximize("prismatic damage, +weapon, +offhand", false);
+
+	int hot_dmg = min(40,numeric_modifier("hot damage"));
+	int cold_dmg = min(40,numeric_modifier("cold damage"));
+	int stench_dmg = min(40,numeric_modifier("stench damage"));
+	int sleaze_dmg = min(40,numeric_modifier("sleaze damage"));
+	int spooky_dmg = min(40,numeric_modifier("spooky damage"));
+	if(auto_have_skill($skill[Cold Shoulder]))
+	{
+		cold_dmg = min(40, (5+cold_dmg));
+	}
+	
+	//lunging thrust smack as a seal clubber with a club triples elemental damage. this applies to damage that does not come from weapon, excluding cold shoulder.
+	boolean want_club = false;
+	if(my_class() == $class[Seal Clubber] && auto_have_skill($skill[Lunging Thrust-Smack]))
+	{
+		maximize("prismatic damage, +weapon, +offhand, +club", false);
+		int club_hot_dmg = min(40,(3*numeric_modifier("hot damage")));
+		int club_cold_dmg = min(40,(3*numeric_modifier("cold damage")));
+		int club_stench_dmg = min(40,(3*numeric_modifier("stench damage")));
+		int club_sleaze_dmg = min(40,(3*numeric_modifier("sleaze damage")));
+		int club_spooky_dmg = min(40,(3*numeric_modifier("spooky damage")));
+		
+		if(auto_have_skill($skill[Cold Shoulder]))
+		{
+			club_cold_dmg = min(40, (5+club_cold_dmg));
+		}
+
+		if((hot_dmg + cold_dmg + stench_dmg + sleaze_dmg + spooky_dmg) < (club_hot_dmg + club_cold_dmg + club_stench_dmg + club_sleaze_dmg + club_spooky_dmg))
+		{
+			want_club = true;
+			hot_dmg = club_hot_dmg;
+			cold_dmg = club_cold_dmg;
+			stench_dmg = club_stench_dmg;
+			sleaze_dmg = club_sleaze_dmg;
+			spooky_dmg = club_spooky_dmg;
+		}
+	}
+	
+	int attack_dmg = 40 + min(40,hot_dmg) + min(40,cold_dmg) + min(40,stench_dmg) + min(40,sleaze_dmg) + min(40,spooky_dmg);
+	
+	//check magic damage
+	boolean spell_extra_element = false;
+	if(item_amount($item[Rain-Doh green lantern]) > 0 || item_amount($item[meteorb]) > 0 || item_amount($item[snow mobile]) > 0)
+	{
+		spell_extra_element = true;
+	}
+	else foreach it in $items[Rain-Doh green lantern, meteorb, snow mobile]
+	{
+		if(creatable_amount(it) > 0)
+		{
+			create(1, it);
+			spell_extra_element = true;
+			break;
+		}
+	}
+
+	int	spell_dmg = 0;
+	string best_spell = "";
+	if(auto_have_skill($skill[Saucestorm]))
+	{
+		if(80>spell_dmg)
+		{
+			best_spell = "saucestorm";
+			spell_dmg = max(80,spell_dmg);
+		}
+		//IIRC hot and cold extra elements don't work for saucestorm, so only want green lantern. TODO verify
+		if(item_amount($item[Rain-Doh green lantern]) > 0 && 120>spell_dmg)
+		{
+			best_spell = "saucestorm";
+			spell_dmg = max(120,spell_dmg);
+		}
+	}
+	if(auto_have_skill($skill[Weapon of the Pastalord]) && auto_have_skill($skill[Flavour of Magic]))
+	{
+		if(80>spell_dmg)
+		{
+			best_spell = "weapon_of_the_pastalord";
+			spell_dmg = max(80,spell_dmg);
+		}
+		if(spell_extra_element && 120>spell_dmg)
+		{
+			best_spell = "weapon_of_the_pastalord";
+			spell_dmg = max(120,spell_dmg);
+		}
+	}
+	if(auto_have_skill($skill[Turtleini]))
+	{
+		if(120>spell_dmg)
+		{
+			best_spell = "turtleini";
+			spell_dmg = max(120,spell_dmg);
+		}
+		if(spell_extra_element && 160>spell_dmg)
+		{
+			//how does [Turtleini] get affected by extra elements? I am guessing it increases it to 160. TODO verify
+			best_spell = "turtleini";
+			spell_dmg = max(160,spell_dmg);
+		}
+	}
+	
+	boolean plan_on_spells = false;
+	if(attack_dmg < spell_dmg)
+	{
+		plan_on_spells = true;
+	}
+	
+	//final dressup for the boss
+	if(plan_on_spells)
+	{
+		set_property("auto_rain_king_combat", best_spell);
+		if(spell_extra_element)
+		{
+			maximize("spell damage percent, +weapon", false);
+			if(item_amount($item[Rain-Doh green lantern]) > 0)
+			{
+				equip($slot[off-hand], $item[Rain-Doh green lantern]);
+			}
+			else if(item_amount($item[meteorb]) > 0)
+			{
+				equip($slot[off-hand], $item[meteorb]);
+			}
+			else if(item_amount($item[snow mobile]) > 0)
+			{
+				equip($slot[off-hand], $item[snow mobile]);
+			}
+		}
+		else
+		{
+			maximize("spell damage percent, +weapon, +offhand", false);
+		}
+	}
+	else
+	{
+		set_property("auto_rain_king_combat", "attack");
+		if(want_club)
+		{
+			maximize("prismatic damage, +weapon, +offhand, +club", false);
+		}
+		else
+		{
+			maximize("prismatic damage, +weapon, +offhand", false);
+		}
+	}
+	
+	//Rain King strips all equipment other than weapon and offhand.
+	//Stripped equipment can only provide you with -ML which is applied before the stripping
+	buyUpTo(3, $item[water wings for babies]);
+	maximize("-ml, -weapon, -offhand", false);
+	
+	//Fight!
+	acquireHP();
+	set_property("auto_disableAdventureHandling", true);
+	autoAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
+	set_property("auto_disableAdventureHandling", false);
+	if(last_monster() != $monster[The Rain King])
+	{
+		abort("Failed to start the battle with The Rain King");
+	}
+	if(have_effect($effect[Beaten Up]) > 0)
+	{
+		abort("The Rain King beat me up! please finish him off manually");
+	}
+	if(get_property("auto_stayInRun").to_boolean())
+	{
+		abort("User wanted to stay in run (auto_stayInRun), we are done.");
+	}
+	else
+	{
+		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
+		if(get_property("kingLiberated") == "true")
+		{
+			abort("All done. King Ralph has been freed");
+		}
+		abort("Tried to break prism but failed");
+	}
+	abort("How did I reach this line? I should have fought [The Rain King]");
+	return false;
 }

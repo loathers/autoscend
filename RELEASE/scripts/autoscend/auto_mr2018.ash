@@ -302,8 +302,7 @@ boolean fantasyRealmToken()
 
 	//This does not appear to check that we no longer need to adventure there...
 
-	autoAdv(1, $location[The Bandit Crossroads]);
-	return true;
+	return autoAdv(1, $location[The Bandit Crossroads]);
 }
 
 boolean songboomSetting(string goal)

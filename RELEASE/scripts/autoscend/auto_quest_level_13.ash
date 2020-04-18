@@ -970,27 +970,35 @@ boolean L13_towerNSTower()
 
 boolean L13_towerNSFinal()
 {
-	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 11)
+	//state 11 means ready to fight sorceress. state 12 means lost to her due to lack of wand thus unlocking bear verb orgy
+	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 12)
 	{
 		return false;
 	}
-	if(get_property("auto_wandOfNagamar").to_boolean())
+	
+	//wand acquisition function is called before this function, it turns this propery to false once a wand is acquired.
+	//it is also false on all paths that don't want a wand. Thus if it is true it means we do want a wand but didn't get one yet.
+	if(get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") == 11)
 	{
 		auto_log_warning("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
 	}
 
-	//Only if the final boss does not unbuff us...
-	if($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, Heavy Rains, The Source, Way of the Surprising Fist, Zombie Slayer] contains auto_my_path())
+	if(auto_my_path() == "Heavy Rains")
 	{
-		if(auto_my_path() == "The Source")
-		{
-			acquireMP(200, 0);
-		}
+		return L13_towerFinalHeavyRains();
 	}
-	else
+	
+	if(auto_my_path() == "The Source")
 	{
+		acquireMP(200, 0);
+	}
+	
+	if(!($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, The Source, Way of the Surprising Fist, Zombie Slayer] contains auto_my_path()))
+	{
+		//Only if the final boss does not unbuff us...
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
 	}
+	
 	if(my_class() == $class[Turtle Tamer])
 	{
 		autoEquip($item[Ouija Board\, Ouija Board]);

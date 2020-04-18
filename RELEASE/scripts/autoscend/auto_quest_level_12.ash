@@ -108,7 +108,6 @@ int auto_warKillsPerBattle(int sidequests)
 	int kills = 2**sidequests;
 		
 	// Avatar of Sneaky Pete has a motorbike mod that gives +3 kills/battle.
-	// TODO find correct spelling of mafia property for Rocket Launcher, I am currently guessing its spelling
 	if(get_property("peteMotorbikeCowling") == "Rocket Launcher")
 	{
 		kills += 3;

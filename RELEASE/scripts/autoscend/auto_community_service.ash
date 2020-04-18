@@ -3326,12 +3326,9 @@ void cs_make_stuff(int curQuest)
 			cli_execute("make " + $item[Staff of the Headmaster\'s Victuals]);
 		}
 
-		if(!have_familiar($familiar[Machine Elf]) && canChangeFamiliar())
+		if(!canChangeToFamiliar($familiar[Machine Elf]) && item_amount($item[Handful of Smithereens]) >= 3)
 		{
-			if(item_amount($item[Handful of Smithereens]) >= 3)
-			{
-				cli_execute("make 3 " + $item[Louder Than Bomb]);
-			}
+			cli_execute("make 3 " + $item[Louder Than Bomb]);
 		}
 
 		if((item_amount($item[Scrumptious Reagent]) >= 5) && have_skill($skill[Advanced Saucecrafting]))

@@ -7141,7 +7141,6 @@ boolean is_superlikely(string encounterName)
 
 }
 
-
 // Function to Predict how many turns we will get from an AT buff
 int auto_predictAccordionTurns()
 {
@@ -7170,4 +7169,120 @@ int auto_predictAccordionTurns()
 	}
 
 	return CurrentBestTurns;
+}
+
+boolean hasTTBlessing()
+{
+	//do you currently have a turtle blessing active? or if not turtle tamer then the buff?
+	
+	foreach eff in $effects[
+	Blessing of the War Snapper,
+	Grand Blessing of the War Snapper,
+	Glorious Blessing of the War Snapper,
+	Blessing of She-Who-Was,
+	Grand Blessing of She-Who-Was,
+	Glorious Blessing of She-Who-Was,
+	Blessing of the Storm Tortoise,
+	Grand Blessing of the Storm Tortoise,
+	Glorious Blessing of the Storm Tortoise,
+	Disdain of the War Snapper,
+	Disdain of She-Who-Was,
+	Disdain of the Storm Tortoise
+	]
+	{
+		if(have_effect(eff) > 0)
+		{
+			return true;
+		}
+	}
+	
+	return false;	
+}
+
+void effectAblativeArmor(boolean passive_dmg_allowed)
+{
+	//when facing a boss that has a buff stripping mechanic that is limited on how many can be stripped per round.
+	//then load up on as many reasonable buffs as you can taking cost into account.
+	//avoid potentially undesireable effects such as +ML.
+	//I am pretty sure non combat skills that give an effect count.
+	//but I am labeling them seperate from buffs in case we ever need to split this function.
+	
+	//if you have something that reduces the cost of casting buffs, wear it now.
+	maximize("-mana cost, -tie", false);
+	
+	//Passive damage
+	if(passive_dmg_allowed)
+	{
+		buffMaintain($effect[Spiky Shell], 0, 1, 1);					//8 MP
+		buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);	//5 MP
+		buffMaintain($effect[Scarysauce], 0, 1, 1);						//10 MP
+	}
+	
+	//1MP Non-Combat skills from each class
+	buffMaintain($effect[Seal Clubbing Frenzy], 0, 1, 1);
+	buffMaintain($effect[Patience of the Tortoise], 0, 1, 1);
+	buffMaintain($effect[Pasta Oneness], 0, 1, 1);
+	buffMaintain($effect[Saucemastery], 0, 1, 1);
+	buffMaintain($effect[Disco State of Mind], 0, 1, 1);
+	buffMaintain($effect[Mariachi Mood], 0, 1, 1);
+
+	//Seal clubber Non-Combat skills
+	buffMaintain($effect[Blubbered Up], 0, 1, 1);						//7 MP
+	buffMaintain($effect[Rage of the Reindeer], 0, 1, 1);				//10 MP
+	buffMaintain($effect[A Few Extra Pounds], 0, 1, 1);					//10 MP
+	//free intrisic, does it work as ablative armor? TODO add support for it in buffMaintain
+	if(have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
+	{
+		use_skill(1, $skill[Iron Palm Technique]);
+	}						
+	
+	//Turtle Tamer Non-Combat skills
+	if(!hasTTBlessing())
+	{
+		buffMaintain($effect[Blessing of the War Snapper], 0, 1, 1);	//15 MP. other blessings too expensive.
+	}
+	
+	//Pastamancer Non-Combat skills
+	buffMaintain($effect[Springy Fusilli], 0, 1, 1);					//10 MP
+	buffMaintain($effect[Shield of the Pastalord], 0, 1, 1);			//20 MP
+	buffMaintain($effect[Leash of Linguini], 0, 1, 1);					//12 MP
+	
+	//Sauceror Non-Combat skills
+	buffMaintain($effect[Sauce Monocle], 0, 1, 1);						//20 MP
+
+	//Disco Bandit Non-Combat skills
+	buffMaintain($effect[Disco Fever], 0, 1, 1);						//10 MP
+	
+	//Turtle Tamer Buffs
+	buffMaintain($effect[Ghostly Shell], 0, 1, 1);						//6 MP
+	buffMaintain($effect[Tenacity of the Snapper], 0, 1, 1);			//8 MP
+	buffMaintain($effect[Empathy], 0, 1, 1);							//15 MP
+	buffMaintain($effect[Reptilian Fortitude], 0, 1, 1);				//8 MP
+	buffMaintain($effect[Astral Shell], 0, 1, 1);						//10 MP
+	buffMaintain($effect[Jingle Jangle Jingle], 0, 1, 1);				//5 MP
+	buffMaintain($effect[Curiosity of Br'er Tarrypin], 0, 1, 1);		//5 MP
+	
+	//Sauceror Buffs
+	buffMaintain($effect[Elemental Saucesphere], 0, 1, 1);				//10 MP
+	buffMaintain($effect[Antibiotic Saucesphere], 0, 1, 1);				//15 MP
+	
+	//Accordion Thief Buffs. We are not shrugging so it will only apply new ones if we have space for them
+	buffMaintain($effect[The Moxious Madrigal], 0, 1, 1);				//2 MP
+	buffMaintain($effect[The Magical Mojomuscular Melody], 0, 1, 1);	//3 MP
+	buffMaintain($effect[Cletus's Canticle of Celerity], 0, 1, 1);		//4 MP
+	buffMaintain($effect[Power Ballad of the Arrowsmith], 0, 1, 1);		//5 MP
+	buffMaintain($effect[Polka of Plenty], 0, 1, 1);					//7 MP
+	
+	//Mutually exclusive effects
+	if(have_effect($effect[Musk of the Moose]) == 0 && have_effect($effect[Hippy Stench]) == 0)
+	{
+		buffMaintain($effect[Smooth Movements], 0, 1, 1);				//10 MP
+	}
+	if(have_effect($effect[Smooth Movements]) == 0 && have_effect($effect[Fresh Scent]) == 0)
+	{
+		buffMaintain($effect[Musk of the Moose], 0, 1, 1);				//10 MP
+	}	
+	
+	//TODO facial expressions, need to check you are not wearing one first and which ones you have
+	//Maybe just not do facial expressions? too much complexity for a singular effect.
 }
