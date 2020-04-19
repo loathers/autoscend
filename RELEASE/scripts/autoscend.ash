@@ -2565,6 +2565,9 @@ boolean LX_spookyBedroomCombat()
 {
 	set_property("auto_disableAdventureHandling", true);
 
+	zelda_equipTool($stat[moxie]);
+	equipMaximizedGear();
+
 	autoAdv(1, $location[The Haunted Bedroom]);
 	if(contains_text(visit_url("main.php"), "choice.php"))
 	{
