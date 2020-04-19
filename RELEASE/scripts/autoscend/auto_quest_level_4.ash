@@ -57,6 +57,9 @@ boolean L4_batCave()
 		{
 			auto_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
 		}
+		// TODO: Mafia currently does not advance the quest tracker when the Plumber boss is defeated.
+		// This breaks that infinite loop, while "refresh quests" apparently doesn't. Who knows?
+		visit_url("place.php?whichplace=bathole");
 		return true;
 	}
 	if(batStatus >= 2)
