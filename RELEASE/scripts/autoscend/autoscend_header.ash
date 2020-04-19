@@ -315,7 +315,6 @@ boolean L9_ed_chasmStart();									//Defined in autoscend/auto_edTheUndying.ash
 boolean LM_boris();											//Defined in autoscend/auto_boris.ash
 boolean LM_fallout();										//Defined in autoscend/auto_fallout.ash
 boolean LM_jello();											//Defined in autoscend/auto_jellonewbie.ash
-boolean LM_pete();											//Defined in autoscend/auto_sneakypete.ash
 boolean LX_ghostBusting();									//Defined in autoscend/auto_mr2016.ash
 boolean LX_theSource();										//Defined in autoscend/auto_theSource.ash
 familiar[int] List();										//Defined in autoscend/auto_list.ash
@@ -901,7 +900,7 @@ boolean ocrs_postHelper();									//Defined in autoscend/auto_summerfun.ash
 void oldPeoplePlantStuff();									//Defined in autoscend/auto_floristfriar.ash
 boolean organsFull();										//Defined in autoscend/auto_util.ash
 boolean ovenHandle();										//Defined in autoscend/auto_util.ash
-boolean pete_buySkills();									//Defined in autoscend/auto_sneakypete.ash
+void pete_buySkills();										//Defined in autoscend/auto_sneakypete.ash
 void pete_initializeDay(int day);							//Defined in autoscend/auto_sneakypete.ash
 void pete_initializeSettings();								//Defined in autoscend/auto_sneakypete.ash
 boolean picky_buyskills();									//Defined in autoscend/auto_picky.ash

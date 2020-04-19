@@ -69,19 +69,20 @@ void pete_initializeDay(int day)
 	}
 }
 
-boolean pete_buySkills()
+void pete_buySkills()
 {
 	if(my_class() != $class[Avatar of Sneaky Pete])
 	{
-		return false;
+		return;
 	}
 	if(my_level() <= get_property("auto_peteSkills").to_int())
 	{
-		return false;
+		return;
 	}
-	if(have_skill($skill[Natural Dancer]) && have_skill($skill[Flash Headlight]) && have_skill($skill[Walk Away From Explosion]) && (my_level() > 12))
+	//if you have those 3 skills then you have all skills.
+	if(have_skill($skill[Natural Dancer]) && have_skill($skill[Flash Headlight]) && have_skill($skill[Walk Away From Explosion]))
 	{
-		return false;
+		return;
 	}
 
 	string page = visit_url("da.php?place=gate3");
@@ -93,6 +94,7 @@ boolean pete_buySkills()
 
 		while(skillPoints > 0)
 		{
+			//skills are listed in inverse order. The first listed skill is the last skill to buy.
 			skillPoints = skillPoints - 1;
 			int tree = 1;
 
@@ -101,18 +103,6 @@ boolean pete_buySkills()
 				tree = 2;
 			}
 			if(!have_skill($skill[Biker Swagger]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Riding Tall]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Check Mirror]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Easy Riding]))
 			{
 				tree = 2;
 			}
@@ -198,6 +188,18 @@ boolean pete_buySkills()
 				tree = 1;
 			}
 
+			if(!have_skill($skill[Riding Tall]))
+			{
+				tree = 2;
+			}
+			if(!have_skill($skill[Check Mirror]))
+			{
+				tree = 2;
+			}
+			if(!have_skill($skill[Easy Riding]))
+			{
+				tree = 2;
+			}
 			if(!have_skill($skill[Peel Out]))
 			{
 				tree = 2;
@@ -279,18 +281,4 @@ boolean pete_buySkills()
 	}
 
 	set_property("auto_peteSkills", my_level());
-	return true;
-}
-
-
-boolean LM_pete()
-{
-	if(my_path() != "Avatar of Sneaky Pete")
-	{
-		return false;
-	}
-
-	pete_buySkills();
-
-	return false;
 }

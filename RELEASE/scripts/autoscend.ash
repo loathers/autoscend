@@ -276,6 +276,12 @@ int auto_advToReserve()
 		{
 			reserveadv = max(2, reserveadv);
 		}
+		
+		//sneaky pete specific check. Mixologist lets you spend 2 adv on crafting. cocktail magic makes crafting free.
+		if(auto_have_skill($skill[Mixologist]) && !auto_have_skill($skill[Cocktail Magic]))
+		{
+			reserveadv = max(2, reserveadv);
+		}
 	}
 	
 	return reserveadv;
@@ -4907,7 +4913,7 @@ boolean doTasks()
 	//Early adventure options that we probably want
 	if(dna_startAcquire())				return true;
 	if(LM_boris())						return true;
-	if(LM_pete())						return true;
+	pete_buySkills();
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
