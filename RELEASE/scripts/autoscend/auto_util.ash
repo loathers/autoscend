@@ -852,9 +852,8 @@ boolean loopHandlerDelay(string counterSetting, int threshold)
 boolean loopHandlerDelayAll()
 {
 	boolean boo = loopHandlerDelay("_auto_lastABooCycleFix");
-	boolean desk = loopHandlerDelay("_auto_digitizeDeskCounter");
 	boolean digitize = loopHandlerDelay("_auto_digitizeAssassinCounter");
-	return boo || desk || digitize;
+	return boo || digitize;
 }
 
 string reverse(string s)

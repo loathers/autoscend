@@ -770,6 +770,28 @@ boolean neverendingPartyCombat(stat st, boolean hardmode, string option, boolean
 	return neverendingPartyCombat($effect[none], hardmode, option, powerlevelling);
 }
 
+int neverendingPartyRemainingFreeFights()
+{
+	//Returns how many free fights do you have remaining in neverending party?
+	
+	if(!neverendingPartyAvailable())
+	{
+		return 0;
+	}
+	//if path randomizes names then the free fights are not free
+	if(auto_my_path() == "Disguises Delimit" || auto_my_path() == "One Crazy Random Summer")
+	{
+		return 0;
+	}
+	//daily pass users do not get free fights
+	if(get_property("_neverendingPartyToday").to_boolean())
+	{
+		return 0;
+	}
+	//mafia counts how many times you fought there for free, not how many free fights remain.
+	return 10 - get_property("_neverendingPartyFreeTurns").to_int();
+}
+
 boolean neverendingPartyAvailable()
 {
 	if(!get_property("neverendingPartyAlways").to_boolean() && !get_property("_neverendingPartyToday").to_boolean())
@@ -803,7 +825,6 @@ boolean neverendingPartyAvailable()
 	}
 	if(get_property("auto_skipNEPOverride").to_boolean())
 	{
-		auto_log_warning("NEP access disabled. This can be turned on in the Relay by setting auto_skipNEPOverride = false", "red");
 		return false;
 	}
 
