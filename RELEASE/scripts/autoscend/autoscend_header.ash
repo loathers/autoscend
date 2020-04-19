@@ -825,6 +825,7 @@ boolean hasShieldEquipped();								//Defined in autoscend/auto_util.ash
 boolean hasTail(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
 boolean hasTorso(monster enemy);							//Defined in autoscend/auto_monsterparts.ash
 boolean haveAny(boolean[item] array);						//Defined in autoscend/auto_util.ash
+boolean acquireOrPull(item it);								//Defined in autoscend/auto_util.ash
 boolean have_skills(boolean[skill] array);					//Defined in autoscend/auto_util.ash
 boolean auto_have_skill(skill sk);							//Defined in autoscend/auto_util.ash
 boolean haveGhostReport();									//Defined in autoscend/auto_mr2016.ash

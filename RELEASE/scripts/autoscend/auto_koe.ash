@@ -48,11 +48,10 @@ boolean LX_koeInvaderHandler()
 
 	resetMaximize();
 
-	if(!possessEquipment($item[meteorb]))
-		retrieve_item(1, $item[meteorb]);
-	// Maybe you don't have the IOTM? Seems worth it, whatever
-	pullXWhenHaveY($item[meteorb], 1, 0);
-	autoEquip($slot[off-hand], $item[meteorb]);
+	if(acquireOrPull($item[meteorb]))
+	{
+		autoEquip($slot[off-hand], $item[meteorb]);
+	}
 
 	simMaximizeWith("200 all res");
 
@@ -72,7 +71,7 @@ boolean LX_koeInvaderHandler()
 	if(have_skill($skill[Weapon of the Pastalord]) && auto_is_valid($skill[Weapon of the Pastalord]))
 	{
 		int sources = 2;
-		if(possessEquipment($item[meteorb])) sources++;
+		if(acquireOrPull($item[meteorb])) sources++;
 		if(sources * turns * damageCap >= 1000)
 		{
 			foreach el in $elements[cold, hot, sleaze, spooky, stench]

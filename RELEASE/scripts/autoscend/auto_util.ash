@@ -4326,6 +4326,31 @@ boolean haveAny(boolean[item] array)
 	return false;
 }
 
+boolean acquireOrPull(item it)
+{
+	//this function is for when you want to make sure you have 1 of an item
+	//if you have one it returns true. if you don't it will craft one. if it can't it will pull it.
+	
+	if(possessEquipment(it)) return true;
+	if(item_amount(it) > 0)  return true;
+	if(retrieve_item(1, it)) return true;
+	if(canPull(it))
+	{
+		if(pullXWhenHaveY(it, 1, 0)) return true;
+	}
+	
+	//special handling via pulling 1 ingredient to craft the item desired
+	if(it == $item[meteorb] && canPull($item[metal meteoroid]))
+	{
+		if(pullXWhenHaveY(it, 1, 0))
+		{
+			if(retrieve_item(1, it)) return true;
+		}
+	}
+	
+	return false;
+}
+
 boolean in_ronin()
 {
 	return !can_interact();
@@ -5295,6 +5320,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Become Superficially Interested]:	useItem = $item[Daily Affirmation: Be Superficially Interested];	break;
 	case $effect[Bendin\' Hell]:					useSkill = $skill[Bend Hell];					break;
 	case $effect[Bent Knees]:					useSkill = $skill[Bendable Knees];					break;
+	case $effect[Benetton\'s Medley of Diversity]:	useSkill = $skill[Benetton\'s Medley of Diversity];		break;
 	case $effect[Berry Elemental]:				useItem = $item[Tapioc Berry];					break;
 	case $effect[Berry Statistical]:			useItem = $item[Snarf Berry];					break;
 	case $effect[Big]:							useSkill = $skill[Get Big];						break;
@@ -5324,6 +5350,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Blubbered Up]:					useSkill = $skill[Blubber Up];					break;
 	case $effect[Blue Swayed]:					useItem = $item[Pulled Blue Taffy];				break;
 	case $effect[Bone Springs]:					useSkill = $skill[Bone Springs];				break;
+	case $effect[Boner Battalion]:				useSkill = $skill[Summon &quot;Boner Battalion&quot;];	break;
 	case $effect[Boon of She-Who-Was]:			useSkill = $skill[Spirit Boon];					break;
 	case $effect[Boon of the Storm Tortoise]:	useSkill = $skill[Spirit Boon];					break;
 	case $effect[Boon of the War Snapper]:		useSkill = $skill[Spirit Boon];					break;
