@@ -5264,6 +5264,7 @@ void auto_begin()
 	backupSetting("autoSatisfyWithNPCs", true);
 	backupSetting("removeMalignantEffects", false);
 	backupSetting("autoAntidote", 0);
+	backupSetting("dontStopForCounters", true);
 
 	backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
