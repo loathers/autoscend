@@ -7257,11 +7257,6 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	buffMaintain($effect[Blubbered Up], 0, 1, 1);						//7 MP
 	buffMaintain($effect[Rage of the Reindeer], 0, 1, 1);				//10 MP
 	buffMaintain($effect[A Few Extra Pounds], 0, 1, 1);					//10 MP
-	//free intrisic, does it work as ablative armor? TODO add support for it in buffMaintain
-	if(have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
-	{
-		use_skill(1, $skill[Iron Palm Technique]);
-	}						
 	
 	//Turtle Tamer Non-Combat skills
 	if(!hasTTBlessing())

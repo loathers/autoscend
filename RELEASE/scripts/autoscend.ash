@@ -1327,6 +1327,12 @@ void initializeDay(int day)
 	{
 		boolean temp = cli_execute("make shoe gum");
 	}
+	
+	//a free to cast intrinsic that makes swords count as clubs. if you have it there is no reason to ever have it off regardless of class.
+	if(auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
+	{
+		use_skill(1, $skill[Iron Palm Technique]);
+	}
 
 	ed_initializeDay(day);
 	boris_initializeDay(day);
@@ -1355,11 +1361,6 @@ void initializeDay(int day)
 			if(item_amount($item[Xiblaxian holo-wrist-puter simcode]) > 0)
 			{
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
-			}
-
-			if(have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0) && (my_class() == $class[Seal Clubber]))
-			{
-				use_skill(1, $skill[Iron Palm Technique]);
 			}
 
 			if((auto_get_clan_lounge() contains $item[Clan Floundry]) && (item_amount($item[Fishin\' Pole]) == 0))
