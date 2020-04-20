@@ -1944,7 +1944,6 @@ boolean doBedtime()
 	}
 	else if((my_daycount() <= 2) && (freeCrafts() > 0) && my_adventures() > 0)
 	{
-		backupSetting("requireBoxServants", "false");
 		// Check for rapid prototyping
 		while((freeCrafts() > 0) && (item_amount($item[Scrumptious Reagent]) > 0) && (item_amount($item[Cranberries]) > 0) && (item_amount($item[Cranberry Cordial]) < 2) && have_skill($skill[Advanced Saucecrafting]))
 		{
@@ -1955,7 +1954,6 @@ boolean doBedtime()
 		{
 			cli_execute("make " + $item[Milk Of Magnesium]);
 		}
-		restoreSetting("requireBoxServants");
 	}
 
 	dna_bedtime();
