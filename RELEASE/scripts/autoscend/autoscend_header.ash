@@ -846,6 +846,7 @@ int[int] intList();											//Defined in autoscend/auto_list.ash
 int internalQuestStatus(string prop);						//Defined in autoscend/auto_util.ash
 int freeCrafts();											//Defined in autoscend/auto_util.ash
 boolean is100FamRun();										//Defined in autoscend/auto_util.ash
+boolean pathAllowsFamiliar();								//Defined in autoscend/auto_util.ash
 boolean canChangeFamiliar();								//Defined in autoscend/auto_util.ash
 boolean canChangeToFamiliar(familiar target);				//Defined in autoscend/auto_util.ash
 boolean isBanished(monster enemy);							//Defined in autoscend/auto_util.ash

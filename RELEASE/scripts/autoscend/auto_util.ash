@@ -880,12 +880,31 @@ boolean is100FamRun()
 	return true;
 }
 
+boolean pathAllowsFamiliar()
+{
+	//paths in which you cannot use a familiar
+	//pokefam converts your familiars into pokefam, they are not actually familiars in that path and cannot be used as such.
+	if($strings[
+	Actually Ed the Undying, 
+	Avatar of Boris,
+	Avatar of Jarlsberg,
+	Avatar of Sneaky Pete,
+	License to Adventure,
+	Pocket Familiars,
+	Dark Gyffte
+	] contains auto_my_path())
+	{
+		return false;
+	}
+	
+	return true;
+}
+
 boolean canChangeFamiliar()
 {
 	// answers the question "am I allowed to change familiar?" in the general sense
 	
-	//paths in which you cannot use a familiar as a familiar (in pokefam familiars are used as something else)
-	if($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, License to Adventure, Pocket Familiars, Dark Gyffte] contains auto_my_path())
+	if(!pathAllowsFamiliar())
 	{
 		return false;
 	}
