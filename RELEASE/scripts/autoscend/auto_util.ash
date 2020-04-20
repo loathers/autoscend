@@ -3744,6 +3744,11 @@ boolean basicAdjustML()
 
 boolean auto_change_mcd(int mcd)
 {
+	return auto_change_mcd(mcd, false);
+}
+
+boolean auto_change_mcd(int mcd, boolean immediatly)
+{
 	if (in_koe()) return false;
 
 	int best = 10;
@@ -3774,7 +3779,7 @@ boolean auto_change_mcd(int mcd)
 		best = 11;
 	}
 
-	if(my_level() >= 13 && !get_property("auto_disregardInstantKarma").to_boolean())
+	if(my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("auto_ignoreFlyer").to_boolean())
 		{
@@ -3787,7 +3792,13 @@ boolean auto_change_mcd(int mcd)
 	{
 		return true;
 	}
-	return change_mcd(next);
+	if(immediatly)
+	{
+		return change_mcd(next);
+	}
+	//for non immediate changes we still return true because the setting was set to be changed later.
+	set_property("auto_mcd_target", next);
+	return true;
 }
 
 boolean evokeEldritchHorror(string option)

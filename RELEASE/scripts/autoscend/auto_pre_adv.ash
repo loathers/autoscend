@@ -496,4 +496,11 @@ void main()
 	}
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
+	
+	//to avoid constant flipping on the MCD. change it right before adventuring
+	int mcd_target = get_property("auto_mcd_target").to_int();
+	if(current_mcd() != mcd_target)
+	{
+		change_mcd(mcd_target);
+	}
 }
