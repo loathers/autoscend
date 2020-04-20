@@ -210,6 +210,13 @@ boolean L11_aridDesert()
 	{
 		string temp = visit_url("place.php?whichplace=desertbeach", false);
 	}
+	
+	// TODO: Mafia currently (r20019) does not properly track desert exploration progress in plumber
+	// Not sure if this fix can do exact progress, but when I visited that page it corrected my explortion to 100 and quest progress to done so it will prevent adv loss at least
+	if(in_zelda() && get_property("desertExploration").to_int() < 100)
+	{
+		string discard = visit_url("place.php?whichplace=desertbeach");
+	}
 
 	if(get_property("desertExploration").to_int() >= 100)
 	{
