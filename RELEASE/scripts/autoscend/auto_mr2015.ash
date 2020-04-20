@@ -115,7 +115,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Avatar of Boris")
+	else if(in_boris())
 	{
 		switch(my_daycount())
 		{
@@ -236,7 +236,7 @@ boolean auto_mayoItems()
 	}
 
 	boolean[item] mayos;
-	if(my_path() == "Avatar of Boris")
+	if(in_boris())
 	{
 		switch(my_daycount())
 		{

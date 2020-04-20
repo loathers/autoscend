@@ -77,7 +77,7 @@ boolean snojoFightAvailable()
 		standard[2] = "Muscle";
 		standard[3] = "Moxie";
 
-		if((my_path() == "Avatar of Boris") && (possessEquipment($item[Boris\'s Helm]) || possessEquipment($item[Boris\'s Helm (Askew)])))
+		if(in_boris() && (possessEquipment($item[Boris\'s Helm]) || possessEquipment($item[Boris\'s Helm (Askew)])))
 		{
 			standard[0] = "Muscle";
 			standard[1] = "Mysticality";

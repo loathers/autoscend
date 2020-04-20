@@ -84,7 +84,7 @@ boolean januaryToteAcquire(item it)
 
 	if(choice == 2)
 	{
-		if((auto_my_path() == "Way of the Surprising Fist") || (my_class() == $class[Avatar Of Boris]))
+		if((auto_my_path() == "Way of the Surprising Fist") || in_boris())
 		{
 			return false;
 		}

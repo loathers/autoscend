@@ -67,7 +67,7 @@ void main()
 		uneffect($effect[Scarysauce]);
 	}
 
-	if(my_path() == $class[Avatar of Boris])
+	if(in_boris())
 	{
 		if((have_effect($effect[Song of Solitude]) == 0) && (have_effect($effect[Song of Battle]) == 0))
 		{

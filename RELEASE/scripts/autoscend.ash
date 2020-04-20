@@ -4884,6 +4884,8 @@ boolean doTasks()
 	# This function buys missing skills in general, not just for Picky.
 	# It should be moved.
 	picky_buyskills();
+	boris_buySkills();
+	pete_buySkills();
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();
@@ -4912,14 +4914,12 @@ boolean doTasks()
 
 	//Early adventure options that we probably want
 	if(dna_startAcquire())				return true;
-	if(LM_boris())						return true;
-	pete_buySkills();
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
 	if(LM_digimon())					return true;
 	if(LM_majora())						return true;
-	if(LM_batpath()) return true;
+	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
 
 	if(auto_my_path() != "Community Service")

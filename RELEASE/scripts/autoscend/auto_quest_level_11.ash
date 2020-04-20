@@ -1217,7 +1217,7 @@ boolean L11_hiddenCityZones()
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 	boolean needMatches = (get_property("hiddenTavernUnlock").to_int() != my_ascensions());
 
-	if (!in_hardcore() || my_class() == $class[Avatar of Boris] || auto_my_path() == "Way of the Surprising Fist" || auto_my_path() == "Pocket Familiars")
+	if (!in_hardcore() || in_boris() || auto_my_path() == "Way of the Surprising Fist" || auto_my_path() == "Pocket Familiars")
 	{
 		needMachete = false;
 	}
@@ -1481,7 +1481,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || (my_class() == $class[Avatar of Boris]) || (auto_my_path() == "Way of the Surprising Fist") || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || in_boris() || (auto_my_path() == "Way of the Surprising Fist") || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.
