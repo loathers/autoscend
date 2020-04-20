@@ -92,6 +92,12 @@ boolean L10_ground();
 boolean L10_topFloor();
 boolean L10_holeInTheSkyUnlock();
 boolean LX_getStarKey();
+
+int shenItemsReturned();												//Defined in autoscend/auto_quest_level_11.ash
+boolean[location] shenSnakeLocations(int day, int n_items_returned);	//Defined in autoscend/auto_quest_level_11.ash
+boolean[location] shenZonesToAvoidBecauseMaybeSnake();					//Defined in autoscend/auto_quest_level_11.ash
+boolean shenShouldDelayZone(location loc);								//Defined in autoscend/auto_quest_level_11.ash
+
 boolean L11_palindome();
 boolean L11_hiddenCity();
 boolean L11_hiddenTavernUnlock();

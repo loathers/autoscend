@@ -169,6 +169,12 @@ void initializeSettings()
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
 	set_property("auto_pulls", "");
+
+	 // Day on which the Shen quest was started. Required to predict which zones to avoid until Shen tells us to go there.
+	set_property("auto_shenStarted", "");
+	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
+	set_property("auto_shenSkipLastLevel", 0); 
+
 	set_property("auto_skipDesert", 0);
 	set_property("auto_snapshot", "");
 	set_property("auto_sniffs", "");
@@ -624,7 +630,7 @@ int pullsNeeded(string data)
 	int adv = 0;
 
 	int progress = 0;
-	if(internalQuestStatus("questL13Final	") == 4)
+	if(internalQuestStatus("questL13Final") == 4)
 	{
 		progress = 1;
 	}
@@ -4423,6 +4429,7 @@ boolean LX_getStarKey()
 	}
 	
 	boolean hole_in_sky_unreachable = internalQuestStatus("questL10Garbage") < 9;
+	// TODO: Clean up logic
 	boolean shen_might_request_hole = internalQuestStatus("questL11Shen") < 7;
 	if (hole_in_sky_unreachable || shen_might_request_hole)
 	{
@@ -4455,6 +4462,12 @@ boolean LX_getStarKey()
 	if(!zone_isAvailable($location[The Hole In The Sky]))
 	{
 		auto_log_warning("The Hole In The Sky is not available, we have to do something else...", "red");
+		return false;
+	}
+
+	if (shenShouldDelayZone($location[The Hole in the Sky]))
+	{
+		auto_log_debug("Delaying Hole in the Sky in case of Shen.");
 		return false;
 	}
 
@@ -4812,6 +4825,29 @@ boolean doTasks()
 	{
 		cli_execute("refresh inv");
 	}
+
+	// As soon as Shen gives us his first item request, we know what sequence of snakes we're getting.
+	// This can't be done inside the L11 quest handling, in case the user manually begins the Shen quest.
+	// This value is wrong if the user meets Shen, then runs autoscend on the following day.
+	// That's OK, although it'll make our pathing a little funky.
+	if (get_property("auto_shenStarted") == "" && (1 <= internalQuestStatus("questL11Shen")))
+	{
+		auto_log_info("It seems Shen has given us a quest.", "blue");
+		auto_log_info("I am going to avoid the following zones until Shen tells me to go there or until I run out of other things to do:");
+		int linec = 1;
+		foreach z, _ in shenZonesToAvoidBecauseMaybeSnake()
+		{
+			auto_log_info(linec++ + ". " + z);
+		}
+		auto_log_info("These zones will be incorrect if autoscend did not run on the day you manually met Shen..", "blue");
+		auto_log_info("You can change these zones by changing the start date autoscend uses: set auto_shenStarted=2", "blue");
+		auto_log_info("You can also disable this feature: set auto_shenSkipLastLevel=999.", "blue");
+
+		auto_log_warning("This feature is super experimental. Please report any issues.", "red");
+		// TODO: provide manual override to disable in case I've screwed up something
+		set_property("auto_shenStarted", my_daycount());
+	}
+
 	bat_formNone();
 	horseDefault();
 	resetMaximize();
@@ -5129,8 +5165,17 @@ boolean doTasks()
 	if(L13_towerNSNagamar())			return true;
 	if(L13_towerNSFinal())				return true;
 
+	if(my_level() > get_property("auto_shenSkipLastLevel").to_int())
+	{
+		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do.", "red");
+		set_property("auto_shenSkipLastLevel", my_level());
+		return true;
+	}
+
+
 	if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
 	{
+		auto_log_warning("I've run out of stuff to do. Time to powerlevel, I suppose.", "red");
 		set_property("auto_powerLevelLastLevel", my_level());
 		return true;
 	}

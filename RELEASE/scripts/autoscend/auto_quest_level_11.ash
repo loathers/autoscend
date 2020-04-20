@@ -1,5 +1,98 @@
 script "auto_quest_level_11.ash"
 
+int shenItemsReturned()
+{
+	int progress = internalQuestStatus("questL11Shen");
+	if (progress < 1) return 0;
+	if (progress < 3) return 1;
+	else if (progress < 5) return 2;
+	else return 3;
+}
+
+boolean[location] shenSnakeLocations(int day, int n_items_returned)
+{
+	// Returns the locations in which we will find snakes for Shen, on a particular day.
+	// From https://kol.coldfront.net/thekolwiki/index.php/Shen_Copperhead,_Nightclub_Owner
+
+	boolean[location] union(boolean[location] one, boolean[location] two, boolean[location] three)
+	{
+		boolean[location] ret;
+		switch (n_items_returned)
+		{
+		case 0:
+		foreach z, _ in one { ret[z] = true; }
+		case 1:
+		foreach z, _ in two { ret[z] = true; }
+		case 2:
+		foreach z, _ in three { ret[z] = true; }
+		case 3:
+		}
+		return ret;
+	}
+	boolean[location] batsnake  = $locations[The Batrat and Ratbat Burrow];
+	boolean[location] frozen    = $locations[Lair of the Ninja Snowmen];
+	boolean[location] burning   = $locations[The Castle in the Clouds in the Sky (Top Floor)];
+	boolean[location] ten_heads = $locations[The Hole in the Sky];
+	boolean[location] frattle   = $locations[The Smut Orc Logging Camp];
+	boolean[location] snakleton = $locations[The Unquiet Garves, The VERY Unquiet Garves];
+
+	if (in_koe())
+	{
+		return union(ten_heads, frattle, frozen);
+	}
+
+	switch (day) {
+	case 1: return union(batsnake, frozen, burning);
+	case 2: return union(frattle, snakleton, ten_heads);
+	case 3: return union(frozen, batsnake, snakleton);
+	case 4: return union(frattle, batsnake, snakleton);
+	case 5: return union(burning, batsnake, ten_heads);
+	case 6: return union(burning, batsnake, ten_heads);
+	case 7: return union(frattle, snakleton, ten_heads);
+	case 8: return union(snakleton, burning, frattle);
+	case 9: return union(snakleton, frattle, ten_heads);
+	case 10: return union(ten_heads, batsnake, burning);
+	case 11: return union(frozen, batsnake, burning);
+	}
+	boolean[location] empty;
+	return empty;
+}
+
+boolean[location] shenZonesToAvoidBecauseMaybeSnake()
+{
+	if (get_property("auto_shenSkipLastLevel").to_int() >= my_level())
+	{
+		boolean[location] empty;
+		return empty;
+	}
+	if (get_property("auto_shenStarted") != "")
+	{
+		int day = get_property("auto_shenStarted").to_int();
+		int items_returned = shenItemsReturned();
+		return shenSnakeLocations(day, items_returned);
+	}
+	else
+	{
+		// Assume we're going to start Shen today, tomorrow, or two days from now.
+		boolean[location] zones_to_avoid;
+
+		for (int d=0; d<3; d++)
+		{
+			foreach z, _ in shenSnakeLocations(d+my_daycount(), 0)
+			{
+				zones_to_avoid[z] = true;
+			}
+
+		}
+		return zones_to_avoid;
+	}
+}
+
+boolean shenShouldDelayZone(location loc)
+{
+	return shenZonesToAvoidBecauseMaybeSnake() contains loc;
+}
+
 boolean L11_blackMarket()
 {
 	if (internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 1 || black_market_available())

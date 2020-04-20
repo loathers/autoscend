@@ -250,6 +250,12 @@ boolean L8_trapperNinjaLair()
 			return false;
 		}
 
+		if (shenShouldDelayZone($location[Lair of the Ninja Snowmen]))
+		{
+			auto_log_debug("Delaying Lair of the Ninja Snowmen in case of Shen.");
+			return false;
+		}
+
 		handleFamiliar("item");
 		asdonBuff($effect[Driving Obnoxiously]);
 		if(!providePlusCombat(25))
