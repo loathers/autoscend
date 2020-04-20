@@ -4429,8 +4429,7 @@ boolean LX_getStarKey()
 	}
 	
 	boolean hole_in_sky_unreachable = internalQuestStatus("questL10Garbage") < 9;
-	// TODO: Clean up logic
-	boolean shen_might_request_hole = internalQuestStatus("questL11Shen") < 7;
+	boolean shen_might_request_hole = shenShouldDelayZone($location[The Hole in the Sky]);
 	if (hole_in_sky_unreachable || shen_might_request_hole)
 	{
 		return false;
@@ -4462,12 +4461,6 @@ boolean LX_getStarKey()
 	if(!zone_isAvailable($location[The Hole In The Sky]))
 	{
 		auto_log_warning("The Hole In The Sky is not available, we have to do something else...", "red");
-		return false;
-	}
-
-	if (shenShouldDelayZone($location[The Hole in the Sky]))
-	{
-		auto_log_debug("Delaying Hole in the Sky in case of Shen.");
 		return false;
 	}
 
@@ -4844,7 +4837,6 @@ boolean doTasks()
 		auto_log_info("You can also disable this feature: set auto_shenSkipLastLevel=999.", "blue");
 
 		auto_log_warning("This feature is super experimental. Please report any issues.", "red");
-		// TODO: provide manual override to disable in case I've screwed up something
 		set_property("auto_shenStarted", my_daycount());
 	}
 
