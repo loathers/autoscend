@@ -1361,7 +1361,7 @@ boolean L11_hiddenCityZones()
 		return true;
 	}
 
-	if ($location[A Massive Ziggurat].turns_spent < 3)
+	if ($location[A Massive Ziggurat].turns_spent < 3 && get_property("lastEncounter") != "Legend of the Temple in the Hidden City")
 	{
 		equipMachete();
 
@@ -1371,10 +1371,7 @@ boolean L11_hiddenCityZones()
 		{
 			handleBjornify($familiar[Grimstone Golem]);
 		}
-		autoAdv(1, $location[A Massive Ziggurat]);
-		handleFamiliar("item");
-		handleBjornify($familiar[El Vibrato Megadrone]);
-		return true;
+		if(autoAdv(1, $location[A Massive Ziggurat])) return true;
 	}
 	return false;
 }
