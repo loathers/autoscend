@@ -16,16 +16,27 @@ boolean L4_batCave()
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 
 	int batStatus = internalQuestStatus("questL04Bat");
-	if((item_amount($item[Sonar-In-A-Biscuit]) > 0) && (batStatus < 3))
+	if(batStatus < 3)
 	{
-		if(use(1, $item[Sonar-In-A-Biscuit]))
+		if(item_amount($item[Sonar-In-A-Biscuit]) > 0)
 		{
-			return true;
+			if(use(1, $item[Sonar-In-A-Biscuit]))
+			{
+				return true;
+			}
+			else
+			{
+				auto_log_warning("Failed to use [Sonar-In-A-Biscuit] for some reason. refreshing inventory and skipping", "red");
+				cli_execute("refresh inv");
+			}
 		}
-		else
+		else if(can_interact())
 		{
-			auto_log_warning("Failed to use [Sonar-In-A-Biscuit] for some reason. refreshing inventory and skipping", "red");
-			cli_execute("refresh inv");
+			//if in post ronin or in casual, buy and use [Sonar-In-A-Biscuit] if cheaper than 500 meat.
+			if(buyUpTo(1, $item[Sonar-In-A-Biscuit], 500))
+			{
+				if(use(1, $item[Sonar-In-A-Biscuit])) return true;
+			}
 		}
 	}
 

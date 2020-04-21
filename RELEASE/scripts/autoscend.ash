@@ -36,6 +36,7 @@ import <autoscend/auto_mr2020.ash>
 import <autoscend/auto_boris.ash>
 import <autoscend/auto_jellonewbie.ash>
 import <autoscend/auto_fallout.ash>
+import <autoscend/auto_casual.ash>
 import <autoscend/auto_community_service.ash>
 import <autoscend/auto_sneakypete.ash>
 import <autoscend/auto_heavyrains.ash>
@@ -1917,7 +1918,7 @@ boolean doBedtime()
 	equipRollover();
 	hr_doBedtime();
 
-	while((my_daycount() == 1) && (item_amount($item[resolution: be more adventurous]) > 0) && (get_property("_resolutionAdv").to_int() < 10) && (get_property("_casualAscension").to_int() < my_ascensions()))
+	while(my_daycount() == 1 && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())
 	{
 		use(1, $item[resolution: be more adventurous]);
 	}
@@ -4062,11 +4063,17 @@ boolean LX_phatLootToken()
 		return false;
 	}
 
-	if((!possessEquipment($item[Ring of Detect Boring Doors]) || (item_amount($item[Eleven-Foot Pole]) == 0) || (item_amount($item[Pick-O-Matic Lockpicks]) == 0)) && auto_have_familiar($familiar[Gelatinous Cubeling]))
+	if(!possessEquipment($item[Ring of Detect Boring Doors]) || item_amount($item[Eleven-Foot Pole]) == 0 || item_amount($item[Pick-O-Matic Lockpicks]) == 0)
 	{
 		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 		{
 			return false;
+		}
+		else if(can_interact())
+		{
+			buyUpTo(1, $item[Eleven-Foot Pole]);
+			buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
+			buyUpTo(1, $item[Ring of Detect Boring Doors]);
 		}
 	}
 
@@ -4764,12 +4771,6 @@ void print_header()
 
 boolean doTasks()
 {
-	if(get_property("_casualAscension").to_int() >= my_ascensions())
-	{
-		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
-		return false;
-	}
-
 	if(get_property("auto_doCombatCopy") == "yes")
 	{	# This should never persist into another turn, ever.
 		set_property("auto_doCombatCopy", "no");
@@ -5157,10 +5158,6 @@ void auto_begin()
 	//This also should set our path too.
 	string page = visit_url("main.php");
 	page = visit_url("api.php?what=status&for=4", false);
-	if((get_property("_casualAscension").to_int() >= my_ascensions()) && (my_ascensions() > 0))
-	{
-		return;
-	}
 
 	if(contains_text(page, "Being Picky"))
 	{
