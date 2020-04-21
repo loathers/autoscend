@@ -4244,7 +4244,7 @@ boolean LX_handleSpookyravenFirstFloor()
 	{
 		abort("Have Lady Spookyraven's Necklace but did not give it to her....");
 	}
-
+	
 	if(hasSpookyravenLibraryKey())
 	{
 		auto_log_info("Well, we need writing desks", "blue");
@@ -4252,7 +4252,7 @@ boolean LX_handleSpookyravenFirstFloor()
 		set_property("choiceAdventure888", "4");
 		set_property("choiceAdventure889", "5");
 		set_property("choiceAdventure163", "4");
-		autoAdv(1, $location[The Haunted Library]);
+		if(autoAdv(1, $location[The Haunted Library])) return true;
 	}
 	else if(item_amount($item[Spookyraven Billiards Room Key]) == 1)
 	{
@@ -4291,11 +4291,8 @@ boolean LX_handleSpookyravenFirstFloor()
 		if(!possessEquipment($item[Pool Cue]) && !possessEquipment(staffOfFats) && !possessEquipment(staffOfFatsEd) && !possessEquipment(staffOfEd) && !in_tcrs())
 		{
 			auto_log_info("Well, I need a pool cueball...", "blue");
-			backupSetting("choiceAdventure330", 1);
 			providePlusNonCombat(25, true);
-			autoAdv(1, $location[The Haunted Billiards Room]);
-			restoreSetting("choiceAdventure330");
-			return true;
+			if(autoAdv(1, $location[The Haunted Billiards Room])) return true;
 		}
 
 		auto_log_info("Looking at the billiards room: 14 <= " + expectPool + " <= 18", "green");
@@ -4344,10 +4341,8 @@ boolean LX_handleSpookyravenFirstFloor()
 		}
 
 		auto_log_info("It's billiards time!", "blue");
-		backupSetting("choiceAdventure330", 1);
 		providePlusNonCombat(25, true);
-		autoAdv(1, $location[The Haunted Billiards Room]);
-		restoreSetting("choiceAdventure330");
+		if(autoAdv(1, $location[The Haunted Billiards Room])) return true;
 	}
 	else
 	{
@@ -4366,10 +4361,9 @@ boolean LX_handleSpookyravenFirstFloor()
 			}
 		}
 
-		autoAdv(1, $location[The Haunted Kitchen]);
-		handleFamiliar("item");
+		if(autoAdv(1, $location[The Haunted Kitchen])) return true;
 	}
-	return true;
+	return false;
 }
 
 boolean LX_handleSpookyravenNecklace()
@@ -5281,6 +5275,7 @@ void auto_begin()
 	backupSetting("battleAction", "custom combat script");
 
 	backupSetting("choiceAdventure1107", 1);
+	backupSetting("choiceAdventure330", 1);
 
 	if(get_property("counterScript") != "")
 	{
