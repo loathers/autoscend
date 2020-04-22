@@ -1622,7 +1622,7 @@ boolean L11_mauriceSpookyraven()
 
 boolean L11_redZeppelin()
 {
-	if (internalQuestStatus("questL11Shen") < 8)
+	if (internalQuestStatus("questL11Shen") < 8 && my_level() != get_property("auto_powerLevelLastLevel").to_int())
 	{
 		return false;
 	}
