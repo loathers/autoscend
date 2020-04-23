@@ -882,16 +882,25 @@ boolean is100FamRun()
 
 boolean pathAllowsFamiliar()
 {
-	//paths in which you cannot use a familiar
-	//pokefam converts your familiars into pokefam, they are not actually familiars in that path and cannot be used as such.
-	if($strings[
-	Actually Ed the Undying, 
+	//does the current path allows you to use familiar?
+	
+	//classes is preferred to string because that way mafia will return an error if you misspelled the class name.
+	if($classes[
+	Ed, 
 	Avatar of Boris,
 	Avatar of Jarlsberg,
 	Avatar of Sneaky Pete,
+	Vampyre
+	] contains my_class())
+	{
+		return false;
+	}
+	
+	//path check for cases where the path bans familairs and does not use a unique class.
+	//since pokefam converts your familiars into pokefam, they are not actually familiars in that path and cannot be used as familiars.
+	if($strings[
 	License to Adventure,
-	Pocket Familiars,
-	Dark Gyffte
+	Pocket Familiars
 	] contains auto_my_path())
 	{
 		return false;
