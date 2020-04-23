@@ -5275,7 +5275,7 @@ void auto_begin()
 	backupSetting("battleAction", "custom combat script");
 
 	backupSetting("choiceAdventure1107", 1);
-	backupSetting("choiceAdventure330", 1);
+	backupSetting("choiceAdventure330", 1);		//haunted billiards room NC shark chum
 
 	if(get_property("counterScript") != "")
 	{

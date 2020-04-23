@@ -3778,7 +3778,7 @@ boolean auto_change_mcd(int mcd, boolean immediatly)
 	{
 		best = 11;
 	}
-
+	//under level 13 we want to level up. level 14+ we already missed the instant karma, no point in holding back anymore.
 	if(my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("auto_ignoreFlyer").to_boolean())
