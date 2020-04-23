@@ -27,6 +27,7 @@ boolean L4_batCave()
 			else
 			{
 				auto_log_warning("Failed to use [Sonar-In-A-Biscuit] for some reason. refreshing inventory and skipping", "red");
+				visit_url("place.php?whichplace=bathole");
 				cli_execute("refresh inv");
 			}
 		}
