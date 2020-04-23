@@ -4825,6 +4825,7 @@ boolean doTasks()
 	// That's OK, although it'll make our pathing a little funky.
 	if (get_property("auto_shenStarted") == "" && (1 <= internalQuestStatus("questL11Shen")))
 	{
+		set_property("auto_shenStarted", my_daycount());
 		auto_log_info("It seems Shen has given us a quest.", "blue");
 		auto_log_info("I am going to avoid the following zones until Shen tells me to go there or until I run out of other things to do:");
 		int linec = 1;
@@ -4837,7 +4838,6 @@ boolean doTasks()
 		auto_log_info("You can also disable this feature: set auto_shenSkipLastLevel=999.", "blue");
 
 		auto_log_warning("This feature is super experimental. Please report any issues.", "red");
-		set_property("auto_shenStarted", my_daycount());
 	}
 
 	bat_formNone();
