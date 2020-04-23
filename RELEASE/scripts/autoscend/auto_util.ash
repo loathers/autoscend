@@ -882,9 +882,6 @@ boolean is100FamRun()
 
 boolean pathAllowsFamiliar()
 {
-	//does the current path allows you to use familiar?
-	
-	//classes is preferred to string because that way mafia will return an error if you misspelled the class name.
 	if($classes[
 	Ed, 
 	Avatar of Boris,
@@ -3756,7 +3753,7 @@ boolean auto_change_mcd(int mcd)
 	return auto_change_mcd(mcd, false);
 }
 
-boolean auto_change_mcd(int mcd, boolean immediatly)
+boolean auto_change_mcd(int mcd, boolean immediately)
 {
 	if (in_koe()) return false;
 
@@ -3801,7 +3798,7 @@ boolean auto_change_mcd(int mcd, boolean immediatly)
 	{
 		return true;
 	}
-	if(immediatly)
+	if(immediately)
 	{
 		return change_mcd(next);
 	}

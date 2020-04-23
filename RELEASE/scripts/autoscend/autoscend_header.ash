@@ -464,7 +464,7 @@ boolean auto_barrelPrayers();									//Defined in autoscend/auto_mr2015.ash
 void auto_begin();											//Defined in autoscend.ash
 item auto_bestBadge();										//Defined in autoscend/auto_mr2016.ash
 boolean auto_change_mcd(int mcd);								//Defined in autoscend/auto_util.ash
-boolean auto_change_mcd(int mcd, boolean immediatly);			//Defined in autoscend/auto_util.ash
+boolean auto_change_mcd(int mcd, boolean immediately);			//Defined in autoscend/auto_util.ash
 string auto_combatHandler(int round, string opp, string text);//Defined in autoscend/auto_combat.ash
 boolean auto_doPrecinct();									//Defined in autoscend/auto_mr2016.ash
 string auto_edCombatHandler(int round, string opp, string text);//Defined in autoscend/auto_combat.ash
