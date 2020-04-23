@@ -2571,8 +2571,8 @@ boolean LX_spookyBedroomCombat()
 {
 	set_property("auto_disableAdventureHandling", true);
 	
-	//this should NOT have an in_zelda() check. because we auto_disableAdventureHandling for all paths.
 	zelda_equipTool($stat[moxie]);
+	// Disabling adventure handling means that we need to manually equip maximized gear.
 	equipMaximizedGear();
 
 	autoAdv(1, $location[The Haunted Bedroom]);
