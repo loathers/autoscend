@@ -1079,9 +1079,8 @@ boolean doVacation()
 	}
 	if(in_zelda())
 	{
-		autoEquip($item[work boots]);
-		//maximizer is unreliable at that location for some reason.
-		equip($item[work boots]);
+		zelda_equipTool($stat[moxie]);
+		equipMaximizedGear();
 	}
 	if(my_primestat() == $stat[Muscle])
 	{
@@ -1157,7 +1156,14 @@ boolean fortuneCookieEvent()
 			auto_log_warning("Do we not have access to either The Haunted Pantry or The Sleazy Back Alley?", "red");
 			goal = $location[The Haunted Pantry];
 		}
-
+		
+		if(in_zelda())
+		{
+			//prevent plumber crash when it tries to adventure without plumber gear.
+			zelda_equipTool($stat[moxie]);
+			equipMaximizedGear();
+		}
+		
 		boolean retval = autoAdv(goal);
 		if (item_amount($item[Knob Goblin lunchbox]) > 0)
 		{
@@ -2570,8 +2576,9 @@ boolean LX_attemptPowerLevel()
 boolean LX_spookyBedroomCombat()
 {
 	set_property("auto_disableAdventureHandling", true);
-
+	
 	zelda_equipTool($stat[moxie]);
+	// Disabling adventure handling means that we need to manually equip maximized gear.
 	equipMaximizedGear();
 
 	autoAdv(1, $location[The Haunted Bedroom]);
