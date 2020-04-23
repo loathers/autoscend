@@ -4771,6 +4771,11 @@ void print_header()
 
 boolean doTasks()
 {
+	if(get_property("_casualAscension").to_int() >= my_ascensions())
+	{	
+		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");	
+		return false;	
+	}
 	if(get_property("auto_doCombatCopy") == "yes")
 	{	# This should never persist into another turn, ever.
 		set_property("auto_doCombatCopy", "no");
@@ -5158,6 +5163,10 @@ void auto_begin()
 	//This also should set our path too.
 	string page = visit_url("main.php");
 	page = visit_url("api.php?what=status&for=4", false);
+	if((get_property("_casualAscension").to_int() >= my_ascensions()) && (my_ascensions() > 0))
+	{
+		return;
+	}
 
 	if(contains_text(page, "Being Picky"))
 	{
