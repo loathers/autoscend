@@ -70,11 +70,21 @@ boolean L4_batCave()
 			autoAdv($location[The Beanbat Chamber]);
 			return true;
 		}
+		if (shenShouldDelayZone($location[The Batrat and Ratbat Burrow]))
+		{
+			auto_log_debug("Delaying Batrat Burrow in case of Shen.");
+			return false;
+		}
 		autoAdv($location[The Batrat and Ratbat Burrow]);
 		return true;
 	}
 	if(batStatus >= 1)
 	{
+		if (shenShouldDelayZone($location[The Batrat and Ratbat Burrow]))
+		{
+			auto_log_debug("Delaying Batrat Burrow in case of Shen.");
+			return false;
+		}
 		bat_formBats();
 		autoAdv($location[The Batrat and Ratbat Burrow]);
 		return true;

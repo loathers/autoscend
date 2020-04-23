@@ -272,6 +272,12 @@ boolean L10_topFloor()
 		return false;
 	}
 
+	if (shenShouldDelayZone($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	{
+		auto_log_debug("Delaying Top Floor in case of Shen.");
+		return false;
+	}
+
 	auto_log_info("Castle Top Floor", "blue");
 	set_property("choiceAdventure680", 1); // Mercy adventure: Are you a Man or a Mouse?
 	if(item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
@@ -360,6 +366,12 @@ boolean L10_holeInTheSkyUnlock()
 		// we force auto_holeinthesky to true in L11_shenCopperhead() as Ed if Shen sends us to the Hole in the Sky
 		// as otherwise the zone isn't required at all for Ed.
 		set_property("auto_holeinthesky", false);
+		return false;
+	}
+
+	if (shenShouldDelayZone($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	{
+		auto_log_debug("Delaying unlocking Hole in the Sky in case of Shen.");
 		return false;
 	}
 

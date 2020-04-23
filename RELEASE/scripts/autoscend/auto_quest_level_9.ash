@@ -81,6 +81,13 @@ boolean L9_chasmBuild()
 		return false;
 	}
 
+	if (shenShouldDelayZone($location[The Smut Orc Logging Camp]))
+	{
+		auto_log_debug("Delaying Logging Camp in case of Shen.");
+		return false;
+	}
+
+
 	auto_log_info("Chasm time", "blue");
 
 	if(item_amount($item[fancy oil painting]) > 0)
