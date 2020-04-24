@@ -4340,11 +4340,14 @@ boolean acquireOrPull(item it)
 	}
 	
 	//special handling via pulling 1 ingredient to craft the item desired
-	if(it == $item[meteorb] && canPull($item[metal meteoroid]))
+	if($items[asteroid belt, meteorb, shooting morning star, meteorite guard, meteortarboard, meteorthopedic shoes] contains it)
 	{
-		if(pullXWhenHaveY(it, 1, 0))
+		if(canPull($item[metal meteoroid]))
 		{
-			if(retrieve_item(1, it)) return true;
+			if(pullXWhenHaveY($item[metal meteoroid], 1, 0))
+			{
+				if(retrieve_item(1, it)) return true;
+			}
 		}
 	}
 	
