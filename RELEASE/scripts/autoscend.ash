@@ -2795,18 +2795,19 @@ int auto_freeCombatsRemaining()
 	return auto_freeCombatsRemaining(false);
 }
 
-int auto_freeCombatsRemaining(boolean log_for_debug)
+int auto_freeCombatsRemaining(boolean print_remaining_fights)
 {
 
 	void debugPrint(string msg)
 	{
-	  if (!log_for_debug) return;
+	  if (!print_remaining_fights) return;
 	  print(msg, "red");
 	}
 
+	//under level 13 we wan to get max XP. level 14+ we already missed the insta karma, no need to hold back anymore.
+	boolean powerlevel = my_level() != 13 || get_property("auto_disregardInstantKarma").to_boolean();
 	int count = 0;
 	int temp = 0;
-	boolean powerlevel = my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean();
 	
 	debugPrint("Remaining Free Fights:");
 	if(!in_koe() && canChangeToFamiliar($familiar[Machine Elf]))

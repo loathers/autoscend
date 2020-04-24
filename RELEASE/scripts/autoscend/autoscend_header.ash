@@ -309,7 +309,7 @@ boolean useCocoon();
 
 //Large pile dump.
 int auto_freeCombatsRemaining();							//Defined in autoscend.ash
-int auto_freeCombatsRemaining(boolean log_for_debug);		//Defined in autoscend.ash
+int auto_freeCombatsRemaining(boolean print_remaining_fights);		//Defined in autoscend.ash
 int auto_advToReserve();									//Defined in autoscend.ash
 boolean auto_unreservedAdvRemaining();						//Defined in autoscend.ash
 boolean L9_ed_chasmBuildClover(int need);					//Defined in autoscend/auto_edTheUndying.ash
