@@ -274,3 +274,15 @@ void boris_buySkills()
 
 	set_property("auto_borisSkills", my_level());
 }
+
+boolean LM_boris()
+{
+	if(!in_boris())
+	{
+		return false;
+	}
+
+	boris_buySkills();
+
+	return false;
+}

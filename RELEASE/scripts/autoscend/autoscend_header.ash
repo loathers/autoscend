@@ -312,8 +312,10 @@ int auto_advToReserve();									//Defined in autoscend.ash
 boolean auto_unreservedAdvRemaining();						//Defined in autoscend.ash
 boolean L9_ed_chasmBuildClover(int need);					//Defined in autoscend/auto_edTheUndying.ash
 boolean L9_ed_chasmStart();									//Defined in autoscend/auto_edTheUndying.ash
+boolean LM_boris();											//Defined in autoscend/auto_boris.ash
 boolean LM_fallout();										//Defined in autoscend/auto_fallout.ash
 boolean LM_jello();											//Defined in autoscend/auto_jellonewbie.ash
+boolean LM_pete();											//Defined in autoscend/auto_sneakypete.ash
 boolean LX_ghostBusting();									//Defined in autoscend/auto_mr2016.ash
 boolean LX_theSource();										//Defined in autoscend/auto_theSource.ash
 familiar[int] List();										//Defined in autoscend/auto_list.ash

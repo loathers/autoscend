@@ -282,3 +282,15 @@ void pete_buySkills()
 
 	set_property("auto_peteSkills", my_level());
 }
+
+boolean LM_pete()
+{
+	if(my_path() != "Avatar of Sneaky Pete")
+	{
+		return false;
+	}
+
+	pete_buySkills();
+
+	return false;
+}
