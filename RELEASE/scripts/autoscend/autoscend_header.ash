@@ -505,6 +505,9 @@ boolean containsCombat(item it);							//Defined in autoscend/auto_combat.ash
 boolean containsCombat(skill sk);							//Defined in autoscend/auto_combat.ash
 boolean containsCombat(string action);						//Defined in autoscend/auto_combat.ash
 
+boolean inCasual();											//Defined in autoscend/auto_casual.ash
+boolean inPostRonin();										//Defined in autoscend/auto_casual.ash
+
 string cs_combatKing(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash
 string cs_combatLTB(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash
 string cs_combatNormal(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash

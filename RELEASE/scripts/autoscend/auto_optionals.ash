@@ -60,7 +60,7 @@ boolean LX_dinseylandfillFunbucks()
 	{
 		return false;
 	}
-	if(item_amount($item[Bag of Park Garbage]) > 0)
+	if(item_amount($item[Bag of Park Garbage]) > 0 && !can_interact())
 	{
 		return dinseylandfill_garbageMoney();
 	}

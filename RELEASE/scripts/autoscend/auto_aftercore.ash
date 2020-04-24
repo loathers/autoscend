@@ -1247,7 +1247,6 @@ boolean auto_cheesePostCS(int leave)
 
 	boolean oldGarbage = get_property("auto_getDinseyGarbageMoney").to_boolean();
 	set_property("auto_getDinseyGarbageMoney", true);
-	dinseylandfill_garbageMoney();
 	set_property("auto_getDinseyGarbageMoney", oldGarbage);
 
 	getDiscoStyle(7);

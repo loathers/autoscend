@@ -6,7 +6,6 @@ item[element] getCharterIndexable();
 boolean elementalPlanes_initializeSettings();
 boolean elementalPlanes_access(element ele);
 boolean elementalPlanes_takeJob(element ele);
-boolean dinseylandfill_garbageMoney();
 boolean volcano_bunkerJob();
 boolean volcano_lavaDogs();			//See code before using this!
 
