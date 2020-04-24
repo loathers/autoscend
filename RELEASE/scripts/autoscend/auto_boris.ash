@@ -2,12 +2,16 @@ script "auto_boris.ash"
 
 boolean in_boris()
 {
-	return auto_my_path() == "Avatar of Boris";
+	return my_class() == $class[Avatar of Boris];
 }
 
 boolean borisAdjustML()
 {
 	//set target ML boosts for boris.
+	if(!in_boris())
+	{
+		return false;
+	}
 	
 	if(my_buffedstat($stat[muscle]) < 30)
 	{
@@ -38,7 +42,7 @@ void boris_initializeSettings()
 {
 	if(in_boris())
 	{
-		Print("Initializing Avatar of Boris settings", "blue");
+		auto_log_info("Initializing Avatar of Boris settings", "blue");
 		set_property("auto_borisSkills", -1);
 		set_property("auto_cubeItems", false);
 		set_property("auto_grimstoneOrnateDowsingRod", false);
