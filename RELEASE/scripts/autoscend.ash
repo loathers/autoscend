@@ -2807,30 +2807,29 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 	//under level 13 we wan to get max XP. level 14+ we already missed the insta karma, no need to hold back anymore.
 	boolean powerlevel = my_level() != 13 || get_property("auto_disregardInstantKarma").to_boolean();
 	int count = 0;
-	int temp = 0;
 	
 	debugPrint("Remaining Free Fights:");
 	if(!in_koe() && canChangeToFamiliar($familiar[Machine Elf]))
 	{
-		temp = 5-get_property("_machineTunnelsAdv").to_int();
+		int temp = 5-get_property("_machineTunnelsAdv").to_int();
 		count += temp;
 		debugPrint("Machine Elf = " + temp);
 	}
 	if(snojoFightAvailable())
 	{
-		temp = 10-get_property("_snojoFreeFights").to_int();
+		int temp = 10-get_property("_snojoFreeFights").to_int();
 		count += temp;
 		debugPrint("Snojo = " + temp);
 	}
 	if(canChangeToFamiliar($familiar[God Lobster]) && powerlevel)
 	{
-		temp = 3-get_property("_godLobsterFights").to_int();
+		int temp = 3-get_property("_godLobsterFights").to_int();
 		count += temp;
 		debugPrint("God Lobster = " + temp);
 	}
 	if(neverendingPartyRemainingFreeFights() > 0)
 	{
-		temp = neverendingPartyRemainingFreeFights();
+		int temp = neverendingPartyRemainingFreeFights();
 		count += temp;
 		debugPrint("Neverending Party = " + temp);
 	}
