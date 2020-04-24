@@ -142,10 +142,6 @@ void handleKingLiberation()
 			}
 		}
 
-		if(have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
-		{
-			use_skill(1, $skill[Iron Palm Technique]);
-		}
 		set_property("auto_aftercore", true);
 	}
 

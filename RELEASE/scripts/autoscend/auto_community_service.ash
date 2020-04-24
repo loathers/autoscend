@@ -2957,11 +2957,6 @@ void cs_initializeDay(int day)
 				use_skill(1, $skill[Spirit of Peppermint]);
 			}
 
-			if(have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0) && (my_class() == $class[Seal Clubber]))
-			{
-				use_skill(1, $skill[Iron Palm Technique]);
-			}
-
 			visit_url("tutorial.php?action=toot");
 			use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
 			use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);

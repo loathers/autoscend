@@ -588,8 +588,10 @@ boolean L13_towerFinalHeavyRains()
 	}
 	
 	//buff up before the boss
-	//buffMaintain($effect[Benetton's Medley of Diversity], 0, 1, 1);		//15 prismatic weapon dmg. TODO: implemented in buffMaintain
+	buffMaintain($effect[Benetton's Medley of Diversity], 0, 1, 1);			//15 prismatic weapon dmg.
 	buffMaintain($effect[Dirge of Dreadfulness], 0, 1, 1);					//12 spooky weapon dmg
+	buffMaintain($effect[Boner Battalion], 0, 1, 1);						//32-33 sleaze and spooky passive dmg
+	buffMaintain($effect[Frigidalmatian], 0, 1, 1);							//40 (due to cap) cold passive dmg
 	effectAblativeArmor(true);					//Unimportant effects protect your important one from being removed.
 	
 	//Calculate melee/ranged damage. Each element is capped at 40. assume you will be able to deal 40 physical damage.
@@ -643,9 +645,8 @@ boolean L13_towerFinalHeavyRains()
 	}
 	else foreach it in $items[Rain-Doh green lantern, meteorb, snow mobile]
 	{
-		if(creatable_amount(it) > 0)
+		if(acquireOrPull(it))
 		{
-			create(1, it);
 			spell_extra_element = true;
 			break;
 		}
@@ -705,6 +706,8 @@ boolean L13_towerFinalHeavyRains()
 	if(plan_on_spells)
 	{
 		set_property("auto_rain_king_combat", best_spell);
+		setFlavour($element[sleaze]);		//a safe element that does not conflict with offhand items.
+		executeFlavour();
 		if(spell_extra_element)
 		{
 			maximize("spell damage percent, +weapon", false);
@@ -745,8 +748,10 @@ boolean L13_towerFinalHeavyRains()
 	maximize("-ml, -weapon, -offhand", false);
 	
 	//Fight!
+	//auto_disableAdventureHandling because we don't want maximize, switch familiar, change buffs, or anything else that might break our specific prepwork.
 	acquireHP();
-	set_property("auto_disableAdventureHandling", true);
+	acquireMP();
+	set_property("auto_disableAdventureHandling", true);		
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
 	set_property("auto_disableAdventureHandling", false);
 	if(last_monster() != $monster[The Rain King])
