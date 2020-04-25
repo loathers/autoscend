@@ -37,6 +37,7 @@ boolean LX_bitchinMeatcar();
 boolean LX_meatMaid();
 boolean LX_craftAcquireItems();
 boolean LX_freeCombats();
+boolean LX_freeCombats(boolean powerlevel);
 boolean LX_dolphinKingMap();
 boolean LX_steelOrgan();
 boolean resolveSixthDMT();
@@ -308,6 +309,7 @@ boolean useCocoon();
 
 //Large pile dump.
 int auto_freeCombatsRemaining();							//Defined in autoscend.ash
+int auto_freeCombatsRemaining(boolean print_remaining_fights);		//Defined in autoscend.ash
 int auto_advToReserve();									//Defined in autoscend.ash
 boolean auto_unreservedAdvRemaining();						//Defined in autoscend.ash
 boolean L9_ed_chasmBuildClover(int need);					//Defined in autoscend/auto_edTheUndying.ash
@@ -665,6 +667,7 @@ boolean neverendingPartyCombat(stat st);					//Defined in autoscend/auto_mr2018.
 boolean neverendingPartyCombat(effect eff);					//Defined in autoscend/auto_mr2018.ash
 boolean neverendingPartyCombat();							//Defined in autoscend/auto_mr2018.ash
 boolean neverendingPartyPowerlevel();					//Defined in autoscend/auto_mr2018.ash
+int neverendingPartyRemainingFreeFights();					//Defined in autoscend/auto_mr2018.ash
 boolean neverendingPartyAvailable();						//Defined in autoscend/auto_mr2018.ash
 string auto_latteDropName(location l); // Defined in autoscend/auto_mr2018.ash
 boolean auto_latteDropAvailable(location l); // Defined in autoscend/auto_mr2018.ash

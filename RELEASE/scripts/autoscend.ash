@@ -2413,13 +2413,7 @@ boolean LX_attemptPowerLevel()
 	handleFamiliar("stat");
 	addToMaximize("100 exp");
 
-	if(snojoFightAvailable() && (auto_my_path() == "Pocket Familiars"))
-	{
-		autoAdv(1, $location[The X-32-F Combat Training Snowman]);
-		return true;
-	}
-
-	if(LX_freeCombats())
+	if(LX_freeCombats(true))
 	{
 		return true;
 	}
@@ -2804,37 +2798,74 @@ boolean LX_getDigitalKey()
 
 int auto_freeCombatsRemaining()
 {
+	return auto_freeCombatsRemaining(false);
+}
+
+int auto_freeCombatsRemaining(boolean print_remaining_fights)
+{
+
+	void debugPrint(string msg)
+	{
+	  if (!print_remaining_fights) return;
+	  print(msg, "red");
+	}
+
+	//under level 13 we wan to get max XP. level 14+ we already missed the insta karma, no need to hold back anymore.
+	boolean powerlevel = my_level() != 13 || get_property("auto_disregardInstantKarma").to_boolean();
 	int count = 0;
 	
+	debugPrint("Remaining Free Fights:");
 	if(!in_koe() && canChangeToFamiliar($familiar[Machine Elf]))
 	{
-		count += 5-get_property("_machineTunnelsAdv").to_int();
+		int temp = 5-get_property("_machineTunnelsAdv").to_int();
+		count += temp;
+		debugPrint("Machine Elf = " + temp);
 	}
 	if(snojoFightAvailable())
 	{
-		count += 10-get_property("_snojoFreeFights").to_int();
+		int temp = 10-get_property("_snojoFreeFights").to_int();
+		count += temp;
+		debugPrint("Snojo = " + temp);
 	}
-	if(canChangeToFamiliar($familiar[God Lobster]))
+	if(canChangeToFamiliar($familiar[God Lobster]) && powerlevel)
 	{
-		count += 3-get_property("_godLobsterFights").to_int();
+		int temp = 3-get_property("_godLobsterFights").to_int();
+		count += temp;
+		debugPrint("God Lobster = " + temp);
 	}
-	if(neverendingPartyAvailable())
+	if(neverendingPartyRemainingFreeFights() > 0)
 	{
-		count += 10-get_property("_neverendingPartyFreeTurns").to_int();
+		int temp = neverendingPartyRemainingFreeFights();
+		count += temp;
+		debugPrint("Neverending Party = " + temp);
 	}
 	if(get_property("_eldritchTentacleFought").to_boolean() == false)
 	{
 		count++;
+		debugPrint("Tent Tentacle = 1");
 	}
 	if(auto_have_skill($skill[Evoke Eldritch Horror]) && get_property("_eldritchHorrorEvoked").to_boolean() == false)
 	{
 		count++;
+		debugPrint("Evoke Eldritch = 1");
 	}
 	
 	return count;
 }
 
 boolean LX_freeCombats()
+{
+	if(my_level() != 13 || get_property("auto_disregardInstantKarma").to_boolean())
+	{
+		return LX_freeCombats(true);
+	}
+	else
+	{
+		return LX_freeCombats(false);
+	}
+}
+
+boolean LX_freeCombats(boolean powerlevel)
 {
 	if(auto_freeCombatsRemaining() == 0)
 	{
@@ -2854,25 +2885,29 @@ boolean LX_freeCombats()
 	
 	if(my_adventures() < 2)
 	{
-		auto_log_warning("Too few adventures to safely automate free combats.", "red");
-		auto_log_warning("If we lose your last adv on a free combat the remaining free combats are wasted.", "red");
-		abort("Please perform the remaining free combats manually.");
+		auto_freeCombatsRemaining(true);
+		auto_log_warning("Too few adventures to safely automate free combats", "red");
+		auto_log_warning("If we lose your last adv on a free combat the remaining free combats are wasted", "red");
+		abort("Please perform the remaining free combats manually then run me again");
 	}
 
-	if((auto_my_path() != "Disguises Delimit") && neverendingPartyCombat())
+	if(neverendingPartyRemainingFreeFights() > 0)
 	{
-		return true;
+		if(powerlevel)
+		{
+			if(neverendingPartyPowerlevel()) return true;
+		}
+		else
+		{
+			if(neverendingPartyCombat()) return true;
+		}
 	}
+	
+	boolean adv_done = false;
 
 	if(!in_koe() && get_property("_machineTunnelsAdv").to_int() < 5 && canChangeToFamiliar($familiar[Machine Elf]))
 	{
-		if(get_property("auto_choice1119") != "")
-		{
-			set_property("choiceAdventure1119", get_property("auto_choice1119"));
-		}
-		set_property("auto_choice1119", get_property("choiceAdventure1119"));
-		set_property("choiceAdventure1119", 1);
-
+		backupSetting("choiceAdventure1119", 1);
 
 		familiar bjorn = my_bjorned_familiar();
 		if(bjorn == $familiar[Machine Elf])
@@ -2880,35 +2915,38 @@ boolean LX_freeCombats()
 			handleBjornify($familiar[Grinning Turtle]);
 		}
 		handleFamiliar($familiar[Machine Elf]);
-		autoAdv(1, $location[The Deep Machine Tunnels]);
+		adv_done = autoAdv(1, $location[The Deep Machine Tunnels]);
 		if(bjorn == $familiar[Machine Elf])
 		{
 			handleBjornify(bjorn);
 		}
 
-		set_property("choiceAdventure1119", get_property("auto_choice1119"));
-		set_property("auto_choice1119", "");
+		restoreSetting("choiceAdventure1119");
 		handleFamiliar("item");
 		loopHandlerDelayAll();
-		return true;
+		if(adv_done) return true;
 	}
 
 	if(snojoFightAvailable())
 	{
-		handleFamiliar($familiar[Ms. Puck Man]);
-		autoAdv(1, $location[The X-32-F Combat Training Snowman]);
-		handleFamiliar("item");
-		if(get_property("_auto_digitizeDeskCounter").to_int() > 2)
-		{
-			set_property("_auto_digitizeDeskCounter", get_property("_auto_digitizeDeskCounter").to_int() - 1);
-		}
+		adv_done = autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 		loopHandlerDelayAll();
-		return true;
+		if(adv_done) return true;
 	}
 
-	if(((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean())) && godLobsterCombat())
+	if(powerlevel)
 	{
-		return true;
+		if(godLobsterCombat()) return true;
+	}
+	
+	if(get_property("_eldritchTentacleFought").to_boolean() == false)
+	{
+		if(fightScienceTentacle()) return true;
+	}
+	
+	if(auto_have_skill($skill[Evoke Eldritch Horror]) && get_property("_eldritchHorrorEvoked").to_boolean() == false)
+	{
+		if(evokeEldritchHorror()) return true;
 	}
 
 	return false;
@@ -5032,10 +5070,7 @@ boolean doTasks()
 
 	if(snojoFightAvailable() && (my_daycount() == 2) && (get_property("snojoMoxieWins").to_int() == 10))
 	{
-		handleFamiliar($familiar[Ms. Puck Man]);
-		autoAdv(1, $location[The X-32-F Combat Training Snowman]);
-		handleFamiliar("item");
-		return true;
+		return autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 	}
 
 	if(resolveSixthDMT())			return true;
