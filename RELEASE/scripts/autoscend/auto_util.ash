@@ -3798,12 +3798,13 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 	{
 		return true;
 	}
+	
+	set_property("auto_mcd_target", next);
 	if(immediately)
 	{
 		return change_mcd(next);
 	}
-	//for non immediate changes we still return true because the setting was set to be changed later.
-	set_property("auto_mcd_target", next);
+	//for non immediate changes we still return true because the mafia setting was changed and MCD will be changed later.
 	return true;
 }
 
