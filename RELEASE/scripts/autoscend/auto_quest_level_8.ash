@@ -332,13 +332,14 @@ boolean L8_getMineOres()
 			handleFamiliar("item");
 			return autoAdv($location[Itznotyerzitz Mine]);
 		} else if (possessOutfit("Mining Gear", true)) {
+			equipMaximizedGear();
 			outfit("Mining Gear");
+			acquireHP(1);
 			auto_log_info("Mining in Itznotyerzitz Mine for Trapper ore", "blue");
 			int cell = getCellToMine(oreGoal);
 			if (cell != 0) {
 				set_property("auto_minedCells", get_property("auto_minedCells") + cell.to_string() + ",");
 				visit_url("mining.php?mine=1&which=" + cell.to_string() + "&pwd");
-				acquireHP(1);
 				return true;
 			}
 		}
