@@ -3694,6 +3694,7 @@ boolean auto_have_familiar(familiar fam)
 
 boolean basicAdjustML()
 {
+	if(in_boris()) return borisAdjustML();
 	if (in_zelda())
 	{
 		// We don't get many stats from combat - no point running ML.

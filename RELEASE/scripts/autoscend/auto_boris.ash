@@ -1,9 +1,48 @@
 script "auto_boris.ash"
 
+boolean in_boris()
+{
+	return my_class() == $class[Avatar of Boris];
+}
+
+boolean borisAdjustML()
+{
+	//set target ML boosts for boris.
+	if(!in_boris())
+	{
+		return false;
+	}
+	
+	if(my_buffedstat($stat[muscle]) < 30)
+	{
+		return auto_change_mcd(0);
+	}
+	
+	boolean strong = auto_have_skill($skill[Barrel Chested]);
+	
+	if(!strong)
+	{
+		auto_change_mcd(0);
+	}
+	else
+	{
+		auto_change_mcd(11);
+	}
+	
+	//Overconfident is an intrinsic +30 ML. By the time you are strong enough to use it it can be turned on and left on
+	if(strong && my_buffedstat($stat[muscle]) > 100 && have_skill($skill[Pep Talk]) && have_effect($effect[Overconfident]) == 0)
+	{
+		use_skill(1, $skill[Pep Talk]);
+	}
+	
+	return true;
+}
+
 void boris_initializeSettings()
 {
-	if(my_path() == "Avatar of Boris")
+	if(in_boris())
 	{
+		auto_log_info("Initializing Avatar of Boris settings", "blue");
 		set_property("auto_borisSkills", -1);
 		set_property("auto_cubeItems", false);
 		set_property("auto_grimstoneOrnateDowsingRod", false);
@@ -17,12 +56,9 @@ void boris_initializeSettings()
 	}
 }
 
-
-
-
 void boris_initializeDay(int day)
 {
-	if(my_path() != "Avatar of Boris")
+	if(!in_boris())
 	{
 		return;
 	}
@@ -76,19 +112,20 @@ void boris_initializeDay(int day)
 	}
 }
 
-boolean boris_buySkills()
+void boris_buySkills()
 {
-	if(my_class() != $class[Avatar of Boris])
+	if(!in_boris())
 	{
-		return false;
+		return;
 	}
 	if(my_level() <= get_property("auto_borisSkills").to_int())
 	{
-		return false;
+		return;
 	}
+	//if you have these 3 skills then you have all skills
 	if(have_skill($skill[Bifurcating Blow]) && have_skill($skill[Banishing Shout]) && have_skill($skill[Gourmand]))
 	{
-		return false;
+		return;
 	}
 
 	int possBorisPoints = 0;
@@ -106,6 +143,8 @@ boolean boris_buySkills()
 			skillPoints = skillPoints - 1;
 			int tree = 1;
 
+			//skills are listed in reverse order. from last to first to buy.
+			//Correct Boris strat is super easy. get all feasting, then all shouting, then fighting last.
 			if(!have_skill($skill[Bifurcating Blow]))
 			{
 				tree = 1;
@@ -134,6 +173,19 @@ boolean boris_buySkills()
 			{
 				tree = 1;
 			}
+			if(!have_skill($skill[Broadside]))
+			{
+				tree = 1;
+			}
+			if(!have_skill($skill[[11002]Ferocity]))
+			{
+				tree = 1;
+			}
+			if(!have_skill($skill[Cleave]))
+			{
+				tree = 1;
+			}
+			
 			if(!have_skill($skill[Banishing Shout]))
 			{
 				tree = 2;
@@ -154,22 +206,6 @@ boolean boris_buySkills()
 			{
 				tree = 2;
 			}
-			if(!have_skill($skill[Gourmand]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Barrel Chested]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[More to Love]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Hungry Eyes]))
-			{
-				tree = 3;
-			}
 			if(!have_skill($skill[Song of Solitude]))
 			{
 				tree = 2;
@@ -189,6 +225,23 @@ boolean boris_buySkills()
 			if(!have_skill($skill[Intimidating Bellow]))
 			{
 				tree = 2;
+			}
+			
+			if(!have_skill($skill[Gourmand]))
+			{
+				tree = 3;
+			}
+			if(!have_skill($skill[Barrel Chested]))
+			{
+				tree = 3;
+			}
+			if(!have_skill($skill[More to Love]))
+			{
+				tree = 3;
+			}
+			if(!have_skill($skill[Hungry Eyes]))
+			{
+				tree = 3;
 			}
 			if(!have_skill($skill[Heroic Belch]))
 			{
@@ -215,31 +268,16 @@ boolean boris_buySkills()
 				tree = 3;
 			}
 
-			if(!have_skill($skill[Broadside]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[[11002]Ferocity]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Cleave]))
-			{
-				tree = 1;
-			}
-
 			visit_url("da.php?pwd&whichtree=" + tree + "&action=borisskill");
 		}
 	}
 
 	set_property("auto_borisSkills", my_level());
-	return true;
 }
-
 
 boolean LM_boris()
 {
-	if(my_path() != "Avatar of Boris")
+	if(!in_boris())
 	{
 		return false;
 	}

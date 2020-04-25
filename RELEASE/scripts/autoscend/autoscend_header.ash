@@ -416,7 +416,9 @@ boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] ineb
 boolean tcrs_maximize_with_items(string maximizerString);	//Defined in autoscend/auto_tcrs.ash
 boolean in_koe();											//Defined in autoscend/auto_koe.ash
 boolean in_zelda();											//Defined in autoscend/auto_zelda.ash
-boolean boris_buySkills();									//Defined in autoscend/auto_boris.ash
+boolean in_boris();											//Defined in autoscend/auto_boris.ash
+boolean borisAdjustML();									//Defined in autoscend/auto_boris.ash
+void boris_buySkills();										//Defined in autoscend/auto_boris.ash
 void boris_initializeDay(int day);							//Defined in autoscend/auto_boris.ash
 void boris_initializeSettings();							//Defined in autoscend/auto_boris.ash
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
@@ -901,7 +903,7 @@ boolean ocrs_postHelper();									//Defined in autoscend/auto_summerfun.ash
 void oldPeoplePlantStuff();									//Defined in autoscend/auto_floristfriar.ash
 boolean organsFull();										//Defined in autoscend/auto_util.ash
 boolean ovenHandle();										//Defined in autoscend/auto_util.ash
-boolean pete_buySkills();									//Defined in autoscend/auto_sneakypete.ash
+void pete_buySkills();										//Defined in autoscend/auto_sneakypete.ash
 void pete_initializeDay(int day);							//Defined in autoscend/auto_sneakypete.ash
 void pete_initializeSettings();								//Defined in autoscend/auto_sneakypete.ash
 boolean picky_buyskills();									//Defined in autoscend/auto_picky.ash

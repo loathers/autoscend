@@ -276,6 +276,12 @@ int auto_advToReserve()
 		{
 			reserveadv = max(2, reserveadv);
 		}
+		
+		//sneaky pete specific check. Mixologist lets you spend 2 adv on crafting. cocktail magic makes crafting free.
+		if(auto_have_skill($skill[Mixologist]) && !auto_have_skill($skill[Cocktail Magic]))
+		{
+			reserveadv = max(2, reserveadv);
+		}
 	}
 	
 	return reserveadv;
@@ -4913,7 +4919,7 @@ boolean doTasks()
 	if(LM_groundhog())					return true;
 	if(LM_digimon())					return true;
 	if(LM_majora())						return true;
-	if(LM_batpath()) return true;
+	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
 
 	if(auto_my_path() != "Community Service")
