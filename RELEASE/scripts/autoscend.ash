@@ -5196,6 +5196,14 @@ boolean doTasks()
 
 	if (L12_clearBattlefield())			return true;
 	if(LX_koeInvaderHandler())			return true;
+	
+	if(my_level() > get_property("auto_shenSkipLastLevel").to_int() && get_property("questL11Shen") != "finished")
+	{
+		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do.", "red");
+		set_property("auto_shenSkipLastLevel", my_level());
+		return true;
+	}
+	
 	if(L13_powerLevel())				return true;
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
@@ -5203,14 +5211,6 @@ boolean doTasks()
 	if(L13_towerNSTower())				return true;
 	if(L13_towerNSNagamar())			return true;
 	if(L13_towerNSFinal())				return true;
-
-	if(my_level() > get_property("auto_shenSkipLastLevel").to_int())
-	{
-		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do.", "red");
-		set_property("auto_shenSkipLastLevel", my_level());
-		return true;
-	}
-
 
 	if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
 	{
