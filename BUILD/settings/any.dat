@@ -6,6 +6,7 @@ auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks d
 auto_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
 auto_clearCombatScripts	boolean	Clear out the postAdventure, preAdventure and kingLiberated settings upon kingLiberation. These will return upon running the script in a new ascension.
 auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
+auto_powerLevelTimer	integer	Sets the delay before each adv spent powerleveling, default is 10 sec. lowest valid value is 1.
 auto_pullPVPJunk	boolean	Pull various PVP junk when liberating the King? Mostly avatar potions but other stuff might get added.
 auto_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
 auto_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.

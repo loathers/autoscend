@@ -205,88 +205,30 @@ boolean LX_getStarKey()
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
-boolean L13_powerLevel()
+boolean L13_startQuest()
 {
-	// this function is exceptionally badly named. It powerlevels to 13 and nothing else. Should be refactored.
-	if(internalQuestStatus("questL13Final") < 0)
+	// start final quest for the naughty sorceress. If needed power level to reach level 13
+	
+	if(internalQuestStatus("questL13Final") > -1)
 	{
-		if(my_level() < 13)
+		return false;
+	}
+	
+	//start quest if level 13+
+	if(my_level() > 12)
+	{
+		council(); // Log council output
+		if(internalQuestStatus("questL13Final") > -1)
 		{
-			auto_log_warning("I seem to need to power level, or something... waaaa.", "red");
-			# lx_attemptPowerLevel is before. We need to merge all of this into that....
-			set_property("auto_newbieOverride", true);
-
-			if(needDigitalKey())
-			{
-				woods_questStart();
-				if(LX_getDigitalKey())
-				{
-					return true;
-				}
-			}
-			if(needStarKey())
-			{
-				if(zone_isAvailable($location[The Hole In The Sky]))
-				{
-					if(LX_getStarKey())
-					{
-						return true;
-					}
-				}
-			}
-			if(!hasTorso())
-			{
-				if(LX_melvignShirt())
-				{
-					return true;
-				}
-			}
-
-			int delay = get_property("auto_powerLevelTimer").to_int();
-			if(delay == 0)
-			{
-				delay = 10;
-			}
-			wait(delay);
-
-			if(haveAnyIotmAlternativeRestSiteAvailable() && haveFreeRestAvailable() && auto_my_path() != "The Source")
-			{
-				doFreeRest();
-				cli_execute("scripts/autoscend/auto_post_adv.ash");
-				loopHandlerDelayAll();
-				return true;
-			}
-
-			if(!LX_attemptPowerLevel())
-			{
-				if(get_property("auto_powerLevelAdvCount").to_int() >= 10)
-				{
-					auto_log_warning("The following error message is probably wrong, you just need to powerlevel to 13 most likely.", "red");
-					if((item_amount($item[Rock Band Flyers]) > 0) || (item_amount($item[Jam Band Flyers]) > 0))
-					{
-						abort("Need more flyer ML but don't know where to go :(");
-					}
-					else
-					{
-						abort("I am lost, please forgive me. I feel underleveled.");
-					}
-				}
-			}
 			return true;
 		}
 		else
 		{
-			if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
-			{
-				auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
-				set_property("auto_powerLevelLastLevel", my_level());
-				return true;
-			}
-			council(); // Log council output
-			abort("Some sidequest is not done for some raisin. Some sidequest is missing, or something is missing, or something is not not something. We don't know what to do.");
+			abort("I am unable to start the final quest for some reason");
 		}
 	}
-	return false;
+	// if we reached this point under level 13 then we need to level up.
+	return LX_attemptPowerLevel();
 }
 
 boolean L13_towerNSContests()
