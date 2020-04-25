@@ -1,5 +1,45 @@
 script "auto_quest_level_13.ash"
 
+boolean needStarKey()
+{
+	if(contains_text(get_property("nsTowerDoorKeysUsed"),"star key"))
+	{
+		return false;
+	}
+	if(item_amount($item[Richard\'s Star Key]) > 0)
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean needDigitalKey()
+{
+	if(contains_text(get_property("nsTowerDoorKeysUsed"),"digital key"))
+	{
+		return false;
+	}
+	if(item_amount($item[Digital Key]) > 0)
+	{
+		return false;
+	}
+	if(whitePixelCount() >= 30)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+int whitePixelCount()
+{
+	int count = item_amount($item[White Pixel]);
+
+	int extra = min(item_amount($item[Red Pixel]), item_amount($item[Blue Pixel]));
+	extra = min(extra, item_amount($item[Green Pixel]));
+	return count + extra;
+}
+
 boolean L13_powerLevel()
 {
 	// this function is exceptionally badly named. It powerlevels to 13 and nothing else. Should be refactored.
@@ -496,23 +536,12 @@ boolean L13_towerNSHedge()
 
 boolean L13_sorceressDoor()
 {
-	if(internalQuestStatus("questL13Final") < 5 || internalQuestStatus("questL13Final") > 5)
+	if(internalQuestStatus("questL13Final") != 5)
 	{
 		return false;
 	}
 
-	if (item_amount($item[white pixel]) >= 30 && item_amount($item[Digital Key]) == 0)
-	{
-		if (in_koe())
-		{
-			buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Digital Key]);
-		}
-		else
-		{
-			cli_execute("make digital key");
-		}
-		set_property("auto_crackpotjar", "finished");
-	}
+	if(LX_getDigitalKey()) return true;
 
 	string page = visit_url("place.php?whichplace=nstower_door");
 	if(contains_text(page, "ns_lock6"))
@@ -616,26 +645,6 @@ boolean L13_sorceressDoor()
 
 	if(contains_text(page, "ns_lock5"))
 	{
-		if(item_amount($item[Digital Key]) == 0)
-		{
-			if(item_amount($item[white pixel]) < 30)
-			{
-				int pulls_needed = 30 - item_amount($item[white pixel]);
-				// Save 5 pulls for later, just in case.
-				if(pulls_remaining() - pulls_needed >= 5)
-				{
-					pullXWhenHaveY($item[white pixel], pulls_needed, item_amount($item[white pixel]));
-				}
-			}
-			if(in_koe() && item_amount($item[white pixel]) >= 30)
-			{
-				buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Digital Key]);
-			}
-			else
-			{
-				cli_execute("make digital key");
-			}
-		}
 		if(item_amount($item[Digital Key]) == 0)
 		{
 			abort("Need Digital Key for the Sorceress door :(");

@@ -13,6 +13,10 @@ script "autoscend_header.ash"
 //		<classification>: M for most of ascension, "sc" for Seal Clubber only
 //		<path>: [optional] indicates path to be used in. "ed" for ed, "cs" for community service
 //			Usually separated with _
+//******************************************************************************************************
+
+//Defined in autoscend.ash Started
+
 boolean LA_cs_communityService();				//Defined in autoscend/auto_community_service.ash
 boolean LM_edTheUndying();						//Defined in autoscend/auto_edTheUndying.ash
 
@@ -27,7 +31,6 @@ boolean ornateDowsingRod();
 boolean LX_nastyBooty();
 boolean LX_spookyravenSecond();
 boolean LX_spookyBedroomCombat();
-boolean LX_getDigitalKey();
 boolean LX_guildUnlock();
 boolean LX_hardcoreFoodFarm();
 boolean LX_melvignShirt();
@@ -47,16 +50,16 @@ boolean LX_faxing();
 boolean LX_universeFrat();
 boolean LX_burnDelay();
 boolean LX_loggingHatchet();
-
-
-//*********** Section of stuff moved into auto_optionals.ash *******************/
-boolean LX_artistQuest();
-boolean LX_dinseylandfillFunbucks();
-//*********** End of stuff moved into auto_optionals.ash ***********************/
-
 boolean Lsc_flyerSeals();
 
-boolean handleRainDoh();
+//Defined in autoscend/auto_optionals.ash
+
+boolean LX_artistQuest();					//Defined in autoscend/auto_optionals.ash
+boolean LX_dinseylandfillFunbucks();		//Defined in autoscend/auto_optionals.ash
+
+
+
+boolean handleRainDoh();					//Defined in autoscend/auto_mr2012.ash
 
 boolean L2_mosquito();
 boolean L2_treeCoin();
@@ -92,7 +95,6 @@ boolean L10_basement();
 boolean L10_ground();
 boolean L10_topFloor();
 boolean L10_holeInTheSkyUnlock();
-boolean LX_getStarKey();
 
 int shenItemsReturned();												//Defined in autoscend/auto_quest_level_11.ash
 boolean[location] shenSnakeLocations(int day, int n_items_returned);	//Defined in autoscend/auto_quest_level_11.ash
@@ -166,6 +168,9 @@ boolean L12_gremlins();										//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_orchardFinalize();								//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_finalizeWar();									//Defined in autoscend/auto_quest_level_12.ash
 
+//Defined in autoscend/auto_quest_level_13.ash
+boolean LX_getDigitalKey();
+boolean LX_getStarKey();
 boolean L13_powerLevel();
 boolean L13_sorceressDoor();
 boolean L13_towerNSContests();
@@ -564,20 +569,20 @@ boolean dna_bedtime();										//Defined in autoscend/auto_mr2014.ash
 boolean dna_generic();										//Defined in autoscend/auto_mr2014.ash
 boolean dna_sorceressTest();								//Defined in autoscend/auto_mr2014.ash
 boolean dna_startAcquire();									//Defined in autoscend/auto_mr2014.ash
-boolean auto_reagnimatedGetPart();	//Defined in autoscend/auto_mr2012.ash
+boolean auto_reagnimatedGetPart();							//Defined in autoscend/auto_mr2012.ash
 boolean doBedtime();										//Defined in autoscend.ash
 boolean doHRSkills();										//Defined in autoscend/auto_heavyrains.ash
 boolean doVacation();										//Defined in autoscend.ash
 int doHottub();												//Defined in autoscend/auto_clan.ash
-int hotTubSoaksRemaining();						//Defined in autoscend/auto_clan.ash
+int hotTubSoaksRemaining();									//Defined in autoscend/auto_clan.ash
 boolean isHotTubAvailable();								//Defined in autoscend/auto_clan.ash
 int doNumberology(string goal);								//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, boolean doIt);				//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, boolean doIt, string option);//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, string option);				//Defined in autoscend/auto_util.ash
 boolean doTasks();											//Defined in autoscend.ash
-boolean isSpeakeasyDrink(item drink); //Defined in autoscend/auto_clan.ash
-boolean canDrinkSpeakeasyDrink(item drink); //Defined in autoscend/auto_clan.ash
+boolean isSpeakeasyDrink(item drink);						//Defined in autoscend/auto_clan.ash
+boolean canDrinkSpeakeasyDrink(item drink); 				//Defined in autoscend/auto_clan.ash
 boolean drinkSpeakeasyDrink(item drink);					//Defined in autoscend/auto_clan.ash
 boolean drinkSpeakeasyDrink(string drink);					//Defined in autoscend/auto_clan.ash
 boolean eatFancyDog(string dog);							//Defined in autoscend/auto_clan.ash
@@ -989,9 +994,9 @@ string tryBeerPong();										//Defined in autoscend/auto_util.ash
 boolean tryPantsEat();										//Defined in autoscend/auto_cooking.ash
 int turkeyBooze();											//Defined in autoscend/auto_util.ash
 boolean use_barrels();										//Defined in autoscend/auto_util.ash
-boolean needStarKey();										//Defined in autoscend/auto_util.ash
-boolean needDigitalKey();									//Defined in autoscend/auto_util.ash
-int whitePixelCount();										//Defined in autoscend/auto_util.ash
+boolean needStarKey();										//Defined in autoscend/auto_quest_level_13.ash
+boolean needDigitalKey();									//Defined in autoscend/auto_quest_level_13.ash
+int whitePixelCount();										//Defined in autoscend/auto_quest_level_13.ash
 boolean careAboutDrops(monster mon);						//Defined in autoscend/auto_util.ash
 boolean volcano_bunkerJob();								//Defined in autoscend/auto_elementalPlanes.ash
 boolean volcano_lavaDogs();									//Defined in autoscend/auto_elementalPlanes.ash

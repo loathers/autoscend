@@ -68,7 +68,7 @@ boolean handleRainDoh()
 	}
 	if(enemy == $monster[Ghost])
 	{
-		int count = item_amount($item[white pixel]);
+		int count = whitePixelCount();
 		count += 30 * item_amount($item[digital key]);
 
 		if((count <= 20) && (get_property("_raindohCopiesMade").to_int() < 5))

@@ -732,10 +732,10 @@ int pullsNeeded(string data)
 			}
 		}
 
-		if((item_amount($item[Digital Key]) == 0) && (item_amount($item[White Pixel]) < 30))
+		if(item_amount($item[Digital Key]) == 0 && whitePixelCount() < 30)
 		{
-			auto_log_warning("Need " + (30-item_amount($item[white pixel])) + " white pixels.", "red");
-			count = count + (30 - item_amount($item[white pixel]));
+			auto_log_warning("Need " + (30-whitePixelCount()) + " white pixels.", "red");
+			count = count + (30 - whitePixelCount());
 		}
 
 		if(item_amount($item[skeleton key]) == 0)
@@ -2727,23 +2727,13 @@ boolean LX_spookyravenSecond()
 
 boolean LX_getDigitalKey()
 {
-	if (in_koe())
-	{
-		return false;
-	}
+	//Acquire the [Digital Key]
+	
 	if(contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
 	{
 		return false;
 	}
-	if (internalQuestStatus("questL12War") == 1 && get_property("sidequestArenaCompleted") != "none" && get_property("auto_powerLevelAdvCount").to_int() < 9)
-	{
-		return false;
-	}
-	while((item_amount($item[Red Pixel]) > 0) && (item_amount($item[Blue Pixel]) > 0) && (item_amount($item[Green Pixel]) > 0) && (item_amount($item[White Pixel]) < 30) && (item_amount($item[Digital Key]) == 0))
-	{
-		cli_execute("make white pixel");
-	}
-	if((item_amount($item[white pixel]) >= 30) || (item_amount($item[Digital Key]) > 0))
+	if(item_amount($item[Digital Key]) > 0)
 	{
 		if(have_effect($effect[Consumed By Fear]) > 0)
 		{
@@ -2752,7 +2742,47 @@ boolean LX_getDigitalKey()
 		}
 		return false;
 	}
-
+	if (in_koe())
+	{
+		if(item_amount($item[Digital Key]) == 0 && internalQuestStatus("questL13Final") == 5)
+		{
+			return buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Digital Key]);
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	//craft the key if you can
+	if(creatable_amount($item[Digital Key]) > 0 && item_amount($item[Digital Key]) == 0)
+	{
+		if(create(1, $item[Digital Key]))
+		{
+			return true;
+		}
+		else
+		{
+			abort("Mysteriously failed to craft [Digital Key] even though I should be able to make one. Make it manually then run me again");
+		}
+	}
+	
+	//if you are at the tower door and still don't have it, pull some pixels to save adv. keeping 5 pulls for later.
+	if(whitePixelCount() < 30 && internalQuestStatus("questL13Final") == 5 && canPull($item[white pixel]))
+	{
+		int pulls_needed = min((pulls_remaining()-5), 30 - whitePixelCount());
+		pullXWhenHaveY($item[white pixel], pulls_needed, item_amount($item[white pixel]));	//do not use whitePixelCount() in this line.
+	}
+	
+	//Powerful Glove drops lots of white pixels, don't spend adv on it if you have the glove
+	//But if you reach tower door without the key then continue on to spend adv to get its components.
+	if(auto_hasPowerfulGlove() && internalQuestStatus("questL13Final") < 5)
+	{
+		return false;
+	}
+	
+	//Spend adventures to get the digital key
+	boolean adv_spent = false;
 	if(get_property("auto_crackpotjar") == "")
 	{
 		if(item_amount($item[Jar Of Psychoses (The Crackpot Mystic)]) == 0)
@@ -2770,11 +2800,11 @@ boolean LX_getDigitalKey()
 			set_property("auto_crackpotjar", "done");
 		}
 	}
-	auto_log_info("Getting white pixels: Have " + item_amount($item[white pixel]), "blue");
+	auto_log_info("Getting white pixels: Have " + whitePixelCount(), "blue");
 	if(get_property("auto_crackpotjar") == "done")
 	{
 		set_property("choiceAdventure644", 3);
-		autoAdv(1, $location[Fear Man\'s Level]);
+		adv_spent = autoAdv(1, $location[Fear Man\'s Level]);
 		if(have_effect($effect[Consumed By Fear]) == 0)
 		{
 			auto_log_warning("Well, we don't seem to have further access to the Fear Man area so... abort that plan", "red");
@@ -2789,9 +2819,9 @@ boolean LX_getDigitalKey()
 		{
 			autoEquip($item[Fourth of May cosplay saber]);
 		}
-		autoAdv(1, $location[8-bit Realm]);
+		adv_spent = autoAdv(1, $location[8-bit Realm]);
 	}
-	return true;
+	return adv_spent;
 }
 
 int auto_freeCombatsRemaining()
