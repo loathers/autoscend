@@ -40,6 +40,175 @@ int whitePixelCount()
 	return count + extra;
 }
 
+boolean LX_getDigitalKey()
+{
+	//Acquire the [Digital Key]
+	
+	if(contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
+	{
+		return false;
+	}
+	if(item_amount($item[Digital Key]) > 0)
+	{
+		if(have_effect($effect[Consumed By Fear]) > 0)
+		{
+			uneffect($effect[Consumed By Fear]);
+			council();
+		}
+		return false;
+	}
+	if (in_koe())
+	{
+		if(item_amount($item[Digital Key]) == 0 && internalQuestStatus("questL13Final") == 5)
+		{
+			return buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Digital Key]);
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	//craft the key if you can
+	if(creatable_amount($item[Digital Key]) > 0 && item_amount($item[Digital Key]) == 0)
+	{
+		if(create(1, $item[Digital Key]))
+		{
+			return true;
+		}
+		else
+		{
+			abort("Mysteriously failed to craft [Digital Key] even though I should be able to make one. Make it manually then run me again");
+		}
+	}
+	
+	//if you are at the tower door and still don't have it, pull some pixels to save adv. keeping 5 pulls for later.
+	if(whitePixelCount() < 30 && internalQuestStatus("questL13Final") == 5 && canPull($item[white pixel]))
+	{
+		int pulls_needed = min((pulls_remaining()-5), 30 - whitePixelCount());
+		pullXWhenHaveY($item[white pixel], pulls_needed, item_amount($item[white pixel]));	//do not use whitePixelCount() in this line.
+	}
+	
+	//Powerful Glove drops lots of white pixels, don't spend adv on it if you have the glove
+	//But if you reach tower door without the key then continue on to spend adv to get its components.
+	if(auto_hasPowerfulGlove() && internalQuestStatus("questL13Final") < 5)
+	{
+		return false;
+	}
+	
+	//Spend adventures to get the digital key
+	boolean adv_spent = false;
+	if(get_property("auto_crackpotjar") == "")
+	{
+		if(item_amount($item[Jar Of Psychoses (The Crackpot Mystic)]) == 0)
+		{
+			pullXWhenHaveY($item[Jar Of Psychoses (The Crackpot Mystic)], 1, 0);
+		}
+		if(item_amount($item[Jar Of Psychoses (The Crackpot Mystic)]) == 0)
+		{
+			set_property("auto_crackpotjar", "fail");
+		}
+		else
+		{
+			woods_questStart();
+			use(1, $item[Jar Of Psychoses (The Crackpot Mystic)]);
+			set_property("auto_crackpotjar", "done");
+		}
+	}
+	auto_log_info("Getting white pixels: Have " + whitePixelCount(), "blue");
+	if(get_property("auto_crackpotjar") == "done")
+	{
+		set_property("choiceAdventure644", 3);
+		adv_spent = autoAdv(1, $location[Fear Man\'s Level]);
+		if(have_effect($effect[Consumed By Fear]) == 0)
+		{
+			auto_log_warning("Well, we don't seem to have further access to the Fear Man area so... abort that plan", "red");
+			set_property("auto_crackpotjar", "fail");
+		}
+	}
+	else if(get_property("auto_crackpotjar") == "fail")
+	{
+		woods_questStart();
+		autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
+		if(auto_saberChargesAvailable() > 0)
+		{
+			autoEquip($item[Fourth of May cosplay saber]);
+		}
+		adv_spent = autoAdv(1, $location[8-bit Realm]);
+	}
+	return adv_spent;
+}
+
+boolean LX_getStarKey()
+{
+	if(!get_property("auto_getStarKey").to_boolean())
+	{
+		return false;
+	}
+
+	//needStarKey() checks if you own or have used the star key
+	if(!needStarKey())
+	{
+		set_property("auto_getStarKey", false);
+		return false;
+	}
+	
+	boolean hole_in_sky_unreachable = internalQuestStatus("questL10Garbage") < 9;
+	boolean shen_might_request_hole = shenShouldDelayZone($location[The Hole in the Sky]);
+	if (hole_in_sky_unreachable || shen_might_request_hole)
+	{
+		return false;
+	}
+	
+	//kingdom of exploathing does not need rocketship to reach hole in the sky
+	if(item_amount($item[Steam-Powered Model Rocketship]) == 0 && !in_koe())
+	{
+		return false;
+	}
+	
+	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
+	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	{
+		pullXWhenHaveY($item[Star Chart], 1, 0);
+	}
+	
+	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	{
+		return create(1, $item[Richard\'s Star Key]);
+	}
+	
+	//if only star chart is missing and you will pull it at tower door, then you are done for now.
+	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore() && !at_tower_door)
+	{
+		return false;
+	}
+	
+	if(!zone_isAvailable($location[The Hole In The Sky]))
+	{
+		auto_log_warning("The Hole In The Sky is not available, we have to do something else...", "red");
+		return false;
+	}
+
+	if(auto_have_familiar($familiar[Space Jellyfish]))
+	{
+		handleFamiliar($familiar[Space Jellyfish]);
+		if(item_amount($item[Star Chart]) == 0)
+		{
+			set_property("choiceAdventure1221", 1);
+		}
+		else
+		{
+			set_property("choiceAdventure1221", 2 + (my_ascensions() % 2));
+		}
+	}
+	else
+	{
+		handleFamiliar("item");
+	}
+	
+	return autoAdv(1, $location[The Hole In The Sky]);
+}
+
 boolean L13_powerLevel()
 {
 	// this function is exceptionally badly named. It powerlevels to 13 and nothing else. Should be refactored.
