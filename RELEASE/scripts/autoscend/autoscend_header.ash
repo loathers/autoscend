@@ -468,6 +468,7 @@ boolean auto_barrelPrayers();									//Defined in autoscend/auto_mr2015.ash
 void auto_begin();											//Defined in autoscend.ash
 item auto_bestBadge();										//Defined in autoscend/auto_mr2016.ash
 boolean auto_change_mcd(int mcd);								//Defined in autoscend/auto_util.ash
+boolean auto_change_mcd(int mcd, boolean immediately);			//Defined in autoscend/auto_util.ash
 string auto_combatHandler(int round, string opp, string text);//Defined in autoscend/auto_combat.ash
 boolean auto_doPrecinct();									//Defined in autoscend/auto_mr2016.ash
 string auto_edCombatHandler(int round, string opp, string text);//Defined in autoscend/auto_combat.ash
@@ -851,6 +852,7 @@ int[int] intList();											//Defined in autoscend/auto_list.ash
 int internalQuestStatus(string prop);						//Defined in autoscend/auto_util.ash
 int freeCrafts();											//Defined in autoscend/auto_util.ash
 boolean is100FamRun();										//Defined in autoscend/auto_util.ash
+boolean pathAllowsFamiliar();								//Defined in autoscend/auto_util.ash
 boolean canChangeFamiliar();								//Defined in autoscend/auto_util.ash
 boolean canChangeToFamiliar(familiar target);				//Defined in autoscend/auto_util.ash
 boolean isBanished(monster enemy);							//Defined in autoscend/auto_util.ash

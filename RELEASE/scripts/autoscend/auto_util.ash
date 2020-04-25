@@ -879,12 +879,37 @@ boolean is100FamRun()
 	return true;
 }
 
+boolean pathAllowsFamiliar()
+{
+	if($classes[
+	Ed, 
+	Avatar of Boris,
+	Avatar of Jarlsberg,
+	Avatar of Sneaky Pete,
+	Vampyre
+	] contains my_class())
+	{
+		return false;
+	}
+	
+	//path check for cases where the path bans familairs and does not use a unique class.
+	//since pokefam converts your familiars into pokefam, they are not actually familiars in that path and cannot be used as familiars.
+	if($strings[
+	License to Adventure,
+	Pocket Familiars
+	] contains auto_my_path())
+	{
+		return false;
+	}
+	
+	return true;
+}
+
 boolean canChangeFamiliar()
 {
 	// answers the question "am I allowed to change familiar?" in the general sense
 	
-	//paths in which you cannot use a familiar as a familiar (in pokefam familiars are used as something else)
-	if($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, License to Adventure, Pocket Familiars, Dark Gyffte] contains auto_my_path())
+	if(!pathAllowsFamiliar())
 	{
 		return false;
 	}
@@ -3725,6 +3750,11 @@ boolean basicAdjustML()
 
 boolean auto_change_mcd(int mcd)
 {
+	return auto_change_mcd(mcd, false);
+}
+
+boolean auto_change_mcd(int mcd, boolean immediately)
+{
 	if (in_koe()) return false;
 
 	int best = 10;
@@ -3754,8 +3784,8 @@ boolean auto_change_mcd(int mcd)
 	{
 		best = 11;
 	}
-
-	if(my_level() >= 13 && !get_property("auto_disregardInstantKarma").to_boolean())
+	//under level 13 we want to level up. level 14+ we already missed the instant karma, no point in holding back anymore.
+	if(my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("auto_ignoreFlyer").to_boolean())
 		{
@@ -3768,7 +3798,14 @@ boolean auto_change_mcd(int mcd)
 	{
 		return true;
 	}
-	return change_mcd(next);
+	
+	set_property("auto_mcd_target", next);
+	if(immediately)
+	{
+		return change_mcd(next);
+	}
+	//for non immediate changes we still return true because the mafia setting was changed and MCD will be changed later.
+	return true;
 }
 
 boolean evokeEldritchHorror(string option)

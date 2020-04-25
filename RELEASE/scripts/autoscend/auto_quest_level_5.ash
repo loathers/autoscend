@@ -70,9 +70,7 @@ boolean L5_haremOutfit()
 	bat_formBats();
 
 	auto_log_info("Looking for some sexy lingerie!", "blue");
-	autoAdv(1, $location[Cobb\'s Knob Harem]);
-	handleFamiliar("item");
-	return true;
+	return autoAdv(1, $location[Cobb\'s Knob Harem]);
 }
 
 boolean L5_goblinKing()
