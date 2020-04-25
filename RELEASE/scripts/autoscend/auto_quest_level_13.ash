@@ -33,11 +33,7 @@ boolean needDigitalKey()
 
 int whitePixelCount()
 {
-	int count = item_amount($item[White Pixel]);
-
-	int extra = min(item_amount($item[Red Pixel]), item_amount($item[Blue Pixel]));
-	extra = min(extra, item_amount($item[Green Pixel]));
-	return count + extra;
+	return item_amount($item[White Pixel]) + creatable_amount($item[White Pixel]);
 }
 
 boolean LX_getDigitalKey()
