@@ -275,13 +275,45 @@ void boris_buySkills()
 	set_property("auto_borisSkills", my_level());
 }
 
+void borisDemandSandwich()
+{
+	//Boris can summon a sandwich 3 times per day at cost of 5 MP.
+	if(!in_boris())
+	{
+		return;
+	}
+	if(get_property("_demandSandwich").to_int() > 2) 		//max 3 casts a day
+	{
+		return;
+	}
+	
+	//use ongoing MP recovery to summon sandwiches as boris if you can get the best sandwich.
+	if(my_level() > 8)
+	{
+		while(my_mp() > 4 && get_property("_demandSandwich").to_int() < 3)
+		{
+			use_skill(1, $skill[Demand Sandwich]);
+		}
+	}
+	//if your level is too low for the best sandwich, summon a single inferior sandwich to tide you over when low on adventures and if you don't already have one in inventory.
+	//this part semi relies on a future update to consumption code to make it eat one item at a time.
+	else if(my_adventures() < 8 && item_amount($item[club sandwich]) == 0 && item_amount($item[PB&BP]) == 0)
+	{
+		if(my_mp() > 4 && get_property("_demandSandwich").to_int() < 3)
+		{
+			use_skill(1, $skill[Demand Sandwich]);
+		}
+	}
+}
+
 boolean LM_boris()
 {
 	if(!in_boris())
 	{
 		return false;
 	}
-
+	
+	borisDemandSandwich();
 	boris_buySkills();
 
 	return false;
