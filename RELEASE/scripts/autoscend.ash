@@ -732,10 +732,10 @@ int pullsNeeded(string data)
 			}
 		}
 
-		if((item_amount($item[Digital Key]) == 0) && (item_amount($item[White Pixel]) < 30))
+		if(item_amount($item[Digital Key]) == 0 && whitePixelCount() < 30)
 		{
-			auto_log_warning("Need " + (30-item_amount($item[white pixel])) + " white pixels.", "red");
-			count = count + (30 - item_amount($item[white pixel]));
+			auto_log_warning("Need " + (30-whitePixelCount()) + " white pixels.", "red");
+			count = count + (30 - whitePixelCount());
 		}
 
 		if(item_amount($item[skeleton key]) == 0)
@@ -2725,75 +2725,6 @@ boolean LX_spookyravenSecond()
 	return false;
 }
 
-boolean LX_getDigitalKey()
-{
-	if (in_koe())
-	{
-		return false;
-	}
-	if(contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
-	{
-		return false;
-	}
-	if (internalQuestStatus("questL12War") == 1 && get_property("sidequestArenaCompleted") != "none" && get_property("auto_powerLevelAdvCount").to_int() < 9)
-	{
-		return false;
-	}
-	while((item_amount($item[Red Pixel]) > 0) && (item_amount($item[Blue Pixel]) > 0) && (item_amount($item[Green Pixel]) > 0) && (item_amount($item[White Pixel]) < 30) && (item_amount($item[Digital Key]) == 0))
-	{
-		cli_execute("make white pixel");
-	}
-	if((item_amount($item[white pixel]) >= 30) || (item_amount($item[Digital Key]) > 0))
-	{
-		if(have_effect($effect[Consumed By Fear]) > 0)
-		{
-			uneffect($effect[Consumed By Fear]);
-			council();
-		}
-		return false;
-	}
-
-	if(get_property("auto_crackpotjar") == "")
-	{
-		if(item_amount($item[Jar Of Psychoses (The Crackpot Mystic)]) == 0)
-		{
-			pullXWhenHaveY($item[Jar Of Psychoses (The Crackpot Mystic)], 1, 0);
-		}
-		if(item_amount($item[Jar Of Psychoses (The Crackpot Mystic)]) == 0)
-		{
-			set_property("auto_crackpotjar", "fail");
-		}
-		else
-		{
-			woods_questStart();
-			use(1, $item[Jar Of Psychoses (The Crackpot Mystic)]);
-			set_property("auto_crackpotjar", "done");
-		}
-	}
-	auto_log_info("Getting white pixels: Have " + item_amount($item[white pixel]), "blue");
-	if(get_property("auto_crackpotjar") == "done")
-	{
-		set_property("choiceAdventure644", 3);
-		autoAdv(1, $location[Fear Man\'s Level]);
-		if(have_effect($effect[Consumed By Fear]) == 0)
-		{
-			auto_log_warning("Well, we don't seem to have further access to the Fear Man area so... abort that plan", "red");
-			set_property("auto_crackpotjar", "fail");
-		}
-	}
-	else if(get_property("auto_crackpotjar") == "fail")
-	{
-		woods_questStart();
-		autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
-		if(auto_saberChargesAvailable() > 0)
-		{
-			autoEquip($item[Fourth of May cosplay saber]);
-		}
-		autoAdv(1, $location[8-bit Realm]);
-	}
-	return true;
-}
-
 int auto_freeCombatsRemaining()
 {
 	return auto_freeCombatsRemaining(false);
@@ -4463,76 +4394,6 @@ boolean LX_loggingHatchet()
 	auto_log_info("Acquiring the logging hatchet from Camp Logging Camp", "blue");
 	autoAdv(1, $location[Camp Logging Camp]);
 	return true;
-}
-
-boolean LX_getStarKey()
-{
-	if(!get_property("auto_getStarKey").to_boolean())
-	{
-		return false;
-	}
-
-	//needStarKey() checks if you own or have used the star key
-	if(!needStarKey())
-	{
-		set_property("auto_getStarKey", false);
-		return false;
-	}
-	
-	boolean hole_in_sky_unreachable = internalQuestStatus("questL10Garbage") < 9;
-	boolean shen_might_request_hole = shenShouldDelayZone($location[The Hole in the Sky]);
-	if (hole_in_sky_unreachable || shen_might_request_hole)
-	{
-		return false;
-	}
-	
-	//kingdom of exploathing does not need rocketship to reach hole in the sky
-	if(item_amount($item[Steam-Powered Model Rocketship]) == 0 && !in_koe())
-	{
-		return false;
-	}
-	
-	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
-	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
-	{
-		pullXWhenHaveY($item[Star Chart], 1, 0);
-	}
-	
-	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
-	{
-		return create(1, $item[Richard\'s Star Key]);
-	}
-	
-	//if only star chart is missing and you will pull it at tower door, then you are done for now.
-	if((item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7) && !in_hardcore() && !at_tower_door)
-	{
-		return false;
-	}
-	
-	if(!zone_isAvailable($location[The Hole In The Sky]))
-	{
-		auto_log_warning("The Hole In The Sky is not available, we have to do something else...", "red");
-		return false;
-	}
-
-	if(auto_have_familiar($familiar[Space Jellyfish]))
-	{
-		handleFamiliar($familiar[Space Jellyfish]);
-		if(item_amount($item[Star Chart]) == 0)
-		{
-			set_property("choiceAdventure1221", 1);
-		}
-		else
-		{
-			set_property("choiceAdventure1221", 2 + (my_ascensions() % 2));
-		}
-	}
-	else
-	{
-		handleFamiliar("item");
-	}
-	
-	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
 boolean auto_tavern()

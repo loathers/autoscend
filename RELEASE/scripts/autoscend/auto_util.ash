@@ -4742,47 +4742,6 @@ boolean hasShieldEquipped()
 	return item_type(equipped_item($slot[off-hand])) == "shield";
 }
 
-boolean needStarKey()
-{
-	if(contains_text(get_property("nsTowerDoorKeysUsed"),"star key"))
-	{
-		return false;
-	}
-	if(item_amount($item[Richard\'s Star Key]) > 0)
-	{
-		return false;
-	}
-	return true;
-}
-
-boolean needDigitalKey()
-{
-	if(contains_text(get_property("nsTowerDoorKeysUsed"),"digital key"))
-	{
-		return false;
-	}
-	if(item_amount($item[Digital Key]) > 0)
-	{
-		return false;
-	}
-	if(whitePixelCount() >= 30)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-int whitePixelCount()
-{
-	int count = item_amount($item[White Pixel]);
-
-	int extra = min(item_amount($item[Red Pixel]), item_amount($item[Blue Pixel]));
-	extra = min(extra, item_amount($item[Green Pixel]));
-	return count + extra;
-}
-
-
 boolean careAboutDrops(monster mon)
 {
 	if($monsters[Astronomer, Axe Wound, Beaver, Box, Burrowing Bishop, Bush, Camel\'s Toe, Family Jewels, Flange, Honey Pot, Hooded Warrior, Junk, Little Man in the Canoe, Muff, One-Eyed Willie, Pork Sword, Skinflute, Trouser Snake, Twig and Berries] contains mon)

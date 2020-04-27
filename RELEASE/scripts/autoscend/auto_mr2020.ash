@@ -149,8 +149,7 @@ boolean auto_wantToEquipPowerfulGlove()
 
 	if (in_zelda() && !zelda_nothingToBuy()) return true;
 
-	int pixels = item_amount($item[white pixel]);
-	pixels += min(item_amount($item[red pixel]), min(item_amount($item[blue pixel]), item_amount($item[green pixel])));
+	int pixels = whitePixelCount();
 	if (contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
 	{
 		pixels += 30;

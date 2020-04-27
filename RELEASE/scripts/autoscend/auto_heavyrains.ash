@@ -95,7 +95,7 @@ boolean routineRainManHandler()
 		{
 			if (get_property("sidequestNunsCompleted") != "none" && my_rain() > 92)
 			{
-				if((item_amount($item[white pixel]) < 30) && (item_amount($item[digital key]) == 0))
+				if(whitePixelCount() < 30 && item_amount($item[digital key]) == 0)
 				{
 					return rainManSummon("ghost", false, false);
 				}
@@ -420,7 +420,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		#already have the goal, don't summon
 		return false;
 	}
-	if((item_amount($item[white pixel]) >= 29) && (monsterName == "ghost"))
+	if(whitePixelCount() > 29 && monsterName == "ghost")
 	{
 		#already have the subgoal, don't summon
 		return false;
