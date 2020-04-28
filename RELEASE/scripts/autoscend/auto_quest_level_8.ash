@@ -553,9 +553,7 @@ boolean L8_trapperGroar()
 			{
 				addToMaximize("2000cold resistance 5max");
 				//If this returns false, we might have finished already, can we check this?
-				boolean retval = autoAdv(1, $location[Mist-shrouded Peak]);
-				removeFromMaximize("2000cold resistance 5max");
-				return retval;
+				return autoAdv($location[Mist-shrouded Peak]);
 			}
 			else
 			{
