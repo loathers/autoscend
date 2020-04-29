@@ -1990,6 +1990,7 @@ boolean L12_finalizeWar()
 	if(possessOutfit("War Hippy Fatigues"))
 	{
 		auto_log_info("Getting dimes.", "blue");
+		outfit("War Hippy Fatigues");
 		foreach it in $items[padl phone, red class ring, blue class ring, white class ring]
 		{
 			sell(it.buyer, item_amount(it), it);
@@ -2009,6 +2010,7 @@ boolean L12_finalizeWar()
 	if(possessOutfit("Frat Warrior Fatigues"))
 	{
 		auto_log_info("Getting quarters.", "blue");
+		outfit("Frat Warrior Fatigues");
 		foreach it in $items[pink clay bead, purple clay bead, green clay bead, communications windchimes]
 		{
 			sell(it.buyer, item_amount(it), it);

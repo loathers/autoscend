@@ -579,7 +579,9 @@ void consumeStuff()
 		}
 	}
 
-	if (my_adventures() < 10)
+	boolean edSpleenCheck = (isActuallyEd() && spleen_left() > 0); // Ed should fill spleen first
+
+	if (my_adventures() < 10 && !edSpleenCheck)
 	{
 		if (inebriety_left() > 0)
 		{
