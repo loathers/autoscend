@@ -764,7 +764,7 @@ boolean L9_oilPeak()
 
 	auto_MaxMLToCap(auto_convertDesiredML(100), false);
 
-	if((monster_level_adjustment() < 50) && (my_level() < 12))
+	if(monster_level_adjustment() < 50 && my_level() < 12 && my_level() != get_property("auto_powerLevelLastLevel").to_int())
 	{
 		return false;
 	}
