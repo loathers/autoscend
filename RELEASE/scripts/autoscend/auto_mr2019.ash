@@ -227,14 +227,6 @@ boolean auto_sausageGoblin(location loc, string option)
 		return true;
 	}
 
-	if (loc == $location[The Oasis] && have_effect($effect[Ultrahydrated]) == 0)
-	{
-		// The Ultrahydrated superlikely has a higher priority than Sausage Goblins
-		// see Lyft's encounter hierarchy chart in ASS Discord for details.
-		auto_log_info("Can't burn delay using Sausage Goblins in the Oasis without Ultrahydrated!");
-		return false;
-	}
-
 	autoEquip($item[Kramco Sausage-o-Matic&trade;]);
 	return autoAdv(1, loc, option);
 }

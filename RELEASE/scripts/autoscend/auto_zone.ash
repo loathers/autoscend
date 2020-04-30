@@ -630,7 +630,7 @@ generic_t zone_delay(location loc)
 	switch(loc)
 	{
 	case $location[The Oasis]:
-		if(get_property("desertExploration").to_int() < 100)
+		if(get_property("desertExploration").to_int() < 100 && have_effect($effect[Ultrahydrated]) > 0)
 		{
 			value = 5 - loc.turns_spent;
 		}
