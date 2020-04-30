@@ -46,31 +46,41 @@ int januaryToteTurnsLeft(item it)
 
 boolean januaryToteAcquire(item it)
 {
-	if(possessEquipment(it))
+	//a function acquire january's garbage tote equipment. like basic acquire command, this also returns true if you already have the item on hand.
+	
+	if(!isjanuaryToteAvailable())
 	{
-		int score = 1;
-		switch(it)
-		{
-		case $item[Deceased Crimbo Tree]:		score = get_property("garbageTreeCharge").to_int();			break;
-		case $item[Broken Champagne Bottle]:	score = get_property("garbageChampagneCharge").to_int();	break;
-		case $item[Makeshift Garbage Shirt]:	score = get_property("garbageShirtCharge").to_int();		break;
-		}
-		if(score == 0)
-		{
-			if(get_property("_garbageItemChanged").to_boolean())
-			{
-				score = 1;
-			}
-		}
-		if(score > 0)
-		{
-			return false;
-		}
-	}
-	if(!isjanuaryToteAvailable()){
 		return false;
 	}
-
+	
+	//Special handling for if we already have the item on hand. We might want to replace it with tiself.
+	//do not use possessEquipment nor equipmentAmount here, they have special handling for tote foldables that always counts number of january's garbage totes instead of the target item. Resulting in this if always being true.
+	if(available_amount(it) > 0)
+	{
+		int leftover_charges = 0;
+		if(get_property("_garbageItemChanged").to_boolean())
+		{
+			return true;		//item already swapped today eliminating leftover charges. don't replace an item with itself.
+		}
+		else
+		{
+			//since item was not changed yet, count leftover charges from yesterday.
+			//If target item has no charges at all then pretend it has 1 leftover to not replace it with itself.
+			switch(it)
+			{
+			case $item[Deceased Crimbo Tree]:		leftover_charges = get_property("garbageTreeCharge").to_int();			break;
+			case $item[Broken Champagne Bottle]:	leftover_charges = get_property("garbageChampagneCharge").to_int();		break;
+			case $item[Tinsel Tights]:				leftover_charges = 1;													break;
+			case $item[Wad Of Used Tape]:			leftover_charges = 1;													break;
+			case $item[Makeshift Garbage Shirt]:	leftover_charges = get_property("garbageShirtCharge").to_int();			break;
+			}
+		}
+		if(leftover_charges > 0)
+		{
+			return true;		//preserve leftover charges by keeping current instance of the item.
+		}
+	}
+	
 	int choice = 0;
 	switch(it)
 	{
@@ -102,25 +112,29 @@ boolean januaryToteAcquire(item it)
 
 	if(choice == 7)
 	{
-		if(get_property("questM22Shirt") != "unstarted")
+		//can only get one letter per ascension
+		if(get_property("questM22Shirt") != "unstarted" || item_amount($item[Letter For Melvign The Gnome]) > 0)
 		{
 			return false;
 		}
-		if(hasTorso())
+		if(available_amount($item[Makeshift Garbage Shirt]) == 0)		//only rummage a new shirt if we don't already have one on hand.
 		{
-			return false;
+			visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9690", false);	//rummage in your garbage tote
+			run_choice(5);																	//get garbage shirt
 		}
-		if(item_amount($item[Letter For Melvign The Gnome]) > 0)
-		{
-			return false;
-		}
-		choice = 5;
+		visit_url("inv_equip.php?pwd=&which=2&action=equip&whichitem=9699");		//url fail to equip shirt to get a letter
 	}
-
-	string temp = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9690", false);
-	temp = visit_url("choice.php?pwd=&whichchoice=1275&option=" + choice);
-
-	return true;
+	else
+	{
+		visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9690", false);	//rummage in your garbage tote
+		run_choice(choice);																//get desired item
+	}
+	
+	if(item_amount(it) > 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 boolean godLobsterCombat()
