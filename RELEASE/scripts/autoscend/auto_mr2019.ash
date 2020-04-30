@@ -203,18 +203,21 @@ boolean auto_sausageGoblin(location loc, string option)
 		return false;
 	}
 
-	// My (Malibu Stacey) and Ezandora's spading appears to guarantee the first
-	// 7 sausage goblins using a formula of 3n+1 adventures since the previous.
-	// After that, you're on your own (hey it's better than nothing).
-	// Also that doesn't apply to the first goblin, it's always 100%.
+	// Formula = (y+1) / (5+x*3+max(0,x-5)^3)
+	// y is turns since the last goblin
+	// x is the number of goblins you've already encountered that day.
+	// spoilered by The Dictator in ASS Discord #iotm-discussion
+	// intervals are therefore 0, 7, 10, 13, 16, 19, 23, 33, 55, 95, 128...
+	// cut off delay burning after the 8th as the interval gets very large from #9
 	int sausageFights = get_property("_sausageFights").to_int();
-	if (sausageFights >= 7)
+	if (sausageFights >= 8)
 	{
 		return false;
 	}
 
-	int currentGoblinCeiling = (3 * (sausageFights + 1)) + 1;
-	if (sausageFights > 0 && (total_turns_played() - get_property("_lastSausageMonsterTurn").to_int()) < currentGoblinCeiling)
+	float numerator = (total_turns_played() - get_property("_lastSausageMonsterTurn").to_float()) + 1.0;
+	float denominator = 5.0 + (sausageFights * 3.0) + (max(0.0, sausageFights - 5.0))**3.0;
+	if (sausageFights > 0 && (numerator / denominator) < 1.0)
 	{
 		return false;
 	}
@@ -222,6 +225,14 @@ boolean auto_sausageGoblin(location loc, string option)
 	if(loc == $location[none])
 	{
 		return true;
+	}
+
+	if (loc == $location[The Oasis] && have_effect($effect[Ultrahydrated]) == 0)
+	{
+		// The Ultrahydrated superlikely has a higher priority than Sausage Goblins
+		// see Lyft's encounter hierarchy chart in ASS Discord for details.
+		auto_log_info("Can't burn delay using Sausage Goblins in the Oasis without Ultrahydrated!");
+		return false;
 	}
 
 	autoEquip($item[Kramco Sausage-o-Matic&trade;]);
@@ -641,7 +652,7 @@ effect auto_beachCombHeadEffectFromNum(int num)
 		case 4: return $effect[Does It Have a Skull In There??];
 		case 5: return $effect[Oiled, Slick];
 		case 6: return $effect[Lack of Body-Building];
-		case 7: return $effect[We're All Made of Starfish];
+		case 7: return $effect[We\'re All Made of Starfish];
 		case 8: return $effect[Pomp & Circumsands];
 		case 9: return $effect[Resting Beach Face];
 		case 10: return $effect[Do I Know You From Somewhere?];
