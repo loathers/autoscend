@@ -16,7 +16,14 @@ boolean L6_friarsGetParts()
 
 	if($location[The Dark Heart of the Woods].turns_spent == 0)
 	{
-		visit_url("friars.php?action=friars&pwd=");
+		visit_url("friars.php?action=friars&pwd");
+		if (isActuallyEd()) {
+			// mafia bug doesn't update the quest property when visiting the Friars as Ed
+			// See https://kolmafia.us/showthread.php?24912-minor-questL06Friar-isn-t-changed-to-step1-when-talking-to-the-Friars-as-Ed
+			// not that it matters at all, the items we need and locations they're in are the same regardless.
+			// but we can force it to update from the quest log
+			cli_execute("refresh quests");
+		}
 	}
 
 	handleFamiliar("item");

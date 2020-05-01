@@ -3,6 +3,8 @@ import<autoscend.ash>
 
 void main(int choice, string page)
 {
+	auto_log_debug("Running auto_choice_adv.ash");
+	
 	switch (choice) {
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
 			if (possessEquipment($item[eXtreme mittens])) {

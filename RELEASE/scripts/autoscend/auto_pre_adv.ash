@@ -3,6 +3,7 @@ import<autoscend.ash>
 
 void main()
 {
+	auto_log_debug("Running auto_pre_adv.ash");
 
 	location place = my_location();
 	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (auto_my_path() == "Heavy Rains"))
@@ -254,6 +255,14 @@ void main()
 	}
 
 	equipOverrides();
+
+	if (!canChangeFamiliar() && my_familiar() == $familiar[none])
+	{
+		// re-equip a familiar if it's a 100% run just in case something unequipped it
+		// looking at you auto_maximizedConsumeStuff()...
+		handleFamiliar(get_property("auto_100familiar").to_familiar());
+		auto_log_debug("Re-equipped your " + get_property("auto_100familiar") + " as something had unequipped it. This is bad and should be investigated.");
+	}
 
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))
 	{

@@ -4759,17 +4759,7 @@ boolean doTasks()
 
 	basicAdjustML();
 	powerLevelAdjustment();
-	if (!canChangeFamiliar() && my_familiar() == $familiar[none])
-	{
-		// re-equip a familiar if it's a 100% run just in case something unequipped it
-		// looking at you auto_maximizedConsumeStuff()...
-		handleFamiliar(to_familiar(get_property("auto_100familiar")));
-		auto_log_debug("Re-equipped your " + get_property("auto_100familiar") + " as something had unequipped it. This is bad and should be investigated.");
-	}
-	else
-	{
-		handleFamiliar("item");
-	}
+	handleFamiliar("item");
 	basicFamiliarOverrides();
 
 	councilMaintenance();
@@ -5152,7 +5142,6 @@ void auto_begin()
 	backupSetting("promptAboutCrafting", 0);
 	backupSetting("requireBoxServants", false);
 	backupSetting("breakableHandling", 4);
-	backupSetting("recoveryScript", "");
 	backupSetting("trackLightsOut", false);
 	backupSetting("autoSatisfyWithCloset", false);
 	backupSetting("autoSatisfyWithCoinmasters", true);
@@ -5165,13 +5154,15 @@ void auto_begin()
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
 	backupSetting("choiceAdventureScript", "scripts/autoscend/auto_choice_adv.ash");
 	backupSetting("betweenBattleScript", "scripts/autoscend/auto_pre_adv.ash");
+	backupSetting("recoveryScript", "");
 
-	backupSetting("hpAutoRecovery", -1);
-	backupSetting("hpAutoRecoveryTarget", -1);
-	backupSetting("mpAutoRecovery", -1);
-	backupSetting("mpAutoRecoveryTarget", -1);
-	backupSetting("manaBurningTrigger", -1);
-	backupSetting("manaBurningThreshold", -1);
+	backupSetting("hpAutoRecovery", -0.05);
+	backupSetting("hpAutoRecoveryTarget", -0.05);
+	backupSetting("mpAutoRecovery", -0.05);
+	backupSetting("mpAutoRecoveryTarget", -0.05);
+	backupSetting("manaBurningTrigger", -0.05);
+	backupSetting("manaBurningThreshold", -0.05);
+	backupSetting("autoAbortThreshold", -0.05);
 
 	backupSetting("currentMood", "apathetic");
 	backupSetting("customCombatScript", "autoscend_null");

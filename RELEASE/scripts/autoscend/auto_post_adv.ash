@@ -3,6 +3,8 @@ import<autoscend.ash>
 
 void main()
 {
+	auto_log_debug("Running auto_post_adv.ash");
+
 	if(limit_mode() == "spelunky")
 	{
 		return;
