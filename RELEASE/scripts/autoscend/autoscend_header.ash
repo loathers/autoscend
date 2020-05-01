@@ -429,7 +429,7 @@ boolean in_zelda();											//Defined in autoscend/auto_zelda.ash
 boolean in_boris();											//Defined in autoscend/auto_boris.ash
 boolean borisAdjustML();									//Defined in autoscend/auto_boris.ash
 void boris_buySkills();										//Defined in autoscend/auto_boris.ash
-void borisDemandSandwich();									//Defined in autoscend/auto_boris.ash
+boolean borisDemandSandwich(boolean immediately);			//Defined in autoscend/auto_boris.ash
 void borisWastedMP();										//Defined in autoscend/auto_boris.ash
 void boris_initializeDay(int day);							//Defined in autoscend/auto_boris.ash
 void boris_initializeSettings();							//Defined in autoscend/auto_boris.ash

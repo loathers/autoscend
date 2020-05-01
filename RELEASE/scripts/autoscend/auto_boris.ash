@@ -275,35 +275,63 @@ void boris_buySkills()
 	set_property("auto_borisSkills", my_level());
 }
 
-void borisDemandSandwich()
+boolean borisDemandSandwich(boolean immediately)
 {
-	//Boris can summon a sandwich 3 times per day at cost of 5 MP.
+	//Boris can summon a sandwich 3 times per day at cost of 5 MP each
 	if(!in_boris())
 	{
-		return;
+		return false;
 	}
-	if(get_property("_demandSandwich").to_int() > 2) 		//max 3 casts a day
+	if(get_property("_demandSandwich").to_int() > 2) 		//max 3 uses a day
 	{
-		return;
+		return false;
+	}
+	if(my_maxmp() < 5)		//can't cast even a single time
+	{
+		return false;
 	}
 	
-	//use ongoing MP recovery to summon sandwiches as boris if you can get the best sandwich.
-	if(my_level() > 8)
+	int remainingDaily()
 	{
-		while(my_mp() > 4 && get_property("_demandSandwich").to_int() < 3)
+		return 3 - get_property("_demandSandwich").to_int();
+	}
+
+	//if can get best sandwich and is forced to get them all now. use ongoing MP regen to get best sandwich
+	if(!immediately && my_level() > 8) 
+	{
+		int cast_count = min(remainingDaily(), floor(my_mp()/5));
+		if(cast_count > 0)
 		{
-			use_skill(1, $skill[Demand Sandwich]);
+			return use_skill(cast_count, $skill[Demand Sandwich]);
 		}
 	}
-	//if your level is too low for the best sandwich, summon a single inferior sandwich to tide you over when low on adventures and if you don't already have one in inventory.
-	//this part semi relies on a future update to consumption code to make it eat one item at a time.
-	else if(my_adventures() < 8 && item_amount($item[club sandwich]) == 0 && item_amount($item[PB&BP]) == 0)
+	
+	//if we are forced to get them all right now then we don't care about level nor MP regen. We will restore MP as needed.
+	if(immediately)
 	{
-		if(my_mp() > 4 && get_property("_demandSandwich").to_int() < 3)
+		int total_cost = remainingDaily() * 5;
+		if(my_maxmp() >= total_cost)
 		{
-			use_skill(1, $skill[Demand Sandwich]);
+			if(my_mp() < total_cost && !acquireMP(total_cost))		//can't afford it AND failed to restore
+			{
+				abort("failed to acquire the MP needed to cast [Demand Sandwich], aborting to prevent diet mishap");
+			}
+			return use_skill(remainingDaily(), $skill[Demand Sandwich]);
+		}
+		else while(remainingDaily() > 0)
+		{
+			if(acquireMP(5))
+			{
+				use_skill(remainingDaily(), $skill[Demand Sandwich]);
+			}
+			else
+			{
+				abort("failed to acquire the MP needed to cast [Demand Sandwich], aborting to prevent diet mishap");
+			}
 		}
 	}
+	
+	return false;
 }
 
 void borisWastedMP()
@@ -352,7 +380,7 @@ boolean LM_boris()
 		return false;
 	}
 	
-	borisDemandSandwich();
+	borisDemandSandwich(false);
 	boris_buySkills();
 
 	return false;
