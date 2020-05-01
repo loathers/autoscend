@@ -1461,7 +1461,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// need to do L2 quest to unlock the L3. 0.83 Ka zone or 1/1.25/1.67 with 1/2/3 banishes
-	if (L2_mosquito() || L2_treeCoin() || L2_spookyMap() || L2_spookyFertilizer() || L2_spookySapling())
+	if (L2_mosquito() || L11_unlockHiddenTemple())
 	{
 		return true;
 	}
