@@ -2447,7 +2447,6 @@ boolean LX_attemptPowerLevel()
 	LX_attemptPowerLevelTheSource();
 
 	//scaling damage zones
-	if(LX_melvignShirt()) return true;		// If you do not have torso awaregness do it first. If you have that skill do thinknerd last.
 	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]) && (get_property("auto_beatenUpCount").to_int() == 0))
 	{
 		if(autoAdv($location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice])) return true;
@@ -2472,15 +2471,8 @@ boolean LX_attemptPowerLevel()
 	{
 		if(neverendingPartyPowerlevel()) return true;
 	}
-	if(internalQuestStatus("questM22Shirt") > -1)	//do we have access to [The Thinknerd Warehouse]?
-	{
-		if(autoAdv($location[The Thinknerd Warehouse])) return true;		//powerlevel in thinknerd warehouse
-	}
-	else
-	{
-		//try to gain access to thinknerd warehouse. Be willing to spend wish or adv
-		if(LX_unlockThinknerdWarehouse(true)) return true;
-	}
+	//do not use the scaling zone [The Thinknerd Warehouse] here.
+	//it has low stat caps on the scaling, resulting in <30 substats per adv
 
 	// use spare clovers to powerlevel
 	int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
