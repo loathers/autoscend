@@ -1823,6 +1823,7 @@ boolean doBedtime()
 	getSpaceJelly();
 	while(acquireHermitItem($item[Ten-leaf Clover]));
 
+	januaryToteAcquire($item[Makeshift Garbage Shirt]);		//doubles stat gains in the LOV tunnel
 	loveTunnelAcquire(true, $stat[none], true, 3, true, 1);
 
 	if(item_amount($item[Genie Bottle]) > 0)
@@ -3605,28 +3606,6 @@ boolean LX_craftAcquireItems()
 		mummifyFamiliar($familiar[Intergnat], my_primestat());
 		mummifyFamiliar($familiar[Hobo Monkey], "meat");
 		mummifyFamiliar($familiar[XO Skeleton], "mpregen");
-		if((my_primestat() == $stat[Muscle]) && get_property("loveTunnelAvailable").to_boolean() && is_unrestricted($item[Heart-Shaped Crate]) && possessEquipment($item[LOV Eardigan]))
-		{
-			if((januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0) && (my_session_adv() > 75) && ((januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) + 15) > my_adventures()))
-			{
-				januaryToteAcquire($item[Makeshift Garbage Shirt]);
-			}
-			else
-			{
-				januaryToteAcquire($item[Wad Of Used Tape]);
-			}
-		}
-		else
-		{
-			if((januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0) && hasTorso() && (my_session_adv() > 75))
-			{
-				januaryToteAcquire($item[Makeshift Garbage Shirt]);
-			}
-			else
-			{
-				januaryToteAcquire($item[Wad Of Used Tape]);
-			}
-		}
 		#set_property("_dailyCreates", true);
 	}
 

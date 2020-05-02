@@ -1042,6 +1042,8 @@ void main()
 	{
 		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 	}
+	
+	set_property("auto_januaryToteAcquireCalledThisTurn", false);
 
 	auto_log_info("Post Adventure done, beep.", "purple");
 }
