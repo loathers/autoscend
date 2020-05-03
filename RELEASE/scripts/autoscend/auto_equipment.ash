@@ -312,6 +312,7 @@ void removeFromMaximize(string rem)
 	res = res.replace_string(rem, "");
 	// let's be safe here
 	res = res.replace_string(" ,", ",");
+	res = res.replace_string(", ", ",");
 	res = res.replace_string(",,", ",");
 	if(res.ends_with(","))
 	{
