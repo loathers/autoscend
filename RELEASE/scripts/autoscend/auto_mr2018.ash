@@ -2,7 +2,8 @@ script "auto_mr2018.ash"
 
 #	This is meant for items that have a date of 2018.
 
-boolean isjanuaryToteAvailable(){
+boolean isjanuaryToteAvailable()
+{
 	return item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[January\'s Garbage Tote]);
 }
 

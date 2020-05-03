@@ -649,6 +649,7 @@ item[element] getCharterIndexable();						//Defined in autoscend/auto_elementalP
 boolean getDiscoStyle();									//Defined in autoscend/auto_elementalPlanes.ash
 boolean getDiscoStyle(int choice);							//Defined in autoscend/auto_elementalPlanes.ash
 boolean mummifyFamiliar(familiar fam, string bonus);		//Defined in autoscend/auto_mr2017.ash
+boolean isjanuaryToteAvailable();							//Defined in autoscend/auto_mr2018.ash
 int januaryToteTurnsLeft(item it);							//Defined in autoscend/auto_mr2018.ash
 boolean januaryToteAcquire(item it);						//Defined in autoscend/auto_mr2018.ash
 boolean godLobsterCombat();									//Defined in autoscend/auto_mr2018.ash
