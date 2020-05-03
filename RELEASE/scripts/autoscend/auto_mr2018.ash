@@ -57,6 +57,13 @@ boolean januaryToteAcquire(item it)
 	//can't use adventure count in case of free fights.
 	set_property("auto_januaryToteAcquireCalledThisTurn", true);
 	
+	//by default resetMaximize() will add a block for not equipping garbage tote items with charges to preserve the charges.
+	//If we call januaryToteAcquire for an item we want to remove that block for that item.
+	if($items[Deceased Crimbo Tree, Broken Champagne Bottle, Makeshift Garbage Shirt] contains it)
+	{
+		removeFromMaximize("-equip " + it);
+	}
+	
 	//Special handling for if we already have the item on hand. We might want to replace it with itself
 	//do not use possessEquipment nor equipmentAmount here, they have special handling for tote foldables that always counts number of january's garbage totes instead of the target item. Resulting in this if always being true.
 	if(available_amount(it) > 0)
