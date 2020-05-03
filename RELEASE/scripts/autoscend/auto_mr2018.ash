@@ -46,7 +46,7 @@ int januaryToteTurnsLeft(item it)
 
 boolean januaryToteAcquire(item it)
 {
-	//a function acquire january's garbage tote equipment. like basic acquire command, this also returns true if you already have the item on hand.
+	//a function to acquire january's garbage tote equipment. like basic acquire command, this also returns true if you already have the item on hand.
 	
 	if(!isjanuaryToteAvailable())
 	{

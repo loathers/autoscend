@@ -1823,7 +1823,7 @@ boolean doBedtime()
 	getSpaceJelly();
 	while(acquireHermitItem($item[Ten-leaf Clover]));
 
-	januaryToteAcquire($item[Makeshift Garbage Shirt]);		//doubles stat gains in the LOV tunnel
+	januaryToteAcquire($item[Makeshift Garbage Shirt]);		//doubles stat gains in the LOV tunnel. also keep leftover charges for tomorrow.
 	loveTunnelAcquire(true, $stat[none], true, 3, true, 1);
 
 	if(item_amount($item[Genie Bottle]) > 0)
