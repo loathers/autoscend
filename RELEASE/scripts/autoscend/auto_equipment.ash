@@ -311,6 +311,7 @@ void removeFromMaximize(string rem)
 	string res = get_property("auto_maximize_current");
 	res = res.replace_string(rem, "");
 	// let's be safe here
+	res = res.replace_string(" ,", ",");
 	res = res.replace_string(",,", ",");
 	if(res.ends_with(","))
 	{
