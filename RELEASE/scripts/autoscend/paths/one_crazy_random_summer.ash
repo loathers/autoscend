@@ -1,4 +1,4 @@
-script "auto_summerfun.ash"
+script "one_crazy_random_summer.ash"
 
 boolean ocrs_postHelper()
 {

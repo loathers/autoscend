@@ -1,4 +1,4 @@
-script "auto_jellonewbie.ash"
+script "gelatinous_noob.ash"
 
 void jello_initializeSettings();
 string[item] jello_lister();

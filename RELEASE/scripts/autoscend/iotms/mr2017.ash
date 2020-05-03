@@ -1,4 +1,4 @@
-script "auto_mr2017.ash"
+script "mr2017.ash"
 
 #	This is meant for items that have a date of 2017.
 

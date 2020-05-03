@@ -1,4 +1,4 @@
-script "auto_quest_level_13.ash"
+script "level_13.ash"
 
 boolean needStarKey()
 {

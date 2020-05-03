@@ -1,4 +1,4 @@
-script "auto_quest_level_8.ash"
+script "level_8.ash"
 
 boolean L8_trapperStart()
 {

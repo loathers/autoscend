@@ -1,4 +1,4 @@
-script "auto_theSource.ash"
+script "the_source.ash"
 
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();

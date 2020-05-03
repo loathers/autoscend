@@ -1,4 +1,4 @@
-script "auto_quest_level_9.ash"
+script "level_9.ash"
 
 boolean L9_leafletQuest()
 {

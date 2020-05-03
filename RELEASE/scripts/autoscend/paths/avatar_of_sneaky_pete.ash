@@ -1,4 +1,4 @@
-script "auto_sneakypete.ash"
+script "avatar_of_sneaky_pete.ash"
 
 void pete_initializeSettings()
 {

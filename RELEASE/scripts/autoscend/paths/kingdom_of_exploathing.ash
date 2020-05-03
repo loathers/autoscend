@@ -1,4 +1,4 @@
-script "auto_koe.ash"
+script "kingdom_of_exploathing.ash"
 
 boolean in_koe()
 {
@@ -12,6 +12,7 @@ boolean koe_initializeSettings()
 		set_property("auto_bruteForcePalindome", in_hardcore());
 		set_property("auto_holeinthesky", false);
 		set_property("auto_grimstoneOrnateDowsingRod", "false");
+		set_property("auto_paranoia", 3);
 		set_property("auto_skipL12Farm", "true");
 		return true;
 	}

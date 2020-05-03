@@ -1,4 +1,4 @@
-script "auto_heavyrains.ash"
+script "heavy_rains.ash"
 
 boolean rainManSummon(string monsterName, boolean copy, boolean wink);
 

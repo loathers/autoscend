@@ -1,4 +1,4 @@
-script "auto_quest_level_10.ash"
+script "level_10.ash"
 
 boolean L10_plantThatBean()
 {

@@ -1,4 +1,4 @@
-script "auto_mr2015.ash"
+script "mr2015.ash"
 
 #	This is meant for items that have a date of 2015
 #	Handling: shrine to the Barrel God, Chateau Mantegna Room Key, Deck of Every Card

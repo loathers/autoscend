@@ -1,4 +1,4 @@
-script "auto_fallout.ash"
+script "nuclear_autumn.ash"
 
 void fallout_initializeSettings()
 {

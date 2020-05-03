@@ -1,4 +1,4 @@
-script "auto_batpath.ash"
+script "dark_gyffte.ash"
 
 void bat_startAscension()
 {

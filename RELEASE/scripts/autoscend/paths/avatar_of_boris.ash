@@ -1,4 +1,4 @@
-script "auto_boris.ash"
+script "avatar_of_boris.ash"
 
 boolean in_boris()
 {

@@ -1,4 +1,4 @@
-script "auto_groundhog.ash"
+script "live_ascend_repeat.ash"
 
 void groundhog_initializeSettings()
 {

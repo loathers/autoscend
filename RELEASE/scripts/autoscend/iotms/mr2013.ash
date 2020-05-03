@@ -1,4 +1,4 @@
-script "auto_mr2013.ash"
+script "mr2013.ash"
 
 void handleJar()
 {

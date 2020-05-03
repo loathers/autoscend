@@ -1,4 +1,4 @@
-script "auto_quest_level_4.ash"
+script "level_4.ash"
 
 boolean L4_batCave()
 {

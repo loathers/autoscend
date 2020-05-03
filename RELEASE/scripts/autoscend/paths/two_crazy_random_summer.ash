@@ -1,4 +1,4 @@
-script "auto_tcrs.ash"
+script "two_crazy_random_summer.ash"
 
 boolean in_tcrs()
 {

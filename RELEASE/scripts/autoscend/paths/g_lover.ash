@@ -1,4 +1,4 @@
-script "auto_glover.ash"
+script "g_lover.ash"
 
 
 void glover_initializeDay(int day)

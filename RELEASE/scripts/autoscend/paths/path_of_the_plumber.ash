@@ -1,4 +1,4 @@
-script "auto_zelda.ash"
+script "path_of_the_plumber.ash"
 
 boolean in_zelda()
 {

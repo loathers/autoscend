@@ -1,4 +1,4 @@
-script "auto_awol.ash"
+script "avatar_of_west_of_loathing.ash"
 
 boolean awol_initializeSettings()
 {

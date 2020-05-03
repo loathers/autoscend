@@ -1,4 +1,4 @@
-script "auto_mr2014.ash"
+script "mr2014.ash"
 
 #	This is meant for items that have a date of 2014.
 #	Handling: Little Geneticist DNA-Splicing Lab, Xi-Receiver Unit

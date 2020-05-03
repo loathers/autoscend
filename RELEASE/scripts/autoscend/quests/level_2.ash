@@ -1,4 +1,4 @@
-script "auto_quest_level_2.ash"
+script "level_2.ash"
 
 boolean L2_treeCoin()
 {

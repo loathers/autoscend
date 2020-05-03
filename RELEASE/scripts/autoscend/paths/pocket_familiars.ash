@@ -1,4 +1,4 @@
-script "auto_digimon.ash"
+script "pocket_familiars.ash"
 
 
 void digimon_initializeDay(int day)

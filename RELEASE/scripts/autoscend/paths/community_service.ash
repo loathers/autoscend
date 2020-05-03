@@ -1,4 +1,4 @@
-script "auto_community_service.ash"
+script "community_service.ash"
 
 #	Some details derived some yojimbos_law's forum post:
 #	http://forums.kingdomofloathing.com/vb/showpost.php?p=4769933&postcount=345

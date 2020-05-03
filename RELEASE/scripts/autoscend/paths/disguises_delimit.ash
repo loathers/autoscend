@@ -1,4 +1,4 @@
-script "auto_majora.ash"
+script "disguises_delimit.ash"
 
 
 void majora_initializeSettings()

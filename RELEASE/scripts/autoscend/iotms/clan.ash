@@ -1,4 +1,4 @@
-script "auto_clan.ash"
+script "clan.ash"
 
 
 //boolean eatFancyDog(item dog);

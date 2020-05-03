@@ -1,4 +1,4 @@
-script "auto_mr2020.ash"
+script "mr2020.ash"
 
 # This is meant for items that have a date of 2020
 

@@ -1,4 +1,4 @@
-script "auto_quest_level_12.ash"
+script "level_12.ash"
 
 string auto_warSide()
 {

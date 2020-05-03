@@ -1,4 +1,4 @@
-script "auto_bondmember.ash"
+script "license_to_adventure.ash"
 
 void bond_initializeSettings()
 {

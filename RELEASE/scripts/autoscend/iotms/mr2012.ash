@@ -1,4 +1,4 @@
-script "auto_mr2012.ash"
+script "mr2012.ash"
 
 boolean auto_reagnimatedGetPart()
 {

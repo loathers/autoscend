@@ -1,4 +1,4 @@
-script "auto_quest_level_6.ash"
+script "level_6.ash"
 
 boolean L6_friarsGetParts()
 {

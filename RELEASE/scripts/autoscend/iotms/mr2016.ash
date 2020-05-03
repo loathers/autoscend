@@ -1,4 +1,4 @@
-script "auto_mr2016.ash"
+script "mr2016.ash"
 
 #	This is meant for items that have a date of 2016.
 #	Handling: Witchess Set, Snojo, Source Terminal, Protonic Accelerator Pack

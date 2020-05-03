@@ -1,4 +1,4 @@
-script "auto_quest_level_7.ash"
+script "level_7.ash"
 
 boolean L7_crypt()
 {

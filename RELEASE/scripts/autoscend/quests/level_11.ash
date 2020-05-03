@@ -1,4 +1,4 @@
-script "auto_quest_level_11.ash"
+script "level_11.ash"
 
 int shenItemsReturned()
 {

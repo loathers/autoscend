@@ -1,4 +1,4 @@
-script "auto_quest_level_3.ash"
+script "level_3.ash"
 
 boolean L3_tavern()
 {

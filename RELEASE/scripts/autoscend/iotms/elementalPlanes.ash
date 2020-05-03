@@ -1,4 +1,4 @@
-script "auto_elementalPlanes.ash"
+script "elementalPlanes.ash"
 
 boolean getDiscoStyle();
 boolean getDiscoStyle(int choice);

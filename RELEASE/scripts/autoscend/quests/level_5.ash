@@ -1,4 +1,4 @@
-script "auto_quest_level_5.ash"
+script "level_5.ash"
 
 boolean L5_getEncryptionKey()
 {
