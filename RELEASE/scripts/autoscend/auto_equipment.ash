@@ -222,7 +222,7 @@ void resetMaximize()
 	}
 	
 	// don't want to equip these items automatically
-	// spoon breaks mafia, snow suit maximizer handling is problematic
+	// spoon breaks mafia, snow suit bonus drops every 5 combats so is best saved for important things.
 	foreach it in $items[hewn moon-rune spoon, snow suit]
 	{
 		if (possessEquipment(it))
