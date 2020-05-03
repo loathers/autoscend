@@ -211,19 +211,46 @@ void resetMaximize()
 	{
 		res = defaultMaximizeStatement();
 	}
-	foreach it in $items[hewn moon-rune spoon, makeshift garbage shirt, broken champagne bottle, snow suit]
+	
+	void exclude(item it)
+	{
+		if(res != "")
+		{
+			res += ",";
+		}
+		res += "-equip " + it;
+	}
+	
+	// don't want to equip these items automatically
+	// spoon breaks mafia, snow suit bonus drops every 5 combats so is best saved for important things.
+	foreach it in $items[hewn moon-rune spoon, snow suit]
 	{
 		if (possessEquipment(it))
 		{
-			if(res != "")
-			{
-				res += ",";
-			}
-			// don't want to equip these items automatically
-			// spoon breaks mafia, and the others have limited charges
-			res += "-equip " + it;
+			exclude(it);
 		}
 	}
+	//IOTM [january's garbage tote] specific handling.
+	if(isjanuaryToteAvailable())
+	{
+		//preserve leftover charges, prevent mafia halting automation for confirmation.
+		if(!get_property("_garbageItemChanged").to_boolean())	//did not change tote item today
+		{
+			foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt]
+			{
+				exclude(it);
+			}
+		}
+		//preserve current charges
+		else foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Makeshift Garbage Shirt]
+		{
+			if(januaryToteTurnsLeft(it) > 0)
+			{
+				exclude(it);
+			}
+		}
+	}
+	
 	set_property("auto_maximize_current", res);
 	auto_log_debug("Resetting auto_maximize_current to " + res, "gold");
 
@@ -257,6 +284,11 @@ void finalizeMaximize()
 
 void addToMaximize(string add)
 {
+	if(maximizeContains(add))	//skip if trying to add duplicate
+	{
+		auto_log_debug('Tried to add a duplicate of "' + add + '" to current maximizer statement... skipping', "gold");
+		return;
+	}
 	auto_log_debug('Adding "' + add + '" to current maximizer statement', "gold");
 	string res = get_property("auto_maximize_current");
 	boolean addHasComma = add.starts_with(",");
@@ -279,6 +311,8 @@ void removeFromMaximize(string rem)
 	string res = get_property("auto_maximize_current");
 	res = res.replace_string(rem, "");
 	// let's be safe here
+	res = res.replace_string(" ,", ",");
+	res = res.replace_string(", ", ",");
 	res = res.replace_string(",,", ",");
 	if(res.ends_with(","))
 	{
