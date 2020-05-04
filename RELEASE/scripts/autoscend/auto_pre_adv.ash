@@ -457,6 +457,12 @@ void main()
 
 	// Here we enforce our ML restrictions if +/-ML is not specifically called in the current maximizer string
 	enforceMLInPreAdv();
+	
+	// Last minute switching for garbage tote. But only if nothing called on januaryToteAcquire this turn.
+	if(!get_property("auto_januaryToteAcquireCalledThisTurn").to_boolean())
+	{
+		januaryToteAcquire($item[Wad Of Used Tape]);
+	}
 
 // EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
