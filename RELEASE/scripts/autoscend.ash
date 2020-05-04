@@ -3233,7 +3233,7 @@ boolean LX_steelOrgan()
 			{
 				if(possessEquipment(it))
 				{
-					equip(it);
+					autoForceEquip(it);
 					string temp = visit_url("pandamonium.php?action=mourn&whichitem=" + to_int(it) + "&pwd=");
 				}
 				else
