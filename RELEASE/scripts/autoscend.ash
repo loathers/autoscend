@@ -1718,13 +1718,7 @@ boolean doBedtime()
 	ed_terminateSession();
 	bat_terminateSession();
 
-	equipBaseline();
-	while(true)
-	{
-		resetMaximize();
-		handleFamiliar("stat");
-		if(!LX_freeCombats()) break;
-	}
+	while(LX_freeCombats());
 
 	if((my_class() == $class[Seal Clubber]) && guild_store_available() && (auto_my_path() != "G-Lover"))
 	{
@@ -2727,6 +2721,12 @@ boolean LX_spookyravenSecond()
 	return false;
 }
 
+boolean disregardInstantKarma()
+{
+	//under level 13 we wan to get max XP. level 14+ we already missed the insta karma, no need to hold back anymore.
+	return my_level() != 13 || get_property("auto_disregardInstantKarma").to_boolean();
+}
+
 int auto_freeCombatsRemaining()
 {
 	return auto_freeCombatsRemaining(false);
@@ -2741,8 +2741,6 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 	  print(msg, "red");
 	}
 
-	//under level 13 we wan to get max XP. level 14+ we already missed the insta karma, no need to hold back anymore.
-	boolean powerlevel = my_level() != 13 || get_property("auto_disregardInstantKarma").to_boolean();
 	int count = 0;
 	
 	debugPrint("Remaining Free Fights:");
@@ -2758,7 +2756,7 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		count += temp;
 		debugPrint("Snojo = " + temp);
 	}
-	if(canChangeToFamiliar($familiar[God Lobster]) && powerlevel)
+	if(canChangeToFamiliar($familiar[God Lobster]) && disregardInstantKarma())
 	{
 		int temp = 3-get_property("_godLobsterFights").to_int();
 		count += temp;
@@ -2786,25 +2784,20 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 
 boolean LX_freeCombats()
 {
-	if(my_level() != 13 || get_property("auto_disregardInstantKarma").to_boolean())
-	{
-		return LX_freeCombats(true);
-	}
-	else
-	{
-		return LX_freeCombats(false);
-	}
+	return LX_freeCombats(disregardInstantKarma());
 }
 
 boolean LX_freeCombats(boolean powerlevel)
 {
 	if(auto_freeCombatsRemaining() == 0)
 	{
+		auto_log_debug("Could not use free combats because you have none");
 		return false;
 	}
 	
 	if(my_inebriety() > inebriety_limit())
 	{
+		auto_log_debug("Could not use free combats because you are overdrunk");
 		return false;
 	}
 	
@@ -2816,20 +2809,31 @@ boolean LX_freeCombats(boolean powerlevel)
 	
 	if(my_adventures() < 2)
 	{
-		auto_freeCombatsRemaining(true);
+		auto_freeCombatsRemaining(true);		//print remaining free combats.
 		auto_log_warning("Too few adventures to safely automate free combats", "red");
 		auto_log_warning("If we lose your last adv on a free combat the remaining free combats are wasted", "red");
+		auto_log_warning("This should only happen if you lost a free fight. If you did not then please report this", "red");
 		abort("Please perform the remaining free combats manually then run me again");
+	}
+	
+	auto_log_debug("LX_freeCombats active with powerlevel set to " + powerlevel);
+	
+	resetMaximize();
+	if(disregardInstantKarma())
+	{
+		handleFamiliar("stat");
 	}
 
 	if(neverendingPartyRemainingFreeFights() > 0)
 	{
 		if(powerlevel)
 		{
+			auto_log_debug("LX_freeCombats is calling neverendingPartyPowerlevel()");
 			if(neverendingPartyPowerlevel()) return true;
 		}
 		else
 		{
+			auto_log_debug("LX_freeCombats is calling neverendingPartyCombat()");
 			if(neverendingPartyCombat()) return true;
 		}
 	}
@@ -2838,6 +2842,7 @@ boolean LX_freeCombats(boolean powerlevel)
 
 	if(!in_koe() && get_property("_machineTunnelsAdv").to_int() < 5 && canChangeToFamiliar($familiar[Machine Elf]))
 	{
+		auto_log_debug("LX_freeCombats is adventuring in [The Deep Machine Tunnels]");
 		backupSetting("choiceAdventure1119", 1);
 
 		familiar bjorn = my_bjorned_familiar();
@@ -2852,14 +2857,13 @@ boolean LX_freeCombats(boolean powerlevel)
 			handleBjornify(bjorn);
 		}
 
-		restoreSetting("choiceAdventure1119");
-		handleFamiliar("item");
 		loopHandlerDelayAll();
 		if(adv_done) return true;
 	}
 
 	if(snojoFightAvailable())
 	{
+		auto_log_debug("LX_freeCombats is adventuring in [The Snojo]");
 		adv_done = autoAdv(1, $location[The X-32-F Combat Training Snowman]);
 		loopHandlerDelayAll();
 		if(adv_done) return true;
@@ -2867,17 +2871,26 @@ boolean LX_freeCombats(boolean powerlevel)
 
 	if(powerlevel)
 	{
+		auto_log_debug("LX_freeCombats is calling godLobsterCombat()");
 		if(godLobsterCombat()) return true;
 	}
 	
 	if(get_property("_eldritchTentacleFought").to_boolean() == false)
 	{
+		auto_log_debug("LX_freeCombats is calling fightScienceTentacle()");
 		if(fightScienceTentacle()) return true;
 	}
 	
 	if(auto_have_skill($skill[Evoke Eldritch Horror]) && get_property("_eldritchHorrorEvoked").to_boolean() == false)
 	{
+		auto_log_debug("LX_freeCombats is calling evokeEldritchHorror()");
 		if(evokeEldritchHorror()) return true;
+	}
+	
+	if(auto_freeCombatsRemaining() == 0)
+	{
+		auto_log_debug("I reached the end of LX_freeCombats() but I think the following free combats were not used for some reason:");
+		auto_freeCombatsRemaining(true);		//print remaining free combats.
 	}
 
 	return false;
@@ -4882,6 +4895,11 @@ boolean doTasks()
 			evokeEldritchHorror();
 		}
 	}
+	if(my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
+	{
+		auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
+		if(LX_freeCombats()) return true;
+	}
 
 	if(catBurglarHeist())			return true;
 	if(chateauPainting())			return true;
@@ -4958,9 +4976,9 @@ boolean doTasks()
 	if(L7_crypt())						return true;
 	if(fancyOilPainting())				return true;
 
-	if((my_level() >= 7) && (my_daycount() != 2) && LX_freeCombats())
+	if((my_level() > 6) && (my_daycount() != 2))
 	{
-		return true;
+		if(LX_freeCombats()) return true;
 	}
 
 	if(L8_trapperStart())				return true;

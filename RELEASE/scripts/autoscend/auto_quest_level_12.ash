@@ -1355,7 +1355,7 @@ boolean L12_flyerBackup()
 		return false;
 	}
 
-	return LX_freeCombats();
+	return LX_freeCombats(true);
 }
 
 boolean L12_lastDitchFlyer()

@@ -1151,7 +1151,7 @@ boolean auto_cheesePostCS(int leave)
 	{
 		put_closet(item_amount($item[PARTY HARD T-Shirt]), $item[PARTY HARD T-Shirt]);
 	}
-	while(lx_freecombats());
+	while(LX_freeCombats(true));
 
 	if(!get_property("_pottedTeaTreeUsed").to_boolean() && (get_campground() contains $item[Potted Tea Tree]))
 	{
