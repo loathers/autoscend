@@ -3122,9 +3122,9 @@ boolean LX_steelOrgan()
 	}
 	if(get_property("questM10Azazel") == "started")
 	{
-		if(((item_amount($item[Observational Glasses]) == 0) || (item_amount($item[Imp Air]) < 5)) && (item_amount($item[Azazel\'s Tutu]) == 0))
+		if((!possessEquipment($item[Observational Glasses]) || item_amount($item[Imp Air]) < 5) && item_amount($item[Azazel\'s Tutu]) == 0)
 		{
-			if(item_amount($item[Observational Glasses]) == 0)
+			if(!possessEquipment($item[Observational Glasses]))
 			{
 				uneffect($effect[The Sonata of Sneakiness]);
 				buffMaintain($effect[Hippy Stench], 0, 1, 1);
@@ -3231,8 +3231,9 @@ boolean LX_steelOrgan()
 		{
 			foreach it in $items[Hilarious Comedy Prop, Victor\, the Insult Comic Hellhound Puppet, Observational Glasses]
 			{
-				if(item_amount(it) > 0)
+				if(possessEquipment(it))
 				{
+					equip(it);
 					string temp = visit_url("pandamonium.php?action=mourn&whichitem=" + to_int(it) + "&pwd=");
 				}
 				else
