@@ -166,14 +166,6 @@ boolean godLobsterCombat(item it, int goal)
 
 boolean godLobsterCombat(item it, int goal, string option)
 {
-	if(!have_familiar($familiar[God Lobster]))
-	{
-		return false;
-	}
-	if(!is_unrestricted($familiar[God Lobster]))
-	{
-		return false;
-	}
 	if(!canChangeToFamiliar($familiar[God Lobster]))
 	{
 		return false;
@@ -201,9 +193,6 @@ boolean godLobsterCombat(item it, int goal, string option)
 		return false;
 	}
 
-	familiar last = my_familiar();
-	item lastGear = equipped_item($slot[familiar]);
-
 	handleFamiliar($familiar[God Lobster]);
 	use_familiar($familiar[God Lobster]);
 
@@ -228,14 +217,6 @@ boolean godLobsterCombat(item it, int goal, string option)
 	}
 
 	set_property("auto_disableAdventureHandling", false);
-	if(my_familiar() != last)
-	{
-		use_familiar(last);
-	}
-	if(equipped_item($slot[familiar]) != lastGear)
-	{
-		equip($slot[familiar], lastGear);
-	}
 
 	cli_execute("auto_post_adv");
 
