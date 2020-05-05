@@ -314,6 +314,11 @@ boolean autoAdvBypass(string url, string option)
 
 void preAdvUpdateFamiliar(location place)
 {
+	if(get_property("auto_disableFamiliarChanging").to_boolean())
+	{
+		return;
+	}
+	
 	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
 	if(auto_my_path() == "Pocket Familiars")
 	{

@@ -141,6 +141,7 @@ void initializeSettings()
 	set_property("auto_day1_dna", "");
 	set_property("auto_debuffAsdonDelay", 0);
 	set_property("auto_disableAdventureHandling", false);
+	set_property("auto_disableFamiliarChanging", false);
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
