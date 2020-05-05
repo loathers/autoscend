@@ -919,12 +919,22 @@ boolean canChangeFamiliar()
 		return false;
 	}
 	
+	if(get_property("auto_disableFamiliarChanging").to_boolean())
+	{
+		return false;
+	}
+	
 	return true;
 }
 
 boolean canChangeToFamiliar(familiar target)
 {
 	// answers the question of "am I allowed to change familiar to a familiar named target"
+	
+	if(get_property("auto_disableFamiliarChanging").to_boolean())
+	{
+		return false;
+	}
 
 	// if you don't have a familiar, you can't change to it.
 	if(!auto_have_familiar(target))
