@@ -256,7 +256,7 @@ void main()
 
 	equipOverrides();
 
-	if (!canChangeFamiliar() && my_familiar() == $familiar[none])
+	if (is100FamRun() && my_familiar() == $familiar[none])
 	{
 		// re-equip a familiar if it's a 100% run just in case something unequipped it
 		// looking at you auto_maximizedConsumeStuff()...
