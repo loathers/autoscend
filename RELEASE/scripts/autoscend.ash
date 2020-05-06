@@ -4980,7 +4980,12 @@ boolean doTasks()
 	
 	if(LX_getDigitalKey()) 				return true;
 	if(LX_getStarKey()) 				return true;
-	if(L13_startQuest())				return true;
+	
+	if (my_level() < 13)
+	{
+		if(LX_attemptPowerLevel()) return true;
+	}
+	
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
 	if(L13_sorceressDoor())				return true;

@@ -172,7 +172,6 @@ boolean L12_finalizeWar();									//Defined in autoscend/auto_quest_level_12.as
 //Defined in autoscend/auto_quest_level_13.ash
 boolean LX_getDigitalKey();
 boolean LX_getStarKey();
-boolean L13_startQuest();
 boolean L13_sorceressDoor();
 boolean L13_towerNSContests();
 boolean L13_towerNSHedge();

@@ -205,32 +205,6 @@ boolean LX_getStarKey()
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
-boolean L13_startQuest()
-{
-	// start final quest for the naughty sorceress. If needed power level to reach level 13
-	
-	if(internalQuestStatus("questL13Final") > -1)
-	{
-		return false;
-	}
-	
-	//start quest if level 13+
-	if(my_level() > 12)
-	{
-		council(); // Log council output
-		if(internalQuestStatus("questL13Final") > -1)
-		{
-			return true;
-		}
-		else
-		{
-			abort("I am unable to start the final quest for some reason");
-		}
-	}
-	// if we reached this point under level 13 then we need to level up.
-	return LX_attemptPowerLevel();
-}
-
 boolean L13_towerNSContests()
 {
 	if (internalQuestStatus("questL13Final") < 0 || internalQuestStatus("questL13Final") > 3)
