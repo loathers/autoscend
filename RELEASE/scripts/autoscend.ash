@@ -141,7 +141,6 @@ void initializeSettings()
 	set_property("auto_day1_dna", "");
 	set_property("auto_debuffAsdonDelay", 0);
 	set_property("auto_disableAdventureHandling", false);
-	set_property("auto_disableFamiliarChanging", false);
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
@@ -4682,10 +4681,10 @@ boolean doTasks()
 		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");	
 		return false;	
 	}
-	if(get_property("auto_doCombatCopy") == "yes")
-	{	# This should never persist into another turn, ever.
-		set_property("auto_doCombatCopy", "no");
-	}
+	
+	//These settings should never persist into another turn, ever.
+	set_property("auto_doCombatCopy", "no");
+	set_property("auto_disableFamiliarChanging", false);
 
 	print_header();
 
@@ -5129,6 +5128,7 @@ void auto_begin()
 	auto_log_info("Current Ascension: " + auto_my_path());
 
 	set_property("auto_disableAdventureHandling", false);
+	set_property("auto_disableFamiliarChanging", false);
 
 	auto_spoonTuneConfirm();
 
