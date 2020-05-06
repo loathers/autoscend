@@ -197,6 +197,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 
 	//when pre_adventure.ash is run by mafia before fighting god lobster, we do not want it to switch to another familiar.
 	set_property("auto_disableFamiliarChanging", true);
+	cli_execute("auto_pre_adv.ash");
 
 	string page_text = visit_url("main.php?fightgodlobster=1");
 	if(contains_text(page_text, "You can't challenge your God Lobster anymore"))
