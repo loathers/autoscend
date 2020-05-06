@@ -2420,7 +2420,6 @@ boolean LX_attemptPowerLevel()
 	set_property("auto_powerLevelAdvCount", get_property("auto_powerLevelAdvCount").to_int() + 1);
 	set_property("auto_powerLevelLastAttempted", my_turncount());
 	set_property("auto_powerLevelLastLevel", my_level());
-	set_property("auto_newbieOverride", true);
 	
 	handleFamiliar("stat");
 	addToMaximize("100 exp");
