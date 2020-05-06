@@ -549,29 +549,29 @@ boolean L9_twinPeak()
 	{
 		return false;
 	}
+	
+	//set fixed NC values
+	set_property("choiceAdventure604", "1");	//welcome NC to twin peak step 1 = "continue"
+	set_property("choiceAdventure605", "1");	//welcome NC to twin peak step 2 = "everything goes black"
+	set_property("choiceAdventure607", "1");	//finish stench / room 237
+	set_property("choiceAdventure608", "1");	//finish food drop / pantry
+	set_property("choiceAdventure609", "1");	//do jar of oil / sound of music... goto 616
+	set_property("choiceAdventure616", "1");	//finish jar of oil / sound of music
+	set_property("choiceAdventure610", "1");	//do init / "who's that" / "to catch a killer"... goto 1056
+	set_property("choiceAdventure1056", "1");	//finish init / "now it's dark"
+	set_property("choiceAdventure618", "2");	//burn this hotel pity NC to skip the zone if you spent over 50 adventures there.
+	
+	//main lodge NC. we swap around this value multiple times. initially set to 0 to prevent mistakes.
+	set_property("choiceAdventure606", "0");	
 
-	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-	if(get_property("twinPeakProgress").to_int() == 0)
-	{
-		auto_log_info("Twin Peak", "blue");
-		set_property("choiceAdventure604", "1");
-		set_property("choiceAdventure618", "2");
-		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
-		autoAdv(1, $location[Twin Peak]);
-		if(last_monster() != $monster[gourmet gourami])
-		{
-			visit_url("choice.php?pwd&whichchoice=604&option=1&choiceform1=Continue...");
-			visit_url("choice.php?pwd&whichchoice=604&option=1&choiceform1=Everything+goes+black.");
-			set_property("choiceAdventure606", "2");
-			set_property("choiceAdventure608", "1");
-		}
-		return true;
-	}
-
+	//-combat via combining 2 IOTMs. Needs to be moved to providePlusNonCombat
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
+	providePlusNonCombat(25);
+	
+	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);		//heavy rains specific reduce item drop penalty by 10%
 
 	int progress = get_property("twinPeakProgress").to_int();
 	boolean needStench = ((progress & 1) == 0);
@@ -579,43 +579,38 @@ boolean L9_twinPeak()
 	boolean needJar = ((progress & 4) == 0);
 	boolean needInit = (progress == 7);
 
-	int attemptNum = 0;
 	boolean attempt = false;
-	if(needInit)
+	if(!attempt && needInit)
 	{
-		buffMaintain($effect[Adorable Lookout], 0, 1, 1);
-		if(initiative_modifier() < 40.0)
+		if(provideInitiative(40,true))
 		{
-			if((my_class() == $class[Turtle Tamer]) || (my_class() == $class[Seal Clubber]))
-			{
-				buyUpTo(1, $item[Cheap Wind-Up Clock]);
-				buffMaintain($effect[Ticking Clock], 0, 1, 1);
-			}
+			set_property("choiceAdventure606", "4");
+			attempt = true;
 		}
-		if(initiative_modifier() < 40.0)
+		else
 		{
-			return false;
+			return false;			//init test shows up last. if we can't do it there is no point in checking rest of function.
 		}
-		attemptNum = 4;
-		attempt = true;
 	}
 
-	if(needJar && (item_amount($item[Jar of Oil]) == 1))
+	if(!attempt && needJar)
 	{
-		attemptNum = 3;
-		attempt = true;
+		if(item_amount($item[Jar of Oil]) == 1)
+		{
+			set_property("choiceAdventure606", "3");
+			attempt = true;
+		}
 	}
 
 	if(!attempt && needFood)
 	{
 		float food_drop = item_drop_modifier();
 		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()), equipped_item($slot[familiar]));
-
+		
 		if(my_servant() == $servant[Cat])
 		{
 			food_drop -= numeric_modifier($familiar[Baby Gravy Fairy], "Item Drop", $servant[Cat].level, $item[none]);
 		}
-
 		if((food_drop < 50) && (food_drop >= 20))
 		{
 			if(friars_available() && (!get_property("friarsBlessingReceived").to_boolean()))
@@ -632,9 +627,14 @@ boolean L9_twinPeak()
 			use(1, $item[Eagle Feather]);
 			food_drop = food_drop + 20;
 		}
+		if((food_drop < 50.0) && (item_amount($item[resolution: be happier]) > 0) && (have_effect($effect[Joyful Resolve]) == 0))
+		{
+			buffMaintain($effect[Joyful Resolve], 0, 1, 1);
+			food_drop = food_drop + 15;
+		}
 		if(food_drop >= 50.0)
 		{
-			attemptNum = 2;
+			set_property("choiceAdventure606", "2");
 			attempt = true;
 		}
 	}
@@ -648,7 +648,7 @@ boolean L9_twinPeak()
 		if(resPossible[$element[stench]] >= 4)
 		{
 			provideResistances(resGoal, true);
-			attemptNum = 1;
+			set_property("choiceAdventure606", "1");
 			attempt = true;
 		}
 	}
@@ -657,41 +657,18 @@ boolean L9_twinPeak()
 	{
 		return false;
 	}
+	auto_log_info("Twin Peak", "blue");
 
-	set_property("choiceAdventure609", "1");
-	if(attemptNum == 1)
-	{
-		set_property("choiceAdventure606", "1");
-		set_property("choiceAdventure607", "1");
-	}
-	else if(attemptNum == 2)
-	{
-		set_property("choiceAdventure606", "2");
-		set_property("choiceAdventure608", "1");
-	}
-	else if(attemptNum == 3)
-	{
-		set_property("choiceAdventure606", "3");
-		set_property("choiceAdventure609", "1");
-		set_property("choiceAdventure616", "1");
-	}
-	else if(attemptNum == 4)
-	{
-		set_property("choiceAdventure606", "4");
-		set_property("choiceAdventure610", "1");
-		set_property("choiceAdventure1056", "1");
-	}
-
-	int trimmers = item_amount($item[Rusty Hedge Trimmers]);
-	if(item_amount($item[Rusty Hedge Trimmers]) > 0)
+	int starting_trimmers = item_amount($item[Rusty Hedge Trimmers]);
+	if(starting_trimmers > 0)
 	{
 		use(1, $item[rusty hedge trimmers]);
 		cli_execute("refresh inv");
-		if(item_amount($item[rusty hedge trimmers]) == trimmers)
+		if(item_amount($item[rusty hedge trimmers]) == starting_trimmers)
 		{
 			abort("Tried using a rusty hedge trimmer but that didn't seem to work");
 		}
-		auto_log_info("Hedge trimming situation: " + attemptNum, "green");
+		auto_log_info("Hedge trimming situation: " + get_property("choiceAdventure606").to_int(), "green");
 		string page = visit_url("main.php");
 		if((contains_text(page, "choice.php")) && (!contains_text(page, "Really Sticking Her Neck Out")) && (!contains_text(page, "It Came from Beneath the Sewer?")))
 		{
@@ -704,55 +681,7 @@ boolean L9_twinPeak()
 		}
 	}
 
-	int lastTwin = get_property("twinPeakProgress").to_int();
-	if(autoAdvBypass(297, $location[Twin Peak]))
-	{
-		if(lastAdventureSpecialNC())
-		{
-			autoAdv(1, $location[Twin Peak]);
-			#abort("May be stuck in an interrupting Non-Combat adventure, finish current adventure and resume.");
-		}
-		return true;
-	}
-	if(lastTwin != get_property("twinPeakProgress").to_int())
-	{
-		return true;
-	}
-
-	auto_log_warning("Backwards Twin Peak Handler, can this be removed? (As of 2016/04/17, no)", "red");
-	string page = visit_url("main.php");
-	if((contains_text(page, "choice.php")) && (!contains_text(page, "Really Sticking Her Neck Out")) && (!contains_text(page, "It Came from Beneath the Sewer?")))
-	{
-		if(attemptNum == 1)
-		{
-			visit_url("choice.php?pwd&whichchoice=606&option=1&choiceform1=Investigate+Room+237");
-			visit_url("choice.php?pwd&whichchoice=607&option=1&choiceform1=Carefully+inspect+the+body");
-		}
-		else if(attemptNum == 2)
-		{
-			visit_url("choice.php?pwd&whichchoice=606&option=2&choiceform2=Search+the+pantry");
-			visit_url("choice.php?pwd&whichchoice=608&option=1&choiceform1=Search+the+shelves");
-		}
-		else if(attemptNum == 3)
-		{
-			visit_url("choice.php?pwd&whichchoice=606&option=3&choiceform3=Follow+the+faint+sound+of+music");
-			visit_url("choice.php?pwd&whichchoice=609&option=1&choiceform1=Examine+the+painting");
-			visit_url("choice.php?pwd&whichchoice=616&option=1&choiceform1=Mingle");
-		}
-		else if(attemptNum == 4)
-		{
-			visit_url("choice.php?pwd&whichchoice=606&option=4&choiceform4=Wait+--+who%27s+that%3F");
-			visit_url("choice.php?pwd&whichchoice=610&option=1&choiceform1=Pursue+your+double");
-			visit_url("choice.php?pwd&whichchoice=1056&option=1&choiceform1=And+then...");
-		}
-		return true;
-	}
-	else
-	{
-		autoAdv(1, $location[Twin Peak]);
-		handleFamiliar("item");
-	}
-	return true;
+	return autoAdv($location[Twin Peak]);
 }
 
 boolean L9_oilPeak()
