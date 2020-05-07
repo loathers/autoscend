@@ -21,7 +21,6 @@ import <autoscend/auto_cooking.ash>
 import <autoscend/auto_adventure.ash>
 import <autoscend/auto_casual.ash>
 import <autoscend/auto_monsterparts.ash>
-import <autoscend/auto_optionals.ash>
 import <autoscend/auto_list.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
@@ -74,6 +73,7 @@ import <autoscend/quests/level_10.ash>
 import <autoscend/quests/level_11.ash>
 import <autoscend/quests/level_12.ash>
 import <autoscend/quests/level_13.ash>
+import <autoscend/quests/optional.ash>
 
 void initializeSettings()
 {
