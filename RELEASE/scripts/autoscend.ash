@@ -2388,18 +2388,28 @@ boolean powerLevelAdjustment()
 
 boolean LX_melvignShirt()
 {
-	if(internalQuestStatus("questM22Shirt") < 0)
+	//Do the quest [The Shirt Off His Lack of Back] to get the skill [Torso Awaregness] from melvign the gnome.	
+	
+	if(hasTorso())
 	{
 		return false;
 	}
 	if(get_property("questM22Shirt") == "finished")
 	{
+		//is it actually possible to finish the quest and not have torso awareness? if not then this can be delted.
 		return false;
 	}
+	if(internalQuestStatus("questM22Shirt") < 0)	//if quest has not started
+	{
+		if(!LX_unlockThinknerdWarehouse(false))		//if failed to start the quest without spending adv or wish
+		{
+			return false;
+		}
+	}
+	
 	if(item_amount($item[Professor What Garment]) == 0)
 	{
-		autoAdv($location[The Thinknerd Warehouse]);
-		return true;
+		return autoAdv($location[The Thinknerd Warehouse]);
 	}
 	string temp = visit_url("place.php?whichplace=mountains&action=mts_melvin", false);
 	return true;
@@ -2409,170 +2419,113 @@ boolean LX_attemptPowerLevel()
 {
 	set_property("auto_powerLevelAdvCount", get_property("auto_powerLevelAdvCount").to_int() + 1);
 	set_property("auto_powerLevelLastAttempted", my_turncount());
-
+	set_property("auto_powerLevelLastLevel", my_level());
+	
 	handleFamiliar("stat");
 	addToMaximize("100 exp");
-
-	if(LX_freeCombats(true))
+	
+	auto_log_warning("I need to powerlevel", "red");
+	int delay = get_property("auto_powerLevelTimer").to_int();
+	if(delay == 0)
 	{
+		delay = 10;
+	}
+	wait(delay);
+
+	if(LX_freeCombats(true)) return true;
+	
+	if(chateaumantegna_available() && haveFreeRestAvailable() && auto_my_path() != "The Source")
+	{
+		doFreeRest();
+		cli_execute("scripts/autoscend/auto_post_adv.ash");
+		loopHandlerDelayAll();
 		return true;
 	}
+	
+	//The Source path specific powerleveling
+	LX_attemptPowerLevelTheSource();
 
-	if(!hasTorso())
-	{
-		// We need to acquire a letter from Melvign...
-		if(LX_melvignShirt())
-		{
-			return true;
-		}
-	}
-
-	if(auto_my_path() == "The Source")
-	{
-		if (get_property("lastSecondFloorUnlock").to_int() == my_ascensions())
-		{
-			if(get_property("barrelShrineUnlocked").to_boolean())
-			{
-				if(cloversAvailable() == 0)
-				{
-					handleBarrelFullOfBarrels(false);
-					string temp = visit_url("barrel.php");
-					temp = visit_url("choice.php?whichchoice=1099&pwd=&option=2");
-					handleBarrelFullOfBarrels(false);
-					return true;
-				}
-				stat myStat = my_primestat();
-				if(my_basestat(myStat) >= 148)
-				{
-					return false;
-				}
-				else if(my_basestat(myStat) >= 125)
-				{
-					//Should probably prefer to check what equipment failures we may be having.
-					if((my_basestat($stat[Muscle]) < my_basestat(myStat)) && (my_basestat($stat[Muscle]) < 70))
-					{
-						myStat = $stat[Muscle];
-					}
-					if((my_basestat($stat[Mysticality]) < my_basestat(myStat)) && (my_basestat($stat[Mysticality]) < 70))
-					{
-						myStat = $stat[Mysticality];
-					}
-					if((my_basestat($stat[Moxie]) < my_basestat(myStat)) && (my_basestat($stat[Moxie]) < 70))
-					{
-						myStat = $stat[Moxie];
-					}
-				}
-				//Else, default to mainstat.
-
-				//Determine where to go for clover stats, do not worry about clover failures
-				location whereTo = $location[none];
-				switch(myStat)
-				{
-				case $stat[Muscle]:			whereTo = $location[The Haunted Gallery];				break;
-				case $stat[Mysticality]:	whereTo = $location[The Haunted Bathroom];				break;
-				case $stat[Moxie]:			whereTo = $location[The Haunted Ballroom];				break;
-				}
-
-				if (whereTo == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") > 3)
-				{
-					use(item_amount($item[ten-leaf clover]), $item[ten-leaf clover]);
-					LX_spookyBedroomCombat();
-					return true;
-				}
-				if(cloversAvailable() > 0)
-				{
-					cloverUsageInit();
-				}
-				autoAdv(1, whereTo);
-				cloverUsageFinish();
-				return true;
-			}
-			//Banish mahogant, elegant after gown only. (Harold\'s Bell?)
-			LX_spookyBedroomCombat();
-			return true;
-		}
-	}
-
+	//scaling damage zones
 	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]) && (get_property("auto_beatenUpCount").to_int() == 0))
 	{
-		autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+		if(autoAdv($location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice])) return true;
 	}
-	else if(elementalPlanes_access($element[spooky]))
+	if(elementalPlanes_access($element[spooky]))
 	{
-		autoAdv(1, $location[The Deep Dark Jungle]);
+		if(autoAdv($location[The Deep Dark Jungle])) return true;
 	}
-	else if(elementalPlanes_access($element[cold]))
+	if(elementalPlanes_access($element[cold]))
 	{
-		autoAdv(1, $location[VYKEA]);
+		if(autoAdv($location[VYKEA])) return true;
 	}
-	else if(elementalPlanes_access($element[sleaze]))
+	if(elementalPlanes_access($element[sleaze]))
 	{
-		autoAdv(1, $location[Sloppy Seconds Diner]);
+		if(autoAdv($location[Sloppy Seconds Diner])) return true;
 	}
-	else if (elementalPlanes_access($element[hot]))
+	if (elementalPlanes_access($element[hot]))
 	{
-		autoAdv(1, $location[The SMOOCH Army HQ]);
+		if(autoAdv($location[The SMOOCH Army HQ])) return true;
 	}
-	else if (neverendingPartyAvailable())
+	if (neverendingPartyAvailable())
 	{
-		neverendingPartyPowerlevel();
+		if(neverendingPartyPowerlevel()) return true;
 	}
-	else
-	{
-		// burn all spare clovers after level 12 if we need to powerlevel.
-		int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
-		if (my_level() >= 12 && internalQuestStatus("questL12War") > 1 && cloversAvailable() > cloverLimit)
-		{
-			//Determine where to go for clover stats, do not worry about clover failures
-			location whereTo = $location[none];
-			switch (my_primestat())
-			{
-				case $stat[Muscle]:
-					whereTo = $location[The Haunted Gallery];
-					break;
-				case $stat[Mysticality]:
-					whereTo = $location[The Haunted Bathroom];
-					break;
-				case $stat[Moxie]:
-					whereTo = $location[The Haunted Ballroom];
-					break;
-			}
+	//do not use the scaling zone [The Thinknerd Warehouse] here.
+	//it has low stat caps on the scaling, resulting in <30 substats per adv
 
-			cloverUsageInit();
-			boolean retval = autoAdv(1, whereTo);
-			cloverUsageFinish();
-			return retval;
+	// use spare clovers to powerlevel
+	int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
+	if(my_level() >= 12 && internalQuestStatus("questL12War") > 1 && cloversAvailable() > cloverLimit)
+	{
+		//Determine where to go for clover stats, do not worry about clover failures
+		location whereTo = $location[none];
+		switch (my_primestat())
+		{
+			case $stat[Muscle]:
+				whereTo = $location[The Haunted Gallery];
+				break;
+			case $stat[Mysticality]:
+				whereTo = $location[The Haunted Bathroom];
+				break;
+			case $stat[Moxie]:
+				whereTo = $location[The Haunted Ballroom];
+				break;
 		}
 
-		// optimal levelling if you have no IotMs with scaling monsters
-		if (internalQuestStatus("questM21Dance") > 3)
-		{
-			switch (my_primestat())
-			{
-				case $stat[Muscle]:
-					set_property("louvreDesiredGoal", "4"); // get Muscle stats
-					break;
-				case $stat[Mysticality]:
-					set_property("louvreDesiredGoal", "5"); // get Myst stats
-					break;
-				case $stat[Moxie]:
-					set_property("louvreDesiredGoal", "6"); // get Moxie stats
-					break;
-			}
-			if (isActuallyEd() && (!possessEquipment($item[serpentine sword]) || !possessEquipment($item[snake shield])))
-			{
-				set_property("choiceAdventure89", "2"); // fight the snake knight (as Ed)
-			}
-			else
-			{
-				set_property("choiceAdventure89", "6"); // ignore the NC & banish it for 10 adv
-			}
-			providePlusNonCombat(25);
-			return autoAdv($location[The Haunted Gallery]);
-		}
-		return false;
+		cloverUsageInit();
+		boolean adv_spent = autoAdv(whereTo);
+		cloverUsageFinish();
+		if(adv_spent) return true;
 	}
-	return true;
+
+	// [Haunted Gallery] is the optimal powerleveling spot if you have no scaling monsters nor clovers left.
+	if (internalQuestStatus("questM21Dance") > 3)
+	{
+		switch (my_primestat())
+		{
+			case $stat[Muscle]:
+				set_property("louvreDesiredGoal", "4"); // get Muscle stats
+				break;
+			case $stat[Mysticality]:
+				set_property("louvreDesiredGoal", "5"); // get Myst stats
+				break;
+			case $stat[Moxie]:
+				set_property("louvreDesiredGoal", "6"); // get Moxie stats
+				break;
+		}
+		if (isActuallyEd() && (!possessEquipment($item[serpentine sword]) || !possessEquipment($item[snake shield])))
+		{
+			set_property("choiceAdventure89", "2"); // fight the snake knight (as Ed)
+		}
+		else
+		{
+			set_property("choiceAdventure89", "6"); // ignore the NC & banish it for 10 adv
+		}
+		providePlusNonCombat(25);
+		if(autoAdv($location[The Haunted Gallery])) return true;
+	}
+	
+	return false;
 }
 
 boolean LX_spookyBedroomCombat()
@@ -3363,15 +3316,6 @@ boolean LX_craftAcquireItems()
 		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
 	}
 
-	if(get_property("questM22Shirt") == "unstarted")
-	{
-		januaryToteAcquire($item[Letter For Melvign The Gnome]);
-		if(possessEquipment($item[Makeshift Garbage Shirt]))
-		{
-			string temp = visit_url("inv_equip.php?pwd&which=2&action=equip&whichitem=" + to_int($item[Makeshift Garbage Shirt]));
-		}
-	}
-
 	if((get_property("lastGoofballBuy").to_int() != my_ascensions()) && (internalQuestStatus("questL03Rat") >= 0))
 	{
 		visit_url("place.php?whichplace=woods");
@@ -3576,17 +3520,6 @@ boolean LX_craftAcquireItems()
 			int choice = 1 + to_int(it) - to_int($item[Meteortarboard]);
 			string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=9516");
 			temp = visit_url("choice.php?pwd=&whichchoice=1264&option=" + choice);
-		}
-	}
-
-	if(item_amount($item[Letter For Melvign The Gnome]) > 0)
-	{
-		use(1, $item[Letter For Melvign The Gnome]);
-		if(get_property("questM22Shirt") == "unstarted")
-		{
-			auto_log_warning("Mafia did not register using the Melvign letter...", "red");
-			cli_execute("refresh inv");
-			set_property("questM22Shirt", "started");
 		}
 	}
 
@@ -5029,6 +4962,7 @@ boolean doTasks()
 	if (L12_clearBattlefield())			return true;
 	if(LX_koeInvaderHandler())			return true;
 	
+	//release the softblock on quests that are waiting for shen quest
 	if(my_level() > get_property("auto_shenSkipLastLevel").to_int() && get_property("questL11Shen") != "finished")
 	{
 		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do.", "red");
@@ -5036,7 +4970,22 @@ boolean doTasks()
 		return true;
 	}
 	
-	if(L13_powerLevel())				return true;
+	//release the softblock on various quests that await optimal conditions.
+	if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
+	{
+		auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
+		set_property("auto_powerLevelLastLevel", my_level());
+		return true;
+	}
+	
+	if(LX_getDigitalKey()) 				return true;
+	if(LX_getStarKey()) 				return true;
+	
+	if (my_level() < 13)
+	{
+		if(LX_attemptPowerLevel()) return true;
+	}
+	
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
 	if(L13_sorceressDoor())				return true;

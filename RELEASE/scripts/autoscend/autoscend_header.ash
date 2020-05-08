@@ -172,7 +172,6 @@ boolean L12_finalizeWar();									//Defined in autoscend/auto_quest_level_12.as
 //Defined in autoscend/auto_quest_level_13.ash
 boolean LX_getDigitalKey();
 boolean LX_getStarKey();
-boolean L13_powerLevel();
 boolean L13_sorceressDoor();
 boolean L13_towerNSContests();
 boolean L13_towerNSHedge();
@@ -983,6 +982,7 @@ int stomach_left();											//Defined in autoscend/auto_util.ash
 boolean theSource_buySkills();								//Defined in autoscend/auto_theSource.ash
 boolean theSource_initializeSettings();						//Defined in autoscend/auto_theSource.ash
 boolean theSource_oracle();									//Defined in autoscend/auto_theSource.ash
+boolean LX_attemptPowerLevelTheSource();					//Defined in autoscend/auto_theSource.ash
 boolean timeSpinnerAdventure();								//Defined in autoscend/auto_mr2016.ash
 boolean timeSpinnerAdventure(string option);				//Defined in autoscend/auto_mr2016.ash
 boolean timeSpinnerCombat(monster goal);					//Defined in autoscend/auto_mr2016.ash
@@ -1238,6 +1238,7 @@ generic_t zone_needItem(location loc);						//Defined in autoscend/auto_zone.ash
 generic_t zone_difficulty(location loc);					//Defined in autoscend/auto_zone.ash
 generic_t zone_combatMod(location loc);						//Defined in autoscend/auto_zone.ash
 generic_t zone_delay(location loc);							//Defined in autoscend/auto_zone.ash
+boolean LX_unlockThinknerdWarehouse(boolean spend_resources);		//Defined in autoscend/auto_zone.ash
 generic_t zone_available(location loc);						//Defined in autoscend/auto_zone.ash
 boolean zone_unlock(location loc);
 location[int] zone_list();									//Defined in autoscend/auto_zone.ash
