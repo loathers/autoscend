@@ -275,13 +275,112 @@ void boris_buySkills()
 	set_property("auto_borisSkills", my_level());
 }
 
-boolean LM_boris()
+boolean borisDemandSandwich(boolean immediately)
 {
+	//Boris can summon a sandwich 3 times per day at cost of 5 MP each
 	if(!in_boris())
 	{
 		return false;
 	}
+	if(get_property("_demandSandwich").to_int() > 2) 		//max 3 uses a day
+	{
+		return false;
+	}
+	if(my_maxmp() < 5)		//can't cast even a single time
+	{
+		return false;
+	}
+	
+	int remainingDaily()
+	{
+		return 3 - get_property("_demandSandwich").to_int();
+	}
 
+	//if can get best sandwich and is forced to get them all now. use ongoing MP regen to get best sandwich
+	if(!immediately && my_level() > 8) 
+	{
+		int cast_count = min(remainingDaily(), floor(my_mp()/5));
+		if(cast_count > 0)
+		{
+			return use_skill(cast_count, $skill[Demand Sandwich]);
+		}
+	}
+	
+	//if we are forced to get them all right now then we don't care about level nor MP regen. We will restore MP as needed.
+	if(immediately)
+	{
+		int total_cost = remainingDaily() * 5;
+		if(my_maxmp() >= total_cost)
+		{
+			if(my_mp() < total_cost && !acquireMP(total_cost))		//can't afford it AND failed to restore
+			{
+				abort("failed to acquire the MP needed to cast [Demand Sandwich], aborting to prevent diet mishap");
+			}
+			return use_skill(remainingDaily(), $skill[Demand Sandwich]);
+		}
+		else while(remainingDaily() > 0)
+		{
+			if(acquireMP(5))
+			{
+				use_skill(remainingDaily(), $skill[Demand Sandwich]);
+			}
+			else
+			{
+				abort("failed to acquire the MP needed to cast [Demand Sandwich], aborting to prevent diet mishap");
+			}
+		}
+	}
+	
+	return false;
+}
+
+void borisWastedMP()
+{
+	//Check for wasted MP regeneration and use it up. primarily called towards the end of auto_pre_adv.ash
+	//Mostly the MP regen would come from clancy
+	if(!in_boris())
+	{
+		return;
+	}
+	
+	float max_potential_mp_regen = numeric_modifier("MP Regen Max");
+	float missing_mp = my_maxmp() - my_mp();
+	float potential_mp_wasted = 0;
+	if(max_potential_mp_regen > missing_mp)
+	{
+		potential_mp_wasted = max_potential_mp_regen - missing_mp;
+	}
+	
+	//Laugh it off costs 1 MP to cast and gives either 1 or 2 HP randomly.
+	while(my_hp() < my_maxhp() && potential_mp_wasted > 0)
+	{
+		//multi use without risking wastage. Need to loop a few times because we can't predict what we actually roll for healing.
+		int missingHP = my_maxhp() - my_hp();
+		int castAmount = min(potential_mp_wasted, missingHP / 2);
+		
+		//at exactly 1 HP missing there is a 50% chance of wasting 1 point of HP healed. Better than 100% chance of wasting MP though, so do it.
+		//also this prevents an infinite loop at 1HP missing. Keep that in mind if you remove this
+		if(missingHP == 1)	
+		{
+			castAmount = 1;
+		}
+		
+		potential_mp_wasted = potential_mp_wasted - castAmount;		
+		use_skill(castAmount, $skill[Laugh it Off]);
+	}
+}
+
+boolean LM_boris()
+{
+	//this function is called early once every loop of doTasks() in autoscend.ash
+	//if something in this function returns true then it will restart the loop and get called again.
+	
+	if(!in_boris())
+	{
+		return false;
+	}
+	
+	borisDemandSandwich(false);
 	boris_buySkills();
 
 	return false;
