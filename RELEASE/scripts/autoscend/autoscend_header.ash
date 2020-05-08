@@ -315,6 +315,7 @@ boolean useCocoon();
 
 
 //Large pile dump.
+boolean disregardInstantKarma();							//Defined in autoscend.ash
 int auto_freeCombatsRemaining();							//Defined in autoscend.ash
 int auto_freeCombatsRemaining(boolean print_remaining_fights);		//Defined in autoscend.ash
 int auto_advToReserve();									//Defined in autoscend.ash

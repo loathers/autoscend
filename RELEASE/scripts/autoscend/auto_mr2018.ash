@@ -166,14 +166,6 @@ boolean godLobsterCombat(item it, int goal)
 
 boolean godLobsterCombat(item it, int goal, string option)
 {
-	if(!have_familiar($familiar[God Lobster]))
-	{
-		return false;
-	}
-	if(!is_unrestricted($familiar[God Lobster]))
-	{
-		return false;
-	}
 	if(!canChangeToFamiliar($familiar[God Lobster]))
 	{
 		return false;
@@ -195,15 +187,6 @@ boolean godLobsterCombat(item it, int goal, string option)
 		return false;
 	}
 
-	// Avoid fighting the lobster when we are in our pajamas.
-	if (in_zelda() && !zelda_equippedHammer() && !zelda_equippedFlower() && !zelda_equippedBoots())
-	{
-		return false;
-	}
-
-	familiar last = my_familiar();
-	item lastGear = equipped_item($slot[familiar]);
-
 	handleFamiliar($familiar[God Lobster]);
 	use_familiar($familiar[God Lobster]);
 
@@ -212,12 +195,12 @@ boolean godLobsterCombat(item it, int goal, string option)
 		equip($slot[familiar], it);
 	}
 
-	// TODO: Disabling adventure handling means we do not swap out equipment,
-	// which means sometimes we fight the god lobster in our pajamas and die.
-	set_property("auto_disableAdventureHandling", true);
+	//when pre_adventure.ash is run by mafia before fighting god lobster, we do not want it to switch to another familiar.
+	set_property("auto_disableFamiliarChanging", true);
+	cli_execute("auto_pre_adv.ash");
 
-	string temp = visit_url("main.php?fightgodlobster=1");
-	if(contains_text(temp, "You can't challenge your God Lobster anymore"))
+	string page_text = visit_url("main.php?fightgodlobster=1");
+	if(contains_text(page_text, "You can't challenge your God Lobster anymore"))
 	{
 		set_property("_godLobsterFights", 3);
 	}
@@ -227,24 +210,8 @@ boolean godLobsterCombat(item it, int goal, string option)
 		autoAdv(1, $location[Noob Cave], option);
 	}
 
-	set_property("auto_disableAdventureHandling", false);
-	if(my_familiar() != last)
-	{
-		use_familiar(last);
-	}
-	if(equipped_item($slot[familiar]) != lastGear)
-	{
-		equip($slot[familiar], lastGear);
-	}
+	set_property("auto_disableFamiliarChanging", false);
 
-	cli_execute("auto_post_adv");
-
-	# r18906 seems to lose track of the astral pet sweater. Ugh.
-	cli_execute("refresh all");
-	if(equipped_item($slot[familiar]) != lastGear)
-	{
-		abort("Mafia lost track of our familiar equipment. Ugh...");
-	}
 	return true;
 }
 
