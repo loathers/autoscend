@@ -4706,7 +4706,6 @@ boolean doTasks()
 	if(LM_glover())						return true;
 
 	tophatMaker();
-	equipBaseline();
 	xiblaxian_makeStuff();
 	deck_useScheme("");
 	autosellCrap();
