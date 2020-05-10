@@ -393,6 +393,7 @@ location ListOutput(location[int] list);					//Defined in autoscend/auto_list.as
 int [item] auto_get_campground();								//Defined in autoscend/auto_util.ash
 boolean basicAdjustML();									//Defined in autoscend/auto_util.ash
 boolean beatenUpResolution();								//Defined in autoscend.ash
+int speculative_pool_skill();								//Defined in autoscend.ash
 boolean adventureFailureHandler();							//Defined in autoscend.ash
 boolean councilMaintenance();								//Defined in autoscend.ash
 boolean [location] get_floundry_locations();				//Defined in autoscend/auto_clan.ash
