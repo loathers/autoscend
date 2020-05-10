@@ -28,11 +28,6 @@ boolean autoAdv(int num, location loc, string option)
 		}
 	}
 
-	if (isActuallyEd())
-	{
-		ed_handleAdventureServant(loc);
-	}
-
 	if(auto_my_path() == "Pocket Familiars")
 	{
 		return digimon_autoAdv(num, loc, option);
@@ -76,15 +71,6 @@ boolean autoAdv(int num, location loc, string option)
 boolean autoAdv(int num, location loc)
 {
 	return autoAdv(num, loc, "");
-}
-
-boolean autoAdv()
-{
-	if(my_location() == $location[none])
-	{
-		return autoAdv(1, $location[Noob Cave], "");
-	}
-	return autoAdv(1, my_location(), "");
 }
 
 boolean autoAdv(location loc)

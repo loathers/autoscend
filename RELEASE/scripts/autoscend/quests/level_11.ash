@@ -93,6 +93,363 @@ boolean shenShouldDelayZone(location loc)
 	return shenZonesToAvoidBecauseMaybeSnake() contains loc;
 }
 
+boolean LX_handleSpookyravenFirstFloor()
+{
+	if(get_property("lastSecondFloorUnlock").to_int() >= my_ascensions())
+	{
+		return false;
+	}
+
+	boolean delayKitchen = get_property("auto_delayHauntedKitchen").to_boolean();
+	if(item_amount($item[Spookyraven Billiards Room Key]) > 0)
+	{
+		delayKitchen = false;
+	}
+	if(my_level() == get_property("auto_powerLevelLastLevel").to_int())
+	{
+		delayKitchen = false;
+	}
+	if(delayKitchen)
+	{
+		int [element] resGoals;
+		resGoals[$element[hot]] = 9;
+		resGoals[$element[stench]] = 9;
+		// check to see if we can acquire sufficient hot and stench res for the kitchen
+		int [element] resPossible = provideResistances(resGoals, true, true);
+		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
+		if(delayKitchen)
+		{
+			if (isActuallyEd())
+			{
+				// If we already have all the elemental wards as ed we're probably not going to get any better, so might as well get it over with
+				delayKitchen = !have_skill($skill[Even More Elemental Wards]);
+			}
+			// if we're at the point where we need to level up to get more quests other than this, we might as well just do this instead
+			if((get_property("auto_powerLevelAdvCount").to_int() > 7) && (get_property("auto_powerLevelLastLevel").to_int() == my_level()))
+			{
+				delayKitchen = false;
+			}
+		}
+	}
+
+	if(delayKitchen)
+	{
+		return false;
+	}
+
+	if(get_property("writingDesksDefeated").to_int() >= 5)
+	{
+		abort("Mafia reports 5 or more writing desks defeated yet we are still looking for them? Give Lady Spookyraven her necklace?");
+	}
+	if(item_amount($item[Lady Spookyraven\'s Necklace]) > 0)
+	{
+		abort("Have Lady Spookyraven's Necklace but did not give it to her....");
+	}
+	
+	if(hasSpookyravenLibraryKey())
+	{
+		auto_log_info("Well, we need writing desks", "blue");
+		auto_log_info("Going to the liberry!", "blue");
+		set_property("choiceAdventure888", "4");
+		set_property("choiceAdventure889", "5");
+		set_property("choiceAdventure163", "4");
+		if(autoAdv(1, $location[The Haunted Library])) return true;
+	}
+	else if(item_amount($item[Spookyraven Billiards Room Key]) == 1)
+	{
+		int expectPool = speculative_pool_skill();
+
+		// Staff of Fats (non-Ed and Ed) and Staff of Ed (from Ed)
+		item staffOfFats = $item[2268];
+		item staffOfFatsEd = $item[7964];
+		item staffOfEd = $item[7961];
+
+		// Prevent the needless equipping of Cues if we don't need it.
+		boolean usePoolEquips = true;
+
+		if((expectPool < 18) && (!in_tcrs()))
+		{
+			if(possessEquipment(staffOfFats) || possessEquipment(staffOfFatsEd) || possessEquipment(staffOfEd))
+			{
+				expectPool += 5;
+			}
+			else if(possessEquipment($item[Pool Cue]))
+			{
+				expectPool += 3;
+			}
+		}
+		else if(in_tcrs())
+		{
+				auto_log_info("During this Crazy Summer Pool Cues are used differently.", "blue");
+				boolean usePoolEquips = false;
+		}
+		else
+		{
+				auto_log_info("I don't need to equip a cue to beat this ghostie.", "blue");
+				boolean usePoolEquips = false;
+		}
+
+		if(!possessEquipment($item[Pool Cue]) && !possessEquipment(staffOfFats) && !possessEquipment(staffOfFatsEd) && !possessEquipment(staffOfEd) && !in_tcrs())
+		{
+			auto_log_info("Well, I need a pool cueball...", "blue");
+			providePlusNonCombat(25, true);
+			if(autoAdv(1, $location[The Haunted Billiards Room])) return true;
+		}
+
+		auto_log_info("Looking at the billiards room: 14 <= " + expectPool + " <= 18", "green");
+		if((my_inebriety() < 8) && ((my_inebriety() + 2) < inebriety_limit()))
+		{
+			if(expectPool < 18)
+			{
+				auto_log_info("Not quite boozed up for the billiards room... we'll be back.", "green");
+				if (my_level() != get_property("auto_powerLevelLastLevel").to_int())
+				{
+					return false;
+				}
+			}
+
+			auto_log_info("Well, maybe I'll just deal with not being drunk enough, punk", "blue");
+		}
+		if((my_inebriety() > 12) && (expectPool < 16))
+		{
+			if(in_hardcore() && (my_daycount() <= 2))
+			{
+				auto_log_info("Ok, I'm too boozed up for the billards room, I'll be back.", "green");
+			}
+			if(!in_hardcore() && (my_daycount() <= 1))
+			{
+				auto_log_info("I'm too drunk for pool, at least it is only " + format_date_time("yyyyMMdd", today_to_string(), "EEEE"), "green");
+			}
+			return false;
+		}
+
+		set_property("choiceAdventure875" , "1");
+		if(expectPool < 14)
+		{
+			set_property("choiceAdventure875", "2");
+		}
+
+		if(usePoolEquips)
+		{
+			if(possessEquipment($item[Pool Cue]))
+			{
+				buffMaintain($effect[Chalky Hand], 0, 1, 1);
+			}
+			autoEquip($slot[weapon], $item[Pool Cue]);
+			autoEquip(staffOfFats);
+			autoEquip(staffOfFatsEd);
+			autoEquip(staffOfEd);
+		}
+
+		auto_log_info("It's billiards time!", "blue");
+		providePlusNonCombat(25, true);
+		if(autoAdv(1, $location[The Haunted Billiards Room])) return true;
+	}
+	else
+	{
+		int [element] resGoal;
+		resGoal[$element[hot]] = 9;
+		resGoal[$element[stench]] = 9;
+		int [element] resPossible = provideResistances(resGoal, true, false);
+		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + resPossible[$element[hot]] + "/" + resPossible[$element[stench]] + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
+		if(get_property("manorDrawerCount").to_int() >= 24)
+		{
+			cli_execute("refresh inv");
+			if(item_amount($item[Spookyraven Billiards Room Key]) == 0)
+			{
+				auto_log_warning("We think you've opened enough drawers in the kitchen but you don't have the Billiards Room Key.");
+				wait(10);
+			}
+		}
+
+		if(autoAdv(1, $location[The Haunted Kitchen])) return true;
+	}
+	return false;
+}
+
+boolean LX_handleSpookyravenNecklace()
+{
+	if((get_property("lastSecondFloorUnlock").to_int() >= my_ascensions()) || (item_amount($item[Lady Spookyraven\'s Necklace]) == 0))
+	{
+		return false;
+	}
+
+	auto_log_info("Starting Spookyraven Second Floor.", "blue");
+	visit_url("place.php?whichplace=manor1&action=manor1_ladys");
+	visit_url("main.php");
+	visit_url("place.php?whichplace=manor2&action=manor2_ladys");
+
+	set_property("choiceAdventure876", "2");
+	set_property("choiceAdventure877", "1");
+	set_property("choiceAdventure878", "3");
+	set_property("choiceAdventure879", "1");
+	set_property("choiceAdventure880", "1");
+
+	#handle lights-out, too bad we can\'t at least start Stephen Spookyraven here.
+	set_property("choiceAdventure897", "2");
+	set_property("choiceAdventure896", "1");
+	set_property("choiceAdventure892", "2");
+
+	if(item_amount($item[Lady Spookyraven\'s Necklace]) > 0)
+	{
+		cli_execute("refresh inv");
+		#abort("Mafia still doesn't understand the ghost of a necklace, just re-run me.");
+	}
+	return true;
+}
+
+boolean LX_spookyBedroomCombat()
+{
+	set_property("auto_disableAdventureHandling", true);
+	
+	zelda_equipTool($stat[moxie]);
+	// Disabling adventure handling means that we need to manually equip maximized gear.
+	equipMaximizedGear();
+
+	autoAdv(1, $location[The Haunted Bedroom]);
+	if(contains_text(visit_url("main.php"), "choice.php"))
+	{
+		auto_log_info("Bedroom choice adventure get!", "green");
+		autoAdv(1, $location[The Haunted Bedroom]);
+	}
+	else if(contains_text(visit_url("main.php"), "Combat"))
+	{
+		auto_log_info("Bedroom post-combat super combat get!", "green");
+		autoAdv(1, $location[The Haunted Bedroom]);
+	}
+	set_property("auto_disableAdventureHandling", false);
+	return false;
+}
+
+boolean LX_spookyravenSecond()
+{
+	if (internalQuestStatus("questM21Dance") < 0 || internalQuestStatus("questM21Dance") > 3 || get_property("lastSecondFloorUnlock").to_int() < my_ascensions())
+	{
+		return false;
+	}
+
+	if((item_amount($item[Lady Spookyraven\'s Powder Puff]) == 1) && (item_amount($item[Lady Spookyraven\'s Dancing Shoes]) == 1) && (item_amount($item[Lady Spookyraven\'s Finest Gown]) == 1))
+	{
+		auto_log_info("Finished Spookyraven, just dancing with the lady.", "blue");
+		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
+		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
+		autoAdv(1, $location[The Haunted Ballroom]);
+		#
+		#	Is it possible that some other adventure can interrupt us here? If so, we will need to fix that.
+		#
+		if(contains_text(get_property("lastEncounter"), "Lights Out in the Ballroom"))
+		{
+			autoAdv(1, $location[The Haunted Ballroom]);
+		}
+		set_property("choiceAdventure106", "2");
+		if($classes[Avatar of Boris, Ed] contains my_class())
+		{
+			set_property("choiceAdventure106", "3");
+		}
+		if(auto_my_path() == "Nuclear Autumn")
+		{
+			set_property("choiceAdventure106", "3");
+		}
+		return true;
+	}
+
+	if(considerGrimstoneGolem(true))
+	{
+		handleBjornify($familiar[Grimstone Golem]);
+	}
+
+	//Convert Spookyraven Spectacles to a toggle
+	boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
+	boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
+	if(my_class() == $class[Avatar of Boris])
+	{
+		needSpectacles = false;
+	}
+	if(auto_my_path() == "Way of the Surprising Fist")
+	{
+		needSpectacles = false;
+	}
+	if((auto_my_path() == "Nuclear Autumn") && in_hardcore())
+	{
+		needSpectacles = false;
+	}
+	if(needSpectacles)
+	{
+		set_property("choiceAdventure878", "3");
+	}
+	else
+	{
+		if(needCamera)
+		{
+			set_property("choiceAdventure878", "4");
+		}
+		else
+		{
+			set_property("choiceAdventure878", "2");
+		}
+	}
+
+	set_property("choiceAdventure877", "1");
+	if(internalQuestStatus("questM21Dance") < 2)
+	{
+		if (item_amount($item[Lady Spookyraven\'s Finest Gown]) > 0)
+		{
+			// got the Bedroom item but we might still need items for other parts
+			// of the macguffin quest if we got unlucky
+			if(needSpectacles)
+			{
+				auto_log_info("Need Spectacles, damn it.", "blue");
+				LX_spookyBedroomCombat();
+				auto_log_info("Finished 1 Spookyraven Bedroom Spectacle Sequence", "blue");
+				return true;
+			}
+			else if(needCamera)
+			{
+				auto_log_info("Need Disposable Instant Camera, damn it.", "blue");
+				LX_spookyBedroomCombat();
+				auto_log_info("Finished 1 Spookyraven Bedroom Disposable Instant Camera Sequence", "blue");
+				return true;
+			}
+		}
+		if((item_amount($item[Lady Spookyraven\'s Finest Gown]) == 0) && !contains_text(get_counters("Fortune Cookie", 0, 10), "Fortune Cookie"))
+		{
+			auto_log_info("Spookyraven: Bedroom, rummaging through nightstands looking for naughty meatbag trinkets.", "blue");
+			LX_spookyBedroomCombat();
+			auto_log_info("Finished 1 Spookyraven Bedroom Sequence", "blue");
+			return true;
+		}
+		if(item_amount($item[Lady Spookyraven\'s Dancing Shoes]) == 0)
+		{
+			set_property("louvreGoal", "7");
+			set_property("louvreDesiredGoal", "7");
+			auto_log_info("Spookyraven: Gallery", "blue");
+
+			auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
+
+			autoAdv(1, $location[The Haunted Gallery]);
+			return true;
+		}
+		if(item_amount($item[Lady Spookyraven\'s Powder Puff]) == 0)
+		{
+			if((my_daycount() == 1) && (get_property("_hipsterAdv").to_int() < 7) && is_unrestricted($familiar[Artistic Goth Kid]) && auto_have_familiar($familiar[Artistic Goth Kid]))
+			{
+				handleFamiliar($familiar[Artistic Goth Kid]);
+			}
+			auto_log_info("Spookyraven: Bathroom", "blue");
+			set_property("choiceAdventure892", "1");
+
+			auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
+
+			auto_forceNextNoncombat();
+			autoAdv(1, $location[The Haunted Bathroom]);
+
+			handleFamiliar("item");
+			return true;
+		}
+	}
+	return false;
+}
+
 boolean L11_blackMarket()
 {
 	if (internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 1 || black_market_available())

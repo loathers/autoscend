@@ -191,7 +191,6 @@ boolean autoscend_migrate();
 //	Note that, as of at least Mafia r16560, we can not use run_combat(<combat filter>).
 //	Don\'t even try it, it requires a custom modification that we can not really do an ASH workaround for.
 //	They are all defined in autoscend/auto_adventure.ash
-boolean autoAdv();
 boolean autoAdv(location loc);								//num is ignored
 boolean autoAdv(int num, location loc);						//num is ignored
 boolean autoAdv(int num, location loc, string option);		//num is ignored
@@ -499,7 +498,6 @@ int auto_sourceTerminalExtrudeLeft();							//Defined in autoscend/auto_mr2016.a
 int[string] auto_sourceTerminalMissing();						//Defined in autoscend/auto_mr2016.ash
 boolean auto_sourceTerminalRequest(string request);			//Defined in autoscend/auto_mr2016.ash
 int[string] auto_sourceTerminalStatus();						//Defined in autoscend/auto_mr2016.ash
-boolean auto_tavern();										//Defined in autoscend.ash
 string auto_JunkyardCombatHandler(int round, string opp, string text);		//Defined in autoscend/auto_combat.ash
 int changeClan();											//Defined in autoscend/auto_clan.ash
 int changeClan(int toClan);									//Defined in autoscend/auto_clan.ash
@@ -904,7 +902,6 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 int lumberCount();											//Defined in autoscend/auto_util.ash
 void makeStartingSmiths();									//Defined in autoscend/auto_equipment.ash
 int maxSealSummons();										//Defined in autoscend/auto_util.ash
-void maximize_hedge();										//Defined in autoscend.ash
 boolean mayo_acquireMayo(item it);							//Defined in autoscend/auto_mr2015.ash
 int ns_crowd1();											//Defined in autoscend/auto_util.ash
 stat ns_crowd2();											//Defined in autoscend/auto_util.ash

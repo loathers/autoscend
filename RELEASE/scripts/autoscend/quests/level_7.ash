@@ -55,7 +55,7 @@ boolean L7_crypt()
 
 		provideInitiative(850, true);
 
-		if (isActuallyEd() && monster_attack($monster[modern zmobie]) >= my_maxhp())
+		if (isActuallyEd() && expected_damage($monster[modern zmobie]) >= my_maxhp())
 		{
 			// Need to be able to tank a hit from the modern zmobies as Ed
 			// as we'll never get the jump because their initiative is ridiculous.

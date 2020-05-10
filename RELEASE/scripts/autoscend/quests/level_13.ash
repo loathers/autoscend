@@ -545,6 +545,31 @@ boolean L13_towerNSContests()
 	return false;
 }
 
+void maximize_hedge()
+{
+	string data = visit_url("campground.php?action=telescopelow");
+
+	element first = ns_hedge1();
+	element second = ns_hedge2();
+	element third = ns_hedge3();
+	int [element] resGoal;
+	if((first == $element[none]) || (second == $element[none]) || (third == $element[none]))
+	{
+		foreach ele in $elements[hot, cold, stench, sleaze, spooky]
+		{
+			resGoal[ele] = 9;
+		}
+	}
+	else
+	{
+		resGoal[first] = 9;
+		resGoal[second] = 9;
+		resGoal[third] = 9;
+	}
+
+	provideResistances(resGoal, true);
+}
+
 boolean L13_towerNSHedge()
 {
 	if(internalQuestStatus("questL13Final") < 4 || internalQuestStatus("questL13Final") > 4)
