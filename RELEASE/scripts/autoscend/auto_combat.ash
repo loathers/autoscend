@@ -3202,7 +3202,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		{
 			doRenenutet = true;
 		}
-		if((enemy == $monster[Pygmy Janitor]) && (item_amount($item[Book of Matches]) == 0) && (get_property("relocatePygmyJanitor").to_int() != my_ascensions()))
+		if((enemy == $monster[Pygmy Janitor]) && (item_amount($item[Book of Matches]) == 0) && (get_property("hiddenTavernUnlock").to_int() != my_ascensions()))
 		{
 			doRenenutet = true;
 		}

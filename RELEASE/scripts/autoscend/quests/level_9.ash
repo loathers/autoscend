@@ -1,5 +1,29 @@
 script "level_9.ash"
 
+boolean LX_loggingHatchet()
+{
+	if (!canadia_available())
+	{
+		return false;
+	}
+
+	if (available_amount($item[logging hatchet]) > 0)
+	{
+		return false;
+	}
+
+	if ($location[Camp Logging Camp].turns_spent > 0 ||
+		$location[Camp Logging Camp].combat_queue != "" ||
+		$location[Camp Logging Camp].noncombat_queue != "")
+	{
+		return false;
+	}
+
+	auto_log_info("Acquiring the logging hatchet from Camp Logging Camp", "blue");
+	autoAdv(1, $location[Camp Logging Camp]);
+	return true;
+}
+
 boolean L9_leafletQuest()
 {
 	if((my_level() < 9) || possessEquipment($item[Giant Pinky Ring]))

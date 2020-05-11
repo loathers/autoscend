@@ -1207,3 +1207,40 @@ boolean resolveSixthDMT()
 	}
 	return false;
 }
+
+boolean LX_dinseylandfillFunbucks()
+{
+	if(!get_property("auto_getDinseyGarbageMoney").to_boolean())
+	{
+		return false;
+	}
+	if(!elementalPlanes_access($element[stench]))
+	{
+		return false;
+	}
+	if(get_property("auto_dinseyGarbageMoney").to_int() == my_daycount())
+	{
+		return false;
+	}
+	if((my_adventures() == 0) || (my_level() < 6))
+	{
+		return false;
+	}
+	if(item_amount($item[Bag of Park Garbage]) > 0 && !can_interact())
+	{
+		return dinseylandfill_garbageMoney();
+	}
+	// Abort if we've already gotten our easy funbucks.
+	// If we don't do this, we get stuck in a loop of getting garbage, using it, and doing BARF more.
+	if(get_property("_dinseyGarbageDisposed").to_boolean()){
+		return false;
+	}
+	if((my_daycount() >= 3) && (my_adventures() > 5))
+	{
+		# We do this after the item check since we may have an extra bag and we should turn that in.
+		return false;
+	}
+	buffMaintain($effect[How to Scam Tourists], 0, 1, 1);
+	autoAdv(1, $location[Barf Mountain]);
+	return true;
+}

@@ -6366,6 +6366,8 @@ boolean auto_check_conditions(string conds)
 					abort('"' + condition_data + '" does not properly convert to a monster!');
 				if(have_effect($effect[On The Trail]) > 0 && get_property("olfactedMonster").to_monster() == check_sniffed)
 					return true;
+				if(isActuallyEd() && get_property("stenchCursedMonster").to_monster() == check_sniffed)
+					return true;
 				if(my_class() == $class[Avatar of Sneaky Pete] && get_property("makeFriendsMonster").to_monster() == check_sniffed)
 					return true;
 				if($classes[Cow Puncher, Beanslinger, Snake Oiler] contains my_class() && get_property("longConMonster").to_monster() == check_sniffed)

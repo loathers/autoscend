@@ -41,6 +41,8 @@ void main()
 
 	preAdvXiblaxian(place);
 
+	ed_handleAdventureServant(place);
+
 	if(get_floundry_locations() contains place)
 	{
 		buffMaintain($effect[Baited Hook], 0, 1, 1);

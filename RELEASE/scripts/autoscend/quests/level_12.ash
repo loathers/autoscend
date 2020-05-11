@@ -1583,9 +1583,12 @@ boolean L12_themtharHills()
 	}
 	asdonBuff($effect[Driving Observantly]);
 
-
-
-	handleFamiliar("meat");
+	if (isActuallyEd()) {
+		handleServant("meat");
+	} else {
+		handleFamiliar("meat");
+	}
+	
 	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (auto_my_path() != "Heavy Rains"))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
