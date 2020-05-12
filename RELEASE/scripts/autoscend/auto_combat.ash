@@ -437,22 +437,22 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 			if(enemy == $monster[Your Shadow])
 			{
-				auto_log_debug("plumber confirmed to be identifying $monster[Your Shadow] without need for workaround");
+				auto_log_debug("plumber confirmed to be identifying $monster[Your Shadow] without need for workaround. please report this");
 			}
 			else
 			{
-				auto_log_debug("plumber confirmed still need a workaround for identifying $monster[Your Shadow]");
+				auto_log_debug("plumber confirmed still need a workaround for identifying $monster[Your Shadow]. please report this");
 			}
 		}
 		if($classes[Snake Oiler, Cow Puncher, Beanslinger, Gelatinous Noob] contains my_class())
 		{
 			if(enemy == $monster[Your Shadow])
 			{
-				auto_log_debug(my_class() +" confirmed to be identifying $monster[Your Shadow] without need for workaround");
+				auto_log_debug(my_class() +" confirmed to be identifying $monster[Your Shadow] without need for workaround. please report this");
 			}
 			else
 			{
-				auto_log_debug(my_class() +" confirmed still need a workaround for identifying $monster[Your Shadow]");
+				auto_log_debug(my_class() +" confirmed still need a workaround for identifying $monster[Your Shadow]. please report this");
 			}
 		}
 		
