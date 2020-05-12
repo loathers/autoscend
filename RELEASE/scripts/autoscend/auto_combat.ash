@@ -432,6 +432,30 @@ string auto_combatHandler(int round, monster enemy, string text)
 	//TODO test plumber, geleatinous noob, and west of loathing paths to see if these workarounds are still needed.
 	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger, shadow gelatinous noob, Shadow Plumber] contains enemy.to_string())
 	{
+		//debug as you go
+		if(in_zelda())
+		{
+			if(enemy == $monster[Your Shadow])
+			{
+				auto_log_debug("plumber confirmed to be identifying $monster[Your Shadow] without need for workaround");
+			}
+			else
+			{
+				auto_log_debug("plumber confirmed still need a workaround for identifying $monster[Your Shadow]");
+			}
+		}
+		if($classes[Snake Oiler, Cow Puncher, Beanslinger, Gelatinous Noob] contains my_class())
+		{
+			if(enemy == $monster[Your Shadow])
+			{
+				auto_log_debug(my_class() +" confirmed to be identifying $monster[Your Shadow] without need for workaround");
+			}
+			else
+			{
+				auto_log_debug(my_class() +" confirmed still need a workaround for identifying $monster[Your Shadow]");
+			}
+		}
+		
 		if(in_zelda())
 		{
 			if(item_amount($item[super deluxe mushroom]) > 0)
