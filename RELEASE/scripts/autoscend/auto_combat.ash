@@ -2,8 +2,6 @@ script "auto_combat.ash"
 
 monster ocrs_helper(string page);
 void awol_helper(string page);
-string auto_edCombatHandler(int round, string opp, string text);
-string auto_combatHandler(int round, string opp, string text);
 
 boolean registerCombat(string action);
 boolean registerCombat(skill sk);
@@ -232,10 +230,9 @@ string getStallString(monster enemy)
 }
 
 
-string auto_combatHandler(int round, string opp, string text)
+string auto_combatHandler(int round, monster enemy, string text)
 {
 	#Yes, round 0, really.
-	monster enemy = to_monster(opp);
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
 	int damageReceived = 0;
 	if(round == 0)
@@ -432,8 +429,33 @@ string auto_combatHandler(int round, string opp, string text)
 		return "runaway";
 	}
 
-	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob") || (opp == "Shadow Plumber"))
+	//TODO test plumber, geleatinous noob, and west of loathing paths to see if these workarounds are still needed.
+	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger, shadow gelatinous noob, Shadow Plumber] contains enemy.to_string())
 	{
+		//debug as you go
+		if(in_zelda())
+		{
+			if(enemy == $monster[Your Shadow])
+			{
+				auto_log_debug("plumber confirmed to be identifying $monster[Your Shadow] without need for workaround. please report this");
+			}
+			else
+			{
+				auto_log_debug("plumber confirmed still need a workaround for identifying $monster[Your Shadow]. please report this");
+			}
+		}
+		if($classes[Snake Oiler, Cow Puncher, Beanslinger, Gelatinous Noob] contains my_class())
+		{
+			if(enemy == $monster[Your Shadow])
+			{
+				auto_log_debug(my_class() +" confirmed to be identifying $monster[Your Shadow] without need for workaround. please report this");
+			}
+			else
+			{
+				auto_log_debug(my_class() +" confirmed still need a workaround for identifying $monster[Your Shadow]. please report this");
+			}
+		}
+		
 		if(in_zelda())
 		{
 			if(item_amount($item[super deluxe mushroom]) > 0)
@@ -2368,10 +2390,8 @@ string auto_combatHandler(int round, string opp, string text)
 	return attackMinor;
 }
 
-string findBanisher(int round, string opp, string text)
+string findBanisher(int round, monster enemy, string text)
 {
-	monster enemy = to_monster(opp);
-
 	string banishAction = banisherCombatString(enemy, my_location(), true);
 	if(banishAction != "")
 	{
@@ -2394,20 +2414,18 @@ string findBanisher(int round, string opp, string text)
 	{
 		return useSkill($skill[Storm of the Scarab], false);
 	}
-	return auto_combatHandler(round, opp, text);
+	return auto_combatHandler(round, enemy, text);
 }
 
-string auto_JunkyardCombatHandler(int round, string opp, string text)
+string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 {
-	monster enemy = to_monster(opp);
-
 	if(!($monsters[A.M.C. gremlin, batwinged gremlin, erudite gremlin, spider gremlin, vegetable gremlin] contains enemy))
 	{
 		if (isActuallyEd())
 		{
-			return auto_edCombatHandler(round, opp, text);
+			return auto_edCombatHandler(round, enemy, text);
 		}
-		return auto_combatHandler(round, opp, text);
+		return auto_combatHandler(round, enemy, text);
 	}
 
 	auto_log_info("auto_JunkyardCombatHandler: " + round, "brown");
@@ -2557,7 +2575,7 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 		{
 			if (get_property("_edDefeats").to_int() >= 2)
 			{
-				return findBanisher(round, opp, text);
+				return findBanisher(round, enemy, text);
 			}
 			else if (canUse($item[Seal Tooth], false) && get_property("auto_edStatus") == "UNDYING!")
 			{
@@ -2566,7 +2584,7 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 		}
 		else
 		{
-			return findBanisher(round, opp, text);
+			return findBanisher(round, enemy, text);
 		}
 	}
 
@@ -2585,7 +2603,7 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 	return "attack with weapon";
 }
 
-string auto_edCombatHandler(int round, string opp, string text)
+string auto_edCombatHandler(int round, monster enemy, string text)
 {
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
 	int damageReceived = 0;
@@ -2644,7 +2662,6 @@ string auto_edCombatHandler(int round, string opp, string text)
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	monster enemy = to_monster(opp);
 	phylum type = monster_phylum(enemy);
 	string combatState = get_property("auto_combatHandler");
 	string edCombatState = get_property("auto_edCombatHandler");
@@ -2871,7 +2888,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+	if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 	{
 		if(auto_wantToSniff(enemy, my_location()))
 		{
@@ -2883,7 +2900,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if(my_location() == $location[The Secret Council Warehouse])
 	{
-		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			#	Rememeber, we are looking to see if we have enough of the opposite item here.
@@ -2917,7 +2934,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if(my_location() == $location[The Smut Orc Logging Camp])
 	{
-		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			string stenched = to_lower_case(get_property("stenchCursedMonster"));
@@ -3339,7 +3356,8 @@ string auto_edCombatHandler(int round, string opp, string text)
 	return useSkill($skill[Mild Curse], false);
 }
 
-string auto_saberTrickMeteorShowerCombatHandler(int round, string opp, string text){
+string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text)
+{
 	if(canUse($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && auto_have_skill($skill[Meteor Lore])){
 		if(canUse($skill[Meteor Shower])){
 			return useSkill($skill[Meteor Shower]);
