@@ -785,7 +785,26 @@ boolean L12_filthworms()
 	}
 
 	auto_log_info("Doing the orchard.", "blue");
-
+	
+	//can fight filthworms early as fratboys so long as you do not wear a frat outfit. 
+	//maximizer can accidentally end up wearing the outfit and cause infinite loop.
+	//might want to fight filthworms early to flyer. determining exactly when is overly complex so we are just assuming always.
+	//the frat outfits are pretty weak and as such its no big loss if we don't wear it when doing it early.
+	if(auto_warSide() == "fratboy" && get_property("hippiedDefeated").to_int() < 64)
+	{
+		//helmet is least useful with +40 max MP enchantment.
+		if(possessOutfit("frat warrior fatigues"))
+		{
+			addToMaximize("-equip beer helmet");
+		}
+		//pants and hat are identical, randomly selected hat for exclusion
+		if(possessOutfit("frat boy ensemble"))
+		{
+			addToMaximize("-orcish baseball cap");
+		}
+	}
+	
+	//use the stench glands to unlock the next step of the quest.
 	if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
 	{
 		use(1, $item[Filthworm Hatchling Scent Gland]);
@@ -799,14 +818,24 @@ boolean L12_filthworms()
 		use(1, $item[Filthworm Royal Guard Scent Gland]);
 	}
 
+	//if we can kill the queen we don't care about gland drops anymore. kill her and finish this
 	if(have_effect($effect[Filthworm Guard Stench]) > 0)
 	{
-		handleFamiliar("meat");
-		autoAdv(1, $location[The Filthworm Queen\'s Chamber]);
-		return true;
+		return autoAdv(1, $location[The Filthworm Queen\'s Chamber]);
 	}
 
-	if(!have_skill($skill[Lash of the Cobra]))
+	//if we can guarentee stealing the stench gland then no point in buffing item drop
+	if(auto_have_skill($skill[Lash of the Cobra]) && get_property("_edLashCount").to_int() < 31)
+	{
+		auto_log_info("Ed will steal stench glands using [Lash of the Cobra]");
+	}
+	else if(get_property("_xoHugsUsed").to_int() < 11 && canChangeToFamiliar($familiar[XO Skeleton]))
+	{
+		auto_log_info("Will steal stench glands using [XO Skeleton]");
+		handleFamiliar($familiar[XO Skeleton]);
+	}
+	//TODO add IOTM cat burglar stealing support here with another else if
+	else		//could not guarentee stealing. buff item drops instead
 	{
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
 		buffMaintain($effect[Kindly Resolve], 0, 1, 1);
@@ -825,69 +854,50 @@ boolean L12_filthworms()
 			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
 		}
 		buffMaintain($effect[Frosty], 0, 1, 1);
-	}
-
-	if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
-	{
-		buyUpTo(1, $item[third-hand lantern]);
-		autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
-	}
-
-	if(possessEquipment($item[A Light That Never Goes Out]) && can_equip($item[A Light That Never Goes Out]))
-	{
-		if(weapon_hands(equipped_item($slot[weapon])) != 1)
+		
+		handleFamiliar("item");
+		handleServant("item");
+		
+		addToMaximize("200item");
+		
+		//craft IOTM derivative that gives high item bonus
+		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 		{
-			equip($slot[weapon], $item[none]);
+			buyUpTo(1, $item[third-hand lantern]);
+			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
 		}
-		equip($item[A Light That Never Goes Out]);
-	}
-
-	handleFamiliar("item");
-	if(item_amount($item[Training Helmet]) > 0)
-	{
-		equip($slot[hat], $item[Training Helmet]);
-	}
-
-	januaryToteAcquire($item[Broken Champagne Bottle]);
-	if(item_amount($item[Broken Champagne Bottle]) > 0)
-	{
-		equip($item[Broken Champagne Bottle]);
-	}
-
-	if(auto_my_path() == "Live. Ascend. Repeat.")
-	{
-		if(item_drop_modifier() < 400.0)
+		
+		//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
+		if(januaryToteAcquire($item[Broken Champagne Bottle]))
 		{
-			abort("Can not handle item drop amount for the Filthworms, deja vu!! Either get us to +400% and rerun or do it yourself.");
+			equip($item[Broken Champagne Bottle]);
+		}
+		
+		if(auto_my_path() == "Live. Ascend. Repeat.")
+		{
+			equipMaximizedGear();
+			if(item_drop_modifier() < 400.0)
+			{
+				abort("Can not handle item drop amount for the Filthworms, deja vu!! Either get us to +400% and rerun or do it yourself.");
+			}
 		}
 	}
-
+	
+	boolean retval = false;
 	if(have_effect($effect[Filthworm Drone Stench]) > 0)
 	{
-		if(get_property("_xoHugsUsed").to_int() <= 10 && canChangeToFamiliar($familiar[XO Skeleton]))
-		{
-			handleFamiliar($familiar[XO Skeleton]);
-		}
-		autoAdv(1, $location[The Royal Guard Chamber]);
+		retval = autoAdv(1, $location[The Royal Guard Chamber]);
 	}
 	else if(have_effect($effect[Filthworm Larva Stench]) > 0)
 	{
-		if(get_property("_xoHugsUsed").to_int() <= 10 && canChangeToFamiliar($familiar[XO Skeleton]))
-		{
-			handleFamiliar($familiar[XO Skeleton]);
-		}
-		autoAdv(1, $location[The Feeding Chamber]);
+		retval = autoAdv(1, $location[The Feeding Chamber]);
 	}
 	else
 	{
-		if(get_property("_xoHugsUsed").to_int() <= 10 && canChangeToFamiliar($familiar[XO Skeleton]))
-		{
-			handleFamiliar($familiar[XO Skeleton]);
-		}
-		autoAdv(1, $location[The Hatching Chamber]);
+		retval = autoAdv(1, $location[The Hatching Chamber]);
 	}
-	handleFamiliar("item");
-	return true;
+
+	return retval;
 }
 
 boolean L12_orchardFinalize()
