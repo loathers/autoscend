@@ -482,7 +482,7 @@ boolean auto_change_mcd(int mcd, boolean immediately);			//Defined in autoscend/
 string auto_combatHandler(int round, monster enemy, string text);	//Defined in autoscend/auto_combat.ash
 boolean auto_doPrecinct();									//Defined in autoscend/auto_mr2016.ash
 string auto_edCombatHandler(int round, monster enemy, string text);	//Defined in autoscend/auto_combat.ash
-string auto_saberTrickMeteorShowerCombatHandler(int round, string opp, string text); //Defined in autoscend/auto_combat.ash
+string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text); //Defined in autoscend/auto_combat.ash
 boolean auto_floundryAction();								//Defined in autoscend/auto_clan.ash
 boolean auto_floundryUse();									//Defined in autoscend/auto_clan.ash
 boolean auto_floundryAction(item it);							//Defined in autoscend/auto_clan.ash
@@ -499,7 +499,7 @@ int auto_sourceTerminalExtrudeLeft();							//Defined in autoscend/auto_mr2016.a
 int[string] auto_sourceTerminalMissing();						//Defined in autoscend/auto_mr2016.ash
 boolean auto_sourceTerminalRequest(string request);			//Defined in autoscend/auto_mr2016.ash
 int[string] auto_sourceTerminalStatus();						//Defined in autoscend/auto_mr2016.ash
-string auto_JunkyardCombatHandler(int round, string opp, string text);		//Defined in autoscend/auto_combat.ash
+string auto_JunkyardCombatHandler(int round, monster enemy, string text);		//Defined in autoscend/auto_combat.ash
 int changeClan();											//Defined in autoscend/auto_clan.ash
 int changeClan(int toClan);									//Defined in autoscend/auto_clan.ash
 int changeClan(string clanName);							//Defined in autoscend/auto_clan.ash
@@ -641,7 +641,7 @@ void fallout_initializeSettings();							//Defined in autoscend/auto_fallout.ash
 int fastenerCount();										//Defined in autoscend/auto_util.ash
 boolean fightScienceTentacle();								//Defined in autoscend/auto_util.ash
 boolean fightScienceTentacle(string option);				//Defined in autoscend/auto_util.ash
-string findBanisher(int round, string opp, string text);	//Defined in autoscend/auto_combat.ash
+string findBanisher(int round, monster enemy, string text);	//Defined in autoscend/auto_combat.ash
 void florist_initializeSettings();							//Defined in autoscend/auto_floristfriar.ash
 boolean forceEquip(slot sl, item it);						//Defined in autoscend/auto_util.ash
 int fullness_left();										//Defined in autoscend/auto_util.ash
