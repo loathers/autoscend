@@ -1,14 +1,15 @@
 script "auto_combat.ash"
 
+//since combat functions will never be used outside of combat file, they get declared here instead of the general header file.
 monster ocrs_helper(string page);
 void awol_helper(string page);
-
 boolean registerCombat(string action);
 boolean registerCombat(skill sk);
 boolean registerCombat(item it);
 boolean containsCombat(string action);
 boolean containsCombat(skill sk);
 boolean containsCombat(item it);
+boolean enemyCanBlocksSkills();
 
 /*
 *	Advance combat round, nothing happens.
@@ -229,6 +230,24 @@ string getStallString(monster enemy)
 	return "";
 }
 
+boolean enemyCanBlocksSkills()
+{
+	//we want to know if enemy can sometimes block a skill. For such enemies skills should be used only if absolutely necessary
+	//for enemies that always block a skill a seperate function should be made... if we ever fight any in run.
+	
+	monster enemy = last_monster();
+	
+	if($monsters[
+	Bonerdagon,
+	Naughty Sorceress,
+	Naughty Sorceress (2)
+	] contains enemy)
+	{
+		return true;
+	}
+	
+	return false;
+}
 
 string auto_combatHandler(int round, monster enemy, string text)
 {
@@ -1477,7 +1496,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Curse of Weaksauce]);
 	}
 
-	if(canUse($skill[Intimidating Bellow]) && (my_mp() >= 25) && auto_have_skill($skill[Louder Bellows]))
+	//boris specific 3MP skill that delevels by 15%, with an upgrade it delevels 30% and stuns.
+	//even without the upgrade it it is worth it. actually without upgrade you need it more due to low skill.
+	if(canUse($skill[Intimidating Bellow]) && expected_damage() > 0 && !enemyCanBlocksSkills())
 	{
 		return useSkill($skill[Intimidating Bellow]);
 	}
