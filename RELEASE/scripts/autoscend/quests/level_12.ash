@@ -781,6 +781,7 @@ boolean L12_filthworms()
 	}
 	if(item_amount($item[Heart of the Filthworm Queen]) > 0)
 	{
+		handleFamiliar("meat");
 		return false;
 	}
 
@@ -825,11 +826,17 @@ boolean L12_filthworms()
 	}
 
 	//if we can guarentee stealing the stench gland then no point in buffing item drop
-	if(auto_have_skill($skill[Lash of the Cobra]) && get_property("_edLashCount").to_int() < 31)
+	if(auto_have_skill($skill[Lash of the Cobra]) && get_property("_edLashCount").to_int() < 30)
 	{
 		auto_log_info("Ed will steal stench glands using [Lash of the Cobra]");
 	}
-	else if(get_property("_xoHugsUsed").to_int() < 11 && canChangeToFamiliar($familiar[XO Skeleton]))
+//	else if(auto_have_skill($skill[Smash & Graaagh]))
+//	{
+//		//only 30 per day, can't find mafia tracking for it so it can't be implemented yet.
+//		//Needs to be implemented in auto_combat.ash too before uncommenting this block
+//		auto_log_info("Zombie Master will steal stench glands using [Smash & Graaagh]");
+//	}
+	else if(get_property("_xoHugsUsed").to_int() < 10 && canChangeToFamiliar($familiar[XO Skeleton]))
 	{
 		auto_log_info("Will steal stench glands using [XO Skeleton]");
 		handleFamiliar($familiar[XO Skeleton]);
