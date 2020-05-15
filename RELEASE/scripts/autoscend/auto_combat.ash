@@ -1,8 +1,8 @@
 script "auto_combat.ash"
 
+//since combat functions will never be used outside of combat file, they get declared here instead of the general header file.
 monster ocrs_helper(string page);
 void awol_helper(string page);
-
 boolean registerCombat(string action);
 boolean registerCombat(skill sk);
 boolean registerCombat(item it);
@@ -229,6 +229,24 @@ string getStallString(monster enemy)
 	return "";
 }
 
+boolean enemyCanBlocksSkills()
+{
+	//we want to know if enemy can sometimes block a skill. For such enemies skills should be used only if absolutely necessary
+	//for enemies that always block a skill a seperate function should be made... if we ever fight any in run.
+	
+	monster enemy = last_monster();
+	
+	if($monsters[
+	Bonerdagon,
+	Naughty Sorceress,
+	Naughty Sorceress (2)
+	] contains enemy)
+	{
+		return true;
+	}
+	
+	return false;
+}
 
 string auto_combatHandler(int round, monster enemy, string text)
 {
@@ -430,20 +448,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 	}
 
 	//TODO test plumber, geleatinous noob, and west of loathing paths to see if these workarounds are still needed.
-	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger, shadow gelatinous noob, Shadow Plumber] contains enemy.to_string())
+	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger, shadow gelatinous noob] contains enemy.to_string())
 	{
 		//debug as you go
-		if(in_zelda())
-		{
-			if(enemy == $monster[Your Shadow])
-			{
-				auto_log_debug("plumber confirmed to be identifying $monster[Your Shadow] without need for workaround. please report this");
-			}
-			else
-			{
-				auto_log_debug("plumber confirmed still need a workaround for identifying $monster[Your Shadow]. please report this");
-			}
-		}
 		if($classes[Snake Oiler, Cow Puncher, Beanslinger, Gelatinous Noob] contains my_class())
 		{
 			if(enemy == $monster[Your Shadow])
@@ -1477,7 +1484,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Curse of Weaksauce]);
 	}
 
-	if(canUse($skill[Intimidating Bellow]) && (my_mp() >= 25) && auto_have_skill($skill[Louder Bellows]))
+	//boris specific 3MP skill that delevels by 15%, with an upgrade it delevels 30% and stuns.
+	//even without the upgrade it it is worth it. actually without upgrade you need it more due to low skill.
+	if(canUse($skill[Intimidating Bellow]) && expected_damage() > 0 && !enemyCanBlocksSkills())
 	{
 		return useSkill($skill[Intimidating Bellow]);
 	}
