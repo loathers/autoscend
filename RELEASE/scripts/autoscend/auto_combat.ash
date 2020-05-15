@@ -448,20 +448,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 	}
 
 	//TODO test plumber, geleatinous noob, and west of loathing paths to see if these workarounds are still needed.
-	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger, shadow gelatinous noob, Shadow Plumber] contains enemy.to_string())
+	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger, shadow gelatinous noob] contains enemy.to_string())
 	{
 		//debug as you go
-		if(in_zelda())
-		{
-			if(enemy == $monster[Your Shadow])
-			{
-				auto_log_debug("plumber confirmed to be identifying $monster[Your Shadow] without need for workaround. please report this");
-			}
-			else
-			{
-				auto_log_debug("plumber confirmed still need a workaround for identifying $monster[Your Shadow]. please report this");
-			}
-		}
 		if($classes[Snake Oiler, Cow Puncher, Beanslinger, Gelatinous Noob] contains my_class())
 		{
 			if(enemy == $monster[Your Shadow])
