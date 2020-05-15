@@ -9,7 +9,6 @@ boolean registerCombat(item it);
 boolean containsCombat(string action);
 boolean containsCombat(skill sk);
 boolean containsCombat(item it);
-boolean enemyCanBlocksSkills();
 
 /*
 *	Advance combat round, nothing happens.
