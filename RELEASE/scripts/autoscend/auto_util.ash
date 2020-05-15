@@ -2413,7 +2413,8 @@ boolean isUnclePAvailable()
 	{
 		return false;
 	}
-	return true;
+	string page_text = visit_url("place.php?whichplace=desertbeach");
+	return !page_text.contains_text("You don't know where a desert beach is");
 }
 
 boolean instakillable(monster mon)
