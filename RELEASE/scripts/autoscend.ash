@@ -2447,27 +2447,20 @@ boolean LX_attemptPowerLevel()
 		switch (my_primestat())
 		{
 			case $stat[Muscle]:
-				set_property("louvreDesiredGoal", "4"); // get Muscle stats
+				backupSetting("louvreDesiredGoal", "4"); // get Muscle stats
 				break;
 			case $stat[Mysticality]:
-				set_property("louvreDesiredGoal", "5"); // get Myst stats
+				backupSetting("louvreDesiredGoal", "5"); // get Myst stats
 				break;
 			case $stat[Moxie]:
-				set_property("louvreDesiredGoal", "6"); // get Moxie stats
+				backupSetting("louvreDesiredGoal", "6"); // get Moxie stats
 				break;
 		}
-		if (isActuallyEd() && (!possessEquipment($item[serpentine sword]) || !possessEquipment($item[snake shield])))
-		{
-			set_property("choiceAdventure89", "2"); // fight the snake knight (as Ed)
+		providePlusNonCombat(25, true);
+		if(autoAdv($location[The Haunted Gallery])) {
+			return true;
 		}
-		else
-		{
-			set_property("choiceAdventure89", "6"); // ignore the NC & banish it for 10 adv
-		}
-		providePlusNonCombat(25);
-		if(autoAdv($location[The Haunted Gallery])) return true;
 	}
-	
 	return false;
 }
 
@@ -3532,11 +3525,10 @@ boolean doTasks()
 	}
 	if(LX_bitchinMeatcar())				return true;
 	if(L5_getEncryptionKey())			return true;
-	if(LX_handleSpookyravenNecklace())	return true;
 	if(LX_unlockPirateRealm())			return true;
 	if(handleRainDoh())				return true;
 	if(routineRainManHandler())			return true;
-	if(LX_handleSpookyravenFirstFloor())return true;
+	if(LX_spookyravenManorFirstFloor())	return true;
 
 	if(!get_property("auto_slowSteelOrgan").to_boolean() && get_property("auto_getSteelOrgan").to_boolean())
 	{
@@ -3546,10 +3538,7 @@ boolean doTasks()
 
 	if(L4_batCave())					return true;
 	if(L2_mosquito())					return true;
-	if(L2_treeCoin())					return true;
-	if(L2_spookyMap())					return true;
-	if(L2_spookyFertilizer())			return true;
-	if(L2_spookySapling())				return true;
+	if(LX_unlockHiddenTemple())	return true;
 	if(L6_dakotaFanning())				return true;
 	if(L5_haremOutfit())				return true;
 	if(LX_phatLootToken())				return true;
@@ -3564,7 +3553,7 @@ boolean doTasks()
 		}
 	}
 
-	if(LX_spookyravenSecond())			return true;
+	if(LX_spookyravenManorSecondFloor())			return true;
 	if(L3_tavern())						return true;
 	if(L6_friarsGetParts())				return true;
 	if(LX_hardcoreFoodFarm())			return true;
@@ -3772,6 +3761,7 @@ void auto_begin()
 	backupSetting("choiceAdventureScript", "scripts/autoscend/auto_choice_adv.ash");
 	backupSetting("betweenBattleScript", "scripts/autoscend/auto_pre_adv.ash");
 	backupSetting("recoveryScript", "");
+	backupSetting("counterScript", "");
 
 	backupSetting("hpAutoRecovery", -0.05);
 	backupSetting("hpAutoRecoveryTarget", -0.05);
@@ -3782,16 +3772,9 @@ void auto_begin()
 	backupSetting("autoAbortThreshold", -0.05);
 
 	backupSetting("currentMood", "apathetic");
-	backupSetting("customCombatScript", "autoscend_null");
-	backupSetting("battleAction", "custom combat script");
 
 	backupSetting("choiceAdventure1107", 1);
 	backupSetting("choiceAdventure330", 1);		//haunted billiards room NC shark chum
-
-	if(get_property("counterScript") != "")
-	{
-		backupSetting("counterScript", "scripts/autoscend/auto_counter.ash");
-	}
 
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))

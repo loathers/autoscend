@@ -7294,7 +7294,7 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	buffMaintain($effect[Reptilian Fortitude], 0, 1, 1);				//8 MP
 	buffMaintain($effect[Astral Shell], 0, 1, 1);						//10 MP
 	buffMaintain($effect[Jingle Jangle Jingle], 0, 1, 1);				//5 MP
-	buffMaintain($effect[Curiosity of Br'er Tarrypin], 0, 1, 1);		//5 MP
+	buffMaintain($effect[Curiosity of Br\'er Tarrypin], 0, 1, 1);		//5 MP
 	
 	//Sauceror Buffs
 	buffMaintain($effect[Elemental Saucesphere], 0, 1, 1);				//10 MP
@@ -7303,7 +7303,7 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	//Accordion Thief Buffs. We are not shrugging so it will only apply new ones if we have space for them
 	buffMaintain($effect[The Moxious Madrigal], 0, 1, 1);				//2 MP
 	buffMaintain($effect[The Magical Mojomuscular Melody], 0, 1, 1);	//3 MP
-	buffMaintain($effect[Cletus's Canticle of Celerity], 0, 1, 1);		//4 MP
+	buffMaintain($effect[Cletus\'s Canticle of Celerity], 0, 1, 1);		//4 MP
 	buffMaintain($effect[Power Ballad of the Arrowsmith], 0, 1, 1);		//5 MP
 	buffMaintain($effect[Polka of Plenty], 0, 1, 1);					//7 MP
 	
@@ -7319,4 +7319,9 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	
 	//TODO facial expressions, need to check you are not wearing one first and which ones you have
 	//Maybe just not do facial expressions? too much complexity for a singular effect.
+}
+
+int currentPoolSkill() {
+	string [int] poolskill_command = split_string(cli_execute_output("poolskill"));
+	return substring(poolskill_command[0], poolskill_command[0].last_index_of(":") + 2,  poolskill_command[0].length() - 1).to_int();
 }

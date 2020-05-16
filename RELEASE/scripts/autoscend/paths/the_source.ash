@@ -303,7 +303,7 @@ boolean LX_attemptPowerLevelTheSource()
 		if (whereTo == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") > 3)
 		{
 			use(item_amount($item[ten-leaf clover]), $item[ten-leaf clover]);
-			LX_spookyBedroomCombat();
+			autoAdv($location[The Haunted Bedroom]);
 			return true;
 		}
 		if(cloversAvailable() > 0)
@@ -315,5 +315,5 @@ boolean LX_attemptPowerLevelTheSource()
 		return true;
 	}
 	//Banish mahogant, elegant after gown only. (Harold\'s Bell?)
-	return LX_spookyBedroomCombat();
+	return autoAdv($location[The Haunted Bedroom]);
 }

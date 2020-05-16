@@ -1458,7 +1458,7 @@ generic_t zone_available(location loc)
 	// compare our result with canadv(https://svn.code.sf.net/p/therazekolmafia/canadv/code/), log a warning if theres a difference. Ideally we can see if there are any differences between our code and Bales, and if not remove all of ours in favor of the dependency
 	boolean canAdvRetval = can_adv(loc);
 	if(canAdvRetval != retval._boolean){
-		auto_log_warning("Uh oh, autoscend and canadv dont agree on whether we can adventure at " + loc + " (autoscend: "+retval._boolean+", canadv: "+canAdvRetval+"). Will assume locaiton available if either is true.");
+		auto_log_debug("Uh oh, autoscend and canadv dont agree on whether we can adventure at " + loc + " (autoscend: "+retval._boolean+", canadv: "+canAdvRetval+"). Will assume locaiton available if either is true.");
 		retval._boolean = retval._boolean || canAdvRetval;
 	}
 

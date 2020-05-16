@@ -44,7 +44,6 @@ void ed_initializeSettings()
 		set_property("auto_edCombatCount", 0);
 		set_property("auto_edCombatRoundCount", 0);
 
-		set_property("choiceAdventure1002", 1);
 		set_property("desertExploration", 100);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
 		set_property("auto_delayHauntedKitchen", true);
@@ -1058,8 +1057,8 @@ void ed_handleAdventureServant(location loc)
 		}
 	}
 
-	// Locations where meat drop is required for quest furthering purposes
-	if (loc == $location[The Themthar Hills] && have_servant($servant[Maid]))
+	// Locations where meat drop is required for quest furthering purposes (or just nice to have)
+	if ($locations[The Themthar Hills, The Filthworm Queen\'s Chamber] contains loc && have_servant($servant[Maid]))
 	{
 		myServant = $servant[Maid];
 	}
@@ -1461,7 +1460,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// need to do L2 quest to unlock the L3. 0.83 Ka zone or 1/1.25/1.67 with 1/2/3 banishes
-	if (L2_mosquito() || L2_treeCoin() || L2_spookyMap() || L2_spookyFertilizer() || L2_spookySapling())
+	if (L2_mosquito() || LX_unlockHiddenTemple())
 	{
 		return true;
 	}

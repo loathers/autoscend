@@ -124,51 +124,55 @@ boolean L9_chasmBuild()
 	asdonBuff($effect[Driving Intimidatingly]);
 
 	// Check our Load out to see if spells are the best option for Orc-Thumping
-	boolean useSpellsInOrcCamp = false;
-	if(setFlavour($element[cold]) && canUse($skill[Stuffed Mortar Shell]))
-	{
-		useSpellsInOrcCamp = true;
+	if (isGuildClass()) {
+		// This only applies to classes which can use perm'd skills,
+		// so let's not waste time and console spam when we're a class or path that can't do any of this.
+		boolean useSpellsInOrcCamp = false;
+		if(setFlavour($element[cold]) && canUse($skill[Stuffed Mortar Shell]))
+		{
+			useSpellsInOrcCamp = true;
+		}
+
+		if(setFlavour($element[cold]) && canUse($skill[Cannelloni Cannon], false))
+		{
+			useSpellsInOrcCamp = true;
+		}
+
+		if(canUse($skill[Saucegeyser], false))
+		{
+			useSpellsInOrcCamp = true;
+		}
+
+		if(canUse($skill[Saucecicle], false))
+		{
+			useSpellsInOrcCamp = true;
+		}
+
+		// Always Maximize and choose our default Non-Com First, in case we are wrong about the non-com we MAY have some gear still equipped to help us.
+		if(useSpellsInOrcCamp == true)
+		{
+			auto_log_info("Preparing to Blast Orcs with Cold Spells!", "blue");
+			addToMaximize("myst,40spell damage,80spell damage percent,40cold spell damage,-1000 ml");
+			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
+			buffMaintain($effect[Song of Sauce], 150, 1, 1);
+
+			auto_log_info("If we encounter Blech House when we are not expecting it we will stop.", "blue");
+			auto_log_info("Currently setup for Myst/Spell Damage, option 2: Blast it down with a spell", "blue");
+			set_property("choiceAdventure1345", 0);
+		}
+		else
+		{
+			auto_log_info("Preparing to Ice-Punch Orcs!", "blue");
+			addToMaximize("muscle,40weapon damage,60weapon damage percent,40cold damage,-1000 ml");
+			buffMaintain($effect[Carol of the Bulls], 50, 1, 1);
+			buffMaintain($effect[Song of The North], 150, 1, 1);
+
+			auto_log_info("If we encounter Blech House when we are not expecting it we will stop.", "blue");
+			auto_log_info("Currently setup for Muscle/Weapon Damage, option 1: Kick it down", "blue");
+			set_property("choiceAdventure1345", 0);
+		}
 	}
-
-	if(setFlavour($element[cold]) && canUse($skill[Cannelloni Cannon], false))
-	{
-		useSpellsInOrcCamp = true;
-	}
-
-	if(canUse($skill[Saucegeyser], false))
-	{
-		useSpellsInOrcCamp = true;
-	}
-
-	if(canUse($skill[Saucecicle], false))
-	{
-		useSpellsInOrcCamp = true;
-	}
-
-	// Always Maximize and choose our default Non-Com First, in case we are wrong about the non-com we MAY have some gear still equipped to help us.
-	if(useSpellsInOrcCamp == true)
-	{
-		auto_log_info("Preparing to Blast Orcs with Cold Spells!", "blue");
-		addToMaximize("myst,40spell damage,80spell damage percent,40cold spell damage,-1000 ml");
-		buffMaintain($effect[Carol of the Hells], 50, 1, 1);
-		buffMaintain($effect[Song of Sauce], 150, 1, 1);
-
-		auto_log_info("If we encounter Blech House when we are not expecting it we will stop.", "blue");
-		auto_log_info("Currently setup for Myst/Spell Damage, option 2: Blast it down with a spell", "blue");
-		set_property("choiceAdventure1345", 0);
-	}
-	else
-	{
-		auto_log_info("Preparing to Ice-Punch Orcs!", "blue");
-		addToMaximize("muscle,40weapon damage,60weapon damage percent,40cold damage,-1000 ml");
-		buffMaintain($effect[Carol of the Bulls], 50, 1, 1);
-		buffMaintain($effect[Song of The North], 150, 1, 1);
-
-		auto_log_info("If we encounter Blech House when we are not expecting it we will stop.", "blue");
-		auto_log_info("Currently setup for Muscle/Weapon Damage, option 1: Kick it down", "blue");
-		set_property("choiceAdventure1345", 0);
-	}
-
+	
 	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
 	{
 		// If we think the non-com will hit NOW we clear maximizer to keep previous settings from carrying forward
