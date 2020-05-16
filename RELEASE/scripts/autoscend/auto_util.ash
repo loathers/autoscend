@@ -6040,6 +6040,11 @@ location solveDelayZone()
 		burnZone = $location[The Exploaded Battlefield];
 	}
 
+	if(in_lowkeysummer())
+	{
+		burnZone = lowkey_nextAvailableKeyDelayLocation();
+	}
+
 	return burnZone;
 }
 

@@ -43,9 +43,14 @@ boolean[item] lowKeyPriority = $items[
 	Peg key,					// +5 stats
 ];
 
+boolean in_lowkeysummer()
+{
+	return auto_my_path() == "Low Key Summer";
+}
+
 void lowkey_initializeSettings()
 {
-	if (auto_my_path() != "Low Key Summer")
+	if (!in_lowkeysummer())
 	{
 		return;
 	}
@@ -55,7 +60,7 @@ void lowkey_initializeSettings()
 
 int lowkey_keyDelayRemaining(location loc)
 {
-	if (auto_my_path() != "Low Key Summer")
+	if (!in_lowkeysummer())
 	{
 		return 0;
 	}
@@ -65,7 +70,7 @@ int lowkey_keyDelayRemaining(location loc)
 
 int lowkey_keysRemaining()
 {
-	if (auto_my_path() != "Low Key Summer")
+	if (!in_lowkeysummer())
 	{
 		return 0;
 	}
@@ -85,7 +90,7 @@ int lowkey_keysRemaining()
 
 int lowkey_keyLocationsAvailable()
 {
-	if (auto_my_path() != "Low Key Summer")
+	if (!in_lowkeysummer())
 	{
 		return 0;
 	}
@@ -107,7 +112,7 @@ int lowkey_keyLocationsAvailable()
 // order is subjective
 location lowkey_nextKeyLocation(boolean checkAvailable)
 {
-	if (auto_my_path() != "Low Key Summer")
+	if (!in_lowkeysummer())
 	{
 		return $location[none];
 	}
@@ -129,7 +134,7 @@ location lowkey_nextKeyLocation(boolean checkAvailable)
 		location loc = lowKeys[key];
 		if (key.available_amount() == 0)
 		{
-			if (checkAvailable || zone_isAvailable(loc))
+			if (!checkAvailable || zone_isAvailable(loc))
 			{
 				return lowKeys[key];
 			}
@@ -140,9 +145,12 @@ location lowkey_nextKeyLocation(boolean checkAvailable)
 	foreach key in lowKeys
 	{
 		location loc = lowKeys[key];
-		if (key.available_amount() == 0 && zone_isAvailable(loc))
+		if (key.available_amount() == 0)
 		{
-			return lowKeys[key];
+			if (!checkAvailable || zone_isAvailable(loc))
+			{
+				return lowKeys[key];
+			}
 		}
 	}
 
@@ -151,17 +159,36 @@ location lowkey_nextKeyLocation(boolean checkAvailable)
 
 location lowkey_nextKeyLocation()
 {
-	return lowkey_nextKeyLocation(false);
+	return lowkey_nextKeyLocation(false, false);
 }
 
 location lowkey_nextAvailableKeyLocation()
 {
-	return lowkey_nextKeyLocation(true);
+	return lowkey_nextKeyLocation(true, false);
+}
+
+location lowkey_nextAvailableKeyDelayLocation()
+{
+	if (!in_lowkeysummer())
+	{
+		return $location[none];
+	}
+
+	foreach key in lowKeys
+	{
+		location loc = lowKeys[key];
+		if (key.available_amount() == 0 && zone_isAvailable(loc) && lowkey_keyDelayRemaining(loc) > 0)
+		{
+			return lowKeys[key];
+		}
+	}
+
+	return $location[none];
 }
 
 boolean L13_sorceressDoorLowKey()
 {
-	if (auto_my_path() != "Low Key Summer")
+	if (!in_lowkeysummer())
 	{
 		return false;
 	}

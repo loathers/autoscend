@@ -648,7 +648,7 @@ boolean L13_sorceressDoor()
 	}
 
 	// Low Key Summer has an entirely different door.
-	if (auto_my_path() == "Low Key Summer")
+	if (in_lowkeysummer())
 	{
 		// TODO: call this function earlier?
 		return L13_sorceressDoorLowKey();
