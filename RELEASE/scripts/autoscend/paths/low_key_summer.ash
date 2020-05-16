@@ -158,3 +158,41 @@ location lowkey_nextAvailableKeyLocation()
 {
 	return lowkey_nextKeyLocation(true);
 }
+
+boolean L13_sorceressDoorLowKey()
+{
+	if (auto_my_path() != "Low Key Summer")
+	{
+		return false;
+	}
+
+	// TODO: Check door for unlocked locks to prevent infinite loops
+	// https://kolmafia.us/showthread.php?25001-Low-Key-path&p=157469&viewfull=1#post157469
+
+	// TODO: Handle the standard keys
+
+	location loc = lowkey_nextAvailableKeyLocation();
+
+	if (loc == $location[none])
+	{
+		int remaining = lowkey_keysRemaining();
+		// TODO: Unlock required zones
+		if (remaining > 0)
+		{
+			auto_log_warning("Unable to adventure for remaining low keys");
+			foreach key in lowKeys
+			{
+				if (key.available_amount() == 0)
+				{
+					auto_log_warning(lowKeys[key] + " " + key);
+				}
+			}
+			abort("Please unlock zones manually and try again.");
+		}
+		// TODO: Unlock doors
+		abort("All low keys found, please unlock door.")
+		return false;
+	}
+
+	return autoAdv(1, loc);
+}

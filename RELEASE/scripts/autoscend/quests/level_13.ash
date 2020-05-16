@@ -647,6 +647,13 @@ boolean L13_sorceressDoor()
 		return false;
 	}
 
+	// Low Key Summer has an entirely different door.
+	if (auto_my_path() == "Low Key Summer")
+	{
+		// TODO: call this function earlier?
+		return L13_sorceressDoorLowKey();
+	}
+
 	if(LX_getDigitalKey()) return true;
 
 	string page = visit_url("place.php?whichplace=nstower_door");
