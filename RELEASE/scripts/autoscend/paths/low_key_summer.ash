@@ -165,7 +165,7 @@ boolean LX_findHelpfulLowKey()
 	if (my_level() < 13)
 	{
 		// needs knob lab access
-		if (my_primestat() == $stat[Muscle]) && lowkey_keyAdv($item[Knob labinet key])) { return true; }
+		if (my_primestat() == $stat[Muscle] && lowkey_keyAdv($item[Knob labinet key])) { return true; }
 		// needs accept landfil quest
 		if (my_primestat() == $stat[Moxie] && lowkey_keyAdv($item[scrap metal key])) { return true; }
 		// Needs Pandamonium access
