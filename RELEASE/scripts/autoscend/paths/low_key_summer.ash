@@ -216,7 +216,7 @@ boolean LX_findHelpfulLowKey()
 	}
 
 	// +combat before sonofa
-	if (internalQuestStatus("questL12War") == 1 && get_property("sidequestLighthouseCompleted") == "none"))
+	if (internalQuestStatus("questL12War") == 1 && get_property("sidequestLighthouseCompleted") == "none")
 	{
 		if (lowkey_keyAdv($item[Music Box Key])) { return true; }
 	}
