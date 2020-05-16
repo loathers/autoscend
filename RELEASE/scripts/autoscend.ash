@@ -61,6 +61,7 @@ import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/standard.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
+import <autoscend/paths/low_key_summer.ash>
 
 import <autoscend/quests/level_2.ash>
 import <autoscend/quests/level_3.ash>
