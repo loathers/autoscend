@@ -151,7 +151,7 @@ boolean lowkey_keyAdv(item key)
 	}
 
 	location loc = lowKeys[key];
-	if (!zone_isAvailable(zone))
+	if (!zone_isAvailable(loc))
 	{
 		return false;
 	}
