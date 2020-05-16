@@ -165,70 +165,70 @@ boolean LX_findHelpfulLowKey()
 	if (my_level() < 13)
 	{
 		// needs knob lab access
-		if (my_primestat() == $stat[Muscle]) && lowkey_keyAdv($item[Knob labinet key])) { return true };
+		if (my_primestat() == $stat[Muscle]) && lowkey_keyAdv($item[Knob labinet key])) { return true; }
 		// needs accept landfil quest
-		if (my_primestat() == $stat[Moxie] && lowkey_keyAdv($item[scrap metal key])) { return true };
+		if (my_primestat() == $stat[Moxie] && lowkey_keyAdv($item[scrap metal key])) { return true; }
 		// Needs Pandamonium access
-		if (my_primestat() == $stat[Mysticality] && lowkey_keyAdv($item[Demonic key])) { return true };
+		if (my_primestat() == $stat[Mysticality] && lowkey_keyAdv($item[Demonic key])) { return true; }
 	}
 
 	// -combat
-	if (lowkey_keyAdv($item[Key sausage])) { return true };
+	if (lowkey_keyAdv($item[Key sausage])) { return true; }
 
 	// +item
 	// needs pirate quest ugh
-	if (lowkey_keyAdv($item[Treasure chest key])) { return true };
+	if (lowkey_keyAdv($item[Treasure chest key])) { return true; }
 
 	// +meat
-	if (lowkey_keyAdv($item[Knob treasury key])) { return true };
-	if (lowkey_keyAdv($item[Kekekey])) { return true };
+	if (lowkey_keyAdv($item[Knob treasury key])) { return true; }
+	if (lowkey_keyAdv($item[Kekekey])) { return true; }
 
 	// Knob key to unlock shaft for +adv
-	if (lowkey_keyAdv($item[Knob labinet key])) { return true };
+	if (lowkey_keyAdv($item[Knob labinet key])) { return true; }
 
 	// +adv
-	if (lowkey_keyAdv($item[Knob shaft skate key])) { return true };
+	if (lowkey_keyAdv($item[Knob shaft skate key])) { return true; }
 
 	if (internalQuestStatus("questL09Topping") == 3)
 	{
 		// +ml (before oil peak)
 		// needs pirate quest ugh
-		if (lowkey_keyAdv($item[F\'c\'le sh\'c\'le k\'y])) { return true };
+		if (lowkey_keyAdv($item[F\'c\'le sh\'c\'le k\'y])) { return true; }
 		// needs accept nemesis quest
-		if (lowkey_keyAdv($item[Clown car key])) { return true };
+		if (lowkey_keyAdv($item[Clown car key])) { return true; }
 		// cold res before aboo
-		if (lowkey_keyAdv($item[Ice Key])) { return true };
+		if (lowkey_keyAdv($item[Ice Key])) { return true; }
 		// spooky res before aboo
-		if (lowkey_keyAdv($item[Weremoose key])) { return true };
+		if (lowkey_keyAdv($item[Weremoose key])) { return true; }
 	}
 
 	// sleaze damage before red zeppelin
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
 	{
-		if (lowkey_keyAdv($item[Deep-fried key])) { return true };
-		if (lowkey_keyAdv($item[Clown car key])) { return true };
+		if (lowkey_keyAdv($item[Deep-fried key])) { return true; }
+		if (lowkey_keyAdv($item[Clown car key])) { return true; }
 	}
 
 	// cold spell damage before orcs
 	if (internalQuestStatus("questL09Topping") == 0 && get_property("chasmBridgeProgress").to_int() < 30)
 	{
-		if (lowkey_keyAdv($item[Ice Key])) { return true };
+		if (lowkey_keyAdv($item[Ice Key])) { return true; }
 	}
 
 	// +combat before sonofa
 	if (internalQuestStatus("questL12War") == 1 && get_property("sidequestLighthouseCompleted") == "none"))
 	{
-		if (lowkey_keyAdv($item[Music Box Key])) { return true };
+		if (lowkey_keyAdv($item[Music Box Key])) { return true; }
 	}
 
 	// Attributes?
-	//if (lowkey_keyAdv($item[Rabbit\'s foot key])) { return true };
+	//if (lowkey_keyAdv($item[Rabbit\'s foot key])) { return true; }
 
 	// familiar weight?
-	//if (lowkey_keyAdv($item[Black rose key])) { return true };
+	//if (lowkey_keyAdv($item[Black rose key])) { return true; }
 
 	// food drops?
-	//if (lowkey_keyAdv($item[Anchovy can key])) { return true };
+	//if (lowkey_keyAdv($item[Anchovy can key])) { return true; }
 
 	return false;
 }
