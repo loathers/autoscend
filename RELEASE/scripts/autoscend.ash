@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19979; // If you can recover HP or MP with a restorative, it is not banned in your path
+since r20103; // Low Key Summer Keys
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
