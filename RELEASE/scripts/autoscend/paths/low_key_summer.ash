@@ -44,19 +44,31 @@ boolean[item] lowKeyPriority = $items[
 
 void lowkey_initializeSettings()
 {
-	if (auto_my_path() == "Low Key Summer")
+	if (auto_my_path() != "Low Key Summer")
 	{
-		// TODO?
+		return;
 	}
+
+	// TODO?
 }
 
 int lowkey_keyDelayRemaining(location loc)
 {
+	if (auto_my_path() != "Low Key Summer")
+	{
+		return 0;
+	}
+
 	return max(11 - loc.turns_spent, 0);
 }
 
 int lowkey_keysRemaining()
 {
+	if (auto_my_path() != "Low Key Summer")
+	{
+		return 0;
+	}
+
 	int found = 0;
 	foreach key in lowKeys
 	{
@@ -72,6 +84,11 @@ int lowkey_keysRemaining()
 
 int lowkey_keyLocationsAvailable()
 {
+	if (auto_my_path() != "Low Key Summer")
+	{
+		return 0;
+	}
+
 	int available = 0;
 	foreach key in lowKeys
 	{
