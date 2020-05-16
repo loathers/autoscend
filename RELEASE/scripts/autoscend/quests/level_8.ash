@@ -237,7 +237,7 @@ void auto_testMining(item oreGoal) {
 			break;
 		}
 	}
-	auto_log_info("Found 3 " + oreGoal.to_string() + " in " + advCount.to_string() + "adventures.");
+	auto_log_info("Found 3 " + oreGoal.to_string() + " in " + advCount.to_string() + " adventures.");
 }
 
 boolean L8_trapperAdvance()
