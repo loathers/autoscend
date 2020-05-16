@@ -190,7 +190,7 @@ boolean L13_sorceressDoorLowKey()
 			abort("Please unlock zones manually and try again.");
 		}
 		// TODO: Unlock doors
-		abort("All low keys found, please unlock door.")
+		abort("All low keys found, please unlock door.");
 		return false;
 	}
 
