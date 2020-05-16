@@ -159,12 +159,12 @@ location lowkey_nextKeyLocation(boolean checkAvailable)
 
 location lowkey_nextKeyLocation()
 {
-	return lowkey_nextKeyLocation(false, false);
+	return lowkey_nextKeyLocation(false);
 }
 
 location lowkey_nextAvailableKeyLocation()
 {
-	return lowkey_nextKeyLocation(true, false);
+	return lowkey_nextKeyLocation(true);
 }
 
 location lowkey_nextAvailableKeyDelayLocation()
