@@ -76,7 +76,7 @@ int lowkey_keyLocationsAvailable()
 	foreach key in lowKeys
 	{
 		location loc = lowKeys[key];
-		if (key.available_amount() == 0 && zone_isAvailable(primstatLocation))
+		if (key.available_amount() == 0 && zone_isAvailable(loc))
 		{
 			available++;
 		}
@@ -97,11 +97,11 @@ location lowkey_nextKeyLocation(boolean checkAvailable)
 	// Get primestat gains key first?
 	if (my_level() < 13)
 	{
-		item primestatkey = lowKeyStats[my_primestat()];
-		location primstatLocation = lowKeys[primestatkey];
-		if (primestatkey.available_amount() == 0 && zone_isAvailable(primstatLocation))
+		item primestatKey = lowKeyStats[my_primestat()];
+		location primestatLocation = lowKeys[primestatKey];
+		if (primestatKey.available_amount() == 0 && zone_isAvailable(primestatLocation))
 		{
-			return primstatLocation;
+			return primestatLocation;
 		}
 	}
 
