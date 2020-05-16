@@ -26,17 +26,17 @@ lowKeys[$item[Knob labinet key]] = $location[Cobb\'s Knob Laboratory];
 lowKeys[$item[Knob treasury key]] = $location[Cobb\'s Knob Treasury];
 
 item[stat] lowKeyStats;
-lowKeyStats[$stat[muscle]] = $item[Knob labinet key];
-lowKeyStats[$stat[moxie]] = $item[scrap metal key];
-lowKeyStats[$stat[muscle]] = $item[Demonic key];
+lowKeyStats[$stat[Muscle]] = $item[Knob labinet key];
+lowKeyStats[$stat[Moxie]] = $item[scrap metal key];
+lowKeyStats[$stat[Mysticality]] = $item[Demonic key];
 
 // TODO Order
 // Treasure chest key,			// +30 item, +30 meat
 // F\'c\'le sh\'c\'le k\'y,	// +20 ml
 // knob shaft skate key,		// +adv
 boolean[item] lowKeyPriority = $items[
-	Knob treasury key,			// +50 meat, +20 pickpocket
 	Key sausage,				// -10 combat?
+	Knob treasury key,			// +50 meat, +20 pickpocket
 	Music Box Key,				// +10 combat?
 	Clown car key,				// +10 ml, +10 prismatic damage
 	Peg key,					// +5 stats
@@ -89,7 +89,7 @@ int lowkey_keyLocationsAvailable()
 // order is subjective
 location lowkey_nextKeyLocation(boolean checkAvailable)
 {
-	if (auto_my_path() == "Low Key Summer")
+	if (auto_my_path() != "Low Key Summer")
 	{
 		return $location[none];
 	}
