@@ -1210,6 +1210,8 @@ location lowkey_nextKeyLocation(boolean checkAvailable); // Defined in autoscend
 location lowkey_nextKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
 location lowkey_nextAvailableKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
 location lowkey_nextAvailableKeyDelayLocation(); // Defined in autoscend/paths/low_key_summer.ash
+boolean lowkey_keyAdv(item key); // Defined in autoscend/paths/low_key_summer.ash
+boolean LX_findHelpfulLowKey();  // Defined in autoscend/paths/low_key_summer.ash
 boolean L13_sorceressDoorLowKey(); // Defined in autoscend/paths/low_key_summer.ash
 
 element currentFlavour(); // Defined in autoscend/auto_util.ash

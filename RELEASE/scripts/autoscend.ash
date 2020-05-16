@@ -3532,6 +3532,7 @@ boolean doTasks()
 	{
 		if(LX_bitchinMeatcar())			return true;
 	}
+	if(LX_findHelpfulLowKey())			return true;
 	if(LX_bitchinMeatcar())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_handleSpookyravenNecklace())	return true;
