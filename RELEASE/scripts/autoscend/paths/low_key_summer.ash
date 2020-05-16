@@ -4,7 +4,7 @@ location[item] lowKeys;
 lowKeys[$item[Clown car key]] = $location[The \"Fun\" House];
 lowKeys[$item[Peg key]] = $location[The Obligatory Pirate\'s Cove];
 lowKeys[$item[Ice Key]] = $location[The Icy Peak];
-lowKeys[$item[Demonic key]] = $location[Pandemonium Slums];
+lowKeys[$item[Demonic key]] = $location[Pandamonium Slums];
 lowKeys[$item[Rabbit\'s foot key]] = $location[The Dire Warren];
 lowKeys[$item[Weremoose key]] = $location[Cobb\'s Knob Menagerie, Level 2];
 lowKeys[$item[Deep-fried key]] = $location[Madness Bakery];
