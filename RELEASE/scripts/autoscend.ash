@@ -233,6 +233,7 @@ void initializeSettings()
 	bat_initializeSettings();
 	koe_initializeSettings();
 	zelda_initializeSettings();
+	lowkey_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }

@@ -1201,6 +1201,14 @@ boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_skillValid(skill sk); // Defined in autoscend/auto_zelda.ash
 boolean zelda_equipTool(stat st); // Defined in autoscend/auto_zelda.ash
 
+boolean lowkey_initializeSettings(); // Defined in autoscend/paths/low_key_summer.ash
+int lowkey_keyDelayRemaining(location loc); // Defined in autoscend/paths/low_key_summer.ash
+int lowkey_keysRemaining(); // Defined in autoscend/paths/low_key_summer.ash
+int lowkey_keyLocationsAvailable(); // Defined in autoscend/paths/low_key_summer.ash
+location lowkey_nextKeyLocation(boolean checkAvailable); // Defined in autoscend/paths/low_key_summer.ash
+location lowkey_nextKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
+location lowkey_nextAvailableKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
+
 element currentFlavour(); // Defined in autoscend/auto_util.ash
 void resetFlavour(); // Defined in autoscend/auto_util.ash
 boolean setFlavour(element ele); // Defined in autoscend/auto_util.ash
