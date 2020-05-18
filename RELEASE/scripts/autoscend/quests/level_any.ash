@@ -210,7 +210,7 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-	if(!canDesert || !isGeneralStoreAvailable() || in_lowkeysummer())
+	if(!canDesert || !isGeneralStoreAvailable())
 	{
 		return LX_desertAlternate();
 	}
