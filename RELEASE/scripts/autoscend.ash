@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20103; // Low Key Summer Keys
+since r20111; // nsTowerDoorKeysUsed should be correct now
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
