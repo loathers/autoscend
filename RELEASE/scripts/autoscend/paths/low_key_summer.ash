@@ -202,6 +202,16 @@ boolean lowkey_zoneUnlocks()
 
 boolean LX_findHelpfulLowKey()
 {
+	if (!in_lowkeysummer())
+	{
+		return false;
+	}
+
+	if (internalQuestStatus("questL13Final") != 5)
+	{
+		return false;
+	}
+
 	if (lowkey_zoneUnlocks())
 	{
 		return true;
@@ -282,6 +292,11 @@ boolean LX_findHelpfulLowKey()
 boolean L13_sorceressDoorLowKey()
 {
 	if (!in_lowkeysummer())
+	{
+		return false;
+	}
+
+	if (internalQuestStatus("questL13Final") != 5)
 	{
 		return false;
 	}
