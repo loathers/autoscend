@@ -25,8 +25,6 @@ lowKeys[$item[aqu&iacute;]] = $location[South of the Border];
 lowKeys[$item[Knob labinet key]] = $location[Cobb\'s Knob Laboratory];
 lowKeys[$item[Knob treasury key]] = $location[Cobb\'s Knob Treasury];
 
-// TODO: Check available_amount + nsTowerDoorKeysUsed
-
 boolean in_lowkeysummer()
 {
 	return auto_my_path() == "Low Key Summer";
@@ -63,7 +61,7 @@ int lowkey_keysRemaining()
 	foreach key in lowKeys
 	{
 		location loc = lowKeys[key];
-		if (key.available_amount() > 0)
+		if (!lowkey_needKey(key))
 		{
 			found++;
 		}
@@ -72,24 +70,14 @@ int lowkey_keysRemaining()
 	return 23 - found;
 }
 
-int lowkey_keyLocationsAvailable()
+boolean lowkey_needKey(item key)
 {
-	if (!in_lowkeysummer())
+	if (internalQuestStatus("questL13Final") != 5)
 	{
-		return 0;
+		return false;
 	}
 
-	int available = 0;
-	foreach key in lowKeys
-	{
-		location loc = lowKeys[key];
-		if (key.available_amount() == 0 && zone_isAvailable(loc))
-		{
-			available++;
-		}
-	}
-
-	return available;
+	return key.available_amount() == 0 && !contains_text(get_property("nsTowerDoorKeysUsed"), key);
 }
 
 // TODO: Unaware if a key has been used and lost
@@ -104,7 +92,7 @@ location lowkey_nextKeyLocation(boolean checkAvailable)
 	foreach key in lowKeys
 	{
 		location loc = lowKeys[key];
-		if (key.available_amount() == 0)
+		if (lowkey_needKey(key))
 		{
 			if (!checkAvailable || zone_isAvailable(loc))
 			{
@@ -136,7 +124,7 @@ location lowkey_nextAvailableKeyDelayLocation()
 	foreach key in lowKeys
 	{
 		location loc = lowKeys[key];
-		if (key.available_amount() == 0 && zone_isAvailable(loc) && lowkey_keyDelayRemaining(loc) > 0)
+		if (lowkey_needKey(key) && zone_isAvailable(loc) && lowkey_keyDelayRemaining(loc) > 0)
 		{
 			return lowKeys[key];
 		}
@@ -147,7 +135,7 @@ location lowkey_nextAvailableKeyDelayLocation()
 
 boolean lowkey_keyAdv(item key)
 {
-	if (key.available_amount() > 0)
+	if (!lowkey_needKey(key))
 	{
 		return false;
 	}
@@ -314,15 +302,14 @@ boolean L13_sorceressDoorLowKey()
 	if (loc == $location[none])
 	{
 		int remaining = lowkey_keysRemaining();
-		// TODO: Unlock required zones
 		if (remaining > 0)
 		{
 			auto_log_warning("Unable to adventure for remaining low keys");
 			foreach key in lowKeys
 			{
-				if (key.available_amount() == 0)
+				if (lowkey_needKey(key))
 				{
-					auto_log_warning(lowKeys[key] + " " + key);
+					auto_log_warning(lowKeys[key] + ": " + key);
 				}
 			}
 			abort("Please unlock zones manually and try again.");

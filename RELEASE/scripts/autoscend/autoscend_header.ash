@@ -1206,7 +1206,6 @@ boolean in_lowkeysummer(); // Defined in autoscend/paths/low_key_summer.ash
 boolean lowkey_initializeSettings(); // Defined in autoscend/paths/low_key_summer.ash
 int lowkey_keyDelayRemaining(location loc); // Defined in autoscend/paths/low_key_summer.ash
 int lowkey_keysRemaining(); // Defined in autoscend/paths/low_key_summer.ash
-int lowkey_keyLocationsAvailable(); // Defined in autoscend/paths/low_key_summer.ash
 location lowkey_nextKeyLocation(boolean checkAvailable); // Defined in autoscend/paths/low_key_summer.ash
 location lowkey_nextKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
 location lowkey_nextAvailableKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
