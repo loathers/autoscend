@@ -25,6 +25,8 @@ lowKeys[$item[aqu&iacute;]] = $location[South of the Border];
 lowKeys[$item[Knob labinet key]] = $location[Cobb\'s Knob Laboratory];
 lowKeys[$item[Knob treasury key]] = $location[Cobb\'s Knob Treasury];
 
+// TODO: Check available_amount + nsTowerDoorKeysUsed
+
 boolean in_lowkeysummer()
 {
 	return auto_my_path() == "Low Key Summer";
@@ -303,6 +305,7 @@ boolean L13_sorceressDoorLowKey()
 
 	// TODO: Check door for unlocked locks to prevent infinite loops
 	// https://kolmafia.us/showthread.php?25001-Low-Key-path&p=157469&viewfull=1#post157469
+	// nsTowerDoorKeysUsed currently isn't always updated
 
 	// TODO: Handle the standard keys
 
