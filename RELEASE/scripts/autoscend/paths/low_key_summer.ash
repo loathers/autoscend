@@ -156,23 +156,34 @@ boolean lowkey_keyAdv(item key)
 		return false;
 	}
 
+	// Pirate equipment
+	if ($locations[The F\'c\'le, Belowdecks] contains loc)
+	{
+		// Ca
+		if (possessEquipment($item[pirate fledges]) > 0)
+		{
+			autoEquip($item[pirate fledges]);
+		}
+		else if (have_outfit("swashbuckling getup"))
+		{
+			autoEquip($item[eyepatch]);
+			autoEquip($item[swashbuckling pants]);
+			autoEquip($item[stuffed shoulder parrot]);
+		}
+		else
+		{
+			// Shouldn't get here due to zone_isAvailable check
+			return false;
+		}
+	}
+
 	return autoAdv(1, loc);
 }
 
 boolean lowkey_zoneUnlocks()
 {
-	// TODO: Put this in a function, share with LX_desertAlternate()
-	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
+	if(startHippyBoatmanSubQuest())
 	{
-		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
-		temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
-		temp = visit_url("choice.php?pwd=&whichchoice=798&option=2");
-		temp = visit_url("woods.php");
-
-		if(get_property("questM19Hippy") == "unstarted")
-		{
-			abort("Failed to unlock The Old Landfill. Not sure what to do now...");
-		}
 		return true;
 	}
 

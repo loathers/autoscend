@@ -107,10 +107,7 @@ boolean LX_desertAlternate()
 		}
 		if(get_property("questM19Hippy") == "unstarted")
 		{
-			string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
-			temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
-			temp = visit_url("choice.php?pwd=&whichchoice=798&option=2");
-			temp = visit_url("woods.php");
+			startHippyBoatmanSubQuest();
 
 			if(get_property("questM19Hippy") == "unstarted")
 			{
@@ -213,7 +210,7 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-	if(!canDesert || !isGeneralStoreAvailable())
+	if(!canDesert || !isGeneralStoreAvailable() || in_lowkeysummer())
 	{
 		return LX_desertAlternate();
 	}

@@ -978,6 +978,7 @@ int spleen_left();											//Defined in autoscend/auto_util.ash
 boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
 boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
 boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash
+boolean startHippyBoatmanSubQuest();						//Defined in autoscend/auto_util.ash
 string statCard();											//Defined in autoscend/auto_util.ash
 int stomach_left();											//Defined in autoscend/auto_util.ash
 boolean theSource_buySkills();								//Defined in autoscend/auto_theSource.ash
