@@ -159,8 +159,32 @@ boolean lowkey_keyAdv(item key)
 	return autoAdv(1, loc);
 }
 
+boolean lowkey_zoneUnlocks()
+{
+	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
+	{
+		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
+		temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
+		temp = visit_url("choice.php?pwd=&whichchoice=798&option=2");
+		temp = visit_url("woods.php");
+
+		if(get_property("questM19Hippy") == "unstarted")
+		{
+			abort("Failed to unlock The Old Landfill. Not sure what to do now...");
+		}
+		return true;
+	}
+
+	return false;
+}
+
 boolean LX_findHelpfulLowKey()
 {
+	if (lowkey_zoneUnlocks())
+	{
+		return true;
+	}
+
 	// mainstat
 	if (my_level() < 13)
 	{
