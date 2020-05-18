@@ -175,6 +175,11 @@ boolean lowkey_zoneUnlocks()
 		return true;
 	}
 
+	if (startArmorySubQuest())
+	{
+		return true;
+	}
+
 	return false;
 }
 
