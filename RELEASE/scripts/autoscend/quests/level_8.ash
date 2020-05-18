@@ -172,13 +172,35 @@ int getCellToMine(item oreGoal) {
 			}
 			rowLimit++;
 		}
+		if (count(potentialCells) == 0) {
+			// we could be in a situation where the loadstone replaced one of our ores and we still need 1 or 2 ores
+			// but have exhausted all the twinkling cells adjacent to the ores we've found
+			// first lets find the loadstone cell
+			int loadstoneCell;
+			foreach oreCell, oreType in minedCells {
+				if (oreType == $item[loadstone]) {
+					loadstoneCell = oreCell;
+				}
+			}
+			// now add all twinkling cells adjacent to the loadstone in the top 4 rows to the potential cells
+			int[4] orthogonals = getOrthogonals(loadstoneCell);
+			foreach orthoPos, orthoCell in orthogonals {
+				if (canMine(orthoCell, 4) && sparklingCells contains orthoCell) {
+					potentialCells[potentialCount] = orthoCell;
+					potentialCount++;
+				}
+			}
+		}
 	}
+	int numPotentials = count(potentialCells);
 	// only found one potential, just return it
-	if (count(potentialCells) == 1) {
+	if (numPotentials == 1) {
 		return potentialCells[0];
+	} else if (numPotentials == 0) {
+		abort("Glitch in the matrix. Please report this to the dev team (preferably with a log and screenshot of your mine");
 	}
 	// found 2 or more potentials, return a random one of them
-	return potentialCells[random(count(potentialCells))];
+	return potentialCells[random(numPotentials)];
 }
 
 void auto_testMining(item oreGoal) {
@@ -215,7 +237,7 @@ void auto_testMining(item oreGoal) {
 			break;
 		}
 	}
-	auto_log_info("Found 3 " + oreGoal.to_string() + " in " + advCount.to_string() + "adventures.");
+	auto_log_info("Found 3 " + oreGoal.to_string() + " in " + advCount.to_string() + " adventures.");
 }
 
 boolean L8_trapperAdvance()
