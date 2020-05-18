@@ -160,7 +160,7 @@ boolean lowkey_keyAdv(item key)
 	if ($locations[The F\'c\'le, Belowdecks] contains loc)
 	{
 		// Ca
-		if (possessEquipment($item[pirate fledges]) > 0)
+		if (possessEquipment($item[pirate fledges]))
 		{
 			autoEquip($item[pirate fledges]);
 		}
