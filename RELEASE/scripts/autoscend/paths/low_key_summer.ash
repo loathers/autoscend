@@ -161,6 +161,7 @@ boolean lowkey_keyAdv(item key)
 
 boolean lowkey_zoneUnlocks()
 {
+	// TODO: Put this in a function, share with LX_desertAlternate()
 	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
 	{
 		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
@@ -176,6 +177,11 @@ boolean lowkey_zoneUnlocks()
 	}
 
 	if (startArmorySubQuest())
+	{
+		return true;
+	}
+
+	if (startGalaktikSubQuest())
 	{
 		return true;
 	}
