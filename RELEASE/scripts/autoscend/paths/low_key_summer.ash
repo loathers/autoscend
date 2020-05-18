@@ -40,6 +40,16 @@ void lowkey_initializeSettings()
 	// TODO?
 }
 
+boolean lowkey_needKey(item key)
+{
+	if (internalQuestStatus("questL13Final") != 5)
+	{
+		return false;
+	}
+
+	return key.available_amount() == 0 && !contains_text(get_property("nsTowerDoorKeysUsed"), key);
+}
+
 int lowkey_keyDelayRemaining(location loc)
 {
 	if (!in_lowkeysummer())
@@ -68,16 +78,6 @@ int lowkey_keysRemaining()
 	}
 
 	return 23 - found;
-}
-
-boolean lowkey_needKey(item key)
-{
-	if (internalQuestStatus("questL13Final") != 5)
-	{
-		return false;
-	}
-
-	return key.available_amount() == 0 && !contains_text(get_property("nsTowerDoorKeysUsed"), key);
 }
 
 // TODO: Unaware if a key has been used and lost
