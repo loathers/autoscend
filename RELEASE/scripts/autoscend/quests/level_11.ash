@@ -161,104 +161,84 @@ boolean LX_unlockHauntedBilliardsRoom() {
 	return false;
 }
 
-boolean LX_unlockHauntedLibrary() {
-	if (internalQuestStatus("questM20Necklace") < 1 || internalQuestStatus("questM20Necklace") > 2) {
-		return false;
-	}
-
-	if (item_amount($item[Spookyraven billiards room key]) < 1 || hasSpookyravenLibraryKey()) {
-		return false;
-	}
-
-	if (internalQuestStatus("questM20Necklace") < 2) {
-		auto_log_info("Well, I need a pool cue...", "blue");
-		if (!auto_forceNextNoncombat()) {
-			providePlusNonCombat(25, true);
-		}
-		if (autoAdv($location[The Haunted Billiards Room])) {
-			return true;
-		}
-	}
-
-	int expectPool = speculative_pool_skill();
-
-	// Staff of Fats (non-Ed and Ed) and Staff of Ed (from Ed)
-	item staffOfFats = $item[2268];
-	item staffOfFatsEd = $item[7964];
-	item staffOfEd = $item[7961];
-
-	// Prevent the needless equipping of Cues if we don't need it.
-	boolean usePoolEquips = true;
-
-	if((expectPool < 18) && (!in_tcrs()))
+boolean LX_unlockHauntedLibrary()
+{
+	//Adventure in the haunted billiards room to get the key to the haunted library
+	if (internalQuestStatus("questM20Necklace") < 1 || internalQuestStatus("questM20Necklace") > 2)
 	{
-		if(possessEquipment(staffOfFats) || possessEquipment(staffOfFatsEd) || possessEquipment(staffOfEd))
-		{
-			expectPool += 5;
-		}
-		else if(possessEquipment($item[Pool Cue]))
-		{
-			expectPool += 3;
-		}
+		return false;
+	}
+	if (item_amount($item[Spookyraven billiards room key]) < 1 || hasSpookyravenLibraryKey())
+	{
+		return false;
+	}
+	
+	//equipment handling
+	int expectPool = speculative_pool_skill();
+	item staffOfFats = $item[2268];		//regular staff of fats. +5 pool +2 training
+	item EdStaffOfFats = $item[7964];	//ed path version of staff of fats. +5 pool
+	item EdStaffOfEd = $item[7961];		//ed path version of staff of ed. +5 pool
+	
+	if(in_boris())
+	{
+		auto_log_info("Boris cannot equip a pool cue.", "blue");
 	}
 	else if(in_tcrs())
 	{
 		auto_log_info("During this Crazy Summer Pool Cues are used differently.", "blue");
-		boolean usePoolEquips = false;
+	}
+	else if(expectPool > 17)
+	{
+		auto_log_info("I don't need to equip a cue to beat this ghostie.", "blue");
 	}
 	else
 	{
-		auto_log_info("I don't need to equip a cue to beat this ghostie.", "blue");
-		boolean usePoolEquips = false;
+		if(possessEquipment(staffOfFats))
+		{
+			autoEquip(staffOfFats);		//+5 pool skill & +2 training gains.
+			expectPool += 5;
+		}
+		else if(possessEquipment(EdStaffOfEd) && expectPool + 5 > 13)
+		{
+			autoEquip(EdStaffOfEd);		//+5 pool skill
+			expectPool += 5;
+		}
+		else if(possessEquipment(EdStaffOfFats) && expectPool + 5 > 13)
+		{
+			autoEquip(EdStaffOfFats);	//+5 pool skill
+			expectPool += 5;
+		}
+		else if(possessEquipment($item[Pool Cue]) && expectPool + 3 > 13)
+		{
+			autoEquip($item[Pool Cue]);	//+3 pool skill
+			expectPool += 3;
+		}
 	}
-
-	auto_log_info("Looking at the billiards room: 14 <= " + expectPool + " <= 18", "green");
-	if((my_inebriety() < 8) && ((my_inebriety() + 2) < inebriety_limit()))
+	
+	//inebrity handling. do not care if: auto succeed or can't drink or ran out of things to do.
+	if(expectPool < 18 && can_drink() && my_level() != get_property("auto_powerLevelLastLevel").to_int())
 	{
-		if(expectPool < 18)
+		//paths with inebrity limit under 11 should wait until they are at max to do this
+		if(my_inebriety() < inebriety_limit() && inebriety_limit() < 11)
 		{
-			auto_log_info("Not quite boozed up for the billiards room... we'll be back.", "green");
-			if (my_level() != get_property("auto_powerLevelLastLevel").to_int())
-			{
-				return false;
-			}
+			auto_log_info("I will come back when I had more to drink.", "green");
+			resetMaximize();	//cancel equipping pool cue
+			return false;
 		}
-
-		auto_log_info("Well, maybe I'll just deal with not being drunk enough, punk", "blue");
+		//handling paths with max inebrity over 10
+		//TODO change consumption code to actually drink one at a time and then add rules here.
+		//do not forget to reset maximize if you want to return false.
 	}
-	if((my_inebriety() > 12) && (expectPool < 16))
+	
+	//+3 pool skill & +1 training gains. speculative_pool_skill() already assumed we would use it if we can.
+	buffMaintain($effect[Chalky Hand], 0, 1, 1);
+
+	if(!auto_forceNextNoncombat())
 	{
-		if(in_hardcore() && (my_daycount() <= 2))
-		{
-			auto_log_info("Ok, I'm too boozed up for the billards room, I'll be back.", "green");
-		}
-		if(!in_hardcore() && (my_daycount() <= 1))
-		{
-			auto_log_info("I'm too drunk for pool, at least it is only " + format_date_time("yyyyMMdd", today_to_string(), "EEEE"), "green");
-		}
-		return false;
-	}
-
-	if(usePoolEquips)
-	{
-		if(possessEquipment($item[Pool Cue]))
-		{
-			buffMaintain($effect[Chalky Hand], 0, 1, 1);
-		}
-		autoEquip($slot[weapon], $item[Pool Cue]);
-		autoEquip(staffOfFats);
-		autoEquip(staffOfFatsEd);
-		autoEquip(staffOfEd);
-	}
-
-	auto_log_info("It's billiards time!", "blue");
-	if (!auto_forceNextNoncombat()) {
 		providePlusNonCombat(25, true);
 	}
-	if (autoAdv($location[The Haunted Billiards Room])) {
-		return true;
-	}
-	return false;
+	auto_log_info("It's billiards time!", "blue");
+	return autoAdv($location[The Haunted Billiards Room]);
 }
 
 boolean LX_unlockManorSecondFloor() {

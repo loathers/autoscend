@@ -245,11 +245,14 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(2); // skip
 			}
 			break;
-		case 875: // Welcome To Our ool Table (The Haunted Billiards Room)
-			if (currentPoolSkill() >= 18) {
-				run_choice(1);
-			} else {
-				run_choice(2);
+		case 875: // Welcome To Our ool Table (The Haunted Billiards Room).
+			if(poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)
+			{
+				run_choice(1);		//try to win the key. on failure still gain 1 pool skill
+			}
+			else
+			{
+				run_choice(2);		//practice pool skill
 			}
 			break;
 		case 876: // One Simple Nightstand (The Haunted Bedroom)
