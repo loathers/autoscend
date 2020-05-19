@@ -11,11 +11,6 @@ void main()
 		abort("Familiar has no equipment, WTF");
 	}
 
-	if(get_property("customCombatScript") != "autoscend_null")
-	{
-		abort("customCombatScript is set to unrecognized '" + get_property("customCombatScript") + "', should be 'autoscend_null'");
-	}
-
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		auto_log_info("Preadventure skipped by standard adventure handler.", "green");

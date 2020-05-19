@@ -24,7 +24,7 @@ boolean L7_crypt()
 	boolean edAlcove = true;
 	if (isActuallyEd())
 	{
-		edAlcove = have_skill($skill[More Legs]);
+		edAlcove = (have_skill($skill[More Legs]) && (expected_damage($monster[modern zmobie]) + 1) < my_maxhp());
 	}
 
 	if((get_property("romanticTarget") != $monster[modern zmobie]) && (get_property("auto_waitingArrowAlcove").to_int() < 50))
@@ -54,31 +54,6 @@ boolean L7_crypt()
 		}
 
 		provideInitiative(850, true);
-
-		if (isActuallyEd() && expected_damage($monster[modern zmobie]) >= my_maxhp())
-		{
-			// Need to be able to tank a hit from the modern zmobies as Ed
-			// as we'll never get the jump because their initiative is ridiculous.
-			// Otherwise we'll just die repeatedly.
-			if (get_property("telescopeUpgrades").to_int() > 0 && !get_property("telescopeLookedHigh").to_boolean())
-			{
-				cli_execute("telescope high");
-			}
-			if (!get_property("_lyleFavored").to_boolean())
-			{
-				cli_execute("monorail");
-			}
-			if (have_effect($effect[Butt-Rock Hair]) == 0)
-			{
-				buyUpTo(1, $item[Hair Spray]);
-				buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
-			}
-			if (have_effect($effect[Go Get \'Em, Tiger!]) == 0)
-			{
-				buyUpTo(1, $item[Ben-Gal&trade; Balm]);
-				buffMaintain($effect[Go Get \'Em, Tiger!], 0, 1, 1);
-			}
-		}
 
 		autoEquip($item[Gravy Boat]);
 

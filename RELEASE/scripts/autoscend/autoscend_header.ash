@@ -21,16 +21,12 @@ boolean LA_cs_communityService();				//Defined in autoscend/auto_community_servi
 boolean LM_edTheUndying();						//Defined in autoscend/auto_edTheUndying.ash
 
 boolean LX_desertAlternate();
-boolean LX_handleSpookyravenNecklace();
-boolean LX_handleSpookyravenFirstFloor();
 boolean LX_phatLootToken();
 boolean LX_islandAccess();
 boolean fancyOilPainting();
 boolean LX_fcle();
 boolean ornateDowsingRod();
 boolean LX_nastyBooty();
-boolean LX_spookyravenSecond();
-boolean LX_spookyBedroomCombat();
 boolean LX_guildUnlock();
 boolean LX_hardcoreFoodFarm();
 boolean LX_melvignShirt();
@@ -62,10 +58,6 @@ boolean LX_dinseylandfillFunbucks();		//Defined in autoscend/auto_optionals.ash
 boolean handleRainDoh();					//Defined in autoscend/auto_mr2012.ash
 
 boolean L2_mosquito();
-boolean L2_treeCoin();
-boolean L2_spookyMap();
-boolean L2_spookyFertilizer();
-boolean L2_spookySapling();
 
 boolean L3_tavern();
 
@@ -102,6 +94,9 @@ boolean[location] shenSnakeLocations(int day, int n_items_returned);	//Defined i
 boolean[location] shenZonesToAvoidBecauseMaybeSnake();					//Defined in autoscend/auto_quest_level_11.ash
 boolean shenShouldDelayZone(location loc);								//Defined in autoscend/auto_quest_level_11.ash
 
+boolean LX_unlockHiddenTemple();
+boolean LX_spookyravenManorFirstFloor();
+boolean LX_spookyravenManorSecondFloor();
 boolean L11_palindome();
 boolean L11_hiddenCity();
 boolean L11_hiddenTavernUnlock();
@@ -122,7 +117,6 @@ boolean L11_unlockPyramid();
 boolean L11_unlockEd();
 boolean L11_defeatEd();
 boolean L11_getBeehive();
-boolean L11_fistDocuments();
 
 // Used in autoscend/auto_quest_level_12.ash
 record WarPlan
@@ -1214,6 +1208,7 @@ boolean auto_haveQueuedForcedNonCombat(); // Defined in autoscend/auto_util.ash
 boolean is_superlikely(string encounterName); // Defined in autoscend/auto_util.ash
 boolean hasTTBlessing();									 // Defined in autoscend/auto_util.ash
 void effectAblativeArmor(boolean passive_dmg_allowed);		 // Defined in autoscend/auto_util.ash
+int currentPoolSkill(); 		 // Defined in autoscend/auto_util.ash
 
 //Record from autoscend/auto_zone.ash
 record generic_t
