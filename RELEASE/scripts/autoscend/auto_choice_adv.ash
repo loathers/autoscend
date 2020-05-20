@@ -402,6 +402,19 @@ void main(int choice, string page)
 		case 1387: // Using the Force (Fourth of May Cosplay Saber)
 			run_choice(get_property("_auto_saberChoice").to_int());
 			break;
+		case 1414: // Lock Picking
+			if(item_amount($item[Boris\'s Key]) == 0)
+			{
+				run_choice(1);
+			}
+			else if(item_amount($item[Jarlsberg\'s Key]) == 0)
+			{
+				run_choice(2);
+			}
+			else if(item_amount($item[Sneaky Pete\'s Key]) == 0)
+			{
+				run_choice(3);
+			}
 		default:
 			break;
 	}

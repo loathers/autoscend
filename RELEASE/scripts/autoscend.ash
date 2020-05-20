@@ -3544,6 +3544,7 @@ boolean doTasks()
 	if(LX_unlockHiddenTemple())	return true;
 	if(L6_dakotaFanning())				return true;
 	if(L5_haremOutfit())				return true;
+	if(LX_lockPicking())					return true;
 	if(LX_phatLootToken())				return true;
 	if(L5_goblinKing())					return true;
 	if(LX_islandAccess())				return true;

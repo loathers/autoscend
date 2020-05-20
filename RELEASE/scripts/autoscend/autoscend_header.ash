@@ -21,6 +21,7 @@ boolean LA_cs_communityService();				//Defined in autoscend/auto_community_servi
 boolean LM_edTheUndying();						//Defined in autoscend/auto_edTheUndying.ash
 
 boolean LX_desertAlternate();
+boolean LX_lockPicking();
 boolean LX_phatLootToken();
 boolean LX_islandAccess();
 boolean fancyOilPainting();

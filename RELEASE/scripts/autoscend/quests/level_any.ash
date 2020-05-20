@@ -250,6 +250,33 @@ boolean LX_islandAccess()
 	return false;
 }
 
+boolean LX_lockPicking()
+{
+	if (!auto_have_skill($skill[Lock Picking]))
+	{
+		return false;
+	}
+
+	if (get_property("lockPicked").to_boolean() == true)
+	{
+		return false;
+	}
+
+	if(towerKeyCount(false) >= 3)
+	{
+		return false;
+	}
+
+	if(my_mp() < mp_cost($skill[Lock Picking]))
+	{
+		return false;
+	}
+
+	use_skill(1, $skill[Lock Picking]);
+	run_turn();
+	return get_property("lockPicked").to_boolean();
+}
+
 boolean LX_phatLootToken()
 {
 	if(towerKeyCount(false) >= 3)
