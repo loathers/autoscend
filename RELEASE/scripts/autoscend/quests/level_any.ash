@@ -286,6 +286,7 @@ boolean LX_lockPicking()
 	}
 
 	use_skill(1, $skill[Lock Picking]);
+	run_turn();
 	return get_property("lockPicked").to_boolean();
 }
 
