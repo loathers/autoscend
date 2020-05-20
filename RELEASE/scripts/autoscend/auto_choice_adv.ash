@@ -357,6 +357,13 @@ void main(int choice, string page)
 				set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 			}
 			break;
+		case 1061: // Heart of Madness(Madness Bakery Quest)
+			if(internalQuestStatus("questM25Armorer") <= 1) {
+				run_choice(1);
+			} else {
+				run_choice(5);
+			}
+			break;
 		case 1082: // The "Rescue" (post-Cake Lord in Madness Bakery)
 			run_choice(1);
 			break;

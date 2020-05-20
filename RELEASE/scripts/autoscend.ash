@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r19979; // If you can recover HP or MP with a restorative, it is not banned in your path
+since r20111; // nsTowerDoorKeysUsed should be correct now
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -61,6 +61,7 @@ import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/standard.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
+import <autoscend/paths/low_key_summer.ash>
 
 import <autoscend/quests/level_2.ash>
 import <autoscend/quests/level_3.ash>
@@ -233,6 +234,7 @@ void initializeSettings()
 	bat_initializeSettings();
 	koe_initializeSettings();
 	zelda_initializeSettings();
+	lowkey_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -3523,6 +3525,7 @@ boolean doTasks()
 	{
 		if(LX_bitchinMeatcar())			return true;
 	}
+	if(LX_findHelpfulLowKey())			return true;
 	if(LX_bitchinMeatcar())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_unlockPirateRealm())			return true;

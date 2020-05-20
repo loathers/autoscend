@@ -972,6 +972,7 @@ int spleen_left();											//Defined in autoscend/auto_util.ash
 boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
 boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
 boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash
+boolean startHippyBoatmanSubQuest();						//Defined in autoscend/auto_util.ash
 string statCard();											//Defined in autoscend/auto_util.ash
 int stomach_left();											//Defined in autoscend/auto_util.ash
 boolean theSource_buySkills();								//Defined in autoscend/auto_theSource.ash
@@ -1194,6 +1195,18 @@ int zelda_ppCost(skill sk); // Defined in autoscend/auto_zelda.ash
 boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
 boolean zelda_skillValid(skill sk); // Defined in autoscend/auto_zelda.ash
 boolean zelda_equipTool(stat st); // Defined in autoscend/auto_zelda.ash
+
+boolean in_lowkeysummer(); // Defined in autoscend/paths/low_key_summer.ash
+boolean lowkey_initializeSettings(); // Defined in autoscend/paths/low_key_summer.ash
+int lowkey_keyDelayRemaining(location loc); // Defined in autoscend/paths/low_key_summer.ash
+int lowkey_keysRemaining(); // Defined in autoscend/paths/low_key_summer.ash
+location lowkey_nextKeyLocation(boolean checkAvailable); // Defined in autoscend/paths/low_key_summer.ash
+location lowkey_nextKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
+location lowkey_nextAvailableKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
+location lowkey_nextAvailableKeyDelayLocation(); // Defined in autoscend/paths/low_key_summer.ash
+boolean lowkey_keyAdv(item key); // Defined in autoscend/paths/low_key_summer.ash
+boolean LX_findHelpfulLowKey();  // Defined in autoscend/paths/low_key_summer.ash
+boolean L13_sorceressDoorLowKey(); // Defined in autoscend/paths/low_key_summer.ash
 
 element currentFlavour(); // Defined in autoscend/auto_util.ash
 void resetFlavour(); // Defined in autoscend/auto_util.ash
