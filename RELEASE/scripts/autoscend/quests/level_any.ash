@@ -252,12 +252,12 @@ boolean LX_islandAccess()
 
 boolean LX_lockPicking()
 {
-	if (!auto_have_skill($skill[Lock Picking]))
+	if(!auto_have_skill($skill[Lock Picking]))
 	{
 		return false;
 	}
 
-	if (get_property("lockPicked").to_boolean() == true)
+	if(get_property("lockPicked").to_boolean() == true)
 	{
 		return false;
 	}
