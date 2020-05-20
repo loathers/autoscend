@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20111; // nsTowerDoorKeysUsed should be correct now
+since r20114; // Lock Picking can be cast once per ascension. track in "lockPicked" property
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
