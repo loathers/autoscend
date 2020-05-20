@@ -80,7 +80,6 @@ int lowkey_keysRemaining()
 	return 23 - found;
 }
 
-// TODO: Unaware if a key has been used and lost
 // order is subjective
 location lowkey_nextKeyLocation(boolean checkAvailable)
 {
@@ -149,7 +148,6 @@ boolean lowkey_keyAdv(item key)
 	// Pirate equipment
 	if ($locations[The F\'c\'le, Belowdecks] contains loc)
 	{
-		// Ca
 		if (possessEquipment($item[pirate fledges]))
 		{
 			autoEquip($item[pirate fledges]);
@@ -290,10 +288,6 @@ boolean L13_sorceressDoorLowKey()
 	{
 		return false;
 	}
-
-	// TODO: Check door for unlocked locks to prevent infinite loops
-	// https://kolmafia.us/showthread.php?25001-Low-Key-path&p=157469&viewfull=1#post157469
-	// nsTowerDoorKeysUsed currently isn't always updated
 
 	// TODO: Handle the standard keys
 
