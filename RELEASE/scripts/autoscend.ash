@@ -3776,7 +3776,8 @@ void auto_begin()
 	backupSetting("autoAbortThreshold", -0.05);
 
 	backupSetting("currentMood", "apathetic");
-
+	backupSetting("battleAction", "custom combat script");
+	
 	backupSetting("choiceAdventure1107", 1);
 	backupSetting("choiceAdventure330", 1);		//haunted billiards room NC shark chum
 
