@@ -883,7 +883,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 			if (is_tradeable(it))
 			{
-				pullables[it] = min(howmany, pulls_remaining()));
+				pullables[it] = min(howmany, pulls_remaining());
 			}
 			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore())
 			{
