@@ -685,6 +685,10 @@ boolean autoPrepConsume(ConsumeAction action)
 	{
 		auto_log_info("autoPrepConsume: Pulling a " + action.it, "blue");
 		action.howToGet = SL_OBTAIN_NULL;
+		if (storage_amount(action.it) == 0)
+		{
+			buy_using_storage(1, action.it);
+		}
 		return pullXWhenHaveY(action.it, 1, item_amount(action.it));
 	}
 	else if(action.howToGet == SL_OBTAIN_CRAFT)
@@ -877,9 +881,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
-			if (storage_amount(it) > 0 && is_tradeable(it))
+			if (is_tradeable(it))
 			{
-				pullables[it] = min(howmany, min(pulls_remaining(), storage_amount(it)));
+				pullables[it] = min(howmany, pulls_remaining()));
 			}
 			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore())
 			{

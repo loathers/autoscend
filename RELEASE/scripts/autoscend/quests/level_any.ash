@@ -274,7 +274,6 @@ boolean LX_lockPicking()
 
 	// As of r20114, this choice does not work in choice adventure script
 	if(item_amount($item[Boris\'s Key]) == 0)
-
 	{
 		set_property("choiceAdventure1414", 1);
 	}
