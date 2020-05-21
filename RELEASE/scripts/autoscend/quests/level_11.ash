@@ -225,9 +225,19 @@ boolean LX_unlockHauntedLibrary()
 			resetMaximize();	//cancel equipping pool cue
 			return false;
 		}
-		//handling paths with max inebrity over 10
-		//TODO change consumption code to actually drink one at a time and then add rules here.
-		//do not forget to reset maximize if you want to return false.
+		if(my_inebriety() < 8)
+		{
+			auto_log_info("I will come back when I had more to drink.", "green");
+			resetMaximize();	//cancel equipping pool cue
+			return false;
+		}
+		if(my_inebriety() > 11)
+		{
+			int penalty = 2 * (10 - my_inebriety());
+			auto_log_info("I overshot my inebrity goal for the [Haunted Billiards Room] which gives me a penalty of " + penalty + "pool skill. I will come back tomorrow or if I run out of things to do.", "green");
+			resetMaximize();	//cancel equipping pool cue
+			return false;
+		}
 	}
 	
 	//+3 pool skill & +1 training gains. speculative_pool_skill() already assumed we would use it if we can.
