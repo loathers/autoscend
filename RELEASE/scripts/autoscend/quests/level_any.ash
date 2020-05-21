@@ -257,7 +257,7 @@ boolean LX_lockPicking()
 		return false;
 	}
 
-	if(get_property("lockPicked").to_boolean() == true)
+	if(get_property("lockPicked").to_boolean())
 	{
 		return false;
 	}
