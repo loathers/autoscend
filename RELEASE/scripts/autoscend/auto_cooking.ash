@@ -585,7 +585,7 @@ void consumeStuff()
 			{
 				use_familiar($familiar[none]);
 			}
-			boolean shouldDrink = false;
+			boolean shouldDrink = true;
 			if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
 			{
 				auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
