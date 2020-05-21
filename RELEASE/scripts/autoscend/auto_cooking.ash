@@ -674,10 +674,6 @@ boolean autoPrepConsume(ConsumeAction action)
 	{
 		auto_log_info("autoPrepConsume: Pulling a " + action.it, "blue");
 		action.howToGet = SL_OBTAIN_NULL;
-		if (storage_amount(action.it) == 0)
-		{
-			buy_using_storage(1, action.it);
-		}
 		return pullXWhenHaveY(action.it, 1, item_amount(action.it));
 	}
 	else if(action.howToGet == SL_OBTAIN_CRAFT)
