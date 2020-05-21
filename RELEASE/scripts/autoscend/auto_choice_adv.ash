@@ -1,7 +1,7 @@
 script "auto_choice_adv.ash";
 import<autoscend.ash>
 
-void main(int choice, string page)
+boolean auto_run_choice(int choice, string page)
 {
 	auto_log_debug("Running auto_choice_adv.ash");
 	
@@ -404,5 +404,24 @@ void main(int choice, string page)
 			break;
 		default:
 			break;
+	}
+
+	return true;
+}
+
+void main(int choice, string page)
+{
+	boolean ret = false;
+	try
+	{
+		ret = auto_run_choice(choice, page);
+	}
+	finally
+	{
+		if (!ret)
+		{
+			auto_log_error("Error running auto_choice_adv.ash, setting auto_interrupt=true");
+			set_property("auto_interrupt", true);
+		}
 	}
 }
