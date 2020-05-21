@@ -592,7 +592,7 @@ void consumeStuff()
 				shouldDrink = false;
 				if (fullness_left() == 0)
 				{
-					auto_log_warning("Nede to drink as no fullness is available, pool skill will suffer.");
+					auto_log_warning("Need to drink as no fullness is available, pool skill will suffer.");
 					shouldDrink = true;
 				}
 			}
