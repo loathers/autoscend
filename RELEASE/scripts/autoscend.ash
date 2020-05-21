@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20111; // nsTowerDoorKeysUsed should be correct now
+since r20114; // Lock Picking can be cast once per ascension. track in "lockPicked" property
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -3544,6 +3544,7 @@ boolean doTasks()
 	if(LX_unlockHiddenTemple())	return true;
 	if(L6_dakotaFanning())				return true;
 	if(L5_haremOutfit())				return true;
+	if(LX_lockPicking())					return true;
 	if(LX_phatLootToken())				return true;
 	if(L5_goblinKing())					return true;
 	if(LX_islandAccess())				return true;

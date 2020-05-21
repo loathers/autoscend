@@ -250,6 +250,48 @@ boolean LX_islandAccess()
 	return false;
 }
 
+boolean LX_lockPicking()
+{
+	if(!auto_have_skill($skill[Lock Picking]))
+	{
+		return false;
+	}
+
+	if(get_property("lockPicked").to_boolean())
+	{
+		return false;
+	}
+
+	if(towerKeyCount(false) >= 3)
+	{
+		return false;
+	}
+
+	if(my_mp() < mp_cost($skill[Lock Picking]))
+	{
+		return false;
+	}
+
+	// As of r20114, this choice does not work in choice adventure script
+	if(item_amount($item[Boris\'s Key]) == 0)
+
+	{
+		set_property("choiceAdventure1414", 1);
+	}
+	else if(item_amount($item[Jarlsberg\'s Key]) == 0)
+	{
+		set_property("choiceAdventure1414", 2);
+	}
+	else if(item_amount($item[Sneaky Pete\'s Key]) == 0)
+	{
+		set_property("choiceAdventure1414", 3);
+	}
+
+	use_skill(1, $skill[Lock Picking]);
+	run_turn();
+	return get_property("lockPicked").to_boolean();
+}
+
 boolean LX_phatLootToken()
 {
 	if(towerKeyCount(false) >= 3)
