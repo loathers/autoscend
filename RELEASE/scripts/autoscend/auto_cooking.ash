@@ -1114,9 +1114,9 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 	}
 
 	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(actions[best]), "blue");
-	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFull").to_float())
+	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
 	{
-		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFull " + get_property("auto_consumeMinAdvPerFull"));
+		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFill " + get_property("auto_consumeMinAdvPerFill"));
 		return false;
 	}
 
