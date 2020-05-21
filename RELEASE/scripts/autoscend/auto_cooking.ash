@@ -565,6 +565,7 @@ void consumeStuff()
 		{
 			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
 			autoEat(1, $item[Fortune Cookie]);
+			return;
 		}
 	}
 
@@ -583,11 +584,11 @@ void consumeStuff()
 			{
 				use_familiar($familiar[none]);
 			}
-			auto_knapsackAutoConsume("drink", false);
+			auto_autoConsumeOne("drink", false);
 		}
 		if (fullness_left() > 0)
 		{
-			auto_knapsackAutoConsume("eat", false);
+			auto_autoConsumeOne("eat", false);
 		}
 	}
 }
@@ -1073,26 +1074,31 @@ void auto_autoDrinkNightcap(boolean simulate)
 	autoConsume(actions[best]);
 }
 
-boolean auto_autoDrinkOne(boolean simulate)
+boolean auto_autoConsumeOne(string type, boolean simulate)
 {
 	if (inebriety_left() == 0) return false;
 
 	ConsumeAction[int] actions;
-	loadConsumables("drink", actions);
+	loadConsumables(type, actions);
 
-	float best_adv_per_drunk = 0.0;
+	float best_adv_per_fill = 0.0;
 	int best = -1;
 	for (int i=0; i < count(actions); i++)
 	{
-		float tentative_adv_per_drunk = actions[i].desirability/actions[i].size;
-		if (tentative_adv_per_drunk > best_adv_per_drunk)
+		float tentative_adv_per_fill = actions[i].desirability/actions[i].size;
+		if (tentative_adv_per_fill > best_adv_per_fill)
 		{
-			best_adv_per_drunk = tentative_adv_per_drunk;
+			best_adv_per_fill = tentative_adv_per_fill;
 			best = i;
 		}
 	}
 
-	auto_log_info("auto_autoDrinkOne: Planning to execute " + to_pretty_string(actions[best]), "blue");
+	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(actions[best]), "blue");
+	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFull").to_float())
+	{
+		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFull " + get_property("auto_consumeMinAdvPerFull"));
+		return false;
+	}
 
 	if(!simulate)
 	{

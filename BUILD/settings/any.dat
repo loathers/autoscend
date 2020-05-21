@@ -21,6 +21,7 @@ auto_blacklistFamiliar	string	A semi-colon separated string of familiar names th
 auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
 auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
 auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
+auto_consumeMinAdvPerFull	float	The minimum adventures per full to consider for a consumable before eating or drinking it. Defaults to 0.0 and will consume whatever is available if necessary.
 auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
 auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
 auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
