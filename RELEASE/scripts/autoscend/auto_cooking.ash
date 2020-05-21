@@ -44,17 +44,6 @@ boolean saucemavenApplies(item it)
 
 float expectedAdventuresFrom(item it)
 {
-	if(it == $item[magical sausage]) return 1;
-
-	if ($items[campfire baked potato, campfire beans, campfire coffee] contains it)
-	{
-		return 4.5; // I guess?
-	}
-	if ($items[campfire hot dog, campfire s\'more, campfire stew] contains it)
-	{
-		return 3.5; // I guess?
-	}
-
 	float parse()
 	{
 		if (!it.adventures.contains_text("-")) return it.adventures.to_int();
@@ -576,6 +565,7 @@ void consumeStuff()
 		{
 			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
 			autoEat(1, $item[Fortune Cookie]);
+			return;
 		}
 	}
 
@@ -588,17 +578,35 @@ void consumeStuff()
 
 	if (my_adventures() < 10 && !edSpleenCheck)
 	{
+		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
 		if (inebriety_left() > 0)
 		{
 			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper])
 			{
 				use_familiar($familiar[none]);
 			}
-			auto_knapsackAutoConsume("drink", false);
+			boolean shouldDrink = true;
+			if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
+			{
+				auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
+				shouldDrink = false;
+				if (fullness_left() == 0)
+				{
+					auto_log_warning("Need to drink as no fullness is available, pool skill will suffer.");
+					shouldDrink = true;
+				}
+			}
+			if (shouldDrink && auto_autoConsumeOne("drink", false))
+			{
+				return;
+			}
 		}
 		if (fullness_left() > 0)
 		{
-			auto_knapsackAutoConsume("eat", false);
+			if (auto_autoConsumeOne("eat", false))
+			{
+				return;
+			}
 		}
 	}
 }
@@ -877,9 +885,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
-			if (storage_amount(it) > 0 && is_tradeable(it))
+			if (is_tradeable(it))
 			{
-				pullables[it] = min(howmany, min(pulls_remaining(), storage_amount(it)));
+				pullables[it] = min(howmany, pulls_remaining());
 			}
 			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore())
 			{
@@ -1084,26 +1092,33 @@ void auto_autoDrinkNightcap(boolean simulate)
 	autoConsume(actions[best]);
 }
 
-boolean auto_autoDrinkOne(boolean simulate)
+boolean auto_autoConsumeOne(string type, boolean simulate)
 {
 	if (inebriety_left() == 0) return false;
 
 	ConsumeAction[int] actions;
-	loadConsumables("drink", actions);
+	loadConsumables(type, actions);
 
-	float best_adv_per_drunk = 0.0;
+	float best_desirability_per_fill = 0.0;
+	float best_adv_per_fill = 0.0;
 	int best = -1;
 	for (int i=0; i < count(actions); i++)
 	{
-		float tentative_adv_per_drunk = actions[i].desirability/actions[i].size;
-		if (tentative_adv_per_drunk > best_adv_per_drunk)
+		float tentative_desirability_per_fill = actions[i].desirability/actions[i].size;
+		if (tentative_desirability_per_fill > best_desirability_per_fill)
 		{
-			best_adv_per_drunk = tentative_adv_per_drunk;
+			best_desirability_per_fill = tentative_desirability_per_fill;
+			best_adv_per_fill = actions[i].adventures/actions[i].size;
 			best = i;
 		}
 	}
 
-	auto_log_info("auto_autoDrinkOne: Planning to execute " + to_pretty_string(actions[best]), "blue");
+	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(actions[best]), "blue");
+	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
+	{
+		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFill " + get_property("auto_consumeMinAdvPerFill"));
+		return false;
+	}
 
 	if(!simulate)
 	{
