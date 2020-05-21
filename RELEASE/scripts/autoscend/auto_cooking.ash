@@ -578,17 +578,35 @@ void consumeStuff()
 
 	if (my_adventures() < 10 && !edSpleenCheck)
 	{
+		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
 		if (inebriety_left() > 0)
 		{
 			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper])
 			{
 				use_familiar($familiar[none]);
 			}
-			auto_autoConsumeOne("drink", false);
+			boolean shouldDrink = false;
+			if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
+			{
+				auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
+				shouldDrink = false;
+				if (fullness_left() == 0)
+				{
+					auto_log_warning("Nede to drink as no fullness is available, pool skill will suffer.");
+					shouldDrink = true;
+				}
+			}
+			if (shouldDrink && auto_autoConsumeOne("drink", false))
+			{
+				return;
+			}
 		}
 		if (fullness_left() > 0)
 		{
-			auto_autoConsumeOne("eat", false);
+			if (auto_autoConsumeOne("eat", false))
+			{
+				return;
+			}
 		}
 	}
 }
