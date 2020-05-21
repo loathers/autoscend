@@ -455,7 +455,7 @@ boolean autoEat(int howMany, item toEat, boolean silent);		//Defined in autoscen
 boolean auto_knapsackAutoConsume(string type, boolean simulate);	//Defined in autoscend/auto_cooking.ash
 boolean loadConsumables(item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] inebriety);	 //Defined in autoscend/auto_cooking.ash
 void auto_autoDrinkNightcap(boolean simulate);				//Defined in autoscend/auto_cooking.ash
-boolean auto_autoDrinkOne(boolean simulate);					//Defined in autoscend/auto_cooking.ash
+boolean auto_autoConsumeOne(string type, boolean simulate);					//Defined in autoscend/auto_cooking.ash
 boolean saucemavenApplies(item it);							//Defined in autoscend/auto_cooking.ash
 boolean autoMaximize(string req, boolean simulate);			//Defined in autoscend/auto_util.ash
 boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in autoscend/auto_util.ash
