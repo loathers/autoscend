@@ -1099,14 +1099,16 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 	ConsumeAction[int] actions;
 	loadConsumables(type, actions);
 
+	float best_desirability_per_fill = 0.0;
 	float best_adv_per_fill = 0.0;
 	int best = -1;
 	for (int i=0; i < count(actions); i++)
 	{
-		float tentative_adv_per_fill = actions[i].desirability/actions[i].size;
-		if (tentative_adv_per_fill > best_adv_per_fill)
+		float tentative_desirability_per_fill = actions[i].desirability/actions[i].size;
+		if (tentative_desirability_per_fill > best_desirability_per_fill)
 		{
-			best_adv_per_fill = tentative_adv_per_fill;
+			best_desirability_per_fill = tentative_desirability_per_fill;
+			best_adv_per_fill = actions[i].adventures/actions[i].size;
 			best = i;
 		}
 	}
