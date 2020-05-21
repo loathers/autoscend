@@ -1,7 +1,7 @@
 script "auto_pre_adv.ash";
 import<autoscend.ash>
 
-void main()
+boolean auto_pre_adventure()
 {
 	auto_log_debug("Running auto_pre_adv.ash");
 
@@ -14,19 +14,19 @@ void main()
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		auto_log_info("Preadventure skipped by standard adventure handler.", "green");
-		return;
+		return true;
 	}
 
 	if(last_monster().random_modifiers["clingy"])
 	{
 		auto_log_info("Preadventure skipped by clingy modifier.", "green");
-		return;
+		return true;
 	}
 
 	if(place == $location[The Lower Chambers])
 	{
 		auto_log_info("Preadventure skipped by Ed the Undying!", "green");
-		return;
+		return true;
 	}
 
 	auto_log_info("Starting preadventure script...", "green");
@@ -515,5 +515,24 @@ void main()
 	if(current_mcd() != mcd_target)
 	{
 		change_mcd(mcd_target);
+	}
+
+	return true;
+}
+
+void main()
+{
+	boolean ret = false;
+	try
+	{
+		ret = auto_pre_adventure();
+	}
+	finally
+	{
+		if (!ret)
+		{
+			auto_log_error("Error running auto_pre_adv.ash, setting auto_interrupt=true");
+			set_property("auto_interrupt", true);
+		}
 	}
 }

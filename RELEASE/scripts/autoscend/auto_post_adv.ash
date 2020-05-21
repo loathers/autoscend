@@ -1,13 +1,13 @@
 script "auto_post_adv.ash";
 import<autoscend.ash>
 
-void main()
+boolean auto_post_adventure()
 {
 	auto_log_debug("Running auto_post_adv.ash");
 
 	if(limit_mode() == "spelunky")
 	{
-		return;
+		return true;
 	}
 
 	/* This tracks noncombat-forcers like Clara's Bell and stench jelly, which
@@ -50,7 +50,7 @@ void main()
 		if(last_monster() != $monster[Eldritch Tentacle])
 		{
 			auto_log_warning("Expected Tentacle, uh oh!", "red");
-			return;
+			return false;
 		}
 		auto_log_info("No Tentacle expected this time!", "green");
 	}
@@ -68,10 +68,10 @@ void main()
 				if(have_effect($effect[Beaten Up]) > 0)
 				{
 					auto_log_warning("Post combat time caused up to be Beaten Up!", "red");
-					return;
+					return false;
 				}
 				autoAdv(my_location());
-				return;
+				return true;
 			}
 		}
 	}
@@ -92,7 +92,7 @@ void main()
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		auto_log_info("Postadventure skipped by standard adventure handler.", "green");
-		return;
+		return true;
 	}
 
 	if(!get_property("_ballInACupUsed").to_boolean() && (item_amount($item[Ball-In-A-Cup]) > 0))
@@ -116,21 +116,21 @@ void main()
 	if((my_location() == $location[The Lower Chambers]) && (item_amount($item[[2334]Holy MacGuffin]) == 0))
 	{
 		auto_log_info("Postadventure skipped by Ed the Undying!", "green");
-		return;
+		return true;
 	}
 
 	if((my_location() == $location[The Invader]))
 	{
 		// Just so the "are we beaten up?" check in auto_koe works properly
 		auto_log_info("Postadventure skipped for The Invader!", "green");
-		return;
+		return true;
 	}
 
 	ocrs_postHelper();
 	if(last_monster().random_modifiers["clingy"])
 	{
 		auto_log_info("Postadventure skipped by clingy modifier.", "green");
-		return;
+		return true;
 	}
 
 	if(have_effect($effect[Cunctatitis]) > 0)
@@ -244,7 +244,7 @@ void main()
 		{
 			acquireMP(100, my_meat());
 		}
-		return;
+		return true;
 	}
 
 	skill libram = preferredLibram();
@@ -348,7 +348,7 @@ void main()
 			use_skill(1, libram);
 		}
 
-		return;
+		return true;
 	}
 
 	if(auto_my_path() == "The Source")
@@ -1046,4 +1046,22 @@ void main()
 	set_property("auto_januaryToteAcquireCalledThisTurn", false);
 
 	auto_log_info("Post Adventure done, beep.", "purple");
+	return true;
+}
+
+void main()
+{
+	boolean ret = false;
+	try
+	{
+		ret = auto_post_adventure();
+	}
+	finally
+	{
+		if (!ret)
+		{
+			auto_log_error("Error running auto_post_adv.ash, setting auto_interrupt=true");
+			set_property("auto_interrupt", true);
+		}
+	}
 }
