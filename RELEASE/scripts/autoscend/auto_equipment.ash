@@ -192,7 +192,7 @@ string defaultMaximizeStatement()
 		}
 		if (in_zelda())
 		{
-			res += ",-ml";
+			res += ",plumber,-ml";
 		}
 	}
 
