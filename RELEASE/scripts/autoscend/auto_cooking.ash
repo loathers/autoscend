@@ -858,7 +858,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			(historical_price(it) <= 20000 || (KEY_LIME_PIES contains it && historical_price(it) < 40000)))
 		{
 			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
-			if((it == $item[Spaghetti Breakfast]) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean() || get_property("_distentionPillUsed").to_boolean())) continue;
+			if((it == $item[Spaghetti Breakfast]) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean())) continue;
 
 			int howmany = 1 + organLeft()/organCost(it);
 			// Only one Spaghetti Breakfast can be eaten
