@@ -1105,15 +1105,34 @@ void auto_autoDrinkNightcap(boolean simulate)
 
 boolean auto_autoConsumeOne(string type, boolean simulate)
 {
-	if (inebriety_left() == 0) return false;
+	int organLeft()
+	{
+		if (type == "eat") return fullness_left();
+		if (type == "drink") return inebriety_left();
+		abort("Unrecognized organ type: should be 'eat' or 'drink', was " + type);
+		return 0;
+	}
+	if (organLeft() == 0) return false;
 
 	ConsumeAction[int] actions;
 	loadConsumables(type, actions);
 
+	int remaining_space = organLeft();
+
+	float[int] desirability;
+	int[int] space;
+	for (int i=0; i<count(actions); i++)
+	{
+		desirability[i] = actions[i].desirability;
+		space[i] = actions[i].size;
+	}
+
+	boolean[int] result = knapsack(remaining_space, count(space), space, desirability);
+
 	float best_desirability_per_fill = 0.0;
 	float best_adv_per_fill = 0.0;
 	int best = -1;
-	for (int i=0; i < count(actions); i++)
+	foreach i in result
 	{
 		float tentative_desirability_per_fill = actions[i].desirability/actions[i].size;
 		if (tentative_desirability_per_fill > best_desirability_per_fill)
