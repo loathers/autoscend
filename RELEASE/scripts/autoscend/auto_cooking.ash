@@ -857,19 +857,16 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			is_unrestricted(it) &&
 			(historical_price(it) <= 20000 || (KEY_LIME_PIES contains it && historical_price(it) < 40000)))
 		{
-			if((it == $item[astral pilsner] || it == $item[Cold One]) && my_level() < 11) continue;
+			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
 			if((it == $item[astral hot dog] || it == $item[Spaghetti Breakfast]) && my_level() < 11) continue;
+			if((it == $item[Spaghetti Breakfast])) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean())) continue;
 
 			int howmany = 1 + organLeft()/organCost(it);
+			// Only one Spaghetti Breakfast can be eaten
+			if(it == $item[Spaghetti Breakfast]) howmany = 1;
 			if (item_amount(it) > 0 && organCost(it) <= 5)
 			{
 				small_owned[it] = min(max(item_amount(it) - auto_reserveAmount(it), 0), howmany);
-			}
-			// Only one Spaghetti Breakfast can be eaten, and it must be first
-			if(it == $item[Spaghetti Breakfast])
-			{
-				if (my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean()) continue;
-				howmany = 1;
 			}
 			// don't add speakeasy drinks, because they can't actually be bought as items
 			if (npc_price(it) > 0 && !isSpeakeasyDrink(it))
