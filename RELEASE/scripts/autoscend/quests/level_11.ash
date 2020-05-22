@@ -1296,17 +1296,14 @@ boolean L11_hiddenCity()
 			if(have_effect($effect[Thrice-Cursed]) == 0)
 			{
 				L11_hiddenTavernUnlock(true);
-				while(have_effect($effect[Thrice-Cursed]) == 0)
+				while(have_effect($effect[Thrice-Cursed]) == 0 && inebriety_left() >= $item[Cursed Punch].inebriety && canDrink($item[Cursed Punch]) && my_ascensions() == get_property("hiddenTavernUnlock").to_int() && !in_tcrs())
 				{
-					if((inebriety_left() >= $item[Cursed Punch].inebriety) && canDrink($item[Cursed Punch]) && (my_ascensions() == get_property("hiddenTavernUnlock").to_int()) && !in_tcrs())
+					buyUpTo(1, $item[Cursed Punch]);
+					if(item_amount($item[Cursed Punch]) == 0)
 					{
-						buyUpTo(1, $item[Cursed Punch]);
-						if(item_amount($item[Cursed Punch]) == 0)
-						{
-							abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
-						}
-						autoDrink(1, $item[Cursed Punch]);
+						abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
 					}
+					autoDrink(1, $item[Cursed Punch]);
 				}
 			}
 			auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
