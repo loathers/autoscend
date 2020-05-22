@@ -866,7 +866,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				small_owned[it] = min(max(item_amount(it) - auto_reserveAmount(it), 0), howmany);
 			}
 			// Only one Spaghetti Breakfast can be eaten, and it must be first
-			if(t == $item[Spaghetti Breakfast])
+			if(it == $item[Spaghetti Breakfast])
 			{
 				if (my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean()) continue;
 				howmany = 1;
