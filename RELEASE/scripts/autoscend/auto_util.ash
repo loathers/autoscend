@@ -7346,3 +7346,12 @@ int currentPoolSkill() {
 	string [int] poolskill_command = split_string(cli_execute_output("poolskill"));
 	return substring(poolskill_command[0], poolskill_command[0].last_index_of(":") + 2,  poolskill_command[0].length() - 1).to_int();
 }
+
+int poolSkillPracticeGains()
+{
+	//predict gains from choosing to practice your pool skill (choice 2) in noncombat adv 875 "Welcome To Our ool Table"
+	int count = 1;
+	if(have_effect($effect[chalky hand]) > 0) count += 1;
+	if(equipped_amount($item[[2268]Staff of Fats]) > 0) count += 2;		//note that $item[[7964]Staff of Fats] does not help here.
+	return count;
+}

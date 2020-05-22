@@ -3146,7 +3146,7 @@ int speculative_pool_skill()
 	{
 		expectPool += my_inebriety();
 	}
-	if((have_effect($effect[Chalky Hand]) > 0) || (item_amount($item[Handful of Hand Chalk]) > 0))
+	if(auto_is_valid($item[Handful of Hand Chalk]) && (have_effect($effect[Chalky Hand]) > 0 || item_amount($item[Handful of Hand Chalk]) > 0))
 	{
 		expectPool += 3;
 	}

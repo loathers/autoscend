@@ -1223,6 +1223,7 @@ boolean is_superlikely(string encounterName); // Defined in autoscend/auto_util.
 boolean hasTTBlessing();									 // Defined in autoscend/auto_util.ash
 void effectAblativeArmor(boolean passive_dmg_allowed);		 // Defined in autoscend/auto_util.ash
 int currentPoolSkill(); 		 // Defined in autoscend/auto_util.ash
+int poolSkillPracticeGains();								// Defined in autoscend/auto_util.ash
 
 //Record from autoscend/auto_zone.ash
 record generic_t
