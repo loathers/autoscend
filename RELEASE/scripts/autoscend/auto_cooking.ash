@@ -1143,6 +1143,12 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 		}
 	}
 
+	if (best == -1)
+	{
+		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
+		return false;
+	}
+
 	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(actions[best]), "blue");
 	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
 	{
