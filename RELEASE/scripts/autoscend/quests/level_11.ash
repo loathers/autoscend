@@ -1707,6 +1707,7 @@ boolean L11_redZeppelin()
 	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
 	buffMaintain($effect[Musky], 0, 1, 1);
 	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
+	pullXWhenHaveY($item[deck of lewd playing cards], 1, 0);
 
 	providePlusNonCombat(25);
 

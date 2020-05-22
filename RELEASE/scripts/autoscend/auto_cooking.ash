@@ -801,9 +801,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
-	// Spaghetti breakfast is awkward since it has to be the first food consumed
-	// and we can only consume one. We don't handle this yet, so... blacklist!
-	boolean[item] blacklist = $items[spaghetti breakfast];
+	boolean[item] blacklist = $items[Cursed Punch];
 	boolean[item] craftable_blacklist;
 
 	// If we have 2 sticks of firewood, the current knapsack-solver
@@ -859,11 +857,12 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			is_unrestricted(it) &&
 			(historical_price(it) <= 20000 || (KEY_LIME_PIES contains it && historical_price(it) < 40000)))
 		{
-			if((it == $item[astral pilsner] || it == $item[Cold One]) && my_level() < 11) continue;
-			if((it == $item[astral hot dog] || it == $item[Spaghetti Breakfast]) && my_level() < 11) continue;
-			if (it == $item[Cursed Punch]) continue;
+			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
+			if((it == $item[Spaghetti Breakfast]) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean())) continue;
 
 			int howmany = 1 + organLeft()/organCost(it);
+			// Only one Spaghetti Breakfast can be eaten
+			if(it == $item[Spaghetti Breakfast]) howmany = 1;
 			if (item_amount(it) > 0 && organCost(it) <= 5)
 			{
 				small_owned[it] = min(max(item_amount(it) - auto_reserveAmount(it), 0), howmany);
@@ -933,6 +932,18 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				auto_log_info("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
 				actions[n].desirability += 25;
+			}
+			if ((obtain_mode == SL_OBTAIN_NULL) && (it == $item[Spaghetti Breakfast]))
+			{
+				if (get_property("_spaghettiBreakfastEaten").to_boolean() || my_fullness() > 0)
+				{
+					actions[n].desirability -= 50;
+				}
+				else
+				{
+					auto_log_info("Spaghetti Breakfast available, we should eat that first.");
+					actions[n].desirability += 50;
+				}
 			}
 			if (obtain_mode == SL_OBTAIN_CRAFT)
 			{

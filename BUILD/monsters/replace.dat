@@ -1,5 +1,5 @@
 Banshee Librarian	item:Killing Jar>0
-Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4
+Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber
 Knob Goblin Madam	item:Knob Goblin Perfume>0
 Bookbat
 Craven Carven Raven

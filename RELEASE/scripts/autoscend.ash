@@ -436,7 +436,7 @@ boolean handleFamiliar(familiar fam)
 	}
 #	set_property("auto_familiarChoice", my_familiar());
 
-	if(hr_handleFamiliar(fam))
+	if(hr_handleFamiliar(toEquip))
 	{
 		return true;
 	}
@@ -456,7 +456,10 @@ boolean basicFamiliarOverrides()
 	int spleen_hold = 8 * item_amount($item[Astral Energy Drink]);
 	foreach it in $items[Agua De Vida, Grim Fairy Tale, Groose Grease, Powdered Gold, Unconscious Collective Dream Jar]
 	{
-		spleen_hold += 4 * item_amount(it);
+		if (auto_is_valid(it))
+		{
+			spleen_hold += 4 * item_amount(it);
+		}
 	}
 	if((spleen_left() >= (4 + spleen_hold)) && haveSpleenFamiliar())
 	{
@@ -3812,6 +3815,12 @@ void auto_begin()
 		use_familiar($familiar[none]);
 	}
 	dailyEvents();
+
+	// Try to consume something if not enough adventures to get going
+	if (!auto_unreservedAdvRemaining())
+	{
+		consumeStuff();
+	}
 	
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
 	while(auto_unreservedAdvRemaining() && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
