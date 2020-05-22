@@ -3812,6 +3812,12 @@ void auto_begin()
 		use_familiar($familiar[none]);
 	}
 	dailyEvents();
+
+	// Try to consume something if not enough adventures to get going
+	if (!auto_unreservedAdvRemaining())
+	{
+		consumeStuff();
+	}
 	
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
 	while(auto_unreservedAdvRemaining() && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
