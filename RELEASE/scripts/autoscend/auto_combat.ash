@@ -309,7 +309,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 	#Handle different path is monster_level_adjustment() > 150 (immune to staggers?)
 	int mcd = monster_level_adjustment();
 
-	boolean doBanisher = !get_property("kingLiberated").to_boolean();
+	boolean doBanisher = !inAftercore();
 
 	if(my_path() == "Disguises Delimit")
 	{
@@ -1036,7 +1036,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(canUse($skill[Extract]) && get_property("kingLiberated").to_boolean())
+	if(canUse($skill[Extract]) && inAftercore())
 	{
 		return useSkill($skill[Extract]);
 	}
@@ -1229,7 +1229,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(!get_property("kingLiberated").to_boolean())
+	if(!inAftercore())
 	{
 		if(item_amount($item[short writ of habeas corpus]) > 0)
 		{
@@ -1405,7 +1405,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
-			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Chest X-Ray], "auto_instakill");
 				loopHandlerDelayAll();
@@ -1414,7 +1414,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 		if(canUse($skill[shattering punch]) && (get_property("_shatteringPunchUsed").to_int() < 3))
 		{
-			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 				loopHandlerDelayAll();
@@ -1423,7 +1423,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean())
 		{
-			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 				loopHandlerDelayAll();
@@ -1517,7 +1517,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 		if($item[Daily Affirmation: Keep Free Hate In Your Heart].combat)
 		{
-			if(canUse($item[Daily Affirmation: Keep Free Hate In Your Heart]) && get_property("kingLiberated").to_boolean() && hippy_stone_broken() && !get_property("_affirmationHateUsed").to_boolean())
+			if(canUse($item[Daily Affirmation: Keep Free Hate In Your Heart]) && inAftercore() && hippy_stone_broken() && !get_property("_affirmationHateUsed").to_boolean())
 			{
 				return useItem($item[Daily Affirmation: Keep Free Hate In Your Heart]);
 			}
@@ -1738,7 +1738,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(canUse($skill[Candyblast]) && (my_mp() > 60) && get_property("kingLiberated").to_boolean())
+	if(canUse($skill[Candyblast]) && (my_mp() > 60) && inAftercore())
 	{
 		# We can get only one candy and we can detect it, if so desired:
 		# "Hey, some of it is even intact afterwards!"
@@ -1760,7 +1760,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Stuffed Mortar Shell]);
 	}
 
-	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !get_property("kingLiberated").to_boolean() && (auto_my_path() != "Nuclear Autumn"))
+	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && (auto_my_path() != "Nuclear Autumn"))
 	{
 		if($monsters[Dairy Goat] contains enemy)
 		{
@@ -1786,7 +1786,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Curse Of Weaksauce]);
 	}
 
-	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !get_property("kingLiberated").to_boolean())
+	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !inAftercore())
 	{
 		if($monsters[Ninja Snowman Assassin, Lobsterfrogman] contains enemy)
 		{
@@ -1798,7 +1798,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3) && !get_property("kingLiberated").to_boolean())
+	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3) && !inAftercore())
 	{
 		if(get_property("auto_digitizeDirective") == enemy)
 		{

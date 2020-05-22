@@ -1109,7 +1109,7 @@ boolean getSpaceJelly()
 	}
 	if(my_path() != "Standard")
 	{
-		if(!get_property("kingLiberated").to_boolean())
+		if(!inAftercore())
 		{
 			return false;
 		}
@@ -1273,7 +1273,7 @@ boolean asdonAutoFeed(int goal)
 	{
 		return false;
 	}
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return false;
 	}

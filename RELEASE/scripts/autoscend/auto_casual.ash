@@ -9,10 +9,15 @@ boolean inCasual()
 	return false;
 }
 
+boolean inAftercore()
+{
+	return get_property("kingLiberated").to_boolean();
+}
+
 boolean inPostRonin()
 {
-	//can interact means you are not in ronin and not in hardcore, but it does not mean you are not in casual.
-	if(can_interact() && !inCasual())
+	//can interact means you are not in ronin and not in hardcore. It returns true in casual, aftercore, and postronin
+	if(can_interact() && !inCasual() && !inAftercore())
 	{
 		return true;
 	}

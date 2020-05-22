@@ -542,7 +542,7 @@ void consumeStuff()
 	{
 		return;
 	}
-	if (get_property("kingLiberated").to_boolean())
+	if (inAftercore())
 	{
 		return;
 	}

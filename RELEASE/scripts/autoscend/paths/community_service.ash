@@ -1336,7 +1336,7 @@ boolean LA_cs_communityService()
 			{
 				auto_log_warning("Waiting a few seconds, please hold.", "red");
 				wait(5);
-				if(get_property("kingLiberated").to_boolean())
+				if(inAftercore())
 				{
 					cli_execute("call auto_king");
 					return true;

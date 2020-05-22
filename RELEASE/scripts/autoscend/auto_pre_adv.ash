@@ -125,7 +125,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if(!get_property("kingLiberated").to_boolean())
+	if(!inAftercore())
 	{
 		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
 		{
@@ -363,7 +363,7 @@ boolean auto_pre_adventure()
 	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
 
 	// Generic Conditions
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		doML = false;
 		removeML = false;

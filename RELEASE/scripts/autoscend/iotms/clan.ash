@@ -173,7 +173,7 @@ boolean [location] get_floundry_locations()
 	static boolean [location] floundryLocations;
 
 	int currentLiberation = 1;
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		currentLiberation = 2;
 	}
@@ -691,7 +691,7 @@ boolean auto_floundryAction()
 	{
 		return false;
 	}
-	if(!get_property("_floundryItemGot").to_boolean() && (auto_get_clan_lounge() contains $item[Clan Floundry]) && !get_property("kingLiberated").to_boolean())
+	if(!get_property("_floundryItemGot").to_boolean() && (auto_get_clan_lounge() contains $item[Clan Floundry]) && !inAftercore())
 	{
 		if(get_property("auto_floundryChoice") != "")
 		{

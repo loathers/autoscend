@@ -430,7 +430,7 @@ boolean handleFamiliar(familiar fam)
 		#use_familiar(toEquip);
 		set_property("auto_familiarChoice", toEquip);
 	}
-	if(get_property("kingLiberated").to_boolean() && (toEquip != $familiar[none]) && (toEquip != my_familiar()) && (my_bjorned_familiar() != toEquip))
+	if(inAftercore() && (toEquip != $familiar[none]) && (toEquip != my_familiar()) && (my_bjorned_familiar() != toEquip))
 	{
 		use_familiar(toEquip);
 	}
@@ -608,7 +608,7 @@ boolean LX_faxing()
 
 int pullsNeeded(string data)
 {
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return 0;
 	}
@@ -1167,7 +1167,7 @@ boolean fortuneCookieEvent()
 
 void initializeDay(int day)
 {
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return;
 	}
@@ -1236,7 +1236,7 @@ void initializeDay(int day)
 		}
 	}
 
-	if(!get_property("_pottedTeaTreeUsed").to_boolean() && (auto_get_campground() contains $item[Potted Tea Tree]) && !get_property("kingLiberated").to_boolean())
+	if(!get_property("_pottedTeaTreeUsed").to_boolean() && (auto_get_campground() contains $item[Potted Tea Tree]) && !inAftercore())
 	{
 		if(get_property("auto_teaChoice") != "")
 		{
@@ -1707,7 +1707,7 @@ boolean doBedtime()
 	{
 		handleFamiliar("stat");
 		int oldSeals = get_property("_sealsSummoned").to_int();
-		while((get_property("_sealsSummoned").to_int() < 5) && (!get_property("kingLiberated").to_boolean()) && (my_meat() > 4500))
+		while((get_property("_sealsSummoned").to_int() < 5) && (!inAftercore()) && (my_meat() > 4500))
 		{
 			boolean summoned = false;
 			if((my_daycount() == 1) && (my_level() >= 6) && isHermitAvailable())
@@ -1899,7 +1899,7 @@ boolean doBedtime()
 		}
 	}
 
-	if((my_daycount() == 1) && (possessEquipment($item[Thor\'s Pliers]) || (freeCrafts() > 0)) && !possessEquipment($item[Chrome Sword]) && !get_property("kingLiberated").to_boolean() && !in_tcrs())
+	if((my_daycount() == 1) && (possessEquipment($item[Thor\'s Pliers]) || (freeCrafts() > 0)) && !possessEquipment($item[Chrome Sword]) && !inAftercore() && !in_tcrs())
 	{
 		item oreGoal = to_item(get_property("trapperOre"));
 		int need = 1;
@@ -1977,7 +1977,7 @@ boolean doBedtime()
 		}
 		if(!get_property("_aprilShower").to_boolean())
 		{
-			if(get_property("kingLiberated").to_boolean())
+			if(inAftercore())
 			{
 				cli_execute("shower ice");
 			}
@@ -2002,7 +2002,7 @@ boolean doBedtime()
 	{
 		cli_execute("concert 2");
 	}
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		if((item_amount($item[The Legendary Beat]) > 0) && !get_property("_legendaryBeat").to_boolean())
 		{
@@ -2064,7 +2064,7 @@ boolean doBedtime()
 
 	if(is_unrestricted($item[Source Terminal]) && (get_campground() contains $item[Source Terminal]))
 	{
-		if(!get_property("_kingLiberated").to_boolean() && (get_property("auto_extrudeChoice") != "none"))
+		if(!inAftercore() && (get_property("auto_extrudeChoice") != "none"))
 		{
 			int count = 3 - get_property("_sourceTerminalExtrudes").to_int();
 
@@ -2257,7 +2257,7 @@ boolean doBedtime()
 	}
 	else
 	{
-		if(!get_property("kingLiberated").to_boolean())
+		if(!inAftercore())
 		{
 			auto_log_info(get_property("auto_banishes_day" + my_daycount()));
 			auto_log_info(get_property("auto_yellowRay_day" + my_daycount()));
@@ -3633,7 +3633,7 @@ boolean doTasks()
 	if(LX_getStarKey())					return true;
 	if(L12_lastDitchFlyer())			return true;
 
-	if(!get_property("kingLiberated").to_boolean() && (my_inebriety() < inebriety_limit()) && !get_property("_gardenHarvested").to_boolean())
+	if(!inAftercore() && (my_inebriety() < inebriety_limit()) && !get_property("_gardenHarvested").to_boolean())
 	{
 		int[item] camp = auto_get_campground();
 		if((camp contains $item[Packet of Thanksgarden Seeds]) && (camp contains $item[Cornucopia]) && (camp[$item[Cornucopia]] > 0) && (internalQuestStatus("questL12War") >= 1))
@@ -3823,7 +3823,7 @@ void auto_begin()
 	}
 	
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
-	while(auto_unreservedAdvRemaining() && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !get_property("kingLiberated").to_boolean() && doTasks())
+	while(auto_unreservedAdvRemaining() && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !inAftercore() && doTasks())
 	{
 		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
 		{
@@ -3833,7 +3833,7 @@ void auto_begin()
 		consumeStuff();
 	}
 
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		equipBaseline();
 		handleFamiliar("item");

@@ -58,7 +58,7 @@ boolean auto_barrelPrayers()
 			return false;
 		}
 	}
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return false;
 	}
@@ -216,7 +216,7 @@ boolean auto_mayoItems()
 	{
 		return false;
 	}
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return false;
 	}
@@ -532,7 +532,7 @@ boolean chateaumantegna_nightstandSet()
 	{
 		return false;
 	}
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return false;
 	}

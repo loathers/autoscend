@@ -60,7 +60,7 @@ boolean snojoFightAvailable()
 		return false;
 	}
 
-	if(!get_property("kingLiberated").to_boolean())
+	if(!inAftercore())
 	{
 		int[string] controls;
 		controls["MUSCLE"] = 1;
