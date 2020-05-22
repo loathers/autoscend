@@ -4516,6 +4516,10 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	{
 		return false;
 	}
+	if (!auto_is_valid(it))
+	{
+		return false;
+	}
 	if((item_amount(it) + equipped_amount(it)) == whenHave)
 	{
 		int lastStorage = storage_amount(it);
