@@ -436,7 +436,7 @@ boolean handleFamiliar(familiar fam)
 	}
 #	set_property("auto_familiarChoice", my_familiar());
 
-	if(hr_handleFamiliar(fam))
+	if(hr_handleFamiliar(toEquip))
 	{
 		return true;
 	}
