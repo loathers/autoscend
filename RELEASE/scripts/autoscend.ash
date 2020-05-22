@@ -456,7 +456,10 @@ boolean basicFamiliarOverrides()
 	int spleen_hold = 8 * item_amount($item[Astral Energy Drink]);
 	foreach it in $items[Agua De Vida, Grim Fairy Tale, Groose Grease, Powdered Gold, Unconscious Collective Dream Jar]
 	{
-		spleen_hold += 4 * item_amount(it);
+		if (auto_is_valid(it))
+		{
+			spleen_hold += 4 * item_amount(it);
+		}
 	}
 	if((spleen_left() >= (4 + spleen_hold)) && haveSpleenFamiliar())
 	{
