@@ -26,26 +26,50 @@ boolean LX_loggingHatchet()
 
 boolean L9_leafletQuest()
 {
-	if((my_level() < 9) || possessEquipment($item[Giant Pinky Ring]))
+	if(my_level() < 9)
 	{
 		return false;
 	}
-	if (isActuallyEd() || in_koe())
+	if(isActuallyEd() || in_koe())
 	{
 		return false;
 	}
-	if(auto_get_campground() contains $item[Frobozz Real-Estate Company Instant House (TM)])
+	if(get_property("leafletCompleted").to_boolean())
 	{
 		return false;
 	}
-	if(item_amount($item[Frobozz Real-Estate Company Instant House (TM)]) > 0)
+	
+	//get a [strange leaflet]
+	item leaflet = $item[strange leaflet];
+	if(closet_amount($item[strange leaflet]) > 0)
 	{
-		return false;
+		take_closet(1, $item[strange leaflet]);
 	}
+	if(available_amount($item[strange leaflet]) == 0)
+	{
+		council();
+		if(item_amount($item[strange leaflet]) == 0)
+		{
+			auto_log_debug("Tried to grab a [strange leaflet] from the council and it did not work... This needs fixing. skipping for now.");
+			return false;
+		}
+	}
+	
 	auto_log_info("Got a leaflet to do", "blue");
-	council();
-	cli_execute("leaflet");
-	use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
+	if(disregardInstantKarma())		//checks a user setting as well as current level
+	{
+		cli_execute("leaflet");		//also gain +200 substats for each stat
+	}
+	else
+	{
+		//in plumber you eat manually and can jump from level 8 to 13 via food.
+		cli_execute("leaflet nomagic");		//no substat gains
+	}
+	
+	if(auto_get_campground() contains $item[Newbiesport&trade; tent])
+	{
+		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
+	}
 	return true;
 }
 
