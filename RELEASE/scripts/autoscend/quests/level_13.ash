@@ -1224,7 +1224,7 @@ boolean L13_towerNSFinal()
 	}
 
 	visit_url("place.php?whichplace=nstower&action=ns_11_prism");
-	if(get_property("kingLiberated") == "false")
+	if(!inAftercore())
 	{
 		abort("Yeah, so, I'm done. You might be stuck at the shadow, or at the final boss, or just with a king in a prism. I don't know and quite frankly, after the last " + my_daycount() + " days, I don't give a damn. That's right, I said it. Bitches.");
 	}

@@ -4,7 +4,7 @@ import <autoscend.ash>
 void handleKingLiberation()
 {
 	restoreAllSettings();
-	if(get_property("kingLiberated").to_boolean() && (get_property("auto_snapshot") == ""))
+	if(inAftercore() && (get_property("auto_snapshot") == ""))
 	{
 		auto_log_info("Yay! The King is saved. I suppose you should do stuff.");
 		if(!get_property("auto_kingLiberation").to_boolean())
@@ -113,7 +113,7 @@ void handleKingLiberation()
 		}
 	}
 
-	if((get_property("kingLiberated") == "true") && !get_property("auto_aftercore").to_boolean())
+	if(inAftercore() && !get_property("auto_aftercore").to_boolean())
 	{
 //		buy_item($item[4-d camera], 1, 10000);
 //		buy_item($item[mojo filter], 2, 3500);

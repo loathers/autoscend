@@ -1464,7 +1464,7 @@ boolean auto_wantToBanish(monster enemy, location loc)
 
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
 {
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return "";
 	}
@@ -4064,7 +4064,7 @@ boolean use_barrels()
 	{
 		return false;
 	}
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return false;
 	}
@@ -4508,7 +4508,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	{
 		return false;
 	}
-	if(!is_unrestricted(it) && !get_property("kingLiberated").to_boolean())
+	if(!is_unrestricted(it) && !inAftercore())
 	{
 		return false;
 	}
@@ -4653,7 +4653,7 @@ boolean pulverizeThing(item it)
 boolean buy_item(item it, int quantity, int maxprice)
 {
 	take_closet(closet_amount(it), it);
-	if(get_property("kingLiberated") != "false")
+	if(inAftercore())
 	{
 		take_storage(storage_amount(it), it);
 	}
@@ -5951,7 +5951,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 		if($effects[Drunk and Avuncular, Record Hunger] contains buff)
 		{
-			if(get_property("kingLiberated").to_boolean())
+			if(inAftercore())
 			{
 				return false;
 			}

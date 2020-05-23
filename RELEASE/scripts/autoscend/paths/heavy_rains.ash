@@ -769,7 +769,7 @@ boolean L13_towerFinalHeavyRains()
 	else
 	{
 		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
-		if(get_property("kingLiberated") == "true")
+		if(inAftercore())
 		{
 			abort("All done. King Ralph has been freed");
 		}

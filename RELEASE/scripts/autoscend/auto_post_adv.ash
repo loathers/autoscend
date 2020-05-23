@@ -293,7 +293,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Eau de Tortue], 0, 1, 1);
 	}
 
-	if((monster_level_adjustment() > 140) && !get_property("kingLiberated").to_boolean())
+	if((monster_level_adjustment() > 140) && !inAftercore())
 	{
 		buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
 		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
@@ -415,7 +415,7 @@ boolean auto_post_adventure()
 	effect awolDesired = awol_walkBuff();
 	if(awolDesired != $effect[none])
 	{
-		if(!get_property("kingLiberated").to_boolean())
+		if(!inAftercore())
 		{
 			int awolMP = 85;
 			if(my_class() == $class[Beanslinger])
@@ -645,7 +645,7 @@ boolean auto_post_adventure()
 	else
 	{
 		boolean didOutfit = false;
-		if((my_basestat($stat[mysticality]) >= 200) && (my_buffedstat($stat[mysticality]) >= 200) && (get_property("kingLiberated") != "false") && (item_amount($item[Wand of Oscus]) > 0) && (item_amount($item[Oscus\'s Dumpster Waders]) > 0) && (item_amount($item[Oscus\'s Pelt]) > 0))
+		if((my_basestat($stat[mysticality]) >= 200) && (my_buffedstat($stat[mysticality]) >= 200) && inAftercore() && (item_amount($item[Wand of Oscus]) > 0) && (item_amount($item[Oscus\'s Dumpster Waders]) > 0) && (item_amount($item[Oscus\'s Pelt]) > 0))
 		{
 			cli_execute("outfit save Backup");
 			#Using the cli command may not upgrade our stats if our max mp drops
@@ -792,7 +792,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Mathematically Precise], 150, 1, 5);
 #		buffMaintain($effect[Rotten Memories], 150, 1, 10);
 
-		if(get_property("kingLiberated").to_boolean())
+		if(inAftercore())
 		{
 			if((auto_have_skill($skill[Summon Rad Libs])) && (my_mp() > 6))
 			{
@@ -917,7 +917,7 @@ boolean auto_post_adventure()
 		set_property("auto_cubeItems", false);
 	}
 
-	if(!get_property("kingLiberated").to_boolean())
+	if(!inAftercore())
 	{
 		if((my_daycount() == 1) && (my_bjorned_familiar() != $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() == 0) && (have_familiar($familiar[grim brother])) && (equipped_item($slot[back]) == $item[Buddy Bjorn]) && (my_familiar() != $familiar[Grim Brother]))
 		{
@@ -950,7 +950,7 @@ boolean auto_post_adventure()
 		auto_log_info("Have " + item_amount($item[Hellseal Sinew]) + " sinew(s).", "green");
 	}
 
-	if((my_location() == $location[The Hidden Bowling Alley]) && get_property("kingLiberated").to_boolean())
+	if((my_location() == $location[The Hidden Bowling Alley]) && inAftercore())
 	{
 		if(item_amount($item[Bowling Ball]) > 0)
 		{
@@ -958,7 +958,7 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if((my_level() < 13) && !get_property("kingLiberated").to_boolean() && (my_meat() > 7500))
+	if((my_level() < 13) && !inAftercore() && (my_meat() > 7500))
 	{
 		if(item_amount($item[pulled red taffy]) >= 6)
 		{
@@ -1001,7 +1001,7 @@ boolean auto_post_adventure()
 
 
 	# We only do this in aftercore because we don't want a spiralling death loop in-run.
-	if(get_property("kingLiberated").to_boolean() && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
+	if(inAftercore() && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
 	{
 		auto_log_warning("Owwie, was beaten up but trying to recover", "red");
 		use_skill(1, $skill[Tongue of the Walrus]);

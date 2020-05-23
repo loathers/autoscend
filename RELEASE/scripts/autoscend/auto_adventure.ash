@@ -313,7 +313,7 @@ void preAdvUpdateFamiliar(location place)
 
 	if((famChoice != $familiar[none]) && canChangeFamiliar() && (internalQuestStatus("questL13Final") < 13))
 	{
-		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
+		if((famChoice != my_familiar()) && !inAftercore())
 		{
 #			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
 			use_familiar(famChoice);
