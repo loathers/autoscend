@@ -79,7 +79,9 @@ boolean LX_getDigitalKey()
 	}
 	
 	//if you are at the tower door and still don't have it, pull some pixels to save adv. keeping 5 pulls for later.
-	if(whitePixelCount() < 30 && internalQuestStatus("questL13Final") == 5 && canPull($item[white pixel]))
+	boolean needLowKeyPixels = (in_lowkeysummer() ? (lowkey_needKey($item[Digital Key]) && lowkey_keysRemaining() == 1) : true);
+	// in low-key summer, only pull pixels if we have no other keys left to get. Otherwise this wastes pulls as it starts at the door.
+	if(whitePixelCount() < 30 && (internalQuestStatus("questL13Final") == 5 && needLowKeyPixels) && canPull($item[white pixel]))
 	{
 		int pulls_needed = min((pulls_remaining()-5), 30 - whitePixelCount());
 		pullXWhenHaveY($item[white pixel], pulls_needed, item_amount($item[white pixel]));	//do not use whitePixelCount() in this line.
