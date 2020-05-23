@@ -40,7 +40,6 @@ boolean L9_leafletQuest()
 	}
 	
 	//get a [strange leaflet]
-	item leaflet = $item[strange leaflet];
 	if(closet_amount($item[strange leaflet]) > 0)
 	{
 		take_closet(1, $item[strange leaflet]);
@@ -71,7 +70,8 @@ boolean L9_leafletQuest()
 	{
 		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
 	}
-	return true;
+	
+	return get_property("leafletCompleted").to_boolean();
 }
 
 void L9_chasmMaximizeForNoncombat()
