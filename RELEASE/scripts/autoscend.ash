@@ -1339,7 +1339,8 @@ void initializeDay(int day)
 	{
 		if(get_property("auto_day_init").to_int() < 1)
 		{
-			if (item_amount($item[Newbiesport&trade; tent]) > 0)
+			//big rock is what mafia returns when you have no dwelling.
+			if (item_amount($item[Newbiesport&trade; tent]) > 0 && get_dwelling() == $item[big rock])
 			{
 				use(1, $item[Newbiesport&trade; tent]);
 			}
