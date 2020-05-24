@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20114; // Lock Picking can be cast once per ascension. track in "lockPicked" property
+since r20127; // Leaflet use is now tracked via "leafletCompleted" setting
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1339,7 +1339,8 @@ void initializeDay(int day)
 	{
 		if(get_property("auto_day_init").to_int() < 1)
 		{
-			if (item_amount($item[Newbiesport&trade; tent]) > 0)
+			//big rock is what mafia returns when you have no dwelling.
+			if(item_amount($item[Newbiesport&trade; tent]) > 0 && auto_is_valid($item[Newbiesport&trade; tent]) && get_dwelling() == $item[big rock])
 			{
 				use(1, $item[Newbiesport&trade; tent]);
 			}
@@ -2471,8 +2472,18 @@ boolean LX_attemptPowerLevel()
 
 boolean disregardInstantKarma()
 {
-	//under level 13 we wan to get max XP. level 14+ we already missed the insta karma, no need to hold back anymore.
-	return my_level() != 13 || get_property("auto_disregardInstantKarma").to_boolean();
+	//do we want to ignore the instant karma you get for defeating the naughty sorceress at exactly level 13. Used to tweak our XP gains.
+	if(inAftercore())
+	{
+		return true;
+	}
+	if(my_level() != 13)
+	{
+		//under level 13 we wan to get max XP gains. level 14+ we already missed the insta karma, no need to hold back anymore.
+		return true;
+	}
+	//auto_disregardInstantKarma is a user configured setting
+	return get_property("auto_disregardInstantKarma").to_boolean();
 }
 
 int auto_freeCombatsRemaining()
@@ -3505,6 +3516,7 @@ boolean doTasks()
 	if(chateauPainting())			return true;
 	if(LX_faxing())						return true;
 	if(LX_artistQuest())				return true;
+	if(L9_leafletQuest())				return true;
 	if(L5_findKnob())					return true;
 	if(LM_edTheUndying())				return true;
 	if(L12_sonofaPrefix())				return true;
@@ -3570,7 +3582,6 @@ boolean doTasks()
 		return true;
 	}
 
-	if(L9_leafletQuest())				return true;
 	if(L7_crypt())						return true;
 	if(fancyOilPainting())				return true;
 
