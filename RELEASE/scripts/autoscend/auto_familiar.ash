@@ -349,39 +349,3 @@ boolean haveSpleenFamiliar()
 	}
 	return false;
 }
-
-boolean considerGrimstoneGolem(boolean bjornCrown)
-{
-	if(!have_familiar($familiar[Grimstone Golem]))
-	{
-		return false;
-	}
-
-	if(bjornCrown && (get_property("_grimstoneMaskDropsCrown").to_int() != 0))
-	{
-		return false;
-	}
-
-	if((get_property("desertExploration").to_int() >= 70) && (get_property("chasmBridgeProgress").to_int() >= 29))
-	{
-		return false;
-	}
-
-	if(get_property("chasmBridgeProgress").to_int() >= 29)
-	{
-		if(!get_property("auto_grimstoneOrnateDowsingRod").to_boolean())
-		{
-			return false;
-		}
-	}
-
-	if(get_property("desertExploration").to_int() >= 70)
-	{
-		if(!get_property("auto_grimstoneFancyOilPainting").to_boolean())
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
