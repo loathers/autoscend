@@ -207,8 +207,7 @@ boolean autoAdvBypass(int snarfblat, location loc, string option);
 //	Secondary adventuring functions
 //	They are all defined in autoscend/auto_adventure.ash
 boolean preAdvXiblaxian(location loc);
-void preAdvUpdateFamiliar(location loc);
-
+void preAdvUpdateFamiliar(location place);					//Defined in autoscend/auto_adventure.ash
 
 
 // Log Handling/User Output
@@ -217,11 +216,6 @@ void print_header();
 
 // Semi-rare Handlers:
 boolean fortuneCookieEvent();
-
-// Familiar Behavior, good stuff.
-boolean handleFamiliar(familiar fam);
-boolean handleFamiliar(string fam);
-boolean basicFamiliarOverrides();
 
 // Meat Generation
 boolean autosellCrap();
@@ -234,6 +228,18 @@ boolean dailyEvents();
 //	External autoscend.ash functions, indicate where they come from.
 //
 //
+
+// Defined in autoscend/auto_familiar.ash
+boolean is100FamRun();										//Defined in autoscend/auto_familiar.ash
+boolean pathAllowsFamiliar();								//Defined in autoscend/auto_familiar.ash
+boolean auto_have_familiar(familiar fam);					//Defined in autoscend/auto_familiar.ash
+boolean canChangeFamiliar();								//Defined in autoscend/auto_familiar.ash
+boolean canChangeToFamiliar(familiar target);				//Defined in autoscend/auto_familiar.ash
+boolean handleFamiliar(string type);						//Defined in autoscend/auto_familiar.ash
+boolean handleFamiliar(familiar fam);						//Defined in autoscend/auto_familiar.ash
+boolean basicFamiliarOverrides();							//Defined in autoscend/auto_familiar.ash
+boolean haveSpleenFamiliar();								//Defined in autoscend/auto_familiar.ash
+boolean considerGrimstoneGolem(boolean bjornCrown);			//Defined in autoscend/auto_familiar.ash
 
 
 //Do we have a some item either equipped or in inventory (not closet or hagnk\'s.
@@ -464,7 +470,6 @@ boolean autoOverdrink(int howMany, item toOverdrink);			//Defined in autoscend/a
 boolean canDrink(item toDrink);								//Defined in autoscend/auto_cooking.ash
 boolean canEat(item toEat);									//Defined in autoscend/auto_cooking.ash
 boolean canChew(item toChew); //Defined in autoscend/auto_cooking.ash
-boolean auto_have_familiar(familiar fam);						//Defined in autoscend/auto_util.ash
 boolean auto_advWitchess(string target);						//Defined in autoscend/auto_mr2016.ash
 boolean auto_advWitchess(string target, string option);		//Defined in autoscend/auto_mr2016.ash
 int auto_advWitchessTargets(string target);					//Defined in autoscend/auto_mr2016.ash
@@ -507,7 +512,6 @@ void chateaumantegna_useDesk();								//Defined in autoscend/auto_mr2015.ash
 boolean chateaumantegna_usePainting();						//Defined in autoscend/auto_mr2015.ash
 boolean chateaumantegna_usePainting(string option);			//Defined in autoscend/auto_mr2015.ash
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
-boolean considerGrimstoneGolem(boolean bjornCrown);			//Defined in autoscend/auto_util.ash
 boolean acquireTransfunctioner();							//Defined in autoscend/auto_util.ash
 void consumeStuff();										//Defined in autoscend/auto_cooking.ash
 boolean containsCombat(item it);							//Defined in autoscend/auto_combat.ash
@@ -803,7 +807,6 @@ int auto_meteoriteAdesUsed();								//Defined in autoscend/auto_mr2017.ash
 boolean handleBarrelFullOfBarrels(boolean daily);			//Defined in autoscend/auto_util.ash
 boolean handleCopiedMonster(item itm);						//Defined in autoscend/auto_util.ash
 boolean handleCopiedMonster(item itm, string option);		//Defined in autoscend/auto_util.ash
-boolean handleFamiliar(string type);						//Defined in autoscend.ash
 boolean powerLevelAdjustment();								//Defined in autoscend.ash
 boolean handleFaxMonster(monster enemy);					//Defined in autoscend/auto_clan.ash
 boolean handleFaxMonster(monster enemy, boolean fightIt);	//Defined in autoscend/auto_clan.ash
@@ -841,7 +844,6 @@ boolean acquireOrPull(item it);								//Defined in autoscend/auto_util.ash
 boolean have_skills(boolean[skill] array);					//Defined in autoscend/auto_util.ash
 boolean auto_have_skill(skill sk);							//Defined in autoscend/auto_util.ash
 boolean haveGhostReport();									//Defined in autoscend/auto_mr2016.ash
-boolean haveSpleenFamiliar();								//Defined in autoscend/auto_util.ash
 int howLongBeforeHoloWristDrop();							//Defined in autoscend/auto_util.ash
 void hr_doBedtime();										//Defined in autoscend/auto_heavyrains.ash
 boolean hr_handleFamiliar(familiar fam);					//Defined in autoscend/auto_heavyrains.ash
@@ -857,10 +859,6 @@ boolean instakillable(monster mon);							//Defined in autoscend/auto_util.ash
 int[int] intList();											//Defined in autoscend/auto_list.ash
 int internalQuestStatus(string prop);						//Defined in autoscend/auto_util.ash
 int freeCrafts();											//Defined in autoscend/auto_util.ash
-boolean is100FamRun();										//Defined in autoscend/auto_util.ash
-boolean pathAllowsFamiliar();								//Defined in autoscend/auto_util.ash
-boolean canChangeFamiliar();								//Defined in autoscend/auto_util.ash
-boolean canChangeToFamiliar(familiar target);				//Defined in autoscend/auto_util.ash
 boolean isBanished(monster enemy);							//Defined in autoscend/auto_util.ash
 boolean isExpectingArrow();									//Defined in autoscend/auto_util.ash
 boolean isFreeMonster(monster mon);							//Defined in autoscend/auto_util.ash

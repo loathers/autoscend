@@ -18,8 +18,6 @@ boolean use_barrels();
 int autoCraft(string mode, int count, item item1, item item2);
 int[item] auto_get_campground();
 int towerKeyCount();
-boolean haveSpleenFamiliar();
-boolean considerGrimstoneGolem(boolean bjornCrown);
 float elemental_resist_value(int resistance);
 int elemental_resist(element goal);
 boolean organsFull();
@@ -877,97 +875,6 @@ string reverse(string s)
 		ret += char_at(s, i);
 	}
 	return ret;
-}
-
-boolean is100FamRun()
-{
-	// answers the question of "is this a 100% familiar run"
-	
-	if(get_property("auto_100familiar").to_familiar() == $familiar[none])
-	{
-		return false;
-	}
-	
-	// if you reached this line, then it means that auto_100familiar is set to some specific familiar.
-	return true;
-}
-
-boolean pathAllowsFamiliar()
-{
-	if($classes[
-	Ed, 
-	Avatar of Boris,
-	Avatar of Jarlsberg,
-	Avatar of Sneaky Pete,
-	Vampyre
-	] contains my_class())
-	{
-		return false;
-	}
-	
-	//path check for cases where the path bans familairs and does not use a unique class.
-	//since pokefam converts your familiars into pokefam, they are not actually familiars in that path and cannot be used as familiars.
-	if($strings[
-	License to Adventure,
-	Pocket Familiars
-	] contains auto_my_path())
-	{
-		return false;
-	}
-	
-	return true;
-}
-
-boolean canChangeFamiliar()
-{
-	// answers the question "am I allowed to change familiar?" in the general sense
-	
-	if(!pathAllowsFamiliar())
-	{
-		return false;
-	}
-	
-	if(is100FamRun())
-	{
-		return false;
-	}
-	
-	if(get_property("auto_disableFamiliarChanging").to_boolean())
-	{
-		return false;
-	}
-	
-	return true;
-}
-
-boolean canChangeToFamiliar(familiar target)
-{
-	// answers the question of "am I allowed to change familiar to a familiar named target"
-	
-	if(get_property("auto_disableFamiliarChanging").to_boolean())
-	{
-		return false;
-	}
-
-	// if you don't have a familiar, you can't change to it.
-	if(!auto_have_familiar(target))
-	{
-		return false;
-	}
-
-	// You are allowed to change to a familiar if it is also the goal of the current 100% run.
-	if(get_property("auto_100familiar").to_familiar() == target)
-	{
-		return true;
-	}
-	else if(!canChangeFamiliar())
-	{
-		// checks path limitations, as well as 100% runs for a diferent familiar than target
-		return false;
-	}
-	
-	// if you reached this point, then auto_100familiar must not be set to anything, you are allowed to change familiar.
-	return true;
 }
 
 boolean setAdvPHPFlag()
@@ -3717,29 +3624,6 @@ boolean provideMoxie(int amt, boolean doEquips)
 	return provideMoxie(amt, doEquips, false) >= amt;
 }
 
-boolean auto_have_familiar(familiar fam)
-{
-	if(auto_my_path() == "License to Adventure")
-	{
-		return false;
-	}
-	if($classes[
-		Avatar Of Boris,
-		Avatar Of Jarlsberg,
-		Avatar Of Sneaky Pete,
-		Ed,
-		Vampyre,
-		] contains my_class())
-	{
-		return false;
-	}
-	if(!auto_is_valid(fam))
-	{
-		return false;
-	}
-	return have_familiar(fam);
-}
-
 boolean basicAdjustML()
 {
 	if(in_boris()) return borisAdjustML();
@@ -4995,66 +4879,6 @@ void auto_visit_gnasir()
 	{
 		visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
 	}
-}
-
-boolean considerGrimstoneGolem(boolean bjornCrown)
-{
-	if(!have_familiar($familiar[Grimstone Golem]))
-	{
-		return false;
-	}
-
-	if(bjornCrown && (get_property("_grimstoneMaskDropsCrown").to_int() != 0))
-	{
-		return false;
-	}
-
-	if((get_property("desertExploration").to_int() >= 70) && (get_property("chasmBridgeProgress").to_int() >= 29))
-	{
-		return false;
-	}
-
-	if(get_property("chasmBridgeProgress").to_int() >= 29)
-	{
-		if(!get_property("auto_grimstoneOrnateDowsingRod").to_boolean())
-		{
-			return false;
-		}
-	}
-
-	if(get_property("desertExploration").to_int() >= 70)
-	{
-		if(!get_property("auto_grimstoneFancyOilPainting").to_boolean())
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-boolean haveSpleenFamiliar()
-{
-	boolean [familiar] spleenies = $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey];
-
-	int[familiar] blacklist;
-	if(get_property("auto_blacklistFamiliar") != "")
-	{
-		string[int] noFams = split_string(get_property("auto_blacklistFamiliar"), ";");
-		foreach index, fam in noFams
-		{
-			blacklist[to_familiar(trim(fam))] = 1;
-		}
-	}
-
-	foreach fam in spleenies
-	{
-		if(have_familiar(fam) && !(blacklist contains fam))
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 boolean acquireTransfunctioner()
