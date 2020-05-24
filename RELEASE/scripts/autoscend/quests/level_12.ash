@@ -791,7 +791,7 @@ boolean L12_filthworms()
 	//maximizer can accidentally end up wearing the outfit and cause infinite loop.
 	//might want to fight filthworms early to flyer. determining exactly when is overly complex so we are just assuming always.
 	//the frat outfits are pretty weak and as such its no big loss if we don't wear it when doing it early.
-	if(auto_warSide() == "fratboy" && get_property("hippiedDefeated").to_int() < 64)
+	if(auto_warSide() == "fratboy" && get_property("hippiesDefeated").to_int() < 64)
 	{
 		//helmet is least useful with +40 max MP enchantment.
 		if(possessOutfit("frat warrior fatigues"))
@@ -801,7 +801,7 @@ boolean L12_filthworms()
 		//pants and hat are identical, randomly selected hat for exclusion
 		if(possessOutfit("frat boy ensemble"))
 		{
-			addToMaximize("-orcish baseball cap");
+			addToMaximize("-equip orcish baseball cap");
 		}
 	}
 	
@@ -1894,7 +1894,7 @@ boolean L12_clearBattlefield()
 {
 	if(in_koe())
 	{
-		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiedDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && possessOutfit("Frat Warrior Fatigues", true))
+		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiesDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && possessOutfit("Frat Warrior Fatigues", true))
 		{
 			handleFamiliar("item");
 			if(haveWarOutfit())
