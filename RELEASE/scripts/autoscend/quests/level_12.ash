@@ -1894,7 +1894,7 @@ boolean L12_clearBattlefield()
 {
 	if(in_koe())
 	{
-		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiedDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && possessOutfit("Frat Warrior Fatigues", true))
+		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiesDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && possessOutfit("Frat Warrior Fatigues", true))
 		{
 			handleFamiliar("item");
 			if(haveWarOutfit())
