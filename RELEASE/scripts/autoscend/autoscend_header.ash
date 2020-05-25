@@ -879,6 +879,11 @@ boolean isOverdueArrow();									//Defined in autoscend/auto_util.ash
 boolean isOverdueDigitize();								//Defined in autoscend/auto_util.ash
 boolean isProtonGhost(monster mon);							//Defined in autoscend/auto_util.ash
 boolean isUnclePAvailable();								//Defined in autoscend/auto_util.ash
+boolean isDesertAvailable();								//Defined in autoscend/auto_util.ash
+boolean inKnollSign();										//Defined in autoscend/auto_util.ash
+boolean inCanadiaSign();									//Defined in autoscend/auto_util.ash
+boolean inGnomeSign();										//Defined in autoscend/auto_util.ash
+boolean allowSoftblockShen();								//Defined in autoscend/auto_util.ash
 boolean is_avatar_potion(item it);							//Defined in autoscend/auto_util.ash
 int auto_mall_price(item it);									//Defined in autoscend/auto_util.ash
 item[int] itemList();										//Defined in autoscend/auto_list.ash

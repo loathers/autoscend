@@ -486,7 +486,7 @@ boolean LM_bond()
 				}
 			}
 
-			if(get_property("lastDesertUnlock").to_int() < my_ascensions())
+			if(!isDesertAvailable())
 			{
 				if(my_meat() > 5000)
 				{

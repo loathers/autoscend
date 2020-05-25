@@ -834,7 +834,7 @@ generic_t zone_available(location loc)
 		break;
 	case $location[South of The Border]:
 	case $location[The Shore\, Inc. Travel Agency]:
-		if(get_property("lastDesertUnlock").to_int() == my_ascensions())
+		if(isDesertAvailable())
 		{
 			retval._boolean = true;
 		}
@@ -1378,7 +1378,7 @@ generic_t zone_available(location loc)
 		break;
 
 	case $location[Thugnderdome]:
-		if(get_property("lastDesertUnlock").to_int() == my_ascensions())
+		if(isDesertAvailable())
 		{
 			retval._boolean = gnomads_available();
 		}

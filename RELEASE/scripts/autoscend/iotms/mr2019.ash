@@ -35,8 +35,7 @@ boolean auto_sausageGrind(int numSaus)
 boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 {
 	// Some paths are pretty meat-intensive early. Just in case...
-	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
-	if(my_turncount() < 90 || !canDesert)
+	if(my_turncount() < 90 || !isDesertAvailable())
 	{
 		return false;
 	}
@@ -475,10 +474,6 @@ boolean auto_spoonReadyToTuneMoon()
 		return false;
 	}
 
-	boolean isKnoll = $strings[mongoose, wallaby, vole] contains currsign;
-	boolean isCanadia = $strings[platypus, opossum, marmot] contains currsign;
-	boolean isGnomad = $strings[wombat, blender, packrat] contains currsign;
-
 	boolean toKnoll = $strings[mongoose, wallaby, vole] contains spoonsign;
 	boolean toCanadia = $strings[platypus, opossum, marmot] contains spoonsign;
 	boolean toGnomad = $strings[wombat, blender, packrat] contains spoonsign;
@@ -494,9 +489,9 @@ boolean auto_spoonReadyToTuneMoon()
 		return false;
 	}
 
-	if(isKnoll && !toKnoll)
+	if(inKnollSign() && !toKnoll)
 	{
-		if(get_property("lastDesertUnlock").to_int() < my_ascensions())
+		if(!isDesertAvailable())
 		{
 			// we want to get the meatcar via the knoll store
 			return false;
@@ -511,13 +506,13 @@ boolean auto_spoonReadyToTuneMoon()
 		}
 	}
 
-	if(isCanadia && !toCanadia && item_amount($item[logging hatchet]) == 0)
+	if(inCanadiaSign() && !toCanadia && item_amount($item[logging hatchet]) == 0)
 	{
 		// want to make sure we've grabbed the logging hatchet before switching away from canadia
 		return false;
 	}
 
-	if(isGnomad && !toGnomad && auto_is_valid($skill[Torso Awaregness]) && !auto_have_skill($skill[Torso Awaregness]))
+	if(inGnomeSign() && !toGnomad && auto_is_valid($skill[Torso Awaregness]) && !auto_have_skill($skill[Torso Awaregness]))
 	{
 		// we want to know about our torso before swapping away from gnomad signs
 		return false;

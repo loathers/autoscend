@@ -177,7 +177,7 @@ void initializeSettings()
 	set_property("auto_powerLevelLastAttempted", "0");
 	set_property("auto_pulls", "");
 
-	 // Day on which the Shen quest was started. Required to predict which zones to avoid until Shen tells us to go there.
+	// Day on which the Shen quest was started. Required to predict which zones to avoid until Shen tells us to go there.
 	set_property("auto_shenStarted", "");
 	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
 	set_property("auto_shenSkipLastLevel", 0); 
@@ -3329,10 +3329,10 @@ boolean doTasks()
 	if(LX_guildUnlock())				return true;
 	if(knoll_available() && get_property("auto_spoonconfirmed").to_int() == my_ascensions())
 	{
-		if(LX_bitchinMeatcar())			return true;
+		if(LX_bitchinMeatcar())			return true;		//buy the meatcar before switching signs with the rune spoon
 	}
 	if(LX_findHelpfulLowKey())			return true;
-	if(LX_bitchinMeatcar())				return true;
+	if(LX_unlockDesert())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_unlockPirateRealm())			return true;
 	if(handleRainDoh())				return true;
@@ -3437,16 +3437,15 @@ boolean doTasks()
 	if (LX_lowkeySummer())					return true;
 	
 	//release the softblock on quests that are waiting for shen quest
-	if(my_level() > get_property("auto_shenSkipLastLevel").to_int() && get_property("questL11Shen") != "finished")
+	if(allowSoftblockShen())
 	{
-		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do.", "red");
+		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do. Releasing softblock.", "red");
 		set_property("auto_shenSkipLastLevel", my_level());
 		return true;
 	}
 	
 	if(LX_getDigitalKey()) 				return true;
 	if(LX_getStarKey()) 				return true;
-	
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
 	if(L13_sorceressDoor())				return true;

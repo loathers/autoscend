@@ -2276,6 +2276,47 @@ boolean isUnclePAvailable()
 	return !page_text.contains_text("You don't know where a desert beach is");
 }
 
+boolean isDesertAvailable()
+{
+	//Is this workaround still needed or is mafia correctly recognizing desert is available in koe?
+	if(in_koe())
+	{
+		auto_log_info("The desert exploded so no need to build a meatcar...");
+		set_property("lastDesertUnlock", my_ascensions());
+	}
+	
+	return get_property("lastDesertUnlock").to_int() == my_ascensions();
+}
+
+boolean inKnollSign()
+{
+	return $strings[Mongoose, Vole, Wallaby] contains my_sign();
+}
+
+boolean inCanadiaSign()
+{
+	return $strings[Marmot, Opossum, Platypus] contains my_sign();
+}
+
+boolean inGnomeSign()
+{
+	return $strings[Blender, Packrat, Wombat] contains my_sign();
+}
+
+boolean allowSoftblockShen()
+{
+	//Some quests have a softblock on doing them because shen might need them. When we run out of things to do this softblock is released.
+	//Return true means the softblock is active. Return false means the softblock is released.
+	if(get_property("questL11Shen") == "finished")
+	{
+		return false;		//shen quest is over. softblock not needed
+	}
+	
+	//We tell users to disable the shen softblock by setting auto_shenSkipLastLevel to 999.
+	//This is why we want to return < my_level() and not != my_level()
+	return get_property("auto_shenSkipLastLevel").to_int() < my_level();
+}
+
 boolean instakillable(monster mon)
 {
 	if(mon.boss)
@@ -3606,7 +3647,7 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 	if (in_koe()) return false;
 
 	int best = 10;
-	if($strings[Mongoose, Vole, Wallaby] contains my_sign())
+	if(inKnollSign())
 	{
 		if(item_amount($item[Detuned Radio]) == 0)
 		{
@@ -3617,14 +3658,14 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 			return false;
 		}
 	}
-	if($strings[Blender, Packrat, Wombat] contains my_sign())
+	if(inGnomeSign())
 	{
-		if(get_property("lastDesertUnlock").to_int() < my_ascensions())
+		if(gnomads_available())
 		{
 			return false;
 		}
 	}
-	if($strings[Marmot, Opossum, Platypus] contains my_sign())
+	if(inCanadiaSign())
 	{
 		best = 11;
 	}

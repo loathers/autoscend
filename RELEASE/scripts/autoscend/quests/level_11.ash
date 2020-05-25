@@ -60,7 +60,7 @@ boolean[location] shenSnakeLocations(int day, int n_items_returned)
 
 boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 {
-	if (get_property("auto_shenSkipLastLevel").to_int() >= my_level())
+	if (!allowSoftblockShen())
 	{
 		boolean[location] empty;
 		return empty;
