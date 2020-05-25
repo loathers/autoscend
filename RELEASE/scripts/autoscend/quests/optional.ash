@@ -367,3 +367,362 @@ boolean LX_guildUnlock()
 	}
 	return false;
 }
+
+boolean LX_pirateOutfit() {
+	if (get_property("lastIslandUnlock").to_int() < my_ascensions()) {
+		return LX_islandAccess();
+	}
+	if (possessOutfit("Swashbuckling Getup")) {
+		if (item_amount($item[The Big Book Of Pirate Insults]) == 0 && my_meat() > npc_price($item[The Big Book Of Pirate Insults])) {
+			buyUpTo(1, $item[The Big Book Of Pirate Insults]);
+		}
+		return false;
+	}
+	auto_log_info("Searching for a pirate outfit.", "blue");
+	providePlusNonCombat(25, true);
+	if (autoAdv($location[The Obligatory Pirate\'s Cove])) {
+		return true;
+	}
+	return false;
+}
+
+void piratesCoveChoiceHandler(int choice) {
+	if (choice == 22) { // The Arrrbitrator
+		if (possessEquipment($item[eyepatch])) {
+			if (possessEquipment($item[swashbuckling pants])) {
+				run_choice(3); // get 100 Meat.
+			} else {
+				run_choice(2); // get swashbuckling pants
+			}
+		} else {
+			run_choice(1); // get eyepatch
+		}
+	} else if (choice == 23) { // Barrie Me at Sea
+		if (possessEquipment($item[stuffed shoulder parrot])) {
+			if (possessEquipment($item[swashbuckling pants])) {
+				run_choice(3); // get 100 Meat.
+			} else {
+				run_choice(2); // get swashbuckling pants
+			}
+		} else {
+			run_choice(1); // get stuffed shoulder parrot
+		}
+	} else if (choice == 24) { // Amatearrr Night
+		if (possessEquipment($item[stuffed shoulder parrot])) {
+			if (possessEquipment($item[eyepatch])) {
+				run_choice(2); // get 100 Meat.
+			} else {
+				run_choice(3); // get eyepatch
+			}
+		} else {
+			run_choice(1); // get stuffed shoulder parrot
+		}
+	} else {
+		abort("unhandled choice in piratesCoveChoiceHandler");
+	}
+}
+
+string beerPong(string page)
+{
+	record r {
+		string insult;
+		string retort;
+	};
+
+	r [int] insults;
+	insults[1].insult="Arrr, the power of me serve'll flay the skin from yer bones!";
+	insults[1].retort="Obviously neither your tongue nor your wit is sharp enough for the job.";
+	insults[2].insult="Do ye hear that, ye craven blackguard?  It be the sound of yer doom!";
+	insults[2].retort="It can't be any worse than the smell of your breath!";
+	insults[3].insult="Suck on <i>this</i>, ye miserable, pestilent wretch!";
+	insults[3].retort="That reminds me, tell your wife and sister I had a lovely time last night.";
+	insults[4].insult="The streets will run red with yer blood when I'm through with ye!";
+	insults[4].retort="I'd've thought yellow would be more your color.";
+	insults[5].insult="Yer face is as foul as that of a drowned goat!";
+	insults[5].retort="I'm not really comfortable being compared to your girlfriend that way.";
+	insults[6].insult="When I'm through with ye, ye'll be crying like a little girl!";
+	insults[6].retort="It's an honor to learn from such an expert in the field.";
+	insults[7].insult="In all my years I've not seen a more loathsome worm than yerself!";
+	insults[7].retort="Amazing!  How do you manage to shave without using a mirror?";
+	insults[8].insult="Not a single man has faced me and lived to tell the tale!";
+	insults[8].retort="It only seems that way because you haven't learned to count to one.";
+
+	while(!page.contains_text("victory laps"))
+	{
+		string old_page = page;
+
+		if(!page.contains_text("Insult Beer Pong"))
+		{
+			abort("You don't seem to be playing Insult Beer Pong.");
+		}
+
+		if(page.contains_text("Phooey"))
+		{
+			auto_log_info("Looks like something went wrong and you lost.", "lime");
+			return page;
+		}
+
+		foreach i in insults
+		{
+			if(page.contains_text(insults[i].insult))
+			{
+				if(page.contains_text(insults[i].retort))
+				{
+					auto_log_info("Found appropriate retort for insult.", "lime");
+					auto_log_debug("Insult: " + insults[i].insult, "lime");
+					auto_log_debug("Retort: " + insults[i].retort, "lime");
+					page = visit_url("beerpong.php?value=Retort!&response=" + i);
+					break;
+				}
+				else
+				{
+					auto_log_info("Looks like you needed a retort you haven't learned.", "red");
+					auto_log_debug("Insult: " + insults[i].insult, "lime");
+					auto_log_debug("Retort: " + insults[i].retort, "lime");
+
+					// Give a bad retort
+					page = visit_url("beerpong.php?value=Retort!&response=9");
+					return page;
+				}
+			}
+		}
+
+		if(page == old_page)
+		{
+			abort("String not found. There may be an error with one of the insult or retort strings.");
+		}
+	}
+
+	auto_log_info("You won a thrilling game of Insult Beer Pong!", "lime");
+	return page;
+}
+
+string tryBeerPong()
+{
+	string page = visit_url("adventure.php?snarfblat=157"); //http://127.0.0.1:60081/adventure.php?snarfblat=157
+	if(contains_text(page, "Arrr You Man Enough?"))
+	{
+		page = beerPong(visit_url("choice.php?pwd&whichchoice=187&option=1"));
+	}
+	return page;
+}
+
+int numPirateInsults() {
+	int retval = 0;
+	int i = 1;
+	while (i <= 8) {
+		if (get_property("lastPirateInsult" + i) == "true") {
+			retval = retval + 1;
+		}
+		i = i + 1;
+	}
+	return retval;
+}
+
+boolean LX_joinPirateCrew() {
+	if (get_property("lastIslandUnlock").to_int() < my_ascensions()) {
+		return LX_islandAccess();
+	}
+	if (internalQuestStatus("questM12Pirate") > 4) {
+		return false;
+	}
+	if (!possessOutfit("Swashbuckling Getup", true)) {
+		auto_log_info("Can not equip, or do not have the Swashbuckling Getup. Delaying.", "red");
+		return false;
+	}
+	if (item_amount($item[The Big Book Of Pirate Insults]) == 0 && my_meat() > npc_price($item[The Big Book Of Pirate Insults])) {
+		buyUpTo(1, $item[The Big Book Of Pirate Insults]);
+	}
+	if (internalQuestStatus("questM12Pirate") == -1 || internalQuestStatus("questM12Pirate") == 1 || internalQuestStatus("questM12Pirate") == 3) {
+		auto_log_info("Findin' the Cap'n", "blue");
+		autoOutfit("Swashbuckling Getup");
+		if (numPirateInsults() >= 6) {
+			providePlusNonCombat(25, true);
+		}
+		autoAdv($location[Barrrney\'s Barrr]); // this returns false on the Cap'n Caronch adventures for some reason.
+		return true;
+	} else if (internalQuestStatus("questM12Pirate") == 0) {
+		auto_log_info("Nasty Booty time!", "red");
+		if (autoAdvBypass("inv_use.php?pwd=&which=3&whichitem=2950", $location[Noob Cave])) {
+			return true;
+		}
+	} else if (internalQuestStatus("questM12Pirate") == 2) {
+		auto_log_info("Attempting to infiltrate the frat house", "blue");
+		boolean infiltrationReady = false;
+		if (possessOutfit("Frat Boy Ensemble", true))  {
+			outfit("Frat Boy Ensemble");
+			infiltrationReady = true;
+		} else if (possessEquipment($item[mullet wig]) && item_amount($item[briefcase]) > 0) {
+			autoForceEquip($item[mullet wig]);
+			infiltrationReady = true;
+		} else if (possessEquipment($item[frilly skirt]) && item_amount($item[hot wing]) > 2) {
+			autoForceEquip($item[frilly skirt]);
+			infiltrationReady = true;
+		}
+
+		if (!infiltrationReady) {
+			if (item_amount($item[hot wing]) > 2) {
+				if (knoll_available() && my_meat() > npc_price($item[frilly skirt])) {
+					buyUpTo(1, $item[frilly skirt]);
+					autoForceEquip($item[frilly skirt]);
+					infiltrationReady = true;
+				} else {
+					if (internalQuestStatus("questM01Untinker") == -1) {
+						visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
+					}
+					if (autoAdv($location[The Degrassi Knoll Gym])) {
+						return true;
+					}
+				}
+			}
+			// TODO: add handling for the other methods here? Do we care about anything other than Catburgling?
+		}
+
+		if (infiltrationReady) {
+			if (use(1, $item[Orcish Frat House blueprints])) {
+				return true;
+			}
+		}
+	} else if (internalQuestStatus("questM12Pirate") == 4) {
+		if (numPirateInsults() >= 6) {
+			// this is held together with duct tape and hopes and dreams.
+			// it can and will fail but it will have to do for now.
+			auto_log_info("Beer Pong time.", "blue");
+			outfit("Swashbuckling Getup");
+			backupSetting("choiceAdventure187", "0");
+			tryBeerPong();
+			return true;
+		} else {
+			auto_log_info("Insult gathering party.", "blue");
+			addToMaximize("-outfit Swashbuckling Getup");
+			providePlusCombat(25, true);
+			if (autoAdv($location[The Obligatory Pirate\'s Cove])) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void barrrneysBarrrChoiceHandler(int choice) {
+	auto_log_info("barrrneysBarrrChoiceHandler Running choice " + choice, "blue");
+	if (choice == 184) { // That Explains All The Eyepatches
+		if (my_primestat() == $stat[mysticality]) {
+			run_choice(3); // get shot of rotgut
+		} else {
+			run_choice(1); // combat with tipsy pirate
+		}
+	} else if (choice == 185) { // Yes, You're a Rock Starrr
+		run_choice(3); // combat with tetchy pirate at 0 drunkenness or stats otherwise
+	} else if (choice == 186) { // A Test of Testarrrsterone
+		if (my_primestat() == $stat[moxie]) {
+			run_choice(3); // moxie stats
+		} else {
+			run_choice(1); // stats
+		}
+	} else {
+		abort("unhandled choice in barrrneysBarrrChoiceHandler");
+	}
+}
+
+boolean LX_fledglingPirateIsYou() {
+	if (internalQuestStatus("questM12Pirate") != 5) {
+		return false;
+	}
+
+	if (possessEquipment($item[pirate fledges])) {
+		return false;
+	}
+
+	auto_log_info("F'c'le t'me!", "blue");
+	autoOutfit("Swashbuckling Getup");
+	providePlusCombat(25, true);
+	if (autoAdv($location[The F\'c\'le])) {
+		return true;
+	}
+	return false;
+}
+
+void fcleChoiceHandler(int choice) {
+	if (choice == 191) {
+		if(item_amount($item[Valuable Trinket]) > 0) {
+			run_choice(2);
+		} else {
+			switch(my_primestat()) {
+				case $stat[Muscle]:
+					run_choice(3);
+					break;
+				case $stat[Mysticality]:
+					run_choice(4);
+					break;
+				case $stat[Moxie]:
+					run_choice(1);
+					break;
+			}
+		}
+	} else {
+		abort("unhandled choice in fcleChoiceHandler");
+	}
+}
+
+boolean LX_unlockBelowdecks() {
+	if (internalQuestStatus("questM12Pirate") != 6 || internalQuestStatus("questL11MacGuffin") < 2) {
+		return false;
+	}
+
+	if (!possessEquipment($item[pirate fledges])) {
+		return false;
+	}
+
+	auto_log_info("Swordfish? Every password was swordfish!", "blue");
+	autoEquip($item[pirate fledges]);
+	providePlusNonCombat(25, true);
+	if (autoAdv($location[The Poop Deck])) {
+		return true;
+	}
+	return false;
+}
+
+boolean LX_pirateQuest() {
+	if (LX_pirateOutfit() || LX_joinPirateCrew() || LX_fledglingPirateIsYou() || LX_unlockBelowdecks()) {
+		return true;
+	}
+	return false;
+}
+
+string[class] legendaryEpicWeapons;
+legendaryEpicWeapons[$class[Seal Clubber]] = "Hammer of Smiting";
+legendaryEpicWeapons[$class[Turtle Tamer]] = "Chelonian Morningstar";
+legendaryEpicWeapons[$class[Pastamancer]] = "Greek Pasta Spoon of Peril";
+legendaryEpicWeapons[$class[Sauceror]] = "17-alarm Saucepan";
+legendaryEpicWeapons[$class[Disco Bandit]] = "Shagadelic Disco Banjo";
+legendaryEpicWeapons[$class[Accordion Thief]] = "Squeezebox of the Ages";
+// usage: item legendaryEpicWeapon = legendaryEpicWeapons[my_class()].to_item();
+
+boolean LX_acquireLegendaryEpicWeapon() {
+	if (internalQuestStatus("questG04Nemesis") < 0 || internalQuestStatus("questG04Nemesis") > 4) {
+		return false;
+	}
+
+	if (item_amount(legendaryEpicWeapons[my_class()].to_item()) > 0) {
+		return false;
+	}
+
+	if (internalQuestStatus("questG04Nemesis") == 4) {
+		visit_url("guild.php?place=scg");
+		return true;
+	}
+
+	if (autoAdv($location[The Unquiet Garves])) {
+		return true;
+	}
+	return false;
+}
+
+// TODO: Add the rest of the Nemesis quest with a flag to enable doing it in-run?
+boolean LX_NemesisQuest() {
+	if (LX_acquireLegendaryEpicWeapon()) {
+		return true;
+	}
+	return false;
+}

@@ -172,16 +172,24 @@ boolean lowkey_zoneUnlocks()
 {
 	if(startHippyBoatmanSubQuest())
 	{
+		// opens The Old Landfill for scrap metal key (+20% to all Moxie Gains)
 		return true;
 	}
 
 	if (startArmorySubQuest())
 	{
+		// opens Madness Bakery for deep-fried key (+3 sleaze res, +15 sleaze dmg, +30 sleaze spell dmg)
 		return true;
 	}
 
 	if (startGalaktikSubQuest())
 	{
+		// opens The Overgrown Lot for discarded bike lock key (+10 MP,  4-5 MP regen)
+		return true;
+	}
+
+	if (startMeatsmithSubQuest()) {
+		// opens The Skeleton Store for actual skeleton key (100 DA, 10 DR)
 		return true;
 	}
 
@@ -211,65 +219,74 @@ boolean LX_findHelpfulLowKey()
 		// needs knob lab access
 		if (my_primestat() == $stat[Muscle] && lowkey_keyAdv($item[Knob labinet key])) { return true; }
 		// needs accept landfil quest
-		if (my_primestat() == $stat[Moxie] && lowkey_keyAdv($item[scrap metal key])) { return true; }
+		if (my_primestat() == $stat[Moxie] && (LX_hippyBoatman() || lowkey_keyAdv($item[scrap metal key]))) { return true; }
 		// Needs Pandamonium access
 		if (my_primestat() == $stat[Mysticality] && lowkey_keyAdv($item[Demonic key])) { return true; }
 	}
 
-	// -combat
+	// Attributes. This is a nowander zone so burning delay here is unlikely.
+	if (lowkey_keyAdv($item[Rabbit\'s foot key])) { return true; }
+
+	// familiar weight
+	if (lowkey_keyAdv($item[Black rose key])) { return true; }
+
+	// -combat. Key sausage needs Cobb's Knob Access
 	if (lowkey_keyAdv($item[Key sausage])) { return true; }
 
 	// +item
-	// needs pirate quest ugh
+	// Treasure chest key needs Belowdecks access
 	if (lowkey_keyAdv($item[Treasure chest key])) { return true; }
 
-	// +meat
+	// +meat. Knob treasury key needs Cobb's Knob Access. Kekekey needs The Valley of Rof L'm Fao access.
 	if (lowkey_keyAdv($item[Knob treasury key])) { return true; }
 	if (lowkey_keyAdv($item[Kekekey])) { return true; }
 
-	// Knob key to unlock shaft for +adv
-	if (lowkey_keyAdv($item[Knob labinet key])) { return true; }
+	// Knob key to unlock shaft for +adv. needs Cobb's Knob Access
+	if (item_amount($item[Cobb\'s Knob lab key]) < 1 && lowkey_keyAdv($item[Knob labinet key])) { return true; }
 
-	// +adv
+	// +adv. Knob shaft skate key needs Cobb's Knob lab key for access to Knob Shaft
 	if (lowkey_keyAdv($item[Knob shaft skate key])) { return true; }
 
-	if (internalQuestStatus("questL09Topping") == 3)
-	{
+	if (internalQuestStatus("questM20Necklace") < 1) {
+		// hot res for the Haunted Kitchen. aquí needs Desert Beach Access
+		if (lowkey_keyAdv($item[aqu&iacute;])) { return true; }
+		// stench res for the Haunted Kitchen
+		if (lowkey_keyAdv($item[batting cage key])) { return true; }
+	}
+
+	if (internalQuestStatus("questL09Topping") > 0 && internalQuestStatus("questL09Topping") < 3) {
 		// +ml (before oil peak)
-		// needs pirate quest ugh
+		// F'c'le sh'c'le k'y needs F'c'le access
 		if (lowkey_keyAdv($item[F\'c\'le sh\'c\'le k\'y])) { return true; }
-		// needs accept nemesis quest
+		// Clown car key needs "Fun" house access
 		if (lowkey_keyAdv($item[Clown car key])) { return true; }
-		// cold res before aboo
+		// cold res before aboo. Needs Icy Peak Access
 		if (lowkey_keyAdv($item[Ice Key])) { return true; }
-		// spooky res before aboo
+		// spooky res before aboo. Needs Menagerie access.
 		if (lowkey_keyAdv($item[Weremoose key])) { return true; }
 	}
 
 	// sleaze damage before red zeppelin
-	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
-	{
+	if (internalQuestStatus("questL11Ron") > -1 && internalQuestStatus("questL11Ron") < 2) {
 		if (lowkey_keyAdv($item[Deep-fried key])) { return true; }
+		// Clown car key needs "Fun" house access
 		if (lowkey_keyAdv($item[Clown car key])) { return true; }
 	}
 
-	// cold spell damage before orcs
+	// cold spell damage before orcs. Ice Key needs The Icy Peak access
 	if (internalQuestStatus("questL09Topping") == 0 && get_property("chasmBridgeProgress").to_int() < 30)
 	{
 		if (lowkey_keyAdv($item[Ice Key])) { return true; }
 	}
 
-	// +combat before sonofa
+	// +combat before sonofa. Music Box Key needs Spookyraven Manor third floor access
 	if (internalQuestStatus("questL12War") == 1 && get_property("sidequestLighthouseCompleted") == "none")
 	{
 		if (lowkey_keyAdv($item[Music Box Key])) { return true; }
 	}
 
-	// Attributes?
-	//if (lowkey_keyAdv($item[Rabbit\'s foot key])) { return true; }
-
-	// familiar weight?
-	//if (lowkey_keyAdv($item[Black rose key])) { return true; }
+	// stats. Needs Island access. May as well finish this off since we'll be farming the Pirate Outfit
+	if (lowkey_keyAdv($item[peg key])) { return true; }
 
 	// food drops?
 	//if (lowkey_keyAdv($item[Anchovy can key])) { return true; }
@@ -308,10 +325,27 @@ boolean L13_sorceressDoorLowKey()
 			}
 			abort("Please unlock zones manually and try again.");
 		}
-		// TODO: Unlock doors
-		abort("All low keys found, please unlock door manually.");
+		// Unlock door
+		if (tower_door()) {
+			return true;
+		}
 		return false;
 	}
 
 	return autoAdv(1, loc);
+}
+
+boolean LX_lowkeySummer() {
+	if (!in_lowkeysummer()) {
+		return false;
+	}
+
+	// Stuff we need to do in this path to unlock key zones.
+	if (LX_pirateQuest()) {
+		return true;
+	}
+	if (LX_acquireLegendaryEpicWeapon()) {
+		return true;
+	}
+	return false;
 }

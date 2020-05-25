@@ -101,52 +101,11 @@ boolean LX_desertAlternate()
 {
 	if(auto_my_path() == "Nuclear Autumn")
 	{
-		if(my_basestat(my_primestat()) < 25)
-		{
-			return false;
-		}
-		if(get_property("questM19Hippy") == "unstarted")
-		{
-			startHippyBoatmanSubQuest();
-
-			if(get_property("questM19Hippy") == "unstarted")
-			{
-				abort("Failed to unlock The Old Landfill. Not sure what to do now...");
-			}
-			return true;
-		}
-		if((item_amount($item[Old Claw-Foot Bathtub]) > 0) && (item_amount($item[Old Clothesline Pole]) > 0) && (item_amount($item[Antique Cigar Sign]) > 0) && (item_amount($item[Worse Homes and Gardens]) > 0))
-		{
-			cli_execute("make 1 junk junk");
-			string temp = visit_url("place.php?whichplace=woods&action=woods_hippy");
-			return true;
-		}
-
-		if(item_amount($item[Funky Junk Key]) > 0)
-		{
-			//We will hit a Once More Unto the Junk adventure now
-			if(item_amount($item[Old Claw-Foot Bathtub]) == 0)
-			{
-				set_property("choiceAdventure794", 1);
-				set_property("choiceAdventure795", 1);
-			}
-			else if(item_amount($item[Old Clothesline Pole]) == 0)
-			{
-				set_property("choiceAdventure794", 2);
-				set_property("choiceAdventure796", 2);
-			}
-			else if(item_amount($item[Antique Cigar Sign]) == 0)
-			{
-				set_property("choiceAdventure794", 3);
-				set_property("choiceAdventure797", 3);
-			}
-			return autoAdv($location[The Old Landfill]);
-		}
-		else
-		{
-			return autoAdv($location[The Old Landfill]);
-		}
-
+		return LX_hippyBoatman();
+	}
+	if(get_property("lastDesertUnlock").to_int() == my_ascensions())
+	{
+		return false;
 	}
 	if(knoll_available())
 	{
@@ -168,6 +127,10 @@ boolean LX_islandAccess()
 	if(in_koe())
 	{
 		return false;
+	}
+
+	if (in_lowkeysummer()) {
+		return LX_hippyBoatman();
 	}
 
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
@@ -248,6 +211,76 @@ boolean LX_islandAccess()
 		return true;
 	}
 	return false;
+}
+
+boolean LX_hippyBoatman() {
+	if (get_property("lastIslandUnlock").to_int() >= my_ascensions()) {
+		return false;
+	}
+
+	if (item_amount($item[junk junk]) > 0 ) {
+		return false;
+	}
+
+	if (get_property("questM19Hippy") == "finished") {  // TODO: replace this with internalQuestStatus when you have the steps
+		return false;
+	}
+
+	if (my_basestat(my_primestat()) < 25) {
+		return false;
+	}
+
+	if (internalQuestStatus("questM19Hippy") < 0) {
+		startHippyBoatmanSubQuest();
+
+		if (internalQuestStatus("questM19Hippy") < 0) {
+			abort("Failed to unlock The Old Landfill. Not sure what to do now...");
+		}
+		return true;
+	}
+
+	if (autoAdv($location[The Old Landfill])) {
+		if (item_amount($item[Old Claw-Foot Bathtub]) > 0 && item_amount($item[Old Clothesline Pole]) > 0 && item_amount($item[Antique Cigar Sign]) > 0 && item_amount($item[Worse Homes and Gardens]) > 0) {
+			create(1, $item[junk junk]);
+			visit_url("place.php?whichplace=woods&action=woods_hippy");
+		}
+		return true;
+	}
+	return false;
+}
+
+void oldLandfillChoiceHandler(int choice) {
+	if (choice == 794) { // Once More Unto the Junk
+		if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
+			run_choice(1); // go to The Bathroom of Ten Men (#795)
+		} else if(item_amount($item[Old Clothesline Pole]) == 0) {
+			run_choice(2); // go to The Den of Iquity (#796)
+		} else if(item_amount($item[Antique Cigar Sign]) == 0) {
+			run_choice(3); // go to Let's Workshop This a Little (#797)
+		} else {
+			run_choice(1); // go to The Bathroom of Ten Men (#795)
+		}
+	} else if (choice == 795) { // The Bathroom of Ten Men
+		if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
+			run_choice(1); // get old claw-foot bathtub
+		} else {
+			run_choice(2); // fight a random enemy from the zone
+		}
+	} else if (choice == 796) { // The Den of Iquity
+		if(item_amount($item[Old Clothesline Pole]) == 0) {
+			run_choice(2); // get old clothesline pole
+		} else {
+			run_choice(3); // get tangle of copper wire
+		}
+	} else if (choice == 797) { // Let's Workshop This a Little
+		if(item_amount($item[Antique Cigar Sign]) == 0) {
+			run_choice(3); // get antique cigar sign
+		} else {
+			run_choice(1); // get Junk-Bond
+		}
+	} else {
+		abort("unhandled choice in oldLandfillChoiceHandler");
+	}
 }
 
 boolean LX_lockPicking()

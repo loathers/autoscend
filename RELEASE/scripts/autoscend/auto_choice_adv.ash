@@ -72,6 +72,11 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(1); // get miner's helmet
 			}
 			break;
+		case 22: // The Arrrbitrator (The Obligatory Pirate's Cove)
+		case 23: // Barrie Me at Sea (The Obligatory Pirate's Cove)
+		case 24: // Amatearrr Night (The Obligatory Pirate's Cove)
+			piratesCoveChoiceHandler(choice);
+			break;
 		case 89: // Out in the Garden (The Haunted Gallery)
 			if (isActuallyEd() && (!possessEquipment($item[serpentine sword]) || !possessEquipment($item[snake shield]))) {
 				run_choice(2); // fight the snake knight (should non-Ed classes/paths do this too?)
@@ -97,6 +102,27 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
 			run_choice(4); // skip
+			break;
+		case 184: // That Explains All The Eyepatches (Barrrney's Barrr)
+		case 185: // Yes, You're a Rock Starrr (Barrrney's Barrr)
+		case 186: // A Test of Testarrrsterone (Barrrney's Barrr)
+			barrrneysBarrrChoiceHandler(choice);
+			break;
+			// Note: 187 is the Beer Pong NC and is currently handled differently.
+		case 188: // The Infiltrationist (Orcish Frat House blueprints)
+			if (is_wearing_outfit("Frat Boy Ensemble")) {
+				run_choice(1);
+			} else if (equipped_amount($item[mullet wig]) == 1 && item_amount($item[briefcase]) > 0) {
+				run_choice(2);
+			} else {
+				run_choice(3);
+			}
+			break;
+		case 189: // O Cap'm, My Cap'm (The Poop Deck)
+			run_choice(2); // skip
+			break;
+		case 191: // Chatterboxing (The F'c'le)
+			fcleChoiceHandler(choice);
 			break;
 		case 502: // Arboreal Respite (The Spooky Forest)
 			if (internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0) {
@@ -245,6 +271,12 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(2); // skip
 			}
 			break;
+		case 794: // Once More Unto the Junk (The Old Landfill)
+		case 795: // The Bathroom of Ten Men (The Old Landfill)
+		case 796: // The Den of Iquity (The Old Landfill)
+		case 797: // Let's Workshop This a Little (The Old Landfill)
+			oldLandfillChoiceHandler(choice);
+			break;
 		case 875: // Welcome To Our ool Table (The Haunted Billiards Room).
 			if(poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)
 			{
@@ -289,6 +321,9 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 882: // Off the Rack (The Haunted Bathroom)
 			run_choice(1); // take the towel
+			break;
+		case 885: // Chasin' Babies (Nursery) (The Haunted Nursery)
+			run_choice(6); // skip
 			break;
 		case 888: // Take a Look, it's in a Book! (Rise) (The Haunted Library)
 			run_choice(4); // skip
@@ -360,7 +395,16 @@ boolean auto_run_choice(int choice, string page)
 				set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 			}
 			break;
-		case 1061: // Heart of Madness(Madness Bakery Quest)
+		case 1060: // Temporarily Out of Skeletons (The Skeleton Store)
+			if (item_amount($item[Skeleton Store office key]) == 0) {
+				run_choice(1); // Skeleton Store office key
+			} else if (internalQuestStatus("questM23Meatsmith") < 1) {
+				run_choice(4); // fight The former owner of the Skeleton Store
+			} else {
+				run_choice(2); // get ring of telling skeletons what to do or 300 meat
+			}
+			break;
+		case 1061: // Heart of Madness (Madness Bakery Quest)
 			if(internalQuestStatus("questM25Armorer") <= 1) {
 				run_choice(1);
 			} else {
