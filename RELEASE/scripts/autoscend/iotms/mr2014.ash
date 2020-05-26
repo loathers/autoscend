@@ -1,7 +1,7 @@
 script "mr2014.ash"
 
 #	This is meant for items that have a date of 2014.
-#	Handling: Little Geneticist DNA-Splicing Lab, Xi-Receiver Unit
+#	Handling: Bjorn, Little Geneticist DNA-Splicing Lab, Xi-Receiver Unit
 #
 
 
@@ -11,11 +11,102 @@ boolean dna_generic();
 boolean dna_startAcquire();
 boolean xiblaxian_makeStuff();
 
+boolean handleBjornify(familiar fam)
+{
+	if(in_hardcore())
+	{
+		return false;
+	}
 
-//Supplemental
+	if((equipped_item($slot[back]) != $item[buddy bjorn]) || (my_bjorned_familiar() == fam))
+	{
+		return false;
+	}
 
+	if(!canChangeFamiliar() && (fam == my_familiar()))
+	{
+		return false;
+	}
 
+	if(have_familiar(fam))
+	{
+		bjornify_familiar(fam);
+	}
+	else
+	{
+		if(have_familiar($familiar[El Vibrato Megadrone]))
+		{
+			bjornify_familiar($familiar[El Vibrato Megadrone]);
+		}
+		else
+		{
+			if((my_familiar() != $familiar[Grimstone Golem]) && have_familiar($familiar[Grimstone Golem]))
+			{
+				bjornify_familiar($familiar[Grimstone Golem]);
+			}
+			else if(have_familiar($familiar[Adorable Seal Larva]))
+			{
+				bjornify_familiar($familiar[Adorable Seal Larva]);
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+	if(my_familiar() == $familiar[none])
+	{
+		if(my_bjorned_familiar() == $familiar[Grimstone Golem])
+		{
+			handleFamiliar("stat");
+		}
+		else if(my_bjorned_familiar() == $familiar[Grim Brother])
+		{
+			handleFamiliar("item");
+		}
+		else
+		{
+			handleFamiliar("item");
+		}
+	}
+	return true;
+}
 
+boolean considerGrimstoneGolem(boolean bjornCrown)
+{
+	if(!have_familiar($familiar[Grimstone Golem]))
+	{
+		return false;
+	}
+
+	if(bjornCrown && (get_property("_grimstoneMaskDropsCrown").to_int() != 0))
+	{
+		return false;
+	}
+
+	if((get_property("desertExploration").to_int() >= 70) && (get_property("chasmBridgeProgress").to_int() >= 29))
+	{
+		return false;
+	}
+
+	if(get_property("chasmBridgeProgress").to_int() >= 29)
+	{
+		if(!get_property("auto_grimstoneOrnateDowsingRod").to_boolean())
+		{
+			return false;
+		}
+	}
+
+	if(get_property("desertExploration").to_int() >= 70)
+	{
+		if(!get_property("auto_grimstoneFancyOilPainting").to_boolean())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
 
 boolean dna_startAcquire()
 {

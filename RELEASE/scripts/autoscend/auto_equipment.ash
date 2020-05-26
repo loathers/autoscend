@@ -471,67 +471,6 @@ boolean possessOutfit(string outfitToCheck) {
 	return possessOutfit(outfitToCheck, false);	
 }
 
-boolean handleBjornify(familiar fam)
-{
-	if(in_hardcore())
-	{
-		return false;
-	}
-
-	if((equipped_item($slot[back]) != $item[buddy bjorn]) || (my_bjorned_familiar() == fam))
-	{
-		return false;
-	}
-
-	if(!canChangeFamiliar() && (fam == my_familiar()))
-	{
-		return false;
-	}
-
-	if(have_familiar(fam))
-	{
-		bjornify_familiar(fam);
-	}
-	else
-	{
-		if(have_familiar($familiar[El Vibrato Megadrone]))
-		{
-			bjornify_familiar($familiar[El Vibrato Megadrone]);
-		}
-		else
-		{
-			if((my_familiar() != $familiar[Grimstone Golem]) && have_familiar($familiar[Grimstone Golem]))
-			{
-				bjornify_familiar($familiar[Grimstone Golem]);
-			}
-			else if(have_familiar($familiar[Adorable Seal Larva]))
-			{
-				bjornify_familiar($familiar[Adorable Seal Larva]);
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
-	if(my_familiar() == $familiar[none])
-	{
-		if(my_bjorned_familiar() == $familiar[Grimstone Golem])
-		{
-			handleFamiliar("stat");
-		}
-		else if(my_bjorned_familiar() == $familiar[Grim Brother])
-		{
-			handleFamiliar("item");
-		}
-		else
-		{
-			handleFamiliar("item");
-		}
-	}
-	return true;
-}
-
 void equipBaseline()
 {
 	equipMaximizedGear();
