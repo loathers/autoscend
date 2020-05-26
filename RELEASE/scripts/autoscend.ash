@@ -3076,7 +3076,7 @@ void print_header()
 
 boolean doTasks()
 {
-	if(get_property("_casualAscension").to_int() >= my_ascensions())
+	if(inCasual())
 	{	
 		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");	
 		return false;	
@@ -3091,7 +3091,7 @@ boolean doTasks()
 	auto_interruptCheck();
 
 	int delay = get_property("auto_delayTimer").to_int();
-	if(delay != 0)
+	if(delay > 0)
 	{
 		auto_log_info("Delay between adventures... beep boop... ", "blue");
 		wait(delay);
