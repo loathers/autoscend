@@ -1406,7 +1406,10 @@ boolean L12_lastDitchFlyer()
 				return true;
 			}
 		}
-		return true;
+	} else if (needDigitalKey()) {
+		if (LX_getDigitalKey()) {
+			return true;
+		}
 	}
 	else
 	{
@@ -1418,6 +1421,7 @@ boolean L12_lastDitchFlyer()
 		}
 		return true;
 	}
+	return false;
 }
 
 boolean LX_attemptFlyering()
