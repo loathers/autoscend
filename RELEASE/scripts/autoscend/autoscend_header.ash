@@ -21,6 +21,8 @@ boolean LA_cs_communityService();				//Defined in autoscend/auto_community_servi
 boolean LM_edTheUndying();						//Defined in autoscend/auto_edTheUndying.ash
 
 boolean LX_desertAlternate();
+boolean LX_hippyBoatman();
+void oldLandfillChoiceHandler(int choice);
 boolean LX_lockPicking();
 boolean LX_phatLootToken();
 boolean LX_islandAccess();
@@ -29,6 +31,15 @@ boolean LX_fcle();
 boolean ornateDowsingRod();
 boolean LX_nastyBooty();
 boolean LX_guildUnlock();
+boolean LX_pirateOutfit();
+void piratesCoveChoiceHandler(int choice);
+boolean LX_joinPirateCrew();
+void barrrneysBarrrChoiceHandler(int choice, string page);
+boolean LX_fledglingPirateIsYou();
+void fcleChoiceHandler(int choice);
+boolean LX_unlockBelowdecks();
+boolean LX_pirateQuest();
+boolean LX_acquireLegendaryEpicWeapon();
 boolean LX_hardcoreFoodFarm();
 boolean LX_melvignShirt();
 boolean LX_attemptPowerLevel();
@@ -1205,6 +1216,7 @@ location lowkey_nextAvailableKeyDelayLocation(); // Defined in autoscend/paths/l
 boolean lowkey_keyAdv(item key); // Defined in autoscend/paths/low_key_summer.ash
 boolean LX_findHelpfulLowKey();  // Defined in autoscend/paths/low_key_summer.ash
 boolean L13_sorceressDoorLowKey(); // Defined in autoscend/paths/low_key_summer.ash
+boolean LX_lowkeySummer(); // Defined in autoscend/paths/low_key_summer.ash
 
 element currentFlavour(); // Defined in autoscend/auto_util.ash
 void resetFlavour(); // Defined in autoscend/auto_util.ash

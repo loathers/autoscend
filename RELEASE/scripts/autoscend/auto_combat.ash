@@ -1055,7 +1055,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(canUse($item[The Big Book of Pirate Insults]) && (numPirateInsults() < 8) && (internalQuestStatus("questM12Pirate") < 5))
 	{
-		if(($locations[Barrrney\'s Barrr, The Obligatory Pirate\'s Cove] contains my_location()) || ((enemy == $monster[Gaudy Pirate]) && (my_location() != $location[Belowdecks])))
+		if ($locations[Barrrney\'s Barrr, The Obligatory Pirate\'s Cove] contains my_location())
 		{
 			return useItem($item[The Big Book Of Pirate Insults]);
 		}

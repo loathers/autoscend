@@ -311,6 +311,16 @@ boolean auto_pre_adventure()
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);
 	}
 
+	if ($locations[Barrrney\'s Barrr, The F\'c\'le, The Poop Deck, Belowdecks] contains place) {
+		if (possessEquipment($item[pirate fledges])) {
+			autoEquip($slot[acc3], $item[pirate fledges]);
+		} else if (possessOutfit("Swashbuckling Getup")) {
+			autoOutfit("Swashbuckling Getup");
+		} else {
+			abort("Trying to be a pirate without being able to dress like a pirate.");
+		}
+	}
+
 	bat_formPreAdventure();
 	horsePreAdventure();
 

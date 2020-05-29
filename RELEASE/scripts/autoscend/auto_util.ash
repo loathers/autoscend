@@ -65,7 +65,6 @@ int internalQuestStatus(string prop);
 string runChoice(string page_text);
 int turkeyBooze();
 int amountTurkeyBooze();
-int numPirateInsults();
 int fastenerCount();
 int lumberCount();
 skill preferredLibram();
@@ -88,7 +87,6 @@ item bangPotionNeeded(effect need);
 boolean solveBangPotion(effect need);
 boolean pulverizeThing(item it);
 boolean buy_item(item it, int quantity, int maxprice);
-string tryBeerPong();
 boolean hasShieldEquipped();
 boolean[skill] ATSongList();
 void shrugAT();
@@ -174,7 +172,6 @@ int auto_predictAccordionTurns();
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns);
-string beerPong(string page);
 boolean beehiveConsider();
 string safeString(string input);
 string safeString(skill input);
@@ -3255,8 +3252,8 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		if(resfam != $familiar[none])
 		{
 			// need to use now so maximizer will see it
+			familiar currentFamiliar = my_familiar();
 			use_familiar(resfam);
-			handleFamiliar(resfam);
 			if(resfam == $familiar[Trick-or-Treating Tot])
 			{
 				cli_execute("acquire 1 li'l candy corn costume");
@@ -3267,6 +3264,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
+			use_familiar(currentFamiliar);
 		}
 		if(pass())
 			return result();
@@ -4085,22 +4083,6 @@ int amountTurkeyBooze()
 	return 0;
 }
 
-int numPirateInsults()
-{
-	int retval = 0;
-	int i = 1;
-	while(i <= 8)
-	{
-		if(get_property("lastPirateInsult"+i) == "true")
-		{
-			retval = retval + 1;
-		}
-		i = i + 1;
-	}
-	return retval;
-}
-
-
 int fastenerCount()
 {
 	int base = get_property("chasmBridgeProgress").to_int();
@@ -4564,82 +4546,6 @@ boolean buy_item(item it, int quantity, int maxprice)
 	return true;
 }
 
-//Thanks, Rinn!
-string beerPong(string page)
-{
-	record r {
-		string insult;
-		string retort;
-	};
-
-	r [int] insults;
-	insults[1].insult="Arrr, the power of me serve'll flay the skin from yer bones!";
-	insults[1].retort="Obviously neither your tongue nor your wit is sharp enough for the job.";
-	insults[2].insult="Do ye hear that, ye craven blackguard?  It be the sound of yer doom!";
-	insults[2].retort="It can't be any worse than the smell of your breath!";
-	insults[3].insult="Suck on <i>this</i>, ye miserable, pestilent wretch!";
-	insults[3].retort="That reminds me, tell your wife and sister I had a lovely time last night.";
-	insults[4].insult="The streets will run red with yer blood when I'm through with ye!";
-	insults[4].retort="I'd've thought yellow would be more your color.";
-	insults[5].insult="Yer face is as foul as that of a drowned goat!";
-	insults[5].retort="I'm not really comfortable being compared to your girlfriend that way.";
-	insults[6].insult="When I'm through with ye, ye'll be crying like a little girl!";
-	insults[6].retort="It's an honor to learn from such an expert in the field.";
-	insults[7].insult="In all my years I've not seen a more loathsome worm than yerself!";
-	insults[7].retort="Amazing!  How do you manage to shave without using a mirror?";
-	insults[8].insult="Not a single man has faced me and lived to tell the tale!";
-	insults[8].retort="It only seems that way because you haven't learned to count to one.";
-
-	while(!page.contains_text("victory laps"))
-	{
-		string old_page = page;
-
-		if(!page.contains_text("Insult Beer Pong"))
-		{
-			abort("You don't seem to be playing Insult Beer Pong.");
-		}
-
-		if(page.contains_text("Phooey"))
-		{
-			auto_log_info("Looks like something went wrong and you lost.", "lime");
-			return page;
-		}
-
-		foreach i in insults
-		{
-			if(page.contains_text(insults[i].insult))
-			{
-				if(page.contains_text(insults[i].retort))
-				{
-					auto_log_info("Found appropriate retort for insult.", "lime");
-					auto_log_debug("Insult: " + insults[i].insult, "lime");
-					auto_log_debug("Retort: " + insults[i].retort, "lime");
-					page = visit_url("beerpong.php?value=Retort!&response=" + i);
-					break;
-				}
-				else
-				{
-					auto_log_info("Looks like you needed a retort you haven't learned.", "red");
-					auto_log_debug("Insult: " + insults[i].insult, "lime");
-					auto_log_debug("Retort: " + insults[i].retort, "lime");
-
-					// Give a bad retort
-					page = visit_url("beerpong.php?value=Retort!&response=9");
-					return page;
-				}
-			}
-		}
-
-		if(page == old_page)
-		{
-			abort("String not found. There may be an error with one of the insult or retort strings.");
-		}
-	}
-
-	auto_log_info("You won a thrilling game of Insult Beer Pong!", "lime");
-	return page;
-}
-
 int howLongBeforeHoloWristDrop()
 {
 	int drops = get_property("_holoWristDrops").to_int() + 1;
@@ -4989,17 +4895,6 @@ int [item] auto_get_campground()
 	}
 
 	return campItems;
-}
-
-//Thanks, Rinn!
-string tryBeerPong()
-{
-	string page = visit_url("adventure.php?snarfblat=157");
-	if(contains_text(page, "Arrr You Man Enough?"))
-	{
-		page = beerPong(visit_url("choice.php?pwd&whichchoice=187&option=1"));
-	}
-	return page;
 }
 
 boolean buyUpTo(int num, item it)

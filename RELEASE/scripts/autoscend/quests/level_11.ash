@@ -287,7 +287,7 @@ boolean LX_spookyravenManorFirstFloor() {
 }
 
 boolean LX_danceWithLadySpookyraven() {
-	if (internalQuestStatus("questM21Dance") > 2) {
+	if (internalQuestStatus("questM21Dance") != 2) {
 		return false;
 	}
 
@@ -297,6 +297,10 @@ boolean LX_danceWithLadySpookyraven() {
 	auto_log_info("Finished Spookyraven, just dancing with the lady.", "blue");
 	visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 	if (autoAdv($location[The Haunted Ballroom])) {
+		if (in_lowkeysummer()) {
+			// need to open the Haunted Nursery for the music box key.
+			visit_url("place.php?whichplace=manor3&action=manor3_ladys");
+		}
 		return true;
 	}
 	return false;

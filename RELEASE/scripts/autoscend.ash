@@ -3403,16 +3403,6 @@ boolean doTasks()
 	if(L11_hiddenCityZones())			return true;
 	if(ornateDowsingRod())				return true;
 	if(L11_aridDesert())				return true;
-
-	if (get_property("sidequestNunsCompleted") != "none" && item_amount($item[Half A Purse]) == 1)
-	{
-		pulverizeThing($item[Half A Purse]);
-		if(item_amount($item[Handful of Smithereens]) > 0)
-		{
-			cli_execute("make " + $item[Louder Than Bomb]);
-		}
-	}
-
 	if(L11_hiddenCity())				return true;
 	if(L11_talismanOfNam())				return true;
 	if(L11_palindome())					return true;
@@ -3428,8 +3418,6 @@ boolean doTasks()
 	if(L12_farm())						return true;
 	if(L11_getBeehive())				return true;
 	if(L12_finalizeWar())				return true;
-	if(LX_getDigitalKey())				return true;
-	if(LX_getStarKey())					return true;
 	if(L12_lastDitchFlyer())			return true;
 
 	if(!inAftercore() && (my_inebriety() < inebriety_limit()) && !get_property("_gardenHarvested").to_boolean())
@@ -3443,6 +3431,7 @@ boolean doTasks()
 
 	if (L12_clearBattlefield())			return true;
 	if(LX_koeInvaderHandler())			return true;
+	if (LX_lowkeySummer())					return true;
 	
 	//release the softblock on quests that are waiting for shen quest
 	if(my_level() > get_property("auto_shenSkipLastLevel").to_int() && get_property("questL11Shen") != "finished")
