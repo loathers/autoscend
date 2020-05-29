@@ -282,9 +282,6 @@ boolean LX_findHelpfulLowKey()
 		if (lowkey_keyAdv($item[Music Box Key])) { return true; }
 	}
 
-	// stats. Needs Island access. May as well finish this off since we'll be farming the Pirate Outfit
-	//if (LX_pirateOutfit() || lowkey_keyAdv($item[peg key])) { return true; }
-
 	// Attributes. This is a nowander zone so burning delay here is unlikely.
 	//if (lowkey_keyAdv($item[Rabbit\'s foot key])) { return true; }
 
