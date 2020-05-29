@@ -3546,6 +3546,7 @@ void auto_begin()
 	auto_spoonTuneConfirm();
 
 	settingFixer();
+	resetMaximize();
 
 	uneffect($effect[Ode To Booze]);
 	handlePulls(my_daycount());
