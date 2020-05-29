@@ -224,9 +224,6 @@ boolean LX_findHelpfulLowKey()
 		if (my_primestat() == $stat[Mysticality] && lowkey_keyAdv($item[Demonic key])) { return true; }
 	}
 
-	// Attributes. This is a nowander zone so burning delay here is unlikely.
-	if (lowkey_keyAdv($item[Rabbit\'s foot key])) { return true; }
-
 	// familiar weight
 	if (lowkey_keyAdv($item[Black rose key])) { return true; }
 
@@ -286,7 +283,10 @@ boolean LX_findHelpfulLowKey()
 	}
 
 	// stats. Needs Island access. May as well finish this off since we'll be farming the Pirate Outfit
-	if (lowkey_keyAdv($item[peg key])) { return true; }
+	//if (LX_pirateOutfit() || lowkey_keyAdv($item[peg key])) { return true; }
+
+	// Attributes. This is a nowander zone so burning delay here is unlikely.
+	//if (lowkey_keyAdv($item[Rabbit\'s foot key])) { return true; }
 
 	// food drops?
 	//if (lowkey_keyAdv($item[Anchovy can key])) { return true; }
