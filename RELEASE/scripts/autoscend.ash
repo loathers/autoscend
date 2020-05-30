@@ -167,6 +167,7 @@ void initializeSettings()
 	set_property("auto_ignoreFlyer", false);
 	set_property("auto_instakill", "");
 	set_property("auto_modernzmobiecount", "");
+	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);

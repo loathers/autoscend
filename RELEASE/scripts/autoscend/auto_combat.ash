@@ -1279,6 +1279,10 @@ string auto_combatHandler(int round, monster enemy, string text)
 			set_property("auto_combatHandler", combatState + "(replacer)");
 			if(index_of(combatAction, "skill") == 0)
 			{
+				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])
+				{
+					handleTracker($item[Powerful Glove], $skill[CHEAT CODE: Replace Enemy], "auto_powerfulglove");
+				}
 				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_replaces");
 			}
 			else if(index_of(combatAction, "item") == 0)

@@ -308,6 +308,12 @@ void main()
 		generateTrackingData("auto_pulls", false);
 	}
 
+	if (auto_hasPowerfulGlove())
+	{
+		writeln("<h2>Powerful Glove</h2>");
+		generateTrackingData("auto_powerfulglove", true);
+	}
+
 	writeln("<h2>Other Stuff</h2>");
 	generateTrackingData("auto_otherstuff", true);
 
