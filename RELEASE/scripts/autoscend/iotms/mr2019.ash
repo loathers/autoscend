@@ -753,7 +753,39 @@ boolean auto_pillKeeper(int pill)
 	auto_log_info("Using pill keeper: consuming pill #" + pill, "blue");
 	string page = visit_url("main.php?eowkeeper=1", false);
 	page = visit_url("choice.php?pwd=&whichchoice=1395&pwd&option=" + pill, true);
-	return true;
+	// Succeeded in consuming a pill
+	if (contains_text(page, "You grab the day"))
+	{
+		string type = "unknown";
+		switch(pill)
+		{
+			case 1: type = "yellow ray"; break;
+			case 2: type = "potion"; break;
+			case 3: type = "noncombat"; break;
+			case 4: type = "resistance"; break;
+			case 5: type = "stat"; break;
+			case 6: type = "fam weight"; break;
+			case 7: type = "semirare"; break;
+			case 8: type = "random"; break;
+		}
+		handleTracker($item[Eight Days a Week Pill Keeper], type, "auto_chewed");
+		return true;
+	}
+
+	// yellow ray, noncombat, or semirare already queued
+	if (contains_text(page, "You can't take any more of that right now."))
+	{
+		auto_log_warning("Pill keeper pill #" + pill + " already in effect", "yellow");
+		return true;
+	}
+
+	if (contains_text("Your spleen can't handle any more days worth of medicine!"))
+	{
+		auto_log_warning("Not enough spleen remaining to use pill keeper", "red");
+	}
+
+	// Failed to consume a pill
+	return false;
 }
 
 boolean auto_pillKeeper(string pill)
