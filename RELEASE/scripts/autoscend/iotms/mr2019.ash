@@ -677,7 +677,13 @@ boolean auto_beachCombHead(string name)
 	if(!auto_beachCombAvailable())   return false;
 	if(!auto_canBeachCombHead(name)) return false;
 
-	return cli_execute("beach head " + auto_beachCombHeadNumFrom(name));
+	boolean ret = cli_execute("beach head " + auto_beachCombHeadNumFrom(name));
+	
+	if (ret)
+	{
+		handleTracker($item[Beach Comb], name, "auto_otherstuff");
+	}
+	return ret;
 }
 
 int auto_beachCombFreeUsesLeft(){
