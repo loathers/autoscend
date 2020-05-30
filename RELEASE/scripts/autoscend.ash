@@ -3360,6 +3360,7 @@ boolean doTasks()
 	if(LX_spookyravenManorSecondFloor())			return true;
 	if(L3_tavern())						return true;
 	if(L6_friarsGetParts())				return true;
+	if(L8_trapperStart())				return true;
 	if(LX_hardcoreFoodFarm())			return true;
 
 	if(in_hardcore() && LX_steelOrgan())
@@ -3375,7 +3376,6 @@ boolean doTasks()
 		if(LX_freeCombats()) return true;
 	}
 
-	if(L8_trapperStart())				return true;
 	if(L8_trapperGround())				return true;
 	if(L8_trapperNinjaLair())			return true;
 	if(L8_trapperGroar())				return true;
