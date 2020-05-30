@@ -622,11 +622,11 @@ boolean ed_eatStuff()
 
 	// fill up on Mummified Beef Haunches as they are Ed's main source of turn-gen
 	int canEat = min((spleen_left() / 5), item_amount($item[Mummified Beef Haunch]));
-	if (canEat > 0)
+	if (canEat > 0 && autoChew(canEat, $item[Mummified Beef Haunch]))
 	{
-		autoChew(canEat, $item[Mummified Beef Haunch]);
+		return true;
 	}
-	return true;
+	return false;
 }
 
 skill ed_nextUpgrade()

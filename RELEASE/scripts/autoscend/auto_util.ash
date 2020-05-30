@@ -6150,6 +6150,15 @@ boolean auto_check_conditions(string conds)
 				if(!m4.find())
 					abort('"' + condition_data + '" is not a proper ML condition format!');
 				return compare_numbers(monster_level_adjustment(), to_int(m4.group(2)), m4.group(1));
+			// data: eat\drink\chew
+			// True if we can eat\drink\chew anything today
+			case "consume":
+				switch (condition_data):
+					case "eat" return fullness_left() > 0;
+					case "drink" return inebriety_left() > 0;
+					case "chew" return spleen_left() > 0;
+					default:
+						abort('Invalid consume type "' + condition_type + '" found!');
 			default:
 				abort('Invalid condition type "' + condition_type + '" found!');
 		}
