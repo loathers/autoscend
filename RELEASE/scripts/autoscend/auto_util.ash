@@ -6153,7 +6153,7 @@ boolean auto_check_conditions(string conds)
 			// data: eat\drink\chew
 			// True if we can eat\drink\chew anything today
 			case "consume":
-				switch (condition_data):
+				switch (condition_data)
 				{
 					case "eat" return fullness_left() > 0;
 					case "drink" return inebriety_left() > 0;
