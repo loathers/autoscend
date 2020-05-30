@@ -613,8 +613,8 @@ boolean consumeFortune()
 		return false;
 	}
 
-	// Don't get lucky numbers for the first semi-rare
-	if (my_turncount() < 80)
+	// Don't get lucky numbers for the first semi-rare if we still need to adventure in the outskirts
+	if (my_turncount() < 80 && internalQuestStatus("questL05Goblin") == 0)
 	{
 		return false;
 	}
