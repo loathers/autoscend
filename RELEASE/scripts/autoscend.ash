@@ -880,6 +880,7 @@ boolean fortuneCookieEvent()
 {
 	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
 	{
+		// TODO: Replace logic with semirare.dat locations. Make sure to check if the zone is available.
 		auto_log_info("Semi rare time!", "blue");
 		cli_execute("counters");
 
