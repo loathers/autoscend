@@ -619,7 +619,7 @@ boolean consumeFortune()
 		return false;
 	}
 
-	if (my_level() < 12)
+	if (my_level() > 12)
 	{
 		return false;
 	}
