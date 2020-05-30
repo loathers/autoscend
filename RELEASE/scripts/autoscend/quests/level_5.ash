@@ -15,7 +15,7 @@ boolean L5_getEncryptionKey()
 
 	// Defer if we can line up with the first semi-rare window to get a lunchbox
 	// Only if we don't have a fortune cookie counter
-	if (my_turncount() < 70 && !contains_text(get_counters("Fortune Cookie", 0, 80 - my_turncount()), "Fortune Cookie")
+	if (my_turncount() < 70 && !contains_text(get_counters("Fortune Cookie", 0, 80 - my_turncount()), "Fortune Cookie"))
 	{
 		return false;
 	}
