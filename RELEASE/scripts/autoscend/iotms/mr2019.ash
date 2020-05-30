@@ -156,6 +156,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 			auto_log_warning("Somehow failed to eat a sausage! What??", "red");
 			return false;
 		}
+		handleTracker($item[magical sausage], "auto_eaten");
 		maxToEat--;
 	}
 
