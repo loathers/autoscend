@@ -6155,9 +6155,9 @@ boolean auto_check_conditions(string conds)
 			case "consume":
 				switch (condition_data)
 				{
-					case "eat" return fullness_left() > 0;
-					case "drink" return inebriety_left() > 0;
-					case "chew" return spleen_left() > 0;
+					case "eat": return fullness_left() > 0;
+					case "drink": return inebriety_left() > 0;
+					case "chew": return spleen_left() > 0;
 					default:
 						abort('Invalid consume type "' + condition_type + '" found!');
 				}
