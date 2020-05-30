@@ -13,6 +13,13 @@ boolean L5_getEncryptionKey()
 		return true;
 	}
 
+	// Defer if we can line up with the first semi-rare window to get a lunchbox
+	// Only if we don't have a fortune cookie counter
+	if (my_turncount() < 70 && !contains_text(get_counters("Fortune Cookie", 0, 80 - my_turncount()), "Fortune Cookie")
+	{
+		return false;
+	}
+
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Retractable Toes]) && (item_amount($item[Cocktail Mushroom]) == 0))
