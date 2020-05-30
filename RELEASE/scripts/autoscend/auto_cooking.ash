@@ -555,13 +555,13 @@ void consumeStuff()
 	// fills up spleen for Ed.
 	if (ed_eatStuff())
 	{
-		return true;
+		return;
 	}
 
 	// Try to get Fortune Cookie numbers
 	if (consumeFortune())
 	{
-		return true;
+		return;
 	}
 
 	boolean edSpleenCheck = (isActuallyEd() && spleen_left() > 0); // Ed should fill spleen first
