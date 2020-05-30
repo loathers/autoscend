@@ -944,10 +944,6 @@ boolean fortuneCookieEvent()
 		}
 		
 		boolean retval = autoAdv(goal);
-		if (item_amount($item[Knob Goblin lunchbox]) > 0)
-		{
-			use(item_amount($item[Knob Goblin lunchbox]), $item[Knob Goblin lunchbox]);
-		}
 		return retval;
 	}
 	return false;

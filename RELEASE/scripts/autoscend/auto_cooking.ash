@@ -814,6 +814,10 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	{
 		use(item_amount($item[van key]), $item[van key]);
 	}
+	if ((item_amount($item[Knob Goblin lunchbox]) > 0) && (pulls_remaining() != -1))
+	{
+		use(item_amount($item[Knob Goblin lunchbox]), $item[Knob Goblin lunchbox]);
+	}
 
 	// type is "eat" or "drink"
 	int type  = 0;
