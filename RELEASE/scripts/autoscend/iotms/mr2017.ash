@@ -101,6 +101,7 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
+	
 	return true;
 }
 
