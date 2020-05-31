@@ -542,6 +542,39 @@ void handleTracker(item used, string detail, string tracker)
 	set_property(tracker, cur);
 }
 
+void handleTracker(item used, skill detail, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(detail) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
+void handleTracker(familiar used, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
+void handleTracker(familiar used, item detail, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(detail) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
 void handleTracker(string used, string tracker)
 {
 	string cur = get_property(tracker);

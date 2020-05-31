@@ -843,6 +843,9 @@ void handleTracker(monster enemy, string toTrack, string tracker);//Defined in a
 void handleTracker(monster enemy, string tracker);			//Defined in autoscend/auto_util.ash
 void handleTracker(string used, string tracker); //Defined in autoscend/auto_util.ash
 void handleTracker(item used, string detail, string tracker); //Defined in autoscend/auto_util.ash
+void handleTracker(item used, skill detail, string tracker); //Defined in autoscend/auto_util.ash
+void handleTracker(familiar used, string tracker);			//Defined in autoscend/auto_util.ash
+void handleTracker(familiar used, item detail, string tracker); //Defined in autoscend/auto_util.ash
 boolean hasArm(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
 boolean hasHead(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
 boolean hasLeg(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
