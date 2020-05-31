@@ -101,6 +101,7 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
+	handleTracker($item[Mumming Trunk], fam, "auto_otherstuff");
 	
 	return true;
 }
