@@ -459,6 +459,8 @@ string safeString(string input)
 {
 	matcher comma = create_matcher("[,]", input);
 	input = replace_all(comma, ".");
+	matcher colon = create_matcher("[:]", input);
+	input = replace_all(colon, ".");
 	return input;
 }
 
