@@ -637,7 +637,7 @@ boolean consumeFortune()
 	if (fullness_left() > 0 && my_meat() >= npc_price($item[Fortune Cookie]))
 	{
 		// Don't eat a fortune cookie if a spaghetti breakfast is still consumable
-		if (auto_is_valid($item[Spaghetti Breakfast]) && my_fullness() == 0 && my_level() >= 10)
+		if (auto_is_valid($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_fullness() == 0 && my_level() >= 10)
 		{
 			return false;
 		}
