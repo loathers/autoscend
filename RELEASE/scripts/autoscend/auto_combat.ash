@@ -311,9 +311,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	boolean doBanisher = !inAftercore();
 
+	int majora = -1;
 	if(my_path() == "Disguises Delimit")
 	{
-		int majora = -1;
 		matcher maskMatch = create_matcher("mask(\\d+).png", text);
 		if(maskMatch.find())
 		{
@@ -1863,6 +1863,28 @@ string auto_combatHandler(int round, monster enemy, string text)
 			return useSkill($skill[[7333]Fireball Barrage]);
 		}
 		return useSkill($skill[Fireball Toss], false);
+	}
+
+	//disguise delimit path specific killing
+	if(majora == 13)	//welding mask
+	{
+		//reflect damage from spells back to player. changing masks does not stop this.
+		//some spells actually damage the monster too.
+		//saucegeyser confirmed to not damage the monster. saucestorm confirmed to damage the monster.
+		if(enemy.physical_resistance >= 80)
+		{
+			if(my_hp() > monster_hp() + 150 && canUse($skill[Saucestorm], false))
+			{
+				return useSkill($skill[Saucestorm], false);
+			}
+			//TODO check if our physical attack can deal elemental damage.
+			else abort("Not sure how to handle a physically resistent enemy wearing a welding mask.");
+		}
+		if(canSurvive(1.5) && round < 10)
+		{
+			return "attack with weapon";
+		}
+		abort("Not sure how to handle welding mask.");
 	}
 
 	string attackMinor = "attack with weapon";
