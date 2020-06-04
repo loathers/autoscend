@@ -114,7 +114,7 @@ boolean auto_powerfulGloveNoncombatSkill(skill sk)
 
 	if (ret)
 	{
-		handleTracker($item[Powerful Glove], sk, "auto_powerfulglove");
+		handleTracker(sk, "auto_powerfulglove");
 	}
 
 	return ret;

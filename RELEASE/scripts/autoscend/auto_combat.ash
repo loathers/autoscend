@@ -1281,7 +1281,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			{
 				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])
 				{
-					handleTracker($item[Powerful Glove], $skill[CHEAT CODE: Replace Enemy], "auto_powerfulglove");
+					handleTracker($skill[CHEAT CODE: Replace Enemy], "auto_powerfulglove");
 				}
 				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_replaces");
 			}
