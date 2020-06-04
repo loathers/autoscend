@@ -329,7 +329,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	while(howMany > 0)
 	{
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, toEat.fullness);
-		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() > 11000) && (get_property("mayoInMouth") == "") && is_unrestricted($item[Portable Mayo Clinic]))
+		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() > 11000) && (get_property("mayoInMouth") == "") && auto_is_valid($item[Portable Mayo Clinic]))
 		{
 			buyUpTo(1, $item[Mayoflex], 1000);
 			use(1, $item[Mayoflex]);
@@ -552,21 +552,16 @@ void consumeStuff()
 		return;
 	}
 
-	ed_eatStuff(); // fills up spleen for Ed.
-
-	if (!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
+	// fills up spleen for Ed.
+	if (ed_eatStuff())
 	{
-		boolean shouldEatCookie = (my_meat() >= npc_price($item[Fortune Cookie]) && fullness_left() > 0 && my_level() < 12);
-		if (inebriety_left() > 0)
-		{
-			shouldEatCookie = (shouldEatCookie && !autoDrink(1, $item[Lucky Lindy]));
-		}
-		if (shouldEatCookie)
-		{
-			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
-			autoEat(1, $item[Fortune Cookie]);
-			return;
-		}
+		return;
+	}
+
+	// Try to get Fortune Cookie numbers
+	if (consumeFortune())
+	{
+		return;
 	}
 
 	boolean edSpleenCheck = (isActuallyEd() && spleen_left() > 0); // Ed should fill spleen first
@@ -609,6 +604,50 @@ void consumeStuff()
 			}
 		}
 	}
+}
+
+boolean consumeFortune()
+{
+	if (contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
+	{
+		return false;
+	}
+
+	// Don't get lucky numbers for the first semi-rare if we still need to adventure in the outskirts
+	if (my_turncount() < 80 && (internalQuestStatus("questL05Goblin") < 1 && item_amount($item[Knob Goblin encryption key]) < 1))
+	{
+		return false;
+	}
+
+	// Try to consume a Lucky Lindy
+	if (inebriety_left() > 0 && canDrink($item[Lucky Lindy]) && my_meat() >= npc_price($item[Lucky Lindy]))
+	{
+		if (autoDrink(1, $item[Lucky Lindy]))
+		{
+			return true;
+		}
+	}
+	
+	// Try to consume a Fortune Cookie
+	if (fullness_left() > 0 && canEat($item[Fortune Cookie]) && my_meat() >= npc_price($item[Fortune Cookie]))
+	{
+		// Eat a spaghetti breakfast if still consumable
+		if (canEat($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_fullness() == 0 && my_level() >= 10)
+		{
+			if (!autoEat(1, $item[Spaghetti Breakfast]))
+			{
+				return false;
+			}
+		}
+
+		buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
+		if (autoEat(1, $item[Fortune Cookie]))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 int SL_ORGAN_STOMACH = 1;
@@ -773,6 +812,10 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	{
 		use(item_amount($item[van key]), $item[van key]);
 	}
+	if ((item_amount($item[Knob Goblin lunchbox]) > 0) && (pulls_remaining() != -1))
+	{
+		use(item_amount($item[Knob Goblin lunchbox]), $item[Knob Goblin lunchbox]);
+	}
 
 	// type is "eat" or "drink"
 	int type  = 0;
@@ -854,7 +897,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			canConsume(it) &&
 			(organCost(it) > 0) &&
 			(it.fullness == 0 || it.inebriety == 0) &&
-			is_unrestricted(it) &&
+			auto_is_valid(it) &&
 			(historical_price(it) <= 20000 || (KEY_LIME_PIES contains it && historical_price(it) < 40000)))
 		{
 			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
@@ -922,7 +965,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				// This could be a property, I don't know.
 				actions[n].desirability -= 6.0;
 			}
-			if (type == SL_ORGAN_STOMACH && is_unrestricted($item[special seasoning]))
+			if (type == SL_ORGAN_STOMACH && auto_is_valid($item[special seasoning]))
 			{
 				actions[n].desirability += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
 			}

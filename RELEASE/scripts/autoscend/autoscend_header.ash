@@ -521,6 +521,7 @@ boolean chateaumantegna_usePainting(string option);			//Defined in autoscend/iot
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
 boolean acquireTransfunctioner();							//Defined in autoscend/auto_util.ash
 void consumeStuff();										//Defined in autoscend/auto_cooking.ash
+boolean consumeFortune();									//Defined in autoscend/auto_cooking.ash
 boolean containsCombat(item it);							//Defined in autoscend/auto_combat.ash
 boolean containsCombat(skill sk);							//Defined in autoscend/auto_combat.ash
 boolean containsCombat(string action);						//Defined in autoscend/auto_combat.ash

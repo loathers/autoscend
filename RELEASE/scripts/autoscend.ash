@@ -944,10 +944,6 @@ boolean fortuneCookieEvent()
 		}
 		
 		boolean retval = autoAdv(goal);
-		if (item_amount($item[Knob Goblin lunchbox]) > 0)
-		{
-			use(item_amount($item[Knob Goblin lunchbox]), $item[Knob Goblin lunchbox]);
-		}
 		return retval;
 	}
 	return false;
@@ -3363,6 +3359,7 @@ boolean doTasks()
 	if(LX_spookyravenManorSecondFloor())			return true;
 	if(L3_tavern())						return true;
 	if(L6_friarsGetParts())				return true;
+	if(L8_trapperStart())				return true;
 	if(LX_hardcoreFoodFarm())			return true;
 
 	if(in_hardcore() && LX_steelOrgan())
@@ -3378,7 +3375,6 @@ boolean doTasks()
 		if(LX_freeCombats()) return true;
 	}
 
-	if(L8_trapperStart())				return true;
 	if(L8_trapperGround())				return true;
 	if(L8_trapperNinjaLair())			return true;
 	if(L8_trapperGroar())				return true;
@@ -3571,7 +3567,6 @@ void auto_begin()
 	backupSetting("battleAction", "custom combat script");
 	
 	backupSetting("choiceAdventure1107", 1);
-	backupSetting("choiceAdventure330", 1);		//haunted billiards room NC shark chum
 
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))
