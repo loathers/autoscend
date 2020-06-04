@@ -763,19 +763,19 @@ boolean auto_pillKeeper(int pill)
 	// Succeeded in consuming a pill
 	if (contains_text(page, "You grab the day"))
 	{
-		string type = "unknown";
+		string detail = "unknown";
 		switch(pill)
 		{
-			case 1: type = "yellow ray"; break;
-			case 2: type = "potion"; break;
-			case 3: type = "noncombat"; break;
-			case 4: type = "resistance"; break;
-			case 5: type = "stat"; break;
-			case 6: type = "fam weight"; break;
-			case 7: type = "semirare"; break;
-			case 8: type = "random"; break;
+			case 1: detail = "yellow ray"; break;
+			case 2: detail = "potion"; break;
+			case 3: detail = "noncombat"; break;
+			case 4: detail = "resistance"; break;
+			case 5: detail = "stat"; break;
+			case 6: detail = "fam weight"; break;
+			case 7: detail = "semirare"; break;
+			case 8: detail = "random"; break;
 		}
-		handleTracker($item[Eight Days a Week Pill Keeper], type, "auto_chewed");
+		handleTracker($item[Eight Days a Week Pill Keeper], detail, "auto_chewed");
 		return true;
 	}
 
