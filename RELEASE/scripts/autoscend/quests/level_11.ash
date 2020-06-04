@@ -344,14 +344,15 @@ boolean getLadySpookyravensDancingShoes() {
 	}
 
 	// Louvre It or Leave It choice adventure has a delay of 5 adventures.
-	// TODO: add a check for delay burning?
 	backupSetting("louvreDesiredGoal", "7"); // lets just let mafia automate this for us.
 	auto_log_info("Spookyraven: Gallery", "blue");
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
-	if (!auto_forceNextNoncombat()) {
-		providePlusNonCombat(25, true);
+	if ($location[The Haunted Gallery].turns_spent >= 5) {
+		if (!auto_forceNextNoncombat()) {
+			providePlusNonCombat(25, true);
+		}
 	}
 	if (autoAdv($location[The Haunted Gallery])) {
 		return true;
@@ -368,13 +369,14 @@ boolean getLadySpookyravensPowderPuff() {
 		return false;
 	}
 	// Never Gonna Make You Up choice adventure has a delay of 5 adventures.
-	// TODO: add a check for delay burning?
 	auto_log_info("Spookyraven: Bathroom", "blue");
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
-	if (!auto_forceNextNoncombat()) {
-		providePlusNonCombat(25, true);
+	if ($location[The Haunted Bathroom].turns_spent >= 5) {
+		if (!auto_forceNextNoncombat()) {
+			providePlusNonCombat(25, true);
+		}
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
