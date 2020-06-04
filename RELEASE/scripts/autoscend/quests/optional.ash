@@ -690,21 +690,30 @@ boolean LX_pirateQuest() {
 	return false;
 }
 
-string[class] legendaryEpicWeapons;
-legendaryEpicWeapons[$class[Seal Clubber]] = "Hammer of Smiting";
-legendaryEpicWeapons[$class[Turtle Tamer]] = "Chelonian Morningstar";
-legendaryEpicWeapons[$class[Pastamancer]] = "Greek Pasta Spoon of Peril";
-legendaryEpicWeapons[$class[Sauceror]] = "17-alarm Saucepan";
-legendaryEpicWeapons[$class[Disco Bandit]] = "Shagadelic Disco Banjo";
-legendaryEpicWeapons[$class[Accordion Thief]] = "Squeezebox of the Ages";
-// usage: item legendaryEpicWeapon = legendaryEpicWeapons[my_class()].to_item();
+item[class] legendaryEpicWeapons;
+legendaryEpicWeapons[$class[Seal Clubber]] = $item[Hammer of Smiting];
+legendaryEpicWeapons[$class[Turtle Tamer]] = $item[Chelonian Morningstar];
+legendaryEpicWeapons[$class[Pastamancer]] = $item[Greek Pasta Spoon of Peril];
+legendaryEpicWeapons[$class[Sauceror]] = $item[17-alarm Saucepan];
+legendaryEpicWeapons[$class[Disco Bandit]] = $item[Shagadelic Disco Banjo];
+legendaryEpicWeapons[$class[Accordion Thief]] = $item[Squeezebox of the Ages];
+// usage: item legendaryEpicWeapon = legendaryEpicWeapons[my_class()];
+
+item[class] starterWeapons;
+starterWeapons[$class[Seal Clubber]] = $item[seal-clubbing club];
+starterWeapons[$class[Turtle Tamer]] = $item[turtle totem];
+starterWeapons[$class[Pastamancer]] = $item[pasta spoon];
+starterWeapons[$class[Sauceror]] = $item[saucepan];
+starterWeapons[$class[Disco Bandit]] = $item[disco ball];
+starterWeapons[$class[Accordion Thief]] = $item[stolen accordion];
+// usage: item starterWeapon = starterWeapons[my_class()];
 
 boolean LX_acquireLegendaryEpicWeapon() {
 	if (internalQuestStatus("questG04Nemesis") < 0 || internalQuestStatus("questG04Nemesis") > 4) {
 		return false;
 	}
 
-	if (item_amount(legendaryEpicWeapons[my_class()].to_item()) > 0) {
+	if (item_amount(legendaryEpicWeapons[my_class()]) > 0) {
 		return false;
 	}
 
@@ -712,6 +721,8 @@ boolean LX_acquireLegendaryEpicWeapon() {
 		visit_url("guild.php?place=scg");
 		return true;
 	}
+
+	addToMaximize("-equip " + starterWeapons[my_class()].to_string());
 
 	if (autoAdv($location[The Unquiet Garves])) {
 		return true;
