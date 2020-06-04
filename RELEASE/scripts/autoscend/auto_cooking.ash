@@ -619,11 +619,6 @@ boolean consumeFortune()
 		return false;
 	}
 
-	if (my_level() > 12)
-	{
-		return false;
-	}
-
 	// Try to consume a Lucky Lindy
 	if (inebriety_left() > 0 && auto_is_valid($item[Lucky Lindy]) && my_meat() >= npc_price($item[Lucky Lindy]))
 	{
