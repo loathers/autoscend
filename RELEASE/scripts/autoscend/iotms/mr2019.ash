@@ -786,7 +786,7 @@ boolean auto_pillKeeper(int pill)
 		return true;
 	}
 
-	if (contains_text("Your spleen can't handle any more days worth of medicine!"))
+	if (contains_text(page, "Your spleen can't handle any more days worth of medicine!"))
 	{
 		auto_log_warning("Not enough spleen remaining to use pill keeper", "red");
 	}
