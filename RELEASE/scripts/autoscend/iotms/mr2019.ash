@@ -782,7 +782,7 @@ boolean auto_pillKeeper(int pill)
 	// yellow ray, noncombat, or semirare already queued
 	if (contains_text(page, "You can't take any more of that right now."))
 	{
-		auto_log_warning("Pill keeper pill #" + pill + " already in effect", "yellow");
+		auto_log_warning("Pill keeper pill #" + pill + " already in effect", "red");
 		return true;
 	}
 
