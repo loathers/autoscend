@@ -3567,15 +3567,6 @@ void auto_begin()
 	backupSetting("battleAction", "custom combat script");
 	
 	backupSetting("choiceAdventure1107", 1);
-	//haunted billiards room NC shark chum
-	if (get_property("poolSharkCount").to_int() < 25)
-	{
-		backupSetting("choiceAdventure330", 1);
-	}
-	else
-	{
-		backupSetting("choiceAdventure330", 2);
-	}
 
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))

@@ -124,6 +124,13 @@ boolean auto_run_choice(int choice, string page)
 		case 191: // Chatterboxing (The F'c'le)
 			fcleChoiceHandler(choice);
 			break;
+		case 330: // A Shark's Chum (The Haunted Billiards Room, semi-rarely)
+			if (get_property("poolSharkCount").to_int() < 25) {
+				run_choice(1); // train pool skill
+			} else {
+				run_choice(2); // fight hustled spectre for cube of billiard chalk
+			}
+			break;
 		case 502: // Arboreal Respite (The Spooky Forest)
 			if (internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0) {
 				// need the mosquito larva
