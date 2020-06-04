@@ -75,7 +75,7 @@ void handleSetting(string type, int x)
 	writeln("<input type='hidden' name='"+set.name+"_didchange' value='"+get_property(set.name)+"' />");
 }
 
-void generateTrackingData(string tracked, boolean hasSkill)
+void generateTrackingData(string tracked)
 {
 	int day = 0;
 	string[int] tracking = split_string(get_property(tracked), ",");
@@ -97,20 +97,6 @@ void generateTrackingData(string tracked, boolean hasSkill)
 		tracking[x] = replace_all(cheat, "CHEAT CODE -");
 		string[int] current = split_string(tracking[x], ":");
 		int curDay = to_int(current[0]);
-		string enemy = current[1];
-
-		string skillUsed = "";
-		int turns = 0;
-
-		if(hasSkill)
-		{
-			skillUsed = current[2];
-			turns = to_int(current[3]);
-		}
-		else
-		{
-			turns = to_int(current[2]);
-		}
 		if(curDay > day)
 		{
 			day = curDay;
@@ -120,14 +106,17 @@ void generateTrackingData(string tracked, boolean hasSkill)
 			}
 			writeln("Day " + day + ": ");
 		}
-		if(hasSkill)
+		string toWrite = "(";
+		for i from i to count(current) 
 		{
-			writeln("(" + enemy + ":" + skillUsed + ":" + turns + "), ");
+			toWrite = toWrite + current[i];
+			if (i != count(current) - 1)
+			{
+				toWrite = toWrite + ":";
+			}
 		}
-		else
-		{
-			writeln("(" + enemy + ":" + turns + "), ");
-		}
+		toWrite = toWrite + "),";
+		writeln(toWrite);
 	}
 }
 
@@ -254,68 +243,68 @@ void main()
 	writeln("<br>Handle <a href=\"autoscend_quests.php\">Quest Tracker</a><br>");
 
 	writeln("<h2>Banishes</h2>");
-	generateTrackingData("auto_banishes", true);
+	generateTrackingData("auto_banishes");
 
 	writeln("<h2>Yellow Rays <img src=\"images/itemimages/eyes.gif\"></h2>");
-	generateTrackingData("auto_yellowRays", true);
+	generateTrackingData("auto_yellowRays");
 
 	writeln("<h2>Sniffing</h2>");
-	generateTrackingData("auto_sniffs", true);
+	generateTrackingData("auto_sniffs");
 
 	writeln("<h2>Copies</h2>");
-	generateTrackingData("auto_copies", true);
+	generateTrackingData("auto_copies");
 
 	writeln("<h2>Replaces</h2>");
-	generateTrackingData("auto_replaces", true);
+	generateTrackingData("auto_replaces");
 
 	writeln("<h2>Instakills</h2>");
-	generateTrackingData("auto_instakill", true);
+	generateTrackingData("auto_instakill");
 
 	writeln("<h2>Eated</h2>");
-	generateTrackingData("auto_eaten", false);
+	generateTrackingData("auto_eaten");
 
 	writeln("<h2>Drinkenated</h2>");
-	generateTrackingData("auto_drunken", false);
+	generateTrackingData("auto_drunken");
 
 	writeln("<h2>Chewed</h2>");
-	generateTrackingData("auto_chewed", false);
+	generateTrackingData("auto_chewed");
 
 	// Don't want to show if they can't make wishes, but maybe they can with pocket wishes
 	if(get_property("auto_wishes") != "" || item_amount($item[genie bottle]) > 0)
 	{
 		writeln("<h2>Wishes</h2>");
-		generateTrackingData("auto_wishes", true);
+		generateTrackingData("auto_wishes");
 	}
 
 	if(my_class() == $class[Ed])
 	{
 		writeln("<h2>Lash of the Cobra <img src=\"images/itemimages/cobrahead.gif\"></h2>");
-		generateTrackingData("auto_lashes", false);
+		generateTrackingData("auto_lashes");
 
 		writeln("<h2>Talisman of Renenutet <img src=\"images/itemimages/tal_r.gif\"></h2>");
-		generateTrackingData("auto_renenutet", false);
+		generateTrackingData("auto_renenutet");
 	}
 
 	if(my_path() == "One Crazy Random Summer")
 	{
 		writeln("<h2>One Crazy Random Summer Fun-o-meter!</h2>");
-		generateTrackingData("auto_funTracker", true);
+		generateTrackingData("auto_funTracker");
 	}
 
 	if(!in_hardcore())
 	{
 		writeln("<h2>Pulls</h2>");
-		generateTrackingData("auto_pulls", false);
+		generateTrackingData("auto_pulls");
 	}
 
 	if (auto_hasPowerfulGlove())
 	{
 		writeln("<h2>Powerful Glove</h2>");
-		generateTrackingData("auto_powerfulglove", true);
+		generateTrackingData("auto_powerfulglove");
 	}
 
 	writeln("<h2>Other Stuff</h2>");
-	generateTrackingData("auto_otherstuff", true);
+	generateTrackingData("auto_otherstuff");
 
 
 	writeln("<h2>Info</h2>");
