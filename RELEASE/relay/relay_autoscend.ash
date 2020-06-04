@@ -107,7 +107,7 @@ void generateTrackingData(string tracked)
 			writeln("Day " + day + ": ");
 		}
 		string toWrite = "(";
-		for i from i to count(current) 
+		for i from 1 to count(current) 
 		{
 			toWrite = toWrite + current[i];
 			if (i != count(current) - 1)
