@@ -708,9 +708,24 @@ starterWeapons[$class[Disco Bandit]] = $item[disco ball];
 starterWeapons[$class[Accordion Thief]] = $item[stolen accordion];
 // usage: item starterWeapon = starterWeapons[my_class()];
 
-boolean LX_acquireLegendaryEpicWeapon() {
-	if (internalQuestStatus("questG04Nemesis") < 0 || internalQuestStatus("questG04Nemesis") > 4) {
-		return false;
+boolean LX_acquireLegendaryEpicWeapon()
+{
+	if (internalQuestStatus("questG04Nemesis") > 4)
+	{
+		return false;	//already done with this part
+	}
+	if(!isGuildClass() || !guild_store_available())
+	{
+		return false;	//no guild access. can't start this quest
+	}
+	if(internalQuestStatus("questG04Nemesis") < 0)
+	{
+		visit_url("guild.php?place=scg");	//start quest
+		cli_execute("refresh quests");		//fixes buggy tracking. confirmed still in mafia r20143
+		if (internalQuestStatus("questG04Nemesis") < 0)
+		{
+			abort("Failed to start Nemesis quest. Please start it manually then run me again");
+		}
 	}
 
 	if (item_amount(legendaryEpicWeapons[my_class()]) > 0) {
@@ -731,9 +746,10 @@ boolean LX_acquireLegendaryEpicWeapon() {
 }
 
 // TODO: Add the rest of the Nemesis quest with a flag to enable doing it in-run?
-boolean LX_NemesisQuest() {
-	if (LX_acquireLegendaryEpicWeapon()) {
-		return true;
-	}
+boolean LX_NemesisQuest()
+{
+	if(LX_guildUnlock()) return true;
+	if(LX_acquireLegendaryEpicWeapon()) return true;
+	
 	return false;
 }
