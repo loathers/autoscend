@@ -836,13 +836,8 @@ item handleSolveThing(boolean[item] poss);					//Defined in autoscend/auto_equip
 item handleSolveThing(boolean[item] poss, slot loc);		//Defined in autoscend/auto_equipment.ash
 item handleSolveThing(item[int] poss);						//Defined in autoscend/auto_equipment.ash
 item handleSolveThing(item[int] poss, slot loc);			//Defined in autoscend/auto_equipment.ash
-void handleTracker(item used, string tracker);				//Defined in autoscend/auto_util.ash
-void handleTracker(monster enemy, item toTrack, string tracker);//Defined in autoscend/auto_util.ash
-void handleTracker(monster enemy, skill toTrack, string tracker);//Defined in autoscend/auto_util.ash
-void handleTracker(monster enemy, string toTrack, string tracker);//Defined in autoscend/auto_util.ash
-void handleTracker(monster enemy, string tracker);			//Defined in autoscend/auto_util.ash
-void handleTracker(string used, string tracker); //Defined in autoscend/auto_util.ash
-void handleTracker(item used, string detail, string tracker); //Defined in autoscend/auto_util.ash
+void handleTracker(string used, string tracker);			//Defined in autoscend/auto_util.ash
+void handleTracker(string used, string detail, string tracker);	//Defined in autoscend/auto_util.ash
 boolean hasArm(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
 boolean hasHead(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
 boolean hasLeg(monster enemy);								//Defined in autoscend/auto_monsterparts.ash

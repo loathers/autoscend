@@ -488,6 +488,7 @@ boolean catBurglarHeist(item it)
 			string choice_name = button.group(1);
 			string url = "choice.php?whichchoice=1320&option=1&"+choice_name+"="+to_string(it)+"&pwd=" + my_hash();
 			page = visit_url(url);
+			handleTracker($familiar[Cat Burglar], it, "auto_otherstuff");
 			return true;
 		}
 		auto_log_warning("We don't seem to be able to heist a " + it + ". Maybe we didn't fight it with the Cat Burglar?", "red");

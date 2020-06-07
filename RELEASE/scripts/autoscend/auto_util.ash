@@ -55,12 +55,7 @@ boolean handleSealAncient(string option);
 boolean handleSealElement(element flavor);
 boolean handleSealElement(element flavor, string option);
 void handleTracker(string used, string tracker);
-void handleTracker(item used, string tracker);
-void handleTracker(item used, string detail, string tracker);
-void handleTracker(monster enemy, string tracker);
-void handleTracker(monster enemy, skill toTrack, string tracker);
-void handleTracker(monster enemy, string toTrack, string tracker);
-void handleTracker(monster enemy, item toTrack, string tracker);
+void handleTracker(string used, string detail, string tracker);
 int internalQuestStatus(string prop);
 string runChoice(string page_text);
 int turkeyBooze();
@@ -459,6 +454,8 @@ string safeString(string input)
 {
 	matcher comma = create_matcher("[,]", input);
 	input = replace_all(comma, ".");
+	matcher colon = create_matcher("[:]", input);
+	input = replace_all(colon, ".");
 	return input;
 }
 
@@ -476,72 +473,6 @@ string safeString(monster input)
 	return safeString("" + input);
 }
 
-void handleTracker(monster enemy, skill toTrack, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(enemy) + ":" + safeString(toTrack) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(monster enemy, string toTrack, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(enemy) + ":" + safeString(toTrack) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(monster enemy, item toTrack, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(enemy) + ":" + safeString(toTrack) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(monster enemy, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(enemy) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(item used, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(item used, string detail, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(detail) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
 void handleTracker(string used, string tracker)
 {
 	string cur = get_property(tracker);
@@ -550,6 +481,17 @@ void handleTracker(string used, string tracker)
 		cur = cur + ", ";
 	}
 	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
+void handleTracker(string used, string detail, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(detail) + ":" + my_turncount() + ")";
 	set_property(tracker, cur);
 }
 

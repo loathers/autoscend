@@ -112,6 +112,11 @@ boolean auto_powerfulGloveNoncombatSkill(skill sk)
 		equip($slot[Acc3], old);
 	}
 
+	if (ret)
+	{
+		handleTracker(sk, "auto_powerfulglove");
+	}
+
 	return ret;
 }
 

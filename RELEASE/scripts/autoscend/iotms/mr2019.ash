@@ -156,6 +156,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 			auto_log_warning("Somehow failed to eat a sausage! What??", "red");
 			return false;
 		}
+		handleTracker($item[magical sausage], "auto_eaten");
 		maxToEat--;
 	}
 
@@ -677,7 +678,13 @@ boolean auto_beachCombHead(string name)
 	if(!auto_beachCombAvailable())   return false;
 	if(!auto_canBeachCombHead(name)) return false;
 
-	return cli_execute("beach head " + auto_beachCombHeadNumFrom(name));
+	boolean ret = cli_execute("beach head " + auto_beachCombHeadNumFrom(name));
+	
+	if (ret)
+	{
+		handleTracker($item[Beach Comb], name, "auto_otherstuff");
+	}
+	return ret;
 }
 
 int auto_beachCombFreeUsesLeft(){
@@ -753,7 +760,39 @@ boolean auto_pillKeeper(int pill)
 	auto_log_info("Using pill keeper: consuming pill #" + pill, "blue");
 	string page = visit_url("main.php?eowkeeper=1", false);
 	page = visit_url("choice.php?pwd=&whichchoice=1395&pwd&option=" + pill, true);
-	return true;
+	// Succeeded in consuming a pill
+	if (contains_text(page, "You grab the day"))
+	{
+		string detail = "unknown";
+		switch(pill)
+		{
+			case 1: detail = "yellow ray"; break;
+			case 2: detail = "potion"; break;
+			case 3: detail = "noncombat"; break;
+			case 4: detail = "resistance"; break;
+			case 5: detail = "stat"; break;
+			case 6: detail = "fam weight"; break;
+			case 7: detail = "semirare"; break;
+			case 8: detail = "random"; break;
+		}
+		handleTracker($item[Eight Days a Week Pill Keeper], detail, "auto_chewed");
+		return true;
+	}
+
+	// yellow ray, noncombat, or semirare already queued
+	if (contains_text(page, "You can't take any more of that right now."))
+	{
+		auto_log_warning("Pill keeper pill #" + pill + " already in effect", "red");
+		return true;
+	}
+
+	if (contains_text(page, "Your spleen can't handle any more days worth of medicine!"))
+	{
+		auto_log_warning("Not enough spleen remaining to use pill keeper", "red");
+	}
+
+	// Failed to consume a pill
+	return false;
 }
 
 boolean auto_pillKeeper(string pill)
