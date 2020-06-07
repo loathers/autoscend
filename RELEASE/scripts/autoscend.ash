@@ -2138,22 +2138,28 @@ boolean doBedtime()
 	return false;
 }
 
-boolean powerLevelAdjustment()
-{
-	if(get_property("auto_powerLevelLastLevel").to_int() != my_level() && get_property("auto_powerLevelAdvCount").to_int() > 0)
-	{
-		set_property("auto_powerLevelLastLevel", my_level());
-		set_property("auto_powerLevelAdvCount", 0);
-		return true;
-	}
-	return false;
+boolean isAboutToPowerlevel() {
+	return get_property("auto_powerLevelLastLevel").to_int() == my_level();
 }
 
 boolean LX_attemptPowerLevel()
 {
+	if (my_level() > 12) {
+		return false;
+	}
+
+	if (!isAboutToPowerlevel()) {
+		//release the softblock on various quests that await optimal conditions.
+		auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
+		set_property("auto_powerLevelLastLevel", my_level());
+		set_property("auto_powerLevelAdvCount", 0);
+		return true;
+	}
+
+	auto_log_warning("I've run out of stuff to do. Time to powerlevel, I suppose.", "red");
+
 	set_property("auto_powerLevelAdvCount", get_property("auto_powerLevelAdvCount").to_int() + 1);
 	set_property("auto_powerLevelLastAttempted", my_turncount());
-	set_property("auto_powerLevelLastLevel", my_level());
 	
 	handleFamiliar("stat");
 	addToMaximize("100 exp");
@@ -3148,7 +3154,6 @@ boolean doTasks()
 	resetFlavour();
 
 	basicAdjustML();
-	powerLevelAdjustment();
 	handleFamiliar("item");
 	basicFamiliarOverrides();
 
@@ -3438,21 +3443,8 @@ boolean doTasks()
 		return true;
 	}
 	
-	//release the softblock on various quests that await optimal conditions.
-	if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
-	{
-		auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
-		set_property("auto_powerLevelLastLevel", my_level());
-		return true;
-	}
-	
 	if(LX_getDigitalKey()) 				return true;
 	if(LX_getStarKey()) 				return true;
-	
-	if (my_level() < 13)
-	{
-		if(LX_attemptPowerLevel()) return true;
-	}
 	
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
@@ -3461,12 +3453,7 @@ boolean doTasks()
 	if(L13_towerNSNagamar())			return true;
 	if(L13_towerNSFinal())				return true;
 
-	if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
-	{
-		auto_log_warning("I've run out of stuff to do. Time to powerlevel, I suppose.", "red");
-		set_property("auto_powerLevelLastLevel", my_level());
-		return true;
-	}
+	if (LX_attemptPowerLevel()) return true;	
 
 	auto_log_info("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");
 	return false;

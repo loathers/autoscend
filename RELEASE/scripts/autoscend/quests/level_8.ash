@@ -324,7 +324,7 @@ boolean L8_getMineOres()
 		if(get_property("auto_wandOfNagamar").to_boolean())
 		{
 			numCloversKeep = 1;
-			if(get_property("auto_powerLevelLastLevel").to_int() == my_level())
+			if(isAboutToPowerlevel())
 			{
 				numCloversKeep = 0;
 			}
@@ -537,7 +537,7 @@ boolean L8_trapperGroar()
 			return true;
 		}
 	}
-	if(get_property("auto_powerLevelAdvCount").to_int() > 8)
+	if(isAboutToPowerlevel())
 	{
 		if(L8_trapperExtreme())
 		{

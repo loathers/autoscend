@@ -63,7 +63,7 @@ boolean L5_haremOutfit()
 
 	if(!adjustForYellowRayIfPossible($monster[Knob Goblin Harem Girl]))
 	{
-		if(my_level() != get_property("auto_powerLevelLastLevel").to_int())
+		if(!isAboutToPowerlevel())
 		{
 			return false;
 		}
@@ -76,7 +76,10 @@ boolean L5_haremOutfit()
 	bat_formBats();
 
 	auto_log_info("Looking for some sexy lingerie!", "blue");
-	return autoAdv($location[Cobb\'s Knob Harem]);
+	if (autoAdv($location[Cobb\'s Knob Harem])) {
+		return true;
+	}
+	return false;
 }
 
 boolean L5_goblinKing()
@@ -85,7 +88,7 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
-	if (my_level() < 8 && get_property("auto_powerLevelAdvCount").to_int() < 9)
+	if (my_level() < 8 && !isAboutToPowerlevel()) // needs to be changed to check if we'll survive
 	{
 		return false;
 	}
@@ -110,12 +113,12 @@ boolean L5_goblinKing()
 	buffMaintain($effect[Knob Goblin Perfume], 0, 1, 1);
 	if(have_effect($effect[Knob Goblin Perfume]) == 0)
 	{
-		autoAdv($location[Cobb\'s Knob Harem]);
-		if(contains_text(get_property("lastEncounter"), "Cobb's Knob lab key"))
+		boolean advSpent = autoAdv($location[Cobb\'s Knob Harem]);
+		if (have_effect($effect[Knob Goblin Perfume]) == 0)
 		{
-			autoAdv($location[Cobb\'s Knob Harem]);
+			advSpent = autoAdv($location[Cobb\'s Knob Harem]);
 		}
-		return true;
+		return advSpent;
 	}
 
 	if(my_primestat() == $stat[Muscle])
@@ -132,21 +135,16 @@ boolean L5_goblinKing()
 		buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
 	}
 
-	if(monster_level_adjustment() > 150)
-	{
-		autoEquip($slot[acc2], $item[none]);
-	}
-
 	// TODO: I died here, maybe we should heal a bit?
 	if (!in_zelda())
 	{
 		auto_change_mcd(10); // get the Crown from the Goblin King.
 	}
-	autoAdv($location[Throne Room]);
+	boolean advSpent = autoAdv($location[Throne Room]);
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_zelda())
 	{
 		council();
 	}
-	return true;
+	return advSpent;
 }

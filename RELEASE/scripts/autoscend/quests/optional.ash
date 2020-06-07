@@ -737,6 +737,11 @@ boolean LX_acquireLegendaryEpicWeapon()
 		return true;
 	}
 
+	if (shenShouldDelayZone($location[The Unquiet Garves])) {
+		auto_log_debug("Delaying The Unquiet Garves in case of Shen.");
+		return false;
+	}
+
 	addToMaximize("-equip " + starterWeapons[my_class()].to_string());
 
 	if (autoAdv($location[The Unquiet Garves])) {
