@@ -129,7 +129,7 @@ boolean LX_unlockHauntedBilliardsRoom() {
 	}
 	
 	boolean delayKitchen = get_property("auto_delayHauntedKitchen").to_boolean();
-	if(my_level() == get_property("auto_powerLevelLastLevel").to_int())
+	if(isAboutToPowerlevel())
 	{
 		// if we're at the point where we need to level up to get more quests other than this, we might as well just do this instead
 		delayKitchen = false;
@@ -216,7 +216,7 @@ boolean LX_unlockHauntedLibrary()
 	}
 	
 	//inebrity handling. do not care if: auto succeed or can't drink or ran out of things to do.
-	if(expectPool < 18 && can_drink() && my_level() != get_property("auto_powerLevelLastLevel").to_int())
+	if(expectPool < 18 && can_drink() && !isAboutToPowerlevel())
 	{
 		//paths with inebrity limit under 11 should wait until they are at max to do this
 		if(my_inebriety() < inebriety_limit() && inebriety_limit() < 11)
@@ -401,7 +401,7 @@ boolean L11_blackMarket()
 	{
 		return false;
 	}
-	if ((possessEquipment($item[Blackberry Galoshes]) && !auto_can_equip($item[Blackberry Galoshes])) && my_level() != get_property("auto_powerLevelLastLevel").to_int())
+	if ((possessEquipment($item[Blackberry Galoshes]) && !auto_can_equip($item[Blackberry Galoshes])) && !isAboutToPowerlevel())
 	{
 		return false;
 	}
@@ -1690,7 +1690,7 @@ boolean L11_mauriceSpookyraven()
 
 boolean L11_redZeppelin()
 {
-	if (internalQuestStatus("questL11Shen") < 8 && my_level() != get_property("auto_powerLevelLastLevel").to_int())
+	if (internalQuestStatus("questL11Shen") < 8 && !isAboutToPowerlevel())
 	{
 		return false;
 	}

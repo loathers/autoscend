@@ -817,7 +817,7 @@ int auto_meteoriteAdesUsed();								//Defined in autoscend/iotms/auto_mr2017.as
 boolean handleBarrelFullOfBarrels(boolean daily);			//Defined in autoscend/auto_util.ash
 boolean handleCopiedMonster(item itm);						//Defined in autoscend/auto_util.ash
 boolean handleCopiedMonster(item itm, string option);		//Defined in autoscend/auto_util.ash
-boolean powerLevelAdjustment();								//Defined in autoscend.ash
+boolean isAboutToPowerlevel();
 boolean handleFaxMonster(monster enemy);					//Defined in autoscend/auto_clan.ash
 boolean handleFaxMonster(monster enemy, boolean fightIt);	//Defined in autoscend/auto_clan.ash
 boolean handleFaxMonster(monster enemy, boolean fightIt, string option);//Defined in autoscend/auto_clan.ash

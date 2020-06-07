@@ -499,6 +499,10 @@ boolean auto_pre_adventure()
 		acquireHP();
 	}
 
+	if (my_hp() <= (my_maxhp() * 0.75)) {
+		acquireHP();
+	}
+
 	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
 	if(wasted_mp > 0 && my_mp() > 400)
 	{

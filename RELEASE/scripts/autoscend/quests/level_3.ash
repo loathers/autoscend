@@ -224,7 +224,7 @@ boolean L3_tavern()
 		}
 	}
 
-	if(my_level() == get_property("auto_powerLevelLastLevel").to_int())
+	if(isAboutToPowerlevel())
 	{
 		delayTavern = false;
 	}
