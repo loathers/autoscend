@@ -1,11 +1,13 @@
 script "auto_post_adv.ash";
 import<autoscend.ash>
 
-void handlePostAdventure()
+boolean auto_post_adventure()
 {
+	auto_log_debug("Running auto_post_adv.ash");
+
 	if(limit_mode() == "spelunky")
 	{
-		return;
+		return true;
 	}
 
 	/* This tracks noncombat-forcers like Clara's Bell and stench jelly, which
@@ -48,7 +50,7 @@ void handlePostAdventure()
 		if(last_monster() != $monster[Eldritch Tentacle])
 		{
 			auto_log_warning("Expected Tentacle, uh oh!", "red");
-			return;
+			return false;
 		}
 		auto_log_info("No Tentacle expected this time!", "green");
 	}
@@ -66,19 +68,12 @@ void handlePostAdventure()
 				if(have_effect($effect[Beaten Up]) > 0)
 				{
 					auto_log_warning("Post combat time caused up to be Beaten Up!", "red");
-					return;
+					return false;
 				}
 				autoAdv(my_location());
-				return;
+				return true;
 			}
 		}
-	}
-
-	//This has a post combat scenario, let us just handle it.
-	if(last_monster() == $monster[Cake Lord])
-	{
-		run_choice(1);
-		run_choice(1);
 	}
 
 	if((get_property("lastEncounter") == "Daily Briefing") && (auto_my_path() == "License to Adventure"))
@@ -97,26 +92,7 @@ void handlePostAdventure()
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		auto_log_info("Postadventure skipped by standard adventure handler.", "green");
-		return;
-	}
-
-	if(choice_follows_fight())
-	{
-		// make sure last_choice is updated
-		visit_url("main.php");
-		switch(last_choice())
-		{
-			case 1340: // Is There A Doctor In The House?
-				auto_log_info("Accepting doctor quest, it's our job!");
-				run_choice(1);
-				break;
-			case 1342: // Torpor
-				bat_reallyPickSkills(20);
-				break;
-			default:
-				auto_log_warning("Unrecognized unhandled choice after combat " + last_choice(), "red");
-				break;
-		}
+		return true;
 	}
 
 	if(!get_property("_ballInACupUsed").to_boolean() && (item_amount($item[Ball-In-A-Cup]) > 0))
@@ -140,21 +116,21 @@ void handlePostAdventure()
 	if((my_location() == $location[The Lower Chambers]) && (item_amount($item[[2334]Holy MacGuffin]) == 0))
 	{
 		auto_log_info("Postadventure skipped by Ed the Undying!", "green");
-		return;
+		return true;
 	}
 
 	if((my_location() == $location[The Invader]))
 	{
 		// Just so the "are we beaten up?" check in auto_koe works properly
 		auto_log_info("Postadventure skipped for The Invader!", "green");
-		return;
+		return true;
 	}
 
 	ocrs_postHelper();
 	if(last_monster().random_modifiers["clingy"])
 	{
 		auto_log_info("Postadventure skipped by clingy modifier.", "green");
-		return;
+		return true;
 	}
 
 	if(have_effect($effect[Cunctatitis]) > 0)
@@ -246,7 +222,7 @@ void handlePostAdventure()
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}
 
-			if (my_level() < 13 && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && (!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob] contains my_location()) || have_skill($skill[More Legs])) && my_location() != $location[The Smut Orc Logging Camp])
+			if ((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && !($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Smut Orc Logging Camp] contains my_location()))
 			{
 				buffMaintain($effect[Blessing of Serqet], 10, 1, 10);
 			}
@@ -268,7 +244,7 @@ void handlePostAdventure()
 		{
 			acquireMP(100, my_meat());
 		}
-		return;
+		return true;
 	}
 
 	skill libram = preferredLibram();
@@ -317,7 +293,7 @@ void handlePostAdventure()
 		buffMaintain($effect[Eau de Tortue], 0, 1, 1);
 	}
 
-	if((monster_level_adjustment() > 140) && !get_property("kingLiberated").to_boolean())
+	if((monster_level_adjustment() > 140) && !inAftercore())
 	{
 		buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
 		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
@@ -372,7 +348,7 @@ void handlePostAdventure()
 			use_skill(1, libram);
 		}
 
-		return;
+		return true;
 	}
 
 	if(auto_my_path() == "The Source")
@@ -439,7 +415,7 @@ void handlePostAdventure()
 	effect awolDesired = awol_walkBuff();
 	if(awolDesired != $effect[none])
 	{
-		if(!get_property("kingLiberated").to_boolean())
+		if(!inAftercore())
 		{
 			int awolMP = 85;
 			if(my_class() == $class[Beanslinger])
@@ -669,7 +645,7 @@ void handlePostAdventure()
 	else
 	{
 		boolean didOutfit = false;
-		if((my_basestat($stat[mysticality]) >= 200) && (my_buffedstat($stat[mysticality]) >= 200) && (get_property("kingLiberated") != "false") && (item_amount($item[Wand of Oscus]) > 0) && (item_amount($item[Oscus\'s Dumpster Waders]) > 0) && (item_amount($item[Oscus\'s Pelt]) > 0))
+		if((my_basestat($stat[mysticality]) >= 200) && (my_buffedstat($stat[mysticality]) >= 200) && inAftercore() && (item_amount($item[Wand of Oscus]) > 0) && (item_amount($item[Oscus\'s Dumpster Waders]) > 0) && (item_amount($item[Oscus\'s Pelt]) > 0))
 		{
 			cli_execute("outfit save Backup");
 			#Using the cli command may not upgrade our stats if our max mp drops
@@ -816,7 +792,7 @@ void handlePostAdventure()
 		buffMaintain($effect[Mathematically Precise], 150, 1, 5);
 #		buffMaintain($effect[Rotten Memories], 150, 1, 10);
 
-		if(get_property("kingLiberated").to_boolean())
+		if(inAftercore())
 		{
 			if((auto_have_skill($skill[Summon Rad Libs])) && (my_mp() > 6))
 			{
@@ -941,7 +917,7 @@ void handlePostAdventure()
 		set_property("auto_cubeItems", false);
 	}
 
-	if(!get_property("kingLiberated").to_boolean())
+	if(!inAftercore())
 	{
 		if((my_daycount() == 1) && (my_bjorned_familiar() != $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() == 0) && (have_familiar($familiar[grim brother])) && (equipped_item($slot[back]) == $item[Buddy Bjorn]) && (my_familiar() != $familiar[Grim Brother]))
 		{
@@ -974,7 +950,7 @@ void handlePostAdventure()
 		auto_log_info("Have " + item_amount($item[Hellseal Sinew]) + " sinew(s).", "green");
 	}
 
-	if((my_location() == $location[The Hidden Bowling Alley]) && get_property("kingLiberated").to_boolean())
+	if((my_location() == $location[The Hidden Bowling Alley]) && inAftercore())
 	{
 		if(item_amount($item[Bowling Ball]) > 0)
 		{
@@ -982,7 +958,7 @@ void handlePostAdventure()
 		}
 	}
 
-	if((my_level() < 13) && !get_property("kingLiberated").to_boolean() && (my_meat() > 7500))
+	if((my_level() < 13) && !inAftercore() && (my_meat() > 7500))
 	{
 		if(item_amount($item[pulled red taffy]) >= 6)
 		{
@@ -1025,7 +1001,7 @@ void handlePostAdventure()
 
 
 	# We only do this in aftercore because we don't want a spiralling death loop in-run.
-	if(get_property("kingLiberated").to_boolean() && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
+	if(inAftercore() && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
 	{
 		auto_log_warning("Owwie, was beaten up but trying to recover", "red");
 		use_skill(1, $skill[Tongue of the Walrus]);
@@ -1066,11 +1042,26 @@ void handlePostAdventure()
 	{
 		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 	}
+	
+	set_property("auto_januaryToteAcquireCalledThisTurn", false);
 
 	auto_log_info("Post Adventure done, beep.", "purple");
+	return true;
 }
 
 void main()
 {
-	handlePostAdventure();
+	boolean ret = false;
+	try
+	{
+		ret = auto_post_adventure();
+	}
+	finally
+	{
+		if (!ret)
+		{
+			auto_log_error("Error running auto_post_adv.ash, setting auto_interrupt=true");
+			set_property("auto_interrupt", true);
+		}
+	}
 }

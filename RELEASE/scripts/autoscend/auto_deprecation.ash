@@ -82,11 +82,7 @@ boolean settingFixer()
 	}
 	if(get_property("auto_100familiar") == "no")
 	{
-		set_property("auto_100familiar", false);
-	}
-	if(get_property("auto_100familiar") == "true")
-	{
-		set_property("auto_100familiar", $familiar[Egg Benedict]);
+		set_property("auto_100familiar", $familiar[none]);
 	}
 	if(get_property("auto_100familiar") == "false")
 	{
@@ -481,5 +477,30 @@ boolean settingFixer()
 		remove_property("auto_legacyConsumeStuff");
 	}
 
+	if (property_exists("betweenAdventureScript"))
+	{
+		auto_log_debug("betweenAdventureScript might be an old mafia property that was renamed but it does nothing now.");
+		remove_property("betweenAdventureScript");
+	}
+
+	if (property_exists("auto_copperhead"))
+	{
+		auto_log_debug("Mafia added tracking for the Copperhead Club non-combat so this is no longer necesssary.");
+		remove_property("auto_copperhead");
+	}
+
+	if (property_exists("auto_hpAutoRecoveryItems"))
+	{
+		remove_property("auto_hpAutoRecoveryItems");
+	}
+	if (property_exists("auto_hpAutoRecovery"))
+	{
+		remove_property("auto_hpAutoRecovery");
+	}
+	if (property_exists("auto_hpAutoRecoveryTarget"))
+	{
+		remove_property("auto_hpAutoRecoveryTarget");
+	}
+	
 	return true;
 }

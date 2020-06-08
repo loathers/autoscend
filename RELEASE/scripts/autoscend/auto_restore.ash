@@ -393,6 +393,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       restored_amount += numeric_modifier("Bonus Resting HP");
     }
 
+    if (isActuallyEd() && !($items[linen bandages, silk bandages, cotton bandages] contains metadata.name.to_item())) {
+      restored_amount = 0;
+    }
+
     return restored_amount;
   }
 
@@ -523,7 +527,9 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   float blood_skill_opportunity_casts(float goal){
     boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
       auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
-      my_maxhp() > hp_cost($skill[Blood Bond]);
+      my_maxhp() > hp_cost($skill[Blood Bond]) &&
+      goal > ((9-hp_regen())*10) && // blood bond drains hp after combat, make sure we dont accidentally kill the player
+      get_property("auto_restoreUseBloodBond").to_boolean();
 
     boolean bloodBubbleAvailable = auto_have_skill($skill[Blood Bubble]) &&
       my_maxhp() > hp_cost($skill[Blood Bubble]);
@@ -1084,12 +1090,12 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     }
   }
 
-  skill pick_blood_skill(){
-    int conservative_blood_bond_cost = hp_cost($skill[Blood Bond]) + ((9-hp_regen())*10);
+  skill pick_blood_skill(int final_hp){
     boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
-      auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
+      pathAllowsFamiliar() &&
       my_maxhp() > hp_cost($skill[Blood Bond]) &&
-      my_maxhp() > conservative_blood_bond_cost/3; // blood bond drains hp after combat, make sure we dont accidentally kill the player
+      final_hp > ((9-hp_regen())*10) && // blood bond drains hp after combat, make sure we dont accidentally kill the player
+      get_property("auto_restoreUseBloodBond").to_boolean();
 
     boolean bloodBubbleAvailable = auto_have_skill($skill[Blood Bubble]) &&
       my_maxhp() > hp_cost($skill[Blood Bubble]);
@@ -1109,7 +1115,8 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     return blood_skill;
   }
 
-  boolean use_opportunity_blood_skills(int hp_restored_per_use){
+  boolean use_opportunity_blood_skills(int hp_restored_per_use, int final_hp)
+  {
     int restored = my_hp() + hp_restored_per_use;
     int waste = min(my_hp()-1, restored-my_maxhp());
     if(waste <= 0) return true;
@@ -1137,7 +1144,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
       casts_so_far += times_to_cast;
     }
     if(casts_so_far < casts_total){
-      to_cast[pick_blood_skill()] += casts_total - casts_so_far;
+      to_cast[pick_blood_skill(final_hp)] += casts_total - casts_so_far;
     }
     boolean success = true;
     foreach sk, times in to_cast{
@@ -1215,7 +1222,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 
     boolean success = false;
     foreach i, o in options{
-      use_opportunity_blood_skills(o.vars["hp_restored_per_use"]);
+      use_opportunity_blood_skills(o.vars["hp_restored_per_use"], my_hp()+o.vars["hp_total_restored"]);
       success = use_restore(o.metadata, meat_reserve, useFreeRests);
       if(success){
         break;
@@ -1296,6 +1303,11 @@ boolean acquireMP(int goal, int meat_reserve){
  */
 boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 {
+	//vampyres don't use MP
+	if(my_class() == $class[Vampyre])
+	{
+		return false;
+	}
 
   boolean isMax = (goal == my_maxmp());
 
@@ -1387,12 +1399,25 @@ boolean acquireHP(int goal, int meat_reserve){
   */
 boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 
-  if (isActuallyEd() && my_hp() > 0)
-  {
-    // Ed doesn't need to heal outside of combat unless on 0 hp
-    return false;
+  if (isActuallyEd()) {
+    if (my_hp() > 0) {
+      // Ed doesn't need to heal outside of combat unless on 0 hp
+      return false;
+    } else {
+      // handle situations where acquireHP() has been called and passed though to here
+      // so goal = my_maxhp(). This is exceptionally wasteful for Ed as it will burn all his linen bandages
+      // and then all his Ka replacing his linen bandages. Ed only needs 1 HP to adventure.
+      goal = 1;
+    }
   }
-  
+
+	//vampyres can only be restored using blood bags, which are too valuable to waste on healing HP.
+	//better to make food/drink from them and then rest in your coffin
+	if(my_class() == $class[Vampyre])
+	{
+		return false;
+	}
+
   boolean isMax = (goal == my_maxhp());
 
   __cure_bad_stuff();

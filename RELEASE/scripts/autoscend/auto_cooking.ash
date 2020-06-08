@@ -6,7 +6,6 @@ script "auto_cooking.ash"
 
 boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);
 boolean consumeMilkOfMagnesiumIfUnused(boolean useAdv);
-int autoDailySpecialPrice();
 boolean autoEat(int howMany, item toEat);
 boolean autoEat(int howMany, item toEat, boolean silent);
 boolean autoDrink(int howMany, item toDrink);
@@ -45,17 +44,6 @@ boolean saucemavenApplies(item it)
 
 float expectedAdventuresFrom(item it)
 {
-	if(it == $item[magical sausage]) return 1;
-
-	if ($items[campfire baked potato, campfire beans, campfire coffee] contains it)
-	{
-		return 4.5; // I guess?
-	}
-	if ($items[campfire hot dog, campfire s\'more, campfire stew] contains it)
-	{
-		return 3.5; // I guess?
-	}
-
 	float parse()
 	{
 		if (!it.adventures.contains_text("-")) return it.adventures.to_int();
@@ -261,46 +249,6 @@ boolean autoDrinkCafe(int howmany, int id)
 	return true;
 }
 
-int autoDailySpecialPrice()
-{
-	//this function provides the purchase price for the daily special item in chez snootie or gnomish microbrewery.
-
-	//check for known items whose autosell price is hidden due to being marked nodiscard
-	switch(daily_special())
-	{
-		//chez snootie
-		case $item[banana]: return 3;
-		case $item[banana cream pie]: return 30;
-		case $item[fiery wing]: return 96;
-		case $item[forbidden sausage]: return 46;
-		case $item[ghost cucumber]: return 225;
-		case $item[laser-broiled pear]: return 465;
-		
-		//gnomish microbrewery
-		case $item[banana daiquiri]: return 30;
-		case $item[bungle in the jungle]: return 75;
-		case $item[especially salty dog]: return 462;
-	}
-
-	//if an item has an autosell price, the cost to buy it from chez snootie or gnomish microbrewery is 3 times the autosell value
-	if (autosell_price(daily_special()) > 0)
-	{
-		return 3*autosell_price(daily_special());
-	}
-	
-	//this function should not be called if you do not have access to a daily special (for example, knoll sign). But just in case
-	if (daily_special() == $item[none])
-	{
-		auto_log_warning("for some reason auto_cooking.ash called function autoDailySpecialPrice() even though no daily special item is available to you from chez snootie or gnomish microbrewery", "orange");
-		return 100;
-	}
-
-	//if an item does not have an autosell price and is not a known item, assume the price is 100 and print a warning asking the user to report this
-	auto_log_warning("Autoscend can not determine the price of the daily special at chez snnotie or gnomish microbrewery and will guess it costs 100 meat", "orange");
-	auto_log_warning("Please report this warning. file auto_cooking.ash function autoDailySpecialPrice() item " + daily_special(), "orange");
-	return 100;
-}
-
 boolean autoEatCafe(int howmany, int id)
 {
 	if(!canadia_available()) return false;
@@ -381,7 +329,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	while(howMany > 0)
 	{
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, toEat.fullness);
-		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() > 11000) && (get_property("mayoInMouth") == "") && is_unrestricted($item[Portable Mayo Clinic]))
+		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() > 11000) && (get_property("mayoInMouth") == "") && auto_is_valid($item[Portable Mayo Clinic]))
 		{
 			buyUpTo(1, $item[Mayoflex], 1000);
 			use(1, $item[Mayoflex]);
@@ -454,7 +402,7 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 
 boolean consumeMilkOfMagnesiumIfUnused()
 {
-	if(get_property("_milkOfMagnesiumUsed").to_boolean())
+	if(get_property("_milkOfMagnesiumUsed").to_boolean() || item_amount($item[Milk Of Magnesium]) < 1)
 	{
 		return false;
 	}
@@ -470,6 +418,10 @@ boolean canDrink(item toDrink)
 	if(!auto_is_valid(toDrink))
 	{
 		return false;
+	}
+	if (my_class() == $class[Avatar of Jarlsberg])
+	{
+		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
 	}
 	if((auto_my_path() == "Nuclear Autumn") && (toDrink.inebriety != 1))
 	{
@@ -525,6 +477,10 @@ boolean canEat(item toEat)
 	if(!auto_is_valid(toEat))
 	{
 		return false;
+	}
+	if (my_class() == $class[Avatar of Jarlsberg])
+	{
+		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
 	if((auto_my_path() == "Nuclear Autumn") && (toEat.fullness != 1))
 	{
@@ -586,7 +542,7 @@ void consumeStuff()
 	{
 		return;
 	}
-	if (get_property("kingLiberated").to_boolean())
+	if (inAftercore())
 	{
 		return;
 	}
@@ -596,37 +552,102 @@ void consumeStuff()
 		return;
 	}
 
-	ed_eatStuff(); // fills up spleen for Ed.
-
-	if (!contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
+	// fills up spleen for Ed.
+	if (ed_eatStuff())
 	{
-		boolean shouldEatCookie = (my_meat() >= npc_price($item[Fortune Cookie]) && fullness_left() > 0 && my_level() < 12);
-		if (inebriety_left() > 0)
-		{
-			shouldEatCookie = (shouldEatCookie && !autoDrink(1, $item[Lucky Lindy]));
-		}
-		if (shouldEatCookie)
-		{
-			buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
-			autoEat(1, $item[Fortune Cookie]);
-		}
+		return;
 	}
 
-	if (my_adventures() < 10)
+	// Try to get Fortune Cookie numbers
+	if (consumeFortune())
 	{
+		return;
+	}
+
+	boolean edSpleenCheck = (isActuallyEd() && spleen_left() > 0); // Ed should fill spleen first
+	
+	if (my_adventures() < 10 && fullness_left() > 0 && in_boris())
+	{
+		borisDemandSandwich(true);
+	}
+
+	if (my_adventures() < 10 && !edSpleenCheck)
+	{
+		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
 		if (inebriety_left() > 0)
 		{
 			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper])
 			{
 				use_familiar($familiar[none]);
 			}
-			auto_knapsackAutoConsume("drink", false);
+			boolean shouldDrink = true;
+			if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
+			{
+				auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
+				shouldDrink = false;
+				if (fullness_left() == 0)
+				{
+					auto_log_warning("Need to drink as no fullness is available, pool skill will suffer.");
+					shouldDrink = true;
+				}
+			}
+			if (shouldDrink && auto_autoConsumeOne("drink", false))
+			{
+				return;
+			}
 		}
 		if (fullness_left() > 0)
 		{
-			auto_knapsackAutoConsume("eat", false);
+			if (auto_autoConsumeOne("eat", false))
+			{
+				return;
+			}
 		}
 	}
+}
+
+boolean consumeFortune()
+{
+	if (contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
+	{
+		return false;
+	}
+
+	// Don't get lucky numbers for the first semi-rare if we still need to adventure in the outskirts
+	if (my_turncount() < 80 && (internalQuestStatus("questL05Goblin") < 1 && item_amount($item[Knob Goblin encryption key]) < 1))
+	{
+		return false;
+	}
+
+	// Try to consume a Lucky Lindy
+	if (inebriety_left() > 0 && canDrink($item[Lucky Lindy]) && my_meat() >= npc_price($item[Lucky Lindy]))
+	{
+		if (autoDrink(1, $item[Lucky Lindy]))
+		{
+			return true;
+		}
+	}
+	
+	// Try to consume a Fortune Cookie
+	if (fullness_left() > 0 && canEat($item[Fortune Cookie]) && my_meat() >= npc_price($item[Fortune Cookie]))
+	{
+		// Eat a spaghetti breakfast if still consumable
+		if (canEat($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_fullness() == 0 && my_level() >= 10)
+		{
+			if (!autoEat(1, $item[Spaghetti Breakfast]))
+			{
+				return false;
+			}
+		}
+
+		buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
+		if (autoEat(1, $item[Fortune Cookie]))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 int SL_ORGAN_STOMACH = 1;
@@ -791,6 +812,10 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	{
 		use(item_amount($item[van key]), $item[van key]);
 	}
+	if ((item_amount($item[Knob Goblin lunchbox]) > 0) && (pulls_remaining() != -1))
+	{
+		use(item_amount($item[Knob Goblin lunchbox]), $item[Knob Goblin lunchbox]);
+	}
 
 	// type is "eat" or "drink"
 	int type  = 0;
@@ -819,9 +844,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
-	// Spaghetti breakfast is awkward since it has to be the first food consumed
-	// and we can only consume one. We don't handle this yet, so... blacklist!
-	boolean[item] blacklist = $items[spaghetti breakfast];
+	boolean[item] blacklist = $items[Cursed Punch];
 	boolean[item] craftable_blacklist;
 
 	// If we have 2 sticks of firewood, the current knapsack-solver
@@ -874,14 +897,15 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			canConsume(it) &&
 			(organCost(it) > 0) &&
 			(it.fullness == 0 || it.inebriety == 0) &&
-			is_unrestricted(it) &&
+			auto_is_valid(it) &&
 			(historical_price(it) <= 20000 || (KEY_LIME_PIES contains it && historical_price(it) < 40000)))
 		{
-			if((it == $item[astral pilsner] || it == $item[Cold One]) && my_level() < 11) continue;
-			if((it == $item[astral hot dog] || it == $item[Spaghetti Breakfast]) && my_level() < 11) continue;
-			if (it == $item[Cursed Punch]) continue;
+			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
+			if((it == $item[Spaghetti Breakfast]) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean())) continue;
 
 			int howmany = 1 + organLeft()/organCost(it);
+			// Only one Spaghetti Breakfast can be eaten
+			if(it == $item[Spaghetti Breakfast]) howmany = 1;
 			if (item_amount(it) > 0 && organCost(it) <= 5)
 			{
 				small_owned[it] = min(max(item_amount(it) - auto_reserveAmount(it), 0), howmany);
@@ -903,9 +927,10 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
-			if (storage_amount(it) > 0 && is_tradeable(it))
+			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
+			if (is_tradeable(it) && !isSpeakeasyDrink(it))
 			{
-				pullables[it] = min(howmany, min(pulls_remaining(), storage_amount(it)));
+				pullables[it] = min(howmany, pulls_remaining());
 			}
 			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore())
 			{
@@ -940,7 +965,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				// This could be a property, I don't know.
 				actions[n].desirability -= 6.0;
 			}
-			if (type == SL_ORGAN_STOMACH && is_unrestricted($item[special seasoning]))
+			if (type == SL_ORGAN_STOMACH && auto_is_valid($item[special seasoning]))
 			{
 				actions[n].desirability += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
 			}
@@ -951,6 +976,18 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				auto_log_info("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
 				actions[n].desirability += 25;
+			}
+			if ((obtain_mode == SL_OBTAIN_NULL) && (it == $item[Spaghetti Breakfast]))
+			{
+				if (get_property("_spaghettiBreakfastEaten").to_boolean() || my_fullness() > 0)
+				{
+					actions[n].desirability -= 50;
+				}
+				else
+				{
+					auto_log_info("Spaghetti Breakfast available, we should eat that first.");
+					actions[n].desirability += 50;
+				}
 			}
 			if (obtain_mode == SL_OBTAIN_CRAFT)
 			{
@@ -990,7 +1027,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	// Add daily special
 	if (daily_special() != $item[none] && canConsume(daily_special()))
 	{
-		int daily_special_limit = 1 + min(my_meat()/autoDailySpecialPrice(), organLeft()/organCost(daily_special()));
+		int daily_special_limit = 1 + min(my_meat()/get_property("_dailySpecialPrice").to_int(), organLeft()/organCost(daily_special()));
 		for (int i=0; i < daily_special_limit; i++)
 		{
 			int n = count(actions);
@@ -1110,26 +1147,58 @@ void auto_autoDrinkNightcap(boolean simulate)
 	autoConsume(actions[best]);
 }
 
-boolean auto_autoDrinkOne(boolean simulate)
+boolean auto_autoConsumeOne(string type, boolean simulate)
 {
-	if (inebriety_left() == 0) return false;
+	int organLeft()
+	{
+		if (type == "eat") return fullness_left();
+		if (type == "drink") return inebriety_left();
+		abort("Unrecognized organ type: should be 'eat' or 'drink', was " + type);
+		return 0;
+	}
+	if (organLeft() == 0) return false;
 
 	ConsumeAction[int] actions;
-	loadConsumables("drink", actions);
+	loadConsumables(type, actions);
 
-	float best_adv_per_drunk = 0.0;
-	int best = -1;
-	for (int i=0; i < count(actions); i++)
+	int remaining_space = organLeft();
+
+	float[int] desirability;
+	int[int] space;
+	for (int i=0; i<count(actions); i++)
 	{
-		float tentative_adv_per_drunk = actions[i].desirability/actions[i].size;
-		if (tentative_adv_per_drunk > best_adv_per_drunk)
+		desirability[i] = actions[i].desirability;
+		space[i] = actions[i].size;
+	}
+
+	boolean[int] result = knapsack(remaining_space, count(space), space, desirability);
+
+	float best_desirability_per_fill = 0.0;
+	float best_adv_per_fill = 0.0;
+	int best = -1;
+	foreach i in result
+	{
+		float tentative_desirability_per_fill = actions[i].desirability/actions[i].size;
+		if (tentative_desirability_per_fill > best_desirability_per_fill)
 		{
-			best_adv_per_drunk = tentative_adv_per_drunk;
+			best_desirability_per_fill = tentative_desirability_per_fill;
+			best_adv_per_fill = actions[i].adventures/actions[i].size;
 			best = i;
 		}
 	}
 
-	auto_log_info("auto_autoDrinkOne: Planning to execute " + to_pretty_string(actions[best]), "blue");
+	if (best == -1)
+	{
+		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
+		return false;
+	}
+
+	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(actions[best]), "blue");
+	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
+	{
+		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFill " + get_property("auto_consumeMinAdvPerFill"));
+		return false;
+	}
 
 	if(!simulate)
 	{

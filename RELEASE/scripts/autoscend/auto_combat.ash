@@ -1,10 +1,8 @@
 script "auto_combat.ash"
 
+//since combat functions will never be used outside of combat file, they get declared here instead of the general header file.
 monster ocrs_helper(string page);
 void awol_helper(string page);
-string auto_edCombatHandler(int round, string opp, string text);
-string auto_combatHandler(int round, string opp, string text);
-
 boolean registerCombat(string action);
 boolean registerCombat(skill sk);
 boolean registerCombat(item it);
@@ -231,11 +229,28 @@ string getStallString(monster enemy)
 	return "";
 }
 
+boolean enemyCanBlocksSkills()
+{
+	//we want to know if enemy can sometimes block a skill. For such enemies skills should be used only if absolutely necessary
+	//for enemies that always block a skill a seperate function should be made... if we ever fight any in run.
+	
+	monster enemy = last_monster();
+	
+	if($monsters[
+	Bonerdagon,
+	Naughty Sorceress,
+	Naughty Sorceress (2)
+	] contains enemy)
+	{
+		return true;
+	}
+	
+	return false;
+}
 
-string auto_combatHandler(int round, string opp, string text)
+string auto_combatHandler(int round, monster enemy, string text)
 {
 	#Yes, round 0, really.
-	monster enemy = to_monster(opp);
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
 	int damageReceived = 0;
 	if(round == 0)
@@ -289,17 +304,16 @@ string auto_combatHandler(int round, string opp, string text)
 	phylum current = to_phylum(get_property("dnaSyringe"));
 
 	string combatState = get_property("auto_combatHandler");
-	int thunderBirdsLeft = get_property("auto_combatHandlerThunderBird").to_int();
 	int fingernailClippersLeft = get_property("auto_combatHandlerFingernailClippers").to_int();
 
 	#Handle different path is monster_level_adjustment() > 150 (immune to staggers?)
 	int mcd = monster_level_adjustment();
 
-	boolean doBanisher = !get_property("kingLiberated").to_boolean();
+	boolean doBanisher = !inAftercore();
 
+	int majora = -1;
 	if(my_path() == "Disguises Delimit")
 	{
-		int majora = -1;
 		matcher maskMatch = create_matcher("mask(\\d+).png", text);
 		if(maskMatch.find())
 		{
@@ -433,8 +447,22 @@ string auto_combatHandler(int round, string opp, string text)
 		return "runaway";
 	}
 
-	if((enemy == $monster[Your Shadow]) || (opp == "shadow cow puncher") || (opp == "shadow snake oiler") || (opp == "shadow beanslinger") || (opp == "shadow gelatinous noob") || (opp == "Shadow Plumber"))
+	//TODO test plumber, geleatinous noob, and west of loathing paths to see if these workarounds are still needed.
+	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger, shadow gelatinous noob] contains enemy.to_string())
 	{
+		//debug as you go
+		if($classes[Snake Oiler, Cow Puncher, Beanslinger, Gelatinous Noob] contains my_class())
+		{
+			if(enemy == $monster[Your Shadow])
+			{
+				auto_log_debug(my_class() +" confirmed to be identifying $monster[Your Shadow] without need for workaround. please report this");
+			}
+			else
+			{
+				auto_log_debug(my_class() +" confirmed still need a workaround for identifying $monster[Your Shadow]. please report this");
+			}
+		}
+		
 		if(in_zelda())
 		{
 			if(item_amount($item[super deluxe mushroom]) > 0)
@@ -543,16 +571,6 @@ string auto_combatHandler(int round, string opp, string text)
 		{
 			return useSkill($skill[Saucegeyser]);
 		}
-	}
-
-	// Unique Heavy Rains Enemy that Reflects Spells.
-	if(enemy.to_string() == "Gurgle")
-	{
-		if(canUse($skill[Summon Love Stinkbug], false))
-		{
-			return useSkill($skill[Summon Love Stinkbug], false);
-		}
-		return "attack with weapon";
 	}
 
 	if (enemy == $monster[The Invader] && canUse($skill[Weapon of the Pastalord], false))
@@ -745,25 +763,141 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(thunderBirdsLeft > 0)
+	//Heavy Rain boss debuff & Stunning
+	if($monsters[Big Wisnaqua, The Aquaman, The Rain King] contains enemy)
 	{
-		thunderBirdsLeft = thunderBirdsLeft - 1;
-		set_property("auto_combatHandlerThunderBird", thunderBirdsLeft.to_string());
-		return useSkill($skill[Thunder Bird], false);
-	}
-
-	if(canUse($skill[Thunder Bird]) && (monster_level_adjustment() <= 150))
-	{
-		if($monsters[Big Wisnaqua, The Aquaman, The Big Wisniewski, The Man, The Rain King] contains enemy)
+		//During round 1 against late bosses set how many [Thunder Bird] we plan to cast during this combat
+		if(round == 1 && get_property("auto_combatHandlerThunderBird").to_int() == 0)
 		{
-			if(canUse($skill[Curse Of Weaksauce]) && (my_mp() >= 60) && auto_have_skill($skill[Itchy Curse Finger]))
+			int targetThunderBird = 3;
+			if(monster_level_adjustment() > 80)
 			{
+				targetThunderBird++;
+			}
+			if(monster_level_adjustment() > 110)
+			{
+				targetThunderBird++;
+			}
+			if(monster_level_adjustment() > 150)
+			{
+				targetThunderBird++;
+			}
+			set_property("auto_combatHandlerThunderBird", targetThunderBird);
+		}
+	
+		//These bosses are actually stunable. unless their ML is over 150
+		if(monster_level_adjustment() > 150)		//not stunable
+		{
+			//30% debuff each crayon shavings, making each 1 superior to 2 casts of [Thunder Bird]
+			if(item_amount($item[crayon shavings]) > 1 && auto_have_skill($skill[Ambidextrous Funkslinging]))
+			{
+				set_property("auto_combatHandlerThunderBird", get_property("auto_combatHandlerThunderBird").to_int() - 4);
+				return "item " + $item[crayon shavings] + ", " + $item[crayon shavings];
+			}
+			if(item_amount($item[crayon shavings]) > 0)
+			{
+				set_property("auto_combatHandlerThunderBird", get_property("auto_combatHandlerThunderBird").to_int() - 2);
+				return "item " + $item[crayon shavings];
+			}
+		}
+		else		//stunable
+		{
+			if(canUse($skill[Micrometeorite]))
+			{
+				//stun and delevel 10% (or theoretically up to 25% if it was not used constantly)
+				set_property("auto_combatHandlerThunderBird", get_property("auto_combatHandlerThunderBird").to_int() - 1);
+				return useSkill($skill[Micrometeorite]);
+			}
+			if(canUse($skill[Curse Of Weaksauce]) && my_mp() >= 50 && auto_have_skill($skill[Itchy Curse Finger]))
+			{
+				//every round delevel 3% of original attack value
 				return useSkill($skill[Curse Of Weaksauce]);
 			}
-
-			set_property("auto_combatHandlerThunderBird", "5");
-			return useSkill($skill[Thunderstrike]);
+			if(canUse($skill[Thunderstrike]) && my_thunder() >= 5)
+			{
+				//Once per combat multiround stun ability that does not delevel
+				return useSkill($skill[Thunderstrike]);
+			}
+			if(canUse($skill[Curse Of Weaksauce]) && my_mp() >= 50)
+			{
+				//rely on thunderstrike stun if you do not have [Itchy Curse Finger]
+				return useSkill($skill[Curse Of Weaksauce]);
+			}
 		}
+		
+		//once done with stunnning, use [Thunder Bird] which debuffs but does not stun.
+		if(my_thunder() == 0 && get_property("auto_combatHandlerThunderBird").to_int() > 0)
+		{
+			set_property("auto_combatHandlerThunderBird", 0);
+		}
+		if(get_property("auto_combatHandlerThunderBird").to_int() > 0 && canUse($skill[Thunder Bird], false))
+		{
+			set_property("auto_combatHandlerThunderBird", get_property("auto_combatHandlerThunderBird").to_int() - 1);
+			return useSkill($skill[Thunder Bird], false);
+		}
+	}
+
+	// Heavy Rains Final Boss. strips you of positive effects every time it hits you. Capped at 40 damage per source per element.
+	if(enemy.to_string() == "The Rain King")
+	{
+		if(get_property("auto_rain_king_combat") == "attack")
+		{
+			if(canUse($skill[Lunging Thrust-Smack], false))
+			{
+				return useSkill($skill[Lunging Thrust-Smack], false);
+			}
+			if(canUse($skill[Thrust-Smack], false))
+			{
+				return useSkill($skill[Thrust-Smack], false);
+			}
+			if(canUse($skill[Lunge Smack], false))
+			{
+				return useSkill($skill[Lunge Smack], false);
+			}
+			return "attack with weapon";
+		}
+		if(get_property("auto_rain_king_combat") == "saucestorm" && canUse($skill[Saucestorm], false))
+		{
+			return useSkill($skill[Saucestorm], false);
+		}
+		if(get_property("auto_rain_king_combat") == "weapon_of_the_pastalord" && canUse($skill[Weapon of the Pastalord], false))
+		{
+			return useSkill($skill[Weapon of the Pastalord], false);
+		}
+		if(get_property("auto_rain_king_combat") == "turtleini" && canUse($skill[Turtleini], false))
+		{
+			return useSkill($skill[Turtleini], false);
+		}
+		abort("I am not sure how to finish this battle");
+	}
+	
+	// Unique Heavy Rains Enemy that Reflects Spells.
+	if(enemy.to_string() == "Gurgle")
+	{
+		if(canUse($skill[Summon Love Stinkbug]))
+		{
+			return useSkill($skill[Summon Love Stinkbug]);
+		}
+		return "attack with weapon";
+	}
+	
+	// Unique Heavy Rains Enemy that reduces Spells damage to 1 and caps non spell damage at 39 per source and type
+	// Has low enough HP it can be defeated in 10 combat turns using simple melee attacks that deal only physical damage
+	if(enemy.to_string() == "Dr. Aquard")
+	{
+		if(canUse($skill[Curse of Weaksauce]))
+		{
+			return useSkill($skill[Curse of Weaksauce]);
+		}
+		if(canUse($skill[Micrometeorite]))
+		{
+			return useSkill($skill[Micrometeorite]);
+		}
+		if(canUse($skill[Summon Love Stinkbug]))
+		{
+			return useSkill($skill[Summon Love Stinkbug]);
+		}
+		return "attack with weapon";
 	}
 
 	if((my_location() == $location[The Battlefield (Frat Uniform)]) && (enemy == $monster[gourmet gourami]))
@@ -902,7 +1036,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(canUse($skill[Extract]) && get_property("kingLiberated").to_boolean())
+	if(canUse($skill[Extract]) && inAftercore())
 	{
 		return useSkill($skill[Extract]);
 	}
@@ -921,7 +1055,7 @@ string auto_combatHandler(int round, string opp, string text)
 
 	if(canUse($item[The Big Book of Pirate Insults]) && (numPirateInsults() < 8) && (internalQuestStatus("questM12Pirate") < 5))
 	{
-		if(($locations[Barrrney\'s Barrr, The Obligatory Pirate\'s Cove] contains my_location()) || ((enemy == $monster[Gaudy Pirate]) && (my_location() != $location[Belowdecks])))
+		if ($locations[Barrrney\'s Barrr, The Obligatory Pirate\'s Cove] contains my_location())
 		{
 			return useItem($item[The Big Book Of Pirate Insults]);
 		}
@@ -991,6 +1125,15 @@ string auto_combatHandler(int round, string opp, string text)
 			}
 			return useItem($item[Jam Band Flyers]);
 		}
+	}
+	
+	if(canUse($item[chaos butterfly]) && !get_property("chaosButterflyThrown").to_boolean() && !get_property("auto_skipL12Farm").to_boolean())
+	{
+		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
+		{
+			return useItems($item[chaos butterfly], $item[Time-Spinner]);
+		}
+		return useItem($item[chaos butterfly]);
 	}
 
 	if(item_amount($item[Cocktail Napkin]) > 0)
@@ -1086,7 +1229,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(!get_property("kingLiberated").to_boolean())
+	if(!inAftercore())
 	{
 		if(item_amount($item[short writ of habeas corpus]) > 0)
 		{
@@ -1136,6 +1279,10 @@ string auto_combatHandler(int round, string opp, string text)
 			set_property("auto_combatHandler", combatState + "(replacer)");
 			if(index_of(combatAction, "skill") == 0)
 			{
+				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])
+				{
+					handleTracker($skill[CHEAT CODE: Replace Enemy], "auto_powerfulglove");
+				}
 				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_replaces");
 			}
 			else if(index_of(combatAction, "item") == 0)
@@ -1262,7 +1409,7 @@ string auto_combatHandler(int round, string opp, string text)
 
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
-			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Chest X-Ray], "auto_instakill");
 				loopHandlerDelayAll();
@@ -1271,7 +1418,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		if(canUse($skill[shattering punch]) && (get_property("_shatteringPunchUsed").to_int() < 3))
 		{
-			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 				loopHandlerDelayAll();
@@ -1280,7 +1427,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean())
 		{
-			if((my_adventures() < 20) || get_property("kingLiberated").to_boolean() || (my_daycount() >= 3))
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 				loopHandlerDelayAll();
@@ -1341,7 +1488,9 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Curse of Weaksauce]);
 	}
 
-	if(canUse($skill[Intimidating Bellow]) && (my_mp() >= 25) && auto_have_skill($skill[Louder Bellows]))
+	//boris specific 3MP skill that delevels by 15%, with an upgrade it delevels 30% and stuns.
+	//even without the upgrade it it is worth it. actually without upgrade you need it more due to low skill.
+	if(canUse($skill[Intimidating Bellow]) && expected_damage() > 0 && !enemyCanBlocksSkills())
 	{
 		return useSkill($skill[Intimidating Bellow]);
 	}
@@ -1372,7 +1521,7 @@ string auto_combatHandler(int round, string opp, string text)
 
 		if($item[Daily Affirmation: Keep Free Hate In Your Heart].combat)
 		{
-			if(canUse($item[Daily Affirmation: Keep Free Hate In Your Heart]) && get_property("kingLiberated").to_boolean() && hippy_stone_broken() && !get_property("_affirmationHateUsed").to_boolean())
+			if(canUse($item[Daily Affirmation: Keep Free Hate In Your Heart]) && inAftercore() && hippy_stone_broken() && !get_property("_affirmationHateUsed").to_boolean())
 			{
 				return useItem($item[Daily Affirmation: Keep Free Hate In Your Heart]);
 			}
@@ -1440,9 +1589,9 @@ string auto_combatHandler(int round, string opp, string text)
 			{
 				return useSkill($skill[Northern Explosion], false);
 			}
-			else
+			else if($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class())
 			{
-				auto_log_warning("None of our preferred skills available. Engaging in Fisticuffs.", "red");
+				auto_log_warning("None of our preferred [cold] skills available against smut orcs. Engaging in Fisticuffs.", "red");
 			}
 		}
 
@@ -1593,7 +1742,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(canUse($skill[Candyblast]) && (my_mp() > 60) && get_property("kingLiberated").to_boolean())
+	if(canUse($skill[Candyblast]) && (my_mp() > 60) && inAftercore())
 	{
 		# We can get only one candy and we can detect it, if so desired:
 		# "Hey, some of it is even intact afterwards!"
@@ -1615,7 +1764,7 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Stuffed Mortar Shell]);
 	}
 
-	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !get_property("kingLiberated").to_boolean() && (auto_my_path() != "Nuclear Autumn"))
+	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && (auto_my_path() != "Nuclear Autumn"))
 	{
 		if($monsters[Dairy Goat] contains enemy)
 		{
@@ -1641,7 +1790,7 @@ string auto_combatHandler(int round, string opp, string text)
 		return useSkill($skill[Curse Of Weaksauce]);
 	}
 
-	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !get_property("kingLiberated").to_boolean())
+	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !inAftercore())
 	{
 		if($monsters[Ninja Snowman Assassin, Lobsterfrogman] contains enemy)
 		{
@@ -1653,7 +1802,7 @@ string auto_combatHandler(int round, string opp, string text)
 		}
 	}
 
-	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3) && !get_property("kingLiberated").to_boolean())
+	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3) && !inAftercore())
 	{
 		if(get_property("auto_digitizeDirective") == enemy)
 		{
@@ -1718,6 +1867,48 @@ string auto_combatHandler(int round, string opp, string text)
 			return useSkill($skill[[7333]Fireball Barrage]);
 		}
 		return useSkill($skill[Fireball Toss], false);
+	}
+
+	//disguise delimit path specific killing
+	if(majora == 13)	//welding mask
+	{
+		//reflect damage from spells back to player. kept if mask is changed
+		//some spells actually damage the monster too.
+		//saucegeyser confirmed to not damage the monster. saucestorm confirmed to damage the monster.
+		if(enemy.physical_resistance >= 80)
+		{
+			if(my_hp() > monster_hp() + 150 && canUse($skill[Saucestorm], false))
+			{
+				return useSkill($skill[Saucestorm], false);
+			}
+			//TODO check if our physical attack can deal elemental damage.
+			else abort("Not sure how to handle a physically resistent enemy wearing a welding mask.");
+		}
+		if(canSurvive(1.5) && round < 10)
+		{
+			return "attack with weapon";
+		}
+		abort("Not sure how to handle welding mask.");
+	}
+	if(majora == 25)	//tiki mask
+	{
+		//triples HP and hard caps damage at 10 per source. kept if mask is changed
+		//seal clubbers have ways to increase this damage but its overly complicated to calculate. simplified calculation is used.
+		int hot_dmg = min(10,numeric_modifier("hot damage"));
+		int cold_dmg = min(10,numeric_modifier("cold damage"));
+		int stench_dmg = min(10,numeric_modifier("stench damage"));
+		int sleaze_dmg = min(10,numeric_modifier("sleaze damage"));
+		int spooky_dmg = min(10,numeric_modifier("spooky damage"));
+		int attack_dmg = 10 + hot_dmg + cold_dmg + stench_dmg + sleaze_dmg + spooky_dmg;
+		
+		if(attack_dmg > 20)
+		{
+			return "attack with weapon";
+		}
+		if(canUse($skill[Saucestorm], false))
+		{
+			return useSkill($skill[Saucestorm], false);
+		}
 	}
 
 	string attackMinor = "attack with weapon";
@@ -2254,10 +2445,8 @@ string auto_combatHandler(int round, string opp, string text)
 	return attackMinor;
 }
 
-string findBanisher(int round, string opp, string text)
+string findBanisher(int round, monster enemy, string text)
 {
-	monster enemy = to_monster(opp);
-
 	string banishAction = banisherCombatString(enemy, my_location(), true);
 	if(banishAction != "")
 	{
@@ -2280,20 +2469,18 @@ string findBanisher(int round, string opp, string text)
 	{
 		return useSkill($skill[Storm of the Scarab], false);
 	}
-	return auto_combatHandler(round, opp, text);
+	return auto_combatHandler(round, enemy, text);
 }
 
-string auto_JunkyardCombatHandler(int round, string opp, string text)
+string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 {
-	monster enemy = to_monster(opp);
-
 	if(!($monsters[A.M.C. gremlin, batwinged gremlin, erudite gremlin, spider gremlin, vegetable gremlin] contains enemy))
 	{
 		if (isActuallyEd())
 		{
-			return auto_edCombatHandler(round, opp, text);
+			return auto_edCombatHandler(round, enemy, text);
 		}
-		return auto_combatHandler(round, opp, text);
+		return auto_combatHandler(round, enemy, text);
 	}
 
 	auto_log_info("auto_JunkyardCombatHandler: " + round, "brown");
@@ -2443,7 +2630,7 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 		{
 			if (get_property("_edDefeats").to_int() >= 2)
 			{
-				return findBanisher(round, opp, text);
+				return findBanisher(round, enemy, text);
 			}
 			else if (canUse($item[Seal Tooth], false) && get_property("auto_edStatus") == "UNDYING!")
 			{
@@ -2452,7 +2639,7 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 		}
 		else
 		{
-			return findBanisher(round, opp, text);
+			return findBanisher(round, enemy, text);
 		}
 	}
 
@@ -2471,7 +2658,7 @@ string auto_JunkyardCombatHandler(int round, string opp, string text)
 	return "attack with weapon";
 }
 
-string auto_edCombatHandler(int round, string opp, string text)
+string auto_edCombatHandler(int round, monster enemy, string text)
 {
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
 	int damageReceived = 0;
@@ -2507,7 +2694,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location())
 	{
-		if (my_mp() < mp_cost($skill[Fist Of The Mummy]))
+		if (my_mp() < mp_cost($skill[Fist Of The Mummy]) && get_property("_edDefeats").to_int() < 2)
 		{
 			foreach it in $items[Holy Spring Water, Spirit Beer, Sacramental Wine]
 			{
@@ -2530,7 +2717,6 @@ string auto_edCombatHandler(int round, string opp, string text)
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	monster enemy = to_monster(opp);
 	phylum type = monster_phylum(enemy);
 	string combatState = get_property("auto_combatHandler");
 	string edCombatState = get_property("auto_edCombatHandler");
@@ -2741,6 +2927,11 @@ string auto_edCombatHandler(int round, string opp, string text)
 			return useItem($item[Jam Band Flyers]);
 		}
 	}
+	
+	if(canUse($item[chaos butterfly]) && !get_property("chaosButterflyThrown").to_boolean() && !get_property("auto_skipL12Farm").to_boolean())
+	{
+		return useItem($item[chaos butterfly]);
+	}
 
 	if((enemy == $monster[dirty thieving brigand]) && !contains_text(edCombatState, "curse of fortune"))
 	{
@@ -2752,7 +2943,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		}
 	}
 
-	if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+	if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 	{
 		if(auto_wantToSniff(enemy, my_location()))
 		{
@@ -2764,7 +2955,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if(my_location() == $location[The Secret Council Warehouse])
 	{
-		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			#	Rememeber, we are looking to see if we have enough of the opposite item here.
@@ -2798,7 +2989,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 
 	if(my_location() == $location[The Smut Orc Logging Camp])
 	{
-		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster") != opp && get_property("_edDefeats").to_int() < 3)
+		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			string stenched = to_lower_case(get_property("stenchCursedMonster"));
@@ -3083,7 +3274,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		{
 			doRenenutet = true;
 		}
-		if((enemy == $monster[Pygmy Janitor]) && (item_amount($item[Book of Matches]) == 0) && (get_property("relocatePygmyJanitor").to_int() != my_ascensions()))
+		if((enemy == $monster[Pygmy Janitor]) && (item_amount($item[Book of Matches]) == 0) && (get_property("hiddenTavernUnlock").to_int() != my_ascensions()))
 		{
 			doRenenutet = true;
 		}
@@ -3161,7 +3352,7 @@ string auto_edCombatHandler(int round, string opp, string text)
 		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
-	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location() && canUse($skill[Fist Of The Mummy], false))
+	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest, The Batrat and Ratbat Burrow, The Boss Bat\'s Lair, Cobb\'s Knob Harem] contains my_location() && canUse($skill[Fist Of The Mummy], false))
 	{
 		return useSkill($skill[Fist Of The Mummy], false);
 	}
@@ -3220,7 +3411,8 @@ string auto_edCombatHandler(int round, string opp, string text)
 	return useSkill($skill[Mild Curse], false);
 }
 
-string auto_saberTrickMeteorShowerCombatHandler(int round, string opp, string text){
+string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text)
+{
 	if(canUse($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && auto_have_skill($skill[Meteor Lore])){
 		if(canUse($skill[Meteor Shower])){
 			return useSkill($skill[Meteor Shower]);

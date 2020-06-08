@@ -18,8 +18,6 @@ boolean use_barrels();
 int autoCraft(string mode, int count, item item1, item item2);
 int[item] auto_get_campground();
 int towerKeyCount();
-boolean haveSpleenFamiliar();
-boolean considerGrimstoneGolem(boolean bjornCrown);
 float elemental_resist_value(int resistance);
 int elemental_resist(element goal);
 boolean organsFull();
@@ -57,17 +55,11 @@ boolean handleSealAncient(string option);
 boolean handleSealElement(element flavor);
 boolean handleSealElement(element flavor, string option);
 void handleTracker(string used, string tracker);
-void handleTracker(item used, string tracker);
-void handleTracker(item used, string detail, string tracker);
-void handleTracker(monster enemy, string tracker);
-void handleTracker(monster enemy, skill toTrack, string tracker);
-void handleTracker(monster enemy, string toTrack, string tracker);
-void handleTracker(monster enemy, item toTrack, string tracker);
+void handleTracker(string used, string detail, string tracker);
 int internalQuestStatus(string prop);
 string runChoice(string page_text);
 int turkeyBooze();
 int amountTurkeyBooze();
-int numPirateInsults();
 int fastenerCount();
 int lumberCount();
 skill preferredLibram();
@@ -80,6 +72,7 @@ int spleen_left();
 int stomach_left();
 int fullness_left();
 int inebriety_left();
+boolean canPull(item it);
 void pullAll(item it);
 void pullAndUse(item it, int uses);
 boolean pullXWhenHaveY(item it, int howMany, int whenHave);
@@ -89,7 +82,6 @@ item bangPotionNeeded(effect need);
 boolean solveBangPotion(effect need);
 boolean pulverizeThing(item it);
 boolean buy_item(item it, int quantity, int maxprice);
-string tryBeerPong();
 boolean hasShieldEquipped();
 boolean[skill] ATSongList();
 void shrugAT();
@@ -133,8 +125,6 @@ boolean loopHandler(string turnSetting, string counterSetting, string abortMessa
 boolean loopHandler(string turnSetting, string counterSetting, int threshold);
 boolean loopHandlerDelay(string counterSetting);
 boolean loopHandlerDelay(string counterSetting, int threshold);
-boolean is100FamiliarRun();
-boolean is100FamiliarRun(familiar thisOne);
 boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
@@ -177,7 +167,6 @@ int auto_predictAccordionTurns();
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns);
-string beerPong(string page);
 boolean beehiveConsider();
 string safeString(string input);
 string safeString(skill input);
@@ -465,6 +454,8 @@ string safeString(string input)
 {
 	matcher comma = create_matcher("[,]", input);
 	input = replace_all(comma, ".");
+	matcher colon = create_matcher("[:]", input);
+	input = replace_all(colon, ".");
 	return input;
 }
 
@@ -482,72 +473,6 @@ string safeString(monster input)
 	return safeString("" + input);
 }
 
-void handleTracker(monster enemy, skill toTrack, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(enemy) + ":" + safeString(toTrack) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(monster enemy, string toTrack, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(enemy) + ":" + safeString(toTrack) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(monster enemy, item toTrack, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(enemy) + ":" + safeString(toTrack) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(monster enemy, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(enemy) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(item used, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
-void handleTracker(item used, string detail, string tracker)
-{
-	string cur = get_property(tracker);
-	if(cur != "")
-	{
-		cur = cur + ", ";
-	}
-	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(detail) + ":" + my_turncount() + ")";
-	set_property(tracker, cur);
-}
-
 void handleTracker(string used, string tracker)
 {
 	string cur = get_property(tracker);
@@ -556,6 +481,17 @@ void handleTracker(string used, string tracker)
 		cur = cur + ", ";
 	}
 	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
+void handleTracker(string used, string detail, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(detail) + ":" + my_turncount() + ")";
 	set_property(tracker, cur);
 }
 
@@ -650,12 +586,11 @@ boolean restoreSetting(string setting)
 
 boolean startArmorySubQuest()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_koe() || auto_my_path() == "Nuclear Autumn")
 	{
 		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
 		{
-			use(1, $item[Hypnotic Breadcrumbs]);
-			return true;
+			return use(1, $item[Hypnotic Breadcrumbs]);
 		}
 		return false;
 	}
@@ -665,7 +600,10 @@ boolean startArmorySubQuest()
 		string temp = visit_url("shop.php?whichshop=armory");
 		temp = visit_url("shop.php?whichshop=armory&action=talk");
 		temp = visit_url("choice.php?pwd=&whichchoice=1065&option=1");
-		return true;
+		if(internalQuestStatus("questM25Armorer") > -1)
+		{
+			return true;
+		}
 	}
 	return false;
 }
@@ -707,6 +645,19 @@ boolean startGalaktikSubQuest()
 		string temp = visit_url("shop.php?whichshop=doc");
 		temp = visit_url("shop.php?whichshop=doc&action=talk");
 		temp = visit_url("choice.php?pwd=&whichchoice=1064&option=1");
+		return true;
+	}
+	return false;
+}
+
+boolean startHippyBoatmanSubQuest()
+{
+	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
+	{
+		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
+		temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
+		temp = visit_url("choice.php?pwd=&whichchoice=798&option=2");
+		temp = visit_url("woods.php");
 		return true;
 	}
 	return false;
@@ -851,9 +802,8 @@ boolean loopHandlerDelay(string counterSetting, int threshold)
 boolean loopHandlerDelayAll()
 {
 	boolean boo = loopHandlerDelay("_auto_lastABooCycleFix");
-	boolean desk = loopHandlerDelay("_auto_digitizeDeskCounter");
 	boolean digitize = loopHandlerDelay("_auto_digitizeAssassinCounter");
-	return boo || desk || digitize;
+	return boo || digitize;
 }
 
 string reverse(string s)
@@ -865,43 +815,6 @@ string reverse(string s)
 	}
 	return ret;
 }
-
-boolean is100FamiliarRun()
-{
-	// Answers the question "am I not allowed to change my familiar?"
-	// Returns true for paths with no familiars
-	if(get_property("auto_100familiar") == $familiar[Egg Benedict])
-	{
-		if(have_familiar($familiar[Mosquito]))
-		{
-			return false;
-		}
-	}
-
-	if(get_property("auto_100familiar") == $familiar[none])
-	{
-		return false;
-	}
-	if(get_property("auto_100familiar") == "")
-	{
-		return false;
-	}
-	return true;
-}
-
-boolean is100FamiliarRun(familiar thisOne)
-{
-	if(is100FamiliarRun())
-	{
-		if(get_property("auto_100familiar") == thisOne)
-		{
-			return false;
-		}
-		return true;
-	}
-	return false;
-}
-
 
 boolean setAdvPHPFlag()
 {
@@ -1316,7 +1229,7 @@ boolean canYellowRay(monster target)
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
 	// first, do any necessary prep to use a yellow ray
-	if((my_familiar() == $familiar[Crimbo Shrub]) || (!is100FamiliarRun($familiar[Crimbo Shrub]) && auto_have_familiar($familiar[Crimbo Shrub])))
+	if(canChangeToFamiliar($familiar[Crimbo Shrub]))
 	{
 		if(item_amount($item[box of old Crimbo decorations]) == 0)
 		{
@@ -1397,7 +1310,7 @@ boolean auto_wantToBanish(monster enemy, location loc)
 
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
 {
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return "";
 	}
@@ -2359,7 +2272,8 @@ boolean isUnclePAvailable()
 	{
 		return false;
 	}
-	return true;
+	string page_text = visit_url("place.php?whichplace=desertbeach");
+	return !page_text.contains_text("You don't know where a desert beach is");
 }
 
 boolean instakillable(monster mon)
@@ -2921,9 +2835,10 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		auto_powerfulGloveNoncombat();
 	}
 
-	// TODO: And we have >400 coins. Or some cutoff.
+	//blooper ink costs 15 coins without which it will error when trying to buy it, so that is the bare minimum we need to check for
+	//However we don't want to waste our early coins on it as they are precious. So require at least 400 coins before buying it.
 	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt) &&
-	   my_class() == $class[Plumber] && 0 == have_effect($effect[Blooper Inked]))
+	   my_class() == $class[Plumber] && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400)
 	{
 		retrieve_item(1, $item[blooper ink]);
 		buffMaintain($effect[Blooper Inked], 0, 1, 1);
@@ -3265,7 +3180,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	if(pass())
 		return result();
 
-	if(doEquips && !is100FamiliarRun())
+	if(doEquips && canChangeFamiliar())
 	{
 		familiar resfam = $familiar[none];
 		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot]
@@ -3279,8 +3194,8 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		if(resfam != $familiar[none])
 		{
 			// need to use now so maximizer will see it
+			familiar currentFamiliar = my_familiar();
 			use_familiar(resfam);
-			handleFamiliar(resfam);
 			if(resfam == $familiar[Trick-or-Treating Tot])
 			{
 				cli_execute("acquire 1 li'l candy corn costume");
@@ -3291,6 +3206,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
+			use_familiar(currentFamiliar);
 		}
 		if(pass())
 			return result();
@@ -3648,31 +3564,9 @@ boolean provideMoxie(int amt, boolean doEquips)
 	return provideMoxie(amt, doEquips, false) >= amt;
 }
 
-boolean auto_have_familiar(familiar fam)
-{
-	if(auto_my_path() == "License to Adventure")
-	{
-		return false;
-	}
-	if($classes[
-		Avatar Of Boris,
-		Avatar Of Jarlsberg,
-		Avatar Of Sneaky Pete,
-		Ed,
-		Vampyre,
-		] contains my_class())
-	{
-		return false;
-	}
-	if(!auto_is_valid(fam))
-	{
-		return false;
-	}
-	return have_familiar(fam);
-}
-
 boolean basicAdjustML()
 {
+	if(in_boris()) return borisAdjustML();
 	if (in_zelda())
 	{
 		// We don't get many stats from combat - no point running ML.
@@ -3704,6 +3598,11 @@ boolean basicAdjustML()
 
 boolean auto_change_mcd(int mcd)
 {
+	return auto_change_mcd(mcd, false);
+}
+
+boolean auto_change_mcd(int mcd, boolean immediately)
+{
 	if (in_koe()) return false;
 
 	int best = 10;
@@ -3733,8 +3632,8 @@ boolean auto_change_mcd(int mcd)
 	{
 		best = 11;
 	}
-
-	if(my_level() >= 13 && !get_property("auto_disregardInstantKarma").to_boolean())
+	//under level 13 we want to level up. level 14+ we already missed the instant karma, no point in holding back anymore.
+	if(my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		if((get_property("questL12War") == "finished") || (get_property("sidequestArenaCompleted") != "none") || (get_property("flyeredML").to_int() >= 10000) || get_property("auto_ignoreFlyer").to_boolean())
 		{
@@ -3747,7 +3646,14 @@ boolean auto_change_mcd(int mcd)
 	{
 		return true;
 	}
-	return change_mcd(next);
+	
+	set_property("auto_mcd_target", next);
+	if(immediately)
+	{
+		return change_mcd(next);
+	}
+	//for non immediate changes we still return true because the mafia setting was changed and MCD will be changed later.
+	return true;
 }
 
 boolean evokeEldritchHorror(string option)
@@ -3982,7 +3888,7 @@ boolean use_barrels()
 	{
 		return false;
 	}
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		return false;
 	}
@@ -4118,22 +4024,6 @@ int amountTurkeyBooze()
 	}
 	return 0;
 }
-
-int numPirateInsults()
-{
-	int retval = 0;
-	int i = 1;
-	while(i <= 8)
-	{
-		if(get_property("lastPirateInsult"+i) == "true")
-		{
-			retval = retval + 1;
-		}
-		i = i + 1;
-	}
-	return retval;
-}
-
 
 int fastenerCount()
 {
@@ -4305,11 +4195,80 @@ boolean haveAny(boolean[item] array)
 	return false;
 }
 
+boolean acquireOrPull(item it)
+{
+	//this function is for when you want to make sure you have 1 of an item
+	//if you have one it returns true. if you don't it will craft one. if it can't it will pull it.
+	
+	if(possessEquipment(it)) return true;
+	if(item_amount(it) > 0)  return true;
+	if(retrieve_item(1, it)) return true;
+	if(canPull(it))
+	{
+		if(pullXWhenHaveY(it, 1, 0)) return true;
+	}
+	
+	//special handling via pulling 1 ingredient to craft the item desired
+	if($items[asteroid belt, meteorb, shooting morning star, meteorite guard, meteortarboard, meteorthopedic shoes] contains it)
+	{
+		if(canPull($item[metal meteoroid]))
+		{
+			if(pullXWhenHaveY($item[metal meteoroid], 1, 0))
+			{
+				if(retrieve_item(1, it)) return true;
+			}
+		}
+	}
+	
+	return false;
+}
+
 boolean in_ronin()
 {
 	return !can_interact();
 }
 
+boolean canPull(item it)
+{
+	if(in_hardcore())
+	{
+		return false;
+	}
+	if(it == $item[none])
+	{
+		return false;
+	}
+	if(!is_unrestricted(it))
+	{
+		return false;
+	}
+	if(pulls_remaining() == 0)
+	{
+		return false;
+	}
+	
+	if(storage_amount(it) > 0)
+	{
+		return true;
+	}
+
+	int meat = my_storage_meat();
+	if(can_interact())
+	{
+		meat = max(meat, my_meat() - 5000);
+	}
+	int curPrice = auto_mall_price(it);
+	if (curPrice >= 20000)
+	{
+		return false;
+	}
+	else if (curPrice < meat)
+	{
+		return true;
+	}
+	
+	return false;
+}
 
 void pullAll(item it)
 {
@@ -4357,11 +4316,15 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	{
 		return false;
 	}
-	if(!is_unrestricted(it) && !get_property("kingLiberated").to_boolean())
+	if(!is_unrestricted(it) && !inAftercore())
 	{
 		return false;
 	}
 	if(pulls_remaining() == 0)
+	{
+		return false;
+	}
+	if (!auto_is_valid(it))
 	{
 		return false;
 	}
@@ -4498,7 +4461,7 @@ boolean pulverizeThing(item it)
 boolean buy_item(item it, int quantity, int maxprice)
 {
 	take_closet(closet_amount(it), it);
-	if(get_property("kingLiberated") != "false")
+	if(inAftercore())
 	{
 		take_storage(storage_amount(it), it);
 	}
@@ -4525,82 +4488,6 @@ boolean buy_item(item it, int quantity, int maxprice)
 	return true;
 }
 
-//Thanks, Rinn!
-string beerPong(string page)
-{
-	record r {
-		string insult;
-		string retort;
-	};
-
-	r [int] insults;
-	insults[1].insult="Arrr, the power of me serve'll flay the skin from yer bones!";
-	insults[1].retort="Obviously neither your tongue nor your wit is sharp enough for the job.";
-	insults[2].insult="Do ye hear that, ye craven blackguard?  It be the sound of yer doom!";
-	insults[2].retort="It can't be any worse than the smell of your breath!";
-	insults[3].insult="Suck on <i>this</i>, ye miserable, pestilent wretch!";
-	insults[3].retort="That reminds me, tell your wife and sister I had a lovely time last night.";
-	insults[4].insult="The streets will run red with yer blood when I'm through with ye!";
-	insults[4].retort="I'd've thought yellow would be more your color.";
-	insults[5].insult="Yer face is as foul as that of a drowned goat!";
-	insults[5].retort="I'm not really comfortable being compared to your girlfriend that way.";
-	insults[6].insult="When I'm through with ye, ye'll be crying like a little girl!";
-	insults[6].retort="It's an honor to learn from such an expert in the field.";
-	insults[7].insult="In all my years I've not seen a more loathsome worm than yerself!";
-	insults[7].retort="Amazing!  How do you manage to shave without using a mirror?";
-	insults[8].insult="Not a single man has faced me and lived to tell the tale!";
-	insults[8].retort="It only seems that way because you haven't learned to count to one.";
-
-	while(!page.contains_text("victory laps"))
-	{
-		string old_page = page;
-
-		if(!page.contains_text("Insult Beer Pong"))
-		{
-			abort("You don't seem to be playing Insult Beer Pong.");
-		}
-
-		if(page.contains_text("Phooey"))
-		{
-			auto_log_info("Looks like something went wrong and you lost.", "lime");
-			return page;
-		}
-
-		foreach i in insults
-		{
-			if(page.contains_text(insults[i].insult))
-			{
-				if(page.contains_text(insults[i].retort))
-				{
-					auto_log_info("Found appropriate retort for insult.", "lime");
-					auto_log_debug("Insult: " + insults[i].insult, "lime");
-					auto_log_debug("Retort: " + insults[i].retort, "lime");
-					page = visit_url("beerpong.php?value=Retort!&response=" + i);
-					break;
-				}
-				else
-				{
-					auto_log_info("Looks like you needed a retort you haven't learned.", "red");
-					auto_log_debug("Insult: " + insults[i].insult, "lime");
-					auto_log_debug("Retort: " + insults[i].retort, "lime");
-
-					// Give a bad retort
-					page = visit_url("beerpong.php?value=Retort!&response=9");
-					return page;
-				}
-			}
-		}
-
-		if(page == old_page)
-		{
-			abort("String not found. There may be an error with one of the insult or retort strings.");
-		}
-	}
-
-	auto_log_info("You won a thrilling game of Insult Beer Pong!", "lime");
-	return page;
-}
-
 int howLongBeforeHoloWristDrop()
 {
 	int drops = get_property("_holoWristDrops").to_int() + 1;
@@ -4614,52 +4501,6 @@ boolean hasShieldEquipped()
 {
 	return item_type(equipped_item($slot[off-hand])) == "shield";
 }
-
-boolean needStarKey()
-{
-	if(contains_text(get_property("nsTowerDoorKeysUsed"),"star key"))
-	{
-		return false;
-	}
-	if(item_amount($item[Richard\'s Star Key]) > 0)
-	{
-		return false;
-	}
-	if((item_amount($item[Star Chart]) > 0) && (item_amount($item[Star]) >= 8) && (item_amount($item[Line]) >= 7))
-	{
-		return false;
-	}
-
-	return true;
-}
-
-boolean needDigitalKey()
-{
-	if(contains_text(get_property("nsTowerDoorKeysUsed"),"digital key"))
-	{
-		return false;
-	}
-	if(item_amount($item[Digital Key]) > 0)
-	{
-		return false;
-	}
-	if(whitePixelCount() >= 30)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-int whitePixelCount()
-{
-	int count = item_amount($item[White Pixel]);
-
-	int extra = min(item_amount($item[Red Pixel]), item_amount($item[Blue Pixel]));
-	extra = min(extra, item_amount($item[Green Pixel]));
-	return count + extra;
-}
-
 
 boolean careAboutDrops(monster mon)
 {
@@ -4888,66 +4729,6 @@ void auto_visit_gnasir()
 	}
 }
 
-boolean considerGrimstoneGolem(boolean bjornCrown)
-{
-	if(!have_familiar($familiar[Grimstone Golem]))
-	{
-		return false;
-	}
-
-	if(bjornCrown && (get_property("_grimstoneMaskDropsCrown").to_int() != 0))
-	{
-		return false;
-	}
-
-	if((get_property("desertExploration").to_int() >= 70) && (get_property("chasmBridgeProgress").to_int() >= 29))
-	{
-		return false;
-	}
-
-	if(get_property("chasmBridgeProgress").to_int() >= 29)
-	{
-		if(!get_property("auto_grimstoneOrnateDowsingRod").to_boolean())
-		{
-			return false;
-		}
-	}
-
-	if(get_property("desertExploration").to_int() >= 70)
-	{
-		if(!get_property("auto_grimstoneFancyOilPainting").to_boolean())
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-boolean haveSpleenFamiliar()
-{
-	boolean [familiar] spleenies = $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey];
-
-	int[familiar] blacklist;
-	if(get_property("auto_blacklistFamiliar") != "")
-	{
-		string[int] noFams = split_string(get_property("auto_blacklistFamiliar"), ";");
-		foreach index, fam in noFams
-		{
-			blacklist[to_familiar(trim(fam))] = 1;
-		}
-	}
-
-	foreach fam in spleenies
-	{
-		if(have_familiar(fam) && !(blacklist contains fam))
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 boolean acquireTransfunctioner()
 {
 	if(available_amount($item[Continuum Transfunctioner]) > 0)
@@ -5056,17 +4837,6 @@ int [item] auto_get_campground()
 	}
 
 	return campItems;
-}
-
-//Thanks, Rinn!
-string tryBeerPong()
-{
-	string page = visit_url("adventure.php?snarfblat=157");
-	if(contains_text(page, "Arrr You Man Enough?"))
-	{
-		page = beerPong(visit_url("choice.php?pwd&whichchoice=187&option=1"));
-	}
-	return page;
 }
 
 boolean buyUpTo(int num, item it)
@@ -5238,6 +5008,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Become Superficially Interested]:	useItem = $item[Daily Affirmation: Be Superficially Interested];	break;
 	case $effect[Bendin\' Hell]:					useSkill = $skill[Bend Hell];					break;
 	case $effect[Bent Knees]:					useSkill = $skill[Bendable Knees];					break;
+	case $effect[Benetton\'s Medley of Diversity]:	useSkill = $skill[Benetton\'s Medley of Diversity];		break;
 	case $effect[Berry Elemental]:				useItem = $item[Tapioc Berry];					break;
 	case $effect[Berry Statistical]:			useItem = $item[Snarf Berry];					break;
 	case $effect[Big]:							useSkill = $skill[Get Big];						break;
@@ -5267,6 +5038,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Blubbered Up]:					useSkill = $skill[Blubber Up];					break;
 	case $effect[Blue Swayed]:					useItem = $item[Pulled Blue Taffy];				break;
 	case $effect[Bone Springs]:					useSkill = $skill[Bone Springs];				break;
+	case $effect[Boner Battalion]:				useSkill = $skill[Summon &quot;Boner Battalion&quot;];	break;
 	case $effect[Boon of She-Who-Was]:			useSkill = $skill[Spirit Boon];					break;
 	case $effect[Boon of the Storm Tortoise]:	useSkill = $skill[Spirit Boon];					break;
 	case $effect[Boon of the War Snapper]:		useSkill = $skill[Spirit Boon];					break;
@@ -5840,7 +5612,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 		if($effects[Drunk and Avuncular, Record Hunger] contains buff)
 		{
-			if(get_property("kingLiberated").to_boolean())
+			if(inAftercore())
 			{
 				return false;
 			}
@@ -5932,7 +5704,7 @@ location solveDelayZone()
 	// These are locations that aren't 1:1 turn savings, but can still be useful
 
 	// Shorten the time before finding Gnasir, so that we can start acquiring desert pages sooner
-	if(zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
+	if(zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent >= 1 && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
 	{
 		burnZone = $location[The Arid\, Extra-Dry Desert];
 	}
@@ -5944,6 +5716,11 @@ location solveDelayZone()
 	if(in_koe() && $location[The Exploaded Battlefield].turns_spent < 5)
 	{
 		burnZone = $location[The Exploaded Battlefield];
+	}
+
+	if(in_lowkeysummer())
+	{
+		burnZone = lowkey_nextAvailableKeyDelayLocation();
 	}
 
 	return burnZone;
@@ -6273,6 +6050,8 @@ boolean auto_check_conditions(string conds)
 					abort('"' + condition_data + '" does not properly convert to a monster!');
 				if(have_effect($effect[On The Trail]) > 0 && get_property("olfactedMonster").to_monster() == check_sniffed)
 					return true;
+				if(isActuallyEd() && get_property("stenchCursedMonster").to_monster() == check_sniffed)
+					return true;
 				if(my_class() == $class[Avatar of Sneaky Pete] && get_property("makeFriendsMonster").to_monster() == check_sniffed)
 					return true;
 				if($classes[Cow Puncher, Beanslinger, Snake Oiler] contains my_class() && get_property("longConMonster").to_monster() == check_sniffed)
@@ -6313,6 +6092,17 @@ boolean auto_check_conditions(string conds)
 				if(!m4.find())
 					abort('"' + condition_data + '" is not a proper ML condition format!');
 				return compare_numbers(monster_level_adjustment(), to_int(m4.group(2)), m4.group(1));
+			// data: eat\drink\chew
+			// True if we can eat\drink\chew anything today
+			case "consume":
+				switch (condition_data)
+				{
+					case "eat": return fullness_left() > 0;
+					case "drink": return inebriety_left() > 0;
+					case "chew": return spleen_left() > 0;
+					default:
+						abort('Invalid consume type "' + condition_type + '" found!');
+				}
 			default:
 				abort('Invalid condition type "' + condition_type + '" found!');
 		}
@@ -6432,6 +6222,11 @@ void auto_interruptCheck()
 		set_property("auto_interrupt", false);
 		restoreAllSettings();
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
+	}
+	else if (get_property("auto_debugging").to_boolean())
+	{
+		set_property("auto_interrupt", true);
+		auto_log_info("auto_debugging detected, auto_interrupt enabled.");
 	}
 }
 
@@ -6865,17 +6660,13 @@ boolean auto_setMCDToCap()
 	// Don't try to set the MCD if in KoE
 	if(!in_koe())
 	{
-		if(($strings[Marmot, Opossum, Platypus] contains my_sign()) && (11 <= remainingMLToCap()))
-		{
-			auto_change_mcd(11);
-		}
-		else if(10 <= remainingMLToCap())
-		{
-			auto_change_mcd(10);
-		}
-		else if(10 > remainingMLToCap())
+		if (current_mcd() > remainingMLToCap())
 		{
 			auto_change_mcd(remainingMLToCap());
+		}
+		else
+		{
+			auto_change_mcd(11);
 		}
 	}
 
@@ -6903,13 +6694,6 @@ boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 //		Ur-kel's may need new entries in this case due to its variance
 boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 {
-
-// Turn Off MCD first if not in KoE, so we can maximize our ML within constraints.
-	if(!in_koe() && !($locations[The Boss Bat\'s Lair, Haert of the Cyrpt, Throne Room] contains my_location()))
-	{
-		auto_change_mcd(0);
-	}
-
 	void tryEffects(boolean [effect] effects)
 	{
 		foreach eff in effects
@@ -7090,7 +6874,6 @@ boolean is_superlikely(string encounterName)
 
 }
 
-
 // Function to Predict how many turns we will get from an AT buff
 int auto_predictAccordionTurns()
 {
@@ -7119,4 +6902,132 @@ int auto_predictAccordionTurns()
 	}
 
 	return CurrentBestTurns;
+}
+
+boolean hasTTBlessing()
+{
+	//do you currently have a turtle blessing active? or if not turtle tamer then the buff?
+	
+	foreach eff in $effects[
+	Blessing of the War Snapper,
+	Grand Blessing of the War Snapper,
+	Glorious Blessing of the War Snapper,
+	Blessing of She-Who-Was,
+	Grand Blessing of She-Who-Was,
+	Glorious Blessing of She-Who-Was,
+	Blessing of the Storm Tortoise,
+	Grand Blessing of the Storm Tortoise,
+	Glorious Blessing of the Storm Tortoise,
+	Disdain of the War Snapper,
+	Disdain of She-Who-Was,
+	Disdain of the Storm Tortoise
+	]
+	{
+		if(have_effect(eff) > 0)
+		{
+			return true;
+		}
+	}
+	
+	return false;	
+}
+
+void effectAblativeArmor(boolean passive_dmg_allowed)
+{
+	//when facing a boss that has a buff stripping mechanic that is limited on how many can be stripped per round.
+	//then load up on as many reasonable buffs as you can taking cost into account.
+	//avoid potentially undesireable effects such as +ML.
+	//I am pretty sure non combat skills that give an effect count.
+	//but I am labeling them seperate from buffs in case we ever need to split this function.
+	
+	//if you have something that reduces the cost of casting buffs, wear it now.
+	maximize("-mana cost, -tie", false);
+	
+	//Passive damage
+	if(passive_dmg_allowed)
+	{
+		buffMaintain($effect[Spiky Shell], 0, 1, 1);					//8 MP
+		buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);	//5 MP
+		buffMaintain($effect[Scarysauce], 0, 1, 1);						//10 MP
+	}
+	
+	//1MP Non-Combat skills from each class
+	buffMaintain($effect[Seal Clubbing Frenzy], 0, 1, 1);
+	buffMaintain($effect[Patience of the Tortoise], 0, 1, 1);
+	buffMaintain($effect[Pasta Oneness], 0, 1, 1);
+	buffMaintain($effect[Saucemastery], 0, 1, 1);
+	buffMaintain($effect[Disco State of Mind], 0, 1, 1);
+	buffMaintain($effect[Mariachi Mood], 0, 1, 1);
+
+	//Seal clubber Non-Combat skills
+	buffMaintain($effect[Blubbered Up], 0, 1, 1);						//7 MP
+	buffMaintain($effect[Rage of the Reindeer], 0, 1, 1);				//10 MP
+	buffMaintain($effect[A Few Extra Pounds], 0, 1, 1);					//10 MP
+	
+	//Turtle Tamer Non-Combat skills
+	if(!hasTTBlessing())
+	{
+		buffMaintain($effect[Blessing of the War Snapper], 0, 1, 1);	//15 MP. other blessings too expensive.
+	}
+	
+	//Pastamancer Non-Combat skills
+	buffMaintain($effect[Springy Fusilli], 0, 1, 1);					//10 MP
+	buffMaintain($effect[Shield of the Pastalord], 0, 1, 1);			//20 MP
+	buffMaintain($effect[Leash of Linguini], 0, 1, 1);					//12 MP
+	
+	//Sauceror Non-Combat skills
+	buffMaintain($effect[Sauce Monocle], 0, 1, 1);						//20 MP
+
+	//Disco Bandit Non-Combat skills
+	buffMaintain($effect[Disco Fever], 0, 1, 1);						//10 MP
+	
+	//Turtle Tamer Buffs
+	buffMaintain($effect[Ghostly Shell], 0, 1, 1);						//6 MP
+	buffMaintain($effect[Tenacity of the Snapper], 0, 1, 1);			//8 MP
+	buffMaintain($effect[Empathy], 0, 1, 1);							//15 MP
+	buffMaintain($effect[Reptilian Fortitude], 0, 1, 1);				//8 MP
+	buffMaintain($effect[Astral Shell], 0, 1, 1);						//10 MP
+	buffMaintain($effect[Jingle Jangle Jingle], 0, 1, 1);				//5 MP
+	buffMaintain($effect[Curiosity of Br\'er Tarrypin], 0, 1, 1);		//5 MP
+	
+	//Sauceror Buffs
+	buffMaintain($effect[Elemental Saucesphere], 0, 1, 1);				//10 MP
+	buffMaintain($effect[Antibiotic Saucesphere], 0, 1, 1);				//15 MP
+	
+	//Accordion Thief Buffs. We are not shrugging so it will only apply new ones if we have space for them
+	buffMaintain($effect[The Moxious Madrigal], 0, 1, 1);				//2 MP
+	buffMaintain($effect[The Magical Mojomuscular Melody], 0, 1, 1);	//3 MP
+	buffMaintain($effect[Cletus\'s Canticle of Celerity], 0, 1, 1);		//4 MP
+	buffMaintain($effect[Power Ballad of the Arrowsmith], 0, 1, 1);		//5 MP
+	buffMaintain($effect[Polka of Plenty], 0, 1, 1);					//7 MP
+	
+	//Mutually exclusive effects
+	if(have_effect($effect[Musk of the Moose]) == 0 && have_effect($effect[Hippy Stench]) == 0)
+	{
+		buffMaintain($effect[Smooth Movements], 0, 1, 1);				//10 MP
+	}
+	if(have_effect($effect[Smooth Movements]) == 0 && have_effect($effect[Fresh Scent]) == 0)
+	{
+		buffMaintain($effect[Musk of the Moose], 0, 1, 1);				//10 MP
+	}	
+	
+	//TODO facial expressions, need to check you are not wearing one first and which ones you have
+	//Maybe just not do facial expressions? too much complexity for a singular effect.
+}
+
+int currentPoolSkill() {
+	// format of the cli 'poolskill' command return value is:
+	// Pool Skill is estimated at : 12.
+	// 0 from equipment, 0 from having 15 inebriety, 2 hustling training and 10 learning from 25 sharks.
+	string [int] poolskill_command = split_string(cli_execute_output("poolskill"));
+	return substring(poolskill_command[0], poolskill_command[0].last_index_of(":") + 2,  poolskill_command[0].length() - 1).to_int();
+}
+
+int poolSkillPracticeGains()
+{
+	//predict gains from choosing to practice your pool skill (choice 2) in noncombat adv 875 "Welcome To Our ool Table"
+	int count = 1;
+	if(have_effect($effect[chalky hand]) > 0) count += 1;
+	if(equipped_amount($item[[2268]Staff of Fats]) > 0) count += 2;		//note that $item[[7964]Staff of Fats] does not help here.
+	return count;
 }

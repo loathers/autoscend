@@ -6,8 +6,8 @@ auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks d
 auto_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
 auto_clearCombatScripts	boolean	Clear out the postAdventure, preAdventure and kingLiberated settings upon kingLiberation. These will return upon running the script in a new ascension.
 auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
+auto_powerLevelTimer	integer	Sets the delay before each adv spent powerleveling, default is 10 sec. lowest valid value is 1.
 auto_pullPVPJunk	boolean	Pull various PVP junk when liberating the King? Mostly avatar potions but other stuff might get added.
-auto_diceMode	boolean	Equip all available Dice (OCRS) gear. This is probably not FUN.
 auto_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
 auto_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
 auto_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
@@ -17,10 +17,11 @@ auto_floundryChoice	string	Force floundry usage. Must use the item name (Use ; t
 auto_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
 auto_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
 auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
-auto_blacklistFamiliar	string	A semi-colon separate string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
+auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
 auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
-auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Ashton Kutcher (ignores Soda Bread).
-auto_limitConsume	boolean	When false, will not eat or drink anything automatically.
+auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
+auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
+auto_consumeMinAdvPerFill	float	The minimum adventures per fill to consider for a consumable before eating or drinking it. Defaults to 0.0 and will consume whatever is available if necessary.
 auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
 auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
 auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
@@ -35,6 +36,7 @@ auto_optimizeConsultsInRun	boolean	When true, optimize our consults in run to ge
 auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
 auto_consultChoice	string	The name of the player you want to do Zatara consults with.
 auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
+auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
 auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
 auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
 auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
@@ -43,5 +45,7 @@ auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after
 auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle.
 auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
 auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
+auto_mineForOres	boolean	BETA: If true, will attempt to acquire the Mining Gear and then mine in Itznotyerzitzmine for Ore during level 8 quest
 auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
 auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
+auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.

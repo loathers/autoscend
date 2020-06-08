@@ -1,11 +1,5 @@
 script "autoscend/auto_equipment.ash";
 
-void equipBaseline();
-void equipRollover();
-void ensureSealClubs();
-void makeStartingSmiths();
-int equipmentAmount(item equipment);
-
 string getMaximizeSlotPref(slot s)
 {
 	return "_auto_maximize_equip_" + s.to_string();
@@ -65,12 +59,23 @@ boolean autoEquip(item it)
 
 // specifically intended for forcing something in to a specific slot,
 // instead of just forcing it to be equipped in general
-// made for Antique Machete, mainly
+// mostly for the Antique Machete and unstable fulminate
 boolean autoForceEquip(slot s, item it)
 {
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
 		return false;
+	}
+	if($slot[off-hand] == s)
+	{
+		if (weapon_hands(equipped_item($slot[weapon])) > 1)
+		{
+			removeFromMaximize("+equip " + equipped_item($slot[weapon]));
+			equip($slot[weapon], $item[none]);
+		}
+		removeFromMaximize("-equip " + it);
+		addToMaximize("-off-hand, 1hand");
+		return equip($slot[off-hand], it);
 	}
 	if(equip(s, it))
 	{
@@ -88,7 +93,7 @@ boolean autoForceEquip(item it)
 
 boolean autoOutfit(string toWear)
 {
-	if(!have_outfit(toWear))
+	if(!possessOutfit(toWear, true))
 	{
 		return false;
 	}
@@ -187,7 +192,7 @@ string defaultMaximizeStatement()
 		}
 		if (in_zelda())
 		{
-			res += ",-ml";
+			res += ",plumber,-ml";
 		}
 	}
 
@@ -206,19 +211,47 @@ void resetMaximize()
 	{
 		res = defaultMaximizeStatement();
 	}
-	foreach it in $items[hewn moon-rune spoon, makeshift garbage shirt, broken champagne bottle, snow suit]
+	
+	void exclude(item it)
+	{
+		if(res != "")
+		{
+			res += ",";
+		}
+		res += "-equip " + it;
+	}
+	
+	// don't want to equip these items automatically
+	// snow suit bonus drops every 5 combats so is best saved for important things
+	// spoon, sword, and staph are text scramblers which cause errors in mafia tracking
+	foreach it in $items[hewn moon-rune spoon, sword behind inappropriate prepositions, staph of homophones, snow suit]
 	{
 		if (possessEquipment(it))
 		{
-			if(res != "")
-			{
-				res += ",";
-			}
-			// don't want to equip these items automatically
-			// spoon breaks mafia, and the others have limited charges
-			res += "-equip " + it;
+			exclude(it);
 		}
 	}
+	//IOTM [january's garbage tote] specific handling.
+	if(isjanuaryToteAvailable())
+	{
+		//preserve leftover charges, prevent mafia halting automation for confirmation.
+		if(!get_property("_garbageItemChanged").to_boolean())	//did not change tote item today
+		{
+			foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt]
+			{
+				exclude(it);
+			}
+		}
+		//preserve current charges
+		else foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Makeshift Garbage Shirt]
+		{
+			if(januaryToteTurnsLeft(it) > 0)
+			{
+				exclude(it);
+			}
+		}
+	}
+	
 	set_property("auto_maximize_current", res);
 	auto_log_debug("Resetting auto_maximize_current to " + res, "gold");
 
@@ -252,6 +285,11 @@ void finalizeMaximize()
 
 void addToMaximize(string add)
 {
+	if(maximizeContains(add))	//skip if trying to add duplicate
+	{
+		auto_log_debug('Tried to add a duplicate of "' + add + '" to current maximizer statement... skipping', "gold");
+		return;
+	}
 	auto_log_debug('Adding "' + add + '" to current maximizer statement', "gold");
 	string res = get_property("auto_maximize_current");
 	boolean addHasComma = add.starts_with(",");
@@ -274,6 +312,8 @@ void removeFromMaximize(string rem)
 	string res = get_property("auto_maximize_current");
 	res = res.replace_string(rem, "");
 	// let's be safe here
+	res = res.replace_string(" ,", ",");
+	res = res.replace_string(", ", ",");
 	res = res.replace_string(",,", ",");
 	if(res.ends_with(","))
 	{
@@ -372,88 +412,6 @@ void equipOverrides()
 	}
 }
 
-void makeStartingSmiths()
-{
-	if(!auto_have_skill($skill[Summon Smithsness]))
-	{
-		return;
-	}
-
-	if(item_amount($item[Lump of Brituminous Coal]) == 0)
-	{
-		if(my_mp() < (3 * mp_cost($skill[Summon Smithsness])))
-		{
-			auto_log_warning("You don't have enough MP for initialization, it might be ok but probably not.", "red");
-		}
-		use_skill(3, $skill[Summon Smithsness]);
-	}
-
-	if(knoll_available())
-	{
-		buyUpTo(1, $item[maiden wig]);
-	}
-
-	switch(my_class())
-	{
-	case $class[Seal Clubber]:
-		if(!possessEquipment($item[Meat Tenderizer is Murder]))
-		{
-			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[seal-clubbing club]);
-		}
-		if(!possessEquipment($item[Vicar\'s Tutu]) && (item_amount($item[Lump of Brituminous Coal]) > 0) && knoll_available())
-		{
-			buy(1, $item[Frilly Skirt]);
-			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Frilly Skirt]);
-		}
-		break;
-	case $class[Turtle Tamer]:
-		if(!possessEquipment($item[Work is a Four Letter Sword]))
-		{
-			buyUpTo(1, $item[Sword Hilt]);
-			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[sword hilt]);
-		}
-		if(!possessEquipment($item[Ouija Board\, Ouija Board]))
-		{
-			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[turtle totem]);
-		}
-		break;
-	case $class[Sauceror]:
-		if(!possessEquipment($item[Saucepanic]))
-		{
-			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[Saucepan]);
-		}
-		if(!possessEquipment($item[A Light that Never Goes Out]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
-		{
-			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Third-hand Lantern]);
-		}
-		break;
-	case $class[Pastamancer]:
-		if(!possessEquipment($item[Hand That Rocks the Ladle]))
-		{
-			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[Pasta Spoon]);
-		}
-		break;
-	case $class[Disco Bandit]:
-		if(!possessEquipment($item[Frankly Mr. Shank]))
-		{
-			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[Disco Ball]);
-		}
-		break;
-	case $class[Accordion Thief]:
-		if(!possessEquipment($item[Shakespeare\'s Sister\'s Accordion]))
-		{
-			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[Stolen Accordion]);
-		}
-		break;
-	}
-
-	if(knoll_available() && !possessEquipment($item[Hairpiece on Fire]) && (item_amount($item[lump of Brituminous Coal]) > 0))
-	{
-		autoCraft("smith", 1, $item[lump of Brituminous coal], $item[maiden wig]);
-	}
-	buffMaintain($effect[Merry Smithsness], 0, 1, 10);
-}
-
 int equipmentAmount(item equipment)
 {
 	if(equipment == $item[none])
@@ -487,98 +445,35 @@ boolean possessEquipment(item equipment)
 	return equipmentAmount(equipment) > 0;
 }
 
-boolean handleBjornify(familiar fam)
-{
-	if(in_hardcore())
-	{
+boolean possessOutfit(string outfitToCheck, boolean checkCanEquip) {
+	// have_outfit will report false if you're wearing some of the items
+	// it will only report true if you have all in inventory or are wearing the whole thing
+	// hence this now exists.
+	if (count(outfit_pieces(outfitToCheck)) == 0) {
+		auto_log_warning(outfitToCheck + " is not a valid outfit!");
 		return false;
 	}
-
-	if((equipped_item($slot[back]) != $item[buddy bjorn]) || (my_bjorned_familiar() == fam))
-	{
-		return false;
-	}
-
-	if(is100FamiliarRun() && (fam == my_familiar()))
-	{
-		return false;
-	}
-
-	if(have_familiar(fam))
-	{
-		bjornify_familiar(fam);
-	}
-	else
-	{
-		if(have_familiar($familiar[El Vibrato Megadrone]))
+	
+	foreach key, piece in outfit_pieces(outfitToCheck) {
+		if (!possessEquipment(piece))
 		{
-			bjornify_familiar($familiar[El Vibrato Megadrone]);
+			return false;
 		}
-		else
+		if(checkCanEquip && !can_equip(piece))
 		{
-			if((my_familiar() != $familiar[Grimstone Golem]) && have_familiar($familiar[Grimstone Golem]))
-			{
-				bjornify_familiar($familiar[Grimstone Golem]);
-			}
-			else if(have_familiar($familiar[Adorable Seal Larva]))
-			{
-				bjornify_familiar($familiar[Adorable Seal Larva]);
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
-	if(my_familiar() == $familiar[none])
-	{
-		if(my_bjorned_familiar() == $familiar[Grimstone Golem])
-		{
-			handleFamiliar("stat");
-		}
-		else if(my_bjorned_familiar() == $familiar[Grim Brother])
-		{
-			handleFamiliar("item");
-		}
-		else
-		{
-			handleFamiliar("item");
+			return false;
 		}
 	}
 	return true;
 }
 
+boolean possessOutfit(string outfitToCheck) {
+	return possessOutfit(outfitToCheck, false);	
+}
+
 void equipBaseline()
 {
-	if(my_daycount() == 1)
-	{
-		if(have_familiar($familiar[grimstone golem]))
-		{
-			if(get_property("_grimFairyTaleDropsCrown").to_int() >= 1)
-			{
-				handleBjornify($familiar[El Vibrato Megadrone]);
-			}
-		}
-		else
-		{
-			handleBjornify($familiar[El Vibrato Megadrone]);
-		}
-	}
-	if(my_daycount() == 2)
-	{
-		handleBjornify($familiar[El Vibrato Megadrone]);
-	}
-
-	if(get_property("auto_diceMode").to_boolean())
-	{
-		autoEquip($slot[acc1], $item[Dice Ring]);
-		autoEquip($slot[acc2], $item[Dice Belt Buckle]);
-		autoEquip($slot[acc3], $item[Dice Sunglasses]);
-		autoEquip($slot[hat], $item[Dice-Print Do-Rag]);
-		autoEquip($slot[back], $item[Dice-Shaped Backpack]);
-		autoEquip($slot[pants], $item[Dice-Print Pajama Pants]);
-		autoEquip($slot[familiar], $item[Kill Screen]);
-	}
+	equipMaximizedGear();
 }
 
 void ensureSealClubs()
@@ -623,6 +518,8 @@ void equipRollover()
 		to_max += ",0.3fites";
 	if(auto_have_familiar($familiar[Trick-or-Treating Tot]))
 		to_max += ",switch Trick-or-Treating Tot";
+	if(auto_have_familiar($familiar[Left-Hand Man]))
+		to_max += ",switch Left-Hand Man";
 
 	maximize(to_max, false);
 

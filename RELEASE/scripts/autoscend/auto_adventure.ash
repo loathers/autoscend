@@ -14,22 +14,24 @@ boolean autoAdv(int num, location loc, string option)
 		return false;
 	}
 
-	set_property("auto_combatHandler", "");
+	remove_property("auto_combatHandler");
 	set_property("auto_diag_round", 0);
 	set_property("nextAdventure", loc);
 	if(option == "")
 	{
-		option = "auto_combatHandler";
+		if (isActuallyEd())
+		{
+			option = "auto_edCombatHandler";
+			remove_property("auto_edCombatHandler");
+		} else {
+			option = "auto_combatHandler";
+		}
 	}
-	if (isActuallyEd())
-	{
-		return autoEdAdv(num, loc, option);
-	}
+
 	if(auto_my_path() == "Pocket Familiars")
 	{
 		return digimon_autoAdv(num, loc, option);
 	}
-
 
 	boolean retval = false;
 
@@ -48,7 +50,7 @@ boolean autoAdv(int num, location loc, string option)
 	}
 	else
 	{
-		retval = adv1(loc, 0, option);
+		retval = adv1(loc, -1, option);
 	}
 	if(auto_my_path() == "One Crazy Random Summer")
 	{
@@ -62,25 +64,13 @@ boolean autoAdv(int num, location loc, string option)
 			}
 		}
 	}
-	if(get_property("lastEncounter") == "Using the Force")
-	{
-		run_choice(get_property("_auto_saberChoice").to_int());
-	}
+
 	return retval;
 }
 
 boolean autoAdv(int num, location loc)
 {
 	return autoAdv(num, loc, "");
-}
-
-boolean autoAdv()
-{
-	if(my_location() == $location[none])
-	{
-		return autoAdv(1, $location[Noob Cave], "");
-	}
-	return autoAdv(1, my_location(), "");
 }
 
 boolean autoAdv(location loc)
@@ -92,11 +82,6 @@ boolean autoAdvBypass(string url, location loc)
 {
 	return autoAdvBypass(url, loc, "");
 }
-
-#boolean autoAdvBypass(string[int] url, location loc)
-#{
-#	return autoAdvBypass(url, loc, "");
-#}
 
 boolean autoAdvBypass(string url, location loc, string option)
 {
@@ -124,11 +109,16 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	cli_execute("auto_pre_adv");
 	if(option == "")
 	{
-		option = "auto_combatHandler";
+		if (isActuallyEd())
+		{
+			option = "auto_edCombatHandler";
+		} else {
+			option = "auto_combatHandler";
+		}
 	}
 	if (isActuallyEd())
 	{
-		ed_preAdv(1, loc, option);
+		ed_handleAdventureServant(loc);
 	}
 
 	auto_log_info("About to start a combat indirectly at " + loc + "... (" + count(url) + ") accesses required.", "blue");
@@ -148,7 +138,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		}
 		urlGetFlags /= 2;
 	}
-	if (my_hp() == 0 || have_effect($effect[Beaten Up]) > 0)
+	if ((my_hp() == 0 || have_effect($effect[Beaten Up]) > 0) && !isActuallyEd())
 	{
 		auto_log_warning("Uh oh! Died when starting a combat indirectly.", "red");
 		#Can we just return true here?
@@ -164,11 +154,6 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	{
 		auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 
-		if (isActuallyEd())
-		{
-				auto_runEdCombat(option, false);
-				return true;
-		}
 		if(option != "autoscend_null") // && (option != ""))
 		{
 			if(get_auto_attack() == 0)
@@ -315,15 +300,20 @@ boolean autoAdvBypass(string url, string option)
 
 void preAdvUpdateFamiliar(location place)
 {
+	if(get_property("auto_disableFamiliarChanging").to_boolean())
+	{
+		return;
+	}
+	
 	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
 	if(auto_my_path() == "Pocket Familiars")
 	{
 		famChoice = $familiar[none];
 	}
 
-	if((famChoice != $familiar[none]) && !is100FamiliarRun() && (internalQuestStatus("questL13Final") < 13))
+	if((famChoice != $familiar[none]) && canChangeFamiliar() && (internalQuestStatus("questL13Final") < 13))
 	{
-		if((famChoice != my_familiar()) && !get_property("kingLiberated").to_boolean())
+		if((famChoice != my_familiar()) && !inAftercore())
 		{
 #			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
 			use_familiar(famChoice);
@@ -345,7 +335,7 @@ void preAdvUpdateFamiliar(location place)
 				}
 			}
 		}
-		if(wannaHeist && (famChoice != $familiar[none]) && !is100FamiliarRun())
+		if(wannaHeist && (famChoice != $familiar[none]) && canChangeToFamiliar($familiar[Cat Burglar]))
 		{
 			use_familiar($familiar[cat burglar]);
 		}

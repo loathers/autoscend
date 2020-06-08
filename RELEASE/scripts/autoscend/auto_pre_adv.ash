@@ -1,39 +1,32 @@
 script "auto_pre_adv.ash";
 import<autoscend.ash>
 
-void handlePreAdventure()
+boolean auto_pre_adventure()
 {
-	handlePreAdventure(my_location());
-}
+	auto_log_debug("Running auto_pre_adv.ash");
 
-void handlePreAdventure(location place)
-{
+	location place = my_location();
 	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (auto_my_path() == "Heavy Rains"))
 	{
 		abort("Familiar has no equipment, WTF");
 	}
 
-	if(get_property("customCombatScript") != "autoscend_null")
-	{
-		abort("customCombatScript is set to unrecognized '" + get_property("customCombatScript") + "', should be 'autoscend_null'");
-	}
-
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		auto_log_info("Preadventure skipped by standard adventure handler.", "green");
-		return;
+		return true;
 	}
 
 	if(last_monster().random_modifiers["clingy"])
 	{
 		auto_log_info("Preadventure skipped by clingy modifier.", "green");
-		return;
+		return true;
 	}
 
 	if(place == $location[The Lower Chambers])
 	{
 		auto_log_info("Preadventure skipped by Ed the Undying!", "green");
-		return;
+		return true;
 	}
 
 	auto_log_info("Starting preadventure script...", "green");
@@ -43,14 +36,11 @@ void handlePreAdventure(location place)
 
 	preAdvXiblaxian(place);
 
+	ed_handleAdventureServant(place);
+
 	if(get_floundry_locations() contains place)
 	{
 		buffMaintain($effect[Baited Hook], 0, 1, 1);
-	}
-
-	if((my_mp() < 30) && ((my_mp()+20) < my_maxmp()) && (item_amount($item[Psychokinetic Energy Blob]) > 0))
-	{
-		use(1, $item[Psychokinetic Energy Blob]);
 	}
 
 	if((get_property("_bittycar") == "") && (item_amount($item[Bittycar Meatcar]) > 0))
@@ -75,7 +65,7 @@ void handlePreAdventure(location place)
 		uneffect($effect[Scarysauce]);
 	}
 
-	if(my_path() == $class[Avatar of Boris])
+	if(in_boris())
 	{
 		if((have_effect($effect[Song of Solitude]) == 0) && (have_effect($effect[Song of Battle]) == 0))
 		{
@@ -135,7 +125,7 @@ void handlePreAdventure(location place)
 		}
 	}
 
-	if(!get_property("kingLiberated").to_boolean())
+	if(!inAftercore())
 	{
 		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
 		{
@@ -231,35 +221,14 @@ void handlePreAdventure(location place)
 		if ((is_ghost_in_zone(place) && !skip_equipping_flower)
 			|| (place == $location[The Smut Orc Logging Camp] && possessEquipment($item[frosty button])))
 		{
-			if (possessEquipment($item[bonfire flower]))
-			{
-				autoEquip($item[bonfire flower]);
-			}
-			else if (possessEquipment($item[[10462]fire flower]))
-			{
-				autoEquip($item[[10462]fire flower]);
-			}
-			else if (item_amount($item[coin]) >= 20)
-			{
-				// 20 coins to avoid doing clever re-routing? Yes please!
-				retrieve_item(1, $item[[10462]fire flower]);
-				autoEquip($item[[10462]fire flower]);
-			}
-			else
+			if(!zelda_equipTool($stat[mysticality]))
 			{
 				abort("I'm scared to adventure in a zone with ghosts without a fire flower. Please fight a bit and buy me a fire flower.");
 			}
 		}
 		else
 		{
-			if (possessEquipment($item[fancy boots]))
-			{
-				autoEquip($slot[acc3], $item[fancy boots]);
-			}
-			else if (possessEquipment($item[work boots]))
-			{
-				autoEquip($slot[acc3], $item[work boots]);
-			}
+			zelda_equipTool($stat[moxie]);
 		}
 
 		// It is dangerous out there! Take this!
@@ -283,6 +252,14 @@ void handlePreAdventure(location place)
 	}
 
 	equipOverrides();
+
+	if (is100FamRun() && my_familiar() == $familiar[none])
+	{
+		// re-equip a familiar if it's a 100% run just in case something unequipped it
+		// looking at you auto_maximizedConsumeStuff()...
+		handleFamiliar(get_property("auto_100familiar").to_familiar());
+		auto_log_debug("Re-equipped your " + get_property("auto_100familiar") + " as something had unequipped it. This is bad and should be investigated.");
+	}
 
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))
 	{
@@ -308,12 +285,40 @@ void handlePreAdventure(location place)
 		{
 			abort("Tried to charge a WineBomb but don't have one.");
 		}
-		autoEquip($slot[off-hand], $item[Unstable Fulminate]);
+		if(equipped_amount($item[Unstable Fulminate]) == 0)
+		{
+			auto_log_warning("Tried to adventure in [The Haunted Boiler Room] without an [Unstable Fulminate]... correcting", "red");
+			autoForceEquip($slot[off-hand], $item[Unstable Fulminate]);
+			if(equipped_amount($item[Unstable Fulminate]) == 0)
+			{
+				abort("Correction failed, please report this. Manually get the [wine bomb] then run me again");
+			}
+		}
+	}
+
+	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
+		equip($slot[Pants], $item[None]);
+		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+		if (is_wearing_outfit("Filthy Hippy Disguise")) {
+			abort("Tried to adventure in the Hippy Camp as Actually Ed the Undying wearing the Filthy Hippy Disguise (this is bad).");
+		} else {
+			auto_log_info("Took off the Filthy Hippy Disguise before adventuring in the Hippy Camp so we don't waste adventures on non-combats.");
+		}
 	}
 
 	if(place == $location[The Black Forest])
 	{
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);
+	}
+
+	if ($locations[Barrrney\'s Barrr, The F\'c\'le, The Poop Deck, Belowdecks] contains place) {
+		if (possessEquipment($item[pirate fledges])) {
+			autoEquip($slot[acc3], $item[pirate fledges]);
+		} else if (possessOutfit("Swashbuckling Getup")) {
+			autoOutfit("Swashbuckling Getup");
+		} else {
+			abort("Trying to be a pirate without being able to dress like a pirate.");
+		}
 	}
 
 	bat_formPreAdventure();
@@ -368,7 +373,7 @@ void handlePreAdventure(location place)
 	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
 
 	// Generic Conditions
-	if(get_property("kingLiberated").to_boolean())
+	if(inAftercore())
 	{
 		doML = false;
 		removeML = false;
@@ -444,17 +449,27 @@ void handlePreAdventure(location place)
 		uneffect($effect[Driving Recklessly]);
 		uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
 
-		if((purgeML) && item_amount($item[soft green echo eyedrop antidote]) > 5)
+		if(purgeML && item_amount($item[soft green echo eyedrop antidote]) > 5)
 		{
 			uneffect($effect[Drescher\'s Annoying Noise]);
 			uneffect($effect[Pride of the Puffin]);
 			uneffect($effect[Ceaseless Snarling]);
 			uneffect($effect[Blessing of Serqet]);
 		}
+		else if (purgeML && isActuallyEd() && (item_amount($item[ancient cure-all]) > 0 || item_amount($item[soft green echo eyedrop antidote]) > 0))
+		{
+			uneffect($effect[Blessing of Serqet]);
+		}
 	}
 
 	// Here we enforce our ML restrictions if +/-ML is not specifically called in the current maximizer string
 	enforceMLInPreAdv();
+	
+	// Last minute switching for garbage tote. But only if nothing called on januaryToteAcquire this turn.
+	if(!get_property("auto_januaryToteAcquireCalledThisTurn").to_boolean())
+	{
+		januaryToteAcquire($item[Wad Of Used Tape]);
+	}
 
 // EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
@@ -470,7 +485,6 @@ void handlePreAdventure(location place)
 		// Last minute MCD alterations if Limit set, otherwise trust maximizer
 		if(get_property("auto_MLSafetyLimit") != "")
 		{
-			auto_change_mcd(0);
 			auto_setMCDToCap();
 		}
 
@@ -485,12 +499,17 @@ void handlePreAdventure(location place)
 		acquireHP();
 	}
 
+	if (my_hp() <= (my_maxhp() * 0.75)) {
+		acquireHP();
+	}
+
 	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
 	if(wasted_mp > 0 && my_mp() > 400)
 	{
 		auto_log_info("Burning " + wasted_mp + " MP...");
 		cli_execute("burn " + wasted_mp);
 	}
+	borisWastedMP();
 
 	acquireMP(32, 1000);
 
@@ -499,12 +518,35 @@ void handlePreAdventure(location place)
 		auto_log_warning("We don't have a lot of MP but we are chugging along anyway", "red");
 	}
 	groundhogAbort(place);
-	if(my_inebriety() > inebriety_limit()) abort("You are overdrunk. Stop it.");
+	if (my_inebriety() > inebriety_limit()) {
+		abort("You are overdrunk. Stop it.");
+	}
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
+	
+	//to avoid constant flipping on the MCD. change it right before adventuring
+	int mcd_target = get_property("auto_mcd_target").to_int();
+	if(current_mcd() != mcd_target)
+	{
+		change_mcd(mcd_target);
+	}
+
+	return true;
 }
 
 void main()
 {
-	handlePreAdventure();
+	boolean ret = false;
+	try
+	{
+		ret = auto_pre_adventure();
+	}
+	finally
+	{
+		if (!ret)
+		{
+			auto_log_error("Error running auto_pre_adv.ash, setting auto_interrupt=true");
+			set_property("auto_interrupt", true);
+		}
+	}
 }

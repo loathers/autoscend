@@ -53,7 +53,7 @@ banish	47	Warehouse Janitor
 banish	48	Upgraded Ram
 
 replace	0	Banshee Librarian	item:Killing Jar>0
-replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4
+replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber
 replace	2	Knob Goblin Madam	item:Knob Goblin Perfume>0
 replace	3	Bookbat
 replace	4	Craven Carven Raven
@@ -100,18 +100,21 @@ sniff	5	Dairy Goat	loc:The Goatlet
 sniff	6	Morbid Skull
 sniff	7	Pygmy Bowler
 sniff	8	Pygmy Witch Surgeon
-sniff	9	Quiet Healer
-sniff	10	Tomb Rat
-sniff	11	Blooper	loc:8-Bit Realm
-sniff	12	Bob Racecar	!sniffed:Racecar Bob
-sniff	13	Racecar Bob	!sniffed:Bob Racecar
-sniff	14	Government Scientist	class:Ed
-sniff	15	Green Ops Soldier	!path:Kingdom of Exploathing
-sniff	16	War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
-sniff	17	War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
-sniff	18	Possessed Wine Rack
-sniff	19	Blue Oyster cultist
-sniff	20	Dirty Old Lihc	prop:cyrptNicheEvilness>28
+sniff	9	pygmy witch accountant	loc:The Hidden Office Building
+sniff	10	Pygmy Janitor	!tavern:true
+sniff	11	Quiet Healer
+sniff	12	Tomb Rat
+sniff	13	Blooper	loc:8-Bit Realm
+sniff	14	Bob Racecar	!sniffed:Racecar Bob
+sniff	15	Racecar Bob	!sniffed:Bob Racecar
+sniff	16	Government Scientist	class:Ed
+sniff	17	Green Ops Soldier	!path:Kingdom of Exploathing
+sniff	18	War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
+sniff	19	War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
+sniff	20	Possessed Wine Rack
+sniff	21	Blue Oyster cultist
+sniff	22	Dirty Old Lihc	prop:cyrptNicheEvilness>28
+sniff	23	Possibility Giant	prop:chaosButterflyThrown=false;item:chaos butterfly<1
 
 # Gotta get that wig
 yellowray	0	Burly Sidekick	item:Mohawk Wig<1
