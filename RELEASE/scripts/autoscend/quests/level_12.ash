@@ -1636,7 +1636,10 @@ boolean L12_themtharHills()
 		meat_need = meat_need - 100;
 	}
 
-	use_familiar(to_familiar(get_property("auto_familiarChoice")));
+	if(canChangeFamiliar()) {
+		// if we're in a 100% run, this property returns "none" which will unequip our familiar and ruin a 100% run.
+		use_familiar(to_familiar(get_property("auto_familiarChoice")));
+	}
 	float meatDropHave = meat_drop_modifier();
 
 	if (isActuallyEd() && have_skill($skill[Curse of Fortune]) && item_amount($item[Ka Coin]) > 0)
