@@ -257,7 +257,8 @@ boolean auto_pre_adventure()
 	{
 		// re-equip a familiar if it's a 100% run just in case something unequipped it
 		// looking at you auto_maximizedConsumeStuff()...
-		handleFamiliar(get_property("auto_100familiar").to_familiar());
+		// and L12_themtharHills()...
+		use_familiar(get_property("auto_100familiar").to_familiar());
 		auto_log_debug("Re-equipped your " + get_property("auto_100familiar") + " as something had unequipped it. This is bad and should be investigated.");
 	}
 
