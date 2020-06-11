@@ -1,66 +1,38 @@
-# Undead familiars only when a zombie
-XO Skeleton	path:Zombie Master;prop:_xoHugsUsed<11
-Reagnimated Gnome	path:Zombie Master
-# Do we wanna grab cubeling drops? Usually yes.
-Gelatinous Cubeling	prop:auto_useCubeling=true;prop:auto_cubeItems=true
-# Cheerleader isn't subject to weight restrictions in KOLHS, so let's just use it before almost anything to be safee
+# "Item" is used when we want a familiar that boosts the chance of a monster dropping an item
+# We expect that familiars that drop items directly a limited amount of times per day will be used first elsewhere. So do not account for those.
+#
+# exempt from 10 lbs restriction in KOHLS path
 Steam-Powered Cheerleader	path:KOLHS
-# Wanna get that jar
-Angry Jung Man	prop:_jungDrops<1;day:1
-# Wanna get that mask
-Grimstone Golem	prop:_grimstoneMaskDrops<1;day:1
-# That's some nice booze
-Fist Turkey	prop:_turkeyBooze<5
-# Might as well grab an egg
-Rockin' Robin	prop:rockinRobinProgress>=25
-# And some wax
-Optimistic Candle	prop:optimisticCandleProgress>=25
-# And some garbage
-Garbage Fire	prop:garbageFireProgress>=25
-# And devilish folios
-Blavious Kloop	prop:_kloopDrops<3
-# And some absinthe
-Green Pixie	prop:_absintheDrops<3
-# And a tales of spelunking
-Adventurous Spelunker	prop:_spelunkingTalesDrops<1
-# And some substats, if in The Source
-Fist Turkey	prop:_turkeyMuscle<5;mainstat:Muscle;path:The Source
-Fist Turkey	prop:_turkeyMyst<5;mainstat:Mysticality;path:The Source
-Fist Turkey	prop:_turkeyMoxie<5;mainstat:Moxie;path:The Source
-# And some BACON
-Intergnat	item:BACON<350
-# And some heist charges
-Cat Burglar	prop:_catBurglarCharge<30
-# And some hugpockets
-XO Skeleton	prop:_xoHugsUsed<5
-# And some pastes
-Pair of Stomping Boots	prop:_bootStomps<7
-# And some more hugpockets
-XO Skeleton	prop:_xoHugsUsed<11
-# And some adventures
-Reagnimated Gnome
 # Fairies with a multiplier
+# 1.4x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
-#Mutant Fire Ant	grimdark:0
+# 1.3x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
-# Jumpsuited Hound Dog DELIBERATELY not included because it provides usually unwanted +combat
+# Jumpsuited Hound Dog is a 1.25x multiplier fairy that provides +combat. only use it if we did not provide noncombat this loop.
+Jumpsuited Hound Dog	!prop_boolean:_auto_thisLoopPlusNoncombat
+# 1.2x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
-#Mutant Fire Ant	grimdark:1
+# 1.1x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
+# fairy that generates extra adventures
+Reagnimated Gnome
+# Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
+XO Skeleton
+# Fairy that drops bacon with no limit. 1 per combat
+Intergnat
 # Fairyballs
 Elf Operative
 Optimistic Candle
 Rockin' Robin
-# More BACON, why not
-Intergnat
 # Fairywhelps
 Pocket Professor
-XO Skeleton
 Garbage Fire
 Dandy Lion
 # Fairychauns
+Fist Turkey
 Cat Burglar
 Angry Jung Man
+Grimstone Golem
 Adventurous Spelunker
 Blavious Kloop
 Hippo Ballerina
@@ -78,20 +50,24 @@ Gelatinous Cubeling
 Steam-Powered Cheerleader
 Obtuse Angel
 Green Pixie
-#Mutant Fire Ant	grimdark:2
-# Let's bowl 300!
-Bowlet
 # Elemental fairies
 Sleazy Gravy Fairy
 Stinky Gravy Fairy
 Flaming Gravy Fairy
 Frozen Gravy Fairy
 Spooky Gravy Fairy
+# Physical damage fairy
+Bowlet
 # Barely special fairies
 Mechanical Songbird
 Grouper Groupie
 Peppermint Rhino
+# Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
+Slimeling
 # Turtles are cute
 Syncopated Turtle
 # The original
 Baby Gravy Fairy
+# Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
+# If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
+Mutant Fire Ant
