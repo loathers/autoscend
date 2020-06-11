@@ -130,10 +130,6 @@ boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
 boolean evokeEldritchHorror();
 boolean auto_change_mcd(int mcd);
-boolean providePlusCombat(int amt);
-boolean providePlusNonCombat(int amt);
-boolean providePlusCombat(int amt, boolean doEquips);
-boolean providePlusNonCombat(int amt, boolean doEquips);
 boolean basicAdjustML();
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
@@ -2675,6 +2671,7 @@ boolean providePlusNonCombat(int amt)
 
 boolean providePlusCombat(int amt, boolean doEquips)
 {
+	set_property("_auto_thisLoopPlusCombat", true);		//track if this was called this loop. can't check adv because of free fights.
 	if(amt == 0)
 	{
 		return true;
@@ -2756,6 +2753,7 @@ boolean providePlusCombat(int amt, boolean doEquips)
 
 boolean providePlusNonCombat(int amt, boolean doEquips)
 {
+	set_property("_auto_thisLoopPlusNoncombat", true);		//track if this was called this loop. can't check adv because of free fights.
 	if(amt == 0)
 	{
 		return true;
@@ -6031,6 +6029,10 @@ boolean auto_check_conditions(string conds)
 				if(!($strings[=,==] contains m2.group(2)))
 					return compare_numbers(prop.to_int(), m2.group(3).to_int(), m2.group(2));
 				return prop == m2.group(3);
+			// data: <propname>
+			// gets propname and converts to a boolean
+			case "prop_boolean":
+				return get_property(condition_data).to_boolean();
 			// data: <questpropname><comparison operator><value>
 			// like prop, but with > and < and >= and <= and uses internalQuestStatus
 			// the value to compare to should always be an integer
@@ -7030,4 +7032,17 @@ int poolSkillPracticeGains()
 	if(have_effect($effect[chalky hand]) > 0) count += 1;
 	if(equipped_amount($item[[2268]Staff of Fats]) > 0) count += 2;		//note that $item[[7964]Staff of Fats] does not help here.
 	return count;
+}
+
+void resetThisLoop()
+{
+	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
+	//We use boolean instead of adventure count because of free combats.
+	
+	set_property("auto_doCombatCopy", "no");
+	set_property("_auto_thisLoopPlusCombat", false);		//have we called providePlusCombat this loop
+	set_property("_auto_thisLoopPlusNoncombat", false);		//have we called providePlusNonCombat this loop
+	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
+	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
+	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure
 }

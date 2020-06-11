@@ -246,9 +246,10 @@ boolean pathAllowsFamiliar();								//Defined in autoscend/auto_familiar.ash
 boolean auto_have_familiar(familiar fam);					//Defined in autoscend/auto_familiar.ash
 boolean canChangeFamiliar();								//Defined in autoscend/auto_familiar.ash
 boolean canChangeToFamiliar(familiar target);				//Defined in autoscend/auto_familiar.ash
+familiar lookupFamiliarDatafile(string type);				//Defined in autoscend/auto_familiar.ash
 boolean handleFamiliar(string type);						//Defined in autoscend/auto_familiar.ash
 boolean handleFamiliar(familiar fam);						//Defined in autoscend/auto_familiar.ash
-boolean basicFamiliarOverrides();							//Defined in autoscend/auto_familiar.ash
+boolean autoChooseFamiliar(location place);					//Defined in autoscend/auto_familiar.ash
 boolean haveSpleenFamiliar();								//Defined in autoscend/auto_familiar.ash
 
 
@@ -398,6 +399,7 @@ location[int] ListInsertInorder(location[int] list, location what);//Defined in 
 int ListFind(location[int] list, location what);			//Defined in autoscend/auto_list.ash
 int ListFind(location[int] list, location what, int idx);	//Defined in autoscend/auto_list.ash
 location ListOutput(location[int] list);					//Defined in autoscend/auto_list.ash
+void resetThisLoop();										//Defined in autoscend/auto_util.ash
 int [item] auto_get_campground();								//Defined in autoscend/auto_util.ash
 boolean basicAdjustML();									//Defined in autoscend/auto_util.ash
 boolean beatenUpResolution();								//Defined in autoscend.ash

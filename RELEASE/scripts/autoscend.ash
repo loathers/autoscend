@@ -3085,9 +3085,9 @@ boolean doTasks()
 		return false;	
 	}
 	
-	//These settings should never persist into another turn, ever.
-	set_property("auto_doCombatCopy", "no");
-	set_property("auto_disableFamiliarChanging", false);
+	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
+	//We use boolean instead of adventure count because of free combats.
+	resetThisLoop();
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 
 	print_header();
@@ -3155,8 +3155,6 @@ boolean doTasks()
 	resetFlavour();
 
 	basicAdjustML();
-	handleFamiliar("item");
-	basicFamiliarOverrides();
 
 	councilMaintenance();
 	# This function buys missing skills in general, not just for Picky.

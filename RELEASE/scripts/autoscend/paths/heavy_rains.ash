@@ -24,16 +24,6 @@ void hr_initializeSettings()
 	}
 }
 
-boolean hr_handleFamiliar(familiar fam)
-{
-	if((my_path() == "Heavy Rains") && (equipped_item($slot[familiar]) != $item[miniature life preserver]) && (my_familiar() != $familiar[none]))
-	{
-		autoEquip($slot[familiar], $item[miniature life preserver]);
-		return true;
-	}
-	return false;
-}
-
 boolean routineRainManHandler()
 {
 	if(!have_skill($skill[Rain Man]) || (auto_my_path() != "Heavy Rains"))
