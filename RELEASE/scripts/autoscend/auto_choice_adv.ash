@@ -453,9 +453,6 @@ boolean auto_run_choice(int choice, string page)
 		case 1342: // Torpor (Dark Gyffte)
 			bat_reallyPickSkills(20);
 			break;
-		case 1387: // Using the Force (Fourth of May Cosplay Saber)
-			run_choice(get_property("_auto_saberChoice").to_int());
-			break;
 		default:
 			break;
 	}
