@@ -349,22 +349,19 @@ int auto_saberChargesAvailable()
 
 string auto_combatSaberBanish()
 {
-	set_property("_auto_saberChoice", 1);
-	wait(3);
+	set_property("choiceAdventure1387", 1);
 	return "skill " + $skill[Use the Force];
 }
 
 string auto_combatSaberCopy()
 {
-	set_property("_auto_saberChoice", 2);
-	wait(3);
+	set_property("choiceAdventure1387", 2);
 	return "skill " + $skill[Use the Force];
 }
 
 string auto_combatSaberYR()
 {
-	set_property("_auto_saberChoice", 3);
-	wait(3);
+	set_property("choiceAdventure1387", 3);
 	return "skill " + $skill[Use the Force];
 }
 
