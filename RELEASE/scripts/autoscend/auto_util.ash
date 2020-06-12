@@ -3658,18 +3658,15 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 			return false;
 		}
 	}
-	if(inGnomeSign())
+	if(inGnomeSign() && !gnomads_available())
 	{
-		if(gnomads_available())
-		{
-			return false;
-		}
+		return false;
 	}
 	if(canadia_available())
 	{
 		best = 11;
 	}
-	if(my_sign() == "Bad Moon")
+	if(in_bad_moon())
 	{
 		best = 11;
 	}
