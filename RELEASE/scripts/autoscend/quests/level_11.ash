@@ -646,7 +646,7 @@ boolean L11_aridDesert()
 	{
 		progress += 2;
 	}
-	if(get_property("peteMotorbikeHeadlight") = "Blacklight Bulb")	//TODO verify spelling on this string
+	if(get_property("peteMotorbikeHeadlight") == "Blacklight Bulb")	//TODO verify spelling on this string
 	{
 		progress += 2;
 	}
@@ -2192,97 +2192,55 @@ boolean L11_unlockPyramid()
 	}
 	if (isActuallyEd())
 	{
+		return false;	//ed starts with pyramid unlocked and cannot adventure there
+	}
+	//get staff of ed if possible. we are only checking one version of it because the other one is a path of ed exclusive
+	if(creatable_amount($item[[2325]Staff Of Ed]) > 0)
+	{
+		create(1, $item[[2325]Staff Of Ed]);
+	}
+	if(!possessEquipment($item[[2325]Staff Of Ed]))
+	{
 		return false;
 	}
-
-	if((item_amount($item[[2325]Staff Of Ed]) > 0) || ((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2268]Staff Of Fats]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0)))
+	
+	auto_log_info("Reveal the pyramid", "blue");
+	if (in_koe())
 	{
-		auto_log_info("Reveal the pyramid", "blue");
-		if(item_amount($item[[2325]Staff Of Ed]) == 0)
-		{
-			if((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0))
-			{
-				autoCraft("combine", 1, $item[[2180]Ancient Amulet], $item[[2286]Eye Of Ed]);
-			}
-			if((item_amount($item[Headpiece of the Staff of Ed]) > 0) && (item_amount($item[[2268]Staff Of Fats]) > 0))
-			{
-				autoCraft("combine", 1, $item[headpiece of the staff of ed], $item[[2268]Staff Of Fats]);
-			}
-		}
-		if(item_amount($item[[2325]Staff Of Ed]) == 0)
-		{
-			abort("Failed making Staff of Ed (2325) via CLI. Please do it manually and rerun.");
-		}
-
-		if (in_koe())
-		{
-			visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
-			cli_execute("refresh quests");
-		}
-		else
-		{
-			visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
-		}
-
-		if (internalQuestStatus("questL11Pyramid") < 0)
-		{
-			auto_log_info("No burning Ed's model now!", "blue");
-			if((auto_my_path() == "One Crazy Random Summer") && (get_property("desertExploration").to_int() == 100))
-			{
-				auto_log_warning("We might have had an issue due to OCRS and the Desert, please finish the desert (and only the desert) manually and run again.", "red");
-				string page = visit_url("place.php?whichplace=desertbeach");
-				matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
-				if(desert_matcher.find())
-				{
-					int found = to_int(desert_matcher.group(1));
-					if(found < 100)
-					{
-						set_property("desertExploration", found);
-					}
-				}
-
-				if(get_property("desertExploration").to_int() == 100)
-				{
-					abort("Tried to open the Pyramid but could not - exploration at 100?. Something went wrong :(");
-				}
-				else
-				{
-					auto_log_info("Incorrectly had exploration value of 100 however, this was correctable. Trying to resume.", "blue");
-					return false;
-				}
-			}
-			if(my_turncount() == get_property("auto_skipDesert").to_int())
-			{
-				auto_log_warning("Did not have an Arid Desert Item and the Pyramid is next. Must backtrack and recover", "red");
-				if((my_adventures() >= 3) && (my_meat() >= 500))
-				{
-					LX_doVacation();
-					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
-					{
-						cli_execute("make UV-Resistant Compass");
-					}
-					if(item_amount($item[UV-Resistant Compass]) == 0)
-					{
-						abort("Could not acquire a UV-Resistant Compass. Failing.");
-					}
-				}
-				else
-				{
-					abort("Could not backtrack to handle getting a UV-Resistant Compass");
-				}
-				return true;
-			}
-			abort("Tried to open the Pyramid but could not. Something went wrong :(");
-		}
-
-		buffMaintain($effect[Snow Shoes], 0, 1, 1);
-		autoAdv(1, $location[The Upper Chamber]);
-		return true;
+		visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
+		cli_execute("refresh quests");
 	}
 	else
 	{
-		return false;
+		visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
 	}
+
+	//check results of above URL visit
+	if (internalQuestStatus("questL11Pyramid") < 0)		//unlock failed
+	{
+		cli_execute("refresh quests");		//maybe it worked and mafia did not notice?
+		if(internalQuestStatus("questL11Pyramid") > -1)
+		{
+			return true;		//actually unlock did not fail.
+		}
+	
+		int initial = get_property("desertExploration").to_int();
+		string page = visit_url("place.php?whichplace=desertbeach");
+		matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
+		if(desert_matcher.find())
+		{
+			int found = to_int(desert_matcher.group(1));
+			if(found != initial)
+			{
+				auto_log_info("Incorrectly had exploration value of " + initial + " when it should be at " + found + ". This was corrected. Trying to resume.", "blue");
+				set_property("desertExploration", found);
+				return true;
+			}
+			abort("Tried to open the Pyramid but could not. property desertExploration determined to be correct");
+		}
+		abort("Tried to open the Pyramid but could not. could not verify the actual exploration amount of the desert");
+	}
+	return true;	//unlock successful
 }
 
 boolean L11_unlockEd()
