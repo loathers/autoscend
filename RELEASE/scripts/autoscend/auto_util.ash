@@ -3647,7 +3647,7 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 	if (in_koe()) return false;
 
 	int best = 10;
-	if(inKnollSign())
+	if(knoll_available())
 	{
 		if(item_amount($item[Detuned Radio]) == 0)
 		{
