@@ -501,7 +501,10 @@ boolean L11_forgedDocuments()
 	}
 	if (my_meat() < npc_price($item[Forged Identification Documents]))
 	{
-		abort("Could not buy Forged Identification Documents, can not steal identities!");
+		if(isAboutToPowerlevel())
+		{
+			abort("Could not afford to buy Forged Identification Documents, can not steal identities!");
+		}
 		return false;
 	}
 
