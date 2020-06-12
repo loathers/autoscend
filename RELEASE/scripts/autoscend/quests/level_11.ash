@@ -646,6 +646,7 @@ boolean L11_aridDesert()
 	{
 		progress += 2;
 	}
+	//TODO Avatar of sneaky pete black lightbulb gives +2 progress too
 
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
 	{
