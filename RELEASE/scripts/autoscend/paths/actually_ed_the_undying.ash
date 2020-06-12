@@ -28,7 +28,6 @@ void ed_initializeSettings()
 		set_property("auto_getBeehive", false);
 		set_property("auto_getStarKey", false);
 		set_property("auto_grimstoneFancyOilPainting", false);
-		set_property("auto_grimstoneOrnateDowsingRod", false);
 		set_property("auto_holeinthesky", false);
 		set_property("auto_lashes", "");
 		set_property("auto_needLegs", false);

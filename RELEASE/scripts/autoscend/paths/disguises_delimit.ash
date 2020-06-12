@@ -7,7 +7,6 @@ void majora_initializeSettings()
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_getBoningKnife", true);
-		set_property("auto_grimstoneOrnateDowsingRod", false);
 	}
 }
 

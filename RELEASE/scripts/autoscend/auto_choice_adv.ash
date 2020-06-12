@@ -278,11 +278,35 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(2); // skip
 			}
 			break;
+		case 793: // The Shore, Inc. Travel Agency. doing a vacation
+			if(my_primestat() == $stat[Muscle])
+			{
+				run_choice(1);
+			}
+			else if(my_primestat() == $stat[Mysticality])
+			{
+				run_choice(2);
+			}
+			else	//if no prime stat we still want moxie
+			{
+				run_choice(3);
+			}
+			break;
 		case 794: // Once More Unto the Junk (The Old Landfill)
 		case 795: // The Bathroom of Ten Men (The Old Landfill)
 		case 796: // The Den of Iquity (The Old Landfill)
 		case 797: // Let's Workshop This a Little (The Old Landfill)
 			oldLandfillChoiceHandler(choice);
+			break;
+		case 829: // we all wear masks. (grimstone mask)
+			run_choice(1);			//choose step mother. we want [Ornate Dowsing Rod]
+			break;
+		case 822: //The Prince's Ball (In the Restroom)
+		case 823: //The Prince's Ball (On the Dance Floor)
+		case 824: //The Prince's Ball (The Kitchen)
+		case 825: //The Prince's Ball (On the Balcony)
+		case 826: //The Prince's Ball (The Lounge)
+			run_choice(1);			//pickup odd silver coin
 			break;
 		case 875: // Welcome To Our ool Table (The Haunted Billiards Room).
 			if(poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)

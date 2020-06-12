@@ -229,7 +229,6 @@ void initializeSettings()
 	bond_initializeSettings();
 	fallout_initializeSettings();
 	pete_initializeSettings();
-	groundhog_initializeSettings();
 	digimon_initializeSettings();
 	majora_initializeSettings();
 	glover_initializeSettings();
@@ -851,29 +850,37 @@ int handlePulls(int day)
 	return pulls_remaining();
 }
 
-boolean doVacation()
+boolean LX_doVacation()
 {
 	if(in_koe())
 	{
+		return false;		//cannot vacation in kingdom of exploathing path
+	}
+	
+	int meat_needed = 500;
+	int adv_needed = 3;
+	int adv_budget = my_adventures() - auto_advToReserve();
+	if(my_path() == "Way of the Surprising Fist")
+	{
+		meat_needed = 5;
+		adv_needed = 5;
+	}
+	if(adv_needed > adv_budget)
+	{
+		auto_log_info("I want to vacation but I do not have enough adventures left", "red");
 		return false;
 	}
-	if(in_zelda())
+	if(meat_needed > my_meat())
+	{
+		auto_log_info("I want to vacation but I do not have enough meat", "red");
+		return false;
+	}
+	if(in_zelda())	//avoid error for not having plumber gear equipped.
 	{
 		zelda_equipTool($stat[moxie]);
 		equipMaximizedGear();
 	}
-	if(my_primestat() == $stat[Muscle])
-	{
-		set_property("choiceAdventure793", "1");
-	}
-	else if(my_primestat() == $stat[Mysticality])
-	{
-		set_property("choiceAdventure793", "2");
-	}
-	else
-	{
-		set_property("choiceAdventure793", "3");
-	}
+
 	return autoAdv(1, $location[The Shore\, Inc. Travel Agency]);
 }
 
@@ -3079,9 +3086,36 @@ void print_header()
 
 boolean doTasks()
 {
+	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
+	
+	if(!auto_unreservedAdvRemaining())
+	{
+		auto_log_warning("No more unreserved adventures left", "red");
+		return false;	//we are out of adventures
+	}
+	if(get_property("_auto_doneToday").to_boolean())
+	{
+		auto_log_warning("According to property _auto_doneToday I am done for today", "red");
+		return false;
+	}
+	if(my_familiar() == $familiar[Stooper])
+	{
+		auto_log_info("Avoiding stooper stupor...", "blue");
+		use_familiar($familiar[none]);
+	}
+	if(my_inebriety() > inebriety_limit())
+	{
+		auto_log_warning("I am overdrunk", "red");
+		return false;
+	}
+	if(inAftercore())
+	{
+		auto_log_warning("I am in aftercore", "red");
+		return false;
+	}	
 	if(inCasual())
 	{	
-		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");	
+		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
 		return false;	
 	}
 	
@@ -3404,7 +3438,7 @@ boolean doTasks()
 	if(L11_nostrilOfTheSerpent())		return true;
 	if(L11_unlockHiddenCity())			return true;
 	if(L11_hiddenCityZones())			return true;
-	if(ornateDowsingRod())				return true;
+	if(LX_ornateDowsingRod(false))		return true;
 	if(L11_aridDesert())				return true;
 	if(L11_hiddenCity())				return true;
 	if(L11_talismanOfNam())				return true;
@@ -3595,7 +3629,7 @@ void auto_begin()
 	}
 	
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
-	while(auto_unreservedAdvRemaining() && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !inAftercore() && doTasks())
+	while(doTasks())
 	{
 		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
 		{
@@ -3603,40 +3637,6 @@ void auto_begin()
 		}
 		#We save the last adventure for a rain man, damn it.
 		consumeStuff();
-	}
-
-	if(inAftercore())
-	{
-		equipBaseline();
-		handleFamiliar("item");
-		if(item_amount($item[Boris\'s Helm]) > 0)
-		{
-			equip($item[Boris\'s Helm]);
-		}
-		if(item_amount($item[camp scout backpack]) > 0)
-		{
-			equip($item[camp scout backpack]);
-		}
-		if(item_amount($item[operation patriot shield]) > 0)
-		{
-			equip($item[operation patriot shield]);
-		}
-		if((equipped_item($slot[familiar]) != $item[snow suit]) && (item_amount($item[snow suit]) > 0))
-		{
-			equip($item[snow suit]);
-		}
-		if((item_amount($item[mr. cheeng\'s spectacles]) > 0) && !have_equipped($item[Mr. Cheeng\'s Spectacles]))
-		{
-			equip($slot[acc2], $item[mr. cheeng\'s spectacles]);
-		}
-		if((item_amount($item[mr. screege\'s spectacles]) > 0) && !have_equipped($item[Mr. Screege\'s Spectacles]))
-		{
-			equip($slot[acc3], $item[mr. screege\'s spectacles]);
-		}
-		if((item_amount($item[numberwang]) > 0) && can_equip($item[numberwang]))
-		{
-			equip($slot[acc1], $item[numberwang]);
-		}
 	}
 
 	if(doBedtime())

@@ -119,7 +119,7 @@ boolean LX_unlockDesert()
 	}
 	
 	//spend adv to unlock the desert
-	if(LX_bitchinMeatcar()) return true;
+	return LX_bitchinMeatcar();
 }
 
 boolean LX_desertAlternate()
@@ -220,7 +220,7 @@ boolean LX_islandAccess()
 	}
 	while((item_amount($item[Shore Inc. Ship Trip Scrip]) < 3) && (my_meat() >= 500) && (item_amount($item[Dinghy Plans]) == 0))
 	{
-		doVacation();
+		LX_doVacation();
 	}
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
 	{
