@@ -548,7 +548,10 @@ boolean L11_mcmuffinDiary()
 	}
 	if (my_adventures() < 4 || my_meat() < 500 || item_amount($item[Forged Identification Documents]) == 0)
 	{
-		abort("Could not vacation at the shore to find your fathers diary!");
+		if(isAboutToPowerlevel())
+		{
+			abort("Could not vacation at the shore to find your fathers diary!");
+		}
 		return false;
 	}
 
