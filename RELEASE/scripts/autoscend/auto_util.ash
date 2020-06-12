@@ -3665,7 +3665,7 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 			return false;
 		}
 	}
-	if(inCanadiaSign())
+	if(canadia_available())
 	{
 		best = 11;
 	}
