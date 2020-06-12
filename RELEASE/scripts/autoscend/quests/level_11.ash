@@ -642,11 +642,14 @@ boolean L11_aridDesert()
 		desertBuff = $item[Ornate Dowsing Rod];
 		progress = 3;
 	}
-	if((get_property("bondDesert").to_boolean()) && ($location[The Arid\, Extra-Dry Desert].turns_spent > 0))
+	if(get_property("bondDesert").to_boolean())
 	{
 		progress += 2;
 	}
-	//TODO Avatar of sneaky pete black lightbulb gives +2 progress too
+	if(get_property("peteMotorbikeHeadlight") = "Blacklight Bulb")	//TODO verify spelling on this string
+	{
+		progress += 2;
+	}
 
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
 	{
