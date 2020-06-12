@@ -182,7 +182,6 @@ void initializeSettings()
 	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
 	set_property("auto_shenSkipLastLevel", 0); 
 
-	set_property("auto_skipDesert", 0);
 	set_property("auto_snapshot", "");
 	set_property("auto_sniffs", "");
 	set_property("auto_waitingArrowAlcove", "50");
