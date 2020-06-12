@@ -2194,12 +2194,13 @@ boolean L11_unlockPyramid()
 	{
 		return false;	//ed starts with pyramid unlocked and cannot adventure there
 	}
-	//get staff of ed if possible. we are only checking one version of it because the other one is a path of ed exclusive
+	//get staff of ed if possible. we are only checking the non equipment version of it.
+	//the equipment version is actually ed the undying path exclusive
 	if(creatable_amount($item[[2325]Staff Of Ed]) > 0)
 	{
 		create(1, $item[[2325]Staff Of Ed]);
 	}
-	if(!possessEquipment($item[[2325]Staff Of Ed]))
+	if(item_amount($item[[2325]Staff Of Ed]) == 0)
 	{
 		return false;
 	}
