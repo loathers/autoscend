@@ -347,16 +347,6 @@ void preAdvUpdateFamiliar(location place)
 		autoChooseFamiliar(place);
 	}
 	
-	//if we explicitly speficied that we want to not use a familiar this adventure.
-	if(get_property("auto_familiarChoice") == "REALLY_NONE")
-	{
-		if(my_familiar() != $familiar[none])
-		{
-			use_familiar($familiar[none]);
-		}
-		return;
-	}
-	
 	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
 	if(famChoice == $familiar[none])
 	{
@@ -373,7 +363,7 @@ void preAdvUpdateFamiliar(location place)
 	}
 	
 	//familiar equipment overrides
-	if((my_path() == "Heavy Rains"))
+	if(my_path() == "Heavy Rains")
 	{
 		autoEquip($slot[familiar], $item[miniature life preserver]);
 	}

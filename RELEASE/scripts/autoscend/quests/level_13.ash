@@ -991,7 +991,10 @@ boolean L13_towerNSTower()
 			uneffect($effect[Jalape&ntilde;o Saucesphere]);
 			uneffect($effect[Mayeaugh]);
 			uneffect($effect[Spiky Shell]);
-			handleFamiliar($familiar[none]);
+			if (!is100FamRun()) {
+				set_property("auto_disableFamiliarChanging", true);
+				use_familiar($familiar[none]);
+			}
 			buffMaintain($effect[Tomato Power], 0, 1, 1);
 			buffMaintain($effect[Seeing Colors], 0, 1, 1);
 			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
