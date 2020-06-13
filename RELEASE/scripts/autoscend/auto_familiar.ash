@@ -253,6 +253,11 @@ boolean autoChooseFamiliar(location place)
 	{
 		return handleFamiliar($familiar[Machine Elf]);
 	}
+
+	// Can't take familiars with you to FantasyRealm
+	if (place == $location[The Bandit Crossroads]) {
+		return use_familiar($familiar[none]);
+	}
 	
 	//High priority checks that are too complicated for the datafile
 	familiar famChoice = $familiar[none];
