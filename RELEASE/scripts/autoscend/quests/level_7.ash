@@ -65,9 +65,7 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
-		autoAdv(1, $location[The Defiled Alcove]);
-		handleFamiliar("item");
-		return true;
+		return autoAdv(1, $location[The Defiled Alcove]);
 	}
 
 	// In KoE, skeleton astronauts are random encounters that drop Evil Eyes.
@@ -131,10 +129,7 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Niche!", "blue");
-		autoAdv(1, $location[The Defiled Niche]);
-
-		handleFamiliar("item");
-		return true;
+		return autoAdv(1, $location[The Defiled Niche]);
 	}
 
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
