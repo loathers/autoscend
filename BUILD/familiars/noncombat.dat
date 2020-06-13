@@ -1,0 +1,3 @@
+# This is a list of familiars who decrease the frequency of combat encounters
+# reduces combat by -floor(weight/7.5) to a maximum of -10%.
+Disgeist
