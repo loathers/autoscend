@@ -2186,7 +2186,7 @@ boolean L11_palindome()
 
 boolean L11_unlockPyramid()
 {
-  if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > 0)
+  if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > -1)
 	{
 		return false;
 	}
@@ -2217,7 +2217,11 @@ boolean L11_unlockPyramid()
 	}
 
 	//check results of above URL visit
-	if (internalQuestStatus("questL11Pyramid") < 0)		//unlock failed
+	if (internalQuestStatus("questL11Pyramid") > -1)
+	{
+		return true;	//unlock successful
+	}
+	else 		//unlock failed
 	{
 		cli_execute("refresh quests");		//maybe it worked and mafia did not notice?
 		if(internalQuestStatus("questL11Pyramid") > -1)
@@ -2241,7 +2245,8 @@ boolean L11_unlockPyramid()
 		}
 		abort("Tried to open the Pyramid but could not. could not verify the actual exploration amount of the desert");
 	}
-	return true;	//unlock successful
+	
+	return false;
 }
 
 boolean L11_unlockEd()
