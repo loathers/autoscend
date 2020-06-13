@@ -17,6 +17,9 @@ boss	2	Mu
 boss	3	Warbear Drone
 boss	4	Mosquito
 
+# This is a list of familiars who increase the frequency of combat encounters
+# 1.25x fairy. increases combat frequency by floor(weight/6) to a maximum of +5%
+
 # "drop" type is used when we want to grab a familiar that drops items themselves rather than boosting the odds of the enemy dropping items.
 #
 # First we grab up to small amount of various specific drops.
@@ -252,6 +255,9 @@ meat	37	Urchin Urchin
 meat	38	Cornbeefadon
 # The original
 meat	39	Leprechaun
+
+# This is a list of familiars who decrease the frequency of combat encounters
+# reduces combat by -floor(weight/7.5) to a maximum of -10%.
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)
