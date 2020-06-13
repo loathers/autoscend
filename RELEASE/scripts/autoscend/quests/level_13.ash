@@ -991,7 +991,7 @@ boolean L13_towerNSTower()
 			uneffect($effect[Jalape&ntilde;o Saucesphere]);
 			uneffect($effect[Mayeaugh]);
 			uneffect($effect[Spiky Shell]);
-			if (!is100FamRun()) {
+			if (canChangeFamiliar()) {
 				set_property("auto_disableFamiliarChanging", true);
 				use_familiar($familiar[none]);
 			}
