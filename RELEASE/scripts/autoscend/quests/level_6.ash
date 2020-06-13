@@ -26,7 +26,6 @@ boolean L6_friarsGetParts()
 		}
 	}
 
-	handleFamiliar("item");
 	if(equipped_item($slot[Shirt]) == $item[Tunac])
 	{
 		autoEquip($slot[Shirt], $item[none]);
