@@ -8,8 +8,9 @@ Steam-Powered Cheerleader	path:KOLHS
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
 # 1.3x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
-# Jumpsuited Hound Dog is a 1.25x multiplier fairy that provides +combat. only use it if we did not provide noncombat this loop.
-Jumpsuited Hound Dog	!prop_boolean:_auto_thisLoopPlusNoncombat
+# Jumpsuited Hound Dog is a 1.25x multiplier fairy that provides +combat.
+# most places do not want +combat so only use it when we explicitly do providePlusCombat
+Jumpsuited Hound Dog	prop_boolean:_auto_thisLoopPlusCombat
 # 1.2x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
 # 1.1x multiplier fairy
