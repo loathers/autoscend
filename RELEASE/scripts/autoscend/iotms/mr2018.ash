@@ -285,7 +285,6 @@ boolean fantasyRealmToken()
 	{
 		return false;
 	}
-	handleFamiliar($familiar[none]);
 
 	if(possessEquipment($item[FantasyRealm G. E. M.]))
 	{

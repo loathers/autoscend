@@ -116,13 +116,12 @@ boolean canChangeToFamiliar(familiar target)
 		return false;
 	}
 	
-	//handle a target of none. after we verified we are not breaking a 100% run to do so.
-	if(target == $familiar[none])
-	{
-		//on paths that do not allow familiars at all, trying to switch to $familiar[none] causes an exception.
-		return pathAllowsFamiliar();
+	// Don't allow switching to a target of none.
+	if(target == $familiar[none])	
+	{	
+		return false;	
 	}
-	
+
 	// if you reached this point, then auto_100familiar must not be set to anything, you are allowed to change familiar.
 	return true;
 }
@@ -202,8 +201,7 @@ boolean handleFamiliar(familiar fam)
 	}
 	if(fam == $familiar[none])
 	{
-		set_property("auto_familiarChoice", "REALLY_NONE");		//special handling for switching to familiar none.
-		return true;
+		return false;
 	}
 	if(get_property("auto_familiarChoice").to_familiar() == fam)	//this should go after $familiar[none] check
 	{
@@ -254,6 +252,11 @@ boolean autoChooseFamiliar(location place)
 	if(place == $location[The Deep Machine Tunnels])
 	{
 		return handleFamiliar($familiar[Machine Elf]);
+	}
+
+	// Can't take familiars with you to FantasyRealm
+	if (place == $location[The Bandit Crossroads]) {
+		return use_familiar($familiar[none]);
 	}
 	
 	//High priority checks that are too complicated for the datafile
