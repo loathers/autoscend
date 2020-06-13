@@ -2742,13 +2742,13 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		if(are_we_done()) return true;
 	}
 	
-	if(lookupFamiliarDatafile("combat") != $familiar[none])		//do we have a valid +combat familiar
+	familiar target_fam = lookupFamiliarDatafile("combat");
+	if(target_fam != $familiar[none])		//do we have a valid -combat familiar
 	{
-		handleFamiliar("combat");	//avoid flip flop
-		familiar target = get_property("auto_familiarChoice").to_familiar();
-		if(my_familiar() != target)
+		handleFamiliar(target_fam);			//avoid flip flop
+		if(my_familiar() != target_fam)
 		{
-			use_familiar(target);
+			use_familiar(target_fam);
 		}
 		if(are_we_done()) return true;
 	}
@@ -2820,13 +2820,13 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		if(are_we_done()) return true;
 	}
 	
-	if(lookupFamiliarDatafile("noncombat") != $familiar[none])		//do we have a valid -combat familiar
+	familiar target_fam = lookupFamiliarDatafile("noncombat");
+	if(target_fam != $familiar[none])		//do we have a valid -combat familiar
 	{
-		handleFamiliar("noncombat");	//avoid flip flop
-		familiar target = get_property("auto_familiarChoice").to_familiar();
-		if(my_familiar() != target)
+		handleFamiliar(target_fam);			//avoid flip flop
+		if(my_familiar() != target_fam)
 		{
-			use_familiar(target);
+			use_familiar(target_fam);
 		}
 		if(are_we_done()) return true;
 	}
