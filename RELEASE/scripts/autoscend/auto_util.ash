@@ -2718,10 +2718,11 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	}
 	set_property("_auto_thisLoopPlusCombat", true);		//track if this was called this loop. my_session_adv() won't work due to free fights
 	
+	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
+	simMaximize();
+	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 	boolean are_we_done()
 	{
-		simMaximize();
-		int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(numeric_modifier("Combat Rate").to_int() + equipDiff >= amt)
 		{
 			return true;
@@ -2756,6 +2757,9 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	if(doEquips)
 	{
 		addToMaximize("200combat " + to_string(amt) + "max");
+		//update our equipDiff value since we changed maximizer string
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(are_we_done()) return true;
 	}
 	
@@ -2797,10 +2801,11 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	amt = -1 * amt;
 	set_property("_auto_thisLoopPlusNoncombat", true);		//track if this was called this loop. my_session_adv() won't work due to free fights
 
+	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
+	simMaximize();
+	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 	boolean are_we_done()
 	{
-		simMaximize();
-		int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(numeric_modifier("Combat Rate").to_int() + equipDiff <= amt)
 		{
 			return true;
@@ -2834,6 +2839,9 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	if(doEquips)
 	{
 		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
+		//update our equipDiff value since we changed maximizer string
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(are_we_done()) return true;
 	}
 
