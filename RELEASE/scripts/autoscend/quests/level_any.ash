@@ -2,18 +2,12 @@
 
 boolean LX_bitchinMeatcar()
 {
-	if((item_amount($item[Bitchin\' Meatcar]) > 0) || (auto_my_path() == "Nuclear Autumn"))
+	if(isDesertAvailable())
 	{
 		return false;
 	}
-	if(get_property("lastDesertUnlock").to_int() == my_ascensions())
+	if(item_amount($item[Bitchin\' Meatcar]) > 0)
 	{
-		return false;
-	}
-	if(in_koe())
-	{
-		auto_log_info("The desert exploded, so no need to build a meatcar...");
-		set_property("lastDesertUnlock", my_ascensions());
 		return false;
 	}
 	
@@ -50,23 +44,6 @@ boolean LX_bitchinMeatcar()
 		return false;
 	}
 	
-	//if rich then just buy the desert pass
-	if((my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000)) && isGeneralStoreAvailable())
-	{
-		auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
-		buyUpTo(1, $item[Desert Bus Pass]);
-		if(item_amount($item[Desert Bus Pass]) > 0)
-		{
-			return true;
-		}
-	}
-	
-	//plumbers should wait until they are rich enough to buy the desert pass
-	if(in_zelda())
-	{
-		return false;
-	}
-	
 	if(item_amount($item[Gnollish Toolbox]) > 0)
 	{
 		use(1, $item[Gnollish Toolbox]);
@@ -95,6 +72,54 @@ boolean LX_bitchinMeatcar()
 	
 	//could not adventure in degrassi knoll garage and could not unlock it. you are probably too early in the run and need to come back to it later.
 	return false;
+}
+
+boolean LX_unlockDesert()
+{
+	if(isDesertAvailable())
+	{
+		return false;
+	}
+	
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		if(isAboutToPowerlevel())
+		{
+			auto_log_info("We ran out of things to do. Trying to prematurely unlock Desert", "blue");
+		}
+		else
+		{
+			auto_log_info("In Nuclear Autumn you get a free desert pass at level 11. skipping unlocking it for now", "blue");
+			return false;
+		}
+	}
+	
+	//knollsign lets you buy the meatcar for less meat than a desert pass without spending any adv.
+	if(inKnollSign())
+	{
+		return LX_bitchinMeatcar();
+	}
+	
+	//if wealthy enough just buy the desert pass outright instead of spending adventures.
+	if(my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000) && isGeneralStoreAvailable())
+	{
+		auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
+		buyUpTo(1, $item[Desert Bus Pass]);
+		if(item_amount($item[Desert Bus Pass]) > 0)
+		{
+			return true;
+		}
+	}
+	
+	//plumbers should wait until they are rich enough to buy the desert pass. As they have few uses for meat.
+	if(in_zelda() && !isAboutToPowerlevel())
+	{
+		auto_log_info("Plumbers have few uses for meat. Delaying desert unlock until we can buy a pass.", "blue");
+		return false;
+	}
+	
+	//spend adv to unlock the desert
+	return LX_bitchinMeatcar();
 }
 
 boolean LX_desertAlternate()
@@ -173,7 +198,7 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-	if(!canDesert || !isGeneralStoreAvailable())
+	if(!isDesertAvailable() || !isGeneralStoreAvailable())
 	{
 		return LX_desertAlternate();
 	}
@@ -195,7 +220,7 @@ boolean LX_islandAccess()
 	}
 	while((item_amount($item[Shore Inc. Ship Trip Scrip]) < 3) && (my_meat() >= 500) && (item_amount($item[Dinghy Plans]) == 0))
 	{
-		doVacation();
+		LX_doVacation();
 	}
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
 	{

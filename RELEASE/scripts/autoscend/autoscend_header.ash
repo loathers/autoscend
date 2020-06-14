@@ -28,7 +28,7 @@ boolean LX_phatLootToken();
 boolean LX_islandAccess();
 boolean fancyOilPainting();
 boolean LX_fcle();
-boolean ornateDowsingRod();
+boolean LX_ornateDowsingRod(boolean doing_desert_now);	//Defined in autoscend/iotms/auto_mr2014.ash
 boolean LX_nastyBooty();
 boolean LX_guildUnlock();
 boolean LX_pirateOutfit();
@@ -115,6 +115,7 @@ boolean L11_hiddenTavernUnlock();
 boolean L11_hiddenTavernUnlock(boolean force);
 boolean L11_blackMarket();
 boolean L11_forgedDocuments();
+boolean L11_getUVCompass();										//Defined in autoscend/auto_quest_level_11.ash
 boolean L11_aridDesert();
 boolean L11_mcmuffinDiary();
 boolean L11_unlockHiddenCity();
@@ -586,7 +587,7 @@ boolean dna_startAcquire();									//Defined in autoscend/iotms/auto_mr2014.ash
 boolean auto_reagnimatedGetPart();							//Defined in autoscend/iotms/auto_mr2012.ash
 boolean doBedtime();										//Defined in autoscend.ash
 boolean doHRSkills();										//Defined in autoscend/auto_heavyrains.ash
-boolean doVacation();										//Defined in autoscend.ash
+boolean LX_doVacation();										//Defined in autoscend.ash
 int doHottub();												//Defined in autoscend/auto_clan.ash
 int hotTubSoaksRemaining();									//Defined in autoscend/auto_clan.ash
 boolean isHotTubAvailable();								//Defined in autoscend/auto_clan.ash
@@ -879,6 +880,11 @@ boolean isOverdueArrow();									//Defined in autoscend/auto_util.ash
 boolean isOverdueDigitize();								//Defined in autoscend/auto_util.ash
 boolean isProtonGhost(monster mon);							//Defined in autoscend/auto_util.ash
 boolean isUnclePAvailable();								//Defined in autoscend/auto_util.ash
+boolean isDesertAvailable();								//Defined in autoscend/auto_util.ash
+boolean inKnollSign();										//Defined in autoscend/auto_util.ash
+boolean inCanadiaSign();									//Defined in autoscend/auto_util.ash
+boolean inGnomeSign();										//Defined in autoscend/auto_util.ash
+boolean allowSoftblockShen();								//Defined in autoscend/auto_util.ash
 boolean is_avatar_potion(item it);							//Defined in autoscend/auto_util.ash
 int auto_mall_price(item it);									//Defined in autoscend/auto_util.ash
 item[int] itemList();										//Defined in autoscend/auto_list.ash
@@ -1147,7 +1153,6 @@ boolean glover_usable(string it);							//Defined in autoscend/auto_glover.ash
 boolean LM_glover();										//Defined in autoscend/auto_glover.ash
 
 boolean groundhogSafeguard();								//Defined in autoscend/auto_groundhog.ash
-void groundhog_initializeSettings();						//Defined in autoscend/auto_groundhog.ash
 boolean canGroundhog(location loc);							//Defined in autoscend/auto_groundhog.ash
 boolean groundhogAbort(location loc);						//Defined in autoscend/auto_groundhog.ash
 boolean LM_groundhog();										//Defined in autoscend/auto_groundhog.ash

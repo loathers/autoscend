@@ -323,6 +323,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 				auto_log_info("Found mask: " + majora, "green");
 			}
 		}
+		else
+		{
+			abort("Failed to identify the mask worn by the monster [" + enemy + "]. Finish this combat manually then run me again");
+		}
+		
 		if((majora == 7) && canUse($skill[Swap Mask]))
 		{
 			return useSkill($skill[Swap Mask]);

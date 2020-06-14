@@ -502,5 +502,10 @@ boolean settingFixer()
 		remove_property("auto_hpAutoRecoveryTarget");
 	}
 	
+	if (property_exists("auto_skipDesert"))
+	{
+		remove_property("auto_skipDesert");
+	}
+	
 	return true;
 }

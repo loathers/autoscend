@@ -60,7 +60,7 @@ boolean[location] shenSnakeLocations(int day, int n_items_returned)
 
 boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 {
-	if (get_property("auto_shenSkipLastLevel").to_int() >= my_level())
+	if (!allowSoftblockShen())
 	{
 		boolean[location] empty;
 		return empty;
@@ -501,7 +501,10 @@ boolean L11_forgedDocuments()
 	}
 	if (my_meat() < npc_price($item[Forged Identification Documents]))
 	{
-		abort("Could not buy Forged Identification Documents, can not steal identities!");
+		if(isAboutToPowerlevel())
+		{
+			abort("Could not afford to buy Forged Identification Documents, can not steal identities!");
+		}
 		return false;
 	}
 
@@ -545,12 +548,15 @@ boolean L11_mcmuffinDiary()
 	}
 	if (my_adventures() < 4 || my_meat() < 500 || item_amount($item[Forged Identification Documents]) == 0)
 	{
-		abort("Could not vacation at the shore to find your fathers diary!");
+		if(isAboutToPowerlevel())
+		{
+			abort("Could not vacation at the shore to find your fathers diary!");
+		}
 		return false;
 	}
 
 	auto_log_info("Getting the McMuffin Diary", "blue");
-	doVacation();
+	LX_doVacation();
 	foreach diary in $items[Your Father\'s Macguffin Diary, Copy of a Jerk Adventurer\'s Father\'s Diary]
 	{
 		if(item_amount(diary) > 0)
@@ -562,30 +568,67 @@ boolean L11_mcmuffinDiary()
 	return false;
 }
 
-boolean L11_aridDesert()
+boolean L11_getUVCompass()
 {
-	if (internalQuestStatus("questL11Desert") < 0 || internalQuestStatus("questL11Desert") > 0)
+	//acquire a [UV-resistant compass] if needed
+	if(possessEquipment($item[Ornate Dowsing Rod]) && is_unrestricted($item[Ornate Dowsing Rod]))
 	{
-		return false;
+		return false;		//already have a dowsing rod. we do not need a compass.
+	}
+	if(possessEquipment($item[UV-resistant compass]))
+	{
+		return false;		//already have compass
+	}
+	if(in_koe())
+	{
+		return false;		//impossible to get compass in this path. [The Shore, Inc] is unavailable
+	}
+	if(auto_my_path() == "Way of the Surprising Fist" || $class[Avatar of Boris] == my_class())
+	{
+		return false;		//cannot equip offhand item in these paths
 	}
 
-	// Mafia probably handles this correctly (and probably has done so for a while). (failing again as of r19010)
-	if(auto_my_path() == "Pocket Familiars")
+	if(item_amount($item[Shore Inc. Ship Trip Scrip]) == 0)
 	{
-		string temp = visit_url("place.php?whichplace=desertbeach", false);
+		return LX_doVacation();
 	}
 	
-	// TODO: Mafia currently (r20019) does not properly track desert exploration progress in plumber
-	// Not sure if this fix can do exact progress, but when I visited that page it corrected my explortion to 100 and quest progress to done so it will prevent adv loss at least
-	if(in_zelda() && get_property("desertExploration").to_int() < 100)
+	if(create(1, $item[UV-Resistant Compass]))
 	{
-		string discard = visit_url("place.php?whichplace=desertbeach");
+		return true;
+	}
+	else
+	{
+		cli_execute("refresh inv");
+		if(possessEquipment($item[UV-resistant compass]))
+		{
+			return true;
+		}
+		else abort("I have the Scrip for it but am failing to buy [UV-resistant compass] for some reason. buy it manually and run me again");
 	}
 
-	if(get_property("desertExploration").to_int() >= 100)
+	return false;
+}
+
+boolean L11_aridDesert()
+{
+	if(internalQuestStatus("questL11Desert") != 0)
 	{
 		return false;
 	}
+
+	// Fix broken desert tracking. pocket familiars failing as of r19010. plumber as of r20019
+	if(in_zelda() || auto_my_path() == "Pocket Familiars")
+	{
+		visit_url("place.php?whichplace=desertbeach", false);
+	}
+	if(get_property("desertExploration").to_int() >= 100)
+	{
+		return false;		//done exploring
+	}
+	
+	if(LX_ornateDowsingRod(true)) return true;		//spend adv trying to get [Ornate Dowsing Rod]. doing_desert_now = true.
+	if(L11_getUVCompass()) return true;				//spend adv trying to get [UV-resistant compass]
 
 	item desertBuff = $item[none];
 	int progress = 1;
@@ -594,80 +637,18 @@ boolean L11_aridDesert()
 		desertBuff = $item[UV-resistant compass];
 		progress = 2;
 	}
-	if(possessEquipment($item[Ornate Dowsing Rod]) && is_unrestricted($item[Hibernating Grimstone Golem]))
+	if(possessEquipment($item[Ornate Dowsing Rod]) && is_unrestricted($item[Ornate Dowsing Rod]))
 	{
 		desertBuff = $item[Ornate Dowsing Rod];
 		progress = 3;
 	}
-	if((get_property("bondDesert").to_boolean()) && ($location[The Arid\, Extra-Dry Desert].turns_spent > 0))
+	if(get_property("bondDesert").to_boolean())
 	{
 		progress += 2;
 	}
-
-	boolean failDesert = true;
-	if(possessEquipment(desertBuff))
+	if(get_property("peteMotorbikeHeadlight") == "Blacklight Bulb")	//TODO verify spelling on this string
 	{
-		failDesert = false;
-	}
-	if($classes[Avatar of Boris, Avatar of Sneaky Pete] contains my_class())
-	{
-		failDesert = false;
-	}
-	if(auto_my_path() == "Way of the Surprising Fist")
-	{
-		failDesert = false;
-	}
-	if(get_property("bondDesert").to_boolean())
-	{
-		failDesert = false;
-	}
-	if(in_koe())
-	{
-		failDesert = false;
-	}
-
-	if(failDesert)
-	{
-		if((my_level() >= 12) && !in_hardcore())
-		{
-			auto_log_warning("Do you actually have a UV-resistant compass? Try 'refresh inv' in the CLI! If possible, pull a Grimstone mask and rerun, we may have missed that somehow.", "green");
-			if(is_unrestricted($item[Hibernating Grimstone Golem]) && have_familiar($familiar[Grimstone Golem]))
-			{
-				abort("I can't do the Oasis without an Ornate Dowsing Rod. You can manually get a UV-resistant compass and I'll use that if you really hate me that much.");
-			}
-			else
-			{
-				cli_execute("refresh inv");
-				if(possessEquipment($item[UV-resistant compass]))
-				{
-					desertBuff = $item[UV-resistant compass];
-					progress = 2;
-				}
-				else if((my_adventures() > 3) && (my_meat() > 1200))
-				{
-					doVacation();
-					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
-					{
-						cli_execute("make UV-Resistant Compass");
-					}
-					if(!possessEquipment($item[UV-Resistant Compass]))
-					{
-						abort("Could not acquire a UV-Resistant Compass. Failing.");
-					}
-					return true;
-				}
-				else
-				{
-					abort("Can not handle the desert in our current situation.");
-				}
-			}
-		}
-		else
-		{
-			auto_log_warning("Skipping desert, don't have a rod or a compass.");
-			set_property("auto_skipDesert", my_turncount());
-		}
-		return false;
+		progress += 2;
 	}
 
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
@@ -677,7 +658,7 @@ boolean L11_aridDesert()
 		{
 			autoEquip($item[Thor\'s Pliers]);
 		}
-		if(auto_have_familiar($familiar[Artistic Goth Kid]))
+		if(canChangeToFamiliar($familiar[Artistic Goth Kid]))
 		{
 			handleFamiliar($familiar[Artistic Goth Kid]);
 		}
@@ -2205,103 +2186,67 @@ boolean L11_palindome()
 
 boolean L11_unlockPyramid()
 {
-  if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > 0)
+  if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > -1)
 	{
 		return false;
 	}
 	if (isActuallyEd())
 	{
+		return false;	//ed starts with pyramid unlocked and cannot adventure there
+	}
+	//get staff of ed if possible. we are only checking the non equipment version of it.
+	//the equipment version is actually ed the undying path exclusive
+	if(creatable_amount($item[[2325]Staff Of Ed]) > 0)
+	{
+		create(1, $item[[2325]Staff Of Ed]);
+	}
+	if(item_amount($item[[2325]Staff Of Ed]) == 0)
+	{
 		return false;
 	}
-
-	if((item_amount($item[[2325]Staff Of Ed]) > 0) || ((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2268]Staff Of Fats]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0)))
+	
+	auto_log_info("Reveal the pyramid", "blue");
+	if (in_koe())
 	{
-		auto_log_info("Reveal the pyramid", "blue");
-		if(item_amount($item[[2325]Staff Of Ed]) == 0)
-		{
-			if((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0))
-			{
-				autoCraft("combine", 1, $item[[2180]Ancient Amulet], $item[[2286]Eye Of Ed]);
-			}
-			if((item_amount($item[Headpiece of the Staff of Ed]) > 0) && (item_amount($item[[2268]Staff Of Fats]) > 0))
-			{
-				autoCraft("combine", 1, $item[headpiece of the staff of ed], $item[[2268]Staff Of Fats]);
-			}
-		}
-		if(item_amount($item[[2325]Staff Of Ed]) == 0)
-		{
-			abort("Failed making Staff of Ed (2325) via CLI. Please do it manually and rerun.");
-		}
-
-		if (in_koe())
-		{
-			visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
-			cli_execute("refresh quests");
-		}
-		else
-		{
-			visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
-		}
-
-		if (internalQuestStatus("questL11Pyramid") < 0)
-		{
-			auto_log_info("No burning Ed's model now!", "blue");
-			if((auto_my_path() == "One Crazy Random Summer") && (get_property("desertExploration").to_int() == 100))
-			{
-				auto_log_warning("We might have had an issue due to OCRS and the Desert, please finish the desert (and only the desert) manually and run again.", "red");
-				string page = visit_url("place.php?whichplace=desertbeach");
-				matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
-				if(desert_matcher.find())
-				{
-					int found = to_int(desert_matcher.group(1));
-					if(found < 100)
-					{
-						set_property("desertExploration", found);
-					}
-				}
-
-				if(get_property("desertExploration").to_int() == 100)
-				{
-					abort("Tried to open the Pyramid but could not - exploration at 100?. Something went wrong :(");
-				}
-				else
-				{
-					auto_log_info("Incorrectly had exploration value of 100 however, this was correctable. Trying to resume.", "blue");
-					return false;
-				}
-			}
-			if(my_turncount() == get_property("auto_skipDesert").to_int())
-			{
-				auto_log_warning("Did not have an Arid Desert Item and the Pyramid is next. Must backtrack and recover", "red");
-				if((my_adventures() >= 3) && (my_meat() >= 500))
-				{
-					doVacation();
-					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
-					{
-						cli_execute("make UV-Resistant Compass");
-					}
-					if(item_amount($item[UV-Resistant Compass]) == 0)
-					{
-						abort("Could not acquire a UV-Resistant Compass. Failing.");
-					}
-				}
-				else
-				{
-					abort("Could not backtrack to handle getting a UV-Resistant Compass");
-				}
-				return true;
-			}
-			abort("Tried to open the Pyramid but could not. Something went wrong :(");
-		}
-
-		buffMaintain($effect[Snow Shoes], 0, 1, 1);
-		autoAdv(1, $location[The Upper Chamber]);
-		return true;
+		visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
+		cli_execute("refresh quests");
 	}
 	else
 	{
-		return false;
+		visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
 	}
+
+	//check results of above URL visit
+	if (internalQuestStatus("questL11Pyramid") > -1)
+	{
+		return true;	//unlock successful
+	}
+	else 		//unlock failed
+	{
+		cli_execute("refresh quests");		//maybe it worked and mafia did not notice?
+		if(internalQuestStatus("questL11Pyramid") > -1)
+		{
+			return true;		//actually unlock did not fail.
+		}
+	
+		int initial = get_property("desertExploration").to_int();
+		string page = visit_url("place.php?whichplace=desertbeach");
+		matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
+		if(desert_matcher.find())
+		{
+			int found = to_int(desert_matcher.group(1));
+			if(found != initial)
+			{
+				auto_log_info("Incorrectly had exploration value of " + initial + " when it should be at " + found + ". This was corrected. Trying to resume.", "blue");
+				set_property("desertExploration", found);
+				return true;
+			}
+			abort("Tried to open the Pyramid but could not. property desertExploration determined to be correct");
+		}
+		abort("Tried to open the Pyramid but could not. could not verify the actual exploration amount of the desert");
+	}
+	
+	return false;
 }
 
 boolean L11_unlockEd()

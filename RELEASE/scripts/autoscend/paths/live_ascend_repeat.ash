@@ -1,13 +1,5 @@
 script "live_ascend_repeat.ash"
 
-void groundhog_initializeSettings()
-{
-	if(auto_my_path() == "Live. Ascend. Repeat.")
-	{
-		set_property("auto_grimstoneOrnateDowsingRod", false);
-	}
-}
-
 boolean groundhogSafeguard()
 {
 	if(auto_my_path() == "Live. Ascend. Repeat.")

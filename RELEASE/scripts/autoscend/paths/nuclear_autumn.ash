@@ -6,7 +6,6 @@ void fallout_initializeSettings()
 	{
 		set_property("auto_cubeItems", false);
 		set_property("auto_getBeehive", true);
-		set_property("auto_grimstoneOrnateDowsingRod", true);
 
 		if(item_amount($item[Deck of Every Card]) > 0)
 		{
