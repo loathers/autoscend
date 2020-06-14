@@ -2716,12 +2716,13 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		return true;
 	}
-	set_property("_auto_thisLoopPlusCombat", true);		//track if this was called this loop. my_session_adv() won't work due to free fights
+	set_property("_auto_thisLoopPlusCombat", true);		//track if this was called this loop. my_turncount() won't work due to free fights
 	
+	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
+	simMaximize();
+	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 	boolean are_we_done()
 	{
-		simMaximize();
-		int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(numeric_modifier("Combat Rate").to_int() + equipDiff >= amt)
 		{
 			return true;
@@ -2742,20 +2743,26 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		if(are_we_done()) return true;
 	}
 	
-	familiar target_fam = lookupFamiliarDatafile("combat");
-	if(target_fam != $familiar[none])		//do we have a valid -combat familiar
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())	//do not overwrite an already chosen familiar.
 	{
-		handleFamiliar(target_fam);			//avoid flip flop
-		if(my_familiar() != target_fam)
+		familiar target_fam = lookupFamiliarDatafile("combat");
+		if(target_fam != $familiar[none])		//do we have a valid -combat familiar
 		{
-			use_familiar(target_fam);
+			handleFamiliar(target_fam);			//avoid flip flop
+			if(my_familiar() != target_fam)
+			{
+				use_familiar(target_fam);
+			}
+			if(are_we_done()) return true;
 		}
-		if(are_we_done()) return true;
 	}
 	
 	if(doEquips)
 	{
 		addToMaximize("200combat " + to_string(amt) + "max");
+		//update our equipDiff value since we changed maximizer string
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(are_we_done()) return true;
 	}
 	
@@ -2795,12 +2802,13 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		return true;
 	}
 	amt = -1 * amt;
-	set_property("_auto_thisLoopPlusNoncombat", true);		//track if this was called this loop. my_session_adv() won't work due to free fights
+	set_property("_auto_thisLoopPlusNoncombat", true);		//track if this was called this loop. my_turncount() won't work due to free fights
 
+	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
+	simMaximize();
+	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 	boolean are_we_done()
 	{
-		simMaximize();
-		int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(numeric_modifier("Combat Rate").to_int() + equipDiff <= amt)
 		{
 			return true;
@@ -2820,20 +2828,26 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		if(are_we_done()) return true;
 	}
 	
-	familiar target_fam = lookupFamiliarDatafile("noncombat");
-	if(target_fam != $familiar[none])		//do we have a valid -combat familiar
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())	//do not overwrite an already chosen familiar.
 	{
-		handleFamiliar(target_fam);			//avoid flip flop
-		if(my_familiar() != target_fam)
+		familiar target_fam = lookupFamiliarDatafile("noncombat");
+		if(target_fam != $familiar[none])		//do we have a valid -combat familiar
 		{
-			use_familiar(target_fam);
+			handleFamiliar(target_fam);			//avoid flip flop
+			if(my_familiar() != target_fam)
+			{
+				use_familiar(target_fam);
+			}
+			if(are_we_done()) return true;
 		}
-		if(are_we_done()) return true;
 	}
 	
 	if(doEquips)
 	{
 		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
+		//update our equipDiff value since we changed maximizer string
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
 		if(are_we_done()) return true;
 	}
 

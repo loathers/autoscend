@@ -721,7 +721,7 @@ boolean L11_aridDesert()
 		{
 			autoEquip(desertBuff);
 		}
-		handleFamiliar("initSuggest");
+		handleFamiliar("init");
 		set_property("choiceAdventure805", 1);
 		int need = 100 - get_property("desertExploration").to_int();
 		auto_log_info("Need for desert: " + need, "blue");
@@ -1366,7 +1366,7 @@ boolean L11_hiddenCity()
 	if (item_amount($item[stone triangle]) == 4) {
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
-		handleFamiliar("initSuggest");
+		handleFamiliar("init");
 		return autoAdv($location[A Massive Ziggurat]);
 	}
 	
@@ -1496,7 +1496,7 @@ boolean L11_mauriceSpookyraven()
 			providePlusNonCombat(25, true);
 		}
 
-		handleFamiliar("initSuggest");
+		handleFamiliar("init");
 
 		return autoAdv($location[The Haunted Ballroom]);
 	}

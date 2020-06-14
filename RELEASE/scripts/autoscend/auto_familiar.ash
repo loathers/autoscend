@@ -246,18 +246,6 @@ boolean autoChooseFamiliar(location place)
 	{
 		return handleFamiliar(familiar_target_100);		//do not break 100 familiar runs
 	}
-	set_property("auto_familiarChoice", $familiar[none]);	//reset familiar choice
-	
-	//familiar required to adventure in that zone.
-	if(place == $location[The Deep Machine Tunnels])
-	{
-		return handleFamiliar($familiar[Machine Elf]);
-	}
-
-	// Can't take familiars with you to FantasyRealm
-	if (place == $location[The Bandit Crossroads]) {
-		return use_familiar($familiar[none]);
-	}
 	
 	//High priority checks that are too complicated for the datafile
 	familiar famChoice = $familiar[none];

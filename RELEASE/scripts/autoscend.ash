@@ -149,7 +149,7 @@ void initializeSettings()
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
-	set_property("auto_familiarChoice", $familiar[none]);
+	set_property("auto_familiarChoice", "");
 	set_property("auto_forceTavern", false);
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
@@ -2507,7 +2507,7 @@ boolean Lsc_flyerSeals()
 			}
 		}
 
-		handleFamiliar("initSuggest");
+		handleFamiliar("init");
 		boolean clubbedSeal = false;
 		if(doElement)
 		{
