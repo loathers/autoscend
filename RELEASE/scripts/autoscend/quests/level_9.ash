@@ -781,7 +781,7 @@ boolean L9_oilPeak()
 	}
 
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-	handleFamiliar("initSuggest");
+	handleFamiliar("init");
 
 	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 

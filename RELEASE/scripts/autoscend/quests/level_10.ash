@@ -325,7 +325,7 @@ boolean L10_topFloor()
 		set_property("choiceAdventure679", 1);
 	}
 
-	handleFamiliar("initSuggest");
+	handleFamiliar("init");
 	if(!auto_forceNextNoncombat())
 	{
 		providePlusNonCombat(25);

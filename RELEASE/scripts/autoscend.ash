@@ -2507,7 +2507,7 @@ boolean Lsc_flyerSeals()
 			}
 		}
 
-		handleFamiliar("initSuggest");
+		handleFamiliar("init");
 		boolean clubbedSeal = false;
 		if(doElement)
 		{
