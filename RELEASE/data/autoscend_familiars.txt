@@ -19,6 +19,7 @@ boss	4	Mosquito
 
 # This is a list of familiars who increase the frequency of combat encounters
 # 1.25x fairy. increases combat frequency by floor(weight/6) to a maximum of +5%
+combat	0	Jumpsuited Hound Dog
 
 # "drop" type is used when we want to grab a familiar that drops items themselves rather than boosting the odds of the enemy dropping items.
 #
@@ -30,7 +31,7 @@ drop	0	Fist Turkey	prop:_turkeyBooze<5
 # drops 1 per combat with chance of 2nd if wearing familiar specific equip
 drop	1	Puck Man	item:Yellow Pixel<20
 drop	2	Ms. Puck Man	item:Yellow Pixel<20
-# 1st wax drop per run only takes 5 combats, afterwards 30. makes a single size 2 density 4.25 food or drink 
+# 1st wax drop per run only takes 5 combats, afterwards 30. makes a single size 2 density 4.25 food or drink
 drop	3	Optimistic Candle	prop:optimisticCandleProgress>=25
 # 1st robin egg per run only takes 5 combats, afterwards 30. potion that gives all res +3
 drop	4	Rockin' Robin	prop:rockinRobinProgress>=25
@@ -98,7 +99,7 @@ drop	32	XO Skeleton
 drop	33	Intergnat
 # Generates adventures after combat
 drop	34	Reagnimated Gnome
-# Every 30 combats drops wax which makes a single size 2 density 4.25 food or drink 
+# Every 30 combats drops wax which makes a single size 2 density 4.25 food or drink
 drop	35	Optimistic Candle
 # Drops robin's egg every 30 combats. +3 all res potion
 drop	36	Rockin' Robin
@@ -258,6 +259,7 @@ meat	39	Leprechaun
 
 # This is a list of familiars who decrease the frequency of combat encounters
 # reduces combat by -floor(weight/7.5) to a maximum of -10%.
+noncombat	0	Disgeist
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)
