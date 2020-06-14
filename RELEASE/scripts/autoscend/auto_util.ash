@@ -2716,7 +2716,7 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		return true;
 	}
-	set_property("_auto_thisLoopPlusCombat", true);		//track if this was called this loop. my_session_adv() won't work due to free fights
+	set_property("_auto_thisLoopPlusCombat", true);		//track if this was called this loop. my_turncount() won't work due to free fights
 	
 	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
 	simMaximize();
@@ -2802,7 +2802,7 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		return true;
 	}
 	amt = -1 * amt;
-	set_property("_auto_thisLoopPlusNoncombat", true);		//track if this was called this loop. my_session_adv() won't work due to free fights
+	set_property("_auto_thisLoopPlusNoncombat", true);		//track if this was called this loop. my_turncount() won't work due to free fights
 
 	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
 	simMaximize();

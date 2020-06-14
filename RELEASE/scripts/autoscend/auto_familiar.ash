@@ -246,7 +246,6 @@ boolean autoChooseFamiliar(location place)
 	{
 		return handleFamiliar(familiar_target_100);		//do not break 100 familiar runs
 	}
-	set_property("auto_familiarChoice", $familiar[none]);	//reset familiar choice
 	
 	//familiar required to adventure in that zone.
 	if(place == $location[The Deep Machine Tunnels])
