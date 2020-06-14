@@ -2743,15 +2743,18 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		if(are_we_done()) return true;
 	}
 	
-	familiar target_fam = lookupFamiliarDatafile("combat");
-	if(target_fam != $familiar[none])		//do we have a valid -combat familiar
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())	//do not overwrite an already chosen familiar.
 	{
-		handleFamiliar(target_fam);			//avoid flip flop
-		if(my_familiar() != target_fam)
+		familiar target_fam = lookupFamiliarDatafile("combat");
+		if(target_fam != $familiar[none])		//do we have a valid -combat familiar
 		{
-			use_familiar(target_fam);
+			handleFamiliar(target_fam);			//avoid flip flop
+			if(my_familiar() != target_fam)
+			{
+				use_familiar(target_fam);
+			}
+			if(are_we_done()) return true;
 		}
-		if(are_we_done()) return true;
 	}
 	
 	if(doEquips)
@@ -2825,15 +2828,18 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		if(are_we_done()) return true;
 	}
 	
-	familiar target_fam = lookupFamiliarDatafile("noncombat");
-	if(target_fam != $familiar[none])		//do we have a valid -combat familiar
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())	//do not overwrite an already chosen familiar.
 	{
-		handleFamiliar(target_fam);			//avoid flip flop
-		if(my_familiar() != target_fam)
+		familiar target_fam = lookupFamiliarDatafile("noncombat");
+		if(target_fam != $familiar[none])		//do we have a valid -combat familiar
 		{
-			use_familiar(target_fam);
+			handleFamiliar(target_fam);			//avoid flip flop
+			if(my_familiar() != target_fam)
+			{
+				use_familiar(target_fam);
+			}
+			if(are_we_done()) return true;
 		}
-		if(are_we_done()) return true;
 	}
 	
 	if(doEquips)
