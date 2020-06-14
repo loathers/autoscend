@@ -308,15 +308,26 @@ void preAdvUpdateFamiliar(location place)
 	{
 		return;		//will just error in those paths
 	}
+	if(is100FamRun())
+	{
+		handleFamiliar(get_property("auto_100familiar").to_familiar());			//do not break 100 familiar runs
+	}
 	
-	//familiar required to adventure in that zone, override everything else.
+	//familiar requirement to adventure in a zone, override everything else.
 	if(place == $location[The Deep Machine Tunnels])
 	{
 		handleFamiliar($familiar[Machine Elf]);
 	}
+	// Can't take familiars with you to FantasyRealm
+	if (place == $location[The Bandit Crossroads])
+	{
+		if(my_familiar() == $familiar[none]) return;		//avoid mafia error from trying to change none into none.
+		use_familiar($familiar[none]);
+		return;		//no familiar means no equipment, we are done.
+	}
 	
 	//if familiar not set yet, first check stealing familiar
-	if(get_property("auto_familiarChoice") == "" && canChangeToFamiliar($familiar[cat burglar]) && catBurglarHeistsLeft() > 0)
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean() && canChangeToFamiliar($familiar[cat burglar]) && catBurglarHeistsLeft() > 0)
 	{
 		//Stealing with familiar. TODO add XO Skelton here too
 		
@@ -340,10 +351,8 @@ void preAdvUpdateFamiliar(location place)
 	}
 	
 	//if familiar not set choose a familiar using general logic
-	if(get_property("auto_familiarChoice") == "" && !get_property("_auto_thisLoopHandleFamiliar").to_boolean())
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())		//check that we didn't already set familiar target this loop
 	{
-		//if we already called handleFamiliar it means we have a specific familiar we need for the location we are adventuring in
-		//if we don't then it means we should run the selector before to choose the best general familiar
 		autoChooseFamiliar(place);
 	}
 	
