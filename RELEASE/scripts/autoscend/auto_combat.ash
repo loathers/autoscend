@@ -3435,14 +3435,13 @@ string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string
 		}
 	}
 	return abortCombat("Unable to perform saber trick (meteor shower)");
-	return "";
 }
 
 monster ocrs_helper(string page)
 {
 	if(my_path() != "One Crazy Random Summer")
 	{
-		return abortCombat("Should not be in ocrs_helper if not on the path!");
+		auto_log_critical("Should not be in ocrs_helper if not on the path!");
 	}
 
 	string combatState = get_property("auto_combatHandler");
