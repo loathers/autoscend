@@ -46,7 +46,6 @@ boolean L7_crypt()
 
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && canGroundhog($location[The Defiled Alcove]))
 	{
-		handleFamiliar("init");
 
 		if((get_property("_badlyRomanticArrows").to_int() == 0) && auto_have_familiar($familiar[Reanimated Reanimator]) && (my_daycount() == 1))
 		{
@@ -82,7 +81,6 @@ boolean L7_crypt()
 	{
 		auto_log_info("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
-		handleFamiliar("item");
 		autoEquip($item[Gravy Boat]);
 
 		bat_formBats();

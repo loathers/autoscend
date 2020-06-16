@@ -249,12 +249,106 @@ boolean autoChooseFamiliar(location place)
 	
 	//High priority checks that are too complicated for the datafile
 	familiar famChoice = $familiar[none];
+
+	// Blackbird/Crow cut turns in the Black Forest but we only need to equip them
+	// if we don't have them in inventory.
+	if ($location[The Black Forest] == place) {
+		if (auto_my_path() != "Bees Hate You") {
+			if (item_amount($item[Reassembled Blackbird]) == 0 && canChangeToFamiliar($familiar[Reassembled Blackbird])) {
+				famChoice = $familiar[Reassembled Blackbird];
+			}
+		} else {
+			if (item_amount($item[Reconstituted Crow]) == 0 && canChangeToFamiliar($familiar[Reconstituted Crow])) {
+				famChoice = $familiar[Reconstituted Crow];
+			}
+		}
+	}
+
+	// Gremlins have special familiar handling.
+	if ($locations[Next to that Barrel with Something Burning in it, Out By that Rusted-Out Car, Over Where the Old Tires Are, Near an Abandoned Refrigerator] contains place) {
+		famChoice = lookupFamiliarDatafile("gremlins");
+	}
+
+	// places where item drop is required to help save adventures.
+	if ($locations[The Typical Tavern Cellar, The Beanbat Chamber, Cobb's Knob Harem, The Defiled Nook, The Goatlet, Itznotyerzitz Mine,
+	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Hospital, The Hidden Bowling Alley, The Haunted Wine Cellar,
+	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, The Red Zeppelin, Whitey's Grove, The Oasis, The Middle Chamber,
+	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
+	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, 8-Bit Realm, The Degrassi Knoll Garage, The Old Landfill,
+	The Laugh Floor, Infernal Rackets Backstage] contains place) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// only need +item in the pirates cove if we're faming the outfit (may be farming insults here or getting the key in LKS otherwise)
+	if ($location[The Obligatory Pirate's Cove] == place && !possessOutfit("Swashbuckling Getup")) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// Only need +item in the F'c'le if we're getting the fledges (could still be getting the key in LKS)
+	if ($location[The F'c'le] == place && internalQuestStatus("questM12Pirate") < 6) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// The World's Biggest Jerk can send us here so only use +item if we're farming sonars.
+	if ($location[The Batrat and Ratbat Burrow] == place && internalQuestStatus("questL04Bat") < 3) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// only need +item on the extreme slope if we're faming the outfit.
+	if ($location[The eXtreme Slope] == place && !possessOutfit("eXtreme Cold-Weather Gear")) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
 	
+	// only use +item in A-Boo Peak when adventuring (so we don't accidentally override resistance familiars when doing The Horror).
+	if ($location[A-Boo Peak] == place && get_property("auto_aboopending").to_int() == 0) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// only need +item at Oil Peak if we need Bubblin' Crude (TODO: it might be useful in HC for food?).
+	if ($location[Oil Peak] == place &&
+	((get_property("twinPeakProgress").to_int() & 4) == 0 &&
+		item_amount($item[Jar Of Oil]) < 1 && item_amount($item[Bubblin\' Crude]) < 12))  {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// The World's Biggest Jerk can also send us here so only use +item if we're farming bridge parts.
+	if ($location[The Smut Orc Logging Camp] == place && internalQuestStatus("questL09Topping") < 1) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// Killing jar saves adventures unlocking the Pyramid.
+	if ($location[The Haunted Library] == place && item_amount($item[killing jar]) < 1) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// +item helps if we still need the book of matches
+	if ($location[The Hidden Park] == place && get_property("hiddenTavernUnlock").to_int() != my_ascensions()) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// only need +item in the war camps if we are farming the outfit.
+	if ($locations[Wartime Frat House, Wartime Hippy Camp] contains place) {
+		if (!possessOutfit("Frat Warrior Fatigues") || !possessOutfit("War Hippy Fatigues")) {
+			famChoice = lookupFamiliarDatafile("item");
+		}
+	}
+
+	// places where meat drop is required to help save adventures.
+	if ($location[The Themthar Hills] == place) {
+		famChoice = lookupFamiliarDatafile("meat");
+	}
+	
+	// places where initiative is required to help save adventures.
+	if ($location[The Defiled Alcove] == place) {
+		famChoice = lookupFamiliarDatafile("init");
+	}
+
 	//Gelatinous Cubeling drops items that save turns in the daily dungeon
 	if(famChoice == $familiar[none] &&
 	canChangeToFamiliar($familiar[Gelatinous Cubeling]) &&
 	get_property("auto_useCubeling").to_boolean() &&
-	get_property("auto_cubeItems").to_boolean())
+	get_property("auto_cubeItems").to_boolean()
+	&& lookupFamiliarDatafile("item") != $familiar[Gelatinous Cubeling]) // don't farm the drops if this is the best +item familiar we have. We will get them regardless.
 	{
 		famChoice = $familiar[Gelatinous Cubeling];
 	}
@@ -296,10 +390,7 @@ boolean autoChooseFamiliar(location place)
 			
 			if(spleenFamiliarsAvailable > 0) foreach fam in $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey]
 			{
-				if(get_property("_auto_thisLoopPlusNoncombat").to_boolean() && fam == $familiar[Grim Brother])
-				{
-					continue;	//skip +combat familiars if we want -combat
-				}
+
 				if((fam.drops_today < bound) && canChangeToFamiliar(fam))
 				{
 					famChoice = fam;
@@ -330,6 +421,11 @@ boolean autoChooseFamiliar(location place)
 		famChoice = $familiar[Angry Jung Man];
 	}
 	
+	// places where meat drop is desirable due to high meat drop monsters.
+	if ($locations[The Boss Bat's Lair, Mist-Shrouded Peak, The Icy Peak, The Filthworm Queen's Chamber] contains place) {
+		famChoice = lookupFamiliarDatafile("meat");
+	}
+
 	//if critically low on MP and meat. use restore familiar to avoid going bankrupt
 	boolean poor = my_meat() < 1000;
 	if(internalQuestStatus("questL11MacGuffin") < 2)
@@ -347,20 +443,14 @@ boolean autoChooseFamiliar(location place)
 		famChoice = lookupFamiliarDatafile("drop");
 	}
 	
-	//select the best familiar that improves the odds of the enemy dropping an item
-	if(famChoice == $familiar[none])
-	{
-		famChoice = lookupFamiliarDatafile("item");
+	// Stats from combats makes runs go faster apparently.
+	if (famChoice == $familiar[none] && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
+		famChoice = lookupFamiliarDatafile("stat");
 	}
 	
-	//fallback choices
-	if(famChoice == $familiar[none])
-	{
-		famChoice = lookupFamiliarDatafile("meat");
-	}
-	if(famChoice == $familiar[none] && canChangeToFamiliar($familiar[Mosquito]))
-	{
-		famChoice = $familiar[Mosquito];
+	// fallback to regen if nothing else. At worst the player will have something like a Ghuol Whelp or Starfish.
+	if (famChoice == $familiar[none]) {
+		famChoice = lookupFamiliarDatafile("regen");
 	}
 
 	return handleFamiliar(famChoice);

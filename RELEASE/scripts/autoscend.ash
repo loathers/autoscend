@@ -1188,7 +1188,6 @@ void initializeDay(int day)
 
 			makeStartingSmiths();
 
-			handleFamiliar("item");
 			equipBaseline();
 
 			handleBjornify($familiar[none]);
@@ -2406,7 +2405,6 @@ boolean LX_freeCombats(boolean powerlevel)
 		{
 			handleBjornify($familiar[Grinning Turtle]);
 		}
-		handleFamiliar($familiar[Machine Elf]);
 		adv_done = autoAdv(1, $location[The Deep Machine Tunnels]);
 		if(bjorn == $familiar[Machine Elf])
 		{
@@ -2507,7 +2505,6 @@ boolean Lsc_flyerSeals()
 			}
 		}
 
-		handleFamiliar("init");
 		boolean clubbedSeal = false;
 		if(doElement)
 		{
@@ -2544,7 +2541,6 @@ boolean Lsc_flyerSeals()
 				use(1, $item[ingot of seal-iron]);
 			}
 		}
-		handleFamiliar("item");
 		return clubbedSeal;
 	}
 	return false;
@@ -3291,10 +3287,6 @@ boolean doTasks()
 		if((item_amount($item[ring of detect boring doors]) == 1) && (item_amount($item[eleven-foot pole]) == 1) && (item_amount($item[pick-o-matic lockpicks]) == 1))
 		{
 			set_property("auto_cubeItems", false);
-		}
-		if(get_property("auto_cubeItems").to_boolean() && (my_familiar() != $familiar[Gelatinous Cubeling]) && auto_have_familiar($familiar[Gelatinous Cubeling]))
-		{
-			handleFamiliar($familiar[Gelatinous Cubeling]);
 		}
 	}
 

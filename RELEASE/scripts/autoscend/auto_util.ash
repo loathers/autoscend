@@ -2716,7 +2716,6 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		return true;
 	}
-	set_property("_auto_thisLoopPlusCombat", true);		//track if this was called this loop. my_turncount() won't work due to free fights
 	
 	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
 	simMaximize();
@@ -2741,20 +2740,6 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		uneffect(eff);
 		if(are_we_done()) return true;
-	}
-	
-	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())	//do not overwrite an already chosen familiar.
-	{
-		familiar target_fam = lookupFamiliarDatafile("combat");
-		if(target_fam != $familiar[none])		//do we have a valid -combat familiar
-		{
-			handleFamiliar(target_fam);			//avoid flip flop
-			if(my_familiar() != target_fam)
-			{
-				use_familiar(target_fam);
-			}
-			if(are_we_done()) return true;
-		}
 	}
 	
 	if(doEquips)
@@ -2792,6 +2777,10 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	asdonBuff($effect[Driving Obnoxiously]);
 	if(are_we_done()) return true;
 	
+	// only return false if we don't have a positive combat rate.
+	if (numeric_modifier("Combat Rate").to_int() + equipDiff > 0)	{
+		return true;
+	}
 	return false;
 }
 
@@ -2802,7 +2791,6 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		return true;
 	}
 	amt = -1 * amt;
-	set_property("_auto_thisLoopPlusNoncombat", true);		//track if this was called this loop. my_turncount() won't work due to free fights
 
 	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
 	simMaximize();
@@ -2826,20 +2814,6 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	{
 		uneffect(eff);
 		if(are_we_done()) return true;
-	}
-	
-	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())	//do not overwrite an already chosen familiar.
-	{
-		familiar target_fam = lookupFamiliarDatafile("noncombat");
-		if(target_fam != $familiar[none])		//do we have a valid -combat familiar
-		{
-			handleFamiliar(target_fam);			//avoid flip flop
-			if(my_familiar() != target_fam)
-			{
-				use_familiar(target_fam);
-			}
-			if(are_we_done()) return true;
-		}
 	}
 	
 	if(doEquips)
@@ -2896,6 +2870,10 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	asdonBuff($effect[Driving Stealthily]);
 	if(are_we_done()) return true;
 	
+	// only return false if we don't have a negative combat rate.
+	if (numeric_modifier("Combat Rate").to_int() + equipDiff < 0) {
+		return true;
+	}
 	return false;
 }
 
@@ -3148,6 +3126,12 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			if(!pass(ele))
 				return false;
 		}
+		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot] contains my_familiar()) {
+			// if we pass while having a resist familiar equipped, make sure we keep it equipped
+			// otherwise we may end up flip-flopping from the resist familiar and something else
+			// which could cost us adventures if switching familiars affects our resistances enough
+			handleFamiliar(my_familiar());
+		}
 		return true;
 	}
 
@@ -3241,7 +3225,6 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		if(resfam != $familiar[none])
 		{
 			// need to use now so maximizer will see it
-			familiar currentFamiliar = my_familiar();
 			use_familiar(resfam);
 			if(resfam == $familiar[Trick-or-Treating Tot])
 			{
@@ -3253,10 +3236,10 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
-			use_familiar(currentFamiliar);
 		}
-		if(pass())
+		if(pass()) {
 			return result();
+		}
 	}
 
 	if(doEquips)
@@ -7095,8 +7078,6 @@ void resetThisLoop()
 	//We use boolean instead of adventure count because of free combats.
 	
 	set_property("auto_doCombatCopy", "no");
-	set_property("_auto_thisLoopPlusCombat", false);		//have we called providePlusCombat this loop
-	set_property("_auto_thisLoopPlusNoncombat", false);		//have we called providePlusNonCombat this loop
 	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
 	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
 	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure
