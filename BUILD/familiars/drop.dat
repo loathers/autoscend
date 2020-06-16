@@ -42,7 +42,7 @@ Intergnat	item:BACON<150
 #
 # density 1.875 size 4 spleen consumables. boolean autoChooseFamiliar(location place) will already grab the amount needed for spleen
 # Here they are only used to grab extras.
-Grim Brother	prop:_grimFairyTaleDrops<5;!prop_boolean:_auto_thisLoopPlusNoncombat
+Grim Brother	prop:_grimFairyTaleDrops<5
 Pair of Stomping Boots	prop:_bootStomps<7
 Baby Sandworm	prop:_aguaDrops<5
 Bloovian Groose	prop:_grooseDrops<5

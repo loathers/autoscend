@@ -145,14 +145,6 @@ boolean LX_steelOrgan()
 				# Should we check for -NC stuff and deal with it?
 				# We need a Combat Modifier controller
 			}
-			if(item_amount($item[Imp Air]) >= 5)
-			{
-				handleFamiliar($familiar[Jumpsuited Hound Dog]);
-			}
-			else
-			{
-				handleFamiliar("item");
-			}
 			autoAdv(1, $location[The Laugh Floor]);
 		}
 		else if(((item_amount($item[Azazel\'s Unicorn]) == 0) || (item_amount($item[Bus Pass]) < 5)) && (item_amount($item[Azazel\'s Tutu]) == 0))
@@ -236,7 +228,6 @@ boolean LX_steelOrgan()
 			{
 				uneffect($effect[The Sonata of Sneakiness]);
 			}
-			handleFamiliar("item");
 			autoAdv(1, $location[Infernal Rackets Backstage]);
 		}
 		else if((item_amount($item[Azazel\'s Lollipop]) == 0) && (item_amount($item[Azazel\'s Tutu]) == 0))

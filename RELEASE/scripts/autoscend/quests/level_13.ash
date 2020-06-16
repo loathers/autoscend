@@ -199,11 +199,6 @@ boolean LX_getStarKey()
 			set_property("choiceAdventure1221", 2 + (my_ascensions() % 2));
 		}
 	}
-	else
-	{
-		handleFamiliar("item");
-	}
-	
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
@@ -488,7 +483,6 @@ boolean L13_towerNSContests()
 		}
 	}
 
-	handleFamiliar("item");
 	equipBaseline();
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_01_crowd1"))
@@ -933,10 +927,6 @@ boolean L13_towerNSTower()
 				set_property("auto_getBeehive", true);
 				auto_log_warning("I probably failed the Wall of Skin, I assume that I tried without a beehive. Well, I'm going back to get it.", "red");
 			}
-			else
-			{
-				handleFamiliar("item");
-			}
 		}
 		else
 		{
@@ -1029,10 +1019,6 @@ boolean L13_towerNSTower()
 				auto_log_warning("Could not towerkill Wall of Bones, reverting to Boning Knife", "red");
 				acquireHP();
 				set_property("auto_getBoningKnife", true);
-			}
-			else
-			{
-				handleFamiliar("item");
 			}
 		}
 		else if((item_amount($item[Electric Boning Knife]) > 0) || (auto_my_path() == "Pocket Familiars"))

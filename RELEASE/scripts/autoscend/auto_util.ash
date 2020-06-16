@@ -2716,7 +2716,6 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		return true;
 	}
-	set_property("_auto_thisLoopPlusCombat", true);		//track if this was called this loop. my_turncount() won't work due to free fights
 	
 	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
 	simMaximize();
@@ -2741,20 +2740,6 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		uneffect(eff);
 		if(are_we_done()) return true;
-	}
-	
-	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())	//do not overwrite an already chosen familiar.
-	{
-		familiar target_fam = lookupFamiliarDatafile("combat");
-		if(target_fam != $familiar[none])		//do we have a valid -combat familiar
-		{
-			handleFamiliar(target_fam);			//avoid flip flop
-			if(my_familiar() != target_fam)
-			{
-				use_familiar(target_fam);
-			}
-			if(are_we_done()) return true;
-		}
 	}
 	
 	if(doEquips)
@@ -2802,7 +2787,6 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		return true;
 	}
 	amt = -1 * amt;
-	set_property("_auto_thisLoopPlusNoncombat", true);		//track if this was called this loop. my_turncount() won't work due to free fights
 
 	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
 	simMaximize();
@@ -2826,20 +2810,6 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	{
 		uneffect(eff);
 		if(are_we_done()) return true;
-	}
-	
-	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())	//do not overwrite an already chosen familiar.
-	{
-		familiar target_fam = lookupFamiliarDatafile("noncombat");
-		if(target_fam != $familiar[none])		//do we have a valid -combat familiar
-		{
-			handleFamiliar(target_fam);			//avoid flip flop
-			if(my_familiar() != target_fam)
-			{
-				use_familiar(target_fam);
-			}
-			if(are_we_done()) return true;
-		}
 	}
 	
 	if(doEquips)
@@ -3241,7 +3211,6 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		if(resfam != $familiar[none])
 		{
 			// need to use now so maximizer will see it
-			familiar currentFamiliar = my_familiar();
 			use_familiar(resfam);
 			if(resfam == $familiar[Trick-or-Treating Tot])
 			{
@@ -3253,10 +3222,11 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
-			use_familiar(currentFamiliar);
 		}
-		if(pass())
+		if(pass()) {
+			handleFamiliar(resfam);
 			return result();
+		}
 	}
 
 	if(doEquips)
@@ -7095,8 +7065,6 @@ void resetThisLoop()
 	//We use boolean instead of adventure count because of free combats.
 	
 	set_property("auto_doCombatCopy", "no");
-	set_property("_auto_thisLoopPlusCombat", false);		//have we called providePlusCombat this loop
-	set_property("_auto_thisLoopPlusNoncombat", false);		//have we called providePlusNonCombat this loop
 	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
 	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
 	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure

@@ -17,10 +17,6 @@ boss	2	Mu
 boss	3	Warbear Drone
 boss	4	Mosquito
 
-# This is a list of familiars who increase the frequency of combat encounters
-# 1.25x fairy. increases combat frequency by floor(weight/6) to a maximum of +5%
-combat	0	Jumpsuited Hound Dog
-
 # "drop" type is used when we want to grab a familiar that drops items themselves rather than boosting the odds of the enemy dropping items.
 #
 # First we grab up to small amount of various specific drops.
@@ -65,7 +61,7 @@ drop	16	Intergnat	item:BACON<150
 #
 # density 1.875 size 4 spleen consumables. boolean autoChooseFamiliar(location place) will already grab the amount needed for spleen
 # Here they are only used to grab extras.
-drop	17	Grim Brother	prop:_grimFairyTaleDrops<5;!prop_boolean:_auto_thisLoopPlusNoncombat
+drop	17	Grim Brother	prop:_grimFairyTaleDrops<5
 drop	18	Pair of Stomping Boots	prop:_bootStomps<7
 drop	19	Baby Sandworm	prop:_aguaDrops<5
 drop	20	Bloovian Groose	prop:_grooseDrops<5
@@ -135,66 +131,65 @@ item	1	Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
 # 1.3x multiplier fairy
 item	2	Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
 # Jumpsuited Hound Dog is a 1.25x multiplier fairy that provides +combat.
-# most places do not want +combat so only use it when we explicitly do providePlusCombat
-item	3	Jumpsuited Hound Dog	prop_boolean:_auto_thisLoopPlusCombat
+# Jumpsuited Hound Dog DELIBERATELY not included because it provides usually unwanted +combat
 # 1.2x multiplier fairy
-item	4	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
+item	3	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
 # 1.1x multiplier fairy
-item	5	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
+item	4	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 # fairy that generates extra adventures
-item	6	Reagnimated Gnome
+item	5	Reagnimated Gnome
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
-item	7	XO Skeleton
+item	6	XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
-item	8	Intergnat
+item	7	Intergnat
 # Fairyballs
-item	9	Elf Operative
-item	10	Optimistic Candle
-item	11	Rockin' Robin
+item	8	Elf Operative
+item	9	Optimistic Candle
+item	10	Rockin' Robin
 # Fairywhelps
-item	12	Pocket Professor
-item	13	Garbage Fire
-item	14	Dandy Lion
+item	11	Pocket Professor
+item	12	Garbage Fire
+item	13	Dandy Lion
 # Fairychauns
-item	15	Fist Turkey
-item	16	Cat Burglar
-item	17	Angry Jung Man
-item	18	Grimstone Golem
-item	19	Adventurous Spelunker
-item	20	Blavious Kloop
-item	21	Hippo Ballerina
-item	22	Dancing Frog
-item	23	Coffee Pixie
-item	24	Attention-Deficit Demon
-item	25	Jitterbug
-item	26	Casagnova Gnome
-item	27	Psychedelic Bear
-item	28	Piano Cat
+item	14	Fist Turkey
+item	15	Cat Burglar
+item	16	Angry Jung Man
+item	17	Grimstone Golem
+item	18	Adventurous Spelunker
+item	19	Blavious Kloop
+item	20	Hippo Ballerina
+item	21	Dancing Frog
+item	22	Coffee Pixie
+item	23	Attention-Deficit Demon
+item	24	Jitterbug
+item	25	Casagnova Gnome
+item	26	Psychedelic Bear
+item	27	Piano Cat
 # Slightly special fairies
-item	29	Red-Nosed Snapper
-item	30	Pair of Stomping Boots
-item	31	Gelatinous Cubeling
-item	32	Steam-Powered Cheerleader
-item	33	Obtuse Angel
-item	34	Green Pixie
+item	28	Red-Nosed Snapper
+item	29	Pair of Stomping Boots
+item	30	Gelatinous Cubeling
+item	31	Steam-Powered Cheerleader
+item	32	Obtuse Angel
+item	33	Green Pixie
 # Elemental fairies
-item	35	Sleazy Gravy Fairy
-item	36	Stinky Gravy Fairy
-item	37	Flaming Gravy Fairy
-item	38	Frozen Gravy Fairy
-item	39	Spooky Gravy Fairy
+item	34	Sleazy Gravy Fairy
+item	35	Stinky Gravy Fairy
+item	36	Flaming Gravy Fairy
+item	37	Frozen Gravy Fairy
+item	38	Spooky Gravy Fairy
 # Physical damage fairy
-item	40	Bowlet
+item	39	Bowlet
 # Barely special fairies
-item	41	Mechanical Songbird
-item	42	Grouper Groupie
-item	43	Peppermint Rhino
+item	40	Mechanical Songbird
+item	41	Grouper Groupie
+item	42	Peppermint Rhino
 # Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	44	Slimeling
+item	43	Slimeling
 # Turtles are cute
-item	45	Syncopated Turtle
+item	44	Syncopated Turtle
 # The original
-item	46	Baby Gravy Fairy
+item	45	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
 
@@ -256,10 +251,6 @@ meat	37	Urchin Urchin
 meat	38	Cornbeefadon
 # The original
 meat	39	Leprechaun
-
-# This is a list of familiars who decrease the frequency of combat encounters
-# reduces combat by -floor(weight/7.5) to a maximum of -10%.
-noncombat	0	Disgeist
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)

@@ -81,7 +81,6 @@ boolean L10_airship()
 	}
 
 	autoAdv($location[The Penultimate Fantasy Airship]);
-	handleFamiliar("item");
 	return true;
 }
 
@@ -130,14 +129,6 @@ boolean L10_basement()
 		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella) or Neckbeard Choice
 	}
 
-	if(auto_have_familiar($familiar[Ms. Puck Man]))
-	{
-		handleFamiliar($familiar[Ms. Puck Man]);
-	}
-	else if(auto_have_familiar($familiar[Puck Man]))
-	{
-		handleFamiliar($familiar[Puck Man]);
-	}
 	if(!auto_forceNextNoncombat())
 	{
 		providePlusNonCombat(25);
@@ -153,7 +144,6 @@ boolean L10_basement()
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 	resetMaximize();
 	
-	handleFamiliar("item");
 
 	if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 	{
@@ -235,15 +225,6 @@ boolean L10_ground()
 		set_property("choiceAdventure1026", 2); // Home on the Free Range: Get Electric Boning Knife then Skip
 	}
 
-	if(auto_have_familiar($familiar[Ms. Puck Man]))
-	{
-		handleFamiliar($familiar[Ms. Puck Man]);
-	}
-	else if(auto_have_familiar($familiar[Puck Man]))
-	{
-		handleFamiliar($familiar[Puck Man]);
-	}
-
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 	providePlusNonCombat(25);
 
@@ -256,7 +237,6 @@ boolean L10_ground()
 	}
 
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]);
-	handleFamiliar("item");
 	return true;
 }
 
@@ -325,14 +305,12 @@ boolean L10_topFloor()
 		set_property("choiceAdventure679", 1);
 	}
 
-	handleFamiliar("init");
 	if(!auto_forceNextNoncombat())
 	{
 		providePlusNonCombat(25);
 	}
 	autoEquip($item[mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
-	handleFamiliar("item");
 
 	if (internalQuestStatus("questL10Garbage") > 9)
 	{
@@ -381,20 +359,11 @@ boolean L10_holeInTheSkyUnlock()
 	set_property("choiceAdventure678", 3);
 	set_property("choiceAdventure676", 4);
 
-	if(auto_have_familiar($familiar[Ms. Puck Man]))
-	{
-		handleFamiliar($familiar[Ms. Puck Man]);
-	}
-	else if(auto_have_familiar($familiar[Puck Man]))
-	{
-		handleFamiliar($familiar[Puck Man]);
-	}
 	if(!auto_forceNextNoncombat())
 	{
 		providePlusNonCombat(25);
 	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
-	handleFamiliar("item");
 
 	return true;
 }
