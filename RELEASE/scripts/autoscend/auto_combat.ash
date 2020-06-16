@@ -2443,20 +2443,8 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 		return "attack with weapon";
 	}
-	else
-	{
-		return abortCombat("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
-	}
 
-	if(attackMinor == "attack with weapon")
-	{
-		if(canUse($skill[Summon Love Stinkbug]))
-		{
-			return useSkill($skill[Summon Love Stinkbug]);
-		}
-	}
-
-	return attackMinor;
+	return abortCombat("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
 }
 
 string findBanisher(int round, monster enemy, string text)
