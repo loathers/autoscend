@@ -259,6 +259,11 @@ boolean enemyCanBlocksSkills()
 
 string auto_combatHandler(int round, monster enemy, string text)
 {
+	if(round > 25)
+	{
+		return abortCombat("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
+	}
+	
 	#Yes, round 0, really.
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
 	int damageReceived = 0;
@@ -2444,7 +2449,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		return "attack with weapon";
 	}
 
-	return abortCombat("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
+	return attackMinor;
 }
 
 string findBanisher(int round, monster enemy, string text)
