@@ -2476,7 +2476,8 @@ string findBanisher(int round, monster enemy, string text)
 
 string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 {
-	if(!($monsters[A.M.C. gremlin, batwinged gremlin, erudite gremlin, spider gremlin, vegetable gremlin] contains enemy))
+	if(!($monsters[A.M.C. gremlin, batwinged gremlin, batwinged gremlin (tool), erudite gremlin, erudite gremlin (tool),
+	spider gremlin, spider gremlin (tool), vegetable gremlin, vegetable gremlin (tool)] contains enemy))
 	{
 		if (isActuallyEd())
 		{
@@ -2488,69 +2489,15 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	auto_log_info("auto_JunkyardCombatHandler: " + round, "brown");
 	if(round == 0)
 	{
-		set_property("auto_gremlinMoly", true);
+		set_property("auto_gremlinMoly", false);
 		set_property("auto_combatHandler", "");
 	}
 
 	string combatState = get_property("auto_combatHandler");
 	string edCombatState = get_property("auto_edCombatHandler");
 
-	if (isActuallyEd())
-	{
-		if(contains_text(edCombatState, "gremlinNeedBanish"))
-		{
-			set_property("auto_gremlinMoly", false);
-		}
-	}
-
-	if(enemy == $monster[A.M.C. gremlin])
-	{
-		set_property("auto_gremlinMoly", false);
-	}
-
-	if(my_location() == $location[Next To That Barrel With Something Burning In It])
-	{
-		if(enemy == $monster[vegetable gremlin])
-		{
-			set_property("auto_gremlinMoly", false);
-		}
-		else if(contains_text(text, "It does a bombing run over your head"))
-		{
-			set_property("auto_gremlinMoly", false);
-		}
-	}
-	else if(my_location() == $location[Out By That Rusted-Out Car])
-	{
-		if(enemy == $monster[erudite gremlin])
-		{
-			set_property("auto_gremlinMoly", false);
-		}
-		else if(contains_text(text, "It picks a beet off of itself and beats you with it"))
-		{
-			set_property("auto_gremlinMoly", false);
-		}
-	}
-	else if(my_location() == $location[Over Where The Old Tires Are])
-	{
-		if(enemy == $monster[spider gremlin])
-		{
-			set_property("auto_gremlinMoly", false);
-		}
-		else if(contains_text(text, "He uses the random junk around him"))
-		{
-			set_property("auto_gremlinMoly", false);
-		}
-	}
-	else if(my_location() == $location[Near an Abandoned Refrigerator])
-	{
-		if(enemy == $monster[batwinged gremlin])
-		{
-			set_property("auto_gremlinMoly", false);
-		}
-		else if(contains_text(text, "It bites you in the fibula with its mandibles"))
-		{
-			set_property("auto_gremlinMoly", false);
-		}
+	if ($monsters[batwinged gremlin (tool), erudite gremlin (tool), spider gremlin (tool), vegetable gremlin (tool)] contains enemy) {
+		set_property("auto_gremlinMoly", true);
 	}
 
 	if (!contains_text(edCombatState, "gremlinNeedBanish") && !get_property("auto_gremlinMoly").to_boolean() && isActuallyEd())
