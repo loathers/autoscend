@@ -2316,137 +2316,132 @@ string auto_combatHandler(int round, monster enemy, string text)
 		break;
 	}
 
-	if(round <= 25)
+	if(((my_hp() * 10)/3) < my_maxhp())
 	{
-		if(((my_hp() * 10)/3) < my_maxhp())
+		if(canUse($skill[Thunderstrike]) && (monster_level_adjustment() <= 150))
 		{
-			if(canUse($skill[Thunderstrike]) && (monster_level_adjustment() <= 150))
-			{
-				return useSkill($skill[Thunderstrike]);
-			}
-
-			if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 100) && (my_mp() >= costStunner) && stunnable(enemy))
-			{
-				set_property("auto_combatHandler", combatState + "(stunner)");
-				return stunner;
-			}
-
-			if(canUse($skill[Unleash The Greash]) && (monster_element(enemy) != $element[sleaze]) && (have_effect($effect[Takin\' It Greasy]) > 100))
-			{
-				return useSkill($skill[Unleash The Greash]);
-			}
-			if(canUse($skill[Thousand-Yard Stare]) && (monster_element(enemy) != $element[spooky]) && (have_effect($effect[Intimidating Mien]) > 100))
-			{
-				return useSkill($skill[Thousand-Yard Stare]);
-			}
-			if($monsters[Aquagoblin, Lord Soggyraven] contains enemy)
-			{
-				return attackMajor;
-			}
-			if((my_class() == $class[Turtle Tamer]) && canUse($skill[Spirit Snap]))
-			{
-				if((have_effect($effect[Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the War Snapper]) > 0) || (have_effect($effect[Glorious Blessing of She-Who-Was]) > 0))
-				{
-					return useSkill($skill[Spirit Snap]);
-				}
-			}
-			if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]))
-			{
-				return useSkill($skill[Northern Explosion]);
-			}
-			if((!contains_text(combatState, "last attempt")) && (my_mp() >= costMajor))
-			{
-				if(canSurvive(1.4))
-				{
-					set_property("auto_combatHandler", combatState + "(last attempt)");
-					auto_log_warning("Uh oh, I'm having trouble in combat.", "red");
-				}
-				return attackMajor;
-			}
-			if(canSurvive(2.5))
-			{
-				auto_log_warning("Hmmm, I don't really know what to do in this combat but it looks like I'll live.", "red");
-				if(my_mp() >= costMajor)
-				{
-					return attackMajor;
-				}
-				else if(my_mp() >= costMinor)
-				{
-					return attackMinor;
-				}
-				return "attack with weapon";
-			}
-			if(my_location() != $location[The Slime Tube])
-			{
-				return abortCombat("Could not handle monster, sorry");
-			}
-		}
-		if((monster_level_adjustment() > 150) && (my_mp() >= 45) && canUse($skill[Shell Up]) && (my_class() == $class[Turtle Tamer]))
-		{
-			return useSkill($skill[Shell Up]);
+			return useSkill($skill[Thunderstrike]);
 		}
 
-		if(attackMinor == "attack with weapon")
+		if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 100) && (my_mp() >= costStunner) && stunnable(enemy))
 		{
-			if(canUse($skill[Summon Love Stinkbug]))
-			{
-				return useSkill($skill[Summon Love Stinkbug]);
-			}
-			if(canUse($skill[Mighty Axing], false) && (equipped_item($slot[Weapon]) != $item[none]))
-			{
-				return useSkill($skill[Mighty Axing], false);
-			}
+			set_property("auto_combatHandler", combatState + "(stunner)");
+			return stunner;
 		}
 
-		if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[cold]) && canUse($skill[Throat Refrigerant], false))
+		if(canUse($skill[Unleash The Greash]) && (monster_element(enemy) != $element[sleaze]) && (have_effect($effect[Takin\' It Greasy]) > 100))
 		{
-			return useSkill($skill[Throat Refrigerant], false);
+			return useSkill($skill[Unleash The Greash]);
 		}
-
-		if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[hot]) && canUse($skill[Boiling Tear Ducts], false))
+		if(canUse($skill[Thousand-Yard Stare]) && (monster_element(enemy) != $element[spooky]) && (have_effect($effect[Intimidating Mien]) > 100))
 		{
-			return useSkill($skill[Boiling Tear Ducts], false);
+			return useSkill($skill[Thousand-Yard Stare]);
 		}
-
-		if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[sleaze]) && canUse($skill[Projectile Salivary Glands]))
-		{
-			return useSkill($skill[Projectile Salivary Glands]);
-		}
-
-		if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[spooky]) && canUse($skill[Translucent Skin], false))
-		{
-			return useSkill($skill[Translucent Skin], false);
-		}
-
-		if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]) && canUse($skill[Skunk Glands], false))
-		{
-			return useSkill($skill[Skunk Glands], false);
-		}
-
-		if((my_location() == $location[The X-32-F Combat Training Snowman]) && contains_text(text, "Cattle Prod") && (my_mp() >= costMajor))
+		if($monsters[Aquagoblin, Lord Soggyraven] contains enemy)
 		{
 			return attackMajor;
 		}
-
-		if((monster_level_adjustment() > 150) && (my_mp() >= costMajor) && (attackMajor != "attack with weapon"))
+		if((my_class() == $class[Turtle Tamer]) && canUse($skill[Spirit Snap]))
 		{
+			if((have_effect($effect[Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the War Snapper]) > 0) || (have_effect($effect[Glorious Blessing of She-Who-Was]) > 0))
+			{
+				return useSkill($skill[Spirit Snap]);
+			}
+		}
+		if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]))
+		{
+			return useSkill($skill[Northern Explosion]);
+		}
+		if((!contains_text(combatState, "last attempt")) && (my_mp() >= costMajor))
+		{
+			if(canSurvive(1.4))
+			{
+				set_property("auto_combatHandler", combatState + "(last attempt)");
+				auto_log_warning("Uh oh, I'm having trouble in combat.", "red");
+			}
 			return attackMajor;
 		}
-		if(canUse($skill[Lunge Smack], false) && (attackMinor != "attack with weapon") && (weapon_type(equipped_item($slot[weapon])) == $stat[Muscle]))
+		if(canSurvive(2.5))
 		{
-			return attackMinor;
+			auto_log_warning("Hmmm, I don't really know what to do in this combat but it looks like I'll live.", "red");
+			if(my_mp() >= costMajor)
+			{
+				return attackMajor;
+			}
+			else if(my_mp() >= costMinor)
+			{
+				return attackMinor;
+			}
+			return "attack with weapon";
 		}
-		if((my_mp() >= costMinor) && (attackMinor != "attack with weapon"))
+		if(my_location() != $location[The Slime Tube])
 		{
-			return attackMinor;
+			return abortCombat("Could not handle monster, sorry");
 		}
+	}
+	if((monster_level_adjustment() > 150) && (my_mp() >= 45) && canUse($skill[Shell Up]) && (my_class() == $class[Turtle Tamer]))
+	{
+		return useSkill($skill[Shell Up]);
+	}
 
-		if((round > 20) && canUse($skill[Saucestorm], false))
+	if(attackMinor == "attack with weapon")
+	{
+		if(canUse($skill[Summon Love Stinkbug]))
 		{
-			return useSkill($skill[Saucestorm], false);
+			return useSkill($skill[Summon Love Stinkbug]);
 		}
+		if(canUse($skill[Mighty Axing], false) && (equipped_item($slot[Weapon]) != $item[none]))
+		{
+			return useSkill($skill[Mighty Axing], false);
+		}
+	}
 
-		return "attack with weapon";
+	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[cold]) && canUse($skill[Throat Refrigerant], false))
+	{
+		return useSkill($skill[Throat Refrigerant], false);
+	}
+
+	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[hot]) && canUse($skill[Boiling Tear Ducts], false))
+	{
+		return useSkill($skill[Boiling Tear Ducts], false);
+	}
+
+	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[sleaze]) && canUse($skill[Projectile Salivary Glands]))
+	{
+		return useSkill($skill[Projectile Salivary Glands]);
+	}
+
+	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[spooky]) && canUse($skill[Translucent Skin], false))
+	{
+		return useSkill($skill[Translucent Skin], false);
+	}
+
+	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]) && canUse($skill[Skunk Glands], false))
+	{
+		return useSkill($skill[Skunk Glands], false);
+	}
+
+	if((my_location() == $location[The X-32-F Combat Training Snowman]) && contains_text(text, "Cattle Prod") && (my_mp() >= costMajor))
+	{
+		return attackMajor;
+	}
+
+	if((monster_level_adjustment() > 150) && (my_mp() >= costMajor) && (attackMajor != "attack with weapon"))
+	{
+		return attackMajor;
+	}
+	if(canUse($skill[Lunge Smack], false) && (attackMinor != "attack with weapon") && (weapon_type(equipped_item($slot[weapon])) == $stat[Muscle]))
+	{
+		return attackMinor;
+	}
+	if((my_mp() >= costMinor) && (attackMinor != "attack with weapon"))
+	{
+		return attackMinor;
+	}
+
+	if((round > 20) && canUse($skill[Saucestorm], false))
+	{
+		return useSkill($skill[Saucestorm], false);
 	}
 
 	return attackMinor;
