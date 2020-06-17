@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20175; // WHen we initially parse a combat encounter and create a MonsterData, set the lastMOnster in the MonsterStatusTracker immediately, rather than waiting for it to be re-created later from the monster name.
+since r20188; // If automating an adventure leaves you in a choice, automate the choice
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
