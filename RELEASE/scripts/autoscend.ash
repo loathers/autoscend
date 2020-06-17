@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20127; // Leaflet use is now tracked via "leafletCompleted" setting
+since r20188; // If automating an adventure leaves you in a choice, automate the choice
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
