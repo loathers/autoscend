@@ -550,7 +550,7 @@ boolean LX_joinPirateCrew() {
 		auto_log_info("Attempting to infiltrate the frat house", "blue");
 		boolean infiltrationReady = false;
 		if (possessOutfit("Frat Boy Ensemble", true))  {
-			outfit("Frat Boy Ensemble");
+			autoOutfit("Frat Boy Ensemble");
 			infiltrationReady = true;
 		} else if (possessEquipment($item[mullet wig]) && item_amount($item[briefcase]) > 0) {
 			autoForceEquip($item[mullet wig]);
@@ -588,7 +588,7 @@ boolean LX_joinPirateCrew() {
 			// this is held together with duct tape and hopes and dreams.
 			// it can and will fail but it will have to do for now.
 			auto_log_info("Beer Pong time.", "blue");
-			outfit("Swashbuckling Getup");
+			autoOutfit("Swashbuckling Getup");
 			backupSetting("choiceAdventure187", "0");
 			tryBeerPong();
 			return true;
