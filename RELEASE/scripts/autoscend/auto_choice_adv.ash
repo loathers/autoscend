@@ -114,9 +114,9 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(1);
 			} else if (equipped_amount($item[mullet wig]) == 1 && item_amount($item[briefcase]) > 0) {
 				run_choice(2);
-			} else {
+			} else if (equipped_amount($item[frilly skirt]) == 1 && item_amount($item[hot wing]) > 2) {
 				run_choice(3);
-			}
+			} else abort("I tried to infiltrate the orcish frat house without being equipped for the job");
 			break;
 		case 189: // O Cap'm, My Cap'm (The Poop Deck)
 			run_choice(2); // skip
