@@ -734,18 +734,19 @@ boolean L7_crypt();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_08.ash
-boolean L8_trapperStart();
 boolean needOre();
 int getCellToMine(item oreGoal);
-boolean L8_trapperAdvance();
 boolean L8_getGoatCheese();
 boolean L8_getMineOres();
 void itznotyerzitzMineChoiceHandler(int choice);
-boolean L8_trapperGround();
 boolean L8_trapperExtreme();
 void theeXtremeSlopeChoiceHandler(int choice);
 boolean L8_trapperNinjaLair();
 boolean L8_trapperGroar();
+boolean L8_trapperPeak();
+boolean L8_trapperSlope();
+boolean L8_trapperGround();
+boolean L8_trapperTalk();
 boolean L8_trapperQuest();
 
 ########################################################################################################

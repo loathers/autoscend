@@ -168,12 +168,9 @@ boolean LX_theSource()
 		}
 		if(goal == $location[Lair of the Ninja Snowmen])
 		{
-			if((item_amount($item[Ninja Rope]) == 0) || (item_amount($item[Ninja Carabiner]) == 0) || (item_amount($item[Ninja Crampons]) == 0))
+			if(L8_trapperNinjaLair())
 			{
-				if(L8_trapperNinjaLair())
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 
