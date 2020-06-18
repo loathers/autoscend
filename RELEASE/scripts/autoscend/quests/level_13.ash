@@ -225,6 +225,12 @@ boolean L13_towerNSContests()
 		visit_url("choice.php?pwd=&whichchoice=1022&option=1", true);
 		return true;
 	}
+	
+	//if you do not have a telescope you need to actually visit the contest booth once to find out what element and offstat is needed
+	if(get_property("nsChallenge1") == "none" || get_property("nsChallenge2") == "none")
+	{
+		visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
+	}
 
 	boolean crowd1Insufficient()
 	{
