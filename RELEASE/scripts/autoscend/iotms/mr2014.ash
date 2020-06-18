@@ -371,14 +371,9 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Grimstone Mask]) || !is_unrestricted($item[Ornate Dowsing Rod]))
+	if(!auto_is_valid($item[Grimstone Mask]) || !auto_can_equip($item[Ornate Dowsing Rod]))
 	{
 		set_property("auto_grimstoneOrnateDowsingRod", false);	//mask or rod are not valid
-		return false;
-	}
-	if(auto_my_path() == "Way of the Surprising Fist" || $class[Avatar of Boris] == my_class())
-	{
-		set_property("auto_grimstoneOrnateDowsingRod", false);	//cannot equip offhand item in those paths
 		return false;
 	}
 	if(possessEquipment($item[Ornate Dowsing Rod]))

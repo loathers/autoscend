@@ -566,9 +566,13 @@ boolean L11_mcmuffinDiary()
 boolean L11_getUVCompass()
 {
 	//acquire a [UV-resistant compass] if needed
-	if(possessEquipment($item[Ornate Dowsing Rod]) && is_unrestricted($item[Ornate Dowsing Rod]))
+	if(possessEquipment($item[Ornate Dowsing Rod]) && auto_can_equip($item[Ornate Dowsing Rod]))
 	{
 		return false;		//already have a dowsing rod. we do not need a compass.
+	}
+	if(!auto_can_equip($item[UV-resistant compass]))
+	{
+		return false;
 	}
 	if(possessEquipment($item[UV-resistant compass]))
 	{
@@ -577,10 +581,6 @@ boolean L11_getUVCompass()
 	if(in_koe())
 	{
 		return false;		//impossible to get compass in this path. [The Shore, Inc] is unavailable
-	}
-	if(auto_my_path() == "Way of the Surprising Fist" || $class[Avatar of Boris] == my_class())
-	{
-		return false;		//cannot equip offhand item in these paths
 	}
 
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) == 0)
