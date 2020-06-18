@@ -337,6 +337,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 				auto_log_info("Found mask: " + majora, "green");
 			}
 		}
+		else if(enemy == $monster[Your Shadow])	//matcher fails on your shadow and it always wears mask 1.
+		{
+			majora = 1;
+			auto_log_info("Found mask: 1", "green");
+		}
 		else
 		{
 			return abortCombat("Failed to identify the mask worn by the monster [" + enemy + "]. Finish this combat manually then run me again");
