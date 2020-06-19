@@ -304,24 +304,33 @@ void preAdvUpdateFamiliar(location place)
 	{
 		return;
 	}
+	if(!pathAllowsFamiliar())
+	{
+		return;		//will just error in those paths
+	}
+	if(is100FamRun())
+	{
+		handleFamiliar(get_property("auto_100familiar").to_familiar());			//do not break 100 familiar runs
+	}
 	
-	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
-	if(auto_my_path() == "Pocket Familiars")
+	//familiar requirement to adventure in a zone, override everything else.
+	if(place == $location[The Deep Machine Tunnels])
 	{
-		famChoice = $familiar[none];
+		handleFamiliar($familiar[Machine Elf]);
 	}
-
-	if((famChoice != $familiar[none]) && canChangeFamiliar() && (internalQuestStatus("questL13Final") < 13))
+	// Can't take familiars with you to FantasyRealm
+	if (place == $location[The Bandit Crossroads])
 	{
-		if((famChoice != my_familiar()) && !inAftercore())
-		{
-#			auto_log_error("FAMILIAR DIRECTIVE ERROR: Selected " + famChoice + " but have " + my_familiar(), "red");
-			use_familiar(famChoice);
-		}
+		if(my_familiar() == $familiar[none]) return;		//avoid mafia error from trying to change none into none.
+		use_familiar($familiar[none]);
+		return;		//no familiar means no equipment, we are done.
 	}
-
-	if(auto_have_familiar($familiar[cat burglar]))
+	
+	//if familiar not set yet, first check stealing familiar
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean() && canChangeToFamiliar($familiar[cat burglar]) && catBurglarHeistsLeft() > 0)
 	{
+		//Stealing with familiar. TODO add XO Skelton here too
+		
 		item[monster] heistDesires = catBurglarHeistDesires();
 		boolean wannaHeist = false;
 		foreach mon, it in heistDesires
@@ -335,21 +344,37 @@ void preAdvUpdateFamiliar(location place)
 				}
 			}
 		}
-		if(wannaHeist && (famChoice != $familiar[none]) && canChangeToFamiliar($familiar[Cat Burglar]))
+		if(wannaHeist)
 		{
-			use_familiar($familiar[cat burglar]);
+			handleFamiliar($familiar[cat burglar]);
 		}
 	}
-
-	if((place == $location[The Deep Machine Tunnels]) && (my_familiar() != $familiar[Machine Elf]))
+	
+	//if familiar not set choose a familiar using general logic
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())		//check that we didn't already set familiar target this loop
 	{
-		if(!auto_have_familiar($familiar[Machine Elf]))
+		autoChooseFamiliar(place);
+	}
+	
+	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
+	if(famChoice == $familiar[none])
+	{
+		if(get_property("auto_familiarChoice") == "")
 		{
-			auto_log_critical("Massive failure, we don't use snowglobes.");
-			abort("Massive failure, we don't use snowglobes.");
+			abort("void preAdvUpdateFamiliar failed because property auto_familiarChoice is empty for some reason");
 		}
-		auto_log_error("Somehow we are going to the DMT without a Machine Elf...", "red");
-		use_familiar($familiar[Machine Elf]);
+		abort("void preAdvUpdateFamiliar failed to convert auto_familiarChoice of [" + get_property("auto_familiarChoice") + "] into a $familiar");
+	}
+	
+	if(famChoice != my_familiar() && canChangeToFamiliar(famChoice))
+	{
+		use_familiar(famChoice);
+	}
+	
+	//familiar equipment overrides
+	if(my_path() == "Heavy Rains")
+	{
+		autoEquip($slot[familiar], $item[miniature life preserver]);
 	}
 
 	if(my_familiar() == $familiar[Trick-Or-Treating Tot])

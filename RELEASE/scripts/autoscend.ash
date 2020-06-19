@@ -149,7 +149,7 @@ void initializeSettings()
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
-	set_property("auto_familiarChoice", $familiar[none]);
+	set_property("auto_familiarChoice", "");
 	set_property("auto_forceTavern", false);
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
@@ -1188,7 +1188,6 @@ void initializeDay(int day)
 
 			makeStartingSmiths();
 
-			handleFamiliar("item");
 			equipBaseline();
 
 			handleBjornify($familiar[none]);
@@ -2406,7 +2405,6 @@ boolean LX_freeCombats(boolean powerlevel)
 		{
 			handleBjornify($familiar[Grinning Turtle]);
 		}
-		handleFamiliar($familiar[Machine Elf]);
 		adv_done = autoAdv(1, $location[The Deep Machine Tunnels]);
 		if(bjorn == $familiar[Machine Elf])
 		{
@@ -2507,7 +2505,6 @@ boolean Lsc_flyerSeals()
 			}
 		}
 
-		handleFamiliar("initSuggest");
 		boolean clubbedSeal = false;
 		if(doElement)
 		{
@@ -2544,7 +2541,6 @@ boolean Lsc_flyerSeals()
 				use(1, $item[ingot of seal-iron]);
 			}
 		}
-		handleFamiliar("item");
 		return clubbedSeal;
 	}
 	return false;
@@ -3118,9 +3114,9 @@ boolean doTasks()
 		return false;	
 	}
 	
-	//These settings should never persist into another turn, ever.
-	set_property("auto_doCombatCopy", "no");
-	set_property("auto_disableFamiliarChanging", false);
+	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
+	//We use boolean instead of adventure count because of free combats.
+	resetThisLoop();
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 
 	print_header();
@@ -3188,8 +3184,6 @@ boolean doTasks()
 	resetFlavour();
 
 	basicAdjustML();
-	handleFamiliar("item");
-	basicFamiliarOverrides();
 
 	councilMaintenance();
 	# This function buys missing skills in general, not just for Picky.
@@ -3293,10 +3287,6 @@ boolean doTasks()
 		if((item_amount($item[ring of detect boring doors]) == 1) && (item_amount($item[eleven-foot pole]) == 1) && (item_amount($item[pick-o-matic lockpicks]) == 1))
 		{
 			set_property("auto_cubeItems", false);
-		}
-		if(get_property("auto_cubeItems").to_boolean() && (my_familiar() != $familiar[Gelatinous Cubeling]) && auto_have_familiar($familiar[Gelatinous Cubeling]))
-		{
-			handleFamiliar($familiar[Gelatinous Cubeling]);
 		}
 	}
 

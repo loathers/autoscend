@@ -565,14 +565,12 @@ boolean L9_aBooPeak()
 			{
 				use(1, $item[Scroll of Drastic Healing]);
 			}
-			handleFamiliar("item");
 			handleBjornify(priorBjorn);
 			return true;
 		}
 
 		auto_log_info("Nevermind, that peak is too scary!", "green");
 		equipBaseline();
-		handleFamiliar("item");
 		handleBjornify(priorBjorn);
 	}
 	else
@@ -781,7 +779,6 @@ boolean L9_oilPeak()
 	}
 
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-	handleFamiliar("initSuggest");
 
 	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 
@@ -842,7 +839,6 @@ boolean L9_oilPeak()
 			uneffect($effect[Driving Wastefully]);
 		}
 	}
-	handleFamiliar("item");
 	return true;
 }
 

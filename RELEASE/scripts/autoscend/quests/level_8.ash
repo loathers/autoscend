@@ -268,7 +268,6 @@ boolean L8_getGoatCheese()
 	}
 
 	auto_log_info("Yay for goat cheese!", "blue");
-	handleFamiliar("item");
 	if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
@@ -351,7 +350,6 @@ boolean L8_getMineOres()
 		if (!possessOutfit("Mining Gear")) {
 			auto_log_info("Getting Mining Gear.", "blue");
 			providePlusNonCombat(25);
-			handleFamiliar("item");
 			return autoAdv($location[Itznotyerzitz Mine]);
 		} else if (possessOutfit("Mining Gear", true)) {
 			equipMaximizedGear();
@@ -406,7 +404,6 @@ boolean L8_trapperExtreme()
 
 	auto_log_info("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
 	providePlusNonCombat(25);
-	handleFamiliar("item");
 	return autoAdv($location[The eXtreme Slope]);
 }
 

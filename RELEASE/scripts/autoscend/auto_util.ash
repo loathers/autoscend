@@ -130,10 +130,6 @@ boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
 boolean evokeEldritchHorror();
 boolean auto_change_mcd(int mcd);
-boolean providePlusCombat(int amt);
-boolean providePlusNonCombat(int amt);
-boolean providePlusCombat(int amt, boolean doEquips);
-boolean providePlusNonCombat(int amt, boolean doEquips);
 boolean basicAdjustML();
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
@@ -2720,66 +2716,55 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		return true;
 	}
+	
+	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
+	simMaximize();
+	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+	boolean are_we_done()
+	{
+		if(numeric_modifier("Combat Rate").to_int() + equipDiff >= amt)
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	if(have_effect($effect[Become Superficially Interested]) > 0)
 	{
-		string temp = visit_url("charsheet.php?pwd=&action=newyouinterest");
+		visit_url("charsheet.php?pwd=&action=newyouinterest");
+		if(are_we_done()) return true;
 	}
-
+	
 //	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness, Patent Invisibility, Shelter of Shed]
 	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness]
 	{
-		if(!uneffect(eff))
-		{
-			return false;
-		}
+		uneffect(eff);
+		if(are_we_done()) return true;
 	}
-
-	if(auto_have_familiar($familiar[Jumpsuited Hound Dog]) && my_familiar() == $familiar[Jumpsuited Hound Dog])
-	{
-		// prevent swapping back and forth between hound dog and not hound dog when just
-		// on the cusp of the right amount of +combat when we have the hound dog out
-		handleFamiliar($familiar[Jumpsuited Hound Dog]);
-	}
-
-	if(numeric_modifier("Combat Rate").to_int() >= amt)
-	{
-		return true;
-	}
-
-	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
-	foreach eff in $effects[Musk of the Moose, Carlweather\'s Cantata of Confrontation, Blinking Belly, Song of Battle, Frown, Angry, Screaming! \ SCREAMING! \ AAAAAAAH!]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(numeric_modifier("Combat Rate").to_int() >= amt)
-		{
-			return true;
-		}
-	}
-
-	foreach eff in $effects[Taunt of Horus, Hippy Stench, High Colognic, Celestial Saltiness, Everything Must Go!, Patent Aggression, Lion in Ambush]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(numeric_modifier("Combat Rate").to_int() >= amt)
-		{
-			return true;
-		}
-	}
-
-	int equipDiff = 0;
-
+	
 	if(doEquips)
 	{
 		addToMaximize("200combat " + to_string(amt) + "max");
+		//update our equipDiff value since we changed maximizer string
 		simMaximize();
 		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
-		if(auto_have_familiar($familiar[Jumpsuited Hound Dog]))
-		{
-			handleFamiliar($familiar[Jumpsuited Hound Dog]);
-		}
+		if(are_we_done()) return true;
+	}
+	
+	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);		//remove an AT buff so we have room for Cantata Of Confrontation
+	foreach eff in $effects[Musk of the Moose, Carlweather\'s Cantata of Confrontation, Blinking Belly, Song of Battle, Frown, Angry, Screaming! \ SCREAMING! \ AAAAAAAH!]
+	{
+		buffMaintain(eff, 0, 1, 1);
+		if(are_we_done()) return true;
 	}
 
-	if((numeric_modifier("Combat Rate").to_int() + equipDiff < amt)
-	   && (get_property("_horsery") == "dark horse"))
+	foreach eff in $effects[Taunt of Horus, Hippy Stench, Unmuffled, High Colognic, Celestial Saltiness, Everything Must Go!, Patent Aggression, Lion in Ambush]
+	{
+		buffMaintain(eff, 0, 1, 1);
+		if(are_we_done()) return true;
+	}
+
+	if(get_property("_horsery") == "dark horse")
 	{
 		getHorse("return");
 	}
@@ -2787,12 +2772,16 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		horseMaintain();
 	}
+	if(are_we_done()) return true;
 
-	if(numeric_modifier("Combat Rate").to_int() + equipDiff < amt)
-	{
-		asdonBuff($effect[Driving Obnoxiously]);
+	asdonBuff($effect[Driving Obnoxiously]);
+	if(are_we_done()) return true;
+	
+	// only return false if we don't have a positive combat rate.
+	if (numeric_modifier("Combat Rate").to_int() + equipDiff > 0)	{
+		return true;
 	}
-	return true;
+	return false;
 }
 
 boolean providePlusNonCombat(int amt, boolean doEquips)
@@ -2803,41 +2792,50 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	}
 	amt = -1 * amt;
 
+	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
+	simMaximize();
+	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+	boolean are_we_done()
+	{
+		if(numeric_modifier("Combat Rate").to_int() + equipDiff <= amt)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	if(have_effect($effect[Become Intensely Interested]) > 0)
 	{
-		string temp = visit_url("charsheet.php?pwd=&action=newyouinterest");
+		visit_url("charsheet.php?pwd=&action=newyouinterest");
+		if(are_we_done()) return true;
 	}
 
 	foreach eff in $effects[Carlweather\'s Cantata Of Confrontation, Driving Obnoxiously]
 	{
-		if(!uneffect(eff))
-		{
-			return false;
-		}
-		if(numeric_modifier("Combat Rate").to_int() <= amt)
-		{
-			return true;
-		}
+		uneffect(eff);
+		if(are_we_done()) return true;
+	}
+	
+	if(doEquips)
+	{
+		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
+		//update our equipDiff value since we changed maximizer string
+		simMaximize();
+		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+		if(are_we_done()) return true;
 	}
 
 	foreach eff in $effects[Patent Invisibility]
 	{
 		buffMaintain(eff, 0, 1, 1);
-		if(numeric_modifier("Combat Rate").to_int() <= amt)
-		{
-			return true;
-		}
+		if(are_we_done()) return true;
 	}
 
-	shrugAT($effect[The Sonata of Sneakiness]);
-	//Assumes that Rev Engine was taken with Extra-Quiet Muffler.
+	shrugAT($effect[The Sonata of Sneakiness]);		//remove an AT buff so we have room for sonata of sneakiness
 	foreach eff in $effects[Shelter Of Shed, Brooding, Muffled, Smooth Movements, The Sonata of Sneakiness, Song of Solitude, Inked Well, Bent Knees, Extended Toes, Ink Cloud, Patent Invisibility, Cloak of Shadows]
 	{
 		buffMaintain(eff, 0, 1, 1);
-		if(numeric_modifier("Combat Rate").to_int() <= amt)
-		{
-			return true;
-		}
+		if(are_we_done()) return true;
 	}
 
 	// We can get these during normal game, may as well use them!
@@ -2851,46 +2849,32 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		{
 			use(1, $item[deodorant]);
 		}
-		if (numeric_modifier("Combat Rate").to_int() <= amt)
-		{
-			return true;
-		}
+		if(are_we_done()) return true;
 	}
 
-	int equipDiff = 0;
-
-	if(doEquips)
-	{
-		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
-		simMaximize();
-		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
-	}
-
-	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
-	{
-		getHorse("noncombat");
-	}
-
-	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
-	{
-		auto_powerfulGloveNoncombat();
-	}
+	getHorse("noncombat");
+	if(are_we_done()) return true;
+	
+	auto_powerfulGloveNoncombat();
+	if(are_we_done()) return true;
 
 	//blooper ink costs 15 coins without which it will error when trying to buy it, so that is the bare minimum we need to check for
 	//However we don't want to waste our early coins on it as they are precious. So require at least 400 coins before buying it.
-	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt) &&
-	   my_class() == $class[Plumber] && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400)
+	if(in_zelda() && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400)
 	{
 		retrieve_item(1, $item[blooper ink]);
 		buffMaintain($effect[Blooper Inked], 0, 1, 1);
+		if(are_we_done()) return true;
 	}
 
-
-	if(numeric_modifier("Combat Rate").to_int() + equipDiff > amt)
-	{
-		asdonBuff($effect[Driving Stealthily]);
+	asdonBuff($effect[Driving Stealthily]);
+	if(are_we_done()) return true;
+	
+	// only return false if we don't have a negative combat rate.
+	if (numeric_modifier("Combat Rate").to_int() + equipDiff < 0) {
+		return true;
 	}
-	return true;
+	return false;
 }
 
 float provideInitiative(int amt, boolean doEquips, boolean speculative)
@@ -3142,6 +3126,12 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			if(!pass(ele))
 				return false;
 		}
+		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot] contains my_familiar()) {
+			// if we pass while having a resist familiar equipped, make sure we keep it equipped
+			// otherwise we may end up flip-flopping from the resist familiar and something else
+			// which could cost us adventures if switching familiars affects our resistances enough
+			handleFamiliar(my_familiar());
+		}
 		return true;
 	}
 
@@ -3235,7 +3225,6 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		if(resfam != $familiar[none])
 		{
 			// need to use now so maximizer will see it
-			familiar currentFamiliar = my_familiar();
 			use_familiar(resfam);
 			if(resfam == $familiar[Trick-or-Treating Tot])
 			{
@@ -3247,10 +3236,10 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
-			use_familiar(currentFamiliar);
 		}
-		if(pass())
+		if(pass()) {
 			return result();
+		}
 	}
 
 	if(doEquips)
@@ -5290,7 +5279,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Ministrations in the Dark]:	useItem = $item[EMD Holo-Record];				break;
 	case $effect[The Moxie Of LOV]:				useItem = $item[LOV Elixir #9];					break;
 	case $effect[The Moxious Madrigal]:			useSkill = $skill[The Moxious Madrigal];		break;
-	case $effect[Muffled]:						useSkill = $skill[Rev Engine];					break;
+	case $effect[Muffled]:
+		if(get_property("peteMotorbikeMuffler") == "Extra-Quiet Muffler")
+		{
+			useSkill = $skill[Rev Engine];
+		}																						break;
 	case $effect[Musk of the Moose]:			useSkill = $skill[Musk of the Moose];			break;
 	case $effect[Musky]:						useItem = $item[Lynyrd Musk];					break;
 	case $effect[Mutated]:						useItem = $item[Gremlin Mutagen];				break;
@@ -5506,6 +5499,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Truly Gritty]:					useItem = $item[True Grit];						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
+	case $effect[Unmuffled]:
+		if(get_property("peteMotorbikeMuffler") == "Extra-Loud Muffler")
+		{
+			useSkill = $skill[Rev Engine];
+		}																						break;
 	case $effect[Unrunnable Face]:				useItem = $item[Runproof Mascara];				break;
 	case $effect[Unusual Perspective]:			useItem = $item[Unusual Oil];					break;
 	case $effect[Ur-Kel\'s Aria of Annoyance]:	useSkill = $skill[Ur-Kel\'s Aria of Annoyance];	break;
@@ -6069,6 +6067,10 @@ boolean auto_check_conditions(string conds)
 				if(!($strings[=,==] contains m2.group(2)))
 					return compare_numbers(prop.to_int(), m2.group(3).to_int(), m2.group(2));
 				return prop == m2.group(3);
+			// data: <propname>
+			// gets propname and converts to a boolean
+			case "prop_boolean":
+				return get_property(condition_data).to_boolean();
 			// data: <questpropname><comparison operator><value>
 			// like prop, but with > and < and >= and <= and uses internalQuestStatus
 			// the value to compare to should always be an integer
@@ -7068,4 +7070,15 @@ int poolSkillPracticeGains()
 	if(have_effect($effect[chalky hand]) > 0) count += 1;
 	if(equipped_amount($item[[2268]Staff of Fats]) > 0) count += 2;		//note that $item[[7964]Staff of Fats] does not help here.
 	return count;
+}
+
+void resetThisLoop()
+{
+	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
+	//We use boolean instead of adventure count because of free combats.
+	
+	set_property("auto_doCombatCopy", "no");
+	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
+	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
+	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure
 }

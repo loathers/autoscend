@@ -439,11 +439,6 @@ boolean L11_blackMarket()
 
 	autoEquip($slot[acc3], $item[Blackberry Galoshes]);
 
-	if((my_ascensions() == 0) || (item_amount($item[Reassembled Blackbird]) == 0))
-	{
-		handleFamiliar($familiar[Reassembled Blackbird]);
-	}
-
 	//If we want the Beehive, and don\'t have enough adventures, this is dangerous.
 	if (get_property("auto_getBeehive").to_boolean() && my_adventures() < 3) {
 		return false;
@@ -721,7 +716,6 @@ boolean L11_aridDesert()
 		{
 			autoEquip(desertBuff);
 		}
-		handleFamiliar("initSuggest");
 		set_property("choiceAdventure805", 1);
 		int need = 100 - get_property("desertExploration").to_int();
 		auto_log_info("Need for desert: " + need, "blue");
@@ -904,7 +898,6 @@ boolean L11_aridDesert()
 		}
 
 		autoAdv(1, $location[The Arid\, Extra-Dry Desert]);
-		handleFamiliar("item");
 
 		if(contains_text(get_property("lastEncounter"), "A Sietch in Time"))
 		{
@@ -1366,7 +1359,6 @@ boolean L11_hiddenCity()
 	if (item_amount($item[stone triangle]) == 4) {
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
-		handleFamiliar("initSuggest");
 		return autoAdv($location[A Massive Ziggurat]);
 	}
 	
@@ -1495,8 +1487,6 @@ boolean L11_mauriceSpookyraven()
 		if (!auto_forceNextNoncombat()) {
 			providePlusNonCombat(25, true);
 		}
-
-		handleFamiliar("initSuggest");
 
 		return autoAdv($location[The Haunted Ballroom]);
 	}
@@ -2018,7 +2008,6 @@ boolean L11_palindome()
 	{
 		if(item_amount($item[Wet Stunt Nut Stew]) == 0)
 		{
-			handleFamiliar("item");
 			equipBaseline();
 			if((item_amount($item[Bird Rib]) == 0) || (item_amount($item[Lion Oil]) == 0))
 			{
@@ -2339,7 +2328,6 @@ boolean L11_unlockEd()
 		{
 			auto_sourceTerminalEnhance("items");
 		}
-		handleFamiliar("item");
 	}
 
 	if(get_property("controlRoomUnlock").to_boolean())

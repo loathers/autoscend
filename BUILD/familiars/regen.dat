@@ -4,14 +4,14 @@
 # But starfish restore roughly 0.25*weight PER TURN
 # and average combat length looks to be ~6 rounds in autoscend, so that's 1.5*weight on average
 # Not even bothering with cocoabos
-# Ash is nice
+# starfish. drops 5 ash/day which makes +15 ML potion for 15 adv
 Galloping Grill	prop:_hotAshesDrops<5
-# Tokens are nice
+# starfish that drops 5 tokens a day that can be exchanged for a spleen consumable that gives adv
 Rogue Program	prop:_tokenDrops<5
-# Hugpockets are good, Xs and Os are good, even if whelps aren't as good as starfish
-XO Skeleton	prop:_xoHugsUsed<11
-# Free stuff!
-Lil' Barrel Mimic
+# whelp. Drops x and o with no limit. 1 each per nine combats. makes density 4.5 food. density 4 booze. can skip building a bridge.
+XO Skeleton
+# Drops assorted stuff, mostly junk. has some awesome food. requires familiar equip brass bung spigot to regen HP/MP
+Lil' Barrel Mimic	item:brass bung spigot>0
 # It's a starfish with reduced activation rate, except it ALWAYS attacks on turn one, so that's probably more hits per battle on average in short battles? oh, and it's a sombrero too
 Galloping Grill
 # A super starfish (50% activation instead of 33%)
