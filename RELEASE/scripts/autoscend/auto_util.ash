@@ -131,11 +131,6 @@ boolean evokeEldritchHorror(string option);
 boolean evokeEldritchHorror();
 boolean auto_change_mcd(int mcd);
 boolean basicAdjustML();
-boolean auto_is_valid(item it);
-boolean auto_is_valid(familiar fam);
-boolean auto_is_valid(skill sk);
-boolean auto_can_equip(item it);
-boolean auto_can_equip(item it, slot s);
 boolean auto_badassBelt();
 int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
@@ -5801,6 +5796,12 @@ boolean auto_is_valid(item it)
 		else if(!expectGhostReport() && !haveGhostReport())
 			return false;
 	}
+	if(it == $item[Grimstone Mask])
+	{
+		if(!isGuildClass())		//it seems like all non core classes are disallowed. need to spade this to verify if any class is exempt
+			return false;
+	}
+	
 	return bees_hate_usable(it.to_string()) && is_unrestricted(it);
 }
 

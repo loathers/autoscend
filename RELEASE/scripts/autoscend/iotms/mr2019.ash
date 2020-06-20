@@ -195,10 +195,7 @@ boolean auto_sausageGoblin(location loc, string option)
 	{
 		return false;
 	}
-	
-	// can't equip kramko sausage grinder during certain paths, return false in those paths
-	
-	if (auto_my_path() == "Way of the Surprising Fist" || in_boris())
+	if(!auto_can_equip($item[Kramco Sausage-o-Matic&trade;]))
 	{
 		return false;
 	}
