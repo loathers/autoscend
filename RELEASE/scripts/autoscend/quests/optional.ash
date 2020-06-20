@@ -579,7 +579,7 @@ boolean LX_joinPirateCrew() {
 			// this is held together with duct tape and hopes and dreams.
 			// it can and will fail but it will have to do for now.
 			auto_log_info("Beer Pong time.", "blue");
-			autoOutfit("Swashbuckling Getup");
+			outfit("Swashbuckling Getup");	//do not use autoOutfit since we use visit_url in tryBeerPong which skips maximizer
 			backupSetting("choiceAdventure187", "0");
 			tryBeerPong();
 			return true;
