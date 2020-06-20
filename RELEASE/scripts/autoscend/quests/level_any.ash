@@ -218,9 +218,9 @@ boolean LX_islandAccess()
 	{
 		abort("Dude, we got Dinghy Plans... we should not be here....");
 	}
-	while((item_amount($item[Shore Inc. Ship Trip Scrip]) < 3) && (my_meat() >= 500) && (item_amount($item[Dinghy Plans]) == 0))
+	while(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3 &&  item_amount($item[Dinghy Plans]) == 0)
 	{
-		LX_doVacation();
+		if(!LX_doVacation()) break;		//tries to vacation and if fails it will break the loop
 	}
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
 	{
