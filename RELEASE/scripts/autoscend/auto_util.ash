@@ -2724,10 +2724,21 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	{
 		return true;
 	}
+	boolean forbid_extra = true;
+	if(amt >= 25)
+	{
+		forbid_extra = false;		//do we want to stop when there are FREE methods to raise it further
+	}
 	
-	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
-	simMaximize();
+	//equipment handling
+	if(doEquips)
+	{
+		//to prevent flipflop resulting in failing 50% of the turns we always do this first. see issue #400
+		addToMaximize("200combat " + to_string(amt) + "max");
+	}
+	simMaximize();	//we do not want to repeatedly simulate equipment. simulate it once only.
 	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+
 	boolean are_we_done()
 	{
 		if(numeric_modifier("Combat Rate").to_int() + equipDiff >= amt)
@@ -2737,28 +2748,23 @@ boolean providePlusCombat(int amt, boolean doEquips)
 		return false;
 	}
 	
+	if(forbid_extra && are_we_done()) return true;	//did equipment reach goal.
+	
+	//you can toggle this effect between -combat and +combat for free without limit
 	if(have_effect($effect[Become Superficially Interested]) > 0)
 	{
 		visit_url("charsheet.php?pwd=&action=newyouinterest");
-		if(are_we_done()) return true;
+		if(forbid_extra && are_we_done()) return true;
 	}
 	
-//	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness, Patent Invisibility, Shelter of Shed]
+	//free to uneffect
 	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness]
 	{
 		uneffect(eff);
-		if(are_we_done()) return true;
+		if(forbid_extra && are_we_done()) return true;
 	}
 	
-	if(doEquips)
-	{
-		addToMaximize("200combat " + to_string(amt) + "max");
-		//update our equipDiff value since we changed maximizer string
-		simMaximize();
-		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
-		if(are_we_done()) return true;
-	}
-	
+	//now we have reached effects that actually have a cost
 	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);		//remove an AT buff so we have room for Cantata Of Confrontation
 	foreach eff in $effects[Musk of the Moose, Carlweather\'s Cantata of Confrontation, Blinking Belly, Song of Battle, Frown, Angry, Screaming! \ SCREAMING! \ AAAAAAAH!]
 	{
@@ -2785,6 +2791,8 @@ boolean providePlusCombat(int amt, boolean doEquips)
 	asdonBuff($effect[Driving Obnoxiously]);
 	if(are_we_done()) return true;
 	
+	//Patent Invisibility & Shelter of Shed are not free to uneffect. but should be handled somehow.
+	
 	// only return false if we don't have a positive combat rate.
 	if (numeric_modifier("Combat Rate").to_int() + equipDiff > 0)	{
 		return true;
@@ -2798,11 +2806,22 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 	{
 		return true;
 	}
+	boolean forbid_extra = true;
+	if(amt >= 25)
+	{
+		forbid_extra = false;		//do we want to stop when there are FREE methods to raise it further
+	}
 	amt = -1 * amt;
 
-	//we do not need to repeatedly simulate equipment. do it once now and a second time if we change the maximizer string.
-	simMaximize();
+	//equipment handling
+	if(doEquips)
+	{
+		//to prevent flipflop resulting in failing 50% of the turns we always do this first. see issue #400
+		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
+	}
+	simMaximize();	//we do not want to repeatedly simulate equipment. simulate it once only.
 	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+
 	boolean are_we_done()
 	{
 		if(numeric_modifier("Combat Rate").to_int() + equipDiff <= amt)
@@ -2811,34 +2830,24 @@ boolean providePlusNonCombat(int amt, boolean doEquips)
 		}
 		return false;
 	}
+	
+	if(forbid_extra && are_we_done()) return true;	//did equipment reach goal.
 
+	//you can toggle this effect between -combat and +combat for free without limit
 	if(have_effect($effect[Become Intensely Interested]) > 0)
 	{
 		visit_url("charsheet.php?pwd=&action=newyouinterest");
-		if(are_we_done()) return true;
+		if(forbid_extra && are_we_done()) return true;
 	}
 
+	//free to uneffect
 	foreach eff in $effects[Carlweather\'s Cantata Of Confrontation, Driving Obnoxiously]
 	{
 		uneffect(eff);
-		if(are_we_done()) return true;
-	}
-	
-	if(doEquips)
-	{
-		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
-		//update our equipDiff value since we changed maximizer string
-		simMaximize();
-		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
-		if(are_we_done()) return true;
+		if(forbid_extra && are_we_done()) return true;
 	}
 
-	foreach eff in $effects[Patent Invisibility]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(are_we_done()) return true;
-	}
-
+	//now we have reached effects that actually have a cost
 	shrugAT($effect[The Sonata of Sneakiness]);		//remove an AT buff so we have room for sonata of sneakiness
 	foreach eff in $effects[Shelter Of Shed, Brooding, Muffled, Smooth Movements, The Sonata of Sneakiness, Song of Solitude, Inked Well, Bent Knees, Extended Toes, Ink Cloud, Patent Invisibility, Cloak of Shadows]
 	{
