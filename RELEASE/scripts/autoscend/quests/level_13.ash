@@ -1238,7 +1238,6 @@ boolean L13_towerNSNagamar()
 	{
 		return false;
 	}
-	
 	if(item_amount($item[Wand of Nagamar]) > 0)
 	{
 		set_property("auto_wandOfNagamar", false);
@@ -1255,6 +1254,14 @@ boolean L13_towerNSNagamar()
 		else
 		{
 			auto_log_warning("Buying [Wand of Nagamar] using rare Meat Isotopes failed even thought we had 30 isotopes... trying alternatives", "red");
+		}
+	}
+	if(auto_my_path() == "Disguises Delimit" && internalQuestStatus("questL13Final") == 12)
+	{
+		cli_execute("refresh quests");
+		if(internalQuestStatus("questL13Final") != 12)
+		{
+			abort("In this specific ascension [naughty sorceress \(3\)] is wearing a mask that makes kol base game fail to advance the quest to step 12. Which means that bear verb orgy is impossible for this specific run. Manually grab a [Ten-Leaf Clover] from [Barrel Full of Barrels] then use it to get a [Wand of Nagamar] manually and run me again");
 		}
 	}
 	
