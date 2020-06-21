@@ -3558,6 +3558,7 @@ void auto_begin()
 	backupSetting("removeMalignantEffects", false);
 	backupSetting("autoAntidote", 0);
 	backupSetting("dontStopForCounters", true);
+	backupSetting("maximizerCombinationLimit", "100000");
 
 	backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
