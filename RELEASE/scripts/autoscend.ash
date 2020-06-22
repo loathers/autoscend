@@ -2367,7 +2367,7 @@ boolean LX_freeCombats(boolean powerlevel)
 		auto_freeCombatsRemaining(true);		//print remaining free combats.
 		auto_log_warning("Too few adventures to safely automate free combats", "red");
 		auto_log_warning("If we lose your last adv on a free combat the remaining free combats are wasted", "red");
-		auto_log_warning("This should only happen if you lost a free fight. If you did not then please report this", "red");
+		auto_log_warning("This error should only occur if you lost a free fight. If you did not then please report this", "red");
 		abort("Please perform the remaining free combats manually then run me again");
 	}
 	
