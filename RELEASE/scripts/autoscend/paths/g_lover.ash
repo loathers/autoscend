@@ -4,7 +4,7 @@ script "g_lover.ash"
 void glover_initializeDay(int day)
 {
 	if (auto_my_path() != "G-Lover") {
-		return false;
+		return;
 	}
 
 	if((item_amount($item[Mumming Trunk]) > 0) && !get_property("_mummifyDone").to_boolean())
