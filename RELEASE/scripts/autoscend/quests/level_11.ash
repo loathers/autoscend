@@ -95,6 +95,12 @@ boolean shenShouldDelayZone(location loc)
 
 boolean LX_unlockHiddenTemple() {
 	// replaces L2_treeCoin(),  L2_spookyMap(),  L2_spookyFertilizer() & L2_spookySapling()
+
+	if (auto_my_path() == "G-Lover") {
+		// Spooky Temple map ain't nuthin' but a 'G' Thang.
+		return false;
+	}
+
 	if (hidden_temple_unlocked()) {
 		return false;
 	}
