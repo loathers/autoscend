@@ -706,7 +706,13 @@ boolean auto_campawayGrabBuffs()
 		return false;
 	}
 
-	if(!get_property("_auto_contributedCampaway").to_boolean() && item_amount($item[campfire smoke]) + creatable_amount($item[campfire smoke]) > 0)
+	int lim = 4 - get_property("_campAwaySmileBuffs").to_int() - get_property("_campAwayCloudBuffs").to_int();
+	for (int i=0; i < lim; i++)
+	{
+		visit_url("place.php?whichplace=campaway&action=campaway_sky");
+	}
+
+	if(get_property("_campAwayCloudBuffs").to_int() == 0 && item_amount($item[campfire smoke]) + creatable_amount($item[campfire smoke]) > 0)
 	{
 		if(item_amount($item[campfire smoke]) == 0)
 		{
@@ -715,14 +721,9 @@ boolean auto_campawayGrabBuffs()
 		string message = "why is my computer on fire?";
 		string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=" + $item[campfire smoke].to_int());
 		temp = visit_url("choice.php?pwd=&whichchoice=1394&option=1&message=" + message);
-		set_property("_auto_contributedCampaway", true);
-	}
-
-	int lim = 4 - get_property("_campAwaySmileBuffs").to_int() - get_property("_campAwayCloudBuffs").to_int();
-	for (int i=0; i < lim; i++)
-	{
 		visit_url("place.php?whichplace=campaway&action=campaway_sky");
 	}
+
 	return true;
 }
 
