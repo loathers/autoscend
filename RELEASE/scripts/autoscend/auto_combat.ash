@@ -20,14 +20,6 @@ boolean containsCombat(item it);
 
 // private prototypes
 
-string abortCombat(string msg)
-{
-	//abort() does not work in combat. instead we need the combat filter to return "abort" string.
-	//to use this function: return abortCombat("message goes here");
-	print(msg, "red");
-	return "abort";
-}
-
 boolean haveUsed(skill sk)
 {
 	return get_property("auto_combatHandler").contains_text("(sk" + sk.to_int().to_string() + ")");
@@ -261,7 +253,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 {
 	if(round > 25)
 	{
-		return abortCombat("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
+		abort("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
 	}
 	
 	#Yes, round 0, really.
@@ -301,7 +293,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(get_property("auto_diag_round").to_int() > 60)
 	{
-		return abortCombat("Somehow got to 60 rounds.... aborting");
+		abort("Somehow got to 60 rounds.... aborting");
 	}
 
 	if(my_path() == "One Crazy Random Summer")
@@ -344,7 +336,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 		else
 		{
-			return abortCombat("Failed to identify the mask worn by the monster [" + enemy + "]. Finish this combat manually then run me again");
+			abort("Failed to identify the mask worn by the monster [" + enemy + "]. Finish this combat manually then run me again");
 		}
 		
 		if((majora == 7) && canUse($skill[Swap Mask]))
@@ -357,7 +349,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			{
 				return "attack with weapon";
 			}
-			return abortCombat("May not be able to survive combat. Is swapping protest mask still not allowing us to do anything?");
+			abort("May not be able to survive combat. Is swapping protest mask still not allowing us to do anything?");
 		}
 		if(my_mask() == "protest mask" && canUse($skill[Swap Mask]))
 		{
@@ -493,7 +485,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			{
 				return "item " + $item[super deluxe mushroom];
 			}
-			return abortCombat("Oh no, I don't have any super deluxe mushrooms to deal with this shadow plumber :(");
+			abort("Oh no, I don't have any super deluxe mushrooms to deal with this shadow plumber :(");
 		}
 		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
@@ -522,7 +514,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 			return "item " + $item[Rain-Doh Indigo Cup];
 		}
-		return abortCombat("Uh oh, I ran out of gauze garters and filthy poultices");
+		abort("Uh oh, I ran out of gauze garters and filthy poultices");
 	}
 
 	if(enemy == $monster[Wall Of Meat])
@@ -892,7 +884,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Turtleini], false);
 		}
-		return abortCombat("I am not sure how to finish this battle");
+		abort("I am not sure how to finish this battle");
 	}
 	
 	// Unique Heavy Rains Enemy that Reflects Spells.
@@ -990,7 +982,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 			if((get_property("_badlyRomanticArrows").to_int() == 1) && (round <= 1) && (get_property("romanticTarget") != enemy))
 			{
-				return abortCombat("Have animator out but can not arrow");
+				abort("Have animator out but can not arrow");
 			}
 			if(enemy == $monster[modern zmobie])
 			{
@@ -1242,7 +1234,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(contains_text(combatState, "yellowray"))
 	{
-		return abortCombat("Ugh, where is my damn yellowray!!!");
+		abort("Ugh, where is my damn yellowray!!!");
 	}
 
 	if(item_amount($item[Green Smoke Bomb]) > 0)
@@ -1270,7 +1262,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		if(banishAction != "")
 		{
 			auto_log_info("Looking at banishAction: " + banishAction, "green");
-			#return abortCombat("Banisher considered here. Weee");
+			#abort("Banisher considered here. Weee");
 			#wait(10);
 			#banishAction = "";
 		}
@@ -1906,13 +1898,13 @@ string auto_combatHandler(int round, monster enemy, string text)
 				return useSkill($skill[Saucestorm], false);
 			}
 			//TODO check if our physical attack can deal elemental damage.
-			else return abortCombat("Not sure how to handle a physically resistent enemy wearing a welding mask.");
+			else abort("Not sure how to handle a physically resistent enemy wearing a welding mask.");
 		}
 		if(canSurvive(1.5) && round < 10)
 		{
 			return "attack with weapon";
 		}
-		return abortCombat("Not sure how to handle welding mask.");
+		abort("Not sure how to handle welding mask.");
 	}
 	if(majora == 25)	//tiki mask
 	{
@@ -2381,7 +2373,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 		if(my_location() != $location[The Slime Tube])
 		{
-			return abortCombat("Could not handle monster, sorry");
+			abort("Could not handle monster, sorry");
 		}
 	}
 	if((monster_level_adjustment() > 150) && (my_mp() >= 45) && canUse($skill[Shell Up]) && (my_class() == $class[Turtle Tamer]))
@@ -2618,7 +2610,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	int damageReceived = 0;
 	if (!isActuallyEd())
 	{
-		return abortCombat("Not in Actually Ed the Undying, this combat filter will result in massive suckage.");
+		abort("Not in Actually Ed the Undying, this combat filter will result in massive suckage.");
 	}
 
 	if (round == 0)
@@ -2668,7 +2660,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(get_property("auto_diag_round").to_int() > 60)
 	{
-		return abortCombat("Somehow got to 60 rounds.... aborting");
+		abort("Somehow got to 60 rounds.... aborting");
 	}
 
 	phylum type = monster_phylum(enemy);
@@ -3374,7 +3366,8 @@ string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string
 			return auto_combatSaberYR();
 		}
 	}
-	return abortCombat("Unable to perform saber trick (meteor shower)");
+	abort("Unable to perform saber trick (meteor shower)");
+	return "abort";	//must have a return
 }
 
 monster ocrs_helper(string page)

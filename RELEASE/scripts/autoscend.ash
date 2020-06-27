@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20188; // If automating an adventure leaves you in a choice, automate the choice
+since r20210; // abort now works in combat filter function
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
