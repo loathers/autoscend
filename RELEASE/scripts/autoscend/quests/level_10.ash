@@ -2,7 +2,7 @@ script "level_10.ash"
 
 boolean L10_plantThatBean()
 {
-	if (internalQuestStatus("questL10Garbage") < 0 || internalQuestStatus("questL10Garbage") > 0)
+	if(internalQuestStatus("questL10Garbage") != 0)
 	{
 		return false;
 	}
