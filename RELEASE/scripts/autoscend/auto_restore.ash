@@ -1148,7 +1148,9 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
     }
     boolean success = true;
     foreach sk, times in to_cast{
-      success &= use_skill(times, sk);
+      if (sk != $skill[none]) {
+        success &= use_skill(times, sk);
+      }
     }
     return success;
   }
