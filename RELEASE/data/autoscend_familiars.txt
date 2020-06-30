@@ -285,30 +285,31 @@ regen	13	Underworld Bonsai
 regen	14	Star Starfish
 # Fairysuperwhelps
 regen	15	Garbage Fire
-regen	16	XO Skeleton
-regen	17	Choctopus
+regen	16	Choctopus
 # Superwhelps
-regen	18	Plastic Pirate Skull
-regen	19	Trick-or-Treating Tot
+regen	17	Plastic Pirate Skull
+regen	18	Trick-or-Treating Tot
 # Fairywhelps
-regen	20	Dandy Lion
+regen	19	Dandy Lion
 # Special whelps
-regen	21	Ms. Puck Man
-regen	22	Puck Man
-regen	23	Squamous Gibberer
-regen	24	He-Boulder
-regen	25	Cotton Candy Carnie
+regen	20	Ms. Puck Man
+regen	21	Puck Man
+regen	22	Squamous Gibberer
+regen	23	He-Boulder
+regen	24	Cotton Candy Carnie
 # Slightly better whelp for saucerors
-regen	26	Pet Cheezling	class:Sauceror
+regen	25	Pet Cheezling	class:Sauceror
 # Whelps with a multiplier, why not I guess
 #Mutant Gila Monster	grimdark:0
 #Mutant Gila Monster	grimdark:1
 # Marginally special whelps
 #Mutant Gila Monster	grimdark:2
-regen	27	Pottery Barn Owl
+regen	26	Pottery Barn Owl
 # Regular old whelps
-regen	28	Pet Cheezling
-regen	29	Ghuol Whelp
+regen	27	Pet Cheezling
+regen	28	Ghuol Whelp
+# The absolute default that everyone should have after their first run
+regen	29	Mosquito
 
 # Sombrero is desirable with a decent amount of ML
 stat	0	Galloping Grill	ML:>=120
