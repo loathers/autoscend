@@ -1117,6 +1117,9 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 
   boolean use_opportunity_blood_skills(int hp_restored_per_use, int final_hp)
   {
+    if (!auto_have_skill($skill[Blood Bond]) && !auto_have_skill($skill[Blood Bond])) {
+      return false;
+    }
     int restored = my_hp() + hp_restored_per_use;
     int waste = min(my_hp()-1, restored-my_maxhp());
     if(waste <= 0) return true;
