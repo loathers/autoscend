@@ -2318,6 +2318,9 @@ boolean instakillable(monster mon)
 	static boolean[monster] not_instakillable = $monsters[
 		// Cyrpt bosses
 		conjoined zmombie, gargantulihc, giant skeelton, huge ghuol,
+		
+		// crowd of adventurers bosses at the tower tests
+		Tasmanian Dervish, Mr. Loathing, The Mastermind, Seannery the Conman, The Lavalier, Leonard, Arthur Frankenstein, Mrs. Freeze, Odorous Humongous,
 
 		// time-spinner
 		Ancient Skeleton with Skin still on it, Apathetic Tyrannosaurus, Assembly Elemental, Cro-Magnon Gnoll, Krakrox the Barbarian, Wooly Duck,
