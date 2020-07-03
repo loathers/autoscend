@@ -341,6 +341,11 @@ boolean L9_aBooPeak()
 		}
 	}
 
+	if (get_property("auto_abooclover").to_boolean() && clueAmt >= get_property("booPeakProgress").to_int()/30) {
+		// if you get lucky/have enough item drop to get 3 clues while getting to 90% haunted, don't waste a clover getting more.
+		set_property("auto_abooclover", false);
+	}
+
 	auto_log_info("A-Boo Peak: " + get_property("booPeakProgress"), "blue");
 	boolean clueCheck = ((clueAmt > 0) || (get_property("auto_aboopending").to_int() != 0));
 	if (get_property("auto_abooclover").to_boolean() && get_property("booPeakProgress").to_int() >= 30 && booCloversOk)
