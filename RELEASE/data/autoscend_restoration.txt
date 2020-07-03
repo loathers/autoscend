@@ -43,7 +43,7 @@
 42	Shake it Off	skill	ALL	0	0	0	All Negative	none
 43	Gelatinous Reconstruction	skill	13	0	0	0	Beaten Up	none
 44	Disco Nap	skill	20	0	0	0	none	none
-46	Lasagna Bandages	skill	15	0	0	0	none	none
+46	Lasagna Bandages	skill	20	0	0	0	none	none
 47	big rock	dwelling	4	5	0	0	none	none
 48	Newbiesport&trade; tent	dwelling	9	10	0	0	none	none
 49	Giant Pilgrim Hat	dwelling	14	15	0	0	none	Pyramid Power
@@ -104,6 +104,7 @@
 107	A Relaxing Hot Tub	clan	ALL	0	5	2	All Negative	none
 108	Psychokinetic Energy Blob	item	0	25	0	0	none	none
 109	Cloaca-Cola	item	0	12	0	0	none	none
+## Actually Ed the Undying restores
 110	Holy Spring Water	item	0	50	0	0	none	Spiritually Awake
 111	Spirit Beer	item	0	90	0	0	none	Spiritually Aware
 112	Sacramental Wine	item	0	180	0	0	none	Spiritually Awash

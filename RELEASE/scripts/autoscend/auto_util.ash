@@ -2236,6 +2236,16 @@ boolean isMusGuildStoreAvailable()
 	return false;
 }
 
+boolean isMystGuildStoreAvailable() {
+	if ($classes[Pastamancer, Sauceror] contains my_class() && guild_store_available()) {
+		return true;
+	}
+	if (my_class() == $class[Accordion Thief] && my_level() >= 9 && guild_store_available()) {
+		return true;
+	}
+	return false;
+}
+
 boolean isArmoryAvailable()
 {
 	if(auto_my_path() == "Nuclear Autumn")

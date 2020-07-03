@@ -873,6 +873,7 @@ boolean isFreeMonster(monster mon);							//Defined in autoscend/auto_util.ash
 boolean isGalaktikAvailable();								//Defined in autoscend/auto_util.ash
 boolean isGeneralStoreAvailable();							//Defined in autoscend/auto_util.ash
 boolean isMusGuildStoreAvailable();							//Defined in autoscend/auto_util.ash
+boolean isMystGuildStoreAvailable(); 						//Defined in autoscend/auto_util.ash
 boolean isArmoryAvailable();								//Defined in autoscend/auto_util.ash
 boolean isGhost(monster mon);								//Defined in autoscend/auto_util.ash
 boolean isGuildClass();										//Defined in autoscend/auto_util.ash
