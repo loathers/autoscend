@@ -393,6 +393,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       restored_amount += numeric_modifier("Bonus Resting HP");
     }
 
+    if (metadata.name == "Disco Nap" && auto_have_skill($skill[Adventurer of Leisure])) {
+      restored_amount = 40;
+    }
+
     if (isActuallyEd() && !($items[linen bandages, silk bandages, cotton bandages] contains metadata.name.to_item())) {
       restored_amount = 0;
     }
@@ -436,16 +440,42 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     return max(get_value("hp", "uses_needed_for_goal"), get_value("mp", "uses_needed_for_goal"));
   }
 
-  float meat_per_use(){
-    if(metadata.type != "item"){
+  float meat_per_use() {
+    if (metadata.type == "item") {
+      item i = to_item(metadata.name);
+      int price = npc_price(i);
+      if (can_interact()){
+        price = min(price, auto_mall_price(i));
+      }
+      return price;
+    } else if (metadata.type == "skill") {
+      float meat_per_mp = 9.0; // default to Doc Galaktik's Invigorating Tonic at 90 meat/10 MP
+      if (dispensary_available() || black_market_available()) {
+        meat_per_mp = 8.0; // Knob Goblin seltzer or Black cherry soda at 80 meat/10 MP
+      }
+      if (get_property("questM24Doc") == "finished") {
+        meat_per_mp = 6.0; // Doc Galaktik's Invigorating Tonic reduced to 60 meat/10 MP
+      }
+      if (auto_have_skill($skill[Five Finger Discount])) {
+        meat_per_mp = meat_per_mp * 0.95; // this isn't quite right for discounted Doc Galaktik but I don't care.
+      }
+      if (isMystGuildStoreAvailable()) {
+        int mmj_cost = auto_have_skill($skill[Five Finger Discount]) ? 100 : 95;
+        int mmj_mp_restored = my_level() * 1.5 + 5;
+        float mmj_meat_per_mp = mmj_cost / mmj_mp_restored;
+        meat_per_mp = min(meat_per_mp, mmj_meat_per_mp);
+        // at level 6 and above, MMJ is better than all but discounted doc galaktik
+        // and at level 8 and above it's better than everything
+      }
+      if (my_class() == $class[Sauceror]) {
+        // your MP cup runneth over
+        meat_per_mp = 0.1;
+      }
+      skill s = to_skill(metadata.name);
+      return (mp_cost(s) * meat_per_mp);
+    } else {
       return 0.0;
     }
-    item i = to_item(metadata.name);
-    int price = npc_price(i);
-    if(can_interact()){
-      price = min(price, auto_mall_price(i));
-    }
-    return price;
   }
 
   float tokens_per_use(){
