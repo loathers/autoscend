@@ -31,25 +31,26 @@ int getCellToMine(item oreGoal) {
 	}
 
 	item[int] parseMineLayout() {
-
-		string[int] splitted = split_string(get_property("mineLayout1").substring(1), "#");
-
+		
 		item[int] minedCells;
-		foreach iter, str in splitted {
-			if (str.contains_text("asbestos ore")) {
-				minedCells[str.substring(0,2).to_int()] = $item[asbestos ore];
-			} else if (str.contains_text("chrome ore")) {
-				minedCells[str.substring(0,2).to_int()] = $item[chrome ore];
-			} else if (str.contains_text("linoleum ore")) {
-				minedCells[str.substring(0,2).to_int()] = $item[linoleum ore];
-			} else if (str.contains_text("loadstone")) {
-				minedCells[str.substring(0,2).to_int()] = $item[loadstone];
-			} else if (str.contains_text("lump of diamond")) {
-				minedCells[str.substring(0,2).to_int()] = $item[lump of diamond];
-			} else if (str.contains_text("meat stack")) {
-				minedCells[str.substring(0,2).to_int()] = $item[meat stack];
-			} else if (str.contains_text("stone of eXtreme power")) {
-				minedCells[str.substring(0,2).to_int()] = $item[stone of eXtreme power];
+		string mineLayout = get_property("mineLayout1");
+		if (mineLayout != "") {
+			foreach iter, str in split_string(mineLayout.substring(1), "#") {
+				if (str.contains_text("asbestos ore")) {
+					minedCells[str.substring(0,2).to_int()] = $item[asbestos ore];
+				} else if (str.contains_text("chrome ore")) {
+					minedCells[str.substring(0,2).to_int()] = $item[chrome ore];
+				} else if (str.contains_text("linoleum ore")) {
+					minedCells[str.substring(0,2).to_int()] = $item[linoleum ore];
+				} else if (str.contains_text("loadstone")) {
+					minedCells[str.substring(0,2).to_int()] = $item[loadstone];
+				} else if (str.contains_text("lump of diamond")) {
+					minedCells[str.substring(0,2).to_int()] = $item[lump of diamond];
+				} else if (str.contains_text("meat stack")) {
+					minedCells[str.substring(0,2).to_int()] = $item[meat stack];
+				} else if (str.contains_text("stone of eXtreme power")) {
+					minedCells[str.substring(0,2).to_int()] = $item[stone of eXtreme power];
+				}
 			}
 		}
 		return minedCells;
@@ -163,7 +164,7 @@ int getCellToMine(item oreGoal) {
 		while (count(potentialCells) == 0 && rowLimit < 5) {
 			foreach oreCell in oreSeen {
 				int[4] orthogonals = getOrthogonals(oreCell);
-				foreach orthoPos, orthoCell in orthogonals {
+				foreach _, orthoCell in orthogonals {
 					if (canMine(orthoCell, rowLimit) && sparklingCells contains orthoCell) {
 						potentialCells[potentialCount] = orthoCell;
 						potentialCount++;
@@ -184,7 +185,7 @@ int getCellToMine(item oreGoal) {
 			}
 			// now add all twinkling cells adjacent to the loadstone in the top 4 rows to the potential cells
 			int[4] orthogonals = getOrthogonals(loadstoneCell);
-			foreach orthoPos, orthoCell in orthogonals {
+			foreach _, orthoCell in orthogonals {
 				if (canMine(orthoCell, 4) && sparklingCells contains orthoCell) {
 					potentialCells[potentialCount] = orthoCell;
 					potentialCount++;
@@ -201,43 +202,6 @@ int getCellToMine(item oreGoal) {
 	}
 	// found 2 or more potentials, return a random one of them
 	return potentialCells[random(numPotentials)];
-}
-
-void auto_testMining(item oreGoal) {
-	// use this to test in aftercore. Will mine 3 ores of whatever type you pass e.g.
-	// ash import <autoscend.ash> auto_testMining($item[linoleum ore]);
-	// I'd recommend equipping some HP regen stuff in slots not needed by the Mining Gear
-	// Shark Jumper & 1-3 Heart of the Volcano works well
-	if (!possessOutfit("Mining Gear"))
-	{
-		return;
-	}
-	outfit("Mining Gear");
-	int startingAmount = item_amount(oreGoal);
-	remove_property("auto_minedCells");
-
-	matcher openCheck = create_matcher("Open Cavern \\(\\d,6\\)", visit_url("mining.php?mine=1"));
-	if (openCheck.find()) {
-		auto_log_info("Resetting mine (doesn't cost an adventure)");
-		visit_url("mining.php?mine=1&reset=1&pwd");
-	}
-
-	int advCount = 0;
-	while (item_amount(oreGoal) < startingAmount + 3) {
-		int cell = getCellToMine(oreGoal);
-		if (cell != 0) {
-			set_property("auto_minedCells", get_property("auto_minedCells") + cell.to_string() + ",");
-			visit_url("mining.php?mine=1&which=" + cell.to_string() + "&pwd");
-			advCount++;
-			if (my_hp() == 0) {
-				acquireHP(1);
-			}
-		} else {
-			auto_log_info("Something went wrong.");
-			break;
-		}
-	}
-	auto_log_info("Found 3 " + oreGoal.to_string() + " in " + advCount.to_string() + " adventures.");
 }
 
 boolean L8_trapperAdvance()
@@ -346,7 +310,7 @@ boolean L8_getMineOres()
 			cloverUsageFinish();
 			return true;
 		}
-	} else if (get_property("auto_mineForOres").to_boolean()) {
+	} else {
 		if (!possessOutfit("Mining Gear")) {
 			auto_log_info("Getting Mining Gear.", "blue");
 			providePlusNonCombat(25);
@@ -365,6 +329,49 @@ boolean L8_getMineOres()
 		}
 	}
 	return false;
+}
+
+void itznotyerzitzMineChoiceHandler(int choice) {
+	auto_log_info("itznotyerzitzMineChoiceHandler Running choice " + choice, "blue");
+	if (choice == 18) { // A Flat Miner
+		if (possessEquipment($item[miner\'s pants])) {
+			if (possessEquipment($item[7-Foot Dwarven mattock])) {
+				run_choice(3); // get 100 Meat.
+			} else {
+				run_choice(2); // get 7-Foot Dwarven mattock
+			}
+		} else {
+			run_choice(1); // get miner's pants
+		}
+	} else if (choice == 19) { // 100% Legal
+		if (possessEquipment($item[miner\'s helmet])) {
+			if (possessEquipment($item[miner\'s pants])) {
+				run_choice(3); // get 100 Meat.
+			} else {
+				run_choice(2); // get miner's pants
+			}
+		} else {
+			run_choice(1); // get miner's helmet
+		}
+	} else if (choice == 20) { // See You Next Fall
+		if (possessEquipment($item[miner\'s helmet])) {
+			if (possessEquipment($item[7-Foot Dwarven mattock])) {
+				run_choice(3); // get 100 Meat.
+			} else {
+				run_choice(2); // get 7-Foot Dwarven mattock
+			}
+		} else {
+			run_choice(1); // get miner's helmet
+		}
+	} else if (choice == 556) { // More Locker Than Morlock
+		if (!possessOutfit("Mining Gear")) {
+			run_choice(1); // get an outfit piece
+		} else {
+			run_choice(2); // skip
+		}
+	} else {
+		abort("unhandled choice in itznotyerzitzMineChoiceHandler");
+	}
 }
 
 boolean L8_trapperGround()
@@ -405,6 +412,53 @@ boolean L8_trapperExtreme()
 	auto_log_info("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
 	providePlusNonCombat(25);
 	return autoAdv($location[The eXtreme Slope]);
+}
+
+void theeXtremeSlopeChoiceHandler(int choice) {
+	auto_log_info("theeXtremeSlopeChoiceHandler Running choice " + choice, "blue");
+	if (choice == 15) { // Yeti Nother Hippy
+		if (possessEquipment($item[eXtreme mittens])) {
+			if (possessEquipment($item[eXtreme scarf])) {
+				run_choice(3); // get 200 Meat.
+			} else {
+				run_choice(2); // get eXtreme scarf
+			}
+		} else {
+			run_choice(1); // get eXtreme mittens
+		}
+	} else if (choice == 16)  { // Saint Beernard
+		if (possessEquipment($item[snowboarder pants])) {
+			if (possessEquipment($item[eXtreme scarf])) {
+				run_choice(3); // get 200 Meat.
+			} else {
+				run_choice(2); // get eXtreme scarf
+			}
+		} else {
+			run_choice(1); // get snowboarder pants
+		}
+	} else if (choice == 17) { // Generic Teen Comedy Snowboarding Adventure
+		if (possessEquipment($item[eXtreme mittens])) {
+			if (possessEquipment($item[snowboarder pants])) {
+				run_choice(3); // get 200 Meat.
+			} else {
+				run_choice(2); // get snowboarder pants
+			}
+		} else {
+			run_choice(1); // get eXtreme mittens
+		}
+	} else if (choice == 575) { // Duffel on the Double
+		if (!possessOutfit("eXtreme Cold-Weather Gear")) {
+			run_choice(1); // get an outfit piece
+		} else {
+			if (isActuallyEd()) { // add other paths which don't want to waste spleen (if any) here.
+				run_choice(3); // skip
+			} else {
+				run_choice(4); // Lucky Pill. (Clover for 1 spleen, worth?)
+			}
+		}
+	} else {
+		abort("unhandled choice in theeXtremeSlopeChoiceHandler");
+	}
 }
 
 boolean L8_trapperNinjaLair()

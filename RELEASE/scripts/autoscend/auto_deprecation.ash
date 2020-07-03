@@ -506,6 +506,11 @@ boolean settingFixer()
 	{
 		remove_property("auto_skipDesert");
 	}
+
+	if (property_exists("auto_mineForOres")) {
+		auto_log_debug("Automated Ore mining in hardcore is now for everyone!", "red");
+		remove_property("auto_mineForOres");
+	}
 	
 	return true;
 }
