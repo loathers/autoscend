@@ -515,3 +515,24 @@ boolean LX_meatMaid()
 	}
 	return false;
 }
+
+boolean dependenceDayClovers()
+{
+	if(get_property("_fireworkUsed").to_boolean())
+	{
+		return false;	//only 1 firework per day allowed
+	}
+	if(holiday() != "Dependence Day")	//TODO verify spelling
+	{
+		return false;	//it is not dependence day today
+	}
+	auto_log_info("Today is Dependence Day and I want to use a [green rocket] for some clovers", "green");
+	if(my_meat() < npc_price($item[green rocket]))
+	{
+		auto_log_info("I can't afford a [green rocket]. I will try again later");
+		return false;	//not enough meat to buy it
+	}
+	
+	buyUpTo(1, $item[green rocket]);
+	return use(1, $item[green rocket]);
+}
