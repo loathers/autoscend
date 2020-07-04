@@ -321,8 +321,7 @@ boolean L9_aBooPeak()
 			removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
 		}
 
-		autoAdv(1, $location[A-Boo Peak]);
-		return true;
+		return autoAdv(1, $location[A-Boo Peak]);
 	}
 
 	boolean booCloversOk = false;
@@ -343,6 +342,7 @@ boolean L9_aBooPeak()
 
 	if (get_property("auto_abooclover").to_boolean() && clueAmt >= get_property("booPeakProgress").to_int()/30) {
 		// if you get lucky/have enough item drop to get 3 clues while getting to 90% haunted, don't waste a clover getting more.
+		auto_log_info("We have enough A-boo clues to clear the peak, lets not waste a clover");
 		set_property("auto_abooclover", false);
 	}
 
