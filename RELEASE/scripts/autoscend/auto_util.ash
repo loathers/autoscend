@@ -2351,7 +2351,7 @@ boolean instakillable(monster mon)
 		Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl, Eldritch Tentacle,
 
 		// Other Monsters that Mafia returns as instakillable (or not a boss), that really aren't
-		Drunken Rat King
+		cosmetics wraith, Drunken Rat King
 	];
 
 	if(not_instakillable contains mon)
