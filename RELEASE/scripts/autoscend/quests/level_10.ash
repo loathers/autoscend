@@ -2,7 +2,7 @@ script "level_10.ash"
 
 boolean L10_plantThatBean()
 {
-	if (internalQuestStatus("questL10Garbage") < 0 || internalQuestStatus("questL10Garbage") > 0)
+	if(internalQuestStatus("questL10Garbage") != 0)
 	{
 		return false;
 	}
@@ -11,8 +11,8 @@ boolean L10_plantThatBean()
 	string page = visit_url("place.php?whichplace=plains");
 	if(contains_text(page, "place.php?whichplace=beanstalk"))
 	{
-		auto_log_warning("I have no bean but I see a stalk here. Okies. I'm ok with that", "blue");
-		visit_url("place.php?whichplace=beanstalk");
+		auto_log_warning("I see the beanstalk has already been planted. fixing questL10Garbage to step1", "blue");
+		set_property("questL10Garbage", "step1");
 		return true;
 	}
 	if(item_amount($item[Enchanted Bean]) > 0)
