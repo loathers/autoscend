@@ -13,9 +13,6 @@ Rockin' Robin	prop:rockinRobinProgress>=25
 Optimistic Candle	prop:optimisticCandleProgress>=25
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
 Crimbo Shrub
-# Free car fuel, or meat, or food/booze if we're really desperate
-Party Mouse
-Lil' Barrel Mimic
 # Volleyballs with a multiplier
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
@@ -35,15 +32,23 @@ Hunchbacked Minion
 Nervous Tick
 Cymbal-Playing Monkey
 Cheshire Bat
+# VolleyWhelps
+Melodramedary
 # Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
 Frumious Bandersnatch
-# Fancy
-Miniature Sword &amp; Martini Guy
 # Slightly special volleyballs
 Reanimated Reanimator
 God Lobster
+Party Mouse
+Lil' Barrel Mimic
+Piranha Plant
+Antique Nutcracker
+# Fancy
+Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
 Grinning Turtle
+# His winning smile
+Smiling Rat
 # The original
 Blood-Faced Volleyball

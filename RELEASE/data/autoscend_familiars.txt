@@ -287,29 +287,30 @@ regen	14	Star Starfish
 regen	15	Garbage Fire
 regen	16	Choctopus
 # Superwhelps
-regen	17	Plastic Pirate Skull
-regen	18	Trick-or-Treating Tot
+regen	17	Melodramedary
+regen	18	Plastic Pirate Skull
+regen	19	Trick-or-Treating Tot
 # Fairywhelps
-regen	19	Dandy Lion
+regen	20	Dandy Lion
 # Special whelps
-regen	20	Ms. Puck Man
-regen	21	Puck Man
-regen	22	Squamous Gibberer
-regen	23	He-Boulder
-regen	24	Cotton Candy Carnie
+regen	21	Ms. Puck Man
+regen	22	Puck Man
+regen	23	Squamous Gibberer
+regen	24	He-Boulder
+regen	25	Cotton Candy Carnie
 # Slightly better whelp for saucerors
-regen	25	Pet Cheezling	class:Sauceror
+regen	26	Pet Cheezling	class:Sauceror
 # Whelps with a multiplier, why not I guess
 #Mutant Gila Monster	grimdark:0
 #Mutant Gila Monster	grimdark:1
 # Marginally special whelps
 #Mutant Gila Monster	grimdark:2
-regen	26	Pottery Barn Owl
+regen	27	Pottery Barn Owl
 # Regular old whelps
-regen	27	Pet Cheezling
-regen	28	Ghuol Whelp
+regen	28	Pet Cheezling
+regen	29	Ghuol Whelp
 # The absolute default that everyone should have after their first run
-regen	29	Mosquito
+regen	30	Mosquito
 
 # Sombrero is desirable with a decent amount of ML
 stat	0	Galloping Grill	ML:>=120
@@ -326,40 +327,45 @@ stat	7	Rockin' Robin	prop:rockinRobinProgress>=25
 stat	8	Optimistic Candle	prop:optimisticCandleProgress>=25
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
 stat	9	Crimbo Shrub
-# Free car fuel, or meat, or food/booze if we're really desperate
-stat	10	Party Mouse
-stat	11	Lil' Barrel Mimic
 # Volleyballs with a multiplier
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyballs
-stat	12	Elf Operative
-stat	13	Optimistic Candle
-stat	14	Rockin' Robin
+stat	10	Elf Operative
+stat	11	Optimistic Candle
+stat	12	Rockin' Robin
 # Volleychauns
-stat	15	Golden Monkey
-stat	16	Bloovian Groose
-stat	17	Unconscious Collective
-stat	18	Grim Brother
-stat	19	Dramatic Hedgehog
-stat	20	Chauvinist Pig
-stat	21	Uniclops
-stat	22	Hunchbacked Minion
-stat	23	Nervous Tick
-stat	24	Cymbal-Playing Monkey
-stat	25	Cheshire Bat
+stat	13	Golden Monkey
+stat	14	Bloovian Groose
+stat	15	Unconscious Collective
+stat	16	Grim Brother
+stat	17	Dramatic Hedgehog
+stat	18	Chauvinist Pig
+stat	19	Uniclops
+stat	20	Hunchbacked Minion
+stat	21	Nervous Tick
+stat	22	Cymbal-Playing Monkey
+stat	23	Cheshire Bat
+# VolleyWhelps
+stat	24	Melodramedary
 # Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
-stat	26	Frumious Bandersnatch
-# Fancy
-stat	27	Miniature Sword &amp; Martini Guy
+stat	25	Frumious Bandersnatch
 # Slightly special volleyballs
-stat	28	Reanimated Reanimator
-stat	29	God Lobster
+stat	26	Reanimated Reanimator
+stat	27	God Lobster
+stat	28	Party Mouse
+stat	29	Lil' Barrel Mimic
+stat	30	Piranha Plant
+stat	31	Antique Nutcracker
+# Fancy
+stat	32	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	30	Grinning Turtle
+stat	33	Grinning Turtle
+# His winning smile
+stat	34	Smiling Rat
 # The original
-stat	31	Blood-Faced Volleyball
+stat	35	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work
