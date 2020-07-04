@@ -7,70 +7,14 @@ boolean auto_run_choice(int choice, string page)
 	
 	switch (choice) {
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
-			if (possessEquipment($item[eXtreme mittens])) {
-				if (possessEquipment($item[eXtreme scarf])) {
-					run_choice(3); // get 200 Meat.
-				} else {
-					run_choice(2); // get eXtreme scarf
-				}
-			} else {
-				run_choice(1); // get eXtreme mittens
-			}
-			break;
 		case 16: // Saint Beernard (The eXtreme Slope)
-			if (possessEquipment($item[snowboarder pants])) {
-				if (possessEquipment($item[eXtreme scarf])) {
-					run_choice(3); // get 200 Meat.
-				} else {
-					run_choice(2); // get eXtreme scarf
-				}
-			} else {
-				run_choice(1); // get snowboarder pants
-			}
-			break;
 		case 17: // Generic Teen Comedy Snowboarding Adventure (The eXtreme Slope)
-			if (possessEquipment($item[eXtreme mittens])) {
-				if (possessEquipment($item[snowboarder pants])) {
-					run_choice(3); // get 200 Meat.
-				} else {
-					run_choice(2); // get snowboarder pants
-				}
-			} else {
-				run_choice(1); // get eXtreme mittens
-			}
+			theeXtremeSlopeChoiceHandler(choice);
 			break;
 		case 18: // A Flat Miner (Itznotyerzitz Mine)
-			if (possessEquipment($item[miner\'s pants])) {
-				if (possessEquipment($item[7-Foot Dwarven mattock])) {
-					run_choice(3); // get 100 Meat.
-				} else {
-					run_choice(2); // get 7-Foot Dwarven mattock
-				}
-			} else {
-				run_choice(1); // get miner's pants
-			}
-			break;
 		case 19: // 100% Legal (Itznotyerzitz Mine)
-			if (possessEquipment($item[miner\'s helmet])) {
-				if (possessEquipment($item[miner\'s pants])) {
-					run_choice(3); // get 100 Meat.
-				} else {
-					run_choice(2); // get miner's pants
-				}
-			} else {
-				run_choice(1); // get miner's helmet
-			}
-			break;
 		case 20: // See You Next Fall (Itznotyerzitz Mine)
-			if (possessEquipment($item[miner\'s helmet])) {
-				if (possessEquipment($item[7-Foot Dwarven mattock])) {
-					run_choice(3); // get 100 Meat.
-				} else {
-					run_choice(2); // get 7-Foot Dwarven mattock
-				}
-			} else {
-				run_choice(1); // get miner's helmet
-			}
+			itznotyerzitzMineChoiceHandler(choice);
 			break;
 		case 22: // The Arrrbitrator (The Obligatory Pirate's Cove)
 		case 23: // Barrie Me at Sea (The Obligatory Pirate's Cove)
@@ -187,22 +131,10 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 556: // More Locker Than Morlock (Itznotyerzitz Mine)
-			if (!possessOutfit("Mining Gear")) {
-				run_choice(1); // get an outfit piece
-			} else {
-				run_choice(2); // skip
-			}
+			itznotyerzitzMineChoiceHandler(choice);
 			break;
 		case 575: // Duffel on the Double (The eXtreme Slope)
-			if (!possessOutfit("eXtreme Cold-Weather Gear")) {
-				run_choice(1); // get an outfit piece
-			} else {
-				if (isActuallyEd()) { // add other paths which don't want to waste spleen (if any) here.
-					run_choice(3); // skip
-				} else {
-					run_choice(4); // Lucky Pill. (Clover for 1 spleen, worth?)
-				}
-			}
+			theeXtremeSlopeChoiceHandler(choice);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
 			if (auto_my_path() == "Pocket Familiars" && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
@@ -460,15 +392,15 @@ boolean auto_run_choice(int choice, string page)
 				search = "I'd like some experience.";
 			}
 
-			int choice = 0;
+			int glchoice = 0;
 			foreach idx, str in available_choice_options()
 			{
 				if(contains_text(str,search))
 				{
-					choice = idx;
+					glchoice = idx;
 				}
 			}
-			run_choice(choice);
+			run_choice(glchoice);
 			break;
 		case 1340: // Is There A Doctor In The House? (Lil' Doctor Bag™)
 			auto_log_info("Accepting doctor quest, it's our job!");

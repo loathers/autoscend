@@ -22,7 +22,6 @@ boolean LM_edTheUndying();						//Defined in autoscend/auto_edTheUndying.ash
 
 boolean LX_desertAlternate();
 boolean LX_hippyBoatman();
-void oldLandfillChoiceHandler(int choice);
 boolean LX_lockPicking();
 boolean LX_phatLootToken();
 boolean LX_islandAccess();
@@ -32,11 +31,8 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now);	//Defined in autoscend/io
 boolean LX_nastyBooty();
 boolean LX_guildUnlock();
 boolean LX_pirateOutfit();
-void piratesCoveChoiceHandler(int choice);
 boolean LX_joinPirateCrew();
-void barrrneysBarrrChoiceHandler(int choice, string page);
 boolean LX_fledglingPirateIsYou();
-void fcleChoiceHandler(int choice);
 boolean LX_unlockBelowdecks();
 boolean LX_pirateQuest();
 boolean LX_acquireLegendaryEpicWeapon();
@@ -1273,3 +1269,11 @@ location[int] zones_available();							//Defined in autoscend/auto_zone.ash
 monster[int] mobs_available();								//Defined in autoscend/auto_zone.ash
 item[int] drops_available();								//Defined in autoscend/auto_zone.ash
 item[int] hugpocket_available();							//Defined in autoscend/auto_zone.ash
+
+// functions for handling choice adventures. Only ever called from auto_choice_adv.ash
+void oldLandfillChoiceHandler(int choice);
+void piratesCoveChoiceHandler(int choice);
+void barrrneysBarrrChoiceHandler(int choice, string page);
+void fcleChoiceHandler(int choice);
+void itznotyerzitzMineChoiceHandler(int choice);
+void theeXtremeSlopeChoiceHandler(int choice);
