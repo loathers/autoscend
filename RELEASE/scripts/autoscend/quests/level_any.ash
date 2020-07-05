@@ -526,13 +526,18 @@ boolean dependenceDayClovers()
 	{
 		return false;	//it is not dependence day today
 	}
+	
 	auto_log_info("Today is Dependence Day and I want to use a [green rocket] for some clovers", "green");
-	if(my_meat() < npc_price($item[green rocket]))
+	if(item_amount($item[green rocket]) == 0 && my_meat() < npc_price($item[green rocket]))
 	{
 		auto_log_info("I can't afford a [green rocket]. I will try again later");
-		return false;	//not enough meat to buy it
+		return false;
 	}
 	
 	buyUpTo(1, $item[green rocket]);
-	return use(1, $item[green rocket]);
+	if(item_amount($item[green rocket]) > 0)
+	{
+		return use(1, $item[green rocket]);
+	}
+	return false;
 }
