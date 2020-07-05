@@ -384,7 +384,10 @@ boolean LX_phatLootToken()
 
 	auto_log_info("Phat Loot Token Get!", "blue");
 	set_property("choiceAdventure691", "2");
-	autoEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
+	if(get_property("_lastDailyDungeonRoom").to_int() == 4 || get_property("_lastDailyDungeonRoom").to_int() == 9)
+	{
+		autoEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
+	}
 
 	backupSetting("choiceAdventure692", 4);
 	if(item_amount($item[Platinum Yendorian Express Card]) > 0)
@@ -425,7 +428,7 @@ boolean LX_phatLootToken()
 	{
 		backupSetting("choiceAdventure693", 1);
 	}
-	if(equipped_amount($item[Ring of Detect Boring Doors]) > 0)
+	if(possessEquipment($item[Ring of Detect Boring Doors]))
 	{
 		backupSetting("choiceAdventure690", 2);
 		backupSetting("choiceAdventure691", 2);
@@ -438,10 +441,6 @@ boolean LX_phatLootToken()
 
 
 	autoAdv(1, $location[The Daily Dungeon]);
-	if(possessEquipment($item[Ring Of Detect Boring Doors]))
-	{
-		cli_execute("unequip acc3");
-	}
 	restoreSetting("choiceAdventure690");
 	restoreSetting("choiceAdventure691");
 	restoreSetting("choiceAdventure692");
