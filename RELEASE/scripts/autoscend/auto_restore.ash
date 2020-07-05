@@ -604,20 +604,15 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       return -1.0;
     }
     float needed;
-    int price;
     if(metadata.type == "item") {
       item i = to_item(metadata.name);
       needed = max(0.0, total_uses_needed() - item_amount(i));
-      price = npc_price(i);
-      if(can_interact()){
-        price = min(price, auto_mall_price(i));
-      }
     } else if (metadata.type == "skill"){
       needed = total_uses_needed();
-      price = meat_per_use();
     }
 
-    if(price == 0){
+    float price = get_value("meat_per_use");
+    if(price < 0.001){
       return -1.0;
     }
     return price * needed;
