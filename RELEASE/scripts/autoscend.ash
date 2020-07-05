@@ -2609,6 +2609,7 @@ boolean LX_hardcoreFoodFarm()
 
 boolean LX_craftAcquireItems()
 {
+	dependenceDayClovers();
 	if((item_amount($item[Ten-Leaf Clover]) > 0) && glover_usable($item[Ten-Leaf Clover]))
 	{
 		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);

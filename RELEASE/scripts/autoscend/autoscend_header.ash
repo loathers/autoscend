@@ -41,7 +41,8 @@ boolean LX_melvignShirt();
 boolean LX_attemptPowerLevel();
 boolean LX_attemptFlyering();
 boolean LX_bitchinMeatcar();
-boolean LX_meatMaid();
+boolean LX_meatMaid();								//Defined in autoscend/quests/level_any.ash
+boolean dependenceDayClovers();						//Defined in autoscend/quests/level_any.ash
 boolean LX_craftAcquireItems();
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
