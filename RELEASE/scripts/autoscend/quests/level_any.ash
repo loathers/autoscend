@@ -522,7 +522,7 @@ boolean dependenceDayClovers()
 	{
 		return false;	//only 1 firework per day allowed
 	}
-	if(holiday() != "Dependence Day")	//TODO verify spelling
+	if(holiday() != "Dependence Day")
 	{
 		return false;	//it is not dependence day today
 	}
