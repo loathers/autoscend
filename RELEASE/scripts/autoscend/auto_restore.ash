@@ -600,17 +600,19 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   }
 
   float total_meat_used(){
-    if(metadata.type != "item"){
+    if(metadata.type != "item" && metadata.type != "skill"){
       return -1.0;
     }
-    item i = to_item(metadata.name);
-    float needed = max(0.0, total_uses_needed() - item_amount(i));
-    int price = npc_price(i);
-    if(can_interact()){
-      price = min(price, auto_mall_price(i));
+    float needed;
+    if(metadata.type == "item") {
+      item i = to_item(metadata.name);
+      needed = max(0.0, total_uses_needed() - item_amount(i));
+    } else if (metadata.type == "skill"){
+      needed = total_uses_needed();
     }
 
-    if(price == 0){
+    float price = get_value("meat_per_use");
+    if(price < 0.001){
       return -1.0;
     }
     return price * needed;
