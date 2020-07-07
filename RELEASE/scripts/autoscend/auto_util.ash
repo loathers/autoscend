@@ -2318,7 +2318,7 @@ boolean instakillable(monster mon)
 	static boolean[monster] not_instakillable = $monsters[
 		// Cyrpt bosses
 		conjoined zmombie, gargantulihc, giant skeelton, huge ghuol,
-
+		
 		// time-spinner
 		Ancient Skeleton with Skin still on it, Apathetic Tyrannosaurus, Assembly Elemental, Cro-Magnon Gnoll, Krakrox the Barbarian, Wooly Duck,
 
@@ -2696,189 +2696,304 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 }
 
 
-boolean providePlusCombat(int amt)
-{
-	return providePlusCombat(amt, true);
-}
-boolean providePlusNonCombat(int amt)
-{
-	return providePlusNonCombat(amt, true);
+float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	float alreadyHave = numeric_modifier("Combat Rate");
+	float need = amt - alreadyHave;
+
+	if (need > 0) {
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	} else {
+		auto_log_debug("We already have enough!");
+	}
+
+	float delta = 0;
+
+	float result() {
+		return numeric_modifier("Combat Rate") + delta;
+	}
+
+	if (doEquips) {
+		string max = "200combat " + amt + "max";
+		if (speculative) {
+			simMaximizeWith(max);
+		} else {
+			addToMaximize("200combat " + amt + "max");
+			simMaximize();
+		}
+		delta = simValue("Combat Rate") - numeric_modifier("Combat Rate");
+		auto_log_debug("With gear we can get to " + result());
+	}
+
+	boolean pass() {
+		return result() >= amt;
+	}
+
+	if(pass()) {
+		return result();
+	}
+
+	// first lets do stuff that is "free" (as in has no MP cost, item use or can be freely removed/toggled)
+	
+	if (have_effect($effect[Become Superficially Interested]) > 0) {
+		visit_url("charsheet.php?pwd=&action=newyouinterest");
+		if(pass()) {
+			return result();
+		}
+	}
+
+	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness] {
+		uneffect(eff);
+		if(pass()) {
+			return result();
+		}
+	}
+
+	if (get_property("_horsery") == "dark horse") {
+		horseNone();
+	} else {
+		horseMaintain();
+	}
+	if(pass()) {
+		return result();
+	}
+
+	void handleEffect(effect eff) {
+		if (speculative) {
+			delta += numeric_modifier(eff, "Combat Rate");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects) {
+		foreach eff in effects {
+			if (buffMaintain(eff, 0, 1, 1, speculative)) {
+				handleEffect(eff);
+			}
+			if (pass()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Now handle buffs that cost MP, items or other resources
+
+	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
+	if (tryEffects($effects[
+		Musk of the Moose,
+		Carlweather's Cantata of Confrontation,
+		Blinking Belly,
+		Song of Battle,
+		Frown,
+		Angry,
+		Screaming! \ SCREAMING! \ AAAAAAAH!,
+		Coffeesphere,
+		Unmuffled
+	])) {
+		return result();
+	}
+
+	if (tryEffects($effects[
+		Taunt of Horus,
+		Patent Aggression,
+		Lion in Ambush,
+		Everything Must Go!,
+		Hippy Stench,
+		High Colognic,
+		Celestial Saltiness,
+		Simply Irresistible
+	])) {
+		return result();
+	}
+
+	if(canAsdonBuff($effect[Driving Obnoxiously])) {
+		if (!speculative) {
+			asdonBuff($effect[Driving Obnoxiously]);
+		}
+		handleEffect($effect[Driving Obnoxiously]);
+	}
+	if(pass()) {
+		return result();
+	}
+
+	return result();
 }
 
 boolean providePlusCombat(int amt, boolean doEquips)
 {
-	if(amt == 0)
-	{
-		return true;
-	}
-	boolean forbid_extra = true;
-	if(amt >= 25)
-	{
-		forbid_extra = false;		//do we want to stop when there are FREE methods to raise it further
-	}
-	
-	//equipment handling
-	if(doEquips)
-	{
-		//to prevent flipflop resulting in failing 50% of the turns we always do this first. see issue #400
-		addToMaximize("200combat " + to_string(amt) + "max");
-	}
-	simMaximize();	//we do not want to repeatedly simulate equipment. simulate it once only.
-	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+	return providePlusCombat(amt, doEquips, false) >= amt;
+}
 
-	boolean are_we_done()
-	{
-		if(numeric_modifier("Combat Rate").to_int() + equipDiff >= amt)
-		{
-			return true;
+boolean providePlusCombat(int amt)
+{
+	return providePlusCombat(amt, true);
+}
+
+float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	float alreadyHave = numeric_modifier("Combat Rate");
+	float need = amt - alreadyHave;
+
+	if (need > 0) {
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	} else {
+		auto_log_debug("We already have enough!");
+	}
+
+	float delta = 0;
+
+	float result() {
+		return numeric_modifier("Combat Rate") + delta;
+	}
+
+	if (doEquips) {
+		string max = "-200combat " + amt + "max";
+		if (speculative) {
+			simMaximizeWith(max);
+		} else {
+			addToMaximize("-200combat " + amt + "max");
+			simMaximize();
+		}
+		delta = simValue("Combat Rate") - numeric_modifier("Combat Rate");
+		auto_log_debug("With gear we can get to " + result());
+	}
+
+	boolean pass() {
+		return result() >= amt;
+	}
+
+	if(pass()) {
+		return result();
+	}
+
+
+	// first lets do stuff that is "free" (as in has no MP cost, item use or can be freely removed/toggled)
+
+	if (have_effect($effect[Become Intensely Interested]) > 0) {
+		visit_url("charsheet.php?pwd=&action=newyouinterest");
+		if(pass()) {
+			return result();
+		}
+	}
+
+	foreach eff in $effects[Carlweather\'s Cantata Of Confrontation, Driving Obnoxiously] {
+		uneffect(eff);
+		if(pass()) {
+			return result();
+		}
+	}
+
+	horseDark();
+	if(pass()) {
+		return result();
+	}
+
+	void handleEffect(effect eff) {
+		if (speculative) {
+			delta += numeric_modifier(eff, "Combat Rate");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects) {
+		foreach eff in effects {
+			if (buffMaintain(eff, 0, 1, 1, speculative)) {
+				handleEffect(eff);
+			}
+			if (pass()) {
+				return true;
+			}
 		}
 		return false;
 	}
-	
-	if(forbid_extra && are_we_done()) return true;	//did equipment reach goal.
-	
-	//you can toggle this effect between -combat and +combat for free without limit
-	if(have_effect($effect[Become Superficially Interested]) > 0)
-	{
-		visit_url("charsheet.php?pwd=&action=newyouinterest");
-		if(forbid_extra && are_we_done()) return true;
-	}
-	
-	//free to uneffect
-	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness]
-	{
-		uneffect(eff);
-		if(forbid_extra && are_we_done()) return true;
-	}
-	
-	//now we have reached effects that actually have a cost
-	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);		//remove an AT buff so we have room for Cantata Of Confrontation
-	foreach eff in $effects[Musk of the Moose, Carlweather\'s Cantata of Confrontation, Blinking Belly, Song of Battle, Frown, Angry, Screaming! \ SCREAMING! \ AAAAAAAH!]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(are_we_done()) return true;
+
+	// Now handle buffs that cost MP, items or other resources
+
+	shrugAT($effect[The Sonata of Sneakiness]);
+	if (tryEffects($effects[
+		Shelter Of Shed,
+		Brooding,
+		Muffled,
+		Smooth Movements,
+		The Sonata of Sneakiness,
+		Song of Solitude,
+		Inked Well,
+		Bent Knees,
+		Extended Toes,
+		Ink Cloud,
+		Cloak of Shadows,
+		Chocolatesphere
+	])) {
+		return result();
 	}
 
-	foreach eff in $effects[Taunt of Horus, Hippy Stench, Unmuffled, High Colognic, Celestial Saltiness, Everything Must Go!, Patent Aggression, Lion in Ambush]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(are_we_done()) return true;
+	if (auto_birdModifier("Combat Rate") > 0) {
+		if (tryEffects($effects[Blessing of the Bird])) {
+			return result();
+		}
 	}
 
-	if(get_property("_horsery") == "dark horse")
-	{
-		getHorse("return");
+	if (auto_favoriteBirdModifier("Combat Rate") > 0) {
+		if (tryEffects($effects[Blessing of Your Favorite Bird])) {
+			return result();
+		}
 	}
-	else
-	{
-		horseMaintain();
-	}
-	if(are_we_done()) return true;
 
-	asdonBuff($effect[Driving Obnoxiously]);
-	if(are_we_done()) return true;
-	
-	//Patent Invisibility & Shelter of Shed are not free to uneffect. but should be handled somehow.
-	
-	// only return false if we don't have a positive combat rate.
-	if (numeric_modifier("Combat Rate").to_int() + equipDiff > 0)	{
-		return true;
+	if (tryEffects($effects[
+		Ashen,
+		Predjudicetidigitation,
+		Patent Invisibility,
+		Ministrations in the Dark,
+		Fresh Scent,
+		Become Superficially interested,
+		Gummed Shoes,
+		Simply Invisible,
+		Inky Camouflage,	
+		Celestial Camouflage
+	])) {
+		return result();
 	}
-	return false;
+
+	if(canAsdonBuff($effect[Driving Stealthily])) {
+		if (!speculative) {
+			asdonBuff($effect[Driving Stealthily]);
+		}
+		handleEffect($effect[Driving Stealthily]);
+	}
+	if(pass()) {
+		return result();
+	}
+
+	//blooper ink costs 15 coins without which it will error when trying to buy it, so that is the bare minimum we need to check for
+	//However we don't want to waste our early coins on it as they are precious. So require at least 400 coins before buying it.
+	if (in_zelda() && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400) {
+		if (!speculative) {
+			retrieve_item(1, $item[blooper ink]);
+		}
+		if (tryEffects($effects[Blooper Inked])) {
+			return result();
+		}
+	}
+
+	// Glove charges are a limited per-day resource, lets do this last so we don't waste possible uses of Replace Enemy
+	if (tryEffects($effects[Triple-Sized])) {
+		return result();
+	}
+
+	return result();
 }
 
 boolean providePlusNonCombat(int amt, boolean doEquips)
 {
-	if(amt == 0)
-	{
-		return true;
-	}
-	boolean forbid_extra = true;
-	if(amt >= 25)
-	{
-		forbid_extra = false;		//do we want to stop when there are FREE methods to raise it further
-	}
-	amt = -1 * amt;
+	return providePlusNonCombat(amt, doEquips, false) >= amt;
+}
 
-	//equipment handling
-	if(doEquips)
-	{
-		//to prevent flipflop resulting in failing 50% of the turns we always do this first. see issue #400
-		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
-	}
-	simMaximize();	//we do not want to repeatedly simulate equipment. simulate it once only.
-	int equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
-
-	boolean are_we_done()
-	{
-		if(numeric_modifier("Combat Rate").to_int() + equipDiff <= amt)
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	if(forbid_extra && are_we_done()) return true;	//did equipment reach goal.
-
-	//you can toggle this effect between -combat and +combat for free without limit
-	if(have_effect($effect[Become Intensely Interested]) > 0)
-	{
-		visit_url("charsheet.php?pwd=&action=newyouinterest");
-		if(forbid_extra && are_we_done()) return true;
-	}
-
-	//free to uneffect
-	foreach eff in $effects[Carlweather\'s Cantata Of Confrontation, Driving Obnoxiously]
-	{
-		uneffect(eff);
-		if(forbid_extra && are_we_done()) return true;
-	}
-
-	//now we have reached effects that actually have a cost
-	shrugAT($effect[The Sonata of Sneakiness]);		//remove an AT buff so we have room for sonata of sneakiness
-	foreach eff in $effects[Shelter Of Shed, Brooding, Muffled, Smooth Movements, The Sonata of Sneakiness, Song of Solitude, Inked Well, Bent Knees, Extended Toes, Ink Cloud, Patent Invisibility, Cloak of Shadows]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(are_we_done()) return true;
-	}
-
-	// We can get these during normal game, may as well use them!
-	if(0 == have_effect($effect[Fresh Scent]))
-	{
-		if(item_amount($item[chunk of rock salt]) > 0)
-		{
-			use(1, $item[chunk of rock salt]);
-		}
-		else if(item_amount($item[deodorant]) > 0)
-		{
-			use(1, $item[deodorant]);
-		}
-		if(are_we_done()) return true;
-	}
-
-	getHorse("noncombat");
-	if(are_we_done()) return true;
-	
-	auto_powerfulGloveNoncombat();
-	if(are_we_done()) return true;
-
-	//blooper ink costs 15 coins without which it will error when trying to buy it, so that is the bare minimum we need to check for
-	//However we don't want to waste our early coins on it as they are precious. So require at least 400 coins before buying it.
-	if(in_zelda() && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400)
-	{
-		retrieve_item(1, $item[blooper ink]);
-		buffMaintain($effect[Blooper Inked], 0, 1, 1);
-		if(are_we_done()) return true;
-	}
-
-	asdonBuff($effect[Driving Stealthily]);
-	if(are_we_done()) return true;
-	
-	// only return false if we don't have a negative combat rate.
-	if (numeric_modifier("Combat Rate").to_int() + equipDiff < 0) {
-		return true;
-	}
-	return false;
+boolean providePlusNonCombat(int amt)
+{
+	return providePlusNonCombat(amt, true);
 }
 
 float provideInitiative(int amt, boolean doEquips, boolean speculative)
@@ -5012,6 +5127,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Antibiotic Saucesphere]:		useSkill = $skill[Antibiotic Saucesphere];		break;
 	case $effect[Arched Eyebrow of the Archmage]:useSkill = $skill[Arched Eyebrow of the Archmage];break;
 	case $effect[Armor-Plated]:					useItem = $item[Bent Scrap Metal];				break;
+	case $effect[Ashen]:					useItem = $item[pile of ashes];						break;
 	case $effect[Ashen Burps]:					useItem = $item[ash soda];						break;
 	case $effect[Astral Shell]:
 		if(acquireTotem())
@@ -5092,12 +5208,15 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Celestial Camouflage]:			useItem = $item[Celestial Squid Ink];			break;
 	case $effect[Celestial Saltiness]:			useItem = $item[Celestial Au Jus];				break;
 	case $effect[Celestial Sheen]:				useItem = $item[Celestial Olive Oil];			break;
+	case $effect[Celestial Vision]:				useItem = $item[Celestial Carrot Juice];			break;
 	case $effect[Cinnamon Challenger]:			useItem = $item[Pulled Red Taffy];				break;
 	case $effect[Cletus\'s Canticle of Celerity]:	useSkill = $skill[Cletus\'s Canticle of Celerity];break;
 	case $effect[Cloak of Shadows]: useSkill = $skill[Blood Cloak]; break;
 	case $effect[Clyde\'s Blessing]:			useItem = $item[The Legendary Beat];			break;
 	case $effect[Chalky Hand]:					useItem = $item[Handful of Hand Chalk];			break;
+	case $effect[Chocolatesphere]:					useSkill = $skill[Chocolatesphere];			break;
 	case $effect[Cranberry Cordiality]:			useItem = $item[Cranberry Cordial];				break;
+	case $effect[Coffeesphere]:				useSkill = $skill[Coffeesphere];			break;
 	case $effect[Cold Hard Skin]:				useItem = $item[Frost-Rimed Seal Hide];			break;
 	case $effect[Contemptible Emanations]:		useItem = $item[Cologne of Contempt];			break;
 	case $effect[The Cupcake of Wrath]:			useItem = $item[Green-Frosted Astral Cupcake];	break;
@@ -5176,6 +5295,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Football Eyes]:				useItem = $item[Black Facepaint];				break;
 	case $effect[Fortunate Resolve]:			useItem = $item[Resolution: Be Luckier];		break;
 	case $effect[Frenzied, Bloody]:				useSkill = $skill[Blood Frenzy];				break;
+	case $effect[Fresh Scent]:					useItem = $item[deodorant];						break;
 	case $effect[Frigidalmatian]:				useSkill = $skill[Frigidalmatian];				break;
 	case $effect[Frog in Your Throat]:			useItem = $item[Frogade];						break;
 	case $effect[From Nantucket]:				useItem = $item[Ye Olde Bawdy Limerick];		break;
@@ -5199,6 +5319,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Graham Crackling]:				useItem = $item[Heather Graham Cracker];		break;
 	case $effect[Greasy Peasy]:					useItem = $item[Robot Grease];					break;
 	case $effect[Greedy Resolve]:				useItem = $item[Resolution: Be Wealthier];		break;
+	case $effect[Gristlesphere]:				useSkill = $skill[Gristlesphere];		break;
 	case $effect[Gummed Shoes]:					useItem = $item[Shoe Gum];						break;
 	case $effect[Gummi-Grin]:					useItem = $item[Gummi Turtle];					break;
 	case $effect[Hairy Palms]:					useItem = $item[Orcish Hand Lotion];			break;
@@ -5231,6 +5352,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Industrial Strength Starch]:	useItem = $item[Industrial Strength Starch];	break;
 	case $effect[Ink Cloud]:					useSkill = $skill[Ink Gland];						break;
 	case $effect[Inked Well]:					useSkill = $skill[Squid Glands];				break;
+	case $effect[Inky Camouflage]:	useItem = $item[Vial of Squid Ink];	break;
 	case $effect[Inscrutable Gaze]:				useSkill = $skill[Inscrutable Gaze];			break;
 	case $effect[Insulated Trousers]:			useItem = $item[Cold Powder];					break;
 	case $effect[Intimidating Mien]:			useSkill = $skill[Intimidating Mien];			break;
@@ -5306,6 +5428,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Of Course It Looks Great]:		useSkill = $skill[Check Hair];					break;
 	case $effect[Oiled Skin]:					useItem = $item[Skin Oil];						break;
 	case $effect[Oiled-Up]:						useItem = $item[Pec Oil];						break;
+	case $effect[Oilsphere]:						useSkill = $skill[Oilsphere];						break;
 	case $effect[OMG WTF]:						useItem = $item[Confiscated Cell Phone];		break;
 	case $effect[One Very Clear Eye]:			useItem = $item[Cyclops Eyedrops];				break;
 	case $effect[Orange Crusher]:				useItem = $item[Pulled Orange Taffy];			break;
@@ -5349,6 +5472,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Power of Heka]:				useSkill = $skill[Power of Heka];				break;
 	case $effect[The Power Of LOV]:				useItem = $item[LOV Elixir #3];					break;
 	case $effect[Prideful Strut]:				useSkill = $skill[Walk: Prideful Strut];		break;
+	case $effect[Predjudicetidigitation]:	useItem = $item[worst candy];break;
 	case $effect[Protection from Bad Stuff]:	useItem = $item[scroll of Protection from Bad Stuff];break;
 	case $effect[Provocative Perkiness]:		useItem = $item[Libation of Liveliness];		break;
 	case $effect[Puddingskin]:					useItem = $item[scroll of Puddingskin];			break;
@@ -5416,7 +5540,9 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Shelter of Shed]:				useSkill = $skill[Shelter of Shed];				break;
 	case $effect[Shrieking Weasel]:				useItem = $item[Shrieking Weasel Holo-Record];	break;
 	case $effect[Simmering]:					useSkill = $skill[Simmer];						break;
+	case $effect[Simply Invisible]:			useItem = $item[Invisibility Potion];		break;
 	case $effect[Simply Irresistible]:			useItem = $item[Irresistibility Potion];		break;
+	case $effect[Simply Irritable]:			useItem = $item[Irritability potion];		break;
 	case $effect[Singer\'s Faithful Ocelot]:	useSkill = $skill[Singer\'s Faithful Ocelot];	break;
 	case $effect[Sinuses For Miles]:			useItem = $item[Mick\'s IcyVapoHotness Inhaler];break;
 	case $effect[Sleaze-Resistant Trousers]:	useItem = $item[Sleaze Powder];					break;
@@ -6306,11 +6432,6 @@ element currentFlavour()
 	return $element[none];
 }
 
-void resetFlavour()
-{
-	set_property("_auto_tunedElement", "");
-}
-
 boolean setFlavour(element ele)
 {
 	if(!auto_have_skill($skill[Flavour of Magic]))
@@ -7082,13 +7203,3 @@ int poolSkillPracticeGains()
 	return count;
 }
 
-void resetThisLoop()
-{
-	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
-	//We use boolean instead of adventure count because of free combats.
-	
-	set_property("auto_doCombatCopy", "no");
-	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
-	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
-	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure
-}

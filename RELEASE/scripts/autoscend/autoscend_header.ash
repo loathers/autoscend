@@ -932,8 +932,10 @@ void picky_pulls();											//Defined in autoscend/auto_picky.ash
 void picky_startAscension();								//Defined in autoscend/auto_picky.ash
 skill preferredLibram();									//Defined in autoscend/auto_util.ash
 location provideAdvPHPZone();								//Defined in autoscend/auto_util.ash
+float providePlusCombat(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
 boolean providePlusCombat(int amt);							//Defined in autoscend/auto_util.ash
 boolean providePlusCombat(int amt, boolean doEquips);		//Defined in autoscend/auto_util.ash
+float providePlusNonCombat(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
 boolean providePlusNonCombat(int amt);						//Defined in autoscend/auto_util.ash
 boolean providePlusNonCombat(int amt, boolean doEquips);	//Defined in autoscend/auto_util.ash
 boolean acquireCombatMods(int amt);							//Defined in autoscend/auto_util.ash
