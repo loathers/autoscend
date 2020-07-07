@@ -14,7 +14,6 @@ import <autoscend/autoscend_migration.ash>
 import <canadv.ash>
 
 import <autoscend/auto_adventure.ash>
-import <autoscend/auto_casual.ash>
 import <autoscend/auto_combat.ash>
 import <autoscend/auto_cooking.ash>
 import <autoscend/auto_deprecation.ash>
@@ -45,6 +44,7 @@ import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
+import <autoscend/paths/casual.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
 import <autoscend/paths/disguises_delimit.ash>
@@ -3226,6 +3226,7 @@ boolean doTasks()
 	if(LM_majora())						return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
+	if(LM_canInteract()) 			return true;
 
 	if(auto_my_path() != "Community Service")
 	{
