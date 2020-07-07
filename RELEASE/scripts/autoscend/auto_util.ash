@@ -2318,7 +2318,7 @@ boolean instakillable(monster mon)
 	static boolean[monster] not_instakillable = $monsters[
 		// Cyrpt bosses
 		conjoined zmombie, gargantulihc, giant skeelton, huge ghuol,
-		
+
 		// time-spinner
 		Ancient Skeleton with Skin still on it, Apathetic Tyrannosaurus, Assembly Elemental, Cro-Magnon Gnoll, Krakrox the Barbarian, Wooly Duck,
 
@@ -6432,6 +6432,11 @@ element currentFlavour()
 	return $element[none];
 }
 
+void resetFlavour()
+{
+	set_property("_auto_tunedElement", "");
+}
+
 boolean setFlavour(element ele)
 {
 	if(!auto_have_skill($skill[Flavour of Magic]))
@@ -7203,3 +7208,13 @@ int poolSkillPracticeGains()
 	return count;
 }
 
+void resetThisLoop()
+{
+	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
+	//We use boolean instead of adventure count because of free combats.
+	
+	set_property("auto_doCombatCopy", "no");
+	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
+	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
+	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure
+}
