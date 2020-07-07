@@ -3677,12 +3677,14 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 	}
 	mcd = min(mcd, best);
 	int next = max(0, mcd);
+	
+	set_property("auto_mcd_target", next); // if we return without setting this, we will flip-flop the mcd every adventure...
+
 	if(next == current_mcd())
 	{
 		return true;
 	}
 	
-	set_property("auto_mcd_target", next);
 	if(immediately)
 	{
 		return change_mcd(next);
