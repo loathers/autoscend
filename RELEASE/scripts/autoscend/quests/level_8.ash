@@ -254,6 +254,11 @@ boolean L8_getMineOres()
 		return false;
 	}
 
+	if (get_property("chateauMonster").to_monster() == $monster[Mountain Man]) {
+		// apparently this is a thing some people do. Lets add the most basic of support.
+		return false;
+	}
+
 	if((my_rain() > 50) && (have_effect($effect[Ultrahydrated]) == 0) && (auto_my_path() == "Heavy Rains") && have_skill($skill[Rain Man]))
 	{
 		auto_log_info("Trying to summon a mountain man", "blue");
