@@ -2719,7 +2719,7 @@ float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
 		if (speculative) {
 			simMaximizeWith(max);
 		} else {
-			addToMaximize("200combat " + amt + "max");
+			addToMaximize(max);
 			simMaximize();
 		}
 		delta = simValue("Combat Rate") - numeric_modifier("Combat Rate");
@@ -2854,7 +2854,7 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 		if (speculative) {
 			simMaximizeWith(max);
 		} else {
-			addToMaximize("-200combat " + amt + "max");
+			addToMaximize(max);
 			simMaximize();
 		}
 		delta = simValue("Combat Rate") - numeric_modifier("Combat Rate");
@@ -3028,7 +3028,7 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 		}
 		else
 		{
-			addToMaximize("500initiative " + amt + "max");
+			addToMaximize(max);
 			simMaximize();
 		}
 		delta = simValue("Initiative") - numeric_modifier("Initiative");
