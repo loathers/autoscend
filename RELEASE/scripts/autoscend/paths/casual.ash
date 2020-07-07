@@ -23,3 +23,21 @@ boolean inPostRonin()
 	}
 	return false;
 }
+
+boolean LM_canInteract()
+{
+	//this function is called early once every loop of doTasks() in autoscend.ash to do things when we have unlimited mall access
+	//which indicates postronin or casual or aftercore. currently won't get called in aftercore
+	
+	if(!can_interact())
+	{
+		return false;
+	}
+	
+	if(get_property("lastEmptiedStorage").to_int() != my_ascensions())
+	{
+		cli_execute("pull all");
+	}
+	
+	return false;
+}
