@@ -1744,8 +1744,7 @@ boolean L11_redZeppelin()
 		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
 		foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
 		{
-			if((item_amount(it) > 0) && can_equip(it))
-			{
+			if (possessEquipment(it) && can_equip(it)) {
 				lynyrd_protestors += 5;
 			}
 		}
