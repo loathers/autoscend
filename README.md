@@ -11,6 +11,10 @@ Seriously, we need and want the help. Want to learn how to code? Or maybe you kn
 autoscend is a script that will play through an entire ascension for you in the Kingdom of Loathing.
 It is built up from sl\_ascend and cc\_ascend before it.
 
+## License
+[![License: CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)  
+This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+
 ## Installation
 
 Run this command in the graphical CLI:
