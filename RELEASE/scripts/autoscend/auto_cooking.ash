@@ -844,7 +844,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
-	boolean[item] blacklist = $items[Cursed Punch];
+	boolean[item] blacklist = $items[Cursed Punch, Unidentified Drink];
 	boolean[item] craftable_blacklist;
 
 	// If we have 2 sticks of firewood, the current knapsack-solver
@@ -963,7 +963,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				// Is this a good estimate of how many adventures a pull is worth? I don't know!
 				// This could be a property, I don't know.
-				actions[n].desirability -= 6.0;
+				actions[n].desirability -= 5.0;
 			}
 			if (type == SL_ORGAN_STOMACH && auto_is_valid($item[special seasoning]))
 			{
