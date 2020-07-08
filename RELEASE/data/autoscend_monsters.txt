@@ -115,6 +115,8 @@ sniff	20	Possessed Wine Rack
 sniff	21	Blue Oyster cultist
 sniff	22	Dirty Old Lihc	prop:cyrptNicheEvilness>28
 sniff	23	Possibility Giant	prop:chaosButterflyThrown=false;item:chaos butterfly<1
+sniff	24	Serialbus	item:bus pass<5
+sniff	25	CH Imp	item:imp air<5
 
 # Gotta get that wig
 yellowray	0	Burly Sidekick	item:Mohawk Wig<1

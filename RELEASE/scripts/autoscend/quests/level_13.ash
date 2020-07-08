@@ -649,13 +649,15 @@ boolean L13_sorceressDoor()
 		return false;
 	}
 
+	if (LX_getDigitalKey() || LX_getStarKey()) {
+		return true;
+	}
+
 	// Low Key Summer has an entirely different door.
 	if (in_lowkeysummer())
 	{
 		return L13_sorceressDoorLowKey();
 	}
-
-	if(LX_getDigitalKey()) return true;
 
 	string page = visit_url("place.php?whichplace=nstower_door");
 	if(contains_text(page, "ns_lock6"))
@@ -956,14 +958,10 @@ boolean L13_towerNSTower()
 		{
 			cli_execute("concert 2");
 		}
-		if(!canChangeFamiliar())
-		{
-			addToMaximize("200meat drop");
-		}
-		else
-		{
-			addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconscious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
-		}
+		
+		handleFamiliar("meat");
+		addToMaximize("200meat drop");
+		
 		if(my_class() == $class[Seal Clubber])
 		{
 			autoEquip($item[Meat Tenderizer is Murder]);

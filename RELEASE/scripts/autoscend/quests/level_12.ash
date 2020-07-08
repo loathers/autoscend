@@ -731,8 +731,6 @@ boolean L12_startWar()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 	
-	providePlusNonCombat(25);
-
 	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
@@ -860,8 +858,6 @@ boolean L12_filthworms()
 			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
 		}
 		buffMaintain($effect[Frosty], 0, 1, 1);
-		
-		addToMaximize("200item");
 		
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
@@ -1087,13 +1083,6 @@ boolean L12_sonofaBeach()
 
 	if(auto_my_path() != "Live. Ascend. Repeat.")
 	{
-		if(!providePlusCombat(25, true))
-		{
-			auto_log_warning("Failure in +Combat acquisition or -Combat shrugging (lobsterfrogman), delaying", "red");
-			equipBaseline();
-			return false;
-		}
-
 		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
 		{
 			if((item_amount($item[Ass-Stompers of Violence]) > 0) && (equipped_item($slot[acc1]) != $item[Ass-Stompers of Violence]) && can_equip($item[Ass-Stompers of Violence]))
@@ -1234,12 +1223,6 @@ boolean L12_sonofaPrefix()
 
 	if(auto_my_path() != "Live. Ascend. Repeat.")
 	{
-		if(!providePlusCombat(25))
-		{
-			auto_log_warning("Failure in +Combat acquisition or -Combat shrugging (lobsterfrogman), delaying", "red");
-			return false;
-		}
-
 		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
 		{
 			if((item_amount($item[Ass-Stompers of Violence]) > 0) && (equipped_item($slot[acc1]) != $item[Ass-Stompers of Violence]) && can_equip($item[Ass-Stompers of Violence]))
@@ -1548,16 +1531,8 @@ boolean L12_themtharHills()
 	}
 	buffMaintain($effect[Purr of the Feline], 10, 1, 1);
 	songboomSetting("meat");
-
-	if(!canChangeFamiliar())
-	{
-		addToMaximize("200meat drop");
-	}
-	else
-	{
-		addToMaximize("200meat drop,switch Hobo Monkey,switch rockin' robin,switch adventurous spelunker,switch Grimstone Golem,switch Fist Turkey,switch Unconscious Collective,switch Golden Monkey,switch Angry Jung Man,switch Leprechaun,switch cat burglar");
-		handleFamiliar(my_familiar());
-	}
+	handleFamiliar("meat");
+	addToMaximize("200meat drop");
 
 	if(get_property("auto_useWishes").to_boolean())
 	{
@@ -1623,6 +1598,7 @@ boolean L12_themtharHills()
 		// if we're in a 100% run, this property returns "none" which will unequip our familiar and ruin a 100% run.
 		use_familiar(to_familiar(get_property("auto_familiarChoice")));
 	}
+	equipMaximizedGear();
 	float meatDropHave = meat_drop_modifier();
 
 	if (isActuallyEd() && have_skill($skill[Curse of Fortune]) && item_amount($item[Ka Coin]) > 0)

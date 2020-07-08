@@ -317,7 +317,7 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// Killing jar saves adventures unlocking the Pyramid.
-	if ($location[The Haunted Library] == place && item_amount($item[killing jar]) < 1) {
+	if ($location[The Haunted Library] == place && item_amount($item[killing jar]) < 1 && (get_property("gnasirProgress").to_int() & 4) == 0 && get_property("desertExploration") < 100) {
 		famChoice = lookupFamiliarDatafile("item");
 	}
 

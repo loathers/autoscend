@@ -89,6 +89,11 @@ boolean auto_post_adventure()
 		}
 	}
 
+	if (my_location() == $location[The Old Landfill] && item_amount($item[funky junk key]) > 0) {
+		// got a key drop, reset the tracking property.
+		set_property("auto_junkspritesencountered", 0);
+	}
+
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		auto_log_info("Postadventure skipped by standard adventure handler.", "green");
@@ -451,7 +456,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 15, 1, 10);
 		// Only maintain skills in path with familiars
-		if(auto_have_familiar($familiar[Mosquito]))
+		if(pathAllowsFamiliar())
 		{
 			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
 			if(regen > 10.0)
@@ -512,7 +517,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 20, 1, 10);
 		// Only Maintain skills in path with familiars
-		if(auto_have_familiar($familiar[Mosquito]))
+		if(pathAllowsFamiliar())
 		{
 			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
 			if(regen > 10.0)
@@ -579,7 +584,7 @@ boolean auto_post_adventure()
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
 		// Only maintain in path with familiars
-		if(auto_have_familiar($familiar[Mosquito]))
+		if(pathAllowsFamiliar())
 		{
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 			if(regen > 4.0)
@@ -689,7 +694,7 @@ boolean auto_post_adventure()
 		}
 
 		// Only maintain in path with familiars
-		if(auto_have_familiar($familiar[Mosquito]))
+		if(pathAllowsFamiliar())
 		{
 			buffMaintain($effect[Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
@@ -779,7 +784,7 @@ boolean auto_post_adventure()
 		}
 
 		// Only maintain in path with familiars
-		if(auto_have_familiar($familiar[Mosquito]))
+		if(pathAllowsFamiliar())
 		{
 			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);
 		}

@@ -318,7 +318,6 @@ boolean L8_getMineOres()
 	} else {
 		if (!possessOutfit("Mining Gear")) {
 			auto_log_info("Getting Mining Gear.", "blue");
-			providePlusNonCombat(25);
 			return autoAdv($location[Itznotyerzitz Mine]);
 		} else if (possessOutfit("Mining Gear", true)) {
 			equipMaximizedGear();
@@ -415,7 +414,6 @@ boolean L8_trapperExtreme()
 	}
 
 	auto_log_info("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
-	providePlusNonCombat(25);
 	return autoAdv($location[The eXtreme Slope]);
 }
 

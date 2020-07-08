@@ -1,6 +1,17 @@
 script "auto_pre_adv.ash";
 import<autoscend.ash>
 
+void print_footer() {
+	auto_log_info("HP: " + my_hp() + "/" + my_maxhp() + ", MP: " + my_mp() + "/" + my_maxmp() + " Meat: " + my_meat(), "blue");
+	if (my_class() == $class[Sauceror]) {
+		auto_log_info("Soulsauce: " + my_soulsauce(), "blue");
+	}
+	auto_log_info("Familiar: " + my_familiar().to_string() + " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs.", "blue");
+	auto_log_info("ML: " + monster_level_adjustment() + " Encounter: " + combat_rate_modifier() + " Init: " + initiative_modifier(), "blue");
+	auto_log_info("Exp Bonus: " + experience_bonus() + " Meat Drop: " + meat_drop_modifier() + " Item Drop: " + item_drop_modifier(), "blue");
+	auto_log_info("Resists: " + numeric_modifier("Hot Resistance") + "/" + numeric_modifier("Cold Resistance") + "/" + numeric_modifier("Stench Resistance") + "/" + numeric_modifier("Spooky Resistance") + "/" + numeric_modifier("Sleaze Resistance"), "blue");
+}
+
 boolean auto_pre_adventure()
 {
 	auto_log_debug("Running auto_pre_adv.ash");
@@ -46,11 +57,6 @@ boolean auto_pre_adventure()
 	if((get_property("_bittycar") == "") && (item_amount($item[Bittycar Meatcar]) > 0))
 	{
 		use(1, $item[Bittycar Meatcar]);
-	}
-
-	if((have_effect($effect[Coated in Slime]) > 0) && (place != $location[The Slime Tube]))
-	{
-		visit_url("clan_slimetube.php?action=chamois&pwd");
 	}
 
 	if((place == $location[The Broodling Grounds]) && (my_class() == $class[Seal Clubber]))
@@ -125,33 +131,10 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if(!inAftercore())
-	{
-		if(($locations[Barrrney\'s Barrr, The Black Forest, The F\'c\'le, Monorail Work Site] contains place))
-		{
-			acquireCombatMods(zone_combatMod(place)._int, true);
-		}
-		if(place == $location[Sonofa Beach] && !auto_voteMonster())
-		{
-			acquireCombatMods(zone_combatMod(place)._int, true);
-		}
-
-		if($locations[Whitey\'s Grove] contains place)
-		{
-			acquireCombatMods(zone_combatMod(place)._int, true);
-		}
-
-		if($locations[A Maze of Sewer Tunnels, The Castle in the Clouds in the Sky (Basement), The Castle in the Clouds in the Sky (Ground Floor), The Castle in the Clouds in the Sky (Top Floor), The Dark Elbow of the Woods, The Dark Heart of the Woods, The Dark Neck of the Woods, The Defiled Alcove, The Defiled Cranny, The Extreme Slope, The Haunted Ballroom, The Haunted Bathroom, The Haunted Billiards Room, The Haunted Gallery, The Hidden Hospital, The Hidden Park, The Ice Hotel, Inside the Palindome, The Obligatory Pirate\'s Cove, The Penultimate Fantasy Airship, The Poop Deck, The Spooky Forest, Super Villain\'s Lair, Twin Peak, The Upper Chamber, Wartime Hippy Camp, Wartime Hippy Camp (Frat Disguise)] contains place)
-		{
-			acquireCombatMods(zone_combatMod(place)._int, true);
-		}
-	}
-	else
-	{
-		if((get_property("questL11Spare") == "finished") && (place == $location[The Hidden Bowling Alley]) && (item_amount($item[Bowling Ball]) > 0))
-		{
-			put_closet(item_amount($item[Bowling Ball]), $item[Bowling Ball]);
-		}
+	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
+	generic_t combatModifier = zone_combatMod(place);
+	if (combatModifier._boolean) {
+		acquireCombatMods(combatModifier._int, true);
 	}
 
 	if(monster_level_adjustment() > 120)
@@ -328,7 +311,7 @@ boolean auto_pre_adventure()
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean)
 	{
-		addToMaximize("50item " + ceil(itemNeed._float) + "max");
+		addToMaximize("50item " + (ceil(itemNeed._float) + 100.0) + "max"); // maximizer treats item drop as 100 higher than it actually is for some reason.
 		simMaximize();
 		float itemDrop = simValue("Item Drop");
 		if(itemDrop < itemNeed._float)
@@ -472,7 +455,7 @@ boolean auto_pre_adventure()
 		januaryToteAcquire($item[Wad Of Used Tape]);
 	}
 
-// EQUIP MAXIMIZED GEAR
+	// EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
 	cli_execute("checkpoint clear");
 
@@ -532,6 +515,7 @@ boolean auto_pre_adventure()
 		change_mcd(mcd_target);
 	}
 
+	print_footer();
 	return true;
 }
 

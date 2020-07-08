@@ -62,15 +62,6 @@ boolean L10_airship()
 	{
 		bat_formBats();
 	}
-	else
-	{
-		providePlusNonCombat(25);
-
-		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-		buffMaintain($effect[Snow Shoes], 0, 1, 1);
-		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
-		buffMaintain($effect[Gummed Shoes], 0, 1, 1);
-	}
 
 	if (isActuallyEd() && $location[The Penultimate Fantasy Airship].turns_spent < 1)	
 	{	
@@ -129,10 +120,8 @@ boolean L10_basement()
 		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella) or Neckbeard Choice
 	}
 
-	if(!auto_forceNextNoncombat())
-	{
-		providePlusNonCombat(25);
-	}
+	auto_forceNextNoncombat();
+
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Bendable Knees]) && (item_amount($item[Bottle of Gregnadigne]) == 0))
@@ -226,7 +215,6 @@ boolean L10_ground()
 	}
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
-	providePlusNonCombat(25);
 
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
@@ -305,10 +293,7 @@ boolean L10_topFloor()
 		set_property("choiceAdventure679", 1);
 	}
 
-	if(!auto_forceNextNoncombat())
-	{
-		providePlusNonCombat(25);
-	}
+	auto_forceNextNoncombat();
 	autoEquip($item[mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
@@ -359,10 +344,7 @@ boolean L10_holeInTheSkyUnlock()
 	set_property("choiceAdventure678", 3);
 	set_property("choiceAdventure676", 4);
 
-	if(!auto_forceNextNoncombat())
-	{
-		providePlusNonCombat(25);
-	}
+	auto_forceNextNoncombat();
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
 	return true;
