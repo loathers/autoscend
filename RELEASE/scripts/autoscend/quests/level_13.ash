@@ -675,11 +675,7 @@ boolean L13_sorceressDoor()
 
 	if(towerKeyCount() < 3)
 	{
-		while(useMalware());
-		if(towerKeyCount() < 3)
-		{
-			abort("Do not have enough hero keys");
-		}
+		abort("Do not have enough hero keys");
 	}
 
 	if(contains_text(page, "ns_lock1"))

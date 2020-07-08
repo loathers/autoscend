@@ -23,7 +23,9 @@ boolean LM_edTheUndying();						//Defined in autoscend/auto_edTheUndying.ash
 boolean LX_desertAlternate();
 boolean LX_hippyBoatman();
 boolean LX_lockPicking();
-boolean LX_phatLootToken();
+float estimateDailyDungeonAdvNeeded();				//Defined in autoscend/quests/level_any.ash
+boolean LX_phatLootToken();							//Defined in autoscend/quests/level_any.ash
+boolean LX_dailyDungeonToken();						//Defined in autoscend/quests/level_any.ash
 boolean LX_islandAccess();
 boolean fancyOilPainting();
 boolean LX_fcle();
