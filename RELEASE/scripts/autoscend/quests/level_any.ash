@@ -496,7 +496,8 @@ boolean LX_dailyDungeonToken()
 	
 	// make sure we have enough adventures. since partial completion means wasted adventures.
 	int adv_budget = my_adventures() - auto_advToReserve();
-	if(adv_budget < estimateDailyDungeonAdvNeeded())
+	if(adv_budget < ceil(estimateDailyDungeonAdvNeeded()))
+
 	{
 		return false;	//not enough adv
 	}
