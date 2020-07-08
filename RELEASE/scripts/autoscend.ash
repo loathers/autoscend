@@ -196,6 +196,7 @@ void initializeSettings()
 	set_property("auto_skipL12Farm", "false");
 	set_property("auto_L12FarmStage", "0");
 	set_property("choiceAdventure1003", 0);
+	set_property("auto_junkspritesencountered", 0);
 	remove_property("auto_minedCells");
 	beehiveConsider();
 
@@ -204,7 +205,7 @@ void initializeSettings()
 	{
 		auto_sourceTerminalRequest("enquiry monsters.enq");
 	}
-	else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && auto_have_familiar($familiar[Mosquito]))
+	else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && pathAllowsFamiliar())
 	{
 		auto_sourceTerminalRequest("enquiry familiar.enq");
 	}
@@ -2638,7 +2639,7 @@ boolean LX_craftAcquireItems()
 	}
 	else
 	{
-		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && auto_have_familiar($familiar[Mosquito]))
+		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathAllowsFamiliar())
 		{
 			set_property("choiceAdventure1106", 3);
 		}
@@ -3080,6 +3081,24 @@ void print_header()
 	}
 }
 
+void resetState() {
+	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
+	//We use boolean instead of adventure count because of free combats.
+	
+	set_property("auto_doCombatCopy", "no");
+	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
+	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
+	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure
+	set_property("choiceAdventure1387", -1); // using the force non-combat
+	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
+
+	horseDefault(); // horsery tracking
+
+	bat_formNone(); // Vampyre form tracking
+
+	resetMaximize();
+}
+
 boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
@@ -3097,7 +3116,8 @@ boolean doTasks()
 	if(my_familiar() == $familiar[Stooper])
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		use_familiar($familiar[none]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[none]);
+		use_familiar(fam);
 	}
 	if(my_inebriety() > inebriety_limit())
 	{
@@ -3115,11 +3135,6 @@ boolean doTasks()
 		return false;	
 	}
 	
-	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
-	//We use boolean instead of adventure count because of free combats.
-	resetThisLoop();
-	set_property("choiceAdventure1387", -1); // using the force non-combat
-
 	print_header();
 
 	auto_interruptCheck();
@@ -3179,10 +3194,8 @@ boolean doTasks()
 		auto_log_warning("This feature is super experimental. Please report any issues.", "red");
 	}
 
-	bat_formNone();
-	horseDefault();
-	resetMaximize();
-	resetFlavour();
+	// actually doing stuff should start from here onwards.
+	resetState();
 
 	basicAdjustML();
 
@@ -3334,15 +3347,10 @@ boolean doTasks()
 	if(LX_artistQuest())				return true;
 	if(L9_leafletQuest())				return true;
 	if(L5_findKnob())					return true;
-	if(LM_edTheUndying())				return true;
 	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
-
-	if(snojoFightAvailable() && (my_daycount() == 2) && (get_property("snojoMoxieWins").to_int() == 10))
-	{
-		return autoAdv(1, $location[The X-32-F Combat Training Snowman]);
-	}
-
+	if (LM_edTheUndying())				return true;
+	if (LX_lowkeySummer())				return true;
 	if(resolveSixthDMT())			return true;
 	if(LX_dinseylandfillFunbucks())		return true;
 	if(L12_flyerFinish())				return true;
@@ -3356,7 +3364,6 @@ boolean doTasks()
 	{
 		if(LX_bitchinMeatcar())			return true;		//buy the meatcar before switching signs with the rune spoon
 	}
-	if(LX_findHelpfulLowKey())			return true;
 	if(LX_unlockDesert())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_unlockPirateRealm())			return true;
@@ -3401,12 +3408,6 @@ boolean doTasks()
 
 	if(L7_crypt())						return true;
 	if(fancyOilPainting())				return true;
-
-	if((my_level() > 6) && (my_daycount() != 2))
-	{
-		if(LX_freeCombats()) return true;
-	}
-
 	if(L8_trapperGround())				return true;
 	if(L8_trapperNinjaLair())			return true;
 	if(L8_trapperGroar())				return true;
@@ -3459,7 +3460,6 @@ boolean doTasks()
 
 	if (L12_clearBattlefield())			return true;
 	if(LX_koeInvaderHandler())			return true;
-	if (LX_lowkeySummer())					return true;
 	
 	//release the softblock on quests that are waiting for shen quest
 	if(allowSoftblockShen())
@@ -3578,7 +3578,6 @@ void auto_begin()
 	backupSetting("autoAbortThreshold", -0.05);
 
 	backupSetting("currentMood", "apathetic");
-	backupSetting("battleAction", "custom combat script");
 	
 	backupSetting("choiceAdventure1107", 1);
 
@@ -3610,7 +3609,8 @@ void auto_begin()
 	if(my_familiar() == $familiar[Stooper])
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		use_familiar($familiar[none]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[none]);
+		use_familiar(fam);
 	}
 	dailyEvents();
 

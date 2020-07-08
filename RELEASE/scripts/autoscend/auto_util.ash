@@ -620,6 +620,15 @@ boolean startMeatsmithSubQuest()
 	return false;
 }
 
+boolean finishMeatsmithSubQuest() {
+	if (internalQuestStatus("questM23Meatsmith") == 1) {
+		visit_url("shop.php?whichshop=meatsmith");
+		run_choice(2);
+		return true;
+	}
+	return false;
+}
+
 boolean startGalaktikSubQuest()
 {
 	if(auto_my_path() == "Nuclear Autumn")
@@ -637,6 +646,20 @@ boolean startGalaktikSubQuest()
 		temp = visit_url("shop.php?whichshop=doc&action=talk");
 		temp = visit_url("choice.php?pwd=&whichchoice=1064&option=1");
 		return true;
+	}
+	return false;
+}
+
+boolean finishGalaktikSubQuest() {
+	if (item_amount($item[fraudwort]) >= 3 && item_amount($item[shysterweed]) >= 3 && item_amount($item[swindleblossom]) >= 3) {
+		string temp = visit_url("shop.php?whichshop=doc");
+		if (temp.contains_text("What did you need, again?")) {
+			visit_url("shop.php?whichshop=doc&action=talk");
+		}
+		run_choice(2);
+		if (internalQuestStatus("questM24Doc") > 1) {
+			return true;
+		}
 	}
 	return false;
 }
@@ -6447,11 +6470,6 @@ element currentFlavour()
 	return $element[none];
 }
 
-void resetFlavour()
-{
-	set_property("_auto_tunedElement", "");
-}
-
 boolean setFlavour(element ele)
 {
 	if(!auto_have_skill($skill[Flavour of Magic]))
@@ -7223,13 +7241,3 @@ int poolSkillPracticeGains()
 	return count;
 }
 
-void resetThisLoop()
-{
-	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
-	//We use boolean instead of adventure count because of free combats.
-	
-	set_property("auto_doCombatCopy", "no");
-	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
-	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
-	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure
-}

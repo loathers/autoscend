@@ -3,149 +3,6 @@ script "auto_zone.ash"
 //All functions should fail if the king is liberated?
 //Zone functions come here.
 
-generic_t zone_needItem(location loc);
-generic_t zone_difficulty(location loc);
-generic_t zone_combatMod(location loc);
-generic_t zone_delay(location loc);
-generic_t zone_available(location loc);
-boolean zone_unlock(location loc);
-location[int] zone_list();
-int[location] zone_delayable();
-boolean zone_isAvailable(location loc);
-boolean zone_isAvailable(location loc, boolean unlockIfPossible);
-location[int] zones_available();
-monster[int] mobs_available();
-item[int] drops_available();
-item[int] hugpocket_available();
-boolean is_ghost_in_zone(location loc);
-
-boolean LX_unlockThinknerdWarehouse(boolean spend_resources)
-{
-	//unlocks [The Thinknerd Warehouse], returns true if successful or adv is spent
-	//much easier to do if you already have torso awaregness
-	
-	if(internalQuestStatus("questM22Shirt") > -1)
-	{
-		return false;
-	}
-	
-	auto_log_debug("Trying to unlock [The Thinknerd Warehouse] with spend_resources set to " + spend_resources);
-	
-	//unlocking is a multi step process. We want to try things in reverse to conserve resources and in case some steps were already complete.
-	
-	boolean useLetter()
-	{
-		if(item_amount($item[Letter for Melvign the Gnome]) > 0)
-		{
-			if(use(1, $item[Letter for Melvign the Gnome]))
-			{
-				auto_log_debug("Successfully unlocked the [The Thinknerd Warehouse]");
-				return true;
-			}
-			else
-			{
-				abort("Somehow failed to use [Letter for Melvign the Gnome]... aborting to prevent infinite loops");
-			}
-		}
-		return false;
-	}
-	
-	item target_shirt = $item[none];
-	boolean hasShirt = false;
-	
-	//one time initial scan of inventory
-	foreach it in get_inventory()
-	{
-		if(to_slot(it) == $slot[shirt])
-		{
-			target_shirt = it;
-			hasShirt = true;
-			break;
-		}
-	}
-		
-	boolean useShirtThenLetter()
-	{
-		if(!hasShirt)
-		{
-			return false;
-		}
-		string temp = visit_url("inv_equip.php?pwd&which=2&action=equip&whichitem=" + target_shirt.to_int());
-		if(useLetter()) return true;
-		auto_log_error("For some reason LX_unlockThinknerdWarehouse failed when trying to use the shirt [" + target_shirt + "] to get [Letter for Melvign the Gnome] to start the quest", "red");
-		return false;
-	}
-	void getShirtWhenHaveNone(item it)
-	{
-		if(hasShirt) return;
-		if(canPull(it))
-		{
-			if(pullXWhenHaveY(it, 1, 0))
-			{
-				target_shirt = it;
-				hasShirt = true;
-			}
-		}
-		else if(creatable_amount(it) > 0 && (spend_resources || knoll_available()))
-		{
-			if(create(1, it))
-			{
-				target_shirt = it;
-				hasShirt = true;
-			}
-		}
-	}
-	
-	//if you already had a shirt or a letter, then just unlock the quest now
-	if(useLetter()) return true;
-	if(useShirtThenLetter()) return true;
-	
-	//Try to acquire a shirt.
-	
-	//IOTM that does not require a pull
-	januaryToteAcquire($item[Letter For Melvign The Gnome]);	//no stats and no pull required
-	if(useLetter()) return true;
-	
-	//TODO, make the following IOTM foldables actually work
-	//getShirtWhenHaveNone($item[flaming pink shirt])		//foldable IOTM that requires torso awaregness.
-	//getShirtWhenHaveNone($item[origami pasties])			//foldable IOTM that requires torso awaregness.
-	//getShirtWhenHaveNone($item[sugar shirt])				//libram summons sugar sheet, multiuse 1 with torso awaregness to get sugar shirt
-	
-	//Shirts to pull
-	getShirtWhenHaveNone($item[Sneaky Pete\'s leather jacket]);		//useful IOTM shirt with no state requirements to wear
-	getShirtWhenHaveNone($item[Sneaky Pete\'s leather jacket (collar popped)]);
-	getShirtWhenHaveNone($item[Professor What T-Shirt]);			//you likely have it, no requirements to wear, very cheap in mall
-	
-	//Shirts to smith. Will likely cost 1 adv unless in knoll sign.
-	getShirtWhenHaveNone($item[white snakeskin duster]);		//7 mus req
-	getShirtWhenHaveNone($item[clownskin harness]);				//15 mus req
-	getShirtWhenHaveNone($item[demonskin jacket]);				//25 mus req
-	getShirtWhenHaveNone($item[gnauga hide vest]);				//25 mus req
-	getShirtWhenHaveNone($item[tuxedo shirt]);					//35 mus req
-	getShirtWhenHaveNone($item[yak anorak]);					//42 mus req
-	getShirtWhenHaveNone($item[hipposkin poncho]);				//45 mus req
-	getShirtWhenHaveNone($item[lynyrdskin tunic]);				//70 mus req
-	getShirtWhenHaveNone($item[bat-ass leather jacket]);		//77 mus req
-
-	//wish for a shirt
-	if(spend_resources && wishesAvailable() > 0 && shouldUseWishes() && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
-	{
-		makeGenieWish("for a blessed rustproof +2 gray dragon scale mail");
-		target_shirt = $item[blessed rustproof +2 gray dragon scale mail];
-		hasShirt = true;
-	}
-	
-	//TODO adventure somewhere to acquire shirt
-	//if(spend_resources && hasTorso())
-	
-	//did we succeeded in getting a shirt? use it and then the letter.
-	if(useShirtThenLetter()) return true;
-	
-	//sadness, we couldn't unlock this zone.
-	auto_log_debug("Failed to unlock [The Thinknerd Warehouse]");
-	return false;
-}
-
 boolean zone_unlock(location loc){
 
 	boolean unlocked = false;
@@ -220,18 +77,51 @@ record generic_t
 
 generic_t zone_needItem(location loc)
 {
+	// attempting to list these in descending order in relation to the quest they relate to
+	// (so L13 quest stuff first then L12 then L11 and so on).
 	generic_t retval;
 	float value = 0.0;
 	switch(loc)
 	{
+	case $location[8-Bit Realm]:
+		value = 50.0;
+		break;
+	case $location[The Hole in the Sky]:
+		if (item_amount($item[Star]) < 8 || item_amount($item[Line]) < 7) {
+			value = 30.0;
+		}
+		break;
+	case $location[Frat House]:
+	case $location[Hippy Camp]:
+			value = 5.0;
+		break;
+	case $location[Wartime Frat House]:
+		if (!possessOutfit("Frat Warrior Fatigues")) {
+			value = 5.0;
+		}
+	case $location[Wartime Hippy Camp]:
+		if (!possessOutfit("War Hippy Fatigues")) {
+			value = 5.0;
+		}
+	case $location[The Battlefield (Frat Uniform)]:
+	case $location[The Battlefield (Hippy Uniform)]:
+			value = 5.0;
+		break;
+	case $location[The Hatching Chamber]:
+	case $location[The Feeding Chamber]:
+	case $location[The Royal Guard Chamber]:
+		value = 10.0;
+		break;
 	case $location[The Oasis]:
 		value = 30.0;
 		break;
 	case $location[The Middle Chamber]:
 		value = 20.0;
 		break;
-	case $location[The Deep Machine Tunnels]:
-		value = 30.0;			#Just a guess.
+	case $location[The Haunted Library]:
+		if (item_amount($item[killing jar]) < 1 && (get_property("gnasirProgress").to_int() & 4) == 0 && get_property("desertExploration") < 100) {
+			value = 10.0;
+		}
 		break;
 	case $location[The Haunted Laundry Room]:
 		value = 5.0 * (1.0 + get_property("auto_cabinetsencountered").to_float());
@@ -240,34 +130,122 @@ generic_t zone_needItem(location loc)
 		value = 5.0 * (1.0 + get_property("auto_wineracksencountered").to_float());
 		break;
 	case $location[The Hidden Park]:
-	case $location[The Hidden Apartment Building]:
-	case $location[The Hidden Office Building]:
-		if((get_property("hiddenTavernUnlock").to_int() < my_ascensions()) && !contains_text(get_property("banishedMonsters"), $monster[Pygmy Janitor]))
-		{
+		if (get_property("hiddenTavernUnlock").to_int() < my_ascensions()) {
 			value = 20.0;
 		}
 		break;
 	case $location[The Hidden Bowling Alley]:
-		// Should actually check if we have used 4/5 already.
-		if(item_amount($item[Bowling Ball]) == 0)
-		{
+		if (item_amount($item[Bowling Ball]) == 0 && get_property("hiddenBowlingAlleyProgress") < 5) {
 			value = 40.0;
-		}
-		//Once we have completed the Bowling Alley, we do not care about this anymore.
-		if((get_property("hiddenTavernUnlock").to_int() < my_ascensions()) && !contains_text(get_property("banishedMonsters"), $monster[Pygmy Janitor]))
-		{
-			value = 20.0;
 		}
 		break;
 	case $location[The Hidden Temple]:
 		//Only if we need stone wool manually for some reason.
 		//Or via the semi-rare!		(100/50/20 for SR, 25 Sheep)
-		break;
-	case $location[8-Bit Realm]:
-		value = 60.0;
+		if (have_effect($effect[Stone-Faced]) == 0) {
+			value = 20.0;
+		}
 		break;
 	case $location[The Black Forest]:
-		//Is it possible we want blackberries?
+		if (!possessEquipment($item[blackberry galoshes])) {
+			value = 20.0;
+		}
+		break;
+	case $location[Inside the Palindome]:
+		if (item_amount($item[Stunt Nuts]) == 0 && item_amount($item[Wet Stunt Nut Stew]) == 0) {
+			value = 30.0;
+		}
+		break;
+	case $location[Whitey\'s Grove]:
+		if(((item_amount($item[Lion Oil]) == 0) || (item_amount($item[Bird Rib]) == 0)) && (item_amount($item[Wet Stew]) == 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0) && (internalQuestStatus("questL11Palindome") < 5))
+		{
+			value = 25.0;
+		}
+		break;
+	case $location[The Copperhead Club]:
+	case $location[A Mob of Zeppelin Protesters]:
+		value = 15.0;
+		break;
+	case $location[The Red Zeppelin]:
+		value = 30.0;
+		break;
+	case $location[The Penultimate Fantasy Airship]:
+		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]) && !possessEquipment($item[Titanium Assault Umbrella]))
+		{
+			value = 10.0;
+		}
+		if(!possessEquipment($item[Mohawk Wig]))
+		{
+			value = 10.0;
+		}
+		break;
+	case $location[The Castle in the Clouds in the Sky (Basement)]:
+		value = 40.0;
+		break;
+	case $location[The Castle in the Clouds in the Sky (Ground Floor)]:
+		value = 20.0;
+		break;
+	case $location[The Smut Orc Logging Camp]:
+		if(item_amount($item[Ten-Leaf Clover]) == 0)
+		{
+			value = 10.0;
+		}
+		break;
+	case $location[A-Boo Peak]:
+		if(get_property("auto_aboopending").to_int() == 0)
+		{
+			value = 15.0;
+		}
+		break;
+	case $location[Twin Peak]:
+		value = 15.0;
+		break;
+	case $location[Oil Peak]:
+		if ((get_property("twinPeakProgress").to_int() & 4) == 0 && item_amount($item[Bubblin\' Crude]) < 12 && item_amount($item[Jar Of Oil]) < 1) {
+			if (monster_level_adjustment() > 100) {
+				value = 10.0;
+			} else if(monster_level_adjustment() > 50) {
+				value = 30.0;
+			} else if (monster_level_adjustment() > 20) {
+				value = 10.0;
+			}
+		}
+		break;
+	case $location[Itznotyerzitz Mine]:
+		if (!possessOutfit("Mining Gear") && item_amount($item[Ten-Leaf Clover]) == 0)
+		{
+			value = 10.0;
+		}
+		break;
+	case $location[The Goatlet]:
+		value = 40.0;
+		break;
+	case $location[The Extreme Slope]:
+		if(!possessOutfit("eXtreme Cold-Weather Gear"))
+		{
+			value = 10.0;
+		}
+	case $location[The Defiled Nook]:
+		// Handle for a gravy boat?
+		if(get_property("cyrptNookEvilness").to_int() > 26)
+		{
+			value = 20.0;
+		}
+		break;
+	case $location[Cobb\'s Knob Barracks]:
+		if(!have_outfit("Knob Goblin Elite Guard Uniform"))
+		{
+			value = 10.0;
+		}
+		break;
+	case $location[Cobb\'s Knob Harem]:
+		if(item_amount($item[Knob Goblin Perfume]) == 0)
+		{
+			value = 25.0;
+		}
+		if (!possessOutfit("Knob Goblin Harem Girl Disguise")) {
+			value = 20.0;
+		}
 		break;
 	case $location[The Beanbat Chamber]:
 		if(item_amount($item[Enchanted Bean]) == 0)
@@ -292,34 +270,6 @@ generic_t zone_needItem(location loc)
 			value = 10.0;
 		}
 		break;
-	case $location[Inside the Palindome]:
-		if((item_amount($item[Stunt Nuts]) == 0) && (item_amount($item[Wet Stew]) == 0))
-		{
-			value = 32.0;
-		}
-		break;
-	case $location[Whitey\'s Grove]:
-		if(((item_amount($item[Lion Oil]) == 0) || (item_amount($item[Bird Rib]) == 0)) && (item_amount($item[Wet Stew]) == 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0) && (internalQuestStatus("questL11Palindome") < 5))
-		{
-			value = 25.0;
-		}
-		break;
-	case $location[Cobb\'s Knob Barracks]:
-		if(!have_outfit("Knob Goblin Elite Guard Uniform"))
-		{
-			value = 10.0;
-		}
-		break;
-	case $location[Cobb\'s Knob Harem]:
-		if(item_amount($item[Knob Goblin Perfume]) == 0)
-		{
-			value = 25.0;
-		}
-		if(!have_outfit("Knob Goblin Harem Girl Disguise"))
-		{
-			value = 20.0;
-		}
-		break;
 	case $location[The Laugh Floor]:
 		if(item_amount($item[Imp Air]) < 5)
 		{
@@ -332,13 +282,6 @@ generic_t zone_needItem(location loc)
 			value = 15.0;
 		}
 		break;
-	case $location[The Defiled Nook]:
-		// Handle for a gravy boat?
-		if(get_property("cyrptNookEvilness").to_int() > 26)
-		{
-			value = 20.0;
-		}
-		break;
 	case $location[Barrrney\'s Barrr]:
 		if(item_amount($item[Cocktail Napkin]) == 0)
 		{
@@ -346,90 +289,17 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The F\'c\'le]:
-		if((item_amount($item[Ball Polish]) == 0) || (item_amount($item[Mizzenmast Mop]) == 0) ||(item_amount($item[Rigging Shampoo]) == 0))
-		{
-			value = 30.0;
-		}
-		break;
-	case $location[The Hatching Chamber]:
-	case $location[The Feeding Chamber]:
-	case $location[The Royal Guard Chamber]:
-		value = 10.0;
-		break;
-	case $location[The Smut Orc Logging Camp]:
-		if(item_amount($item[Ten-Leaf Clover]) == 0)
-		{
-			value = 10.0;
-		}
-		break;
-	case $location[A-Boo Peak]:
-		{
-			int progress = get_property("booPeakProgress").to_int();
-			progress -= (30 * item_amount($item[A-Boo Clue]));
-			if(get_property("auto_aboopending").to_int() != 0)
-			{
-				progress -= 30;
-			}
-			if(progress > 4)
-			{
-				value = 15.0;
-			}
-		}
-		break;
-	case $location[Twin Peak]:
-		value = 15.0;
-		break;
-	case $location[Oil Peak]:
-		// Should probably also check for Twin Peak completion here.
-		if((item_amount($item[Bubblin\' Crude]) < 12) && (item_amount($item[Jar Of Oil])  == 0))
-		{
-			if(monster_level_adjustment() > 100)
-			{
-				value = 10.0;
-			}
-			else if(monster_level_adjustment() > 50)
-			{
+		if (item_amount($item[Ball Polish]) == 0 || item_amount($item[Mizzenmast Mop]) == 0 || item_amount($item[Rigging Shampoo]) == 0) {
+			if (!possessEquipment($item[pirate fledges])) {
 				value = 30.0;
 			}
 		}
 		break;
-	case $location[Itznotyerzitz Mine]:
-		if(item_amount($item[Ten-Leaf Clover]) == 0)
-		{
-			value = 10.0;
-		}
+	case $location[The Old Landfill]:
+		value = 5.0 * (1.0 + get_property("auto_junkspritesencountered").to_float());
 		break;
-	case $location[The Goatlet]:
-		value = 40.0;
-		break;
-
-	case $location[The Extreme Slope]:
-		if(!have_outfit("extreme cold-weather gear"))
-		{
-			value = 10.0;
-		}
-
-	case $location[The Penultimate Fantasy Airship]:
-		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]) && !possessEquipment($item[Titanium Assault Umbrella]))
-		{
-			value = 10.0;
-		}
-		if(!possessEquipment($item[Mohawk Wig]))
-		{
-			value = 10.0;
-		}
-		break;
-	case $location[The Castle in the Clouds in the Sky (Basement)]:
-		//Should we care about Heavy D?
-		break;
-	case $location[The Castle in the Clouds in the Sky (Top Floor)]:
-		//Should we care about Thin Black Candles?
-		break;
-	case $location[The Hole in the Sky]:
-		if((item_amount($item[Star]) < 8) || (item_amount($item[Line]) < 7))
-		{
-			value = 30.0;
-		}
+	case $location[The Deep Machine Tunnels]:
+		value = 30.0;			#Just a guess.
 		break;
 	case $location[Barf Mountain]:
 		retval._float = 15.0;
@@ -485,19 +355,34 @@ generic_t zone_needItem(location loc)
 
 generic_t zone_combatMod(location loc)
 {
+	// attempting to list these in descending order in relation to the quest they relate to
+	// (so L13 quest stuff first then L12 then L11 and so on).
 	generic_t retval;
 	generic_t delay = zone_delay(loc);
 	int value = 0;
 	switch(loc)
 	{
+	case $location[Frat House]:
+	case $location[Hippy Camp]:
+		if (my_level() >= 9) {
+			value = -85;
+		}
+		break;
+	case $location[Wartime Frat House]:
+	case $location[Wartime Hippy Camp]:
+		value = -80;
+		break;
+	case $location[Sonofa Beach]:
+		value = 90;
+		break;
 	case $location[The Upper Chamber]:
 		value = -85;
 		break;
-	case $location[Super Villain\'s Lair]:
-		if(!get_property("_villainLairColorChoiceUsed").to_boolean() || !get_property("_villainLairDoorChoiceUsed").to_boolean() || !get_property("_villainLairSymbologyChoiceUsed").to_boolean())
-		{
-			value = -70;
-		}
+	case $location[The Haunted Billiards Room]:
+		value = -85;
+		break;
+	case $location[The Haunted Library]:
+		value = 25;
 		break;
 	case $location[The Haunted Gallery]:
 		if((delay._int == 0) || (!contains_text(get_property("relayCounters"), "Garden Banished")))
@@ -517,51 +402,23 @@ generic_t zone_combatMod(location loc)
 			value = -90;
 		}
 		break;
-	case $location[The Typical Tavern Cellar]:
-		//We could cut it off early if the Rat Faucet is the last one
-		//And marginally if we know the 3rd/6th square are forced events.
-		value = -75;
-		break;
-	case $location[Through the Spacegate]:
-	case $location[The Cheerless Spire (Level 5)]:
-		value = 5;
-		break;
-	case $location[The Cheerless Spire (Level 4)]:
-	case $location[The Cheerless Spire (Level 3)]:
-	case $location[The Cheerless Spire (Level 2)]:
-	case $location[The Cheerless Spire (Level 1)]:
+	case $location[The Hidden Park]:
 		value = -85;
 		break;
-	case $location[The Spooky Forest]:
-		if(delay._int == 0)
-		{
-			value = -85;
-		}
-		break;
 	case $location[The Hidden Temple]:
-		if(auto_my_path() == "G-Lover")
-		{
+		if (have_effect($effect[Stone-Faced]) == 0) {
 			value = -90;
 		}
 		break;
-	case $location[The Copperhead Club]:
 	case $location[A Mob Of Zeppelin Protesters]:
-	case $location[The Red Zeppelin]:
 		value = -70;
 		break;
-
 	case $location[The Black Forest]:
-		if(internalQuestStatus("questL13Final") < 5)
-		{
+		if (internalQuestStatus("questL13Final") < 6) {
 			value = 5;
-		}
-		else if(internalQuestStatus("questL13Final") == 5)
-		{
+		} else if (internalQuestStatus("questL13Final") == 6) {
 			value = -95;
 		}
-		break;
-	case $location[Monorail Work Site]:
-		value = 25;
 		break;
 	case $location[Inside the Palindome]:
 		if(((item_amount($item[Photograph Of A Red Nugget]) == 0) || (item_amount($item[Photograph Of An Ostrich Egg]) == 0) || (item_amount($item[Photograph Of God]) == 0)) && internalQuestStatus("questL11Palindome") <= 2)
@@ -579,80 +436,6 @@ generic_t zone_combatMod(location loc)
 			value = 15;
 		}
 		break;
-	case $location[The Dark Neck of the Woods]:
-		value = -85;
-		break;
-	case $location[The Dark Heart of the Woods]:
-		value = -85;
-		break;
-	case $location[The Dark Elbow of the Woods]:
-		value = -85;
-		break;
-	case $location[The Defiled Cranny]:
-		value = -85;
-		break;
-	case $location[The Defiled Alcove]:
-		value = -85;
-		break;
-	case $location[Barrrney\'s Barrr]:
-		if(internalQuestStatus("questM12Pirate") >= 0)
-		{
-			value = 20;
-		}
-		break;
-	case $location[The F\'c\'le]:
-		if((item_amount($item[Ball Polish]) == 0) || (item_amount($item[Mizzenmast Mop]) == 0) ||(item_amount($item[Rigging Shampoo]) == 0))
-		{
-			value = 20;
-		}
-		break;
-	case $location[The Poop Deck]:
-		value = -80;
-		break;
-	case $location[Wartime Hippy Camp (Frat Disguise)]:
-		value = -80;
-		break;
-	case $location[Wartime Hippy Camp]:
-		value = -80;
-		break;
-	case $location[The Extreme Slope]:
-		value = -95;
-		break;
-	case $location[Lair of the Ninja Snowmen]:
-		value = 80;
-		break;
-	case $location[Sonofa Beach]:
-		value = 90;
-		break;
-	case $location[Twin Peak]:
-		value = -80;
-		break;
-	case $location[A Maze of Sewer Tunnels]:
-		// I guess there is not a preference for this?
-		value = -95;
-		break;
-	case $location[The Ice Hotel]:
-		value = -85;
-		break;
-	case $location[The Obligatory Pirate\'s Cove]:
-		if(internalQuestStatus("questM12Pirate") < 2)
-		{
-			value = -60;
-		}
-		else if(numPirateInsults() < 6)
-		{
-			value = 40;
-		}
-		else if(numPirateInsults() <= 7)
-		{
-			value = -10;
-		}
-		else
-		{
-			value = -60;
-		}
-
-		break;
 	case $location[The Penultimate Fantasy Airship]:
 		if(delay._int == 0)
 		{
@@ -665,22 +448,109 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[The Castle in the Clouds in the Sky (Basement)]:
-		value = -95;
-		break;
 	case $location[The Castle in the Clouds in the Sky (Ground Floor)]:
-		if(internalQuestStatus("questL13Final") == 8)
-		{
-			value = -95;
-		}
-		break;
 	case $location[The Castle in the Clouds in the Sky (Top Floor)]:
 		value = -95;
 		break;
-	case $location[The Hidden Park]:
-		if(item_amount($item[Bowling Ball]) < 3)
+	case $location[Twin Peak]:
+		value = -85;
+		break;
+	case $location[The Extreme Slope]:
+		value = -95;
+		break;
+	case $location[Itznotyerzitz Mine]:
+		if (!possessOutfit("Mining Gear") && item_amount($item[Ten-Leaf Clover]) == 0) {
+			value = -90;
+		}
+		break;
+	case $location[Lair of the Ninja Snowmen]:
+		value = 80;
+		break;
+	case $location[The Dark Neck of the Woods]:
+	case $location[The Dark Heart of the Woods]:
+	case $location[The Dark Elbow of the Woods]:
+		value = -95;
+		break;
+	case $location[The Defiled Cranny]:
+	case $location[The Defiled Alcove]:
+		value = -85;
+		break;
+	case $location[The Outskirts of Cobb's Knob]:
+		value = 20;
+		break;
+	case $location[The Typical Tavern Cellar]:
+		//We could cut it off early if the Rat Faucet is the last one
+		//And marginally if we know the 3rd/6th square are forced events.
+		value = -75;
+		break;
+	case $location[The Spooky Forest]:
+		if(delay._int == 0)
 		{
 			value = -85;
 		}
+		break;
+	case $location[The Laugh Floor]:
+		if (item_amount($item[Azazel's lollipop]) < 1) {
+			value = 15.0;
+		}
+		break;
+	case $location[Infernal Rackets Backstage]:
+		if (item_amount($item[Azazel's unicorn]) < 1) {
+			value = -70;
+		}
+		break;
+	case $location[Barrrney\'s Barrr]:
+		if (numPirateInsults() >= 6) {
+			value = -80;
+		} else {
+			value = 20;
+		}
+		break;
+	case $location[The F\'c\'le]:
+		if(!possessEquipment($item[pirate fledges]))
+		{
+			value = 20;
+		}
+		break;
+	case $location[The Poop Deck]:
+		value = -80;
+		break;
+	case $location[The Obligatory Pirate\'s Cove]:
+		if(!possessOutfit("Swashbuckling Getup")) {
+			value = -60;
+		} else if (numPirateInsults() < 8) {
+			value = 40;
+		}
+		break;
+	case $location[The Knob Shaft]:
+		value = 15;
+		break;
+	case $location[South of The Border]:
+		value = 50;
+		break;
+	case $location[The Icy Peak]:
+		value = 15;
+		break;
+	case $location[Pandamonium Slums]:
+		value = 5;
+		break;
+	case $location[The Haunted Pantry]:
+		value = 20;
+		break;
+	case $location[Cobb's Knob Treasury]:
+		value = 15;
+		break;
+	case $location[Super Villain\'s Lair]:
+		if(!get_property("_villainLairColorChoiceUsed").to_boolean() || !get_property("_villainLairDoorChoiceUsed").to_boolean() || !get_property("_villainLairSymbologyChoiceUsed").to_boolean())
+		{
+			value = -70;
+		}
+		break;
+	case $location[Through the Spacegate]:
+		value = 5;
+		break;
+	case $location[The Ice Hotel]:
+		value = -85;
 		break;
 	default:
 		retval._error = true;

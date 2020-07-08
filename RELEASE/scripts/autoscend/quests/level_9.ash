@@ -625,7 +625,6 @@ boolean L9_twinPeak()
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
-	providePlusNonCombat(25);
 	
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);		//heavy rains specific reduce item drop penalty by 10%
 
@@ -818,12 +817,6 @@ boolean L9_oilPeak()
 		{
 			asdonBuff($effect[Driving Wastefully]);
 		}
-	}
-
-	// Help protect ourselves against not getting enough crudes if tackling cartels
-	if(simMaximizeWith("1000ml 100min"))
-	{
-		addToMaximize("120item");
 	}
 
 	addToMaximize("1000ml " + auto_convertDesiredML(100) + "max");

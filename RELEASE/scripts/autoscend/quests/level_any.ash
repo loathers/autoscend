@@ -247,7 +247,7 @@ boolean LX_hippyBoatman() {
 		return false;
 	}
 
-	if (get_property("questM19Hippy") == "finished") {  // TODO: replace this with internalQuestStatus when you have the steps
+	if (internalQuestStatus("questM19Hippy") > 3) {
 		return false;
 	}
 
@@ -264,26 +264,40 @@ boolean LX_hippyBoatman() {
 		return true;
 	}
 
-	if (autoAdv($location[The Old Landfill])) {
-		if (item_amount($item[Old Claw-Foot Bathtub]) > 0 && item_amount($item[Old Clothesline Pole]) > 0 && item_amount($item[Antique Cigar Sign]) > 0 && item_amount($item[Worse Homes and Gardens]) > 0) {
-			create(1, $item[junk junk]);
-			visit_url("place.php?whichplace=woods&action=woods_hippy");
+	if (item_amount($item[Old Claw-Foot Bathtub]) > 0 && item_amount($item[Old Clothesline Pole]) > 0 && item_amount($item[Antique Cigar Sign]) > 0 && item_amount($item[Worse Homes and Gardens]) > 0) {
+		create(1, $item[junk junk]);
+		visit_url("place.php?whichplace=woods&action=woods_hippy");
+		if (internalQuestStatus("questM19Hippy") > 3) {
+			return true;
 		}
-		return true;
+		abort("Failed to create the junk junk or finish the quest for some reason!");
 	}
-	return false;
+
+	return autoAdv($location[The Old Landfill]);
 }
 
 void oldLandfillChoiceHandler(int choice) {
 	if (choice == 794) { // Once More Unto the Junk
-		if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
-			run_choice(1); // go to The Bathroom of Ten Men (#795)
-		} else if(item_amount($item[Old Clothesline Pole]) == 0) {
-			run_choice(2); // go to The Den of Iquity (#796)
-		} else if(item_amount($item[Antique Cigar Sign]) == 0) {
-			run_choice(3); // go to Let's Workshop This a Little (#797)
+		if (item_amount($item[junk junk]) == 0) {
+			if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
+				run_choice(1); // go to The Bathroom of Ten Men (#795)
+			} else if(item_amount($item[Old Clothesline Pole]) == 0) {
+				run_choice(2); // go to The Den of Iquity (#796)
+			} else if(item_amount($item[Antique Cigar Sign]) == 0) {
+				run_choice(3); // go to Let's Workshop This a Little (#797)
+			} else {
+				run_choice(1); // go to The Bathroom of Ten Men (#795)
+			}
 		} else {
-			run_choice(1); // go to The Bathroom of Ten Men (#795)
+			// TODO: Add handling to get the eternal car battery
+			// doesn't look like there's mafia tracking for it yet.
+			if (item_amount($item[tangle of copper wire]) == 0) {
+				run_choice(2); // go to The Den of Iquity (#796)
+			} else if (item_amount($item[Junk-Bond]) == 0) {
+				run_choice(3); // go to Let's Workshop This a Little (#797)
+			} else {
+				run_choice(1); // go to The Bathroom of Ten Men (#795)
+			}
 		}
 	} else if (choice == 795) { // The Bathroom of Ten Men
 		if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {

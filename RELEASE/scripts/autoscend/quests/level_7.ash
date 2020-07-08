@@ -172,8 +172,6 @@ boolean L7_crypt()
 
 		auto_MaxMLToCap(auto_convertDesiredML(149), true);
 
-		providePlusNonCombat(25);
-
 		addToMaximize("200ml " + auto_convertDesiredML(149) + "max");
 		autoAdv(1, $location[The Defiled Cranny]);
 		return true;

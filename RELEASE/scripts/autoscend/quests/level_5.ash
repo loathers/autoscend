@@ -148,3 +148,8 @@ boolean L5_goblinKing()
 	}
 	return advSpent;
 }
+
+boolean L5_slayTheGoblinKing() {
+	if (L5_getEncryptionKey() || L5_findKnob() || L5_haremOutfit() || L5_goblinKing()) {  return true; }
+	return false;
+}

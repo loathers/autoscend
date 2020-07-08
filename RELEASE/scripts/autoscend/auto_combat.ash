@@ -274,6 +274,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 			case $monster[cabinet of Dr. Limpieza]:
 				set_property("auto_cabinetsencountered", get_property("auto_cabinetsencountered").to_int() + 1);
 				break;
+			case $monster[junksprite bender]:
+			case $monster[junksprite melter]:
+			case $monster[junksprite sharpener]:
+				set_property("auto_junkspritesencountered", get_property("auto_junkspritesencountered").to_int() + 1);
+				break;
 		}
 
 		set_property("auto_combatHandler", "");

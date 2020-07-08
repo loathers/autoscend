@@ -111,7 +111,6 @@ boolean LX_unlockHiddenTemple() {
 	// TODO: add a check for delay burning
 	auto_log_info("Attempting to make the Hidden Temple less hidden.", "blue");
 	pullXWhenHaveY($item[Spooky-Gro Fertilizer], 1, 0);
-	providePlusNonCombat(25, true);
 	if (autoAdv($location[The Spooky Forest])) {
 		if (item_amount($item[Spooky Temple map]) > 0 && item_amount($item[Spooky-Gro Fertilizer]) > 0 && item_amount($item[Spooky Sapling]) > 0) {
 			use(1, $item[Spooky Temple Map]);
@@ -249,10 +248,7 @@ boolean LX_unlockHauntedLibrary()
 	//+3 pool skill & +1 training gains. speculative_pool_skill() already assumed we would use it if we can.
 	buffMaintain($effect[Chalky Hand], 0, 1, 1);
 
-	if(!auto_forceNextNoncombat())
-	{
-		providePlusNonCombat(25, true);
-	}
+	auto_forceNextNoncombat();
 	auto_log_info("It's billiards time!", "blue");
 	return autoAdv($location[The Haunted Billiards Room]);
 }
@@ -293,15 +289,15 @@ boolean LX_spookyravenManorFirstFloor() {
 }
 
 boolean LX_danceWithLadySpookyraven() {
-	if (internalQuestStatus("questM21Dance") != 2) {
+	if (internalQuestStatus("questM21Dance") < 2 || internalQuestStatus("questM21Dance") > 3) {
 		return false;
 	}
 
-	if (item_amount($item[Lady Spookyraven\'s Powder Puff]) != 1 && item_amount($item[Lady Spookyraven\'s Dancing Shoes]) != 1 && item_amount($item[Lady Spookyraven\'s Finest Gown]) != 1) {
-		return false;
+	if (item_amount($item[Lady Spookyraven\'s Powder Puff]) == 1 && item_amount($item[Lady Spookyraven\'s Dancing Shoes]) == 1 && item_amount($item[Lady Spookyraven\'s Finest Gown]) == 1) {
+		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 	}
+
 	auto_log_info("Finished Spookyraven, just dancing with the lady.", "blue");
-	visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 	if (autoAdv($location[The Haunted Ballroom])) {
 		if (in_lowkeysummer()) {
 			// need to open the Haunted Nursery for the music box key.
@@ -312,7 +308,7 @@ boolean LX_danceWithLadySpookyraven() {
 	return false;
 }
 
-boolean getLadySpookyravensFinestGown() {
+boolean LX_getLadySpookyravensFinestGown() {
 	if (internalQuestStatus("questM21Dance") != 1) {
 		return false;
 	}
@@ -340,7 +336,7 @@ boolean getLadySpookyravensFinestGown() {
 	return false;
 }
 
-boolean getLadySpookyravensDancingShoes() {
+boolean LX_getLadySpookyravensDancingShoes() {
 	if (internalQuestStatus("questM21Dance") != 1) {
 		return false;
 	}
@@ -355,10 +351,8 @@ boolean getLadySpookyravensDancingShoes() {
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
-	if ($location[The Haunted Gallery].turns_spent >= 5) {
-		if (!auto_forceNextNoncombat()) {
-			providePlusNonCombat(25, true);
-		}
+	if (!zone_delay($location[The Haunted Gallery])._boolean) {
+		auto_forceNextNoncombat();
 	}
 	if (autoAdv($location[The Haunted Gallery])) {
 		return true;
@@ -366,7 +360,7 @@ boolean getLadySpookyravensDancingShoes() {
 	return false;
 }
 
-boolean getLadySpookyravensPowderPuff() {
+boolean LX_getLadySpookyravensPowderPuff() {
 	if (internalQuestStatus("questM21Dance") != 1) {
 		return false;
 	}
@@ -379,10 +373,8 @@ boolean getLadySpookyravensPowderPuff() {
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
-	if ($location[The Haunted Bathroom].turns_spent >= 5) {
-		if (!auto_forceNextNoncombat()) {
-			providePlusNonCombat(25, true);
-		}
+	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
+		auto_forceNextNoncombat();
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
@@ -395,7 +387,7 @@ boolean LX_spookyravenManorSecondFloor()
 	if (get_property("lastSecondFloorUnlock").to_int() < my_ascensions()) {
 		return false;
 	}
-	if (LX_danceWithLadySpookyraven() || getLadySpookyravensFinestGown() || getLadySpookyravensDancingShoes() || getLadySpookyravensPowderPuff()) {
+	if (LX_danceWithLadySpookyraven() || LX_getLadySpookyravensFinestGown() || LX_getLadySpookyravensDancingShoes() || LX_getLadySpookyravensPowderPuff()) {
 		return true;
 	}
 	return false;
@@ -438,11 +430,6 @@ boolean L11_blackMarket()
 		set_property("auto_getBeehive", false);
 	}
 
-	if(auto_my_path() != "Live. Ascend. Repeat.")
-	{
-		providePlusCombat(5, true);
-	}
-
 	autoEquip($slot[acc3], $item[Blackberry Galoshes]);
 
 	//If we want the Beehive, and don\'t have enough adventures, this is dangerous.
@@ -476,18 +463,13 @@ boolean L11_getBeehive()
 
 	auto_log_info("Must find a beehive!", "blue");
 
-	if (!auto_forceNextNoncombat()) {
-		providePlusNonCombat(25, true);
-	}
+	auto_forceNextNoncombat();
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
 	{
 		set_property("auto_getBeehive", false);
 	}
-	if (advSpent) {
-		return true;
-	}
-	return false;
+	return advSpent;
 }
 
 boolean L11_forgedDocuments()
@@ -1410,11 +1392,6 @@ boolean L11_hiddenCityZones()
 	}
 
 	if (needMachete || needRelocate) {
-		// Try to get the NC so that we can relocate Janitors and get items quickly
-		if ($location[The Hidden Park].turns_spent < 6 && !auto_forceNextNoncombat()) {
-			// Machete NC is guaranteed on the 7th adventure here
-			providePlusNonCombat(25, true);
-		}
 		return autoAdv($location[The Hidden Park]);
 	}
 
@@ -1490,10 +1467,9 @@ boolean L11_mauriceSpookyraven()
 			return false;
 		}
 
-		if (!auto_forceNextNoncombat()) {
-			providePlusNonCombat(25, true);
+		if (!zone_delay($location[The Haunted Ballroom])._boolean) {
+			auto_forceNextNoncombat();
 		}
-
 		return autoAdv($location[The Haunted Ballroom]);
 	}
 	if(item_amount($item[recipe: mortar-dissolving solution]) == 0)
@@ -1692,8 +1668,6 @@ boolean L11_redZeppelin()
 	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
 	pullXWhenHaveY($item[deck of lewd playing cards], 1, 0);
 
-	providePlusNonCombat(25);
-
 	if(item_amount($item[Flamin\' Whatshisname]) > 0)
 	{
 		backupSetting("choiceAdventure866", 3);
@@ -1841,6 +1815,29 @@ boolean L11_ronCopperhead()
 	return false;
 }
 
+boolean L11_shenStartQuest() {
+	// as the first adventure in the Copperhead Club is always the first Shen NC
+	// we can adventure there once as soon as it's open to start the quest and lock in
+	// our zones
+	if (internalQuestStatus("questL11Shen") != 0)
+	{
+		return false;
+	}
+	if (autoAdv($location[The Copperhead Club])) {
+		if (internalQuestStatus("questL11Shen") == 1) {
+			set_property("auto_shenStarted", my_daycount());
+			auto_log_info("It seems Shen has given us a quest.", "blue");
+			auto_log_info("I am going to avoid the following zones until Shen tells me to go there or until I run out of other things to do:");
+			int linec = 1;
+			foreach z, _ in shenZonesToAvoidBecauseMaybeSnake() {
+				auto_log_info(linec++ + ". " + z);
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
 boolean L11_shenCopperhead()
 {
 	if (internalQuestStatus("questL11Shen") < 0 || internalQuestStatus("questL11Shen") > 7)
@@ -1850,7 +1847,11 @@ boolean L11_shenCopperhead()
 
 	set_property("choiceAdventure1074", 1);
 
-	if (internalQuestStatus("questL11Shen") == 0 || internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
+	if (L11_shenStartQuest()) {
+		return true;
+	}
+
+	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
 	{
 		if (item_amount($item[Crappy Waiter Disguise]) > 0 && have_effect($effect[Crappily Disguised as a Waiter]) == 0 && !in_tcrs())
 		{
@@ -1858,11 +1859,11 @@ boolean L11_shenCopperhead()
 
 			// default to getting unnamed cocktails to turn into Flamin' Whatsisnames.
 			int behindtheStacheOption = 4;
-			if (item_amount($item[priceless diamond]) > 0 || item_amount($item[Red Zeppelin Ticket]) > 0 || (internalQuestStatus("questL11Shen") == 6 && item_amount($item[unnamed cocktail]) > 0))
+			if (item_amount($item[priceless diamond]) > 0 || item_amount($item[Red Zeppelin Ticket]) > 0 || my_meat() > 10000 ||  (internalQuestStatus("questL11Shen") == 6 && item_amount($item[unnamed cocktail]) > 0))
 			{
 				if (get_property("copperheadClubHazard") != "lantern")
 				{
-					// got priceless diamond or zeppelin ticket so lets burn the place down (and make Flamin' Whatsisnames)
+					// got priceless diamond or zeppelin ticket (or we are rich) so lets burn the place down (and make Flamin' Whatsisnames)
 					behindtheStacheOption = 3;
 				}
 			}
@@ -1877,16 +1878,8 @@ boolean L11_shenCopperhead()
 			set_property("choiceAdventure855", behindtheStacheOption);
 		}
 
-		if (!maximizeContains("-10ml"))
-		{
-			addToMaximize("-10ml");
-		}
-		boolean retval = autoAdv($location[The Copperhead Club]);
-		if (maximizeContains("-10ml"))
-		{
-			removeFromMaximize("-10ml");
-		}
-		return retval;
+		addToMaximize("-10ml");
+		return autoAdv($location[The Copperhead Club]);
 	}
 
 	if((internalQuestStatus("questL11Shen") == 1) || (internalQuestStatus("questL11Shen") == 3) || (internalQuestStatus("questL11Shen") == 5))

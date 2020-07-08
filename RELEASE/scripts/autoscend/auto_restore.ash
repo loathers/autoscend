@@ -460,7 +460,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
         meat_per_mp = meat_per_mp * 0.95; // this isn't quite right for discounted Doc Galaktik but I don't care.
       }
       if (isMystGuildStoreAvailable()) {
-        int mmj_cost = auto_have_skill($skill[Five Finger Discount]) ? 100 : 95;
+        int mmj_cost = auto_have_skill($skill[Five Finger Discount]) ? 95 : 100;
         int mmj_mp_restored = my_level() * 1.5 + 5;
         float mmj_meat_per_mp = mmj_cost / mmj_mp_restored;
         meat_per_mp = min(meat_per_mp, mmj_meat_per_mp);
@@ -556,7 +556,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   // TODO: doesnt account properly for multiuse situations where we could have more blood skill casts and less waste than this formula suggests
   float blood_skill_opportunity_casts(float goal){
     boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
-      auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
+      pathAllowsFamiliar() && //checks if player can use familiars in this run
       my_maxhp() > hp_cost($skill[Blood Bond]) &&
       goal > ((9-hp_regen())*10) && // blood bond drains hp after combat, make sure we dont accidentally kill the player
       get_property("auto_restoreUseBloodBond").to_boolean();
