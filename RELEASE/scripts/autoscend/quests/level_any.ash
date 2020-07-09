@@ -409,7 +409,7 @@ float estimateDailyDungeonAdvNeeded()
 
 boolean LX_phatLootToken()
 {
-	if(towerKeyCount(false) >= 3)
+	if(towerKeyCount(false) >= 3 && !get_property("auto_forcePhatLootToken").to_boolean())
 	{
 		return false;	//have enough tokens
 	}
