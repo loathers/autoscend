@@ -488,7 +488,7 @@ boolean auto_pre_adventure()
 	}
 
 	//my_mp is broken in Dark Gyffte
-	if (auto_my_path() != "Dark Gyffte")
+	if (my_class() != $class[Vampyre])
 	{
 		int wasted_mp = my_mp() + mp_regen() - my_maxmp();
 		if(wasted_mp > 0 && my_mp() > 400)
