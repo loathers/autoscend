@@ -512,6 +512,66 @@ boolean LX_dailyDungeonToken()
 	return autoAdv(1, $location[The Daily Dungeon]);
 }
 
+void dailyDungeonChoiceHandler(int choice, string[int] options)
+{
+	//noncombat choices handler for daily dungeon.
+	
+	switch (choice)
+	{
+		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
+		case 691: // Second Chest (Daily Dungeon 10th room)
+			if(options contains 2)
+			{
+				run_choice(2);	// skip 3 rooms using ring of Detect Boring Doors
+			} 
+			else
+			{
+				run_choice(3);	// skip 1 room
+			}
+			break;
+		case 692: // I Wanna Be a Door (Daily Dungeon)
+			if(options contains 3)
+			{
+				run_choice(3);	// use [Pick-O-Matic Lockpicks] to skip
+			}
+			else if(options contains 7)
+			{
+				run_choice(7);	// use [Platinum Yendorian Express Card] to skip
+			}
+			else if(item_amount($item[Skeleton Key]) > 1 ||
+			(item_amount($item[Skeleton Key]) > 0 && contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key])))
+			{
+				run_choice(2);	// use [Skeleton Key] to skip
+			}
+			else if(my_primestat() == $stat[Muscle] && my_buffedstat($stat[Muscle]) >= 30)
+			{
+				run_choice(4);	// spend adv and not guarenteed to work
+			}
+			else if(my_primestat() == $stat[Mysticality] && my_buffedstat($stat[Mysticality]) >= 30)
+			{
+				run_choice(5);	// spend adv and not guarenteed to work
+			}
+			else if(my_primestat() == $stat[Moxie] && my_buffedstat($stat[Moxie]) >= 30)
+			{
+				run_choice(6);	// spend adv and not guarenteed to work
+			}
+			else abort("I made an error and tried to adventure in the daily dungeon when I have no means of handling [I Wanna Be a Door]");
+			break;
+		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
+			if(options contains 2)
+			{
+				run_choice(2);	// use eleven-foot pole to skip
+			} 
+			else
+			{
+				run_choice(1);	// take damage to progress
+			}
+			break;
+		default:
+			break;
+	}
+}
+
 boolean LX_dolphinKingMap()
 {
 	if(item_amount($item[Dolphin King\'s Map]) > 0)
