@@ -137,6 +137,7 @@ boolean auto_run_choice(int choice, string page)
 		case 575: // Duffel on the Double (The eXtreme Slope)
 			theeXtremeSlopeChoiceHandler(choice);
 			break;
+		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
 		case 692: // I Wanna Be a Door (Daily Dungeon)

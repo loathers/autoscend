@@ -517,6 +517,9 @@ void dailyDungeonChoiceHandler(int choice, string[int] options)
 	
 	switch (choice)
 	{
+		case 689: // The Final Reward (Daily Dungeon 15th room)
+			run_choice(1);	// Get fat loot token
+			break;
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
 			if(options contains 2)
