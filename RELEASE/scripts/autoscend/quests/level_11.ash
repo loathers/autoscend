@@ -92,9 +92,16 @@ desert_buff_record desertBuffs()
 	}
 
 	// There are some other familiars we might choose if nothing affects progress
-	if (dbr.fam == $familiar[none] && canChangeToFamiliar($familiar[Artistic Goth Kid]))
+	if (dbr.fam == $familiar[none])
 	{
-		dbr.fam = $familiar[Artistic Goth Kid];
+		if(get_property("_hipsterAdv").to_int() < 7 && canChangeToFamiliar($familiar[Artistic Goth Kid]))
+		{
+			dbr.fam = $familiar[Artistic Goth Kid];
+		}
+		else if(get_property("_hipsterAdv").to_int() < 7 && canChangeToFamiliar($familiar[Mini-Hipster]))
+		{
+			dbr.fam = $familiar[Mini-Hipster];
+		}
 	}
 
     return dbr;
