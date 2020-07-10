@@ -26,7 +26,6 @@ boolean LX_lockPicking();
 float estimateDailyDungeonAdvNeeded();				//Defined in autoscend/quests/level_any.ash
 boolean LX_phatLootToken();							//Defined in autoscend/quests/level_any.ash
 boolean LX_dailyDungeonToken();						//Defined in autoscend/quests/level_any.ash
-void dailyDungeonChoiceHandler(int choice, string[int] options);	//Defined in autoscend/quests/level_any.ash
 boolean LX_islandAccess();
 boolean fancyOilPainting();
 boolean LX_fcle();
@@ -1300,3 +1299,4 @@ void barrrneysBarrrChoiceHandler(int choice, string page);
 void fcleChoiceHandler(int choice);
 void itznotyerzitzMineChoiceHandler(int choice);
 void theeXtremeSlopeChoiceHandler(int choice);
+void dailyDungeonChoiceHandler(int choice, string[int] options);	//Defined in autoscend/quests/level_any.ash
