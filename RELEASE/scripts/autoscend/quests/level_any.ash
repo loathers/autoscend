@@ -363,104 +363,217 @@ boolean LX_lockPicking()
 	return get_property("lockPicked").to_boolean();
 }
 
+float estimateDailyDungeonAdvNeeded()
+{
+	//estimates the amount of adventures we expect to need to do the daily dungeon. the result is only an estimate and not exact.
+	//uses your current tools rather than potential tools. so it does not account for the possibility of pulling something or getting a cubeling drop.
+	
+	float progress = get_property("_lastDailyDungeonRoom").to_float();
+	float adv_needed = 15 - progress;
+	if(progress < 5)
+	{
+		adv_needed = adv_needed - 2;
+		if(possessEquipment($item[Ring of Detect Boring Doors]))
+		{
+			adv_needed = adv_needed - 4;
+		}
+	}
+	else if(progress < 10)
+	{
+		adv_needed = adv_needed - 1;
+		if(possessEquipment($item[Ring of Detect Boring Doors]))
+		{
+			adv_needed = adv_needed - 2;
+		}
+	}
+	
+	int random_NC_tool_count = 0;
+	if(item_amount($item[Eleven-Foot Pole]) > 0)
+	{
+		random_NC_tool_count++;
+	}
+	if(item_amount($item[Platinum Yendorian Express Card]) > 0 ||
+	item_amount($item[Pick-O-Matic Lockpicks]) > 0 ||
+	(creatable_amount($item[Skeleton Key]) + item_amount($item[Skeleton Key]) > 2))
+	{
+		random_NC_tool_count++;
+	}
+	
+	if(random_NC_tool_count > 0)
+	{
+		adv_needed = adv_needed / (1 + random_NC_tool_count);
+	}
+	
+	return adv_needed;
+}
+
 boolean LX_phatLootToken()
 {
-	if(towerKeyCount(false) >= 3)
+	if(towerKeyCount(false) >= 3 && !get_property("auto_forcePhatLootToken").to_boolean())
 	{
-		return false;
+		return false;	//have enough tokens
 	}
-	if (get_property("dailyDungeonDone").to_boolean())
+	
+	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]) && in_hardcore())
 	{
-		if (fantasyRealmToken())
-		{
-			return true;
-		}
-		return false;
+		//if unable to get the daily dungeon tools then prefer to do fantasy realm over daily dungeon
+		if(fantasyRealmToken()) return true;
 	}
-	if(my_adventures() <= 15 - get_property("_lastDailyDungeonRoom").to_int())
+	if(LX_dailyDungeonToken()) return true;
+	if(get_property("dailyDungeonDone").to_boolean())
 	{
-		return false;
+		//wait until daily dungeon is done before considering doing fantasy realm
+		if(fantasyRealmToken()) return true;
 	}
-
+	
+	return false;
+}
+	
+boolean LX_dailyDungeonToken()
+{
+	if(get_property("dailyDungeonDone").to_boolean())
+	{
+		return false;	// already done today
+	}
+	
 	if(!possessEquipment($item[Ring of Detect Boring Doors]) || item_amount($item[Eleven-Foot Pole]) == 0 || item_amount($item[Pick-O-Matic Lockpicks]) == 0)
 	{
 		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 		{
-			return false;
+			return false;	//we can switch to cubeling so wait until we have all the tools before doing daily dungeon
 		}
-		else if(can_interact())
+	}
+	
+	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
+	{
+		buyUpTo(1, $item[Eleven-Foot Pole]);
+		buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
+		if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not buy a second one if already equipped
 		{
-			buyUpTo(1, $item[Eleven-Foot Pole]);
-			buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
 			buyUpTo(1, $item[Ring of Detect Boring Doors]);
 		}
 	}
-
-	auto_log_info("Phat Loot Token Get!", "blue");
-	set_property("choiceAdventure691", "2");
+	
+	//if you can not use the cubeling then pull the missing tools if possible
+	pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+	if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not pull a second one if already equipped
+	{
+		pullXWhenHaveY($item[Ring of Detect Boring Doors], 1, 0);
+	}
+	if(item_amount($item[Pick-O-Matic Lockpicks]) == 0)
+	{
+		pullXWhenHaveY($item[Platinum Yendorian Express Card], 1, 0);
+	}
+	if(item_amount($item[Platinum Yendorian Express Card]) == 0)
+	{
+		pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
+	}
+	
+	//if you do not have an unlimited lockpick then handle skeleton keys and verify primary stat
+	if(item_amount($item[Platinum Yendorian Express Card]) == 0 && item_amount($item[Pick-O-Matic Lockpicks]) == 0)
+	{
+		int skeleton_key_amt_needed = 2;
+		if(contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key]))
+		{
+			skeleton_key_amt_needed--;
+		}
+		
+		int skeleton_key_amt_to_create =  skeleton_key_amt_needed - item_amount($item[Skeleton Key]);
+		skeleton_key_amt_to_create = min(creatable_amount($item[Skeleton Key]), skeleton_key_amt_to_create);
+		if(skeleton_key_amt_to_create > 0)
+		{
+			create(skeleton_key_amt_to_create, $item[Skeleton Key]);
+		}
+		
+		//make sure we have the means to handle choice adventure 692 [I Wanna Be a Door]
+		if(item_amount($item[Skeleton Key]) < skeleton_key_amt_needed && my_basestat(my_primestat()) < 30)
+		{
+			//no lockpick, not enough skeleton key, and not enough primestat.
+			//checking basestat because buffed can become lower based on equipment worn. and also if mainstat is under 30 and you got no lockpicks then you should probably delay daily dungeon
+			return false;
+		}
+	}
+	
+	// make sure we have enough adventures. since partial completion means wasted adventures.
+	int adv_budget = my_adventures() - auto_advToReserve();
+	if(adv_budget < 1 + ceil(estimateDailyDungeonAdvNeeded()))
+	{
+		return false;	//not enough adv
+	}
+	
+	auto_log_info("Doing the daily dungeon", "blue");
+	
 	if(get_property("_lastDailyDungeonRoom").to_int() == 4 || get_property("_lastDailyDungeonRoom").to_int() == 9)
 	{
 		autoEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
 	}
 
-	backupSetting("choiceAdventure692", 4);
-	if(item_amount($item[Platinum Yendorian Express Card]) > 0)
-	{
-		backupSetting("choiceAdventure692", 7);
-	}
-	else if(item_amount($item[Pick-O-Matic Lockpicks]) > 0)
-	{
-		backupSetting("choiceAdventure692", 3);
-	}
-	else
-	{
-		int keysNeeded = 2;
-		if(contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key]))
-		{
-			keysNeeded = 1;
-		}
+	return autoAdv(1, $location[The Daily Dungeon]);
+}
 
-		if((item_amount($item[Skeleton Key]) < keysNeeded) && (available_amount($item[Skeleton Key]) >= keysNeeded))
-		{
-			cli_execute("make 1 " + $item[Skeleton Key]);
-		}
-		if((item_amount($item[Skeleton Key]) < keysNeeded) && (available_amount($item[Skeleton Key]) >= keysNeeded))
-		{
-			cli_execute("make 1 " + $item[Skeleton Key]);
-		}
-		if(item_amount($item[Skeleton Key]) >= keysNeeded)
-		{
-			backupSetting("choiceAdventure692", 2);
-		}
-	}
-
-	if(item_amount($item[Eleven-Foot Pole]) > 0)
+void dailyDungeonChoiceHandler(int choice, string[int] options)
+{
+	//noncombat choices handler for daily dungeon.
+	
+	switch (choice)
 	{
-		backupSetting("choiceAdventure693", 2);
-	}
-	else
-	{
-		backupSetting("choiceAdventure693", 1);
-	}
-	if(possessEquipment($item[Ring of Detect Boring Doors]))
-	{
-		backupSetting("choiceAdventure690", 2);
-		backupSetting("choiceAdventure691", 2);
-	}
-	else
-	{
-		backupSetting("choiceAdventure690", 3);
-		backupSetting("choiceAdventure691", 3);
-	}
+		case 689: // The Final Reward (Daily Dungeon 15th room)
+			run_choice(1);	// Get fat loot token
+			break;
+		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
+		case 691: // Second Chest (Daily Dungeon 10th room)
+			if(options contains 2)
+			{
+				run_choice(2);	// skip 3 rooms using ring of Detect Boring Doors
+			} 
+			else
+			{
+				run_choice(3);	// skip 1 room
+			}
+			break;
+		case 692: // I Wanna Be a Door (Daily Dungeon)
+			if(options contains 3)
+			{
+				run_choice(3);	// use [Pick-O-Matic Lockpicks] to skip
+			}
+			else if(options contains 7)
+			{
+				run_choice(7);	// use [Platinum Yendorian Express Card] to skip
+			}
+			else if(item_amount($item[Skeleton Key]) > 1 ||
+			(item_amount($item[Skeleton Key]) > 0 && contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key])))
+			{
+				run_choice(2);	// use [Skeleton Key] to skip
+			}
+			else if(my_primestat() == $stat[Muscle] && my_buffedstat($stat[Muscle]) >= 30)
+			{
+				run_choice(4);	// spend adv and not guarenteed to work
+			}
+			else if(my_primestat() == $stat[Mysticality] && my_buffedstat($stat[Mysticality]) >= 30)
+			{
+				run_choice(5);	// spend adv and not guarenteed to work
+			}
+			else if(my_primestat() == $stat[Moxie] && my_buffedstat($stat[Moxie]) >= 30)
+			{
+				run_choice(6);	// spend adv and not guarenteed to work
+			}
+			else abort("I made an error and tried to adventure in the daily dungeon when I have no means of handling [I Wanna Be a Door]");
+			break;
+		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
+			if(options contains 2)
+			{
+				run_choice(2);	// use eleven-foot pole to skip
+			} 
+			else
+			{
+				run_choice(1);	// take damage to progress
+			}
+			break;
+		default:
+			abort("unhandled choice in dailyDungeonChoiceHandler");
+			break;
 
-
-	autoAdv(1, $location[The Daily Dungeon]);
-	restoreSetting("choiceAdventure690");
-	restoreSetting("choiceAdventure691");
-	restoreSetting("choiceAdventure692");
-	restoreSetting("choiceAdventure693");
-
-	return true;
+	}
 }
 
 boolean LX_dolphinKingMap()

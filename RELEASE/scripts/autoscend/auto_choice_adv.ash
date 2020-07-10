@@ -4,6 +4,7 @@ import<autoscend.ash>
 boolean auto_run_choice(int choice, string page)
 {
 	auto_log_debug("Running auto_choice_adv.ash");
+	string[int] options = available_choice_options();
 	
 	switch (choice) {
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
@@ -135,6 +136,13 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 575: // Duffel on the Double (The eXtreme Slope)
 			theeXtremeSlopeChoiceHandler(choice);
+			break;
+		case 689: // The Final Reward (Daily Dungeon 15th room)
+		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
+		case 691: // Second Chest (Daily Dungeon 10th room)
+		case 692: // I Wanna Be a Door (Daily Dungeon)
+		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
+			dailyDungeonChoiceHandler(choice, options);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
 			if (auto_my_path() == "Pocket Familiars" && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
@@ -375,7 +383,6 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1062: // Lots of Options (The Overgrown Lot)
-			string[int] options = available_choice_options();
 			if (options contains 1) {
 				run_choice(1); // get flowers for the doc
 			} else {
@@ -405,7 +412,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 
 			int glchoice = 0;
-			foreach idx, str in available_choice_options()
+			foreach idx, str in options
 			{
 				if(contains_text(str,search))
 				{
