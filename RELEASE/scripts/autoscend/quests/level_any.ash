@@ -407,9 +407,9 @@ float estimateDailyDungeonAdvNeeded()
 	return adv_needed;
 }
 
-boolean LX_phatLootToken()
+boolean LX_fatLootToken()
 {
-	if(towerKeyCount(false) >= 3 && !get_property("auto_forcePhatLootToken").to_boolean())
+	if(towerKeyCount(false) >= 3 && !get_property("auto_forceFatLootToken").to_boolean())
 	{
 		return false;	//have enough tokens
 	}
