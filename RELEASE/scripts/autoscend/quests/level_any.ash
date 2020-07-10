@@ -570,7 +570,9 @@ void dailyDungeonChoiceHandler(int choice, string[int] options)
 			}
 			break;
 		default:
+			abort("unhandled choice in dailyDungeonChoiceHandler");
 			break;
+
 	}
 }
 
