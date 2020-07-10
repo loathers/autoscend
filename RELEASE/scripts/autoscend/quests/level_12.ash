@@ -731,8 +731,6 @@ boolean L12_startWar()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 	
-	providePlusNonCombat(25);
-
 	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
@@ -781,7 +779,6 @@ boolean L12_filthworms()
 	}
 	if(item_amount($item[Heart of the Filthworm Queen]) > 0)
 	{
-		handleFamiliar("meat");
 		return false;
 	}
 
@@ -861,11 +858,6 @@ boolean L12_filthworms()
 			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
 		}
 		buffMaintain($effect[Frosty], 0, 1, 1);
-		
-		handleFamiliar("item");
-		handleServant("item");
-		
-		addToMaximize("200item");
 		
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
@@ -999,7 +991,6 @@ boolean L12_gremlins()
 	{
 		bat_formMist();
 	}
-	handleFamiliar("gremlins");
 	songboomSetting("dr");
 	if(item_amount($item[molybdenum hammer]) == 0)
 	{
@@ -1024,7 +1015,6 @@ boolean L12_gremlins()
 		autoAdv(1, $location[near an abandoned refrigerator], "auto_JunkyardCombatHandler");
 		return true;
 	}
-	handleFamiliar("item");
 	warOutfit(true);
 	visit_url("bigisland.php?action=junkman&pwd");
 	return true;
@@ -1072,7 +1062,6 @@ boolean L12_sonofaBeach()
 		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 		if(chateaumantegna_usePainting())
 		{
-			handleFamiliar("item");
 			return true;
 		}
 	}
@@ -1094,13 +1083,6 @@ boolean L12_sonofaBeach()
 
 	if(auto_my_path() != "Live. Ascend. Repeat.")
 	{
-		if(!providePlusCombat(25, true))
-		{
-			auto_log_warning("Failure in +Combat acquisition or -Combat shrugging (lobsterfrogman), delaying", "red");
-			equipBaseline();
-			return false;
-		}
-
 		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
 		{
 			if((item_amount($item[Ass-Stompers of Violence]) > 0) && (equipped_item($slot[acc1]) != $item[Ass-Stompers of Violence]) && can_equip($item[Ass-Stompers of Violence]))
@@ -1140,7 +1122,6 @@ boolean L12_sonofaBeach()
 
 	autoAdv(1, $location[Sonofa Beach]);
 	set_property("auto_doCombatCopy", "no");
-	handleFamiliar("item");
 
 	if (isActuallyEd() && my_hp() == 0)
 	{
@@ -1186,7 +1167,6 @@ boolean L12_sonofaPrefix()
 		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 		if(chateaumantegna_usePainting())
 		{
-			handleFamiliar("stat");
 			return true;
 		}
 	}
@@ -1243,12 +1223,6 @@ boolean L12_sonofaPrefix()
 
 	if(auto_my_path() != "Live. Ascend. Repeat.")
 	{
-		if(!providePlusCombat(25))
-		{
-			auto_log_warning("Failure in +Combat acquisition or -Combat shrugging (lobsterfrogman), delaying", "red");
-			return false;
-		}
-
 		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
 		{
 			if((item_amount($item[Ass-Stompers of Violence]) > 0) && (equipped_item($slot[acc1]) != $item[Ass-Stompers of Violence]) && can_equip($item[Ass-Stompers of Violence]))
@@ -1311,7 +1285,6 @@ boolean L12_sonofaPrefix()
 	autoAdv(1, $location[Sonofa Beach]);
 	set_property("auto_combatDirective", "");
 	set_property("auto_doCombatCopy", "no");
-	handleFamiliar("item");
 
 	if (isActuallyEd() && my_hp() == 0)
 	{
@@ -1400,7 +1373,6 @@ boolean L12_lastDitchFlyer()
 		}
 		else
 		{
-			handleFamiliar("item");
 			if(LX_getStarKey())
 			{
 				return true;
@@ -1559,16 +1531,8 @@ boolean L12_themtharHills()
 	}
 	buffMaintain($effect[Purr of the Feline], 10, 1, 1);
 	songboomSetting("meat");
-
-	if(!canChangeFamiliar())
-	{
-		addToMaximize("200meat drop");
-	}
-	else
-	{
-		addToMaximize("200meat drop,switch Hobo Monkey,switch rockin' robin,switch adventurous spelunker,switch Grimstone Golem,switch Fist Turkey,switch Unconscious Collective,switch Golden Monkey,switch Angry Jung Man,switch Leprechaun,switch cat burglar");
-		handleFamiliar(my_familiar());
-	}
+	handleFamiliar("meat");
+	addToMaximize("200meat drop");
 
 	if(get_property("auto_useWishes").to_boolean())
 	{
@@ -1604,12 +1568,6 @@ boolean L12_themtharHills()
 	}
 	asdonBuff($effect[Driving Observantly]);
 
-	if (isActuallyEd()) {
-		handleServant("meat");
-	} else {
-		handleFamiliar("meat");
-	}
-	
 	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (auto_my_path() != "Heavy Rains"))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
@@ -1640,6 +1598,7 @@ boolean L12_themtharHills()
 		// if we're in a 100% run, this property returns "none" which will unequip our familiar and ruin a 100% run.
 		use_familiar(to_familiar(get_property("auto_familiarChoice")));
 	}
+	equipMaximizedGear();
 	float meatDropHave = meat_drop_modifier();
 
 	if (isActuallyEd() && have_skill($skill[Curse of Fortune]) && item_amount($item[Ka Coin]) > 0)
@@ -1674,7 +1633,6 @@ boolean L12_themtharHills()
 
 			if(failNuns)
 			{
-				handleFamiliar("item");
 				set_property("auto_skipNuns", "true");
 				return false;
 			}
@@ -1739,7 +1697,6 @@ boolean L12_themtharHills()
 		diffMeat = diffMeat * 1.2;
 		average = average * 1.2;
 	}
-	handleFamiliar("item");
 	return true;
 }
 
@@ -1903,7 +1860,6 @@ boolean L12_clearBattlefield()
 	{
 		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiesDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && possessOutfit("Frat Warrior Fatigues", true))
 		{
-			handleFamiliar("item");
 			if(haveWarOutfit())
 			{
 				warOutfit(false);
@@ -1978,7 +1934,6 @@ boolean L12_clearBattlefield()
 				use(1, $item[Stuffing Fluffer]);
 				return true;
 			}
-			handleFamiliar("item");
 			warOutfit(false);
 			return warAdventure();
 		}
@@ -1986,7 +1941,6 @@ boolean L12_clearBattlefield()
 		if (get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192 && internalQuestStatus("questL12War") == 1)
 		{
 			auto_log_info("Getting to the nunnery/junkyard", "blue");
-			handleFamiliar("item");
 			warOutfit(false);
 			return warAdventure();
 		}
@@ -1994,7 +1948,6 @@ boolean L12_clearBattlefield()
 		if ((get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean()) && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
 		{
 			auto_log_info("Doing the wars.", "blue");
-			handleFamiliar("item");
 			warOutfit(false);
 			return warAdventure();
 		}

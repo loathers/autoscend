@@ -2,18 +2,12 @@
 
 boolean LX_bitchinMeatcar()
 {
-	if((item_amount($item[Bitchin\' Meatcar]) > 0) || (auto_my_path() == "Nuclear Autumn"))
+	if(isDesertAvailable())
 	{
 		return false;
 	}
-	if(get_property("lastDesertUnlock").to_int() == my_ascensions())
+	if(item_amount($item[Bitchin\' Meatcar]) > 0)
 	{
-		return false;
-	}
-	if(in_koe())
-	{
-		auto_log_info("The desert exploded, so no need to build a meatcar...");
-		set_property("lastDesertUnlock", my_ascensions());
 		return false;
 	}
 	
@@ -50,23 +44,6 @@ boolean LX_bitchinMeatcar()
 		return false;
 	}
 	
-	//if rich then just buy the desert pass
-	if((my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000)) && isGeneralStoreAvailable())
-	{
-		auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
-		buyUpTo(1, $item[Desert Bus Pass]);
-		if(item_amount($item[Desert Bus Pass]) > 0)
-		{
-			return true;
-		}
-	}
-	
-	//plumbers should wait until they are rich enough to buy the desert pass
-	if(in_zelda())
-	{
-		return false;
-	}
-	
 	if(item_amount($item[Gnollish Toolbox]) > 0)
 	{
 		use(1, $item[Gnollish Toolbox]);
@@ -95,6 +72,54 @@ boolean LX_bitchinMeatcar()
 	
 	//could not adventure in degrassi knoll garage and could not unlock it. you are probably too early in the run and need to come back to it later.
 	return false;
+}
+
+boolean LX_unlockDesert()
+{
+	if(isDesertAvailable())
+	{
+		return false;
+	}
+	
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		if(isAboutToPowerlevel())
+		{
+			auto_log_info("We ran out of things to do. Trying to prematurely unlock Desert", "blue");
+		}
+		else
+		{
+			auto_log_info("In Nuclear Autumn you get a free desert pass at level 11. skipping unlocking it for now", "blue");
+			return false;
+		}
+	}
+	
+	//knollsign lets you buy the meatcar for less meat than a desert pass without spending any adv.
+	if(inKnollSign())
+	{
+		return LX_bitchinMeatcar();
+	}
+	
+	//if wealthy enough just buy the desert pass outright instead of spending adventures.
+	if(my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000) && isGeneralStoreAvailable())
+	{
+		auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
+		buyUpTo(1, $item[Desert Bus Pass]);
+		if(item_amount($item[Desert Bus Pass]) > 0)
+		{
+			return true;
+		}
+	}
+	
+	//plumbers should wait until they are rich enough to buy the desert pass. As they have few uses for meat.
+	if(in_zelda() && !isAboutToPowerlevel())
+	{
+		auto_log_info("Plumbers have few uses for meat. Delaying desert unlock until we can buy a pass.", "blue");
+		return false;
+	}
+	
+	//spend adv to unlock the desert
+	return LX_bitchinMeatcar();
 }
 
 boolean LX_desertAlternate()
@@ -173,7 +198,7 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-	if(!canDesert || !isGeneralStoreAvailable())
+	if(!isDesertAvailable() || !isGeneralStoreAvailable())
 	{
 		return LX_desertAlternate();
 	}
@@ -193,9 +218,9 @@ boolean LX_islandAccess()
 	{
 		abort("Dude, we got Dinghy Plans... we should not be here....");
 	}
-	while((item_amount($item[Shore Inc. Ship Trip Scrip]) < 3) && (my_meat() >= 500) && (item_amount($item[Dinghy Plans]) == 0))
+	while(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3 &&  item_amount($item[Dinghy Plans]) == 0)
 	{
-		doVacation();
+		if(!LX_doVacation()) break;		//tries to vacation and if fails it will break the loop
 	}
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
 	{
@@ -222,7 +247,7 @@ boolean LX_hippyBoatman() {
 		return false;
 	}
 
-	if (get_property("questM19Hippy") == "finished") {  // TODO: replace this with internalQuestStatus when you have the steps
+	if (internalQuestStatus("questM19Hippy") > 3) {
 		return false;
 	}
 
@@ -239,26 +264,40 @@ boolean LX_hippyBoatman() {
 		return true;
 	}
 
-	if (autoAdv($location[The Old Landfill])) {
-		if (item_amount($item[Old Claw-Foot Bathtub]) > 0 && item_amount($item[Old Clothesline Pole]) > 0 && item_amount($item[Antique Cigar Sign]) > 0 && item_amount($item[Worse Homes and Gardens]) > 0) {
-			create(1, $item[junk junk]);
-			visit_url("place.php?whichplace=woods&action=woods_hippy");
+	if (item_amount($item[Old Claw-Foot Bathtub]) > 0 && item_amount($item[Old Clothesline Pole]) > 0 && item_amount($item[Antique Cigar Sign]) > 0 && item_amount($item[Worse Homes and Gardens]) > 0) {
+		create(1, $item[junk junk]);
+		visit_url("place.php?whichplace=woods&action=woods_hippy");
+		if (internalQuestStatus("questM19Hippy") > 3) {
+			return true;
 		}
-		return true;
+		abort("Failed to create the junk junk or finish the quest for some reason!");
 	}
-	return false;
+
+	return autoAdv($location[The Old Landfill]);
 }
 
 void oldLandfillChoiceHandler(int choice) {
 	if (choice == 794) { // Once More Unto the Junk
-		if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
-			run_choice(1); // go to The Bathroom of Ten Men (#795)
-		} else if(item_amount($item[Old Clothesline Pole]) == 0) {
-			run_choice(2); // go to The Den of Iquity (#796)
-		} else if(item_amount($item[Antique Cigar Sign]) == 0) {
-			run_choice(3); // go to Let's Workshop This a Little (#797)
+		if (item_amount($item[junk junk]) == 0) {
+			if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
+				run_choice(1); // go to The Bathroom of Ten Men (#795)
+			} else if(item_amount($item[Old Clothesline Pole]) == 0) {
+				run_choice(2); // go to The Den of Iquity (#796)
+			} else if(item_amount($item[Antique Cigar Sign]) == 0) {
+				run_choice(3); // go to Let's Workshop This a Little (#797)
+			} else {
+				run_choice(1); // go to The Bathroom of Ten Men (#795)
+			}
 		} else {
-			run_choice(1); // go to The Bathroom of Ten Men (#795)
+			// TODO: Add handling to get the eternal car battery
+			// doesn't look like there's mafia tracking for it yet.
+			if (item_amount($item[tangle of copper wire]) == 0) {
+				run_choice(2); // go to The Den of Iquity (#796)
+			} else if (item_amount($item[Junk-Bond]) == 0) {
+				run_choice(3); // go to Let's Workshop This a Little (#797)
+			} else {
+				run_choice(1); // go to The Bathroom of Ten Men (#795)
+			}
 		}
 	} else if (choice == 795) { // The Bathroom of Ten Men
 		if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
@@ -324,105 +363,217 @@ boolean LX_lockPicking()
 	return get_property("lockPicked").to_boolean();
 }
 
-boolean LX_phatLootToken()
+float estimateDailyDungeonAdvNeeded()
 {
-	if(towerKeyCount(false) >= 3)
+	//estimates the amount of adventures we expect to need to do the daily dungeon. the result is only an estimate and not exact.
+	//uses your current tools rather than potential tools. so it does not account for the possibility of pulling something or getting a cubeling drop.
+	
+	float progress = get_property("_lastDailyDungeonRoom").to_float();
+	float adv_needed = 15 - progress;
+	if(progress < 5)
 	{
-		return false;
-	}
-	if (get_property("dailyDungeonDone").to_boolean())
-	{
-		if (fantasyRealmToken())
+		adv_needed = adv_needed - 2;
+		if(possessEquipment($item[Ring of Detect Boring Doors]))
 		{
-			return true;
+			adv_needed = adv_needed - 4;
 		}
-		return false;
 	}
-	if(my_adventures() <= 15 - get_property("_lastDailyDungeonRoom").to_int())
+	else if(progress < 10)
 	{
-		return false;
+		adv_needed = adv_needed - 1;
+		if(possessEquipment($item[Ring of Detect Boring Doors]))
+		{
+			adv_needed = adv_needed - 2;
+		}
 	}
+	
+	int random_NC_tool_count = 0;
+	if(item_amount($item[Eleven-Foot Pole]) > 0)
+	{
+		random_NC_tool_count++;
+	}
+	if(item_amount($item[Platinum Yendorian Express Card]) > 0 ||
+	item_amount($item[Pick-O-Matic Lockpicks]) > 0 ||
+	(creatable_amount($item[Skeleton Key]) + item_amount($item[Skeleton Key]) > 2))
+	{
+		random_NC_tool_count++;
+	}
+	
+	if(random_NC_tool_count > 0)
+	{
+		adv_needed = adv_needed / (1 + random_NC_tool_count);
+	}
+	
+	return adv_needed;
+}
 
+boolean LX_fatLootToken()
+{
+	if(towerKeyCount(false) >= 3 && !get_property("auto_forceFatLootToken").to_boolean())
+	{
+		return false;	//have enough tokens
+	}
+	
+	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]) && in_hardcore())
+	{
+		//if unable to get the daily dungeon tools then prefer to do fantasy realm over daily dungeon
+		if(fantasyRealmToken()) return true;
+	}
+	if(LX_dailyDungeonToken()) return true;
+	if(get_property("dailyDungeonDone").to_boolean())
+	{
+		//wait until daily dungeon is done before considering doing fantasy realm
+		if(fantasyRealmToken()) return true;
+	}
+	
+	return false;
+}
+	
+boolean LX_dailyDungeonToken()
+{
+	if(get_property("dailyDungeonDone").to_boolean())
+	{
+		return false;	// already done today
+	}
+	
 	if(!possessEquipment($item[Ring of Detect Boring Doors]) || item_amount($item[Eleven-Foot Pole]) == 0 || item_amount($item[Pick-O-Matic Lockpicks]) == 0)
 	{
 		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 		{
-			return false;
+			return false;	//we can switch to cubeling so wait until we have all the tools before doing daily dungeon
 		}
-		else if(can_interact())
+	}
+	
+	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
+	{
+		buyUpTo(1, $item[Eleven-Foot Pole]);
+		buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
+		if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not buy a second one if already equipped
 		{
-			buyUpTo(1, $item[Eleven-Foot Pole]);
-			buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
 			buyUpTo(1, $item[Ring of Detect Boring Doors]);
 		}
 	}
-
-	auto_log_info("Phat Loot Token Get!", "blue");
-	set_property("choiceAdventure691", "2");
-	autoEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
-
-	backupSetting("choiceAdventure692", 4);
-	if(item_amount($item[Platinum Yendorian Express Card]) > 0)
+	
+	//if you can not use the cubeling then pull the missing tools if possible
+	pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+	if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not pull a second one if already equipped
 	{
-		backupSetting("choiceAdventure692", 7);
+		pullXWhenHaveY($item[Ring of Detect Boring Doors], 1, 0);
 	}
-	else if(item_amount($item[Pick-O-Matic Lockpicks]) > 0)
+	if(item_amount($item[Pick-O-Matic Lockpicks]) == 0)
 	{
-		backupSetting("choiceAdventure692", 3);
+		pullXWhenHaveY($item[Platinum Yendorian Express Card], 1, 0);
 	}
-	else
+	if(item_amount($item[Platinum Yendorian Express Card]) == 0)
 	{
-		int keysNeeded = 2;
+		pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
+	}
+	
+	//if you do not have an unlimited lockpick then handle skeleton keys and verify primary stat
+	if(item_amount($item[Platinum Yendorian Express Card]) == 0 && item_amount($item[Pick-O-Matic Lockpicks]) == 0)
+	{
+		int skeleton_key_amt_needed = 2;
 		if(contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key]))
 		{
-			keysNeeded = 1;
+			skeleton_key_amt_needed--;
 		}
-
-		if((item_amount($item[Skeleton Key]) < keysNeeded) && (available_amount($item[Skeleton Key]) >= keysNeeded))
+		
+		int skeleton_key_amt_to_create =  skeleton_key_amt_needed - item_amount($item[Skeleton Key]);
+		skeleton_key_amt_to_create = min(creatable_amount($item[Skeleton Key]), skeleton_key_amt_to_create);
+		if(skeleton_key_amt_to_create > 0)
 		{
-			cli_execute("make 1 " + $item[Skeleton Key]);
+			create(skeleton_key_amt_to_create, $item[Skeleton Key]);
 		}
-		if((item_amount($item[Skeleton Key]) < keysNeeded) && (available_amount($item[Skeleton Key]) >= keysNeeded))
+		
+		//make sure we have the means to handle choice adventure 692 [I Wanna Be a Door]
+		if(item_amount($item[Skeleton Key]) < skeleton_key_amt_needed && my_basestat(my_primestat()) < 30)
 		{
-			cli_execute("make 1 " + $item[Skeleton Key]);
-		}
-		if(item_amount($item[Skeleton Key]) >= keysNeeded)
-		{
-			backupSetting("choiceAdventure692", 2);
+			//no lockpick, not enough skeleton key, and not enough primestat.
+			//checking basestat because buffed can become lower based on equipment worn. and also if mainstat is under 30 and you got no lockpicks then you should probably delay daily dungeon
+			return false;
 		}
 	}
-
-	if(item_amount($item[Eleven-Foot Pole]) > 0)
+	
+	// make sure we have enough adventures. since partial completion means wasted adventures.
+	int adv_budget = my_adventures() - auto_advToReserve();
+	if(adv_budget < 1 + ceil(estimateDailyDungeonAdvNeeded()))
 	{
-		backupSetting("choiceAdventure693", 2);
+		return false;	//not enough adv
 	}
-	else
+	
+	auto_log_info("Doing the daily dungeon", "blue");
+	
+	if(get_property("_lastDailyDungeonRoom").to_int() == 4 || get_property("_lastDailyDungeonRoom").to_int() == 9)
 	{
-		backupSetting("choiceAdventure693", 1);
-	}
-	if(equipped_amount($item[Ring of Detect Boring Doors]) > 0)
-	{
-		backupSetting("choiceAdventure690", 2);
-		backupSetting("choiceAdventure691", 2);
-	}
-	else
-	{
-		backupSetting("choiceAdventure690", 3);
-		backupSetting("choiceAdventure691", 3);
+		autoEquip($slot[acc3], $item[Ring Of Detect Boring Doors]);
 	}
 
+	return autoAdv(1, $location[The Daily Dungeon]);
+}
 
-	autoAdv(1, $location[The Daily Dungeon]);
-	if(possessEquipment($item[Ring Of Detect Boring Doors]))
+void dailyDungeonChoiceHandler(int choice, string[int] options)
+{
+	//noncombat choices handler for daily dungeon.
+	
+	switch (choice)
 	{
-		cli_execute("unequip acc3");
-	}
-	restoreSetting("choiceAdventure690");
-	restoreSetting("choiceAdventure691");
-	restoreSetting("choiceAdventure692");
-	restoreSetting("choiceAdventure693");
+		case 689: // The Final Reward (Daily Dungeon 15th room)
+			run_choice(1);	// Get fat loot token
+			break;
+		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
+		case 691: // Second Chest (Daily Dungeon 10th room)
+			if(options contains 2)
+			{
+				run_choice(2);	// skip 3 rooms using ring of Detect Boring Doors
+			} 
+			else
+			{
+				run_choice(3);	// skip 1 room
+			}
+			break;
+		case 692: // I Wanna Be a Door (Daily Dungeon)
+			if(options contains 3)
+			{
+				run_choice(3);	// use [Pick-O-Matic Lockpicks] to skip
+			}
+			else if(options contains 7)
+			{
+				run_choice(7);	// use [Platinum Yendorian Express Card] to skip
+			}
+			else if(item_amount($item[Skeleton Key]) > 1 ||
+			(item_amount($item[Skeleton Key]) > 0 && contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key])))
+			{
+				run_choice(2);	// use [Skeleton Key] to skip
+			}
+			else if(my_primestat() == $stat[Muscle] && my_buffedstat($stat[Muscle]) >= 30)
+			{
+				run_choice(4);	// spend adv and not guarenteed to work
+			}
+			else if(my_primestat() == $stat[Mysticality] && my_buffedstat($stat[Mysticality]) >= 30)
+			{
+				run_choice(5);	// spend adv and not guarenteed to work
+			}
+			else if(my_primestat() == $stat[Moxie] && my_buffedstat($stat[Moxie]) >= 30)
+			{
+				run_choice(6);	// spend adv and not guarenteed to work
+			}
+			else abort("I made an error and tried to adventure in the daily dungeon when I have no means of handling [I Wanna Be a Door]");
+			break;
+		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
+			if(options contains 2)
+			{
+				run_choice(2);	// use eleven-foot pole to skip
+			} 
+			else
+			{
+				run_choice(1);	// take damage to progress
+			}
+			break;
+		default:
+			abort("unhandled choice in dailyDungeonChoiceHandler");
+			break;
 
-	return true;
+	}
 }
 
 boolean LX_dolphinKingMap()
@@ -487,6 +638,32 @@ boolean LX_meatMaid()
 			abort("May be stuck in an interrupting Non-Combat adventure, finish current adventure and resume");
 		}
 		return true;
+	}
+	return false;
+}
+
+boolean dependenceDayClovers()
+{
+	if(get_property("_fireworkUsed").to_boolean())
+	{
+		return false;	//only 1 firework per day allowed
+	}
+	if(holiday() != "Dependence Day")
+	{
+		return false;	//it is not dependence day today
+	}
+	
+	auto_log_info("Today is Dependence Day and I want to use a [green rocket] for some clovers", "green");
+	if(item_amount($item[green rocket]) == 0 && my_meat() < npc_price($item[green rocket]))
+	{
+		auto_log_info("I can't afford a [green rocket]. I will try again later");
+		return false;
+	}
+	
+	buyUpTo(1, $item[green rocket]);
+	if(item_amount($item[green rocket]) > 0)
+	{
+		return use(1, $item[green rocket]);
 	}
 	return false;
 }

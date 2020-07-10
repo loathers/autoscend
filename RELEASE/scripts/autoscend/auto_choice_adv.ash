@@ -4,73 +4,18 @@ import<autoscend.ash>
 boolean auto_run_choice(int choice, string page)
 {
 	auto_log_debug("Running auto_choice_adv.ash");
+	string[int] options = available_choice_options();
 	
 	switch (choice) {
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
-			if (possessEquipment($item[eXtreme mittens])) {
-				if (possessEquipment($item[eXtreme scarf])) {
-					run_choice(3); // get 200 Meat.
-				} else {
-					run_choice(2); // get eXtreme scarf
-				}
-			} else {
-				run_choice(1); // get eXtreme mittens
-			}
-			break;
 		case 16: // Saint Beernard (The eXtreme Slope)
-			if (possessEquipment($item[snowboarder pants])) {
-				if (possessEquipment($item[eXtreme scarf])) {
-					run_choice(3); // get 200 Meat.
-				} else {
-					run_choice(2); // get eXtreme scarf
-				}
-			} else {
-				run_choice(1); // get snowboarder pants
-			}
-			break;
 		case 17: // Generic Teen Comedy Snowboarding Adventure (The eXtreme Slope)
-			if (possessEquipment($item[eXtreme mittens])) {
-				if (possessEquipment($item[snowboarder pants])) {
-					run_choice(3); // get 200 Meat.
-				} else {
-					run_choice(2); // get snowboarder pants
-				}
-			} else {
-				run_choice(1); // get eXtreme mittens
-			}
+			theeXtremeSlopeChoiceHandler(choice);
 			break;
 		case 18: // A Flat Miner (Itznotyerzitz Mine)
-			if (possessEquipment($item[miner\'s pants])) {
-				if (possessEquipment($item[7-Foot Dwarven mattock])) {
-					run_choice(3); // get 100 Meat.
-				} else {
-					run_choice(2); // get 7-Foot Dwarven mattock
-				}
-			} else {
-				run_choice(1); // get miner's pants
-			}
-			break;
 		case 19: // 100% Legal (Itznotyerzitz Mine)
-			if (possessEquipment($item[miner\'s helmet])) {
-				if (possessEquipment($item[miner\'s pants])) {
-					run_choice(3); // get 100 Meat.
-				} else {
-					run_choice(2); // get miner's pants
-				}
-			} else {
-				run_choice(1); // get miner's helmet
-			}
-			break;
 		case 20: // See You Next Fall (Itznotyerzitz Mine)
-			if (possessEquipment($item[miner\'s helmet])) {
-				if (possessEquipment($item[7-Foot Dwarven mattock])) {
-					run_choice(3); // get 100 Meat.
-				} else {
-					run_choice(2); // get 7-Foot Dwarven mattock
-				}
-			} else {
-				run_choice(1); // get miner's helmet
-			}
+			itznotyerzitzMineChoiceHandler(choice);
 			break;
 		case 22: // The Arrrbitrator (The Obligatory Pirate's Cove)
 		case 23: // Barrie Me at Sea (The Obligatory Pirate's Cove)
@@ -114,9 +59,9 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(1);
 			} else if (equipped_amount($item[mullet wig]) == 1 && item_amount($item[briefcase]) > 0) {
 				run_choice(2);
-			} else {
+			} else if (equipped_amount($item[frilly skirt]) == 1 && item_amount($item[hot wing]) > 2) {
 				run_choice(3);
-			}
+			} else abort("I tried to infiltrate the orcish frat house without being equipped for the job");
 			break;
 		case 189: // O Cap'm, My Cap'm (The Poop Deck)
 			run_choice(2); // skip
@@ -187,22 +132,17 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 556: // More Locker Than Morlock (Itznotyerzitz Mine)
-			if (!possessOutfit("Mining Gear")) {
-				run_choice(1); // get an outfit piece
-			} else {
-				run_choice(2); // skip
-			}
+			itznotyerzitzMineChoiceHandler(choice);
 			break;
 		case 575: // Duffel on the Double (The eXtreme Slope)
-			if (!possessOutfit("eXtreme Cold-Weather Gear")) {
-				run_choice(1); // get an outfit piece
-			} else {
-				if (isActuallyEd()) { // add other paths which don't want to waste spleen (if any) here.
-					run_choice(3); // skip
-				} else {
-					run_choice(4); // Lucky Pill. (Clover for 1 spleen, worth?)
-				}
-			}
+			theeXtremeSlopeChoiceHandler(choice);
+			break;
+		case 689: // The Final Reward (Daily Dungeon 15th room)
+		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
+		case 691: // Second Chest (Daily Dungeon 10th room)
+		case 692: // I Wanna Be a Door (Daily Dungeon)
+		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
+			dailyDungeonChoiceHandler(choice, options);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
 			if (auto_my_path() == "Pocket Familiars" && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
@@ -278,11 +218,35 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(2); // skip
 			}
 			break;
+		case 793: // The Shore, Inc. Travel Agency. doing a vacation
+			if(my_primestat() == $stat[Muscle])
+			{
+				run_choice(1);
+			}
+			else if(my_primestat() == $stat[Mysticality])
+			{
+				run_choice(2);
+			}
+			else	//if no prime stat we still want moxie
+			{
+				run_choice(3);
+			}
+			break;
 		case 794: // Once More Unto the Junk (The Old Landfill)
 		case 795: // The Bathroom of Ten Men (The Old Landfill)
 		case 796: // The Den of Iquity (The Old Landfill)
 		case 797: // Let's Workshop This a Little (The Old Landfill)
 			oldLandfillChoiceHandler(choice);
+			break;
+		case 829: // we all wear masks. (grimstone mask)
+			run_choice(1);			//choose step mother. we want [Ornate Dowsing Rod]
+			break;
+		case 822: //The Prince's Ball (In the Restroom)
+		case 823: //The Prince's Ball (On the Dance Floor)
+		case 824: //The Prince's Ball (The Kitchen)
+		case 825: //The Prince's Ball (On the Balcony)
+		case 826: //The Prince's Ball (The Lounge)
+			run_choice(1);			//pickup odd silver coin
 			break;
 		case 875: // Welcome To Our ool Table (The Haunted Billiards Room).
 			if(poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)
@@ -418,6 +382,17 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(5);
 			}
 			break;
+		case 1062: // Lots of Options (The Overgrown Lot)
+			if (options contains 1) {
+				run_choice(1); // get flowers for the doc
+			} else {
+				if (options contains 5) {
+					run_choice(5); // get booze from map to a hidden booze cache
+				} else {
+					run_choice(3); // get booze
+				}
+			}
+			break;
 		case 1082: // The "Rescue" (post-Cake Lord in Madness Bakery)
 			run_choice(1);
 			break;
@@ -436,15 +411,15 @@ boolean auto_run_choice(int choice, string page)
 				search = "I'd like some experience.";
 			}
 
-			int choice = 0;
-			foreach idx, str in available_choice_options()
+			int glchoice = 0;
+			foreach idx, str in options
 			{
 				if(contains_text(str,search))
 				{
-					choice = idx;
+					glchoice = idx;
 				}
 			}
-			run_choice(choice);
+			run_choice(glchoice);
 			break;
 		case 1340: // Is There A Doctor In The House? (Lil' Doctor Bag™)
 			auto_log_info("Accepting doctor quest, it's our job!");
@@ -452,9 +427,6 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1342: // Torpor (Dark Gyffte)
 			bat_reallyPickSkills(20);
-			break;
-		case 1387: // Using the Force (Fourth of May Cosplay Saber)
-			run_choice(get_property("_auto_saberChoice").to_int());
 			break;
 		default:
 			break;

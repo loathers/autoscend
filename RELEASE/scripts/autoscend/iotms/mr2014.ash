@@ -365,21 +365,15 @@ boolean xiblaxian_makeStuff()
 	return false;
 }
 
-boolean ornateDowsingRod()
+boolean LX_ornateDowsingRod(boolean doing_desert_now)
 {
 	if(!get_property("auto_grimstoneOrnateDowsingRod").to_boolean())
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Grimstone Mask]))
+	if(!auto_is_valid($item[Grimstone Mask]) || !auto_can_equip($item[Ornate Dowsing Rod]))
 	{
-		set_property("auto_grimstoneOrnateDowsingRod", false);
-		return false;
-	}
-	if(possessEquipment($item[UV-resistant compass]))
-	{
-		auto_log_warning("You have a UV-resistant compass for some raisin, I assume you don't want an Ornate Dowsing Rod.", "red");
-		set_property("auto_grimstoneOrnateDowsingRod", false);
+		set_property("auto_grimstoneOrnateDowsingRod", false);	//mask or rod are not valid
 		return false;
 	}
 	if(possessEquipment($item[Ornate Dowsing Rod]))
@@ -388,58 +382,89 @@ boolean ornateDowsingRod()
 		set_property("auto_grimstoneOrnateDowsingRod", false);
 		return false;
 	}
-	if(my_adventures() <= 6)
+	if(in_hardcore())		//will we be able to pull at any point in the run. not just right now (we might be out of pulls today)
 	{
-		return false;
+		if(!canChangeToFamiliar($familiar[Grimstone Golem]))	//no golem, or not allowed in path
+		{
+			set_property("auto_grimstoneOrnateDowsingRod", false);	
+			return false;
+		}
 	}
-	if(item_amount($item[Grimstone Mask]) == 0)
-	{
-		return false;
-	}
-	if(my_daycount() < 2)
+	
+	//because it requires continuous adventures in the same day, then we want to do pre do this before we even get to the desert.
+	//but we do not want to do it too early either. so we wait until we are at least day 2 and level 7 to get the dowsing rod.
+	//unless we are doing desert now. in which case we ignore this limitation and do it now
+	if(!doing_desert_now && (my_level() < 8 || my_daycount() < 2))
 	{
 		return false;
 	}
 	if(get_counters("", 0, 6) != "")
 	{
+		return false;	//do not waste a semirare
+	}
+	
+	if(item_amount($item[Grimstone Mask]) == 0 && !canChangeToFamiliar($familiar[Grimstone Golem]) && canPull($item[Grimstone Mask]))
+	{
+		pullXWhenHaveY($item[Grimstone Mask], 1, 0);		//pull the mask if you do not have it and cannot use the golem
+	}
+	if(item_amount($item[Grimstone Mask]) == 0)
+	{
+		return false;
+	}
+	
+	if(my_adventures() <= 6)
+	{
+		auto_log_info("I need at least 6 adv to get [Ornate Dowsing Rod] and I only have " + my_adventures(), "blue");
+		if(doing_desert_now)
+		{
+			if(fullness_left() + inebriety_left() > 0)
+			{
+				abort("I am trying to do desert now so I cannot delay getting [Ornate Dowsing Rod]. I still have stomch and and liver left. Eat and drink until at least 6 adv and then run me again");
+			}
+			if(isAboutToPowerlevel())
+			{
+				auto_log_info("I have nothing else to do except the desert. So I am ending the day early", "blue");
+				set_property("_auto_doneToday", true);
+				return true;	//want to restart the loop so it can properly exit it and do bedtime.
+			}
+		}
 		return false;
 	}
 
-	#Need to make sure we get our grimstone mask
 	auto_log_info("Acquiring a Dowsing Rod!", "blue");
-	set_property("choiceAdventure829", "1");
 	use(1, $item[grimstone mask]);
 
-	set_property("choiceAdventure822", "1");
-	set_property("choiceAdventure823", "1");
-	set_property("choiceAdventure824", "1");
-	set_property("choiceAdventure825", "1");
-	set_property("choiceAdventure826", "1");
 	while(item_amount($item[odd silver coin]) < 1)
 	{
-		autoAdv(1, $location[The Prince\'s Balcony]);
+		autoAdv($location[The Prince\'s Balcony]);
 	}
 	while(item_amount($item[odd silver coin]) < 2)
 	{
-		autoAdv(1, $location[The Prince\'s Dance Floor]);
+		autoAdv($location[The Prince\'s Dance Floor]);
 	}
 	while(item_amount($item[odd silver coin]) < 3)
 	{
-		autoAdv(1, $location[The Prince\'s Lounge]);
+		autoAdv($location[The Prince\'s Lounge]);
 	}
 	while(item_amount($item[odd silver coin]) < 4)
 	{
-		autoAdv(1, $location[The Prince\'s Kitchen]);
+		autoAdv($location[The Prince\'s Kitchen]);
 	}
 	while(item_amount($item[odd silver coin]) < 5)
 	{
-		autoAdv(1, $location[The Prince\'s Restroom]);
+		autoAdv($location[The Prince\'s Restroom]);
 	}
 
-	cli_execute("make ornate dowsing rod");
-	set_property("auto_grimstoneOrnateDowsingRod", false);
-	set_property("choiceAdventure805", "1");
-	return true;
+	set_property("auto_grimstoneOrnateDowsingRod", false);	//craft success = we done. fail = we ask user to make it
+	if(create(1, $item[Ornate Dowsing Rod]))
+	{
+		return true;
+	}
+	if(item_amount($item[Ornate Dowsing Rod]) == 0)
+	{
+		abort("Failed to craft [Ornate Dowsing Rod]. craft it manually and run me again");
+	}
+	return false;
 }
 
 boolean fancyOilPainting()

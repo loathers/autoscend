@@ -46,7 +46,6 @@ boolean L7_crypt()
 
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && canGroundhog($location[The Defiled Alcove]))
 	{
-		handleFamiliar("init");
 
 		if((get_property("_badlyRomanticArrows").to_int() == 0) && auto_have_familiar($familiar[Reanimated Reanimator]) && (my_daycount() == 1))
 		{
@@ -65,9 +64,7 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
-		autoAdv(1, $location[The Defiled Alcove]);
-		handleFamiliar("item");
-		return true;
+		return autoAdv(1, $location[The Defiled Alcove]);
 	}
 
 	// In KoE, skeleton astronauts are random encounters that drop Evil Eyes.
@@ -84,7 +81,6 @@ boolean L7_crypt()
 	{
 		auto_log_info("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
-		handleFamiliar("item");
 		autoEquip($item[Gravy Boat]);
 
 		bat_formBats();
@@ -131,10 +127,7 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Niche!", "blue");
-		autoAdv(1, $location[The Defiled Niche]);
-
-		handleFamiliar("item");
-		return true;
+		return autoAdv(1, $location[The Defiled Niche]);
 	}
 
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
@@ -178,8 +171,6 @@ boolean L7_crypt()
 		}
 
 		auto_MaxMLToCap(auto_convertDesiredML(149), true);
-
-		providePlusNonCombat(25);
 
 		addToMaximize("200ml " + auto_convertDesiredML(149) + "max");
 		autoAdv(1, $location[The Defiled Cranny]);

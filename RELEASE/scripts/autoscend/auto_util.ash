@@ -130,16 +130,7 @@ boolean fightScienceTentacle();
 boolean evokeEldritchHorror(string option);
 boolean evokeEldritchHorror();
 boolean auto_change_mcd(int mcd);
-boolean providePlusCombat(int amt);
-boolean providePlusNonCombat(int amt);
-boolean providePlusCombat(int amt, boolean doEquips);
-boolean providePlusNonCombat(int amt, boolean doEquips);
 boolean basicAdjustML();
-boolean auto_is_valid(item it);
-boolean auto_is_valid(familiar fam);
-boolean auto_is_valid(skill sk);
-boolean auto_can_equip(item it);
-boolean auto_can_equip(item it, slot s);
 boolean auto_badassBelt();
 int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
@@ -629,6 +620,15 @@ boolean startMeatsmithSubQuest()
 	return false;
 }
 
+boolean finishMeatsmithSubQuest() {
+	if (internalQuestStatus("questM23Meatsmith") == 1) {
+		visit_url("shop.php?whichshop=meatsmith");
+		run_choice(2);
+		return true;
+	}
+	return false;
+}
+
 boolean startGalaktikSubQuest()
 {
 	if(auto_my_path() == "Nuclear Autumn")
@@ -646,6 +646,20 @@ boolean startGalaktikSubQuest()
 		temp = visit_url("shop.php?whichshop=doc&action=talk");
 		temp = visit_url("choice.php?pwd=&whichchoice=1064&option=1");
 		return true;
+	}
+	return false;
+}
+
+boolean finishGalaktikSubQuest() {
+	if (item_amount($item[fraudwort]) >= 3 && item_amount($item[shysterweed]) >= 3 && item_amount($item[swindleblossom]) >= 3) {
+		string temp = visit_url("shop.php?whichshop=doc");
+		if (temp.contains_text("What did you need, again?")) {
+			visit_url("shop.php?whichshop=doc&action=talk");
+		}
+		run_choice(2);
+		if (internalQuestStatus("questM24Doc") > 1) {
+			return true;
+		}
 	}
 	return false;
 }
@@ -2245,6 +2259,16 @@ boolean isMusGuildStoreAvailable()
 	return false;
 }
 
+boolean isMystGuildStoreAvailable() {
+	if ($classes[Pastamancer, Sauceror] contains my_class() && guild_store_available()) {
+		return true;
+	}
+	if (my_class() == $class[Accordion Thief] && my_level() >= 9 && guild_store_available()) {
+		return true;
+	}
+	return false;
+}
+
 boolean isArmoryAvailable()
 {
 	if(auto_my_path() == "Nuclear Autumn")
@@ -2276,6 +2300,47 @@ boolean isUnclePAvailable()
 	return !page_text.contains_text("You don't know where a desert beach is");
 }
 
+boolean isDesertAvailable()
+{
+	//Is this workaround still needed or is mafia correctly recognizing desert is available in koe?
+	if(in_koe())
+	{
+		auto_log_info("The desert exploded so no need to build a meatcar...");
+		set_property("lastDesertUnlock", my_ascensions());
+	}
+	
+	return get_property("lastDesertUnlock").to_int() == my_ascensions();
+}
+
+boolean inKnollSign()
+{
+	return $strings[Mongoose, Vole, Wallaby] contains my_sign();
+}
+
+boolean inCanadiaSign()
+{
+	return $strings[Marmot, Opossum, Platypus] contains my_sign();
+}
+
+boolean inGnomeSign()
+{
+	return $strings[Blender, Packrat, Wombat] contains my_sign();
+}
+
+boolean allowSoftblockShen()
+{
+	//Some quests have a softblock on doing them because shen might need them. When we run out of things to do this softblock is released.
+	//Return true means the softblock is active. Return false means the softblock is released.
+	if(get_property("questL11Shen") == "finished")
+	{
+		return false;		//shen quest is over. softblock not needed
+	}
+	
+	//We tell users to disable the shen softblock by setting auto_shenSkipLastLevel to 999.
+	//This is why we want to return < my_level() and not != my_level()
+	return get_property("auto_shenSkipLastLevel").to_int() < my_level();
+}
+
 boolean instakillable(monster mon)
 {
 	if(mon.boss)
@@ -2286,6 +2351,9 @@ boolean instakillable(monster mon)
 	static boolean[monster] not_instakillable = $monsters[
 		// Cyrpt bosses
 		conjoined zmombie, gargantulihc, giant skeelton, huge ghuol,
+		
+		// crowd of adventurers bosses at the tower tests
+		Tasmanian Dervish, Mr. Loathing, The Mastermind, Seannery the Conman, The Lavalier, Leonard, Arthur Frankenstein, Mrs. Freeze, Odorous Humongous,
 
 		// time-spinner
 		Ancient Skeleton with Skin still on it, Apathetic Tyrannosaurus, Assembly Elemental, Cro-Magnon Gnoll, Krakrox the Barbarian, Wooly Duck,
@@ -2306,7 +2374,7 @@ boolean instakillable(monster mon)
 		Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl, Eldritch Tentacle,
 
 		// Other Monsters that Mafia returns as instakillable (or not a boss), that really aren't
-		Drunken Rat King
+		cosmetics wraith, Drunken Rat King
 	];
 
 	if(not_instakillable contains mon)
@@ -2664,192 +2732,304 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 }
 
 
-boolean providePlusCombat(int amt)
-{
-	return providePlusCombat(amt, true);
-}
-boolean providePlusNonCombat(int amt)
-{
-	return providePlusNonCombat(amt, true);
+float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	float alreadyHave = numeric_modifier("Combat Rate");
+	float need = amt - alreadyHave;
+
+	if (need > 0) {
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	} else {
+		auto_log_debug("We already have enough!");
+	}
+
+	float delta = 0;
+
+	float result() {
+		return numeric_modifier("Combat Rate") + delta;
+	}
+
+	if (doEquips) {
+		string max = "200combat " + amt + "max";
+		if (speculative) {
+			simMaximizeWith(max);
+		} else {
+			addToMaximize(max);
+			simMaximize();
+		}
+		delta = simValue("Combat Rate") - numeric_modifier("Combat Rate");
+		auto_log_debug("With gear we can get to " + result());
+	}
+
+	boolean pass() {
+		return result() >= amt;
+	}
+
+	if(pass()) {
+		return result();
+	}
+
+	// first lets do stuff that is "free" (as in has no MP cost, item use or can be freely removed/toggled)
+	
+	if (have_effect($effect[Become Superficially Interested]) > 0) {
+		visit_url("charsheet.php?pwd=&action=newyouinterest");
+		if(pass()) {
+			return result();
+		}
+	}
+
+	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness] {
+		uneffect(eff);
+		if(pass()) {
+			return result();
+		}
+	}
+
+	if (get_property("_horsery") == "dark horse") {
+		horseNone();
+	} else {
+		horseMaintain();
+	}
+	if(pass()) {
+		return result();
+	}
+
+	void handleEffect(effect eff) {
+		if (speculative) {
+			delta += numeric_modifier(eff, "Combat Rate");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects) {
+		foreach eff in effects {
+			if (buffMaintain(eff, 0, 1, 1, speculative)) {
+				handleEffect(eff);
+			}
+			if (pass()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Now handle buffs that cost MP, items or other resources
+
+	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
+	if (tryEffects($effects[
+		Musk of the Moose,
+		Carlweather's Cantata of Confrontation,
+		Blinking Belly,
+		Song of Battle,
+		Frown,
+		Angry,
+		Screaming! \ SCREAMING! \ AAAAAAAH!,
+		Coffeesphere,
+		Unmuffled
+	])) {
+		return result();
+	}
+
+	if (tryEffects($effects[
+		Taunt of Horus,
+		Patent Aggression,
+		Lion in Ambush,
+		Everything Must Go!,
+		Hippy Stench,
+		High Colognic,
+		Celestial Saltiness,
+		Simply Irresistible
+	])) {
+		return result();
+	}
+
+	if(canAsdonBuff($effect[Driving Obnoxiously])) {
+		if (!speculative) {
+			asdonBuff($effect[Driving Obnoxiously]);
+		}
+		handleEffect($effect[Driving Obnoxiously]);
+	}
+	if(pass()) {
+		return result();
+	}
+
+	return result();
 }
 
 boolean providePlusCombat(int amt, boolean doEquips)
 {
-	if(amt == 0)
-	{
-		return true;
-	}
-	if(have_effect($effect[Become Superficially Interested]) > 0)
-	{
-		string temp = visit_url("charsheet.php?pwd=&action=newyouinterest");
-	}
-
-//	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness, Patent Invisibility, Shelter of Shed]
-	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness]
-	{
-		if(!uneffect(eff))
-		{
-			return false;
-		}
-	}
-
-	if(auto_have_familiar($familiar[Jumpsuited Hound Dog]) && my_familiar() == $familiar[Jumpsuited Hound Dog])
-	{
-		// prevent swapping back and forth between hound dog and not hound dog when just
-		// on the cusp of the right amount of +combat when we have the hound dog out
-		handleFamiliar($familiar[Jumpsuited Hound Dog]);
-	}
-
-	if(numeric_modifier("Combat Rate").to_int() >= amt)
-	{
-		return true;
-	}
-
-	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
-	foreach eff in $effects[Musk of the Moose, Carlweather\'s Cantata of Confrontation, Blinking Belly, Song of Battle, Frown, Angry, Screaming! \ SCREAMING! \ AAAAAAAH!]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(numeric_modifier("Combat Rate").to_int() >= amt)
-		{
-			return true;
-		}
-	}
-
-	foreach eff in $effects[Taunt of Horus, Hippy Stench, High Colognic, Celestial Saltiness, Everything Must Go!, Patent Aggression, Lion in Ambush]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(numeric_modifier("Combat Rate").to_int() >= amt)
-		{
-			return true;
-		}
-	}
-
-	int equipDiff = 0;
-
-	if(doEquips)
-	{
-		addToMaximize("200combat " + to_string(amt) + "max");
-		simMaximize();
-		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
-		if(auto_have_familiar($familiar[Jumpsuited Hound Dog]))
-		{
-			handleFamiliar($familiar[Jumpsuited Hound Dog]);
-		}
-	}
-
-	if((numeric_modifier("Combat Rate").to_int() + equipDiff < amt)
-	   && (get_property("_horsery") == "dark horse"))
-	{
-		getHorse("return");
-	}
-	else
-	{
-		horseMaintain();
-	}
-
-	if(numeric_modifier("Combat Rate").to_int() + equipDiff < amt)
-	{
-		asdonBuff($effect[Driving Obnoxiously]);
-	}
-	return true;
+	return providePlusCombat(amt, doEquips, false) >= amt;
 }
 
-boolean providePlusNonCombat(int amt, boolean doEquips)
+boolean providePlusCombat(int amt)
 {
-	if(amt == 0)
-	{
-		return true;
-	}
-	amt = -1 * amt;
+	return providePlusCombat(amt, true);
+}
 
-	if(have_effect($effect[Become Intensely Interested]) > 0)
-	{
-		string temp = visit_url("charsheet.php?pwd=&action=newyouinterest");
-	}
+float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
-	foreach eff in $effects[Carlweather\'s Cantata Of Confrontation, Driving Obnoxiously]
-	{
-		if(!uneffect(eff))
-		{
-			return false;
-		}
-		if(numeric_modifier("Combat Rate").to_int() <= amt)
-		{
-			return true;
-		}
+	float alreadyHave = numeric_modifier("Combat Rate");
+	float need = amt - alreadyHave;
+
+	if (need > 0) {
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	} else {
+		auto_log_debug("We already have enough!");
 	}
 
-	foreach eff in $effects[Patent Invisibility]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(numeric_modifier("Combat Rate").to_int() <= amt)
-		{
-			return true;
+	float delta = 0;
+
+	float result() {
+		return numeric_modifier("Combat Rate") + delta;
+	}
+
+	if (doEquips) {
+		string max = "-200combat " + amt + "max";
+		if (speculative) {
+			simMaximizeWith(max);
+		} else {
+			addToMaximize(max);
+			simMaximize();
+		}
+		delta = simValue("Combat Rate") - numeric_modifier("Combat Rate");
+		auto_log_debug("With gear we can get to " + result());
+	}
+
+	boolean pass() {
+		return result() >= amt;
+	}
+
+	if(pass()) {
+		return result();
+	}
+
+
+	// first lets do stuff that is "free" (as in has no MP cost, item use or can be freely removed/toggled)
+
+	if (have_effect($effect[Become Intensely Interested]) > 0) {
+		visit_url("charsheet.php?pwd=&action=newyouinterest");
+		if(pass()) {
+			return result();
 		}
 	}
+
+	foreach eff in $effects[Carlweather\'s Cantata Of Confrontation, Driving Obnoxiously] {
+		uneffect(eff);
+		if(pass()) {
+			return result();
+		}
+	}
+
+	horseDark();
+	if(pass()) {
+		return result();
+	}
+
+	void handleEffect(effect eff) {
+		if (speculative) {
+			delta += numeric_modifier(eff, "Combat Rate");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects) {
+		foreach eff in effects {
+			if (buffMaintain(eff, 0, 1, 1, speculative)) {
+				handleEffect(eff);
+			}
+			if (pass()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Now handle buffs that cost MP, items or other resources
 
 	shrugAT($effect[The Sonata of Sneakiness]);
-	//Assumes that Rev Engine was taken with Extra-Quiet Muffler.
-	foreach eff in $effects[Shelter Of Shed, Brooding, Muffled, Smooth Movements, The Sonata of Sneakiness, Song of Solitude, Inked Well, Bent Knees, Extended Toes, Ink Cloud, Patent Invisibility, Cloak of Shadows]
-	{
-		buffMaintain(eff, 0, 1, 1);
-		if(numeric_modifier("Combat Rate").to_int() <= amt)
-		{
-			return true;
+	if (tryEffects($effects[
+		Shelter Of Shed,
+		Brooding,
+		Muffled,
+		Smooth Movements,
+		The Sonata of Sneakiness,
+		Song of Solitude,
+		Inked Well,
+		Bent Knees,
+		Extended Toes,
+		Ink Cloud,
+		Cloak of Shadows,
+		Chocolatesphere
+	])) {
+		return result();
+	}
+
+	if (auto_birdModifier("Combat Rate") > 0) {
+		if (tryEffects($effects[Blessing of the Bird])) {
+			return result();
 		}
 	}
 
-	// We can get these during normal game, may as well use them!
-	if(0 == have_effect($effect[Fresh Scent]))
-	{
-		if(item_amount($item[chunk of rock salt]) > 0)
-		{
-			use(1, $item[chunk of rock salt]);
-		}
-		else if(item_amount($item[deodorant]) > 0)
-		{
-			use(1, $item[deodorant]);
-		}
-		if (numeric_modifier("Combat Rate").to_int() <= amt)
-		{
-			return true;
+	if (auto_favoriteBirdModifier("Combat Rate") > 0) {
+		if (tryEffects($effects[Blessing of Your Favorite Bird])) {
+			return result();
 		}
 	}
 
-	int equipDiff = 0;
-
-	if(doEquips)
-	{
-		addToMaximize("-200combat " + to_string(-1 * amt) + "max");
-		simMaximize();
-		equipDiff = to_int(simValue("Combat Rate") - numeric_modifier("Combat Rate"));
+	if (tryEffects($effects[
+		Ashen,
+		Predjudicetidigitation,
+		Patent Invisibility,
+		Ministrations in the Dark,
+		Fresh Scent,
+		Become Superficially interested,
+		Gummed Shoes,
+		Simply Invisible,
+		Inky Camouflage,	
+		Celestial Camouflage
+	])) {
+		return result();
 	}
 
-	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
-	{
-		getHorse("noncombat");
+	if(canAsdonBuff($effect[Driving Stealthily])) {
+		if (!speculative) {
+			asdonBuff($effect[Driving Stealthily]);
+		}
+		handleEffect($effect[Driving Stealthily]);
 	}
-
-	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt))
-	{
-		auto_powerfulGloveNoncombat();
+	if(pass()) {
+		return result();
 	}
 
 	//blooper ink costs 15 coins without which it will error when trying to buy it, so that is the bare minimum we need to check for
 	//However we don't want to waste our early coins on it as they are precious. So require at least 400 coins before buying it.
-	if((numeric_modifier("Combat Rate").to_int() + equipDiff > amt) &&
-	   my_class() == $class[Plumber] && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400)
-	{
-		retrieve_item(1, $item[blooper ink]);
-		buffMaintain($effect[Blooper Inked], 0, 1, 1);
+	if (in_zelda() && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400) {
+		if (!speculative) {
+			retrieve_item(1, $item[blooper ink]);
+		}
+		if (tryEffects($effects[Blooper Inked])) {
+			return result();
+		}
 	}
 
-
-	if(numeric_modifier("Combat Rate").to_int() + equipDiff > amt)
-	{
-		asdonBuff($effect[Driving Stealthily]);
+	// Glove charges are a limited per-day resource, lets do this last so we don't waste possible uses of Replace Enemy
+	if (tryEffects($effects[Triple-Sized])) {
+		return result();
 	}
-	return true;
+
+	return result();
+}
+
+boolean providePlusNonCombat(int amt, boolean doEquips)
+{
+	return providePlusNonCombat(amt, doEquips, false) >= amt;
+}
+
+boolean providePlusNonCombat(int amt)
+{
+	return providePlusNonCombat(amt, true);
 }
 
 float provideInitiative(int amt, boolean doEquips, boolean speculative)
@@ -2884,7 +3064,7 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 		}
 		else
 		{
-			addToMaximize("500initiative " + amt + "max");
+			addToMaximize(max);
 			simMaximize();
 		}
 		delta = simValue("Initiative") - numeric_modifier("Initiative");
@@ -3101,6 +3281,12 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			if(!pass(ele))
 				return false;
 		}
+		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot] contains my_familiar()) {
+			// if we pass while having a resist familiar equipped, make sure we keep it equipped
+			// otherwise we may end up flip-flopping from the resist familiar and something else
+			// which could cost us adventures if switching familiars affects our resistances enough
+			handleFamiliar(my_familiar());
+		}
 		return true;
 	}
 
@@ -3194,7 +3380,6 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		if(resfam != $familiar[none])
 		{
 			// need to use now so maximizer will see it
-			familiar currentFamiliar = my_familiar();
 			use_familiar(resfam);
 			if(resfam == $familiar[Trick-or-Treating Tot])
 			{
@@ -3206,10 +3391,10 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
 			}
-			use_familiar(currentFamiliar);
 		}
-		if(pass())
+		if(pass()) {
 			return result();
+		}
 	}
 
 	if(doEquips)
@@ -3606,7 +3791,7 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 	if (in_koe()) return false;
 
 	int best = 10;
-	if($strings[Mongoose, Vole, Wallaby] contains my_sign())
+	if(knoll_available())
 	{
 		if(item_amount($item[Detuned Radio]) == 0)
 		{
@@ -3617,18 +3802,15 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 			return false;
 		}
 	}
-	if($strings[Blender, Packrat, Wombat] contains my_sign())
+	if(inGnomeSign() && !gnomads_available())
 	{
-		if(get_property("lastDesertUnlock").to_int() < my_ascensions())
-		{
-			return false;
-		}
+		return false;
 	}
-	if($strings[Marmot, Opossum, Platypus] contains my_sign())
+	if(canadia_available())
 	{
 		best = 11;
 	}
-	if(my_sign() == "Bad Moon")
+	if(in_bad_moon())
 	{
 		best = 11;
 	}
@@ -3642,12 +3824,14 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 	}
 	mcd = min(mcd, best);
 	int next = max(0, mcd);
+	
+	set_property("auto_mcd_target", next); // if we return without setting this, we will flip-flop the mcd every adventure...
+
 	if(next == current_mcd())
 	{
 		return true;
 	}
 	
-	set_property("auto_mcd_target", next);
 	if(immediately)
 	{
 		return change_mcd(next);
@@ -4981,6 +5165,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Antibiotic Saucesphere]:		useSkill = $skill[Antibiotic Saucesphere];		break;
 	case $effect[Arched Eyebrow of the Archmage]:useSkill = $skill[Arched Eyebrow of the Archmage];break;
 	case $effect[Armor-Plated]:					useItem = $item[Bent Scrap Metal];				break;
+	case $effect[Ashen]:					useItem = $item[pile of ashes];						break;
 	case $effect[Ashen Burps]:					useItem = $item[ash soda];						break;
 	case $effect[Astral Shell]:
 		if(acquireTotem())
@@ -5061,12 +5246,15 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Celestial Camouflage]:			useItem = $item[Celestial Squid Ink];			break;
 	case $effect[Celestial Saltiness]:			useItem = $item[Celestial Au Jus];				break;
 	case $effect[Celestial Sheen]:				useItem = $item[Celestial Olive Oil];			break;
+	case $effect[Celestial Vision]:				useItem = $item[Celestial Carrot Juice];			break;
 	case $effect[Cinnamon Challenger]:			useItem = $item[Pulled Red Taffy];				break;
 	case $effect[Cletus\'s Canticle of Celerity]:	useSkill = $skill[Cletus\'s Canticle of Celerity];break;
 	case $effect[Cloak of Shadows]: useSkill = $skill[Blood Cloak]; break;
 	case $effect[Clyde\'s Blessing]:			useItem = $item[The Legendary Beat];			break;
 	case $effect[Chalky Hand]:					useItem = $item[Handful of Hand Chalk];			break;
+	case $effect[Chocolatesphere]:					useSkill = $skill[Chocolatesphere];			break;
 	case $effect[Cranberry Cordiality]:			useItem = $item[Cranberry Cordial];				break;
+	case $effect[Coffeesphere]:				useSkill = $skill[Coffeesphere];			break;
 	case $effect[Cold Hard Skin]:				useItem = $item[Frost-Rimed Seal Hide];			break;
 	case $effect[Contemptible Emanations]:		useItem = $item[Cologne of Contempt];			break;
 	case $effect[The Cupcake of Wrath]:			useItem = $item[Green-Frosted Astral Cupcake];	break;
@@ -5145,6 +5333,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Football Eyes]:				useItem = $item[Black Facepaint];				break;
 	case $effect[Fortunate Resolve]:			useItem = $item[Resolution: Be Luckier];		break;
 	case $effect[Frenzied, Bloody]:				useSkill = $skill[Blood Frenzy];				break;
+	case $effect[Fresh Scent]:					useItem = $item[deodorant];						break;
 	case $effect[Frigidalmatian]:				useSkill = $skill[Frigidalmatian];				break;
 	case $effect[Frog in Your Throat]:			useItem = $item[Frogade];						break;
 	case $effect[From Nantucket]:				useItem = $item[Ye Olde Bawdy Limerick];		break;
@@ -5168,6 +5357,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Graham Crackling]:				useItem = $item[Heather Graham Cracker];		break;
 	case $effect[Greasy Peasy]:					useItem = $item[Robot Grease];					break;
 	case $effect[Greedy Resolve]:				useItem = $item[Resolution: Be Wealthier];		break;
+	case $effect[Gristlesphere]:				useSkill = $skill[Gristlesphere];		break;
 	case $effect[Gummed Shoes]:					useItem = $item[Shoe Gum];						break;
 	case $effect[Gummi-Grin]:					useItem = $item[Gummi Turtle];					break;
 	case $effect[Hairy Palms]:					useItem = $item[Orcish Hand Lotion];			break;
@@ -5200,6 +5390,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Industrial Strength Starch]:	useItem = $item[Industrial Strength Starch];	break;
 	case $effect[Ink Cloud]:					useSkill = $skill[Ink Gland];						break;
 	case $effect[Inked Well]:					useSkill = $skill[Squid Glands];				break;
+	case $effect[Inky Camouflage]:	useItem = $item[Vial of Squid Ink];	break;
 	case $effect[Inscrutable Gaze]:				useSkill = $skill[Inscrutable Gaze];			break;
 	case $effect[Insulated Trousers]:			useItem = $item[Cold Powder];					break;
 	case $effect[Intimidating Mien]:			useSkill = $skill[Intimidating Mien];			break;
@@ -5252,7 +5443,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Ministrations in the Dark]:	useItem = $item[EMD Holo-Record];				break;
 	case $effect[The Moxie Of LOV]:				useItem = $item[LOV Elixir #9];					break;
 	case $effect[The Moxious Madrigal]:			useSkill = $skill[The Moxious Madrigal];		break;
-	case $effect[Muffled]:						useSkill = $skill[Rev Engine];					break;
+	case $effect[Muffled]:
+		if(get_property("peteMotorbikeMuffler") == "Extra-Quiet Muffler")
+		{
+			useSkill = $skill[Rev Engine];
+		}																						break;
 	case $effect[Musk of the Moose]:			useSkill = $skill[Musk of the Moose];			break;
 	case $effect[Musky]:						useItem = $item[Lynyrd Musk];					break;
 	case $effect[Mutated]:						useItem = $item[Gremlin Mutagen];				break;
@@ -5271,6 +5466,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Of Course It Looks Great]:		useSkill = $skill[Check Hair];					break;
 	case $effect[Oiled Skin]:					useItem = $item[Skin Oil];						break;
 	case $effect[Oiled-Up]:						useItem = $item[Pec Oil];						break;
+	case $effect[Oilsphere]:						useSkill = $skill[Oilsphere];						break;
 	case $effect[OMG WTF]:						useItem = $item[Confiscated Cell Phone];		break;
 	case $effect[One Very Clear Eye]:			useItem = $item[Cyclops Eyedrops];				break;
 	case $effect[Orange Crusher]:				useItem = $item[Pulled Orange Taffy];			break;
@@ -5314,6 +5510,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Power of Heka]:				useSkill = $skill[Power of Heka];				break;
 	case $effect[The Power Of LOV]:				useItem = $item[LOV Elixir #3];					break;
 	case $effect[Prideful Strut]:				useSkill = $skill[Walk: Prideful Strut];		break;
+	case $effect[Predjudicetidigitation]:	useItem = $item[worst candy];break;
 	case $effect[Protection from Bad Stuff]:	useItem = $item[scroll of Protection from Bad Stuff];break;
 	case $effect[Provocative Perkiness]:		useItem = $item[Libation of Liveliness];		break;
 	case $effect[Puddingskin]:					useItem = $item[scroll of Puddingskin];			break;
@@ -5381,7 +5578,9 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Shelter of Shed]:				useSkill = $skill[Shelter of Shed];				break;
 	case $effect[Shrieking Weasel]:				useItem = $item[Shrieking Weasel Holo-Record];	break;
 	case $effect[Simmering]:					useSkill = $skill[Simmer];						break;
+	case $effect[Simply Invisible]:			useItem = $item[Invisibility Potion];		break;
 	case $effect[Simply Irresistible]:			useItem = $item[Irresistibility Potion];		break;
+	case $effect[Simply Irritable]:			useItem = $item[Irritability potion];		break;
 	case $effect[Singer\'s Faithful Ocelot]:	useSkill = $skill[Singer\'s Faithful Ocelot];	break;
 	case $effect[Sinuses For Miles]:			useItem = $item[Mick\'s IcyVapoHotness Inhaler];break;
 	case $effect[Sleaze-Resistant Trousers]:	useItem = $item[Sleaze Powder];					break;
@@ -5468,6 +5667,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Truly Gritty]:					useItem = $item[True Grit];						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
+	case $effect[Unmuffled]:
+		if(get_property("peteMotorbikeMuffler") == "Extra-Loud Muffler")
+		{
+			useSkill = $skill[Rev Engine];
+		}																						break;
 	case $effect[Unrunnable Face]:				useItem = $item[Runproof Mascara];				break;
 	case $effect[Unusual Perspective]:			useItem = $item[Unusual Oil];					break;
 	case $effect[Ur-Kel\'s Aria of Annoyance]:	useSkill = $skill[Ur-Kel\'s Aria of Annoyance];	break;
@@ -5765,6 +5969,12 @@ boolean auto_is_valid(item it)
 		else if(!expectGhostReport() && !haveGhostReport())
 			return false;
 	}
+	if(it == $item[Grimstone Mask])
+	{
+		if(!isGuildClass())		//it seems like all non core classes are disallowed. need to spade this to verify if any class is exempt
+			return false;
+	}
+	
 	return bees_hate_usable(it.to_string()) && is_unrestricted(it);
 }
 
@@ -6031,6 +6241,10 @@ boolean auto_check_conditions(string conds)
 				if(!($strings[=,==] contains m2.group(2)))
 					return compare_numbers(prop.to_int(), m2.group(3).to_int(), m2.group(2));
 				return prop == m2.group(3);
+			// data: <propname>
+			// gets propname and converts to a boolean
+			case "prop_boolean":
+				return get_property(condition_data).to_boolean();
 			// data: <questpropname><comparison operator><value>
 			// like prop, but with > and < and >= and <= and uses internalQuestStatus
 			// the value to compare to should always be an integer
@@ -6254,11 +6468,6 @@ element currentFlavour()
 	}
 
 	return $element[none];
-}
-
-void resetFlavour()
-{
-	set_property("_auto_tunedElement", "");
 }
 
 boolean setFlavour(element ele)
@@ -7031,3 +7240,4 @@ int poolSkillPracticeGains()
 	if(equipped_amount($item[[2268]Staff of Fats]) > 0) count += 2;		//note that $item[[7964]Staff of Fats] does not help here.
 	return count;
 }
+

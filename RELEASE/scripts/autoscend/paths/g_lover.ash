@@ -3,6 +3,10 @@ script "g_lover.ash"
 
 void glover_initializeDay(int day)
 {
+	if (auto_my_path() != "G-Lover") {
+		return;
+	}
+
 	if((item_amount($item[Mumming Trunk]) > 0) && !get_property("_mummifyDone").to_boolean())
 	{
 		mummifyFamiliar($familiar[Disgeist], "myst");
@@ -22,7 +26,6 @@ void glover_initializeSettings()
 		set_property("auto_getBeehive", true);
 		set_property("auto_getBoningKnife", true);
 		set_property("auto_dakotaFanning", true);
-		set_property("auto_grimstoneOrnateDowsingRod", false);
 		set_property("auto_ignoreFlyer", true);
 		set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 16);
 

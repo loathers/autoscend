@@ -11,9 +11,6 @@ boolean L6_friarsGetParts()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 
-	buffMaintain($effect[Snow Shoes], 0, 1, 1);
-	buffMaintain($effect[Gummed Shoes], 0, 1, 1);
-
 	if($location[The Dark Heart of the Woods].turns_spent == 0)
 	{
 		visit_url("friars.php?action=friars&pwd");
@@ -26,13 +23,10 @@ boolean L6_friarsGetParts()
 		}
 	}
 
-	handleFamiliar("item");
 	if(equipped_item($slot[Shirt]) == $item[Tunac])
 	{
 		autoEquip($slot[Shirt], $item[none]);
 	}
-
-	providePlusNonCombat(25);
 
 	if(auto_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 2))
 	{

@@ -28,7 +28,6 @@ void ed_initializeSettings()
 		set_property("auto_getBeehive", false);
 		set_property("auto_getStarKey", false);
 		set_property("auto_grimstoneFancyOilPainting", false);
-		set_property("auto_grimstoneOrnateDowsingRod", false);
 		set_property("auto_holeinthesky", false);
 		set_property("auto_lashes", "");
 		set_property("auto_needLegs", false);
@@ -1478,7 +1477,7 @@ boolean LM_edTheUndying()
 	if (!have_skill($skill[Even More Elemental Wards])) { 
 		// if we don't have the last Elemental Resistance Upgrade, we still need Ka
 		// Thus we shouldn't block quests that Shen might request as almost all of them are Ka zones.
-		if(my_level() > get_property("auto_shenSkipLastLevel").to_int() && get_property("questL11Shen") != "finished") {
+		if(allowSoftblockShen()) {
 			auto_log_warning("I was trying to avoid zones that Shen might need, but I still need Ka for upgrades.", "red");
 			set_property("auto_shenSkipLastLevel", my_level());
 			return true;

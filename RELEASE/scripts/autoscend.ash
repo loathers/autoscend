@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20127; // Leaflet use is now tracked via "leafletCompleted" setting
+since r20210; // abort now works in combat filter function
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -14,7 +14,6 @@ import <autoscend/autoscend_migration.ash>
 import <canadv.ash>
 
 import <autoscend/auto_adventure.ash>
-import <autoscend/auto_casual.ash>
 import <autoscend/auto_combat.ash>
 import <autoscend/auto_cooking.ash>
 import <autoscend/auto_deprecation.ash>
@@ -45,6 +44,7 @@ import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
+import <autoscend/paths/casual.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
 import <autoscend/paths/disguises_delimit.ash>
@@ -149,7 +149,7 @@ void initializeSettings()
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
-	set_property("auto_familiarChoice", $familiar[none]);
+	set_property("auto_familiarChoice", "");
 	set_property("auto_forceTavern", false);
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
@@ -177,12 +177,11 @@ void initializeSettings()
 	set_property("auto_powerLevelLastAttempted", "0");
 	set_property("auto_pulls", "");
 
-	 // Day on which the Shen quest was started. Required to predict which zones to avoid until Shen tells us to go there.
+	// Day on which the Shen quest was started. Required to predict which zones to avoid until Shen tells us to go there.
 	set_property("auto_shenStarted", "");
 	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
 	set_property("auto_shenSkipLastLevel", 0); 
 
-	set_property("auto_skipDesert", 0);
 	set_property("auto_snapshot", "");
 	set_property("auto_sniffs", "");
 	set_property("auto_waitingArrowAlcove", "50");
@@ -197,6 +196,7 @@ void initializeSettings()
 	set_property("auto_skipL12Farm", "false");
 	set_property("auto_L12FarmStage", "0");
 	set_property("choiceAdventure1003", 0);
+	set_property("auto_junkspritesencountered", 0);
 	remove_property("auto_minedCells");
 	beehiveConsider();
 
@@ -205,7 +205,7 @@ void initializeSettings()
 	{
 		auto_sourceTerminalRequest("enquiry monsters.enq");
 	}
-	else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && auto_have_familiar($familiar[Mosquito]))
+	else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && pathAllowsFamiliar())
 	{
 		auto_sourceTerminalRequest("enquiry familiar.enq");
 	}
@@ -229,7 +229,6 @@ void initializeSettings()
 	bond_initializeSettings();
 	fallout_initializeSettings();
 	pete_initializeSettings();
-	groundhog_initializeSettings();
 	digimon_initializeSettings();
 	majora_initializeSettings();
 	glover_initializeSettings();
@@ -851,29 +850,37 @@ int handlePulls(int day)
 	return pulls_remaining();
 }
 
-boolean doVacation()
+boolean LX_doVacation()
 {
 	if(in_koe())
 	{
+		return false;		//cannot vacation in kingdom of exploathing path
+	}
+	
+	int meat_needed = 500;
+	int adv_needed = 3;
+	int adv_budget = my_adventures() - auto_advToReserve();
+	if(my_path() == "Way of the Surprising Fist")
+	{
+		meat_needed = 5;
+		adv_needed = 5;
+	}
+	if(adv_needed > adv_budget)
+	{
+		auto_log_info("I want to vacation but I do not have enough adventures left", "red");
 		return false;
 	}
-	if(in_zelda())
+	if(meat_needed > my_meat())
+	{
+		auto_log_info("I want to vacation but I do not have enough meat", "red");
+		return false;
+	}
+	if(in_zelda())	//avoid error for not having plumber gear equipped.
 	{
 		zelda_equipTool($stat[moxie]);
 		equipMaximizedGear();
 	}
-	if(my_primestat() == $stat[Muscle])
-	{
-		set_property("choiceAdventure793", "1");
-	}
-	else if(my_primestat() == $stat[Mysticality])
-	{
-		set_property("choiceAdventure793", "2");
-	}
-	else
-	{
-		set_property("choiceAdventure793", "3");
-	}
+
 	return autoAdv(1, $location[The Shore\, Inc. Travel Agency]);
 }
 
@@ -1182,7 +1189,6 @@ void initializeDay(int day)
 
 			makeStartingSmiths();
 
-			handleFamiliar("item");
 			equipBaseline();
 
 			handleBjornify($familiar[none]);
@@ -2362,7 +2368,7 @@ boolean LX_freeCombats(boolean powerlevel)
 		auto_freeCombatsRemaining(true);		//print remaining free combats.
 		auto_log_warning("Too few adventures to safely automate free combats", "red");
 		auto_log_warning("If we lose your last adv on a free combat the remaining free combats are wasted", "red");
-		auto_log_warning("This should only happen if you lost a free fight. If you did not then please report this", "red");
+		auto_log_warning("This error should only occur if you lost a free fight. If you did not then please report this", "red");
 		abort("Please perform the remaining free combats manually then run me again");
 	}
 	
@@ -2400,7 +2406,6 @@ boolean LX_freeCombats(boolean powerlevel)
 		{
 			handleBjornify($familiar[Grinning Turtle]);
 		}
-		handleFamiliar($familiar[Machine Elf]);
 		adv_done = autoAdv(1, $location[The Deep Machine Tunnels]);
 		if(bjorn == $familiar[Machine Elf])
 		{
@@ -2501,7 +2506,6 @@ boolean Lsc_flyerSeals()
 			}
 		}
 
-		handleFamiliar("initSuggest");
 		boolean clubbedSeal = false;
 		if(doElement)
 		{
@@ -2538,7 +2542,6 @@ boolean Lsc_flyerSeals()
 				use(1, $item[ingot of seal-iron]);
 			}
 		}
-		handleFamiliar("item");
 		return clubbedSeal;
 	}
 	return false;
@@ -2607,6 +2610,7 @@ boolean LX_hardcoreFoodFarm()
 
 boolean LX_craftAcquireItems()
 {
+	dependenceDayClovers();
 	if((item_amount($item[Ten-Leaf Clover]) > 0) && glover_usable($item[Ten-Leaf Clover]))
 	{
 		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
@@ -2635,7 +2639,7 @@ boolean LX_craftAcquireItems()
 	}
 	else
 	{
-		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && auto_have_familiar($familiar[Mosquito]))
+		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathAllowsFamiliar())
 		{
 			set_property("choiceAdventure1106", 3);
 		}
@@ -3077,18 +3081,60 @@ void print_header()
 	}
 }
 
+void resetState() {
+	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
+	//We use boolean instead of adventure count because of free combats.
+	
+	set_property("auto_doCombatCopy", "no");
+	set_property("_auto_thisLoopHandleFamiliar", false);	//have we called handleFamiliar this loop
+	set_property("auto_disableFamiliarChanging", false);	//disable autoscend making changes to familiar
+	set_property("auto_familiarChoice", "");				//which familiar do we want to switch to during pre_adventure
+	set_property("choiceAdventure1387", -1); // using the force non-combat
+	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
+
+	horseDefault(); // horsery tracking
+
+	bat_formNone(); // Vampyre form tracking
+
+	resetMaximize();
+}
+
 boolean doTasks()
 {
+	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
+	
+	if(!auto_unreservedAdvRemaining())
+	{
+		auto_log_warning("No more unreserved adventures left", "red");
+		return false;	//we are out of adventures
+	}
+	if(get_property("_auto_doneToday").to_boolean())
+	{
+		auto_log_warning("According to property _auto_doneToday I am done for today", "red");
+		return false;
+	}
+	if(my_familiar() == $familiar[Stooper])
+	{
+		auto_log_info("Avoiding stooper stupor...", "blue");
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[none]);
+		use_familiar(fam);
+	}
+	if(my_inebriety() > inebriety_limit())
+	{
+		auto_log_warning("I am overdrunk", "red");
+		return false;
+	}
+	if(inAftercore())
+	{
+		auto_log_warning("I am in aftercore", "red");
+		return false;
+	}	
 	if(inCasual())
 	{	
-		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");	
+		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
 		return false;	
 	}
 	
-	//These settings should never persist into another turn, ever.
-	set_property("auto_doCombatCopy", "no");
-	set_property("auto_disableFamiliarChanging", false);
-
 	print_header();
 
 	auto_interruptCheck();
@@ -3148,14 +3194,10 @@ boolean doTasks()
 		auto_log_warning("This feature is super experimental. Please report any issues.", "red");
 	}
 
-	bat_formNone();
-	horseDefault();
-	resetMaximize();
-	resetFlavour();
+	// actually doing stuff should start from here onwards.
+	resetState();
 
 	basicAdjustML();
-	handleFamiliar("item");
-	basicFamiliarOverrides();
 
 	councilMaintenance();
 	# This function buys missing skills in general, not just for Picky.
@@ -3197,6 +3239,7 @@ boolean doTasks()
 	if(LM_majora())						return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
+	if(LM_canInteract()) 			return true;
 
 	if(auto_my_path() != "Community Service")
 	{
@@ -3260,10 +3303,6 @@ boolean doTasks()
 		{
 			set_property("auto_cubeItems", false);
 		}
-		if(get_property("auto_cubeItems").to_boolean() && (my_familiar() != $familiar[Gelatinous Cubeling]) && auto_have_familiar($familiar[Gelatinous Cubeling]))
-		{
-			handleFamiliar($familiar[Gelatinous Cubeling]);
-		}
 	}
 
 	if((my_daycount() == 1) && ($familiar[Fist Turkey].drops_today < 5) && auto_have_familiar($familiar[Fist Turkey]))
@@ -3308,15 +3347,10 @@ boolean doTasks()
 	if(LX_artistQuest())				return true;
 	if(L9_leafletQuest())				return true;
 	if(L5_findKnob())					return true;
-	if(LM_edTheUndying())				return true;
 	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
-
-	if(snojoFightAvailable() && (my_daycount() == 2) && (get_property("snojoMoxieWins").to_int() == 10))
-	{
-		return autoAdv(1, $location[The X-32-F Combat Training Snowman]);
-	}
-
+	if (LM_edTheUndying())				return true;
+	if (LX_lowkeySummer())				return true;
 	if(resolveSixthDMT())			return true;
 	if(LX_dinseylandfillFunbucks())		return true;
 	if(L12_flyerFinish())				return true;
@@ -3328,10 +3362,9 @@ boolean doTasks()
 	if(LX_guildUnlock())				return true;
 	if(knoll_available() && get_property("auto_spoonconfirmed").to_int() == my_ascensions())
 	{
-		if(LX_bitchinMeatcar())			return true;
+		if(LX_bitchinMeatcar())			return true;		//buy the meatcar before switching signs with the rune spoon
 	}
-	if(LX_findHelpfulLowKey())			return true;
-	if(LX_bitchinMeatcar())				return true;
+	if(LX_unlockDesert())				return true;
 	if(L5_getEncryptionKey())			return true;
 	if(LX_unlockPirateRealm())			return true;
 	if(handleRainDoh())				return true;
@@ -3350,7 +3383,7 @@ boolean doTasks()
 	if(L6_dakotaFanning())				return true;
 	if(L5_haremOutfit())				return true;
 	if(LX_lockPicking())					return true;
-	if(LX_phatLootToken())				return true;
+	if(LX_fatLootToken())				return true;
 	if(L5_goblinKing())					return true;
 	if(LX_islandAccess())				return true;
 
@@ -3375,12 +3408,6 @@ boolean doTasks()
 
 	if(L7_crypt())						return true;
 	if(fancyOilPainting())				return true;
-
-	if((my_level() > 6) && (my_daycount() != 2))
-	{
-		if(LX_freeCombats()) return true;
-	}
-
 	if(L8_trapperGround())				return true;
 	if(L8_trapperNinjaLair())			return true;
 	if(L8_trapperGroar())				return true;
@@ -3403,7 +3430,7 @@ boolean doTasks()
 	if(L11_nostrilOfTheSerpent())		return true;
 	if(L11_unlockHiddenCity())			return true;
 	if(L11_hiddenCityZones())			return true;
-	if(ornateDowsingRod())				return true;
+	if(LX_ornateDowsingRod(false))		return true;
 	if(L11_aridDesert())				return true;
 	if(L11_hiddenCity())				return true;
 	if(L11_talismanOfNam())				return true;
@@ -3433,19 +3460,17 @@ boolean doTasks()
 
 	if (L12_clearBattlefield())			return true;
 	if(LX_koeInvaderHandler())			return true;
-	if (LX_lowkeySummer())					return true;
 	
 	//release the softblock on quests that are waiting for shen quest
-	if(my_level() > get_property("auto_shenSkipLastLevel").to_int() && get_property("questL11Shen") != "finished")
+	if(allowSoftblockShen())
 	{
-		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do.", "red");
+		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do. Releasing softblock.", "red");
 		set_property("auto_shenSkipLastLevel", my_level());
 		return true;
 	}
 	
 	if(LX_getDigitalKey()) 				return true;
 	if(LX_getStarKey()) 				return true;
-	
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
 	if(L13_sorceressDoor())				return true;
@@ -3535,6 +3560,7 @@ void auto_begin()
 	backupSetting("removeMalignantEffects", false);
 	backupSetting("autoAntidote", 0);
 	backupSetting("dontStopForCounters", true);
+	backupSetting("maximizerCombinationLimit", "100000");
 
 	backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
@@ -3552,7 +3578,6 @@ void auto_begin()
 	backupSetting("autoAbortThreshold", -0.05);
 
 	backupSetting("currentMood", "apathetic");
-	backupSetting("battleAction", "custom combat script");
 	
 	backupSetting("choiceAdventure1107", 1);
 
@@ -3584,7 +3609,8 @@ void auto_begin()
 	if(my_familiar() == $familiar[Stooper])
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		use_familiar($familiar[none]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[none]);
+		use_familiar(fam);
 	}
 	dailyEvents();
 
@@ -3595,7 +3621,7 @@ void auto_begin()
 	}
 	
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
-	while(auto_unreservedAdvRemaining() && (my_inebriety() <= inebriety_limit()) && !(my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]) && !inAftercore() && doTasks())
+	while(doTasks())
 	{
 		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
 		{
@@ -3603,40 +3629,6 @@ void auto_begin()
 		}
 		#We save the last adventure for a rain man, damn it.
 		consumeStuff();
-	}
-
-	if(inAftercore())
-	{
-		equipBaseline();
-		handleFamiliar("item");
-		if(item_amount($item[Boris\'s Helm]) > 0)
-		{
-			equip($item[Boris\'s Helm]);
-		}
-		if(item_amount($item[camp scout backpack]) > 0)
-		{
-			equip($item[camp scout backpack]);
-		}
-		if(item_amount($item[operation patriot shield]) > 0)
-		{
-			equip($item[operation patriot shield]);
-		}
-		if((equipped_item($slot[familiar]) != $item[snow suit]) && (item_amount($item[snow suit]) > 0))
-		{
-			equip($item[snow suit]);
-		}
-		if((item_amount($item[mr. cheeng\'s spectacles]) > 0) && !have_equipped($item[Mr. Cheeng\'s Spectacles]))
-		{
-			equip($slot[acc2], $item[mr. cheeng\'s spectacles]);
-		}
-		if((item_amount($item[mr. screege\'s spectacles]) > 0) && !have_equipped($item[Mr. Screege\'s Spectacles]))
-		{
-			equip($slot[acc3], $item[mr. screege\'s spectacles]);
-		}
-		if((item_amount($item[numberwang]) > 0) && can_equip($item[numberwang]))
-		{
-			equip($slot[acc1], $item[numberwang]);
-		}
 	}
 
 	if(doBedtime())

@@ -393,6 +393,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
       restored_amount += numeric_modifier("Bonus Resting HP");
     }
 
+    if (metadata.name == "Disco Nap" && auto_have_skill($skill[Adventurer of Leisure])) {
+      restored_amount = 40;
+    }
+
     if (isActuallyEd() && !($items[linen bandages, silk bandages, cotton bandages] contains metadata.name.to_item())) {
       restored_amount = 0;
     }
@@ -436,16 +440,42 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
     return max(get_value("hp", "uses_needed_for_goal"), get_value("mp", "uses_needed_for_goal"));
   }
 
-  float meat_per_use(){
-    if(metadata.type != "item"){
+  float meat_per_use() {
+    if (metadata.type == "item") {
+      item i = to_item(metadata.name);
+      int price = npc_price(i);
+      if (can_interact()){
+        price = min(price, auto_mall_price(i));
+      }
+      return price;
+    } else if (metadata.type == "skill") {
+      float meat_per_mp = 9.0; // default to Doc Galaktik's Invigorating Tonic at 90 meat/10 MP
+      if (dispensary_available() || black_market_available()) {
+        meat_per_mp = 8.0; // Knob Goblin seltzer or Black cherry soda at 80 meat/10 MP
+      }
+      if (get_property("questM24Doc") == "finished") {
+        meat_per_mp = 6.0; // Doc Galaktik's Invigorating Tonic reduced to 60 meat/10 MP
+      }
+      if (auto_have_skill($skill[Five Finger Discount])) {
+        meat_per_mp = meat_per_mp * 0.95; // this isn't quite right for discounted Doc Galaktik but I don't care.
+      }
+      if (isMystGuildStoreAvailable()) {
+        int mmj_cost = auto_have_skill($skill[Five Finger Discount]) ? 95 : 100;
+        int mmj_mp_restored = my_level() * 1.5 + 5;
+        float mmj_meat_per_mp = mmj_cost / mmj_mp_restored;
+        meat_per_mp = min(meat_per_mp, mmj_meat_per_mp);
+        // at level 6 and above, MMJ is better than all but discounted doc galaktik
+        // and at level 8 and above it's better than everything
+      }
+      if (my_class() == $class[Sauceror]) {
+        // your MP cup runneth over
+        meat_per_mp = 0.1;
+      }
+      skill s = to_skill(metadata.name);
+      return (mp_cost(s) * meat_per_mp);
+    } else {
       return 0.0;
     }
-    item i = to_item(metadata.name);
-    int price = npc_price(i);
-    if(can_interact()){
-      price = min(price, auto_mall_price(i));
-    }
-    return price;
   }
 
   float tokens_per_use(){
@@ -526,7 +556,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   // TODO: doesnt account properly for multiuse situations where we could have more blood skill casts and less waste than this formula suggests
   float blood_skill_opportunity_casts(float goal){
     boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
-      auto_have_familiar($familiar[Mosquito]) && //checks if player can use familiars in this run
+      pathAllowsFamiliar() && //checks if player can use familiars in this run
       my_maxhp() > hp_cost($skill[Blood Bond]) &&
       goal > ((9-hp_regen())*10) && // blood bond drains hp after combat, make sure we dont accidentally kill the player
       get_property("auto_restoreUseBloodBond").to_boolean();
@@ -570,17 +600,19 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
   }
 
   float total_meat_used(){
-    if(metadata.type != "item"){
+    if(metadata.type != "item" && metadata.type != "skill"){
       return -1.0;
     }
-    item i = to_item(metadata.name);
-    float needed = max(0.0, total_uses_needed() - item_amount(i));
-    int price = npc_price(i);
-    if(can_interact()){
-      price = min(price, auto_mall_price(i));
+    float needed;
+    if(metadata.type == "item") {
+      item i = to_item(metadata.name);
+      needed = max(0.0, total_uses_needed() - item_amount(i));
+    } else if (metadata.type == "skill"){
+      needed = total_uses_needed();
     }
 
-    if(price == 0){
+    float price = get_value("meat_per_use");
+    if(price < 0.001){
       return -1.0;
     }
     return price * needed;
@@ -1117,6 +1149,9 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 
   boolean use_opportunity_blood_skills(int hp_restored_per_use, int final_hp)
   {
+    if (!auto_have_skill($skill[Blood Bond]) && !auto_have_skill($skill[Blood Bond])) {
+      return false;
+    }
     int restored = my_hp() + hp_restored_per_use;
     int waste = min(my_hp()-1, restored-my_maxhp());
     if(waste <= 0) return true;

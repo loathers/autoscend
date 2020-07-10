@@ -394,6 +394,10 @@ boolean settingFixer()
 	{
 		remove_property("auto_phatloot");
 	}
+	if (property_exists("auto_forcePhatLootToken"))
+	{
+		remove_property("auto_forcePhatLootToken");
+	}
 	if (property_exists("auto_prewar"))
 	{
 		remove_property("auto_prewar");
@@ -500,6 +504,16 @@ boolean settingFixer()
 	if (property_exists("auto_hpAutoRecoveryTarget"))
 	{
 		remove_property("auto_hpAutoRecoveryTarget");
+	}
+	
+	if (property_exists("auto_skipDesert"))
+	{
+		remove_property("auto_skipDesert");
+	}
+
+	if (property_exists("auto_mineForOres")) {
+		auto_log_debug("Automated Ore mining in hardcore is now for everyone!", "red");
+		remove_property("auto_mineForOres");
 	}
 	
 	return true;

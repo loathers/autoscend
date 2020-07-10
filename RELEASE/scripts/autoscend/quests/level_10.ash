@@ -2,7 +2,7 @@ script "level_10.ash"
 
 boolean L10_plantThatBean()
 {
-	if (internalQuestStatus("questL10Garbage") < 0 || internalQuestStatus("questL10Garbage") > 0)
+	if(internalQuestStatus("questL10Garbage") != 0)
 	{
 		return false;
 	}
@@ -11,8 +11,8 @@ boolean L10_plantThatBean()
 	string page = visit_url("place.php?whichplace=plains");
 	if(contains_text(page, "place.php?whichplace=beanstalk"))
 	{
-		auto_log_warning("I have no bean but I see a stalk here. Okies. I'm ok with that", "blue");
-		visit_url("place.php?whichplace=beanstalk");
+		auto_log_warning("I see the beanstalk has already been planted. fixing questL10Garbage to step1", "blue");
+		set_property("questL10Garbage", "step1");
 		return true;
 	}
 	if(item_amount($item[Enchanted Bean]) > 0)
@@ -62,15 +62,6 @@ boolean L10_airship()
 	{
 		bat_formBats();
 	}
-	else
-	{
-		providePlusNonCombat(25);
-
-		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-		buffMaintain($effect[Snow Shoes], 0, 1, 1);
-		buffMaintain($effect[Fishy\, Oily], 0, 1, 1);
-		buffMaintain($effect[Gummed Shoes], 0, 1, 1);
-	}
 
 	if (isActuallyEd() && $location[The Penultimate Fantasy Airship].turns_spent < 1)	
 	{	
@@ -81,7 +72,6 @@ boolean L10_airship()
 	}
 
 	autoAdv($location[The Penultimate Fantasy Airship]);
-	handleFamiliar("item");
 	return true;
 }
 
@@ -130,18 +120,8 @@ boolean L10_basement()
 		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella) or Neckbeard Choice
 	}
 
-	if(auto_have_familiar($familiar[Ms. Puck Man]))
-	{
-		handleFamiliar($familiar[Ms. Puck Man]);
-	}
-	else if(auto_have_familiar($familiar[Puck Man]))
-	{
-		handleFamiliar($familiar[Puck Man]);
-	}
-	if(!auto_forceNextNoncombat())
-	{
-		providePlusNonCombat(25);
-	}
+	auto_forceNextNoncombat();
+
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Bendable Knees]) && (item_amount($item[Bottle of Gregnadigne]) == 0))
@@ -153,7 +133,6 @@ boolean L10_basement()
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 	resetMaximize();
 	
-	handleFamiliar("item");
 
 	if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 	{
@@ -235,17 +214,7 @@ boolean L10_ground()
 		set_property("choiceAdventure1026", 2); // Home on the Free Range: Get Electric Boning Knife then Skip
 	}
 
-	if(auto_have_familiar($familiar[Ms. Puck Man]))
-	{
-		handleFamiliar($familiar[Ms. Puck Man]);
-	}
-	else if(auto_have_familiar($familiar[Puck Man]))
-	{
-		handleFamiliar($familiar[Puck Man]);
-	}
-
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
-	providePlusNonCombat(25);
 
 	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
 	{
@@ -256,7 +225,6 @@ boolean L10_ground()
 	}
 
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]);
-	handleFamiliar("item");
 	return true;
 }
 
@@ -325,14 +293,9 @@ boolean L10_topFloor()
 		set_property("choiceAdventure679", 1);
 	}
 
-	handleFamiliar("initSuggest");
-	if(!auto_forceNextNoncombat())
-	{
-		providePlusNonCombat(25);
-	}
+	auto_forceNextNoncombat();
 	autoEquip($item[mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
-	handleFamiliar("item");
 
 	if (internalQuestStatus("questL10Garbage") > 9)
 	{
@@ -381,20 +344,8 @@ boolean L10_holeInTheSkyUnlock()
 	set_property("choiceAdventure678", 3);
 	set_property("choiceAdventure676", 4);
 
-	if(auto_have_familiar($familiar[Ms. Puck Man]))
-	{
-		handleFamiliar($familiar[Ms. Puck Man]);
-	}
-	else if(auto_have_familiar($familiar[Puck Man]))
-	{
-		handleFamiliar($familiar[Puck Man]);
-	}
-	if(!auto_forceNextNoncombat())
-	{
-		providePlusNonCombat(25);
-	}
+	auto_forceNextNoncombat();
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
-	handleFamiliar("item");
 
 	return true;
 }

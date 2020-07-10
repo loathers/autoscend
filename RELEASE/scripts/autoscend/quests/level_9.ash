@@ -321,8 +321,7 @@ boolean L9_aBooPeak()
 			removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
 		}
 
-		autoAdv(1, $location[A-Boo Peak]);
-		return true;
+		return autoAdv(1, $location[A-Boo Peak]);
 	}
 
 	boolean booCloversOk = false;
@@ -339,6 +338,12 @@ boolean L9_aBooPeak()
 		{
 			booCloversOk = true;
 		}
+	}
+
+	if (get_property("auto_abooclover").to_boolean() && clueAmt >= get_property("booPeakProgress").to_int()/30) {
+		// if you get lucky/have enough item drop to get 3 clues while getting to 90% haunted, don't waste a clover getting more.
+		auto_log_info("We have enough A-boo clues to clear the peak, lets not waste a clover");
+		set_property("auto_abooclover", false);
 	}
 
 	auto_log_info("A-Boo Peak: " + get_property("booPeakProgress"), "blue");
@@ -565,14 +570,12 @@ boolean L9_aBooPeak()
 			{
 				use(1, $item[Scroll of Drastic Healing]);
 			}
-			handleFamiliar("item");
 			handleBjornify(priorBjorn);
 			return true;
 		}
 
 		auto_log_info("Nevermind, that peak is too scary!", "green");
 		equipBaseline();
-		handleFamiliar("item");
 		handleBjornify(priorBjorn);
 	}
 	else
@@ -622,7 +625,6 @@ boolean L9_twinPeak()
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
-	providePlusNonCombat(25);
 	
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);		//heavy rains specific reduce item drop penalty by 10%
 
@@ -781,7 +783,6 @@ boolean L9_oilPeak()
 	}
 
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-	handleFamiliar("initSuggest");
 
 	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 
@@ -818,12 +819,6 @@ boolean L9_oilPeak()
 		}
 	}
 
-	// Help protect ourselves against not getting enough crudes if tackling cartels
-	if(simMaximizeWith("1000ml 100min"))
-	{
-		addToMaximize("120item");
-	}
-
 	addToMaximize("1000ml " + auto_convertDesiredML(100) + "max");
 
 	auto_log_info("Oil Peak with ML: " + monster_level_adjustment(), "blue");
@@ -842,7 +837,6 @@ boolean L9_oilPeak()
 			uneffect($effect[Driving Wastefully]);
 		}
 	}
-	handleFamiliar("item");
 	return true;
 }
 

@@ -42,6 +42,133 @@ boolean LX_artistQuest()
 	return false;
 }
 
+boolean LX_unlockThinknerdWarehouse(boolean spend_resources)
+{
+	//unlocks [The Thinknerd Warehouse], returns true if successful or adv is spent
+	//much easier to do if you already have torso awaregness
+	
+	if(internalQuestStatus("questM22Shirt") > -1)
+	{
+		return false;
+	}
+	
+	auto_log_debug("Trying to unlock [The Thinknerd Warehouse] with spend_resources set to " + spend_resources);
+	
+	//unlocking is a multi step process. We want to try things in reverse to conserve resources and in case some steps were already complete.
+	
+	boolean useLetter()
+	{
+		if(item_amount($item[Letter for Melvign the Gnome]) > 0)
+		{
+			if(use(1, $item[Letter for Melvign the Gnome]))
+			{
+				auto_log_debug("Successfully unlocked the [The Thinknerd Warehouse]");
+				return true;
+			}
+			else
+			{
+				abort("Somehow failed to use [Letter for Melvign the Gnome]... aborting to prevent infinite loops");
+			}
+		}
+		return false;
+	}
+	
+	item target_shirt = $item[none];
+	boolean hasShirt = false;
+	
+	//one time initial scan of inventory
+	foreach it in get_inventory()
+	{
+		if(to_slot(it) == $slot[shirt])
+		{
+			target_shirt = it;
+			hasShirt = true;
+			break;
+		}
+	}
+		
+	boolean useShirtThenLetter()
+	{
+		if(!hasShirt)
+		{
+			return false;
+		}
+		string temp = visit_url("inv_equip.php?pwd&which=2&action=equip&whichitem=" + target_shirt.to_int());
+		if(useLetter()) return true;
+		auto_log_error("For some reason LX_unlockThinknerdWarehouse failed when trying to use the shirt [" + target_shirt + "] to get [Letter for Melvign the Gnome] to start the quest", "red");
+		return false;
+	}
+	void getShirtWhenHaveNone(item it)
+	{
+		if(hasShirt) return;
+		if(canPull(it))
+		{
+			if(pullXWhenHaveY(it, 1, 0))
+			{
+				target_shirt = it;
+				hasShirt = true;
+			}
+		}
+		else if(creatable_amount(it) > 0 && (spend_resources || knoll_available()))
+		{
+			if(create(1, it))
+			{
+				target_shirt = it;
+				hasShirt = true;
+			}
+		}
+	}
+	
+	//if you already had a shirt or a letter, then just unlock the quest now
+	if(useLetter()) return true;
+	if(useShirtThenLetter()) return true;
+	
+	//Try to acquire a shirt.
+	
+	//IOTM that does not require a pull
+	januaryToteAcquire($item[Letter For Melvign The Gnome]);	//no stats and no pull required
+	if(useLetter()) return true;
+	
+	//TODO, make the following IOTM foldables actually work
+	//getShirtWhenHaveNone($item[flaming pink shirt])		//foldable IOTM that requires torso awaregness.
+	//getShirtWhenHaveNone($item[origami pasties])			//foldable IOTM that requires torso awaregness.
+	//getShirtWhenHaveNone($item[sugar shirt])				//libram summons sugar sheet, multiuse 1 with torso awaregness to get sugar shirt
+	
+	//Shirts to pull
+	getShirtWhenHaveNone($item[Sneaky Pete\'s leather jacket]);		//useful IOTM shirt with no state requirements to wear
+	getShirtWhenHaveNone($item[Sneaky Pete\'s leather jacket (collar popped)]);
+	getShirtWhenHaveNone($item[Professor What T-Shirt]);			//you likely have it, no requirements to wear, very cheap in mall
+	
+	//Shirts to smith. Will likely cost 1 adv unless in knoll sign.
+	getShirtWhenHaveNone($item[white snakeskin duster]);		//7 mus req
+	getShirtWhenHaveNone($item[clownskin harness]);				//15 mus req
+	getShirtWhenHaveNone($item[demonskin jacket]);				//25 mus req
+	getShirtWhenHaveNone($item[gnauga hide vest]);				//25 mus req
+	getShirtWhenHaveNone($item[tuxedo shirt]);					//35 mus req
+	getShirtWhenHaveNone($item[yak anorak]);					//42 mus req
+	getShirtWhenHaveNone($item[hipposkin poncho]);				//45 mus req
+	getShirtWhenHaveNone($item[lynyrdskin tunic]);				//70 mus req
+	getShirtWhenHaveNone($item[bat-ass leather jacket]);		//77 mus req
+
+	//wish for a shirt
+	if(spend_resources && wishesAvailable() > 0 && shouldUseWishes() && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
+	{
+		makeGenieWish("for a blessed rustproof +2 gray dragon scale mail");
+		target_shirt = $item[blessed rustproof +2 gray dragon scale mail];
+		hasShirt = true;
+	}
+	
+	//TODO adventure somewhere to acquire shirt
+	//if(spend_resources && hasTorso())
+	
+	//did we succeeded in getting a shirt? use it and then the letter.
+	if(useShirtThenLetter()) return true;
+	
+	//sadness, we couldn't unlock this zone.
+	auto_log_debug("Failed to unlock [The Thinknerd Warehouse]");
+	return false;
+}
+
 boolean LX_melvignShirt()
 {
 	//Do the quest [The Shirt Off His Lack of Back] to get the skill [Torso Awaregness] from melvign the gnome.	
@@ -136,23 +263,6 @@ boolean LX_steelOrgan()
 	{
 		if((!possessEquipment($item[Observational Glasses]) || item_amount($item[Imp Air]) < 5) && item_amount($item[Azazel\'s Tutu]) == 0)
 		{
-			if(!possessEquipment($item[Observational Glasses]))
-			{
-				uneffect($effect[The Sonata of Sneakiness]);
-				buffMaintain($effect[Hippy Stench], 0, 1, 1);
-				buffMaintain($effect[Carlweather\'s Cantata of Confrontation], 10, 1, 1);
-				buffMaintain($effect[Musk of the Moose], 10, 1, 1);
-				# Should we check for -NC stuff and deal with it?
-				# We need a Combat Modifier controller
-			}
-			if(item_amount($item[Imp Air]) >= 5)
-			{
-				handleFamiliar($familiar[Jumpsuited Hound Dog]);
-			}
-			else
-			{
-				handleFamiliar("item");
-			}
 			autoAdv(1, $location[The Laugh Floor]);
 		}
 		else if(((item_amount($item[Azazel\'s Unicorn]) == 0) || (item_amount($item[Bus Pass]) < 5)) && (item_amount($item[Azazel\'s Tutu]) == 0))
@@ -226,17 +336,6 @@ boolean LX_steelOrgan()
 				return true;
 			}
 
-			if(item_amount($item[Azazel\'s Unicorn]) == 0)
-			{
-				uneffect($effect[Carlweather\'s Cantata of Confrontation]);
-				buffMaintain($effect[The Sonata of Sneakiness], 20, 1, 1);
-				buffMaintain($effect[Smooth Movements], 10, 1, 1);
-			}
-			else
-			{
-				uneffect($effect[The Sonata of Sneakiness]);
-			}
-			handleFamiliar("item");
 			autoAdv(1, $location[Infernal Rackets Backstage]);
 		}
 		else if((item_amount($item[Azazel\'s Lollipop]) == 0) && (item_amount($item[Azazel\'s Tutu]) == 0))
@@ -372,18 +471,20 @@ boolean LX_pirateOutfit() {
 	if (get_property("lastIslandUnlock").to_int() < my_ascensions()) {
 		return LX_islandAccess();
 	}
+	if (possessEquipment($item[peg key]) && !in_hardcore()) {
+		// if we have the key, just pull any outfit parts we are still missing
+		foreach _, it in outfit_pieces("Swashbuckling Getup") {
+			pullXWhenHaveY(it, 1, 0);
+		}
+	}
 	if (possessOutfit("Swashbuckling Getup")) {
-		if (item_amount($item[The Big Book Of Pirate Insults]) == 0 && my_meat() > npc_price($item[The Big Book Of Pirate Insults])) {
+		if (possessOutfit("Swashbuckling Getup", true) && item_amount($item[The Big Book Of Pirate Insults]) == 0 && my_meat() > npc_price($item[The Big Book Of Pirate Insults])) {
 			buyUpTo(1, $item[The Big Book Of Pirate Insults]);
 		}
 		return false;
 	}
 	auto_log_info("Searching for a pirate outfit.", "blue");
-	providePlusNonCombat(25, true);
-	if (autoAdv($location[The Obligatory Pirate\'s Cove])) {
-		return true;
-	}
-	return false;
+	return autoAdv($location[The Obligatory Pirate\'s Cove]);
 }
 
 void piratesCoveChoiceHandler(int choice) {
@@ -536,9 +637,6 @@ boolean LX_joinPirateCrew() {
 	if (internalQuestStatus("questM12Pirate") == -1 || internalQuestStatus("questM12Pirate") == 1 || internalQuestStatus("questM12Pirate") == 3) {
 		auto_log_info("Findin' the Cap'n", "blue");
 		autoOutfit("Swashbuckling Getup");
-		if (numPirateInsults() >= 6) {
-			providePlusNonCombat(25, true);
-		}
 		autoAdv($location[Barrrney\'s Barrr]); // this returns false on the Cap'n Caronch adventures for some reason.
 		return true;
 	} else if (internalQuestStatus("questM12Pirate") == 0) {
@@ -550,12 +648,15 @@ boolean LX_joinPirateCrew() {
 		auto_log_info("Attempting to infiltrate the frat house", "blue");
 		boolean infiltrationReady = false;
 		if (possessOutfit("Frat Boy Ensemble", true))  {
+			auto_log_info("We have the Frat Boy Ensemble, begin infiltration!", "blue");
 			outfit("Frat Boy Ensemble");
 			infiltrationReady = true;
 		} else if (possessEquipment($item[mullet wig]) && item_amount($item[briefcase]) > 0) {
+			auto_log_info("We have a mullet wig and a briefcase, begin infiltration!", "blue");
 			autoForceEquip($item[mullet wig]);
 			infiltrationReady = true;
 		} else if (possessEquipment($item[frilly skirt]) && item_amount($item[hot wing]) > 2) {
+			auto_log_info("We have hot wings and a frilly skirt, begin infiltration!", "blue");
 			autoForceEquip($item[frilly skirt]);
 			infiltrationReady = true;
 		}
@@ -563,10 +664,12 @@ boolean LX_joinPirateCrew() {
 		if (!infiltrationReady) {
 			if (item_amount($item[hot wing]) > 2) {
 				if (knoll_available() && my_meat() > npc_price($item[frilly skirt])) {
+					auto_log_info("We have hot wings but no frilly skirt. Lets go shopping!", "blue");
 					buyUpTo(1, $item[frilly skirt]);
 					autoForceEquip($item[frilly skirt]);
 					infiltrationReady = true;
 				} else {
+					auto_log_info("We have hot wings but no frilly skirt. Lets go to the gym!", "blue");
 					if (internalQuestStatus("questM01Untinker") == -1) {
 						visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
 					}
@@ -588,14 +691,13 @@ boolean LX_joinPirateCrew() {
 			// this is held together with duct tape and hopes and dreams.
 			// it can and will fail but it will have to do for now.
 			auto_log_info("Beer Pong time.", "blue");
-			outfit("Swashbuckling Getup");
+			outfit("Swashbuckling Getup");	//do not use autoOutfit since we use visit_url in tryBeerPong which skips maximizer
 			backupSetting("choiceAdventure187", "0");
 			tryBeerPong();
 			return true;
 		} else {
 			auto_log_info("Insult gathering party.", "blue");
 			addToMaximize("-outfit Swashbuckling Getup");
-			providePlusCombat(25, true);
 			if (autoAdv($location[The Obligatory Pirate\'s Cove])) {
 				return true;
 			}
@@ -636,11 +738,7 @@ boolean LX_fledglingPirateIsYou() {
 
 	auto_log_info("F'c'le t'me!", "blue");
 	autoOutfit("Swashbuckling Getup");
-	providePlusCombat(25, true);
-	if (autoAdv($location[The F\'c\'le])) {
-		return true;
-	}
-	return false;
+	return autoAdv($location[The F\'c\'le]);
 }
 
 void fcleChoiceHandler(int choice) {
@@ -676,11 +774,7 @@ boolean LX_unlockBelowdecks() {
 
 	auto_log_info("Swordfish? Every password was swordfish!", "blue");
 	autoEquip($item[pirate fledges]);
-	providePlusNonCombat(25, true);
-	if (autoAdv($location[The Poop Deck])) {
-		return true;
-	}
-	return false;
+	return autoAdv($location[The Poop Deck]);
 }
 
 boolean LX_pirateQuest() {
@@ -690,14 +784,14 @@ boolean LX_pirateQuest() {
 	return false;
 }
 
-item[class] legendaryEpicWeapons;
-legendaryEpicWeapons[$class[Seal Clubber]] = $item[Hammer of Smiting];
-legendaryEpicWeapons[$class[Turtle Tamer]] = $item[Chelonian Morningstar];
-legendaryEpicWeapons[$class[Pastamancer]] = $item[Greek Pasta Spoon of Peril];
-legendaryEpicWeapons[$class[Sauceror]] = $item[17-alarm Saucepan];
-legendaryEpicWeapons[$class[Disco Bandit]] = $item[Shagadelic Disco Banjo];
-legendaryEpicWeapons[$class[Accordion Thief]] = $item[Squeezebox of the Ages];
-// usage: item legendaryEpicWeapon = legendaryEpicWeapons[my_class()];
+item[class] epicWeapons;
+epicWeapons[$class[Seal Clubber]] = $item[Hammer of Smiting];
+epicWeapons[$class[Turtle Tamer]] = $item[Chelonian Morningstar];
+epicWeapons[$class[Pastamancer]] = $item[Greek Pasta Spoon of Peril];
+epicWeapons[$class[Sauceror]] = $item[17-alarm Saucepan];
+epicWeapons[$class[Disco Bandit]] = $item[Shagadelic Disco Banjo];
+epicWeapons[$class[Accordion Thief]] = $item[Squeezebox of the Ages];
+// usage: item epicWeapon = epicWeapons[my_class()];
 
 item[class] starterWeapons;
 starterWeapons[$class[Seal Clubber]] = $item[seal-clubbing club];
@@ -708,7 +802,7 @@ starterWeapons[$class[Disco Bandit]] = $item[disco ball];
 starterWeapons[$class[Accordion Thief]] = $item[stolen accordion];
 // usage: item starterWeapon = starterWeapons[my_class()];
 
-boolean LX_acquireLegendaryEpicWeapon()
+boolean LX_acquireEpicWeapon()
 {
 	if (internalQuestStatus("questG04Nemesis") > 4)
 	{
@@ -721,6 +815,7 @@ boolean LX_acquireLegendaryEpicWeapon()
 	if(internalQuestStatus("questG04Nemesis") < 0)
 	{
 		visit_url("guild.php?place=scg");	//start quest
+		visit_url("guild.php?place=scg"); // No really, start the quest.
 		cli_execute("refresh quests");		//fixes buggy tracking. confirmed still in mafia r20143
 		if (internalQuestStatus("questG04Nemesis") < 0)
 		{
@@ -728,9 +823,7 @@ boolean LX_acquireLegendaryEpicWeapon()
 		}
 	}
 
-	if (item_amount(legendaryEpicWeapons[my_class()]) > 0) {
-		return false;
-	}
+	if (item_amount(epicWeapons[my_class()]) > 0) { return false; }
 
 	if (internalQuestStatus("questG04Nemesis") == 4) {
 		visit_url("guild.php?place=scg");
@@ -744,17 +837,12 @@ boolean LX_acquireLegendaryEpicWeapon()
 
 	addToMaximize("-equip " + starterWeapons[my_class()].to_string());
 
-	if (autoAdv($location[The Unquiet Garves])) {
-		return true;
-	}
-	return false;
+	return autoAdv($location[The Unquiet Garves]);
 }
 
 // TODO: Add the rest of the Nemesis quest with a flag to enable doing it in-run?
 boolean LX_NemesisQuest()
 {
-	if(LX_guildUnlock()) return true;
-	if(LX_acquireLegendaryEpicWeapon()) return true;
-	
+	if (LX_guildUnlock() || LX_acquireEpicWeapon()) { return true; }
 	return false;
 }

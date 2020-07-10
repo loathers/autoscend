@@ -199,11 +199,6 @@ boolean LX_getStarKey()
 			set_property("choiceAdventure1221", 2 + (my_ascensions() % 2));
 		}
 	}
-	else
-	{
-		handleFamiliar("item");
-	}
-	
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
@@ -224,6 +219,12 @@ boolean L13_towerNSContests()
 		visit_url("choice.php?pwd=&whichchoice=1021&option=1", true);
 		visit_url("choice.php?pwd=&whichchoice=1022&option=1", true);
 		return true;
+	}
+	
+	//if you do not have a telescope you need to actually visit the contest booth once to find out what element and offstat is needed
+	if(get_property("nsChallenge1") == "none" || get_property("nsChallenge2") == "none")
+	{
+		visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
 	}
 
 	boolean crowd1Insufficient()
@@ -488,7 +489,6 @@ boolean L13_towerNSContests()
 		}
 	}
 
-	handleFamiliar("item");
 	equipBaseline();
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_01_crowd1"))
@@ -649,13 +649,15 @@ boolean L13_sorceressDoor()
 		return false;
 	}
 
+	if (LX_getDigitalKey() || LX_getStarKey()) {
+		return true;
+	}
+
 	// Low Key Summer has an entirely different door.
 	if (in_lowkeysummer())
 	{
 		return L13_sorceressDoorLowKey();
 	}
-
-	if(LX_getDigitalKey()) return true;
 
 	string page = visit_url("place.php?whichplace=nstower_door");
 	if(contains_text(page, "ns_lock6"))
@@ -673,11 +675,7 @@ boolean L13_sorceressDoor()
 
 	if(towerKeyCount() < 3)
 	{
-		while(useMalware());
-		if(towerKeyCount() < 3)
-		{
-			abort("Do not have enough hero keys");
-		}
+		abort("Do not have enough hero keys");
 	}
 
 	if(contains_text(page, "ns_lock1"))
@@ -933,10 +931,6 @@ boolean L13_towerNSTower()
 				set_property("auto_getBeehive", true);
 				auto_log_warning("I probably failed the Wall of Skin, I assume that I tried without a beehive. Well, I'm going back to get it.", "red");
 			}
-			else
-			{
-				handleFamiliar("item");
-			}
 		}
 		else
 		{
@@ -960,14 +954,10 @@ boolean L13_towerNSTower()
 		{
 			cli_execute("concert 2");
 		}
-		if(!canChangeFamiliar())
-		{
-			addToMaximize("200meat drop");
-		}
-		else
-		{
-			addToMaximize("200meat drop,switch hobo monkey,switch rockin' robin,switch adventurous spelunker,switch grimstone golem,switch fist turkey,switch unconscious collective,switch golden monkey,switch angry jung man,switch leprechaun,switch cat burglar");
-		}
+		
+		handleFamiliar("meat");
+		addToMaximize("200meat drop");
+		
 		if(my_class() == $class[Seal Clubber])
 		{
 			autoEquip($item[Meat Tenderizer is Murder]);
@@ -991,7 +981,10 @@ boolean L13_towerNSTower()
 			uneffect($effect[Jalape&ntilde;o Saucesphere]);
 			uneffect($effect[Mayeaugh]);
 			uneffect($effect[Spiky Shell]);
-			handleFamiliar($familiar[none]);
+			if (canChangeFamiliar()) {
+				set_property("auto_disableFamiliarChanging", true);
+				use_familiar($familiar[none]);
+			}
 			buffMaintain($effect[Tomato Power], 0, 1, 1);
 			buffMaintain($effect[Seeing Colors], 0, 1, 1);
 			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
@@ -1026,10 +1019,6 @@ boolean L13_towerNSTower()
 				auto_log_warning("Could not towerkill Wall of Bones, reverting to Boning Knife", "red");
 				acquireHP();
 				set_property("auto_getBoningKnife", true);
-			}
-			else
-			{
-				handleFamiliar("item");
 			}
 		}
 		else if((item_amount($item[Electric Boning Knife]) > 0) || (auto_my_path() == "Pocket Familiars"))
@@ -1243,7 +1232,6 @@ boolean L13_towerNSNagamar()
 	{
 		return false;
 	}
-	
 	if(item_amount($item[Wand of Nagamar]) > 0)
 	{
 		set_property("auto_wandOfNagamar", false);
@@ -1260,6 +1248,14 @@ boolean L13_towerNSNagamar()
 		else
 		{
 			auto_log_warning("Buying [Wand of Nagamar] using rare Meat Isotopes failed even thought we had 30 isotopes... trying alternatives", "red");
+		}
+	}
+	if(auto_my_path() == "Disguises Delimit" && internalQuestStatus("questL13Final") == 12)
+	{
+		cli_execute("refresh quests");
+		if(internalQuestStatus("questL13Final") != 12)
+		{
+			abort("In this specific ascension [naughty sorceress \(3\)] is wearing a mask that makes kol base game fail to advance the quest to step 12. Which means that bear verb orgy is impossible for this specific run. Manually grab a [Ten-Leaf Clover] from [Barrel Full of Barrels] then use it to get a [Wand of Nagamar] manually and run me again");
 		}
 	}
 	

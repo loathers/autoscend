@@ -182,7 +182,7 @@ string defaultMaximizeStatement()
 			}
 		}
 
-		if(auto_have_familiar($familiar[mosquito]))
+		if(pathAllowsFamiliar())
 		{
 			res += ",2familiar weight";
 			if(my_familiar().familiar_weight() < 20)

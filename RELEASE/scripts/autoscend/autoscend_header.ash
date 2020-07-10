@@ -22,30 +22,30 @@ boolean LM_edTheUndying();						//Defined in autoscend/auto_edTheUndying.ash
 
 boolean LX_desertAlternate();
 boolean LX_hippyBoatman();
-void oldLandfillChoiceHandler(int choice);
 boolean LX_lockPicking();
-boolean LX_phatLootToken();
+float estimateDailyDungeonAdvNeeded();				//Defined in autoscend/quests/level_any.ash
+boolean LX_fatLootToken();							//Defined in autoscend/quests/level_any.ash
+boolean LX_dailyDungeonToken();						//Defined in autoscend/quests/level_any.ash
 boolean LX_islandAccess();
 boolean fancyOilPainting();
 boolean LX_fcle();
-boolean ornateDowsingRod();
+boolean LX_ornateDowsingRod(boolean doing_desert_now);	//Defined in autoscend/iotms/auto_mr2014.ash
 boolean LX_nastyBooty();
 boolean LX_guildUnlock();
 boolean LX_pirateOutfit();
-void piratesCoveChoiceHandler(int choice);
 boolean LX_joinPirateCrew();
-void barrrneysBarrrChoiceHandler(int choice, string page);
 boolean LX_fledglingPirateIsYou();
-void fcleChoiceHandler(int choice);
 boolean LX_unlockBelowdecks();
 boolean LX_pirateQuest();
-boolean LX_acquireLegendaryEpicWeapon();
+boolean LX_acquireEpicWeapon();
 boolean LX_hardcoreFoodFarm();
 boolean LX_melvignShirt();
 boolean LX_attemptPowerLevel();
 boolean LX_attemptFlyering();
 boolean LX_bitchinMeatcar();
-boolean LX_meatMaid();
+boolean LX_unlockDesert();
+boolean LX_meatMaid();								//Defined in autoscend/quests/level_any.ash
+boolean dependenceDayClovers();						//Defined in autoscend/quests/level_any.ash
 boolean LX_craftAcquireItems();
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
@@ -74,19 +74,25 @@ boolean L2_mosquito();
 boolean L3_tavern();
 
 boolean L4_batCave();
+
 boolean L5_haremOutfit();
 boolean L5_findKnob();
 boolean L5_goblinKing();
 boolean L5_getEncryptionKey();
+boolean L5_slayTheGoblinKing();
+
 boolean L6_dakotaFanning();
 boolean L6_friarsGetParts();
-boolean L8_trapperStart();
+
 boolean L7_crypt();
+
+boolean L8_trapperStart();
 boolean L8_trapperGround();
 boolean L8_trapperNinjaLair();
 boolean L8_trapperExtreme();
 boolean L8_trapperGroar();
 boolean L8_trapperQuest();
+
 boolean L9_chasmBuild();
 boolean L9_highLandlord();
 boolean L9_aBooPeak();
@@ -107,7 +113,14 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake();					//Defined in autoscen
 boolean shenShouldDelayZone(location loc);								//Defined in autoscend/auto_quest_level_11.ash
 
 boolean LX_unlockHiddenTemple();
+boolean LX_unlockManorSecondFloor();
+boolean LX_unlockHauntedLibrary();
+boolean LX_unlockHauntedBilliardsRoom();
 boolean LX_spookyravenManorFirstFloor();
+boolean LX_danceWithLadySpookyraven();
+boolean LX_getLadySpookyravensFinestGown();
+boolean LX_getLadySpookyravensDancingShoes();
+boolean LX_getLadySpookyravensPowderPuff();
 boolean LX_spookyravenManorSecondFloor();
 boolean L11_palindome();
 boolean L11_hiddenCity();
@@ -115,11 +128,13 @@ boolean L11_hiddenTavernUnlock();
 boolean L11_hiddenTavernUnlock(boolean force);
 boolean L11_blackMarket();
 boolean L11_forgedDocuments();
+boolean L11_getUVCompass();										//Defined in autoscend/auto_quest_level_11.ash
 boolean L11_aridDesert();
 boolean L11_mcmuffinDiary();
 boolean L11_unlockHiddenCity();
 boolean L11_hiddenCityZones();
 boolean L11_talismanOfNam();
+boolean L11_shenStartQuest();
 boolean L11_shenCopperhead();
 boolean L11_ronCopperhead();
 boolean L11_redZeppelin();
@@ -174,6 +189,7 @@ boolean L12_sonofaFinish();									//Defined in autoscend/auto_quest_level_12.a
 boolean L12_gremlins();										//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_orchardFinalize();								//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_finalizeWar();									//Defined in autoscend/auto_quest_level_12.ash
+boolean L12_clearBattlefield();
 
 //Defined in autoscend/auto_quest_level_13.ash
 boolean LX_getDigitalKey();
@@ -246,9 +262,10 @@ boolean pathAllowsFamiliar();								//Defined in autoscend/auto_familiar.ash
 boolean auto_have_familiar(familiar fam);					//Defined in autoscend/auto_familiar.ash
 boolean canChangeFamiliar();								//Defined in autoscend/auto_familiar.ash
 boolean canChangeToFamiliar(familiar target);				//Defined in autoscend/auto_familiar.ash
+familiar lookupFamiliarDatafile(string type);				//Defined in autoscend/auto_familiar.ash
 boolean handleFamiliar(string type);						//Defined in autoscend/auto_familiar.ash
 boolean handleFamiliar(familiar fam);						//Defined in autoscend/auto_familiar.ash
-boolean basicFamiliarOverrides();							//Defined in autoscend/auto_familiar.ash
+boolean autoChooseFamiliar(location place);					//Defined in autoscend/auto_familiar.ash
 boolean haveSpleenFamiliar();								//Defined in autoscend/auto_familiar.ash
 
 
@@ -267,14 +284,10 @@ void removeCombat();							//Defined in autoscend/auto_equipment.ash
 int[item] auto_get_campground();					//Defined in autoscend/auto_util.ash
 
 
-//Returns how many Hero Keys and Phat Loot tokens we have.
+//Returns how many Hero Keys and Fat Loot tokens we have.
 //effective count (with malware) vs true count.
 int towerKeyCount(boolean effective);			//Defined in autoscend/auto_util.ash
 int towerKeyCount();							//Defined in autoscend/auto_util.ash
-
-
-//Uses Daily Dungeon Malware to get Phat Loot.
-boolean useMalware();							//Defined in autoscend.ash
 
 //Determines if we need ore for the trapper or not.
 boolean needOre();								//Defined in autoscend/auto_util.ash
@@ -526,9 +539,10 @@ boolean containsCombat(item it);							//Defined in autoscend/auto_combat.ash
 boolean containsCombat(skill sk);							//Defined in autoscend/auto_combat.ash
 boolean containsCombat(string action);						//Defined in autoscend/auto_combat.ash
 
-boolean inCasual();											//Defined in autoscend/auto_casual.ash
-boolean inAftercore();										//Defined in autoscend/auto_casual.ash
-boolean inPostRonin();										//Defined in autoscend/auto_casual.ash
+boolean inCasual();											//Defined in autoscend/paths/casual.ash
+boolean inAftercore();										//Defined in autoscend/paths/casual.ash
+boolean inPostRonin();										//Defined in autoscend/paths/casual.ash
+boolean LM_canInteract();								//Defined in autoscend/paths/casual.ash
 
 string cs_combatKing(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash
 string cs_combatLTB(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash
@@ -586,7 +600,7 @@ boolean dna_startAcquire();									//Defined in autoscend/iotms/auto_mr2014.ash
 boolean auto_reagnimatedGetPart();							//Defined in autoscend/iotms/auto_mr2012.ash
 boolean doBedtime();										//Defined in autoscend.ash
 boolean doHRSkills();										//Defined in autoscend/auto_heavyrains.ash
-boolean doVacation();										//Defined in autoscend.ash
+boolean LX_doVacation();										//Defined in autoscend.ash
 int doHottub();												//Defined in autoscend/auto_clan.ash
 int hotTubSoaksRemaining();									//Defined in autoscend/auto_clan.ash
 boolean isHotTubAvailable();								//Defined in autoscend/auto_clan.ash
@@ -870,6 +884,7 @@ boolean isFreeMonster(monster mon);							//Defined in autoscend/auto_util.ash
 boolean isGalaktikAvailable();								//Defined in autoscend/auto_util.ash
 boolean isGeneralStoreAvailable();							//Defined in autoscend/auto_util.ash
 boolean isMusGuildStoreAvailable();							//Defined in autoscend/auto_util.ash
+boolean isMystGuildStoreAvailable(); 						//Defined in autoscend/auto_util.ash
 boolean isArmoryAvailable();								//Defined in autoscend/auto_util.ash
 boolean isGhost(monster mon);								//Defined in autoscend/auto_util.ash
 boolean isGuildClass();										//Defined in autoscend/auto_util.ash
@@ -879,6 +894,11 @@ boolean isOverdueArrow();									//Defined in autoscend/auto_util.ash
 boolean isOverdueDigitize();								//Defined in autoscend/auto_util.ash
 boolean isProtonGhost(monster mon);							//Defined in autoscend/auto_util.ash
 boolean isUnclePAvailable();								//Defined in autoscend/auto_util.ash
+boolean isDesertAvailable();								//Defined in autoscend/auto_util.ash
+boolean inKnollSign();										//Defined in autoscend/auto_util.ash
+boolean inCanadiaSign();									//Defined in autoscend/auto_util.ash
+boolean inGnomeSign();										//Defined in autoscend/auto_util.ash
+boolean allowSoftblockShen();								//Defined in autoscend/auto_util.ash
 boolean is_avatar_potion(item it);							//Defined in autoscend/auto_util.ash
 int auto_mall_price(item it);									//Defined in autoscend/auto_util.ash
 item[int] itemList();										//Defined in autoscend/auto_list.ash
@@ -924,8 +944,10 @@ void picky_pulls();											//Defined in autoscend/auto_picky.ash
 void picky_startAscension();								//Defined in autoscend/auto_picky.ash
 skill preferredLibram();									//Defined in autoscend/auto_util.ash
 location provideAdvPHPZone();								//Defined in autoscend/auto_util.ash
+float providePlusCombat(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
 boolean providePlusCombat(int amt);							//Defined in autoscend/auto_util.ash
 boolean providePlusCombat(int amt, boolean doEquips);		//Defined in autoscend/auto_util.ash
+float providePlusNonCombat(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
 boolean providePlusNonCombat(int amt);						//Defined in autoscend/auto_util.ash
 boolean providePlusNonCombat(int amt, boolean doEquips);	//Defined in autoscend/auto_util.ash
 boolean acquireCombatMods(int amt);							//Defined in autoscend/auto_util.ash
@@ -978,6 +1000,8 @@ boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
 boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
 boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash
 boolean startHippyBoatmanSubQuest();						//Defined in autoscend/auto_util.ash
+boolean finishMeatsmithSubQuest();						//Defined in autoscend/auto_util.ash
+boolean finishGalaktikSubQuest();						//Defined in autoscend/auto_util.ash
 string statCard();											//Defined in autoscend/auto_util.ash
 int stomach_left();											//Defined in autoscend/auto_util.ash
 boolean theSource_buySkills();								//Defined in autoscend/auto_theSource.ash
@@ -1147,7 +1171,6 @@ boolean glover_usable(string it);							//Defined in autoscend/auto_glover.ash
 boolean LM_glover();										//Defined in autoscend/auto_glover.ash
 
 boolean groundhogSafeguard();								//Defined in autoscend/auto_groundhog.ash
-void groundhog_initializeSettings();						//Defined in autoscend/auto_groundhog.ash
 boolean canGroundhog(location loc);							//Defined in autoscend/auto_groundhog.ash
 boolean groundhogAbort(location loc);						//Defined in autoscend/auto_groundhog.ash
 boolean LM_groundhog();										//Defined in autoscend/auto_groundhog.ash
@@ -1215,7 +1238,6 @@ boolean L13_sorceressDoorLowKey(); // Defined in autoscend/paths/low_key_summer.
 boolean LX_lowkeySummer(); // Defined in autoscend/paths/low_key_summer.ash
 
 element currentFlavour(); // Defined in autoscend/auto_util.ash
-void resetFlavour(); // Defined in autoscend/auto_util.ash
 boolean setFlavour(element ele); // Defined in autoscend/auto_util.ash
 boolean executeFlavour(); // Defined in autoscend/auto_util.ash
 boolean autoFlavour(location place); // Defined in autoscend/auto_util.ash
@@ -1265,3 +1287,12 @@ location[int] zones_available();							//Defined in autoscend/auto_zone.ash
 monster[int] mobs_available();								//Defined in autoscend/auto_zone.ash
 item[int] drops_available();								//Defined in autoscend/auto_zone.ash
 item[int] hugpocket_available();							//Defined in autoscend/auto_zone.ash
+
+// functions for handling choice adventures. Only ever called from auto_choice_adv.ash
+void oldLandfillChoiceHandler(int choice);
+void piratesCoveChoiceHandler(int choice);
+void barrrneysBarrrChoiceHandler(int choice, string page);
+void fcleChoiceHandler(int choice);
+void itznotyerzitzMineChoiceHandler(int choice);
+void theeXtremeSlopeChoiceHandler(int choice);
+void dailyDungeonChoiceHandler(int choice, string[int] options);	//Defined in autoscend/quests/level_any.ash

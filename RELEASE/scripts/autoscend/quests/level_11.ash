@@ -1,5 +1,112 @@
 script "level_11.ash"
 
+
+record desert_buff_record
+{
+	item offhand;
+	item fam_equip;
+	familiar fam;
+	int progress;
+};
+
+desert_buff_record desertBuffs()
+{
+    desert_buff_record dbr;
+
+    dbr.progress = 1;
+
+	boolean possessUnrestricted(item it)
+	{
+		return possessEquipment(it) && is_unrestricted(it);
+	}
+
+	boolean compassValid = possessUnrestricted($item[UV-resistant compass]);
+	boolean lhmValid = canChangeToFamiliar($familiar[Left-Hand Man]);
+	boolean meloValid = canChangeToFamiliar($familiar[Melodramedary]);
+	boolean odrValid = possessUnrestricted($item[Ornate Dowsing Rod]);
+
+	dbr.fam = $familiar[none];
+	dbr.fam_equip = $item[none];
+	dbr.offhand = $item[none];
+
+	// If we can't use the Ornate dowsing rod
+	if (!odrValid)
+	{
+		// And we can use the compass
+		if (compassValid)
+		{
+			// And we have the Left-Hand man but not the Melodramedary
+			// Free up our offhand for something useful
+			if (lhmValid && !meloValid)
+			{
+				dbr.fam = $familiar[Left-Hand Man];
+				dbr.fam_equip = $item[UV-resistant compass];
+				dbr.progress += 1;
+			}
+			// Otherwise hold the compass
+			else
+			{
+				dbr.offhand = $item[UV-resistant compass];
+				dbr.progress += 1;
+			}
+		}
+
+		// If we have the Melodramedary use it!
+		if (meloValid)
+		{
+			dbr.fam = $familiar[Melodramedary];
+			dbr.progress += 1;
+		}
+	}
+	// Otherwise
+	else
+	{
+		// If we have it and a Left-Hand man is our best familiar choice
+		// but we have no compass free up our offhand
+		if (!compassValid && lhmValid && !meloValid)
+		{
+			dbr.fam = $familiar[Left-Hand Man];
+			dbr.fam_equip = $item[Ornate Dowsing Rod];
+			dbr.progress += 2;
+		}
+		// Otherwise we can just hold it
+		else
+		{
+			dbr.offhand = $item[Ornate Dowsing Rod];
+			dbr.progress += 2;
+		}
+
+		// Melodramedary is better here though
+		if (meloValid)
+		{
+			dbr.fam = $familiar[Melodramedary];
+			dbr.progress += 1;
+		}
+		// Otherwise we can give the compass to the Left-Hand man if possible
+		else if (compassValid && lhmValid)
+		{
+			dbr.fam = $familiar[Left-Hand Man];
+			dbr.fam_equip = $item[UV-resistant compass];
+			dbr.progress += 1;
+		}
+	}
+
+	// There are some other familiars we might choose if nothing affects progress
+	if (dbr.fam == $familiar[none])
+	{
+		if(get_property("_hipsterAdv").to_int() < 7 && canChangeToFamiliar($familiar[Artistic Goth Kid]))
+		{
+			dbr.fam = $familiar[Artistic Goth Kid];
+		}
+		else if(get_property("_hipsterAdv").to_int() < 7 && canChangeToFamiliar($familiar[Mini-Hipster]))
+		{
+			dbr.fam = $familiar[Mini-Hipster];
+		}
+	}
+
+    return dbr;
+}
+
 int shenItemsReturned()
 {
 	int progress = internalQuestStatus("questL11Shen");
@@ -60,7 +167,7 @@ boolean[location] shenSnakeLocations(int day, int n_items_returned)
 
 boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 {
-	if (get_property("auto_shenSkipLastLevel").to_int() >= my_level())
+	if (!allowSoftblockShen())
 	{
 		boolean[location] empty;
 		return empty;
@@ -95,6 +202,12 @@ boolean shenShouldDelayZone(location loc)
 
 boolean LX_unlockHiddenTemple() {
 	// replaces L2_treeCoin(),  L2_spookyMap(),  L2_spookyFertilizer() & L2_spookySapling()
+
+	if (auto_my_path() == "G-Lover") {
+		// Spooky Temple map ain't nuthin' but a 'G' Thang.
+		return false;
+	}
+
 	if (hidden_temple_unlocked()) {
 		return false;
 	}
@@ -105,7 +218,6 @@ boolean LX_unlockHiddenTemple() {
 	// TODO: add a check for delay burning
 	auto_log_info("Attempting to make the Hidden Temple less hidden.", "blue");
 	pullXWhenHaveY($item[Spooky-Gro Fertilizer], 1, 0);
-	providePlusNonCombat(25, true);
 	if (autoAdv($location[The Spooky Forest])) {
 		if (item_amount($item[Spooky Temple map]) > 0 && item_amount($item[Spooky-Gro Fertilizer]) > 0 && item_amount($item[Spooky Sapling]) > 0) {
 			use(1, $item[Spooky Temple Map]);
@@ -243,10 +355,7 @@ boolean LX_unlockHauntedLibrary()
 	//+3 pool skill & +1 training gains. speculative_pool_skill() already assumed we would use it if we can.
 	buffMaintain($effect[Chalky Hand], 0, 1, 1);
 
-	if(!auto_forceNextNoncombat())
-	{
-		providePlusNonCombat(25, true);
-	}
+	auto_forceNextNoncombat();
 	auto_log_info("It's billiards time!", "blue");
 	return autoAdv($location[The Haunted Billiards Room]);
 }
@@ -287,15 +396,15 @@ boolean LX_spookyravenManorFirstFloor() {
 }
 
 boolean LX_danceWithLadySpookyraven() {
-	if (internalQuestStatus("questM21Dance") != 2) {
+	if (internalQuestStatus("questM21Dance") < 2 || internalQuestStatus("questM21Dance") > 3) {
 		return false;
 	}
 
-	if (item_amount($item[Lady Spookyraven\'s Powder Puff]) != 1 && item_amount($item[Lady Spookyraven\'s Dancing Shoes]) != 1 && item_amount($item[Lady Spookyraven\'s Finest Gown]) != 1) {
-		return false;
+	if (item_amount($item[Lady Spookyraven\'s Powder Puff]) == 1 && item_amount($item[Lady Spookyraven\'s Dancing Shoes]) == 1 && item_amount($item[Lady Spookyraven\'s Finest Gown]) == 1) {
+		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 	}
+
 	auto_log_info("Finished Spookyraven, just dancing with the lady.", "blue");
-	visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 	if (autoAdv($location[The Haunted Ballroom])) {
 		if (in_lowkeysummer()) {
 			// need to open the Haunted Nursery for the music box key.
@@ -306,7 +415,7 @@ boolean LX_danceWithLadySpookyraven() {
 	return false;
 }
 
-boolean getLadySpookyravensFinestGown() {
+boolean LX_getLadySpookyravensFinestGown() {
 	if (internalQuestStatus("questM21Dance") != 1) {
 		return false;
 	}
@@ -334,7 +443,7 @@ boolean getLadySpookyravensFinestGown() {
 	return false;
 }
 
-boolean getLadySpookyravensDancingShoes() {
+boolean LX_getLadySpookyravensDancingShoes() {
 	if (internalQuestStatus("questM21Dance") != 1) {
 		return false;
 	}
@@ -349,10 +458,8 @@ boolean getLadySpookyravensDancingShoes() {
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
-	if ($location[The Haunted Gallery].turns_spent >= 5) {
-		if (!auto_forceNextNoncombat()) {
-			providePlusNonCombat(25, true);
-		}
+	if (!zone_delay($location[The Haunted Gallery])._boolean) {
+		auto_forceNextNoncombat();
 	}
 	if (autoAdv($location[The Haunted Gallery])) {
 		return true;
@@ -360,7 +467,7 @@ boolean getLadySpookyravensDancingShoes() {
 	return false;
 }
 
-boolean getLadySpookyravensPowderPuff() {
+boolean LX_getLadySpookyravensPowderPuff() {
 	if (internalQuestStatus("questM21Dance") != 1) {
 		return false;
 	}
@@ -373,10 +480,8 @@ boolean getLadySpookyravensPowderPuff() {
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
-	if ($location[The Haunted Bathroom].turns_spent >= 5) {
-		if (!auto_forceNextNoncombat()) {
-			providePlusNonCombat(25, true);
-		}
+	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
+		auto_forceNextNoncombat();
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
@@ -389,7 +494,7 @@ boolean LX_spookyravenManorSecondFloor()
 	if (get_property("lastSecondFloorUnlock").to_int() < my_ascensions()) {
 		return false;
 	}
-	if (LX_danceWithLadySpookyraven() || getLadySpookyravensFinestGown() || getLadySpookyravensDancingShoes() || getLadySpookyravensPowderPuff()) {
+	if (LX_danceWithLadySpookyraven() || LX_getLadySpookyravensFinestGown() || LX_getLadySpookyravensDancingShoes() || LX_getLadySpookyravensPowderPuff()) {
 		return true;
 	}
 	return false;
@@ -432,17 +537,7 @@ boolean L11_blackMarket()
 		set_property("auto_getBeehive", false);
 	}
 
-	if(auto_my_path() != "Live. Ascend. Repeat.")
-	{
-		providePlusCombat(5, true);
-	}
-
 	autoEquip($slot[acc3], $item[Blackberry Galoshes]);
-
-	if((my_ascensions() == 0) || (item_amount($item[Reassembled Blackbird]) == 0))
-	{
-		handleFamiliar($familiar[Reassembled Blackbird]);
-	}
 
 	//If we want the Beehive, and don\'t have enough adventures, this is dangerous.
 	if (get_property("auto_getBeehive").to_boolean() && my_adventures() < 3) {
@@ -475,18 +570,13 @@ boolean L11_getBeehive()
 
 	auto_log_info("Must find a beehive!", "blue");
 
-	if (!auto_forceNextNoncombat()) {
-		providePlusNonCombat(25, true);
-	}
+	auto_forceNextNoncombat();
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
 	{
 		set_property("auto_getBeehive", false);
 	}
-	if (advSpent) {
-		return true;
-	}
-	return false;
+	return advSpent;
 }
 
 boolean L11_forgedDocuments()
@@ -501,7 +591,10 @@ boolean L11_forgedDocuments()
 	}
 	if (my_meat() < npc_price($item[Forged Identification Documents]))
 	{
-		abort("Could not buy Forged Identification Documents, can not steal identities!");
+		if(isAboutToPowerlevel())
+		{
+			abort("Could not afford to buy Forged Identification Documents, can not steal identities!");
+		}
 		return false;
 	}
 
@@ -545,12 +638,15 @@ boolean L11_mcmuffinDiary()
 	}
 	if (my_adventures() < 4 || my_meat() < 500 || item_amount($item[Forged Identification Documents]) == 0)
 	{
-		abort("Could not vacation at the shore to find your fathers diary!");
+		if(isAboutToPowerlevel())
+		{
+			abort("Could not vacation at the shore to find your fathers diary!");
+		}
 		return false;
 	}
 
 	auto_log_info("Getting the McMuffin Diary", "blue");
-	doVacation();
+	LX_doVacation();
 	foreach diary in $items[Your Father\'s Macguffin Diary, Copy of a Jerk Adventurer\'s Father\'s Diary]
 	{
 		if(item_amount(diary) > 0)
@@ -562,112 +658,79 @@ boolean L11_mcmuffinDiary()
 	return false;
 }
 
-boolean L11_aridDesert()
+boolean L11_getUVCompass()
 {
-	if (internalQuestStatus("questL11Desert") < 0 || internalQuestStatus("questL11Desert") > 0)
+	//acquire a [UV-resistant compass] if needed
+	if(possessEquipment($item[Ornate Dowsing Rod]) && auto_can_equip($item[Ornate Dowsing Rod]))
+	{
+		return false;		//already have a dowsing rod. we do not need a compass.
+	}
+	if(!auto_can_equip($item[UV-resistant compass]))
 	{
 		return false;
 	}
-
-	// Mafia probably handles this correctly (and probably has done so for a while). (failing again as of r19010)
-	if(auto_my_path() == "Pocket Familiars")
-	{
-		string temp = visit_url("place.php?whichplace=desertbeach", false);
-	}
-	
-	// TODO: Mafia currently (r20019) does not properly track desert exploration progress in plumber
-	// Not sure if this fix can do exact progress, but when I visited that page it corrected my explortion to 100 and quest progress to done so it will prevent adv loss at least
-	if(in_zelda() && get_property("desertExploration").to_int() < 100)
-	{
-		string discard = visit_url("place.php?whichplace=desertbeach");
-	}
-
-	if(get_property("desertExploration").to_int() >= 100)
-	{
-		return false;
-	}
-
-	item desertBuff = $item[none];
-	int progress = 1;
 	if(possessEquipment($item[UV-resistant compass]))
 	{
-		desertBuff = $item[UV-resistant compass];
-		progress = 2;
-	}
-	if(possessEquipment($item[Ornate Dowsing Rod]) && is_unrestricted($item[Hibernating Grimstone Golem]))
-	{
-		desertBuff = $item[Ornate Dowsing Rod];
-		progress = 3;
-	}
-	if((get_property("bondDesert").to_boolean()) && ($location[The Arid\, Extra-Dry Desert].turns_spent > 0))
-	{
-		progress += 2;
-	}
-
-	boolean failDesert = true;
-	if(possessEquipment(desertBuff))
-	{
-		failDesert = false;
-	}
-	if($classes[Avatar of Boris, Avatar of Sneaky Pete] contains my_class())
-	{
-		failDesert = false;
-	}
-	if(auto_my_path() == "Way of the Surprising Fist")
-	{
-		failDesert = false;
-	}
-	if(get_property("bondDesert").to_boolean())
-	{
-		failDesert = false;
+		return false;		//already have compass
 	}
 	if(in_koe())
 	{
-		failDesert = false;
+		return false;		//impossible to get compass in this path. [The Shore, Inc] is unavailable
 	}
 
-	if(failDesert)
+	if(item_amount($item[Shore Inc. Ship Trip Scrip]) == 0)
 	{
-		if((my_level() >= 12) && !in_hardcore())
+		return LX_doVacation();
+	}
+	
+	if(create(1, $item[UV-Resistant Compass]))
+	{
+		return true;
+	}
+	else
+	{
+		cli_execute("refresh inv");
+		if(possessEquipment($item[UV-resistant compass]))
 		{
-			auto_log_warning("Do you actually have a UV-resistant compass? Try 'refresh inv' in the CLI! If possible, pull a Grimstone mask and rerun, we may have missed that somehow.", "green");
-			if(is_unrestricted($item[Hibernating Grimstone Golem]) && have_familiar($familiar[Grimstone Golem]))
-			{
-				abort("I can't do the Oasis without an Ornate Dowsing Rod. You can manually get a UV-resistant compass and I'll use that if you really hate me that much.");
-			}
-			else
-			{
-				cli_execute("refresh inv");
-				if(possessEquipment($item[UV-resistant compass]))
-				{
-					desertBuff = $item[UV-resistant compass];
-					progress = 2;
-				}
-				else if((my_adventures() > 3) && (my_meat() > 1200))
-				{
-					doVacation();
-					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
-					{
-						cli_execute("make UV-Resistant Compass");
-					}
-					if(!possessEquipment($item[UV-Resistant Compass]))
-					{
-						abort("Could not acquire a UV-Resistant Compass. Failing.");
-					}
-					return true;
-				}
-				else
-				{
-					abort("Can not handle the desert in our current situation.");
-				}
-			}
+			return true;
 		}
-		else
-		{
-			auto_log_warning("Skipping desert, don't have a rod or a compass.");
-			set_property("auto_skipDesert", my_turncount());
-		}
+		else abort("I have the Scrip for it but am failing to buy [UV-resistant compass] for some reason. buy it manually and run me again");
+	}
+
+	return false;
+}
+
+boolean L11_aridDesert()
+{
+	if(internalQuestStatus("questL11Desert") != 0)
+	{
 		return false;
+	}
+
+	// Fix broken desert tracking. pocket familiars failing as of r19010. plumber as of r20019
+	if(in_zelda() || auto_my_path() == "Pocket Familiars")
+	{
+		visit_url("place.php?whichplace=desertbeach", false);
+	}
+	if(get_property("desertExploration").to_int() >= 100)
+	{
+		return false;		//done exploring
+	}
+	
+	if(LX_ornateDowsingRod(true)) return true;		//spend adv trying to get [Ornate Dowsing Rod]. doing_desert_now = true.
+	if(L11_getUVCompass()) return true;				//spend adv trying to get [UV-resistant compass]
+
+	desert_buff_record dbr = desertBuffs();
+
+	int progress = dbr.progress;
+
+	if(get_property("bondDesert").to_boolean())
+	{
+		progress += 2;
+	}
+	if(get_property("peteMotorbikeHeadlight") == "Blacklight Bulb")	//TODO verify spelling on this string
+	{
+		progress += 2;
 	}
 
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
@@ -676,10 +739,6 @@ boolean L11_aridDesert()
 		if(auto_my_path() == "Heavy Rains")
 		{
 			autoEquip($item[Thor\'s Pliers]);
-		}
-		if(auto_have_familiar($familiar[Artistic Goth Kid]))
-		{
-			handleFamiliar($familiar[Artistic Goth Kid]);
 		}
 
 		if(possessEquipment($item[reinforced beaded headband]) && possessEquipment($item[bullet-proof corduroys]) && possessEquipment($item[round purple sunglasses]))
@@ -736,11 +795,18 @@ boolean L11_aridDesert()
 			}
 		}
 
-		if(desertBuff != $item[none])
+		if (dbr.fam != $familiar[none])
 		{
-			autoEquip(desertBuff);
+			handleFamiliar(dbr.fam);
 		}
-		handleFamiliar("initSuggest");
+		if (dbr.offhand != $item[none])
+		{
+			autoEquip($slot[off-hand], dbr.offhand);
+		}
+		if (dbr.fam_equip != $item[none])
+		{
+			autoEquip($slot[familiar], dbr.fam_equip);
+		}
 		set_property("choiceAdventure805", 1);
 		int need = 100 - get_property("desertExploration").to_int();
 		auto_log_info("Need for desert: " + need, "blue");
@@ -923,7 +989,6 @@ boolean L11_aridDesert()
 		}
 
 		autoAdv(1, $location[The Arid\, Extra-Dry Desert]);
-		handleFamiliar("item");
 
 		if(contains_text(get_property("lastEncounter"), "A Sietch in Time"))
 		{
@@ -1385,7 +1450,6 @@ boolean L11_hiddenCity()
 	if (item_amount($item[stone triangle]) == 4) {
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
-		handleFamiliar("initSuggest");
 		return autoAdv($location[A Massive Ziggurat]);
 	}
 	
@@ -1431,11 +1495,6 @@ boolean L11_hiddenCityZones()
 	}
 
 	if (needMachete || needRelocate) {
-		// Try to get the NC so that we can relocate Janitors and get items quickly
-		if ($location[The Hidden Park].turns_spent < 6 && !auto_forceNextNoncombat()) {
-			// Machete NC is guaranteed on the 7th adventure here
-			providePlusNonCombat(25, true);
-		}
 		return autoAdv($location[The Hidden Park]);
 	}
 
@@ -1511,12 +1570,9 @@ boolean L11_mauriceSpookyraven()
 			return false;
 		}
 
-		if (!auto_forceNextNoncombat()) {
-			providePlusNonCombat(25, true);
+		if (!zone_delay($location[The Haunted Ballroom])._boolean) {
+			auto_forceNextNoncombat();
 		}
-
-		handleFamiliar("initSuggest");
-
 		return autoAdv($location[The Haunted Ballroom]);
 	}
 	if(item_amount($item[recipe: mortar-dissolving solution]) == 0)
@@ -1715,8 +1771,6 @@ boolean L11_redZeppelin()
 	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
 	pullXWhenHaveY($item[deck of lewd playing cards], 1, 0);
 
-	providePlusNonCombat(25);
-
 	if(item_amount($item[Flamin\' Whatshisname]) > 0)
 	{
 		backupSetting("choiceAdventure866", 3);
@@ -1767,8 +1821,7 @@ boolean L11_redZeppelin()
 		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
 		foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
 		{
-			if((item_amount(it) > 0) && can_equip(it))
-			{
+			if (possessEquipment(it) && can_equip(it)) {
 				lynyrd_protestors += 5;
 			}
 		}
@@ -1865,6 +1918,29 @@ boolean L11_ronCopperhead()
 	return false;
 }
 
+boolean L11_shenStartQuest() {
+	// as the first adventure in the Copperhead Club is always the first Shen NC
+	// we can adventure there once as soon as it's open to start the quest and lock in
+	// our zones
+	if (internalQuestStatus("questL11Shen") != 0)
+	{
+		return false;
+	}
+	if (autoAdv($location[The Copperhead Club])) {
+		if (internalQuestStatus("questL11Shen") == 1) {
+			set_property("auto_shenStarted", my_daycount());
+			auto_log_info("It seems Shen has given us a quest.", "blue");
+			auto_log_info("I am going to avoid the following zones until Shen tells me to go there or until I run out of other things to do:");
+			int linec = 1;
+			foreach z, _ in shenZonesToAvoidBecauseMaybeSnake() {
+				auto_log_info(linec++ + ". " + z);
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
 boolean L11_shenCopperhead()
 {
 	if (internalQuestStatus("questL11Shen") < 0 || internalQuestStatus("questL11Shen") > 7)
@@ -1874,7 +1950,11 @@ boolean L11_shenCopperhead()
 
 	set_property("choiceAdventure1074", 1);
 
-	if (internalQuestStatus("questL11Shen") == 0 || internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
+	if (L11_shenStartQuest()) {
+		return true;
+	}
+
+	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
 	{
 		if (item_amount($item[Crappy Waiter Disguise]) > 0 && have_effect($effect[Crappily Disguised as a Waiter]) == 0 && !in_tcrs())
 		{
@@ -1882,11 +1962,11 @@ boolean L11_shenCopperhead()
 
 			// default to getting unnamed cocktails to turn into Flamin' Whatsisnames.
 			int behindtheStacheOption = 4;
-			if (item_amount($item[priceless diamond]) > 0 || item_amount($item[Red Zeppelin Ticket]) > 0 || (internalQuestStatus("questL11Shen") == 6 && item_amount($item[unnamed cocktail]) > 0))
+			if (item_amount($item[priceless diamond]) > 0 || item_amount($item[Red Zeppelin Ticket]) > 0 || my_meat() > 10000 ||  (internalQuestStatus("questL11Shen") == 6 && item_amount($item[unnamed cocktail]) > 0))
 			{
 				if (get_property("copperheadClubHazard") != "lantern")
 				{
-					// got priceless diamond or zeppelin ticket so lets burn the place down (and make Flamin' Whatsisnames)
+					// got priceless diamond or zeppelin ticket (or we are rich) so lets burn the place down (and make Flamin' Whatsisnames)
 					behindtheStacheOption = 3;
 				}
 			}
@@ -1901,16 +1981,8 @@ boolean L11_shenCopperhead()
 			set_property("choiceAdventure855", behindtheStacheOption);
 		}
 
-		if (!maximizeContains("-10ml"))
-		{
-			addToMaximize("-10ml");
-		}
-		boolean retval = autoAdv($location[The Copperhead Club]);
-		if (maximizeContains("-10ml"))
-		{
-			removeFromMaximize("-10ml");
-		}
-		return retval;
+		addToMaximize("-10ml");
+		return autoAdv($location[The Copperhead Club]);
 	}
 
 	if((internalQuestStatus("questL11Shen") == 1) || (internalQuestStatus("questL11Shen") == 3) || (internalQuestStatus("questL11Shen") == 5))
@@ -2037,7 +2109,6 @@ boolean L11_palindome()
 	{
 		if(item_amount($item[Wet Stunt Nut Stew]) == 0)
 		{
-			handleFamiliar("item");
 			equipBaseline();
 			if((item_amount($item[Bird Rib]) == 0) || (item_amount($item[Lion Oil]) == 0))
 			{
@@ -2205,103 +2276,67 @@ boolean L11_palindome()
 
 boolean L11_unlockPyramid()
 {
-  if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > 0)
+  if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > -1)
 	{
 		return false;
 	}
 	if (isActuallyEd())
 	{
+		return false;	//ed starts with pyramid unlocked and cannot adventure there
+	}
+	//get staff of ed if possible. we are only checking the non equipment version of it.
+	//the equipment version is actually ed the undying path exclusive
+	if(creatable_amount($item[[2325]Staff Of Ed]) > 0)
+	{
+		create(1, $item[[2325]Staff Of Ed]);
+	}
+	if(item_amount($item[[2325]Staff Of Ed]) == 0)
+	{
 		return false;
 	}
-
-	if((item_amount($item[[2325]Staff Of Ed]) > 0) || ((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2268]Staff Of Fats]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0)))
+	
+	auto_log_info("Reveal the pyramid", "blue");
+	if (in_koe())
 	{
-		auto_log_info("Reveal the pyramid", "blue");
-		if(item_amount($item[[2325]Staff Of Ed]) == 0)
-		{
-			if((item_amount($item[[2180]Ancient Amulet]) > 0) && (item_amount($item[[2286]Eye Of Ed]) > 0))
-			{
-				autoCraft("combine", 1, $item[[2180]Ancient Amulet], $item[[2286]Eye Of Ed]);
-			}
-			if((item_amount($item[Headpiece of the Staff of Ed]) > 0) && (item_amount($item[[2268]Staff Of Fats]) > 0))
-			{
-				autoCraft("combine", 1, $item[headpiece of the staff of ed], $item[[2268]Staff Of Fats]);
-			}
-		}
-		if(item_amount($item[[2325]Staff Of Ed]) == 0)
-		{
-			abort("Failed making Staff of Ed (2325) via CLI. Please do it manually and rerun.");
-		}
-
-		if (in_koe())
-		{
-			visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
-			cli_execute("refresh quests");
-		}
-		else
-		{
-			visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
-		}
-
-		if (internalQuestStatus("questL11Pyramid") < 0)
-		{
-			auto_log_info("No burning Ed's model now!", "blue");
-			if((auto_my_path() == "One Crazy Random Summer") && (get_property("desertExploration").to_int() == 100))
-			{
-				auto_log_warning("We might have had an issue due to OCRS and the Desert, please finish the desert (and only the desert) manually and run again.", "red");
-				string page = visit_url("place.php?whichplace=desertbeach");
-				matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
-				if(desert_matcher.find())
-				{
-					int found = to_int(desert_matcher.group(1));
-					if(found < 100)
-					{
-						set_property("desertExploration", found);
-					}
-				}
-
-				if(get_property("desertExploration").to_int() == 100)
-				{
-					abort("Tried to open the Pyramid but could not - exploration at 100?. Something went wrong :(");
-				}
-				else
-				{
-					auto_log_info("Incorrectly had exploration value of 100 however, this was correctable. Trying to resume.", "blue");
-					return false;
-				}
-			}
-			if(my_turncount() == get_property("auto_skipDesert").to_int())
-			{
-				auto_log_warning("Did not have an Arid Desert Item and the Pyramid is next. Must backtrack and recover", "red");
-				if((my_adventures() >= 3) && (my_meat() >= 500))
-				{
-					doVacation();
-					if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0)
-					{
-						cli_execute("make UV-Resistant Compass");
-					}
-					if(item_amount($item[UV-Resistant Compass]) == 0)
-					{
-						abort("Could not acquire a UV-Resistant Compass. Failing.");
-					}
-				}
-				else
-				{
-					abort("Could not backtrack to handle getting a UV-Resistant Compass");
-				}
-				return true;
-			}
-			abort("Tried to open the Pyramid but could not. Something went wrong :(");
-		}
-
-		buffMaintain($effect[Snow Shoes], 0, 1, 1);
-		autoAdv(1, $location[The Upper Chamber]);
-		return true;
+		visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
+		cli_execute("refresh quests");
 	}
 	else
 	{
-		return false;
+		visit_url("place.php?whichplace=desertbeach&action=db_pyramid1");
 	}
+
+	//check results of above URL visit
+	if (internalQuestStatus("questL11Pyramid") > -1)
+	{
+		return true;	//unlock successful
+	}
+	else 		//unlock failed
+	{
+		cli_execute("refresh quests");		//maybe it worked and mafia did not notice?
+		if(internalQuestStatus("questL11Pyramid") > -1)
+		{
+			return true;		//actually unlock did not fail.
+		}
+	
+		int initial = get_property("desertExploration").to_int();
+		string page = visit_url("place.php?whichplace=desertbeach");
+		matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
+		if(desert_matcher.find())
+		{
+			int found = to_int(desert_matcher.group(1));
+			if(found != initial)
+			{
+				auto_log_info("Incorrectly had exploration value of " + initial + " when it should be at " + found + ". This was corrected. Trying to resume.", "blue");
+				set_property("desertExploration", found);
+				return true;
+			}
+			abort("Tried to open the Pyramid but could not. property desertExploration determined to be correct");
+		}
+		abort("Tried to open the Pyramid but could not. could not verify the actual exploration amount of the desert");
+	}
+	
+	return false;
 }
 
 boolean L11_unlockEd()
@@ -2394,7 +2429,6 @@ boolean L11_unlockEd()
 		{
 			auto_sourceTerminalEnhance("items");
 		}
-		handleFamiliar("item");
 	}
 
 	if(get_property("controlRoomUnlock").to_boolean())

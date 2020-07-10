@@ -35,8 +35,7 @@ boolean auto_sausageGrind(int numSaus)
 boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 {
 	// Some paths are pretty meat-intensive early. Just in case...
-	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
-	if(my_turncount() < 90 || !canDesert)
+	if(my_turncount() < 90 || !isDesertAvailable())
 	{
 		return false;
 	}
@@ -196,10 +195,7 @@ boolean auto_sausageGoblin(location loc, string option)
 	{
 		return false;
 	}
-	
-	// can't equip kramko sausage grinder during certain paths, return false in those paths
-	
-	if (auto_my_path() == "Way of the Surprising Fist" || in_boris())
+	if(!auto_can_equip($item[Kramco Sausage-o-Matic&trade;]))
 	{
 		return false;
 	}
@@ -349,19 +345,19 @@ int auto_saberChargesAvailable()
 
 string auto_combatSaberBanish()
 {
-	set_property("_auto_saberChoice", 1);
+	set_property("choiceAdventure1387", 1);
 	return "skill " + $skill[Use the Force];
 }
 
 string auto_combatSaberCopy()
 {
-	set_property("_auto_saberChoice", 2);
+	set_property("choiceAdventure1387", 2);
 	return "skill " + $skill[Use the Force];
 }
 
 string auto_combatSaberYR()
 {
-	set_property("_auto_saberChoice", 3);
+	set_property("choiceAdventure1387", 3);
 	return "skill " + $skill[Use the Force];
 }
 
@@ -475,10 +471,6 @@ boolean auto_spoonReadyToTuneMoon()
 		return false;
 	}
 
-	boolean isKnoll = $strings[mongoose, wallaby, vole] contains currsign;
-	boolean isCanadia = $strings[platypus, opossum, marmot] contains currsign;
-	boolean isGnomad = $strings[wombat, blender, packrat] contains currsign;
-
 	boolean toKnoll = $strings[mongoose, wallaby, vole] contains spoonsign;
 	boolean toCanadia = $strings[platypus, opossum, marmot] contains spoonsign;
 	boolean toGnomad = $strings[wombat, blender, packrat] contains spoonsign;
@@ -494,9 +486,9 @@ boolean auto_spoonReadyToTuneMoon()
 		return false;
 	}
 
-	if(isKnoll && !toKnoll)
+	if(inKnollSign() && !toKnoll)
 	{
-		if(get_property("lastDesertUnlock").to_int() < my_ascensions())
+		if(!isDesertAvailable())
 		{
 			// we want to get the meatcar via the knoll store
 			return false;
@@ -511,13 +503,13 @@ boolean auto_spoonReadyToTuneMoon()
 		}
 	}
 
-	if(isCanadia && !toCanadia && item_amount($item[logging hatchet]) == 0)
+	if(inCanadiaSign() && !toCanadia && item_amount($item[logging hatchet]) == 0)
 	{
 		// want to make sure we've grabbed the logging hatchet before switching away from canadia
 		return false;
 	}
 
-	if(isGnomad && !toGnomad && auto_is_valid($skill[Torso Awaregness]) && !auto_have_skill($skill[Torso Awaregness]))
+	if(inGnomeSign() && !toGnomad && auto_is_valid($skill[Torso Awaregness]) && !auto_have_skill($skill[Torso Awaregness]))
 	{
 		// we want to know about our torso before swapping away from gnomad signs
 		return false;
@@ -714,7 +706,13 @@ boolean auto_campawayGrabBuffs()
 		return false;
 	}
 
-	if(!get_property("_auto_contributedCampaway").to_boolean() && item_amount($item[campfire smoke]) + creatable_amount($item[campfire smoke]) > 0)
+	int lim = 4 - get_property("_campAwaySmileBuffs").to_int() - get_property("_campAwayCloudBuffs").to_int();
+	for (int i=0; i < lim; i++)
+	{
+		visit_url("place.php?whichplace=campaway&action=campaway_sky");
+	}
+
+	if(get_property("_campAwayCloudBuffs").to_int() == 0 && item_amount($item[campfire smoke]) + creatable_amount($item[campfire smoke]) > 0)
 	{
 		if(item_amount($item[campfire smoke]) == 0)
 		{
@@ -723,14 +721,9 @@ boolean auto_campawayGrabBuffs()
 		string message = "why is my computer on fire?";
 		string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=" + $item[campfire smoke].to_int());
 		temp = visit_url("choice.php?pwd=&whichchoice=1394&option=1&message=" + message);
-		set_property("_auto_contributedCampaway", true);
-	}
-
-	int lim = 4 - get_property("_campAwaySmileBuffs").to_int() - get_property("_campAwayCloudBuffs").to_int();
-	for (int i=0; i < lim; i++)
-	{
 		visit_url("place.php?whichplace=campaway&action=campaway_sky");
 	}
+
 	return true;
 }
 
