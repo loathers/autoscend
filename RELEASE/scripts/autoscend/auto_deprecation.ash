@@ -394,6 +394,10 @@ boolean settingFixer()
 	{
 		remove_property("auto_phatloot");
 	}
+	if (property_exists("auto_forcePhatLootToken"))
+	{
+		remove_property("auto_forcePhatLootToken");
+	}
 	if (property_exists("auto_prewar"))
 	{
 		remove_property("auto_prewar");

@@ -6,7 +6,7 @@
 6	auto_clanstuff	string	ANY	What was the last day we did 'end of day' clan stuff.
 7	auto_cookie	integer	ANY	HCCS Only: Tracks fortune cookie.
 8	auto_crackpotjar	string	ANY	Status of Crackpot Mystic Jar of Psychoses
-9	auto_cubeItems	boolean	ANY	Do we need to use the Gelatinous Cube for Phat Loot Tokens?
+9	auto_cubeItems	boolean	ANY	Do we need to use the Gelatinous Cube for Fat Loot Tokens?
 10	auto_day1_dna	string	ANY	'finished' if we have hybridized ourselves at the start of Ascension.
 11	auto_day_init	string	ANY	Current daycount if we finished initializing today.
 12	auto_disableAdventureHandling	string	ANY	When set this prevents post/preadventure behavior. This is necessary for multi-adventure situations and 'a choice follows this' situations.

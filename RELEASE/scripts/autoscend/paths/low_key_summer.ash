@@ -353,7 +353,7 @@ boolean LX_lowkeySummer() {
 	if (LX_hippyBoatman()) { return true; }
 
 	// Desert access, Daily Dungeon and other early random stuff.
-	if (LX_loggingHatchet() || LX_unlockDesert() || LX_lockPicking() || LX_phatLootToken()) { return true; }
+	if (LX_loggingHatchet() || LX_unlockDesert() || LX_lockPicking() || LX_fatLootToken()) { return true; }
 
 	// Get the Steel Organ if the user wants it (probably good in this path since turnbloat).
 	if (LX_steelOrgan()) { return true; }

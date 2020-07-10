@@ -24,7 +24,7 @@ boolean LX_desertAlternate();
 boolean LX_hippyBoatman();
 boolean LX_lockPicking();
 float estimateDailyDungeonAdvNeeded();				//Defined in autoscend/quests/level_any.ash
-boolean LX_phatLootToken();							//Defined in autoscend/quests/level_any.ash
+boolean LX_fatLootToken();							//Defined in autoscend/quests/level_any.ash
 boolean LX_dailyDungeonToken();						//Defined in autoscend/quests/level_any.ash
 boolean LX_islandAccess();
 boolean fancyOilPainting();
@@ -284,14 +284,10 @@ void removeCombat();							//Defined in autoscend/auto_equipment.ash
 int[item] auto_get_campground();					//Defined in autoscend/auto_util.ash
 
 
-//Returns how many Hero Keys and Phat Loot tokens we have.
+//Returns how many Hero Keys and Fat Loot tokens we have.
 //effective count (with malware) vs true count.
 int towerKeyCount(boolean effective);			//Defined in autoscend/auto_util.ash
 int towerKeyCount();							//Defined in autoscend/auto_util.ash
-
-
-//Uses Daily Dungeon Malware to get Phat Loot.
-boolean useMalware();							//Defined in autoscend.ash
 
 //Determines if we need ore for the trapper or not.
 boolean needOre();								//Defined in autoscend/auto_util.ash
