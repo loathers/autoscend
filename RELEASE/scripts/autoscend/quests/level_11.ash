@@ -1,5 +1,112 @@
 script "level_11.ash"
 
+
+record desert_buff_record
+{
+	item offhand;
+	item fam_equip;
+	familiar fam;
+	int progress;
+};
+
+desert_buff_record desertBuffs()
+{
+    desert_buff_record dbr;
+
+    dbr.progress = 1;
+
+	boolean possessUnrestricted(item it)
+	{
+		return possessEquipment(it) && is_unrestricted(it);
+	}
+
+	boolean compassValid = possessUnrestricted($item[UV-resistant compass]);
+	boolean lhmValid = canChangeToFamiliar($familiar[Left-Hand Man]);
+	boolean meloValid = canChangeToFamiliar($familiar[Melodramedary]);
+	boolean odrValid = possessUnrestricted($item[Ornate Dowsing Rod]);
+
+	dbr.fam = $familiar[none];
+	dbr.fam_equip = $item[none];
+	dbr.offhand = $item[none];
+
+	// If we can't use the Ornate dowsing rod
+	if (!odrValid)
+	{
+		// And we can use the compass
+		if (compassValid)
+		{
+			// And we have the Left-Hand man but not the Melodramedary
+			// Free up our offhand for something useful
+			if (lhmValid && !meloValid)
+			{
+				dbr.fam = $familiar[Left-Hand Man];
+				dbr.fam_equip = $item[UV-resistant compass];
+				dbr.progress += 1;
+			}
+			// Otherwise hold the compass
+			else
+			{
+				dbr.offhand = $item[UV-resistant compass];
+				dbr.progress += 1;
+			}
+		}
+
+		// If we have the Melodramedary use it!
+		if (meloValid)
+		{
+			dbr.fam = $familiar[Melodramedary];
+			dbr.progress += 1;
+		}
+	}
+	// Otherwise
+	else
+	{
+		// If we have it and a Left-Hand man is our best familiar choice
+		// but we have no compass free up our offhand
+		if (!compassValid && lhmValid && !meloValid)
+		{
+			dbr.fam = $familiar[Left-Hand Man];
+			dbr.fam_equip = $item[Ornate Dowsing Rod];
+			dbr.progress += 2;
+		}
+		// Otherwise we can just hold it
+		else
+		{
+			dbr.offhand = $item[Ornate Dowsing Rod];
+			dbr.progress += 2;
+		}
+
+		// Melodramedary is better here though
+		if (meloValid)
+		{
+			dbr.fam = $familiar[Melodramedary];
+			dbr.progress += 1;
+		}
+		// Otherwise we can give the compass to the Left-Hand man if possible
+		else if (compassValid && lhmValid)
+		{
+			dbr.fam = $familiar[Left-Hand Man];
+			dbr.fam_equip = $item[UV-resistant compass];
+			dbr.progress += 1;
+		}
+	}
+
+	// There are some other familiars we might choose if nothing affects progress
+	if (dbr.fam == $familiar[none])
+	{
+		if(get_property("_hipsterAdv").to_int() < 7 && canChangeToFamiliar($familiar[Artistic Goth Kid]))
+		{
+			dbr.fam = $familiar[Artistic Goth Kid];
+		}
+		else if(get_property("_hipsterAdv").to_int() < 7 && canChangeToFamiliar($familiar[Mini-Hipster]))
+		{
+			dbr.fam = $familiar[Mini-Hipster];
+		}
+	}
+
+    return dbr;
+}
+
 int shenItemsReturned()
 {
 	int progress = internalQuestStatus("questL11Shen");
@@ -613,18 +720,10 @@ boolean L11_aridDesert()
 	if(LX_ornateDowsingRod(true)) return true;		//spend adv trying to get [Ornate Dowsing Rod]. doing_desert_now = true.
 	if(L11_getUVCompass()) return true;				//spend adv trying to get [UV-resistant compass]
 
-	item desertBuff = $item[none];
-	int progress = 1;
-	if(possessEquipment($item[UV-resistant compass]))
-	{
-		desertBuff = $item[UV-resistant compass];
-		progress = 2;
-	}
-	if(possessEquipment($item[Ornate Dowsing Rod]) && is_unrestricted($item[Ornate Dowsing Rod]))
-	{
-		desertBuff = $item[Ornate Dowsing Rod];
-		progress = 3;
-	}
+	desert_buff_record dbr = desertBuffs();
+
+	int progress = dbr.progress;
+
 	if(get_property("bondDesert").to_boolean())
 	{
 		progress += 2;
@@ -640,10 +739,6 @@ boolean L11_aridDesert()
 		if(auto_my_path() == "Heavy Rains")
 		{
 			autoEquip($item[Thor\'s Pliers]);
-		}
-		if(canChangeToFamiliar($familiar[Artistic Goth Kid]))
-		{
-			handleFamiliar($familiar[Artistic Goth Kid]);
 		}
 
 		if(possessEquipment($item[reinforced beaded headband]) && possessEquipment($item[bullet-proof corduroys]) && possessEquipment($item[round purple sunglasses]))
@@ -700,9 +795,17 @@ boolean L11_aridDesert()
 			}
 		}
 
-		if(desertBuff != $item[none])
+		if (dbr.fam != $familiar[none])
 		{
-			autoEquip(desertBuff);
+			handleFamiliar(dbr.fam);
+		}
+		if (dbr.offhand != $item[none])
+		{
+			autoEquip($slot[off-hand], dbr.offhand);
+		}
+		if (dbr.fam_equip != $item[none])
+		{
+			autoEquip($slot[familiar], dbr.fam_equip);
 		}
 		set_property("choiceAdventure805", 1);
 		int need = 100 - get_property("desertExploration").to_int();
