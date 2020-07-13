@@ -280,16 +280,6 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
-		equip($slot[Pants], $item[None]);
-		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
-		if (is_wearing_outfit("Filthy Hippy Disguise")) {
-			abort("Tried to adventure in the Hippy Camp as Actually Ed the Undying wearing the Filthy Hippy Disguise (this is bad).");
-		} else {
-			auto_log_info("Took off the Filthy Hippy Disguise before adventuring in the Hippy Camp so we don't waste adventures on non-combats.");
-		}
-	}
-
 	if(place == $location[The Black Forest])
 	{
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);
@@ -458,6 +448,16 @@ boolean auto_pre_adventure()
 	// EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
 	cli_execute("checkpoint clear");
+
+	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
+		equip($slot[Pants], $item[None]);
+		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+		if (is_wearing_outfit("Filthy Hippy Disguise")) {
+			abort("Tried to adventure in the Hippy Camp as Actually Ed the Undying wearing the Filthy Hippy Disguise (this is bad).");
+		} else {
+			auto_log_info("Took off the Filthy Hippy Disguise before adventuring in the Hippy Camp so we don't waste adventures on non-combats.");
+		}
+	}
 
 	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
 	if(lowMLZones contains place)

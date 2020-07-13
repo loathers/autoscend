@@ -1296,3 +1296,4 @@ void fcleChoiceHandler(int choice);
 void itznotyerzitzMineChoiceHandler(int choice);
 void theeXtremeSlopeChoiceHandler(int choice);
 void dailyDungeonChoiceHandler(int choice, string[int] options);	//Defined in autoscend/quests/level_any.ash
+void edUnderworldChoiceHandler(int choice);

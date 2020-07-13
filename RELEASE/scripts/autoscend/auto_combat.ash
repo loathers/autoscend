@@ -2668,7 +2668,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	phylum type = monster_phylum(enemy);
 	string combatState = get_property("auto_combatHandler");
 	string edCombatState = get_property("auto_edCombatHandler");
 
@@ -2676,9 +2675,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	{
 		set_property("auto_edStatus", "dying");
 	}
-
-	#Handle different path is monster_level_adjustment() > 150 (immune to staggers?)
-	int mcd = monster_level_adjustment();
 
 	if(have_effect($effect[Temporary Amnesia]) > 0)
 	{
@@ -2819,17 +2815,12 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Summon Love Gnats]);
 		}
-
-		if (item_amount($item[Ka Coin]) > 200 && canUse($skill[Curse of Fortune]))
-		{
-			return useSkill($skill[Curse of Fortune]);
-		}
 	}
 	else if(get_property("auto_edStatus") == "dying")
 	{
 		boolean doStunner = true;
 
-		if((mcd > 50) && canSurvive(1.15))
+		if(monster_level_adjustment() > 50 && canSurvive(1.15))
 		{
 			doStunner = false;
 		}
@@ -2884,13 +2875,15 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return useItem($item[chaos butterfly]);
 	}
 
-	if((enemy == $monster[dirty thieving brigand]) && !contains_text(edCombatState, "curse of fortune"))
-	{
-		if (item_amount($item[Ka Coin]) > 0 && canUse($skill[Curse Of Fortune]))
-		{
+	if(enemy == $monster[dirty thieving brigand] && !contains_text(edCombatState, "curse of fortune")) {
+		if (item_amount($item[Ka Coin]) > 0 && canUse($skill[Curse Of Fortune]) && my_hp() > expected_damage() + 15) {
+			// need to kill the monster without resurrecting to get the bonus meat drop so only use it if we have enough HP to survive a hit
 			set_property("auto_edCombatHandler", edCombatState + "(curse of fortune)");
 			set_property("auto_edStatus", "dying");
 			return useSkill($skill[Curse Of Fortune]);
+		} else {
+			// get a full heal, maybe we can Curse and kill after resurrection
+			set_property("auto_edStatus", "UNDYING!");
 		}
 	}
 
@@ -3264,6 +3257,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(get_property("auto_edStatus") == "UNDYING!")
 	{
+		// We're taking a trip to the underworld. Either we want to abuse resurrection or we want to go shopping
 		if(my_location() == $location[The Secret Government Laboratory])
 		{
 			if((item_amount($item[Rock Band Flyers]) == 0) && (item_amount($item[Jam Band Flyers]) == 0))
@@ -3276,11 +3270,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			}
 		}
 
-		if (item_amount($item[Ka Coin]) > 200 && canUse($skill[Curse of Fortune]))
-		{
-			return useSkill($skill[Curse of Fortune]);
-		}
-
 		if (canUse($item[Seal Tooth], false))
 		{
 			return useItem($item[Seal Tooth], false);
@@ -3289,6 +3278,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Mild Curse], false);
 	}
 
+	// Actually killing stuff starts here
 	if (my_location() == $location[The Secret Government Laboratory] && canUse($skill[Roar of the Lion], false))
 	{
 		if (canUse($skill[Storm Of The Scarab], false) && my_buffedstat($stat[Mysticality]) >= 60)

@@ -24,7 +24,7 @@ boolean L7_crypt()
 	boolean edAlcove = true;
 	if (isActuallyEd())
 	{
-		edAlcove = (have_skill($skill[More Legs]) && (expected_damage($monster[modern zmobie]) + 1) < my_maxhp());
+		edAlcove = (have_skill($skill[More Legs]) && (expected_damage($monster[modern zmobie]) + 15) < my_maxhp());
 	}
 
 	if((get_property("romanticTarget") != $monster[modern zmobie]) && (get_property("auto_waitingArrowAlcove").to_int() < 50))

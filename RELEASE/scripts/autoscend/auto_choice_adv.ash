@@ -362,21 +362,8 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1023: // Like a Bat Into Hell (Actually Ed the Undying)
-			run_choice(1); // Enter the Underworld
-			auto_log_info("Ed died in combat " + get_property("_edDefeats").to_int() + " time(s)", "blue");
-			ed_shopping(); // "free" trip to the Underworld, may as well go shopping!
-			visit_url("place.php?whichplace=edunder&action=edunder_leave");
-			break;
 		case 1024:  // Like a Bat out of Hell (Actually Ed the Undying)
-			if (get_property("_edDefeats").to_int() < get_property("edDefeatAbort").to_int()) {
-				// resurrecting is still free.
-				run_choice(1, false); // UNDYING!
-			} else {
-				// resurrecting will cost Ka
-				run_choice(2); // Accept the cold embrace of death (Return to the Pyramid)
-				auto_log_info("Ed died in combat for reals!");
-				set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
-			}
+			edUnderworldChoiceHandler(choice);
 			break;
 		case 1060: // Temporarily Out of Skeletons (The Skeleton Store)
 			if (item_amount($item[Skeleton Store office key]) == 0) {
@@ -411,6 +398,14 @@ boolean auto_run_choice(int choice, string page)
 		case 1083: // Cogito Ergot Sum (post-post-Cake Lord in Madness Bakery)
 			run_choice(1);
 			break;
+		case 1115: // VYKEA! (VYKEA)
+			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && auto_my_path() != "Community Service") {
+				run_choice(1); // get consumables
+			} else if (!get_property("_VYKEALoungeRaided").to_boolean()) {
+				run_choice(4); // get Wal-Mart gift certificates
+			} else {
+				run_choice(6); // skip
+			}
 		case 1310: // Granted a Boon (God Lobster)
 			int goal = get_property("_auto_lobsterChoice").to_int();
 			string search = "I'd like part of your regalia.";
