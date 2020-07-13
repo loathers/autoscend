@@ -1,5 +1,5 @@
 script "autoscend.ash";
-since r20210; // abort now works in combat filter function
+since r20232; // Melodramedary gives +1 desert exploration when equipped.
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
