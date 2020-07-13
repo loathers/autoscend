@@ -493,15 +493,7 @@ boolean L8_trapperNinjaLair()
 		return false;
 	}
 
-	if(in_hardcore())
-	{
-		if (isActuallyEd())
-		{
-			if((have_effect($effect[Taunt of Horus]) == 0) && (item_amount($item[Talisman of Horus]) == 0))
-			{
-				return false;
-			}
-		}
+	if (in_hardcore()) {
 		if((have_effect($effect[Thrice-Cursed]) > 0) || (have_effect($effect[Twice-Cursed]) > 0) || (have_effect($effect[Once-Cursed]) > 0))
 		{
 			return false;
@@ -513,36 +505,20 @@ boolean L8_trapperNinjaLair()
 			return false;
 		}
 
-		handleFamiliar("item");
-		asdonBuff($effect[Driving Obnoxiously]);
-		if(!providePlusCombat(25))
-		{
-			auto_log_warning("Could not uneffect for ninja snowmen, delaying", "red");
-			return false;
-		}
-
 		if (isActuallyEd() && !elementalPlanes_access($element[spooky]))
 		{
 			adjustEdHat("myst");
 		}
 
-		if(numeric_modifier("Combat Rate") <= 9.0)
-		{
-			autoEquip($slot[Back], $item[Carpe]);
-		}
-
-		if(numeric_modifier("Combat Rate") <= 0.0)
-		{
+		if (providePlusCombat(25, true, true) <= 0.0) {
 			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Ninja Snowmen.", "red");
-			equipBaseline();
 			return false;
 		}
 
-		if(!autoAdv(1, $location[Lair of the Ninja Snowmen]))
-		{
-			auto_log_warning("Seems like we failed the Ninja Snowmen unlock, reverting trapper setting", "red");
+		if (autoAdv($location[Lair of the Ninja Snowmen])) {
+			return true;
 		}
-		return true;
+		auto_log_warning("Seems like we failed the Ninja Snowmen unlock, reverting trapper setting", "red");
 	}
 	return false;
 }
