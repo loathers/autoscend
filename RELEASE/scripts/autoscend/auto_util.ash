@@ -3015,7 +3015,7 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 	}
 
 	// Glove charges are a limited per-day resource, lets do this last so we don't waste possible uses of Replace Enemy
-	if (tryEffects($effects[Triple-Sized])) {
+	if (tryEffects($effects[Invisible Avatar])) {
 		return result();
 	}
 
