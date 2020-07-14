@@ -2868,9 +2868,11 @@ boolean providePlusCombat(int amt)
 }
 
 float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
-	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " negative combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
-	float alreadyHave = numeric_modifier("Combat Rate");
+	// numeric_modifier will return -combat as a negative value and +combat as a positive value
+	// so we will need to invert the return values otherwise this will be wrong (since amt is supposed to be positive).
+ 	float alreadyHave = -1.0 * numeric_modifier("Combat Rate");
 	float need = amt - alreadyHave;
 
 	if (need > 0) {
@@ -2882,7 +2884,7 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 	float delta = 0;
 
 	float result() {
-		return numeric_modifier("Combat Rate") + delta;
+		return (-1.0 * numeric_modifier("Combat Rate")) + delta;
 	}
 
 	if (doEquips) {
@@ -2893,7 +2895,7 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 			addToMaximize(max);
 			simMaximize();
 		}
-		delta = simValue("Combat Rate") - numeric_modifier("Combat Rate");
+		delta = (-1.0 * simValue("Combat Rate")) - (-1.0* numeric_modifier("Combat Rate"));
 		auto_log_debug("With gear we can get to " + result());
 	}
 
@@ -2929,7 +2931,7 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 
 	void handleEffect(effect eff) {
 		if (speculative) {
-			delta += numeric_modifier(eff, "Combat Rate");
+			delta += (-1.0 * numeric_modifier(eff, "Combat Rate"));
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
 	}
@@ -3015,7 +3017,7 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 	}
 
 	// Glove charges are a limited per-day resource, lets do this last so we don't waste possible uses of Replace Enemy
-	if (tryEffects($effects[Invisible Avatar])) {
+	if (auto_hasPowerfulGlove() && tryEffects($effects[Invisible Avatar])) {
 		return result();
 	}
 
