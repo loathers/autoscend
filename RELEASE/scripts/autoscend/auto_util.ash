@@ -5396,6 +5396,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Inscrutable Gaze]:				useSkill = $skill[Inscrutable Gaze];			break;
 	case $effect[Insulated Trousers]:			useItem = $item[Cold Powder];					break;
 	case $effect[Intimidating Mien]:			useSkill = $skill[Intimidating Mien];			break;
+	case $effect[Invisible Avatar]:					useSkill = $skill[none];						break;
 	case $effect[Irresistible Resolve]:			useItem = $item[Resolution: Be Sexier];			break;
 	case $effect[Jackasses\' Symphony of Destruction]:useSkill = $skill[Jackasses\' Symphony of Destruction];	break;
 	case $effect[Jalape&ntilde;o Saucesphere]:	useSkill = $skill[Jalape&ntilde;o Saucesphere];	break;
