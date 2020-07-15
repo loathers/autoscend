@@ -5809,6 +5809,18 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 	}
 
+	if (buff == $effect[Invisible Avatar])
+	{
+		if (speculative)
+		{
+			return auto_powerfulGloveCharges() >= 5;
+		}
+		else
+		{
+			return auto_powerfulGloveNoncombat();
+		}
+	}
+
 	boolean[effect] falloutEffects = $effects[Drunk and Avuncular, Lucky Struck, Ministrations in the Dark, Power\, Man, Record Hunger, Shrieking Weasel, Superdrifting];
 	if(falloutEffects contains buff)
 	{
