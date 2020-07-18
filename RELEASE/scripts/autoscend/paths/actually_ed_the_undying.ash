@@ -1428,7 +1428,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// The hidden city is mostly 2 Ka monsters so do it ASAP.
-	if (L11_nostrilOfTheSerpent() || L11_unlockHiddenCity() || L11_hiddenCityZones() || L11_hiddenCity())
+	if (L11_unlockHiddenCity() || L11_hiddenCityZones() || L11_hiddenCity())
 	{
 		return true;
 	}

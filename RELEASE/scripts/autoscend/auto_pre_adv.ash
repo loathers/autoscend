@@ -429,7 +429,7 @@ boolean auto_pre_adventure()
 	if(removeML)
 	{
 		auto_change_mcd(0);
-
+		addToMaximize("-10ml");
 		uneffect($effect[Driving Recklessly]);
 		uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
 

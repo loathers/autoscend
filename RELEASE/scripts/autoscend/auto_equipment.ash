@@ -223,8 +223,8 @@ void resetMaximize()
 	
 	// don't want to equip these items automatically
 	// snow suit bonus drops every 5 combats so is best saved for important things
-	// spoon, sword, and staph are text scramblers which cause errors in mafia tracking
-	foreach it in $items[hewn moon-rune spoon, sword behind inappropriate prepositions, staph of homophones, snow suit]
+	// sword, and staph are text scramblers which cause errors in mafia tracking
+	foreach it in $items[sword behind inappropriate prepositions, staph of homophones, snow suit]
 	{
 		if (possessEquipment(it))
 		{

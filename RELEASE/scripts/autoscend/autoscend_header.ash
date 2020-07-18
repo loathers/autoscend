@@ -139,7 +139,6 @@ boolean L11_shenCopperhead();
 boolean L11_ronCopperhead();
 boolean L11_redZeppelin();
 boolean L11_mauriceSpookyraven();
-boolean L11_nostrilOfTheSerpent();
 boolean L11_unlockPyramid();
 boolean L11_unlockEd();
 boolean L11_defeatEd();
@@ -1289,10 +1288,11 @@ item[int] drops_available();								//Defined in autoscend/auto_zone.ash
 item[int] hugpocket_available();							//Defined in autoscend/auto_zone.ash
 
 // functions for handling choice adventures. Only ever called from auto_choice_adv.ash
+void hiddenTempleChoiceHandler(int choice, string page);
 void oldLandfillChoiceHandler(int choice);
 void piratesCoveChoiceHandler(int choice);
 void barrrneysBarrrChoiceHandler(int choice, string page);
 void fcleChoiceHandler(int choice);
 void itznotyerzitzMineChoiceHandler(int choice);
 void theeXtremeSlopeChoiceHandler(int choice);
-void dailyDungeonChoiceHandler(int choice, string[int] options);	//Defined in autoscend/quests/level_any.ash
+void dailyDungeonChoiceHandler(int choice, string[int] options);
