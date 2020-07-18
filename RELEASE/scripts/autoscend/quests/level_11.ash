@@ -1083,6 +1083,7 @@ boolean L11_unlockHiddenCity() {
 void hiddenTempleChoiceHandler(int choice, string page) {
 	if (choice == 123) { // At Least It's Not Full Of Trash
 		run_choice(2); // Go to Beginning at the Beginning of Beginning
+		visit_url("choice.php");
 	} else if (choice == 124) { // Beginning at the Beginning of Beginning
 		cli_execute("dvorak"); // Solve puzzle and go to No Visible Means of Support (#125)
 	} else if (choice == 125) { // No Visible Means of Support
