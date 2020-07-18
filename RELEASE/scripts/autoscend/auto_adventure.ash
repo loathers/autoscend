@@ -117,6 +117,13 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		run_choice(-1);
 	}
 
+	if (get_property("lastEncounter") == "Using the Force") {
+		// because of course this fucking thing needs special handling.
+		// Why can this just not be handled like every other post-combat choice in mafia?
+		// It's not that fucking special. If we can handle the doc bag, Ed's resurrection and a bunch of other stuff, WHY IS THIS SO HARD?
+		// https://kolmafia.us/showthread.php?25235-Using-the-Force-doesn-t-set-choice_follows_fight()-(in-certain-conditions-)
+		run_choice(-1);
+	}
 
 	// this should handle stuff like Ed's resurrect/fight loop
 	// and anything else that chains combats & choices in any order
