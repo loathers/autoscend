@@ -1077,7 +1077,7 @@ boolean L11_unlockHiddenCity() {
 			abort("We do not smell like Stone nor have the face of one. We currently donut farm Stone Wool. Please get some");
 		}
 	}
-	return autoAdv(1, $location[The Hidden Temple]);
+	return autoAdv($location[The Hidden Temple]);
 }
 
 void hiddenTempleChoiceHandler(int choice, string page) {
@@ -1389,40 +1389,32 @@ boolean L11_hiddenCityZones()
 		return autoAdv($location[The Hidden Park]);
 	}
 
-	if (get_property("hiddenApartmentProgress") == 0)
-	{
+	if (get_property("hiddenApartmentProgress") == 0) {
 		if (!equipMachete()) {
 			return false;
 		}
-		boolean advSpent = autoAdv($location[An Overgrown Shrine (Northwest)]);
-		return advSpent;
+		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
-	if (get_property("hiddenOfficeProgress") == 0)
-	{
+	if (get_property("hiddenOfficeProgress") == 0) {
 		if (!equipMachete()) {
 			return false;
 		}
-		boolean advSpent = autoAdv($location[An Overgrown Shrine (Northeast)]);
-		return advSpent;
+		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
 
-	if (get_property("hiddenHospitalProgress") == 0)
-	{
+	if (get_property("hiddenHospitalProgress") == 0) {
 		if (!equipMachete()) {
 			return false;
 		}
-		boolean advSpent = autoAdv($location[An Overgrown Shrine (Southwest)]);
-		return advSpent;
+		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
-	if (get_property("hiddenBowlingAlleyProgress") == 0)
-	{
+	if (get_property("hiddenBowlingAlleyProgress") == 0) {
 		if (!equipMachete()) {
 			return false;
 		}
-		boolean advSpent = autoAdv($location[An Overgrown Shrine (Southeast)]);
-		return advSpent;
+		return autoAdv($location[An Overgrown Shrine (Southeast)]);
 	}
 
 	if (!get_property("auto_openedziggurat").to_boolean()) {
