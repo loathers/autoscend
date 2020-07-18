@@ -120,7 +120,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	// this should handle stuff like Ed's resurrect/fight loop
 	// and anything else that chains combats & choices in any order
 	while (fight_follows_choice() || choice_follows_fight() || in_multi_fight() || handling_choice()) {
-		if ((fight_follows_choice() || in_multi_fight()) && (!choice_follows_fight() || !handling_choice())) {
+		if ((fight_follows_choice() || in_multi_fight()) && (!choice_follows_fight() && !handling_choice())) {
 			auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 			run_combat(option);
 		}
