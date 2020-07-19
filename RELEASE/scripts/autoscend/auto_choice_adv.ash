@@ -46,7 +46,6 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(4); // skip
 			break;
 		case 123: // At Least It's Not Full Of Trash (The Hidden Temple)
-		case 124: // Beginning at the Beginning of Beginning (The Hidden Temple)
 		case 125: // No Visible Means of Support (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
