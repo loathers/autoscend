@@ -21,7 +21,7 @@ boolean L10_plantThatBean()
 		return true;
 	}
 
-	if(internalQuestStatus("questL04Bat") >= 0)
+	if(internalQuestStatus("questL04Bat") >= 2)
 	{
 		auto_log_info("I don't have a magic bean! Travesty!!", "blue");
 		return autoAdv($location[The Beanbat Chamber]);

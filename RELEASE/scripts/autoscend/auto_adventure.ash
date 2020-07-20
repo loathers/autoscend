@@ -10,7 +10,7 @@ boolean autoAdv(location loc, string option)
 boolean autoAdv(int num, location loc, string option)
 {
 	if(!zone_isAvailable(loc, true)){
-		auto_log_warning("Cant get to " + loc + " right now.", "red");
+		auto_log_warning("Can't get to " + loc + " right now.", "red");
 		return false;
 	}
 
@@ -33,39 +33,7 @@ boolean autoAdv(int num, location loc, string option)
 		return digimon_autoAdv(num, loc, option);
 	}
 
-	boolean retval = false;
-
-	if((my_adventures() == 0) || ((inebriety_left() < 0) && (equipped_item($slot[off-hand]) != $item[Drunkula\'s Wineglass])))
-	{
-		string page = visit_url("fight.php");
-		if(contains_text(page, "Combat"))
-		{
-			run_combat(option);
-			retval = true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else
-	{
-		retval = adv1(loc, -1, option);
-	}
-	if(auto_my_path() == "One Crazy Random Summer")
-	{
-		if(last_monster().random_modifiers["clingy"])
-		{
-			int oldDesert = get_property("desertExploration").to_int();
-			retval = autoAdv(num, loc, option);
-			if(my_location() == $location[The Arid\, Extra-Dry Desert])
-			{
-				set_property("desertExploration", oldDesert);
-			}
-		}
-	}
-
-	return retval;
+	return adv1(loc, -1, option);
 }
 
 boolean autoAdv(int num, location loc)
@@ -90,32 +58,32 @@ boolean autoAdvBypass(string url, location loc, string option)
 	return autoAdvBypass(0, urlConvert, loc, option);
 }
 
-# Preserved to remind us of this issue.
-#boolean autoAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option)
-#
-#	urlGetFlags allows us to force visit_url(X, false). It is a bit field.
-#
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
 	if(!zone_isAvailable(loc, true))
 	{
 		// reinstate this check for now. Didn't fix the War boss fight outside of Ed & KoE,
 		// will work around that by passing Noob Cave as location until this is refactored.
-		auto_log_warning("Cant get to " + loc + " right now.", "red");	
+		auto_log_warning("Can't get to " + loc + " right now.", "red");	
 		return false;	
 	}
 	
 	set_property("nextAdventure", loc);
 	cli_execute("auto_pre_adv");
+	remove_property("auto_combatHandler");
+	set_property("auto_diag_round", 0);
+
 	if(option == "")
 	{
 		if (isActuallyEd())
 		{
 			option = "auto_edCombatHandler";
+			remove_property("auto_edCombatHandler");
 		} else {
 			option = "auto_combatHandler";
 		}
 	}
+
 	if (isActuallyEd())
 	{
 		ed_handleAdventureServant(loc);
@@ -127,9 +95,6 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	{
 		if((urlGetFlags & 1) == 1)
 		{
-			#auto_log_warning("Visit_url(" + it + ") override to false", "red");
-			//When using this, you may have to add my_hash yourself.
-			//We can probably do this (but is it possible that a search for "pwd" can cause false positives?)
 			page = visit_url(it, false);
 		}
 		else
@@ -138,61 +103,36 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		}
 		urlGetFlags /= 2;
 	}
-	if ((my_hp() == 0 || have_effect($effect[Beaten Up]) > 0) && !isActuallyEd())
-	{
-		auto_log_warning("Uh oh! Died when starting a combat indirectly.", "red");
-		#Can we just return true here?
-		abort("autoAdvBypass override abort");
-	}
 
+	// handle the initial combat or choice the easy way.
 	string combatPage = "<b>Combat";
-	if(auto_my_path() == "Pocket Familiars")
-	{
+	if (auto_my_path() == "Pocket Familiars") {
 		combatPage = "<b>Fight!";
 	}
-	if(contains_text(page, combatPage))
-	{
+	if (contains_text(page, combatPage)) {
 		auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
+		run_combat(option);
+	} else {
+		auto_log_info("autoAdvBypass has encountered a choice!", "green");
+		run_choice(-1);
+	}
 
-		if(option != "autoscend_null") // && (option != ""))
-		{
-			if(get_auto_attack() == 0)
-			{
-				if((inebriety_left() >= 0) || (equipped_item($slot[off-hand]) == $item[Drunkula\'s Wineglass]))
-				{
-					return autoAdv(1, loc, option);
-				}
-				else
-				{
-					string temp = run_combat(option);
-					cli_execute("auto_post_adv");
-					return true;
-				}
-			}
-			else
-			{
-				string temp = run_combat();
-				cli_execute("auto_post_adv");
-				return true;
-			}
+	// this should handle stuff like Ed's resurrect/fight loop
+	// and anything else that chains combats & choices in any order
+	while (fight_follows_choice() || choice_follows_fight() || in_multi_fight() || handling_choice()) {
+		if ((fight_follows_choice() || in_multi_fight()) && (!choice_follows_fight() && !handling_choice())) {
+			auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
+			run_combat(option);
 		}
-		else
-		{
-			string temp = run_combat();
-			cli_execute("auto_post_adv");
-			return true;
+		if (choice_follows_fight() || handling_choice()) {
+			auto_log_info("autoAdvBypass has encountered a choice!", "green");
+			run_choice(-1);
 		}
 	}
 
-	# Encounters that need to generate a false so we handle them manually should go here.
-	if(get_property("lastEncounter") == "Fitting In")
-	{
-		return false;
-	}
-	if(get_property("lastEncounter") == "Arboreal Respite")
-	{
-		return false;
-	}
+	cli_execute("auto_post_adv");
+
+	// Encounters that need to generate a false so we handle them manually should go here.
 	if(get_property("lastEncounter") == "Travel to a Recent Fight")
 	{
 		return false;
@@ -201,64 +141,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	{
 		return false;
 	}
-	if(auto_my_path() == "G-Lover")
-	{
-		if(get_property("lastEncounter") == "The Hidden Heart of the Hidden Temple")
-		{
-			return false;
-		}
-	}
-
-
-
-	boolean inChoice = false;
-	if(contains_text(page, "whichchoice value=") || contains_text(page, "whichchoice="))
-	{
-		auto_log_warning("Override hit a choice adventure (" + loc + "), trying....", "red");
-		inChoice = true;
-	}
-
-	matcher choice_matcher = create_matcher("(?:whichchoice value=(\\d+))|(?:whichchoice=(\\d+))", page);
-	if(choice_matcher.find())
-	{
-		//If we come in from an unknown adventure type, mafia does not handle the choice adventure properly
-		int choice = choice_matcher.group(1).to_int();
-		if(choice == 0)
-		{
-			choice = choice_matcher.group(2).to_int();
-		}
-
-		boolean retval = false;
-		if(!retval)
-		{
-			run_choice(get_property("choiceAdventure" + choice).to_int());
-			cli_execute("auto_post_adv");
-			//We can no longer return an adventure return value here... is false acceptable?
-		}
-		else
-		{
-			set_property("auto_disableAdventureHandling", true);
-			boolean retval = true;
-			if((inebriety_left() >= 0) || (equipped_item($slot[off-hand]) == $item[Drunkula\'s Wineglass]))
-			{
-				retval = autoAdv(1, loc, option);
-			}
-			else
-			{
-				run_combat(option);
-			}
-			set_property("auto_disableAdventureHandling", false);
-			cli_execute("auto_post_adv");
-		}
-		return retval;
-	}
-
-	if(inChoice)
-	{
-		abort("Detected we are in a choice adventure but the matcher was done incorrectly.");
-	}
-
-	return false;
+	return true;
 }
 
 boolean autoAdvBypass(int snarfblat, location loc)

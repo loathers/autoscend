@@ -1058,172 +1058,62 @@ boolean L11_wishForBaaBaaBuran()
 	return false;
 }
 
-boolean L11_unlockHiddenCity()
-{
-	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2)
-	{
+boolean L11_unlockHiddenCity() {
+	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2) {
 		return false;
 	}
-	if(my_adventures() <= 3)
-	{
+	if (my_adventures() - auto_advToReserve() <= 3) {
 		return false;
-	}
-	if (item_amount($item[The Nostril of the Serpent]) < 1)
-	{
-		return false;
-	}
-
-	boolean useStoneWool = true;
-
-	if (auto_my_path() == "G-Lover" || in_tcrs())
-	{
-		if(my_adventures() <= 3)
-		{
-			return false;
-		}
-		useStoneWool = false;
-		backupSetting("choiceAdventure581", 1);
-		backupSetting("choiceAdventure579", 3);
 	}
 
 	auto_log_info("Searching for the Hidden City", "blue");
-	if(useStoneWool)
-	{
-		if((item_amount($item[Stone Wool]) == 0) && (have_effect($effect[Stone-Faced]) == 0))
-		{
+	if (auto_my_path() != "G-Lover" && !in_tcrs()) {
+		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0) {
 			L11_wishForBaaBaaBuran();
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 		buffMaintain($effect[Stone-Faced], 0, 1, 1);
-		if(have_effect($effect[Stone-Faced]) == 0)
-		{
+		if (have_effect($effect[Stone-Faced]) == 0) {
 			abort("We do not smell like Stone nor have the face of one. We currently donut farm Stone Wool. Please get some");
 		}
 	}
-
-	boolean bypassResult = autoAdvBypass(280);
-
-	if (auto_my_path() == "G-Lover" || in_tcrs())
-	{
-		if(get_property("lastEncounter") != "The Hidden Heart of the Hidden Temple")
-		{
-			restoreSetting("choiceAdventure579");
-			restoreSetting("choiceAdventure581");
-			return true;
-		}
-	}
-	else
-	{
-		if(bypassResult)
-		{
-			auto_log_warning("Wandering monster interrupted our attempt at the Hidden City", "red");
-			return true;
-		}
-		if(get_property("lastEncounter") != "Fitting In")
-		{
-			abort("We donut fit in. You are not a munchkin or your donut is invalid. Failed getting the correct adventure at the Hidden Temple. Exit adventure and restart.");
-		}
-	}
-
-	if(get_property("lastEncounter") == "Fitting In")
-	{
-		visit_url("choice.php?whichchoice=582&option=2&pwd");
-	}
-
-	visit_url("choice.php?whichchoice=580&option=2&pwd");
-	visit_url("choice.php?whichchoice=584&option=4&pwd");
-	visit_url("choice.php?whichchoice=580&option=1&pwd");
-	visit_url("choice.php?whichchoice=123&option=2&pwd");
-	visit_url("choice.php");
-	cli_execute("dvorak");
-	visit_url("choice.php?whichchoice=125&option=3&pwd");
-	auto_log_info("Hidden City Unlocked");
-
-	restoreSetting("choiceAdventure579");
-	restoreSetting("choiceAdventure581");
-	return true;
+	return autoAdv($location[The Hidden Temple]);
 }
 
-
-boolean L11_nostrilOfTheSerpent()
-{
-	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2)
-	{
-		return false;
-	}
-	if(item_amount($item[The Nostril of the Serpent]) != 0)
-	{
-		return false;
-	}
-
-	auto_log_info("Must get a snake nose.", "blue");
-	boolean useStoneWool = true;
-
-	if (auto_my_path() == "G-Lover" || in_tcrs())
-	{
-		if(my_adventures() <= 3)
-		{
-			return false;
+void hiddenTempleChoiceHandler(int choice, string page) {
+	if (choice == 123) { // At Least It's Not Full Of Trash
+		run_choice(2); // Go to Beginning at the Beginning of Beginning
+		visit_url("choice.php");
+		cli_execute("dvorak"); // Solve puzzle and go to No Visible Means of Support (#125)
+	} else if (choice == 125) { // No Visible Means of Support
+		run_choice(3); // Unlock the Hidden City!
+	} else if (choice == 579) { // Such Great Heights
+		if (item_amount($item[The Nostril of the Serpent]) == 0 && internalQuestStatus("questL11Worship") < 3) {
+			run_choice(2); // Get The Nostril of the Serpent
+		} else {
+			run_choice(3); // +3 adventures and extend 10 effects (first time) or skip
 		}
-		useStoneWool = false;
-		backupSetting("choiceAdventure581", 1);
-	}
-
-	if(useStoneWool)
-	{
-		if((item_amount($item[Stone Wool]) == 0) && (have_effect($effect[Stone-Faced]) == 0))
-		{
-			L11_wishForBaaBaaBuran();
-			pullXWhenHaveY($item[Stone Wool], 1, 0);
+	} else if (choice == 580) { // The Hidden Heart of the Hidden Temple
+		if (!page.contains_text("The door is decorated with that little lightning-tailed guy from your father's diary.")) {
+			run_choice(2); // Go to Unconfusing Buttons (#584) or Confusing Buttons (#583)
+		} else {
+			run_choice(1); // Go to At Least It's Not Full Of Trash (#123)
 		}
-		buffMaintain($effect[Stone-Faced], 0, 1, 1);
-		if(have_effect($effect[Stone-Faced]) == 0)
-		{
-			abort("We are not Stone-Faced. Please get a stone wool and run me again.");
+	} else if (choice == 581) { // Such Great Depths
+		run_choice(3); // Fight the Clan of cave bars
+	} else if (choice == 582) { // Fitting In
+		if (item_amount($item[The Nostril of the Serpent]) > 0 && internalQuestStatus("questL11Worship") < 3) {
+				run_choice(2); // Go to The Hidden Heart of the Hidden Temple (#580)
+		} else {
+			run_choice(1); // Go to Such Great Heights (#579)
 		}
+	} else if (choice == 583) { // Confusing Buttons
+		run_choice(1); // Randomly changes The Hidden Heart of the Hidden Temple
+	} else if (choice == 584) { // Unconfusing Buttons
+		run_choice(4); // Go to The Hidden Heart of the Hidden Temple (Pikachutlotal) (#580)
+	} else {
+		abort("unhandled choice in hiddenTempleChoiceHandler");
 	}
-
-	set_property("choiceAdventure582", "1");
-	set_property("choiceAdventure579", "2");
-	if (auto_my_path() == "G-Lover" || in_tcrs())
-	{
-		if(!autoAdvBypass(280))
-		{
-			if(get_property("lastEncounter") == "The Hidden Heart of the Hidden Temple")
-			{
-				string page = visit_url("main.php");
-				if(contains_text(page, "decorated with that little lightning"))
-				{
-					visit_url("choice.php?whichchoice=580&option=1&pwd");
-					visit_url("choice.php?whichchoice=123&option=2&pwd");
-					visit_url("choice.php");
-					cli_execute("dvorak");
-					visit_url("choice.php?whichchoice=125&option=3&pwd");
-					auto_log_info("Hidden City Unlocked");
-				}
-				else
-				{
-					visit_url("choice.php?whichchoice=580&option=2&pwd");
-					visit_url("choice.php?whichchoice=583&option=1&pwd");
-				}
-			}
-		}
-	}
-	else
-	{
-		autoAdv(1, $location[The Hidden Temple]);
-	}
-
-	if(get_property("lastAdventure") == "Such Great Heights")
-	{
-		cli_execute("refresh inv");
-	}
-	if(item_amount($item[The Nostril of the Serpent]) == 1)
-	{
-		set_property("choiceAdventure579", "0");
-	}
-	restoreSetting("choiceAdventure581");
-	return true;
 }
 
 boolean L11_hiddenTavernUnlock()
@@ -1498,53 +1388,42 @@ boolean L11_hiddenCityZones()
 		return autoAdv($location[The Hidden Park]);
 	}
 
-	if (get_property("hiddenApartmentProgress") == 0)
-	{
+	if (get_property("hiddenApartmentProgress") == 0) {
 		if (!equipMachete()) {
 			return false;
 		}
-		boolean advSpent = autoAdv($location[An Overgrown Shrine (Northwest)]);
-		loopHandlerDelayAll();
-		return advSpent;
+		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
-	if (get_property("hiddenOfficeProgress") == 0)
-	{
+	if (get_property("hiddenOfficeProgress") == 0) {
 		if (!equipMachete()) {
 			return false;
 		}
-		boolean advSpent = autoAdv($location[An Overgrown Shrine (Northeast)]);
-		loopHandlerDelayAll();
-		return advSpent;
+		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
 
-	if (get_property("hiddenHospitalProgress") == 0)
-	{
+	if (get_property("hiddenHospitalProgress") == 0) {
 		if (!equipMachete()) {
 			return false;
 		}
-		boolean advSpent = autoAdv($location[An Overgrown Shrine (Southwest)]);
-		loopHandlerDelayAll();
-		return advSpent;
+		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
-	if (get_property("hiddenBowlingAlleyProgress") == 0)
-	{
+	if (get_property("hiddenBowlingAlleyProgress") == 0) {
 		if (!equipMachete()) {
 			return false;
 		}
-		boolean advSpent = autoAdv($location[An Overgrown Shrine (Southeast)]);
-		loopHandlerDelayAll();
-		return advSpent;
+		return autoAdv($location[An Overgrown Shrine (Southeast)]);
 	}
 
-	if ($location[A Massive Ziggurat].turns_spent < 3)
-	{
+	if (!get_property("auto_openedziggurat").to_boolean()) {
 		if (!equipMachete()) {
 			return false;
 		}
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
-		loopHandlerDelayAll();
+		if (get_property("lastEncounter") == "Legend of the Temple in the Hidden City" || (isActuallyEd() && get_property("lastEncounter") == "Temple of the Legend in the Hidden City")) {
+			set_property("auto_openedziggurat", true);
+		}
 		return advSpent;
 	}
 	return false;
@@ -1926,6 +1805,7 @@ boolean L11_shenStartQuest() {
 	{
 		return false;
 	}
+	backupSetting("choiceAdventure1074", 1);
 	if (autoAdv($location[The Copperhead Club])) {
 		if (internalQuestStatus("questL11Shen") == 1) {
 			set_property("auto_shenStarted", my_daycount());
@@ -1947,8 +1827,6 @@ boolean L11_shenCopperhead()
 	{
 		return false;
 	}
-
-	set_property("choiceAdventure1074", 1);
 
 	if (L11_shenStartQuest()) {
 		return true;
