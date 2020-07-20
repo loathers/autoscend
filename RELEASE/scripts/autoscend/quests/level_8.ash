@@ -315,7 +315,7 @@ boolean L8_getMineOres()
 			cloverUsageFinish();
 			return true;
 		}
-	} else {
+	} else if (isAboutToPowerlevel()) {
 		if (!possessOutfit("Mining Gear")) {
 			auto_log_info("Getting Mining Gear.", "blue");
 			return autoAdv($location[Itznotyerzitz Mine]);

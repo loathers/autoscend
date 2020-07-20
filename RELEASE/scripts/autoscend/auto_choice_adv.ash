@@ -45,6 +45,10 @@ boolean auto_run_choice(int choice, string page)
 		case 107: // Bad Medicine is What You Need (The Haunted Bathroom)
 			run_choice(4); // skip
 			break;
+		case 123: // At Least It's Not Full Of Trash (The Hidden Temple)
+		case 125: // No Visible Means of Support (The Hidden Temple)
+			hiddenTempleChoiceHandler(choice, page);
+			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
 			run_choice(4); // skip
 			break;
@@ -137,6 +141,14 @@ boolean auto_run_choice(int choice, string page)
 		case 575: // Duffel on the Double (The eXtreme Slope)
 			theeXtremeSlopeChoiceHandler(choice);
 			break;
+		case 579: // Such Great Heights (The Hidden Temple)
+		case 580: // The Hidden Heart of the Hidden Temple (The Hidden Temple)
+		case 581: // Such Great Depths (The Hidden Temple)
+		case 582: // Fitting In (The Hidden Temple)
+		case 583: // Confusing Buttons (The Hidden Temple)
+		case 584: // Unconfusing Buttons (The Hidden Temple)
+			hiddenTempleChoiceHandler(choice, page);
+			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
@@ -215,7 +227,7 @@ boolean auto_run_choice(int choice, string page)
 			if (item_amount($item[stone triangle]) == 4) {
 				run_choice(1); // fight the Protector Spirit (or replacement)
 			} else {
-				run_choice(2); // skip
+				run_choice(6); // skip
 			}
 			break;
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
@@ -332,7 +344,7 @@ boolean auto_run_choice(int choice, string page)
 			if (item_amount($item[stone triangle]) == 4) {
 				run_choice(1); // Put the Ancient Amulet back
 			} else {
-				run_choice(2); // skip
+				run_choice(6); // skip
 			}
 			break;
 		case 1018: // Bee Persistent (The Black Forest)

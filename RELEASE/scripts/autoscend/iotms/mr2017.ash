@@ -1423,6 +1423,13 @@ boolean asdonCanMissile()
 	return (auto_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
 }
 
+boolean isHorseryAvailable() {
+	if(!get_property("horseryAvailable").to_boolean()) {
+		return false;
+	}
+	return true;
+}
+
 int horseCost()
 {
 	if(get_property("_horseryRented").to_int() > 0)
@@ -1559,41 +1566,57 @@ boolean getHorse(string type)
 
 void horseDefault()
 {
-	set_property("auto_desiredHorse", "");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "");
+	}
 }
 
 void horseMaintain()
 {
-	set_property("auto_desiredHorse", horseNormalize(get_property("_horsery")));
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", horseNormalize(get_property("_horsery")));
+	}
 }
 
 void horseNone()
 {
-	set_property("auto_desiredHorse", "return");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "return");
+	}
 }
 
 void horseNormal()
 {
-	set_property("auto_desiredHorse", "normal");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "normal");
+	}
 }
 
 void horseDark()
 {
-	set_property("auto_desiredHorse", "dark");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "dark");
+	}
 }
 
 void horseCrazy()
 {
-	set_property("auto_desiredHorse", "crazy");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "crazy");
+	}
 }
 
 void horsePale()
 {
-	set_property("auto_desiredHorse", "pale");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "pale");
+	}
 }
 
 boolean horsePreAdventure()
 {
+	if (!isHorseryAvailable()) { return false; }
+
 	string desiredHorse = get_property("auto_desiredHorse");
 	if (desiredHorse == "")
 	{

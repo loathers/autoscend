@@ -319,6 +319,7 @@ boolean L13_sorceressDoorLowKey()
 			abort("Please unlock zones manually and try again.");
 		}
 		// Unlock door
+		council(); // make sure all quests have been handed in or turning the door knob will be blocked.
 		if (tower_door()) {
 			return true;
 		}
@@ -432,7 +433,7 @@ boolean LX_lowkeySummer() {
 
 	if (internalQuestStatus("questL11MacGuffin") > -1) {
 		// open the hidden city up.
-		if (L11_nostrilOfTheSerpent() || L11_unlockHiddenCity()) { return true; }
+		if (L11_unlockHiddenCity()) { return true; }
 
 		// +item helps with getting fulminate ingredients, Hidden City drops and Copperhead/Zeppelin.
 		if (possessEquipment($item[Treasure Chest key])) {

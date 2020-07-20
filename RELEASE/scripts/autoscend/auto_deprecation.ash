@@ -340,6 +340,10 @@ boolean settingFixer()
 	}
 	if (property_exists("auto_hiddencity"))
 	{
+		remove_property("auto_hiddencity");
+	}
+	if (property_exists("auto_hiddenhospital"))
+	{
 		remove_property("auto_hiddenhospital");
 	}
 	if (property_exists("auto_hiddenoffice"))
