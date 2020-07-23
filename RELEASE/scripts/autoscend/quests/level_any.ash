@@ -420,7 +420,7 @@ boolean LX_fatLootToken()
 		if(fantasyRealmToken()) return true;
 	}
 	if(LX_dailyDungeonToken()) return true;
-	if(get_property("dailyDungeonDone").to_boolean())
+	if(get_property("dailyDungeonDone").to_boolean() && my_daycount() > 1)
 	{
 		//wait until daily dungeon is done before considering doing fantasy realm
 		if(fantasyRealmToken()) return true;

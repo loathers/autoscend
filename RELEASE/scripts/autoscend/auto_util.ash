@@ -2977,13 +2977,13 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 		return result();
 	}
 
-	if (auto_birdModifier("Combat Rate") > 0) {
+	if ((-1.0 * auto_birdModifier("Combat Rate")) > 0) {
 		if (tryEffects($effects[Blessing of the Bird])) {
 			return result();
 		}
 	}
 
-	if (auto_favoriteBirdModifier("Combat Rate") > 0) {
+	if ((-1.0 * auto_favoriteBirdModifier("Combat Rate")) > 0) {
 		if (tryEffects($effects[Blessing of Your Favorite Bird])) {
 			return result();
 		}
@@ -5907,20 +5907,12 @@ location solveDelayZone()
 	int[location] delayableZones = zone_delayable();
 	int amt = count(delayableZones);
 	location burnZone = $location[none];
-	if(amt != 0)
-	{
-		int index = 0;
-		if(amt > 1)
-		{
-			index = random(amt);
-		}
-		foreach idx in delayableZones
-		{
-			if(index == 0)
-			{
-				burnZone = idx;
+	if (count(delayableZones) != 0) {
+		// find the delayable zone with the lowest delay left.
+		foreach loc, delay in delayableZones {
+			if (burnZone == $location[none] || delay < delayableZones[burnZone]) {
+				burnZone = loc;
 			}
-			index--;
 		}
 	}
 
