@@ -176,7 +176,10 @@ boolean autoMaximize(string req, boolean simulate)
 		tcrs_maximize_with_items(req);
 #		user_confirm("Beep");
 	}
-	return maximize(req, simulate);
+	backupSetting("logPreferenceChange", "false");
+	boolean didmax = maximize(req, simulate);
+	restoreSetting("logPreferenceChange");
+	return didmax;
 }
 
 boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
@@ -187,7 +190,10 @@ boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 		tcrs_maximize_with_items(req);
 #		user_confirm("Beep");
 	}
-	return maximize(req, maxPrice, priceLevel, simulate);
+	backupSetting("logPreferenceChange", "false");
+	boolean didmax = maximize(req, maxPrice, priceLevel, simulate);
+	restoreSetting("logPreferenceChange");
+	return didmax;
 }
 
 aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip)
@@ -198,7 +204,10 @@ aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulat
 #		user_confirm("Beep");
 		tcrs_maximize_with_items(req);
 	}
-	return maximize(req, maxPrice, priceLevel, simulate, includeEquip);
+	backupSetting("logPreferenceChange", "false");
+	aggregate maxrecord = maximize(req, maxPrice, priceLevel, simulate, includeEquip);
+	restoreSetting("logPreferenceChange");
+	return maxrecord;
 }
 
 void debugMaximize(string req, int meat)
@@ -2968,13 +2977,13 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 		return result();
 	}
 
-	if (auto_birdModifier("Combat Rate") > 0) {
+	if ((-1.0 * auto_birdModifier("Combat Rate")) > 0) {
 		if (tryEffects($effects[Blessing of the Bird])) {
 			return result();
 		}
 	}
 
-	if (auto_favoriteBirdModifier("Combat Rate") > 0) {
+	if ((-1.0 * auto_favoriteBirdModifier("Combat Rate")) > 0) {
 		if (tryEffects($effects[Blessing of Your Favorite Bird])) {
 			return result();
 		}
@@ -5898,20 +5907,12 @@ location solveDelayZone()
 	int[location] delayableZones = zone_delayable();
 	int amt = count(delayableZones);
 	location burnZone = $location[none];
-	if(amt != 0)
-	{
-		int index = 0;
-		if(amt > 1)
-		{
-			index = random(amt);
-		}
-		foreach idx in delayableZones
-		{
-			if(index == 0)
-			{
-				burnZone = idx;
+	if (count(delayableZones) != 0) {
+		// find the delayable zone with the lowest delay left.
+		foreach loc, delay in delayableZones {
+			if (burnZone == $location[none] || delay < delayableZones[burnZone]) {
+				burnZone = loc;
 			}
-			index--;
 		}
 	}
 
@@ -7165,7 +7166,9 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	//but I am labeling them seperate from buffs in case we ever need to split this function.
 	
 	//if you have something that reduces the cost of casting buffs, wear it now.
+	backupSetting("logPreferenceChange", "false");
 	maximize("-mana cost, -tie", false);
+	restoreSetting("logPreferenceChange");
 	
 	//Passive damage
 	if(passive_dmg_allowed)

@@ -241,23 +241,22 @@ boolean LX_unlockHauntedBilliardsRoom() {
 	}
 	
 	boolean delayKitchen = get_property("auto_delayHauntedKitchen").to_boolean();
-	if(isAboutToPowerlevel())
-	{
+	if (isAboutToPowerlevel()) {
 		// if we're at the point where we need to level up to get more quests other than this, we might as well just do this instead
 		delayKitchen = false;
 	}
-	if(delayKitchen)
-	{
+	if (delayKitchen) {
 		int [element] resGoals;
 		resGoals[$element[hot]] = 9;
 		resGoals[$element[stench]] = 9;
 		// check to see if we can acquire sufficient hot and stench res for the kitchen
 		int [element] resPossible = provideResistances(resGoals, true, true);
 		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
-		if (delayKitchen && isActuallyEd()) {
-			// If we already have all the elemental wards as ed we're probably not going to get any better, so might as well get it over with
-			delayKitchen = !have_skill($skill[Even More Elemental Wards]);
-		}
+	}
+
+	if (delayKitchen && isActuallyEd()) {
+		// If we already have all the elemental wards as ed we're probably not going to get any better, so might as well get it over with
+		delayKitchen = !have_skill($skill[Even More Elemental Wards]);
 	}
 
 	if (!delayKitchen) {

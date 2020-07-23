@@ -614,7 +614,7 @@ boolean consumeFortune()
 	}
 
 	// Don't get lucky numbers for the first semi-rare if we still need to adventure in the outskirts
-	if (my_turncount() < 80 && (internalQuestStatus("questL05Goblin") < 1 && item_amount($item[Knob Goblin encryption key]) < 1))
+	if (my_turncount() < 80 && (internalQuestStatus("questL05Goblin") < 1 && item_amount($item[Knob Goblin encryption key]) < 1) && !isActuallyEd())
 	{
 		return false;
 	}

@@ -132,8 +132,9 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
+	boolean burningDelay = (auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin());
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean) {
+	if (combatModifier._boolean && !burningDelay && !auto_haveQueuedForcedNonCombat()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
@@ -277,16 +278,6 @@ boolean auto_pre_adventure()
 			{
 				abort("Correction failed, please report this. Manually get the [wine bomb] then run me again");
 			}
-		}
-	}
-
-	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
-		equip($slot[Pants], $item[None]);
-		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
-		if (is_wearing_outfit("Filthy Hippy Disguise")) {
-			abort("Tried to adventure in the Hippy Camp as Actually Ed the Undying wearing the Filthy Hippy Disguise (this is bad).");
-		} else {
-			auto_log_info("Took off the Filthy Hippy Disguise before adventuring in the Hippy Camp so we don't waste adventures on non-combats.");
 		}
 	}
 
@@ -458,6 +449,16 @@ boolean auto_pre_adventure()
 	// EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
 	cli_execute("checkpoint clear");
+
+	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
+		equip($slot[Pants], $item[None]);
+		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+		if (is_wearing_outfit("Filthy Hippy Disguise")) {
+			abort("Tried to adventure in the Hippy Camp as Actually Ed the Undying wearing the Filthy Hippy Disguise (this is bad).");
+		} else {
+			auto_log_info("Took off the Filthy Hippy Disguise before adventuring in the Hippy Camp so we don't waste adventures on non-combats.");
+		}
+	}
 
 	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
 	if(lowMLZones contains place)

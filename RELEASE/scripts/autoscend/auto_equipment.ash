@@ -357,8 +357,9 @@ float simValue(string modifier)
 void equipMaximizedGear()
 {
 	finalizeMaximize();
-	auto_log_info("Maximizing: " + get_property("auto_maximize_current"), "blue");
+	backupSetting("logPreferenceChange", "false");
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
+	restoreSetting("logPreferenceChange");
 }
 
 void equipOverrides()
@@ -521,7 +522,9 @@ void equipRollover()
 	if(auto_have_familiar($familiar[Left-Hand Man]))
 		to_max += ",switch Left-Hand Man";
 
+	backupSetting("logPreferenceChange", "false");
 	maximize(to_max, false);
+	restoreSetting("logPreferenceChange");
 
 	if(!in_hardcore())
 	{
