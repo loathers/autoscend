@@ -25,6 +25,10 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
+	if(!bees_hate_usable(fam.to_string()))
+	{
+		return false;
+	}
 	familiar last = my_familiar();
 
 	int goal = 0;
