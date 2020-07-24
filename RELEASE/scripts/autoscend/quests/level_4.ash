@@ -18,7 +18,8 @@ boolean L4_batCave()
 	int batStatus = internalQuestStatus("questL04Bat");
 	if(batStatus < 3)
 	{
-		if(item_amount($item[Sonar-In-A-Biscuit]) > 0)
+		boolean can_use_baiscuit = auto_is_valid($item[Sonar-In-A-Biscuit]);
+		if(can_use_baiscuit && item_amount($item[Sonar-In-A-Biscuit]) > 0)
 		{
 			if(use(1, $item[Sonar-In-A-Biscuit]))
 			{
@@ -31,7 +32,7 @@ boolean L4_batCave()
 				cli_execute("refresh inv");
 			}
 		}
-		else if(can_interact())
+		else if(can_use_baiscuit && can_interact())
 		{
 			//if in post ronin or in casual, buy and use [Sonar-In-A-Biscuit] if cheaper than 500 meat.
 			if(buyUpTo(1, $item[Sonar-In-A-Biscuit], 500))
