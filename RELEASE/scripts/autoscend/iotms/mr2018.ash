@@ -322,6 +322,10 @@ boolean songboomSetting(int option)
 	{
 		return false;
 	}
+	if(auto_my_path() == "Bees Hate You")
+	{
+		return false;
+	}
 	if(get_property("_boomBoxSongsLeft").to_int() == 0)
 	{
 		if(option != 6)

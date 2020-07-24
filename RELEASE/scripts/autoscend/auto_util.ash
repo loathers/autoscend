@@ -2007,7 +2007,7 @@ int cloversAvailable()
 	retval += item_amount($item[Ten-Leaf Clover]);
 	retval += closet_amount($item[Ten-Leaf Clover]);
 
-	if(auto_my_path() == "G-Lover")
+	if(auto_my_path() == "G-Lover" || auto_my_path() == "Bees Hate You")
 	{
 		retval -= item_amount($item[Disassembled Clover]);
 	}
@@ -2038,7 +2038,7 @@ boolean cloverUsageInit()
 
 	if(item_amount($item[Disassembled Clover]) > 0)
 	{
-		if(auto_my_path() != "G-Lover")
+		if(auto_my_path() != "G-Lover" && auto_my_path() != "Bees Hate You")
 		{
 			use(1, $item[Disassembled Clover]);
 		}
@@ -4084,6 +4084,10 @@ boolean use_barrels()
 		return false;
 	}
 	if(inAftercore())
+	{
+		return false;
+	}
+	if(auto_my_path() == "Bees Hate You")
 	{
 		return false;
 	}
