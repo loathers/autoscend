@@ -17,7 +17,7 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Mumming Trunk]))
+	if(!auto_is_valid($item[Mumming Trunk]))
 	{
 		return false;
 	}
@@ -117,7 +117,7 @@ boolean pantogramPants()
 
 boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int misc)
 {
-	if(!is_unrestricted($item[Portable Pantogram]))
+	if(!auto_is_valid($item[Portable Pantogram]))
 	{
 		return false;
 	}
@@ -126,10 +126,6 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 		return false;
 	}
 	if(possessEquipment($item[Pantogram Pants]))
-	{
-		return false;
-	}
-	if(!auto_is_valid($item[Pantogram Pants])
 	{
 		return false;
 	}
@@ -392,11 +388,7 @@ boolean kgbWasteClicks()
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
-	{
-		return false;
-	}
-	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase])
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -623,7 +615,7 @@ boolean kgbSetup()
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -768,7 +760,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -897,7 +889,7 @@ boolean kgbDial(int dial, int curVal, int target)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -939,7 +931,7 @@ boolean solveKGBMastermind()
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}

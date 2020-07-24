@@ -201,7 +201,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 
 boolean fantasyRealmAvailable()
 {
-	if(!is_unrestricted($item[FantasyRealm membership packet]))
+	if(!auto_is_valid($item[FantasyRealm membership packet]))
 	{
 		return false;
 	}
@@ -214,7 +214,7 @@ boolean fantasyRealmAvailable()
 
 boolean fantasyRealmToken()
 {
-	if(!is_unrestricted($item[FantasyRealm membership packet]))
+	if(!auto_is_valid($item[FantasyRealm membership packet]))
 	{
 		return false;
 	}
@@ -314,15 +314,11 @@ boolean songboomSetting(string goal)
 
 boolean songboomSetting(int option)
 {
-	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
+	if(!auto_is_valid($item[SongBoom&trade; BoomBox]))
 	{
 		return false;
 	}
 	if(item_amount($item[SongBoom&trade; BoomBox]) == 0)
-	{
-		return false;
-	}
-	if(auto_my_path() == "Bees Hate You")
 	{
 		return false;
 	}
@@ -394,7 +390,7 @@ boolean songboomSetting(int option)
 
 void auto_setSongboom()
 {
-	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
+	if(!auto_is_valid($item[SongBoom&trade; BoomBox]))
 	{
 		return;
 	}
@@ -573,7 +569,7 @@ boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 	{
 		return false;
 	}
-	if(!auto_is_valid($item[Bastille Battalion Control Rig])
+	if(!auto_is_valid($item[Bastille Battalion Control Rig]))
 	{
 		return false;
 	}
