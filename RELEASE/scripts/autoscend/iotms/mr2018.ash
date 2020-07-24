@@ -573,6 +573,10 @@ boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 	{
 		return false;
 	}
+	if(!auto_is_valid($item[Bastille Battalion Control Rig])
+	{
+		return false;
+	}
 	if(get_property("_bastilleGames").to_int() != 0)
 	{
 		return false;

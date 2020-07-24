@@ -25,7 +25,7 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
-	if(!bees_hate_usable(fam.to_string()))
+	if(!auto_is_valid(fam))
 	{
 		return false;
 	}
@@ -129,7 +129,10 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 	{
 		return false;
 	}
-
+	if(!auto_is_valid($item[Pantogram Pants])
+	{
+		return false;
+	}
 	int m = 0;
 	switch(st)
 	{
@@ -390,6 +393,10 @@ boolean kgbWasteClicks()
 		return false;
 	}
 	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase])
 	{
 		return false;
 	}
