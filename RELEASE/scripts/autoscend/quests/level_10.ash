@@ -15,14 +15,8 @@ boolean L10_plantThatBean()
 		set_property("questL10Garbage", "step1");
 		return true;
 	}
-	if(item_amount($item[Enchanted Bean]) > 0 && auto_is_valid($item[Enchanted Bean]))
+	if(item_amount($item[Enchanted Bean]) > 0)
 	{
-		use(1, $item[Enchanted Bean]);
-		return true;
-	} else if(item_amount($item[Enchanted Bean]) > 0)
-	{ 
-		//can't use the bean, but we can visit coffee grounds directly to plant it
-		auto_log_info("Planting magic bean without using it!", "blue");
 		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;
 	}

@@ -561,15 +561,11 @@ boolean catBurglarHeist()
 
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 {
-	if(!is_unrestricted($item[Bastille Battalion Control Rig]))
+	if(!auto_is_valid($item[Bastille Battalion Control Rig]))
 	{
 		return false;
 	}
 	if(item_amount($item[Bastille Battalion Control Rig]) == 0)
-	{
-		return false;
-	}
-	if(!auto_is_valid($item[Bastille Battalion Control Rig]))
 	{
 		return false;
 	}
