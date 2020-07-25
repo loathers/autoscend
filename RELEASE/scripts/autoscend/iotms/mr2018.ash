@@ -201,7 +201,7 @@ boolean godLobsterCombat(item it, int goal, string option)
 
 boolean fantasyRealmAvailable()
 {
-	if(!auto_is_valid($item[FantasyRealm membership packet]))
+	if(!is_unrestricted($item[FantasyRealm membership packet]))
 	{
 		return false;
 	}
@@ -214,7 +214,7 @@ boolean fantasyRealmAvailable()
 
 boolean fantasyRealmToken()
 {
-	if(!auto_is_valid($item[FantasyRealm membership packet]))
+	if(!is_unrestricted($item[FantasyRealm membership packet]))
 	{
 		return false;
 	}
