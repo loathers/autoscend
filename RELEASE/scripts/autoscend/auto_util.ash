@@ -5959,7 +5959,6 @@ boolean bees_hate_usable(string str)
 
 	switch(str)
 	{
-	case "enchanted bean":
 	case "Cobb's Knob map":
 	case "ball polish":
 	case "black market map":
