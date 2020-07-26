@@ -5133,10 +5133,6 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		return false;
 	}
-	if(!is_unrestricted(source))
-	{
-		return false;
-	}
 	if((item_amount(source) < uses) && (my_path() != "Way of the Surprising Fist"))
 	{
 		if(historical_price(source) < 2000)
@@ -5344,6 +5340,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			buff = $effect[Shield of the Pastalord];
 		}
 		break;
+	case $effect[Float Like a Butterfly, Smell Like a Bee]:
+		if(auto_my_path() == "Bees Hate You")
+		{
+			useItem = $item[honeypot];
+		}																						break;
 	case $effect[Florid Cheeks]:				useItem = $item[Henna Face Paint];				break;
 	case $effect[Football Eyes]:				useItem = $item[Black Facepaint];				break;
 	case $effect[Fortunate Resolve]:			useItem = $item[Resolution: Be Luckier];		break;
@@ -5948,35 +5949,6 @@ location solveDelayZone()
 	}
 
 	return burnZone;
-}
-
-boolean bees_hate_usable(string str)
-{
-	if(auto_my_path() != "Bees Hate You")
-	{
-		return true;
-	}
-
-	switch(str)
-	{
-	case "Cobb's Knob map":
-	case "ball polish":
-	case "black market map":
-	case "boring binder clip":
-	case "beehive":
-	case "electric boning knife":
-		return true;
-	}
-
-	if(contains_text(str, "b"))
-	{
-		return false;
-	}
-	if(contains_text(str, "B"))
-	{
-		return false;
-	}
-	return true;
 }
 
 boolean auto_is_valid(item it)
