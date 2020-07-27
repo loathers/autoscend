@@ -1489,11 +1489,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		keep = 0;
 	}
 
-	if((item_amount($item[Louder Than Bomb]) > keep) && (!(used contains "louder than bomb")))
+	if((item_amount($item[Louder Than Bomb]) > keep) && (!(used contains "louder than bomb")) && auto_is_valid($item[Louder Than Bomb]))
 	{
 		return "item " + $item[Louder Than Bomb];
 	}
-	if((item_amount($item[Tennis Ball]) > keep) && (!(used contains "tennis ball")))
+	if((item_amount($item[Tennis Ball]) > keep) && (!(used contains "tennis ball")) && auto_is_valid($item[Tennis Ball]))
 	{
 		return "item " + $item[Tennis Ball];
 	}

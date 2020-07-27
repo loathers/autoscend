@@ -1252,7 +1252,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(!inAftercore())
 	{
-		if(item_amount($item[short writ of habeas corpus]) > 0)
+		if(item_amount($item[short writ of habeas corpus]) > 0 && canUse($item[short writ of habeas corpus]))
 		{
 			if($monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
 			{

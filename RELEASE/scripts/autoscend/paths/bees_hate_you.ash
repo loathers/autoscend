@@ -29,11 +29,12 @@ boolean bees_hate_usable(string str)
 	case "boring binder clip":
 	case "beehive":
 	case "electric boning knife":
-	case "Ninja carabiner":
+	case "ninja carabiner":
+	case "Orcish baseball cap":
 	case "reinforced beaded headband":
 	case "bullet-proof corduroys":
-	case "round purple sunglasses":
-
+	case "blackberry galoshes":
+	case "titanium assault umbrella":
 		return true;
 	}
 
@@ -54,9 +55,9 @@ boolean LM_bhy()
 	{
 		return false;
 	}
-	// maximizer tries to use garbage tote to make unwieldable items and then bombs when equipping them
+	// pension check keeps trying to be used
 	// we can't turn disassembled clovers back into ten-leaf ones
-	foreach it in $items[January's Garbage Tote,Ten-Leaf Clover]
+	foreach it in $items[black pension check,ten-leaf clover]
 	{
 		if(item_amount(it) > 0)
 		{
