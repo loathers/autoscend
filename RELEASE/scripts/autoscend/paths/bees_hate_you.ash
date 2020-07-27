@@ -7,7 +7,7 @@ void bhy_initializeSettings()
 	{
 		set_property("auto_abooclover", false);
 		set_property("auto_wandOfNagamar", false);
-		set_property("auto_hippyInstead", false);
+		set_property("auto_hippyInstead", true);
 		set_property("auto_getBeehive", true);
 		set_property("auto_getBoningKnife", true);
 		set_property("auto_ignoreFlyer", true);
