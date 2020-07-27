@@ -925,7 +925,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if (in_koe() || auto_my_path() == "Pocket Familiars")
+	if (in_koe() || auto_my_path() == "Pocket Familiars" || auto_my_path() == "Bees Hate You")
 	{
 		return false;
 	}

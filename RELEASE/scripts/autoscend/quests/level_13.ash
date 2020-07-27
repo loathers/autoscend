@@ -1100,6 +1100,11 @@ boolean L13_towerNSFinal()
 		return L13_towerFinalHeavyRains();
 	}
 	
+	if(auto_my_path() == "Bees Hate You")
+	{
+		return L13_bhy_towerFinal();
+	}
+	
 	if(auto_my_path() == "The Source")
 	{
 		acquireMP(200, 0);

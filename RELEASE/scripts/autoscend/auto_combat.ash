@@ -783,6 +783,12 @@ string auto_combatHandler(int round, monster enemy, string text)
 			return useSkill($skill[CLEESH]);
 		}
 	}
+	
+	//Bees Hate You final boss
+	if(canUse($item[antique hand mirror]) && (enemy == $monster[Guy Made Of Bees]))
+	{
+		return useItem($item[antique hand mirror]);
+	}
 
 	//Heavy Rain boss debuff & Stunning
 	if($monsters[Big Wisnaqua, The Aquaman, The Rain King] contains enemy)

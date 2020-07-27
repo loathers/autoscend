@@ -67,3 +67,46 @@ boolean LM_bhy()
 
 	return false;
 }
+
+boolean L13_bhy_towerFinal()
+{
+	//Prepare for and defeat the final boss for a Bees hate You run. Which has special rules for engagement.
+	if (internalQuestStatus("questL13Final") != 11)
+	{
+		return false;
+	}
+	
+	if (item_amount($item[antique hand mirror]) < 1 )
+	{
+		abort("Need the [antique hand mirror] to defeat the guy made of bees. Please get one from the jewelry of the animated rustic nightstand and try again.");
+	}
+	
+	cli_execute("scripts/autoscend/auto_pre_adv.ash");
+	set_property("auto_disableAdventureHandling", true);
+	autoAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
+	
+	if(last_monster() != $monster[Guy Made Of Bees])
+	{
+		abort("Failed to start the battle with Guy Made Of Bees");
+	}
+	if(have_effect($effect[Beaten Up]) > 0)
+	{
+		abort("The Guy Made Of Bees beat me up! Please finish him off manually");
+	}
+	if(get_property("auto_stayInRun").to_boolean())
+	{
+		abort("User wanted to stay in run (auto_stayInRun), we are done.");
+	}
+	else
+	{
+		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
+		if(inAftercore())
+		{
+			abort("All done. King Ralph has been freed");
+		}
+		abort("Tried to break prism but failed");
+	}
+	abort("How did I reach this line? I should have fought [Guy Made Of Bees]");
+	return false;
+	
+}
