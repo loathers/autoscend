@@ -290,7 +290,11 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
-			run_choice(1); // get moxie substats
+			if (auto_my_path() == "Bees Hate You" && item_amount($item[Antique Hand Mirror]) < 1) {
+				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
+			} else {
+				run_choice(1); // get moxie substats
+			}
 			break;
 		case 880: // One Elegant Nightstand (The Haunted Bedroom)
 			if (internalQuestStatus("questM21Dance") < 2 && item_amount($item[Lady Spookyraven\'s Finest Gown]) == 0) {
