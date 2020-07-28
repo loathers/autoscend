@@ -945,6 +945,13 @@ boolean L12_gremlins()
 			}
 			buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
 		}
+	} else {
+		if (item_amount($item[Seal Tooth]) == 0) {
+			acquireHermitItem($item[Seal Tooth]);
+			if (item_amount($item[Seal Tooth]) == 0) {
+				abort("We don't have a seal tooth. Stasising Gremlins is not going to go well if you lack something to stasis them with.");
+			}
+		}
 	}
 
 	if(0 < have_effect($effect[Curse of the Black Pearl Onion])) {

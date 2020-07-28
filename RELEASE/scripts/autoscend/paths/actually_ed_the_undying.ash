@@ -1273,6 +1273,12 @@ boolean LM_edTheUndying()
 		}
 	}
 
+	if (item_amount($item[Seal Tooth]) == 0 && my_meat() > 1500) {
+		// people with lots of IotMs are too survivable and kill stuff when trying to UNDYING
+		// if they have to use Mild Curse.
+		acquireHermitItem($item[Seal Tooth]);
+	}
+
 	if(L1_ed_island() || L1_ed_islandFallback())
 	{
 		return true;

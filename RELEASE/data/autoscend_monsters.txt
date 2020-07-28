@@ -5,7 +5,7 @@
 banish	0	A.M.C. Gremlin
 banish	1	Animated Mahogany Nightstand
 banish	2	Animated Possessions
-banish	3	Animated Rustic Nightstand
+banish	3	Animated Rustic Nightstand	!path:Bees Hate You
 banish	4	Bubblemint Twins	!class:Ed
 banish	5	Bullet Bill
 banish	6	Burly Sidekick	item:Mohawk Wig>0
