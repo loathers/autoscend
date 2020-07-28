@@ -1031,6 +1031,18 @@ generic_t zone_available(location loc)
 			retval._boolean = true;
 		}
 		break;
+	case $location[Wartime Frat House (Hippy Disguise)]:
+		if((internalQuestStatus("questL12War") == 0) && have_outfit("war hippy fatigues"))
+		{
+			retval._boolean = true;
+		}
+		break;
+	case $location[The Battlefield (Hippy Uniform)]:
+		if((internalQuestStatus("questL12War") >= 1) && (get_property("fratboysDefeated").to_int() < 1000) && have_outfit("war hippy fatigues") && (get_property("questL12War") != "finished"))
+		{
+			retval._boolean = true;
+		}
+		break;
 	case $location[Next to that Barrel with Something Burning in it]:
 	case $location[Near an Abandoned Refrigerator]:
 	case $location[Over Where the Old Tires Are]:

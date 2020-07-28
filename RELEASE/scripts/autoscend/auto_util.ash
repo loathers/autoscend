@@ -1489,11 +1489,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		keep = 0;
 	}
 
-	if((item_amount($item[Louder Than Bomb]) > keep) && (!(used contains "louder than bomb")))
+	if((item_amount($item[Louder Than Bomb]) > keep) && (!(used contains "louder than bomb")) && auto_is_valid($item[Louder Than Bomb]))
 	{
 		return "item " + $item[Louder Than Bomb];
 	}
-	if((item_amount($item[Tennis Ball]) > keep) && (!(used contains "tennis ball")))
+	if((item_amount($item[Tennis Ball]) > keep) && (!(used contains "tennis ball")) && auto_is_valid($item[Tennis Ball]))
 	{
 		return "item " + $item[Tennis Ball];
 	}
@@ -2007,7 +2007,7 @@ int cloversAvailable()
 	retval += item_amount($item[Ten-Leaf Clover]);
 	retval += closet_amount($item[Ten-Leaf Clover]);
 
-	if(auto_my_path() == "G-Lover")
+	if(auto_my_path() == "G-Lover" || auto_my_path() == "Bees Hate You")
 	{
 		retval -= item_amount($item[Disassembled Clover]);
 	}
@@ -2038,7 +2038,7 @@ boolean cloverUsageInit()
 
 	if(item_amount($item[Disassembled Clover]) > 0)
 	{
-		if(auto_my_path() != "G-Lover")
+		if(auto_my_path() != "G-Lover" && auto_my_path() != "Bees Hate You")
 		{
 			use(1, $item[Disassembled Clover]);
 		}
@@ -2073,7 +2073,7 @@ boolean cloverUsageFinish()
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
 		auto_log_debug("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
-		if(auto_my_path() == "G-Lover")
+		if(auto_my_path() == "G-Lover" || auto_my_path() == "Bees Hate You")
 		{
 			put_closet(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
 		}
@@ -4087,6 +4087,10 @@ boolean use_barrels()
 	{
 		return false;
 	}
+	if(auto_my_path() == "Bees Hate You")
+	{
+		return false;
+	}
 
 	boolean [item] barrels = $items[little firkin, normal barrel, big tun, weathered barrel, dusty barrel, disintegrating barrel, moist barrel, rotting barrel, mouldering barrel, barnacled barrel];
 
@@ -5129,10 +5133,6 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		return false;
 	}
-	if(!is_unrestricted(source))
-	{
-		return false;
-	}
 	if((item_amount(source) < uses) && (my_path() != "Way of the Surprising Fist"))
 	{
 		if(historical_price(source) < 2000)
@@ -5340,6 +5340,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			buff = $effect[Shield of the Pastalord];
 		}
 		break;
+	case $effect[Float Like a Butterfly, Smell Like a Bee]:
+		if(auto_my_path() == "Bees Hate You")
+		{
+			useItem = $item[honeypot];
+		}																						break;
 	case $effect[Florid Cheeks]:				useItem = $item[Henna Face Paint];				break;
 	case $effect[Football Eyes]:				useItem = $item[Black Facepaint];				break;
 	case $effect[Fortunate Resolve]:			useItem = $item[Resolution: Be Luckier];		break;
@@ -5944,36 +5949,6 @@ location solveDelayZone()
 	}
 
 	return burnZone;
-}
-
-boolean bees_hate_usable(string str)
-{
-	if(auto_my_path() != "Bees Hate You")
-	{
-		return true;
-	}
-
-	switch(str)
-	{
-	case "enchanted bean":
-	case "Cobb's Knob map":
-	case "ball polish":
-	case "black market map":
-	case "boring binder clip":
-	case "beehive":
-	case "electric boning knife":
-		return true;
-	}
-
-	if(contains_text(str, "b"))
-	{
-		return false;
-	}
-	if(contains_text(str, "B"))
-	{
-		return false;
-	}
-	return true;
 }
 
 boolean auto_is_valid(item it)

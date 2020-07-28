@@ -314,7 +314,7 @@ boolean songboomSetting(string goal)
 
 boolean songboomSetting(int option)
 {
-	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
+	if(!auto_is_valid($item[SongBoom&trade; BoomBox]))
 	{
 		return false;
 	}
@@ -390,7 +390,7 @@ boolean songboomSetting(int option)
 
 void auto_setSongboom()
 {
-	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
+	if(!auto_is_valid($item[SongBoom&trade; BoomBox]))
 	{
 		return;
 	}
@@ -561,7 +561,7 @@ boolean catBurglarHeist()
 
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 {
-	if(!is_unrestricted($item[Bastille Battalion Control Rig]))
+	if(!auto_is_valid($item[Bastille Battalion Control Rig]))
 	{
 		return false;
 	}

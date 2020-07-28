@@ -334,6 +334,11 @@ boolean L9_aBooPeak()
 				booCloversOk = true;
 			}
 		}
+		else if(auto_my_path() == "Bees Hate You")
+		{
+			// bees hate clues, don't waste clovers on them
+			booCloversOk = false;
+		}
 		else
 		{
 			booCloversOk = true;
@@ -627,6 +632,15 @@ boolean L9_twinPeak()
 	}
 	
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);		//heavy rains specific reduce item drop penalty by 10%
+	//BHY specific prevent wandering bees from skipping the burning the hotel down choice and wasting turns
+	buffMaintain($effect[Float Like a Butterfly, Smell Like a Bee], 0, 1, 1);
+	
+	if(auto_my_path() == "Bees Hate You")
+	{
+		// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
+		set_property("choiceAdventure606", "6"); // and flee the music NC
+		return autoAdv($location[Twin Peak]);
+	}
 
 	int progress = get_property("twinPeakProgress").to_int();
 	boolean needStench = ((progress & 1) == 0);
@@ -755,6 +769,10 @@ boolean L9_oilPeak()
 
 	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
 	{
+		if (!auto_is_valid($item[Bubblin\' Crude]))
+		{
+			return false;
+		}
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean needJar = ((oilProgress & 4) == 0);
 

@@ -121,7 +121,7 @@ int auto_warKillsPerBattle(int sidequests)
 
 int auto_estimatedAdventuresForChaosButterfly()
 {
-	// Returns an ESTIMATE of how manny adventures it will take to acquire a chaos butterfly.
+	// Returns an ESTIMATE of how many adventures it will take to acquire a chaos butterfly.
 	
 	if(get_property("chaosButterflyThrown").to_boolean() || item_amount($item[chaos butterfly]) > 0)
 	{
@@ -925,7 +925,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if (in_koe() || auto_my_path() == "Pocket Familiars")
+	if (in_koe() || auto_my_path() == "Pocket Familiars" || auto_my_path() == "Bees Hate You")
 	{
 		return false;
 	}

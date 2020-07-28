@@ -104,13 +104,18 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return false;
 	}
+	// if this path doesn't allow this familiar, you can't change to it
+	if(!auto_is_valid(target))
+	{
+		return false;
+	}
 
 	// You are allowed to change to a familiar if it is also the goal of the current 100% run.
 	if(get_property("auto_100familiar").to_familiar() == target)
 	{
 		return true;
 	}
-	else if(!canChangeFamiliar())
+	if(!canChangeFamiliar())
 	{
 		// checks path limitations, as well as 100% runs for a diferent familiar than target
 		return false;
