@@ -773,6 +773,9 @@ boolean auto_pillKeeperFreeUseAvailable();	//Defined in autoscend/iotms/auto_mr2
 boolean auto_pillKeeperAvailable();			//Defined in autoscend/iotms/auto_mr2019.ash
 boolean auto_pillKeeper(int pill);			//Defined in autoscend/iotms/auto_mr2019.ash
 boolean auto_pillKeeper(string pill);		//Defined in autoscend/iotms/auto_mr2019.ash
+
+boolean auto_haveBirdADayCalendar();
+boolean auto_birdOfTheDay();
 boolean auto_birdIsValid();					//Defined in autoscend/iotms/auto_mr2020.ash
 float auto_birdModifier(string mod);		//Defined in autoscend/iotms/auto_mr2020.ash
 float auto_favoriteBirdModifier(string mod);//Defined in autoscend/iotms/auto_mr2020.ash
