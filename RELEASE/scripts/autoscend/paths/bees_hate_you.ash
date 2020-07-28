@@ -35,6 +35,8 @@ boolean bees_hate_usable(string str)
 	case "bullet-proof corduroys":
 	case "blackberry galoshes":
 	case "titanium assault umbrella":
+	case "Knob Goblin harem pants":
+	case "Knob Goblin harem veil":
 		return true;
 	}
 
