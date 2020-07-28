@@ -1448,9 +1448,6 @@ boolean L11_mauriceSpookyraven()
 			return false;
 		}
 
-		if (!zone_delay($location[The Haunted Ballroom])._boolean) {
-			auto_forceNextNoncombat();
-		}
 		return autoAdv($location[The Haunted Ballroom]);
 	}
 	if(item_amount($item[recipe: mortar-dissolving solution]) == 0)
