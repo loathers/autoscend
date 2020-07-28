@@ -783,6 +783,12 @@ string auto_combatHandler(int round, monster enemy, string text)
 			return useSkill($skill[CLEESH]);
 		}
 	}
+	
+	//Bees Hate You final boss
+	if(canUse($item[antique hand mirror]) && (enemy == $monster[Guy Made Of Bees]))
+	{
+		return useItem($item[antique hand mirror]);
+	}
 
 	//Heavy Rain boss debuff & Stunning
 	if($monsters[Big Wisnaqua, The Aquaman, The Rain King] contains enemy)
@@ -1252,7 +1258,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(!inAftercore())
 	{
-		if(item_amount($item[short writ of habeas corpus]) > 0)
+		if(item_amount($item[short writ of habeas corpus]) > 0 && canUse($item[short writ of habeas corpus]))
 		{
 			if($monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
 			{

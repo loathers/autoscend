@@ -44,6 +44,7 @@ import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
+import <autoscend/paths/bees_hate_you.ash>
 import <autoscend/paths/casual.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
@@ -237,6 +238,7 @@ void initializeSettings()
 	koe_initializeSettings();
 	zelda_initializeSettings();
 	lowkey_initializeSettings();
+	bhy_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -3214,6 +3216,8 @@ boolean doTasks()
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;
+	//This just closets stuff that bees don't like
+	if(LM_bhy())						return true;
 
 	tophatMaker();
 	xiblaxian_makeStuff();

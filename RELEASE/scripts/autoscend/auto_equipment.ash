@@ -251,6 +251,13 @@ void resetMaximize()
 			}
 		}
 	}
+	else if (item_amount($item[January's Garbage Tote]) > 0 && auto_my_path() == "Bees Hate You") {
+	// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
+	foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt] {
+		exclude(it);
+	}
+}
+
 	
 	set_property("auto_maximize_current", res);
 	auto_log_debug("Resetting auto_maximize_current to " + res, "gold");

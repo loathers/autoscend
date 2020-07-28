@@ -17,7 +17,7 @@ boolean L10_plantThatBean()
 	}
 	if(item_amount($item[Enchanted Bean]) > 0)
 	{
-		use(1, $item[Enchanted Bean]);
+		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;
 	}
 
