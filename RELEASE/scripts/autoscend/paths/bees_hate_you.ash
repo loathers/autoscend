@@ -3,7 +3,7 @@ script "bees_hate_you.ash"
 
 void bhy_initializeSettings()
 {
-	if(auto_my_path() == "Bees hate You")
+	if(auto_my_path() == "Bees Hate You")
 	{
 		set_property("auto_abooclover", false);
 		set_property("auto_wandOfNagamar", false);
