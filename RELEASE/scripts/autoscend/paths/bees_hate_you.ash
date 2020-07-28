@@ -3,7 +3,7 @@ script "bees_hate_you.ash"
 
 void bhy_initializeSettings()
 {
-	if(auto_my_path() == "Bees hate You")
+	if(auto_my_path() == "Bees Hate You")
 	{
 		set_property("auto_abooclover", false);
 		set_property("auto_wandOfNagamar", false);
@@ -35,6 +35,8 @@ boolean bees_hate_usable(string str)
 	case "bullet-proof corduroys":
 	case "blackberry galoshes":
 	case "titanium assault umbrella":
+	case "Knob Goblin harem pants":
+	case "Knob Goblin harem veil":
 		return true;
 	}
 
