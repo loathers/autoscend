@@ -1,5 +1,3 @@
-script "auto_cooking.ash"
-
 #
 #	Handler for in-run consumption
 #

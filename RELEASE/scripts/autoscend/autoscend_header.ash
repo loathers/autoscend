@@ -209,35 +209,6 @@ string autoscend_previous_version();
 boolean autoscend_needs_update();
 boolean autoscend_migrate();
 
-//
-//	Primary adventuring functions, we need additonal functionality over adv1, so we do it here.
-//	Note that, as of at least Mafia r16560, we can not use run_combat(<combat filter>).
-//	Don\'t even try it, it requires a custom modification that we can not really do an ASH workaround for.
-//	They are all defined in autoscend/auto_adventure.ash
-boolean autoAdv(location loc);								//num is ignored
-boolean autoAdv(int num, location loc);						//num is ignored
-boolean autoAdv(int num, location loc, string option);		//num is ignored
-boolean autoAdv(location loc, string option);
-boolean autoAdvBypass(string url);
-boolean autoAdvBypass(string url, string option);
-boolean autoAdvBypass(string url, location loc);
-boolean autoAdvBypass(string url, location loc, string option);
-#boolean autoAdvBypass(string[int] url);
-#boolean autoAdvBypass(string[int] url, string option);
-#boolean autoAdvBypass(string[int] url, location loc);
-boolean autoAdvBypass(int becauseStringIntIsSomehowJustString, string[int] url, location loc, string option);
-boolean autoAdvBypass(int snarfblat);
-boolean autoAdvBypass(int snarfblat, string option);
-boolean autoAdvBypass(int snarfblat, location loc);
-boolean autoAdvBypass(int snarfblat, location loc, string option);
-
-//
-//	Secondary adventuring functions
-//	They are all defined in autoscend/auto_adventure.ash
-boolean preAdvXiblaxian(location loc);
-void preAdvUpdateFamiliar(location place);					//Defined in autoscend/auto_adventure.ash
-
-
 // Log Handling/User Output
 void print_header();
 
@@ -257,19 +228,54 @@ boolean dailyEvents();
 //
 //
 
-// Defined in autoscend/auto_familiar.ash
-boolean is100FamRun();										//Defined in autoscend/auto_familiar.ash
-boolean pathAllowsFamiliar();								//Defined in autoscend/auto_familiar.ash
-boolean auto_have_familiar(familiar fam);					//Defined in autoscend/auto_familiar.ash
-boolean canChangeFamiliar();								//Defined in autoscend/auto_familiar.ash
-boolean canChangeToFamiliar(familiar target);				//Defined in autoscend/auto_familiar.ash
-familiar lookupFamiliarDatafile(string type);				//Defined in autoscend/auto_familiar.ash
-boolean handleFamiliar(string type);						//Defined in autoscend/auto_familiar.ash
-boolean handleFamiliar(familiar fam);						//Defined in autoscend/auto_familiar.ash
-boolean autoChooseFamiliar(location place);					//Defined in autoscend/auto_familiar.ash
-boolean haveSpleenFamiliar();								//Defined in autoscend/auto_familiar.ash
-boolean wantCubeling();										//Defined in autoscend/auto_familiar.ash
+// Defined in autoscend/auto_adventure.ash
+boolean autoAdv(int num, location loc, string option);		//num is ignored
+boolean autoAdv(int num, location loc);						//num is ignored
+boolean autoAdv(location loc);
+boolean autoAdv(location loc, string option);
+boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in autoscend/auto_adventure.ash
+boolean autoAdvBypass(string url, location loc);
+boolean autoAdvBypass(string url, location loc, string option);
+boolean autoAdvBypass(int snarfblat, location loc);
+boolean autoAdvBypass(int snarfblat, location loc, string option);
+boolean autoAdvBypass(int snarfblat);
+boolean autoAdvBypass(string url);
+boolean autoAdvBypass(int snarfblat, string option);
+boolean autoAdvBypass(string url, string option);
 
+// Defined in autoscend/auto_familiar.ash
+boolean is100FamRun();
+boolean pathAllowsFamiliar();
+boolean auto_have_familiar(familiar fam);
+boolean canChangeFamiliar();
+boolean canChangeToFamiliar(familiar target);
+familiar lookupFamiliarDatafile(string type);
+boolean handleFamiliar(string type);
+boolean handleFamiliar(familiar fam);
+boolean autoChooseFamiliar(location place);
+boolean haveSpleenFamiliar();
+boolean wantCubeling();
+void preAdvUpdateFamiliar(location place);
+
+// Defined in autoscend/auto_providers.ash
+float providePlusCombat(int amt, boolean doEquips, boolean speculative);
+boolean providePlusCombat(int amt, boolean doEquips);
+boolean providePlusCombat(int amt);
+float providePlusNonCombat(int amt, boolean doEquips, boolean speculative);
+boolean providePlusNonCombat(int amt, boolean doEquips);
+boolean providePlusNonCombat(int amt);
+float provideInitiative(int amt, boolean doEquips, boolean speculative);
+boolean provideInitiative(int amt, boolean doEquips);
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative);
+boolean provideResistances(int [element] amt, boolean doEquips);
+float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative);
+boolean provideStats(int [stat] amt, boolean doEquips);
+float provideMuscle(int amt, boolean doEquips, boolean speculative);
+boolean provideMuscle(int amt, boolean doEquips);
+float provideMysticality(int amt, boolean doEquips, boolean speculative);
+boolean provideMysticality(int amt, boolean doEquips);
+float provideMoxie(int amt, boolean doEquips, boolean speculative);
+boolean provideMoxie(int amt, boolean doEquips);
 
 //Do we have a some item either equipped or in inventory (not closet or hagnk\'s.
 boolean possessEquipment(item equipment);		//Defined in autoscend/auto_equipment.ash
@@ -470,7 +476,6 @@ boolean canYellowRay(monster target); //Defined in autoscend/auto_util.ash
 boolean canYellowRay();										//Defined in autoscend/auto_util.ash
 boolean canReplace(monster target);	//Defined in autoscend/auto_util.ash
 boolean canReplace();				//Defined in autoscend/auto_util.ash
-boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in autoscend/auto_adventure.ash
 boolean autoChew(int howMany, item toChew);					//Defined in autoscend/auto_cooking.ash
 float expectedAdventuresFrom(item it);						//Defined in autoscend/auto_cooking.ash
 int autoCraft(string mode, int count, item item1, item item2);//Defined in autoscend/auto_util.ash
@@ -956,26 +961,8 @@ void picky_pulls();											//Defined in autoscend/auto_picky.ash
 void picky_startAscension();								//Defined in autoscend/auto_picky.ash
 skill preferredLibram();									//Defined in autoscend/auto_util.ash
 location provideAdvPHPZone();								//Defined in autoscend/auto_util.ash
-float providePlusCombat(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
-boolean providePlusCombat(int amt);							//Defined in autoscend/auto_util.ash
-boolean providePlusCombat(int amt, boolean doEquips);		//Defined in autoscend/auto_util.ash
-float providePlusNonCombat(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
-boolean providePlusNonCombat(int amt);						//Defined in autoscend/auto_util.ash
-boolean providePlusNonCombat(int amt, boolean doEquips);	//Defined in autoscend/auto_util.ash
-boolean acquireCombatMods(int amt);							//Defined in autoscend/auto_util.ash
-boolean acquireCombatMods(int amt, boolean doEquips);		//Defined in autoscend/auto_util.ash
-float provideInitiative(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
-boolean provideInitiative(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
-int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
-boolean provideResistances(int [element] amt, boolean doEquips); //Defined in autoscend/auto_util.ash
-float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
-boolean provideStats(int [stat] amt, boolean doEquips); //Defined in autoscend/auto_util.ash
-float provideMuscle(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
-boolean provideMuscle(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
-float provideMysticality(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
-boolean provideMysticality(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
-float provideMoxie(int amt, boolean doEquips, boolean speculative); //Defined in autoscend/auto_util.ash
-boolean provideMoxie(int amt, boolean doEquips); //Defined in autoscend/auto_util.ash
+boolean acquireCombatMods(int amt);
+boolean acquireCombatMods(int amt, boolean doEquips);
 boolean canPull(item it);									//Defined in autoscend/auto_util.ash
 void pullAll(item it);										//Defined in autoscend/auto_util.ash
 void pullAndUse(item it, int uses);							//Defined in autoscend/auto_util.ash

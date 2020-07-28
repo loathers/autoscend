@@ -15,12 +15,13 @@ import <canadv.ash>
 
 import <autoscend/auto_adventure.ash>
 import <autoscend/auto_combat.ash>
-import <autoscend/auto_cooking.ash>
+import <autoscend/auto_consume.ash>
 import <autoscend/auto_deprecation.ash>
 import <autoscend/auto_equipment.ash>
 import <autoscend/auto_familiar.ash>
 import <autoscend/auto_list.ash>
 import <autoscend/auto_monsterparts.ash>
+import <autoscend/auto_providers.ash>
 import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>

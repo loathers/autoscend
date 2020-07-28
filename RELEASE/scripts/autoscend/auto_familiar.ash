@@ -1,5 +1,3 @@
-script "autoscend/auto_familiar.ash";
-
 boolean is100FamRun()
 {
 	// answers the question of "is this a 100% familiar run"
@@ -489,4 +487,98 @@ boolean wantCubeling()
 	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
 	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one
 	return item_amount($item[eleven-foot pole]) == 0 || need_ring || need_lockpicks;
+}
+
+void preAdvUpdateFamiliar(location place)
+{
+	if(get_property("auto_disableFamiliarChanging").to_boolean())
+	{
+		return;
+	}
+	if(!pathAllowsFamiliar())
+	{
+		return;		//will just error in those paths
+	}
+	if(is100FamRun())
+	{
+		handleFamiliar(get_property("auto_100familiar").to_familiar());			//do not break 100 familiar runs
+	}
+	
+	//familiar requirement to adventure in a zone, override everything else.
+	if(place == $location[The Deep Machine Tunnels])
+	{
+		handleFamiliar($familiar[Machine Elf]);
+	}
+	// Can't take familiars with you to FantasyRealm
+	if (place == $location[The Bandit Crossroads])
+	{
+		if(my_familiar() == $familiar[none]) return;		//avoid mafia error from trying to change none into none.
+		use_familiar($familiar[none]);
+		return;		//no familiar means no equipment, we are done.
+	}
+	
+	//if familiar not set yet, first check stealing familiar
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean() && canChangeToFamiliar($familiar[cat burglar]) && catBurglarHeistsLeft() > 0)
+	{
+		//Stealing with familiar. TODO add XO Skelton here too
+		
+		item[monster] heistDesires = catBurglarHeistDesires();
+		boolean wannaHeist = false;
+		foreach mon, it in heistDesires
+		{
+			foreach i, mmon in get_monsters(place)
+			{
+				if(mmon == mon)
+				{
+					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
+					wannaHeist = true;
+				}
+			}
+		}
+		if(wannaHeist)
+		{
+			handleFamiliar($familiar[cat burglar]);
+		}
+	}
+	
+	//if familiar not set choose a familiar using general logic
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())		//check that we didn't already set familiar target this loop
+	{
+		autoChooseFamiliar(place);
+	}
+	
+	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
+	if(famChoice == $familiar[none])
+	{
+		if(get_property("auto_familiarChoice") == "")
+		{
+			abort("void preAdvUpdateFamiliar failed because property auto_familiarChoice is empty for some reason");
+		}
+		abort("void preAdvUpdateFamiliar failed to convert auto_familiarChoice of [" + get_property("auto_familiarChoice") + "] into a $familiar");
+	}
+	
+	if(famChoice != my_familiar() && canChangeToFamiliar(famChoice))
+	{
+		use_familiar(famChoice);
+	}
+	
+	//familiar equipment overrides
+	if(my_path() == "Heavy Rains")
+	{
+		autoEquip($slot[familiar], $item[miniature life preserver]);
+	}
+
+	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
+	{
+		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
+		{
+			if(equipped_item($slot[Familiar]) != $item[Li\'l Candy Corn Costume])
+			{
+				if(item_amount($item[Li\'l Candy Corn Costume]) > 0)
+				{
+					equip($slot[Familiar], $item[Li\'l Candy Corn Costume]);
+				}
+			}
+		}
+	}
 }
