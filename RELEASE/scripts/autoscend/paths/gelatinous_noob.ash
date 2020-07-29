@@ -97,7 +97,7 @@ void jello_buySkills()
 {
 	//Need to consider skill orders, how to handle when we have starting skills.
 
-	boolean[item] blacklist = $items[LOV Enamorang];
+	boolean[item] blacklist;
 	
 	if(internalQuestStatus("questL10Garbage") < 2 && item_amount($item[Enchanted Bean]) == 1)
 	{
