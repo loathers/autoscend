@@ -775,6 +775,9 @@ int auto_powerfulGloveReplacesAvailable(boolean inCombat);	//Defined in autoscen
 boolean auto_wantToEquipPowerfulGlove();	//Defined in autoscend/iotms/auto_mr2020.ash
 boolean auto_willEquipPowerfulGlove();		//Defined in autoscend/iotms/auto_mr2020.ash
 boolean auto_forceEquipPowerfulGlove();		//Defined in autoscend/iotms/auto_mr2020.ash
+boolean auto_canFightPiranhaPlant();
+boolean auto_canTendMushroomGarden();
+
 boolean getSpaceJelly();					//Defined in autoscend/iotms/auto_mr2017.ash
 int horseCost();											//Defined in autoscend/iotms/auto_mr2017.ash
 string horseNormalize(string horseText); // Defined in autoscend/auto_mr2017.ash
