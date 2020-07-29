@@ -256,7 +256,7 @@ boolean auto_mayoItems()
 		case 4:				mayos = $items[none];								break;
 		}
 	}
-	else if((my_path() == "Heavy Rains") && !in_hardcore())
+	else if(my_path() == "Heavy Rains" && !in_hardcore())
 	{
 		switch(my_daycount())
 		{
@@ -266,14 +266,14 @@ boolean auto_mayoItems()
 		case 4:				mayos = $items[Sphygmayomanometer];					break;
 		}
 	}
-	else if((my_path() == "Gelatinous Noob"))
+	else if(in_gnoob())
 	{
 		switch(my_daycount())
 		{
 		default:			mayos = $items[none];								break;
 		}
 	}
-	else if((my_path() == "License to Adventure"))
+	else if(my_path() == "License to Adventure")
 	{
 		switch(my_daycount())
 		{

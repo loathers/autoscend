@@ -225,7 +225,7 @@ boolean L9_chasmBuild()
 			return true;
 		}
 
-		if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
+		if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 		{
 			if(!have_skill($skill[Powerful Vocal Chords]) && (item_amount($item[Baby Oil Shooter]) == 0))
 			{

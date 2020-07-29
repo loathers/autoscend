@@ -1,8 +1,13 @@
 script "gelatinous_noob.ash"
 
+boolean in_gnoob()
+{
+	return my_class() == $class[Gelatinous Noob];
+}
+
 void jello_initializeSettings()
 {
-	if(my_path() == "Gelatinous Noob")
+	if(in_gnoob())
 	{
 		set_property("auto_cubeItems", false);
 	}
@@ -211,7 +216,7 @@ string[item] jello_lister(string goal)
 
 int jello_absorbsLeft()
 {
-	if(my_path() != "Gelatinous Noob")
+	if(!in_gnoob())
 	{
 		return 0;
 	}
@@ -226,7 +231,7 @@ string[item] jello_lister()
 
 boolean LM_jello()
 {
-	if(my_path() != "Gelatinous Noob")
+	if(!in_gnoob())
 	{
 		return false;
 	}

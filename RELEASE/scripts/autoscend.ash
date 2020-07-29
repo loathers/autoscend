@@ -1466,7 +1466,7 @@ boolean doBedtime()
 	{
 		if(my_inebriety() <= inebriety_limit())
 		{
-			if(my_class() != $class[Gelatinous Noob] && my_familiar() != $familiar[Stooper])
+			if(in_gnoob() && my_familiar() != $familiar[Stooper])
 			{
 				return false;
 			}
@@ -2019,7 +2019,7 @@ boolean doBedtime()
 	auto_beachUseFreeCombs();
 
 	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
-	if((my_class() == $class[Gelatinous Noob]) || !can_drink() || out_of_blood)
+	if(in_gnoob() || !can_drink() || out_of_blood)
 	{
 		if((my_adventures() <= 2) || (internalQuestStatus("questL13Final") >= 14))
 		{
