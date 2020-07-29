@@ -1323,7 +1323,7 @@ generic_t zone_available(location loc)
 		break;
 
 	case $location[Your Mushroom Garden]:
-		retval._boolean = (auto_piranhaPlantFightsRemaining() || auto_canTendMushroomGarden());
+		retval._boolean = (auto_canFightPiranhaPlant() || auto_canTendMushroomGarden());
 		break;
 
 #	This is just to do a mass test.
