@@ -145,17 +145,17 @@ boolean auto_pre_adventure()
 
 	foreach i,mon in get_monsters(place)
 	{
-		if(auto_wantToYellowRay(mon, place))
+		if(auto_wantToYellowRay(mon, place) && !burningDelay)
 		{
 			adjustForYellowRayIfPossible(mon);
 		}
 
-		if(auto_wantToBanish(mon, place))
+		if(auto_wantToBanish(mon, place) && !burningDelay)
 		{
 			adjustForBanishIfPossible(mon, place);
 		}
 
-		if(auto_wantToReplace(mon, place))
+		if(auto_wantToReplace(mon, place) && !burningDelay)
 		{
 			adjustForReplaceIfPossible(mon);
 		}

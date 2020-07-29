@@ -1801,6 +1801,10 @@ boolean L11_shenStartQuest() {
 	{
 		return false;
 	}
+	if (my_daycount() < 2 || !allowSoftblockShen()) {
+		// if you're fast enough to open it on day 1, maybe wait until day 2
+		return false;
+	}
 	backupSetting("choiceAdventure1074", 1);
 	if (autoAdv($location[The Copperhead Club])) {
 		if (internalQuestStatus("questL11Shen") == 1) {
@@ -1942,6 +1946,10 @@ boolean L11_palindome()
 {
 	if (internalQuestStatus("questL11Palindome") < 0 || internalQuestStatus("questL11Palindome") > 5)
 	{
+		return false;
+	}
+
+	if (!possessEquipment($item[Talisman o' Namsilat])) {
 		return false;
 	}
 
