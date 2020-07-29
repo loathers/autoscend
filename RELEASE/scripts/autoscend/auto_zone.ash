@@ -1322,13 +1322,8 @@ generic_t zone_available(location loc)
 		retval._boolean = false;
 		break;
 
-
-	//Special cases that we are not going to worry too much about.
-	case $location[A Maze of Sewer Tunnels]:
-		if(my_adventures() >= 10)
-		{
-			retval._boolean = true;
-		}
+	case $location[Your Mushroom Garden]:
+		retval._boolean = (auto_piranhaPlantFightsRemaining() || auto_canTendMushroomGarden());
 		break;
 
 #	This is just to do a mass test.

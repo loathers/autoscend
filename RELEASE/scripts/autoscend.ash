@@ -1445,6 +1445,8 @@ boolean dailyEvents()
 		}
 	}
 
+	auto_getGuzzlrCocktailSet();
+
 	return true;
 }
 
@@ -2336,7 +2338,13 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		count++;
 		debugPrint("Evoke Eldritch = 1");
 	}
-	
+
+	if (auto_canFightPiranhaPlant()) {
+		int temp = auto_piranhaPlantFightsRemaining();
+		count += temp;
+		debugPrint("Piranha Plant Fights = " + temp);
+	}
+
 	return count;
 }
 
@@ -2380,6 +2388,11 @@ boolean LX_freeCombats(boolean powerlevel)
 	if(disregardInstantKarma())
 	{
 		handleFamiliar("stat");
+	}
+
+	if (auto_canFightPiranhaPlant() || auto_canTendMushroomGarden()) {
+		auto_log_debug("LX_freeCombats is calling auto_mushroomGardenHandler()");
+		return auto_mushroomGardenHandler();
 	}
 
 	if(neverendingPartyRemainingFreeFights() > 0)
