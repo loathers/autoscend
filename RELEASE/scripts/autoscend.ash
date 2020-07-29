@@ -1466,7 +1466,7 @@ boolean doBedtime()
 	{
 		if(my_inebriety() <= inebriety_limit())
 		{
-			if(in_gnoob() && my_familiar() != $familiar[Stooper])
+			if(!in_gnoob() && my_familiar() != $familiar[Stooper])
 			{
 				return false;
 			}

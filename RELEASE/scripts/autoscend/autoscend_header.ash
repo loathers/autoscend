@@ -907,7 +907,7 @@ int auto_mall_price(item it);									//Defined in autoscend/auto_util.ash
 item[int] itemList();										//Defined in autoscend/auto_list.ash
 int jello_absorbsLeft();									//Defined in autoscend/auto_jellonewbie.ash
 int gnoobAbsorbCost(item it);								//Defined in autoscend/auto_jellonewbie.ash
-boolean jello_buySkills();									//Defined in autoscend/auto_jellonewbie.ash
+void jello_buySkills();										//Defined in autoscend/auto_jellonewbie.ash
 boolean in_gnoob();											//Defined in autoscend/auto_jellonewbie.ash
 void jello_initializeSettings();							//Defined in autoscend/auto_jellonewbie.ash
 string[item] jello_lister();								//Defined in autoscend/auto_jellonewbie.ash
