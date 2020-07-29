@@ -249,6 +249,7 @@ boolean auto_getGuzzlrCocktailSet() {
 			if (get_property("questGuzzlr") == "unstarted" && get_property("_guzzlrPlatinumDeliveries").to_int() == 0 && !get_property("_guzzlrQuestAbandoned").to_boolean()) {
       	visit_url("inventory.php?tap=guzzlr", false);
       	run_choice(4); // take platinum quest
+				wait(1); // mafia's tracking breaks occasionally if you go too fast.
       	visit_url("inventory.php?tap=guzzlr", false);
       	run_choice(1); // abandon
       	run_choice(5); // leave the choice.
