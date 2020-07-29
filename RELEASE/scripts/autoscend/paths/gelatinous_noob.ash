@@ -1,13 +1,5 @@
 script "gelatinous_noob.ash"
 
-void jello_initializeSettings();
-string[item] jello_lister();
-string[item] jello_lister(string goal);
-boolean jello_buySkills();
-boolean LM_jello();
-void jello_startAscension(string page);
-int jello_absorbsLeft();
-
 void jello_initializeSettings()
 {
 	if(my_path() == "Gelatinous Noob")
@@ -47,6 +39,38 @@ void jello_startAscension(string page)
 	}
 }
 
+int gnoobAbsorbCost(item it)
+{
+	int retval = 999999;
+	if(is_npc_item())
+	{
+		retval = npc_price(it);
+	}
+	if(is_tradeable(it))
+	{
+		int mall_price = auto_mall_price(it);
+		if(retval > 0)
+		{
+			retval = min(retval, mall_price);
+		}
+		else
+		{
+			retval = mall_price;
+		}
+	}
+	
+	if(retval < 0)
+	{
+		retval = 999999;
+		auto_log_debug("gnoobAbsorbCost tried to find absorb price of the item [" + it + "] and somehow got a result lower than 0. Which is probably indicative of the item being incorrectly listed as tradeable. Returned a massively high price to prevent errors.");
+	}
+	if(retval == 999999)
+	{
+		auto_log_debug("gnoobAbsorbCost tried to find absorb price of the item [" + it + "] and could not find a means to acquire it. Returned a massively high price to prevent errors. Should this have been checked in the first place?");
+	}
+	
+	return retval;
+}
 
 boolean jello_buySkills()
 {
@@ -98,12 +122,12 @@ boolean jello_buySkills()
 					continue;
 				}
 
-				sort possible by auto_mall_price(value);
+				sort possible by gnoobAbsorbCost(value);
 
 				auto_log_info("Trying to acquire skill " + sk + " and considering: " , "green");
 				for(int i=0; i<bound; i++)
 				{
-					auto_log_info(possible[i] + ": " + auto_mall_price(possible[i]), "blue");
+					auto_log_info(possible[i] + ": " + gnoobAbsorbCost(possible[i]), "blue");
 				}
 
 				for(int i=0; (i<bound) && !have_skill(sk); i++)
