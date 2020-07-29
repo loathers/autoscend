@@ -197,3 +197,66 @@ void auto_burnPowerfulGloveCharges()
 		auto_powerfulGloveStats();
 	}
 }
+
+boolean auto_canFightPiranhaPlant() {
+	int numMushroomFights = (in_zelda() ? 5 : 1);
+	if (auto_is_valid($item[packet of mushroom spores]) &&
+			get_campground() contains $item[packet of mushroom spores] &&
+			get_property("_mushroomGardenFights").to_int() < numMushroomFights) {
+		return true;
+	}
+	return false;
+}
+
+boolean auto_canTendMushroomGarden() {
+	if (auto_is_valid($item[packet of mushroom spores]) &&
+			get_campground() contains $item[packet of mushroom spores] &&
+			!get_property("_mushroomGardenVisited").to_boolean()) {
+		return true;
+	}
+	return false;
+}
+
+int auto_piranhaPlantFightsRemaining() {
+	if (auto_canFightPiranhaPlant()) {
+		int numMushroomFights = (in_zelda() ? 5 : 1);
+		return (numMushroomFights - get_property("_mushroomGardenFights").to_int());
+	}
+	return 0;
+}
+
+boolean auto_mushroomGardenHandler() {
+	if (auto_piranhaPlantFightsRemaining() > 0) {
+		return autoAdv($location[Your Mushroom Garden]);
+	} else if (auto_canTendMushroomGarden()) {
+		autoAdv($location[Your Mushroom Garden]);
+		// TODO: Malibu Stacey - move all this to a more central location after refactor
+		use(item_amount($item[colossal free-range mushroom]), $item[colossal free-range mushroom]);
+		use(item_amount($item[immense free-range mushroom]), $item[immense free-range mushroom]);
+		use(item_amount($item[giant free-range mushroom]), $item[giant free-range mushroom]);
+		use(item_amount($item[bulky free-range mushroom]), $item[bulky free-range mushroom]);
+		use(item_amount($item[plump free-range mushroom]), $item[plump free-range mushroom]);
+		use(item_amount($item[free-range mushroom]), $item[free-range mushroom]);
+		return true;
+	}
+	return false;
+}
+
+boolean auto_getGuzzlrCocktailSet() {
+	if (possessEquipment($item[Guzzlr tablet]) && auto_is_valid($item[Guzzlr tablet])) {
+		if (get_property("guzzlrGoldDeliveries").to_int() >= 5) {
+			auto_log_info("Getting a Guzzlr Cocktail Set (for all the good it will do).");
+			if (get_property("questGuzzlr") == "unstarted" && get_property("_guzzlrPlatinumDeliveries").to_int() == 0 && !get_property("_guzzlrQuestAbandoned").to_boolean()) {
+      	visit_url("inventory.php?tap=guzzlr", false);
+      	run_choice(4); // take platinum quest
+      	visit_url("inventory.php?tap=guzzlr", false);
+      	run_choice(1); // abandon
+      	run_choice(5); // leave the choice.
+				return true; // ponder on what else you could've spent the Mr. Accessory on instead.
+    	}
+		} else {
+			auto_log_info("You haven't unlocked the platinum Guzzlr quests yet. I wouldn't worry about it though as it's all but useless.");
+		}
+	}
+	return false;
+}
