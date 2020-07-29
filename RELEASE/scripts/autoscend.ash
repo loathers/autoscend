@@ -30,6 +30,7 @@ import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
 import <autoscend/iotms/eudora.ash>
 import <autoscend/iotms/floristfriar.ash>
+import <autoscend/iotms/mr2011.ash>
 import <autoscend/iotms/mr2012.ash>
 import <autoscend/iotms/mr2013.ash>
 import <autoscend/iotms/mr2014.ash>
