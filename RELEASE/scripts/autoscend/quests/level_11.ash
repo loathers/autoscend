@@ -1073,7 +1073,11 @@ boolean L11_unlockHiddenCity() {
 		}
 		buffMaintain($effect[Stone-Faced], 0, 1, 1);
 		if (have_effect($effect[Stone-Faced]) == 0) {
-			abort("We do not smell like Stone nor have the face of one. We currently donut farm Stone Wool. Please get some");
+			if(isAboutToPowerlevel())	//we ran out of other things to do.
+			{
+				abort("We do not smell like Stone nor have the face of one. We currently donut farm Stone Wool. Please get some");
+			}
+			else return false;	//try to do other things first.
 		}
 	}
 	return autoAdv($location[The Hidden Temple]);
