@@ -178,7 +178,7 @@ boolean jello_buySkills()
 			break;
 		}
 	}
-	if((jello_absorbsLeft() > 0) && (my_adventures() <= 2) && (my_level() >= 12))
+	if(jello_absorbsLeft() > 0 && my_adventures() <= 1 + auto_advToReserve() && my_level() >= 12)
 	{
 		buyUpTo(1, $item[Potted Cactus]);
 		cli_execute("absorb " + $item[Potted Cactus]);
