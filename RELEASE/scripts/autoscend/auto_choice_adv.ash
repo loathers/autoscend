@@ -439,6 +439,9 @@ boolean auto_run_choice(int choice, string page)
 		case 1342: // Torpor (Dark Gyffte)
 			bat_reallyPickSkills(20);
 			break;
+		case 1410: // The Mushy Center (Your Mushroom Garden)
+			run_choice(2); // pick the mushroom.
+			break;
 		default:
 			break;
 	}
