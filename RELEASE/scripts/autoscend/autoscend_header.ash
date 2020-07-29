@@ -583,6 +583,7 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);			//Defined in autoscend
 boolean consumeMilkOfMagnesiumIfUnused();					//Defined in autoscend/auto_cooking.ash
 
 void debugMaximize(string req, int meat);					//Defined in autoscend/auto_util.ash
+boolean isClipartItem(item it);								//Defined in autoscend/iotms/auto_mr2015.ash
 boolean deck_available();									//Defined in autoscend/iotms/auto_mr2015.ash
 boolean deck_cheat(string cheat);							//Defined in autoscend/iotms/auto_mr2015.ash
 boolean deck_draw();										//Defined in autoscend/iotms/auto_mr2015.ash

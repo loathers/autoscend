@@ -41,8 +41,12 @@ void jello_startAscension(string page)
 
 int gnoobAbsorbCost(item it)
 {
+	//estimates the cost of absorbing an item as a gnoob for the specific purpose of sorting which item we prefer to use.
+	//this uses the price we have to pay to acquire it rather than the market value of an item.
+	//do not check if we already have the item here. as that could result in multiple items of price 0 and not knowing which is better.
+	
 	int retval = 999999;
-	if(is_npc_item())
+	if(is_npc_item(it))
 	{
 		retval = npc_price(it);
 	}
@@ -59,6 +63,11 @@ int gnoobAbsorbCost(item it)
 		}
 	}
 	
+	if(!can_interact() && auto_have_skill($skill[Summon Clip Art]) && get_property("_clipartSummons").to_int() < 3 && isClipartItem(it))
+	{
+		retval = 18;		//the price to acquire it is only 2 MP which we can highball as 18 meat at galaktik pricing.
+	}
+	
 	if(retval < 0)
 	{
 		retval = 999999;
@@ -66,7 +75,7 @@ int gnoobAbsorbCost(item it)
 	}
 	if(retval == 999999)
 	{
-		auto_log_debug("gnoobAbsorbCost tried to find absorb price of the item [" + it + "] and could not find a means to acquire it. Returned a massively high price to prevent errors. Should this have been checked in the first place?");
+		auto_log_debug("gnoobAbsorbCost tried to find absorb price of the item [" + it + "] and could not find a means to acquire it. Returned a massively high price to prevent errors. This should get fixed");
 	}
 	
 	return retval;
