@@ -1512,7 +1512,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || in_boris() || (auto_my_path() == "Way of the Surprising Fist") || (auto_my_path() == "Bees Hate You") || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || in_boris() || (auto_my_path() == "Way of the Surprising Fist") || in_bhy() || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.

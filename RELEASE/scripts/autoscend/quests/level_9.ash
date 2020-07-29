@@ -334,7 +334,7 @@ boolean L9_aBooPeak()
 				booCloversOk = true;
 			}
 		}
-		else if(auto_my_path() == "Bees Hate You")
+		else if(in_bhy())
 		{
 			// bees hate clues, don't waste clovers on them
 			booCloversOk = false;
@@ -635,7 +635,7 @@ boolean L9_twinPeak()
 	//BHY specific prevent wandering bees from skipping the burning the hotel down choice and wasting turns
 	buffMaintain($effect[Float Like a Butterfly, Smell Like a Bee], 0, 1, 1);
 	
-	if(auto_my_path() == "Bees Hate You")
+	if(in_bhy())
 	{
 		// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
 		set_property("choiceAdventure606", "6"); // and flee the music NC

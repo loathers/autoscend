@@ -1,9 +1,14 @@
 script "bees_hate_you.ash"
 
+boolean in_bhy()
+{
+	return (auto_my_path() == "Bees Hate You");
+}
+
 
 void bhy_initializeSettings()
 {
-	if(auto_my_path() == "Bees Hate You")
+	if(in_bhy())
 	{
 		set_property("auto_abooclover", false);
 		set_property("auto_wandOfNagamar", false);
@@ -16,7 +21,7 @@ void bhy_initializeSettings()
 
 boolean bees_hate_usable(string str)
 {
-	if(auto_my_path() != "Bees Hate You")
+	if(in_bhy())
 	{
 		return true;
 	}
@@ -53,7 +58,7 @@ boolean bees_hate_usable(string str)
 
 boolean LM_bhy()
 {
-	if(auto_my_path() != "Bees hate You")
+	if(in_bhy())
 	{
 		return false;
 	}

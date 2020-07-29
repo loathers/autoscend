@@ -1100,7 +1100,7 @@ boolean L13_towerNSFinal()
 		return L13_towerFinalHeavyRains();
 	}
 	
-	if(auto_my_path() == "Bees Hate You")
+	if(in_bhy())
 	{
 		return L13_bhy_towerFinal();
 	}

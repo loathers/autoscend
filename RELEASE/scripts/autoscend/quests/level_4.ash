@@ -112,7 +112,7 @@ boolean L4_batCave()
 		return false;
 	}
 
-	if (cloversAvailable() > 0 && batStatus <= 1 && auto_my_path() != "Bees Hate You")
+	if (cloversAvailable() > 0 && batStatus <= 1 && !in_bhy())
 	{
 		cloverUsageInit();
 		autoAdvBypass(31, $location[Guano Junction]);
