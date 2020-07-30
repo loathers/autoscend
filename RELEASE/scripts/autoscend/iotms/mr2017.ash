@@ -1623,7 +1623,7 @@ boolean horsePreAdventure()
 	string desiredHorse = get_property("auto_desiredHorse");
 	if (desiredHorse == "")
 	{
-		desiredHorse = "dark";
+		return false;
 	}
 
 	if (desiredHorse != "normal"

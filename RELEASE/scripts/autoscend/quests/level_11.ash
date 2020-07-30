@@ -227,7 +227,9 @@ boolean LX_unlockHiddenTemple() {
 	return false;
 }
 
-boolean LX_unlockHauntedBilliardsRoom() {
+boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay) {
+	// forceDelay will force the check for 9 hot res & 9 stench res to be used regardless of what
+	// auto_delayHauntedKitchen is set to.
 	if (internalQuestStatus("questM20Necklace") != 0) {
 		return false;
 	}
@@ -240,7 +242,7 @@ boolean LX_unlockHauntedBilliardsRoom() {
 		return false;
 	}
 	
-	boolean delayKitchen = get_property("auto_delayHauntedKitchen").to_boolean();
+	boolean delayKitchen = get_property("auto_delayHauntedKitchen").to_boolean() || forceDelay;
 	if (isAboutToPowerlevel()) {
 		// if we're at the point where we need to level up to get more quests other than this, we might as well just do this instead
 		delayKitchen = false;
@@ -270,6 +272,10 @@ boolean LX_unlockHauntedBilliardsRoom() {
 		}
 	}
 	return false;
+}
+
+boolean LX_unlockHauntedBilliardsRoom() {
+	return LX_unlockHauntedBilliardsRoom(false);
 }
 
 boolean LX_unlockHauntedLibrary()
@@ -1805,6 +1811,10 @@ boolean L11_shenStartQuest() {
 	{
 		return false;
 	}
+	if (my_daycount() < 2 || !allowSoftblockShen()) {
+		// if you're fast enough to open it on day 1, maybe wait until day 2
+		return false;
+	}
 	backupSetting("choiceAdventure1074", 1);
 	if (autoAdv($location[The Copperhead Club])) {
 		if (internalQuestStatus("questL11Shen") == 1) {
@@ -1830,6 +1840,11 @@ boolean L11_shenCopperhead()
 
 	if (L11_shenStartQuest()) {
 		return true;
+	}
+
+	if (internalQuestStatus("questL11Shen") < 1) {
+		// if we haven't spoke to Shen for the first time yet, don't try to handle the quest.
+		return false;
 	}
 
 	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
@@ -1946,6 +1961,10 @@ boolean L11_palindome()
 {
 	if (internalQuestStatus("questL11Palindome") < 0 || internalQuestStatus("questL11Palindome") > 5)
 	{
+		return false;
+	}
+
+	if (!possessEquipment($item[Talisman o' Namsilat])) {
 		return false;
 	}
 

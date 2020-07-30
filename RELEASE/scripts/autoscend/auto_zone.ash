@@ -614,14 +614,22 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[The Hidden Apartment Building]:
-		value = 8 - loc.turns_spent;
-		retval._item = $item[Clara\'s Bell];
-		//Special case this
+		if (internalQuestStatus("questL11Curses") < 2) {
+			if (loc.turns_spent == 0) {
+				value = 8;
+			} else {
+				value = loc.turns_spent % 8;
+			}
+		}
 		break;
 	case $location[The Hidden Office Building]:
-		value = 10 - loc.turns_spent;
-		retval._item = $item[Clara\'s Bell];
-		//Special case?
+		if (internalQuestStatus("questL11Business") < 2) {
+			if (loc.turns_spent == 0) {
+				value = 5;
+			} else {
+				value = loc.turns_spent % 5;
+			}
+		}
 		break;
 	case $location[The Spooky Forest]:
 		value = 5 - loc.turns_spent;

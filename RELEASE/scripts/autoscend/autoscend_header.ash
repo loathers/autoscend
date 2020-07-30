@@ -115,6 +115,7 @@ boolean shenShouldDelayZone(location loc);								//Defined in autoscend/auto_qu
 boolean LX_unlockHiddenTemple();
 boolean LX_unlockManorSecondFloor();
 boolean LX_unlockHauntedLibrary();
+boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay);
 boolean LX_unlockHauntedBilliardsRoom();
 boolean LX_spookyravenManorFirstFloor();
 boolean LX_danceWithLadySpookyraven();
