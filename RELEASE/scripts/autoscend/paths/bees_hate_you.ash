@@ -21,7 +21,7 @@ void bhy_initializeSettings()
 
 boolean bees_hate_usable(string str)
 {
-	if(in_bhy())
+	if(!in_bhy())
 	{
 		return true;
 	}
@@ -58,7 +58,7 @@ boolean bees_hate_usable(string str)
 
 boolean LM_bhy()
 {
-	if(in_bhy())
+	if(!in_bhy())
 	{
 		return false;
 	}
