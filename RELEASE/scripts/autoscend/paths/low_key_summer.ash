@@ -368,10 +368,7 @@ boolean LX_lowkeySummer() {
 
 	// If we have the resources to do the Haunted Kitchen in the minimum adventures, we should do it sooner 
 	if (internalQuestStatus("questM20Necklace") == 0) {
-		backupSetting("auto_delayHauntedKitchen", true);
-		boolean advSpent = LX_unlockHauntedBilliardsRoom();
-		restoreSetting("auto_delayHauntedKitchen");
-		if (advSpent) { return true; }
+		return LX_unlockHauntedBilliardsRoom(true);
 	}
 
 	if (internalQuestStatus("questL12War") > -1) {
