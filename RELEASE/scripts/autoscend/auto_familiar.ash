@@ -162,6 +162,7 @@ familiar lookupFamiliarDatafile(string type)
 	}
 	
 	//no suitable familiars found in datafile
+	auto_log_debug(`Could not find any "{type}" type familiars!`);
 	return $familiar[none];
 }
 
@@ -393,13 +394,15 @@ boolean autoChooseFamiliar(location place)
 			int spleen_drops_need = (spleen_left() + 3)/4;
 			int bound = (spleen_drops_need + spleenFamiliarsAvailable - 1) / spleenFamiliarsAvailable;
 			
-			if(spleenFamiliarsAvailable > 0) foreach fam in $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey]
+			if(spleenFamiliarsAvailable > 0)
 			{
-
-				if((fam.drops_today < bound) && canChangeToFamiliar(fam))
+				foreach fam in $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey]
 				{
-					famChoice = fam;
-					break;
+					if((fam.drops_today < bound) && canChangeToFamiliar(fam))
+					{
+						famChoice = fam;
+						break;
+					}
 				}
 			}
 		}
