@@ -4489,6 +4489,10 @@ void pullAndUse(item it, int uses)
 
 int auto_mall_price(item it)
 {
+	if(isSpeakeasyDrink(it))
+	{
+		return -1;	//speakeasy drinks are marked as tradeable but cannot be acquired as a physical item to trade.
+	}
 	if(is_tradeable(it))
 	{
 		int retval = mall_price(it);
