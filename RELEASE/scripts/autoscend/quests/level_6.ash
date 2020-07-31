@@ -33,7 +33,7 @@ boolean L6_friarsGetParts()
 		handleFamiliar($familiar[Space Jellyfish]);
 	}
 
-	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
+	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Frown Muscles]) && (item_amount($item[Bottle of Novelty Hot Sauce]) == 0))
 		{

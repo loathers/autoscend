@@ -564,7 +564,7 @@ boolean witchessFights()
 		return false;
 	}
 
-	if(my_class() == $class[Gelatinous Noob])
+	if(in_gnoob())
 	{
 		return auto_advWitchess("ml");
 	}

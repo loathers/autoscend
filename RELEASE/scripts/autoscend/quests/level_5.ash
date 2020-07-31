@@ -20,7 +20,7 @@ boolean L5_getEncryptionKey()
 		return false;
 	}
 
-	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
+	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Retractable Toes]) && (item_amount($item[Cocktail Mushroom]) == 0))
 		{

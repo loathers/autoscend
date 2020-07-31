@@ -1,16 +1,13 @@
 script "gelatinous_noob.ash"
 
-void jello_initializeSettings();
-string[item] jello_lister();
-string[item] jello_lister(string goal);
-boolean jello_buySkills();
-boolean LM_jello();
-void jello_startAscension(string page);
-int jello_absorbsLeft();
+boolean in_gnoob()
+{
+	return my_class() == $class[Gelatinous Noob];
+}
 
 void jello_initializeSettings()
 {
-	if(my_path() == "Gelatinous Noob")
+	if(in_gnoob())
 	{
 		set_property("auto_cubeItems", false);
 	}
@@ -47,117 +44,159 @@ void jello_startAscension(string page)
 	}
 }
 
-
-boolean jello_buySkills()
+int gnoobAbsorbCost(item it)
 {
-	/*
-		Need to consider skill orders, how to handle when we have starting skills.
-		Blacklist and whitelist are just for testing for now, need more work.
-	*/
-
-	boolean[item] blacklist = $items[LOV Enamorang, Enchanted Bean, Sockdollager];
-	boolean[item] whitelist = $items[Abstraction: Thought, Accidental Cider, All-Purpose Cleaner, All-Purpose Flower, Ancient Vinyl Coin Purse, Anti-Anti-Antidote, Anticheese, Baby Oil Shooter, Barrel Pickle, Bat Guano, Bat Wing Kabob, Beach Glass Bead, Black Forest Cake, Black No. 2, Black Pension Check, Bottle of Gregnadigne, Bottle of Novelty Hot Sauce, Bottle of Popskull, Bottle of Whiskey, Buckler Buckle, Carob Chunks, Catgut Taco, Cocktail Mushroom, Cog, Concentrated Magicalness Pill, Cranberries, Crossbow String, Decomposed Boot, Decorative Fountain, Demon Skin, Dire Fudgesicle, Dirty Bottlecap, Disintegrating Quill Pen, Doc Galaktik\'s Homeopathic Elixir, Doc Galaktik\'s Invigorating Tonic, Dusty Bottle of Zinfandel, Eldritch Effluvium, Falcon&trade; Maltese Liquor, Fermenting Powder, Fine Wine, Fish-Liver Oil, Flaregun, Fricasseed Brains, Ghuol-Ear Kabob, Ghuol Egg, Gnollish Casserole Dish, Gnollish Pie Tin, Greek Fire, Hatorade, Herbs, Hermit Permit, Imp Ale, Interesting Clod of Dirt, Lemon, Limepatch, Meat Engine, Meat Paste, Meat Stack, Mushroom Pizza, Old Coin Purse, Orange, Overpriced &quot;imported&quot; beer, Pants Kit, Patchouli Incense Stick, Petrified Noodles, Phat Turquoise Bead, pickle-flavored chewing gum, Pickled Egg, Pile of Gold Coins, Pink Pony, Pink Slime, Plain Pizza, Polysniff Perfume, Potted Cactus, Redrum, Ruby W, Seal Tooth, Shot of Granola Liqueur, Shot of Grapefruit Schnapps, Slap and Tickle, Snifter of Thoroughly Aged Brandy, Spring, Sprocket, Steampunk Potion, Stench Nuggets, Stench Powder, Strawberry, Sturdy Sword Hilt, Super-Spiky Hair Gel, Tenderizing Hammer, Tires, Tom\'s of the Spanish Main Toothpaste, Unnamed Cocktail, Unstable Quark, Used Beer, Wad of Tofu, Weremoose Spit, Whiskey Sour, Wussiness Potion];
-
-	if(internalQuestStatus("questM21Dance") >= 1)
+	//estimates the cost of absorbing an item as a gnoob for the specific purpose of sorting which item we prefer to use.
+	//this uses the price we have to pay to acquire it rather than the market value of an item.
+	//do not check if we already have the item here. as that could result in multiple items of price 0 and not knowing which is better.
+	
+	int retval = 999999;
+	if(is_npc_item(it))
 	{
-//		whitelist[$item[Handful of Hand Chalk]] = true;
+		retval = npc_price(it);
+	}
+	if(is_tradeable(it))
+	{
+		int mall_price = auto_mall_price(it);
+		if(retval > 0)
+		{
+			retval = min(retval, mall_price);
+		}
+		else
+		{
+			retval = mall_price;
+		}
+	}
+	
+	if(!can_interact())	//do not have unrestricted mall access. meaning ronin or hardcore
+	{
+		if(auto_have_skill($skill[Summon Clip Art]) && get_property("_clipartSummons").to_int() < 3 && isClipartItem(it))
+		{
+			retval = 18;		//the price to acquire it is only 2 MP which we can highball as 18 meat at galaktik pricing.
+		}
+		if(item_amount(it) > 0 && retval < 20000)
+		{
+			retval = 0;		//set item price to 0 since we have it and it is not unreasonably expensive
+		}
+	}
+	
+	if(retval == 999999)
+	{
+		auto_log_debug("gnoobAbsorbCost tried to find absorb price of the item [" + it + "] and could not find a means to acquire it. Returned a massively high price to prevent errors. This should get fixed");
+	}
+	if(retval < 0)
+	{
+		retval = 999999;
+		auto_log_debug("gnoobAbsorbCost tried to find absorb price of the item [" + it + "] and somehow got a result lower than 0. Which is probably indicative of the item being incorrectly listed as tradeable. Returned a massively high price to prevent errors.");
+	}
+	
+	return retval;
+}
+
+void jello_buySkills()
+{
+	//Need to consider skill orders, how to handle when we have starting skills.
+
+	boolean[item] blacklist;
+	
+	if(internalQuestStatus("questL10Garbage") < 2 && item_amount($item[Enchanted Bean]) == 1)
+	{
+		blacklist[$item[Enchanted Bean]] = true;	//need to keep our only enchanted bean to be planted
 	}
 
-	while(jello_absorbsLeft() > 0)
+	string[item] available = jello_lister();
+	int starting_absorb_count = my_absorbs();
+	int earlyTerm = max(5, get_property("_noobSkillCount").to_int() + ((my_daycount() - 1) * min(my_level()+2, 15))) + get_property("noobPoints").to_int() + 2;
+
+	foreach sk in $skills[Large Intestine, Small Intestine, Stomach-Like Thing, Rudimentary Alimentary Canal, Central Hypothalamus, Arrogance, Sense of Pride, Sense of Purpose, Retractable Toes, Bendable Knees, Ink Gland, Anger Glands, Basic Self-Worth, Work Ethic, Visual Cortex, Saccade Reflex, Frown Muscles, Powerful Vocal Chords, Optic Nerves, Right Eyeball, Left Eyeball, Thumbs, Index Fingers, Middle Fingers, Ring Fingers, Pinky Fingers, Hot Headedness, Sunglasses, Sense of Sarcasm, Beating Human Heart, Oversized Right Kidney, Anterior Cruciate Ligaments, Achilles Tendons, Kneecaps, Ankle Joints, Hamstrings, Pathological Greed, Sense of Entitlement, Business Acumen, Financial Ambition, The Concept of Property, Bravery Gland, Subcutaneous Fat, Adrenal Gland, Nasal Septum, Hyperactive Amygdala, Nasal Lamina Propria, Right Eyelid, Pinchable Nose, Left Eyelid, Nose Hair, Overalls, Rigid Rib Cage, Rigid Headbone]
 	{
-		string[item] available = jello_lister();
-		int start = my_absorbs();
-		int earlyTerm = max(5, get_property("_noobSkillCount").to_int() + ((my_daycount() - 1) * min(my_level()+2, 15))) + get_property("noobPoints").to_int() + 2;
-
-		foreach sk in $skills[Large Intestine, Small Intestine, Stomach-Like Thing, Rudimentary Alimentary Canal, Central Hypothalamus, Arrogance, Sense of Pride, Sense of Purpose, Retractable Toes, Bendable Knees, Ink Gland, Anger Glands, Basic Self-Worth, Work Ethic, Visual Cortex, Saccade Reflex, Frown Muscles, Powerful Vocal Chords, Optic Nerves, Right Eyeball, Left Eyeball, Thumbs, Index Fingers, Middle Fingers, Ring Fingers, Pinky Fingers, Hot Headedness, Sunglasses, Sense of Sarcasm, Beating Human Heart, Oversized Right Kidney, Anterior Cruciate Ligaments, Achilles Tendons, Kneecaps, Ankle Joints, Hamstrings, Pathological Greed, Sense of Entitlement, Business Acumen, Financial Ambition, The Concept of Property, Bravery Gland, Subcutaneous Fat, Adrenal Gland, Nasal Septum, Hyperactive Amygdala, Nasal Lamina Propria, Right Eyelid, Pinchable Nose, Left Eyelid, Nose Hair, Overalls, Rigid Rib Cage, Rigid Headbone]
+		if(have_skill(sk))
 		{
-			earlyTerm --;
-			if(earlyTerm <= 0)
-			{
-				break;
-			}
-			if(jello_absorbsLeft() <= 0)
-			{
-				break;
-			}
-			if(!have_skill(sk))
-			{
-				item[int] possible;
-				int count = 0;
-				foreach it in available
-				{
-					if(!blacklist[it] && it.noob_skill == sk)
-					{
-						possible[count(possible)] = it;
-					}
-				}
-				int bound = count(possible);
-				if(bound == 0)
-				{
-					continue;
-				}
-
-				sort possible by auto_mall_price(value);
-
-				auto_log_info("Trying to acquire skill " + sk + " and considering: " , "green");
-				for(int i=0; i<bound; i++)
-				{
-					auto_log_info(possible[i] + ": " + auto_mall_price(possible[i]), "blue");
-				}
-
-				for(int i=0; (i<bound) && !have_skill(sk); i++)
-				{
-					if(!whitelist[possible[i]])
-					{
-						continue;
-					}
-					if(item_amount(possible[i]) == 0)
-					{
-						if(creatable_amount(possible[i]) == 0)
-						{
-							if(npc_price(possible[i]) < my_meat())
-							{
-								buyUpTo(1, possible[i], npc_price(possible[i]));
-							}
-							else
-							{
-								continue;
-							}
-						}
-						else
-						{
-							cli_execute("make " + possible[i]);
-						}
-					}
-					cli_execute("absorb " + possible[i]);
-				}
-			}
+			continue;	//no need to do anything for a skill you already have. do not decrement earlyTerm either.
 		}
-
-		if(start == my_absorbs())
+		earlyTerm --;
+		if(earlyTerm <= 0)
+		{
+			auto_log_debug("jello_buySkills checked too many skills without getting any. terminating loop early");
+			break;
+		}
+		if(jello_absorbsLeft() <= 0)
 		{
 			break;
 		}
+			
+		item[int] possible;
+		int count = 0;
+		foreach it in available
+		{
+			if(!blacklist[it] && it.noob_skill == sk)
+			{
+				possible[count(possible)] = it;
+			}
+		}
+		int bound = count(possible);
+		if(bound == 0)	//we do not have any item that could get us the desired skill
+		{
+			continue;
+		}
+
+		sort possible by gnoobAbsorbCost(value);
+
+		auto_log_info("Trying to acquire skill " + sk + " and considering: " , "green");
+		for(int i=0; i<bound; i++)
+		{
+			auto_log_info(possible[i] + ": " + gnoobAbsorbCost(possible[i]) + " meat", "blue");
+		}
+
+		//get the skill
+		for(int i=0; (i<bound) && !have_skill(sk); i++)
+		{
+			if(item_amount(possible[i]) == 0)
+			{
+				retrieve_item(1,possible[i]);
+				if(item_amount(possible[i]) == 0)
+				{
+					auto_log_info("Failed to acquire [" + possible[i] + "] for jello_buySkills");
+					continue;
+				}
+			}
+			cli_execute("absorb " + possible[i]);
+			if(starting_absorb_count == my_absorbs())
+			{
+				abort("Tried and failed to absorb [" + possible[i] + "]. this should not have happened and needs to be fixed");
+			}
+			else
+			{
+				available = jello_lister();		//recheck item availability now that one was consumed. necessary for tome handling and NPC stores.
+			}
+		}
 	}
-	if((jello_absorbsLeft() > 0) && (my_adventures() <= 2) && (my_level() >= 12))
+	
+	//absorb potted cactus for adventures
+	if(jello_absorbsLeft() > 0 && my_adventures() <= 1 + auto_advToReserve() && my_level() >= 12)
 	{
 		buyUpTo(1, $item[Potted Cactus]);
-		cli_execute("absorb " + $item[Potted Cactus]);
+		if(item_amount($item[Potted Cactus]) > 0)
+		{
+			cli_execute("absorb Potted Cactus");
+		}
 	}
-	return true;
 }
 
 
 string[item] jello_lister(string goal)
 {
 	string[item] retval;
-//	int output = 0;
 	foreach it in $items[]
 	{
-		boolean canGet = (item_amount(it) > 0) || (creatable_amount(it) > 0); # || (available_amount(it) > 0);
-		if((npc_price(it) > 0) && (my_meat() >= npc_price(it)))
+		boolean canGet = item_amount(it) > 0 || creatable_amount(it) > 0;
+		if(npc_price(it) > 0 && my_meat() >= npc_price(it))
 		{
 			canGet = true;
+		}
+		if(isSpeakeasyDrink(it))	//speakeasy drinks are instantly drank which does not work for gnoob
+		{
+			canGet = false;
 		}
 		if(canGet && (it.noob_skill != $skill[none]) && !have_skill(it.noob_skill))
 		{
@@ -177,7 +216,7 @@ string[item] jello_lister(string goal)
 
 int jello_absorbsLeft()
 {
-	if(my_path() != "Gelatinous Noob")
+	if(!in_gnoob())
 	{
 		return 0;
 	}
@@ -192,7 +231,7 @@ string[item] jello_lister()
 
 boolean LM_jello()
 {
-	if(my_path() != "Gelatinous Noob")
+	if(!in_gnoob())
 	{
 		return false;
 	}
