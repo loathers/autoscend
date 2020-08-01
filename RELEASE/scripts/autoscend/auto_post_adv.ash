@@ -917,11 +917,6 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if(get_property("auto_cubeItems").to_boolean() && (item_amount($item[Ring Of Detect Boring Doors]) == 1) && (item_amount($item[Eleven-Foot Pole]) == 1) && (item_amount($item[Pick-O-Matic Lockpicks]) == 1))
-	{
-		set_property("auto_cubeItems", false);
-	}
-
 	if(!inAftercore())
 	{
 		if((my_daycount() == 1) && (my_bjorned_familiar() != $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() == 0) && (have_familiar($familiar[grim brother])) && (equipped_item($slot[back]) == $item[Buddy Bjorn]) && (my_familiar() != $familiar[Grim Brother]))

@@ -23,7 +23,6 @@ void ed_initializeSettings()
 	if (isActuallyEd())
 	{
 		set_property("auto_crackpotjar", "done");
-		set_property("auto_cubeItems", false);
 		set_property("auto_day1_dna", "finished");
 		set_property("auto_getBeehive", false);
 		set_property("auto_getStarKey", false);
@@ -33,7 +32,6 @@ void ed_initializeSettings()
 		set_property("auto_needLegs", false);
 		set_property("auto_renenutet", "");
 		set_property("auto_servantChoice", "");
-		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);
 
 		set_property("auto_edSkills", -1);

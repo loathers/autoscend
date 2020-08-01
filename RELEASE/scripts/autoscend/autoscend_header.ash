@@ -25,6 +25,7 @@ boolean LX_hippyBoatman();
 boolean LX_lockPicking();
 float estimateDailyDungeonAdvNeeded();				//Defined in autoscend/quests/level_any.ash
 boolean LX_fatLootToken();							//Defined in autoscend/quests/level_any.ash
+boolean wantCubeling();								//Defined in autoscend/quests/level_any.ash
 boolean LX_dailyDungeonToken();						//Defined in autoscend/quests/level_any.ash
 boolean LX_islandAccess();
 boolean fancyOilPainting();

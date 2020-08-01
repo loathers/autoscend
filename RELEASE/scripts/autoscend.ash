@@ -90,7 +90,6 @@ void initializeSettings()
 	set_location($location[none]);
 	invalidateRestoreOptionCache();
 
-	set_property("auto_useCubeling", true);
 	set_property("auto_100familiar", $familiar[none]);
 	if(my_familiar() != $familiar[none])
 	{
@@ -98,10 +97,6 @@ void initializeSettings()
 		if(userAnswer)
 		{
 			set_property("auto_100familiar", my_familiar());
-		}
-		if(!canChangeFamiliar())
-		{
-			set_property("auto_useCubeling", false);
 		}
 	}
 
@@ -142,7 +137,6 @@ void initializeSettings()
 	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
 	set_property("auto_crackpotjar", "");
-	set_property("auto_cubeItems", true);
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
 	set_property("auto_day1_dna", "");
@@ -3313,14 +3307,6 @@ boolean doTasks()
 
 	dna_sorceressTest();
 	dna_generic();
-
-	if(get_property("auto_useCubeling").to_boolean())
-	{
-		if((item_amount($item[ring of detect boring doors]) == 1) && (item_amount($item[eleven-foot pole]) == 1) && (item_amount($item[pick-o-matic lockpicks]) == 1))
-		{
-			set_property("auto_cubeItems", false);
-		}
-	}
 
 	if((my_daycount() == 1) && ($familiar[Fist Turkey].drops_today < 5) && auto_have_familiar($familiar[Fist Turkey]))
 	{

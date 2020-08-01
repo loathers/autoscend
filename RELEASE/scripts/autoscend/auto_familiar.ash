@@ -351,10 +351,8 @@ boolean autoChooseFamiliar(location place)
 
 	//Gelatinous Cubeling drops items that save turns in the daily dungeon
 	if(famChoice == $familiar[none] &&
-	canChangeToFamiliar($familiar[Gelatinous Cubeling]) &&
-	get_property("auto_useCubeling").to_boolean() &&
-	get_property("auto_cubeItems").to_boolean()
-	&& lookupFamiliarDatafile("item") != $familiar[Gelatinous Cubeling]) // don't farm the drops if this is the best +item familiar we have. We will get them regardless.
+	wantCubeling() &&
+	lookupFamiliarDatafile("item") != $familiar[Gelatinous Cubeling]) // don't farm the drops if this is the best +item familiar we have. We will get them regardless.
 	{
 		famChoice = $familiar[Gelatinous Cubeling];
 	}

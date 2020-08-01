@@ -92,19 +92,11 @@ boolean settingFixer()
 	{
 		set_property("auto_killingjar", "finished");
 	}
-	if(get_property("auto_useCubeling") == "yes")
-	{
-		set_property("auto_useCubeling", true);
-	}
 	if(get_property("auto_sonata") == "finished")
 	{
 		set_property("auto_sonata", "");
 	}
 
-	if(get_property("auto_useCubeling") == "no")
-	{
-		set_property("auto_useCubeling", false);
-	}
 	if(get_property("auto_wandOfNagamar") == "yes")
 	{
 		set_property("auto_wandOfNagamar", true);
@@ -178,14 +170,8 @@ boolean settingFixer()
 		set_property("auto_aftercore", true);
 	}
 
-	if(get_property("auto_cubeItems") == "")
-	{
-		set_property("auto_cubeItems", true);
-	}
-	if(get_property("auto_cubeItems") == "done")
-	{
-		set_property("auto_cubeItems", false);
-	}
+	remove_property("auto_cubeItems");
+	remove_property("auto_useCubeling");
 
 	if(get_property("auto_xiblaxianChoice") == "")
 	{

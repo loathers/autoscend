@@ -428,20 +428,29 @@ boolean LX_fatLootToken()
 	
 	return false;
 }
+
+boolean wantCubeling()
+{
+	//do we still want to use a gelatinous cubeling familiar so that it will drop the daily dungeon tools
+	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
+	{
+		return false;	//can not use it so we do not want it.
+	}
 	
+	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
+	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one
+	return item_amount($item[eleven-foot pole]) == 0 || need_ring || need_lockpicks;
+}
+
 boolean LX_dailyDungeonToken()
 {
 	if(get_property("dailyDungeonDone").to_boolean())
 	{
 		return false;	// already done today
 	}
-	
-	if(!possessEquipment($item[Ring of Detect Boring Doors]) || item_amount($item[Eleven-Foot Pole]) == 0 || item_amount($item[Pick-O-Matic Lockpicks]) == 0)
+	if(wantCubeling())
 	{
-		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-		{
-			return false;	//we can switch to cubeling so wait until we have all the tools before doing daily dungeon
-		}
+		return false;	//can switch to cubeling so wait until we have all the tool drops before doing daily dungeon
 	}
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin

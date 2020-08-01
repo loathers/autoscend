@@ -44,8 +44,6 @@ void boris_initializeSettings()
 	{
 		auto_log_info("Initializing Avatar of Boris settings", "blue");
 		set_property("auto_borisSkills", -1);
-		set_property("auto_cubeItems", false);
-		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);
 
 		# Mafia r16876 does not see the Boris Helms in storage and will not pull them.
