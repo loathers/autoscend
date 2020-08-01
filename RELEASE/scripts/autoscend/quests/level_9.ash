@@ -585,7 +585,7 @@ boolean L9_aBooPeak()
 	}
 	else
 	{
-		if ($location[A-Boo Peak].turns_spent < 10 && item_amount($item[January\'s Garbage Tote]) > 0)
+		if ($location[A-Boo Peak].turns_spent < 10 && item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[Broken Champagne Bottle]))
 		{
 			januaryToteAcquire($item[Broken Champagne Bottle]);
 			removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
