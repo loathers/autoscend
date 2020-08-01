@@ -228,7 +228,6 @@ void initializeSettings()
 	florist_initializeSettings();
 	ed_initializeSettings();
 	boris_initializeSettings();
-	jello_initializeSettings();
 	bond_initializeSettings();
 	fallout_initializeSettings();
 	pete_initializeSettings();

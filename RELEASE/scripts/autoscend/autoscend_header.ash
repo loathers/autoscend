@@ -910,7 +910,6 @@ int jello_absorbsLeft();									//Defined in autoscend/auto_jellonewbie.ash
 int gnoobAbsorbCost(item it);								//Defined in autoscend/auto_jellonewbie.ash
 void jello_buySkills();										//Defined in autoscend/auto_jellonewbie.ash
 boolean in_gnoob();											//Defined in autoscend/auto_jellonewbie.ash
-void jello_initializeSettings();							//Defined in autoscend/auto_jellonewbie.ash
 string[item] jello_lister();								//Defined in autoscend/auto_jellonewbie.ash
 string[item] jello_lister(string goal);						//Defined in autoscend/auto_jellonewbie.ash
 void jello_startAscension(string page);						//Defined in autoscend/auto_jellonewbie.ash
