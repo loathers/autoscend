@@ -315,7 +315,7 @@ boolean L9_aBooPeak()
 	{
 		auto_log_info("A-Boo Peak (initial): " + get_property("booPeakProgress"), "blue");
 
-		if (clueAmt < 3 && item_amount($item[January\'s Garbage Tote]) > 0)
+		if (clueAmt < 3 && item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[Broken Champagne Bottle]))
 		{
 			januaryToteAcquire($item[Broken Champagne Bottle]);
 			removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
