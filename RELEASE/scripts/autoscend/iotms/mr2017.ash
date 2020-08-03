@@ -5,7 +5,7 @@ script "mr2017.ash"
 boolean mummifyFamiliar(familiar fam, string bonus)
 {
 	bonus = to_lower_case(bonus);
-	if(auto_my_path() == "Pocket Familiars")
+	if(auto_my_path() == "Pocket Familiars" || auto_my_path() == "Dark Gyffte" || my_path() == "License to Adventure")
 	{
 		return false;
 	}
