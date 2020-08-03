@@ -1,9 +1,11 @@
+script "mr2017.ash"
+
 #	This is meant for items that have a date of 2017.
 
 boolean mummifyFamiliar(familiar fam, string bonus)
 {
 	bonus = to_lower_case(bonus);
-	if(!pathAllowsFamiliar())
+	if(auto_my_path() == "Pocket Familiars" || my_class() == $class[Vampyre] || my_path() == "License to Adventure")
 	{
 		return false;
 	}
@@ -275,7 +277,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-	if((loveEffect == 2) && !pathAllowsFamiliar())
+	if((loveEffect == 2) && !have_familiar($familiar[Mosquito]))
 	{
 		loveEffect = 3;
 	}
