@@ -407,7 +407,7 @@ void auto_setSongboom()
 		// Once we've started the war, we want to be able to micromanage songs
 		// for Gremlins and Nuns. Don't break this for them.
 	}
-	else if (!isActuallyEd() && internalQuestStatus("questL07Cyrptic") < 1 && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
+	else if (!isActuallyEd() && !auto_havePillKeeper() && internalQuestStatus("questL07Cyrptic") < 1 && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
 	{
 		songboomSetting("nightmare");
 	}
@@ -487,6 +487,19 @@ item[monster] catBurglarHeistDesires()
 	 * PREADVENTURE IF WE NEED THE BURGLE.
 	 */
 	item[monster] wannaHeists;
+
+	if (!canChangeToFamiliar($familiar[XO Skeleton]) && get_property("sidequestOrchardCompleted") == "none") {
+		// Can't hugpocket? 1 turn filthworms is still a thing you can do!
+		if (have_effect($effect[Filthworm Larva Stench]) == 0 && item_amount($item[Filthworm Hatchling Scent Gland]) == 0) {
+			wannaHeists[$monster[larval filthworm]] = $item[Filthworm Hatchling Scent Gland];
+		}
+		if (have_effect($effect[Filthworm Drone Stench]) == 0 && item_amount($item[Filthworm Drone Scent Gland]) == 0) {
+			wannaHeists[$monster[filthworm drone]] = $item[Filthworm Drone Scent Gland];
+		}
+		if (have_effect($effect[Filthworm Guard Stench]) == 0 && item_amount($item[Filthworm Royal Guard Scent Gland]) == 0) {
+			wannaHeists[$monster[filthworm royal guard]] = $item[Filthworm Royal Guard Scent Gland];
+		}
+	}
 
 	item oreGoal = to_item(get_property("trapperOre"));
 	if (oreGoal != $item[none] && item_amount(oreGoal) < 3 && internalQuestStatus("questL08Trapper") < 2 && in_hardcore())
@@ -1152,6 +1165,10 @@ boolean auto_latteRefill()
 	return auto_latteRefill("");
 }
 
+boolean auto_haveVotingBooth() {
+	return ((get_property("_voteToday").to_boolean() || get_property("voteAlways").to_boolean()) && auto_is_valid($item[voter registration form]));
+}
+
 boolean auto_voteSetup()
 {
 	return auto_voteSetup(0,0,0);
@@ -1236,7 +1253,7 @@ boolean auto_voteMonster(boolean freeMon, location loc)
 
 boolean auto_voteMonster(boolean freeMon, location loc, string option)
 {
-	if(!get_property("_voteToday").to_boolean() && !get_property("voteAlways").to_boolean())
+	if(!auto_haveVotingBooth())
 	{
 		return false;
 	}

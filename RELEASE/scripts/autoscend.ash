@@ -912,7 +912,7 @@ boolean fortuneCookieEvent()
 			goal = $location[The Limerick Dungeon];
 		}
 
-		if (goal == $location[The Limerick Dungeon] && (get_property("semirareLocation") == goal || item_amount($item[Cyclops Eyedrops]) > 0 || get_property("lastFilthClearance").to_int() >= my_ascensions() || get_property("sidequestOrchardCompleted") != "none" || get_property("currentHippyStore") != "none" || isActuallyEd() || in_koe()))
+		if (goal == $location[The Limerick Dungeon] && (get_property("semirareLocation") == goal || item_amount($item[Cyclops Eyedrops]) > 0 || get_property("lastFilthClearance").to_int() >= my_ascensions() || get_property("sidequestOrchardCompleted") != "none" || get_property("currentHippyStore") != "none" || isActuallyEd() || in_koe() || item_amount($item[heart of the filthworm queen]) > 0))
 		{
 			goal = $location[The Copperhead Club];
 		}
@@ -3113,6 +3113,15 @@ void resetState() {
 	bat_formNone(); // Vampyre form tracking
 
 	resetMaximize();
+
+	if (canChangeToFamiliar($familiar[Left-Hand Man]) && familiar_equipped_equipment($familiar[Left-Hand Man]) != $item[none]) {
+		// Leaving something equipped on the Left-Hand man like the Latte is currently bugged in mafia
+		// as it will show any skills the equipment gives as available even when you have a completely different familiar
+		// see https://kolmafia.us/showthread.php?24780-April-2020-IOTM-sinistral-homunculus&p=158453&viewfull=1#post158453
+		auto_log_info(`Unequipping your {familiar_equipped_equipment($familiar[Left-Hand Man])} from the Left-Hand Man`, "blue");
+		use_familiar($familiar[Left-Hand Man]);
+		equip($slot[familiar], $item[none]);
+	}
 }
 
 boolean doTasks()
@@ -3359,7 +3368,7 @@ boolean doTasks()
 		if(LX_freeCombats()) return true;
 	}
 
-	if(catBurglarHeist())			return true;
+	catBurglarHeist(); // don't return true from this, isn't adventuring.
 	if(chateauPainting())			return true;
 	if(LX_faxing())						return true;
 	if(LX_artistQuest())				return true;

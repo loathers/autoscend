@@ -1372,7 +1372,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 
 	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
 
-	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent") && get_property("_auto_maximize_equip_off-hand") != "")
+	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
 	{
 		return "skill " + $skill[Throw Latte on Opponent];
 	}
@@ -1439,6 +1439,14 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
+
+	if ((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force")) {
+		// can't use the force on uncopyable monsters
+		if (enemy == $monster[none] || enemy.copyable) {
+			return auto_combatSaberBanish();
+		}
+	}
+
 	if((inCombat ? auto_have_skill($skill[KGB Tranquilizer Dart]) : possessEquipment($item[Kremlin\'s Greatest Briefcase])) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
 	{
 		boolean useIt = true;

@@ -120,6 +120,29 @@ boolean autoOutfit(string toWear)
 	return pass;
 }
 
+boolean autoStripOutfit(string toRemove) {
+	// removes an outfit if you have it equipped
+
+	item[int] outfit_pieces = outfit_pieces(toRemove);
+	if (count(outfit_pieces) == 0 || !is_wearing_outfit(toRemove)) {
+		return false;
+	}
+	auto_log_info(`Removing your {toRemove} outfit as requested.`, "blue");
+	foreach _, piece in outfit_pieces {
+		if (to_slot(piece) != $slot[acc1]) {
+			equip(to_slot(piece), $item[none]);
+		} else {
+			foreach accSlot in $slots[acc1, acc2, acc3] {
+				if (equipped_item(accSlot) == piece) {
+					equip(accSlot, $item[none]);
+					break;
+				}
+			}
+		}
+	}
+	return is_wearing_outfit(toRemove);
+}
+
 boolean tryAddItemToMaximize(slot s, item it)
 {
 	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
@@ -273,6 +296,10 @@ void finalizeMaximize()
 	if(auto_wantToEquipPowerfulGlove())
 	{
 		auto_forceEquipPowerfulGlove();
+	}
+	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 8) {
+		// Save the first 8 sausage goblins for delay burning
+		addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
 	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
