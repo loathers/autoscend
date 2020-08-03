@@ -1275,17 +1275,18 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] office!", "blue");
 
-		if((item_amount($item[Boring Binder Clip]) == 1) && (item_amount($item[McClusky File (Page 5)]) == 1))
-		{
-			visit_url("inv_use.php?pwd=&which=3&whichitem=6694");
-			cli_execute("refresh inv");
+		if (creatable_amount($item[McClusky file (complete)]) > 0) {
+			create(1, $item[McClusky file (complete)]);
+		}
+
+		boolean workingHoliday = ($location[The Hidden Office Building].turns_spent > 0 && $location[The Hidden Office Building].turns_spent % 5 == 0);
+
+		if (!workingHoliday && item_amount($item[McClusky file (complete)]) > 0 && auto_canForceNextNoncombat()) {
+			auto_forceNextNoncombat();
 		}
 
 		auto_log_info("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
-		backupSetting("autoCraft", false);
-		boolean advSpent = autoAdv($location[The Hidden Office Building]);
-		restoreSetting("autoCraft");
-		return advSpent;
+		return autoAdv($location[The Hidden Office Building]);
 	}
 
 	if (internalQuestStatus("questL11Spare") < 2)
@@ -1895,7 +1896,7 @@ boolean L11_shenCopperhead()
 		case $item[Murphy\'s Rancid Black Flag]:		goal = $location[The Castle in the Clouds in the Sky (Top Floor)];	break;
 		case $item[The Eye of the Stars]:				goal = $location[The Hole in the Sky];								break;
 		case $item[The Lacrosse Stick of Lacoronado]:	goal = $location[The Smut Orc Logging Camp];						break;
-		case $item[The Shield of Brook]:				goal = $location[The VERY Unquiet Garves];							break;
+		case $item[The Shield of Brook]:				goal = $location[The Unquiet Garves];							break;
 		}
 		if(goal == $location[none])
 		{

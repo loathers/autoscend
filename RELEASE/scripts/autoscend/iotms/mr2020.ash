@@ -244,19 +244,18 @@ boolean auto_mushroomGardenHandler() {
 
 boolean auto_getGuzzlrCocktailSet() {
 	if (possessEquipment($item[Guzzlr tablet]) && auto_is_valid($item[Guzzlr tablet])) {
-		if (get_property("guzzlrGoldDeliveries").to_int() >= 5) {
+		if (get_property("guzzlrGoldDeliveries").to_int() >= 5
+		&& get_property("questGuzzlr") == "unstarted"
+		&& get_property("_guzzlrPlatinumDeliveries").to_int() == 0
+		&& !get_property("_guzzlrQuestAbandoned").to_boolean()) {
 			auto_log_info("Getting a Guzzlr Cocktail Set (for all the good it will do).");
-			if (get_property("questGuzzlr") == "unstarted" && get_property("_guzzlrPlatinumDeliveries").to_int() == 0 && !get_property("_guzzlrQuestAbandoned").to_boolean()) {
-      	visit_url("inventory.php?tap=guzzlr", false);
-      	run_choice(4); // take platinum quest
-				wait(1); // mafia's tracking breaks occasionally if you go too fast.
-      	visit_url("inventory.php?tap=guzzlr", false);
-      	run_choice(1); // abandon
-      	run_choice(5); // leave the choice.
-				return true; // ponder on what else you could've spent the Mr. Accessory on instead.
-    	}
-		} else {
-			auto_log_info("You haven't unlocked the platinum Guzzlr quests yet. I wouldn't worry about it though as it's all but useless.");
+			visit_url("inventory.php?tap=guzzlr", false);
+			run_choice(4); // take platinum quest
+			wait(1); // mafia's tracking breaks occasionally if you go too fast.
+			visit_url("inventory.php?tap=guzzlr", false);
+			run_choice(1); // abandon
+			run_choice(5); // leave the choice.
+			return true; // ponder on what else you could've spent the Mr. Accessory on instead.
 		}
 	}
 	return false;

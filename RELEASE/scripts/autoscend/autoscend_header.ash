@@ -172,6 +172,7 @@ int auto_warTotalBattles(WarPlan plan, int remaining);		//Defined in autoscend/a
 int auto_warTotalBattles(WarPlan plan);						//Defined in autoscend/auto_quest_level_12.ash
 boolean warAdventure();										//Defined in autoscend/auto_quest_level_12.ash
 boolean haveWarOutfit();									//Defined in autoscend/auto_quest_level_12.ash
+boolean warOutfit(boolean immediate);
 boolean warOutfit();										//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_sonofaPrefix();									//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_themtharHills();								//Defined in autoscend/auto_quest_level_12.ash
@@ -640,6 +641,7 @@ boolean autoEquip(slot s, item it); //Defined in autoscend/auto_equipment.ash
 boolean autoEquip(item it); //Defined in autoscend/auto_equipment.ash
 boolean autoForceEquip(slot s, item it); //Defined in autoscend/auto_equipment.ash
 boolean autoForceEquip(item it); //Defined in autoscend/auto_equipment.ash
+boolean autoStripOutfit(string toRemove);
 boolean tryAddItemToMaximize(slot s, item it); //Defined in autoscend/auto_equipment.ash
 string defaultMaximizeStatement(); //Defined in autoscend/auto_equipment.ash
 void resetMaximize(); //Defined in autoscend/auto_equipment.ash
@@ -716,6 +718,7 @@ boolean auto_latteRefill(string want1, string want2); // Defined in autoscend/au
 boolean auto_latteRefill(string want1, boolean force); // Defined in autoscend/auto_mr2018.ash
 boolean auto_latteRefill(string want1); // Defined in autoscend/auto_mr2018.ash
 boolean auto_latteRefill(); // Defined in autoscend/auto_mr2018.ash
+boolean auto_haveVotingBooth();
 boolean auto_voteSetup();										//Defined in autoscend/iotms/auto_mr2018.ash
 boolean auto_voteSetup(int candidate);						//Defined in autoscend/iotms/auto_mr2018.ash
 boolean auto_voteSetup(int candidate, int first, int second);	//Defined in autoscend/iotms/auto_mr2018.ash
@@ -733,6 +736,7 @@ boolean auto_sausageGrind(int numSaus); // Defined in autoscend/auto_mr2019.ash
 boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll); // Defined in autoscend/auto_mr2019.ash
 boolean auto_sausageEatEmUp(int maximumToEat); // Defined in autoscend/auto_mr2019.ash
 boolean auto_sausageEatEmUp(); // Defined in autoscend/auto_mr2019.ash
+boolean auto_haveKramcoSausageOMatic();
 boolean auto_sausageGoblin(); // Defined in autoscend/auto_mr2019.ash
 boolean auto_sausageGoblin(location loc); // Defined in autoscend/auto_mr2019.ash
 boolean auto_sausageGoblin(location loc, string option); // Defined in autoscend/auto_mr2019.ash
@@ -757,6 +761,7 @@ boolean auto_beachUseFreeCombs();	// Defined in autoscend/auto_mr2019.ash
 effect auto_beachCombHeadEffect(string name); // Defined in autoscend/auto_mr2019.ash
 boolean auto_campawayAvailable();	// Defined in autoscend/auto_mr2019.ash
 boolean auto_campawayGrabBuffs();	// Defined in autoscend/auto_mr2019.ash
+boolean auto_havePillKeeper();
 int auto_pillKeeperUses();						//Defined in autoscend/iotms/auto_mr2019.ash
 boolean auto_pillKeeperFreeUseAvailable();	//Defined in autoscend/iotms/auto_mr2019.ash
 boolean auto_pillKeeperAvailable();			//Defined in autoscend/iotms/auto_mr2019.ash

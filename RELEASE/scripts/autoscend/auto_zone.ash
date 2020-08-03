@@ -608,7 +608,7 @@ generic_t zone_delay(location loc)
 		value = 5 - loc.turns_spent;
 		break;
 	case $location[The Hidden Park]:
-		if(!possessEquipment($item[Antique Machete]) && !possessEquipment($item[Muculent Machete]))
+		if(!possessEquipment($item[Antique Machete]) && !possessEquipment($item[Muculent Machete]) && in_hardcore())
 		{
 			value = 6 - loc.turns_spent;
 		}
@@ -672,6 +672,14 @@ generic_t zone_delay(location loc)
 	case $location[The Castle in the Clouds in the Sky (Ground Floor)]:
 		value = 10 - loc.turns_spent;
 		break;
+	case $location[The Haunted Pantry]:
+		if (isGuildClass() && my_primestat() == $stat[mysticality]) {
+			value = 5 - loc.turns_spent;
+		}
+	case $location[The Sleazy Back Alley]:
+		if (isGuildClass() && my_primestat() == $stat[moxie]) {
+			value = 5 - loc.turns_spent;
+		}
 	default:
 		retval._error = true;
 		break;

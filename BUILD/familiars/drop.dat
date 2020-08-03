@@ -22,17 +22,11 @@ Fist Turkey	prop:_turkeyMuscle<5;mainstat:Muscle;path:The Source
 Fist Turkey	prop:_turkeyMyst<5;mainstat:Mysticality;path:The Source
 Fist Turkey	prop:_turkeyMoxie<5;mainstat:Moxie;path:The Source
 #
-# Cat Burgler can charge up heists. 30 combats give it 2 charges.
+# Cat Burglar can charge up heists. 30 combats give it 2 charges.
 Cat Burglar	prop:_catBurglarCharge<30
 #
-# Drops many items. make sure we got 1 in stock of the banisher, as well as size 1 density 5 food/drink
-# Because it drops so many different items the odds of getting what we want are reduced. so lowered its priority
-Elf Operative	item:tryptophan dart<1
-Elf Operative	item:elf army field rations<1
-Elf Operative	item:martiny<1
-# drops size 1 density 4.5 food and drink. odds of drop are relatively low so it down here
-Garbage Fire	item:extra-toasted half sandwich<1
-Garbage Fire	item:mulled hobo wine<1
+# Melodramedary generating spit seems good
+#Melodramedary	prop:camelSpit<100 - Don't uncomment until we actally use it
 #
 # Drops BACON every battle. 100 bacon makes size 15 density 4.83 food. 150 bacon can get you a fat loot token
 Intergnat	item:BACON<150
@@ -58,33 +52,5 @@ Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 Blavious Kloop	prop:_kloopDrops<5
 # can drop 5 absinthe a day
 Green Pixie	prop:_absintheDrops<5
-# Drops robin's egg every 30 combats. +3 all res potion
-Rockin' Robin	item:robin\'s egg<1
 # Hot ashes can make a potion that gives +15 ML for 15 adv. drop limit 5/day
 Galloping Grill	prop:_hotAshesDrops<5
-#
-# Below this line are familiars with no properties. meaning if you have it then it will be kept selected permanently.
-# Most of those also appear higher up in the file with properties. Meaning we use them until a select amount is grabbed first.
-#
-# Drops many items. among them: banish, restore, stun, damage, size 1 density 5 food/drink, -combat equip, all res +2 equip, +3XP equip, +15% meat equip
-Elf Operative
-# Drops more burning newspapers. one per 30 combats. also drops size 1 density 4.5 food and drink
-Garbage Fire
-# Drops x and o with no limit. 1 each per nine combats. makes density 4.5 food. density 4 booze. can skip building a bridge.
-XO Skeleton
-# Drops BACON every combat
-Intergnat
-# Generates adventures after combat
-Reagnimated Gnome
-# Every 30 combats drops wax which makes a single size 2 density 4.25 food or drink 
-Optimistic Candle
-# Drops robin's egg every 30 combats. +3 all res potion
-Rockin' Robin
-# cheap IOTM derivative that drops many different things. many are junk, but it does have size 3 density 3.83 food which is better than nothing.
-Lil' Barrel Mimic
-# Once the hot ashes all dropped. remaining drops are not that useful.
-Galloping Grill
-# Can use to track phyllum, every 11 encounters from tracked phyllum results in a drop. Needs more code before it goes higher on the list
-Red-Nosed Snapper
-# 2% and 4% chance respectively to drop time's arrow and arrowgram.
-Obtuse Angel

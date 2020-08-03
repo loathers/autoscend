@@ -177,6 +177,13 @@ boolean auto_sausageEatEmUp() {
 	return auto_sausageEatEmUp(0);
 }
 
+boolean auto_haveKramcoSausageOMatic() {
+	if (possessEquipment($item[Kramco Sausage-o-Matic&trade;]) && auto_can_equip($item[Kramco Sausage-o-Matic&trade;])) {
+		return true;
+	}
+	return false;
+}
+
 boolean auto_sausageGoblin()
 {
 	return auto_sausageGoblin($location[none], "");
@@ -193,11 +200,7 @@ boolean auto_sausageGoblin(location loc, string option)
 	// by all sorts stuff like superlikelies, wanderers and semi-rares.
 	// The good news is, being overridden just means adventure there again to get it
 
-	if(!possessEquipment($item[Kramco Sausage-o-Matic&trade;]))
-	{
-		return false;
-	}
-	if(!auto_can_equip($item[Kramco Sausage-o-Matic&trade;]))
+	if(!auto_haveKramcoSausageOMatic())
 	{
 		return false;
 	}
@@ -207,13 +210,7 @@ boolean auto_sausageGoblin(location loc, string option)
 	// x is the number of goblins you've already encountered that day.
 	// spoilered by The Dictator in ASS Discord #iotm-discussion
 	// intervals are therefore 0, 7, 10, 13, 16, 19, 23, 33, 55, 95, 128...
-	// cut off delay burning after the 8th as the interval gets very large from #9
 	int sausageFights = get_property("_sausageFights").to_int();
-	if (sausageFights >= 8)
-	{
-		return false;
-	}
-
 	float numerator = (total_turns_played() - get_property("_lastSausageMonsterTurn").to_float()) + 1.0;
 	float denominator = 5.0 + (sausageFights * 3.0) + (max(0.0, sausageFights - 5.0))**3.0;
 	if (sausageFights > 0 && (numerator / denominator) < 1.0)
@@ -729,11 +726,13 @@ boolean auto_campawayGrabBuffs()
 	return true;
 }
 
+boolean auto_havePillKeeper() {
+	return (possessEquipment($item[Eight Days a Week Pill Keeper]) && is_unrestricted($item[Unopened Eight Days a Week Pill Keeper]));
+}
+
 int auto_pillKeeperUses()
 {
-	if (0 == equipmentAmount($item[Eight Days a Week Pill Keeper])
-		|| (!is_unrestricted($item[Unopened Eight Days a Week Pill Keeper])))
-	{
+	if (!auto_havePillKeeper()) {
 		return 0;
 	}
 	return spleen_left()/3 + 1 - get_property("_freePillKeeperUsed").to_boolean().to_int();

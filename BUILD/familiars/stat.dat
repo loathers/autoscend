@@ -1,16 +1,8 @@
 # Sombrero is desirable with a decent amount of ML
 Galloping Grill	ML:>=120
 Baby Sandworm	ML:>=120
+God Lobster	ML:>=120;item:God Lobster's Ring>0
 Hovering Sombrero	ML:>=120
-# Wanna get yummy chewables
-Golden Monkey	prop:_powderedGoldDrops<3
-Bloovian Groose	prop:_grooseDrops<3
-Unconscious Collective	prop:_dreamJarDrops<3
-Grim Brother	prop:_grimFairyTaleDrops<3
-# Might as well grab an egg
-Rockin' Robin	prop:rockinRobinProgress>=25
-# And some wax
-Optimistic Candle	prop:optimisticCandleProgress>=25
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
 Crimbo Shrub
 # Volleyballs with a multiplier
