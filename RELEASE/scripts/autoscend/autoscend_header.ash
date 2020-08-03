@@ -25,7 +25,6 @@ boolean LX_hippyBoatman();
 boolean LX_lockPicking();
 float estimateDailyDungeonAdvNeeded();				//Defined in autoscend/quests/level_any.ash
 boolean LX_fatLootToken();							//Defined in autoscend/quests/level_any.ash
-boolean wantCubeling();								//Defined in autoscend/quests/level_any.ash
 boolean LX_dailyDungeonToken();						//Defined in autoscend/quests/level_any.ash
 boolean LX_islandAccess();
 boolean fancyOilPainting();
@@ -268,6 +267,7 @@ boolean handleFamiliar(string type);						//Defined in autoscend/auto_familiar.a
 boolean handleFamiliar(familiar fam);						//Defined in autoscend/auto_familiar.ash
 boolean autoChooseFamiliar(location place);					//Defined in autoscend/auto_familiar.ash
 boolean haveSpleenFamiliar();								//Defined in autoscend/auto_familiar.ash
+boolean wantCubeling();										//Defined in autoscend/auto_familiar.ash
 
 
 //Do we have a some item either equipped or in inventory (not closet or hagnk\'s.

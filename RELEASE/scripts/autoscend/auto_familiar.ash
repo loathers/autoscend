@@ -473,3 +473,16 @@ boolean haveSpleenFamiliar()
 	}
 	return false;
 }
+
+boolean wantCubeling()
+{
+	//do we still want to use a gelatinous cubeling familiar so that it will drop the daily dungeon tools
+	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
+	{
+		return false;	//can not use it so we do not want it.
+	}
+	
+	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
+	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one
+	return item_amount($item[eleven-foot pole]) == 0 || need_ring || need_lockpicks;
+}
