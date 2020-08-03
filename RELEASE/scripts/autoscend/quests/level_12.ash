@@ -865,13 +865,12 @@ boolean L12_filthworms()
 			buyUpTo(1, $item[third-hand lantern]);
 			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
 		}
-		
-		//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
-		if(januaryToteAcquire($item[Broken Champagne Bottle]))
-		{
-			equip($item[Broken Champagne Bottle]);
+
+		if (!canChangeToFamiliar($familiar[XO Skeleton]) && catBurglarHeistsLeft() < 1) {
+			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
+			januaryToteAcquire($item[Broken Champagne Bottle]);
 		}
-		
+
 		if(auto_my_path() == "Live. Ascend. Repeat.")
 		{
 			equipMaximizedGear();
@@ -990,7 +989,6 @@ boolean L12_gremlins()
 	// this keeps us from accidentally killing gremlins
 	addToMaximize("-familiar");
 
-	#Put a different shield in here.
 	auto_log_info("Doing them gremlins", "blue");
 	addToMaximize("20dr,1da 1000max,3hp,-3ml");
 	acquireHP();

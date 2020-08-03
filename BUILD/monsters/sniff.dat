@@ -8,6 +8,7 @@ Morbid Skull
 Pygmy Bowler
 Pygmy Witch Surgeon
 pygmy witch accountant	loc:The Hidden Office Building
+pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
 Pygmy Janitor	!tavern:true
 Quiet Healer
 Tomb Rat
@@ -24,3 +25,6 @@ Dirty Old Lihc	prop:cyrptNicheEvilness>28
 Possibility Giant	prop:chaosButterflyThrown=false;item:chaos butterfly<1
 Serialbus	item:bus pass<5
 CH Imp	item:imp air<5
+Camel Toe
+Skinflute
+Red Butler

@@ -698,6 +698,9 @@ boolean LX_joinPirateCrew() {
 		} else {
 			auto_log_info("Insult gathering party.", "blue");
 			addToMaximize("-outfit Swashbuckling Getup");
+			// If we're wearing the pirate outfit already, autoAdv will fail to adventure
+			// in the cove since the zone isn't available unless we remove it (which wouldn't happen until auto_pre_adv runs)
+			autoStripOutfit("Swashbuckling Getup");
 			if (autoAdv($location[The Obligatory Pirate\'s Cove])) {
 				return true;
 			}

@@ -8,7 +8,9 @@
 Galloping Grill	prop:_hotAshesDrops<5
 # starfish that drops 5 tokens a day that can be exchanged for a spleen consumable that gives adv
 Rogue Program	prop:_tokenDrops<5
-# whelp. Drops x and o with no limit. 1 each per nine combats. makes density 4.5 food. density 4 booze. can skip building a bridge.
+# Fairywhelps. Weight is better used on these and 2 of them drop useful items.
+Pocket Professor
+Garbage Fire
 XO Skeleton
 # Drops assorted stuff, mostly junk. has some awesome food. requires familiar equip brass bung spigot to regen HP/MP
 Lil' Barrel Mimic	item:brass bung spigot>0
@@ -28,10 +30,8 @@ Snow Angel
 Underworld Bonsai
 Star Starfish
 # Fairysuperwhelps
-Garbage Fire
 Choctopus
 # Superwhelps
-Melodramedary
 Plastic Pirate Skull
 Trick-or-Treating Tot
 # Fairywhelps
