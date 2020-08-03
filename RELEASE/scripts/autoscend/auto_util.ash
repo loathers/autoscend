@@ -6888,6 +6888,11 @@ boolean auto_setMCDToCap()
 // We use this function to determine the suitability of using Ur-Kel's
 boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 {
+	if(!auto_have_skill($skill[Ur-Kel\'s Aria of Annoyance]))
+	{
+		return false;
+	}
+
 	if((have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0) && ((monster_level_adjustment() + (2 * my_level())) <= auto_convertDesiredML(UrKelToML)))
 	{
 		if((get_property("auto_MLSafetyLimit") == "") || (((2 * my_level()) <= UrKelUpperLimit) && ((2 * my_level()) >= UrKelLowerLimit)))
