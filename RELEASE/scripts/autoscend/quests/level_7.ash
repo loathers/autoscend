@@ -85,19 +85,8 @@ boolean L7_crypt()
 
 		bat_formBats();
 
-		januaryToteAcquire($item[broken champagne bottle]);
-		if(get_property("cyrptNookEvilness").to_int() > 26)
-		{
-			removeFromMaximize("-equip " + $item[broken champagne bottle]);
-		}
-		else if((numeric_modifier("item drop") < 400) && (item_amount($item[Broken Champagne Bottle]) > 0) && (get_property("cyrptNookEvilness").to_int() > 26))
-		{
-			autoEquip($item[broken champagne bottle]);
-		}
-
-		if(get_property("cyrptNookEvilness").to_int() >= 28)
-		{
-			useNightmareFuelIfPossible();
+		if (get_property("cyrptNookEvilness").to_int() > 26) {
+			januaryToteAcquire($item[broken champagne bottle]);
 		}
 
 		autoAdv(1, $location[The Defiled Nook]);

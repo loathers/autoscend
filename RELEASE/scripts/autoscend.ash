@@ -2905,6 +2905,15 @@ boolean adventureFailureHandler()
 				tooManyAdventures = false;
 			}
 		}
+		
+		if(tooManyAdventures && in_bhy())
+		{
+			if($locations[A-Boo Peak, Twin Peak] contains my_location())
+			{
+				//bees prevent doing these quickly
+				tooManyAdventures = false;
+			}
+		}
 
 		if ($locations[The Haunted Gallery] contains my_location() && my_location().turns_spent < 100)
 		{

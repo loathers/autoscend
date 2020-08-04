@@ -2015,7 +2015,7 @@ int cloversAvailable()
 	retval += item_amount($item[Ten-Leaf Clover]);
 	retval += closet_amount($item[Ten-Leaf Clover]);
 
-	if(auto_my_path() == "G-Lover" || auto_my_path() == "Bees Hate You")
+	if(auto_my_path() == "G-Lover" || in_bhy())
 	{
 		retval -= item_amount($item[Disassembled Clover]);
 	}
@@ -2046,7 +2046,7 @@ boolean cloverUsageInit()
 
 	if(item_amount($item[Disassembled Clover]) > 0)
 	{
-		if(auto_my_path() != "G-Lover" && auto_my_path() != "Bees Hate You")
+		if(auto_my_path() != "G-Lover" && !in_bhy())
 		{
 			use(1, $item[Disassembled Clover]);
 		}
@@ -2081,7 +2081,7 @@ boolean cloverUsageFinish()
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
 		auto_log_debug("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
-		if(auto_my_path() == "G-Lover" || auto_my_path() == "Bees Hate You")
+		if(auto_my_path() == "G-Lover" || in_bhy())
 		{
 			put_closet(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
 		}
@@ -4095,7 +4095,7 @@ boolean use_barrels()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Bees Hate You")
+	if(in_bhy())
 	{
 		return false;
 	}
@@ -5353,7 +5353,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 		break;
 	case $effect[Float Like a Butterfly, Smell Like a Bee]:
-		if(auto_my_path() == "Bees Hate You")
+		if(in_bhy())
 		{
 			useItem = $item[honeypot];
 		}																						break;
