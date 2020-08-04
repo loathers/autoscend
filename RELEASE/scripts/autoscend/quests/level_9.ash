@@ -315,10 +315,9 @@ boolean L9_aBooPeak()
 	{
 		auto_log_info("A-Boo Peak (initial): " + get_property("booPeakProgress"), "blue");
 
-		if (clueAmt < 3 && item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[Broken Champagne Bottle]))
+		if (clueAmt < 3)
 		{
 			januaryToteAcquire($item[Broken Champagne Bottle]);
-			removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
 		}
 
 		return autoAdv(1, $location[A-Boo Peak]);
@@ -585,10 +584,9 @@ boolean L9_aBooPeak()
 	}
 	else
 	{
-		if ($location[A-Boo Peak].turns_spent < 10 && item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[Broken Champagne Bottle]))
+		if ($location[A-Boo Peak].turns_spent < 10)
 		{
 			januaryToteAcquire($item[Broken Champagne Bottle]);
-			removeFromMaximize("-equip " + $item[Broken Champagne Bottle]);
 		}
 
 		autoAdv(1, $location[A-Boo Peak]);
