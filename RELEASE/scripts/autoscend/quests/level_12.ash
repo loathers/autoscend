@@ -171,7 +171,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(auto_my_path() == "Bees Hate You" || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || auto_my_path() == "Pocket Familiars")
 	{
 		return advCost;
 	}
@@ -257,7 +257,7 @@ WarPlan auto_bestWarPlan()
 	boolean considerNuns = true;
 	boolean considerFarm = true;
 	
-	if(auto_my_path() == "Bees Hate You" || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || auto_my_path() == "Pocket Familiars")
 	{
 		considerArena = false;
 		considerJunkyard = false;
@@ -924,7 +924,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if (in_koe() || auto_my_path() == "Pocket Familiars" || auto_my_path() == "Bees Hate You")
+	if (in_koe() || auto_my_path() == "Pocket Familiars" || in_bhy())
 	{
 		return false;
 	}
@@ -1707,7 +1707,7 @@ boolean L12_themtharHills()
 
 boolean LX_obtainChaosButterfly()
 {
-	if(auto_my_path() == "Bees Hate You" || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || auto_my_path() == "Pocket Familiars")
 	{
 		return false;
 	}
