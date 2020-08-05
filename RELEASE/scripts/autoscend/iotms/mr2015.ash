@@ -1066,10 +1066,6 @@ boolean deck_useScheme(string action)
 
 		if(card == "key")
 		{
-			if(my_daycount() == 1)
-			{
-				set_property("auto_cubeItems", false);
-			}
 			if(towerKeyCount() >= 3)
 			{
 				continue;

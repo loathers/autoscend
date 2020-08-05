@@ -428,20 +428,16 @@ boolean LX_fatLootToken()
 	
 	return false;
 }
-	
+
 boolean LX_dailyDungeonToken()
 {
 	if(get_property("dailyDungeonDone").to_boolean())
 	{
 		return false;	// already done today
 	}
-	
-	if(!possessEquipment($item[Ring of Detect Boring Doors]) || item_amount($item[Eleven-Foot Pole]) == 0 || item_amount($item[Pick-O-Matic Lockpicks]) == 0)
+	if(wantCubeling())
 	{
-		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-		{
-			return false;	//we can switch to cubeling so wait until we have all the tools before doing daily dungeon
-		}
+		return false;	//can switch to cubeling so wait until we have all the tool drops before doing daily dungeon
 	}
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin

@@ -268,6 +268,7 @@ boolean handleFamiliar(string type);						//Defined in autoscend/auto_familiar.a
 boolean handleFamiliar(familiar fam);						//Defined in autoscend/auto_familiar.ash
 boolean autoChooseFamiliar(location place);					//Defined in autoscend/auto_familiar.ash
 boolean haveSpleenFamiliar();								//Defined in autoscend/auto_familiar.ash
+boolean wantCubeling();										//Defined in autoscend/auto_familiar.ash
 
 
 //Do we have a some item either equipped or in inventory (not closet or hagnk\'s.
@@ -915,7 +916,6 @@ int jello_absorbsLeft();									//Defined in autoscend/auto_jellonewbie.ash
 int gnoobAbsorbCost(item it);								//Defined in autoscend/auto_jellonewbie.ash
 void jello_buySkills();										//Defined in autoscend/auto_jellonewbie.ash
 boolean in_gnoob();											//Defined in autoscend/auto_jellonewbie.ash
-void jello_initializeSettings();							//Defined in autoscend/auto_jellonewbie.ash
 string[item] jello_lister();								//Defined in autoscend/auto_jellonewbie.ash
 string[item] jello_lister(string goal);						//Defined in autoscend/auto_jellonewbie.ash
 void jello_startAscension(string page);						//Defined in autoscend/auto_jellonewbie.ash

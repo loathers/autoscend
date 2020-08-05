@@ -351,10 +351,8 @@ boolean autoChooseFamiliar(location place)
 
 	//Gelatinous Cubeling drops items that save turns in the daily dungeon
 	if(famChoice == $familiar[none] &&
-	canChangeToFamiliar($familiar[Gelatinous Cubeling]) &&
-	get_property("auto_useCubeling").to_boolean() &&
-	get_property("auto_cubeItems").to_boolean()
-	&& lookupFamiliarDatafile("item") != $familiar[Gelatinous Cubeling]) // don't farm the drops if this is the best +item familiar we have. We will get them regardless.
+	wantCubeling() &&
+	lookupFamiliarDatafile("item") != $familiar[Gelatinous Cubeling]) // don't farm the drops if this is the best +item familiar we have. We will get them regardless.
 	{
 		famChoice = $familiar[Gelatinous Cubeling];
 	}
@@ -474,4 +472,17 @@ boolean haveSpleenFamiliar()
 		}
 	}
 	return false;
+}
+
+boolean wantCubeling()
+{
+	//do we still want to use a gelatinous cubeling familiar so that it will drop the daily dungeon tools
+	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
+	{
+		return false;	//can not use it so we do not want it.
+	}
+	
+	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
+	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one
+	return item_amount($item[eleven-foot pole]) == 0 || need_ring || need_lockpicks;
 }
