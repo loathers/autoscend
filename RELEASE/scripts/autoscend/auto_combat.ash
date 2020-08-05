@@ -2983,7 +2983,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			{
 				auto_log_warning("Unable to track yellow ray behavior: " + combatAction, "red");
 			}
-			if(combatAction == ("skill " + $skill[Asdon Martin: Missile Launcher]))
+			if(combatAction == useSkill($skill[Asdon Martin: Missile Launcher], false))
 			{
 				set_property("_missileLauncherUsed", true);
 			}
