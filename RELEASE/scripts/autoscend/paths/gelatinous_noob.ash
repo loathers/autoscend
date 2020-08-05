@@ -5,14 +5,6 @@ boolean in_gnoob()
 	return my_class() == $class[Gelatinous Noob];
 }
 
-void jello_initializeSettings()
-{
-	if(in_gnoob())
-	{
-		set_property("auto_cubeItems", false);
-	}
-}
-
 void jello_startAscension(string page)
 {
 	if(contains_text(page, "Welcome to the Kingdom, Gelatinous Noob"))

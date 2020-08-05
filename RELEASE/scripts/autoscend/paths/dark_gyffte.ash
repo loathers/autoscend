@@ -11,11 +11,9 @@ void bat_initializeSettings()
 {
 	if(my_path() == "Dark Gyffte")
 	{
-		set_property("auto_cubeItems", false);
 		set_property("auto_getSteelOrgan", false);
 		set_property("auto_grimstoneFancyOilPainting", false);
 		set_property("auto_paranoia", 10);
-		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);
 		set_property("auto_bat_desiredForm", "");
 	}
