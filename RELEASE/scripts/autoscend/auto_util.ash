@@ -2804,10 +2804,12 @@ float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
 	}
 
 	if (get_property("_horsery") == "dark horse") {
-		horseNone();
+		if (!speculative) {
+			horseNone();
+		}
 		delta += (-1.0 * numeric_modifier("Horsery:dark horse", "Combat Rate")); // horsery changes don't happen until pre-adventure so this needs to be manually added otherwise it won't count.
 		auto_log_debug("We " + (speculative ? "can remove" : "will remove") + " Dark Horse, we will have " + result());
-	} else {
+	} else if (!speculative) {
 		horseMaintain();
 	}
 	if(pass()) {
@@ -2947,12 +2949,16 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 	}
 
 	if (isHorseryAvailable() && my_meat() > horseCost() && get_property("_horsery") != "dark horse") {
-		horseDark();
+		if (!speculative) {
+			horseDark();
+		}
 		delta += (-1.0 * numeric_modifier("Horsery:dark horse", "Combat Rate")); // horsery changes don't happen until pre-adventure so this needs to be manually added otherwise it won't count.
 		auto_log_debug("We " + (speculative ? "can gain" : "will gain") + " Dark Horse, we will have " + result());
-		if(pass()) {
-			return result();
-		}
+	} else if (!speculative) {
+		horseMaintain();
+	}
+	if(pass()) {
+		return result();
 	}
 
 
