@@ -476,10 +476,14 @@ boolean haveSpleenFamiliar()
 
 boolean wantCubeling()
 {
-	//do we still want to use a gelatinous cubeling familiar so that it will drop the daily dungeon tools
+	//do we still want to use a gelatinous cubeling familiar specifically for it to drop the daily dungeon tools
 	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 	{
 		return false;	//can not use it so we do not want it.
+	}
+	if(get_property("cubelingProgress").to_int() > 11)
+	{
+		return false;	//cubeling already dropped tools in this ascension. It cannot drop more until you ascend again.
 	}
 	
 	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;

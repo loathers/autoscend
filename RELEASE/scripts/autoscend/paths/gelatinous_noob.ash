@@ -91,6 +91,10 @@ void jello_buySkills()
 
 	boolean[item] blacklist;
 	
+	if(item_amount($item[Pick-O-Matic lockpicks]) == 1)
+	{
+		blacklist[$item[Pick-O-Matic lockpicks]] = true;	//do not absorb our last lockpick. could have more than 1 in postronin
+	}
 	if(internalQuestStatus("questL10Garbage") < 2 && item_amount($item[Enchanted Bean]) == 1)
 	{
 		blacklist[$item[Enchanted Bean]] = true;	//need to keep our only enchanted bean to be planted
