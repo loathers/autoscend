@@ -132,7 +132,7 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = (auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin());
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin()) && place == solveDelayZone());
 	generic_t combatModifier = zone_combatMod(place);
 	if (combatModifier._boolean && !burningDelay && !auto_haveQueuedForcedNonCombat()) {
 		acquireCombatMods(combatModifier._int, true);
