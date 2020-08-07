@@ -1243,11 +1243,6 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(contains_text(combatState, "yellowray"))
-	{
-		abort("Ugh, where is my damn yellowray!!!");
-	}
-
 	if(item_amount($item[Green Smoke Bomb]) > 0)
 	{
 		if($monsters[Animated Possessions, Natural Spider] contains enemy)
@@ -2970,7 +2965,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if (!contains_text(combatState, "yellowray") && canYellowRay(enemy) && auto_wantToYellowRay(enemy, my_location()))
+	if(!contains_text(combatState, "yellowray") && auto_wantToYellowRay(enemy, my_location()))
 	{
 		string combatAction = yellowRayCombatString(enemy, true);
 		if(combatAction != "")
@@ -2988,7 +2983,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			{
 				auto_log_warning("Unable to track yellow ray behavior: " + combatAction, "red");
 			}
-			if(combatAction == ("skill " + $skill[Asdon Martin: Missile Launcher]))
+			if(combatAction == useSkill($skill[Asdon Martin: Missile Launcher], false))
 			{
 				set_property("_missileLauncherUsed", true);
 			}
