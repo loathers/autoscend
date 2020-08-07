@@ -2805,6 +2805,8 @@ float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
 
 	if (get_property("_horsery") == "dark horse") {
 		horseNone();
+		delta += (-1.0 * numeric_modifier("Horsery:dark horse", "Combat Rate")); // horsery changes don't happen until pre-adventure so this needs to be manually added otherwise it won't count.
+		auto_log_debug("We " + (speculative ? "can remove" : "will remove") + " Dark Horse, we will have " + result());
 	} else {
 		horseMaintain();
 	}
@@ -2815,6 +2817,9 @@ float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
 	void handleEffect(effect eff) {
 		if (speculative) {
 			delta += numeric_modifier(eff, "Combat Rate");
+			if (eff == $effect[Musk of the Moose] && have_effect($effect[Smooth Movements]) > 0) {
+				delta += (-1.0 * numeric_modifier($effect[Smooth Movements], "Combat Rate")); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
+			}
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
 	}
@@ -2941,14 +2946,22 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 		}
 	}
 
-	horseDark();
-	if(pass()) {
-		return result();
+	if (isHorseryAvailable() && my_meat() > horseCost() && get_property("_horsery") != "dark horse") {
+		horseDark();
+		delta += (-1.0 * numeric_modifier("Horsery:dark horse", "Combat Rate")); // horsery changes don't happen until pre-adventure so this needs to be manually added otherwise it won't count.
+		auto_log_debug("We " + (speculative ? "can gain" : "will gain") + " Dark Horse, we will have " + result());
+		if(pass()) {
+			return result();
+		}
 	}
+
 
 	void handleEffect(effect eff) {
 		if (speculative) {
 			delta += (-1.0 * numeric_modifier(eff, "Combat Rate"));
+			if (eff == $effect[Smooth Movements] && have_effect($effect[Musk of the Moose]) > 0) {
+				delta += numeric_modifier($effect[Musk of the Moose], "Combat Rate"); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
+			}
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
 	}

@@ -787,6 +787,7 @@ boolean auto_canFightPiranhaPlant();
 boolean auto_canTendMushroomGarden();
 
 boolean getSpaceJelly();					//Defined in autoscend/iotms/auto_mr2017.ash
+boolean isHorseryAvailable();
 int horseCost();											//Defined in autoscend/iotms/auto_mr2017.ash
 string horseNormalize(string horseText); // Defined in autoscend/auto_mr2017.ash
 boolean getHorse(string type);								//Defined in autoscend/iotms/auto_mr2017.ash
