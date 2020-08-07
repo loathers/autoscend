@@ -1455,9 +1455,18 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests){
 	
 	//owning a hand in glove breaks maxHP tracking. need to check possession rather than equipped because unequipping it also breaks it. in fact it causes us to get stuck in an infinite loop of trying to restore hp when already at max HP.
 	//mafia devs think it is actually a kol bug so they won't fix it. https://kolmafia.us/showthread.php?25214
-	if(possessEquipment($item[hand in glove]))
+	if(possessEquipment($item[Hand in Glove]))
 	{
+		int initial_maxHP = my_maxhp();
 		cli_execute("refresh status");
+		if(initial_maxHP == my_maxhp())
+		{
+			auto_log_debug("I just refreshed status because I detected [Hand in Glove]. But it turned out to not have been necessary");
+		}
+		else
+		{
+			auto_log_debug("I just refreshed status because I detected [Hand in Glove] and it corrected my maxHP value. This prevented an infinite loop");
+		}
 	}
 
   boolean isMax = (goal == my_maxhp());
