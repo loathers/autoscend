@@ -4,17 +4,6 @@ script "auto_cooking.ash"
 #	Handler for in-run consumption
 #
 
-boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);
-boolean consumeMilkOfMagnesiumIfUnused(boolean useAdv);
-boolean autoEat(int howMany, item toEat);
-boolean autoEat(int howMany, item toEat, boolean silent);
-boolean autoDrink(int howMany, item toDrink);
-boolean autoOverdrink(int howMany, item toOverdrink);
-boolean autoChew(int howMany, item toChew);
-boolean tryPantsEat();
-boolean canDrink(item toDrink);
-boolean canEat(item toEat);
-
 boolean saucemavenApplies(item it)
 {
 	static boolean[item] saucy_foods = $items[Cold hi mein,
