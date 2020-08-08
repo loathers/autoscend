@@ -370,7 +370,7 @@ boolean LX_unlockManorSecondFloor() {
 		return false;
 	}
 
-	if (!hasSpookyravenLibraryKey() || possessEquipment($item[ghost of a necklace])) {
+	if (!hasSpookyravenLibraryKey()) {
 		return false;
 	}
 
