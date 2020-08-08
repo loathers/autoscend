@@ -4,13 +4,6 @@ script "mr2014.ash"
 #	Handling: Bjorn, Little Geneticist DNA-Splicing Lab, Xi-Receiver Unit
 #
 
-
-boolean dna_bedtime();
-boolean dna_sorceressTest();
-boolean dna_generic();
-boolean dna_startAcquire();
-boolean xiblaxian_makeStuff();
-
 boolean handleBjornify(familiar fam)
 {
 	if(in_hardcore())
