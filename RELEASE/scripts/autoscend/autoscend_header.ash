@@ -1264,6 +1264,7 @@ boolean auto_canForceNextNoncombat();  // Defined in autoscend/auto_util.ash
 boolean auto_forceNextNoncombat(); // Defined in autoscend/auto_util.ash
 boolean auto_haveQueuedForcedNonCombat(); // Defined in autoscend/auto_util.ash
 boolean is_superlikely(string encounterName); // Defined in autoscend/auto_util.ash
+int auto_predictAccordionTurns();								//Defined in autoscend/auto_util.ash
 boolean hasTTBlessing();									 // Defined in autoscend/auto_util.ash
 void effectAblativeArmor(boolean passive_dmg_allowed);		 // Defined in autoscend/auto_util.ash
 int currentPoolSkill(); 		 // Defined in autoscend/auto_util.ash
