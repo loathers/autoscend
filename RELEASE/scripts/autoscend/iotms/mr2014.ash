@@ -78,6 +78,10 @@ boolean considerGrimstoneGolem(boolean bjornCrown)
 	{
 		return false;
 	}
+	if(!auto_is_valid($item[Grimstone Mask]))
+	{
+		return false;
+	}
 
 	if(bjornCrown && (get_property("_grimstoneMaskDropsCrown").to_int() != 0))
 	{
@@ -474,6 +478,10 @@ boolean fancyOilPainting()
 		return false;
 	}
 	if(my_adventures() <= 4)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[Grimstone Mask]) || !auto_is_valid($item[fancy oil painting]))
 	{
 		return false;
 	}
