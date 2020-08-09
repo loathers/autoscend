@@ -1,6 +1,5 @@
 script "pocket_familiars.ash"
 
-
 void digimon_initializeDay(int day)
 {
 	digimon_makeTeam();

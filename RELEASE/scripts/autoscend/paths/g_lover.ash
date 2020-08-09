@@ -1,6 +1,5 @@
 script "g_lover.ash"
 
-
 void glover_initializeDay(int day)
 {
 	if (auto_my_path() != "G-Lover") {

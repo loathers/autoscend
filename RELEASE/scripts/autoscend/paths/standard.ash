@@ -1,8 +1,5 @@
 script "standard.ash"
 
-import<auto_util.ash>
-# Code here is supplementary handlers and specialized handlers
-
 void standard_dnaPotions()
 {
 	if(auto_my_path() == "Standard")
