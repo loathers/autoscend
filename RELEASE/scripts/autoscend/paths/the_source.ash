@@ -1,11 +1,5 @@
 script "the_source.ash"
 
-boolean theSource_initializeSettings();
-boolean theSource_buySkills();
-boolean LX_theSource();
-boolean theSource_oracle();
-
-
 boolean theSource_initializeSettings()
 {
 	if(my_path() == "The Source")

@@ -1,7 +1,5 @@
 script "heavy_rains.ash"
 
-boolean rainManSummon(string monsterName, boolean copy, boolean wink);
-
 void hr_initializeSettings()
 {
 	if(my_path() == "Heavy Rains")

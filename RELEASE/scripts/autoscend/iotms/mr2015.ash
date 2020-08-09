@@ -4,29 +4,6 @@ script "mr2015.ash"
 #	Handling: shrine to the Barrel God, Chateau Mantegna Room Key, Deck of Every Card
 #
 
-boolean auto_barrelPrayers();
-boolean auto_mayoItems();
-
-boolean chateaumantegna_available();
-void chateaumantegna_useDesk();
-boolean chateaumantegna_havePainting();
-boolean chateaumantegna_usePainting(string option);
-boolean chateaumantegna_usePainting();
-boolean[item] chateaumantegna_decorations();
-void chateaumantegna_buyStuff(item toBuy);
-boolean chateaumantegna_nightstandSet();
-
-boolean deck_available();
-int deck_draws_left();
-boolean deck_draw();
-boolean deck_cheat(string cheat);
-boolean deck_useScheme(string action);
-
-
-
-//Supplemental
-
-
 boolean mayo_acquireMayo(item it)
 {
 	if(!is_unrestricted($item[Portable Mayo Clinic]))

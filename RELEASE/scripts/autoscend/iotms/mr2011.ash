@@ -1,5 +1,7 @@
 script "mr2011.ash"
 
+#	This is meant for items that have a date of 2011
+
 boolean isClipartItem(item it)
 {
 	return $items[Ur-Donut,

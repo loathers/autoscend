@@ -4,43 +4,6 @@ script "mr2016.ash"
 #	Handling: Witchess Set, Snojo, Source Terminal, Protonic Accelerator Pack
 #			Time-Spinner
 
-boolean snojoFightAvailable();
-boolean auto_advWitchess(string target);
-boolean auto_advWitchess(string target, string option);
-
-boolean auto_haveWitchess();
-boolean auto_haveSourceTerminal();
-boolean auto_sourceTerminalRequest(string request);
-boolean auto_sourceTerminalEnhance(string request);
-int auto_sourceTerminalEnhanceLeft();
-boolean auto_sourceTerminalExtrude(string request);
-int auto_sourceTerminalExtrudeLeft();
-int[string] auto_sourceTerminalStatus();
-boolean auto_doPrecinct();
-item auto_bestBadge();
-boolean auto_sourceTerminalEducate(skill first);
-boolean auto_sourceTerminalEducate(skill first, skill second);
-boolean LX_ghostBusting();
-boolean expectGhostReport();
-boolean haveGhostReport();
-
-boolean timeSpinnerGet(string goal);
-boolean timeSpinnerConsume(item goal);
-boolean timeSpinnerCombat(monster goal);
-boolean timeSpinnerCombat(monster goal, string option);
-boolean timeSpinnerAdventure(string option);
-boolean timeSpinnerAdventure();
-
-boolean rethinkingCandy(effect acquire);
-boolean rethinkingCandy(effect acquire, boolean simulate);
-boolean rethinkingCandyList();
-
-//Supplemental
-int auto_advWitchessTargets(string target);
-
-
-
-
 boolean snojoFightAvailable()
 {
 	if(!is_unrestricted($item[X-32-F Snowman Crate]))
