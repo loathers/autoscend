@@ -247,7 +247,8 @@ void resetMaximize()
 	// don't want to equip these items automatically
 	// snow suit bonus drops every 5 combats so is best saved for important things
 	// sword, and staph are text scramblers which cause errors in mafia tracking
-	foreach it in $items[sword behind inappropriate prepositions, staph of homophones, snow suit]
+	// bathysphere gives -20 lbs familiar weight. under certain circumstances maximizer decides to equip it
+	foreach it in $items[sword behind inappropriate prepositions, staph of homophones, snow suit, little bitty bathysphere]
 	{
 		if (possessEquipment(it))
 		{
