@@ -243,6 +243,50 @@ boolean autoAdvBypass(string url);
 boolean autoAdvBypass(int snarfblat, string option);
 boolean autoAdvBypass(string url, string option);
 
+//Defined in autoscend/auto_consume.ash
+boolean autoDrink(int howMany, item toDrink);
+boolean autoOverdrink(int howMany, item toOverdrink);
+boolean autoChew(int howMany, item toChew);
+boolean autoEat(int howMany, item toEat);
+boolean autoEat(int howMany, item toEat, boolean silent);
+boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);
+boolean consumeMilkOfMagnesiumIfUnused();
+boolean canDrink(item toDrink);
+boolean canEat(item toEat);
+boolean canChew(item toChew);
+void consumeStuff();
+boolean consumeFortune();
+boolean loadConsumables(item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] inebriety);
+void auto_autoDrinkNightcap(boolean simulate);
+boolean auto_autoConsumeOne(string type, boolean simulate);
+boolean auto_knapsackAutoConsume(string type, boolean simulate);
+
+// Defined in autoscend/auto_equipment.ash
+string getMaximizeSlotPref(slot s);
+boolean autoEquip(slot s, item it);
+boolean autoEquip(item it);
+boolean autoForceEquip(slot s, item it);
+boolean autoForceEquip(item it);
+boolean autoOutfit(string toWear);
+boolean autoStripOutfit(string toRemove);
+boolean tryAddItemToMaximize(slot s, item it);
+void resetMaximize();
+void addToMaximize(string add);
+void removeFromMaximize(string rem);
+boolean maximizeContains(string check);
+boolean simMaximize();
+boolean simMaximizeWith(string add);
+float simValue(string modifier);
+void equipMaximizedGear();
+void equipOverrides();
+int equipmentAmount(item equipment);
+boolean possessEquipment(item equipment);
+boolean possessOutfit(string outfit, boolean checkCanEquip);
+boolean possessOutfit(string outfit);
+void equipBaseline();
+void ensureSealClubs();
+void equipRollover();
+
 // Defined in autoscend/auto_familiar.ash
 boolean is100FamRun();
 boolean pathAllowsFamiliar();
@@ -276,16 +320,6 @@ float provideMysticality(int amt, boolean doEquips, boolean speculative);
 boolean provideMysticality(int amt, boolean doEquips);
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, boolean doEquips);
-
-//Do we have a some item either equipped or in inventory (not closet or hagnk\'s.
-boolean possessEquipment(item equipment);		//Defined in autoscend/auto_equipment.ash
-int equipmentAmount(item equipment); // Defined in autoscend/auto_equipment.ash
-boolean possessOutfit(string outfit, boolean checkCanEquip); // Defined in autoscend/auto_equipment.ash
-boolean possessOutfit(string outfit); // Defined in autoscend/auto_equipment.ash
-
-//Remove +NC or +C equipment
-void removeNonCombat();							//Defined in autoscend/auto_equipment.ash
-void removeCombat();							//Defined in autoscend/auto_equipment.ash
 
 //Wrapper for get_campground(), primarily deals with the oven issue in Ed.
 //Also uses Garden item as identifier for the garden in addition to what get_campground() does
@@ -476,27 +510,12 @@ boolean canYellowRay(monster target); //Defined in autoscend/auto_util.ash
 boolean canYellowRay();										//Defined in autoscend/auto_util.ash
 boolean canReplace(monster target);	//Defined in autoscend/auto_util.ash
 boolean canReplace();				//Defined in autoscend/auto_util.ash
-boolean autoChew(int howMany, item toChew);					//Defined in autoscend/auto_cooking.ash
-float expectedAdventuresFrom(item it);						//Defined in autoscend/auto_cooking.ash
 int autoCraft(string mode, int count, item item1, item item2);//Defined in autoscend/auto_util.ash
-boolean canOde(item toDrink); //Defined in autoscend/auto_cooking.ash
 boolean canSimultaneouslyAcquire(int[item] needed);			//Defined in autoscend/auto_util.ash
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
-boolean autoDrink(int howMany, item toDrink);					//Defined in autoscend/auto_cooking.ash
-boolean autoEat(int howMany, item toEat);						//Defined in autoscend/auto_cooking.ash
-boolean autoEat(int howMany, item toEat, boolean silent);		//Defined in autoscend/auto_cooking.ash
-boolean auto_knapsackAutoConsume(string type, boolean simulate);	//Defined in autoscend/auto_cooking.ash
-boolean loadConsumables(item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] inebriety);	 //Defined in autoscend/auto_cooking.ash
-void auto_autoDrinkNightcap(boolean simulate);				//Defined in autoscend/auto_cooking.ash
-boolean auto_autoConsumeOne(string type, boolean simulate);					//Defined in autoscend/auto_cooking.ash
-boolean saucemavenApplies(item it);							//Defined in autoscend/auto_cooking.ash
 boolean autoMaximize(string req, boolean simulate);			//Defined in autoscend/auto_util.ash
 boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate);//Defined in autoscend/auto_util.ash
 aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);//Defined in autoscend/auto_util.ash
-boolean autoOverdrink(int howMany, item toOverdrink);			//Defined in autoscend/auto_cooking.ash
-boolean canDrink(item toDrink);								//Defined in autoscend/auto_cooking.ash
-boolean canEat(item toEat);									//Defined in autoscend/auto_cooking.ash
-boolean canChew(item toChew); //Defined in autoscend/auto_cooking.ash
 boolean auto_advWitchess(string target);						//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_advWitchess(string target, string option);		//Defined in autoscend/iotms/auto_mr2016.ash
 int auto_advWitchessTargets(string target);					//Defined in autoscend/iotms/auto_mr2016.ash
@@ -540,8 +559,6 @@ boolean chateaumantegna_usePainting();						//Defined in autoscend/iotms/auto_mr
 boolean chateaumantegna_usePainting(string option);			//Defined in autoscend/iotms/auto_mr2015.ash
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
 boolean acquireTransfunctioner();							//Defined in autoscend/auto_util.ash
-void consumeStuff();										//Defined in autoscend/auto_cooking.ash
-boolean consumeFortune();									//Defined in autoscend/auto_cooking.ash
 boolean containsCombat(item it);							//Defined in autoscend/auto_combat.ash
 boolean containsCombat(skill sk);							//Defined in autoscend/auto_combat.ash
 boolean containsCombat(string action);						//Defined in autoscend/auto_combat.ash
@@ -586,10 +603,6 @@ boolean canTrySaberTrickMeteorShower();           //Defined in autoscend/auto_co
 boolean trySaberTrickMeteorShower();              //Defined in autoscend/auto_community_service.ash
 int beachHeadTurnSavings(int quest);							//Defined in autoscend/auto_community_service.ash
 boolean tryBeachHeadBuff(int quest);							//Defined in autoscend/auto_community_service.ash
-
-boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);			//Defined in autoscend/auto_cooking.ash
-boolean consumeMilkOfMagnesiumIfUnused();					//Defined in autoscend/auto_cooking.ash
-
 void debugMaximize(string req, int meat);					//Defined in autoscend/auto_util.ash
 boolean isClipartItem(item it);								//Defined in autoscend/iotms/auto_mr2015.ash
 boolean deck_available();									//Defined in autoscend/iotms/auto_mr2015.ash
@@ -640,28 +653,6 @@ boolean elementalPlanes_initializeSettings();				//Defined in autoscend/auto_ele
 boolean elementalPlanes_takeJob(element ele);				//Defined in autoscend/auto_elementalPlanes.ash
 int elemental_resist(element goal);							//Defined in autoscend/auto_util.ash
 float elemental_resist_value(int resistance);				//Defined in autoscend/auto_util.ash
-void ensureSealClubs();										//Defined in autoscend/auto_equipment.ash
-string getMaximizeSlotPref(slot s); //Defined in autoscend/auto_equipment.ash
-item getTentativeMaximizeEquip(slot s); //Defined in autoscend/auto_equipment.ash
-boolean autoEquip(slot s, item it); //Defined in autoscend/auto_equipment.ash
-boolean autoEquip(item it); //Defined in autoscend/auto_equipment.ash
-boolean autoForceEquip(slot s, item it); //Defined in autoscend/auto_equipment.ash
-boolean autoForceEquip(item it); //Defined in autoscend/auto_equipment.ash
-boolean autoStripOutfit(string toRemove);
-boolean tryAddItemToMaximize(slot s, item it); //Defined in autoscend/auto_equipment.ash
-string defaultMaximizeStatement(); //Defined in autoscend/auto_equipment.ash
-void resetMaximize(); //Defined in autoscend/auto_equipment.ash
-void finalizeMaximize(); //Defined in autoscend/auto_equipment.ash
-void addToMaximize(string add); //Defined in autoscend/auto_equipment.ash
-void removeFromMaximize(string rem); //Defined in autoscend/auto_equipment.ash
-boolean maximizeContains(string check); //Defined in autoscend/auto_equipment.ash
-boolean simMaximize(); //Defined in autoscend/auto_equipment.ash
-boolean simMaximizeWith(string add); //Defined in autoscend/auto_equipment.ash
-float simValue(string modifier); //Defined in autoscend/auto_equipment.ash
-void equipOverrides(); //Defined in autoscend/auto_equipment.ash
-void equipMaximizedGear(); //Defined in autoscend/auto_equipment.ash
-void equipBaseline();										//Defined in autoscend/auto_equipment.ash
-void equipRollover();										//Defined in autoscend/auto_equipment.ash
 boolean eudora_available();									//Defined in autoscend/auto_eudora.ash
 item eudora_current();										//Defined in autoscend/auto_eudora.ash
 boolean[item] eudora_initializeSettings();					//Defined in autoscend/auto_eudora.ash
@@ -865,10 +856,6 @@ boolean handleSealElement(element flavor);					//Defined in autoscend/auto_util.
 boolean handleSealElement(element flavor, string option);	//Defined in autoscend/auto_util.ash
 boolean handleServant(servant who);							//Defined in autoscend/auto_edTheUndying.ash
 boolean handleServant(string name);							//Defined in autoscend/auto_edTheUndying.ash
-item handleSolveThing(boolean[item] poss);					//Defined in autoscend/auto_equipment.ash
-item handleSolveThing(boolean[item] poss, slot loc);		//Defined in autoscend/auto_equipment.ash
-item handleSolveThing(item[int] poss);						//Defined in autoscend/auto_equipment.ash
-item handleSolveThing(item[int] poss, slot loc);			//Defined in autoscend/auto_equipment.ash
 void handleTracker(string used, string tracker);			//Defined in autoscend/auto_util.ash
 void handleTracker(string used, string detail, string tracker);	//Defined in autoscend/auto_util.ash
 boolean hasArm(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
@@ -977,7 +964,6 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 boolean registerCombat(item it);							//Defined in autoscend/auto_combat.ash
 boolean registerCombat(skill sk);							//Defined in autoscend/auto_combat.ash
 boolean registerCombat(string action);						//Defined in autoscend/auto_combat.ash
-void replaceBaselineAcc3();									//Defined in autoscend/auto_equipment.ash
 boolean restoreAllSettings();								//Defined in autoscend/auto_util.ash
 boolean restoreSetting(string setting);						//Defined in autoscend/auto_util.ash
 boolean restore_property(string setting, string source);	//Defined in autoscend/auto_util.ash
@@ -1022,7 +1008,6 @@ boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);//D
 void trickMafiaAboutFlorist();								//Defined in autoscend/auto_floristfriar.ash
 string trim(string input);									//Defined in autoscend/auto_util.ash
 string tryBeerPong();										//Defined in autoscend/auto_util.ash
-boolean tryPantsEat();										//Defined in autoscend/auto_cooking.ash
 int turkeyBooze();											//Defined in autoscend/auto_util.ash
 boolean use_barrels();										//Defined in autoscend/auto_util.ash
 boolean needStarKey();										//Defined in autoscend/auto_quest_level_13.ash

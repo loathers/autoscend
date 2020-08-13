@@ -525,16 +525,6 @@ void ensureSealClubs()
 	}
 }
 
-void removeNonCombat()
-{
-	addToMaximize("-50combat");
-}
-
-void removeCombat()
-{
-	addToMaximize("50combat");
-}
-
 void equipRollover()
 {
 	if(in_gnoob())
