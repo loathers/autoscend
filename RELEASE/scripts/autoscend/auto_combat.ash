@@ -1663,6 +1663,20 @@ string auto_combatHandler(int round, monster enemy, string text)
 			return useItem($item[Tomayohawk-Style Reflex Hammer]);
 		}
 
+		// skills from Lathe weapons
+		// Ebony Epee
+		if(canUse($skill[Disarming Thrust]))
+		{
+			return useSkill($skill[Disarming Thrust]);
+		}
+		// Weeping Willow Wand
+		if(canUse($skill[Barrage of Tears]))
+		{
+			return useSkill($skill[Barrage of Tears]);
+		}
+		// Poison Dart (from beechwood blowgun) is not used here
+		// because it does not stagger the enemy like the others
+
 		if(canUse($skill[Cadenza]) && (item_type(equipped_item($slot[weapon])) == "accordion"))
 		{
 			if($items[Accordion of Jordion, Accordionoid Rocca, non-Euclidean non-accordion, Shakespeare\'s Sister\'s Accordion, zombie accordion] contains equipped_item($slot[weapon]))
