@@ -1,5 +1,3 @@
-script "auto_cooking.ash"
-
 #
 #	Handler for in-run consumption
 #
@@ -48,49 +46,6 @@ float expectedAdventuresFrom(item it)
 	//if (item_amount($item[black label]) > 0 && $items[bottle of gin, bottle of rum, bottle of tequila, bottle of vodka or bottle of whiskey] contains it)
 	//	expected += 3.5;
 	return expected;
-}
-
-boolean tryPantsEat()
-{
-	if(fullness_left() > 0)
-	{
-		foreach it in $items[Tasty Tart, Deviled Egg, Actual Tapas, Cold Mashed Potatoes, Dinner Roll, Whole Turkey Leg, Can of Sardines, High-Calorie Sugar Substitute, Pat of Butter]
-		{
-			if(!canEat(it))
-			{
-				continue;
-			}
-			if((it == $item[Actual Tapas]) && (my_level() < 11))
-			{
-				continue;
-			}
-
-			if(item_amount(it) > 0)
-			{
-				cli_execute("refresh inv");
-				if(item_amount(it) == 0)
-				{
-					auto_log_warning("Error, mafia thought you had " + it + " but you didn't....", "red");
-					return false;
-				}
-				if((get_property("mayoInMouth") == "") && (auto_get_campground() contains $item[Portable Mayo Clinic]))
-				{
-					if((item_amount($item[Mayoflex]) == 0) && (my_meat() > 12000))
-					{
-						buy(1, $item[Mayoflex]);
-					}
-					if(item_amount($item[Mayoflex]) > 0)
-					{
-						use(1, $item[Mayoflex]);
-					}
-				}
-				buffMaintain($effect[Song of the Glorious Lunch], 10, 1, 1);
-				autoEat(1, it);
-				return true;
-			}
-		}
-	}
-	return false;
 }
 
 boolean canOde(item toDrink)

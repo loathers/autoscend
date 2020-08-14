@@ -45,8 +45,6 @@ boolean auto_pre_adventure()
 
 	preAdvUpdateFamiliar(place);
 
-	preAdvXiblaxian(place);
-
 	ed_handleAdventureServant(place);
 
 	if(get_floundry_locations() contains place)
