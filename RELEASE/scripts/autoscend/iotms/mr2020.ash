@@ -2,17 +2,22 @@ script "mr2020.ash"
 
 # This is meant for items that have a date of 2020
 
+boolean auto_haveBirdADayCalendar() {
+	return (item_amount($item[Bird-a-Day calendar]) > 0 && auto_is_valid($item[Bird-a-Day calendar]));
+}
+
+boolean auto_birdOfTheDay() {
+	if (auto_haveBirdADayCalendar() && get_property("_birdOfTheDay") == "") {
+		auto_log_info("What a beautiful morning! What's today's bird?");
+		return use(1, $item[Bird-a-Day calendar]);
+	}
+	return false;
+}
+
 boolean auto_birdIsValid()
 {
-	// can't seek a bird if you can't use the calendar
-	if(!auto_is_valid($item[Bird-a-Day calendar]))
-	{
-		return false;
-	}
-
-	// can't seek a bird if you don't own the calendar
-	if(item_amount($item[Bird-a-Day calendar]) < 1)
-	{
+	// can't seek a bird if you can't use or don't own the calendar
+	if (!auto_haveBirdADayCalendar()) {
 		return false;
 	}
 

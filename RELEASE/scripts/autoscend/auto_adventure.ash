@@ -1,12 +1,7 @@
-script "auto_adventure.ash"
-
-# num is not handled properly anyway, so we'll just reject it.
-boolean autoAdv(location loc, string option)
-{
-	return autoAdv(1, loc, option);
-}
-
-# num is not handled properly anyway, so we'll just reject it.
+// autoAdv is used to automate adventuring *once* in adventure.php zones
+// it will (should?) handle the complete adventure from start to finish regardless of
+// how many choices or combats it encounters (this is mafia's adv1 behaviour)
+// TODO: seems to return false even if it adventures successfully but doesn't cost an adventure (mafia issue?)
 boolean autoAdv(int num, location loc, string option)
 {
 	if(!zone_isAvailable(loc, true)){
@@ -46,18 +41,15 @@ boolean autoAdv(location loc)
 	return autoAdv(1, loc, "");
 }
 
-boolean autoAdvBypass(string url, location loc)
+boolean autoAdv(location loc, string option)
 {
-	return autoAdvBypass(url, loc, "");
+	return autoAdv(1, loc, option);
 }
 
-boolean autoAdvBypass(string url, location loc, string option)
-{
-	string[int] urlConvert;
-	urlConvert[0] = url;
-	return autoAdvBypass(0, urlConvert, loc, option);
-}
 
+// autoAdvBypass is used to automate adventuring *once* in non-adventure.php zones
+// it will (should?) handle the complete adventure from start to finish regardless of
+// how many choices or combats it encounters
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option)
 {
 	if(!zone_isAvailable(loc, true))
@@ -144,11 +136,24 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	return true;
 }
 
+boolean autoAdvBypass(string url, location loc)
+{
+	return autoAdvBypass(url, loc, "");
+}
+
+boolean autoAdvBypass(string url, location loc, string option)
+{
+	string[int] urlConvert;
+	urlConvert[0] = url;
+	return autoAdvBypass(0, urlConvert, loc, option);
+}
+
 boolean autoAdvBypass(int snarfblat, location loc)
 {
 	string page = "adventure.php?snarfblat=" + snarfblat;
 	return autoAdvBypass(page, loc);
 }
+
 boolean autoAdvBypass(int snarfblat, location loc, string option)
 {
 	string page = "adventure.php?snarfblat=" + snarfblat;
@@ -159,191 +164,18 @@ boolean autoAdvBypass(int snarfblat)
 {
 	return autoAdvBypass(snarfblat, $location[Noob Cave]);
 }
+
 boolean autoAdvBypass(string url)
 {
 	return autoAdvBypass(url, $location[Noob Cave]);
 }
-#boolean autoAdvBypass(string[int] url)
-#{
-#	return autoAdvBypass(url, $location[Noob Cave]);
-#}
+
 boolean autoAdvBypass(int snarfblat, string option)
 {
 	return autoAdvBypass(snarfblat, $location[Noob Cave], option);
 }
+
 boolean autoAdvBypass(string url, string option)
 {
 	return autoAdvBypass(url, $location[Noob Cave], option);
-}
-#boolean autoAdvBypass(string[int] url, string option)
-#{
-#	return autoAdvBypass(url, $location[Noob Cave], option);
-#}
-
-
-void preAdvUpdateFamiliar(location place)
-{
-	if(get_property("auto_disableFamiliarChanging").to_boolean())
-	{
-		return;
-	}
-	if(!pathAllowsFamiliar())
-	{
-		return;		//will just error in those paths
-	}
-	if(is100FamRun())
-	{
-		handleFamiliar(get_property("auto_100familiar").to_familiar());			//do not break 100 familiar runs
-	}
-	
-	//familiar requirement to adventure in a zone, override everything else.
-	if(place == $location[The Deep Machine Tunnels])
-	{
-		handleFamiliar($familiar[Machine Elf]);
-	}
-	// Can't take familiars with you to FantasyRealm
-	if (place == $location[The Bandit Crossroads])
-	{
-		if(my_familiar() == $familiar[none]) return;		//avoid mafia error from trying to change none into none.
-		use_familiar($familiar[none]);
-		return;		//no familiar means no equipment, we are done.
-	}
-	
-	//if familiar not set yet, first check stealing familiar
-	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean() && canChangeToFamiliar($familiar[cat burglar]) && catBurglarHeistsLeft() > 0)
-	{
-		//Stealing with familiar. TODO add XO Skelton here too
-		
-		item[monster] heistDesires = catBurglarHeistDesires();
-		boolean wannaHeist = false;
-		foreach mon, it in heistDesires
-		{
-			foreach i, mmon in get_monsters(place)
-			{
-				if(mmon == mon)
-				{
-					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
-					wannaHeist = true;
-				}
-			}
-		}
-		if(wannaHeist)
-		{
-			handleFamiliar($familiar[cat burglar]);
-		}
-	}
-	
-	//if familiar not set choose a familiar using general logic
-	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())		//check that we didn't already set familiar target this loop
-	{
-		autoChooseFamiliar(place);
-	}
-	
-	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
-	if(famChoice == $familiar[none])
-	{
-		if(get_property("auto_familiarChoice") == "")
-		{
-			abort("void preAdvUpdateFamiliar failed because property auto_familiarChoice is empty for some reason");
-		}
-		abort("void preAdvUpdateFamiliar failed to convert auto_familiarChoice of [" + get_property("auto_familiarChoice") + "] into a $familiar");
-	}
-	
-	if(famChoice != my_familiar() && canChangeToFamiliar(famChoice))
-	{
-		use_familiar(famChoice);
-	}
-	
-	//familiar equipment overrides
-	if(my_path() == "Heavy Rains")
-	{
-		autoEquip($slot[familiar], $item[miniature life preserver]);
-	}
-
-	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
-	{
-		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
-		{
-			if(equipped_item($slot[Familiar]) != $item[Li\'l Candy Corn Costume])
-			{
-				if(item_amount($item[Li\'l Candy Corn Costume]) > 0)
-				{
-					equip($slot[Familiar], $item[Li\'l Candy Corn Costume]);
-				}
-			}
-		}
-	}
-}
-
-
-boolean preAdvXiblaxian(location loc)
-{
-	if((equipped_item($slot[acc3]) == $item[Xiblaxian Holo-Wrist-Puter]) && (howLongBeforeHoloWristDrop() <= 1))
-	{
-		string area = loc.environment;
-		# This is an attempt to farm Xiblaxian food/booze stuff.
-		item toMake = to_item(get_property("auto_xiblaxianChoice"));
-		if(toMake == $item[none])
-		{
-			toMake = $item[Xiblaxian Ultraburrito];
-		}
-
-		# If we migrate all Ed workaround combats to the bypasser, we don't need to check main.php
-		if(my_class() == $class[Ed])
-		{
-			if(contains_text(visit_url("main.php"), "Combat"))
-			{
-				auto_log_warning("As Ed, I was not bypassed into this combat correctly (but it'll be ok)", "red");
-				return false;
-			}
-		}
-
-		# For overriden adventures, we should use a place with a similar location profile.
-		# However, that means we\'d lose the Noob Cave canaray
-		if(loc == $location[Noob Cave])
-		{
-			#replaceBaselineAcc3();
-			return true;
-		}
-
-		if(toMake == $item[Xiblaxian Ultraburrito])
-		{
-			if((area == "indoor") && (item_amount($item[Xiblaxian Circuitry]) > 0))
-			{
-				#replaceBaselineAcc3();
-			}
-			else if((area == "outdoor") && (item_amount($item[Xiblaxian Polymer]) > 0))
-			{
-				#replaceBaselineAcc3();
-			}
-			else if((area == "underground") && (item_amount($item[Xiblaxian Alloy]) > 2))
-			{
-				#replaceBaselineAcc3();
-			}
-			else
-			{
-				auto_log_info("We should be getting a Xiblaxian wotsit this combat. Beep boop.", "green");
-			}
-		}
-		else if(toMake == $item[Xiblaxian Space-Whiskey])
-		{
-			if((area == "indoor") && (item_amount($item[Xiblaxian Circuitry]) > 2))
-			{
-				#replaceBaselineAcc3();
-			}
-			else if((area == "outdoor") && (item_amount($item[Xiblaxian Polymer]) > 0))
-			{
-				#replaceBaselineAcc3();
-			}
-			else if((area == "underground") && (item_amount($item[Xiblaxian Alloy]) > 0))
-			{
-				#replaceBaselineAcc3();
-			}
-			else
-			{
-				auto_log_info("We should be getting a Xiblaxian wotsit this combat. Beep boop.", "green");
-			}
-		}
-	}
-	return true;
 }
