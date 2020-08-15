@@ -290,15 +290,6 @@ boolean auto_latheHardwood(item toLathe)
 
 boolean auto_latheAppropriateWeapon()
 {
-	switch(my_class())
-	{
-		// autoscend likes Plumber to go for moxie, so let's make sure it
-		// does even if another stat is ahead at the start of the day.
-		case $class[Plumber]:
-			return auto_latheHardwood($item[beechwood blowgun]);
-		// If any future classes also have a variable mainstat, specify the desired item here
-	}
-
 	item toLathe;
 
 	switch(my_primestat())
@@ -312,6 +303,16 @@ boolean auto_latheAppropriateWeapon()
 		case $stat[Moxie]:
 			toLathe = $item[beechwood blowgun];
 			break;
+	}
+
+	switch(my_class())
+	{
+		// autoscend likes Plumber to go for moxie, so let's make sure it
+		// does even if another stat is ahead at the start of the day.
+		case $class[Plumber]:
+			toLathe = $item[beechwood blowgun];
+			break;
+		// If any future classes also have a variable mainstat, specify the desired item here
 	}
 
 	// don't want to accidentally use a second scrap in casual or something
