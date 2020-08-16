@@ -1330,6 +1330,10 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Breathe Out];
 	}
 
+	if (item_amount($item[human musk]) > 0 && (!(used contains "human musk")) && auto_is_valid($item[human musk]) && get_property("_humanMuskUses").to_int() < 3) {
+		return `item {$item[human musk].to_string()}`;
+	}
+
 	//We want to limit usage of these much more than the others.
 	if(!($monsters[Natural Spider, Tan Gnat, Tomb Servant, Upgraded Ram] contains enemy))
 	{
@@ -1457,7 +1461,7 @@ string yellowRayCombatString(monster target, boolean inCombat)
 		{
 			return "skill " + $skill[Flash Headlight];
 		}
-		foreach it in $items[Golden Light, Pumpkin Bomb, Unbearable Light, Viral Video]
+		foreach it in $items[Golden Light, Pumpkin Bomb, Unbearable Light, Viral Video, micronova]
 		{
 			if((item_amount(it) > 0) && auto_is_valid(it))
 			{

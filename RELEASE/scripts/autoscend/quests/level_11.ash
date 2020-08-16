@@ -1246,6 +1246,10 @@ boolean L11_hiddenCity()
 			}
 		}
 
+		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+			changeSnapperPhylum($phylum[dude]);
+		}
+
 		if(!elevatorAction)
 		{
 			auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
@@ -1285,6 +1289,10 @@ boolean L11_hiddenCity()
 			auto_forceNextNoncombat();
 		}
 
+		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+			changeSnapperPhylum($phylum[dude]);
+		}
+
 		auto_log_info("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
 		return autoAdv($location[The Hidden Office Building]);
 	}
@@ -1305,6 +1313,10 @@ boolean L11_hiddenCity()
 			}
 		}
 
+		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+			changeSnapperPhylum($phylum[dude]);
+		}
+
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 		auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
 		return autoAdv($location[The Hidden Bowling Alley]);
@@ -1315,6 +1327,9 @@ boolean L11_hiddenCity()
 		if(item_amount($item[Dripping Stone Sphere]) > 0)
 		{
 			return true;
+		}
+		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+			changeSnapperPhylum($phylum[dude]);
 		}
 		auto_log_info("The idden osptial!! [sic]", "blue");
 
@@ -1395,6 +1410,9 @@ boolean L11_hiddenCityZones()
 	}
 
 	if (needMachete || needRelocate) {
+		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+			changeSnapperPhylum($phylum[dude]);
+		}
 		return autoAdv($location[The Hidden Park]);
 	}
 
@@ -1740,6 +1758,10 @@ boolean L11_redZeppelin()
 		}
 	}
 
+	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+		changeSnapperPhylum($phylum[dude]);
+	}
+
 	int lastProtest = get_property("zeppelinProtestors").to_int();
 	boolean retval = autoAdv($location[A Mob Of Zeppelin Protesters]);
 	if(!lastAdventureSpecialNC())
@@ -1873,6 +1895,10 @@ boolean L11_shenCopperhead()
 				}
 			}
 			set_property("choiceAdventure855", behindtheStacheOption);
+		}
+
+		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+			changeSnapperPhylum($phylum[dude]);
 		}
 
 		addToMaximize("-10ml");
@@ -2163,7 +2189,10 @@ boolean L11_palindome()
 		}
 
 		autoEquip($slot[acc3], $item[Talisman o\' Namsilat]);
-		autoAdv(1, $location[Inside the Palindome]);
+		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+			changeSnapperPhylum($phylum[dude]);
+		}
+		autoAdv($location[Inside the Palindome]);
 		if(($location[Inside the Palindome].turns_spent > 30) && (auto_my_path() != "Pocket Familiars") && (auto_my_path() != "G-Lover") && !in_koe())
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");

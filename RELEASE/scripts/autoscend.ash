@@ -2413,6 +2413,9 @@ boolean LX_freeCombats(boolean powerlevel)
 		else
 		{
 			auto_log_debug("LX_freeCombats is calling neverendingPartyCombat()");
+			if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+				changeSnapperPhylum($phylum[dude]);
+			}
 			if(neverendingPartyCombat()) return true;
 		}
 	}
@@ -3128,6 +3131,8 @@ void resetState() {
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
 
 	horseDefault(); // horsery tracking
+
+	set_property("auto_snapperPhylum", ""); // Red-Nosed Snapper phylum tracking
 
 	bat_formNone(); // Vampyre form tracking
 
