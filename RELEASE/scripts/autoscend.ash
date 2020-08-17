@@ -1450,6 +1450,7 @@ boolean dailyEvents()
 	}
 
 	auto_getGuzzlrCocktailSet();
+	auto_latheAppropriateWeapon();
 
 	return true;
 }
