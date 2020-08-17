@@ -784,6 +784,8 @@ boolean auto_willEquipPowerfulGlove();		//Defined in autoscend/iotms/auto_mr2020
 boolean auto_forceEquipPowerfulGlove();		//Defined in autoscend/iotms/auto_mr2020.ash
 boolean auto_canFightPiranhaPlant();
 boolean auto_canTendMushroomGarden();
+boolean auto_latheHardwood(item toLathe); // Defined in autoscend/iotms/auto_mr2020.ash
+boolean auto_latheAppropriateWeapon(); // Defined in autoscend/iotms/auto_mr2020.ash
 
 boolean getSpaceJelly();					//Defined in autoscend/iotms/auto_mr2017.ash
 boolean isHorseryAvailable();

@@ -265,3 +265,65 @@ boolean auto_getGuzzlrCocktailSet() {
 	}
 	return false;
 }
+
+boolean auto_latheHardwood(item toLathe)
+{
+	// can't lathe if lathe is out of standard (or otherwise unusable)
+	if(!auto_is_valid($item[SpinMaster&trade; lathe]))
+		return false;
+
+	// can't lathe... without a lathe
+	if(item_amount($item[SpinMaster&trade; lathe]) < 1)
+		return false;
+
+	// can't lathe without hardwood
+	if(item_amount($item[flimsy hardwood scraps]) < 1)
+		return false;
+
+	// can't lathe things that aren't made of hardwood
+	if(!($items[
+		beechwood blowgun,
+		birch battery,
+		ebony epee,
+		maple magnet,
+		weeping willow wand,
+	] contains toLathe))
+		return false;
+
+	return buy($coinmaster[Your SpinMaster&trade; lathe], 1, toLathe);
+}
+
+boolean auto_latheAppropriateWeapon()
+{
+	item toLathe;
+
+	switch(my_primestat())
+	{
+		case $stat[Muscle]:
+			toLathe = $item[ebony epee];
+			break;
+		case $stat[Mysticality]:
+			toLathe = $item[weeping willow wand];
+			break;
+		case $stat[Moxie]:
+			toLathe = $item[beechwood blowgun];
+			break;
+	}
+
+	switch(my_class())
+	{
+		// autoscend likes Plumber to go for moxie, so let's make sure it
+		// does even if another stat is ahead at the start of the day.
+		case $class[Plumber]:
+			toLathe = $item[beechwood blowgun];
+			break;
+		// If any future classes also have a variable mainstat, specify the desired item here
+	}
+
+	// don't want to accidentally use a second scrap in casual or something
+	if(possessEquipment(toLathe))
+		return false;
+
+	return auto_latheHardwood(toLathe);
+}
+
