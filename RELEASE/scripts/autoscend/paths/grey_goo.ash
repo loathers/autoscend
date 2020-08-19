@@ -23,7 +23,7 @@ boolean LA_grey_goo_tasks()
 		return false;
 	}
 
-    print("Adventuring in Grey Goo is not currently supported, or necessary. Have fun!")
+    print("Adventuring in Grey Goo is not currently supported, or necessary. Have fun!");
 
     if (my_daycount() >= 3)
     {
