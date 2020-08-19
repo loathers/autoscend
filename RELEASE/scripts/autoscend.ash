@@ -53,6 +53,7 @@ import <autoscend/paths/dark_gyffte.ash>
 import <autoscend/paths/disguises_delimit.ash>
 import <autoscend/paths/g_lover.ash>
 import <autoscend/paths/gelatinous_noob.ash>
+import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/license_to_adventure.ash>
@@ -217,6 +218,7 @@ void initializeSettings() {
 	zelda_initializeSettings();
 	lowkey_initializeSettings();
 	bhy_initializeSettings();
+	grey_goo_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -1114,6 +1116,7 @@ void initializeDay(int day)
 	majora_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
+	grey_goo_initializeDay(day);
 
 	if(day == 1)
 	{
@@ -3326,6 +3329,15 @@ boolean doTasks()
 	if(auto_my_path() == "Community Service")
 	{
 		abort("Should not have gotten here, aborted LA_cs_communityService method allowed return to caller. Uh oh.");
+	}
+
+	if(LA_grey_goo_tasks())
+	{
+		return true;
+	}
+	if(auto_my_path() == "Grey Goo")
+	{
+		abort("Should not have gotten here, aborted LA_grey_goo_tasks method allowed return to caller. Uh oh.");
 	}
 
 	auto_voteSetup(0,0,0);
