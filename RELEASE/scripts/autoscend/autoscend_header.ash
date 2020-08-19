@@ -1169,6 +1169,10 @@ boolean canGroundhog(location loc);							//Defined in autoscend/auto_groundhog.
 boolean groundhogAbort(location loc);						//Defined in autoscend/auto_groundhog.ash
 boolean LM_groundhog();										//Defined in autoscend/auto_groundhog.ash
 
+void grey_goo_initializeSettings();							//Defined in autoscend/grey_goo.ash
+void grey_goo_initializeDay(int day);						//Defined in autoscend/grey_goo.ash
+boolean LA_grey_goo_tasks();								//Defined in autoscend/grey_goo.ash
+
 void bat_startAscension(); // Defined in autoscend/auto_batpath.ash
 void bat_initializeSession(); // Defined in autoscend/auto_batpath.ash
 void bat_terminateSession(); // Defined in autoscend/auto_batpath.ash
