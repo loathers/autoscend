@@ -2413,7 +2413,8 @@ boolean LX_freeCombats(boolean powerlevel)
 		else
 		{
 			auto_log_debug("LX_freeCombats is calling neverendingPartyCombat()");
-			if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+			if (handleFamiliar($familiar[Red-Nosed Snapper]))
+			{
 				auto_changeSnapperPhylum($phylum[dude]);
 			}
 			if(neverendingPartyCombat()) return true;

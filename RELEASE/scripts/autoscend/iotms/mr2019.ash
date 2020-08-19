@@ -941,9 +941,15 @@ void auto_deliberate_pizza()
 	auto_log_info("For " + auto_pizza_unclamped_advs(best_plan) + " adventures.");
 }
 
-boolean auto_changeSnapperPhylum(phylum toChange) {
+boolean auto_changeSnapperPhylum(phylum toChange)
+{
+  // Calling this function with a suitable phylum (anything other than none)
+	// will cause the Red-Nosed Snapper to be changed to that phylum during pre-Adventure handling.
+	// This will overwrite any current phylum, losing all progress towards that item (this is intended)
+	// You have been warned.
 
-	if (!canChangeToFamiliar($familiar[Red-Nosed Snapper]) || toChange == $phylum[none]) {
+	if (!canChangeToFamiliar($familiar[Red-Nosed Snapper]) || toChange == $phylum[none])
+	{
 		return false;
 	}
 	string phylumString = (toChange == $phylum[mer-kin] ? "merkin" : toChange.to_string());
@@ -951,27 +957,33 @@ boolean auto_changeSnapperPhylum(phylum toChange) {
 	return true;
 }
 
-boolean auto_snapperPreAdventure(location loc) {
-	if (my_familiar() != $familiar[Red-Nosed Snapper]) {
+boolean auto_snapperPreAdventure(location loc)
+{
+	if (my_familiar() != $familiar[Red-Nosed Snapper])
+	{
 		return false;
 	}
 	
 	string desiredPhylum = get_property("auto_snapperPhylum");
-	if (desiredPhylum != "merkin" && desiredPhylum != "" && desiredPhylum.to_phylum() == $phylum[none]) {
+	if (desiredPhylum != "merkin" && desiredPhylum != "" && desiredPhylum.to_phylum() == $phylum[none])
+	{
 		auto_log_warning(`auto_snapperPhylum was set to bad value: {desiredPhylum}. Should be a valid phylum.`, "red");
 		remove_property("auto_snapperPhylum");
 		return false;
 	}
 
-	if (get_property("redSnapperPhylum") == desiredPhylum) {
+	if (get_property("redSnapperPhylum") == desiredPhylum)
+	{
 		auto_log_debug(`Red-Nosed Snapper is already guiding you towards {desiredPhylum}`);
 		return false;
 	}
 
 	// this is mainly in case autoChooseFamiliar switches to the Snapper due to no "better" +item familiars being available
 	// It is preferred that you do not rely on this to change phylum in a quest, call changeSnapperPhylum in the quest handling code instead.
-	if (desiredPhylum == "" && get_property("redSnapperProgress").to_int() == 0) {
-		switch (loc) {
+	if (desiredPhylum == "" && get_property("redSnapperProgress").to_int() == 0)
+	{
+		switch (loc)
+		{
 			case $location[The Penultimate Fantasy Airship]:
 			case $location[The Hidden Park]:
 			case $location[The Hidden Hospital]:
