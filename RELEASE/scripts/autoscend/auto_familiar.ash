@@ -102,6 +102,7 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return false;
 	}
+	
 	// if this path doesn't allow this familiar, you can't change to it
 	if(!auto_is_valid(target))
 	{
@@ -113,9 +114,10 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return true;
 	}
+	
+	// check path limitations, as well as 100% runs for a different familiar than target
 	if(!canChangeFamiliar())
 	{
-		// checks path limitations, as well as 100% runs for a diferent familiar than target
 		return false;
 	}
 	
@@ -123,6 +125,12 @@ boolean canChangeToFamiliar(familiar target)
 	if(target == $familiar[none])	
 	{	
 		return false;	
+	}
+
+	// If target is in the Crown of Thrones or Buddy Bjorn, we can't switch to it either.
+	if (target == my_enthroned_familiar() || target == my_bjorned_familiar())
+	{
+		return false;
 	}
 
 	// if you reached this point, then auto_100familiar must not be set to anything, you are allowed to change familiar.
