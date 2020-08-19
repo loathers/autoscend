@@ -71,6 +71,9 @@ boolean L10_airship()
 		visit_url("place.php?whichplace=beanstalk");	
 	}
 
+	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+		auto_changeSnapperPhylum($phylum[dude]);
+	}
 	autoAdv($location[The Penultimate Fantasy Airship]);
 	return true;
 }
@@ -173,6 +176,9 @@ boolean L10_basement()
 				else
 				{
 					auto_log_warning("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
+					if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+						auto_changeSnapperPhylum($phylum[dude]);
+					}
 					autoAdv(1, $location[The Penultimate Fantasy Airship]);
 				}
 				return true;
