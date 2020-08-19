@@ -941,7 +941,7 @@ void auto_deliberate_pizza()
 	auto_log_info("For " + auto_pizza_unclamped_advs(best_plan) + " adventures.");
 }
 
-boolean changeSnapperPhylum(phylum toChange) {
+boolean auto_changeSnapperPhylum(phylum toChange) {
 
 	if (!canChangeToFamiliar($familiar[Red-Nosed Snapper]) || toChange == $phylum[none]) {
 		return false;
@@ -951,7 +951,7 @@ boolean changeSnapperPhylum(phylum toChange) {
 	return true;
 }
 
-boolean snapperPreAdventure(location loc) {
+boolean auto_snapperPreAdventure(location loc) {
 	if (my_familiar() != $familiar[Red-Nosed Snapper]) {
 		return false;
 	}
@@ -970,7 +970,7 @@ boolean snapperPreAdventure(location loc) {
 
 	// this is mainly in case autoChooseFamiliar switches to the Snapper due to no "better" +item familiars being available
 	// It is preferred that you do not rely on this to change phylum in a quest, call changeSnapperPhylum in the quest handling code instead.
-	if (desiredPhylum == "" && get_property("redSnapperProgress").to_int() < 7) {
+	if (desiredPhylum == "" && get_property("redSnapperProgress").to_int() == 0) {
 		switch (loc) {
 			case $location[The Penultimate Fantasy Airship]:
 			case $location[The Hidden Park]:

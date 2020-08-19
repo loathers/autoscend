@@ -1247,7 +1247,7 @@ boolean L11_hiddenCity()
 		}
 
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			changeSnapperPhylum($phylum[dude]);
+			auto_changeSnapperPhylum($phylum[dude]);
 		}
 
 		if(!elevatorAction)
@@ -1290,7 +1290,7 @@ boolean L11_hiddenCity()
 		}
 
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			changeSnapperPhylum($phylum[dude]);
+			auto_changeSnapperPhylum($phylum[dude]);
 		}
 
 		auto_log_info("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
@@ -1314,7 +1314,7 @@ boolean L11_hiddenCity()
 		}
 
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			changeSnapperPhylum($phylum[dude]);
+			auto_changeSnapperPhylum($phylum[dude]);
 		}
 
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
@@ -1329,7 +1329,7 @@ boolean L11_hiddenCity()
 			return true;
 		}
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			changeSnapperPhylum($phylum[dude]);
+			auto_changeSnapperPhylum($phylum[dude]);
 		}
 		auto_log_info("The idden osptial!! [sic]", "blue");
 
@@ -1411,7 +1411,7 @@ boolean L11_hiddenCityZones()
 
 	if (needMachete || needRelocate) {
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			changeSnapperPhylum($phylum[dude]);
+			auto_changeSnapperPhylum($phylum[dude]);
 		}
 		return autoAdv($location[The Hidden Park]);
 	}
@@ -1759,7 +1759,7 @@ boolean L11_redZeppelin()
 	}
 
 	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-		changeSnapperPhylum($phylum[dude]);
+		auto_changeSnapperPhylum($phylum[dude]);
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
@@ -1898,7 +1898,7 @@ boolean L11_shenCopperhead()
 		}
 
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			changeSnapperPhylum($phylum[dude]);
+			auto_changeSnapperPhylum($phylum[dude]);
 		}
 
 		addToMaximize("-10ml");
@@ -2190,7 +2190,7 @@ boolean L11_palindome()
 
 		autoEquip($slot[acc3], $item[Talisman o\' Namsilat]);
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			changeSnapperPhylum($phylum[dude]);
+			auto_changeSnapperPhylum($phylum[dude]);
 		}
 		autoAdv($location[Inside the Palindome]);
 		if(($location[Inside the Palindome].turns_spent > 30) && (auto_my_path() != "Pocket Familiars") && (auto_my_path() != "G-Lover") && !in_koe())

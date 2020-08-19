@@ -72,7 +72,7 @@ boolean L10_airship()
 	}
 
 	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-		changeSnapperPhylum($phylum[dude]);
+		auto_changeSnapperPhylum($phylum[dude]);
 	}
 	autoAdv($location[The Penultimate Fantasy Airship]);
 	return true;
@@ -177,7 +177,7 @@ boolean L10_basement()
 				{
 					auto_log_warning("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
 					if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-						changeSnapperPhylum($phylum[dude]);
+						auto_changeSnapperPhylum($phylum[dude]);
 					}
 					autoAdv(1, $location[The Penultimate Fantasy Airship]);
 				}

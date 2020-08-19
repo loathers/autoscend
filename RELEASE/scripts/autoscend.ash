@@ -2414,7 +2414,7 @@ boolean LX_freeCombats(boolean powerlevel)
 		{
 			auto_log_debug("LX_freeCombats is calling neverendingPartyCombat()");
 			if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-				changeSnapperPhylum($phylum[dude]);
+				auto_changeSnapperPhylum($phylum[dude]);
 			}
 			if(neverendingPartyCombat()) return true;
 		}
@@ -3132,7 +3132,7 @@ void resetState() {
 
 	horseDefault(); // horsery tracking
 
-	set_property("auto_snapperPhylum", ""); // Red-Nosed Snapper phylum tracking
+	set_property("auto_snapperPhylum", ""); // internal Red-Nosed Snapper phylum tracking. Ensures we only change it maximum once per adventure (and don't lose charges)
 
 	bat_formNone(); // Vampyre form tracking
 
