@@ -468,11 +468,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 		return "runaway";
 	}
 
-	//TODO test plumber, geleatinous noob, and west of loathing paths to see if these workarounds are still needed.
-	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger, shadow gelatinous noob] contains enemy.to_string())
+	//TODO test west of loathing paths to see if the workaround of checking strings is still needed
+	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger] contains enemy.to_string())
 	{
 		//debug as you go
-		if($classes[Snake Oiler, Cow Puncher, Beanslinger, Gelatinous Noob] contains my_class())
+		if($classes[Snake Oiler, Cow Puncher, Beanslinger] contains my_class())
 		{
 			if(enemy == $monster[Your Shadow])
 			{
