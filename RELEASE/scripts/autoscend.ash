@@ -14,7 +14,6 @@ import <autoscend/autoscend_migration.ash>
 import <canadv.ash>
 
 import <autoscend/auto_adventure.ash>
-import <autoscend/auto_combat.ash>
 import <autoscend/auto_consume.ash>
 import <autoscend/auto_deprecation.ash>
 import <autoscend/auto_equipment.ash>
@@ -26,6 +25,8 @@ import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
+
+import <autoscend/combat/auto_combat.ash>
 
 import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
