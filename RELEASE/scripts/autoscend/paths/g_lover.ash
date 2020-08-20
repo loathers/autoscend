@@ -53,6 +53,15 @@ boolean glover_usable(string it)
 	{
 		return true;
 	}
+	item checkItem = it.to_item();
+	if (checkItem != $item[none] && $items[Ninja Carabiner, Ninja Crampons, Ninja Rope, linoleum ore, chrome ore, asbestos ore, wet stew] contains checkItem) {
+		// these are not "used", they just need to exist in inventory for the quest they are used in.
+		return true;
+	} else if (to_slot(checkItem) != $slot[none]) {
+		// easy way to check if an item is equipment.
+		// all equipment is fine to use, you just don't get enchantments from stuff that lacks G's
+		return true;
+	}
 	return false;
 }
 

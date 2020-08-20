@@ -1342,11 +1342,11 @@ boolean adjustForYellowRayIfPossible()
 
 string replaceMonsterCombatString(monster target, boolean inCombat)
 {
-	if (auto_macrometeoritesAvailable() > 0)
+	if (auto_macrometeoritesAvailable() > 0 && auto_is_valid($skill[Macrometeorite]))
 	{
 		return "skill " + $skill[Macrometeorite];
 	}
-	if (auto_powerfulGloveReplacesAvailable(inCombat) > 0)
+	if (auto_powerfulGloveReplacesAvailable(inCombat) > 0 && auto_is_valid($skill[CHEAT CODE: Replace Enemy]))
 	{
 		return "skill " + $skill[CHEAT CODE: Replace Enemy];
 	}

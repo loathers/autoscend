@@ -2925,6 +2925,12 @@ boolean adventureFailureHandler()
 			}
 		}
 
+		if (tooManyAdventures && auto_my_path() == "G-Lover") {
+			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp] contains my_location()) {
+				tooManyAdventures = false;
+			}
+		}
+
 		if ($locations[The Haunted Gallery] contains my_location() && my_location().turns_spent < 100)
 		{
 			tooManyAdventures = false;
