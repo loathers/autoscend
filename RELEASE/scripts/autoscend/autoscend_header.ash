@@ -470,9 +470,6 @@ boolean cloverUsageFinish();								//Defined in autoscend/auto_util.ash
 boolean adjustEdHat(string goal);							//Defined in autoscend/iotms/auto_mr2015.ash
 int amountTurkeyBooze();									//Defined in autoscend/auto_util.ash
 boolean awol_buySkills();									//Defined in autoscend/auto_awol.ash
-void awol_helper(string page);								//Defined in autoscend/auto_combat.ash
-boolean canSurvive(float mult, int add);					//Defined in autoscend/auto_combat.ash
-boolean canSurvive(float mult);								//Defined in autoscend/auto_combat.ash
 boolean awol_initializeSettings();							//Defined in autoscend/auto_awol.ash
 void awol_useStuff();										//Defined in autoscend/auto_awol.ash
 effect awol_walkBuff();										//Defined in autoscend/auto_awol.ash
@@ -525,10 +522,7 @@ void auto_begin();											//Defined in autoscend.ash
 item auto_bestBadge();										//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_change_mcd(int mcd);								//Defined in autoscend/auto_util.ash
 boolean auto_change_mcd(int mcd, boolean immediately);			//Defined in autoscend/auto_util.ash
-string auto_combatHandler(int round, monster enemy, string text);	//Defined in autoscend/auto_combat.ash
 boolean auto_doPrecinct();									//Defined in autoscend/iotms/auto_mr2016.ash
-string auto_edCombatHandler(int round, monster enemy, string text);	//Defined in autoscend/auto_combat.ash
-string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text); //Defined in autoscend/auto_combat.ash
 boolean auto_floundryAction();								//Defined in autoscend/auto_clan.ash
 boolean auto_floundryUse();									//Defined in autoscend/auto_clan.ash
 boolean auto_floundryAction(item it);							//Defined in autoscend/auto_clan.ash
@@ -545,7 +539,6 @@ int auto_sourceTerminalExtrudeLeft();							//Defined in autoscend/iotms/auto_mr
 int[string] auto_sourceTerminalMissing();						//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_sourceTerminalRequest(string request);			//Defined in autoscend/iotms/auto_mr2016.ash
 int[string] auto_sourceTerminalStatus();						//Defined in autoscend/iotms/auto_mr2016.ash
-string auto_JunkyardCombatHandler(int round, monster enemy, string text);		//Defined in autoscend/auto_combat.ash
 int changeClan();											//Defined in autoscend/auto_clan.ash
 int changeClan(int toClan);									//Defined in autoscend/auto_clan.ash
 int changeClan(string clanName);							//Defined in autoscend/auto_clan.ash
@@ -559,20 +552,12 @@ boolean chateaumantegna_usePainting();						//Defined in autoscend/iotms/auto_mr
 boolean chateaumantegna_usePainting(string option);			//Defined in autoscend/iotms/auto_mr2015.ash
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
 boolean acquireTransfunctioner();							//Defined in autoscend/auto_util.ash
-boolean containsCombat(item it);							//Defined in autoscend/auto_combat.ash
-boolean containsCombat(skill sk);							//Defined in autoscend/auto_combat.ash
-boolean containsCombat(string action);						//Defined in autoscend/auto_combat.ash
 
 boolean inCasual();											//Defined in autoscend/paths/casual.ash
 boolean inAftercore();										//Defined in autoscend/paths/casual.ash
 boolean inPostRonin();										//Defined in autoscend/paths/casual.ash
 boolean LM_canInteract();								//Defined in autoscend/paths/casual.ash
 
-string cs_combatKing(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash
-string cs_combatLTB(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash
-string cs_combatNormal(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash
-string cs_combatWitch(int round, string opp, string text);	//Defined in autoscend/auto_community_service.ash
-string cs_combatYR(int round, string opp, string text);		//Defined in autoscend/auto_community_service.ash
 void cs_dnaPotions();										//Defined in autoscend/auto_community_service.ash
 boolean cs_eat_spleen();									//Defined in autoscend/auto_community_service.ash
 boolean cs_eat_stuff(int quest);							//Defined in autoscend/auto_community_service.ash
@@ -665,7 +650,6 @@ void fallout_initializeSettings();							//Defined in autoscend/auto_fallout.ash
 int fastenerCount();										//Defined in autoscend/auto_util.ash
 boolean fightScienceTentacle();								//Defined in autoscend/auto_util.ash
 boolean fightScienceTentacle(string option);				//Defined in autoscend/auto_util.ash
-string findBanisher(int round, monster enemy, string text);	//Defined in autoscend/auto_combat.ash
 void florist_initializeSettings();							//Defined in autoscend/auto_floristfriar.ash
 boolean forceEquip(slot sl, item it);						//Defined in autoscend/auto_util.ash
 int fullness_left();										//Defined in autoscend/auto_util.ash
@@ -941,7 +925,6 @@ element ns_hedge1();										//Defined in autoscend/auto_util.ash
 element ns_hedge2();										//Defined in autoscend/auto_util.ash
 element ns_hedge3();										//Defined in autoscend/auto_util.ash
 int numPirateInsults();										//Defined in autoscend/auto_util.ash
-monster ocrs_helper(string page);							//Defined in autoscend/auto_combat.ash
 boolean ocrs_postCombatResolve();							//Defined in autoscend/auto_summerfun.ash
 boolean ocrs_postHelper();									//Defined in autoscend/auto_summerfun.ash
 void oldPeoplePlantStuff();									//Defined in autoscend/auto_floristfriar.ash
@@ -965,9 +948,6 @@ int pullsNeeded(string data);								//Defined in autoscend.ash
 boolean pulverizeThing(item it);							//Defined in autoscend/auto_util.ash
 boolean rainManSummon(string monsterName, boolean copy, boolean wink);//Defined in autoscend/auto_heavyrains.ash
 boolean rainManSummon(string monsterName, boolean copy, boolean wink, string option);//Defined in autoscend/auto_heavyrains.ash
-boolean registerCombat(item it);							//Defined in autoscend/auto_combat.ash
-boolean registerCombat(skill sk);							//Defined in autoscend/auto_combat.ash
-boolean registerCombat(string action);						//Defined in autoscend/auto_combat.ash
 boolean restoreAllSettings();								//Defined in autoscend/auto_util.ash
 boolean restoreSetting(string setting);						//Defined in autoscend/auto_util.ash
 boolean restore_property(string setting, string source);	//Defined in autoscend/auto_util.ash
