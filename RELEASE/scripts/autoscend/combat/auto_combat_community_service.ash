@@ -1,6 +1,6 @@
 //Path specific combat handling functions for Community Service
 
-string cs_combatNormal(int round, string opp, string text)
+string cs_combatNormal(int round, monster enemy, string text)
 {
 	if(round == 0)
 	{
@@ -8,13 +8,11 @@ string cs_combatNormal(int round, string opp, string text)
 		set_property("auto_combatHandler", "");
 	}
 
-	set_property("auto_diag_round", round);
-	if(get_property("auto_diag_round").to_int() > 60)
+	if(round > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	monster enemy = to_monster(opp);
 	string combatState = get_property("auto_combatHandler");
 
 	phylum current = to_phylum(get_property("dnaSyringe"));
@@ -338,7 +336,7 @@ string cs_combatNormal(int round, string opp, string text)
 	return "attack with weapon";
 }
 
-string cs_combatXO(int round, string opp, string text)
+string cs_combatXO(int round, monster enemy, string text)
 {
 	# This assumes we have Volcano Charter, Meteor Love [sic], Snokebomb, XO Skeleton (not blocked by 100% run), and 50 MP, anything else and it probably fails
 	if(round == 0)
@@ -347,8 +345,7 @@ string cs_combatXO(int round, string opp, string text)
 		set_property("auto_combatHandler", "");
 	}
 
-	set_property("auto_diag_round", round);
-	if(get_property("auto_diag_round").to_int() > 60)
+	if(round > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
@@ -358,7 +355,6 @@ string cs_combatXO(int round, string opp, string text)
 		abort("In cs_combatXO without an XO to XOXO with");
 	}
 
-	monster enemy = to_monster(opp);
 	string combatState = get_property("auto_combatHandler");
 
 
@@ -405,7 +401,7 @@ string cs_combatXO(int round, string opp, string text)
 	return "skill " + $skill[Snokebomb];
 }
 
-string cs_combatYR(int round, string opp, string text)
+string cs_combatYR(int round, monster enemy, string text)
 {
 	if(round == 0)
 	{
@@ -413,13 +409,11 @@ string cs_combatYR(int round, string opp, string text)
 		set_property("auto_combatHandler", "");
 	}
 
-	set_property("auto_diag_round", round);
-	if(get_property("auto_diag_round").to_int() > 60)
+	if(round > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	monster enemy = to_monster(opp);
 	string combatState = get_property("auto_combatHandler");
 
 	phylum current = to_phylum(get_property("dnaSyringe"));
@@ -558,7 +552,7 @@ string cs_combatYR(int round, string opp, string text)
 	return "attack with weapon";
 }
 
-string cs_combatKing(int round, string opp, string text)
+string cs_combatKing(int round, monster enemy, string text)
 {
 	if(round == 0)
 	{
@@ -566,13 +560,11 @@ string cs_combatKing(int round, string opp, string text)
 		set_property("auto_combatHandler", "");
 	}
 
-	set_property("auto_diag_round", round);
-	if(get_property("auto_diag_round").to_int() > 60)
+	if(round > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	monster enemy = to_monster(opp);
 	string combatState = get_property("auto_combatHandler");
 
 	if(enemy != $monster[Witchess King])
@@ -592,7 +584,7 @@ string cs_combatKing(int round, string opp, string text)
 	return "action with weapon";
 }
 
-string cs_combatWitch(int round, string opp, string text)
+string cs_combatWitch(int round, monster enemy, string text)
 {
 	if(round == 0)
 	{
@@ -600,13 +592,11 @@ string cs_combatWitch(int round, string opp, string text)
 		set_property("auto_combatHandler", "");
 	}
 
-	set_property("auto_diag_round", round);
-	if(get_property("auto_diag_round").to_int() > 60)
+	if(round > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	monster enemy = to_monster(opp);
 	string combatState = get_property("auto_combatHandler");
 
 	if(enemy != $monster[Witchess Witch])
@@ -633,7 +623,7 @@ string cs_combatWitch(int round, string opp, string text)
 	return "action with weapon";
 }
 
-string cs_combatLTB(int round, string opp, string text)
+string cs_combatLTB(int round, monster enemy, string text)
 {
 	if(round == 0)
 	{
@@ -641,13 +631,11 @@ string cs_combatLTB(int round, string opp, string text)
 		set_property("auto_combatHandler", "");
 	}
 
-	set_property("auto_diag_round", round);
-	if(get_property("auto_diag_round").to_int() > 60)
+	if(round > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	monster enemy = to_monster(opp);
 	string combatState = get_property("auto_combatHandler");
 	if(!contains_text(combatState, "giant growth") && have_skill($skill[Giant Growth]))
 	{
@@ -667,7 +655,7 @@ string cs_combatLTB(int round, string opp, string text)
 
 	if(isFreeMonster(enemy))
 	{
-		return cs_combatNormal(round, opp, text);
+		return cs_combatNormal(round, enemy, text);
 	}
 
 	if(!contains_text(combatState, "shattering punch") && have_skill($skill[Shattering Punch]) && (my_mp() >= mp_cost($skill[Shattering Punch])) && !isFreeMonster(enemy) && !enemy.boss && (get_property("_shatteringPunchUsed").to_int() < 3))

@@ -1,5 +1,3 @@
-script "auto_combat.ash"
-
 import <autoscend/combat/auto_combat_header.ash>					//header file for combat
 import <autoscend/combat/auto_combat_util.ash>						//combat utilities
 import <autoscend/combat/auto_combat_awol.ash>						//path = avatar of west of loathing
@@ -58,19 +56,14 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	set_property("auto_diag_round", round);
 
-	if(get_property("auto_diag_round").to_int() > 60)
-	{
-		abort("Somehow got to 60 rounds.... aborting");
-	}
-
 	if(my_path() == "One Crazy Random Summer")
 	{
-		enemy = ocrs_helper(text);
+		enemy = ocrs_combat_helper(text);
 		enemy = last_monster();
 	}
 	if(my_path() == "Avatar of West of Loathing")
 	{
-		awol_helper(text);
+		awol_combat_helper(text);
 	}
 
 	phylum type = monster_phylum(enemy);
@@ -80,7 +73,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 	int fingernailClippersLeft = get_property("auto_combatHandlerFingernailClippers").to_int();
 
 	#Handle different path is monster_level_adjustment() > 150 (immune to staggers?)
-	int mcd = monster_level_adjustment();
+	int enemy_la = monster_level_adjustment();
 
 	boolean doBanisher = !inAftercore();
 
@@ -230,22 +223,8 @@ string auto_combatHandler(int round, monster enemy, string text)
 		return "runaway";
 	}
 
-	//TODO test west of loathing paths to see if the workaround of checking strings is still needed
-	if(enemy == $monster[Your Shadow] || $strings[shadow cow puncher, shadow snake oiler, shadow beanslinger] contains enemy.to_string())
+	if(enemy == $monster[Your Shadow])
 	{
-		//debug as you go
-		if($classes[Snake Oiler, Cow Puncher, Beanslinger] contains my_class())
-		{
-			if(enemy == $monster[Your Shadow])
-			{
-				auto_log_debug(my_class() +" confirmed to be identifying $monster[Your Shadow] without need for workaround. please report this");
-			}
-			else
-			{
-				auto_log_debug(my_class() +" confirmed still need a workaround for identifying $monster[Your Shadow]. please report this");
-			}
-		}
-		
 		if(in_zelda())
 		{
 			if(item_amount($item[super deluxe mushroom]) > 0)
@@ -1283,22 +1262,22 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(enemy == $monster[Eldritch Tentacle])
 	{
-		mcd = 151;
+		enemy_la = 151;
 	}
 
 	// if(enemy == $monster[invader bullet]) // TODO: on version bump
 	if(enemy.to_string().to_lower_case() == "invader bullet")
 	{
-		mcd = 151;
+		enemy_la = 151;
 	}
 
 	if($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains enemy && !get_property("auto_confidence").to_boolean())
 	{
-		mcd = 151;
+		enemy_la = 151;
 	}
 
 	#Default behaviors:
-	if(mcd <= 150)
+	if(enemy_la <= 150)
 	{
 		if(canUse($skill[Curse of Weaksauce]) && have_skill($skill[Itchy Curse Finger]) && (my_mp() >= 60) && doWeaksauce)
 		{
@@ -1499,7 +1478,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 	}
 
 	#Default behaviors, multi-staggers when chance is 50% or greater
-	if(mcd < 100 && stunnable(enemy))
+	if(enemy_la < 100 && stunnable(enemy))
 	{
 		if(canUse($item[Rain-Doh blue balls]))
 		{

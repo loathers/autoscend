@@ -1,5 +1,3 @@
-script "standard.ash"
-
 void standard_dnaPotions()
 {
 	if(auto_my_path() == "Standard")

@@ -1,5 +1,3 @@
-script "auto_casual.ash"
-
 boolean inCasual()
 {
 	if(get_property("_casualAscension").to_int() >= my_ascensions())

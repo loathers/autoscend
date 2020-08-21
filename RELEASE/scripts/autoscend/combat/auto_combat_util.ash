@@ -230,38 +230,6 @@ boolean enemyCanBlocksSkills()
 	return false;
 }
 
-boolean registerCombat(string action)
-{
-	set_property("auto_combatHandler", get_property("auto_combatHandler") + "(" + to_lower_case(action) + ")");
-	return true;
-}
-
-boolean registerCombat(skill sk)
-{
-	return registerCombat(to_string(sk));
-}
-
-boolean registerCombat(item it)
-{
-	return registerCombat(to_string(it));
-}
-
-boolean containsCombat(string action)
-{
-	action = "(" + to_lower_case(action) + ")";
-	return contains_text(get_property("auto_combatHandler"), action);
-}
-
-boolean containsCombat(skill sk)
-{
-	return containsCombat(to_string(sk));
-}
-
-boolean containsCombat(item it)
-{
-	return containsCombat(to_string(it));
-}
-
 boolean canSurvive(float mult, int add)
 {
 	int damage = expected_damage();

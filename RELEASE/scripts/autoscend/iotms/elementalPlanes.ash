@@ -1,5 +1,3 @@
-script "elementalPlanes.ash"
-
 boolean getDiscoStyle();
 boolean getDiscoStyle(int choice);
 item[element] getCharterIndexable();

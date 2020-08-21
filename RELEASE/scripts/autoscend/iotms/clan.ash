@@ -1,6 +1,3 @@
-script "clan.ash"
-
-
 //boolean eatFancyDog(item dog);
 boolean zataraClanmate(string who);
 boolean zataraSeaside(string who);

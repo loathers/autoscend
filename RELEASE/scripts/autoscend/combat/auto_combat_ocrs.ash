@@ -1,10 +1,10 @@
 //Path specific combat handling for One Crazy Random Summer
 
-monster ocrs_helper(string page)
+monster ocrs_combat_helper(string page)
 {
 	if(my_path() != "One Crazy Random Summer")
 	{
-		auto_log_critical("Should not be in ocrs_helper if not on the path!");
+		auto_log_critical("Should not be in ocrs_combat_helper if not on the path!");
 	}
 
 	string combatState = get_property("auto_combatHandler");

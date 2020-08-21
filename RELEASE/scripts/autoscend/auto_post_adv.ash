@@ -1,4 +1,3 @@
-script "auto_post_adv.ash";
 import<autoscend.ash>
 
 boolean auto_post_adventure()

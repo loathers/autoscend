@@ -1,5 +1,3 @@
-script "floristfriar.ash"
-
 void florist_initializeSettings()
 {
 	# Nothing to initialize, left as a stub.

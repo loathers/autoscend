@@ -1,5 +1,3 @@
-script "gelatinous_noob.ash"
-
 boolean in_gnoob()
 {
 	return my_class() == $class[Gelatinous Noob];

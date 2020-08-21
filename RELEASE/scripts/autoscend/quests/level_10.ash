@@ -1,5 +1,3 @@
-script "level_10.ash"
-
 boolean L10_plantThatBean()
 {
 	if(internalQuestStatus("questL10Garbage") != 0)

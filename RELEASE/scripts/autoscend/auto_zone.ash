@@ -1,5 +1,3 @@
-script "auto_zone.ash"
-
 //All functions should fail if the king is liberated?
 //Zone functions come here.
 

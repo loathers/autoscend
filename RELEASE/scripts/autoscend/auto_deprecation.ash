@@ -1,5 +1,3 @@
-script "auto_deprecation.ash"
-
 /****
 
 Functions in here are defined in autoscend/autoscend_header.ash

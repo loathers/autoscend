@@ -1,5 +1,3 @@
-script "two_crazy_random_summer.ash"
-
 boolean in_tcrs()
 {
 	return my_path() == "36" || my_path() == "Two Crazy Random Summer";
