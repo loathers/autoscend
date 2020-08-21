@@ -1,5 +1,3 @@
-script "level_5.ash"
-
 boolean L5_getEncryptionKey()
 {
 	if (internalQuestStatus("questL05Goblin") > 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)

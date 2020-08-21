@@ -1,5 +1,3 @@
-script "live_ascend_repeat.ash"
-
 boolean groundhogSafeguard()
 {
 	if(auto_my_path() == "Live. Ascend. Repeat.")

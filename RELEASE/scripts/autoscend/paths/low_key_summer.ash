@@ -1,5 +1,3 @@
-script "low_key_summer.ash"
-
 // These are listed in the order they will be iterated (item id ascending) to make debugging easier.
 location[item] lowKeys;
 lowKeys[$item[Clown car key]] = $location[The \"Fun\" House];

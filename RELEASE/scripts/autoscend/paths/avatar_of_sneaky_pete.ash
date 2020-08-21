@@ -1,5 +1,3 @@
-script "avatar_of_sneaky_pete.ash"
-
 void pete_initializeSettings()
 {
 	if(my_path() == "Avatar of Sneaky Pete")

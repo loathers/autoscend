@@ -1,4 +1,3 @@
-script "auto_pre_adv.ash";
 import<autoscend.ash>
 
 void print_footer() {

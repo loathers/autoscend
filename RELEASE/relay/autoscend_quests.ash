@@ -1,5 +1,3 @@
-script "relay_autoscend.ash";
-
 // Thanks to relay_bumcheekascend.ash for a starting point here.
 
 record setting {

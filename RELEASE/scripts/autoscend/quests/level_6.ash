@@ -1,5 +1,3 @@
-script "level_6.ash"
-
 boolean L6_friarsGetParts()
 {
 	if (internalQuestStatus("questL06Friar") < 0 || internalQuestStatus("questL06Friar") > 2)

@@ -1,5 +1,3 @@
-script "dark_gyffte.ash"
-
 void bat_startAscension()
 {
 	if(my_path() == "Dark Gyffte") {

@@ -1,5 +1,3 @@
-script "auto_test.ash"
-
 import <autoscend.ash>
 
 boolean passed;

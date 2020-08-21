@@ -1,5 +1,3 @@
-script "auto_restore.ash";
-
 /**
  * Functions designed to deal with restoring hp/mp, removing status effects, etc.
  *

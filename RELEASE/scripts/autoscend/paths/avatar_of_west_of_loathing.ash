@@ -1,5 +1,3 @@
-script "avatar_of_west_of_loathing.ash"
-
 boolean awol_initializeSettings()
 {
 	if(my_path() == "Avatar of West of Loathing")

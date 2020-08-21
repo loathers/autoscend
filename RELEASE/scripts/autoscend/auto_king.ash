@@ -1,4 +1,3 @@
-script "auto_king.ash";
 import <autoscend.ash>
 
 void handleKingLiberation()

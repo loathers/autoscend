@@ -1,5 +1,3 @@
-script "level_2.ash"
-
 boolean L2_mosquito()
 {
 	if (internalQuestStatus("questL02Larva") < 0 || internalQuestStatus("questL02Larva") > 1)

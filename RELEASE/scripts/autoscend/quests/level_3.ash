@@ -1,5 +1,3 @@
-script "level_3.ash"
-
 boolean auto_tavern()
 {
 	if (internalQuestStatus("questL03Rat") < 1 || internalQuestStatus("questL03Rat") > 1)

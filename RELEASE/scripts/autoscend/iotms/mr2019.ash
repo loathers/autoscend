@@ -1,5 +1,3 @@
-script "mr2019.ash"
-
 # This is meant for items that have a date of 2019
 
 int auto_sausageEaten()

@@ -1,5 +1,3 @@
-script "level_8.ash"
-
 boolean L8_trapperStart()
 {
 	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 0)

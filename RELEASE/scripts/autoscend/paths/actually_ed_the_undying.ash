@@ -1,5 +1,3 @@
-script "actually_ed_the_undying.ash"
-
 boolean isActuallyEd()
 {
 	return (my_class() == $class[Ed] || my_path() == "Actually Ed the Undying");

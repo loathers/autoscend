@@ -1,5 +1,3 @@
-script "avatar_of_boris.ash"
-
 boolean in_boris()
 {
 	return my_class() == $class[Avatar of Boris];

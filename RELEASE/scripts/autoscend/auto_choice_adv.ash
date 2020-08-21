@@ -1,4 +1,3 @@
-script "auto_choice_adv.ash";
 import<autoscend.ash>
 
 boolean auto_run_choice(int choice, string page)
