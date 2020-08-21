@@ -1,5 +1,3 @@
-script "mr2014.ash"
-
 #	This is meant for items that have a date of 2014.
 #	Handling: Bjorn, Little Geneticist DNA-Splicing Lab, Xi-Receiver Unit
 #

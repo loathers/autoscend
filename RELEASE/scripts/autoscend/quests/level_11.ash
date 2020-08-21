@@ -1,6 +1,3 @@
-script "level_11.ash"
-
-
 record desert_buff_record
 {
 	item offhand;

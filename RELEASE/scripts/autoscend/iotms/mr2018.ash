@@ -1,5 +1,3 @@
-script "mr2018.ash"
-
 #	This is meant for items that have a date of 2018.
 
 boolean isjanuaryToteAvailable()

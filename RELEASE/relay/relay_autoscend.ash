@@ -1,5 +1,3 @@
-script "relay_autoscend.ash";
-
 import <autoscend.ash>
 
 // Thanks to relay_cheeseascend.ash for a starting point here.

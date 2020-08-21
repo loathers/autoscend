@@ -1,4 +1,3 @@
-script "picky.ash"
 # Code here is supplementary handlers and specialized handlers
 
 void picky_pulls()

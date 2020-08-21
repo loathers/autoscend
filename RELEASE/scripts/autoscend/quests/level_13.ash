@@ -1,5 +1,3 @@
-script "level_13.ash"
-
 boolean needStarKey()
 {
 	if(contains_text(get_property("nsTowerDoorKeysUsed"),"star key"))

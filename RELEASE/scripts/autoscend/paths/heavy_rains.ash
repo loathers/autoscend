@@ -1,5 +1,3 @@
-script "heavy_rains.ash"
-
 void hr_initializeSettings()
 {
 	if(my_path() == "Heavy Rains")

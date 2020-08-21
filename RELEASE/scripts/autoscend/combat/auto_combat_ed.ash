@@ -52,9 +52,8 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	{
 		set_property("auto_edStatus", "dying");
 	}
-	set_property("auto_diag_round", round);
 
-	if(get_property("auto_diag_round").to_int() > 60)
+	if(round > 60)
 	{
 		abort("Somehow got to 60 rounds.... aborting");
 	}

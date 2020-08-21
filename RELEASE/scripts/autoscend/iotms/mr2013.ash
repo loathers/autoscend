@@ -1,5 +1,3 @@
-script "mr2013.ash"
-
 #	This is meant for items that have a date of 2013
 
 void handleJar()

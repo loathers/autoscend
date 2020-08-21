@@ -1,5 +1,3 @@
-script "autoscend_migration.ash"
-
 static string __autoscend_version = "1.5.0";
 static int __autoscend_confirm_timeoutMS = 10000;
 static string __remove_sl_ascend_confirmation = "Looks like you have the old sl_ascend project installed as well. Would you like to remove it? (it is no longer maintained). Will default to false in 10 seconds.";

@@ -1,5 +1,3 @@
-script "eudora.ash"
-
 boolean eudora_available()
 {
 	if(contains_text(visit_url("account.php"),"tab=correspondence"))

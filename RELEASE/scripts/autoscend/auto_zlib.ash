@@ -1,5 +1,3 @@
-script "auto_zlib.ash"
-
 /*
 	This is a snippet of the zlib script, to provide the process_kmail function only (as auto_process_kmail to avoid conflicts)
 */

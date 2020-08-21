@@ -1,5 +1,3 @@
-script "level_12.ash"
-
 string auto_warSide()
 {
 	//returns the side you are fighting for in the form of a string.

@@ -1,5 +1,3 @@
-script "auto_util.ash";
-
 // Private Prototypes
 boolean buffMaintain(item source, effect buff, int uses, int turns);
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns);

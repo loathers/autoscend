@@ -1,5 +1,3 @@
-script "path_of_the_plumber.ash"
-
 boolean in_zelda()
 {
 	return my_path() == "Path of the Plumber";

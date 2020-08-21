@@ -1,5 +1,3 @@
-script "grey_goo.ash"
-
 void grey_goo_initializeSettings()
 {
 	if (my_path() != "Grey Goo")

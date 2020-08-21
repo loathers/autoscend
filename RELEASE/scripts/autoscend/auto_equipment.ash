@@ -1,5 +1,3 @@
-script "autoscend/auto_equipment.ash";
-
 string getMaximizeSlotPref(slot s)
 {
 	return "_auto_maximize_equip_" + s.to_string();

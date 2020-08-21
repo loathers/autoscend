@@ -1,5 +1,3 @@
-script "mr2017.ash"
-
 #	This is meant for items that have a date of 2017.
 
 boolean mummifyFamiliar(familiar fam, string bonus)

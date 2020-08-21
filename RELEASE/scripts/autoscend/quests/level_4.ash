@@ -1,5 +1,3 @@
-script "level_4.ash"
-
 boolean L4_batCave()
 {
 	if (internalQuestStatus("questL04Bat") < 0 || internalQuestStatus("questL04Bat") > 4)

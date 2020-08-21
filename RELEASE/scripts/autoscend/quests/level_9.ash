@@ -1,5 +1,3 @@
-script "level_9.ash"
-
 boolean LX_loggingHatchet()
 {
 	if (!canadia_available())

@@ -1,5 +1,3 @@
-script "nuclear_autumn.ash"
-
 void fallout_initializeSettings()
 {
 	if(my_path() == "Nuclear Autumn")

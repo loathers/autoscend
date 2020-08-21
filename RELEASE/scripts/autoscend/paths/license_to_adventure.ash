@@ -1,5 +1,3 @@
-script "license_to_adventure.ash"
-
 void bond_initializeSettings()
 {
 	if(my_path() == "License to Adventure")

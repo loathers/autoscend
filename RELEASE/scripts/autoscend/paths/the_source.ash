@@ -1,5 +1,3 @@
-script "the_source.ash"
-
 boolean theSource_initializeSettings()
 {
 	if(my_path() == "The Source")

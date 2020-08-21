@@ -1,5 +1,3 @@
-script "bees_hate_you.ash"
-
 boolean in_bhy()
 {
 	return (auto_my_path() == "Bees Hate You");
