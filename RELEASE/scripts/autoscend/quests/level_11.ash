@@ -2362,7 +2362,8 @@ boolean L11_defeatEd()
 	{
 		return false;
 	}
-	if(my_adventures() <= 7)
+
+	if (my_adventures() - auto_advToReserve() <= 7)
 	{
 		return false;
 	}
