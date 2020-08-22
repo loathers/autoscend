@@ -46,8 +46,7 @@ boolean L4_batCave()
 	{
 		if (item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 1 && !isActuallyEd())
 		{
-			autoAdv($location[The Beanbat Chamber]);
-			return true;
+			return autoAdv($location[The Beanbat Chamber]);
 		}
 		council();
 		if (in_koe())

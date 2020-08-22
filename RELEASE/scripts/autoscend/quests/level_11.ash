@@ -2367,7 +2367,8 @@ boolean L11_defeatEd()
 		return false;
 	}
 
-	if (get_counters("Fortune Cookie", 0, 6) == "Fortune Cookie") {
+	if (get_counters("Fortune Cookie", 0, 6) == "Fortune Cookie")
+	{
 		return false;
 	}
 
