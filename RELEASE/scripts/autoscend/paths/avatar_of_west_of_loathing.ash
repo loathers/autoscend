@@ -266,13 +266,13 @@ boolean awol_buySkills()
 			{
 				if(my_class() == $class[Beanslinger])
 				{
-					if(!have_skill($skill[Beanstorm]))									//15MP AoE 2 hits high dmg.
+					if(!have_skill($skill[Lavafava]))									//3MP deal minor hot dmg twice
 					{
-						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=6", true);
+						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=0", true);
 					}
-					else if(!have_skill($skill[Beanscreen]))							//10MP block 3 next attacks
+					else if(!have_skill($skill[Bean Runner]))							//+75% init
 					{
-						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=3", true);
+						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=4", true);
 					}
 					else if(!have_skill($skill[Canhandle]))								//0MP shake offhand beans for heal or dmg and stagger
 					{
@@ -282,13 +282,13 @@ boolean awol_buySkills()
 					{
 						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=8", true);
 					}
-					else if(!have_skill($skill[Lavafava]))								//3MP deal minor hot dmg twice
+					else if(!have_skill($skill[Beanstorm]))								//15MP AoE 2 hits high dmg.
 					{
-						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=0", true);
+						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=6", true);
 					}
-					else if(!have_skill($skill[Bean Runner]))							//+75% init
+					else if(!have_skill($skill[Beanscreen]))							//10MP block 3 next attacks
 					{
-						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=4", true);
+						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=3", true);
 					}
 					else if(!have_skill($skill[Beancannon]) && beanSlang)				//banish
 					{
