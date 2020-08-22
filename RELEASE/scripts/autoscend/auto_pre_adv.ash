@@ -28,18 +28,6 @@ boolean auto_pre_adventure()
 		return true;
 	}
 
-	if(last_monster().random_modifiers["clingy"])
-	{
-		auto_log_info("Preadventure skipped by clingy modifier.", "green");
-		return true;
-	}
-
-	if(place == $location[The Lower Chambers])
-	{
-		auto_log_info("Preadventure skipped by Ed the Undying!", "green");
-		return true;
-	}
-
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " + place.to_string(), "green");
 

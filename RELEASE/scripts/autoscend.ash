@@ -3620,6 +3620,8 @@ void auto_begin()
 	backupSetting("autoAbortThreshold", -0.05);
 
 	backupSetting("currentMood", "apathetic");
+
+	backupSetting("logPreferenceChange", "true");
 	
 	backupSetting("choiceAdventure1107", 1);
 
