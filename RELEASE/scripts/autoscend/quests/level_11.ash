@@ -1246,10 +1246,6 @@ boolean L11_hiddenCity()
 			}
 		}
 
-		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			auto_changeSnapperPhylum($phylum[dude]);
-		}
-
 		if(!elevatorAction)
 		{
 			auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
@@ -1289,10 +1285,6 @@ boolean L11_hiddenCity()
 			auto_forceNextNoncombat();
 		}
 
-		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			auto_changeSnapperPhylum($phylum[dude]);
-		}
-
 		auto_log_info("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
 		return autoAdv($location[The Hidden Office Building]);
 	}
@@ -1313,10 +1305,6 @@ boolean L11_hiddenCity()
 			}
 		}
 
-		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			auto_changeSnapperPhylum($phylum[dude]);
-		}
-
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 		auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
 		return autoAdv($location[The Hidden Bowling Alley]);
@@ -1327,9 +1315,6 @@ boolean L11_hiddenCity()
 		if(item_amount($item[Dripping Stone Sphere]) > 0)
 		{
 			return true;
-		}
-		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-			auto_changeSnapperPhylum($phylum[dude]);
 		}
 		auto_log_info("The idden osptial!! [sic]", "blue");
 
@@ -2377,7 +2362,13 @@ boolean L11_defeatEd()
 	{
 		return false;
 	}
-	if(my_adventures() <= 7)
+
+	if (my_adventures() - auto_advToReserve() <= 7)
+	{
+		return false;
+	}
+
+	if (get_counters("Fortune Cookie", 0, 6) == "Fortune Cookie")
 	{
 		return false;
 	}
@@ -2416,37 +2407,15 @@ boolean L11_defeatEd()
 
 	zelda_equipTool($stat[moxie]);
 
-	// When we disable adventure handling, we also disable the maximizer that
-	// would normally happen in pre-adventure.
-	equipMaximizedGear();
-
-	acquireHP();
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 
 	set_property("choiceAdventure976", "1");
 
-	int edFights = 0;
-	set_property("auto_disableAdventureHandling", true);
-	while(item_amount($item[[2334]Holy MacGuffin]) == 0)
+	autoAdv($location[The Lower Chambers]);
+	if(auto_my_path() == "Pocket Familiars" || in_koe())
 	{
-		edFights++;
-		auto_log_info("Hello Ed #" + edFights + " give me McMuffin please.", "blue");
-		autoAdv(1, $location[The Lower Chambers]);
-		if(have_effect($effect[Beaten Up]) > 0 && item_amount($item[[2334]Holy MacGuffin]) == 0)
-		{
-			set_property("auto_disableAdventureHandling", false);
-			abort("Got Beaten Up by Ed the Undying - generally not safe to try to recover.");
-		}
-		if (edFights > 10)
-		{
-			abort("Trying to fight too many Eds, leave the poor dude alone!");
-		}
-		if(auto_my_path() == "Pocket Familiars" || in_koe())
-		{
-			cli_execute("refresh inv");
-		}
+		cli_execute("refresh inv");
 	}
-	set_property("auto_disableAdventureHandling", false);
 
 	if(item_amount($item[[2334]Holy MacGuffin]) != 0)
 	{
