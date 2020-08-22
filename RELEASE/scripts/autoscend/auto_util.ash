@@ -1332,7 +1332,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 
 	if (item_amount($item[human musk]) > 0 && (!(used contains "human musk")) && auto_is_valid($item[human musk]) && get_property("_humanMuskUses").to_int() < 3)
 	{
-		return `item {$item[human musk].to_string()}`;
+		return "item " + $item[human musk];
 	}
 
 	//We want to limit usage of these much more than the others.
