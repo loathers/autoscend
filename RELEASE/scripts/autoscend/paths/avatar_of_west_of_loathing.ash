@@ -270,6 +270,10 @@ boolean awol_buySkills()
 					{
 						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=0", true);
 					}
+					else if(!have_skill($skill[Walk: Prideful Strut]) && beanSlang)		//40MP/20adv +10 stats per fight
+					{
+						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=9", true);
+					}
 					else if(!have_skill($skill[Bean Runner]))							//+75% init
 					{
 						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=4", true);
@@ -293,10 +297,6 @@ boolean awol_buySkills()
 					else if(!have_skill($skill[Beancannon]) && beanSlang)				//banish
 					{
 						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=7", true);
-					}
-					else if(!have_skill($skill[Walk: Prideful Strut]) && beanSlang)		//40MP/20adv +10 stats per fight
-					{
-						page = visit_url("choice.php?pwd=&option=1&whichchoice=1178&whichskill=9", true);
 					}
 					else if(!have_skill($skill[Beanweaver]))							//2x bean enchantment, +2adv +substats bean plates
 					{
