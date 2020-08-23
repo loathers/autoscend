@@ -224,14 +224,6 @@ boolean LX_steelOrgan()
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
-	if(my_path() == "Avatar of West of Loathing")
-	{
-		if((get_property("awolPointsCowpuncher").to_int() < 7) || (get_property("awolPointsBeanslinger").to_int() < 1) || (get_property("awolPointsSnakeoiler").to_int() < 5))
-		{
-			set_property("auto_getSteelOrgan", false);
-			return false;
-		}
-	}
 
 	if(have_skill($skill[Liver of Steel]) || have_skill($skill[Stomach of Steel]) || have_skill($skill[Spleen of Steel]))
 	{
