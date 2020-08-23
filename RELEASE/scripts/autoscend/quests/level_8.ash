@@ -259,63 +259,77 @@ boolean L8_getMineOres()
 		return false;
 	}
 
-	if((my_rain() > 50) && (have_effect($effect[Ultrahydrated]) == 0) && (auto_my_path() == "Heavy Rains") && have_skill($skill[Rain Man]))
+	//heavy rain copy handling.
+	if(auto_my_path() == "Heavy Rains" && have_skill($skill[Rain Man]))
 	{
+		if(my_rain() < 50)
+		{
+			auto_log_info("Need Ore but not enough rain. Delaying ore for trapper", "blue");
+			return false;
+		}
+		if(have_effect($effect[Ultrahydrated]) == 0 && my_rain() < 90)
+		{
+			auto_log_info("Do not waste ultrahydrated. Delaying ore for trapper", "blue");
+			return false;
+		}
 		auto_log_info("Trying to summon a mountain man", "blue");
 		set_property("auto_mountainmen", "1");
 		return rainManSummon("mountain man", false, false);
 	}
-	else if(auto_my_path() == "Heavy Rains")
+	
+	//in softcore we want to pull the ores.
+	if(!in_hardcore())
 	{
-		#Do pulls instead if we don't possess rain man?
-		auto_log_info("Need Ore but not enough rain", "blue");
-		return false;
-	}
-	else if(!in_hardcore())
-	{
-		if(pulls_remaining() >= (3 - item_amount(oreGoal)))
+		if(pulls_remaining() < (3 - item_amount(oreGoal)))
 		{
-			pullXWhenHaveY(oreGoal, 3 - item_amount(oreGoal), item_amount(oreGoal));
-			return true;
+			return false;	//if not enough pulls left wait until tomorrow
 		}
+		pullXWhenHaveY(oreGoal, 3 - item_amount(oreGoal), item_amount(oreGoal));
+		if(item_amount(oreGoal) == 3)
+		{
+			return true;	//pulled successfully.
+		}
+		//do not return false if failed to pull despite having enough pulls left. It suggests there is some other issue preventing us from pulling so we should go forwards and acquire them.
 	}
-	else if (canGenieCombat() && (get_property("auto_useWishes").to_boolean()) && (catBurglarHeistsLeft() >= 2))
+	
+	//use 1 wish if we can guarentee it will be enough via cat burglar
+	if(canGenieCombat() && get_property("auto_useWishes").to_boolean() && catBurglarHeistsLeft() > 1)
 	{
 		auto_log_info("Trying to wish for a mountain man, which the cat will then burgle, hopefully.");
-		handleFamiliar("item");
 		handleFamiliar($familiar[cat burglar]);
 		return makeGenieCombat($monster[mountain man]);
 	}
-	else if((my_level() >= 12) && in_hardcore())
+	
+	//try to clover for the ore
+	int numCloversKeep = 0;
+	if(get_property("auto_wandOfNagamar").to_boolean())
 	{
-		int numCloversKeep = 0;
-		if(get_property("auto_wandOfNagamar").to_boolean())
+		numCloversKeep = 1;
+		if(isAboutToPowerlevel())
 		{
-			numCloversKeep = 1;
-			if(isAboutToPowerlevel())
-			{
-				numCloversKeep = 0;
-			}
+			numCloversKeep = 0;
 		}
-		if(auto_my_path() == "Nuclear Autumn")
+	}
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		if(cloversAvailable() <= numCloversKeep)
 		{
-			if(cloversAvailable() <= numCloversKeep)
-			{
-				handleBarrelFullOfBarrels(false);
-				string temp = visit_url("barrel.php");
-				temp = visit_url("choice.php?whichchoice=1099&pwd=&option=2");
-				handleBarrelFullOfBarrels(false);
-				return true;
-			}
-		}
-		if(cloversAvailable() > numCloversKeep)
-		{
-			cloverUsageInit();
-			autoAdvBypass(270, $location[Itznotyerzitz Mine]);
-			cloverUsageFinish();
+			handleBarrelFullOfBarrels(false);
+			string temp = visit_url("barrel.php");
+			temp = visit_url("choice.php?whichchoice=1099&pwd=&option=2");
+			handleBarrelFullOfBarrels(false);
 			return true;
 		}
-	} else if (isAboutToPowerlevel()) {
+	}
+	if(cloversAvailable() > numCloversKeep)
+	{
+		cloverUsageInit();
+		autoAdvBypass(270, $location[Itznotyerzitz Mine]);
+		cloverUsageFinish();
+		return true;
+	}
+
+	if(isAboutToPowerlevel()) {
 		if (!possessOutfit("Mining Gear")) {
 			auto_log_info("Getting Mining Gear.", "blue");
 			return autoAdv($location[Itznotyerzitz Mine]);
@@ -332,6 +346,7 @@ boolean L8_getMineOres()
 			}
 		}
 	}
+	
 	return false;
 }
 
