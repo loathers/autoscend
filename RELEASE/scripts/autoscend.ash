@@ -2162,16 +2162,16 @@ boolean isAboutToPowerlevel() {
 
 boolean LX_attemptPowerLevel()
 {
+	if (!isAboutToPowerlevel())		//determined that the softblock on quests waiting for optimal conditions is still on
+	{
+		auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
+		set_property("auto_powerLevelLastLevel", my_level());		//release softblock until you level up
+		set_property("auto_powerLevelAdvCount", 0);
+		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
+	}
+	
 	if (my_level() > 12) {
 		return false;
-	}
-
-	if (!isAboutToPowerlevel()) {
-		//release the softblock on various quests that await optimal conditions.
-		auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
-		set_property("auto_powerLevelLastLevel", my_level());
-		set_property("auto_powerLevelAdvCount", 0);
-		return true;
 	}
 
 	auto_log_warning("I've run out of stuff to do. Time to powerlevel, I suppose.", "red");
