@@ -276,6 +276,11 @@ boolean auto_latheHardwood(item toLathe)
 	if(item_amount($item[SpinMaster&trade; lathe]) < 1)
 		return false;
 
+	// if breakfast hasn't run and you haven't grabbed it manually, we won't
+	// see the scrap if we don't go grab it ourself. So do that, if needed.
+	if(!get_property("_spinmasterLatheVisited").to_boolean())
+		visit_url("shop.php?whichshop=lathe");
+
 	// can't lathe without hardwood
 	if(item_amount($item[flimsy hardwood scraps]) < 1)
 		return false;
