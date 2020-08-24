@@ -1979,7 +1979,7 @@ boolean uneffect(effect toRemove)
 	}
 	if(($effects[Driving Intimidatingly, Driving Obnoxiously, Driving Observantly, Driving Quickly, Driving Recklessly, Driving Safely, Driving Stealthily, Driving Wastefully, Driving Waterproofly] contains toRemove) && (auto_get_campground() contains $item[Asdon Martin Keyfob]))
 	{
-		string temp = visit_url("campground.php?pwd=&preaction=undrive");
+		visit_url("campground.php?pwd=&preaction=undrive");
 		return true;
 	}
 
