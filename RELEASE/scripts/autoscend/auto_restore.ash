@@ -2004,12 +2004,6 @@ boolean uneffect(effect toRemove)
 	return false;
 }
 
-// Deprecated, please use acquireHP()
-boolean useCocoon()
-{
-  return acquireHP();
-}
-
 /**
  * we could in theory set this as our restore script, but autoscend is not currently designed to heal this way and changing this now would probably break assumptions people have anticipated in their code, causing undefined behavior. I assume this is why we have the warning about autoscend not playing well with restore scripts and disabling them when it starts.
  *

@@ -396,17 +396,17 @@ boolean auto_post_adventure()
 
 	if((monster_level_adjustment() > 120) && ((my_hp() * 10) < (my_maxhp() * 8)) && (my_mp() >= 20))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	if((my_maxhp() > 200) && (my_hp() < 80) && (my_mp() > 25))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	if((my_maxhp() > 200) && (my_hp() < 140) && (my_mp() > 100))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 
@@ -666,23 +666,23 @@ boolean auto_post_adventure()
 
 		if((my_mp() > 150) && (my_maxhp() > 300) && (my_hp() < 140))
 		{
-			useCocoon();
+			acquireHP();
 		}
 		if((my_mp() > 100) && (my_maxhp() > 500) && (my_hp() < 250))
 		{
-			useCocoon();
+			acquireHP();
 		}
 		if((my_mp() > 75) && (my_maxhp() > 500) && (my_hp() < 200))
 		{
-			useCocoon();
+			acquireHP();
 		}
 		if((my_mp() > 75) && (my_maxhp() > 700) && (my_hp() < 300))
 		{
-			useCocoon();
+			acquireHP();
 		}
 		if((my_mp() > 75) && ((my_hp() == 0) || ((my_maxhp()/my_hp()) > 3)))
 		{
-			useCocoon();
+			acquireHP();
 		}
 
 		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 250, 1, 10);

@@ -1098,7 +1098,6 @@ boolean doFreeRest();
 boolean haveFreeRestAvailable();
 int freeRestsRemaining();
 boolean uneffect(effect toRemove);
-boolean useCocoon();
 
 ########################################################################################################
 //Defined in autoscend/autoscend_migration.ash
