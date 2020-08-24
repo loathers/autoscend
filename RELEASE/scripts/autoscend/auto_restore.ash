@@ -516,12 +516,23 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if (metadata.type == "item")
 		{
 			item i = to_item(metadata.name);
-			int price = npc_price(i);
-			if (can_interact())
+			if(can_interact())			//we have unlimited mall access = casual, aftercore, or postronin
 			{
-				price = min(price, auto_mall_price(i));
+				int price = 999999;		//do not use items that cannot be bought
+				if(is_tradeable(i))		//is possible to trade in the mall
+				{
+					price = min(price, auto_mall_price(i));
+				}
+				if(npc_price(i) > 0)	//is possible to buy from an NPC store
+				{
+					price = min(price, npc_price(i));
+				}
+				return price;
 			}
-			return price;
+			else		//mall access is limited. this means pulls are limited too.
+			{
+				return npc_price(i);	//note that this sets items that cannot be purchased to free
+			}
 		}
 		else if (metadata.type == "skill")
 		{
