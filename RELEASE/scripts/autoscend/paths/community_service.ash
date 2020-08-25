@@ -4212,11 +4212,7 @@ boolean cs_healthMaintain(){
 	if(my_maxhp() < 50){
 		target = floor(my_maxhp() * .8);
 	}
-	return cs_healthMaintain(target);
-}
-
-boolean cs_healthMaintain(int target){
-	return acquireHP(target, 2500, true);
+	return acquireHP(target, 2500);
 }
 
 boolean cs_mpMaintain(){
@@ -4226,11 +4222,11 @@ boolean cs_mpMaintain(){
 	} else if(my_maxmp() >= 120){
 		target = 120;
 	}
-	return cs_mpMaintain(target);
+	return acquireMP(target, 1500);
 }
 
 boolean cs_mpMaintain(int target){
-	return acquireMP(target, 1500, true);
+	return acquireMP(target, 1500);
 }
 
 boolean canTrySaberTrickMeteorShower(){

@@ -477,7 +477,6 @@ int get_cs_questNum(string input);
 void set_cs_questListFast(int[int] fast);
 boolean cs_preTurnStuff(int curQuest);
 boolean cs_healthMaintain();
-boolean cs_healthMaintain(int target);
 boolean cs_mpMaintain();
 boolean cs_mpMaintain(int target);
 boolean canTrySaberTrickMeteorShower();
