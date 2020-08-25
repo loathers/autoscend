@@ -516,8 +516,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if (metadata.type == "item")
 		{
 			item i = to_item(metadata.name);
-			if(can_interact())			//we have unlimited mall access = casual, aftercore, or postronin
+			if(can_interact() || my_meat() > 20000)
 			{
+				//we have unlimited mall access = casual, aftercore, or postronin. or we are just rich with over 20k meat.
+				//In either case we want to conserve rare items and consider an item's mall value rather than conserving our current meat stocks.
+				//ex: scroll of drastic healing will be considered to be worth its mall price here.
 				int price = 999999;		//do not use items that cannot be bought
 				if(is_tradeable(i))		//is possible to trade in the mall
 				{
@@ -529,9 +532,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 				}
 				return price;
 			}
-			else		//mall access is limited. this means pulls are limited too.
+			else
 			{
-				return npc_price(i);	//note that this sets items that cannot be purchased to free
+				//mall access is limited, this means pulls are limited too. also meat < 20k so we want to spend items to preserve meat
+				//ex: scroll of drastic healing will be considered free. since we spent no meat for it to drop.
+				return npc_price(i);	//this will set items that cannot be purchased from an NPC store to free.
 			}
 		}
 		else if (metadata.type == "skill")
