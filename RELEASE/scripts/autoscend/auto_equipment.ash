@@ -546,6 +546,8 @@ void equipRollover()
 		to_max += ",switch Trick-or-Treating Tot";
 	if(auto_have_familiar($familiar[Left-Hand Man]))
 		to_max += ",switch Left-Hand Man";
+	if(my_familiar() == $familiar[none] && auto_have_familiar($familiar[Mosquito]))
+		to_max += ",switch Mosquito";
 
 	backupSetting("logPreferenceChange", "false");
 	maximize(to_max, false);

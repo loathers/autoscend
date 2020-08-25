@@ -522,7 +522,7 @@ void consumeStuff()
 		{
 			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper])
 			{
-				use_familiar($familiar[none]);
+				use_familiar($familiar[Mosquito]);
 			}
 			boolean shouldDrink = true;
 			if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
