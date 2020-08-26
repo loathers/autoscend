@@ -54,12 +54,30 @@ boolean glover_usable(string it)
 		return true;
 	}
 	item checkItem = it.to_item();
-	if (checkItem != $item[none] && $items[Ninja Carabiner, Ninja Crampons, Ninja Rope, linoleum ore, chrome ore, asbestos ore, wet stew] contains checkItem) {
-		// these are not "used", they just need to exist in inventory for the quest they are used in.
-		return true;
-	} else if (to_slot(checkItem) != $slot[none]) {
-		// easy way to check if an item is equipment.
-		// all equipment is fine to use, you just don't get enchantments from stuff that lacks G's
+	if (checkItem != $item[none] && $items[ninja Carabiner,
+																				ninja Crampons,
+																				ninja Rope,
+																				eXtreme scarf,
+																				snowboarder pants,
+																				eXtreme mittens,
+																				linoleum ore,
+																				chrome ore,
+																				asbestos ore,
+																				amulet of extreme plot significance,
+																				titanium assault umbrella,
+																				antique machete,
+																				half-size scalpel,
+																				head mirror,
+																				wet stew,
+																				Orcish baseball cap,
+																				homoerotic frat-paddle,
+																				filthy knitted dread sack,
+																				filthy corduroys,
+																				beer helmet,
+																				distressed denim pants,
+																				reinforced beaded headband,
+																				bullet-proof corduroys] contains checkItem) {
+		// these are all used for quest furthering porpoises so they still "work" even though they don't contain G's
 		return true;
 	}
 	return false;

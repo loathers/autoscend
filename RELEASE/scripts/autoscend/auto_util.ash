@@ -3823,7 +3823,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
 	case $effect[Empathy]:
-		if(have_familiar($familiar[Mosquito]) && acquireTotem())
+		if(pathAllowsFamiliars() && acquireTotem())
 		{
 			useSkill = $skill[Empathy of the Newt];
 		}																						break;
@@ -3948,7 +3948,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Juiced and Jacked]:			useItem = $item[Pumpkin Juice];					break;
 	case $effect[Juiced and Loose]:				useSkill = $skill[Steroid Bladder];				break;
 	case $effect[Leash of Linguini]:
-		if(have_familiar($familiar[Mosquito]))
+		if(pathAllowsFamiliars())
 		{
 			useSkill = $skill[Leash of Linguini];
 		}																						break;

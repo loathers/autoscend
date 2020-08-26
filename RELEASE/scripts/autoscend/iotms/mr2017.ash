@@ -275,7 +275,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-	if((loveEffect == 2) && !have_familiar($familiar[Mosquito]))
+	if((loveEffect == 2) && !pathAllowsFamiliars())
 	{
 		loveEffect = 3;
 	}
