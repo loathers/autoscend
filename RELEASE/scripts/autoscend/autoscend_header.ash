@@ -1342,3 +1342,4 @@ boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);
 int currentPoolSkill();
 int poolSkillPracticeGains();
+float npcStoreDiscountMulti();

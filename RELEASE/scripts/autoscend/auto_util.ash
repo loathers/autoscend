@@ -5764,3 +5764,21 @@ int poolSkillPracticeGains()
 	return count;
 }
 
+float npcStoreDiscountMulti()
+{
+	//calculates a multiplier to be applied to store prices for our current discount for NPC stores.
+	//does not bother with sleaze jelly or Post-holiday sale coupon
+	
+	float retval = 1.0;
+	
+	if(auto_have_skill($skill[Five Finger Discount]))
+	{
+		retval -= 0.05;
+	}
+	if(possessEquipment($item[Travoltan trousers]) && auto_is_valid($item[Travoltan trousers]))
+	{
+		retval -= 0.05;
+	}
+	
+	return retval;
+}
