@@ -29,11 +29,6 @@ boolean fancyOilPainting();
 boolean LX_fcle();
 boolean LX_ornateDowsingRod(boolean doing_desert_now);	//Defined in autoscend/iotms/auto_mr2014.ash
 boolean LX_nastyBooty();
-boolean LX_joinPirateCrew();
-boolean LX_fledglingPirateIsYou();
-boolean LX_unlockBelowdecks();
-boolean LX_pirateQuest();
-boolean LX_acquireEpicWeapon();
 boolean LX_hardcoreFoodFarm();
 boolean LX_attemptPowerLevel();
 boolean LX_attemptFlyering();
@@ -45,7 +40,8 @@ boolean LX_craftAcquireItems();
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
 boolean LX_dolphinKingMap();
-boolean resolveSixthDMT();
+boolean LX_dinseylandfillFunbucks();				//Defined in autoscend/iotms/auto_mr2015.ash
+boolean resolveSixthDMT();							//Defined in autoscend/iotms/auto_mr2015.ash
 boolean witchessFights();
 boolean chateauPainting();
 boolean LX_faxing();
@@ -200,15 +196,21 @@ boolean finishMeatsmithSubQuest();						//Defined in autoscend/auto_util.ash
 boolean finishGalaktikSubQuest();						//Defined in autoscend/auto_util.ash
 
 //Defined in autoscend/quests/optional.ash
-boolean LX_artistQuest();					//Defined in autoscend/quests/optional.ash
+boolean LX_artistQuest();											//Defined in autoscend/quests/optional.ash
 boolean LX_unlockThinknerdWarehouse(boolean spend_resources);		//Defined in autoscend/quests/optional.ash
-boolean LX_melvignShirt();					//Defined in autoscend/quests/optional.ash
+boolean LX_melvignShirt();											//Defined in autoscend/quests/optional.ash
 boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean LX_pirateOutfit();
-string beerPong(string page);				//Defined in autoscend/quests/optional.ash
-string tryBeerPong();						//Defined in autoscend/quests/optional.ash
-boolean LX_dinseylandfillFunbucks();		//Defined in autoscend/quests/optional.ash
+string beerPong(string page);										//Defined in autoscend/quests/optional.ash
+string tryBeerPong();												//Defined in autoscend/quests/optional.ash
+int numPirateInsults();												//Defined in autoscend/quests/optional.ash
+boolean LX_joinPirateCrew();
+boolean LX_fledglingPirateIsYou();
+boolean LX_unlockBelowdecks();
+boolean LX_pirateQuest();
+boolean LX_acquireEpicWeapon();
+LX_NemesisQuest();
 
 //these need sorting
 string autoscend_current_version();
@@ -930,7 +932,6 @@ element ns_crowd3();										//Defined in autoscend/auto_util.ash
 element ns_hedge1();										//Defined in autoscend/auto_util.ash
 element ns_hedge2();										//Defined in autoscend/auto_util.ash
 element ns_hedge3();										//Defined in autoscend/auto_util.ash
-int numPirateInsults();										//Defined in autoscend/auto_util.ash
 boolean ocrs_postCombatResolve();							//Defined in autoscend/auto_summerfun.ash
 boolean ocrs_postHelper();									//Defined in autoscend/auto_summerfun.ash
 void oldPeoplePlantStuff();									//Defined in autoscend/auto_floristfriar.ash
