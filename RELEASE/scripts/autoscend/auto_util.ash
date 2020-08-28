@@ -5782,3 +5782,50 @@ float npcStoreDiscountMulti()
 	
 	return retval;
 }
+
+int meatReserve()
+{
+	//the amount of meat we want to reserve for quest usage when performing a restore
+	
+	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely
+	{
+		return 0;	
+	}
+	
+	int reserve_gnasir = 0;		//used to track how much we need to reserve for black paint for gnasir
+	int reserve_diary = 0;		//used to track how much we need to reserve to acquire [your father's MacGuffin diary] at L11 quest
+	int reserve_island = 0;		//used to track how much we need to reserve to unlock the mysterious island
+	
+	//how much do we reserve for gnasir?
+	if(internalQuestStatus("questL11Desert") < 1 &&				//bitwise. desert exploration not yet finished
+	(get_property("gnasirProgress").to_int() & 2) != 2)			//gnasir has not been given black paint yet
+	{
+		reserve_gnasir += 1000;
+	}
+	
+	//how much do we reserve for [your father's MacGuffin diary]?
+	if(item_amount($item[your father\'s MacGuffin diary]) == 0 &&		//you do not yet have diary
+	!in_koe() &&														//diary is given by council for free in kingdom of exploathing
+	my_path() != "Way of the Surprising Fist")							//costs 5 meat total in way of the surprising fist. no need to track that
+	{
+		reserve_diary += 500;		//1 vacation. no need to count script. we don't pull it or get it prematurely.
+		
+		//cannot just use npc_price() for [forged identification documents] because they are not always available. it would return 0.
+		if(item_amount($item[forged identification documents]) == 0)
+		{
+			reserve_diary += 5000 * npcStoreDiscountMulti();
+		}
+	}
+	
+	//how much do we reserve for unlocking mysterious island?
+	if(get_property("lastIslandUnlock").to_int() < my_ascensions())		//need to unlock island
+	{
+		reserve_island += 1500;		//3 vacations. no need to count script. we don't pull it or get it prematurely.
+		if(item_amount($item[dingy planks]) == 0)
+		{
+			reserve_island += 400 * npcStoreDiscountMulti();
+		}
+	}
+	
+	return reserve_gnasir + reserve_diary + reserve_island;
+}
