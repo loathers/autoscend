@@ -457,6 +457,97 @@ boolean LX_guildUnlock()
 	return false;
 }
 
+boolean startArmorySubQuest()
+{
+	if(in_koe() || auto_my_path() == "Nuclear Autumn")
+	{
+		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
+		{
+			return use(1, $item[Hypnotic Breadcrumbs]);
+		}
+		return false;
+	}
+
+	if(internalQuestStatus("questM25Armorer") == -1)
+	{
+		string temp = visit_url("shop.php?whichshop=armory");
+		temp = visit_url("shop.php?whichshop=armory&action=talk");
+		temp = visit_url("choice.php?pwd=&whichchoice=1065&option=1");
+		if(internalQuestStatus("questM25Armorer") > -1)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean startMeatsmithSubQuest()
+{
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		if(item_amount($item[Bone With a Price Tag On It]) > 0)
+		{
+			use(1, $item[Bone With a Price Tag On It]);
+			return true;
+		}
+		return false;
+	}
+	if(internalQuestStatus("questM23Meatsmith") == -1)
+	{
+		string temp = visit_url("shop.php?whichshop=meatsmith");
+		temp = visit_url("shop.php?whichshop=meatsmith&action=talk");
+		temp = visit_url("choice.php?pwd=&whichchoice=1059&option=1");
+		return true;
+	}
+	return false;
+}
+
+boolean finishMeatsmithSubQuest()
+{
+	if (internalQuestStatus("questM23Meatsmith") == 1) {
+		visit_url("shop.php?whichshop=meatsmith");
+		run_choice(2);
+		return true;
+	}
+	return false;
+}
+
+boolean startGalaktikSubQuest()
+{
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
+		{
+			use(1, $item[Map to a Hidden Booze Cache]);
+			return true;
+		}
+		return false;
+	}
+	if(internalQuestStatus("questM24Doc") == -1)
+	{
+		string temp = visit_url("shop.php?whichshop=doc");
+		temp = visit_url("shop.php?whichshop=doc&action=talk");
+		temp = visit_url("choice.php?pwd=&whichchoice=1064&option=1");
+		return true;
+	}
+	return false;
+}
+
+boolean finishGalaktikSubQuest()
+{
+	if (item_amount($item[fraudwort]) >= 3 && item_amount($item[shysterweed]) >= 3 && item_amount($item[swindleblossom]) >= 3) {
+		string temp = visit_url("shop.php?whichshop=doc");
+		if (temp.contains_text("What did you need, again?")) {
+			visit_url("shop.php?whichshop=doc&action=talk");
+		}
+		run_choice(2);
+		if (internalQuestStatus("questM24Doc") > 1) {
+			return true;
+		}
+	}
+	return false;
+}
+
 boolean LX_pirateOutfit() {
 	if (get_property("lastIslandUnlock").to_int() < my_ascensions()) {
 		return LX_islandAccess();

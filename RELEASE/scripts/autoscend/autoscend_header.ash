@@ -189,18 +189,17 @@ boolean LX_dolphinKingMap();
 boolean LX_meatMaid();								//Defined in autoscend/quests/level_any.ash
 boolean dependenceDayClovers();						//Defined in autoscend/quests/level_any.ash
 
-boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
-boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
-boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash
-boolean finishMeatsmithSubQuest();						//Defined in autoscend/auto_util.ash
-boolean finishGalaktikSubQuest();						//Defined in autoscend/auto_util.ash
-
 //Defined in autoscend/quests/optional.ash
 boolean LX_artistQuest();											//Defined in autoscend/quests/optional.ash
 boolean LX_unlockThinknerdWarehouse(boolean spend_resources);		//Defined in autoscend/quests/optional.ash
 boolean LX_melvignShirt();											//Defined in autoscend/quests/optional.ash
 boolean LX_steelOrgan();
 boolean LX_guildUnlock();
+boolean startArmorySubQuest();
+boolean startGalaktikSubQuest();
+boolean finishGalaktikSubQuest();
+boolean startMeatsmithSubQuest();
+boolean finishMeatsmithSubQuest();
 boolean LX_pirateOutfit();
 string beerPong(string page);										//Defined in autoscend/quests/optional.ash
 string tryBeerPong();												//Defined in autoscend/quests/optional.ash
