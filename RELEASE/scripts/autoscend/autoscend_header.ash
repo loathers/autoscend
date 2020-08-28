@@ -17,14 +17,6 @@
 
 boolean LA_cs_communityService();				//Defined in autoscend/auto_community_service.ash
 boolean LM_edTheUndying();						//Defined in autoscend/auto_edTheUndying.ash
-
-boolean LX_desertAlternate();
-boolean LX_hippyBoatman();
-boolean LX_lockPicking();
-float estimateDailyDungeonAdvNeeded();				//Defined in autoscend/quests/level_any.ash
-boolean LX_fatLootToken();							//Defined in autoscend/quests/level_any.ash
-boolean LX_dailyDungeonToken();						//Defined in autoscend/quests/level_any.ash
-boolean LX_islandAccess();
 boolean fancyOilPainting();
 boolean LX_fcle();
 boolean LX_ornateDowsingRod(boolean doing_desert_now);	//Defined in autoscend/iotms/auto_mr2014.ash
@@ -32,14 +24,9 @@ boolean LX_nastyBooty();
 boolean LX_hardcoreFoodFarm();
 boolean LX_attemptPowerLevel();
 boolean LX_attemptFlyering();
-boolean LX_bitchinMeatcar();
-boolean LX_unlockDesert();
-boolean LX_meatMaid();								//Defined in autoscend/quests/level_any.ash
-boolean dependenceDayClovers();						//Defined in autoscend/quests/level_any.ash
 boolean LX_craftAcquireItems();
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
-boolean LX_dolphinKingMap();
 boolean LX_dinseylandfillFunbucks();				//Defined in autoscend/iotms/auto_mr2015.ash
 boolean resolveSixthDMT();							//Defined in autoscend/iotms/auto_mr2015.ash
 boolean witchessFights();
@@ -188,10 +175,23 @@ boolean L13_ed_councilWarehouse();
 boolean L13_ed_towerHandler();
 
 //Defined in autoscend/quests/level_any.ash
+boolean LX_bitchinMeatcar();
+boolean LX_unlockDesert();
+boolean LX_desertAlternate();
+boolean LX_islandAccess();
+boolean startHippyBoatmanSubQuest();
+boolean LX_hippyBoatman();
+boolean LX_lockPicking();
+float estimateDailyDungeonAdvNeeded();				//Defined in autoscend/quests/level_any.ash
+boolean LX_fatLootToken();							//Defined in autoscend/quests/level_any.ash
+boolean LX_dailyDungeonToken();						//Defined in autoscend/quests/level_any.ash
+boolean LX_dolphinKingMap();
+boolean LX_meatMaid();								//Defined in autoscend/quests/level_any.ash
+boolean dependenceDayClovers();						//Defined in autoscend/quests/level_any.ash
+
 boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
 boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
 boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash
-boolean startHippyBoatmanSubQuest();						//Defined in autoscend/auto_util.ash
 boolean finishMeatsmithSubQuest();						//Defined in autoscend/auto_util.ash
 boolean finishGalaktikSubQuest();						//Defined in autoscend/auto_util.ash
 
