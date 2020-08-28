@@ -29,15 +29,12 @@ boolean fancyOilPainting();
 boolean LX_fcle();
 boolean LX_ornateDowsingRod(boolean doing_desert_now);	//Defined in autoscend/iotms/auto_mr2014.ash
 boolean LX_nastyBooty();
-boolean LX_guildUnlock();
-boolean LX_pirateOutfit();
 boolean LX_joinPirateCrew();
 boolean LX_fledglingPirateIsYou();
 boolean LX_unlockBelowdecks();
 boolean LX_pirateQuest();
 boolean LX_acquireEpicWeapon();
 boolean LX_hardcoreFoodFarm();
-boolean LX_melvignShirt();
 boolean LX_attemptPowerLevel();
 boolean LX_attemptFlyering();
 boolean LX_bitchinMeatcar();
@@ -48,7 +45,6 @@ boolean LX_craftAcquireItems();
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
 boolean LX_dolphinKingMap();
-boolean LX_steelOrgan();
 boolean resolveSixthDMT();
 boolean witchessFights();
 boolean chateauPainting();
@@ -57,13 +53,6 @@ boolean LX_universeFrat();
 boolean LX_burnDelay();
 boolean LX_loggingHatchet();
 boolean Lsc_flyerSeals();
-
-//Defined in autoscend/auto_optionals.ash
-
-boolean LX_artistQuest();					//Defined in autoscend/auto_optionals.ash
-boolean LX_dinseylandfillFunbucks();		//Defined in autoscend/auto_optionals.ash
-
-
 
 boolean handleRainDoh();					//Defined in autoscend/iotms/auto_mr2012.ash
 
@@ -190,7 +179,7 @@ boolean L12_orchardFinalize();								//Defined in autoscend/auto_quest_level_12
 boolean L12_finalizeWar();									//Defined in autoscend/auto_quest_level_12.ash
 boolean L12_clearBattlefield();
 
-//Defined in autoscend/auto_quest_level_13.ash
+//Defined in autoscend/quests/level_13.ash
 boolean LX_getDigitalKey();
 boolean LX_getStarKey();
 boolean L13_sorceressDoor();
@@ -202,6 +191,26 @@ boolean L13_towerNSFinal();
 boolean L13_ed_councilWarehouse();
 boolean L13_ed_towerHandler();
 
+//Defined in autoscend/quests/level_any.ash
+boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
+boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
+boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash
+boolean startHippyBoatmanSubQuest();						//Defined in autoscend/auto_util.ash
+boolean finishMeatsmithSubQuest();						//Defined in autoscend/auto_util.ash
+boolean finishGalaktikSubQuest();						//Defined in autoscend/auto_util.ash
+
+//Defined in autoscend/quests/optional.ash
+boolean LX_artistQuest();					//Defined in autoscend/quests/optional.ash
+boolean LX_unlockThinknerdWarehouse(boolean spend_resources);		//Defined in autoscend/quests/optional.ash
+boolean LX_melvignShirt();					//Defined in autoscend/quests/optional.ash
+boolean LX_steelOrgan();
+boolean LX_guildUnlock();
+boolean LX_pirateOutfit();
+string beerPong(string page);				//Defined in autoscend/quests/optional.ash
+string tryBeerPong();						//Defined in autoscend/quests/optional.ash
+boolean LX_dinseylandfillFunbucks();		//Defined in autoscend/quests/optional.ash
+
+//these need sorting
 string autoscend_current_version();
 string autoscend_previous_version();
 boolean autoscend_needs_update();
@@ -474,7 +483,6 @@ effect awol_walkBuff();										//Defined in autoscend/auto_awol.ash
 boolean backupSetting(string setting, string newValue);		//Defined in autoscend/auto_util.ash
 int[monster] banishedMonsters();							//Defined in autoscend/auto_util.ash
 boolean beehiveConsider();									//Defined in autoscend/auto_util.ash
-string beerPong(string page);								//Defined in autoscend/auto_util.ash
 int estimatedTurnsLeft();									//Defined in autoscend/auto_util.ash
 boolean summonMonster();									//Defined in autoscend/auto_util.ash
 boolean summonMonster(string option);						//Defined in autoscend/auto_util.ash
@@ -966,12 +974,6 @@ void shrugAT(effect anticipated);							//Defined in autoscend/auto_util.ash
 boolean snojoFightAvailable();								//Defined in autoscend/iotms/auto_mr2016.ash
 int solveCookie();											//Defined in autoscend/auto_util.ash
 int spleen_left();											//Defined in autoscend/auto_util.ash
-boolean startArmorySubQuest();								//Defined in autoscend/auto_util.ash
-boolean startGalaktikSubQuest();							//Defined in autoscend/auto_util.ash
-boolean startMeatsmithSubQuest();							//Defined in autoscend/auto_util.ash
-boolean startHippyBoatmanSubQuest();						//Defined in autoscend/auto_util.ash
-boolean finishMeatsmithSubQuest();						//Defined in autoscend/auto_util.ash
-boolean finishGalaktikSubQuest();						//Defined in autoscend/auto_util.ash
 string statCard();											//Defined in autoscend/auto_util.ash
 int stomach_left();											//Defined in autoscend/auto_util.ash
 boolean theSource_buySkills();								//Defined in autoscend/auto_theSource.ash
@@ -989,7 +991,6 @@ boolean tophatMaker();										//Defined in autoscend.ash
 boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);//Defined in autoscend/auto_deprecation.ash
 void trickMafiaAboutFlorist();								//Defined in autoscend/auto_floristfriar.ash
 string trim(string input);									//Defined in autoscend/auto_util.ash
-string tryBeerPong();										//Defined in autoscend/auto_util.ash
 int turkeyBooze();											//Defined in autoscend/auto_util.ash
 boolean use_barrels();										//Defined in autoscend/auto_util.ash
 boolean needStarKey();										//Defined in autoscend/auto_quest_level_13.ash
@@ -1255,7 +1256,6 @@ generic_t zone_needItem(location loc);						//Defined in autoscend/auto_zone.ash
 generic_t zone_difficulty(location loc);					//Defined in autoscend/auto_zone.ash
 generic_t zone_combatMod(location loc);						//Defined in autoscend/auto_zone.ash
 generic_t zone_delay(location loc);							//Defined in autoscend/auto_zone.ash
-boolean LX_unlockThinknerdWarehouse(boolean spend_resources);		//Defined in autoscend/auto_zone.ash
 generic_t zone_available(location loc);						//Defined in autoscend/auto_zone.ash
 boolean zone_unlock(location loc);
 location[int] zone_list();									//Defined in autoscend/auto_zone.ash
@@ -1270,7 +1270,7 @@ item[int] hugpocket_available();							//Defined in autoscend/auto_zone.ash
 // functions for handling choice adventures. Only ever called from auto_choice_adv.ash
 void hiddenTempleChoiceHandler(int choice, string page);
 void oldLandfillChoiceHandler(int choice);
-void piratesCoveChoiceHandler(int choice);
+void piratesCoveChoiceHandler(int choice);							//Defined in autoscend/quests/optional.ash
 void barrrneysBarrrChoiceHandler(int choice, string page);
 void fcleChoiceHandler(int choice);
 void itznotyerzitzMineChoiceHandler(int choice);
