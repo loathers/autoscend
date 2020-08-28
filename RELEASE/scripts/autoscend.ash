@@ -876,6 +876,7 @@ boolean LX_doVacation()
 
 boolean fortuneCookieEvent()
 {
+	//Semi-rare Handler
 	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
 	{
 		auto_log_info("Semi rare time!", "blue");
@@ -1325,6 +1326,8 @@ void initializeDay(int day)
 
 boolean dailyEvents()
 {
+	//Daily Events that should happen at start and not end.
+	
 	auto_birdOfTheDay();
 	while(auto_doPrecinct());
 	handleBarrelFullOfBarrels(true);
