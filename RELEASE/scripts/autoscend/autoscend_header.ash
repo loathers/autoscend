@@ -199,24 +199,24 @@ boolean L13_ed_councilWarehouse();
 boolean L13_ed_towerHandler();
 
 //Defined in autoscend/quests/level_any.ash
-boolean LX_bitchinMeatcar();										//Defined in autoscend/quests/level_any.ash
-boolean LX_unlockDesert();											//Defined in autoscend/quests/level_any.ash
-boolean LX_desertAlternate();										//Defined in autoscend/quests/level_any.ash
-boolean LX_islandAccess();											//Defined in autoscend/quests/level_any.ash
-boolean startHippyBoatmanSubQuest();								//Defined in autoscend/quests/level_any.ash
-boolean LX_hippyBoatman();											//Defined in autoscend/quests/level_any.ash
-boolean LX_lockPicking();											//Defined in autoscend/quests/level_any.ash
-float estimateDailyDungeonAdvNeeded();								//Defined in autoscend/quests/level_any.ash
-boolean LX_fatLootToken();											//Defined in autoscend/quests/level_any.ash
-boolean LX_dailyDungeonToken();										//Defined in autoscend/quests/level_any.ash
-boolean LX_dolphinKingMap();										//Defined in autoscend/quests/level_any.ash
-boolean LX_meatMaid();												//Defined in autoscend/quests/level_any.ash
-boolean dependenceDayClovers();										//Defined in autoscend/quests/level_any.ash
+boolean LX_bitchinMeatcar();
+boolean LX_unlockDesert();
+boolean LX_desertAlternate();
+boolean LX_islandAccess();
+boolean startHippyBoatmanSubQuest();
+boolean LX_hippyBoatman();
+boolean LX_lockPicking();
+float estimateDailyDungeonAdvNeeded();
+boolean LX_fatLootToken();
+boolean LX_dailyDungeonToken();
+boolean LX_dolphinKingMap();
+boolean LX_meatMaid();
+boolean dependenceDayClovers();
 
 //Defined in autoscend/quests/optional.ash
-boolean LX_artistQuest();											//Defined in autoscend/quests/optional.ash
-boolean LX_unlockThinknerdWarehouse(boolean spend_resources);		//Defined in autoscend/quests/optional.ash
-boolean LX_melvignShirt();											//Defined in autoscend/quests/optional.ash
+boolean LX_artistQuest();
+boolean LX_unlockThinknerdWarehouse(boolean spend_resources);
+boolean LX_melvignShirt();
 boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean startArmorySubQuest();
@@ -225,9 +225,9 @@ boolean finishGalaktikSubQuest();
 boolean startMeatsmithSubQuest();
 boolean finishMeatsmithSubQuest();
 boolean LX_pirateOutfit();
-string beerPong(string page);										//Defined in autoscend/quests/optional.ash
-string tryBeerPong();												//Defined in autoscend/quests/optional.ash
-int numPirateInsults();												//Defined in autoscend/quests/optional.ash
+string beerPong(string page);
+string tryBeerPong();
+int numPirateInsults();
 boolean LX_joinPirateCrew();
 boolean LX_fledglingPirateIsYou();
 boolean LX_unlockBelowdecks();
@@ -260,6 +260,29 @@ boolean auto_floundryUse();
 boolean auto_floundryAction();
 boolean auto_floundryAction(item it);
 
+//Defined in autoscend/iotms/auto_elementalPlanes.ash
+item[element] getCharterIndexable();
+boolean elementalPlanes_initializeSettings();
+boolean elementalPlanes_access(element ele);
+boolean elementalPlanes_takeJob(element ele);
+boolean dinseylandfill_garbageMoney();
+boolean getDiscoStyle(int choice);
+boolean getDiscoStyle();
+boolean volcano_lavaDogs();
+boolean volcano_bunkerJob();
+
+//Defined in autoscend/iotms/auto_eudora.ash
+boolean eudora_available();
+boolean[item] eudora_initializeSettings();
+item eudora_current();
+int[item] eudora_xiblaxian();
+
+//Defined in autoscend/iotms/auto_floristfriar.ash
+void florist_initializeSettings();
+boolean didWePlantHere(location loc);
+void trickMafiaAboutFlorist();
+void oldPeoplePlantStuff();
+
 //Defined in autoscend/iotms/auto_mr2011.ash
 boolean isClipartItem(item it);
 
@@ -283,9 +306,6 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now);		//Defined in autoscend/i
 boolean fancyOilPainting();
 
 boolean adjustEdHat(string goal);							//Defined in autoscend/iotms/auto_mr2015.ash
-void oldPeoplePlantStuff();									//Defined in autoscend/auto_floristfriar.ash
-boolean didWePlantHere(location loc);						//Defined in autoscend/auto_floristfriar.ash
-boolean dinseylandfill_garbageMoney();						//Defined in autoscend/auto_elementalPlanes.ash
 boolean LX_dinseylandfillFunbucks();						//Defined in autoscend/iotms/auto_mr2015.ash
 boolean resolveSixthDMT();									//Defined in autoscend/iotms/auto_mr2015.ash
 boolean deck_available();									//Defined in autoscend/iotms/auto_mr2015.ash
@@ -657,15 +677,8 @@ boolean ed_needShop();										//Defined in autoscend/auto_edTheUndying.ash
 void ed_handleAdventureServant(location loc);	//Defined in autoscend/auto_edTheUndying.ash
 void ed_terminateSession();									//Defined in autoscend/auto_edTheUndying.ash
 effect[int] effectList();									//Defined in autoscend/auto_list.ash
-boolean elementalPlanes_access(element ele);				//Defined in autoscend/auto_elementalPlanes.ash
-boolean elementalPlanes_initializeSettings();				//Defined in autoscend/auto_elementalPlanes.ash
-boolean elementalPlanes_takeJob(element ele);				//Defined in autoscend/auto_elementalPlanes.ash
 int elemental_resist(element goal);							//Defined in autoscend/auto_util.ash
 float elemental_resist_value(int resistance);				//Defined in autoscend/auto_util.ash
-boolean eudora_available();									//Defined in autoscend/auto_eudora.ash
-item eudora_current();										//Defined in autoscend/auto_eudora.ash
-boolean[item] eudora_initializeSettings();					//Defined in autoscend/auto_eudora.ash
-int[item] eudora_xiblaxian();								//Defined in autoscend/auto_eudora.ash
 boolean evokeEldritchHorror();								//Defined in autoscend/auto_util.ash
 boolean evokeEldritchHorror(string option);					//Defined in autoscend/auto_util.ash
 boolean fallout_buySkills();								//Defined in autoscend/auto_fallout.ash
@@ -674,13 +687,9 @@ void fallout_initializeSettings();							//Defined in autoscend/auto_fallout.ash
 int fastenerCount();										//Defined in autoscend/auto_util.ash
 boolean fightScienceTentacle();								//Defined in autoscend/auto_util.ash
 boolean fightScienceTentacle(string option);				//Defined in autoscend/auto_util.ash
-void florist_initializeSettings();							//Defined in autoscend/auto_floristfriar.ash
 boolean forceEquip(slot sl, item it);						//Defined in autoscend/auto_util.ash
 int fullness_left();										//Defined in autoscend/auto_util.ash
 location solveDelayZone();									//Defined in autoscend/auto_util.ash
-item[element] getCharterIndexable();						//Defined in autoscend/auto_elementalPlanes.ash
-boolean getDiscoStyle();									//Defined in autoscend/auto_elementalPlanes.ash
-boolean getDiscoStyle(int choice);							//Defined in autoscend/auto_elementalPlanes.ash
 boolean mummifyFamiliar(familiar fam, string bonus);		//Defined in autoscend/iotms/auto_mr2017.ash
 boolean isjanuaryToteAvailable();							//Defined in autoscend/iotms/auto_mr2018.ash
 int januaryToteTurnsLeft(item it);							//Defined in autoscend/iotms/auto_mr2018.ash
@@ -993,7 +1002,6 @@ boolean timeSpinnerConsume(item goal);						//Defined in autoscend/iotms/auto_mr
 boolean timeSpinnerGet(string goal);						//Defined in autoscend/iotms/auto_mr2016.ash
 void tootGetMeat();											//Defined in autoscend/auto_util.ash
 boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);//Defined in autoscend/auto_deprecation.ash
-void trickMafiaAboutFlorist();								//Defined in autoscend/auto_floristfriar.ash
 string trim(string input);									//Defined in autoscend/auto_util.ash
 int turkeyBooze();											//Defined in autoscend/auto_util.ash
 boolean use_barrels();										//Defined in autoscend/auto_util.ash
@@ -1001,8 +1009,6 @@ boolean needStarKey();										//Defined in autoscend/quests/level_13.ash
 boolean needDigitalKey();									//Defined in autoscend/quests/level_13.ash
 int whitePixelCount();										//Defined in autoscend/quests/level_13.ash
 boolean careAboutDrops(monster mon);						//Defined in autoscend/auto_util.ash
-boolean volcano_bunkerJob();								//Defined in autoscend/auto_elementalPlanes.ash
-boolean volcano_lavaDogs();									//Defined in autoscend/auto_elementalPlanes.ash
 item whatHiMein();											//Defined in autoscend/auto_util.ash
 effect whatStatSmile();										//Defined in autoscend/auto_util.ash
 void woods_questStart();									//Defined in autoscend/auto_util.ash
