@@ -59,7 +59,6 @@ boolean LX_fcle();
 boolean LX_nastyBooty();
 boolean LX_attemptFlyering();
 boolean witchessFights();
-boolean chateauPainting();
 boolean LX_loggingHatchet();
 //tosort ending
 
@@ -298,21 +297,33 @@ boolean handleBjornify(familiar fam);
 boolean considerGrimstoneGolem(boolean bjornCrown);
 boolean dna_startAcquire();
 boolean dna_generic();
-boolean dna_sorceressTest();								//Defined in autoscend/iotms/auto_mr2014.ash
-boolean dna_bedtime();										//Defined in autoscend/iotms/auto_mr2014.ash
-boolean xiblaxian_makeStuff();								//Defined in autoscend/iotms/auto_mr2014.ash
-boolean LX_ornateDowsingRod(boolean doing_desert_now);		//Defined in autoscend/iotms/auto_mr2014.ash
+boolean dna_sorceressTest();
+boolean dna_bedtime();
+boolean xiblaxian_makeStuff();
+boolean LX_ornateDowsingRod(boolean doing_desert_now);
 boolean fancyOilPainting();
 
-boolean adjustEdHat(string goal);							//Defined in autoscend/iotms/auto_mr2015.ash
-boolean LX_dinseylandfillFunbucks();						//Defined in autoscend/iotms/auto_mr2015.ash
-boolean resolveSixthDMT();									//Defined in autoscend/iotms/auto_mr2015.ash
-boolean deck_available();									//Defined in autoscend/iotms/auto_mr2015.ash
-boolean deck_cheat(string cheat);							//Defined in autoscend/iotms/auto_mr2015.ash
-boolean deck_draw();										//Defined in autoscend/iotms/auto_mr2015.ash
-int deck_draws_left();										//Defined in autoscend/iotms/auto_mr2015.ash
-boolean deck_useScheme(string action);						//Defined in autoscend/iotms/auto_mr2015.ash
-boolean mayo_acquireMayo(item it);							//Defined in autoscend/iotms/auto_mr2015.ash
+//Defined in autoscend/iotms/auto_mr2015.ash
+boolean mayo_acquireMayo(item it);
+boolean auto_barrelPrayers();
+boolean auto_mayoItems();
+boolean chateaumantegna_available();
+void chateaumantegna_useDesk();
+boolean chateaumantegna_havePainting();
+boolean chateaumantegna_usePainting(string option);
+boolean chateaumantegna_usePainting();
+boolean[item] chateaumantegna_decorations();
+void chateaumantegna_buyStuff(item toBuy);
+boolean chateaumantegna_nightstandSet();
+boolean chateauPainting();
+boolean deck_available();
+int deck_draws_left();
+boolean deck_draw();
+boolean deck_cheat(string cheat);
+boolean deck_useScheme(string action);
+boolean adjustEdHat(string goal);
+boolean resolveSixthDMT();
+boolean LX_dinseylandfillFunbucks();
 
 //Defined in autoscend/autoscend_migration.ash
 string autoscend_current_version();
@@ -596,14 +607,12 @@ boolean auto_advWitchess(string target);						//Defined in autoscend/iotms/auto_
 boolean auto_advWitchess(string target, string option);		//Defined in autoscend/iotms/auto_mr2016.ash
 int auto_advWitchessTargets(string target);					//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_autosell(int quantity, item toSell);				//Defined in autoscend/auto_util.ash
-boolean auto_barrelPrayers();									//Defined in autoscend/iotms/auto_mr2015.ash
 item auto_bestBadge();										//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_change_mcd(int mcd);								//Defined in autoscend/auto_util.ash
 boolean auto_change_mcd(int mcd, boolean immediately);			//Defined in autoscend/auto_util.ash
 boolean auto_doPrecinct();									//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_haveSourceTerminal();							//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_haveWitchess();									//Defined in autoscend/iotms/auto_mr2016.ash
-boolean auto_mayoItems();										//Defined in autoscend/iotms/auto_mr2015.ash
 void auto_process_kmail(string functionname);					//Defined in autoscend/auto_zlib.ash
 boolean auto_sourceTerminalEducate(skill first);				//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_sourceTerminalEducate(skill first, skill second);//Defined in autoscend/iotms/auto_mr2016.ash
@@ -614,14 +623,6 @@ int auto_sourceTerminalExtrudeLeft();							//Defined in autoscend/iotms/auto_mr
 int[string] auto_sourceTerminalMissing();						//Defined in autoscend/iotms/auto_mr2016.ash
 boolean auto_sourceTerminalRequest(string request);			//Defined in autoscend/iotms/auto_mr2016.ash
 int[string] auto_sourceTerminalStatus();						//Defined in autoscend/iotms/auto_mr2016.ash
-boolean chateaumantegna_available();						//Defined in autoscend/iotms/auto_mr2015.ash
-void chateaumantegna_buyStuff(item toBuy);					//Defined in autoscend/iotms/auto_mr2015.ash
-boolean[item] chateaumantegna_decorations();				//Defined in autoscend/iotms/auto_mr2015.ash
-boolean chateaumantegna_havePainting();						//Defined in autoscend/iotms/auto_mr2015.ash
-boolean chateaumantegna_nightstandSet();					//Defined in autoscend/iotms/auto_mr2015.ash
-void chateaumantegna_useDesk();								//Defined in autoscend/iotms/auto_mr2015.ash
-boolean chateaumantegna_usePainting();						//Defined in autoscend/iotms/auto_mr2015.ash
-boolean chateaumantegna_usePainting(string option);			//Defined in autoscend/iotms/auto_mr2015.ash
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
 boolean acquireTransfunctioner();							//Defined in autoscend/auto_util.ash
 
