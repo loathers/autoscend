@@ -59,7 +59,6 @@ boolean LX_fcle();
 boolean LX_nastyBooty();
 boolean LX_attemptFlyering();
 boolean witchessFights();
-boolean LX_loggingHatchet();
 //tosort ending
 
 //Defined in autoscend/quests/level_02.ash
@@ -69,33 +68,48 @@ boolean L2_mosquito();
 boolean auto_tavern();
 boolean L3_tavern();
 
+//Defined in autoscend/quests/level_04.ash
 boolean L4_batCave();
 
-boolean L5_haremOutfit();
-boolean L5_findKnob();
-boolean L5_goblinKing();
+//Defined in autoscend/quests/level_05.ash
 boolean L5_getEncryptionKey();
+boolean L5_findKnob();
+boolean L5_haremOutfit();
+boolean L5_goblinKing();
 boolean L5_slayTheGoblinKing();
 
-boolean L6_dakotaFanning();
+//Defined in autoscend/quests/level_06.ash
 boolean L6_friarsGetParts();
+boolean L6_dakotaFanning();
 
+//Defined in autoscend/quests/level_07.ash
 boolean L7_crypt();
 
+//Defined in autoscend/quests/level_08.ash
 boolean L8_trapperStart();
+int getCellToMine(item oreGoal);
+boolean L8_trapperAdvance();
+boolean L8_getGoatCheese();
+boolean L8_getMineOres();
+void itznotyerzitzMineChoiceHandler(int choice);
 boolean L8_trapperGround();
-boolean L8_trapperNinjaLair();
 boolean L8_trapperExtreme();
+void theeXtremeSlopeChoiceHandler(int choice);
+boolean L8_trapperNinjaLair();
 boolean L8_trapperGroar();
 boolean L8_trapperQuest();
 
+//Defined in autoscend/quests/level_09.ash
+boolean LX_loggingHatchet();
+boolean L9_leafletQuest();
+void L9_chasmMaximizeForNoncombat();
 boolean L9_chasmBuild();
-boolean L9_highLandlord();
 boolean L9_aBooPeak();
 boolean L9_twinPeak();
 boolean L9_oilPeak();
-boolean L9_leafletQuest();
+boolean L9_highLandlord();
 
+//Defined in autoscend/quests/level_10.ash
 boolean L10_plantThatBean();
 boolean L10_airship();
 boolean L10_basement();
@@ -103,10 +117,11 @@ boolean L10_ground();
 boolean L10_topFloor();
 boolean L10_holeInTheSkyUnlock();
 
-int shenItemsReturned();												//Defined in autoscend/quests/level_11.ash
-boolean[location] shenSnakeLocations(int day, int n_items_returned);	//Defined in autoscend/quests/level_11.ash
-boolean[location] shenZonesToAvoidBecauseMaybeSnake();					//Defined in autoscend/quests/level_11.ash
-boolean shenShouldDelayZone(location loc);								//Defined in autoscend/quests/level_11.ash
+//Defined in autoscend/quests/level_11.ash
+int shenItemsReturned();
+boolean[location] shenSnakeLocations(int day, int n_items_returned);
+boolean[location] shenZonesToAvoidBecauseMaybeSnake();
+boolean shenShouldDelayZone(location loc);
 
 boolean LX_unlockHiddenTemple();
 boolean LX_unlockManorSecondFloor();
@@ -1285,7 +1300,5 @@ void oldLandfillChoiceHandler(int choice);
 void piratesCoveChoiceHandler(int choice);							//Defined in autoscend/quests/optional.ash
 void barrrneysBarrrChoiceHandler(int choice, string page);
 void fcleChoiceHandler(int choice);
-void itznotyerzitzMineChoiceHandler(int choice);
-void theeXtremeSlopeChoiceHandler(int choice);
 void dailyDungeonChoiceHandler(int choice, string[int] options);	//Defined in autoscend/quests/level_any.ash
 void edUnderworldChoiceHandler(int choice);
