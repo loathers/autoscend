@@ -2,6 +2,7 @@
 //If we want to have a function return a custom data structure we need to first define it before the function.
 //To avoid conflict with our unified header (define cross-dependent functions without circular importing) we first define all records here.
 //We then import them to the very begining of autoscend_header.ash
+//Note that we only do this for cross dependent functions. If a record is only going to be used in a single file, define it inside that file.
 ########################################################################################
 
 // Used in autoscend/quests/level_12.ash
