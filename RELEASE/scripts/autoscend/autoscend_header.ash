@@ -62,8 +62,11 @@ boolean witchessFights();
 boolean LX_loggingHatchet();
 //tosort ending
 
+//Defined in autoscend/quests/level_02.ash
 boolean L2_mosquito();
 
+//Defined in autoscend/quests/level_03.ash
+boolean auto_tavern();
 boolean L3_tavern();
 
 boolean L4_batCave();
