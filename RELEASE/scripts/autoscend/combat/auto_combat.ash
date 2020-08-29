@@ -2023,9 +2023,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costMinor = mp_cost($skill[Cowcall]);
 		}
 
-		if(canUse($skill[Beanscreen], false) && !canSurvive(5.0))
+		if(canUse($skill[Beanscreen]) && !canSurvive(5.0))
 		{
-			stunner = useSkill($skill[Beanscreen], false);
+			stunner = useSkill($skill[Beanscreen]);
 			costStunner = mp_cost($skill[Beanscreen]);
 		}
 
