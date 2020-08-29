@@ -278,7 +278,6 @@ item eudora_current();
 int[item] eudora_xiblaxian();
 
 //Defined in autoscend/iotms/auto_floristfriar.ash
-void florist_initializeSettings();
 boolean didWePlantHere(location loc);
 void trickMafiaAboutFlorist();
 void oldPeoplePlantStuff();

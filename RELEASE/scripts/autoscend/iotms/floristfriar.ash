@@ -1,8 +1,3 @@
-void florist_initializeSettings()
-{
-	# Nothing to initialize, left as a stub.
-}
-
 boolean didWePlantHere(location loc)
 {
 	string [location, 3] places = get_florist_plants();

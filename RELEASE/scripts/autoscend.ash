@@ -204,7 +204,6 @@ void initializeSettings() {
 	hr_initializeSettings();
 	awol_initializeSettings();
 	theSource_initializeSettings();
-	florist_initializeSettings();
 	ed_initializeSettings();
 	boris_initializeSettings();
 	bond_initializeSettings();
