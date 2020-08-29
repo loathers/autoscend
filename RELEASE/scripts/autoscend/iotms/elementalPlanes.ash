@@ -162,8 +162,6 @@ boolean elementalPlanes_takeJob(element ele)
 	return false;
 }
 
-
-
 boolean dinseylandfill_garbageMoney()
 {
 	if(!elementalPlanes_access($element[stench]))
