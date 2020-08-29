@@ -342,6 +342,20 @@ boolean drinkSpeakeasyDrink(item drink)
 	return cli_execute("drink 1 " + drink);
 }
 
+boolean drinkSpeakeasyDrink(string drink)
+{
+	if(!(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
+	{
+		return false;
+	}
+
+	item realDrink = to_item(drink);
+	if(realDrink == $item[None])
+	{
+		return false;
+	}
+	return drinkSpeakeasyDrink(realDrink);
+}
 
 boolean zataraAvailable()
 {
@@ -633,22 +647,6 @@ boolean eatFancyDog(string dog)
 	cli_execute("eatsilent 1 " + dog);
 	handleTracker(dog, "auto_eaten");
 	return true;
-}
-
-
-boolean drinkSpeakeasyDrink(string drink)
-{
-	if(!(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
-	{
-		return false;
-	}
-
-	item realDrink = to_item(drink);
-	if(realDrink == $item[None])
-	{
-		return false;
-	}
-	return drinkSpeakeasyDrink(realDrink);
 }
 
 boolean auto_floundryUse()
