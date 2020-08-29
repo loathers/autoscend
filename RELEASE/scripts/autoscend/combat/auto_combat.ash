@@ -1011,12 +1011,6 @@ string auto_combatHandler(int round, monster enemy, string text)
 		if(banishAction != "")
 		{
 			auto_log_info("Looking at banishAction: " + banishAction, "green");
-			#abort("Banisher considered here. Weee");
-			#wait(10);
-			#banishAction = "";
-		}
-		if(banishAction != "")
-		{
 			set_property("auto_combatHandler", combatState + "(banisher)");
 			if(index_of(banishAction, "skill") == 0)
 			{
