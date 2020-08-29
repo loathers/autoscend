@@ -13,6 +13,9 @@
 //			Usually separated with _
 //******************************************************************************************************
 
+//auto_record.ash is used to define records. allowing us to then define functions that return said records.
+import <autoscend/autoscend_record.ash>
+
 //Defined in autoscend.ash
 void initializeSettings();
 void initializeSession();
@@ -155,17 +158,6 @@ boolean L11_unlockPyramid();
 boolean L11_unlockEd();
 boolean L11_defeatEd();
 boolean L11_getBeehive();
-
-// Used in autoscend/quests/level_12.ash
-record WarPlan
-{
-	boolean do_arena;
-	boolean do_junkyard;
-	boolean do_lighthouse;
-	boolean do_orchard;
-	boolean do_nuns;
-	boolean do_farm;
-};
 
 WarPlan warplan_from_bitmask(int mask);						//Defined in autoscend/quests/level_12.ash
 int bitmask_from_warplan(WarPlan plan);						//Defined in autoscend/quests/level_12.ash
@@ -1057,18 +1049,6 @@ boolean zoneNonCombat(location loc);						//Defined in autoscend/auto_util.ash
 boolean declineTrades();									//Defined in autoscend/auto_util.ash
 void auto_interruptCheck(); //Defined in autoscend/auto_util.ash
 
-//From Zlib Stuff
-record kmailObject {
-	int id;                   // message id
-	string type;              // possible values observed thus far: normal, giftshop
-	int fromid;               // sender\'s playerid (0 for npcs)
-	int azunixtime;           // KoL server\'s unix timestamp
-	string message;           // message (not including items/meat)
-	int[item] items;          // items included in the message
-	int meat;                 // meat included in the message
-	string fromname;          // sender\'s playername
-	string localtime;         // your local time according to your KoL account, human-readable string
-};
 boolean auto_deleteMail(kmailObject msg);						//Defined in autoscend/auto_util.ash
 
 boolean auto_is_valid(item it); //Defined in autoscend/auto_util.ash
@@ -1259,26 +1239,6 @@ void effectAblativeArmor(boolean passive_dmg_allowed);		 // Defined in autoscend
 int currentPoolSkill(); 		 // Defined in autoscend/auto_util.ash
 int poolSkillPracticeGains();								// Defined in autoscend/auto_util.ash
 
-//Record from autoscend/auto_zone.ash
-record generic_t
-{
-	boolean _error;
-	boolean _boolean;
-	int _int;
-	float _float;
-	string _string;
-	item _item;
-	location _location;
-	class _class;
-	stat _stat;
-	skill _skill;
-	effect _effect;
-	familiar _familiar;
-	slot _slot;
-	monster _monster;
-	element _element;
-	phylum _phylum;
-};
 generic_t zone_needItem(location loc);						//Defined in autoscend/auto_zone.ash
 generic_t zone_difficulty(location loc);					//Defined in autoscend/auto_zone.ash
 generic_t zone_combatMod(location loc);						//Defined in autoscend/auto_zone.ash
