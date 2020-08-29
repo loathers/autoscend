@@ -1011,12 +1011,6 @@ string auto_combatHandler(int round, monster enemy, string text)
 		if(banishAction != "")
 		{
 			auto_log_info("Looking at banishAction: " + banishAction, "green");
-			#abort("Banisher considered here. Weee");
-			#wait(10);
-			#banishAction = "";
-		}
-		if(banishAction != "")
-		{
 			set_property("auto_combatHandler", combatState + "(banisher)");
 			if(index_of(banishAction, "skill") == 0)
 			{
@@ -2029,9 +2023,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costMinor = mp_cost($skill[Cowcall]);
 		}
 
-		if(canUse($skill[Beanscreen], false) && canSurvive(2.0))
+		if(canUse($skill[Beanscreen]) && !canSurvive(5.0))
 		{
-			stunner = useSkill($skill[Beanscreen], false);
+			stunner = useSkill($skill[Beanscreen]);
 			costStunner = mp_cost($skill[Beanscreen]);
 		}
 
