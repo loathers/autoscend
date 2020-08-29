@@ -696,7 +696,6 @@ boolean auto_floundryAction()
 	return false;
 }
 
-
 boolean auto_floundryAction(item it)
 {
 	if(get_property("_floundryItemCreated").to_boolean())
