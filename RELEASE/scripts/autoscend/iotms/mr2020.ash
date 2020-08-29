@@ -119,6 +119,18 @@ boolean auto_powerfulGloveNoncombatSkill(skill sk)
 	{
 		handleTracker(sk, "auto_powerfulglove");
 	}
+	else
+	{
+		// if we fail to cast a skill, odds are something has gone wrong with
+		// mafia's tracking. Let's check to make sure, then make sure we stop
+		// attempting to use more cheats in vain if so.
+		string page = visit_url("desc_item.php?whichitem=991142661");
+		if(page.contains_text("The Glove's battery is fully depleted."))
+		{
+			auto_log_error("Mafia's Powerful Glove battery tracking was wrong, correcting.");
+			set_property("_powerfulGloveBatteryPowerUsed", 100);
+		}
+	}
 
 	return ret;
 }
