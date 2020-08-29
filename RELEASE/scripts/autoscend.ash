@@ -68,14 +68,14 @@ import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/low_key_summer.ash>
 
-import <autoscend/quests/level_2.ash>
-import <autoscend/quests/level_3.ash>
-import <autoscend/quests/level_4.ash>
-import <autoscend/quests/level_5.ash>
-import <autoscend/quests/level_6.ash>
-import <autoscend/quests/level_7.ash>
-import <autoscend/quests/level_8.ash>
-import <autoscend/quests/level_9.ash>
+import <autoscend/quests/level_02.ash>
+import <autoscend/quests/level_03.ash>
+import <autoscend/quests/level_04.ash>
+import <autoscend/quests/level_05.ash>
+import <autoscend/quests/level_06.ash>
+import <autoscend/quests/level_07.ash>
+import <autoscend/quests/level_08.ash>
+import <autoscend/quests/level_09.ash>
 import <autoscend/quests/level_10.ash>
 import <autoscend/quests/level_11.ash>
 import <autoscend/quests/level_12.ash>
