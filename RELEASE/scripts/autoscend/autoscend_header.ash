@@ -1,4 +1,4 @@
-//	This is the primary (or will be) header file for autoscend.
+//	This is the primary header file for autoscend.
 //	All potentially cross-dependent functions should be defined here such that we can use them from
 //	other scripts without the circular dependency issue. Thanks Ultibot for the advice regarding this.
 //	Documentation can go here too, I suppose.
