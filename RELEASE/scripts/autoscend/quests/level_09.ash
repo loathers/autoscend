@@ -121,6 +121,26 @@ void L9_chasmMaximizeForNoncombat()
 	}
 }
 
+int fastenerCount()
+{
+	int base = get_property("chasmBridgeProgress").to_int();
+	base = base + item_amount($item[Morningwood Plank]);
+	base = base + item_amount($item[Raging Hardwood Plank]);
+	base = base + item_amount($item[Weirdwood Plank]);
+
+	return base;
+}
+
+int lumberCount()
+{
+	int base = get_property("chasmBridgeProgress").to_int();
+	base = base + item_amount($item[Thick Caulk]);
+	base = base + item_amount($item[Long Hard Screw]);
+	base = base + item_amount($item[Messy Butt Joint]);
+
+	return base;
+}
+
 boolean L9_chasmBuild()
 {
 	if (internalQuestStatus("questL09Topping") < 0 || get_property("chasmBridgeProgress").to_int() >= 30 || internalQuestStatus("questL09Topping") > 0)

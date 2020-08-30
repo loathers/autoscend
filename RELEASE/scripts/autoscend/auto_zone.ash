@@ -51,27 +51,7 @@ int[location] zone_delayable()
 	return retval;
 }
 
-/*
-record generic_t
-{
-	boolean _error;
-	boolean _boolean;
-	int _int;
-	float _float;
-	string _string;
-	item _item;
-	location _location;
-	class _class;
-	stat _stat;
-	skill _skill;
-	effect _effect;
-	familiar _familiar;
-	slot _slot;
-	monster _monster;
-	element _element;
-	phylum _phylum;
-};
-*/
+// generic_t is defined in autoscend_record.ash
 
 generic_t zone_needItem(location loc)
 {

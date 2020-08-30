@@ -29,6 +29,41 @@ boolean needDigitalKey()
 	return true;
 }
 
+int towerKeyCount()
+{
+	return towerKeyCount(true);
+}
+
+int towerKeyCount(boolean effective)
+{
+	//Returns how many Hero Keys and Fat Loot tokens we have.
+	//effective count (with malware) vs true count.
+	
+	if (isActuallyEd())
+	{
+		return 3;
+	}
+
+	int tokens = item_amount($item[Fat Loot Token]);
+	if((item_amount($item[Boris\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
+	{
+		tokens = tokens + 1;
+	}
+	if((item_amount($item[Jarlsberg\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
+	{
+		tokens = tokens + 1;
+	}
+	if((item_amount($item[Sneaky Pete\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
+	{
+		tokens = tokens + 1;
+	}
+	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (auto_my_path() != "Pocket Familiars"))
+	{
+		tokens = tokens + 1;
+	}
+	return tokens;
+}
+
 int whitePixelCount()
 {
 	return item_amount($item[White Pixel]) + creatable_amount($item[White Pixel]);
@@ -198,6 +233,51 @@ boolean LX_getStarKey()
 		}
 	}
 	return autoAdv(1, $location[The Hole In The Sky]);
+}
+
+int ns_crowd1()
+{
+	if(get_property("nsContestants1").to_int() != 0)
+	{
+		auto_log_info("Default Test: Initiative", "red");
+	}
+	return 1;
+}
+
+stat ns_crowd2()
+{
+	if(get_property("nsContestants2").to_int() != 0)
+	{
+		auto_log_info("Off-Stat Test: " + get_property("nsChallenge1"), "red");
+	}
+	return to_stat(get_property("nsChallenge1"));
+}
+
+element ns_crowd3()
+{
+	if(get_property("nsContestants3").to_int() != 0)
+	{
+		auto_log_info("Elemental Test: " + get_property("nsChallenge2"), "red");
+	}
+	return to_element(get_property("nsChallenge2"));
+}
+
+element ns_hedge1()
+{
+	auto_log_info("Hedge Maze 1: " + get_property("nsChallenge3"), "red");
+	return to_element(get_property("nsChallenge3"));
+}
+
+element ns_hedge2()
+{
+	auto_log_info("Hedge Maze 2: " + get_property("nsChallenge4"), "red");
+	return to_element(get_property("nsChallenge4"));
+}
+
+element ns_hedge3()
+{
+	auto_log_info("Hedge Maze 3: " + get_property("nsChallenge5"), "red");
+	return to_element(get_property("nsChallenge5"));
 }
 
 boolean L13_towerNSContests()

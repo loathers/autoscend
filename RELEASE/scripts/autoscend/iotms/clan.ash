@@ -1,22 +1,3 @@
-//boolean eatFancyDog(item dog);
-boolean zataraClanmate(string who);
-boolean zataraSeaside(string who);
-boolean eatFancyDog(string dog);
-boolean isSpeakeasyDrink(item drink);
-boolean canDrinkSpeakeasyDrink(item drink);
-boolean drinkSpeakeasyDrink(item drink);
-boolean drinkSpeakeasyDrink(string drink);
-boolean auto_floundryAction(item it);
-boolean auto_floundryAction();
-boolean [location] get_floundry_locations();
-int changeClan(int toClan);			//Returns new clan ID (or old one if it failed)
-int changeClan();					//To BAFH
-int doHottub();						//Returns number of usages left.
-boolean handleFaxMonster(monster enemy);
-boolean handleFaxMonster(monster enemy, string option);
-boolean handleFaxMonster(monster enemy, boolean fightIt);
-boolean handleFaxMonster(monster enemy, boolean fightIt, string option);
-
 int[item] auto_get_clan_lounge()
 {
 	int[item] retval;
@@ -248,6 +229,8 @@ int changeClan(string clanName)
 
 int changeClan(int toClan)
 {
+	//Returns new clan ID (or old one if it failed)
+	
 	int oldClan = get_clan_id();
 	if(toClan == oldClan)
 	{
@@ -277,7 +260,7 @@ int changeClan(int toClan)
 }
 
 
-int changeClan()
+int changeClan()		//To BAFH
 {
 	return changeClan(90485);
 }
@@ -293,6 +276,8 @@ boolean isHotTubAvailable(){
 
 int doHottub()
 {
+	//Returns number of usages left.
+	
 	if(!(isHotTubAvailable() && hotTubSoaksRemaining() > 0))
 	{
 		return 0;
@@ -357,6 +342,20 @@ boolean drinkSpeakeasyDrink(item drink)
 	return cli_execute("drink 1 " + drink);
 }
 
+boolean drinkSpeakeasyDrink(string drink)
+{
+	if(!(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
+	{
+		return false;
+	}
+
+	item realDrink = to_item(drink);
+	if(realDrink == $item[None])
+	{
+		return false;
+	}
+	return drinkSpeakeasyDrink(realDrink);
+}
 
 boolean zataraAvailable()
 {
@@ -650,22 +649,6 @@ boolean eatFancyDog(string dog)
 	return true;
 }
 
-
-boolean drinkSpeakeasyDrink(string drink)
-{
-	if(!(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
-	{
-		return false;
-	}
-
-	item realDrink = to_item(drink);
-	if(realDrink == $item[None])
-	{
-		return false;
-	}
-	return drinkSpeakeasyDrink(realDrink);
-}
-
 boolean auto_floundryUse()
 {
 	if(!get_property("_floundryItemUsed").to_boolean())
@@ -712,7 +695,6 @@ boolean auto_floundryAction()
 	}
 	return false;
 }
-
 
 boolean auto_floundryAction(item it)
 {

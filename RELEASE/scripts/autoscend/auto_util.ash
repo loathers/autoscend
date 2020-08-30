@@ -1,15 +1,4 @@
-// Private Prototypes
-boolean buffMaintain(item source, effect buff, int uses, int turns);
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns);
-boolean beehiveConsider();
-string safeString(string input);
-string safeString(skill input);
-string safeString(item input);
-string safeString(monster input);
-location provideAdvPHPZone();
-
-// Function Definitions
-
+//A file full of utility functions which we import into autoscend.ash
 
 boolean autoMaximize(string req, boolean simulate)
 {
@@ -427,108 +416,6 @@ boolean restoreSetting(string setting)
 	return false;
 }
 
-boolean startArmorySubQuest()
-{
-	if(in_koe() || auto_my_path() == "Nuclear Autumn")
-	{
-		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
-		{
-			return use(1, $item[Hypnotic Breadcrumbs]);
-		}
-		return false;
-	}
-
-	if(internalQuestStatus("questM25Armorer") == -1)
-	{
-		string temp = visit_url("shop.php?whichshop=armory");
-		temp = visit_url("shop.php?whichshop=armory&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1065&option=1");
-		if(internalQuestStatus("questM25Armorer") > -1)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-boolean startMeatsmithSubQuest()
-{
-	if(auto_my_path() == "Nuclear Autumn")
-	{
-		if(item_amount($item[Bone With a Price Tag On It]) > 0)
-		{
-			use(1, $item[Bone With a Price Tag On It]);
-			return true;
-		}
-		return false;
-	}
-	if(internalQuestStatus("questM23Meatsmith") == -1)
-	{
-		string temp = visit_url("shop.php?whichshop=meatsmith");
-		temp = visit_url("shop.php?whichshop=meatsmith&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1059&option=1");
-		return true;
-	}
-	return false;
-}
-
-boolean finishMeatsmithSubQuest() {
-	if (internalQuestStatus("questM23Meatsmith") == 1) {
-		visit_url("shop.php?whichshop=meatsmith");
-		run_choice(2);
-		return true;
-	}
-	return false;
-}
-
-boolean startGalaktikSubQuest()
-{
-	if(auto_my_path() == "Nuclear Autumn")
-	{
-		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
-		{
-			use(1, $item[Map to a Hidden Booze Cache]);
-			return true;
-		}
-		return false;
-	}
-	if(internalQuestStatus("questM24Doc") == -1)
-	{
-		string temp = visit_url("shop.php?whichshop=doc");
-		temp = visit_url("shop.php?whichshop=doc&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1064&option=1");
-		return true;
-	}
-	return false;
-}
-
-boolean finishGalaktikSubQuest() {
-	if (item_amount($item[fraudwort]) >= 3 && item_amount($item[shysterweed]) >= 3 && item_amount($item[swindleblossom]) >= 3) {
-		string temp = visit_url("shop.php?whichshop=doc");
-		if (temp.contains_text("What did you need, again?")) {
-			visit_url("shop.php?whichshop=doc&action=talk");
-		}
-		run_choice(2);
-		if (internalQuestStatus("questM24Doc") > 1) {
-			return true;
-		}
-	}
-	return false;
-}
-
-boolean startHippyBoatmanSubQuest()
-{
-	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
-	{
-		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
-		temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
-		temp = visit_url("choice.php?pwd=&whichchoice=798&option=2");
-		temp = visit_url("woods.php");
-		return true;
-	}
-	return false;
-}
-
 location provideAdvPHPZone()
 {
 	if(elementalPlanes_access($element[stench]))
@@ -604,27 +491,6 @@ location provideAdvPHPZone()
 	return $location[none];
 }
 
-boolean hasSpookyravenLibraryKey()
-{
-	return ((item_amount($item[1764]) > 0) || (item_amount($item[7302]) > 0));
-}
-boolean hasILoveMeVolI()
-{
-	return ((item_amount($item[2258]) > 0) || (item_amount($item[7262]) > 0));
-}
-boolean useILoveMeVolI()
-{
-	if(item_amount($item[2258]) > 0)
-	{
-		return use(1, $item[2258]);
-	}
-	else if(item_amount($item[7262]) > 0)
-	{
-		return use(1, $item[7262]);
-	}
-	return false;
-}
-
 boolean loopHandler(string turnSetting, string counterSetting, string abortMessage, int threshold)
 {
 	if(my_turncount() == get_property(turnSetting).to_int())
@@ -694,26 +560,6 @@ boolean setAdvPHPFlag()
 
 }
 
-boolean isOverdueDigitize()
-{
-	if(get_property("_sourceTerminalDigitizeUses").to_int() == 0)
-	{
-		return false;
-	}
-	if(get_counters("Digitize Monster", 1, 200) == "Digitize Monster")
-	{
-		return false;
-	}
-	if(contains_text(get_property("_tempRelayCounters"), "Digitize Monster"))
-	{
-		return false;
-	}
-	if(get_counters("Digitize Monster", 0, 0) == "Digitize Monster")
-	{
-		return true;
-	}
-	return false;
-}
 boolean isOverdueArrow()
 {
 	if(get_property("_romanticFightsLeft").to_int() == 0)
@@ -734,6 +580,7 @@ boolean isOverdueArrow()
 	}
 	return false;
 }
+
 boolean isExpectingArrow()
 {
 	if(get_property("_romanticFightsLeft").to_int() == 0)
@@ -763,7 +610,6 @@ boolean isExpectingArrow()
 	}
 	return false;
 }
-
 
 int[monster] banishedMonsters()
 {
@@ -863,47 +709,6 @@ int solveCookie()
 	}
 
 	return get_property("auto_cookie").to_int();
-}
-
-
-boolean needOre()
-{
-	if (internalQuestStatus("questL08Trapper") > 2)
-	{
-		return false;
-	}
-	item oreGoal = to_item(get_property("trapperOre"));
-	if(item_amount(oreGoal) >= 3)
-	{
-		return false;
-	}
-	if((item_amount($item[Asbestos Ore]) >= 3) && (item_amount($item[Linoleum Ore]) >= 3) && (item_amount($item[Chrome Ore]) >= 3))
-	{
-		return false;
-	}
-	return true;
-}
-
-
-int spleen_left()
-{
-	return spleen_limit() - my_spleen_use();
-}
-
-
-int stomach_left()
-{
-	return fullness_limit() - my_fullness();
-}
-
-int fullness_left()
-{
-	return stomach_left();
-}
-
-int inebriety_left()
-{
-	return inebriety_limit() - my_inebriety();
 }
 
 int estimatedTurnsLeft()
@@ -1123,32 +928,31 @@ boolean canYellowRay()
 	return canYellowRay($monster[none]);
 }
 
-// private
-boolean[string] auto_reallyBanishesUsedAt(location loc)
-{
-	string banished = get_property("banishedMonsters");
-	string[int] banishList = split_string(banished, ":");
-	monster[int] atLoc = get_monsters(loc);
-	boolean[string] used;
-
-	for(int i=0; (i+1)<count(banishList); i = i + 3)
-	{
-		monster curMon = to_monster(banishList[i]);
-		string curUsed = banishList[i+1];
-
-		for(int j=0; j<count(atLoc); j++)
-		{
-			if(atLoc[j] == curMon)
-			{
-				used[curUsed] = true;
-			}
-		}
-	}
-	return used;
-}
-
 boolean[string] auto_banishesUsedAt(location loc)
 {
+	boolean[string] auto_reallyBanishesUsedAt(location loc)
+	{
+		string banished = get_property("banishedMonsters");
+		string[int] banishList = split_string(banished, ":");
+		monster[int] atLoc = get_monsters(loc);
+		boolean[string] used;
+
+		for(int i=0; (i+1)<count(banishList); i = i + 3)
+		{
+			monster curMon = to_monster(banishList[i]);
+			string curUsed = banishList[i+1];
+
+			for(int j=0; j<count(atLoc); j++)
+			{
+				if(atLoc[j] == curMon)
+				{
+					used[curUsed] = true;
+				}
+			}
+		}
+		return used;
+	}
+	
 	if($locations[Next To That Barrel With Something Burning In It, Out By That Rusted-Out Car, Over Where The Old Tires Are, Near an Abandoned Refrigerator] contains loc)
 	{
 		boolean[string] gremlinBanishes;
@@ -1649,46 +1453,6 @@ float elemental_resist_value(int resistance)
 int elemental_resist(element goal)
 {
 	return numeric_modifier(goal + " resistance");
-}
-
-int ns_crowd1()
-{
-	if(get_property("nsContestants1").to_int() != 0)
-	{
-		auto_log_info("Default Test: Initiative", "red");
-	}
-	return 1;
-}
-stat ns_crowd2()
-{
-	if(get_property("nsContestants2").to_int() != 0)
-	{
-		auto_log_info("Off-Stat Test: " + get_property("nsChallenge1"), "red");
-	}
-	return to_stat(get_property("nsChallenge1"));
-}
-element ns_crowd3()
-{
-	if(get_property("nsContestants3").to_int() != 0)
-	{
-		auto_log_info("Elemental Test: " + get_property("nsChallenge2"), "red");
-	}
-	return to_element(get_property("nsChallenge2"));
-}
-element ns_hedge1()
-{
-	auto_log_info("Hedge Maze 1: " + get_property("nsChallenge3"), "red");
-	return to_element(get_property("nsChallenge3"));
-}
-element ns_hedge2()
-{
-	auto_log_info("Hedge Maze 2: " + get_property("nsChallenge4"), "red");
-	return to_element(get_property("nsChallenge4"));
-}
-element ns_hedge3()
-{
-	auto_log_info("Hedge Maze 3: " + get_property("nsChallenge5"), "red");
-	return to_element(get_property("nsChallenge5"));
 }
 
 skill preferredLibram()
@@ -2836,38 +2600,6 @@ boolean handleSealElement(element flavor, string option)
 	return autoAdvBypass(page, $location[Noob Cave], option);
 }
 
-int towerKeyCount()
-{
-	return towerKeyCount(true);
-}
-
-int towerKeyCount(boolean effective)
-{
-	if (isActuallyEd())
-	{
-		return 3;
-	}
-
-	int tokens = item_amount($item[Fat Loot Token]);
-	if((item_amount($item[Boris\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
-	{
-		tokens = tokens + 1;
-	}
-	if((item_amount($item[Jarlsberg\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
-	{
-		tokens = tokens + 1;
-	}
-	if((item_amount($item[Sneaky Pete\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
-	{
-		tokens = tokens + 1;
-	}
-	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (auto_my_path() != "Pocket Familiars"))
-	{
-		tokens = tokens + 1;
-	}
-	return tokens;
-}
-
 boolean handleBarrelFullOfBarrels(boolean daily)
 {
 	if(!get_property("barrelShrineUnlocked").to_boolean())
@@ -3044,39 +2776,6 @@ boolean clear_property_if(string setting, string cond)
 		return true;
 	}
 	return false;
-}
-
-int turkeyBooze()
-{
-	return get_property("_turkeyBooze").to_int();
-}
-
-int amountTurkeyBooze()
-{
-	if(is_unrestricted($item[Fist Turkey Outline]))
-	{
-		return item_amount($item[Agitated Turkey]) + item_amount($item[Ambitious Turkey]) + item_amount($item[Friendly Turkey]);
-	}
-	return 0;
-}
-
-int fastenerCount()
-{
-	int base = get_property("chasmBridgeProgress").to_int();
-	base = base + item_amount($item[Morningwood Plank]);
-	base = base + item_amount($item[Raging Hardwood Plank]);
-	base = base + item_amount($item[Weirdwood Plank]);
-
-	return base;
-}
-int lumberCount()
-{
-	int base = get_property("chasmBridgeProgress").to_int();
-	base = base + item_amount($item[Thick Caulk]);
-	base = base + item_amount($item[Long Hard Screw]);
-	base = base + item_amount($item[Messy Butt Joint]);
-
-	return base;
 }
 
 int doNumberology(string goal)
@@ -3256,11 +2955,6 @@ boolean acquireOrPull(item it)
 	}
 	
 	return false;
-}
-
-boolean in_ronin()
-{
-	return !can_interact();
 }
 
 boolean canPull(item it)
@@ -3756,18 +3450,6 @@ string auto_my_path()
 	return my_path();
 }
 
-void auto_visit_gnasir()
-{
-	if (in_koe())
-	{
-		visit_url("place.php?whichplace=exploathing_beach&action=expl_gnasir");
-	}
-	else
-	{
-		visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
-	}
-}
-
 boolean acquireTransfunctioner()
 {
 	if(available_amount($item[Continuum Transfunctioner]) > 0)
@@ -3790,6 +3472,9 @@ boolean acquireTransfunctioner()
 
 int [item] auto_get_campground()
 {
+	//Wrapper for get_campground(), primarily deals with the oven issue in Ed.
+	//Also uses Garden item as identifier for the garden in addition to what get_campground() does
+	
 	if (isActuallyEd())
 	{
 		int [item] empty;

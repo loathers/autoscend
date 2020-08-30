@@ -11,6 +11,26 @@ boolean L8_trapperStart()
 	return true;
 }
 
+boolean needOre()
+{
+	//Determines if we need ore for the trapper or not.
+	
+	if (internalQuestStatus("questL08Trapper") > 2)
+	{
+		return false;
+	}
+	item oreGoal = to_item(get_property("trapperOre"));
+	if(item_amount(oreGoal) >= 3)
+	{
+		return false;
+	}
+	if((item_amount($item[Asbestos Ore]) >= 3) && (item_amount($item[Linoleum Ore]) >= 3) && (item_amount($item[Chrome Ore]) >= 3))
+	{
+		return false;
+	}
+	return true;
+}
+
 int getCellToMine(item oreGoal) {
 
 	// the mine is an 8*7 grid starting at 0,0 in the top left and each cell has an incrementing identifier starting at 0.

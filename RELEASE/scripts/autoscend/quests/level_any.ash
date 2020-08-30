@@ -238,6 +238,19 @@ boolean LX_islandAccess()
 	return false;
 }
 
+boolean startHippyBoatmanSubQuest()
+{
+	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
+	{
+		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
+		temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
+		temp = visit_url("choice.php?pwd=&whichchoice=798&option=2");
+		temp = visit_url("woods.php");
+		return true;
+	}
+	return false;
+}
+
 boolean LX_hippyBoatman() {
 	if (get_property("lastIslandUnlock").to_int() >= my_ascensions()) {
 		return false;
