@@ -1055,15 +1055,8 @@ float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, boolean doEquips);
 
 ########################################################################################################
-//Defined in autoscend/autoscend_migration.ash
-string autoscend_current_version();
-string autoscend_previous_version();
-boolean autoscend_needs_update();
-boolean autoscend_migrate();
-
-########################################################################################################
-// Restoration (hp/mp) functions
 //Defined in autoscend/auto_restore.ash
+//Restoration (hp/mp) functions
 void invalidateRestoreOptionCache();
 boolean acquireMP();
 boolean acquireMP(int goal);
@@ -1090,10 +1083,41 @@ boolean uneffect(effect toRemove);
 boolean useCocoon();
 
 ########################################################################################################
+//Defined in autoscend/autoscend_migration.ash
+string autoscend_current_version();
+string autoscend_previous_version();
+boolean autoscend_needs_update();
+boolean autoscend_migrate();
+
+########################################################################################################
+//Defined in autoscend/auto_zlib.ash
+void auto_process_kmail(string functionname);
+
+########################################################################################################
+//Defined in autoscend/auto_zone.ash
+boolean zone_unlock(location loc);
+boolean zone_isAvailable(location loc, boolean unlockIfPossible);
+boolean zone_isAvailable(location loc);
+int[location] zone_delayable();
+generic_t zone_needItem(location loc);
+generic_t zone_combatMod(location loc);
+generic_t zone_delay(location loc);
+generic_t zone_available(location loc);
+generic_t zone_difficulty(location loc);
+location[int] zone_list();
+location[int] zones_available();
+monster[int] mobs_available();
+item[int] drops_available();
+item[int] hugpocket_available();
+boolean is_ghost_in_zone(location loc);
+
+########################################################################################################
+//Defined in autoscend/auto_util.ash
+//Other files are placed alphabetically. But due to its sheer size auto_util.ash goes last
+
 //Wrapper for get_campground(), primarily deals with the oven issue in Ed.
 //Also uses Garden item as identifier for the garden in addition to what get_campground() does
 int[item] auto_get_campground();					//Defined in autoscend/auto_util.ash
-
 
 //Returns how many Hero Keys and Fat Loot tokens we have.
 //effective count (with malware) vs true count.
@@ -1113,9 +1137,7 @@ void auto_visit_gnasir();
 boolean hasSpookyravenLibraryKey();				//Defined in autoscend/auto_util.ash
 boolean hasILoveMeVolI();						//Defined in autoscend/auto_util.ash
 boolean useILoveMeVolI();						//Defined in autoscend/auto_util.ash
-########################################################################################################
-//Large pile dump.
-void auto_process_kmail(string functionname);		//Defined in autoscend/auto_zlib.ash
+
 int [item] auto_get_campground();								//Defined in autoscend/auto_util.ash
 boolean basicAdjustML();									//Defined in autoscend/auto_util.ash
 boolean acquireGumItem(item it);							//Defined in autoscend/auto_util.ash
@@ -1297,7 +1319,6 @@ boolean zoneMeat(location loc);								//Defined in autoscend/auto_util.ash
 boolean zoneNonCombat(location loc);						//Defined in autoscend/auto_util.ash
 boolean declineTrades();									//Defined in autoscend/auto_util.ash
 void auto_interruptCheck(); //Defined in autoscend/auto_util.ash
-
 boolean auto_deleteMail(kmailObject msg);						//Defined in autoscend/auto_util.ash
 
 boolean auto_is_valid(item it); //Defined in autoscend/auto_util.ash
@@ -1305,7 +1326,6 @@ boolean auto_is_valid(familiar fam); //Defined in autoscend/auto_util.ash
 boolean auto_is_valid(skill sk); //Defined in autoscend/auto_util.ash
 
 // Logging
-//Defined in autoscend/auto_util.ash
 string auto_log_level_threshold();
 int auto_log_level(string level);
 boolean auto_log(string s, string color, string log_level);
@@ -1324,15 +1344,9 @@ boolean auto_log_trace(string s);
 
 boolean auto_can_equip(item it); //Defined in autoscend/auto_util.ash
 boolean auto_can_equip(item it, slot s); //Defined in autoscend/auto_util.ash
-
 boolean auto_check_conditions(string conds); //Defined in autoscend/auto_util.ash
-
 boolean [monster] auto_getMonsters(string category); //Defined in autoscend/auto_util.ash
-
 boolean auto_badassBelt(); //Defined in autoscend/auto_util.ash
-
-//Dump from accessory scripts.
-
 element currentFlavour(); //Defined in autoscend/auto_util.ash
 boolean setFlavour(element ele); //Defined in autoscend/auto_util.ash
 boolean executeFlavour(); //Defined in autoscend/auto_util.ash
@@ -1348,18 +1362,3 @@ boolean hasTTBlessing();									 //Defined in autoscend/auto_util.ash
 void effectAblativeArmor(boolean passive_dmg_allowed);		 //Defined in autoscend/auto_util.ash
 int currentPoolSkill(); 		 //Defined in autoscend/auto_util.ash
 int poolSkillPracticeGains();								//Defined in autoscend/auto_util.ash
-
-generic_t zone_needItem(location loc);						//Defined in autoscend/auto_zone.ash
-generic_t zone_difficulty(location loc);					//Defined in autoscend/auto_zone.ash
-generic_t zone_combatMod(location loc);						//Defined in autoscend/auto_zone.ash
-generic_t zone_delay(location loc);							//Defined in autoscend/auto_zone.ash
-generic_t zone_available(location loc);						//Defined in autoscend/auto_zone.ash
-boolean zone_unlock(location loc);
-location[int] zone_list();									//Defined in autoscend/auto_zone.ash
-int[location] zone_delayable();								//Defined in autoscend/auto_zone.ash
-boolean zone_isAvailable(location loc);						//Defined in autoscend/auto_zone.ash
-boolean zone_isAvailable(location loc, boolean unlockIfPossible);
-location[int] zones_available();							//Defined in autoscend/auto_zone.ash
-monster[int] mobs_available();								//Defined in autoscend/auto_zone.ash
-item[int] drops_available();								//Defined in autoscend/auto_zone.ash
-item[int] hugpocket_available();							//Defined in autoscend/auto_zone.ash
