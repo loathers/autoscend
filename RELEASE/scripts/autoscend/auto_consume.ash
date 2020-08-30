@@ -2,6 +2,26 @@
 #	Handler for in-run consumption
 #
 
+int spleen_left()
+{
+	return spleen_limit() - my_spleen_use();
+}
+
+int stomach_left()
+{
+	return fullness_limit() - my_fullness();
+}
+
+int fullness_left()
+{
+	return stomach_left();
+}
+
+int inebriety_left()
+{
+	return inebriety_limit() - my_inebriety();
+}
+
 boolean saucemavenApplies(item it)
 {
 	static boolean[item] saucy_foods = $items[Cold hi mein,

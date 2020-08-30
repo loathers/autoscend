@@ -711,27 +711,6 @@ int solveCookie()
 	return get_property("auto_cookie").to_int();
 }
 
-int spleen_left()
-{
-	return spleen_limit() - my_spleen_use();
-}
-
-
-int stomach_left()
-{
-	return fullness_limit() - my_fullness();
-}
-
-int fullness_left()
-{
-	return stomach_left();
-}
-
-int inebriety_left()
-{
-	return inebriety_limit() - my_inebriety();
-}
-
 int estimatedTurnsLeft()
 {
 	//Probably will try bother to try dealing with milk, glorious lunch, ode, at least not now.
