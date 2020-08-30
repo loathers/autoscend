@@ -817,6 +817,8 @@ boolean L12_finalizeWar();
 //Defined in autoscend/quests/level_13.ash
 boolean needStarKey();
 boolean needDigitalKey();
+int towerKeyCount();
+int towerKeyCount(boolean effective);
 int whitePixelCount();
 boolean LX_getDigitalKey();
 boolean LX_getStarKey();
@@ -1185,8 +1187,6 @@ boolean handleSealNormal(item it);
 boolean handleSealNormal(item it, string option);
 boolean handleSealElement(element flavor);
 boolean handleSealElement(element flavor, string option);
-int towerKeyCount();
-int towerKeyCount(boolean effective);
 void handleTracker(string used, string tracker);
 void handleTracker(string used, string detail, string tracker);
 boolean hasShieldEquipped();

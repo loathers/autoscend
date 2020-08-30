@@ -2693,41 +2693,6 @@ boolean handleSealElement(element flavor, string option)
 	return autoAdvBypass(page, $location[Noob Cave], option);
 }
 
-int towerKeyCount()
-{
-	return towerKeyCount(true);
-}
-
-int towerKeyCount(boolean effective)
-{
-	//Returns how many Hero Keys and Fat Loot tokens we have.
-	//effective count (with malware) vs true count.
-	
-	if (isActuallyEd())
-	{
-		return 3;
-	}
-
-	int tokens = item_amount($item[Fat Loot Token]);
-	if((item_amount($item[Boris\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
-	{
-		tokens = tokens + 1;
-	}
-	if((item_amount($item[Jarlsberg\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
-	{
-		tokens = tokens + 1;
-	}
-	if((item_amount($item[Sneaky Pete\'s Key]) > 0) || contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
-	{
-		tokens = tokens + 1;
-	}
-	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (auto_my_path() != "Pocket Familiars"))
-	{
-		tokens = tokens + 1;
-	}
-	return tokens;
-}
-
 boolean handleBarrelFullOfBarrels(boolean daily)
 {
 	if(!get_property("barrelShrineUnlocked").to_boolean())
