@@ -438,6 +438,234 @@ effect awol_walkBuff();
 boolean awol_buySkills();
 
 ########################################################################################################
+//Defined in autoscend/paths/bees_hate_you.ash
+boolean in_bhy();
+void bhy_initializeSettings();
+boolean bees_hate_usable(string str);
+boolean LM_bhy();
+boolean L13_bhy_towerFinal();
+
+########################################################################################################
+//Defined in autoscend/paths/casual.ash
+boolean inCasual();
+boolean inAftercore();
+boolean inPostRonin();
+boolean LM_canInteract();
+
+########################################################################################################
+//Defined in autoscend/paths/community_service.ash
+boolean LA_cs_communityService();
+boolean cs_witchess();
+void cs_initializeDay(int day);
+boolean do_chateauGoat();
+boolean cs_spendRests();
+void cs_make_stuff(int curQuest);
+boolean cs_eat_spleen();
+boolean cs_eat_stuff(int quest);
+void cs_dnaPotions();
+boolean cs_giant_growth();
+boolean auto_csHandleGrapes();
+int estimate_cs_questCost(int quest);
+int [int] get_cs_questList();
+int expected_next_cs_quest();
+string what_cs_quest(int quest);
+int expected_next_cs_quest_internal();
+boolean do_cs_quest(int quest);
+boolean do_cs_quest(string quest);
+int get_cs_questCost(int quest);
+int get_cs_questCost(string input);
+int get_cs_questNum(string input);
+void set_cs_questListFast(int[int] fast);
+boolean cs_preTurnStuff(int curQuest);
+boolean cs_healthMaintain();
+boolean cs_healthMaintain(int target);
+boolean cs_mpMaintain();
+boolean cs_mpMaintain(int target);
+boolean canTrySaberTrickMeteorShower();
+boolean trySaberTrickMeteorShower();
+int beachHeadTurnSavings(int quest);
+boolean tryBeachHeadBuff(int quest);
+
+########################################################################################################
+//Defined in autoscend/paths/dark_gyffte.ash
+void bat_startAscension();
+void bat_initializeSettings();
+boolean bat_wantHowl(location loc);
+boolean bat_formNone();
+boolean bat_formWolf(boolean speculative);
+boolean bat_formWolf();
+boolean bat_formMist(boolean speculative);
+boolean bat_formMist();
+boolean bat_formBats(boolean speculative);
+boolean bat_formBats();
+void bat_clearForms();
+boolean bat_switchForm(effect form, boolean speculative);
+boolean bat_switchForm(effect form);
+boolean bat_formPreAdventure();
+void bat_initializeSession();
+void bat_terminateSession();
+void bat_initializeDay(int day);
+int bat_maxHPCost(skill sk);
+int bat_baseHP();
+int bat_remainingBaseHP();
+boolean[skill] bat_desiredSkills(int hpLeft);
+boolean[skill] bat_desiredSkills(int hpLeft, boolean[skill] forcedPicks);
+void bat_reallyPickSkills(int hpLeft);
+void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills);
+boolean bat_shouldPickSkills(int hpLeft);
+boolean bat_shouldEnsorcel(monster m);
+int bat_creatable_amount(item desired);
+boolean bat_multicraft(string mode, boolean [item] options);
+boolean bat_cook(item desired);
+boolean bat_consumption();
+boolean bat_skillValid(skill sk);
+boolean bat_tryBloodBank();
+boolean LM_batpath();
+
+########################################################################################################
+//Defined in autoscend/paths/disguises_delimit.ash
+void majora_initializeSettings();
+boolean LM_majora();
+
+########################################################################################################
+//Defined in autoscend/paths/g_lover.ash
+void glover_initializeDay(int day);
+void glover_initializeSettings();
+boolean glover_usable(string it);
+boolean LM_glover();
+
+########################################################################################################
+//Defined in autoscend/paths/gelatinous_noob.ash
+boolean in_gnoob();
+void jello_startAscension(string page);
+int gnoobAbsorbCost(item it);
+void jello_buySkills();
+string[item] jello_lister(string goal);
+int jello_absorbsLeft();
+string[item] jello_lister();
+boolean LM_jello();
+
+########################################################################################################
+//Defined in autoscend/paths/grey_goo.ash
+void grey_goo_initializeSettings();
+void grey_goo_initializeDay(int day);
+boolean LA_grey_goo_tasks();
+
+########################################################################################################
+//Defined in autoscend/paths/heavy_rains.ash
+void hr_initializeSettings();
+boolean routineRainManHandler();
+void hr_initializeDay(int day);
+void hr_doBedtime();
+boolean doHRSkills();
+boolean rainManSummon(string monsterName, boolean copy, boolean wink, string option);
+boolean rainManSummon(string monsterName, boolean copy, boolean wink);
+boolean L13_towerFinalHeavyRains();
+
+########################################################################################################
+//Defined in autoscend/paths/kingdom_of_exploathing.ash
+boolean in_koe();
+boolean koe_initializeSettings();
+boolean LX_koeInvaderHandler();
+
+########################################################################################################
+//Defined in autoscend/paths/license_to_adventure.ash
+void bond_initializeSettings();
+boolean bond_initializeDay(int day);
+boolean bond_buySkills();
+boolean LM_bond();
+item[int] bondDrinks();
+
+########################################################################################################
+//Defined in autoscend/paths/live_ascend_repeat.ash
+boolean groundhogSafeguard();
+boolean canGroundhog(location loc);
+boolean groundhogAbort(location loc);
+boolean LM_groundhog();
+
+########################################################################################################
+//Defined in autoscend/paths/low_key_summer.ash
+boolean in_lowkeysummer();
+void lowkey_initializeSettings();
+boolean lowkey_needKey(item key);
+int lowkey_keyDelayRemaining(location loc);
+int lowkey_keysRemaining();
+location lowkey_nextKeyLocation(boolean checkAvailable);
+location lowkey_nextKeyLocation();
+location lowkey_nextAvailableKeyLocation();
+location lowkey_nextAvailableKeyDelayLocation();
+boolean lowkey_keyAdv(item key);
+boolean lowkey_zoneUnlocks();
+boolean LX_findHelpfulLowKey();
+boolean L13_sorceressDoorLowKey();
+boolean LX_lowkeySummer();
+
+########################################################################################################
+//Defined in autoscend/paths/nuclear_autumn.ash
+void fallout_initializeSettings();
+void fallout_initializeDay(int day);
+boolean fallout_buySkills();
+boolean LM_fallout();
+
+########################################################################################################
+//Defined in autoscend/paths/one_crazy_random_summer.ash
+boolean ocrs_postHelper();
+boolean ocrs_postCombatResolve();
+
+########################################################################################################
+//Defined in autoscend/paths/path_of_the_plumber.ash
+boolean in_zelda();
+boolean zelda_initializeSettings();
+boolean zelda_haveHammer();
+boolean zelda_equippedHammer();
+boolean zelda_haveFlower();
+boolean zelda_equippedFlower();
+boolean zelda_equippedBoots();
+int zelda_numBadgesBought();
+boolean zelda_buySkill(skill sk);
+boolean zelda_buyEquipment(item it);
+stat zelda_costume();
+boolean zelda_buyCostume(stat st);
+boolean zelda_nothingToBuy();
+boolean zelda_buyStuff();
+int zelda_ppCost(skill sk);
+boolean zelda_canDealScalingDamage();
+boolean zelda_skillValid(skill sk);
+boolean zelda_equipTool(stat st);
+
+########################################################################################################
+//Defined in autoscend/paths/picky.ash
+void picky_pulls();
+void picky_startAscension();
+boolean picky_buyskills();
+
+########################################################################################################
+//Defined in autoscend/paths/pocket_familiars.ash
+void digimon_initializeDay(int day);
+void digimon_initializeSettings();
+boolean digimon_makeTeam();
+boolean LM_digimon();
+boolean digimon_autoAdv(int num, location loc, string option);
+
+########################################################################################################
+//Defined in autoscend/paths/standard.ash
+void standard_dnaPotions();
+
+########################################################################################################
+//Defined in autoscend/paths/the_source.ash
+boolean theSource_initializeSettings();
+boolean theSource_buySkills();
+boolean LX_theSource();
+boolean theSource_oracle();
+boolean LX_attemptPowerLevelTheSource();
+
+########################################################################################################
+//Defined in autoscend/paths/two_crazy_random_summer.ash
+boolean in_tcrs();
+float tcrs_expectedAdvPerFill(string quality);
+boolean tcrs_maximize_with_items(string maximizerString);
+
+########################################################################################################
 //Defined in autoscend/quests/level_02.ash
 boolean L2_mosquito();
 
@@ -604,6 +832,7 @@ boolean LX_desertAlternate();
 boolean LX_islandAccess();
 boolean startHippyBoatmanSubQuest();
 boolean LX_hippyBoatman();
+void oldLandfillChoiceHandler(int choice);
 boolean LX_lockPicking();
 float estimateDailyDungeonAdvNeeded();
 boolean LX_fatLootToken();
@@ -631,18 +860,13 @@ string beerPong(string page);
 string tryBeerPong();
 int numPirateInsults();
 boolean LX_joinPirateCrew();
+void barrrneysBarrrChoiceHandler(int choice);
 boolean LX_fledglingPirateIsYou();
+void fcleChoiceHandler(int choice);
 boolean LX_unlockBelowdecks();
 boolean LX_pirateQuest();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
-
-########################################################################################################
-//Defined in autoscend/autoscend_migration.ash
-string autoscend_current_version();
-string autoscend_previous_version();
-boolean autoscend_needs_update();
-boolean autoscend_migrate();
 
 ########################################################################################################
 // Defined in autoscend/auto_adventure.ash
@@ -650,7 +874,7 @@ boolean autoAdv(int num, location loc, string option);		//num is ignored
 boolean autoAdv(int num, location loc);						//num is ignored
 boolean autoAdv(location loc);
 boolean autoAdv(location loc, string option);
-boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option);//Defined in autoscend/auto_adventure.ash
+boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option);
 boolean autoAdvBypass(string url, location loc);
 boolean autoAdvBypass(string url, location loc, string option);
 boolean autoAdvBypass(int snarfblat, location loc);
@@ -662,8 +886,15 @@ boolean autoAdvBypass(string url, string option);
 
 ########################################################################################################
 //Defined in autoscend/auto_consume.ash
+boolean saucemavenApplies(item it);
+float expectedAdventuresFrom(item it);
+boolean canOde(item toDrink);
 boolean autoDrink(int howMany, item toDrink);
 boolean autoOverdrink(int howMany, item toOverdrink);
+string cafeFoodName(int id);
+string cafeDrinkName(int id);
+boolean autoDrinkCafe(int howmany, int id);
+boolean autoEatCafe(int howmany, int id);
 boolean autoChew(int howMany, item toChew);
 boolean autoEat(int howMany, item toEat);
 boolean autoEat(int howMany, item toEat, boolean silent);
@@ -674,10 +905,14 @@ boolean canEat(item toEat);
 boolean canChew(item toChew);
 void consumeStuff();
 boolean consumeFortune();
-boolean loadConsumables(item[int] item_backmap, int[int] cafe_backmap, float[int] adv, int[int] inebriety);
 void auto_autoDrinkNightcap(boolean simulate);
 boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
+
+########################################################################################################
+//Defined in autoscend/auto_deprecation.ash
+boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
+boolean settingFixer();
 
 ########################################################################################################
 // Defined in autoscend/auto_equipment.ash
@@ -720,6 +955,90 @@ boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
+
+########################################################################################################
+// Defined in autoscend/auto_list.ash
+familiar[int] List();
+effect[int] List(boolean[effect] data);
+familiar[int] List(boolean[familiar] data);
+int[int] List(boolean[int] data);
+item[int] List(boolean[item] data);
+effect[int] List(effect[int] data);
+familiar[int] List(familiar[int] data);
+int[int] List(int[int] data);
+item[int] List(item[int] data);
+effect[int] ListErase(effect[int] list, int index);
+familiar[int] ListErase(familiar[int] list, int index);
+int[int] ListErase(int[int] list, int index);
+item[int] ListErase(item[int] list, int index);
+int ListFind(effect[int] list, effect what);
+int ListFind(effect[int] list, effect what, int idx);
+int ListFind(familiar[int] list, familiar what);
+int ListFind(familiar[int] list, familiar what, int idx);
+int ListFind(int[int] list, int what);
+int ListFind(int[int] list, int what, int idx);
+int ListFind(item[int] list, item what);
+int ListFind(item[int] list, item what, int idx);
+effect[int] ListInsert(effect[int] list, effect what);
+familiar[int] ListInsert(familiar[int] list, familiar what);
+int[int] ListInsert(int[int] list, int what);
+item[int] ListInsert(item[int] list, item what);
+effect[int] ListInsertAt(effect[int] list, effect what, int idx);
+familiar[int] ListInsertAt(familiar[int] list, familiar what, int idx);
+int[int] ListInsertAt(int[int] list, int what, int idx);
+item[int] ListInsertAt(item[int] list, item what, int idx);
+effect[int] ListInsertFront(effect[int] list, effect what);
+familiar[int] ListInsertFront(familiar[int] list, familiar what);
+int[int] ListInsertFront(int[int] list, int what);
+item[int] ListInsertFront(item[int] list, item what);
+effect[int] ListInsertInorder(effect[int] list, effect what);
+familiar[int] ListInsertInorder(familiar[int] list, familiar what);
+int[int] ListInsertInorder(int[int] list, int what);
+item[int] ListInsertInorder(item[int] list, item what);
+string ListOutput(effect[int] list);
+string ListOutput(familiar[int] list);
+string ListOutput(int[int] list);
+string ListOutput(item[int] list);
+effect[int] ListRemove(effect[int] list, effect what);
+effect[int] ListRemove(effect[int] list, effect what, int idx);
+familiar[int] ListRemove(familiar[int] list, familiar what);
+familiar[int] ListRemove(familiar[int] list, familiar what, int idx);
+int[int] ListRemove(int[int] list, int what);
+int[int] ListRemove(int[int] list, int what, int idx);
+item[int] ListRemove(item[int] list, item what);
+item[int] ListRemove(item[int] list, item what, int idx);
+location ListOutput(location[int] list);
+location[int] locationList();
+location[int] List(boolean[location] data);
+location[int] List(location[int] data);
+location[int] ListRemove(location[int] list, location what);
+location[int] ListRemove(location[int] list, location what, int idx);
+location[int] ListErase(location[int] list, int index);
+location[int] ListInsertFront(location[int] list, location what);
+location[int] ListInsert(location[int] list, location what);
+location[int] ListInsertAt(location[int] list, location what, int idx);
+location[int] ListInsertInorder(location[int] list, location what);
+int ListFind(location[int] list, location what);
+int ListFind(location[int] list, location what, int idx);
+location ListOutput(location[int] list);
+effect[int] effectList();
+int[int] intList();
+item[int] itemList();
+
+########################################################################################################
+//Defined in autoscend/auto_monsterparts.ash
+boolean hasArm(monster enemy);
+boolean hasHead(monster enemy);
+boolean hasLeg(monster enemy);
+boolean hasTail(monster enemy);
+boolean hasTorso(monster enemy);
+
+########################################################################################################
+//Defined in autoscend/autoscend_migration.ash
+string autoscend_current_version();
+string autoscend_previous_version();
+boolean autoscend_needs_update();
+boolean autoscend_migrate();
 
 ########################################################################################################
 // Defined in autoscend/auto_providers.ash
@@ -796,75 +1115,6 @@ boolean useCocoon();
 
 //Large pile dump.
 void auto_process_kmail(string functionname);		//Defined in autoscend/auto_zlib.ash
-boolean LA_cs_communityService();							//Defined in autoscend/paths/community_service.ash
-boolean LX_fcle();
-boolean LX_nastyBooty();
-boolean LM_fallout();										//Defined in autoscend/auto_fallout.ash
-boolean LM_jello();											//Defined in autoscend/auto_jellonewbie.ash
-boolean LX_theSource();										//Defined in autoscend/auto_theSource.ash
-familiar[int] List();										//Defined in autoscend/auto_list.ash
-effect[int] List(boolean[effect] data);						//Defined in autoscend/auto_list.ash
-familiar[int] List(boolean[familiar] data);					//Defined in autoscend/auto_list.ash
-int[int] List(boolean[int] data);							//Defined in autoscend/auto_list.ash
-item[int] List(boolean[item] data);							//Defined in autoscend/auto_list.ash
-effect[int] List(effect[int] data);							//Defined in autoscend/auto_list.ash
-familiar[int] List(familiar[int] data);						//Defined in autoscend/auto_list.ash
-int[int] List(int[int] data);								//Defined in autoscend/auto_list.ash
-item[int] List(item[int] data);								//Defined in autoscend/auto_list.ash
-effect[int] ListErase(effect[int] list, int index);			//Defined in autoscend/auto_list.ash
-familiar[int] ListErase(familiar[int] list, int index);		//Defined in autoscend/auto_list.ash
-int[int] ListErase(int[int] list, int index);				//Defined in autoscend/auto_list.ash
-item[int] ListErase(item[int] list, int index);				//Defined in autoscend/auto_list.ash
-int ListFind(effect[int] list, effect what);				//Defined in autoscend/auto_list.ash
-int ListFind(effect[int] list, effect what, int idx);		//Defined in autoscend/auto_list.ash
-int ListFind(familiar[int] list, familiar what);			//Defined in autoscend/auto_list.ash
-int ListFind(familiar[int] list, familiar what, int idx);	//Defined in autoscend/auto_list.ash
-int ListFind(int[int] list, int what);						//Defined in autoscend/auto_list.ash
-int ListFind(int[int] list, int what, int idx);				//Defined in autoscend/auto_list.ash
-int ListFind(item[int] list, item what);					//Defined in autoscend/auto_list.ash
-int ListFind(item[int] list, item what, int idx);			//Defined in autoscend/auto_list.ash
-effect[int] ListInsert(effect[int] list, effect what);		//Defined in autoscend/auto_list.ash
-familiar[int] ListInsert(familiar[int] list, familiar what);//Defined in autoscend/auto_list.ash
-int[int] ListInsert(int[int] list, int what);				//Defined in autoscend/auto_list.ash
-item[int] ListInsert(item[int] list, item what);			//Defined in autoscend/auto_list.ash
-effect[int] ListInsertAt(effect[int] list, effect what, int idx);//Defined in autoscend/auto_list.ash
-familiar[int] ListInsertAt(familiar[int] list, familiar what, int idx);//Defined in autoscend/auto_list.ash
-int[int] ListInsertAt(int[int] list, int what, int idx);	//Defined in autoscend/auto_list.ash
-item[int] ListInsertAt(item[int] list, item what, int idx);	//Defined in autoscend/auto_list.ash
-effect[int] ListInsertFront(effect[int] list, effect what);	//Defined in autoscend/auto_list.ash
-familiar[int] ListInsertFront(familiar[int] list, familiar what);//Defined in autoscend/auto_list.ash
-int[int] ListInsertFront(int[int] list, int what);			//Defined in autoscend/auto_list.ash
-item[int] ListInsertFront(item[int] list, item what);		//Defined in autoscend/auto_list.ash
-effect[int] ListInsertInorder(effect[int] list, effect what);//Defined in autoscend/auto_list.ash
-familiar[int] ListInsertInorder(familiar[int] list, familiar what);//Defined in autoscend/auto_list.ash
-int[int] ListInsertInorder(int[int] list, int what);		//Defined in autoscend/auto_list.ash
-item[int] ListInsertInorder(item[int] list, item what);		//Defined in autoscend/auto_list.ash
-string ListOutput(effect[int] list);						//Defined in autoscend/auto_list.ash
-string ListOutput(familiar[int] list);						//Defined in autoscend/auto_list.ash
-string ListOutput(int[int] list);							//Defined in autoscend/auto_list.ash
-string ListOutput(item[int] list);							//Defined in autoscend/auto_list.ash
-effect[int] ListRemove(effect[int] list, effect what);		//Defined in autoscend/auto_list.ash
-effect[int] ListRemove(effect[int] list, effect what, int idx);//Defined in autoscend/auto_list.ash
-familiar[int] ListRemove(familiar[int] list, familiar what);//Defined in autoscend/auto_list.ash
-familiar[int] ListRemove(familiar[int] list, familiar what, int idx);//Defined in autoscend/auto_list.ash
-int[int] ListRemove(int[int] list, int what);				//Defined in autoscend/auto_list.ash
-int[int] ListRemove(int[int] list, int what, int idx);		//Defined in autoscend/auto_list.ash
-item[int] ListRemove(item[int] list, item what);			//Defined in autoscend/auto_list.ash
-item[int] ListRemove(item[int] list, item what, int idx);	//Defined in autoscend/auto_list.ash
-location ListOutput(location[int] list);					//Defined in autoscend/auto_list.ash
-location[int] locationList();								//Defined in autoscend/auto_list.ash
-location[int] List(boolean[location] data);					//Defined in autoscend/auto_list.ash
-location[int] List(location[int] data);						//Defined in autoscend/auto_list.ash
-location[int] ListRemove(location[int] list, location what);//Defined in autoscend/auto_list.ash
-location[int] ListRemove(location[int] list, location what, int idx);//Defined in autoscend/auto_list.ash
-location[int] ListErase(location[int] list, int index);		//Defined in autoscend/auto_list.ash
-location[int] ListInsertFront(location[int] list, location what);//Defined in autoscend/auto_list.ash
-location[int] ListInsert(location[int] list, location what);//Defined in autoscend/auto_list.ash
-location[int] ListInsertAt(location[int] list, location what, int idx);//Defined in autoscend/auto_list.ash
-location[int] ListInsertInorder(location[int] list, location what);//Defined in autoscend/auto_list.ash
-int ListFind(location[int] list, location what);			//Defined in autoscend/auto_list.ash
-int ListFind(location[int] list, location what, int idx);	//Defined in autoscend/auto_list.ash
-location ListOutput(location[int] list);					//Defined in autoscend/auto_list.ash
 int [item] auto_get_campground();								//Defined in autoscend/auto_util.ash
 boolean basicAdjustML();									//Defined in autoscend/auto_util.ash
 boolean acquireGumItem(item it);							//Defined in autoscend/auto_util.ash
@@ -880,12 +1130,6 @@ boolean beehiveConsider();									//Defined in autoscend/auto_util.ash
 int estimatedTurnsLeft();									//Defined in autoscend/auto_util.ash
 boolean summonMonster();									//Defined in autoscend/auto_util.ash
 boolean summonMonster(string option);						//Defined in autoscend/auto_util.ash
-boolean in_tcrs();											//Defined in autoscend/auto_tcrs.ash
-float tcrs_expectedAdvPerFill(string quality);				//Defined in autoscend/auto_tcrs.ash
-boolean tcrs_loadCafeDrinks(int[int] cafe_backmap, float[int] adv, int[int] inebriety);	//Defined in autoscend/auto_tcrs.ash
-boolean tcrs_maximize_with_items(string maximizerString);	//Defined in autoscend/auto_tcrs.ash
-boolean in_koe();											//Defined in autoscend/auto_koe.ash
-boolean in_zelda();											//Defined in autoscend/auto_zelda.ash
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);//Defined in autoscend/auto_util.ash
 boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);//Defined in autoscend/auto_util.ash
@@ -911,56 +1155,15 @@ boolean auto_change_mcd(int mcd);								//Defined in autoscend/auto_util.ash
 boolean auto_change_mcd(int mcd, boolean immediately);			//Defined in autoscend/auto_util.ash
 boolean clear_property_if(string setting, string cond);		//Defined in autoscend/auto_util.ash
 boolean acquireTransfunctioner();							//Defined in autoscend/auto_util.ash
-
-boolean inCasual();											//Defined in autoscend/paths/casual.ash
-boolean inAftercore();										//Defined in autoscend/paths/casual.ash
-boolean inPostRonin();										//Defined in autoscend/paths/casual.ash
-boolean LM_canInteract();								//Defined in autoscend/paths/casual.ash
-
-void cs_dnaPotions();										//Defined in autoscend/paths/community_service.ash
-boolean cs_eat_spleen();									//Defined in autoscend/paths/community_service.ash
-boolean cs_eat_stuff(int quest);							//Defined in autoscend/paths/community_service.ash
-boolean cs_giant_growth();									//Defined in autoscend/paths/community_service.ash
-void cs_initializeDay(int day);								//Defined in autoscend/paths/community_service.ash
-void cs_make_stuff(int curQuest);							//Defined in autoscend/paths/community_service.ash
-boolean cs_spendRests();									//Defined in autoscend/paths/community_service.ash
-boolean cs_witchess();										//Defined in autoscend/paths/community_service.ash
-int estimate_cs_questCost(int quest);						//Defined in autoscend/paths/community_service.ash
-int [int] get_cs_questList();								//Defined in autoscend/paths/community_service.ash
-boolean auto_csHandleGrapes();								//Defined in autoscend/paths/community_service.ash
-string what_cs_quest(int quest);							//Defined in autoscend/paths/community_service.ash
-int get_cs_questCost(int quest);							//Defined in autoscend/paths/community_service.ash
-int get_cs_questCost(string input);							//Defined in autoscend/paths/community_service.ash
-int get_cs_questNum(string input);							//Defined in autoscend/paths/community_service.ash
-int expected_next_cs_quest();								//Defined in autoscend/paths/community_service.ash
-int expected_next_cs_quest_internal();						//Defined in autoscend/paths/community_service.ash
-boolean do_chateauGoat();									//Defined in autoscend/paths/community_service.ash
-boolean do_cs_quest(int quest);								//Defined in autoscend/paths/community_service.ash
-boolean do_cs_quest(string quest);							//Defined in autoscend/paths/community_service.ash
-boolean cs_preTurnStuff(int curQuest);						//Defined in autoscend/paths/community_service.ash
-void set_cs_questListFast(int[int] fast);					//Defined in autoscend/paths/community_service.ash
-boolean cs_healthMaintain();											//Defined in autoscend/paths/community_service.ash
-boolean cs_healthMaintain(int target);						//Defined in autoscend/paths/community_service.ash
-boolean cs_mpMaintain();													//Defined in autoscend/paths/community_service.ash
-boolean cs_mpMaintain(int target);								//Defined in autoscend/paths/community_service.ash
-boolean canTrySaberTrickMeteorShower();           //Defined in autoscend/paths/community_service.ash
-boolean trySaberTrickMeteorShower();              //Defined in autoscend/paths/community_service.ash
-int beachHeadTurnSavings(int quest);							//Defined in autoscend/paths/community_service.ash
-boolean tryBeachHeadBuff(int quest);							//Defined in autoscend/paths/community_service.ash
 void debugMaximize(string req, int meat);					//Defined in autoscend/auto_util.ash
-boolean doHRSkills();										//Defined in autoscend/auto_heavyrains.ash
 int doNumberology(string goal);								//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, boolean doIt);				//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, boolean doIt, string option);//Defined in autoscend/auto_util.ash
 int doNumberology(string goal, string option);				//Defined in autoscend/auto_util.ash
-effect[int] effectList();									//Defined in autoscend/auto_list.ash
 int elemental_resist(element goal);							//Defined in autoscend/auto_util.ash
 float elemental_resist_value(int resistance);				//Defined in autoscend/auto_util.ash
 boolean evokeEldritchHorror();								//Defined in autoscend/auto_util.ash
 boolean evokeEldritchHorror(string option);					//Defined in autoscend/auto_util.ash
-boolean fallout_buySkills();								//Defined in autoscend/auto_fallout.ash
-void fallout_initializeDay(int day);						//Defined in autoscend/auto_fallout.ash
-void fallout_initializeSettings();							//Defined in autoscend/auto_fallout.ash
 int fastenerCount();										//Defined in autoscend/auto_util.ash
 boolean fightScienceTentacle();								//Defined in autoscend/auto_util.ash
 boolean fightScienceTentacle(string option);				//Defined in autoscend/auto_util.ash
@@ -982,27 +1185,16 @@ boolean handleSealElement(element flavor);					//Defined in autoscend/auto_util.
 boolean handleSealElement(element flavor, string option);	//Defined in autoscend/auto_util.ash
 void handleTracker(string used, string tracker);			//Defined in autoscend/auto_util.ash
 void handleTracker(string used, string detail, string tracker);	//Defined in autoscend/auto_util.ash
-boolean hasArm(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
-boolean hasHead(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
-boolean hasLeg(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
 boolean hasShieldEquipped();								//Defined in autoscend/auto_util.ash
-boolean hasTail(monster enemy);								//Defined in autoscend/auto_monsterparts.ash
-boolean hasTorso(monster enemy);							//Defined in autoscend/auto_monsterparts.ash
 boolean haveAny(boolean[item] array);						//Defined in autoscend/auto_util.ash
 boolean acquireOrPull(item it);								//Defined in autoscend/auto_util.ash
 boolean have_skills(boolean[skill] array);					//Defined in autoscend/auto_util.ash
 boolean auto_have_skill(skill sk);							//Defined in autoscend/auto_util.ash
 int howLongBeforeHoloWristDrop();							//Defined in autoscend/auto_util.ash
-void hr_doBedtime();										//Defined in autoscend/auto_heavyrains.ash
-boolean hr_handleFamiliar(familiar fam);					//Defined in autoscend/auto_heavyrains.ash
-void hr_initializeDay(int day);								//Defined in autoscend/auto_heavyrains.ash
-void hr_initializeSettings();								//Defined in autoscend/auto_heavyrains.ash
-boolean L13_towerFinalHeavyRains();							//Defined in autoscend/auto_heavyrains.ash
 boolean in_ronin();											//Defined in autoscend/auto_util.ash
 int inebriety_left();										//Defined in autoscend/auto_util.ash
 boolean stunnable(monster mon);								//Defined in autoscend/auto_util.ash
 boolean instakillable(monster mon);							//Defined in autoscend/auto_util.ash
-int[int] intList();											//Defined in autoscend/auto_list.ash
 int internalQuestStatus(string prop);						//Defined in autoscend/auto_util.ash
 int freeCrafts();											//Defined in autoscend/auto_util.ash
 boolean isBanished(monster enemy);							//Defined in autoscend/auto_util.ash
@@ -1028,14 +1220,6 @@ boolean inGnomeSign();										//Defined in autoscend/auto_util.ash
 boolean allowSoftblockShen();								//Defined in autoscend/auto_util.ash
 boolean is_avatar_potion(item it);							//Defined in autoscend/auto_util.ash
 int auto_mall_price(item it);									//Defined in autoscend/auto_util.ash
-item[int] itemList();										//Defined in autoscend/auto_list.ash
-int jello_absorbsLeft();									//Defined in autoscend/auto_jellonewbie.ash
-int gnoobAbsorbCost(item it);								//Defined in autoscend/auto_jellonewbie.ash
-void jello_buySkills();										//Defined in autoscend/auto_jellonewbie.ash
-boolean in_gnoob();											//Defined in autoscend/auto_jellonewbie.ash
-string[item] jello_lister();								//Defined in autoscend/auto_jellonewbie.ash
-string[item] jello_lister(string goal);						//Defined in autoscend/auto_jellonewbie.ash
-void jello_startAscension(string page);						//Defined in autoscend/auto_jellonewbie.ash
 boolean lastAdventureSpecialNC();							//Defined in autoscend/auto_util.ash
 boolean loopHandler(string turnSetting, string counterSetting, int threshold);//Defined in autoscend/auto_util.ash
 boolean loopHandler(string turnSetting, string counterSetting, string abortMessage, int threshold);//Defined in autoscend/auto_util.ash
@@ -1051,13 +1235,8 @@ element ns_crowd3();										//Defined in autoscend/auto_util.ash
 element ns_hedge1();										//Defined in autoscend/auto_util.ash
 element ns_hedge2();										//Defined in autoscend/auto_util.ash
 element ns_hedge3();										//Defined in autoscend/auto_util.ash
-boolean ocrs_postCombatResolve();							//Defined in autoscend/auto_summerfun.ash
-boolean ocrs_postHelper();									//Defined in autoscend/auto_summerfun.ash
 boolean organsFull();										//Defined in autoscend/auto_util.ash
 boolean ovenHandle();										//Defined in autoscend/auto_util.ash
-boolean picky_buyskills();									//Defined in autoscend/auto_picky.ash
-void picky_pulls();											//Defined in autoscend/auto_picky.ash
-void picky_startAscension();								//Defined in autoscend/auto_picky.ash
 skill preferredLibram();									//Defined in autoscend/auto_util.ash
 location provideAdvPHPZone();								//Defined in autoscend/auto_util.ash
 boolean acquireCombatMods(int amt);
@@ -1067,12 +1246,9 @@ void pullAll(item it);										//Defined in autoscend/auto_util.ash
 void pullAndUse(item it, int uses);							//Defined in autoscend/auto_util.ash
 boolean pullXWhenHaveY(item it, int howMany, int whenHave);	//Defined in autoscend/auto_util.ash
 boolean pulverizeThing(item it);							//Defined in autoscend/auto_util.ash
-boolean rainManSummon(string monsterName, boolean copy, boolean wink);//Defined in autoscend/auto_heavyrains.ash
-boolean rainManSummon(string monsterName, boolean copy, boolean wink, string option);//Defined in autoscend/auto_heavyrains.ash
 boolean restoreAllSettings();								//Defined in autoscend/auto_util.ash
 boolean restoreSetting(string setting);						//Defined in autoscend/auto_util.ash
 boolean restore_property(string setting, string source);	//Defined in autoscend/auto_util.ash
-boolean routineRainManHandler();							//Defined in autoscend/auto_heavyrains.ash
 string runChoice(string page_text);							//Defined in autoscend/auto_util.ash
 string safeString(item input);								//Defined in autoscend/auto_util.ash
 string safeString(monster input);							//Defined in autoscend/auto_util.ash
@@ -1080,19 +1256,13 @@ string safeString(skill input);								//Defined in autoscend/auto_util.ash
 string safeString(string input);							//Defined in autoscend/auto_util.ash
 boolean setAdvPHPFlag();									//Defined in autoscend/auto_util.ash
 boolean set_property_ifempty(string setting, string change);//Defined in autoscend/auto_util.ash
-boolean settingFixer();										//Defined in autoscend/auto_deprecation.ash
 void shrugAT();												//Defined in autoscend/auto_util.ash
 void shrugAT(effect anticipated);							//Defined in autoscend/auto_util.ash
 int solveCookie();											//Defined in autoscend/auto_util.ash
 int spleen_left();											//Defined in autoscend/auto_util.ash
 string statCard();											//Defined in autoscend/auto_util.ash
 int stomach_left();											//Defined in autoscend/auto_util.ash
-boolean theSource_buySkills();								//Defined in autoscend/auto_theSource.ash
-boolean theSource_initializeSettings();						//Defined in autoscend/auto_theSource.ash
-boolean theSource_oracle();									//Defined in autoscend/auto_theSource.ash
-boolean LX_attemptPowerLevelTheSource();					//Defined in autoscend/auto_theSource.ash
 void tootGetMeat();											//Defined in autoscend/auto_util.ash
-boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);//Defined in autoscend/auto_deprecation.ash
 string trim(string input);									//Defined in autoscend/auto_util.ash
 int turkeyBooze();											//Defined in autoscend/auto_util.ash
 boolean use_barrels();										//Defined in autoscend/auto_util.ash
@@ -1166,9 +1336,6 @@ void handlePreAdventure(location place);					//Defined in auto_pre_adv.ash
 
 void handlePostAdventure();									//Defined in auto_post_adv.ash
 
-void handleKingLiberation();								//Defined in auto_king.ash
-boolean pullPVPJunk();										//Defined in auto_king.ash
-
 boolean auto_acquireKeycards();								//Defined in autoscend/auto_aftercore.ash
 boolean auto_aftercore();										//Defined in autoscend/auto_aftercore.ash
 boolean auto_aftercore(int leave);							//Defined in autoscend/auto_aftercore.ash
@@ -1202,105 +1369,6 @@ boolean auto_toxicMascot();									//Defined in autoscend/auto_aftercore.ash
 boolean auto_trashNet();										//Defined in autoscend/auto_aftercore.ash
 string simpleCombatFilter(int round, string opp, string text);//Defined in autoscend/auto_aftercore.ash
 
-boolean in_bhy();											//Defined in autoscend/paths/bees_hate_you.ash
-void bhy_initializeSettings();								//Defined in autoscend/paths/bees_hate_you.ash
-boolean bees_hate_usable(string it);						//Defined in autoscend/paths/bees_hate_you.ash
-boolean LM_bhy();											//Defined in autoscend/paths/bees_hate_you.ash
-boolean L13_bhy_towerFinal();								//Defined in autoscend/paths/bees_hate_you.ash
-
-boolean LM_bond();											//Defined in autoscend/auto_bondmember.ash
-boolean bond_buySkills();									//Defined in autoscend/auto_bondmember.ash
-boolean bond_initializeSettings();							//Defined in autoscend/auto_bondmember.ash
-item[int] bondDrinks();										//Defined in autoscend/auto_bondmember.ash
-void bond_initializeDay(int day);							//Defined in autoscend/auto_bondmember.ash
-
-
-void majora_initializeSettings();							//Defined in autoscend/auto_majora.ash
-void majora_initializeDay(int day);							//Defined in autoscend/auto_majora.ash
-boolean LM_majora();										//Defined in autoscend/auto_majora.ash
-
-void digimon_initializeSettings();							//Defined in autoscend/auto_digimon.ash
-void digimon_initializeDay(int day);						//Defined in autoscend/auto_digimon.ash
-boolean digimon_makeTeam();									//Defined in autoscend/auto_digimon.ash
-boolean LM_digimon();										//Defined in autoscend/auto_digimon.ash
-boolean digimon_autoAdv(int num, location loc, string option);//Defined in autoscend/auto_digimon.ash
-
-void glover_initializeSettings();							//Defined in autoscend/auto_glover.ash
-void glover_initializeDay(int day);							//Defined in autoscend/auto_glover.ash
-boolean glover_usable(string it);							//Defined in autoscend/auto_glover.ash
-boolean LM_glover();										//Defined in autoscend/auto_glover.ash
-
-boolean groundhogSafeguard();								//Defined in autoscend/auto_groundhog.ash
-boolean canGroundhog(location loc);							//Defined in autoscend/auto_groundhog.ash
-boolean groundhogAbort(location loc);						//Defined in autoscend/auto_groundhog.ash
-boolean LM_groundhog();										//Defined in autoscend/auto_groundhog.ash
-
-void grey_goo_initializeSettings();							//Defined in autoscend/grey_goo.ash
-void grey_goo_initializeDay(int day);						//Defined in autoscend/grey_goo.ash
-boolean LA_grey_goo_tasks();								//Defined in autoscend/grey_goo.ash
-
-void bat_startAscension(); // Defined in autoscend/auto_batpath.ash
-void bat_initializeSession(); // Defined in autoscend/auto_batpath.ash
-void bat_terminateSession(); // Defined in autoscend/auto_batpath.ash
-void bat_initializeDay(int day); // Defined in autoscend/auto_batpath.ash
-int bat_maxHPCost(skill sk); // Defined in autoscend/auto_batpath.ash
-int bat_baseHP(); // Defined in autoscend/auto_batpath.ash
-int bat_remainingBaseHP(); // Defined in autoscend/auto_batpath.ash
-boolean[skill] bat_desiredSkills(int hpLeft); // Defined in autoscend/auto_batpath.ash
-boolean[skill] bat_desiredSkills(int hpLeft, boolean[skill] requiredSkills); // Defined in autoscend/auto_batpath.ash
-void bat_reallyPickSkills(int hpLeft); // Defined in autoscend/auto_batpath.ash
-void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills); // Defined in autoscend/auto_batpath.ash
-boolean bat_shouldPickSkills(int hpLeft); // Defined in autoscend/auto_batpath.ash
-boolean bat_shouldEnsorcel(monster m); // Defined in autoscend/auto_batpath.ash
-int bat_creatable_amount(item desired); // Defined in autoscend/auto_batpath.ash
-boolean bat_multicraft(string mode, boolean [item] options); // Defined in autoscend/auto_batpath.ash
-boolean bat_cook(item desired); // Defined in autoscend/auto_batpath.ash
-boolean bat_consumption(); // Defined in autoscend/auto_batpath.ash
-boolean bat_skillValid(skill sk); // Defined in autoscend/auto_batpath.ash
-boolean bat_tryBloodBank(); // Defined in autoscend/auto_batpath.ash
-boolean bat_wantHowl(location loc); // Defined in autoscend/auto_batpath.ash
-boolean bat_formNone(); // Defined in autoscend/auto_batpath.ash
-boolean bat_formWolf(boolean speculative); // Defined in autoscend/auto_batpath.ash
-boolean bat_formWolf(); // Defined in autoscend/auto_batpath.ash
-boolean bat_formMist(boolean speculative); // Defined in autoscend/auto_batpath.ash
-boolean bat_formMist(); // Defined in autoscend/auto_batpath.ash
-boolean bat_formBats(boolean speculative); // Defined in autoscend/auto_batpath.ash
-boolean bat_formBats(); // Defined in autoscend/auto_batpath.ash
-void bat_clearForms(); // Defined in autoscend/auto_batpath.ash
-boolean bat_switchForm(effect form, boolean speculative); // Defined in autoscend/auto_batpath.ash
-boolean bat_switchForm(effect form); // Defined in autoscend/auto_batpath.ash
-boolean bat_formPreAdventure(); // Defined in autoscend/auto_batpath.ash
-boolean LM_batpath(); // Defined in autoscend/auto_batpath.ash
-
-boolean zelda_initializeSettings(); // Defined in autoscend/auto_zelda.ash
-boolean zelda_haveHammer(); // Defined in autoscend/auto_zelda.ash
-boolean zelda_haveFlower(); // Defined in autoscend/auto_zelda.ash
-boolean zelda_equippedHammer(); // Defined in autoscend/auto_zelda.ash
-boolean zelda_equippedFlower(); // Defined in autoscend/auto_zelda.ash
-boolean zelda_equippedBoots(); // Defined in autoscend/auto_zelda.ash
-int zelda_numBadgesBought(); // Defined in autoscend/auto_zelda.ash
-boolean zelda_buySkill(skill sk); // Defined in autoscend/auto_zelda.ash
-boolean zelda_buyEquipment(item it); // Defined in autoscend/auto_zelda.ash
-boolean zelda_nothingToBuy(); // Defined in autoscend/auto_zelda.ash
-boolean zelda_buyStuff(); // Defined in autoscend/auto_zelda.ash
-int zelda_ppCost(skill sk); // Defined in autoscend/auto_zelda.ash
-boolean zelda_canDealScalingDamage(); // Defined in autoscend/auto_zelda.ash
-boolean zelda_skillValid(skill sk); // Defined in autoscend/auto_zelda.ash
-boolean zelda_equipTool(stat st); // Defined in autoscend/auto_zelda.ash
-
-boolean in_lowkeysummer(); // Defined in autoscend/paths/low_key_summer.ash
-boolean lowkey_initializeSettings(); // Defined in autoscend/paths/low_key_summer.ash
-int lowkey_keyDelayRemaining(location loc); // Defined in autoscend/paths/low_key_summer.ash
-int lowkey_keysRemaining(); // Defined in autoscend/paths/low_key_summer.ash
-location lowkey_nextKeyLocation(boolean checkAvailable); // Defined in autoscend/paths/low_key_summer.ash
-location lowkey_nextKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
-location lowkey_nextAvailableKeyLocation(); // Defined in autoscend/paths/low_key_summer.ash
-location lowkey_nextAvailableKeyDelayLocation(); // Defined in autoscend/paths/low_key_summer.ash
-boolean lowkey_keyAdv(item key); // Defined in autoscend/paths/low_key_summer.ash
-boolean LX_findHelpfulLowKey();  // Defined in autoscend/paths/low_key_summer.ash
-boolean L13_sorceressDoorLowKey(); // Defined in autoscend/paths/low_key_summer.ash
-boolean LX_lowkeySummer(); // Defined in autoscend/paths/low_key_summer.ash
-
 element currentFlavour(); // Defined in autoscend/auto_util.ash
 boolean setFlavour(element ele); // Defined in autoscend/auto_util.ash
 boolean executeFlavour(); // Defined in autoscend/auto_util.ash
@@ -1331,8 +1399,3 @@ location[int] zones_available();							//Defined in autoscend/auto_zone.ash
 monster[int] mobs_available();								//Defined in autoscend/auto_zone.ash
 item[int] drops_available();								//Defined in autoscend/auto_zone.ash
 item[int] hugpocket_available();							//Defined in autoscend/auto_zone.ash
-
-// functions for handling choice adventures. Only ever called from auto_choice_adv.ash
-void oldLandfillChoiceHandler(int choice);
-void barrrneysBarrrChoiceHandler(int choice, string page);
-void fcleChoiceHandler(int choice);
