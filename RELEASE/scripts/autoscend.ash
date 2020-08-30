@@ -1113,7 +1113,6 @@ void initializeDay(int day)
 	cs_initializeDay(day);
 	bond_initializeDay(day);
 	digimon_initializeDay(day);
-	majora_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);

@@ -7,11 +7,6 @@ void majora_initializeSettings()
 	}
 }
 
-void majora_initializeDay(int day)
-{
-
-}
-
 boolean LM_majora()
 {
 	if(auto_my_path() == "Disguises Delimit")
