@@ -30,7 +30,6 @@ import <autoscend/combat/auto_combat.ash>
 import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
 import <autoscend/iotms/eudora.ash>
-import <autoscend/iotms/floristfriar.ash>
 import <autoscend/iotms/mr2011.ash>
 import <autoscend/iotms/mr2012.ash>
 import <autoscend/iotms/mr2013.ash>
@@ -68,14 +67,14 @@ import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/low_key_summer.ash>
 
-import <autoscend/quests/level_2.ash>
-import <autoscend/quests/level_3.ash>
-import <autoscend/quests/level_4.ash>
-import <autoscend/quests/level_5.ash>
-import <autoscend/quests/level_6.ash>
-import <autoscend/quests/level_7.ash>
-import <autoscend/quests/level_8.ash>
-import <autoscend/quests/level_9.ash>
+import <autoscend/quests/level_02.ash>
+import <autoscend/quests/level_03.ash>
+import <autoscend/quests/level_04.ash>
+import <autoscend/quests/level_05.ash>
+import <autoscend/quests/level_06.ash>
+import <autoscend/quests/level_07.ash>
+import <autoscend/quests/level_08.ash>
+import <autoscend/quests/level_09.ash>
 import <autoscend/quests/level_10.ash>
 import <autoscend/quests/level_11.ash>
 import <autoscend/quests/level_12.ash>
@@ -204,7 +203,6 @@ void initializeSettings() {
 	hr_initializeSettings();
 	awol_initializeSettings();
 	theSource_initializeSettings();
-	florist_initializeSettings();
 	ed_initializeSettings();
 	boris_initializeSettings();
 	bond_initializeSettings();
@@ -876,6 +874,7 @@ boolean LX_doVacation()
 
 boolean fortuneCookieEvent()
 {
+	//Semi-rare Handler
 	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
 	{
 		auto_log_info("Semi rare time!", "blue");
@@ -1113,7 +1112,6 @@ void initializeDay(int day)
 	cs_initializeDay(day);
 	bond_initializeDay(day);
 	digimon_initializeDay(day);
-	majora_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);
@@ -1325,6 +1323,8 @@ void initializeDay(int day)
 
 boolean dailyEvents()
 {
+	//Daily Events that should happen at start and not end.
+	
 	auto_birdOfTheDay();
 	while(auto_doPrecinct());
 	handleBarrelFullOfBarrels(true);

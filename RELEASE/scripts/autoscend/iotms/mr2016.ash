@@ -111,6 +111,27 @@ boolean auto_haveSourceTerminal()
 	return (auto_get_campground() contains $item[Source Terminal]);
 }
 
+boolean isOverdueDigitize()
+{
+	if(get_property("_sourceTerminalDigitizeUses").to_int() == 0)
+	{
+		return false;
+	}
+	if(get_counters("Digitize Monster", 1, 200) == "Digitize Monster")
+	{
+		return false;
+	}
+	if(contains_text(get_property("_tempRelayCounters"), "Digitize Monster"))
+	{
+		return false;
+	}
+	if(get_counters("Digitize Monster", 0, 0) == "Digitize Monster")
+	{
+		return true;
+	}
+	return false;
+}
+
 boolean auto_sourceTerminalRequest(string request)
 {
 	//enhance <effect>.enh		[meat|items|init|critical]
