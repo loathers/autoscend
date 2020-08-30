@@ -235,6 +235,51 @@ boolean LX_getStarKey()
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
+int ns_crowd1()
+{
+	if(get_property("nsContestants1").to_int() != 0)
+	{
+		auto_log_info("Default Test: Initiative", "red");
+	}
+	return 1;
+}
+
+stat ns_crowd2()
+{
+	if(get_property("nsContestants2").to_int() != 0)
+	{
+		auto_log_info("Off-Stat Test: " + get_property("nsChallenge1"), "red");
+	}
+	return to_stat(get_property("nsChallenge1"));
+}
+
+element ns_crowd3()
+{
+	if(get_property("nsContestants3").to_int() != 0)
+	{
+		auto_log_info("Elemental Test: " + get_property("nsChallenge2"), "red");
+	}
+	return to_element(get_property("nsChallenge2"));
+}
+
+element ns_hedge1()
+{
+	auto_log_info("Hedge Maze 1: " + get_property("nsChallenge3"), "red");
+	return to_element(get_property("nsChallenge3"));
+}
+
+element ns_hedge2()
+{
+	auto_log_info("Hedge Maze 2: " + get_property("nsChallenge4"), "red");
+	return to_element(get_property("nsChallenge4"));
+}
+
+element ns_hedge3()
+{
+	auto_log_info("Hedge Maze 3: " + get_property("nsChallenge5"), "red");
+	return to_element(get_property("nsChallenge5"));
+}
+
 boolean L13_towerNSContests()
 {
 	if (internalQuestStatus("questL13Final") < 0 || internalQuestStatus("questL13Final") > 3)
