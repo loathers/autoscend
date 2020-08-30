@@ -869,7 +869,7 @@ boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
 
 ########################################################################################################
-// Defined in autoscend/auto_adventure.ash
+//Defined in autoscend/auto_adventure.ash
 boolean autoAdv(int num, location loc, string option);		//num is ignored
 boolean autoAdv(int num, location loc);						//num is ignored
 boolean autoAdv(location loc);
@@ -915,7 +915,7 @@ boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
 boolean settingFixer();
 
 ########################################################################################################
-// Defined in autoscend/auto_equipment.ash
+//Defined in autoscend/auto_equipment.ash
 string getMaximizeSlotPref(slot s);
 boolean autoEquip(slot s, item it);
 boolean autoEquip(item it);
@@ -942,7 +942,7 @@ void ensureSealClubs();
 void equipRollover();
 
 ########################################################################################################
-// Defined in autoscend/auto_familiar.ash
+//Defined in autoscend/auto_familiar.ash
 boolean is100FamRun();
 boolean pathAllowsFamiliar();
 boolean auto_have_familiar(familiar fam);
@@ -957,7 +957,7 @@ boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
 
 ########################################################################################################
-// Defined in autoscend/auto_list.ash
+//Defined in autoscend/auto_list.ash
 familiar[int] List();
 effect[int] List(boolean[effect] data);
 familiar[int] List(boolean[familiar] data);
@@ -1034,14 +1034,7 @@ boolean hasTail(monster enemy);
 boolean hasTorso(monster enemy);
 
 ########################################################################################################
-//Defined in autoscend/autoscend_migration.ash
-string autoscend_current_version();
-string autoscend_previous_version();
-boolean autoscend_needs_update();
-boolean autoscend_migrate();
-
-########################################################################################################
-// Defined in autoscend/auto_providers.ash
+//Defined in autoscend/auto_providers.ash
 float providePlusCombat(int amt, boolean doEquips, boolean speculative);
 boolean providePlusCombat(int amt, boolean doEquips);
 boolean providePlusCombat(int amt);
@@ -1061,32 +1054,16 @@ boolean provideMysticality(int amt, boolean doEquips);
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, boolean doEquips);
 
-//Wrapper for get_campground(), primarily deals with the oven issue in Ed.
-//Also uses Garden item as identifier for the garden in addition to what get_campground() does
-int[item] auto_get_campground();					//Defined in autoscend/auto_util.ash
+########################################################################################################
+//Defined in autoscend/autoscend_migration.ash
+string autoscend_current_version();
+string autoscend_previous_version();
+boolean autoscend_needs_update();
+boolean autoscend_migrate();
 
-
-//Returns how many Hero Keys and Fat Loot tokens we have.
-//effective count (with malware) vs true count.
-int towerKeyCount(boolean effective);			//Defined in autoscend/auto_util.ash
-int towerKeyCount();							//Defined in autoscend/auto_util.ash
-
-//Determines if we need ore for the trapper or not.
-boolean needOre();								//Defined in autoscend/auto_util.ash
-
-//Wrapper for my_path(), in case there are delays in Mafia translating path values
-string auto_my_path();							//Defined in autoscend/auto_util.ash
-
-//Visits gnasir, can change based on path
-void auto_visit_gnasir();
-
-//Item disambiguation functions
-boolean hasSpookyravenLibraryKey();				//Defined in autoscend/auto_util.ash
-boolean hasILoveMeVolI();						//Defined in autoscend/auto_util.ash
-boolean useILoveMeVolI();						//Defined in autoscend/auto_util.ash
-
+########################################################################################################
 // Restoration (hp/mp) functions
-// Defined in autoscend/auto_restore.ash
+//Defined in autoscend/auto_restore.ash
 void invalidateRestoreOptionCache();
 boolean acquireMP();
 boolean acquireMP(int goal);
@@ -1112,7 +1089,31 @@ int freeRestsRemaining();
 boolean uneffect(effect toRemove);
 boolean useCocoon();
 
+########################################################################################################
+//Wrapper for get_campground(), primarily deals with the oven issue in Ed.
+//Also uses Garden item as identifier for the garden in addition to what get_campground() does
+int[item] auto_get_campground();					//Defined in autoscend/auto_util.ash
 
+
+//Returns how many Hero Keys and Fat Loot tokens we have.
+//effective count (with malware) vs true count.
+int towerKeyCount(boolean effective);			//Defined in autoscend/auto_util.ash
+int towerKeyCount();							//Defined in autoscend/auto_util.ash
+
+//Determines if we need ore for the trapper or not.
+boolean needOre();								//Defined in autoscend/auto_util.ash
+
+//Wrapper for my_path(), in case there are delays in Mafia translating path values
+string auto_my_path();							//Defined in autoscend/auto_util.ash
+
+//Visits gnasir, can change based on path
+void auto_visit_gnasir();
+
+//Item disambiguation functions
+boolean hasSpookyravenLibraryKey();				//Defined in autoscend/auto_util.ash
+boolean hasILoveMeVolI();						//Defined in autoscend/auto_util.ash
+boolean useILoveMeVolI();						//Defined in autoscend/auto_util.ash
+########################################################################################################
 //Large pile dump.
 void auto_process_kmail(string functionname);		//Defined in autoscend/auto_zlib.ash
 int [item] auto_get_campground();								//Defined in autoscend/auto_util.ash
@@ -1171,7 +1172,7 @@ boolean forceEquip(slot sl, item it);						//Defined in autoscend/auto_util.ash
 int fullness_left();										//Defined in autoscend/auto_util.ash
 location solveDelayZone();									//Defined in autoscend/auto_util.ash
 
-boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val); // Defined in autoscend/auto_util.ash
+boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val); //Defined in autoscend/auto_util.ash
 
 
 boolean handleBarrelFullOfBarrels(boolean daily);			//Defined in autoscend/auto_util.ash
@@ -1225,8 +1226,8 @@ boolean loopHandler(string turnSetting, string counterSetting, int threshold);//
 boolean loopHandler(string turnSetting, string counterSetting, string abortMessage, int threshold);//Defined in autoscend/auto_util.ash
 boolean loopHandlerDelay(string counterSetting);			//Defined in autoscend/auto_util.ash
 boolean loopHandlerDelay(string counterSetting, int threshold);//Defined in autoscend/auto_util.ash
-boolean loopHandlerDelayAll();								// Defined in autoscend/auto_util.ash
-string reverse(string s);									// Defined in autoscend/auto_util.ash
+boolean loopHandlerDelayAll();								//Defined in autoscend/auto_util.ash
+string reverse(string s);									//Defined in autoscend/auto_util.ash
 int lumberCount();											//Defined in autoscend/auto_util.ash
 int maxSealSummons();										//Defined in autoscend/auto_util.ash
 int ns_crowd1();											//Defined in autoscend/auto_util.ash
@@ -1284,12 +1285,12 @@ boolean adjustForReplaceIfPossible(monster target);				//Defined in autoscend/au
 boolean adjustForReplaceIfPossible();							//Defined in autoscend/auto_util.ash
 string banisherCombatString(monster enemy, location loc, boolean inCombat); //Defined in autoscend/auto_util.ash
 string banisherCombatString(monster enemy, location loc);	//Defined in autoscend/auto_util.ash
-boolean[string] auto_banishesUsedAt(location loc); // Defined in autoscend/auto_util.ash
-boolean auto_wantToBanish(monster enemy, location loc); // Defined in autoscend/auto_util.ash
-boolean auto_wantToSniff(monster enemy, location loc); // Defined in autoscend/auto_util.ash
-boolean auto_wantToYellowRay(monster enemy, location loc); // Defined in autoscend/auto_util.ash
-boolean auto_wantToReplace(monster enemy, location loc); // Defined in autoscend/auto_util.ash
-int total_items(boolean [item] items); // Defined in autoscend/auto_util.ash
+boolean[string] auto_banishesUsedAt(location loc); //Defined in autoscend/auto_util.ash
+boolean auto_wantToBanish(monster enemy, location loc); //Defined in autoscend/auto_util.ash
+boolean auto_wantToSniff(monster enemy, location loc); //Defined in autoscend/auto_util.ash
+boolean auto_wantToYellowRay(monster enemy, location loc); //Defined in autoscend/auto_util.ash
+boolean auto_wantToReplace(monster enemy, location loc); //Defined in autoscend/auto_util.ash
+int total_items(boolean [item] items); //Defined in autoscend/auto_util.ash
 boolean zoneCombat(location loc);							//Defined in autoscend/auto_util.ash
 boolean zoneItem(location loc);								//Defined in autoscend/auto_util.ash
 boolean zoneMeat(location loc);								//Defined in autoscend/auto_util.ash
@@ -1304,7 +1305,7 @@ boolean auto_is_valid(familiar fam); //Defined in autoscend/auto_util.ash
 boolean auto_is_valid(skill sk); //Defined in autoscend/auto_util.ash
 
 // Logging
-// Defined in autoscend/auto_util.ash
+//Defined in autoscend/auto_util.ash
 string auto_log_level_threshold();
 int auto_log_level(string level);
 boolean auto_log(string s, string color, string log_level);
@@ -1331,59 +1332,22 @@ boolean [monster] auto_getMonsters(string category); //Defined in autoscend/auto
 boolean auto_badassBelt(); //Defined in autoscend/auto_util.ash
 
 //Dump from accessory scripts.
-void handlePreAdventure();									//Defined in auto_pre_adv.ash
-void handlePreAdventure(location place);					//Defined in auto_pre_adv.ash
 
-void handlePostAdventure();									//Defined in auto_post_adv.ash
-
-boolean auto_acquireKeycards();								//Defined in autoscend/auto_aftercore.ash
-boolean auto_aftercore();										//Defined in autoscend/auto_aftercore.ash
-boolean auto_aftercore(int leave);							//Defined in autoscend/auto_aftercore.ash
-boolean autoscendIntoCS();									//Defined in autoscend/auto_aftercore.ash
-boolean autoscendIntoBond();								//Defined in autoscend/auto_aftercore.ash
-boolean auto_cheeseAftercore(int leave);						//Defined in autoscend/auto_aftercore.ash
-boolean auto_cheesePostCS();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_cheesePostCS(int leave);							//Defined in autoscend/auto_aftercore.ash
-void auto_combatTest();										//Defined in autoscend/auto_aftercore.ash
-boolean auto_dailyDungeon();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_doCS();											//Defined in autoscend/auto_aftercore.ash
-boolean auto_doWalford();										//Defined in autoscend/auto_aftercore.ash
-boolean auto_fingernail();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_goreBucket();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_guildClown();									//Defined in autoscend/auto_aftercore.ash
-item auto_guildEpicWeapon();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_guildUnlock();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_junglePuns();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_jungleSandwich();								//Defined in autoscend/auto_aftercore.ash
-boolean auto_lubeBarfMountain();								//Defined in autoscend/auto_aftercore.ash
-boolean auto_mtMolehill();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_nastyBears();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_nemesisCave();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_nemesisIsland();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_packOfSmokes();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_racismReduction();								//Defined in autoscend/auto_aftercore.ash
-boolean auto_sexismReduction();								//Defined in autoscend/auto_aftercore.ash
-boolean auto_sloppySecondsDiner();							//Defined in autoscend/auto_aftercore.ash
-boolean auto_toxicGlobules();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_toxicMascot();									//Defined in autoscend/auto_aftercore.ash
-boolean auto_trashNet();										//Defined in autoscend/auto_aftercore.ash
-string simpleCombatFilter(int round, string opp, string text);//Defined in autoscend/auto_aftercore.ash
-
-element currentFlavour(); // Defined in autoscend/auto_util.ash
-boolean setFlavour(element ele); // Defined in autoscend/auto_util.ash
-boolean executeFlavour(); // Defined in autoscend/auto_util.ash
-boolean autoFlavour(location place); // Defined in autoscend/auto_util.ash
-int auto_reserveAmount(item it); // Defined in autoscend/auto_util.ash
-int auto_reserveCraftAmount(item it); // Defined in autoscend/auto_util.ash
-boolean auto_canForceNextNoncombat();  // Defined in autoscend/auto_util.ash
-boolean auto_forceNextNoncombat(); // Defined in autoscend/auto_util.ash
-boolean auto_haveQueuedForcedNonCombat(); // Defined in autoscend/auto_util.ash
-boolean is_superlikely(string encounterName); // Defined in autoscend/auto_util.ash
+element currentFlavour(); //Defined in autoscend/auto_util.ash
+boolean setFlavour(element ele); //Defined in autoscend/auto_util.ash
+boolean executeFlavour(); //Defined in autoscend/auto_util.ash
+boolean autoFlavour(location place); //Defined in autoscend/auto_util.ash
+int auto_reserveAmount(item it); //Defined in autoscend/auto_util.ash
+int auto_reserveCraftAmount(item it); //Defined in autoscend/auto_util.ash
+boolean auto_canForceNextNoncombat();  //Defined in autoscend/auto_util.ash
+boolean auto_forceNextNoncombat(); //Defined in autoscend/auto_util.ash
+boolean auto_haveQueuedForcedNonCombat(); //Defined in autoscend/auto_util.ash
+boolean is_superlikely(string encounterName); //Defined in autoscend/auto_util.ash
 int auto_predictAccordionTurns();								//Defined in autoscend/auto_util.ash
-boolean hasTTBlessing();									 // Defined in autoscend/auto_util.ash
-void effectAblativeArmor(boolean passive_dmg_allowed);		 // Defined in autoscend/auto_util.ash
-int currentPoolSkill(); 		 // Defined in autoscend/auto_util.ash
-int poolSkillPracticeGains();								// Defined in autoscend/auto_util.ash
+boolean hasTTBlessing();									 //Defined in autoscend/auto_util.ash
+void effectAblativeArmor(boolean passive_dmg_allowed);		 //Defined in autoscend/auto_util.ash
+int currentPoolSkill(); 		 //Defined in autoscend/auto_util.ash
+int poolSkillPracticeGains();								//Defined in autoscend/auto_util.ash
 
 generic_t zone_needItem(location loc);						//Defined in autoscend/auto_zone.ash
 generic_t zone_difficulty(location loc);					//Defined in autoscend/auto_zone.ash
