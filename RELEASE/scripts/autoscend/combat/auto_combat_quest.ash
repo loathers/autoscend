@@ -69,6 +69,11 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	{
 		return useSkill($skill[Summon Love Gnats]);
 	}
+	
+	if(canUse($skill[Beanscreen]))
+	{
+		return useSkill($skill[Beanscreen]);
+	}
 
 	if(canUse($skill[Bad Medicine]))
 	{
@@ -117,6 +122,11 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		{
 			return findBanisher(round, enemy, text);
 		}
+	}
+	
+	if(!canSurvive(1.5))
+	{
+		abort("I am too weak to safely stasis this gremlin");
 	}
 
 	foreach it in $items[Seal Tooth, Spectre Scepter, Doc Galaktik\'s Pungent Unguent]
