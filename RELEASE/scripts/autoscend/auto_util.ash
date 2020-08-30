@@ -763,28 +763,6 @@ int solveCookie()
 	return get_property("auto_cookie").to_int();
 }
 
-
-boolean needOre()
-{
-	//Determines if we need ore for the trapper or not.
-	
-	if (internalQuestStatus("questL08Trapper") > 2)
-	{
-		return false;
-	}
-	item oreGoal = to_item(get_property("trapperOre"));
-	if(item_amount(oreGoal) >= 3)
-	{
-		return false;
-	}
-	if((item_amount($item[Asbestos Ore]) >= 3) && (item_amount($item[Linoleum Ore]) >= 3) && (item_amount($item[Chrome Ore]) >= 3))
-	{
-		return false;
-	}
-	return true;
-}
-
-
 int spleen_left()
 {
 	return spleen_limit() - my_spleen_use();

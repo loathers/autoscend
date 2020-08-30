@@ -697,6 +697,7 @@ boolean L7_crypt();
 ########################################################################################################
 //Defined in autoscend/quests/level_08.ash
 boolean L8_trapperStart();
+boolean needOre();
 int getCellToMine(item oreGoal);
 boolean L8_trapperAdvance();
 boolean L8_getGoatCheese();
@@ -1116,8 +1117,6 @@ boolean is_ghost_in_zone(location loc);
 
 int towerKeyCount();
 int towerKeyCount(boolean effective);
-
-boolean needOre();								//Defined in autoscend/auto_util.ash
 
 //Wrapper for my_path(), in case there are delays in Mafia translating path values
 string auto_my_path();							//Defined in autoscend/auto_util.ash
