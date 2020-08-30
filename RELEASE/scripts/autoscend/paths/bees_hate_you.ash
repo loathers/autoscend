@@ -113,5 +113,4 @@ boolean L13_bhy_towerFinal()
 	}
 	abort("How did I reach this line? I should have fought [Guy Made Of Bees]");
 	return false;
-	
 }
