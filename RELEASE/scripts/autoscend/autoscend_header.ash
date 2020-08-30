@@ -1287,7 +1287,6 @@ location solveDelayZone();
 boolean[int] knapsack(int maxw, int n, int[int] weight, float[int] val);
 boolean hasShieldEquipped();
 int howLongBeforeHoloWristDrop();
-boolean in_ronin();
 int auto_mall_price(item it);
 boolean canPull(item it);
 void pullAll(item it);

@@ -2976,11 +2976,6 @@ boolean acquireOrPull(item it)
 	return false;
 }
 
-boolean in_ronin()
-{
-	return !can_interact();
-}
-
 boolean canPull(item it)
 {
 	if(in_hardcore())
