@@ -1,7 +1,6 @@
 //	This is the primary header file for autoscend.
 //	All potentially cross-dependent functions should be defined here such that we can use them from
 //	other scripts without the circular dependency issue. Thanks Ultibot for the advice regarding this.
-//	Documentation can go here too, I suppose.
 //	All functions that are defined outside of autoscend must include a note regarding where they come from
 //		Seriously, it\'s rude not to.
 
@@ -1115,16 +1114,9 @@ boolean is_ghost_in_zone(location loc);
 //Defined in autoscend/auto_util.ash
 //Other files are placed alphabetically. But due to its sheer size auto_util.ash goes last
 
-//Wrapper for get_campground(), primarily deals with the oven issue in Ed.
-//Also uses Garden item as identifier for the garden in addition to what get_campground() does
-int[item] auto_get_campground();					//Defined in autoscend/auto_util.ash
+int towerKeyCount();
+int towerKeyCount(boolean effective);
 
-//Returns how many Hero Keys and Fat Loot tokens we have.
-//effective count (with malware) vs true count.
-int towerKeyCount(boolean effective);			//Defined in autoscend/auto_util.ash
-int towerKeyCount();							//Defined in autoscend/auto_util.ash
-
-//Determines if we need ore for the trapper or not.
 boolean needOre();								//Defined in autoscend/auto_util.ash
 
 //Wrapper for my_path(), in case there are delays in Mafia translating path values

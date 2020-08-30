@@ -766,6 +766,8 @@ int solveCookie()
 
 boolean needOre()
 {
+	//Determines if we need ore for the trapper or not.
+	
 	if (internalQuestStatus("questL08Trapper") > 2)
 	{
 		return false;
@@ -2741,6 +2743,9 @@ int towerKeyCount()
 
 int towerKeyCount(boolean effective)
 {
+	//Returns how many Hero Keys and Fat Loot tokens we have.
+	//effective count (with malware) vs true count.
+	
 	if (isActuallyEd())
 	{
 		return 3;
@@ -3688,6 +3693,9 @@ boolean acquireTransfunctioner()
 
 int [item] auto_get_campground()
 {
+	//Wrapper for get_campground(), primarily deals with the oven issue in Ed.
+	//Also uses Garden item as identifier for the garden in addition to what get_campground() does
+	
 	if (isActuallyEd())
 	{
 		int [item] empty;
