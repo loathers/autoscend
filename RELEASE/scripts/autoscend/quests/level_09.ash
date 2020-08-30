@@ -597,7 +597,7 @@ boolean L9_aBooPeak()
 		}
 
 		auto_log_info("Nevermind, that peak is too scary!", "green");
-		equipBaseline();
+		resetState();
 		handleBjornify(priorBjorn);
 	}
 	else
