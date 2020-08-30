@@ -3637,18 +3637,6 @@ string auto_my_path()
 	return my_path();
 }
 
-void auto_visit_gnasir()
-{
-	if (in_koe())
-	{
-		visit_url("place.php?whichplace=exploathing_beach&action=expl_gnasir");
-	}
-	else
-	{
-		visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
-	}
-}
-
 boolean acquireTransfunctioner()
 {
 	if(available_amount($item[Continuum Transfunctioner]) > 0)

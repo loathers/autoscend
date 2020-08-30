@@ -751,6 +751,7 @@ boolean L11_blackMarket();
 boolean L11_getBeehive();
 boolean L11_forgedDocuments();
 boolean L11_mcmuffinDiary();
+void auto_visit_gnasir();
 boolean L11_getUVCompass();
 boolean L11_aridDesert();
 boolean L11_wishForBaaBaaBuran();
@@ -1120,9 +1121,6 @@ int towerKeyCount(boolean effective);
 
 //Wrapper for my_path(), in case there are delays in Mafia translating path values
 string auto_my_path();							//Defined in autoscend/auto_util.ash
-
-//Visits gnasir, can change based on path
-void auto_visit_gnasir();
 
 //Item disambiguation functions
 boolean hasSpookyravenLibraryKey();				//Defined in autoscend/auto_util.ash

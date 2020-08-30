@@ -660,6 +660,19 @@ boolean L11_mcmuffinDiary()
 	return false;
 }
 
+void auto_visit_gnasir()
+{
+	//Visits gnasir, can change based on path
+	if (in_koe())
+	{
+		visit_url("place.php?whichplace=exploathing_beach&action=expl_gnasir");
+	}
+	else
+	{
+		visit_url("place.php?whichplace=desertbeach&action=db_gnasir");
+	}
+}
+
 boolean L11_getUVCompass()
 {
 	//acquire a [UV-resistant compass] if needed
