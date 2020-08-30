@@ -502,27 +502,6 @@ location provideAdvPHPZone()
 	return $location[none];
 }
 
-boolean hasSpookyravenLibraryKey()
-{
-	return ((item_amount($item[1764]) > 0) || (item_amount($item[7302]) > 0));
-}
-boolean hasILoveMeVolI()
-{
-	return ((item_amount($item[2258]) > 0) || (item_amount($item[7262]) > 0));
-}
-boolean useILoveMeVolI()
-{
-	if(item_amount($item[2258]) > 0)
-	{
-		return use(1, $item[2258]);
-	}
-	else if(item_amount($item[7262]) > 0)
-	{
-		return use(1, $item[7262]);
-	}
-	return false;
-}
-
 boolean loopHandler(string turnSetting, string counterSetting, string abortMessage, int threshold)
 {
 	if(my_turncount() == get_property(turnSetting).to_int())

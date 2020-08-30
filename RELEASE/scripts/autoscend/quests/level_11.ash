@@ -224,6 +224,29 @@ boolean LX_unlockHiddenTemple() {
 	return false;
 }
 
+boolean hasSpookyravenLibraryKey()
+{
+	return ((item_amount($item[1764]) > 0) || (item_amount($item[7302]) > 0));
+}
+
+boolean hasILoveMeVolI()
+{
+	return ((item_amount($item[2258]) > 0) || (item_amount($item[7262]) > 0));
+}
+
+boolean useILoveMeVolI()
+{
+	if(item_amount($item[2258]) > 0)
+	{
+		return use(1, $item[2258]);
+	}
+	else if(item_amount($item[7262]) > 0)
+	{
+		return use(1, $item[7262]);
+	}
+	return false;
+}
+
 boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay) {
 	// forceDelay will force the check for 9 hot res & 9 stench res to be used regardless of what
 	// auto_delayHauntedKitchen is set to.
