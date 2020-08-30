@@ -128,6 +128,8 @@ boolean dna_bedtime();
 boolean xiblaxian_makeStuff();
 boolean LX_ornateDowsingRod(boolean doing_desert_now);
 boolean fancyOilPainting();
+int turkeyBooze();
+int amountTurkeyBooze();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2015.ash
@@ -1255,10 +1257,10 @@ boolean zoneMeat(location loc);
 boolean zoneItem(location loc);
 boolean set_property_ifempty(string setting, string change);
 boolean restore_property(string setting, string source);
+boolean clear_property_if(string setting, string cond);
 
 
 int [item] auto_get_campground();
-int amountTurkeyBooze();
 boolean beehiveConsider();
 boolean summonMonster(string option);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
@@ -1269,8 +1271,6 @@ boolean buyUpTo(int num, item it);
 boolean buyUpTo(int num, item it, int maxprice);
 boolean buy_item(item it, int quantity, int maxprice);
 boolean canSimultaneouslyAcquire(int[item] needed);
-boolean clear_property_if(string setting, string cond);
-boolean clear_property_if(string setting, string cond);
 string auto_my_path();
 boolean acquireTransfunctioner();
 int doNumberology(string goal);
@@ -1296,7 +1296,6 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave);
 boolean pulverizeThing(item it);
 void shrugAT();
 void shrugAT(effect anticipated);
-int turkeyBooze();
 boolean careAboutDrops(monster mon);
 void woods_questStart();
 boolean auto_wantToSniff(monster enemy, location loc);

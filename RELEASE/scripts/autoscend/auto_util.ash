@@ -2778,20 +2778,6 @@ boolean clear_property_if(string setting, string cond)
 	return false;
 }
 
-int turkeyBooze()
-{
-	return get_property("_turkeyBooze").to_int();
-}
-
-int amountTurkeyBooze()
-{
-	if(is_unrestricted($item[Fist Turkey Outline]))
-	{
-		return item_amount($item[Agitated Turkey]) + item_amount($item[Ambitious Turkey]) + item_amount($item[Friendly Turkey]);
-	}
-	return 0;
-}
-
 int fastenerCount()
 {
 	int base = get_property("chasmBridgeProgress").to_int();

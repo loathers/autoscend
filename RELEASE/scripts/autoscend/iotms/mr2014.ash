@@ -516,3 +516,17 @@ boolean fancyOilPainting()
 	set_property("auto_grimstoneFancyOilPainting", false);
 	return true;
 }
+
+int turkeyBooze()
+{
+	return get_property("_turkeyBooze").to_int();
+}
+
+int amountTurkeyBooze()
+{
+	if(is_unrestricted($item[Fist Turkey Outline]))
+	{
+		return item_amount($item[Agitated Turkey]) + item_amount($item[Ambitious Turkey]) + item_amount($item[Friendly Turkey]);
+	}
+	return 0;
+}
