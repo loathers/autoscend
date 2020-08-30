@@ -560,26 +560,6 @@ boolean setAdvPHPFlag()
 
 }
 
-boolean isOverdueDigitize()
-{
-	if(get_property("_sourceTerminalDigitizeUses").to_int() == 0)
-	{
-		return false;
-	}
-	if(get_counters("Digitize Monster", 1, 200) == "Digitize Monster")
-	{
-		return false;
-	}
-	if(contains_text(get_property("_tempRelayCounters"), "Digitize Monster"))
-	{
-		return false;
-	}
-	if(get_counters("Digitize Monster", 0, 0) == "Digitize Monster")
-	{
-		return true;
-	}
-	return false;
-}
 boolean isOverdueArrow()
 {
 	if(get_property("_romanticFightsLeft").to_int() == 0)
@@ -600,6 +580,7 @@ boolean isOverdueArrow()
 	}
 	return false;
 }
+
 boolean isExpectingArrow()
 {
 	if(get_property("_romanticFightsLeft").to_int() == 0)
@@ -629,7 +610,6 @@ boolean isExpectingArrow()
 	}
 	return false;
 }
-
 
 int[monster] banishedMonsters()
 {
