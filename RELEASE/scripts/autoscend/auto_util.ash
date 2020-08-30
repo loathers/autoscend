@@ -1,15 +1,4 @@
-// Private Prototypes
-boolean buffMaintain(item source, effect buff, int uses, int turns);
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns);
-boolean beehiveConsider();
-string safeString(string input);
-string safeString(skill input);
-string safeString(item input);
-string safeString(monster input);
-location provideAdvPHPZone();
-
-// Function Definitions
-
+//A file full of utility functions which we import into autoscend.ash
 
 boolean autoMaximize(string req, boolean simulate)
 {
