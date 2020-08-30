@@ -101,12 +101,6 @@ item eudora_current();
 int[item] eudora_xiblaxian();
 
 ########################################################################################################
-//Defined in autoscend/iotms/auto_floristfriar.ash
-boolean didWePlantHere(location loc);
-void trickMafiaAboutFlorist();
-void oldPeoplePlantStuff();
-
-########################################################################################################
 //Defined in autoscend/iotms/mr2011.ash
 boolean isClipartItem(item it);
 
@@ -119,6 +113,9 @@ boolean handleRainDoh();
 //Defined in autoscend/iotms/mr2013.ash
 void handleJar();
 void makeStartingSmiths();
+boolean didWePlantHere(location loc);
+void trickMafiaAboutFlorist();
+void oldPeoplePlantStuff();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2014.ash
