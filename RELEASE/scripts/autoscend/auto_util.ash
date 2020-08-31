@@ -5789,9 +5789,9 @@ int meatReserve()
 	
 	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely
 	{
-		if(!isDesertAvailable() && inKnollSign() && my_level() > 5 && my_turncount() < 50)
-		{
-			return 500;		//reserve some meat for the bitchin' meatcar
+		if(!isDesertAvailable() && inKnollSign() && my_level() > 5 && my_turncount() > 50)
+		{		//reason for both level and turncount being checked is that many iotms could level us on turn 1.
+			return 500;		//reserve some meat for the bitchin' meatcar.
 		}
 		return 0;	
 	}
