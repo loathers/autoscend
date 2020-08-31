@@ -88,7 +88,7 @@ void handleKingLiberation()
 		set_property("auto_snapshot", my_ascensions());
 	}
 
-	if(inAftercore() && !get_property("auto_aftercore").to_boolean())
+	if(!get_property("auto_aftercore").to_boolean())
 	{
 //		buy_item($item[4-d camera], 1, 10000);
 //		buy_item($item[mojo filter], 2, 3500);
@@ -111,9 +111,9 @@ void handleKingLiberation()
 
 		if(get_property("auto_dickstab").to_boolean())
 		{
-			while(item_amount($item[Shore Inc. Ship Trip Scrip]) < 3)
+			while(item_amount($item[Shore Inc. Ship Trip Scrip]) < 4)
 			{
-				adventure(1, $location[The Shore\, Inc. Travel Agency]);
+				if(!LX_doVacation()) break;		//tries to vacation and if fails it will break the loop
 			}
 		}
 
