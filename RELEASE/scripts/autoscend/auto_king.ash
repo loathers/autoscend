@@ -70,18 +70,6 @@ void handleKingLiberation()
 	//if you just finished a standard run mafia thinks icehouse is empty
 	visit_url("museum.php?action=icehouse", false);
 
-	if(get_property("auto_borrowedTimeOnLiberation").to_boolean() && (get_property("_borrowedTimeUsed") == "false"))
-	{
-		if(get_property("_clipartSummons").to_int() < 3)
-		{
-			cli_execute("make borrowed time");
-		}
-		if((item_amount($item[Borrowed Time]) > 0) && (my_daycount() > 1))
-		{
-			use(1, $item[borrowed time]);
-		}
-	}
-
 	visit_url("campground.php?action=workshed");
 
 	if(get_property("auto_snapshot") == "")
