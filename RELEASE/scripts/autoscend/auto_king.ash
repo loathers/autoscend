@@ -73,7 +73,11 @@ void handleKingLiberation()
 	//workaround for telegraphOfficeAvailable not updating when you finish a standard run. also grab your boots
 	visit_url("place.php?whichplace=town_right");
 
+	//probably a workaround for going into a standard run with an out of standard item resulting in mafia thinking you have no item in workshed.
+	//is this fix still needed?
 	visit_url("campground.php?action=workshed");
+	
+	visit_url("place.php?whichplace=town_wrong&action=townwrong_precinct");
 
 	if(get_property("auto_snapshot").to_int() != my_ascensions())
 	{
@@ -83,8 +87,6 @@ void handleKingLiberation()
 		}
 		set_property("auto_snapshot", my_ascensions());
 	}
-
-	visit_url("place.php?whichplace=town_wrong&action=townwrong_precinct");
 
 	if(inAftercore() && !get_property("auto_aftercore").to_boolean())
 	{
