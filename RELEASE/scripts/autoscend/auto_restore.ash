@@ -516,12 +516,28 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if (metadata.type == "item")
 		{
 			item i = to_item(metadata.name);
-			int price = npc_price(i);
-			if (can_interact())
+			if(can_interact() || my_meat() > 20000)
 			{
-				price = min(price, auto_mall_price(i));
+				//we have unlimited mall access = casual, aftercore, or postronin. or we are just rich with over 20k meat.
+				//In either case we want to conserve rare items and consider an item's mall value rather than conserving our current meat stocks.
+				//ex: scroll of drastic healing will be considered to be worth its mall price here.
+				int price = 999999;		//do not use items that cannot be bought
+				if(is_tradeable(i))		//is possible to trade in the mall
+				{
+					price = min(price, auto_mall_price(i));
+				}
+				if(npc_price(i) > 0)	//is possible to buy from an NPC store
+				{
+					price = min(price, npc_price(i));
+				}
+				return price;
 			}
-			return price;
+			else
+			{
+				//mall access is limited, this means pulls are limited too. also meat < 20k so we want to spend items to preserve meat
+				//ex: scroll of drastic healing will be considered free. since we spent no meat for it to drop.
+				return npc_price(i);	//this will set items that cannot be purchased from an NPC store to free.
+			}
 		}
 		else if (metadata.type == "skill")
 		{
@@ -1598,23 +1614,23 @@ void invalidateRestoreOptionCache()
 
 
 /**
- * Try to acquire your max mp (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire your max mp (useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= my_maxmp() after attempting to restore.
  */
-boolean acquireMP(){
+boolean acquireMP()
+{
 	return acquireMP(my_maxmp());
 }
 
 /**
- * Try to acquire up to the mp goal (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire up to the mp goal (useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= goal after attempting to restore.
  */
 boolean acquireMP(int goal)
 {
-  int meat_reserve = can_interact() ? 0 : my_meat();
-	return acquireMP(goal, meat_reserve);
+	return acquireMP(goal, meatReserve());
 }
 
 /**
@@ -1622,7 +1638,8 @@ boolean acquireMP(int goal)
  *
  * returns true if my_mp() >= goal after attempting to restore.
  */
-boolean acquireMP(int goal, int meat_reserve){
+boolean acquireMP(int goal, int meat_reserve)
+{
 	return acquireMP(goal, meat_reserve, true);
 }
 
@@ -1667,13 +1684,13 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 }
 
 /**
- * Try to acquire up to the mp goal expressed as a percentage (out of either 1.0 or 100.0) (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
+ * Try to acquire up to the mp goal expressed as a percentage (out of either 1.0 or 100.0) (useFreeRests: true). Will also cure poisoned and beaten up before restoring any mp.
  *
  * returns true if my_mp() >= goalPercent after attempting to restore.
  */
-boolean acquireMP(float goalPercent){
-  int meat_reserve = can_interact() ? 0 : my_meat();
-	return acquireMP(goalPercent, meat_reserve);
+boolean acquireMP(float goalPercent)
+{
+	return acquireMP(goalPercent, meatReserve());
 }
 
 /**
@@ -1681,7 +1698,8 @@ boolean acquireMP(float goalPercent){
  *
  * returns true if my_mp() >= goalPercent after attempting to restore.
  */
-boolean acquireMP(float goalPercent, int meat_reserve){
+boolean acquireMP(float goalPercent, int meat_reserve)
+{
 	return acquireMP(goalPercent, meat_reserve, true);
 }
 
@@ -1690,7 +1708,8 @@ boolean acquireMP(float goalPercent, int meat_reserve){
  *
  * returns true if my_mp() >= goalPercent after attempting to restore.
  */
-boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests){
+boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests)
+{
 	int goal = my_maxmp();
 	if(goalPercent > 1.0){
 		goal = ceil((goalPercent/100.0) * my_maxmp());
@@ -1701,22 +1720,23 @@ boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests){
 }
 
 /**
- * Try to acquire your max hp (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire your max hp (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= my_maxhp() after attempting to restore.
  */
-boolean acquireHP(){
+boolean acquireHP()
+{
 	return acquireHP(my_maxhp());
 }
 
 /**
- * Try to acquire up to the hp goal (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire up to the hp goal (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= goal after attempting to restore.
  */
-boolean acquireHP(int goal){
-  int meat_reserve = can_interact() ? 0 : my_meat();
-	return acquireHP(goal, meat_reserve);
+boolean acquireHP(int goal)
+{
+	return acquireHP(goal, meatReserve());
 }
 
 /**
@@ -1724,7 +1744,8 @@ boolean acquireHP(int goal){
  *
  * returns true if my_hp() >= goal after attempting to restore.
  */
-boolean acquireHP(int goal, int meat_reserve){
+boolean acquireHP(int goal, int meat_reserve)
+{
 	return acquireHP(goal, meat_reserve, true);
 }
 
@@ -1806,13 +1827,13 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 }
 
 /**
- * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0) (meat_reserve: 0 if out of ronin otherwise my_meat (wont spend meat), useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire up to the hp goal expressed as a percentage (out of either 1.0 or 100.0) (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= goalPercent after attempting to restore.
  */
-boolean acquireHP(float goalPercent){
-  int meat_reserve = can_interact() ? 0 : my_meat();
-	return acquireHP(goalPercent, meat_reserve);
+boolean acquireHP(float goalPercent)
+{
+	return acquireHP(goalPercent, meatReserve());
 }
 
 /**
@@ -1820,7 +1841,8 @@ boolean acquireHP(float goalPercent){
  *
  * returns true if my_hp() >= goalPercent after attempting to restore.
  */
-boolean acquireHP(float goalPercent, int meat_reserve){
+boolean acquireHP(float goalPercent, int meat_reserve)
+{
 	return acquireHP(goalPercent, meat_reserve, true);
 }
 
@@ -1829,7 +1851,8 @@ boolean acquireHP(float goalPercent, int meat_reserve){
  *
  * returns true if my_hp() >= goalPercent after attempting to restore.
  */
-boolean acquireHP(float goalPercent, int meat_reserve, boolean useFreeRests){
+boolean acquireHP(float goalPercent, int meat_reserve, boolean useFreeRests)
+{
 	int goal = my_maxhp();
 	if(goalPercent > 1.0){
 		goal = ceil((goalPercent/100.0) * my_maxhp());
@@ -1979,7 +2002,7 @@ boolean uneffect(effect toRemove)
 	}
 	if(($effects[Driving Intimidatingly, Driving Obnoxiously, Driving Observantly, Driving Quickly, Driving Recklessly, Driving Safely, Driving Stealthily, Driving Wastefully, Driving Waterproofly] contains toRemove) && (auto_get_campground() contains $item[Asdon Martin Keyfob]))
 	{
-		string temp = visit_url("campground.php?pwd=&preaction=undrive");
+		visit_url("campground.php?pwd=&preaction=undrive");
 		return true;
 	}
 
@@ -2002,12 +2025,6 @@ boolean uneffect(effect toRemove)
 		return true;
 	}
 	return false;
-}
-
-// Deprecated, please use acquireHP()
-boolean useCocoon()
-{
-  return acquireHP();
 }
 
 /**

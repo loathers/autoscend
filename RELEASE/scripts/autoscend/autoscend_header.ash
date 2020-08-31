@@ -477,7 +477,6 @@ int get_cs_questNum(string input);
 void set_cs_questListFast(int[int] fast);
 boolean cs_preTurnStuff(int curQuest);
 boolean cs_healthMaintain();
-boolean cs_healthMaintain(int target);
 boolean cs_mpMaintain();
 boolean cs_mpMaintain(int target);
 boolean canTrySaberTrickMeteorShower();
@@ -1098,7 +1097,6 @@ boolean doFreeRest();
 boolean haveFreeRestAvailable();
 int freeRestsRemaining();
 boolean uneffect(effect toRemove);
-boolean useCocoon();
 
 ########################################################################################################
 //Defined in autoscend/autoscend_migration.ash
@@ -1344,3 +1342,5 @@ boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);
 int currentPoolSkill();
 int poolSkillPracticeGains();
+float npcStoreDiscountMulti();
+int meatReserve();

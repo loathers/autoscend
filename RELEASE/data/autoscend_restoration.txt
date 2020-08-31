@@ -16,7 +16,7 @@
 15	forest tears	item	7	0	0	0	Beaten Up	none
 16	Doc Galaktik's Pungent Unguent	item	4	0	0	0	none	none
 17	palm-frond fan	item	40	40	0	0	none	none
-18	pixel orb	item	ALL	ALL	0	0	none	none
+18	Cloaca-Cola	item	0	12	0	0	none	none
 19	scroll of drastic healing	item	ALL	0	0	0	none	none
 20	warm El Vibrato drone	item	ALL	0	0	0	none	Well-preserved
 21	Camp Scout pup tent	item	1000	0	0	0	none	none
@@ -103,11 +103,10 @@
 106	generic mana potion	item	0	scaling	0	0	none	none
 107	A Relaxing Hot Tub	clan	ALL	0	5	2	All Negative	none
 108	Psychokinetic Energy Blob	item	0	25	0	0	none	none
-109	Cloaca-Cola	item	0	12	0	0	none	none
 ## Actually Ed the Undying restores
-110	Holy Spring Water	item	0	50	0	0	none	Spiritually Awake
-111	Spirit Beer	item	0	90	0	0	none	Spiritually Aware
-112	Sacramental Wine	item	0	180	0	0	none	Spiritually Awash
-113	linen bandages	item	30	0	0	0	none	none
-114	cotton bandages	item	60	0	0	0	none	none
-115	silk bandages	item	120	0	0	0	none	none
+109	Holy Spring Water	item	0	50	0	0	none	Spiritually Awake
+110	Spirit Beer	item	0	90	0	0	none	Spiritually Aware
+111	Sacramental Wine	item	0	180	0	0	none	Spiritually Awash
+112	linen bandages	item	30	0	0	0	none	none
+113	cotton bandages	item	60	0	0	0	none	none
+114	silk bandages	item	120	0	0	0	none	none
