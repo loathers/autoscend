@@ -70,7 +70,7 @@ boolean glover_usable(string it)
 																				head mirror,
 																				wet stew,
 																				Orcish baseball cap,
-																				homoerotic frat-paddle,
+																				Orcish frat-paddle,
 																				filthy knitted dread sack,
 																				filthy corduroys,
 																				beer helmet,
