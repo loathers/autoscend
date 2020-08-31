@@ -87,6 +87,18 @@ void handleKingLiberation()
 		}
 		set_property("auto_snapshot", my_ascensions());
 	}
+	
+	if(get_property("auto_borrowedTimeOnLiberation").to_boolean() && (get_property("_borrowedTimeUsed") == "false"))
+	{
+		if(get_property("_clipartSummons").to_int() < 3)
+		{
+			cli_execute("make borrowed time");
+		}
+		if((item_amount($item[Borrowed Time]) > 0) && (my_daycount() > 1))
+		{
+			use(1, $item[borrowed time]);
+		}
+	}
 
 	if(get_property("auto_aftercore").to_int() != my_ascensions())
 	{
