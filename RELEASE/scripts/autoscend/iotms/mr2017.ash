@@ -275,7 +275,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-	if((loveEffect == 2) && !pathAllowsFamiliars())
+	if((loveEffect == 2) && !pathAllowsFamiliar())
 	{
 		loveEffect = 3;
 	}
