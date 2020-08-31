@@ -170,6 +170,7 @@ boolean settingFixer()
 
 	remove_property("auto_cubeItems");
 	remove_property("auto_useCubeling");
+	remove_property("auto_pullPVPJunk");
 
 	if(get_property("auto_xiblaxianChoice") == "")
 	{
