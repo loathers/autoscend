@@ -67,8 +67,11 @@ void handleKingLiberation()
 	
 	displayOnKingLiberation();
 
-	//if you just finished a standard run mafia thinks icehouse is empty
+	//workaround for mafia thinking icehouse is empty when you finish a standard run
 	visit_url("museum.php?action=icehouse", false);
+	
+	//workaround for telegraphOfficeAvailable not updating when you finish a standard run. also grab your boots
+	visit_url("place.php?whichplace=town_right");
 
 	visit_url("campground.php?action=workshed");
 
