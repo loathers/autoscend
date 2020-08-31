@@ -86,16 +86,6 @@ void handleKingLiberation()
 
 	visit_url("place.php?whichplace=town_wrong&action=townwrong_precinct");
 
-	if((item_amount($item[Game Grid Token]) > 0) || (item_amount($item[Game Grid Ticket]) > 0))
-	{
-		int oldToken = item_amount($item[Defective Game Grid Token]);
-		visit_url("place.php?whichplace=arcade&action=arcade_plumber", false);
-		if(item_amount($item[Defective Game Grid Token]) > oldToken)
-		{
-			auto_log_info("Woohoo!!! You got a game grid tokON!!", "green");
-		}
-	}
-
 	if(inAftercore() && !get_property("auto_aftercore").to_boolean())
 	{
 //		buy_item($item[4-d camera], 1, 10000);
