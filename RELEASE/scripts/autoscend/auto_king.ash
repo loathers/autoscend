@@ -72,17 +72,13 @@ void handleKingLiberation()
 
 	visit_url("campground.php?action=workshed");
 
-	if(get_property("auto_snapshot") == "")
+	if(get_property("auto_snapshot").to_int() != my_ascensions())
 	{
-		if(svn_info("bumcheekascend-snapshot").last_changed_rev > 0)
-		{
-			cli_execute("snapshot");
-		}
 		if(svn_info("ccascend-snapshot").last_changed_rev > 0)
 		{
-			cli_execute("cc_snapshot");
+			cli_execute("cc_snapshot.ash");
 		}
-		set_property("auto_snapshot", "done");
+		set_property("auto_snapshot", my_ascensions());
 	}
 
 	visit_url("place.php?whichplace=town_wrong&action=townwrong_precinct");
