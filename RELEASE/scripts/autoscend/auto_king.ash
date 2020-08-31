@@ -3,93 +3,86 @@ import <autoscend.ash>
 void handleKingLiberation()
 {
 	restoreAllSettings();
-	if(inAftercore() && (get_property("auto_snapshot") == ""))
+	if(!inAftercore())
 	{
-		auto_log_info("Yay! The King is saved. I suppose you should do stuff.");
-		if(!get_property("auto_kingLiberation").to_boolean())
-		{
-			set_property("auto_snapshot", "aborted");
-			return;
-		}
+		auto_log_info("can't run king liberated script. I am not actually in aftercore.");
+		return;
+	}
 
-		if(my_familiar() != $familiar[Black Cat])
-		{
-			set_property("auto_100familiar", $familiar[none]);
-		}
+	auto_log_info("Yay! The King is saved. I suppose you should do stuff.");
 
-		// Some items don\'t get pulled, notably, Stench Wad but some others as well (fat loot token, holiday fun, box of sunshine).
-		// This might fix it...
-		cli_execute("refresh all");
+	if(my_familiar() != $familiar[Black Cat])
+	{
+		set_property("auto_100familiar", "");
+	}
 
-		if(have_display())
+	if(have_display())
+	{
+		boolean[item] toDisplay = $items[Instant Karma, Thwaitgold Ant Statuette, Thwaitgold Bee Statuette, Thwaitgold Bookworm Statuette, Thwaitgold Butterfly Statuette, Thwaitgold Caterpillar Statuette, Thwaitgold Cockroach Statuette, Thwaitgold Dragonfly Statuette, Thwaitgold Firefly Statuette, Thwaitgold Goliath Beetle Statuette, Thwaitgold Grasshopper Statuette, Thwaitgold Maggot Statuette, Thwaitgold Moth Statuette, Thwaitgold Nit Statuette, Thwaitgold Praying Mantis Statuette, Thwaitgold Scarab Beetle Statuette, Thwaitgold Scorpion Statuette, Thwaitgold Spider Statuette, Thwaitgold Stag Beetle Statuette, Thwaitgold Termite Statuette, Thwaitgold Wheel Bug Statuette, Thwaitgold Woollybear Statuette];
+		foreach it in toDisplay
 		{
-			boolean[item] toDisplay = $items[Instant Karma, Thwaitgold Ant Statuette, Thwaitgold Bee Statuette, Thwaitgold Bookworm Statuette, Thwaitgold Butterfly Statuette, Thwaitgold Caterpillar Statuette, Thwaitgold Cockroach Statuette, Thwaitgold Dragonfly Statuette, Thwaitgold Firefly Statuette, Thwaitgold Goliath Beetle Statuette, Thwaitgold Grasshopper Statuette, Thwaitgold Maggot Statuette, Thwaitgold Moth Statuette, Thwaitgold Nit Statuette, Thwaitgold Praying Mantis Statuette, Thwaitgold Scarab Beetle Statuette, Thwaitgold Scorpion Statuette, Thwaitgold Spider Statuette, Thwaitgold Stag Beetle Statuette, Thwaitgold Termite Statuette, Thwaitgold Wheel Bug Statuette, Thwaitgold Woollybear Statuette];
-			foreach it in toDisplay
+			if(item_amount(it) > 0)
 			{
-				if(item_amount(it) > 0)
-				{
-					auto_log_info("Displaying " + item_amount(it) + " " + it, "green");
-				}
-				put_display(item_amount(it), it);
+				auto_log_info("Displaying " + item_amount(it) + " " + it, "green");
 			}
+			put_display(item_amount(it), it);
 		}
+	}
+	
+	if(get_property("lastEmptiedStorage").to_int() != my_ascensions())
+	{
+		cli_execute("pull all");
+	}
 
-		if(get_property("lastEmptiedStorage").to_int() != my_ascensions())
+	visit_url("museum.php?action=icehouse", false);
+	visit_url("place.php?whichplace=desertbeach&action=db_nukehouse");
+	if((get_property("sidequestOrchardCompleted") != "none") && !get_property("_hippyMeatCollected").to_boolean())
+	{
+		visit_url("shop.php?whichshop=hippy");
+	}
+	visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
+	visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
+	visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
+	visit_url("clan_rumpus.php?action=click&spot=1&furni=4");
+	visit_url("clan_rumpus.php?action=click&spot=4&furni=2");
+	visit_url("clan_rumpus.php?action=click&spot=9&furni=3");
+
+	if(get_property("auto_borrowedTimeOnLiberation").to_boolean() && (get_property("_borrowedTimeUsed") == "false"))
+	{
+		if(get_property("_clipartSummons").to_int() < 3)
 		{
-			cli_execute("pull all");
+			cli_execute("make borrowed time");
 		}
-
-//		visit_url("lair2.php?preaction=key&whichkey=436");
-		visit_url("museum.php?action=icehouse", false);
-		visit_url("place.php?whichplace=desertbeach&action=db_nukehouse");
-		if((get_property("sidequestOrchardCompleted") != "none") && !get_property("_hippyMeatCollected").to_boolean())
+		if((item_amount($item[Borrowed Time]) > 0) && (my_daycount() > 1))
 		{
-			visit_url("shop.php?whichshop=hippy");
+			use(1, $item[borrowed time]);
 		}
-		visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
-		visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
-		visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
-		visit_url("clan_rumpus.php?action=click&spot=1&furni=4");
-		visit_url("clan_rumpus.php?action=click&spot=4&furni=2");
-		visit_url("clan_rumpus.php?action=click&spot=9&furni=3");
+	}
 
-		if(get_property("auto_borrowedTimeOnLiberation").to_boolean() && (get_property("_borrowedTimeUsed") == "false"))
+	visit_url("campground.php?action=workshed");
+
+	if(get_property("auto_snapshot") == "")
+	{
+		if(svn_info("bumcheekascend-snapshot").last_changed_rev > 0)
 		{
-			if(get_property("_clipartSummons").to_int() < 3)
-			{
-				cli_execute("make borrowed time");
-			}
-			if((item_amount($item[Borrowed Time]) > 0) && (my_daycount() > 1))
-			{
-				use(1, $item[borrowed time]);
-			}
+			cli_execute("snapshot");
 		}
-
-		visit_url("campground.php?action=workshed");
-
-		if(get_property("auto_snapshot") == "")
+		if(svn_info("ccascend-snapshot").last_changed_rev > 0)
 		{
-			if(svn_info("bumcheekascend-snapshot").last_changed_rev > 0)
-			{
-				cli_execute("snapshot");
-			}
-			if(svn_info("ccascend-snapshot").last_changed_rev > 0)
-			{
-				cli_execute("cc_snapshot");
-			}
-			set_property("auto_snapshot", "done");
+			cli_execute("cc_snapshot");
 		}
+		set_property("auto_snapshot", "done");
+	}
 
-		visit_url("place.php?whichplace=town_wrong&action=townwrong_precinct");
+	visit_url("place.php?whichplace=town_wrong&action=townwrong_precinct");
 
-		if((item_amount($item[Game Grid Token]) > 0) || (item_amount($item[Game Grid Ticket]) > 0))
+	if((item_amount($item[Game Grid Token]) > 0) || (item_amount($item[Game Grid Ticket]) > 0))
+	{
+		int oldToken = item_amount($item[Defective Game Grid Token]);
+		visit_url("place.php?whichplace=arcade&action=arcade_plumber", false);
+		if(item_amount($item[Defective Game Grid Token]) > oldToken)
 		{
-			int oldToken = item_amount($item[Defective Game Grid Token]);
-			visit_url("place.php?whichplace=arcade&action=arcade_plumber", false);
-			if(item_amount($item[Defective Game Grid Token]) > oldToken)
-			{
-				auto_log_info("Woohoo!!! You got a game grid tokON!!", "green");
-			}
+			auto_log_info("Woohoo!!! You got a game grid tokON!!", "green");
 		}
 	}
 
