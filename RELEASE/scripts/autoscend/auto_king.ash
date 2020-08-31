@@ -1,24 +1,33 @@
 import <autoscend.ash>
 
-void handleKingLiberation()
+void displayOnKingLiberation()
 {
-	restoreAllSettings();
-	if(!inAftercore())
-	{
-		auto_log_info("can't run king liberated script. I am not actually in aftercore.");
-		return;
-	}
-
-	auto_log_info("Yay! The King is saved. I suppose you should do stuff.");
-
-	if(my_familiar() != $familiar[Black Cat])
-	{
-		set_property("auto_100familiar", "");
-	}
-
 	if(have_display())
 	{
-		boolean[item] toDisplay = $items[Instant Karma, Thwaitgold Ant Statuette, Thwaitgold Bee Statuette, Thwaitgold Bookworm Statuette, Thwaitgold Butterfly Statuette, Thwaitgold Caterpillar Statuette, Thwaitgold Cockroach Statuette, Thwaitgold Dragonfly Statuette, Thwaitgold Firefly Statuette, Thwaitgold Goliath Beetle Statuette, Thwaitgold Grasshopper Statuette, Thwaitgold Maggot Statuette, Thwaitgold Moth Statuette, Thwaitgold Nit Statuette, Thwaitgold Praying Mantis Statuette, Thwaitgold Scarab Beetle Statuette, Thwaitgold Scorpion Statuette, Thwaitgold Spider Statuette, Thwaitgold Stag Beetle Statuette, Thwaitgold Termite Statuette, Thwaitgold Wheel Bug Statuette, Thwaitgold Woollybear Statuette];
+		boolean[item] toDisplay = $items[
+		Thwaitgold Bee Statuette,					//2011 Bees Hate You
+		Thwaitgold Grasshopper Statuette,			//2011 Way of the Surprising Fist
+		Thwaitgold Butterfly Statuette,				//2011 Trendy
+		Thwaitgold Stag Beetle Statuette,			//2012 Avatar of Boris
+		Thwaitgold Woollybear Statuette,			//2012 Bugbear Invasion
+		Thwaitgold Maggot Statuette,				//2012 Zombie Slayer
+		Thwaitgold Praying Mantis Statuette,		//2012 Class Act
+		Thwaitgold Firefly Statuette,				//2013 Avatar of Jarlsberg
+		Thwaitgold Goliath Beetle Statuette,		//2013 BIG!
+		Thwaitgold Bookworm Statuette,				//2013 KOLHS
+		Thwaitgold Ant Statuette,					//2013 Class Act II: A Class For Pigs
+		Thwaitgold Dragonfly Statuette,				//2014 Avatar of Sneaky Pete
+		Thwaitgold Wheel Bug Statuette,				//2014 Slow and Steady
+		Thwaitgold Spider Statuette,				//2014 Heavy Rains
+		Thwaitgold Nit Statuette,					//2014 Picky
+		Thwaitgold Scarab Beetle Statuette,			//2015 Actually Ed the Undying
+		Thwaitgold Caterpillar Statuette,			//2015 One Crazy Random Summer
+		Thwaitgold Termite Statuette,				//2015 Community Service
+		Thwaitgold Scorpion Statuette,				//2016 Avatar of West of Loathing
+		Thwaitgold Moth Statuette,					//2016 The Source
+		Thwaitgold Cockroach Statuette				//2016 Nuclear Autumn
+		];
+		
 		foreach it in toDisplay
 		{
 			if(item_amount(it) > 0)
@@ -28,12 +37,23 @@ void handleKingLiberation()
 			put_display(item_amount(it), it);
 		}
 	}
-	
-	if(get_property("lastEmptiedStorage").to_int() != my_ascensions())
+}
+
+void handleKingLiberation()
+{
+	if(!inAftercore())
 	{
-		cli_execute("pull all");
+		auto_log_info("can't run king liberated script. I am not actually in aftercore.");
+		return;
 	}
+	restoreAllSettings();
+	auto_log_info("Yay! The King is saved. I suppose you should do stuff.");
+		
+	cli_execute("pull all");
+	visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman");		//start sea quest so breakfast can collect [sea jelly]
 	cli_execute("breakfast");
+	
+	displayOnKingLiberation();
 
 	//if you just finished a standard run mafia thinks icehouse is empty
 	visit_url("museum.php?action=icehouse", false);
