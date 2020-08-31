@@ -25,7 +25,19 @@ void displayOnKingLiberation()
 		Thwaitgold Termite Statuette,				//2015 Community Service
 		Thwaitgold Scorpion Statuette,				//2016 Avatar of West of Loathing
 		Thwaitgold Moth Statuette,					//2016 The Source
-		Thwaitgold Cockroach Statuette				//2016 Nuclear Autumn
+		Thwaitgold Cockroach Statuette,				//2016 Nuclear Autumn
+		Thwaitgold amoeba statuette,				//2017 Gelatinous Noob
+		Thwaitgold bug statuette,					//2017 License to Adventure
+		Thwaitgold time fly statuette,				//2017 Live. Ascend. Repeat.
+		Thwaitgold metabug statuette,				//2018 Pocket Familiars
+		Thwaitgold chigger statuette,				//2018 G-Lover
+		Thwaitgold masked hunter statuette,			//2018 Disguises Delimit
+		Thwaitgold mosquito statuette,				//2019 Dark Gyffte
+		Thwaitgold nymph statuette,					//2019 Two Crazy Random Summer
+		Thwaitgold bombardier beetle statuette,		//2019 Kingdom of Exploathing
+		Thwaitgold buzzy beetle statuette,			//2020 Path of the Plumber
+		Thwaitgold keyhole spider statuette,		//2020 Low Key Summer
+		Thwaitgold slug statuette,					//2020 Grey Goo
 		];
 		
 		foreach it in toDisplay
