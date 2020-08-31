@@ -3604,7 +3604,11 @@ void auto_begin()
 	backupSetting("dontStopForCounters", true);
 	backupSetting("maximizerCombinationLimit", "100000");
 
-	backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
+	if(get_property("auto_kingLiberation").to_boolean())
+	{
+		backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
+	}
+	
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
 	backupSetting("choiceAdventureScript", "scripts/autoscend/auto_choice_adv.ash");
 	backupSetting("betweenBattleScript", "scripts/autoscend/auto_pre_adv.ash");
