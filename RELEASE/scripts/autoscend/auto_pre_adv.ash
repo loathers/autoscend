@@ -123,11 +123,6 @@ boolean auto_pre_adventure()
 		acquireCombatMods(combatModifier._int, true);
 	}
 
-	if(monster_level_adjustment() > 120)
-	{
-		acquireHP(80.0);
-	}
-
 	foreach i,mon in get_monsters(place)
 	{
 		if(auto_wantToYellowRay(mon, place) && !burningDelay)

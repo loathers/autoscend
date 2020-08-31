@@ -1022,7 +1022,7 @@ boolean LX_ghostBusting()
 			return false;
 		}
 
-		useCocoon();
+		acquireHP();
 		auto_log_info("Ghost busting time! At: " + get_property("ghostLocation"), "blue");
 		boolean newbieFail = false;
 		if(goal == $location[The Skeleton Store])
