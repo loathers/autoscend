@@ -4,7 +4,6 @@ auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we ha
 auto_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
 auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
 auto_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
-auto_clearCombatScripts	boolean	Clear out the postAdventure, preAdventure and kingLiberated settings upon kingLiberation. These will return upon running the script in a new ascension.
 auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
 auto_powerLevelTimer	integer	Sets the delay before each adv spent powerleveling, default is 10 sec. lowest valid value is 1.
 auto_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?

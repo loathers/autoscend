@@ -118,13 +118,6 @@ void handleKingLiberation()
 		set_property("auto_aftercore", true);
 	}
 
-	if(get_property("auto_clearCombatScripts").to_boolean())
-	{
-		restoreSetting("kingLiberatedScript");
-		restoreSetting("afterAdventureScript");
-		restoreSetting("betweenBattleScript");
-		restoreSetting("counterScript");
-	}
 	auto_log_info("King Liberation Complete. Thank you for playing", "blue");
 }
 

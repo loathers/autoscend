@@ -286,6 +286,7 @@ boolean settingFixer()
 	remove_property("auto_twinpeakprogress");
 	remove_property("auto_war");
 	remove_property("auto_winebomb");
+	remove_property("auto_clearCombatScripts");
 
 	if (property_exists("auto_legacyConsumeStuff"))
 	{
