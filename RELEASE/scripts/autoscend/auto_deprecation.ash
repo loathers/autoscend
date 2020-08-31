@@ -159,14 +159,6 @@ boolean settingFixer()
 	{
 		set_property("auto_abooclover", false);
 	}
-	if(get_property("auto_aftercore") == "")
-	{
-		set_property("auto_aftercore", false);
-	}
-	if(get_property("auto_aftercore") == "done")
-	{
-		set_property("auto_aftercore", true);
-	}
 
 	remove_property("auto_cubeItems");
 	remove_property("auto_useCubeling");

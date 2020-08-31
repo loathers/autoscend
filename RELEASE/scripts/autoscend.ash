@@ -124,7 +124,6 @@ void initializeSettings() {
 
 	set_property("auto_abooclover", true);
 	set_property("auto_aboopending", 0);
-	set_property("auto_aftercore", false);
 	set_property("auto_banishes", "");
 	set_property("auto_batoomerangDay", 0);
 	set_property("auto_beatenUpCount", 0);

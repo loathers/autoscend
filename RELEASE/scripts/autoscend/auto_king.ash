@@ -88,7 +88,7 @@ void handleKingLiberation()
 		set_property("auto_snapshot", my_ascensions());
 	}
 
-	if(!get_property("auto_aftercore").to_boolean())
+	if(get_property("auto_aftercore").to_int() != my_ascensions())
 	{
 //		buy_item($item[4-d camera], 1, 10000);
 //		buy_item($item[mojo filter], 2, 3500);
@@ -117,7 +117,7 @@ void handleKingLiberation()
 			}
 		}
 
-		set_property("auto_aftercore", true);
+		set_property("auto_aftercore", my_ascensions());
 	}
 
 	auto_log_info("King Liberation Complete. Thank you for playing", "blue");
