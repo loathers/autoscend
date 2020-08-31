@@ -33,19 +33,10 @@ void handleKingLiberation()
 	{
 		cli_execute("pull all");
 	}
+	cli_execute("breakfast");
 
+	//if you just finished a standard run mafia thinks icehouse is empty
 	visit_url("museum.php?action=icehouse", false);
-	visit_url("place.php?whichplace=desertbeach&action=db_nukehouse");
-	if((get_property("sidequestOrchardCompleted") != "none") && !get_property("_hippyMeatCollected").to_boolean())
-	{
-		visit_url("shop.php?whichshop=hippy");
-	}
-	visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
-	visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
-	visit_url("clan_rumpus.php?action=click&spot=3&furni=3");
-	visit_url("clan_rumpus.php?action=click&spot=1&furni=4");
-	visit_url("clan_rumpus.php?action=click&spot=4&furni=2");
-	visit_url("clan_rumpus.php?action=click&spot=9&furni=3");
 
 	if(get_property("auto_borrowedTimeOnLiberation").to_boolean() && (get_property("_borrowedTimeUsed") == "false"))
 	{
