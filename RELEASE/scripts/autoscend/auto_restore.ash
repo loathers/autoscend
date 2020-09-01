@@ -628,7 +628,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			return 0.0;
 		}
 
-		return floor(price_per / currency_available);
+		return floor(currency_available / price_per);
 	}
 
 	float total_uses_available()
