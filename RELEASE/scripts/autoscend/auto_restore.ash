@@ -904,17 +904,6 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 				return true;
 			}
 		}
-		if(get_value("total_uses_available") < get_value("total_uses_needed"))
-		{
-			if(get_value("total_meat_used") > 0.0 && get_value("total_meat_used") <= get_value("meat_available_to_spend"))
-			{
-				return true;
-			}
-			if(get_value("total_coinmaster_tokens_used") > 0.0 && get_value("total_coinmaster_tokens_used") < to_item(metadata.name).seller.available_tokens)
-			{
-				return true;
-			}
-		}
 		return get_value("total_uses_available") > 0.0 && get_value("total_uses_available") >= get_value("total_uses_needed");
 	}
 
