@@ -325,6 +325,9 @@ boolean[string] __VARS_KEYS = {
 	"amount_creatable": true,
 	"amount_buyable": true,
 	"meat_per_use": true,
+	"tokens_per_use": true,
+	"total_creatable": true,
+	"total_buyable": true,
 	"reserve_limit_hard": true,
 	"total_uses_remaining": true, // candidate for removal
 	"soft_reserve_limit": true,
