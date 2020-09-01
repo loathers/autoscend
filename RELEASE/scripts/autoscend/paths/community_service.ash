@@ -1318,32 +1318,7 @@ boolean LA_cs_communityService()
 	case 0:
 		{
 			auto_log_info("Service Complete, finishing finish...", "blue");
-			try
-			{
-				if(do_cs_quest(30))
-				{
-					cli_execute("call auto_king");
-					return true;
-				}
-				else
-				{
-					abort("Could not complete run.");
-				}
-			}
-			finally
-			{
-				auto_log_warning("Waiting a few seconds, please hold.", "red");
-				wait(5);
-				if(inAftercore())
-				{
-					cli_execute("call auto_king");
-					return true;
-				}
-				else
-				{
-					abort("kingLiberation not set correctly but run is probably complete. Beep boop. Try running again to handle resetting options");
-				}
-			}
+			do_cs_quest(30);
 		}
 		break;
 

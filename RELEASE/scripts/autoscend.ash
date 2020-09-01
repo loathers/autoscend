@@ -124,7 +124,6 @@ void initializeSettings() {
 
 	set_property("auto_abooclover", true);
 	set_property("auto_aboopending", 0);
-	set_property("auto_aftercore", false);
 	set_property("auto_banishes", "");
 	set_property("auto_batoomerangDay", 0);
 	set_property("auto_beatenUpCount", 0);
@@ -180,7 +179,6 @@ void initializeSettings() {
 	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
 	set_property("auto_shenSkipLastLevel", 0); 
 
-	set_property("auto_snapshot", "");
 	set_property("auto_sniffs", "");
 	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
@@ -3604,7 +3602,11 @@ void auto_begin()
 	backupSetting("dontStopForCounters", true);
 	backupSetting("maximizerCombinationLimit", "100000");
 
-	backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
+	if(get_property("auto_kingLiberation").to_boolean())
+	{
+		backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
+	}
+	
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
 	backupSetting("choiceAdventureScript", "scripts/autoscend/auto_choice_adv.ash");
 	backupSetting("betweenBattleScript", "scripts/autoscend/auto_pre_adv.ash");
