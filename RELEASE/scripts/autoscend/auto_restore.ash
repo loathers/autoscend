@@ -609,8 +609,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
 		float price_per = 0.0;
 		float currency_available = 0.0;
+		item it = to_item(metadata.name);
 
-		if(get_value("meat_per_use") > 0.0)
+		boolean mall_buyable = can_interact() && is_tradeable(it);
+		if(mall_buyable || npc_price(it) > 0)
 		{
 			price_per = get_value("meat_per_use");
 			currency_available = max(0.0, my_meat() - meat_reserve);
@@ -618,7 +620,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		else if(get_value("tokens_per_use") > 0.0)
 		{
 			price_per = get_value("tokens_per_use");
-			currency_available = to_item(metadata.name).seller.available_tokens;
+			currency_available = it.seller.available_tokens;
 		}
 
 		if(currency_available == 0)
