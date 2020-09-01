@@ -512,6 +512,42 @@ boolean finishMeatsmithSubQuest()
 	return false;
 }
 
+void considerGalaktikSubQuest()
+{
+	//by default we do not do doc galaktik quest. user can manually enable it via gui for this current ascension.
+	//this function considers wheather we should automatically enable it for this ascension.
+	
+	if(get_property("auto_doGalaktik").to_boolean())
+	{
+		return;		//already enabled for this ascension
+	}
+	if(internalQuestStatus("questM24Doc") != 0)		//quest is unstarted or already finished
+	{
+		return;		//we always try to start this quest. if we could not for some reason then there is no point in trying to do it
+	}
+	if(my_turncount() < 30)
+	{
+		return;		//give it some turns to see how well we handle things before deciding if galaktik is needed
+	}
+	if(my_class() == $class[Vampyre] || in_zelda())
+	{
+		return;		//these classes cannot use galaktik restorers.
+	}
+	
+	if(my_meat() < 100)
+	{
+		auto_log_info("We are so poor we cannot effectively restore anymore. Enabling Galaktik quest for this ascension", "red");
+		set_property("auto_doGalaktik", true);
+		return;
+	}
+	if(my_meat() + 100 < meatReserve())
+	{
+		auto_log_info("Our meat reserves are far too low, we still need to save up some for quests. Enabling Galaktik quest for this ascension", "red");
+		set_property("auto_doGalaktik", true);
+		return;
+	}
+}
+
 boolean startGalaktikSubQuest()
 {
 	if(auto_my_path() == "Nuclear Autumn")
@@ -546,6 +582,27 @@ boolean finishGalaktikSubQuest()
 		}
 	}
 	return false;
+}
+
+boolean LX_galaktikSubQuest()
+{
+	//do doc galaktik optional subquest.
+	
+	if(startGalaktikSubQuest()) return true;
+	if(finishGalaktikSubQuest()) return true;
+	considerGalaktikSubQuest();
+	
+	if(internalQuestStatus("questM24Doc") != 0)
+	{
+		//questM24Doc is used by mafia to track progress. step1 means you have the flowers and need to turn them in. 0 means started but incomplete.
+		return false;	
+	}
+	if(!get_property("auto_doGalaktik").to_boolean())
+	{
+		return false;		//by default we do not want to do this quest.
+	}
+	
+	return autoAdv($location[The Overgrown Lot]);
 }
 
 boolean LX_pirateOutfit() {

@@ -63,7 +63,8 @@ post	3	auto_hippyInstead	boolean	Fight on the side of the hippies instead of the
 post	4	auto_ignoreFlyer	boolean	Do not do the flyer quest, recommended to set true if fighting for the hippies.
 post	5	auto_haveoven	boolean	If you have an oven, this should be true. But we can't always check the campground.
 post	6	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar?
-post	7	auto_paranoia	integer	How often should we refresh quests? -1 is never, lower positive numbers = more often.
+post	7	auto_doGalaktik	boolean	Do Galaktik quest this ascension
+post	8	auto_paranoia	integer	How often should we refresh quests? -1 is never, lower positive numbers = more often.
 
 pre	0	auto_pvpEnable	boolean	Automatically participate in PvP?
 pre	1	auto_alwaysGetSteelOrgan	boolean	If true, get the Steel Organ in the next ascension.

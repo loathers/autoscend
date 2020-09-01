@@ -156,6 +156,7 @@ void initializeSettings() {
 	set_property("auto_grimstoneFancyOilPainting", true);
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
+	set_property("auto_doGalaktik", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
@@ -3396,6 +3397,7 @@ boolean doTasks()
 	if(chateauPainting())			return true;
 	if(LX_faxing())						return true;
 	if(LX_artistQuest())				return true;
+	if(LX_galaktikSubQuest())			return true;
 	if(L9_leafletQuest())				return true;
 	if(L5_findKnob())					return true;
 	if(L12_sonofaPrefix())				return true;
