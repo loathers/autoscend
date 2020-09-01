@@ -874,10 +874,12 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if(metadata.type == "item")
 		{
 			item i = to_item(metadata.name);
-			boolean npc_buyable = npc_price(i) > 0 || (i.seller != $coinmaster[none] && is_accessible(i.seller) && get_property("autoSatisfyWithCoinmasters").to_boolean());
 			boolean mall_buyable = can_interact() && auto_mall_price(i) > 0;
-			boolean can_buy = meat_reserve < my_meat() && (npc_buyable || mall_buyable);
-			return (available_amount(i) > 0 || can_buy);
+			boolean npc_meat_buyable = npc_price(i) > 0;
+			boolean coinmaster_buyable = i.seller != $coinmaster[none] && is_accessible(i.seller) && get_property("autoSatisfyWithCoinmasters").to_boolean();
+			
+			boolean can_buy = meat_reserve < my_meat() && (npc_meat_buyable || mall_buyable);
+			return (available_amount(i) > 0 || can_buy || coinmaster_buyable);
 		}
 		if(metadata.type == "skill")
 		{
