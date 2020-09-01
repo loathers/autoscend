@@ -159,17 +159,10 @@ boolean settingFixer()
 	{
 		set_property("auto_abooclover", false);
 	}
-	if(get_property("auto_aftercore") == "")
-	{
-		set_property("auto_aftercore", false);
-	}
-	if(get_property("auto_aftercore") == "done")
-	{
-		set_property("auto_aftercore", true);
-	}
 
 	remove_property("auto_cubeItems");
 	remove_property("auto_useCubeling");
+	remove_property("auto_pullPVPJunk");
 
 	if(get_property("auto_xiblaxianChoice") == "")
 	{
@@ -285,6 +278,7 @@ boolean settingFixer()
 	remove_property("auto_twinpeakprogress");
 	remove_property("auto_war");
 	remove_property("auto_winebomb");
+	remove_property("auto_clearCombatScripts");
 
 	if (property_exists("auto_legacyConsumeStuff"))
 	{
