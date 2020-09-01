@@ -405,6 +405,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		{
 			optimization_parameters.vars[name] = value;
 		}
+		else
+		{
+			//we must have [name] defined in one of the above keys or it will not be stored/retrieved.
+			abort("void set_value(string name, float value) was asked to store the undefined key = " + name);
+		}
 	}
 
 	void set_value(string name, boolean value)
@@ -412,6 +417,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if(__CONSTRAINT_KEYS contains name)
 		{
 			optimization_parameters.constraints[name] = value;
+		}
+		else
+		{
+			//we must have [name] defined in one of the above keys or it will not be stored/retrieved.
+			abort("void set_value(string name, boolean value) was asked to store the undefined key = " + name);
 		}
 	}
 
@@ -425,6 +435,8 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		{
 			return optimization_parameters.vars[name];
 		}
+		//we must have [name] defined in one of the above keys or it will not be stored/retrieved.
+		abort("float get_value(string name) was asked to return the undefined key = " + name);
 		return 0.0;
 	}
 
