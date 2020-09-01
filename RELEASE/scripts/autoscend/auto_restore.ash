@@ -896,6 +896,9 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
 	boolean have_required_resources()
 	{
+		//this is used to quickly remove unavailable restorers from consideration before we even do any optimization.
+		
+		//for skills, the value of total_uses_available assumes we will not restore_mp to cast. so we overrule it in this function by comparing to our maxmp instead.
 		if(metadata.type == "skill")
 		{
 			skill s = to_skill(metadata.name);
@@ -904,7 +907,9 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 				return true;
 			}
 		}
-		return get_value("total_uses_available") > 0.0 && get_value("total_uses_available") >= get_value("total_uses_needed");
+		
+		//for everything that is not a skill we trust total_uses_available.
+		return get_value("total_uses_available") > 0.0;
 	}
 
 	boolean restores_needed_resources()
