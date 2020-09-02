@@ -3356,11 +3356,6 @@ boolean doTasks()
 	dna_sorceressTest();
 	dna_generic();
 
-	if((my_daycount() == 1) && ($familiar[Fist Turkey].drops_today < 5) && auto_have_familiar($familiar[Fist Turkey]))
-	{
-		handleFamiliar($familiar[Fist Turkey]);
-	}
-
 	if(((my_hp() * 5) < my_maxhp()) && (my_mp() > 100))
 	{
 		acquireHP();
