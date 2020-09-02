@@ -111,6 +111,24 @@ boolean L4_batCave()
 
 	if (cloversAvailable() > 0 && batStatus <= 1 && !in_bhy())
 	{
+		if(my_hp() < 6)	//we will be taking 5 damage from this
+		{
+			if(my_maxhp() < 6)
+			{
+				auto_log_warning("How did I end up in [Guano Junction] with less than 6 max HP? skipping until maxHP > 5", "blue");
+				return false;
+			}
+			if(isActuallyEd())
+			{
+				auto_log_warning("Ed wanted to clover [Guano Junction] but does not have enough HP. skipping until HP > 5", "blue");
+				return false;
+			}
+			if(!acquireHP(6))	//try to restore HP to avoid beaten up
+			{
+				auto_log_warning("Tried to restore HP to 6 to clover [Guano Junction] but failed to do so. skipping until HP > 5", "blue");
+				return false;
+			}
+		}
 		cloverUsageInit();
 		autoAdvBypass(31, $location[Guano Junction]);
 		cloverUsageFinish();
@@ -118,6 +136,5 @@ boolean L4_batCave()
 	}
 
 	bat_formBats();
-	autoAdv($location[Guano Junction]);
-	return true;
+	return autoAdv($location[Guano Junction]);
 }
