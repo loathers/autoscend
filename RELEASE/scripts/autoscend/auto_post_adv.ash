@@ -1033,6 +1033,18 @@ boolean auto_post_adventure()
 			abort("We have been disavowed...");
 		}
 	}
+	
+	if(isActuallyEd() && my_hp() == 0)
+	{
+		acquireHP(1);
+		if(my_hp() == 0 && get_property("_auto_edNoLinenCheck").to_boolean())	//we got beaten up in a risky NC as ed
+		{
+			if(!edUnderworldAdv())	//try to spend 1 adv to restore HP
+			{
+				abort("Failed to rest as ed");
+			}
+		}
+	}
 
 	set_property("auto_combatDirective", "");
 	set_property("auto_digitizeDirective", "");

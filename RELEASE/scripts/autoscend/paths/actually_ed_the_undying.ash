@@ -1231,6 +1231,52 @@ boolean L9_ed_chasmBuildClover(int need)
 	return false;
 }
 
+boolean edHarmfulNoncombatCheck(boolean softblock)
+{
+	//checks if ed is prepared to go into a zone where NC damage might kill him.
+	//returns true if ed is NOT prepared. use in dangerous locations with (assuming softblock): if(edHarmfulNoncombatCheck(true)) return false;
+	//softblock == true is used for main quests which should be done anyways if we are about to powerlevel.
+	//softblock == false is used for optional quests which should be hard blocked if we cannot handle NC damage.
+	
+	if(!isActuallyEd())
+	{
+		return false;
+	}
+	
+	boolean hasNoLinen = item_amount($item[Linen Bandages]) == 0;
+	
+	if(softblock && isAboutToPowerlevel() && hasNoLinen)
+	{
+		auto_log_info("We are about to powerlevel so instead we are taking a risk and going into a dangerous NC zone without Linen Bandages", "blue");
+		set_property("_auto_edNoLinenCheck", true);
+		return false;
+	}
+	
+	return hasNoLinen;
+}
+
+boolean edUnderworldAdv()
+{
+	//This function is used to spend 1 adv "resting" as ed by entering the underworld via the gate at his pyramid, shopping, then leaving.
+	//Should only be called it really necessary. Such as if we died to an NC damage and have no restorers.
+	
+	if(!isActuallyEd())
+	{
+		abort("edUnderworldAdv() should not have been called as not ed.");
+	}
+	
+	int initial_turncount = my_turncount();
+
+	visit_url("place.php?whichplace=edbase&action=edbase_portal");		//click on portal in base
+	run_choice(1);		// Enter the Underworld
+	run_choice(1);		// Need to click through another window
+	ed_shopping();		// Shop while there
+	visit_url("place.php?whichplace=edunder&action=edunder_leave");		//click on portal in underworld
+	run_choice(1);		// Exit the Underworld
+	
+	return my_turncount() == 1 + initial_turncount;
+}
+
 boolean LM_edTheUndying()
 {
 	if (!isActuallyEd())

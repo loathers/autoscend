@@ -3136,6 +3136,7 @@ void resetState() {
 	set_property("auto_familiarChoice", ""); // which familiar do we want to switch to during pre_adventure
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
+	set_property("_auto_edNoLinenCheck", false); // ed went into a zone with NCs that deal damage without linen bandages
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{

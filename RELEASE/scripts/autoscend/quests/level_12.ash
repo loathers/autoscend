@@ -1106,6 +1106,10 @@ boolean L12_sonofaBeach()
 	{
 		return false;
 	}
+	if(edHarmfulNoncombatCheck(true))	//is ed ready to take this risk?
+	{
+		return false;	//ed is not prepared. delay
+	}
 
 	//Seriously? http://alliancefromhell.com/viewtopic.php?t=1338
 	if(item_amount($item[Wool Hat]) == 1)

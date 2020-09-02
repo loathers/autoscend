@@ -421,6 +421,8 @@ boolean L1_ed_island();
 boolean L1_ed_islandFallback();
 boolean L9_ed_chasmStart();
 boolean L9_ed_chasmBuildClover(int need);
+boolean edHarmfulNoncombatCheck(boolean softblock);
+boolean edUnderworldAdv();
 boolean LM_edTheUndying();
 void edUnderworldChoiceHandler(int choice);
 
