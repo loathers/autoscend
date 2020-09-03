@@ -28,7 +28,27 @@ boolean autoAdv(int num, location loc, string option)
 		return digimon_autoAdv(num, loc, option);
 	}
 
-	return adv1(loc, -1, option);
+	// adv1 can erroneously return false for "choiceless" non-combats
+	// see https://kolmafia.us/showthread.php?25370-adv1-returns-false-for-quot-choiceless-quot-choice-adventures
+	// undo all this when (if?) that ever gets fixed
+	string previousEncounter = get_property("lastEncounter");
+	int turncount = my_turncount();
+	boolean advReturn = adv1(loc, -1, option);
+	if (!advReturn)
+	{
+		auto_log_debug("adv1 returned false for some reason. Did we actually adventure though?", "blue");
+		if (get_property("lastEncounter") != previousEncounter)
+		{
+			auto_log_debug(`Looks like we may have adventured, lastEncounter was {previousEncounter}, now {get_property("lastEncounter")}`, "blue");
+			advReturn = true;
+		}
+		if (my_turncount() > turncount)
+		{
+			auto_log_debug(`Looks like we may have adventured, turncount was {turncount}, now {my_turncount()}`, "blue");
+			advReturn = true;
+		}
+	}
+	return advReturn;
 }
 
 boolean autoAdv(int num, location loc)
