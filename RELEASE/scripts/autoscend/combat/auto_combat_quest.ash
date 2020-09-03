@@ -126,7 +126,10 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	
 	if(!canSurvive(1.5))
 	{
-		abort("I am too weak to safely stasis this gremlin");
+		if(!isActuallyEd() || get_property("_edDefeats").to_int() >= 2)
+		{
+			abort("I am too weak to safely stasis this gremlin");
+		}
 	}
 
 	foreach it in $items[Seal Tooth, Spectre Scepter, Doc Galaktik\'s Pungent Unguent]
