@@ -269,7 +269,8 @@ WarPlan auto_bestWarPlan()
 		considerNuns = false;
 		considerOrchard = false;
 	}
-	if (auto_my_path() == "G-Lover") {
+	if (auto_my_path() == "G-Lover")
+	{
 		considerArena = false;
 	}
 	

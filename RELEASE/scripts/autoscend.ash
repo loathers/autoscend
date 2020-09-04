@@ -2925,8 +2925,10 @@ boolean adventureFailureHandler()
 			}
 		}
 
-		if (tooManyAdventures && auto_my_path() == "G-Lover") {
-			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Hidden Temple] contains my_location()) {
+		if (tooManyAdventures && auto_my_path() == "G-Lover")
+		{
+			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Hidden Temple] contains my_location())
+			{
 				tooManyAdventures = false;
 			}
 		}
