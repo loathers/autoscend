@@ -796,7 +796,7 @@ boolean L9_oilPeak()
 		{
 			if (auto_my_path() == "G-Lover")
 			{
-				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 3)
+				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
 				{
 					buy($coinmaster[G-Mart], 1, $item[Crude Oil Congealer]);
 				}
