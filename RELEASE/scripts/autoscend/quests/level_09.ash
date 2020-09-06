@@ -557,7 +557,11 @@ boolean L9_aBooPeak()
 				}
 				set_property("auto_aboopending", my_turncount());
 			}
-			if(auto_have_familiar($familiar[Mu]))
+			if(auto_have_familiar($familiar[Trick-or-Treating Tot]))
+			{
+				handleFamiliar($familiar[Trick-or-Treating Tot]);
+			}
+			else if(auto_have_familiar($familiar[Mu]))
 			{
 				handleFamiliar($familiar[Mu]);
 			}
