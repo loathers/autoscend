@@ -32,7 +32,7 @@ boolean L5_getEncryptionKey()
 
 boolean L5_findKnob()
 {
-	if (internalQuestStatus("questL05Goblin") < 0 || internalQuestStatus("questL05Goblin") > 0)
+	if (internalQuestStatus("questL05Goblin") != 0)
 	{
 		return false;
 	}

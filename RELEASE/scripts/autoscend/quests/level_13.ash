@@ -652,7 +652,7 @@ void maximize_hedge()
 
 boolean L13_towerNSHedge()
 {
-	if(internalQuestStatus("questL13Final") < 4 || internalQuestStatus("questL13Final") > 4)
+	if(internalQuestStatus("questL13Final") != 4)
 	{
 		return false;
 	}
