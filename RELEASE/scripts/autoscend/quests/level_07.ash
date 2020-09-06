@@ -1,6 +1,6 @@
 boolean L7_crypt()
 {
-	if (internalQuestStatus("questL07Cyrptic") < 0 || internalQuestStatus("questL07Cyrptic") > 0)
+	if (internalQuestStatus("questL07Cyrptic") != 0)
 	{
 		return false;
 	}

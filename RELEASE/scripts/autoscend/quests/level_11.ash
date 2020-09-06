@@ -643,7 +643,7 @@ boolean L11_forgedDocuments()
 
 boolean L11_mcmuffinDiary()
 {
-	if (internalQuestStatus("questL11MacGuffin") < 1 || internalQuestStatus("questL11MacGuffin") > 1 || internalQuestStatus("questL11Black") < 2)
+	if (internalQuestStatus("questL11MacGuffin") != 1 || internalQuestStatus("questL11Black") < 2)
 	{
 		return false;
 	}
@@ -2391,7 +2391,7 @@ boolean L11_unlockEd()
 
 boolean L11_defeatEd()
 {
-	if (internalQuestStatus("questL11Pyramid") < 3 || internalQuestStatus("questL11Pyramid") > 3 || !get_property("pyramidBombUsed").to_boolean())
+	if (internalQuestStatus("questL11Pyramid") != 3 || !get_property("pyramidBombUsed").to_boolean())
 	{
 		return false;
 	}
