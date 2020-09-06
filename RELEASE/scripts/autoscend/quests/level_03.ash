@@ -1,6 +1,6 @@
 boolean auto_tavern()
 {
-	if (internalQuestStatus("questL03Rat") < 1 || internalQuestStatus("questL03Rat") > 1)
+	if (internalQuestStatus("questL03Rat") != 1)
 	{
 		return false;
 	}

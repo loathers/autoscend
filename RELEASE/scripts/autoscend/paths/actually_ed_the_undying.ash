@@ -173,7 +173,7 @@ boolean L13_ed_councilWarehouse()
 	{
 		return false;
 	}
-	if (internalQuestStatus("questL13Warehouse") < 0 || internalQuestStatus("questL13Warehouse") > 0)
+	if (internalQuestStatus("questL13Warehouse") != 0)
 	{
 		return false;
 	}
