@@ -1506,7 +1506,7 @@ boolean doBedtime()
 
 	while(LX_freeCombats());
 
-	if((my_class() == $class[Seal Clubber]) && guild_store_available() && (auto_my_path() != "G-Lover"))
+	if((my_class() == $class[Seal Clubber]) && guild_store_available())
 	{
 		handleFamiliar("stat");
 		int oldSeals = get_property("_sealsSummoned").to_int();
