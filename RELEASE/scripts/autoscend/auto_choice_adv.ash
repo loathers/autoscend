@@ -385,14 +385,25 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1062: // Lots of Options (The Overgrown Lot)
-			if (options contains 1) {
-				run_choice(1); // get flowers for the doc
-			} else {
-				if (options contains 5) {
-					run_choice(5); // get booze from map to a hidden booze cache
-				} else {
-					run_choice(3); // get booze
-				}
+			if(options contains 1)
+			{
+				run_choice(1); // get flowers for doc galaktik quest
+			}
+			else if(can_drink() && options contains 5)
+			{
+				run_choice(5); // get extra booze from map to a hidden booze cache
+			}
+			else if(can_drink() && !in_boris())		//prefer food in boris
+			{
+				run_choice(3); // get booze
+			}
+			else if(can_eat())
+			{
+				run_choice(2); // get food
+			}
+			else
+			{
+				run_choice(4); // get 15 moxie substat
 			}
 			break;
 		case 1082: // The "Rescue" (post-Cake Lord in Madness Bakery)

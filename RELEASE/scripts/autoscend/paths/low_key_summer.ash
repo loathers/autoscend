@@ -181,12 +181,6 @@ boolean lowkey_zoneUnlocks()
 		return true;
 	}
 
-	if (startGalaktikSubQuest() || finishGalaktikSubQuest())
-	{
-		// opens The Overgrown Lot for discarded bike lock key (+10 MP, 4-5 MP regen)
-		return true;
-	}
-
 	if (startMeatsmithSubQuest() || finishMeatsmithSubQuest()) {
 		// opens The Skeleton Store for actual skeleton key (100 DA, 10 DR)
 		return true;
