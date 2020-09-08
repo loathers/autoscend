@@ -325,6 +325,9 @@ boolean[string] __VARS_KEYS = {
 	"amount_creatable": true,
 	"amount_buyable": true,
 	"meat_per_use": true,
+	"tokens_per_use": true,
+	"total_creatable": true,
+	"total_buyable": true,
 	"reserve_limit_hard": true,
 	"total_uses_remaining": true, // candidate for removal
 	"soft_reserve_limit": true,
@@ -405,6 +408,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		{
 			optimization_parameters.vars[name] = value;
 		}
+		else
+		{
+			//we must have [name] defined in one of the above keys or it will not be stored/retrieved.
+			abort("void set_value(string name, float value) was asked to store the undefined key = " + name);
+		}
 	}
 
 	void set_value(string name, boolean value)
@@ -412,6 +420,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if(__CONSTRAINT_KEYS contains name)
 		{
 			optimization_parameters.constraints[name] = value;
+		}
+		else
+		{
+			//we must have [name] defined in one of the above keys or it will not be stored/retrieved.
+			abort("void set_value(string name, boolean value) was asked to store the undefined key = " + name);
 		}
 	}
 
@@ -425,6 +438,8 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		{
 			return optimization_parameters.vars[name];
 		}
+		//we must have [name] defined in one of the above keys or it will not be stored/retrieved.
+		abort("float get_value(string name) was asked to return the undefined key = " + name);
 		return 0.0;
 	}
 
@@ -609,8 +624,10 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
 		float price_per = 0.0;
 		float currency_available = 0.0;
+		item it = to_item(metadata.name);
 
-		if(get_value("meat_per_use") > 0.0)
+		boolean mall_buyable = can_interact() && is_tradeable(it);
+		if(mall_buyable || npc_price(it) > 0)
 		{
 			price_per = get_value("meat_per_use");
 			currency_available = max(0.0, my_meat() - meat_reserve);
@@ -618,7 +635,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		else if(get_value("tokens_per_use") > 0.0)
 		{
 			price_per = get_value("tokens_per_use");
-			currency_available = to_item(metadata.name).seller.available_tokens;
+			currency_available = it.seller.available_tokens;
 		}
 
 		if(currency_available == 0)
@@ -626,7 +643,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			return 0.0;
 		}
 
-		return floor(price_per / currency_available);
+		return floor(currency_available / price_per);
 	}
 
 	float total_uses_available()
@@ -872,10 +889,12 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if(metadata.type == "item")
 		{
 			item i = to_item(metadata.name);
-			boolean npc_buyable = npc_price(i) > 0 || (i.seller != $coinmaster[none] && is_accessible(i.seller) && get_property("autoSatisfyWithCoinmasters").to_boolean());
 			boolean mall_buyable = can_interact() && auto_mall_price(i) > 0;
-			boolean can_buy = meat_reserve < my_meat() && (npc_buyable || mall_buyable);
-			return (available_amount(i) > 0 || can_buy);
+			boolean npc_meat_buyable = npc_price(i) > 0;
+			boolean coinmaster_buyable = i.seller != $coinmaster[none] && is_accessible(i.seller) && get_property("autoSatisfyWithCoinmasters").to_boolean();
+			
+			boolean can_buy = meat_reserve < my_meat() && (npc_meat_buyable || mall_buyable);
+			return (available_amount(i) > 0 || can_buy || coinmaster_buyable);
 		}
 		if(metadata.type == "skill")
 		{
@@ -894,6 +913,9 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 
 	boolean have_required_resources()
 	{
+		//this is used to quickly remove unavailable restorers from consideration before we even do any optimization.
+		
+		//for skills, the value of total_uses_available assumes we will not restore_mp to cast. so we overrule it in this function by comparing to our maxmp instead.
 		if(metadata.type == "skill")
 		{
 			skill s = to_skill(metadata.name);
@@ -902,18 +924,9 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 				return true;
 			}
 		}
-		if(get_value("total_uses_available") < get_value("total_uses_needed"))
-		{
-			if(get_value("total_meat_used") > 0.0 && get_value("total_meat_used") <= get_value("meat_available_to_spend"))
-			{
-				return true;
-			}
-			if(get_value("total_coinmaster_tokens_used") > 0.0 && get_value("total_coinmaster_tokens_used") < to_item(metadata.name).seller.available_tokens)
-			{
-				return true;
-			}
-		}
-		return get_value("total_uses_available") > 0.0 && get_value("total_uses_available") >= get_value("total_uses_needed");
+		
+		//for everything that is not a skill we trust total_uses_available.
+		return get_value("total_uses_available") > 0.0;
 	}
 
 	boolean restores_needed_resources()
