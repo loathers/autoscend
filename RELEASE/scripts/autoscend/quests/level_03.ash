@@ -18,111 +18,112 @@ boolean auto_tavern()
 	resetMaximize();
 
 	boolean maximized = false;
-	foreach loc in locations
+	//Sleaze is the only one we don't care about
+	if (possessEquipment($item[Kremlin\'s Greatest Briefcase]))
 	{
-		//Sleaze is the only one we don't care about
-		if (possessEquipment($item[Kremlin\'s Greatest Briefcase]))
+		string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
+		if(contains_text(mod, "Weapon Damage Percent"))
 		{
-			string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
-			if(contains_text(mod, "Weapon Damage Percent"))
+			string page = visit_url("place.php?whichplace=kgb");
+			boolean flipped = false;
+			if(contains_text(page, "handleup"))
 			{
-				string page = visit_url("place.php?whichplace=kgb");
-				boolean flipped = false;
-				if(contains_text(page, "handleup"))
-				{
-					page = visit_url("place.php?whichplace=kgb&action=kgb_handleup", false);
-					flipped = true;
-				}
+				page = visit_url("place.php?whichplace=kgb&action=kgb_handleup", false);
+				flipped = true;
+			}
 
-				page = visit_url("place.php?whichplace=kgb&action=kgb_button1", false);
-				page = visit_url("place.php?whichplace=kgb&action=kgb_button1", false);
-				if(flipped)
-				{
-					page = visit_url("place.php?whichplace=kgb&action=kgb_handledown", false);
-				}
+			page = visit_url("place.php?whichplace=kgb&action=kgb_button1", false);
+			page = visit_url("place.php?whichplace=kgb&action=kgb_button1", false);
+			if(flipped)
+			{
+				page = visit_url("place.php?whichplace=kgb&action=kgb_handledown", false);
 			}
 		}
+	}
 
-		if(numeric_modifier("Hot Damage") < 20.0)
+	if(numeric_modifier("Hot Damage") < 20.0)
+	{
+		buffMaintain($effect[Pyromania], 20, 1, 1);
+	}
+	if(numeric_modifier("Cold Damage") < 20.0)
+	{
+		buffMaintain($effect[Frostbeard], 20, 1, 1);
+	}
+	if(numeric_modifier("Stench Damage") < 20.0)
+	{
+		buffMaintain($effect[Rotten Memories], 20, 1, 1);
+	}
+	if(numeric_modifier("Spooky Damage") < 20.0)
+	{
+		if(auto_have_skill($skill[Intimidating Mien]))
 		{
-			buffMaintain($effect[Pyromania], 20, 1, 1);
-		}
-		if(numeric_modifier("Cold Damage") < 20.0)
-		{
-			buffMaintain($effect[Frostbeard], 20, 1, 1);
-		}
-		if(numeric_modifier("Stench Damage") < 20.0)
-		{
-			buffMaintain($effect[Rotten Memories], 20, 1, 1);
-		}
-		if(numeric_modifier("Spooky Damage") < 20.0)
-		{
-			if(auto_have_skill($skill[Intimidating Mien]))
-			{
-				buffMaintain($effect[Intimidating Mien], 20, 1, 1);
-			}
-			else
-			{
-				buffMaintain($effect[Dirge of Dreadfulness], 20, 1, 1);
-				buffMaintain($effect[Snarl of the Timberwolf], 20, 1, 1);
-			}
-		}
-
-		if (!isActuallyEd() && monster_level_adjustment() <= 299)
-		{
-			auto_MaxMLToCap(auto_convertDesiredML(150), true);
+			buffMaintain($effect[Intimidating Mien], 20, 1, 1);
 		}
 		else
 		{
-			auto_MaxMLToCap(auto_convertDesiredML(150), false);
+			buffMaintain($effect[Dirge of Dreadfulness], 20, 1, 1);
+			buffMaintain($effect[Snarl of the Timberwolf], 20, 1, 1);
 		}
+	}
 
-		foreach element_type in $strings[Hot, Cold, Stench, Sleaze, Spooky]
-		{
-			if(numeric_modifier(element_type + " Damage") < 20.0)
-			{
-				auto_beachCombHead(element_type);
-			}
-		}
+	if (!isActuallyEd() && monster_level_adjustment() <= 299)
+	{
+		auto_MaxMLToCap(auto_convertDesiredML(150), true);
+	}
+	else
+	{
+		auto_MaxMLToCap(auto_convertDesiredML(150), false);
+	}
 
-		if(!maximized)
+	foreach element_type in $strings[Hot, Cold, Stench, Sleaze, Spooky]
+	{
+		if(numeric_modifier(element_type + " Damage") < 20.0)
 		{
-			// Tails are a better time saving investment
-			addToMaximize("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max");
-			simMaximize();
-			maximized = true;
+			auto_beachCombHead(element_type);
 		}
-		int [string] eleChoiceCombos = {
-			"Cold": 513,
-			"Hot": 496,
-			"Spooky": 515,
-			"Stench": 514
-		};
-		int capped = 0;
-		foreach ele, choicenum in eleChoiceCombos
-		{
-			boolean passed = simValue(ele + " Damage") >= 20.0;
-			set_property("choiceAdventure" + choicenum, passed ? "2" : "1");
-			if(passed) ++capped;
-		}
-		if(capped >= 3)
-		{
-			providePlusNonCombat(25);
-		}
-		else
-		{
-			providePlusCombat(25);
-		}
+	}
 
-		string tavern = get_property("tavernLayout");
+	if(!maximized)
+	{
+		// Tails are a better time saving investment
+		addToMaximize("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max");
+		simMaximize();
+		maximized = true;
+	}
+	int [string] eleChoiceCombos = {
+		"Cold": 513,
+		"Hot": 496,
+		"Spooky": 515,
+		"Stench": 514
+	};
+	int capped = 0;
+	foreach ele, choicenum in eleChoiceCombos
+	{
+		boolean passed = simValue(ele + " Damage") >= 20.0;
+		set_property("choiceAdventure" + choicenum, passed ? "2" : "1");
+		if(passed) ++capped;
+	}
+	if(capped >= 3)
+	{
+		providePlusNonCombat(25);
+	}
+	else
+	{
+		providePlusCombat(25);
+	}
+
+	string tavern = get_property("tavernLayout");
+	if(tavern == "0000000000000000000000000")
+	{
+		string temp = visit_url("cellar.php");
 		if(tavern == "0000000000000000000000000")
 		{
-			string temp = visit_url("cellar.php");
-			if(tavern == "0000000000000000000000000")
-			{
-				abort("Invalid Tavern Configuration, could not visit cellar and repair. Uh oh...");
-			}
+			abort("Invalid Tavern Configuration, could not visit cellar and repair. Uh oh...");
 		}
+	}
+
+	foreach loc in locations
+	{
 		if(char_at(tavern, loc) == "0")
 		{
 			int actual = loc + 1;
