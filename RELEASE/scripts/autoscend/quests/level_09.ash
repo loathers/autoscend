@@ -747,6 +747,7 @@ boolean L9_twinPeak()
 	int starting_trimmers = item_amount($item[Rusty Hedge Trimmers]);
 	if(starting_trimmers > 0)
 	{
+		equipMaximizedGear();
 		use(1, $item[rusty hedge trimmers]);
 		cli_execute("refresh inv");
 		if(item_amount($item[rusty hedge trimmers]) == starting_trimmers)
@@ -785,33 +786,33 @@ boolean L9_oilPeak()
 
 	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
 	{
-		if (!auto_is_valid($item[Bubblin\' Crude]))
-		{
-			return false;
-		}
 		int oilProgress = get_property("twinPeakProgress").to_int();
-		boolean needJar = ((oilProgress & 4) == 0);
-
-		if((item_amount($item[Bubblin\' Crude]) >= 12) && needJar)
-		{
-			if(auto_my_path() == "G-Lover")
-			{
-				if(item_amount($item[Crude Oil Congealer]) == 0)
-				{
-					cli_execute("make " + $item[Crude Oil Congealer]);
-				}
-				use(1, $item[Crude Oil Congealer]);
-			}
-			else
-			{
-				cli_execute("make " + $item[Jar Of Oil]);
-			}
-			return true;
-		}
-
-		if((item_amount($item[Jar Of Oil]) > 0) || !needJar)
+		boolean needJar = ((oilProgress & 4) == 0) && item_amount($item[Jar Of Oil]) == 0;
+		if (!needJar)
 		{
 			return false;
+		}
+		else if (item_amount($item[Bubblin' Crude]) >= 12)
+		{
+			if (auto_my_path() == "G-Lover")
+			{
+				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
+				{
+					buy($coinmaster[G-Mart], 1, $item[Crude Oil Congealer]);
+				}
+				if (item_amount($item[Crude Oil Congealer]) > 0)
+				{
+					use(1, $item[Crude Oil Congealer]);
+				}
+			}
+			else if (auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
+			{
+				create(1, $item[Jar Of Oil]);
+			}
+			if (item_amount($item[Jar Of Oil]) > 0)
+			{
+				return true;
+			}
 		}
 		auto_log_info("Oil Peak is finished but we need more crude!", "blue");
 	}

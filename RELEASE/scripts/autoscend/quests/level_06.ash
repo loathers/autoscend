@@ -39,7 +39,11 @@ boolean L6_friarsGetParts()
 		}
 	}
 
-	if(item_amount($item[box of birthday candles]) == 0)
+	boolean delayHeart = (get_property("auto_dakotaFanning").to_boolean() && internalQuestStatus("questM16Temple") < 0);
+	// if we have to do the "Dakota" Fanning quest to unlock the Hidden Temple,
+	// delay adventuring in The Dark Heart of the Woods until the quest is started.
+
+	if(item_amount($item[box of birthday candles]) == 0 && !delayHeart)
 	{
 		auto_log_info("Getting Box of Birthday Candles", "blue");
 		autoAdv(1, $location[The Dark Heart of the Woods]);

@@ -269,6 +269,10 @@ WarPlan auto_bestWarPlan()
 		considerNuns = false;
 		considerOrchard = false;
 	}
+	if (auto_my_path() == "G-Lover")
+	{
+		considerArena = false;
+	}
 	
 	// Calculate the adventure cost of doing each sidequest.
 	int advCostArena = 0;		//Arena actual cost is 0 adventures... unless you mess it up. TODO: check if messed up.
