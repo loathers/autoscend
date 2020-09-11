@@ -510,7 +510,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if((my_familiar() == $familiar[Pair of Stomping Boots]) && (get_property("_bootStomps").to_int()) < 7 && instakillable(enemy) && get_property("bootsCharged").to_boolean())
 	{
-		if(!($monsters[Dairy Goat, Lobsterfrogman, Writing Desk] contains enemy) && !($locations[The Laugh Floor, Infernal Rackets Backstage] contains my_location())  )
+		if(!($monsters[Dairy Goat, Lobsterfrogman, Writing Desk] contains enemy) && !($locations[The Laugh Floor, Infernal Rackets Backstage] contains my_location()) && canUse($skill[Release the boots]))
 		{
 			return useSkill($skill[Release the boots]);
 		}
@@ -1354,7 +1354,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			}
 		}
 
-		if(my_location() == $location[The Haunted Kitchen] && equipped_amount($item[vampyric cloake]) > 0 && get_property("_vampyreCloakeFormUses").to_int() < 10)
+		if(my_location() == $location[The Haunted Kitchen] && canUse($skill[Become a Cloud of Mist]) && get_property("_vampyreCloakeFormUses").to_int() < 10)
 		{
 			int hot = to_int(numeric_modifier("Hot Resistance"));
 			int stench = to_int(numeric_modifier("Stench Resistance"));

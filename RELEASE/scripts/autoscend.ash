@@ -1506,7 +1506,7 @@ boolean doBedtime()
 
 	while(LX_freeCombats());
 
-	if((my_class() == $class[Seal Clubber]) && guild_store_available() && (auto_my_path() != "G-Lover"))
+	if((my_class() == $class[Seal Clubber]) && guild_store_available())
 	{
 		handleFamiliar("stat");
 		int oldSeals = get_property("_sealsSummoned").to_int();
@@ -2921,6 +2921,14 @@ boolean adventureFailureHandler()
 			if($locations[A-Boo Peak, Twin Peak] contains my_location())
 			{
 				//bees prevent doing these quickly
+				tooManyAdventures = false;
+			}
+		}
+
+		if (tooManyAdventures && auto_my_path() == "G-Lover")
+		{
+			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Hidden Temple] contains my_location())
+			{
 				tooManyAdventures = false;
 			}
 		}
