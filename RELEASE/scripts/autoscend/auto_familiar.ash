@@ -282,12 +282,17 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// places where item drop is required to help save adventures.
-	if ($locations[The Typical Tavern Cellar, The Beanbat Chamber, Cobb's Knob Harem, The Defiled Nook, The Goatlet, Itznotyerzitz Mine,
+	if ($locations[The Typical Tavern Cellar, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
 	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Hospital, The Hidden Bowling Alley, The Haunted Wine Cellar,
 	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, The Red Zeppelin, Whitey's Grove, The Oasis, The Middle Chamber,
 	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
 	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, 8-Bit Realm, The Degrassi Knoll Garage, The Old Landfill,
 	The Laugh Floor, Infernal Rackets Backstage] contains place) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
+	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 26) {
 		famChoice = lookupFamiliarDatafile("item");
 	}
 
@@ -351,7 +356,7 @@ boolean autoChooseFamiliar(location place)
 	}
 	
 	// places where initiative is required to help save adventures.
-	if ($location[The Defiled Alcove] == place) {
+	if ($location[The Defiled Alcove] == place && get_property("cyrptAlcoveEvilness").to_int() > 26) {
 		famChoice = lookupFamiliarDatafile("init");
 	}
 

@@ -296,7 +296,7 @@ void finalizeMaximize()
 	{
 		auto_forceEquipPowerfulGlove();
 	}
-	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 8) {
+	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none]) {
 		// Save the first 8 sausage goblins for delay burning
 		addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
 	}
