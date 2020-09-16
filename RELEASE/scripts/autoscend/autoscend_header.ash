@@ -383,6 +383,19 @@ boolean auto_mushroomGardenHandler();
 boolean auto_getGuzzlrCocktailSet();
 boolean auto_latheHardwood(item toLathe);
 boolean auto_latheAppropriateWeapon();
+boolean auto_hasCargoShorts();
+int auto_cargoShortsGetPocket(item i);
+int auto_cargoShortsGetPocket(monster m);
+int auto_cargoShortsGetPocket(effect e);
+boolean auto_cargoShortsCanOpenPocket();
+boolean auto_cargoShortsCanOpenPocket(int pocket);
+boolean auto_cargoShortsCanOpenPocket(item i);
+boolean auto_cargoShortsCanOpenPocket(monster m);
+boolean auto_cargoShortsCanOpenPocket(effect e);
+boolean auto_cargoShortsOpenPocket(int pocket);
+boolean auto_cargoShortsOpenPocket(item i);
+boolean auto_cargoShortsOpenPocket(monster m);
+boolean auto_cargoShortsOpenPocket(effect e);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
