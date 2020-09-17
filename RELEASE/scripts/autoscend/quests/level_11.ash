@@ -1887,8 +1887,8 @@ boolean L11_shenStartQuest()
 			foreach z, _ in shenZonesToAvoidBecauseMaybeSnake() {
 				auto_log_info(linec++ + ". " + z);
 				set_property("auto_shenZonesTurnsSpent", `{get_property("auto_shenZonesTurnsSpent")}{z}:{z.turns_spent};`);
-				set_property("auto_lastShenTurn", $location[The Copperhead Club].turns_spent);
 			}
+			set_property("auto_lastShenTurn", $location[The Copperhead Club].turns_spent);
 		}
 		return true;
 	}
