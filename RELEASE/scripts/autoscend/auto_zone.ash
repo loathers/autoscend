@@ -649,12 +649,14 @@ generic_t zone_delay(location loc)
 		value = 10 - loc.turns_spent;
 		break;
 	case $location[The Haunted Pantry]:
-		if (isGuildClass() && my_primestat() == $stat[mysticality]) {
+		if (isGuildClass() && my_primestat() == $stat[mysticality])
+		{
 			value = 5 - loc.turns_spent;
 		}
 		break;
 	case $location[The Sleazy Back Alley]:
-		if (isGuildClass() && my_primestat() == $stat[moxie]) {
+		if (isGuildClass() && my_primestat() == $stat[moxie])
+		{
 			value = 5 - loc.turns_spent;
 		}
 		break;
@@ -682,7 +684,7 @@ generic_t zone_delay(location loc)
 	case $location[The Copperhead Club]:
 		if (internalQuestStatus("questL11Shen") % 2 == 0)
 		{
-				value = 5 - (loc.turns_spent - get_property("auto_lastShenTurn").to_int());
+			value = 5 - (loc.turns_spent - get_property("auto_lastShenTurn").to_int());
 		}
 		break;
 	default:

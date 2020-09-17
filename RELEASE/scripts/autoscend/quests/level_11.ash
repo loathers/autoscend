@@ -396,7 +396,8 @@ boolean LX_unlockHauntedLibrary()
 	//+3 pool skill & +1 training gains. speculative_pool_skill() already assumed we would use it if we can.
 	buffMaintain($effect[Chalky Hand], 0, 1, 1);
 
-	if (internalQuestStatus("questM20Necklace") == 2) {
+	if (internalQuestStatus("questM20Necklace") == 2)
+	{
 		// only force after we get the pool cue NC.
 		auto_forceNextNoncombat();
 	}

@@ -292,7 +292,8 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
-	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 26) {
+	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 26)
+	{
 		famChoice = lookupFamiliarDatafile("item");
 	}
 
@@ -356,7 +357,8 @@ boolean autoChooseFamiliar(location place)
 	}
 	
 	// places where initiative is required to help save adventures.
-	if ($location[The Defiled Alcove] == place && get_property("cyrptAlcoveEvilness").to_int() > 26) {
+	if ($location[The Defiled Alcove] == place && get_property("cyrptAlcoveEvilness").to_int() > 26)
+	{
 		famChoice = lookupFamiliarDatafile("init");
 	}
 
