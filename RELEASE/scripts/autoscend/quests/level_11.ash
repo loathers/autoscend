@@ -643,7 +643,7 @@ boolean L11_forgedDocuments()
 
 boolean L11_mcmuffinDiary()
 {
-	if (internalQuestStatus("questL11MacGuffin") < 1 || internalQuestStatus("questL11MacGuffin") > 1 || internalQuestStatus("questL11Black") < 2)
+	if (internalQuestStatus("questL11MacGuffin") != 1 || internalQuestStatus("questL11Black") < 2)
 	{
 		return false;
 	}
@@ -1714,7 +1714,7 @@ boolean L11_redZeppelin()
 		}
 	}
 
-	if(item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
+	if(auto_is_valid($item[lynyrd snare]) && item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
 	{
 		return autoAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
 	}
@@ -2391,7 +2391,7 @@ boolean L11_unlockEd()
 
 boolean L11_defeatEd()
 {
-	if (internalQuestStatus("questL11Pyramid") < 3 || internalQuestStatus("questL11Pyramid") > 3 || !get_property("pyramidBombUsed").to_boolean())
+	if (internalQuestStatus("questL11Pyramid") != 3 || !get_property("pyramidBombUsed").to_boolean())
 	{
 		return false;
 	}

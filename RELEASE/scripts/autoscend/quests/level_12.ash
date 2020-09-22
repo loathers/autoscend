@@ -269,6 +269,10 @@ WarPlan auto_bestWarPlan()
 		considerNuns = false;
 		considerOrchard = false;
 	}
+	if (auto_my_path() == "G-Lover")
+	{
+		considerArena = false;
+	}
 	
 	// Calculate the adventure cost of doing each sidequest.
 	int advCostArena = 0;		//Arena actual cost is 0 adventures... unless you mess it up. TODO: check if messed up.
@@ -767,7 +771,7 @@ boolean L12_startWar()
 
 boolean L12_filthworms()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestOrchardCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestOrchardCompleted") != "none")
 	{
 		return false;
 	}
@@ -918,7 +922,7 @@ boolean L12_orchardFinalize()
 
 boolean L12_gremlins()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestJunkyardCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestJunkyardCompleted") != "none")
 	{
 		return false;
 	}
@@ -1025,7 +1029,7 @@ boolean L12_gremlins()
 
 boolean L12_sonofaBeach()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestLighthouseCompleted") != "none")
 	{
 		return false;
 	}
@@ -1138,7 +1142,7 @@ boolean L12_sonofaPrefix()
 	// this appears to be a copy & paste of L12_sonofaBeach() with some small changes
 	// for Vote Monster/Macrometeor shenanigans. Refactor this so only the relevant code remains.
 
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestLighthouseCompleted") != "none")
 	{
 		return false;
 	}
@@ -1298,7 +1302,7 @@ boolean L12_sonofaPrefix()
 
 boolean L12_sonofaFinish()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestLighthouseCompleted") != "none")
 	{
 		return false;
 	}
@@ -1357,7 +1361,7 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() >= 10000)
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() >= 10000)
 	{
 		return false;
 	}
@@ -1441,7 +1445,7 @@ boolean LX_attemptFlyering()
 
 boolean L12_flyerFinish()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1)
+	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
 	}
@@ -1481,7 +1485,7 @@ boolean L12_flyerFinish()
 
 boolean L12_themtharHills()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestNunsCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestNunsCompleted") != "none")
 	{
 		return false;
 	}
@@ -1960,7 +1964,7 @@ boolean L12_clearBattlefield()
 
 boolean L12_finalizeWar()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1)
+	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
 	}

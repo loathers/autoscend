@@ -156,6 +156,7 @@ void initializeSettings() {
 	set_property("auto_grimstoneFancyOilPainting", true);
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
+	set_property("auto_doGalaktik", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
@@ -1505,7 +1506,7 @@ boolean doBedtime()
 
 	while(LX_freeCombats());
 
-	if((my_class() == $class[Seal Clubber]) && guild_store_available() && (auto_my_path() != "G-Lover"))
+	if((my_class() == $class[Seal Clubber]) && guild_store_available())
 	{
 		handleFamiliar("stat");
 		int oldSeals = get_property("_sealsSummoned").to_int();
@@ -2924,6 +2925,14 @@ boolean adventureFailureHandler()
 			}
 		}
 
+		if (tooManyAdventures && auto_my_path() == "G-Lover")
+		{
+			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Hidden Temple] contains my_location())
+			{
+				tooManyAdventures = false;
+			}
+		}
+
 		if ($locations[The Haunted Gallery] contains my_location() && my_location().turns_spent < 100)
 		{
 			tooManyAdventures = false;
@@ -3391,6 +3400,7 @@ boolean doTasks()
 	if(chateauPainting())			return true;
 	if(LX_faxing())						return true;
 	if(LX_artistQuest())				return true;
+	if(LX_galaktikSubQuest())			return true;
 	if(L9_leafletQuest())				return true;
 	if(L5_findKnob())					return true;
 	if(L12_sonofaPrefix())				return true;

@@ -78,7 +78,7 @@ boolean L10_airship()
 
 boolean L10_basement()
 {
-	if (internalQuestStatus("questL10Garbage") < 7 || internalQuestStatus("questL10Garbage") > 7)
+	if (internalQuestStatus("questL10Garbage") != 7)
 	{
 		return false;
 	}
@@ -195,7 +195,7 @@ boolean L10_basement()
 
 boolean L10_ground()
 {
-	if (internalQuestStatus("questL10Garbage") < 8 || internalQuestStatus("questL10Garbage") > 8)
+	if (internalQuestStatus("questL10Garbage") != 8)
 	{
 		return false;
 	}

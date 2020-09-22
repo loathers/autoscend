@@ -1342,11 +1342,11 @@ boolean adjustForYellowRayIfPossible()
 
 string replaceMonsterCombatString(monster target, boolean inCombat)
 {
-	if (auto_macrometeoritesAvailable() > 0)
+	if (auto_macrometeoritesAvailable() > 0 && auto_is_valid($skill[Macrometeorite]))
 	{
 		return "skill " + $skill[Macrometeorite];
 	}
-	if (auto_powerfulGloveReplacesAvailable(inCombat) > 0)
+	if (auto_powerfulGloveReplacesAvailable(inCombat) > 0 && auto_is_valid($skill[CHEAT CODE: Replace Enemy]))
 	{
 		return "skill " + $skill[CHEAT CODE: Replace Enemy];
 	}
@@ -3823,7 +3823,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
 	case $effect[Empathy]:
-		if(have_familiar($familiar[Mosquito]) && acquireTotem())
+		if(pathAllowsFamiliar() && acquireTotem())
 		{
 			useSkill = $skill[Empathy of the Newt];
 		}																						break;
@@ -3948,7 +3948,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Juiced and Jacked]:			useItem = $item[Pumpkin Juice];					break;
 	case $effect[Juiced and Loose]:				useSkill = $skill[Steroid Bladder];				break;
 	case $effect[Leash of Linguini]:
-		if(have_familiar($familiar[Mosquito]))
+		if(pathAllowsFamiliar())
 		{
 			useSkill = $skill[Leash of Linguini];
 		}																						break;
