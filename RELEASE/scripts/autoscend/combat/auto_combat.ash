@@ -1710,6 +1710,21 @@ string auto_combatHandler(int round, monster enemy, string text)
 			stunner = useSkill($skill[Club Foot], false);
 			costStunner = mp_cost($skill[Club Foot]);
 		}
+        
+        if(((monster_defense() - my_buffedstat(my_primestat())) > 20) && canUse($skill[Saucestorm], false) && !hasClubEquipped())
+		{
+			attackMajor = useSkill($skill[Saucestorm], false);
+			costMajor = mp_cost($skill[Saucestorm]);
+		}
+
+		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
+		{
+			attackMinor = useSkill($skill[Saucestorm], false);
+			attackMinor = useSkill($skill[Saucestorm], false);
+			costMinor = mp_cost($skill[Saucestorm]);
+			costMajor = mp_cost($skill[Saucestorm]);
+		}
+
 		break;
 	case $class[Turtle Tamer]:
 		attackMinor = "attack with weapon";

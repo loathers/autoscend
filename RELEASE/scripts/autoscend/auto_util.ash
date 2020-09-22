@@ -3235,6 +3235,11 @@ boolean hasShieldEquipped()
 	return item_type(equipped_item($slot[off-hand])) == "shield";
 }
 
+boolean hasClubEquipped()
+{
+	return item_type(equipped_item($slot[weapon])) == "club";
+}
+
 boolean careAboutDrops(monster mon)
 {
 	if($monsters[Astronomer, Axe Wound, Beaver, Box, Burrowing Bishop, Bush, Camel\'s Toe, Family Jewels, Flange, Honey Pot, Hooded Warrior, Junk, Little Man in the Canoe, Muff, One-Eyed Willie, Pork Sword, Skinflute, Trouser Snake, Twig and Berries] contains mon)
