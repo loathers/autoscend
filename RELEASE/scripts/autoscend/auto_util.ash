@@ -1064,7 +1064,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Breathe Out];
 	}
-	if(auto_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (inCombat ? (item_type(equipped_item($slot[weapon])) == "club") : true) && (!(used contains "batter up!")))
+	if(auto_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (inCombat ? hasClubEquipped() : true) && (!(used contains "batter up!")))
 	{
 		return "skill " + $skill[Batter Up!];
 	}
@@ -3237,7 +3237,7 @@ boolean hasShieldEquipped()
 
 boolean hasClubEquipped()
 {
-	return item_type(equipped_item($slot[weapon])) == "club";
+	return item_type(equipped_item($slot[weapon])) == "club" || (item_type(equipped_item($slot[weapon])) == "sword" && has_effect($effect[iron palms]));
 }
 
 boolean careAboutDrops(monster mon)
