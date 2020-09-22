@@ -557,11 +557,15 @@ boolean L9_aBooPeak()
 				}
 				set_property("auto_aboopending", my_turncount());
 			}
-			if(auto_have_familiar($familiar[Mu]))
+			if(canChangeToFamiliar($familiar[Trick-or-Treating Tot]))
+			{
+				handleFamiliar($familiar[Trick-or-Treating Tot]);
+			}
+			else if(canChangeToFamiliar($familiar[Mu]))
 			{
 				handleFamiliar($familiar[Mu]);
 			}
-			else if(auto_have_familiar($familiar[Exotic Parrot]))
+			else if(canChangeToFamiliar($familiar[Exotic Parrot]))
 			{
 				handleFamiliar($familiar[Exotic Parrot]);
 			}
