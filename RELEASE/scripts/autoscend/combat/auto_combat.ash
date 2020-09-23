@@ -1711,7 +1711,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costStunner = mp_cost($skill[Club Foot]);
 		}
         
-        if((buffed_hit_stat() - 20) > monster_defense() && canUse($skill[Saucestorm], false) && !hasClubEquipped())
+        if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false) && !hasClubEquipped())
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
@@ -1754,7 +1754,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costStunner = mp_cost($skill[Shell Up]);
 		}
 
-		if((buffed_hit_stat() - 20) > monster_defense() && canUse($skill[Saucestorm], false))
+		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
@@ -1911,7 +1911,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costStunner = mp_cost($skill[Accordion Bash]);
 		}
 
-		if((buffed_hit_stat() - 20) > monster_defense() && canUse($skill[Saucestorm], false))
+		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
@@ -1944,7 +1944,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			}
 		}
 
-		if((buffed_hit_stat() - 20) > monster_defense() && canUse($skill[Saucestorm], false))
+		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
