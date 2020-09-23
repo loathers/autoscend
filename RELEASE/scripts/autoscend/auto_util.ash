@@ -980,7 +980,7 @@ boolean auto_wantToBanish(monster enemy, location loc)
 
 boolean hasClubEquipped()
 {
-	return item_type(equipped_item($slot[weapon])) == "club" || (item_type(equipped_item($slot[weapon])) == "sword" && has_effect($effect[iron palms]));
+	return item_type(equipped_item($slot[weapon])) == "club" || (item_type(equipped_item($slot[weapon])) == "sword" && have_effect($effect[iron palms]));
 }
 
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
