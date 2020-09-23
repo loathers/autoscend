@@ -1711,7 +1711,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costStunner = mp_cost($skill[Club Foot]);
 		}
         
-        if(((monster_defense() - my_buffedstat(my_primestat())) > 20) && canUse($skill[Saucestorm], false) && !hasClubEquipped())
+        if((buffed_hit_stat() - 20) > monster_defense() && canUse($skill[Saucestorm], false) && !hasClubEquipped())
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
@@ -1720,7 +1720,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
 		{
 			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMinor = useSkill($skill[Saucestorm], false);
+			attackMajor = useSkill($skill[Saucestorm], false);
 			costMinor = mp_cost($skill[Saucestorm]);
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
@@ -1754,7 +1754,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costStunner = mp_cost($skill[Shell Up]);
 		}
 
-		if(((monster_defense() - my_buffedstat(weapon_type(equipped_item($slot[Weapon])))) > 20) && canUse($skill[Saucestorm], false))
+		if((buffed_hit_stat() - 20) > monster_defense() && canUse($skill[Saucestorm], false))
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
@@ -1911,7 +1911,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costStunner = mp_cost($skill[Accordion Bash]);
 		}
 
-		if(((monster_defense() - my_buffedstat(my_primestat())) > 20) && canUse($skill[Saucestorm], false))
+		if((buffed_hit_stat() - 20) > monster_defense() && canUse($skill[Saucestorm], false))
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
@@ -1944,7 +1944,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			}
 		}
 
-		if(((monster_defense() - my_buffedstat(my_primestat())) > 20) && canUse($skill[Saucestorm], false))
+		if((buffed_hit_stat() - 20) > monster_defense() && canUse($skill[Saucestorm], false))
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
@@ -2117,7 +2117,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 				return useSkill($skill[Spirit Snap]);
 			}
 		}
-		if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]) && (hasClubEquipped() || (monster_defense() - my_buffedstat(my_primestat())) > 20)))
+		if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]) && (hasClubEquipped() || (buffed_hit_stat() - 20) > monster_defense()))
 		{
 			return useSkill($skill[Northern Explosion]);
 		}
