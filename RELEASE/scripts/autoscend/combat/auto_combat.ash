@@ -2117,7 +2117,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 				return useSkill($skill[Spirit Snap]);
 			}
 		}
-		if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]))
+		if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]) && (hasClubEquipped() || (monster_defense() - my_buffedstat(my_primestat())) > 20)))
 		{
 			return useSkill($skill[Northern Explosion]);
 		}
