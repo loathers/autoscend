@@ -978,6 +978,11 @@ boolean auto_wantToBanish(monster enemy, location loc)
 	return monstersToBanish[enemy];
 }
 
+boolean hasClubEquipped()
+{
+	return item_type(equipped_item($slot[weapon])) == "club" || (item_type(equipped_item($slot[weapon])) == "sword" && has_effect($effect[iron palms]));
+}
+
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
 {
 	if(inAftercore())
@@ -3233,11 +3238,6 @@ int howLongBeforeHoloWristDrop()
 boolean hasShieldEquipped()
 {
 	return item_type(equipped_item($slot[off-hand])) == "shield";
-}
-
-boolean hasClubEquipped()
-{
-	return item_type(equipped_item($slot[weapon])) == "club" || (item_type(equipped_item($slot[weapon])) == "sword" && has_effect($effect[iron palms]));
 }
 
 boolean careAboutDrops(monster mon)
