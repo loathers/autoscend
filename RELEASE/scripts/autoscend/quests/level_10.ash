@@ -315,8 +315,9 @@ boolean L10_topFloor()
 
 boolean L10_holeInTheSkyUnlock()
 {
-	if (internalQuestStatus("questL10Garbage") < 9)
+	if (internalQuestStatus("questL10Garbage") < 11)
 	{
+		//top floor opens at step9. but we want to finish the giant trash quest first before we do hole in the sky.
 		return false;
 	}
 	if(!get_property("auto_holeinthesky").to_boolean())
