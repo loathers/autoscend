@@ -8,7 +8,7 @@ env:
 
 on: [push, pull_request]
 
-jobsmo
+jobs:
   verify:
     name: Verify
     runs-on: ubuntu-latest
