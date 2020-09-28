@@ -1246,36 +1246,24 @@ boolean ed_DelayNC_DailyDungeon()
 	{
 		return false;		//will not take any damage from NCs.
 	}
-	if(item_amount($item[Linen Bandages]) == 0)
-	{
-		return true;		//delay to avoid wasting adv on resting when we die to an NC.
-	}
 	
-	return false;
+	return item_amount($item[Linen Bandages]) == 0;
 }
 
-boolean edHarmfulNoncombatCheck(boolean softblock)
+boolean ed_DelayNC_SonofaBeach()
 {
-	//checks if ed is prepared to go into a zone where NC damage might kill him.
-	//returns true if ed is NOT prepared. use in dangerous locations with (assuming softblock): if(edHarmfulNoncombatCheck(true)) return false;
-	//softblock == true is used for main quests which should be done anyways if we are about to powerlevel.
-	//softblock == false is used for optional quests which should be hard blocked if we cannot handle NC damage.
-	
+	//return true if we should delay sonofa beach as Ed because we cannot handle the zerg rush noncombat
+	//NC damage is between 50% to 100% of your maxHP. if it kills you and you have no healing item you waste an adventure.
 	if(!isActuallyEd())
 	{
 		return false;
 	}
-	
-	boolean hasNoLinen = item_amount($item[Linen Bandages]) == 0;
-	
-	if(softblock && isAboutToPowerlevel() && hasNoLinen)
+	if(isAboutToPowerlevel())
 	{
-		auto_log_info("We are about to powerlevel so instead we are taking a risk and going into a dangerous NC zone without Linen Bandages", "blue");
-		set_property("_auto_edNoLinenCheck", true);
-		return false;
+		return false;	//take the risk if we have nothing left to do.
 	}
 	
-	return hasNoLinen;
+	return item_amount($item[Linen Bandages]) == 0;
 }
 
 boolean edUnderworldAdv()

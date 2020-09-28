@@ -1106,7 +1106,7 @@ boolean L12_sonofaBeach()
 	{
 		return false;
 	}
-	if(edHarmfulNoncombatCheck(true))	//is ed ready to take this risk?
+	if(ed_DelayNC_SonofaBeach())	//is ed ready to take this risk?
 	{
 		return false;	//ed is not prepared. delay
 	}
