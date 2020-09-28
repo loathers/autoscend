@@ -1269,8 +1269,7 @@ boolean ed_DelayNC_SonofaBeach()
 boolean edUnderworldAdv()
 {
 	//This function is used to spend 1 adv "resting" as ed by entering the underworld via the gate at his pyramid, shopping, then leaving.
-	//Should only be called it really necessary. Such as if we died to an NC damage and have no restorers.
-	
+	//Does not check our current HP to see if it should run. only call it if necessary.
 	if(!isActuallyEd())
 	{
 		abort("edUnderworldAdv() should not have been called as not ed.");
