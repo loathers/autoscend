@@ -1231,6 +1231,29 @@ boolean L9_ed_chasmBuildClover(int need)
 	return false;
 }
 
+boolean ed_DelayNC_DailyDungeon()
+{
+	//Ed will be doing daily dungeon if auto_forceFatLootToken == true
+	//return true if we should delay daily dungeon as Ed because we cannot handle the NCs
+	if(!isActuallyEd())
+	{
+		return false;
+	}
+	
+	boolean has_pole = item_amount($item[Eleven-Foot Pole]) > 0;
+	boolean has_picks = item_amount($item[Platinum Yendorian Express Card]) > 0 || item_amount($item[Pick-O-Matic Lockpicks]) > 0;
+	if(has_pole && has_picks)
+	{
+		return false;		//will not take any damage from NCs.
+	}
+	if(item_amount($item[Linen Bandages]) == 0)
+	{
+		return true;		//delay to avoid wasting adv on resting when we die to an NC.
+	}
+	
+	return false;
+}
+
 boolean edHarmfulNoncombatCheck(boolean softblock)
 {
 	//checks if ed is prepared to go into a zone where NC damage might kill him.

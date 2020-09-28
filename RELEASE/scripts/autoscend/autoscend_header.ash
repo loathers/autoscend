@@ -421,6 +421,7 @@ boolean L1_ed_island();
 boolean L1_ed_islandFallback();
 boolean L9_ed_chasmStart();
 boolean L9_ed_chasmBuildClover(int need);
+boolean ed_DelayNC_DailyDungeon();
 boolean edHarmfulNoncombatCheck(boolean softblock);
 boolean edUnderworldAdv();
 boolean LM_edTheUndying();

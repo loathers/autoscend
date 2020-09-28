@@ -503,13 +503,7 @@ boolean LX_dailyDungeonToken()
 		}
 	}
 	
-	boolean has_pole = item_amount($item[Eleven-Foot Pole]) > 0;
-	boolean has_picks = item_amount($item[Platinum Yendorian Express Card]) > 0 || item_amount($item[Pick-O-Matic Lockpicks]) > 0;
-	
-	//Ed will be doing daily dungeon if auto_forceFatLootToken == true
-	if(!has_pole &&		//can take NC damage from traps
-	!has_picks &&		//can take NC damage from doors
-	edHarmfulNoncombatCheck(false))	//is ed and unable to handle dying from NC damage without wasting adventures
+	if(ed_DelayNC_DailyDungeon())
 	{
 		return false;
 	}
