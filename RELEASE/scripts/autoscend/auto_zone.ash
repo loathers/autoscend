@@ -682,7 +682,7 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[The Copperhead Club]:
-		if (internalQuestStatus("questL11Shen") % 2 == 0)
+		if (internalQuestStatus("questL11Shen") > 0 && internalQuestStatus("questL11Shen") % 2 == 0)
 		{
 			value = 5 - (loc.turns_spent - get_property("auto_lastShenTurn").to_int());
 		}
