@@ -814,6 +814,7 @@ boolean L12_preOutfit();
 boolean L12_startWar();
 boolean L12_filthworms();
 boolean L12_orchardFinalize();
+void gremlinsFamiliar();
 boolean L12_gremlins();
 boolean L12_sonofaBeach();
 boolean L12_sonofaPrefix();
@@ -977,6 +978,8 @@ void equipRollover();
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
 boolean is100FamRun();
+boolean isHinderingFamiliar100Run();
+boolean isAttackFamiliar(familiar fam);
 boolean pathAllowsFamiliar();
 boolean auto_have_familiar(familiar fam);
 boolean canChangeFamiliar();
