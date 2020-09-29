@@ -558,6 +558,7 @@ generic_t zone_delay(location loc)
 {
 	generic_t retval;
 	int value = 0;
+	int[location] shenZones = getShenZonesTurnsSpent();
 	switch(loc)
 	{
 	case $location[The Oasis]:
@@ -578,9 +579,6 @@ generic_t zone_delay(location loc)
 		break;
 	case $location[The Haunted Bathroom]:
 		value = 5 - loc.turns_spent;
-		break;
-	case $location[The Haunted Bedroom]:
-		value = 6 - loc.turns_spent;
 		break;
 	case $location[The Haunted Ballroom]:
 		value = 5 - loc.turns_spent;
@@ -651,13 +649,44 @@ generic_t zone_delay(location loc)
 		value = 10 - loc.turns_spent;
 		break;
 	case $location[The Haunted Pantry]:
-		if (isGuildClass() && my_primestat() == $stat[mysticality]) {
+		if (isGuildClass() && my_primestat() == $stat[mysticality])
+		{
 			value = 5 - loc.turns_spent;
 		}
+		break;
 	case $location[The Sleazy Back Alley]:
-		if (isGuildClass() && my_primestat() == $stat[moxie]) {
+		if (isGuildClass() && my_primestat() == $stat[moxie])
+		{
 			value = 5 - loc.turns_spent;
 		}
+		break;
+	case $location[The Smut Orc Logging Camp]:
+		if (shenZones contains loc && get_property("chasmBridgeProgress").to_int() >= 30)
+		{
+			value = 3 - (loc.turns_spent - shenZones[loc]);
+		}
+		break;
+	case $location[The Hole in the Sky]:
+		if (shenZones contains loc && !needStarKey())
+		{
+			value = 3 - (loc.turns_spent - shenZones[loc]);
+		}
+		break;
+	case $location[The Unquiet Garves]:
+	case $location[The Castle in the Clouds in the Sky (Top Floor)]:
+	case $location[Lair of the Ninja Snowmen]:
+	case $location[The Batrat and Ratbat Burrow]:
+		if (shenZones contains loc)
+		{
+			value = 3 - (loc.turns_spent - shenZones[loc]);
+		}
+		break;
+	case $location[The Copperhead Club]:
+		if (internalQuestStatus("questL11Shen") > 0 && internalQuestStatus("questL11Shen") % 2 == 0)
+		{
+			value = 5 - (loc.turns_spent - get_property("auto_lastShenTurn").to_int());
+		}
+		break;
 	default:
 		retval._error = true;
 		break;
@@ -1625,7 +1654,7 @@ generic_t zone_difficulty(location loc)
 
 location[int] zone_list()
 {
-	return List($locations[8-Bit Realm, A-Boo Peak, The Arid\, Extra-Dry Desert, The Bandit Crossroads, Barf Mountain, Barrrney\'s Barrr, The Bat Hole Entrance, The Batrat And Ratbat Burrow, The Battlefield (Frat Uniform), The Beanbat Chamber, Belowdecks, The Black Forest, The Boss Bat\'s Lair, The Bubblin\' Caldera, The Bugbear Pen, The Castle in the Clouds in the Sky (Basement), The Castle in the Clouds in the Sky (Ground Floor), The Castle in the Clouds in the Sky (Top Floor), Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Cobb\'s Knob Kitchens, Cobb\'s Knob Treasury, Coldest Adventurer Contest, The Copperhead Club, The Cursed Village, The Daily Dungeon, The Dark Elbow of the Woods, The Dark Heart of the Woods, The Dark Neck of the Woods, The Deep Dark Jungle, The Deep Machine Tunnels, The Defiled Alcove, The Defiled Cranny, The Defiled Niche, The Defiled Nook, Drunken Stupor, The Dungeons of Doom, The Enormous Greater-Than Sign, The Extreme Slope, The F\'c\'le, Fastest Adventurer Contest, The Feeding Chamber, The Filthworm Queen\'s Chamber, The Fun-Guy Mansion, Gingerbread Civic Center, Gingerbread Industrial Zone, Gingerbread Sewers, Gingerbread Train Station, Gingerbread Upscale Retail District, The Goatlet, Guano Junction, The Haiku Dungeon, The Hatching Chamber, The Haunted Ballroom, The Haunted Bathroom, The Haunted Bedroom, The Haunted Billiards Room, The Haunted Boiler Room, The Haunted Conservatory, The Haunted Gallery, The Haunted Kitchen, The Haunted Laundry Room, The Haunted Library, The Haunted Pantry, The Haunted Wine Cellar, The Hidden Apartment Building, The Hidden Bowling Alley, The Hidden Hospital, The Hidden Office Building, The Hidden Park, The Hidden Temple, The Hole in the Sky, Hottest Adventurer Contest, The Ice Hole, The Ice Hotel, The Icy Peak, Infernal Rackets Backstage, Inside the Palindome, Investigating A Plaintive Telegram, Itznotyerzitz Mine, Lair of the Ninja Snowmen, LavaCo&trade; Lamp Factory, The Laugh Floor, The Limerick Dungeon, The Lower Chambers, Madness Bakery, The Mansion of Dr. Weirdeaux, A Massive Ziggurat, A Maze Of Sewer Tunnels, The Middle Chamber, Mist-Shrouded Peak, A Mob Of Zeppelin Protesters, Monorail Work Site, The Mystic Wood, Near an Abandoned Refrigerator, Next to that Barrel with Something Burning in it, Noob Cave, The Oasis, The Obligatory Pirate\'s Cove, Oil Peak, The Old Landfill, Out by that Rusted-Out Car, The Outskirts of Cobb\'s Knob, Over Where the Old Tires Are, The Overgrown Lot, An Overgrown Shrine (Northeast), An Overgrown Shrine (Northwest), An Overgrown Shrine (Southeast), An Overgrown Shrine (Southwest), Pandamonium Slums, The Penultimate Fantasy Airship, Pirates of the Garbage Barges, The Poop Deck, The Putrid Swamp, The Red Queen\'s Garden, The Red Zeppelin, The Royal Guard Chamber, The Secret Government Laboratory, The Shore\, Inc. Travel Agency, The Skeleton Store, Sleaziest Adventurer Contest, The Sleazy Back Alley, Sloppy Seconds Diner, The Skeleton Store, Smartest Adventurer Contest, The SMOOCH Army HQ, Smoothest Adventurer Contest, South of the Border, Spookiest Adventurer Contest, The Spooky Gravy Burrow, The Sprawling Cemetery, Stinkiest Adventurer Contest, Strongest Adventurer Contest, The Smut Orc Logging Camp, Sonofa Beach, The Spooky Forest, Summoning Chamber, The Sunken Party Yacht, Super Villain\'s Lair, The Themthar Hills, The Thinknerd Warehouse, Throne Room, Through the Spacegate, Thugnderdome, The Towering Mountains, The Toxic Teacups, Twin Peak, The Typical Tavern Cellar, Uncle Gator\'s Country Fun-Time Liquid Waste Sluice, The Upper Chamber, The Velvet / Gold Mine, The VERY Unquiet Garves, VYKEA, The X-32-F Combat Training Snowman, Wartime Hippy Camp (Frat Disguise), Whitey\'s Grove]);
+	return List($locations[8-Bit Realm, A-Boo Peak, The Arid\, Extra-Dry Desert, The Bandit Crossroads, Barf Mountain, Barrrney\'s Barrr, The Bat Hole Entrance, The Batrat And Ratbat Burrow, The Battlefield (Frat Uniform), The Beanbat Chamber, Belowdecks, The Black Forest, The Boss Bat\'s Lair, The Bubblin\' Caldera, The Bugbear Pen, The Castle in the Clouds in the Sky (Basement), The Castle in the Clouds in the Sky (Ground Floor), The Castle in the Clouds in the Sky (Top Floor), Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Cobb\'s Knob Kitchens, Cobb\'s Knob Treasury, Coldest Adventurer Contest, The Copperhead Club, The Cursed Village, The Daily Dungeon, The Dark Elbow of the Woods, The Dark Heart of the Woods, The Dark Neck of the Woods, The Deep Dark Jungle, The Deep Machine Tunnels, The Defiled Alcove, The Defiled Cranny, The Defiled Niche, The Defiled Nook, Drunken Stupor, The Dungeons of Doom, The Enormous Greater-Than Sign, The Extreme Slope, The F\'c\'le, Fastest Adventurer Contest, The Feeding Chamber, The Filthworm Queen\'s Chamber, The Fun-Guy Mansion, Gingerbread Civic Center, Gingerbread Industrial Zone, Gingerbread Sewers, Gingerbread Train Station, Gingerbread Upscale Retail District, The Goatlet, Guano Junction, The Haiku Dungeon, The Hatching Chamber, The Haunted Ballroom, The Haunted Bathroom, The Haunted Bedroom, The Haunted Billiards Room, The Haunted Boiler Room, The Haunted Conservatory, The Haunted Gallery, The Haunted Kitchen, The Haunted Laundry Room, The Haunted Library, The Haunted Pantry, The Haunted Wine Cellar, The Hidden Apartment Building, The Hidden Bowling Alley, The Hidden Hospital, The Hidden Office Building, The Hidden Park, The Hidden Temple, The Hole in the Sky, Hottest Adventurer Contest, The Ice Hole, The Ice Hotel, The Icy Peak, Infernal Rackets Backstage, Inside the Palindome, Investigating A Plaintive Telegram, Itznotyerzitz Mine, Lair of the Ninja Snowmen, LavaCo&trade; Lamp Factory, The Laugh Floor, The Limerick Dungeon, The Lower Chambers, Madness Bakery, The Mansion of Dr. Weirdeaux, A Massive Ziggurat, A Maze Of Sewer Tunnels, The Middle Chamber, Mist-Shrouded Peak, A Mob Of Zeppelin Protesters, Monorail Work Site, The Mystic Wood, Near an Abandoned Refrigerator, Next to that Barrel with Something Burning in it, Noob Cave, The Oasis, The Obligatory Pirate\'s Cove, Oil Peak, The Old Landfill, Out by that Rusted-Out Car, The Outskirts of Cobb\'s Knob, Over Where the Old Tires Are, The Overgrown Lot, An Overgrown Shrine (Northeast), An Overgrown Shrine (Northwest), An Overgrown Shrine (Southeast), An Overgrown Shrine (Southwest), Pandamonium Slums, The Penultimate Fantasy Airship, Pirates of the Garbage Barges, The Poop Deck, The Putrid Swamp, The Red Queen\'s Garden, The Red Zeppelin, The Royal Guard Chamber, The Secret Government Laboratory, The Shore\, Inc. Travel Agency, The Skeleton Store, Sleaziest Adventurer Contest, The Sleazy Back Alley, Sloppy Seconds Diner, The Skeleton Store, Smartest Adventurer Contest, The SMOOCH Army HQ, Smoothest Adventurer Contest, South of the Border, Spookiest Adventurer Contest, The Spooky Gravy Burrow, The Sprawling Cemetery, Stinkiest Adventurer Contest, Strongest Adventurer Contest, The Smut Orc Logging Camp, Sonofa Beach, The Spooky Forest, Summoning Chamber, The Sunken Party Yacht, Super Villain\'s Lair, The Themthar Hills, The Thinknerd Warehouse, Throne Room, Through the Spacegate, Thugnderdome, The Towering Mountains, The Toxic Teacups, Twin Peak, The Typical Tavern Cellar, Uncle Gator\'s Country Fun-Time Liquid Waste Sluice, The Upper Chamber, The Unquiet Garves, The Velvet / Gold Mine, The VERY Unquiet Garves, VYKEA, The X-32-F Combat Training Snowman, Wartime Hippy Camp (Frat Disguise), Whitey\'s Grove]);
 }
 
 location[int] zones_available()

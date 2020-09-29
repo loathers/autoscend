@@ -308,5 +308,7 @@ boolean settingFixer()
 		remove_property("auto_mineForOres");
 	}
 	
+	remove_property("auto_shenStarted");
+	
 	return true;
 }

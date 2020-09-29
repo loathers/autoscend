@@ -169,9 +169,9 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		boolean[location] empty;
 		return empty;
 	}
-	if (get_property("auto_shenStarted") != "")
+	if (get_property("shenInitiationDay").to_int() > 0)
 	{
-		int day = get_property("auto_shenStarted").to_int();
+		int day = get_property("shenInitiationDay").to_int();
 		int items_returned = shenItemsReturned();
 		return shenSnakeLocations(day, items_returned);
 	}
@@ -195,6 +195,22 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 boolean shenShouldDelayZone(location loc)
 {
 	return shenZonesToAvoidBecauseMaybeSnake() contains loc;
+}
+
+int[location] getShenZonesTurnsSpent()
+{
+	int[location] delayValues;
+	if (get_property("auto_shenZonesTurnsSpent") != "")
+	{
+		string[int] zones = split_string(get_property("auto_shenZonesTurnsSpent"), ";");
+		foreach _, zone in zones
+		{
+			location loc = zone.substring(0, zone.index_of(":")).to_location();
+			int turns_spent = zone.substring(zone.index_of(":") + 1).to_int();
+			delayValues[loc] = turns_spent;
+		}
+	}
+	return delayValues;
 }
 
 boolean LX_unlockHiddenTemple() {
@@ -380,7 +396,11 @@ boolean LX_unlockHauntedLibrary()
 	//+3 pool skill & +1 training gains. speculative_pool_skill() already assumed we would use it if we can.
 	buffMaintain($effect[Chalky Hand], 0, 1, 1);
 
-	auto_forceNextNoncombat();
+	if (internalQuestStatus("questM20Necklace") == 2)
+	{
+		// only force after we get the pool cue NC.
+		auto_forceNextNoncombat();
+	}
 	auto_log_info("It's billiards time!", "blue");
 	return autoAdv($location[The Haunted Billiards Room]);
 }
@@ -483,9 +503,6 @@ boolean LX_getLadySpookyravensDancingShoes() {
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
-	if (!zone_delay($location[The Haunted Gallery])._boolean) {
-		auto_forceNextNoncombat();
-	}
 	if (autoAdv($location[The Haunted Gallery])) {
 		return true;
 	}
@@ -716,6 +733,7 @@ boolean L11_getUVCompass()
 		return false;		//impossible to get compass in this path. [The Shore, Inc] is unavailable
 	}
 
+	pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 1, 0);
 	if(item_amount($item[Shore Inc. Ship Trip Scrip]) == 0)
 	{
 		return LX_doVacation();
@@ -1844,7 +1862,8 @@ boolean L11_ronCopperhead()
 	return false;
 }
 
-boolean L11_shenStartQuest() {
+boolean L11_shenStartQuest()
+{
 	// as the first adventure in the Copperhead Club is always the first Shen NC
 	// we can adventure there once as soon as it's open to start the quest and lock in
 	// our zones
@@ -1852,20 +1871,24 @@ boolean L11_shenStartQuest() {
 	{
 		return false;
 	}
-	if (my_daycount() < 2 || !allowSoftblockShen()) {
+	if (my_daycount() < 2 || !allowSoftblockShen())
+	{
 		// if you're fast enough to open it on day 1, maybe wait until day 2
 		return false;
 	}
 	backupSetting("choiceAdventure1074", 1);
-	if (autoAdv($location[The Copperhead Club])) {
-		if (internalQuestStatus("questL11Shen") == 1) {
-			set_property("auto_shenStarted", my_daycount());
+	if (autoAdv($location[The Copperhead Club]))
+	{
+		if (internalQuestStatus("questL11Shen") == 1)
+		{
 			auto_log_info("It seems Shen has given us a quest.", "blue");
 			auto_log_info("I am going to avoid the following zones until Shen tells me to go there or until I run out of other things to do:");
 			int linec = 1;
 			foreach z, _ in shenZonesToAvoidBecauseMaybeSnake() {
 				auto_log_info(linec++ + ". " + z);
+				set_property("auto_shenZonesTurnsSpent", `{get_property("auto_shenZonesTurnsSpent")}{z}:{z.turns_spent};`);
 			}
+			set_property("auto_lastShenTurn", $location[The Copperhead Club].turns_spent);
 		}
 		return true;
 	}
@@ -1920,7 +1943,15 @@ boolean L11_shenCopperhead()
 		}
 
 		addToMaximize("-10ml");
-		return autoAdv($location[The Copperhead Club]);
+		if (autoAdv($location[The Copperhead Club]))
+		{
+			if (get_property("lastEncounter").contains_text("Shen Copperhead, "))
+			{
+				set_property("auto_lastShenTurn", $location[The Copperhead Club].turns_spent);
+			}
+			return true;
+		}
+		return false;
 	}
 
 	if((internalQuestStatus("questL11Shen") == 1) || (internalQuestStatus("questL11Shen") == 3) || (internalQuestStatus("questL11Shen") == 5))

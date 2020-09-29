@@ -15,6 +15,10 @@ Skeletal Sommelier
 Slick Lihc
 White Chocolate Golem
 Stone Temple Pirate	item:Eyepatch>0
+Crusty Pirate
+Chatty Pirate
+party skelteon
+basic lihc
 # lobsterfrogman (todo: add more wanderers)
 Government Agent	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 Terrible Mutant	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none

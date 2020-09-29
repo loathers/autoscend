@@ -148,10 +148,13 @@ boolean auto_pre_adventure()
 
 	// Latte may conflict with certain quests. Ignore latte drops for the greater good.
 	boolean[location] IgnoreLatteDrop = $locations[The Haunted Boiler Room];
-	if (auto_latteDropWanted(place) && !(IgnoreLatteDrop contains place)) {
-		if (auto_sausageGoblin()) {
+	if (auto_latteDropWanted(place) && !(IgnoreLatteDrop contains place))
+	{
+		if (auto_sausageGoblin() && place == solveDelayZone())
+		{
 			// Burning delay using a Sausage Goblin. Can't hold both the Kramco and the Latte, we only have one off-hand!
-			if (canChangeToFamiliar($familiar[Left-Hand Man])) {
+			if (canChangeToFamiliar($familiar[Left-Hand Man]))
+			{
 				// If we can use the Left-Hand man, we can get a two-fer with both the Kramco and Latte
 				// Hurrah! We found an actual use for it, it's not useless after all!
 				auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our Latte from ' + place + ", and we're buring delay using the Kramco so your Left-Hand Man will be bringing your Latte along!", "blue");				handleFamiliar($familiar[Left-Hand Man]);
@@ -159,7 +162,9 @@ boolean auto_pre_adventure()
 				use_familiar($familiar[Left-Hand Man]); // update familiar already called so have to force.
 				autoEquip($slot[familiar], $item[latte lovers member\'s mug]);
 			}
-		} else {
+		}
+		else
+		{
 			auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our Latte from ' + place + ", so we're bringing it along.", "blue");
 			autoEquip($item[latte lovers member\'s mug]);
 		}
