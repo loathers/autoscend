@@ -750,6 +750,7 @@ int shenItemsReturned();
 boolean[location] shenSnakeLocations(int day, int n_items_returned);
 boolean[location] shenZonesToAvoidBecauseMaybeSnake();
 boolean shenShouldDelayZone(location loc);
+int[location] getShenZonesTurnsSpent();
 boolean LX_unlockHiddenTemple();
 boolean hasSpookyravenLibraryKey();
 boolean hasILoveMeVolI();
