@@ -455,7 +455,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 15, 1, 10);
 		// Only maintain skills in path with familiars
-		if(pathAllowsFamiliar())
+		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
 		{
 			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
 			if(regen > 10.0)
@@ -516,7 +516,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 20, 1, 10);
 		// Only Maintain skills in path with familiars
-		if(pathAllowsFamiliar())
+		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
 		{
 			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
 			if(regen > 10.0)
@@ -583,7 +583,7 @@ boolean auto_post_adventure()
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
 		// Only maintain in path with familiars
-		if(pathAllowsFamiliar())
+		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
 		{
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 			if(regen > 4.0)
@@ -693,7 +693,7 @@ boolean auto_post_adventure()
 		}
 
 		// Only maintain in path with familiars
-		if(pathAllowsFamiliar())
+		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
 		{
 			buffMaintain($effect[Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
@@ -783,9 +783,9 @@ boolean auto_post_adventure()
 		}
 
 		// Only maintain in path with familiars
-		if(pathAllowsFamiliar())
+		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
 		{
-			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);
+			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);		//familiar acts more often
 		}
 		buffMaintain($effect[A Few Extra Pounds], 200, 1, 2);
 		buffMaintain($effect[Boon of the War Snapper], 200, 1, 5);

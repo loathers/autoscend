@@ -3137,6 +3137,15 @@ void resetState() {
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 
+	if(doNotBuffFamiliar100Run())		//some familiars are always bad
+	{
+		set_property("_auto_bad100Familiar", true);			//disable buffing familiar
+	}
+	else		//some familiars are only bad at certain locations
+	{
+		set_property("_auto_bad100Familiar", false); 		//reset to not bad. target location might set them as bad again
+	}
+
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
 
 	horseDefault(); // horsery tracking
