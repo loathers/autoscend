@@ -1250,20 +1250,30 @@ boolean ed_DelayNC_DailyDungeon()
 	return item_amount($item[Linen Bandages]) == 0;
 }
 
-boolean ed_DelayNC_SonofaBeach()
+boolean ed_DelayNC(int potential_dmg)
 {
-	//return true if we should delay sonofa beach as Ed because we cannot handle the zerg rush noncombat
-	//NC damage is between 50% to 100% of your maxHP. if it kills you and you have no healing item you waste an adventure.
+	//return true if we should delay NC as ed because it might kill us and cause us to waste an adv on restoring
 	if(!isActuallyEd())
 	{
 		return false;
+	}
+	if(my_hp() > potential_dmg)
+	{
+		return false;	//not enough dmg to kill us
 	}
 	if(isAboutToPowerlevel())
 	{
 		return false;	//take the risk if we have nothing left to do.
 	}
 	
+	//if we have no restorers then return true to delay
 	return item_amount($item[Linen Bandages]) == 0;
+}
+
+boolean ed_DelayNC(float potential_dmg_percent)
+{
+	int potential_dmg = ceil(0.01 * potential_dmg_percent * my_maxhp());
+	return ed_DelayNC(potential_dmg);
 }
 
 boolean edUnderworldAdv()

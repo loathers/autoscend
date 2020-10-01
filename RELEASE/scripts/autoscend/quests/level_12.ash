@@ -1106,7 +1106,7 @@ boolean L12_sonofaBeach()
 	{
 		return false;
 	}
-	if(ed_DelayNC_SonofaBeach())	//is ed ready to take this risk?
+	if(ed_DelayNC(100.0))	//zerg rush can deal 100% of maxHP in damage
 	{
 		return false;	//ed is not prepared. delay
 	}
