@@ -1160,14 +1160,12 @@ boolean L12_sonofaBeach()
 		set_property("auto_doCombatCopy", "yes");
 	}
 
-	autoAdv(1, $location[Sonofa Beach]);
+	boolean retval = autoAdv($location[Sonofa Beach]);
+	
 	set_property("auto_doCombatCopy", "no");
-
-	if (isActuallyEd() && my_hp() == 0)
-	{
-		use(1, $item[Linen Bandages]);
-	}
-	return true;
+	edAcquireHP();
+	
+	return retval;
 }
 
 boolean L12_sonofaPrefix()
@@ -1322,15 +1320,13 @@ boolean L12_sonofaPrefix()
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 
-	autoAdv(1, $location[Sonofa Beach]);
+	boolean retval = autoAdv($location[Sonofa Beach]);
+	
 	set_property("auto_combatDirective", "");
 	set_property("auto_doCombatCopy", "no");
-
-	if (isActuallyEd() && my_hp() == 0)
-	{
-		use(1, $item[Linen Bandages]);
-	}
-	return true;
+	edAcquireHP();
+	
+	return retval;
 }
 
 boolean L12_sonofaFinish()
