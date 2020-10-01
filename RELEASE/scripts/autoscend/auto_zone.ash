@@ -1167,6 +1167,12 @@ generic_t zone_available(location loc)
 			retval._boolean = true;
 		}
 		break;
+	case $location[The Tunnel of L.O.V.E.]:
+		if(get_property("loveTunnelAvailable").to_boolean() && !get_property("_loveTunnelUsed").to_boolean())
+		{
+			retval._boolean = true;
+		}
+		break;
 	case $location[Fastest Adventurer Contest]:
 		if(get_property("nsContestants1").to_int() > 0)
 		{
