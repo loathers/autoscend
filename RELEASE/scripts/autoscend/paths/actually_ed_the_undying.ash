@@ -1275,6 +1275,7 @@ boolean edUnderworldAdv()
 		abort("edUnderworldAdv() should not have been called as not ed.");
 	}
 	
+	auto_log_info("Visiting the underworld via the pyramid gate", "blue");
 	int initial_turncount = my_turncount();
 
 	visit_url("place.php?whichplace=edbase&action=edbase_portal");		//click on portal in base
