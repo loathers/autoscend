@@ -95,14 +95,7 @@ boolean auto_pre_adventure()
 			// the game doesn't let you adventure if you have no HP even though Ed
 			// gets a full heal when he goes to the underworld
 			// only necessary if a non-combat puts you on 0 HP.
-			acquireHP(1);		//try to restore to 1 HP using an item
-			if(my_hp() == 0)	//failed to restore via items
-			{
-				if(!edUnderworldAdv())	//try to spend 1 adv to restore HP
-				{
-					abort("Ed was unable to restore HP and can not continue");
-				}
-			}
+			edAcquireHP();
 		}
 	}
 

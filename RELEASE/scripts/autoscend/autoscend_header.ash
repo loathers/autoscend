@@ -425,6 +425,7 @@ boolean ed_DelayNC_DailyDungeon();
 boolean ed_DelayNC(int potential_dmg);
 boolean ed_DelayNC(float potential_dmg_percent);
 boolean edUnderworldAdv();
+boolean edAcquireHP();
 boolean LM_edTheUndying();
 void edUnderworldChoiceHandler(int choice);
 

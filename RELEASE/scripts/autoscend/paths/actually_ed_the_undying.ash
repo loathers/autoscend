@@ -1272,7 +1272,8 @@ boolean ed_DelayNC(int potential_dmg)
 
 boolean ed_DelayNC(float potential_dmg_percent)
 {
-	int potential_dmg = ceil(0.01 * potential_dmg_percent * my_maxhp());
+	float multi = 0.01 * potential_dmg_percent;
+	int potential_dmg = ceil(multi * my_maxhp());
 	return ed_DelayNC(potential_dmg);
 }
 
@@ -1284,18 +1285,51 @@ boolean edUnderworldAdv()
 	{
 		abort("edUnderworldAdv() should not have been called as not ed.");
 	}
-	
+	if(my_adventures() == 0)
+	{
+		abort("Tried to spend 1 adv as ed visiting the underworld when we have no adv left");
+	}
 	auto_log_info("Visiting the underworld via the pyramid gate", "blue");
 	int initial_turncount = my_turncount();
 
 	visit_url("place.php?whichplace=edbase&action=edbase_portal");		//click on portal in base
-	run_choice(1);		// Enter the Underworld
-	run_choice(1);		// Need to click through another window
-	ed_shopping();		// Shop while there
+	run_choice(1);														//Enter the Underworld
+	run_choice(1);														//Need to click through another window
+	ed_shopping();														//Shop while there
 	visit_url("place.php?whichplace=edunder&action=edunder_leave");		//click on portal in underworld
-	run_choice(1);		// Exit the Underworld
+	run_choice(1);														//Exit the Underworld
 	
 	return my_turncount() == 1 + initial_turncount;
+}
+
+boolean edAcquireHP()
+{
+	//Ed only needs 1 HP to adventure. goal = my_maxhp() is exceptionally wasteful for ed as it will burn all his linen bandages and then all his Ka replacing his linen bandages.
+	if(!isActuallyEd())
+	{
+		return false;
+	}
+	if(my_hp() > 0)
+	{
+		return false;	// Ed doesn't need to heal outside of combat unless on 0 hp
+	}
+	foreach it in $items[linen bandages,cotton bandages,silk bandages]
+	{
+		if(item_amount(it) > 0)
+		{
+			use(1,$item[Linen Bandages]);
+			break;
+		}
+	}
+	if(my_hp() == 0)		//could not restore via items
+	{
+		edUnderworldAdv();
+	}
+	if(my_hp() == 0)
+	{
+		abort("Ed somehow failed to restore HP and can not continue");		//prevent infinite loop of failing to adventure due to 0 HP.
+	}
+	return true;
 }
 
 boolean LM_edTheUndying()
