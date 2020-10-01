@@ -1046,68 +1046,78 @@ boolean L13_towerNSTower()
 		return true;
 	}
 
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_07_monster3"))
+	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_07_monster3"))		//need to kill wall of bones
 	{
-		if((item_amount($item[Electric Boning Knife]) > 0) || (auto_my_path() == "Pocket Familiars"))
-		{
-			set_property("auto_getBoningKnife", false);
-		}
-
-		if(!get_property("auto_getBoningKnife").to_boolean() && ((my_class() == $class[Sauceror]) || have_skill($skill[Garbage Nova])))
-		{
-			uneffect($effect[Scarysauce]);
-			uneffect($effect[Jalape&ntilde;o Saucesphere]);
-			uneffect($effect[Mayeaugh]);
-			uneffect($effect[Spiky Shell]);
-			if (canChangeFamiliar()) {
-				set_property("auto_disableFamiliarChanging", true);
-				use_familiar($familiar[none]);
-			}
-			buffMaintain($effect[Tomato Power], 0, 1, 1);
-			buffMaintain($effect[Seeing Colors], 0, 1, 1);
-			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
-			buffMaintain($effect[OMG WTF], 0, 1, 1);
-			buffMaintain($effect[There is a Spoon], 0, 1, 1);
-			boolean keepTrying = true;
-			acquireMP(216, 0);
-
-			buffMaintain($effect[Song of Sauce], 0, 1, 1);
-			buffMaintain($effect[Carol of the Hells], 0, 1, 1);
-			if(item_amount($item[Electric Boning Knife]) == 0)
-			{
-				addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
-			}
-			foreach s in $slots[acc1, acc2, acc3]
-			{
-				if(equipped_item(s) == $item[hand in glove])
-				{
-					equip(s, $item[none]);
-				}
-			}
-
-			acquireHP();
-
-			// Go into the fight with No Familiar Equips since maximizer wants to force an equip
-			// this keeps us from accidentally dealing damage and killing ourselves
-			addToMaximize("-familiar");
-
-			autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
-			if(internalQuestStatus("questL13Final") < 9)
-			{
-				auto_log_warning("Could not towerkill Wall of Bones, reverting to Boning Knife", "red");
-				acquireHP();
-				set_property("auto_getBoningKnife", true);
-			}
-		}
-		else if((item_amount($item[Electric Boning Knife]) > 0) || (auto_my_path() == "Pocket Familiars"))
+		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+		boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
+		
+		if(has_boning_knife || auto_my_path() == "Pocket Familiars")		//I have everything I need. just go fight
 		{
 			return autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 		}
-		else if(canGroundhog($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+		
+		//should I grab an electric boning knife?
+		if(hundred_fam != $familiar[none] && isAttackFamiliar(hundred_fam))
 		{
-			auto_log_info("Backfarming an Electric Boning Knife", "green");
-			set_property("choiceAdventure1026", "2");
-			autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]);
+			set_property("auto_getBoningKnife", true);		//in 100% familiar run with attack familiar we must acquire boning knife
+		}
+		if(my_class() != $class[Sauceror] && !have_skill($skill[Garbage Nova]))
+		{
+			set_property("auto_getBoningKnife", true);		//can not towerkill. get boning knife instead
+		}
+		
+		if(get_property("auto_getBoningKnife").to_boolean())	//grab boning knife if we deemed it necessary
+		{
+			if(canGroundhog($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+			{
+				auto_log_info("Backfarming an Electric Boning Knife", "green");
+				return autoAdv($location[The Castle in the Clouds in the Sky (Ground Floor)]);
+			}
+			else abort("I determined I must get [Electric Boning Knife] to proceed but I can not get one");
+		}
+		
+		//if we reached this spot we decided that we do not need a boning knife and intend to try to towerkill the wall of bones.
+		uneffect($effect[Scarysauce]);
+		uneffect($effect[Jalape&ntilde;o Saucesphere]);
+		uneffect($effect[Mayeaugh]);
+		uneffect($effect[Spiky Shell]);
+		buffMaintain($effect[Tomato Power], 0, 1, 1);
+		buffMaintain($effect[Seeing Colors], 0, 1, 1);
+		buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
+		buffMaintain($effect[OMG WTF], 0, 1, 1);
+		buffMaintain($effect[There is a Spoon], 0, 1, 1);
+		buffMaintain($effect[Song of Sauce], 0, 1, 1);
+		buffMaintain($effect[Carol of the Hells], 0, 1, 1);
+		
+		// Maximizer tries to force familiar equipment. and prefers passive dmg a that. Avoid dealing damage from familiar and losing
+		if(canChangeFamiliar())
+		{
+			use_familiar(lookupFamiliarDatafile("gremlins"));		//delevel with no damage. fallback to none if unavailable
+			set_property("auto_disableFamiliarChanging", true);
+		}
+		if(my_familiar() != $familiar[none])
+		{
+			addToMaximize("-familiar");
+			equip($slot[familiar], $item[none]);
+		}
+
+		addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
+		equipMaximizedGear();
+		foreach s in $slots[acc1, acc2, acc3]
+		{
+			if(equipped_item(s) == $item[hand in glove])
+			{
+				equip(s, $item[none]);
+			}
+		}
+		
+		acquireMP(216, 0);
+		acquireHP();
+		autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
+		if(internalQuestStatus("questL13Final") < 9)
+		{
+			auto_log_warning("Failed to towerkill Wall of Bones. Reverting to Boning Knife", "red");
+			set_property("auto_getBoningKnife", true);
 		}
 		return true;
 	}
