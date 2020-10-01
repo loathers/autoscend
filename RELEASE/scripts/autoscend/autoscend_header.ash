@@ -978,7 +978,7 @@ void equipRollover();
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
 boolean is100FamRun();
-boolean isHinderingFamiliar100Run();
+boolean doNotBuffFamiliar100Run();
 boolean isAttackFamiliar(familiar fam);
 boolean pathAllowsFamiliar();
 boolean auto_have_familiar(familiar fam);

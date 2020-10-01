@@ -11,9 +11,9 @@ boolean is100FamRun()
 	return true;
 }
 
-boolean isHinderingFamiliar100Run()
+boolean doNotBuffFamiliar100Run()
 {
-	//indicates that we are in a 100% familiar run with a familiar that hinders you. and thus should not be buffed
+	//indicates that we are in a 100% familiar run with a familiar that should not be buffed. Either because it hinders you or is useless.
 	if(!is100FamRun())
 	{
 		return false;
@@ -28,6 +28,12 @@ boolean isHinderingFamiliar100Run()
 	
 	//these familiars sometime attack the enemy
 	if($familiars[Fuzzy Dice, Stab Bat, Killer Bee, Scary Death Orb, RoboGoose] contains hundred_fam)
+	{
+		return true;
+	}
+	
+	//these familiars do nothing rather than actively hinder you. Still should not be buffed.
+	if($familiars[Pet Rock, Toothsome Rock, Bulky Buddy Box, Holiday Log, Homemade Robot, Software Bug, Bad Vibe] contains hundred_fam)
 	{
 		return true;
 	}

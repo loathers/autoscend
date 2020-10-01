@@ -3137,7 +3137,7 @@ void resetState() {
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 
-	if(isHinderingFamiliar100Run())		//some familiars are always bad
+	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{
 		set_property("_auto_bad100Familiar", true);			//disable buffing familiar
 	}
