@@ -516,6 +516,10 @@ void considerGalaktikSubQuest()
 	//by default we do not do doc galaktik quest. user can manually enable it via gui for this current ascension.
 	//this function considers wheather we should automatically enable it for this ascension.
 	
+	if(!get_property("auto_considerGalaktik").to_boolean())
+	{
+		return;		//user must opt in for automatic enabling of galaktik quest when needed
+	}
 	if(get_property("auto_doGalaktik").to_boolean())
 	{
 		return;		//already enabled for this ascension
