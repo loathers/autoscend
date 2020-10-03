@@ -532,6 +532,14 @@ void considerGalaktikSubQuest()
 	{
 		return;		//these classes cannot use galaktik restorers.
 	}
+	if(my_class() == $class[Accordion Thief] && my_level() > 10)
+	{
+		return;		//AT get guild store access and can use [magical mystery juice] instead
+	}
+	if($classes[Pastamancer, Sauceror] contains my_class())
+	{
+		return;		//Sauceror restores via curse of weaksauce. Pastamancer can use MMJ to restore.
+	}
 	
 	if(my_meat() < 100)
 	{
