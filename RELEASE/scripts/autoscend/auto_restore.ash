@@ -470,11 +470,6 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			restored_amount = 40;
 		}
 
-		if (isActuallyEd() && !($items[linen bandages, silk bandages, cotton bandages] contains metadata.name.to_item()))
-		{
-			restored_amount = 0;
-		}
-
 		return restored_amount;
 	}
 
@@ -1767,20 +1762,9 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	//Try to acquire up to the hp goal, optionally buying items and using free rests. Will also cure poisoned and beaten up before restoring any hp.
 	//returns true if my_hp() >= goal after attempting to restore.
 
-	if (isActuallyEd())
+	if(isActuallyEd())
 	{
-		if (my_hp() > 0)
-		{
-			// Ed doesn't need to heal outside of combat unless on 0 hp
-			return false;
-		}
-		else
-		{
-			// handle situations where acquireHP() has been called and passed though to here
-			// so goal = my_maxhp(). This is exceptionally wasteful for Ed as it will burn all his linen bandages
-			// and then all his Ka replacing his linen bandages. Ed only needs 1 HP to adventure.
-			goal = 1;
-		}
+		return edAcquireHP();
 	}
 
 	//vampyres can only be restored using blood bags, which are too valuable to waste on healing HP.
