@@ -127,7 +127,7 @@ void write_familiar()
 	{
 		if(turns_played() == 0)
 		{
-			to_write = "Run has not yet been started and 100% familiar is set to = " +hundred_fam+ "<br><br>";
+			to_write = "100% familiar is set to = " +hundred_fam+ ". Turns played is at 0 so it might be possible to change this. So long as you have not done any free fights<br><br>";
 			writeln(to_write);
 			writeln("<form action='' method='post'>");
 			writeln("<input type='hidden' name='auto_100familiar' value='none'/>");
@@ -143,7 +143,7 @@ void write_familiar()
 	{
 		if(turns_played() == 0)
 		{
-			writeln("Run has not yet been started and 100% familiar has not been set");
+			writeln("100% familiar has not been set. Turns played is at 0 so it might be possible to change this. So long as you have not done any free fights");
 			writeln("<form action='' method='post'>");
 			writeln("<input type='hidden' name='auto_100familiar' value='" +my_familiar()+ "'/>");
 			writeln("<input type='submit' name='' value='Set current familiar as 100% target'/></form>");
