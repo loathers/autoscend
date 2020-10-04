@@ -1,3 +1,4 @@
+auto_getSteelOrgan	boolean	Get Steel Organ this ascension?
 auto_getBeehive	boolean	Go for the beehive?
 auto_getStarKey	boolean	Get Richard's Star Key?
 auto_holeinthesky	boolean	Do we need to open the Hole in the Sky?
