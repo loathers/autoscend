@@ -421,6 +421,11 @@ boolean L1_ed_island();
 boolean L1_ed_islandFallback();
 boolean L9_ed_chasmStart();
 boolean L9_ed_chasmBuildClover(int need);
+boolean ed_DelayNC_DailyDungeon();
+boolean ed_DelayNC(int potential_dmg);
+boolean ed_DelayNC(float potential_dmg_percent);
+boolean edUnderworldAdv();
+boolean edAcquireHP();
 boolean LM_edTheUndying();
 void edUnderworldChoiceHandler(int choice);
 
@@ -750,6 +755,7 @@ int shenItemsReturned();
 boolean[location] shenSnakeLocations(int day, int n_items_returned);
 boolean[location] shenZonesToAvoidBecauseMaybeSnake();
 boolean shenShouldDelayZone(location loc);
+int[location] getShenZonesTurnsSpent();
 boolean LX_unlockHiddenTemple();
 boolean hasSpookyravenLibraryKey();
 boolean hasILoveMeVolI();
@@ -813,6 +819,7 @@ boolean L12_preOutfit();
 boolean L12_startWar();
 boolean L12_filthworms();
 boolean L12_orchardFinalize();
+void gremlinsFamiliar();
 boolean L12_gremlins();
 boolean L12_sonofaBeach();
 boolean L12_sonofaPrefix();
@@ -976,6 +983,8 @@ void equipRollover();
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
 boolean is100FamRun();
+boolean doNotBuffFamiliar100Run();
+boolean isAttackFamiliar(familiar fam);
 boolean pathAllowsFamiliar();
 boolean auto_have_familiar(familiar fam);
 boolean canChangeFamiliar();

@@ -920,6 +920,36 @@ boolean L12_orchardFinalize()
 	return true;
 }
 
+void gremlinsFamiliar()
+{
+	//when fighting gremlins we want to minimize the familiar ability to cause damage.
+	//maximizer will try to force an equip into familiar slot. So disable maximizer switching of familiar equipment
+	addToMaximize("-familiar");
+	
+	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+	boolean strip_familiar = true;
+	if(hundred_fam != $familiar[none] && isAttackFamiliar(hundred_fam))		//in 100% familiar run with an attack familiar
+	{
+		set_property("_auto_bad100Familiar", true);			//do not buff bad familiar
+		
+		if(get_property("questS01OldGuy") == "unstarted" && !get_property("_auto_seaQuestStartedToday").to_boolean())
+		{
+			//easier to track if we tried today than to track if it is allowed in current path
+			set_property("_auto_seaQuestStartedToday", true);
+			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman");	//get bathysphere by starting the sea quest
+		}
+		if(possessEquipment($item[little bitty bathysphere]))
+		{
+			equip($slot[familiar], $item[little bitty bathysphere]);
+			strip_familiar = false;
+		}
+	}
+	if(strip_familiar)
+	{
+		equip($slot[familiar], $item[none]);	//strip familiar equipment if not in 100% run to avoid passive dmg
+	}
+}
+
 boolean L12_gremlins()
 {
 	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestJunkyardCompleted") != "none")
@@ -987,9 +1017,8 @@ boolean L12_gremlins()
 		abort("Do gremlins manually, sorry. Or set sidequestJunkyardCompleted=fratboy and we will just skip them");
 	}
 
-	// Go into the fight with No Familiar Equips since maximizer wants to force an equip
-	// this keeps us from accidentally killing gremlins
-	addToMaximize("-familiar");
+	// Avoid killing the tool gremlins using familiar damage.
+	gremlinsFamiliar();
 
 	auto_log_info("Doing them gremlins", "blue");
 	addToMaximize("20dr,1da 1000max,3hp,-3ml");
@@ -1077,6 +1106,10 @@ boolean L12_sonofaBeach()
 	{
 		return false;
 	}
+	if(ed_DelayNC(100.0))	//zerg rush can deal 100% of maxHP in damage
+	{
+		return false;	//ed is not prepared. delay
+	}
 
 	//Seriously? http://alliancefromhell.com/viewtopic.php?t=1338
 	if(item_amount($item[Wool Hat]) == 1)
@@ -1127,14 +1160,12 @@ boolean L12_sonofaBeach()
 		set_property("auto_doCombatCopy", "yes");
 	}
 
-	autoAdv(1, $location[Sonofa Beach]);
+	boolean retval = autoAdv($location[Sonofa Beach]);
+	
 	set_property("auto_doCombatCopy", "no");
-
-	if (isActuallyEd() && my_hp() == 0)
-	{
-		use(1, $item[Linen Bandages]);
-	}
-	return true;
+	edAcquireHP();
+	
+	return retval;
 }
 
 boolean L12_sonofaPrefix()
@@ -1289,15 +1320,13 @@ boolean L12_sonofaPrefix()
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 
-	autoAdv(1, $location[Sonofa Beach]);
+	boolean retval = autoAdv($location[Sonofa Beach]);
+	
 	set_property("auto_combatDirective", "");
 	set_property("auto_doCombatCopy", "no");
-
-	if (isActuallyEd() && my_hp() == 0)
-	{
-		use(1, $item[Linen Bandages]);
-	}
-	return true;
+	edAcquireHP();
+	
+	return retval;
 }
 
 boolean L12_sonofaFinish()

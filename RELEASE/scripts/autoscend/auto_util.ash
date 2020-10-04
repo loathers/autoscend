@@ -4501,11 +4501,10 @@ boolean auto_is_valid(item it)
 
 boolean auto_is_valid(familiar fam)
 {
-	familiar hundo = to_familiar(get_property("auto_100familiar"));
-	if(hundo != $familiar[none] && hundo != fam){
-		auto_log_warning(fam + " isnt valid, player is in a 100% familiar run with " + hundo);
+	if(is100FamRun()){
+		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
-	return bees_hate_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam) && (hundo == $familiar[none] || hundo == fam);
+	return bees_hate_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean auto_is_valid(skill sk)

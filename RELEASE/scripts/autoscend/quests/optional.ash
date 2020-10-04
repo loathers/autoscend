@@ -202,14 +202,6 @@ boolean LX_steelOrgan()
 	{
 		return false;
 	}
-	if (get_property("questL06Friar") != "finished")
-	{
-		return false;
-	}
-	if(my_adventures() == 0)
-	{
-		return false;
-	}
 	if($classes[Ed, Gelatinous Noob, Vampyre] contains my_class())
 	{
 		auto_log_info(my_class() + " can not use a Steel Organ, turning off setting.", "blue");
@@ -229,6 +221,13 @@ boolean LX_steelOrgan()
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
+
+	if (internalQuestStatus("questL06Friar") < 3)
+	{
+		// can't get to Pandaemonium if we haven't cleansed the taint!
+		return L6_friarsGetParts();
+	}
+
 	if(get_property("questM10Azazel") != "finished")
 	{
 		auto_log_info("I am hungry for some steel.", "blue");
@@ -429,7 +428,7 @@ boolean LX_guildUnlock()
 			set_property("choiceAdventure121", "2");//Under the Knife -> Umm, no thanks. Seriously.
 			set_property("choiceAdventure542", "1");//Now\'s Your Pants! I Mean... Your Chance! -> Yoink
 			pref = "questG08Moxie";
-			if(goal != $item[none])
+			if (internalQuestStatus(pref) < 1)
 			{
 				loc = $location[The Sleazy Back Alley];
 			}
@@ -448,7 +447,7 @@ boolean LX_guildUnlock()
 		}
 
 		autoAdv(1, loc);
-		if(item_amount(goal) > 0)
+		if (internalQuestStatus(pref) == 1)
 		{
 			visit_url("guild.php?place=challenge");
 		}
@@ -517,6 +516,10 @@ void considerGalaktikSubQuest()
 	//by default we do not do doc galaktik quest. user can manually enable it via gui for this current ascension.
 	//this function considers wheather we should automatically enable it for this ascension.
 	
+	if(!get_property("auto_considerGalaktik").to_boolean())
+	{
+		return;		//user must opt in for automatic enabling of galaktik quest when needed
+	}
 	if(get_property("auto_doGalaktik").to_boolean())
 	{
 		return;		//already enabled for this ascension
@@ -532,6 +535,14 @@ void considerGalaktikSubQuest()
 	if(my_class() == $class[Vampyre] || in_zelda())
 	{
 		return;		//these classes cannot use galaktik restorers.
+	}
+	if(my_class() == $class[Accordion Thief] && my_level() > 10)
+	{
+		return;		//AT get guild store access and can use [magical mystery juice] instead
+	}
+	if($classes[Pastamancer, Sauceror] contains my_class())
+	{
+		return;		//Sauceror restores via curse of weaksauce. Pastamancer can use MMJ to restore.
 	}
 	
 	if(my_meat() < 100)

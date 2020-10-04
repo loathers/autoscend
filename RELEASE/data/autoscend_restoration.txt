@@ -107,6 +107,3 @@
 109	Holy Spring Water	item	0	50	0	0	none	Spiritually Awake
 110	Spirit Beer	item	0	90	0	0	none	Spiritually Aware
 111	Sacramental Wine	item	0	180	0	0	none	Spiritually Awash
-112	linen bandages	item	30	0	0	0	none	none
-113	cotton bandages	item	60	0	0	0	none	none
-114	silk bandages	item	120	0	0	0	none	none
