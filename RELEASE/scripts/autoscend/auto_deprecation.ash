@@ -310,6 +310,12 @@ boolean settingFixer()
 	
 	remove_property("auto_shenStarted");
 	remove_property("auto_breakstone");
+	remove_property("auto_aftercore");
+	remove_property("auto_aboocount");
+	remove_property("auto_dinseyGarbageMoney");
+	remove_property("auto_lastABooConsider");
+	remove_property("auto_lastABooCycleFix");
+	remove_property("auto_longConMonster");
 	
 	return true;
 }

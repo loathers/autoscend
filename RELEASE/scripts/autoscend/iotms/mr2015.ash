@@ -1189,10 +1189,6 @@ boolean LX_dinseylandfillFunbucks()
 	{
 		return false;
 	}
-	if(get_property("auto_dinseyGarbageMoney").to_int() == my_daycount())
-	{
-		return false;
-	}
 	if((my_adventures() == 0) || (my_level() < 6))
 	{
 		return false;

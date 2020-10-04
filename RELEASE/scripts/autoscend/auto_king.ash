@@ -97,36 +97,31 @@ void handleKingLiberation()
 		}
 	}
 
-	if(get_property("auto_aftercore").to_int() != my_ascensions())
+//	buy_item($item[4-d camera], 1, 10000);
+//	buy_item($item[mojo filter], 2, 3500);
+//	buy_item($item[stone wool], 2, 3500);
+//	buy_item($item[drum machine], 1, 2500);
+//	buy_item($item[killing jar], 1, 500);
+//	buy_item($item[spooky-gro fertilizer], 1, 500);
+//	buy_item($item[stunt nuts], 1, 500);
+//	buy_item($item[wet stew], 1, 3500);
+//	buy_item($item[star chart], 1, 500);
+//	buy_item($item[milk of magnesium], 2, 1200);
+//	buy_item($item[Boris\'s Key Lime Pie], 1, 8500);
+//	buy_item($item[Jarlsberg\'s Key Lime Pie], 1, 8500);
+//	buy_item($item[Sneaky Pete\'s Key Lime Pie], 1, 8500);
+//	buy_item($item[Digital Key Lime Pie], 1, 8500);
+//	buy_item($item[Star Key Lime Pie], 3, 8500);
+//	buy_item($item[The Big Book of Pirate insults], 1, 600);
+//	buy_item($item[hand in glove], 1, 5000);
+
+
+	if(get_property("auto_dickstab").to_boolean())
 	{
-//		buy_item($item[4-d camera], 1, 10000);
-//		buy_item($item[mojo filter], 2, 3500);
-//		buy_item($item[stone wool], 2, 3500);
-//		buy_item($item[drum machine], 1, 2500);
-//		buy_item($item[killing jar], 1, 500);
-//		buy_item($item[spooky-gro fertilizer], 1, 500);
-//		buy_item($item[stunt nuts], 1, 500);
-//		buy_item($item[wet stew], 1, 3500);
-//		buy_item($item[star chart], 1, 500);
-//		buy_item($item[milk of magnesium], 2, 1200);
-//		buy_item($item[Boris\'s Key Lime Pie], 1, 8500);
-//		buy_item($item[Jarlsberg\'s Key Lime Pie], 1, 8500);
-//		buy_item($item[Sneaky Pete\'s Key Lime Pie], 1, 8500);
-//		buy_item($item[Digital Key Lime Pie], 1, 8500);
-//		buy_item($item[Star Key Lime Pie], 3, 8500);
-//		buy_item($item[The Big Book of Pirate insults], 1, 600);
-//		buy_item($item[hand in glove], 1, 5000);
-
-
-		if(get_property("auto_dickstab").to_boolean())
+		while(item_amount($item[Shore Inc. Ship Trip Scrip]) < 4)
 		{
-			while(item_amount($item[Shore Inc. Ship Trip Scrip]) < 4)
-			{
-				if(!LX_doVacation()) break;		//tries to vacation and if fails it will break the loop
-			}
+			if(!LX_doVacation()) break;		//tries to vacation and if fails it will break the loop
 		}
-
-		set_property("auto_aftercore", my_ascensions());
 	}
 
 	auto_log_info("King Liberation Complete. Thank you for playing", "blue");
