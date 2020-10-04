@@ -118,6 +118,43 @@ void generateTrackingData(string tracked)
 	}
 }
 
+void write_familiar()
+{
+	//display current 100% familiar. and options related to it.
+	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+	string to_write;
+	if(hundred_fam != $familiar[none])			//we already have a 100% familiar set for this ascension
+	{
+		if(turns_played() == 0)
+		{
+			to_write = "Run has not yet been started and 100% familiar is set to = " +hundred_fam+ "<br><br>";
+			writeln(to_write);
+			writeln("<form action='' method='post'>");
+			writeln("<input type='hidden' name='auto_100familiar' value='none'/>");
+			writeln("<input type='submit' name='' value='Disable 100% familiar run'/></form>");
+		}
+		else
+		{
+			to_write = "100% familiar is set to = " +hundred_fam+ "<br><br>";
+			writeln(to_write);
+		}
+	}
+	else										//100% familiar not set.
+	{
+		if(turns_played() == 0)
+		{
+			writeln("Run has not yet been started and 100% familiar has not been set");
+			writeln("<form action='' method='post'>");
+			writeln("<input type='hidden' name='auto_100familiar' value='" +my_familiar()+ "'/>");
+			writeln("<input type='submit' name='' value='Set current familiar as 100% target'/></form>");
+		}
+		else
+		{
+			writeln("This is not a 100% familiar run");
+		}
+	}
+}
+
 void main()
 {
 	initializeSettings();		//called once per ascension. should not handle anything other than intialising properties.
@@ -133,7 +170,7 @@ void main()
 	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
 	writeln("<input type='submit' name='' value='Interrupt Script'/></form>");
 	
-
+	write_familiar();		//display current 100% familiar. and options related to it.
 
 	fields = form_fields();
 	if(count(fields) > 0)
