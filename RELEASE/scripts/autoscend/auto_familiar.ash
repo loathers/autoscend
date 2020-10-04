@@ -63,8 +63,7 @@ boolean isAttackFamiliar(familiar fam)
 		return true;
 	}
 	
-	if($familiars[Adventurous Spelunker,		//mafia bug. https://kolmafia.us/showthread.php?25467
-	Doppelshifter,								//random familiar every fight. can be an attack familiar
+	if($familiars[Doppelshifter,				//random familiar every fight. can be an attack familiar
 	Dandy Lion									//attacks if you equip a whip.
 	] contains fam)
 	{

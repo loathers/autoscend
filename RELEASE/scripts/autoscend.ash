@@ -1,4 +1,4 @@
-since r20321; // Log daycount when first got Shen Copperhead, Nightclub Owner.  Thanks to fredg1
+since r20417;	//min mafia revision needed to run this script. Last update: Adventurous Spelunker familiar can deal damage
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
