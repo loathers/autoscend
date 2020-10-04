@@ -6,7 +6,6 @@
 7	auto_crackpotjar	string	POST	Status of Crackpot Mystic Jar of Psychoses
 9	auto_day1_dna	string	POST	'finished' if we have hybridized ourselves at the start of Ascension.
 10	auto_day_init	string	POST	Current daycount if we finished initializing today.
-11	auto_disableAdventureHandling	string	ACTION	When set this prevents post/preadventure behavior. This is necessary for multi-adventure situations and 'a choice follows this' situations.
 13	auto_getBoningKnife	boolean	POST	Do we want Boning Knife this ascension?
 14	auto_gnasirUnlocked	boolean	POST	Have we found gnasir in the Desert?
 15	auto_grimstoneFancyOilPainting	boolean	POST	do grimstone for fancy oil painting this ascension?
@@ -30,7 +29,6 @@
 40	_auto_lastABooConsider	integer	POST	Last turn that we considered doing A-Boo Peak
 41	_auto_lastABooCycleFix	integer	POST	Tracker to prevent us infinitely looping on A-Boo Peak
 42	_auto_witchessBattles	integer	POST	Tracker for Witchess Combats (yes, this is actually needed).
-43	auto_combatDirective	string	POST	State of overloading of combat behaviors.
 44	auto_needLegs	boolean	POST	In Ed, do we require getting legs before trying to Ka farm?
 45	auto_hccsTurnSave	boolean	ANY	Community Service: Should we ignore pixel farming?
 46	auto_maxCandyPrice	integer	ANY	Max allowable price per candy for Rethinking Candy (default 2500)
