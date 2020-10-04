@@ -3040,11 +3040,10 @@ void cs_initializeDay(int day)
 				handleBarrelFullOfBarrels(true);
 			}
 
-			if(get_property("auto_breakstone").to_boolean())
+			if(get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
 			{
-				string temp = visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
-				temp = visit_url("peevpee.php?place=fight");
-				set_property("auto_breakstone", false);
+				visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
+				visit_url("peevpee.php?place=fight");
 			}
 			set_property("auto_day_init", 1);
 			try

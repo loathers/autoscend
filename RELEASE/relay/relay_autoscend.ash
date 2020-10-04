@@ -120,6 +120,8 @@ void generateTrackingData(string tracked)
 
 void main()
 {
+	initializeSettings();		//called once per ascension. should not handle anything other than intialising properties.
+	
 	write_styles();
 	writeln("<html><head><title>autoscend Crapulent Manager</title>");
 	writeln("</head><body><h1>autoscend Manager</h1>");
@@ -130,6 +132,7 @@ void main()
 	writeln("<form action='' method='post'>");
 	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
 	writeln("<input type='submit' name='' value='Interrupt Script'/></form>");
+	
 
 
 	fields = form_fields();
@@ -229,8 +232,8 @@ void main()
 
 	writeln("<table><tr><th>Settings Color Codings</th></tr>");
 	writeln("<tr bgcolor=#00ffff><td>Anytime: This setting can be changed at any time and takes effect immediately.</td></tr>");
-	writeln("<tr bgcolor=#ffff00><td>Pre: This setting takes effect on the next run that is started with the script.</td></tr>");
-	writeln("<tr bgcolor=#00ff00><td>Post: This setting is set by the first run of the script but can be overrode after that. Translation: Run script on day 1, after first adventure, set these however you like.</td></tr>");
+	writeln("<tr bgcolor=#ffff00><td>Pre: Next time we initialize autoscend this will be used to determine what we should set some Post type settings to.</td></tr>");
+	writeln("<tr bgcolor=#00ff00><td>Post: This setting is used to indicate things to do on the current ascension. They are all automatically reconfigured each ascension when we initialize setting on the first run of autoscend. After settings have been initialized you may change this. Under some circumstances they will be automatically changed mid ascension</td></tr>");
 	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
 	if(get_property("auto_allowSharingData").to_boolean())
 	{

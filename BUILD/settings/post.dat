@@ -1,10 +1,10 @@
-auto_getSteelOrgan	boolean	Get Steel Organ this ascension?
-auto_getBeehive	boolean	Go for the beehive?
-auto_getStarKey	boolean	Get Richard's Star Key?
-auto_holeinthesky	boolean	Do we need to open the Hole in the Sky?
-auto_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat Warriors?
-auto_ignoreFlyer	boolean	Do not do the flyer quest, recommended to set true if fighting for the hippies.
-auto_haveoven	boolean	If you have an oven, this should be true. But we can't always check the campground.
-auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar?
-auto_doGalaktik	boolean	Do Galaktik quest this ascension
-auto_paranoia	integer	How often should we refresh quests? -1 is never, lower positive numbers = more often.
+auto_getSteelOrgan	boolean	Get Steel Organ in this ascension?
+auto_getBeehive	boolean	Get Beehive in this ascension?
+auto_getStarKey	boolean	Get Richard's Star Key in this ascension?
+auto_holeinthesky	boolean	Open the Hole in the Sky in this ascension?
+auto_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat Warriors in this ascension?
+auto_ignoreFlyer	boolean	Do not do the flyer quest in this ascension? recommended to set true if fighting for the hippies.
+auto_haveoven	boolean	Track oven status. If you have an oven this should be true. But we can't always check the campground.
+auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this ascension?
+auto_doGalaktik	boolean	Do Galaktik quest this ascension?
+auto_paranoia	integer	How often should we refresh quests? measured in adventures. -1 is never, lower positive numbers = more often.

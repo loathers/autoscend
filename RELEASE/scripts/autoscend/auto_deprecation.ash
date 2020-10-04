@@ -309,6 +309,7 @@ boolean settingFixer()
 	}
 	
 	remove_property("auto_shenStarted");
+	remove_property("auto_breakstone");
 	
 	return true;
 }

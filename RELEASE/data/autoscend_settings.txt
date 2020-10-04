@@ -56,20 +56,20 @@ any	46	auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. 
 any	47	auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
 any	48	auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
 any	49	auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
+any	50	auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
 
-post	0	auto_getSteelOrgan	boolean	Get Steel Organ this ascension?
-post	1	auto_getBeehive	boolean	Go for the beehive?
-post	2	auto_getStarKey	boolean	Get Richard's Star Key?
-post	3	auto_holeinthesky	boolean	Do we need to open the Hole in the Sky?
-post	4	auto_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat Warriors?
-post	5	auto_ignoreFlyer	boolean	Do not do the flyer quest, recommended to set true if fighting for the hippies.
-post	6	auto_haveoven	boolean	If you have an oven, this should be true. But we can't always check the campground.
-post	7	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar?
-post	8	auto_doGalaktik	boolean	Do Galaktik quest this ascension
-post	9	auto_paranoia	integer	How often should we refresh quests? -1 is never, lower positive numbers = more often.
+post	0	auto_getSteelOrgan	boolean	Get Steel Organ in this ascension?
+post	1	auto_getBeehive	boolean	Get Beehive in this ascension?
+post	2	auto_getStarKey	boolean	Get Richard's Star Key in this ascension?
+post	3	auto_holeinthesky	boolean	Open the Hole in the Sky in this ascension?
+post	4	auto_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat Warriors in this ascension?
+post	5	auto_ignoreFlyer	boolean	Do not do the flyer quest in this ascension? recommended to set true if fighting for the hippies.
+post	6	auto_haveoven	boolean	Track oven status. If you have an oven this should be true. But we can't always check the campground.
+post	7	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this ascension?
+post	8	auto_doGalaktik	boolean	Do Galaktik quest this ascension?
+post	9	auto_paranoia	integer	How often should we refresh quests? measured in adventures. -1 is never, lower positive numbers = more often.
 
-pre	0	auto_pvpEnable	boolean	Automatically participate in PvP?
-pre	1	auto_alwaysGetSteelOrgan	boolean	If true, get the Steel Organ in the next ascension.
+pre	0	auto_alwaysGetSteelOrgan	When we next initialize settings it will be copied to auto_getSteelOrgan
 
 sharing	0	auto_shareMaximizer	boolean	Share maximzer data. This includes the maximzer string, class, path, softcore/hardcore and moon sign.
 

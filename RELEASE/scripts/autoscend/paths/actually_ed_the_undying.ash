@@ -810,12 +810,11 @@ boolean ed_shopping()
 
 	auto_log_info("Time to shop!", "red");
 
-	if (get_property("auto_breakstone").to_boolean())
+	if (get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
 	{
-		string temp = visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
-		temp = visit_url("place.php?whichplace=edunder&action=edunder_hippy");
-		temp = visit_url("choice.php?pwd&whichchoice=1057&option=1", true);
-		set_property("auto_breakstone", false);
+		visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
+		visit_url("place.php?whichplace=edunder&action=edunder_hippy");
+		visit_url("choice.php?pwd&whichchoice=1057&option=1", true);
 	}
 
 	int coins = item_amount($item[Ka Coin]);

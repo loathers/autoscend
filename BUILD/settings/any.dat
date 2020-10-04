@@ -48,3 +48,4 @@ auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for 
 auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
 auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
 auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
+auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
