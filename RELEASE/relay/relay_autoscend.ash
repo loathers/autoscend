@@ -127,7 +127,7 @@ void write_familiar()
 	{
 		if(turns_played() == 0)
 		{
-			to_write = "100% familiar is set to = " +hundred_fam+ ". Turns played is at 0 so it might be possible to change this. So long as you have not done any free fights<br><br>";
+			to_write = "100% familiar is set to = " +hundred_fam+ ". Turns played is at 0 so it might be possible to change this. So long as you have not done any free fights<br>";
 			writeln(to_write);
 			writeln("<form action='' method='post'>");
 			writeln("<input type='hidden' name='auto_100familiar' value='none'/>");
@@ -135,7 +135,7 @@ void write_familiar()
 		}
 		else
 		{
-			to_write = "100% familiar is set to = " +hundred_fam+ "<br><br>";
+			to_write = "100% familiar is set to = " +hundred_fam+ "<br>";
 			writeln(to_write);
 		}
 	}
@@ -143,14 +143,14 @@ void write_familiar()
 	{
 		if(turns_played() == 0)
 		{
-			writeln("100% familiar has not been set. Turns played is at 0 so it might be possible to change this. So long as you have not done any free fights");
+			writeln("100% familiar has not been set. Turns played is at 0 so it might be possible to change this. So long as you have not done any free fights<br>");
 			writeln("<form action='' method='post'>");
 			writeln("<input type='hidden' name='auto_100familiar' value='" +my_familiar()+ "'/>");
 			writeln("<input type='submit' name='' value='Set current familiar as 100% target'/></form>");
 		}
 		else
 		{
-			writeln("This is not a 100% familiar run");
+			writeln("This is not a 100% familiar run<br>");
 		}
 	}
 }
@@ -171,6 +171,15 @@ void main()
 	writeln("<input type='submit' name='' value='Interrupt Script'/></form>");
 	
 	write_familiar();		//display current 100% familiar. and options related to it.
+	
+	if(my_ascensions() == get_property("auto_doneInitialize").to_int())
+	{
+		writeln("Settings have been initialized for current ascension. You may change Post type settings<br>");
+	}
+	else
+	{
+		writeln("Settings have not been initialized for current ascension. Do not change Post type settings<br>");
+	}
 
 	fields = form_fields();
 	if(count(fields) > 0)
