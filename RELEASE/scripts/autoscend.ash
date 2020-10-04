@@ -90,9 +90,9 @@ void initializeSettings() {
 	// all paths that have extra settings should call their path specific
 	// initialise function at the end of this function (may override properties set in here).
 
-	if(my_ascensions() <= get_property("auto_doneInitialize").to_int())
+	if(my_ascensions() == get_property("auto_doneInitialize").to_int())
 	{
-		return;
+		return;		//already initialized settings this ascension
 	}
 	set_location($location[none]);
 	invalidateRestoreOptionCache();
