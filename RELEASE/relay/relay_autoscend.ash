@@ -179,7 +179,6 @@ void main()
 
 	file_to_map("autoscend_settings.txt", s);
 
-	boolean dickstab = false;
 	writeln("<form action='' method='post'>");
 	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
 	writeln("<input type='submit' name='' value='Interrupt Script'/></form>");
@@ -197,6 +196,7 @@ void main()
 	
 	writeln("<br><a href=\"autoscend_settings_extra.php\">For extra settings click here</a><br>");
 
+	boolean dickstab = false;
 	fields = form_fields();
 	if(count(fields) > 0)
 	{
