@@ -322,7 +322,7 @@ void main()
 		generateTrackingData("auto_wishes");
 	}
 
-	if(my_class() == $class[Ed])
+	if(isActuallyEd())
 	{
 		writeln("<h2>Lash of the Cobra <img src=\"images/itemimages/cobrahead.gif\"></h2>");
 		generateTrackingData("auto_lashes");
@@ -358,7 +358,7 @@ void main()
 	writeln("Day: " + my_daycount() + "<br>");
 	writeln("Turns Played: " + my_turncount() + "<br>");
 	writeln("Tavern: " + get_property("tavernLayout") + "<br>");
-	if(my_class() == $class[Ed])
+	if(isActuallyEd())
 	{
 		writeln("Combats: " + get_property("auto_edCombatCount") + "<br>");
 		writeln("Combat Rounds: " + get_property("auto_edCombatRoundCount") + "<br>");
