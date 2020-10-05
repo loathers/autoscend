@@ -1,6 +1,3 @@
-script "pocket_familiars.ash"
-
-
 void digimon_initializeDay(int day)
 {
 	digimon_makeTeam();
@@ -10,12 +7,9 @@ void digimon_initializeSettings()
 {
 	if(auto_my_path() == "Pocket Familiars")
 	{
-		set_property("auto_getBeehive", false);
 		set_property("auto_getBoningKnife", false);
-		set_property("auto_cubeItems", false);
 		set_property("auto_hippyInstead", true);
 		set_property("auto_ignoreFlyer", true);
-		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);
 	}
 }

@@ -1,5 +1,3 @@
-script "optional.ash"
-
 // All prototypes for this code described in autoscend_header.ash
 
 boolean LX_artistQuest()
@@ -204,14 +202,6 @@ boolean LX_steelOrgan()
 	{
 		return false;
 	}
-	if (get_property("questL06Friar") != "finished")
-	{
-		return false;
-	}
-	if(my_adventures() == 0)
-	{
-		return false;
-	}
 	if($classes[Ed, Gelatinous Noob, Vampyre] contains my_class())
 	{
 		auto_log_info(my_class() + " can not use a Steel Organ, turning off setting.", "blue");
@@ -224,14 +214,6 @@ boolean LX_steelOrgan()
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
-	if(my_path() == "Avatar of West of Loathing")
-	{
-		if((get_property("awolPointsCowpuncher").to_int() < 7) || (get_property("awolPointsBeanslinger").to_int() < 1) || (get_property("awolPointsSnakeoiler").to_int() < 5))
-		{
-			set_property("auto_getSteelOrgan", false);
-			return false;
-		}
-	}
 
 	if(have_skill($skill[Liver of Steel]) || have_skill($skill[Stomach of Steel]) || have_skill($skill[Spleen of Steel]))
 	{
@@ -239,6 +221,13 @@ boolean LX_steelOrgan()
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
+
+	if (internalQuestStatus("questL06Friar") < 3)
+	{
+		// can't get to Pandaemonium if we haven't cleansed the taint!
+		return L6_friarsGetParts();
+	}
+
 	if(get_property("questM10Azazel") != "finished")
 	{
 		auto_log_info("I am hungry for some steel.", "blue");
@@ -439,7 +428,7 @@ boolean LX_guildUnlock()
 			set_property("choiceAdventure121", "2");//Under the Knife -> Umm, no thanks. Seriously.
 			set_property("choiceAdventure542", "1");//Now\'s Your Pants! I Mean... Your Chance! -> Yoink
 			pref = "questG08Moxie";
-			if(goal != $item[none])
+			if (internalQuestStatus(pref) < 1)
 			{
 				loc = $location[The Sleazy Back Alley];
 			}
@@ -458,13 +447,161 @@ boolean LX_guildUnlock()
 		}
 
 		autoAdv(1, loc);
-		if(item_amount(goal) > 0)
+		if (internalQuestStatus(pref) == 1)
 		{
 			visit_url("guild.php?place=challenge");
 		}
 		return true;
 	}
 	return false;
+}
+
+boolean startArmorySubQuest()
+{
+	if(in_koe() || auto_my_path() == "Nuclear Autumn")
+	{
+		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
+		{
+			return use(1, $item[Hypnotic Breadcrumbs]);
+		}
+		return false;
+	}
+
+	if(internalQuestStatus("questM25Armorer") == -1)
+	{
+		string temp = visit_url("shop.php?whichshop=armory");
+		temp = visit_url("shop.php?whichshop=armory&action=talk");
+		temp = visit_url("choice.php?pwd=&whichchoice=1065&option=1");
+		if(internalQuestStatus("questM25Armorer") > -1)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean startMeatsmithSubQuest()
+{
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		if(item_amount($item[Bone With a Price Tag On It]) > 0)
+		{
+			use(1, $item[Bone With a Price Tag On It]);
+			return true;
+		}
+		return false;
+	}
+	if(internalQuestStatus("questM23Meatsmith") == -1)
+	{
+		string temp = visit_url("shop.php?whichshop=meatsmith");
+		temp = visit_url("shop.php?whichshop=meatsmith&action=talk");
+		temp = visit_url("choice.php?pwd=&whichchoice=1059&option=1");
+		return true;
+	}
+	return false;
+}
+
+boolean finishMeatsmithSubQuest()
+{
+	if (internalQuestStatus("questM23Meatsmith") == 1) {
+		visit_url("shop.php?whichshop=meatsmith");
+		run_choice(2);
+		return true;
+	}
+	return false;
+}
+
+void considerGalaktikSubQuest()
+{
+	//by default we do not do doc galaktik quest. user can manually enable it via gui for this current ascension.
+	//this function considers wheather we should automatically enable it for this ascension.
+	
+	if(get_property("auto_doGalaktik").to_boolean())
+	{
+		return;		//already enabled for this ascension
+	}
+	if(internalQuestStatus("questM24Doc") != 0)		//quest is unstarted or already finished
+	{
+		return;		//we always try to start this quest. if we could not for some reason then there is no point in trying to do it
+	}
+	if(my_turncount() < 30)
+	{
+		return;		//give it some turns to see how well we handle things before deciding if galaktik is needed
+	}
+	if(my_class() == $class[Vampyre] || in_zelda())
+	{
+		return;		//these classes cannot use galaktik restorers.
+	}
+	
+	if(my_meat() < 100)
+	{
+		auto_log_info("We are so poor we cannot effectively restore anymore. Enabling Galaktik quest for this ascension", "red");
+		set_property("auto_doGalaktik", true);
+		return;
+	}
+	if(my_meat() + 100 < meatReserve())
+	{
+		auto_log_info("Our meat reserves are far too low, we still need to save up some for quests. Enabling Galaktik quest for this ascension", "red");
+		set_property("auto_doGalaktik", true);
+		return;
+	}
+}
+
+boolean startGalaktikSubQuest()
+{
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
+		{
+			use(1, $item[Map to a Hidden Booze Cache]);
+			return true;
+		}
+		return false;
+	}
+	if(internalQuestStatus("questM24Doc") == -1)
+	{
+		string temp = visit_url("shop.php?whichshop=doc");
+		temp = visit_url("shop.php?whichshop=doc&action=talk");
+		temp = visit_url("choice.php?pwd=&whichchoice=1064&option=1");
+		return true;
+	}
+	return false;
+}
+
+boolean finishGalaktikSubQuest()
+{
+	if (item_amount($item[fraudwort]) >= 3 && item_amount($item[shysterweed]) >= 3 && item_amount($item[swindleblossom]) >= 3) {
+		string temp = visit_url("shop.php?whichshop=doc");
+		if (temp.contains_text("What did you need, again?")) {
+			visit_url("shop.php?whichshop=doc&action=talk");
+		}
+		run_choice(2);
+		if (internalQuestStatus("questM24Doc") > 1) {
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean LX_galaktikSubQuest()
+{
+	//do doc galaktik optional subquest.
+	
+	if(startGalaktikSubQuest()) return true;
+	if(finishGalaktikSubQuest()) return true;
+	considerGalaktikSubQuest();
+	
+	if(internalQuestStatus("questM24Doc") != 0)
+	{
+		//questM24Doc is used by mafia to track progress. step1 means you have the flowers and need to turn them in. 0 means started but incomplete.
+		return false;	
+	}
+	if(!get_property("auto_doGalaktik").to_boolean())
+	{
+		return false;		//by default we do not want to do this quest.
+	}
+	
+	return autoAdv($location[The Overgrown Lot]);
 }
 
 boolean LX_pirateOutfit() {
@@ -698,6 +835,9 @@ boolean LX_joinPirateCrew() {
 		} else {
 			auto_log_info("Insult gathering party.", "blue");
 			addToMaximize("-outfit Swashbuckling Getup");
+			// If we're wearing the pirate outfit already, autoAdv will fail to adventure
+			// in the cove since the zone isn't available unless we remove it (which wouldn't happen until auto_pre_adv runs)
+			autoStripOutfit("Swashbuckling Getup");
 			if (autoAdv($location[The Obligatory Pirate\'s Cove])) {
 				return true;
 			}

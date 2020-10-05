@@ -1,31 +1,6 @@
-script "mr2015.ash"
-
 #	This is meant for items that have a date of 2015
 #	Handling: shrine to the Barrel God, Chateau Mantegna Room Key, Deck of Every Card
 #
-
-boolean auto_barrelPrayers();
-boolean auto_mayoItems();
-
-boolean chateaumantegna_available();
-void chateaumantegna_useDesk();
-boolean chateaumantegna_havePainting();
-boolean chateaumantegna_usePainting(string option);
-boolean chateaumantegna_usePainting();
-boolean[item] chateaumantegna_decorations();
-void chateaumantegna_buyStuff(item toBuy);
-boolean chateaumantegna_nightstandSet();
-
-boolean deck_available();
-int deck_draws_left();
-boolean deck_draw();
-boolean deck_cheat(string cheat);
-boolean deck_useScheme(string action);
-
-
-
-//Supplemental
-
 
 boolean mayo_acquireMayo(item it)
 {
@@ -256,7 +231,7 @@ boolean auto_mayoItems()
 		case 4:				mayos = $items[none];								break;
 		}
 	}
-	else if((my_path() == "Heavy Rains") && !in_hardcore())
+	else if(my_path() == "Heavy Rains" && !in_hardcore())
 	{
 		switch(my_daycount())
 		{
@@ -266,14 +241,14 @@ boolean auto_mayoItems()
 		case 4:				mayos = $items[Sphygmayomanometer];					break;
 		}
 	}
-	else if((my_path() == "Gelatinous Noob"))
+	else if(in_gnoob())
 	{
 		switch(my_daycount())
 		{
 		default:			mayos = $items[none];								break;
 		}
 	}
-	else if((my_path() == "License to Adventure"))
+	else if(my_path() == "License to Adventure")
 	{
 		switch(my_daycount())
 		{
@@ -1066,10 +1041,6 @@ boolean deck_useScheme(string action)
 
 		if(card == "key")
 		{
-			if(my_daycount() == 1)
-			{
-				set_property("auto_cubeItems", false);
-			}
 			if(towerKeyCount() >= 3)
 			{
 				continue;

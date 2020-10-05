@@ -1,5 +1,3 @@
-script "mr2019.ash"
-
 # This is meant for items that have a date of 2019
 
 int auto_sausageEaten()
@@ -134,7 +132,9 @@ boolean auto_sausageEatEmUp(int maxToEat)
 	{
 		auto_log_info("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
 		cli_execute("checkpoint");
+		backupSetting("logPreferenceChange", "false");
 		maximize("mp,-tie", false);
+		restoreSetting("logPreferenceChange");
 	}
 	// I could optimize this a little more by eating more sausage at once if you have enough max mp...
 	// but meh.
@@ -175,6 +175,13 @@ boolean auto_sausageEatEmUp() {
 	return auto_sausageEatEmUp(0);
 }
 
+boolean auto_haveKramcoSausageOMatic() {
+	if (possessEquipment($item[Kramco Sausage-o-Matic&trade;]) && auto_can_equip($item[Kramco Sausage-o-Matic&trade;])) {
+		return true;
+	}
+	return false;
+}
+
 boolean auto_sausageGoblin()
 {
 	return auto_sausageGoblin($location[none], "");
@@ -191,11 +198,7 @@ boolean auto_sausageGoblin(location loc, string option)
 	// by all sorts stuff like superlikelies, wanderers and semi-rares.
 	// The good news is, being overridden just means adventure there again to get it
 
-	if(!possessEquipment($item[Kramco Sausage-o-Matic&trade;]))
-	{
-		return false;
-	}
-	if(!auto_can_equip($item[Kramco Sausage-o-Matic&trade;]))
+	if(!auto_haveKramcoSausageOMatic())
 	{
 		return false;
 	}
@@ -205,13 +208,7 @@ boolean auto_sausageGoblin(location loc, string option)
 	// x is the number of goblins you've already encountered that day.
 	// spoilered by The Dictator in ASS Discord #iotm-discussion
 	// intervals are therefore 0, 7, 10, 13, 16, 19, 23, 33, 55, 95, 128...
-	// cut off delay burning after the 8th as the interval gets very large from #9
 	int sausageFights = get_property("_sausageFights").to_int();
-	if (sausageFights >= 8)
-	{
-		return false;
-	}
-
 	float numerator = (total_turns_played() - get_property("_lastSausageMonsterTurn").to_float()) + 1.0;
 	float denominator = 5.0 + (sausageFights * 3.0) + (max(0.0, sausageFights - 5.0))**3.0;
 	if (sausageFights > 0 && (numerator / denominator) < 1.0)
@@ -727,11 +724,13 @@ boolean auto_campawayGrabBuffs()
 	return true;
 }
 
+boolean auto_havePillKeeper() {
+	return (possessEquipment($item[Eight Days a Week Pill Keeper]) && is_unrestricted($item[Unopened Eight Days a Week Pill Keeper]));
+}
+
 int auto_pillKeeperUses()
 {
-	if (0 == equipmentAmount($item[Eight Days a Week Pill Keeper])
-		|| (!is_unrestricted($item[Unopened Eight Days a Week Pill Keeper])))
-	{
+	if (!auto_havePillKeeper()) {
 		return 0;
 	}
 	return spleen_left()/3 + 1 - get_property("_freePillKeeperUsed").to_boolean().to_int();
@@ -938,4 +937,95 @@ void auto_deliberate_pizza()
 		to_string(best_plan.ing3) + "\n  " +
 		to_string(best_plan.ing4) + "\n  ");
 	auto_log_info("For " + auto_pizza_unclamped_advs(best_plan) + " adventures.");
+}
+
+boolean auto_changeSnapperPhylum(phylum toChange)
+{
+  // Calling this function with a suitable phylum (anything other than none)
+	// will cause the Red-Nosed Snapper to be changed to that phylum during pre-Adventure handling.
+	// This will overwrite any current phylum, losing all progress towards that item (this is intended)
+	// You have been warned.
+
+	if (!canChangeToFamiliar($familiar[Red-Nosed Snapper]) || toChange == $phylum[none])
+	{
+		return false;
+	}
+	string phylumString = (toChange == $phylum[mer-kin] ? "merkin" : toChange.to_string());
+	set_property("auto_snapperPhylum", phylumString);
+	return true;
+}
+
+boolean auto_snapperPreAdventure(location loc)
+{
+	if (my_familiar() != $familiar[Red-Nosed Snapper])
+	{
+		return false;
+	}
+	
+	string desiredPhylum = get_property("auto_snapperPhylum");
+	if (desiredPhylum != "merkin" && desiredPhylum != "" && desiredPhylum.to_phylum() == $phylum[none])
+	{
+		auto_log_warning(`auto_snapperPhylum was set to bad value: {desiredPhylum}. Should be a valid phylum.`, "red");
+		remove_property("auto_snapperPhylum");
+		return false;
+	}
+
+	if (get_property("redSnapperPhylum") == desiredPhylum)
+	{
+		auto_log_debug(`Red-Nosed Snapper is already guiding you towards {desiredPhylum}`);
+		return false;
+	}
+
+	// this is mainly in case autoChooseFamiliar switches to the Snapper due to no "better" +item familiars being available
+	// It is preferred that you do not rely on this to change phylum in a quest, call changeSnapperPhylum in the quest handling code instead.
+	if (desiredPhylum == "" && get_property("redSnapperProgress").to_int() == 0)
+	{
+		switch (loc)
+		{
+			case $location[The Penultimate Fantasy Airship]:
+			case $location[The Hidden Park]:
+			case $location[The Hidden Hospital]:
+			case $location[The Hidden Office Building]:
+			case $location[The Hidden Apartment Building]:
+			case $location[The Hidden Bowling Alley]:
+			case $location[The Copperhead Club]:
+			case $location[A Mob of Zeppelin Protesters]:
+			case $location[The Red Zeppelin]:
+			case $location[Inside the Palindome]:
+			case $location[The Neverending Party]:
+			case $location[South of The Border]:
+			case $location[The Valley of Rof L'm Fao]:
+				desiredPhylum = $phylum[dude].to_string(); // human musk (banisher)
+				break;
+			case $location[The Hole in the Sky]:
+				desiredPhylum = $phylum[constellation].to_string(); // micronova (yellow ray)
+				break;
+			case $location[The Smut Orc Logging Camp]:
+				desiredPhylum = $phylum[orc].to_string(); // boot flask (size 3 awesome booze)
+				break;
+			case $location[The Outskirts of Cobb's Knob]:
+			case $location[Cobb's Knob Barracks]:
+			case $location[Cobb's Knob Kitchens]:
+			case $location[Cobb's Knob Harem]:
+			case $location[Cobb's Knob Treasury]:
+			case $location[Cobb's Knob Laboratory]:
+				desiredPhylum = $phylum[goblin].to_string(); // guffin (size 3 awesome food)
+				break;
+			case $location[The "Fun" House]:
+				desiredPhylum = $phylum[horror].to_string(); // powdered madness (free kill)
+				break;
+			case $location[Twin Peak]:
+				// this is actually a dude heavy zone *but* we want to fight the topiary monsters for rusty hedge trimmers.
+				desiredPhylum = $phylum[beast].to_string();
+				break;
+			default:
+				auto_log_info(`Going to {loc} with the Red-Nosed Snapper without setting a phylum. This is not necessarily bad but it might be worth checking.`, "blue");
+				return false;
+		}
+	}
+
+	visit_url("familiar.php?action=guideme&pwd");
+	visit_url(`choice.php?pwd&whichchoice=1396&option=1&cat={desiredPhylum}`);
+	auto_log_info(`Red-Nosed Snapper is now guiding you towards {desiredPhylum}`, "blue");
+	return true;
 }

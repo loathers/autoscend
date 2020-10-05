@@ -1,5 +1,3 @@
-script "path_of_the_plumber.ash"
-
 boolean in_zelda()
 {
 	return my_path() == "Path of the Plumber";
@@ -11,7 +9,6 @@ boolean zelda_initializeSettings()
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_wandOfNagamar", false);
-		set_property("auto_useCubeling", true);
 		// TODO: Remove when quest handling is correct.
 		set_property("auto_paranoia", 1);
 	}

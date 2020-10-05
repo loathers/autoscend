@@ -1,5 +1,3 @@
-script "autoscend/auto_familiar.ash";
-
 boolean is100FamRun()
 {
 	// answers the question of "is this a 100% familiar run"
@@ -104,15 +102,22 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return false;
 	}
+	
+	// if this path doesn't allow this familiar, you can't change to it
+	if(!auto_is_valid(target))
+	{
+		return false;
+	}
 
 	// You are allowed to change to a familiar if it is also the goal of the current 100% run.
 	if(get_property("auto_100familiar").to_familiar() == target)
 	{
 		return true;
 	}
-	else if(!canChangeFamiliar())
+	
+	// check path limitations, as well as 100% runs for a different familiar than target
+	if(!canChangeFamiliar())
 	{
-		// checks path limitations, as well as 100% runs for a diferent familiar than target
 		return false;
 	}
 	
@@ -120,6 +125,12 @@ boolean canChangeToFamiliar(familiar target)
 	if(target == $familiar[none])	
 	{	
 		return false;	
+	}
+
+	// If target is in the Crown of Thrones or Buddy Bjorn, we can't switch to it either.
+	if (target == my_enthroned_familiar() || target == my_bjorned_familiar())
+	{
+		return false;
 	}
 
 	// if you reached this point, then auto_100familiar must not be set to anything, you are allowed to change familiar.
@@ -157,6 +168,7 @@ familiar lookupFamiliarDatafile(string type)
 	}
 	
 	//no suitable familiars found in datafile
+	auto_log_debug(`Could not find any "{type}" type familiars!`);
 	return $familiar[none];
 }
 
@@ -253,7 +265,7 @@ boolean autoChooseFamiliar(location place)
 	// Blackbird/Crow cut turns in the Black Forest but we only need to equip them
 	// if we don't have them in inventory.
 	if ($location[The Black Forest] == place) {
-		if (auto_my_path() != "Bees Hate You") {
+		if (!in_bhy()) {
 			if (item_amount($item[Reassembled Blackbird]) == 0 && canChangeToFamiliar($familiar[Reassembled Blackbird])) {
 				famChoice = $familiar[Reassembled Blackbird];
 			}
@@ -270,12 +282,18 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// places where item drop is required to help save adventures.
-	if ($locations[The Typical Tavern Cellar, The Beanbat Chamber, Cobb's Knob Harem, The Defiled Nook, The Goatlet, Itznotyerzitz Mine,
+	if ($locations[The Typical Tavern Cellar, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
 	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Hospital, The Hidden Bowling Alley, The Haunted Wine Cellar,
 	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, The Red Zeppelin, Whitey's Grove, The Oasis, The Middle Chamber,
 	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
 	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, 8-Bit Realm, The Degrassi Knoll Garage, The Old Landfill,
 	The Laugh Floor, Infernal Rackets Backstage] contains place) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
+	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 26)
+	{
 		famChoice = lookupFamiliarDatafile("item");
 	}
 
@@ -339,16 +357,15 @@ boolean autoChooseFamiliar(location place)
 	}
 	
 	// places where initiative is required to help save adventures.
-	if ($location[The Defiled Alcove] == place) {
+	if ($location[The Defiled Alcove] == place && get_property("cyrptAlcoveEvilness").to_int() > 26)
+	{
 		famChoice = lookupFamiliarDatafile("init");
 	}
 
 	//Gelatinous Cubeling drops items that save turns in the daily dungeon
 	if(famChoice == $familiar[none] &&
-	canChangeToFamiliar($familiar[Gelatinous Cubeling]) &&
-	get_property("auto_useCubeling").to_boolean() &&
-	get_property("auto_cubeItems").to_boolean()
-	&& lookupFamiliarDatafile("item") != $familiar[Gelatinous Cubeling]) // don't farm the drops if this is the best +item familiar we have. We will get them regardless.
+	wantCubeling() &&
+	lookupFamiliarDatafile("item") != $familiar[Gelatinous Cubeling]) // don't farm the drops if this is the best +item familiar we have. We will get them regardless.
 	{
 		famChoice = $familiar[Gelatinous Cubeling];
 	}
@@ -388,13 +405,15 @@ boolean autoChooseFamiliar(location place)
 			int spleen_drops_need = (spleen_left() + 3)/4;
 			int bound = (spleen_drops_need + spleenFamiliarsAvailable - 1) / spleenFamiliarsAvailable;
 			
-			if(spleenFamiliarsAvailable > 0) foreach fam in $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey]
+			if(spleenFamiliarsAvailable > 0)
 			{
-
-				if((fam.drops_today < bound) && canChangeToFamiliar(fam))
+				foreach fam in $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey]
 				{
-					famChoice = fam;
-					break;
+					if((fam.drops_today < bound) && canChangeToFamiliar(fam))
+					{
+						famChoice = fam;
+						break;
+					}
 				}
 			}
 		}
@@ -466,4 +485,115 @@ boolean haveSpleenFamiliar()
 		}
 	}
 	return false;
+}
+
+boolean wantCubeling()
+{
+	//do we still want to use a gelatinous cubeling familiar specifically for it to drop the daily dungeon tools
+	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
+	{
+		return false;	//can not use it so we do not want it.
+	}
+	if(get_property("cubelingProgress").to_int() > 11)
+	{
+		return false;	//cubeling already dropped tools in this ascension. It cannot drop more until you ascend again.
+	}
+	
+	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
+	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one
+	return item_amount($item[eleven-foot pole]) == 0 || need_ring || need_lockpicks;
+}
+
+void preAdvUpdateFamiliar(location place)
+{
+	if(get_property("auto_disableFamiliarChanging").to_boolean())
+	{
+		return;
+	}
+	if(!pathAllowsFamiliar())
+	{
+		return;		//will just error in those paths
+	}
+	if(is100FamRun())
+	{
+		handleFamiliar(get_property("auto_100familiar").to_familiar());			//do not break 100 familiar runs
+	}
+	
+	//familiar requirement to adventure in a zone, override everything else.
+	if(place == $location[The Deep Machine Tunnels])
+	{
+		handleFamiliar($familiar[Machine Elf]);
+	}
+	// Can't take familiars with you to FantasyRealm
+	if (place == $location[The Bandit Crossroads])
+	{
+		if(my_familiar() == $familiar[none]) return;		//avoid mafia error from trying to change none into none.
+		use_familiar($familiar[none]);
+		return;		//no familiar means no equipment, we are done.
+	}
+	
+	//if familiar not set yet, first check stealing familiar
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean() && canChangeToFamiliar($familiar[cat burglar]) && catBurglarHeistsLeft() > 0)
+	{
+		//Stealing with familiar. TODO add XO Skelton here too
+		
+		item[monster] heistDesires = catBurglarHeistDesires();
+		boolean wannaHeist = false;
+		foreach mon, it in heistDesires
+		{
+			foreach i, mmon in get_monsters(place)
+			{
+				if(mmon == mon)
+				{
+					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
+					wannaHeist = true;
+				}
+			}
+		}
+		if(wannaHeist)
+		{
+			handleFamiliar($familiar[cat burglar]);
+		}
+	}
+	
+	//if familiar not set choose a familiar using general logic
+	if(!get_property("_auto_thisLoopHandleFamiliar").to_boolean())		//check that we didn't already set familiar target this loop
+	{
+		autoChooseFamiliar(place);
+	}
+	
+	familiar famChoice = to_familiar(get_property("auto_familiarChoice"));
+	if(famChoice == $familiar[none])
+	{
+		if(get_property("auto_familiarChoice") == "")
+		{
+			abort("void preAdvUpdateFamiliar failed because property auto_familiarChoice is empty for some reason");
+		}
+		abort("void preAdvUpdateFamiliar failed to convert auto_familiarChoice of [" + get_property("auto_familiarChoice") + "] into a $familiar");
+	}
+	
+	if(famChoice != my_familiar() && canChangeToFamiliar(famChoice))
+	{
+		use_familiar(famChoice);
+	}
+	
+	//familiar equipment overrides
+	if(my_path() == "Heavy Rains")
+	{
+		autoEquip($slot[familiar], $item[miniature life preserver]);
+	}
+
+	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
+	{
+		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
+		{
+			if(equipped_item($slot[Familiar]) != $item[Li\'l Candy Corn Costume])
+			{
+				if(item_amount($item[Li\'l Candy Corn Costume]) > 0)
+				{
+					equip($slot[Familiar], $item[Li\'l Candy Corn Costume]);
+				}
+			}
+		}
+	}
 }

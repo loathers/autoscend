@@ -1,5 +1,3 @@
-script "actually_ed_the_undying.ash"
-
 boolean isActuallyEd()
 {
 	return (my_class() == $class[Ed] || my_path() == "Actually Ed the Undying");
@@ -23,7 +21,6 @@ void ed_initializeSettings()
 	if (isActuallyEd())
 	{
 		set_property("auto_crackpotjar", "done");
-		set_property("auto_cubeItems", false);
 		set_property("auto_day1_dna", "finished");
 		set_property("auto_getBeehive", false);
 		set_property("auto_getStarKey", false);
@@ -33,7 +30,6 @@ void ed_initializeSettings()
 		set_property("auto_needLegs", false);
 		set_property("auto_renenutet", "");
 		set_property("auto_servantChoice", "");
-		set_property("auto_useCubeling", false);
 		set_property("auto_wandOfNagamar", false);
 
 		set_property("auto_edSkills", -1);
@@ -45,7 +41,6 @@ void ed_initializeSettings()
 
 		set_property("desertExploration", 100);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
-		set_property("auto_delayHauntedKitchen", true);
 	}
 }
 
@@ -54,7 +49,7 @@ void ed_initializeSession()
 	if (isActuallyEd())
 	{
 		// the following settings will affect combat automation
-		// see auto_choice_adv.ash for where and how they are used.
+		// see edUnderworldChoiceHandler() for where and how they are used.
 		backupSetting("choiceAdventure1023", "");
 		backupSetting("choiceAdventure1024", "");
 		backupSetting("edDefeatAbort", "3");
@@ -169,62 +164,6 @@ boolean L13_ed_towerHandler()
 		}
 		return true;
 	}
-	else
-	{
-		if(haveAnyIotmAlternativeRestSiteAvailable() && doFreeRest())
-		{
-			cli_execute("scripts/autoscend/auto_post_adv.ash");
-			return true;
-		}
-		auto_log_warning("Please check your quests, but you might just not be at level 13 yet in order to continue.", "red");
-		if((my_level() < 13) && elementalPlanes_access($element[spooky]))
-		{
-			boolean tryJungle = false;
-			if(have_effect($effect[Jungle Juiced]) > 0)
-			{
-				tryJungle = true;
-			}
-
-			if(((my_inebriety() + 1) < inebriety_limit()) && (item_amount($item[Coinspiracy]) > 0) && (have_effect($effect[Jungle Juiced]) == 0))
-			{
-				buyUpTo(1, $item[Jungle Juice]);
-				autoDrink(1, $item[Jungle Juice]);
-				tryJungle = true;
-			}
-
-			buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
-			if(my_primestat() == $stat[Mysticality])
-			{
-				buffMaintain($effect[Perspicacious Pressure], 0, 1, 1);
-				buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
-				buffMaintain($effect[Erudite], 0, 1, 1);
-			}
-
-			if(tryJungle)
-			{
-				autoAdv(1, $location[The Deep Dark Jungle]);
-			}
-			else
-			{
-				if(item_amount($item[Personal Ventilation Unit]) > 0)
-				{
-					autoEquip($slot[acc2], $item[Personal Ventilation Unit]);
-				}
-				autoAdv(1, $location[The Secret Government Laboratory]);
-			}
-			return true;
-		}
-		else if((my_level() < 13) && elementalPlanes_access($element[stench]))
-		{
-			autoAdv(1, $location[Pirates of the Garbage Barges]);
-			return true;
-		}
-		else
-		{
-			auto_log_info("We must be missing a sidequest. We can't find the jerk adventurer. Must pretend we are alive...", "blue");
-		}
-	}
-
 	return false;
 }
 
@@ -234,14 +173,14 @@ boolean L13_ed_councilWarehouse()
 	{
 		return false;
 	}
-	if (internalQuestStatus("questL13Warehouse") < 0 || internalQuestStatus("questL13Warehouse") > 0)
+	if (internalQuestStatus("questL13Warehouse") != 0)
 	{
 		return false;
 	}
 
 	if(item_amount($item[7965]) == 0)
 	{
-		autoAdv(1, $location[The Secret Council Warehouse]);
+		autoAdv($location[The Secret Council Warehouse]);
 	}
 	else
 	{
@@ -1140,7 +1079,7 @@ boolean L1_ed_island()
 	}
 
 	buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
-	autoAdv(1, $location[The Secret Government Laboratory]);
+	autoAdv($location[The Secret Government Laboratory]);
 	if(item_amount($item[Bottle-Opener Keycard]) > 0)
 	{
 		use(1, $item[Bottle-Opener Keycard]);
@@ -1164,61 +1103,23 @@ boolean L1_ed_islandFallback()
 		}
 	}
 
-	if(!get_property("lovebugsUnlocked").to_boolean())
-	{
-		if(my_turncount() == 0)
-		{
-			while((my_mp() < mp_cost($skill[Storm of the Scarab])) && (my_mp() < my_maxmp()) && (my_meat() > 1500))
-			{
-				buyUpTo(1, $item[Doc Galaktik\'s Invigorating Tonic], 90);
-				use(1, $item[Doc Galaktik\'s Invigorating Tonic]);
-			}
-		}
-		else if(my_turncount() == 1)
-		{
-			if((is_unrestricted($item[Clan Pool Table])) && (get_property("_poolGames").to_int() < 3) && (item_amount($item[Clan VIP Lounge Key]) > 0))
-			{
-				visit_url("clan_viplounge.php?preaction=poolgame&stance=2");
-				visit_url("clan_viplounge.php?preaction=poolgame&stance=2");
-				visit_url("clan_viplounge.php?preaction=poolgame&stance=2");
-			}
-		}
-	}
-
 	if (neverendingPartyAvailable())
 	{
 		return neverendingPartyPowerlevel();
 	}
 	if(elementalPlanes_access($element[stench]))
 	{
-		autoAdv(1, $location[Pirates of the Garbage Barges]);
-		return true;
+		return autoAdv($location[Pirates of the Garbage Barges]);
 	}
 	if(elementalPlanes_access($element[cold]))
 	{
-		if(get_property("_VYKEALoungeRaided").to_boolean())
-		{
-			if(get_property("_VYKEACafeteriaRaided").to_boolean())
-			{
-				set_property("choiceAdventure1115", 6);
-			}
-			else
-			{
-				set_property("choiceAdventure1115", 1);
-			}
-		}
-		else
-		{
-			set_property("choiceAdventure1115", 9);
-		}
-		autoAdv(1, $location[VYKEA]);
-		return true;
+		return autoAdv($location[VYKEA]);
 	}
 	if(elementalPlanes_access($element[hot]))
 	{
 		//Maybe this is a good choice?
 		set_property("choiceAdventure1094", 5);
-		autoAdv(1, $location[The SMOOCH Army HQ]);
+		autoAdv($location[The SMOOCH Army HQ]);
 		set_property("choiceAdventure1094", 2);
 		return true;
 	}
@@ -1244,14 +1145,8 @@ boolean L1_ed_islandFallback()
 	
 	if (have_skill($skill[Upgraded Legs]) || item_amount($item[Ka coin]) >= 10)
 	{
-		if(have_outfit("Filthy Hippy Disguise") && is_wearing_outfit("Filthy Hippy Disguise"))
-		{
-			equip($slot[Pants], $item[None]);
-			put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
-			equipBaseline();
-		}
 		auto_change_mcd(11);
-		boolean retVal = autoAdv(1, $location[Hippy Camp]);
+		boolean retVal = autoAdv($location[Hippy Camp]);
 		if (item_amount($item[Filthy Corduroys]) > 0)
 		{
 			if (closet_amount($item[Filthy Corduroys]) > 0)
@@ -1290,12 +1185,9 @@ boolean L1_ed_islandFallback()
 		return retVal;
 	}
 	set_property("auto_needLegs", true);
-	if (!maximizeContains("-10ml"))
-	{
-		addToMaximize("-10ml");
-		auto_change_mcd(0);
-	}
-	return autoAdv(1, $location[The Outskirts of Cobb\'s Knob]);
+	addToMaximize("-10ml");
+	auto_change_mcd(0);
+	return autoAdv($location[The Outskirts of Cobb\'s Knob]);
 }
 
 boolean L9_ed_chasmStart()
@@ -1377,6 +1269,12 @@ boolean LM_edTheUndying()
 		}
 	}
 
+	if (item_amount($item[Seal Tooth]) == 0 && my_meat() > 1500) {
+		// people with lots of IotMs are too survivable and kill stuff when trying to UNDYING
+		// if they have to use Mild Curse.
+		acquireHermitItem($item[Seal Tooth]);
+	}
+
 	if(L1_ed_island() || L1_ed_islandFallback())
 	{
 		return true;
@@ -1428,7 +1326,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// The hidden city is mostly 2 Ka monsters so do it ASAP.
-	if (L11_nostrilOfTheSerpent() || L11_unlockHiddenCity() || L11_hiddenCityZones() || L11_hiddenCity())
+	if (L11_unlockHiddenCity() || L11_hiddenCityZones() || L11_hiddenCity())
 	{
 		return true;
 	}
@@ -1495,4 +1393,26 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	return false;
+}
+
+void edUnderworldChoiceHandler(int choice) {
+	auto_log_debug(`edUnderworldChoiceHandler Running choice {choice}`, "blue");
+	if (choice == 1023) { // Like a Bat Into Hell
+		run_choice(1); // Enter the Underworld
+		auto_log_info("Ed died in combat " + get_property("_edDefeats").to_int() + " time(s)", "blue");
+		ed_shopping(); // "free" trip to the Underworld, may as well go shopping!
+		visit_url("place.php?whichplace=edunder&action=edunder_leave");
+	} else if (choice == 1024) { // Like a Bat out of Hell
+		if (get_property("_edDefeats").to_int() < get_property("edDefeatAbort").to_int()) {
+			// resurrecting is still free.
+			run_choice(1, false); // UNDYING!
+		} else {
+			// resurrecting will cost Ka
+			run_choice(2); // Accept the cold embrace of death (Return to the Pyramid)
+			auto_log_info("Ed died in combat for reals!");
+			set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
+		}
+	} else {
+		abort("unhandled choice in edUnderworldChoiceHandler");
+	}
 }

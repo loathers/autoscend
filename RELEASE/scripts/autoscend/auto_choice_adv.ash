@@ -1,4 +1,3 @@
-script "auto_choice_adv.ash";
 import<autoscend.ash>
 
 boolean auto_run_choice(int choice, string page)
@@ -44,6 +43,10 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 107: // Bad Medicine is What You Need (The Haunted Bathroom)
 			run_choice(4); // skip
+			break;
+		case 123: // At Least It's Not Full Of Trash (The Hidden Temple)
+		case 125: // No Visible Means of Support (The Hidden Temple)
+			hiddenTempleChoiceHandler(choice, page);
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
 			run_choice(4); // skip
@@ -137,6 +140,14 @@ boolean auto_run_choice(int choice, string page)
 		case 575: // Duffel on the Double (The eXtreme Slope)
 			theeXtremeSlopeChoiceHandler(choice);
 			break;
+		case 579: // Such Great Heights (The Hidden Temple)
+		case 580: // The Hidden Heart of the Hidden Temple (The Hidden Temple)
+		case 581: // Such Great Depths (The Hidden Temple)
+		case 582: // Fitting In (The Hidden Temple)
+		case 583: // Confusing Buttons (The Hidden Temple)
+		case 584: // Unconfusing Buttons (The Hidden Temple)
+			hiddenTempleChoiceHandler(choice, page);
+			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
@@ -215,7 +226,7 @@ boolean auto_run_choice(int choice, string page)
 			if (item_amount($item[stone triangle]) == 4) {
 				run_choice(1); // fight the Protector Spirit (or replacement)
 			} else {
-				run_choice(2); // skip
+				run_choice(6); // skip
 			}
 			break;
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
@@ -278,7 +289,11 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
-			run_choice(1); // get moxie substats
+			if (in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
+				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
+			} else {
+				run_choice(1); // get moxie substats
+			}
 			break;
 		case 880: // One Elegant Nightstand (The Haunted Bedroom)
 			if (internalQuestStatus("questM21Dance") < 2 && item_amount($item[Lady Spookyraven\'s Finest Gown]) == 0) {
@@ -332,7 +347,7 @@ boolean auto_run_choice(int choice, string page)
 			if (item_amount($item[stone triangle]) == 4) {
 				run_choice(1); // Put the Ancient Amulet back
 			} else {
-				run_choice(2); // skip
+				run_choice(6); // skip
 			}
 			break;
 		case 1018: // Bee Persistent (The Black Forest)
@@ -350,21 +365,8 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1023: // Like a Bat Into Hell (Actually Ed the Undying)
-			run_choice(1); // Enter the Underworld
-			auto_log_info("Ed died in combat " + get_property("_edDefeats").to_int() + " time(s)", "blue");
-			ed_shopping(); // "free" trip to the Underworld, may as well go shopping!
-			visit_url("place.php?whichplace=edunder&action=edunder_leave");
-			break;
 		case 1024:  // Like a Bat out of Hell (Actually Ed the Undying)
-			if (get_property("_edDefeats").to_int() < get_property("edDefeatAbort").to_int()) {
-				// resurrecting is still free.
-				run_choice(1, false); // UNDYING!
-			} else {
-				// resurrecting will cost Ka
-				run_choice(2); // Accept the cold embrace of death (Return to the Pyramid)
-				auto_log_info("Ed died in combat for reals!");
-				set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
-			}
+			edUnderworldChoiceHandler(choice);
 			break;
 		case 1060: // Temporarily Out of Skeletons (The Skeleton Store)
 			if (item_amount($item[Skeleton Store office key]) == 0) {
@@ -383,14 +385,25 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1062: // Lots of Options (The Overgrown Lot)
-			if (options contains 1) {
-				run_choice(1); // get flowers for the doc
-			} else {
-				if (options contains 5) {
-					run_choice(5); // get booze from map to a hidden booze cache
-				} else {
-					run_choice(3); // get booze
-				}
+			if(options contains 1)
+			{
+				run_choice(1); // get flowers for doc galaktik quest
+			}
+			else if(can_drink() && options contains 5)
+			{
+				run_choice(5); // get extra booze from map to a hidden booze cache
+			}
+			else if(can_drink() && !in_boris())		//prefer food in boris
+			{
+				run_choice(3); // get booze
+			}
+			else if(can_eat())
+			{
+				run_choice(2); // get food
+			}
+			else
+			{
+				run_choice(4); // get 15 moxie substat
 			}
 			break;
 		case 1082: // The "Rescue" (post-Cake Lord in Madness Bakery)
@@ -399,6 +412,14 @@ boolean auto_run_choice(int choice, string page)
 		case 1083: // Cogito Ergot Sum (post-post-Cake Lord in Madness Bakery)
 			run_choice(1);
 			break;
+		case 1115: // VYKEA! (VYKEA)
+			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && auto_my_path() != "Community Service") {
+				run_choice(1); // get consumables
+			} else if (!get_property("_VYKEALoungeRaided").to_boolean()) {
+				run_choice(4); // get Wal-Mart gift certificates
+			} else {
+				run_choice(6); // skip
+			}
 		case 1310: // Granted a Boon (God Lobster)
 			int goal = get_property("_auto_lobsterChoice").to_int();
 			string search = "I'd like part of your regalia.";
@@ -427,6 +448,9 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1342: // Torpor (Dark Gyffte)
 			bat_reallyPickSkills(20);
+			break;
+		case 1410: // The Mushy Center (Your Mushroom Garden)
+			run_choice(2); // pick the mushroom.
 			break;
 		default:
 			break;

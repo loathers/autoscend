@@ -238,6 +238,19 @@ boolean LX_islandAccess()
 	return false;
 }
 
+boolean startHippyBoatmanSubQuest()
+{
+	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
+	{
+		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
+		temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
+		temp = visit_url("choice.php?pwd=&whichchoice=798&option=2");
+		temp = visit_url("woods.php");
+		return true;
+	}
+	return false;
+}
+
 boolean LX_hippyBoatman() {
 	if (get_property("lastIslandUnlock").to_int() >= my_ascensions()) {
 		return false;
@@ -420,7 +433,7 @@ boolean LX_fatLootToken()
 		if(fantasyRealmToken()) return true;
 	}
 	if(LX_dailyDungeonToken()) return true;
-	if(get_property("dailyDungeonDone").to_boolean())
+	if(get_property("dailyDungeonDone").to_boolean() && my_daycount() > 1)
 	{
 		//wait until daily dungeon is done before considering doing fantasy realm
 		if(fantasyRealmToken()) return true;
@@ -428,20 +441,16 @@ boolean LX_fatLootToken()
 	
 	return false;
 }
-	
+
 boolean LX_dailyDungeonToken()
 {
 	if(get_property("dailyDungeonDone").to_boolean())
 	{
 		return false;	// already done today
 	}
-	
-	if(!possessEquipment($item[Ring of Detect Boring Doors]) || item_amount($item[Eleven-Foot Pole]) == 0 || item_amount($item[Pick-O-Matic Lockpicks]) == 0)
+	if(wantCubeling())
 	{
-		if(canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-		{
-			return false;	//we can switch to cubeling so wait until we have all the tools before doing daily dungeon
-		}
+		return false;	//can switch to cubeling so wait until we have all the tool drops before doing daily dungeon
 	}
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
@@ -651,6 +660,10 @@ boolean dependenceDayClovers()
 	if(holiday() != "Dependence Day")
 	{
 		return false;	//it is not dependence day today
+	}
+	if(isActuallyEd() && get_property("lastIslandUnlock").to_int() != my_ascensions())
+	{
+		return false;	//buying it before unlocking the island on day 1 makes you too poor to unlock it on day 1 and adds days to the run
 	}
 	
 	auto_log_info("Today is Dependence Day and I want to use a [green rocket] for some clovers", "green");

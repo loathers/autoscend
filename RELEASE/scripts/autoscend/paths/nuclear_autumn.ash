@@ -1,16 +1,8 @@
-script "nuclear_autumn.ash"
-
 void fallout_initializeSettings()
 {
 	if(my_path() == "Nuclear Autumn")
 	{
-		set_property("auto_cubeItems", false);
 		set_property("auto_getBeehive", true);
-
-		if(item_amount($item[Deck of Every Card]) > 0)
-		{
-			set_property("auto_useCubeling", false);
-		}
 	}
 }
 

@@ -1,4 +1,3 @@
-script "auto_post_adv.ash";
 import<autoscend.ash>
 
 boolean auto_post_adventure()
@@ -397,17 +396,17 @@ boolean auto_post_adventure()
 
 	if((monster_level_adjustment() > 120) && ((my_hp() * 10) < (my_maxhp() * 8)) && (my_mp() >= 20))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	if((my_maxhp() > 200) && (my_hp() < 80) && (my_mp() > 25))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 	if((my_maxhp() > 200) && (my_hp() < 140) && (my_mp() > 100))
 	{
-		useCocoon();
+		acquireHP();
 	}
 
 
@@ -667,23 +666,23 @@ boolean auto_post_adventure()
 
 		if((my_mp() > 150) && (my_maxhp() > 300) && (my_hp() < 140))
 		{
-			useCocoon();
+			acquireHP();
 		}
 		if((my_mp() > 100) && (my_maxhp() > 500) && (my_hp() < 250))
 		{
-			useCocoon();
+			acquireHP();
 		}
 		if((my_mp() > 75) && (my_maxhp() > 500) && (my_hp() < 200))
 		{
-			useCocoon();
+			acquireHP();
 		}
 		if((my_mp() > 75) && (my_maxhp() > 700) && (my_hp() < 300))
 		{
-			useCocoon();
+			acquireHP();
 		}
 		if((my_mp() > 75) && ((my_hp() == 0) || ((my_maxhp()/my_hp()) > 3)))
 		{
-			useCocoon();
+			acquireHP();
 		}
 
 		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 250, 1, 10);
@@ -917,11 +916,6 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if(get_property("auto_cubeItems").to_boolean() && (item_amount($item[Ring Of Detect Boring Doors]) == 1) && (item_amount($item[Eleven-Foot Pole]) == 1) && (item_amount($item[Pick-O-Matic Lockpicks]) == 1))
-	{
-		set_property("auto_cubeItems", false);
-	}
-
 	if(!inAftercore())
 	{
 		if((my_daycount() == 1) && (my_bjorned_familiar() != $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() == 0) && (have_familiar($familiar[grim brother])) && (equipped_item($slot[back]) == $item[Buddy Bjorn]) && (my_familiar() != $familiar[Grim Brother]))
@@ -1048,8 +1042,6 @@ boolean auto_post_adventure()
 		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 	}
 	
-	set_property("auto_januaryToteAcquireCalledThisTurn", false);
-
 	auto_log_info("Post Adventure done, beep.", "purple");
 	return true;
 }

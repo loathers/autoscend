@@ -1,5 +1,3 @@
-script "autoscend/auto_equipment.ash";
-
 string getMaximizeSlotPref(slot s)
 {
 	return "_auto_maximize_equip_" + s.to_string();
@@ -120,6 +118,29 @@ boolean autoOutfit(string toWear)
 	return pass;
 }
 
+boolean autoStripOutfit(string toRemove) {
+	// removes an outfit if you have it equipped
+
+	item[int] outfit_pieces = outfit_pieces(toRemove);
+	if (count(outfit_pieces) == 0 || !is_wearing_outfit(toRemove)) {
+		return false;
+	}
+	auto_log_info(`Removing your {toRemove} outfit as requested.`, "blue");
+	foreach _, piece in outfit_pieces {
+		if (to_slot(piece) != $slot[acc1]) {
+			equip(to_slot(piece), $item[none]);
+		} else {
+			foreach accSlot in $slots[acc1, acc2, acc3] {
+				if (equipped_item(accSlot) == piece) {
+					equip(accSlot, $item[none]);
+					break;
+				}
+			}
+		}
+	}
+	return is_wearing_outfit(toRemove);
+}
+
 boolean tryAddItemToMaximize(slot s, item it)
 {
 	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
@@ -223,8 +244,9 @@ void resetMaximize()
 	
 	// don't want to equip these items automatically
 	// snow suit bonus drops every 5 combats so is best saved for important things
-	// spoon, sword, and staph are text scramblers which cause errors in mafia tracking
-	foreach it in $items[hewn moon-rune spoon, sword behind inappropriate prepositions, staph of homophones, snow suit]
+	// sword, and staph are text scramblers which cause errors in mafia tracking
+	// bathysphere gives -20 lbs familiar weight. under certain circumstances maximizer decides to equip it
+	foreach it in $items[sword behind inappropriate prepositions, staph of homophones, snow suit, little bitty bathysphere]
 	{
 		if (possessEquipment(it))
 		{
@@ -251,6 +273,13 @@ void resetMaximize()
 			}
 		}
 	}
+	else if (item_amount($item[January's Garbage Tote]) > 0 && in_bhy()) {
+	// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
+	foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt] {
+		exclude(it);
+	}
+}
+
 	
 	set_property("auto_maximize_current", res);
 	auto_log_debug("Resetting auto_maximize_current to " + res, "gold");
@@ -267,6 +296,11 @@ void finalizeMaximize()
 	{
 		auto_forceEquipPowerfulGlove();
 	}
+	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none])
+	{
+		// Save the first 8 sausage goblins for delay burning
+		addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
+	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
 		string pref = getMaximizeSlotPref(s);
@@ -279,7 +313,14 @@ void finalizeMaximize()
 	}
 	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
-		addToMaximize("effective");
+		if (my_class() == $class[Seal Clubber] && auto_my_path() == "G-Lover")
+		{
+			addToMaximize("club");
+		}
+		else
+		{
+			addToMaximize("effective");
+		}
 	}
 }
 
@@ -357,8 +398,9 @@ float simValue(string modifier)
 void equipMaximizedGear()
 {
 	finalizeMaximize();
-	auto_log_info("Maximizing: " + get_property("auto_maximize_current"), "blue");
+	backupSetting("logPreferenceChange", "false");
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
+	restoreSetting("logPreferenceChange");
 }
 
 void equipOverrides()
@@ -489,19 +531,9 @@ void ensureSealClubs()
 	}
 }
 
-void removeNonCombat()
-{
-	addToMaximize("-50combat");
-}
-
-void removeCombat()
-{
-	addToMaximize("50combat");
-}
-
 void equipRollover()
 {
-	if(my_class() == $class[Gelatinous Noob])
+	if(in_gnoob())
 	{
 		return;
 	}
@@ -520,8 +552,12 @@ void equipRollover()
 		to_max += ",switch Trick-or-Treating Tot";
 	if(auto_have_familiar($familiar[Left-Hand Man]))
 		to_max += ",switch Left-Hand Man";
+	if(my_familiar() == $familiar[none] && auto_have_familiar($familiar[Mosquito]))
+		to_max += ",switch Mosquito";
 
+	backupSetting("logPreferenceChange", "false");
 	maximize(to_max, false);
+	restoreSetting("logPreferenceChange");
 
 	if(!in_hardcore())
 	{

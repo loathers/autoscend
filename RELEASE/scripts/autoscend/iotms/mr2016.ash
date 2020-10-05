@@ -1,45 +1,6 @@
-script "mr2016.ash"
-
 #	This is meant for items that have a date of 2016.
 #	Handling: Witchess Set, Snojo, Source Terminal, Protonic Accelerator Pack
 #			Time-Spinner
-
-boolean snojoFightAvailable();
-boolean auto_advWitchess(string target);
-boolean auto_advWitchess(string target, string option);
-
-boolean auto_haveWitchess();
-boolean auto_haveSourceTerminal();
-boolean auto_sourceTerminalRequest(string request);
-boolean auto_sourceTerminalEnhance(string request);
-int auto_sourceTerminalEnhanceLeft();
-boolean auto_sourceTerminalExtrude(string request);
-int auto_sourceTerminalExtrudeLeft();
-int[string] auto_sourceTerminalStatus();
-boolean auto_doPrecinct();
-item auto_bestBadge();
-boolean auto_sourceTerminalEducate(skill first);
-boolean auto_sourceTerminalEducate(skill first, skill second);
-boolean LX_ghostBusting();
-boolean expectGhostReport();
-boolean haveGhostReport();
-
-boolean timeSpinnerGet(string goal);
-boolean timeSpinnerConsume(item goal);
-boolean timeSpinnerCombat(monster goal);
-boolean timeSpinnerCombat(monster goal, string option);
-boolean timeSpinnerAdventure(string option);
-boolean timeSpinnerAdventure();
-
-boolean rethinkingCandy(effect acquire);
-boolean rethinkingCandy(effect acquire, boolean simulate);
-boolean rethinkingCandyList();
-
-//Supplemental
-int auto_advWitchessTargets(string target);
-
-
-
 
 boolean snojoFightAvailable()
 {
@@ -148,6 +109,27 @@ boolean auto_haveSourceTerminal()
 	}
 
 	return (auto_get_campground() contains $item[Source Terminal]);
+}
+
+boolean isOverdueDigitize()
+{
+	if(get_property("_sourceTerminalDigitizeUses").to_int() == 0)
+	{
+		return false;
+	}
+	if(get_counters("Digitize Monster", 1, 200) == "Digitize Monster")
+	{
+		return false;
+	}
+	if(contains_text(get_property("_tempRelayCounters"), "Digitize Monster"))
+	{
+		return false;
+	}
+	if(get_counters("Digitize Monster", 0, 0) == "Digitize Monster")
+	{
+		return true;
+	}
+	return false;
 }
 
 boolean auto_sourceTerminalRequest(string request)
@@ -564,7 +546,7 @@ boolean witchessFights()
 		return false;
 	}
 
-	if(my_class() == $class[Gelatinous Noob])
+	if(in_gnoob())
 	{
 		return auto_advWitchess("ml");
 	}
@@ -1040,7 +1022,7 @@ boolean LX_ghostBusting()
 			return false;
 		}
 
-		useCocoon();
+		acquireHP();
 		auto_log_info("Ghost busting time! At: " + get_property("ghostLocation"), "blue");
 		boolean newbieFail = false;
 		if(goal == $location[The Skeleton Store])
@@ -1104,14 +1086,6 @@ boolean LX_ghostBusting()
 			{
 				auto_log_warning("Failed to unlock [The Overgrown Lot] for ghostbusting", "red");
 				newbieFail = true;
-			}
-			else if(get_property("questM24Doc") != "finished")
-			{
-				set_property("choiceAdventure1062", 1);
-			}
-			else
-			{
-				set_property("choiceAdventure1062", 4);
 			}
 		}
 		if((item_amount($item[Swindleblossom]) >= 3) && (item_amount($item[Fraudwort]) >= 3) && (item_amount($item[Shysterweed]) >= 3))

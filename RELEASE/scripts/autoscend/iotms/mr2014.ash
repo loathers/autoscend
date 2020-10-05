@@ -1,15 +1,6 @@
-script "mr2014.ash"
-
 #	This is meant for items that have a date of 2014.
 #	Handling: Bjorn, Little Geneticist DNA-Splicing Lab, Xi-Receiver Unit
 #
-
-
-boolean dna_bedtime();
-boolean dna_sorceressTest();
-boolean dna_generic();
-boolean dna_startAcquire();
-boolean xiblaxian_makeStuff();
 
 boolean handleBjornify(familiar fam)
 {
@@ -75,6 +66,10 @@ boolean handleBjornify(familiar fam)
 boolean considerGrimstoneGolem(boolean bjornCrown)
 {
 	if(!have_familiar($familiar[Grimstone Golem]))
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[Grimstone Mask]))
 	{
 		return false;
 	}
@@ -477,6 +472,10 @@ boolean fancyOilPainting()
 	{
 		return false;
 	}
+	if(!auto_is_valid($item[Grimstone Mask]) || !auto_is_valid($item[fancy oil painting]))
+	{
+		return false;
+	}
 	if(item_amount($item[Grimstone Mask]) == 0)
 	{
 		return false;
@@ -516,4 +515,18 @@ boolean fancyOilPainting()
 	cli_execute("make fancy oil painting");
 	set_property("auto_grimstoneFancyOilPainting", false);
 	return true;
+}
+
+int turkeyBooze()
+{
+	return get_property("_turkeyBooze").to_int();
+}
+
+int amountTurkeyBooze()
+{
+	if(is_unrestricted($item[Fist Turkey Outline]))
+	{
+		return item_amount($item[Agitated Turkey]) + item_amount($item[Ambitious Turkey]) + item_amount($item[Friendly Turkey]);
+	}
+	return 0;
 }

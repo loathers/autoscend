@@ -1,4 +1,3 @@
-script "auto_pre_adv.ash";
 import<autoscend.ash>
 
 void print_footer() {
@@ -28,24 +27,10 @@ boolean auto_pre_adventure()
 		return true;
 	}
 
-	if(last_monster().random_modifiers["clingy"])
-	{
-		auto_log_info("Preadventure skipped by clingy modifier.", "green");
-		return true;
-	}
-
-	if(place == $location[The Lower Chambers])
-	{
-		auto_log_info("Preadventure skipped by Ed the Undying!", "green");
-		return true;
-	}
-
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " + place.to_string(), "green");
 
 	preAdvUpdateFamiliar(place);
-
-	preAdvXiblaxian(place);
 
 	ed_handleAdventureServant(place);
 
@@ -132,29 +117,25 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin()) && place == solveDelayZone());
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean) {
+	if (combatModifier._boolean && !burningDelay && !auto_haveQueuedForcedNonCombat()) {
 		acquireCombatMods(combatModifier._int, true);
-	}
-
-	if(monster_level_adjustment() > 120)
-	{
-		acquireHP(80.0);
 	}
 
 	foreach i,mon in get_monsters(place)
 	{
-		if(auto_wantToYellowRay(mon, place))
+		if(auto_wantToYellowRay(mon, place) && !burningDelay)
 		{
 			adjustForYellowRayIfPossible(mon);
 		}
 
-		if(auto_wantToBanish(mon, place))
+		if(auto_wantToBanish(mon, place) && !burningDelay)
 		{
 			adjustForBanishIfPossible(mon, place);
 		}
 
-		if(auto_wantToReplace(mon, place))
+		if(auto_wantToReplace(mon, place) && !burningDelay)
 		{
 			adjustForReplaceIfPossible(mon);
 		}
@@ -167,10 +148,26 @@ boolean auto_pre_adventure()
 
 	// Latte may conflict with certain quests. Ignore latte drops for the greater good.
 	boolean[location] IgnoreLatteDrop = $locations[The Haunted Boiler Room];
-	if((auto_latteDropWanted(place)) && (!(IgnoreLatteDrop contains place)))
+	if (auto_latteDropWanted(place) && !(IgnoreLatteDrop contains place))
 	{
-		auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our latte from ' + place + ", so we're bringing it along.", "blue");
-		autoEquip($item[latte lovers member\'s mug]);
+		if (auto_sausageGoblin() && place == solveDelayZone())
+		{
+			// Burning delay using a Sausage Goblin. Can't hold both the Kramco and the Latte, we only have one off-hand!
+			if (canChangeToFamiliar($familiar[Left-Hand Man]))
+			{
+				// If we can use the Left-Hand man, we can get a two-fer with both the Kramco and Latte
+				// Hurrah! We found an actual use for it, it's not useless after all!
+				auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our Latte from ' + place + ", and we're buring delay using the Kramco so your Left-Hand Man will be bringing your Latte along!", "blue");				handleFamiliar($familiar[Left-Hand Man]);
+				handleFamiliar($familiar[Left-Hand Man]);
+				use_familiar($familiar[Left-Hand Man]); // update familiar already called so have to force.
+				autoEquip($slot[familiar], $item[latte lovers member\'s mug]);
+			}
+		}
+		else
+		{
+			auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our Latte from ' + place + ", so we're bringing it along.", "blue");
+			autoEquip($item[latte lovers member\'s mug]);
+		}
 	}
 
 	if(in_zelda())
@@ -280,16 +277,6 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
-		equip($slot[Pants], $item[None]);
-		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
-		if (is_wearing_outfit("Filthy Hippy Disguise")) {
-			abort("Tried to adventure in the Hippy Camp as Actually Ed the Undying wearing the Filthy Hippy Disguise (this is bad).");
-		} else {
-			auto_log_info("Took off the Filthy Hippy Disguise before adventuring in the Hippy Camp so we don't waste adventures on non-combats.");
-		}
-	}
-
 	if(place == $location[The Black Forest])
 	{
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);
@@ -307,6 +294,7 @@ boolean auto_pre_adventure()
 
 	bat_formPreAdventure();
 	horsePreAdventure();
+	auto_snapperPreAdventure(place);
 
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean)
@@ -429,7 +417,7 @@ boolean auto_pre_adventure()
 	if(removeML)
 	{
 		auto_change_mcd(0);
-
+		addToMaximize("-10ml");
 		uneffect($effect[Driving Recklessly]);
 		uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
 
@@ -458,6 +446,16 @@ boolean auto_pre_adventure()
 	// EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
 	cli_execute("checkpoint clear");
+
+	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
+		equip($slot[Pants], $item[None]);
+		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
+		if (is_wearing_outfit("Filthy Hippy Disguise")) {
+			abort("Tried to adventure in the Hippy Camp as Actually Ed the Undying wearing the Filthy Hippy Disguise (this is bad).");
+		} else {
+			auto_log_info("Took off the Filthy Hippy Disguise before adventuring in the Hippy Camp so we don't waste adventures on non-combats.");
+		}
+	}
 
 	// Last minute debug logging and a final MCD tweak just in case Maximizer did silly stuff
 	if(lowMLZones contains place)

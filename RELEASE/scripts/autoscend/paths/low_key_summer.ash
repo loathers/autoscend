@@ -1,5 +1,3 @@
-script "low_key_summer.ash"
-
 // These are listed in the order they will be iterated (item id ascending) to make debugging easier.
 location[item] lowKeys;
 lowKeys[$item[Clown car key]] = $location[The \"Fun\" House];
@@ -124,9 +122,9 @@ location lowkey_nextAvailableKeyDelayLocation()
 	foreach key in lowKeys
 	{
 		location loc = lowKeys[key];
-		if (lowkey_needKey(key) && zone_isAvailable(loc) && lowkey_keyDelayRemaining(loc) > 0)
+		if (lowkey_needKey(key) && zone_isAvailable(loc) && lowkey_keyDelayRemaining(loc) > 0 && loc.wanderers)
 		{
-			return lowKeys[key];
+			return loc;
 		}
 	}
 
@@ -180,12 +178,6 @@ boolean lowkey_zoneUnlocks()
 	if (startArmorySubQuest())
 	{
 		// opens Madness Bakery for deep-fried key (+3 sleaze res, +15 sleaze dmg, +30 sleaze spell dmg)
-		return true;
-	}
-
-	if (startGalaktikSubQuest() || finishGalaktikSubQuest())
-	{
-		// opens The Overgrown Lot for discarded bike lock key (+10 MP, 4-5 MP regen)
 		return true;
 	}
 
@@ -280,12 +272,6 @@ boolean LX_findHelpfulLowKey()
 		if (lowkey_keyAdv($item[Music Box Key])) { return true; }
 	}
 
-	// Attributes. This is a nowander zone so burning delay here is unlikely.
-	//if (lowkey_keyAdv($item[Rabbit\'s foot key])) { return true; }
-
-	// food drops?
-	//if (lowkey_keyAdv($item[Anchovy can key])) { return true; }
-
 	return false;
 }
 
@@ -319,6 +305,7 @@ boolean L13_sorceressDoorLowKey()
 			abort("Please unlock zones manually and try again.");
 		}
 		// Unlock door
+		council(); // make sure all quests have been handed in or turning the door knob will be blocked.
 		if (tower_door()) {
 			return true;
 		}
@@ -369,6 +356,11 @@ boolean LX_lowkeySummer() {
 	} else {
 		// Make sure Cobb's Knob is open so we can get the key.
 		if (L5_getEncryptionKey() || L5_findKnob()) { return true; }
+	}
+
+	// If we have the resources to do the Haunted Kitchen in the minimum adventures, we should do it sooner 
+	if (internalQuestStatus("questM20Necklace") == 0) {
+		return LX_unlockHauntedBilliardsRoom(true);
 	}
 
 	if (internalQuestStatus("questL12War") > -1) {
@@ -432,7 +424,7 @@ boolean LX_lowkeySummer() {
 
 	if (internalQuestStatus("questL11MacGuffin") > -1) {
 		// open the hidden city up.
-		if (L11_nostrilOfTheSerpent() || L11_unlockHiddenCity()) { return true; }
+		if (L11_unlockHiddenCity()) { return true; }
 
 		// +item helps with getting fulminate ingredients, Hidden City drops and Copperhead/Zeppelin.
 		if (possessEquipment($item[Treasure Chest key])) {
@@ -460,7 +452,12 @@ boolean LX_lowkeySummer() {
 	}
 
 	// Open up the top of the beanstalk.
-	if (L10_plantThatBean()) { return true; }
+	if (L10_plantThatBean()) {
+		return true;
+	} else if (internalQuestStatus("questL10Garbage") > -1) {
+		// make sure we can get an enchanted bean to open the beanstalk with if we can't open it.
+		if (L4_batCave()) { return true; }
+	}
 
 	// Should have the -combat key long before level 10 but lets just make sure.
 	if (possessEquipment($item[Key sausage])) {
@@ -491,10 +488,12 @@ boolean LX_lowkeySummer() {
 	if (possessEquipment($item[aqu&iacute;]) && possessEquipment($item[batting cage key])) {
 		if (LX_unlockHauntedBilliardsRoom()) { return true; }
 	} else {
-		// hot res for the Haunted Kitchen. aquí needs Desert Beach Access
-		if (lowkey_keyAdv($item[aqu&iacute;])) { return true; }
-		// stench res for the Haunted Kitchen
-		if (lowkey_keyAdv($item[batting cage key])) { return true; }
+		if (internalQuestStatus("questM20Necklace") == 0) {
+			// hot res for the Haunted Kitchen. aquí needs Desert Beach Access
+			if (lowkey_keyAdv($item[aqu&iacute;])) { return true; }
+			// stench res for the Haunted Kitchen
+			if (lowkey_keyAdv($item[batting cage key])) { return true; }
+		}
 	}
 
 	// Spookyraven quest steps that don't need -combat or resists, just monster killin' (or dancing with a ghost for stats).
@@ -514,6 +513,7 @@ boolean LX_lowkeySummer() {
 	if (L13_sorceressDoor() || L13_towerNSTower() || L13_towerNSNagamar() || L13_towerNSFinal()) { return true; }
 
 	// Release the softblock on quests that are waiting for Shen quest.
+	// If anyone ever gets this far in this path I will be both surprised and weirdly impressed.
 	if (my_level() > get_property("auto_shenSkipLastLevel").to_int() && get_property("questL11Shen") != "finished") {
 		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do.", "red");
 		set_property("auto_shenSkipLastLevel", my_level());

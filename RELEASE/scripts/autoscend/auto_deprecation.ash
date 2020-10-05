@@ -1,5 +1,3 @@
-script "auto_deprecation.ash"
-
 /****
 
 Functions in here are defined in autoscend/autoscend_header.ash
@@ -92,19 +90,11 @@ boolean settingFixer()
 	{
 		set_property("auto_killingjar", "finished");
 	}
-	if(get_property("auto_useCubeling") == "yes")
-	{
-		set_property("auto_useCubeling", true);
-	}
 	if(get_property("auto_sonata") == "finished")
 	{
 		set_property("auto_sonata", "");
 	}
 
-	if(get_property("auto_useCubeling") == "no")
-	{
-		set_property("auto_useCubeling", false);
-	}
 	if(get_property("auto_wandOfNagamar") == "yes")
 	{
 		set_property("auto_wandOfNagamar", true);
@@ -169,23 +159,10 @@ boolean settingFixer()
 	{
 		set_property("auto_abooclover", false);
 	}
-	if(get_property("auto_aftercore") == "")
-	{
-		set_property("auto_aftercore", false);
-	}
-	if(get_property("auto_aftercore") == "done")
-	{
-		set_property("auto_aftercore", true);
-	}
 
-	if(get_property("auto_cubeItems") == "")
-	{
-		set_property("auto_cubeItems", true);
-	}
-	if(get_property("auto_cubeItems") == "done")
-	{
-		set_property("auto_cubeItems", false);
-	}
+	remove_property("auto_cubeItems");
+	remove_property("auto_useCubeling");
+	remove_property("auto_pullPVPJunk");
 
 	if(get_property("auto_xiblaxianChoice") == "")
 	{
@@ -242,238 +219,66 @@ boolean settingFixer()
 		remove_property("auto_invaderKilled");
 	}
 
-	if (property_exists("auto_airship"))
-	{
-		remove_property("auto_airship");
-	}
-	if (property_exists("auto_ballroom"))
-	{
-		remove_property("auto_ballroom");
-	}
-	if (property_exists("auto_ballroomflat"))
-	{
-		remove_property("auto_ballroomflat");
-	}
-	if (property_exists("auto_ballroomopen"))
-	{
-		remove_property("auto_ballroomopen");
-	}
-	if (property_exists("auto_ballroomsong"))
-	{
-		remove_property("auto_ballroomsong");
-	}
-	if (property_exists("auto_bat"))
-	{
-		remove_property("auto_bat");
-	}
-	if (property_exists("auto_bean"))
-	{
-		remove_property("auto_bean");
-	}
-	if (property_exists("auto_blackfam"))
-	{
-		remove_property("auto_blackfam");
-	}
-	if (property_exists("auto_blackmap"))
-	{
-		remove_property("auto_blackmap");
-	}
-	if (property_exists("auto_boopeak"))
-	{
-		remove_property("auto_boopeak");
-	}
-	if (property_exists("auto_castlebasement"))
-	{
-		remove_property("auto_castlebasement");
-	}
-	if (property_exists("auto_castleground"))
-	{
-		remove_property("auto_castleground");
-	}
-	if (property_exists("auto_castletop"))
-	{
-		remove_property("auto_castletop");
-	}
-	if (property_exists("auto_consumption"))
-	{
-		remove_property("auto_consumption");
-	}
-	if (property_exists("auto_crypt"))
-	{
-		remove_property("auto_crypt");
-	}
-	if (property_exists("auto_day1_cobb"))
-	{
-		remove_property("auto_day1_cobb");
-	}
-	if (property_exists("auto_fcle"))
-	{
-		remove_property("auto_fcle");
-	}
-	if (property_exists("auto_friars"))
-	{
-		remove_property("auto_friars");
-	}
-	if (property_exists("auto_goblinking"))
-	{
-		remove_property("auto_goblinking");
-	}
-	if (property_exists("auto_gremlins"))
-	{
-		remove_property("auto_gremlins");
-	}
-	if (property_exists("auto_gremlinBanishes"))
-	{
-		remove_property("auto_gremlinBanishes");
-	}
-	if (property_exists("auto_gunpowder"))
-	{
-		remove_property("auto_gunpowder");
-	}
-	if (property_exists("auto_hiddenapartment"))
-	{
-		remove_property("auto_hiddenapartment");
-	}
-	if (property_exists("auto_hiddenbowling"))
-	{
-		remove_property("auto_hiddenbowling");
-	}
-	if (property_exists("auto_hiddencity"))
-	{
-		remove_property("auto_hiddenhospital");
-	}
-	if (property_exists("auto_hiddenoffice"))
-	{
-		remove_property("auto_hiddenoffice");
-	}
-	if (property_exists("auto_hiddenunlock"))
-	{
-		remove_property("auto_hiddenunlock");
-	}
-	if (property_exists("auto_hiddenzones"))
-	{
-		remove_property("auto_hiddenzones");
-	}
-	if (property_exists("auto_highlandlord"))
-	{
-		remove_property("auto_highlandlord");
-	}
-	if (property_exists("auto_masonryWall"))
-	{
-		remove_property("auto_masonryWall");
-	}
-	if (property_exists("auto_mcmuffin"))
-	{
-		remove_property("auto_mcmuffin");
-	}
-	if (property_exists("auto_mistypeak"))
-	{
-		remove_property("auto_mistypeak");
-	}
-	if (property_exists("auto_mosquito"))
-	{
-		remove_property("auto_mosquito");
-	}
-	if (property_exists("auto_nuns"))
-	{
-		remove_property("auto_nuns");
-	}
-	if (property_exists("auto_oilpeak"))
-	{
-		remove_property("auto_oilpeak");
-	}
-	if (property_exists("auto_orchard"))
-	{
-		remove_property("auto_orchard");
-	}
-	if (property_exists("auto_palindome"))
-	{
-		remove_property("auto_palindome");
-	}
-	if (property_exists("auto_phatloot"))
-	{
-		remove_property("auto_phatloot");
-	}
-	if (property_exists("auto_forcePhatLootToken"))
-	{
-		remove_property("auto_forcePhatLootToken");
-	}
-	if (property_exists("auto_prewar"))
-	{
-		remove_property("auto_prewar");
-	}
-	if (property_exists("auto_prehippy"))
-	{
-		remove_property("auto_prehippy");
-	}
-	if (property_exists("auto_pirateoutfit"))
-	{
-		remove_property("auto_pirateoutfit");
-	}
-	if (property_exists("auto_trytower"))
-	{
-		remove_property("auto_trytower");
-	}
-	if (property_exists("auto_shenCopperhead"))
-	{
-		remove_property("auto_shenCopperhead");
-	}
-	if (property_exists("auto_spookyfertilizer"))
-	{
-		remove_property("auto_spookyfertilizer");
-	}
-	if (property_exists("auto_spookymap"))
-	{
-		remove_property("auto_spookymap");
-	}
-	if (property_exists("auto_spookyravensecond"))
-	{
-		remove_property("auto_spookyravensecond");
-	}
-	if (property_exists("auto_spookysapling"))
-	{
-		remove_property("auto_spookysapling");
-	}
-	if (property_exists("auto_sonofa"))
-	{
-		remove_property("auto_sonofa");
-	}
-	if (property_exists("auto_sorceress"))
-	{
-		remove_property("auto_sorceress");
-	}
-	if (property_exists("auto_swordfish"))
-	{
-		remove_property("auto_swordfish");
-	}
-	if (property_exists("auto_tavern"))
-	{
-		remove_property("auto_tavern");
-	}
-	if (property_exists("auto_trapper"))
-	{
-		remove_property("auto_trapper");
-	}
-	if (property_exists("auto_treecoin"))
-	{
-		remove_property("auto_treecoin");
-	}
-	if (property_exists("auto_twinpeak"))
-	{
-		remove_property("auto_twinpeak");
-	}
-	if (property_exists("auto_twinpeakprogress"))
-	{
-		remove_property("auto_twinpeakprogress");
-	}
-	if (property_exists("auto_war"))
-	{
-		remove_property("auto_war");
-	}
-	if (property_exists("auto_winebomb"))
-	{
-		remove_property("auto_winebomb");
-	}
+	remove_property("auto_airship");
+	remove_property("auto_ballroom");
+	remove_property("auto_ballroomflat");
+	remove_property("auto_ballroomopen");
+	remove_property("auto_ballroomsong");
+	remove_property("auto_bat");
+	remove_property("auto_bean");
+	remove_property("auto_blackfam");
+	remove_property("auto_blackmap");
+	remove_property("auto_boopeak");
+	remove_property("auto_castlebasement");
+	remove_property("auto_castleground");
+	remove_property("auto_castletop");
+	remove_property("auto_consumption");
+	remove_property("auto_crypt");
+	remove_property("auto_day1_cobb");
+	remove_property("auto_fcle");
+	remove_property("auto_friars");
+	remove_property("auto_goblinking");
+	remove_property("auto_gremlins");
+	remove_property("auto_gremlinBanishes");
+	remove_property("auto_gunpowder");
+	remove_property("auto_hiddenapartment");
+	remove_property("auto_hiddenbowling");
+	remove_property("auto_hiddencity");
+	remove_property("auto_hiddenhospital");
+	remove_property("auto_hiddenoffice");
+	remove_property("auto_hiddenunlock");
+	remove_property("auto_hiddenzones");
+	remove_property("auto_highlandlord");
+	remove_property("auto_masonryWall");
+	remove_property("auto_mcmuffin");
+	remove_property("auto_mistypeak");
+	remove_property("auto_mosquito");
+	remove_property("auto_nuns");
+	remove_property("auto_oilpeak");
+	remove_property("auto_orchard");
+	remove_property("auto_palindome");
+	remove_property("auto_phatloot");
+	remove_property("auto_forcePhatLootToken");
+	remove_property("auto_prewar");
+	remove_property("auto_prehippy");
+	remove_property("auto_pirateoutfit");
+	remove_property("auto_trytower");
+	remove_property("auto_shenCopperhead");
+	remove_property("auto_spookyfertilizer");
+	remove_property("auto_spookymap");
+	remove_property("auto_spookyravensecond");
+	remove_property("auto_spookysapling");
+	remove_property("auto_sonofa");
+	remove_property("auto_sorceress");
+	remove_property("auto_swordfish");
+	remove_property("auto_tavern");
+	remove_property("auto_trapper");
+	remove_property("auto_treecoin");
+	remove_property("auto_twinpeak");
+	remove_property("auto_twinpeakprogress");
+	remove_property("auto_war");
+	remove_property("auto_winebomb");
+	remove_property("auto_clearCombatScripts");
 
 	if (property_exists("auto_legacyConsumeStuff"))
 	{
@@ -493,28 +298,17 @@ boolean settingFixer()
 		remove_property("auto_copperhead");
 	}
 
-	if (property_exists("auto_hpAutoRecoveryItems"))
-	{
-		remove_property("auto_hpAutoRecoveryItems");
-	}
-	if (property_exists("auto_hpAutoRecovery"))
-	{
-		remove_property("auto_hpAutoRecovery");
-	}
-	if (property_exists("auto_hpAutoRecoveryTarget"))
-	{
-		remove_property("auto_hpAutoRecoveryTarget");
-	}
-	
-	if (property_exists("auto_skipDesert"))
-	{
-		remove_property("auto_skipDesert");
-	}
+	remove_property("auto_hpAutoRecoveryItems");
+	remove_property("auto_hpAutoRecovery");
+	remove_property("auto_hpAutoRecoveryTarget");
+	remove_property("auto_skipDesert");
 
 	if (property_exists("auto_mineForOres")) {
 		auto_log_debug("Automated Ore mining in hardcore is now for everyone!", "red");
 		remove_property("auto_mineForOres");
 	}
+	
+	remove_property("auto_shenStarted");
 	
 	return true;
 }

@@ -1,5 +1,3 @@
-script "level_10.ash"
-
 boolean L10_plantThatBean()
 {
 	if(internalQuestStatus("questL10Garbage") != 0)
@@ -17,11 +15,11 @@ boolean L10_plantThatBean()
 	}
 	if(item_amount($item[Enchanted Bean]) > 0)
 	{
-		use(1, $item[Enchanted Bean]);
+		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;
 	}
 
-	if(internalQuestStatus("questL04Bat") >= 0)
+	if(internalQuestStatus("questL04Bat") >= 2)
 	{
 		auto_log_info("I don't have a magic bean! Travesty!!", "blue");
 		return autoAdv($location[The Beanbat Chamber]);
@@ -71,13 +69,16 @@ boolean L10_airship()
 		visit_url("place.php?whichplace=beanstalk");	
 	}
 
+	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+		auto_changeSnapperPhylum($phylum[dude]);
+	}
 	autoAdv($location[The Penultimate Fantasy Airship]);
 	return true;
 }
 
 boolean L10_basement()
 {
-	if (internalQuestStatus("questL10Garbage") < 7 || internalQuestStatus("questL10Garbage") > 7)
+	if (internalQuestStatus("questL10Garbage") != 7)
 	{
 		return false;
 	}
@@ -122,7 +123,7 @@ boolean L10_basement()
 
 	auto_forceNextNoncombat();
 
-	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
+	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Bendable Knees]) && (item_amount($item[Bottle of Gregnadigne]) == 0))
 		{
@@ -173,6 +174,9 @@ boolean L10_basement()
 				else
 				{
 					auto_log_warning("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
+					if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+						auto_changeSnapperPhylum($phylum[dude]);
+					}
 					autoAdv(1, $location[The Penultimate Fantasy Airship]);
 				}
 				return true;
@@ -191,7 +195,7 @@ boolean L10_basement()
 
 boolean L10_ground()
 {
-	if (internalQuestStatus("questL10Garbage") < 8 || internalQuestStatus("questL10Garbage") > 8)
+	if (internalQuestStatus("questL10Garbage") != 8)
 	{
 		return false;
 	}
@@ -216,7 +220,7 @@ boolean L10_ground()
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
-	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
+	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Bendable Knees]) && (item_amount($item[Bottle of Gregnadigne]) == 0))
 		{
@@ -311,8 +315,9 @@ boolean L10_topFloor()
 
 boolean L10_holeInTheSkyUnlock()
 {
-	if (internalQuestStatus("questL10Garbage") < 9)
+	if (internalQuestStatus("questL10Garbage") < 11)
 	{
+		//top floor opens at step9. but we want to finish the giant trash quest first before we do hole in the sky.
 		return false;
 	}
 	if(!get_property("auto_holeinthesky").to_boolean())

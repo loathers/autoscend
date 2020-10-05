@@ -1,5 +1,3 @@
-script "level_12.ash"
-
 string auto_warSide()
 {
 	//returns the side you are fighting for in the form of a string.
@@ -121,7 +119,7 @@ int auto_warKillsPerBattle(int sidequests)
 
 int auto_estimatedAdventuresForChaosButterfly()
 {
-	// Returns an ESTIMATE of how manny adventures it will take to acquire a chaos butterfly.
+	// Returns an ESTIMATE of how many adventures it will take to acquire a chaos butterfly.
 	
 	if(get_property("chaosButterflyThrown").to_boolean() || item_amount($item[chaos butterfly]) > 0)
 	{
@@ -171,7 +169,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(auto_my_path() == "Bees Hate You" || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || auto_my_path() == "Pocket Familiars")
 	{
 		return advCost;
 	}
@@ -257,7 +255,7 @@ WarPlan auto_bestWarPlan()
 	boolean considerNuns = true;
 	boolean considerFarm = true;
 	
-	if(auto_my_path() == "Bees Hate You" || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || auto_my_path() == "Pocket Familiars")
 	{
 		considerArena = false;
 		considerJunkyard = false;
@@ -270,6 +268,10 @@ WarPlan auto_bestWarPlan()
 	{
 		considerNuns = false;
 		considerOrchard = false;
+	}
+	if (auto_my_path() == "G-Lover")
+	{
+		considerArena = false;
 	}
 	
 	// Calculate the adventure cost of doing each sidequest.
@@ -657,7 +659,7 @@ boolean L12_preOutfit()
 		return false;
 	}
 
-	if((my_class() == $class[Gelatinous Noob]) && auto_have_familiar($familiar[Robortender]))
+	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Ink Gland]) && (item_amount($item[Shot of Granola Liqueur]) == 0))
 		{
@@ -769,7 +771,7 @@ boolean L12_startWar()
 
 boolean L12_filthworms()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestOrchardCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestOrchardCompleted") != "none")
 	{
 		return false;
 	}
@@ -865,13 +867,12 @@ boolean L12_filthworms()
 			buyUpTo(1, $item[third-hand lantern]);
 			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
 		}
-		
-		//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
-		if(januaryToteAcquire($item[Broken Champagne Bottle]))
-		{
-			equip($item[Broken Champagne Bottle]);
+
+		if (!canChangeToFamiliar($familiar[XO Skeleton]) && catBurglarHeistsLeft() < 1) {
+			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
+			januaryToteAcquire($item[Broken Champagne Bottle]);
 		}
-		
+
 		if(auto_my_path() == "Live. Ascend. Repeat.")
 		{
 			equipMaximizedGear();
@@ -921,11 +922,11 @@ boolean L12_orchardFinalize()
 
 boolean L12_gremlins()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestJunkyardCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestJunkyardCompleted") != "none")
 	{
 		return false;
 	}
-	if (in_koe() || auto_my_path() == "Pocket Familiars")
+	if (in_koe() || auto_my_path() == "Pocket Familiars" || in_bhy())
 	{
 		return false;
 	}
@@ -944,6 +945,13 @@ boolean L12_gremlins()
 				return false;
 			}
 			buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
+		}
+	} else {
+		if (item_amount($item[Seal Tooth]) == 0) {
+			acquireHermitItem($item[Seal Tooth]);
+			if (item_amount($item[Seal Tooth]) == 0) {
+				abort("We don't have a seal tooth. Stasising Gremlins is not going to go well if you lack something to stasis them with.");
+			}
 		}
 	}
 
@@ -983,7 +991,6 @@ boolean L12_gremlins()
 	// this keeps us from accidentally killing gremlins
 	addToMaximize("-familiar");
 
-	#Put a different shield in here.
 	auto_log_info("Doing them gremlins", "blue");
 	addToMaximize("20dr,1da 1000max,3hp,-3ml");
 	acquireHP();
@@ -1022,7 +1029,7 @@ boolean L12_gremlins()
 
 boolean L12_sonofaBeach()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestLighthouseCompleted") != "none")
 	{
 		return false;
 	}
@@ -1135,7 +1142,7 @@ boolean L12_sonofaPrefix()
 	// this appears to be a copy & paste of L12_sonofaBeach() with some small changes
 	// for Vote Monster/Macrometeor shenanigans. Refactor this so only the relevant code remains.
 
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestLighthouseCompleted") != "none")
 	{
 		return false;
 	}
@@ -1295,7 +1302,7 @@ boolean L12_sonofaPrefix()
 
 boolean L12_sonofaFinish()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestLighthouseCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestLighthouseCompleted") != "none")
 	{
 		return false;
 	}
@@ -1354,7 +1361,7 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() >= 10000)
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() >= 10000)
 	{
 		return false;
 	}
@@ -1438,7 +1445,7 @@ boolean LX_attemptFlyering()
 
 boolean L12_flyerFinish()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1)
+	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
 	}
@@ -1478,7 +1485,7 @@ boolean L12_flyerFinish()
 
 boolean L12_themtharHills()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1 || get_property("sidequestNunsCompleted") != "none")
+	if (internalQuestStatus("questL12War") != 1 || get_property("sidequestNunsCompleted") != "none")
 	{
 		return false;
 	}
@@ -1702,7 +1709,7 @@ boolean L12_themtharHills()
 
 boolean LX_obtainChaosButterfly()
 {
-	if(auto_my_path() == "Bees Hate You" || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || auto_my_path() == "Pocket Familiars")
 	{
 		return false;
 	}
@@ -1957,7 +1964,7 @@ boolean L12_clearBattlefield()
 
 boolean L12_finalizeWar()
 {
-	if (internalQuestStatus("questL12War") < 1 || internalQuestStatus("questL12War") > 1)
+	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
 	}

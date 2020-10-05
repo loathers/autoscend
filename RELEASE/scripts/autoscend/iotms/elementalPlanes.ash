@@ -1,15 +1,3 @@
-script "elementalPlanes.ash"
-
-boolean getDiscoStyle();
-boolean getDiscoStyle(int choice);
-item[element] getCharterIndexable();
-boolean elementalPlanes_initializeSettings();
-boolean elementalPlanes_access(element ele);
-boolean elementalPlanes_takeJob(element ele);
-boolean volcano_bunkerJob();
-boolean volcano_lavaDogs();			//See code before using this!
-
-
 item[element] getCharterIndexable()
 {
 	item[element] charters;
@@ -173,8 +161,6 @@ boolean elementalPlanes_takeJob(element ele)
 	}
 	return false;
 }
-
-
 
 boolean dinseylandfill_garbageMoney()
 {

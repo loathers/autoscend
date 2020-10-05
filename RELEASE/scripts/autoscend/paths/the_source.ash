@@ -1,11 +1,3 @@
-script "the_source.ash"
-
-boolean theSource_initializeSettings();
-boolean theSource_buySkills();
-boolean LX_theSource();
-boolean theSource_oracle();
-
-
 boolean theSource_initializeSettings()
 {
 	if(my_path() == "The Source")
@@ -138,18 +130,6 @@ boolean LX_theSource()
 			string temp = visit_url("shop.php?whichshop=armory");
 			temp = visit_url("choice.php?pwd=&whichchoice=1065&option=2");
 			return true;
-		}
-		if(goal == $location[The Overgrown Lot])
-		{
-			//Meh.
-			if(get_property("questM24Doc") != "finished")
-			{
-				set_property("choiceAdventure1062", 1);
-			}
-			else
-			{
-				set_property("choiceAdventure1062", 4);
-			}
 		}
 		if((item_amount($item[Swindleblossom]) >= 3) && (item_amount($item[Fraudwort]) >= 3) && (item_amount($item[Shysterweed]) >= 3))
 		{

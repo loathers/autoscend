@@ -1,5 +1,3 @@
-script "one_crazy_random_summer.ash"
-
 boolean ocrs_postHelper()
 {
 	if(my_path() != "One Crazy Random Summer")

@@ -1,11 +1,9 @@
-script "mr2017.ash"
-
 #	This is meant for items that have a date of 2017.
 
 boolean mummifyFamiliar(familiar fam, string bonus)
 {
 	bonus = to_lower_case(bonus);
-	if(auto_my_path() == "Pocket Familiars")
+	if(!pathAllowsFamiliar())
 	{
 		return false;
 	}
@@ -17,11 +15,15 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Mumming Trunk]))
+	if(!auto_is_valid($item[Mumming Trunk]))
 	{
 		return false;
 	}
 	if(!have_familiar(fam))
+	{
+		return false;
+	}
+	if(!auto_is_valid(fam))
 	{
 		return false;
 	}
@@ -113,7 +115,7 @@ boolean pantogramPants()
 
 boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int misc)
 {
-	if(!is_unrestricted($item[Portable Pantogram]))
+	if(!auto_is_valid($item[Portable Pantogram]))
 	{
 		return false;
 	}
@@ -125,7 +127,6 @@ boolean pantogramPants(stat st, element el, int hpmp, int meatItemStats, int mis
 	{
 		return false;
 	}
-
 	int m = 0;
 	switch(st)
 	{
@@ -274,7 +275,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-	if((loveEffect == 2) && !have_familiar($familiar[Mosquito]))
+	if((loveEffect == 2) && !pathAllowsFamiliar())
 	{
 		loveEffect = 3;
 	}
@@ -385,7 +386,7 @@ boolean kgbWasteClicks()
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -612,7 +613,7 @@ boolean kgbSetup()
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -757,7 +758,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -886,7 +887,7 @@ boolean kgbDial(int dial, int curVal, int target)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -928,7 +929,7 @@ boolean solveKGBMastermind()
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Kremlin\'s Greatest Briefcase]))
+	if(!auto_is_valid($item[Kremlin\'s Greatest Briefcase]))
 	{
 		return false;
 	}
@@ -1423,6 +1424,13 @@ boolean asdonCanMissile()
 	return (auto_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
 }
 
+boolean isHorseryAvailable() {
+	if(!get_property("horseryAvailable").to_boolean()) {
+		return false;
+	}
+	return true;
+}
+
 int horseCost()
 {
 	if(get_property("_horseryRented").to_int() > 0)
@@ -1559,45 +1567,61 @@ boolean getHorse(string type)
 
 void horseDefault()
 {
-	set_property("auto_desiredHorse", "");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "");
+	}
 }
 
 void horseMaintain()
 {
-	set_property("auto_desiredHorse", horseNormalize(get_property("_horsery")));
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", horseNormalize(get_property("_horsery")));
+	}
 }
 
 void horseNone()
 {
-	set_property("auto_desiredHorse", "return");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "return");
+	}
 }
 
 void horseNormal()
 {
-	set_property("auto_desiredHorse", "normal");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "normal");
+	}
 }
 
 void horseDark()
 {
-	set_property("auto_desiredHorse", "dark");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "dark");
+	}
 }
 
 void horseCrazy()
 {
-	set_property("auto_desiredHorse", "crazy");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "crazy");
+	}
 }
 
 void horsePale()
 {
-	set_property("auto_desiredHorse", "pale");
+	if (isHorseryAvailable()) {
+		set_property("auto_desiredHorse", "pale");
+	}
 }
 
 boolean horsePreAdventure()
 {
+	if (!isHorseryAvailable()) { return false; }
+
 	string desiredHorse = get_property("auto_desiredHorse");
 	if (desiredHorse == "")
 	{
-		desiredHorse = "dark";
+		return false;
 	}
 
 	if (desiredHorse != "normal"

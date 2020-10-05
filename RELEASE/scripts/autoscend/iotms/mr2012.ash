@@ -1,4 +1,4 @@
-script "mr2012.ash"
+#	This is meant for items that have a date of 2012
 
 boolean auto_reagnimatedGetPart()
 {

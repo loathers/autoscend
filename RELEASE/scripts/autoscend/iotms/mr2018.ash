@@ -1,5 +1,3 @@
-script "mr2018.ash"
-
 #	This is meant for items that have a date of 2018.
 
 boolean isjanuaryToteAvailable()
@@ -195,24 +193,8 @@ boolean godLobsterCombat(item it, int goal, string option)
 		equip($slot[familiar], it);
 	}
 
-	//when pre_adventure.ash is run by mafia before fighting god lobster, we do not want it to switch to another familiar.
-	set_property("auto_disableFamiliarChanging", true);
-	cli_execute("auto_pre_adv.ash");
-
-	string page_text = visit_url("main.php?fightgodlobster=1");
-	if(contains_text(page_text, "You can't challenge your God Lobster anymore"))
-	{
-		set_property("_godLobsterFights", 3);
-	}
-	else
-	{
-		set_property("_auto_lobsterChoice", to_string(goal));
-		autoAdv(1, $location[Noob Cave], option);
-	}
-
-	set_property("auto_disableFamiliarChanging", false);
-
-	return true;
+	set_property("_auto_lobsterChoice", to_string(goal));
+	return autoAdvBypass("main.php?fightgodlobster=1", option);
 }
 
 boolean fantasyRealmAvailable()
@@ -330,7 +312,7 @@ boolean songboomSetting(string goal)
 
 boolean songboomSetting(int option)
 {
-	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
+	if(!auto_is_valid($item[SongBoom&trade; BoomBox]))
 	{
 		return false;
 	}
@@ -406,7 +388,7 @@ boolean songboomSetting(int option)
 
 void auto_setSongboom()
 {
-	if(!is_unrestricted($item[SongBoom&trade; BoomBox]))
+	if(!auto_is_valid($item[SongBoom&trade; BoomBox]))
 	{
 		return;
 	}
@@ -423,7 +405,7 @@ void auto_setSongboom()
 		// Once we've started the war, we want to be able to micromanage songs
 		// for Gremlins and Nuns. Don't break this for them.
 	}
-	else if (!isActuallyEd() && internalQuestStatus("questL07Cyrptic") < 1 && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
+	else if (!isActuallyEd() && !auto_havePillKeeper() && internalQuestStatus("questL07Cyrptic") < 1 && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
 	{
 		songboomSetting("nightmare");
 	}
@@ -504,6 +486,19 @@ item[monster] catBurglarHeistDesires()
 	 */
 	item[monster] wannaHeists;
 
+	if (!canChangeToFamiliar($familiar[XO Skeleton]) && get_property("sidequestOrchardCompleted") == "none") {
+		// Can't hugpocket? 1 turn filthworms is still a thing you can do!
+		if (have_effect($effect[Filthworm Larva Stench]) == 0 && item_amount($item[Filthworm Hatchling Scent Gland]) == 0) {
+			wannaHeists[$monster[larval filthworm]] = $item[Filthworm Hatchling Scent Gland];
+		}
+		if (have_effect($effect[Filthworm Drone Stench]) == 0 && item_amount($item[Filthworm Drone Scent Gland]) == 0) {
+			wannaHeists[$monster[filthworm drone]] = $item[Filthworm Drone Scent Gland];
+		}
+		if (have_effect($effect[Filthworm Guard Stench]) == 0 && item_amount($item[Filthworm Royal Guard Scent Gland]) == 0) {
+			wannaHeists[$monster[filthworm royal guard]] = $item[Filthworm Royal Guard Scent Gland];
+		}
+	}
+
 	item oreGoal = to_item(get_property("trapperOre"));
 	if (oreGoal != $item[none] && item_amount(oreGoal) < 3 && internalQuestStatus("questL08Trapper") < 2 && in_hardcore())
 	{
@@ -577,7 +572,7 @@ boolean catBurglarHeist()
 
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 {
-	if(!is_unrestricted($item[Bastille Battalion Control Rig]))
+	if(!auto_is_valid($item[Bastille Battalion Control Rig]))
 	{
 		return false;
 	}
@@ -1168,6 +1163,10 @@ boolean auto_latteRefill()
 	return auto_latteRefill("");
 }
 
+boolean auto_haveVotingBooth() {
+	return ((get_property("_voteToday").to_boolean() || get_property("voteAlways").to_boolean()) && auto_is_valid($item[voter registration form]));
+}
+
 boolean auto_voteSetup()
 {
 	return auto_voteSetup(0,0,0);
@@ -1252,7 +1251,7 @@ boolean auto_voteMonster(boolean freeMon, location loc)
 
 boolean auto_voteMonster(boolean freeMon, location loc, string option)
 {
-	if(!get_property("_voteToday").to_boolean() && !get_property("voteAlways").to_boolean())
+	if(!auto_haveVotingBooth())
 	{
 		return false;
 	}
