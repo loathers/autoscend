@@ -132,6 +132,8 @@ void main()
 	file_to_map("autoscend_settings_extra.txt", s);
 
 	boolean dickstab = false;
+	
+	writeln("<br><a href=\"relay_autoscend.php\">Return to main autoscend page</a><br>");
 
 	fields = form_fields();
 	if(count(fields) > 0)

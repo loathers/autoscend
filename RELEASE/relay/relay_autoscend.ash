@@ -181,7 +181,7 @@ void main()
 		writeln("Settings have not been initialized for current ascension. Do not change Post type settings<br>");
 	}
 	
-	writeln("<br>For extra settings <a href=\"autoscend_settings_extra.php\">click here</a><br>");
+	writeln("<br><a href=\"autoscend_settings_extra.php\">For extra settings click here</a><br>");
 
 	fields = form_fields();
 	if(count(fields) > 0)
