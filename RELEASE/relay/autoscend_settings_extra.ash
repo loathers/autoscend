@@ -8,8 +8,6 @@ void main()
 
 	file_to_map("autoscend_settings_extra.txt", s);
 
-	boolean dickstab = false;
-	
 	writeln("<br><a href=\"relay_autoscend.php\">Return to main autoscend page</a><br>");
 
 	fields = form_fields();
@@ -36,13 +34,6 @@ void main()
 #				writeln("Property " + x + " had: " + oldSetting + " now: " + fields[x] + "<br>");
 #			}
 
-			if(x == "auto_dickstab")
-			{
-				if((fields[x] != get_property("auto_dickstab")) && (fields[x] == "true"))
-				{
-					dickstab = true;
-				}
-			}
 			if(get_property(x) != fields[x])
 			{
 				writeln("Changing setting " + x + " to " + fields[x] + "<br>");
