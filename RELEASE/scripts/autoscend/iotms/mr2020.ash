@@ -376,13 +376,7 @@ boolean auto_cargoShortsCanOpenPocket(item i)
 	if (!auto_cargoShortsCanOpenPocket())
 		return false;
 
-	foreach index, pocket in potential_pockets(i)
-	{
-		if (auto_cargoShortsCanOpenPocket(pocket))
-			return true;
-	}
-
-	return false;
+	return available_pocket(i) != 0;
 }
 
 boolean auto_cargoShortsCanOpenPocket(monster m)
@@ -390,27 +384,15 @@ boolean auto_cargoShortsCanOpenPocket(monster m)
 	if (!auto_cargoShortsCanOpenPocket())
 		return false;
 
-	foreach index, pocket in potential_pockets(m)
-	{
-		if (auto_cargoShortsCanOpenPocket(pocket))
-			return true;
-	}
-
-	return false;
+	return available_pocket(m) != 0;
 }
 
 boolean auto_cargoShortsCanOpenPocket(effect e)
 {
 	if (!auto_cargoShortsCanOpenPocket())
 		return false;
-
-	foreach index, pocket in potential_pockets(e)
-	{
-		if (auto_cargoShortsCanOpenPocket(pocket))
-			return true;
-	}
-
-	return false;
+	
+	return available_pocket(e) != 0;
 }
 
 boolean auto_cargoShortsCanOpenPocket(stat s)
@@ -418,13 +400,7 @@ boolean auto_cargoShortsCanOpenPocket(stat s)
 	if (!auto_cargoShortsCanOpenPocket())
 		return false;
 
-	foreach index, pocket in potential_pockets(s)
-	{
-		if (auto_cargoShortsCanOpenPocket(pocket))
-			return true;
-	}
-
-	return false;
+	return available_pocket(s) != 0;
 }
 
 boolean auto_cargoShortsCanOpenPocket(string s)
@@ -459,7 +435,7 @@ boolean auto_cargoShortsOpenPocket(item i)
 	if (!auto_cargoShortsCanOpenPocket(i))
 		return false;
 
-	return count(pick_pocket(i)) != 0;
+	return pick_pocket(available_pocket(i));
 }
 
 boolean auto_cargoShortsOpenPocket(monster m)
@@ -467,7 +443,7 @@ boolean auto_cargoShortsOpenPocket(monster m)
 	if (!auto_cargoShortsCanOpenPocket(m))
 		return false;
 
-	return pick_pocket(m);
+	return pick_pocket(available_pocket(m));
 }
 
 boolean auto_cargoShortsOpenPocket(effect e)
@@ -475,7 +451,7 @@ boolean auto_cargoShortsOpenPocket(effect e)
 	if (!auto_cargoShortsCanOpenPocket(e))
 		return false;
 
-	return count(pick_pocket(e)) != 0;
+	return pick_pocket(available_pocket(e));
 }
 
 boolean auto_cargoShortsOpenPocket(stat s)
@@ -483,7 +459,7 @@ boolean auto_cargoShortsOpenPocket(stat s)
 	if (!auto_cargoShortsCanOpenPocket(s))
 		return false;
 
-	return count(pick_pocket(s)) != 0;
+	return pick_pocket(available_pocket(s));
 }
 
 boolean auto_cargoShortsOpenPocket(string s)
