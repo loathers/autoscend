@@ -459,7 +459,7 @@ boolean auto_cargoShortsOpenPocket(item i)
 	if (!auto_cargoShortsCanOpenPocket(i))
 		return false;
 
-	return pick_pocket(i);
+	return count(pick_pocket(i)) != 0;
 }
 
 boolean auto_cargoShortsOpenPocket(monster m)
@@ -475,7 +475,7 @@ boolean auto_cargoShortsOpenPocket(effect e)
 	if (!auto_cargoShortsCanOpenPocket(e))
 		return false;
 
-	return pick_pocket(e);
+	return count(pick_pocket(e)) != 0;
 }
 
 boolean auto_cargoShortsOpenPocket(stat s)
@@ -483,7 +483,7 @@ boolean auto_cargoShortsOpenPocket(stat s)
 	if (!auto_cargoShortsCanOpenPocket(s))
 		return false;
 
-	return pick_pocket(s);
+	return count(pick_pocket(s)) != 0;
 }
 
 boolean auto_cargoShortsOpenPocket(string s)
@@ -492,15 +492,15 @@ boolean auto_cargoShortsOpenPocket(string s)
 		return false;
 
 	if (s.to_int() != 0)
-		return pick_pocket(s.to_int());
+		return auto_cargoShortsOpenPocket(s.to_int());
 	else if (s.to_item() != $item[none])
-		return pick_pocket(s.to_item());
+		return auto_cargoShortsOpenPocket(s.to_item());
 	else if (s.to_monster() != $monster[none])
-		return pick_pocket(s.to_monster());
+		return auto_cargoShortsOpenPocket(s.to_monster());
 	else if (s.to_effect() != $effect[none])
-		return pick_pocket(s.to_effect());
+		return auto_cargoShortsOpenPocket(s.to_effect());
 	else if (s.to_stat() != $stat[none])
-		return pick_pocket(s.to_stat());
+		return auto_cargoShortsOpenPocket(s.to_stat());
 
 	return false;
 }
