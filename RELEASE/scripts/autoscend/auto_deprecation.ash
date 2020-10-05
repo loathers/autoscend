@@ -316,6 +316,7 @@ boolean settingFixer()
 	remove_property("auto_lastABooConsider");
 	remove_property("auto_lastABooCycleFix");
 	remove_property("auto_longConMonster");
+	remove_property("auto_voidWarranty");
 	
 	return true;
 }

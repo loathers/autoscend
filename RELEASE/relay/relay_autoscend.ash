@@ -240,13 +240,7 @@ void main()
 	{
 		writeln("auto_dickstab was just set to true<br>");
 		writeln("Your warranty has been declared void.<br>");
-		set_property("auto_voidWarranty", "rekt");
 		writeln("Togging incompatible settings. You can re-enabled them here if you so desire. This resetting only takes effect upon setting auto_dickstab to true.<br><br>");
-#		if(get_property("auto_getDinseyGarbageMoney").to_boolean())
-#		{
-#			set_property("auto_getDinseyGarbageMoney", false);
-#			writeln("Disabled auto_getDinseyGarbageMoney.<br>");
-#		}
 		if(get_property("auto_hippyInstead").to_boolean())
 		{
 			set_property("auto_hippyInstead", false);
