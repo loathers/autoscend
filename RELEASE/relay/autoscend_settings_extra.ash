@@ -78,18 +78,7 @@ void main()
 	}
 	writeln("<tr><td align=center colspan='3'><input type='submit' name='' value='Save Changes'/></td></tr></table></form>");
 	
-	//write explanation of table contents
-/*
-	writeln("<table><tr><th>Settings Color Codings</th></tr>");
-	writeln("<tr bgcolor=#00ffff><td>Anytime: This setting can be changed at any time and takes effect immediately.</td></tr>");
-	writeln("<tr bgcolor=#ffff00><td>Pre: This setting takes effect on the next run that is started with the script.</td></tr>");
-	writeln("<tr bgcolor=#00ff00><td>Post: This setting is set by the first run of the script but can be overrode after that. Translation: Run script on day 1, after first adventure, set these however you like.</td></tr>");
-	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
-	if(get_property("auto_allowSharingData").to_boolean())
-	{
-		writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data. This causes something to immediately (or when reasonable) happen.</td></tr>");
-	}
-	writeln("</table>");
-*/
+	write_settings_key();		//display the key to the settings table
+	
 	writeln("</body></html>");
 }
