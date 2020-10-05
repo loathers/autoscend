@@ -409,7 +409,7 @@ boolean auto_cargoShortsCanOpenPocket(string s)
 		return false;
 
 	// to_int errors if not an int, check with regex first
-	matcher m = create_matcher("^\d+$", cond);
+	matcher m = create_matcher("^\d+$", s);
 	if (m.find())
 		return auto_cargoShortsCanOpenPocket(s.to_int());
 	else if (s.to_item() != $item[none])
@@ -470,7 +470,7 @@ boolean auto_cargoShortsOpenPocket(string s)
 		return false;
 
 	// to_int errors if not an int, check with regex first
-	matcher m = create_matcher("^\d+$", cond);
+	matcher m = create_matcher("^\d+$", s);
 	if (m.find())
 		return auto_cargoShortsOpenPocket(s.to_int());
 	else if (s.to_item() != $item[none])
