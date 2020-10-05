@@ -11,6 +11,68 @@ boolean is100FamRun()
 	return true;
 }
 
+boolean doNotBuffFamiliar100Run()
+{
+	//indicates that we are in a 100% familiar run with a familiar that should not be buffed. Either because it hinders you or is useless.
+	if(!is100FamRun())
+	{
+		return false;
+	}
+	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+	
+	//these familiars are only harmful
+	if($familiars[black cat, O.A.F.] contains hundred_fam)
+	{
+		return true;
+	}
+	
+	//these familiars sometime attack the enemy
+	if($familiars[Fuzzy Dice, Stab Bat, Killer Bee, Scary Death Orb, RoboGoose] contains hundred_fam)
+	{
+		return true;
+	}
+	
+	//these familiars do nothing rather than actively hinder you. Still should not be buffed.
+	if($familiars[Pet Rock, Toothsome Rock, Bulky Buddy Box, Holiday Log, Homemade Robot, Software Bug, Bad Vibe] contains hundred_fam)
+	{
+		return true;
+	}
+	
+	return false;
+}
+
+boolean isAttackFamiliar(familiar fam)
+{
+	//is the familiar called fam able to deal damage to the enemy
+	if(fam.physical_damage || fam.elemental_damage)
+	{
+		return true;
+	}
+	
+	//these familiars vary by configuration. TODO actually check their configuration
+	if($familiars[Mini-Crimbot,
+	El Vibrato Megadrone,
+	Reagnimated Gnome,
+	Mini-Adventurer,
+	Reanimated Reanimator,
+	Comma Chameleon,
+	Mad Hatrack,
+	Fancypants Scarecrow
+	] contains fam)
+	{
+		return true;
+	}
+	
+	if($familiars[Doppelshifter,				//random familiar every fight. can be an attack familiar
+	Dandy Lion									//attacks if you equip a whip.
+	] contains fam)
+	{
+		return true;
+	}
+	
+	return false;
+}
+
 boolean pathAllowsFamiliar()
 {
 	if($classes[

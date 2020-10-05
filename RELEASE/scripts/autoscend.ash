@@ -1,4 +1,4 @@
-since r20321; // Log daycount when first got Shen Copperhead, Nightclub Owner.  Thanks to fredg1
+since r20417;	//min mafia revision needed to run this script. Last update: Adventurous Spelunker familiar can deal damage
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -3136,6 +3136,15 @@ void resetState() {
 	set_property("auto_familiarChoice", ""); // which familiar do we want to switch to during pre_adventure
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
+
+	if(doNotBuffFamiliar100Run())		//some familiars are always bad
+	{
+		set_property("_auto_bad100Familiar", true);			//disable buffing familiar
+	}
+	else		//some familiars are only bad at certain locations
+	{
+		set_property("_auto_bad100Familiar", false); 		//reset to not bad. target location might set them as bad again
+	}
 
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
 
