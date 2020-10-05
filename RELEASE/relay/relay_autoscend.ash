@@ -37,7 +37,6 @@ void write_styles()
 	"</style>");
 }
 
-
 void handleSetting(string type, int x)
 {
 	string color = "white";

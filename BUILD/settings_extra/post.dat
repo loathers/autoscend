@@ -1,1 +1,26 @@
-
+auto_chasmBusted	boolean	Has the orc chasm bridge been 'trolled yet? Ed only.
+auto_cookie	integer	HCCS Only: Tracks fortune cookie.
+auto_crackpotjar	string	Status of Crackpot Mystic Jar of Psychoses
+auto_day1_dna	string	'finished' if we have hybridized ourselves at the start of Ascension.
+auto_day_init	string	Current daycount if we finished initializing today.
+auto_getBoningKnife	boolean	Do we want Boning Knife this ascension?
+auto_gnasirUnlocked	boolean	Have we found gnasir in the Desert?
+auto_grimstoneFancyOilPainting	boolean	do grimstone for fancy oil painting this ascension?
+auto_grimstoneOrnateDowsingRod	boolean	do grimstone for ornate dowsing rod this ascension?
+auto_hedge	string	'fast' or 'slow', determining how quickly we want to finish the Hedge Maze.
+auto_powerLevelLastLevel	string	Last Level that we had nothing to do.
+auto_powerLevelAdvCount	string	Adventures count of times we had nothing to do.
+auto_powerLevelLastAttempted	string	Last adventure that we did nothing on.
+auto_skipNuns	boolean	Skip nuns quest this ascension?
+auto_waitingArrowAlcove	integer	If we arrowed a modern zmobie, this tells us when to return to the Alcove (cyrptAlcoveEvilness value).
+auto_100familiar	string	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
+auto_beatenUpCount	integer	How many times were we beaten up this ascension. Affects ML and whether we try to heal or abort when we get beaten up.
+auto_doneInitialize	integer	Indicates last ascension that we initialized with the script.
+auto_noSnakeOil	integer	Last day that we could no longer Extract Oil.
+auto_renenutetBought	integer	Number of Talisman of Renenutet's bought on last tracking.
+auto_batoomerangDay	integer	Part of Replica Bat-oomerang Tracker
+auto_batoomerangUse	integer	Part of Replica Bat-oomerang Tracker
+_auto_lastABooConsider	integer	Last turn that we considered doing A-Boo Peak
+_auto_lastABooCycleFix	integer	Tracker to prevent us infinitely looping on A-Boo Peak
+_auto_witchessBattles	integer	Tracker for Witchess Combats (yes, this is actually needed).
+auto_needLegs	boolean	In Ed, do we require getting legs before trying to Ka farm?
