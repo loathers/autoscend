@@ -180,6 +180,8 @@ void main()
 	{
 		writeln("Settings have not been initialized for current ascension. Do not change Post type settings<br>");
 	}
+	
+	writeln("<br>For extra settings <a href=\"autoscend_settings_extra.php\">click here</a><br>");
 
 	fields = form_fields();
 	if(count(fields) > 0)
@@ -286,8 +288,6 @@ void main()
 		writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data. This causes something to immediately (or when reasonable) happen.</td></tr>");
 	}
 	writeln("</table>");
-
-	writeln("<br>Handle <a href=\"autoscend_quests.php\">Quest Tracker</a><br>");
 
 	writeln("<h2>Banishes</h2>");
 	generateTrackingData("auto_banishes");
