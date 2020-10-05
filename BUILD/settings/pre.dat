@@ -1,1 +1,1 @@
-auto_alwaysGetSteelOrgan	When we next initialize settings it will be copied to auto_getSteelOrgan
+auto_alwaysGetSteelOrgan	boolean	When we next initialize settings it will be copied to auto_getSteelOrgan

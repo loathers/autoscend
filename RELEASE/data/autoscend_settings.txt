@@ -5,8 +5,7 @@
 
 action	0	auto_interrupt	boolean	Cause script to stop before starting next turn action (instead of trying to abort midturn).
 action	1	auto_debugging	boolean	Will cause the script to stop after one adventure (by setting auto_interrupt = true).
-action	2	auto_disableAdventureHandling	boolean	When set this prevents post/preadventure behavior.
-action	3	auto_combatDirective	string	An action to execute at the start of next combat
+action	2	auto_paranoia	integer	How often should we refresh quests? measured in adventures. -1 is never, lower positive numbers = more often.
 
 any	0	auto_skipNEPOverride	boolean	If true, will not use the Neverending Party even if mafia says it is available.
 any	1	auto_newbieOverride	boolean	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
@@ -66,12 +65,9 @@ post	2	auto_getStarKey	boolean	Get Richard's Star Key in this ascension?
 post	3	auto_holeinthesky	boolean	Open the Hole in the Sky in this ascension?
 post	4	auto_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat Warriors in this ascension?
 post	5	auto_ignoreFlyer	boolean	Do not do the flyer quest in this ascension? recommended to set true if fighting for the hippies.
-post	6	auto_haveoven	boolean	Track oven status. If you have an oven this should be true. But we can't always check the campground.
-post	7	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this ascension?
-post	8	auto_doGalaktik	boolean	Do Galaktik quest this ascension?
-post	9	auto_paranoia	integer	How often should we refresh quests? measured in adventures. -1 is never, lower positive numbers = more often.
+post	6	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this ascension?
 
-pre	0	auto_alwaysGetSteelOrgan	When we next initialize settings it will be copied to auto_getSteelOrgan
+pre	0	auto_alwaysGetSteelOrgan	boolean	When we next initialize settings it will be copied to auto_getSteelOrgan
 
 sharing	0	auto_shareMaximizer	boolean	Share maximzer data. This includes the maximzer string, class, path, softcore/hardcore and moon sign.
 

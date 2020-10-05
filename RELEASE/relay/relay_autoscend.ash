@@ -159,25 +159,20 @@ void write_settings_key()
 	//display the key to the settings table.
 	writeln("<table><tr><th>Settings Color Codings</th></tr>");
 	writeln("<tr bgcolor=#00ffff><td>Anytime: This setting can be changed at any time and takes effect immediately.</td></tr>");
-	writeln("<tr bgcolor=#ffff00><td>Pre: Next time we initialize autoscend this will be used to determine what we should set some Post type settings to.</td></tr>");
-	writeln("<tr bgcolor=#00ff00><td>Post: This setting is used to indicate things to do on the current ascension. They are all automatically reconfigured each ascension when we initialize setting on the first run of autoscend. After settings have been initialized you may change this. Under some circumstances they will be automatically changed mid ascension</td></tr>");
+	writeln("<tr bgcolor=#ffff00><td>Pre: Next time we initialize settings for autoscend this will be used to determine what we should set some Post type settings to.</td></tr>");
+	writeln("<tr bgcolor=#00ff00><td>Post: settings for current ascension. Automatically reconfigured each ascension when we initialize setting for that ascension. After settings have been initialized you may change this. Under some circumstances they will be automatically changed mid ascension</td></tr>");
 	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
-	if(get_property("auto_allowSharingData").to_boolean())
-	{
-		writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data. This causes something to immediately (or when reasonable) happen.</td></tr>");
-	}
+	writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data.</td></tr>");
 	writeln("</table>");
 }
 
 void main()
 {
-	initializeSettings();		//called once per ascension. should not handle anything other than intialising properties.
+	initializeSettings();		//runs once per ascension. should not handle anything other than intialising settings for this ascension.
 	
 	write_styles();
 	writeln("<html><head><title>autoscend manager</title>");
 	writeln("</head><body><h1>autoscend manager</h1>");
-
-	file_to_map("autoscend_settings.txt", s);
 
 	writeln("<form action='' method='post'>");
 	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
@@ -197,6 +192,7 @@ void main()
 	writeln("<br><a href=\"autoscend_settings_extra.php\">For extra settings click here</a><br><br>");
 
 	//generate settings table
+	file_to_map("autoscend_settings.txt", s);
 	boolean dickstab = false;	//used to detect if we just enabled dickstab
 	fields = form_fields();
 	if(count(fields) > 0)

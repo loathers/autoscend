@@ -1,1 +1,2 @@
-#
+auto_disableAdventureHandling	boolean	When set this prevents post/preadventure behavior. resets every loop.
+auto_combatDirective	string	An action to execute at the start of next combat. resets every loop.

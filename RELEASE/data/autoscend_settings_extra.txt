@@ -3,7 +3,8 @@
 
 # variable timing, number, variable name, variable type, description
 
-#
+action	0	auto_disableAdventureHandling	boolean	When set this prevents post/preadventure behavior. resets every loop.
+action	1	auto_combatDirective	string	An action to execute at the start of next combat. resets every loop.
 
 any	0	auto_abooclover	boolean	Are we considering using a clover at A-Boo Peak?
 any	1	auto_aboopending	integer	The last turn of a pending A-Boo Clue. 0 if no clue active.
@@ -41,6 +42,8 @@ post	22	_auto_lastABooConsider	integer	Last turn that we considered doing A-Boo 
 post	23	_auto_lastABooCycleFix	integer	Tracker to prevent us infinitely looping on A-Boo Peak
 post	24	_auto_witchessBattles	integer	Tracker for Witchess Combats (yes, this is actually needed).
 post	25	auto_needLegs	boolean	In Ed, do we require getting legs before trying to Ka farm?
+post	26	auto_haveoven	boolean	Track oven status. If you have an oven this should be true. But we can't always check the campground.
+post	27	auto_doGalaktik	boolean	Do Galaktik optional sidequest this ascension?
 
 #
 

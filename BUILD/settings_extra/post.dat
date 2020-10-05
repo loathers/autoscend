@@ -24,3 +24,5 @@ _auto_lastABooConsider	integer	Last turn that we considered doing A-Boo Peak
 _auto_lastABooCycleFix	integer	Tracker to prevent us infinitely looping on A-Boo Peak
 _auto_witchessBattles	integer	Tracker for Witchess Combats (yes, this is actually needed).
 auto_needLegs	boolean	In Ed, do we require getting legs before trying to Ka farm?
+auto_haveoven	boolean	Track oven status. If you have an oven this should be true. But we can't always check the campground.
+auto_doGalaktik	boolean	Do Galaktik optional sidequest this ascension?

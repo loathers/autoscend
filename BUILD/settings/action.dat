@@ -1,4 +1,3 @@
 auto_interrupt	boolean	Cause script to stop before starting next turn action (instead of trying to abort midturn).
 auto_debugging	boolean	Will cause the script to stop after one adventure (by setting auto_interrupt = true).
-auto_disableAdventureHandling	boolean	When set this prevents post/preadventure behavior.
-auto_combatDirective	string	An action to execute at the start of next combat
+auto_paranoia	integer	How often should we refresh quests? measured in adventures. -1 is never, lower positive numbers = more often.
