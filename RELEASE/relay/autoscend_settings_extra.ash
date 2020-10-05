@@ -8,8 +8,9 @@ void main()
 
 	file_to_map("autoscend_settings_extra.txt", s);
 
-	writeln("<br><a href=\"relay_autoscend.php\">Return to main autoscend page</a><br>");
+	writeln("<br><a href=\"relay_autoscend.php\">Return to main autoscend page</a><br><br>");
 
+	//generate settings table
 	fields = form_fields();
 	if(count(fields) > 0)
 	{
@@ -29,11 +30,6 @@ void main()
 				}
 				continue;
 			}
-#			else
-#			{
-#				writeln("Property " + x + " had: " + oldSetting + " now: " + fields[x] + "<br>");
-#			}
-
 			if(get_property(x) != fields[x])
 			{
 				writeln("Changing setting " + x + " to " + fields[x] + "<br>");

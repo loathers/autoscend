@@ -174,8 +174,8 @@ void main()
 	initializeSettings();		//called once per ascension. should not handle anything other than intialising properties.
 	
 	write_styles();
-	writeln("<html><head><title>autoscend Crapulent Manager</title>");
-	writeln("</head><body><h1>autoscend Manager</h1>");
+	writeln("<html><head><title>autoscend manager</title>");
+	writeln("</head><body><h1>autoscend manager</h1>");
 
 	file_to_map("autoscend_settings.txt", s);
 
@@ -194,9 +194,10 @@ void main()
 		writeln("Settings have not been initialized for current ascension. Do not change Post type settings<br>");
 	}
 	
-	writeln("<br><a href=\"autoscend_settings_extra.php\">For extra settings click here</a><br>");
+	writeln("<br><a href=\"autoscend_settings_extra.php\">For extra settings click here</a><br><br>");
 
-	boolean dickstab = false;
+	//generate settings table
+	boolean dickstab = false;	//used to detect if we just enabled dickstab
 	fields = form_fields();
 	if(count(fields) > 0)
 	{
@@ -216,22 +217,18 @@ void main()
 				}
 				continue;
 			}
-#			else
-#			{
-#				writeln("Property " + x + " had: " + oldSetting + " now: " + fields[x] + "<br>");
-#			}
-
-			if(x == "auto_dickstab")
+			if(get_property(x) != fields[x])
+			{
+				writeln("Changing setting " + x + " to " + fields[x] + "<br>");
+				set_property(x, fields[x]);
+			}
+			
+			if(x == "auto_dickstab")	//used to detect if we just enabled dickstab
 			{
 				if((fields[x] != get_property("auto_dickstab")) && (fields[x] == "true"))
 				{
 					dickstab = true;
 				}
-			}
-			if(get_property(x) != fields[x])
-			{
-				writeln("Changing setting " + x + " to " + fields[x] + "<br>");
-				set_property(x, fields[x]);
 			}
 		}
 	}
