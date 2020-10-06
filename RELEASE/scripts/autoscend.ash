@@ -1,4 +1,4 @@
-since r20417;	//min mafia revision needed to run this script. Last update: Adventurous Spelunker familiar can deal damage
+since r20430;	//min mafia revision needed to run this script. Last update: Cargo Shorts support complete
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
