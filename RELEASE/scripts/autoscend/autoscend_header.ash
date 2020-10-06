@@ -392,10 +392,14 @@ boolean auto_cargoShortsCanOpenPocket(int pocket);
 boolean auto_cargoShortsCanOpenPocket(item i);
 boolean auto_cargoShortsCanOpenPocket(monster m);
 boolean auto_cargoShortsCanOpenPocket(effect e);
+boolean auto_cargoShortsCanOpenPocket(stat s);
+boolean auto_cargoShortsCanOpenPocket(string s);
 boolean auto_cargoShortsOpenPocket(int pocket);
 boolean auto_cargoShortsOpenPocket(item i);
 boolean auto_cargoShortsOpenPocket(monster m);
 boolean auto_cargoShortsOpenPocket(effect e);
+boolean auto_cargoShortsOpenPocket(stat e);
+boolean auto_cargoShortsOpenPocket(string s);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

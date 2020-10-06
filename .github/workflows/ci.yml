@@ -2,8 +2,8 @@
 
 name: CI
 env:
-  MAFIA_BUILD: "1902"
-  MAFIA_VERSION: "20394"
+  MAFIA_BUILD: "1938"
+  MAFIA_VERSION: "20430"
   SCRIPT_NAME: "autoscend.ash"
 
 on: [push, pull_request]
