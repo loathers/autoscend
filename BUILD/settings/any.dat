@@ -7,7 +7,6 @@ auto_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liber
 auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
 auto_powerLevelTimer	integer	Sets the delay before each adv spent powerleveling, default is 10 sec. lowest valid value is 1.
 auto_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
-auto_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
 auto_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
 auto_confidence	boolean	If true, we'll get the confidence buff instead of breaking the mirror. Good if your combat suite isn't very fleshed out yet, since it makes the Naughty Sorceress dramatically easier.
 auto_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
