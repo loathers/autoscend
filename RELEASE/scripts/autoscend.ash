@@ -3236,7 +3236,7 @@ boolean doTasks()
 			set_property("auto_paranoia_counter", paranoia_counter + 1);
 		}
 	}
-	if(get_property("auto_helpMeMafiaIsSuperBrokenAaah").to_boolean())
+	if(get_property("auto_inv_paranoia").to_boolean())
 	{
 		cli_execute("refresh inv");
 	}
