@@ -2,3 +2,4 @@ auto_interrupt	boolean	Script will abort after the next action is finished (inst
 auto_debugging	boolean	Every time you run the script it will perform one adventure and then stop by setting auto_interrupt = true
 auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
 auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.
+auto_newbieOverride	boolean	If true will override newbie block once then set itself to false. Newbie block is enabled used when you fight a crate (please report crate fighting) or when you spent too many adventures in a zone
