@@ -345,7 +345,6 @@ void main()
 	writeln("<h2>Other Stuff</h2>");
 	generateTrackingData("auto_otherstuff");
 
-
 	writeln("<h2>Info</h2>");
 	writeln("Ascension: " + my_ascensions() + "<br>");
 	writeln("Day: " + my_daycount() + "<br>");
@@ -358,7 +357,8 @@ void main()
 	}
 
 	//TODO: need way to track version independent of svn branch since you can have different branches checked out
-	writeln("Version (autoscend): " + autoscend_current_version() + "<br>");
+	writeln("Autoscend Version: " + autoscend_current_version() + "<br>");
 
+	writeln("<br>");
 	writeln("</body></html>");
 }
