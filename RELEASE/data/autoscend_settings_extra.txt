@@ -3,8 +3,9 @@
 
 # variable timing, number, variable name, variable type, description
 
-action	0	auto_disableAdventureHandling	boolean	When set this prevents post/preadventure behavior. resets every loop.
-action	1	auto_combatDirective	string	An action to execute at the start of next combat. resets every loop.
+action	0	auto_disableAdventureHandling	boolean	When true this prevents preadventure and postadventure scripts from running. resets every loop.
+action	1	auto_disableFamiliarChanging	boolean	When true this prevents familiar changes. resets every loop.
+action	2	auto_combatDirective	string	An action to execute at the start of next combat. resets every loop.
 
 any	0	auto_abooclover	boolean	Are we considering using a clover at A-Boo Peak?
 any	1	auto_aboopending	integer	The last turn of a pending A-Boo Clue. 0 if no clue active.
