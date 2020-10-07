@@ -36,8 +36,6 @@ auto_consultChoice	string	The name of the player you want to do Zatara consults 
 auto_considerGalaktik	boolean	When true autoscend may automatically enable galaktik quest for this run if it decides it is needed.
 auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
 auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
-auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
-auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
 auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
 auto_useWishes	boolean	When true, use the Genie Bottle to go faster in non-Community Service runs.
 auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.

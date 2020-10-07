@@ -15,6 +15,8 @@ any	5	auto_csDoWheel	boolean	Community Service: Use Wheel of Fortune instead of 
 any	6	auto_hccsTurnSave	boolean	Community Service: Should we ignore pixel farming?
 any	7	auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Candy (default 2500)
 any	8	auto_hccsNoConcludeDay	boolean	Community Service: When true reduce how many daily end-of-day things we do.
+any	9	auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
+any	10	auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
 
 post	0	auto_chasmBusted	boolean	Has the orc chasm bridge been 'trolled yet? Ed only.
 post	1	auto_cookie	integer	HCCS Only: Tracks fortune cookie.
