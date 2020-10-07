@@ -147,10 +147,7 @@ void write_familiar()
 			writeln("<input type='hidden' name='auto_100familiar' value='" +my_familiar()+ "'/>");
 			writeln("<input type='submit' name='' value='Set current familiar as 100% target'/></form>");
 		}
-		else
-		{
-			writeln("This is not a 100% familiar run<br>");
-		}
+		//we could use an else to report that we are not in a 100% familiar run and it is too late to change it. but there is no need to.
 	}
 }
 
@@ -174,9 +171,12 @@ void main()
 	writeln("<html><head><title>autoscend manager</title>");
 	writeln("</head><body><h1>autoscend manager</h1>");
 
+	//button to interrupt script
 	writeln("<form action='' method='post'>");
 	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
-	writeln("<input type='submit' name='' value='Interrupt Script'/></form>");
+	writeln("<input type='submit' name='' value='Safely Stop Autoscend'/></form>");
+	
+	//TODO add button to run autoscend
 	
 	write_familiar();		//display current 100% familiar. and options related to it.
 	
