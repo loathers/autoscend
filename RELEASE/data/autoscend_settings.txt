@@ -3,8 +3,8 @@
 
 # variable timing, number, variable name, variable type, description
 
-action	0	auto_interrupt	boolean	Cause script to stop before starting next turn action (instead of trying to abort midturn).
-action	1	auto_debugging	boolean	Will cause the script to stop after one adventure (by setting auto_interrupt = true).
+action	0	auto_interrupt	boolean	Script will abort after the next action is finished (instead of mid turn which can cause problems). Will be reset to false after every time it is used.
+action	1	auto_debugging	boolean	Every time you run the script it will perform one adventure and then stop by setting auto_interrupt = true
 action	2	auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
 action	3	auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.
 
