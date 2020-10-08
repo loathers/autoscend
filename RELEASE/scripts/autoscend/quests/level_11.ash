@@ -414,11 +414,18 @@ boolean LX_unlockManorSecondFloor() {
 		return false;
 	}
 
+	//finish quest
 	if (item_amount($item[Lady Spookyraven\'s Necklace]) > 0) {
 		auto_log_info("Giving Lady Spookyraven her necklace.", "blue");
 		visit_url("place.php?whichplace=manor1&action=manor1_ladys");
 		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 		return true;
+	}
+	
+	if(my_turncount() == get_property("_LAR_skipNC163").to_int())
+	{
+		auto_log_info("In LAR path NC163 is forced to reoccur if we skip it. Go do something else.");
+		return false;
 	}
 
 	auto_log_info("Well, we need writing desks", "blue");
