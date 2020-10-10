@@ -65,7 +65,7 @@ int auto_warEnemiesRemaining()
 	// Returns the number of enemies left to defeat in the fratboy-hippy war.
 	
 	int enemiesRemaining = 1000;
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		//Pokefam only has 500 total to defeat with all 6 sidequests immediately accessible.
 		//TODO: find out if pokefam starts with 500 enemies defeated out of 1000 total. or 0 defeated out of 500 total
@@ -169,7 +169,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(in_bhy() || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || in_pokefam())
 	{
 		return advCost;
 	}
@@ -255,7 +255,7 @@ WarPlan auto_bestWarPlan()
 	boolean considerNuns = true;
 	boolean considerFarm = true;
 	
-	if(in_bhy() || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || in_pokefam())
 	{
 		considerArena = false;
 		considerJunkyard = false;
@@ -956,7 +956,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if (in_koe() || auto_my_path() == "Pocket Familiars" || in_bhy())
+	if (in_koe() || in_pokefam() || in_bhy())
 	{
 		return false;
 	}
@@ -1082,7 +1082,7 @@ boolean L12_sonofaBeach()
 		return false;
 	}
 
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		if(contains_text($location[Sonofa Beach].combat_queue, to_string($monster[Lobsterfrogman])))
 		{
@@ -1738,7 +1738,7 @@ boolean L12_themtharHills()
 
 boolean LX_obtainChaosButterfly()
 {
-	if(in_bhy() || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || in_pokefam())
 	{
 		return false;
 	}
@@ -1785,7 +1785,7 @@ boolean LX_obtainChaosButterfly()
 	// to avoid any funny business where we don't use the chaos butterfly,
 	// adventure somewhere else, our CCS uses the chaos butterfly, and we
 	// suddenly realize that we want to complete dooks after all.
-	if(!get_property("chaosButterflyThrown").to_boolean() && item_amount($item[chaos butterfly]) > 0 && auto_my_path() != "Pocket Familiars")
+	if(!get_property("chaosButterflyThrown").to_boolean() && item_amount($item[chaos butterfly]) > 0 && !in_pokefam())
 	{
 		if($location[McMillicancuddy's Barn].turns_spent > 0)
 		{
@@ -2149,7 +2149,7 @@ boolean L12_finalizeWar()
 		auto_log_warning("Boss already defeated, ignoring", "red");
 	}
 
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		string temp = visit_url("island.php");
 		council();

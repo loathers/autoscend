@@ -57,7 +57,7 @@ int towerKeyCount(boolean effective)
 	{
 		tokens = tokens + 1;
 	}
-	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (auto_my_path() != "Pocket Familiars"))
+	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (!in_pokefam()))
 	{
 		tokens = tokens + 1;
 	}
@@ -611,7 +611,7 @@ boolean L13_towerNSContests()
 		return true;
 	}
 	auto_log_info("No challenges left!", "green");
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		if(get_property("nsContestants1").to_int() == 0)
 		{
@@ -993,7 +993,7 @@ boolean L13_towerNSTower()
 			sourceNeed -= 2;
 		}
 		auto_log_info("I think I have " + sources + " sources of damage, let's do this!", "blue");
-		if(auto_my_path() == "Pocket Familiars")
+		if(in_pokefam())
 		{
 			sources = 9999;
 		}
@@ -1051,7 +1051,7 @@ boolean L13_towerNSTower()
 		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 		boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
 		
-		if(has_boning_knife || auto_my_path() == "Pocket Familiars")		//I have everything I need. just go fight
+		if(has_boning_knife || in_pokefam())		//I have everything I need. just go fight
 		{
 			return autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 		}

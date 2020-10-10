@@ -156,7 +156,7 @@ boolean auto_run_choice(int choice, string page)
 			dailyDungeonChoiceHandler(choice, options);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
-			if (auto_my_path() == "Pocket Familiars" && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
+			if (in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
 				run_choice(3); // relocate lawyers to park
 			} else if (have_effect($effect[Thrice-Cursed]) > 0) {
 				run_choice(1); // fight the spirit
