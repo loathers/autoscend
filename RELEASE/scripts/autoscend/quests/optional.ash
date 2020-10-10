@@ -388,7 +388,7 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if((auto_my_path() == "Nuclear Autumn") || (auto_my_path() == "Pocket Familiars"))
+	if(auto_my_path() == "Nuclear Autumn" || in_pokefam())
 	{
 		return false;
 	}

@@ -661,6 +661,7 @@ boolean picky_buyskills();
 
 ########################################################################################################
 //Defined in autoscend/paths/pocket_familiars.ash
+boolean in_pokefam();
 void digimon_initializeDay(int day);
 void digimon_initializeSettings();
 boolean digimon_makeTeam();

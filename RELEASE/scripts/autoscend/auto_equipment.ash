@@ -178,7 +178,7 @@ string defaultMaximizeStatement()
 	string res = "5item,meat";
 
 	// combat is completely different in pokefam, so most stuff doesn't matter there
-	if(auto_my_path() != "Pocket Familiars")
+	if(!in_pokefam())
 	{
 		res += ",0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
 		if(my_class() == $class[Vampyre])
@@ -538,7 +538,7 @@ void equipRollover()
 		return;
 	}
 
-	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li\'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li\'l Unicorn Costume])) && auto_is_valid($item[Li\'l Unicorn Costume]) && auto_my_path() != "Pocket Familiars")
+	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li\'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li\'l Unicorn Costume])) && auto_is_valid($item[Li\'l Unicorn Costume]) && !in_pokefam())
 	{
 		cli_execute("buy Li'l Unicorn Costume");
 	}

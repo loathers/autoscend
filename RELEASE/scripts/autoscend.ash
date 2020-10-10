@@ -733,7 +733,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[Numberwang], 1, 0);
 		}
-		if(auto_my_path() == "Pocket Familiars")
+		if(in_pokefam())
 		{
 			pullXWhenHaveY($item[Ring Of Detect Boring Doors], 1, 0);
 			pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
@@ -793,7 +793,7 @@ int handlePulls(int day)
 			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
 		}
 
-		if((auto_my_path() != "Pocket Familiars") && (auto_my_path() != "G-Lover"))
+		if(!in_pokefam() && auto_my_path() != "G-Lover")
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
@@ -1121,7 +1121,7 @@ void initializeDay(int day)
 		if(get_property("auto_day_init").to_int() < 1)
 		{
 			auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-			if(contains_text(get_property("sourceTerminalEnquiryKnown"), "monsters.enq") && (auto_my_path() == "Pocket Familiars"))
+			if(contains_text(get_property("sourceTerminalEnquiryKnown"), "monsters.enq") && in_pokefam())
 			{
 				auto_sourceTerminalRequest("enquiry monsters.enq");
 			}
@@ -1621,7 +1621,7 @@ boolean doBedtime()
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
-		if(auto_my_path() == "Pocket Familiars" || my_class() == $class[Vampyre])
+		if(in_pokefam() || my_class() == $class[Vampyre])
 		{
 			cli_execute("friars food");
 		}
@@ -1901,7 +1901,7 @@ boolean doBedtime()
 			}
 		}
 		int extrudeLeft = 3 - get_property("_sourceTerminalExtrudes").to_int();
-		if((extrudeLeft > 0) && (auto_my_path() != "Pocket Familiars") && (item_amount($item[Source Essence]) >= 10))
+		if(extrudeLeft > 0 && !in_pokefam() && item_amount($item[Source Essence]) >= 10)
 		{
 			auto_log_info("You still have " + extrudeLeft + " Source Extrusions left", "blue");
 		}
