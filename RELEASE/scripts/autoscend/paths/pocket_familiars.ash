@@ -1,6 +1,6 @@
 boolean in_pokefam()
 {
-	return in_pokefam();
+	return auto_my_path() == "Pocket Familiars";
 }
 
 void digimon_initializeDay(int day)
