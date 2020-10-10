@@ -363,7 +363,7 @@ boolean auto_sourceTerminalEducate(skill first, skill second)
 	{
 		return false;
 	}
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		return false;
 	}

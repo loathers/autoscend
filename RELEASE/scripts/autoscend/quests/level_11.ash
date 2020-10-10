@@ -764,7 +764,7 @@ boolean L11_aridDesert()
 	}
 
 	// Fix broken desert tracking. pocket familiars failing as of r19010. plumber as of r20019
-	if(in_zelda() || auto_my_path() == "Pocket Familiars")
+	if(in_zelda() || in_pokefam())
 	{
 		visit_url("place.php?whichplace=desertbeach", false);
 	}
@@ -1287,7 +1287,7 @@ boolean L11_hiddenCity()
 			{
 				elevatorAction = auto_forceNextNoncombat();
 
-				if(auto_my_path() == "Pocket Familiars")
+				if(in_pokefam())
 				{
 					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
 					{
@@ -1440,7 +1440,7 @@ boolean L11_hiddenCityZones()
 	boolean needMachete = !possessEquipment($item[Antique Machete]);
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
-	if (!in_hardcore() || in_boris() || auto_my_path() == "Way of the Surprising Fist" || auto_my_path() == "Pocket Familiars")
+	if (!in_hardcore() || in_boris() || auto_my_path() == "Way of the Surprising Fist" || in_pokefam())
 	{
 		needMachete = false;
 	}
@@ -2242,7 +2242,7 @@ boolean L11_palindome()
 			auto_changeSnapperPhylum($phylum[dude]);
 		}
 		autoAdv($location[Inside the Palindome]);
-		if(($location[Inside the Palindome].turns_spent > 30) && (auto_my_path() != "Pocket Familiars") && (auto_my_path() != "G-Lover") && !in_koe())
+		if(($location[Inside the Palindome].turns_spent > 30) && !in_pokefam() && (auto_my_path() != "G-Lover") && !in_koe())
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}
@@ -2476,7 +2476,7 @@ boolean L11_defeatEd()
 	set_property("choiceAdventure976", "1");
 
 	autoAdv($location[The Lower Chambers]);
-	if(auto_my_path() == "Pocket Familiars" || in_koe())
+	if(in_pokefam() || in_koe())
 	{
 		cli_execute("refresh inv");
 	}
