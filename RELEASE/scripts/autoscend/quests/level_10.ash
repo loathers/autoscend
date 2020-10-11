@@ -33,13 +33,17 @@ boolean L10_airship()
 	{
 		return false;
 	}
+	if(my_turncount() == get_property("_LAR_skipNC178").to_int())
+	{
+		auto_log_info("In LAR path NC178 is forced to reoccur if we skip it. Go do something else.");
+		return false;
+	}
 
 	auto_log_info("Fantasy Airship Fly Fly time", "blue");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
-	set_property("choiceAdventure178", "2"); // Hammering the Armory: Skip
 
 	if(item_amount($item[Model Airship]) == 0)
 	{
