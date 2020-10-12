@@ -3328,33 +3328,6 @@ cabinet of Dr. Limpieza
 	return false;
 }
 
-boolean beehiveConsider()
-{
-	if(in_hardcore())
-	{
-		if(have_skill($skill[Shell Up]) && have_skill($skill[Sauceshell]))
-		{
-			set_property("auto_getBeehive", false);
-		}
-		else
-		{
-			set_property("auto_getBeehive", true);
-		}
-	}
-	else
-	{
-		if(have_skill($skill[Shell Up]) || have_skill($skill[Sauceshell]))
-		{
-			set_property("auto_getBeehive", false);
-		}
-		else
-		{
-			set_property("auto_getBeehive", true);
-		}
-	}
-	return true;
-}
-
 boolean[skill] ATSongList()
 {
 	// This List contains ALL AT songs in order from Most to Least Important as to determine what effect to shrug off.
