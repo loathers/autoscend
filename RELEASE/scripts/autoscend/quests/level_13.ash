@@ -235,6 +235,33 @@ boolean LX_getStarKey()
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
+boolean beehiveConsider()
+{
+	if(in_hardcore())
+	{
+		if(have_skill($skill[Shell Up]) && have_skill($skill[Sauceshell]))
+		{
+			set_property("auto_getBeehive", false);
+		}
+		else
+		{
+			set_property("auto_getBeehive", true);
+		}
+	}
+	else
+	{
+		if(have_skill($skill[Shell Up]) || have_skill($skill[Sauceshell]))
+		{
+			set_property("auto_getBeehive", false);
+		}
+		else
+		{
+			set_property("auto_getBeehive", true);
+		}
+	}
+	return true;
+}
+
 int ns_crowd1()
 {
 	if(get_property("nsContestants1").to_int() != 0)
