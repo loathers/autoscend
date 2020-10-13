@@ -664,6 +664,7 @@ boolean picky_buyskills();
 boolean in_pokefam();
 void digimon_initializeDay(int day);
 void digimon_initializeSettings();
+string pokefam_defaultMaximizeStatement();
 boolean digimon_makeTeam();
 boolean LM_digimon();
 boolean digimon_autoAdv(int num, location loc, string option);

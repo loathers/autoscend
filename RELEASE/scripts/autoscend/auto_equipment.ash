@@ -175,46 +175,45 @@ boolean tryAddItemToMaximize(slot s, item it)
 
 string defaultMaximizeStatement()
 {
-	string res = "5item,meat";
-
-	// combat is completely different in pokefam, so most stuff doesn't matter there
-	if(!in_pokefam())
+	if(in_pokefam())
 	{
-		res += ",0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
-		if(my_class() == $class[Vampyre])
+		return pokefam_defaultMaximizeStatement();
+	}
+	
+	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+	if(my_class() == $class[Vampyre])
+	{
+		res += ",0.8hp,3hp regen";
+	}
+	else
+	{
+		res += ",0.4hp,0.2mp 1000max";
+		res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
+	}
+
+	if(!in_zelda())
+	{
+		if(my_primestat() == $stat[Mysticality])
 		{
-			res += ",0.8hp,3hp regen";
+			res += ",0.25spell damage,1.75spell damage percent";
 		}
 		else
 		{
-			res += ",0.4hp,0.2mp 1000max";
-			res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
+			res += ",1.5weapon damage,0.75weapon damage percent,1.5elemental damage";
 		}
+	}
 
-		if(!in_zelda())
+	if(pathAllowsFamiliar())
+	{
+		res += ",2familiar weight";
+		if(my_familiar().familiar_weight() < 20)
 		{
-			if(my_primestat() == $stat[Mysticality])
-			{
-				res += ",0.25spell damage,1.75spell damage percent";
-			}
-			else
-			{
-				res += ",1.5weapon damage,0.75weapon damage percent,1.5elemental damage";
-			}
+			res += ",5familiar exp";
 		}
-
-		if(pathAllowsFamiliar())
-		{
-			res += ",2familiar weight";
-			if(my_familiar().familiar_weight() < 20)
-			{
-				res += ",5familiar exp";
-			}
-		}
-		if (in_zelda())
-		{
-			res += ",plumber,-ml";
-		}
+	}
+	if (in_zelda())
+	{
+		res += ",plumber,-ml";
 	}
 
 	if(!in_zelda() && ((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean())))
