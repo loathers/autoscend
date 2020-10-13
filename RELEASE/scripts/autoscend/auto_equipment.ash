@@ -199,7 +199,7 @@ string defaultMaximizeStatement()
 			}
 			else
 			{
-				res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+				res += ",1.5weapon damage,0.75weapon damage percent,1.5elemental damage";
 			}
 		}
 
