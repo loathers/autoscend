@@ -4,10 +4,7 @@ name: CI
 env:
   MAFIA_BUILD: "1938"
   MAFIA_VERSION: "20430"
-  SCRIPT_NAME1: "autoscend.ash"
-  SCRIPT_NAME2: "auto_pre_adv.ash"
-  SCRIPT_NAME3: "auto_post_adv.ash"
-  SCRIPT_NAME4: "auto_choice_adv.ash"
+  SCRIPT_NAMES: "autoscend.ash auto_pre_adv.ash auto_post_adv.ash auto_choice_adv.ash relay_autoscend.ash autoscend_quests.ash"
 
 on: [push, pull_request]
 
@@ -46,47 +43,19 @@ jobs:
           java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_dependencies
         fi
 
-        # Verify autoscend.ash
-        echo "Verifying autoscend.ash..."
-        echo "try { cli_execute('verify ${SCRIPT_NAME1}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
-        output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
-        if [[ $output != *"Script verification complete." ]]; then echo $output
-          exit 1
-        else
-          echo "autoscend.ash verified!"      
-        fi
+        errors=0
+        for ashfile in ${SCRIPT_NAMES}; do
+            # Run the verification
+            echo "Verifying ${ashfile}..."
 
-        # Verify auto_pre_adv.ash
-        echo "Verifying auto_pre_adv.ash..."
-        echo "try { cli_execute('verify ${SCRIPT_NAME2}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
-        output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
-        if [[ $output != *"Script verification complete." ]]; then
-          echo $output
-          exit 1
-        else
-          echo "auto_pre_adv.ash verified!"      
-        fi
+            echo "try { cli_execute('verify ${ashfile}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
+            output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
+            if [[ $output == *"Script verification complete." ]]; then
+                echo "Verified ${ashfile}!"
+            else
+                echo $output
+                errors=$((errors+1))
+            fi
+        done
 
-        # Verify auto_post_adv.ash
-        echo "Verifying auto_post_adv.ash..."
-        echo "try { cli_execute('verify ${SCRIPT_NAME3}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
-        output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
-        if [[ $output != *"Script verification complete." ]]; then
-          echo $output
-          exit 1
-        else
-          echo "auto_post_adv.ash verified!"      
-        fi
-
-        # Verify auto_choice_adv.ash
-        echo "Verifying auto_choice_adv.ash..."
-        echo "try { cli_execute('verify ${SCRIPT_NAME4}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
-        output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
-        if [[ $output != *"Script verification complete." ]]; then
-          echo $output
-          exit 1
-        else
-          echo "auto_choice_adv.ash verified!"      
-        fi
-
-        exit 0
+        exit ${errors}
