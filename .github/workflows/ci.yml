@@ -7,6 +7,7 @@ env:
   SCRIPT_NAME1: "autoscend.ash"
   SCRIPT_NAME2: "auto_pre_adv.ash"
   SCRIPT_NAME3: "auto_post_adv.ash"
+  SCRIPT_NAME4: "auto_choice_adv.ash"
 
 on: [push, pull_request]
 
@@ -75,6 +76,17 @@ jobs:
           exit 1
         else
           echo "auto_post_adv.ash verified!"      
+        fi
+
+        # Verify auto_choice_adv.ash
+        echo "Verifying auto_choice_adv.ash..."
+        echo "try { cli_execute('verify ${SCRIPT_NAME4}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
+        output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
+        if [[ $output != *"Script verification complete." ]]; then
+          echo $output
+          exit 1
+        else
+          echo "auto_choice_adv.ash verified!"      
         fi
 
         exit 0
