@@ -52,7 +52,7 @@ jobs:
         else
           echo "autoscend.ash verified!"      
         fi
-		
+
         # Verify auto_pre_adv.ash
         echo "Verifying auto_pre_adv.ash..."
         echo "try { cli_execute('verify ${"auto_pre_adv.ash"}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
@@ -63,7 +63,7 @@ jobs:
         else
           echo "auto_pre_adv.ash verified!"      
         fi
-		
+
         # Verify auto_post_adv.ash
         echo "Verifying auto_post_adv.ash..."
         echo "try { cli_execute('verify ${"auto_post_adv.ash"}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
@@ -74,5 +74,5 @@ jobs:
         else
           echo "auto_post_adv.ash verified!"      
         fi
-		
+
         exit 0
