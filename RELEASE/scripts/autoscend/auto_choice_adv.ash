@@ -509,7 +509,7 @@ boolean auto_run_choice(int choice, string page)
 		case 1434: // Choice 1434 is frat camp verge of war Sneaky Sneaky (Cartography)
 			run_choice(2); // start the war
 			break;
-		case 1434: // Choice 1436 is Billiards Room Options (Cartography)
+		case 1436: // Choice 1436 is Billiards Room Options (Cartography)
 			if(poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)
 			{
 				run_choice(2);		//try to win the key. on failure still gain 1 pool skill
