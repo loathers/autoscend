@@ -500,7 +500,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			else if (best_protestors == fire_protestors)
 			{
-				run_choice(3);;
+				run_choice(3);
 			}
 			break;
 		case 1433: // Choice 1433 is Hippy camp verge of war Sneaky Sneaky (Cartography)
