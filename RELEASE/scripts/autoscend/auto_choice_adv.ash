@@ -463,6 +463,62 @@ boolean auto_run_choice(int choice, string page)
 		case 1410: // The Mushy Center (Your Mushroom Garden)
 			run_choice(2); // pick the mushroom.
 			break;
+		case 1427: // Hidden Junction (Cartography)
+			run_choice(1); // fight the screambat.
+			break;
+		case 1428: // Choice 1428 is Your Neck of the Woods (Cartography)
+			run_choice(1); // advance neck quest
+			break;
+		case 1429: // Choice 1429 is No Nook Unknown (Cartography)
+			run_choice(1); // acquire 2 evil eyes
+			break;
+		case 1430: // Choice 1430 is Ghostly Memories (Cartography)
+			run_choice(1); // If we are adventuring in the peak we are trying to clear the peak, go to the horror
+			break;
+		case 1431: // Choice 1431 is Here There Be Giants (Cartography)
+			run_choice(1); // go to steampunk giant to complete the quest
+			break;
+		case 1432: // Choice 1432 is Mob Maptality (Cartography)
+			float fire_protestors = item_amount($item[Flamin\' Whatshisname]) > 0 ? 10 : 3;
+			float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
+			float sleaze_protestors = square_root(sleaze_amount);
+			float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
+			foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
+				{
+					if (equipped_amount(it) > 0) {
+						lynyrd_protestors += 5;
+					}
+				}
+			float best_protestors = max(fire_protestors, max(sleaze_protestors, lynyrd_protestors));
+			if(best_protestors == lynyrd_protestors)
+			{
+				run_choice(2);
+			}
+			else if(best_protestors == sleaze_protestors)
+			{
+				run_choice(1);
+			}
+			else if (best_protestors == fire_protestors)
+			{
+				run_choice(3);;
+			}
+			break;
+		case 1433: // Choice 1433 is Hippy camp verge of war Sneaky Sneaky (Cartography)
+			run_choice(3); // start the war
+			break;
+		case 1434: // Choice 1434 is frat camp verge of war Sneaky Sneaky (Cartography)
+			run_choice(2); // start the war
+			break;
+		case 1434: // Choice 1436 is Billiards Room Options (Cartography)
+			if(poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)
+			{
+				run_choice(2);		//try to win the key. on failure still gain 1 pool skill
+			}
+			else
+			{
+				run_choice(1);		//acquire the pool cue
+			}
+			break;
 		default:
 			break;
 	}
