@@ -47,33 +47,32 @@ jobs:
         echo "Verifying autoscend.ash..."
         echo "try { cli_execute('verify ${SCRIPT_NAME}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
         output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
-        if [[ $output != *"Script verification complete." ]]; then
-		  echo $output
+        if [[ $output != *"Script verification complete." ]]; then echo $output
           exit 1
         else
           echo "autoscend.ash verified!"      
         fi
 		
-		# Verify auto_pre_adv.ash
-		echo "Verifying auto_pre_adv.ash..."
+        # Verify auto_pre_adv.ash
+        echo "Verifying auto_pre_adv.ash..."
         echo "try { cli_execute('verify ${"auto_pre_adv.ash"}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
         output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
         if [[ $output != *"Script verification complete." ]]; then
-		  echo $output
+          echo $output
           exit 1
         else
           echo "auto_pre_adv.ash verified!"      
         fi
 		
-		# Verify auto_post_adv.ash
-		echo "Verifying auto_post_adv.ash..."
+        # Verify auto_post_adv.ash
+        echo "Verifying auto_post_adv.ash..."
         echo "try { cli_execute('verify ${"auto_post_adv.ash"}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
         output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
         if [[ $output != *"Script verification complete." ]]; then
-		  echo $output
+          echo $output
           exit 1
         else
           echo "auto_post_adv.ash verified!"      
         fi
 		
-		exit 0
+        exit 0
