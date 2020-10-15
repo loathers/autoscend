@@ -1717,12 +1717,25 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
 
-		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
+		if(enemy.physical_resistance > 80)
 		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
+			boolean success = false;
+			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
+			{
+				if(canUse(sk, false))
+				{
+					attackMinor = useSkill(sk, false);
+					attackMajor = useSkill(sk, false);
+					costMinor = mp_cost(sk);
+					costMajor = mp_cost(sk);
+					success = true;
+					break;
+				}
+			}
+			if(!success)
+			{
+				abort("I am fighting a physically immune monster and I do not know how to kill it");
+			}
 		}
 
 		break;
