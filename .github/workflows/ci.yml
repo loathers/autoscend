@@ -4,7 +4,7 @@ name: CI
 env:
   MAFIA_BUILD: "1938"
   MAFIA_VERSION: "20430"
-  SCRIPT_NAMES: "autoscend.ash auto_pre_adv.ash auto_post_adv.ash auto_choice_adv.ash relay_autoscend.ash autoscend_quests.ash"
+  SCRIPT_NAMES: "autoscend.ash auto_pre_adv.ash auto_post_adv.ash auto_choice_adv.ash relay_autoscend.ash autoscend_settings_extra.ash"
 
 on: [push, pull_request]
 
