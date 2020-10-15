@@ -467,7 +467,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // fight the screambat.
 			break;
 		case 1428: // Choice 1428 is Your Neck of the Woods (Cartography)
-			run_choice(1); // advance neck quest
+			run_choice(2); // advance neck quest
 			break;
 		case 1429: // Choice 1429 is No Nook Unknown (Cartography)
 			run_choice(1); // acquire 2 evil eyes
