@@ -4,7 +4,7 @@ name: CI
 env:
   MAFIA_BUILD: "1938"
   MAFIA_VERSION: "20430"
-  SCRIPT_NAME: "autoscend.ash"
+  SCRIPT_NAMES: "autoscend.ash auto_pre_adv.ash auto_post_adv.ash auto_choice_adv.ash relay_autoscend.ash autoscend_quests.ash"
 
 on: [push, pull_request]
 
@@ -43,15 +43,19 @@ jobs:
           java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_dependencies
         fi
 
-        # Run the verification
-        echo "Verifying..."
+        errors=0
+        for ashfile in ${SCRIPT_NAMES}; do
+            # Run the verification
+            echo "Verifying ${ashfile}..."
 
-        echo "try { cli_execute('verify ${SCRIPT_NAME}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
-        output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
-        if [[ $output == *"Script verification complete." ]]; then
-          echo "Verified!"
-          exit 0
-        else
-          echo $output
-          exit 1
-        fi
+            echo "try { cli_execute('verify ${ashfile}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
+            output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
+            if [[ $output == *"Script verification complete." ]]; then
+                echo "Verified ${ashfile}!"
+            else
+                echo $output
+                errors=$((errors+1))
+            fi
+        done
+
+        exit ${errors}
