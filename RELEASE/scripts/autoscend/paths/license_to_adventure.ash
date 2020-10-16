@@ -156,7 +156,6 @@ boolean bond_initializeDay(int day)
 			{
 				cli_execute("teatree " + $item[Cuppa Sobrie Tea]);
 			}
-			L8_trapperGround();
 			//Digitize a blooper? Time spin it?
 			equipBaseline();
 
@@ -539,18 +538,14 @@ boolean LM_bond()
 			}
 		}
 
-		if((internalQuestStatus("questL08Trapper") < 2) && (my_level() >= 8))
+		if(internalQuestStatus("questL08Trapper") == 0 || internalQuestStatus("questL08Trapper") == 1)
 		{
-			if(item_amount($item[Goat Cheese]) < 2)
-			{
-				if(L8_trapperGround()) return true;
-			}
-			else if(item_amount($item[Goat Cheese]) == 2)
+			if(item_amount($item[Goat Cheese]) == 2 && timeSpinnerRemaining() >= 3)
 			{
 				auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-				return timeSpinnerCombat($monster[Dairy Goat]);
+				if(timeSpinnerCombat($monster[Dairy Goat])) return true;
 			}
-			if(L8_trapperGround()) return true;
+			if(L8_trapperQuest()) return true;
 		}
 		if(my_level() >= 9)
 		{

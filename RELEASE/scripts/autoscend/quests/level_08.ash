@@ -389,13 +389,13 @@ boolean L8_trapperExtreme()
 	{
 		return false;
 	}
+	if(L8_trapperPeak())	//try to unlock peak
+	{
+		return true;	//successfully finished this part of the quest
+	}
 	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
 	{
 		return false;
-	}
-	if(L8_trapperPeak())
-	{
-		return true;		//unlock peak if ready to do so.
 	}
 	
 	//we should equip the extreme outfit if we have it
@@ -461,54 +461,91 @@ void theeXtremeSlopeChoiceHandler(int choice) {
 	}
 }
 
+boolean L8_trapperSlopeSoftcore()
+{
+	//Slop handling for softcore. We want to pull the ninja climbing gear. unless we are copying ninja assassins. in which case we want to go do something else.
+	
+	//special path or IOTM handling
+	if(!get_property("auto_L8_ninjaAssassinFail").to_boolean())		//can defeat assassins
+	{
+		if(have_skill($skill[Rain Man]))
+		{
+			auto_log_info("Delay pulling ninja climbing gear. we want to summon assassins with rain man skill", "blue");
+			return false;
+		}
+		if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
+		{
+			auto_log_info("Delay pulling ninja climbing gear. we have already digitized [ninja snowman assassin]", "blue");
+			return false;
+		}
+	}
+
+	//pull ninja climbing gear to skip the slope.
+	foreach it in $items[Ninja Carabiner, Ninja Crampons, Ninja Rope]
+	{
+		pullXWhenHaveY(it, 1, 0);
+		if(pulls_remaining() == 0 && item_amount(it) == 0)
+		{
+			return false;	//out of pulls in softcore. come back tomorrow
+		}
+	}
+	
+	//if we reached this point we have all the climbing gear. only need 5 cold res to progress
+	if(L8_trapperPeak())	//try to unlock peak with the pulled items
+	{
+		return true;	//successfully finished this part of the quest
+	}
+	else	//if we failed to unlock at this point it is because we do not have 5 cold res. So grab the outfit for that +5 cold res
+	{
+		return L8_trapperExtreme();
+	}
+	return false;		//must have a return value. fallback option. should never actually be reached
+}
+
 boolean L8_trapperNinjaLair()
 {
-	//adventure in the lair of the ninja snowmen to find and fight ninja snowman assassins
+	//adventure in the lair of the ninja snowmen to find and fight ninja snowman assassins.
+	//usually this would only occur in hardcore
 	if(internalQuestStatus("questL08Trapper") != 2)
 	{
 		return false;
 	}
-	if(get_property("auto_L8_ninjaSkip").to_boolean())
+	if(L8_trapperPeak())	//try to unlock peak
 	{
-		return false;	//this ascension we are skipping ninja route
+		return true;	//successfully finished this part of the quest
 	}
-	if(L8_trapperPeak())
+	if(get_property("auto_L8_extremeInstead").to_boolean())			//we want to do extreme path instead
 	{
-		return true;	//unlock peak if ready to do so.
+		return false;	
 	}
+	if(get_property("auto_L8_ninjaAssassinFail").to_boolean())		//we cannot survive against assassins
+	{
+		set_property("auto_L8_extremeInstead", true);
+		return false;
+	}
+	//we must use two variables because there are too many special cases. Maybe we can survie assassins but not encounter them due to +combat being too low. Copiers and pulls complicate matters. We could copy an assassin even if we cannot encounter it in the lair
 	
-	if(isActuallyEd() && in_hardcore())
+	if(isActuallyEd())
 	{
-		auto_log_info("Hardcore Ed prefers to do the extreme slope", "blue");
-		set_property("auto_L8_ninjaSkip", true);		//give up on ninja route for this ascension
+		//we lack a function to determine if we will get instagibbed by assassins.
+		//if we had one ed could benefit from doing the slope when he does not get instagibbed by the assassins
+		auto_log_info("Ed assumed to not be able to survive ninja assassins", "blue");
+		set_property("auto_L8_ninjaAssassinFail", true);		//we assume ed cannot defeat assassins
 		return true;
-	}
-	
-	//pull ninja climbing gear to skip the slope.
-	if(!in_hardcore() &&	//must be in softcore to allow pulls
-	!have_skill($skill[Rain Man]) &&	//if we have rain man skill we will copy assassins
-	get_property("sourceOracleTarget").to_location() != $location[Lair of the Ninja Snowmen])	//Source oracle target is this zone
-	{
-		foreach it in $items[Ninja Carabiner, Ninja Crampons, Ninja Rope]
-		{
-			pullXWhenHaveY(it, 1, 0);
-			if(pulls_remaining() == 0 && item_amount(it) == 0)
-			{
-				return false;	//out of pulls in softcore. come back tomorrow
-			}
-		}
 	}
 
 	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
 	{
-		if(loopHandler("_auto_digitizeAssassinTurn", "_auto_digitizeAssassinCounter", "Potentially unable to do anything while waiting on digitized Ninja Snowman Assassin.", 10))
-		{
-			auto_log_info("Have a digitized Ninja Snowman Assassin, let's put off the Ninja Snowmen Lair", "blue");
-		}
+		auto_log_info("Have a digitized Ninja Snowman Assassin, let's put off the Ninja Snowmen Lair", "blue");
+		return false;
+	}
+	if(have_skill($skill[Rain Man]))
+	{
+		auto_log_info("Delay adventuring in ninja snowmen lair. we are going to be copying them instead with rain man skill", "blue");
 		return false;
 	}
 
-	if((have_effect($effect[Thrice-Cursed]) > 0) || (have_effect($effect[Twice-Cursed]) > 0) || (have_effect($effect[Once-Cursed]) > 0))
+	if(have_effect($effect[Thrice-Cursed]) > 0 || have_effect($effect[Twice-Cursed]) > 0 || have_effect($effect[Once-Cursed]) > 0)
 	{
 		return false;
 	}
@@ -519,13 +556,13 @@ boolean L8_trapperNinjaLair()
 		return false;
 	}
 
-	//can we provide enough combat bonus to make it worthwhile trying to get snowman assassins?
+	//can we provide enough combat bonus to encounter snowman assassins?
 	if(providePlusCombat(25, true, true) <= 0.0)	//ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
-			auto_log_info("Something is keeping us from getting a suitable combat rate for ninja snowman assassin. we can only reach: " + numeric_modifier("Combat Rate") + ". Since we are about to powerlevel we are giving up on ninja route", "red");
-			set_property("auto_L8_ninjaSkip", true);		//give up on ninja route for this ascension
+			auto_log_info("Something is keeping us from getting a suitable combat rate for ninja snowman assassin. we can only reach: " + numeric_modifier("Combat Rate") + ". Switching to extreme slope route", "red");
+			set_property("auto_L8_extremeInstead", true);
 			return true;
 		}
 		else
@@ -630,39 +667,30 @@ boolean L8_trapperPeak()
 boolean L8_trapperSlope()
 {
 	//climb the slope and reach the peak in L8 trapper quest. either via ninja snowmen lair or via the extreme slope
-	//climbing the slope is step2 of the quest. when you unlock the peak it advances to step3
+	
 	if(internalQuestStatus("questL08Trapper") != 2)
 	{
-		return false;
+		return false;		//climbing the slope is step2 of the quest. when you unlock the peak it advances to step3
 	}
-
-	if(L8_trapperPeak())
+	if(can_interact())		//casual and postronin special handling
 	{
-		return true;		//unlock peak if ready to do so.
+		return L8_slopeCasual();	//mallbuy everything. or go do something else if too poor to do so
 	}
-	
-	if(get_property("auto_L8_ninjaSkip").to_boolean())	//we are skipping ninja route this ascension
+	else if(!in_hardcore())		//!casual && !postronin && !hardcore == in softcore. which requires special handling
+	{
+		return L8_trapperSlopeSoftcore();	//pull ninja climbing gear. unless assassins are being copied, then go do something else
+	}
+	if(L8_trapperPeak())	//try to finish step2 of the quest.
+	{
+		return true;
+	}
+	//hardcore handling
+	if(get_property("auto_L8_extremeInstead").to_boolean())		//we decided we do not want to adventure in the ninja lair
 	{
 		if(L8_trapperExtreme()) return true;	//try to climb slope via extreme path
 	}
 	if(L8_trapperNinjaLair()) return true;	//try to climb slope via ninja path
 	
-	return false;
-}
-
-boolean L8_trapperGround()
-{
-	//do the ground portion of L8 trapper quest
-	if (internalQuestStatus("questL08Trapper") < 0 || internalQuestStatus("questL08Trapper") > 1)
-	{
-		return false;
-	}
-	
-	//talk to trapper if needed. grab the goat cheese and ore for the trapper if needed during step1 of the quest
-	if(L8_trapperTalk() || L8_getGoatCheese() || L8_getMineOres())
-	{
-		return true;
-	}
 	return false;
 }
 
@@ -721,7 +749,7 @@ boolean L8_trapperQuest()
 		return false;
 	}
 
-	if(L8_trapperTalk() || L8_trapperGround() || L8_trapperSlope() || L8_trapperGroar())
+	if(L8_trapperTalk() || L8_getGoatCheese() || L8_getMineOres() || L8_trapperSlope() || L8_trapperGroar())
 	{
 		return true;
 	}

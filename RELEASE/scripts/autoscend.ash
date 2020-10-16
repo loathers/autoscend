@@ -159,7 +159,8 @@ void initializeSettings() {
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
 	set_property("auto_doGalaktik", false);
-	set_property("auto_L8_ninjaSkip", false);
+	set_property("auto_L8_ninjaAssassinFail", false);
+	set_property("auto_L8_extremeInstead", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
