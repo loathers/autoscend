@@ -256,6 +256,10 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 			return "item " + $item[Filthy Poultice];
 		}
+		if(item_amount($item[red pixel potion]) > 0)
+		{
+			return "item " + $item[red pixel potion];
+		}
 		if(item_amount($item[Rain-Doh Indigo Cup]) > 0)
 		{
 			return "item " + $item[Rain-Doh Indigo Cup];

@@ -1175,7 +1175,7 @@ boolean L13_towerNSTower()
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
 		acquireHP();
 
-		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
+		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]);
 		if(in_zelda())
 		{
 			n_healing_items = item_amount($item[super deluxe mushroom]);
@@ -1187,7 +1187,16 @@ boolean L13_towerNSTower()
 		}
 		if(n_healing_items < 5)
 		{
-			abort("We only have " + n_healing_items + " healing items, I'm not sure we can do the shadow.");
+			int create_target = min(creatable_amount($item[red pixel potion]), 5 - n_healing_items);
+			if(create_target > 0)
+			{
+				if(create(create_target, $item[red pixel potion]))
+				{
+					return true;
+				}
+				abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
+			}
+			return autoAdv($location[8-bit Realm]);
 		}
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;
