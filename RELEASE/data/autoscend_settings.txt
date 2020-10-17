@@ -3,72 +3,69 @@
 
 # variable timing, number, variable name, variable type, description
 
-action	0	auto_interrupt	boolean	Cause script to stop before starting next turn action (instead of trying to abort midturn).
-action	1	auto_debugging	boolean	Will cause the script to stop after one adventure (by setting auto_interrupt = true).
+action	0	auto_interrupt	boolean	Script will abort after the next action is finished (instead of mid turn which can cause problems). Will be reset to false after every time it is used.
+action	1	auto_debugging	boolean	Every time you run the script it will perform one adventure and then stop by setting auto_interrupt = true
+action	2	auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
+action	3	auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.
+action	4	auto_newbieOverride	boolean	If true will override newbie block once then set itself to false. Newbie block is enabled used when you fight a crate (please report crate fighting) or when you spent too many adventures in a zone
 
-any	0	auto_skipNEPOverride	boolean	If true, will not use the Neverending Party even if mafia says it is available.
-any	1	auto_newbieOverride	boolean	Did you fight a crate? Ugh... Report it please, but if you want the script to try again, set this to true and it'll override it. Once.
-any	2	auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
-any	3	auto_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
-any	4	auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
-any	5	auto_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
-any	6	auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
-any	7	auto_powerLevelTimer	integer	Sets the delay before each adv spent powerleveling, default is 10 sec. lowest valid value is 1.
-any	8	auto_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
-any	9	auto_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
-any	10	auto_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
-any	11	auto_confidence	boolean	If true, we'll get the confidence buff instead of breaking the mirror. Good if your combat suite isn't very fleshed out yet, since it makes the Naughty Sorceress dramatically easier.
-any	12	auto_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
-any	13	auto_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
-any	14	auto_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
-any	15	auto_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
-any	16	auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
-any	17	auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
-any	18	auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
-any	19	auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
-any	20	auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
-any	21	auto_consumeMinAdvPerFill	float	The minimum adventures per fill to consider for a consumable before eating or drinking it. Defaults to 0.0 and will consume whatever is available if necessary.
-any	22	auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
-any	23	auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
-any	24	auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
-any	25	auto_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
-any	26	auto_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.
-any	27	auto_equipment_override_weapon	string	A semicolon separated list of overrides for the weapon slot.
-any	28	auto_equipment_override_off-hand	string	A semicolon separated list of overrides for the off-hand slot.
-any	29	auto_equipment_override_pants	string	A semicolon separated list of overrides for the pants slot.
-any	30	auto_equipment_override_acc	string	A semicolon separated list of overrides for the acc slots.
-any	31	auto_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
-any	32	auto_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get Ascension relevant rewards.
-any	33	auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
-any	34	auto_consultChoice	string	The name of the player you want to do Zatara consults with.
-any	35	auto_considerGalaktik	boolean	When true autoscend may automatically enable galaktik quest for this run if it decides it is needed.
-any	36	auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
-any	37	auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
-any	38	auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
-any	39	auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
-any	40	auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
-any	41	auto_useWishes	boolean	When true, use the Genie Bottle to go faster in non-Community Service runs.
-any	42	auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
-any	43	auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle.
-any	44	auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
-any	45	auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
-any	46	auto_helpMeMafiaIsSuperBrokenAaah	boolean	Pretty much just for werebear. If for some reason you find that mafia completely fails to detect item drops occasionally, leading to wasting a ton of adventures continuing to look for an item you already found, try this out.
-any	47	auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
-any	48	auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
-any	49	auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
+any	0	auto_skipNEPOverride	boolean	If true will not use the Neverending Party even if mafia says it is available.
+any	1	auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
+any	2	auto_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
+any	3	auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
+any	4	auto_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
+any	5	auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
+any	6	auto_powerLevelTimer	integer	Delay in seconds before each time we spend an adv powerleveling. default is 10 sec. lowest valid value is 1.
+any	7	auto_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
+any	8	auto_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
+any	9	auto_confidence	boolean	If true, we'll get the confidence buff instead of breaking the mirror. Good if your combat suite isn't very fleshed out yet, since it makes the Naughty Sorceress dramatically easier.
+any	10	auto_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
+any	11	auto_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
+any	12	auto_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
+any	13	auto_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
+any	14	auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
+any	15	auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
+any	16	auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
+any	17	auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
+any	18	auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
+any	19	auto_consumeMinAdvPerFill	float	The minimum adventures per fill to consider for a consumable before eating or drinking it. Defaults to 0.0 and will consume whatever is available if necessary.
+any	20	auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
+any	21	auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
+any	22	auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
+any	23	auto_equipment_override_back	string	A semicolon separated list of overrides for the back slot.
+any	24	auto_equipment_override_shirt	string	A semicolon separated list of overrides for the shirt slot.
+any	25	auto_equipment_override_weapon	string	A semicolon separated list of overrides for the weapon slot.
+any	26	auto_equipment_override_off-hand	string	A semicolon separated list of overrides for the off-hand slot.
+any	27	auto_equipment_override_pants	string	A semicolon separated list of overrides for the pants slot.
+any	28	auto_equipment_override_acc	string	A semicolon separated list of overrides for the acc slots.
+any	29	auto_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
+any	30	auto_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get Ascension relevant rewards.
+any	31	auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
+any	32	auto_consultChoice	string	The name of the player you want to do Zatara consults with.
+any	33	auto_considerGalaktik	boolean	When true autoscend may automatically enable galaktik quest for this run if it decides it is needed.
+any	34	auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
+any	35	auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
+any	36	auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
+any	37	auto_useWishes	boolean	When true, use the Genie Bottle to go faster in non-Community Service runs.
+any	38	auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
+any	39	auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle.
+any	40	auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
+any	41	auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
+any	42	auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets the level of log output for autoscend gcli and session log output. Critical showing the least detail (only critical messages) and trace showing the most detail (print everything). Defaults to info.
+any	43	auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
+any	44	auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
+any	45	auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
 
-post	0	auto_getBeehive	boolean	Go for the beehive?
-post	1	auto_getStarKey	boolean	Get Richard's Star Key?
-post	2	auto_holeinthesky	boolean	Do we need to open the Hole in the Sky?
-post	3	auto_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat Warriors?
-post	4	auto_ignoreFlyer	boolean	Do not do the flyer quest, recommended to set true if fighting for the hippies.
-post	5	auto_haveoven	boolean	If you have an oven, this should be true. But we can't always check the campground.
-post	6	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar?
-post	7	auto_doGalaktik	boolean	Do Galaktik quest this ascension
-post	8	auto_paranoia	integer	How often should we refresh quests? -1 is never, lower positive numbers = more often.
+post	0	auto_getSteelOrgan	boolean	Get Steel Organ in this ascension?
+post	1	auto_getBeehive	boolean	Get Beehive in this ascension?
+post	2	auto_getStarKey	boolean	Get Richard's Star Key in this ascension?
+post	3	auto_holeinthesky	boolean	Open the Hole in the Sky in this ascension?
+post	4	auto_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat Warriors in this ascension?
+post	5	auto_ignoreFlyer	boolean	Do not do the flyer quest in this ascension? recommended to set true if fighting for the hippies.
+post	6	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this ascension?
 
-pre	0	auto_pvpEnable	boolean	Automatically participate in PvP?
-pre	1	auto_alwaysGetSteelOrgan	boolean	If true, get the Steel Organ in the next ascension.
+pre	0	auto_alwaysGetSteelOrgan	boolean	When we next initialize settings it will be copied to auto_getSteelOrgan
 
-sharing	0	auto_shareMaximizer	boolean	Share maximzer data. This includes the maximzer string, class, path, softcore/hardcore and moon sign.
+sharing	0	auto_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
+sharing	1	auto_shareMaximizer	boolean	Share maximzer data. This includes the maximzer string, class, path, softcore/hardcore and moon sign.
 

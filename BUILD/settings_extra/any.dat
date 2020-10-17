@@ -1,0 +1,11 @@
+auto_abooclover	boolean	Are we considering using a clover at A-Boo Peak?
+auto_aboopending	integer	The last turn of a pending A-Boo Clue. 0 if no clue active.
+auto_clanstuff	string	What was the last day we did 'end of day' clan stuff.
+auto_noSleepingDog	boolean	When true do not eat a Sleeping Dog.
+auto_saveMargarita	boolean	Community Service: Do not consume Emergency Margarita
+auto_csDoWheel	boolean	Community Service: Use Wheel of Fortune instead of Myst Stats Deck Cheat
+auto_hccsTurnSave	boolean	Community Service: Should we ignore pixel farming?
+auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Candy (default 2500)
+auto_hccsNoConcludeDay	boolean	Community Service: When true reduce how many daily end-of-day things we do.
+auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
+auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).

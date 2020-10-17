@@ -1,2 +1,5 @@
-auto_interrupt	boolean	Cause script to stop before starting next turn action (instead of trying to abort midturn).
-auto_debugging	boolean	Will cause the script to stop after one adventure (by setting auto_interrupt = true).
+auto_interrupt	boolean	Script will abort after the next action is finished (instead of mid turn which can cause problems). Will be reset to false after every time it is used.
+auto_debugging	boolean	Every time you run the script it will perform one adventure and then stop by setting auto_interrupt = true
+auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
+auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.
+auto_newbieOverride	boolean	If true will override newbie block once then set itself to false. Newbie block is enabled used when you fight a crate (please report crate fighting) or when you spent too many adventures in a zone

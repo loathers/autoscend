@@ -90,9 +90,9 @@ void initializeSettings() {
 	// all paths that have extra settings should call their path specific
 	// initialise function at the end of this function (may override properties set in here).
 
-	if(my_ascensions() <= get_property("auto_doneInitialize").to_int())
+	if(my_ascensions() == get_property("auto_doneInitialize").to_int())
 	{
-		return;
+		return;		//already initialized settings this ascension
 	}
 	set_location($location[none]);
 	invalidateRestoreOptionCache();
@@ -129,7 +129,6 @@ void initializeSettings() {
 	set_property("auto_batoomerangDay", 0);
 	set_property("auto_beatenUpCount", 0);
 	set_property("auto_getBeehive", false);
-	set_property("auto_breakstone", get_property("auto_pvpEnable").to_boolean());
 	set_property("auto_bruteForcePalindome", false);
 	set_property("auto_cabinetsencountered", 0);
 	set_property("auto_chasmBusted", true);
@@ -152,7 +151,7 @@ void initializeSettings() {
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
 	set_property("auto_getStarKey", true);
-	set_property("auto_getSteelOrgan", get_property("auto_alwaysGetSteelOrgan").to_boolean());
+	set_property("auto_getSteelOrgan", get_property("auto_alwaysGetSteelOrgan"));
 	set_property("auto_gnasirUnlocked", false);
 	set_property("auto_grimstoneFancyOilPainting", true);
 	set_property("auto_grimstoneOrnateDowsingRod", true);
@@ -1203,11 +1202,10 @@ void initializeDay(int day)
 
 			string temp = visit_url("guild.php?place=challenge");
 
-			if(get_property("auto_breakstone").to_boolean())
+			if(get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
 			{
-				temp = visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
-				temp = visit_url("peevpee.php?place=fight");
-				set_property("auto_breakstone", false);
+				visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
+				visit_url("peevpee.php?place=fight");
 			}
 
 			auto_beachCombHead("exp");
@@ -3238,7 +3236,7 @@ boolean doTasks()
 			set_property("auto_paranoia_counter", paranoia_counter + 1);
 		}
 	}
-	if(get_property("auto_helpMeMafiaIsSuperBrokenAaah").to_boolean())
+	if(get_property("auto_inv_paranoia").to_boolean())
 	{
 		cli_execute("refresh inv");
 	}

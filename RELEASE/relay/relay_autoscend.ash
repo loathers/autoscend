@@ -37,7 +37,6 @@ void write_styles()
 	"</style>");
 }
 
-
 void handleSetting(string type, int x)
 {
 	string color = "white";
@@ -118,20 +117,83 @@ void generateTrackingData(string tracked)
 	}
 }
 
+void write_familiar()
+{
+	//display current 100% familiar. and options related to it.
+	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+	string to_write;
+	if(hundred_fam != $familiar[none])			//we already have a 100% familiar set for this ascension
+	{
+		if(turns_played() == 0)
+		{
+			to_write = "100% familiar is set to = " +hundred_fam+ ". Turns played is at 0 so it might be possible to change this. So long as you have not done any free fights<br>";
+			writeln(to_write);
+			writeln("<form action='' method='post'>");
+			writeln("<input type='hidden' name='auto_100familiar' value='none'/>");
+			writeln("<input type='submit' name='' value='Disable 100% familiar run'/></form>");
+		}
+		else
+		{
+			to_write = "100% familiar is set to = " +hundred_fam+ "<br>";
+			writeln(to_write);
+		}
+	}
+	else										//100% familiar not set.
+	{
+		if(turns_played() == 0)
+		{
+			writeln("100% familiar has not been set. Turns played is at 0 so it might be possible to change this. So long as you have not done any free fights<br>");
+			writeln("<form action='' method='post'>");
+			writeln("<input type='hidden' name='auto_100familiar' value='" +my_familiar()+ "'/>");
+			writeln("<input type='submit' name='' value='Set current familiar as 100% target'/></form>");
+		}
+		//we could use an else to report that we are not in a 100% familiar run and it is too late to change it. but there is no need to.
+	}
+}
+
+void write_settings_key()
+{
+	//display the key to the settings table.
+	writeln("<table><tr><th>Settings Color Codings</th></tr>");
+	writeln("<tr bgcolor=#00ffff><td>Anytime: This setting can be changed at any time and takes effect immediately.</td></tr>");
+	writeln("<tr bgcolor=#ffff00><td>Pre: Next time we initialize settings for autoscend this will be used to determine what we should set some Post type settings to.</td></tr>");
+	writeln("<tr bgcolor=#00ff00><td>Post: settings for current ascension. Automatically reconfigured each ascension when we initialize setting for that ascension. After settings have been initialized you may change this. Under some circumstances they will be automatically changed mid ascension</td></tr>");
+	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
+	writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data.</td></tr>");
+	writeln("</table>");
+}
+
 void main()
 {
+	initializeSettings();		//runs once per ascension. should not handle anything other than intialising settings for this ascension.
+	
 	write_styles();
-	writeln("<html><head><title>autoscend Crapulent Manager</title>");
-	writeln("</head><body><h1>autoscend Manager</h1>");
+	writeln("<html><head><title>autoscend manager</title>");
+	writeln("</head><body><h1>autoscend manager</h1>");
 
-	file_to_map("autoscend_settings.txt", s);
-
-	boolean dickstab = false;
+	//button to interrupt script
 	writeln("<form action='' method='post'>");
 	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
-	writeln("<input type='submit' name='' value='Interrupt Script'/></form>");
+	writeln("<input type='submit' name='' value='Safely Stop Autoscend'/></form>");
+	
+	//TODO add button to run autoscend
+	
+	write_familiar();		//display current 100% familiar. and options related to it.
+	
+	if(my_ascensions() == get_property("auto_doneInitialize").to_int())
+	{
+		writeln("Settings have been initialized for current ascension. You may change Post type settings<br>");
+	}
+	else
+	{
+		writeln("Settings have not been initialized for current ascension. Do not change Post type settings<br>");
+	}
+	
+	writeln("<br><a href=\"autoscend_settings_extra.php\">For extra settings click here</a><br><br>");
 
-
+	//generate settings table
+	file_to_map("autoscend_settings.txt", s);
+	boolean dickstab = false;	//used to detect if we just enabled dickstab
 	fields = form_fields();
 	if(count(fields) > 0)
 	{
@@ -151,22 +213,18 @@ void main()
 				}
 				continue;
 			}
-#			else
-#			{
-#				writeln("Property " + x + " had: " + oldSetting + " now: " + fields[x] + "<br>");
-#			}
-
-			if(x == "auto_dickstab")
+			if(get_property(x) != fields[x])
+			{
+				writeln("Changing setting " + x + " to " + fields[x] + "<br>");
+				set_property(x, fields[x]);
+			}
+			
+			if(x == "auto_dickstab")	//used to detect if we just enabled dickstab
 			{
 				if((fields[x] != get_property("auto_dickstab")) && (fields[x] == "true"))
 				{
 					dickstab = true;
 				}
-			}
-			if(get_property(x) != fields[x])
-			{
-				writeln("Changing setting " + x + " to " + fields[x] + "<br>");
-				set_property(x, fields[x]);
 			}
 		}
 	}
@@ -175,13 +233,7 @@ void main()
 	{
 		writeln("auto_dickstab was just set to true<br>");
 		writeln("Your warranty has been declared void.<br>");
-		set_property("auto_voidWarranty", "rekt");
 		writeln("Togging incompatible settings. You can re-enabled them here if you so desire. This resetting only takes effect upon setting auto_dickstab to true.<br><br>");
-#		if(get_property("auto_getDinseyGarbageMoney").to_boolean())
-#		{
-#			set_property("auto_getDinseyGarbageMoney", false);
-#			writeln("Disabled auto_getDinseyGarbageMoney.<br>");
-#		}
 		if(get_property("auto_hippyInstead").to_boolean())
 		{
 			set_property("auto_hippyInstead", false);
@@ -227,18 +279,7 @@ void main()
 	}
 	writeln("<tr><td align=center colspan='3'><input type='submit' name='' value='Save Changes'/></td></tr></table></form>");
 
-	writeln("<table><tr><th>Settings Color Codings</th></tr>");
-	writeln("<tr bgcolor=#00ffff><td>Anytime: This setting can be changed at any time and takes effect immediately.</td></tr>");
-	writeln("<tr bgcolor=#ffff00><td>Pre: This setting takes effect on the next run that is started with the script.</td></tr>");
-	writeln("<tr bgcolor=#00ff00><td>Post: This setting is set by the first run of the script but can be overrode after that. Translation: Run script on day 1, after first adventure, set these however you like.</td></tr>");
-	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
-	if(get_property("auto_allowSharingData").to_boolean())
-	{
-		writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data. This causes something to immediately (or when reasonable) happen.</td></tr>");
-	}
-	writeln("</table>");
-
-	writeln("<br>Handle <a href=\"autoscend_quests.php\">Quest Tracker</a><br>");
+	write_settings_key();		//display the key to the settings table
 
 	writeln("<h2>Banishes</h2>");
 	generateTrackingData("auto_banishes");
@@ -274,7 +315,7 @@ void main()
 		generateTrackingData("auto_wishes");
 	}
 
-	if(my_class() == $class[Ed])
+	if(isActuallyEd())
 	{
 		writeln("<h2>Lash of the Cobra <img src=\"images/itemimages/cobrahead.gif\"></h2>");
 		generateTrackingData("auto_lashes");
@@ -304,20 +345,20 @@ void main()
 	writeln("<h2>Other Stuff</h2>");
 	generateTrackingData("auto_otherstuff");
 
-
 	writeln("<h2>Info</h2>");
 	writeln("Ascension: " + my_ascensions() + "<br>");
 	writeln("Day: " + my_daycount() + "<br>");
 	writeln("Turns Played: " + my_turncount() + "<br>");
 	writeln("Tavern: " + get_property("tavernLayout") + "<br>");
-	if(my_class() == $class[Ed])
+	if(isActuallyEd())
 	{
 		writeln("Combats: " + get_property("auto_edCombatCount") + "<br>");
 		writeln("Combat Rounds: " + get_property("auto_edCombatRoundCount") + "<br>");
 	}
 
 	//TODO: need way to track version independent of svn branch since you can have different branches checked out
-	writeln("Version (autoscend): " + autoscend_current_version() + "<br>");
+	writeln("Autoscend Version: " + autoscend_current_version() + "<br>");
 
+	writeln("<br>");
 	writeln("</body></html>");
 }
