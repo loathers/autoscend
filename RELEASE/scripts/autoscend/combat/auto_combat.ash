@@ -233,34 +233,52 @@ string auto_combatHandler(int round, monster enemy, string text)
 			}
 			abort("Oh no, I don't have any super deluxe mushrooms to deal with this shadow plumber :(");
 		}
-		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
+		boolean ambi = auto_have_skill($skill[Ambidextrous Funkslinging]);
+		item hand_1 = $item[none];
+		item hand_2 = $item[none];
+		item icup = $item[Rain-Doh Indigo Cup];		//restore 20% of max HP. only once per combat
+		if(canUse(icup))
 		{
-			if(item_amount($item[Gauze Garter]) >= 2)
+			if(my_maxhp() > 500 && hand_1 == $item[none])
 			{
-				return "item " + $item[Gauze Garter] + ", " + $item[Gauze Garter];
+				markAsUsed(icup);
+				hand_1 = icup;
 			}
-			if(item_amount($item[Filthy Poultice]) >= 2)
+			else if(ambi && my_maxhp() > 250 && hand_1 == $item[none])
 			{
-				return "item " + $item[filthy Poultice] + ", " + $item[Filthy Poultice];
+				markAsUsed(icup);
+				hand_1 = icup;
 			}
-			if((item_amount($item[Gauze Garter]) > 0) && (item_amount($item[Filthy Poultice]) > 0))
+		}
+		//items which can be used multiple times per combat
+		foreach it in $items[Gauze Garter, filthy Poultice, red pixel potion]
+		{
+			if(hand_1 == $item[none] && item_amount(it) > 0)
 			{
-				return "item " + $item[Gauze Garter] + ", " + $item[Filthy Poultice];
+				hand_1 = it;
+			}
+			if(hand_2 == $item[none])
+			{
+				if(item_amount(it) > 1)
+				{
+					hand_2 = it;
+				}
+				else if(item_amount(it) > 0 && hand_1 != it)
+				{
+					hand_2 = it;
+				}
 			}
 		}
-		if(item_amount($item[Gauze Garter]) > 0)
+		
+		if(ambi && hand_1 != $item[none] && hand_2 != $item[none])
 		{
-			return "item " + $item[Gauze Garter];
+			return "item " +hand_1+ ", " +hand_2;
 		}
-		if(item_amount($item[Filthy Poultice]) > 0)
+		if(hand_1 != $item[none])
 		{
-			return "item " + $item[Filthy Poultice];
+			return "item " +hand_1;
 		}
-		if(item_amount($item[Rain-Doh Indigo Cup]) > 0)
-		{
-			return "item " + $item[Rain-Doh Indigo Cup];
-		}
-		abort("Uh oh, I ran out of gauze garters and filthy poultices");
+		abort("Uh oh, I ran out of healing items to use against your shadow");
 	}
 
 	if(enemy == $monster[Wall Of Meat])
