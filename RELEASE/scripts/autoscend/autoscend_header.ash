@@ -178,6 +178,8 @@ boolean auto_doPrecinct();
 boolean expectGhostReport();
 boolean haveGhostReport();
 boolean LX_ghostBusting();
+int timeSpinnerRemaining();
+int timeSpinnerRemaining(boolean verify);
 boolean timeSpinnerGet(string goal);
 boolean timeSpinnerConsume(item goal);
 boolean timeSpinnerAdventure();
