@@ -31,7 +31,6 @@ boolean LX_doVacation();
 boolean fortuneCookieEvent();
 void initializeDay(int day);
 boolean dailyEvents();
-boolean doBedtime();
 boolean isAboutToPowerlevel();
 boolean LX_attemptPowerLevel();
 boolean disregardInstantKarma();
@@ -927,6 +926,10 @@ boolean autoAdvBypass(int snarfblat);
 boolean autoAdvBypass(string url);
 boolean autoAdvBypass(int snarfblat, string option);
 boolean autoAdvBypass(string url, string option);
+
+########################################################################################################
+//Defined in autoscend/auto_bedtime.ash
+boolean doBedtime();
 
 ########################################################################################################
 //Defined in autoscend/auto_consume.ash
