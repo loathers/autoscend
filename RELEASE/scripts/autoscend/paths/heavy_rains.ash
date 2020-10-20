@@ -480,53 +480,48 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		}
 	}
 
-
-	if((get_property("_raindohCopiesMade").to_int() >= 5) || (item_amount($item[Rain-doh box full of monster]) > 0))
+	if(get_property("_raindohCopiesMade").to_int() >= 5 || item_amount($item[Rain-doh box full of monster]) > 0)
 	{
 		copy = false;
 	}
 
 	set_property("choiceAdventure970", "0");
 
-	if(!canChangeToFamiliar($familiar[Reanimated Reanimator]))
+	//prepare wink/arrow familiar
+	if(get_property("_badlyRomanticArrows") == "1")		//shared property for [Obtuse Angel] && [Reanimated Reanimator]
 	{
-		wink = false;
+		wink = false;		//we already used our only daily wink/arrow today
 	}
-	else
+	if(wink == true)
 	{
-		handleFamiliar("item");
-	}
-
-	if((wink == true) && have_familiar($familiar[Reanimated Reanimator]))
-	{
-		if(get_property("_badlyRomanticArrows") == "1")
+		if(canChangeToFamiliar($familiar[Reanimated Reanimator]))
 		{
-			abort("Trying to arrow/wink a monster but we've already done so today.");
+			handleFamiliar($familiar[Reanimated Reanimator]);
 		}
-#		use_familiar($familiar[Reanimated Reanimator]);
-		handleFamiliar($familiar[Reanimated Reanimator]);
+		else if(canChangeToFamiliar($familiar[Obtuse Angel]))
+		{
+			handleFamiliar($familiar[Obtuse Angel]);
+		}
+		else
+		{
+			wink = false;
+			handleFamiliar("item");
+		}
 	}
 
 	if(copy)
 	{
 		set_property("auto_doCombatCopy", "yes");
 	}
-	auto_log_info("Looking to summon: " + monsterName, "blue");
 
+	//use the rainman to summon a monster
+	auto_log_info("Looking to summon: " + monsterName, "blue");
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1";
 	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" + mId + "&option=1&choice2=and+Fight%21";
 	autoAdvBypass(0, pages, $location[Noob Cave], option);
 
-#	visit_url("runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1", true);
-#	visit_url("choice.php?pwd&whichchoice=970&whichmonster=" + mId + "&option=1&choice2=and+Fight%21");
-#	autoAdv(1, $location[Noob Cave]);
-
-	if(wink == true)
-	{
-		handleFamiliar("item");
-	}
-	if(copy && (item_amount($item[Rain-doh box full of monster]) == 0))
+	if(copy && item_amount($item[Rain-doh box full of monster]) == 0)
 	{
 		abort("Tried to make a copy but failed");
 	}
