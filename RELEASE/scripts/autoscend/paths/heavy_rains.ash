@@ -33,7 +33,7 @@ boolean routineRainManHandler()
 		want_to_rainman = true;
 	}
 	//stomach and liver are full, and 1 adv is left before we are done for the day
-	if(my_adventures() == (1 + auto_advToReserve()) && my_rain() >= 50 && my_fullness() == fullness_limit() && my_inebriety() == inebriety_limit())
+	if(my_adventures() <= (1 + auto_advToReserve()) && my_rain() >= 50 && my_fullness() == fullness_limit() && my_inebriety() == inebriety_limit())
 	{
 		want_to_rainman = true;
 	}
