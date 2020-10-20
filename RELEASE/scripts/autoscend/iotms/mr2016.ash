@@ -1270,6 +1270,19 @@ boolean timeSpinnerConsume(item goal)
 	{
 		return false;
 	}
+	boolean available = false;
+	foreach i,s in split_string(get_property("_timeSpinnerFoodAvailable"), ",")
+	{
+		if(goal.id == s.to_int())
+		{
+			available = true;
+		}
+	}
+	if(!available)
+	{
+		return false;		//the item we want to re-consume via time travel is not available currently
+	}
+	
 	int initial_fullness = fullness_left();
 	visit_url("inv_use.php?pwd=&which=3&whichitem=9104");
 	visit_url("choice.php?pwd=&whichchoice=1195&option=2");
