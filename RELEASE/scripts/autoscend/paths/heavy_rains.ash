@@ -22,7 +22,7 @@ void hr_initializeSettings()
 
 boolean routineRainManHandler()
 {
-	if(!have_skill($skill[Rain Man]) || (auto_my_path() != "Heavy Rains"))
+	if(!have_skill($skill[Rain Man]))
 	{
 		return false;
 	}
@@ -295,11 +295,6 @@ boolean doHRSkills()
 
 boolean rainManSummon(string monsterName, boolean copy, boolean wink, string option)
 {
-	if(my_path() != "Heavy Rains")
-	{
-		return false;
-	}
-
 	if(!have_skill($skill[Rain Man]))
 	{
 		return false;
@@ -487,8 +482,6 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	{
 		copy = false;
 	}
-
-	set_property("choiceAdventure970", "0");
 
 	//prepare wink/arrow familiar
 	if(get_property("_badlyRomanticArrows") == "1")		//shared property for [Obtuse Angel] && [Reanimated Reanimator]
