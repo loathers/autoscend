@@ -1273,7 +1273,7 @@ boolean timeSpinnerConsume(item goal)
 	boolean available = false;
 	foreach i,s in split_string(get_property("_timeSpinnerFoodAvailable"), ",")
 	{
-		if(goal.id == s.to_int())
+		if(goal.to_int() == s.to_int())
 		{
 			available = true;
 		}
