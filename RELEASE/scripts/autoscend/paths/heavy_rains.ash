@@ -26,78 +26,62 @@ boolean routineRainManHandler()
 	{
 		return false;
 	}
-	
-	boolean want_to_rainman = false;
-	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0))
+	if(my_rain() < 50)
 	{
-		want_to_rainman = true;
+		return false;	//not enough rain to use skill
 	}
-	//stomach and liver are full, and 1 adv is left before we are done for the day
-	if(my_adventures() <= (1 + auto_advToReserve()) && my_rain() >= 50 && my_fullness() == fullness_limit() && my_inebriety() == inebriety_limit())
+	if(my_rain() < 80 && my_adventures() > (1 + auto_advToReserve()) && inebriety_left() > 0 && stomach_left() > 0)
 	{
-		want_to_rainman = true;
+		return false;	//if we got plenty of adventures left then delay using rain man until rain meter reaches 80
 	}
 	
-	if(want_to_rainman)
+	if(my_daycount() == 2 && (!get_property("chateauAvailable").to_boolean() || get_property("chateauMonster") != "lobsterfrogman"))
 	{
-		if(my_daycount() == 2 && (!get_property("chateauAvailable").to_boolean() || get_property("chateauMonster") != "lobsterfrogman"))
+		return rainManSummon($monster[lobsterfrogman], true, true);
+	}
+	if(get_property("auto_mountainmen") == "")
+	{
+		set_property("auto_mountainmen", "1");
+		return rainManSummon($monster[mountain man], true, false);
+	}
+	if(internalQuestStatus("questL08Trapper") == 1 && needOre())
+	{
+		return rainManSummon($monster[mountain man], false, false);
+	}
+	if(get_property("auto_ninjasnowmanassassin") == "")
+	{
+		return rainManSummon($monster[ninja snowman assassin], true, false);
+	}
+	if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == "") && !get_property("auto_hippyInstead").to_boolean())
+	{
+		return rainManSummon($monster[orcish frat boy spy], false, false);
+	}
+	if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_warhippyspy") == "") && get_property("auto_hippyInstead").to_boolean())
+	{
+		return rainManSummon($monster[war hippy spy], false, false);
+	}
+	if(needStarKey())
+	{
+		if(item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
 		{
-			rainManSummon($monster[lobsterfrogman], true, true);
+			return rainManSummon($monster[skinflute], true, false);
 		}
-		
-		if(get_property("auto_mountainmen") == "")
+		else if((item_amount($item[star chart]) == 0))
 		{
-			set_property("auto_mountainmen", "1");
-			return rainManSummon($monster[mountain man], true, false);
-		}
-
-		if (internalQuestStatus("questL08Trapper") < 2)
-		{
-			return rainManSummon($monster[mountain man], false, false);
-		}
-
-		if(get_property("auto_ninjasnowmanassassin") == "")
-		{
-			return rainManSummon($monster[ninja snowman assassin], true, false);
-		}
-
-		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == "") && !get_property("auto_hippyInstead").to_boolean())
-		{
-			return rainManSummon($monster[orcish frat boy spy], false, false);
-		}
-		
-		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_warhippyspy") == "") && get_property("auto_hippyInstead").to_boolean())
-		{
-			return rainManSummon($monster[war hippy spy], false, false);
-		}
-		
-		if(needStarKey())
-		{
-			if(item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
-			{
-				return rainManSummon($monster[skinflute], true, false);
-			}
-			else if((item_amount($item[star chart]) == 0))
-			{
-				return rainManSummon($monster[astronomer], false, false);
-			}
-		}
-		if(needDigitalKey())
-		{
-			if (get_property("sidequestNunsCompleted") != "none" && my_rain() > 92)
-			{
-				if(whitePixelCount() < 30 && item_amount($item[digital key]) == 0)
-				{
-					return rainManSummon($monster[ghost], false, false);
-				}
-			}
-		}
-
-		if(my_daycount() < 3)
-		{
-			auto_log_info("I have nothing left to rain man, maybe we are getting ready for make it rain?");
+			return rainManSummon($monster[astronomer], false, false);
 		}
 	}
+	if(needDigitalKey())
+	{
+		if (get_property("sidequestNunsCompleted") != "none" && my_rain() > 92)
+		{
+			if(whitePixelCount() < 30 && item_amount($item[digital key]) == 0)
+			{
+				return rainManSummon($monster[ghost], false, false);
+			}
+		}
+	}
+
 	return false;
 }
 
