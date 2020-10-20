@@ -480,7 +480,10 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		}
 	}
 
-	if(get_property("_raindohCopiesMade").to_int() >= 5 || item_amount($item[Rain-doh box full of monster]) > 0)
+	
+	if(item_amount($item[Rain-Doh black box]) > 0 ||			//do we actually have a black box to copy with
+	get_property("_raindohCopiesMade").to_int() >= 5 ||			//ran out of uses today
+	item_amount($item[Rain-doh box full of monster]) > 0)		//must discharge the full box before we can use the empty box again
 	{
 		copy = false;
 	}
