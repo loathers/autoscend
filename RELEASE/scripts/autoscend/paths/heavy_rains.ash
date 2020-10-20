@@ -40,6 +40,11 @@ boolean routineRainManHandler()
 	
 	if(want_to_rainman)
 	{
+		if(my_daycount() == 2 && (!get_property("chateauAvailable").to_boolean() || get_property("chateauMonster") != "lobsterfrogman"))
+		{
+			rainManSummon($monster[lobsterfrogman], true, true);
+		}
+		
 		if(get_property("auto_mountainmen") == "")
 		{
 			set_property("auto_mountainmen", "1");
@@ -141,13 +146,6 @@ void hr_initializeDay(int day)
 			}
 			set_property("auto_day1_skills", "finished");
 			visit_url("main.php");
-		}
-		else if((day == 2) && (my_rain() > 80))
-		{
-			if((get_property("chateauAvailable").to_boolean() == false) || (get_property("chateauMonster") != "lobsterfrogman"))
-			{
-				rainManSummon($monster[lobsterfrogman], true, true);
-			}
 		}
 	}
 }
