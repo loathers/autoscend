@@ -2304,7 +2304,7 @@ int auto_freeCombatsRemaining()
 int auto_freeCombatsRemaining(boolean print_remaining_fights)
 {
 
-	void debugPrint(string msg)
+	void logRemainingFights(string msg)
 	{
 	  if (!print_remaining_fights) return;
 	  print(msg, "red");
@@ -2312,46 +2312,46 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 
 	int count = 0;
 	
-	debugPrint("Remaining Free Fights:");
+	logRemainingFights("Remaining Free Fights:");
 	if(!in_koe() && canChangeToFamiliar($familiar[Machine Elf]))
 	{
 		int temp = 5-get_property("_machineTunnelsAdv").to_int();
 		count += temp;
-		debugPrint("Machine Elf = " + temp);
+		logRemainingFights("Machine Elf = " + temp);
 	}
 	if(snojoFightAvailable())
 	{
 		int temp = 10-get_property("_snojoFreeFights").to_int();
 		count += temp;
-		debugPrint("Snojo = " + temp);
+		logRemainingFights("Snojo = " + temp);
 	}
 	if(canChangeToFamiliar($familiar[God Lobster]) && disregardInstantKarma())
 	{
 		int temp = 3-get_property("_godLobsterFights").to_int();
 		count += temp;
-		debugPrint("God Lobster = " + temp);
+		logRemainingFights("God Lobster = " + temp);
 	}
 	if(neverendingPartyRemainingFreeFights() > 0)
 	{
 		int temp = neverendingPartyRemainingFreeFights();
 		count += temp;
-		debugPrint("Neverending Party = " + temp);
+		logRemainingFights("Neverending Party = " + temp);
 	}
 	if(get_property("_eldritchTentacleFought").to_boolean() == false)
 	{
 		count++;
-		debugPrint("Tent Tentacle = 1");
+		logRemainingFights("Tent Tentacle = 1");
 	}
 	if(auto_have_skill($skill[Evoke Eldritch Horror]) && get_property("_eldritchHorrorEvoked").to_boolean() == false)
 	{
 		count++;
-		debugPrint("Evoke Eldritch = 1");
+		logRemainingFights("Evoke Eldritch = 1");
 	}
 
 	if (auto_canFightPiranhaPlant()) {
 		int temp = auto_piranhaPlantFightsRemaining();
 		count += temp;
-		debugPrint("Piranha Plant Fights = " + temp);
+		logRemainingFights("Piranha Plant Fights = " + temp);
 	}
 
 	return count;
