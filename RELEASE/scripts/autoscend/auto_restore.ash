@@ -1376,6 +1376,19 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 		return -1;
 	}
 	
+	int max_resource()
+	{
+		if(resource_type == "hp")
+		{
+			return my_maxhp();
+		}
+		else if(resource_type == "mp")
+		{
+			return my_maxmp();
+		}
+		return -1;
+	}
+	
 	int hp_target()
 	{
 		if(resource_type == "hp")
@@ -1558,6 +1571,10 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 
 	while(current_resource() < goal)
 	{
+		if(goal > max_resource())	//prevent infinite loop in case maxHP or maxMP dropped below goal
+		{
+			goal = max_resource();
+		}
 		__RestorationOptimization[int] options = __maximize_restore_options(hp_target(), mp_target(), meat_reserve, useFreeRests);
 		if(count(options) == 0)
 		{
@@ -1628,7 +1645,7 @@ void invalidateRestoreOptionCache()
  */
 boolean acquireMP()
 {
-	return acquireMP(my_maxmp());
+	return acquireMP(min(0.95 * my_maxmp(),300));
 }
 
 /**
@@ -1685,7 +1702,8 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	// TODO: move this to general effectiveness method
 	if(my_maxmp() - my_mp() > 300)
 	{
-		auto_sausageEatEmUp(1);
+		auto_sausageEatEmUp(1);		//this involve outfit changes which can lower our maxMP to below what goal was. which would cause infinite loop
+		goal = min(goal, my_maxmp());
 	}
 	__restore("mp", goal, meat_reserve, useFreeRests);
 	return (my_mp() >= goal);
