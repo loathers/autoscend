@@ -2229,6 +2229,7 @@ boolean LX_attemptPowerLevel()
 	{
 		if(neverendingPartyPowerlevel()) return true;
 	}
+	if(timeSpinnerAdventure()) return true;
 	//do not use the scaling zone [The Thinknerd Warehouse] here.
 	//it has low stat caps on the scaling, resulting in <30 substats per adv
 

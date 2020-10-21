@@ -1187,8 +1187,39 @@ boolean LX_ghostBusting()
 	return false;
 }
 
+int timeSpinnerRemaining()
+{
+	return timeSpinnerRemaining(false);
+}
+
+int timeSpinnerRemaining(boolean verify)
+{
+	//how many time spinner minutes remain to be used.
+	if(!auto_is_valid($item[Time-Spinner]) || item_amount($item[Time-Spinner]) == 0)
+	{
+		return 0;		//time-spinner is not available at all. thus we have 0 minutes to utilize
+	}
+	int spins_used = get_property("_timeSpinnerMinutesUsed").to_int();
+	if(verify)
+	{
+		visit_url("inv_use.php?pwd=&which=3&whichitem=9104");		//visit time-spinner to update remaining minutes
+		int spins_new = get_property("_timeSpinnerMinutesUsed").to_int();
+		if(spins_used != spins_new)
+		{
+			auto_log_warning("Detected and corrected erroneous tracking of _timeSpinnerMinutesUsed", "red");
+			spins_used = spins_new;
+		}
+	}
+	return 10 - spins_used;
+}
+
 boolean timeSpinnerGet(string goal)
 {
+	//spend 2 minutes to visit the far future using ezandora's script to get something
+	if(timeSpinnerRemaining(true) < 2)
+	{
+		return false;	
+	}
 	goal = to_lower_case(goal);
 	if(!($strings[booze, drink, food, memory, history, ears, mall, none] contains goal))
 	{
@@ -1224,30 +1255,39 @@ boolean timeSpinnerGet(string goal)
 		return false;
 	}
 
-	if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() <= 8))
+	if(svn_info("Ezandora-Far-Future-branches-Release").last_changed_rev > 0)
 	{
-		if(svn_info("Ezandora-Far-Future-branches-Release").last_changed_rev > 0)
-		{
-			//Required by dependencies
-			cli_execute("FarFuture " + goal);
-			return true;
-		}
-		return false;
+		//Required by dependencies
+		cli_execute("FarFuture " + goal);
+		return true;
 	}
 	return false;
 }
 boolean timeSpinnerConsume(item goal)
 {
-	if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() <= 7))
+	//spend 3 minutes to re-consume a food item
+	if(timeSpinnerRemaining(true) < 3)
 	{
-		string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=9104");
-		if(get_property("_timeSpinnerMinutesUsed").to_int() <= 7)
+		return false;
+	}
+	boolean available = false;
+	foreach i,s in split_string(get_property("_timeSpinnerFoodAvailable"), ",")
+	{
+		if(goal.to_int() == s.to_int())
 		{
-			temp = visit_url("choice.php?pwd=&whichchoice=1195&option=2");
-			temp = visit_url("choice.php?pwd=&whichchoice=1197&option=1&foodid=" + to_int(goal));
+			available = true;
 		}
 	}
-	return false;
+	if(!available)
+	{
+		return false;		//the item we want to re-consume via time travel is not available currently
+	}
+	
+	int initial_fullness = fullness_left();
+	visit_url("inv_use.php?pwd=&which=3&whichitem=9104");
+	visit_url("choice.php?pwd=&whichchoice=1195&option=2");
+	visit_url("choice.php?pwd=&whichchoice=1197&option=1&foodid=" + to_int(goal));
+	return fullness_left() != initial_fullness;
 }
 
 boolean timeSpinnerAdventure()
@@ -1257,19 +1297,15 @@ boolean timeSpinnerAdventure()
 
 boolean timeSpinnerAdventure(string option)
 {
-	if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() <= 9))
+	//spend 1 minutes to Adventure Way Back in Time
+	if(timeSpinnerRemaining(true) < 1)
 	{
-		string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=9104");
-		if(get_property("_timeSpinnerMinutesUsed").to_int() <= 9)
-		{
-			string[int] pages;
-			pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
-			pages[1] = "choice.php?pwd=&whichchoice=1195&option=3";
-			if(autoAdvBypass(0, pages, $location[Noob Cave], option)) {}
-			return true;
-		}
+		return false;
 	}
-	return false;
+	string[int] pages;
+	pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
+	pages[1] = "choice.php?pwd=&whichchoice=1195&option=3";
+	return autoAdvBypass(0, pages, $location[Noob Cave], option);
 }
 
 
@@ -1280,34 +1316,27 @@ boolean timeSpinnerCombat(monster goal)
 
 boolean timeSpinnerCombat(monster goal, string option)
 {
-	if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() <= 7))
+	//spend 3 minutes to Travel to a Recent Fight
+	if(timeSpinnerRemaining(true) < 3)
 	{
-		string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=9104");
-		if(get_property("_timeSpinnerMinutesUsed").to_int() <= 7)
-		{
-			string[int] pages;
-			pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
-			pages[1] = "choice.php?pwd=&whichchoice=1195&option=1";
-			pages[2] = "choice.php?pwd=&whichchoice=1196&option=1&monid=" + goal.id;
-			if(autoAdvBypass(0, pages, $location[Noob Cave], option))
-			{
-				handleTracker(goal, $item[Time-Spinner], "auto_copies");
-			}
-			else
-			{
-				if(get_property("lastEncounter") == "Travel to a Recent Fight")
-				{
-					string temp = visit_url("choice.php?pwd&whichchoice=1196&option=2");
-				}
-				else
-				{
-					abort("Time-Spinner combat failed and we were unable to leave the Time-Spinner");
-				}
-				return false;
-			}
-
-			return true;
-		}
+		return false;
+	}
+	string[int] pages;
+	pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
+	pages[1] = "choice.php?pwd=&whichchoice=1195&option=1";
+	pages[2] = "choice.php?pwd=&whichchoice=1196&option=1&monid=" + goal.id;
+	if(autoAdvBypass(0, pages, $location[Noob Cave], option))
+	{
+		handleTracker(goal, $item[Time-Spinner], "auto_copies");
+		return true;
+	}
+	if(get_property("lastEncounter") == "Travel to a Recent Fight")
+	{
+		visit_url("choice.php?pwd&whichchoice=1196&option=2");
+	}
+	else
+	{
+		abort("Time-Spinner combat failed and we were unable to leave the Time-Spinner");
 	}
 	return false;
 }
