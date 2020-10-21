@@ -629,7 +629,7 @@ boolean L13_towerFinalHeavyRains()
 	//Fight!
 	//auto_disableAdventureHandling because we don't want maximize, switch familiar, change buffs, or anything else that might break our specific prepwork.
 	acquireHP();
-	acquireMP();
+	acquireMP(200);
 	set_property("auto_disableAdventureHandling", true);		
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
 	set_property("auto_disableAdventureHandling", false);
