@@ -936,10 +936,10 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 		}
-		if(canChangeToFamiliar($familiar[Mu]))
+		if(canChangeToFamiliar($familiar[Imitation Crab]))
 		{
-			handleFamiliar($familiar[Mu]);
-			sources = sources + 5;
+			handleFamiliar($familiar[Imitation Crab]);
+			sources = sources + 4;
 		}
 		else if(canChangeToFamiliar($familiar[warbear drone]))
 		{
@@ -961,11 +961,6 @@ boolean L13_towerNSTower()
 		{
 			handleFamiliar($familiar[Sludgepuppy]);
 			sources = sources + 3;
-		}
-		else if(canChangeToFamiliar($familiar[Imitation Crab]))
-		{
-			handleFamiliar($familiar[Imitation Crab]);
-			sources = sources + 2;
 		}
 		if(autoEquip($slot[acc1], $item[hippy protest button]))
 		{
