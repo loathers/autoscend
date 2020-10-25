@@ -579,8 +579,7 @@ boolean routineRainManHandler();
 void hr_initializeDay(int day);
 void hr_doBedtime();
 boolean doHRSkills();
-boolean rainManSummon(string monsterName, boolean copy, boolean wink, string option);
-boolean rainManSummon(string monsterName, boolean copy, boolean wink);
+boolean rainManSummon(monster target, boolean copy, boolean wink);
 boolean L13_towerFinalHeavyRains();
 
 ########################################################################################################
