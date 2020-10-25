@@ -395,9 +395,9 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	{
 		return false;
 	}
-	if(auto_my_path() == "KOLHS")
+	if(in_kolhs())
 	{
-		if(!($items[Bottle of Fruity &quot;Wine&quot;, Can of the Cheapest Beer, Single Swig of Vodka, Steel Margarita] contains toDrink))
+		if(!($items[Can of the Cheapest Beer, Bottle of Fruity &quot;Wine&quot;, Single Swig of Vodka, fountain \'soda\', stepmom\'s booze, Steel Margarita] contains toDrink))
 		{
 			return false;
 		}

@@ -589,6 +589,10 @@ boolean koe_initializeSettings();
 boolean LX_koeInvaderHandler();
 
 ########################################################################################################
+//Defined in autoscend/paths/kolhs.ash
+boolean in_kolhs();
+
+########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
 void bond_initializeSettings();
 boolean bond_initializeDay(int day);
