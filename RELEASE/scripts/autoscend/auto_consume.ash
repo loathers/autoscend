@@ -526,6 +526,11 @@ void consumeStuff()
 		cs_eat_spleen();
 		return;
 	}
+	if(in_kolhs())
+	{
+		kolhs_consume();
+		return;
+	}
 
 	// fills up spleen for Ed.
 	if (ed_eatStuff())

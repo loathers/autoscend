@@ -214,6 +214,7 @@ void initializeSettings() {
 	glover_initializeSettings();
 	bat_initializeSettings();
 	koe_initializeSettings();
+	kolhs_initializeSettings();
 	zelda_initializeSettings();
 	lowkey_initializeSettings();
 	bhy_initializeSettings();
@@ -2587,6 +2588,7 @@ boolean doTasks()
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
 	if(LM_canInteract()) 			return true;
+	if(LM_kolhs()) 						return true;
 
 	if(auto_my_path() != "Community Service")
 	{

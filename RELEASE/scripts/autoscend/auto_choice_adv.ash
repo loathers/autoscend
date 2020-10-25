@@ -166,6 +166,10 @@ boolean auto_run_choice(int choice, string page)
 		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
 			dailyDungeonChoiceHandler(choice, options);
 			break;
+		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
+		case 772: // Saved by the Bell (KOLHS after school)
+			kolhsChoiceHandler(choice);
+			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
 			if (in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
 				run_choice(3); // relocate lawyers to park

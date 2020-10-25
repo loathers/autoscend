@@ -591,6 +591,15 @@ boolean LX_koeInvaderHandler();
 ########################################################################################################
 //Defined in autoscend/paths/kolhs.ash
 boolean in_kolhs();
+boolean kolhs_mandatorySchool();
+void kolhs_initializeSettings();
+void kolhs_closetDrink();
+void kolhs_consume();
+boolean LX_kolhs_yearbookCameraGet();
+boolean LX_kolhs_yearbookCameraQuest();
+boolean LX_kolhs_school();
+void kolhsChoiceHandler(int choice);
+boolean LM_kolhs();
 
 ########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
