@@ -90,7 +90,7 @@ init	3	Happy Medium
 # "Item" is used when we want a familiar that boosts the chance of a monster dropping an item
 # We expect that familiars that drop items directly a limited amount of times per day will be used first elsewhere. So do not account for those.
 #
-# exempt from 10 lbs restriction in KOHLS path
+# exempt from 10 lbs restriction in KOLHS path
 item	0	Steam-Powered Cheerleader	path:KOLHS
 # Fairies with a multiplier
 # 1.4x multiplier fairy
