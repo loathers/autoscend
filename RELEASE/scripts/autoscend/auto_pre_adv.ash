@@ -13,25 +13,16 @@ void print_footer() {
 
 boolean auto_pre_adventure()
 {
-	auto_log_debug("Running auto_pre_adv.ash");
-
 	location place = my_location();
-	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (auto_my_path() == "Heavy Rains"))
-	{
-		abort("Familiar has no equipment, WTF");
-	}
-
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		auto_log_info("Preadventure skipped by standard adventure handler.", "green");
 		return true;
 	}
-
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " + place.to_string(), "green");
-
+	
 	preAdvUpdateFamiliar(place);
-
 	ed_handleAdventureServant(place);
 
 	if(get_floundry_locations() contains place)

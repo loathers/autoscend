@@ -292,7 +292,7 @@ boolean L8_getMineOres()
 		}
 		auto_log_info("Trying to summon a mountain man", "blue");
 		set_property("auto_mountainmen", "1");
-		return rainManSummon("mountain man", false, false);
+		return rainManSummon($monster[mountain man], false, false);
 	}
 	
 	//in softcore we want to pull the ores.

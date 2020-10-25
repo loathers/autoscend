@@ -642,7 +642,10 @@ void preAdvUpdateFamiliar(location place)
 	//familiar equipment overrides
 	if(my_path() == "Heavy Rains")
 	{
-		autoEquip($slot[familiar], $item[miniature life preserver]);
+		if(famChoice != $familiar[Left-Hand Man])
+		{
+			autoEquip($slot[familiar], $item[miniature life preserver]);
+		}
 	}
 
 	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
