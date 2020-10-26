@@ -1155,7 +1155,6 @@ generic_t zone_combatMod(location loc);
 generic_t zone_delay(location loc);
 generic_t zone_available(location loc);
 generic_t zone_difficulty(location loc);
-location[int] zone_list();
 location[int] zones_available();
 monster[int] mobs_available();
 item[int] drops_available();

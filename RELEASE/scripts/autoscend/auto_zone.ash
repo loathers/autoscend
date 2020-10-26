@@ -38,9 +38,8 @@ boolean zone_isAvailable(location loc)
 
 int[location] zone_delayable()
 {
-	location[int] locs = zone_list();
 	int[location] retval;
-	foreach idx, loc in locs
+	foreach loc in $locations[]
 	{
 		generic_t locValue = zone_delay(loc);
 		if(locValue._boolean && zone_isAvailable(loc))
@@ -1658,15 +1657,10 @@ generic_t zone_difficulty(location loc)
 	return retval;
 }
 
-location[int] zone_list()
-{
-	return List($locations[8-Bit Realm, A-Boo Peak, The Arid\, Extra-Dry Desert, The Bandit Crossroads, Barf Mountain, Barrrney\'s Barrr, The Bat Hole Entrance, The Batrat And Ratbat Burrow, The Battlefield (Frat Uniform), The Beanbat Chamber, Belowdecks, The Black Forest, The Boss Bat\'s Lair, The Bubblin\' Caldera, The Bugbear Pen, The Castle in the Clouds in the Sky (Basement), The Castle in the Clouds in the Sky (Ground Floor), The Castle in the Clouds in the Sky (Top Floor), Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Cobb\'s Knob Kitchens, Cobb\'s Knob Treasury, Coldest Adventurer Contest, The Copperhead Club, The Cursed Village, The Daily Dungeon, The Dark Elbow of the Woods, The Dark Heart of the Woods, The Dark Neck of the Woods, The Deep Dark Jungle, The Deep Machine Tunnels, The Defiled Alcove, The Defiled Cranny, The Defiled Niche, The Defiled Nook, Drunken Stupor, The Dungeons of Doom, The Enormous Greater-Than Sign, The Extreme Slope, The F\'c\'le, Fastest Adventurer Contest, The Feeding Chamber, The Filthworm Queen\'s Chamber, The Fun-Guy Mansion, Gingerbread Civic Center, Gingerbread Industrial Zone, Gingerbread Sewers, Gingerbread Train Station, Gingerbread Upscale Retail District, The Goatlet, Guano Junction, The Haiku Dungeon, The Hatching Chamber, The Haunted Ballroom, The Haunted Bathroom, The Haunted Bedroom, The Haunted Billiards Room, The Haunted Boiler Room, The Haunted Conservatory, The Haunted Gallery, The Haunted Kitchen, The Haunted Laundry Room, The Haunted Library, The Haunted Pantry, The Haunted Wine Cellar, The Hidden Apartment Building, The Hidden Bowling Alley, The Hidden Hospital, The Hidden Office Building, The Hidden Park, The Hidden Temple, The Hole in the Sky, Hottest Adventurer Contest, The Ice Hole, The Ice Hotel, The Icy Peak, Infernal Rackets Backstage, Inside the Palindome, Investigating A Plaintive Telegram, Itznotyerzitz Mine, Lair of the Ninja Snowmen, LavaCo&trade; Lamp Factory, The Laugh Floor, The Limerick Dungeon, The Lower Chambers, Madness Bakery, The Mansion of Dr. Weirdeaux, A Massive Ziggurat, A Maze Of Sewer Tunnels, The Middle Chamber, Mist-Shrouded Peak, A Mob Of Zeppelin Protesters, Monorail Work Site, The Mystic Wood, Near an Abandoned Refrigerator, Next to that Barrel with Something Burning in it, Noob Cave, The Oasis, The Obligatory Pirate\'s Cove, Oil Peak, The Old Landfill, Out by that Rusted-Out Car, The Outskirts of Cobb\'s Knob, Over Where the Old Tires Are, The Overgrown Lot, An Overgrown Shrine (Northeast), An Overgrown Shrine (Northwest), An Overgrown Shrine (Southeast), An Overgrown Shrine (Southwest), Pandamonium Slums, The Penultimate Fantasy Airship, Pirates of the Garbage Barges, The Poop Deck, The Putrid Swamp, The Red Queen\'s Garden, The Red Zeppelin, The Royal Guard Chamber, The Secret Government Laboratory, The Shore\, Inc. Travel Agency, The Skeleton Store, Sleaziest Adventurer Contest, The Sleazy Back Alley, Sloppy Seconds Diner, The Skeleton Store, Smartest Adventurer Contest, The SMOOCH Army HQ, Smoothest Adventurer Contest, South of the Border, Spookiest Adventurer Contest, The Spooky Gravy Burrow, The Sprawling Cemetery, Stinkiest Adventurer Contest, Strongest Adventurer Contest, The Smut Orc Logging Camp, Sonofa Beach, The Spooky Forest, Summoning Chamber, The Sunken Party Yacht, Super Villain\'s Lair, The Themthar Hills, The Thinknerd Warehouse, Throne Room, Through the Spacegate, Thugnderdome, The Towering Mountains, The Toxic Teacups, Twin Peak, The Typical Tavern Cellar, Uncle Gator\'s Country Fun-Time Liquid Waste Sluice, The Upper Chamber, The Unquiet Garves, The Velvet / Gold Mine, The VERY Unquiet Garves, VYKEA, The X-32-F Combat Training Snowman, Wartime Hippy Camp (Frat Disguise), Whitey\'s Grove]);
-}
-
 location[int] zones_available()
 {
 	location[int] retval;
-	foreach idx, loc in zone_list()
+	foreach loc in $locations[]
 	{
 		if(zone_isAvailable(loc, false))
 		{
