@@ -1153,7 +1153,7 @@ int[location] zone_delayable();
 generic_t zone_needItem(location loc);
 generic_t zone_combatMod(location loc);
 generic_t zone_delay(location loc);
-generic_t zone_available(location loc);
+boolean zone_available(location loc);
 generic_t zone_difficulty(location loc);
 location[int] zones_available();
 monster[int] mobs_available();
