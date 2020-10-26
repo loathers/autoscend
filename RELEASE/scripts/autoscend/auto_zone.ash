@@ -686,6 +686,15 @@ generic_t zone_delay(location loc)
 			value = 5 - (loc.turns_spent - get_property("auto_lastShenTurn").to_int());
 		}
 		break;
+	case $location[The Hallowed Halls]:
+	case $location[Art Class]:
+	case $location[Chemistry Class]:
+	case $location[Shop Class]:
+		if(kolhs_mandatorySchool())		//KOLHS path specific delay locations
+		{
+			value = 40 - get_property("_kolhsAdventures").to_int();		//shared counter of 40 adv between all 4 zones
+		}
+		break;
 	default:
 		retval._error = true;
 		break;
@@ -702,6 +711,15 @@ generic_t zone_delay(location loc)
 boolean zone_available(location loc)
 {
 	boolean retval = false;
+	
+	if(kolhs_mandatorySchool())		//kolhs path specifically blocks non school zones until school is done.
+	{
+		if($locations[The Hallowed Halls, Art Class, Chemistry Class, Shop Class] contains loc)
+		{
+			retval = true;
+		}
+		return retval;
+	}
 
 	switch(loc)
 	{
