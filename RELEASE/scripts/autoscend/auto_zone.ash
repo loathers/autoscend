@@ -1746,6 +1746,29 @@ boolean is_ghost_in_zone(location loc)
 	return false;
 }
 
+location[int] monster_to_location(monster target)
+{
+	location[int] retval;
+	int key = 0;
+	foreach loc in $locations[]		//check all locations in the game
+	{
+		boolean mon_in_loc = false;
+		foreach idx, mon in get_monsters(loc)
+		{
+			if(target == mon)
+			{
+				mon_in_loc = true;
+			}
+		}
+		if(mon_in_loc)
+		{
+			retval[key] = loc;
+			key++;
+		}
+	}
+	return retval;
+}
+
 
 /*
 	case $location[The Oasis]:

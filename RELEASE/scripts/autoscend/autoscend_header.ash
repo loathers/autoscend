@@ -1160,6 +1160,7 @@ monster[int] mobs_available();
 item[int] drops_available();
 item[int] hugpocket_available();
 boolean is_ghost_in_zone(location loc);
+location[int] monster_to_location(monster target);
 
 ########################################################################################################
 //Defined in autoscend/auto_util.ash
