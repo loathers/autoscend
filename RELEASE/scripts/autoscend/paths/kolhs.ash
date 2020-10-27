@@ -267,6 +267,13 @@ boolean LM_kolhs()
 		return false;
 	}
 	
+	familiar familiar_target_100 = get_property("auto_100familiar").to_familiar();
+	if(familiar_target_100 != $familiar[none] && familiar_target_100 != $familiar[Steam-Powered Cheerleader])
+	{
+		set_property("auto_100familiar", $familiar[none]);
+		abort("Detected an attempted 100% familiar run with [" +familiar_target_100+ "] in KOLHS. [Steam Powered Cheerleader] is the only valid 100% familiar run in KOLHS. 100% familiar run disabled. You can run autoscend again to continue");
+	}
+	
 	kolhs_closetDrink();								//in postronin closet extra combat drop drinks to prevent issues
 	
 	if(LX_kolhs_school()) return true;					//mandatory for first 40 adv to be spent in school
