@@ -2192,17 +2192,37 @@ boolean councilMaintenance()
 
 boolean adventureFailureHandler()
 {
+	location place = my_location();
 	if(my_location().turns_spent > 52)
 	{
-		boolean tooManyAdventures = false;
-		if (($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Deep Dark Jungle, The Neverending Party, Noob Cave, Pirates of the Garbage Barges, The Secret Government Laboratory, Sloppy Seconds Diner, The SMOOCH Army HQ, Super Villain\'s Lair, Uncle Gator\'s Country Fun-Time Liquid Waste Sluice, VYKEA, The X-32-F Combat Training Snowman, The Exploaded Battlefield, The Arrrboretum] contains my_location()) == false)
+		boolean tooManyAdventures = true;
+		
+		//general override function
+		if ($locations[
+		//Many places do not have a proper ID which makes them indistinguishable from noob cave
+		Noob Cave,
+		
+		//quest locations where you spend lots of adventures and can not over adventure either
+		The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform),
+		
+		//kingdom of exploathing specific location for the hippy-frat war
+		The Exploaded Battlefield,
+		
+		//IOTM zones only used to powerlevel
+		The Deep Dark Jungle, The Neverending Party, Pirates of the Garbage Barges, The Secret Government Laboratory, Sloppy Seconds Diner, The SMOOCH Army HQ, Super Villain\'s Lair, Uncle Gator\'s Country Fun-Time Liquid Waste Sluice, VYKEA, The X-32-F Combat Training Snowman,
+		
+		//in KOLHS path you must spend 40 adv per day split between those locations. zones only exist in kolhs
+		The Hallowed Halls, Art Class, Chemistry Class, Shop Class,
+		
+		//holiday event. must spend 100 turns there to complete the holiday.
+		The Arrrboretum] contains place)
 		{
-			tooManyAdventures = true;
+			tooManyAdventures = false;
 		}
 
 		if(tooManyAdventures && (my_path() == "The Source"))
 		{
-			if($locations[The Haunted Ballroom, The Haunted Bathroom, The Haunted Bedroom, The Haunted Gallery] contains my_location())
+			if($locations[The Haunted Ballroom, The Haunted Bathroom, The Haunted Bedroom, The Haunted Gallery] contains place)
 			{
 				tooManyAdventures = false;
 			}
@@ -2210,7 +2230,7 @@ boolean adventureFailureHandler()
 
 		if(tooManyAdventures && isActuallyEd())
 		{
-			if ($location[Hippy Camp] == my_location())
+			if ($location[Hippy Camp] == place)
 			{
 				tooManyAdventures = false;
 			}
@@ -2218,7 +2238,7 @@ boolean adventureFailureHandler()
 		
 		if(tooManyAdventures && in_bhy())
 		{
-			if($locations[A-Boo Peak, Twin Peak] contains my_location())
+			if($locations[A-Boo Peak, Twin Peak] contains place)
 			{
 				//bees prevent doing these quickly
 				tooManyAdventures = false;
@@ -2227,13 +2247,13 @@ boolean adventureFailureHandler()
 
 		if (tooManyAdventures && auto_my_path() == "G-Lover")
 		{
-			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Hidden Temple] contains my_location())
+			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Hidden Temple] contains place)
 			{
 				tooManyAdventures = false;
 			}
 		}
 
-		if ($locations[The Haunted Gallery] contains my_location() && my_location().turns_spent < 100)
+		if ($locations[The Haunted Gallery] contains place && place.turns_spent < 100)
 		{
 			tooManyAdventures = false;
 		}
@@ -2243,12 +2263,12 @@ boolean adventureFailureHandler()
 			if(get_property("auto_newbieOverride").to_boolean())
 			{
 				set_property("auto_newbieOverride", false);
-				auto_log_warning("We have spent " + my_location().turns_spent + " turns at '" + my_location() + "' and that is bad... override accepted.", "red");
+				auto_log_warning("We have spent " + place.turns_spent + " turns at '" + place + "' and that is bad... override accepted.", "red");
 			}
 			else
 			{
 				auto_log_critical("You can set auto_newbieOverride = true to bypass this once.", "blue");
-				abort("We have spent " + my_location().turns_spent + " turns at '" + my_location() + "' and that is bad... aborting.");
+				abort("We have spent " + place.turns_spent + " turns at '" + place + "' and that is bad... aborting.");
 			}
 		}
 	}
