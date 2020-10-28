@@ -1746,15 +1746,14 @@ boolean is_ghost_in_zone(location loc)
 	return false;
 }
 
-location[int] monster_to_location(monster target)
+boolean[location] monster_to_location(monster target)
 {
-	location[int] retval;
-	int key = 0;
+	boolean[location] retval;
 	foreach loc in $locations[]		//check all locations in the game
 	{
 		foreach idx, mon in get_monsters(loc) if (target == mon)
 		{
-			retval[key++] = loc;
+			retval[loc] = true;
 			break;
 		}
 	}
