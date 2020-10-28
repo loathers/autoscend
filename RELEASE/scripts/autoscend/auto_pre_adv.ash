@@ -223,6 +223,7 @@ boolean auto_pre_adventure()
 	}
 
 	equipOverrides();
+	kolhs_preadv(place);
 
 	if (is100FamRun() && my_familiar() == $familiar[none])
 	{
@@ -231,13 +232,6 @@ boolean auto_pre_adventure()
 		// and L12_themtharHills()...
 		use_familiar(get_property("auto_100familiar").to_familiar());
 		auto_log_debug("Re-equipped your " + get_property("auto_100familiar") + " as something had unequipped it. This is bad and should be investigated.");
-	}
-	
-	if($locations[The Hallowed Halls, Art Class, Chemistry Class, Shop Class] contains place)		//KOLHS path specific zones
-	{
-		//hats are forbidden. will fail to adventure if not removed
-		addToMaximize("-hat");
-		equip($slot[hat], $item[none]);
 	}
 
 	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))
@@ -275,19 +269,6 @@ boolean auto_pre_adventure()
 		}
 	}
 	
-	if(place == get_property("_yearbookCameraTargetLocation").to_location() && in_kolhs())
-	{
-		if(equipped_amount($item[Yearbook Club Camera]) == 0)
-		{
-			auto_log_warning("Tried to adventure in [" +place+ "] to do the yearbook camera quest without a [Yearbook Club Camera] equipped... correcting", "red");
-			autoForceEquip($slot[acc2], $item[Yearbook Club Camera]);
-			if(equipped_amount($item[Yearbook Club Camera]) == 0)
-			{
-				abort("Correction failed, please report this. Manually photograph a [" +get_property("yearbookCameraTarget")+ "] then run me again");
-			}
-		}
-	}
-
 	if(place == $location[The Black Forest])
 	{
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);

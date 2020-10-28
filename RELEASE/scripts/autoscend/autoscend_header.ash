@@ -595,6 +595,8 @@ boolean kolhs_mandatorySchool();
 void kolhs_initializeSettings();
 void kolhs_closetDrink();
 void kolhs_consume();
+void kolhs_preadv(location place);
+boolean LX_kolhs_visitYearbookClub();
 boolean LX_kolhs_yearbookCameraGet();
 boolean LX_kolhs_yearbookCameraQuest();
 boolean LX_kolhs_school();

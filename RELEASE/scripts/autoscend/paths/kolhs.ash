@@ -115,6 +115,29 @@ void kolhs_consume()
 	}
 }
 
+void kolhs_preadv(location place)
+{
+	if($locations[The Hallowed Halls, Art Class, Chemistry Class, Shop Class] contains place)		//KOLHS path specific zones
+	{
+		//hats are forbidden. will fail to adventure if not removed
+		addToMaximize("-hat");
+		equip($slot[hat], $item[none]);
+	}
+	
+	if(place == get_property("_yearbookCameraTargetLocation").to_location() && in_kolhs())
+	{
+		if(equipped_amount($item[Yearbook Club Camera]) == 0)
+		{
+			auto_log_warning("Tried to adventure in [" +place+ "] to do the yearbook camera quest without a [Yearbook Club Camera] equipped... correcting", "red");
+			autoForceEquip($slot[acc2], $item[Yearbook Club Camera]);
+			if(equipped_amount($item[Yearbook Club Camera]) == 0)
+			{
+				abort("Correction failed, please report this. Manually photograph a [" +get_property("yearbookCameraTarget")+ "] then run me again");
+			}
+		}
+	}
+}
+
 boolean LX_kolhs_visitYearbookClub()
 {
 	//visit to yearbook club. You start the quest on one day and complete it the next day so no point in multiple visits in one day.
