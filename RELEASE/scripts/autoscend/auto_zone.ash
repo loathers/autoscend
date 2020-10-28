@@ -1752,18 +1752,10 @@ location[int] monster_to_location(monster target)
 	int key = 0;
 	foreach loc in $locations[]		//check all locations in the game
 	{
-		boolean mon_in_loc = false;
-		foreach idx, mon in get_monsters(loc)
+		foreach idx, mon in get_monsters(loc) if (target == mon)
 		{
-			if(target == mon)
-			{
-				mon_in_loc = true;
-			}
-		}
-		if(mon_in_loc)
-		{
-			retval[key] = loc;
-			key++;
+			retval[key++] = loc;
+			break;
 		}
 	}
 	return retval;
