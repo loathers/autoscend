@@ -117,14 +117,20 @@ void kolhs_consume()
 
 void kolhs_preadv(location place)
 {
-	if($locations[The Hallowed Halls, Art Class, Chemistry Class, Shop Class] contains place)		//KOLHS path specific zones
+	if(!in_kolhs())
 	{
-		//hats are forbidden. will fail to adventure if not removed
+		return;
+	}
+	
+	//KOLHS path specific zones where hats are forbidden. wearing one fails to adv and causes infinite loop
+	if($locations[The Hallowed Halls, Art Class, Chemistry Class, Shop Class] contains place)
+	{
 		addToMaximize("-hat");
 		equip($slot[hat], $item[none]);
 	}
 	
-	if(place == get_property("_yearbookCameraTargetLocation").to_location() && in_kolhs())
+	//prepare yearbook camera
+	if(place == get_property("_yearbookCameraTargetLocation").to_location() && !get_property("yearbookCameraPending").to_boolean())
 	{
 		if(equipped_amount($item[Yearbook Club Camera]) == 0)
 		{
