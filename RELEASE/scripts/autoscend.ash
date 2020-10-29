@@ -2874,8 +2874,8 @@ void auto_begin()
 	if(to_string(my_class()) == "Astral Spirit")
 	{
 		# my_class() can report Astral Spirit even though it is not a valid class....
-		auto_log_warning("We think we are an Astral Spirit, if you actually are that's bad!", "red");
-		cli_execute("refresh all");
+		//workaround for this bug specifically https://kolmafia.us/showthread.php?25579
+		abort("Mafia thinks you are an astral spirit. Type "logout" in gCLI and then log back in afterwards. as this is needed to fix this and identify what your class actually is");
 	}
 
 	auto_log_info("Hello " + my_name() + ", time to explode!");
