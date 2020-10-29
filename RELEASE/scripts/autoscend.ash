@@ -2875,7 +2875,7 @@ void auto_begin()
 	{
 		# my_class() can report Astral Spirit even though it is not a valid class....
 		//workaround for this bug specifically https://kolmafia.us/showthread.php?25579
-		abort("Mafia thinks you are an astral spirit. Type "logout" in gCLI and then log back in afterwards. as this is needed to fix this and identify what your class actually is");
+		abort("Mafia thinks you are an astral spirit. Type \"logout\" in gCLI and then log back in afterwards. as this is needed to fix this and identify what your class actually is");
 	}
 
 	auto_log_info("Hello " + my_name() + ", time to explode!");
