@@ -918,6 +918,10 @@ boolean L13_towerNSTower()
 		{
 			sources = 6;
 		}
+		else if(autoEquip($item[Fourth of May Cosplay Saber]))
+		{
+			sources = 6;
+		}
 		else
 		{
 			foreach damage in $strings[Cold Damage, Hot Damage, Sleaze Damage, Spooky Damage, Stench Damage]
@@ -932,7 +936,12 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 		}
-		if(canChangeToFamiliar($familiar[warbear drone]))
+		if(canChangeToFamiliar($familiar[Imitation Crab]))
+		{
+			handleFamiliar($familiar[Imitation Crab]);
+			sources = sources + 4;
+		}
+		else if(canChangeToFamiliar($familiar[warbear drone]))
 		{
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
@@ -952,11 +961,6 @@ boolean L13_towerNSTower()
 		{
 			handleFamiliar($familiar[Sludgepuppy]);
 			sources = sources + 3;
-		}
-		else if(canChangeToFamiliar($familiar[Imitation Crab]))
-		{
-			handleFamiliar($familiar[Imitation Crab]);
-			sources = sources + 2;
 		}
 		if(autoEquip($slot[acc1], $item[hippy protest button]))
 		{
@@ -989,6 +993,11 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 			buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);
+		}
+		if(have_skill($skill[The Psalm of Pointiness]))
+		{
+			buffMaintain($effect[Psalm of Pointiness], 0, 1, 1);
+			sources = sources + 1;
 		}
 		handleBjornify($familiar[Hobo Monkey]);
 		autoEquip($slot[acc2], $item[world\'s best adventurer sash]);

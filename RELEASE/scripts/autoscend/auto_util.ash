@@ -3341,6 +3341,7 @@ boolean[skill] ATSongList()
 		The Sonata of Sneakiness,
 		Fat Leon\'s Phat Loot Lyric,
 		The Polka of Plenty,
+		The Psalm of Pointiness,
 		Aloysius\' Antiphon of Aptitude,
 		Paul\'s Passionate Pop Song,
 		Donho\'s Bubbly Ballad,
@@ -3349,7 +3350,6 @@ boolean[skill] ATSongList()
 		Benetton\'s Medley of Diversity,
 		Dirge of Dreadfulness,
 		Stevedave\'s Shanty of Superiority,
-		The Psalm of Pointiness,
 		Brawnee\'s Anthem of Absorption,
 		Jackasses\' Symphony of Destruction,
 		The Power Ballad of the Arrowsmith,
@@ -4028,6 +4028,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Pill Party!]:					useItem = $item[Pill Cup];						break;
 	case $effect[Pisces in the Skyces]:			useItem = $item[tobiko marble soda];			break;
+	case $effect[Psalm of Pointiness]:			shrugAT($effect[Psalm of Pointiness]);
+												useSkill = $skill[The Psalm of Pointiness];		break;
 	case $effect[Prayer of Seshat]:				useSkill = $skill[Prayer of Seshat];			break;
 	case $effect[Pride of the Puffin]:			useSkill = $skill[Pride of the Puffin];			break;
 	case $effect[Polar Express]:				useItem = $item[Cloaca Cola Polar];				break;
