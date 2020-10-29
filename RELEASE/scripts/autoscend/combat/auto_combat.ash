@@ -748,19 +748,24 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(canUse($skill[Wink At]) && (my_familiar() == $familiar[Reanimated Reanimator]))
+	skill wink_skill = $skill[none];
+	if(canUse($skill[Wink At]))
+	{
+		wink_skill = $skill[Wink At];
+	}
+	if(canUse($skill[Fire a badly romantic arrow]))
+	{
+		wink_skill = $skill[Fire a badly romantic arrow];
+	}
+	if(wink_skill != $skill[none])		//we can wink / romatic arrow
 	{
 		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin] contains enemy)
 		{
-			if((get_property("_badlyRomanticArrows").to_int() == 1) && (round <= 1) && (get_property("romanticTarget") != enemy))
-			{
-				abort("Have animator out but can not arrow");
-			}
 			if(enemy == $monster[modern zmobie])
 			{
 				set_property("auto_waitingArrowAlcove", get_property("cyrptAlcoveEvilness").to_int() - 20);
 			}
-			return useSkill($skill[Wink At]);
+			return useSkill(wink_skill);
 		}
 	}
 

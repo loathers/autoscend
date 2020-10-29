@@ -31,7 +31,6 @@ boolean LX_doVacation();
 boolean fortuneCookieEvent();
 void initializeDay(int day);
 boolean dailyEvents();
-boolean doBedtime();
 boolean isAboutToPowerlevel();
 boolean LX_attemptPowerLevel();
 boolean disregardInstantKarma();
@@ -178,6 +177,8 @@ boolean auto_doPrecinct();
 boolean expectGhostReport();
 boolean haveGhostReport();
 boolean LX_ghostBusting();
+int timeSpinnerRemaining();
+int timeSpinnerRemaining(boolean verify);
 boolean timeSpinnerGet(string goal);
 boolean timeSpinnerConsume(item goal);
 boolean timeSpinnerAdventure();
@@ -578,8 +579,7 @@ boolean routineRainManHandler();
 void hr_initializeDay(int day);
 void hr_doBedtime();
 boolean doHRSkills();
-boolean rainManSummon(string monsterName, boolean copy, boolean wink, string option);
-boolean rainManSummon(string monsterName, boolean copy, boolean wink);
+boolean rainManSummon(monster target, boolean copy, boolean wink);
 boolean L13_towerFinalHeavyRains();
 
 ########################################################################################################
@@ -927,6 +927,10 @@ boolean autoAdvBypass(int snarfblat, string option);
 boolean autoAdvBypass(string url, string option);
 
 ########################################################################################################
+//Defined in autoscend/auto_bedtime.ash
+boolean doBedtime();
+
+########################################################################################################
 //Defined in autoscend/auto_consume.ash
 int spleen_left();
 int stomach_left();
@@ -1149,14 +1153,14 @@ int[location] zone_delayable();
 generic_t zone_needItem(location loc);
 generic_t zone_combatMod(location loc);
 generic_t zone_delay(location loc);
-generic_t zone_available(location loc);
+boolean zone_available(location loc);
 generic_t zone_difficulty(location loc);
-location[int] zone_list();
 location[int] zones_available();
 monster[int] mobs_available();
 item[int] drops_available();
 item[int] hugpocket_available();
 boolean is_ghost_in_zone(location loc);
+boolean[location] monster_to_location(monster target);
 
 ########################################################################################################
 //Defined in autoscend/auto_util.ash

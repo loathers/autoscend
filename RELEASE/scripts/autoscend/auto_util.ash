@@ -3548,6 +3548,10 @@ boolean buyUpTo(int num, item it)
 
 boolean buyUpTo(int num, item it, int maxprice)
 {
+	if(item_amount(it) >= num)
+	{
+		return true;	//we already have the target amount
+	}
 	if(($items[Ben-Gal&trade; Balm, Hair Spray] contains it) && !isGeneralStoreAvailable())
 	{
 		return false;
@@ -3557,17 +3561,21 @@ boolean buyUpTo(int num, item it, int maxprice)
 		return false;
 	}
 
-	int orig = num;
-	num = num - item_amount(it);
-	if(num > 0)
+	int missing = num - item_amount(it);
+	if(can_interact() && shop_amount(it) > 0 && mall_price(it) < maxprice)	//prefer to buy from yourself
 	{
-		buy(num, it, maxprice);
-		if(item_amount(it) < orig)
+		take_shop(min(missing, shop_amount(it)), it);
+		missing = num - item_amount(it);
+	}
+	if(missing > 0)
+	{
+		buy(missing, it, maxprice);
+		if(item_amount(it) < num)
 		{
-			auto_log_warning("Could not buyUpTo(" + orig + ") of " + it + ". Maxprice: " + maxprice, "red");
+			auto_log_warning("Could not buyUpTo(" + num + ") of " + it + ". Maxprice: " + maxprice, "red");
 		}
 	}
-	return (item_amount(it) >= orig);
+	return (item_amount(it) >= num);
 }
 
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative)
