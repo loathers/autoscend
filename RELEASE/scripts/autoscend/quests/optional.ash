@@ -1012,7 +1012,9 @@ void houseUpgrade()
 	{
 		use(1, $item[Newbiesport&trade; tent]);
 	}
-	if(get_dwelling() == $item[big rock] || get_dwelling() == $item[Newbiesport&trade; tent])
+	if((get_dwelling() == $item[big rock] || get_dwelling() == $item[Newbiesport&trade; tent]) &&
+	item_amount($item[Frobozz Real-Estate Company Instant House (TM)]) > 0 &&
+	auto_is_valid($item[Frobozz Real-Estate Company Instant House (TM)]))
 	{
 		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
 	}
