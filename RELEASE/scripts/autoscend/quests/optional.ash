@@ -998,3 +998,24 @@ boolean LX_NemesisQuest()
 	if (LX_guildUnlock() || LX_acquireEpicWeapon()) { return true; }
 	return false;
 }
+
+void houseUpgrade()
+{
+	//function for upgrading your dwelling.
+	if(isActuallyEd() || my_class() == $class[Vampyre] || auto_my_path() == "Nuclear Autumn")
+	{
+		return;		//paths where dwelling is locked
+	}
+	
+	//if you have no dwelling get_dwelling() returns $item[big rock]
+	if(item_amount($item[Newbiesport&trade; tent]) > 0 && auto_is_valid($item[Newbiesport&trade; tent]) && get_dwelling() == $item[big rock])
+	{
+		use(1, $item[Newbiesport&trade; tent]);
+	}
+	if((get_dwelling() == $item[big rock] || get_dwelling() == $item[Newbiesport&trade; tent]) &&
+	item_amount($item[Frobozz Real-Estate Company Instant House (TM)]) > 0 &&
+	auto_is_valid($item[Frobozz Real-Estate Company Instant House (TM)]))
+	{
+		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
+	}
+}

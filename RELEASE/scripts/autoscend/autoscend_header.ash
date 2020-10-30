@@ -909,6 +909,7 @@ boolean LX_unlockBelowdecks();
 boolean LX_pirateQuest();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
+void houseUpgrade();
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash

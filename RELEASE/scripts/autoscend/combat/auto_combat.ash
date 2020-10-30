@@ -1873,7 +1873,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stream of Sauce]);
 		}
 
-		if(my_soulsauce() >= 5)
+		if(canUse($skill[Soul Bubble], false) && my_soulsauce() >= 5)
 		{
 			stunner = useSkill($skill[Soul Bubble]);
 			costStunner = mp_cost($skill[Soul Bubble]);

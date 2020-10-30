@@ -63,12 +63,6 @@ boolean L9_leafletQuest()
 		cli_execute("leaflet nomagic");		//no substat gains
 	}
 	
-	//upgrade dwelling. big rock is what mafia returns when you have no dwelling.
-	if(get_dwelling() == $item[big rock] || get_dwelling() == $item[Newbiesport&trade; tent])
-	{
-		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
-	}
-	
 	return get_property("leafletCompleted").to_boolean();
 }
 

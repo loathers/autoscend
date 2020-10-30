@@ -1138,11 +1138,6 @@ void initializeDay(int day)
 				auto_sourceTerminalRequest("enquiry protect.enq");
 			}
 
-			//big rock is what mafia returns when you have no dwelling.
-			if(item_amount($item[Newbiesport&trade; tent]) > 0 && auto_is_valid($item[Newbiesport&trade; tent]) && get_dwelling() == $item[big rock])
-			{
-				use(1, $item[Newbiesport&trade; tent]);
-			}
 			kgbSetup();
 			if(item_amount($item[transmission from planet Xi]) > 0)
 			{
@@ -2559,6 +2554,7 @@ boolean doTasks()
 	oldPeoplePlantStuff();
 	use_barrels();
 	auto_latteRefill();
+	houseUpgrade();
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;
