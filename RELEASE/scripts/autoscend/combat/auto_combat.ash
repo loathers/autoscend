@@ -1321,6 +1321,16 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
+				  
+		if(canUse($skill[Detect Weakness]))
+		{
+			return useSkill($skill[Detect Weakness]);
+		}
+
+		if(canUse($skill[Deploy Robo-Handcuffs]))
+		{
+			return useSkill($skill[Deploy Robo-Handcuffs]);
+		}
 
 		if(canUse($skill[Pocket Crumbs]))
 		{
