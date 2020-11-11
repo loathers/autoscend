@@ -159,6 +159,8 @@ void initializeSettings() {
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
 	set_property("auto_doGalaktik", false);
+	set_property("auto_L8_ninjaAssassinFail", false);
+	set_property("auto_L8_extremeInstead", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
@@ -2764,7 +2766,6 @@ boolean doTasks()
 	if(LX_spookyravenManorSecondFloor())			return true;
 	if(L3_tavern())						return true;
 	if(L6_friarsGetParts())				return true;
-	if(L8_trapperStart())				return true;
 	if(LX_hardcoreFoodFarm())			return true;
 
 	if(in_hardcore() && LX_steelOrgan())
@@ -2774,9 +2775,7 @@ boolean doTasks()
 
 	if(L7_crypt())						return true;
 	if(fancyOilPainting())				return true;
-	if(L8_trapperGround())				return true;
-	if(L8_trapperNinjaLair())			return true;
-	if(L8_trapperGroar())				return true;
+	if(L8_trapperQuest())				return true;
 	if(LX_steelOrgan())					return true;
 	if(L10_plantThatBean())				return true;
 	if(L12_preOutfit())					return true;

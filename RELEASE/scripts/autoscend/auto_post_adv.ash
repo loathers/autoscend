@@ -996,6 +996,11 @@ boolean auto_post_adventure()
 			auto_log_info("At the snojo, let's not keep going there and dying....", "red");
 			set_property("_snojoFreeFights", 10);
 		}
+		if(last_monster() == $monster[ninja snowman assassin])
+		{
+			auto_log_info("We were beaten up by a [ninja snowman assassin]. disabling ninja route", "red");
+			set_property("auto_L8_ninjaAssassinFail", true);
+		}
 		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 		use_skill(1, $skill[Tongue of the Walrus]);
 	}

@@ -5,7 +5,7 @@ void hr_initializeSettings()
 		#Rain Man (Heavy Rains) Related settings
 		set_property("auto_holeinthesky", false);
 		set_property("auto_mountainmen", "");
-		set_property("auto_ninjasnowmanassassin", "");
+		set_property("auto_ninjasnowmanassassin", false);	//are we done with ninja snowman assassins
 		set_property("auto_orcishfratboyspy", "");
 		set_property("auto_warhippyspy", "");
 
@@ -48,7 +48,7 @@ boolean routineRainManHandler()
 	{
 		return rainManSummon($monster[mountain man], false, false);
 	}
-	if(get_property("auto_ninjasnowmanassassin") == "")
+	if(!get_property("auto_ninjasnowmanassassin").to_boolean())
 	{
 		return rainManSummon($monster[ninja snowman assassin], true, false);
 	}
@@ -330,13 +330,13 @@ boolean rainManSummon(monster target, boolean copy, boolean wink)
 		count = count + min(item_amount($item[ninja carabiner]), 1);
 		if(count == 3)
 		{
-			set_property("auto_ninjasnowmanassassin", "1");
+			set_property("auto_ninjasnowmanassassin", true);
 			#already have all ninja gear
 			return false;
 		}
 		if(count == 2)
 		{
-			set_property("auto_ninjasnowmanassassin", "1");
+			set_property("auto_ninjasnowmanassassin", true);
 			copy = false;
 		}
 		wink = false;

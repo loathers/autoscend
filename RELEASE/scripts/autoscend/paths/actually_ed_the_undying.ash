@@ -1442,7 +1442,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// L8 quest is all 1 Ka zones for Ed (unlikely to survive Ninja Snowmen Assassins so they don't count)
-	if (L8_trapperStart() || L8_trapperGround() || L8_trapperGroar())
+	if (L8_trapperQuest())
 	{
 		return true;
 	}
