@@ -223,6 +223,7 @@ boolean auto_pre_adventure()
 	}
 
 	equipOverrides();
+	kolhs_preadv(place);
 
 	if (is100FamRun() && my_familiar() == $familiar[none])
 	{
@@ -267,7 +268,7 @@ boolean auto_pre_adventure()
 			}
 		}
 	}
-
+	
 	if(place == $location[The Black Forest])
 	{
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);

@@ -369,8 +369,9 @@ boolean LX_steelOrgan()
 		}
 		boolean wontBeOverdrunk = inebriety_left() >= $item[Steel Margarita].inebriety - 5;
 		boolean notOverdrunk = my_inebriety() <= inebriety_limit();
-		boolean notSavingForBilliards = hasSpookyravenLibraryKey() || get_property("lastSecondFloorUnlock").to_int() == my_ascensions();
-		if((item_amount($item[Steel Margarita]) > 0) && wontBeOverdrunk && notOverdrunk && (notSavingForBilliards || my_inebriety() + $item[Steel Margarita].inebriety <= 10 || my_inebriety() >= 12))
+		boolean notSavingForBilliards = hasSpookyravenLibraryKey() || get_property("lastSecondFloorUnlock").to_int() == my_ascensions() || my_inebriety() + $item[Steel Margarita].inebriety <= 10 || my_inebriety() >= 12;
+		boolean notWaitingKOLHS = !in_kolhs() || my_inebriety() > 9;
+		if(item_amount($item[Steel Margarita]) > 0 && wontBeOverdrunk && notOverdrunk && notSavingForBilliards && notWaitingKOLHS)
 		{
 			autoDrink(1, $item[Steel Margarita]);
 		}
