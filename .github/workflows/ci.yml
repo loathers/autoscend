@@ -19,7 +19,8 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: Prepare KoLmafia
+    - name: Determine KoLmafia version
+      id: mafia
       run: |
         set -o pipefail
         export MAFIA_VERSION=$(head -n1 RELEASE/scripts/autoscend.ash | grep -o '[0-9]\+')
@@ -32,9 +33,22 @@ jobs:
           echo "Couldn't determine Jenkins build number!"
           exit 1
         fi
-        JENKINS_URL="https://ci.kolmafia.us/job/Kolmafia/${MAFIA_BUILD}/artifact/dist/KoLmafia-${MAFIA_VERSION}.jar"
-        echo "$JENKINS_URL"
-        curl "$JENKINS_URL" --output .github/kolmafia.jar
+        export JENKINS_URL="https://ci.kolmafia.us/job/Kolmafia/${MAFIA_BUILD}/artifact/dist/KoLmafia-${MAFIA_VERSION}.jar"
+        echo "::set-output name=jenkins::$JENKINS_URL"
+        echo "::set-output name=build::$MAFIA_BUILD"
+        echo "::set-output name=version::$MAFIA_VERSION"
+
+    - name: Cache KoLmafia
+      id: cache
+      uses: actions/cache@v2
+      with:
+        path: .github/kolmafia.jar
+        key: kolmafia-${{steps.mafia.outputs.build}}-${{steps.mafia.outputs.version}}
+
+    - name: Download KoLmafia
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        curl "${{steps.mafia.outputs.jenkins}}" --output .github/kolmafia.jar
 
     - name: Install and verify
       run: |
