@@ -4,7 +4,10 @@ boolean LX_loggingHatchet()
 	{
 		return false;
 	}
-
+	if(kolhs_mandatorySchool())
+	{
+		return false;	//avoid infinite loop in kolhs. we can not get the hatchet until we finish mandatory school for the day
+	}
 	if (available_amount($item[logging hatchet]) > 0)
 	{
 		return false;

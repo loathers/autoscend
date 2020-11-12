@@ -75,6 +75,36 @@ boolean theSource_buySkills()
 	return false;
 }
 
+boolean L8_theSourceNinjaOracle()
+{
+	//handles the scenario where we want do the oracle quest and the target is the ninja snowmen lair
+	//in this case we do not mind if we can not beat the assassins. but if we can we would rather not waste adventures.
+	if(internalQuestStatus("questL08Trapper") == -1)	//quest not even started. zone not accessible
+	{
+		return false;
+	}
+	if(internalQuestStatus("questL08Trapper") > 2)		//done with the slope this ascension so just adventure in the lair
+	{
+		return autoAdv($location[Lair of the Ninja Snowmen]);
+	}
+	if(internalQuestStatus("questL08Trapper") < 2)		//try to advance quest to step2 to unlock the ninja snowman lair
+	{
+		return L8_trapperQuest();		//if we fail to advance quest we want to go do something else. we are probably delaying
+	}
+	
+	if(have_effect($effect[Thrice-Cursed]) > 0 || have_effect($effect[Twice-Cursed]) > 0 || have_effect($effect[Once-Cursed]) > 0)
+	{
+		return false;									//delaying to not disrupt hidden city
+	}
+	if(shenShouldDelayZone($location[Lair of the Ninja Snowmen]))
+	{
+		auto_log_debug("Delaying Lair of the Ninja Snowmen in case of Shen.");
+		return false;
+	}
+	
+	return autoAdv($location[Lair of the Ninja Snowmen]);
+}
+
 boolean LX_theSource()
 {
 	if(my_path() != "The Source")
@@ -168,13 +198,7 @@ boolean LX_theSource()
 		}
 		if(goal == $location[Lair of the Ninja Snowmen])
 		{
-			if((item_amount($item[Ninja Rope]) == 0) || (item_amount($item[Ninja Carabiner]) == 0) || (item_amount($item[Ninja Crampons]) == 0))
-			{
-				if(L8_trapperNinjaLair())
-				{
-					return true;
-				}
-			}
+			return L8_theSourceNinjaOracle();
 		}
 
 		if((goal == $location[The Red Zeppelin]) && (internalQuestStatus("questL11Ron") < 3))

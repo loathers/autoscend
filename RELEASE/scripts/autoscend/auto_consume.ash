@@ -373,13 +373,13 @@ boolean consumeMilkOfMagnesiumIfUnused()
 	return use(1, $item[Milk of Magnesium]);
 }
 
-boolean canDrink(item toDrink)
+boolean canDrink(item toDrink, boolean checkValidity)
 {
 	if(!can_drink())
 	{
 		return false;
 	}
-	if(!auto_is_valid(toDrink))
+	if(!auto_is_valid(toDrink) && checkValidity)
 	{
 		return false;
 	}
@@ -395,9 +395,9 @@ boolean canDrink(item toDrink)
 	{
 		return false;
 	}
-	if(auto_my_path() == "KOLHS")
+	if(in_kolhs())
 	{
-		if(!($items[Bottle of Fruity &quot;Wine&quot;, Can of the Cheapest Beer, Single Swig of Vodka, Steel Margarita] contains toDrink))
+		if(!($items[Can of the Cheapest Beer, Bottle of Fruity &quot;Wine&quot;, Single Swig of Vodka, fountain \'soda\', stepmom\'s booze, Steel Margarita] contains toDrink))
 		{
 			return false;
 		}
@@ -432,13 +432,18 @@ boolean canDrink(item toDrink)
 	return true;
 }
 
-boolean canEat(item toEat)
+boolean canDrink(item toDrink)
+{
+	return canDrink(toDrink, true);
+}
+
+boolean canEat(item toEat, boolean checkValidity)
 {
 	if(!can_eat())
 	{
 		return false;
 	}
-	if(!auto_is_valid(toEat))
+	if(!auto_is_valid(toEat) && checkValidity)
 	{
 		return false;
 	}
@@ -477,6 +482,12 @@ boolean canEat(item toEat)
 	return true;
 }
 
+boolean canEat(item toEat)
+{
+	return canEat(toEat, true);
+}
+
+
 boolean canChew(item toChew)
 {
 	if(!auto_is_valid(toChew))
@@ -513,6 +524,11 @@ void consumeStuff()
 	if(auto_my_path() == "Community Service")
 	{
 		cs_eat_spleen();
+		return;
+	}
+	if(in_kolhs())
+	{
+		kolhs_consume();
 		return;
 	}
 
@@ -787,9 +803,14 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	else if (_type == "drink") type = SL_ORGAN_LIVER;
 	else return false;
 
+	boolean canConsume(item it, boolean checkValidity)
+	{
+		return type == SL_ORGAN_STOMACH ? canEat(it, checkValidity) : canDrink(it, checkValidity);
+	}
+
 	boolean canConsume(item it)
 	{
-		return type == SL_ORGAN_STOMACH ? canEat(it) : canDrink(it);
+		return canConsume(it, true);
 	}
 
 	int organLeft()
@@ -989,7 +1010,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	if(type == SL_ORGAN_STOMACH && !canadia_available()) return false;
 
 	// Add daily special
-	if (daily_special() != $item[none] && canConsume(daily_special()))
+	if (daily_special() != $item[none] && canConsume(daily_special(), false)) // specials are always consumable even if they would be restricted as regular consumables.
 	{
 		int daily_special_limit = 1 + min(my_meat()/get_property("_dailySpecialPrice").to_int(), organLeft()/organCost(daily_special()));
 		for (int i=0; i < daily_special_limit; i++)

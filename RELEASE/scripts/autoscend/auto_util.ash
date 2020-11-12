@@ -5773,14 +5773,19 @@ float npcStoreDiscountMulti()
 int meatReserve()
 {
 	//the amount of meat we want to reserve for quest usage when performing a restore
+	int reserve_extra = 0;		//extra reserved for various reasons
+	if(in_kolhs())
+	{
+		reserve_extra += 100;
+	}
 	
 	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely
 	{
 		if(!isDesertAvailable() && inKnollSign() && my_level() > 5 && my_turncount() > 50)
 		{		//reason for both level and turncount being checked is that many iotms could level us on turn 1.
-			return 500;		//reserve some meat for the bitchin' meatcar.
+			return 500 + reserve_extra;		//reserve some meat for the bitchin' meatcar.
 		}
-		return 0;	
+		return reserve_extra;	
 	}
 	
 	int reserve_gnasir = 0;		//used to track how much we need to reserve for black paint for gnasir
@@ -5818,5 +5823,5 @@ int meatReserve()
 		}
 	}
 	
-	return reserve_gnasir + reserve_diary + reserve_island;
+	return reserve_gnasir + reserve_diary + reserve_island + reserve_extra;
 }

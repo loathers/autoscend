@@ -472,6 +472,7 @@ boolean L13_bhy_towerFinal();
 boolean inCasual();
 boolean inAftercore();
 boolean inPostRonin();
+boolean L8_slopeCasual();
 boolean LM_canInteract();
 
 ########################################################################################################
@@ -589,6 +590,21 @@ boolean koe_initializeSettings();
 boolean LX_koeInvaderHandler();
 
 ########################################################################################################
+//Defined in autoscend/paths/kolhs.ash
+boolean in_kolhs();
+boolean kolhs_mandatorySchool();
+void kolhs_initializeSettings();
+void kolhs_closetDrink();
+void kolhs_consume();
+void kolhs_preadv(location place);
+boolean LX_kolhs_visitYearbookClub();
+boolean LX_kolhs_yearbookCameraGet();
+boolean LX_kolhs_yearbookCameraQuest();
+boolean LX_kolhs_school();
+void kolhsChoiceHandler(int choice);
+boolean LM_kolhs();
+
+########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
 void bond_initializeSettings();
 boolean bond_initializeDay(int day);
@@ -677,6 +693,7 @@ void standard_dnaPotions();
 //Defined in autoscend/paths/the_source.ash
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();
+boolean L8_theSourceNinjaOracle();
 boolean LX_theSource();
 boolean theSource_oracle();
 boolean LX_attemptPowerLevelTheSource();
@@ -719,18 +736,19 @@ boolean L7_crypt();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_08.ash
-boolean L8_trapperStart();
 boolean needOre();
 int getCellToMine(item oreGoal);
-boolean L8_trapperAdvance();
 boolean L8_getGoatCheese();
 boolean L8_getMineOres();
 void itznotyerzitzMineChoiceHandler(int choice);
-boolean L8_trapperGround();
 boolean L8_trapperExtreme();
 void theeXtremeSlopeChoiceHandler(int choice);
+boolean L8_trapperSlopeSoftcore();
 boolean L8_trapperNinjaLair();
 boolean L8_trapperGroar();
+boolean L8_trapperPeak();
+boolean L8_trapperSlope();
+boolean L8_trapperTalk();
 boolean L8_trapperQuest();
 
 ########################################################################################################
