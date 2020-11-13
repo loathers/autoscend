@@ -1284,6 +1284,10 @@ string yellowRayCombatString(monster target, boolean inCombat)
 		{
 			return "skill " + $skill[Open a Big Yellow Present];
 		}
+		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]))
+		{
+			return "skill " + $skill[Unleash the Devil's Kiss];
+		}
 	}
 
 	if(asdonCanMissile())
@@ -1325,6 +1329,15 @@ boolean adjustForYellowRay(string combat_string)
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
 		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
+	}
+	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
+	{
+		// avoid uselessly reconfiguring the cape
+		if (get_property("retroCapeSuperhero") != "heck" && get_property("retroCapeWashingInstructions") != "kiss")
+		{
+			cli_execute("retrocape mysticality kiss");
+		}
+		return autoEquip($slot[back], $item[unwrapped knock-off retro superhero cape]);
 	}
 	return true;
 }
