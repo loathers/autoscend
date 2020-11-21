@@ -400,6 +400,11 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 	return false;
 }
 
+boolean LX_ornateDowsingRod()
+{
+	return LX_ornateDowsingRod(false);
+}
+
 boolean fancyOilPainting()
 {
 	if(get_property("chasmBridgeProgress").to_int() >= 30)

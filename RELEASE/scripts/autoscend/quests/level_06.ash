@@ -1,3 +1,8 @@
+boolean L6_friarsGetParts_condition_hardcode()
+{
+	return in_hardcore() && isGuildClass();
+}
+
 boolean L6_friarsGetParts()
 {
 	if (internalQuestStatus("questL06Friar") < 0 || internalQuestStatus("questL06Friar") > 2)

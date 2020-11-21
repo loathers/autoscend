@@ -196,6 +196,11 @@ boolean LX_melvignShirt()
 	return true;
 }
 
+boolean LX_steelOrgan_condition_slow()
+{
+	return !get_property("auto_slowSteelOrgan").to_boolean() && get_property("auto_getSteelOrgan").to_boolean();
+}
+
 boolean LX_steelOrgan()
 {
 	if(!get_property("auto_getSteelOrgan").to_boolean())

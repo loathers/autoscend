@@ -1,5 +1,10 @@
 // This file should contain functions for adventuring which are not related to any of the council quests nor any "optional" quests.
 
+boolean LX_bitchinMeatcar_condition()
+{
+	return knoll_available() && get_property("auto_spoonconfirmed").to_int() == my_ascensions();
+}
+
 boolean LX_bitchinMeatcar()
 {
 	if(isDesertAvailable())
