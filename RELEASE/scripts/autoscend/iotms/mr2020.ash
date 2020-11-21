@@ -97,7 +97,7 @@ int auto_powerfulGloveCharges()
 
 boolean auto_powerfulGloveNoncombatSkill(skill sk)
 {
-	if (!auto_hasPowerfulGlove()) return false;
+	if (!auto_hasPowerfulGlove() || !auto_is_valid(sk)) return false;
 
 	if (auto_powerfulGloveCharges() < 5) return false;
 
