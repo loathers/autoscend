@@ -125,7 +125,10 @@ boolean L10_basement()
 		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella) or Neckbeard Choice
 	}
 
-	auto_forceNextNoncombat();
+	if (possessEquipment($item[Amulet of Extreme Plot Significance]))
+	{
+		auto_forceNextNoncombat();
+	}
 
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
@@ -135,7 +138,7 @@ boolean L10_basement()
 		}
 	}
 
-	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
+	autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
 	resetMaximize();
 	
 
@@ -232,8 +235,7 @@ boolean L10_ground()
 		}
 	}
 
-	autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]);
-	return true;
+	return autoAdv($location[The Castle in the Clouds in the Sky (Ground Floor)]);
 }
 
 boolean L10_topFloor()

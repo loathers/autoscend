@@ -26,7 +26,7 @@ Fist Turkey	prop:_turkeyMoxie<5;mainstat:Moxie;path:The Source
 Cat Burglar	prop:_catBurglarCharge<30
 #
 # Melodramedary generating spit seems good
-#Melodramedary	prop:camelSpit<100 - Don't uncomment until we actally use it
+Melodramedary	prop:camelSpit<100
 #
 # Drops BACON every battle. 100 bacon makes size 15 density 4.83 food. 150 bacon can get you a fat loot token
 Intergnat	item:BACON<150

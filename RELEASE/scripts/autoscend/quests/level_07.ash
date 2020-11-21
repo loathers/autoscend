@@ -114,6 +114,10 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Niche!", "blue");
+		if (canSniff($monster[Dirty Old Lihc], $location[The Defiled Niche]) && auto_mapTheMonsters())
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Dirty Old Lihc.");
+		}
 		return autoAdv(1, $location[The Defiled Niche]);
 	}
 

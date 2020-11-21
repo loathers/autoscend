@@ -132,6 +132,7 @@ int amountTurkeyBooze();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2015.ash
+boolean auto_haveLovebugs();
 boolean mayo_acquireMayo(item it);
 boolean auto_barrelPrayers();
 boolean auto_mayoItems();
@@ -382,6 +383,7 @@ boolean auto_canTendMushroomGarden();
 int auto_piranhaPlantFightsRemaining();
 boolean auto_mushroomGardenHandler();
 boolean auto_getGuzzlrCocktailSet();
+boolean auto_canCamelSpit();
 boolean auto_latheHardwood(item toLathe);
 boolean auto_latheAppropriateWeapon();
 boolean auto_hasCargoShorts();
@@ -401,6 +403,9 @@ boolean auto_cargoShortsOpenPocket(monster m);
 boolean auto_cargoShortsOpenPocket(effect e);
 boolean auto_cargoShortsOpenPocket(stat e);
 boolean auto_cargoShortsOpenPocket(string s);
+boolean auto_canMapTheMonsters();
+boolean auto_mapTheMonsters();
+void cartographyChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -772,6 +777,7 @@ boolean L10_basement();
 boolean L10_ground();
 boolean L10_topFloor();
 boolean L10_holeInTheSkyUnlock();
+boolean L10_rainOnThePlains();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_11.ash
@@ -881,6 +887,7 @@ boolean L13_sorceressDoor();
 boolean L13_towerNSTower();
 boolean L13_towerNSFinal();
 boolean L13_towerNSNagamar();
+boolean L13_towerAscent();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_any.ash
@@ -1228,6 +1235,7 @@ string banisherCombatString(monster enemy, location loc);
 boolean canBanish(monster enemy, location loc);
 boolean adjustForBanish(string combat_string);
 boolean adjustForBanishIfPossible(monster enemy, location loc);
+string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDrop);
 string yellowRayCombatString(monster target, boolean inCombat);
 string yellowRayCombatString(monster target);
 string yellowRayCombatString();
@@ -1242,6 +1250,9 @@ boolean canReplace();
 boolean adjustForReplace(string combat_string);
 boolean adjustForReplaceIfPossible(monster target);
 boolean adjustForReplaceIfPossible();
+boolean canSniff(monster enemy, location loc);
+boolean adjustForSniffingIfPossible(monster target);
+boolean adjustForSniffingIfPossible();
 string statCard();
 boolean hasTorso();
 boolean isGuildClass();

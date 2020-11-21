@@ -4,7 +4,7 @@ boolean needStarKey()
 	{
 		return false;
 	}
-	if(item_amount($item[Richard\'s Star Key]) > 0)
+	if(item_amount($item[Richard\'s Star Key]) > 0 || creatable_amount($item[Richard\'s Star Key]) > 0)
 	{
 		return false;
 	}
@@ -165,7 +165,11 @@ boolean LX_getDigitalKey()
 		{
 			autoEquip($item[Fourth of May cosplay saber]);
 		}
-		adv_spent = autoAdv(1, $location[8-bit Realm]);
+		if (canSniff($monster[Blooper], $location[8-bit Realm]) && auto_mapTheMonsters())
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Blooper.");
+		}
+		adv_spent = autoAdv($location[8-bit Realm]);
 	}
 	return adv_spent;
 }
@@ -1434,6 +1438,15 @@ boolean L13_towerNSNagamar()
 		{
 			auto_log_warning("Clovering [The Castle in the Clouds in the Sky (Basement)] for wand parts failed for some reason", "red");
 		}
+	}
+	return false;
+}
+
+boolean L13_towerAscent()
+{
+	if (L13_towerNSContests() || L13_towerNSHedge()|| L13_sorceressDoor() || L13_towerNSTower() || L13_towerNSNagamar() || L13_towerNSFinal())
+	{
+		return true;
 	}
 	return false;
 }
