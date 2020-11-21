@@ -95,4 +95,5 @@ default	87	L13_sorceressDoor
 default	88	L13_towerNSTower
 default	89	L13_towerNSNagamar
 default	90	L13_towerNSFinal
+default	91	LX_attemptPowerLevel
 
