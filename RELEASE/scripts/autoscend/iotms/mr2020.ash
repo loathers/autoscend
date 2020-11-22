@@ -673,3 +673,31 @@ void cartographyChoiceHandler(int choice)
 		abort("unhandled choice in cartographyChoiceHandler");
 	}
 }
+
+boolean auto_hasRetrocape()
+{
+	return possessEquipment($item[unwrapped knock-off retro superhero cape]) && auto_is_valid($item[unwrapped knock-off retro superhero cape]);
+}
+
+boolean auto_configureRetrocape(string hero, string tag)
+{
+	if (!auto_hasRetrocape())
+	{
+		return false;
+	}
+	if (!($strings["muscle", "mysticality", "moxie", "vampire", "heck", "robot"] contains hero))
+	{
+		return false;
+	}
+	if (!($strings["hold", "thrill", "kiss", "kill"] contains tag))
+	{
+		return false;
+	}
+	// avoid uselessly reconfiguring the cape
+	if (get_property("retroCapeSuperhero") != hero && get_property("retroCapeWashingInstructions") != tag)
+	{
+		// retrocape [muscle | mysticality | moxie | vampire | heck | robot] [hold | thrill | kiss | kill]
+		cli_execute(`retrocape {hero} {tag}`);
+	}
+	return get_property("retroCapeSuperhero") == hero && get_property("retroCapeWashingInstructions") == tag;
+}

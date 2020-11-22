@@ -563,3 +563,37 @@ void equipRollover()
 		auto_log_info("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
 	}
 }
+
+boolean equipSword() {
+	item swordToEquip = $item[none];
+	// use the ebony epee if we have it
+	if (possessEquipment($item[ebony epee])) {
+		swordToEquip = $item[ebony epee];
+	}
+
+	if (swordToEquip == $item[none])
+	{
+		// check for some swords that we might have acquired in run already. Yes machetes are actually swords.
+		foreach it in $items[antique machete, black sword, broken sword, cardboard katana, cardboard wakizashi,
+		drowsy sword, knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete,
+		ridiculously huge sword, serpentine sword, vorpal blade, white sword, sweet ninja sword]
+		{
+			if (possessEquipment(it) && can_equip(it))
+			{
+				swordToEquip = it;
+				break;
+			}
+		}
+	}
+
+	if (swordToEquip == $item[none])
+	{
+		// if we still don't have a sword available, buy one for a trivial amount of meat.
+		if (retrieve_item(1, $item[sweet ninja sword])) // costs 50 meat from the armorer and leggerer
+		{
+			swordToEquip = $item[sweet ninja sword];
+		}
+	}
+
+	return autoEquip(swordToEquip);
+}

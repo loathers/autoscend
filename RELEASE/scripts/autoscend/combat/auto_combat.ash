@@ -1249,6 +1249,12 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
+	if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])
+	{
+		// instakills Undead and reduces evilness in Cyrpt zones.
+		return useSkill($skill[Slay the Dead]);
+	}
+
 	if(canUse($skill[Bad Medicine]) && (my_mp() >= (3 * mp_cost($skill[Bad Medicine]))))
 	{
 		return useSkill($skill[Bad Medicine]);
