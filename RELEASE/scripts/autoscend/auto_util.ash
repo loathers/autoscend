@@ -1337,11 +1337,7 @@ boolean adjustForYellowRay(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
 	{
-		// avoid uselessly reconfiguring the cape
-		if (get_property("retroCapeSuperhero") != "heck" && get_property("retroCapeWashingInstructions") != "kiss")
-		{
-			cli_execute("retrocape mysticality kiss");
-		}
+		auto_configureRetrocape("heck", "kiss");
 		return autoEquip($slot[back], $item[unwrapped knock-off retro superhero cape]);
 	}
 	return true;
