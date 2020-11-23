@@ -406,6 +406,8 @@ boolean auto_cargoShortsOpenPocket(string s);
 boolean auto_canMapTheMonsters();
 boolean auto_mapTheMonsters();
 void cartographyChoiceHandler(int choice);
+boolean auto_hasRetrocape();
+boolean auto_configureRetrocape(string hero, string tag);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
