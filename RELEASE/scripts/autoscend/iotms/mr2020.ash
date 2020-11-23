@@ -685,14 +685,23 @@ boolean auto_configureRetrocape(string hero, string tag)
 	{
 		return false;
 	}
-	if (!($strings["muscle", "mysticality", "moxie", "vampire", "heck", "robot"] contains hero))
+	if (hero != "muscle"
+	    && hero != "mysticality"
+	    && hero != "moxie"
+	    && hero != "vampire"
+	    && hero != "heck"
+			&& hero != "robot")
 	{
 		return false;
 	}
-	if (!($strings["hold", "thrill", "kiss", "kill"] contains tag))
+	if (tag != "hold"
+	    && tag != "thrill"
+	    && tag != "kiss"
+			&& tag != "kill")
 	{
 		return false;
 	}
+
 	// avoid uselessly reconfiguring the cape
 	if (get_property("retroCapeSuperhero") != hero && get_property("retroCapeWashingInstructions") != tag)
 	{
