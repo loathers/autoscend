@@ -347,7 +347,7 @@ boolean organsFull()
 boolean backupSetting(string setting, string newValue)
 {
 	string[string,string] defaults;
-	file_to_map("defaults.txt", defaults);
+	file_to_map("data/defaults.txt", defaults);
 
 	int found = 0;
 	string oldValue = "";
@@ -386,7 +386,7 @@ boolean backupSetting(string setting, string newValue)
 boolean restoreAllSettings()
 {
 	string[string,string] defaults;
-	file_to_map("defaults.txt", defaults);
+	file_to_map("data/defaults.txt", defaults);
 
 	boolean retval = false;
 	foreach domain, name, value in defaults
