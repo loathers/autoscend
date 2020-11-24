@@ -716,7 +716,7 @@ boolean auto_configureRetrocape(string hero, string tag)
 	}
 
 	// avoid uselessly reconfiguring the cape
-	if (get_property("retroCapeSuperhero") != tempHero && get_property("retroCapeWashingInstructions") != tag)
+	if (get_property("retroCapeSuperhero") != tempHero || get_property("retroCapeWashingInstructions") != tag)
 	{
 		// retrocape [muscle | mysticality | moxie | vampire | heck | robot] [hold | thrill | kiss | kill]
 		cli_execute(`retrocape {tempHero} {tag}`);
