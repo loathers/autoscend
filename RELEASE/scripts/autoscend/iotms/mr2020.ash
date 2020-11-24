@@ -501,18 +501,14 @@ boolean auto_canMapTheMonsters()
 
 boolean auto_mapTheMonsters()
 {
-	if(get_property("auto_mappingMonsters").to_boolean())
+	if(get_property("mappingMonsters").to_boolean())
 	{
 		auto_log_warning("Trying to cast map the monsters but we already have an unused cast pending, skipping.", "red");
 		return true;
 	}
 	if (auto_canMapTheMonsters())
 	{
-		if (use_skill(1, $skill[Map the Monsters]))
-		{
-			set_property("auto_mappingMonsters", true);
-		}
-		return true;
+		return use_skill(1, $skill[Map the Monsters]);
 	}
 	return false;
 }
@@ -649,7 +645,6 @@ void cartographyChoiceHandler(int choice)
 		if (enemy != $monster[none])
 		{
 			handleTracker($skill[Map the Monsters], enemy, "auto_otherstuff");
-			set_property("auto_mappingMonsters", false);
 			run_choice(1, `heyscriptswhatsupwinkwink={enemy.to_int()}`);
 		}
 		else
