@@ -96,7 +96,6 @@ boolean L7_crypt()
 			januaryToteAcquire($item[broken champagne bottle]);
 		}
 
-		
 		return autoAdv($location[The Defiled Nook]);
 	}
 	else if(skip_in_koe)
