@@ -595,5 +595,5 @@ boolean equipSword() {
 		}
 	}
 
-	return autoForceEquip(swordToEquip, $slot[weapon]);
+	return autoForceEquip($slot[weapon], swordToEquip);
 }
