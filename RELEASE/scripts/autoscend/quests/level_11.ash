@@ -1634,7 +1634,7 @@ boolean L11_mauriceSpookyraven()
 		}
 		if (canSniff($monster[Possessed Wine Rack], $location[The Haunted Wine Cellar]) && auto_mapTheMonsters())
 		{
-			auto_log_info("Attemping to use Map the Monsters to olfact a Cabinet of Dr. Limpieza.");
+			auto_log_info("Attemping to use Map the Monsters to olfact a Possessed Wine Rack.");
 		}
 		return autoAdv($location[The Haunted Wine Cellar]);
 	}
@@ -1847,7 +1847,8 @@ boolean L11_ronCopperhead()
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Red Butler.");
 		}
-		if (auto_canCamelSpit()) {
+		if (auto_canCamelSpit())
+		{
 			auto_log_info("Bringing the Camel to spit on a Red Butler for glark cables.");
 			handleFamiliar($familiar[Melodramedary]);
 		}
