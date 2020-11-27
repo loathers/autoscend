@@ -56,7 +56,7 @@ drop	12	Intergnat	item:BACON<150
 # density 1.875 size 4 spleen consumables. boolean autoChooseFamiliar(location place) will already grab the amount needed for spleen
 # Here they are only used to grab extras.
 drop	13	Grim Brother	prop:_grimFairyTaleDrops<5
-drop	14	Pair of Stomping Boots	prop:_bootStomps<7
+drop	14	Pair of Stomping Boots	!path:G-Lover;prop:_bootStomps<7
 drop	15	Baby Sandworm	prop:_aguaDrops<5
 drop	16	Bloovian Groose	prop:_grooseDrops<5
 drop	17	Golden Monkey	prop:_powderedGoldDrops<5
@@ -135,7 +135,7 @@ item	27	Psychedelic Bear
 item	28	Piano Cat
 # Slightly special fairies
 item	29	Red-Nosed Snapper
-item	30	Pair of Stomping Boots
+item	30	Pair of Stomping Boots	!path:G-Lover
 item	31	Gelatinous Cubeling
 item	32	Steam-Powered Cheerleader
 item	33	Obtuse Angel
