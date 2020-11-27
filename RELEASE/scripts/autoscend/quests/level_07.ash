@@ -42,7 +42,7 @@ boolean L7_crypt()
 	{
 		if (auto_configureRetrocape("vampire", "kill")) {
 			autoEquip($item[unwrapped knock-off retro superhero cape]);
-			equipSword();
+			auto_forceEquipSword();
 		}
 	}
 

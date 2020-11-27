@@ -1018,6 +1018,7 @@ boolean possessOutfit(string outfit);
 void equipBaseline();
 void ensureSealClubs();
 void equipRollover();
+boolean auto_forceEquipSword();
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
