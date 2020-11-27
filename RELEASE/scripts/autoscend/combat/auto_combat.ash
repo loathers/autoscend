@@ -1408,7 +1408,8 @@ string auto_combatHandler(int round, monster enemy, string text)
 			}
 		}
 
-		if (enemy == $monster[dirty thieving brigand] && canUse($skill[Become a Wolf]) && get_property("_vampyreCloakeFormUses").to_int() < 10) {
+		if (enemy == $monster[dirty thieving brigand] && canUse($skill[Become a Wolf]) && get_property("_vampyreCloakeFormUses").to_int() < 10)
+		{
 			return useSkill($skill[Become a Wolf]);
 		}
 

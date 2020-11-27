@@ -1447,7 +1447,8 @@ boolean adjustForSniffingIfPossible(monster target)
 		auto_log_info("Uneffecting On the trail to have Transcendent Olfaction available for " + target, "blue");
 		monster old_olfact = get_property("olfactedMonster").to_monster();
 		string output = cli_execute_output("uneffect On the trail");
-		if (output.contains_text("On the Trail removed.")) {
+		if (output.contains_text("On the Trail removed."))
+		{
 			handleTracker($item[soft green echo eyedrop antidote], old_olfact, "auto_otherstuff");
 			return true;
 		}

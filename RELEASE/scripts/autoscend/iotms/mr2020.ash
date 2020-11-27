@@ -501,7 +501,7 @@ boolean auto_canMapTheMonsters()
 
 boolean auto_mapTheMonsters()
 {
-	if(get_property("mappingMonsters").to_boolean())
+	if (get_property("mappingMonsters").to_boolean())
 	{
 		auto_log_warning("Trying to cast map the monsters but we already have an unused cast pending, skipping.", "red");
 		return true;
@@ -612,17 +612,18 @@ void cartographyChoiceHandler(int choice)
 		float sleaze_protestors = square_root(sleaze_amount);
 		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
 		foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
+		{
+			if (equipped_amount(it) > 0)
 			{
-				if (equipped_amount(it) > 0) {
-					lynyrd_protestors += 5;
-				}
+				lynyrd_protestors += 5;
 			}
+		}
 		float best_protestors = max(fire_protestors, max(sleaze_protestors, lynyrd_protestors));
-		if(best_protestors == lynyrd_protestors)
+		if (best_protestors == lynyrd_protestors)
 		{
 			run_choice(2);
 		}
-		else if(best_protestors == sleaze_protestors)
+		else if (best_protestors == sleaze_protestors)
 		{
 			run_choice(1);
 		}
@@ -654,7 +655,7 @@ void cartographyChoiceHandler(int choice)
 	}
 	else if (choice == 1436) // Billiards Room Options (The Haunted Billiards Room)
 	{
-		if(poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)
+		if (poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)
 		{
 			run_choice(2);		//try to win the key. on failure still gain 1 pool skill
 		}
@@ -680,19 +681,19 @@ boolean auto_configureRetrocape(string hero, string tag)
 	{
 		return false;
 	}
-	if (hero != "muscle"
-	    && hero != "mysticality"
-	    && hero != "moxie"
-	    && hero != "vampire"
-	    && hero != "heck"
-			&& hero != "robot")
+	if (hero != "muscle" &&
+			hero != "mysticality" &&
+			hero != "moxie" &&
+			hero != "vampire" &&
+			hero != "heck" &&
+			hero != "robot")
 	{
 		return false;
 	}
-	if (tag != "hold"
-	    && tag != "thrill"
-	    && tag != "kiss"
-			&& tag != "kill")
+	if (tag != "hold" &&
+			tag != "thrill" &&
+			tag != "kiss" &&
+			tag != "kill")
 	{
 		return false;
 	}

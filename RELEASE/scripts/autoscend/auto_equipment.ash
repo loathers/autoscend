@@ -567,7 +567,8 @@ void equipRollover()
 boolean auto_forceEquipSword() {
 	item swordToEquip = $item[none];
 	// use the ebony epee if we have it
-	if (possessEquipment($item[ebony epee])) {
+	if (possessEquipment($item[ebony epee]))
+	{
 		swordToEquip = $item[ebony epee];
 	}
 

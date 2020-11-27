@@ -131,7 +131,7 @@ boolean auto_pre_adventure()
 			adjustForReplaceIfPossible(mon);
 		}
 
-		if(auto_wantToSniff(mon, place) && !burningDelay)
+		if (auto_wantToSniff(mon, place) && !burningDelay)
 		{
 			adjustForSniffingIfPossible(mon);
 		}
