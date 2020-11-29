@@ -399,7 +399,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-
+	if ($monsters[pygmy bowler, bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, red butler] contains enemy && canUse($skill[%fn\, spit on them!]))
+	{
+		handleTracker($skill[%fn\, spit on them!], enemy, "auto_otherstuff");
+		return useSkill($skill[%fn\, spit on them!], true);
+	}
 
 	if(have_effect($effect[Temporary Amnesia]) > 0)
 	{
@@ -1245,6 +1249,12 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
+	if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])
+	{
+		// instakills Undead and reduces evilness in Cyrpt zones.
+		return useSkill($skill[Slay the Dead]);
+	}
+
 	if(canUse($skill[Bad Medicine]) && (my_mp() >= (3 * mp_cost($skill[Bad Medicine]))))
 	{
 		return useSkill($skill[Bad Medicine]);
@@ -1396,6 +1406,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 			{
 				return useSkill($skill[Become a Cloud of Mist]);
 			}
+		}
+
+		if (enemy == $monster[dirty thieving brigand] && canUse($skill[Become a Wolf]) && get_property("_vampyreCloakeFormUses").to_int() < 10)
+		{
+			return useSkill($skill[Become a Wolf]);
 		}
 
 		if(canUse($skill[Air Dirty Laundry]))

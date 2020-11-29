@@ -153,11 +153,9 @@ boolean L9_chasmBuild()
 
 
 	auto_log_info("Chasm time", "blue");
-
-	if(item_amount($item[fancy oil painting]) > 0)
-	{
-		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-	}
+	
+	// make sure our progress count is correct before we do anything.
+	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
 	// -Combat is useless here since NC is triggered by killing Orcs...So we kill orcs better!
 	// -ML helps us deal more cold damage and trigger the NC faster.
@@ -768,6 +766,21 @@ boolean L9_twinPeak()
 		}
 	}
 
+	if (auto_canCamelSpit() && auto_canMapTheMonsters())
+	{
+		if (adjustForYellowRayIfPossible($monster[bearpig topiary animal]))
+		{
+			if (auto_mapTheMonsters())
+			{
+				handleFamiliar($familiar[Melodramedary]);
+				auto_log_info("Attemping to use Map the Monsters to Yellow Ray a Camel Spitted bearpig topiary animal. Yes that is a mouthful but lets hope it works and we get 4 rusty hedge trimmers!");
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
 	return autoAdv($location[Twin Peak]);
 }
 
@@ -899,9 +912,9 @@ boolean L9_highLandlord()
 		return true;
 	}
 
-	if(L9_twinPeak())			return true;
 	if(L9_aBooPeak())			return true;
 	if(L9_oilPeak())			return true;
+	if(L9_twinPeak())			return true;
 
 	if (internalQuestStatus("questL09Topping") == 3)
 	{

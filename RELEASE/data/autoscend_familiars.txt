@@ -27,7 +27,7 @@ drop	0	Fist Turkey	prop:_turkeyBooze<5
 # drops 1 per combat with chance of 2nd if wearing familiar specific equip
 drop	1	Puck Man	item:Yellow Pixel<20
 drop	2	Ms. Puck Man	item:Yellow Pixel<20
-# 1st wax drop per run only takes 5 combats, afterwards 30. makes a single size 2 density 4.25 food or drink 
+# 1st wax drop per run only takes 5 combats, afterwards 30. makes a single size 2 density 4.25 food or drink
 drop	3	Optimistic Candle	prop:optimisticCandleProgress>=25
 # 1st robin egg per run only takes 5 combats, afterwards 30. potion that gives all res +3
 drop	4	Rockin' Robin	prop:rockinRobinProgress>=25
@@ -45,34 +45,34 @@ drop	9	Fist Turkey	prop:_turkeyMoxie<5;mainstat:Moxie;path:The Source
 drop	10	Cat Burglar	prop:_catBurglarCharge<30
 #
 # Melodramedary generating spit seems good
-#Melodramedary	prop:camelSpit<100 - Don't uncomment until we actally use it
+drop	11	Melodramedary	prop:camelSpit<100
 #
 # Drops BACON every battle. 100 bacon makes size 15 density 4.83 food. 150 bacon can get you a fat loot token
-drop	11	Intergnat	item:BACON<150
+drop	12	Intergnat	item:BACON<150
 #
 # Below this lines drops are not needed more of for the run and are just grabbing for profit.
 # Most are useful in limited amounts which we already grab via boolean autoChooseFamiliar(location place)
 #
 # density 1.875 size 4 spleen consumables. boolean autoChooseFamiliar(location place) will already grab the amount needed for spleen
 # Here they are only used to grab extras.
-drop	12	Grim Brother	prop:_grimFairyTaleDrops<5
-drop	13	Pair of Stomping Boots	prop:_bootStomps<7
-drop	14	Baby Sandworm	prop:_aguaDrops<5
-drop	15	Bloovian Groose	prop:_grooseDrops<5
-drop	16	Golden Monkey	prop:_powderedGoldDrops<5
-drop	17	Unconscious Collective	prop:_dreamJarDrops<5
+drop	13	Grim Brother	prop:_grimFairyTaleDrops<5
+drop	14	Pair of Stomping Boots	!path:G-Lover;prop:_bootStomps<7
+drop	15	Baby Sandworm	prop:_aguaDrops<5
+drop	16	Bloovian Groose	prop:_grooseDrops<5
+drop	17	Golden Monkey	prop:_powderedGoldDrops<5
+drop	18	Unconscious Collective	prop:_dreamJarDrops<5
 # psychoanalytic jar 1 per day.
-drop	18	Angry Jung Man	prop:_jungDrops<1
+drop	19	Angry Jung Man	prop:_jungDrops<1
 # grimstone mask 1 per day
-drop	19	Grimstone Golem	prop:_grimstoneMaskDrops<1
+drop	20	Grimstone Golem	prop:_grimstoneMaskDrops<1
 # tales of spelunking 1 per day
-drop	20	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
+drop	21	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # can drop 5 devilish folio a day
-drop	21	Blavious Kloop	prop:_kloopDrops<5
+drop	22	Blavious Kloop	prop:_kloopDrops<5
 # can drop 5 absinthe a day
-drop	22	Green Pixie	prop:_absintheDrops<5
+drop	23	Green Pixie	prop:_absintheDrops<5
 # Hot ashes can make a potion that gives +15 ML for 15 adv. drop limit 5/day
-drop	23	Galloping Grill	prop:_hotAshesDrops<5
+drop	24	Galloping Grill	prop:_hotAshesDrops<5
 
 # We want to delevel, but don't want to deal damage
 gremlins	0	Nosy Nose
@@ -135,7 +135,7 @@ item	27	Psychedelic Bear
 item	28	Piano Cat
 # Slightly special fairies
 item	29	Red-Nosed Snapper
-item	30	Pair of Stomping Boots
+item	30	Pair of Stomping Boots	!path:G-Lover
 item	31	Gelatinous Cubeling
 item	32	Steam-Powered Cheerleader
 item	33	Obtuse Angel

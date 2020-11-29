@@ -97,7 +97,7 @@ int auto_powerfulGloveCharges()
 
 boolean auto_powerfulGloveNoncombatSkill(skill sk)
 {
-	if (!auto_hasPowerfulGlove()) return false;
+	if (!auto_hasPowerfulGlove() || !auto_is_valid(sk)) return false;
 
 	if (auto_powerfulGloveCharges() < 5) return false;
 
@@ -274,6 +274,11 @@ boolean auto_getGuzzlrCocktailSet() {
 		}
 	}
 	return false;
+}
+
+boolean auto_canCamelSpit()
+{
+	return canChangeToFamiliar($familiar[Melodramedary]) && get_property("camelSpit").to_int() == 100;
 }
 
 boolean auto_latheHardwood(item toLathe)
@@ -483,4 +488,234 @@ boolean auto_cargoShortsOpenPocket(string s)
 		return auto_cargoShortsOpenPocket(s.to_stat());
 
 	return false;
+}
+
+boolean auto_canMapTheMonsters()
+{
+	if (have_skill($skill[Map the Monsters]) && auto_is_valid($skill[Map the Monsters]))
+	{
+		return get_property("_monstersMapped").to_int() < 3;
+	}
+	return false;
+}
+
+boolean auto_mapTheMonsters()
+{
+	if (get_property("mappingMonsters").to_boolean())
+	{
+		auto_log_warning("Trying to cast map the monsters but we already have an unused cast pending, skipping.", "red");
+		return true;
+	}
+	if (auto_canMapTheMonsters())
+	{
+		return use_skill(1, $skill[Map the Monsters]);
+	}
+	return false;
+}
+
+monster auto_monsterToMap(location loc)
+{
+	monster enemy = $monster[none];
+	switch (loc)
+	{
+		case $location[8-Bit Realm]:
+			enemy = $monster[Blooper];
+			break;
+		case $location[The Haunted Library]:
+			enemy = $monster[writing desk];
+			break;
+		case $location[The Defiled Niche]:
+			enemy = $monster[dirty old lihc];
+			break;
+		case $location[The Goatlet]:
+			enemy = $monster[dairy goat];
+			break;
+		case $location[Twin Peak]:
+			enemy = $monster[bearpig topiary animal];
+			break;
+		case $location[A Mob of Zeppelin Protesters]:
+			enemy = $monster[blue oyster cultist];
+			break;
+		case $location[The Red Zeppelin]:
+			enemy = $monster[red butler];
+			break;
+		case $location[Inside the Palindome]:
+			enemy = $monster[Bob Racecar];
+			break;
+		case $location[The Hidden Bowling Alley]:
+			enemy = $monster[Pygmy Bowler];
+			break;
+		case $location[The Hidden Hospital]:
+			enemy = $monster[Pygmy Witch Surgeon];
+			break;
+		case $location[The Haunted Laundry Room]:
+			enemy = $monster[cabinet of dr. limpieza];
+			break;
+		case $location[The Haunted Wine Cellar]:
+			enemy = $monster[possessed wine rack];
+			break;
+		case $location[The Middle Chamber]:
+			enemy = $monster[tomb rat];
+			break;
+		case $location[Sonofa Beach]:
+			enemy = $monster[lobsterfrogman]; // not implemented yet (will be used to saber copy in 2021)
+			break;
+	}
+	return enemy;
+}
+
+void cartographyChoiceHandler(int choice)
+{
+	auto_log_info("cartographyChoiceHandler Running choice " + choice, "blue");
+	if (choice == 1427) // Hidden Junction (Guano Junction)
+	{
+		run_choice(1); // fight the screambat.
+	}
+	else if (choice == 1428) // Your Neck of the Woods (The Dark Neck of the Woods)
+	{
+		run_choice(2); // skip first 2 quest non-combats
+	}
+	else if (choice == 1429) // No Nook Unknown (The Defiled Nook)
+	{
+			run_choice(1); // acquire 2 evil eyes
+	}
+	else if (choice == 1430) // Ghostly Memories (A-boo Peak)
+	{
+		run_choice(1); // If we are adventuring in the peak we are trying to clear the peak, go to the horror
+	}
+	else if (choice == 1431) // Choice 1431 is Here There Be Giants (Cartography)
+	{
+		if (internalQuestStatus("questL10Garbage") == 9)
+		{
+			if (item_amount($item[model airship]) > 0)
+			{
+				run_choice(1); // go to steampunk choice to complete the quest
+			}
+			else if (have_equipped($item[mohawk wig]))
+			{
+				run_choice(4); // go to the punk rock choice to complete the quest
+			}
+			else
+			{
+				run_choice(3); // go to the raver choice to get the record?
+			}
+		}
+		else
+		{
+			run_choice(1); // go to steampunk choice to open the hole in the sky.
+		}
+	}
+	else if (choice == 1432) // Mob Maptality (A Mob of Zeppelin Protesters)
+	{
+		float fire_protestors = item_amount($item[Flamin\' Whatshisname]) > 0 ? 10 : 3;
+		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
+		float sleaze_protestors = square_root(sleaze_amount);
+		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
+		foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
+		{
+			if (equipped_amount(it) > 0)
+			{
+				lynyrd_protestors += 5;
+			}
+		}
+		float best_protestors = max(fire_protestors, max(sleaze_protestors, lynyrd_protestors));
+		if (best_protestors == lynyrd_protestors)
+		{
+			run_choice(2);
+		}
+		else if (best_protestors == sleaze_protestors)
+		{
+			run_choice(1);
+		}
+		else if (best_protestors == fire_protestors)
+		{
+			run_choice(3);
+		}
+	}
+	else if (choice == 1433) // Sneaky Sneaky (The Hippy Camp (Verge of War))
+	{
+		run_choice(3); // start the war
+	}
+	else if (choice == 1434) // Sneaky Sneaky (Orcish Frat House (Verge of War))
+	{
+		run_choice(2); // start the war
+	}
+	else if (choice == 1435) // Leading Yourself Right to Them (Map the Monsters)
+	{
+		monster enemy = auto_monsterToMap(my_location());
+		if (enemy != $monster[none])
+		{
+			handleTracker($skill[Map the Monsters], enemy, "auto_otherstuff");
+			run_choice(1, `heyscriptswhatsupwinkwink={enemy.to_int()}`);
+		}
+		else
+		{
+			abort("trying to map a monster but don't know which monster to map!");
+		}
+	}
+	else if (choice == 1436) // Billiards Room Options (The Haunted Billiards Room)
+	{
+		if (poolSkillPracticeGains() == 1 || currentPoolSkill() > 15)
+		{
+			run_choice(2);		//try to win the key. on failure still gain 1 pool skill
+		}
+		else
+		{
+			run_choice(1);		//acquire the pool cue
+		}
+	}
+	else
+	{
+		abort("unhandled choice in cartographyChoiceHandler");
+	}
+}
+
+boolean auto_hasRetrocape()
+{
+	return possessEquipment($item[unwrapped knock-off retro superhero cape]) && auto_is_valid($item[unwrapped knock-off retro superhero cape]);
+}
+
+boolean auto_configureRetrocape(string hero, string tag)
+{
+	if (!auto_hasRetrocape())
+	{
+		return false;
+	}
+	if (hero != "muscle" &&
+			hero != "mysticality" &&
+			hero != "moxie" &&
+			hero != "vampire" &&
+			hero != "heck" &&
+			hero != "robot")
+	{
+		return false;
+	}
+	if (tag != "hold" &&
+			tag != "thrill" &&
+			tag != "kiss" &&
+			tag != "kill")
+	{
+		return false;
+	}
+	string tempHero = hero;
+	if (hero == "muscle")
+	{
+		temphero = "vampire";
+	}
+	if (hero == "mysticality")
+	{
+		temphero = "heck";
+	}
+	if (hero == "moxie")
+	{
+		temphero = "robot";
+	}
+
+	// avoid uselessly reconfiguring the cape
+	if (get_property("retroCapeSuperhero") != tempHero || get_property("retroCapeWashingInstructions") != tag)
+	{
+		// retrocape [muscle | mysticality | moxie | vampire | heck | robot] [hold | thrill | kiss | kill]
+		cli_execute(`retrocape {tempHero} {tag}`);
+	}
+	return get_property("retroCapeSuperhero") == tempHero && get_property("retroCapeWashingInstructions") == tag;
 }

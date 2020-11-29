@@ -95,7 +95,7 @@ replace	37	Ancient Insane Monk	path:Community Service;loc:The Haiku Dungeon
 replace	38	Ferocious Bugbear	path:Community Service;loc:The Haiku Dungeon
 replace	39	Gelatinous Cube	path:Community Service;loc:The Haiku Dungeon
 
-sniff	0	pygmy shaman	loc:The Hidden Apartment Building;sgeea:3;!effect:Thrice-Cursed
+sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed
 sniff	1	Gurgle the Turgle
 sniff	2	Writing Desk	!prop:writingDesksDefeated=5
 sniff	3	Smoke Monster	item:Pack of Smokes>0
@@ -127,7 +127,7 @@ sniff	28	Skinflute
 sniff	29	Red Butler
 
 # Gotta get that wig
-yellowray	0	Burly Sidekick	item:Mohawk Wig<1
+yellowray	0	Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography
 # We also want an amulet, but not badly enough to yellow ray it unless we're backtracking to get it
 yellowray	1	Quiet Healer	item:amulet of extreme plot significance<1;quest:questL10Garbage>6
 # Dressing up as a harem girl because we have no shame
@@ -170,4 +170,7 @@ yellowray	32	larval filthworm	!familiar:XO Skeleton;!class:Ed
 yellowray	33	filthworm drone	!familiar:XO Skeleton;!class:Ed
 yellowray	34	filthworm royal guard	!familiar:XO Skeleton;!class:Ed
 yellowray	35	Knight (Snake)	class:Ed
+yellowray	36	bearpig topiary animal	familiar:Melodramedary
+yellowray	37	elephant (meatcar?) topiary animal	familiar:Melodramedary
+yellowray	38	spider (duck?) topiary animal	familiar:Melodramedary
 

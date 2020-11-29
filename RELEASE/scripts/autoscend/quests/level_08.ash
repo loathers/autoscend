@@ -226,6 +226,10 @@ boolean L8_getGoatCheese()
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
 	}
+	if (canSniff($monster[Dairy Goat], $location[The Goatlet]) && auto_mapTheMonsters())
+	{
+		auto_log_info("Attemping to use Map the Monsters to olfact a Dairy Goat.");
+	}
 	boolean retval = autoAdv($location[The Goatlet]);
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 	return retval;

@@ -654,7 +654,7 @@ boolean L12_preOutfit()
 		}
 	}
 
-	if(have_skill($skill[Calculate the Universe]) && (my_daycount() == 1))
+	if(have_skill($skill[Calculate the Universe]) && my_daycount() == 1 && get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int())
 	{
 		return false;
 	}
@@ -881,6 +881,11 @@ boolean L12_filthworms()
 				abort("Can not handle item drop amount for the Filthworms, deja vu!! Either get us to +400% and rerun or do it yourself.");
 			}
 		}
+	}
+
+	if (auto_cargoShortsOpenPocket(343)) // skip straight to the Royal Guard Chamber
+	{
+		handleTracker($item[Cargo Cultist Shorts], $effect[Filthworm Drone Stench], "auto_otherstuff");
 	}
 	
 	boolean retval = false;
@@ -1219,12 +1224,12 @@ boolean L12_sonofaPrefix()
 				{
 					set_property("auto_doCombatCopy", "yes");
 				}
-				if (auto_voteMonster())
+				if (auto_voteMonster() && !auto_voteMonster(true))
 				{
 					auto_voteMonster(false, $location[Sonofa Beach], "");
 					return true;
 				}
-				else if (auto_sausageGoblin())
+				else if (auto_sausageGoblin() && !auto_haveVotingBooth())
 				{
 					auto_sausageGoblin($location[Sonofa Beach], "");
 					return true;

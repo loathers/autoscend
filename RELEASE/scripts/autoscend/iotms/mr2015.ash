@@ -2,6 +2,11 @@
 #	Handling: shrine to the Barrel God, Chateau Mantegna Room Key, Deck of Every Card
 #
 
+boolean auto_haveLovebugs()
+{
+	return get_property("lovebugsUnlocked").to_boolean() && auto_is_valid($skill[Summon Love Stinkbug]);
+}
+
 boolean mayo_acquireMayo(item it)
 {
 	if(!is_unrestricted($item[Portable Mayo Clinic]))

@@ -517,6 +517,11 @@ generic_t zone_combatMod(location loc)
 	case $location[Cobb's Knob Treasury]:
 		value = 15;
 		break;
+	case $location[The VERY Unquiet Garves]:
+		if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12 && !in_koe()) {
+			value = -100;
+		}
+		break;
 	case $location[Super Villain\'s Lair]:
 		if(!get_property("_villainLairColorChoiceUsed").to_boolean() || !get_property("_villainLairDoorChoiceUsed").to_boolean() || !get_property("_villainLairSymbologyChoiceUsed").to_boolean())
 		{
@@ -681,7 +686,7 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[The Copperhead Club]:
-		if (internalQuestStatus("questL11Shen") > 0 && internalQuestStatus("questL11Shen") % 2 == 0)
+		if (internalQuestStatus("questL11Shen") > 0 && internalQuestStatus("questL11Shen") < 8)
 		{
 			value = 5 - (loc.turns_spent - get_property("auto_lastShenTurn").to_int());
 		}

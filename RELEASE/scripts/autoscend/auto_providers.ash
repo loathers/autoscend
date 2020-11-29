@@ -357,9 +357,6 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 		}
 		delta = simValue("Initiative") - numeric_modifier("Initiative");
 		auto_log_debug("With gear we can get to " + result());
-
-		if(!speculative)
-			handleFamiliar("init");
 	}
 
 	boolean pass()
@@ -369,6 +366,13 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 
 	if(pass())
 		return result();
+
+	if (!speculative && doEquips)
+	{
+		handleFamiliar("init");
+		if(pass())
+			return result();
+	}
 
 	void handleEffect(effect eff)
 	{

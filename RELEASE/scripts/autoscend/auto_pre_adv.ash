@@ -130,6 +130,11 @@ boolean auto_pre_adventure()
 		{
 			adjustForReplaceIfPossible(mon);
 		}
+
+		if (auto_wantToSniff(mon, place) && !burningDelay)
+		{
+			adjustForSniffingIfPossible(mon);
+		}
 	}
 
 	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))

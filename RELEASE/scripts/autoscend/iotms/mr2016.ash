@@ -1356,7 +1356,7 @@ boolean rethinkingCandy(effect acquire)
 
 boolean rethinkingCandy(effect acquire, boolean simulate)
 {
-	if(!have_skill($skill[Sweet Synthesis]) && !simulate)
+	if((!have_skill($skill[Sweet Synthesis]) || !auto_is_valid($skill[Sweet Synthesis])) && !simulate)
 	{
 		return false;
 	}
