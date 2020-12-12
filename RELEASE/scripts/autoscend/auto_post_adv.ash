@@ -928,7 +928,7 @@ boolean auto_post_adventure()
 		{
 			bjornify_familiar($familiar[el vibrato megadrone]);
 		}
-		if((my_bjorned_familiar() == $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() >= 1))
+		if((my_bjorned_familiar() == $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() >= 1) && have_familiar($familiar[El Vibrato Megadrone]))
 		{
 			bjornify_familiar($familiar[el vibrato megadrone]);
 		}
