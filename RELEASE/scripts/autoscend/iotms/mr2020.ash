@@ -681,6 +681,38 @@ boolean auto_configureRetrocape(string hero, string tag)
 	{
 		return false;
 	}
+
+	// store the requested settings in a property so we can handle them later
+	string settings = hero + "," + tag;
+	set_property("auto_retrocapeSettings", settings);
+
+	// cut down potential server hits by telling the maximizer to not consider it.
+	addToMaximize("-equip unwrapped knock-off retro superhero cape");
+	return true;
+}
+
+boolean auto_handleRetrocape()
+{
+	if (!auto_hasRetrocape())
+	{
+		return false;
+	}
+
+	string settingsProperty = get_property("auto_retrocapeSettings");
+	if (settingsProperty == "")
+	{
+		return false;
+	}
+
+	string[int] settings = split_string(settingsProperty, ",");
+	if (count(settings) != 2)
+	{
+		return false;
+	}
+
+	string hero = settings[0];
+	string tag = settings[1];
+
 	if (hero != "muscle" &&
 			hero != "mysticality" &&
 			hero != "moxie" &&
@@ -715,7 +747,11 @@ boolean auto_configureRetrocape(string hero, string tag)
 	if (get_property("retroCapeSuperhero") != tempHero || get_property("retroCapeWashingInstructions") != tag)
 	{
 		// retrocape [muscle | mysticality | moxie | vampire | heck | robot] [hold | thrill | kiss | kill]
-		cli_execute(`retrocape {tempHero} {tag}`);
+		cli_execute(`retrocape {tempHero} {tag}`); // configures and equips
 	}
-	return get_property("retroCapeSuperhero") == tempHero && get_property("retroCapeWashingInstructions") == tag;
+	else
+	{
+		equip($item[unwrapped knock-off retro superhero cape]); // already configured, just equip
+	}
+	return get_property("retroCapeSuperhero") == tempHero && get_property("retroCapeWashingInstructions") == tag && have_equipped($item[unwrapped knock-off retro superhero cape]);
 }

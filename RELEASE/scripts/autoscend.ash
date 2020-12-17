@@ -1,4 +1,4 @@
-since r20494;	//min mafia revision needed to run this script. Last update: Cargo Shorts support complete
+since r20555;	//min mafia revision needed to run this script. Last update: Support retrocape in the Maximizer.
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -2467,6 +2467,7 @@ void resetState() {
 		set_property("_auto_bad100Familiar", false); 		//reset to not bad. target location might set them as bad again
 	}
 
+	set_property("auto_retrocapeSettings", ""); // retrocape config
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
 
 	horseDefault(); // horsery tracking

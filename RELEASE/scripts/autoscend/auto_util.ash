@@ -1338,7 +1338,6 @@ boolean adjustForYellowRay(string combat_string)
 	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
 	{
 		auto_configureRetrocape("heck", "kiss");
-		return autoEquip($slot[back], $item[unwrapped knock-off retro superhero cape]);
 	}
 	return true;
 }
