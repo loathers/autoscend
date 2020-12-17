@@ -1,4 +1,4 @@
-since r20555;	//min mafia revision needed to run this script. Last update: Support retrocape in the Maximizer.
+since r20568;	//min mafia revision needed to run this script. Last update: Maximizer bonus keyword
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
