@@ -219,7 +219,6 @@ string defaultMaximizeStatement()
 	{
 		res += ",plumber,-ml";
 	}
-
 	else if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
 		res += ",10exp,5" + my_primestat() + " experience percent";
