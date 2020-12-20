@@ -393,6 +393,9 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
+	if(get_property('auto_skipUnlockGuild').to_boolean()) {
+		return false;
+	}
 	auto_log_info("Let's unlock the guild.", "green");
 
 	string pref;
