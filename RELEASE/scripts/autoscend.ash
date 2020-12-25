@@ -1,4 +1,4 @@
-since r20555;	//min mafia revision needed to run this script. Last update: Support retrocape in the Maximizer.
+since r20568;	//min mafia revision needed to run this script. Last update: Maximizer bonus keyword
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -639,6 +639,11 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[etched hourglass], 1, 0);
 		}
 
+		if((storage_amount($item[mafia thumb ring]) > 0) && auto_is_valid($item[mafia thumb ring]))
+		{
+			pullXWhenHaveY($item[mafia thumb ring], 1, 0);
+		}
+
 		if((storage_amount($item[can of rain-doh]) > 0) && glover_usable($item[Can Of Rain-Doh]) && (pullXWhenHaveY($item[can of Rain-doh], 1, 0)))
 		{
 			if(item_amount($item[Can of Rain-doh]) > 0)
@@ -763,11 +768,6 @@ int handlePulls(int day)
 		if(auto_have_skill($skill[Summon Smithsness]))
 		{
 			pullXWhenHaveY($item[hand in glove], 1, 0);
-		}
-		else
-		{
-			//pullXWhenHaveY(<smithsWeapon>, 1, 0);
-			//Possibly pull other smiths gear?
 		}
 
 		if((auto_my_path() != "Heavy Rains") && (auto_my_path() != "License to Adventure") && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))

@@ -181,6 +181,10 @@ string defaultMaximizeStatement()
 	}
 	
 	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+	if(my_primestat() != $stat[Moxie])
+		res += ",mox";
+
+
 	if(my_class() == $class[Vampyre])
 	{
 		res += ",0.8hp,3hp regen";
@@ -199,7 +203,7 @@ string defaultMaximizeStatement()
 		}
 		else
 		{
-			res += ",1.5weapon damage,0.75weapon damage percent,1.5elemental damage";
+			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
 		}
 	}
 
@@ -215,8 +219,7 @@ string defaultMaximizeStatement()
 	{
 		res += ",plumber,-ml";
 	}
-
-	if(!in_zelda() && ((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean())))
+	else if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
 		res += ",10exp,5" + my_primestat() + " experience percent";
 	}
@@ -289,12 +292,14 @@ void resetMaximize()
 	}
 }
 
+void addBonusToMaximize(item it, int amt)
+{
+	if(possessEquipment(it) && auto_can_equip(it))
+		addToMaximize("+" + amt + "bonus " + it);
+}
+
 void finalizeMaximize()
 {
-	if(auto_wantToEquipPowerfulGlove())
-	{
-		auto_forceEquipPowerfulGlove();
-	}
 	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none])
 	{
 		// Save the first 8 sausage goblins for delay burning
@@ -309,6 +314,17 @@ void finalizeMaximize()
 			removeFromMaximize("-equip " + toEquip);
 			addToMaximize("+equip " + toEquip);
 		}
+	}
+	if(auto_wantToEquipPowerfulGlove())
+	{
+		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
+	}
+	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
+	addBonusToMaximize($item[Mr. Screege's spectacles], 100); // meat stuff
+	if(have_effect($effect[blood bubble]) == 0)
+	{
+		// blocks first hit, but doesn't stack with blood bubble
+		addBonusToMaximize($item[Eight Days a Week Pill Keeper], 100);
 	}
 	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
