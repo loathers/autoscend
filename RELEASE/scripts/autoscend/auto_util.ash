@@ -4518,6 +4518,33 @@ location solveDelayZone()
 	return burnZone;
 }
 
+boolean allowSoftblockDelay()
+{
+	return get_property("auto_delayLastLevel").to_int() < my_level();
+}
+
+boolean canBurnDelay(location loc)
+{
+	// TODO: Add Digitize (Portscan?) & LOV Enamorang
+	if (!zone_delay(loc)._boolean || !allowSoftblockDelay())
+	{
+		return false;
+	}
+	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
+	{
+		return true;
+	}
+	else if (auto_haveVotingBooth() && (get_property("_voteFreeFights").to_int() < 3 || get_property("_voteMonster").to_monster() == $monster[angry ghost]))
+	{
+		return true;
+	}
+	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic()))
+	{
+		return true;
+	}
+	return false;
+}
+
 boolean auto_is_valid(item it)
 {
 	if(!glover_usable(it))

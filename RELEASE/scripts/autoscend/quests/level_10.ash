@@ -212,6 +212,11 @@ boolean L10_ground()
 		return false;
 	}
 
+	if (canBurnDelay($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+	{
+		return false;
+	}
+
 	auto_log_info("Castle Ground Floor, boring!", "blue");
 	set_property("choiceAdventure672", 3); // There's No Ability Like Possibility: Skip
 	set_property("choiceAdventure673", 1); // Putting Off Is Off-Putting: Very Overdue Library Book then Skip
@@ -363,4 +368,13 @@ boolean L10_holeInTheSkyUnlock()
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
 	return true;
+}
+
+boolean L10_rainOnThePlains()
+{
+	if (L10_plantThatBean() || L10_airship() || L10_basement() || L10_ground() || L10_topFloor() || L10_holeInTheSkyUnlock())
+	{
+		return true;
+	}
+	return false;
 }
