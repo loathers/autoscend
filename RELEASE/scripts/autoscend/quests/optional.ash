@@ -393,6 +393,11 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
+	if (!($strings[Picky, Community Service, Low Key Summer] contains auto_my_path())
+		&& get_property('auto_skipUnlockGuild').to_boolean())
+	{
+		return false;
+	}
 	auto_log_info("Let's unlock the guild.", "green");
 
 	string pref;
