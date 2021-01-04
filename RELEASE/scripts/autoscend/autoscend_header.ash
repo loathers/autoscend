@@ -727,7 +727,7 @@ boolean L4_batCave();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_05.ash
-boolean L5_waitForSemirare();
+boolean shouldWaitForSemirareL5();
 boolean L5_getEncryptionKey();
 boolean L5_findKnob();
 boolean L5_haremOutfit();

@@ -4,7 +4,7 @@
 //step1 == used [Cobb's Knob map] with [Knob Goblin encryption key] to unlock internal zones.
 //finished == killed the king. you still need to visit council afterwards to get rewarded.
 
-boolean L5_waitForSemirare()
+boolean shouldWaitForSemirareL5()
 {
 	//Defer if we can line up with the first semi-rare window to get a lunchbox.
 	if(my_turncount() > 70)
@@ -34,7 +34,7 @@ boolean L5_getEncryptionKey()
 		visit_url("guild.php?place=challenge");
 		return true;
 	}
-	if(L5_waitForSemirare())
+	if(shouldWaitForSemirareL5())
 	{
 		return false;
 	}
