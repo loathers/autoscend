@@ -2715,6 +2715,7 @@ boolean doTasks()
 	if(LX_artistQuest())				return true;
 	if(LX_galaktikSubQuest())			return true;
 	if(L9_leafletQuest())				return true;
+	if(L5_findKnob())					return true;		//use encryption key to unlock possible delay zone if you have it
 	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
 	if (LM_edTheUndying())				return true;
