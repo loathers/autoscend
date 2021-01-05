@@ -4,25 +4,6 @@
 //step1 == used [Cobb's Knob map] with [Knob Goblin encryption key] to unlock internal zones.
 //finished == killed the king. you still need to visit council afterwards to get rewarded.
 
-boolean shouldWaitForSemirareL5()
-{
-	//Defer if we can line up with the first semi-rare window to get a lunchbox.
-	if(my_turncount() > 70)
-	{
-		return false;
-	}
-	if(!contains_text(get_counters("Fortune Cookie", 0, 80 - my_turncount()), "Fortune Cookie"))
-	{
-		return false;		//Only wait if we don't have an exact fortune cookie counter
-	}
-	if($location[The Outskirts of Cobb's Knob].turns_spent > 9)
-	{
-		return false;		//already done with the zone
-	}
-	
-	return true;
-}
-
 boolean L5_getEncryptionKey()
 {
 	if (internalQuestStatus("questL05Goblin") != 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
@@ -34,7 +15,10 @@ boolean L5_getEncryptionKey()
 		visit_url("guild.php?place=challenge");
 		return true;
 	}
-	if(shouldWaitForSemirareL5())
+
+	// Defer if we can line up with the first semi-rare window to get a lunchbox
+	// Only if we don't have a fortune cookie counter
+	if (my_turncount() < 70 && !contains_text(get_counters("Fortune Cookie", 0, 80 - my_turncount()), "Fortune Cookie") && $location[The Outskirts of Cobb's Knob].turns_spent < 10)
 	{
 		return false;
 	}
