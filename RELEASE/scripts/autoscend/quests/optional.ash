@@ -452,6 +452,11 @@ boolean LX_guildUnlock()
 			return false;
 		}
 
+		if (canBurnDelay(loc)) {
+			// All guild unlock choice adventures have a delay of 5 adventures.
+			return false;
+		}
+
 		autoAdv(1, loc);
 		if (internalQuestStatus(pref) == 1)
 		{

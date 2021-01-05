@@ -1360,6 +1360,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
 boolean auto_faceCheck(string face);
 location solveDelayZone();
+boolean allowSoftblockDelay();
+boolean canBurnDelay(location loc);
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
 boolean auto_is_valid(skill sk);
