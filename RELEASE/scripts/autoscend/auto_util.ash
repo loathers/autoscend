@@ -4534,7 +4534,7 @@ boolean canBurnDelay(location loc)
 	{
 		return true;
 	}
-	else if (auto_haveVotingBooth() && (get_property("_voteFreeFights").to_int() < 3 || get_property("_voteMonster").to_monster() == $monster[angry ghost]))
+	else if (auto_haveVotingBooth() && get_property("_voteFreeFights").to_int() < 3)
 	{
 		return true;
 	}
