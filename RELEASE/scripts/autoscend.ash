@@ -2812,7 +2812,6 @@ boolean doTasks()
 	if(L12_farm())						return true;
 	if(L11_getBeehive())				return true;
 	if(L12_finalizeWar())				return true;
-	if(L12_lastDitchFlyer())			return true;
 
 	if(!inAftercore() && (my_inebriety() < inebriety_limit()) && !get_property("_gardenHarvested").to_boolean())
 	{
@@ -2836,6 +2835,7 @@ boolean doTasks()
 	
 	if(LX_getDigitalKey()) 				return true;
 	if(LX_getStarKey()) 				return true;
+	if(L12_lastDitchFlyer())			return true;
 	if(L13_towerNSContests())			return true;
 	if(L13_towerNSHedge())				return true;
 	if(L13_sorceressDoor())				return true;
