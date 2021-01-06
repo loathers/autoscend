@@ -184,6 +184,8 @@ void initializeSettings() {
 	remove_property("auto_shenZonesTurnsSpent");
 	remove_property("auto_lastShenTurn");
 	
+	set_property("auto_delayLastLevel", 0);
+
 	set_property("auto_sniffs", "");
 	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
@@ -2822,6 +2824,14 @@ boolean doTasks()
 
 	if (L12_clearBattlefield())			return true;
 	if(LX_koeInvaderHandler())			return true;
+
+	// release the softblock on delay burning
+	if(allowSoftblockDelay())
+	{
+		auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
+		set_property("auto_delayLastLevel", my_level());
+		return true;
+	}
 	
 	//release the softblock on quests that are waiting for shen quest
 	if(allowSoftblockShen())

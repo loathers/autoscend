@@ -303,17 +303,8 @@ boolean auto_saberDailyUpgrade(int day)
 	{
 		return auto_saberChoice("res");
 	}
-
-	if(day == 1)
-	{
-		return auto_saberChoice("ml");
-	}
-	else
-	{
-		return auto_saberChoice("res");
-	}
-
-	return false;
+	
+	return auto_saberChoice("fam");
 }
 
 monster auto_saberCurrentMonster()

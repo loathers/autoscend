@@ -23,6 +23,11 @@ boolean L5_getEncryptionKey()
 		return false;
 	}
 
+	if (canBurnDelay($location[The Outskirts of Cobb's Knob]))
+	{
+		return false;
+	}
+
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Retractable Toes]) && (item_amount($item[Cocktail Mushroom]) == 0))

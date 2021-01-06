@@ -179,14 +179,26 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 	{
 		// Assume we're going to start Shen today, tomorrow, or two days from now.
 		boolean[location] zones_to_avoid;
-
-		for (int d=0; d<3; d++)
+		if (my_level() < 11)
 		{
-			foreach z, _ in shenSnakeLocations(d+my_daycount(), 0)
+
+			for (int day=0; day<3; day++)
+			{
+				foreach z, _ in shenSnakeLocations(day+my_daycount(), 0)
+				{
+					zones_to_avoid[z] = true;
+				}
+
+			}
+		}
+		else
+		{
+			// if we're already level 11, well either be starting ASAP
+			// or leaving it until day 2 if we're on day 1
+			foreach z, _ in shenSnakeLocations(max(2, my_daycount()), 0)
 			{
 				zones_to_avoid[z] = true;
 			}
-
 		}
 		return zones_to_avoid;
 	}
@@ -227,8 +239,11 @@ boolean LX_unlockHiddenTemple() {
 	if (item_amount($item[Spooky Sapling]) == 0 && my_meat() < 100) {
 		return false;
 	}
-	// Arboreal Respite choice adventure has a delay of 5 adventures.
-	// TODO: add a check for delay burning
+	if (canBurnDelay($location[The Spooky Forest]))
+	{
+		// Arboreal Respite choice adventure has a delay of 5 adventures.
+		return false;
+	}
 	auto_log_info("Attempting to make the Hidden Temple less hidden.", "blue");
 	pullXWhenHaveY($item[Spooky-Gro Fertilizer], 1, 0);
 	if (autoAdv($location[The Spooky Forest])) {
@@ -505,7 +520,12 @@ boolean LX_getLadySpookyravensDancingShoes() {
 		return false;
 	}
 
-	// Louvre It or Leave It choice adventure has a delay of 5 adventures.
+	if (canBurnDelay($location[The Haunted Gallery]))
+	{
+		// Louvre It or Leave It choice adventure has a delay of 5 adventures.
+		return false;
+	}
+
 	backupSetting("louvreDesiredGoal", "7"); // lets just let mafia automate this for us.
 	auto_log_info("Spookyraven: Gallery", "blue");
 
@@ -525,7 +545,13 @@ boolean LX_getLadySpookyravensPowderPuff() {
 	if (item_amount($item[Lady Spookyraven\'s Powder Puff]) > 0) {
 		return false;
 	}
-	// Never Gonna Make You Up choice adventure has a delay of 5 adventures.
+
+	if (canBurnDelay($location[The Haunted Bathroom]))
+	{
+		// Never Gonna Make You Up choice adventure has a delay of 5 adventures.
+		return false;
+	}
+
 	auto_log_info("Spookyraven: Bathroom", "blue");
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
@@ -1500,6 +1526,12 @@ boolean L11_mauriceSpookyraven()
 			return false;
 		}
 
+		if (canBurnDelay($location[The Haunted Ballroom]))
+		{
+			// We'll All Be Flat choice adventure has a delay of 5 adventures.
+			return false;
+		}
+
 		return autoAdv($location[The Haunted Ballroom]);
 	}
 	if(item_amount($item[recipe: mortar-dissolving solution]) == 0)
@@ -2010,6 +2042,12 @@ boolean L11_shenCopperhead()
 			else if (goal == $location[The Smut Orc Logging Camp] && (L9_ed_chasmStart() || L9_chasmBuild()))
 			{
 				return true;
+			}
+
+			if (canBurnDelay(goal))
+			{
+				// Snakes have variable delay of 3-5 adventures but we can burn at least 3 of that.
+				return false;
 			}
 
 			return autoAdv(goal);
