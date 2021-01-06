@@ -2717,7 +2717,7 @@ boolean doTasks()
 	if(LX_artistQuest())				return true;
 	if(LX_galaktikSubQuest())			return true;
 	if(L9_leafletQuest())				return true;
-	if(L5_findKnob())					return true;
+	if(L5_findKnob())					return true;		//use encryption key to unlock possible delay zone if you have it
 	if(L12_sonofaPrefix())				return true;
 	if(LX_burnDelay())					return true;
 	if (LM_edTheUndying())				return true;
@@ -2736,7 +2736,6 @@ boolean doTasks()
 		if(LX_bitchinMeatcar())			return true;		//buy the meatcar before switching signs with the rune spoon
 	}
 	if(LX_unlockDesert())				return true;
-	if(L5_getEncryptionKey())			return true;
 	if(LX_unlockPirateRealm())			return true;
 	if(handleRainDoh())				return true;
 	if(routineRainManHandler())			return true;
@@ -2752,10 +2751,9 @@ boolean doTasks()
 	if(L2_mosquito())					return true;
 	if(LX_unlockHiddenTemple())	return true;
 	if(L6_dakotaFanning())				return true;
-	if(L5_haremOutfit())				return true;
 	if(LX_lockPicking())					return true;
 	if(LX_fatLootToken())				return true;
-	if(L5_goblinKing())					return true;
+	if(L5_slayTheGoblinKing())			return true;
 	if(LX_islandAccess())				return true;
 
 	if(in_hardcore() && isGuildClass())
