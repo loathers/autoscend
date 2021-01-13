@@ -1271,7 +1271,8 @@ boolean auto_voteMonster(boolean freeMon, location loc, string option)
 	{
 		return false;
 	}
-	if(!possessEquipment($item[&quot;I voted!&quot; sticker]) || !auto_is_valid($item[&quot;I voted!&quot; sticker]))
+	// is_unrestricted instead of auto_is_valid as the monsters can be encountered in g-lover
+	if(!possessEquipment($item[&quot;I voted!&quot; sticker]) || !is_unrestricted($item[&quot;I voted!&quot; sticker]))
 	{
 		return false;
 	}
