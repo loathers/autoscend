@@ -1298,7 +1298,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && (auto_saberChargesAvailable() > 0))
 	{
 		// can't use the force on uncopyable monsters
-		if(target == $monster[none] || target.copyable || noForceDrop)
+		if(target == $monster[none] || (target.copyable && !noForceDrop))
 		{
 			return auto_combatSaberYR();
 		}
