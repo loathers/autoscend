@@ -1164,7 +1164,8 @@ boolean auto_latteRefill()
 }
 
 boolean auto_haveVotingBooth() {
-	return ((get_property("_voteToday").to_boolean() || get_property("voteAlways").to_boolean()) && auto_is_valid($item[voter registration form]));
+	// is_unrestricted instead of auto_is_valid as the enchatments are usable in g lover.
+	return ((get_property("_voteToday").to_boolean() || get_property("voteAlways").to_boolean()) && is_unrestricted($item[voter registration form]));
 }
 
 boolean auto_voteSetup()
@@ -1195,7 +1196,7 @@ boolean auto_voteSetup(int candidate, int first, int second)
 	{
 		return false;
 	}
-	if(!get_property("_voteToday").to_boolean() && !get_property("voteAlways").to_boolean())
+	if(!auto_haveVotingBooth())
 	{
 		return false;
 	}
@@ -1270,7 +1271,8 @@ boolean auto_voteMonster(boolean freeMon, location loc, string option)
 	{
 		return false;
 	}
-	if(!possessEquipment($item[&quot;I voted!&quot; sticker]))
+	// is_unrestricted instead of auto_is_valid as the monsters can be encountered in g-lover
+	if(!possessEquipment($item[&quot;I voted!&quot; sticker]) || !is_unrestricted($item[&quot;I voted!&quot; sticker]))
 	{
 		return false;
 	}
