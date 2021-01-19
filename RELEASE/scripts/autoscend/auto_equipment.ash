@@ -300,9 +300,10 @@ void addBonusToMaximize(item it, int amt)
 
 void finalizeMaximize()
 {
-	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none])
+	if (auto_haveKramcoSausageOMatic() && ((auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none]) || get_property("mappingMonsters").to_boolean()))
 	{
 		// Save the first 8 sausage goblins for delay burning
+		// also don't equip Kramco when using Map the Monsters as sausage goblins override the NC
 		addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
 	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
