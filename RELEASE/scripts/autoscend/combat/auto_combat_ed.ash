@@ -384,13 +384,60 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if (canUse($skill[Curse Of Vacation]) && get_property("auto_edStatus") == "dying")
+	if(!contains_text(combatState, "banishercheck") && auto_wantToBanish(enemy, my_location()))
 	{
-		if (auto_wantToBanish(enemy, my_location()) && !(auto_banishesUsedAt(my_location()) contains "curse of vacation"))
+		string combatAction = banisherCombatString(enemy, my_location(), true);
+		if(combatAction != "")
 		{
-			handleTracker(enemy, $skill[Curse of Vacation], "auto_banishes");
-			return useSkill($skill[Curse Of Vacation]);
+			set_property("auto_combatHandler", combatState + "(banisher)");
+			if(index_of(combatAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_banishes");
+			}
+			else if(index_of(combatAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_banishes");
+			}
+			else
+			{
+				auto_log_warning("Unable to track banisher behavior: " + combatAction, "red");
+			}
+			return combatAction;
 		}
+		set_property("auto_combatHandler", combatState + "(banishercheck)");
+		combatState += "(banishercheck)";
+	}
+
+	if (!contains_text(combatState, "replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	{
+		string combatAction = replaceMonsterCombatString(enemy, true);
+		if(combatAction != "")
+		{
+			set_property("auto_combatHandler", combatState + "(replacer)");
+			if(index_of(combatAction, "skill") == 0)
+			{
+				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])
+				{
+					handleTracker($skill[CHEAT CODE: Replace Enemy], "auto_powerfulglove");
+				}
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_replaces");
+			}
+			else if(index_of(combatAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+			}
+			else
+			{
+				auto_log_warning("Unable to track replacer behavior: " + combatAction, "red");
+			}
+			return combatAction;
+		}
+		else
+		{
+			auto_log_warning("Wanted a replacer but we can not find one.", "red");
+		}
+		set_property("auto_combatHandler", combatState + "(replacercheck)");
+		combatState += "(replacercheck)";
 	}
 
 	if (canUse($item[Disposable Instant Camera]) && $monsters[Bob Racecar, Racecar Bob] contains enemy)

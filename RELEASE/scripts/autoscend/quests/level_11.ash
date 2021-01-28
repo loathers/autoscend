@@ -107,9 +107,9 @@ desert_buff_record desertBuffs()
 int shenItemsReturned()
 {
 	int progress = internalQuestStatus("questL11Shen");
-	if (progress < 1) return 0;
-	if (progress < 3) return 1;
-	else if (progress < 5) return 2;
+	if (progress < 3) return 0;
+	if (progress < 5) return 1;
+	else if (progress < 7) return 2;
 	else return 3;
 }
 

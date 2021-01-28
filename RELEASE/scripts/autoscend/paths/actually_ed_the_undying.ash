@@ -1421,7 +1421,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// start the macguffin quest, conveniently the black forest is a 1.4 Ka zone.
-	if (L11_blackMarket() || L11_forgedDocuments() || L11_mcmuffinDiary())
+	if (L11_blackMarket() || L11_forgedDocuments() || L11_mcmuffinDiary() || L11_shenStartQuest())
 	{
 		return true;
 	}
