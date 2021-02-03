@@ -1,4 +1,4 @@
-since r20568;	//min mafia revision needed to run this script. Last update: Maximizer bonus keyword
+since r20623;	// min mafia revision needed to run this script. Last update: Rename crimbo20 cafe consumables & lower ranges, mark as Unspaded as wiki appears incorrect
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -202,6 +202,7 @@ void initializeSettings() {
 	set_property("auto_junkspritesencountered", 0);
 	set_property("auto_openedziggurat", false);
 	remove_property("auto_minedCells");
+	remove_property("auto_boughtCommerceGhostItem");
 	beehiveConsider();
 
 	eudora_initializeSettings();
@@ -2581,6 +2582,7 @@ boolean doTasks()
 	oldPeoplePlantStuff();
 	use_barrels();
 	auto_latteRefill();
+	auto_buyCrimboCommerceMallItem();
 	houseUpgrade();
 
 	//This just closets stuff so G-Lover does not mess with us.

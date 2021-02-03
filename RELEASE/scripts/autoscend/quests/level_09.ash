@@ -766,7 +766,7 @@ boolean L9_twinPeak()
 		}
 	}
 
-	if (auto_canCamelSpit() && auto_canMapTheMonsters())
+	if ($location[Twin Peak].turns_spent != 0 && auto_canCamelSpit() && auto_canMapTheMonsters())
 	{
 		if (adjustForYellowRayIfPossible($monster[bearpig topiary animal]))
 		{
