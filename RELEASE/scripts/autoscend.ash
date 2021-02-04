@@ -202,6 +202,7 @@ void initializeSettings() {
 	set_property("auto_junkspritesencountered", 0);
 	set_property("auto_openedziggurat", false);
 	remove_property("auto_minedCells");
+	remove_property("auto_shinningStarted");
 	remove_property("auto_boughtCommerceGhostItem");
 	beehiveConsider();
 

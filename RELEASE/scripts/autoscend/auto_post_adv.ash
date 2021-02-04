@@ -1024,6 +1024,11 @@ boolean auto_post_adventure()
 		auto_log_info("Fought " + get_property("auto_modernzmobiecount") + " modern zmobies.", "blue");
 	}
 
+	if (get_property("lastEncounter") == "Welcome to the Great Overlook Lodge")
+	{
+		set_property("auto_shinningStarted", true);
+	}
+
 	if(have_effect($effect[Disavowed]) > 0)
 	{
 		if(get_property("_auto_bondBriefing") != "finished")
