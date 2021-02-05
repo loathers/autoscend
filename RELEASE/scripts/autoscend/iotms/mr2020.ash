@@ -732,15 +732,15 @@ boolean auto_handleRetrocape()
 	string tempHero = hero;
 	if (hero == "muscle")
 	{
-		temphero = "vampire";
+		tempHero = "vampire";
 	}
 	if (hero == "mysticality")
 	{
-		temphero = "heck";
+		tempHero = "heck";
 	}
 	if (hero == "moxie")
 	{
-		temphero = "robot";
+		tempHero = "robot";
 	}
 
 	// avoid uselessly reconfiguring the cape
@@ -754,4 +754,37 @@ boolean auto_handleRetrocape()
 		equip($item[unwrapped knock-off retro superhero cape]); // already configured, just equip
 	}
 	return get_property("retroCapeSuperhero") == tempHero && get_property("retroCapeWashingInstructions") == tag && have_equipped($item[unwrapped knock-off retro superhero cape]);
+}
+
+boolean auto_buyCrimboCommerceMallItem()
+{
+	if (!auto_is_valid($familiar[Ghost of Crimbo Commerce]))
+	{
+		return false;
+	}
+
+	string ghostItemString = get_property("commerceGhostItem");
+	if (ghostItemString == "")
+	{
+		// haven't triggered the greedy ghost message at least once yet.
+		return false;
+	}
+
+	if (get_property("auto_boughtCommerceGhostItem") == ghostItemString)
+	{
+		// already bought the item.
+		return false;
+	}
+
+	auto_log_info(`Commerce Ghost wants us to buy a {ghostItemString} which will give us roughly {my_level()*25} substats in the next combat with it.`);
+	string output = cli_execute_output(`buy from mall {ghostItemString}`);
+	if (!output.contains_text("Purchases complete."))
+	{
+		abort(`Something went wrong buying {ghostItemString} from the mall.`);
+	}
+	else
+	{
+		set_property("auto_boughtCommerceGhostItem", ghostItemString);
+	}
+	return true;
 }

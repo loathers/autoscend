@@ -409,6 +409,7 @@ void cartographyChoiceHandler(int choice);
 boolean auto_hasRetrocape();
 boolean auto_configureRetrocape(string hero, string tag);
 boolean auto_handleRetrocape();
+boolean auto_buyCrimboCommerceMallItem();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

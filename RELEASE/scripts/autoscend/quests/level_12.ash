@@ -1128,31 +1128,7 @@ boolean L12_sonofaBeach()
 
 	if(auto_my_path() != "Live. Ascend. Repeat.")
 	{
-		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
-		{
-			if((item_amount($item[Ass-Stompers of Violence]) > 0) && (equipped_item($slot[acc1]) != $item[Ass-Stompers of Violence]) && can_equip($item[Ass-Stompers of Violence]))
-			{
-				equip($slot[acc1], $item[Ass-Stompers of Violence]);
-			}
-			else
-			{
-				equip($slot[acc1], $item[bejeweled pledge pin]);
-			}
-		}
-		if(item_amount($item[portable cassette player]) > 0)
-		{
-			equip($slot[acc2], $item[portable cassette player]);
-		}
-		if(numeric_modifier("Combat Rate") <= 9.0)
-		{
-			if(possessEquipment($item[Carpe]))
-			{
-				equip($slot[Back], $item[Carpe]);
-			}
-		}
-		asdonBuff($effect[Driving Obnoxiously]);
-
-		if(numeric_modifier("Combat Rate") < 0.0)
+		if (providePlusCombat(25, true, true) < 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
 			equipBaseline();

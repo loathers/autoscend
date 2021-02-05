@@ -333,7 +333,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Inscrutable Gaze], 30, 1, 1);
 		buffMaintain($effect[Big], 50, 1, 1);
 
-		boolean [skill] toCast = $skills[Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Communism!, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Prevent Scurvy and Sobriety, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
+		boolean [skill] toCast = $skills[Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Bowl Full of Jelly, Chubby and Plump, Communism!, Eye and a Twist, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Prevent Scurvy and Sobriety, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
 
 		foreach sk in toCast
 		{
@@ -1022,6 +1022,11 @@ boolean auto_post_adventure()
 	{
 		set_property("auto_modernzmobiecount", "" + (get_property("auto_modernzmobiecount").to_int() + 1));
 		auto_log_info("Fought " + get_property("auto_modernzmobiecount") + " modern zmobies.", "blue");
+	}
+
+	if (get_property("lastEncounter") == "Welcome to the Great Overlook Lodge")
+	{
+		set_property("auto_shinningStarted", true);
 	}
 
 	if(have_effect($effect[Disavowed]) > 0)
