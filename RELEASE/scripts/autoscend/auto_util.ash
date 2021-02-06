@@ -8,9 +8,7 @@ boolean autoMaximize(string req, boolean simulate)
 		tcrs_maximize_with_items(req);
 #		user_confirm("Beep");
 	}
-	backupSetting("logPreferenceChange", "false");
 	boolean didmax = maximize(req, simulate);
-	restoreSetting("logPreferenceChange");
 	return didmax;
 }
 
@@ -22,9 +20,7 @@ boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 		tcrs_maximize_with_items(req);
 #		user_confirm("Beep");
 	}
-	backupSetting("logPreferenceChange", "false");
 	boolean didmax = maximize(req, maxPrice, priceLevel, simulate);
-	restoreSetting("logPreferenceChange");
 	return didmax;
 }
 
@@ -36,9 +32,7 @@ aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulat
 #		user_confirm("Beep");
 		tcrs_maximize_with_items(req);
 	}
-	backupSetting("logPreferenceChange", "false");
 	aggregate maxrecord = maximize(req, maxPrice, priceLevel, simulate, includeEquip);
-	restoreSetting("logPreferenceChange");
 	return maxrecord;
 }
 
@@ -5744,9 +5738,7 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	//but I am labeling them seperate from buffs in case we ever need to split this function.
 	
 	//if you have something that reduces the cost of casting buffs, wear it now.
-	backupSetting("logPreferenceChange", "false");
 	maximize("-mana cost, -tie", false);
-	restoreSetting("logPreferenceChange");
 	
 	//Passive damage
 	if(passive_dmg_allowed)

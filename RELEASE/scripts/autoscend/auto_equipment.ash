@@ -421,9 +421,7 @@ float simValue(string modifier)
 void equipMaximizedGear()
 {
 	finalizeMaximize();
-	backupSetting("logPreferenceChange", "false");
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
-	restoreSetting("logPreferenceChange");
 }
 
 void equipOverrides()
@@ -578,9 +576,7 @@ void equipRollover()
 	if(my_familiar() == $familiar[none] && auto_have_familiar($familiar[Mosquito]))
 		to_max += ",switch Mosquito";
 
-	backupSetting("logPreferenceChange", "false");
 	maximize(to_max, false);
-	restoreSetting("logPreferenceChange");
 
 	if(!in_hardcore())
 	{
