@@ -5,7 +5,7 @@ void hr_initializeSettings()
 		#Rain Man (Heavy Rains) Related settings
 		set_property("auto_holeinthesky", false);
 		set_property("auto_mountainmen", "");
-		set_property("auto_ninjasnowmanassassin", "");
+		set_property("auto_ninjasnowmanassassin", false);	//are we done with ninja snowman assassins
 		set_property("auto_orcishfratboyspy", "");
 		set_property("auto_warhippyspy", "");
 
@@ -22,77 +22,66 @@ void hr_initializeSettings()
 
 boolean routineRainManHandler()
 {
-	if(!have_skill($skill[Rain Man]) || (auto_my_path() != "Heavy Rains"))
+	if(!have_skill($skill[Rain Man]))
 	{
 		return false;
 	}
-	
-	boolean want_to_rainman = false;
-	if((my_rain() > (92 - (7 * (my_daycount() - 1)))) && (have_effect($effect[ultrahydrated]) == 0))
+	if(my_rain() < 50)
 	{
-		want_to_rainman = true;
+		return false;	//not enough rain to use skill
 	}
-	//stomach and liver are full, and 1 adv is left before we are done for the day
-	if(my_adventures() == (1 + auto_advToReserve()) && my_rain() >= 50 && my_fullness() == fullness_limit() && my_inebriety() == inebriety_limit())
+	if(my_rain() < 80 && my_adventures() > (1 + auto_advToReserve()) && inebriety_left() > 0 && stomach_left() > 0)
 	{
-		want_to_rainman = true;
+		return false;	//if we got plenty of adventures left then delay using rain man until rain meter reaches 80
 	}
 	
-	if(want_to_rainman)
+	if(my_daycount() == 2 && (!get_property("chateauAvailable").to_boolean() || get_property("chateauMonster") != "lobsterfrogman"))
 	{
-		if(get_property("auto_mountainmen") == "")
+		return rainManSummon($monster[lobsterfrogman], true, true);
+	}
+	if(get_property("auto_mountainmen") == "")
+	{
+		set_property("auto_mountainmen", "1");
+		return rainManSummon($monster[mountain man], true, false);
+	}
+	if(internalQuestStatus("questL08Trapper") == 1 && needOre())
+	{
+		return rainManSummon($monster[mountain man], false, false);
+	}
+	if(!get_property("auto_ninjasnowmanassassin").to_boolean())
+	{
+		return rainManSummon($monster[ninja snowman assassin], true, false);
+	}
+	if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == "") && !get_property("auto_hippyInstead").to_boolean())
+	{
+		return rainManSummon($monster[orcish frat boy spy], false, false);
+	}
+	if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_warhippyspy") == "") && get_property("auto_hippyInstead").to_boolean())
+	{
+		return rainManSummon($monster[war hippy spy], false, false);
+	}
+	if(needStarKey())
+	{
+		if(item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
 		{
-			set_property("auto_mountainmen", "1");
-			return rainManSummon("mountain man", true, false);
+			return rainManSummon($monster[skinflute], true, false);
 		}
-
-		if (internalQuestStatus("questL08Trapper") < 2)
+		else if((item_amount($item[star chart]) == 0))
 		{
-			return rainManSummon("mountain man", false, false);
-		}
-
-		if(get_property("auto_ninjasnowmanassassin") == "")
-		{
-			return rainManSummon("ninja snowman assassin", true, false);
-		}
-
-		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == "") && !get_property("auto_hippyInstead").to_boolean())
-		{
-			return rainManSummon("orcish frat boy spy", false, false);
-		}
-		
-		if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_warhippyspy") == "") && get_property("auto_hippyInstead").to_boolean())
-		{
-			return rainManSummon("war hippy spy", false, false);
-		}
-		
-		if(needStarKey())
-		{
-			if(item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
-			{
-				return rainManSummon("skinflute", true, false);
-			}
-			else if((item_amount($item[star chart]) == 0))
-			{
-				return rainManSummon("the astronomer", false, false);
-			}
-		}
-		if(needDigitalKey())
-		{
-			if (get_property("sidequestNunsCompleted") != "none" && my_rain() > 92)
-			{
-				if(whitePixelCount() < 30 && item_amount($item[digital key]) == 0)
-				{
-					return rainManSummon("ghost", false, false);
-				}
-			}
-		}
-
-		if(my_daycount() < 3)
-		{
-			auto_log_info("I have nothing left to rain man, maybe we are getting ready for make it rain?");
+			return rainManSummon($monster[astronomer], false, false);
 		}
 	}
+	if(needDigitalKey())
+	{
+		if (get_property("sidequestNunsCompleted") != "none" && my_rain() > 92)
+		{
+			if(whitePixelCount() < 30 && item_amount($item[digital key]) == 0)
+			{
+				return rainManSummon($monster[ghost], false, false);
+			}
+		}
+	}
+
 	return false;
 }
 
@@ -141,13 +130,6 @@ void hr_initializeDay(int day)
 			}
 			set_property("auto_day1_skills", "finished");
 			visit_url("main.php");
-		}
-		else if((day == 2) && (my_rain() > 80))
-		{
-			if((get_property("chateauAvailable").to_boolean() == false) || (get_property("chateauMonster") != "lobsterfrogman"))
-			{
-				rainManSummon("lobsterfrogman", true, true);
-			}
 		}
 	}
 }
@@ -293,13 +275,8 @@ boolean doHRSkills()
 	return false;
 }
 
-boolean rainManSummon(string monsterName, boolean copy, boolean wink, string option)
+boolean rainManSummon(monster target, boolean copy, boolean wink)
 {
-	if(my_path() != "Heavy Rains")
-	{
-		return false;
-	}
-
 	if(!have_skill($skill[Rain Man]))
 	{
 		return false;
@@ -312,131 +289,60 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 	{
 		return false;
 	}
-	string mId = 0;
-	if((monsterName == "astronomer") || (monsterName == "the astronomer"))
+
+	if(item_amount($item[richard\'s star key]) == 1 && target == $monster[skinflute])
 	{
-		mId = 184;
+		return false;		//already have the goal, don't summon
 	}
-	if(monsterName == "huge swarm of ghuol whelps")
+	if(target == $monster[astronomer])
 	{
-		mId = 1072;
-	}
-	if(monsterName == "trouser snake")
-	{
-		mId = 179;
-	}
-	if(monsterName == "family jewels")
-	{
-		mId = 180;
-	}
-	if(monsterName == "orcish frat boy spy")
-	{
-		mId = 409;
-	}
-	if(monsterName == "war hippy spy")
-	{
-		mId = 419;
-	}
-	if(monsterName == "morbid skull")
-	{
-		mId = 1269;
-	}
-	if(monsterName == "skinflute")
-	{
-		mId = 353;
-	}
-	if(monsterName == "writing desk")
-	{
-		mId = 405;
-	}
-	if(monsterName == "dirty thieving brigand")
-	{
-		mId = 475;
-	}
-	if(monsterName == "lobsterfrogman")
-	{
-		mId = 529;
-	}
-	if(monsterName == "ghost")
-	{
-		mId = 950;
-	}
-	if(monsterName == "mountain man")
-	{
-		mId = 1153;
-	}
-	if(monsterName == "ninja snowman assassin")
-	{
-		mId = 1185;
+		if(item_amount($item[richard\'s star key]) == 1 || item_amount($item[star chart]) > 0)
+		{
+			return false;		//already have the goal, don't summon
+		}
 	}
 
-	if(mId == 0)
-	{
-		return false;
-	}
-
-	if((item_amount($item[ghost of a necklace]) == 1) && (monsterName == "writing desk"))
-	{
-		#No more writing desks please.
-		return false;
-	}
-	if((item_amount($item[richard\'s star key]) == 1) && (monsterName == "skinflute"))
-	{
-		#already have the goal, don't summon
-		return false;
-	}
-	if((item_amount($item[richard\'s star key]) == 1) && (mId == 184))
-	{
-		#already have the goal, don't summon
-		return false;
-	}
-	if((item_amount($item[star chart]) > 0) && (mId == 184))
-	{
-		#already have the goal, don't summon
-		return false;
-	}
-
-	if((item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && (monsterName == "skinflute"))
+	if((item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && target == $monster[skinflute])
 	{
 		#already have the subgoal, don't summon
 		return false;
 	}
-	if((item_amount($item[digital key]) == 1) && (monsterName == "ghost"))
+	if((item_amount($item[digital key]) == 1) && target == $monster[ghost])
 	{
 		#already have the goal, don't summon
 		return false;
 	}
-	if(whitePixelCount() > 29 && monsterName == "ghost")
+	if(whitePixelCount() > 29 && target == $monster[ghost])
 	{
 		#already have the subgoal, don't summon
 		return false;
 	}
-	if ((get_property("sidequestLighthouseCompleted") != "none" || item_amount($item[barrel of gunpowder]) >= 5) && monsterName == "lobsterfrogman")
+	if ((get_property("sidequestLighthouseCompleted") != "none" || item_amount($item[barrel of gunpowder]) >= 5) && target == $monster[lobsterfrogman])
 	{
 		#already have the subgoal, don't summon
 		return false;
 	}
 	##Handle reject after we satisfy the lobsterfrogman
-	if(monsterName == "ninja snowman assassin")
+	if(target == $monster[ninja snowman assassin])
 	{
 		int count = min(item_amount($item[ninja rope]), 1);
 		count = count + min(item_amount($item[ninja crampons]), 1);
 		count = count + min(item_amount($item[ninja carabiner]), 1);
 		if(count == 3)
 		{
-			set_property("auto_ninjasnowmanassassin", "1");
+			set_property("auto_ninjasnowmanassassin", true);
 			#already have all ninja gear
 			return false;
 		}
 		if(count == 2)
 		{
-			set_property("auto_ninjasnowmanassassin", "1");
+			set_property("auto_ninjasnowmanassassin", true);
 			copy = false;
 		}
 		wink = false;
 	}
 
-	if(monsterName == "orcish frat boy spy")
+	if(target == $monster[orcish frat boy spy])
 	{
 		set_property("auto_orcishfratboyspy", "done");
 		if((item_amount($item[beer helmet]) > 0) || (item_amount($item[bejeweled pledge pin]) > 0) || (item_amount($item[distressed denim pants]) > 0))
@@ -449,7 +355,7 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		}
 	}
 	
-	if(monsterName == "war hippy spy")
+	if(target == $monster[war hippy spy])
 	{
 		set_property("auto_warhippyspy", "done");
 		if((item_amount($item[reinforced beaded headband]) > 0) || (item_amount($item[round purple sunglasses]) > 0) || (item_amount($item[bullet-proof corduroys]) > 0))
@@ -462,82 +368,70 @@ boolean rainManSummon(string monsterName, boolean copy, boolean wink, string opt
 		}
 	}
 
-	if(monsterName == "skinflute")
+	if(target == $monster[skinflute])
 	{
 		if(item_amount($item[star]) >= 8)
 		{
-			monsterName = "trouser snake";
-			mId = 179;
+			target = $monster[trouser snake];
 			copy = false;
 			wink = false;
 		}
 		else if(item_amount($item[line]) >= 7)
 		{
-			monsterName = "family jewels";
-			mId = 180;
+			target = $monster[family jewels];
 			copy = false;
 			wink = false;
 		}
 	}
 
-
-	if((get_property("_raindohCopiesMade").to_int() >= 5) || (item_amount($item[Rain-doh box full of monster]) > 0))
+	
+	if(item_amount($item[Rain-Doh black box]) > 0 ||			//do we actually have a black box to copy with
+	get_property("_raindohCopiesMade").to_int() >= 5 ||			//ran out of uses today
+	item_amount($item[Rain-doh box full of monster]) > 0)		//must discharge the full box before we can use the empty box again
 	{
 		copy = false;
 	}
 
-	set_property("choiceAdventure970", "0");
-
-	if(!canChangeToFamiliar($familiar[Reanimated Reanimator]))
+	//prepare wink/arrow familiar
+	if(get_property("_badlyRomanticArrows") == "1")		//shared property for [Obtuse Angel] && [Reanimated Reanimator]
 	{
-		wink = false;
+		wink = false;		//we already used our only daily wink/arrow today
 	}
-	else
+	if(wink == true)
 	{
-		handleFamiliar("item");
-	}
-
-	if((wink == true) && have_familiar($familiar[Reanimated Reanimator]))
-	{
-		if(get_property("_badlyRomanticArrows") == "1")
+		if(canChangeToFamiliar($familiar[Reanimated Reanimator]))
 		{
-			abort("Trying to arrow/wink a monster but we've already done so today.");
+			handleFamiliar($familiar[Reanimated Reanimator]);
 		}
-#		use_familiar($familiar[Reanimated Reanimator]);
-		handleFamiliar($familiar[Reanimated Reanimator]);
+		else if(canChangeToFamiliar($familiar[Obtuse Angel]))
+		{
+			handleFamiliar($familiar[Obtuse Angel]);
+		}
+		else
+		{
+			wink = false;
+			handleFamiliar("item");
+		}
 	}
 
 	if(copy)
 	{
 		set_property("auto_doCombatCopy", "yes");
 	}
-	auto_log_info("Looking to summon: " + monsterName, "blue");
 
+	//use the rainman to summon a monster
+	auto_log_info("Rain Man will summon: " +target, "blue");
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1";
-	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" + mId + "&option=1&choice2=and+Fight%21";
-	autoAdvBypass(0, pages, $location[Noob Cave], option);
+	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" +target.to_int()+ "&option=1&choice2=and+Fight%21";
+	autoAdvBypass(0, pages, $location[Noob Cave], "");
 
-#	visit_url("runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1", true);
-#	visit_url("choice.php?pwd&whichchoice=970&whichmonster=" + mId + "&option=1&choice2=and+Fight%21");
-#	autoAdv(1, $location[Noob Cave]);
-
-	if(wink == true)
-	{
-		handleFamiliar("item");
-	}
-	if(copy && (item_amount($item[Rain-doh box full of monster]) == 0))
+	if(copy && item_amount($item[Rain-doh box full of monster]) == 0)
 	{
 		abort("Tried to make a copy but failed");
 	}
 
 	return true;
-}
-
-
-boolean rainManSummon(string monsterName, boolean copy, boolean wink)
-{
-	return rainManSummon(monsterName, copy, wink, "");
 }
 
 boolean L13_towerFinalHeavyRains()
@@ -735,7 +629,7 @@ boolean L13_towerFinalHeavyRains()
 	//Fight!
 	//auto_disableAdventureHandling because we don't want maximize, switch familiar, change buffs, or anything else that might break our specific prepwork.
 	acquireHP();
-	acquireMP();
+	acquireMP(200);
 	set_property("auto_disableAdventureHandling", true);		
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);
 	set_property("auto_disableAdventureHandling", false);

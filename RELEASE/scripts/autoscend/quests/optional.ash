@@ -369,8 +369,9 @@ boolean LX_steelOrgan()
 		}
 		boolean wontBeOverdrunk = inebriety_left() >= $item[Steel Margarita].inebriety - 5;
 		boolean notOverdrunk = my_inebriety() <= inebriety_limit();
-		boolean notSavingForBilliards = hasSpookyravenLibraryKey() || get_property("lastSecondFloorUnlock").to_int() == my_ascensions();
-		if((item_amount($item[Steel Margarita]) > 0) && wontBeOverdrunk && notOverdrunk && (notSavingForBilliards || my_inebriety() + $item[Steel Margarita].inebriety <= 10 || my_inebriety() >= 12))
+		boolean notSavingForBilliards = hasSpookyravenLibraryKey() || get_property("lastSecondFloorUnlock").to_int() == my_ascensions() || my_inebriety() + $item[Steel Margarita].inebriety <= 10 || my_inebriety() >= 12;
+		boolean notWaitingKOLHS = !in_kolhs() || my_inebriety() > 9;
+		if(item_amount($item[Steel Margarita]) > 0 && wontBeOverdrunk && notOverdrunk && notSavingForBilliards && notWaitingKOLHS)
 		{
 			autoDrink(1, $item[Steel Margarita]);
 		}
@@ -388,7 +389,12 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if((auto_my_path() == "Nuclear Autumn") || (auto_my_path() == "Pocket Familiars"))
+	if(auto_my_path() == "Nuclear Autumn" || in_pokefam())
+	{
+		return false;
+	}
+	if (!($strings[Picky, Community Service, Low Key Summer] contains auto_my_path())
+		&& get_property('auto_skipUnlockGuild').to_boolean())
 	{
 		return false;
 	}
@@ -443,6 +449,11 @@ boolean LX_guildUnlock()
 		if(internalQuestStatus(pref) < 0)
 		{
 			auto_log_warning("Visiting the guild failed to set guild quest.", "red");
+			return false;
+		}
+
+		if (canBurnDelay(loc)) {
+			// All guild unlock choice adventures have a delay of 5 adventures.
 			return false;
 		}
 
@@ -997,4 +1008,25 @@ boolean LX_NemesisQuest()
 {
 	if (LX_guildUnlock() || LX_acquireEpicWeapon()) { return true; }
 	return false;
+}
+
+void houseUpgrade()
+{
+	//function for upgrading your dwelling.
+	if(isActuallyEd() || my_class() == $class[Vampyre] || auto_my_path() == "Nuclear Autumn")
+	{
+		return;		//paths where dwelling is locked
+	}
+	
+	//if you have no dwelling get_dwelling() returns $item[big rock]
+	if(item_amount($item[Newbiesport&trade; tent]) > 0 && auto_is_valid($item[Newbiesport&trade; tent]) && get_dwelling() == $item[big rock])
+	{
+		use(1, $item[Newbiesport&trade; tent]);
+	}
+	if((get_dwelling() == $item[big rock] || get_dwelling() == $item[Newbiesport&trade; tent]) &&
+	item_amount($item[Frobozz Real-Estate Company Instant House (TM)]) > 0 &&
+	auto_is_valid($item[Frobozz Real-Estate Company Instant House (TM)]))
+	{
+		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
+	}
 }

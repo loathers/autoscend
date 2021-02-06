@@ -1,5 +1,5 @@
 # Gotta get that wig
-Burly Sidekick	item:Mohawk Wig<1
+Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography
 # We also want an amulet, but not badly enough to yellow ray it unless we're backtracking to get it
 Quiet Healer	item:amulet of extreme plot significance<1;quest:questL10Garbage>6
 # Dressing up as a harem girl because we have no shame
@@ -42,3 +42,6 @@ larval filthworm	!familiar:XO Skeleton;!class:Ed
 filthworm drone	!familiar:XO Skeleton;!class:Ed
 filthworm royal guard	!familiar:XO Skeleton;!class:Ed
 Knight (Snake)	class:Ed
+bearpig topiary animal	familiar:Melodramedary
+elephant (meatcar?) topiary animal	familiar:Melodramedary
+spider (duck?) topiary animal	familiar:Melodramedary

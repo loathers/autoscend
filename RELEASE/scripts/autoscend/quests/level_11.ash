@@ -107,9 +107,9 @@ desert_buff_record desertBuffs()
 int shenItemsReturned()
 {
 	int progress = internalQuestStatus("questL11Shen");
-	if (progress < 1) return 0;
-	if (progress < 3) return 1;
-	else if (progress < 5) return 2;
+	if (progress < 3) return 0;
+	if (progress < 5) return 1;
+	else if (progress < 7) return 2;
 	else return 3;
 }
 
@@ -179,14 +179,26 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 	{
 		// Assume we're going to start Shen today, tomorrow, or two days from now.
 		boolean[location] zones_to_avoid;
-
-		for (int d=0; d<3; d++)
+		if (my_level() < 11)
 		{
-			foreach z, _ in shenSnakeLocations(d+my_daycount(), 0)
+
+			for (int day=0; day<3; day++)
+			{
+				foreach z, _ in shenSnakeLocations(day+my_daycount(), 0)
+				{
+					zones_to_avoid[z] = true;
+				}
+
+			}
+		}
+		else
+		{
+			// if we're already level 11, well either be starting ASAP
+			// or leaving it until day 2 if we're on day 1
+			foreach z, _ in shenSnakeLocations(max(2, my_daycount()), 0)
 			{
 				zones_to_avoid[z] = true;
 			}
-
 		}
 		return zones_to_avoid;
 	}
@@ -227,8 +239,11 @@ boolean LX_unlockHiddenTemple() {
 	if (item_amount($item[Spooky Sapling]) == 0 && my_meat() < 100) {
 		return false;
 	}
-	// Arboreal Respite choice adventure has a delay of 5 adventures.
-	// TODO: add a check for delay burning
+	if (canBurnDelay($location[The Spooky Forest]))
+	{
+		// Arboreal Respite choice adventure has a delay of 5 adventures.
+		return false;
+	}
 	auto_log_info("Attempting to make the Hidden Temple less hidden.", "blue");
 	pullXWhenHaveY($item[Spooky-Gro Fertilizer], 1, 0);
 	if (autoAdv($location[The Spooky Forest])) {
@@ -414,19 +429,27 @@ boolean LX_unlockManorSecondFloor() {
 		return false;
 	}
 
+	//finish quest
 	if (item_amount($item[Lady Spookyraven\'s Necklace]) > 0) {
 		auto_log_info("Giving Lady Spookyraven her necklace.", "blue");
 		visit_url("place.php?whichplace=manor1&action=manor1_ladys");
 		visit_url("place.php?whichplace=manor2&action=manor2_ladys");
 		return true;
 	}
+	
+	if(my_turncount() == get_property("_LAR_skipNC163").to_int())
+	{
+		auto_log_info("In LAR path NC163 is forced to reoccur if we skip it. Go do something else.");
+		return false;
+	}
 
 	auto_log_info("Well, we need writing desks", "blue");
 	auto_log_info("Going to the library!", "blue");
-	if (autoAdv($location[The Haunted Library])) {
-		return true;
+	if (canSniff($monster[Writing Desk], $location[The Haunted Library]) && auto_mapTheMonsters())
+	{
+		auto_log_info("Attemping to use Map the Monsters to olfact a writing desk.");
 	}
-	return false;
+	return autoAdv($location[The Haunted Library]);
 }
 
 boolean LX_spookyravenManorFirstFloor() {
@@ -497,7 +520,12 @@ boolean LX_getLadySpookyravensDancingShoes() {
 		return false;
 	}
 
-	// Louvre It or Leave It choice adventure has a delay of 5 adventures.
+	if (canBurnDelay($location[The Haunted Gallery]))
+	{
+		// Louvre It or Leave It choice adventure has a delay of 5 adventures.
+		return false;
+	}
+
 	backupSetting("louvreDesiredGoal", "7"); // lets just let mafia automate this for us.
 	auto_log_info("Spookyraven: Gallery", "blue");
 
@@ -517,7 +545,13 @@ boolean LX_getLadySpookyravensPowderPuff() {
 	if (item_amount($item[Lady Spookyraven\'s Powder Puff]) > 0) {
 		return false;
 	}
-	// Never Gonna Make You Up choice adventure has a delay of 5 adventures.
+
+	if (canBurnDelay($location[The Haunted Bathroom]))
+	{
+		// Never Gonna Make You Up choice adventure has a delay of 5 adventures.
+		return false;
+	}
+
 	auto_log_info("Spookyraven: Bathroom", "blue");
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
@@ -764,7 +798,7 @@ boolean L11_aridDesert()
 	}
 
 	// Fix broken desert tracking. pocket familiars failing as of r19010. plumber as of r20019
-	if(in_zelda() || auto_my_path() == "Pocket Familiars")
+	if(in_zelda() || in_pokefam())
 	{
 		visit_url("place.php?whichplace=desertbeach", false);
 	}
@@ -1064,7 +1098,7 @@ boolean L11_aridDesert()
 		int need = 100 - get_property("desertExploration").to_int();
 		auto_log_info("Getting some ultrahydrated, I suppose. Desert left: " + need, "blue");
 
-		if((need > (5 * progress)) && (cloversAvailable() > 2) && !get_property("lovebugsUnlocked").to_boolean())
+		if((need > (5 * progress)) && cloversAvailable() > 2 && !auto_haveLovebugs())
 		{
 			auto_log_info("Gonna clover this, yeah, it only saves 2 adventures. So?", "green");
 			cloverUsageInit();
@@ -1232,39 +1266,9 @@ boolean L11_hiddenCity()
 	if (internalQuestStatus("questL11Curses") > 1 || item_amount($item[Moss-Covered Stone Sphere]) > 0)
 	{
 		uneffect($effect[Thrice-Cursed]);
-		if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Shaman]))
-		{
-			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
-			{
-				auto_log_info("They stink so much!", "blue");
-				uneffect($effect[On The Trail]);
-			}
-		}
 	}
 
-	if (internalQuestStatus("questL11Business") > 1 || item_amount($item[Crackling Stone Sphere]) > 0)
-	{
-		if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Witch Accountant]))
-		{
-			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
-			{
-				auto_log_info("No more accountants to hunt!", "blue");
-				uneffect($effect[On The Trail]);
-			}
-		}
-	}
 
-	if (internalQuestStatus("questL11Spare") > 1 || item_amount($item[Scorched Stone Sphere]) > 0)
-	{
-		if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") == $monster[Pygmy Bowler]))
-		{
-			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
-			{
-				auto_log_info("No more stinky bowling shoes to worry about!", "blue");
-				uneffect($effect[On The Trail]);
-			}
-		}
-	}
 
 	if (item_amount($item[Moss-Covered Stone Sphere]) == 0 && internalQuestStatus("questL11Business") < 1)
 	{
@@ -1287,7 +1291,7 @@ boolean L11_hiddenCity()
 			{
 				elevatorAction = auto_forceNextNoncombat();
 
-				if(auto_my_path() == "Pocket Familiars")
+				if(in_pokefam())
 				{
 					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
 					{
@@ -1358,6 +1362,15 @@ boolean L11_hiddenCity()
 
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 		auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
+		if (canSniff($monster[Pygmy Bowler], $location[The Hidden Bowling Alley]) && auto_mapTheMonsters() && item_amount($item[bowling ball]) < 1)
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Pygmy Bowler.");
+		}
+		if (auto_canCamelSpit() && get_property("hiddenBowlingAlleyProgress").to_int() < 2)
+		{
+			auto_log_info("Bringing the Camel to spit on a Pygmy Bowler for bowling balls.");
+			handleFamiliar($familiar[Melodramedary]);
+		}
 		return autoAdv($location[The Hidden Bowling Alley]);
 	}
 
@@ -1440,7 +1453,7 @@ boolean L11_hiddenCityZones()
 	boolean needMachete = !possessEquipment($item[Antique Machete]);
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
-	if (!in_hardcore() || in_boris() || auto_my_path() == "Way of the Surprising Fist" || auto_my_path() == "Pocket Familiars")
+	if (!in_hardcore() || in_boris() || auto_my_path() == "Way of the Surprising Fist" || in_pokefam())
 	{
 		needMachete = false;
 	}
@@ -1510,6 +1523,12 @@ boolean L11_mauriceSpookyraven()
 		auto_log_info("Searching for the basement of Spookyraven", "blue");
 		if(!cangroundHog($location[The Haunted Ballroom]))
 		{
+			return false;
+		}
+
+		if (canBurnDelay($location[The Haunted Ballroom]))
+		{
+			// We'll All Be Flat choice adventure has a delay of 5 adventures.
 			return false;
 		}
 
@@ -1645,6 +1664,10 @@ boolean L11_mauriceSpookyraven()
 		{
 			bat_formBats();
 		}
+		if (canSniff($monster[Possessed Wine Rack], $location[The Haunted Wine Cellar]) && auto_mapTheMonsters())
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Possessed Wine Rack.");
+		}
 		return autoAdv($location[The Haunted Wine Cellar]);
 	}
 	if (item_amount($item[blasting soda]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
@@ -1653,6 +1676,10 @@ boolean L11_mauriceSpookyraven()
 		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
 		{
 			bat_formBats();
+		}
+		if (canSniff($monster[Cabinet of Dr. Limpieza], $location[The Haunted Laundry Room]) && auto_mapTheMonsters())
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Cabinet of Dr. Limpieza.");
 		}
 		return autoAdv($location[The Haunted Laundry Room]);
 	}
@@ -1799,6 +1826,10 @@ boolean L11_redZeppelin()
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
+	if (canSniff($monster[Blue Oyster Cultist], $location[A Mob Of Zeppelin Protesters]) && auto_mapTheMonsters())
+	{
+		auto_log_info("Attemping to use Map the Monsters to olfact a Blue Oyster Cultist.");
+	}
 	boolean retval = autoAdv($location[A Mob Of Zeppelin Protesters]);
 	if(!lastAdventureSpecialNC())
 	{
@@ -1844,6 +1875,15 @@ boolean L11_ronCopperhead()
 		}
 		// For Glark Cables. OPTIMAL!
 		bat_formBats();
+		if (canSniff($monster[Red Butler], $location[The Red Zeppelin]) && auto_mapTheMonsters())
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Red Butler.");
+		}
+		if (auto_canCamelSpit())
+		{
+			auto_log_info("Bringing the Camel to spit on a Red Butler for glark cables.");
+			handleFamiliar($familiar[Melodramedary]);
+		}
 		boolean retval = autoAdv($location[The Red Zeppelin]);
 		// open red boxes when we get them (not sure if this is the place for this but it'll do for now)
 		if (item_amount($item[red box]) > 0)
@@ -1877,6 +1917,7 @@ boolean L11_shenStartQuest()
 		return false;
 	}
 	backupSetting("choiceAdventure1074", 1);
+	auto_log_info("Going to see the World's Biggest Jerk about some snakes and stones and stuff.", "blue");
 	if (autoAdv($location[The Copperhead Club]))
 	{
 		if (internalQuestStatus("questL11Shen") == 1)
@@ -2001,6 +2042,12 @@ boolean L11_shenCopperhead()
 			else if (goal == $location[The Smut Orc Logging Camp] && (L9_ed_chasmStart() || L9_chasmBuild()))
 			{
 				return true;
+			}
+
+			if (canBurnDelay(goal))
+			{
+				// Snakes have variable delay of 3-5 adventures but we can burn at least 3 of that.
+				return false;
 			}
 
 			return autoAdv(goal);
@@ -2228,26 +2275,26 @@ boolean L11_palindome()
 			}
 		}
 
-		if((have_effect($effect[On The Trail]) > 0) && !($monsters[Bob Racecar, Racecar Bob] contains get_property("olfactedMonster").to_monster()) && internalQuestStatus("questL11Palindome") < 2)
-		{
-			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
-			{
-				auto_log_info("Gotta hunt down them Naskar boys.", "blue");
-				uneffect($effect[On The Trail]);
-			}
-		}
-
 		autoEquip($slot[acc3], $item[Talisman o\' Namsilat]);
-		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+		if (handleFamiliar($familiar[Red-Nosed Snapper]))
+		{
 			auto_changeSnapperPhylum($phylum[dude]);
 		}
-		autoAdv($location[Inside the Palindome]);
-		if(($location[Inside the Palindome].turns_spent > 30) && (auto_my_path() != "Pocket Familiars") && (auto_my_path() != "G-Lover") && !in_koe())
+		if (canSniff($monster[Bob Racecar], $location[Inside the Palindome]) && auto_mapTheMonsters())
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Bob Racecar.");
+		}
+		boolean advSpent = autoAdv($location[Inside the Palindome]);
+		if(($location[Inside the Palindome].turns_spent > 30) && !in_pokefam() && (auto_my_path() != "G-Lover") && !in_koe())
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}
+		else
+		{
+			return advSpent;
+		}
 	}
-	return true;
+	return false;
 }
 
 boolean L11_unlockPyramid()
@@ -2348,6 +2395,11 @@ boolean L11_unlockEd()
 
 	if((total >= 10) && (my_adventures() >= 4) && get_property("controlRoomUnlock").to_boolean())
 	{
+		if (get_counters("Fortune Cookie", 0, 3) == "Fortune Cookie")
+		{
+			return false;
+		}
+
 		visit_url("place.php?whichplace=pyramid&action=pyramid_control");
 		int x = 0;
 		while(x < 10)
@@ -2394,13 +2446,6 @@ boolean L11_unlockEd()
 			cli_execute("make sugar fairy");
 			buffMaintain($effect[Dance of the Sugar Fairy], 0, 1, 1);
 		}
-		if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") != $monster[Tomb Rat]))
-		{
-			if(item_amount($item[soft green echo eyedrop antidote]) > 0)
-			{
-				uneffect($effect[On The Trail]);
-			}
-		}
 		if(have_effect($effect[items.enh]) == 0)
 		{
 			auto_sourceTerminalEnhance("items");
@@ -2416,6 +2461,10 @@ boolean L11_unlockEd()
 		}
 	}
 
+	if (canSniff($monster[Tomb Rat], $location[The Middle Chamber]) && auto_mapTheMonsters())
+	{
+		auto_log_info("Attemping to use Map the Monsters to olfact a Tomb Rat.");
+	}
 	autoAdv(1, $location[The Middle Chamber]);
 	return true;
 }
@@ -2476,7 +2525,7 @@ boolean L11_defeatEd()
 	set_property("choiceAdventure976", "1");
 
 	autoAdv($location[The Lower Chambers]);
-	if(auto_my_path() == "Pocket Familiars" || in_koe())
+	if(in_pokefam() || in_koe())
 	{
 		cli_execute("refresh inv");
 	}

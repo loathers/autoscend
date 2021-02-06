@@ -175,49 +175,51 @@ boolean tryAddItemToMaximize(slot s, item it)
 
 string defaultMaximizeStatement()
 {
-	string res = "5item,meat";
-
-	// combat is completely different in pokefam, so most stuff doesn't matter there
-	if(auto_my_path() != "Pocket Familiars")
+	if(in_pokefam())
 	{
-		res += ",0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
-		if(my_class() == $class[Vampyre])
+		return pokefam_defaultMaximizeStatement();
+	}
+	
+	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+	if(my_primestat() != $stat[Moxie])
+		res += ",mox";
+
+
+	if(my_class() == $class[Vampyre])
+	{
+		res += ",0.8hp,3hp regen";
+	}
+	else
+	{
+		res += ",0.4hp,0.2mp 1000max";
+		res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
+	}
+
+	if(!in_zelda())
+	{
+		if(my_primestat() == $stat[Mysticality])
 		{
-			res += ",0.8hp,3hp regen";
+			res += ",0.25spell damage,1.75spell damage percent";
 		}
 		else
 		{
-			res += ",0.4hp,0.2mp 1000max";
-			res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
-		}
-
-		if(!in_zelda())
-		{
-			if(my_primestat() == $stat[Mysticality])
-			{
-				res += ",0.25spell damage,1.75spell damage percent";
-			}
-			else
-			{
-				res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
-			}
-		}
-
-		if(pathAllowsFamiliar())
-		{
-			res += ",2familiar weight";
-			if(my_familiar().familiar_weight() < 20)
-			{
-				res += ",5familiar exp";
-			}
-		}
-		if (in_zelda())
-		{
-			res += ",plumber,-ml";
+			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
 		}
 	}
 
-	if(!in_zelda() && ((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean())))
+	if(pathAllowsFamiliar())
+	{
+		res += ",2familiar weight";
+		if(my_familiar().familiar_weight() < 20)
+		{
+			res += ",5familiar exp";
+		}
+	}
+	if (in_zelda())
+	{
+		res += ",plumber,-ml";
+	}
+	else if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
 		res += ",10exp,5" + my_primestat() + " experience percent";
 	}
@@ -290,15 +292,25 @@ void resetMaximize()
 	}
 }
 
+void addBonusToMaximize(item it, int amt)
+{
+	if(possessEquipment(it) && auto_can_equip(it))
+		addToMaximize("+" + amt + "bonus " + it);
+}
+
 void finalizeMaximize()
 {
-	if(auto_wantToEquipPowerfulGlove())
+	if (possessEquipment($item[miniature crystal ball]))
 	{
-		auto_forceEquipPowerfulGlove();
+		// until we add support for this, we shouldn't allow the maximizer to equip it
+		// I noticed it being worn in preference to the astral pet sweater which is a waste
+		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
 	}
-	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none])
+
+	if (auto_haveKramcoSausageOMatic() && ((auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none]) || get_property("mappingMonsters").to_boolean()))
 	{
 		// Save the first 8 sausage goblins for delay burning
+		// also don't equip Kramco when using Map the Monsters as sausage goblins override the NC
 		addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
 	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
@@ -310,6 +322,17 @@ void finalizeMaximize()
 			removeFromMaximize("-equip " + toEquip);
 			addToMaximize("+equip " + toEquip);
 		}
+	}
+	if(auto_wantToEquipPowerfulGlove())
+	{
+		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
+	}
+	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
+	addBonusToMaximize($item[Mr. Screege's spectacles], 100); // meat stuff
+	if(have_effect($effect[blood bubble]) == 0)
+	{
+		// blocks first hit, but doesn't stack with blood bubble
+		addBonusToMaximize($item[Eight Days a Week Pill Keeper], 100);
 	}
 	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
@@ -538,7 +561,7 @@ void equipRollover()
 		return;
 	}
 
-	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li\'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li\'l Unicorn Costume])) && auto_is_valid($item[Li\'l Unicorn Costume]) && auto_my_path() != "Pocket Familiars")
+	if(auto_have_familiar($familiar[Trick-or-Treating Tot]) && !possessEquipment($item[Li\'l Unicorn Costume]) && (my_meat() > 3000 + npc_price($item[Li\'l Unicorn Costume])) && auto_is_valid($item[Li\'l Unicorn Costume]) && !in_pokefam())
 	{
 		cli_execute("buy Li'l Unicorn Costume");
 	}
@@ -563,4 +586,39 @@ void equipRollover()
 	{
 		auto_log_info("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
 	}
+}
+
+boolean auto_forceEquipSword() {
+	item swordToEquip = $item[none];
+	// use the ebony epee if we have it
+	if (possessEquipment($item[ebony epee]))
+	{
+		swordToEquip = $item[ebony epee];
+	}
+
+	if (swordToEquip == $item[none])
+	{
+		// check for some swords that we might have acquired in run already. Yes machetes are actually swords.
+		foreach it in $items[antique machete, black sword, broken sword, cardboard katana, cardboard wakizashi,
+		drowsy sword, knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete,
+		ridiculously huge sword, serpentine sword, vorpal blade, white sword, sweet ninja sword]
+		{
+			if (possessEquipment(it) && can_equip(it))
+			{
+				swordToEquip = it;
+				break;
+			}
+		}
+	}
+
+	if (swordToEquip == $item[none])
+	{
+		// if we still don't have a sword available, buy one for a trivial amount of meat.
+		if (retrieve_item(1, $item[sweet ninja sword])) // costs 50 meat from the armorer and leggerer
+		{
+			swordToEquip = $item[sweet ninja sword];
+		}
+	}
+
+	return autoForceEquip($slot[weapon], swordToEquip);
 }

@@ -1,3 +1,8 @@
+boolean in_pokefam()
+{
+	return auto_my_path() == "Pocket Familiars";
+}
+
 void digimon_initializeDay(int day)
 {
 	digimon_makeTeam();
@@ -5,7 +10,7 @@ void digimon_initializeDay(int day)
 
 void digimon_initializeSettings()
 {
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		set_property("auto_hippyInstead", true);
 		set_property("auto_ignoreFlyer", true);
@@ -13,10 +18,20 @@ void digimon_initializeSettings()
 	}
 }
 
+string pokefam_defaultMaximizeStatement()
+{
+	// combat is completely different in pokefam, so most stuff doesn't matter there
+	string res = "5item,meat";
+	if(my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())
+	{
+		res += ",10exp,5" + my_primestat() + " experience percent";
+	}
+	return res;
+}
 
 boolean digimon_makeTeam()
 {
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		string temp = visit_url("famteam.php", false);
 
@@ -84,10 +99,9 @@ boolean digimon_makeTeam()
 	return true;
 }
 
-
 boolean LM_digimon()
 {
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		digimon_makeTeam();
 		if((my_primestat() == $stat[Muscle]) && !possessEquipment($item[Dented Scepter]) && (my_level() < 13))
@@ -100,7 +114,7 @@ boolean LM_digimon()
 
 boolean digimon_autoAdv(int num, location loc, string option)
 {
-	if(auto_my_path() != "Pocket Familiars")
+	if(!in_pokefam())
 	{
 		abort("Can not use Digimon protocols without Digimon!");
 	}
@@ -113,7 +127,7 @@ boolean digimon_autoAdv(int num, location loc, string option)
 #	boolean retval = adv1(loc, 0, option);
 	string temp = visit_url(to_url(loc), false);
 
-	if (get_property("pyramidBombUsed").to_boolean() && auto_my_path() == "Pocket Familiars" && loc == $location[The Lower Chambers])
+	if (get_property("pyramidBombUsed").to_boolean() && in_pokefam() && loc == $location[The Lower Chambers])
 	{
 		temp = visit_url(to_url(loc) + "a", false);
 	}

@@ -4,7 +4,10 @@ boolean LX_loggingHatchet()
 	{
 		return false;
 	}
-
+	if(kolhs_mandatorySchool())
+	{
+		return false;	//avoid infinite loop in kolhs. we can not get the hatchet until we finish mandatory school for the day
+	}
 	if (available_amount($item[logging hatchet]) > 0)
 	{
 		return false;
@@ -61,12 +64,6 @@ boolean L9_leafletQuest()
 	{
 		//in plumber you eat manually and can jump from level 8 to 13 via food.
 		cli_execute("leaflet nomagic");		//no substat gains
-	}
-	
-	//upgrade dwelling. big rock is what mafia returns when you have no dwelling.
-	if(get_dwelling() == $item[big rock] || get_dwelling() == $item[Newbiesport&trade; tent])
-	{
-		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
 	}
 	
 	return get_property("leafletCompleted").to_boolean();
@@ -156,11 +153,9 @@ boolean L9_chasmBuild()
 
 
 	auto_log_info("Chasm time", "blue");
-
-	if(item_amount($item[fancy oil painting]) > 0)
-	{
-		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-	}
+	
+	// make sure our progress count is correct before we do anything.
+	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
 	// -Combat is useless here since NC is triggered by killing Orcs...So we kill orcs better!
 	// -ML helps us deal more cold damage and trigger the NC faster.
@@ -771,6 +766,22 @@ boolean L9_twinPeak()
 		}
 	}
 
+	if (get_property("auto_shinningStarted").to_boolean() && auto_canCamelSpit() && auto_canMapTheMonsters())
+	{
+		// Shh! You want to get sued?
+		if (adjustForYellowRayIfPossible($monster[bearpig topiary animal]))
+		{
+			if (auto_mapTheMonsters())
+			{
+				handleFamiliar($familiar[Melodramedary]);
+				auto_log_info("Attemping to use Map the Monsters to Yellow Ray a Camel Spitted bearpig topiary animal. Yes that is a mouthful but lets hope it works and we get 4 rusty hedge trimmers!");
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
 	return autoAdv($location[Twin Peak]);
 }
 
@@ -902,9 +913,9 @@ boolean L9_highLandlord()
 		return true;
 	}
 
-	if(L9_twinPeak())			return true;
 	if(L9_aBooPeak())			return true;
 	if(L9_oilPeak())			return true;
+	if(L9_twinPeak())			return true;
 
 	if (internalQuestStatus("questL09Topping") == 3)
 	{

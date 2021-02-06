@@ -49,7 +49,18 @@ boolean auto_run_choice(int choice, string page)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
+			if(auto_my_path() == "Live. Ascend. Repeat.")
+			{
+				set_property("_LAR_skipNC163", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
+			}
 			run_choice(4); // skip
+			break;
+		case 178: // Hammering the Armory
+			if(auto_my_path() == "Live. Ascend. Repeat.")
+			{
+				set_property("_LAR_skipNC178", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
+			}
+			run_choice(2); // skip
 			break;
 		case 184: // That Explains All The Eyepatches (Barrrney's Barrr)
 		case 185: // Yes, You're a Rock Starrr (Barrrney's Barrr)
@@ -155,8 +166,12 @@ boolean auto_run_choice(int choice, string page)
 		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
 			dailyDungeonChoiceHandler(choice, options);
 			break;
+		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
+		case 772: // Saved by the Bell (KOLHS after school)
+			kolhsChoiceHandler(choice);
+			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
-			if (auto_my_path() == "Pocket Familiars" && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
+			if (in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
 				run_choice(3); // relocate lawyers to park
 			} else if (have_effect($effect[Thrice-Cursed]) > 0) {
 				run_choice(1); // fight the spirit
@@ -451,6 +466,18 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1410: // The Mushy Center (Your Mushroom Garden)
 			run_choice(2); // pick the mushroom.
+			break;
+		case 1427: // Hidden Junction (Cartography)
+		case 1428: // Choice 1428 is Your Neck of the Woods (Cartography)
+		case 1429: // Choice 1429 is No Nook Unknown (Cartography)
+		case 1430: // Choice 1430 is Ghostly Memories (Cartography)
+		case 1431: // Choice 1431 is Here There Be Giants (Cartography)
+		case 1432: // Choice 1432 is Mob Maptality (Cartography)
+		case 1433: // Choice 1433 is Hippy camp verge of war Sneaky Sneaky (Cartography)
+		case 1434: // Choice 1434 is frat camp verge of war Sneaky Sneaky (Cartography)
+		case 1435: // Leading Yourself Right to Them (Map the Monsters)
+		case 1436: // Choice 1436 is Billiards Room Options (Cartography)
+			cartographyChoiceHandler(choice);
 			break;
 		default:
 			break;

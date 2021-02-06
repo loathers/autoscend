@@ -1,10 +1,15 @@
+//L5 quest progress notes:
+//unstarted
+//started == acquired [Cobb's Knob map] from council
+//step1 == used [Cobb's Knob map] with [Knob Goblin encryption key] to unlock internal zones.
+//finished == killed the king. you still need to visit council afterwards to get rewarded.
+
 boolean L5_getEncryptionKey()
 {
-	if (internalQuestStatus("questL05Goblin") > 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
+	if (internalQuestStatus("questL05Goblin") != 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
 	{
 		return false;
 	}
-
 	if(item_amount($item[11-inch knob sausage]) == 1)
 	{
 		visit_url("guild.php?place=challenge");
@@ -13,7 +18,12 @@ boolean L5_getEncryptionKey()
 
 	// Defer if we can line up with the first semi-rare window to get a lunchbox
 	// Only if we don't have a fortune cookie counter
-	if (my_turncount() < 70 && !contains_text(get_counters("Fortune Cookie", 0, 80 - my_turncount()), "Fortune Cookie"))
+	if (my_turncount() < 70 && !contains_text(get_counters("Fortune Cookie", 0, 80 - my_turncount()), "Fortune Cookie") && $location[The Outskirts of Cobb's Knob].turns_spent < 10)
+	{
+		return false;
+	}
+
+	if (canBurnDelay($location[The Outskirts of Cobb's Knob]))
 	{
 		return false;
 	}
@@ -50,7 +60,7 @@ boolean L5_findKnob()
 
 boolean L5_haremOutfit()
 {
-	if (internalQuestStatus("questL05Goblin") < 0 || internalQuestStatus("questL05Goblin") > 1)
+	if(internalQuestStatus("questL05Goblin") != 1)
 	{
 		return false;
 	}
@@ -82,7 +92,7 @@ boolean L5_haremOutfit()
 
 boolean L5_goblinKing()
 {
-	if (internalQuestStatus("questL05Goblin") < 0 || internalQuestStatus("questL05Goblin") > 1)
+	if(internalQuestStatus("questL05Goblin") != 1)
 	{
 		return false;
 	}
@@ -147,7 +157,8 @@ boolean L5_goblinKing()
 	return advSpent;
 }
 
-boolean L5_slayTheGoblinKing() {
+boolean L5_slayTheGoblinKing()
+{
 	if (L5_getEncryptionKey() || L5_findKnob() || L5_haremOutfit() || L5_goblinKing()) {  return true; }
 	return false;
 }

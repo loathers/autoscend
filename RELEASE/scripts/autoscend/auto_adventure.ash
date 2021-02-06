@@ -23,7 +23,7 @@ boolean autoAdv(int num, location loc, string option)
 		}
 	}
 
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		return digimon_autoAdv(num, loc, option);
 	}
@@ -118,7 +118,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 
 	// handle the initial combat or choice the easy way.
 	string combatPage = "<b>Combat";
-	if (auto_my_path() == "Pocket Familiars") {
+	if (in_pokefam()) {
 		combatPage = "<b>Fight!";
 	}
 	if (contains_text(page, combatPage)) {

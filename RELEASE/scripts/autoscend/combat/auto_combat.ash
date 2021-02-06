@@ -233,34 +233,52 @@ string auto_combatHandler(int round, monster enemy, string text)
 			}
 			abort("Oh no, I don't have any super deluxe mushrooms to deal with this shadow plumber :(");
 		}
-		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
+		boolean ambi = auto_have_skill($skill[Ambidextrous Funkslinging]);
+		item hand_1 = $item[none];
+		item hand_2 = $item[none];
+		item icup = $item[Rain-Doh Indigo Cup];		//restore 20% of max HP. only once per combat
+		if(canUse(icup))
 		{
-			if(item_amount($item[Gauze Garter]) >= 2)
+			if(my_maxhp() > 500 && hand_1 == $item[none])
 			{
-				return "item " + $item[Gauze Garter] + ", " + $item[Gauze Garter];
+				markAsUsed(icup);
+				hand_1 = icup;
 			}
-			if(item_amount($item[Filthy Poultice]) >= 2)
+			else if(ambi && my_maxhp() > 250 && hand_1 == $item[none])
 			{
-				return "item " + $item[filthy Poultice] + ", " + $item[Filthy Poultice];
+				markAsUsed(icup);
+				hand_1 = icup;
 			}
-			if((item_amount($item[Gauze Garter]) > 0) && (item_amount($item[Filthy Poultice]) > 0))
+		}
+		//items which can be used multiple times per combat
+		foreach it in $items[Gauze Garter, filthy Poultice, red pixel potion]
+		{
+			if(hand_1 == $item[none] && item_amount(it) > 0)
 			{
-				return "item " + $item[Gauze Garter] + ", " + $item[Filthy Poultice];
+				hand_1 = it;
+			}
+			if(hand_2 == $item[none])
+			{
+				if(item_amount(it) > 1)
+				{
+					hand_2 = it;
+				}
+				else if(item_amount(it) > 0 && hand_1 != it)
+				{
+					hand_2 = it;
+				}
 			}
 		}
-		if(item_amount($item[Gauze Garter]) > 0)
+		
+		if(ambi && hand_1 != $item[none] && hand_2 != $item[none])
 		{
-			return "item " + $item[Gauze Garter];
+			return "item " +hand_1+ ", " +hand_2;
 		}
-		if(item_amount($item[Filthy Poultice]) > 0)
+		if(hand_1 != $item[none])
 		{
-			return "item " + $item[Filthy Poultice];
+			return "item " +hand_1;
 		}
-		if(item_amount($item[Rain-Doh Indigo Cup]) > 0)
-		{
-			return "item " + $item[Rain-Doh Indigo Cup];
-		}
-		abort("Uh oh, I ran out of gauze garters and filthy poultices");
+		abort("Uh oh, I ran out of healing items to use against your shadow");
 	}
 
 	if(enemy == $monster[Wall Of Meat])
@@ -381,7 +399,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-
+	if ($monsters[pygmy bowler, bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, red butler] contains enemy && canUse($skill[%fn\, spit on them!]))
+	{
+		handleTracker($skill[%fn\, spit on them!], enemy, "auto_otherstuff");
+		return useSkill($skill[%fn\, spit on them!], true);
+	}
 
 	if(have_effect($effect[Temporary Amnesia]) > 0)
 	{
@@ -730,19 +752,24 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(canUse($skill[Wink At]) && (my_familiar() == $familiar[Reanimated Reanimator]))
+	skill wink_skill = $skill[none];
+	if(canUse($skill[Wink At]))
+	{
+		wink_skill = $skill[Wink At];
+	}
+	if(canUse($skill[Fire a badly romantic arrow]))
+	{
+		wink_skill = $skill[Fire a badly romantic arrow];
+	}
+	if(wink_skill != $skill[none])		//we can wink / romatic arrow
 	{
 		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin] contains enemy)
 		{
-			if((get_property("_badlyRomanticArrows").to_int() == 1) && (round <= 1) && (get_property("romanticTarget") != enemy))
-			{
-				abort("Have animator out but can not arrow");
-			}
 			if(enemy == $monster[modern zmobie])
 			{
 				set_property("auto_waitingArrowAlcove", get_property("cyrptAlcoveEvilness").to_int() - 20);
 			}
-			return useSkill($skill[Wink At]);
+			return useSkill(wink_skill);
 		}
 	}
 
@@ -1222,6 +1249,12 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
+	if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])
+	{
+		// instakills Undead and reduces evilness in Cyrpt zones.
+		return useSkill($skill[Slay the Dead]);
+	}
+
 	if(canUse($skill[Bad Medicine]) && (my_mp() >= (3 * mp_cost($skill[Bad Medicine]))))
 	{
 		return useSkill($skill[Bad Medicine]);
@@ -1298,6 +1331,16 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
+				  
+		if(canUse($skill[Detect Weakness]))
+		{
+			return useSkill($skill[Detect Weakness]);
+		}
+
+		if(canUse($skill[Deploy Robo-Handcuffs]))
+		{
+			return useSkill($skill[Deploy Robo-Handcuffs]);
+		}
 
 		if(canUse($skill[Pocket Crumbs]))
 		{
@@ -1363,6 +1406,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 			{
 				return useSkill($skill[Become a Cloud of Mist]);
 			}
+		}
+
+		if (enemy == $monster[dirty thieving brigand] && canUse($skill[Become a Wolf]) && get_property("_vampyreCloakeFormUses").to_int() < 10)
+		{
+			return useSkill($skill[Become a Wolf]);
 		}
 
 		if(canUse($skill[Air Dirty Laundry]))
@@ -1717,12 +1765,25 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
 
-		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
+		if(enemy.physical_resistance > 80)
 		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
+			boolean success = false;
+			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
+			{
+				if(canUse(sk, false))
+				{
+					attackMinor = useSkill(sk, false);
+					attackMajor = useSkill(sk, false);
+					costMinor = mp_cost(sk);
+					costMajor = mp_cost(sk);
+					success = true;
+					break;
+				}
+			}
+			if(!success)
+			{
+				abort("I am fighting a physically immune monster and I do not know how to kill it");
+			}
 		}
 
 		break;
@@ -1837,7 +1898,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stream of Sauce]);
 		}
 
-		if(my_soulsauce() >= 5)
+		if(canUse($skill[Soul Bubble], false) && my_soulsauce() >= 5)
 		{
 			stunner = useSkill($skill[Soul Bubble]);
 			costStunner = mp_cost($skill[Soul Bubble]);

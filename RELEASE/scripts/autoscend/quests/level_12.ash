@@ -65,7 +65,7 @@ int auto_warEnemiesRemaining()
 	// Returns the number of enemies left to defeat in the fratboy-hippy war.
 	
 	int enemiesRemaining = 1000;
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		//Pokefam only has 500 total to defeat with all 6 sidequests immediately accessible.
 		//TODO: find out if pokefam starts with 500 enemies defeated out of 1000 total. or 0 defeated out of 500 total
@@ -169,7 +169,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(in_bhy() || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || in_pokefam())
 	{
 		return advCost;
 	}
@@ -255,7 +255,7 @@ WarPlan auto_bestWarPlan()
 	boolean considerNuns = true;
 	boolean considerFarm = true;
 	
-	if(in_bhy() || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || in_pokefam())
 	{
 		considerArena = false;
 		considerJunkyard = false;
@@ -654,7 +654,7 @@ boolean L12_preOutfit()
 		}
 	}
 
-	if(have_skill($skill[Calculate the Universe]) && (my_daycount() == 1))
+	if(have_skill($skill[Calculate the Universe]) && my_daycount() == 1 && get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int())
 	{
 		return false;
 	}
@@ -882,6 +882,11 @@ boolean L12_filthworms()
 			}
 		}
 	}
+
+	if (auto_cargoShortsOpenPocket(343)) // skip straight to the Royal Guard Chamber
+	{
+		handleTracker($item[Cargo Cultist Shorts], $effect[Filthworm Drone Stench], "auto_otherstuff");
+	}
 	
 	boolean retval = false;
 	if(have_effect($effect[Filthworm Drone Stench]) > 0)
@@ -956,7 +961,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if (in_koe() || auto_my_path() == "Pocket Familiars" || in_bhy())
+	if (in_koe() || in_pokefam() || in_bhy())
 	{
 		return false;
 	}
@@ -1082,7 +1087,7 @@ boolean L12_sonofaBeach()
 		return false;
 	}
 
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		if(contains_text($location[Sonofa Beach].combat_queue, to_string($monster[Lobsterfrogman])))
 		{
@@ -1123,31 +1128,7 @@ boolean L12_sonofaBeach()
 
 	if(auto_my_path() != "Live. Ascend. Repeat.")
 	{
-		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
-		{
-			if((item_amount($item[Ass-Stompers of Violence]) > 0) && (equipped_item($slot[acc1]) != $item[Ass-Stompers of Violence]) && can_equip($item[Ass-Stompers of Violence]))
-			{
-				equip($slot[acc1], $item[Ass-Stompers of Violence]);
-			}
-			else
-			{
-				equip($slot[acc1], $item[bejeweled pledge pin]);
-			}
-		}
-		if(item_amount($item[portable cassette player]) > 0)
-		{
-			equip($slot[acc2], $item[portable cassette player]);
-		}
-		if(numeric_modifier("Combat Rate") <= 9.0)
-		{
-			if(possessEquipment($item[Carpe]))
-			{
-				equip($slot[Back], $item[Carpe]);
-			}
-		}
-		asdonBuff($effect[Driving Obnoxiously]);
-
-		if(numeric_modifier("Combat Rate") < 0.0)
+		if (providePlusCombat(25, true, true) < 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
 			equipBaseline();
@@ -1219,12 +1200,12 @@ boolean L12_sonofaPrefix()
 				{
 					set_property("auto_doCombatCopy", "yes");
 				}
-				if (auto_voteMonster())
+				if (auto_voteMonster() && !auto_voteMonster(true))
 				{
 					auto_voteMonster(false, $location[Sonofa Beach], "");
 					return true;
 				}
-				else if (auto_sausageGoblin())
+				else if (auto_sausageGoblin() && !auto_haveVotingBooth())
 				{
 					auto_sausageGoblin($location[Sonofa Beach], "");
 					return true;
@@ -1738,7 +1719,7 @@ boolean L12_themtharHills()
 
 boolean LX_obtainChaosButterfly()
 {
-	if(in_bhy() || auto_my_path() == "Pocket Familiars")
+	if(in_bhy() || in_pokefam())
 	{
 		return false;
 	}
@@ -1785,7 +1766,7 @@ boolean LX_obtainChaosButterfly()
 	// to avoid any funny business where we don't use the chaos butterfly,
 	// adventure somewhere else, our CCS uses the chaos butterfly, and we
 	// suddenly realize that we want to complete dooks after all.
-	if(!get_property("chaosButterflyThrown").to_boolean() && item_amount($item[chaos butterfly]) > 0 && auto_my_path() != "Pocket Familiars")
+	if(!get_property("chaosButterflyThrown").to_boolean() && item_amount($item[chaos butterfly]) > 0 && !in_pokefam())
 	{
 		if($location[McMillicancuddy's Barn].turns_spent > 0)
 		{
@@ -2149,7 +2130,7 @@ boolean L12_finalizeWar()
 		auto_log_warning("Boss already defeated, ignoring", "red");
 	}
 
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		string temp = visit_url("island.php");
 		council();

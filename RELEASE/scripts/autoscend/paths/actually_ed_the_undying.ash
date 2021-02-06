@@ -810,12 +810,11 @@ boolean ed_shopping()
 
 	auto_log_info("Time to shop!", "red");
 
-	if (get_property("auto_breakstone").to_boolean())
+	if (get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
 	{
-		string temp = visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
-		temp = visit_url("place.php?whichplace=edunder&action=edunder_hippy");
-		temp = visit_url("choice.php?pwd&whichchoice=1057&option=1", true);
-		set_property("auto_breakstone", false);
+		visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
+		visit_url("place.php?whichplace=edunder&action=edunder_hippy");
+		visit_url("choice.php?pwd&whichchoice=1057&option=1", true);
 	}
 
 	int coins = item_amount($item[Ka Coin]);
@@ -1422,7 +1421,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// start the macguffin quest, conveniently the black forest is a 1.4 Ka zone.
-	if (L11_blackMarket() || L11_forgedDocuments() || L11_mcmuffinDiary())
+	if (L11_blackMarket() || L11_forgedDocuments() || L11_mcmuffinDiary() || L11_shenStartQuest())
 	{
 		return true;
 	}
@@ -1443,7 +1442,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// L8 quest is all 1 Ka zones for Ed (unlikely to survive Ninja Snowmen Assassins so they don't count)
-	if (L8_trapperStart() || L8_trapperGround() || L8_trapperGroar())
+	if (L8_trapperQuest())
 	{
 		return true;
 	}

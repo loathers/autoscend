@@ -4,7 +4,7 @@ boolean needStarKey()
 	{
 		return false;
 	}
-	if(item_amount($item[Richard\'s Star Key]) > 0)
+	if(item_amount($item[Richard\'s Star Key]) > 0 || creatable_amount($item[Richard\'s Star Key]) > 0)
 	{
 		return false;
 	}
@@ -57,7 +57,7 @@ int towerKeyCount(boolean effective)
 	{
 		tokens = tokens + 1;
 	}
-	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (auto_my_path() != "Pocket Familiars"))
+	if(effective && (item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && !get_property("dailyDungeonDone").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (!in_pokefam()))
 	{
 		tokens = tokens + 1;
 	}
@@ -165,7 +165,11 @@ boolean LX_getDigitalKey()
 		{
 			autoEquip($item[Fourth of May cosplay saber]);
 		}
-		adv_spent = autoAdv(1, $location[8-bit Realm]);
+		if (canSniff($monster[Blooper], $location[8-bit Realm]) && auto_mapTheMonsters())
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Blooper.");
+		}
+		adv_spent = autoAdv($location[8-bit Realm]);
 	}
 	return adv_spent;
 }
@@ -233,6 +237,33 @@ boolean LX_getStarKey()
 		}
 	}
 	return autoAdv(1, $location[The Hole In The Sky]);
+}
+
+boolean beehiveConsider()
+{
+	if(in_hardcore())
+	{
+		if(have_skill($skill[Shell Up]) && have_skill($skill[Sauceshell]))
+		{
+			set_property("auto_getBeehive", false);
+		}
+		else
+		{
+			set_property("auto_getBeehive", true);
+		}
+	}
+	else
+	{
+		if(have_skill($skill[Shell Up]) || have_skill($skill[Sauceshell]))
+		{
+			set_property("auto_getBeehive", false);
+		}
+		else
+		{
+			set_property("auto_getBeehive", true);
+		}
+	}
+	return true;
 }
 
 int ns_crowd1()
@@ -611,7 +642,7 @@ boolean L13_towerNSContests()
 		return true;
 	}
 	auto_log_info("No challenges left!", "green");
-	if(auto_my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		if(get_property("nsContestants1").to_int() == 0)
 		{
@@ -891,6 +922,10 @@ boolean L13_towerNSTower()
 		{
 			sources = 6;
 		}
+		else if(autoEquip($item[Fourth of May Cosplay Saber]))
+		{
+			sources = 6;
+		}
 		else
 		{
 			foreach damage in $strings[Cold Damage, Hot Damage, Sleaze Damage, Spooky Damage, Stench Damage]
@@ -905,7 +940,12 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 		}
-		if(canChangeToFamiliar($familiar[warbear drone]))
+		if(canChangeToFamiliar($familiar[Imitation Crab]))
+		{
+			handleFamiliar($familiar[Imitation Crab]);
+			sources = sources + 4;
+		}
+		else if(canChangeToFamiliar($familiar[warbear drone]))
 		{
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
@@ -925,11 +965,6 @@ boolean L13_towerNSTower()
 		{
 			handleFamiliar($familiar[Sludgepuppy]);
 			sources = sources + 3;
-		}
-		else if(canChangeToFamiliar($familiar[Imitation Crab]))
-		{
-			handleFamiliar($familiar[Imitation Crab]);
-			sources = sources + 2;
 		}
 		if(autoEquip($slot[acc1], $item[hippy protest button]))
 		{
@@ -963,6 +998,11 @@ boolean L13_towerNSTower()
 			sources = sources + 1;
 			buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);
 		}
+		if(have_skill($skill[The Psalm of Pointiness]))
+		{
+			buffMaintain($effect[Psalm of Pointiness], 0, 1, 1);
+			sources = sources + 1;
+		}
 		handleBjornify($familiar[Hobo Monkey]);
 		autoEquip($slot[acc2], $item[world\'s best adventurer sash]);
 		autoEquip($slot[acc3], $item[Groll Doll]);
@@ -993,7 +1033,7 @@ boolean L13_towerNSTower()
 			sourceNeed -= 2;
 		}
 		auto_log_info("I think I have " + sources + " sources of damage, let's do this!", "blue");
-		if(auto_my_path() == "Pocket Familiars")
+		if(in_pokefam())
 		{
 			sources = 9999;
 		}
@@ -1051,7 +1091,7 @@ boolean L13_towerNSTower()
 		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 		boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
 		
-		if(has_boning_knife || auto_my_path() == "Pocket Familiars")		//I have everything I need. just go fight
+		if(has_boning_knife || in_pokefam())		//I have everything I need. just go fight
 		{
 			return autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 		}
@@ -1148,7 +1188,7 @@ boolean L13_towerNSTower()
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
 		acquireHP();
 
-		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]);
+		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]);
 		if(in_zelda())
 		{
 			n_healing_items = item_amount($item[super deluxe mushroom]);
@@ -1160,7 +1200,16 @@ boolean L13_towerNSTower()
 		}
 		if(n_healing_items < 5)
 		{
-			abort("We only have " + n_healing_items + " healing items, I'm not sure we can do the shadow.");
+			int create_target = min(creatable_amount($item[red pixel potion]), 5 - n_healing_items);
+			if(create_target > 0)
+			{
+				if(create(create_target, $item[red pixel potion]))
+				{
+					return true;
+				}
+				abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
+			}
+			return autoAdv($location[8-bit Realm]);
 		}
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;
@@ -1389,6 +1438,15 @@ boolean L13_towerNSNagamar()
 		{
 			auto_log_warning("Clovering [The Castle in the Clouds in the Sky (Basement)] for wand parts failed for some reason", "red");
 		}
+	}
+	return false;
+}
+
+boolean L13_towerAscent()
+{
+	if (L13_towerNSContests() || L13_towerNSHedge()|| L13_sorceressDoor() || L13_towerNSTower() || L13_towerNSNagamar() || L13_towerNSFinal())
+	{
+		return true;
 	}
 	return false;
 }

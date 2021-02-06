@@ -201,10 +201,10 @@ boolean settingFixer()
 		set_property("auto_paranoia", -1);
 	}
 
-	if(get_property("auto_helpMeMafiaIsSuperBrokenAaah") == "")
+	if(get_property("auto_inv_paranoia") == "")
 	{
 		auto_log_debug("Mafia probably isn't super broken, so let's set it that way...", "red");
-		set_property("auto_helpMeMafiaIsSuperBrokenAaah", false);
+		set_property("auto_inv_paranoia", false);
 	}
 
 	if(property_exists("auto_beta_test"))
@@ -309,6 +309,14 @@ boolean settingFixer()
 	}
 	
 	remove_property("auto_shenStarted");
+	remove_property("auto_breakstone");
+	remove_property("auto_aftercore");
+	remove_property("auto_aboocount");
+	remove_property("auto_dinseyGarbageMoney");
+	remove_property("auto_lastABooConsider");
+	remove_property("auto_lastABooCycleFix");
+	remove_property("auto_longConMonster");
+	remove_property("auto_voidWarranty");
 	
 	return true;
 }

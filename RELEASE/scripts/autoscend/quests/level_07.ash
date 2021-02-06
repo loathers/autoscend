@@ -38,6 +38,14 @@ boolean L7_crypt()
 		}
 	}
 
+	void knockOffCapePrep()
+	{
+		if (auto_configureRetrocape("vampire", "kill"))
+		{
+			auto_forceEquipSword();
+		}
+	}
+
 	// make sure quest status is correct before we attempt to adventure.
 	visit_url("crypt.php");
 	use(1, $item[Evilometer]);
@@ -53,7 +61,7 @@ boolean L7_crypt()
 		provideInitiative(850, true);
 
 		autoEquip($item[Gravy Boat]);
-
+		knockOffCapePrep();
 		addToMaximize("100initiative 850max");
 
 		if(get_property("cyrptAlcoveEvilness").to_int() >= 28)
@@ -62,7 +70,7 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
-		return autoAdv(1, $location[The Defiled Alcove]);
+		return autoAdv($location[The Defiled Alcove]);
 	}
 
 	// In KoE, skeleton astronauts are random encounters that drop Evil Eyes.
@@ -80,6 +88,7 @@ boolean L7_crypt()
 		auto_log_info("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
 		autoEquip($item[Gravy Boat]);
+		knockOffCapePrep();
 
 		bat_formBats();
 
@@ -87,8 +96,7 @@ boolean L7_crypt()
 			januaryToteAcquire($item[broken champagne bottle]);
 		}
 
-		autoAdv(1, $location[The Defiled Nook]);
-		return true;
+		return autoAdv($location[The Defiled Nook]);
 	}
 	else if(skip_in_koe)
 	{
@@ -102,6 +110,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Artistic Goth Kid]);
 		}
 		autoEquip($item[Gravy Boat]);
+		knockOffCapePrep();
 
 		if(auto_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
@@ -114,7 +123,11 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Niche!", "blue");
-		return autoAdv(1, $location[The Defiled Niche]);
+		if (canSniff($monster[Dirty Old Lihc], $location[The Defiled Niche]) && auto_mapTheMonsters())
+		{
+			auto_log_info("Attemping to use Map the Monsters to olfact a Dirty Old Lihc.");
+		}
+		return autoAdv($location[The Defiled Niche]);
 	}
 
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
@@ -128,6 +141,7 @@ boolean L7_crypt()
 		}
 
 		autoEquip($item[Gravy Boat]);
+		knockOffCapePrep();
 
 		spacegateVaccine($effect[Emotional Vaccine]);
 
@@ -160,8 +174,7 @@ boolean L7_crypt()
 		auto_MaxMLToCap(auto_convertDesiredML(149), true);
 
 		addToMaximize("200ml " + auto_convertDesiredML(149) + "max");
-		autoAdv(1, $location[The Defiled Cranny]);
-		return true;
+		return autoAdv($location[The Defiled Cranny]);
 	}
 
 	if(get_property("cyrptTotalEvilness").to_int() <= 0)

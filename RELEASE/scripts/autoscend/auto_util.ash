@@ -347,7 +347,7 @@ boolean organsFull()
 boolean backupSetting(string setting, string newValue)
 {
 	string[string,string] defaults;
-	file_to_map("defaults.txt", defaults);
+	file_to_map("data/defaults.txt", defaults);
 
 	int found = 0;
 	string oldValue = "";
@@ -386,7 +386,7 @@ boolean backupSetting(string setting, string newValue)
 boolean restoreAllSettings()
 {
 	string[string,string] defaults;
-	file_to_map("defaults.txt", defaults);
+	file_to_map("data/defaults.txt", defaults);
 
 	boolean retval = false;
 	foreach domain, name, value in defaults
@@ -920,7 +920,7 @@ boolean canYellowRay(monster target)
 	}
 	# Pulled Yellow Taffy	- How do we handle the underwater check?
 	# He-Boulder?			- How do we do this?
-	return yellowRayCombatString(target) != "";
+	return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains target) != "";
 }
 
 boolean canYellowRay()
@@ -1241,7 +1241,7 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	return false;
 }
 
-string yellowRayCombatString(monster target, boolean inCombat)
+string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDrop)
 {
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
@@ -1284,6 +1284,10 @@ string yellowRayCombatString(monster target, boolean inCombat)
 		{
 			return "skill " + $skill[Open a Big Yellow Present];
 		}
+		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]))
+		{
+			return "skill " + $skill[Unleash the Devil's Kiss];
+		}
 	}
 
 	if(asdonCanMissile())
@@ -1294,13 +1298,18 @@ string yellowRayCombatString(monster target, boolean inCombat)
 	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && (auto_saberChargesAvailable() > 0))
 	{
 		// can't use the force on uncopyable monsters
-		if(target == $monster[none] || target.copyable)
+		if(target == $monster[none] || (target.copyable && !noForceDrop))
 		{
 			return auto_combatSaberYR();
 		}
 	}
 
 	return "";
+}
+
+string yellowRayCombatString(monster target, boolean inCombat)
+{
+	return yellowRayCombatString(target, inCombat, false);
 }
 
 string yellowRayCombatString(monster target)
@@ -1326,6 +1335,10 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
 	}
+	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
+	{
+		auto_configureRetrocape("heck", "kiss");
+	}
 	return true;
 }
 
@@ -1333,7 +1346,7 @@ boolean adjustForYellowRayIfPossible(monster target)
 {
 	if(canYellowRay(target))
 	{
-		string yr_string = yellowRayCombatString(target);
+		string yr_string = yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains target);
 		auto_log_info("Adjusting to have YR available for " + target + ": " + yr_string, "blue");
 		return adjustForYellowRay(yr_string);
 	}
@@ -1408,6 +1421,52 @@ boolean adjustForReplaceIfPossible(monster target)
 boolean adjustForReplaceIfPossible()
 {
 	return adjustForReplaceIfPossible($monster[none]);
+}
+
+boolean canSniff(monster enemy, location loc)
+{
+	if (have_skill($skill[Transcendent Olfaction]) &&
+	auto_is_valid($skill[Transcendent Olfaction]) &&
+	get_property("olfactedMonster").to_monster() != enemy &&
+	(have_effect($effect[On The Trail]) == 0 || item_amount($item[soft green echo eyedrop antidote]) > 0))
+	{
+		return auto_wantToSniff(enemy, loc);
+	}
+	return false;
+}
+
+boolean adjustForSniffingIfPossible(monster target)
+{
+	if (have_skill($skill[Transcendent Olfaction]) && auto_is_valid($skill[Transcendent Olfaction]))
+	{
+		if (get_property("olfactedMonster").to_monster() != target &&
+				have_effect($effect[On the trail]) > 0 &&
+				item_amount($item[soft green echo eyedrop antidote]) > 0)
+		{
+			auto_log_info("Uneffecting On the trail to have Transcendent Olfaction available for " + target, "blue");
+			monster old_olfact = get_property("olfactedMonster").to_monster();
+			string output = cli_execute_output("uneffect On the trail");
+			if (output.contains_text("On the Trail removed."))
+			{
+				handleTracker($item[soft green echo eyedrop antidote], old_olfact, "auto_otherstuff");
+				return true;
+			}
+			else
+			{
+				auto_log_info("Failed to Uneffect On the trail for some reason?", "blue");
+			}
+		}
+		if (my_mp() < mp_cost($skill[Transcendent Olfaction]))
+		{
+			acquireMP(mp_cost($skill[Transcendent Olfaction]));
+		}
+	}
+	return false;
+}
+
+boolean adjustForSniffingIfPossible()
+{
+	return adjustForSniffingIfPossible($monster[none]);
 }
 
 string statCard()
@@ -3328,33 +3387,6 @@ cabinet of Dr. Limpieza
 	return false;
 }
 
-boolean beehiveConsider()
-{
-	if(in_hardcore())
-	{
-		if(have_skill($skill[Shell Up]) && have_skill($skill[Sauceshell]))
-		{
-			set_property("auto_getBeehive", false);
-		}
-		else
-		{
-			set_property("auto_getBeehive", true);
-		}
-	}
-	else
-	{
-		if(have_skill($skill[Shell Up]) || have_skill($skill[Sauceshell]))
-		{
-			set_property("auto_getBeehive", false);
-		}
-		else
-		{
-			set_property("auto_getBeehive", true);
-		}
-	}
-	return true;
-}
-
 boolean[skill] ATSongList()
 {
 	// This List contains ALL AT songs in order from Most to Least Important as to determine what effect to shrug off.
@@ -3368,6 +3400,7 @@ boolean[skill] ATSongList()
 		The Sonata of Sneakiness,
 		Fat Leon\'s Phat Loot Lyric,
 		The Polka of Plenty,
+		The Psalm of Pointiness,
 		Aloysius\' Antiphon of Aptitude,
 		Paul\'s Passionate Pop Song,
 		Donho\'s Bubbly Ballad,
@@ -3376,7 +3409,6 @@ boolean[skill] ATSongList()
 		Benetton\'s Medley of Diversity,
 		Dirge of Dreadfulness,
 		Stevedave\'s Shanty of Superiority,
-		The Psalm of Pointiness,
 		Brawnee\'s Anthem of Absorption,
 		Jackasses\' Symphony of Destruction,
 		The Power Ballad of the Arrowsmith,
@@ -3575,6 +3607,10 @@ boolean buyUpTo(int num, item it)
 
 boolean buyUpTo(int num, item it, int maxprice)
 {
+	if(item_amount(it) >= num)
+	{
+		return true;	//we already have the target amount
+	}
 	if(($items[Ben-Gal&trade; Balm, Hair Spray] contains it) && !isGeneralStoreAvailable())
 	{
 		return false;
@@ -3584,17 +3620,21 @@ boolean buyUpTo(int num, item it, int maxprice)
 		return false;
 	}
 
-	int orig = num;
-	num = num - item_amount(it);
-	if(num > 0)
+	int missing = num - item_amount(it);
+	if(can_interact() && shop_amount(it) > 0 && mall_price(it) < maxprice)	//prefer to buy from yourself
 	{
-		buy(num, it, maxprice);
-		if(item_amount(it) < orig)
+		take_shop(min(missing, shop_amount(it)), it);
+		missing = num - item_amount(it);
+	}
+	if(missing > 0)
+	{
+		buy(missing, it, maxprice);
+		if(item_amount(it) < num)
 		{
-			auto_log_warning("Could not buyUpTo(" + orig + ") of " + it + ". Maxprice: " + maxprice, "red");
+			auto_log_warning("Could not buyUpTo(" + num + ") of " + it + ". Maxprice: " + maxprice, "red");
 		}
 	}
-	return (item_amount(it) >= orig);
+	return (item_amount(it) >= num);
 }
 
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative)
@@ -4047,6 +4087,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Pill Party!]:					useItem = $item[Pill Cup];						break;
 	case $effect[Pisces in the Skyces]:			useItem = $item[tobiko marble soda];			break;
+	case $effect[Psalm of Pointiness]:			shrugAT($effect[Psalm of Pointiness]);
+												useSkill = $skill[The Psalm of Pointiness];		break;
 	case $effect[Prayer of Seshat]:				useSkill = $skill[Prayer of Seshat];			break;
 	case $effect[Pride of the Puffin]:			useSkill = $skill[Pride of the Puffin];			break;
 	case $effect[Polar Express]:				useItem = $item[Cloaca Cola Polar];				break;
@@ -4479,6 +4521,33 @@ location solveDelayZone()
 	}
 
 	return burnZone;
+}
+
+boolean allowSoftblockDelay()
+{
+	return get_property("auto_delayLastLevel").to_int() < my_level();
+}
+
+boolean canBurnDelay(location loc)
+{
+	// TODO: Add Digitize (Portscan?) & LOV Enamorang
+	if (!zone_delay(loc)._boolean || !allowSoftblockDelay())
+	{
+		return false;
+	}
+	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
+	{
+		return true;
+	}
+	else if (auto_haveVotingBooth() && get_property("_voteFreeFights").to_int() < 3)
+	{
+		return true;
+	}
+	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic()))
+	{
+		return true;
+	}
+	return false;
 }
 
 boolean auto_is_valid(item it)
@@ -5790,14 +5859,19 @@ float npcStoreDiscountMulti()
 int meatReserve()
 {
 	//the amount of meat we want to reserve for quest usage when performing a restore
+	int reserve_extra = 0;		//extra reserved for various reasons
+	if(in_kolhs())
+	{
+		reserve_extra += 100;
+	}
 	
 	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely
 	{
 		if(!isDesertAvailable() && inKnollSign() && my_level() > 5 && my_turncount() > 50)
 		{		//reason for both level and turncount being checked is that many iotms could level us on turn 1.
-			return 500;		//reserve some meat for the bitchin' meatcar.
+			return 500 + reserve_extra;		//reserve some meat for the bitchin' meatcar.
 		}
-		return 0;	
+		return reserve_extra;	
 	}
 	
 	int reserve_gnasir = 0;		//used to track how much we need to reserve for black paint for gnasir
@@ -5835,5 +5909,5 @@ int meatReserve()
 		}
 	}
 	
-	return reserve_gnasir + reserve_diary + reserve_island;
+	return reserve_gnasir + reserve_diary + reserve_island + reserve_extra;
 }

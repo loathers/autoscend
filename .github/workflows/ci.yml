@@ -2,9 +2,7 @@
 
 name: CI
 env:
-  MAFIA_BUILD: "1902"
-  MAFIA_VERSION: "20394"
-  SCRIPT_NAME: "autoscend.ash"
+  SCRIPT_NAMES: "autoscend.ash auto_pre_adv.ash auto_post_adv.ash auto_choice_adv.ash relay_autoscend.ash autoscend_settings_extra.ash"
 
 on: [push, pull_request]
 
@@ -17,16 +15,41 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Setup Java JDK
-      uses: actions/setup-java@v1.3.0
+      uses: actions/setup-java@v1.4.3
       with:
         java-version: 1.8
 
-    - name: Prepare KoLmafia
+    - name: Determine KoLmafia version
+      id: mafia
       run: |
-        if [[ ! -f ".github/kolmafia.jar" ]]; then
-          curl "https://ci.kolmafia.us/job/Kolmafia/${MAFIA_BUILD}/artifact/dist/KoLmafia-${MAFIA_VERSION}.jar" --output .github/kolmafia.jar
+        set -o pipefail
+        export MAFIA_VERSION=$(head -n1 RELEASE/scripts/autoscend.ash | grep -o '[0-9]\+')
+        if [[ -z "$MAFIA_VERSION" ]]; then
+          echo "Couldn't determine required mafia version!"
+          exit 1
         fi
-    
+        export MAFIA_BUILD=$(curl --fail --silent --globoff 'https://ci.kolmafia.us/job/Kolmafia/api/json?tree=builds[number,artifacts[relativePath]]' | jq '[.builds[]] | map(select(.artifacts[].relativePath | contains(env.MAFIA_VERSION))) | .[] | .number' | head -n1)
+        if [[ -z "$MAFIA_BUILD" ]]; then
+          echo "Couldn't determine Jenkins build number!"
+          exit 1
+        fi
+        export JENKINS_URL="https://ci.kolmafia.us/job/Kolmafia/${MAFIA_BUILD}/artifact/dist/KoLmafia-${MAFIA_VERSION}.jar"
+        echo "::set-output name=jenkins::$JENKINS_URL"
+        echo "::set-output name=build::$MAFIA_BUILD"
+        echo "::set-output name=version::$MAFIA_VERSION"
+
+    - name: Cache KoLmafia
+      id: cache
+      uses: actions/cache@v2
+      with:
+        path: .github/kolmafia.jar
+        key: kolmafia-${{steps.mafia.outputs.build}}-${{steps.mafia.outputs.version}}
+
+    - name: Download KoLmafia
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        curl "${{steps.mafia.outputs.jenkins}}" --output .github/kolmafia.jar
+
     - name: Install and verify
       run: |
         cd RELEASE
@@ -43,15 +66,19 @@ jobs:
           java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_dependencies
         fi
 
-        # Run the verification
-        echo "Verifying..."
+        errors=0
+        for ashfile in ${SCRIPT_NAMES}; do
+            # Run the verification
+            echo "Verifying ${ashfile}..."
 
-        echo "try { cli_execute('verify ${SCRIPT_NAME}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
-        output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
-        if [[ $output == *"Script verification complete." ]]; then
-          echo "Verified!"
-          exit 0
-        else
-          echo $output
-          exit 1
-        fi
+            echo "try { cli_execute('verify ${ashfile}'); } finally { cli_execute('exit'); }" > scripts/_ci_verify.ash
+            output=$(java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_verify)
+            if [[ $output == *"Script verification complete." ]]; then
+                echo "Verified ${ashfile}!"
+            else
+                echo $output
+                errors=$((errors+1))
+            fi
+        done
+
+        exit ${errors}

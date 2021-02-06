@@ -33,13 +33,17 @@ boolean L10_airship()
 	{
 		return false;
 	}
+	if(my_turncount() == get_property("_LAR_skipNC178").to_int())
+	{
+		auto_log_info("In LAR path NC178 is forced to reoccur if we skip it. Go do something else.");
+		return false;
+	}
 
 	auto_log_info("Fantasy Airship Fly Fly time", "blue");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
-	set_property("choiceAdventure178", "2"); // Hammering the Armory: Skip
 
 	if(item_amount($item[Model Airship]) == 0)
 	{
@@ -121,7 +125,10 @@ boolean L10_basement()
 		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella) or Neckbeard Choice
 	}
 
-	auto_forceNextNoncombat();
+	if (possessEquipment($item[Amulet of Extreme Plot Significance]))
+	{
+		auto_forceNextNoncombat();
+	}
 
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
@@ -131,7 +138,7 @@ boolean L10_basement()
 		}
 	}
 
-	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
+	autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
 	resetMaximize();
 	
 
@@ -205,11 +212,16 @@ boolean L10_ground()
 		return false;
 	}
 
+	if (canBurnDelay($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+	{
+		return false;
+	}
+
 	auto_log_info("Castle Ground Floor, boring!", "blue");
 	set_property("choiceAdventure672", 3); // There's No Ability Like Possibility: Skip
 	set_property("choiceAdventure673", 1); // Putting Off Is Off-Putting: Very Overdue Library Book then Skip
 	set_property("choiceAdventure674", 3); // Huzzah!: Skip
-	if (isActuallyEd() || (auto_my_path() == "Pocket Familiars"))
+	if (isActuallyEd() || in_pokefam())
 	{
 		set_property("choiceAdventure1026", 3); // Home on the Free Range: Skip
 	}
@@ -228,8 +240,7 @@ boolean L10_ground()
 		}
 	}
 
-	autoAdv(1, $location[The Castle in the Clouds in the Sky (Ground Floor)]);
-	return true;
+	return autoAdv($location[The Castle in the Clouds in the Sky (Ground Floor)]);
 }
 
 boolean L10_topFloor()
@@ -329,10 +340,14 @@ boolean L10_holeInTheSkyUnlock()
 		set_property("auto_holeinthesky", false);
 		return false;
 	}
-	if (!needStarKey() && !isActuallyEd())
+	int day = get_property("shenInitiationDay").to_int();
+	int items_returned = shenItemsReturned();
+	boolean[location] shenLocs = shenSnakeLocations(day, items_returned);
+	if (!needStarKey() && !(shenLocs contains $location[The Hole in the Sky]))
 	{
 		// we force auto_holeinthesky to true in L11_shenCopperhead() as Ed if Shen sends us to the Hole in the Sky
 		// as otherwise the zone isn't required at all for Ed.
+		// Should also handle situations where the player manually got the star key before unlocking Shen.
 		set_property("auto_holeinthesky", false);
 		return false;
 	}
@@ -353,4 +368,13 @@ boolean L10_holeInTheSkyUnlock()
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
 	return true;
+}
+
+boolean L10_rainOnThePlains()
+{
+	if (L10_plantThatBean() || L10_airship() || L10_basement() || L10_ground() || L10_topFloor() || L10_holeInTheSkyUnlock())
+	{
+		return true;
+	}
+	return false;
 }

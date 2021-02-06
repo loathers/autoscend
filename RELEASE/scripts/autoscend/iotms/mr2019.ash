@@ -45,7 +45,7 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	if(casingsOwned == 0)
 		return false;
 		
-	//it is actually possible to have a casing but not have the kramko grinder
+	//it is actually possible to have a casing but not have the kramco grinder
 	if(!possessEquipment($item[Kramco Sausage-o-Matic&trade;]))
 	{
 		return false;
@@ -303,17 +303,8 @@ boolean auto_saberDailyUpgrade(int day)
 	{
 		return auto_saberChoice("res");
 	}
-
-	if(day == 1)
-	{
-		return auto_saberChoice("ml");
-	}
-	else
-	{
-		return auto_saberChoice("res");
-	}
-
-	return false;
+	
+	return auto_saberChoice("fam");
 }
 
 monster auto_saberCurrentMonster()

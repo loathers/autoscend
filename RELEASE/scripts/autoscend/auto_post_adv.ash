@@ -333,7 +333,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Inscrutable Gaze], 30, 1, 1);
 		buffMaintain($effect[Big], 50, 1, 1);
 
-		boolean [skill] toCast = $skills[Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Communism!, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Prevent Scurvy and Sobriety, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
+		boolean [skill] toCast = $skills[Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Bowl Full of Jelly, Chubby and Plump, Communism!, Eye and a Twist, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Prevent Scurvy and Sobriety, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
 
 		foreach sk in toCast
 		{
@@ -448,6 +448,8 @@ boolean auto_post_adventure()
 
 	# This is the list of castables that all MP sequences will use.
 	boolean [skill] toCast = $skills[Prevent Scurvy and Sobriety, Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Communism!, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
+	
+	boolean buff_familiar = pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean();
 
 	if(my_maxmp() < 50)
 	{
@@ -455,7 +457,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 15, 1, 10);
 		// Only maintain skills in path with familiars
-		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
+		if(buff_familiar)
 		{
 			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
 			if(regen > 10.0)
@@ -516,7 +518,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Power Ballad of the Arrowsmith], 7, 1, 5);
 		buffMaintain(whatStatSmile(), 20, 1, 10);
 		// Only Maintain skills in path with familiars
-		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
+		if(buff_familiar)
 		{
 			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
 			if(regen > 10.0)
@@ -583,7 +585,7 @@ boolean auto_post_adventure()
 			buffMaintain(whatStatSmile(), 40, 1, 10);
 		}
 		// Only maintain in path with familiars
-		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
+		if(buff_familiar)
 		{
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 			if(regen > 4.0)
@@ -693,7 +695,7 @@ boolean auto_post_adventure()
 		}
 
 		// Only maintain in path with familiars
-		if(pathAllowsFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
+		if(buff_familiar)
 		{
 			buffMaintain($effect[Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
@@ -926,7 +928,7 @@ boolean auto_post_adventure()
 		{
 			bjornify_familiar($familiar[el vibrato megadrone]);
 		}
-		if((my_bjorned_familiar() == $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() >= 1))
+		if((my_bjorned_familiar() == $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() >= 1) && have_familiar($familiar[El Vibrato Megadrone]))
 		{
 			bjornify_familiar($familiar[el vibrato megadrone]);
 		}
@@ -994,6 +996,11 @@ boolean auto_post_adventure()
 			auto_log_info("At the snojo, let's not keep going there and dying....", "red");
 			set_property("_snojoFreeFights", 10);
 		}
+		if(last_monster() == $monster[ninja snowman assassin])
+		{
+			auto_log_info("We were beaten up by a [ninja snowman assassin]. disabling ninja route", "red");
+			set_property("auto_L8_ninjaAssassinFail", true);
+		}
 		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 		use_skill(1, $skill[Tongue of the Walrus]);
 	}
@@ -1015,6 +1022,11 @@ boolean auto_post_adventure()
 	{
 		set_property("auto_modernzmobiecount", "" + (get_property("auto_modernzmobiecount").to_int() + 1));
 		auto_log_info("Fought " + get_property("auto_modernzmobiecount") + " modern zmobies.", "blue");
+	}
+
+	if (get_property("lastEncounter") == "Welcome to the Great Overlook Lodge")
+	{
+		set_property("auto_shinningStarted", true);
 	}
 
 	if(have_effect($effect[Disavowed]) > 0)

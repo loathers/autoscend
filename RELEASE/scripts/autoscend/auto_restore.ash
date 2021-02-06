@@ -564,22 +564,22 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			{
 				meat_per_mp = meat_per_mp * 0.95; // this isn't quite right for discounted Doc Galaktik but I don't care.
 			}
-		if (isMystGuildStoreAvailable())
-		{
-			int mmj_cost = auto_have_skill($skill[Five Finger Discount]) ? 95 : 100;
-			int mmj_mp_restored = my_level() * 1.5 + 5;
-			float mmj_meat_per_mp = mmj_cost / mmj_mp_restored;
-			meat_per_mp = min(meat_per_mp, mmj_meat_per_mp);
-			// at level 6 and above, MMJ is better than all but discounted doc galaktik
-			// and at level 8 and above it's better than everything
-		}
-		if (my_class() == $class[Sauceror])
-		{
-			// your MP cup runneth over
-			meat_per_mp = 0.1;
-		}
-		skill s = to_skill(metadata.name);
-		return (mp_cost(s) * meat_per_mp);
+			if (isMystGuildStoreAvailable())
+			{
+				int mmj_cost = auto_have_skill($skill[Five Finger Discount]) ? 95 : 100;
+				int mmj_mp_restored = my_level() * 1.5 + 5;
+				float mmj_meat_per_mp = mmj_cost / mmj_mp_restored;
+				meat_per_mp = min(meat_per_mp, mmj_meat_per_mp);
+				// at level 6 and above, MMJ is better than all but discounted doc galaktik
+				// and at level 8 and above it's better than everything
+			}
+			if (my_class() == $class[Sauceror] || can_interact())
+			{
+				// your MP cup runneth over
+				meat_per_mp = 0.1;
+			}
+			skill s = to_skill(metadata.name);
+			return (mp_cost(s) * meat_per_mp);
 		}
 		else
 		{
@@ -1376,6 +1376,19 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 		return -1;
 	}
 	
+	int max_resource()
+	{
+		if(resource_type == "hp")
+		{
+			return my_maxhp();
+		}
+		else if(resource_type == "mp")
+		{
+			return my_maxmp();
+		}
+		return -1;
+	}
+	
 	int hp_target()
 	{
 		if(resource_type == "hp")
@@ -1558,6 +1571,10 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 
 	while(current_resource() < goal)
 	{
+		if(goal > max_resource())	//prevent infinite loop in case maxHP or maxMP dropped below goal
+		{
+			goal = max_resource();
+		}
 		__RestorationOptimization[int] options = __maximize_restore_options(hp_target(), mp_target(), meat_reserve, useFreeRests);
 		if(count(options) == 0)
 		{
@@ -1628,7 +1645,7 @@ void invalidateRestoreOptionCache()
  */
 boolean acquireMP()
 {
-	return acquireMP(my_maxmp());
+	return acquireMP(min(0.95 * my_maxmp(),300));
 }
 
 /**
@@ -1685,7 +1702,8 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	// TODO: move this to general effectiveness method
 	if(my_maxmp() - my_mp() > 300)
 	{
-		auto_sausageEatEmUp(1);
+		auto_sausageEatEmUp(1);		//this involve outfit changes which can lower our maxMP to below what goal was. which would cause infinite loop
+		goal = min(goal, my_maxmp());
 	}
 	__restore("mp", goal, meat_reserve, useFreeRests);
 	return (my_mp() >= goal);

@@ -156,7 +156,6 @@ boolean bond_initializeDay(int day)
 			{
 				cli_execute("teatree " + $item[Cuppa Sobrie Tea]);
 			}
-			L8_trapperGround();
 			//Digitize a blooper? Time spin it?
 			equipBaseline();
 
@@ -539,41 +538,14 @@ boolean LM_bond()
 			}
 		}
 
-		if((internalQuestStatus("questL08Trapper") < 2) && (my_level() >= 8))
+		if(internalQuestStatus("questL08Trapper") == 0 || internalQuestStatus("questL08Trapper") == 1)
 		{
-			if(item_amount($item[Goat Cheese]) == 0)
-			{
-				L8_trapperStart();
-				set_property("auto_combatDirective", "start;(olfaction)");
-				if((get_property("_kgbTranquilizerDartUses").to_int() < 3) && (item_amount($item[Kremlin\'s Greatest Briefcase]) > 0))
-				{
-					equip($slot[acc3], $item[Kremlin\'s Greatest Briefcase]);
-				}
-				if(L8_trapperGround())
-				{
-					set_property("auto_combatDirective", "");
-					return true;
-				}
-				set_property("auto_combatDirective", "");
-			}
-			else if(item_amount($item[Goat Cheese]) == 2)
+			if(item_amount($item[Goat Cheese]) == 2 && timeSpinnerRemaining() >= 3)
 			{
 				auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-				return timeSpinnerCombat($monster[Dairy Goat]);
+				if(timeSpinnerCombat($monster[Dairy Goat])) return true;
 			}
-			else if(item_amount(to_item(get_property("trapperOre"))) == 1)
-			{
-				while(acquireHermitItem($item[Ten-Leaf Clover]));
-				use(1, $item[Disassembled Clover]);
-				backupSetting("cloverProtectActive", false);
-				autoAdvBypass(270, $location[Itznotyerzitz Mine]);
-				restoreSetting("cloverProtectActive");
-				return true;
-			}
-			else if(item_amount(to_item(get_property("trapperOre"))) == 3)
-			{
-				return L8_trapperGround();
-			}
+			if(L8_trapperQuest()) return true;
 		}
 		if(my_level() >= 9)
 		{

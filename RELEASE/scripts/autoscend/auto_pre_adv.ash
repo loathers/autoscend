@@ -13,25 +13,16 @@ void print_footer() {
 
 boolean auto_pre_adventure()
 {
-	auto_log_debug("Running auto_pre_adv.ash");
-
 	location place = my_location();
-	if((equipped_item($slot[familiar]) == $item[none]) && (my_familiar() != $familiar[none]) && (auto_my_path() == "Heavy Rains"))
-	{
-		abort("Familiar has no equipment, WTF");
-	}
-
 	if(get_property("auto_disableAdventureHandling").to_boolean())
 	{
 		auto_log_info("Preadventure skipped by standard adventure handler.", "green");
 		return true;
 	}
-
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " + place.to_string(), "green");
-
+	
 	preAdvUpdateFamiliar(place);
-
 	ed_handleAdventureServant(place);
 
 	if(get_floundry_locations() contains place)
@@ -139,6 +130,11 @@ boolean auto_pre_adventure()
 		{
 			adjustForReplaceIfPossible(mon);
 		}
+
+		if (auto_wantToSniff(mon, place) && !burningDelay)
+		{
+			adjustForSniffingIfPossible(mon);
+		}
 	}
 
 	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))
@@ -232,6 +228,7 @@ boolean auto_pre_adventure()
 	}
 
 	equipOverrides();
+	kolhs_preadv(place);
 
 	if (is100FamRun() && my_familiar() == $familiar[none])
 	{
@@ -276,7 +273,7 @@ boolean auto_pre_adventure()
 			}
 		}
 	}
-
+	
 	if(place == $location[The Black Forest])
 	{
 		autoEquip($slot[acc3], $item[Blackberry Galoshes]);
@@ -445,6 +442,7 @@ boolean auto_pre_adventure()
 
 	// EQUIP MAXIMIZED GEAR
 	equipMaximizedGear();
+	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	cli_execute("checkpoint clear");
 
 	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {

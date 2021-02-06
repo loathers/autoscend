@@ -62,7 +62,7 @@ boolean handleRainDoh()
 		set_property("auto_doCombatCopy", "no");
 		if(count == 3)
 		{
-			set_property("auto_ninjasnowmanassassin", "1");
+			set_property("auto_ninjasnowmanassassin", true);
 		}
 		return true;
 	}

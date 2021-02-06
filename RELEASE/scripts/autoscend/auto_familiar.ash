@@ -177,6 +177,17 @@ boolean canChangeToFamiliar(familiar target)
 		return true;
 	}
 	
+	//kolhs specific check that needs to go here specifically. can not take familiars >10 lbs base weight into school zone.
+	if(kolhs_mandatorySchool() || 				//we are in kolhs and are adventuring in a school zone
+	get_property("_NC772_directive") != "")		//we are in kolhs and doing saved by the bell NC
+	{
+		if(target != $familiar[Steam-Powered Cheerleader] &&	//sole exception to the rule
+		familiar_weight(target) > 10)
+		{
+			return false;
+		}
+	}
+	
 	// check path limitations, as well as 100% runs for a different familiar than target
 	if(!canChangeFamiliar())
 	{
@@ -642,7 +653,10 @@ void preAdvUpdateFamiliar(location place)
 	//familiar equipment overrides
 	if(my_path() == "Heavy Rains")
 	{
-		autoEquip($slot[familiar], $item[miniature life preserver]);
+		if(famChoice != $familiar[Left-Hand Man])
+		{
+			autoEquip($slot[familiar], $item[miniature life preserver]);
+		}
 	}
 
 	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
