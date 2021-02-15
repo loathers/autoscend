@@ -777,6 +777,16 @@ boolean auto_buyCrimboCommerceMallItem()
 	}
 
 	auto_log_info(`Commerce Ghost wants us to buy a {ghostItemString} which will give us roughly {my_level()*25} substats in the next combat with it.`);
+
+	if (ghostItemString.contains_text(",")) {
+		// buy from mall doesn't handle items with commas in the name
+		// but if we strip it out, fuzzy matching will map it back to a $item.
+		// yes cli_execute is bad and should feel bad but buy from mall 
+		// doesn't have an ASH equivalent (yet)
+		buffer newGhostItemString = ghostItemString.replace_string(",", "");
+		ghostItemString = newGhostItemString;
+	}
+
 	string output = cli_execute_output(`buy from mall {ghostItemString}`);
 	if (!output.contains_text("Purchases complete."))
 	{

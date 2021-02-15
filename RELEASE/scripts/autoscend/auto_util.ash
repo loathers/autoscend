@@ -914,7 +914,7 @@ boolean canYellowRay(monster target)
 	}
 	# Pulled Yellow Taffy	- How do we handle the underwater check?
 	# He-Boulder?			- How do we do this?
-	return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains target) != "";
+	return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 }
 
 boolean canYellowRay()
@@ -1340,7 +1340,7 @@ boolean adjustForYellowRayIfPossible(monster target)
 {
 	if(canYellowRay(target))
 	{
-		string yr_string = yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains target);
+		string yr_string = yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target);
 		auto_log_info("Adjusting to have YR available for " + target + ": " + yr_string, "blue");
 		return adjustForYellowRay(yr_string);
 	}
