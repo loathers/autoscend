@@ -612,7 +612,7 @@ boolean L8_trapperGroar()
 	if(provideResistances(resGoal, false) || provideResistances(resGoal, true))
 	{
 		auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
-		addToMaximize("2000cold resistance 5max");
+		equipMaximizedGear();
 		return autoAdv($location[Mist-shrouded Peak]);
 	}
 	return false;
