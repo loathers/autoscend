@@ -44,7 +44,7 @@ any	31	auto_consultClan	string	The clan name of the player you want to do Zatara
 any	32	auto_consultChoice	string	The name of the player you want to do Zatara consults with.
 any	33	auto_considerGalaktik	boolean	When true autoscend may automatically enable galaktik quest for this run if it decides it is needed.
 any	34	auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
-any	35	auto_skipUnlockGuild    boolean When true, don't unlock the guild.
+any	35	auto_skipUnlockGuild	boolean	When true, don't unlock the guild.
 any	36	auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
 any	37	auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
 any	38	auto_useWishes	boolean	When true, use the Genie Bottle to go faster in non-Community Service runs.
