@@ -711,6 +711,7 @@ boolean ed_needShop()
 
 	if (get_property("auto_needLegs").to_boolean() && coins >= ed_KaCost($skill[Upgraded Legs]))
 	{
+		auto_log_info("Ed needs legs (and can afford them)! UNDYING for a free trip to the Underworld!");
 		return true;
 	}
 
@@ -719,6 +720,7 @@ boolean ed_needShop()
 	canEat = max(0, canEat - item_amount($item[Mummified Beef Haunch]));
 	if (canEat > 0 && coins >= 15)
 	{
+		auto_log_info("Ed needs beef haunches (and can afford them)! UNDYING for a free trip to the Underworld!");
 		return true;
 	}
 
@@ -727,6 +729,7 @@ boolean ed_needShop()
 	{
 		if (item_amount($item[Holy Spring Water]) < 1 && item_amount($item[Spirit Beer]) < 1 && item_amount($item[Sacramental Wine]) < 1)
 		{
+			auto_log_info("Ed needs MP restores! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 	}
@@ -736,36 +739,44 @@ boolean ed_needShop()
 	int requiredKa = ed_KaCost(nextUpgrade);
 	if (canEat < 1 && requiredKa != -1 && coins >= requiredKa)
 	{
+		auto_log_info(`Ed needs {nextUpgrade.to_string()} (and can afford it)! UNDYING for a free trip to the Underworld!`);
 		return true;
 	}
 	else if (have_skill($skill[Okay Seriously, This is the Last Spleen]) && canEat < 1)
 	{
 		if (item_amount($item[Talisman of Renenutet]) < 1 && get_property("auto_renenutetBought").to_int() < 7 && coins >= (7 - get_property("auto_renenutetBought").to_int()))
 		{
+			auto_log_info("Ed needs Talismens of Renenutet! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Linen Bandages]) < 1 && coins >= 4)
 		{
+			auto_log_info("Ed needs Linen Bandages! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Holy Spring Water]) < 1 && coins >= 1 && (my_maxmp() - my_mp() < 50))
 		{
+			auto_log_info("Ed needs Holy Spring Water! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Talisman of Horus]) < 1 && coins >= 5)
 		{
+			auto_log_info("Ed needs Talismens of Horus! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Spirit Beer]) < 1 && coins >= 30)
 		{
+			auto_log_info("Ed needs Spirit Beer! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if ((item_amount($item[Soft Green Echo Eyedrop Antidote]) + item_amount($item[Ancient Cure-All])) < 1 && coins >= 30)
 		{
+			auto_log_info("Ed needs Ancient Cure-All! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Sacramental Wine]) < 1 && coins >= 30)
 		{
+			auto_log_info("Ed needs Sacramental Wine! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 	}
@@ -876,10 +887,10 @@ boolean ed_shopping()
 		else if (have_skill($skill[Okay Seriously, This is the Last Spleen]) && canEat < 1)
 		{
 			while (item_amount($item[Talisman of Renenutet]) < 7 && get_property("auto_renenutetBought").to_int() < 7 && coins >= 1)
-		{
-			auto_log_info("Buying Talisman of Renenutet", "green");
-			visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=439", true);
-			set_property("auto_renenutetBought", 1 + get_property("auto_renenutetBought").to_int());
+			{
+				auto_log_info("Buying Talisman of Renenutet", "green");
+				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=439", true);
+				set_property("auto_renenutetBought", 1 + get_property("auto_renenutetBought").to_int());
 				coins -= 1;
 			}
 			while (item_amount($item[Linen Bandages]) < 4 && coins >= 1)

@@ -544,7 +544,7 @@ void consumeStuff()
 		return;
 	}
 
-	boolean edSpleenCheck = (isActuallyEd() && spleen_left() > 0); // Ed should fill spleen first
+	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
 	
 	if (my_adventures() < 10 && fullness_left() > 0 && in_boris())
 	{
