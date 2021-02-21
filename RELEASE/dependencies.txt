@@ -4,3 +4,4 @@ https://github.com/Ezandora/Far-Future/branches/Release/
 https://github.com/Ezandora/Voting-Booth/trunk/Release/
 https://github.com/Ezandora/Comb-Beach/trunk/Release/
 https://svn.code.sf.net/p/therazekolmafia/canadv/code/
+https://github.com/gausie/excavator/trunk/RELEASE/

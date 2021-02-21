@@ -928,7 +928,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean wantJarlsbergPie = false;
 	boolean wantPetePie = false;
 
-	if (towerKeyCount() < 3 && get_property("auto_consumeKeyLimePies").to_boolean())
+	if (towerKeyCount() < 3 && !get_property("auto_dontConsumeKeyLimePies").to_boolean())
 	{
 		if(item_amount($item[Boris\'s key]) == 0 && item_amount($item[fat loot token]) < 3)
 			wantBorisPie = true;
