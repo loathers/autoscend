@@ -778,7 +778,7 @@ boolean auto_buyCrimboCommerceMallItem()
 
 	auto_log_info(`Commerce Ghost wants us to buy a {ghostItemString} which will give us roughly {my_level()*25} substats in the next combat with it.`);
 
-	string output = cli_execute_output(`buy from mall [{ghostItemString}.to_item().to_int()]`);
+	string output = cli_execute_output(`buy from mall [{ghostItemString.to_item().to_int()}]`);
 	if (!output.contains_text("Purchases complete."))
 	{
 		abort(`Something went wrong buying {ghostItemString} from the mall.`);
