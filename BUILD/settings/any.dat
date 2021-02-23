@@ -1,6 +1,6 @@
 auto_skipNEPOverride	boolean	If true will not use the Neverending Party even if mafia says it is available.
 auto_skipGuzzlrCocktailSet	boolean	If true will not accept and abandon a Platinum Guzzlr quest for the cocktail set.
-auto_mushroomGardenGrowth	integer Picks the mushroom when growth reaches the given value (or higher). Defaults to 1 to pick every day, capped at 11.
+auto_mushroomGardenGrowth	integer	Picks the mushroom when growth reaches the given value (or higher). Defaults to 1 to pick every day, capped at 11.
 auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
 auto_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
 auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
@@ -17,6 +17,7 @@ auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the ar
 auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
 auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
 auto_consumeMinAdvPerFill	float	The minimum adventures per fill to consider for a consumable before eating or drinking it. Defaults to 0.0 and will consume whatever is available if necessary.
+auto_consumePullDesirability	float	This value is used as a rough estimate of how much a pull is "worth" when the consumption algorithm is considering using pulls. Higher values will make it more conservative and vice-versa. Defaults to 5.0.
 auto_dontConsumeKeyLimePies	boolean	When false, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
 auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
 auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
