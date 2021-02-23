@@ -319,6 +319,7 @@ boolean settingFixer()
 	if (get_property("auto_consumeKeyLimePies") != "")
 	{
 		set_property("auto_dontConsumeKeyLimePies", !get_property("auto_consumeKeyLimePies").to_boolean());
+		remove_property("auto_consumeKeyLimePies");
 	}
 	remove_property("auto_shareMaximizer");
 	remove_property("auto_allowSharingData");
