@@ -1,4 +1,4 @@
-since r20623;	// min mafia revision needed to run this script. Last update: Rename crimbo20 cafe consumables & lower ranges, mark as Unspaded as wiki appears incorrect
+since r20653;	// min mafia revision needed to run this script. Last update: Torso Awaregness -> Torso Awareness
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -2108,7 +2108,7 @@ boolean LX_craftAcquireItems()
 		run_choice(1);
 	}
 
-	if(knoll_available() && (have_skill($skill[Torso Awaregness]) || have_skill($skill[Best Dressed])) && (item_amount($item[Demon Skin]) > 0) && !possessEquipment($item[Demonskin Jacket]))
+	if(knoll_available() && (have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed])) && (item_amount($item[Demon Skin]) > 0) && !possessEquipment($item[Demonskin Jacket]))
 	{
 		//Demonskin Jacket, requires an adventure, knoll available doesn\'t matter here...
 	}
