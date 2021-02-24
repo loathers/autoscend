@@ -497,7 +497,7 @@ boolean auto_spoonReadyToTuneMoon()
 		return false;
 	}
 
-	if(inGnomeSign() && !toGnomad && auto_is_valid($skill[Torso Awaregness]) && !auto_have_skill($skill[Torso Awaregness]))
+	if(inGnomeSign() && !toGnomad && auto_is_valid($skill[Torso Awareness]) && !auto_have_skill($skill[Torso Awareness]))
 	{
 		// we want to know about our torso before swapping away from gnomad signs
 		return false;
