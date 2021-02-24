@@ -1485,7 +1485,7 @@ string statCard()
 
 boolean hasTorso()
 {
-	return have_skill($skill[Torso Awaregness]) || have_skill($skill[Best Dressed]);
+	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]);
 }
 
 boolean isGuildClass()
