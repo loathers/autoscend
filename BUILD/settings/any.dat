@@ -1,16 +1,15 @@
 auto_skipNEPOverride	boolean	If true will not use the Neverending Party even if mafia says it is available.
+auto_skipGuzzlrCocktailSet	boolean	If true will not accept and abandon a Platinum Guzzlr quest for the cocktail set.
+auto_mushroomGardenGrowth	integer	Picks the mushroom when growth reaches the given value (or higher). Defaults to 1 to pick every day, capped at 11.
 auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
 auto_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
 auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
-auto_borrowedTimeOnLiberation	boolean	Automatically use Borrowed Time when liberating the King? This assumes that you are going to bother to ascend again the same day.
 auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
 auto_powerLevelTimer	integer	Delay in seconds before each time we spend an adv powerleveling. default is 10 sec. lowest valid value is 1.
-auto_kingLiberation	boolean	Use the CHEDDAH kingLiberation script?
 auto_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
 auto_confidence	boolean	If true, we'll get the confidence buff instead of breaking the mirror. Good if your combat suite isn't very fleshed out yet, since it makes the Naughty Sorceress dramatically easier.
 auto_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
 auto_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
-auto_xiblaxianChoice	string	When using Xiblaxian Stuff, do we make a Xiblaxian Ultraburrito or Xiblaxian Space-Whiskey
 auto_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
 auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
 auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
@@ -18,7 +17,8 @@ auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the ar
 auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
 auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
 auto_consumeMinAdvPerFill	float	The minimum adventures per fill to consider for a consumable before eating or drinking it. Defaults to 0.0 and will consume whatever is available if necessary.
-auto_consumeKeyLimePies	boolean	When true, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
+auto_consumePullDesirability	float	This value is used as a rough estimate of how much a pull is "worth" when the consumption algorithm is considering using pulls. Higher values will make it more conservative and vice-versa. Defaults to 5.0.
+auto_dontConsumeKeyLimePies	boolean	When false, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
 auto_maximize_baseline	string	The string to use as the baseline for the maximizer when deciding gear. If this is blank or "default", it will use a generated maximizer statement that takes your current situation in to account somewhat.
 auto_equipment_override_hat	string	A semicolon separated list of overrides for the hat slot.
 auto_equipment_override_back	string	A semicolon separated list of overrides for the back slot.

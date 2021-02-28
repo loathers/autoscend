@@ -272,10 +272,7 @@ void main()
 	}
 	foreach x in s["sharing"]
 	{
-		if(get_property("auto_allowSharingData").to_boolean())
-		{
-			handleSetting("sharing", x);
-		}
+		handleSetting("sharing", x);
 	}
 	writeln("<tr><td align=center colspan='3'><input type='submit' name='' value='Save Changes'/></td></tr></table></form>");
 

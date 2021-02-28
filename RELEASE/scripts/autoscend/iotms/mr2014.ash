@@ -308,58 +308,6 @@ boolean dna_bedtime()
 	return false;
 }
 
-
-boolean xiblaxian_makeStuff()
-{
-	if((my_daycount() >= 2) && possessEquipment($item[Xiblaxian holo-wrist-puter]))
-	{
-		item toMake = to_item(get_property("auto_xiblaxianChoice"));
-
-		boolean canMake = false;
-		if((toMake == $item[Xiblaxian Ultraburrito]) && (fullness_left() >= 4) && (item_amount($item[Xiblaxian Circuitry]) >= 1) && (item_amount($item[Xiblaxian Polymer]) >= 1) && (item_amount($item[Xiblaxian Alloy]) >= 3))
-		{
-			canMake = true;
-		}
-		if((toMake == $item[Xiblaxian Space-Whiskey]) && (inebriety_left() >= 4) && (item_amount($item[Xiblaxian Circuitry]) >= 3) && (item_amount($item[Xiblaxian Polymer]) >= 1) && (item_amount($item[Xiblaxian Alloy]) >= 1))
-		{
-			canMake = true;
-		}
-
-		if(!canMake)
-		{
-			return false;
-		}
-
-		if(item_amount(toMake) > 0)
-		{
-			return false;
-		}
-
-		if(item_amount($item[Xiblaxian 5D Printer]) == 0)
-		{
-			if(item_amount($item[transmission from planet Xi]) > 0)
-			{
-				use(1, $item[transmission from planet xi]);
-				use(1, $item[Xiblaxian Cache Locator Simcode]);
-			}
-		}
-
-		if(item_amount($item[Xiblaxian 5D Printer]) > 0)
-		{
-			int[item] canMake = eudora_xiblaxian();
-			if((toMake == $item[Xiblaxian Ultraburrito]) && (canMake contains $item[Xiblaxian Ultraburrito]) && (canMake[$item[Xiblaxian Ultraburrito]] > 0))
-			{
-				visit_url("shop.php?pwd=&whichshop=5dprinter&action=buyitem&quantity=1&whichrow=339", true);
-			}
-			if((toMake == $item[Xiblaxian Space-Whiskey]) && (canMake contains $item[Xiblaxian Space-Whiskey]) && (canMake[$item[Xiblaxian Space-Whiskey]] > 0))
-			{
-				visit_url("shop.php?pwd=&whichshop=5dprinter&action=buyitem&quantity=1&whichrow=338", true);
-			}
-		}
-	}
-	return false;
-}
-
 boolean LX_ornateDowsingRod(boolean doing_desert_now)
 {
 	if(!get_property("auto_grimstoneOrnateDowsingRod").to_boolean())

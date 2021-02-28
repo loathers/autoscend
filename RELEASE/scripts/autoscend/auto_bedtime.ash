@@ -693,6 +693,11 @@ boolean doBedtime()
 			auto_log_info("You have a tea tree to shake!", "blue");
 		}
 
+		if (get_property("spadingData") != "")
+		{
+			cli_execute("spade");
+		}
+
 		auto_log_info("You are probably done for today, beep.", "blue");
 		return true;
 	}

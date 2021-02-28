@@ -928,7 +928,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean wantJarlsbergPie = false;
 	boolean wantPetePie = false;
 
-	if (towerKeyCount() < 3 && get_property("auto_consumeKeyLimePies").to_boolean())
+	if (towerKeyCount() < 3 && !get_property("auto_dontConsumeKeyLimePies").to_boolean())
 	{
 		if(item_amount($item[Boris\'s key]) == 0 && item_amount($item[fat loot token]) < 3)
 			wantBorisPie = true;
@@ -946,9 +946,12 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			actions[n] = MakeConsumeAction(it);
 			if (obtain_mode == SL_OBTAIN_PULL)
 			{
-				// Is this a good estimate of how many adventures a pull is worth? I don't know!
-				// This could be a property, I don't know.
 				actions[n].desirability -= 5.0;
+				float user_desirability = get_property("auto_consumePullDesirability").to_float();
+				if (user_desirability > 0.0)
+				{
+					actions[n].desirability -= user_desirability;
+				}
 			}
 			if (type == SL_ORGAN_STOMACH && auto_is_valid($item[special seasoning]))
 			{

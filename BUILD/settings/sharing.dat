@@ -1,2 +1,1 @@
-auto_allowSharingData	boolean	Allow the script to send information about the ascension to a sad, abused database in hopes of great spades? Specifics will appear (at the bottom) once set to true.
-auto_shareMaximizer	boolean	Share maximzer data. This includes the maximzer string, class, path, softcore/hardcore and moon sign.
+auto_disableExcavator	boolean	When set to true will disable automatically sending spading data via the Extractor script

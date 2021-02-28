@@ -250,19 +250,6 @@ void debugMaximize(string req, int meat)	//This function will be removed.
 	print_html(tableDo);
 	print_html(tableDont);
 
-	if(get_property("auto_shareMaximizer").to_boolean() && get_property("auto_allowSharingData").to_boolean())
-	{
-		auto_log_info("Sharing Maximizer data.", "blue");
-		string temp = visit_url("http://cheesellc.com/kol/sharing.php?type=maximizer&data="+url_encode(tableDo + tableDont));
-		if(contains_text(temp, "success"))
-		{
-			auto_log_info("Data shared successfully", "green");
-		}
-		else
-		{
-			auto_log_warning("Data share failed", "green");
-		}
-	}
 
 	//	A successive print will help make the table readable in cases where it is not rendered properly
 	//cli_execute("ashref get_inventory");

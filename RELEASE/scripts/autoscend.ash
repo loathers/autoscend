@@ -194,7 +194,6 @@ void initializeSettings() {
 	set_property("auto_writingDeskSummon", false);
 	set_property("auto_yellowRays", "");
 	set_property("auto_replaces", "");
-	set_property("auto_consumeKeyLimePies", true);
 	set_property("auto_skipNuns", "false");
 	set_property("auto_skipL12Farm", "false");
 	set_property("auto_L12FarmStage", "0");
@@ -1030,13 +1029,13 @@ void initializeDay(int day)
 		if(get_property("auto_teaChoice") != "")
 		{
 			string[int] teaChoice = split_string(get_property("auto_teaChoice"), ";");
-			item myTea = trim(teaChoice[min(count(teaChoice), my_daycount()) - 1]).to_item();
-			if(myTea != $item[none])
+			string myTea = trim(teaChoice[min(count(teaChoice), my_daycount()) - 1]);
+			if (myTea.to_item() != $item[none] || myTea == "shake")
 			{
 				boolean buff = cli_execute("teatree " + myTea);
 			}
 		}
-		else if(day == 1)
+		else if (day == 1 && auto_is_valid($item[Potted Tea Tree]))
 		{
 			if(fullness_limit() > 0)
 			{
@@ -1051,7 +1050,7 @@ void initializeDay(int day)
 				boolean buff = cli_execute("teatree " + $item[Cuppa Royal Tea]);
 			}
 		}
-		else if(day == 2)
+		else if (day == 2 && auto_is_valid($item[Potted Tea Tree]))
 		{
 			if(inebriety_limit() > 0)
 			{
@@ -1446,7 +1445,7 @@ boolean dailyEvents()
 
 	while(zataraClanmate(""));
 
-	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]))
+	if (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]) && auto_my_path() != "G-Lover")
 	{
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
 		{
@@ -2592,7 +2591,6 @@ boolean doTasks()
 	if(LM_bhy())						return true;
 
 	tophatMaker();
-	xiblaxian_makeStuff();
 	deck_useScheme("");
 	autosellCrap();
 	asdonAutoFeed();
@@ -2927,17 +2925,15 @@ void auto_begin()
 	backupSetting("autoAntidote", 0);
 	backupSetting("dontStopForCounters", true);
 	backupSetting("maximizerCombinationLimit", "100000");
-
-	if(get_property("auto_kingLiberation").to_boolean())
-	{
-		backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
-	}
-	
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
 	backupSetting("choiceAdventureScript", "scripts/autoscend/auto_choice_adv.ash");
 	backupSetting("betweenBattleScript", "scripts/autoscend/auto_pre_adv.ash");
 	backupSetting("recoveryScript", "");
 	backupSetting("counterScript", "");
+	if (!get_property("auto_disableExcavator").to_boolean())
+	{
+		backupSetting("spadingScript", "excavator.ash");
+	}
 
 	backupSetting("hpAutoRecovery", -0.05);
 	backupSetting("hpAutoRecoveryTarget", -0.05);

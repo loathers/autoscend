@@ -465,7 +465,7 @@ boolean auto_run_choice(int choice, string page)
 			bat_reallyPickSkills(20);
 			break;
 		case 1410: // The Mushy Center (Your Mushroom Garden)
-			run_choice(2); // pick the mushroom.
+			mushroomGardenChoiceHandler(choice);
 			break;
 		case 1427: // Hidden Junction (Cartography)
 		case 1428: // Choice 1428 is Your Neck of the Woods (Cartography)

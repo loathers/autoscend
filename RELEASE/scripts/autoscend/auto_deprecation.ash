@@ -164,11 +164,6 @@ boolean settingFixer()
 	remove_property("auto_useCubeling");
 	remove_property("auto_pullPVPJunk");
 
-	if(get_property("auto_xiblaxianChoice") == "")
-	{
-		set_property("auto_xiblaxianChoice", $item[Xiblaxian Ultraburrito]);
-	}
-
 	if(get_property("lastPlusSignUnlock") == "true")
 	{
 		auto_log_debug("lastPlusSignUnlock was changed to a boolean, fixing...", "red");
@@ -317,6 +312,17 @@ boolean settingFixer()
 	remove_property("auto_lastABooCycleFix");
 	remove_property("auto_longConMonster");
 	remove_property("auto_voidWarranty");
-	
+	remove_property("auto_kingLiberation");
+	remove_property("auto_borrowedTimeOnLiberation");
+	remove_property("auto_xiblaxianChoice");
+	remove_property("auto_extrudeChoice");
+	if (get_property("auto_consumeKeyLimePies") != "")
+	{
+		set_property("auto_dontConsumeKeyLimePies", !get_property("auto_consumeKeyLimePies").to_boolean());
+		remove_property("auto_consumeKeyLimePies");
+	}
+	remove_property("auto_shareMaximizer");
+	remove_property("auto_allowSharingData");
+
 	return true;
 }
