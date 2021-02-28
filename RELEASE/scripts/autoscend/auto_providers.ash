@@ -292,7 +292,8 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 	}
 
 	// Feeling Lonely can only be used 3 times per day.
-	if (auto_canFeelLonely() && tryEffects($effects[Feeling Lonely])) {
+	if (auto_canFeelLonely() && tryEffects($effects[Feeling Lonely]))
+	{
 		return result();
 	}
 
@@ -659,7 +660,8 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		return result();
 
 	// Feeling Peaceful can only be used 3 times per day.
-	if (auto_canFeelPeaceful() && tryEffects($effects[Feeling Peaceful])) {
+	if (auto_canFeelPeaceful() && tryEffects($effects[Feeling Peaceful]))
+	{
 		return result();
 	}
 
@@ -908,7 +910,8 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		return result();
 
 	// Feeling Excited can only be used 3 times per day.
-	if (auto_canFeelExcitement() && tryEffects($effects[Feeling Excited])) {
+	if (auto_canFeelExcitement() && tryEffects($effects[Feeling Excited]))
+	{
 		return result();
 	}
 
