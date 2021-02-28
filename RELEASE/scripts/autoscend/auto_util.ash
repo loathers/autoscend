@@ -1624,35 +1624,6 @@ item whatHiMein()
 	return $item[crudles];
 }
 
-void tootOriole()
-{
-	//Toot Oriole must be visited each ascension to unlock other quests from the council
-	if(get_property("questM05Toot") == "finished")
-	{
-		return;
-	}
-	
-	visit_url("tutorial.php?action=toot");		//do quest
-	//finishing toot quest is not correctly noticed by mafia. r20655 has workaround of correcting this by refreshing quests
-	cli_execute("refresh quests");
-	
-	if(get_property("questM05Toot") == "finished")
-	{
-		use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
-		use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
-		council();
-	}
-	else abort("Failed to finish the Toot Oriole quest. This prevents us from getting other quests from council");
-}
-
-void tootGetMeat()
-{
-	auto_autosell(min(5, item_amount($item[hamethyst])), $item[hamethyst]);
-	auto_autosell(min(5, item_amount($item[baconstone])), $item[baconstone]);
-	auto_autosell(min(5, item_amount($item[porquoise])), $item[porquoise]);
-}
-
-
 boolean ovenHandle()
 {
 	if((auto_get_campground() contains $item[Dramatic&trade; range]) && !get_property("auto_haveoven").to_boolean())

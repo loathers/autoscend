@@ -727,6 +727,11 @@ float tcrs_expectedAdvPerFill(string quality);
 boolean tcrs_maximize_with_items(string maximizerString);
 
 ########################################################################################################
+//Defined in autoscend/quests/level_01.ash
+void tootOriole();
+void tootGetMeat();
+
+########################################################################################################
 //Defined in autoscend/quests/level_02.ash
 boolean L2_mosquito();
 
@@ -1283,8 +1288,6 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin);
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);
 effect whatStatSmile();
 item whatHiMein();
-void tootOriole();
-void tootGetMeat();
 boolean ovenHandle();
 boolean isGhost(monster mon);
 boolean isProtonGhost(monster mon);

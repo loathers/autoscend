@@ -71,6 +71,7 @@ import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/low_key_summer.ash>
 
+import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>
 import <autoscend/quests/level_03.ash>
 import <autoscend/quests/level_04.ash>
