@@ -1283,6 +1283,7 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin);
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);
 effect whatStatSmile();
 item whatHiMein();
+void tootOriole();
 void tootGetMeat();
 boolean ovenHandle();
 boolean isGhost(monster mon);

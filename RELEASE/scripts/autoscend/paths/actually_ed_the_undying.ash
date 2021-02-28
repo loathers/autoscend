@@ -90,12 +90,7 @@ void ed_initializeDay(int day)
 			{
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
 			}
-
-			visit_url("tutorial.php?action=toot");
-			use(item_amount($item[Letter to Ed the Undying]), $item[Letter to Ed the Undying]);
-			use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
 			tootGetMeat();
-
 			equipBaseline();
 		}
 	}
