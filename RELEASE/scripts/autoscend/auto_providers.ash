@@ -291,6 +291,11 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 		return result();
 	}
 
+	// Feeling Lonely can only be used 3 times per day.
+	if (auto_canFeelLonely() && tryEffects($effects[Feeling Lonely])) {
+		return result();
+	}
+
 	//blooper ink costs 15 coins without which it will error when trying to buy it, so that is the bare minimum we need to check for
 	//However we don't want to waste our early coins on it as they are precious. So require at least 400 coins before buying it.
 	if (in_zelda() && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400) {
@@ -653,6 +658,11 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	]))
 		return result();
 
+	// Feeling Peaceful can only be used 3 times per day.
+	if (auto_canFeelPeaceful() && tryEffects($effects[Feeling Peaceful])) {
+		return result();
+	}
+
 	if(bat_formMist(speculative))
 		handleEffect($effect[Mist Form]);
 	if(pass())
@@ -896,6 +906,11 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 
 	if(pass())
 		return result();
+
+	// Feeling Excited can only be used 3 times per day.
+	if (auto_canFeelExcitement() && tryEffects($effects[Feeling Excited])) {
+		return result();
+	}
 
 	// buffs from items
 	if(doEquips)

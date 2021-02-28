@@ -1073,6 +1073,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Reflex Hammer];
 	}
 
+	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
+	{
+		return "skill " + $skill[Feel Hatred];
+	}
+
 	if ((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force")) {
 		// can't use the force on uncopyable monsters
 		if (enemy == $monster[none] || enemy.copyable) {
@@ -1274,6 +1279,11 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	if(asdonCanMissile())
 	{
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
+	}
+
+	if (auto_canFeelEnvy())
+	{
+		return "skill " + $skill[Feel Envy];
 	}
 
 	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && (auto_saberChargesAvailable() > 0))
@@ -3864,6 +3874,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Faboooo]:						useItem = $item[Fabiotion];						break;
 	case $effect[Far Out]:						useItem = $item[Patchouli Incense Stick];		break;
 	case $effect[Fat Leon\'s Phat Loot Lyric]:	useSkill = $skill[Fat Leon\'s Phat Loot Lyric];	break;
+	case $effect[Feeling Lonely]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Excited]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Nervous]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Peaceful]:					useSkill = $skill[none];						break;
 	case $effect[Feeling Punchy]:				useItem = $item[Punching Potion];				break;
 	case $effect[Feroci Tea]:					useItem = $item[cuppa Feroci tea];				break;
 	case $effect[Fever From the Flavor]:	useItem = $item[bottle of antifreeze];	break;
@@ -4386,6 +4400,19 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		else
 		{
 			return auto_powerfulGloveNoncombat();
+		}
+	}
+
+	if ($effects[Feeling Lonely, Feeling Excited, Feeling Nervous, Feeling Peaceful] contains buff)
+	{
+		if (speculative)
+		{
+			skill feeling = buff.to_skill();
+			return feeling.timescast < feeling.dailylimit;
+		}
+		else
+		{
+			useSkill = buff.to_skill();
 		}
 	}
 

@@ -412,6 +412,19 @@ boolean auto_handleRetrocape();
 boolean auto_buyCrimboCommerceMallItem();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2020.ash
+boolean auto_haveEmotionChipSkills();
+boolean auto_canFeelEnvy();
+boolean auto_canFeelHatred();
+boolean auto_canFeelNostalgic();
+boolean auto_canFeelPride();
+boolean auto_canFeelSuperior();
+boolean auto_canFeelLonely();
+boolean auto_canFeelExcitement();
+boolean auto_canFeelNervous();
+boolean auto_canFeelPeaceful();
+
+########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
 boolean isActuallyEd();
 int ed_spleen_limit();

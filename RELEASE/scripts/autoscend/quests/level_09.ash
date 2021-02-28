@@ -803,7 +803,7 @@ boolean L9_oilPeak()
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean needJar = ((oilProgress & 4) == 0) && item_amount($item[Jar Of Oil]) == 0;
-		if (!needJar)
+		if (!needJar || in_bhy())
 		{
 			return false;
 		}
