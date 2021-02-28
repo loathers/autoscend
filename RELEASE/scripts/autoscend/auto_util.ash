@@ -4403,16 +4403,21 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 	}
 
-	if ($effects[Feeling Lonely, Feeling Excited, Feeling Nervous, Feeling Peaceful] contains buff)
+	if ($effects[Feeling Lonely, Feeling Excited, Feeling Nervous, Feeling Peaceful] contains buff && auto_haveEmotionChipSkills())
 	{
+		skill feeling = buff.to_skill();
 		if (speculative)
 		{
-			skill feeling = buff.to_skill();
 			return feeling.timescast < feeling.dailylimit;
+		}
+		else if (feeling.timescast < feeling.dailylimit)
+		{
+			useSkill = buff.to_skill();
+			handleTracker(useSkill, "auto_otherstuff");
 		}
 		else
 		{
-			useSkill = buff.to_skill();
+			return false;
 		}
 	}
 
@@ -4496,6 +4501,11 @@ location solveDelayZone()
 		// find the delayable zone with the lowest delay left.
 		foreach loc, delay in delayableZones {
 			if (burnZone == $location[none] || delay < delayableZones[burnZone]) {
+				burnZone = loc;
+			}
+			if (loc == $location[The Spooky Forest] && delay == delayableZones[burnZone])
+			{
+				// prioritise the Spooky Forest when its delay remaining equals the lowest delay zone
 				burnZone = loc;
 			}
 		}

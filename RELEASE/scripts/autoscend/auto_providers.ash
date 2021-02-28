@@ -276,7 +276,8 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 		Gummed Shoes,
 		Simply Invisible,
 		Inky Camouflage,	
-		Celestial Camouflage
+		Celestial Camouflage,
+		Feeling Lonely,
 	])) {
 		return result();
 	}
@@ -288,12 +289,6 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 		handleEffect($effect[Driving Stealthily]);
 	}
 	if(pass()) {
-		return result();
-	}
-
-	// Feeling Lonely can only be used 3 times per day.
-	if (auto_canFeelLonely() && tryEffects($effects[Feeling Lonely]))
-	{
 		return result();
 	}
 
@@ -656,14 +651,9 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		Scarysauce,
 		Blessing of the Bird,
 		Blessing of Your Favorite Bird,
+		Feeling Peaceful,
 	]))
 		return result();
-
-	// Feeling Peaceful can only be used 3 times per day.
-	if (auto_canFeelPeaceful() && tryEffects($effects[Feeling Peaceful]))
-	{
-		return result();
-	}
 
 	if(bat_formMist(speculative))
 		handleEffect($effect[Mist Form]);
@@ -898,6 +888,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		// varying effects
 		Blessing of the Bird,
 		Blessing of Your Favorite Bird,
+		Feeling Excited,
 	]))
 		return result();
 
@@ -908,12 +899,6 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 
 	if(pass())
 		return result();
-
-	// Feeling Excited can only be used 3 times per day.
-	if (auto_canFeelExcitement() && tryEffects($effects[Feeling Excited]))
-	{
-		return result();
-	}
 
 	// buffs from items
 	if(doEquips)
