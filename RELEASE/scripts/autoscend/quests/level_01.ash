@@ -12,7 +12,14 @@ void tootOriole()
 	
 	if(get_property("questM05Toot") == "finished")
 	{
-		use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
+		if(isActuallyEd())
+		{
+			use(item_amount($item[Letter to Ed the Undying]), $item[Letter to Ed the Undying]);
+		}
+		else
+		{
+			use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
+		}
 		use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
 		council();
 	}
