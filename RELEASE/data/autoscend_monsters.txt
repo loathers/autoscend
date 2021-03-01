@@ -106,7 +106,7 @@ sniff	7	Pygmy Bowler
 sniff	8	Pygmy Witch Surgeon
 sniff	9	pygmy witch accountant	loc:The Hidden Office Building
 sniff	10	pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
-sniff	11	Pygmy Janitor	!tavern:true
+sniff	11	Pygmy Janitor	loc:The Hidden Park;!tavern:true
 sniff	12	Quiet Healer
 sniff	13	Tomb Rat
 sniff	14	Blooper	loc:8-Bit Realm

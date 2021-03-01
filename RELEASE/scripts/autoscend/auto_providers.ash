@@ -276,7 +276,8 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 		Gummed Shoes,
 		Simply Invisible,
 		Inky Camouflage,	
-		Celestial Camouflage
+		Celestial Camouflage,
+		Feeling Lonely,
 	])) {
 		return result();
 	}
@@ -650,6 +651,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 		Scarysauce,
 		Blessing of the Bird,
 		Blessing of Your Favorite Bird,
+		Feeling Peaceful,
 	]))
 		return result();
 
@@ -886,6 +888,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 		// varying effects
 		Blessing of the Bird,
 		Blessing of Your Favorite Bird,
+		Feeling Excited,
 	]))
 		return result();
 

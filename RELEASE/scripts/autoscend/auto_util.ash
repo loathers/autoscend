@@ -1073,6 +1073,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Reflex Hammer];
 	}
 
+	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
+	{
+		return "skill " + $skill[Feel Hatred];
+	}
+
 	if ((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force")) {
 		// can't use the force on uncopyable monsters
 		if (enemy == $monster[none] || enemy.copyable) {
@@ -1274,6 +1279,11 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	if(asdonCanMissile())
 	{
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
+	}
+
+	if (auto_canFeelEnvy())
+	{
+		return "skill " + $skill[Feel Envy];
 	}
 
 	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && (auto_saberChargesAvailable() > 0))
@@ -3864,6 +3874,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Faboooo]:						useItem = $item[Fabiotion];						break;
 	case $effect[Far Out]:						useItem = $item[Patchouli Incense Stick];		break;
 	case $effect[Fat Leon\'s Phat Loot Lyric]:	useSkill = $skill[Fat Leon\'s Phat Loot Lyric];	break;
+	case $effect[Feeling Lonely]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Excited]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Nervous]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Peaceful]:					useSkill = $skill[none];						break;
 	case $effect[Feeling Punchy]:				useItem = $item[Punching Potion];				break;
 	case $effect[Feroci Tea]:					useItem = $item[cuppa Feroci tea];				break;
 	case $effect[Fever From the Flavor]:	useItem = $item[bottle of antifreeze];	break;
@@ -4389,6 +4403,24 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 	}
 
+	if ($effects[Feeling Lonely, Feeling Excited, Feeling Nervous, Feeling Peaceful] contains buff && auto_haveEmotionChipSkills())
+	{
+		skill feeling = buff.to_skill();
+		if (speculative)
+		{
+			return feeling.timescast < feeling.dailylimit;
+		}
+		else if (feeling.timescast < feeling.dailylimit)
+		{
+			useSkill = buff.to_skill();
+			handleTracker(useSkill, "auto_otherstuff");
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	boolean[effect] falloutEffects = $effects[Drunk and Avuncular, Lucky Struck, Ministrations in the Dark, Power\, Man, Record Hunger, Shrieking Weasel, Superdrifting];
 	if(falloutEffects contains buff)
 	{
@@ -4469,6 +4501,11 @@ location solveDelayZone()
 		// find the delayable zone with the lowest delay left.
 		foreach loc, delay in delayableZones {
 			if (burnZone == $location[none] || delay < delayableZones[burnZone]) {
+				burnZone = loc;
+			}
+			if (loc == $location[The Spooky Forest] && delay == delayableZones[burnZone])
+			{
+				// prioritise the Spooky Forest when its delay remaining equals the lowest delay zone
 				burnZone = loc;
 			}
 		}

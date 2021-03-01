@@ -42,6 +42,7 @@ import <autoscend/iotms/mr2017.ash>
 import <autoscend/iotms/mr2018.ash>
 import <autoscend/iotms/mr2019.ash>
 import <autoscend/iotms/mr2020.ash>
+import <autoscend/iotms/mr2021.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/avatar_of_boris.ash>
