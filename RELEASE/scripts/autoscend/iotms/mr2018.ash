@@ -570,6 +570,13 @@ boolean catBurglarHeist()
 	return false;
 }
 
+boolean catBurglarHeistTask()
+{
+	catBurglarHeist();
+	// don't return true from this, isn't adventuring.
+	return false;
+}
+
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 {
 	if(!auto_is_valid($item[Bastille Battalion Control Rig]))

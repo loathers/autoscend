@@ -1793,6 +1793,42 @@ boolean LX_freeCombats(boolean powerlevel)
 	return false;
 }
 
+boolean LX_freeCombatsTask_condition()
+{
+	return my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1;
+}
+
+boolean LX_freeCombatsTask()
+{
+	auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
+	if(LX_freeCombats()) return true;
+}
+
+boolean LX_fightTentacle()
+{
+	boolean weak_and_zelda = in_zelda() && !zelda_canDealScalingDamage();
+	if(my_daycount() == 1)
+	{
+		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0) && !weak_and_zelda)
+		{
+			fightScienceTentacle();
+			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
+			{
+				evokeEldritchHorror();
+			}
+		}
+	}
+	else if((my_level() >= 9) && (my_hp() > 0) && !weak_and_zelda)
+	{
+		fightScienceTentacle();
+		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
+		{
+			evokeEldritchHorror();
+		}
+	}
+	return false;
+}
+
 boolean Lsc_flyerSeals()
 {
 	if(my_class() != $class[Seal Clubber])
@@ -2731,34 +2767,6 @@ boolean doTasks()
 	{
 		acquireHP();
 	}
-
-	boolean weak_and_zelda = in_zelda() && !zelda_canDealScalingDamage();
-	if(my_daycount() == 1)
-	{
-		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0) && !weak_and_zelda)
-		{
-			fightScienceTentacle();
-			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
-			{
-				evokeEldritchHorror();
-			}
-		}
-	}
-	else if((my_level() >= 9) && (my_hp() > 0) && !weak_and_zelda)
-	{
-		fightScienceTentacle();
-		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
-		{
-			evokeEldritchHorror();
-		}
-	}
-	if(my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
-	{
-		auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
-		if(LX_freeCombats()) return true;
-	}
-
-	catBurglarHeist(); // don't return true from this, isn't adventuring.
 
 	if (process_tasks()) return true;
 
