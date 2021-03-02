@@ -6,20 +6,21 @@ void tootOriole()
 		return;
 	}
 	
-	visit_url("tutorial.php?action=toot");		//do quest
+	//do quest
+	visit_url("tutorial.php?action=toot");
+	if(isActuallyEd())
+	{
+		use(item_amount($item[Letter to Ed the Undying]), $item[Letter to Ed the Undying]);
+	}
+	else
+	{
+		use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
+	}
 	//finishing toot quest is not correctly noticed by mafia. r20655 has workaround of correcting this by refreshing quests
 	cli_execute("refresh quests");
 	
 	if(get_property("questM05Toot") == "finished")
 	{
-		if(isActuallyEd())
-		{
-			use(item_amount($item[Letter to Ed the Undying]), $item[Letter to Ed the Undying]);
-		}
-		else
-		{
-			use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
-		}
 		use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
 		council();
 	}
