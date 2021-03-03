@@ -472,6 +472,15 @@ boolean auto_run_choice(int choice, string page)
 			}
 			run_choice(glchoice);
 			break;
+		case 1322: // The Beginning of the Neverend (The Neverending Party)
+		case 1323: // All Done! (The Neverending Party)
+		case 1324: // It Hasn't Ended, It's Just Paused (The Neverending Party)
+		case 1325: // A Room With a View... Of a Bed (The Neverending Party)
+		case 1326: // Gone Kitchin' (The Neverending Party)
+		case 1327: // Forward to the Back (The Neverending Party)
+		case 1328: // Basement Urges (The Neverending Party)
+			neverendingPartyChoiceHandler(choice);
+			break;
 		case 1340: // Is There A Doctor In The House? (Lil' Doctor Bag™)
 			auto_log_info("Accepting doctor quest, it's our job!");
 			run_choice(1);
