@@ -1801,7 +1801,7 @@ boolean LX_freeCombatsTask_condition()
 boolean LX_freeCombatsTask()
 {
 	auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
-	if(LX_freeCombats()) return true;
+	return LX_freeCombats();
 }
 
 boolean LX_fightTentacle()

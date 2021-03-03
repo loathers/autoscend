@@ -38,6 +38,8 @@ int auto_freeCombatsRemaining();
 int auto_freeCombatsRemaining(boolean print_remaining_fights);
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
+boolean LX_freeCombatsTask();
+boolean LX_freeCombatsTask_condition();
 boolean Lsc_flyerSeals();
 boolean LX_hardcoreFoodFarm();
 boolean LX_craftAcquireItems();

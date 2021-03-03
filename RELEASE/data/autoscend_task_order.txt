@@ -5,7 +5,7 @@
 # If path name does not exist in data file, 'default' will be used
 # path name, index, function, condition_function (optional)
 default	0	LX_fightTentacle
-default	1	LX_freeCombatsTask  LX_freeCombatsTask_condition
+default	1	LX_freeCombatsTask	LX_freeCombatsTask_condition
 default	2	catBurglarHeistTask
 default	3	chateauPainting
 default	4	LX_faxing
