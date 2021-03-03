@@ -1,4 +1,4 @@
-since r20653;	// min mafia revision needed to run this script. Last update: Torso Awaregness -> Torso Awareness
+since r20655;	// min mafia revision needed to run this script. Last update: questM05Toot tracking will correct to finished when refreshing quests
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -71,6 +71,7 @@ import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/low_key_summer.ash>
 
+import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>
 import <autoscend/quests/level_03.ash>
 import <autoscend/quests/level_04.ash>
@@ -1112,6 +1113,9 @@ void initializeDay(int day)
 	{
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
+	
+	//you must finish the Toot Oriole quest to unlock council quests.
+	tootOriole();
 
 	ed_initializeDay(day);
 	boris_initializeDay(day);
@@ -1161,9 +1165,6 @@ void initializeDay(int day)
 				visit_url("clan_viplounge.php?action=floundry");
 			}
 
-			visit_url("tutorial.php?action=toot");
-			use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
-			use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
 			tootGetMeat();
 
 			hr_initializeDay(day);
