@@ -86,7 +86,7 @@ default	78	L11_getBeehive
 default	79	L12_finalizeWar
 default	80	L12_clearBattlefield
 default	81	LX_koeInvaderHandler
-default	82	setSoftblockDelay   allowSoftblockDelay
+default	82	setSoftblockDelay	allowSoftblockDelay
 default	83	setSoftblockShen	allowSoftblockShen
 default	84	LX_getDigitalKey
 default	85	LX_getStarKey

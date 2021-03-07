@@ -1409,6 +1409,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
 boolean auto_faceCheck(string face);
 location solveDelayZone();
+boolean setSoftblockDelay();
 boolean allowSoftblockDelay();
 boolean setSoftblockDelay();
 boolean canBurnDelay(location loc);
