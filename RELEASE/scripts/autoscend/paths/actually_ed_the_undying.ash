@@ -1420,6 +1420,11 @@ boolean LM_edTheUndying()
 		}
 	}
 
+	// we should open the manor second floor sooner rather than later as starting the level 11 quest
+	// ruins our pool skill and having delay burning zones open is nice.
+	if (LX_unlockManorSecondFloor() || LX_unlockHauntedLibrary() || LX_unlockHauntedBilliardsRoom(true)) {
+		return true;
+	}
 	// as we do hippy side, the war is a 2 Ka quest (excluding sidequests but that shouldn't matter)
 	// once the war is no longer a complete mess of spaghetti code, change this to do the whole war.
 	if (L12_getOutfit() || L12_startWar())
@@ -1473,7 +1478,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// Copperhead Club & Mob of Zeppelin Protestors are 2 Ka zones (with a banish use) but we want to delay them so we can semi-rare Copperhead
-	if (L11_mauriceSpookyraven() || L11_talismanOfNam() || L11_palindome())
+	if (LX_spookyravenManorSecondFloor() || L11_mauriceSpookyraven() || L11_talismanOfNam() || L11_palindome())
 	{
 		return true;
 	}

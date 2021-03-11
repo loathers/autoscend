@@ -1414,7 +1414,12 @@ boolean L11_hiddenCity()
 	if (item_amount($item[stone triangle]) == 4) {
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
-		return autoAdv($location[A Massive Ziggurat]);
+		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
+		if (internalQuestStatus("questL11MacGuffin") > 2) {
+			// Actually Ed finishes this quest when all 3 parts of the staff are returned
+			council();
+		}
+		return advSpent;
 	}
 	
 	return false;
@@ -1559,6 +1564,10 @@ boolean L11_mauriceSpookyraven()
 		if (isActuallyEd())
 		{
 			visit_url("place.php?whichplace=manor4&action=manor4_chamberboss");
+			if (internalQuestStatus("questL11MacGuffin") > 2) {
+				// Actually Ed finishes this quest when all 3 parts of the staff are returned
+				council();
+			}
 		}
 		else
 		{
@@ -2184,9 +2193,12 @@ boolean L11_palindome()
 
 		if (isActuallyEd())
 		{
+			if (internalQuestStatus("questL11MacGuffin") > 2) {
+				// Actually Ed finishes this quest when all 3 parts of the staff are returned
+				council();
+			}
 			return true;
 		}
-
 
 		# is step 4 when we got the wet stunt nut stew?
 		if (internalQuestStatus("questL11Palindome") < 5)
