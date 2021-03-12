@@ -716,11 +716,6 @@ boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 	return true;
 }
 
-boolean neverendingPartyPowerlevel()
-{
-	return neverendingPartyCombat();
-}
-
 int neverendingPartyRemainingFreeFights()
 {
 	//Returns how many free fights do you have remaining in neverending party?
@@ -777,7 +772,7 @@ boolean neverendingPartyCombat()
 	fightClubSpa();
 	//May need to actually have 1 adventure left.
 
-	if (januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
+	if (hasTorso() && januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
 	{
 		januaryToteAcquire($item[Makeshift Garbage Shirt]);
 		autoEquip($slot[shirt], $item[Makeshift Garbage Shirt]);

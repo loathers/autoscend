@@ -267,7 +267,6 @@ boolean catBurglarHeist(item it);
 item[monster] catBurglarHeistDesires();
 boolean catBurglarHeist();
 boolean cheeseWarMachine(int stats, int it, int eff, int potion);
-boolean neverendingPartyPowerlevel();
 boolean neverendingPartyCombat();
 int neverendingPartyRemainingFreeFights();
 boolean neverendingPartyAvailable();

@@ -1532,7 +1532,7 @@ boolean LX_attemptPowerLevel()
 	}
 	if (neverendingPartyAvailable())
 	{
-		if(neverendingPartyPowerlevel()) return true;
+		if(neverendingPartyCombat()) return true;
 	}
 	if(timeSpinnerAdventure()) return true;
 	//do not use the scaling zone [The Thinknerd Warehouse] here.
@@ -1714,8 +1714,8 @@ boolean LX_freeCombats(boolean powerlevel)
 	{
 		if(powerlevel)
 		{
-			auto_log_debug("LX_freeCombats is calling neverendingPartyPowerlevel()");
-			if(neverendingPartyPowerlevel()) return true;
+			auto_log_debug("LX_freeCombats is calling neverendingPartyCombat()");
+			if(neverendingPartyCombat()) return true;
 		}
 		else
 		{

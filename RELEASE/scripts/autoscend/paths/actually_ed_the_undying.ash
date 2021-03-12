@@ -1110,7 +1110,7 @@ boolean L1_ed_islandFallback()
 
 	if (neverendingPartyAvailable())
 	{
-		return neverendingPartyPowerlevel();
+		return neverendingPartyCombat();
 	}
 	if(elementalPlanes_access($element[stench]))
 	{
