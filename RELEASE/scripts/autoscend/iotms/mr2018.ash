@@ -793,24 +793,43 @@ void neverendingPartyChoiceHandler(int choice)
 	}
 	else if (choice == 1324) // It Hasn't Ended, It's Just Paused
 	{
-		if (isAboutToPowerlevel() || isActuallyEd())
+		effect buff = $effect[none];
+		switch (my_primestat())
 		{
-			effect buff = $effect[none];
+			case $stat[Muscle]:
+				buff = $effect[Spiced Up];
+				break;
+			case $stat[Mysticality]:
+				buff = $effect[Tomes of Opportunity];
+				break;
+			case $stat[Moxie]:
+				buff = $effect[The Best Hair You've Ever Had];
+				break;
+		}
+		if (buff != $effect[none] && have_effect(buff) < 9)
+		{
+			// Get the +mainstat% buff if we don't have enough turns of it to get us to the next scheduled NC.
 			switch (my_primestat())
 			{
 				case $stat[Muscle]:
-					buff = $effect[Spiced Up];
+					run_choice(2); // Check out the kitchen (go to Gone Kitchin')
 					break;
 				case $stat[Mysticality]:
-					buff = $effect[Tomes of Opportunity];
+					run_choice(1); // Head upstairs (go to A Room With a View... Of a Bed)
 					break;
 				case $stat[Moxie]:
-					buff = $effect[The Best Hair You've Ever Had];
+					run_choice(4); // Investigate the basement (go to Basement Urges)
+					break;
+				default:
+					run_choice(5); // Pick a fight (fight a random monster from the zone)
 					break;
 			}
-			int buffTurns = have_effect(buff);
-			int citronellaTurns = have_effect($effect[Citronella Armpits]);
-			if (buffTurns > 9 && citronellaTurns < 9 && citronellaTurns < buffTurns)
+		}
+		else if (isAboutToPowerlevel() || isActuallyEd())
+		{
+			// If we're powerlevelling (or farming Ka) grab the +ML buff if we don't have enough turns
+			// of it to get us to the next scheduled NC. Otherwise take the combat.
+			if (have_effect($effect[Citronella Armpits]) < 9)
 			{
 				run_choice(3); // Go to the back yard (go to Forward to the Back)
 			}
@@ -818,21 +837,8 @@ void neverendingPartyChoiceHandler(int choice)
 			{
 				run_choice(5); // Pick a fight (fight a random monster from the zone)
 			}
-		}
-		switch (my_primestat())
-		{
-			case $stat[Muscle]:
-				run_choice(2); // Check out the kitchen (go to Gone Kitchin')
-				break;
-			case $stat[Mysticality]:
-				run_choice(1); // Head upstairs (go to A Room With a View... Of a Bed)
-				break;
-			case $stat[Moxie]:
-				run_choice(4); // Investigate the basement (go to Basement Urges)
-				break;
-			default:
-				run_choice(5); // Pick a fight (fight a random monster from the zone)
-				break;
+		} else {
+			run_choice(5); // Pick a fight (fight a random monster from the zone)
 		}
 	}
 	else if (choice == 1325) // A Room With a View... Of a Bed
