@@ -40,7 +40,7 @@ default	32	LX_lockPicking
 default	33	LX_fatLootToken
 default	34	L5_slayTheGoblinKing
 default	35	LX_islandAccess
-default	36	L6_friarsGetParts	L6_friarsGetParts_condition_hardcode
+default	36	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
 default	37	LX_spookyravenManorSecondFloor
 default	38	L3_tavern
 default	39	L6_friarsGetParts

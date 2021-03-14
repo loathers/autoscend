@@ -772,7 +772,7 @@ boolean L5_slayTheGoblinKing();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_06.ash
-boolean L6_friarsGetParts_condition_hardcode();
+boolean L6_friarsGetParts_condition_hardcore();
 boolean L6_friarsGetParts();
 boolean L6_dakotaFanning();
 

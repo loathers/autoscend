@@ -1,4 +1,4 @@
-boolean L6_friarsGetParts_condition_hardcode()
+boolean L6_friarsGetParts_condition_hardcore()
 {
 	return in_hardcore() && isGuildClass();
 }

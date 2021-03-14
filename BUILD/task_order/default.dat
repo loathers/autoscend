@@ -36,7 +36,7 @@ LX_lockPicking
 LX_fatLootToken
 L5_slayTheGoblinKing()
 LX_islandAccess
-L6_friarsGetParts	L6_friarsGetParts_condition_hardcode
+L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
 LX_spookyravenManorSecondFloor
 L3_tavern
 L6_friarsGetParts
