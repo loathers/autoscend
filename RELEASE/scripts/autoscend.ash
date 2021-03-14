@@ -1,4 +1,4 @@
-since r20731;	// min mafia revision needed to run this script. Last update: Grim Brother and Red-Nosed Snapper now usable in Quantum Terrarium
+since r20494;	//min mafia revision needed to run this script. Last update: Cargo Shorts support complete
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
