@@ -1100,9 +1100,9 @@ boolean L1_ed_islandFallback()
 		return false;
 	}
 
-	if((my_level() >= 10) || ((my_level() >= 8) && have_skill($skill[Still Another Extra Spleen])) || ((my_level() >= 6) && have_skill($skill[Okay Seriously\, This Is The Last Spleen])))
+	if (my_level() >= 10 || have_skill($skill[Okay Seriously\, This Is The Last Spleen]))
 	{
-		if((spleen_left() < 5) || (my_adventures() > 10))
+		if (spleen_left() < 5 || my_adventures() > 10)
 		{
 			return false;
 		}
