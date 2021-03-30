@@ -1004,7 +1004,8 @@ boolean canEat(item toEat);
 boolean canChew(item toChew);
 void consumeStuff();
 boolean consumeFortune();
-void auto_autoDrinkNightcap(boolean simulate);
+void auto_printNightcap();
+void auto_drinkNightcap();
 boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
 
