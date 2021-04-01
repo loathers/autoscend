@@ -1143,6 +1143,10 @@ void auto_drinkNightcap()
 	{
 		return;		//current path cannot drink booze at all
 	}
+	if(auto_freeCombatsRemaining() > 0)
+	{
+		return;		//do not overdrink if we still have free fights we want to do. undesireable free fights are not counted by that function
+	}
 	//you can't overdrink if already overdrunk. TODO account for green beer on cinco de mayo
 	if(auto_have_familiar($familiar[Stooper]))
 	{
