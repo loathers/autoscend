@@ -480,13 +480,37 @@ boolean startArmorySubQuest()
 
 	if(internalQuestStatus("questM25Armorer") == -1)
 	{
-		string temp = visit_url("shop.php?whichshop=armory");
-		temp = visit_url("shop.php?whichshop=armory&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1065&option=1");
+		visit_url("shop.php?whichshop=armory");
+		visit_url("shop.php?whichshop=armory&action=talk");
+		visit_url("choice.php?pwd=&whichchoice=1065&option=1");
 		if(internalQuestStatus("questM25Armorer") > -1)
 		{
 			return true;
 		}
+	}
+	return false;
+}
+
+boolean armorySideQuest()
+{
+	//do the quest [Lending a Hand (and a Foot)] and unlock [madeline's baking supply] store
+	if(!get_property("auto_doArmory").to_boolean())		//post setting indicating we should do this quest this ascension
+	{
+		return false;
+	}
+	startArmorySubQuest();
+	
+	if(internalQuestStatus("questM25Armorer") > -1 && internalQuestStatus("questM25Armorer") < 4)
+	{
+		set_property("choiceAdventure1061", 1);			//try to enter office
+		return autoAdv($location[Madness Bakery]);
+	}
+	if(internalQuestStatus("questM25Armorer") == 4)		//got no-handed pie. need to turn it in.
+	{
+		auto_log_info("finishing quest [Lending a Hand (and a Foot)]");
+		visit_url("shop.php?whichshop=armory");
+		run_choice(2);		//give no-handed pie to finish the quest
+		return true;
 	}
 	return false;
 }

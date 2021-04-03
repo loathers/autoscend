@@ -937,6 +937,7 @@ boolean LX_melvignShirt();
 boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean startArmorySubQuest();
+boolean armorySideQuest();
 void considerGalaktikSubQuest();
 boolean startGalaktikSubQuest();
 boolean finishGalaktikSubQuest();
