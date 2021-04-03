@@ -2667,7 +2667,7 @@ boolean doTasks()
 	{
 		return true;
 	}
-	if(auto_my_path() == "Grey Goo")
+	if(in_ggoo())
 	{
 		abort("Should not have gotten here, aborted LA_grey_goo_tasks method allowed return to caller. Uh oh.");
 	}
