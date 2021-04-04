@@ -465,6 +465,7 @@ void boris_initializeDay(int day);
 void boris_buySkills();
 boolean borisDemandSandwich(boolean immediately);
 void borisWastedMP();
+boolean borisAcquireHP(int goal);
 boolean LM_boris();
 
 ########################################################################################################

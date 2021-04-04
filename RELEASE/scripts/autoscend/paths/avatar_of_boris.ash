@@ -366,6 +366,48 @@ void borisWastedMP()
 	}
 }
 
+boolean borisAcquireHP(int goal)
+{
+	//boris cannot use the normal acquireHP function until it is modified allow multi using skills.
+	//that fix is nontrivial so until such a change is made here is a function that makes boris playable
+	
+	if(!in_boris())
+	{
+		return false;
+	}
+	
+	//Laugh it off costs 1 MP to cast and gives either 1 or 2 HP randomly. it is the primary way to restore HP as boris. MP is restored as normal
+	//At the moment HP restore items are simply not used for boris. instead MP restorers are used which are then converted into HP using laugh it off. as stated before this is a bandaid until main restoration function can be fixed to handle multicast. also 99% of the HP you will be restoring in boris would be done via laugh it off anyways.
+	while(my_hp() < goal)
+	{
+		//we need to loop a few times because our MP tank might be too small to allow us to fully heal in one go. also to prevent wasteage we calculate as if we would get max rolls instead of avg rolls on healed amount when multi casting.
+		int missingHP = goal - my_hp();
+		boolean failed_acquireMP = false;
+		int castAmount = missingHP / 2;
+		int mp_desired = min(castAmount, (0.9 * my_maxmp()));
+		if(my_mp() < mp_desired )	//I do not have enough MP to cast as many laugh it off as I would like
+		{
+			if(!acquireMP(mp_desired))		//try to acquireMP to target. if we already have it acquireMP will just return true.
+			{
+				failed_acquireMP = true;
+			}
+		}
+		castAmount = min(my_mp(), castAmount);		//regardless of MP restore success or failure. we can not spend MP we do not have
+		
+		//if we are exactly 1 HP short there is a 50% chance of wasting 1 point of HP healed. a risk worth taking to achieve target HP.
+		//also this prevents an infinite loop at 1HP missing. Keep that in mind if you remove this
+		if(missingHP == 1)	
+		{
+			castAmount = min(1, castAmount);		//use min in case we had 0 MP left and failed to restore.
+		}
+		
+		use_skill(castAmount, $skill[Laugh it Off]);
+		if(failed_acquireMP) break;			//MP restore failed so we are done.
+		if(goal > my_maxhp()) break;		//just in case to prevent infinite loop
+	}
+	return goal >= my_hp();		//match acquireHP() function
+}
+
 boolean LM_boris()
 {
 	//this function is called early once every loop of doTasks() in autoscend.ash
