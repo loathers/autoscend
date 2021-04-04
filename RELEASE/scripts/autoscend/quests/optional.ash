@@ -586,7 +586,7 @@ void considerGalaktikSubQuest()
 		set_property("auto_doGalaktik", true);
 		return;
 	}
-	if(my_meat() + 100 < meatReserve())
+	if(my_meat() < meatReserve() + 100)
 	{
 		auto_log_info("Our meat reserves are far too low, we still need to save up some for quests. Enabling Galaktik quest for this ascension", "red");
 		set_property("auto_doGalaktik", true);
