@@ -383,7 +383,7 @@ boolean borisAcquireHP(int goal)
 		int missingHP = goal - my_hp();
 		boolean failed_acquireMP = my_maxmp() < 11;
 		int castAmount = missingHP / 2;
-		if(missingHP == 1)	//at 1 HP short there is a 50% chance of wasting 1 point of HP healed. a risk worth taking to achieve target HP.
+		if(missingHP == 1)	//at 1 HP less than maxHP there is a 50% chance of wasting 1 point of HP healed. a risk worth taking to achieve target HP.
 		{
 			castAmount = 1;	//prevents an infinite loop at 1HP missing. since int 1 divided by 2 = 0
 		}
