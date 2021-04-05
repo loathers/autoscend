@@ -383,6 +383,10 @@ boolean borisAcquireHP(int goal)
 		int missingHP = goal - my_hp();
 		boolean failed_acquireMP = my_maxmp() < 11;
 		int castAmount = missingHP / 2;
+		if(missingHP == 1)	//at 1 HP short there is a 50% chance of wasting 1 point of HP healed. a risk worth taking to achieve target HP.
+		{
+			castAmount = 1;	//prevents an infinite loop at 1HP missing. since int 1 divided by 2 = 0
+		}
 		int mp_desired = min(castAmount, (0.9 * my_maxmp()));
 		if(my_mp() < mp_desired &&		//I do not have enough MP to cast as many laugh it off as I would like
 		my_maxmp() > 10)				//if maxMP is too low. do not wastefully try restoring it.
@@ -394,14 +398,8 @@ boolean borisAcquireHP(int goal)
 		}
 		castAmount = min(my_mp(), castAmount);		//regardless of MP restore success or failure. we can not spend MP we do not have
 		
-		//if we are exactly 1 HP short there is a 50% chance of wasting 1 point of HP healed. a risk worth taking to achieve target HP.
-		//also this prevents an infinite loop at 1HP missing. Keep that in mind if you remove this
-		if(missingHP == 1)	
-		{
-			castAmount = min(1, castAmount);		//use min in case we had 0 MP left and failed to restore.
-		}
-		
-		use_skill(castAmount, $skill[Laugh it Off]);
+		if(my_mp() == 0) break;				//if I reached this point with no MP I am done
+		use_skill(castAmount, $skill[Laugh it Off]);	//multi restore HP
 		if(failed_acquireMP) break;			//MP restore failed so we are done.
 		if(goal > my_maxhp()) break;		//just in case to prevent infinite loop
 	}
