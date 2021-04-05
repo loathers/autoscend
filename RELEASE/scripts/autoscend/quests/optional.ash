@@ -502,7 +502,6 @@ boolean armorySideQuest()
 	
 	if(internalQuestStatus("questM25Armorer") > -1 && internalQuestStatus("questM25Armorer") < 4)
 	{
-		set_property("choiceAdventure1061", 1);			//try to enter office
 		return autoAdv($location[Madness Bakery]);
 	}
 	if(internalQuestStatus("questM25Armorer") == 4)		//got no-handed pie. need to turn it in.
