@@ -491,7 +491,7 @@ boolean startArmorySubQuest()
 	return false;
 }
 
-boolean armorySideQuest()
+boolean LX_armorySideQuest()
 {
 	//do the quest [Lending a Hand (and a Foot)] and unlock [madeline's baking supply] store
 	//step2 = need to kill the cake lord
