@@ -370,7 +370,6 @@ boolean borisAcquireHP(int goal)
 {
 	//boris cannot use the normal acquireHP function until it is modified allow multi using skills.
 	//that fix is nontrivial so until such a change is made here is a function that makes boris playable
-	
 	if(!in_boris())
 	{
 		return false;
@@ -382,10 +381,11 @@ boolean borisAcquireHP(int goal)
 	{
 		//we need to loop a few times because our MP tank might be too small to allow us to fully heal in one go. also to prevent wasteage we calculate as if we would get max rolls instead of avg rolls on healed amount when multi casting.
 		int missingHP = goal - my_hp();
-		boolean failed_acquireMP = false;
+		boolean failed_acquireMP = my_maxmp() < 11;
 		int castAmount = missingHP / 2;
 		int mp_desired = min(castAmount, (0.9 * my_maxmp()));
-		if(my_mp() < mp_desired )	//I do not have enough MP to cast as many laugh it off as I would like
+		if(my_mp() < mp_desired &&		//I do not have enough MP to cast as many laugh it off as I would like
+		my_maxmp() > 10)				//if maxMP is too low. do not wastefully try restoring it.
 		{
 			if(!acquireMP(mp_desired))		//try to acquireMP to target. if we already have it acquireMP will just return true.
 			{
