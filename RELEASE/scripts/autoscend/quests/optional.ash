@@ -494,6 +494,9 @@ boolean startArmorySubQuest()
 boolean armorySideQuest()
 {
 	//do the quest [Lending a Hand (and a Foot)] and unlock [madeline's baking supply] store
+	//step2 = need to kill the cake lord
+	//step3 = killed the cake lord
+	//step4 = clicked through the mandatory noncombat pages after the cake lord was killed
 	if(!get_property("auto_doArmory").to_boolean())		//post setting indicating we should do this quest this ascension
 	{
 		return false;
