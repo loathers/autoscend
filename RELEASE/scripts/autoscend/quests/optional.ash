@@ -331,17 +331,14 @@ boolean LX_steelOrgan()
 		{
 			foreach it in $items[Hilarious Comedy Prop, Victor\, the Insult Comic Hellhound Puppet, Observational Glasses]
 			{
-				if(possessEquipment(it))
+				if(possessEquipment(it) && auto_can_equip(it))
 				{
 					autoForceEquip(it);
-					string temp = visit_url("pandamonium.php?action=mourn&whichitem=" + to_int(it) + "&pwd=");
+					visit_url("pandamonium.php?action=mourn&whichitem=" + to_int(it) + "&pwd=");
 				}
-				else
+				else if(available_amount(it) == 0)
 				{
-					if(available_amount(it) == 0)
-					{
-						abort("Somehow we do not have " + it + " at this point...");
-					}
+					abort("Somehow we do not have " + it + " at this point...");
 				}
 			}
 		}
