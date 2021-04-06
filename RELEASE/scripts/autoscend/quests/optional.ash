@@ -331,17 +331,14 @@ boolean LX_steelOrgan()
 		{
 			foreach it in $items[Hilarious Comedy Prop, Victor\, the Insult Comic Hellhound Puppet, Observational Glasses]
 			{
-				if(possessEquipment(it))
+				if(possessEquipment(it) && auto_can_equip(it))
 				{
 					autoForceEquip(it);
-					string temp = visit_url("pandamonium.php?action=mourn&whichitem=" + to_int(it) + "&pwd=");
+					visit_url("pandamonium.php?action=mourn&whichitem=" + to_int(it) + "&pwd=");
 				}
-				else
+				else if(available_amount(it) == 0)
 				{
-					if(available_amount(it) == 0)
-					{
-						abort("Somehow we do not have " + it + " at this point...");
-					}
+					abort("Somehow we do not have " + it + " at this point...");
 				}
 			}
 		}
@@ -480,13 +477,39 @@ boolean startArmorySubQuest()
 
 	if(internalQuestStatus("questM25Armorer") == -1)
 	{
-		string temp = visit_url("shop.php?whichshop=armory");
-		temp = visit_url("shop.php?whichshop=armory&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1065&option=1");
+		visit_url("shop.php?whichshop=armory");
+		visit_url("shop.php?whichshop=armory&action=talk");
+		visit_url("choice.php?pwd=&whichchoice=1065&option=1");
 		if(internalQuestStatus("questM25Armorer") > -1)
 		{
 			return true;
 		}
+	}
+	return false;
+}
+
+boolean LX_armorySideQuest()
+{
+	//do the quest [Lending a Hand (and a Foot)] and unlock [madeline's baking supply] store
+	//step2 = need to kill the cake lord
+	//step3 = killed the cake lord
+	//step4 = clicked through the mandatory noncombat pages after the cake lord was killed
+	if(!get_property("auto_doArmory").to_boolean())		//post setting indicating we should do this quest this ascension
+	{
+		return false;
+	}
+	startArmorySubQuest();
+	
+	if(internalQuestStatus("questM25Armorer") > -1 && internalQuestStatus("questM25Armorer") < 4)
+	{
+		return autoAdv($location[Madness Bakery]);
+	}
+	if(internalQuestStatus("questM25Armorer") == 4)		//got no-handed pie. need to turn it in.
+	{
+		auto_log_info("finishing quest [Lending a Hand (and a Foot)]");
+		visit_url("shop.php?whichshop=armory");
+		run_choice(2);		//give no-handed pie to finish the quest
+		return true;
 	}
 	return false;
 }
@@ -562,7 +585,7 @@ void considerGalaktikSubQuest()
 		set_property("auto_doGalaktik", true);
 		return;
 	}
-	if(my_meat() + 100 < meatReserve())
+	if(my_meat() < meatReserve() + 100)
 	{
 		auto_log_info("Our meat reserves are far too low, we still need to save up some for quests. Enabling Galaktik quest for this ascension", "red");
 		set_property("auto_doGalaktik", true);

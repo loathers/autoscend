@@ -393,7 +393,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1061: // Heart of Madness (Madness Bakery Quest)
-			if(internalQuestStatus("questM25Armorer") <= 1) {
+			if(internalQuestStatus("questM25Armorer") <= 2) {
 				run_choice(1);
 			} else {
 				run_choice(5);

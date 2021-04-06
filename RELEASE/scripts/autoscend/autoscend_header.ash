@@ -465,6 +465,7 @@ void boris_initializeDay(int day);
 void boris_buySkills();
 boolean borisDemandSandwich(boolean immediately);
 void borisWastedMP();
+boolean borisAcquireHP(int goal);
 boolean LM_boris();
 
 ########################################################################################################
@@ -937,6 +938,7 @@ boolean LX_melvignShirt();
 boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean startArmorySubQuest();
+boolean LX_armorySideQuest();
 void considerGalaktikSubQuest();
 boolean startGalaktikSubQuest();
 boolean finishGalaktikSubQuest();
