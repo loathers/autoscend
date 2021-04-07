@@ -28,12 +28,12 @@ jobs:
           echo "Couldn't determine required mafia version!"
           exit 1
         fi
-        export MAFIA_BUILD=$(curl --fail --silent --globoff 'https://ci.kolmafia.us/job/Kolmafia/api/json?tree=builds[number,artifacts[relativePath]]' | jq '[.builds[]] | map(select(.artifacts[].relativePath | contains(env.MAFIA_VERSION))) | .[] | .number' | head -n1)
+        export MAFIA_BUILD=$(curl --fail --silent --globoff 'https://ci.kolmafia.us/job/Kolmafia/api/json?tree=lastCompletedBuild[artifacts[relativePath]]' | jq '[.lastCompletedBuild[]] | map(select(.artifacts[].relativePath | contains(env.MAFIA_VERSION))) | .[] | .number' | head -n1)
         if [[ -z "$MAFIA_BUILD" ]]; then
           echo "Couldn't determine Jenkins build number!"
           exit 1
         fi
-        export JENKINS_URL="https://ci.kolmafia.us/job/Kolmafia/${MAFIA_BUILD}/artifact/dist/KoLmafia-${MAFIA_VERSION}.jar"
+        export JENKINS_URL="https://ci.kolmafia.us/job/Kolmafia/lastCompletedBuild/artifact/dist/KoLmafia-${MAFIA_BUILD}.jar"
         echo "::set-output name=jenkins::$JENKINS_URL"
         echo "::set-output name=build::$MAFIA_BUILD"
         echo "::set-output name=version::$MAFIA_VERSION"
