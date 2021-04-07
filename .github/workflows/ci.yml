@@ -46,7 +46,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .github/kolmafia.jar
-        key: kolmafia-${{steps.mafia.outputs.build}}-${{steps.mafia.outputs.version}}
+        key: kolmafia-${{steps.mafia.outputs.build}}
 
     - name: Download KoLmafia
       if: steps.cache.outputs.cache-hit != 'true'
