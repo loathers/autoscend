@@ -1614,6 +1614,11 @@ boolean L11_mauriceSpookyraven()
 		{
 			return autoAdv($location[The Haunted Gallery]);
 		}
+		//3rd floor unlock fix. can manually adv without starting quest. but autoAdv fails until quest is started. so start the quest
+		if(internalQuestStatus("questM17Babies") == -1)
+		{
+			visit_url("place.php?whichplace=manor3&action=manor3_ladys");	//talk to 3rd floor ghost to start quest
+		}
 		if(item_amount($item[Detartrated Anhydrous Sublicalc]) == 0)
 		{
 			return autoAdv($location[The Haunted Laboratory]);
