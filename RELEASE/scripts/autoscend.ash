@@ -1,4 +1,6 @@
-since r20655;	// min mafia revision needed to run this script. Last update: questM05Toot tracking will correct to finished when refreshing quests
+since r20655;	// min mafia revision needed to run this script.
+//do not include numbers in the comments of above line. as our CI script takes all numbers from the above line to determine revision
+//Last update: questM05Toot tracking will correct to finished when refreshing quests
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
