@@ -1600,33 +1600,27 @@ boolean L11_mauriceSpookyraven()
 		# I suppose we can let anyone in without the Spectacles.
 		if(item_amount($item[Loosening Powder]) == 0)
 		{
-			autoAdv($location[The Haunted Kitchen]);
-			return true;
+			return autoAdv($location[The Haunted Kitchen]);
 		}
 		if(item_amount($item[Powdered Castoreum]) == 0)
 		{
-			autoAdv($location[The Haunted Conservatory]);
-			return true;
+			return autoAdv($location[The Haunted Conservatory]);
 		}
 		if(item_amount($item[Drain Dissolver]) == 0)
 		{
-			autoAdv($location[The Haunted Bathroom]);
-			return true;
+			return autoAdv($location[The Haunted Bathroom]);
 		}
 		if(item_amount($item[Triple-Distilled Turpentine]) == 0)
 		{
-			autoAdv($location[The Haunted Gallery]);
-			return true;
+			return autoAdv($location[The Haunted Gallery]);
 		}
 		if(item_amount($item[Detartrated Anhydrous Sublicalc]) == 0)
 		{
-			autoAdv($location[The Haunted Laboratory]);
-			return true;
+			return autoAdv($location[The Haunted Laboratory]);
 		}
 		if(item_amount($item[Triatomaceous Dust]) == 0)
 		{
-			autoAdv($location[The Haunted Storage Room]);
-			return true;
+			return autoAdv($location[The Haunted Storage Room]);
 		}
 
 		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
