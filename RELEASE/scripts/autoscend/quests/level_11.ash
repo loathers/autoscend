@@ -1455,13 +1455,9 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean needMachete = !possessEquipment($item[Antique Machete]);
+	boolean canUseMachete = !in_boris() && auto_my_path() != "Way of the Surprising Fist" && !in_pokefam();
+	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && in_hardcore();
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
-
-	if (!in_hardcore() || in_boris() || auto_my_path() == "Way of the Surprising Fist" || in_pokefam())
-	{
-		needMachete = false;
-	}
 
 	if (needMachete || needRelocate) {
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
@@ -1471,28 +1467,28 @@ boolean L11_hiddenCityZones()
 	}
 
 	if (get_property("hiddenApartmentProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
 	if (get_property("hiddenOfficeProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
 
 	if (get_property("hiddenHospitalProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
 	if (get_property("hiddenBowlingAlleyProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Southeast)]);
