@@ -29,6 +29,7 @@ jobs:
           exit 1
         fi
         export MAFIA_BUILD=$(curl --fail --silent --globoff 'https://ci.kolmafia.us/job/Kolmafia/api/json?tree=lastCompletedBuild[changeSet[items[revision]]]')
+        echo "$MAFIA_BUILD";
         if [[ -z "$MAFIA_BUILD" ]]; then
           echo "Could not determine mafia version of Jenkins last completed build!"
           exit 1
