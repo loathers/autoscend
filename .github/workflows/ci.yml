@@ -37,9 +37,9 @@ jobs:
         echo "::set-output name=jenkins::$JENKINS_URL"
         echo "Jenkins URL = ${JENKINS_URL}"
         echo "::set-output name=build::$MAFIA_BUILD"
-        echo "Jenkins Mafia Build = ${JENKINS_URL}"
+        echo "Jenkins Mafia Build = ${MAFIA_BUILD}"
         echo "::set-output name=version::$AUTOSCEND_VERSION_REQ"
-        echo "Autoscend mafia version required = ${JENKINS_URL}"
+        echo "Autoscend mafia version required = ${AUTOSCEND_VERSION_REQ}"
 
     - name: Cache KoLmafia
       id: cache
