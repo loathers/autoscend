@@ -23,20 +23,20 @@ jobs:
       id: mafia
       run: |
         set -o pipefail
-        export MAFIA_VERSION=$(head -n1 RELEASE/scripts/autoscend.ash | grep -o '[0-9]\+')
-        if [[ -z "$MAFIA_VERSION" ]]; then
-          echo "Couldn't determine required mafia version!"
+        export AUTOSCEND_VERSION_REQ=$(head -n1 RELEASE/scripts/autoscend.ash | grep -o '[0-9]\+')
+        if [[ -z "$AUTOSCEND_VERSION_REQ" ]]; then
+          echo "Could not determine minimum mafia version required by autoscend!"
           exit 1
         fi
-        export MAFIA_BUILD=$(curl --fail --silent --globoff 'https://ci.kolmafia.us/job/Kolmafia/api/json?tree=lastCompletedBuild[artifacts[fileName]]' | jq '[.lastCompletedBuild[]] | map(select(.artifacts[].relativePath | contains(env.MAFIA_VERSION))) | .[] | .number' | head -n1)
+        export MAFIA_BUILD=$(curl --fail --silent --globoff 'https://ci.kolmafia.us/job/Kolmafia/api/json?tree=lastCompletedBuild[artifacts[fileName]]' | jq '[.lastCompletedBuild[]] | map(select(.artifacts[].relativePath | contains(env.AUTOSCEND_VERSION_REQ))) | .[] | .number' | head -n1)
         if [[ -z "$MAFIA_BUILD" ]]; then
-          echo "Couldn't determine Jenkins mafia version!"
+          echo "Could not determine mafia version of Jenkins last completed build!"
           exit 1
         fi
         export JENKINS_URL="https://ci.kolmafia.us/job/Kolmafia/lastCompletedBuild/artifact/dist/KoLmafia-${MAFIA_BUILD}.jar"
         echo "::set-output name=jenkins::$JENKINS_URL"
         echo "::set-output name=build::$MAFIA_BUILD"
-        echo "::set-output name=version::$MAFIA_VERSION"
+        echo "::set-output name=version::$AUTOSCEND_VERSION_REQ"
 
     - name: Cache KoLmafia
       id: cache
