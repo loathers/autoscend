@@ -1057,39 +1057,3 @@ void houseUpgrade()
 		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
 	}
 }
-
-boolean LX_oddJobs(int target)
-{
-	//use odd jobs board for roughly ~100 meat per adv and some stats.
-	//choice 1 == costs 3 adv and balanced stats
-	//choice 2 == costs 10 adv and mus focus stats
-	//choice 3 == costs 10 adv and mys focus stats
-	//choice 4 == costs 10 adv and mox focus stats
-	if(target < 1 || target > 4)
-	{
-		abort("LX_oddJobs has been given an invalid target");
-	}
-	
-	int adv_needed = 10;
-	if (target == 1)
-	{
-		adv_needed = 3;
-	}
-	if(my_adventures() < adv_needed)
-	{
-		auto_log_warning("LX_oddJobs does not have enough adv left to do desired oddjob");
-		return false;
-	}
-	
-	int start_adv = my_adventures();
-	visit_url("place.php?whichplace=town&action=town_oddjobs");
-	run_choice(target);
-	
-	if(my_adventures() == start_adv - adv_needed)
-	{
-		cli_execute("auto_post_adv.ash");
-		return true;
-	}
-	abort("LX_oddJobs() error detected. target = " +target+ ". start_adv = " +start_adv+ ". adventures = " +my_adventures()+ ".");
-	return false;
-}

@@ -595,8 +595,6 @@ boolean LM_jello();
 boolean in_ggoo();
 void grey_goo_initializeSettings();
 void grey_goo_initializeDay(int day);
-boolean greygoo_fortuneCollect();
-boolean greygoo_oddJobs();
 boolean LA_grey_goo_tasks();
 
 ########################################################################################################
@@ -962,7 +960,6 @@ boolean LX_pirateQuest();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
 void houseUpgrade();
-boolean LX_oddJobs(int target);
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash
