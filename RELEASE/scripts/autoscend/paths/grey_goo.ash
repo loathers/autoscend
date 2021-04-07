@@ -27,27 +27,15 @@ boolean LA_grey_goo_tasks()
 		return false;
 	}
 	
-	if(LX_galaktikSubQuest()) return true;			//will only do the quest if auto_doGalaktik is true
-	//if(LX_guildUnlock()) return true;
-	
-	//unlock [typical tavern]
-	if(L2_mosquito()) return true;					//must do this quest to unlock typical tavern
-	if(internalQuestStatus("questL03Rat") == 0)		//got the quest from council but yet to speak to bart ender
-	{
-		visit_url("tavern.php?place=barkeep");		//talk to him once to unlock his booze selling.
-	}
-	if(LX_armorySideQuest()) return true;			//unlock [madeline's baking supply] store while getting some food
-	
-	if(LX_freeCombats(true)) return true;
+	if(LX_galaktikSubQuest()) return true;			//only if user manually set auto_doGalaktik to true this ascension
+	if(LX_armorySideQuest()) return true;			//only if user manually set auto_doArmory to true this ascension
 
-	if(my_daycount() < 3)
+	print("Adventuring in Grey Goo is not currently supported, or necessary. Have fun!");
+	if (my_daycount() >= 3)
 	{
-		print("You are currently on day " +my_daycount()+ " out of 3 of this grey goo run","red");
+		print("You made it beyond the dawn of the third day and can now ascend. Congratulations!", "blue");
+		abort();
 	}
-	else
-	{
-		print("You are done with this grey goo ascension. please enter the astral gash","green");
-	}	
-	set_property("_auto_doneToday", true);		//skip doTasks() and go to doBedtime()
-	return true;		//restart doTasks() loop so we can notice the above setting
+	abort("Please come back in " + (3 - my_daycount()) + " days.");
+	return true;
 }
