@@ -23,11 +23,6 @@ jobs:
       id: mafia
       run: |
         set -o pipefail
-        export AUTOSCEND_VERSION_REQ=$(head -n1 RELEASE/scripts/autoscend.ash | grep -o '[0-9]\+')
-        if [[ -z "$AUTOSCEND_VERSION_REQ" ]]; then
-          echo "Could not determine minimum mafia version required by autoscend!"
-          exit 1
-        fi
         export MAFIA_BUILD=$(curl --fail --silent --globoff 'https://ci.kolmafia.us/job/Kolmafia/api/json?tree=lastCompletedBuild[changeSet[items[revision]]]' | grep -o '[0-9]\+')
         if [[ -z "$MAFIA_BUILD" ]]; then
           echo "Could not determine mafia version of Jenkins last completed build!"
@@ -38,8 +33,6 @@ jobs:
         echo "Jenkins URL = ${JENKINS_URL}"
         echo "::set-output name=build::$MAFIA_BUILD"
         echo "Jenkins Mafia Build = ${MAFIA_BUILD}"
-        echo "::set-output name=version::$AUTOSCEND_VERSION_REQ"
-        echo "Autoscend mafia version required = ${AUTOSCEND_VERSION_REQ}"
 
     - name: Cache KoLmafia
       id: cache
