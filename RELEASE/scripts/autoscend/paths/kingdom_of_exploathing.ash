@@ -11,6 +11,7 @@ boolean koe_initializeSettings()
 		set_property("auto_holeinthesky", false);
 		set_property("auto_paranoia", 3);
 		set_property("auto_skipL12Farm", "true");
+		set_property("auto_grimstoneOrnateDowsingRod", false);
 		return true;
 	}
 	return false;
