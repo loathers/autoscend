@@ -547,7 +547,12 @@ boolean startMeatsmithSubQuest()
 
 boolean finishMeatsmithSubQuest()
 {
-	if (internalQuestStatus("questM23Meatsmith") == 1) {
+	if(internalQuestStatus("questM23Meatsmith") != 1)
+	{
+		return false;
+	}
+	if(item_amount($item[Check to the Meatsmith]) > 0)
+	{
 		visit_url("shop.php?whichshop=meatsmith");
 		run_choice(2);
 		return true;
