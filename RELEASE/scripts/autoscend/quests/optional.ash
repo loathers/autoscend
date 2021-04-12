@@ -555,6 +555,24 @@ boolean finishMeatsmithSubQuest()
 	return false;
 }
 
+boolean LX_meatsmithSubQuest()
+{
+	//do meatsmith optional subquest.
+	if(startMeatsmithSubQuest()) return true;		//always start the quest if available
+	if(finishMeatsmithSubQuest()) return true;		//always turn the quest in if possible
+	
+	if(internalQuestStatus("questM23Meatsmith") != 0)
+	{
+		return false;	
+	}
+	if(!get_property("auto_doMeatsmith").to_boolean())
+	{
+		return false;		//by default we do not want to do this quest.
+	}
+	
+	return autoAdv($location[The Skeleton Store]);
+}
+
 void considerGalaktikSubQuest()
 {
 	//by default we do not do doc galaktik quest. user can manually enable it via gui for this current ascension.
