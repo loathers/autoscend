@@ -636,10 +636,9 @@ boolean finishGalaktikSubQuest()
 boolean LX_galaktikSubQuest()
 {
 	//do doc galaktik optional subquest.
-	
-	if(startGalaktikSubQuest()) return true;
-	if(finishGalaktikSubQuest()) return true;
-	considerGalaktikSubQuest();
+	if(startGalaktikSubQuest()) return true;	//always start the quest if available
+	if(finishGalaktikSubQuest()) return true;	//always turn the quest in if possible
+	considerGalaktikSubQuest();					//if allowed will automatically enable the quest in some cases
 	
 	if(internalQuestStatus("questM24Doc") != 0)
 	{
