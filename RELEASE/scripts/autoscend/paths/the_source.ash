@@ -120,12 +120,6 @@ boolean LX_theSource()
 	location goal = get_property("sourceOracleTarget").to_location();
 	if((goal != $location[none]) && (item_amount($item[No Spoon]) == 0))
 	{
-		if(item_amount($item[Check to the Meatsmith]) > 0)
-		{
-			string temp = visit_url("shop.php?whichshop=meatsmith");
-			temp = visit_url("choice.php?pwd=&whichchoice=1059&option=2");
-			return true;
-		}
 		if((goal == $location[The Batrat and Ratbat Burrow]) && (internalQuestStatus("questL04Bat") < 1))
 		{
 			return false;
