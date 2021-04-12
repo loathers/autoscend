@@ -895,7 +895,10 @@ boolean canYellowRay(monster target)
 			temp = visit_url("choice.php?pwd=&whichchoice=999&option=1&topper=1&lights=1&garland=1&gift=1");
 		}
 	}
-	if(!get_property("_internetViralVideoBought").to_boolean() && (item_amount($item[BACON]) >= 20) && auto_is_valid($item[Viral Video]))
+	if(!get_property("_internetViralVideoBought").to_boolean() &&	//can only buy 1 per day
+	(item_amount($item[BACON]) >= 20) &&	//it costs 20 bacon
+	auto_is_valid($item[Viral Video]) &&	//do not bother buying it if it is not valid
+	!in_koe())	//bacon store is unreachable in kingdom of exploathing
 	{
 		cli_execute("make " + $item[Viral Video]);
 	}
