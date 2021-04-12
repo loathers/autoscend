@@ -162,6 +162,7 @@ void initializeSettings() {
 	set_property("auto_haveoven", false);
 	set_property("auto_doGalaktik", false);
 	set_property("auto_doArmory", false);
+	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
 	set_property("auto_haveSourceTerminal", false);

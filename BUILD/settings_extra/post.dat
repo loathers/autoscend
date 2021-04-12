@@ -27,5 +27,6 @@ auto_needLegs	boolean	In Ed, do we require getting legs before trying to Ka farm
 auto_haveoven	boolean	Track oven status. If you have an oven this should be true. But we can't always check the campground.
 auto_doGalaktik	boolean	Do Galaktik optional sidequest this ascension?
 auto_doArmory	boolean	Do Lending a Hand (and a Foot) optional sidequest this ascension to unlock madeline baking supply?
+auto_doMeatsmith	boolean	Do Meatsmith optional sidequest this ascension?
 auto_L8_ninjaAssassinFail	boolean	True means we think we cannot defeat ninja snowmen assassins and are thus avoiding them this ascension. We will not copy them nor adventure in the lair of the ninja snowmen
 auto_L8_extremeInstead	boolean	True means we want to adventure in the extreme slope path instead of the ninja snowmen lair this ascension.
