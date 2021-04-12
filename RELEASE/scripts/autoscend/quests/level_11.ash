@@ -1455,13 +1455,9 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean needMachete = !possessEquipment($item[Antique Machete]);
+	boolean canUseMachete = !in_boris() && auto_my_path() != "Way of the Surprising Fist" && !in_pokefam();
+	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && in_hardcore();
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
-
-	if (!in_hardcore() || in_boris() || auto_my_path() == "Way of the Surprising Fist" || in_pokefam())
-	{
-		needMachete = false;
-	}
 
 	if (needMachete || needRelocate) {
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
@@ -1471,28 +1467,28 @@ boolean L11_hiddenCityZones()
 	}
 
 	if (get_property("hiddenApartmentProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
 	if (get_property("hiddenOfficeProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
 
 	if (get_property("hiddenHospitalProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
 	if (get_property("hiddenBowlingAlleyProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Southeast)]);
@@ -1600,33 +1596,32 @@ boolean L11_mauriceSpookyraven()
 		# I suppose we can let anyone in without the Spectacles.
 		if(item_amount($item[Loosening Powder]) == 0)
 		{
-			autoAdv($location[The Haunted Kitchen]);
-			return true;
+			return autoAdv($location[The Haunted Kitchen]);
 		}
 		if(item_amount($item[Powdered Castoreum]) == 0)
 		{
-			autoAdv($location[The Haunted Conservatory]);
-			return true;
+			return autoAdv($location[The Haunted Conservatory]);
 		}
 		if(item_amount($item[Drain Dissolver]) == 0)
 		{
-			autoAdv($location[The Haunted Bathroom]);
-			return true;
+			return autoAdv($location[The Haunted Bathroom]);
 		}
 		if(item_amount($item[Triple-Distilled Turpentine]) == 0)
 		{
-			autoAdv($location[The Haunted Gallery]);
-			return true;
+			return autoAdv($location[The Haunted Gallery]);
+		}
+		//3rd floor unlock fix. can manually adv without starting quest. but autoAdv fails until quest is started. so start the quest
+		if(internalQuestStatus("questM17Babies") == -1)
+		{
+			visit_url("place.php?whichplace=manor3&action=manor3_ladys");	//talk to 3rd floor ghost to start quest
 		}
 		if(item_amount($item[Detartrated Anhydrous Sublicalc]) == 0)
 		{
-			autoAdv($location[The Haunted Laboratory]);
-			return true;
+			return autoAdv($location[The Haunted Laboratory]);
 		}
 		if(item_amount($item[Triatomaceous Dust]) == 0)
 		{
-			autoAdv($location[The Haunted Storage Room]);
-			return true;
+			return autoAdv($location[The Haunted Storage Room]);
 		}
 
 		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
