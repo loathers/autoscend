@@ -492,28 +492,34 @@ boolean startArmorySubQuest()
 	return false;
 }
 
+boolean finishArmorySideQuest()
+{
+	if(internalQuestStatus("questM25Armorer") != 4)		//step4 == have [no-handed pie]. need to turn it in.
+	{
+		return false;
+	}
+	auto_log_info("finishing quest [Lending a Hand (and a Foot)]");
+	visit_url("shop.php?whichshop=armory");
+	run_choice(2);		//give no-handed pie to finish the quest
+	return true;
+}
+
 boolean LX_armorySideQuest()
 {
 	//do the quest [Lending a Hand (and a Foot)] and unlock [madeline's baking supply] store
 	//step2 = need to kill the cake lord
 	//step3 = killed the cake lord
 	//step4 = clicked through the mandatory noncombat pages after the cake lord was killed
+	startArmorySubQuest();							//always start the quest to unlock the zone. costs no adv
+	if(finishArmorySideQuest()) return true;		//always finish the quest if possible. unlocks a shop.
+
 	if(!get_property("auto_doArmory").to_boolean())		//post setting indicating we should do this quest this ascension
 	{
 		return false;
-	}
-	startArmorySubQuest();
-	
+	}	
 	if(internalQuestStatus("questM25Armorer") > -1 && internalQuestStatus("questM25Armorer") < 4)
 	{
 		return autoAdv($location[Madness Bakery]);
-	}
-	if(internalQuestStatus("questM25Armorer") == 4)		//got no-handed pie. need to turn it in.
-	{
-		auto_log_info("finishing quest [Lending a Hand (and a Foot)]");
-		visit_url("shop.php?whichshop=armory");
-		run_choice(2);		//give no-handed pie to finish the quest
-		return true;
 	}
 	return false;
 }
