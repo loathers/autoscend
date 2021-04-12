@@ -12,6 +12,7 @@ boolean koe_initializeSettings()
 		set_property("auto_paranoia", 3);
 		set_property("auto_skipL12Farm", "true");
 		set_property("auto_grimstoneOrnateDowsingRod", false);		//location not reachable in koe
+		set_property("auto_grimstoneFancyOilPainting", false);		//location not reachable in koe
 		return true;
 	}
 	return false;
