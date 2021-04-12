@@ -529,7 +529,6 @@ boolean LA_cs_communityService()
 						cli_execute("make " + $item[Skeleton Key]);
 					}
 				}
-				set_property("choiceAdventure1060", 2);
 				if(!cs_healthMaintain()){
 					abort("Wasnt able to maintain health.");
 				}
