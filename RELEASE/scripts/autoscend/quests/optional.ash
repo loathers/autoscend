@@ -395,6 +395,10 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
+	if(in_ggoo() && $classes[Seal Clubber, Turtle Tamer] contains my_class())
+	{
+		return false;	//muscle classes cannot unlock guild in grey goo
+	}
 	auto_log_info("Let's unlock the guild.", "green");
 
 	string pref;

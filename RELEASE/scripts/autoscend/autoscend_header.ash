@@ -592,6 +592,7 @@ boolean LM_jello();
 
 ########################################################################################################
 //Defined in autoscend/paths/grey_goo.ash
+boolean in_ggoo();
 void grey_goo_initializeSettings();
 void grey_goo_initializeDay(int day);
 boolean LA_grey_goo_tasks();
