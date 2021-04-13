@@ -636,8 +636,7 @@ boolean startGalaktikSubQuest()
 	{
 		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
 		{
-			use(1, $item[Map to a Hidden Booze Cache]);
-			return true;
+			return use(1, $item[Map to a Hidden Booze Cache]);
 		}
 		return false;
 	}
