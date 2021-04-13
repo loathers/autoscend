@@ -508,7 +508,7 @@ boolean auto_pre_adventure()
 		{
 			auto_log_info("Trying to adv in [" +place+ "] while overdrunk... is actually permitted", "blue");
 		}
-		else abort("You are overdrunk. Stop it.");
+		else abort("Trying to adv in [" +place+ "] while overdrunk... Stop it.");
 	}
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
