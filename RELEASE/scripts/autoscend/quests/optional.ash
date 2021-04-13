@@ -502,7 +502,7 @@ boolean finishArmorySideQuest()
 	auto_log_info("finishing quest [Lending a Hand (and a Foot)]");
 	visit_url("shop.php?whichshop=armory");
 	run_choice(2);		//give no-handed pie to finish the quest
-	return true;
+	return internalQuestStatus("questM25Armorer") > 4;
 }
 
 boolean LX_armorySideQuest()
