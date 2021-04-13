@@ -527,23 +527,28 @@ boolean LX_armorySideQuest()
 
 boolean startMeatsmithSubQuest()
 {
+	if(in_koe())
+	{
+		return false;	//quest cannot be started and zone cannot be unlocked.
+	}
+	if(internalQuestStatus("questM23Meatsmith") != -1)
+	{
+		return false;	//quest already started
+	}
 	if(auto_my_path() == "Nuclear Autumn")
 	{
 		if(item_amount($item[Bone With a Price Tag On It]) > 0)
 		{
-			use(1, $item[Bone With a Price Tag On It]);
-			return true;
+			//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
+			return use(1, $item[Bone With a Price Tag On It]);
 		}
 		return false;
 	}
-	if(internalQuestStatus("questM23Meatsmith") == -1)
-	{
-		string temp = visit_url("shop.php?whichshop=meatsmith");
-		temp = visit_url("shop.php?whichshop=meatsmith&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1059&option=1");
-		return true;
-	}
-	return false;
+
+	visit_url("shop.php?whichshop=meatsmith");
+	visit_url("shop.php?whichshop=meatsmith&action=talk");
+	run_choice(1);
+	return internalQuestStatus("questM23Meatsmith") > -1;
 }
 
 boolean finishMeatsmithSubQuest()
