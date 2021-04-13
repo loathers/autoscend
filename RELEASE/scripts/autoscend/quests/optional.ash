@@ -633,6 +633,10 @@ void considerGalaktikSubQuest()
 
 boolean startGalaktikSubQuest()
 {
+	if(internalQuestStatus("questM24Doc") != -1)
+	{
+		return false;	//quest already started
+	}
 	if(auto_my_path() == "Nuclear Autumn" || in_koe())
 	{
 		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
@@ -642,14 +646,11 @@ boolean startGalaktikSubQuest()
 		}
 		return false;
 	}
-	if(internalQuestStatus("questM24Doc") == -1)
-	{
-		visit_url("shop.php?whichshop=doc");
-		visit_url("shop.php?whichshop=doc&action=talk");
-		run_choice(1);
-		return true;
-	}
-	return false;
+
+	visit_url("shop.php?whichshop=doc");
+	visit_url("shop.php?whichshop=doc&action=talk");
+	run_choice(1);
+	return internalQuestStatus("questM24Doc") > -1;
 }
 
 boolean finishGalaktikSubQuest()
