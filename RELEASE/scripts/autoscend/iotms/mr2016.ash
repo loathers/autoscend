@@ -992,10 +992,8 @@ boolean haveGhostReport()
 
 boolean LX_ghostBusting()
 {
-	if(!possessEquipment($item[Protonic Accelerator Pack]) || !auto_can_equip($item[Protonic Accelerator Pack]))
-	{
-		return false;
-	}
+	//a function for busting or killing ghosts associated with [Protonic Accelerator Pack].
+	//do not check if we have the IOTM because [Almost-dead_walkie-talkie] gives access to these ghosts without the proton pack.
 	if(get_property("questPAGhost") == "unstarted")
 	{
 		if(!expectGhostReport())
@@ -1037,14 +1035,20 @@ boolean LX_ghostBusting()
 		return false;
 	}
 
-	auto_log_info("Ghost busting time! At: " +goal, "blue");
-	autoForceEquip($item[Protonic Accelerator Pack]);
+	if(possessEquipment($item[Protonic Accelerator Pack]) && auto_can_equip($item[Protonic Accelerator Pack]))
+	{
+		auto_log_info("Ghost busting time! At: " +goal, "blue");
+		autoForceEquip($item[Protonic Accelerator Pack]);
+	}
+	else	//hypothetical future path where pack cannot be equipped. or we used [Almost-dead_walkie-talkie] to get a ghost without the pack
+	{
+		auto_log_info("We can not bust ghosts. but we can still kill them and get ~100 MP worth of restore items. killing ghost at: " +goal, "blue");
+	}
 	if(goal == $location[Inside The Palindome])
 	{
 		autoForceEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
 	acquireHP();
-	auto_log_info("Time to bust some ghosts!!!", "green");
 	return autoAdv(goal);
 }
 
