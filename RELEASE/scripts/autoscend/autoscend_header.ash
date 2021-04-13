@@ -1305,6 +1305,7 @@ boolean acquireHermitItem(item it);
 boolean isHermitAvailable();
 boolean isGalaktikAvailable();
 boolean isGeneralStoreAvailable();
+boolean isArmoryAndLeggeryStoreAvailable();
 boolean isMusGuildStoreAvailable();
 boolean isMystGuildStoreAvailable();
 boolean isArmoryAvailable();

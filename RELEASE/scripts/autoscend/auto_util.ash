@@ -1925,6 +1925,23 @@ boolean isGeneralStoreAvailable()
 	return true;
 }
 
+boolean isArmoryAndLeggeryStoreAvailable()
+{
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		return false;
+	}
+	if(auto_my_path() == "Zombie Master")
+	{
+		return false;
+	}
+	if(in_koe())
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean isMusGuildStoreAvailable()
 {
 	if ($classes[seal clubber, turtle tamer] contains my_class() && guild_store_available())

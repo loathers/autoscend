@@ -599,7 +599,7 @@ boolean auto_forceEquipSword() {
 		drowsy sword, knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete,
 		ridiculously huge sword, serpentine sword, vorpal blade, white sword, sweet ninja sword]
 		{
-			if (possessEquipment(it) && can_equip(it))
+			if (possessEquipment(it) && auto_can_equip(it))
 			{
 				swordToEquip = it;
 				break;
@@ -607,13 +607,19 @@ boolean auto_forceEquipSword() {
 		}
 	}
 
-	if (swordToEquip == $item[none])
+	if (swordToEquip == $item[none] && isArmoryAndLeggeryStoreAvailable() && my_meat() > 49)
 	{
 		// if we still don't have a sword available, buy one for a trivial amount of meat.
+		// we must check availability first. retrieve_item does not return false on failure. it aborts on failure.
 		if (retrieve_item(1, $item[sweet ninja sword])) // costs 50 meat from the armorer and leggerer
 		{
 			swordToEquip = $item[sweet ninja sword];
 		}
+	}
+	
+	if (swordToEquip == $item[none])	//we do not want to force equip none and then report success.
+	{
+		return false;
 	}
 
 	return autoForceEquip($slot[weapon], swordToEquip);
