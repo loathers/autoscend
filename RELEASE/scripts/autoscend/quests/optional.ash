@@ -643,9 +643,9 @@ boolean startGalaktikSubQuest()
 	}
 	if(internalQuestStatus("questM24Doc") == -1)
 	{
-		string temp = visit_url("shop.php?whichshop=doc");
-		temp = visit_url("shop.php?whichshop=doc&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1064&option=1");
+		visit_url("shop.php?whichshop=doc");
+		visit_url("shop.php?whichshop=doc&action=talk");
+		run_choice(1);
 		return true;
 	}
 	return false;
