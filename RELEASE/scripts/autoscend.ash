@@ -162,6 +162,7 @@ void initializeSettings() {
 	set_property("auto_haveoven", false);
 	set_property("auto_doGalaktik", false);
 	set_property("auto_doArmory", false);
+	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
 	set_property("auto_haveSourceTerminal", false);
@@ -2720,7 +2721,8 @@ boolean doTasks()
 	if(LX_faxing())						return true;
 	if(LX_artistQuest())				return true;
 	if(LX_galaktikSubQuest())			return true;
-	if(LX_armorySideQuest())				return true;
+	if(LX_armorySideQuest())			return true;
+	if(LX_meatsmithSubQuest())			return true;
 	if(L9_leafletQuest())				return true;
 	if(L5_findKnob())					return true;		//use encryption key to unlock possible delay zone if you have it
 	if(L12_sonofaPrefix())				return true;

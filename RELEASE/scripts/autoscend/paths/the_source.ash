@@ -120,54 +120,6 @@ boolean LX_theSource()
 	location goal = get_property("sourceOracleTarget").to_location();
 	if((goal != $location[none]) && (item_amount($item[No Spoon]) == 0))
 	{
-		if(goal == $location[The Skeleton Store])
-		{
-			if(internalQuestStatus("questM23Meatsmith") == 0)
-			{
-				if(item_amount($item[Skeleton Store Office Key]) > 0)
-				{
-					set_property("choiceAdventure1060", 4);
-				}
-				else
-				{
-					set_property("choiceAdventure1060", 1);
-				}
-			}
-			else
-			{
-				set_property("choiceAdventure1060", 2);
-			}
-		}
-		if(item_amount($item[Check to the Meatsmith]) > 0)
-		{
-			string temp = visit_url("shop.php?whichshop=meatsmith");
-			temp = visit_url("choice.php?pwd=&whichchoice=1059&option=2");
-			return true;
-		}
-		if(goal == $location[Madness Bakery])
-		{
-			if(internalQuestStatus("questM25Armorer") <= 1)
-			{
-				set_property("choiceAdventure1061", 1);
-			}
-			else
-			{
-				set_property("choiceAdventure1061", 5);
-			}
-		}
-		if(item_amount($item[no-handed pie]) > 0)
-		{
-			string temp = visit_url("shop.php?whichshop=armory");
-			temp = visit_url("choice.php?pwd=&whichchoice=1065&option=2");
-			return true;
-		}
-		if((item_amount($item[Swindleblossom]) >= 3) && (item_amount($item[Fraudwort]) >= 3) && (item_amount($item[Shysterweed]) >= 3))
-		{
-			string temp = visit_url("shop.php?whichshop=doc");
-			temp = visit_url("shop.php?whichshop=doc&action=talk");
-			temp = visit_url("choice.php?pwd=&whichchoice=1064&option=2");
-			return true;
-		}
 		if((goal == $location[The Batrat and Ratbat Burrow]) && (internalQuestStatus("questL04Bat") < 1))
 		{
 			return false;
