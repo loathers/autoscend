@@ -599,7 +599,7 @@ boolean auto_forceEquipSword() {
 		drowsy sword, knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete,
 		ridiculously huge sword, serpentine sword, vorpal blade, white sword, sweet ninja sword]
 		{
-			if (possessEquipment(it) && can_equip(it))
+			if (possessEquipment(it) && auto_can_equip(it))
 			{
 				swordToEquip = it;
 				break;
