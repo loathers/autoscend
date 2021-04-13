@@ -632,7 +632,7 @@ void considerGalaktikSubQuest()
 
 boolean startGalaktikSubQuest()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(auto_my_path() == "Nuclear Autumn" || in_koe())
 	{
 		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
 		{
