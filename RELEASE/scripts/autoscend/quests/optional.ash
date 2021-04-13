@@ -472,6 +472,7 @@ boolean startArmorySubQuest()
 {
 	if(in_koe() || auto_my_path() == "Nuclear Autumn")
 	{
+		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
 		{
 			return use(1, $item[Hypnotic Breadcrumbs]);
@@ -634,6 +635,7 @@ boolean startGalaktikSubQuest()
 {
 	if(auto_my_path() == "Nuclear Autumn" || in_koe())
 	{
+		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
 		{
 			return use(1, $item[Map to a Hidden Booze Cache]);
