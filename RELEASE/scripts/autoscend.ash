@@ -2593,6 +2593,7 @@ boolean doTasks()
 	auto_latteRefill();
 	auto_buyCrimboCommerceMallItem();
 	houseUpgrade();
+	hatchList();			//hatch familiars that are commonly dropped in run
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;

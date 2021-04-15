@@ -674,3 +674,65 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 }
+
+boolean hatchFamiliar(item hatchling, familiar adult)
+{
+	//This functions converts an item named hatchling into a familiar named adult.
+	//Returns true if you end up having the hatched familiar. False if you do not.
+	if(!pathAllowsFamiliar())
+	{
+		return false;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
+	}
+	//TODO return false if no terrarium installed in camp.
+	
+	//do not use auto_have_familiar. we want to know if it exists in the terrarium and do not care about limitations on use
+	if(have_familiar(adult))
+	{
+		return true;	//we already have desired familiar
+	}
+	if(item_amount(hatchling) == 0)
+	{
+		return false;	//we need to actually own the hatchling to hatch it
+	}
+	
+	auto_log_info("Trying to hatch hatchling item [" +hatchling+ "] into the adult familiar [" +adult+ "]", "blue");
+	visit_url("inv_familiar.php?pwd=&which=3&whichitem=" + hatchling.to_int());
+	
+	if(have_familiar(adult))
+	{
+		auto_log_info("Successfully acquired familiar [" + adult + "]", "blue");
+		return true;
+	}
+	auto_log_info("Failed to convert the familiar hatchling [" + hatchling + "] into the familiar [" + adult + "]", "red");
+	return false;
+}
+
+void hatchList()
+{
+	//this function goes through a list of hatchlings to hatch if available.
+	if(!pathAllowsFamiliar())
+	{
+		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
+	}
+	//TODO return if no terrarium installed in camp.
+	
+	//quest items that are familiar hatchlings. must be hatched before they disappear
+	hatchFamiliar($item[reassembled blackbird], $familiar[Reassembled Blackbird]);		//every ascension
+	hatchFamiliar($item[mosquito larva], $familiar[Mosquito]);							//every ascension
+	hatchFamiliar($item[reconstituted crow], $familiar[reconstituted crow]);			//bees hate you
+	hatchFamiliar($item[black kitten], $familiar[Black Cat]);							//bad moon
+
+	//you get one egg every ascension. often it gets eaten. but you should hatch it if you do not own the familiar
+	hatchFamiliar($item[grue egg], $familiar[Grue]);
+	
+	//hatchling is a common drop. So might as well hatch them if you got one.
+	hatchFamiliar($item[sleeping wereturtle], $familiar[Wereturtle]);
+	
+	//nemesis quest familiars.
+	hatchFamiliar($item[adorable seal larva], $familiar[Adorable Seal Larva]);			//seal clubber
+	hatchFamiliar($item[untamable turtle], $familiar[Untamed Turtle]);					//turtle tamer
+	hatchFamiliar($item[macaroni duck], $familiar[Animated Macaroni Duck]);				//pastamancer
+	hatchFamiliar($item[friendly cheez blob], $familiar[Pet Cheezling]);				//sauceror
+	hatchFamiliar($item[unusual disco ball], $familiar[Autonomous Disco Ball]);			//disco bandit
+	hatchFamiliar($item[stray chihuahua], $familiar[Mariachi Chihuahua]);				//accordion thief
+}
