@@ -1140,6 +1140,20 @@ boolean L1_ed_islandFallback()
 	{
 		return true;
 	}
+	if(get_property("lastIslandUnlock").to_int() != my_ascensions())	//somehow island was not unlocked!
+	{
+		//if we fail to unlock the island at this stage our run will be crippled. normally this does not occur.
+		//but if initialization fails or if user played some turns before running autoscend this can happen.
+		if(my_meat() < 1900)
+		{
+			abort("Island failed to unlock because you do not have enough meat. This is a critical problem for ed pathing. Have at least 1900 meat then run autoscend again");
+		}
+		if(my_adventures() <= 9)
+		{
+			abort("Island failed to unlock because you do not have enough adventures. This is a critical problem for ed pathing. Have at least 10 adv then run autoscend again");
+		}
+		abort("Island failed to unlock for an unknown reason. This is a critical problem for ed pathing. Please unlock the island then run autoscend again");
+	}
 
 	if (my_servant() == $servant[Priest] && my_servant().experience < 196)
 	{
