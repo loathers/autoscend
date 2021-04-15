@@ -710,10 +710,6 @@ boolean LM_digimon();
 boolean digimon_autoAdv(int num, location loc, string option);
 
 ########################################################################################################
-//Defined in autoscend/paths/standard.ash
-void standard_dnaPotions();
-
-########################################################################################################
 //Defined in autoscend/paths/the_source.ash
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();
