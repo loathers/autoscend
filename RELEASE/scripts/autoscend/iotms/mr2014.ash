@@ -178,17 +178,7 @@ boolean dna_generic()
 
 	boolean[phylum] potion;
 
-	if(auto_my_path() == "Standard")
-	{
-		switch(my_daycount())
-		{
-		case 1:			potion = $phylums[construct, construct, humanoid];	break;
-		case 2:			potion = $phylums[dude, constellation, humanoid];	break;
-		case 3:			potion = $phylums[dude, constellation, plant];		break;
-		default:		potion = $phylums[humanoid, construct, dude];		break;
-		}
-	}
-	else if(auto_my_path() == "Heavy Rains")
+	if(auto_my_path() == "Heavy Rains")
 	{
 		switch(my_daycount())
 		{
