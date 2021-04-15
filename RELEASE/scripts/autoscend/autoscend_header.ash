@@ -509,6 +509,9 @@ boolean inCasual();
 boolean inAftercore();
 boolean inPostRonin();
 boolean L8_slopeCasual();
+void acquireFamiliarRagamuffinImp();
+void acquireFamiliarsCasual();
+boolean LX_acquireFamiliarLeprechaun();
 boolean LM_canInteract();
 
 ########################################################################################################
@@ -1102,8 +1105,11 @@ boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
+boolean checkTerrarium();
+void getTerrarium();
 boolean hatchFamiliar(familiar adult);
 void hatchList();
+void acquireFamiliars();
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash
