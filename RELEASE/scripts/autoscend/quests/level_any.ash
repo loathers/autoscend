@@ -203,7 +203,7 @@ boolean LX_islandAccess()
 		return LX_desertAlternate();
 	}
 
-	if((my_adventures() <= 9) || (my_meat() <= 1900))
+	if((my_adventures() <= 9) || (my_meat() < 1900))
 	{
 		return false;
 	}
