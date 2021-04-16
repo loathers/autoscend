@@ -10,6 +10,10 @@ boolean LX_bitchinMeatcar()
 	{
 		return false;
 	}
+	if(in_bhy() && !inKnollSign())		//it is impossible to make a meatcar in this combo of path and signs.
+	{
+		return false;
+	}
 	
 	//calculate meat costs of building your meatcar.
 	//if player manually partially assembled it then it will work, just think it costs slightly more meat than it actually does
@@ -44,10 +48,12 @@ boolean LX_bitchinMeatcar()
 		return false;
 	}
 	
-	if(item_amount($item[Gnollish Toolbox]) > 0)
+	if(item_amount($item[Gnollish Toolbox]) > 0 && auto_is_valid($item[Gnollish Toolbox]))
 	{
-		use(1, $item[Gnollish Toolbox]);
-		return true;
+		if(use(1, $item[Gnollish Toolbox]))
+		{
+			return true;
+		}
 	}
 	
 	//if you reached this point then it means you need to spend adventures to acquire more parts
@@ -92,6 +98,11 @@ boolean LX_unlockDesert()
 			auto_log_info("In Nuclear Autumn you get a free desert pass at level 11. skipping unlocking it for now", "blue");
 			return false;
 		}
+	}
+	
+	if(in_bhy() && !inKnollSign())		//it is impossible to make a meatcar in this combo of path and signs.
+	{
+		return LX_desertAlternate();	//so buying a bus ticket is the only possible way to unlock the desert for this combo
 	}
 	
 	//knollsign lets you buy the meatcar for less meat than a desert pass without spending any adv.
