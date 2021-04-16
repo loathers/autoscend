@@ -44,10 +44,12 @@ boolean LX_bitchinMeatcar()
 		return false;
 	}
 	
-	if(item_amount($item[Gnollish Toolbox]) > 0)
+	if(item_amount($item[Gnollish Toolbox]) > 0 && auto_is_valid($item[Gnollish Toolbox]))
 	{
-		use(1, $item[Gnollish Toolbox]);
-		return true;
+		if(use(1, $item[Gnollish Toolbox]))
+		{
+			return true;
+		}
 	}
 	
 	//if you reached this point then it means you need to spend adventures to acquire more parts
