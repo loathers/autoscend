@@ -862,28 +862,31 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 
 	if(tryEffects($effects[
 		// muscle effects
-		Juiced and Loose,
-		Quiet Determination,
-		Power Ballad of the Arrowsmith,
-		Seal Clubbing Frenzy,
-		Patience of the Tortoise,
+		Juiced and Loose,					//+50% mus. nuclear autumn only. 3 MP/adv
+		Quiet Determination,				//+25% mus. facial expression. 1 MP/adv
+		Rage of the Reindeer,				//+10% mus. +10 weapon dmg. 1 MP/adv
+		Power Ballad of the Arrowsmith,		//+10 mus. +20 maxHP. song. 5 MP (duration varies).
+		Seal Clubbing Frenzy,				//+2 mus. 0.2 MP/adv
+		Patience of the Tortoise,			//+1 mus. +3 maxHP. 0.2 MP/adv
 		
 		// myst effects
-		Mind Vision,
-		Quiet Judgement,
-		The Magical Mojomuscular Melody,
-		Pasta Oneness,
-		Saucemastery,
+		Mind Vision,						//+50% mys. nuclear autumn only. 3 MP/adv
+		Quiet Judgement,					//+25% mys. facial expression. 1 MP/adv
+		The Magical Mojomuscular Melody,	//+10 mys. +20 maxMP. song. 3 MP (duration varies).
+		Pasta Oneness,						//+2 mys. 0.2 MP/adv
+		Saucemastery,						//+1 mys. +3 maxMP. 0.2 MP/adv
 
 		// moxie effects
-		Impeccable Coiffure,
-		Song of Bravado,
-		Disco State of Mind,
-		Mariachi Mood,
+		Impeccable Coiffure,				//+50% mox. nuclear autumn only. 3 MP/adv
+		Song of Bravado,					//+15% all. NOT a song. 10 MP/adv
+		The Moxious Madrigal,				//+10 mox. song. 2 MP (duration varies).
+		Disco State of Mind,				//+2 mox. 0.2 MP/adv
+		Mariachi Mood,						//+1 mox. +3 maxHP. 0.2 MP/adv
 
 		// all-stat effects
-		Song of Bravado,
-		Stevedave's Shanty of Superiority,
+		Big,								//+20% all. 1.5 MP/adv
+		Song of Bravado,					//+15% all. NOT a song. 10 MP/adv
+		Stevedave's Shanty of Superiority,	//+10% all. song. 30 MP (duration varies).
 
 		// varying effects
 		Blessing of the Bird,
@@ -892,10 +895,10 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 	]))
 		return result();
 
-	if(auto_have_skill($skill[Quiet Desperation]))
+	if(auto_have_skill($skill[Quiet Desperation]))		//+25% mox. facial expression. 1 MP/adv
 		tryEffects($effects[Quiet Desperation]);
 	else
-		tryEffects($effects[Disco Smirk]);
+		tryEffects($effects[Disco Smirk]);				//+10 mox. facial expression. 1 MP/adv
 
 	if(pass())
 		return result();
