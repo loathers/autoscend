@@ -1875,99 +1875,46 @@ boolean L12_clearBattlefield()
 {
 	if(in_koe())
 	{
-		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiesDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && possessOutfit("Frat Warrior Fatigues", true))
-		{
-			if(haveWarOutfit())
-			{
-				warOutfit(false);
-			}
-
-			item warKillDoubler = my_primestat() == $stat[mysticality] ? $item[Jacob\'s rung] : $item[Haunted paddle-ball];
-			pullXWhenHaveY(warKillDoubler, 1, 0);
-			if(possessEquipment(warKillDoubler))
-			{
-				autoEquip($slot[weapon], warKillDoubler);
-			}
-
-			item food_item = $item[none];
-			foreach it in $items[pie man was not meant to eat, spaghetti with Skullheads, gnocchetti di Nietzsche, Spaghetti con calaveras, space chowder, Spaghetti with ghost balls, Crudles, Agnolotti arboli, Shells a la shellfish, Linguini immondizia bianco, Fettucini Inconnu, ghuol guolash, suggestive strozzapreti, Fusilli marrownarrow]
-			{
-				if(item_amount(it) > 0)
-				{
-					food_item = it;
-					break;
-				}
-			}
-			if(food_item == $item[none])
-			{
-				if(creatable_amount($item[space chowder]) > 6)
-				{
-					create(1, $item[space chowder]);
-					food_item = $item[space chowder];
-				}
-				else
-				{
-					abort("Couldn't find a good food item for the war.");
-				}
-			}
-
-			// TODO: Mafia should really be tracking this.
-			if(!autoAdvBypass("adventure.php?snarfblat=533", $location[The Exploaded Battlefield]))
-			{
-				if(get_property("lastEncounter") == "Rationing out Destruction")
-				{
-					visit_url("choice.php?whichchoice=1391&option=1&tossid=" + food_item.to_int() + "&pwd=" + my_hash(), true);
-				}
-			}
-
-			if(item_amount($item[solid gold bowling ball]) > 0)
-			{
-				council();
-			}
-			return true;
-		}
-		return false;
+		return L12_koe_clearBattlefield();
 	}
-	else
+
+	if (get_property("hippiesDefeated").to_int() < 64 && get_property("fratboysDefeated").to_int() < 64 && internalQuestStatus("questL12War") == 1)
 	{
-		if (get_property("hippiesDefeated").to_int() < 64 && get_property("fratboysDefeated").to_int() < 64 && internalQuestStatus("questL12War") == 1)
+		auto_log_info("First 64 combats. To orchard/lighthouse", "blue");
+		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
 		{
-			auto_log_info("First 64 combats. To orchard/lighthouse", "blue");
+			cli_execute("make 1 stuffing fluffer");
+		}
+		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cornucopia]) > 0) && glover_usable($item[Cornucopia]))
+		{
+			use(1, $item[Cornucopia]);
 			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
 			{
 				cli_execute("make 1 stuffing fluffer");
 			}
-			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cornucopia]) > 0) && glover_usable($item[Cornucopia]))
-			{
-				use(1, $item[Cornucopia]);
-				if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
-				{
-					cli_execute("make 1 stuffing fluffer");
-				}
-				return true;
-			}
-			if(item_amount($item[Stuffing Fluffer]) > 0)
-			{
-				use(1, $item[Stuffing Fluffer]);
-				return true;
-			}
-			warOutfit(false);
-			return warAdventure();
+			return true;
 		}
-
-		if (get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192 && internalQuestStatus("questL12War") == 1)
+		if(item_amount($item[Stuffing Fluffer]) > 0)
 		{
-			auto_log_info("Getting to the nunnery/junkyard", "blue");
-			warOutfit(false);
-			return warAdventure();
+			use(1, $item[Stuffing Fluffer]);
+			return true;
 		}
+		warOutfit(false);
+		return warAdventure();
+	}
 
-		if ((get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean()) && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
-		{
-			auto_log_info("Doing the wars.", "blue");
-			warOutfit(false);
-			return warAdventure();
-		}
+	if (get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192 && internalQuestStatus("questL12War") == 1)
+	{
+		auto_log_info("Getting to the nunnery/junkyard", "blue");
+		warOutfit(false);
+		return warAdventure();
+	}
+
+	if ((get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean()) && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
+	{
+		auto_log_info("Doing the wars.", "blue");
+		warOutfit(false);
+		return warAdventure();
 	}
 	return false;
 }

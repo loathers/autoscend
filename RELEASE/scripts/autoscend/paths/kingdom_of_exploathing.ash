@@ -18,6 +18,12 @@ boolean koe_initializeSettings()
 	return false;
 }
 
+int koe_rmi_count()
+{
+	//counts how much [rare meat isotopes] you effectively have. since you can convert meat to rmi with no limit at a 1000 to 1 ratio
+	return item_amount($item[rare Meat Isotope]) + (my_meat()/1000);
+}
+
 boolean LX_koeInvaderHandler()
 {
 	if(!in_koe())
@@ -98,4 +104,88 @@ boolean LX_koeInvaderHandler()
 	}
 	auto_log_warning("I don't think we're ready to kill the invader yet.", "blue");
 	return false;
+}
+
+item koe_L12FoodSelect()
+{
+	//selects a desireable food item to toss at enemies during L12 war quest battlefield in koe
+	item food_item = $item[none];
+	foreach it in $items[pie man was not meant to eat, spaghetti with Skullheads, gnocchetti di Nietzsche, Spaghetti con calaveras, space chowder, Spaghetti with ghost balls, Crudles, Agnolotti arboli, Shells a la shellfish, Linguini immondizia bianco, Fettucini Inconnu, ghuol guolash, suggestive strozzapreti, Fusilli marrownarrow]
+	{
+		if(item_amount(it) > 0)
+		{
+			food_item = it;
+			break;
+		}
+	}
+	return food_item;
+}
+
+void koe_RationingOutDestruction()
+{
+	//this function handles choiceAdventure1391 Rationing out Destruction.
+	//a koe specific event where you sacrifice food items to score battlefield kills during the L12 quest.
+	item food_item = koe_L12FoodSelect();
+	if(food_item == $item[none])
+	{
+		abort("I am at the choice adventure and do not know what food I should kill my enemies with during L12 war quest");
+	}
+	run_choice(1,"tossid=" +food_item.to_int());
+}
+
+boolean L12_koe_clearBattlefield()
+{
+	//kingdom of exploathing specific handling for clearing the battlefield.
+	if(!in_koe())
+	{
+		return false;
+	}
+	if(internalQuestStatus("questL12HippyFrat") > 1)
+	{
+		return false;
+	}
+	if(get_property("hippiesDefeated").to_int() >= 333 || get_property("fratboysDefeated").to_int() >= 333)
+	{
+		return false;
+	}
+	if(!haveWarOutfit())
+	{
+		return false;
+	}
+	
+	//turn in the quest if done
+	if(item_amount($item[solid gold bowling ball]) > 0)
+	{
+		council();
+		if(internalQuestStatus("questL12HippyFrat") > 1)
+		{
+			return true;
+		}
+		else cli_execute("refresh quests");
+		if(internalQuestStatus("questL12HippyFrat") < 2)
+		{
+			abort("Could not finish the L12 war quest for some reason");
+		}
+	}
+	
+	//prepare food to kill enemies with in the war. always keep a space chowder on hand if possible before going further. just in case.
+	if(item_amount($item[space chowder]) == 0 && koe_rmi_count() > 4)
+	{
+		retrieve_item(1, $item[space chowder]);
+	}
+	if(koe_L12FoodSelect() == $item[none])
+	{
+		abort("I was unable to acquire a good food item to kill my enemies with in the L12 war quest");
+	}
+
+	//equip yourself for the war
+	warOutfit(false);
+	item warKillDoubler = my_primestat() == $stat[mysticality] ? $item[Jacob\'s rung] : $item[Haunted paddle-ball];
+	pullXWhenHaveY(warKillDoubler, 1, 0);
+	if(possessEquipment(warKillDoubler))
+	{
+		autoEquip($slot[weapon], warKillDoubler);
+	}
+
+	return autoAdv($location[The Exploaded Battlefield]);
 }
