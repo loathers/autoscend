@@ -4594,8 +4594,12 @@ boolean auto_is_valid(item it)
 		if(!isGuildClass())		//it seems like all non core classes are disallowed. need to spade this to verify if any class is exempt
 			return false;
 	}
+	if(in_bhy())
+	{
+		return bhy_is_item_valid(it);
+	}
 	
-	return bees_hate_usable(it.to_string()) && is_unrestricted(it);
+	return is_unrestricted(it);
 }
 
 boolean auto_is_valid(familiar fam)
