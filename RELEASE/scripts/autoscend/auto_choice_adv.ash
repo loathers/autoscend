@@ -299,6 +299,8 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(3); // get Lord Spookyraven's spectacles
 			} else if (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1) {
 				run_choice(4); // get disposable instant camera
+			} else if (my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve()) {
+				run_choice(1); // get ~500 meat
 			} else {
 				run_choice(2); // get mysticality substats
 			}
