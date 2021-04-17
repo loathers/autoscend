@@ -2351,37 +2351,34 @@ int speculative_pool_skill()
 
 boolean autosellCrap()
 {
-	if((item_amount($item[dense meat stack]) > 1) && (item_amount($item[dense meat stack]) <= 10))
+	if(can_interact() && my_meat() > 20000)
 	{
-		auto_autosell(1, $item[dense meat stack]);
+		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	foreach it in $items[Blue Money Bag, Red Money Bag, White Money Bag]
+	
+	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
 	{
 		if(item_amount(it) > 0)
 		{
-			auto_autosell(item_amount(it), it);
+			auto_autosell(item_amount(it), it);		//autosell all of this item
 		}
 	}
 	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
-		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
+		if(item_amount(it) > 0 && auto_is_valid(it))
 		{
-			use(1, it);
+			use(item_amount(it), it);
 		}
 	}
-
-	if(!in_hardcore() && !isGuildClass())
+	if(item_amount($item[elegant nightstick]) > 2)
 	{
-		return false;
-	}
-	if(my_meat() > 6500)
-	{
-		return false;
+		auto_autosell(item_amount($item[elegant nightstick])-2, $item[elegant nightstick]);	//keep 2 for double fisting and sell the rest.
 	}
 
-	if(item_amount($item[meat stack]) > 1)
+	//bellow this point are items we only want to sell if we are desperate for meat.
+	if(my_meat() > meatReserve())
 	{
-		auto_autosell(1, $item[meat stack]);
+		return false;
 	}
 
 	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
