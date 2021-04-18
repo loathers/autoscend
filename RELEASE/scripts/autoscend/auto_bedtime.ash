@@ -564,6 +564,7 @@ boolean doBedtime()
 	}
 
 	auto_beachUseFreeCombs();
+	auto_drinkNightcap();
 
 	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
 	if(in_gnoob() || !can_drink() || out_of_blood)
@@ -593,7 +594,7 @@ boolean doBedtime()
 			auto_log_info("You have a rain man to cast, please do so before overdrinking and then run me again.", "red");
 			return false;
 		}
-		auto_autoDrinkNightcap(true); // simulate;
+		auto_printNightcap();
 		auto_log_warning("You need to overdrink and then run me again. Beep.", "red");
 		if(have_skill($skill[The Ode to Booze]))
 		{
