@@ -142,7 +142,7 @@ boolean L12_koe_clearBattlefield()
 	}
 	if(internalQuestStatus("questL12HippyFrat") != 0)
 	{
-		//questL12War is used in most paths. but not used in koe
+		//questL12War is used in most paths. but not used in koe except to set it to finished after you turn in the quest.
 		//questL12HippyFrat is used exclusively in koe. it only has the values of: unstarted, started, finished.
 		return false;
 	}
@@ -200,7 +200,7 @@ boolean L12_koe_finalizeWar()
 	}
 	if(internalQuestStatus("questL12HippyFrat") != 0)
 	{
-		//questL12War is used in most paths. but not used in koe
+		//questL12War is used in most paths. but not used in koe except to set it to finished after you turn in the quest.
 		//questL12HippyFrat is used exclusively in koe. it only has the values of: unstarted, started, finished.
 		return false;
 	}
@@ -214,5 +214,18 @@ boolean L12_koe_finalizeWar()
 	acquireHP();
 	acquireMP(60);
 	auto_log_info("Let's fight the final boss of the frat-hippy war!", "blue");
-	return autoAdv($location[The Exploaded Battlefield]);
+	boolean retval = autoAdv($location[The Exploaded Battlefield]);
+	council();		//need to visit to grab 10 rare meat isotopes and get next quests
+	cli_execute("refresh quests");		//needed to recognize that war is over
+	if(!retval)
+	{
+		abort("failed to fight the final boss of the frat-hippy war");
+	}
+	if(get_property("questL12War") != "finished")
+	{
+		//only place this property is used in koe is when you turn in the quest to council.
+		//which results in Preference questL12War changed from unstarted to finished
+		abort("I fought the final boss of L12 frat hippy war. I visited the council. and somehow the quest is still incomplete. something is wrong");
+	}
+	return retval;
 }
