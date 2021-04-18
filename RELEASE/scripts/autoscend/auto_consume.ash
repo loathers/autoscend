@@ -1109,7 +1109,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	return true;
 }
 
-void auto_autoDrinkNightcap(boolean simulate)
+ConsumeAction auto_bestNightcap()
 {
 	ConsumeAction[int] actions;
 	loadConsumables("drink", actions);
@@ -1123,16 +1123,60 @@ void auto_autoDrinkNightcap(boolean simulate)
 	}
 
 	int best = 0;
-	for (int i=1; i < count(actions); i++)
+	for(int i=1; i < count(actions); i++)
 	{
-		if (desirability(i) > desirability(best)) best = i;
+		if(desirability(i) > desirability(best)) best = i;
 	}
 
-	auto_log_info("Nightcap is: " + to_pretty_string(actions[best]), "blue");
+	return actions[best];
+}
 
-	if (simulate) return;
+void auto_printNightcap()
+{
+	auto_log_info("Nightcap is: " + to_pretty_string(auto_bestNightcap()), "blue");
+}
 
-	autoConsume(actions[best]);
+void auto_drinkNightcap()
+{
+	//function to overdrink a nightcap at the end of day
+	if(!can_drink())
+	{
+		return;		//current path cannot drink booze at all
+	}
+	if(auto_freeCombatsRemaining() > 0)
+	{
+		return;		//do not overdrink if we still have free fights we want to do. undesireable free fights are not counted by that function
+	}
+	//you can't overdrink if already overdrunk. TODO account for green beer on cinco de mayo
+	if(auto_have_familiar($familiar[Stooper]))
+	{
+		if($familiar[Stooper] == my_familiar() && inebriety_left() < 0) return;		//stooper is current familiar and overdrunk
+		else if(inebriety_left() < -1) return;		//stooper not current familiar. but will be overdrunk even if switching to it
+	}
+	else if(inebriety_left() < 0) return;	//we can not use stooper and are overdrunk
+	
+	familiar start_fam = my_familiar();
+	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
+	&& start_fam != $familiar[Stooper])
+	{
+		use_familiar($familiar[Stooper]);
+	}
+	
+	//fill up remaining liver first. such as stooper space.
+	while(inebriety_left() > 0 && auto_autoConsumeOne("drink", false));
+	
+	//drink your nightcap to become overdrunk
+	ConsumeAction target = auto_bestNightcap();
+	if(!autoPrepConsume(target))
+	{
+		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
+	}
+	autoConsume(target);
+	
+	if(start_fam != my_familiar())
+	{
+		use_familiar(start_fam);
+	}
 }
 
 boolean auto_autoConsumeOne(string type, boolean simulate)
