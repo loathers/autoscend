@@ -15,7 +15,8 @@ auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are i
 auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
 auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
 auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
-auto_limitConsume	boolean	When true, will not eat or drink anything automatically.
+auto_limitConsume	boolean	When true will not eat or drink anything automatically.
+auto_skipNightcap	boolean	When true will not get overdrunk at the end of the day
 auto_consumeMinAdvPerFill	float	The minimum adventures per fill to consider for a consumable before eating or drinking it. Defaults to 0.0 and will consume whatever is available if necessary.
 auto_consumePullDesirability	float	This value is used as a rough estimate of how much a pull is "worth" when the consumption algorithm is considering using pulls. Higher values will make it more conservative and vice-versa. Defaults to 5.0.
 auto_dontConsumeKeyLimePies	boolean	When false, will pull and eat key lime pies if we require keys. Does nothing if auto_limitConsume is true;
