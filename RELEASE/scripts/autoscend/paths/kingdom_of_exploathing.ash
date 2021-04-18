@@ -24,6 +24,25 @@ int koe_rmi_count()
 	return item_amount($item[rare Meat Isotope]) + (my_meat()/1000);
 }
 
+boolean koe_acquire_rmi(int target)
+{
+	//acquires target amount of rare meat isotopes by converting meat into rmi
+	item it = $item[rare Meat Isotope];
+	if(item_amount(it) >= target)
+	{
+		return true;	//we already have the desired amount
+	}
+	if(koe_rmi_count() < target)
+	{
+		auto_log_warning("We wanted to acquire " +target+ " [rare Meat Isotope] but were unable to convert enough meat to get them", "red");
+		return false;
+	}
+	int need = target - item_amount(it);
+	auto_log_info("Attempting to purchase " +need+ " [rare Meat Isotope] from [Cosmic Ray\'s Bazaar]", "blue");
+	buy($coinmaster[Cosmic Ray\'s Bazaar], need, it);
+	return item_amount(it) >= target;
+}
+
 boolean LX_koeInvaderHandler()
 {
 	if(!in_koe())
@@ -228,4 +247,63 @@ boolean L12_koe_finalizeWar()
 		abort("I fought the final boss of L12 frat hippy war. I visited the council. and somehow the quest is still incomplete. something is wrong");
 	}
 	return retval;
+}
+
+boolean L13_koe_towerNSNagamar()
+{
+	//acquire wand of nagamar for kingdom of exploathing path. bear verb orgy is unavailable in koe and some of the letters can not drop in run.
+	if(!in_koe())
+	{
+		return false;
+	}
+	if(!get_property("auto_wandOfNagamar").to_boolean())
+	{
+		return false;		//internal tracking says we do not want wand
+	}
+	if(item_amount($item[Wand of Nagamar]) > 0)		//if we already have wand we should adjust our internal tracking to say so
+	{
+		set_property("auto_wandOfNagamar", false);
+		return false;
+	}
+	if(internalQuestStatus("questL13Final") < 11)
+	{
+		//step11 means ready to fight the sorceress. 12 means we lost once and unlocked bear verb orgy. except BVO is unavailable in koe
+		return false;
+	}
+
+	//softcore it is cheaper to pull then craft the wand components. if we do not have enough pulls then buy it from ray's bazaar
+	if(!in_hardcore())
+	{
+		if(canPull($item[WA]) && canPull($item[ND]) && pulls_remaining() > 1)	//need 2 pulls to get both
+		{
+			acquireOrPull($item[WA]);
+			acquireOrPull($item[ND]);
+			if(create(1, $item[Wand Of Nagamar]))
+			{
+				return true;
+			}
+			else abort("I should be able to pull and assemble a wand of nagamar but mysteriously failed. Manually do so and run me again");
+		}
+		else
+		{
+			auto_log_warning("I am unable to pull the components of the [wand of nagamar]. will try to buy it instead", "red");
+		}
+	}
+	
+	if(koe_acquire_rmi(30))		//it costs 30 rmi to get wand.
+	{
+		auto_log_info("attempting to buy [wand of nagamar] from [Cosmic Ray\'s Bazaar]", "blue");
+		buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Wand of Nagamar]);
+	}
+	else
+	{
+		auto_log_info("I was unable to acquire 30 [rare Meat isotope] needed for the [wand of nagamar]", "blue");
+	}
+	
+	if(item_amount($item[Wand of Nagamar]) > 0)
+	{
+		return true;
+	}
+	abort("I failed to acquire [Wand of Nagamar]");
+	return false;	//must have return value even after an abort
 }
