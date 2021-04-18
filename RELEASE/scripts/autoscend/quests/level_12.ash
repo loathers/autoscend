@@ -1921,6 +1921,10 @@ boolean L12_clearBattlefield()
 
 boolean L12_finalizeWar()
 {
+	if(in_koe())
+	{
+		return L12_koe_finalizeWar();
+	}
 	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
@@ -2056,22 +2060,14 @@ boolean L12_finalizeWar()
 
 	location bossFight = $location[Noob Cave];
 
-	if (in_koe())
-	{
-		bossFight = 533.to_location();
-	}
-
 	if(auto_have_familiar($familiar[Machine Elf]))
 	{
 		handleFamiliar($familiar[Machine Elf]);
 	}
 	string[int] pages;
-	if (!in_koe())
-	{
-		pages[0] = "bigisland.php?place=camp&whichcamp=1";
-		pages[1] = "bigisland.php?place=camp&whichcamp=2";
-		pages[2] = "bigisland.php?action=bossfight&pwd";
-	}
+	pages[0] = "bigisland.php?place=camp&whichcamp=1";
+	pages[1] = "bigisland.php?place=camp&whichcamp=2";
+	pages[2] = "bigisland.php?action=bossfight&pwd";
 	if(!autoAdvBypass(0, pages, bossFight, ""))
 	{
 		auto_log_warning("Boss already defeated, ignoring", "red");

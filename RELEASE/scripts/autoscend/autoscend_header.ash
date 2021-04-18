@@ -617,6 +617,7 @@ boolean LX_koeInvaderHandler();
 item koe_L12FoodSelect();
 void koe_RationingOutDestruction();
 boolean L12_koe_clearBattlefield();
+boolean L12_koe_finalizeWar();
 
 ########################################################################################################
 //Defined in autoscend/paths/kolhs.ash

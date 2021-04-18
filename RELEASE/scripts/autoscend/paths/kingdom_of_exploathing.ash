@@ -140,8 +140,10 @@ boolean L12_koe_clearBattlefield()
 	{
 		return false;
 	}
-	if(internalQuestStatus("questL12HippyFrat") > 1)
+	if(internalQuestStatus("questL12HippyFrat") != 0)
 	{
+		//questL12War is used in most paths. but not used in koe
+		//questL12HippyFrat is used exclusively in koe. it only has the values of: unstarted, started, finished.
 		return false;
 	}
 	if(get_property("hippiesDefeated").to_int() >= 333 || get_property("fratboysDefeated").to_int() >= 333)
@@ -187,5 +189,30 @@ boolean L12_koe_clearBattlefield()
 		autoEquip($slot[weapon], warKillDoubler);
 	}
 
+	return autoAdv($location[The Exploaded Battlefield]);
+}
+
+boolean L12_koe_finalizeWar()
+{
+	if(!in_koe())
+	{
+		return false;
+	}
+	if(internalQuestStatus("questL12HippyFrat") != 0)
+	{
+		//questL12War is used in most paths. but not used in koe
+		//questL12HippyFrat is used exclusively in koe. it only has the values of: unstarted, started, finished.
+		return false;
+	}
+	if(get_property("hippiesDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333)
+	{
+		return false;	//there are 333 of each enemy in koe. if either side had all 333 defeated then this will not return false here.
+	}
+	
+	//koe does not have coin masters. there is nothing to sell here.
+	warOutfit(false);
+	acquireHP();
+	acquireMP(60);
+	auto_log_info("Let's fight the final boss of the frat-hippy war!", "blue");
 	return autoAdv($location[The Exploaded Battlefield]);
 }
