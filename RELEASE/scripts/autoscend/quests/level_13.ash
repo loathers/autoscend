@@ -1369,7 +1369,10 @@ boolean L13_towerNSNagamar()
 	// quest step12 means you fought the sorceress and lost due to not having a wand.
 	// autoscend only reaches step12 of the quest if autoscend was incapable of acquiring a wand before the sorceress
 	// it then has to fallback to bear verb orgy, which itself cannot be done until step12
-	
+	if(in_koe())
+	{
+		return L13_koe_towerNSNagamar();
+	}
 	if (!get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") != 12)
 	{
 		return false;
@@ -1380,18 +1383,6 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
-	if(in_koe() && item_amount($item[rare Meat Isotope]) >= 30)
-	{
-		buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Wand of Nagamar]);
-		if(item_amount($item[Wand of Nagamar]) > 0)
-		{
-			return true;
-		}
-		else
-		{
-			auto_log_warning("Buying [Wand of Nagamar] using rare Meat Isotopes failed even thought we had 30 isotopes... trying alternatives", "red");
-		}
-	}
 	if(auto_my_path() == "Disguises Delimit" && internalQuestStatus("questL13Final") == 12)
 	{
 		cli_execute("refresh quests");
