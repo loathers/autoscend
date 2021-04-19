@@ -2363,16 +2363,26 @@ boolean autosellCrap()
 			auto_autosell(item_amount(it), it);		//autosell all of this item
 		}
 	}
-	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
 		if(item_amount(it) > 0 && auto_is_valid(it))
 		{
 			use(item_amount(it), it);
 		}
 	}
-	if(item_amount($item[elegant nightstick]) > 2)
+	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
 	{
-		auto_autosell(item_amount($item[elegant nightstick])-2, $item[elegant nightstick]);	//keep 2 for double fisting and sell the rest.
+		if(item_amount(it) > 1)		//for these items we want to keep 1 in stock. sell the rest
+		{
+			use(item_amount(it)-1, it);
+		}
+	}
+	foreach it in $items[elegant nightstick]		//keeping 2 nightsticks in stock for double fisting
+	{
+		if(item_amount(it) > 2)		//for these items we want to keep 2 in stock. sell the rest
+		{
+			use(item_amount(it)-2, it);
+		}
 	}
 
 	//bellow this point are items we only want to sell if we are desperate for meat.
