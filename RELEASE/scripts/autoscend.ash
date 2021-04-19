@@ -2351,37 +2351,43 @@ int speculative_pool_skill()
 
 boolean autosellCrap()
 {
-	if((item_amount($item[dense meat stack]) > 1) && (item_amount($item[dense meat stack]) <= 10))
+	if(can_interact() && my_meat() > 20000)
 	{
-		auto_autosell(1, $item[dense meat stack]);
+		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	foreach it in $items[Blue Money Bag, Red Money Bag, White Money Bag]
+	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
 	{
 		if(item_amount(it) > 0)
 		{
-			auto_autosell(item_amount(it), it);
+			auto_autosell(min(10,item_amount(it)), it);		//autosell all of this item
 		}
 	}
-	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
-		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
+		if(item_amount(it) > 0 && auto_is_valid(it))
 		{
-			use(1, it);
+			use(min(10,item_amount(it)), it);
+		}
+	}
+	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
+	{
+		if(item_amount(it) > 1)		//for these items we want to keep 1 in stock. sell the rest
+		{
+			use(min(10,item_amount(it)-1), it);
+		}
+	}
+	foreach it in $items[elegant nightstick]		//keeping 2 nightsticks in stock for double fisting
+	{
+		if(item_amount(it) > 2)		//for these items we want to keep 2 in stock. sell the rest
+		{
+			use(min(10,item_amount(it)-2), it);
 		}
 	}
 
-	if(!in_hardcore() && !isGuildClass())
+	//bellow this point are items we only want to sell if we are desperate for meat.
+	if(my_meat() > meatReserve())
 	{
 		return false;
-	}
-	if(my_meat() > 6500)
-	{
-		return false;
-	}
-
-	if(item_amount($item[meat stack]) > 1)
-	{
-		auto_autosell(1, $item[meat stack]);
 	}
 
 	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]

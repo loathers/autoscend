@@ -54,6 +54,26 @@ boolean bees_hate_usable(string str)
 	return true;
 }
 
+boolean bhy_is_item_valid(item it)
+{
+	//returns whether an item is valid while you are in a bees hate you run. Do not call it outside BHY.
+	if(!in_bhy())		//returning true or false here would cause mistakes. so just abort if this ever happens. which it should not.
+	{
+		abort("bhy_is_item_valid(item it) should never be called outside of bees hate you path.");
+	}
+	if(it.to_slot() != $slot[none])
+	{
+		return is_unrestricted(it);		//this is equipment. equipment can be worn. you take backlash damage from it
+	}
+	if($items[Cobb\'s Knob map, Enchanted bean, Ball polish, Black market map, boring binder clip, beehive, electric boning knife] contains it)
+	{
+		return true;					//these items are explicit exceptions which are allowed in BHY
+	}
+	//familiar hatchlings are always allowed. testing is too complicated and it does not really matter
+	//food, drink, combat items, and useable items are forbidden if contain the letter B in the name:
+	return bees_hate_usable(it.to_string()) && is_unrestricted(it);
+}
+
 boolean LM_bhy()
 {
 	if(!in_bhy())

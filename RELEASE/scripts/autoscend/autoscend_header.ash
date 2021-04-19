@@ -487,6 +487,7 @@ boolean awol_buySkills();
 boolean in_bhy();
 void bhy_initializeSettings();
 boolean bees_hate_usable(string str);
+boolean bhy_is_item_valid(item it);
 boolean LM_bhy();
 boolean L13_bhy_towerFinal();
 
