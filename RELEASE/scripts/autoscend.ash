@@ -2355,36 +2355,32 @@ boolean autosellCrap()
 	{
 		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	if(item_amount($item[dense meat stack]) > 0)	//some people keep their money in dense meat stacks instead of meat format
-	{
-		auto_autosell(min(10, item_amount($item[dense meat stack])), $item[dense meat stack]);
-	}
-	foreach it in $items[meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
+	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
 	{
 		if(item_amount(it) > 0)
 		{
-			auto_autosell(item_amount(it), it);		//autosell all of this item
+			auto_autosell(min(10,item_amount(it)), it);		//autosell all of this item
 		}
 	}
 	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
 		if(item_amount(it) > 0 && auto_is_valid(it))
 		{
-			use(item_amount(it), it);
+			use(min(10,item_amount(it)), it);
 		}
 	}
 	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
 	{
 		if(item_amount(it) > 1)		//for these items we want to keep 1 in stock. sell the rest
 		{
-			use(item_amount(it)-1, it);
+			use(min(10,item_amount(it)-1), it);
 		}
 	}
 	foreach it in $items[elegant nightstick]		//keeping 2 nightsticks in stock for double fisting
 	{
 		if(item_amount(it) > 2)		//for these items we want to keep 2 in stock. sell the rest
 		{
-			use(item_amount(it)-2, it);
+			use(min(10,item_amount(it)-2), it);
 		}
 	}
 
