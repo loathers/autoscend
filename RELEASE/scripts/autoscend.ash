@@ -2355,8 +2355,11 @@ boolean autosellCrap()
 	{
 		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	
-	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
+	if(item_amount($item[dense meat stack]) > 0)	//some people keep their money in dense meat stacks instead of meat format
+	{
+		auto_autosell(min(10, item_amount($item[dense meat stack])), $item[dense meat stack]);
+	}
+	foreach it in $items[meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
 	{
 		if(item_amount(it) > 0)
 		{
