@@ -466,6 +466,9 @@ boolean auto_run_choice(int choice, string page)
 		case 1342: // Torpor (Dark Gyffte)
 			bat_reallyPickSkills(20);
 			break;
+		case 1391: // Rationing out Destruction (Kingdom of Exploathing)
+			koe_RationingOutDestruction();
+			break;
 		case 1410: // The Mushy Center (Your Mushroom Garden)
 			mushroomGardenChoiceHandler(choice);
 			break;

@@ -612,7 +612,12 @@ boolean L13_towerFinalHeavyRains();
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
 boolean in_koe();
 boolean koe_initializeSettings();
+int koe_rmi_count();
 boolean LX_koeInvaderHandler();
+item koe_L12FoodSelect();
+void koe_RationingOutDestruction();
+boolean L12_koe_clearBattlefield();
+boolean L12_koe_finalizeWar();
 
 ########################################################################################################
 //Defined in autoscend/paths/kolhs.ash
