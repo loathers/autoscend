@@ -200,7 +200,7 @@ boolean L12_koe_clearBattlefield()
 	}
 
 	//equip yourself for the war
-	warOutfit(false);
+	equipWarOutfit();
 	item warKillDoubler = my_primestat() == $stat[mysticality] ? $item[Jacob\'s rung] : $item[Haunted paddle-ball];
 	pullXWhenHaveY(warKillDoubler, 1, 0);
 	if(possessEquipment(warKillDoubler))
@@ -229,7 +229,7 @@ boolean L12_koe_finalizeWar()
 	}
 	
 	//koe does not have coin masters. there is nothing to sell here.
-	warOutfit(false);
+	equipWarOutfit();
 	acquireHP();
 	acquireMP(60);
 	auto_log_info("Let's fight the final boss of the frat-hippy war!", "blue");
