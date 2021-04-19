@@ -48,6 +48,19 @@ boolean auto_run_choice(int choice, string page)
 		case 125: // No Visible Means of Support (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
+		case 139:
+		case 140:
+		case 141: // Blockin' Out the Scenery (wearing Frat Boy Ensemble) 
+		case 142: // Blockin' Out the Scenery (wearing Frat Warrior Fatigues)
+		case 143:
+		case 144:
+		case 145: // Fratacombs (wearing Filthy Hippy Disguise) 
+		case 146: // Fratacombs (wearing War Hippy Fatigues)
+		case 147:
+		case 148:
+		case 149:
+			warChoiceHandler(choice);
+			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
 			if(auto_my_path() == "Live. Ascend. Repeat.")
 			{

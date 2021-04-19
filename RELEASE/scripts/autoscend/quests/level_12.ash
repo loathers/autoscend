@@ -526,16 +526,6 @@ boolean L12_getOutfit()
 		return false;
 	}
 
-	// noncombat when adventuring at The Hippy Camp (Verge of War)
-	set_property("choiceAdventure139", "3");	//fight a War Hippy (space) cadet for outfit pieces
-	set_property("choiceAdventure140", "3");	//fight a War Hippy drill sergeant for outfit pieces
-	set_property("choiceAdventure141", "1");	//if wearing [Frat Boy Ensemble] get 50 mysticality
-	
-	// noncombat when adventuring at Orcish Frat House (Verge of War)
-	set_property("choiceAdventure143", "3");	//fight a War Pledgefor outfit pieces
-	set_property("choiceAdventure144", "3");	//fight a Frat Warrior drill sergeant for outfit pieces
-	set_property("choiceAdventure145", "1");	//if wearing [Filthy Hippy Disguise] get 50 muscle
-
 	// if you already have the war outfit we don't need to do anything now
 	if (haveWarOutfit())
 	{
@@ -737,10 +727,6 @@ boolean L12_startWar()
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
 	}
-
-	// set noncombats to value needed to start the war
-	set_property("choiceAdventure142", "3");	//if wearing [Frat Warrior Fatigues] start the war or skip adventure
-	set_property("choiceAdventure146", "3");	//if wearing [War Hippy Fatigues] start the war or skip adventure
 
 	// wear the appropriate war outfit based on auto_hippyInstead
 	warOutfit(false);
@@ -1818,9 +1804,6 @@ boolean L12_farm()
 	}
 	
 	auto_log_info("Save McMillicancuddy's Farm from the Dooks", "blue");
-	set_property("choiceAdventure147", "3");		//open the pond
-	set_property("choiceAdventure148", "1");		//open the back 40
-	set_property("choiceAdventure149", "2");		//open the other back 40
 
 	// There is no mafia tracking for stages of this sidequest
 	// Because Mafia's adventures spent count also increments on a free fight, we cannot
@@ -2086,4 +2069,49 @@ boolean L12_finalizeWar()
 	}
 	council();
 	return true;
+}
+
+void warChoiceHandler(int choice)
+{
+	auto_log_debug("void warChoiceHandler(int choice)");
+
+	switch (choice)
+	{
+		case 139:
+			run_choice(3);		//fight a War Hippy (space) cadet for outfit pieces
+			break;
+		case 140:
+			run_choice(3);		//fight a War Hippy drill sergeant for outfit pieces
+			break;
+		case 141: // Blockin' Out the Scenery (wearing Frat Boy Ensemble) 
+			run_choice(1);		//get 50 mysticality
+			break;
+		case 142: // Blockin' Out the Scenery (wearing Frat Warrior Fatigues)
+			run_choice(3);		//starts the war. skips adventure if already started.
+			break;
+		case 143:
+			run_choice(3);		//fight a War Pledgefor outfit pieces
+			break;
+		case 144:
+			run_choice(3);		//fight a Frat Warrior drill sergeant for outfit pieces
+			break;
+		case 145: // Fratacombs (wearing Filthy Hippy Disguise) 
+			run_choice(1);		//get 50 muscle
+			break;
+		case 146: // Fratacombs (wearing War Hippy Fatigues)
+			run_choice(3);		//starts the war. skips adventure if already started.
+			break;
+		case 147:
+			run_choice(3);		//open the pond
+			break;
+		case 148:
+			run_choice(1);		//open the back 40
+			break;
+		case 149:
+			run_choice(2);		//open the other back 40
+			break;
+		default:
+			auto_log_warning("void warChoiceHandler(int choice) somehow hit default. this should not happen");
+			break;
+	}
 }
