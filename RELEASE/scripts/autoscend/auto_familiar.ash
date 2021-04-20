@@ -675,9 +675,9 @@ void preAdvUpdateFamiliar(location place)
 	}
 }
 
-boolean hatchFamiliar(item hatchling, familiar adult)
+boolean hatchFamiliar(familiar adult)
 {
-	//This functions converts an item named hatchling into a familiar named adult.
+	//This functions hatches a familiar named adult.
 	//Returns true if you end up having the hatched familiar. False if you do not.
 	if(!pathAllowsFamiliar())
 	{
@@ -685,11 +685,12 @@ boolean hatchFamiliar(item hatchling, familiar adult)
 	}
 	//TODO return false if no terrarium installed in camp.
 	
-	//do not use auto_have_familiar. we want to know if it exists in the terrarium and do not care about limitations on use
+	//do not use auto_have_familiar. we want to know if it exists in the terrarium and do not care about path limitations on use
 	if(have_familiar(adult))
 	{
 		return true;	//we already have desired familiar
 	}
+	item hatchling = adult.hatchling;
 	if(item_amount(hatchling) == 0)
 	{
 		return false;	//we need to actually own the hatchling to hatch it
@@ -716,23 +717,21 @@ void hatchList()
 	}
 	//TODO return if no terrarium installed in camp.
 	
-	//quest items that are familiar hatchlings. must be hatched before they disappear
-	hatchFamiliar($item[reassembled blackbird], $familiar[Reassembled Blackbird]);		//every ascension
-	hatchFamiliar($item[mosquito larva], $familiar[Mosquito]);							//every ascension
-	hatchFamiliar($item[reconstituted crow], $familiar[reconstituted crow]);			//bees hate you
-	hatchFamiliar($item[black kitten], $familiar[Black Cat]);							//bad moon
-
-	//you get one egg every ascension. often it gets eaten. but you should hatch it if you do not own the familiar
-	hatchFamiliar($item[grue egg], $familiar[Grue]);
-	
-	//hatchling is a common drop. So might as well hatch them if you got one.
-	hatchFamiliar($item[sleeping wereturtle], $familiar[Wereturtle]);
-	
-	//nemesis quest familiars.
-	hatchFamiliar($item[adorable seal larva], $familiar[Adorable Seal Larva]);			//seal clubber
-	hatchFamiliar($item[untamable turtle], $familiar[Untamed Turtle]);					//turtle tamer
-	hatchFamiliar($item[macaroni duck], $familiar[Animated Macaroni Duck]);				//pastamancer
-	hatchFamiliar($item[friendly cheez blob], $familiar[Pet Cheezling]);				//sauceror
-	hatchFamiliar($item[unusual disco ball], $familiar[Autonomous Disco Ball]);			//disco bandit
-	hatchFamiliar($item[stray chihuahua], $familiar[Mariachi Chihuahua]);				//accordion thief
+	foreach fam in $familiars[
+	Reassembled Blackbird,				//quest item dropped every ascension
+	Mosquito,							//quest item dropped every ascension
+	reconstituted crow,					//quest item dropped in bees hate you
+	Black Cat,							//quest item dropped in bad moon
+	Grue,								//you get one egg every ascension.
+	Wereturtle,							//common drop
+	Adorable Seal Larva,				//nemesis quest: seal clubber
+	Untamed Turtle,						//nemesis quest: turtle tamer
+	Animated Macaroni Duck,				//nemesis quest: pastamancer
+	Pet Cheezling,						//nemesis quest: sauceror
+	Autonomous Disco Ball,				//nemesis quest: disco bandit
+	Mariachi Chihuahua					//nemesis quest: accordion thief
+	]
+	{
+		hatchFamiliar(fam);
+	}
 }
