@@ -2292,7 +2292,7 @@ boolean L11_palindome()
 			auto_log_info("Attemping to use Map the Monsters to olfact a Bob Racecar.");
 		}
 		boolean advSpent = autoAdv($location[Inside the Palindome]);
-		if(($location[Inside the Palindome].turns_spent > 30) && !in_pokefam() && (auto_my_path() != "G-Lover") && !in_koe() && !in_bhy())
+		if($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && !auto_is_valid($item[Disposable Instant Camera]))
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}
