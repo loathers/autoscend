@@ -1068,7 +1068,7 @@ boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
-boolean hatchFamiliar(item hatchling, familiar adult);
+boolean hatchFamiliar(familiar adult);
 void hatchList();
 
 ########################################################################################################
