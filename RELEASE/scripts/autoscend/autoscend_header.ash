@@ -868,7 +868,8 @@ int bitmask_from_warplan(WarPlan plan);
 WarPlan auto_bestWarPlan();
 int auto_warTotalBattles(WarPlan plan, int remaining);
 int auto_warTotalBattles(WarPlan plan);
-boolean warOutfit(boolean immediate);
+void equipWarOutfit();
+void equipWarOutfit(boolean lock);
 boolean haveWarOutfit(boolean canWear);
 boolean haveWarOutfit();
 boolean warAdventure();
@@ -891,6 +892,7 @@ boolean LX_obtainChaosButterfly();
 boolean L12_farm();
 boolean L12_clearBattlefield();
 boolean L12_finalizeWar();
+void warChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/quests/level_13.ash
