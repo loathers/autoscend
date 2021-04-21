@@ -1068,6 +1068,8 @@ boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
+boolean hatchFamiliar(familiar adult);
+void hatchList();
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash
