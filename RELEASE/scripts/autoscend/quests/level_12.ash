@@ -1419,7 +1419,7 @@ boolean LX_attemptFlyering()
 	}
 	else if(neverendingPartyAvailable())
 	{
-		return neverendingPartyPowerlevel();
+		return neverendingPartyCombat();
 	}
 	else
 	{
