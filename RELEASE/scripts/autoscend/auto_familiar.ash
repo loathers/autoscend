@@ -689,7 +689,7 @@ boolean hatchFamiliar(familiar adult)
 	{
 		//have_familiar is inconsistent. it usually returns true if you have a familiar in the terrairum regardless on its usability.
 		//in glover it returns false for unusuable familiars. as such we should test both hatchling and familiar in glover path
-		if(!glover_usable(adult) || !glover_usable(hatchling))
+		if(!glover_usable(adult.to_string()) || !glover_usable(hatchling.to_string()))
 		{
 			return false;
 		}
