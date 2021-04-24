@@ -730,7 +730,7 @@ void hatchList()
 	}
 	//TODO return if no terrarium installed in camp.
 	
-	if(get_propery("questL02Larva") == "finished")
+	if(get_property("questL02Larva") == "finished")
 	{
 		//only try to hatch this after the quest is finished. first copy is given to concil which returns it to you if you need to hatch it
 		hatchFamiliar($familiar[Mosquito]);		//quest item dropped every ascension until hatched
