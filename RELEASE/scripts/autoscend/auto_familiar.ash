@@ -730,9 +730,14 @@ void hatchList()
 	}
 	//TODO return if no terrarium installed in camp.
 	
+	if(get_propery("questL02Larva") == "finished")
+	{
+		//only try to hatch this after the quest is finished. first copy is given to concil which returns it to you if you need to hatch it
+		hatchFamiliar($familiar[Mosquito]);		//quest item dropped every ascension until hatched
+	}
+	
 	foreach fam in $familiars[
 	Reassembled Blackbird,				//quest item dropped every ascension
-	Mosquito,							//quest item dropped every ascension
 	reconstituted crow,					//quest item dropped in bees hate you
 	Black Cat,							//quest item dropped in bad moon
 	Grue,								//you get one egg every ascension.
