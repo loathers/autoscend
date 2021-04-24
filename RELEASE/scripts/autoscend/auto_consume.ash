@@ -805,6 +805,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 
 	boolean canConsume(item it, boolean checkValidity)
 	{
+		if(checkValidity && isClipartItem(it) && !auto_is_valid($skill[summon clip art]) && !can_interact())
+		{
+			//workaround for this mafia bug https://kolmafia.us/threads/g-lovers-clip-art-create-function-failure.26007/
+			return false;
+		}
 		return type == SL_ORGAN_STOMACH ? canEat(it, checkValidity) : canDrink(it, checkValidity);
 	}
 
