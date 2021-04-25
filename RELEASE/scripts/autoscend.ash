@@ -902,7 +902,7 @@ boolean fortuneCookieEvent()
 			goal = $location[The Castle in the Clouds in the Sky (Top Floor)];
 		}
 
-		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_Boolean() || in_koe()))
+		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean() || in_koe()))
 		{
 			goal = $location[The Limerick Dungeon];
 		}
