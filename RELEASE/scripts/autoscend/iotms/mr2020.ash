@@ -209,6 +209,10 @@ void auto_burnPowerfulGloveCharges()
 {
 	while(auto_is_valid($skill[CHEAT CODE: Triple Size]) && auto_hasPowerfulGlove() && auto_powerfulGloveCharges() >= 5)
 	{
+		if(equipped_amount($item[Powerful Glove]) == 0)
+		{
+			equip($item[Powerful Glove]);	//equip it to prevent the skill use command from doing 20 cycles of equip, cast spell, unequip.
+		}
 		auto_powerfulGloveStats();
 	}
 }
