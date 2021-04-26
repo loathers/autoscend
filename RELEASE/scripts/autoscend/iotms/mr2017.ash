@@ -1697,6 +1697,10 @@ boolean makeGenieWish(effect eff)
 	{
 		return false;
 	}
+	if(!glover_usable(eff))		//check if we are in glover and if the effect works in glover. as you can get nonfunctional effects
+	{
+		return false;
+	}
 
 	return makeGenieWish("to be " + eff) || have_effect(eff) > 0;
 }

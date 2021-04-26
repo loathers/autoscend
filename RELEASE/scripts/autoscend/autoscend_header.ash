@@ -572,6 +572,7 @@ boolean in_glover();
 void glover_initializeDay(int day);
 void glover_initializeSettings();
 boolean glover_usable(string it);
+boolean glover_usable(effect eff);
 boolean LM_glover();
 
 ########################################################################################################

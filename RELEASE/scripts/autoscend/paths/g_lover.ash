@@ -72,6 +72,19 @@ boolean glover_usable(string it)
 	return false;
 }
 
+boolean glover_usable(effect eff)
+{
+	if(!in_glover())
+	{
+		return true;
+	}
+	if($effects[Stone-Faced] contains eff)
+	{
+		return true;	//explicit exceptions that work in glover despite not having G in the name
+	}
+	return glover_usable(eff.to_string());
+}
+
 boolean LM_glover()
 {
 	if(!in_glover())
