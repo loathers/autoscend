@@ -679,21 +679,34 @@ boolean hatchFamiliar(familiar adult)
 {
 	//This functions hatches a familiar named adult.
 	//Returns true if you end up having the hatched familiar. False if you do not.
+	
+	item hatchling = adult.hatchling;
 	if(!pathAllowsFamiliar())
 	{
 		return false;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
-	//TODO return false if no terrarium installed in camp.
-	
-	//do not use auto_have_familiar. we want to know if it exists in the terrarium and do not care about path limitations on use
-	if(have_familiar(adult))
+	if(auto_my_path() == "G-Lover")
 	{
-		return true;	//we already have desired familiar
+		//have_familiar is inconsistent. it usually returns true if you have a familiar in the terrairum regardless on its usability.
+		//in glover it returns false for unusuable familiars. as such we should test both hatchling and familiar in glover path
+		if(!glover_usable(adult.to_string()) || !glover_usable(hatchling.to_string()))
+		{
+			return false;
+		}
 	}
-	item hatchling = adult.hatchling;
+	//TODO return false if no terrarium installed in camp.
+	if(have_familiar(adult))		//do not use auto_have_familiar here. we can have an unusable adult in a path that can hatch the hatchling
+	{
+		return true;		//we already have desired familiar. no point it trying to hatch it a second time
+	}
 	if(item_amount(hatchling) == 0)
 	{
-		return false;	//we need to actually own the hatchling to hatch it
+		return false;		//we need to actually own the hatchling to hatch it
+	}
+	if(!auto_is_valid(hatchling) && !in_bhy())		//is hatchling usable in this path?
+	{
+		//all hatchlings are valid in bhy. easier to include !in_bhy() here instead of modifying auto_is_valid to check familiar hatchlings
+		return false;
 	}
 	
 	auto_log_info("Trying to hatch hatchling item [" +hatchling+ "] into the adult familiar [" +adult+ "]", "blue");
@@ -717,9 +730,14 @@ void hatchList()
 	}
 	//TODO return if no terrarium installed in camp.
 	
+	if(get_property("questL02Larva") == "finished")
+	{
+		//only try to hatch this after the quest is finished. first copy is given to concil which returns it to you if you need to hatch it
+		hatchFamiliar($familiar[Mosquito]);		//quest item dropped every ascension until hatched
+	}
+	
 	foreach fam in $familiars[
 	Reassembled Blackbird,				//quest item dropped every ascension
-	Mosquito,							//quest item dropped every ascension
 	reconstituted crow,					//quest item dropped in bees hate you
 	Black Cat,							//quest item dropped in bad moon
 	Grue,								//you get one egg every ascension.
