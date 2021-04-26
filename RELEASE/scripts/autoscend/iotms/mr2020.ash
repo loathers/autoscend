@@ -211,7 +211,7 @@ void auto_burnPowerfulGloveCharges()
 	{
 		if(equipped_amount($item[Powerful Glove]) == 0)
 		{
-			equip($item[Powerful Glove]);	//equip it to prevent the skill use command from doing 20 cycles of equip, cast spell, unequip.
+			equip($item[Powerful Glove]);	//equip it to prevent use command from doing 20 cycles of equip, use skill, unequip.
 		}
 		auto_powerfulGloveStats();
 	}
