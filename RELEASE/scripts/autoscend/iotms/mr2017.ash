@@ -1642,12 +1642,16 @@ boolean shouldUseWishes(){
 }
 
 int wishesAvailable(){
-	if(item_amount($item[Genie Bottle]) == 0 || !auto_is_valid($item[Genie Bottle]))
+	int retval = 0;
+	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]))
 	{
-		return 0;
+		retval += 3 - get_property("_genieWishesUsed").to_int();
 	}
-
-	return (3 - get_property("_genieWishesUsed").to_int()) + item_amount($item[pocket wish]);
+	if(auto_is_valid($item[pocket wish]))
+	{
+		retval += item_amount($item[pocket wish]);
+	}
+	return retval;
 }
 
 boolean makeGenieWish(string wish){
@@ -1656,10 +1660,19 @@ boolean makeGenieWish(string wish){
 		return false;
 	}
 
-	int wish_provider = $item[genie bottle].to_int();
-
-	if (item_amount($item[pocket wish]) > 0){
+	int wish_provider = 0;
+	if(auto_is_valid($item[Genie Bottle]) && item_amount($item[Genie Bottle]) > 0 && get_property("_genieWishesUsed").to_int() < 3)
+	{
+		wish_provider = $item[genie bottle].to_int();
+	}
+	else if(item_amount($item[pocket wish]) > 0 && auto_is_valid($item[pocket wish]))
+	{
 		wish_provider = $item[pocket wish].to_int();
+	}
+	if(wish_provider == 0)
+	{
+		auto_log_warning("wishesAvailable() thinks I have remaining wishes but makeGenieWish(string wish) was unable to find a valid source for them. wishing failed", "red");
+		return false;
 	}
 
 	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider, false);
