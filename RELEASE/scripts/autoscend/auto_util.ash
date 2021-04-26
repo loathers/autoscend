@@ -1677,7 +1677,7 @@ int cloversAvailable()
 	retval += item_amount($item[Ten-Leaf Clover]);
 	retval += closet_amount($item[Ten-Leaf Clover]);
 
-	if(auto_my_path() == "G-Lover" || in_bhy())
+	if(in_glover() || in_bhy())
 	{
 		retval -= item_amount($item[Disassembled Clover]);
 	}
@@ -1708,7 +1708,7 @@ boolean cloverUsageInit()
 
 	if(item_amount($item[Disassembled Clover]) > 0)
 	{
-		if(auto_my_path() != "G-Lover" && !in_bhy())
+		if(!in_glover() && !in_bhy())
 		{
 			use(1, $item[Disassembled Clover]);
 		}
@@ -1743,7 +1743,7 @@ boolean cloverUsageFinish()
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
 		auto_log_debug("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
-		if(auto_my_path() == "G-Lover" || in_bhy())
+		if(in_glover() || in_bhy())
 		{
 			put_closet(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
 		}
@@ -2475,7 +2475,7 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 		{
 			return false;
 		}
-		if(auto_my_path() == "G-Lover")
+		if(in_glover())
 		{
 			return false;
 		}

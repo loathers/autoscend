@@ -417,7 +417,7 @@ void auto_setSongboom()
 		}
 		else
 		{
-			if((auto_my_path() == "G-Lover") && (my_meat() > 10000))
+			if(in_glover() && my_meat() > 10000)
 			{
 				songboomSetting("dr");
 			}

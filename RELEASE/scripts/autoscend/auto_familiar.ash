@@ -685,7 +685,7 @@ boolean hatchFamiliar(familiar adult)
 	{
 		return false;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		//have_familiar is inconsistent. it usually returns true if you have a familiar in the terrairum regardless on its usability.
 		//in glover it returns false for unusuable familiars. as such we should test both hatchling and familiar in glover path

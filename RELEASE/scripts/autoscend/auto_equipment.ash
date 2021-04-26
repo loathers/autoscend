@@ -336,7 +336,7 @@ void finalizeMaximize()
 	}
 	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
-		if (my_class() == $class[Seal Clubber] && auto_my_path() == "G-Lover")
+		if (my_class() == $class[Seal Clubber] && in_glover())
 		{
 			addToMaximize("club");
 		}
