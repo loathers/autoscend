@@ -1,6 +1,11 @@
+boolean in_glover()
+{
+	return auto_my_path() == "G-Lover";
+}
+
 void glover_initializeDay(int day)
 {
-	if (auto_my_path() != "G-Lover") {
+	if (!in_glover()) {
 		return;
 	}
 
@@ -18,7 +23,7 @@ void glover_initializeDay(int day)
 
 void glover_initializeSettings()
 {
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_getBoningKnife", true);
@@ -41,7 +46,7 @@ void glover_initializeSettings()
 
 boolean glover_usable(string it)
 {
-	if(auto_my_path() != "G-Lover")
+	if(!in_glover())
 	{
 		return true;
 	}
@@ -69,7 +74,7 @@ boolean glover_usable(string it)
 
 boolean LM_glover()
 {
-	if(auto_my_path() != "G-Lover")
+	if(!in_glover())
 	{
 		return false;
 	}

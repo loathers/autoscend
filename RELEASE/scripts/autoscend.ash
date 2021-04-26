@@ -683,7 +683,7 @@ int handlePulls(int day)
 			{
 				getPeteShirt = false;
 			}
-			if(auto_my_path() == "G-Lover")
+			if(in_glover())
 			{
 				getPeteShirt = false;
 			}
@@ -793,7 +793,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 3, 0);
 		}
 
-		if(auto_my_path() != "G-Lover")
+		if(!in_glover())
 		{
 			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
 		}
@@ -803,7 +803,7 @@ int handlePulls(int day)
 			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
 		}
 
-		if(!in_pokefam() && auto_my_path() != "G-Lover")
+		if(!in_pokefam() && !in_glover())
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
@@ -1179,7 +1179,7 @@ void initializeDay(int day)
 				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
 					//Try to get Antique Accordion early if we possibly can.
-					if(isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_my_path() != "G-Lover"))
+					if(isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && !in_glover())
 					{
 						buyUpTo(1, $item[Antique Accordion]);
 					}
@@ -1248,7 +1248,7 @@ void initializeDay(int day)
 				pulverizeThing($item[Vicar\'s Tutu]);
 			}
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class()) && (auto_my_path() != "G-Lover"))
+			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class()) && !in_glover())
 			{
 				buyUpTo(1, $item[Antique Accordion]);
 			}
@@ -1448,7 +1448,7 @@ boolean dailyEvents()
 
 	while(zataraClanmate(""));
 
-	if (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]) && auto_my_path() != "G-Lover")
+	if (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]) && !in_glover())
 	{
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
 		{
@@ -2017,7 +2017,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && (auto_my_path() != "G-Lover"))
+	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && !in_glover())
 	{
 		buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
@@ -2033,7 +2033,7 @@ boolean LX_craftAcquireItems()
 	}
 
 	#Can we have some other way to check that we have AT skills? Checking all skills just to be sure.
-	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() >= npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && (auto_my_path() != "G-Lover"))
+	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() >= npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && !in_glover())
 	{
 		boolean buyAntiqueAccordion = false;
 
@@ -2253,7 +2253,7 @@ boolean adventureFailureHandler()
 			}
 		}
 
-		if (tooManyAdventures && auto_my_path() == "G-Lover")
+		if (tooManyAdventures && in_glover())
 		{
 			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Hidden Temple] contains place)
 			{

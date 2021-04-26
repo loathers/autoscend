@@ -501,7 +501,7 @@ boolean doBedtime()
 	}
 
 	int smiles = (5 * (item_amount($item[Golden Mr. Accessory]) + storage_amount($item[Golden Mr. Accessory]) + closet_amount($item[Golden Mr. Accessory]))) - get_property("_smilesOfMrA").to_int();
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		smiles = 0;
 	}

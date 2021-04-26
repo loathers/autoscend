@@ -269,7 +269,7 @@ WarPlan auto_bestWarPlan()
 		considerNuns = false;
 		considerOrchard = false;
 	}
-	if (auto_my_path() == "G-Lover")
+	if (in_glover())
 	{
 		considerArena = false;
 	}
@@ -950,7 +950,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		int need = 30 - item_amount($item[Doc Galaktik\'s Pungent Unguent]);
 		if((need > 0) && (item_amount($item[Molybdenum Pliers]) == 0))
