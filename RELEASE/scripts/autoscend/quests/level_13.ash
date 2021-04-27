@@ -1407,7 +1407,7 @@ boolean L13_towerNSNagamar()
 		return autoAdv($location[The VERY Unquiet Garves]);
 	}
 	
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
 	}

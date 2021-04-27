@@ -277,7 +277,7 @@ boolean auto_post_adventure()
 		else if(isGeneralStoreAvailable())
 		{
 			buyUpTo(1, $item[Anti-Anti-Antidote], 30);
-			if(auto_my_path() != "G-Lover")
+			if(!in_glover())
 			{
 				use(1, $item[Anti-Anti-Antidote]);
 			}
