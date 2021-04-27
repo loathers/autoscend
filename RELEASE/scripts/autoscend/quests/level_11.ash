@@ -228,7 +228,7 @@ int[location] getShenZonesTurnsSpent()
 boolean LX_unlockHiddenTemple() {
 	// replaces L2_treeCoin(),  L2_spookyMap(),  L2_spookyFertilizer() & L2_spookySapling()
 
-	if (auto_my_path() == "G-Lover") {
+	if (in_glover()) {
 		// Spooky Temple map ain't nuthin' but a 'G' Thang.
 		return false;
 	}
@@ -1157,7 +1157,7 @@ boolean L11_unlockHiddenCity() {
 	}
 
 	auto_log_info("Searching for the Hidden City", "blue");
-	if (auto_my_path() != "G-Lover" && !in_tcrs()) {
+	if (!in_glover() && !in_tcrs()) {
 		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0) {
 			L11_wishForBaaBaaBuran();
 			pullXWhenHaveY($item[Stone Wool], 1, 0);

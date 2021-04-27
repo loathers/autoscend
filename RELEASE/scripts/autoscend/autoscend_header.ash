@@ -568,6 +568,7 @@ boolean LM_majora();
 
 ########################################################################################################
 //Defined in autoscend/paths/g_lover.ash
+boolean in_glover();
 void glover_initializeDay(int day);
 void glover_initializeSettings();
 boolean glover_usable(string it);
