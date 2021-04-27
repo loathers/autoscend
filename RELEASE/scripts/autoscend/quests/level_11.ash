@@ -1330,8 +1330,24 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] office!", "blue");
 
-		if (creatable_amount($item[McClusky file (complete)]) > 0) {
+		//workaround for creatable_amount something returning 0 even if the file is creatable.
+		//see https://kolmafia.us/threads/r20705-broke-creatable_amount.26017/
+		boolean has_parts = auto_is_valid($item[boring binder clip]);
+		foreach it in $items[boring binder clip, McClusky file \(page 1\), McClusky file \(page 2\), McClusky file \(page 3\), McClusky file \(page 4\), McClusky file \(page 5\)]
+		{
+			if(item_amount(it) == 0)
+			{
+				has_parts = false;
+				break;
+			}
+		}
+		if(has_parts || creatable_amount($item[McClusky file \(complete\)]) > 0)
+		{
 			create(1, $item[McClusky file (complete)]);
+			if(item_amount($item[McClusky file \(complete\)]) == 0)
+			{
+				abort("Failed to create $item[McClusky file \(complete\)]");
+			}
 		}
 
 		boolean workingHoliday = ($location[The Hidden Office Building].turns_spent > 0 && $location[The Hidden Office Building].turns_spent % 5 == 0);
