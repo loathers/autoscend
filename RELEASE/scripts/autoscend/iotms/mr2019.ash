@@ -326,6 +326,10 @@ int auto_saberChargesAvailable()
 	{
 		return 0;
 	}
+	if(!auto_is_valid($skill[use the force]))
+	{
+		return 0;		//if the combat skill is not valid it can not be used even if the saber itself is valid
+	}
 	return (5 - get_property("_saberForceUses").to_int());
 }
 
