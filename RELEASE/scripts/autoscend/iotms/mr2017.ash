@@ -427,6 +427,7 @@ boolean kgbWasteClicks()
 		}
 		if(start == clicked)	//we were unable to find a single thing to waste clicks on
 		{
+			auto_log_warning("kgbWasteClicks() was unable to spend your remaining KGB clicks on buffs for some reason. Please spend them manually");
 			break;		//prevent infinite loop
 		}
 	}
