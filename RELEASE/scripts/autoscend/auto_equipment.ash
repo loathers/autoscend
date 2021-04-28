@@ -195,7 +195,13 @@ string defaultMaximizeStatement()
 		res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 	}
 
-	if(!in_zelda())
+	//weapon handling
+	if(in_boris())
+	{
+		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
+		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
+	}
+	else if(!in_zelda())
 	{
 		if(my_primestat() == $stat[Mysticality])
 		{

@@ -3,6 +3,16 @@ boolean in_boris()
 	return my_class() == $class[Avatar of Boris];
 }
 
+void borisTrusty()
+{
+	//the only time boris wants to take off trusty is if it is bedtime and he wants to wear a halo. Which is unaffected by this
+	if(!in_boris())
+	{
+		return;
+	}
+	autoForceEquip($item[Trusty]);		//ensure we have trusty equipped
+}
+
 boolean borisAdjustML()
 {
 	//set target ML boosts for boris.
