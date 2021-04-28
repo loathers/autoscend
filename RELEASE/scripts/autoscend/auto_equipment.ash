@@ -229,10 +229,10 @@ string defaultMaximizeStatement()
 
 void resetMaximize()
 {
-	string res = get_property("auto_maximize_baseline");
+	string res = get_property("auto_maximize_baseline");	//user configured override baseline statement.
 	if (res == "" || res.to_lower_case() == "default" || res.to_lower_case() == "disabled")
 	{
-		res = defaultMaximizeStatement();
+		res = defaultMaximizeStatement();		//automatically generated baseline statement
 	}
 	
 	void exclude(item it)
