@@ -405,6 +405,7 @@ boolean kgbWasteClicks()
 	# Yes, this will not be pleasant if we matched our number and each page click changes the buttons.
 	while((get_property("_kgbClicksUsed").to_int() < 22) && (clicked < 9))
 	{
+		int start = clicked;
 		foreach ef in $effects[Items Are Forever, A View To Some Meat, Light!, The Spy Who Loved XP, Initiative And Let Die, The Living Hitpoints, License To Punch, Goldentongue, Thunderspell]
 		{
 			if(contains_text(get_property("auto_kgbTracker"), ":" + to_int(ef)))
@@ -423,6 +424,10 @@ boolean kgbWasteClicks()
 					break;
 				}
 			}
+		}
+		if(start == clicked)	//we were unable to find a single thing to waste clicks on
+		{
+			break;		//prevent infinite loop
 		}
 	}
 
