@@ -1330,8 +1330,13 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] office!", "blue");
 
-		if (creatable_amount($item[McClusky file (complete)]) > 0) {
+		if(creatable_amount($item[McClusky file \(complete\)]) > 0)
+		{
 			create(1, $item[McClusky file (complete)]);
+			if(item_amount($item[McClusky file \(complete\)]) == 0)
+			{
+				abort("Failed to create $item[McClusky file \(complete\)]");
+			}
 		}
 
 		boolean workingHoliday = ($location[The Hidden Office Building].turns_spent > 0 && $location[The Hidden Office Building].turns_spent % 5 == 0);
