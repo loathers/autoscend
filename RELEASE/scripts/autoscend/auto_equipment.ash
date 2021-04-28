@@ -412,10 +412,11 @@ boolean simMaximize()
 
 boolean simMaximizeWith(string add)
 {
+	string backup = get_property("auto_maximize_current");
 	addToMaximize(add);
 	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
 	boolean res = simMaximize();
-	removeFromMaximize(add);
+	set_property("auto_maximize_current", backup);
 	return res;
 }
 
