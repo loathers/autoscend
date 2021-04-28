@@ -395,6 +395,7 @@ boolean kgbWasteClicks()
 		return false;
 	}
 
+	auto_log_info("kgbWasteClicks() will now use up remaining KGB clicks");
 	int clicked = 0;
 	while(kgbDiscovery() && (clicked < 10))
 	{
@@ -404,6 +405,7 @@ boolean kgbWasteClicks()
 	# Yes, this will not be pleasant if we matched our number and each page click changes the buttons.
 	while((get_property("_kgbClicksUsed").to_int() < 22) && (clicked < 9))
 	{
+		int start = clicked;
 		foreach ef in $effects[Items Are Forever, A View To Some Meat, Light!, The Spy Who Loved XP, Initiative And Let Die, The Living Hitpoints, License To Punch, Goldentongue, Thunderspell]
 		{
 			if(contains_text(get_property("auto_kgbTracker"), ":" + to_int(ef)))
@@ -422,6 +424,11 @@ boolean kgbWasteClicks()
 					break;
 				}
 			}
+		}
+		if(start == clicked)
+		{
+			auto_log_warning("kgbWasteClicks() was unable to spend your remaining KGB clicks on buffs for some reason. Please spend them manually");
+			break;		//prevent infinite loop
 		}
 	}
 
