@@ -395,6 +395,7 @@ boolean kgbWasteClicks()
 		return false;
 	}
 
+	auto_log_info("kgbWasteClicks() will now use up remaining KGB clicks");
 	int clicked = 0;
 	while(kgbDiscovery() && (clicked < 10))
 	{
