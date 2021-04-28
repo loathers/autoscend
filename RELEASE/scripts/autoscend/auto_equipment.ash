@@ -195,7 +195,13 @@ string defaultMaximizeStatement()
 		res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 	}
 
-	if(!in_zelda())
+	//weapon handling
+	if(in_boris())
+	{
+		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
+		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
+	}
+	else if(!in_zelda())
 	{
 		if(my_primestat() == $stat[Mysticality])
 		{
@@ -203,7 +209,7 @@ string defaultMaximizeStatement()
 		}
 		else
 		{
-			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			res += ",1.5weapon damage,0.75weapon damage percent,1.5elemental damage";
 		}
 	}
 
@@ -229,10 +235,10 @@ string defaultMaximizeStatement()
 
 void resetMaximize()
 {
-	string res = get_property("auto_maximize_baseline");
+	string res = get_property("auto_maximize_baseline");	//user configured override baseline statement.
 	if (res == "" || res.to_lower_case() == "default" || res.to_lower_case() == "disabled")
 	{
-		res = defaultMaximizeStatement();
+		res = defaultMaximizeStatement();		//automatically generated baseline statement
 	}
 	
 	void exclude(item it)
@@ -275,13 +281,14 @@ void resetMaximize()
 			}
 		}
 	}
-	else if (item_amount($item[January's Garbage Tote]) > 0 && in_bhy()) {
-	// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
-	foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt] {
-		exclude(it);
+	else if (item_amount($item[January's Garbage Tote]) > 0 && in_bhy())
+	{
+		// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
+		foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt]
+		{
+			exclude(it);
+		}
 	}
-}
-
 	
 	set_property("auto_maximize_current", res);
 	auto_log_debug("Resetting auto_maximize_current to " + res, "gold");
@@ -406,10 +413,11 @@ boolean simMaximize()
 
 boolean simMaximizeWith(string add)
 {
+	string backup = get_property("auto_maximize_current");
 	addToMaximize(add);
 	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
 	boolean res = simMaximize();
-	removeFromMaximize(add);
+	set_property("auto_maximize_current", backup);
 	return res;
 }
 

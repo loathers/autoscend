@@ -494,6 +494,7 @@ boolean auto_pre_adventure()
 		}
 	}
 	borisWastedMP();
+	borisTrusty();
 
 	acquireMP(32, 1000);
 

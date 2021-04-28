@@ -452,6 +452,7 @@ void edUnderworldChoiceHandler(int choice);
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
 boolean in_boris();
+void borisTrusty();
 boolean borisAdjustML();
 void boris_initializeSettings();
 void boris_initializeDay(int day);
