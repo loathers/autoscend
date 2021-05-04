@@ -1144,6 +1144,10 @@ void auto_printNightcap()
 void auto_drinkNightcap()
 {
 	//function to overdrink a nightcap at the end of day
+	if(get_property("auto_skipNightcap").to_boolean())
+	{
+		return;
+	}
 	if(my_path() == "Dark Gyffte")
 	{
 		return;		//disable for it now. TODO make a custom function for vampyre nightcap drinking specifically
