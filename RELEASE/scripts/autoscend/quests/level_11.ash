@@ -393,7 +393,7 @@ boolean LX_unlockHauntedLibrary()
 			resetMaximize();	//cancel equipping pool cue
 			return false;
 		}
-		if(my_inebriety() < 8)
+		if((my_inebriety() < inebriety_limit()) && my_inebriety() < 8)
 		{
 			auto_log_info("I will come back when I had more to drink.", "green");
 			resetMaximize();	//cancel equipping pool cue
