@@ -151,6 +151,7 @@ boolean L9_chasmBuild()
 		return false;
 	}
 
+	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 
 	auto_log_info("Chasm time", "blue");
 	
