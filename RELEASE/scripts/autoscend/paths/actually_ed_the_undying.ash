@@ -983,7 +983,7 @@ void ed_handleAdventureServant(location loc)
 	// Default to the Priest as we need Ka to get upgrades and fill spleen (and other miscellanea)
 	servant myServant = $servant[Priest];
 
-	page = visit_url("place.php?whichplace=edbase&action=edbase_door");
+	string page = visit_url("place.php?whichplace=edbase&action=edbase_door");
 	ed_ServantBugWorkaround(page); // need to make sure we're not hitting the bug otherwise have_servant will always wrongly return false.
 
 	if (my_spleen_use() == 35 && have_skill($skill[Even More Elemental Wards]) && my_level() < 13 && have_servant($servant[Scribe]))
