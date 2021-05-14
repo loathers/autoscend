@@ -41,6 +41,7 @@ void ed_initializeSettings()
 
 		set_property("desertExploration", 100);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
+		set_property("auto_edServantBugCount", 0);
 	}
 }
 
@@ -194,7 +195,11 @@ boolean L13_ed_councilWarehouse()
 		auto_log_info("Ed Combats: " + get_property("auto_edCombatCount"), "blue");
 		auto_log_info("Ed Combat Rounds: " + get_property("auto_edCombatRoundCount"), "blue");
 
-		return false;
+		cli_execute("refresh quests");
+		if (internalQuestStatus("questL13Warehouse") > 0)
+		{
+			abort("The holy macguffin has been found. Once you replace it you will have to choose a regular class to switch to and end your hiatus as the Undying Ed. Choose wisely or your face will melt off or something.");
+		}
 	}
 	return true;
 }
@@ -280,6 +285,37 @@ boolean ed_doResting()
 		return true;
 	}
 	return false;
+}
+
+void ed_ServantBugWorkaround(string page) {
+	matcher servants_quarters = create_matcher("The Servants' Quarters", page);
+	if (!servants_quarters.find()) {
+		auto_log_info("You may have hit the servant bug.");
+		// looks like we hit the bug. Let's double check though
+		if (my_level() >= 3 && !have_servant($servant[Priest])) {
+			// yeah definitely bugged. Lets try the simple fix.
+			set_property("auto_edServantBugCount", get_property("auto_edServantBugCount").to_int() + 1);
+			auto_log_critical(`You definitely hit the servant bug. It is now {get_property("auto_edServantBugCount").to_int()} times this ascension.`);
+			foreach lackey in $servants[Priest, Cat, Scribe, Maid] {
+				use_servant(lackey);
+				if (my_servant() == lackey) {
+					auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
+					break;
+				}
+			}
+			if (my_servant() == $servant[none]) {
+				// ok that didn't fix it, lets smash the door down and see if that works.
+				visit_url("place.php?whichplace=edbase&action=edbase_door");
+				visit_url("choice.php?forceoption=1");
+				use_servant($servant[Priest]);
+				if (my_servant() != $servant[Priest]) {
+					abort("Failed to change servant. Report this to the KoL dev team (the little bug icon on your top bar in the relay browser).");
+				} else {
+					auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
+				}
+			}
+		}
+	}
 }
 
 boolean ed_buySkills()
@@ -395,6 +431,7 @@ boolean ed_buySkills()
 	}
 
 	page = visit_url("place.php?whichplace=edbase&action=edbase_door");
+	ed_ServantBugWorkaround(page);
 	matcher my_imbuePoints = create_matcher("Impart Wisdom unto Current Servant ..100xp, (\\d\+) remain.", page);
 	int imbuePoints = 0;
 	if(my_imbuePoints.find())
@@ -410,6 +447,7 @@ boolean ed_buySkills()
 	}
 
 	page = visit_url("place.php?whichplace=edbase&action=edbase_door");
+	ed_ServantBugWorkaround(page);
 	matcher my_servantPoints = create_matcher("You may release (\\d\+) more servant", page);
 	if(my_servantPoints.find())
 	{
@@ -945,6 +983,9 @@ void ed_handleAdventureServant(location loc)
 	// Default to the Priest as we need Ka to get upgrades and fill spleen (and other miscellanea)
 	servant myServant = $servant[Priest];
 
+	page = visit_url("place.php?whichplace=edbase&action=edbase_door");
+	ed_ServantBugWorkaround(page); // need to make sure we're not hitting the bug otherwise have_servant will always wrongly return false.
+
 	if (my_spleen_use() == 35 && have_skill($skill[Even More Elemental Wards]) && my_level() < 13 && have_servant($servant[Scribe]))
 	{
 		// Ka is less important when we have a full spleen and all the skills we need
@@ -1389,7 +1430,7 @@ boolean LM_edTheUndying()
 		}
 	}
 
-	if (item_amount($item[Seal Tooth]) == 0 && my_meat() > 1500) {
+	if (item_amount($item[Seal Tooth]) == 0 && my_meat() > 2500) {
 		// people with lots of IotMs are too survivable and kill stuff when trying to UNDYING
 		// if they have to use Mild Curse.
 		acquireHermitItem($item[Seal Tooth]);

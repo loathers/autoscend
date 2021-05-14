@@ -1944,7 +1944,6 @@ boolean LX_hardcoreFoodFarm()
 
 boolean LX_craftAcquireItems()
 {
-	//dependenceDayClovers(); Green rockets are no longer sold on Dependence Day.
 	if((item_amount($item[Ten-Leaf Clover]) > 0) && glover_usable($item[Ten-Leaf Clover]))
 	{
 		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
@@ -2958,6 +2957,7 @@ void auto_begin()
 	backupSetting("currentMood", "apathetic");
 
 	backupSetting("logPreferenceChange", "true");
+	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 	
 	backupSetting("choiceAdventure1107", 1);
 
