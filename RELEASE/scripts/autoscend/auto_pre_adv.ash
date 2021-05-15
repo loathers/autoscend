@@ -494,6 +494,7 @@ boolean auto_pre_adventure()
 		}
 	}
 	borisWastedMP();
+	borisTrusty();
 
 	acquireMP(32, 1000);
 
@@ -502,8 +503,13 @@ boolean auto_pre_adventure()
 		auto_log_warning("We don't have a lot of MP but we are chugging along anyway", "red");
 	}
 	groundhogAbort(place);
-	if (my_inebriety() > inebriety_limit()) {
-		abort("You are overdrunk. Stop it.");
+	if (my_inebriety() > inebriety_limit())
+	{
+		if($locations[The Tunnel of L.O.V.E.] contains place)
+		{
+			auto_log_info("Trying to adv in [" +place+ "] while overdrunk... is actually permitted", "blue");
+		}
+		else abort("Trying to adv in [" +place+ "] while overdrunk... Stop it.");
 	}
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");

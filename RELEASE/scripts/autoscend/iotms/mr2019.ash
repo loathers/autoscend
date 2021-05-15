@@ -132,9 +132,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 	{
 		auto_log_info("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
 		cli_execute("checkpoint");
-		backupSetting("logPreferenceChange", "false");
 		maximize("mp,-tie", false);
-		restoreSetting("logPreferenceChange");
 	}
 	// I could optimize this a little more by eating more sausage at once if you have enough max mp...
 	// but meh.
@@ -327,6 +325,10 @@ int auto_saberChargesAvailable()
 	if(!possessEquipment($item[Fourth of May cosplay saber]))
 	{
 		return 0;
+	}
+	if(!auto_is_valid($skill[use the force]))
+	{
+		return 0;		//if the combat skill is not valid it can not be used even if the saber itself is valid
 	}
 	return (5 - get_property("_saberForceUses").to_int());
 }

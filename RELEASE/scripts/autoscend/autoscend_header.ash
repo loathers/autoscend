@@ -124,7 +124,6 @@ boolean dna_startAcquire();
 boolean dna_generic();
 boolean dna_sorceressTest();
 boolean dna_bedtime();
-boolean xiblaxian_makeStuff();
 boolean LX_ornateDowsingRod(boolean doing_desert_now);
 boolean fancyOilPainting();
 int turkeyBooze();
@@ -268,16 +267,9 @@ boolean catBurglarHeist(item it);
 item[monster] catBurglarHeistDesires();
 boolean catBurglarHeist();
 boolean cheeseWarMachine(int stats, int it, int eff, int potion);
-boolean neverendingPartyPowerlevel();
 boolean neverendingPartyCombat();
-boolean neverendingPartyCombat(stat st);
-boolean neverendingPartyCombat(effect ef);
-boolean neverendingPartyCombat(stat st, boolean hardmode);
-boolean neverendingPartyCombat(effect ef, boolean hardmode);
-boolean neverendingPartyCombat(stat st, boolean hardmode, string option, boolean powerlevelling);
 int neverendingPartyRemainingFreeFights();
 boolean neverendingPartyAvailable();
-boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, boolean powerlevelling);
 string auto_latteDropName(location l);
 boolean auto_latteDropAvailable(location l);
 boolean auto_latteDropWanted(location l);
@@ -382,6 +374,7 @@ boolean auto_canFightPiranhaPlant();
 boolean auto_canTendMushroomGarden();
 int auto_piranhaPlantFightsRemaining();
 boolean auto_mushroomGardenHandler();
+void mushroomGardenChoiceHandler(int choice);
 boolean auto_getGuzzlrCocktailSet();
 boolean auto_canCamelSpit();
 boolean auto_latheHardwood(item toLathe);
@@ -410,6 +403,19 @@ boolean auto_hasRetrocape();
 boolean auto_configureRetrocape(string hero, string tag);
 boolean auto_handleRetrocape();
 boolean auto_buyCrimboCommerceMallItem();
+
+########################################################################################################
+//Defined in autoscend/iotms/mr2020.ash
+boolean auto_haveEmotionChipSkills();
+boolean auto_canFeelEnvy();
+boolean auto_canFeelHatred();
+boolean auto_canFeelNostalgic();
+boolean auto_canFeelPride();
+boolean auto_canFeelSuperior();
+boolean auto_canFeelLonely();
+boolean auto_canFeelExcitement();
+boolean auto_canFeelNervous();
+boolean auto_canFeelPeaceful();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -446,12 +452,14 @@ void edUnderworldChoiceHandler(int choice);
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
 boolean in_boris();
+void borisTrusty();
 boolean borisAdjustML();
 void boris_initializeSettings();
 void boris_initializeDay(int day);
 void boris_buySkills();
 boolean borisDemandSandwich(boolean immediately);
 void borisWastedMP();
+boolean borisAcquireHP(int goal);
 boolean LM_boris();
 
 ########################################################################################################
@@ -473,6 +481,7 @@ boolean awol_buySkills();
 boolean in_bhy();
 void bhy_initializeSettings();
 boolean bees_hate_usable(string str);
+boolean bhy_is_item_valid(item it);
 boolean LM_bhy();
 boolean L13_bhy_towerFinal();
 
@@ -560,9 +569,11 @@ boolean LM_majora();
 
 ########################################################################################################
 //Defined in autoscend/paths/g_lover.ash
+boolean in_glover();
 void glover_initializeDay(int day);
 void glover_initializeSettings();
 boolean glover_usable(string it);
+boolean glover_usable(effect eff);
 boolean LM_glover();
 
 ########################################################################################################
@@ -578,6 +589,7 @@ boolean LM_jello();
 
 ########################################################################################################
 //Defined in autoscend/paths/grey_goo.ash
+boolean in_ggoo();
 void grey_goo_initializeSettings();
 void grey_goo_initializeDay(int day);
 boolean LA_grey_goo_tasks();
@@ -596,7 +608,14 @@ boolean L13_towerFinalHeavyRains();
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
 boolean in_koe();
 boolean koe_initializeSettings();
+int koe_rmi_count();
+boolean koe_acquire_rmi();
 boolean LX_koeInvaderHandler();
+item koe_L12FoodSelect();
+void koe_RationingOutDestruction();
+boolean L12_koe_clearBattlefield();
+boolean L12_koe_finalizeWar();
+boolean L13_koe_towerNSNagamar();
 
 ########################################################################################################
 //Defined in autoscend/paths/kolhs.ash
@@ -695,10 +714,6 @@ boolean LM_digimon();
 boolean digimon_autoAdv(int num, location loc, string option);
 
 ########################################################################################################
-//Defined in autoscend/paths/standard.ash
-void standard_dnaPotions();
-
-########################################################################################################
 //Defined in autoscend/paths/the_source.ash
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();
@@ -712,6 +727,11 @@ boolean LX_attemptPowerLevelTheSource();
 boolean in_tcrs();
 float tcrs_expectedAdvPerFill(string quality);
 boolean tcrs_maximize_with_items(string maximizerString);
+
+########################################################################################################
+//Defined in autoscend/quests/level_01.ash
+void tootOriole();
+void tootGetMeat();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_02.ash
@@ -844,7 +864,8 @@ int bitmask_from_warplan(WarPlan plan);
 WarPlan auto_bestWarPlan();
 int auto_warTotalBattles(WarPlan plan, int remaining);
 int auto_warTotalBattles(WarPlan plan);
-boolean warOutfit(boolean immediate);
+void equipWarOutfit();
+void equipWarOutfit(boolean lock);
 boolean haveWarOutfit(boolean canWear);
 boolean haveWarOutfit();
 boolean warAdventure();
@@ -867,6 +888,7 @@ boolean LX_obtainChaosButterfly();
 boolean L12_farm();
 boolean L12_clearBattlefield();
 boolean L12_finalizeWar();
+void warChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/quests/level_13.ash
@@ -909,7 +931,6 @@ boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
-boolean dependenceDayClovers();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
@@ -919,12 +940,15 @@ boolean LX_melvignShirt();
 boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean startArmorySubQuest();
+boolean finishArmorySideQuest();
+boolean LX_armorySideQuest();
 void considerGalaktikSubQuest();
 boolean startGalaktikSubQuest();
 boolean finishGalaktikSubQuest();
 boolean LX_galaktikSubQuest();
 boolean startMeatsmithSubQuest();
 boolean finishMeatsmithSubQuest();
+boolean LX_meatsmithSubQuest();
 boolean LX_pirateOutfit();
 void piratesCoveChoiceHandler(int choice);
 string beerPong(string page);
@@ -985,7 +1009,8 @@ boolean canEat(item toEat);
 boolean canChew(item toChew);
 void consumeStuff();
 boolean consumeFortune();
-void auto_autoDrinkNightcap(boolean simulate);
+void auto_printNightcap();
+void auto_drinkNightcap();
 boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
 
@@ -1038,6 +1063,8 @@ boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
+boolean hatchFamiliar(familiar adult);
+void hatchList();
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash
@@ -1270,7 +1297,6 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin);
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);
 effect whatStatSmile();
 item whatHiMein();
-void tootGetMeat();
 boolean ovenHandle();
 boolean isGhost(monster mon);
 boolean isProtonGhost(monster mon);
@@ -1283,6 +1309,7 @@ boolean acquireHermitItem(item it);
 boolean isHermitAvailable();
 boolean isGalaktikAvailable();
 boolean isGeneralStoreAvailable();
+boolean isArmoryAndLeggeryStoreAvailable();
 boolean isMusGuildStoreAvailable();
 boolean isMystGuildStoreAvailable();
 boolean isArmoryAvailable();

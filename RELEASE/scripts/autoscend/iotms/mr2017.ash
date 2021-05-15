@@ -395,6 +395,7 @@ boolean kgbWasteClicks()
 		return false;
 	}
 
+	auto_log_info("kgbWasteClicks() will now use up remaining KGB clicks");
 	int clicked = 0;
 	while(kgbDiscovery() && (clicked < 10))
 	{
@@ -404,6 +405,7 @@ boolean kgbWasteClicks()
 	# Yes, this will not be pleasant if we matched our number and each page click changes the buttons.
 	while((get_property("_kgbClicksUsed").to_int() < 22) && (clicked < 9))
 	{
+		int start = clicked;
 		foreach ef in $effects[Items Are Forever, A View To Some Meat, Light!, The Spy Who Loved XP, Initiative And Let Die, The Living Hitpoints, License To Punch, Goldentongue, Thunderspell]
 		{
 			if(contains_text(get_property("auto_kgbTracker"), ":" + to_int(ef)))
@@ -422,6 +424,11 @@ boolean kgbWasteClicks()
 					break;
 				}
 			}
+		}
+		if(start == clicked)
+		{
+			auto_log_warning("kgbWasteClicks() was unable to spend your remaining KGB clicks on buffs for some reason. Please spend them manually");
+			break;		//prevent infinite loop
 		}
 	}
 
@@ -1642,12 +1649,16 @@ boolean shouldUseWishes(){
 }
 
 int wishesAvailable(){
-	if(item_amount($item[Genie Bottle]) == 0 || !auto_is_valid($item[Genie Bottle]))
+	int retval = 0;
+	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]))
 	{
-		return 0;
+		retval += 3 - get_property("_genieWishesUsed").to_int();
 	}
-
-	return (3 - get_property("_genieWishesUsed").to_int()) + item_amount($item[pocket wish]);
+	if(auto_is_valid($item[pocket wish]))
+	{
+		retval += item_amount($item[pocket wish]);
+	}
+	return retval;
 }
 
 boolean makeGenieWish(string wish){
@@ -1656,10 +1667,19 @@ boolean makeGenieWish(string wish){
 		return false;
 	}
 
-	int wish_provider = $item[genie bottle].to_int();
-
-	if (item_amount($item[pocket wish]) > 0){
+	int wish_provider = 0;
+	if(auto_is_valid($item[Genie Bottle]) && item_amount($item[Genie Bottle]) > 0 && get_property("_genieWishesUsed").to_int() < 3)
+	{
+		wish_provider = $item[genie bottle].to_int();
+	}
+	else if(item_amount($item[pocket wish]) > 0 && auto_is_valid($item[pocket wish]))
+	{
 		wish_provider = $item[pocket wish].to_int();
+	}
+	if(wish_provider == 0)
+	{
+		auto_log_warning("wishesAvailable() thinks I have remaining wishes but makeGenieWish(string wish) was unable to find a valid source for them. wishing failed", "red");
+		return false;
 	}
 
 	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider, false);
@@ -1681,6 +1701,10 @@ boolean makeGenieWish(effect eff)
 		return false;
 	}
 	if(my_adventures() == 0)
+	{
+		return false;
+	}
+	if(!glover_usable(eff))		//check if we are in glover and if the effect works in glover. as you can get nonfunctional effects
 	{
 		return false;
 	}

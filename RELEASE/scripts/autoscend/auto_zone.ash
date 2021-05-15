@@ -793,7 +793,7 @@ boolean zone_available(location loc)
 			retval = true;
 		}
 		break;
-	case $location[Madness Bakery]:
+	case $location[Madness Bakery]:		//can also be unlocked via hypnotic breadcrumbs. which matter in koe and nuclear autumn. but currently not tracked
 		if(internalQuestStatus("questM25Armorer") >= 0)
 		{
 			retval = true;

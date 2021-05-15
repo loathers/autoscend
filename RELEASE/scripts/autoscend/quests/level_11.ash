@@ -228,7 +228,7 @@ int[location] getShenZonesTurnsSpent()
 boolean LX_unlockHiddenTemple() {
 	// replaces L2_treeCoin(),  L2_spookyMap(),  L2_spookyFertilizer() & L2_spookySapling()
 
-	if (auto_my_path() == "G-Lover") {
+	if (in_glover()) {
 		// Spooky Temple map ain't nuthin' but a 'G' Thang.
 		return false;
 	}
@@ -393,7 +393,7 @@ boolean LX_unlockHauntedLibrary()
 			resetMaximize();	//cancel equipping pool cue
 			return false;
 		}
-		if(my_inebriety() < 8)
+		if((my_inebriety() < inebriety_limit()) && my_inebriety() < 8)
 		{
 			auto_log_info("I will come back when I had more to drink.", "green");
 			resetMaximize();	//cancel equipping pool cue
@@ -1157,7 +1157,7 @@ boolean L11_unlockHiddenCity() {
 	}
 
 	auto_log_info("Searching for the Hidden City", "blue");
-	if (auto_my_path() != "G-Lover" && !in_tcrs()) {
+	if (!in_glover() && !in_tcrs()) {
 		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0) {
 			L11_wishForBaaBaaBuran();
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
@@ -1330,8 +1330,13 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] office!", "blue");
 
-		if (creatable_amount($item[McClusky file (complete)]) > 0) {
+		if(creatable_amount($item[McClusky file \(complete\)]) > 0)
+		{
 			create(1, $item[McClusky file (complete)]);
+			if(item_amount($item[McClusky file \(complete\)]) == 0)
+			{
+				abort("Failed to create $item[McClusky file \(complete\)]");
+			}
 		}
 
 		boolean workingHoliday = ($location[The Hidden Office Building].turns_spent > 0 && $location[The Hidden Office Building].turns_spent % 5 == 0);
@@ -1414,7 +1419,12 @@ boolean L11_hiddenCity()
 	if (item_amount($item[stone triangle]) == 4) {
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
-		return autoAdv($location[A Massive Ziggurat]);
+		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
+		if (internalQuestStatus("questL11MacGuffin") > 2) {
+			// Actually Ed finishes this quest when all 3 parts of the staff are returned
+			council();
+		}
+		return advSpent;
 	}
 	
 	return false;
@@ -1450,13 +1460,9 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean needMachete = !possessEquipment($item[Antique Machete]);
+	boolean canUseMachete = !in_boris() && auto_my_path() != "Way of the Surprising Fist" && !in_pokefam();
+	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && in_hardcore();
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
-
-	if (!in_hardcore() || in_boris() || auto_my_path() == "Way of the Surprising Fist" || in_pokefam())
-	{
-		needMachete = false;
-	}
 
 	if (needMachete || needRelocate) {
 		if (handleFamiliar($familiar[Red-Nosed Snapper])) {
@@ -1466,28 +1472,28 @@ boolean L11_hiddenCityZones()
 	}
 
 	if (get_property("hiddenApartmentProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
 	if (get_property("hiddenOfficeProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
 
 	if (get_property("hiddenHospitalProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
 	if (get_property("hiddenBowlingAlleyProgress") == 0) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Southeast)]);
@@ -1559,6 +1565,10 @@ boolean L11_mauriceSpookyraven()
 		if (isActuallyEd())
 		{
 			visit_url("place.php?whichplace=manor4&action=manor4_chamberboss");
+			if (internalQuestStatus("questL11MacGuffin") > 2) {
+				// Actually Ed finishes this quest when all 3 parts of the staff are returned
+				council();
+			}
 		}
 		else
 		{
@@ -1591,33 +1601,32 @@ boolean L11_mauriceSpookyraven()
 		# I suppose we can let anyone in without the Spectacles.
 		if(item_amount($item[Loosening Powder]) == 0)
 		{
-			autoAdv($location[The Haunted Kitchen]);
-			return true;
+			return autoAdv($location[The Haunted Kitchen]);
 		}
 		if(item_amount($item[Powdered Castoreum]) == 0)
 		{
-			autoAdv($location[The Haunted Conservatory]);
-			return true;
+			return autoAdv($location[The Haunted Conservatory]);
 		}
 		if(item_amount($item[Drain Dissolver]) == 0)
 		{
-			autoAdv($location[The Haunted Bathroom]);
-			return true;
+			return autoAdv($location[The Haunted Bathroom]);
 		}
 		if(item_amount($item[Triple-Distilled Turpentine]) == 0)
 		{
-			autoAdv($location[The Haunted Gallery]);
-			return true;
+			return autoAdv($location[The Haunted Gallery]);
+		}
+		//3rd floor unlock fix. can manually adv without starting quest. but autoAdv fails until quest is started. so start the quest
+		if(internalQuestStatus("questM17Babies") == -1)
+		{
+			visit_url("place.php?whichplace=manor3&action=manor3_ladys");	//talk to 3rd floor ghost to start quest
 		}
 		if(item_amount($item[Detartrated Anhydrous Sublicalc]) == 0)
 		{
-			autoAdv($location[The Haunted Laboratory]);
-			return true;
+			return autoAdv($location[The Haunted Laboratory]);
 		}
 		if(item_amount($item[Triatomaceous Dust]) == 0)
 		{
-			autoAdv($location[The Haunted Storage Room]);
-			return true;
+			return autoAdv($location[The Haunted Storage Room]);
 		}
 
 		visit_url("place.php?whichplace=manor4&action=manor4_chamberwall");
@@ -2184,9 +2193,12 @@ boolean L11_palindome()
 
 		if (isActuallyEd())
 		{
+			if (internalQuestStatus("questL11MacGuffin") > 2) {
+				// Actually Ed finishes this quest when all 3 parts of the staff are returned
+				council();
+			}
 			return true;
 		}
-
 
 		# is step 4 when we got the wet stunt nut stew?
 		if (internalQuestStatus("questL11Palindome") < 5)
@@ -2285,7 +2297,7 @@ boolean L11_palindome()
 			auto_log_info("Attemping to use Map the Monsters to olfact a Bob Racecar.");
 		}
 		boolean advSpent = autoAdv($location[Inside the Palindome]);
-		if(($location[Inside the Palindome].turns_spent > 30) && !in_pokefam() && (auto_my_path() != "G-Lover") && !in_koe())
+		if($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && auto_is_valid($item[Disposable Instant Camera]))
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}

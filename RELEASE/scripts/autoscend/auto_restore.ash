@@ -1825,6 +1825,10 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		return true;
 	}
 
+	if(in_boris())
+	{
+		return borisAcquireHP(goal);
+	}
 	if (my_class() == $class[Plumber])
 	{
 		while (my_hp() < goal && my_hp() < my_maxhp() && item_amount($item[coin]) > 400)

@@ -417,7 +417,7 @@ void auto_setSongboom()
 		}
 		else
 		{
-			if((auto_my_path() == "G-Lover") && (my_meat() > 10000))
+			if(in_glover() && my_meat() > 10000)
 			{
 				songboomSetting("dr");
 			}
@@ -716,47 +716,6 @@ boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 	return true;
 }
 
-boolean neverendingPartyPowerlevel()
-{
-	return neverendingPartyCombat(my_primestat(), false, "", true);
-}
-
-boolean neverendingPartyCombat()
-{
-	return neverendingPartyCombat(my_primestat());
-}
-
-boolean neverendingPartyCombat(stat st)
-{
-	return neverendingPartyCombat(st, false);
-}
-
-boolean neverendingPartyCombat(effect ef)
-{
-	return neverendingPartyCombat(ef, false);
-}
-
-boolean neverendingPartyCombat(stat st, boolean hardmode)
-{
-	return neverendingPartyCombat(st, hardmode, "", false);
-}
-
-boolean neverendingPartyCombat(effect ef, boolean hardmode)
-{
-	return neverendingPartyCombat(ef, hardmode, "", false);
-}
-
-boolean neverendingPartyCombat(stat st, boolean hardmode, string option, boolean powerlevelling)
-{
-	switch(st)
-	{
-	case $stat[Muscle]:			return neverendingPartyCombat($effect[Spiced Up], hardmode, option, powerlevelling);
-	case $stat[Mysticality]:	return neverendingPartyCombat($effect[Tomes of Opportunity], hardmode, option, powerlevelling);
-	case $stat[Moxie]:			return neverendingPartyCombat($effect[The Best Hair You\'ve Ever Had], hardmode, option, powerlevelling);
-	}
-	return neverendingPartyCombat($effect[none], hardmode, option, powerlevelling);
-}
-
 int neverendingPartyRemainingFreeFights()
 {
 	//Returns how many free fights do you have remaining in neverending party?
@@ -781,163 +740,148 @@ int neverendingPartyRemainingFreeFights()
 
 boolean neverendingPartyAvailable()
 {
-	if(!get_property("neverendingPartyAlways").to_boolean() && !get_property("_neverendingPartyToday").to_boolean())
+	if (!get_property("neverendingPartyAlways").to_boolean() && !get_property("_neverendingPartyToday").to_boolean())
+	{
+		// check mafia properties which track access.
+		return false;
+	}
+	if (!auto_is_valid($item[Neverending Party invitation envelope]))
 	{
 		return false;
 	}
-	if(get_property("_neverendingPartyFreeTurns").to_int() >= 10)
+	if (get_property("_questPartyFair") == "finished")
 	{
-		if(get_property("_neverendingNotEarly").to_boolean())
-		{
-			return false;
-		}
-		string page = visit_url("place.php?whichplace=town_wrong", false);
-		if(!contains_text(page, "The Neverending Party (Early)"))
-		{
-			set_property("_neverendingNotEarly", true);
-			return false;
-		}
-	}
-	if(get_property("_neverendingPartyOver").to_boolean())
-	{
+		// Can't adventure if the quest is complete for the day.
 		return false;
 	}
-	if(!is_unrestricted($item[Neverending Party invitation envelope]))
+	if (get_property("auto_skipNEPOverride").to_boolean())
 	{
+		// if the user says don't use it, don't use it.
 		return false;
 	}
-	if(inebriety_left() < 0)
-	{
-		return false;
-	}
-	if(get_property("auto_skipNEPOverride").to_boolean())
-	{
-		return false;
-	}
-
 	return true;
-
 }
 
-boolean neverendingPartyCombat(effect eff, boolean hardmode, string option, boolean powerlevelling)
+boolean neverendingPartyCombat()
 {
-	if(!get_property("neverendingPartyAlways").to_boolean() && !get_property("_neverendingPartyToday").to_boolean())
+	if(!neverendingPartyAvailable())
 	{
 		return false;
 	}
-	if((get_property("_neverendingPartyFreeTurns").to_int() >= 10) && !powerlevelling)
-	{
-		if(get_property("_neverendingNotEarly").to_boolean())
-		{
-			return false;
-		}
-		string page = visit_url("place.php?whichplace=town_wrong", false);
-		if(!contains_text(page, "The Neverending Party (Early)"))
-		{
-			set_property("_neverendingNotEarly", true);
-			return false;
-		}
-	}
-	if(get_property("_neverendingPartyOver").to_boolean())
-	{
-		return false;
-	}
-	if(!is_unrestricted($item[Neverending Party invitation envelope]))
-	{
-		return false;
-	}
-	if(inebriety_left() < 0)
-	{
-		return false;
-	}
-	if(hardmode)
-	{
-		if(!possessEquipment($item[PARTY HARD T-shirt]) || !hasTorso())
-		{
-			return false;
-		}
-	}
-	if(!hardmode && possessEquipment($item[PARTY HARD T-shirt]))
-	{
-		return false;
-	}
+
 	fightClubSpa();
 	//May need to actually have 1 adventure left.
 
-	backupSetting("choiceAdventure1322", 2);
-
-	switch(eff)
-	{
-	case $effect[Spiced Up]:
-		backupSetting("choiceAdventure1324", 2);
-		backupSetting("choiceAdventure1326", 2);
-		break;
-	case $effect[Tomes of Opportunity]:
-		backupSetting("choiceAdventure1324", 1);
-		backupSetting("choiceAdventure1325", 2);
-		break;
-	case $effect[Citronella Armpits]:
-		backupSetting("choiceAdventure1324", 3);
-		backupSetting("choiceAdventure1327", 2);
-		break;
-	case $effect[The Best Hair You\'ve Ever Had]:
-		backupSetting("choiceAdventure1324", 4);
-		backupSetting("choiceAdventure1328", 2);
-		break;
-	case $effect[none]:
-		backupSetting("choiceAdventure1324", 5);
-		break;
-	default:
-		return false;
-	}
-
-	item shirt = equipped_item($slot[shirt]);
-	if(hardmode)
-	{
-		autoEquip($slot[shirt], $item[PARTY HARD T-shirt]);
-	}
-	else if (januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
+	if (hasTorso() && januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
 	{
 		januaryToteAcquire($item[Makeshift Garbage Shirt]);
 		autoEquip($slot[shirt], $item[Makeshift Garbage Shirt]);
 	}
 
-	boolean retval;
+	return autoAdv($location[The Neverending Party]);
+}
 
-	if(get_property("choiceAdventure1324").to_int() == 5)
+void neverendingPartyChoiceHandler(int choice)
+{
+	if (choice == 1322) // The Beginning of the Neverend
 	{
-		string[int] pages;
-		pages[0] = "choice.php?pwd&whichchoice=1324&option=" + get_property("choiceAdventure1324");
-		retval = autoAdvBypass(0, pages, $location[The Neverending Party], option);
+		run_choice(2); // No, I'm just here to party (decline quest)
+	}
+	else if (choice == 1323) // All Done!
+	{
+		run_choice(1); // Take your leave (get quest reward)
+	}
+	else if (choice == 1324) // It Hasn't Ended, It's Just Paused
+	{
+		effect buff = $effect[none];
+		switch (my_primestat())
+		{
+			case $stat[Muscle]:
+				buff = $effect[Spiced Up];
+				break;
+			case $stat[Mysticality]:
+				buff = $effect[Tomes of Opportunity];
+				break;
+			case $stat[Moxie]:
+				buff = $effect[The Best Hair You've Ever Had];
+				break;
+		}
+		if (buff != $effect[none] && have_effect(buff) < 9)
+		{
+			// Get the +mainstat% buff if we don't have enough turns of it to get us to the next scheduled NC.
+			switch (my_primestat())
+			{
+				case $stat[Muscle]:
+					run_choice(2); // Check out the kitchen (go to Gone Kitchin')
+					break;
+				case $stat[Mysticality]:
+					run_choice(1); // Head upstairs (go to A Room With a View... Of a Bed)
+					break;
+				case $stat[Moxie]:
+					run_choice(4); // Investigate the basement (go to Basement Urges)
+					break;
+				default:
+					run_choice(5); // Pick a fight (fight a random monster from the zone)
+					break;
+			}
+		}
+		else if (isAboutToPowerlevel() || isActuallyEd())
+		{
+			// If we're powerlevelling (or farming Ka) grab the +ML buff if we don't have enough turns
+			// of it to get us to the next scheduled NC. Otherwise take the combat.
+			if (have_effect($effect[Citronella Armpits]) < 9)
+			{
+				run_choice(3); // Go to the back yard (go to Forward to the Back)
+			}
+			else
+			{
+				run_choice(5); // Pick a fight (fight a random monster from the zone)
+			}
+		} else {
+			run_choice(5); // Pick a fight (fight a random monster from the zone)
+		}
+	}
+	else if (choice == 1325) // A Room With a View... Of a Bed
+	{
+		if (my_primestat() == $stat[Mysticality])
+		{
+			run_choice(2); // Read the tomes (Get Tomes of Opportunity buff. 20 advs of +20% to all Mysticality Gains)
+		}
+		else
+		{
+			run_choice(1); // Take a quick nap (Full HP & MP restore)
+		}
+	}
+	else if (choice == 1326) // Gone Kitchin'
+	{
+		if (my_primestat() == $stat[Muscle])
+		{
+			run_choice(2); // Check out the muscle spice (Get Spiced Up buff. 20 advs of +20% to all Muscle Gains)
+		}
+		else
+		{
+			run_choice(1); // Peruse the cookbooks (get some myst substats)
+		}
+	}
+	else if (choice == 1327) // Forward to the Back
+	{
+		run_choice(2); // Rub the candle wax under your arms (Get Citronella Armpits buff. 50 advs of +30 to Monster Level)
+	}
+	else if (choice == 1328) // Basement Urges
+	{
+		if (my_primestat() == $stat[Moxie])
+		{
+			run_choice(2); // Use the hair gel (Get The Best Hair You've Ever Had buff. 20 advs of +20% to all Moxie Gains)
+		}
+		else
+		{
+			run_choice(1); // Use the workout equipment (get some muscle substats)
+		}
 	}
 	else
 	{
-		retval = autoAdv(1, $location[The Neverending Party], option);
+		abort("unhandled choice in mushroomGardenChoiceHandler");
 	}
-
-	if(retval)
-	{
-		loopHandlerDelayAll();
-	}
-
-	restoreSetting("choiceAdventure1322");
-	restoreSetting("choiceAdventure1324");
-	restoreSetting("choiceAdventure1325");
-	restoreSetting("choiceAdventure1326");
-	restoreSetting("choiceAdventure1327");
-	restoreSetting("choiceAdventure1328");
-
-	if(get_property("lastEncounter") == "Party\'s Over")
-	{
-		set_property("_neverendingPartyOver", true);
-		return false;
-	}
-	if(get_property("lastEncounter") == "All Done!")
-	{
-		set_property("_neverendingPartyOver", true);
-		return false;
-	}
-	return retval;
 }
 
 string auto_latteDropName(location l)

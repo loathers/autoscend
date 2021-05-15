@@ -207,43 +207,57 @@ boolean auto_forceEquipPowerfulGlove()
 
 void auto_burnPowerfulGloveCharges()
 {
-	while (auto_hasPowerfulGlove() && auto_powerfulGloveCharges() >= 5)
+	while(auto_is_valid($skill[CHEAT CODE: Triple Size]) && auto_hasPowerfulGlove() && auto_powerfulGloveCharges() >= 5)
 	{
+		if(equipped_amount($item[Powerful Glove]) == 0)
+		{
+			equip($item[Powerful Glove]);	//equip it to prevent use command from doing 20 cycles of equip, use skill, unequip.
+		}
 		auto_powerfulGloveStats();
 	}
 }
 
-boolean auto_canFightPiranhaPlant() {
+boolean auto_canFightPiranhaPlant()
+{
 	int numMushroomFights = (in_zelda() ? 5 : 1);
 	if (auto_is_valid($item[packet of mushroom spores]) &&
 			get_campground() contains $item[packet of mushroom spores] &&
-			get_property("_mushroomGardenFights").to_int() < numMushroomFights) {
+			get_property("_mushroomGardenFights").to_int() < numMushroomFights)
+	{
 		return true;
 	}
 	return false;
 }
 
-boolean auto_canTendMushroomGarden() {
+boolean auto_canTendMushroomGarden()
+{
 	if (auto_is_valid($item[packet of mushroom spores]) &&
 			get_campground() contains $item[packet of mushroom spores] &&
-			!get_property("_mushroomGardenVisited").to_boolean()) {
+			!get_property("_mushroomGardenVisited").to_boolean())
+	{
 		return true;
 	}
 	return false;
 }
 
-int auto_piranhaPlantFightsRemaining() {
-	if (auto_canFightPiranhaPlant()) {
+int auto_piranhaPlantFightsRemaining()
+{
+	if (auto_canFightPiranhaPlant())
+	{
 		int numMushroomFights = (in_zelda() ? 5 : 1);
 		return (numMushroomFights - get_property("_mushroomGardenFights").to_int());
 	}
 	return 0;
 }
 
-boolean auto_mushroomGardenHandler() {
-	if (auto_piranhaPlantFightsRemaining() > 0) {
+boolean auto_mushroomGardenHandler()
+{
+	if (auto_piranhaPlantFightsRemaining() > 0)
+	{
 		return autoAdv($location[Your Mushroom Garden]);
-	} else if (auto_canTendMushroomGarden()) {
+	}
+	else if (auto_canTendMushroomGarden())
+	{
 		autoAdv($location[Your Mushroom Garden]);
 		// TODO: Malibu Stacey - move all this to a more central location after refactor
 		use(item_amount($item[colossal free-range mushroom]), $item[colossal free-range mushroom]);
@@ -257,12 +271,41 @@ boolean auto_mushroomGardenHandler() {
 	return false;
 }
 
-boolean auto_getGuzzlrCocktailSet() {
-	if (possessEquipment($item[Guzzlr tablet]) && auto_is_valid($item[Guzzlr tablet])) {
+void mushroomGardenChoiceHandler(int choice)
+{
+	if (choice == 1410)
+	{
+		string growth = get_property("auto_mushroomGardenGrowth");
+		int pick = 1;
+		if (growth != "")
+		{
+			// limit to growth of 11 for colossal free-range mushroom as any further growth is wasted.
+			pick = min(growth.to_int(), 11);
+		}
+		if (get_property("mushroomGardenCropLevel").to_int() >= pick)
+		{
+			run_choice(2); // pick the mushroom.
+		}
+		else
+		{
+			run_choice(1); // fertilise the mushroom
+		}
+	}
+	else
+	{
+		abort("unhandled choice in mushroomGardenChoiceHandler");
+	}
+}
+
+boolean auto_getGuzzlrCocktailSet()
+{
+	if (possessEquipment($item[Guzzlr tablet]) && auto_is_valid($item[Guzzlr tablet]) && !get_property("auto_skipGuzzlrCocktailSet").to_boolean())
+	{
 		if (get_property("guzzlrGoldDeliveries").to_int() >= 5
 		&& get_property("questGuzzlr") == "unstarted"
 		&& get_property("_guzzlrPlatinumDeliveries").to_int() == 0
-		&& !get_property("_guzzlrQuestAbandoned").to_boolean()) {
+		&& !get_property("_guzzlrQuestAbandoned").to_boolean())
+		{
 			auto_log_info("Getting a Guzzlr Cocktail Set (for all the good it will do).");
 			visit_url("inventory.php?tap=guzzlr", false);
 			run_choice(4); // take platinum quest
@@ -777,7 +820,8 @@ boolean auto_buyCrimboCommerceMallItem()
 	}
 
 	auto_log_info(`Commerce Ghost wants us to buy a {ghostItemString} which will give us roughly {my_level()*25} substats in the next combat with it.`);
-	string output = cli_execute_output(`buy from mall {ghostItemString}`);
+
+	string output = cli_execute_output(`buy from mall [{ghostItemString.to_item().to_int()}]`);
 	if (!output.contains_text("Purchases complete."))
 	{
 		abort(`Something went wrong buying {ghostItemString} from the mall.`);

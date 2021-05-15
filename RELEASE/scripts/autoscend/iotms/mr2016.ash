@@ -992,10 +992,8 @@ boolean haveGhostReport()
 
 boolean LX_ghostBusting()
 {
-	if(!possessEquipment($item[Protonic Accelerator Pack]))
-	{
-		return false;
-	}
+	//a function for busting or killing ghosts associated with [Protonic Accelerator Pack].
+	//do not check if we have the IOTM because [Almost-dead_walkie-talkie] gives access to these ghosts without the proton pack.
 	if(get_property("questPAGhost") == "unstarted")
 	{
 		if(!expectGhostReport())
@@ -1007,181 +1005,51 @@ boolean LX_ghostBusting()
 			return false;
 		}
 	}
-
+	// goal & progress specific reasons to skip busting this turn go below.
 	location goal = get_property("ghostLocation").to_location();
-	boolean canAttempt = have_equipped($item[Protonic Accelerator Pack]);
-	if(possessEquipment($item[Protonic Accelerator Pack]) && can_equip($item[Protonic Accelerator Pack]))
+	if(goal == $location[none])
 	{
-		canAttempt = true;
+		return false;
+	}
+	if(auto_my_path() == "Community Service" && my_daycount() == 1 && goal == $location[The Spooky Forest])
+	{
+		return false;
+	}
+	if(goal == $location[Inside The Palindome] && !possessEquipment($item[Talisman O\' Namsilat]))
+	{
+		return false;
+	}
+	
+	//zone unlocks which require no adv spent. ghost will not show up here unless zone is available. no need to skip ghost if zone unavailable.
+	startHippyBoatmanSubQuest();	//unlocks $location[The Old Landfill].
+	
+	//zone unlocks which require no adv spent. where a ghost can show up even if you did not unlock the zone. if failed to unlock we skip this ghost
+	startMeatsmithSubQuest();		//unlocks $location[The Skeleton Store]
+	startArmorySubQuest();			//unlocks $location[Madness Bakery]
+	startGalaktikSubQuest();		//unlocks $location[The Overgrown Lot]
+	if($locations[The Skeleton Store, Madness Bakery, The Overgrown Lot] contains goal && !zone_available(goal))
+	{
+		auto_log_critical("Failed to unlock the location [" +goal+ "]. skipping this ghost...", "red");
+		set_property("questPAGhost", "unstarted");
+		set_property("ghostLocation", "");
+		return false;
 	}
 
-	if((goal != $location[none]) && canAttempt)
+	if(possessEquipment($item[Protonic Accelerator Pack]) && auto_can_equip($item[Protonic Accelerator Pack]))
 	{
-		if((auto_my_path() == "Community Service") && (my_daycount() == 1) && (goal == $location[The Spooky Forest]))
-		{
-			return false;
-		}
-
-		acquireHP();
-		auto_log_info("Ghost busting time! At: " + get_property("ghostLocation"), "blue");
-		boolean newbieFail = false;
-		if(goal == $location[The Skeleton Store])
-		{
-			startMeatsmithSubQuest();
-			if(internalQuestStatus("questM23Meatsmith") == -1)
-			{
-				auto_log_warning("Failed to unlock [The Skeleton Store] for ghostbusting", "red");
-				newbieFail = true;
-			}
-			else if(internalQuestStatus("questM23Meatsmith") == 0)
-			{
-				if(item_amount($item[Skeleton Store Office Key]) > 0)
-				{
-					set_property("choiceAdventure1060", 4);
-				}
-				else
-				{
-					set_property("choiceAdventure1060", 1);
-				}
-			}
-			else
-			{
-				set_property("choiceAdventure1060", 2);
-			}
-		}
-		if(item_amount($item[Check to the Meatsmith]) > 0)
-		{
-			string temp = visit_url("shop.php?whichshop=meatsmith");
-			temp = visit_url("choice.php?pwd=&whichchoice=1059&option=2");
-			return true;
-		}
-		if(goal == $location[Madness Bakery])
-		{
-			startArmorySubQuest();
-			if(internalQuestStatus("questM25Armorer") == -1)
-			{
-				auto_log_warning("Failed to unlock [Madness Bakery] for ghostbusting", "red");
-				newbieFail = true;
-			}
-			else if(internalQuestStatus("questM25Armorer") <= 1)
-			{
-				set_property("choiceAdventure1061", 1);
-			}
-			else
-			{
-				set_property("choiceAdventure1061", 5);
-			}
-		}
-		if(item_amount($item[no-handed pie]) > 0)
-		{
-			string temp = visit_url("shop.php?whichshop=armory");
-			temp = visit_url("choice.php?pwd=&whichchoice=1065&option=2");
-			return true;
-		}
-		if(goal == $location[The Overgrown Lot])
-		{
-			//Meh.
-			startGalaktikSubQuest();
-			if(internalQuestStatus("questM24Doc") == -1)
-			{
-				auto_log_warning("Failed to unlock [The Overgrown Lot] for ghostbusting", "red");
-				newbieFail = true;
-			}
-		}
-		if((item_amount($item[Swindleblossom]) >= 3) && (item_amount($item[Fraudwort]) >= 3) && (item_amount($item[Shysterweed]) >= 3))
-		{
-			string temp = visit_url("shop.php?whichshop=doc");
-			temp = visit_url("shop.php?whichshop=doc&action=talk");
-			temp = visit_url("choice.php?pwd=&whichchoice=1064&option=2");
-			return true;
-		}
-		if((goal == $location[The Batrat and Ratbat Burrow]) && (internalQuestStatus("questL04Bat") < 1))
-		{
-			return false;
-		}
-		if((goal == $location[Cobb\'s Knob Laboratory]) && (item_amount($item[Cobb\'s Knob Lab Key]) == 0))
-		{
-			return false;
-		}
-
-		if (goal == $location[Lair of the Ninja Snowmen] && internalQuestStatus("questL08Trapper") < 2)
-		{
-			return false;
-		}
-		if (goal == $location[The VERY Unquiet Garves] && get_property("questL07Cyrptic") != "finished")
-		{
-			return false;
-		}
-		if(goal == $location[The Castle in the Clouds in the Sky (Top Floor)])
-		{
-			if (internalQuestStatus("questL10Garbage") < 9)
-			{
-				return false;
-			}
-			if(L10_topFloor() || L10_holeInTheSkyUnlock())
-			{
-				return true;
-			}
-		}
-		if(goal == $location[Lair of the Ninja Snowmen])
-		{
-			if(L8_trapperNinjaLair())
-			{
-				return true;
-			}
-		}
-
-		if((goal == $location[The Red Zeppelin]) && (internalQuestStatus("questL11Ron") < 3))
-		{
-			return false;
-		}
-		if (goal == $location[The Hidden Park] && internalQuestStatus("questL11Worship") > 3)
-		{
-			return false;
-		}
-
-		item replaceAcc3 = $item[none];
-		if(goal == $location[Inside The Palindome])
-		{
-			if(!possessEquipment($item[Talisman O\' Namsilat]))
-			{
-				return false;
-			}
-			if(equipped_item($slot[acc3]) != $item[Talisman O\' Namsilat])
-			{
-				replaceAcc3 = equipped_item($slot[acc3]);
-				autoEquip($slot[acc3], $item[Talisman O\' Namsilat]);
-			}
-		}
-
-		if(newbieFail)
-		{
-			auto_log_critical("Can't bust that ghost, we don't feel good!! skipping this ghost...", "red");
-			set_property("questPAGhost", "unstarted");
-			set_property("ghostLocation", "");
-			return false;
-		}
-
-		if((equipped_item($slot[Back]) != $item[Protonic Accelerator Pack]) && can_equip($item[Protonic Accelerator Pack]))
-		{
-			autoEquip($slot[Back], $item[Protonic Accelerator Pack]);
-		}
-
-		auto_log_info("Time to bust some ghosts!!!", "green");
-		boolean advVal = autoAdv(goal);
-		if(replaceAcc3 != $item[none])
-		{
-			autoEquip($slot[acc3], replaceAcc3);
-		}
-		if(have_effect($effect[Beaten Up]) == 0)
-		{
-			set_property("questPAGhost", "unstarted");
-			set_property("ghostLocation", "");
-		}
-
-		return advVal;
+		auto_log_info("Ghost busting time! At: " +goal, "blue");
+		autoForceEquip($item[Protonic Accelerator Pack]);
 	}
-	return false;
+	else	//hypothetical future path where pack cannot be equipped. or we used [Almost-dead_walkie-talkie] to get a ghost without the pack
+	{
+		auto_log_info("We can not bust ghosts. but we can still kill them and get ~100 MP worth of restore items. killing ghost at: " +goal, "blue");
+	}
+	if(goal == $location[Inside The Palindome])
+	{
+		autoForceEquip($slot[acc3], $item[Talisman O\' Namsilat]);
+	}
+	acquireHP();
+	return autoAdv(goal);
 }
 
 int timeSpinnerRemaining()

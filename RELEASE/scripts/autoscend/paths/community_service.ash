@@ -529,7 +529,6 @@ boolean LA_cs_communityService()
 						cli_execute("make " + $item[Skeleton Key]);
 					}
 				}
-				set_property("choiceAdventure1060", 2);
 				if(!cs_healthMaintain()){
 					abort("Wasnt able to maintain health.");
 				}
@@ -2930,9 +2929,6 @@ void cs_initializeDay(int day)
 				use_skill(1, $skill[Spirit of Peppermint]);
 			}
 
-			visit_url("tutorial.php?action=toot");
-			use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
-			use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
 			tootGetMeat();
 
 			auto_sourceTerminalEducate($skill[Extract], $skill[Turbo]);

@@ -501,7 +501,7 @@ boolean doBedtime()
 	}
 
 	int smiles = (5 * (item_amount($item[Golden Mr. Accessory]) + storage_amount($item[Golden Mr. Accessory]) + closet_amount($item[Golden Mr. Accessory]))) - get_property("_smilesOfMrA").to_int();
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		smiles = 0;
 	}
@@ -564,6 +564,7 @@ boolean doBedtime()
 	}
 
 	auto_beachUseFreeCombs();
+	auto_drinkNightcap();
 
 	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
 	if(in_gnoob() || !can_drink() || out_of_blood)
@@ -593,7 +594,7 @@ boolean doBedtime()
 			auto_log_info("You have a rain man to cast, please do so before overdrinking and then run me again.", "red");
 			return false;
 		}
-		auto_autoDrinkNightcap(true); // simulate;
+		auto_printNightcap();
 		auto_log_warning("You need to overdrink and then run me again. Beep.", "red");
 		if(have_skill($skill[The Ode to Booze]))
 		{
@@ -691,6 +692,11 @@ boolean doBedtime()
 		if(is_unrestricted($item[Potted Tea Tree]) && !get_property("_pottedTeaTreeUsed").to_boolean() && (auto_get_campground() contains $item[Potted Tea Tree]))
 		{
 			auto_log_info("You have a tea tree to shake!", "blue");
+		}
+
+		if (get_property("spadingData") != "")
+		{
+			cli_execute("spade");
 		}
 
 		auto_log_info("You are probably done for today, beep.", "blue");

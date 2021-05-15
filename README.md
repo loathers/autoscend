@@ -11,6 +11,10 @@ Seriously, we need and want the help. Want to learn how to code? Or maybe you kn
 autoscend is a script that will play through an entire ascension for you in the Kingdom of Loathing.
 It is built up from sl\_ascend and cc\_ascend before it.
 
+autoscend's goal is to be able to brute force an ascension for all paths of KoL, not to do it optimally, but within a couple of real-life days of the target. If you bear this in mind while you use it, you will have a much better experience.  
+If, however, you expect it to run absolutely bleeding edge ascensions with optimal day/turn counts you are in for a world of disappointment.  
+A general purpose ascension script, which supports accounts with any number of perms and/or Mr Store items from none to almost all, will not be optimally tuned to your specific situation. We suggest you adjust your expectations accordingly.
+
 ## License
 [![License: CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)  
 This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
@@ -60,9 +64,7 @@ requirements section. Other classes should work as well, but Sauceror works best
 
 ## Two Crazy Random Summer
 
-The recommended class/sign combination for running autoscend in TCRS is Sauceror/Blender.
-Other signs should work okay too, but they won't have any special support (like automatic diet,
-or using certain nice cheap potions).
+We do not recommend running autoscend on this path as the item seeds change almost monthly which makes it impossible for us to support it reliably.
 
 ## Actually Ed the Undying
 
@@ -106,6 +108,12 @@ cognificent (IGN: cognificent (#2313727))
 gausie (IGN: gausie (#1197090))
 
 taltamir (IGN: taltamir (#2195333))
+
+phulin (IGN: worthawholebean (#1972588))
+
+chunkinaround (IGN: threebullethamburgler (#1993636))
+
+Phillammon (IGN: Phillammon (#2393910))
 
 ## Special Thanks
 

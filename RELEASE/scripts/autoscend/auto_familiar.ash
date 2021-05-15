@@ -14,26 +14,27 @@ boolean is100FamRun()
 boolean doNotBuffFamiliar100Run()
 {
 	//indicates that we are in a 100% familiar run with a familiar that should not be buffed. Either because it hinders you or is useless.
+	//this list was last updated after ghost of crimbo commerce familiar was added.
 	if(!is100FamRun())
 	{
 		return false;
 	}
 	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 	
-	//these familiars are only harmful
+	//these familiars always harm you and never aid you
 	if($familiars[black cat, O.A.F.] contains hundred_fam)
 	{
 		return true;
 	}
 	
-	//these familiars sometime attack the enemy
+	//these familiars sometimes harm you and sometimes attack the enemy
 	if($familiars[Fuzzy Dice, Stab Bat, Killer Bee, Scary Death Orb, RoboGoose] contains hundred_fam)
 	{
 		return true;
 	}
 	
-	//these familiars do nothing rather than actively hinder you. Still should not be buffed.
-	if($familiars[Pet Rock, Toothsome Rock, Bulky Buddy Box, Holiday Log, Homemade Robot, Software Bug, Bad Vibe] contains hundred_fam)
+	//these familiars do not actively hinder you. insead they simply do nothing. should not be buffed to save on MP.
+	if($familiars[Pet Rock, Toothsome Rock, Bulky Buddy Box, Holiday Log, Homemade Robot, Software Bug, Bad Vibe, Pet Coral] contains hundred_fam)
 	{
 		return true;
 	}
@@ -671,5 +672,84 @@ void preAdvUpdateFamiliar(location place)
 				}
 			}
 		}
+	}
+}
+
+boolean hatchFamiliar(familiar adult)
+{
+	//This functions hatches a familiar named adult.
+	//Returns true if you end up having the hatched familiar. False if you do not.
+	
+	item hatchling = adult.hatchling;
+	if(!pathAllowsFamiliar())
+	{
+		return false;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
+	}
+	if(in_glover())
+	{
+		//have_familiar is inconsistent. it usually returns true if you have a familiar in the terrairum regardless on its usability.
+		//in glover it returns false for unusuable familiars. as such we should test both hatchling and familiar in glover path
+		if(!glover_usable(adult.to_string()) || !glover_usable(hatchling.to_string()))
+		{
+			return false;
+		}
+	}
+	//TODO return false if no terrarium installed in camp.
+	if(have_familiar(adult))		//do not use auto_have_familiar here. we can have an unusable adult in a path that can hatch the hatchling
+	{
+		return true;		//we already have desired familiar. no point it trying to hatch it a second time
+	}
+	if(item_amount(hatchling) == 0)
+	{
+		return false;		//we need to actually own the hatchling to hatch it
+	}
+	if(!auto_is_valid(hatchling) && !in_bhy())		//is hatchling usable in this path?
+	{
+		//all hatchlings are valid in bhy. easier to include !in_bhy() here instead of modifying auto_is_valid to check familiar hatchlings
+		return false;
+	}
+	
+	auto_log_info("Trying to hatch hatchling item [" +hatchling+ "] into the adult familiar [" +adult+ "]", "blue");
+	visit_url("inv_familiar.php?pwd=&which=3&whichitem=" + hatchling.to_int());
+	
+	if(have_familiar(adult))
+	{
+		auto_log_info("Successfully acquired familiar [" + adult + "]", "blue");
+		return true;
+	}
+	auto_log_info("Failed to convert the familiar hatchling [" + hatchling + "] into the familiar [" + adult + "]", "red");
+	return false;
+}
+
+void hatchList()
+{
+	//this function goes through a list of hatchlings to hatch if available.
+	if(!pathAllowsFamiliar())
+	{
+		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
+	}
+	//TODO return if no terrarium installed in camp.
+	
+	if(get_property("questL02Larva") == "finished")
+	{
+		//only try to hatch this after the quest is finished. first copy is given to concil which returns it to you if you need to hatch it
+		hatchFamiliar($familiar[Mosquito]);		//quest item dropped every ascension until hatched
+	}
+	
+	foreach fam in $familiars[
+	Reassembled Blackbird,				//quest item dropped every ascension
+	reconstituted crow,					//quest item dropped in bees hate you
+	Black Cat,							//quest item dropped in bad moon
+	Grue,								//you get one egg every ascension.
+	Wereturtle,							//common drop
+	Adorable Seal Larva,				//nemesis quest: seal clubber
+	Untamed Turtle,						//nemesis quest: turtle tamer
+	Animated Macaroni Duck,				//nemesis quest: pastamancer
+	Pet Cheezling,						//nemesis quest: sauceror
+	Autonomous Disco Ball,				//nemesis quest: disco bandit
+	Mariachi Chihuahua					//nemesis quest: accordion thief
+	]
+	{
+		hatchFamiliar(fam);
 	}
 }

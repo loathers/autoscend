@@ -269,7 +269,7 @@ WarPlan auto_bestWarPlan()
 		considerNuns = false;
 		considerOrchard = false;
 	}
-	if (auto_my_path() == "G-Lover")
+	if (in_glover())
 	{
 		considerArena = false;
 	}
@@ -429,51 +429,46 @@ int auto_warTotalBattles(WarPlan plan)
     return auto_warTotalBattles(plan, auto_warEnemiesRemaining());
 }
 
-boolean warOutfit(boolean immediate)
+void equipWarOutfit()
 {
-	boolean reallyWarOutfit(string toWear)
-	{
-		if(immediate)
-		{
-			return outfit(toWear);
-		}
-		else
-		{
-			return autoOutfit(toWear);
-		}
-	}
+	equipWarOutfit(true);
+}
 
-	if(!get_property("auto_hippyInstead").to_boolean())
+void equipWarOutfit(boolean lock)
+{
+	//equip the war outfit suitable for your side of the war. due to problem with maximizer we use autoForceEquip
+	//lock means we want to lock the maximizer slots in question for the rest of the current loop (aka the next autoAdv).
+	//sometimes we wear the outfit. visit url. fail and want to continue on to do another quest instead of aborting or returning true.
+	//in such cases we want lock to be false
+	
+	boolean[item] parts;
+	if(auto_warSide() == "hippy")
 	{
-		if(!reallyWarOutfit("Frat Warrior Fatigues"));
-		{
-			foreach it in $items[Beer Helmet, Distressed Denim Pants, Bejeweled Pledge Pin]
-			{
-				take_closet(closet_amount(it), it);
-			}
-			if(!reallyWarOutfit("Frat Warrior Fatigues"))
-			{
-				abort("Do not have Frat Warrior Fatigues and don't know why....");
-				return false;
-			}
-		}
+		parts = $items[Reinforced Beaded Headband, Bullet-proof Corduroys, Round Purple Sunglasses];
 	}
 	else
 	{
-		if(!reallyWarOutfit("War Hippy Fatigues"))
+		parts = $items[Beer Helmet, Distressed Denim Pants, Bejeweled Pledge Pin];
+	}
+	foreach it in parts
+	{
+		if(item_amount(it) == 0 && equipped_amount(it) == 0)
 		{
-			foreach it in $items[Reinforced Beaded Headband, Bullet-proof Corduroys, Round Purple Sunglasses]
+			if(closet_amount(it) > 0)
 			{
-				take_closet(closet_amount(it), it);
+				take_closet(1, it);
 			}
-			if(!reallyWarOutfit("War Hippy Fatigues"))
-			{
-				abort("Do not have War Hippy Fatigues and don't know why....");
-				return false;
-			}
+			else abort("I mysteriously do not have [" +it+ "] which is needed for the war outfit");
+		}
+		if(lock)
+		{
+			autoForceEquip(it);
+		}
+		else
+		{
+			equip(it);
 		}
 	}
-	return true;
 }
 
 boolean haveWarOutfit(boolean canWear)
@@ -525,16 +520,6 @@ boolean L12_getOutfit()
 	{
 		return false;
 	}
-
-	// noncombat when adventuring at The Hippy Camp (Verge of War)
-	set_property("choiceAdventure139", "3");	//fight a War Hippy (space) cadet for outfit pieces
-	set_property("choiceAdventure140", "3");	//fight a War Hippy drill sergeant for outfit pieces
-	set_property("choiceAdventure141", "1");	//if wearing [Frat Boy Ensemble] get 50 mysticality
-	
-	// noncombat when adventuring at Orcish Frat House (Verge of War)
-	set_property("choiceAdventure143", "3");	//fight a War Pledgefor outfit pieces
-	set_property("choiceAdventure144", "3");	//fight a Frat Warrior drill sergeant for outfit pieces
-	set_property("choiceAdventure145", "1");	//if wearing [Filthy Hippy Disguise] get 50 muscle
 
 	// if you already have the war outfit we don't need to do anything now
 	if (haveWarOutfit())
@@ -738,12 +723,8 @@ boolean L12_startWar()
 		use_skill(1, $skill[Incredible Self-Esteem]);
 	}
 
-	// set noncombats to value needed to start the war
-	set_property("choiceAdventure142", "3");	//if wearing [Frat Warrior Fatigues] start the war or skip adventure
-	set_property("choiceAdventure146", "3");	//if wearing [War Hippy Fatigues] start the war or skip adventure
-
 	// wear the appropriate war outfit based on auto_hippyInstead
-	warOutfit(false);
+	equipWarOutfit();
 
 	// start the war when siding with frat boys
 	if(!get_property("auto_hippyInstead").to_boolean())
@@ -919,7 +900,7 @@ boolean L12_orchardFinalize()
 	{
 		pulverizeThing($item[A Light that Never Goes Out]);
 	}
-	warOutfit(true);
+	equipWarOutfit();
 	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
 	visit_url("shop.php?whichshop=hippy");
 	return true;
@@ -969,7 +950,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		int need = 30 - item_amount($item[Doc Galaktik\'s Pungent Unguent]);
 		if((need > 0) && (item_amount($item[Molybdenum Pliers]) == 0))
@@ -999,14 +980,14 @@ boolean L12_gremlins()
 		//if fighting for frat immediately grab it
 		if(!get_property("auto_hippyInstead").to_boolean())
 		{
-			warOutfit(true);
+			equipWarOutfit();
 			visit_url("bigisland.php?action=junkman&pwd");
 		}
 		
 		//if fighting for hippies grab magnet when enough fratboys killed
 		if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() >= 192))
 		{
-			warOutfit(true);
+			equipWarOutfit();
 			visit_url("bigisland.php?action=junkman&pwd");
 		}
 		
@@ -1015,6 +996,7 @@ boolean L12_gremlins()
 		{
 			abort("We don't have the molybdenum magnet but should... please get it and rerun the script");
 		}
+		else return true;
 	}
 
 	if(auto_my_path() == "Disguises Delimit")
@@ -1056,7 +1038,7 @@ boolean L12_gremlins()
 		autoAdv(1, $location[near an abandoned refrigerator], "auto_JunkyardCombatHandler");
 		return true;
 	}
-	warOutfit(true);
+	equipWarOutfit();
 	visit_url("bigisland.php?action=junkman&pwd");
 	return true;
 }
@@ -1333,7 +1315,7 @@ boolean L12_sonofaFinish()
 		return false;
 	}
 
-	warOutfit(true);
+	equipWarOutfit();
 	visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
 	visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
 	return true;
@@ -1437,7 +1419,7 @@ boolean LX_attemptFlyering()
 	}
 	else if(neverendingPartyAvailable())
 	{
-		return neverendingPartyPowerlevel();
+		return neverendingPartyCombat();
 	}
 	else
 	{
@@ -1480,7 +1462,7 @@ boolean L12_flyerFinish()
 		return false;
 	}
 	auto_log_info("Done with this Flyer crap", "blue");
-	warOutfit(true);
+	equipWarOutfit(false);
 	visit_url("bigisland.php?place=concert&pwd");
 
 	cli_execute("refresh inv");
@@ -1678,7 +1660,7 @@ boolean L12_themtharHills()
 	zataraSeaside("meat");
 
 	{
-		warOutfit(false);
+		equipWarOutfit();
 
 		int lastMeat = get_property("currentNunneryMeat").to_int();
 		int myLastMeat = my_meat();
@@ -1818,9 +1800,6 @@ boolean L12_farm()
 	}
 	
 	auto_log_info("Save McMillicancuddy's Farm from the Dooks", "blue");
-	set_property("choiceAdventure147", "3");		//open the pond
-	set_property("choiceAdventure148", "1");		//open the back 40
-	set_property("choiceAdventure149", "2");		//open the other back 40
 
 	// There is no mafia tracking for stages of this sidequest
 	// Because Mafia's adventures spent count also increments on a free fight, we cannot
@@ -1858,7 +1837,7 @@ boolean L12_farm()
 		}
 		set_property("auto_L12FarmStage", "4");
 	case 4:
-		warOutfit(true);
+		equipWarOutfit();
 		visit_url("bigisland.php?place=farm&action=farmer&pwd");
 		if(get_property("sidequestFarmCompleted") != "none")
 		{
@@ -1875,105 +1854,56 @@ boolean L12_clearBattlefield()
 {
 	if(in_koe())
 	{
-		if (internalQuestStatus("questL12HippyFrat") < 2 && get_property("hippiesDefeated").to_int() < 333 && get_property("fratboysDefeated").to_int() < 333 && possessOutfit("Frat Warrior Fatigues", true))
-		{
-			if(haveWarOutfit())
-			{
-				warOutfit(false);
-			}
-
-			item warKillDoubler = my_primestat() == $stat[mysticality] ? $item[Jacob\'s rung] : $item[Haunted paddle-ball];
-			pullXWhenHaveY(warKillDoubler, 1, 0);
-			if(possessEquipment(warKillDoubler))
-			{
-				autoEquip($slot[weapon], warKillDoubler);
-			}
-
-			item food_item = $item[none];
-			foreach it in $items[pie man was not meant to eat, spaghetti with Skullheads, gnocchetti di Nietzsche, Spaghetti con calaveras, space chowder, Spaghetti with ghost balls, Crudles, Agnolotti arboli, Shells a la shellfish, Linguini immondizia bianco, Fettucini Inconnu, ghuol guolash, suggestive strozzapreti, Fusilli marrownarrow]
-			{
-				if(item_amount(it) > 0)
-				{
-					food_item = it;
-					break;
-				}
-			}
-			if(food_item == $item[none])
-			{
-				if(creatable_amount($item[space chowder]) > 6)
-				{
-					create(1, $item[space chowder]);
-					food_item = $item[space chowder];
-				}
-				else
-				{
-					abort("Couldn't find a good food item for the war.");
-				}
-			}
-
-			// TODO: Mafia should really be tracking this.
-			if(!autoAdvBypass("adventure.php?snarfblat=533", $location[The Exploaded Battlefield]))
-			{
-				if(get_property("lastEncounter") == "Rationing out Destruction")
-				{
-					visit_url("choice.php?whichchoice=1391&option=1&tossid=" + food_item.to_int() + "&pwd=" + my_hash(), true);
-				}
-			}
-
-			if(item_amount($item[solid gold bowling ball]) > 0)
-			{
-				council();
-			}
-			return true;
-		}
-		return false;
+		return L12_koe_clearBattlefield();
 	}
-	else
+
+	if (get_property("hippiesDefeated").to_int() < 64 && get_property("fratboysDefeated").to_int() < 64 && internalQuestStatus("questL12War") == 1)
 	{
-		if (get_property("hippiesDefeated").to_int() < 64 && get_property("fratboysDefeated").to_int() < 64 && internalQuestStatus("questL12War") == 1)
+		auto_log_info("First 64 combats. To orchard/lighthouse", "blue");
+		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
 		{
-			auto_log_info("First 64 combats. To orchard/lighthouse", "blue");
+			cli_execute("make 1 stuffing fluffer");
+		}
+		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cornucopia]) > 0) && glover_usable($item[Cornucopia]))
+		{
+			use(1, $item[Cornucopia]);
 			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
 			{
 				cli_execute("make 1 stuffing fluffer");
 			}
-			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cornucopia]) > 0) && glover_usable($item[Cornucopia]))
-			{
-				use(1, $item[Cornucopia]);
-				if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
-				{
-					cli_execute("make 1 stuffing fluffer");
-				}
-				return true;
-			}
-			if(item_amount($item[Stuffing Fluffer]) > 0)
-			{
-				use(1, $item[Stuffing Fluffer]);
-				return true;
-			}
-			warOutfit(false);
-			return warAdventure();
+			return true;
 		}
-
-		if (get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192 && internalQuestStatus("questL12War") == 1)
+		if(item_amount($item[Stuffing Fluffer]) > 0)
 		{
-			auto_log_info("Getting to the nunnery/junkyard", "blue");
-			warOutfit(false);
-			return warAdventure();
+			use(1, $item[Stuffing Fluffer]);
+			return true;
 		}
+		equipWarOutfit();
+		return warAdventure();
+	}
 
-		if ((get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean()) && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
-		{
-			auto_log_info("Doing the wars.", "blue");
-			warOutfit(false);
-			return warAdventure();
-		}
+	if (get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192 && internalQuestStatus("questL12War") == 1)
+	{
+		auto_log_info("Getting to the nunnery/junkyard", "blue");
+		equipWarOutfit();
+		return warAdventure();
+	}
+
+	if ((get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean()) && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
+	{
+		auto_log_info("Doing the wars.", "blue");
+		equipWarOutfit();
+		return warAdventure();
 	}
 	return false;
 }
 
 boolean L12_finalizeWar()
 {
+	if(in_koe())
+	{
+		return L12_koe_finalizeWar();
+	}
 	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
@@ -2103,28 +2033,20 @@ boolean L12_finalizeWar()
 		}
 		doRest();
 	}
-	warOutfit(false);
+	equipWarOutfit();
 	acquireHP();
 	auto_log_info("Let's fight the boss!", "blue");
 
 	location bossFight = $location[Noob Cave];
-
-	if (in_koe())
-	{
-		bossFight = 533.to_location();
-	}
 
 	if(auto_have_familiar($familiar[Machine Elf]))
 	{
 		handleFamiliar($familiar[Machine Elf]);
 	}
 	string[int] pages;
-	if (!in_koe())
-	{
-		pages[0] = "bigisland.php?place=camp&whichcamp=1";
-		pages[1] = "bigisland.php?place=camp&whichcamp=2";
-		pages[2] = "bigisland.php?action=bossfight&pwd";
-	}
+	pages[0] = "bigisland.php?place=camp&whichcamp=1";
+	pages[1] = "bigisland.php?place=camp&whichcamp=2";
+	pages[2] = "bigisland.php?action=bossfight&pwd";
 	if(!autoAdvBypass(0, pages, bossFight, ""))
 	{
 		auto_log_warning("Boss already defeated, ignoring", "red");
@@ -2143,4 +2065,49 @@ boolean L12_finalizeWar()
 	}
 	council();
 	return true;
+}
+
+void warChoiceHandler(int choice)
+{
+	auto_log_debug("void warChoiceHandler(int choice)");
+
+	switch (choice)
+	{
+		case 139:
+			run_choice(3);		//fight a War Hippy (space) cadet for outfit pieces
+			break;
+		case 140:
+			run_choice(3);		//fight a War Hippy drill sergeant for outfit pieces
+			break;
+		case 141: // Blockin' Out the Scenery (wearing Frat Boy Ensemble) 
+			run_choice(1);		//get 50 mysticality
+			break;
+		case 142: // Blockin' Out the Scenery (wearing Frat Warrior Fatigues)
+			run_choice(3);		//starts the war. skips adventure if already started.
+			break;
+		case 143:
+			run_choice(3);		//fight a War Pledgefor outfit pieces
+			break;
+		case 144:
+			run_choice(3);		//fight a Frat Warrior drill sergeant for outfit pieces
+			break;
+		case 145: // Fratacombs (wearing Filthy Hippy Disguise) 
+			run_choice(1);		//get 50 muscle
+			break;
+		case 146: // Fratacombs (wearing War Hippy Fatigues)
+			run_choice(3);		//starts the war. skips adventure if already started.
+			break;
+		case 147:
+			run_choice(3);		//open the pond
+			break;
+		case 148:
+			run_choice(1);		//open the back 40
+			break;
+		case 149:
+			run_choice(2);		//open the other back 40
+			break;
+		default:
+			auto_log_warning("void warChoiceHandler(int choice) somehow hit default. this should not happen");
+			break;
+	}
 }

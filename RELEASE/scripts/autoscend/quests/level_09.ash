@@ -151,6 +151,7 @@ boolean L9_chasmBuild()
 		return false;
 	}
 
+	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 
 	auto_log_info("Chasm time", "blue");
 	
@@ -255,7 +256,7 @@ boolean L9_chasmBuild()
 
 		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
 		{
-			if(auto_my_path() != "G-Lover")
+			if(!in_glover())
 			{
 				use(1, $item[Smut Orc Keepsake Box]);
 			}
@@ -289,7 +290,7 @@ boolean L9_chasmBuild()
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
 		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
 		{
-			if(auto_my_path() != "G-Lover")
+			if(!in_glover())
 			{
 				use(1, $item[Smut Orc Keepsake Box]);
 			}
@@ -314,7 +315,7 @@ boolean L9_aBooPeak()
 	}
 
 	item clue = $item[A-Boo Clue];
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		if((item_amount($item[A-Boo Glue]) > 0) && (item_amount(clue) > 0))
 		{
@@ -339,7 +340,7 @@ boolean L9_aBooPeak()
 	boolean booCloversOk = false;
 	if(cloversAvailable() > 0)
 	{
-		if(auto_my_path() == "G-Lover")
+		if(in_glover())
 		{
 			if(item_amount($item[A-Boo Glue]) > 0)
 			{
@@ -803,13 +804,13 @@ boolean L9_oilPeak()
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean needJar = ((oilProgress & 4) == 0) && item_amount($item[Jar Of Oil]) == 0;
-		if (!needJar)
+		if (!needJar || in_bhy())
 		{
 			return false;
 		}
 		else if (item_amount($item[Bubblin' Crude]) >= 12)
 		{
-			if (auto_my_path() == "G-Lover")
+			if (in_glover())
 			{
 				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
 				{

@@ -544,7 +544,7 @@ void consumeStuff()
 		return;
 	}
 
-	boolean edSpleenCheck = (isActuallyEd() && spleen_left() > 0); // Ed should fill spleen first
+	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
 	
 	if (my_adventures() < 10 && fullness_left() > 0 && in_boris())
 	{
@@ -805,6 +805,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 
 	boolean canConsume(item it, boolean checkValidity)
 	{
+		if(checkValidity && isClipartItem(it) && !auto_is_valid($skill[summon clip art]) && !can_interact())
+		{
+			//workaround for this mafia bug https://kolmafia.us/threads/g-lovers-clip-art-create-function-failure.26007/
+			return false;
+		}
 		return type == SL_ORGAN_STOMACH ? canEat(it, checkValidity) : canDrink(it, checkValidity);
 	}
 
@@ -928,7 +933,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean wantJarlsbergPie = false;
 	boolean wantPetePie = false;
 
-	if (towerKeyCount() < 3 && get_property("auto_consumeKeyLimePies").to_boolean())
+	if (towerKeyCount() < 3 && !get_property("auto_dontConsumeKeyLimePies").to_boolean())
 	{
 		if(item_amount($item[Boris\'s key]) == 0 && item_amount($item[fat loot token]) < 3)
 			wantBorisPie = true;
@@ -946,9 +951,12 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			actions[n] = MakeConsumeAction(it);
 			if (obtain_mode == SL_OBTAIN_PULL)
 			{
-				// Is this a good estimate of how many adventures a pull is worth? I don't know!
-				// This could be a property, I don't know.
 				actions[n].desirability -= 5.0;
+				float user_desirability = get_property("auto_consumePullDesirability").to_float();
+				if (user_desirability > 0.0)
+				{
+					actions[n].desirability -= user_desirability;
+				}
 			}
 			if (type == SL_ORGAN_STOMACH && auto_is_valid($item[special seasoning]))
 			{
@@ -1106,7 +1114,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	return true;
 }
 
-void auto_autoDrinkNightcap(boolean simulate)
+ConsumeAction auto_bestNightcap()
 {
 	ConsumeAction[int] actions;
 	loadConsumables("drink", actions);
@@ -1120,16 +1128,68 @@ void auto_autoDrinkNightcap(boolean simulate)
 	}
 
 	int best = 0;
-	for (int i=1; i < count(actions); i++)
+	for(int i=1; i < count(actions); i++)
 	{
-		if (desirability(i) > desirability(best)) best = i;
+		if(desirability(i) > desirability(best)) best = i;
 	}
 
-	auto_log_info("Nightcap is: " + to_pretty_string(actions[best]), "blue");
+	return actions[best];
+}
 
-	if (simulate) return;
+void auto_printNightcap()
+{
+	auto_log_info("Nightcap is: " + to_pretty_string(auto_bestNightcap()), "blue");
+}
 
-	autoConsume(actions[best]);
+void auto_drinkNightcap()
+{
+	//function to overdrink a nightcap at the end of day
+	if(get_property("auto_skipNightcap").to_boolean())
+	{
+		return;
+	}
+	if(my_path() == "Dark Gyffte")
+	{
+		return;		//disable for it now. TODO make a custom function for vampyre nightcap drinking specifically
+	}
+	if(!can_drink())
+	{
+		return;		//current path cannot drink booze at all
+	}
+	if(auto_freeCombatsRemaining() > 0)
+	{
+		return;		//do not overdrink if we still have free fights we want to do. undesireable free fights are not counted by that function
+	}
+	//you can't overdrink if already overdrunk. TODO account for green beer on cinco de mayo
+	if(auto_have_familiar($familiar[Stooper]))
+	{
+		if($familiar[Stooper] == my_familiar() && inebriety_left() < 0) return;		//stooper is current familiar and overdrunk
+		else if(inebriety_left() < -1) return;		//stooper not current familiar. but will be overdrunk even if switching to it
+	}
+	else if(inebriety_left() < 0) return;	//we can not use stooper and are overdrunk
+	
+	familiar start_fam = my_familiar();
+	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
+	&& start_fam != $familiar[Stooper])
+	{
+		use_familiar($familiar[Stooper]);
+	}
+	
+	//fill up remaining liver first. such as stooper space.
+	while(inebriety_left() > 0 && auto_autoConsumeOne("drink", false));
+	
+	//drink your nightcap to become overdrunk
+	ConsumeAction target = auto_bestNightcap();
+	if(!autoPrepConsume(target))
+	{
+		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
+	}
+	autoConsume(target);
+	
+	if(start_fam != my_familiar())
+	{
+		use_familiar(start_fam);
+	}
 }
 
 boolean auto_autoConsumeOne(string type, boolean simulate)

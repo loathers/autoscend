@@ -41,6 +41,7 @@ void ed_initializeSettings()
 
 		set_property("desertExploration", 100);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
+		set_property("auto_edServantBugCount", 0);
 	}
 }
 
@@ -90,12 +91,7 @@ void ed_initializeDay(int day)
 			{
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
 			}
-
-			visit_url("tutorial.php?action=toot");
-			use(item_amount($item[Letter to Ed the Undying]), $item[Letter to Ed the Undying]);
-			use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
 			tootGetMeat();
-
 			equipBaseline();
 		}
 	}
@@ -199,7 +195,11 @@ boolean L13_ed_councilWarehouse()
 		auto_log_info("Ed Combats: " + get_property("auto_edCombatCount"), "blue");
 		auto_log_info("Ed Combat Rounds: " + get_property("auto_edCombatRoundCount"), "blue");
 
-		return false;
+		cli_execute("refresh quests");
+		if (internalQuestStatus("questL13Warehouse") > 0)
+		{
+			abort("The holy macguffin has been found. Once you replace it you will have to choose a regular class to switch to and end your hiatus as the Undying Ed. Choose wisely or your face will melt off or something.");
+		}
 	}
 	return true;
 }
@@ -285,6 +285,33 @@ boolean ed_doResting()
 		return true;
 	}
 	return false;
+}
+
+void ed_ServantBugWorkaround(string page) {
+	matcher servants_quarters = create_matcher("The Servants' Quarters", page);
+	if (!servants_quarters.find()) {
+		// looks like we hit the bug. Lets try the simple fix.
+		set_property("auto_edServantBugCount", get_property("auto_edServantBugCount").to_int() + 1);
+		auto_log_critical(`You hit the servant bug. It is now {get_property("auto_edServantBugCount").to_int()} times this ascension.`);
+		foreach lackey in $servants[Priest, Cat, Scribe, Maid] {
+			use_servant(lackey);
+			if (my_servant() == lackey) {
+				auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
+				break;
+			}
+		}
+		if (my_servant() == $servant[none]) {
+			// ok that didn't fix it, lets smash the door down and see if that works.
+			visit_url("place.php?whichplace=edbase&action=edbase_door");
+			visit_url("choice.php?forceoption=1");
+			use_servant($servant[Priest]);
+			if (my_servant() != $servant[Priest]) {
+				abort("Failed to change servant. Report this to the KoL dev team (the little bug icon on your top bar in the relay browser).");
+			} else {
+				auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
+			}
+		}
+	}
 }
 
 boolean ed_buySkills()
@@ -400,6 +427,7 @@ boolean ed_buySkills()
 	}
 
 	page = visit_url("place.php?whichplace=edbase&action=edbase_door");
+	ed_ServantBugWorkaround(page);
 	matcher my_imbuePoints = create_matcher("Impart Wisdom unto Current Servant ..100xp, (\\d\+) remain.", page);
 	int imbuePoints = 0;
 	if(my_imbuePoints.find())
@@ -415,6 +443,7 @@ boolean ed_buySkills()
 	}
 
 	page = visit_url("place.php?whichplace=edbase&action=edbase_door");
+	ed_ServantBugWorkaround(page);
 	matcher my_servantPoints = create_matcher("You may release (\\d\+) more servant", page);
 	if(my_servantPoints.find())
 	{
@@ -711,6 +740,7 @@ boolean ed_needShop()
 
 	if (get_property("auto_needLegs").to_boolean() && coins >= ed_KaCost($skill[Upgraded Legs]))
 	{
+		auto_log_info("Ed needs legs (and can afford them)! UNDYING for a free trip to the Underworld!");
 		return true;
 	}
 
@@ -719,6 +749,7 @@ boolean ed_needShop()
 	canEat = max(0, canEat - item_amount($item[Mummified Beef Haunch]));
 	if (canEat > 0 && coins >= 15)
 	{
+		auto_log_info("Ed needs beef haunches (and can afford them)! UNDYING for a free trip to the Underworld!");
 		return true;
 	}
 
@@ -727,6 +758,7 @@ boolean ed_needShop()
 	{
 		if (item_amount($item[Holy Spring Water]) < 1 && item_amount($item[Spirit Beer]) < 1 && item_amount($item[Sacramental Wine]) < 1)
 		{
+			auto_log_info("Ed needs MP restores! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 	}
@@ -736,36 +768,44 @@ boolean ed_needShop()
 	int requiredKa = ed_KaCost(nextUpgrade);
 	if (canEat < 1 && requiredKa != -1 && coins >= requiredKa)
 	{
+		auto_log_info(`Ed needs {nextUpgrade.to_string()} (and can afford it)! UNDYING for a free trip to the Underworld!`);
 		return true;
 	}
 	else if (have_skill($skill[Okay Seriously, This is the Last Spleen]) && canEat < 1)
 	{
 		if (item_amount($item[Talisman of Renenutet]) < 1 && get_property("auto_renenutetBought").to_int() < 7 && coins >= (7 - get_property("auto_renenutetBought").to_int()))
 		{
+			auto_log_info("Ed needs Talismens of Renenutet! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Linen Bandages]) < 1 && coins >= 4)
 		{
+			auto_log_info("Ed needs Linen Bandages! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Holy Spring Water]) < 1 && coins >= 1 && (my_maxmp() - my_mp() < 50))
 		{
+			auto_log_info("Ed needs Holy Spring Water! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Talisman of Horus]) < 1 && coins >= 5)
 		{
+			auto_log_info("Ed needs Talismens of Horus! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Spirit Beer]) < 1 && coins >= 30)
 		{
+			auto_log_info("Ed needs Spirit Beer! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if ((item_amount($item[Soft Green Echo Eyedrop Antidote]) + item_amount($item[Ancient Cure-All])) < 1 && coins >= 30)
 		{
+			auto_log_info("Ed needs Ancient Cure-All! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 		else if (item_amount($item[Sacramental Wine]) < 1 && coins >= 30)
 		{
+			auto_log_info("Ed needs Sacramental Wine! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
 	}
@@ -876,10 +916,10 @@ boolean ed_shopping()
 		else if (have_skill($skill[Okay Seriously, This is the Last Spleen]) && canEat < 1)
 		{
 			while (item_amount($item[Talisman of Renenutet]) < 7 && get_property("auto_renenutetBought").to_int() < 7 && coins >= 1)
-		{
-			auto_log_info("Buying Talisman of Renenutet", "green");
-			visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=439", true);
-			set_property("auto_renenutetBought", 1 + get_property("auto_renenutetBought").to_int());
+			{
+				auto_log_info("Buying Talisman of Renenutet", "green");
+				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=439", true);
+				set_property("auto_renenutetBought", 1 + get_property("auto_renenutetBought").to_int());
 				coins -= 1;
 			}
 			while (item_amount($item[Linen Bandages]) < 4 && coins >= 1)
@@ -938,6 +978,10 @@ void ed_handleAdventureServant(location loc)
 
 	// Default to the Priest as we need Ka to get upgrades and fill spleen (and other miscellanea)
 	servant myServant = $servant[Priest];
+
+	string page = visit_url("place.php?whichplace=edbase&action=edbase_door");
+	ed_ServantBugWorkaround(page); // need to make sure we're not hitting the bug otherwise have_servant will always wrongly return false.
+	visit_url("place.php?whichplace=edbase"); // leave the choice
 
 	if (my_spleen_use() == 35 && have_skill($skill[Even More Elemental Wards]) && my_level() < 13 && have_servant($servant[Scribe]))
 	{
@@ -1094,9 +1138,9 @@ boolean L1_ed_islandFallback()
 		return false;
 	}
 
-	if((my_level() >= 10) || ((my_level() >= 8) && have_skill($skill[Still Another Extra Spleen])) || ((my_level() >= 6) && have_skill($skill[Okay Seriously\, This Is The Last Spleen])))
+	if (my_level() >= 10 || have_skill($skill[Okay Seriously\, This Is The Last Spleen]))
 	{
-		if((spleen_left() < 5) || (my_adventures() > 10))
+		if (spleen_left() < 5 || my_adventures() > 10)
 		{
 			return false;
 		}
@@ -1104,7 +1148,7 @@ boolean L1_ed_islandFallback()
 
 	if (neverendingPartyAvailable())
 	{
-		return neverendingPartyPowerlevel();
+		return neverendingPartyCombat();
 	}
 	if(elementalPlanes_access($element[stench]))
 	{
@@ -1133,6 +1177,20 @@ boolean L1_ed_islandFallback()
 	if(LX_islandAccess())
 	{
 		return true;
+	}
+	if(get_property("lastIslandUnlock").to_int() != my_ascensions())	//somehow island was not unlocked!
+	{
+		//if we fail to unlock the island at this stage our run will be crippled. normally this does not occur.
+		//but if initialization fails or if user played some turns before running autoscend this can happen.
+		if(my_meat() < 1900)
+		{
+			abort("Island failed to unlock because you do not have enough meat. This is a critical problem for ed pathing. Have at least 1900 meat then run autoscend again");
+		}
+		if(my_adventures() <= 9)
+		{
+			abort("Island failed to unlock because you do not have enough adventures. This is a critical problem for ed pathing. Have at least 10 adv then run autoscend again");
+		}
+		abort("Island failed to unlock for an unknown reason. This is a critical problem for ed pathing. Please unlock the island then run autoscend again");
 	}
 
 	if (my_servant() == $servant[Priest] && my_servant().experience < 196)
@@ -1369,7 +1427,7 @@ boolean LM_edTheUndying()
 		}
 	}
 
-	if (item_amount($item[Seal Tooth]) == 0 && my_meat() > 1500) {
+	if (item_amount($item[Seal Tooth]) == 0 && my_meat() > 2500) {
 		// people with lots of IotMs are too survivable and kill stuff when trying to UNDYING
 		// if they have to use Mild Curse.
 		acquireHermitItem($item[Seal Tooth]);
@@ -1414,6 +1472,11 @@ boolean LM_edTheUndying()
 		}
 	}
 
+	// we should open the manor second floor sooner rather than later as starting the level 11 quest
+	// ruins our pool skill and having delay burning zones open is nice.
+	if (LX_unlockManorSecondFloor() || LX_unlockHauntedLibrary() || LX_unlockHauntedBilliardsRoom(true)) {
+		return true;
+	}
 	// as we do hippy side, the war is a 2 Ka quest (excluding sidequests but that shouldn't matter)
 	// once the war is no longer a complete mess of spaghetti code, change this to do the whole war.
 	if (L12_getOutfit() || L12_startWar())
@@ -1467,7 +1530,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// Copperhead Club & Mob of Zeppelin Protestors are 2 Ka zones (with a banish use) but we want to delay them so we can semi-rare Copperhead
-	if (L11_mauriceSpookyraven() || L11_talismanOfNam() || L11_palindome())
+	if (LX_spookyravenManorSecondFloor() || L11_mauriceSpookyraven() || L11_talismanOfNam() || L11_palindome())
 	{
 		return true;
 	}

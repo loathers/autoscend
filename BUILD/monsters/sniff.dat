@@ -9,7 +9,7 @@ Pygmy Bowler
 Pygmy Witch Surgeon
 pygmy witch accountant	loc:The Hidden Office Building
 pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
-Pygmy Janitor	!tavern:true
+Pygmy Janitor	loc:The Hidden Park;!tavern:true
 Quiet Healer
 Tomb Rat
 Blooper	loc:8-Bit Realm

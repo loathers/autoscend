@@ -1,4 +1,4 @@
-since r20653;	// min mafia revision needed to run this script. Last update: Torso Awaregness -> Torso Awareness
+since r20655;	// min mafia revision needed to run this script. Last update: questM05Toot tracking will correct to finished when refreshing quests
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -42,6 +42,7 @@ import <autoscend/iotms/mr2017.ash>
 import <autoscend/iotms/mr2018.ash>
 import <autoscend/iotms/mr2019.ash>
 import <autoscend/iotms/mr2020.ash>
+import <autoscend/iotms/mr2021.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/avatar_of_boris.ash>
@@ -65,11 +66,11 @@ import <autoscend/paths/one_crazy_random_summer.ash>
 import <autoscend/paths/path_of_the_plumber.ash>
 import <autoscend/paths/picky.ash>
 import <autoscend/paths/pocket_familiars.ash>
-import <autoscend/paths/standard.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/low_key_summer.ash>
 
+import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>
 import <autoscend/quests/level_03.ash>
 import <autoscend/quests/level_04.ash>
@@ -159,6 +160,8 @@ void initializeSettings() {
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
 	set_property("auto_doGalaktik", false);
+	set_property("auto_doArmory", false);
+	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
 	set_property("auto_haveSourceTerminal", false);
@@ -194,7 +197,6 @@ void initializeSettings() {
 	set_property("auto_writingDeskSummon", false);
 	set_property("auto_yellowRays", "");
 	set_property("auto_replaces", "");
-	set_property("auto_consumeKeyLimePies", true);
 	set_property("auto_skipNuns", "false");
 	set_property("auto_skipL12Farm", "false");
 	set_property("auto_L12FarmStage", "0");
@@ -681,7 +683,7 @@ int handlePulls(int day)
 			{
 				getPeteShirt = false;
 			}
-			if(auto_my_path() == "G-Lover")
+			if(in_glover())
 			{
 				getPeteShirt = false;
 			}
@@ -791,7 +793,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 3, 0);
 		}
 
-		if(auto_my_path() != "G-Lover")
+		if(!in_glover())
 		{
 			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
 		}
@@ -801,7 +803,7 @@ int handlePulls(int day)
 			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
 		}
 
-		if(!in_pokefam() && auto_my_path() != "G-Lover")
+		if(!in_pokefam() && !in_glover())
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
@@ -900,7 +902,7 @@ boolean fortuneCookieEvent()
 			goal = $location[The Castle in the Clouds in the Sky (Top Floor)];
 		}
 
-		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("sidequestNunsCompleted") != "none" || in_koe()))
+		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean() || in_koe()))
 		{
 			goal = $location[The Limerick Dungeon];
 		}
@@ -1030,13 +1032,13 @@ void initializeDay(int day)
 		if(get_property("auto_teaChoice") != "")
 		{
 			string[int] teaChoice = split_string(get_property("auto_teaChoice"), ";");
-			item myTea = trim(teaChoice[min(count(teaChoice), my_daycount()) - 1]).to_item();
-			if(myTea != $item[none])
+			string myTea = trim(teaChoice[min(count(teaChoice), my_daycount()) - 1]);
+			if (myTea.to_item() != $item[none] || myTea == "shake")
 			{
 				boolean buff = cli_execute("teatree " + myTea);
 			}
 		}
-		else if(day == 1)
+		else if (day == 1 && auto_is_valid($item[Potted Tea Tree]))
 		{
 			if(fullness_limit() > 0)
 			{
@@ -1051,7 +1053,7 @@ void initializeDay(int day)
 				boolean buff = cli_execute("teatree " + $item[Cuppa Royal Tea]);
 			}
 		}
-		else if(day == 2)
+		else if (day == 2 && auto_is_valid($item[Potted Tea Tree]))
 		{
 			if(inebriety_limit() > 0)
 			{
@@ -1112,6 +1114,9 @@ void initializeDay(int day)
 	{
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
+	
+	//you must finish the Toot Oriole quest to unlock council quests.
+	tootOriole();
 
 	ed_initializeDay(day);
 	boris_initializeDay(day);
@@ -1161,9 +1166,6 @@ void initializeDay(int day)
 				visit_url("clan_viplounge.php?action=floundry");
 			}
 
-			visit_url("tutorial.php?action=toot");
-			use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
-			use(item_amount($item[Pork Elf Goodies Sack]), $item[Pork Elf Goodies Sack]);
 			tootGetMeat();
 
 			hr_initializeDay(day);
@@ -1177,7 +1179,7 @@ void initializeDay(int day)
 				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
 					//Try to get Antique Accordion early if we possibly can.
-					if(isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_my_path() != "G-Lover"))
+					if(isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && !in_glover())
 					{
 						buyUpTo(1, $item[Antique Accordion]);
 					}
@@ -1246,7 +1248,7 @@ void initializeDay(int day)
 				pulverizeThing($item[Vicar\'s Tutu]);
 			}
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class()) && (auto_my_path() != "G-Lover"))
+			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class()) && !in_glover())
 			{
 				buyUpTo(1, $item[Antique Accordion]);
 			}
@@ -1446,7 +1448,7 @@ boolean dailyEvents()
 
 	while(zataraClanmate(""));
 
-	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]))
+	if (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]) && !in_glover())
 	{
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
 		{
@@ -1530,7 +1532,7 @@ boolean LX_attemptPowerLevel()
 	}
 	if (neverendingPartyAvailable())
 	{
-		if(neverendingPartyPowerlevel()) return true;
+		if(neverendingPartyCombat()) return true;
 	}
 	if(timeSpinnerAdventure()) return true;
 	//do not use the scaling zone [The Thinknerd Warehouse] here.
@@ -1712,8 +1714,8 @@ boolean LX_freeCombats(boolean powerlevel)
 	{
 		if(powerlevel)
 		{
-			auto_log_debug("LX_freeCombats is calling neverendingPartyPowerlevel()");
-			if(neverendingPartyPowerlevel()) return true;
+			auto_log_debug("LX_freeCombats is calling neverendingPartyCombat()");
+			if(neverendingPartyCombat()) return true;
 		}
 		else
 		{
@@ -1942,7 +1944,6 @@ boolean LX_hardcoreFoodFarm()
 
 boolean LX_craftAcquireItems()
 {
-	dependenceDayClovers();
 	if((item_amount($item[Ten-Leaf Clover]) > 0) && glover_usable($item[Ten-Leaf Clover]))
 	{
 		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
@@ -2015,7 +2016,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && (auto_my_path() != "G-Lover"))
+	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && !in_glover())
 	{
 		buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
@@ -2031,7 +2032,7 @@ boolean LX_craftAcquireItems()
 	}
 
 	#Can we have some other way to check that we have AT skills? Checking all skills just to be sure.
-	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() >= npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && (auto_my_path() != "G-Lover"))
+	if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && (my_meat() >= npc_price($item[Antique Accordion])) && (auto_predictAccordionTurns() < 10) && !in_glover())
 	{
 		boolean buyAntiqueAccordion = false;
 
@@ -2251,7 +2252,7 @@ boolean adventureFailureHandler()
 			}
 		}
 
-		if (tooManyAdventures && auto_my_path() == "G-Lover")
+		if (tooManyAdventures && in_glover())
 		{
 			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Hidden Temple] contains place)
 			{
@@ -2349,37 +2350,43 @@ int speculative_pool_skill()
 
 boolean autosellCrap()
 {
-	if((item_amount($item[dense meat stack]) > 1) && (item_amount($item[dense meat stack]) <= 10))
+	if(can_interact() && my_meat() > 20000)
 	{
-		auto_autosell(1, $item[dense meat stack]);
+		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	foreach it in $items[Blue Money Bag, Red Money Bag, White Money Bag]
+	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
 	{
 		if(item_amount(it) > 0)
 		{
-			auto_autosell(item_amount(it), it);
+			auto_autosell(min(10,item_amount(it)), it);		//autosell all of this item
 		}
 	}
-	foreach it in $items[Ancient Vinyl Coin Purse, Bag Of Park Garbage, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
-		if((item_amount(it) > 0) && glover_usable(it) && is_unrestricted(it))
+		if(item_amount(it) > 0 && auto_is_valid(it))
 		{
-			use(1, it);
+			use(min(10,item_amount(it)), it);
+		}
+	}
+	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
+	{
+		if(item_amount(it) > 1)		//for these items we want to keep 1 in stock. sell the rest
+		{
+			use(min(10,item_amount(it)-1), it);
+		}
+	}
+	foreach it in $items[elegant nightstick]		//keeping 2 nightsticks in stock for double fisting
+	{
+		if(item_amount(it) > 2)		//for these items we want to keep 2 in stock. sell the rest
+		{
+			use(min(10,item_amount(it)-2), it);
 		}
 	}
 
-	if(!in_hardcore() && !isGuildClass())
+	//bellow this point are items we only want to sell if we are desperate for meat.
+	if(my_meat() > meatReserve())
 	{
 		return false;
-	}
-	if(my_meat() > 6500)
-	{
-		return false;
-	}
-
-	if(item_amount($item[meat stack]) > 1)
-	{
-		auto_autosell(1, $item[meat stack]);
 	}
 
 	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
@@ -2585,6 +2592,7 @@ boolean doTasks()
 	auto_latteRefill();
 	auto_buyCrimboCommerceMallItem();
 	houseUpgrade();
+	hatchList();			//hatch familiars that are commonly dropped in run
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;
@@ -2592,7 +2600,6 @@ boolean doTasks()
 	if(LM_bhy())						return true;
 
 	tophatMaker();
-	xiblaxian_makeStuff();
 	deck_useScheme("");
 	autosellCrap();
 	asdonAutoFeed();
@@ -2666,7 +2673,7 @@ boolean doTasks()
 	{
 		return true;
 	}
-	if(auto_my_path() == "Grey Goo")
+	if(in_ggoo())
 	{
 		abort("Should not have gotten here, aborted LA_grey_goo_tasks method allowed return to caller. Uh oh.");
 	}
@@ -2719,6 +2726,8 @@ boolean doTasks()
 	if(LX_faxing())						return true;
 	if(LX_artistQuest())				return true;
 	if(LX_galaktikSubQuest())			return true;
+	if(LX_armorySideQuest())			return true;
+	if(LX_meatsmithSubQuest())			return true;
 	if(L9_leafletQuest())				return true;
 	if(L5_findKnob())					return true;		//use encryption key to unlock possible delay zone if you have it
 	if(L12_sonofaPrefix())				return true;
@@ -2927,17 +2936,15 @@ void auto_begin()
 	backupSetting("autoAntidote", 0);
 	backupSetting("dontStopForCounters", true);
 	backupSetting("maximizerCombinationLimit", "100000");
-
-	if(get_property("auto_kingLiberation").to_boolean())
-	{
-		backupSetting("kingLiberatedScript", "scripts/autoscend/auto_king.ash");
-	}
-	
 	backupSetting("afterAdventureScript", "scripts/autoscend/auto_post_adv.ash");
 	backupSetting("choiceAdventureScript", "scripts/autoscend/auto_choice_adv.ash");
 	backupSetting("betweenBattleScript", "scripts/autoscend/auto_pre_adv.ash");
 	backupSetting("recoveryScript", "");
 	backupSetting("counterScript", "");
+	if (!get_property("auto_disableExcavator").to_boolean())
+	{
+		backupSetting("spadingScript", "excavator.ash");
+	}
 
 	backupSetting("hpAutoRecovery", -0.05);
 	backupSetting("hpAutoRecoveryTarget", -0.05);
@@ -2950,6 +2957,7 @@ void auto_begin()
 	backupSetting("currentMood", "apathetic");
 
 	backupSetting("logPreferenceChange", "true");
+	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 	
 	backupSetting("choiceAdventure1107", 1);
 

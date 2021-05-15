@@ -331,17 +331,14 @@ boolean LX_steelOrgan()
 		{
 			foreach it in $items[Hilarious Comedy Prop, Victor\, the Insult Comic Hellhound Puppet, Observational Glasses]
 			{
-				if(possessEquipment(it))
+				if(possessEquipment(it) && auto_can_equip(it))
 				{
 					autoForceEquip(it);
-					string temp = visit_url("pandamonium.php?action=mourn&whichitem=" + to_int(it) + "&pwd=");
+					visit_url("pandamonium.php?action=mourn&whichitem=" + to_int(it) + "&pwd=");
 				}
-				else
+				else if(available_amount(it) == 0)
 				{
-					if(available_amount(it) == 0)
-					{
-						abort("Somehow we do not have " + it + " at this point...");
-					}
+					abort("Somehow we do not have " + it + " at this point...");
 				}
 			}
 		}
@@ -397,6 +394,10 @@ boolean LX_guildUnlock()
 		&& get_property('auto_skipUnlockGuild').to_boolean())
 	{
 		return false;
+	}
+	if(in_ggoo() && $classes[Seal Clubber, Turtle Tamer] contains my_class())
+	{
+		return false;	//muscle classes cannot unlock guild in grey goo
 	}
 	auto_log_info("Let's unlock the guild.", "green");
 
@@ -471,6 +472,7 @@ boolean startArmorySubQuest()
 {
 	if(in_koe() || auto_my_path() == "Nuclear Autumn")
 	{
+		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
 		{
 			return use(1, $item[Hypnotic Breadcrumbs]);
@@ -480,9 +482,9 @@ boolean startArmorySubQuest()
 
 	if(internalQuestStatus("questM25Armorer") == -1)
 	{
-		string temp = visit_url("shop.php?whichshop=armory");
-		temp = visit_url("shop.php?whichshop=armory&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1065&option=1");
+		visit_url("shop.php?whichshop=armory");
+		visit_url("shop.php?whichshop=armory&action=talk");
+		visit_url("choice.php?pwd=&whichchoice=1065&option=1");
 		if(internalQuestStatus("questM25Armorer") > -1)
 		{
 			return true;
@@ -491,35 +493,95 @@ boolean startArmorySubQuest()
 	return false;
 }
 
-boolean startMeatsmithSubQuest()
+boolean finishArmorySideQuest()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(internalQuestStatus("questM25Armorer") != 4)		//step4 == have [no-handed pie]. need to turn it in.
 	{
-		if(item_amount($item[Bone With a Price Tag On It]) > 0)
-		{
-			use(1, $item[Bone With a Price Tag On It]);
-			return true;
-		}
 		return false;
 	}
-	if(internalQuestStatus("questM23Meatsmith") == -1)
+	auto_log_info("finishing quest [Lending a Hand (and a Foot)]");
+	visit_url("shop.php?whichshop=armory");
+	run_choice(2);		//give no-handed pie to finish the quest
+	return internalQuestStatus("questM25Armorer") > 4;
+}
+
+boolean LX_armorySideQuest()
+{
+	//do the quest [Lending a Hand (and a Foot)] and unlock [madeline's baking supply] store
+	//step2 = need to kill the cake lord
+	//step3 = killed the cake lord
+	//step4 = clicked through the mandatory noncombat pages after the cake lord was killed
+	startArmorySubQuest();							//always start the quest to unlock the zone. costs no adv
+	if(finishArmorySideQuest()) return true;		//always finish the quest if possible. unlocks a shop.
+
+	if(!get_property("auto_doArmory").to_boolean())		//post setting indicating we should do this quest this ascension
 	{
-		string temp = visit_url("shop.php?whichshop=meatsmith");
-		temp = visit_url("shop.php?whichshop=meatsmith&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1059&option=1");
-		return true;
+		return false;
+	}	
+	if(internalQuestStatus("questM25Armorer") > -1 && internalQuestStatus("questM25Armorer") < 4)
+	{
+		return autoAdv($location[Madness Bakery]);
 	}
 	return false;
 }
 
+boolean startMeatsmithSubQuest()
+{
+	if(in_koe())
+	{
+		return false;	//quest cannot be started and zone cannot be unlocked.
+	}
+	if(internalQuestStatus("questM23Meatsmith") != -1)
+	{
+		return false;	//quest already started
+	}
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		if(item_amount($item[Bone With a Price Tag On It]) > 0)
+		{
+			//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
+			return use(1, $item[Bone With a Price Tag On It]);
+		}
+		return false;
+	}
+
+	visit_url("shop.php?whichshop=meatsmith");
+	visit_url("shop.php?whichshop=meatsmith&action=talk");
+	run_choice(1);
+	return internalQuestStatus("questM23Meatsmith") > -1;
+}
+
 boolean finishMeatsmithSubQuest()
 {
-	if (internalQuestStatus("questM23Meatsmith") == 1) {
+	if(internalQuestStatus("questM23Meatsmith") != 1)
+	{
+		return false;
+	}
+	if(item_amount($item[Check to the Meatsmith]) > 0)
+	{
 		visit_url("shop.php?whichshop=meatsmith");
 		run_choice(2);
 		return true;
 	}
 	return false;
+}
+
+boolean LX_meatsmithSubQuest()
+{
+	//do meatsmith optional subquest.
+	if(startMeatsmithSubQuest()) return true;		//always start the quest if available
+	if(finishMeatsmithSubQuest()) return true;		//always turn the quest in if possible
+	
+	if(internalQuestStatus("questM23Meatsmith") != 0)
+	{
+		return false;	
+	}
+	if(!get_property("auto_doMeatsmith").to_boolean())
+	{
+		return false;		//by default we do not want to do this quest.
+	}
+	
+	return autoAdv($location[The Skeleton Store]);
 }
 
 void considerGalaktikSubQuest()
@@ -543,6 +605,10 @@ void considerGalaktikSubQuest()
 	{
 		return;		//give it some turns to see how well we handle things before deciding if galaktik is needed
 	}
+	if(in_koe())
+	{
+		return;		//galaktik is unavailable in kingdom of exploathing
+	}
 	if(my_class() == $class[Vampyre] || in_zelda())
 	{
 		return;		//these classes cannot use galaktik restorers.
@@ -562,7 +628,7 @@ void considerGalaktikSubQuest()
 		set_property("auto_doGalaktik", true);
 		return;
 	}
-	if(my_meat() + 100 < meatReserve())
+	if(my_meat() < meatReserve() + 100)
 	{
 		auto_log_info("Our meat reserves are far too low, we still need to save up some for quests. Enabling Galaktik quest for this ascension", "red");
 		set_property("auto_doGalaktik", true);
@@ -572,23 +638,24 @@ void considerGalaktikSubQuest()
 
 boolean startGalaktikSubQuest()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(internalQuestStatus("questM24Doc") != -1)
 	{
+		return false;	//quest already started
+	}
+	if(auto_my_path() == "Nuclear Autumn" || in_koe())
+	{
+		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
 		{
-			use(1, $item[Map to a Hidden Booze Cache]);
-			return true;
+			return use(1, $item[Map to a Hidden Booze Cache]);
 		}
 		return false;
 	}
-	if(internalQuestStatus("questM24Doc") == -1)
-	{
-		string temp = visit_url("shop.php?whichshop=doc");
-		temp = visit_url("shop.php?whichshop=doc&action=talk");
-		temp = visit_url("choice.php?pwd=&whichchoice=1064&option=1");
-		return true;
-	}
-	return false;
+
+	visit_url("shop.php?whichshop=doc");
+	visit_url("shop.php?whichshop=doc&action=talk");
+	run_choice(1);
+	return internalQuestStatus("questM24Doc") > -1;
 }
 
 boolean finishGalaktikSubQuest()
@@ -609,10 +676,9 @@ boolean finishGalaktikSubQuest()
 boolean LX_galaktikSubQuest()
 {
 	//do doc galaktik optional subquest.
-	
-	if(startGalaktikSubQuest()) return true;
-	if(finishGalaktikSubQuest()) return true;
-	considerGalaktikSubQuest();
+	if(startGalaktikSubQuest()) return true;	//always start the quest if available
+	if(finishGalaktikSubQuest()) return true;	//always turn the quest in if possible
+	considerGalaktikSubQuest();					//if allowed will automatically enable the quest in some cases
 	
 	if(internalQuestStatus("questM24Doc") != 0)
 	{

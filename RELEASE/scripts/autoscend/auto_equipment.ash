@@ -195,7 +195,13 @@ string defaultMaximizeStatement()
 		res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 	}
 
-	if(!in_zelda())
+	//weapon handling
+	if(in_boris())
+	{
+		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
+		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
+	}
+	else if(!in_zelda())
 	{
 		if(my_primestat() == $stat[Mysticality])
 		{
@@ -203,7 +209,7 @@ string defaultMaximizeStatement()
 		}
 		else
 		{
-			res += ",1.5weapon damage,-0.75weapon damage percent,1.5elemental damage";
+			res += ",1.5weapon damage,0.75weapon damage percent,1.5elemental damage";
 		}
 	}
 
@@ -229,10 +235,10 @@ string defaultMaximizeStatement()
 
 void resetMaximize()
 {
-	string res = get_property("auto_maximize_baseline");
+	string res = get_property("auto_maximize_baseline");	//user configured override baseline statement.
 	if (res == "" || res.to_lower_case() == "default" || res.to_lower_case() == "disabled")
 	{
-		res = defaultMaximizeStatement();
+		res = defaultMaximizeStatement();		//automatically generated baseline statement
 	}
 	
 	void exclude(item it)
@@ -275,13 +281,14 @@ void resetMaximize()
 			}
 		}
 	}
-	else if (item_amount($item[January's Garbage Tote]) > 0 && in_bhy()) {
-	// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
-	foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt] {
-		exclude(it);
+	else if (item_amount($item[January's Garbage Tote]) > 0 && in_bhy())
+	{
+		// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
+		foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt]
+		{
+			exclude(it);
+		}
 	}
-}
-
 	
 	set_property("auto_maximize_current", res);
 	auto_log_debug("Resetting auto_maximize_current to " + res, "gold");
@@ -336,7 +343,7 @@ void finalizeMaximize()
 	}
 	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
-		if (my_class() == $class[Seal Clubber] && auto_my_path() == "G-Lover")
+		if (my_class() == $class[Seal Clubber] && in_glover())
 		{
 			addToMaximize("club");
 		}
@@ -406,10 +413,11 @@ boolean simMaximize()
 
 boolean simMaximizeWith(string add)
 {
+	string backup = get_property("auto_maximize_current");
 	addToMaximize(add);
 	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
 	boolean res = simMaximize();
-	removeFromMaximize(add);
+	set_property("auto_maximize_current", backup);
 	return res;
 }
 
@@ -421,9 +429,7 @@ float simValue(string modifier)
 void equipMaximizedGear()
 {
 	finalizeMaximize();
-	backupSetting("logPreferenceChange", "false");
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
-	restoreSetting("logPreferenceChange");
 }
 
 void equipOverrides()
@@ -578,9 +584,7 @@ void equipRollover()
 	if(my_familiar() == $familiar[none] && auto_have_familiar($familiar[Mosquito]))
 		to_max += ",switch Mosquito";
 
-	backupSetting("logPreferenceChange", "false");
 	maximize(to_max, false);
-	restoreSetting("logPreferenceChange");
 
 	if(!in_hardcore())
 	{
@@ -603,7 +607,7 @@ boolean auto_forceEquipSword() {
 		drowsy sword, knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete,
 		ridiculously huge sword, serpentine sword, vorpal blade, white sword, sweet ninja sword]
 		{
-			if (possessEquipment(it) && can_equip(it))
+			if (possessEquipment(it) && auto_can_equip(it))
 			{
 				swordToEquip = it;
 				break;
@@ -611,13 +615,19 @@ boolean auto_forceEquipSword() {
 		}
 	}
 
-	if (swordToEquip == $item[none])
+	if (swordToEquip == $item[none] && isArmoryAndLeggeryStoreAvailable() && my_meat() > 49)
 	{
 		// if we still don't have a sword available, buy one for a trivial amount of meat.
+		// we must check availability first. retrieve_item does not return false on failure. it aborts on failure.
 		if (retrieve_item(1, $item[sweet ninja sword])) // costs 50 meat from the armorer and leggerer
 		{
 			swordToEquip = $item[sweet ninja sword];
 		}
+	}
+	
+	if (swordToEquip == $item[none])	//we do not want to force equip none and then report success.
+	{
+		return false;
 	}
 
 	return autoForceEquip($slot[weapon], swordToEquip);

@@ -10,6 +10,10 @@ boolean LX_bitchinMeatcar()
 	{
 		return false;
 	}
+	if(in_bhy() && !inKnollSign())		//it is impossible to make a meatcar in this combo of path and signs.
+	{
+		return false;
+	}
 	
 	//calculate meat costs of building your meatcar.
 	//if player manually partially assembled it then it will work, just think it costs slightly more meat than it actually does
@@ -44,10 +48,12 @@ boolean LX_bitchinMeatcar()
 		return false;
 	}
 	
-	if(item_amount($item[Gnollish Toolbox]) > 0)
+	if(item_amount($item[Gnollish Toolbox]) > 0 && auto_is_valid($item[Gnollish Toolbox]))
 	{
-		use(1, $item[Gnollish Toolbox]);
-		return true;
+		if(use(1, $item[Gnollish Toolbox]))
+		{
+			return true;
+		}
 	}
 	
 	//if you reached this point then it means you need to spend adventures to acquire more parts
@@ -92,6 +98,11 @@ boolean LX_unlockDesert()
 			auto_log_info("In Nuclear Autumn you get a free desert pass at level 11. skipping unlocking it for now", "blue");
 			return false;
 		}
+	}
+	
+	if(in_bhy() && !inKnollSign())		//it is impossible to make a meatcar in this combo of path and signs.
+	{
+		return LX_desertAlternate();	//so buying a bus ticket is the only possible way to unlock the desert for this combo
 	}
 	
 	//knollsign lets you buy the meatcar for less meat than a desert pass without spending any adv.
@@ -203,7 +214,7 @@ boolean LX_islandAccess()
 		return LX_desertAlternate();
 	}
 
-	if((my_adventures() <= 9) || (my_meat() <= 1900))
+	if((my_adventures() <= 9) || (my_meat() < 1900))
 	{
 		return false;
 	}
@@ -652,36 +663,6 @@ boolean LX_meatMaid()
 			abort("May be stuck in an interrupting Non-Combat adventure, finish current adventure and resume");
 		}
 		return true;
-	}
-	return false;
-}
-
-boolean dependenceDayClovers()
-{
-	if(get_property("_fireworkUsed").to_boolean())
-	{
-		return false;	//only 1 firework per day allowed
-	}
-	if(holiday() != "Dependence Day")
-	{
-		return false;	//it is not dependence day today
-	}
-	if(isActuallyEd() && get_property("lastIslandUnlock").to_int() != my_ascensions())
-	{
-		return false;	//buying it before unlocking the island on day 1 makes you too poor to unlock it on day 1 and adds days to the run
-	}
-	
-	auto_log_info("Today is Dependence Day and I want to use a [green rocket] for some clovers", "green");
-	if(item_amount($item[green rocket]) == 0 && my_meat() < npc_price($item[green rocket]))
-	{
-		auto_log_info("I can't afford a [green rocket]. I will try again later");
-		return false;
-	}
-	
-	buyUpTo(1, $item[green rocket]);
-	if(item_amount($item[green rocket]) > 0)
-	{
-		return use(1, $item[green rocket]);
 	}
 	return false;
 }

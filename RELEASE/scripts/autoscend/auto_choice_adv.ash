@@ -48,6 +48,19 @@ boolean auto_run_choice(int choice, string page)
 		case 125: // No Visible Means of Support (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
+		case 139:
+		case 140:
+		case 141: // Blockin' Out the Scenery (wearing Frat Boy Ensemble) 
+		case 142: // Blockin' Out the Scenery (wearing Frat Warrior Fatigues)
+		case 143:
+		case 144:
+		case 145: // Fratacombs (wearing Filthy Hippy Disguise) 
+		case 146: // Fratacombs (wearing War Hippy Fatigues)
+		case 147:
+		case 148:
+		case 149:
+			warChoiceHandler(choice);
+			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
 			if(auto_my_path() == "Live. Ascend. Repeat.")
 			{
@@ -299,6 +312,8 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(3); // get Lord Spookyraven's spectacles
 			} else if (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1) {
 				run_choice(4); // get disposable instant camera
+			} else if (my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve()) {
+				run_choice(1); // get ~500 meat
 			} else {
 				run_choice(2); // get mysticality substats
 			}
@@ -393,7 +408,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1061: // Heart of Madness (Madness Bakery Quest)
-			if(internalQuestStatus("questM25Armorer") <= 1) {
+			if(internalQuestStatus("questM25Armorer") <= 2) {
 				run_choice(1);
 			} else {
 				run_choice(5);
@@ -457,6 +472,15 @@ boolean auto_run_choice(int choice, string page)
 			}
 			run_choice(glchoice);
 			break;
+		case 1322: // The Beginning of the Neverend (The Neverending Party)
+		case 1323: // All Done! (The Neverending Party)
+		case 1324: // It Hasn't Ended, It's Just Paused (The Neverending Party)
+		case 1325: // A Room With a View... Of a Bed (The Neverending Party)
+		case 1326: // Gone Kitchin' (The Neverending Party)
+		case 1327: // Forward to the Back (The Neverending Party)
+		case 1328: // Basement Urges (The Neverending Party)
+			neverendingPartyChoiceHandler(choice);
+			break;
 		case 1340: // Is There A Doctor In The House? (Lil' Doctor Bag™)
 			auto_log_info("Accepting doctor quest, it's our job!");
 			run_choice(1);
@@ -464,8 +488,11 @@ boolean auto_run_choice(int choice, string page)
 		case 1342: // Torpor (Dark Gyffte)
 			bat_reallyPickSkills(20);
 			break;
+		case 1391: // Rationing out Destruction (Kingdom of Exploathing)
+			koe_RationingOutDestruction();
+			break;
 		case 1410: // The Mushy Center (Your Mushroom Garden)
-			run_choice(2); // pick the mushroom.
+			mushroomGardenChoiceHandler(choice);
 			break;
 		case 1427: // Hidden Junction (Cartography)
 		case 1428: // Choice 1428 is Your Neck of the Woods (Cartography)

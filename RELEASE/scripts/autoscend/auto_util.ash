@@ -8,9 +8,7 @@ boolean autoMaximize(string req, boolean simulate)
 		tcrs_maximize_with_items(req);
 #		user_confirm("Beep");
 	}
-	backupSetting("logPreferenceChange", "false");
 	boolean didmax = maximize(req, simulate);
-	restoreSetting("logPreferenceChange");
 	return didmax;
 }
 
@@ -22,9 +20,7 @@ boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 		tcrs_maximize_with_items(req);
 #		user_confirm("Beep");
 	}
-	backupSetting("logPreferenceChange", "false");
 	boolean didmax = maximize(req, maxPrice, priceLevel, simulate);
-	restoreSetting("logPreferenceChange");
 	return didmax;
 }
 
@@ -36,9 +32,7 @@ aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulat
 #		user_confirm("Beep");
 		tcrs_maximize_with_items(req);
 	}
-	backupSetting("logPreferenceChange", "false");
 	aggregate maxrecord = maximize(req, maxPrice, priceLevel, simulate, includeEquip);
-	restoreSetting("logPreferenceChange");
 	return maxrecord;
 }
 
@@ -256,19 +250,6 @@ void debugMaximize(string req, int meat)	//This function will be removed.
 	print_html(tableDo);
 	print_html(tableDont);
 
-	if(get_property("auto_shareMaximizer").to_boolean() && get_property("auto_allowSharingData").to_boolean())
-	{
-		auto_log_info("Sharing Maximizer data.", "blue");
-		string temp = visit_url("http://cheesellc.com/kol/sharing.php?type=maximizer&data="+url_encode(tableDo + tableDont));
-		if(contains_text(temp, "success"))
-		{
-			auto_log_info("Data shared successfully", "green");
-		}
-		else
-		{
-			auto_log_warning("Data share failed", "green");
-		}
-	}
 
 	//	A successive print will help make the table readable in cases where it is not rendered properly
 	//cli_execute("ashref get_inventory");
@@ -914,13 +895,16 @@ boolean canYellowRay(monster target)
 			temp = visit_url("choice.php?pwd=&whichchoice=999&option=1&topper=1&lights=1&garland=1&gift=1");
 		}
 	}
-	if(!get_property("_internetViralVideoBought").to_boolean() && (item_amount($item[BACON]) >= 20) && auto_is_valid($item[Viral Video]))
+	if(!get_property("_internetViralVideoBought").to_boolean() &&	//can only buy 1 per day
+	(item_amount($item[BACON]) >= 20) &&	//it costs 20 bacon
+	auto_is_valid($item[Viral Video]) &&	//do not bother buying it if it is not valid
+	!in_koe())	//bacon store is unreachable in kingdom of exploathing
 	{
 		cli_execute("make " + $item[Viral Video]);
 	}
 	# Pulled Yellow Taffy	- How do we handle the underwater check?
 	# He-Boulder?			- How do we do this?
-	return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains target) != "";
+	return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 }
 
 boolean canYellowRay()
@@ -1090,6 +1074,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil\' Doctor&trade; bag])) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
 	{
 		return "skill " + $skill[Reflex Hammer];
+	}
+
+	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
+	{
+		return "skill " + $skill[Feel Hatred];
 	}
 
 	if ((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force")) {
@@ -1295,6 +1284,11 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
 
+	if (auto_canFeelEnvy())
+	{
+		return "skill " + $skill[Feel Envy];
+	}
+
 	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && (auto_saberChargesAvailable() > 0))
 	{
 		// can't use the force on uncopyable monsters
@@ -1346,7 +1340,7 @@ boolean adjustForYellowRayIfPossible(monster target)
 {
 	if(canYellowRay(target))
 	{
-		string yr_string = yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains target);
+		string yr_string = yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target);
 		auto_log_info("Adjusting to have YR available for " + target + ": " + yr_string, "blue");
 		return adjustForYellowRay(yr_string);
 	}
@@ -1633,14 +1627,6 @@ item whatHiMein()
 	return $item[crudles];
 }
 
-void tootGetMeat()
-{
-	auto_autosell(min(5, item_amount($item[hamethyst])), $item[hamethyst]);
-	auto_autosell(min(5, item_amount($item[baconstone])), $item[baconstone]);
-	auto_autosell(min(5, item_amount($item[porquoise])), $item[porquoise]);
-}
-
-
 boolean ovenHandle()
 {
 	if((auto_get_campground() contains $item[Dramatic&trade; range]) && !get_property("auto_haveoven").to_boolean())
@@ -1691,7 +1677,7 @@ int cloversAvailable()
 	retval += item_amount($item[Ten-Leaf Clover]);
 	retval += closet_amount($item[Ten-Leaf Clover]);
 
-	if(auto_my_path() == "G-Lover" || in_bhy())
+	if(in_glover() || in_bhy())
 	{
 		retval -= item_amount($item[Disassembled Clover]);
 	}
@@ -1722,7 +1708,7 @@ boolean cloverUsageInit()
 
 	if(item_amount($item[Disassembled Clover]) > 0)
 	{
-		if(auto_my_path() != "G-Lover" && !in_bhy())
+		if(!in_glover() && !in_bhy())
 		{
 			use(1, $item[Disassembled Clover]);
 		}
@@ -1757,7 +1743,7 @@ boolean cloverUsageFinish()
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
 		auto_log_debug("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
-		if(auto_my_path() == "G-Lover" || in_bhy())
+		if(in_glover() || in_bhy())
 		{
 			put_closet(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
 		}
@@ -1933,6 +1919,23 @@ boolean isGeneralStoreAvailable()
 		return false;
 	}
 	if(auto_my_path() == "Zombie Master")
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean isArmoryAndLeggeryStoreAvailable()
+{
+	if(auto_my_path() == "Nuclear Autumn")
+	{
+		return false;
+	}
+	if(auto_my_path() == "Zombie Master")
+	{
+		return false;
+	}
+	if(in_koe())
 	{
 		return false;
 	}
@@ -2472,7 +2475,7 @@ boolean auto_change_mcd(int mcd, boolean immediately)
 		{
 			return false;
 		}
-		if(auto_my_path() == "G-Lover")
+		if(in_glover())
 		{
 			return false;
 		}
@@ -3883,6 +3886,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Faboooo]:						useItem = $item[Fabiotion];						break;
 	case $effect[Far Out]:						useItem = $item[Patchouli Incense Stick];		break;
 	case $effect[Fat Leon\'s Phat Loot Lyric]:	useSkill = $skill[Fat Leon\'s Phat Loot Lyric];	break;
+	case $effect[Feeling Lonely]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Excited]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Nervous]:					useSkill = $skill[none];						break;
+	case $effect[Feeling Peaceful]:					useSkill = $skill[none];						break;
 	case $effect[Feeling Punchy]:				useItem = $item[Punching Potion];				break;
 	case $effect[Feroci Tea]:					useItem = $item[cuppa Feroci tea];				break;
 	case $effect[Fever From the Flavor]:	useItem = $item[bottle of antifreeze];	break;
@@ -4408,6 +4415,24 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 	}
 
+	if ($effects[Feeling Lonely, Feeling Excited, Feeling Nervous, Feeling Peaceful] contains buff && auto_haveEmotionChipSkills())
+	{
+		skill feeling = buff.to_skill();
+		if (speculative)
+		{
+			return feeling.timescast < feeling.dailylimit;
+		}
+		else if (feeling.timescast < feeling.dailylimit)
+		{
+			useSkill = buff.to_skill();
+			handleTracker(useSkill, "auto_otherstuff");
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	boolean[effect] falloutEffects = $effects[Drunk and Avuncular, Lucky Struck, Ministrations in the Dark, Power\, Man, Record Hunger, Shrieking Weasel, Superdrifting];
 	if(falloutEffects contains buff)
 	{
@@ -4490,6 +4515,11 @@ location solveDelayZone()
 			if (burnZone == $location[none] || delay < delayableZones[burnZone]) {
 				burnZone = loc;
 			}
+			if (loc == $location[The Spooky Forest] && delay == delayableZones[burnZone])
+			{
+				// prioritise the Spooky Forest when its delay remaining equals the lowest delay zone
+				burnZone = loc;
+			}
 		}
 	}
 
@@ -4564,8 +4594,12 @@ boolean auto_is_valid(item it)
 		if(!isGuildClass())		//it seems like all non core classes are disallowed. need to spade this to verify if any class is exempt
 			return false;
 	}
+	if(in_bhy())
+	{
+		return bhy_is_item_valid(it);
+	}
 	
-	return bees_hate_usable(it.to_string()) && is_unrestricted(it);
+	return is_unrestricted(it);
 }
 
 boolean auto_is_valid(familiar fam)
@@ -4578,7 +4612,8 @@ boolean auto_is_valid(familiar fam)
 
 boolean auto_is_valid(skill sk)
 {
-	return ((glover_usable(sk.to_string()) && bees_hate_usable(sk.to_string())) || sk.passive) && bat_skillValid(sk) && zelda_skillValid(sk) && is_unrestricted(sk);
+	//do not check check for B in bees hate you path. it only restricts items and not skills.
+	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && zelda_skillValid(sk) && is_unrestricted(sk);
 }
 
 string auto_log_level_threshold(){
@@ -5744,9 +5779,7 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	//but I am labeling them seperate from buffs in case we ever need to split this function.
 	
 	//if you have something that reduces the cost of casting buffs, wear it now.
-	backupSetting("logPreferenceChange", "false");
 	maximize("-mana cost, -tie", false);
-	restoreSetting("logPreferenceChange");
 	
 	//Passive damage
 	if(passive_dmg_allowed)

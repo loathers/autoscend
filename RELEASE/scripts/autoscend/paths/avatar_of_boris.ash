@@ -3,6 +3,16 @@ boolean in_boris()
 	return my_class() == $class[Avatar of Boris];
 }
 
+void borisTrusty()
+{
+	//the only time boris wants to take off trusty is if it is bedtime and he wants to wear a halo. Which is unaffected by this
+	if(!in_boris())
+	{
+		return;
+	}
+	autoForceEquip($item[Trusty]);		//ensure we have trusty equipped
+}
+
 boolean borisAdjustML()
 {
 	//set target ML boosts for boris.
@@ -43,6 +53,7 @@ void boris_initializeSettings()
 		auto_log_info("Initializing Avatar of Boris settings", "blue");
 		set_property("auto_borisSkills", -1);
 		set_property("auto_wandOfNagamar", false);
+		set_property("auto_doArmory", true);
 
 		# Mafia r16876 does not see the Boris Helms in storage and will not pull them.
 		# We have to force the issue.
@@ -363,6 +374,46 @@ void borisWastedMP()
 		potential_mp_wasted = potential_mp_wasted - castAmount;		
 		use_skill(castAmount, $skill[Laugh it Off]);
 	}
+}
+
+boolean borisAcquireHP(int goal)
+{
+	//boris cannot use the normal acquireHP function until it is modified allow multi using skills.
+	//that fix is nontrivial so until such a change is made here is a function that makes boris playable
+	if(!in_boris())
+	{
+		return false;
+	}
+	
+	//Laugh it off costs 1 MP to cast and gives either 1 or 2 HP randomly. it is the primary way to restore HP as boris. MP is restored as normal
+	//At the moment HP restore items are simply not used for boris. instead MP restorers are used which are then converted into HP using laugh it off. as stated before this is a bandaid until main restoration function can be fixed to handle multicast. also 99% of the HP you will be restoring in boris would be done via laugh it off anyways.
+	while(my_hp() < goal)
+	{
+		//we need to loop a few times because our MP tank might be too small to allow us to fully heal in one go. also to prevent wasteage we calculate as if we would get max rolls instead of avg rolls on healed amount when multi casting.
+		int missingHP = goal - my_hp();
+		boolean failed_acquireMP = my_maxmp() < 11;
+		int castAmount = missingHP / 2;
+		if(missingHP == 1)	//at 1 HP less than maxHP there is a 50% chance of wasting 1 point of HP healed. a risk worth taking to achieve target HP.
+		{
+			castAmount = 1;	//prevents an infinite loop at 1HP missing. since int 1 divided by 2 = 0
+		}
+		int mp_desired = min(castAmount, (0.9 * my_maxmp()));
+		if(my_mp() < mp_desired &&		//I do not have enough MP to cast as many laugh it off as I would like
+		my_maxmp() > 10)				//if maxMP is too low. do not wastefully try restoring it.
+		{
+			if(!acquireMP(mp_desired))		//try to acquireMP to target. if we already have it acquireMP will just return true.
+			{
+				failed_acquireMP = true;
+			}
+		}
+		castAmount = min(my_mp(), castAmount);		//regardless of MP restore success or failure. we can not spend MP we do not have
+		
+		if(my_mp() == 0) break;				//if I reached this point with no MP I am done
+		use_skill(castAmount, $skill[Laugh it Off]);	//multi restore HP
+		if(failed_acquireMP) break;			//MP restore failed so we are done.
+		if(goal > my_maxhp()) break;		//just in case to prevent infinite loop
+	}
+	return goal >= my_hp();		//match acquireHP() function
 }
 
 boolean LM_boris()

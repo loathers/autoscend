@@ -1,6 +1,11 @@
+boolean in_glover()
+{
+	return auto_my_path() == "G-Lover";
+}
+
 void glover_initializeDay(int day)
 {
-	if (auto_my_path() != "G-Lover") {
+	if (!in_glover()) {
 		return;
 	}
 
@@ -18,7 +23,7 @@ void glover_initializeDay(int day)
 
 void glover_initializeSettings()
 {
-	if(auto_my_path() == "G-Lover")
+	if(in_glover())
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_getBoningKnife", true);
@@ -41,7 +46,7 @@ void glover_initializeSettings()
 
 boolean glover_usable(string it)
 {
-	if(auto_my_path() != "G-Lover")
+	if(!in_glover())
 	{
 		return true;
 	}
@@ -67,9 +72,22 @@ boolean glover_usable(string it)
 	return false;
 }
 
+boolean glover_usable(effect eff)
+{
+	if(!in_glover())
+	{
+		return true;
+	}
+	if($effects[Stone-Faced] contains eff)
+	{
+		return true;	//explicit exceptions that work in glover despite not having G in the name
+	}
+	return glover_usable(eff.to_string());
+}
+
 boolean LM_glover()
 {
-	if(auto_my_path() != "G-Lover")
+	if(!in_glover())
 	{
 		return false;
 	}
