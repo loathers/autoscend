@@ -290,10 +290,9 @@ boolean ed_doResting()
 void ed_ServantBugWorkaround(string page) {
 	matcher servants_quarters = create_matcher("The Servants' Quarters", page);
 	if (!servants_quarters.find()) {
-		auto_log_info("You may have hit the servant bug.");
 		// looks like we hit the bug. Lets try the simple fix.
 		set_property("auto_edServantBugCount", get_property("auto_edServantBugCount").to_int() + 1);
-		auto_log_critical(`You definitely hit the servant bug. It is now {get_property("auto_edServantBugCount").to_int()} times this ascension.`);
+		auto_log_critical(`You hit the servant bug. It is now {get_property("auto_edServantBugCount").to_int()} times this ascension.`);
 		foreach lackey in $servants[Priest, Cat, Scribe, Maid] {
 			use_servant(lackey);
 			if (my_servant() == lackey) {
