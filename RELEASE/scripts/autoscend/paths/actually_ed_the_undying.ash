@@ -291,28 +291,25 @@ void ed_ServantBugWorkaround(string page) {
 	matcher servants_quarters = create_matcher("The Servants' Quarters", page);
 	if (!servants_quarters.find()) {
 		auto_log_info("You may have hit the servant bug.");
-		// looks like we hit the bug. Let's double check though
-		if (my_level() >= 3 && !have_servant($servant[Priest])) {
-			// yeah definitely bugged. Lets try the simple fix.
-			set_property("auto_edServantBugCount", get_property("auto_edServantBugCount").to_int() + 1);
-			auto_log_critical(`You definitely hit the servant bug. It is now {get_property("auto_edServantBugCount").to_int()} times this ascension.`);
-			foreach lackey in $servants[Priest, Cat, Scribe, Maid] {
-				use_servant(lackey);
-				if (my_servant() == lackey) {
-					auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
-					break;
-				}
+		// looks like we hit the bug. Lets try the simple fix.
+		set_property("auto_edServantBugCount", get_property("auto_edServantBugCount").to_int() + 1);
+		auto_log_critical(`You definitely hit the servant bug. It is now {get_property("auto_edServantBugCount").to_int()} times this ascension.`);
+		foreach lackey in $servants[Priest, Cat, Scribe, Maid] {
+			use_servant(lackey);
+			if (my_servant() == lackey) {
+				auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
+				break;
 			}
-			if (my_servant() == $servant[none]) {
-				// ok that didn't fix it, lets smash the door down and see if that works.
-				visit_url("place.php?whichplace=edbase&action=edbase_door");
-				visit_url("choice.php?forceoption=1");
-				use_servant($servant[Priest]);
-				if (my_servant() != $servant[Priest]) {
-					abort("Failed to change servant. Report this to the KoL dev team (the little bug icon on your top bar in the relay browser).");
-				} else {
-					auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
-				}
+		}
+		if (my_servant() == $servant[none]) {
+			// ok that didn't fix it, lets smash the door down and see if that works.
+			visit_url("place.php?whichplace=edbase&action=edbase_door");
+			visit_url("choice.php?forceoption=1");
+			use_servant($servant[Priest]);
+			if (my_servant() != $servant[Priest]) {
+				abort("Failed to change servant. Report this to the KoL dev team (the little bug icon on your top bar in the relay browser).");
+			} else {
+				auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
 			}
 		}
 	}
