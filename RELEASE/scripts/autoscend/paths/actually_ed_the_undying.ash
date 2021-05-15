@@ -287,33 +287,6 @@ boolean ed_doResting()
 	return false;
 }
 
-void ed_ServantBugWorkaround(string page) {
-	matcher servants_quarters = create_matcher("The Servants' Quarters", page);
-	if (!servants_quarters.find()) {
-		// looks like we hit the bug. Lets try the simple fix.
-		set_property("auto_edServantBugCount", get_property("auto_edServantBugCount").to_int() + 1);
-		auto_log_critical(`You hit the servant bug. It is now {get_property("auto_edServantBugCount").to_int()} times this ascension.`);
-		foreach lackey in $servants[Priest, Cat, Scribe, Maid] {
-			use_servant(lackey);
-			if (my_servant() == lackey) {
-				auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
-				break;
-			}
-		}
-		if (my_servant() == $servant[none]) {
-			// ok that didn't fix it, lets smash the door down and see if that works.
-			visit_url("place.php?whichplace=edbase&action=edbase_door");
-			visit_url("choice.php?forceoption=1");
-			use_servant($servant[Priest]);
-			if (my_servant() != $servant[Priest]) {
-				abort("Failed to change servant. Report this to the KoL dev team (the little bug icon on your top bar in the relay browser).");
-			} else {
-				auto_log_info("Servant was changed successfully. Maybe one day the KoL devs will give a shit about this bug?");
-			}
-		}
-	}
-}
-
 boolean ed_buySkills()
 {
 	if (!isActuallyEd())
@@ -427,7 +400,6 @@ boolean ed_buySkills()
 	}
 
 	page = visit_url("place.php?whichplace=edbase&action=edbase_door");
-	ed_ServantBugWorkaround(page);
 	matcher my_imbuePoints = create_matcher("Impart Wisdom unto Current Servant ..100xp, (\\d\+) remain.", page);
 	int imbuePoints = 0;
 	if(my_imbuePoints.find())
@@ -443,7 +415,6 @@ boolean ed_buySkills()
 	}
 
 	page = visit_url("place.php?whichplace=edbase&action=edbase_door");
-	ed_ServantBugWorkaround(page);
 	matcher my_servantPoints = create_matcher("You may release (\\d\+) more servant", page);
 	if(my_servantPoints.find())
 	{
@@ -978,10 +949,6 @@ void ed_handleAdventureServant(location loc)
 
 	// Default to the Priest as we need Ka to get upgrades and fill spleen (and other miscellanea)
 	servant myServant = $servant[Priest];
-
-	string page = visit_url("place.php?whichplace=edbase&action=edbase_door");
-	ed_ServantBugWorkaround(page); // need to make sure we're not hitting the bug otherwise have_servant will always wrongly return false.
-	visit_url("place.php?whichplace=edbase"); // leave the choice
 
 	if (my_spleen_use() == 35 && have_skill($skill[Even More Elemental Wards]) && my_level() < 13 && have_servant($servant[Scribe]))
 	{
