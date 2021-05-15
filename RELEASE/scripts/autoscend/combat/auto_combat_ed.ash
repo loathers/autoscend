@@ -196,8 +196,13 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			loopHandlerDelayAll();
 			return "skill" + $skill[Fire the Jokester\'s Gun];
 		}
-	}
 
+		if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])
+		{
+			// instakills Undead and reduces evilness in Cyrpt zones.
+			return useSkill($skill[Slay the Dead]);
+		}
+	}
 
 	if(get_property("auto_edStatus") == "UNDYING!")
 	{
@@ -709,10 +714,10 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 		if (canUse($item[Seal Tooth], false))
 		{
-			return useItem($item[Seal Tooth], false);
+			return "use Seal Tooth; repeat; ";
 		}
 
-		return useSkill($skill[Mild Curse], false);
+		return "skill Mild Curse; repeat; ";
 	}
 
 	// Actually killing stuff starts here
