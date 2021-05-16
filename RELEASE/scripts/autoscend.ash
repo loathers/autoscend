@@ -2513,7 +2513,7 @@ boolean doTasks()
 		auto_log_warning("According to property _auto_doneToday I am done for today", "red");
 		return false;
 	}
-	if(my_familiar() == $familiar[Stooper])
+	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
 		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
@@ -2973,7 +2973,7 @@ void auto_begin()
 
 	initializeSession(); // sets properties for the current session (should all be reset when we're done)
 
-	if(my_familiar() == $familiar[Stooper])
+	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
 		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
