@@ -74,7 +74,7 @@ boolean isAttackFamiliar(familiar fam)
 	return false;
 }
 
-boolean pathAllowsFamiliar()
+boolean pathHasFamiliar()
 {
 	if($classes[
 	Ed, 
@@ -100,9 +100,24 @@ boolean pathAllowsFamiliar()
 	return true;
 }
 
+boolean pathAllowsChangingFamiliar()
+{
+    if(!pathHasFamiliar())
+    {
+        return false;
+    }
+
+    if ( $string[Quantum Terrarium] contains auto_my_path() )
+    {
+        return false;
+    }
+
+    return true;
+}
+
 boolean auto_have_familiar(familiar fam)
 {
-	if(!pathAllowsFamiliar())
+	if(!pathHasFamiliar())
 	{
 		return false;
 	}
@@ -133,7 +148,7 @@ boolean canChangeFamiliar()
 {
 	// answers the question "am I allowed to change familiar?" in the general sense
 	
-	if(!pathAllowsFamiliar() || my_path() == "Quantum Terrarium")
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return false;
 	}
@@ -255,7 +270,7 @@ boolean handleFamiliar(string type)
 	{
 		return false;	//familiar changing temporarily disabled.
 	}
-	if(!pathAllowsFamiliar() || my_path() == "Quantum Terrarium")
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return false;
 	}
@@ -277,7 +292,7 @@ boolean handleFamiliar(familiar fam)
 	{
 		return false;	//familiar changing temporarily disabled.
 	}
-	if(!pathAllowsFamiliar() || my_path() == "Quantum Terrarium")
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return false;
 	}
@@ -323,7 +338,7 @@ boolean autoChooseFamiliar(location place)
 	{
 		return false;
 	}
-	if(!pathAllowsFamiliar() || my_path() == "Quantum Terrarium")
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return false;		//will just error in those paths
 	}
@@ -584,7 +599,7 @@ void preAdvUpdateFamiliar(location place)
 	{
 		return;
 	}
-	if(!pathAllowsFamiliar() || my_path() == "Quantum Terrarium")
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return;		//will just error in those paths
 	}
@@ -681,7 +696,7 @@ boolean hatchFamiliar(familiar adult)
 	//Returns true if you end up having the hatched familiar. False if you do not.
 	
 	item hatchling = adult.hatchling;
-	if(!pathAllowsFamiliar() || my_path() == "Quantum Terrarium")
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return false;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
@@ -724,7 +739,7 @@ boolean hatchFamiliar(familiar adult)
 void hatchList()
 {
 	//this function goes through a list of hatchlings to hatch if available.
-	if(!pathAllowsFamiliar() || my_path() == "Quantum Terrarium")
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
