@@ -107,7 +107,7 @@ boolean pathAllowsChangingFamiliar()
         return false;
     }
 
-    if ( $string[Quantum Terrarium] contains auto_my_path() )
+    if ( $strings[Quantum Terrarium] contains auto_my_path() )
     {
         return false;
     }
