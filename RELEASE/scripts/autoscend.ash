@@ -1138,7 +1138,7 @@ void initializeDay(int day)
 			{
 				auto_sourceTerminalRequest("enquiry monsters.enq");
 			}
-			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && pathAllowsFamiliar())
+			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && pathHasFamiliar())
 			{
 				auto_sourceTerminalRequest("enquiry familiar.enq");
 			}
@@ -1972,7 +1972,7 @@ boolean LX_craftAcquireItems()
 	}
 	else
 	{
-		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathAllowsFamiliar())
+		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar())
 		{
 			set_property("choiceAdventure1106", 3);
 		}
