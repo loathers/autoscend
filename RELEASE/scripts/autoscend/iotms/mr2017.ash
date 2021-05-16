@@ -3,7 +3,7 @@
 boolean mummifyFamiliar(familiar fam, string bonus)
 {
 	bonus = to_lower_case(bonus);
-	if(!pathAllowsFamiliar())
+	if(!pathHasFamiliar())
 	{
 		return false;
 	}
@@ -275,7 +275,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-	if((loveEffect == 2) && !pathAllowsFamiliar())
+	if((loveEffect == 2) && !pathHasFamiliar())
 	{
 		loveEffect = 3;
 	}
