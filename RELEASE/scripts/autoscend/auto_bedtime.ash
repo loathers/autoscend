@@ -578,7 +578,7 @@ boolean doBedtime()
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");
 		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
-		pathAllowsFamiliar() &&		//some paths like pokefam forbid familiar but mafia still indicates you have the familiar
+		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
 		inebriety_left() == 0 &&	//stooper drinking is only useful when liver is exactly at max without a stooper equipped.
 		my_familiar() != $familiar[Stooper])
 		{

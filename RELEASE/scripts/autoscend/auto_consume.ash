@@ -556,7 +556,8 @@ void consumeStuff()
 		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
 		if (inebriety_left() > 0)
 		{
-			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper])
+			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
+			&& pathAllowsChangingFamiliar()) //check path allows changing of familiars
 			{
 				use_familiar($familiar[Mosquito]);
 			}
@@ -1170,7 +1171,7 @@ void auto_drinkNightcap()
 	
 	familiar start_fam = my_familiar();
 	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
-	&& start_fam != $familiar[Stooper])
+	&& start_fam != $familiar[Stooper] && pathAllowsChangingFamiliar()) //check if path allows changing familiar
 	{
 		use_familiar($familiar[Stooper]);
 	}

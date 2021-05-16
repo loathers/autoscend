@@ -692,7 +692,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 	float blood_skill_opportunity_casts(float goal)
 	{
 		boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
-		pathAllowsFamiliar() && //checks if player can use familiars in this run
+		pathHasFamiliar() && //checks if player can use familiars in this run
 		my_maxhp() > hp_cost($skill[Blood Bond]) &&
 		goal > ((9-hp_regen())*10) && // blood bond drains hp after combat, make sure we dont accidentally kill the player
 		get_property("auto_restoreUseBloodBond").to_boolean();
@@ -1416,7 +1416,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 	skill pick_blood_skill(int final_hp)
 	{
 		boolean bloodBondAvailable = auto_have_skill($skill[Blood Bond]) &&
-		pathAllowsFamiliar() &&
+		pathHasFamiliar() &&
 		my_maxhp() > hp_cost($skill[Blood Bond]) &&
 		final_hp > ((9-hp_regen())*10) && // blood bond drains hp after combat, make sure we dont accidentally kill the player
 		get_property("auto_restoreUseBloodBond").to_boolean();
