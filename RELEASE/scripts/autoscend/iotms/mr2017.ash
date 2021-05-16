@@ -7,6 +7,10 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
+	if(!pathAllowsFamiliarChanging() && my_familiar() !== fam) // cannot mummify a familiar if you can't switch to it.
+	{
+		return false;
+	}
 	if(get_property("_mummifyDone").to_boolean())
 	{
 		return false;
