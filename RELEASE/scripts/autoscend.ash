@@ -101,7 +101,7 @@ void initializeSettings() {
 	invalidateRestoreOptionCache();
 
 	set_property("auto_100familiar", $familiar[none]);
-	if(my_familiar() != $familiar[none] && pathAllowsChangingFamiliar())
+	if(my_familiar() != $familiar[none] && pathAllowsChangingFamiliar()) //If we can't control familiar changes, no point setting 100% familiar data
 	{
 		boolean userAnswer = user_confirm("Familiar already set, is this a 100% familiar run? Will default to 'No' in 15 seconds.", 15000, false);
 		if(userAnswer)
