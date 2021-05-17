@@ -1017,8 +1017,7 @@ boolean auto_snapperPreAdventure(location loc)
 		}
 	}
 
-	visit_url("familiar.php?action=guideme&pwd");
-	visit_url(`choice.php?pwd&whichchoice=1396&option=1&cat={desiredPhylum}`);
+	cli_execute(`snapper {desiredPhylum}`)
 	auto_log_info(`Red-Nosed Snapper is now guiding you towards {desiredPhylum}`, "blue");
 	return true;
 }
