@@ -19,7 +19,7 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
-	if(!have_familiar(fam))
+	if(!canChangeToFamiliar(fam)) // Can Change to Familiar checks both whether we have it and if we are allowed to change to it
 	{
 		return false;
 	}
