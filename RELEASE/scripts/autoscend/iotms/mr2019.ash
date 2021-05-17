@@ -1017,7 +1017,7 @@ boolean auto_snapperPreAdventure(location loc)
 		}
 	}
 
-	cli_execute(`snapper {desiredPhylum}`)
+	cli_execute(`snapper {desiredPhylum}`);
 	auto_log_info(`Red-Nosed Snapper is now guiding you towards {desiredPhylum}`, "blue");
 	return true;
 }
