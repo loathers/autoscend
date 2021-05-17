@@ -943,7 +943,7 @@ boolean auto_changeSnapperPhylum(phylum toChange)
 	{
 		return false;
 	}
-	string phylumString = (toChange == $phylum[mer-kin] ? "merkin" : toChange.to_string());
+	string phylumString = toChange.to_string();
 	set_property("auto_snapperPhylum", phylumString);
 	return true;
 }
@@ -956,7 +956,7 @@ boolean auto_snapperPreAdventure(location loc)
 	}
 	
 	string desiredPhylum = get_property("auto_snapperPhylum");
-	if (desiredPhylum != "merkin" && desiredPhylum != "" && desiredPhylum.to_phylum() == $phylum[none])
+	if (desiredPhylum != "" && desiredPhylum.to_phylum() == $phylum[none])
 	{
 		auto_log_warning(`auto_snapperPhylum was set to bad value: {desiredPhylum}. Should be a valid phylum.`, "red");
 		remove_property("auto_snapperPhylum");
@@ -1017,8 +1017,7 @@ boolean auto_snapperPreAdventure(location loc)
 		}
 	}
 
-	visit_url("familiar.php?action=guideme&pwd");
-	visit_url(`choice.php?pwd&whichchoice=1396&option=1&cat={desiredPhylum}`);
+	cli_execute(`snapper {desiredPhylum}`);
 	auto_log_info(`Red-Nosed Snapper is now guiding you towards {desiredPhylum}`, "blue");
 	return true;
 }
