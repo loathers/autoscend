@@ -469,6 +469,14 @@ boolean borisAcquireHP(int goal);
 boolean LM_boris();
 
 ########################################################################################################
+//Defined in autoscend/paths/avatar_of_jarlsberg.ash
+boolean isJarlsberg();
+void jarlsberg_initializeSettings();
+void jarlsberg_initializeDay(int day);
+void jalrsberg_buySkills();
+boolean LM_jarlsberg();
+
+########################################################################################################
 //Defined in autoscend/paths/avatar_of_sneaky_pete.ash
 void pete_initializeSettings();
 void pete_initializeDay(int day);
