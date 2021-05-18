@@ -102,19 +102,18 @@ boolean pathHasFamiliar()
 
 boolean pathAllowsChangingFamiliar()
 {
-    if(!pathHasFamiliar())
-    {
-        return false;
-    }
+		if (!pathHasFamiliar())
+		{
+			return false;
+		}
 
+		// path check for case(s) where Path has familiars but forces you to use one of its choice
+		if (in_quantumTerrarium())
+		{
+			return false;
+		}
 
-	//path check for case(s) where Path has familiars but forces you to use one of its choice
-    if ( $strings[Quantum Terrarium] contains auto_my_path() )
-    {
-        return false;
-    }
-
-    return true;
+	return true;
 }
 
 boolean auto_have_familiar(familiar fam)
