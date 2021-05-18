@@ -1198,7 +1198,18 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 	int organLeft()
 	{
 		if (type == "eat") return fullness_left();
-		if (type == "drink") return inebriety_left();
+		if (type == "drink") 
+		{
+			if (in_quantumTerrarium() && my_familiar() == $familiar[Stooper])
+			{
+				// we can't change familiars so don't drink to full liver as we'll be overdrunk when it changes familiar.
+				return (my_inebriety() < inebriety_limit() ? inebriety_left() - 1 : 0);
+			}
+			else
+			{
+				return inebriety_left();
+			}
+		}
 		abort("Unrecognized organ type: should be 'eat' or 'drink', was " + type);
 		return 0;
 	}

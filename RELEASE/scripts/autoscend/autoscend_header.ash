@@ -405,7 +405,7 @@ boolean auto_handleRetrocape();
 boolean auto_buyCrimboCommerceMallItem();
 
 ########################################################################################################
-//Defined in autoscend/iotms/mr2020.ash
+//Defined in autoscend/iotms/mr2021.ash
 boolean auto_haveEmotionChipSkills();
 boolean auto_canFeelEnvy();
 boolean auto_canFeelHatred();
@@ -416,6 +416,9 @@ boolean auto_canFeelLonely();
 boolean auto_canFeelExcitement();
 boolean auto_canFeelNervous();
 boolean auto_canFeelPeaceful();
+boolean auto_haveBackupCamera();
+void auto_enableBackupCameraReverser();
+int auto_backupUsesLeft();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -712,6 +715,13 @@ string pokefam_defaultMaximizeStatement();
 boolean digimon_makeTeam();
 boolean LM_digimon();
 boolean digimon_autoAdv(int num, location loc, string option);
+
+########################################################################################################
+//Defined in autoscend/paths/quantum_terrarium.ash
+boolean in_quantumTerrarium();
+familiar qt_nextQuantumFamiliar();
+int qt_turnsToNextQuantumAlignment();
+boolean LX_quantumTerrarium();
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash
