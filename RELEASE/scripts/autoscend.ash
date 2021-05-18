@@ -1,4 +1,4 @@
-since r20730;	// min mafia revision needed to run this script. Last update: questM05Toot tracking will correct to finished when refreshing quests
+since r20731;	// min mafia revision needed to run this script. Last update: Grim Brother and Red-Nosed Snapper now usable in Quantum Terrarium
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -66,6 +66,7 @@ import <autoscend/paths/one_crazy_random_summer.ash>
 import <autoscend/paths/path_of_the_plumber.ash>
 import <autoscend/paths/picky.ash>
 import <autoscend/paths/pocket_familiars.ash>
+import <autoscend/paths/quantum_terrarium.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/low_key_summer.ash>
@@ -236,6 +237,7 @@ void initializeSession() {
 	// anything that needs to be set only for the duration the script is running
 	// should be set in here.
 
+	auto_enableBackupCameraReverser();
 	ed_initializeSession();
 	bat_initializeSession();
 }

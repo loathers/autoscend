@@ -943,8 +943,7 @@ boolean auto_changeSnapperPhylum(phylum toChange)
 	{
 		return false;
 	}
-	string phylumString = toChange.to_string();
-	set_property("auto_snapperPhylum", phylumString);
+	set_property("auto_snapperPhylum", toChange);
 	return true;
 }
 
