@@ -1662,6 +1662,11 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		logRemainingFights("Piranha Plant Fights = " + temp);
 	}
 
+	if (auto_canTendMushroomGarden()) {
+		count++;
+		logRemainingFights("Tend to Mushroom Garden = 1"); //Not actually a free fight, but included to ensure carried out at bedtime.
+	}
+
 	return count;
 }
 
