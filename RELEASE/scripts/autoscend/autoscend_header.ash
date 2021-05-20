@@ -722,6 +722,9 @@ boolean in_quantumTerrarium();
 familiar qt_nextQuantumFamiliar();
 int qt_turnsToNextQuantumAlignment();
 boolean LX_quantumTerrarium();
+void qt_initializeSettings();
+boolean qt_FamiliarAvailable (familiar fam);
+boolean qt_FamiliarSwap (familiar fam);
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash
