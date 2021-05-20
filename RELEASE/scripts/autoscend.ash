@@ -228,6 +228,7 @@ void initializeSettings() {
 	lowkey_initializeSettings();
 	bhy_initializeSettings();
 	grey_goo_initializeSettings();
+	qt_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
