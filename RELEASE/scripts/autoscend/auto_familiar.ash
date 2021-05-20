@@ -204,19 +204,25 @@ boolean canChangeToFamiliar(familiar target)
 			return false;
 		}
 	}
+
+	// Don't allow switching to a target of none.
+	if(target == $familiar[none])	
+	{	
+		return false;	
+	}
 	
+	// You are allowed to use your /current/ familiar in Quantum Terrarium runs.
+	if(target == my_familiar() && in_quantumTerrarium())
+	{
+		return true;
+	}
+
 	// check path limitations, as well as 100% runs for a different familiar than target
 	if(!canChangeFamiliar())
 	{
 		return false;
 	}
 	
-	// Don't allow switching to a target of none.
-	if(target == $familiar[none])	
-	{	
-		return false;	
-	}
-
 	// If target is in the Crown of Thrones or Buddy Bjorn, we can't switch to it either.
 	if (target == my_enthroned_familiar() || target == my_bjorned_familiar())
 	{
