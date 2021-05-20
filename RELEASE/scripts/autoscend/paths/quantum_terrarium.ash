@@ -19,6 +19,14 @@ boolean LX_quantumTerrarium()
 	return false;
 }
 
+void qt_initializeSettings()
+{
+   if (in_quantumTerrarium())
+   {
+      set_property("auto_skipNuns", true);   //Remove when leprechaun swapping is supported at nuns.
+   }
+}
+
 string qt_TerrariumPage = visit_url("qterrarium.php");
 
 boolean qt_FamiliarAvailable (familiar fam)
