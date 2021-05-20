@@ -1,6 +1,6 @@
 boolean isJarlsberg()
 {
-    return my_class() = 
+	return (my_class() == $class[Avatar of Jarlsberg] || my_path() == "Avatar of Jarlsberg");
 }
 
 void jarlsberg_initializeSettings()
@@ -11,10 +11,6 @@ void jarlsberg_initializeSettings()
 		set_property("auto_jarlsbergSkills", -1);
 		set_property("auto_wandOfNagamar", false);
 
-		# Mafia r16876 does not see the Boris Helms in storage and will not pull them.
-		# We have to force the issue.
-		string temp = visit_url("storage.php?action=pull&whichitem1=5648&howmany1=1&pwd");
-		temp = visit_url("storage.php?action=pull&whichitem1=5650&howmany1=1&pwd");
 	}
 }
 
@@ -26,8 +22,8 @@ void jarlsberg_initializeDay(int day)
 	}
 	if(day == 2)
 	{
-		equipBaseline(); //What Do
-		ovenHandle(); //What Do
+		equipBaseline(); 
+		ovenHandle(); 
 
 		if(get_property("auto_day_init").to_int() < 2)
 		{
@@ -52,8 +48,7 @@ void jarlsberg_initializeDay(int day)
 			}
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
 			pullXWhenHaveY($item[hand in glove], 1, 0);
-			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
-			//pullXWhenHaveY(whatHiMein(), 1, 0); -> Not including as Jarlsberg can't eat "common" food
+			pullXWhenHaveY($item[blackberry galoshes], 1, 0); 
 		}
 	}
 	else if(day == 3)
@@ -74,7 +69,7 @@ void jarlsberg_initializeDay(int day)
 	}
 }
 
-void jarlsberg_buySkills() //Skills logic to be done later once have a multi in class
+void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a good start, will see how it goes.
 {
 	if(!isJarlsberg())
 	{
@@ -104,136 +99,30 @@ void jarlsberg_buySkills() //Skills logic to be done later once have a multi in 
 		while(skillPoints > 0)
 		{
 			skillPoints = skillPoints - 1;
-			int tree = 1;
+			int skillid = 0;
 
-            //Jarlsberg skills are super odd. Need to ascend and see how the choices work.
+			//skills are listed in reverse order. from last to first to buy..
 
-			//skills are listed in reverse order. from last to first to buy.
-			//Correct strat is super easy. get all feasting, then all shouting, then fighting last.
-			if(!have_skill($skill[Bifurcating Blow]))
+			foreach sk in $skills[Radish Horse, Working Lunch, Gristlesphere, Oilsphere, Coffeesphere, Chocolatesphere, Cream Puff, Blend, Nightcap, 
+			Conjure Cream, Early Riser, Fry, Conjure Dough, Lunch Like A King, Slice, Conjure Cheese, Eggman, 
+			Conjure Eggs, Food Coma, Chop, Grill, Freeze, Best Served Cold, Conjure Fruit, Never Late For Dinner, 
+			Conjure Meat Product, Conjure Vegetables, Hippotatomous, Conjure Potato, Bake, The Most Important Meal, Boil] )
 			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Legendary Impatience]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Song of Cockiness]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Legendary Luck]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Throw Trusty]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Pep Talk]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Sick Pythons]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Broadside]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[[11002]Ferocity]))
-			{
-				tree = 1;
-			}
-			if(!have_skill($skill[Cleave]))
-			{
-				tree = 1;
-			}
-			
-			if(!have_skill($skill[Banishing Shout]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Song of Battle]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Louder Bellows]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Song of Fortune]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Good Singing Voice]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Song of Solitude]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Big Lungs]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Song of Accompaniment]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Legendary Bravado]))
-			{
-				tree = 2;
-			}
-			if(!have_skill($skill[Intimidating Bellow]))
-			{
-				tree = 2;
-			}
-			
-			if(!have_skill($skill[Gourmand]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Barrel Chested]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[More to Love]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Hungry Eyes]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Heroic Belch]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Legendary Appetite]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Big Boned]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Song of the Glorious Lunch]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Legendary Girth]))
-			{
-				tree = 3;
-			}
-			if(!have_skill($skill[Demand Sandwich]))
-			{
-				tree = 3;
+				if(!have_skill(sk))
+				{
+					skillid = to_int(sk);
+				}
 			}
 
-			visit_url("da.php?pwd&whichtree=" + tree + "&action=borisskill");
+			if( skillid != 0)
+			{
+				visit_url("jarlskills.php?action=getskill&skid=" + skillid);
+			}
+			else
+			{
+				return;
+			}
+
 		}
 	}
 
