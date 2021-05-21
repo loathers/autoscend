@@ -141,6 +141,13 @@ boolean auto_have_familiar(familiar fam)
 	{
 		return false;
 	}
+
+	//have_familiar() does not currently properly track that we no longer have familiars that are not our current familiar
+	//below if statement to be removed once it does so.
+	if(in_quantumTerrarium() && fam != my_familiar()) 
+	{
+		return false;
+	}
 	
 	return have_familiar(fam);
 }
