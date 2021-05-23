@@ -1,0 +1,96 @@
+LX_fightTentacle
+LX_freeCombatsTask	LX_freeCombatsTask_condition
+catBurglarHeistTask
+chateauPainting
+LX_faxing
+LX_artistQuest
+LX_galaktikSubQuest
+LX_armorySideQuest
+LX_meatsmithSubQuest
+L9_leafletQuest
+L5_findKnob
+L12_sonofaPrefix
+LX_burnDelay
+LM_edTheUndying
+LX_lowkeySummer
+resolveSixthDMT
+LX_dinseylandfillFunbucks
+L12_flyerFinish
+L12_getOutfit
+L12_startWar
+LX_loggingHatchet
+LX_guildUnlock
+LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+LX_unlockDesert
+LX_unlockPirateRealm
+handleRainDoh
+routineRainManHandler
+LX_spookyravenManorFirstFloor
+L6_friarsGetParts	LX_steelOrgan_condition_slow
+LX_steelOrgan	LX_steelOrgan_condition_slow
+L4_batCave
+L2_mosquito
+LX_unlockHiddenTemple
+L6_dakotaFanning
+LX_lockPicking
+LX_fatLootToken
+L5_slayTheGoblinKing
+LX_islandAccess
+L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+LX_spookyravenManorSecondFloor
+L3_tavern
+L6_friarsGetParts
+LX_hardcoreFoodFarm
+LX_steelOrgan	in_hardcore
+L7_crypt
+fancyOilPainting
+L8_trapperQuest
+LX_steelOrgan
+L10_plantThatBean
+L12_preOutfit
+L10_airship
+L10_basement
+L10_ground
+L11_blackMarket
+L11_forgedDocuments
+L11_mcmuffinDiary
+L10_topFloor
+L10_holeInTheSkyUnlock
+L9_chasmBuild
+L9_highLandlord
+L12_flyerBackup
+Lsc_flyerSeals
+L11_mauriceSpookyraven
+L11_unlockHiddenCity
+L11_hiddenCityZones
+LX_ornateDowsingRod
+L11_aridDesert
+L11_hiddenCity
+L11_talismanOfNam
+L11_palindome
+L11_unlockPyramid
+L11_unlockEd
+L11_defeatEd
+L12_gremlins
+L12_sonofaFinish
+L12_sonofaBeach
+L12_filthworms
+L12_orchardFinalize
+L12_themtharHills
+L12_farm
+L11_getBeehive
+L12_finalizeWar
+L12_clearBattlefield
+LX_koeInvaderHandler
+setSoftblockDelay	allowSoftblockDelay
+setSoftblockShen	allowSoftblockShen
+LX_getDigitalKey
+LX_getStarKey
+L12_lastDitchFlyer
+L13_towerNSContests
+L13_towerNSHedge
+L13_sorceressDoor
+L13_towerNSTower
+L13_towerNSNagamar
+L13_towerNSFinal
+LX_attemptPowerLevel

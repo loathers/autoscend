@@ -38,6 +38,8 @@ int auto_freeCombatsRemaining();
 int auto_freeCombatsRemaining(boolean print_remaining_fights);
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
+boolean LX_freeCombatsTask();
+boolean LX_freeCombatsTask_condition();
 boolean Lsc_flyerSeals();
 boolean LX_hardcoreFoodFarm();
 boolean LX_craftAcquireItems();
@@ -125,6 +127,7 @@ boolean dna_generic();
 boolean dna_sorceressTest();
 boolean dna_bedtime();
 boolean LX_ornateDowsingRod(boolean doing_desert_now);
+boolean LX_ornateDowsingRod();
 boolean fancyOilPainting();
 int turkeyBooze();
 int amountTurkeyBooze();
@@ -769,6 +772,7 @@ boolean L5_slayTheGoblinKing();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_06.ash
+boolean L6_friarsGetParts_condition_hardcore();
 boolean L6_friarsGetParts();
 boolean L6_dakotaFanning();
 
@@ -930,6 +934,7 @@ boolean L13_towerAscent();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_any.ash
+boolean LX_bitchinMeatcar_condition();
 boolean LX_bitchinMeatcar();
 boolean LX_unlockDesert();
 boolean LX_desertAlternate();
@@ -950,6 +955,7 @@ boolean LX_meatMaid();
 boolean LX_artistQuest();
 boolean LX_unlockThinknerdWarehouse(boolean spend_resources);
 boolean LX_melvignShirt();
+boolean LX_steelOrgan_condition_slow();
 boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean startArmorySubQuest();
@@ -1333,6 +1339,7 @@ boolean inKnollSign();
 boolean inCanadiaSign();
 boolean inGnomeSign();
 boolean allowSoftblockShen();
+boolean setSoftblockShen();
 boolean instakillable(monster mon);
 boolean stunnable(monster mon);
 int freeCrafts();
@@ -1402,7 +1409,9 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
 boolean auto_faceCheck(string face);
 location solveDelayZone();
+boolean setSoftblockDelay();
 boolean allowSoftblockDelay();
+boolean setSoftblockDelay();
 boolean canBurnDelay(location loc);
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);

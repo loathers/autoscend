@@ -2037,6 +2037,13 @@ boolean allowSoftblockShen()
 	return get_property("auto_shenSkipLastLevel").to_int() < my_level();
 }
 
+boolean setSoftblockShen()
+{
+	auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do. Releasing softblock.", "red");
+	set_property("auto_shenSkipLastLevel", my_level());
+	return true;
+}
+
 boolean instakillable(monster mon)
 {
 	if(mon.boss)
@@ -4556,6 +4563,13 @@ location solveDelayZone()
 boolean allowSoftblockDelay()
 {
 	return get_property("auto_delayLastLevel").to_int() < my_level();
+}
+
+boolean setSoftblockDelay()
+{
+	auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
+	set_property("auto_delayLastLevel", my_level());
+	return true;
 }
 
 boolean canBurnDelay(location loc)

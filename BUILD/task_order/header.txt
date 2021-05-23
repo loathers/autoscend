@@ -1,0 +1,3 @@
+# Task ordering. Functions must be: boolean func()
+# If path name does not exist in data file, 'default' will be used
+# path name, index, function, condition_function (optional)
