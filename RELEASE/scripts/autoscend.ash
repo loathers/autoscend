@@ -1,4 +1,4 @@
-since r20494;	//min mafia revision needed to run this script. Last update: Cargo Shorts support complete
+since r20736;	//min mafia revision needed to run this script. Last update: Fix have_familiar and other issues where maifa thinks you have a familiar in your terrarium because you saw it during QT
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
