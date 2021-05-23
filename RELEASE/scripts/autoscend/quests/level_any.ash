@@ -171,7 +171,7 @@ boolean LX_islandAccess()
 
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
 
-	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (item_amount($item[Dingy Dinghy]) == 0) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
+	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (get_property("lastIslandUnlock").to_int() != my_ascensions()) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
 		buyUpTo(1, $item[dingy planks]);
