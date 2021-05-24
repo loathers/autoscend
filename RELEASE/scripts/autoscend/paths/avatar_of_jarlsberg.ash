@@ -1,22 +1,20 @@
-boolean isJarlsberg()
+boolean is_Jarlsberg()
 {
 	return (my_class() == $class[Avatar of Jarlsberg] || my_path() == "Avatar of Jarlsberg");
 }
 
 void jarlsberg_initializeSettings()
 {
-    	if(isJarlsberg())
+    	if(is_Jarlsberg())
 	{
 		auto_log_info("Initializing Avatar of Jarlsberg settings", "blue");
-		set_property("auto_jarlsbergSkills", -1);
 		set_property("auto_wandOfNagamar", false);
-
 	}
 }
 
 void jarlsberg_initializeDay(int day)
 {
-	if(!isJarlsberg())
+	if(!is_Jarlsberg())
 	{
 		return;
 	}
@@ -71,23 +69,16 @@ void jarlsberg_initializeDay(int day)
 
 void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a good start, will see how it goes.
 {
-	if(!isJarlsberg())
+	if(!is_Jarlsberg())
 	{
 		return;
 	}
-	if(my_level() <= get_property("auto_jarlsbergSkills").to_int())
+	if(my_level() <= get_property("_auto_jarlsbergSkills").to_int())
 	{
 		return;
 	}
-	//if you have these 16 skills then you have all skills
-	if(have_skill($skill[Coffeesphere]) && have_skill($skill[The Most Important Meal]) && have_skill($skill[Egg Man]) && have_skill($skill[Early Riser])
-    && have_skill($skill[Radish Horse]) && have_skill($skill[Conjure Cheese]) && have_skill($skill[Working Lunch]) && have_skill($skill[Oilsphere])
-    && have_skill($skill[Food Coma]) && have_skill($skill[Hippotatomous]) && have_skill($skill[Never Late for Dinner]) && have_skill($skill[Gristlesphere])
-    && have_skill($skill[Best Served Cold]) && have_skill($skill[Nightcap]) && have_skill($skill[Blend]) && have_skill($skill[Chocolatesphere]))
-	{
-		return;
-	}
-
+	//Jarlsberg's Branching Trees basically means pre-checking if we have the top tier skills is almost doubling up on the server hits for the below.
+	//maybe add a _auto_completedJarlsbergSkillTree or some such property so we only check once a day once we ahve them all?
 
 	string page = visit_url("da.php?place=gate2");
 	matcher my_skillPoints = create_matcher("<b>(\\d\+)</b> skill point", page);
@@ -126,7 +117,7 @@ void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a g
 		}
 	}
 
-	set_property("auto_jarlsbergSkills", my_level());
+	set_property("_auto_jarlsbergSkills", my_level());
 }
 
 boolean LM_jarlsberg()
@@ -134,7 +125,7 @@ boolean LM_jarlsberg()
 	//this function is called early once every loop of doTasks() in autoscend.ash
 	//if something in this function returns true then it will restart the loop and get called again.
 	
-	if(!isJarlsberg())
+	if(!is_Jarlsberg())
 	{
 		return false;
 	}

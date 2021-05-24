@@ -470,7 +470,7 @@ boolean LM_boris();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_jarlsberg.ash
-boolean isJarlsberg();
+boolean is_Jarlsberg();
 void jarlsberg_initializeSettings();
 void jarlsberg_initializeDay(int day);
 void jalrsberg_buySkills();

@@ -2657,6 +2657,9 @@ boolean doTasks()
 	awol_useStuff();
 	theSource_buySkills();
 	zelda_buyStuff();
+	jarlsberg_buySkills();
+	boris_buySkills();
+	pete_buySkills();
 
 	oldPeoplePlantStuff();
 	use_barrels();
