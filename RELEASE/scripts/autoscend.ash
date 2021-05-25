@@ -120,11 +120,6 @@ void initializeSettings() {
 		int curSkill = to_int(my_pool.group(1));
 		int sharkCountMin = ceil((curSkill * curSkill) / 4);
 		int sharkCountMax = ceil((curSkill + 1) * (curSkill + 1) / 4);
-		if(get_property("poolSharkCount").to_int() < sharkCountMin || get_property("poolSharkCount").to_int() >= sharkCountMax)
-		{
-			auto_log_warning("poolSharkCount set to incorrect value.", "red");
-			auto_log_info("You can \"set poolSharkCount="+sharkCountMin+"\" to use the least optimistic value consistent with your pool skill.", "blue");
-		}
 	}
 
 	set_property("auto_abooclover", true);

@@ -180,6 +180,22 @@ boolean auto_run_choice(int choice, string page)
 			dailyDungeonChoiceHandler(choice, options);
 			break;
 		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
+		case 768: // The Littlest Identity Crisis (Mini-adventurer initialization)
+			if (in_quantumTerrarium()) {
+				if (my_location() == $location[The Themthar Hills]) {
+					run_choice(4); // Sauceror is a lep and starfish
+				}
+				else if (my_level() < 13) {
+					run_choice(2); // Turtle Tamer is a volleyball and a starfish at level 5
+				}
+				else {
+					run_choice(6); // Accordion Thief is a fairy and ghoul whelp, with some free buffs.
+				}
+			}
+			else {
+				run_choice(2); // Turtle Tamer is a decent fallback pick.
+			}
+			break;
 		case 772: // Saved by the Bell (KOLHS after school)
 			kolhsChoiceHandler(choice);
 			break;
