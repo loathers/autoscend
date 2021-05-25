@@ -936,7 +936,7 @@ boolean ed_shopping()
 
 void ed_handleAdventureServant(location loc)
 {
-	if (loc == $location[Noob Cave])
+	if (loc == $location[Noob Cave] || !isActuallyEd())
 	{
 		return;
 	}
@@ -1032,6 +1032,12 @@ boolean L1_ed_island()
 {
 	if(!elementalPlanes_access($element[spooky]))
 	{
+		return false;
+	}
+
+	if (!have_skill($skill[Roar of the Lion]))
+	{
+		// combat handling only uses this so it's essential
 		return false;
 	}
 
