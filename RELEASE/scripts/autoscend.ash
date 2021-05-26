@@ -1,4 +1,4 @@
-since r20736;	//min mafia revision needed to run this script. Last update: Fix have_familiar and other issues where maifa thinks you have a familiar in your terrarium because you saw it during QT
+since r20739;	//min mafia revision needed to run this script. Last update: Do not check Quantum Terrarium if player is in a fight or choice or other chained adventure that denies access to other pages
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -2418,7 +2418,7 @@ boolean autosellCrap()
 	{
 		if(item_amount(it) > 2)		//for these items we want to keep 2 in stock. sell the rest
 		{
-			use(min(10,item_amount(it)-2), it);
+			auto_autosell(min(10,item_amount(it)-2), it);
 		}
 	}
 

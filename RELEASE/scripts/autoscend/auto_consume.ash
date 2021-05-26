@@ -613,11 +613,27 @@ boolean consumeFortune()
 	if (fullness_left() > 0 && canEat($item[Fortune Cookie]) && my_meat() >= npc_price($item[Fortune Cookie]))
 	{
 		// Eat a spaghetti breakfast if still consumable
-		if (canEat($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_fullness() == 0 && my_level() >= 10)
+		if (my_fullness() == 0)
 		{
-			if (!autoEat(1, $item[Spaghetti Breakfast]))
+			if (canEat($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_level() >= 10)
 			{
-				return false;
+				if (!autoEat(1, $item[Spaghetti Breakfast]))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				foreach muffin in $items[blueberry muffin, bran muffin, chocolate chip muffin]
+				{
+					if (canEat(muffin) && item_amount(muffin) > 0)
+					{
+						if (!autoEat(1, muffin))
+						{
+							return false;
+						}
+					}
+				}
 			}
 		}
 
@@ -971,16 +987,27 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				auto_log_info("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
 				actions[n].desirability += 25;
 			}
-			if ((obtain_mode == SL_OBTAIN_NULL) && (it == $item[Spaghetti Breakfast]))
+			if (obtain_mode == SL_OBTAIN_NULL)
 			{
-				if (get_property("_spaghettiBreakfastEaten").to_boolean() || my_fullness() > 0)
+				if (it == $item[Spaghetti Breakfast])
 				{
-					actions[n].desirability -= 50;
+					if (get_property("_spaghettiBreakfastEaten").to_boolean() || my_fullness() > 0)
+					{
+						actions[n].desirability -= 50;
+					}
+					else
+					{
+						auto_log_info("Spaghetti Breakfast available, we should eat that first.");
+						actions[n].desirability += 50;
+					}
 				}
-				else
+				else if ($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it)
 				{
-					auto_log_info("Spaghetti Breakfast available, we should eat that first.");
-					actions[n].desirability += 50;
+					if (my_fullness() == 0 && my_level() < 13)
+					{
+						auto_log_info(`{it.to_string()} available, we should eat that first.`);
+						actions[n].desirability += 50;
+					}
 				}
 			}
 			if (obtain_mode == SL_OBTAIN_CRAFT)
@@ -1381,4 +1408,21 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 
 	auto_log_info("Expected " + total_adv + " adventures, got " + (my_adventures() - pre_adventures), "blue");
 	return true;
+}
+
+boolean auto_breakfastCounterVisit() {
+	if (item_amount($item[earthenware muffin tin]) > 0 ||
+	    (!get_property("_muffinOrderedToday").to_boolean() && 
+			$items[blueberry muffin, bran muffin, chocolate chip muffin, earthenware muffin tin] contains get_property("muffinOnOrder").to_item())) {
+		auto_log_info("Going to the breakfast counter to grab/order a breakfast muffin.");
+		visit_url("place.php?whichplace=monorail&action=monorail_downtown");
+		run_choice(7); // Visit the Breakfast Counter
+		if (!get_property("_muffinOrderedToday").to_boolean() && item_amount($item[earthenware muffin tin]) > 0) {
+			auto_log_info("Ordering a bran muffin for tomorrow to keep you regular.");
+			run_choice(2); // Order a bran muffin
+		}
+		run_choice(1); // Back to the Platform!
+		run_choice(8); // Nevermind
+	}
+	return false; // not adventuring, no need to restart doTasks loop.
 }
