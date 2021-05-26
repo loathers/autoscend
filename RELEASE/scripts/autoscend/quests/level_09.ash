@@ -223,6 +223,11 @@ boolean L9_chasmBuild()
 		// to determine best approach.
 		L9_chasmMaximizeForNoncombat();
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
+		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
+		if(get_property("chasmBridgeProgress").to_int() >= 30)
+		{
+			visit_url("place.php?whichplace=highlands&action=highlands_dude");
+		}
 		return true;
 	}
 
