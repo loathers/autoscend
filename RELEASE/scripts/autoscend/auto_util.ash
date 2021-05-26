@@ -5958,3 +5958,69 @@ int meatReserve()
 	
 	return reserve_gnasir + reserve_diary + reserve_island + reserve_extra;
 }
+
+// This function returns the number of bander runaways that will be available after maximizing for fam weight
+int auto_banderRunsAvailable() {
+	if (in_quantumTerrarium()) {
+		if ((my_familiar() == $familiar[Frumious Bandersnatch] && have_skill($skill[The Ode to Booze])) || my_familiar() == $familiar[Pair of Stomping Boots]) {
+			maximize("familiar weight, -tie", false); // Need to maximize or simulate maximizing in accordance with standard autoscend procedure
+			return (((familiar_weight (my_familiar()) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int());
+		}
+		else {
+			return 0;
+		}
+	}
+	else if (have_familiar($familiar[Frumious Bandersnatch]) && have_skill($skill[The Ode to Booze])) {
+		use_familiar($familiar[Frumious Bandersnatch]);
+		maximize("familiar weight, -tie", false);
+		return (((familiar_weight ($familiar[Frumious Bandersnatch]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int());
+	}
+	else if (have_familiar($familiar[Pair of Stomping Boots])) {
+		use_familiar($familiar[Pair of Stomping Boots]);
+		maximize("familiar weight, -tie", false);
+		return (((familiar_weight ($familiar[Pair of Stomping Boots]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int());
+	}
+	else {
+		return 0;
+	}
+}
+			     
+// Need to check for more than bander runs, tatters, and GSBs.  
+int auto_freeRunsAvailable() {
+	int freeRuns = auto_banderRunsAvailable();
+	if (auto_my_path() == "Big!") {
+		return 0; //Big! isn't allowed to use free runaways.
+	}
+	foreach it in $items[tattered scrap of paper, green smoke bomb] {
+		freeRuns += item_amount(it);
+	}
+	return freeRuns;
+}
+
+// The following functions are just copied from sausage goblin handling and aren't representative of how they'll end up.
+boolean auto_freeRunaway()
+{
+	return auto_freeRunaway($location[none], "");
+}
+
+boolean auto_freeRunaway(location loc)
+{
+	return auto_freeRunaway(loc, "");
+}
+
+boolean auto_freeRunaway(location loc, string option)
+{
+	int freeRuns = auto_freeRunsAvailable();
+
+	if (freeRuns == 0)
+	{
+		return false;
+	}
+
+	if (loc == $location[none])
+	{
+		return true;
+	}
+
+	return autoAdv(1, loc, option);
+}
