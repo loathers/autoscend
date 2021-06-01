@@ -1212,7 +1212,7 @@ void auto_drinkNightcap()
 	{
 		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
 	}
-	autoConsume(target);
+	drinksilent(1, target.it);		//drinksilent avoids the popup asking if we are sure we want to overdrink
 	
 	if(start_fam != my_familiar())
 	{
