@@ -172,6 +172,7 @@ void main()
 	//button to interrupt script
 	writeln("<form action='' method='post'>");
 	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
+	writeln("<input type='hidden' name='auto_interrupt_oldvalue' value='false'/>");
 	writeln("<input type='submit' name='' value='Safely Stop Autoscend'/></form>");
 	
 	//TODO add button to run autoscend
