@@ -1426,3 +1426,31 @@ boolean auto_breakfastCounterVisit() {
 	}
 	return false; // not adventuring, no need to restart doTasks loop.
 }
+
+item still_targetToOrigin(item target)
+{
+	//Nash Crosby's Still can convert Origin item into Target item. This function takes a target and tells us which origin it needs.
+	item retval = $item[none];
+	switch(target)
+	{
+	case $item[bottle of Calcutta Emerald]:			retval = $item[bottle of gin];				break;
+	case $item[bottle of Lieutenant Freeman]:		retval = $item[bottle of rum];				break;
+	case $item[bottle of Jorge Sinsonte]:			retval = $item[bottle of tequila];			break;
+	case $item[bottle of Definit]:					retval = $item[bottle of vodka];				break;
+	case $item[bottle of Domesticated Turkey]:		retval = $item[bottle of whiskey];			break;
+	case $item[boxed champagne]:					retval = $item[boxed wine];					break;
+	case $item[bottle of Pete\'s Sake]:				retval = $item[bottle of sake];				break;
+	case $item[bottle of Ooze-O]:					retval = $item[bottle of sewage schnapps];	break;
+	case $item[tangerine]:							retval = $item[grapefruit];					break;
+	case $item[kiwi]:								retval = $item[lemon];						break;
+	case $item[cocktail onion]:						retval = $item[olive];						break;
+	case $item[kumquat]:							retval = $item[orange];						break;
+	case $item[raspberry]:							retval = $item[strawberry];					break;
+	case $item[tonic water]:						retval = $item[soda water];					break;
+	}
+	if(retval == $item[none])
+	{
+		auto_log_debug("still_targetToOrigin failed to lookup the item [" +target+ "]");
+	}
+	return retval;
+}
