@@ -1086,6 +1086,7 @@ boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
 boolean hatchFamiliar(familiar adult);
 void hatchList();
+int auto_banderRunsAvailable();
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash
@@ -1184,6 +1185,10 @@ float provideMysticality(int amt, boolean doEquips, boolean speculative);
 boolean provideMysticality(int amt, boolean doEquips);
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, boolean doEquips);
+float provideFamiliarWeight(familiar fam, int amt, boolean doEquips, boolean speculative);
+boolean provideFamiliarWeight(familiar fam, int amt, boolean doEquips);
+boolean provideFamiliarWeight(familiar fam, int amt);
+boolean provideFamiliarWeight(familiar fam);
 
 ########################################################################################################
 //Defined in autoscend/auto_restore.ash
@@ -1466,3 +1471,7 @@ int currentPoolSkill();
 int poolSkillPracticeGains();
 float npcStoreDiscountMulti();
 int meatReserve();
+int auto_freeRunsAvailable();
+boolean auto_freeRunaway();
+boolean auto_freeRunaway(location loc);
+boolean auto_freeRunaway(location loc, string option);
