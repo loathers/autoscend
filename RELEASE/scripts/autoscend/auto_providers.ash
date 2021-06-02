@@ -1103,7 +1103,7 @@ float provideFamiliarWeight(familiar fam, int amt, boolean doEquips, boolean spe
 			delta += 0;
 		}
 
-		else if (available_amount(familiar_equipment(fam) >= 1 && (familiar_equipment(fam) == $item[nosy nose ringy ring] || familiar_equipment(fam) == $item[cracker] || familiar_equipment(fam) == $item[tiny makeup kit]))
+		else if (available_amount(familiar_equipment(fam)) >= 1 && (familiar_equipment(fam) == $item[nosy nose ringy ring] || familiar_equipment(fam) == $item[cracker] || familiar_equipment(fam) == $item[tiny makeup kit]))
 		{
 			delta += 15;
 		}
@@ -1113,12 +1113,12 @@ float provideFamiliarWeight(familiar fam, int amt, boolean doEquips, boolean spe
 			delta += 10;
 		}
 
-		else if (available_amount(familiar_equipment(fam) >= 1 && (familiar_equipment(fam) == $item[bugged beanie] || familiar_equipment(fam) == $item[solid state loom] || familiar_equipment(fam) == $item[tiny cell phone] || familiar_equipment(fam) == $item[ironic moustache]))
+		else if (available_amount(familiar_equipment(fam)) >= 1 && (familiar_equipment(fam) == $item[bugged beanie] || familiar_equipment(fam) == $item[solid state loom] || familiar_equipment(fam) == $item[tiny cell phone] || familiar_equipment(fam) == $item[ironic moustache]))
 		{
 			delta += 10;
 		}
 
-		else if (available_amount(familiar_equipment(fam) >= 1)
+		else if (available_amount(familiar_equipment(fam)) >= 1)
 		{
 			delta += 5;
 		}
