@@ -1123,7 +1123,7 @@ float provideFamiliarWeight(familiar fam, int amt, boolean doEquips, boolean spe
 			delta += 5;
 		}
 
-		else if (amount_available($item[lead necklace]) >= 1)
+		else if (available_amount($item[lead necklace]) >= 1)
 		{
 			delta += 3;
 		}
