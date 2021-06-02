@@ -1,3 +1,74 @@
+void bedtime_still()
+{
+	//quickly use up all remaining uses of Nash Crosby's Still during bedtime
+	if(!stillReachable())
+	{
+		return;		//we can not reach the still
+	}
+	while(stills_available() > 0)	//spend remaining still uses
+	{
+		item target = $item[none];
+		
+		//first try to get at least 1 each of each of the imrpoved booze if possible
+		foreach it in $items[bottle of Calcutta Emerald, bottle of Lieutenant Freeman, bottle of Jorge Sinsonte, bottle of Definit, bottle of Domesticated Turkey, boxed champagne, bottle of Pete\'s Sake]
+		{
+			if(target == $item[none] && item_amount(it) == 0 && item_amount(still_targetToOrigin(it)) > 0)
+			{
+				target = it;
+			}
+		}
+		
+		//tonic water is an excellent MP restorer and also can be used to craft some drinks.
+		if(target == $item[none] && my_meat() > meatReserve() + 100 && isGeneralStoreAvailable())
+		{
+			if(buyUpTo(1, $item[soda water]))
+			{
+				target = $item[tonic water];
+			}
+		}
+		
+		//if we can not afford tonic water use it on the improved item we have the least of.
+		if(target == $item[none])	//below we will replace target with a better target. only do so if we reached this spot without a target
+		{
+			//all possible still items except [tonic water] and [bottle of Ooze-O]
+			foreach it in $items[bottle of Calcutta Emerald, bottle of Lieutenant Freeman, bottle of Jorge Sinsonte, bottle of Definit, bottle of Domesticated Turkey, boxed champagne, bottle of Pete\'s Sake, tangerine, kiwi, cocktail onion, kumquat, raspberry]
+			{
+				if(target == $item[none] && item_amount(still_targetToOrigin(it)) > 0)	//do not have a target yet
+				{
+					target = it;
+				}
+				if(target != $item[none] &&		//have a target and seek a better one
+				item_amount(it) < item_amount(target) &&	//we want the target we have the least of
+				item_amount(still_targetToOrigin(it)) > 0)	//we need to actually be able to make it
+				{
+					target = it;
+				}
+			}
+		}
+		
+		//finally distill the target
+		if(target != $item[none])
+		{
+			if(!distill(target))	//try to distill target. do something if it fails
+			{
+				auto_log_warning("bedtime_still() failed to distill [" +target+ "] in Nash Crosby's Still and is giving up to avoid infinite loop");
+				break;
+			}
+		}
+		else 		//avoid infinite loop if we did not find any valid targets to distill
+		{
+			auto_log_warning("bedtime_still() could not find any valid targets to distill");
+			break;
+		}
+	
+	}
+	
+	if(stills_available() > 0)
+	{
+		auto_log_info("You have " + stills_available() + " uses of Nash Crosby's Still left.", "red");
+	}
+}
+
 boolean doBedtime()
 {
 	auto_log_info("Starting bedtime: Pulls Left: " + pulls_remaining(), "blue");
@@ -661,10 +732,7 @@ boolean doBedtime()
 			auto_log_info("You can still fight a Chateau Mangtegna Painting today.", "blue");
 		}
 
-		if(stills_available() > 0)
-		{
-			auto_log_info("You have " + stills_available() + " uses of Nash Crosby's Still left.", "blue");
-		}
+		bedtime_still();	//quickly use up all remaining uses of Nash Crosby's Still during bedtime
 
 		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]))
 		{

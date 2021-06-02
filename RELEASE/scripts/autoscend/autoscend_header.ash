@@ -1001,6 +1001,7 @@ boolean autoAdvBypass(string url, string option);
 
 ########################################################################################################
 //Defined in autoscend/auto_bedtime.ash
+void bedtime_still();
 boolean doBedtime();
 
 ########################################################################################################
@@ -1034,6 +1035,8 @@ boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
 boolean auto_breakfastCounterVisit();
 item still_targetToOrigin(item target);
+boolean stillReachable();
+boolean distill(item target);
 
 ########################################################################################################
 //Defined in autoscend/auto_deprecation.ash

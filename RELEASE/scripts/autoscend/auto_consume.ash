@@ -1454,3 +1454,38 @@ item still_targetToOrigin(item target)
 	}
 	return retval;
 }
+
+boolean stillReachable()
+{
+	//can we reach Nash Crosby's Still.
+	//stills_available() insufficient. it returns 0 if your class can not unlock still and 10 if your class can unlock it but did not.
+	if(my_class() == $class[Avatar of Sneaky Pete])
+	{
+		return true;
+	}
+	return guild_store_available() && $classes[Accordion Thief, Disco Bandit] contains my_class();
+}
+
+boolean distill(item target)
+{
+	//use Nash Crosby's Still to create target
+	auto_log_debug("distill(item target) called to create [" +target+ "]");
+	if(!stillReachable())
+	{
+		auto_log_warning("distill(item target) tried to create [" +target+ "] but Nash Crosby's Still is not reachable");
+		return false;
+	}
+	if(stills_available() == 0)
+	{
+		auto_log_warning("distill(item target) tried to create [" +target+ "] but Nash Crosby's Still is out of uses");
+		return false;
+	}
+	int start_amount = item_amount(target);
+	create(1, target);			//use the still to create target
+	if(start_amount + 1 == item_amount(target))
+	{
+		return true;
+	}
+	auto_log_warning("distill(item target) mysteriously failed to create [" +target+ "]");
+	return false;
+}
