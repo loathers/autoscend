@@ -775,3 +775,35 @@ void hatchList()
 		hatchFamiliar(fam);
 	}
 }
+
+// This function returns the number of bander runaways that will be available after maximizing for fam weight
+int auto_banderRunsAvailable()
+{
+	if (in_quantumTerrarium())
+	{
+		if ((my_familiar() == $familiar[Frumious Bandersnatch] && have_skill($skill[The Ode to Booze])) || my_familiar() == $familiar[Pair of Stomping Boots])
+		{
+			return ((provideFamiliarWeight(my_familiar(), 1000, true, true) / 5) - get_property("_banderRunaways").to_int());
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	else if ((canChangeToFamiliar($familiar[Frumious Bandersnatch]) && have_skill($skill[The Ode to Booze]))
+	{
+		return ((provideFamiliarWeight($familiar[Frumious Bandersnatch], 1000, true, true) / 5) - get_property("_banderRunaways").to_int());
+	}
+
+	else if (canChangeToFamiliar($familiar[Pair of Stomping Boots]))
+	{
+		return ((provideFamiliarWeight($familiar[Frumious Bandersnatch], 1000, true, true) / 5) - get_property("_banderRunaways").to_int());
+	}
+
+	else
+	{
+		return 0;
+	}
+}
+	
