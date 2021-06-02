@@ -1056,7 +1056,7 @@ float provideFamiliarWeight(familiar fam, int amt, boolean doEquips, boolean spe
 	{
 		alreadyHave = 9;
 	}
-	if (auto_have_skill($skill[Amphibian Sympathy]) 
+	if (auto_have_skill($skill[Amphibian Sympathy])) 
 	{
 		alreadyHave += 5;
 	}
