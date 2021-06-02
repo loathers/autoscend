@@ -16,24 +16,37 @@ void main()
 	{
 		foreach x in fields
 		{
-			if(contains_text(x, "_didchange"))
+			//Checkboxes that are false are not supplied, so we have to look at the *_oldvalue
+			//fields to see whether there is a "false" checkbox we're not seeing.  So, ignore
+			//the fields that don't end in _ignore.
+			if(! contains_text(x, "_oldvalue"))
 			{
 				continue;
 			}
 
-			string oldSetting = form_field(x + "_didchange");
-			if(oldSetting == fields[x])
+			//Recover name of property and its value.
+			//If new value field doesn't exist, it's a "false" checkbox
+			string prop = substring(x, 0, length(x)-9);
+			string newSetting = fields[prop];
+			if(! (fields contains prop)) 
 			{
-				if(get_property(x) != fields[x])
+				//writeln("Empty checkbox for " + prop + "<br>");
+				newSetting = "false";
+			}
+
+			string oldSetting = form_field(x);
+			if(oldSetting == newSetting)
+			{
+				if(get_property(prop) != newSetting)
 				{
-					writeln("You did not change setting " + x + ". It changed since you last loaded the page, ignoring.<br>");
+					writeln("You did not change setting " + prop + ". It changed since you last loaded the page, ignoring.<br>");
 				}
 				continue;
 			}
-			if(get_property(x) != fields[x])
+			if(get_property(prop) != newSetting)
 			{
-				writeln("Changing setting " + x + " to " + fields[x] + "<br>");
-				set_property(x, fields[x]);
+				writeln("Changing setting " + prop + " to " + newSetting + "<br>");
+				set_property(prop, newSetting);
 			}
 		}
 	}
