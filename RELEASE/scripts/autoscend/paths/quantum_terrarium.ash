@@ -67,3 +67,43 @@ boolean qt_FamiliarSwap (familiar fam)
       return false;
    }
 }
+
+void finalizeMaximizeQTHotfix()
+{
+	//workaround for https://kolmafia.us/threads/quantum-familiar-support.26057/page-2#post-162544
+	//where maximizer crashes autoscend when trying to take a foldable familiar equipment. It tries to steal it which does not work in QT.
+	if(!in_quantumTerrarium())
+	{
+		return;
+	}
+	if(my_familiar() == $familiar[mini-hipster])			//temporary workaround manual handling of mini-hipster equipment
+	{
+		addToMaximize("-familiar");
+		foreach it in $items[ironic moustache, fixed-gear bicycle]
+		{
+			if(equipped_amount(it) > 0)
+			{
+				cli_execute("fold chiptune guitar;");
+			}
+		}
+		if(item_amount($item[chiptune guitar]) > 0 && equipped_amount($item[chiptune guitar]) == 0)
+		{
+			equip($item[chiptune guitar]);
+		}
+	}
+	if(my_familiar() == $familiar[Baby Bugged Bugbear])		//temporary workaround manual handling of Baby Bugged Bugbear equipment
+	{
+		addToMaximize("-familiar");
+		foreach it in $items[bugged balaclava, bugged b&Atilde;&para;n&plusmn;&Atilde;&copy;t]
+		{
+			if(equipped_amount(it) > 0)
+			{
+				cli_execute("fold bugged beanie;");
+			}
+		}
+		if(item_amount($item[bugged beanie]) > 0 && equipped_amount($item[bugged beanie]) == 0)
+		{
+			equip($item[bugged beanie]);
+		}
+	}
+}

@@ -352,6 +352,7 @@ void finalizeMaximize()
 			addToMaximize("effective");
 		}
 	}
+	finalizeMaximizeQTHotfix();
 }
 
 void addToMaximize(string add)
