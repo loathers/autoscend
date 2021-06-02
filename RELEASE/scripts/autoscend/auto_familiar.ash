@@ -790,8 +790,8 @@ int auto_banderRunsAvailable()
 			return 0;
 		}
 	}
-	
-	else if ((canChangeToFamiliar($familiar[Frumious Bandersnatch]) && have_skill($skill[The Ode to Booze]))
+
+	else if (canChangeToFamiliar($familiar[Frumious Bandersnatch]) && have_skill($skill[The Ode to Booze]))
 	{
 		return ((provideFamiliarWeight($familiar[Frumious Bandersnatch], 1000, true, true) / 5) - get_property("_banderRunaways").to_int());
 	}
