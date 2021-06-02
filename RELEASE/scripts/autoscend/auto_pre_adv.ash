@@ -539,5 +539,6 @@ void main()
 			auto_log_error("Error running auto_pre_adv.ash, setting auto_interrupt=true");
 			set_property("auto_interrupt", true);
 		}
+		auto_interruptCheck();
 	}
 }
