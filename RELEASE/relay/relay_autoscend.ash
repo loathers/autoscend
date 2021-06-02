@@ -54,22 +54,20 @@ void handleSetting(string type, int x)
 	switch(set.type)
 	{
 	case "boolean":
-		write("<tr bgcolor="+color+"><td align=center>"+set.name+"</td><td align=center><select name='"+set.name+"'>");
+		string checked = "";
 		if(get_property(set.name) == "true")
 		{
-			write("<option value='true' selected='selected'>true</option><option value='false'>false</option>");
+			checked = " checked";
 		}
-		else
-		{
-			write("<option value='true'>true</option><option value='false' selected='selected'>false</option>");
-		}
+		write("<tr bgcolor="+color+"><td align=center>"+set.name+"</td><td align=center>"
+				+ "<input type='checkbox' name='"+set.name+"' value='true'"+checked+">");
 		writeln("</td><td>"+set.description+"</td></tr>");
 		break;
 	default:
 		writeln("<tr bgcolor="+color+"><td align=center>"+set.name+"</td><td><input type='text' name='"+set.name+"' value='"+get_property(set.name)+"' /></td><td>"+set.description+"</td></tr>");
 		break;
 	}
-	writeln("<input type='hidden' name='"+set.name+"_didchange' value='"+get_property(set.name)+"' />");
+	writeln("<input type='hidden' name='"+set.name+"_oldvalue' value='"+get_property(set.name)+"' />");
 }
 
 void generateTrackingData(string tracked)
@@ -174,6 +172,7 @@ void main()
 	//button to interrupt script
 	writeln("<form action='' method='post'>");
 	writeln("<input type='hidden' name='auto_interrupt' value='true'/>");
+	writeln("<input type='hidden' name='auto_interrupt_oldvalue' value='false'/>");
 	writeln("<input type='submit' name='' value='Safely Stop Autoscend'/></form>");
 	
 	//TODO add button to run autoscend
@@ -199,29 +198,42 @@ void main()
 	{
 		foreach x in fields
 		{
-			if(contains_text(x, "_didchange"))
+			//Checkboxes that are false are not supplied, so we have to look at the *_oldvalue
+			//fields to see whether there is a "false" checkbox we're not seeing.  So, ignore
+			//the fields that don't end in _ignore.
+			if(! contains_text(x, "_oldvalue"))
 			{
 				continue;
 			}
-
-			string oldSetting = form_field(x + "_didchange");
-			if(oldSetting == fields[x])
+			
+			//Recover name of property and its value.
+			//If new value field doesn't exist, it's a "false" checkbox
+			string prop = substring(x, 0, length(x)-9);
+			string newSetting = fields[prop];
+			if(! (fields contains prop)) 
 			{
-				if(get_property(x) != fields[x])
+				//writeln("Empty checkbox for " + prop + "<br>");
+				newSetting = "false";
+			}
+
+			string oldSetting = form_field(x);
+			if(oldSetting == newSetting)
+			{
+				if(get_property(prop) != newSetting)
 				{
-					writeln("You did not change setting " + x + ". It changed since you last loaded the page, ignoring.<br>");
+					writeln("You did not change setting " + prop + ". It changed since you last loaded the page, ignoring.<br>");
 				}
 				continue;
 			}
-			if(get_property(x) != fields[x])
+			if(get_property(prop) != newSetting)
 			{
-				writeln("Changing setting " + x + " to " + fields[x] + "<br>");
-				set_property(x, fields[x]);
+				writeln("Changing setting " + prop + " to " + newSetting + "<br>");
+				set_property(prop, newSetting);
 			}
 			
-			if(x == "auto_dickstab")	//used to detect if we just enabled dickstab
+			if(prop == "auto_dickstab")	//used to detect if we just enabled dickstab
 			{
-				if((fields[x] != get_property("auto_dickstab")) && (fields[x] == "true"))
+				if((newSetting != get_property("auto_dickstab")) && (newSetting == "true"))
 				{
 					dickstab = true;
 				}
