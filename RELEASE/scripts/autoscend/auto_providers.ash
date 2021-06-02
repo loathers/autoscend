@@ -735,7 +735,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 	foreach st,goal in amt
 	{
 		debugprint += goal;
-		debugprint += " ";
+		debugprint += " "; 
 		debugprint += st;
 		debugprint += ", ";
 	}
@@ -1047,3 +1047,165 @@ boolean provideMoxie(int amt, boolean doEquips)
 	return provideMoxie(amt, doEquips, false) >= amt;
 }
 
+float provideFamiliarWeight(familiar fam, int amt, boolean doEquips, boolean speculative)
+{
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " familiar weight to" + fam.to_string() + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	float alreadyHave = familiar_weight(fam);
+	if (alreadyHave <= 1 && (canChangeToFamiliar($familiar[Shorter-Order Cook]) || (in_quantumTerrarium() && familiar_weight(my_familiar()) >= 9)))
+	{
+		alreadyHave = 9;
+	}
+	if (auto_have_skill($skill[Amphibian Sympathy]) 
+	{
+		alreadyHave += 5;
+	}
+	if (my_sign() == "Platypus")
+	{
+		alreadyHave += 5;
+	}
+
+	float need = amt - alreadyHave;
+
+	if(need > 0)
+	{
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	}
+	else
+	{
+		auto_log_debug("We already have enough!");
+	}
+
+	float delta = 0;
+
+	float result()
+	{
+		return familiar_weight(fam) + delta;
+	}
+
+	if(doEquips)
+	{
+		string max = "400Familiar Weight " + amt + "max, -familiar";
+		if(speculative)
+		{
+			simMaximizeWith(max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize();
+		}
+
+		delta = simValue("Familiar Weight") - familiar_weight(fam);
+
+		if (fam == $familiar[Comma Chameleon] || fam == $familiar[Ghost of Crimbo Carols] || fam == $familiar[Ghost of Crimbo Commerce] || fam == $familiar[Ghost of Crimbo Cheer])
+		{
+			delta += 0;
+		}
+
+		else if (available_amount(familiar_equipment(fam) >= 1 && (familiar_equipment(fam) == $item[nosy nose ringy ring] || familiar_equipment(fam) == $item[cracker] || familiar_equipment(fam) == $item[tiny makeup kit]))
+		{
+			delta += 15;
+		}
+
+		else if (available_amount($item[astral pet sweater]) >= 1 || available_amount($item[sugar shield]) >= 1 || available_amount($item[amulet coin]) >= 1 || available_amount($item[luck incense]) >= 1 || available_amount($item[muscle band]) >= 1 || available_amount($item[razor fang]) >= 1 || available_amount($item[shell bell]) >= 1 || available_amount($item[smoke ball]) >= 1 )
+		{
+			delta += 10;
+		}
+
+		else if (available_amount(familiar_equipment(fam) >= 1 && (familiar_equipment(fam) == $item[bugged beanie] || familiar_equipment(fam) == $item[solid state loom] || familiar_equipment(fam) == $item[tiny cell phone] || familiar_equipment(fam) == $item[ironic moustache]))
+		{
+			delta += 10;
+		}
+
+		else if (available_amount(familiar_equipment(fam) >= 1)
+		{
+			delta += 5;
+		}
+
+		else if (amount_available($item[lead necklace]) >= 1)
+		{
+			delta += 3;
+		}
+
+		auto_log_debug("With gear we can get to " + result());
+	}
+
+	boolean pass()
+	{
+		return result() >= amt;
+	}
+
+	if(pass())
+		return result();
+
+	void handleEffect(effect eff)
+	{
+		if(speculative)
+		{
+			delta += numeric_modifier(eff, "Familiar Weight");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(buffMaintain(eff, 0, 1, 1, speculative))
+				handleEffect(eff);
+			if(pass())
+				return true;
+		}
+		return false;
+	}
+
+	//effects from not-items
+	if(tryEffects($effects[
+		Empathy,
+		Leash of Linguini,
+		Blood Bond,
+		Chorale of Companionship,
+		Optimist Primal
+	]))
+		return result();
+
+	//effects from items
+	if(tryEffects($effects[
+		Heavy Petting,
+		Heart of Green,
+		Green Tongue,
+		Loyal Tea,
+		Joy,
+		Healthy Green Glow,
+		Robot Friends,
+		Whole Latte Love
+	]))
+		return result();
+
+	if(doEquips && auto_canBeachCombHead("weight"))
+	{
+		if(!speculative)
+			auto_beachCombHead("weight");
+		handleEffect(auto_beachCombHeadEffect("weight"));
+		if(pass())
+			return result();
+	}
+
+	return result();
+}
+
+boolean provideFamiliarWeight(familiar fam, int amt, boolean doEquips)
+{
+	return provideFamiliarWeight(fam, amt, doEquips, false) >= amt;
+}
+
+boolean provideFamiliarWeight(familiar fam, int amt)
+{
+	return provideFamiliarWeight(fam, amt, true);
+}
+
+boolean provideFamiliarWeight(familiar fam)
+{
+	return provideFamiliarWeight(fam, 1000);
+}
