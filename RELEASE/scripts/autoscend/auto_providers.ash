@@ -735,7 +735,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 	foreach st,goal in amt
 	{
 		debugprint += goal;
-		debugprint += " "; 
+		debugprint += " ";
 		debugprint += st;
 		debugprint += ", ";
 	}
