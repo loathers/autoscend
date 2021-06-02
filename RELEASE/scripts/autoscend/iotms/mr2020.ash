@@ -477,6 +477,10 @@ boolean auto_cargoShortsOpenPocket(int pocket)
 	if (!auto_cargoShortsCanOpenPocket(pocket))
 		return false;
 
+	if (monster_pockets() contains pocket)
+	{
+		return auto_cargoShortsOpenPocket(pocket_monster(pocket));
+	}
 	return pick_pocket(pocket);
 }
 
@@ -492,8 +496,16 @@ boolean auto_cargoShortsOpenPocket(monster m)
 {
 	if (!auto_cargoShortsCanOpenPocket(m))
 		return false;
-
-	return pick_pocket(available_pocket(m));
+	
+	string[int] pages;
+	pages[0] = "inventory.php?action=pocket";
+	pages[1] = `choice.php?pwd={my_hash()}&whichchoice=1420&option=1&pocket={available_pocket(m)}`;
+	if (autoAdvBypass(0, pages, $location[Noob Cave], ""))
+	{
+		handleTracker(m, $item[Cargo Cultist Shorts], "auto_copies");
+		return true;
+	}
+	return false;
 }
 
 boolean auto_cargoShortsOpenPocket(effect e)
