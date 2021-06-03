@@ -27,14 +27,6 @@ svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/
 ```
 Will require [a recent build of KoLMafia](http://builds.kolmafia.us/job/Kolmafia/lastSuccessfulBuild/).
 
-### autoscend Beta
-If you would like to try the newest feature you can checkout the beta branch:
-```
-svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/branches/beta/RELEASE/
-```
-
-Note: you may need to delete KoLMafia's svn cache if you want to switch between the master and beta branches. It can be found in `<mafia dir>/svn/Loathing-Associates-Scripting-Society-autoscend-trunk-RELEASE` and `<mafia dir>/svn/Loathing-Associates-Scripting-Society-autoscend-branches-beta-RELEASE` respectively
-
 ## Usage
 
 Just type autoscend in the gCLI! You can configure autoscend in the relay browser via the relay
