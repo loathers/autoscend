@@ -10,7 +10,7 @@ void bedtime_still()
 		item target = $item[none];
 		
 		//first try to get at least 1 each of each of the imrpoved booze if possible
-		foreach it in $items[bottle of Calcutta Emerald, bottle of Lieutenant Freeman, bottle of Jorge Sinsonte, bottle of Definit, bottle of Domesticated Turkey, boxed champagne, bottle of Pete\'s Sake]
+		foreach it in $items[bottle of Calcutta Emerald, bottle of Lieutenant Freeman, bottle of Jorge Sinsonte, bottle of Definit, bottle of Domesticated Turkey, boxed champagne]
 		{
 			if(target == $item[none] && item_amount(it) == 0 && item_amount(still_targetToOrigin(it)) > 0)
 			{
