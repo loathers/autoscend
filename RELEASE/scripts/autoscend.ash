@@ -1,4 +1,4 @@
-since r20739;	//min mafia revision needed to run this script. Last update: Do not check Quantum Terrarium if player is in a fight or choice or other chained adventure that denies access to other pages
+since r20749;	//min mafia revision needed to run this script. Last update: Fix Quantum Terrarium Request parsing breaking on melodramedary
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
