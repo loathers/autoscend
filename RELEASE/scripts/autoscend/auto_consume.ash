@@ -1430,29 +1430,31 @@ boolean auto_breakfastCounterVisit() {
 item still_targetToOrigin(item target)
 {
 	//Nash Crosby's Still can convert Origin item into Target item. This function takes a target and tells us which origin it needs.
-	item retval = $item[none];
-	switch(target)
+	static item[item] originNeeded = {
+	$item[bottle of Calcutta Emerald]:		$item[bottle of gin],
+	$item[bottle of Lieutenant Freeman]:	$item[bottle of rum],
+	$item[bottle of Jorge Sinsonte]:		$item[bottle of tequila],
+	$item[bottle of Definit]:				$item[bottle of vodka],
+	$item[bottle of Domesticated Turkey]:	$item[bottle of whiskey],
+	$item[boxed champagne]:					$item[boxed wine],
+	$item[bottle of Pete\'s Sake]:			$item[bottle of sake],
+	$item[bottle of Ooze-O]:				$item[bottle of sewage schnapps],
+	$item[tangerine]:						$item[grapefruit],
+	$item[kiwi]:							$item[lemon],
+	$item[cocktail onion]:					$item[olive],
+	$item[kumquat]:							$item[orange],
+	$item[raspberry]:						$item[strawberry],
+	$item[tonic water]:						$item[soda water]
+	};
+	if(originNeeded contains target)
 	{
-	case $item[bottle of Calcutta Emerald]:			retval = $item[bottle of gin];				break;
-	case $item[bottle of Lieutenant Freeman]:		retval = $item[bottle of rum];				break;
-	case $item[bottle of Jorge Sinsonte]:			retval = $item[bottle of tequila];			break;
-	case $item[bottle of Definit]:					retval = $item[bottle of vodka];				break;
-	case $item[bottle of Domesticated Turkey]:		retval = $item[bottle of whiskey];			break;
-	case $item[boxed champagne]:					retval = $item[boxed wine];					break;
-	case $item[bottle of Pete\'s Sake]:				retval = $item[bottle of sake];				break;
-	case $item[bottle of Ooze-O]:					retval = $item[bottle of sewage schnapps];	break;
-	case $item[tangerine]:							retval = $item[grapefruit];					break;
-	case $item[kiwi]:								retval = $item[lemon];						break;
-	case $item[cocktail onion]:						retval = $item[olive];						break;
-	case $item[kumquat]:							retval = $item[orange];						break;
-	case $item[raspberry]:							retval = $item[strawberry];					break;
-	case $item[tonic water]:						retval = $item[soda water];					break;
+		return originNeeded[target];
 	}
-	if(retval == $item[none])
+	else
 	{
 		auto_log_debug("still_targetToOrigin failed to lookup the item [" +target+ "]");
 	}
-	return retval;
+	return $item[none];
 }
 
 boolean stillReachable()
