@@ -72,7 +72,8 @@ boolean L7_crypt()
 		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
 		return autoAdv($location[The Defiled Alcove]);
 	}
-
+	//current mafia bug causes us to lose track of the amount of Evil Eyes in inventory so adding a refresh here
+	cli_execute("refresh inv");
 	// In KoE, skeleton astronauts are random encounters that drop Evil Eyes.
 	// We might be able to reach the Nook boss without adventuring.
 
