@@ -46,6 +46,7 @@ import <autoscend/iotms/mr2021.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/avatar_of_boris.ash>
+import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
@@ -224,6 +225,7 @@ void initializeSettings() {
 	bhy_initializeSettings();
 	grey_goo_initializeSettings();
 	qt_initializeSettings();
+	jarlsberg_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -1126,6 +1128,7 @@ void initializeDay(int day)
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);
+	jarlsberg_initializeDay(day);
 
 	if(day == 1)
 	{
@@ -2654,6 +2657,9 @@ boolean doTasks()
 	awol_useStuff();
 	theSource_buySkills();
 	zelda_buyStuff();
+	jarlsberg_buySkills();
+	boris_buySkills();
+	pete_buySkills();
 
 	oldPeoplePlantStuff();
 	use_barrels();
@@ -2690,8 +2696,9 @@ boolean doTasks()
 	if(LM_majora())						return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
-	if(LM_canInteract()) 			return true;
+	if(LM_canInteract()) 				return true;
 	if(LM_kolhs()) 						return true;
+	if(LM_jarlsberg())					return true;
 
 	if(auto_my_path() != "Community Service")
 	{

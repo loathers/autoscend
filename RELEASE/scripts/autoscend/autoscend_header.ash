@@ -469,6 +469,14 @@ boolean borisAcquireHP(int goal);
 boolean LM_boris();
 
 ########################################################################################################
+//Defined in autoscend/paths/avatar_of_jarlsberg.ash
+boolean is_Jarlsberg();
+void jarlsberg_initializeSettings();
+void jarlsberg_initializeDay(int day);
+void jalrsberg_buySkills();
+boolean LM_jarlsberg();
+
+########################################################################################################
 //Defined in autoscend/paths/avatar_of_sneaky_pete.ash
 void pete_initializeSettings();
 void pete_initializeDay(int day);
@@ -1002,6 +1010,7 @@ boolean autoAdvBypass(string url, string option);
 
 ########################################################################################################
 //Defined in autoscend/auto_bedtime.ash
+void bedtime_still();
 boolean doBedtime();
 
 ########################################################################################################
@@ -1034,6 +1043,9 @@ void auto_drinkNightcap();
 boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
 boolean auto_breakfastCounterVisit();
+item still_targetToOrigin(item target);
+boolean stillReachable();
+boolean distill(item target);
 
 ########################################################################################################
 //Defined in autoscend/auto_deprecation.ash
