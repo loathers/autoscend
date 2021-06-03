@@ -115,6 +115,16 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
+	else if(is_Jarlsberg())
+	{
+		switch(my_daycount())
+		{
+		case 1:				prayers = $strings[Glamour, Vigor, Protection];		break;
+		case 2:				prayers = $strings[Protection, Glamour, Vigor];		break;
+		case 3:				prayers = $strings[Protection, Glamour, Vigor];		break;
+		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
+		}
+	}
 	else if(my_path() == "Way of the Surprising Fist")
 	{
 		switch(my_daycount())
@@ -964,6 +974,7 @@ boolean deck_useScheme(string action)
 			}
 			break;
 		case $class[Avatar of Boris]:
+		case $class[Avatar of Jarlsberg]:
 			switch(my_daycount())
 			{
 			case 1:				cards["key"] = true;						break;
