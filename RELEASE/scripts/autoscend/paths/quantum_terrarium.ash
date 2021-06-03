@@ -15,55 +15,59 @@ int qt_turnsToNextQuantumAlignment()
 
 boolean LX_quantumTerrarium()
 {
-	// TODO. Pathing goes here.
+	if (in_quantumTerrarium())
+	{
+		// placeholder. Just spam the console with familiar info for now.
+		auto_log_info(`In Quantum Terrarium. Current familiar = {my_familiar()}. Next familiar = {get_property("nextQuantumFamiliar")}`);
+	}
 	return false;
 }
 
 void qt_initializeSettings()
 {
-   if (in_quantumTerrarium())
-   {
-      set_property("auto_skipNuns", true);   //Remove when leprechaun swapping is supported at nuns.
-   }
+	if (in_quantumTerrarium())
+	{
+		set_property("auto_skipNuns", true);	//Remove when leprechaun swapping is supported at nuns.
+	}
 }
 
 string qt_TerrariumPage = visit_url("qterrarium.php");
 
 boolean qt_FamiliarAvailable (familiar fam)
-//Check to see if target familiar can be forced.
 {
-   string qt_FamiliarKey = "<option value=\"" + fam.to_int().to_string() + "\">";
-   matcher qt_FamiliarSearch = create_matcher(qt_FamiliarKey, qt_TerrariumPage);
+	//Check to see if target familiar can be forced.
+	string qt_FamiliarKey = "<option value=\"" + fam.to_int().to_string() + "\">";
+	matcher qt_FamiliarSearch = create_matcher(qt_FamiliarKey, qt_TerrariumPage);
 
-   if (qt_turnsToNextQuantumAlignment() > 1)
-   {
-      return false;
-   }
-   else if (find(qt_FamiliarSearch))
-   {
-      return true;
-   }
-   else 
-   {
-      return false;
-   }
+	if (qt_turnsToNextQuantumAlignment() > 1)
+	{
+		return false;
+	}
+	else if (find(qt_FamiliarSearch))
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
 }
 
 boolean qt_FamiliarSwap (familiar fam)
-//Swap/designate next familiar swap if possible.
 {
-   if(fam == $familiar[none])
-   {
-      print(fam.to_string() + " is not a valid familiar, weird behaviour.");
-      return false;
-   }
-   else if (qt_FamiliarAvailable(fam))
-   {
-      visit_url("qterrarium.php?pwd=&action=fam&fid="+ fam.to_int());
-      return true;
-   }
-   else
-   {
-      return false;
-   }
+	//Swap/designate next familiar swap if possible.
+	if(fam == $familiar[none])
+	{
+		print(fam.to_string() + " is not a valid familiar, weird behaviour.");
+		return false;
+	}
+	else if (qt_FamiliarAvailable(fam))
+	{
+		visit_url("qterrarium.php?pwd=&action=fam&fid="+ fam.to_int());
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
