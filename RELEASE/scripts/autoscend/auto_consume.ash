@@ -1426,3 +1426,68 @@ boolean auto_breakfastCounterVisit() {
 	}
 	return false; // not adventuring, no need to restart doTasks loop.
 }
+
+item still_targetToOrigin(item target)
+{
+	//Nash Crosby's Still can convert Origin item into Target item. This function takes a target and tells us which origin it needs.
+	static item[item] originNeeded = {
+	$item[bottle of Calcutta Emerald]:		$item[bottle of gin],
+	$item[bottle of Lieutenant Freeman]:	$item[bottle of rum],
+	$item[bottle of Jorge Sinsonte]:		$item[bottle of tequila],
+	$item[bottle of Definit]:				$item[bottle of vodka],
+	$item[bottle of Domesticated Turkey]:	$item[bottle of whiskey],
+	$item[boxed champagne]:					$item[boxed wine],
+	$item[bottle of Pete\'s Sake]:			$item[bottle of sake],
+	$item[bottle of Ooze-O]:				$item[bottle of sewage schnapps],
+	$item[tangerine]:						$item[grapefruit],
+	$item[kiwi]:							$item[lemon],
+	$item[cocktail onion]:					$item[olive],
+	$item[kumquat]:							$item[orange],
+	$item[raspberry]:						$item[strawberry],
+	$item[tonic water]:						$item[soda water]
+	};
+	if(originNeeded contains target)
+	{
+		return originNeeded[target];
+	}
+	else
+	{
+		auto_log_debug("still_targetToOrigin failed to lookup the item [" +target+ "]");
+	}
+	return $item[none];
+}
+
+boolean stillReachable()
+{
+	//can we reach Nash Crosby's Still.
+	//stills_available() insufficient. it returns 0 if your class can not unlock still and 10 if your class can unlock it but did not.
+	if(my_class() == $class[Avatar of Sneaky Pete])
+	{
+		return true;
+	}
+	return guild_store_available() && $classes[Accordion Thief, Disco Bandit] contains my_class();
+}
+
+boolean distill(item target)
+{
+	//use Nash Crosby's Still to create target
+	auto_log_debug("distill(item target) called to create [" +target+ "]");
+	if(!stillReachable())
+	{
+		auto_log_warning("distill(item target) tried to create [" +target+ "] but Nash Crosby's Still is not reachable");
+		return false;
+	}
+	if(stills_available() == 0)
+	{
+		auto_log_warning("distill(item target) tried to create [" +target+ "] but Nash Crosby's Still is out of uses");
+		return false;
+	}
+	int start_amount = item_amount(target);
+	create(1, target);			//use the still to create target
+	if(start_amount + 1 == item_amount(target))
+	{
+		return true;
+	}
+	auto_log_warning("distill(item target) mysteriously failed to create [" +target+ "]");
+	return false;
+}
