@@ -1,4 +1,4 @@
-since r20655;	// min mafia revision needed to run this script. Last update: questM05Toot tracking will correct to finished when refreshing quests
+since r20739;	//min mafia revision needed to run this script. Last update: Do not check Quantum Terrarium if player is in a fight or choice or other chained adventure that denies access to other pages
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -46,6 +46,7 @@ import <autoscend/iotms/mr2021.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/avatar_of_boris.ash>
+import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
@@ -66,6 +67,7 @@ import <autoscend/paths/one_crazy_random_summer.ash>
 import <autoscend/paths/path_of_the_plumber.ash>
 import <autoscend/paths/picky.ash>
 import <autoscend/paths/pocket_familiars.ash>
+import <autoscend/paths/quantum_terrarium.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/low_key_summer.ash>
@@ -101,7 +103,7 @@ void initializeSettings() {
 	invalidateRestoreOptionCache();
 
 	set_property("auto_100familiar", $familiar[none]);
-	if(my_familiar() != $familiar[none])
+	if(my_familiar() != $familiar[none] && pathAllowsChangingFamiliar()) //If we can't control familiar changes, no point setting 100% familiar data
 	{
 		boolean userAnswer = user_confirm("Familiar already set, is this a 100% familiar run? Will default to 'No' in 15 seconds.", 15000, false);
 		if(userAnswer)
@@ -119,11 +121,6 @@ void initializeSettings() {
 		int curSkill = to_int(my_pool.group(1));
 		int sharkCountMin = ceil((curSkill * curSkill) / 4);
 		int sharkCountMax = ceil((curSkill + 1) * (curSkill + 1) / 4);
-		if(get_property("poolSharkCount").to_int() < sharkCountMin || get_property("poolSharkCount").to_int() >= sharkCountMax)
-		{
-			auto_log_warning("poolSharkCount set to incorrect value.", "red");
-			auto_log_info("You can \"set poolSharkCount="+sharkCountMin+"\" to use the least optimistic value consistent with your pool skill.", "blue");
-		}
 	}
 
 	set_property("auto_abooclover", true);
@@ -227,6 +224,8 @@ void initializeSettings() {
 	lowkey_initializeSettings();
 	bhy_initializeSettings();
 	grey_goo_initializeSettings();
+	qt_initializeSettings();
+	jarlsberg_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -236,6 +235,7 @@ void initializeSession() {
 	// anything that needs to be set only for the duration the script is running
 	// should be set in here.
 
+	auto_enableBackupCameraReverser();
 	ed_initializeSession();
 	bat_initializeSession();
 }
@@ -1128,6 +1128,7 @@ void initializeDay(int day)
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);
+	jarlsberg_initializeDay(day);
 
 	if(day == 1)
 	{
@@ -1138,7 +1139,7 @@ void initializeDay(int day)
 			{
 				auto_sourceTerminalRequest("enquiry monsters.enq");
 			}
-			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && pathAllowsFamiliar())
+			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && pathHasFamiliar())
 			{
 				auto_sourceTerminalRequest("enquiry familiar.enq");
 			}
@@ -1660,6 +1661,11 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		logRemainingFights("Piranha Plant Fights = " + temp);
 	}
 
+	if (auto_canTendMushroomGarden()) {
+		count++;
+		logRemainingFights("Tend to Mushroom Garden = 1"); //Not actually a free fight, but included to ensure carried out at bedtime.
+	}
+
 	return count;
 }
 
@@ -1782,6 +1788,42 @@ boolean LX_freeCombats(boolean powerlevel)
 		auto_freeCombatsRemaining(true);		//print remaining free combats.
 	}
 
+	return false;
+}
+
+boolean LX_freeCombatsTask_condition()
+{
+	return my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1;
+}
+
+boolean LX_freeCombatsTask()
+{
+	auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
+	return LX_freeCombats();
+}
+
+boolean LX_fightTentacle()
+{
+	boolean weak_and_zelda = in_zelda() && !zelda_canDealScalingDamage();
+	if(my_daycount() == 1)
+	{
+		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0) && !weak_and_zelda)
+		{
+			fightScienceTentacle();
+			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
+			{
+				evokeEldritchHorror();
+			}
+		}
+	}
+	else if((my_level() >= 9) && (my_hp() > 0) && !weak_and_zelda)
+	{
+		fightScienceTentacle();
+		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
+		{
+			evokeEldritchHorror();
+		}
+	}
 	return false;
 }
 
@@ -1972,7 +2014,7 @@ boolean LX_craftAcquireItems()
 	}
 	else
 	{
-		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathAllowsFamiliar())
+		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar())
 		{
 			set_property("choiceAdventure1106", 3);
 		}
@@ -2379,7 +2421,7 @@ boolean autosellCrap()
 	{
 		if(item_amount(it) > 2)		//for these items we want to keep 2 in stock. sell the rest
 		{
-			use(min(10,item_amount(it)-2), it);
+			auto_autosell(min(10,item_amount(it)-2), it);
 		}
 	}
 
@@ -2499,6 +2541,35 @@ void resetState() {
 	}
 }
 
+boolean process_tasks()
+{
+	string [string,int,string] task_order;
+	if(!file_to_map("autoscend_task_order.txt", task_order))
+	{
+		abort("Could not load /data/autoscend_task_order.txt");
+	}
+
+	string task_path = my_path();
+	if (!(task_order contains task_path))
+	{
+		task_path = "default";
+	}
+
+	foreach i,task_function,condition_function in task_order[task_path]
+	{
+		if (condition_function == "" || (call boolean condition_function()))
+		{
+			boolean result = call boolean task_function();
+			if (result)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
@@ -2513,7 +2584,7 @@ boolean doTasks()
 		auto_log_warning("According to property _auto_doneToday I am done for today", "red");
 		return false;
 	}
-	if(my_familiar() == $familiar[Stooper])
+	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
 		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
@@ -2586,6 +2657,9 @@ boolean doTasks()
 	awol_useStuff();
 	theSource_buySkills();
 	zelda_buyStuff();
+	jarlsberg_buySkills();
+	boris_buySkills();
+	pete_buySkills();
 
 	oldPeoplePlantStuff();
 	use_barrels();
@@ -2622,8 +2696,9 @@ boolean doTasks()
 	if(LM_majora())						return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
-	if(LM_canInteract()) 			return true;
+	if(LM_canInteract()) 				return true;
 	if(LM_kolhs()) 						return true;
+	if(LM_jarlsberg())					return true;
 
 	if(auto_my_path() != "Community Service")
 	{
@@ -2695,175 +2770,7 @@ boolean doTasks()
 		acquireHP();
 	}
 
-	boolean weak_and_zelda = in_zelda() && !zelda_canDealScalingDamage();
-	if(my_daycount() == 1)
-	{
-		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0) && !weak_and_zelda)
-		{
-			fightScienceTentacle();
-			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
-			{
-				evokeEldritchHorror();
-			}
-		}
-	}
-	else if((my_level() >= 9) && (my_hp() > 0) && !weak_and_zelda)
-	{
-		fightScienceTentacle();
-		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
-		{
-			evokeEldritchHorror();
-		}
-	}
-	if(my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
-	{
-		auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
-		if(LX_freeCombats()) return true;
-	}
-
-	catBurglarHeist(); // don't return true from this, isn't adventuring.
-	if(chateauPainting())			return true;
-	if(LX_faxing())						return true;
-	if(LX_artistQuest())				return true;
-	if(LX_galaktikSubQuest())			return true;
-	if(LX_armorySideQuest())			return true;
-	if(LX_meatsmithSubQuest())			return true;
-	if(L9_leafletQuest())				return true;
-	if(L5_findKnob())					return true;		//use encryption key to unlock possible delay zone if you have it
-	if(L12_sonofaPrefix())				return true;
-	if(LX_burnDelay())					return true;
-	if (LM_edTheUndying())				return true;
-	if (LX_lowkeySummer())				return true;
-	if(resolveSixthDMT())			return true;
-	if(LX_dinseylandfillFunbucks())		return true;
-	if(L12_flyerFinish())				return true;
-	if(L12_getOutfit() || L12_startWar())
-	{
-		return true;
-	}
-	if(LX_loggingHatchet())				return true;
-	if(LX_guildUnlock())				return true;
-	if(knoll_available() && get_property("auto_spoonconfirmed").to_int() == my_ascensions())
-	{
-		if(LX_bitchinMeatcar())			return true;		//buy the meatcar before switching signs with the rune spoon
-	}
-	if(LX_unlockDesert())				return true;
-	if(LX_unlockPirateRealm())			return true;
-	if(handleRainDoh())				return true;
-	if(routineRainManHandler())			return true;
-	if(LX_spookyravenManorFirstFloor())	return true;
-
-	if(!get_property("auto_slowSteelOrgan").to_boolean() && get_property("auto_getSteelOrgan").to_boolean())
-	{
-		if(L6_friarsGetParts())				return true;
-		if(LX_steelOrgan())					return true;
-	}
-
-	if(L4_batCave())					return true;
-	if(L2_mosquito())					return true;
-	if(LX_unlockHiddenTemple())	return true;
-	if(L6_dakotaFanning())				return true;
-	if(LX_lockPicking())					return true;
-	if(LX_fatLootToken())				return true;
-	if(L5_slayTheGoblinKing())			return true;
-	if(LX_islandAccess())				return true;
-
-	if(in_hardcore() && isGuildClass())
-	{
-		if(L6_friarsGetParts())
-		{
-			return true;
-		}
-	}
-
-	if(LX_spookyravenManorSecondFloor())			return true;
-	if(L3_tavern())						return true;
-	if(L6_friarsGetParts())				return true;
-	if(LX_hardcoreFoodFarm())			return true;
-
-	if(in_hardcore() && LX_steelOrgan())
-	{
-		return true;
-	}
-
-	if(L7_crypt())						return true;
-	if(fancyOilPainting())				return true;
-	if(L8_trapperQuest())				return true;
-	if(LX_steelOrgan())					return true;
-	if(L10_plantThatBean())				return true;
-	if(L12_preOutfit())					return true;
-	if(L10_airship())					return true;
-	if(L10_basement())					return true;
-	if(L10_ground())					return true;
-	if(L11_blackMarket())				return true;
-	if(L11_forgedDocuments())			return true;
-	if(L11_mcmuffinDiary())				return true;
-	if(L10_topFloor())					return true;
-	if(L10_holeInTheSkyUnlock())		return true;
-	if(L9_chasmBuild())					return true;
-	if(L9_highLandlord())				return true;
-	if(L12_flyerBackup())				return true;
-	if(Lsc_flyerSeals())				return true;
-	if(L11_mauriceSpookyraven())		return true;
-	if(L11_unlockHiddenCity())			return true;
-	if(L11_hiddenCityZones())			return true;
-	if(LX_ornateDowsingRod(false))		return true;
-	if(L11_aridDesert())				return true;
-	if(L11_hiddenCity())				return true;
-	if(L11_talismanOfNam())				return true;
-	if(L11_palindome())					return true;
-	if(L11_unlockPyramid())				return true;
-	if(L11_unlockEd())					return true;
-	if(L11_defeatEd())					return true;
-	if(L12_gremlins())					return true;
-	if(L12_sonofaFinish())				return true;
-	if(L12_sonofaBeach())				return true;
-	if(L12_filthworms())				return true;
-	if(L12_orchardFinalize())			return true;
-	if(L12_themtharHills())				return true;
-	if(L12_farm())						return true;
-	if(L11_getBeehive())				return true;
-	if(L12_finalizeWar())				return true;
-
-	if(!inAftercore() && (my_inebriety() < inebriety_limit()) && !get_property("_gardenHarvested").to_boolean())
-	{
-		int[item] camp = auto_get_campground();
-		if((camp contains $item[Packet of Thanksgarden Seeds]) && (camp contains $item[Cornucopia]) && (camp[$item[Cornucopia]] > 0) && (internalQuestStatus("questL12War") >= 1))
-		{
-			cli_execute("garden pick");
-		}
-	}
-
-	if (L12_clearBattlefield())			return true;
-	if(LX_koeInvaderHandler())			return true;
-
-	// release the softblock on delay burning
-	if(allowSoftblockDelay())
-	{
-		auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
-		set_property("auto_delayLastLevel", my_level());
-		return true;
-	}
-	
-	//release the softblock on quests that are waiting for shen quest
-	if(allowSoftblockShen())
-	{
-		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do. Releasing softblock.", "red");
-		set_property("auto_shenSkipLastLevel", my_level());
-		return true;
-	}
-	
-	if(LX_getDigitalKey()) 				return true;
-	if(LX_getStarKey()) 				return true;
-	if(L12_lastDitchFlyer())			return true;
-	if(L13_towerNSContests())			return true;
-	if(L13_towerNSHedge())				return true;
-	if(L13_sorceressDoor())				return true;
-	if(L13_towerNSTower())				return true;
-	if(L13_towerNSNagamar())			return true;
-	if(L13_towerNSFinal())				return true;
-
-	if (LX_attemptPowerLevel()) return true;	
+	if (process_tasks()) return true;
 
 	auto_log_info("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");
 	return false;
@@ -2973,7 +2880,7 @@ void auto_begin()
 
 	initializeSession(); // sets properties for the current session (should all be reset when we're done)
 
-	if(my_familiar() == $familiar[Stooper])
+	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
 		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);

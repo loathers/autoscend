@@ -136,6 +136,9 @@ boolean L13_ed_towerHandler()
 	{
 		return false;
 	}
+
+	council(); //Visit prior to checking the quest status to ensure we have correct quest status
+
 	if (internalQuestStatus("questL13Final") < 0 || internalQuestStatus("questL13Final") > 11)
 	{
 		return false;
@@ -146,7 +149,7 @@ boolean L13_ed_towerHandler()
 		return true;
 	}
 
-	council();
+
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_10_sorcfight"))
 	{
 		auto_log_info("We found the jerkwad!! Revenge!!!!!", "blue");
@@ -936,7 +939,7 @@ boolean ed_shopping()
 
 void ed_handleAdventureServant(location loc)
 {
-	if (loc == $location[Noob Cave])
+	if (loc == $location[Noob Cave] || !isActuallyEd())
 	{
 		return;
 	}
@@ -1032,6 +1035,12 @@ boolean L1_ed_island()
 {
 	if(!elementalPlanes_access($element[spooky]))
 	{
+		return false;
+	}
+
+	if (!have_skill($skill[Roar of the Lion]))
+	{
+		// combat handling only uses this so it's essential
 		return false;
 	}
 

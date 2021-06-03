@@ -2037,6 +2037,13 @@ boolean allowSoftblockShen()
 	return get_property("auto_shenSkipLastLevel").to_int() < my_level();
 }
 
+boolean setSoftblockShen()
+{
+	auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do. Releasing softblock.", "red");
+	set_property("auto_shenSkipLastLevel", my_level());
+	return true;
+}
+
 boolean instakillable(monster mon)
 {
 	if(mon.boss)
@@ -3871,7 +3878,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
 	case $effect[Empathy]:
-		if(pathAllowsFamiliar() && acquireTotem())
+		if(pathHasFamiliar() && acquireTotem())
 		{
 			useSkill = $skill[Empathy of the Newt];
 		}																						break;
@@ -4000,7 +4007,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Juiced and Jacked]:			useItem = $item[Pumpkin Juice];					break;
 	case $effect[Juiced and Loose]:				useSkill = $skill[Steroid Bladder];				break;
 	case $effect[Leash of Linguini]:
-		if(pathAllowsFamiliar())
+		if(pathHasFamiliar())
 		{
 			useSkill = $skill[Leash of Linguini];
 		}																						break;
@@ -4556,6 +4563,13 @@ location solveDelayZone()
 boolean allowSoftblockDelay()
 {
 	return get_property("auto_delayLastLevel").to_int() < my_level();
+}
+
+boolean setSoftblockDelay()
+{
+	auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
+	set_property("auto_delayLastLevel", my_level());
+	return true;
 }
 
 boolean canBurnDelay(location loc)

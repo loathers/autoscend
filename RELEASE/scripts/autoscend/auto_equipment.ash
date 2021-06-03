@@ -213,7 +213,7 @@ string defaultMaximizeStatement()
 		}
 	}
 
-	if(pathAllowsFamiliar())
+	if(pathHasFamiliar())
 	{
 		res += ",2familiar weight";
 		if(my_familiar().familiar_weight() < 20)

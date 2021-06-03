@@ -38,6 +38,8 @@ int auto_freeCombatsRemaining();
 int auto_freeCombatsRemaining(boolean print_remaining_fights);
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
+boolean LX_freeCombatsTask();
+boolean LX_freeCombatsTask_condition();
 boolean Lsc_flyerSeals();
 boolean LX_hardcoreFoodFarm();
 boolean LX_craftAcquireItems();
@@ -125,6 +127,7 @@ boolean dna_generic();
 boolean dna_sorceressTest();
 boolean dna_bedtime();
 boolean LX_ornateDowsingRod(boolean doing_desert_now);
+boolean LX_ornateDowsingRod();
 boolean fancyOilPainting();
 int turkeyBooze();
 int amountTurkeyBooze();
@@ -405,7 +408,7 @@ boolean auto_handleRetrocape();
 boolean auto_buyCrimboCommerceMallItem();
 
 ########################################################################################################
-//Defined in autoscend/iotms/mr2020.ash
+//Defined in autoscend/iotms/mr2021.ash
 boolean auto_haveEmotionChipSkills();
 boolean auto_canFeelEnvy();
 boolean auto_canFeelHatred();
@@ -416,6 +419,9 @@ boolean auto_canFeelLonely();
 boolean auto_canFeelExcitement();
 boolean auto_canFeelNervous();
 boolean auto_canFeelPeaceful();
+boolean auto_haveBackupCamera();
+void auto_enableBackupCameraReverser();
+int auto_backupUsesLeft();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -461,6 +467,14 @@ boolean borisDemandSandwich(boolean immediately);
 void borisWastedMP();
 boolean borisAcquireHP(int goal);
 boolean LM_boris();
+
+########################################################################################################
+//Defined in autoscend/paths/avatar_of_jarlsberg.ash
+boolean is_Jarlsberg();
+void jarlsberg_initializeSettings();
+void jarlsberg_initializeDay(int day);
+void jalrsberg_buySkills();
+boolean LM_jarlsberg();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_sneaky_pete.ash
@@ -714,6 +728,16 @@ boolean LM_digimon();
 boolean digimon_autoAdv(int num, location loc, string option);
 
 ########################################################################################################
+//Defined in autoscend/paths/quantum_terrarium.ash
+boolean in_quantumTerrarium();
+familiar qt_nextQuantumFamiliar();
+int qt_turnsToNextQuantumAlignment();
+boolean LX_quantumTerrarium();
+void qt_initializeSettings();
+boolean qt_FamiliarAvailable (familiar fam);
+boolean qt_FamiliarSwap (familiar fam);
+
+########################################################################################################
 //Defined in autoscend/paths/the_source.ash
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();
@@ -756,6 +780,7 @@ boolean L5_slayTheGoblinKing();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_06.ash
+boolean L6_friarsGetParts_condition_hardcore();
 boolean L6_friarsGetParts();
 boolean L6_dakotaFanning();
 
@@ -917,6 +942,7 @@ boolean L13_towerAscent();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_any.ash
+boolean LX_bitchinMeatcar_condition();
 boolean LX_bitchinMeatcar();
 boolean LX_unlockDesert();
 boolean LX_desertAlternate();
@@ -937,6 +963,7 @@ boolean LX_meatMaid();
 boolean LX_artistQuest();
 boolean LX_unlockThinknerdWarehouse(boolean spend_resources);
 boolean LX_melvignShirt();
+boolean LX_steelOrgan_condition_slow();
 boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean startArmorySubQuest();
@@ -982,6 +1009,7 @@ boolean autoAdvBypass(string url, string option);
 
 ########################################################################################################
 //Defined in autoscend/auto_bedtime.ash
+void bedtime_still();
 boolean doBedtime();
 
 ########################################################################################################
@@ -1013,6 +1041,10 @@ void auto_printNightcap();
 void auto_drinkNightcap();
 boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
+boolean auto_breakfastCounterVisit();
+item still_targetToOrigin(item target);
+boolean stillReachable();
+boolean distill(item target);
 
 ########################################################################################################
 //Defined in autoscend/auto_deprecation.ash
@@ -1052,7 +1084,8 @@ boolean auto_forceEquipSword();
 boolean is100FamRun();
 boolean doNotBuffFamiliar100Run();
 boolean isAttackFamiliar(familiar fam);
-boolean pathAllowsFamiliar();
+boolean pathHasFamiliar();
+boolean pathAllowsChangingFamiliar();
 boolean auto_have_familiar(familiar fam);
 boolean canChangeFamiliar();
 boolean canChangeToFamiliar(familiar target);
@@ -1319,6 +1352,7 @@ boolean inKnollSign();
 boolean inCanadiaSign();
 boolean inGnomeSign();
 boolean allowSoftblockShen();
+boolean setSoftblockShen();
 boolean instakillable(monster mon);
 boolean stunnable(monster mon);
 int freeCrafts();
@@ -1388,7 +1422,9 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
 boolean auto_faceCheck(string face);
 location solveDelayZone();
+boolean setSoftblockDelay();
 boolean allowSoftblockDelay();
+boolean setSoftblockDelay();
 boolean canBurnDelay(location loc);
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);

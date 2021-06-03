@@ -556,7 +556,8 @@ void consumeStuff()
 		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
 		if (inebriety_left() > 0)
 		{
-			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper])
+			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
+			&& pathAllowsChangingFamiliar()) //check path allows changing of familiars
 			{
 				use_familiar($familiar[Mosquito]);
 			}
@@ -612,11 +613,27 @@ boolean consumeFortune()
 	if (fullness_left() > 0 && canEat($item[Fortune Cookie]) && my_meat() >= npc_price($item[Fortune Cookie]))
 	{
 		// Eat a spaghetti breakfast if still consumable
-		if (canEat($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_fullness() == 0 && my_level() >= 10)
+		if (my_fullness() == 0)
 		{
-			if (!autoEat(1, $item[Spaghetti Breakfast]))
+			if (canEat($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_level() >= 10)
 			{
-				return false;
+				if (!autoEat(1, $item[Spaghetti Breakfast]))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				foreach muffin in $items[blueberry muffin, bran muffin, chocolate chip muffin]
+				{
+					if (canEat(muffin) && item_amount(muffin) > 0)
+					{
+						if (!autoEat(1, muffin))
+						{
+							return false;
+						}
+					}
+				}
 			}
 		}
 
@@ -970,16 +987,27 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				auto_log_info("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
 				actions[n].desirability += 25;
 			}
-			if ((obtain_mode == SL_OBTAIN_NULL) && (it == $item[Spaghetti Breakfast]))
+			if (obtain_mode == SL_OBTAIN_NULL)
 			{
-				if (get_property("_spaghettiBreakfastEaten").to_boolean() || my_fullness() > 0)
+				if (it == $item[Spaghetti Breakfast])
 				{
-					actions[n].desirability -= 50;
+					if (get_property("_spaghettiBreakfastEaten").to_boolean() || my_fullness() > 0)
+					{
+						actions[n].desirability -= 50;
+					}
+					else
+					{
+						auto_log_info("Spaghetti Breakfast available, we should eat that first.");
+						actions[n].desirability += 50;
+					}
 				}
-				else
+				else if ($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it)
 				{
-					auto_log_info("Spaghetti Breakfast available, we should eat that first.");
-					actions[n].desirability += 50;
+					if (my_fullness() == 0 && my_level() < 13)
+					{
+						auto_log_info(`{it.to_string()} available, we should eat that first.`);
+						actions[n].desirability += 50;
+					}
 				}
 			}
 			if (obtain_mode == SL_OBTAIN_CRAFT)
@@ -1170,7 +1198,7 @@ void auto_drinkNightcap()
 	
 	familiar start_fam = my_familiar();
 	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
-	&& start_fam != $familiar[Stooper])
+	&& start_fam != $familiar[Stooper] && pathAllowsChangingFamiliar()) //check if path allows changing familiar
 	{
 		use_familiar($familiar[Stooper]);
 	}
@@ -1184,7 +1212,7 @@ void auto_drinkNightcap()
 	{
 		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
 	}
-	autoConsume(target);
+	drinksilent(1, target.it);		//drinksilent avoids the popup asking if we are sure we want to overdrink
 	
 	if(start_fam != my_familiar())
 	{
@@ -1197,7 +1225,18 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 	int organLeft()
 	{
 		if (type == "eat") return fullness_left();
-		if (type == "drink") return inebriety_left();
+		if (type == "drink") 
+		{
+			if (in_quantumTerrarium() && my_familiar() == $familiar[Stooper])
+			{
+				// we can't change familiars so don't drink to full liver as we'll be overdrunk when it changes familiar.
+				return (my_inebriety() < inebriety_limit() ? inebriety_left() - 1 : 0);
+			}
+			else
+			{
+				return inebriety_left();
+			}
+		}
 		abort("Unrecognized organ type: should be 'eat' or 'drink', was " + type);
 		return 0;
 	}
@@ -1369,4 +1408,86 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 
 	auto_log_info("Expected " + total_adv + " adventures, got " + (my_adventures() - pre_adventures), "blue");
 	return true;
+}
+
+boolean auto_breakfastCounterVisit() {
+	if (item_amount($item[earthenware muffin tin]) > 0 ||
+	    (!get_property("_muffinOrderedToday").to_boolean() && 
+			$items[blueberry muffin, bran muffin, chocolate chip muffin, earthenware muffin tin] contains get_property("muffinOnOrder").to_item())) {
+		auto_log_info("Going to the breakfast counter to grab/order a breakfast muffin.");
+		visit_url("place.php?whichplace=monorail&action=monorail_downtown");
+		run_choice(7); // Visit the Breakfast Counter
+		if (!get_property("_muffinOrderedToday").to_boolean() && item_amount($item[earthenware muffin tin]) > 0) {
+			auto_log_info("Ordering a bran muffin for tomorrow to keep you regular.");
+			run_choice(2); // Order a bran muffin
+		}
+		run_choice(1); // Back to the Platform!
+		run_choice(8); // Nevermind
+	}
+	return false; // not adventuring, no need to restart doTasks loop.
+}
+
+item still_targetToOrigin(item target)
+{
+	//Nash Crosby's Still can convert Origin item into Target item. This function takes a target and tells us which origin it needs.
+	static item[item] originNeeded = {
+	$item[bottle of Calcutta Emerald]:		$item[bottle of gin],
+	$item[bottle of Lieutenant Freeman]:	$item[bottle of rum],
+	$item[bottle of Jorge Sinsonte]:		$item[bottle of tequila],
+	$item[bottle of Definit]:				$item[bottle of vodka],
+	$item[bottle of Domesticated Turkey]:	$item[bottle of whiskey],
+	$item[boxed champagne]:					$item[boxed wine],
+	$item[bottle of Pete\'s Sake]:			$item[bottle of sake],
+	$item[bottle of Ooze-O]:				$item[bottle of sewage schnapps],
+	$item[tangerine]:						$item[grapefruit],
+	$item[kiwi]:							$item[lemon],
+	$item[cocktail onion]:					$item[olive],
+	$item[kumquat]:							$item[orange],
+	$item[raspberry]:						$item[strawberry],
+	$item[tonic water]:						$item[soda water]
+	};
+	if(originNeeded contains target)
+	{
+		return originNeeded[target];
+	}
+	else
+	{
+		auto_log_debug("still_targetToOrigin failed to lookup the item [" +target+ "]");
+	}
+	return $item[none];
+}
+
+boolean stillReachable()
+{
+	//can we reach Nash Crosby's Still.
+	//stills_available() insufficient. it returns 0 if your class can not unlock still and 10 if your class can unlock it but did not.
+	if(my_class() == $class[Avatar of Sneaky Pete])
+	{
+		return true;
+	}
+	return guild_store_available() && $classes[Accordion Thief, Disco Bandit] contains my_class();
+}
+
+boolean distill(item target)
+{
+	//use Nash Crosby's Still to create target
+	auto_log_debug("distill(item target) called to create [" +target+ "]");
+	if(!stillReachable())
+	{
+		auto_log_warning("distill(item target) tried to create [" +target+ "] but Nash Crosby's Still is not reachable");
+		return false;
+	}
+	if(stills_available() == 0)
+	{
+		auto_log_warning("distill(item target) tried to create [" +target+ "] but Nash Crosby's Still is out of uses");
+		return false;
+	}
+	int start_amount = item_amount(target);
+	create(1, target);			//use the still to create target
+	if(start_amount + 1 == item_amount(target))
+	{
+		return true;
+	}
+	auto_log_warning("distill(item target) mysteriously failed to create [" +target+ "]");
+	return false;
 }

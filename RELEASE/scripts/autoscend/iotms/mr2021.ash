@@ -94,3 +94,22 @@ boolean auto_canFeelPeaceful()
 	}
 	return auto_haveEmotionChipSkills() && get_property("_feelPeacefulUsed") < 3;
 }
+
+boolean auto_haveBackupCamera()
+{
+	return possessEquipment($item[backup camera]) && auto_is_valid($item[backup camera]);
+}
+
+void auto_enableBackupCameraReverser()
+{
+	if (auto_haveBackupCamera() && !get_property("backupCameraReverserEnabled").to_boolean())
+	{
+		cli_execute("backupcamera reverser on");
+	}
+}
+
+int auto_backupUsesLeft()
+{
+	// incorrect for You, Robot. Also don't care.
+	return 11 - get_property("_backUpUses").to_int();
+}

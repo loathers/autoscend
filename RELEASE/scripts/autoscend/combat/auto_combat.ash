@@ -1327,11 +1327,11 @@ string auto_combatHandler(int round, monster enemy, string text)
 			}
 		}
 
-		if(canUse($skill[Curse Of Weaksauce]) && (my_class() == $class[Sauceror]) && (my_mp() >= 20) && doWeaksauce)
+		if (canUse($skill[Curse Of Weaksauce]) && my_class() == $class[Sauceror] && doWeaksauce)
 		{
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
-				  
+
 		if(canUse($skill[Detect Weakness]))
 		{
 			return useSkill($skill[Detect Weakness]);
@@ -1981,7 +1981,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
 		{
 			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMinor = useSkill($skill[Saucestorm], false);
+			attackMajor = useSkill($skill[Saucestorm], false);
 			costMinor = mp_cost($skill[Saucestorm]);
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
@@ -2014,7 +2014,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
 		{
 			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMinor = useSkill($skill[Saucestorm], false);
+			attackMajor = useSkill($skill[Saucestorm], false);
 			costMinor = mp_cost($skill[Saucestorm]);
 			costMajor = mp_cost($skill[Saucestorm]);
 		}

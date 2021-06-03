@@ -3,7 +3,7 @@
 boolean mummifyFamiliar(familiar fam, string bonus)
 {
 	bonus = to_lower_case(bonus);
-	if(!pathAllowsFamiliar())
+	if(!pathHasFamiliar())
 	{
 		return false;
 	}
@@ -19,7 +19,7 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 	{
 		return false;
 	}
-	if(!have_familiar(fam))
+	if(!canChangeToFamiliar(fam)) // Can Change to Familiar checks both whether we have it and if we are allowed to change to it
 	{
 		return false;
 	}
@@ -275,7 +275,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-	if((loveEffect == 2) && !pathAllowsFamiliar())
+	if((loveEffect == 2) && !pathHasFamiliar())
 	{
 		loveEffect = 3;
 	}

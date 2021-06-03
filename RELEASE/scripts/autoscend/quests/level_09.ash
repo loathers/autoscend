@@ -158,6 +158,13 @@ boolean L9_chasmBuild()
 	// make sure our progress count is correct before we do anything.
 	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
+	if (!in_glover() && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
+	{
+ 		// fight Smut Orc Pervert from Cargo Shorts for a Smut Orc Keepsake Box
+ 		use(1, $item[Smut Orc Keepsake Box]);
+		return true;
+	}
+
 	// -Combat is useless here since NC is triggered by killing Orcs...So we kill orcs better!
 	// -ML helps us deal more cold damage and trigger the NC faster.
 	asdonBuff($effect[Driving Intimidatingly]);
@@ -223,6 +230,11 @@ boolean L9_chasmBuild()
 		// to determine best approach.
 		L9_chasmMaximizeForNoncombat();
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
+		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
+		if(get_property("chasmBridgeProgress").to_int() >= 30)
+		{
+			visit_url("place.php?whichplace=highlands&action=highlands_dude");
+		}
 		return true;
 	}
 
