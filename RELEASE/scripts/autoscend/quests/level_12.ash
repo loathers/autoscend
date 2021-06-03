@@ -1866,7 +1866,31 @@ boolean L12_clearBattlefield()
 		return L12_koe_clearBattlefield();
 	}
 
-	if (get_property("hippiesDefeated").to_int() < 64 && get_property("fratboysDefeated").to_int() < 64 && internalQuestStatus("questL12War") == 1)
+	if (internalQuestStatus("questL12War") != 1)
+	{
+		return false;
+	}
+
+	WarPlan sideQuests = auto_warSideQuestsState();
+	boolean nunsCheck = (get_property("auto_skipNuns").to_boolean() ? true : sideQuests.do_nuns);
+	// don't adventure on the battlefield if we haven't completed all 3 available sidequests.
+	// this may need some exceptions for paths added where certain sidequests are not possible.
+	if (auto_warSide() == "fratboy")
+	{
+		if (!sideQuests.do_arena || !sideQuests.do_junkyard || !sideQuests.do_lighthouse)
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (!sideQuests.do_orchard || !nunsCheck || !sideQuests.do_farm)
+		{
+			return false;
+		}
+	}
+
+	if (get_property("hippiesDefeated").to_int() < 64 && get_property("fratboysDefeated").to_int() < 64)
 	{
 		auto_log_info("First 64 combats. To orchard/lighthouse", "blue");
 		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
@@ -1891,14 +1915,44 @@ boolean L12_clearBattlefield()
 		return warAdventure();
 	}
 
-	if (get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192 && internalQuestStatus("questL12War") == 1)
+	if (auto_warSide() == "fratboy")
+	{
+		if (!sideQuests.do_orchard)
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (!sideQuests.do_lighthouse)
+		{
+			return false;
+		}
+	}
+
+	if (get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192)
 	{
 		auto_log_info("Getting to the nunnery/junkyard", "blue");
 		equipWarOutfit();
 		return warAdventure();
 	}
 
-	if ((get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean()) && (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000) && internalQuestStatus("questL12War") == 1)
+	if (auto_warSide() == "fratboy")
+	{
+		if (!nunsCheck)
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (!sideQuests.do_junkyard)
+		{
+			return false;
+		}
+	}
+
+	if (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000)
 	{
 		auto_log_info("Doing the wars.", "blue");
 		equipWarOutfit();
@@ -2119,4 +2173,25 @@ void warChoiceHandler(int choice)
 			auto_log_warning("void warChoiceHandler(int choice) somehow hit default. this should not happen");
 			break;
 	}
+}
+
+boolean L12_islandWar()
+{
+	if (internalQuestStatus("questL12War") == 0 && get_property("lastIslandUnlock").to_int() != my_ascensions())
+	{
+		return LX_islandAccess();
+	}
+	if (L12_preOutfit() || L12_getOutfit() || L12_startWar())
+	{
+		return true;
+	}
+	if (L12_gremlins() || L12_flyerFinish() || L12_sonofaBeach() || L12_sonofaFinish() || L12_filthworms() || L12_orchardFinalize() || L12_themtharHills() || L12_farm())
+	{
+		return true;
+	}
+	if (L12_clearBattlefield() || L12_finalizeWar())
+	{
+		return true;
+	}
+	return false;
 }

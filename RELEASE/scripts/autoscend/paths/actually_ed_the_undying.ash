@@ -1454,8 +1454,7 @@ boolean LM_edTheUndying()
 		return true;
 	}
 	// as we do hippy side, the war is a 2 Ka quest (excluding sidequests but that shouldn't matter)
-	// once the war is no longer a complete mess of spaghetti code, change this to do the whole war.
-	if (L12_getOutfit() || L12_startWar())
+	if (L12_islandWar())
 	{
 		return true;
 	}

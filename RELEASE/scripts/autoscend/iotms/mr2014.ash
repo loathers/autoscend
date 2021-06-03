@@ -304,6 +304,13 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 	{
 		return false;
 	}
+
+	if (get_property("desertExploration").to_int() >= 100 || internalQuestStatus("questL11Desert") > 0)
+	{
+		// don't need a dowsing rod if we've finished the desert.
+		return false;
+	}
+
 	if(!auto_is_valid($item[Grimstone Mask]) || !auto_can_equip($item[Ornate Dowsing Rod]))
 	{
 		set_property("auto_grimstoneOrnateDowsingRod", false);	//mask or rod are not valid

@@ -1373,7 +1373,7 @@ boolean L13_towerNSNagamar()
 	{
 		return L13_koe_towerNSNagamar();
 	}
-	if (!get_property("auto_wandOfNagamar").to_boolean() && internalQuestStatus("questL13Final") != 12)
+	if (!get_property("auto_wandOfNagamar").to_boolean() || internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 12)
 	{
 		return false;
 	}

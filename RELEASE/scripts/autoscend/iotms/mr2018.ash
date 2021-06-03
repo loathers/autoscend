@@ -565,14 +565,8 @@ boolean catBurglarHeist()
 
 	if (wannaHeists contains last_monster())
 	{
-		return catBurglarHeist(wannaHeists[last_monster()]);
+		catBurglarHeist(wannaHeists[last_monster()]);
 	}
-	return false;
-}
-
-boolean catBurglarHeistTask()
-{
-	catBurglarHeist();
 	// don't return true from this, isn't adventuring.
 	return false;
 }

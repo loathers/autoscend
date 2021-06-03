@@ -1,4 +1,4 @@
-since r20739;	//min mafia revision needed to run this script. Last update: Do not check Quantum Terrarium if player is in a fight or choice or other chained adventure that denies access to other pages
+since r20749;	//min mafia revision needed to run this script. Last update: Fix Quantum Terrarium Request parsing breaking on melodramedary
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1510,6 +1510,11 @@ boolean LX_attemptPowerLevel()
 	//The Source path specific powerleveling
 	LX_attemptPowerLevelTheSource();
 
+	if (LX_getDigitalKey() || LX_getStarKey())
+	{
+		return true;
+	}
+
 	//scaling damage zones
 	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]) && (get_property("auto_beatenUpCount").to_int() == 0))
 	{
@@ -1791,38 +1796,12 @@ boolean LX_freeCombats(boolean powerlevel)
 	return false;
 }
 
-boolean LX_freeCombatsTask_condition()
-{
-	return my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1;
-}
-
 boolean LX_freeCombatsTask()
 {
-	auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
-	return LX_freeCombats();
-}
-
-boolean LX_fightTentacle()
-{
-	boolean weak_and_zelda = in_zelda() && !zelda_canDealScalingDamage();
-	if(my_daycount() == 1)
+	if (my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
 	{
-		if((my_adventures() < 10) && (my_level() >= 7) && (my_hp() > 0) && !weak_and_zelda)
-		{
-			fightScienceTentacle();
-			if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
-			{
-				evokeEldritchHorror();
-			}
-		}
-	}
-	else if((my_level() >= 9) && (my_hp() > 0) && !weak_and_zelda)
-	{
-		fightScienceTentacle();
-		if(my_mp() > (2 * mp_cost($skill[Evoke Eldritch Horror])))
-		{
-			evokeEldritchHorror();
-		}
+		auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
+		return LX_freeCombats();
 	}
 	return false;
 }

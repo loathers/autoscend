@@ -39,7 +39,6 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights);
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
 boolean LX_freeCombatsTask();
-boolean LX_freeCombatsTask_condition();
 boolean Lsc_flyerSeals();
 boolean LX_hardcoreFoodFarm();
 boolean LX_craftAcquireItems();
@@ -914,6 +913,7 @@ boolean L12_farm();
 boolean L12_clearBattlefield();
 boolean L12_finalizeWar();
 void warChoiceHandler(int choice);
+boolean L12_islandWar();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_13.ash
