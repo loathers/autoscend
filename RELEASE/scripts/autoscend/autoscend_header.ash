@@ -106,7 +106,7 @@ boolean isClipartItem(item it);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2012.ash
-boolean auto_reagnimatedGetPart();
+void auto_reagnimatedGetPart(int choice);
 boolean handleRainDoh();
 
 ########################################################################################################
