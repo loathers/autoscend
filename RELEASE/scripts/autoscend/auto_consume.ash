@@ -1172,7 +1172,7 @@ void auto_printNightcap()
 void auto_drinkNightcap()
 {
 	//function to overdrink a nightcap at the end of day
-	if(get_property("auto_skipNightcap").to_boolean())
+	if(get_property("auto_skipNightcap").to_boolean() || get_property("auto_limitConsume").to_boolean())
 	{
 		return;
 	}
