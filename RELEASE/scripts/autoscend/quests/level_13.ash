@@ -1078,6 +1078,14 @@ boolean L13_towerNSTower()
 		buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
 		buffMaintain($effect[Patent Avarice], 0, 1, 1);
 		bat_formWolf();
+		if(auto_birdModifier("Meat Drop") > 0)
+		{
+			buffMaintain($effect[Blessing of the Bird], 0, 1, 1);
+		}
+		if(auto_favoriteBirdModifier("Meat Drop") > 0)
+		{
+			buffMaintain($effect[Blessing of Your Favorite Bird], 0, 1, 1);
+		}
 		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 		{
 			cli_execute("concert 2");
