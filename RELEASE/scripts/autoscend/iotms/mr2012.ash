@@ -1,29 +1,31 @@
 #	This is meant for items that have a date of 2012
 
-boolean auto_reagnimatedGetPart()
+void auto_reagnimatedGetPart(int choice)
 {
-	// UNTESTED, DON'T ACTUALLY CALL UNTIL TESTED
-	if(!auto_have_familiar($familiar[Reagnimated Gnome]))
+	if (available_amount($item[gnomish housemaid's kgnee]) == 0) // The housemaid's kgnee is the equipment that justified using the gnome.
 	{
-		return false;
+		run_choice(4);
 	}
-
-	use_familiar($familiar[Reagnimated Gnome]);
-	foreach part in $items[gnomish housemaid's kgnee, gnomish coal miner's lung, gnomish athlete's foot, gnomish tennis elbow, gnomish swimmer's ears]
+	else if (available_amount($item[gnomish coal miner's lung]) == 0) // May as well get the rest of these on subsequent days.
 	{
-		if(possessEquipment(part))
-		{
-			continue;
-		}
-
-		int selection = part.to_int() - $item[gnomish swimmer\'s ears].to_int() + 1;
-		set_property("choiceAdventure597", selection);
-		visit_url("arena.php");
-
-		return possessEquipment(part);
+		run_choice(2);
 	}
-
-	return false;
+	else if (available_amount($item[gnomish athlete's foot]) == 0)
+	{
+		run_choice(5);
+	}
+	else if (available_amount($item[gnomish tennis elbow]) == 0)
+	{
+		run_choice(3);
+	}
+	else if (available_amount($item[gnomish swimmer's ears]) == 0)
+	{
+		run_choice(1);
+	}
+	else
+	{
+		abort("unhandled choice in auto_reagnimatedGetPart");
+	}
 }
 
 boolean handleRainDoh()
