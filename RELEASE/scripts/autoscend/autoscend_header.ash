@@ -729,6 +729,7 @@ boolean digimon_autoAdv(int num, location loc, string option);
 ########################################################################################################
 //Defined in autoscend/paths/quantum_terrarium.ash
 boolean in_quantumTerrarium();
+boolean qt_currentFamiliar(familiar fam);
 familiar qt_nextQuantumFamiliar();
 int qt_turnsToNextQuantumAlignment();
 boolean LX_quantumTerrarium();

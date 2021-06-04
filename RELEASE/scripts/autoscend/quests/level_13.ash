@@ -940,12 +940,22 @@ boolean L13_towerNSTower()
 		{
 			sources = sources + 1;
 		}
-		if(canChangeToFamiliar($familiar[Imitation Crab]))
+		if(canChangeToFamiliar($familiar[Shorter-Order Cook]) || qt_currentFamiliar($familiar[Shorter-Order Cook]))
+		{
+			handleFamiliar($familiar[Shorter-Order Cook]);
+			sources = sources + 6;
+		}		
+		else if(canChangeToFamiliar($familiar[Mu]) || qt_currentFamiliar($familiar[Mu]))
+		{
+			handleFamiliar($familiar[Mu]);
+			sources = sources + 5;
+		}
+		else if(canChangeToFamiliar($familiar[Imitation Crab]) || qt_currentFamiliar($familiar[Imitation Crab]))
 		{
 			handleFamiliar($familiar[Imitation Crab]);
 			sources = sources + 4;
 		}
-		else if(canChangeToFamiliar($familiar[warbear drone]))
+		else if(canChangeToFamiliar($familiar[warbear drone]) || qt_currentFamiliar($familiar[warbear drone]))
 		{
 			sources = sources + 2;
 			handleFamiliar($familiar[Warbear Drone]);
@@ -961,7 +971,7 @@ boolean L13_towerNSTower()
 				sources = sources + 2;
 			}
 		}
-		else if(canChangeToFamiliar($familiar[Sludgepuppy]))
+		else if(canChangeToFamiliar($familiar[Sludgepuppy]) || qt_currentFamiliar($familiar[Sludgepuppy]))
 		{
 			handleFamiliar($familiar[Sludgepuppy]);
 			sources = sources + 3;
@@ -1068,6 +1078,14 @@ boolean L13_towerNSTower()
 		buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
 		buffMaintain($effect[Patent Avarice], 0, 1, 1);
 		bat_formWolf();
+		if(auto_birdModifier("Meat Drop") > 0)
+		{
+			buffMaintain($effect[Blessing of the Bird], 0, 1, 1);
+		}
+		if(auto_favoriteBirdModifier("Meat Drop") > 0)
+		{
+			buffMaintain($effect[Blessing of Your Favorite Bird], 0, 1, 1);
+		}
 		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 		{
 			cli_execute("concert 2");

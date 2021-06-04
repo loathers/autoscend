@@ -3,6 +3,11 @@ boolean in_quantumTerrarium()
 	return auto_my_path() == "Quantum Terrarium";
 }
 
+boolean qt_currentFamiliar(familiar fam)
+{
+	return in_quantumTerrarium() && my_familiar() == fam;
+}
+
 familiar qt_nextQuantumFamiliar()
 {
 	return get_property("nextQuantumFamiliar").to_familiar();
@@ -56,7 +61,7 @@ boolean qt_FamiliarAvailable (familiar fam)
 boolean qt_FamiliarSwap (familiar fam)
 {
 	//Swap/designate next familiar swap if possible.
-	if(fam == $familiar[none])
+	if (fam == $familiar[none])
 	{
 		print(fam.to_string() + " is not a valid familiar, weird behaviour.");
 		return false;
