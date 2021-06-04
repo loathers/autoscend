@@ -478,6 +478,13 @@ boolean auto_spoonReadyToTuneMoon()
 
 	if(inKnollSign() && !toKnoll)
 	{
+		if(get_property("questM01Untinker") != "finished")
+		{
+			// just finish the untinker quest if we can, it's free.
+			visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
+			visit_url("place.php?whichplace=knoll_friendly&action=dk_innabox");
+			visit_url("place.php?whichplace=forestvillage&action=fv_untinker");
+		}
 		if(!isDesertAvailable())
 		{
 			// we want to get the meatcar via the knoll store
