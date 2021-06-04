@@ -1367,7 +1367,7 @@ boolean L11_hiddenCity()
 
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 		auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
-		if (canSniff($monster[Pygmy Bowler], $location[The Hidden Bowling Alley]) && auto_mapTheMonsters() && item_amount($item[bowling ball]) < 1)
+		if (canSniff($monster[Pygmy Bowler], $location[The Hidden Bowling Alley]) && item_amount($item[bowling ball]) < 1 && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Pygmy Bowler.");
 		}
