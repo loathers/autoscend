@@ -682,6 +682,16 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 
+	if (my_familiar() == $familiar[Reagnimated Gnome])
+	{
+		if (get_property("_auto_gnomeArenaVisited").to_boolean() != true)
+		{
+			visit_url("arena.php");
+			set_property("_auto_gnomeArenaVisited", "true");
+		}
+		autoEquip($slot[familiar], $item[gnomish housemaid's kgnee]);
+	}
+
 	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
 	{
 		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)

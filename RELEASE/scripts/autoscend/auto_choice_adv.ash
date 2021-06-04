@@ -172,6 +172,28 @@ boolean auto_run_choice(int choice, string page)
 		case 584: // Unconfusing Buttons (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
+		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
+			if (available_amount($item[gnomish housemaid's kgnee] == 0)) // The housemaid's kgnee is the equipment that justified using the gnome.
+			{
+				run_choice(4);
+			}
+			else if (available_amount($item[gnomish coal miner's lung] == 0)) // May as well get the rest of these on subsequent days.
+			{
+				run_choice(2);
+			}
+			else if (available_amount($item[gnomish athlete's foot] == 0))
+			{
+				run_choice(5);
+			}
+			else if (available_amount($item[gnomish tennis elbow] == 0))
+			{
+				run_choice(3);
+			}
+			else if (available_amount($item[gnomish swimmer's ears] == 0))
+			{
+				run_choice(1);
+			}
+			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
