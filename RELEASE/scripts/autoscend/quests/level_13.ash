@@ -971,7 +971,7 @@ boolean L13_towerNSTower()
 				sources = sources + 2;
 			}
 		}
-		else if(canChangeToFamiliar($familiar[Sludgepuppy] || qt_currentFamiliar($familiar[Sludgepuppy])))
+		else if(canChangeToFamiliar($familiar[Sludgepuppy]) || qt_currentFamiliar($familiar[Sludgepuppy]))
 		{
 			handleFamiliar($familiar[Sludgepuppy]);
 			sources = sources + 3;
