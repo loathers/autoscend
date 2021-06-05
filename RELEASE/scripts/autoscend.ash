@@ -1316,7 +1316,7 @@ void initializeDay(int day)
 	{
 		cli_execute("garden pick");
 	}
-	if(contains_text(campground, "thanksgardenmega.gif") && is_unrestricted($item[packet of thansgarden seeds]))
+	if(contains_text(campground, "thanksgardenmega.gif") && is_unrestricted($item[packet of thanksgarden seeds]))
 	{
 		cli_execute("garden pick");
 	}
