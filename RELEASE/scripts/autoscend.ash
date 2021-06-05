@@ -1308,15 +1308,15 @@ void initializeDay(int day)
 	}
 
 	string campground = visit_url("campground.php");
-	if(contains_text(campground, "beergarden7.gif"))
+	if(contains_text(campground, "beergarden7.gif") && is_unrestricted($item[packet of beer seeds]))
 	{
 		cli_execute("garden pick");
 	}
-	if(contains_text(campground, "wintergarden3.gif"))
+	if(contains_text(campground, "wintergarden3.gif") && is_unrestricted($item[packet of winter seeds]))
 	{
 		cli_execute("garden pick");
 	}
-	if(contains_text(campground, "thanksgardenmega.gif"))
+	if(contains_text(campground, "thanksgardenmega.gif") && is_unrestricted($item[packet of thanksgarden seeds]))
 	{
 		cli_execute("garden pick");
 	}

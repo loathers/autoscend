@@ -1855,7 +1855,7 @@ boolean L12_clearBattlefield()
 	if(!inAftercore() && (my_inebriety() < inebriety_limit()) && !get_property("_gardenHarvested").to_boolean())
 	{
 		int[item] camp = auto_get_campground();
-		if((camp contains $item[Packet of Thanksgarden Seeds]) && (camp contains $item[Cornucopia]) && (camp[$item[Cornucopia]] > 0) && (internalQuestStatus("questL12War") >= 1))
+		if((camp contains $item[Packet of Thanksgarden Seeds]) && (camp contains $item[Cornucopia]) && (camp[$item[Cornucopia]] > 0) && (internalQuestStatus("questL12War") >= 1) && is_unrestricted($item[packet of thanksgarden seeds]))
 		{
 			cli_execute("garden pick");
 		}
