@@ -6,9 +6,14 @@ boolean autoMaximize(string req, boolean simulate)
 	{
 		debugMaximize(req, 0);
 		tcrs_maximize_with_items(req);
-#		user_confirm("Beep");
+	}
+	string logPrefValue = get_property("logPreferenceChange");
+	if (logPrefValue.to_boolean())
+	{
+		set_property("logPreferenceChange", "false");
 	}
 	boolean didmax = maximize(req, simulate);
+	set_property("logPreferenceChange", logPrefValue);
 	return didmax;
 }
 
@@ -18,9 +23,14 @@ boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 	{
 		debugMaximize(req, maxPrice);
 		tcrs_maximize_with_items(req);
-#		user_confirm("Beep");
+	}
+	string logPrefValue = get_property("logPreferenceChange");
+	if (logPrefValue.to_boolean())
+	{
+		set_property("logPreferenceChange", "false");
 	}
 	boolean didmax = maximize(req, maxPrice, priceLevel, simulate);
+	set_property("logPreferenceChange", logPrefValue);
 	return didmax;
 }
 
@@ -29,10 +39,15 @@ aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulat
 	if(!simulate)
 	{
 		debugMaximize(req, maxPrice);
-#		user_confirm("Beep");
 		tcrs_maximize_with_items(req);
 	}
+	string logPrefValue = get_property("logPreferenceChange");
+	if (logPrefValue.to_boolean())
+	{
+		set_property("logPreferenceChange", "false");
+	}
 	aggregate maxrecord = maximize(req, maxPrice, priceLevel, simulate, includeEquip);
+	set_property("logPreferenceChange", logPrefValue);
 	return maxrecord;
 }
 
