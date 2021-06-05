@@ -1166,6 +1166,10 @@ ConsumeAction auto_bestNightcap()
 
 void auto_printNightcap()
 {
+	if(my_path() == "Dark Gyffte")
+	{
+		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
+	}
 	auto_log_info("Nightcap is: " + to_pretty_string(auto_bestNightcap()), "blue");
 }
 
@@ -1178,7 +1182,7 @@ void auto_drinkNightcap()
 	}
 	if(my_path() == "Dark Gyffte")
 	{
-		return;		//disable for it now. TODO make a custom function for vampyre nightcap drinking specifically
+		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}
 	if(!can_drink())
 	{
