@@ -688,7 +688,7 @@ void preAdvUpdateFamiliar(location place)
 		if (!get_property("_auto_gnomeArenaVisited").to_boolean())
 		{
 			visit_url("arena.php");
-			run_choice();
+			run_choice(-1);
 			set_property("_auto_gnomeArenaVisited", "true");
 		}
 		autoEquip($slot[familiar], $item[gnomish housemaid's kgnee]);
