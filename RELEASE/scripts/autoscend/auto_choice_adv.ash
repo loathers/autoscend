@@ -172,6 +172,9 @@ boolean auto_run_choice(int choice, string page)
 		case 584: // Unconfusing Buttons (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
+		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
+			auto_reagnimatedGetPart(choice);
+			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)

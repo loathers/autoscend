@@ -682,6 +682,18 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 
+	if (my_familiar() == $familiar[Reagnimated Gnome])
+	{
+		// This arena visit to obtain gnome familiar equips is turn free and can be done once a day.
+		if (!get_property("_auto_gnomeArenaVisited").to_boolean())
+		{
+			visit_url("arena.php");
+			run_choice(-1);
+			set_property("_auto_gnomeArenaVisited", "true");
+		}
+		autoEquip($slot[familiar], $item[gnomish housemaid's kgnee]);
+	}
+
 	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
 	{
 		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
