@@ -1166,19 +1166,23 @@ ConsumeAction auto_bestNightcap()
 
 void auto_printNightcap()
 {
+	if(my_path() == "Dark Gyffte")
+	{
+		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
+	}
 	auto_log_info("Nightcap is: " + to_pretty_string(auto_bestNightcap()), "blue");
 }
 
 void auto_drinkNightcap()
 {
 	//function to overdrink a nightcap at the end of day
-	if(get_property("auto_skipNightcap").to_boolean())
+	if(get_property("auto_skipNightcap").to_boolean() || get_property("auto_limitConsume").to_boolean())
 	{
 		return;
 	}
 	if(my_path() == "Dark Gyffte")
 	{
-		return;		//disable for it now. TODO make a custom function for vampyre nightcap drinking specifically
+		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}
 	if(!can_drink())
 	{
@@ -1417,6 +1421,12 @@ boolean auto_breakfastCounterVisit() {
 		auto_log_info("Going to the breakfast counter to grab/order a breakfast muffin.");
 		visit_url("place.php?whichplace=monorail&action=monorail_downtown");
 		run_choice(7); // Visit the Breakfast Counter
+		if (get_property("muffinOnOrder") != "" && item_amount(get_property("muffinOnOrder").to_item()) > 0)
+		{
+			// workaround mafia not clearing the property occasionally
+			// see https://kolmafia.us/threads/ordering-a-muffin-at-the-breakfast-counter-doesnt-always-set-the-muffinonorder-property.26072/
+			set_property("muffinOnOrder", "");
+		}
 		if (!get_property("_muffinOrderedToday").to_boolean() && item_amount($item[earthenware muffin tin]) > 0) {
 			auto_log_info("Ordering a bran muffin for tomorrow to keep you regular.");
 			run_choice(2); // Order a bran muffin

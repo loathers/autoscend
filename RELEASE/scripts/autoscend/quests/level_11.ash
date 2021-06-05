@@ -1367,7 +1367,7 @@ boolean L11_hiddenCity()
 
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 		auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
-		if (canSniff($monster[Pygmy Bowler], $location[The Hidden Bowling Alley]) && auto_mapTheMonsters() && item_amount($item[bowling ball]) < 1)
+		if (canSniff($monster[Pygmy Bowler], $location[The Hidden Bowling Alley]) && item_amount($item[bowling ball]) < 1 && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Pygmy Bowler.");
 		}
@@ -2391,15 +2391,17 @@ boolean L11_unlockEd()
 
 		// Forcing Tavern.
 		set_property("auto_forceTavern", true);
-		return false;
+		if (L3_tavern())
+		{
+			return true;
+		}
 	}
 
 	auto_log_info("In the pyramid (W:" + item_amount($item[crumbling wooden wheel]) + ") (R:" + item_amount($item[tomb ratchet]) + ") (U:" + get_property("controlRoomUnlock") + ")", "blue");
 
-	if(!get_property("middleChamberUnlock").to_boolean())
+	if (!get_property("middleChamberUnlock").to_boolean())
 	{
-		autoAdv(1, $location[The Upper Chamber]);
-		return true;
+		return autoAdv(1, $location[The Upper Chamber]);
 	}
 
 	int total = item_amount($item[Crumbling Wooden Wheel]);
@@ -2468,8 +2470,7 @@ boolean L11_unlockEd()
 	{
 		if(!contains_text(get_property("auto_banishes"), $monster[Tomb Servant]) && !contains_text(get_property("auto_banishes"), $monster[Tomb Asp]) && (get_property("olfactedMonster") != $monster[Tomb Rat]))
 		{
-			autoAdv(1, $location[The Upper Chamber]);
-			return true;
+			return autoAdv(1, $location[The Upper Chamber]);
 		}
 	}
 
@@ -2477,8 +2478,8 @@ boolean L11_unlockEd()
 	{
 		auto_log_info("Attemping to use Map the Monsters to olfact a Tomb Rat.");
 	}
-	autoAdv(1, $location[The Middle Chamber]);
-	return true;
+	
+	return autoAdv(1, $location[The Middle Chamber]);
 }
 
 boolean L11_defeatEd()

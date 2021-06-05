@@ -9,6 +9,8 @@ for DIR in ./*/; do
 	OUT="../RELEASE/data/autoscend_${DIR_CLEAN}.txt"
 	echo "$HEADER" > $OUT
 	cat $DIR/header.txt >> $OUT
+	SAVEIFS=$IFS
+	IFS=$(echo -en "\n\b")
 	for FILENAME in ${DIR}*.dat; do
 		SLOT=${FILENAME::-4}
 		SLOT=${SLOT##*/}
@@ -23,4 +25,5 @@ for DIR in ./*/; do
 		done
 		echo "" >> $OUT
 	done
+	IFS=$SAVEIFS
 done

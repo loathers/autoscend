@@ -23,7 +23,7 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 
 Run this command in the graphical CLI:
 ```
-svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/trunk/RELEASE/
+svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/branches/master/RELEASE/
 ```
 Will require [a recent build of KoLMafia](http://builds.kolmafia.us/job/Kolmafia/lastSuccessfulBuild/).
 

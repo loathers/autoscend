@@ -13,16 +13,23 @@ boolean L10_plantThatBean()
 		set_property("questL10Garbage", "step1");
 		return true;
 	}
-	if(item_amount($item[Enchanted Bean]) > 0)
+	if (item_amount($item[Enchanted Bean]) > 0)
 	{
 		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;
 	}
-
-	if(internalQuestStatus("questL04Bat") >= 2)
+	else
 	{
-		auto_log_info("I don't have a magic bean! Travesty!!", "blue");
-		return autoAdv($location[The Beanbat Chamber]);
+		// make sure we can get an enchanted bean to open the beanstalk with if we can't open it.
+		if (L4_batCave())
+		{
+			return true;
+		}
+		else
+		{
+			auto_log_info("I don't have a magic bean! Travesty!!", "blue");
+			return autoAdv($location[The Beanbat Chamber]);
+		}
 	}
 	return false;
 }

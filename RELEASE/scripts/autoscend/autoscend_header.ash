@@ -39,7 +39,6 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights);
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
 boolean LX_freeCombatsTask();
-boolean LX_freeCombatsTask_condition();
 boolean Lsc_flyerSeals();
 boolean LX_hardcoreFoodFarm();
 boolean LX_craftAcquireItems();
@@ -107,7 +106,7 @@ boolean isClipartItem(item it);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2012.ash
-boolean auto_reagnimatedGetPart();
+void auto_reagnimatedGetPart(int choice);
 boolean handleRainDoh();
 
 ########################################################################################################
@@ -730,6 +729,7 @@ boolean digimon_autoAdv(int num, location loc, string option);
 ########################################################################################################
 //Defined in autoscend/paths/quantum_terrarium.ash
 boolean in_quantumTerrarium();
+boolean qt_currentFamiliar(familiar fam);
 familiar qt_nextQuantumFamiliar();
 int qt_turnsToNextQuantumAlignment();
 boolean LX_quantumTerrarium();
@@ -915,6 +915,7 @@ boolean L12_farm();
 boolean L12_clearBattlefield();
 boolean L12_finalizeWar();
 void warChoiceHandler(int choice);
+boolean L12_islandWar();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_13.ash
