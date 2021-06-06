@@ -27,7 +27,7 @@ boolean auto_canFeelHatred()
 
 boolean auto_canFeelNostalgic()
 {
-	// Combat Skill - adds drop table from last copyable monster to the current (see feelNostalgicMonster property)
+	// Combat Skill - adds drop table from last copyable monster to the current (see lastCopyableMonster property)
 	if(!auto_is_valid($skill[Feel Nostalgic]))
 	{
 		return false;
