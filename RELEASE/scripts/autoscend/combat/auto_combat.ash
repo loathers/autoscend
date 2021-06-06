@@ -720,7 +720,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Apprivoisez La Tortue], false);
 	}
 
-	if((!in_zelda() || my_class() == $class[Vampyre]) &&	//paths that do not use MP
+	if((!in_zelda() && my_class() != $class[Vampyre] && my_path() != "Zombie Slayer") &&	//paths that do not use MP
 	canUse($skill[Gulp Latte]) &&
 	my_mp() * 2 < my_maxmp())		//gulp latte restores 50% of your MP. do not waste it.
 	{
