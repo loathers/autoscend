@@ -348,7 +348,7 @@ boolean auto_pillKeeper(int pill);
 boolean auto_pillKeeper(string pill);
 void auto_deliberate_pizza();
 boolean auto_changeSnapperPhylum(phylum toChange);
-boolean auto_snapperPreAdventure(location loc);
+void auto_snapperPreAdventure(location loc);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2020.ash

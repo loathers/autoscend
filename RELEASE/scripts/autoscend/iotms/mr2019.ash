@@ -954,11 +954,11 @@ boolean auto_changeSnapperPhylum(phylum toChange)
 	return true;
 }
 
-boolean auto_snapperPreAdventure(location loc)
+void auto_snapperPreAdventure(location loc)
 {
 	if (my_familiar() != $familiar[Red-Nosed Snapper])
 	{
-		return false;
+		return;
 	}
 	
 	string desiredPhylum = get_property("auto_snapperPhylum");
@@ -966,13 +966,13 @@ boolean auto_snapperPreAdventure(location loc)
 	{
 		auto_log_warning(`auto_snapperPhylum was set to bad value: {desiredPhylum}. Should be a valid phylum.`, "red");
 		remove_property("auto_snapperPhylum");
-		return false;
+		return;
 	}
 
 	if (get_property("redSnapperPhylum") == desiredPhylum)
 	{
 		auto_log_debug(`Red-Nosed Snapper is already guiding you towards {desiredPhylum}`);
-		return false;
+		return;
 	}
 
 	// this is mainly in case autoChooseFamiliar switches to the Snapper due to no "better" +item familiars being available
@@ -1019,11 +1019,13 @@ boolean auto_snapperPreAdventure(location loc)
 				break;
 			default:
 				auto_log_info(`Going to {loc} with the Red-Nosed Snapper without setting a phylum. This is not necessarily bad but it might be worth checking.`, "blue");
-				return false;
+				return;
 		}
 	}
 
-	cli_execute(`snapper {desiredPhylum}`);
-	auto_log_info(`Red-Nosed Snapper is now guiding you towards {desiredPhylum}`, "blue");
-	return true;
+	if(desiredPhylum != "")
+	{
+		cli_execute(`snapper {desiredPhylum}`);
+		auto_log_info(`Red-Nosed Snapper is now guiding you towards {desiredPhylum}`, "blue");
+	}
 }
