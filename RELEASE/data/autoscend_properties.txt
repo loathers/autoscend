@@ -1,5 +1,5 @@
 ## This file is used by autoscend_migration.ash to convert cc_ or sl_ type properties into auto_ properties. The old cc_ and sl_ properties are deleted in the process
-## If a property is being deleted from autoscend then add its removal to auto_depreciation but leave it here.
+## If a property is being deleted from autoscend then add its removal to auto_settings but leave it here.
 0	auto_hpAutoRecoveryItems
 1	auto_hpAutoRecovery
 2	auto_hpAutoRecoveryTarget
