@@ -110,6 +110,5 @@ void auto_enableBackupCameraReverser()
 
 int auto_backupUsesLeft()
 {
-	// incorrect for You, Robot. Also don't care.
-	return 11 - get_property("_backUpUses").to_int();
+	return 11 + (my_path() == "You, Robot" ? 5 : 0) - get_property("_backUpUses").to_int();
 }
