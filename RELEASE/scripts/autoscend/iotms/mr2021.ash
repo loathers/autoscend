@@ -150,7 +150,7 @@ int batteryPoints(item battery)
 		$item[battery (9-Volt)]: 4,
 		$item[battery (lantern)]: 5,
 		$item[battery (car)]: 6
-	}
+	};
 	return points[battery];
 }
 
