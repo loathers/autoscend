@@ -310,7 +310,7 @@ boolean batteryCombine(item battery)
 // This function will ensure a battery is available before use, if possible.
 boolean auto_getBattery(item battery)
 {
-	if (!($items[battery (AAA), battery (AA), battery (D), battery (9-Volt), battery (lantern), battery (car)] contains battery))
+	if(batteryPoints(battery) == 0)	//0 means it is not a battery
 	{
   		return false;
 	}
