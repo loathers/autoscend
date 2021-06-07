@@ -327,9 +327,8 @@ boolean auto_getBattery(item battery)
 		return true;
 	}
 
-	// We need to check that we can untinker (handled by totalBatteryPoints), 
-	// then make sure we have enough AAA value to craft the target battery.
-	if (totalBatteryPoints() > batteryPoints(battery) && get_property("questM01Untinker") == "finished")
+	// Make sure we have enough AAA value to craft the target battery, and that we can untinker.
+	if (totalBatteryPoints() > batteryPoints(battery) && canUntinker())
 	{
 		// We're going to break down each battery one at a time from largest to smallest, and attempt to craft.
 		foreach it in $items[battery (car), battery (lantern), battery (9-Volt), battery (D), battery (AA)]
