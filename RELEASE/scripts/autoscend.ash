@@ -1459,7 +1459,8 @@ boolean dailyEvents()
 
 	auto_getGuzzlrCocktailSet();
 	auto_latheAppropriateWeapon();
-
+	auto_harvestBatteries();
+	
 	return true;
 }
 
