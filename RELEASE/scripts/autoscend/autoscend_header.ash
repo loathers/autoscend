@@ -421,11 +421,6 @@ boolean auto_canFeelPeaceful();
 boolean auto_haveBackupCamera();
 void auto_enableBackupCameraReverser();
 int auto_backupUsesLeft();
-boolean auto_harvestBatteries();
-int batteryPoints(item battery);
-int totalBatteryPoints();
-boolean batteryCombine(item battery);
-boolean auto_getBattery(item battery, int qty);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
