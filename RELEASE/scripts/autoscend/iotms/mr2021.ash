@@ -118,23 +118,26 @@ boolean auto_havePowerPlant()
 	return possessEquipment($item[potted power plant]) && auto_is_valid($item[potted power plant]);
 }
 
-void auto_harvestBatteries()
+boolean auto_harvestBatteries()
 {
-	if (auto_havePowerPlant())
+	if(!auto_havePowerPlant())
 	{
-		// Stolen straight from mafia's breakfast handling.
-		cli_execute("inv_use.php?pwd&whichitem=" + $item[potted power plant].to_int());
-		
-		string [int] status = split_string(get_property("_pottedPowerPlant"), ",");
+  		return false;
+	}
 
-		for ( int pp = 0; pp < status.count(); pp++ )
+	// Stolen straight from mafia's breakfast handling.
+	cli_execute("inv_use.php?pwd&whichitem=" + $item[potted power plant].to_int());
+	
+	string [int] status = split_string(get_property("_pottedPowerPlant"), ",");
+
+	for ( int pp = 0; pp < status.count(); pp++ )
+	{
+		if ( status[pp] > 0)
 		{
-			if ( status[pp] > 0)
-			{
-				cli_execute("choice.php?pwd&whichchoice=1448&option=1&pp=" + ( pp + 1 ));
-			}
+			cli_execute("choice.php?pwd&whichchoice=1448&option=1&pp=" + ( pp + 1 ));
 		}
 	}
+	return true;
 }
 
 // These points the value of a battery represented in AAAs.
@@ -238,7 +241,7 @@ boolean batteryCombine(item battery)
 			craft("combine", 1, $item[battery (AA)], $item[battery (AA)]);
 			return (available_amount($item[battery (9-Volt)]) >= 1);
 		}
-		// Every multi step case with recusion.
+		// Every multi step case with recursion.
 		else if (available_amount($item[battery (AAA)]) >= 4 ||
 		 (available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 2))
 		{
@@ -263,7 +266,7 @@ boolean batteryCombine(item battery)
 			craft("combine", 1, $item[battery (D)], $item[battery (AA)]);
 			return (available_amount($item[battery (lantern)]) >= 1);
 		}
-		// Every multi step case with recusion.
+		// Every multi step case with recursion.
 		else if (available_amount($item[battery (AAA)]) >= 5 ||
 		 (available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 3) ||
 		 (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AAA)]) >= 2) ||
@@ -303,7 +306,7 @@ boolean batteryCombine(item battery)
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AA)]);
 			return (available_amount($item[battery (car)]) >= 1);
 		}
-		// Every other multi step case with recusion.
+		// Every other multi step case with recursion.
 		else if (available_amount($item[battery (AAA)]) >= 6 ||
 		 (available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 4) ||
 		 (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AAA)]) >= 3) ||
