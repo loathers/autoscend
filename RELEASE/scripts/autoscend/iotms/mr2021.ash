@@ -115,12 +115,12 @@ int auto_backupUsesLeft()
 
 boolean auto_havePowerPlant()
 {
-	return possessEquipment($item[potted power plant]) && auto_is_valid($item[potted power plant]);
+	return item_amount($item[potted power plant]) > 0 && auto_is_valid($item[potted power plant]);
 }
 
 boolean auto_harvestBatteries()
 {
-	if(!auto_havePowerPlant())
+	if(!auto_havePowerPlant() || get_property("_pottedPowerPlant") == "0,0,0,0,0,0,0")
 	{
   		return false;
 	}
@@ -157,13 +157,7 @@ int batteryPoints(item battery)
 // These points represent a quantity of AAAs if all batteries were untinkered.
 int totalBatteryPoints()
 {
-	// If the untinker function can't be used, there's effectively no points.
-	if (get_property("questM01Untinker") != "finished")
-	{
-		return 0;
-	}
-
-	int totalPoints = 0;
+int totalPoints = 0;
 
 	foreach it in $items[battery (AAA), battery (AA), battery (D), battery (9-Volt), battery (lantern), battery (car)]
 	{
@@ -177,6 +171,11 @@ int totalBatteryPoints()
 // This is very dense, apologies.
 boolean batteryCombine(item battery)
 {
+	if (!($items[battery (AAA), battery (AA), battery (D), battery (9-Volt), battery (lantern), battery (car)] contains battery))
+	{
+  		return false;
+	}
+
 	// We already have this battery, no need to make more yet.
 	if (available_amount(battery) >= 1)
 	{
@@ -311,6 +310,11 @@ boolean batteryCombine(item battery)
 // This function will ensure a battery is available before use, if possible.
 boolean auto_getBattery(item battery)
 {
+	if (!($items[battery (AAA), battery (AA), battery (D), battery (9-Volt), battery (lantern), battery (car)] contains battery))
+	{
+  		return false;
+	}
+
 	// If we have the desired battery then we're done here.
 	if (available_amount(battery) >= 1)
 	{
@@ -325,7 +329,7 @@ boolean auto_getBattery(item battery)
 
 	// We need to check that we can untinker (handled by totalBatteryPoints), 
 	// then make sure we have enough AAA value to craft the target battery.
-	if (totalBatteryPoints() > batteryPoints(battery))
+	if (totalBatteryPoints() > batteryPoints(battery) && get_property("questM01Untinker") == "finished")
 	{
 		// We're going to break down each battery one at a time from largest to smallest, and attempt to craft.
 		foreach it in $items[battery (car), battery (lantern), battery (9-Volt), battery (D), battery (AA)]
