@@ -171,7 +171,7 @@ int totalBatteryPoints()
 // This is very dense, apologies.
 boolean batteryCombine(item battery)
 {
-	if (!($items[battery (AAA), battery (AA), battery (D), battery (9-Volt), battery (lantern), battery (car)] contains battery))
+	if(batteryPoints(battery) == 0)	//0 means it is not a battery
 	{
   		return false;
 	}
