@@ -1126,6 +1126,10 @@ boolean L13_towerNSTower()
 		
 		if(get_property("auto_getBoningKnife").to_boolean())	//grab boning knife if we deemed it necessary
 		{
+			if(get_property("choiceAdventure1026") != 2)
+			{
+				set_property("choiceAdventure1026", 2);
+			}
 			if(canGroundhog($location[The Castle in the Clouds in the Sky (Ground Floor)]))
 			{
 				auto_log_info("Backfarming an Electric Boning Knife", "green");
