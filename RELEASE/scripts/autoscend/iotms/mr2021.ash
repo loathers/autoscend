@@ -27,7 +27,7 @@ boolean auto_canFeelHatred()
 
 boolean auto_canFeelNostalgic()
 {
-	// Combat Skill - adds drop table from last copyable monster to the current (see feelNostalgicMonster property)
+	// Combat Skill - adds drop table from last copyable monster to the current (see lastCopyableMonster property)
 	if(!auto_is_valid($skill[Feel Nostalgic]))
 	{
 		return false;
@@ -110,12 +110,7 @@ void auto_enableBackupCameraReverser()
 
 int auto_backupUsesLeft()
 {
-	// // You, Robot gets 16 uses, every other path gets 11.
-	// if (my_path() == "You, Robot")
-	// {
-	// 	return 16 - get_property("_backUpUses").to_int();
-	// }
-	return 11 - get_property("_backUpUses").to_int();
+	return 11 + (my_path() == "You, Robot" ? 5 : 0) - get_property("_backUpUses").to_int();
 }
 
 boolean auto_havePowerPlant()
