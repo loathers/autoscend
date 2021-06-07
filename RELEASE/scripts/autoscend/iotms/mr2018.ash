@@ -192,8 +192,11 @@ boolean godLobsterCombat(item it, int goal, string option)
 		return false;
 	}
 
-	handleFamiliar($familiar[God Lobster]);
-	use_familiar($familiar[God Lobster]);
+	if (!in_quantumTerrarium())
+	{
+		handleFamiliar($familiar[God Lobster]);
+		use_familiar($familiar[God Lobster]);
+	}
 
 	if((equipped_item($slot[familiar]) != it) && (it != $item[none]))
 	{
