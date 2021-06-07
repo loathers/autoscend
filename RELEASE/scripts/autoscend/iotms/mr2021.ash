@@ -143,29 +143,15 @@ boolean auto_harvestBatteries()
 // These points the value of a battery represented in AAAs.
 int batteryPoints(item battery)
 {
-	int points = 0;
-	switch (battery)
-	{
-		case $item[battery (AAA)]:
-			points = 1;
-			break;
-		case $item[battery (AA)]:
-			points = 2;
-			break;
-		case $item[battery (D)]:
-			points = 3;
-			break;
-		case $item[battery (9-Volt)]:
-			points = 4;
-			break;
-		case $item[battery (lantern)]:
-			points = 5;
-			break;
-		case $item[battery (car)]:
-			points = 6;
-			break;
+	static int[item] points = {
+		$item[battery (AAA)]: 1,
+		$item[battery (AA)]: 2,
+		$item[battery (D)]: 3,
+		$item[battery (9-Volt)]: 4,
+		$item[battery (lantern)]: 5,
+		$item[battery (car)]: 6
 	}
-	return points;
+	return points[battery];
 }
 
 // These points represent a quantity of AAAs if all batteries were untinkered.
