@@ -157,7 +157,7 @@ int batteryPoints(item battery)
 // These points represent a quantity of AAAs if all batteries were untinkered.
 int totalBatteryPoints()
 {
-int totalPoints = 0;
+	int totalPoints = 0;
 
 	foreach it in $items[battery (AAA), battery (AA), battery (D), battery (9-Volt), battery (lantern), battery (car)]
 	{
