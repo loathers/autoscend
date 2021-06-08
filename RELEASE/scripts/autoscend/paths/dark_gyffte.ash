@@ -363,6 +363,26 @@ boolean bat_shouldPickSkills(int hpLeft)
 	return false;
 }
 
+boolean bat_haveEnsorcelee() // checks if you have a current Ensorceled Monster
+{
+	if(my_class() != $class[Vampyre] || !auto_have_skill($skill[Ensorcel]))
+		return false;
+
+	if(get_property("ensorcelee") == $monster[none])
+		return false;
+	
+	return true;
+}
+
+phylum bat_ensorceledMonster() //returns phylum of current Ensorceled Monster (if you have one)
+{
+	if(!bat_haveEnsorcelee()){
+		return $phylum[none];
+	}
+
+	return monster_phylum(to_monster(get_property("ensorcelee")));
+}	
+
 boolean bat_shouldEnsorcel(monster m)
 {
 	if(my_class() != $class[Vampyre] || !auto_have_skill($skill[Ensorcel]))
@@ -370,8 +390,10 @@ boolean bat_shouldEnsorcel(monster m)
 
 	// until we have a way to tell what we already have as an ensorcelee, just ensorcel goblins
 	// to help avoid getting beaten up...
-	if(m.monster_phylum() == $phylum[goblin] && !isFreeMonster(m))
+	if(m.monster_phylum() == $phylum[goblin] && !isFreeMonster(m) && !bat_haveEnsorcelee()) //stop wasting additional Ensorcel casts once we already have an Ensorcelee
 		return true;
+
+	//code to be added for getting other types of monster (beasts / bugs presumably) where appropriate.
 
 	return false;
 }

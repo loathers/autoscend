@@ -574,6 +574,8 @@ boolean[skill] bat_desiredSkills(int hpLeft, boolean[skill] forcedPicks);
 void bat_reallyPickSkills(int hpLeft);
 void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills);
 boolean bat_shouldPickSkills(int hpLeft);
+boolean bat_haveEnsorcelee();
+phylum bat_ensorceledMonster();
 boolean bat_shouldEnsorcel(monster m);
 int bat_creatable_amount(item desired);
 boolean bat_multicraft(string mode, boolean [item] options);
