@@ -225,17 +225,6 @@ boolean L10_ground()
 	}
 
 	auto_log_info("Castle Ground Floor, boring!", "blue");
-	set_property("choiceAdventure672", 3); // There's No Ability Like Possibility: Skip
-	set_property("choiceAdventure673", 1); // Putting Off Is Off-Putting: Very Overdue Library Book then Skip
-	set_property("choiceAdventure674", 3); // Huzzah!: Skip
-	if (isActuallyEd() || in_pokefam())
-	{
-		set_property("choiceAdventure1026", 3); // Home on the Free Range: Skip
-	}
-	else
-	{
-		set_property("choiceAdventure1026", 2); // Home on the Free Range: Get Electric Boning Knife then Skip
-	}
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
