@@ -107,6 +107,8 @@ chunkinaround (IGN: threebullethamburgler (#1993636))
 
 Phillammon (IGN: Phillammon (#2393910))
 
+Tokoeka (IGN: Asmodais (#2071543))
+
 ## Special Thanks
 
 This script would obviously not be possible without the work of Cheesecookie and soolar.

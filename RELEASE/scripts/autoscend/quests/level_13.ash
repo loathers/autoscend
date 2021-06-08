@@ -1218,7 +1218,19 @@ boolean L13_towerNSTower()
 		}
 		if(n_healing_items < 5)
 		{
-			int create_target = min(creatable_amount($item[red pixel potion]), 5 - n_healing_items);
+			int pull_target = 5 - n_healing_items; //pull healing items if we have any pulls left because its not like we need pulls for anything else at this point
+			int pulled_items = 0;
+			foreach it in $items[gauze garter, filthy poultice, red pixel potion]
+			{
+				while(pulled_items < pull_target && canPull(it))
+				{
+						take_storage(1, it);
+						pulled_items += 1;
+				}
+			
+			}
+
+			int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
 			if(create_target > 0)
 			{
 				if(create(create_target, $item[red pixel potion]))
