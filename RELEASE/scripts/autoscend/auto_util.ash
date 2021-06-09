@@ -7,14 +7,7 @@ boolean autoMaximize(string req, boolean simulate)
 		debugMaximize(req, 0);
 		tcrs_maximize_with_items(req);
 	}
-	string logPrefValue = get_property("logPreferenceChange");
-	if (logPrefValue.to_boolean())
-	{
-		set_property("logPreferenceChange", "false");
-	}
-	boolean didmax = maximize(req, simulate);
-	set_property("logPreferenceChange", logPrefValue);
-	return didmax;
+	return maximize(req, simulate);
 }
 
 boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
@@ -24,14 +17,7 @@ boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate)
 		debugMaximize(req, maxPrice);
 		tcrs_maximize_with_items(req);
 	}
-	string logPrefValue = get_property("logPreferenceChange");
-	if (logPrefValue.to_boolean())
-	{
-		set_property("logPreferenceChange", "false");
-	}
-	boolean didmax = maximize(req, maxPrice, priceLevel, simulate);
-	set_property("logPreferenceChange", logPrefValue);
-	return didmax;
+	return maximize(req, maxPrice, priceLevel, simulate);
 }
 
 aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip)
@@ -41,14 +27,7 @@ aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulat
 		debugMaximize(req, maxPrice);
 		tcrs_maximize_with_items(req);
 	}
-	string logPrefValue = get_property("logPreferenceChange");
-	if (logPrefValue.to_boolean())
-	{
-		set_property("logPreferenceChange", "false");
-	}
-	aggregate maxrecord = maximize(req, maxPrice, priceLevel, simulate, includeEquip);
-	set_property("logPreferenceChange", logPrefValue);
-	return maxrecord;
+	return maximize(req, maxPrice, priceLevel, simulate, includeEquip);
 }
 
 void debugMaximize(string req, int meat)	//This function will be removed.
