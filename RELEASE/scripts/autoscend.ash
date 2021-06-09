@@ -2861,7 +2861,7 @@ void auto_begin()
 	backupSetting("currentMood", "apathetic");
 
 	backupSetting("logPreferenceChange", "true");
-	backupSetting("logPreferenceChangeFilter" "maximizerMRUList,testudinalTeachings,auto_maximize_current");
+	backupSetting("logPreferenceChangeFilter", "maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 	
 	backupSetting("choiceAdventure1107", 1);
