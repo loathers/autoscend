@@ -1090,7 +1090,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
-
+	if((inCombat ? auto_have_skill($skill[Show Your Boring Familiar Pictures]) : possessEquipment($item[familiar scrapbook])) && (get_property("scrapbookCharges").to_int() >= 200 || (get_property("scrapbookCharges").to_int() >= 100 && my_level() >= 13)) && !(used contains "Show Your Boring Familiar Pictures"))
+	{
+		return "skill " + $skill[Show Your Boring Familiar Pictures];
+	}
+	
 	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
 	{
 		return "skill " + $skill[Feel Hatred];
@@ -1215,6 +1219,10 @@ boolean adjustForBanish(string combat_string)
 	if(combat_string == "skill " + $skill[Reflex Hammer])
 	{
 		return autoEquip($item[Lil\' Doctor&trade; bag]);
+	}
+	if(combat_string == "skill " + $skill[Show Your Boring Familiar Pictures])
+	{
+		return autoEquip($item[familiar scrapbook]);
 	}
 	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
 	{
