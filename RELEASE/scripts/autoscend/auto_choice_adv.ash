@@ -175,6 +175,15 @@ boolean auto_run_choice(int choice, string page)
 		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
 			auto_reagnimatedGetPart(choice);
 			break;
+		case 672: //There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
+			run_choice(3);
+			break;
+		case 673: // Putting Off Is Off-Putting (Castle in the Clouds in the Sky (Ground Floor))
+			run_choice(1); //Very Overdue Library Book then Skip
+			break;
+		case 674: // Huzzah! (Castle in the Clouds in the Sky (Ground Floor))
+			run_choice(3);
+			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
@@ -417,6 +426,17 @@ boolean auto_run_choice(int choice, string page)
 		case 1024:  // Like a Bat out of Hell (Actually Ed the Undying)
 			edUnderworldChoiceHandler(choice);
 			break;
+		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
+			if (isActuallyEd() || in_pokefam()) //paths that don't require a boning Knife for the tower - possibly add Bugbear Invasion if we add support for it?
+			{
+				set_property("choiceAdventure1026", 3); //Skip
+			}
+			else
+			{
+				set_property("choiceAdventure1026", 2); // Get Electric Boning Knife then Skip
+			}
+			break;
+
 		case 1060: // Temporarily Out of Skeletons (The Skeleton Store)
 			if (item_amount($item[Skeleton Store office key]) == 0) {
 				run_choice(1); // Skeleton Store office key
