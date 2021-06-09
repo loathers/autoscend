@@ -345,6 +345,11 @@ void finalizeMaximize()
 	{
 		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
 	}
+	// Vampyre autogenerates scraps because of some weird ensorcel interaction. Even without ensorcel active.
+	if(pathHasFamiliar() || my_class() == $class[Vampyre])
+	{
+		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
+	}
 	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
 	addBonusToMaximize($item[Mr. Screege's spectacles], 100); // meat stuff
 	if(have_effect($effect[blood bubble]) == 0)
