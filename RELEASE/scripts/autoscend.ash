@@ -2528,7 +2528,7 @@ void resetState() {
 			equip($item[none], it.to_slot());
 		}
 	}
-	foreach eff in $effects[Can Has Cyborger, Dis Abled, Haiku State of Mind, Just the Best Anapests, O Hai!, Robocamo, Yes, Can Haz]
+	foreach eff in $effects[Can Has Cyborger, Dis Abled, Haiku State of Mind, Just the Best Anapests, O Hai!, Robocamo, Yes\, Can Haz]
 	{
 		// as do these which can all be freely shrugged.
 		if (have_effect(eff) > 0)
@@ -2861,7 +2861,7 @@ void auto_begin()
 	backupSetting("currentMood", "apathetic");
 
 	backupSetting("logPreferenceChange", "true");
-	backupSetting("logPreferenceChangeFilter" "maximizerMRUList, testudinalTeachings, auto_maximize_current");
+	backupSetting("logPreferenceChangeFilter" "maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 	
 	backupSetting("choiceAdventure1107", 1);
