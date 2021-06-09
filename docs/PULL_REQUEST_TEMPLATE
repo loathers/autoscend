@@ -15,4 +15,4 @@ Testing ASH scripts is tricky and generally involves you doing multiple runs wit
 - [ ] My code follows the style guidelines of this project.
 - [ ] I have performed a self-review of my own code.
 - [ ] I have commented my code, particularly in hard-to-understand areas.
-- [ ] I have based by pull request against the [beta branch](https://github.com/Loathing-Associates-Scripting-Society/autoscend/tree/beta) or have a good reason not to.
+- [ ] I have based by pull request against the [master branch](https://github.com/Loathing-Associates-Scripting-Society/autoscend/tree/master) or have a good reason not to.
