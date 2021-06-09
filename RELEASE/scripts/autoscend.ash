@@ -1,4 +1,4 @@
-since r20749;	//min mafia revision needed to run this script. Last update: Fix Quantum Terrarium Request parsing breaking on melodramedary
+since r20762;	//min mafia revision needed to run this script. Last update: Add 'logPreferenceChangeFilter', which is a comma separated list of preferences to not log when logPreferenceChange is enabled
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -2519,6 +2519,23 @@ void resetState() {
 		use_familiar($familiar[Left-Hand Man]);
 		equip($slot[familiar], $item[none]);
 	}
+
+	foreach it in $items[staph of homophones, sword behind inappropriate prepositions]
+	{
+		// these screw with text in the game which breaks mafia's parsing in a lot of places.
+		if (have_equipped(it))
+		{
+			equip($item[none], it.to_slot());
+		}
+	}
+	foreach eff in $effects[Can Has Cyborger, Dis Abled, Haiku State of Mind, Just the Best Anapests, O Hai!, Robocamo, Yes, Can Haz]
+	{
+		// as do these which can all be freely shrugged.
+		if (have_effect(eff) > 0)
+		{
+			cli_execute(`uneffect {eff.to_string()}`);
+		}
+	}
 }
 
 boolean process_tasks()
@@ -2844,6 +2861,7 @@ void auto_begin()
 	backupSetting("currentMood", "apathetic");
 
 	backupSetting("logPreferenceChange", "true");
+	backupSetting("logPreferenceChangeFilter" "maximizerMRUList, testudinalTeachings, auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 	
 	backupSetting("choiceAdventure1107", 1);
