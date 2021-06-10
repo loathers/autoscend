@@ -8,17 +8,6 @@ void glover_initializeDay(int day)
 	if (!in_glover()) {
 		return;
 	}
-
-	if((item_amount($item[Mumming Trunk]) > 0) && !get_property("_mummifyDone").to_boolean())
-	{
-		mummifyFamiliar($familiar[Disgeist], "myst");
-		mummifyFamiliar($familiar[Slimeling], "mpregen");
-		mummifyFamiliar($familiar[Intergnat], "item");
-		mummifyFamiliar($familiar[Gelatinous Cubeling], "muscle");
-		mummifyFamiliar($familiar[God Lobster], "moxie");
-		mummifyFamiliar($familiar[Garbage Fire], "meat");
-		set_property("_mummifyDone", true);
-	}
 }
 
 void glover_initializeSettings()
