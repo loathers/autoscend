@@ -233,17 +233,6 @@ string defaultMaximizeStatement()
 	return res;
 }
 
-void auto_set_maximize_current(string to_set)
-{
-	string logPrefValue = get_property("logPreferenceChange");
-	if (logPrefValue.to_boolean())
-	{
-		set_property("logPreferenceChange", "false");
-	}
-	set_property("auto_maximize_current", to_set);
-	set_property("logPreferenceChange", logPrefValue);
-}
-
 void resetMaximize()
 {
 	string res = get_property("auto_maximize_baseline");	//user configured override baseline statement.
@@ -301,7 +290,7 @@ void resetMaximize()
 		}
 	}
 	
-	auto_set_maximize_current(res);
+	set_property("auto_maximize_current", res);
 	auto_log_debug("Resetting auto_maximize_current to " + res, "gold");
 
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
@@ -385,7 +374,7 @@ void addToMaximize(string add)
 		add = add.substring(1);
 	}
 	res += add;
-	auto_set_maximize_current(res);
+	set_property("auto_maximize_current", res);
 }
 
 void removeFromMaximize(string rem)
@@ -405,7 +394,7 @@ void removeFromMaximize(string rem)
 	{
 		res = res.substring(1);
 	}
-	auto_set_maximize_current(res);
+	set_property("auto_maximize_current", res);
 }
 
 boolean maximizeContains(string check)
@@ -418,7 +407,7 @@ boolean simMaximize()
 	string backup = get_property("auto_maximize_current");
 	finalizeMaximize();
 	boolean res = autoMaximize(get_property("auto_maximize_current"), true);
-	auto_set_maximize_current(backup);
+	set_property("auto_maximize_current", backup);
 	return res;
 }
 
@@ -428,7 +417,7 @@ boolean simMaximizeWith(string add)
 	addToMaximize(add);
 	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
 	boolean res = simMaximize();
-	auto_set_maximize_current(backup);
+	set_property("auto_maximize_current", backup);
 	return res;
 }
 
@@ -440,13 +429,7 @@ float simValue(string modifier)
 void equipMaximizedGear()
 {
 	finalizeMaximize();
-	string logPrefValue = get_property("logPreferenceChange");
-	if (logPrefValue.to_boolean())
-	{
-		set_property("logPreferenceChange", "false");
-	}
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
-	set_property("logPreferenceChange", logPrefValue);
 }
 
 void equipOverrides()
