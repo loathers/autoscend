@@ -1,111 +1,119 @@
 #	This is meant for items that have a date of 2017.
 
+// This should probably only be called directly from community_service.ash.
 boolean mummifyFamiliar(familiar fam, string bonus)
 {
+	if(!pathHasFamiliar()  || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]) || !canChangeToFamiliar(fam) || !auto_is_valid(fam))
+	{
+		return false;
+	}
+
 	bonus = to_lower_case(bonus);
-	if(!pathHasFamiliar())
-	{
-		return false;
-	}
-	if(get_property("_mummifyDone").to_boolean())
-	{
-		return false;
-	}
-	if(item_amount($item[Mumming Trunk]) == 0)
-	{
-		return false;
-	}
-	if(!auto_is_valid($item[Mumming Trunk]))
-	{
-		return false;
-	}
-	if(!canChangeToFamiliar(fam)) // Can Change to Familiar checks both whether we have it and if we are allowed to change to it
-	{
-		return false;
-	}
-	if(!auto_is_valid(fam))
-	{
-		return false;
-	}
+	// I don't want to alter CS behaviour so I'm leaving a couple things in that are otherwise irrelevant.
 	familiar last = my_familiar();
-
 	int goal = 0;
-	if((bonus == "meat") || (bonus == "1"))
+	
+	switch (bonus)
 	{
-		goal = 1;
+		case "1":
+		case "meat":
+			goal = 1;
+			break;
+		case "2":
+		case "mp":
+		case "mp regen":
+		case "mpregen":
+			goal = 2;
+			break;
+		case "3":
+		case "mus":
+		case "muscle":
+			goal = 3;
+			break;
+		case "4":
+		case "item":
+			goal = 4;
+			break;
+		case "5":
+		case "mysticality":
+		case "myst":
+			goal = 5;
+			break;
+		case "6":
+		case "hp":
+		case "hp regen":
+		case "hpregen":
+			goal = 6;
+			break;
+		case "7":
+		case "mox":
+		case "moxie":
+			goal = 7;
+			break;
+		default:
+			return false;
 	}
-	else if((bonus == "mp") || (bonus == "mp regen") || (bonus == "mpregen") || (bonus == "2"))
-	{
-		goal = 2;
-	}
-	else if((bonus == "muscle") || (bonus == "3"))
-	{
-		goal = 3;
-	}
-	else if((bonus == "item") || (bonus == "4"))
-	{
-		goal = 4;
-	}
-	else if((bonus == "mysticality") || (bonus == "myst") || (bonus == "5"))
-	{
-		goal = 5;
-	}
-	else if((bonus == "hp") || (bonus == "hp regen") || (bonus == "hpregen") || (bonus == "6"))
-	{
-		goal = 6;
-	}
-	else if((bonus == "moxie") || (bonus == "7"))
-	{
-		goal = 7;
-	}
-
-	if(contains_text(get_property("_mummeryUses"), goal))
+	
+	if(contains_text(get_property("_mummeryUses"), goal) || goal < 1 || goal >= 8)
 	{
 		return false;
 	}
 
-	if((goal < 1) || (goal >= 8))
+	// CS will use this.
+	if (canChangeFamiliar())
 	{
-		return false;
+		use_familiar(fam);
 	}
-	use_familiar(fam);
-	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=" + to_int($item[Mumming Trunk]), false);
-	boolean available = false;
 
-	int options = 0;
-	foreach idx in available_choice_options()
-	{
-		if(goal == idx)
-		{
-			available = true;
-		}
-		options += 1;
-	}
-	if(!available)
-	{
-		goal = 8;
-		if(options == 1)
-		{
-			set_property("_mummifyDone", true);
-		}
-	}
-	else if(options == 2)
-	{
-		set_property("_mummifyDone", true);
-	}
-	page = visit_url("choice.php?pwd=&whichchoice=1271&option=" + goal);
-
-	if(my_familiar() != last)
+	cli_execute("mummery " + goal);
+	
+	// CS will use this.
+	if(my_familiar() != last && canChangeFamiliar())
 	{
 		use_familiar(last);
 	}
-	if(goal == 8)
+	
+	return true;
+}
+
+// Will provide the appropriate bonus to an arbitrary familiar.
+boolean mummifyFamiliar(familiar fam)
+{
+	if (!pathHasFamiliar()  || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]) || !canChangeToFamiliar(fam) || !auto_is_valid(fam))
 	{
 		return false;
 	}
-	handleTracker($item[Mumming Trunk], fam, "auto_otherstuff");
-	
-	return true;
+
+	string targetBonus = "";
+
+	switch (my_familiar())
+	{
+		case lookupFamiliarDatafile("meat"):
+			targetBonus = "meat";
+			break;
+		case lookupFamiliarDatafile("item"):
+			targetBonus = "item";
+			break;
+		case lookupFamiliarDatafile("gremlins"):
+			targetBonus = "hp";
+			break;
+		case lookupFamiliarDatafile("regen"):
+			targetBonus = "mp";
+			break;
+		case lookupFamiliarDatafile("stat"):
+			targetBonus = my_primestat().to_string();
+			break;
+	}
+	return mummifyFamiliar(fam, targetBonus);
+}
+
+boolean mummifyFamiliar()
+{
+	if (!pathHasFamiliar() || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]) || my_path() == "Community Service")
+	{
+		return false;
+	}	
+	return mummifyFamiliar(my_familiar());
 }
 
 boolean pantogramPants()

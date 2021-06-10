@@ -707,6 +707,11 @@ void preAdvUpdateFamiliar(location place)
 			}
 		}
 	}
+
+	if(my_path() != "Community Service")
+	{
+		mummifyFamiliar();
+	}
 }
 
 boolean hatchFamiliar(familiar adult)
