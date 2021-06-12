@@ -1277,6 +1277,19 @@ boolean L11_hiddenCity()
 			return false;
 		}
 	}
+	
+	//can we handle this zone?
+	if(!acquireHP())	//try to restore HP to max.
+	{
+		return false;		//could not heal HP. we should go do something else first
+	}
+	int weapon_ghost_dmg = numeric_modifier("hot damage") + numeric_modifier("cold damage") + numeric_modifier("stench damage") + numeric_modifier("sleaze damage") + numeric_modifier("spooky damage");
+	if(weapon_ghost_dmg < 20 &&				//we can not rely on melee/ranged weapon to kill the ghost
+	!acquireMP(30))							//try getting some MP, relying on a spell to kill them instead. TODO verify we have a spell
+	{
+		auto_log_warning("We can not reliably kill Specters in hidden city due to a shortage of MP and elemental weapon dmg. Delaying zone", "red");
+		return false;
+	}	
 
 	if (internalQuestStatus("questL11Curses") < 2 && get_counters("Fortune Cookie", 0, 9) != "Fortune Cookie" && have_effect($effect[Ancient Fortitude]) == 0)
 	{
