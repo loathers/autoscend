@@ -365,21 +365,14 @@ boolean bat_shouldPickSkills(int hpLeft)
 
 boolean bat_haveEnsorcelee() // checks if you have a current Ensorceled Monster
 {
-	if(my_class() != $class[Vampyre] || !auto_have_skill($skill[Ensorcel]))
+	if(!auto_have_skill($skill[Ensorcel]))
 		return false;
 
-	if(get_property("ensorcelee") == $monster[none])
-		return false;
-	
-	return true;
+	return get_property("ensorcelee") != "";
 }
 
 phylum bat_ensorceledMonster() //returns phylum of current Ensorceled Monster (if you have one)
 {
-	if(!bat_haveEnsorcelee()){
-		return $phylum[none];
-	}
-
 	return monster_phylum(to_monster(get_property("ensorcelee")));
 }	
 
