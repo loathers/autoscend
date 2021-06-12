@@ -2,42 +2,56 @@
 // These functions are only used for combat so they get their own file.
 // If you want a function to be accessible in all files put it /autoscend/autoscend_header.ash
 
-string auto_combatHandler(int round, monster enemy, string text);		//defined in /autoscend/combat/auto_combat.ash
+#####################################################
+//defined in /autoscend/combat/auto_combat.ash
+string auto_combatHandler(int round, monster enemy, string text);		
 
-boolean haveUsed(skill sk);							//defined in /autoscend/combat/auto_combat_util.ash
-boolean haveUsed(item it);							//defined in /autoscend/combat/auto_combat_util.ash
-int usedCount(skill sk);							//defined in /autoscend/combat/auto_combat_util.ash
-int usedCount(item it);								//defined in /autoscend/combat/auto_combat_util.ash
-void markAsUsed(skill sk);							//defined in /autoscend/combat/auto_combat_util.ash
-void markAsUsed(item it);							//defined in /autoscend/combat/auto_combat_util.ash
-boolean canUse(skill sk, boolean onlyOnce);			//defined in /autoscend/combat/auto_combat_util.ash
-boolean canUse(skill sk);							//defined in /autoscend/combat/auto_combat_util.ash
-boolean canUse(item it, boolean onlyOnce);			//defined in /autoscend/combat/auto_combat_util.ash
-boolean canUse(item it);							//defined in /autoscend/combat/auto_combat_util.ash
-string useSkill(skill sk, boolean mark);			//defined in /autoscend/combat/auto_combat_util.ash
-string useSkill(skill sk);							//defined in /autoscend/combat/auto_combat_util.ash
-string useItem(item it, boolean mark);				//defined in /autoscend/combat/auto_combat_util.ash
-string useItem(item it);							//defined in /autoscend/combat/auto_combat_util.ash
-string useItems(item it1, item it2, boolean mark);	//defined in /autoscend/combat/auto_combat_util.ash
-string useItems(item it1, item it2);				//defined in /autoscend/combat/auto_combat_util.ash
-string getStallString(monster enemy);				//defined in /autoscend/combat/auto_combat_util.ash
-boolean enemyCanBlocksSkills();						//defined in /autoscend/combat/auto_combat_util.ash
-boolean canSurvive(float mult, int add);			//defined in /autoscend/combat/auto_combat_util.ash
-boolean canSurvive(float mult);						//defined in /autoscend/combat/auto_combat_util.ash
-string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text);				//defined in /autoscend/combat/auto_combat_util.ash
-string findBanisher(int round, monster enemy, string text);				//defined in /autoscend/combat/auto_combat_util.ash
+#####################################################
+//defined in /autoscend/combat/auto_combat_util.ash
+boolean haveUsed(skill sk);							
+boolean haveUsed(item it);							
+int usedCount(skill sk);							
+int usedCount(item it);								
+void markAsUsed(skill sk);							
+void markAsUsed(item it);							
+boolean canUse(skill sk, boolean onlyOnce);			
+boolean canUse(skill sk);							
+boolean canUse(item it, boolean onlyOnce);			
+boolean canUse(item it);							
+string useSkill(skill sk, boolean mark);			
+string useSkill(skill sk);							
+string useItem(item it, boolean mark);				
+string useItem(item it);							
+string useItems(item it1, item it2, boolean mark);	
+string useItems(item it1, item it2);				
+string getStallString(monster enemy);				
+boolean enemyCanBlocksSkills();						
+boolean canSurvive(float mult, int add);			
+boolean canSurvive(float mult);						
+string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text);				
+string findBanisher(int round, monster enemy, string text);				
 
-void awol_combat_helper(string page);						//defined in /autoscend/combat/auto_combat_awol.ash
+#####################################################
+//defined in /autoscend/combat/auto_combat_awol.ash
+void awol_combat_helper(string page);
 
-string cs_combatNormal(int round, monster enemy, string text);			//defined in /autoscend/combat/auto_combat_community_service.ash
-string cs_combatXO(int round, monster enemy, string text);				//defined in /autoscend/combat/auto_combat_community_service.ash
-string cs_combatYR(int round, monster enemy, string text);				//defined in /autoscend/combat/auto_combat_community_service.ash
-string cs_combatKing(int round, monster enemy, string text);			//defined in /autoscend/combat/auto_combat_community_service.ash
-string cs_combatWitch(int round, monster enemy, string text);			//defined in /autoscend/combat/auto_combat_community_service.ash
-string cs_combatLTB(int round, monster enemy, string text);				//defined in /autoscend/combat/auto_combat_community_service.ash
+#####################################################
+//defined in /autoscend/combat/auto_combat_community_service.ash
+string cs_combatNormal(int round, monster enemy, string text);			
+string cs_combatXO(int round, monster enemy, string text);				
+string cs_combatYR(int round, monster enemy, string text);				
+string cs_combatKing(int round, monster enemy, string text);			
+string cs_combatWitch(int round, monster enemy, string text);			
+string cs_combatLTB(int round, monster enemy, string text);				
 
-string auto_edCombatHandler(int round, monster enemy, string text);		//defined in /autoscend/combat/auto_combat_ed.ash
+#####################################################
+//defined in /autoscend/combat/auto_combat_ed.ash
+string auto_edCombatHandler(int round, monster enemy, string text);		
 
-monster ocrs_combat_helper(string page);					//defined in /autoscend/combat/auto_combat_ocrs.ash
+#####################################################
+//defined in /autoscend/combat/auto_combat_ocrs.ash
+monster ocrs_combat_helper(string page);					
 
-string auto_JunkyardCombatHandler(int round, monster enemy, string text);		//defined in /autoscend/combat/auto_combat_quest.ash
+#####################################################
+//defined in /autoscend/combat/auto_combat_quest.ash
+string auto_JunkyardCombatHandler(int round, monster enemy, string text);		
