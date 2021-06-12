@@ -2,9 +2,8 @@
 
 string auto_combatJarlsbergStage4(int round, monster enemy, string text)
 {
-	//stage 4 killing the enemy. jarlsberg specific
+	##stage 4 = kill
 	
-	string combatState = get_property("auto_combatHandler");
 	//killing code goes here
 	
 	return "";

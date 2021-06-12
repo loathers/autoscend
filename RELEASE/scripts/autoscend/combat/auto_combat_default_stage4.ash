@@ -1,7 +1,7 @@
 string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
-	//stage 4 killing the enemy.
-	
+	##stage 4 = kill
+
 	string combatState = get_property("auto_combatHandler");
 	phylum type = monster_phylum(enemy);
 	string attackMinor = "attack with weapon";
@@ -10,6 +10,34 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	int costMajor = 0;
 	string stunner = "";
 	int costStunner = 0;
+	
+	if((enemy == $monster[LOV Enforcer]) && canUse($skill[Saucestorm], false))
+	{
+		return useSkill($skill[Saucestorm], false);
+	}
+	
+	//nemesis quest specific kill methods
+	if(my_class() == $class[Seal Clubber])
+	{
+		if(enemy == $monster[Hellseal Pup])
+		{
+			return useSkill($skill[Clobber], false);
+		}
+		if(enemy == $monster[Mother Hellseal])
+		{
+			if(canUse($item[Rain-Doh Indigo Cup]))
+			{
+				return useItem($item[Rain-Doh Indigo Cup]);
+			}
+			return useSkill($skill[Lunging Thrust-Smack], false);
+		}
+	}
+	
+	//nemesis quest tame guard turtle. takes multiple rounds and buffs enemy by 40%. so it should go after stun and delevel
+	if((enemy == $monster[French Guard Turtle]) && have_equipped($item[Fouet de tortue-dressage]) && (my_mp() >= mp_cost($skill[Apprivoisez La Tortue])))
+	{
+		return useSkill($skill[Apprivoisez La Tortue], false);
+	}
 
 	switch(my_class())
 	{
