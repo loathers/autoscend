@@ -2528,7 +2528,7 @@ void resetState() {
 			equip($item[none], it.to_slot());
 		}
 	}
-	foreach eff in $effects[Can Has Cyborger, Dis Abled, Haiku State of Mind, Just the Best Anapests, O Hai!, Robocamo, Yes\, Can Haz]
+	foreach eff in $effects[Dis Abled, Haiku State of Mind, Just the Best Anapests, O Hai!, Robocamo, Yes\, Can Haz]
 	{
 		// as do these which can all be freely shrugged.
 		if (have_effect(eff) > 0)
