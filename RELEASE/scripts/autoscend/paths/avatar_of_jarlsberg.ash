@@ -76,9 +76,12 @@ void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a g
 	if(my_level() <= get_property("_auto_jarlsbergSkills").to_int())
 	{
 		return;
+		
 	}
-	//Jarlsberg's Branching Trees basically means pre-checking if we have the top tier skills is almost doubling up on the server hits for the below.
-	//maybe add a _auto_completedJarlsbergSkillTree or some such property so we only check once a day once we ahve them all?
+	if(get_property("_auto_completedJarlsbergSkillTree").to_boolean()) //Prevent us from running through the full list of skills checks more than once per day if we already have all skills
+	{
+		return;
+	}
 
 	string page = visit_url("da.php?place=gate2");
 	matcher my_skillPoints = create_matcher("<b>(\\d\+)</b> skill point", page);
@@ -111,6 +114,7 @@ void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a g
 			}
 			else
 			{
+				set_property("_auto_completedJarlsbergSkillTree", true);
 				return;
 			}
 
