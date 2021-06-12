@@ -709,6 +709,48 @@ void preAdvUpdateFamiliar(location place)
 	}
 }
 
+boolean checkTerrarium()
+{
+	//do we have an installed terarrium in our camp or a path specific equivalent
+	if(!pathAllowsChangingFamiliar())
+	{
+		return false;
+	}
+	if(auto_my_path() == "Nuclear Autumn" || auto_my_path() == "You, Robot")
+	{
+		return true;	//these paths use an alternative form of terrarium
+	}
+	if(get_property("_auto_hasTerrarium").to_boolean())
+	{
+		return true;	//minimize server hits. if we already verified we have a terrarium today there is no way for it to disappear
+	}
+	boolean retval = visit_url("campground.php").contains_text("bigterrarium.gif");		//visit camp to check
+	if(retval)
+	{
+		set_property("_auto_hasTerrarium", true);	//set value to minimize server hits. _ will automatically reset on rollover or ascension
+	}
+	return retval;
+}
+
+void getTerrarium()
+{
+	//install a terrarium in camp if you do not already have one.
+	if(checkTerrarium() ||				//already have one or have equivalent in path.
+	!pathAllowsChangingFamiliar() ||	//not available in path
+	!isGeneralStoreAvailable() ||		//can not buy it
+	!auto_is_valid($item[Familiar-Gro&trade; Terrarium]) ||		//can not use it
+	my_meat() < 500)					//can not afford it
+	{
+		return;	
+	}
+	buyUpTo(1, $item[Familiar-Gro&trade; Terrarium]);
+	use(1, $item[Familiar-Gro&trade; Terrarium]);
+	if(!checkTerrarium())
+	{
+		auto_log_warning("Mysteriously failed to install a Familiar Terrarium in your camp", "red");
+	}
+}
+
 boolean hatchFamiliar(familiar adult)
 {
 	//This functions hatches a familiar named adult.
@@ -728,7 +770,10 @@ boolean hatchFamiliar(familiar adult)
 			return false;
 		}
 	}
-	//TODO return false if no terrarium installed in camp.
+	if(!checkTerrarium())
+	{
+		return false;
+	}
 	if(have_familiar(adult))		//do not use auto_have_familiar here. we can have an unusable adult in a path that can hatch the hatchling
 	{
 		return true;		//we already have desired familiar. no point it trying to hatch it a second time
@@ -762,8 +807,10 @@ void hatchList()
 	{
 		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
-	//TODO return if no terrarium installed in camp.
-	
+	if(!checkTerrarium())
+	{
+		return;
+	}	
 	if(get_property("questL02Larva") == "finished")
 	{
 		//only try to hatch this after the quest is finished. first copy is given to concil which returns it to you if you need to hatch it
@@ -786,4 +833,40 @@ void hatchList()
 	{
 		hatchFamiliar(fam);
 	}
+}
+
+void acquireFamiliars()
+{
+	//this function acquires hatchlings for important or easy to get familiars and then hatches them.
+	//use is_unrestricted instead of auto_is_valid because familiar hatching is not using an item and ignores most restrictions.
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
+	{
+		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
+	}
+	if(!checkTerrarium())
+	{
+		return;
+	}
+	
+	//Very cheap and very useful IOTM derivative. MP/HP regen. drops lots of useful food and drink early on
+	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]))
+	{
+		acquireOrPull($item[tiny barrel]);		//mallbuy and pull it if we can
+	}
+	hatchFamiliar($familiar[Lil\' Barrel Mimic]);
+	
+	//stat gains. nonscaling. better at low levels. cheap and easy to acquire in run.
+	if(!have_familiar($familiar[Blood-Faced Volleyball]) && item_amount($item[blood-faced volleyball]) == 0 && my_meat() > meatReserve() + 1500)
+	{
+		foreach it in $items[volleyball, seal tooth]
+		{
+			if(item_amount(it) == 0) acquireHermitItem(it);
+		}
+		if(item_amount($item[volleyball]) > 0 && item_amount($item[seal tooth]) > 0)
+		{
+			use(1, $item[seal tooth]);
+			use(1, $item[volleyball]);
+		}
+	}
+	hatchFamiliar($familiar[Blood-Faced Volleyball]);
 }
