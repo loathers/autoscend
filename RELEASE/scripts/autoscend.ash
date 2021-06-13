@@ -2172,9 +2172,6 @@ boolean LX_craftAcquireItems()
 				break;
 			}
 		}
-		mummifyFamiliar($familiar[Intergnat], my_primestat());
-		mummifyFamiliar($familiar[Hobo Monkey], "meat");
-		mummifyFamiliar($familiar[XO Skeleton], "mpregen");
 		#set_property("_dailyCreates", true);
 	}
 
