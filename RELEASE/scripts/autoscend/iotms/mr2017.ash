@@ -1,9 +1,27 @@
 #	This is meant for items that have a date of 2017.
 
 // This should probably only be called directly from community_service.ash.
+boolean auto_hasMummingTrunk()
+{
+	if(!pathHasFamiliar()  || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]))
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean auto_checkFamiliarMummery(familiar fam)
+{
+	if (contains_text(get_property("_mummeryMods"), fam.to_string()))
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean mummifyFamiliar(familiar fam, string bonus)
 {
-	if(!pathHasFamiliar()  || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]) || !canChangeToFamiliar(fam) || !auto_is_valid(fam))
+	if (!canChangeToFamiliar(fam) || !auto_hasMummingTrunk() || !auto_checkFamiliarMummery(fam))
 	{
 		return false;
 	}
@@ -79,7 +97,7 @@ boolean mummifyFamiliar(familiar fam, string bonus)
 // Will provide the appropriate bonus to an arbitrary familiar.
 boolean mummifyFamiliar(familiar fam)
 {
-	if (!pathHasFamiliar()  || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]) || !canChangeToFamiliar(fam) || !auto_is_valid(fam))
+	if (!auto_hasMummingTrunk() || !auto_checkFamiliarMummery(fam))
 	{
 		return false;
 	}
@@ -109,10 +127,12 @@ boolean mummifyFamiliar(familiar fam)
 
 boolean mummifyFamiliar()
 {
-	if (!pathHasFamiliar() || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]) || my_path() == "Community Service")
+	auto_hasMummingTrunk();
+	if (my_path() == "Community Service")
 	{
 		return false;
-	}	
+	}
+	
 	return mummifyFamiliar(my_familiar());
 }
 

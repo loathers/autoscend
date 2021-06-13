@@ -708,7 +708,7 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 
-	if(my_path() != "Community Service")
+	if(my_path() != "Community Service" && !auto_checkFamiliarMummery(my_familiar()))
 	{
 		mummifyFamiliar();
 	}

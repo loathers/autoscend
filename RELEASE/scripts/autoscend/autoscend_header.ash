@@ -193,6 +193,8 @@ boolean rethinkingCandy(effect acquire, boolean simulate);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2017.ash
+boolean auto_hasMummingTrunk();
+boolean auto_checkFamiliarMummery(familiar fam);
 boolean mummifyFamiliar(familiar fam, string bonus);
 boolean mummifyFamiliar(familiar fam);
 boolean mummifyFamiliar();
