@@ -84,6 +84,11 @@ boolean canOde(item toDrink)
 
 boolean autoDrink(int howMany, item toDrink)
 {
+	return autoDrink(howMany, toDrink, false);
+}
+
+boolean autoDrink(int howMany, item toDrink, boolean silent)
+{
 	if((toDrink == $item[none]) || (howMany <= 0))
 	{
 		return false;
@@ -132,7 +137,14 @@ boolean autoDrink(int howMany, item toDrink)
 	{
 		if(!isSpeakeasy)
 		{
-			retval = drink(1, toDrink);
+			if(silent)
+			{
+				retval = drinksilent(1, toDrink);
+			}
+			else
+			{
+				retval = drink(1, toDrink);
+			}
 		}
 		else
 		{
@@ -1216,7 +1228,7 @@ void auto_drinkNightcap()
 	{
 		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
 	}
-	drinksilent(1, target.it);		//drinksilent avoids the popup asking if we are sure we want to overdrink
+	autoDrink(1, target.it, true); // added a silent flag to autoDrink to avoid the overdrink confirmation popup
 	
 	if(start_fam != my_familiar())
 	{

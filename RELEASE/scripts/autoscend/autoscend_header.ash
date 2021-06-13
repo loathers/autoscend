@@ -1031,6 +1031,7 @@ boolean saucemavenApplies(item it);
 float expectedAdventuresFrom(item it);
 boolean canOde(item toDrink);
 boolean autoDrink(int howMany, item toDrink);
+boolean autoDrink(int howMany, item toDrink, boolean silent);
 boolean autoOverdrink(int howMany, item toOverdrink);
 string cafeFoodName(int id);
 string cafeDrinkName(int id);
