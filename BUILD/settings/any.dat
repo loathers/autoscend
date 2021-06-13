@@ -11,7 +11,6 @@ auto_confidence	boolean	If true, we'll get the confidence buff instead of breaki
 auto_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a string that acceptable to Mafia's 'teatree' command (Use ; to separate by daycount, leave blank to skip a day).
 auto_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
 auto_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
-auto_mummeryChoice	string	Force mummery usage. Use familiar name and goals are in order (1..7) (Use ; to separate, leave blank to skip a goal).
 auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
 auto_hatchRagamuffinImp	boolean	If set we will acquire and hatch Ragamuffin Imp in postronin. One per account. some people prefer it in the display case so we require opt in.
 auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
