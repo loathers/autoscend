@@ -1,11 +1,4 @@
-/****
-
-Functions in here are defined in autoscend/autoscend_header.ash
-
-These functions exist to handle outdated configuartions of the script. These would have been removed but we might as well keep them (in case we need to do any new configuration mangling) and they might actually help recover a long-forgotten ascension.
-
-****/
-
+## These functions are used to either upgrade format on properties. delete obsolete properties. or set default values for new properties
 
 boolean trackingSplitterFixer(string oldSetting, int day, string newSetting)
 {
@@ -39,17 +32,11 @@ boolean trackingSplitterFixer(string oldSetting, int day, string newSetting)
 	return true;
 }
 
-boolean settingFixer()
+void auto_settingsUpgrade()
 {
-	/***
-		This will be removed at some point once a reasonable amount of time has
-		passed such that anyone who used the script before a conversion in here
-		should have had it fix them.
-
-		Maybe it won\t. It doesn't really need to be I guess.
-		Backwards compatibility forever!!!
-	***/
-	if(get_property("auto_debug") == "true"){
+	//upgrade settings from old format to new format
+	if(get_property("auto_debug") == "true")
+	{
 		set_property("auto_logLevel", "debug");
 	}
 
@@ -70,13 +57,9 @@ boolean settingFixer()
 	trackingSplitterFixer("auto_renenutet_day3", 3, "auto_renenutet");
 	trackingSplitterFixer("auto_renenutet_day4", 4, "auto_renenutet");
 
-	if(get_property("auto_delayTimer") == "")
-	{
-		set_property("auto_delayTimer", 1);
-	}
 	if(get_property("auto_100familiar") == "yes")
 	{
-		set_property("auto_100familiar", true);
+		set_property("auto_100familiar", my_familiar());
 	}
 	if(get_property("auto_100familiar") == "no")
 	{
@@ -90,11 +73,7 @@ boolean settingFixer()
 	{
 		set_property("auto_killingjar", "finished");
 	}
-	if(get_property("auto_sonata") == "finished")
-	{
-		set_property("auto_sonata", "");
-	}
-
+	
 	if(get_property("auto_wandOfNagamar") == "yes")
 	{
 		set_property("auto_wandOfNagamar", true);
@@ -115,7 +94,6 @@ boolean settingFixer()
 	if(get_property("auto_edDelayTimer") != "")
 	{
 		set_property("auto_delayTimer", get_property("auto_edDelayTimer"));
-		set_property("auto_edDelayTimer", "");
 	}
 	if(get_property("auto_grimstoneFancyOilPainting") == "need")
 	{
@@ -134,36 +112,10 @@ boolean settingFixer()
 		set_property("auto_grimstoneOrnateDowsingRod", false);
 	}
 
-	if(get_property("kingLiberatedScript") == "scripts/kingLiberated.ash")
-	{
-		set_property("kingLiberatedScript", "auto_king.ash");
-	}
-	if(get_property("afterAdventureScript") == "scripts/postadventure.ash")
-	{
-		set_property("afterAdventureScript", "auto_post_adv.ash");
-	}
-	if(get_property("betweenAdventureScript") == "scripts/preadventure.ash")
-	{
-		set_property("betweenAdventureScript", "auto_pre_adv.ash");
-	}
-	if(get_property("betweenBattleScript") == "scripts/preadventure.ash")
-	{
-		set_property("betweenBattleScript", "auto_pre_adv.ash");
-	}
-
-	if(get_property("auto_abooclover") == "")
-	{
-		set_property("auto_abooclover", true);
-	}
 	if(get_property("auto_abooclover") == "used")
 	{
 		set_property("auto_abooclover", false);
 	}
-
-	remove_property("auto_cubeItems");
-	remove_property("auto_useCubeling");
-	remove_property("auto_pullPVPJunk");
-
 	if(get_property("lastPlusSignUnlock") == "true")
 	{
 		auto_log_debug("lastPlusSignUnlock was changed to a boolean, fixing...", "red");
@@ -174,46 +126,37 @@ boolean settingFixer()
 		auto_log_debug("lastTempleUnlock was changed to a boolean, fixing...", "red");
 		set_property("lastTempleUnlock", my_ascensions());
 	}
-
-	if(property_exists("auto_day1_init"))
+	if(get_property("auto_consumeKeyLimePies") != "")
 	{
-		auto_log_debug("Found old day initialization trackers, removing...", "red");
-		remove_property("auto_day1_init");
-		remove_property("auto_day2_init");
-		remove_property("auto_day3_init");
-		remove_property("auto_day4_init");
+		set_property("auto_dontConsumeKeyLimePies", !get_property("auto_consumeKeyLimePies").to_boolean());
 	}
+}
 
-	if(property_exists("auto_gaudy"))
+void auto_settingsFix()
+{
+	//fix settings where user inputted an invalid value
+	if(get_property("auto_save_adv_override").to_int() < -1)
 	{
-		auto_log_debug("Some lingering stuff from when gaudy pirates mattered is still here, let's get rid of it...", "red");
-		remove_property("auto_gaudy");
+		set_property("auto_save_adv_override", -1);		//values lower than -1 are not valid
 	}
+}
 
-	if(get_property("auto_paranoia") == "")
-	{
-		auto_log_debug("No paranoia value, we probably don't want to be paranoid...", "red");
-		set_property("auto_paranoia", -1);
-	}
-
-	if(get_property("auto_inv_paranoia") == "")
-	{
-		auto_log_debug("Mafia probably isn't super broken, so let's set it that way...", "red");
-		set_property("auto_inv_paranoia", false);
-	}
-
-	if(property_exists("auto_beta_test"))
-	{
-		auto_log_debug("Beta testing features should be guarded behind their own individual properties...", "red");
-		remove_property("auto_beta_test");
-	}
-
-	if(property_exists("auto_invaderKilled"))
-	{
-		auto_log_debug("No longer need to track the invaders status ourselves as mafia does it now...", "red");
-		remove_property("auto_invaderKilled");
-	}
-
+void auto_settingsDelete()
+{
+	//delete obsolete settings
+	remove_property("auto_debug");
+	remove_property("auto_sonata");
+	remove_property("auto_edDelayTimer");	//replaced with auto_delayTimer that works in all paths
+	remove_property("auto_cubeItems");
+	remove_property("auto_useCubeling");
+	remove_property("auto_pullPVPJunk");
+	remove_property("auto_day1_init");		//old day initialization trackers
+	remove_property("auto_day2_init");		//old day initialization trackers
+	remove_property("auto_day3_init");		//old day initialization trackers
+	remove_property("auto_day4_init");		//old day initialization trackers
+	remove_property("auto_gaudy");		//Some lingering stuff from when gaudy pirates mattered is still here
+	remove_property("auto_beta_test");		//Beta testing features should be guarded behind their own individual properties
+	remove_property("auto_invaderKilled");		//No longer need to track the invaders status ourselves as mafia does it now
 	remove_property("auto_airship");
 	remove_property("auto_ballroom");
 	remove_property("auto_ballroomflat");
@@ -274,35 +217,14 @@ boolean settingFixer()
 	remove_property("auto_war");
 	remove_property("auto_winebomb");
 	remove_property("auto_clearCombatScripts");
-
-	if (property_exists("auto_legacyConsumeStuff"))
-	{
-		auto_log_debug("Knapsack consumption algorithm is now for everyone!", "red");
-		remove_property("auto_legacyConsumeStuff");
-	}
-
-	if (property_exists("betweenAdventureScript"))
-	{
-		auto_log_debug("betweenAdventureScript might be an old mafia property that was renamed but it does nothing now.");
-		remove_property("betweenAdventureScript");
-	}
-
-	if (property_exists("auto_copperhead"))
-	{
-		auto_log_debug("Mafia added tracking for the Copperhead Club non-combat so this is no longer necesssary.");
-		remove_property("auto_copperhead");
-	}
-
+	remove_property("auto_legacyConsumeStuff");		//Knapsack consumption algorithm is now for everyone
+	remove_property("betweenAdventureScript");		//might be an old mafia property that was renamed but it does nothing now
+	remove_property("auto_copperhead");		//Mafia added tracking for the Copperhead Club non-combat so this is no longer necesssary
+	remove_property("auto_mineForOres");		//Automated Ore mining in hardcore is now for everyone!
 	remove_property("auto_hpAutoRecoveryItems");
 	remove_property("auto_hpAutoRecovery");
 	remove_property("auto_hpAutoRecoveryTarget");
 	remove_property("auto_skipDesert");
-
-	if (property_exists("auto_mineForOres")) {
-		auto_log_debug("Automated Ore mining in hardcore is now for everyone!", "red");
-		remove_property("auto_mineForOres");
-	}
-	
 	remove_property("auto_shenStarted");
 	remove_property("auto_breakstone");
 	remove_property("auto_aftercore");
@@ -316,13 +238,35 @@ boolean settingFixer()
 	remove_property("auto_borrowedTimeOnLiberation");
 	remove_property("auto_xiblaxianChoice");
 	remove_property("auto_extrudeChoice");
-	if (get_property("auto_consumeKeyLimePies") != "")
-	{
-		set_property("auto_dontConsumeKeyLimePies", !get_property("auto_consumeKeyLimePies").to_boolean());
-		remove_property("auto_consumeKeyLimePies");
-	}
+	remove_property("auto_consumeKeyLimePies");
 	remove_property("auto_shareMaximizer");
 	remove_property("auto_allowSharingData");
+}
 
-	return true;
+void defaultConfig(string prop, string val)
+{
+	//this function is used to configure default values. it only makes a change if the current value is nothing
+	if(get_property(prop) == "")			//property currently not set to anything.
+	{
+		auto_log_info(prop+ " has no value set. setting it to the default value of " +val);
+		set_property(prop,val);
+	}
+}
+
+void auto_settingsDefaults()
+{
+	//set default values for settings which have not yet been configured
+	defaultConfig("auto_delayTimer", "1");
+	defaultConfig("auto_abooclover", "true");		//Are we considering using a clover at A-Boo Peak?
+	defaultConfig("auto_paranoia", "-1");
+	defaultConfig("auto_inv_paranoia", "false");
+	defaultConfig("auto_save_adv_override", "-1");
+}
+
+void auto_settings()
+{
+	auto_settingsUpgrade();		//upgrade settings from old format to new format
+	auto_settingsFix();			//fix settings where user inputted an invalid value
+	auto_settingsDelete();		//delete obsolete settings
+	auto_settingsDefaults();	//set default values for settings which have not yet been configured
 }

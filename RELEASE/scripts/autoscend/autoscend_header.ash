@@ -1057,9 +1057,14 @@ boolean stillReachable();
 boolean distill(item target);
 
 ########################################################################################################
-//Defined in autoscend/auto_deprecation.ash
+//Defined in autoscend/auto_settings.ash
 boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
-boolean settingFixer();
+void auto_settingsUpgrade();
+void auto_settingsFix();
+void auto_settingsDelete();
+void defaultConfig(string prop, string val);
+void auto_settingsDefaults();
+void auto_settings();
 
 ########################################################################################################
 //Defined in autoscend/auto_equipment.ash

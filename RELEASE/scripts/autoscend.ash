@@ -16,7 +16,7 @@ import <canadv.ash>
 import <autoscend/auto_adventure.ash>
 import <autoscend/auto_bedtime.ash>
 import <autoscend/auto_consume.ash>
-import <autoscend/auto_deprecation.ash>
+import <autoscend/auto_settings.ash>
 import <autoscend/auto_equipment.ash>
 import <autoscend/auto_familiar.ash>
 import <autoscend/auto_list.ash>
@@ -243,12 +243,6 @@ void initializeSession() {
 int auto_advToReserve()
 {
 	// Calculates how many adventures we should aim to keep in reserve
-	
-	// blank int value does not work. and values lower than -1 are not valid.
-	if(get_property("auto_save_adv_override") == "" || get_property("auto_save_adv_override").to_int() < -1)
-	{
-		set_property("auto_save_adv_override", -1);
-	}
 	
 	// if auto_save_adv_override value is 0 or higher then use the override
 	if(get_property("auto_save_adv_override").to_int() > -1)
@@ -2570,7 +2564,8 @@ boolean process_tasks()
 boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
-	
+
+	auto_settingsFix();		//check and correct invalid configuration inputs made by users
 	if(!auto_unreservedAdvRemaining())
 	{
 		auto_log_warning("No more unreserved adventures left", "red");
@@ -2829,7 +2824,7 @@ void auto_begin()
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	auto_log_info("Current Ascension: " + auto_my_path());
 
-	settingFixer();
+	auto_settings();
 
 	backupSetting("promptAboutCrafting", 0);
 	backupSetting("requireBoxServants", false);
