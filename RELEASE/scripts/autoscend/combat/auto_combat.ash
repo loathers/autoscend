@@ -208,20 +208,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 	if(retval != "") return retval;
 
 	
-
-	if(canUse($skill[Summon Mayfly Swarm]))
-	{
-		if(have_equipped($item[Mayfly Bait Necklace]))
-		{
-			if($locations[Dreadsylvanian Village, Dreadsylvanian Woods, The Ice Hole, The Ice Hotel, Sloppy Seconds Diner, VYKEA] contains my_location())
-			{
-				return useSkill($skill[Summon Mayfly Swarm]);
-			}
-		}
-	}
-
 	if(canUse($item[The Big Book of Pirate Insults]) && (numPirateInsults() < 8) && (internalQuestStatus("questM12Pirate") < 5))
 	{
+		// this should only be applicable in Low-Key Summer (for now)
 		if ($locations[Barrrney\'s Barrr, The Obligatory Pirate\'s Cove] contains my_location())
 		{
 			return useItem($item[The Big Book Of Pirate Insults]);
@@ -383,14 +372,6 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(item_amount($item[Green Smoke Bomb]) > 0)
-	{
-		if($monsters[Animated Possessions, Natural Spider] contains enemy)
-		{
-			return "item " + $item[Green Smoke Bomb];
-		}
-	}
-
 	if(!inAftercore())
 	{
 		if(item_amount($item[short writ of habeas corpus]) > 0 && canUse($item[short writ of habeas corpus]))
@@ -473,11 +454,6 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 			return "item " + $item[Duskwalker Syringe];
 		}
-	}
-
-	if(canUse($item[opium grenade]) && enemy == $monster[pair of burnouts])
-	{
-		return useItem($item[opium grenade]);
 	}
 
 	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy))
