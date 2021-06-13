@@ -241,6 +241,7 @@ void auto_settingsDelete()
 	remove_property("auto_consumeKeyLimePies");
 	remove_property("auto_shareMaximizer");
 	remove_property("auto_allowSharingData");
+	remove_property("auto_mummeryChoice");
 }
 
 void defaultConfig(string prop, string val)
