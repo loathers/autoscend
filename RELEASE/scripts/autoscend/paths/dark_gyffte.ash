@@ -366,7 +366,7 @@ boolean bat_shouldPickSkills(int hpLeft)
 boolean bat_haveEnsorcelee() // checks if you have a current Ensorceled Monster
 {
 	if(!auto_have_skill($skill[Ensorcel]))
-		return false;
+		return false; //in case mafia doesn't clear ensorcelee property when you change skills and drop Ensorcel.
 
 	return get_property("ensorcelee") != "";
 }
@@ -386,7 +386,7 @@ boolean bat_shouldEnsorcel(monster m)
 	if(m.monster_phylum() == $phylum[goblin] && !isFreeMonster(m) && !bat_haveEnsorcelee()) //stop wasting additional Ensorcel casts once we already have an Ensorcelee
 		return true;
 
-	//code to be added for getting other types of monster (beasts / bugs presumably) where appropriate.
+	//TODO code for getting other types of monster (beasts / bugs presumably) where appropriate.
 
 	return false;
 }
