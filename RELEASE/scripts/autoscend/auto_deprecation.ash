@@ -323,6 +323,7 @@ boolean settingFixer()
 	}
 	remove_property("auto_shareMaximizer");
 	remove_property("auto_allowSharingData");
+	remove_property("auto_mummeryChoice");
 
 	return true;
 }
