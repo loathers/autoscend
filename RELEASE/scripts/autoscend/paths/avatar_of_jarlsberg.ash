@@ -97,10 +97,10 @@ void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a g
 
 			//skills are listed in reverse order. from last to first to buy..
 
-			foreach sk in $skills[Radish Horse, Working Lunch, Gristlesphere, Oilsphere, Coffeesphere, Chocolatesphere, Cream Puff, Blend, Nightcap, 
-			Conjure Cream, Early Riser, Fry, Conjure Dough, Lunch Like A King, Slice, Conjure Cheese, Egg man, 
-			Conjure Eggs, Food Coma, Chop, Grill, Freeze, Best Served Cold, Conjure Fruit, Never Late For Dinner, 
-			Conjure Meat Product, Conjure Vegetables, Hippotatomous, Conjure Potato, Bake, The Most Important Meal, Boil]
+			foreach sk in $skills[Radish Horse, Working Lunch, Gristlesphere, Oilsphere, Coffeesphere, Chocolatesphere, Cream Puff, Blend, 
+			Nightcap, Conjure Cream, Early Riser, Fry, Conjure Dough, Lunch Like A King, Slice, Conjure Cheese, 
+			Egg man, Conjure Eggs, Food Coma, Chop, Grill, Best Served Cold, Never Late For Dinner, Conjure Meat Product, 
+			Conjure Vegetables, Hippotatomous, Conjure Potato, Bake, Freeze, Conjure Fruit, The Most Important Meal, Boil]
 			{
 				if(!have_skill(sk))
 				{
