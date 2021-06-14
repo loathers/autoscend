@@ -1331,6 +1331,7 @@ string yellowRayCombatString();
 boolean adjustForYellowRay(string combat_string);
 boolean adjustForYellowRayIfPossible(monster target);
 boolean adjustForYellowRayIfPossible();
+boolean auto_haveYellowRayAvailable();
 string replaceMonsterCombatString(monster target, boolean inCombat);
 string replaceMonsterCombatString(monster target);
 string replaceMonsterCombatString();

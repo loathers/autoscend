@@ -810,6 +810,11 @@ boolean L12_filthworms()
 	{
 		auto_log_info("Ed will steal stench glands using [Lash of the Cobra]");
 	}
+	// or if we're about to yellow ray
+	else if(auto_haveYellowRayAvailable())
+	{
+		auto_log_info("We're going to yellow ray the stench glands.");
+	}
 //	else if(auto_have_skill($skill[Smash & Graaagh]))
 //	{
 //		//only 30 per day, can't find mafia tracking for it so it can't be implemented yet.
