@@ -6,6 +6,11 @@
 string auto_combatJarlsbergStage4(int round, monster enemy, string text)
 {
 	##stage 4 = kill
+	if(!is_Jarlsberg())
+	{
+		return "";
+	}
+	
 	//set the 0MP starting spell as base option
 	string attackNoMP = useSkill($skill[Curdle], false);
 	int costNoMP = mp_cost($skill[Curdle]);
