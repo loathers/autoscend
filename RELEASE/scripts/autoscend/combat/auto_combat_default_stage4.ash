@@ -1,6 +1,27 @@
 string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
 	##stage 4 = kill
+	string retval;
+	
+	#Path = Heavy Rains
+	retval = auto_combatHeavyRainsStage4(round, enemy, text);
+	if(retval != "") return retval;
+	
+	#Path = path of the plumber
+	retval = auto_combatPlumberStage4(round, enemy, text);
+	if(retval != "") return retval;
+	
+	#Path = disguises deliimt
+	retval = auto_combatDisguisesStage4(round, enemy, text);
+	if(retval != "") return retval;
+	
+	#Path = avatar of jarlsberg
+	retval = auto_combatJarlsbergStage4(round, enemy, text);
+	if(retval != "") return retval;
+	
+	#Path = gelatinous noob
+	retval = auto_combatGelatinousNoobStage4(round, enemy, text);
+	if(retval != "") return retval;
 
 	string combatState = get_property("auto_combatHandler");
 	phylum type = monster_phylum(enemy);
@@ -10,6 +31,11 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	int costMajor = 0;
 	string stunner = "";
 	int costStunner = 0;
+	int damageReceived = 0;
+	if(round != 0)
+	{
+		damageReceived = get_property("auto_combatHP").to_int() - my_hp();
+	}
 	
 	if((enemy == $monster[LOV Enforcer]) && canUse($skill[Saucestorm], false))
 	{
@@ -38,7 +64,95 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	{
 		return useSkill($skill[Apprivoisez La Tortue], false);
 	}
+	
+	//iotm back item and the enemies it spawns (free fights) can be killed using special skills to get extra XP and item drops
+	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy))
+	{
+		string stall = getStallString(enemy);
+		if(stall != "")
+		{
+			return stall;
+		}
 
+		if(canUse($skill[Shoot Ghost], false) && (my_mp() > mp_cost($skill[Shoot Ghost])) && !contains_text(combatState, "shootghost3") && !contains_text(combatState, "trapghost"))
+		{
+			boolean shootGhost = true;
+			if(contains_text(combatState, "shootghost2"))
+			{
+				if((damageReceived * 1.075) > my_hp())
+				{
+					shootGhost = false;
+				}
+				else
+				{
+					set_property("auto_combatHandler", combatState + "(shootghost3)");
+				}
+			}
+			else if(contains_text(combatState, "shootghost1"))
+			{
+				if((damageReceived * 2.05) > my_hp())
+				{
+					shootGhost = false;
+				}
+				else
+				{
+					set_property("auto_combatHandler", combatState + "(shootghost2)");
+				}
+			}
+			else
+			{
+				set_property("auto_combatHandler", combatState + "(shootghost1)");
+			}
+
+			if(shootGhost)
+			{
+				return useSkill($skill[Shoot Ghost], false);
+			}
+			else
+			{
+				combatState += "(trapghost)(love stinkbug)";
+				set_property("auto_combatHandler", combatState);
+			}
+		}
+		if(!contains_text(combatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(combatState, "shootghost3"))
+		{
+			auto_log_info("Busting makes me feel good!!", "green");
+			set_property("auto_combatHandler", combatState + "(trapghost)");
+			return useSkill($skill[Trap Ghost], false);
+		}
+	}
+	
+	//turtle tamer specific skill
+	if(my_class() == $class[Turtle Tamer] && canUse($skill[Spirit Snap]) && my_mp() > 80)
+	{
+		if(have_effect($effect[Glorious Blessing of the War Snapper]) > 0)
+		{
+			return useSkill($skill[Spirit Snap]);		//50% buffed muscle physical damage once
+		}
+		if(have_effect($effect[Glorious Blessing of She-Who-Was]) > 0 && monster_element(enemy) != $element[spooky])
+		{
+			return useSkill($skill[Spirit Snap]);		//35% buffed muscle spooky damage once
+		}
+	}
+	
+	//8-16 + 0.25*mys damage. hardcap 50. costs 8MP. does NOT benefit from bringing up the rear ability to double damage cap
+	//each time used has a 33% chance of dropping a candy. one candy per battle max. TODO track this
+	//Cannelloni Cannon is better as it has 16-32 + 0.25*mys damage, is tuneable, and its cap can be boosted with bringing up the rear.
+	//TODO write up a function to determine if we want to use this for the free candy. consider sauceror regeneration and candy mixing
+	if(canUse($skill[Candyblast]) && my_mp() > 60 && inAftercore())
+	{
+		# We can get only one candy and we can detect it, if so desired:
+		# "Hey, some of it is even intact afterwards!"
+		return useSkill($skill[Candyblast]);
+	}
+	
+	//mortar shell is amazing. it really should not be limited to sauceror only.
+	if(canUse($skill[Stuffed Mortar Shell]) && (my_class() == $class[Sauceror]) && canSurvive(2.0) && (currentFlavour() != monster_element(enemy) || currentFlavour() == $element[none]))
+	{
+		return useSkill($skill[Stuffed Mortar Shell]);
+	}
+
+	//general killing code
 	switch(my_class())
 	{
 	case $class[Seal Clubber]:

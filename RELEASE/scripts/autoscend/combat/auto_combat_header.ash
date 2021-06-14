@@ -81,6 +81,10 @@ string auto_combatDisguisesStage4(int round, monster enemy, string text);
 string auto_combatExploathingStage1(int round, monster enemy, string text);
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_gelatinous_noob.ash
+string auto_combatGelatinousNoobStage4(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_heavy_rains.ash
 string auto_combatHeavyRainsStage1(int round, monster enemy, string text);
 string auto_combatHeavyRainsStage2(int round, monster enemy, string text);

@@ -1,6 +1,27 @@
 string auto_combatDefaultStage1(int round, monster enemy, string text)
 {
 	##stage 1 = 1st round actions: puzzle boss, pickpocket, banish, escape, instakill, etc. things that need to be done before delevel
+	string retval;
+	
+	#Path = Heavy Rains
+	retval = auto_combatHeavyRainsStage1(round, enemy, text);
+	if(retval != "") return retval;
+	
+	#Path = The Source
+	retval = auto_combatTheSourceStage1(round, enemy, text);
+	if(retval != "") return retval;
+	
+	#Path = Kingdom of Exploathing
+	retval = auto_combatExploathingStage1(round, enemy, text);
+	if(retval != "") return retval;
+	
+	#Path = Avatar of Sneaky Pete
+	retval = auto_combatPeteStage1(round, enemy, text);
+	if(retval != "") return retval;
+	
+	#Path = Beest Hate You
+	retval = auto_combatBHYStage1(round, enemy, text);
+	if(retval != "") return retval;
 	
 	string combatState = get_property("auto_combatHandler");
 	
@@ -174,6 +195,15 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		return useSkill($skill[%fn\, spit on them!], true);
 	}
 	
+	//duplicate turns the enemy from a single enemy into a mob containing 2 copies of this enemy. Doubling their stats and doubling their drops
+	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && (auto_my_path() != "Nuclear Autumn"))
+	{
+		if($monsters[Dairy Goat] contains enemy)
+		{
+			return useSkill($skill[Duplicate]);
+		}
+	}
+	
 	//these special conditions make it impossible to do anything but attack with weapon.
 	if(have_effect($effect[Temporary Amnesia]) > 0)
 	{
@@ -216,6 +246,37 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			return useSkill($skill[Release the boots]);
 		}
 	}
+	
+	//yellowray instantly kills the enemy and makes them drop all items they can drop.
+	if(!contains_text(combatState, "yellowray") && auto_wantToYellowRay(enemy, my_location()))
+	{
+		string combatAction = yellowRayCombatString(enemy, true);
+		if(combatAction != "")
+		{
+			set_property("auto_combatHandler", combatState + "(yellowray)");
+			if(index_of(combatAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_yellowRays");
+			}
+			else if(index_of(combatAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_yellowRays");
+			}
+			else
+			{
+				auto_log_warning("Unable to track yellow ray behavior: " + combatAction, "red");
+			}
+			if(combatAction == useSkill($skill[Asdon Martin: Missile Launcher], false))
+			{
+				set_property("_missileLauncherUsed", true);
+			}
+			return combatAction;
+		}
+		else
+		{
+			auto_log_warning("Wanted a yellow ray but we can not find one.", "red");
+		}
+	}
 
 	//convert enemy into a helpless frog/newt/lizard
 	if(get_property("auto_useCleesh").to_boolean())
@@ -233,6 +294,74 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		return "item " + $item[T.U.R.D.S. Key];
 	}
 
+	//free runaway against pygmies. accelerates hidden city quest
+	if(item_amount($item[short writ of habeas corpus]) > 0 && canUse($item[short writ of habeas corpus]) && !inAftercore())
+	{
+		if($monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
+		{
+			return "item " + $item[Short Writ Of Habeas Corpus];
+		}
+	}
+	
+	//TODO use $item[Tattered Scrap Of Paper] as a free runaway.
+
+	if(!contains_text(combatState, "banishercheck"))
+	{
+		string banishAction = banisherCombatString(enemy, my_location(), true);
+		if(banishAction != "")
+		{
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
+			set_property("auto_combatHandler", combatState + "(banisher)");
+			if(index_of(banishAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(banishAction, 6)), "auto_banishes");
+			}
+			else if(index_of(banishAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(banishAction, 5)), "auto_banishes");
+			}
+			else
+			{
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+			}
+			return banishAction;
+		}
+		set_property("auto_combatHandler", combatState + "(banishercheck)");
+		combatState += "(banishercheck)";
+	}
+
+	if (!contains_text(combatState, "replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	{
+		string combatAction = replaceMonsterCombatString(enemy, true);
+		if(combatAction != "")
+		{
+			set_property("auto_combatHandler", combatState + "(replacer)");
+			if(index_of(combatAction, "skill") == 0)
+			{
+				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])
+				{
+					handleTracker($skill[CHEAT CODE: Replace Enemy], "auto_powerfulglove");
+				}
+				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_replaces");
+			}
+			else if(index_of(combatAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+			}
+			else
+			{
+				auto_log_warning("Unable to track replacer behavior: " + combatAction, "red");
+			}
+			return combatAction;
+		}
+		else
+		{
+			auto_log_warning("Wanted a replacer but we can not find one.", "red");
+		}
+		set_property("auto_combatHandler", combatState + "(replacercheck)");
+		combatState += "(replacercheck)";
+	}
+	
 	//convert enemy [Tomb rat] into [Tomb rat king]
 	if((enemy == $monster[Tomb Rat]) && (item_amount($item[Tangle Of Rat Tails]) > 0))
 	{
@@ -247,11 +376,92 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 	
-	//escape combat
-//	if(item_amount($item[Tattered Scrap Of Paper]) > 0)		//TODO fix it to actually be used to escape combat
-//	{
-//		return "item " + $item[Tattered Scrap Of Paper];
-//	}
+	# Instakill handler
+	boolean doInstaKill = true;
+	if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
+	{
+		if(auto_have_skill($skill[Digitize]) && (get_property("_sourceTerminalDigitizeMonster") != enemy))
+		{
+			doInstaKill = false;
+		}
+	}
+
+	if(instakillable(enemy) && !isFreeMonster(enemy) && doInstaKill)
+	{
+		if(canUse($skill[lightning strike]))
+		{
+			handleTracker(enemy, $skill[lightning strike], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[lightning strike]);
+		}
+
+		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
+		{
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			{
+				handleTracker(enemy, $skill[Chest X-Ray], "auto_instakill");
+				loopHandlerDelayAll();
+				return useSkill($skill[Chest X-Ray]);
+			}
+		}
+		if(canUse($skill[shattering punch]) && (get_property("_shatteringPunchUsed").to_int() < 3))
+		{
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			{
+				handleTracker(enemy, $skill[shattering punch], "auto_instakill");
+				loopHandlerDelayAll();
+				return useSkill($skill[shattering punch]);
+			}
+		}
+		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean())
+		{
+			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			{
+				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
+				loopHandlerDelayAll();
+				return useSkill($skill[Gingerbread Mob Hit]);
+			}
+		}
+
+	//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
+	//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
+	//		if(!contains_text(combatState, "batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0) && (get_property("_usedReplicaBatoomerang").to_int() < 3))
+	//		THIS IS COPIED TO THE ED SECTION, IF IT IS FIXED, FIX IT THERE TOO!
+		if(canUse($item[Replica Bat-oomerang]))
+		{
+			if(get_property("auto_batoomerangDay").to_int() != my_daycount())
+			{
+				set_property("auto_batoomerangDay", my_daycount());
+				set_property("auto_batoomerangUse", 0);
+			}
+			if(get_property("auto_batoomerangUse").to_int() < 3)
+			{
+				set_property("auto_batoomerangUse", get_property("auto_batoomerangUse").to_int() + 1);
+				handleTracker(enemy, $item[Replica Bat-oomerang], "auto_instakill");
+				loopHandlerDelayAll();
+				return useItem($item[Replica Bat-oomerang]);
+			}
+		}
+
+		if(canUse($skill[Fire the Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean())
+		{
+			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[Fire the Jokester\'s Gun]);
+		}
+	}
+
+	//wearing [retro superhero cape] iotm set to vampire slicer mode instakills Undead and reduces evilness in Cyrpt zones.
+	if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])
+	{
+		return useSkill($skill[Slay the Dead]);
+	}
+	
+	//autokill duplicated enemies. this still costs a turn
+	if(canUse($item[Exploding Cigar]) && haveUsed($skill[Duplicate]))
+	{
+		return useItem($item[Exploding Cigar]);
+	}
 	
 	return "";
 }

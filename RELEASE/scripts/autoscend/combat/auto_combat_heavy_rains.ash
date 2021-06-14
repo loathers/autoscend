@@ -38,7 +38,7 @@ string auto_combatHeavyRainsStage1(int round, monster enemy, string text)
 
 string auto_combatHeavyRainsStage2(int round, monster enemy, string text)
 {
-	##stage 2 = delevel & stun
+	##stage 2 = debuff: delevel, stun, curse, damage over time
 	
 	//Heavy Rain bosses delevel & stun. we only do this to the tougher bosses
 	if($monsters[Big Wisnaqua, The Aquaman, The Rain King] contains enemy)

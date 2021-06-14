@@ -1,6 +1,49 @@
 string auto_combatDefaultStage3(int round, monster enemy, string text)
 {
 	##stage 3 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
+	string retval;
+	
+	//olfaction is used to spawn 2 more copies of the target at current location.
+	//as well as eliminate the special rule that reduces the odds of encountering the same enemy twice in a row.
+	if(auto_wantToSniff(enemy, my_location()))
+	{
+		if(canUse($skill[Transcendent Olfaction]) && (have_effect($effect[On The Trail]) == 0))
+		{
+			handleTracker(enemy, $skill[Transcendent Olfaction], "auto_sniffs");
+			return useSkill($skill[Transcendent Olfaction]);
+		}
+
+		if(canUse($skill[Make Friends]) && get_property("makeFriendsMonster") != enemy && my_audience() >= 20)
+		{
+			handleTracker(enemy, $skill[Make Friends], "auto_sniffs");
+			return useSkill($skill[Make Friends]);
+		}
+
+		if(!contains_text(get_property("longConMonster"), enemy) && canUse($skill[Long Con]) && (get_property("_longConUsed").to_int() < 5))
+		{
+			handleTracker(enemy, $skill[Long Con], "auto_sniffs");
+			return useSkill($skill[Long Con]);
+		}
+
+		if(canUse($skill[Perceive Soul]) && enemy != get_property("auto_bat_soulmonster").to_monster())
+		{
+			handleTracker(enemy, $skill[Perceive Soul], "auto_sniffs");
+			set_property("auto_bat_soulmonster", enemy);
+			return useSkill($skill[Perceive Soul]);
+		}
+
+		if(canUse($skill[Gallapagosian Mating Call]) && enemy != get_property("_gallapagosMonster").to_monster())
+		{
+			handleTracker(enemy, $skill[Gallapagosian Mating Call], "auto_sniffs");
+			return useSkill($skill[Gallapagosian Mating Call]);
+		}
+
+		if(canUse($skill[Offer Latte to Opponent]) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
+		{
+			handleTracker(enemy, $skill[Offer Latte to Opponent], "auto_sniffs");
+			return useSkill($skill[Offer Latte to Opponent]);
+		}
+	}
 	
 	//TODO auto_doCombatCopy property is silly. get rid of it
 	if(!haveUsed($item[Rain-Doh black box]) && (my_path() != "Heavy Rains") && (get_property("_raindohCopiesMade").to_int() < 5))
@@ -35,6 +78,30 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			if($monsters[Apathetic Lizardman, Dairy Ooze, Dodecapede, Giant Giant Moth, Mayonnaise Wasp, Pencil Golem, Sabre-Toothed Lime, Tonic Water Elemental, Vampire Clam] contains enemy)
 			{
 				return "item " + $item[Daily Dungeon Malware];
+			}
+		}
+	}
+	
+	//iotm monster copier that works by creating wandering copies of the targetted monster
+	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !inAftercore())
+	{
+		if($monsters[Ninja Snowman Assassin, Lobsterfrogman] contains enemy)
+		{
+			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
+			{
+				handleTracker(enemy, $skill[Digitize], "auto_copies");
+				return useSkill($skill[Digitize]);
+			}
+		}
+	}
+	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3) && !inAftercore())
+	{
+		if(get_property("auto_digitizeDirective") == enemy)
+		{
+			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
+			{
+				handleTracker(enemy, $skill[Digitize], "auto_copies");
+				return useSkill($skill[Digitize]);
 			}
 		}
 	}
@@ -137,6 +204,89 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		{
 			fingernailClippersLeft = 3;
 			set_property("auto_combatHandlerFingernailClippers", "3");
+		}
+	}
+	
+	//insults are used as part of the pirates quest
+	if(canUse($item[The Big Book of Pirate Insults]) && (numPirateInsults() < 8) && (internalQuestStatus("questM12Pirate") < 5))
+	{
+		// this should only be applicable in Low-Key Summer (for now)
+		if ($locations[Barrrney\'s Barrr, The Obligatory Pirate\'s Cove] contains my_location())
+		{
+			return useItem($item[The Big Book Of Pirate Insults]);
+		}
+	}
+	
+	//cocktail napkin can banish clingy pirates (only them and no other monster). this accelerates the pirates quest
+	if(item_amount($item[Cocktail Napkin]) > 0)
+	{
+		if($monsters[Clingy Pirate (Female), Clingy Pirate (Male)] contains enemy)
+		{
+			return "item " + $item[Cocktail Napkin];
+		}
+	}
+	
+	//this completes the quest Advertise for the Mysterious Island Arena which is a sidequest which accelerates the L12 frat-hippy war quest
+	if((canUse($item[Rock Band Flyers]) || canUse($item[Jam Band Flyers])) && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
+	{
+		string stall = getStallString(enemy);
+		if(stall != "")
+		{
+			return stall;
+		}
+
+		if(canUse($item[Rock Band Flyers]) && (get_property("flyeredML").to_int() < 10000))
+		{
+			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
+			{
+				return useItems($item[Rock Band Flyers], $item[Time-Spinner]);
+			}
+			return useItem($item[Rock Band Flyers]);
+		}
+		if(canUse($item[Jam Band Flyers]) && (get_property("flyeredML").to_int() < 10000))
+		{
+			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
+			{
+				return useItems($item[Jam Band Flyers], $item[Time-Spinner]);
+			}
+			return useItem($item[Jam Band Flyers]);
+		}
+	}
+	
+	//chaos butterfly if thrown in combat once per ascension will accelerate the dooks farm sidequest for the frat-hippy war.
+	if(canUse($item[chaos butterfly]) && !get_property("chaosButterflyThrown").to_boolean() && !get_property("auto_skipL12Farm").to_boolean())
+	{
+		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
+		{
+			return useItems($item[chaos butterfly], $item[Time-Spinner]);
+		}
+		return useItem($item[chaos butterfly]);
+	}
+	
+	//accelerate palindrome quest
+	if(canUse($item[Disposable Instant Camera]))
+	{
+		if($monsters[Bob Racecar, Racecar Bob] contains enemy)
+		{
+			return useItem($item[Disposable Instant Camera]);
+		}
+	}
+	
+	//accelerate oil peak in highlands quest
+	if(item_amount($item[Duskwalker Syringe]) > 0)
+	{
+		if($monsters[Oil Baron, Oil Cartel, Oil Slick, Oil Tycoon] contains enemy)
+		{
+			return "item " + $item[Duskwalker Syringe];
+		}
+	}
+	
+	//used by [Little Geneticist DNA-Splicing Lab] iotm
+	if(canUse($item[DNA extraction syringe]) && monster_level_adjustment() < 150)
+	{
+		if(monster_phylum(enemy) != to_phylum(get_property("dnaSyringe")))
+		{
+			return useItem($item[DNA extraction syringe]);
 		}
 	}
 	
