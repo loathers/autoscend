@@ -1007,20 +1007,6 @@ void initializeDay(int day)
 
 	auto_barrelPrayers();
 
-	if(get_property("auto_mummeryChoice") != "")
-	{
-		string[int] mummeryChoice = split_string(get_property("auto_mummeryChoice"), ";");
-		foreach idx, opt in mummeryChoice
-		{
-			int goal = idx + 1;
-			if((opt == "") || (goal > 7))
-			{
-				continue;
-			}
-			mummifyFamiliar(to_familiar(opt), goal);
-		}
-	}
-
 	if(!get_property("_pottedTeaTreeUsed").to_boolean() && (auto_get_campground() contains $item[Potted Tea Tree]) && !inAftercore())
 	{
 		if(get_property("auto_teaChoice") != "")
@@ -2186,9 +2172,6 @@ boolean LX_craftAcquireItems()
 				break;
 			}
 		}
-		mummifyFamiliar($familiar[Intergnat], my_primestat());
-		mummifyFamiliar($familiar[Hobo Monkey], "meat");
-		mummifyFamiliar($familiar[XO Skeleton], "mpregen");
 		#set_property("_dailyCreates", true);
 	}
 
