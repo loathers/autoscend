@@ -1230,7 +1230,7 @@ void auto_drinkNightcap()
 	}
 	autoDrink(1, target.it, true); // added a silent flag to autoDrink to avoid the overdrink confirmation popup
 	
-	if(start_fam != my_familiar())
+	if(start_fam != my_familiar() && pathAllowsChangingFamiliar())	//familiar can change when crafting the drink in QT
 	{
 		use_familiar(start_fam);
 	}
