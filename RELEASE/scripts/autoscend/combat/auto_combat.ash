@@ -206,16 +206,6 @@ string auto_combatHandler(int round, monster enemy, string text)
 			return "item " + $item[Knob Goblin Firecracker];
 		}
 	}
-	
-	//source terminal iotm source path specific action. provokes an agent into attacking you next turn 3/day
-	if(canUse($skill[Portscan]) && (my_location().turns_spent < 8) && (get_property("_sourceTerminalPortscanUses").to_int() < 3) && !get_property("_portscanPending").to_boolean())
-	{
-		if($locations[The Castle in the Clouds in the Sky (Ground Floor), The Haunted Bathroom, The Haunted Gallery] contains my_location())
-		{
-			set_property("_portscanPending", true);
-			return useSkill($skill[Portscan]);
-		}
-	}
 
 	##stage 5 = kill
 	retval = auto_combatDefaultStage5(round, enemy, text);

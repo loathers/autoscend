@@ -109,6 +109,7 @@ string auto_combatPlumberStage5(int round, monster enemy, string text);
 #####################################################
 //defined in /autoscend/combat/auto_combat_the_source.ash
 string auto_combatTheSourceStage1(int round, monster enemy, string text);
+string auto_combatTheSourceStage4(int round, monster enemy, string text);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_bees_hate_you.ash
