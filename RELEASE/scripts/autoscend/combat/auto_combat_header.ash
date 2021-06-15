@@ -61,6 +61,10 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text);
 string auto_combatDefaultStage1(int round, monster enemy, string text);
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_default_stage2.ash
+string auto_combatDefaultStage2(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_default_stage3.ash
 string auto_combatDefaultStage3(int round, monster enemy, string text);
 

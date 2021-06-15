@@ -170,7 +170,9 @@ string auto_combatHandler(int round, monster enemy, string text)
 	retval = auto_combatDefaultStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
-	##stage 2 = enders. escape, replace, instakill, yellowray and other actions that instantly end combat
+	##stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
+	retval = auto_combatDefaultStage2(round, enemy, text);
+	if(retval != "") return retval;
 	
 	##stage 3 = debuff: delevel, stun, curse, damage over time
 	retval = auto_combatDefaultStage3(round, enemy, text);
