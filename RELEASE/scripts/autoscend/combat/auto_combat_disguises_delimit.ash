@@ -1,8 +1,76 @@
 //Path specific combat handling for disguises delimit
 
+void dd_combat_helper(int round, monster enemy, string text)
+{
+	//identify mask worn during disguises delimit path
+	if(my_path() != "Disguises Delimit")
+	{
+		return;
+	}
+	//note that mafia has a function my_mask().
+	//TODO compare if it is more reliable than our own mask matcher to see if we should switch
+	int majora = -1;
+	matcher maskMatch = create_matcher("mask(\\d+).png", text);
+	if(maskMatch.find())
+	{
+		majora = maskMatch.group(1).to_int();
+		if(round == 0)
+		{
+			auto_log_info("Found mask: " + majora, "green");
+		}
+	}
+	else if(enemy == $monster[Your Shadow])	//matcher fails on your shadow and it always wears mask 1.
+	{
+		majora = 1;
+		auto_log_info("Found mask: 1", "green");
+	}
+	else
+	{
+		abort("Failed to identify the mask worn by the monster [" + enemy + "]. Finish this combat manually then run me again");
+	}
+	set_property("_auto_combatDisguisesDelimitMask", majora);
+}
+
+string auto_combatDisguisesStage1(int round, monster enemy, string text)
+{
+	##stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
+	if(my_path() != "Disguises Delimit")
+	{
+		return "";
+	}
+	
+	//some masks are treated like puzzle bosses. requiring either an immediate swap or special action handling
+	int majora = get_property("_auto_combatDisguisesDelimitMask").to_int();
+	//mask 7 = bandit mask = +300% enemy defense
+	if(majora == 7 && canUse($skill[Swap Mask]))
+	{
+		return useSkill($skill[Swap Mask]);
+	}
+	//mask 3 = protest mask = +30ML. can only attack with weapon or change mask. if changed can only use items or attack with weapon
+	if(majora == 3)
+	{
+		if(canSurvive(1.5))
+		{
+			return "attack with weapon";
+		}
+		abort("May not be able to survive combat. Is swapping protest mask still not allowing us to do anything?");
+	}
+	//this is code is unreachable. it needs fixing.
+	if(my_mask() == "protest mask" && canUse($skill[Swap Mask]))
+	{
+		return useSkill($skill[Swap Mask]);
+	}
+	
+	return "";
+}
+
 string auto_combatDisguisesStage5(int round, monster enemy, string text)
 {
-	//stage 5 killing the enemy. disguises delimit specific
+	##stage 5 = kill
+	if(my_path() != "Disguises Delimit")
+	{
+		return "";
+	}
 	
 	int majora = get_property("_auto_combatDisguisesDelimitMask").to_int();
 	if(majora == 13)	//welding mask

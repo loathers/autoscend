@@ -2,6 +2,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 {
 	##stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 	string retval;
+	
+	#Path = dark gyffte
+	retval = auto_combatDarkGyffteStage2(round, enemy, text);
+	if(retval != "") return retval;
+
 	string combatState = get_property("auto_combatHandler");
 	
 	//instakill enemies in [The Red Zeppelin]

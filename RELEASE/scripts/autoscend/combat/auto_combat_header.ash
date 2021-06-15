@@ -77,7 +77,13 @@ string auto_combatDefaultStage4(int round, monster enemy, string text);
 string auto_combatDefaultStage5(int round, monster enemy, string text);
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_dark_gyffte.ash
+string auto_combatDarkGyffteStage2(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_disguises_delimit.ash
+void dd_combat_helper(int round, monster enemy, string text);
+string auto_combatDisguisesStage1(int round, monster enemy, string text);
 string auto_combatDisguisesStage5(int round, monster enemy, string text);
 
 #####################################################
