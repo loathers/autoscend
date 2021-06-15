@@ -14,6 +14,7 @@ import <autoscend/combat/auto_combat_disguises_delimit.ash>			//path = disguises
 import <autoscend/combat/auto_combat_ed.ash>						//path = actually ed the undying
 import <autoscend/combat/auto_combat_gelatinous_noob.ash>			//path = gelatinous noob
 import <autoscend/combat/auto_combat_kingdom_of_exploathing.ash>	//path = kingdom of exploathing
+import <autoscend/combat/auto_combat_license_to_adventure.ash>		//path = license to adventure
 import <autoscend/combat/auto_combat_ocrs.ash>						//path = one crazy random summer
 import <autoscend/combat/auto_combat_pete.ash>						//path = avatar of sneaky pete
 import <autoscend/combat/auto_combat_plumber.ash>					//path = path of the plumber
@@ -189,22 +190,6 @@ string auto_combatHandler(int round, monster enemy, string text)
 		set_property("auto_bat_ensorcels", get_property("auto_bat_ensorcels").to_int() + 1);
 		handleTracker(enemy, $skill[Ensorcel], "auto_otherstuff");
 		return useSkill($skill[Ensorcel]);
-	}
-	
-	if((my_location() == $location[Super Villain\'s Lair]) && (auto_my_path() == "License to Adventure") && canSurvive(2.0) && (enemy == $monster[Villainous Minion]))
-	{
-		if(!get_property("_villainLairCanLidUsed").to_boolean() && (item_amount($item[Razor-Sharp Can Lid]) > 0))
-		{
-			return "item " + $item[Razor-Sharp Can Lid];
-		}
-		if(!get_property("_villainLairWebUsed").to_boolean() && (item_amount($item[Spider Web]) > 0))
-		{
-			return "item " + $item[Spider Web];
-		}
-		if(!get_property("_villainLairFirecrackerUsed").to_boolean() && (item_amount($item[Knob Goblin Firecracker]) > 0))
-		{
-			return "item " + $item[Knob Goblin Firecracker];
-		}
 	}
 
 	##stage 5 = kill

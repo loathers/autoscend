@@ -7,6 +7,10 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	retval = auto_combatTheSourceStage4(round, enemy, text);
 	if(retval != "") return retval;
 	
+	#Path = license to adventure
+	retval = auto_combatLicenseToAdventureStage4(round, enemy, text);
+	if(retval != "") return retval;
+	
 	//olfaction is used to spawn 2 more copies of the target at current location.
 	//as well as eliminate the special rule that reduces the odds of encountering the same enemy twice in a row.
 	if(auto_wantToSniff(enemy, my_location()))

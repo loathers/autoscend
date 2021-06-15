@@ -1,7 +1,8 @@
-string auto_combatDefaultStage3(int round, monster enemy, string text)
+string auto_combatDefaultStage2(int round, monster enemy, string text)
 {
 	##stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 	string retval;
+	string combatState = get_property("auto_combatHandler");
 	
 	//instakill enemies in [The Red Zeppelin]
 	if(canUse($item[Glark Cable], true) && (my_location() == $location[The Red Zeppelin]) && (get_property("questL11Ron") == "step3") && (get_property("_glarkCableUses").to_int() < 5))

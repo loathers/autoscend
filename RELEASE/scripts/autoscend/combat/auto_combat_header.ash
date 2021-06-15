@@ -85,6 +85,10 @@ string auto_combatDisguisesStage5(int round, monster enemy, string text);
 string auto_combatExploathingStage1(int round, monster enemy, string text);
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_license_to_adventure.ash
+string auto_combatLicenseToAdventureStage4(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_gelatinous_noob.ash
 string auto_combatGelatinousNoobStage5(int round, monster enemy, string text);
 

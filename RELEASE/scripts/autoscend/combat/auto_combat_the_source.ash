@@ -81,4 +81,6 @@ string auto_combatTheSourceStage4(int round, monster enemy, string text)
 			return useSkill($skill[Portscan]);
 		}
 	}
+	
+	return "";
 }
