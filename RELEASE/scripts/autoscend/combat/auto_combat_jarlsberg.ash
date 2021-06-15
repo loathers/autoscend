@@ -3,9 +3,9 @@
 //AoJ spells have a hard DMG cap of 10*(MP Cost) before percentage modifiers are applied. 
 //Things that change the MP costs will change said dmg cap.
 //AoJ can **only** attack via spells / items
-string auto_combatJarlsbergStage4(int round, monster enemy, string text)
+string auto_combatJarlsbergStage5(int round, monster enemy, string text)
 {
-	##stage 4 = kill
+	##stage 5 = kill
 	if(!is_Jarlsberg())
 	{
 		return "";

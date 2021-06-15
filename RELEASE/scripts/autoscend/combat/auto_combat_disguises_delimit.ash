@@ -1,8 +1,8 @@
 //Path specific combat handling for disguises delimit
 
-string auto_combatDisguisesStage4(int round, monster enemy, string text)
+string auto_combatDisguisesStage5(int round, monster enemy, string text)
 {
-	//stage 4 killing the enemy. disguises delimit specific
+	//stage 5 killing the enemy. disguises delimit specific
 	
 	int majora = get_property("_auto_combatDisguisesDelimitMask").to_int();
 	if(majora == 13)	//welding mask

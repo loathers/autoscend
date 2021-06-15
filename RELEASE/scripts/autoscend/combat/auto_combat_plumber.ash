@@ -1,8 +1,8 @@
 //Path specific combat handling for path of the plumber
 
-string auto_combatPlumberStage4(int round, monster enemy, string text)
+string auto_combatPlumberStage5(int round, monster enemy, string text)
 {
-	//stage 4 killing the enemy. plumber specific
+	//stage 5 killing the enemy. plumber specific
 	
 	if(my_class() != $class[Plumber])
 	{

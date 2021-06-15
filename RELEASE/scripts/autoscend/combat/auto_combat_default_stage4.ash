@@ -1,72 +1,233 @@
 string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
-	##stage 4 = kill
+	##stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	string retval;
 	
-	#Path = Heavy Rains
-	retval = auto_combatHeavyRainsStage4(round, enemy, text);
-	if(retval != "") return retval;
-	
-	#Path = path of the plumber
-	retval = auto_combatPlumberStage4(round, enemy, text);
-	if(retval != "") return retval;
-	
-	#Path = disguises deliimt
-	retval = auto_combatDisguisesStage4(round, enemy, text);
-	if(retval != "") return retval;
-	
-	#Path = avatar of jarlsberg
-	retval = auto_combatJarlsbergStage4(round, enemy, text);
-	if(retval != "") return retval;
-	
-	#Path = gelatinous noob
-	retval = auto_combatGelatinousNoobStage4(round, enemy, text);
-	if(retval != "") return retval;
+	//olfaction is used to spawn 2 more copies of the target at current location.
+	//as well as eliminate the special rule that reduces the odds of encountering the same enemy twice in a row.
+	if(auto_wantToSniff(enemy, my_location()))
+	{
+		if(canUse($skill[Transcendent Olfaction]) && (have_effect($effect[On The Trail]) == 0))
+		{
+			handleTracker(enemy, $skill[Transcendent Olfaction], "auto_sniffs");
+			return useSkill($skill[Transcendent Olfaction]);
+		}
 
-	string combatState = get_property("auto_combatHandler");
-	phylum type = monster_phylum(enemy);
-	string attackMinor = "attack with weapon";
-	string attackMajor = "attack with weapon";
-	int costMinor = 0;
-	int costMajor = 0;
-	string stunner = "";
-	int costStunner = 0;
-	int damageReceived = 0;
-	if(round != 0)
-	{
-		damageReceived = get_property("auto_combatHP").to_int() - my_hp();
-	}
-	
-	if((enemy == $monster[LOV Enforcer]) && canUse($skill[Saucestorm], false))
-	{
-		return useSkill($skill[Saucestorm], false);
-	}
-	
-	//nemesis quest specific kill methods
-	if(my_class() == $class[Seal Clubber])
-	{
-		if(enemy == $monster[Hellseal Pup])
+		if(canUse($skill[Make Friends]) && get_property("makeFriendsMonster") != enemy && my_audience() >= 20)
 		{
-			return useSkill($skill[Clobber], false);
+			handleTracker(enemy, $skill[Make Friends], "auto_sniffs");
+			return useSkill($skill[Make Friends]);
 		}
-		if(enemy == $monster[Mother Hellseal])
+
+		if(!contains_text(get_property("longConMonster"), enemy) && canUse($skill[Long Con]) && (get_property("_longConUsed").to_int() < 5))
 		{
-			if(canUse($item[Rain-Doh Indigo Cup]))
+			handleTracker(enemy, $skill[Long Con], "auto_sniffs");
+			return useSkill($skill[Long Con]);
+		}
+
+		if(canUse($skill[Perceive Soul]) && enemy != get_property("auto_bat_soulmonster").to_monster())
+		{
+			handleTracker(enemy, $skill[Perceive Soul], "auto_sniffs");
+			set_property("auto_bat_soulmonster", enemy);
+			return useSkill($skill[Perceive Soul]);
+		}
+
+		if(canUse($skill[Gallapagosian Mating Call]) && enemy != get_property("_gallapagosMonster").to_monster())
+		{
+			handleTracker(enemy, $skill[Gallapagosian Mating Call], "auto_sniffs");
+			return useSkill($skill[Gallapagosian Mating Call]);
+		}
+
+		if(canUse($skill[Offer Latte to Opponent]) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
+		{
+			handleTracker(enemy, $skill[Offer Latte to Opponent], "auto_sniffs");
+			return useSkill($skill[Offer Latte to Opponent]);
+		}
+	}
+	
+	//TODO auto_doCombatCopy property is silly. get rid of it
+	if(!haveUsed($item[Rain-Doh black box]) && (my_path() != "Heavy Rains") && (get_property("_raindohCopiesMade").to_int() < 5))
+	{
+		if((enemy == $monster[Modern Zmobie]) && (get_property("auto_modernzmobiecount").to_int() < 3))
+		{
+			set_property("auto_doCombatCopy", "yes");
+		}
+	}
+	if(canUse($item[Rain-Doh black box]) && (get_property("auto_doCombatCopy") == "yes") && (enemy != $monster[gourmet gourami]))
+	{
+		set_property("auto_doCombatCopy", "no");
+		markAsUsed($item[Rain-Doh black box]); // mark even if not used so we don't spam the error message
+		if(get_property("_raindohCopiesMade").to_int() < 5)
+		{
+			handleTracker(enemy, $item[Rain-Doh black box], "auto_copies");
+			return "item " + $item[Rain-Doh black box];
+		}
+		auto_log_warning("Can not issue copy directive because we have no copies left", "red");
+	}
+	if(get_property("auto_doCombatCopy") == "yes")
+	{
+		set_property("auto_doCombatCopy", "no");
+	}
+	
+	//get 1 additional [fat loot token] per day
+	if(my_location() == $location[The Daily Dungeon])
+	{
+		# If we are in The Daily Dungeon, assume we get 1 token, so only if we need more than 1.
+		if((towerKeyCount(false) < 2) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && (item_amount($item[Daily Dungeon Malware]) > 0))
+		{
+			if($monsters[Apathetic Lizardman, Dairy Ooze, Dodecapede, Giant Giant Moth, Mayonnaise Wasp, Pencil Golem, Sabre-Toothed Lime, Tonic Water Elemental, Vampire Clam] contains enemy)
 			{
-				return useItem($item[Rain-Doh Indigo Cup]);
+				return "item " + $item[Daily Dungeon Malware];
 			}
-			return useSkill($skill[Lunging Thrust-Smack], false);
 		}
 	}
 	
-	//nemesis quest tame guard turtle. takes multiple rounds and buffs enemy by 40%. so it should go after stun and delevel
-	if((enemy == $monster[French Guard Turtle]) && have_equipped($item[Fouet de tortue-dressage]) && (my_mp() >= mp_cost($skill[Apprivoisez La Tortue])))
+	//iotm monster copier that works by creating wandering copies of the targetted monster
+	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !inAftercore())
 	{
-		return useSkill($skill[Apprivoisez La Tortue], false);
+		if($monsters[Ninja Snowman Assassin, Lobsterfrogman] contains enemy)
+		{
+			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
+			{
+				handleTracker(enemy, $skill[Digitize], "auto_copies");
+				return useSkill($skill[Digitize]);
+			}
+		}
+	}
+	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3) && !inAftercore())
+	{
+		if(get_property("auto_digitizeDirective") == enemy)
+		{
+			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
+			{
+				handleTracker(enemy, $skill[Digitize], "auto_copies");
+				return useSkill($skill[Digitize]);
+			}
+		}
 	}
 	
-	//iotm back item and the enemies it spawns (free fights) can be killed using special skills to get extra XP and item drops
-	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy))
+	//accordion thief mechanic. unlike pickpocket it can be done at any round
+	if(canUse($skill[Steal Accordion]) && (my_class() == $class[Accordion Thief]) && canSurvive(2.0))
+	{
+		return useSkill($skill[Steal Accordion]);
+	}
+	
+	//in [The Deep Machine Tunnels] will stagger enemy and grants another abstraction
+	if(canUse($item[Abstraction: Sensation]) && (enemy == $monster[Performer of Actions]))
+	{
+		#	Change +100% Moxie to +100% Init
+		return useItem($item[Abstraction: Sensation]);
+	}
+	if(canUse($item[Abstraction: Thought]) && (enemy == $monster[Perceiver of Sensations]))
+	{
+		# Change +100% Myst to +100% Items
+		return useItem($item[Abstraction: Thought]);
+	}
+	if(canUse($item[Abstraction: Action]) && (enemy == $monster[Thinker of Thoughts]))
+	{
+		# Change +100% Muscle to +10 Familiar Weight
+		return useItem($item[Abstraction: Action]);
+	}
+	
+	//stocking mimic can produce meat until round 10.
+	if((my_familiar() == $familiar[Stocking Mimic]) && (round < 12) && canSurvive(1.5))
+	{
+		if (item_amount($item[Seal Tooth]) > 0)
+		{
+			return "item " + $item[Seal Tooth];
+		}
+	}
+	
+	//nanorhino familiar stuff
+	#Do not accidentally charge the nanorhino with a non-banisher
+	if(my_familiar() == $familiar[Nanorhino] && have_effect($effect[Nanobrawny]) == 0)
+	{
+		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
+		{
+			if((it == $skill[Shieldbutt]) && !hasShieldEquipped())
+			{
+				continue;
+			}
+			if(canUse(it, false))
+			{
+				return useSkill(it, false);
+			}
+		}
+	}
+	if(canUse($skill[Unleash Nanites]) && (have_effect($effect[Nanobrawny]) >= 40))
+	{
+		#if appropriate enemy, then banish
+		if(enemy == $monster[Pygmy Janitor])
+		{
+			return useSkill($skill[Unleash Nanites]);
+		}
+	}
+
+	//winking is a monster copier familiar skill. they share a daily counter
+	skill wink_skill = $skill[none];
+	if(canUse($skill[Wink At]))
+	{
+		wink_skill = $skill[Wink At];
+	}
+	if(canUse($skill[Fire a badly romantic arrow]))
+	{
+		wink_skill = $skill[Fire a badly romantic arrow];
+	}
+	if(wink_skill != $skill[none])		//we can wink / romatic arrow
+	{
+		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin] contains enemy)
+		{
+			if(enemy == $monster[modern zmobie])
+			{
+				set_property("auto_waitingArrowAlcove", get_property("cyrptAlcoveEvilness").to_int() - 20);
+			}
+			return useSkill(wink_skill);
+		}
+	}
+	
+	//[Conspiracy Island] iotm specific. clip the fingernails of [One of Doctor Weirdeaux's creations]
+	int fingernailClippersLeft = get_property("auto_combatHandlerFingernailClippers").to_int();
+	if(fingernailClippersLeft > 0)
+	{
+		fingernailClippersLeft = fingernailClippersLeft - 1;
+		if(fingernailClippersLeft == 0)
+		{
+			markAsUsed($item[military-grade fingernail clippers]);
+		}
+		set_property("auto_combatHandlerFingernailClippers", "" + fingernailClippersLeft);
+		return "item " + $item[military-grade fingernail clippers];
+	}
+
+	if((item_amount($item[military-grade fingernail clippers]) > 0)  && (enemy == $monster[one of Doctor Weirdeaux\'s creations]))
+	{
+		if(!haveUsed($item[military-grade fingernail clippers]))
+		{
+			fingernailClippersLeft = 3;
+			set_property("auto_combatHandlerFingernailClippers", "3");
+		}
+	}
+	
+	//insults are used as part of the pirates quest
+	if(canUse($item[The Big Book of Pirate Insults]) && (numPirateInsults() < 8) && (internalQuestStatus("questM12Pirate") < 5))
+	{
+		// this should only be applicable in Low-Key Summer (for now)
+		if ($locations[Barrrney\'s Barrr, The Obligatory Pirate\'s Cove] contains my_location())
+		{
+			return useItem($item[The Big Book Of Pirate Insults]);
+		}
+	}
+	
+	//cocktail napkin can banish clingy pirates (only them and no other monster). this accelerates the pirates quest
+	if(item_amount($item[Cocktail Napkin]) > 0)
+	{
+		if($monsters[Clingy Pirate (Female), Clingy Pirate (Male)] contains enemy)
+		{
+			return "item " + $item[Cocktail Napkin];
+		}
+	}
+	
+	//this completes the quest Advertise for the Mysterious Island Arena which is a sidequest which accelerates the L12 frat-hippy war quest
+	if((canUse($item[Rock Band Flyers]) || canUse($item[Jam Band Flyers])) && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
 	{
 		string stall = getStallString(enemy);
 		if(stall != "")
@@ -74,619 +235,68 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			return stall;
 		}
 
-		if(canUse($skill[Shoot Ghost], false) && (my_mp() > mp_cost($skill[Shoot Ghost])) && !contains_text(combatState, "shootghost3") && !contains_text(combatState, "trapghost"))
+		if(canUse($item[Rock Band Flyers]) && (get_property("flyeredML").to_int() < 10000))
 		{
-			boolean shootGhost = true;
-			if(contains_text(combatState, "shootghost2"))
+			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
 			{
-				if((damageReceived * 1.075) > my_hp())
-				{
-					shootGhost = false;
-				}
-				else
-				{
-					set_property("auto_combatHandler", combatState + "(shootghost3)");
-				}
+				return useItems($item[Rock Band Flyers], $item[Time-Spinner]);
 			}
-			else if(contains_text(combatState, "shootghost1"))
-			{
-				if((damageReceived * 2.05) > my_hp())
-				{
-					shootGhost = false;
-				}
-				else
-				{
-					set_property("auto_combatHandler", combatState + "(shootghost2)");
-				}
-			}
-			else
-			{
-				set_property("auto_combatHandler", combatState + "(shootghost1)");
-			}
-
-			if(shootGhost)
-			{
-				return useSkill($skill[Shoot Ghost], false);
-			}
-			else
-			{
-				combatState += "(trapghost)(love stinkbug)";
-				set_property("auto_combatHandler", combatState);
-			}
+			return useItem($item[Rock Band Flyers]);
 		}
-		if(!contains_text(combatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(combatState, "shootghost3"))
+		if(canUse($item[Jam Band Flyers]) && (get_property("flyeredML").to_int() < 10000))
 		{
-			auto_log_info("Busting makes me feel good!!", "green");
-			set_property("auto_combatHandler", combatState + "(trapghost)");
-			return useSkill($skill[Trap Ghost], false);
+			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
+			{
+				return useItems($item[Jam Band Flyers], $item[Time-Spinner]);
+			}
+			return useItem($item[Jam Band Flyers]);
 		}
 	}
 	
-	//turtle tamer specific skill
-	if(my_class() == $class[Turtle Tamer] && canUse($skill[Spirit Snap]) && my_mp() > 80)
+	//chaos butterfly if thrown in combat once per ascension will accelerate the dooks farm sidequest for the frat-hippy war.
+	if(canUse($item[chaos butterfly]) && !get_property("chaosButterflyThrown").to_boolean() && !get_property("auto_skipL12Farm").to_boolean())
 	{
-		if(have_effect($effect[Glorious Blessing of the War Snapper]) > 0)
+		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
-			return useSkill($skill[Spirit Snap]);		//50% buffed muscle physical damage once
+			return useItems($item[chaos butterfly], $item[Time-Spinner]);
 		}
-		if(have_effect($effect[Glorious Blessing of She-Who-Was]) > 0 && monster_element(enemy) != $element[spooky])
+		return useItem($item[chaos butterfly]);
+	}
+	
+	//accelerate palindrome quest
+	if(canUse($item[Disposable Instant Camera]))
+	{
+		if($monsters[Bob Racecar, Racecar Bob] contains enemy)
 		{
-			return useSkill($skill[Spirit Snap]);		//35% buffed muscle spooky damage once
+			return useItem($item[Disposable Instant Camera]);
 		}
 	}
 	
-	//8-16 + 0.25*mys damage. hardcap 50. costs 8MP. does NOT benefit from bringing up the rear ability to double damage cap
-	//each time used has a 33% chance of dropping a candy. one candy per battle max. TODO track this
-	//Cannelloni Cannon is better as it has 16-32 + 0.25*mys damage, is tuneable, and its cap can be boosted with bringing up the rear.
-	//TODO write up a function to determine if we want to use this for the free candy. consider sauceror regeneration and candy mixing
-	if(canUse($skill[Candyblast]) && my_mp() > 60 && inAftercore())
+	//accelerate oil peak in highlands quest
+	if(item_amount($item[Duskwalker Syringe]) > 0)
 	{
-		# We can get only one candy and we can detect it, if so desired:
-		# "Hey, some of it is even intact afterwards!"
-		return useSkill($skill[Candyblast]);
+		if($monsters[Oil Baron, Oil Cartel, Oil Slick, Oil Tycoon] contains enemy)
+		{
+			return "item " + $item[Duskwalker Syringe];
+		}
 	}
 	
-	//mortar shell is amazing. it really should not be limited to sauceror only.
-	if(canUse($skill[Stuffed Mortar Shell]) && (my_class() == $class[Sauceror]) && canSurvive(2.0) && (currentFlavour() != monster_element(enemy) || currentFlavour() == $element[none]))
+	//used by [Little Geneticist DNA-Splicing Lab] iotm
+	if(canUse($item[DNA extraction syringe]) && monster_level_adjustment() < 150)
 	{
-		return useSkill($skill[Stuffed Mortar Shell]);
-	}
-
-	//general killing code
-	switch(my_class())
-	{
-	case $class[Seal Clubber]:
-		attackMinor = "attack with weapon";
-		if(canUse($skill[Lunge Smack], false) && (weapon_type(equipped_item($slot[weapon])) == $stat[Muscle]))
+		if(monster_phylum(enemy) != to_phylum(get_property("dnaSyringe")))
 		{
-			attackMinor = useSkill($skill[Lunge Smack], false);
-			costMinor = mp_cost($skill[Lunge Smack]);
-		}
-		if(canUse($skill[Lunging Thrust-Smack], false) && (weapon_type(equipped_item($slot[weapon])) == $stat[Muscle]))
-		{
-			attackMajor = useSkill($skill[Lunging Thrust-Smack], false);
-			costMajor = mp_cost($skill[Lunging Thrust-Smack]);
-		}
-		if(canUse($skill[Club Foot], false))
-		{
-			stunner = useSkill($skill[Club Foot], false);
-			costStunner = mp_cost($skill[Club Foot]);
-		}
-        
-        if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false) && !hasClubEquipped())
-		{
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMajor = mp_cost($skill[Saucestorm]);
-		}
-
-		if(enemy.physical_resistance > 80)
-		{
-			boolean success = false;
-			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
-			{
-				if(canUse(sk, false))
-				{
-					attackMinor = useSkill(sk, false);
-					attackMajor = useSkill(sk, false);
-					costMinor = mp_cost(sk);
-					costMajor = mp_cost(sk);
-					success = true;
-					break;
-				}
-			}
-			if(!success)
-			{
-				abort("I am fighting a physically immune monster and I do not know how to kill it");
-			}
-		}
-
-		break;
-	case $class[Turtle Tamer]:
-		attackMinor = "attack with weapon";
-		if((my_mp() > 150) && canUse($skill[Shieldbutt], false) && hasShieldEquipped())
-		{
-			attackMinor = useSkill($skill[Shieldbutt], false);
-			costMinor = mp_cost($skill[Shieldbutt]);
-		}
-		else if((my_mp() > 80) && ((my_hp() * 2) < my_maxhp()) && canUse($skill[Kneebutt], false))
-		{
-			attackMinor = useSkill($skill[Kneebutt], false);
-			costMinor = mp_cost($skill[Kneebutt]);
-		}
-		if(((round > 15) || ((my_hp() * 2) < my_maxhp())) && canUse($skill[Kneebutt], false))
-		{
-			attackMajor = useSkill($skill[Kneebutt], false);
-			costMajor = mp_cost($skill[Kneebutt]);
-		}
-		if(canUse($skill[Shieldbutt], false) && hasShieldEquipped())
-		{
-			attackMajor = useSkill($skill[Shieldbutt], false);
-			costMajor = mp_cost($skill[Shieldbutt]);
-		}
-		if(canUse($skill[Shell Up], false)) // can't mark it when using it as the generic stunner
-		{
-			stunner = useSkill($skill[Shell Up], false);
-			costStunner = mp_cost($skill[Shell Up]);
-		}
-
-		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
-		{
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMajor = mp_cost($skill[Saucestorm]);
-		}
-
-		break;
-	case $class[Pastamancer]:
-		if(canUse($skill[Cannelloni Cannon], false))
-		{
-			attackMinor = useSkill($skill[Cannelloni Cannon], false);
-			costMinor = mp_cost($skill[Cannelloni Cannon]);
-		}
-		if(canUse($skill[Weapon of the Pastalord], false))
-		{
-			attackMajor = useSkill($skill[Weapon of the Pastalord]);
-			costMajor = mp_cost($skill[Weapon of the Pastalord]);
-		}
-		if(canUse($skill[Saucestorm], false))
-		{
-			attackMajor = useSkill($skill[Saucestorm], false);
-			attackMinor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
-		}
-		if(canUse($skill[Utensil Twist], false) && (item_type(equipped_item($slot[weapon])) == "utensil"))
-		{
-			if(equipped_item($slot[weapon]) == $item[Hand That Rocks the Ladle])
-			{
-				attackMajor = useSkill($skill[Utensil Twist], false);
-				attackMinor = useSkill($skill[Utensil Twist], false);
-				costMinor = mp_cost($skill[Utensil Twist]);
-				costMajor = mp_cost($skill[Utensil Twist]);
-			}
-			else if((enemy.physical_resistance <= 80) && (attackMinor != useSkill($skill[Saucestorm], false)))
-			{
-				attackMinor = useSkill($skill[Utensil Twist], false);
-				costMinor = mp_cost($skill[Utensil Twist]);
-			}
-		}
-		if(canUse($skill[Entangling Noodles], false))
-		{
-			stunner = useSkill($skill[Entangling Noodles], false);
-			costStunner = mp_cost($skill[Entangling Noodles]);
-		}
-		break;
-	case $class[Sauceror]:
-		if(canUse($skill[Saucegeyser], false))
-		{
-			attackMinor = useSkill($skill[Saucegeyser], false);
-			attackMajor = useSkill($skill[Saucegeyser], false);
-			costMinor = mp_cost($skill[Saucegeyser]);
-			costMajor = mp_cost($skill[Saucegeyser]);
-		}
-		else if(canUse($skill[Saucecicle], false) && (monster_element(enemy) != $element[cold]))
-		{
-			attackMinor = useSkill($skill[Saucecicle], false);
-			attackMajor = useSkill($skill[Saucecicle], false);
-			costMinor = mp_cost($skill[Saucecicle]);
-			costMajor = mp_cost($skill[Saucecicle]);
-		}
-		else if(canUse($skill[Saucestorm], false))
-		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
-		}
-		else if(canUse($skill[Wave of Sauce], false) && (monster_element(enemy) != $element[hot]))
-		{
-			attackMinor = useSkill($skill[Wave of Sauce], false);
-			attackMajor = useSkill($skill[Wave of Sauce], false);
-			costMinor = mp_cost($skill[Wave of Sauce]);
-			costMajor = mp_cost($skill[Wave of Sauce]);
-		}
-		else if(canUse($skill[Stream of Sauce], false) && (monster_element(enemy) != $element[hot]))
-		{
-			attackMinor = useSkill($skill[Stream of Sauce], false);
-			attackMajor = useSkill($skill[Stream of Sauce], false);
-			costMinor = mp_cost($skill[Stream of Sauce]);
-			costMajor = mp_cost($skill[Stream of Sauce]);
-		}
-
-		if(canUse($skill[Soul Bubble], false) && my_soulsauce() >= 5)
-		{
-			stunner = useSkill($skill[Soul Bubble]);
-			costStunner = mp_cost($skill[Soul Bubble]);
-		}
-
-		if(!contains_text(combatState, "delaymortarshell") && canSurvive(2.0) && haveUsed($skill[Stuffed Mortar Shell]) && canUse($skill[Salsaball], false))
-		{
-			set_property("auto_combatHandler", combatState + "(delaymortarshell)");
-			return useSkill($skill[Salsaball], false);
-		}
-
-		break;
-
-	case $class[Avatar of Boris]:
-		if(canUse($skill[Heroic Belch], false) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]) && (my_fullness() >= 5))
-		{
-			attackMinor = useSkill($skill[Heroic Belch], false);
-			attackMajor = useSkill($skill[Heroic Belch], false);
-			costMinor = mp_cost($skill[Heroic Belch]);
-			costMajor = mp_cost($skill[Heroic Belch]);
-		}
-
-		if(canUse($skill[Broadside], false))
-		{
-			stunner = useSkill($skill[Broadside], false);
-			costStunner = mp_cost($skill[Broadside]);
-		}
-		break;
-
-	case $class[Avatar of Sneaky Pete]:
-		if(canUse($skill[Peel Out]))
-		{
-			if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, Tomb Asp, Tomb Servant,  W imp] contains enemy)
-			{
-				return useSkill($skill[Peel Out]);
-			}
-		}
-
-
-		if(canUse($item[Firebomb], false) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[hot]))
-		{
-			return useItem($item[Firebomb], false);
-		}
-
-		if(canUse($skill[Pop Wheelie]) && (my_mp() > 40))
-		{
-			return useSkill($skill[Pop Wheelie]);
-		}
-
-		if(canUse($skill[Snap Fingers], false))
-		{
-			stunner = useSkill($skill[Snap Fingers], false);
-			costStunner = mp_cost($skill[Snap Fingers]);
-		}
-
-		break;
-
-	case $class[Accordion Thief]:
-
-		if(canUse($skill[Cadenza]) && (item_type(equipped_item($slot[weapon])) == "accordion") && canSurvive(2.0))
-		{
-			if($items[accordion file, alarm accordion, autocalliope, bal-musette accordion, baritone accordion, cajun accordion, ghost accordion, peace accordion, pentatonic accordion, pygmy concertinette, skipper\'s accordion, squeezebox of the ages, the trickster\'s trikitixa] contains equipped_item($slot[weapon]))
-			{
-				return useSkill($skill[Cadenza]);
-			}
-		}
-
-		if(canUse($skill[Accordion Bash], false) && (item_type(equipped_item($slot[weapon])) == "accordion"))
-		{
-			stunner = useSkill($skill[Accordion Bash], false);
-			costStunner = mp_cost($skill[Accordion Bash]);
-		}
-
-		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
-		{
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMajor = mp_cost($skill[Saucestorm]);
-		}
-
-		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
-		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
-		}
-
-		break;
-
-	case $class[Disco Bandit]:
-
-		if(auto_have_skill($skill[Disco State of Mind]) && auto_have_skill($skill[Flashy Dancer]) && auto_have_skill($skill[Disco Greed]) && auto_have_skill($skill[Disco Bravado]) && monster_level_adjustment() < 150)
-		{
-			float mpRegen = (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max")) / 2;
-			int netCost = 0;
-
-			foreach dance in $skills[Disco Dance of Doom, Disco Dance II: Electric Boogaloo, Disco Dance 3: Back in the Habit]
-			{
-				netCost += mp_cost(dance);
-				if(canUse(dance) && mpRegen > netCost * 2)
-				{
-					return useSkill(dance);
-				}
-			}
-		}
-
-		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
-		{
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMajor = mp_cost($skill[Saucestorm]);
-		}
-
-		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
-		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
-		}
-
-		break;
-
-	case $class[Cow Puncher]:
-	case $class[Beanslinger]:
-	case $class[Snake Oiler]:
-		if(canUse($skill[Extract Oil]) && (my_hp() > 80) && (my_mp() >= (3 * mp_cost($skill[Extract Oil]))))
-		{
-			if($monsters[Aggressive grass snake, Bacon snake, Batsnake, Black adder, Burning Snake of Fire, Coal snake, Diamondback rattler, Frontwinder, Frozen Solid Snake, King snake, Licorice snake, Mutant rattlesnake, Prince snake, Sewer snake with a sewer snake in it, Snakeleton, The Snake with Like Ten Heads, Tomb asp, Trouser Snake, Whitesnake] contains enemy && (item_amount($item[Snake Oil]) < 4))
-			{
-				return useSkill($skill[Extract Oil]);
-			}
-			else if(($phylums[beast, dude, hippy, humanoid, orc, pirate] contains type) && (item_amount($item[Skin Oil]) < 3))
-			{
-				return useSkill($skill[Extract Oil]);
-			}
-			else if(($phylums[bug, construct, constellation, demon, elemental, elf, fish, goblin, hobo, horror, mer-kin, penguin, plant, slime, weird] contains type) && (item_amount($item[Unusual Oil]) < 4))
-			{
-				return useSkill($skill[Extract Oil]);
-			}
-			else if(($phylums[undead] contains type) && (item_amount($item[Skin Oil]) < 5))
-			{
-				return useSkill($skill[Extract Oil]);
-			}
-		}
-		if(canUse($skill[Good Medicine]) && (my_mp() >= (3 * mp_cost($skill[Good Medicine]))))
-		{
-			return useSkill($skill[Good Medicine]);
-		}
-
-		if(canUse($skill[Hogtie]) && (my_mp() >= (6 * mp_cost($skill[Hogtie]))) && hasLeg(enemy))
-		{
-			return useSkill($skill[Hogtie]);
-		}
-
-		if(canUse($skill[Lavafava], false) && (enemy.defense_element != $element[hot]))
-		{
-			attackMajor = useSkill($skill[Lavafava], false);
-			attackMinor = useSkill($skill[Lavafava], false);
-			costMajor = mp_cost($skill[Lavafava]);
-			costMinor = mp_cost($skill[Lavafava]);
-		}
-		if(canUse($skill[Beanstorm], false))
-		{
-			attackMajor = useSkill($skill[Beanstorm], false);
-			attackMinor = useSkill($skill[Beanstorm], false);
-			costMajor = mp_cost($skill[Beanstorm]);
-			costMinor = mp_cost($skill[Beanstorm]);
-		}
-
-		if(canUse($skill[Fan Hammer], false))
-		{
-			attackMajor = useSkill($skill[Fan Hammer], false);
-			attackMinor = useSkill($skill[Fan Hammer], false);
-			costMajor = mp_cost($skill[Fan Hammer]);
-			costMinor = mp_cost($skill[Fan Hammer]);
-		}
-		if(canUse($skill[Snakewhip], false) && (enemy.physical_resistance < 80))
-		{
-			attackMajor = useSkill($skill[Snakewhip], false);
-			attackMinor = useSkill($skill[Snakewhip], false);
-			costMajor = mp_cost($skill[Snakewhip]);
-			costMinor = mp_cost($skill[Snakewhip]);
-		}
-
-		if(canUse($skill[Pungent Mung], false) && (enemy.defense_element != $element[stench]))
-		{
-			attackMajor = useSkill($skill[Pungent Mung], false);
-			attackMinor = useSkill($skill[Pungent Mung], false);
-			costMajor = mp_cost($skill[Pungent Mung]);
-			costMinor = mp_cost($skill[Pungent Mung]);
-		}
-
-		if(canUse($skill[Cowcall], false) && (type != $phylum[undead]) && (enemy.defense_element != $element[spooky]) && (have_effect($effect[Cowrruption]) >= 60 || my_class() == $class[Cow Puncher]))
-		{
-			attackMajor = useSkill($skill[Cowcall], false);
-			attackMinor = useSkill($skill[Cowcall], false);
-			costMajor = mp_cost($skill[Cowcall]);
-			costMinor = mp_cost($skill[Cowcall]);
-		}
-
-		if(canUse($skill[Beanscreen]) && !canSurvive(5.0))
-		{
-			stunner = useSkill($skill[Beanscreen]);
-			costStunner = mp_cost($skill[Beanscreen]);
-		}
-
-		if(canUse($skill[Hogtie], false) && (my_mp() >= (3 * mp_cost($skill[Hogtie]))) && hasLeg(enemy))
-		{
-			stunner = useSkill($skill[Hogtie], false);
-			costStunner = mp_cost($skill[Hogtie]);
-		}
-		break;
-
-	case $class[Vampyre]:
-		foreach sk in $skills[Chill of the Tomb, Blood Spike, Piercing Gaze, Savage Bite]
-		{
-			if(sk == $skill[Chill of the Tomb] && enemy.monster_element() == $element[cold])
-				continue;
-			if(canUse(sk, false) && my_hp() > 3 * hp_cost(sk))
-			{
-				attackMajor = useSkill(sk, false);
-				attackMinor = useSkill(sk, false);
-				break;
-			}
-		}
-		// Hack for Logging Camp: deprioritize Dark Feast, use Chill of the Tomb aggressively
-		if(my_hp() > 0.5 * my_maxhp() && attackMajor == useSkill($skill[Chill of the Tomb], false) && my_location() == $location[The Smut Orc Logging Camp])
-		{
-			break;
-		}
-		if(my_hp() < my_maxhp() && (monster_hp() <= 30 || (monster_hp() <= 100 && auto_have_skill($skill[Hypnotic Eyes]))) && canUse($skill[Dark Feast]))
-		{
-			return useSkill($skill[Dark Feast]);
-		}
-		if(canUse($skill[Blood Chains], false) && my_hp() > 3 * hp_cost($skill[Blood Chains]))
-			stunner = useSkill($skill[Blood Chains], false);
-		// intentionally not setting costMinor or costMajor since they don't cost mp...
-
-		// If we're in a form or something, a beehive is probably better than just attacking
-		if(attackMajor == "attack with weapon" && !have_skill($skill[Preternatural Strength]) && canUse($item[beehive]) && ($stat[moxie] != weapon_type(equipped_item($slot[Weapon]))))
-		{
-			attackMajor = useItem($item[beehive], false);
-			attackMinor = useItem($item[beehive], false);
-		}
-		break;
-	}
-
-	if(((my_hp() * 10)/3) < my_maxhp())
-	{
-		if(canUse($skill[Thunderstrike]) && (monster_level_adjustment() <= 150))
-		{
-			return useSkill($skill[Thunderstrike]);
-		}
-
-		if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 100) && (my_mp() >= costStunner) && stunnable(enemy))
-		{
-			set_property("auto_combatHandler", combatState + "(stunner)");
-			return stunner;
-		}
-
-		if(canUse($skill[Unleash The Greash]) && (monster_element(enemy) != $element[sleaze]) && (have_effect($effect[Takin\' It Greasy]) > 100))
-		{
-			return useSkill($skill[Unleash The Greash]);
-		}
-		if(canUse($skill[Thousand-Yard Stare]) && (monster_element(enemy) != $element[spooky]) && (have_effect($effect[Intimidating Mien]) > 100))
-		{
-			return useSkill($skill[Thousand-Yard Stare]);
-		}
-		if($monsters[Aquagoblin, Lord Soggyraven] contains enemy)
-		{
-			return attackMajor;
-		}
-		if((my_class() == $class[Turtle Tamer]) && canUse($skill[Spirit Snap]))
-		{
-			if((have_effect($effect[Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the War Snapper]) > 0) || (have_effect($effect[Glorious Blessing of She-Who-Was]) > 0))
-			{
-				return useSkill($skill[Spirit Snap]);
-			}
-		}
-		if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]) && (hasClubEquipped() || (buffed_hit_stat() - 20) > monster_defense()))
-		{
-			return useSkill($skill[Northern Explosion]);
-		}
-		if((!contains_text(combatState, "last attempt")) && (my_mp() >= costMajor))
-		{
-			if(canSurvive(1.4))
-			{
-				set_property("auto_combatHandler", combatState + "(last attempt)");
-				auto_log_warning("Uh oh, I'm having trouble in combat.", "red");
-			}
-			return attackMajor;
-		}
-		if(canSurvive(2.5))
-		{
-			auto_log_warning("Hmmm, I don't really know what to do in this combat but it looks like I'll live.", "red");
-			if(my_mp() >= costMajor)
-			{
-				return attackMajor;
-			}
-			else if(my_mp() >= costMinor)
-			{
-				return attackMinor;
-			}
-			return "attack with weapon";
-		}
-		if(my_location() != $location[The Slime Tube])
-		{
-			abort("Could not handle monster, sorry");
+			return useItem($item[DNA extraction syringe]);
 		}
 	}
-	if((monster_level_adjustment() > 150) && (my_mp() >= 45) && canUse($skill[Shell Up]) && (my_class() == $class[Turtle Tamer]))
+	
+	//use latte iotm to restore 50% of max MP
+	if((!in_zelda() && my_class() != $class[Vampyre] && my_path() != "Zombie Slayer") &&	//paths that do not use MP
+	canUse($skill[Gulp Latte]) &&
+	my_mp() * 2 < my_maxmp())		//gulp latte restores 50% of your MP. do not waste it.
 	{
-		return useSkill($skill[Shell Up]);
+		return useSkill($skill[Gulp Latte]);
 	}
-
-	if(attackMinor == "attack with weapon")
-	{
-		if(canUse($skill[Summon Love Stinkbug]))
-		{
-			return useSkill($skill[Summon Love Stinkbug]);
-		}
-		if(canUse($skill[Mighty Axing], false) && (equipped_item($slot[Weapon]) != $item[none]))
-		{
-			return useSkill($skill[Mighty Axing], false);
-		}
-	}
-
-	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[cold]) && canUse($skill[Throat Refrigerant], false))
-	{
-		return useSkill($skill[Throat Refrigerant], false);
-	}
-
-	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[hot]) && canUse($skill[Boiling Tear Ducts], false))
-	{
-		return useSkill($skill[Boiling Tear Ducts], false);
-	}
-
-	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[sleaze]) && canUse($skill[Projectile Salivary Glands]))
-	{
-		return useSkill($skill[Projectile Salivary Glands]);
-	}
-
-	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[spooky]) && canUse($skill[Translucent Skin], false))
-	{
-		return useSkill($skill[Translucent Skin], false);
-	}
-
-	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]) && canUse($skill[Skunk Glands], false))
-	{
-		return useSkill($skill[Skunk Glands], false);
-	}
-
-	if((my_location() == $location[The X-32-F Combat Training Snowman]) && contains_text(text, "Cattle Prod") && (my_mp() >= costMajor))
-	{
-		return attackMajor;
-	}
-
-	if((monster_level_adjustment() > 150) && (my_mp() >= costMajor) && (attackMajor != "attack with weapon"))
-	{
-		return attackMajor;
-	}
-	if(canUse($skill[Lunge Smack], false) && (attackMinor != "attack with weapon") && (weapon_type(equipped_item($slot[weapon])) == $stat[Muscle]))
-	{
-		return attackMinor;
-	}
-	if((my_mp() >= costMinor) && (attackMinor != "attack with weapon"))
-	{
-		return attackMinor;
-	}
-
-	if((round > 20) && canUse($skill[Saucestorm], false))
-	{
-		return useSkill($skill[Saucestorm], false);
-	}
-
-	return attackMinor;
+	
+	return "";
 }

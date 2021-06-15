@@ -2,7 +2,7 @@
 
 string auto_combatBHYStage1(int round, monster enemy, string text)
 {
-	##stage 1 = 1st round actions: puzzle boss, pickpocket, banish, escape, instakill, etc. things that need to be done before debuff
+	##stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
 	
 	//Bees Hate You path final boss instakill.
 	//technically also a hidden boss in all paths but we never want to fight it in other paths

@@ -1,6 +1,6 @@
-string auto_combatGelatinousNoobStage4(int round, monster enemy, string text)
+string auto_combatGelatinousNoobStage5(int round, monster enemy, string text)
 {
-	##stage 4 = kill
+	##stage 5 = kill
 	if(!in_gnoob())
 	{
 		return "";

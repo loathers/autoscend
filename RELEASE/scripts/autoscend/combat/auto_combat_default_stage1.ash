@@ -1,6 +1,6 @@
 string auto_combatDefaultStage1(int round, monster enemy, string text)
 {
-	##stage 1 = 1st round actions: puzzle boss, pickpocket, banish, escape, instakill, etc. things that need to be done before delevel
+	##stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
 	string retval;
 	
 	#Path = Heavy Rains

@@ -2,7 +2,7 @@
 
 string auto_combatHeavyRainsStage1(int round, monster enemy, string text)
 {
-	##stage 1 = 1st round actions: puzzle boss, pickpocket, banish, escape, instakill, etc. things that need to be done before delevel
+	##stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
 	
 	// Unique Heavy Rains Enemy that Reflects Spells.
 	if(enemy.to_string() == "Gurgle")
@@ -36,9 +36,9 @@ string auto_combatHeavyRainsStage1(int round, monster enemy, string text)
 	return "";
 }
 
-string auto_combatHeavyRainsStage2(int round, monster enemy, string text)
+string auto_combatHeavyRainsStage3(int round, monster enemy, string text)
 {
-	##stage 2 = debuff: delevel, stun, curse, damage over time
+	##stage 3 = debuff: delevel, stun, curse, damage over time
 	
 	//Heavy Rain bosses delevel & stun. we only do this to the tougher bosses
 	if($monsters[Big Wisnaqua, The Aquaman, The Rain King] contains enemy)
@@ -117,9 +117,9 @@ string auto_combatHeavyRainsStage2(int round, monster enemy, string text)
 	return "";
 }
 
-string auto_combatHeavyRainsStage4(int round, monster enemy, string text)
+string auto_combatHeavyRainsStage5(int round, monster enemy, string text)
 {
-	##stage 4 = kill
+	##stage 5 = kill
 	
 	// Heavy Rains Final Boss. strips you of positive effects every time it hits you. Capped at 40 damage per source per element.
 	if(enemy.to_string() == "The Rain King")

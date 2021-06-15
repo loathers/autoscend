@@ -1,9 +1,10 @@
 import <autoscend/combat/auto_combat_header.ash>					//header file for combat
 import <autoscend/combat/auto_combat_util.ash>						//combat utilities
 import <autoscend/combat/auto_combat_default_stage1.ash>			//default stage 1 = 1st round actions
-import <autoscend/combat/auto_combat_default_stage2.ash>			//default stage 2 = debuff
-import <autoscend/combat/auto_combat_default_stage3.ash>			//default stage 3 = prekill actions
-import <autoscend/combat/auto_combat_default_stage4.ash>			//default stage 4 = kill
+import <autoscend/combat/auto_combat_default_stage2.ash>			//default stage 2 = enders
+import <autoscend/combat/auto_combat_default_stage3.ash>			//default stage 3 = debuff
+import <autoscend/combat/auto_combat_default_stage4.ash>			//default stage 4 = prekill actions
+import <autoscend/combat/auto_combat_default_stage5.ash>			//default stage 5 = kill
 import <autoscend/combat/auto_combat_awol.ash>						//path = avatar of west of loathing
 import <autoscend/combat/auto_combat_bees_hate_you.ash>				//path = bees hate you
 import <autoscend/combat/auto_combat_community_service.ash>			//path = community service
@@ -165,16 +166,18 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 	
-	##stage 1 = 1st round actions: puzzle boss, pickpocket, banish, escape, instakill, etc. things that need to be done before delevel
+	##stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
 	retval = auto_combatDefaultStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
-	##stage 2 = debuff: delevel, stun, curse, damage over time
-	retval = auto_combatDefaultStage2(round, enemy, text);
+	##stage 2 = enders. escape, replace, instakill, yellowray and other actions that instantly end combat
+	
+	##stage 3 = debuff: delevel, stun, curse, damage over time
+	retval = auto_combatDefaultStage3(round, enemy, text);
 	if(retval != "") return retval;
 	
-	##stage 3 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
-	retval = auto_combatDefaultStage3(round, enemy, text);
+	##stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
+	retval = auto_combatDefaultStage4(round, enemy, text);
 	if(retval != "") return retval;
 
 	//Ensorcel is a Dark Gyffte specific skill that lets you mind control an enemy to becoming a minion 3/day.
@@ -212,8 +215,8 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	##stage 4 = kill
-	retval = auto_combatDefaultStage4(round, enemy, text);
+	##stage 5 = kill
+	retval = auto_combatDefaultStage5(round, enemy, text);
 	if(retval != "") return retval;
 	
 	abort("We reached the end of combat script without finding anything to do");
