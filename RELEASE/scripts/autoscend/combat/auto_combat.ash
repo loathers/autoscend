@@ -25,50 +25,51 @@ import <autoscend/combat/auto_combat_quest.ash>						//quest specific handling
 //	Advance combat round, nothing happens.
 //	/goto fight.php?action=useitem&whichitem=1
 
+void auto_combatInitialize(int round, monster enemy, string text)
+{
+	//reset settings for combat at the start of every combat
+	if(round != 0)	//Yes round 0, really.
+	{
+		return;
+	}
+	
+	auto_log_info("auto_combatHandler: " + round, "brown");
+	
+	switch(enemy)
+	{
+		case $monster[Government Agent]:
+			set_property("_portscanPending", false);
+			break;
+		case $monster[possessed wine rack]:
+			set_property("auto_wineracksencountered", get_property("auto_wineracksencountered").to_int() + 1);
+			break;
+		case $monster[cabinet of Dr. Limpieza]:
+			set_property("auto_cabinetsencountered", get_property("auto_cabinetsencountered").to_int() + 1);
+			break;
+		case $monster[junksprite bender]:
+		case $monster[junksprite melter]:
+		case $monster[junksprite sharpener]:
+			set_property("auto_junkspritesencountered", get_property("auto_junkspritesencountered").to_int() + 1);
+			break;
+	}
+
+	remove_property("auto_combatHandler");
+	remove_property("auto_funCombatHandler");				//ocrs specific tracker
+	remove_property("auto_funPrefix");						//ocrs specific tracker
+	set_property("auto_combatHandlerThunderBird", "0");
+	set_property("auto_combatHandlerFingernailClippers", "0");
+}
+
 string auto_combatHandler(int round, monster enemy, string text)
 {
 	if(round > 25)
 	{
 		abort("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
 	}
+	auto_combatInitialize(round, enemy, text);		//reset properties on round 0 of a new combat
 	string retval;
-	
-	#Yes, round 0, really.
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
-	if(round == 0)
-	{
-		auto_log_info("auto_combatHandler: " + round, "brown");
-
-		switch(enemy)
-		{
-			case $monster[Government Agent]:
-				set_property("_portscanPending", false);
-				break;
-			case $monster[possessed wine rack]:
-				set_property("auto_wineracksencountered", get_property("auto_wineracksencountered").to_int() + 1);
-				break;
-			case $monster[cabinet of Dr. Limpieza]:
-				set_property("auto_cabinetsencountered", get_property("auto_cabinetsencountered").to_int() + 1);
-				break;
-			case $monster[junksprite bender]:
-			case $monster[junksprite melter]:
-			case $monster[junksprite sharpener]:
-				set_property("auto_junkspritesencountered", get_property("auto_junkspritesencountered").to_int() + 1);
-				break;
-		}
-
-		set_property("auto_combatHandler", "");
-		set_property("auto_funCombatHandler", "");				//ocrs specific tracker
-		set_property("auto_funPrefix", "");						//ocrs specific tracker
-		set_property("auto_combatHandlerThunderBird", "0");
-		set_property("auto_combatHandlerFingernailClippers", "0");
-		set_property("auto_combatHP", my_hp());
-	}
-	else
-	{
-		set_property("auto_combatHP", my_hp());
-	}
-
+	set_property("auto_combatHP", my_hp());
 	set_property("auto_diag_round", round);
 
 	if(my_path() == "One Crazy Random Summer")
