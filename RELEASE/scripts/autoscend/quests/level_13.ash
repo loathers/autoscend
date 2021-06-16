@@ -889,181 +889,185 @@ boolean L13_towerNSTower()
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_05_monster1"))
 	{
 		auto_log_info("Time to fight the Wall of Skins!", "blue");
-		auto_change_mcd(0);
-		acquireMP(120, 0);
-
-		int sources = 0;
-		if(autoEquip($item[astral shirt]))
+		if (item_amount($item[Beehive]) > 0)
 		{
-			// nothing, just for else
-		}
-		else if (autoEquip($item[Unfortunato\'s foolscap]))
-		{
-			// nothing, just for else
-		}
-		else if(item_amount($item[cigar box turtle]) > 0)
-		{
-			use(1, $item[cigar box turtle]);
-		}
-		else if(have_effect($effect[damage.enh]) == 0)
-		{
-			int enhances = auto_sourceTerminalEnhanceLeft();
-			if(enhances > 0)
-			{
-				auto_sourceTerminalEnhance("damage");
-			}
-		}
-
-		if(my_class() == $class[Turtle Tamer])
-		{
-			autoEquip($slot[shirt], $item[Shocked Shell]);
-		}
-		if(have_skill($skill[Belch the Rainbow]))
-		{
-			sources = 6;
-		}
-		else if(autoEquip($item[Fourth of May Cosplay Saber]))
-		{
-			sources = 6;
+			autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 		}
 		else
 		{
-			foreach damage in $strings[Cold Damage, Hot Damage, Sleaze Damage, Spooky Damage, Stench Damage]
+			auto_change_mcd(0);
+			acquireMP(120, 0);
+
+			int sources = 0;
+			if(autoEquip($item[astral shirt]))
 			{
-				if(numeric_modifier(damage) > 0)
+				// nothing, just for else
+			}
+			else if (autoEquip($item[Unfortunato\'s foolscap]))
+			{
+				// nothing, just for else
+			}
+			else if(item_amount($item[cigar box turtle]) > 0)
+			{
+				use(1, $item[cigar box turtle]);
+			}
+			else if(have_effect($effect[damage.enh]) == 0)
+			{
+				int enhances = auto_sourceTerminalEnhanceLeft();
+				if(enhances > 0)
 				{
-					sources += 1;
+					auto_sourceTerminalEnhance("damage");
 				}
 			}
-		}
-		if(have_skill($skill[headbutt]))
-		{
-			sources = sources + 1;
-		}
-		if(canChangeToFamiliar($familiar[Shorter-Order Cook]) || qt_currentFamiliar($familiar[Shorter-Order Cook]))
-		{
-			handleFamiliar($familiar[Shorter-Order Cook]);
-			sources = sources + 6;
-		}		
-		else if(canChangeToFamiliar($familiar[Mu]) || qt_currentFamiliar($familiar[Mu]))
-		{
-			handleFamiliar($familiar[Mu]);
-			sources = sources + 5;
-		}
-		else if(canChangeToFamiliar($familiar[Imitation Crab]) || qt_currentFamiliar($familiar[Imitation Crab]))
-		{
-			handleFamiliar($familiar[Imitation Crab]);
-			sources = sources + 4;
-		}
-		else if(canChangeToFamiliar($familiar[warbear drone]) || qt_currentFamiliar($familiar[warbear drone]))
-		{
-			sources = sources + 2;
-			handleFamiliar($familiar[Warbear Drone]);
-			use_familiar($familiar[Warbear Drone]);
-			cli_execute("auto_pre_adv"); // TODO: can we remove this?
-			if(!possessEquipment($item[Warbear Drone Codes]))
+
+			if(my_class() == $class[Turtle Tamer])
 			{
-				pullXWhenHaveY($item[warbear drone codes], 1, 0);
+				autoEquip($slot[shirt], $item[Shocked Shell]);
 			}
-			if(possessEquipment($item[warbear drone codes]))
+			if(have_skill($skill[Belch the Rainbow]))
 			{
-				autoEquip($item[warbear drone codes]);
+				sources = 6;
+			}
+			else if(autoEquip($item[Fourth of May Cosplay Saber]))
+			{
+				sources = 6;
+			}
+			else
+			{
+				foreach damage in $strings[Cold Damage, Hot Damage, Sleaze Damage, Spooky Damage, Stench Damage]
+				{
+					if(numeric_modifier(damage) > 0)
+					{
+						sources += 1;
+					}
+				}
+			}
+			if(have_skill($skill[headbutt]))
+			{
+				sources = sources + 1;
+			}
+			if(canChangeToFamiliar($familiar[Shorter-Order Cook]) || qt_currentFamiliar($familiar[Shorter-Order Cook]))
+			{
+				handleFamiliar($familiar[Shorter-Order Cook]);
+				sources = sources + 6;
+			}		
+			else if(canChangeToFamiliar($familiar[Mu]) || qt_currentFamiliar($familiar[Mu]))
+			{
+				handleFamiliar($familiar[Mu]);
+				sources = sources + 5;
+			}
+			else if(canChangeToFamiliar($familiar[Imitation Crab]) || qt_currentFamiliar($familiar[Imitation Crab]))
+			{
+				handleFamiliar($familiar[Imitation Crab]);
+				sources = sources + 4;
+			}
+			else if(canChangeToFamiliar($familiar[warbear drone]) || qt_currentFamiliar($familiar[warbear drone]))
+			{
 				sources = sources + 2;
-			}
-		}
-		else if(canChangeToFamiliar($familiar[Sludgepuppy]) || qt_currentFamiliar($familiar[Sludgepuppy]))
-		{
-			handleFamiliar($familiar[Sludgepuppy]);
-			sources = sources + 3;
-		}
-		if(autoEquip($slot[acc1], $item[hippy protest button]))
-		{
-			sources = sources + 1;
-		}
-		if(item_amount($item[glob of spoiled mayo]) > 0)
-		{
-			buffMaintain($effect[Mayeaugh], 0, 1, 1);
-			sources = sources + 1;
-		}
-		if(autoEquip($item[smirking shrunken head]))
-		{
-			sources = sources + 1;
-		}
-		else if(autoEquip($item[hot plate]))
-		{
-			sources = sources + 1;
-		}
-		if(have_skill($skill[Scarysauce]))
-		{
-			buffMaintain($effect[Scarysauce], 0, 1, 1);
-			sources = sources + 1;
-		}
-		if(have_skill($skill[Spiky Shell]))
-		{
-			buffMaintain($effect[Spiky Shell], 0, 1, 1);
-			sources = sources + 1;
-		}
-		if(have_skill($skill[Jalape&ntilde;o Saucesphere]))
-		{
-			sources = sources + 1;
-			buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);
-		}
-		if(have_skill($skill[The Psalm of Pointiness]))
-		{
-			buffMaintain($effect[Psalm of Pointiness], 0, 1, 1);
-			sources = sources + 1;
-		}
-		handleBjornify($familiar[Hobo Monkey]);
-		autoEquip($slot[acc2], $item[world\'s best adventurer sash]);
-		autoEquip($slot[acc3], $item[Groll Doll]);
-		autoEquip($slot[acc3], $item[old school calculator watch]);
-		autoEquip($slot[acc3], $item[Bottle Opener Belt Buckle]);
-		autoEquip($slot[acc3], $item[acid-squirting flower]);
-		if(have_skill($skill[Frigidalmatian]) && (my_mp() > 300))
-		{
-			sources = sources + 1;
-		}
-		int sourceNeed = 13;
-		if(have_skill($skill[Shell Up]))
-		{
-			if((have_effect($effect[Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0))
-			{
-				if(have_skill($skill[Blessing of the War Snapper]) && (my_mp() > (2 * mp_cost($skill[Blessing of the War Snapper]))))
+				handleFamiliar($familiar[Warbear Drone]);
+				use_familiar($familiar[Warbear Drone]);
+				cli_execute("auto_pre_adv"); // TODO: can we remove this?
+				if(!possessEquipment($item[Warbear Drone Codes]))
 				{
-					use_skill(1, $skill[Blessing of the War Snapper]);
+					pullXWhenHaveY($item[warbear drone codes], 1, 0);
+				}
+				if(possessEquipment($item[warbear drone codes]))
+				{
+					autoEquip($item[warbear drone codes]);
+					sources = sources + 2;
 				}
 			}
-			if((have_effect($effect[Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Grand Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Glorious Blessing of the Storm Tortoise]) == 0))
+			else if(canChangeToFamiliar($familiar[Sludgepuppy]) || qt_currentFamiliar($familiar[Sludgepuppy]))
+			{
+				handleFamiliar($familiar[Sludgepuppy]);
+				sources = sources + 3;
+			}
+			if(autoEquip($slot[acc1], $item[hippy protest button]))
+			{
+				sources = sources + 1;
+			}
+			if(item_amount($item[glob of spoiled mayo]) > 0)
+			{
+				buffMaintain($effect[Mayeaugh], 0, 1, 1);
+				sources = sources + 1;
+			}
+			if(autoEquip($item[smirking shrunken head]))
+			{
+				sources = sources + 1;
+			}
+			else if(autoEquip($item[hot plate]))
+			{
+				sources = sources + 1;
+			}
+			if(have_skill($skill[Scarysauce]))
+			{
+				buffMaintain($effect[Scarysauce], 0, 1, 1);
+				sources = sources + 1;
+			}
+			if(have_skill($skill[Spiky Shell]))
+			{
+				buffMaintain($effect[Spiky Shell], 0, 1, 1);
+				sources = sources + 1;
+			}
+			if(have_skill($skill[Jalape&ntilde;o Saucesphere]))
+			{
+				sources = sources + 1;
+				buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);
+			}
+			if(have_skill($skill[The Psalm of Pointiness]))
+			{
+				buffMaintain($effect[Psalm of Pointiness], 0, 1, 1);
+				sources = sources + 1;
+			}
+			handleBjornify($familiar[Hobo Monkey]);
+			autoEquip($slot[acc2], $item[world\'s best adventurer sash]);
+			autoEquip($slot[acc3], $item[Groll Doll]);
+			autoEquip($slot[acc3], $item[old school calculator watch]);
+			autoEquip($slot[acc3], $item[Bottle Opener Belt Buckle]);
+			autoEquip($slot[acc3], $item[acid-squirting flower]);
+			if(have_skill($skill[Frigidalmatian]) && (my_mp() > 300))
+			{
+				sources = sources + 1;
+			}
+			int sourceNeed = 13;
+			if(have_skill($skill[Shell Up]))
+			{
+				if((have_effect($effect[Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0))
+				{
+					if(have_skill($skill[Blessing of the War Snapper]) && (my_mp() > (2 * mp_cost($skill[Blessing of the War Snapper]))))
+					{
+						use_skill(1, $skill[Blessing of the War Snapper]);
+					}
+				}
+				if((have_effect($effect[Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Grand Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Glorious Blessing of the Storm Tortoise]) == 0))
+				{
+					sourceNeed -= 2;
+				}
+			}
+			if(have_skill($skill[Sauceshell]))
 			{
 				sourceNeed -= 2;
 			}
-		}
-		if(have_skill($skill[Sauceshell]))
-		{
-			sourceNeed -= 2;
-		}
-		auto_log_info("I think I have " + sources + " sources of damage, let's do this!", "blue");
-		if(in_pokefam())
-		{
-			sources = 9999;
-		}
-		if((item_amount($item[Beehive]) > 0) || (sources > sourceNeed))
-		{
-			if(item_amount($item[Beehive]) == 0)
+			auto_log_info("I think I have " + sources + " sources of damage, let's do this!", "blue");
+			if(in_pokefam())
+			{
+				sources = 9999;
+			}
+			if(sources > sourceNeed)
 			{
 				acquireHP();
+				autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
+				if(internalQuestStatus("questL13Final") < 7)
+				{
+					set_property("auto_getBeehive", true);
+					auto_log_warning("I probably failed the Wall of Skin, I assume that I tried without a beehive. Well, I'm going back to get it.", "red");
+				}
 			}
-			autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
-			if(internalQuestStatus("questL13Final") < 7)
+			else
 			{
 				set_property("auto_getBeehive", true);
-				auto_log_warning("I probably failed the Wall of Skin, I assume that I tried without a beehive. Well, I'm going back to get it.", "red");
+				auto_log_warning("Need a beehive, buzz buzz. Only have " + sources + " damage sources and we want " + sourceNeed, "red");
 			}
-		}
-		else
-		{
-			set_property("auto_getBeehive", true);
-			auto_log_warning("Need a beehive, buzz buzz. Only have " + sources + " damage sources and we want " + sourceNeed, "red");
 		}
 		return true;
 	}
