@@ -1354,11 +1354,6 @@ boolean adjustForYellowRayIfPossible()
 	return adjustForYellowRayIfPossible($monster[none]);
 }
 
-boolean auto_haveYellowRayAvailable()
-{
-	return yellowRayCombatString()!="";
-}
-
 string replaceMonsterCombatString(monster target, boolean inCombat)
 {
 	if (auto_macrometeoritesAvailable() > 0 && auto_is_valid($skill[Macrometeorite]))
