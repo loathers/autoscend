@@ -1344,7 +1344,7 @@ boolean edAcquireHP()
 	}
 	if(my_hp() > 0)
 	{
-		return false;	// Ed doesn't need to heal outside of combat unless on 0 hp
+		return true;	// Ed doesn't need to heal outside of combat unless on 0 hp
 	}
 	foreach it in $items[linen bandages,cotton bandages,silk bandages]
 	{
@@ -1365,8 +1365,33 @@ boolean edAcquireHP()
 	return true;
 }
 
+boolean edAcquireHP(int goal)
+{
+	//function forces Ed to heal to a goal HP. Based on acquireHP function
+	boolean isMax = (goal == my_maxhp());
+
+	__cure_bad_stuff();
+
+	if(isMax)
+	{
+		goal = my_maxhp(); //in case max rose after curing the bad stuff
+	}
+	else if(goal > my_maxhp())
+	{
+		return false;
+	}
+
+	while (my_hp() < goal && my_hp() < my_maxhp() && item_amount($item[Linen Bandages]) > 0)
+	{
+		use(1,$item[Linen Bandages]);
+	}
+
+	return my_hp() >= goal;
+}
+
 boolean LM_edTheUndying()
 {
+	auto_log_info("in Ed loop","red");
 	if (!isActuallyEd())
 	{
 		return false;
