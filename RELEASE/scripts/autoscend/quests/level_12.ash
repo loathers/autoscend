@@ -822,6 +822,11 @@ boolean L12_filthworms()
 		handleFamiliar($familiar[XO Skeleton]);
 	}
 	//TODO add IOTM cat burglar stealing support here with another else if
+	// or if we're about to yellow ray
+	else if(canYellowRay())
+	{
+		auto_log_info("We're going to yellow ray the stench glands.");
+	}
 	else		//could not guarentee stealing. buff item drops instead
 	{
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
