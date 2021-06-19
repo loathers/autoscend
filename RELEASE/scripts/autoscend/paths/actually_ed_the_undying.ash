@@ -1344,7 +1344,7 @@ boolean edAcquireHP()
 	}
 	if(my_hp() > 0)
 	{
-		return false;	// Ed doesn't need to heal outside of combat unless on 0 hp
+		return true;	// Ed doesn't need to heal outside of combat unless on 0 hp
 	}
 	foreach it in $items[linen bandages,cotton bandages,silk bandages]
 	{
