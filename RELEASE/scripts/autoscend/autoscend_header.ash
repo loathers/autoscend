@@ -746,6 +746,7 @@ boolean in_quantumTerrarium();
 boolean qt_currentFamiliar(familiar fam);
 familiar qt_nextQuantumFamiliar();
 int qt_turnsToNextQuantumAlignment();
+boolean LX_qt_godLobster();
 boolean LX_quantumTerrarium();
 void qt_initializeSettings();
 boolean qt_FamiliarAvailable (familiar fam);

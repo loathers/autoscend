@@ -18,6 +18,29 @@ int qt_turnsToNextQuantumAlignment()
 	return total_turns_played() - get_property("_nextQuantumAlignment").to_int();
 }
 
+boolean LX_qt_godLobster()
+{
+	//fight godlobster for XP if it happens to show up and we want XP
+	if(!in_quantumTerrarium() || my_familiar() != $familiar[God Lobster])
+	{
+		return false;	//can not change familiar in quantum terrarium
+	}
+	if(my_level() < 5)
+	{
+		return false;	//do not really trust it to fight it at such a low level
+	}
+	if(my_adventures() < 2)
+	{
+		return false;
+	}
+	if(!disregardInstantKarma())
+	{
+		return false;	//trying for instant karma as per user preference
+	}
+	
+	return godLobsterCombat();
+}
+
 boolean LX_quantumTerrarium()
 {
 	if (in_quantumTerrarium())
@@ -25,6 +48,8 @@ boolean LX_quantumTerrarium()
 		// placeholder. Just spam the console with familiar info for now.
 		auto_log_info(`In Quantum Terrarium. Current familiar = {my_familiar()}. Next familiar = {get_property("nextQuantumFamiliar")}`);
 	}
+	if(LX_qt_godLobster()) return true;
+	
 	return false;
 }
 
