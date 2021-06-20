@@ -185,8 +185,11 @@ boolean godLobsterCombat(item it, int goal, string option)
 		return false;
 	}
 
-	handleFamiliar($familiar[God Lobster]);
-	use_familiar($familiar[God Lobster]);
+	handleFamiliar($familiar[God Lobster]);			//prevent pre_adventure from changing familiar away from god lobster
+	if(my_familiar() != $familiar[God Lobster])		//prevent quantum terrarium crash
+	{
+		use_familiar($familiar[God Lobster]);		//immediately switch to god lobster so we can fight it
+	}
 
 	if((equipped_item($slot[familiar]) != it) && (it != $item[none]))
 	{
