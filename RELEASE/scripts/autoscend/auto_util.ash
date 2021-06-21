@@ -5977,12 +5977,14 @@ int meatReserve()
 	//how much do we reserve for unlocking mysterious island?
 	if(get_property("lastIslandUnlock").to_int() < my_ascensions())		//need to unlock island
 	{
-		//do count scrips. they may have been pulled manually, and one optional property does pull them
-		//if we have more than a single one or reasons to assume it's not for a UV compass
-		if(item_amount($item[Shore Inc. Ship Trip Scrip]) > 0 && (item_amount($item[Shore Inc. Ship Trip Scrip]) >= 2 || internalQuestStatus("questL11Desert") >= 1 || possessEquipment($item[UV-resistant compass]) || !auto_can_equip($item[UV-resistant compass]) || possessEquipment($item[Ornate Dowsing Rod]) || isActuallyEd()))
-			reserve_island += 1500 - 500 * min(3,item_amount($item[Shore Inc. Ship Trip Scrip]));
-		else
-			reserve_island += 1500;	//3 vacations
+		int price_vacation = 500;
+		if(my_path() == "Way of the Surprising Fist")
+		{
+		price_vacation = 5;  //yes really. just 5 meat each
+		}
+		//TODO: scrips. they may have been pulled manually, and one optional property does pull them
+		reserve_island += price_vacation * 3;	//3 vacations
+		
 		if(item_amount($item[dingy planks]) == 0)
 		{
 			reserve_island += 400 * npcStoreDiscountMulti();
