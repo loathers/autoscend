@@ -446,7 +446,7 @@ boolean ed_buySkills()
 			if(!have_servant($servant[Maid]))
 			{
 				sid = 3;
-				if((my_level() >= 9) && (imbuePoints > 5) && !have_servant($servant[Scribe]))
+				if((my_level() >= 9) && (imbuePoints > 4) && !have_servant($servant[Scribe]))
 				{
 					#If we are at the third servant and have enough imbues, get the Scribe instead.
 					sid = 5;
@@ -527,9 +527,10 @@ boolean ed_buySkills()
 				}
 				else
 				{
-					if((imbuePoints > 4) && (my_level() >= 9))
+					if((my_level() >= 9) && (my_level() <= 12))
 					{
-						if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 341))
+						// got scribe early. Imbue to level 21 for passive stat gain
+						if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 441))
 						{
 							tryImbue = $servant[Scribe];
 						}
@@ -896,7 +897,7 @@ boolean ed_shopping()
 				set_property("auto_renenutetBought", 1 + get_property("auto_renenutetBought").to_int());
 				coins -= 1;
 			}
-			while (item_amount($item[Linen Bandages]) < 4 && coins >= 1)
+			while (item_amount($item[Linen Bandages]) < 8 && coins >= 1)
 			{
 				auto_log_info("Buying Linen Bandages", "green");
 				visit_url("shop.php?pwd=&whichshop=edunder_shopshop&action=buyitem&quantity=1&whichrow=429", true);
@@ -1391,7 +1392,6 @@ boolean edAcquireHP(int goal)
 
 boolean LM_edTheUndying()
 {
-	auto_log_info("in Ed loop","red");
 	if (!isActuallyEd())
 	{
 		return false;
