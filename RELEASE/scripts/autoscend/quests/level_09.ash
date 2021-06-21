@@ -526,8 +526,6 @@ boolean L9_aBooPeak()
 			doThisBoo = true;
 		}
 
-		auto_log_info("doThisBoo set " + doThisBoo + "consider " +considerHP + "totaldmg" + totalDamage, "blue");
-
 		if(doThisBoo)
 		{
 			buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
@@ -559,7 +557,7 @@ boolean L9_aBooPeak()
 				if(isActuallyEd())
 				{
 					//force Ed to heal
-					edAcquireHP(totalDamage);
+					edAcquireHP(my_maxhp());
 				}
 			}
 			if(get_property("auto_aboopending").to_int() == 0)
