@@ -2280,6 +2280,13 @@ boolean adventureFailureHandler()
 		{
 			tooManyAdventures = false;
 		}
+		
+		boolean can_powerlevel_stench = elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]) && get_property("auto_beatenUpCount").to_int() == 0;
+		boolean has_powerlevel_iotm = can_powerlevel_stench || elementalPlanes_access($element[spooky]) || elementalPlanes_access($element[cold]) || elementalPlanes_access($element[sleaze]) || elementalPlanes_access($element[hot]) || neverendingPartyAvailable();
+		if(!has_powerlevel_iotm && $locations[The Haunted Gallery, The Haunted Bedroom] contains place)
+		{
+			tooManyAdventures = false;		//if we do not have iotm powerlevel zones then we are forced to use haunted gallery or bedroom
+		}
 
 		if(tooManyAdventures)
 		{
