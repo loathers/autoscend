@@ -526,7 +526,7 @@ boolean L9_aBooPeak()
 			doThisBoo = true;
 		}
 
-		auto_log_info("doThisBoo set ", "blue");
+		auto_log_info("doThisBoo set " + doThisBoo + "consider " +considerHP + "totaldmg" + totalDamage, "blue");
 
 		if(doThisBoo)
 		{
