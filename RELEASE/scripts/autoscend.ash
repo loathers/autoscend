@@ -1578,7 +1578,9 @@ boolean LX_attemptPowerLevel()
 		{
 			goal_count++;
 		}
-		if(my_primestat() == $stat[Moxie] || my_basestat($stat[Moxie]) < 70)	//war outfit requires 70 base mox
+		if(my_primestat() == $stat[Moxie] ||
+		my_basestat($stat[Moxie]) < 70 || 	//war outfit requires 70 base mox
+		get_property("auto_beatenUpCount").to_int() > 5)	//if we are getting beaten up we should raise moxie
 		{
 			goal_count++;
 		}
