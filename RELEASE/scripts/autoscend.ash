@@ -1566,26 +1566,57 @@ boolean LX_attemptPowerLevel()
 		cloverUsageFinish();
 		if(adv_spent) return true;
 	}
-
-	// [Haunted Gallery] is the optimal powerleveling spot if you have no scaling monsters nor clovers left.
+	
 	if (internalQuestStatus("questM21Dance") > 3)
 	{
-		switch (my_primestat())
+		int goal_count = 0;
+		if(my_primestat() == $stat[Muscle])
 		{
-			case $stat[Muscle]:
-				backupSetting("louvreDesiredGoal", "4"); // get Muscle stats
-				break;
-			case $stat[Mysticality]:
-				backupSetting("louvreDesiredGoal", "5"); // get Myst stats
-				break;
-			case $stat[Moxie]:
-				backupSetting("louvreDesiredGoal", "6"); // get Moxie stats
-				break;
+			goal_count++;
 		}
-		providePlusNonCombat(25, true);
-		if(autoAdv($location[The Haunted Gallery])) {
-			return true;
+		if(my_primestat() == $stat[Mysticality] || my_basestat($stat[Mysticality]) < 70)	//war outfit requires 70 base mys
+		{
+			goal_count++;
 		}
+		if(my_primestat() == $stat[Moxie] || my_basestat($stat[Moxie]) < 70)	//war outfit requires 70 base mox
+		{
+			goal_count++;
+		}
+		if(my_meat() < meatReserve() + 1000)
+		{
+			goal_count++;
+		}
+		boolean prefer_bedroom = false;
+		if(goal_count > 1) //for multiple targets then haunted bedroom is best
+		{
+			prefer_bedroom = true;
+		}
+		else if(providePlusNonCombat(25, true, true) < 15)	//only perform the simulation if goal_count is 1
+		{
+			prefer_bedroom = true;	//for one target it depends on your noncombat. bad -combat prefers bedroom. otherwise prefer haunted gallery
+		}
+		
+		if(prefer_bedroom)
+		{
+			if(autoAdv($location[The Haunted Bedroom])) return true;
+		}
+		else		//do [The Haunted Gallery] instead
+		{
+			switch (my_primestat())		//we only ever do the haunted gallery if the sole stat we want is primestat.
+			{
+				case $stat[Muscle]:
+					backupSetting("louvreDesiredGoal", "4"); // get Muscle stats
+					break;
+				case $stat[Mysticality]:
+					backupSetting("louvreDesiredGoal", "5"); // get Myst stats
+					break;
+				case $stat[Moxie]:
+					backupSetting("louvreDesiredGoal", "6"); // get Moxie stats
+					break;
+			}
+			providePlusNonCombat(25, true);
+			if(autoAdv($location[The Haunted Gallery])) return true;
+		}		
 	}
 	return false;
 }
