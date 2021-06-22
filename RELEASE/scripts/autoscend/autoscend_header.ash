@@ -734,12 +734,12 @@ boolean picky_buyskills();
 ########################################################################################################
 //Defined in autoscend/paths/pocket_familiars.ash
 boolean in_pokefam();
-void digimon_initializeDay(int day);
-void digimon_initializeSettings();
+void pokefam_initializeDay(int day);
+void pokefam_initializeSettings();
 string pokefam_defaultMaximizeStatement();
-boolean digimon_makeTeam();
-boolean LM_digimon();
-boolean digimon_autoAdv(int num, location loc, string option);
+boolean pokefam_makeTeam();
+boolean LM_pokefam();
+boolean pokefam_autoAdv(int num, location loc, string option);
 
 ########################################################################################################
 //Defined in autoscend/paths/quantum_terrarium.ash
