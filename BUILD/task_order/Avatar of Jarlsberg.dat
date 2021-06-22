@@ -1,8 +1,7 @@
+LM_jarlsberg
 LX_freeCombatsTask
-catBurglarHeist
 auto_breakfastCounterVisit
 chateauPainting
-LX_faxing
 LX_artistQuest
 LX_galaktikSubQuest
 LX_armorySideQuest
@@ -11,13 +10,9 @@ L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
-resolveSixthDMT
 LX_dinseylandfillFunbucks
 LX_unlockPirateRealm
 handleRainDoh
-LX_quantumTerrarium
-fancyOilPainting
-LX_ornateDowsingRod
 L11_shenStartQuest
 LX_guildUnlock
 LX_unlockDesert
@@ -56,7 +51,6 @@ L11_defeatEd
 L5_slayTheGoblinKing
 L4_batCave
 L3_tavern
-LX_koeInvaderHandler
 setSoftblockDelay	allowSoftblockDelay
 setSoftblockShen	allowSoftblockShen
 L13_towerAscent

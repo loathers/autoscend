@@ -20,10 +20,46 @@ int qt_turnsToNextQuantumAlignment()
 
 boolean LX_quantumTerrarium()
 {
-	if (in_quantumTerrarium())
+	if (!in_quantumTerrarium())
 	{
-		// placeholder. Just spam the console with familiar info for now.
-		auto_log_info(`In Quantum Terrarium. Current familiar = {my_familiar()}. Next familiar = {get_property("nextQuantumFamiliar")}`);
+		return false;
+	}
+
+	switch(my_familiar())
+	{
+		// lets order this by familiar ID in ascending order
+		case $familiar[Machine Elf]:
+			// use free fights for experience and abstractions
+			if (get_property("_machineTunnelsAdv").to_int() < 5)
+			{
+				return autoAdv(1, $location[The Deep Machine Tunnels]);
+			}
+			break;
+		case $familiar[God Lobster]:
+			// use free fights for experience
+			if (auto_godLobsterFightsRemaining() > 0)
+			{
+				if (my_basestat(my_primestat()) < 70)
+				{
+					// 33 advs worth of +10 stats/combat is better than 1.5*70 to all 3 stats
+					if (!possessEquipment($item[God Lobster's Scepter]))
+					{
+						// fight it with no equipment to get the Scepter
+						return godLobsterCombat($item[none], 1);
+					}
+					else
+					{
+						// fight it with the Scepter for the stats buff
+						return godLobsterCombat($item[God Lobster's Scepter], 2);
+					}
+				} else {
+					// get experience
+					return godLobsterCombat();
+				}
+			}
+			break;
+		default:
+			break;
 	}
 	return false;
 }

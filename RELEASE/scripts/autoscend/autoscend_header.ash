@@ -259,6 +259,7 @@ int auto_meteoriteAdesUsed();
 boolean isjanuaryToteAvailable();
 int januaryToteTurnsLeft(item it);
 boolean januaryToteAcquire(item it);
+int auto_godLobsterFightsRemaining();
 boolean godLobsterCombat();
 boolean godLobsterCombat(item it);
 boolean godLobsterCombat(item it, int goal);
