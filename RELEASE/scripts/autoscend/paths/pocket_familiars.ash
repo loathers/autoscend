@@ -3,12 +3,12 @@ boolean in_pokefam()
 	return auto_my_path() == "Pocket Familiars";
 }
 
-void digimon_initializeDay(int day)
+void pokefam_initializeDay(int day)
 {
-	digimon_makeTeam();
+	pokefam_makeTeam();
 }
 
-void digimon_initializeSettings()
+void pokefam_initializeSettings()
 {
 	if(in_pokefam())
 	{
@@ -29,14 +29,14 @@ string pokefam_defaultMaximizeStatement()
 	return res;
 }
 
-boolean digimon_makeTeam()
+boolean pokefam_makeTeam()
 {
 	if(in_pokefam())
 	{
 		string temp = visit_url("famteam.php", false);
 
 		familiar back = $familiar[Killer Bee];
-		foreach fam in $familiars[Killer Bee, Space Jellyfish, Slotter]
+		foreach fam in $familiars[Killer Bee, Slotter]
 		{
 			if(have_familiar(fam))
 			{
@@ -45,9 +45,9 @@ boolean digimon_makeTeam()
 		}
 
 		temp = visit_url("famteam.php?slot=3&fam=" + to_int(back) + "&pwd&action=slot");
-		if(get_property("_digimonBack").to_familiar() != back)
+		if(get_property("_pokefamBack").to_familiar() != back)
 		{
-			set_property("_digimonBack", back);
+			set_property("_pokefamBack", back);
 		}
 
 		familiar middle = $familiar[Scary Death Orb];
@@ -60,9 +60,9 @@ boolean digimon_makeTeam()
 		}
 
 		temp = visit_url("famteam.php?slot=2&fam=" + to_int(middle) + "&pwd&action=slot");
-		if(get_property("_digimonMiddle").to_familiar() != middle)
+		if(get_property("_pokefamMiddle").to_familiar() != middle)
 		{
-			set_property("_digimonMiddle", middle);
+			set_property("_pokefamMiddle", middle);
 		}
 
 		familiar front = $familiar[none];
@@ -89,21 +89,21 @@ boolean digimon_makeTeam()
 			front = $familiar[Levitating Potato];
 		}
 
-		auto_log_info("I choose you! " + front.name + " the " + front + "!!!!", "green");
+		auto_log_info("Choosing " + front + " for front slot.", "green");
 		temp = visit_url("famteam.php?slot=1&fam=" + to_int(front) + "&pwd&action=slot");
-		if(get_property("_digimonFront").to_familiar() != front)
+		if(get_property("_pokefamFront").to_familiar() != front)
 		{
-			set_property("_digimonFront", front);
+			set_property("_pokefamFront", front);
 		}
 	}
 	return true;
 }
 
-boolean LM_digimon()
+boolean LM_pokefam()
 {
 	if(in_pokefam())
 	{
-		digimon_makeTeam();
+		pokefam_makeTeam();
 		if((my_primestat() == $stat[Muscle]) && !possessEquipment($item[Dented Scepter]) && (my_level() < 13))
 		{
 			auto_advWitchess("king");
@@ -112,11 +112,11 @@ boolean LM_digimon()
 	return false;
 }
 
-boolean digimon_autoAdv(int num, location loc, string option)
+boolean pokefam_autoAdv(int num, location loc, string option)
 {
 	if(!in_pokefam())
 	{
-		abort("Can not use Digimon protocols without Digimon!");
+		abort("You are not in a Pocket Familiars run.");
 	}
 
 	if(option == "")
@@ -132,12 +132,12 @@ boolean digimon_autoAdv(int num, location loc, string option)
 		temp = visit_url(to_url(loc) + "a", false);
 	}
 
-	auto_log_info("[Insert Punch Out music here]", "green");
+	auto_log_info("Preparing battle script.", "green");
 	temp = visit_url("fambattle.php");
 	int choiceLimiter = 0;
 	while(contains_text(temp, "whichchoice value=") || contains_text(temp, "whichchoice="))
 	{
-		auto_log_warning("Digimon hit a choice adventure (" + loc + "), trying....", "red");
+		auto_log_warning("Autoscend hit a choice adventure (" + loc + "), trying....", "red");
 		matcher choice_matcher = create_matcher("(?:whichchoice value=(\\d+))|(?:whichchoice=(\\d+))", temp);
 		if(choice_matcher.find())
 		{
@@ -169,7 +169,7 @@ boolean digimon_autoAdv(int num, location loc, string option)
 
 	if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
 	{
-		auto_log_info("Consulting the Helix Fossil....", "green");
+		auto_log_info("Consulting Ezandora's Helix Fossil script:", "green");
 		boolean ignore = cli_execute("ashq import 'Pocket Familiars'; buffer temp = PocketFamiliarsFight();");
 		if($locations[The Defiled Alcove, The Defiled Cranny, The Defiled Niche, The Defiled Nook] contains my_location())
 		{
@@ -182,27 +182,22 @@ boolean digimon_autoAdv(int num, location loc, string option)
 		return true;
 	}
 
-	if(get_property("_digimonFront") == "")
+	if(get_property("_pokefamFront") == "")
 	{
-		set_property("_digimonFront", my_poke_fam(0));
+		set_property("_pokefamFront", my_poke_fam(0));
 	}
-	if(get_property("_digimonMiddle") == "")
+	if(get_property("_pokefamMiddle") == "")
 	{
-		set_property("_digimonMiddle", my_poke_fam(1));
+		set_property("_pokefamMiddle", my_poke_fam(1));
 	}
-	if(get_property("_digimonBack") == "")
+	if(get_property("_pokefamBack") == "")
 	{
-		set_property("_digimonBack", my_poke_fam(2));
+		set_property("_pokefamBack", my_poke_fam(2));
 	}
 
 
-	familiar blastFam = to_familiar(get_property("_digimonBack"));
-	familiar midFam = to_familiar(get_property("_digimonMiddle"));
-#	familiar blastFam = $familiar[Space Jellyfish];
-#	if(!have_familiar($familiar[Space Jellyfish]))
-#	{
-#		blastFam = $familiar[Killer Bee];
-#	}
+	familiar blastFam = to_familiar(get_property("_pokefamBack"));
+	familiar midFam = to_familiar(get_property("_pokefamMiddle"));	
 
 	if(contains_text(temp, "famaction[ult_crazyblast-" + to_int(blastFam) + "]"))
 	{
@@ -232,7 +227,7 @@ boolean digimon_autoAdv(int num, location loc, string option)
 		}
 		if(action > 40)
 		{
-			abort("Can not win this Digimon Battle!");
+			abort("Can not win this Pocket Familiars battle!");
 		}
 	}
 

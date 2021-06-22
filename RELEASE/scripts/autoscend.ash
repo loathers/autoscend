@@ -214,7 +214,7 @@ void initializeSettings() {
 	bond_initializeSettings();
 	fallout_initializeSettings();
 	pete_initializeSettings();
-	digimon_initializeSettings();
+	pokefam_initializeSettings();
 	majora_initializeSettings();
 	glover_initializeSettings();
 	bat_initializeSettings();
@@ -1104,7 +1104,7 @@ void initializeDay(int day)
 	pete_initializeDay(day);
 	cs_initializeDay(day);
 	bond_initializeDay(day);
-	digimon_initializeDay(day);
+	pokefam_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);
@@ -2686,7 +2686,7 @@ boolean doTasks()
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
-	if(LM_digimon())					return true;
+	if(LM_pokefam())					return true;
 	if(LM_majora())						return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;

@@ -62,7 +62,7 @@ boolean L4_batCave()
 		int batskinBelt = item_amount($item[Batskin Belt]);
 		auto_change_mcd(4); // get the pants from the Boss Bat.
 		autoAdv($location[The Boss Bat\'s Lair]);
-		# DIGIMON remove once mafia tracks this
+		# POCKET FAMILIARS remove once mafia tracks this
 		if(item_amount($item[Batskin Belt]) != batskinBelt)
 		{
 			auto_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
