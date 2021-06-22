@@ -147,6 +147,11 @@ boolean januaryToteAcquire(item it)
 	return false;
 }
 
+int auto_godLobsterFightsRemaining()
+{
+	return 3 - get_property("_godLobsterFights").to_int();
+}
+
 boolean godLobsterCombat()
 {
 	return godLobsterCombat($item[none]);
@@ -164,6 +169,8 @@ boolean godLobsterCombat(item it, int goal)
 
 boolean godLobsterCombat(item it, int goal, string option)
 {
+	// it = equipment we want the God Lobster to wear
+	// goal = option we want to select in the post-combat choice
 	if(!canChangeToFamiliar($familiar[God Lobster]))
 	{
 		return false;
@@ -185,8 +192,11 @@ boolean godLobsterCombat(item it, int goal, string option)
 		return false;
 	}
 
-	handleFamiliar($familiar[God Lobster]);
-	use_familiar($familiar[God Lobster]);
+	if (!in_quantumTerrarium())
+	{
+		handleFamiliar($familiar[God Lobster]);
+		use_familiar($familiar[God Lobster]);
+	}
 
 	if((equipped_item($slot[familiar]) != it) && (it != $item[none]))
 	{

@@ -3830,6 +3830,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Busy Bein\' Delicious]:		useItem = $item[Crimbo fudge];					break;
 	case $effect[Butt-Rock Hair]:				useItem = $item[Hair Spray];					break;
 	case $effect[Can\'t Smell Nothin\']:	useItem = $item[Dogsgotnonoz pills];	break;
+	case $effect[Car-Charged]:	useItem = $item[Battery (car)];	break;
 	case $effect[Carlweather\'s Cantata of Confrontation]:useSkill = $skill[Carlweather\'s Cantata of Confrontation];break;
 	case $effect[Carol Of The Bulls]: useSkill = $skill[Carol Of The Bulls]; break;
 	case $effect[Carol Of The Hells]: useSkill = $skill[Carol Of The Hells]; break;
@@ -3969,6 +3970,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Hardly Poisoned At All]:		useSkill = $skill[Disco Nap];					break;
 	case $effect[Healthy Blue Glow]:			useItem = $item[gold star];						break;
 	case $effect[Heightened Senses]:			useItem = $item[airborne mutagen];				break;
+	case $effect[Heart of Green]:			useItem = $item[green candy heart];				break;
+	case $effect[Heart of Lavender]:			useItem = $item[lavender candy heart];				break;
+	case $effect[Heart of Orange]:			useItem = $item[orange candy heart];				break;
+	case $effect[Heart of Pink]:			useItem = $item[pink candy heart];				break;
+	case $effect[Heart of White]:			useItem = $item[white candy heart];				break;
+	case $effect[Heart of Yellow]:			useItem = $item[yellow candy heart];				break;
 	case $effect[Hide of Sobek]:				useSkill = $skill[Hide of Sobek];				break;
 	case $effect[High Colognic]:				useItem = $item[Musk Turtle];					break;
 	case $effect[Hippy Stench]:					useItem = $item[reodorant];						break;
@@ -4251,6 +4258,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Superheroic]:					useItem = $item[Confiscated Comic Book];		break;
 	case $effect[Superhuman Sarcasm]:			useItem = $item[Serum of Sarcasm];				break;
 	case $effect[Suspicious Gaze]:				useSkill = $skill[Suspicious Gaze];				break;
+	case $effect[Sweet Heart]:					useItem = $item[love song of sugary cuteness];			break;
 	case $effect[Sweet\, Nuts]:					useItem = $item[Crimbo Candied Pecan];			break;
 	case $effect[Sweetbreads Flamb&eacute;]:	useItem = $item[Greek Fire];					break;
 	case $effect[Takin\' It Greasy]:			useSkill = $skill[Grease Up];					break;
@@ -5925,6 +5933,8 @@ int meatReserve()
 	
 	int reserve_gnasir = 0;		//used to track how much we need to reserve for black paint for gnasir
 	int reserve_diary = 0;		//used to track how much we need to reserve to acquire [your father's MacGuffin diary] at L11 quest
+	int reserve_zeppelin = 0;	//used to track how much we need to reserve for a zeppelin ticket
+	int reserve_palindome = 0;	//used to track how much we need to reserve for palindome photographs
 	int reserve_island = 0;		//used to track how much we need to reserve to unlock the mysterious island
 	
 	//how much do we reserve for gnasir?
@@ -5948,17 +5958,40 @@ int meatReserve()
 		}
 	}
 	
+	//how much do we reserve for a zeppelin ticket?
+	if(my_level() >= 11 && internalQuestStatus("questL11Ron") < 5 && item_amount($item[Red Zeppelin Ticket]) < 1)
+	{	//the copperhead part tries for a priceless diamond, but if it's over without getting one
+		if( (get_property("questL11Shen") == "finished" || $location[the copperhead club].turns_spent >= 15) && item_amount($item[priceless diamond])< 1)
+			reserve_zeppelin += 5000 * npcStoreDiscountMulti();
+	}	
+	
+	//how much do we reserve for palindome photographs?
+	if(my_level() >= 11 && internalQuestStatus("questL11Palindome") < 1)
+	{	
+		if(item_amount($item[Photograph Of A Red Nugget]) < 1)
+			reserve_palindome += 500;
+		if(item_amount($item[Photograph Of God]) < 1)
+			reserve_palindome += 500;
+	}
+	
 	//how much do we reserve for unlocking mysterious island?
 	if(get_property("lastIslandUnlock").to_int() < my_ascensions())		//need to unlock island
 	{
-		reserve_island += 1500;		//3 vacations. no need to count script. we don't pull it or get it prematurely.
+		int price_vacation = 500;
+		if(my_path() == "Way of the Surprising Fist")
+		{
+		price_vacation = 5;  //yes really. just 5 meat each
+		}
+		//TODO: scrips. they may have been pulled manually, and one optional property does pull them
+		reserve_island += price_vacation * 3;	//3 vacations
+		
 		if(item_amount($item[dingy planks]) == 0)
 		{
 			reserve_island += 400 * npcStoreDiscountMulti();
 		}
 	}
 	
-	return reserve_gnasir + reserve_diary + reserve_island + reserve_extra;
+	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
 }
 
 // Check to see if we can untinker.

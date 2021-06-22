@@ -1203,7 +1203,24 @@ void initializeDay(int day)
 			cli_execute("counters");
 			council();
 		}
-	}
+		
+		// If we have the shortest order cook, loop familiars that will benefit from that.
+		if (pathHasFamiliar() && pathAllowsChangingFamiliar())
+		{
+			familiar init_fam = my_familiar();
+			if (have_familiar($familiar[shorter-order cook]))
+			{
+				foreach fam in $familiars[ghost of crimbo carols, ghost of crimbo commerce, ghost of crimbo cheer]
+				{
+					if (have_familiar(fam))
+					{
+						use_familiar(fam);
+					}
+				}
+			}
+			use_familiar(init_fam);
+		}
+	}//day1
 	else if(day == 2)
 	{
 		equipBaseline();
