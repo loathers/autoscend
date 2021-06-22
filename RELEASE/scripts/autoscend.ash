@@ -1205,14 +1205,17 @@ void initializeDay(int day)
 		}
 		
 		// If we have the shortest order cook, loop familiars that will benefit from that.
-		if(pathHasFamiliar() && pathAllowsChangingFamiliar()) {
+		if (pathHasFamiliar() && pathAllowsChangingFamiliar())
+		{
 			familiar init_fam = my_familiar();
 			if (have_familiar($familiar[shorter-order cook]))
 			{
-				if (have_familiar($familiar[ghost of crimbo carols])) {
-					use_familiar($familiar[ghost of crimbo carols]);
-					use_familiar($familiar[ghost of crimbo commerce]);
-					use_familiar($familiar[ghost of crimbo cheer]);
+				foreach fam in $familiars[ghost of crimbo carols, ghost of crimbo commerce, ghost of crimbo cheer]
+				{
+					if (have_familiar(fam))
+					{
+						use_familiar(fam);
+					}
 				}
 			}
 			use_familiar(init_fam);
