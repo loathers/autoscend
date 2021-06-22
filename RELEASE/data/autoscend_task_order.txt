@@ -4,6 +4,65 @@
 # Task ordering. Functions must be: boolean func()
 # If path name does not exist in data file, 'default' will be used
 # path name, index, function, condition_function (optional)
+
+Avatar of Jarlsberg	0	LM_jarlsberg
+Avatar of Jarlsberg	1	LX_freeCombatsTask
+Avatar of Jarlsberg	2	auto_breakfastCounterVisit
+Avatar of Jarlsberg	3	chateauPainting
+Avatar of Jarlsberg	4	LX_artistQuest
+Avatar of Jarlsberg	5	LX_galaktikSubQuest
+Avatar of Jarlsberg	6	LX_armorySideQuest
+Avatar of Jarlsberg	7	LX_meatsmithSubQuest
+Avatar of Jarlsberg	8	L9_leafletQuest
+Avatar of Jarlsberg	9	L5_findKnob
+Avatar of Jarlsberg	10	L12_sonofaPrefix
+Avatar of Jarlsberg	11	LX_burnDelay
+Avatar of Jarlsberg	12	LX_dinseylandfillFunbucks
+Avatar of Jarlsberg	13	LX_unlockPirateRealm
+Avatar of Jarlsberg	14	handleRainDoh
+Avatar of Jarlsberg	15	L11_shenStartQuest
+Avatar of Jarlsberg	16	LX_guildUnlock
+Avatar of Jarlsberg	17	LX_unlockDesert
+Avatar of Jarlsberg	18	LX_lockPicking
+Avatar of Jarlsberg	19	LX_fatLootToken
+Avatar of Jarlsberg	20	L5_getEncryptionKey
+Avatar of Jarlsberg	21	L5_findKnob
+Avatar of Jarlsberg	22	L2_mosquito
+Avatar of Jarlsberg	23	LX_unlockHiddenTemple
+Avatar of Jarlsberg	24	L6_dakotaFanning
+Avatar of Jarlsberg	25	LX_steelOrgan
+Avatar of Jarlsberg	26	L12_islandWar
+Avatar of Jarlsberg	27	LX_spookyravenManorFirstFloor
+Avatar of Jarlsberg	28	L11_blackMarket
+Avatar of Jarlsberg	29	L11_forgedDocuments
+Avatar of Jarlsberg	30	L11_mcmuffinDiary
+Avatar of Jarlsberg	31	L11_getBeehive
+Avatar of Jarlsberg	32	L11_unlockHiddenCity
+Avatar of Jarlsberg	33	L11_hiddenCityZones
+Avatar of Jarlsberg	34	L11_hiddenCity
+Avatar of Jarlsberg	35	LX_spookyravenManorSecondFloor
+Avatar of Jarlsberg	36	L11_mauriceSpookyraven
+Avatar of Jarlsberg	37	L11_talismanOfNam
+Avatar of Jarlsberg	38	L10_plantThatBean
+Avatar of Jarlsberg	39	L10_rainOnThePlains
+Avatar of Jarlsberg	40	L9_chasmBuild
+Avatar of Jarlsberg	41	L9_highLandlord
+Avatar of Jarlsberg	42	L8_trapperQuest
+Avatar of Jarlsberg	43	L6_friarsGetParts
+Avatar of Jarlsberg	44	L7_crypt
+Avatar of Jarlsberg	45	L11_palindome
+Avatar of Jarlsberg	46	L11_aridDesert
+Avatar of Jarlsberg	47	L11_unlockPyramid
+Avatar of Jarlsberg	48	L11_unlockEd
+Avatar of Jarlsberg	49	L11_defeatEd
+Avatar of Jarlsberg	50	L5_slayTheGoblinKing
+Avatar of Jarlsberg	51	L4_batCave
+Avatar of Jarlsberg	52	L3_tavern
+Avatar of Jarlsberg	53	setSoftblockDelay	allowSoftblockDelay
+Avatar of Jarlsberg	54	setSoftblockShen	allowSoftblockShen
+Avatar of Jarlsberg	55	L13_towerAscent
+Avatar of Jarlsberg	56	LX_attemptPowerLevel
+
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	catBurglarHeist
 Quantum Terrarium	2	auto_breakfastCounterVisit
