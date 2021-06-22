@@ -25,7 +25,7 @@ boolean autoAdv(int num, location loc, string option)
 
 	if(in_pokefam())
 	{
-		return digimon_autoAdv(num, loc, option);
+		return pokefam_autoAdv(num, loc, option);
 	}
 
 	// adv1 can erroneously return false for "choiceless" non-combats
