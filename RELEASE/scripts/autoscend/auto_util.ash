@@ -5933,6 +5933,8 @@ int meatReserve()
 	
 	int reserve_gnasir = 0;		//used to track how much we need to reserve for black paint for gnasir
 	int reserve_diary = 0;		//used to track how much we need to reserve to acquire [your father's MacGuffin diary] at L11 quest
+	int reserve_zeppelin = 0;	//used to track how much we need to reserve for a zeppelin ticket
+	int reserve_palindome = 0;	//used to track how much we need to reserve for palindome photographs
 	int reserve_island = 0;		//used to track how much we need to reserve to unlock the mysterious island
 	
 	//how much do we reserve for gnasir?
@@ -5956,17 +5958,40 @@ int meatReserve()
 		}
 	}
 	
+	//how much do we reserve for a zeppelin ticket?
+	if(my_level() >= 11 && internalQuestStatus("questL11Ron") < 5 && item_amount($item[Red Zeppelin Ticket]) < 1)
+	{	//the copperhead part tries for a priceless diamond, but if it's over without getting one
+		if( (get_property("questL11Shen") == "finished" || $location[the copperhead club].turns_spent >= 15) && item_amount($item[priceless diamond])< 1)
+			reserve_zeppelin += 5000 * npcStoreDiscountMulti();
+	}	
+	
+	//how much do we reserve for palindome photographs?
+	if(my_level() >= 11 && internalQuestStatus("questL11Palindome") < 1)
+	{	
+		if(item_amount($item[Photograph Of A Red Nugget]) < 1)
+			reserve_palindome += 500;
+		if(item_amount($item[Photograph Of God]) < 1)
+			reserve_palindome += 500;
+	}
+	
 	//how much do we reserve for unlocking mysterious island?
 	if(get_property("lastIslandUnlock").to_int() < my_ascensions())		//need to unlock island
 	{
-		reserve_island += 1500;		//3 vacations. no need to count script. we don't pull it or get it prematurely.
+		int price_vacation = 500;
+		if(my_path() == "Way of the Surprising Fist")
+		{
+		price_vacation = 5;  //yes really. just 5 meat each
+		}
+		//TODO: scrips. they may have been pulled manually, and one optional property does pull them
+		reserve_island += price_vacation * 3;	//3 vacations
+		
 		if(item_amount($item[dingy planks]) == 0)
 		{
 			reserve_island += 400 * npcStoreDiscountMulti();
 		}
 	}
 	
-	return reserve_gnasir + reserve_diary + reserve_island + reserve_extra;
+	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
 }
 
 // Check to see if we can untinker.

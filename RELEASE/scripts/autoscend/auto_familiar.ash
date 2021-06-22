@@ -694,6 +694,16 @@ void preAdvUpdateFamiliar(location place)
 		autoEquip($slot[familiar], $item[gnomish housemaid's kgnee]);
 	}
 
+	if (my_familiar() == $familiar[Baby Bugged Bugbear])
+	{
+		if (!possessEquipment($item[Bugged beanie]))
+		{
+			// Once per day, if you don't have the Bugged Beanie equipped, in inventory or closet
+			// you can get one for free by visiting the arena
+			visit_url("arena.php");
+		}
+	}
+
 	if(my_familiar() == $familiar[Trick-Or-Treating Tot])
 	{
 		if($locations[A-Boo Peak, The Haunted Kitchen] contains place)
