@@ -527,8 +527,9 @@ boolean ed_buySkills()
 				}
 				else
 				{
-					if((imbuePoints > 4) && (my_level() >= 9))
+					if((my_level() >= 9) && (my_level() <= 12))
 					{
+						// got scribe early. Imbue to level 21 for passive stat gain
 						if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 441))
 						{
 							tryImbue = $servant[Scribe];
