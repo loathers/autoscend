@@ -1,5 +1,5 @@
 https://github.com/Ezandora/Detective-Solver/branches/Release/
-https://github.com/Loathing-Associates-Scripting-Society/Helix-Fossil/branches/Release/
+https://github.com/Ezandora/Helix-Fossil/branches/Release/
 https://github.com/Ezandora/Far-Future/branches/Release/
 https://github.com/Ezandora/Voting-Booth/trunk/Release/
 https://github.com/Ezandora/Comb-Beach/trunk/Release/
