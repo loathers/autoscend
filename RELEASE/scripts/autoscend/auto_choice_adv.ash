@@ -326,7 +326,18 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 876: // One Simple Nightstand (The Haunted Bedroom)
-			run_choice(2); // get muscle substats
+			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && auto_my_path() != "Way of the Surprising Fist")
+			{
+				run_choice(1); //get old leather wallet worth ~500 meat
+			}
+			else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[muscle] && my_buffedstat($stat[muscle]) < 150)
+			{
+				run_choice(3); // spend 1 ghost key for primestat, get ~200 muscle XP
+			}
+			else
+			{
+				run_choice(2); // get min(200,muscle) of muscle XP
+			}
 			break;
 		case 877: // One Mahogany Nightstand (The Haunted Bedroom)
 			run_choice(1); // get half of a memo or old coin purse
@@ -342,13 +353,19 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(4); // get disposable instant camera
 			} else if (my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve()) {
 				run_choice(1); // get ~500 meat
+			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[mysticality] && my_buffedstat($stat[mysticality]) < 150) {
+				run_choice(5); // spend 1 ghost key for primestat, get ~200 mysticality XP
 			} else {
-				run_choice(2); // get mysticality substats
+				run_choice(2); // get min(200,mys) of mys XP
 			}
 			break;
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
-			if (in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
+			if(options contains 5 && auto_mall_price($item[Engorged Sausages and You]) > 1000) {
+				run_choice(5); // only shows up rarely. when this line was added it was worth 1.3 million in mall
+			} if (in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
 				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
+			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie] && my_buffedstat($stat[moxie]) < 150) {
+				run_choice(4); // spend 1 ghost key for primestat, get ~200 moxie XP
 			} else {
 				run_choice(1); // get moxie substats
 			}
