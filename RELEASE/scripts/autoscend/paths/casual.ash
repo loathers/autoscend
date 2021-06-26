@@ -1,7 +1,17 @@
 boolean inCasual()
 {
-	if(get_property("_casualAscension").to_int() >= my_ascensions())
+	// remove this once mafia has a in_casual() function.
+	if (get_property("auto_isAFilthyCasual") == "")
 	{
+		string page = visit_url("api.php?what=status&for=4", false);
+		set_property("auto_isAFilthyCasual", page.contains_text(`"casual":"1"`));
+	}
+	if (get_property("auto_isAFilthyCasual").to_boolean())
+	{
+		if (get_property("_casualAscension") == "")
+		{
+			set_property("_casualAscension", my_ascensions());
+		}
 		return true;
 	}
 	return false;

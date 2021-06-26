@@ -576,7 +576,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			if (my_class() == $class[Sauceror] || can_interact())
 			{
 				// your MP cup runneth over
-				meat_per_mp = 0.1;
+				meat_per_mp = 0;
 			}
 			skill s = to_skill(metadata.name);
 			return (mp_cost(s) * meat_per_mp);

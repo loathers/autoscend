@@ -203,6 +203,7 @@ void initializeSettings() {
 	remove_property("auto_minedCells");
 	remove_property("auto_shinningStarted");
 	remove_property("auto_boughtCommerceGhostItem");
+	remove_property("auto_isAFilthyCasual");
 	beehiveConsider();
 
 	eudora_initializeSettings();
@@ -2824,14 +2825,9 @@ void auto_begin()
 			auto_log_warning("Okay, but the warranty is off.", "red");
 		}
 	}
-
+	
 	//This also should set our path too.
 	string page = visit_url("main.php");
-	page = visit_url("api.php?what=status&for=4", false);
-	if((get_property("_casualAscension").to_int() >= my_ascensions()) && (my_ascensions() > 0))
-	{
-		return;
-	}
 
 	if(contains_text(page, "Being Picky"))
 	{
