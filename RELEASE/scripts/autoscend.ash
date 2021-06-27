@@ -203,7 +203,6 @@ void initializeSettings() {
 	remove_property("auto_minedCells");
 	remove_property("auto_shinningStarted");
 	remove_property("auto_boughtCommerceGhostItem");
-	remove_property("auto_isAFilthyCasual");
 	beehiveConsider();
 
 	eudora_initializeSettings();
