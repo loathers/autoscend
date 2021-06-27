@@ -511,7 +511,6 @@ boolean L13_bhy_towerFinal();
 
 ########################################################################################################
 //Defined in autoscend/paths/casual.ash
-boolean inCasual();
 boolean inAftercore();
 boolean inPostRonin();
 boolean L8_slopeCasual();

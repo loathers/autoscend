@@ -1,22 +1,3 @@
-boolean inCasual()
-{
-	// remove this once mafia has a in_casual() function.
-	if (get_property("auto_isAFilthyCasual") == "")
-	{
-		string page = visit_url("api.php?what=status&for=4", false);
-		set_property("auto_isAFilthyCasual", page.contains_text(`"casual":"1"`));
-	}
-	if (get_property("auto_isAFilthyCasual").to_boolean())
-	{
-		if (get_property("_casualAscension") == "")
-		{
-			set_property("_casualAscension", my_ascensions());
-		}
-		return true;
-	}
-	return false;
-}
-
 boolean inAftercore()
 {
 	return get_property("kingLiberated").to_boolean();
@@ -25,7 +6,7 @@ boolean inAftercore()
 boolean inPostRonin()
 {
 	//can interact means you are not in ronin and not in hardcore. It returns true in casual, aftercore, and postronin
-	if(can_interact() && !inCasual() && !inAftercore())
+	if(can_interact() && !in_casual() && !inAftercore())
 	{
 		return true;
 	}
