@@ -917,7 +917,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			(organCost(it) > 0) &&
 			(it.fullness == 0 || it.inebriety == 0) &&
 			auto_is_valid(it) &&
-			(historical_price(it) <= 20000 || (KEY_LIME_PIES contains it && historical_price(it) < 40000)))
+			historical_price(it) <= get_property("autoBuyPriceLimit").to_int())
 		{
 			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
 			if((it == $item[Spaghetti Breakfast]) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean())) continue;
@@ -947,13 +947,16 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
-			if (is_tradeable(it) && !isSpeakeasyDrink(it))
+			if (is_tradeable(it) && !isSpeakeasyDrink(it) && canPull(it))
 			{
-				pullables[it] = min(howmany, pulls_remaining());
-			}
-			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore())
-			{
-				pullables[it] = 1;
+				if(KEY_LIME_PIES contains it)
+				{
+					pullables[it] = 1;		//limit key lime pies to 1 pull only
+				}
+				else
+				{
+					pullables[it] = min(howmany, pulls_remaining());
+				}
 			}
 		}
 	}
