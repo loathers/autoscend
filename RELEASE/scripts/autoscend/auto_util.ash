@@ -3063,7 +3063,7 @@ boolean canPull(item it)
 		meat = max(meat, my_meat() - 5000);
 	}
 	int curPrice = auto_mall_price(it);
-	if (curPrice >= 20000)
+	if (curPrice > 20000 || curPrice > get_property("autoBuyPriceLimit").to_int())
 	{
 		return false;
 	}
