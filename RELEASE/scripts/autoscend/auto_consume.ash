@@ -951,9 +951,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				pullables[it] = min(howmany, pulls_remaining());
 			}
-			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore())
+			if ((KEY_LIME_PIES contains it) && !(pullables contains it) && !in_hardcore() && historical_price(it) <= get_property("autoBuyPriceLimit").to_int())
 			{
-				pullables[it] = 1;
+				pullables[it] = 1;		//we do not have one. but under these conditions we plan to mallbuy one then pull it
 			}
 		}
 	}
