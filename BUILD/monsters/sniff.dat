@@ -16,7 +16,7 @@ Blooper	loc:8-Bit Realm
 Bob Racecar	!sniffed:Racecar Bob
 Racecar Bob	!sniffed:Bob Racecar
 Government Scientist	class:Ed
-Green Ops Soldier	!path:Kingdom of Exploathing
+Green Ops Soldier	!path:Kingdom of Exploathing;prop:hippiesDefeated>399
 War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
 War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
 Possessed Wine Rack
