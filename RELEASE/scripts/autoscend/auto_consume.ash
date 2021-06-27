@@ -516,9 +516,19 @@ boolean canChew(item toChew)
 
 void consumeStuff()
 {
-	// grind and eat any sausage that you can
-	auto_sausageGrind(23 - get_property("_sausagesMade").to_int());
-	auto_sausageEatEmUp();
+	// if adventures not needed yet, leave most sausages to acquireMP()
+	if (my_adventures() > 10)
+	{
+		// only grind up to one per level in reserve instead of always grinding all the meat that isn't nailed down
+		auto_sausageGrind(my_level() - get_property("_sausagesMade").to_int());
+		// it would be a good idea to eat one early on for MP but 2-3 things currently don't allow it:
+		// auto_sausageGrind wants 90 turncount and desert unlocked, sausage_reserve_size wants >3, and acquireMP() wants it to restore at least 300 MP
+	}
+	else		
+	{	// grind and eat any sausage that you can once adventures are needed
+		auto_sausageGrind(23 - get_property("_sausagesMade").to_int());
+		auto_sausageEatEmUp();
+	}
 
 	if (get_property("auto_limitConsume").to_boolean())
 	{
