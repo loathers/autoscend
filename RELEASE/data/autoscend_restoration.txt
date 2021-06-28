@@ -17,7 +17,7 @@
 16	Doc Galaktik's Pungent Unguent	item	4	0	0	0	none	none
 17	palm-frond fan	item	40	40	0	0	none	none
 18	Cloaca-Cola	item	0	12	0	0	none	none
-19	scroll of drastic healing	item	ALL	0	0	0	none	none
+19	scroll of drastic healing	item	100000	0	0	0	none	none
 20	warm El Vibrato drone	item	ALL	0	0	0	none	Well-preserved
 21	Camp Scout pup tent	item	1000	0	0	0	none	none
 22	really thick bandage	item	110	0	0	0	none	none
