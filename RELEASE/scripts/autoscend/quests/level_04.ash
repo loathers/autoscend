@@ -14,28 +14,29 @@ boolean L4_batCave()
 	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 
 	int batStatus = internalQuestStatus("questL04Bat");
-	if(batStatus < 3)
+	if (batStatus < 3)
 	{
-		boolean can_use_biscuit = auto_is_valid($item[Sonar-In-A-Biscuit]);
-		if(can_use_biscuit && item_amount($item[Sonar-In-A-Biscuit]) > 0)
+		if (auto_is_valid($item[Sonar-In-A-Biscuit]))
 		{
-			if(use(1, $item[Sonar-In-A-Biscuit]))
+			if (item_amount($item[Sonar-In-A-Biscuit]) == 0 && can_interact())
 			{
-				return true;
+				//if in post ronin or in casual, buy Sonar-In-A-Biscuit if cheaper than what it would cost to get with adventures and clovers.
+				int valueOfSonar = (get_property("valueOfAdventure").to_int() + min(mall_price($item[disassembled clover]), mall_price($item[ten-leaf clover]))) * 0.5;
+				buyUpTo(1, $item[Sonar-In-A-Biscuit], valueOfSonar);
 			}
-			else
+			if (item_amount($item[Sonar-In-A-Biscuit]) > 0)
 			{
-				auto_log_warning("Failed to use [Sonar-In-A-Biscuit] for some reason. refreshing inventory and skipping", "red");
-				visit_url("place.php?whichplace=bathole");
-				cli_execute("refresh inv");
-			}
-		}
-		else if(can_use_biscuit && can_interact())
-		{
-			//if in post ronin or in casual, buy and use [Sonar-In-A-Biscuit] if cheaper than 500 meat.
-			if(buyUpTo(1, $item[Sonar-In-A-Biscuit], 500))
-			{
-				if(use(1, $item[Sonar-In-A-Biscuit])) return true;
+				if (use(1, $item[Sonar-In-A-Biscuit]))
+				{
+					return true;
+				}
+				else
+				{
+					auto_log_warning("Failed to use Sonar-In-A-Biscuit for some reason. refreshing inventory and skipping", "red");
+					visit_url("place.php?whichplace=bathole");
+					cli_execute("refresh inv");
+					return false;
+				}
 			}
 		}
 	}

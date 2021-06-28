@@ -1,4 +1,4 @@
-since r20762;	//min mafia revision needed to run this script. Last update: Add 'logPreferenceChangeFilter', which is a comma separated list of preferences to not log when logPreferenceChange is enabled
+since r20779;	//min mafia revision needed to run this script. Last update: Add is_casual() function that returns value from api.php
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -2631,9 +2631,10 @@ boolean doTasks()
 	{
 		auto_log_warning("I am in aftercore", "red");
 		return false;
-	}	
-	if(inCasual())
-	{	
+	}
+	if (in_casual() && get_property("_casualAscension").to_int() != -1)
+	{
+		set_property("_casualAscension", my_ascensions());
 		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
 		return false;	
 	}
@@ -2828,11 +2829,6 @@ void auto_begin()
 	//This also should set our path too.
 	string page = visit_url("main.php");
 	page = visit_url("api.php?what=status&for=4", false);
-	if((get_property("_casualAscension").to_int() >= my_ascensions()) && (my_ascensions() > 0))
-	{
-		return;
-	}
-
 	if(contains_text(page, "Being Picky"))
 	{
 		picky_startAscension();
