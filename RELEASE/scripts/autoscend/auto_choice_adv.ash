@@ -507,6 +507,9 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(6); // skip
 			}
 			break;
+		case 1119: // Blue Sideways In Time (Machine Elf)
+			run_choice(1); // acquire some abstractions
+			break;
 		case 1310: // Granted a Boon (God Lobster)
 			int goal = get_property("_auto_lobsterChoice").to_int();
 			string search = "I'd like part of your regalia.";

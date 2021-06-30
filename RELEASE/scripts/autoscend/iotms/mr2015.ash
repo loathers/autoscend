@@ -1172,27 +1172,32 @@ boolean adjustEdHat(string goal)
 
 boolean resolveSixthDMT()
 {
-	if(!in_koe() && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 10) && canChangeToFamiliar($familiar[Machine Elf]) && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_daycount() == 2))
+	//every sixth machine elf tunnels visit will be a noncombat. This prepares for it and executes it.
+	if(in_koe())
 	{
-		backupSetting("choiceAdventure1119", 1);
-
-		familiar bjorn = my_bjorned_familiar();
-		if(bjorn == $familiar[Machine Elf])
-		{
-			handleBjornify($familiar[Grinning Turtle]);
-		}
-		handleFamiliar($familiar[Machine Elf]);
-		autoAdv(1, $location[The Deep Machine Tunnels]);
-		if(bjorn == $familiar[Machine Elf])
-		{
-			handleBjornify(bjorn);
-		}
-		
-		restoreSetting("choiceAdventure1119");
-		handleFamiliar("item");
-		return true;
+		return false;
 	}
-	return false;
+	if(!canChangeToFamiliar($familiar[Machine Elf]))
+	{
+		return false;
+	}
+	if(get_property("_machineTunnelsAdv").to_int() != 5)
+	{
+		return false;
+	}
+
+	familiar bjorn = my_bjorned_familiar();
+	if(bjorn == $familiar[Machine Elf])
+	{
+		handleBjornify($familiar[Grinning Turtle]);
+	}
+	handleFamiliar($familiar[Machine Elf]);
+	boolean retval = autoAdv(1, $location[The Deep Machine Tunnels]);
+	if(bjorn == $familiar[Machine Elf])
+	{
+		handleBjornify(bjorn);
+	}
+	return retval;
 }
 
 boolean LX_dinseylandfillFunbucks()
