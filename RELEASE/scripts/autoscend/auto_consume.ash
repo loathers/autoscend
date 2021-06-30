@@ -514,20 +514,55 @@ boolean canChew(item toChew)
 	return true;
 }
 
+float consumptionProgress()
+{
+	// returns indicative ratio of adventure organs used
+	
+	// if not allowed to consume then consider maximum progress is already reached
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return 1;
+	}
+	
+	int organs_used;
+	int organs_max;
+	
+	if (can_eat())
+	{
+		organs_used += my_fullness();
+		organs_max += fullness_limit();
+	}
+	if (can_drink())
+	{
+		organs_used += my_inebriety();
+		organs_max += inebriety_limit();
+	}
+	
+	// don't consider spleen as a significant adventure organ in most paths
+	if (isActuallyEd() || my_path() == "Oxygenarian")
+	{
+		organs_used += my_spleen_use();
+		organs_max += spleen_limit();
+	}
+	// if(my_path() == "Community Service"), autoscend does try to use spleen for adventures but also for buffs
+	// if(my_path() == "Avatar of Sneaky Pete"), autoscend doesn't try to use molotov soda or create Hate to produce them
+	
+	if (organs_max == 0)
+	{
+		return 1;
+	}
+	else
+	{
+		float used_organ_ratio = min(organs_used / organs_max, 1);
+		return used_organ_ratio;
+	}
+}
+
 void consumeStuff()
 {
-	// if adventures not needed yet, leave most sausages to acquireMP()
-	if (my_adventures() > 10)
+	if (auto_haveKramcoSausageOMatic())
 	{
-		// only grind up to one per level in reserve instead of always grinding all the meat that isn't nailed down
-		auto_sausageGrind(my_level() - get_property("_sausagesMade").to_int());
-		// it would be a good idea to eat one early on for MP but 2-3 things currently don't allow it:
-		// auto_sausageGrind wants 90 turncount and desert unlocked, sausage_reserve_size wants >3, and acquireMP() wants it to restore at least 300 MP
-	}
-	else		
-	{	// grind and eat any sausage that you can once adventures are needed
-		auto_sausageGrind(23 - get_property("_sausagesMade").to_int());
-		auto_sausageEatEmUp();
+		auto_sausageWanted();
 	}
 
 	if (get_property("auto_limitConsume").to_boolean())
