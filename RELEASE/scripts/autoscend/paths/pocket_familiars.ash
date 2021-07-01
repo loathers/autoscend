@@ -31,85 +31,14 @@ string pokefam_defaultMaximizeStatement()
 
 boolean pokefam_makeTeam()
 {
-	if(in_pokefam())
+	// choose "strongest 2" in order to allow a middle spot for a pocket familiar to level up
+	if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
 	{
-		string temp = visit_url("famteam.php", false);
-
-		familiar back = $familiar[Killer Bee];
-		foreach fam in $familiars[Killer Bee, Slotter]
-		{
-			if(have_familiar(fam))
-			{
-				back = fam;
-			}
-		}
-
-		temp = visit_url("famteam.php?slot=3&fam=" + to_int(back) + "&pwd&action=slot");
-		if(get_property("_pokefamBack").to_familiar() != back)
-		{
-			set_property("_pokefamBack", back);
-		}
-
-		familiar middle = $familiar[Scary Death Orb];
-		foreach fam in $familiars[]
-		{
-			if((fam.poke_move_2 == "Backstab") && have_familiar(fam) && (back != fam) && (fam.poke_level != 5))
-			{
-				middle = fam;
-			}
-		}
-
-		temp = visit_url("famteam.php?slot=2&fam=" + to_int(middle) + "&pwd&action=slot");
-		if(get_property("_pokefamMiddle").to_familiar() != middle)
-		{
-			set_property("_pokefamMiddle", middle);
-		}
-
-		familiar front = $familiar[none];
-		foreach fam in $familiars[]
-		{
-			if((fam.poke_attribute == "Smart") && have_familiar(fam) && (back != fam) && (middle != fam) && (fam.poke_level != 5))
-			{
-				front = fam;
-			}
-		}
-		if(front == $familiar[none])
-		{
-			foreach fam in $familiars[]
-			{
-				if(have_familiar(fam) && (back != fam) && (middle != fam) && (fam.poke_level != 5))
-				{
-					front = fam;
-				}
-			}
-		}
-
-		if(front == $familiar[none])
-		{
-			front = $familiar[Levitating Potato];
-		}
-
-		auto_log_info("Choosing " + front + " for front slot.", "green");
-		temp = visit_url("famteam.php?slot=1&fam=" + to_int(front) + "&pwd&action=slot");
-		if(get_property("_pokefamFront").to_familiar() != front)
-		{
-			set_property("_pokefamFront", front);
-		}
+		auto_log_info("Setting our team via Ezandora:", "green");
+		boolean ignore = cli_execute("PocketFamiliarsAutoSelect Strongest 2;");
+		return true;
 	}
 	return true;
-}
-
-boolean LM_pokefam()
-{
-	if(in_pokefam())
-	{
-		pokefam_makeTeam();
-		if((my_primestat() == $stat[Muscle]) && !possessEquipment($item[Dented Scepter]) && (my_level() < 13))
-		{
-			auto_advWitchess("king");
-		}
-	}
-	return false;
 }
 
 boolean pokefam_autoAdv(int num, location loc, string option)
