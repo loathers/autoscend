@@ -1186,18 +1186,8 @@ boolean resolveSixthDMT()
 		return false;
 	}
 
-	familiar bjorn = my_bjorned_familiar();
-	if(bjorn == $familiar[Machine Elf])
-	{
-		handleBjornify($familiar[Grinning Turtle]);
-	}
 	handleFamiliar($familiar[Machine Elf]);
-	boolean retval = autoAdv(1, $location[The Deep Machine Tunnels]);
-	if(bjorn == $familiar[Machine Elf])
-	{
-		handleBjornify(bjorn);
-	}
-	return retval;
+	return autoAdv($location[The Deep Machine Tunnels]);
 }
 
 boolean LX_dinseylandfillFunbucks()

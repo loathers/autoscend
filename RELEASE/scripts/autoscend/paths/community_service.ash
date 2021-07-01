@@ -699,7 +699,7 @@ boolean LA_cs_communityService()
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
-					return autoAdv(1, $location[The Deep Machine Tunnels]);
+					return autoAdv($location[The Deep Machine Tunnels]);
 				}
 
 				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() == 5) && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_adventures() > 0) && canChangeToFamiliar($familiar[Machine Elf]))
@@ -708,7 +708,7 @@ boolean LA_cs_communityService()
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
-					return autoAdv(1, $location[The Deep Machine Tunnels]);
+					return autoAdv($location[The Deep Machine Tunnels]);
 				}
 			}
 
@@ -2209,7 +2209,7 @@ boolean LA_cs_communityService()
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
-					return autoAdv(1, $location[The Deep Machine Tunnels]);
+					return autoAdv($location[The Deep Machine Tunnels]);
 				}
 
 				if(canTrySaberTrickMeteorShower() && have_effect($effect[Meteor Showered]) == 0){
@@ -3579,7 +3579,7 @@ boolean cs_giant_growth()
 		if(!cs_healthMaintain() || !cs_mpMaintain()){
 			abort("Wasnt able to maintain health and mp.");
 		}
-		autoAdv(1, $location[The Deep Machine Tunnels], "cs_combatLTB");
+		autoAdv($location[The Deep Machine Tunnels], "cs_combatLTB");
 	}
 	else if(cs_healthMaintain() && !godLobsterCombat($item[none], 3, "cs_combatLTB"))
 	{
