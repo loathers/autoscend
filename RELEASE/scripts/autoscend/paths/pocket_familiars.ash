@@ -31,13 +31,16 @@ string pokefam_defaultMaximizeStatement()
 
 boolean pokefam_makeTeam()
 {
-	// choose "strongest 2" in order to allow a middle spot for a pocket familiar to level up
-	if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
+	if(in_pokefam())
 	{
+		// choose "strongest 2" in order to allow a middle spot for a pocket familiar to level up
+		if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
+		{
 		auto_log_info("Setting our team via Ezandora:", "green");
 		boolean ignore = cli_execute("PocketFamiliarsAutoSelect Strongest 2;");
 		return true;
-	}
+		}
+	}	
 	return true;
 }
 
