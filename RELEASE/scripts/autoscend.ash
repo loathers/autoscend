@@ -2727,7 +2727,6 @@ boolean doTasks()
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
-	if(LM_pokefam())					return true;
 	if(LM_majora())						return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
