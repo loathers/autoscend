@@ -5522,11 +5522,11 @@ int auto_convertDesiredML(int DML)
 // Uses MCD in the constraints of a Cap
 boolean auto_setMCDToCap()
 {
-	int MLToCap = 0;
+	int targetMcd = 0;
 
 	if(get_property("auto_MLSafetyLimit") == "")
 	{
-		MLToCap = 999999;
+		targetMcd = 999999;
 	}
 	else
 	{
@@ -5537,19 +5537,19 @@ boolean auto_setMCDToCap()
 		if(currentMlWithoutMcd < mlSafetyLimit)
 		{
 			// ML is below the cap. Add as much ML with the MCD as possible without exceeding the cap.
-			MLToCap = mlSafetyLimit - currentMlWithoutMcd;
+			targetMcd = mlSafetyLimit - currentMlWithoutMcd;
 		}
 		else
 		{
 			// ML is already at the cap or exceeded it. Don't add any more ML with the MCD.
-			MLToCap = 0;
+			targetMcd = 0;
 		}
 	}
 
 	// Don't try to set the MCD if in KoE
 	if(!in_koe())
 	{
-		auto_change_mcd(MLToCap);
+		auto_change_mcd(targetMcd);
 	}
 
 	return true;
