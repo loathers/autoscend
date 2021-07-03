@@ -5555,14 +5555,7 @@ boolean auto_setMCDToCap()
 	// Don't try to set the MCD if in KoE
 	if(!in_koe())
 	{
-		if (current_mcd() > remainingMLToCap())
-		{
-			auto_change_mcd(remainingMLToCap());
-		}
-		else
-		{
-			auto_change_mcd(11);
-		}
+		auto_change_mcd(remainingMLToCap());
 	}
 
 	return true;
