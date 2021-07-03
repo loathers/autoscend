@@ -5547,13 +5547,7 @@ boolean auto_setMCDToCap()
 		}
 	}
 
-	// Don't try to set the MCD if in KoE
-	if(!in_koe())
-	{
-		auto_change_mcd(targetMcd);
-	}
-
-	return true;
+	return auto_change_mcd(targetMcd);
 }
 
 // We use this function to determine the suitability of using Ur-Kel's
