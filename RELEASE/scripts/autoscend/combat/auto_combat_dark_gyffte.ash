@@ -2,7 +2,7 @@
 
 string auto_combatDarkGyffteStage2(int round, monster enemy, string text)
 {
-	##stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
+	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 
 	//Ensorcel is a Dark Gyffte specific skill that lets you mind control an enemy to becoming a minion 3/day.
 	//mechanically it is a free runaway that also gives you a vampyre specific pet based on the phylum of the monster you are facing.

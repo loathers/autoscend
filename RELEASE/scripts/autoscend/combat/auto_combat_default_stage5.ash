@@ -1,25 +1,25 @@
 string auto_combatDefaultStage5(int round, monster enemy, string text)
 {
-	##stage 5 = kill
+	// stage 5 = kill
 	string retval;
 	
-	#Path = Heavy Rains
+	// Path = Heavy Rains
 	retval = auto_combatHeavyRainsStage5(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = path of the plumber
+	// Path = path of the plumber
 	retval = auto_combatPlumberStage5(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = disguises deliimt
+	// Path = disguises deliimt
 	retval = auto_combatDisguisesStage5(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = avatar of jarlsberg
+	// Path = avatar of jarlsberg
 	retval = auto_combatJarlsbergStage5(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = gelatinous noob
+	// Path = gelatinous noob
 	retval = auto_combatGelatinousNoobStage5(round, enemy, text);
 	if(retval != "") return retval;
 

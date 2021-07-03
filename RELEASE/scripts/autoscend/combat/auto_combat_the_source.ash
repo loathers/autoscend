@@ -69,7 +69,7 @@ string auto_combatTheSourceStage1(int round, monster enemy, string text)
 
 string auto_combatTheSourceStage4(int round, monster enemy, string text)
 {
-	##stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
+	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	
 	//source terminal iotm source path specific action. provokes an agent into attacking you next turn 3/day
 	//is turn referring to combat round or next adv? this is placed in stage 4 on the assumption it means next adv. if it means next combat round then it should be moved to stage 2

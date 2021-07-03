@@ -1,9 +1,9 @@
 string auto_combatDefaultStage3(int round, monster enemy, string text)
 {
-	##stage 3 = debuff: delevel, stun, curse, damage over time
+	// stage 3 = debuff: delevel, stun, curse, damage over time
 	string retval;
 	
-	#Path = Heavy Rains
+	// Path = Heavy Rains
 	retval = auto_combatHeavyRainsStage3(round, enemy, text);
 	if(retval != "") return retval;
 	

@@ -33,7 +33,7 @@ void dd_combat_helper(int round, monster enemy, string text)
 
 string auto_combatDisguisesStage1(int round, monster enemy, string text)
 {
-	##stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
+	// stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
 	if(my_path() != "Disguises Delimit")
 	{
 		return "";
@@ -66,7 +66,7 @@ string auto_combatDisguisesStage1(int round, monster enemy, string text)
 
 string auto_combatDisguisesStage5(int round, monster enemy, string text)
 {
-	##stage 5 = kill
+	// stage 5 = kill
 	if(my_path() != "Disguises Delimit")
 	{
 		return "";

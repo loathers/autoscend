@@ -2,7 +2,7 @@
 
 string auto_combatPeteStage1(int round, monster enemy, string text)
 {
-	##stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
+	// stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
 
 	//adjust audience love/hate. must be first action done in combat
 	//TODO rush to max love, then max hate, then max love again for the consumables

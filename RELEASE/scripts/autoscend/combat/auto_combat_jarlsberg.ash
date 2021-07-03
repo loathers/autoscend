@@ -5,7 +5,7 @@
 //AoJ can **only** attack via spells / items
 string auto_combatJarlsbergStage5(int round, monster enemy, string text)
 {
-	##stage 5 = kill
+	// stage 5 = kill
 	if(!is_Jarlsberg())
 	{
 		return "";

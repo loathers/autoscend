@@ -1,13 +1,13 @@
 string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
-	##stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
+	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	string retval;
 	
-	#Path = The Source
+	// Path = The Source
 	retval = auto_combatTheSourceStage4(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = license to adventure
+	// Path = license to adventure
 	retval = auto_combatLicenseToAdventureStage4(round, enemy, text);
 	if(retval != "") return retval;
 	

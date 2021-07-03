@@ -1,29 +1,29 @@
 string auto_combatDefaultStage1(int round, monster enemy, string text)
 {
-	##stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
+	// stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
 	string retval;
 	
-	#Path = Heavy Rains
+	// Path = Heavy Rains
 	retval = auto_combatHeavyRainsStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = The Source
+	// Path = The Source
 	retval = auto_combatTheSourceStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = Kingdom of Exploathing
+	// Path = Kingdom of Exploathing
 	retval = auto_combatExploathingStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = Avatar of Sneaky Pete
+	// Path = Avatar of Sneaky Pete
 	retval = auto_combatPeteStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = Bees Hate You
+	// Path = Bees Hate You
 	retval = auto_combatBHYStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
-	#Path = disguises delimit
+	// Path = disguises delimit
 	retval = auto_combatDisguisesStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
