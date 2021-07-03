@@ -483,6 +483,17 @@ boolean auto_pre_adventure()
 		acquireHP();
 	}
 
+	// always heal to full HP for Boo Clues
+	if(($locations[A-Boo Peak] contains place) && (get_property("auto_aboopending").to_int() != 0))
+	{
+		acquireHP();
+		if(isActuallyEd())
+		{
+			//force Ed to heal
+			edAcquireHP(my_maxhp());
+		}
+	}
+
 	//my_mp is broken in Dark Gyffte
 	if (my_class() != $class[Vampyre])
 	{
