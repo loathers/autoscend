@@ -1265,6 +1265,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns
 		}
+		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]))
+		{
+			return "skill " + $skill[Unleash the Devil's Kiss]; // 99 turns
+		}
 		if(auto_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
 		{
 			return "skill " + $skill[Disintegrate]; // 100 trurns
@@ -1299,10 +1303,6 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		if((inCombat ? my_familiar() == $familiar[Crimbo Shrub] : auto_have_familiar($familiar[Crimbo Shrub])) && (get_property("shrubGifts") == "yellow"))
 		{
 			return "skill " + $skill[Open a Big Yellow Present]; // 149 turns
-		}
-		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]))
-		{
-			return "skill " + $skill[Unleash the Devil's Kiss]; // 99 turns
 		}
 	}
 
