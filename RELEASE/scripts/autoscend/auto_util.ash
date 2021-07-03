@@ -884,12 +884,14 @@ boolean canYellowRay(monster target)
 			my_meat() > npc_price($item[yellow rocket]))	// ensure we have enough meat
 		{
 			cli_execute("acquire " + $item[yellow rocket]);
-			if (item_amount($item[yellow rocket]) > 0 &&
-				yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "")
-			{
-				// Yellow rocket has the lowest cooldown, and is unlimited, so prioritize over other sources
-				return true;
-			}
+		}
+
+		// Yellow rocket has the lowest cooldown, and is unlimited, so prioritize over other sources
+		if (item_amount($item[yellow rocket]) > 0 &&
+			auto_is_valid($item[yellow rocket]) &&
+			yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "")
+		{
+			return true;
 		}
 
 		if(canChangeToFamiliar($familiar[Crimbo Shrub]))
