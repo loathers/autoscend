@@ -5526,7 +5526,8 @@ boolean auto_setMCDToCap()
 
 	if(get_property("auto_MLSafetyLimit") == "")
 	{
-		targetMcd = 999999;
+		// No ML limit was given, so use the max MCD value
+		targetMcd = 11;
 	}
 	else
 	{
