@@ -5522,37 +5522,32 @@ int auto_convertDesiredML(int DML)
 // Uses MCD in the constraints of a Cap
 boolean auto_setMCDToCap()
 {
-	// This just does the math for comparing vs. the Cap. If no cap is set then ML is virtually unlimited.
-	int remainingMLToCap()
+	int targetMcd = 0;
+
+	if(get_property("auto_MLSafetyLimit") == "")
 	{
-		int MLToCap = 0;
-
-		if(get_property("auto_MLSafetyLimit") == "")
-		{
-			MLToCap = 999999;
-		}
-		else if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int())
-		{
-			MLToCap = get_property("auto_MLSafetyLimit").to_int() - monster_level_adjustment();
-		}
-
-		return MLToCap;
+		// No ML limit was given, so use the max MCD value
+		targetMcd = 11;
 	}
-
-	// Don't try to set the MCD if in KoE
-	if(!in_koe())
+	else
 	{
-		if (current_mcd() > remainingMLToCap())
+		// monster_level_adjustment includes the current MCD value, so it must be removed before calculating the new MCD
+		int currentMlWithoutMcd = monster_level_adjustment() - current_mcd();
+		int mlSafetyLimit = get_property("auto_MLSafetyLimit").to_int();
+
+		if(currentMlWithoutMcd < mlSafetyLimit)
 		{
-			auto_change_mcd(remainingMLToCap());
+			// ML is below the cap. Add as much ML with the MCD as possible without exceeding the cap.
+			targetMcd = mlSafetyLimit - currentMlWithoutMcd;
 		}
 		else
 		{
-			auto_change_mcd(11);
+			// ML is already at the cap or exceeded it. Don't add any more ML with the MCD.
+			targetMcd = 0;
 		}
 	}
 
-	return true;
+	return auto_change_mcd(targetMcd);
 }
 
 // We use this function to determine the suitability of using Ur-Kel's
