@@ -881,7 +881,7 @@ boolean canYellowRay(monster target)
 			get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
 			item_amount($item[yellow rocket]) == 0 &&		// Don't buy if we already have one
 			auto_is_valid($item[yellow rocket]) &&			// or if it's not valid
-			my_meat() > npc_price($item[yellow rocket]))	// ensure we have enough meat
+			my_meat() > npc_price($item[yellow rocket]) + meatReserve())
 		{
 			cli_execute("acquire " + $item[yellow rocket]);
 		}
