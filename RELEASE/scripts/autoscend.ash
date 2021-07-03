@@ -1775,7 +1775,6 @@ boolean LX_freeCombats(boolean powerlevel)
 	if(!in_koe() && get_property("_machineTunnelsAdv").to_int() < 5 && canChangeToFamiliar($familiar[Machine Elf]))
 	{
 		auto_log_debug("LX_freeCombats is adventuring in [The Deep Machine Tunnels]");
-		backupSetting("choiceAdventure1119", 1);
 
 		familiar bjorn = my_bjorned_familiar();
 		if(bjorn == $familiar[Machine Elf])
@@ -2727,7 +2726,6 @@ boolean doTasks()
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
-	if(LM_pokefam())					return true;
 	if(LM_majora())						return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
