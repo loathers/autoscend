@@ -5531,9 +5531,22 @@ boolean auto_setMCDToCap()
 		{
 			MLToCap = 999999;
 		}
-		else if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int())
+		else
 		{
-			MLToCap = get_property("auto_MLSafetyLimit").to_int() - monster_level_adjustment();
+			// monster_level_adjustment includes the current MCD value, so it must be removed before calculating the new MCD
+			int currentMlWithoutMcd = monster_level_adjustment() - current_mcd();
+			int mlSafetyLimit = get_property("auto_MLSafetyLimit").to_int();
+
+			if(currentMlWithoutMcd < mlSafetyLimit)
+			{
+				// ML is below the cap. Add as much ML with the MCD as possible without exceeding the cap.
+				MLToCap = mlSafetyLimit - currentMlWithoutMcd;
+			}
+			else
+			{
+				// ML is already at the cap or exceeded it. Don't add any more ML with the MCD.
+				MLToCap = 0;
+			}
 		}
 
 		return MLToCap;
