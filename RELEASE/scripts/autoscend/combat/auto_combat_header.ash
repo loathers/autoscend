@@ -4,6 +4,7 @@
 
 #####################################################
 //defined in /autoscend/combat/auto_combat.ash
+void auto_combatInitialize(int round, monster enemy, string text);
 string auto_combatHandler(int round, monster enemy, string text);		
 
 #####################################################
@@ -55,3 +56,72 @@ monster ocrs_combat_helper(string page);
 #####################################################
 //defined in /autoscend/combat/auto_combat_quest.ash
 string auto_JunkyardCombatHandler(int round, monster enemy, string text);		
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_default_stage1.ash
+string auto_combatDefaultStage1(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_default_stage2.ash
+string auto_combatDefaultStage2(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_default_stage3.ash
+string auto_combatDefaultStage3(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_default_stage4.ash
+string auto_combatDefaultStage4(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_default_stage5.ash
+string auto_combatDefaultStage5(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_dark_gyffte.ash
+string auto_combatDarkGyffteStage2(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_disguises_delimit.ash
+void dd_combat_helper(int round, monster enemy, string text);
+string auto_combatDisguisesStage1(int round, monster enemy, string text);
+string auto_combatDisguisesStage5(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_kingdom_of_exploathing.ash
+string auto_combatExploathingStage1(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_license_to_adventure.ash
+string auto_combatLicenseToAdventureStage4(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_gelatinous_noob.ash
+string auto_combatGelatinousNoobStage5(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_heavy_rains.ash
+string auto_combatHeavyRainsStage1(int round, monster enemy, string text);
+string auto_combatHeavyRainsStage3(int round, monster enemy, string text);
+string auto_combatHeavyRainsStage5(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_jarlsberg.ash
+string auto_combatJarlsbergStage5(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_pete.ash
+string auto_combatPeteStage1(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_plumber.ash
+string auto_combatPlumberStage5(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_the_source.ash
+string auto_combatTheSourceStage1(int round, monster enemy, string text);
+string auto_combatTheSourceStage4(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_bees_hate_you.ash
+string auto_combatBHYStage1(int round, monster enemy, string text);
