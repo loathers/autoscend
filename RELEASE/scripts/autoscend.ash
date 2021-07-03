@@ -1,4 +1,4 @@
-since r20779;	//min mafia revision needed to run this script. Last update: Add is_casual() function that returns value from api.php
+since r20782;	//min mafia revision needed to run this script. Last update: Initial support for July IotM
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
