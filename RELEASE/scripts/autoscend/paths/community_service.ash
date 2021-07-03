@@ -695,28 +695,20 @@ boolean LA_cs_communityService()
 			{
 				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_adventures() > 0) && canChangeToFamiliar($familiar[Machine Elf]))
 				{
-					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
-					autoAdv(1, $location[The Deep Machine Tunnels]);
-					restoreSetting("choiceAdventure1119");
-					set_property("choiceAdventure1119", "");
-					return true;
+					return autoAdv($location[The Deep Machine Tunnels]);
 				}
 
 				if(have_familiar($familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() == 5) && ($location[The Deep Machine Tunnels].turns_spent == 5) && (my_adventures() > 0) && canChangeToFamiliar($familiar[Machine Elf]))
 				{
-					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
-					autoAdv(1, $location[The Deep Machine Tunnels]);
-					restoreSetting("choiceAdventure1119");
-					set_property("choiceAdventure1119", "");
-					return true;
+					return autoAdv($location[The Deep Machine Tunnels]);
 				}
 			}
 
@@ -2213,15 +2205,11 @@ boolean LA_cs_communityService()
 				}
 				if(get_property("_machineTunnelsAdv").to_int() < 2 && canChangeToFamiliar($familiar[Machine Elf]))
 				{
-					backupSetting("choiceAdventure1119", 1);
 					handleFamiliar($familiar[Machine Elf]);
 					if(!cs_healthMaintain() || !cs_mpMaintain()){
 						abort("Wasnt able to maintain health and mp.");
 					}
-					autoAdv(1, $location[The Deep Machine Tunnels]);
-					restoreSetting("choiceAdventure1119");
-					set_property("choiceAdventure1119", "");
-					return true;
+					return autoAdv($location[The Deep Machine Tunnels]);
 				}
 
 				if(canTrySaberTrickMeteorShower() && have_effect($effect[Meteor Showered]) == 0){
@@ -3587,14 +3575,11 @@ boolean cs_giant_growth()
 
 	if(my_familiar() == $familiar[Machine Elf])
 	{
-		backupSetting("choiceAdventure1119", 1);
 		handleFamiliar($familiar[Machine Elf]);
 		if(!cs_healthMaintain() || !cs_mpMaintain()){
 			abort("Wasnt able to maintain health and mp.");
 		}
-		autoAdv(1, $location[The Deep Machine Tunnels], "cs_combatLTB");
-		restoreSetting("choiceAdventure1119");
-		set_property("choiceAdventure1119", "");
+		autoAdv($location[The Deep Machine Tunnels], "cs_combatLTB");
 	}
 	else if(cs_healthMaintain() && !godLobsterCombat($item[none], 3, "cs_combatLTB"))
 	{
