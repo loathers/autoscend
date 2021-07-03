@@ -1454,13 +1454,17 @@ boolean L11_hiddenCityZones()
 	{
 		if (auto_can_equip($item[Antique Machete]))
 		{
-			if (!possessEquipment($item[Antique Machete]))
+			if (possessEquipment($item[Antique Machete]))
+			{
+				return autoForceEquip($item[Antique Machete]);
+			}
+			else if (!possessEquipment($item[Muculent Machete]))
 			{
 				pullXWhenHaveY($item[Antique Machete], 1, 0);
+				return autoForceEquip($item[Antique Machete]);
 			}
-			return autoForceEquip($item[Antique Machete]);
 		}
-		else
+		if (auto_can_equip($item[Muculent Machete]))
 		{
 			if (!possessEquipment($item[Muculent Machete]))
 			{
