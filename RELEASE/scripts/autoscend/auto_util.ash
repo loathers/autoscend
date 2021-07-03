@@ -5522,40 +5522,34 @@ int auto_convertDesiredML(int DML)
 // Uses MCD in the constraints of a Cap
 boolean auto_setMCDToCap()
 {
-	// This just does the math for comparing vs. the Cap. If no cap is set then ML is virtually unlimited.
-	int remainingMLToCap()
-	{
-		int MLToCap = 0;
+	int MLToCap = 0;
 
-		if(get_property("auto_MLSafetyLimit") == "")
+	if(get_property("auto_MLSafetyLimit") == "")
+	{
+		MLToCap = 999999;
+	}
+	else
+	{
+		// monster_level_adjustment includes the current MCD value, so it must be removed before calculating the new MCD
+		int currentMlWithoutMcd = monster_level_adjustment() - current_mcd();
+		int mlSafetyLimit = get_property("auto_MLSafetyLimit").to_int();
+
+		if(currentMlWithoutMcd < mlSafetyLimit)
 		{
-			MLToCap = 999999;
+			// ML is below the cap. Add as much ML with the MCD as possible without exceeding the cap.
+			MLToCap = mlSafetyLimit - currentMlWithoutMcd;
 		}
 		else
 		{
-			// monster_level_adjustment includes the current MCD value, so it must be removed before calculating the new MCD
-			int currentMlWithoutMcd = monster_level_adjustment() - current_mcd();
-			int mlSafetyLimit = get_property("auto_MLSafetyLimit").to_int();
-
-			if(currentMlWithoutMcd < mlSafetyLimit)
-			{
-				// ML is below the cap. Add as much ML with the MCD as possible without exceeding the cap.
-				MLToCap = mlSafetyLimit - currentMlWithoutMcd;
-			}
-			else
-			{
-				// ML is already at the cap or exceeded it. Don't add any more ML with the MCD.
-				MLToCap = 0;
-			}
+			// ML is already at the cap or exceeded it. Don't add any more ML with the MCD.
+			MLToCap = 0;
 		}
-
-		return MLToCap;
 	}
 
 	// Don't try to set the MCD if in KoE
 	if(!in_koe())
 	{
-		auto_change_mcd(remainingMLToCap());
+		auto_change_mcd(MLToCap);
 	}
 
 	return true;
