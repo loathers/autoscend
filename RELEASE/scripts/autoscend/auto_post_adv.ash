@@ -435,12 +435,19 @@ boolean auto_post_adventure()
 		use_skill(1, $skill[Summon Smithsness]);
 	}
 
-	if (my_maxhp() < 100) {
-		buffMaintain($effect[Ghostly Shell], 6, 1, 5);
-		buffMaintain($effect[Astral Shell], 10, 1, 5);
-		buffMaintain($effect[Reptilian Fortitude], 10, 1, 5);
-		buffMaintain($effect[Springy Fusilli], 10, 1, 5);
-		buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 5);
+	if($classes[Sauceror, Pastamancer] contains my_class())
+	{
+		//everyone wants these buffs. but they are particularly important to casters which is why they are replicated here.
+		buffMaintain($effect[Springy Fusilli], 30, 1, 5);		//+40 init. 10 MP. 1 MP/adv
+		buffMaintain($effect[Walberg\'s Dim Bulb], 30, 1, 5);	//+10 init. 5 MP. 0.5 MP/adv
+	}
+	if (my_maxhp() < 100)
+	{
+		buffMaintain($effect[Ghostly Shell], 30, 1, 5);			//+80 DA. 6 MP. totem based duration
+		buffMaintain($effect[Astral Shell], 30, 1, 5);			//+80 DA, +1 all res. 10 MP. totem based duration
+		buffMaintain($effect[Reptilian Fortitude], 30, 1, 5);	//+30HP. 10 MP. totem based duration
+		buffMaintain($effect[Springy Fusilli], 30, 1, 5);		//+40 init. 10 MP. 1 MP/adv
+		buffMaintain($effect[Walberg\'s Dim Bulb], 30, 1, 5);	//+10 init. 5 MP. 0.5 MP/adv
 	}
 
 	# This is the list of castables that all MP sequences will use.
