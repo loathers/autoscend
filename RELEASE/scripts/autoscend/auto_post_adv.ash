@@ -435,19 +435,15 @@ boolean auto_post_adventure()
 		use_skill(1, $skill[Summon Smithsness]);
 	}
 
-	if($classes[Sauceror, Pastamancer] contains my_class())
-	{
-		//everyone wants these buffs. but they are particularly important to casters which is why they are replicated here.
-		buffMaintain($effect[Springy Fusilli], 30, 1, 5);		//+40 init. 10 MP. 1 MP/adv
-		buffMaintain($effect[Walberg\'s Dim Bulb], 30, 1, 5);	//+10 init. 5 MP. 0.5 MP/adv
-	}
-	if (my_maxhp() < 100)
+	//everyone wants more initiative
+	buffMaintain($effect[Springy Fusilli], 30, 1, 5);			//+40 init. 10 MP. 1 MP/adv
+	buffMaintain($effect[Walberg\'s Dim Bulb], 30, 1, 5);		//+10 init. 5 MP. 0.5 MP/adv
+	if(my_maxhp() < 100 ||			//get some durability to avoid dying
+	!auto_have_skill($skill[Cannelloni Cocoon]))	//!cocoon == expensive heal. +durability to save meat even when maxhp > 100
 	{
 		buffMaintain($effect[Ghostly Shell], 30, 1, 5);			//+80 DA. 6 MP. totem based duration
 		buffMaintain($effect[Astral Shell], 30, 1, 5);			//+80 DA, +1 all res. 10 MP. totem based duration
 		buffMaintain($effect[Reptilian Fortitude], 30, 1, 5);	//+30HP. 10 MP. totem based duration
-		buffMaintain($effect[Springy Fusilli], 30, 1, 5);		//+40 init. 10 MP. 1 MP/adv
-		buffMaintain($effect[Walberg\'s Dim Bulb], 30, 1, 5);	//+10 init. 5 MP. 0.5 MP/adv
 	}
 
 	# This is the list of castables that all MP sequences will use.
