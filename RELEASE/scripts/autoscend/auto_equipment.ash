@@ -307,12 +307,7 @@ void addBonusToMaximize(item it, int amt)
 
 void finalizeMaximize()
 {
-	if (possessEquipment($item[miniature crystal ball]))
-	{
-		// until we add support for this, we shouldn't allow the maximizer to equip it
-		// I noticed it being worn in preference to the astral pet sweater which is a waste
-		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
-	}
+	auto_handleCrystalBall(my_location());
 
 	if (auto_haveKramcoSausageOMatic() && ((auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none]) || get_property("mappingMonsters").to_boolean()))
 	{
