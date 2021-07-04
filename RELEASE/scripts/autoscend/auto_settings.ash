@@ -242,6 +242,8 @@ void auto_settingsDelete()
 	remove_property("auto_shareMaximizer");
 	remove_property("auto_allowSharingData");
 	remove_property("auto_mummeryChoice");
+	remove_property("auto_choice1119");
+	remove_property("auto_useTatter");				//obsolete combat directive to use [Tattered Scrap Of Paper] to escape combat
 }
 
 void defaultConfig(string prop, string val)

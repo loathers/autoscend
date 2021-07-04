@@ -738,7 +738,6 @@ void pokefam_initializeDay(int day);
 void pokefam_initializeSettings();
 string pokefam_defaultMaximizeStatement();
 boolean pokefam_makeTeam();
-boolean LM_pokefam();
 boolean pokefam_autoAdv(int num, location loc, string option);
 
 ########################################################################################################
