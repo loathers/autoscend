@@ -551,15 +551,7 @@ boolean L9_aBooPeak()
 			auto_beachCombHead("spooky");
 
 			set_property("choiceAdventure611", "1");
-			if((my_hp() - 50) < totalDamage)
-			{
-				acquireHP();
-				if(isActuallyEd())
-				{
-					//force Ed to heal
-					edAcquireHP(my_maxhp());
-				}
-			}
+			
 			if(get_property("auto_aboopending").to_int() == 0)
 			{
 				if(item_amount(clue) > 0)
