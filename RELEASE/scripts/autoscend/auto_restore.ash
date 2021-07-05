@@ -451,9 +451,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 	float hp_restored_per_use()
 	{
 		float restored_amount = metadata.hp_restored;
-		if(metadata.restores_variable_hp == __RESTORE_ALL)
+		// treat cocoon as a full HP restore since rarely > 1000 max HP in run
+		if((metadata.restores_variable_hp == __RESTORE_ALL) || (metadata.name == "cannelloni cocoon"))
 		{
-			restored_amount = my_maxhp();
+			// restores all missing HP. Need to be precise so HP waste optimization calculations are correct
+			restored_amount = my_maxhp() - my_hp();
 		}
 		else if(metadata.restores_variable_hp == __RESTORE_HALF)
 		{
@@ -465,7 +467,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			restored_amount += numeric_modifier("Bonus Resting HP");
 		}
 
-		if (metadata.name == "Disco Nap" && auto_have_skill($skill[Adventurer of Leisure]))
+		if (metadata.name == "disco nap" && auto_have_skill($skill[Adventurer of Leisure]))
 		{
 			restored_amount = 40;
 		}
