@@ -377,20 +377,11 @@ boolean auto_post_adventure()
 		{
 			use_skill(1, $skill[Soul Rotation]);
 		}
-		int missing = (my_maxmp() - my_mp()) / 15;
-		int casts = (my_soulsauce() - 25) / 5;
-		if(casts < 0)
+		int missing = (my_maxmp() - my_mp()) / 15;		//soul food restores 15 MP per cast.
+		int casts = min(missing, my_soulsauce() / 5);	//soul food costs 5 soulsauce per cast.
+		if(casts > 0)
 		{
-			casts = 0;
-		}
-		int regen = casts;
-		if(casts > missing)
-		{
-			regen = missing;
-		}
-		if(regen > 0)
-		{
-			use_skill(regen, $skill[Soul Food]);
+			use_skill(casts, $skill[Soul Food]);
 		}
 	}
 
@@ -444,12 +435,15 @@ boolean auto_post_adventure()
 		use_skill(1, $skill[Summon Smithsness]);
 	}
 
-	if (my_maxhp() < 100) {
-		buffMaintain($effect[Ghostly Shell], 6, 1, 5);
-		buffMaintain($effect[Astral Shell], 10, 1, 5);
-		buffMaintain($effect[Reptilian Fortitude], 10, 1, 5);
-		buffMaintain($effect[Springy Fusilli], 10, 1, 5);
-		buffMaintain($effect[Walberg\'s Dim Bulb], 5, 1, 5);
+	//everyone wants more initiative
+	buffMaintain($effect[Springy Fusilli], 30, 1, 5);			//+40 init. 10 MP. 1 MP/adv
+	buffMaintain($effect[Walberg\'s Dim Bulb], 30, 1, 5);		//+10 init. 5 MP. 0.5 MP/adv
+	if(my_maxhp() < 100 ||			//get some durability to avoid dying
+	!auto_have_skill($skill[Cannelloni Cocoon]))	//!cocoon == expensive heal. +durability to save meat even when maxhp > 100
+	{
+		buffMaintain($effect[Ghostly Shell], 30, 1, 5);			//+80 DA. 6 MP. totem based duration
+		buffMaintain($effect[Astral Shell], 30, 1, 5);			//+80 DA, +1 all res. 10 MP. totem based duration
+		buffMaintain($effect[Reptilian Fortitude], 30, 1, 5);	//+30HP. 10 MP. totem based duration
 	}
 
 	# This is the list of castables that all MP sequences will use.
