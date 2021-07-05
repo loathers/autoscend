@@ -4,7 +4,6 @@
 # Task ordering. Functions must be: boolean func()
 # If path name does not exist in data file, 'default' will be used
 # path name, index, function, condition_function (optional)
-
 Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
 Avatar of Jarlsberg	2	auto_breakfastCounterVisit

@@ -113,7 +113,7 @@ sniff	14	Blooper	loc:8-Bit Realm
 sniff	15	Bob Racecar	!sniffed:Racecar Bob
 sniff	16	Racecar Bob	!sniffed:Bob Racecar
 sniff	17	Government Scientist	class:Ed
-sniff	18	Green Ops Soldier	!path:Kingdom of Exploathing
+sniff	18	Green Ops Soldier	!path:Kingdom of Exploathing;prop:hippiesDefeated>399
 sniff	19	War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
 sniff	20	War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
 sniff	21	Possessed Wine Rack
