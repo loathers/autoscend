@@ -457,7 +457,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			restored_amount += numeric_modifier("Bonus Resting HP");
 		}
 
-		if (metadata.name == "Disco Nap" && auto_have_skill($skill[Adventurer of Leisure]))
+		if (metadata.name == "disco nap" && auto_have_skill($skill[Adventurer of Leisure]))
 		{
 			restored_amount = 40;
 		}
@@ -680,7 +680,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if (resource_type == "hp" && metadata.type == "skill")
 		{
 			// don't consider excess healing from spells as "waste".
-			// It would be better to cost this in meat teams across all healing but that's not easy to do right now.
+			// It would be better to price this in meat terms across all healing but that's not easy to do right now.
 			return 0.0;
 		}
 		return max(0.0, get_value(resource_type, "starting") + get_value(resource_type, "max_restorable") - goal);
