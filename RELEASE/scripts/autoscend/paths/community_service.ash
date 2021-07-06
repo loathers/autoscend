@@ -1167,7 +1167,8 @@ boolean LA_cs_communityService()
 				//Consider checking for all Snojo debuffs.
 				uneffect($effect[Hypnotized]);
 
-				if(neverendingPartyAvailable() && (my_adventures() > 0))
+				if(neverendingPartyAvailable() && (get_property("_neverendingPartyFreeTurns").to_int() > 0))
+				//if this isn't only the freeturns, it will run forever based on current coding. TOFIX in future maybe?
 				{
 					familiar oldFam = my_familiar();
 					if(have_familiar($familiar[Rockin\' Robin]) && (item_amount($item[Robin\'s Egg]) == 0))
