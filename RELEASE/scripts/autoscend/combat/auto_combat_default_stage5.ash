@@ -409,7 +409,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			{
 				return useSkill($skill[Extract Oil]);
 			}
-			else if(($phylums[undead] contains type) && (item_amount($item[Skin Oil]) < 5))
+			else if(($phylums[undead] contains type) && (item_amount($item[Eldritch Oil]) < 5))
 			{
 				return useSkill($skill[Extract Oil]);
 			}
