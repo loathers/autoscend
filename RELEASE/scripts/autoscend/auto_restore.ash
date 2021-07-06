@@ -222,40 +222,32 @@ void __init_restoration_metadata()
 
 	void init()
 	{
-		record intermediate_record
-		{
-			string name;
-			string type;
-			string hp_restored;
-			string mp_restored;
-			string soft_reserve_limit;
-			string hard_reserve_limit;
-			string removes_effects;
-			string gives_effects;
-		};
-
-		intermediate_record[int] raw_records;
 		file_to_map(negative_effects_filename, __all_negative_effects);
-		file_to_map(resotration_filename, raw_records);
-
 		__RestorationMetadata[string] parsed_records;
+		
+		#type[idx,name,hp_restored,mp_restored,soft_reserve_limit,hard_reserve_limit,removes_effects,gives_effects]
+		string[string,string,string,string,string,string,string,string] raw_data;
+		file_to_map(resotration_filename, raw_data);
 
-		foreach i, r in raw_records
+		foreach type in $strings[item,skill,clan,dwelling]
 		{
-			__RestorationMetadata parsed;
-			parsed.name = r.name.to_lower_case();
-			parsed.type = r.type.to_lower_case();
-			parsed.hp_restored = parse_restored_amount(r.hp_restored);
-			parsed.restores_variable_hp = parse_restores_variable(r.hp_restored);
-			parsed.mp_restored = parse_restored_amount(r.mp_restored);
-			parsed.restores_variable_mp = parse_restores_variable(r.mp_restored);
-			parsed.soft_reserve_limit = to_int(r.soft_reserve_limit);
-			parsed.hard_reserve_limit = to_int(r.hard_reserve_limit);
-			parsed.removes_effects = parse_effects(parsed.name, r.removes_effects);
-			parsed.removes_beaten_up = (parsed.removes_effects contains $effect[Beaten Up]);
-			parsed.gives_effects = parse_effects(parsed.name, r.gives_effects);
+			foreach idx,name,hp_restored,mp_restored,soft_reserve_limit,hard_reserve_limit,removes_effects,gives_effects in raw_data[type]
+			{
+				__RestorationMetadata parsed;
+				parsed.type = type;
+				parsed.name = name.to_lower_case();
+				parsed.hp_restored = parse_restored_amount(hp_restored);
+				parsed.restores_variable_hp = parse_restores_variable(hp_restored);
+				parsed.mp_restored = parse_restored_amount(mp_restored);
+				parsed.restores_variable_mp = parse_restores_variable(mp_restored);
+				parsed.soft_reserve_limit = to_int(soft_reserve_limit);
+				parsed.hard_reserve_limit = to_int(hard_reserve_limit);
+				parsed.removes_effects = parse_effects(parsed.name, removes_effects);
+				parsed.removes_beaten_up = (parsed.removes_effects contains $effect[Beaten Up]);
+				parsed.gives_effects = parse_effects(parsed.name, gives_effects);
 
-			__known_restoration_sources[parsed.name] = parsed;
+				__known_restoration_sources[parsed.name] = parsed;
+			}
 		}
 	}
 
