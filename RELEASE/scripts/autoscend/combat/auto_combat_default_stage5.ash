@@ -29,8 +29,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	string attackMajor = "attack with weapon";
 	int costMinor = 0;
 	int costMajor = 0;
-	string stunner = "";
-	int costStunner = 0;
 	int damageReceived = 0;
 	if(round != 0)
 	{
@@ -167,13 +165,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMajor = useSkill($skill[Lunging Thrust-Smack], false);
 			costMajor = mp_cost($skill[Lunging Thrust-Smack]);
 		}
-		if(canUse($skill[Club Foot], false))
-		{
-			stunner = useSkill($skill[Club Foot], false);
-			costStunner = mp_cost($skill[Club Foot]);
-		}
-        
-        if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false) && !hasClubEquipped())
+
+		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false) && !hasClubEquipped())
 		{
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
@@ -223,11 +216,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMajor = useSkill($skill[Shieldbutt], false);
 			costMajor = mp_cost($skill[Shieldbutt]);
 		}
-		if(canUse($skill[Shell Up], false)) // can't mark it when using it as the generic stunner
-		{
-			stunner = useSkill($skill[Shell Up], false);
-			costStunner = mp_cost($skill[Shell Up]);
-		}
 
 		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
 		{
@@ -269,11 +257,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				costMinor = mp_cost($skill[Utensil Twist]);
 			}
 		}
-		if(canUse($skill[Entangling Noodles], false))
-		{
-			stunner = useSkill($skill[Entangling Noodles], false);
-			costStunner = mp_cost($skill[Entangling Noodles]);
-		}
 		break;
 	case $class[Sauceror]:
 		if(canUse($skill[Saucegeyser], false))
@@ -312,18 +295,11 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stream of Sauce]);
 		}
 
-		if(canUse($skill[Soul Bubble], false) && my_soulsauce() >= 5)
-		{
-			stunner = useSkill($skill[Soul Bubble]);
-			costStunner = mp_cost($skill[Soul Bubble]);
-		}
-
 		if(!contains_text(combatState, "delaymortarshell") && canSurvive(2.0) && haveUsed($skill[Stuffed Mortar Shell]) && canUse($skill[Salsaball], false))
 		{
 			set_property("auto_combatHandler", combatState + "(delaymortarshell)");
 			return useSkill($skill[Salsaball], false);
 		}
-
 		break;
 
 	case $class[Avatar of Boris]:
@@ -333,12 +309,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMajor = useSkill($skill[Heroic Belch], false);
 			costMinor = mp_cost($skill[Heroic Belch]);
 			costMajor = mp_cost($skill[Heroic Belch]);
-		}
-
-		if(canUse($skill[Broadside], false))
-		{
-			stunner = useSkill($skill[Broadside], false);
-			costStunner = mp_cost($skill[Broadside]);
 		}
 		break;
 
@@ -361,13 +331,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Pop Wheelie]);
 		}
-
-		if(canUse($skill[Snap Fingers], false))
-		{
-			stunner = useSkill($skill[Snap Fingers], false);
-			costStunner = mp_cost($skill[Snap Fingers]);
-		}
-
 		break;
 
 	case $class[Accordion Thief]:
@@ -378,12 +341,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			{
 				return useSkill($skill[Cadenza]);
 			}
-		}
-
-		if(canUse($skill[Accordion Bash], false) && (item_type(equipped_item($slot[weapon])) == "accordion"))
-		{
-			stunner = useSkill($skill[Accordion Bash], false);
-			costStunner = mp_cost($skill[Accordion Bash]);
 		}
 
 		if((buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
@@ -462,11 +419,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			return useSkill($skill[Good Medicine]);
 		}
 
-		if(canUse($skill[Hogtie]) && (my_mp() >= (6 * mp_cost($skill[Hogtie]))) && hasLeg(enemy))
-		{
-			return useSkill($skill[Hogtie]);
-		}
-
 		if(canUse($skill[Lavafava], false) && (enemy.defense_element != $element[hot]))
 		{
 			attackMajor = useSkill($skill[Lavafava], false);
@@ -512,18 +464,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Cowcall]);
 			costMinor = mp_cost($skill[Cowcall]);
 		}
-
-		if(canUse($skill[Beanscreen]) && !canSurvive(5.0))
-		{
-			stunner = useSkill($skill[Beanscreen]);
-			costStunner = mp_cost($skill[Beanscreen]);
-		}
-
-		if(canUse($skill[Hogtie], false) && (my_mp() >= (3 * mp_cost($skill[Hogtie]))) && hasLeg(enemy))
-		{
-			stunner = useSkill($skill[Hogtie], false);
-			costStunner = mp_cost($skill[Hogtie]);
-		}
 		break;
 
 	case $class[Vampyre]:
@@ -547,8 +487,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Dark Feast]);
 		}
-		if(canUse($skill[Blood Chains], false) && my_hp() > 3 * hp_cost($skill[Blood Chains]))
-			stunner = useSkill($skill[Blood Chains], false);
 		// intentionally not setting costMinor or costMajor since they don't cost mp...
 
 		// If we're in a form or something, a beehive is probably better than just attacking
@@ -565,12 +503,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		if(canUse($skill[Thunderstrike]) && (monster_level_adjustment() <= 150))
 		{
 			return useSkill($skill[Thunderstrike]);
-		}
-
-		if(!contains_text(combatState, "stunner") && (stunner != "") && (monster_level_adjustment() <= 100) && (my_mp() >= costStunner) && stunnable(enemy))
-		{
-			set_property("auto_combatHandler", combatState + "(stunner)");
-			return stunner;
 		}
 
 		if(canUse($skill[Unleash The Greash]) && (monster_element(enemy) != $element[sleaze]) && (have_effect($effect[Takin\' It Greasy]) > 100))
