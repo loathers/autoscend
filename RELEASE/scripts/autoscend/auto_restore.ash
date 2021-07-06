@@ -760,7 +760,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		}
 
 		float price = get_value("meat_per_use");
-		if(price < 0.001)
+		if (price < 0.0)
 		{
 			return -1.0;
 		}
