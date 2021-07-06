@@ -20,9 +20,9 @@
 record __RestorationMetadata{
 	string name;
 	string type;
-	int hp_restored;
+	float hp_restored;
 	string restores_variable_hp;
-	int mp_restored;
+	float mp_restored;
 	string restores_variable_mp;
 	int soft_reserve_limit;
 	int hard_reserve_limit;
@@ -189,7 +189,7 @@ void __init_restoration_metadata()
 		return parsed_effects;
 	}
 
-	int parse_restored_amount(string restored_str)
+	float parse_restored_amount(string restored_str)
 	{
 		restored_str = restored_str.to_lower_case();
 		if(restored_str == "all" || restored_str == "half" || restored_str == "scaling")
@@ -198,7 +198,7 @@ void __init_restoration_metadata()
 		}
 		else
 		{
-			return to_int(restored_str);
+			return to_float(restored_str);
 		}
 	}
 
