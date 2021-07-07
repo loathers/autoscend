@@ -46,4 +46,4 @@ auto_logLevel	string	One of: critical, error, warning, info, debug, trace. Sets 
 auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
 auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
 auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
-auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns)
+auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
