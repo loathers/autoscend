@@ -889,6 +889,10 @@ boolean L13_towerNSTower()
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_05_monster1"))
 	{
 		auto_log_info("Time to fight the Wall of Skins!", "blue");
+		if (get_property("auto_towerBreak").to_lower_case() == "wall of skin" || get_property("auto_towerBreak").to_lower_case() == "wallofskin" || get_property("auto_towerBreak").to_lower_case() == "skin" || get_property("auto_towerBreak").to_lower_case() == "level 1")
+		{
+			abort("auto_towerBreak set to abort here.");
+		}
 		if (item_amount($item[Beehive]) > 0)
 		{
 			autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
@@ -1074,6 +1078,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_06_monster2"))
 	{
+		if (get_property("auto_towerBreak").to_lower_case() == "wall of meat" || get_property("auto_towerBreak").to_lower_case() == "wallofmeat" || get_property("auto_towerBreak").to_lower_case() == "meat" || get_property("auto_towerBreak").to_lower_case() == "level 2")
+		{
+			abort("auto_towerBreak set to abort here.");
+		}
 		equipBaseline();
 		shrugAT($effect[Polka of Plenty]);
 		buffMaintain($effect[Disco Leer], 0, 1, 1);
@@ -1110,6 +1118,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_07_monster3"))		//need to kill wall of bones
 	{
+		if (get_property("auto_towerBreak").to_lower_case() == "wall of bones" || get_property("auto_towerBreak").to_lower_case() == "wallofbones" || get_property("auto_towerBreak").to_lower_case() == "bones" || get_property("auto_towerBreak").to_lower_case() == "level 3")
+		{
+			abort("auto_towerBreak set to abort here.");
+		}
 		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 		boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
 		
@@ -1186,6 +1198,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_08_monster4"))
 	{
+		if (get_property("auto_towerBreak").to_lower_case() == "mirror" || get_property("auto_towerBreak").to_lower_case() == "level 4")
+		{
+			abort("auto_towerBreak set to abort here.");
+		}
 		boolean confidence = get_property("auto_confidence").to_boolean();
 		// confidence really just means take the first choice, so it's necessary in vampyre
 		if(my_class() == $class[Vampyre])
@@ -1199,6 +1215,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_09_monster5"))
 	{
+		if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
+		{
+			abort("auto_towerBreak set to abort here.");
+		}
 		if(my_maxhp() < 800)
 		{
 			buffMaintain($effect[Industrial Strength Starch], 0, 1, 1);
@@ -1253,6 +1273,10 @@ boolean L13_towerNSTower()
 
 boolean L13_towerNSFinal()
 {
+	if (get_property("auto_towerBreak").to_lower_case() == "naughty soreceress" || get_property("auto_towerBreak").to_lower_case() == "the naughty soreceress" || get_property("auto_towerBreak").to_lower_case() == "ns" || get_property("auto_towerBreak").to_lower_case() == "sorceress" || get_property("auto_towerBreak").to_lower_case() == "level 6" || get_property("auto_towerBreak").to_lower_case() == "chamber")
+	{
+		abort("auto_towerBreak set to abort here.");
+	}
 	//state 11 means ready to fight sorceress. state 12 means lost to her due to lack of wand thus unlocking bear verb orgy
 	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 12)
 	{
