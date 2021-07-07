@@ -226,4 +226,4 @@
 223	auto_paranoia_counter
 224	auto_wishes
 225	auto_restoreUseBloodBond
-226 auto_towerBreak
+226	auto_towerBreak
