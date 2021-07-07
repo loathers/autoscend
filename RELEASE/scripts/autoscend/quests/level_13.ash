@@ -891,7 +891,7 @@ boolean L13_towerNSTower()
 		auto_log_info("Time to fight the Wall of Skins!", "blue");
 		if (get_property("auto_towerBreak").to_lower_case() == "wall of skin" || get_property("auto_towerBreak").to_lower_case() == "wallofskin" || get_property("auto_towerBreak").to_lower_case() == "skin" || get_property("auto_towerBreak").to_lower_case() == "level 1")
 		{
-			abort("auto_towerBreak set to abort here.")
+			abort("auto_towerBreak set to abort here.");
 		}
 		if (item_amount($item[Beehive]) > 0)
 		{
@@ -1080,7 +1080,7 @@ boolean L13_towerNSTower()
 	{
 		if (get_property("auto_towerBreak").to_lower_case() == "wall of meat" || get_property("auto_towerBreak").to_lower_case() == "wallofmeat" || get_property("auto_towerBreak").to_lower_case() == "meat" || get_property("auto_towerBreak").to_lower_case() == "level 2")
 		{
-			abort("auto_towerBreak set to abort here.")
+			abort("auto_towerBreak set to abort here.");
 		}
 		equipBaseline();
 		shrugAT($effect[Polka of Plenty]);
@@ -1120,7 +1120,7 @@ boolean L13_towerNSTower()
 	{
 		if (get_property("auto_towerBreak").to_lower_case() == "wall of bones" || get_property("auto_towerBreak").to_lower_case() == "wallofbones" || get_property("auto_towerBreak").to_lower_case() == "bones" || get_property("auto_towerBreak").to_lower_case() == "level 3")
 		{
-			abort("auto_towerBreak set to abort here.")
+			abort("auto_towerBreak set to abort here.");
 		}
 		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 		boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
@@ -1200,7 +1200,7 @@ boolean L13_towerNSTower()
 	{
 		if (get_property("auto_towerBreak").to_lower_case() == "mirror" || get_property("auto_towerBreak").to_lower_case() == "level 4")
 		{
-			abort("auto_towerBreak set to abort here.")
+			abort("auto_towerBreak set to abort here.");
 		}
 		boolean confidence = get_property("auto_confidence").to_boolean();
 		// confidence really just means take the first choice, so it's necessary in vampyre
@@ -1217,7 +1217,7 @@ boolean L13_towerNSTower()
 	{
 		if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
 		{
-			abort("auto_towerBreak set to abort here.")
+			abort("auto_towerBreak set to abort here.");
 		}
 		if(my_maxhp() < 800)
 		{
@@ -1275,7 +1275,7 @@ boolean L13_towerNSFinal()
 {
 	if (get_property("auto_towerBreak").to_lower_case() == "naughty soreceress" || get_property("auto_towerBreak").to_lower_case() == "the naughty soreceress" || get_property("auto_towerBreak").to_lower_case() == "ns" || get_property("auto_towerBreak").to_lower_case() == "sorceress" || get_property("auto_towerBreak").to_lower_case() == "level 6" || get_property("auto_towerBreak").to_lower_case() == "chamber")
 	{
-		abort("auto_towerBreak set to abort here.")
+		abort("auto_towerBreak set to abort here.");
 	}
 	//state 11 means ready to fight sorceress. state 12 means lost to her due to lack of wand thus unlocking bear verb orgy
 	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 12)
