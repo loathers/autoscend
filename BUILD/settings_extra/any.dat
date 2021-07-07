@@ -9,3 +9,4 @@ auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Candy (d
 auto_hccsNoConcludeDay	boolean	Community Service: When true reduce how many daily end-of-day things we do.
 auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
 auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
+auto_towerBreak string Where should we break in the tower (e.g. wall of skin, wall of bones, shadow, ns). Disabled by default.
