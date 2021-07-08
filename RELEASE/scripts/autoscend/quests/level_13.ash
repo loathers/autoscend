@@ -1273,7 +1273,7 @@ boolean L13_towerNSTower()
 
 boolean L13_towerNSFinal()
 {
-	if (get_property("auto_towerBreak").to_lower_case() == "naughty soreceress" || get_property("auto_towerBreak").to_lower_case() == "the naughty soreceress" || get_property("auto_towerBreak").to_lower_case() == "ns" || get_property("auto_towerBreak").to_lower_case() == "sorceress" || get_property("auto_towerBreak").to_lower_case() == "level 6" || get_property("auto_towerBreak").to_lower_case() == "chamber")
+	if (get_property("auto_towerBreak").to_lower_case() == "naughty sorceress" || get_property("auto_towerBreak").to_lower_case() == "the naughty sorceress" || get_property("auto_towerBreak").to_lower_case() == "ns" || get_property("auto_towerBreak").to_lower_case() == "sorceress" || get_property("auto_towerBreak").to_lower_case() == "level 6" || get_property("auto_towerBreak").to_lower_case() == "chamber")
 	{
 		abort("auto_towerBreak set to abort here.");
 	}
