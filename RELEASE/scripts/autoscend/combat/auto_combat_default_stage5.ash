@@ -303,6 +303,34 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		break;
 
 	case $class[Avatar of Boris]:
+		// Boris will have problems if Trusty isn't wielded
+		if (equipped_item($slot[Weapon]) != $item[none])
+		{
+			// Mighty axing is better than attacking as it will never fumble and has no mp cost
+			if(canUse($skill[Mighty Axing], false))
+			{
+				attackMinor = useSkill($skill[Mighty Axing], false);
+				attackMajor = useSkill($skill[Mighty Axing], false);
+				costMinor = mp_cost($skill[Mighty Axing]);
+				costMajor = mp_cost($skill[Mighty Axing]);
+			}
+
+			if(canUse($skill[Cleave], false) && (equipped_item($slot[Weapon]) != $item[none]))
+			{
+				attackMajor = useSkill($skill[Cleave], false);
+				costMajor = mp_cost($skill[Cleave]);
+			}
+
+			// Avoid apathy and cunctatitis by using a ranged attack
+			if (canUse($skill[Throw Trusty], false) && $monsters[Apathetic Lizardmen, Procrastination Giants] contains enemy)
+			{
+				attackMinor = useSkill($skill[Throw Trusty], false);
+				attackMajor = useSkill($skill[Throw Trusty], false);
+				costMinor = mp_cost($skill[Throw Trusty]);
+				costMajor = mp_cost($skill[Throw Trusty]);
+			}
+		}
+
 		if(canUse($skill[Heroic Belch], false) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]) && (my_fullness() >= 5))
 		{
 			attackMinor = useSkill($skill[Heroic Belch], false);
@@ -313,32 +341,38 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		break;
 
 	case $class[Avatar of Sneaky Pete]:
-		if(canUse($skill[Peel Out]))
+		// TODO: Move to stage 2, make generic free run handler
+		if (canUse($skill[Peel Out] && auto_wantToBanish(enemy, my_location()))
 		{
-			if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, Tomb Asp, Tomb Servant,  W imp] contains enemy)
-			{
-				return useSkill($skill[Peel Out]);
-			}
+			return useSkill($skill[Peel Out]);
+		}
+
+		if(canUse($skill[Pop Wheelie], false))
+		{
+			attackMajor = useSkill($skill[Pop Wheelie], false);
+			costMajor = mp_cost($skill[Pop Wheelie]);
 		}
 
 		if(canUse($skill[Smoke Break]) && (enemy.physical_resistance >= 80))
 		{
-			return useSkill($skill[Smoke Break]);
+			attackMinor = useSkill($skill[Smoke Break]);
+			attackMajor = useSkill($skill[Smoke Break]);
+			costMinor = mp_cost($skill[Smoke Break]);
+			costMajor = mp_cost($skill[Smoke Break]);
 		}
-
-		if(canUse($skill[Flash Headlight]) && (enemy.physical_resistance >= 80) && (get_property("peteMotorbikeHeadlight") == "Party Bulb" || (get_property("peteMotorbikeHeadlight") == "Blacklight Bulb" && monster_element(enemy) != $element[sleaze])))
+		else if(canUse($skill[Flash Headlight]) && (enemy.physical_resistance >= 80) && (get_property("peteMotorbikeHeadlight") == "Party Bulb" || (get_property("peteMotorbikeHeadlight") == "Blacklight Bulb" && monster_element(enemy) != $element[sleaze])))
 		{
-			return useSkill($skill[Flash Headlight]);
+			attackMinor = useSkill($skill[Flash Headlight]);
+			attackMajor = useSkill($skill[Flash Headlight]);
+			costMinor = mp_cost($skill[Flash Headlight]);
+			costMajor = mp_cost($skill[Flash Headlight]);
 		}
-
-		if(canUse($item[Firebomb], false) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[hot]))
+		else if(canUse($item[Firebomb], false) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[hot]))
 		{
-			return useItem($item[Firebomb], false);
-		}
-
-		if(canUse($skill[Pop Wheelie]) && (my_mp() > 40))
-		{
-			return useSkill($skill[Pop Wheelie]);
+			attackMinor = useItem($item[Firebomb], false);
+			attackMajor = useItem($item[Firebomb], false);
+			costMinor = 0;
+			costMajor = 0;
 		}
 		break;
 
@@ -567,18 +601,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	if((monster_level_adjustment() > 150) && (my_mp() >= 45) && canUse($skill[Shell Up]) && (my_class() == $class[Turtle Tamer]))
 	{
 		return useSkill($skill[Shell Up]);
-	}
-
-	if(attackMinor == "attack with weapon")
-	{
-		if(canUse($skill[Summon Love Stinkbug]))
-		{
-			return useSkill($skill[Summon Love Stinkbug]);
-		}
-		if(canUse($skill[Mighty Axing], false) && (equipped_item($slot[Weapon]) != $item[none]))
-		{
-			return useSkill($skill[Mighty Axing], false);
-		}
 	}
 
 	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[cold]) && canUse($skill[Throat Refrigerant], false))
