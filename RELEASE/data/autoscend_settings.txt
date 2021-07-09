@@ -57,8 +57,8 @@ any	44	auto_logLevel	string	One of: critical, error, warning, info, debug, trace
 any	45	auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
 any	46	auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
 any	47	auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
-any	48	auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
-any	49	auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
+any	48	auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
+any	49	auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
 
 post	0	auto_getSteelOrgan	boolean	Get Steel Organ in this ascension?
 post	1	auto_getBeehive	boolean	Get Beehive in this ascension?
