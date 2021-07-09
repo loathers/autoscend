@@ -321,6 +321,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			}
 		}
 
+		if(canUse($item[Smoke Break]) && (enemy.physical_resistance >= 80))
+		{
+			return useSkill($skill[Smoke Break]);
+		}
 
 		if(canUse($item[Firebomb], false) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[hot]))
 		{
