@@ -47,3 +47,4 @@ auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blo
 auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
 auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
 auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
+auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
