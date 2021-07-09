@@ -18,6 +18,7 @@ any	7	auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Ca
 any	8	auto_hccsNoConcludeDay	boolean	Community Service: When true reduce how many daily end-of-day things we do.
 any	9	auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
 any	10	auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
+any	11	_auto_ignoreRestoreFailureToday	boolean	if true we will for today only ignore failure to restore MP or HP and just continue playing
 
 post	0	auto_chasmBusted	boolean	Has the orc chasm bridge been 'trolled yet? Ed only.
 post	1	auto_cookie	integer	HCCS Only: Tracks fortune cookie.
