@@ -322,7 +322,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			}
 
 			// Avoid apathy and cunctatitis by using a ranged attack
-			if (canUse($skill[Throw Trusty], false) && $monsters[Apathetic Lizardman, Procrastination Giants] contains enemy)
+			if (canUse($skill[Throw Trusty], false) && $monsters[Apathetic Lizardman, Procrastination Giant] contains enemy)
 			{
 				attackMinor = useSkill($skill[Throw Trusty], false);
 				attackMajor = useSkill($skill[Throw Trusty], false);
