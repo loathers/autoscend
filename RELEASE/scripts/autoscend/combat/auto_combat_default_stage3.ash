@@ -367,7 +367,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		case $class[Seal Clubber]:
 			if(canUse($skill[Club Foot]) && (my_fury() > 0 || hasClubEquipped()))
 			{
-				return useSkill($skill[Club Foot])
+				return useSkill($skill[Club Foot]);
 			}
 			break;
 		case $class[Turtle Tamer]:
