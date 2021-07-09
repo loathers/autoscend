@@ -326,6 +326,11 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			return useSkill($skill[Smoke Break]);
 		}
 
+		if(canUse($skill[Flash Headlight]) && (enemy.physical_resistance >= 80) && (get_property("peteMotorbikeHeadlight") == "Party Bulb" || (get_property("peteMotorbikeHeadlight") == "Blacklight Bulb" && monster_element(enemy) != $element[sleaze])))
+		{
+			return useSkill($skill[Flash Headlight]);
+		}
+
 		if(canUse($item[Firebomb], false) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[hot]))
 		{
 			return useItem($item[Firebomb], false);
