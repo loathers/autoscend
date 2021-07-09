@@ -342,7 +342,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 	case $class[Avatar of Sneaky Pete]:
 		// TODO: Move to stage 2, make generic free run handler
-		if (canUse($skill[Peel Out] && auto_wantToBanish(enemy, my_location()))
+		if (canUse($skill[Peel Out]) && auto_wantToBanish(enemy, my_location()))
 		{
 			return useSkill($skill[Peel Out]);
 		}
