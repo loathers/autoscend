@@ -315,7 +315,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				costMajor = mp_cost($skill[Mighty Axing]);
 			}
 
-			if(canUse($skill[Cleave], false) && (equipped_item($slot[Weapon]) != $item[none]))
+			if(canUse($skill[Cleave], false))
 			{
 				attackMajor = useSkill($skill[Cleave], false);
 				costMajor = mp_cost($skill[Cleave]);
