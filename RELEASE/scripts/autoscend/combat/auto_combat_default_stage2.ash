@@ -97,10 +97,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return "item " + $item[Short Writ Of Habeas Corpus];
 		}
 	}
-	
-	//TODO use $item[Tattered Scrap Of Paper] as a free runaway.
 
-	if(!contains_text(combatState, "banishercheck"))
+	if(!contains_text(combatState, "banishercheck") && auto_wantToBanish(enemy, my_location()))
 	{
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
@@ -123,6 +121,20 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		set_property("auto_combatHandler", combatState + "(banishercheck)");
 		combatState += "(banishercheck)";
+	}
+
+
+	// Free run from monsters we want to banish but are unable to
+	if(auto_wantToBanish(enemy, my_location()))
+	{
+		//TODO: Make freeRunCombatString() like banish
+		//TODO use $item[Tattered Scrap Of Paper] as a free runaway?
+		//TODO use $item[Green Smoke Bomb] as a free runaway?
+		if (canUse($skill[Peel Out]))
+		{
+			handleTracker(enemy, $skill[Peel Out], "auto_freeruns");
+			return useSkill($skill[Peel Out]);
+		}
 	}
 
 	if (!contains_text(combatState, "replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
