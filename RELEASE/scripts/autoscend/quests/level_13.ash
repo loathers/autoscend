@@ -1348,29 +1348,8 @@ boolean L13_towerNSFinal()
 				set_property("auto_disableAdventureHandling", false);
 				return true;
 			}
-			if(get_property("auto_stayInRun").to_boolean())
-			{
-				set_property("auto_disableAdventureHandling", false);
-				abort("User wanted to stay in run (auto_stayInRun), we are done.");
-			}
-
-			if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))
-			{
-				set_property("auto_disableAdventureHandling", false);
-				cli_execute("refresh quests");
-				if(internalQuestStatus("questL13Final") > 12)
-				{
-					abort("Freeing the king will result in a path change and we can barely handle The Sleazy Back Alley. Aborting, run the script again after selecting your aftercore path in order for it to clean up.");
-				}
-				return true;
-			}
-			visit_url("place.php?whichplace=nstower&action=ns_11_prism");
+			set_property("auto_disableAdventureHandling", false);
 		}
-		set_property("auto_disableAdventureHandling", false);
-	}
-	else
-	{
-		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
 	}
 
 	if(get_property("auto_stayInRun").to_boolean())
@@ -1386,6 +1365,12 @@ boolean L13_towerNSFinal()
 	if(my_class() == $class[Plumber] && (0 < item_amount($item[Thwaitgold buzzy beetle statuette])))
 	{
 		abort("Freeing the king will lose your extra stomach space. Enjoy the rest of your video game.");
+	}
+
+	if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))
+	{
+		abort("Freeing the king will result in a path change and we can barely handle The Sleazy Back Alley. Aborting, run the script again after selecting your aftercore path in order for it to clean up.");
+		return true;
 	}
 
 	visit_url("place.php?whichplace=nstower&action=ns_11_prism");
