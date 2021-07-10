@@ -221,7 +221,7 @@ void pete_buySkills()
 	// Skip if the motorcycle is fully upgraded
 	if (get_property("peteMotorbikeCowling") == "" ||
 		get_property("peteMotorbikeTires") == "" ||
-		get_property("peteMotorbikeMuffler") == ""||&&
+		get_property("peteMotorbikeMuffler") == "" ||
 		get_property("peteMotorbikeGasTank") == "" ||
 		get_property("peteMotorbikeHeadlight") == "" ||
 		get_property("peteMotorbikeSeat") == "")
