@@ -76,7 +76,7 @@ void pete_buySkills()
 	}
 
 	//if you have those 3 skills then you have all skills.
-	if (!have_skill($skill[Natural Dancer]) || !have_skill($skill[Flash Headlight]) || !have_skill($skill[Walk Away From Explosion])
+	if (!have_skill($skill[Natural Dancer]) || !have_skill($skill[Flash Headlight]) || !have_skill($skill[Walk Away From Explosion]))
 	{
 		string page = visit_url("da.php?place=gate3");
 		matcher my_skillPoints = create_matcher("<b>(\\d\+)</b> skill point", page);
