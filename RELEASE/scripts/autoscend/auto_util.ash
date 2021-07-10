@@ -1021,7 +1021,18 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		Breathe Out: per hot jelly usage
 	*/
 
-	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
+	if (auto_have_skill($skill[Peel Out]) && get_property("peteMotorbikeMuffler") == "Extra-Smelly Muffler" && !(used contains "Peel Out"))
+	{
+		int maxPeelOut = 10;
+		if (get_property("peteMotorbikeTires") == "Racing Slicks")
+		{
+			maxPeelOut = 30;
+		}
+		if (get_property("_petePeeledOut").to_int() < maxPeelOut)
+		{
+			return "skill " + $skill[Peel Out];
+		}
+	}
 
 	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
 	{
