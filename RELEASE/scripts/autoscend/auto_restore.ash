@@ -1570,8 +1570,15 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 		__RestorationOptimization[int] options = __maximize_restore_options(hp_target(), mp_target(), meat_reserve, useFreeRests);
 		if(count(options) == 0)
 		{
-			auto_log_warning("Target "+resource_type+" => " + goal + " - Uh, couldnt determine an effective restoration mechanism. Sorry.", "red");
-			return false;
+			auto_log_critical("Target "+resource_type+" => " + goal + " - couldnt determine an effective restoration mechanism", "red");
+			if(get_property("auto_ignoreRestoreFailure").to_boolean() || get_property("_auto_ignoreRestoreFailureToday").to_boolean())
+			{
+				auto_log_critical("Ignoring the error as per user instructions", "red");
+ 				return false;
+			}
+			print("Aborting due to restore failure... you can override this setting for today by entering in gCLI:");
+			print("set _auto_ignoreRestoreFailureToday = true");
+			abort();
 		}
 
 		boolean success = false;
