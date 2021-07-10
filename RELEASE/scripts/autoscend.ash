@@ -1110,6 +1110,16 @@ void initializeDay(int day)
 	grey_goo_initializeDay(day);
 	jarlsberg_initializeDay(day);
 
+	// Bulk cache mall prices
+	if(!in_hardcore() && get_property("auto_day_init").to_int() < day)
+	{
+		auto_log_info("Bulk caching mall prices for consumables");
+		mall_prices("food");
+		mall_prices("booze");
+		mall_prices("hprestore");
+		mall_prices("mprestore");
+	}
+
 	if(day == 1)
 	{
 		if(get_property("auto_day_init").to_int() < 1)
