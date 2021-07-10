@@ -333,9 +333,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Summon Love Gnats]);
 		}
 
-		if(canUse($skill[Summon Love Stinkbug]) && haveUsed($skill[Summon Love Gnats]) && !contains_text(text, "STUN RESIST"))
+		if(!(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy)))
 		{
-			return useSkill($skill[Summon Love Stinkbug]);
+			if(canUse($skill[Summon Love Stinkbug]) && haveUsed($skill[Summon Love Gnats]) && !contains_text(text, "STUN RESIST"))
+			{
+				return useSkill($skill[Summon Love Stinkbug]);
+			}
 		}
 	}
 	

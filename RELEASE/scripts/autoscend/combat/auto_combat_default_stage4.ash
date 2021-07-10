@@ -307,9 +307,12 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 
 	//stinkbug physically resistant monsters
-	if(canUse($skill[Summon Love Stinkbug]) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]))
+	if(!(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy)))
 	{
-		return useSkill($skill[Summon Love Stinkbug]);
+		if(canUse($skill[Summon Love Stinkbug]) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]))
+		{
+			return useSkill($skill[Summon Love Stinkbug]);
+		}
 	}
 	
 	return "";
