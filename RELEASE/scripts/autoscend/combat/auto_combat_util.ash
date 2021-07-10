@@ -228,7 +228,7 @@ skill getStunner(monster enemy)
 		{
 			return $skill[Beanscreen];
 		}
-		if(canUse($skill[Hogtie]) && !hasUsed($skill[Beanscreen]) && hasLeg(enemy))
+		if(canUse($skill[Hogtie]) && !haveUsed($skill[Beanscreen]) && hasLeg(enemy))
 		{
 			return $skill[Hogtie];
 		}
