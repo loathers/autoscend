@@ -219,7 +219,20 @@ void pete_buySkills()
 		}
 	}
 
-	page = visit_url("main.php?action=motorcycle");
+	set_property("auto_peteSkills", my_level());
+}
+void pete_upgradeMotorcycle()
+{
+	if (get_property("peteMotorbikeCowling") != "" &&
+		get_property("peteMotorbikeTires") != "" &&
+		get_property("peteMotorbikeMuffler") != "" &&
+		get_property("peteMotorbikeGasTank") != "" &&
+		get_property("peteMotorbikeHeadlight") != "" &&
+		get_property("peteMotorbikeSeat") != "")
+	{
+		return;
+	}
+	string page = visit_url("main.php?action=motorcycle");
 	matcher my_cyclePoints = create_matcher("Upping Your Grade", page);
 	while(my_cyclePoints.find())
 	{
@@ -255,7 +268,6 @@ void pete_buySkills()
 		{
 			firstChoice = 6;
 			secondChoice = 1;
-			run_choice(6);
 		}
 
 		if(firstChoice == -1)
@@ -263,19 +275,20 @@ void pete_buySkills()
 			break;
 		}
 
-		page = visit_url("choice.php?pwd=&whichchoice=859&option=" + firstChoice);
-
+		run_choice(firstChoice);
 		if(last_choice() == 859)
 		{
 			abort("Mafia is not handling this correctly, sorry");
 		}
-		page = visit_url("choice.php?pwd=&whichchoice=" + last_choice() + "&option=" + secondChoice);
+		run_choice(secondChoice);
+		if(last_choice() == 859)
+		{
+			abort("Mafia is not handling this correctly, sorry");
+		}
 
 		page = visit_url("main.php?action=motorcycle");
 		my_cyclePoints = create_matcher("Upping Your Grade", page);
 	}
-
-	set_property("auto_peteSkills", my_level());
 }
 
 boolean LM_pete()
@@ -286,6 +299,7 @@ boolean LM_pete()
 	}
 
 	pete_buySkills();
+	pete_upgradeMotorcycle();
 
 	return false;
 }
