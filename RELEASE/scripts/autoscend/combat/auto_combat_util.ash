@@ -164,51 +164,96 @@ string useItems(item it1, item it2)
 	return useItems(it1, it2, true);
 }
 
-string getStallString(monster enemy)
+skill getStunner(monster enemy)
 {
-	// if you call this without actually doing what it returns it'll make me sad :(
+	// Class specific
+	switch(my_class())
+	{
+	case $class[Seal Clubber]:
+		if(canUse($skill[Club Foot]) && (my_fury() > 0 || hasClubEquipped()))
+		{
+			return $skill[Club Foot];
+		}
+		break;
+	case $class[Turtle Tamer]:
+		if(canUse($skill[Shell Up]))
+		{
+			//storm turtle blessings makes shell up a multi-round stun, otherwise it's just a (special) stagger
+			if(have_effect($effect[Blessing of the Storm Tortoise]) > 0 || have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0 || have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0)
+			{
+				return $skill[Shell Up];
+			}
+		}
+		break;
+	case $class[Accordion Thief]:
+		if(canUse($skill[Accordion Bash]) && (item_type(equipped_item($slot[weapon])) == "accordion"))
+		{
+			return $skill[Accordion Bash];
+		}
+		break;
+	case $class[Pastamancer]:
+		if(canUse($skill[Entangling Noodles]))
+		{
+			return $skill[Entangling Noodles];
+		}
+		break;
+	case $class[Sauceror]:
+		if(canUse($skill[Soul Bubble]))
+		{
+			return $skill[Soul Bubble];
+		}
+		break;
+	case $class[Avatar of Boris]:
+		if(canUse($skill[Broadside]))
+		{
+			return $skill[Broadside];
+		}
+		break;
+	case $class[Avatar of Sneaky Pete]:
+		if(canUse($skill[Snap Fingers]))
+		{
+			return $skill[Snap Fingers];
+		}
+		break;
+	case $class[Avatar of Jarlsberg]:
+		if(canUse($skill[Blend]))
+		{
+			return $skill[Blend];
+		}
+		break;
+	case $class[Cow Puncher]:
+	case $class[Beanslinger]:
+	case $class[Snake Oiler]:
+		if(canUse($skill[Beanscreen]))
+		{
+			return $skill[Beanscreen];
+		}
+		if(canUse($skill[Hogtie]) && !hasUsed($skill[Beanscreen]) && hasLeg(enemy))
+		{
+			return $skill[Hogtie];
+		}
+		break;
+	case $class[Vampyre]:
+		if(canUse($skill[Blood Chains]) && my_hp() > 3 * hp_cost($skill[Blood Chains]))
+		{
+			return $skill[Blood Chains];
+		}
+		break;
+	}
 	
+	// Decreases in stun duration the more it's used
 	if(canUse($skill[Summon Love Gnats]))
 	{
-		return useSkill($skill[Summon Love Gnats]);
+		return $skill[Summon Love Gnats];
 	}
 
-	if(canUse($skill[Beanscreen]))
-	{
-		return useSkill($skill[Beanscreen]);
-	}
-
-	if(canUse($skill[Broadside]))
-	{
-		return useSkill($skill[Broadside]);
-	}
-
+	// Nuclear Autum
 	if(canUse($skill[Mind Bullets]))
 	{
-		return useSkill($skill[Mind Bullets]);
+		return $skill[Mind Bullets];
 	}
 
-	if(canUse($skill[Snap Fingers]))
-	{
-		return useSkill($skill[Snap Fingers]);
-	}
-
-	if(canUse($skill[Soul Bubble]))
-	{
-		return useSkill($skill[Soul Bubble]);
-	}
-
-	if(canUse($skill[Blood Chains]))
-	{
-		return useSkill($skill[Blood Chains]);
-	}
-
-	if(canUse($skill[Hogtie]) && !haveUsed($skill[Beanscreen]) && (my_mp() >= (6 * mp_cost($skill[Hogtie]))) && hasLeg(enemy))
-	{
-		return useSkill($skill[Hogtie]);
-	}
-
-	return "";
+	return $skill[none];
 }
 
 boolean enemyCanBlocksSkills()

@@ -66,10 +66,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	//iotm back item and the enemies it spawns (free fights) can be killed using special skills to get extra XP and item drops
 	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy))
 	{
-		string stall = getStallString(enemy);
-		if(stall != "")
+		skill stunner = getStunner(enemy);
+		if(stunner != $skill[none])
 		{
-			return stall;
+			return useSkill(stunner);
 		}
 
 		if(canUse($skill[Shoot Ghost], false) && (my_mp() > mp_cost($skill[Shoot Ghost])) && !contains_text(combatState, "shootghost3") && !contains_text(combatState, "trapghost"))
@@ -108,7 +108,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			}
 			else
 			{
-				combatState += "(trapghost)(love stinkbug)";
+				combatState += "(trapghost)";
 				set_property("auto_combatHandler", combatState);
 			}
 		}

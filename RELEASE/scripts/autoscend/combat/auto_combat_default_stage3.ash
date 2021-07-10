@@ -362,79 +362,10 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 	if(enemy_la <= 100 && stunnable(enemy) && !canSurvive(5.0))
 	{
-		switch(my_class())
+		skill stunner = getStunner(enemy);
+		if(stunner != $skill[none])
 		{
-		case $class[Seal Clubber]:
-			if(canUse($skill[Club Foot]) && (my_fury() > 0 || hasClubEquipped()))
-			{
-				return useSkill($skill[Club Foot]);
-			}
-			break;
-		case $class[Turtle Tamer]:
-			if(canUse($skill[Shell Up]))
-			{
-				//storm turtle blessings makes shell up a multi-round stun, otherwise it's just a (special) stagger
-				if(have_effect($effect[Blessing of the Storm Tortoise]) > 0 || have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0 || have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0)
-				{
-					return useSkill($skill[Shell Up]);
-				}
-			}
-			break;
-		case $class[Accordion Thief]:
-			if(canUse($skill[Accordion Bash]) && (item_type(equipped_item($slot[weapon])) == "accordion"))
-			{
-				return useSkill($skill[Accordion Bash]);
-			}
-			break;
-		case $class[Pastamancer]:
-			if(canUse($skill[Entangling Noodles]))
-			{
-				return useSkill($skill[Entangling Noodles]);
-			}
-			break;
-		case $class[Sauceror]:
-			if(canUse($skill[Soul Bubble]))
-			{
-				return useSkill($skill[Soul Bubble]);
-			}
-			break;
-		case $class[Avatar of Boris]:
-			if(canUse($skill[Broadside]))
-			{
-				return useSkill($skill[Broadside]);
-			}
-			break;
-		case $class[Avatar of Sneaky Pete]:
-			if(canUse($skill[Snap Fingers]))
-			{
-				return useSkill($skill[Snap Fingers], false);
-			}
-			break;
-		case $class[Avatar of Jarlsberg]:
-			if(canUse($skill[Blend]))
-			{
-				return useSkill($skill[Blend]);
-			}
-			break;
-		case $class[Cow Puncher]:
-		case $class[Beanslinger]:
-		case $class[Snake Oiler]:
-			if(canUse($skill[Beanscreen]))
-			{
-				return useSkill($skill[Beanscreen]);
-			}
-
-			if(canUse($skill[Hogtie]) && (my_mp() >= (3 * mp_cost($skill[Hogtie]))) && hasLeg(enemy))
-			{
-				return useSkill($skill[Hogtie]);
-			}
-			break;
-		case $class[Vampyre]:
-			if(canUse($skill[Blood Chains], false) && my_hp() > 3 * hp_cost($skill[Blood Chains]))
-			{
-				return useSkill($skill[Blood Chains], false);
-			}
-			break;
+			return useSkill(stunner);
 		}
 	}
 	
