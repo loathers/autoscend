@@ -363,7 +363,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		return useSkill($skill[Thunderstrike]);
 	}
 
-	if(enemy_la <= 100 && stunnable(enemy) && !canSurvive(5.0))
+	if(enemy_la <= 100 && stunnable(enemy) && (!canSurvive(5.0) || $monsters[Groar] contains enemy))
 	{
 		skill stunner = getStunner(enemy);
 		if(stunner != $skill[none])
