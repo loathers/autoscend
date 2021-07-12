@@ -48,4 +48,4 @@ auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dun
 auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
 auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
 auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
-auto_useBatteries   boolean    If true will use harvest and use batteries during breakfast. If false will only harvest.
+auto_useBatteries	boolean	If true will use harvest and use batteries during breakfast. If false will only harvest.
