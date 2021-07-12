@@ -31,3 +31,4 @@ Skunkulated	true
 Easily Embarrassed	true
 All Covered In Whatsit	true
 Flared Nostrils	true
+Just the Best Anapests true
