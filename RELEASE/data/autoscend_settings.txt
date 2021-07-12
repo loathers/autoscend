@@ -59,7 +59,7 @@ any	46	auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from da
 any	47	auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
 any	48	auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
 any	49	auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
-any	50	auto_useBatteries    boolean If true will use harvest and use batteries during breakfast. If false will only harvest.
+any	50	auto_useBatteries   boolean    If true will use harvest and use batteries during breakfast. If false will only harvest.
 
 post	0	auto_getSteelOrgan	boolean	Get Steel Organ in this ascension?
 post	1	auto_getBeehive	boolean	Get Beehive in this ascension?
