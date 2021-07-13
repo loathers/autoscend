@@ -1325,6 +1325,12 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		}
 	}
 
+	if(get_property("shockingLickCharges").to_int() > 0)
+	{
+		auto_log_info("Using shocking lick","green");
+		return "skill " + $skill[Shocking Lick];
+	}
+
 	return "";
 }
 
