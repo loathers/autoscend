@@ -303,32 +303,28 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		break;
 
 	case $class[Avatar of Boris]:
-		// Boris will have problems if Trusty isn't wielded
-		if (equipped_item($slot[Weapon]) != $item[none])
+		// Mighty axing is better than attacking as it will never fumble and has no mp cost
+		if(canUse($skill[Mighty Axing], false))
 		{
-			// Mighty axing is better than attacking as it will never fumble and has no mp cost
-			if(canUse($skill[Mighty Axing], false))
-			{
-				attackMinor = useSkill($skill[Mighty Axing], false);
-				attackMajor = useSkill($skill[Mighty Axing], false);
-				costMinor = mp_cost($skill[Mighty Axing]);
-				costMajor = mp_cost($skill[Mighty Axing]);
-			}
+			attackMinor = useSkill($skill[Mighty Axing], false);
+			attackMajor = useSkill($skill[Mighty Axing], false);
+			costMinor = mp_cost($skill[Mighty Axing]);
+			costMajor = mp_cost($skill[Mighty Axing]);
+		}
 
-			if(canUse($skill[Cleave], false))
-			{
-				attackMajor = useSkill($skill[Cleave], false);
-				costMajor = mp_cost($skill[Cleave]);
-			}
+		if(canUse($skill[Cleave], false))
+		{
+			attackMajor = useSkill($skill[Cleave], false);
+			costMajor = mp_cost($skill[Cleave]);
+		}
 
-			// Avoid apathy and cunctatitis by using a ranged attack
-			if (canUse($skill[Throw Trusty], false) && $monsters[Apathetic Lizardman, Procrastination Giant] contains enemy)
-			{
-				attackMinor = useSkill($skill[Throw Trusty], false);
-				attackMajor = useSkill($skill[Throw Trusty], false);
-				costMinor = mp_cost($skill[Throw Trusty]);
-				costMajor = mp_cost($skill[Throw Trusty]);
-			}
+		// Avoid apathy and cunctatitis by using a ranged attack
+		if (equipped_item($slot[Weapon]) == $item[Trusty] && canUse($skill[Throw Trusty], false) && $monsters[Apathetic Lizardman, Procrastination Giant] contains enemy)
+		{
+			attackMinor = useSkill($skill[Throw Trusty], false);
+			attackMajor = useSkill($skill[Throw Trusty], false);
+			costMinor = mp_cost($skill[Throw Trusty]);
+			costMajor = mp_cost($skill[Throw Trusty]);
 		}
 
 		if(canUse($skill[Heroic Belch], false) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]) && (my_fullness() >= 5))
