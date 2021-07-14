@@ -491,6 +491,7 @@ boolean LM_jarlsberg();
 void pete_initializeSettings();
 void pete_initializeDay(int day);
 void pete_buySkills();
+int pete_peelOutRemaining();
 boolean LM_pete();
 
 ########################################################################################################

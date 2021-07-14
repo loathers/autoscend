@@ -131,18 +131,10 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		//TODO use $item[Tattered Scrap Of Paper] as a free runaway?
 		//TODO use $item[Green Smoke Bomb] as a free runaway?
 
-		if (canUse($skill[Peel Out]))
+		if (canUse($skill[Peel Out]) && pete_peelOutRemaining() > 0)
 		{
-			int maxPeelOut = 10;
-			if (get_property("peteMotorbikeTires") == "Racing Slicks")
-			{
-				maxPeelOut = 30;
-			}
-			if (get_property("_petePeeledOut").to_int() < maxPeelOut)
-			{
-				handleTracker(enemy, $skill[Peel Out], "auto_freeruns");
-				return useSkill($skill[Peel Out]);
-			}
+			handleTracker(enemy, $skill[Peel Out], "auto_freeruns");
+			return useSkill($skill[Peel Out]);
 		}
 	}
 

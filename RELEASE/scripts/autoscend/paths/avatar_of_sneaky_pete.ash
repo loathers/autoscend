@@ -286,6 +286,16 @@ void pete_buySkills()
 	set_property("auto_peteSkills", my_level());
 }
 
+int pete_peelOutRemaining()
+{
+	if (get_property("peteMotorbikeTires") == "Racing Slicks")
+	{
+		return 30 - get_property("_petePeeledOut").to_int();
+	}
+
+	return 10 - get_property("_petePeeledOut").to_int();
+}
+
 boolean LM_pete()
 {
 	if(my_path() != "Avatar of Sneaky Pete")
