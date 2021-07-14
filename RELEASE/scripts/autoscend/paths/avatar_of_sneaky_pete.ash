@@ -228,7 +228,7 @@ void pete_buySkills()
 	}
 
 	// Skip if the motorcycle is fully upgraded
-	string page = visit_url("main.php?action=motorcycle");
+	page = visit_url("main.php?action=motorcycle");
 	matcher my_cyclePoints = create_matcher("Upping Your Grade", page);
 	while(my_cyclePoints.find())
 	{
