@@ -347,13 +347,15 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			if (canUse($skill[Chop], false))
 			{
 				attackMinor = useSkill($skill[Chop], false);
+				attackMajor = useSkill($skill[Chop], false);
 				costMinor = mp_cost($skill[Chop]);
+				costMajor = mp_cost($skill[Chop]);
 			}
 
 			if (canUse($skill[Slice], false))
 			{
-				attackMinor = useSkill($skill[Slice], false);
-				costMinor = mp_cost($skill[Slice]);
+				attackMajor = useSkill($skill[Slice], false);
+				costMajor = mp_cost($skill[Slice]);
 			}
 		}
 
@@ -361,17 +363,23 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		if ($elements[cold, spooky] contains monster_element(enemy) && canUse($skill[Bake]))
 		{
 			attackMinor = useSkill($skill[Bake]);
+			attackMajor = useSkill($skill[Bake]);
 			costMinor = mp_cost($skill[Bake]);
+			costMajor = mp_cost($skill[Bake]);
 		}
 		else if ($elements[cold, spooky] contains monster_element(enemy) && canUse($skill[Boil], false))
 		{
 			attackMinor = useSkill($skill[Boil], false);
+			attackMajor = useSkill($skill[Boil], false);
 			costMinor = mp_cost($skill[Boil]);
+			costMajor = mp_cost($skill[Boil]);
 		}
 		else if ($elements[stench, sleaze] contains monster_element(enemy) && canUse($skill[Freeze], false))
 		{
 			attackMinor = useSkill($skill[Freeze], false);
+			attackMajor = useSkill($skill[Freeze], false);
 			costMinor = mp_cost($skill[Freeze]);
+			costMajor = mp_cost($skill[Freeze]);
 		}
 		else if (enemy.physical_resistance >= 50)
 		{
@@ -379,43 +387,49 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			if (monster_element(enemy) != $element[hot] && canUse($skill[Bake]))
 			{
 				attackMinor = useSkill($skill[Bake]);
+				attackMajor = useSkill($skill[Bake]);
 				costMinor = mp_cost($skill[Bake]);
+				costMajor = mp_cost($skill[Bake]);
 			}
 			else if (monster_element(enemy) != $element[hot] && canUse($skill[Boil], false))
 			{
 				attackMinor = useSkill($skill[Boil], false);
+				attackMajor = useSkill($skill[Boil], false);
 				costMinor = mp_cost($skill[Boil]);
+				costMajor = mp_cost($skill[Boil]);
 			}
 			else if (monster_element(enemy) != $element[cold] && canUse($skill[Freeze], false))
 			{
 				attackMinor = useSkill($skill[Freeze], false);
+				attackMajor = useSkill($skill[Freeze], false);
 				costMinor = mp_cost($skill[Freeze]);
+				costMajor = mp_cost($skill[Freeze]);
 			}
 		}
 
 		// Prefer double damage
 		if ($elements[hot, stench] contains monster_element(enemy) && canUse($skill[Fry], false))
 		{
-			attackMinor = useSkill($skill[Fry], false);
-			costMinor = mp_cost($skill[Fry]);
+			attackMajor = useSkill($skill[Fry], false);
+			costMajor = mp_cost($skill[Fry]);
 		}
 		else if (monster_element(enemy) != $element[none] && canUse($skill[Grill], false))
 		{
-			attackMinor = useSkill($skill[Grill], false);
-			costMinor = mp_cost($skill[Grill]);
+			attackMajor = useSkill($skill[Grill], false);
+			costMajor = mp_cost($skill[Grill]);
 		}
 		else if (enemy.physical_resistance >= 50)
 		{
 			// If physically resistant, fallback to an elemental spell that will do normal damage
 			if (monster_element(enemy) != $element[sleaze] && canUse($skill[Fry], false))
 			{
-				attackMinor = useSkill($skill[Fry], false);
-				costMinor = mp_cost($skill[Fry]);
+				attackMajor = useSkill($skill[Fry], false);
+				costMajor = mp_cost($skill[Fry]);
 			}
 			else if (canUse($skill[Grill], false))
 			{
-				attackMinor = useSkill($skill[Grill], false);
-				costMinor = mp_cost($skill[Grill]);
+				attackMajor = useSkill($skill[Grill], false);
+				costMajor = mp_cost($skill[Grill]);
 			}
 		}
 
