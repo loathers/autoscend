@@ -84,7 +84,7 @@ void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a g
 	}
 
 	string page = visit_url("da.php?place=gate2");
-	matcher my_skillPoints = create_matcher("<b>(\\d\+)</b> skill point", page);
+	matcher my_skillPoints = create_matcher("(\\d+) skill point", page);
 	if(my_skillPoints.find())
 	{
 		int skillPoints = to_int(my_skillPoints.group(1));
@@ -110,7 +110,7 @@ void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a g
 
 			if( skillid != 0)
 			{
-				visit_url("jarlskills.php?action=getskill&skid=" + skillid);
+				visit_url("jarlskills.php?action=getskill&getskid=" + skillid);
 			}
 			else
 			{
@@ -136,6 +136,17 @@ boolean LM_jarlsberg()
 	
 
 	jarlsberg_buySkills();
+
+	// Use egg man for drops
+	if(auto_have_skill($skill[Egg Man]) && mp_cost($skill[Egg Man]) <= my_mp() && item_amount($item[cosmic egg]) > 0 && my_companion() == "")
+	{
+		use_skill(1, $skill[Egg Man]);
+	}
+
+	if (!get_property("_cosmicSixPackConjured").to_boolean())
+	{
+		create(1, $item[cosmic six-pack]);
+	}
 
 	return false;
 }

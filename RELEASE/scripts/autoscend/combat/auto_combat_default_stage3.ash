@@ -271,7 +271,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//source terminal iotm specific skill to acquire source essence from enemies
-		if(canUse($skill[Extract]) && (my_mp() > (mp_cost($skill[Extract]) * 3)) && (item_amount($item[Source Essence]) <= 60) && stunnable(enemy))
+		if(canUse($skill[Extract]) && (my_mp() > (mp_cost($skill[Extract]) * 3)) && (item_amount($item[Source Essence]) <= 60) && canSurvive(2.0))
 		{
 			return useSkill($skill[Extract]);
 		}
@@ -333,9 +333,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Summon Love Gnats]);
 		}
 
-		if(canUse($skill[Summon Love Stinkbug]) && haveUsed($skill[Summon Love Gnats]) && !contains_text(text, "STUN RESIST"))
+		if(!(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy)))
 		{
-			return useSkill($skill[Summon Love Stinkbug]);
+			if(canUse($skill[Summon Love Stinkbug]) && haveUsed($skill[Summon Love Gnats]) && !contains_text(text, "STUN RESIST"))
+			{
+				return useSkill($skill[Summon Love Stinkbug]);
+			}
 		}
 	}
 	
@@ -351,6 +354,21 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		if(have_effect($effect[Blessing of the Storm Tortoise]) > 0 || have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0 || have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0)
 		{
 			return useSkill($skill[Spirit Snap]);
+		}
+	}
+
+	// Multi-round stuns
+	if(canUse($skill[Thunderstrike]) && enemy_la <= 150 && !canSurvive(5.0))
+	{
+		return useSkill($skill[Thunderstrike]);
+	}
+
+	if(enemy_la <= 100 && stunnable(enemy) && (!canSurvive(5.0) || $monsters[Groar] contains enemy))
+	{
+		skill stunner = getStunner(enemy);
+		if(stunner != $skill[none])
+		{
+			return useSkill(stunner);
 		}
 	}
 	
