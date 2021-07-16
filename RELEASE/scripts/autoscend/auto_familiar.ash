@@ -864,7 +864,7 @@ void acquireFamiliars()
 	}
 	
 	//Very cheap and very useful IOTM derivative. MP/HP regen. drops lots of useful food and drink early on
-	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]))
+	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]))
 	{
 		acquireOrPull($item[tiny barrel]);		//mallbuy and pull it if we can
 	}
