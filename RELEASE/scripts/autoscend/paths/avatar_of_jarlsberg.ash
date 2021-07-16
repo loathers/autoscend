@@ -110,7 +110,7 @@ void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a g
 
 			if( skillid != 0)
 			{
-				visit_url("jarlskills.php?action=getskill&skid=" + skillid);
+				visit_url("jarlskills.php?action=getskill&getskid=" + skillid);
 			}
 			else
 			{
