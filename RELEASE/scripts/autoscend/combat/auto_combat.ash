@@ -9,7 +9,6 @@ import <autoscend/combat/auto_combat_awol.ash>						//path = avatar of west of l
 import <autoscend/combat/auto_combat_bees_hate_you.ash>				//path = bees hate you
 import <autoscend/combat/auto_combat_community_service.ash>			//path = community service
 import <autoscend/combat/auto_combat_heavy_rains.ash>				//path = heavy rains
-import <autoscend/combat/auto_combat_jarlsberg.ash>					//path = avatar of jarlsberg
 import <autoscend/combat/auto_combat_dark_gyffte.ash>				//path = dark gyffte
 import <autoscend/combat/auto_combat_disguises_delimit.ash>			//path = disguises delimit
 import <autoscend/combat/auto_combat_ed.ash>						//path = actually ed the undying
