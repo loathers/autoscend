@@ -143,5 +143,10 @@ boolean LM_jarlsberg()
 		use_skill(1, $skill[Egg Man]);
 	}
 
+	if (!get_property("_cosmicSixPackConjured").to_boolean())
+	{
+		create(1, $item[cosmic six-pack]);
+	}
+
 	return false;
 }
