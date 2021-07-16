@@ -920,7 +920,7 @@ void gremlinsFamiliar()
 	
 	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 	boolean strip_familiar = true;
-	if(hundred_fam != $familiar[none] && isAttackFamiliar(hundred_fam))		//in 100% familiar run with an attack familiar
+	if(hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))	//in 100% familiar run with an attack or block familiar
 	{
 		set_property("_auto_bad100Familiar", true);			//do not buff bad familiar
 		
