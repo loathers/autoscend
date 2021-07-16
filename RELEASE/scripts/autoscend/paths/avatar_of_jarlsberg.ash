@@ -138,7 +138,7 @@ boolean LM_jarlsberg()
 	jarlsberg_buySkills();
 
 	// Use egg man for drops
-	if(auto_have_skill($skill[Egg Man]) && mp_cost($skill[Egg Man]) >= my_mp() && item_amount($item[cosmic egg]) > 0 && my_companion() != "Eggman")
+	if(auto_have_skill($skill[Egg Man]) && mp_cost($skill[Egg Man]) <= my_mp() && item_amount($item[cosmic egg]) > 0 && my_companion() != "Eggman")
 	{
 		use_skill(1, $skill[Egg Man]);
 	}
