@@ -397,7 +397,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	}
 	if (my_class() == $class[Avatar of Jarlsberg])
 	{
-		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
+		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen") || toDrink == $item[Steel Margarita];
 	}
 	if((auto_my_path() == "Nuclear Autumn") && (toDrink.inebriety != 1))
 	{
