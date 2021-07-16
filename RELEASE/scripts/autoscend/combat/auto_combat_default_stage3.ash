@@ -271,7 +271,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//source terminal iotm specific skill to acquire source essence from enemies
-		if(canUse($skill[Extract]) && (my_mp() > (mp_cost($skill[Extract]) * 3)) && (item_amount($item[Source Essence]) <= 60) && stunnable(enemy))
+		if(canUse($skill[Extract]) && (my_mp() > (mp_cost($skill[Extract]) * 3)) && (item_amount($item[Source Essence]) <= 60) && canSurvive(2.0))
 		{
 			return useSkill($skill[Extract]);
 		}
