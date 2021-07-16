@@ -84,7 +84,7 @@ void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a g
 	}
 
 	string page = visit_url("da.php?place=gate2");
-	matcher my_skillPoints = create_matcher("<b>(\\d\+)</b> skill point", page);
+	matcher my_skillPoints = create_matcher("(\\d\+) skill point", page);
 	if(my_skillPoints.find())
 	{
 		int skillPoints = to_int(my_skillPoints.group(1));
