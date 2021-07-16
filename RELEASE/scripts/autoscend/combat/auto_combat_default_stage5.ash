@@ -15,10 +15,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatDisguisesStage5(round, enemy, text);
 	if(retval != "") return retval;
 	
-	// Path = avatar of jarlsberg
-	retval = auto_combatJarlsbergStage5(round, enemy, text);
-	if(retval != "") return retval;
-	
 	// Path = gelatinous noob
 	retval = auto_combatGelatinousNoobStage5(round, enemy, text);
 	if(retval != "") return retval;
@@ -334,6 +330,95 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMinor = mp_cost($skill[Heroic Belch]);
 			costMajor = mp_cost($skill[Heroic Belch]);
 		}
+		break;
+	
+	case $class[Avatar of Jarlsberg]:
+		//AoJ spells have a hard DMG cap of 10*(MP Cost) before percentage modifiers are applied. 
+		//Things that change the MP costs will change said dmg cap.
+		//AoJ can **only** attack via spells / items / jiggling
+		attackMinor = useSkill($skill[Curdle], false);
+		attackMajor = useSkill($skill[Curdle], false);
+		costMinor = mp_cost($skill[Curdle]);
+		costMajor = mp_cost($skill[Curdle]);
+
+		// Default to curdle if the monster is physically resistant
+		if (enemy.physical_resistance < 50)
+		{
+			if (canUse($skill[Chop], false))
+			{
+				attackMinor = useSkill($skill[Chop], false);
+				costMinor = mp_cost($skill[Chop]);
+			}
+
+			if (canUse($skill[Slice], false))
+			{
+				attackMinor = useSkill($skill[Slice], false);
+				costMinor = mp_cost($skill[Slice]);
+			}
+		}
+
+		// Prefer double damage
+		if ($elements[cold, spooky] contains monster_element(enemy) && canUse($skill[Bake]))
+		{
+			attackMinor = useSkill($skill[Bake]);
+			costMinor = mp_cost($skill[Bake]);
+		}
+		else if ($elements[cold, spooky] contains monster_element(enemy) && canUse($skill[Boil], false))
+		{
+			attackMinor = useSkill($skill[Boil], false);
+			costMinor = mp_cost($skill[Boil]);
+		}
+		else if ($elements[stench, sleaze] contains monster_element(enemy) && canUse($skill[Freeze], false))
+		{
+			attackMinor = useSkill($skill[Freeze], false);
+			costMinor = mp_cost($skill[Freeze]);
+		}
+		else if (enemy.physical_resistance >= 50)
+		{
+			// If physically resistant, fallback to an elemental spell that will do normal damage
+			if (monster_element(enemy) != $element[hot] && canUse($skill[Bake]))
+			{
+				attackMinor = useSkill($skill[Bake]);
+				costMinor = mp_cost($skill[Bake]);
+			}
+			else if (monster_element(enemy) != $element[hot] && canUse($skill[Boil], false))
+			{
+				attackMinor = useSkill($skill[Boil], false);
+				costMinor = mp_cost($skill[Boil]);
+			}
+			else if (monster_element(enemy) != $element[cold] && canUse($skill[Freeze], false))
+			{
+				attackMinor = useSkill($skill[Freeze], false);
+				costMinor = mp_cost($skill[Freeze]);
+			}
+		}
+
+		// Prefer double damage
+		if ($elements[hot, stench] contains monster_element(enemy) && canUse($skill[Fry], false))
+		{
+			attackMinor = useSkill($skill[Fry], false);
+			costMinor = mp_cost($skill[Fry]);
+		}
+		else if (monster_element(enemy) != $element[none] && canUse($skill[Grill], false))
+		{
+			attackMinor = useSkill($skill[Grill], false);
+			costMinor = mp_cost($skill[Grill]);
+		}
+		else if (enemy.physical_resistance >= 50)
+		{
+			// If physically resistant, fallback to an elemental spell that will do normal damage
+			if (monster_element(enemy) != $element[sleaze] && canUse($skill[Fry], false))
+			{
+				attackMinor = useSkill($skill[Fry], false);
+				costMinor = mp_cost($skill[Fry]);
+			}
+			else if (canUse($skill[Grill], false))
+			{
+				attackMinor = useSkill($skill[Grill], false);
+				costMinor = mp_cost($skill[Grill]);
+			}
+		}
+
 		break;
 
 	case $class[Avatar of Sneaky Pete]:
