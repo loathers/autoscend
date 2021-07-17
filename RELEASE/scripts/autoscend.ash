@@ -148,6 +148,7 @@ void initializeSettings() {
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
 	set_property("auto_forceTavern", false);
+	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
 	set_property("auto_getStarKey", true);
