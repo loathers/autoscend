@@ -293,6 +293,9 @@ void main()
 	writeln("<h2>Banishes</h2>");
 	generateTrackingData("auto_banishes");
 
+	writeln("<h2>Free Runaways</h2>");
+	generateTrackingData("auto_freeruns");
+
 	writeln("<h2>Yellow Rays <img src=\"images/itemimages/eyes.gif\"></h2>");
 	generateTrackingData("auto_yellowRays");
 

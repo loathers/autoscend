@@ -235,15 +235,15 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//this completes the quest Advertise for the Mysterious Island Arena which is a sidequest which accelerates the L12 frat-hippy war quest
-	if((canUse($item[Rock Band Flyers]) || canUse($item[Jam Band Flyers])) && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
+	if((canUse($item[Rock Band Flyers]) || canUse($item[Jam Band Flyers])) && (get_property("flyeredML").to_int() < 10000) && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
 	{
-		string stall = getStallString(enemy);
-		if(stall != "")
+		skill stunner = getStunner(enemy);
+		if(stunner != $skill[none])
 		{
-			return stall;
+			return useSkill(stunner);
 		}
 
-		if(canUse($item[Rock Band Flyers]) && (get_property("flyeredML").to_int() < 10000))
+		if(canUse($item[Rock Band Flyers]))
 		{
 			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
 			{
@@ -251,7 +251,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			}
 			return useItem($item[Rock Band Flyers]);
 		}
-		if(canUse($item[Jam Band Flyers]) && (get_property("flyeredML").to_int() < 10000))
+		if(canUse($item[Jam Band Flyers]))
 		{
 			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
 			{
@@ -304,6 +304,15 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	my_mp() * 2 < my_maxmp())		//gulp latte restores 50% of your MP. do not waste it.
 	{
 		return useSkill($skill[Gulp Latte]);
+	}
+
+	//stinkbug physically resistant monsters
+	if(!(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy)))
+	{
+		if(canUse($skill[Summon Love Stinkbug]) && (enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]))
+		{
+			return useSkill($skill[Summon Love Stinkbug]);
+		}
 	}
 	
 	return "";
