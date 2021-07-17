@@ -596,6 +596,11 @@ void consumeStuff()
 				return;
 			}
 		}
+		
+		if (in_quantumTerrarium() && spleen_left() >= 4)
+		{
+			qt_EatSpleen();
+		}
 	}
 }
 
