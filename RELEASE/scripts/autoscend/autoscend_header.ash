@@ -751,6 +751,7 @@ boolean LX_quantumTerrarium();
 void qt_initializeSettings();
 boolean qt_FamiliarAvailable (familiar fam);
 boolean qt_FamiliarSwap (familiar fam);
+boolean qt_EatSpleen();
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash
