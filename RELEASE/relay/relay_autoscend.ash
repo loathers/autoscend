@@ -163,6 +163,7 @@ void write_settings_key()
 
 void main()
 {
+	auto_settings();			//runs every time. upgrades old settings to newest format, delete obsolete settings, and configures defaults.
 	initializeSettings();		//runs once per ascension. should not handle anything other than intialising settings for this ascension.
 	
 	write_styles();
