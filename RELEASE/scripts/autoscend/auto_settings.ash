@@ -130,6 +130,10 @@ void auto_settingsUpgrade()
 	{
 		set_property("auto_dontConsumeKeyLimePies", !get_property("auto_consumeKeyLimePies").to_boolean());
 	}
+	if(get_property("auto_alwaysGetSteelOrgan") != "")
+	{
+		set_property("auto_getSteelOrgan_initialize", get_property("auto_alwaysGetSteelOrgan"));
+	}
 }
 
 void auto_settingsFix()
@@ -244,6 +248,7 @@ void auto_settingsDelete()
 	remove_property("auto_mummeryChoice");
 	remove_property("auto_choice1119");
 	remove_property("auto_useTatter");				//obsolete combat directive to use [Tattered Scrap Of Paper] to escape combat
+	remove_property("auto_alwaysGetSteelOrgan");	//renamed to auto_getSteelOrgan_initialize
 }
 
 void defaultConfig(string prop, string val)
