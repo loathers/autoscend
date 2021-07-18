@@ -157,7 +157,7 @@ void initializeSettings() {
 	set_property("auto_grimstoneFancyOilPainting", true);
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
-	set_property("auto_doGalaktik", false);
+	set_property("auto_doGalaktik", get_property("auto_init_doGalaktik"));
 	set_property("auto_doArmory", false);
 	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
