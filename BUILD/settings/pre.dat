@@ -1,1 +1,1 @@
-auto_alwaysGetSteelOrgan	boolean	When we next initialize settings it will be copied to auto_getSteelOrgan
+auto_getSteelOrgan_initialize	boolean	When we initialize an ascension this will be copied to auto_getSteelOrgan

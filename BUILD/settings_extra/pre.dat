@@ -1,1 +1,1 @@
-auto_init_doGalaktik	boolean	When we initialize an ascension this will be copied to auto_doGalaktik
+auto_doGalaktik_initialize	boolean	When we initialize an ascension this will be copied to auto_doGalaktik
