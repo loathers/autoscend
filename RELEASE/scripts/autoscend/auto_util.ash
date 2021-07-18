@@ -1325,7 +1325,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		}
 	}
 
-	if(get_property("shockingLickCharges").to_int() > 0)
+	if(inCombat ? have_skill($skill[Shocking Lick]) : get_property("shockingLickCharges").to_int() > 0)
 	{
 		return "skill " + $skill[Shocking Lick];
 	}
