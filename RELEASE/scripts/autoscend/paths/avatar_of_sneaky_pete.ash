@@ -70,12 +70,20 @@ void pete_buySkills()
 	{
 		return;
 	}
+
 	if(my_level() <= get_property("auto_peteSkills").to_int())
 	{
 		return;
 	}
-	//if you have those 3 skills then you have all skills.
-	if(have_skill($skill[Natural Dancer]) && have_skill($skill[Flash Headlight]) && have_skill($skill[Walk Away From Explosion]))
+
+	// if you have all the skills and the motorcycle is fully upgraded, we're done.
+	if (have_skill($skill[Natural Dancer]) && have_skill($skill[Flash Headlight]) && have_skill($skill[Walk Away From Explosion]) &&
+		get_property("peteMotorbikeCowling") != "" &&
+		get_property("peteMotorbikeTires") != "" &&
+		get_property("peteMotorbikeMuffler") != "" &&
+		get_property("peteMotorbikeGasTank") != "" &&
+		get_property("peteMotorbikeHeadlight") != "" &&
+		get_property("peteMotorbikeSeat") != "")
 	{
 		return;
 	}
@@ -219,6 +227,7 @@ void pete_buySkills()
 		}
 	}
 
+	// Skip if the motorcycle is fully upgraded
 	page = visit_url("main.php?action=motorcycle");
 	matcher my_cyclePoints = create_matcher("Upping Your Grade", page);
 	while(my_cyclePoints.find())
@@ -276,6 +285,16 @@ void pete_buySkills()
 	}
 
 	set_property("auto_peteSkills", my_level());
+}
+
+int pete_peelOutRemaining()
+{
+	if (get_property("peteMotorbikeTires") == "Racing Slicks")
+	{
+		return 30 - get_property("_petePeeledOut").to_int();
+	}
+
+	return 10 - get_property("_petePeeledOut").to_int();
 }
 
 boolean LM_pete()

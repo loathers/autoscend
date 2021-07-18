@@ -153,6 +153,17 @@ boolean auto_post_adventure()
 	regen += numeric_modifier("MP Regen Max").to_float();
 	regen = regen / 3.0;
 
+	if(my_class() == $class[Avatar of Jarlsberg] && auto_have_skill($skill[Early Riser]))
+	{
+		foreach sk in $skills[Conjure Cream, Conjure Dough, Conjure Cheese, Conjure Eggs, Conjure Meat Product, Conjure Vegetables, Conjure Potato, Conjure Fruit]
+		{
+			if (auto_have_skill(sk) && sk.timescast < sk.dailylimit && (my_mp() - 40) >= mp_cost(sk))
+			{
+				use_skill(1, sk);
+			}
+		}
+	}
+
 	if(my_class() == $class[Avatar of Sneaky Pete])
 	{
 		buffMaintain($effect[All Revved Up], 25, 1, 10);
