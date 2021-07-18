@@ -1328,18 +1328,23 @@ boolean L11_hiddenCity()
 			
 			if(canDrinkCursedPunch)
 			{
-				L11_hiddenTavernUnlock(true);
+				boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti());
 				
-				if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= cursesNeeded*$item[Cursed Punch].inebriety))
-					|| (0 != have_effect($effect[Thrice-Cursed]) && $location[The Hidden Apartment Building].turns_spent <= 4))
+				if(canBuyCursedPunch)
 				{
-					elevatorAction = auto_forceNextNoncombat();
+					L11_hiddenTavernUnlock(true);
 
-					if(in_pokefam())
+					if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= cursesNeeded*$item[Cursed Punch].inebriety))
+						|| (0 != have_effect($effect[Thrice-Cursed]) && $location[The Hidden Apartment Building].turns_spent <= 4))
 					{
-						if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+						elevatorAction = auto_forceNextNoncombat();
+
+						if(in_pokefam())
 						{
-							return autoAdv($location[The Hidden Apartment Building]);
+							if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+							{
+								return autoAdv($location[The Hidden Apartment Building]);
+							}
 						}
 					}
 				}
