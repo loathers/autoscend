@@ -485,6 +485,14 @@ boolean LX_dailyDungeonToken()
 	{
 		pullXWhenHaveY($item[Ring of Detect Boring Doors], 1, 0);
 	}
+	if(item_amount($item[Pick-O-Matic Lockpicks]) == 0 && storage_amount($item[Platinum Yendorian Express Card]) > 0)
+	{
+		pullXWhenHaveY($item[Platinum Yendorian Express Card], 1, 0);
+	}
+	if(item_amount($item[Platinum Yendorian Express Card]) == 0)
+	{
+		pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
+	}
 	
 	//if you do not have an unlimited lockpick then handle skeleton keys and verify primary stat
 	if(item_amount($item[Platinum Yendorian Express Card]) == 0 && item_amount($item[Pick-O-Matic Lockpicks]) == 0)
@@ -502,29 +510,12 @@ boolean LX_dailyDungeonToken()
 			create(skeleton_key_amt_to_create, $item[Skeleton Key]);
 		}
 		
-		//if you do not have enough skeleton keys pull an unlimited lockpick if possible
-		if(item_amount($item[Skeleton Key]) < skeleton_key_amt_needed)
+		//make sure we have the means to handle choice adventure 692 [I Wanna Be a Door]
+		if(item_amount($item[Skeleton Key]) < skeleton_key_amt_needed && my_basestat(my_primestat()) < 30)
 		{
-			if(item_amount($item[Pick-O-Matic Lockpicks]) == 0 && storage_amount($item[Platinum Yendorian Express Card]) > 0)
-			{
-				pullXWhenHaveY($item[Platinum Yendorian Express Card], 1, 0);
-			}
-			if(item_amount($item[Platinum Yendorian Express Card]) == 0)
-			{
-				pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
-			}
-		}
-		
-		//if still no unlimited lockpick
-		if(item_amount($item[Platinum Yendorian Express Card]) == 0 && item_amount($item[Pick-O-Matic Lockpicks]) == 0)
-		{
-			//make sure we have the means to handle choice adventure 692 [I Wanna Be a Door]
-			if(item_amount($item[Skeleton Key]) < skeleton_key_amt_needed && my_basestat(my_primestat()) < 30)
-			{
-				//no lockpick, not enough skeleton key, and not enough primestat.
-				//checking basestat because buffed can become lower based on equipment worn. and also if mainstat is under 30 and you got no lockpicks then you should probably delay daily dungeon
-				return false;
-			}
+			//no lockpick, not enough skeleton key, and not enough primestat.
+			//checking basestat because buffed can become lower based on equipment worn. and also if mainstat is under 30 and you got no lockpicks then you should probably delay daily dungeon
+			return false;
 		}
 	}
 	
