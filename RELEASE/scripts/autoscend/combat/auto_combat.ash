@@ -57,6 +57,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	remove_property("auto_funPrefix");						//ocrs specific tracker
 	set_property("auto_combatHandlerThunderBird", "0");
 	set_property("auto_combatHandlerFingernailClippers", "0");
+	set_property("_auto_combatTracker_MortarRound", -1);		//tracks which round we used Stuffed Mortar Shell in.
 }
 
 string auto_combatHandler(int round, monster enemy, string text)

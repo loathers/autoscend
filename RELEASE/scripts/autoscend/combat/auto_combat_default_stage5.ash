@@ -143,6 +143,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	//mortar shell is amazing. it really should not be limited to sauceror only.
 	if(canUse($skill[Stuffed Mortar Shell]) && (my_class() == $class[Sauceror]) && canSurvive(2.0) && (currentFlavour() != monster_element(enemy) || currentFlavour() == $element[none]))
 	{
+		set_property("_auto_combatTracker_MortarRound", round);
 		return useSkill($skill[Stuffed Mortar Shell]);
 	}
 
@@ -290,10 +291,16 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMinor = mp_cost($skill[Stream of Sauce]);
 			costMajor = mp_cost($skill[Stream of Sauce]);
 		}
-
-		if(!contains_text(combatState, "delaymortarshell") && canSurvive(2.0) && haveUsed($skill[Stuffed Mortar Shell]) && canUse($skill[Salsaball], false))
+		
+		#let mortar deal the killing blow so we get more MP from the exploding curse of weaksauce
+		int mortar_round = get_property("_auto_combatTracker_MortarRound").to_int();
+		if(mortar_round > -1 &&		//mortar was used this combat
+		mortar_round == round-1 &&	//mortar will hit this round
+		canSurvive(2.0) &&			//monster is not too scary to play games with
+		monster_hp() > 15 &&		//if monster has too few HP left we can accidentally kill it with salsaball and get only 2MP back
+		//TODO make sure mortar will actually kill it
+		canUse($skill[Salsaball], false))
 		{
-			set_property("auto_combatHandler", combatState + "(delaymortarshell)");
 			return useSkill($skill[Salsaball], false);
 		}
 		break;
