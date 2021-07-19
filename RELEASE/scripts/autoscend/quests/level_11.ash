@@ -1310,6 +1310,21 @@ boolean L11_hiddenCity()
 			cursesNeeded = 1;
 		}
 		
+		//able to drink, enough liver?
+		if(canDrinkCursedPunch)
+		{
+			int inebrietyAllowedForPunch = inebriety_left();
+			if(in_quantumTerrarium() && my_familiar() == $familiar[Stooper])
+			{	//in QT the limit is lower or else will be overdrunk when Stooper changes
+				inebrietyAllowedForPunch -= 1;
+			}
+			
+			if(inebrietyAllowedForPunch < cursesNeeded*$item[Cursed Punch].inebriety)
+			{
+				canDrinkCursedPunch = false;
+			}
+		}
+		
 		if(!elevatorAction && $location[The Hidden Apartment Building].turns_spent <= 4 && auto_canForceNextNoncombat())
 		{
 			//should we try to force the noncombat?
@@ -1332,6 +1347,7 @@ boolean L11_hiddenCity()
 					}
 				}
 				
+				//can drink and inebriety allows it
 				if(canDrinkCursedPunch)
 				{
 					boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti());
@@ -1340,7 +1356,7 @@ boolean L11_hiddenCity()
 					{
 						L11_hiddenTavernUnlock(true);
 
-						if(my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= cursesNeeded*$item[Cursed Punch].inebriety))
+						if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
 						{
 							shouldForceElevatorAction = true;
 						}
@@ -1371,7 +1387,8 @@ boolean L11_hiddenCity()
 		{
 			if(have_effect($effect[Thrice-Cursed]) == 0)
 			{
-				if(canDrinkCursedPunch && (inebriety_left() >= cursesNeeded*$item[Cursed Punch].inebriety))
+				//can drink and inebriety allows it
+				if(canDrinkCursedPunch)
 				{
 					L11_hiddenTavernUnlock(true);
 					if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
