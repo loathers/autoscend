@@ -597,9 +597,9 @@ void consumeStuff()
 			}
 		}
 		
-		if (in_quantumTerrarium() && spleen_left() >= 4)
+		if (spleen_left() >= 4 && !isActuallyEd())
 		{
-			qt_EatSpleen();
+			auto_chewAdventures();
 		}
 	}
 }
@@ -1432,6 +1432,76 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 
 	auto_log_info("Expected " + total_adv + " adventures, got " + (my_adventures() - pre_adventures), "blue");
 	return true;
+}
+
+boolean auto_chewAdventures()
+{
+	//tries to chew a size 4 familiar spleen item for adventures
+	
+	//these items are all out of standard except in Quantum Terrarium
+	if(!is_unrestricted($item[Unconscious Collective Dream Jar]) && !is_unrestricted($item[Powdered Gold]) && !is_unrestricted($item[beastly paste]))
+	{
+		//powdered gold is also restricted in G lover, but if all these are restricted this must be standard
+		//no point continuing if standard restrictions apply
+		return false;
+	}
+	
+	//called to eat size 4 spleen items when adventures < 10 and we can't eat or drink anything
+	
+	int oldSpleenUse = my_spleen_use();
+	
+	//do we wait until the last adventure to chew spleen?
+	boolean waitUntilLastAdventure = false;
+	if(item_amount($item[stench jelly]) >= 2)
+	{
+		int spleenForStenchJelly = min(my_adventures(),item_amount($item[stench jelly]));
+		//wait if chewing 4 spleen would take away the chance to use 2 or more stench jellies
+		if (oldSpleenUse - spleenForStenchJelly <= 2)
+		{
+			waitUntilLastAdventure = true;
+		}
+	}
+	if(auto_havePillKeeper() && spleen_left() == 6)
+	{
+		//if you have pill keeper maybe two force noncombat is better than chewing for adventures?
+		waitUntilLastAdventure = true;
+	}
+	if(waitUntilLastAdventure && my_adventures() > 1)
+	{
+		return false;
+	}
+	
+	if(spleen_left() >= 4)
+	{
+		//first the ones without the level 4 requirement because they give more stats
+		foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease]
+		{
+			if(item_amount(it) > 0)
+			{
+				autoChew(1, it);
+				break;
+			}
+		}
+		if(have_effect($effect[Just the Best Anapests])>0)
+		{
+			uneffect($effect[Just the Best Anapests]);
+		}
+		if(my_level() >= 4 && oldSpleenUse == my_spleen_use())
+		{
+			foreach it in $items[beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
+			{
+				if(item_amount(it) > 0)
+				{
+					if (autoChew(1, it))
+					{
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	return oldSpleenUse != my_spleen_use();
 }
 
 boolean auto_breakfastCounterVisit() {
