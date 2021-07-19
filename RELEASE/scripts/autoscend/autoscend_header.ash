@@ -751,7 +751,6 @@ boolean LX_quantumTerrarium();
 void qt_initializeSettings();
 boolean qt_FamiliarAvailable (familiar fam);
 boolean qt_FamiliarSwap (familiar fam);
-boolean qt_EatSpleen();
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash
@@ -1059,6 +1058,7 @@ void auto_printNightcap();
 void auto_drinkNightcap();
 boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
+boolean auto_chewAdventures();
 boolean auto_breakfastCounterVisit();
 item still_targetToOrigin(item target);
 boolean stillReachable();
