@@ -1310,9 +1310,16 @@ boolean L11_hiddenCity()
 			cursesNeeded = 1;
 		}
 		
-		if(!elevatorAction && auto_canForceNextNoncombat())
+		if(!elevatorAction && $location[The Hidden Apartment Building].turns_spent <= 4 && auto_canForceNextNoncombat())
 		{
-			if(canDrinkCursedPunch)
+			//should we try to force the noncombat?
+			boolean shouldForceElevatorAction = false;
+			
+			if(have_effect($effect[Thrice-Cursed]) > 0)
+			{
+				shouldForceElevatorAction = true;
+			}
+			else if(canDrinkCursedPunch)
 			{
 				if(get_property("auto_consumeMinAdvPerFill").to_float() != 0)
 				{
@@ -1324,28 +1331,32 @@ boolean L11_hiddenCity()
 						canDrinkCursedPunch = false;
 					}
 				}
+				
+				if(canDrinkCursedPunch)
+				{
+					boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti());
+					
+					if(canBuyCursedPunch)
+					{
+						L11_hiddenTavernUnlock(true);
+
+						if(my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= cursesNeeded*$item[Cursed Punch].inebriety))
+						{
+							shouldForceElevatorAction = true;
+						}
+					}
+				}
 			}
 			
-			if(canDrinkCursedPunch)
+			if(shouldForceElevatorAction)
 			{
-				boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti());
-				
-				if(canBuyCursedPunch)
+				elevatorAction = auto_forceNextNoncombat();
+
+				if(in_pokefam())
 				{
-					L11_hiddenTavernUnlock(true);
-
-					if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= cursesNeeded*$item[Cursed Punch].inebriety))
-						|| (0 != have_effect($effect[Thrice-Cursed]) && $location[The Hidden Apartment Building].turns_spent <= 4))
+					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
 					{
-						elevatorAction = auto_forceNextNoncombat();
-
-						if(in_pokefam())
-						{
-							if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
-							{
-								return autoAdv($location[The Hidden Apartment Building]);
-							}
-						}
+						return autoAdv($location[The Hidden Apartment Building]);
 					}
 				}
 			}
