@@ -822,3 +822,15 @@ void combat_status_add(string mark)
 	}
 	set_property("_auto_combatState", st);
 }
+
+float combat_predict_min_dmg_dealt(skill sk, monster enemy)
+{
+	#predict the minimum amount of damage we expect to be able to deal to enemy with sk. using a float to prevent int rounding elsewhere.
+	#do not verify we can cast it here. this will be handled elsewhere.
+	if(!sk.combat)
+	{
+		return 0.0;		//noncombat skill can not deal damage.
+	}
+	float retval;
+	return retval;
+}

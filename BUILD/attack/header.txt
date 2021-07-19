@@ -1,0 +1,5 @@
+# database of combat attack methods
+# some skills produce multiple attacks per cast. The data here is per one attack. Multi attacks are varied and complicated enough to be calculated seperately
+# use -1 to indicate dmg cap is infinite
+# type, idx, name, min dmg, max dmg, stat boost, dmg cap, AoE hits
+
