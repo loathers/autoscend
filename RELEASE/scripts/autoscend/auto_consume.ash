@@ -1478,8 +1478,10 @@ boolean auto_chewAdventures()
 		{
 			if(item_amount(it) > 0)
 			{
-				autoChew(1, it);
-				break;
+				if(autoChew(1, it))
+				{
+					break;
+				}
 			}
 		}
 		if(have_effect($effect[Just the Best Anapests])>0)
