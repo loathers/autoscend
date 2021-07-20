@@ -152,12 +152,12 @@ void initializeSettings() {
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
 	set_property("auto_getStarKey", true);
-	set_property("auto_getSteelOrgan", get_property("auto_alwaysGetSteelOrgan"));
+	set_property("auto_getSteelOrgan", get_property("auto_getSteelOrgan_initialize"));
 	set_property("auto_gnasirUnlocked", false);
 	set_property("auto_grimstoneFancyOilPainting", true);
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
-	set_property("auto_doGalaktik", false);
+	set_property("auto_doGalaktik", get_property("auto_doGalaktik_initialize"));
 	set_property("auto_doArmory", false);
 	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
