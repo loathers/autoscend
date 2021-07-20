@@ -1466,7 +1466,7 @@ boolean auto_chewAdventures()
 		//if you have pill keeper maybe two force noncombat is better than chewing for adventures?
 		waitUntilLastAdventure = true;
 	}
-	if(waitUntilLastAdventure && my_adventures() > 1)
+	if(waitUntilLastAdventure && my_adventures() > 1+auto_advToReserve())
 	{
 		return false;
 	}
