@@ -53,7 +53,7 @@ post	29	auto_doMeatsmith	boolean	Do Meatsmith optional sidequest this ascension?
 post	30	auto_L8_ninjaAssassinFail	boolean	True means we think we cannot defeat ninja snowmen assassins and are thus avoiding them this ascension. We will not copy them nor adventure in the lair of the ninja snowmen
 post	31	auto_L8_extremeInstead	boolean	True means we want to adventure in the extreme slope path instead of the ninja snowmen lair this ascension.
 
-#
+pre	0	auto_doGalaktik_initialize	boolean	When we initialize an ascension this will be copied to auto_doGalaktik
 
 #
 

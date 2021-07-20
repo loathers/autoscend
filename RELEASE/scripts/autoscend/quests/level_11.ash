@@ -1296,11 +1296,75 @@ boolean L11_hiddenCity()
 		auto_log_info("The idden [sic] apartment!", "blue");
 
 		boolean elevatorAction = ($location[The Hidden Apartment Building].turns_spent > 0 && $location[The Hidden Apartment Building].turns_spent % 8 == 0);
-
-		if(auto_canForceNextNoncombat())
+		
+		boolean canDrinkCursedPunch = canDrink($item[Cursed Punch]) && !get_property("auto_limitConsume").to_boolean() && !in_tcrs();
+		//todo: in_tcrs check quality and size of cursed punch instead of skipping? if that is possible
+		
+		int cursesNeeded = 3;
+		if(have_effect($effect[Once-Cursed]) > 0)
 		{
-			if((my_ascensions() == get_property("hiddenTavernUnlock").to_int() && (inebriety_left() >= 3*$item[Cursed Punch].inebriety) && !in_tcrs())
-				|| (0 != have_effect($effect[Thrice-Cursed]) && $location[The Hidden Apartment Building].turns_spent <= 4))
+			cursesNeeded = 2;
+		}
+		if(have_effect($effect[Twice-Cursed]) > 0)
+		{
+			cursesNeeded = 1;
+		}
+		
+		//able to drink, enough liver?
+		if(canDrinkCursedPunch)
+		{
+			int inebrietyAllowedForPunch = inebriety_left();
+			if(in_quantumTerrarium() && my_familiar() == $familiar[Stooper])
+			{	//in QT the limit is lower or else will be overdrunk when Stooper changes
+				inebrietyAllowedForPunch -= 1;
+			}
+			
+			if(inebrietyAllowedForPunch < cursesNeeded*$item[Cursed Punch].inebriety)
+			{
+				canDrinkCursedPunch = false;
+			}
+		}
+		
+		if(!elevatorAction && $location[The Hidden Apartment Building].turns_spent <= 4 && auto_canForceNextNoncombat())
+		{
+			//should we try to force the noncombat?
+			boolean shouldForceElevatorAction = false;
+			
+			if(have_effect($effect[Thrice-Cursed]) > 0)
+			{
+				shouldForceElevatorAction = true;
+			}
+			else if(canDrinkCursedPunch)
+			{
+				if(get_property("auto_consumeMinAdvPerFill").to_float() != 0)
+				{
+					//try to respect user setting for cursed punch while there is apartment delay
+					//give it at least +1 adv that it saves fighting a pygmy shaman
+					int advPerFillFromCursedPunch = (expectedAdventuresFrom($item[Cursed Punch]) + 1) / $item[Cursed Punch].inebriety;
+					if(advPerFillFromCursedPunch < get_property("auto_consumeMinAdvPerFill").to_float())
+					{
+						canDrinkCursedPunch = false;
+					}
+				}
+				
+				//can drink and inebriety allows it
+				if(canDrinkCursedPunch)
+				{
+					boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti());
+					
+					if(canBuyCursedPunch)
+					{
+						L11_hiddenTavernUnlock(true);
+
+						if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+						{
+							shouldForceElevatorAction = true;
+						}
+					}
+				}
+			}
+			
+			if(shouldForceElevatorAction)
 			{
 				elevatorAction = auto_forceNextNoncombat();
 
@@ -1323,15 +1387,19 @@ boolean L11_hiddenCity()
 		{
 			if(have_effect($effect[Thrice-Cursed]) == 0)
 			{
-				L11_hiddenTavernUnlock(true);
-				while(have_effect($effect[Thrice-Cursed]) == 0 && inebriety_left() >= $item[Cursed Punch].inebriety && canDrink($item[Cursed Punch]) && my_ascensions() == get_property("hiddenTavernUnlock").to_int() && !in_tcrs())
+				//can drink and inebriety allows it
+				if(canDrinkCursedPunch)
 				{
-					buyUpTo(1, $item[Cursed Punch]);
-					if(item_amount($item[Cursed Punch]) == 0)
+					L11_hiddenTavernUnlock(true);
+					if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
 					{
-						abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
+						buyUpTo(cursesNeeded, $item[Cursed Punch]);
+						if(item_amount($item[Cursed Punch]) < cursesNeeded)
+						{
+							abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
+						}
+						autoDrink(cursesNeeded, $item[Cursed Punch]);
 					}
-					autoDrink(1, $item[Cursed Punch]);
 				}
 			}
 			auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");

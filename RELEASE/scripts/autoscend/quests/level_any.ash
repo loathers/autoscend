@@ -485,7 +485,7 @@ boolean LX_dailyDungeonToken()
 	{
 		pullXWhenHaveY($item[Ring of Detect Boring Doors], 1, 0);
 	}
-	if(item_amount($item[Pick-O-Matic Lockpicks]) == 0)
+	if(item_amount($item[Pick-O-Matic Lockpicks]) == 0 && storage_amount($item[Platinum Yendorian Express Card]) > 0)
 	{
 		pullXWhenHaveY($item[Platinum Yendorian Express Card], 1, 0);
 	}
