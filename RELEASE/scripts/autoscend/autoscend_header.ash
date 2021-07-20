@@ -1058,7 +1058,6 @@ void auto_printNightcap();
 void auto_drinkNightcap();
 boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
-boolean auto_chewAdventures();
 boolean auto_breakfastCounterVisit();
 item still_targetToOrigin(item target);
 boolean stillReachable();
