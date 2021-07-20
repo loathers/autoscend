@@ -599,7 +599,11 @@ void consumeStuff()
 	
 		if (spleen_left() >= 4 && !isActuallyEd())
 		{
-			auto_chewAdventures();
+			if (auto_chewAdventures())
+			{
+				return;
+			}
+
 		}
 	}
 }
@@ -1439,10 +1443,9 @@ boolean auto_chewAdventures()
 	//tries to chew a size 4 familiar spleen item for adventures
 
 	//these items are all out of standard except in Quantum Terrarium
-	if(!is_unrestricted($item[Unconscious Collective Dream Jar]) && !is_unrestricted($item[Powdered Gold]) && !is_unrestricted($item[beastly paste]))
+	if(!is_unrestricted($item[Unconscious Collective Dream Jar]) && !is_unrestricted($item[Powdered Gold]) && !is_unrestricted($item[gooey paste]))
 	{
-		//powdered gold is also restricted in G lover, but if all these are restricted this must be standard
-		//no point continuing if standard restrictions apply
+		//if all these are restricted this must be standard. no point continuing if standard restrictions apply
 		return false;
 	}
 
@@ -1484,10 +1487,7 @@ boolean auto_chewAdventures()
 				}
 			}
 		}
-		if(have_effect($effect[Just the Best Anapests])>0)
-		{
-			uneffect($effect[Just the Best Anapests]);
-		}
+		//text altering effect from Groose Grease should get removed by resetState
 		if(my_level() >= 4 && oldSpleenUse == my_spleen_use())
 		{
 			foreach it in $items[beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
