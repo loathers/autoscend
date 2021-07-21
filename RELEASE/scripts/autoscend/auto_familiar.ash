@@ -64,8 +64,11 @@ boolean isAttackFamiliar(familiar fam)
 	if(fam == $familiar[Mini-Adventurer])
 	{
 		int miniAdvClass = get_property("miniAdvClass").to_int();
-		if(miniAdvClass == 1 || (miniAdvClass == 2 && my_level() >= 5) || (miniAdvClass == 3 && my_level() >= 15) ||
-		(miniAdvClass == 4 && my_level() >= 5) || (miniAdvClass == 5 && my_level() >= 10))
+		if(miniAdvClass == 1 ||		//seal clubber
+		(miniAdvClass == 2 && my_level() >= 5) ||		//turtle tamer
+		(miniAdvClass == 3 && my_level() >= 15) ||		//pastamancer
+		(miniAdvClass == 4 && my_level() >= 5) ||		//sauceror
+		(miniAdvClass == 5 && my_level() >= 10))		//disco bandit
 		{
 			return true;
 		}
