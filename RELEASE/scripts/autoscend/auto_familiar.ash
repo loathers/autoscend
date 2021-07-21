@@ -54,7 +54,6 @@ boolean isAttackFamiliar(familiar fam)
 	if($familiars[Mini-Crimbot,
 	El Vibrato Megadrone,
 	Reagnimated Gnome,
-	Mini-Adventurer,
 	Reanimated Reanimator,
 	Comma Chameleon,
 	Mad Hatrack,
@@ -62,6 +61,16 @@ boolean isAttackFamiliar(familiar fam)
 	] contains fam)
 	{
 		return true;
+	}
+	if(fam == $familiar[Mini-Adventurer])
+	{
+		int miniAdvClass = get_property("miniAdvClass").to_int();
+		if(miniAdvClass == 1 || (miniAdvClass == 2 && my_level() >= 5) || (miniAdvClass == 3 && my_level() >= 15) ||
+		(miniAdvClass == 4 && my_level() >= 5) || (miniAdvClass == 4 && my_level() >= 10))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	if($familiars[Doppelshifter,				//random familiar every fight. can be an attack familiar
