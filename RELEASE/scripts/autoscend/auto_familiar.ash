@@ -53,7 +53,6 @@ boolean isAttackFamiliar(familiar fam)
 	//these familiars vary by configuration. TODO actually check their configuration
 	if($familiars[Mini-Crimbot,
 	El Vibrato Megadrone,
-	Reagnimated Gnome,
 	Reanimated Reanimator,
 	Comma Chameleon,
 	Mad Hatrack,
@@ -66,10 +65,21 @@ boolean isAttackFamiliar(familiar fam)
 	{
 		int miniAdvClass = get_property("miniAdvClass").to_int();
 		if(miniAdvClass == 1 || (miniAdvClass == 2 && my_level() >= 5) || (miniAdvClass == 3 && my_level() >= 15) ||
-		(miniAdvClass == 4 && my_level() >= 5) || (miniAdvClass == 4 && my_level() >= 10))
+		(miniAdvClass == 4 && my_level() >= 5) || (miniAdvClass == 5 && my_level() >= 10))
 		{
 			return true;
 		}
+		return false;
+	}
+	if(fam == $familiar[Reagnimated Gnome])
+	{
+		//can be an attack familiar with this part equipped
+		//todo: is it possible to know if it will be equipped after this check?
+		if(possessEquipment($item[gnomish athlete's foot]))
+		{
+			return true;
+		}
+		//but not if the part is not even owned
 		return false;
 	}
 	
