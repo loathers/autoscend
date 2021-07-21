@@ -296,13 +296,21 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		int mortar_round = get_property("_auto_combatTracker_MortarRound").to_int();
 		if(mortar_round > -1 &&		//mortar was used this combat
 		mortar_round == round-1 &&	//mortar will hit this round
-		canSurvive(2.0) &&			//monster is not too scary to play games with
-		monster_hp() > 15 &&		//if monster has too few HP left we can accidentally kill it with salsaball and get only 2MP back
 		//TODO make sure mortar will actually kill it
-		canUse($skill[Salsaball], false))
+		canSurvive(2.0))			//monster is not too scary.
 		{
-			return useSkill($skill[Salsaball], false);
+			if(monster_hp() > 1 &&		//avoid killing blow with seal tooth or else 0 MP will be given
+			canUse($item[Seal Tooth], false))
+			{
+				return useItem($item[Seal Tooth], false);
+			}
+			if(monster_hp() > 15 &&		//avoid killing blow with salsaball or else ~2MP will be given
+			canUse($skill[Salsaball], false))
+			{
+				return useSkill($skill[Salsaball], false);
+			}
 		}
+		
 		break;
 
 	case $class[Avatar of Boris]:

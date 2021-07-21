@@ -2117,10 +2117,16 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if((my_meat() > 7500) && (item_amount($item[Seal Tooth]) == 0))
+	if(item_amount($item[Seal Tooth]) == 0)
 	{
-		acquireHermitItem($item[Seal Tooth]);
+		//saucerors want to use sealtooth to delay so that mortar shell delivers final blow for weaksauce MP explosion
+		//TODO: add delaying for mortar for other classes in combat and then remove the sauceror requirement here.
+		if( my_meat() > 7500 || (my_class() == $class[Sauceror] && canUse($skill[Stuffed Mortar Shell])) )
+		{
+			acquireHermitItem($item[Seal Tooth]);
+		}
 	}
+	
 
 	if(my_class() == $class[Turtle Tamer])
 	{
