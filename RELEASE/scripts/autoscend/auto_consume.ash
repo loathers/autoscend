@@ -1441,15 +1441,7 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 boolean auto_chewAdventures()
 {
 	//tries to chew a size 4 familiar spleen item for adventures
-
-	//these items are all out of standard except in Quantum Terrarium
-	if(!is_unrestricted($item[Unconscious Collective Dream Jar]) && !is_unrestricted($item[Powdered Gold]) && !is_unrestricted($item[gooey paste]))
-	{
-		//if all these are restricted this must be standard. no point continuing if standard restrictions apply
-		return false;
-	}
-
-	//called to eat size 4 spleen items when adventures < 10 and we can't eat or drink anything
+	//called when adventures < 10 and we can't eat or drink anything
 
 	int oldSpleenUse = my_spleen_use();
 
