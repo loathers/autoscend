@@ -163,6 +163,7 @@ void write_settings_key()
 
 void main()
 {
+	auto_settings();			//runs every time. upgrades old settings to newest format, delete obsolete settings, and configures defaults.
 	initializeSettings();		//runs once per ascension. should not handle anything other than intialising settings for this ascension.
 	
 	write_styles();
@@ -292,6 +293,9 @@ void main()
 
 	writeln("<h2>Banishes</h2>");
 	generateTrackingData("auto_banishes");
+
+	writeln("<h2>Free Runaways</h2>");
+	generateTrackingData("auto_freeruns");
 
 	writeln("<h2>Yellow Rays <img src=\"images/itemimages/eyes.gif\"></h2>");
 	generateTrackingData("auto_yellowRays");

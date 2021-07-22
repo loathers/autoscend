@@ -25,7 +25,7 @@ string useItem(item it, boolean mark);
 string useItem(item it);							
 string useItems(item it1, item it2, boolean mark);	
 string useItems(item it1, item it2);				
-string getStallString(monster enemy);				
+skill getStunner(monster enemy);				
 boolean enemyCanBlocksSkills();						
 boolean canSurvive(float mult, int add);			
 boolean canSurvive(float mult);						
