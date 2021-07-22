@@ -845,7 +845,7 @@ boolean L10_rainOnThePlains();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_11.ash
-int shenItemsReturned();
+int shenItemsReturnedOrInProgress();
 boolean[location] shenSnakeLocations(int day, int n_items_returned);
 boolean[location] shenZonesToAvoidBecauseMaybeSnake();
 boolean shenShouldDelayZone(location loc);

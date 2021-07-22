@@ -104,12 +104,12 @@ desert_buff_record desertBuffs()
     return dbr;
 }
 
-int shenItemsReturned()
+int shenItemsReturnedOrInProgress()
 {
 	int progress = internalQuestStatus("questL11Shen");
-	if (progress < 3) return 0;
-	if (progress < 5) return 1;
-	else if (progress < 7) return 2;
+	if (progress < 1) return 0;
+	if (progress < 3) return 1;
+	else if (progress < 5) return 2;
 	else return 3;
 }
 
@@ -172,7 +172,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 	if (get_property("shenInitiationDay").to_int() > 0)
 	{
 		int day = get_property("shenInitiationDay").to_int();
-		int items_returned = shenItemsReturned();
+		int items_returned = shenItemsReturnedOrInProgress();
 		return shenSnakeLocations(day, items_returned);
 	}
 	else
