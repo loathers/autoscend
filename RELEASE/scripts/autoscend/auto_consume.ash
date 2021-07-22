@@ -1440,61 +1440,61 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 
 boolean auto_chewAdventures()
 {
-	//tries to chew a size 4 familiar spleen item for adventures
-	//called when adventures < 10 and we can't eat or drink anything
-
-	int oldSpleenUse = my_spleen_use();
-
-	//do we wait until the last adventure to chew spleen?
-	boolean waitUntilLastAdventure = false;
-	if(item_amount($item[stench jelly]) >= 2)
-	{
-		int spleenForStenchJelly = min(my_adventures(),item_amount($item[stench jelly]));
-		//wait if chewing 4 spleen would take away the chance to use 2 or more stench jellies
-		if (oldSpleenUse - spleenForStenchJelly <= 2)
-		{
-			waitUntilLastAdventure = true;
-		}
-	}
-	if(auto_havePillKeeper() && spleen_left() == 6)
-	{
-		//if you have pill keeper maybe two force noncombat is better than chewing for adventures?
-		waitUntilLastAdventure = true;
-	}
-	if(waitUntilLastAdventure && my_adventures() > 1+auto_advToReserve())
+	//tries to chew a size 4 familiar spleen item that gives adventures. All are IOTM derivatives with 1.875 adv/size
+	//since these items are not very good we wait until only 1 adv remains in case something better comes up for spleen.
+	if(my_inebriety() < inebriety_limit() || my_fullness() < fullness_limit() || my_adventures() > 1+auto_advToReserve())
 	{
 		return false;
 	}
-
-	if(spleen_left() >= 4)
+	if(isActuallyEd())
 	{
-		//first the ones without the level 4 requirement because they give more stats
-		foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease]
+		return false;	//this function should not get called in ed. just in case another check here since these are really bad for ed.
+	}
+	if(spleen_left() < 4)
+	{
+		return false;	//they are all size 4
+	}
+	
+	item target = $item[none];
+	int target_value = 0;
+	
+	//first the ones without the level 4 requirement because they give more stats
+	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease]
+	{
+		if(item_amount(it) > 0 && auto_is_valid(it) &&
+		mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//do not chew very expensive items even if already in inv
 		{
-			if(item_amount(it) > 0)
+			if(target == $item[none] || mall_price(it) < target_value)
 			{
-				if(autoChew(1, it))
-				{
-					break;
-				}
+				target = it;
+				target_value = mall_price(it);
 			}
 		}
-		//text altering effect from Groose Grease should get removed by resetState
-		if(my_level() >= 4 && oldSpleenUse == my_spleen_use())
+	}
+	if(my_level() >= 4 && target == $item[none])
+	{
+		foreach it in $items[beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
 		{
-			foreach it in $items[beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
+			if(item_amount(it) > 0 && auto_is_valid(it) &&
+			mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//do not chew very expensive items even if already in inv
 			{
-				if(item_amount(it) > 0)
+				if(target == $item[none] || mall_price(it) < target_value)
 				{
-					if (autoChew(1, it))
-					{
-						break;
-					}
+					target = it;
+					target_value = mall_price(it);
 				}
 			}
 		}
 	}
-
+	
+	int oldSpleenUse = my_spleen_use();
+	if(target != $item[none])
+	{
+		if(!autoChew(1, target))	//the actual chewing attempt
+		{
+			auto_log_warning("Mysteriously failed to chew [" +target+ "]", "red");
+		}
+	}
 	return oldSpleenUse != my_spleen_use();
 }
 
