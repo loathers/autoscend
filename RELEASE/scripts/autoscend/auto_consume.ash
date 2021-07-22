@@ -596,15 +596,12 @@ void consumeStuff()
 				return;
 			}
 		}
+	}
 	
-		if (spleen_left() >= 4 && !isActuallyEd())
-		{
-			if (auto_chewAdventures())
-			{
-				return;
-			}
-
-		}
+	//if stomach and liver are full and out of adv then chew size 4 iotm derivate spleen items that give 1.875 adv/size.
+	if (auto_chewAdventures())
+	{
+		return;
 	}
 }
 
