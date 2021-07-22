@@ -113,6 +113,12 @@ void kolhs_consume()
 		auto_autoConsumeOne("drink", false);
 		return;
 	}
+	
+	//if stomach and liver are full and out of adv then chew size 4 iotm derivate spleen items that give 1.875 adv/size.
+	if (auto_chewAdventures())
+	{
+		return;
+	}
 }
 
 void kolhs_preadv(location place)
