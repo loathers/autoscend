@@ -1458,8 +1458,7 @@ boolean auto_chewAdventures()
 	item target = $item[none];
 	int target_value = 0;
 	
-	//first the ones without the level 4 requirement because they give more stats
-	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease]
+	void chooseCheapestTarget(item it)
 	{
 		if(item_amount(it) > 0 && auto_is_valid(it) &&
 		mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//do not chew very expensive items even if already in inv
@@ -1471,19 +1470,17 @@ boolean auto_chewAdventures()
 			}
 		}
 	}
+	
+	//first the ones without the level 4 requirement because they give more stats
+	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease]
+	{
+		chooseCheapestTarget(it);
+	}
 	if(my_level() >= 4 && target == $item[none])
 	{
 		foreach it in $items[beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
 		{
-			if(item_amount(it) > 0 && auto_is_valid(it) &&
-			mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//do not chew very expensive items even if already in inv
-			{
-				if(target == $item[none] || mall_price(it) < target_value)
-				{
-					target = it;
-					target_value = mall_price(it);
-				}
-			}
+			chooseCheapestTarget(it);
 		}
 	}
 	
