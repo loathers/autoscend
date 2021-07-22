@@ -1437,7 +1437,7 @@ int auto_spleenFamiliarAdvItemsPossessed()
 	
 	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease, beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
 	{
-		if(auto_is_valid(it))
+		if(auto_is_valid(it) && mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//even when not mallbuying them we do not want to use exceptionally expensive items
 		{
 			spleenFamiliarAdvItemsCount += item_amount(it);
 		}
