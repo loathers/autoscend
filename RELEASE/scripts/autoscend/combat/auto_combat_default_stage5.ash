@@ -300,7 +300,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stream of Sauce]);
 		}
 		
-		#let mortar deal the killing blow so we get more MP from the exploding curse of weaksauce
+		//let mortar deal the killing blow so we get more MP from the exploding curse of weaksauce
 		int mortar_round = get_property("_auto_combatTracker_MortarRound").to_int();
 		if(mortar_round > -1 &&		//mortar was used this combat
 		mortar_round == round-1 &&	//mortar will hit this round
