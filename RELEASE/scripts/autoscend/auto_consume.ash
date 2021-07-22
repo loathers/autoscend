@@ -1438,7 +1438,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 boolean auto_chewAdventures()
 {
 	//tries to chew a size 4 familiar spleen item that gives adventures. All are IOTM derivatives with 1.875 adv/size
-	if(my_inebriety() < inebriety_limit() || my_fullness() < fullness_limit() || my_adventures() > 1+auto_advToReserve())
+	boolean liver_check = my_inebriety() < inebriety_limit() && !in_kolhs();	//kolhs has special drinking. liver often unfilled
+	if(liver_check || my_fullness() < fullness_limit() || my_adventures() > 1+auto_advToReserve())
 	{
 		return false;	//1.875 A/S is bad. only chew if 1 adv remains
 	}
