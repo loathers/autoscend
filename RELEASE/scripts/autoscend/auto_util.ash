@@ -874,27 +874,48 @@ boolean canYellowRay(monster target)
 {
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
-	// first, do any necessary prep to use a yellow ray
-	if(canChangeToFamiliar($familiar[Crimbo Shrub]))
+	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
-		if(item_amount($item[box of old Crimbo decorations]) == 0)
+		// first, do any necessary prep to use a yellow ray
+		if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
+			get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
+			item_amount($item[yellow rocket]) == 0 &&		// Don't buy if we already have one
+			auto_is_valid($item[yellow rocket]) &&			// or if it's not valid
+			my_meat() > npc_price($item[yellow rocket]) + meatReserve())
 		{
-			familiar curr = my_familiar();
-			use_familiar($familiar[Crimbo Shrub]);
-			use_familiar(curr);
+			cli_execute("acquire " + $item[yellow rocket]);
 		}
-		if(get_property("shrubGifts") != "yellow" && !get_property("_shrubDecorated").to_boolean())
+
+		// Yellow rocket has the lowest cooldown, and is unlimited, so prioritize over other sources
+		if (item_amount($item[yellow rocket]) > 0 &&
+			auto_is_valid($item[yellow rocket]) &&
+			yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "")
 		{
-			string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=7958");
-			temp = visit_url("choice.php?pwd=&whichchoice=999&option=1&topper=1&lights=1&garland=1&gift=1");
+			return true;
 		}
-	}
-	if(!get_property("_internetViralVideoBought").to_boolean() &&	//can only buy 1 per day
-	(item_amount($item[BACON]) >= 20) &&	//it costs 20 bacon
-	auto_is_valid($item[Viral Video]) &&	//do not bother buying it if it is not valid
-	!in_koe())	//bacon store is unreachable in kingdom of exploathing
-	{
-		cli_execute("make " + $item[Viral Video]);
+
+		if(canChangeToFamiliar($familiar[Crimbo Shrub]))
+		{
+			if(item_amount($item[box of old Crimbo decorations]) == 0)
+			{
+				familiar curr = my_familiar();
+				use_familiar($familiar[Crimbo Shrub]);
+				use_familiar(curr);
+			}
+			if(get_property("shrubGifts") != "yellow" && !get_property("_shrubDecorated").to_boolean())
+			{
+				string temp = visit_url("inv_use.php?pwd=&which=3&whichitem=7958");
+				temp = visit_url("choice.php?pwd=&whichchoice=999&option=1&topper=1&lights=1&garland=1&gift=1");
+			}
+		}
+
+		if(!get_property("_internetViralVideoBought").to_boolean() &&	//can only buy 1 per day
+			(item_amount($item[BACON]) >= 20) &&	//it costs 20 bacon
+			auto_is_valid($item[Viral Video]) &&	//do not bother buying it if it is not valid
+			!in_koe())	//bacon store is unreachable in kingdom of exploathing
+		{
+			cli_execute("make " + $item[Viral Video]);
+		}
 	}
 	# Pulled Yellow Taffy	- How do we handle the underwater check?
 	# He-Boulder?			- How do we do this?
@@ -1000,7 +1021,10 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		Breathe Out: per hot jelly usage
 	*/
 
-	//Peel out with Extra-Smelly Muffler, note 10 limit, increased to 30 with Racing Slicks
+	if (auto_have_skill($skill[Peel Out]) && pete_peelOutRemaining() > 0 && get_property("peteMotorbikeMuffler") == "Extra-Smelly Muffler" && !(used contains "Peel Out"))
+	{
+		return "skill " + $skill[Peel Out];
+	}
 
 	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
 	{
@@ -1238,46 +1262,50 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	{
 		if((item_amount($item[Yellowcake Bomb]) > 0) && auto_is_valid($item[Yellowcake Bomb]))
 		{
-			return "item " + $item[Yellowcake Bomb];
+			return "item " + $item[Yellowcake Bomb]; // 75 turns
+		}
+		if((item_amount($item[yellow rocket]) > 0) && auto_is_valid($item[yellow rocket]))
+		{
+			return "item " + $item[yellow rocket]; // 75 turns
+		}
+		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]))
+		{
+			return "skill " + $skill[Unleash the Devil's Kiss]; // 99 turns
 		}
 		if(auto_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
 		{
-			return "skill " + $skill[Disintegrate];
+			return "skill " + $skill[Disintegrate]; // 100 trurns
 		}
 		if(auto_have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
 		{
-			return "skill " + $skill[Ball Lightning];
+			return "skill " + $skill[Ball Lightning]; // 99 turns
 		}
 		if(auto_have_skill($skill[Wrath of Ra]) && (my_mp() >= mp_cost($skill[Wrath of Ra])))
 		{
-			return "skill " + $skill[Wrath of Ra];
+			return "skill " + $skill[Wrath of Ra]; // 100 turns
 		}
 		if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && auto_is_valid($item[Mayo Lance]))
 		{
-			return "item " + $item[Mayo Lance];
+			return "item " + $item[Mayo Lance]; // 0 - 145 turns
 		}
 		if((get_property("peteMotorbikeHeadlight") == "Ultrabright Yellow Bulb") && auto_have_skill($skill[Flash Headlight]) && (my_mp() >= mp_cost($skill[Flash Headlight])))
 		{
-			return "skill " + $skill[Flash Headlight];
+			return "skill " + $skill[Flash Headlight]; // 100 turns
 		}
 		foreach it in $items[Golden Light, Pumpkin Bomb, Unbearable Light, Viral Video, micronova]
 		{
 			if((item_amount(it) > 0) && auto_is_valid(it))
 			{
-				return "item " + it;
+				return "item " + it; // ~150 turns
 			}
 		}
 		if(auto_have_skill($skill[Unleash Cowrruption]) && (have_effect($effect[Cowrruption]) >= 30))
 		{
-			return "skill " + $skill[Unleash Cowrruption];
+			return "skill " + $skill[Unleash Cowrruption]; // 149 turns
 		}
 		if((inCombat ? my_familiar() == $familiar[Crimbo Shrub] : auto_have_familiar($familiar[Crimbo Shrub])) && (get_property("shrubGifts") == "yellow"))
 		{
-			return "skill " + $skill[Open a Big Yellow Present];
-		}
-		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]))
-		{
-			return "skill " + $skill[Unleash the Devil's Kiss];
+			return "skill " + $skill[Open a Big Yellow Present]; // 149 turns
 		}
 	}
 
@@ -3063,7 +3091,7 @@ boolean canPull(item it)
 		meat = max(meat, my_meat() - 5000);
 	}
 	int curPrice = auto_mall_price(it);
-	if (curPrice >= 20000)
+	if (curPrice > get_property("autoBuyPriceLimit").to_int())
 	{
 		return false;
 	}
@@ -5497,37 +5525,32 @@ int auto_convertDesiredML(int DML)
 // Uses MCD in the constraints of a Cap
 boolean auto_setMCDToCap()
 {
-	// This just does the math for comparing vs. the Cap. If no cap is set then ML is virtually unlimited.
-	int remainingMLToCap()
+	int targetMcd = 0;
+
+	if(get_property("auto_MLSafetyLimit") == "")
 	{
-		int MLToCap = 0;
-
-		if(get_property("auto_MLSafetyLimit") == "")
-		{
-			MLToCap = 999999;
-		}
-		else if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int())
-		{
-			MLToCap = get_property("auto_MLSafetyLimit").to_int() - monster_level_adjustment();
-		}
-
-		return MLToCap;
+		// No ML limit was given, so use the max MCD value
+		targetMcd = 11;
 	}
-
-	// Don't try to set the MCD if in KoE
-	if(!in_koe())
+	else
 	{
-		if (current_mcd() > remainingMLToCap())
+		// monster_level_adjustment includes the current MCD value, so it must be removed before calculating the new MCD
+		int currentMlWithoutMcd = monster_level_adjustment() - current_mcd();
+		int mlSafetyLimit = get_property("auto_MLSafetyLimit").to_int();
+
+		if(currentMlWithoutMcd < mlSafetyLimit)
 		{
-			auto_change_mcd(remainingMLToCap());
+			// ML is below the cap. Add as much ML with the MCD as possible without exceeding the cap.
+			targetMcd = mlSafetyLimit - currentMlWithoutMcd;
 		}
 		else
 		{
-			auto_change_mcd(11);
+			// ML is already at the cap or exceeded it. Don't add any more ML with the MCD.
+			targetMcd = 0;
 		}
 	}
 
-	return true;
+	return auto_change_mcd(targetMcd);
 }
 
 // We use this function to determine the suitability of using Ur-Kel's

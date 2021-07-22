@@ -1,4 +1,4 @@
-since r20762;	//min mafia revision needed to run this script. Last update: Add 'logPreferenceChangeFilter', which is a comma separated list of preferences to not log when logPreferenceChange is enabled
+since r20793;	//min mafia revision needed to run this script. Last update: Add explosive equipment to equipment.txt
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -148,15 +148,16 @@ void initializeSettings() {
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
 	set_property("auto_forceTavern", false);
+	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");
 	set_property("auto_getBoningKnife", false);
 	set_property("auto_getStarKey", true);
-	set_property("auto_getSteelOrgan", get_property("auto_alwaysGetSteelOrgan"));
+	set_property("auto_getSteelOrgan", get_property("auto_getSteelOrgan_initialize"));
 	set_property("auto_gnasirUnlocked", false);
 	set_property("auto_grimstoneFancyOilPainting", true);
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
-	set_property("auto_doGalaktik", false);
+	set_property("auto_doGalaktik", get_property("auto_doGalaktik_initialize"));
 	set_property("auto_doArmory", false);
 	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
@@ -1110,6 +1111,16 @@ void initializeDay(int day)
 	grey_goo_initializeDay(day);
 	jarlsberg_initializeDay(day);
 
+	// Bulk cache mall prices
+	if(!in_hardcore() && get_property("auto_day_init").to_int() < day)
+	{
+		auto_log_info("Bulk caching mall prices for consumables");
+		mall_prices("food");
+		mall_prices("booze");
+		mall_prices("hprestore");
+		mall_prices("mprestore");
+	}
+
 	if(day == 1)
 	{
 		if(get_property("auto_day_init").to_int() < 1)
@@ -1319,6 +1330,11 @@ void initializeDay(int day)
 	}
 
 	set_property("auto_forceNonCombatSource", "");
+
+	// Until KoL fix the utterly stupid bug that requires a manual visit to the fireworks shop
+	// before you can even buy anything from it, we will have to do this.
+	// Why is this so hard? Also why is this even a Clan VIP room item? It's just a shop which charges meat.
+	visit_url("clan_viplounge.php?action=fwshop");
 
 	set_property("auto_day_init", day);
 }
@@ -1775,7 +1791,6 @@ boolean LX_freeCombats(boolean powerlevel)
 	if(!in_koe() && get_property("_machineTunnelsAdv").to_int() < 5 && canChangeToFamiliar($familiar[Machine Elf]))
 	{
 		auto_log_debug("LX_freeCombats is adventuring in [The Deep Machine Tunnels]");
-		backupSetting("choiceAdventure1119", 1);
 
 		familiar bjorn = my_bjorned_familiar();
 		if(bjorn == $familiar[Machine Elf])
@@ -2631,9 +2646,10 @@ boolean doTasks()
 	{
 		auto_log_warning("I am in aftercore", "red");
 		return false;
-	}	
-	if(inCasual())
-	{	
+	}
+	if (in_casual() && get_property("_casualAscension").to_int() != -1)
+	{
+		set_property("_casualAscension", my_ascensions());
 		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
 		return false;	
 	}
@@ -2726,7 +2742,6 @@ boolean doTasks()
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
-	if(LM_pokefam())					return true;
 	if(LM_majora())						return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
@@ -2828,11 +2843,6 @@ void auto_begin()
 	//This also should set our path too.
 	string page = visit_url("main.php");
 	page = visit_url("api.php?what=status&for=4", false);
-	if((get_property("_casualAscension").to_int() >= my_ascensions()) && (my_ascensions() > 0))
-	{
-		return;
-	}
-
 	if(contains_text(page, "Being Picky"))
 	{
 		picky_startAscension();

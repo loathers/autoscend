@@ -18,6 +18,7 @@ any	7	auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Ca
 any	8	auto_hccsNoConcludeDay	boolean	Community Service: When true reduce how many daily end-of-day things we do.
 any	9	auto_saveSausage	boolean	When true, in HCCS, do not eat the Sausage Without A Cause (may cause you to eat nothing on day 2).
 any	10	auto_saveVintage	boolean	When true, in HCCS, do not drink the Vintage Smart Drink (will cause +lbs quest to take 4 more adventures).
+any	11	_auto_ignoreRestoreFailureToday	boolean	if true we will for today only ignore failure to restore MP or HP and just continue playing
 
 post	0	auto_chasmBusted	boolean	Has the orc chasm bridge been 'trolled yet? Ed only.
 post	1	auto_cookie	integer	HCCS Only: Tracks fortune cookie.
@@ -52,7 +53,7 @@ post	29	auto_doMeatsmith	boolean	Do Meatsmith optional sidequest this ascension?
 post	30	auto_L8_ninjaAssassinFail	boolean	True means we think we cannot defeat ninja snowmen assassins and are thus avoiding them this ascension. We will not copy them nor adventure in the lair of the ninja snowmen
 post	31	auto_L8_extremeInstead	boolean	True means we want to adventure in the extreme slope path instead of the ninja snowmen lair this ascension.
 
-#
+pre	0	auto_doGalaktik_initialize	boolean	When we initialize an ascension this will be copied to auto_doGalaktik
 
 #
 

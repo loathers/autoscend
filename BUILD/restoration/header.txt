@@ -1,0 +1,2 @@
+# type, idx, name, hp restored, mp restored, soft reserve limit, hard reserve limit, effects removed, effects gained
+

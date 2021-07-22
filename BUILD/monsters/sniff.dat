@@ -1,7 +1,5 @@
 pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed
-Gurgle the Turgle
 Writing Desk	!prop:writingDesksDefeated=5
-Smoke Monster	item:Pack of Smokes>0
 cabinet of Dr. Limpieza
 Dairy Goat	loc:The Goatlet
 Morbid Skull
@@ -16,15 +14,15 @@ Blooper	loc:8-Bit Realm
 Bob Racecar	!sniffed:Racecar Bob
 Racecar Bob	!sniffed:Bob Racecar
 Government Scientist	class:Ed
-Green Ops Soldier	!path:Kingdom of Exploathing
-War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
-War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5
+Green Ops Soldier	!path:Kingdom of Exploathing;prop:hippiesDefeated>399
+War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Homeopath
+War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Naturopathic Homeopath
 Possessed Wine Rack
 Blue Oyster cultist
 Dirty Old Lihc	prop:cyrptNicheEvilness>28
 Possibility Giant	prop:chaosButterflyThrown=false;item:chaos butterfly<1
 Serialbus	item:bus pass<5
 CH Imp	item:imp air<5
-Camel Toe
-Skinflute
+Camel Toe	!sniffed:Skinflute
+Skinflute	!sniffed:Camel Toe
 Red Butler

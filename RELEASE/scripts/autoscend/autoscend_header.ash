@@ -493,6 +493,7 @@ boolean LM_jarlsberg();
 void pete_initializeSettings();
 void pete_initializeDay(int day);
 void pete_buySkills();
+int pete_peelOutRemaining();
 boolean LM_pete();
 
 ########################################################################################################
@@ -513,7 +514,6 @@ boolean L13_bhy_towerFinal();
 
 ########################################################################################################
 //Defined in autoscend/paths/casual.ash
-boolean inCasual();
 boolean inAftercore();
 boolean inPostRonin();
 boolean L8_slopeCasual();
@@ -741,7 +741,6 @@ void pokefam_initializeDay(int day);
 void pokefam_initializeSettings();
 string pokefam_defaultMaximizeStatement();
 boolean pokefam_makeTeam();
-boolean LM_pokefam();
 boolean pokefam_autoAdv(int num, location loc, string option);
 
 ########################################################################################################
