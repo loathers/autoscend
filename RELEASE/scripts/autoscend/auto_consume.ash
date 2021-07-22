@@ -1438,14 +1438,13 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 boolean auto_chewAdventures()
 {
 	//tries to chew a size 4 familiar spleen item that gives adventures. All are IOTM derivatives with 1.875 adv/size
-	//since these items are not very good we wait until only 1 adv remains in case something better comes up for spleen.
 	if(my_inebriety() < inebriety_limit() || my_fullness() < fullness_limit() || my_adventures() > 1+auto_advToReserve())
 	{
-		return false;
+		return false;	//1.875 A/S is bad. only chew if 1 adv remains
 	}
 	if(isActuallyEd())
 	{
-		return false;	//this function should not get called in ed. just in case another check here since these are really bad for ed.
+		return false;	//these consumables are very bad for ed, who has a path specific spleen consumable shop.
 	}
 	if(spleen_left() < 4)
 	{
