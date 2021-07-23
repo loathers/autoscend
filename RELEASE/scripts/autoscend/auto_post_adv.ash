@@ -149,10 +149,6 @@ boolean auto_post_adventure()
 		}
 	}
 
-	float regen = numeric_modifier("MP Regen Min").to_float() * 2.0;
-	regen += numeric_modifier("MP Regen Max").to_float();
-	regen = regen / 3.0;
-
 	if(my_class() == $class[Avatar of Jarlsberg] && auto_have_skill($skill[Early Riser]))
 	{
 		foreach sk in $skills[Conjure Cream, Conjure Dough, Conjure Cheese, Conjure Eggs, Conjure Meat Product, Conjure Vegetables, Conjure Potato, Conjure Fruit]
@@ -461,7 +457,8 @@ boolean auto_post_adventure()
 	boolean [skill] toCast = $skills[Prevent Scurvy and Sobriety, Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Communism!, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
 	
 	boolean buff_familiar = pathHasFamiliar() && !get_property("_auto_bad100Familiar").to_boolean();
-
+	float regen = (numeric_modifier("MP Regen Min").to_float() + numeric_modifier("MP Regen Max").to_float())/2.0;
+	
 	if(my_maxmp() < 50)
 	{
 		buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
