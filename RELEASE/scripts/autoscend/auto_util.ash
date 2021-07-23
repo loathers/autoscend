@@ -1247,7 +1247,7 @@ boolean adjustForBanish(string combat_string)
 
 boolean adjustForBanishIfPossible(monster enemy, location loc)
 {
-	if(canBanish(enemy, loc))
+	if(canBanish(enemy, loc) && !in_pokefam()) // No banishes in Pocket Familiars, so removing this from options.
 	{
 		string banish_string = banisherCombatString(enemy, loc);
 		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
@@ -1368,7 +1368,7 @@ boolean adjustForYellowRay(string combat_string)
 
 boolean adjustForYellowRayIfPossible(monster target)
 {
-	if(canYellowRay(target))
+	if(canYellowRay(target) && !in_pokefam()) // No YR in Pocket Familiars, so removing this from options.
 	{
 		string yr_string = yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target);
 		auto_log_info("Adjusting to have YR available for " + target + ": " + yr_string, "blue");

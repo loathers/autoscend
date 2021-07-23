@@ -62,6 +62,7 @@ import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
 import <autoscend/paths/license_to_adventure.ash>
 import <autoscend/paths/live_ascend_repeat.ash>
+import <autoscend/paths/low_key_summer.ash>
 import <autoscend/paths/nuclear_autumn.ash>
 import <autoscend/paths/one_crazy_random_summer.ash>
 import <autoscend/paths/path_of_the_plumber.ash>
@@ -70,7 +71,7 @@ import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/quantum_terrarium.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
-import <autoscend/paths/low_key_summer.ash>
+
 
 import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>
@@ -1105,7 +1106,6 @@ void initializeDay(int day)
 	pete_initializeDay(day);
 	cs_initializeDay(day);
 	bond_initializeDay(day);
-	pokefam_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);

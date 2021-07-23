@@ -81,6 +81,16 @@ string auto_combatHandler(int round, monster enemy, string text)
 	{
 		awol_combat_helper(text);
 	}
+	if(my_path() == "Pocket Familiars")
+	{
+		if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
+		{
+		auto_log_info("Combat via Ezandora:", "green");
+		boolean ignore = cli_execute("Pocket Familiars");
+		return true;
+		}
+	}
+
 	dd_combat_helper(round, enemy, text);		//disguise delimit mask identification
 
 	if(get_property("auto_combatDirective") != "")
