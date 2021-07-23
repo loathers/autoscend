@@ -598,7 +598,7 @@ void consumeStuff()
 		}
 	}
 	
-	//if stomach and liver are full and out of adv then chew size 4 iotm derivate spleen items that give 1.875 adv/size.
+	//if stomach and liver are full and out of adv then chew size 4 iotm derivative spleen items that give 1.875 adv/size.
 	if (auto_chewAdventures())
 	{
 		return;
