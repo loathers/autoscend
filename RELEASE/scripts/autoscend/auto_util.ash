@@ -874,6 +874,11 @@ boolean canYellowRay(monster target)
 {
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
+	if(in_pokefam())
+	{	
+		return false;
+	}
+
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
 		// first, do any necessary prep to use a yellow ray
@@ -987,6 +992,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(inAftercore())
 	{
 		return "";
+	}
+
+	if(in_pokefam())
+	{
+		return false;
 	}
 
 	//Check that we actually want to banish this thing.
@@ -1247,7 +1257,7 @@ boolean adjustForBanish(string combat_string)
 
 boolean adjustForBanishIfPossible(monster enemy, location loc)
 {
-	if(canBanish(enemy, loc) && !in_pokefam()) // No banishes in Pocket Familiars, so removing this from options.
+	if(canBanish(enemy, loc))
 	{
 		string banish_string = banisherCombatString(enemy, loc);
 		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
@@ -1368,7 +1378,7 @@ boolean adjustForYellowRay(string combat_string)
 
 boolean adjustForYellowRayIfPossible(monster target)
 {
-	if(canYellowRay(target) && !in_pokefam()) // No YR in Pocket Familiars, so removing this from options.
+	if(canYellowRay(target))
 	{
 		string yr_string = yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target);
 		auto_log_info("Adjusting to have YR available for " + target + ": " + yr_string, "blue");
