@@ -736,6 +736,7 @@ boolean picky_buyskills();
 //Defined in autoscend/paths/pocket_familiars.ash
 boolean in_pokefam();
 void pokefam_initializeSettings();
+string pokefam_defaultMaximizeStatement();
 boolean pokefam_makeTeam();
 boolean L12_pokefam_clearBattlefield();
 

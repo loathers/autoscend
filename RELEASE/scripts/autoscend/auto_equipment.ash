@@ -175,6 +175,11 @@ boolean tryAddItemToMaximize(slot s, item it)
 
 string defaultMaximizeStatement()
 {
+	if(in_pokefam())
+	{
+		return pokefam_defaultMaximizeStatement();
+	}
+	
 	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
 	if(my_primestat() != $stat[Moxie])
 		res += ",mox";

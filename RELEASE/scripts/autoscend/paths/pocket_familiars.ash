@@ -20,6 +20,17 @@ void pokefam_initializeSettings()
 	}
 }
 
+string pokefam_defaultMaximizeStatement()
+{
+	// Combat is completely different in pokefam, so most stuff doesn't matter there
+	string res = "5item,meat";
+	if(my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())
+	{
+		res += ",10exp,5" + my_primestat() + " experience percent";
+	}
+	return res;
+}
+
 boolean pokefam_makeTeam()
 {
 	if(in_pokefam())
