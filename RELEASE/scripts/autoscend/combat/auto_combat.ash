@@ -81,7 +81,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 	{
 		awol_combat_helper(text);
 	}
-	if(my_path() == "Pocket Familiars")
+	if(in_pokefam())
 	{
 		if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
 		{
