@@ -167,10 +167,16 @@ int totalBatteryPoints()
 	return totalPoints;
 }
 
-// Mafia's handling of the create() function is currently not flexible enough for crafting batteries.
-// This is very dense, apologies.
 boolean batteryCombine(item battery)
 {
+	return batteryCombine(battery, false);
+}
+
+boolean batteryCombine(item battery, boolean simulate)
+{
+	// Mafia's handling of the create() function only allows one single recipe for crafting batteries. This can result in situations where you can in fact craft a battery but it fails due to it not being the singular recipe supported by it.
+	// Mafia's can_create has the same issue. simulate is used instead of it to determine if we can create a battery (or already have it).
+	// This is very dense, apologies.
 	if(batteryPoints(battery) == 0)	//0 means it is not a battery
 	{
   		return false;
@@ -188,6 +194,7 @@ boolean batteryCombine(item battery)
 		// There's only one way to craft a AA.
 		if (available_amount($item[battery (AAA)]) >= 2)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (AAA)], $item[battery (AAA)]);
 			return (available_amount($item[battery (AA)]) >= 1);
 		}
@@ -199,12 +206,14 @@ boolean batteryCombine(item battery)
 		// From here on out, we try to resolve the crafting in a single step if possible, starting with largest battery + smallest battery.
 		if (available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (AA)], $item[battery (AAA)]);
 			return (available_amount($item[battery (D)]) >= 1);
 		}
 		// If crafting requires multiple steps, we rely on recursion.
 		else if (available_amount($item[battery (AAA)]) >= 3)
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (AA)]);
 			craft("combine", 1, $item[battery (AA)], $item[battery (AAA)]);
 			return (available_amount($item[battery (D)]) >= 1);
@@ -217,12 +226,14 @@ boolean batteryCombine(item battery)
 		// Single step.
 		if (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AAA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (D)], $item[battery (AAA)]);
 			return (available_amount($item[battery (9-Volt)]) >= 1);
 		}
 		// Single step.
 		else if (available_amount($item[battery (AA)]) >= 2)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (AA)], $item[battery (AA)]);
 			return (available_amount($item[battery (9-Volt)]) >= 1);
 		}
@@ -230,6 +241,7 @@ boolean batteryCombine(item battery)
 		else if (available_amount($item[battery (AAA)]) >= 4 ||
 		 (available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 2))
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (D)]);
 			craft("combine", 1, $item[battery (D)], $item[battery (AAA)]);
 			return (available_amount($item[battery (9-Volt)]) >= 1);
@@ -242,12 +254,14 @@ boolean batteryCombine(item battery)
 		// Single step.
 		if (available_amount($item[battery (9-Volt)]) >= 1 && available_amount($item[battery (AAA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AAA)]);
 			return (available_amount($item[battery (lantern)]) >= 1);
 		}
 		// Single step.
 		else if (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (D)], $item[battery (AA)]);
 			return (available_amount($item[battery (lantern)]) >= 1);
 		}
@@ -257,6 +271,7 @@ boolean batteryCombine(item battery)
 		 (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AAA)]) >= 2) ||
 		 (available_amount($item[battery (AA)]) >= 2 && available_amount($item[battery (AAA)]) >= 1))
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (9-Volt)]);
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AAA)]);
 			return (available_amount($item[battery (lantern)]) >= 1);
@@ -269,24 +284,28 @@ boolean batteryCombine(item battery)
 		// Single step.
 		if (available_amount($item[battery (lantern)]) >= 1 && available_amount($item[battery (AAA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (lantern)], $item[battery (AAA)]);
 			return (available_amount($item[battery (car)]) >= 1);
 		}
 		// Single step.
 		else if (available_amount($item[battery (9-Volt)]) >= 1 && available_amount($item[battery (AA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AA)]);
 			return (available_amount($item[battery (car)]) >= 1);
 		}
 		// Single step.
 		else if (available_amount($item[battery (D)]) >= 2)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (D)], $item[battery (D)]);
 			return (available_amount($item[battery (car)]) >= 1);
 		}
 		// The only multi-step case that can't be resolved by the same function (can't turn AAs into a lantern without a AA or D)
 		else if (available_amount($item[battery (AA)]) >= 3)
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (9-volt)]);
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AA)]);
 			return (available_amount($item[battery (car)]) >= 1);
@@ -299,6 +318,7 @@ boolean batteryCombine(item battery)
 		 (available_amount($item[battery (AA)]) >= 2 && available_amount($item[battery (AAA)]) >= 2) ||
 		 (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 1))
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (lantern)]);
 			craft("combine", 1, $item[battery (lantern)], $item[battery (AAA)]);
 			return (available_amount($item[battery (car)]) >= 1);
