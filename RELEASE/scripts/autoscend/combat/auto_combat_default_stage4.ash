@@ -156,9 +156,9 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			{
 				continue;
 			}
-			if(canUse(it, false))
+			if(canUse(it, true))
 			{
-				return useSkill(it, false);
+				return useSkill(it, true);
 			}
 		}
 	}
