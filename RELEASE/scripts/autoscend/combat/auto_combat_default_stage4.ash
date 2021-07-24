@@ -148,7 +148,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	
 	//nanorhino familiar stuff
 	#Do not accidentally charge the nanorhino with a non-banisher
-	if(my_familiar() == $familiar[Nanorhino] && have_effect($effect[Nanobrawny]) == 0)
+	if(my_familiar() == $familiar[Nanorhino] && have_effect($effect[Nanobrawny]) + have_effect($effect[Nanobrainy]) + have_effect($effect[Nanoballsy]) == 0)
 	{
 		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
 		{
