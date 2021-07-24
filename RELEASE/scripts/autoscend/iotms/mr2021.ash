@@ -137,19 +137,6 @@ boolean auto_harvestBatteries()
 			cli_execute("choice.php?pwd&whichchoice=1448&option=1&pp=" + ( pp + 1 ));
 		}
 	}
-
-	// if user enabled battery usage, consume 9 volts until at 5 charges or run out
-	if(get_property("auto_useBatteries").to_boolean())
-	{
-		while(get_property("shockingLickCharges").to_int() < 5)
-		{
-			if(auto_getBattery($item[battery (9-Volt)]))
-				use(1, $item[battery (9-Volt)]);
-			else
-				break;
-				
-		}
-	}
 	
 	return true;
 }
