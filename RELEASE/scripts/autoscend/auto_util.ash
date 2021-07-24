@@ -876,7 +876,7 @@ boolean canYellowRay(monster target)
 
 	if(in_pokefam())
 	{	
-		return false;
+		return "";
 	}
 
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
