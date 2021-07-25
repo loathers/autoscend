@@ -25,6 +25,120 @@ int auto_sausageFightsToday()
 	return get_property("_sausageFights").to_int();
 }
 
+boolean auto_sausageBlocked()
+{
+	if(in_tcrs())
+	{
+		return true;
+	}
+
+	if(!canEat($item[magical sausage]))
+	{
+		return true;
+	}
+	
+	if (get_property("auto_saveMagicalSausage").to_boolean())
+	{
+		return true;
+	}
+	
+	if (auto_sausageLeftToday() <= 0)
+	{
+		return true;
+	}
+	
+	if (stomach_left() < 0)	//can still be eaten with == 0
+	{
+		return true;
+	}
+	
+	return false;
+}
+
+boolean auto_sausageWanted()
+{
+	if (auto_sausageBlocked())
+	{
+		return false;
+	}
+	
+	// if adventures not needed yet, leave most sausages to acquireMP()
+	if (my_adventures() > 10)
+	{
+		// only grind up to one per level in reserve instead of always grinding all the meat that isn't nailed down
+		auto_sausageGrind(my_level() - get_property("_sausagesMade").to_int());
+		// it would be a good idea to eat one early on for MP but 2-3 things currently don't allow it:
+		// auto_sausageGrind wants 90 turncount and desert unlocked, acquireMP() wants it to restore at least 300 MP
+		return false;
+	}
+	
+	// grind and eat sausages once adventures are needed, progressively with eating or drinking to keep a steady source of MP
+	
+	if (auto_sausageLeftToday() <= 0)
+	{
+		return false;
+	}
+	
+	int sausageMade = get_property("_sausagesMade").to_int();
+	int sausageForBreakfast;	// estimate up to how many sausages before drinks and food?
+	int totalSausageEstimated;	// estimate up to how many sausages by the time liver and stomach will be full?
+	
+	// are there more casings from previous days or copied goblins?
+	int extraCasings = item_amount($item[magical sausage casing]) + sausageMade - auto_sausageFightsToday();
+
+	if (my_daycount() == 1)
+	{
+		// by the time turn 90 allows grinding now, organs will not be empty and more sausages may be eaten anyways
+		sausageForBreakfast = 1;
+		totalSausageEstimated = max(9, sausageMade);
+	}
+	else
+	{
+		sausageForBreakfast = 6;
+		// are there more sausages left from previous days?
+		int extraSausage = item_amount($item[magical sausage]) + auto_sausageEaten() - sausageMade;
+		totalSausageEstimated = min(23, 13 + extraCasings + extraSausage);
+		totalSausageEstimated = max(totalSausageEstimated, sausageMade);
+	}
+	
+	// if expectations for today have already been reached lift them
+	if (auto_sausageEaten() >= totalSausageEstimated)	totalSausageEstimated = 23;
+	
+	// sausage consumption progresses with eating or drinking
+	float progress = consumptionProgress();
+	int totalSausageToEat = ceil(progress * (totalSausageEstimated - sausageForBreakfast)) + sausageForBreakfast;
+	
+	// a reserve is kept for MP restoration
+	boolean noMP = my_class() == $class[Vampyre];
+	int sausage_reserve_size = noMP ? 0 : 3;
+	
+	// no more reserve when close to full or when completely out of adventures
+	if (progress > 0.90)		sausage_reserve_size = 2;
+	if (progress > 0.95)		sausage_reserve_size = 1;
+	if (my_adventures() == 0)	sausage_reserve_size = 0;
+	
+	// the reserve also needs to be planned inside the daily limit
+	totalSausageToEat = min(totalSausageToEat, 23 - sausage_reserve_size);
+	
+	// try to grind up to the reserve on top of what we want to eat
+	int totalSausageToGrind = totalSausageToEat + sausage_reserve_size;
+	int sausageToGrind = min(23,totalSausageToGrind) - sausageMade;
+	
+	auto_sausageGrind(sausageToGrind);
+	
+	// eat if there is enough after grinding to respect the reserve
+	int sausageToEat = totalSausageToEat - auto_sausageEaten();
+	int sausageAvailable = item_amount($item[magical sausage]) - sausage_reserve_size;
+	sausageToEat = min(sausageToEat, sausageAvailable);
+	
+	if (sausageToEat > 0)
+	{
+		return auto_sausageEatEmUp(sausageToEat);
+	}
+	
+	return false;
+}
+
 boolean auto_sausageGrind(int numSaus)
 {
 	return auto_sausageGrind(numSaus, false);
@@ -102,31 +216,15 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 
 boolean auto_sausageEatEmUp(int maxToEat)
 {
-	if(in_tcrs()) return false;
-
-	if(!canEat($item[magical sausage]))
-	{
+	if (auto_sausageBlocked())
 		return false;
-	}
 
-	// if maxToEat is 0, eat as many sausages as possible while respecting the reserve
+	// sausage_reserve_size is handled in auto_sausageWanted()
+
+	if(item_amount($item[magical sausage]) < 1)
+		return false;
+
 	boolean noMP = my_class() == $class[Vampyre];
-	int sausage_reserve_size = noMP ? 0 : 3;
-	if (maxToEat == 0)
-	{
-		maxToEat = auto_sausageLeftToday();
-	}
-	else
-	{
-		sausage_reserve_size = 0;
-	}
-
-	if(item_amount($item[magical sausage]) <= sausage_reserve_size || get_property("auto_saveMagicalSausage").to_boolean())
-		return false;
-
-	if(auto_sausageLeftToday() <= 0)
-		return false;
-
 	int originalMp = my_maxmp();
 	if(!noMP)
 	{
@@ -136,7 +234,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 	}
 	// I could optimize this a little more by eating more sausage at once if you have enough max mp...
 	// but meh.
-	while(maxToEat > 0 && item_amount($item[magical sausage]) > sausage_reserve_size)
+	while(maxToEat > 0 && item_amount($item[magical sausage]) > 0)
 	{
 		if(auto_sausageLeftToday() <= 0)
 			break;
