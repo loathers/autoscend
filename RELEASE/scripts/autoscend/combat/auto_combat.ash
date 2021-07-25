@@ -87,7 +87,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		{
 		auto_log_info("Combat via Ezandora:", "green");
 		boolean ignore = cli_execute("Pocket Familiars");
-		return true;
+		return "";		//does not matter what it returns here. the cli_execute above does the entire combat
 		}
 	}
 
