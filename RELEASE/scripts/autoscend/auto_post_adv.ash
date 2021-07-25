@@ -851,7 +851,7 @@ boolean auto_post_adventure()
 	}
 
 	// Experience and Powerlevelling Section
-	if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
+	if(my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		// +Stat expressions based on mainstat
 		if(my_primestat() == $stat[Muscle])
@@ -875,13 +875,10 @@ boolean auto_post_adventure()
 		auto_faceCheck("Patient Smile");
 		auto_faceCheck("Knowing Smile");
 
-		// Generic +Stat Buffs
-		buffMaintain($effect[Carol of the Thrills], 30, 1, 1);
-
-		// Aptitude is not worth it to maintain if we have Ur-Kel's
-		if((40 < regen * auto_predictAccordionTurns()) && (have_effect($effect[Ur-Kel\'s Aria of Annoyance]) == 0))
+		if(my_meat() > meatReserve()+5000)		//these are only worth it if you have lots of excess meat
 		{
-			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 40, 1, 1);
+			buffMaintain($effect[Carol of the Thrills], 30, 1, 1);		//3MP/adv for non ATs. +3 XP/fight
+			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 40, 1, 1);	//4MP/adv for non ATs. +3 XP/fight split equally 1 per stat.
 		}
 	}
 
