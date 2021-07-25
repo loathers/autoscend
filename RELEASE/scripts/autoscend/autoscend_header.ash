@@ -103,6 +103,8 @@ int[item] eudora_xiblaxian();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2011.ash
 boolean isClipartItem(item it);
+boolean hasLegionKnife();
+boolean pullLegionKnife();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2012.ash
@@ -1103,6 +1105,9 @@ void equipBaseline();
 void ensureSealClubs();
 void equipRollover();
 boolean auto_forceEquipSword();
+boolean is_foldable(item target);
+int foldable_amount(item target);
+boolean auto_fold(item target);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
@@ -1498,3 +1503,6 @@ int poolSkillPracticeGains();
 float npcStoreDiscountMulti();
 int meatReserve();
 boolean canUntinker();
+boolean canUntinker(item it);
+boolean untinker(item target);
+boolean untinker(int amount, item target);

@@ -5701,5 +5701,128 @@ int meatReserve()
 // Check to see if we can untinker.
 boolean canUntinker()
 {
-   return get_property("questM01Untinker") == "finished";
+	if(hasLegionKnife() && auto_is_valid($item[Loathing Legion universal screwdriver]))
+	{
+		return true;		//universal screwdriver can be used to untinker items
+	}
+	return get_property("questM01Untinker") == "finished";
+}
+
+boolean canUntinker(item it)
+{
+	if(!canUntinker())
+	{
+		return false;
+	}
+	if(item_amount(it) == 0)
+	{
+		return false;
+	}
+	
+	//exceptions that can be untinkered even though they are no longer pasteable
+	if($items[31337 scroll] contains it)
+	{
+		return true;
+	}
+	
+	//exceptions that can not be untinkered even though they are pasteable
+	if($items[bitchin\' meatcar, pumpkin carriage, meat stack, peppermint parasol, candy cane candygram, Flaskfull of Hollow, Wand of Nagamar,
+	
+	//Amazing ideas
+	boxing-glove-in-a-box, creepy voodoo doll, innuendo, popcorn, the finger, chaos popcorn, giant diamond ring, mysterious present, s\'more gun, tiny black hole,
+	
+	//dreadsylvania clusterbombs
+	cold clusterbomb, hot clusterbomb, sleaze clusterbomb, spooky clusterbomb, stench clusterbomb,
+	
+	//Rough stuff. except sandpaper
+	A Beginner\'s Guide to Charming Snakes \(used\),
+	A Beginner\'s Guide to Charming Snakes \(used\),
+	A Crimbo Carol\, Ch. 1 \(used\),
+	A Crimbo Carol\, Ch. 2 \(used\),
+	A Crimbo Carol\, Ch. 3 \(used\),
+	A Crimbo Carol\, Ch. 4 \(used\),
+	A Crimbo Carol\, Ch. 5 \(used\),
+	A Crimbo Carol\, Ch. 6 \(used\),
+	Autobiography Of Dynamite Superman Jones \(used\),
+	CRIMBCO Employee Handbook \(chapter 1\) \(used\),
+	CRIMBCO Employee Handbook \(chapter 2\) \(used\),
+	CRIMBCO Employee Handbook \(chapter 3\) \(used\),
+	CRIMBCO Employee Handbook \(chapter 4\) \(used\),
+	CRIMBCO Employee Handbook \(chapter 5\) \(used\),
+	Ellsbury\'s journal \(used\),
+	Field Guide to Skeletal Anatomy \(shredded\),
+	Inigo\'s Incantation of Inspiration \(crumpled\),
+	Tales of a Kansas Toymaker \(used\),
+	The Art of Slapfighting \(used\),
+	The Joy of Wassailing \(used\),
+	The Necbronomicon \(used\),
+	Uncle Romulus \(used\),
+	Zu Mannk&auml;se Dienen \(used\)	
+	] contains it)
+	{
+		return false;
+	}
+	
+	return it.pasteable;
+}
+
+boolean untinker(item target)
+{
+	return untinker(1, target);
+}
+
+boolean untinker(int amount, item target)
+{
+	if(!canUntinker())
+	{
+		auto_log_warning("Attempted to untinker [" +target+ "] but we can not untinker anything right now");
+		return false;
+	}
+	if(!canUntinker(target))
+	{
+		auto_log_warning("Attempted to untinker [" +target+ "] but we can not untinker that item right now");
+		return false;
+	}
+	if(amount < 1)
+	{
+		auto_log_debug("Attempted to untinker [" +target+ "] and detected an invalid desired untinker amount of " +amount);
+		return false;
+	}
+	
+	amount = min(amount, item_amount(target));		//we can not untinker more than we have
+	boolean untinker_all = amount == item_amount(target);
+	auto_log_debug("Attempted to untinker " +amount+ " [" +target+ "]");
+	int start_amt = item_amount(target);
+	item LLUS = $item[Loathing Legion universal screwdriver];
+
+	if(get_property("questM01Untinker") == "finished")
+	{
+		if(untinker_all)
+		{
+			visit_url("place.php?whichplace=forestvillage&action=fv_untinker&pwd=&preaction=untinker&whichitem=" +target.to_int()+ "&untinkerall=on");
+		}
+		else for i from 1 to amount
+		{
+			visit_url("place.php?whichplace=forestvillage&action=fv_untinker&pwd=&preaction=untinker&whichitem=" +target.to_int());
+		}
+	}
+	else if(hasLegionKnife() && auto_is_valid(LLUS) && auto_fold(LLUS))
+	{
+		if(untinker_all)
+		{
+			visit_url("inv_use.php?pwd=" +my_hash()+ "&whichitem=4926&action=screw&dowhichitem=" +target.to_int()+ "&untinkerall=on", false);
+		}
+		else for i from 1 to amount
+		{
+			visit_url("inv_use.php?pwd=" +my_hash()+ "&whichitem=4926&action=screw&dowhichitem=" +target.to_int(), false);
+		}
+	}
+	
+	int success_amt = start_amt - item_amount(target);
+	if(success_amt == amount)
+	{
+		return true;
+	}
+	auto_log_warning("Untinkering " +amount+ " [" +target+ "] mysteriously failed. Only " +success_amt+ " were untinkered");
+	return false;
 }

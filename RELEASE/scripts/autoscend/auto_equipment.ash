@@ -637,3 +637,58 @@ boolean auto_forceEquipSword() {
 
 	return autoForceEquip($slot[weapon], swordToEquip);
 }
+
+boolean is_foldable(item target)
+{
+	//mafia does not provide an easy means of checking if an item possesses the foldable property.
+	//This function checks if the item possesses that property. It does not care if you actually have it
+	int count = 0;
+	foreach it in get_related(target, "fold")
+	{
+		count++;
+	}
+	return count > 1;
+}
+
+int foldable_amount(item target)
+{
+	//counts how many copies we can fold of a certain item.
+	if(!is_foldable(target))
+	{
+		return 0;
+	}
+	int retval = 0;
+	foreach it in get_related(target, "fold")
+	{
+		retval += item_amount(it);
+	}
+	return retval;
+}
+
+boolean auto_fold(item target)
+{
+	//fold an item using mafia fold cli command. with checks to ensure everything worked as expected.
+	if(!is_foldable(target))
+	{
+		auto_log_debug("[" +target+ "] is not foldable");
+		return false;
+	}
+	if(item_amount(target) > 0)
+	{
+		return true;	//we already have the desired item
+	}
+	if(foldable_amount(target) == 0)
+	{
+		auto_log_debug("Can not fold [" +target+ "] because we do not possess the required items");
+		return false;
+	}
+	auto_log_debug("folding [" +target+ "]");
+	int start_amt = item_amount(target);
+	cli_execute("fold " +target);
+	if(item_amount(target) == start_amt+1)
+	{
+		return true;
+	}
+	abort("Mysteriously failed to fold [" +target+ "]. please fold it manually and run me again");
+	return false;
+}
