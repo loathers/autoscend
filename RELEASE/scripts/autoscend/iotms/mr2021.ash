@@ -176,6 +176,8 @@ boolean batteryCombine(item battery, boolean simulate)
 {
 	// Mafia's handling of the create() function only allows one single recipe for crafting batteries. This can result in situations where you can in fact craft a battery but it fails due to it not being the singular recipe supported by it.
 	// Mafia's can_create has the same issue. simulate is used instead of it to determine if we can create a battery (or already have it).
+	// untinkering might be unavailable and it adds complexity. So this function only deals with combining.
+	// to actually get batteries use can_get_battery and auto_getBattery. which call both this function and untinkering functions as needed.
 	// This is very dense, apologies.
 	if(batteryPoints(battery) == 0)	//0 means it is not a battery
 	{
@@ -327,18 +329,33 @@ boolean batteryCombine(item battery, boolean simulate)
 	return false;
 }
 
-// This function will ensure a battery is available before use, if possible.
-boolean auto_getBattery(item battery)
+boolean can_get_battery(item target)
 {
-	if(batteryPoints(battery) == 0)	//0 means it is not a battery
+	if(batteryPoints(target) == 0)		//0 means target is not a battery
 	{
   		return false;
 	}
-
-	// If we have the desired battery then we're done here.
-	if (available_amount(battery) >= 1)
+	if (available_amount(target) > 0)		//already have it
 	{
 		return true;
+	}
+	if(canUntinker())
+	{
+		return totalBatteryPoints() >= batteryPoints(target);	//we can untinker. so just count battery points
+	}
+	return batteryCombine(target, true);	//can not untinker. only check meatpasting by simulating batteryCombine
+}
+
+boolean auto_getBattery(item battery)
+{
+	// This function will ensure a battery is available before use, if possible.
+	if(batteryPoints(battery) == 0)		//0 means it is not a battery
+	{
+  		return false;
+	}
+	if (available_amount(battery) >= 1)
+	{
+		return true;		//we already have the dresired battery. we are done here
 	}
 		
 	// We'll try to create the battery, if it works then great, if not, we keep going.
@@ -355,7 +372,7 @@ boolean auto_getBattery(item battery)
 		{
 			for i from 1 to available_amount(it)
 			{
-				visit_url("place.php?whichplace=forestvillage&action=fv_untinker&pwd=&preaction=untinker&whichitem=" + it.to_int().to_string());
+				untinker(it);
 				
 				if (batteryCombine(battery))
 				{

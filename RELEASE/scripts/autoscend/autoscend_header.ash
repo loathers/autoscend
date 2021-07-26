@@ -433,6 +433,7 @@ int batteryPoints(item battery);
 int totalBatteryPoints();
 boolean batteryCombine(item battery);
 boolean batteryCombine(item battery, boolean simulate);
+boolean can_get_battery(item target);
 boolean auto_getBattery(item battery, int qty);
 
 ########################################################################################################
