@@ -874,6 +874,11 @@ boolean canYellowRay(monster target)
 {
 	# Use this to determine if it is safe to enter a yellow ray combat.
 
+	if(in_pokefam())
+	{	
+		return false;
+	}
+
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
 		// first, do any necessary prep to use a yellow ray
@@ -985,6 +990,11 @@ boolean hasClubEquipped()
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
 {
 	if(inAftercore())
+	{
+		return "";
+	}
+
+	if(in_pokefam())
 	{
 		return "";
 	}

@@ -738,11 +738,10 @@ boolean picky_buyskills();
 ########################################################################################################
 //Defined in autoscend/paths/pocket_familiars.ash
 boolean in_pokefam();
-void pokefam_initializeDay(int day);
 void pokefam_initializeSettings();
 string pokefam_defaultMaximizeStatement();
 boolean pokefam_makeTeam();
-boolean pokefam_autoAdv(int num, location loc, string option);
+boolean L12_pokefam_clearBattlefield();
 
 ########################################################################################################
 //Defined in autoscend/paths/quantum_terrarium.ash
