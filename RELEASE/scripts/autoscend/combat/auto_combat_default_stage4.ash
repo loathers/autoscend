@@ -147,7 +147,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//nanorhino familiar stuff
-	#Do not accidentally charge the nanorhino with a non-banisher
+	//Do not accidentally spend the nanorhino charge to get a buff with a non-banisher
 	boolean nanorhino_charged = get_property("_nanorhinoCharge").to_int() >= 100;
 	if(my_familiar() == $familiar[Nanorhino] && nanorhino_charged && have_effect($effect[Nanobrawny]) + have_effect($effect[Nanobrainy]) + have_effect($effect[Nanoballsy]) == 0)
 	{
