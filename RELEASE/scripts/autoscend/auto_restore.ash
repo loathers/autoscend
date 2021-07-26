@@ -1707,8 +1707,15 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	// TODO: move this to general effectiveness method
 	if(my_maxmp() - my_mp() > 300)
 	{
-		auto_sausageEatEmUp(1);		//this involve outfit changes which can lower our maxMP to below what goal was. which would cause infinite loop
-		goal = min(goal, my_maxmp());
+		if (!auto_sausageBlocked())
+		{
+			if(item_amount($item[magical sausage]) < 1 && get_property("_sausagesMade").to_int() < 23)
+			{
+				auto_sausageGrind(1);
+			}
+			auto_sausageEatEmUp(1);		//this involve outfit changes which can lower our maxMP to below what goal was. which would cause infinite loop
+			goal = min(goal, my_maxmp());
+		}
 	}
 	__restore("mp", goal, meat_reserve, useFreeRests);
 	return (my_mp() >= goal);
