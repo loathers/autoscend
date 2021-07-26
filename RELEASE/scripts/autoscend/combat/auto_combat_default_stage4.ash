@@ -147,8 +147,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//nanorhino familiar stuff
-	boolean nanorhino_charged = get_property("_nanorhinoCharge").to_int() >= 100;
-	if(my_familiar() == $familiar[Nanorhino] && nanorhino_charged && have_effect($effect[Nanobrawny]) + have_effect($effect[Nanobrainy]) + have_effect($effect[Nanoballsy]) == 0)
+	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100)
 	{
 		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
 		{
