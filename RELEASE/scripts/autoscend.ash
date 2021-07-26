@@ -10,6 +10,7 @@ since r20793;	//min mafia revision needed to run this script. Last update: Add e
 
 
 import <autoscend/autoscend_header.ash>
+import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
 import <canadv.ash>
 
@@ -26,8 +27,6 @@ import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
-
-import <autoscend/combat/auto_combat.ash>
 
 import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
