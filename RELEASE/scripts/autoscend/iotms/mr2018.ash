@@ -392,7 +392,7 @@ boolean songboomSetting(int option)
 	{
 		boomsLeft--;
 	}
-	auto_log_info("Change successful to " + get_property("boomBoxSong") + "We have " + boomsLeft + " SongBoom BoomBoxen songens left!", "green");
+	auto_log_info("Change successful to " + get_property("boomBoxSong") + ". We have " + boomsLeft + " SongBoom BoomBoxen songens left!", "green");
 	return true;
 }
 
