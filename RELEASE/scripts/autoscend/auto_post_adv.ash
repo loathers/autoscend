@@ -237,11 +237,6 @@ boolean auto_post_adventure()
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}
 
-			if ((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && !($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Smut Orc Logging Camp] contains my_location()))
-			{
-				buffMaintain($effect[Blessing of Serqet], 10, 1, 10);
-			}
-
 			foreach ef in $effects[Prayer Of Seshat, Wisdom Of Thoth, Power of Heka, Hide Of Sobek, Bounty Of Renenutet]
 			{
 				if(my_mp() > 100)
