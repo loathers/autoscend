@@ -115,7 +115,9 @@ boolean auto_tavern()
 	string tavern = get_property("tavernLayout");
 	if(tavern == "0000000000000000000000000")
 	{
+		// visit cellar then refresh layout property
 		string temp = visit_url("cellar.php");
+		tavern = get_property("tavernLayout");
 		if(tavern == "0000000000000000000000000")
 		{
 			abort("Invalid Tavern Configuration, could not visit cellar and repair. Uh oh...");

@@ -23,11 +23,6 @@ boolean autoAdv(int num, location loc, string option)
 		}
 	}
 
-	if(in_pokefam())
-	{
-		return pokefam_autoAdv(num, loc, option);
-	}
-
 	// adv1 can erroneously return false for "choiceless" non-combats
 	// see https://kolmafia.us/showthread.php?25370-adv1-returns-false-for-quot-choiceless-quot-choice-adventures
 	// undo all this when (if?) that ever gets fixed
