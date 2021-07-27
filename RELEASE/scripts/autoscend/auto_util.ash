@@ -5708,31 +5708,31 @@ boolean canUntinker()
 	return get_property("questM01Untinker") == "finished";
 }
 
-boolean canUntinker(item it)
+boolean canUntinker(item target)
 {
 	if(!canUntinker())
 	{
 		return false;
 	}
-	if(item_amount(it) == 0)
+	if(item_amount(target) == 0)
 	{
 		return false;
 	}
 	
 	//exceptions that can be untinkered even though they are no longer pasteable
-	if($items[31337 scroll] contains it)
+	if($items[31337 scroll] contains target)
 	{
 		return true;
 	}
 	
 	//exceptions that can not be untinkered even though they are pasteable exist. most return craft_type of "Meatpasting (not untinkerable)".
 	//only items which return "Meatpasting" need to be handled here by us
-	if($items[chaos popcorn, cold clusterbomb, hot clusterbomb, sleaze clusterbomb, spooky clusterbomb, stench clusterbomb] contains it)
+	if($items[chaos popcorn, cold clusterbomb, hot clusterbomb, sleaze clusterbomb, spooky clusterbomb, stench clusterbomb] contains target)
 	{
 		return false;
 	}
 	
-	return craft_type(it) == "Meatpasting";
+	return craft_type(target) == "Meatpasting";
 }
 
 boolean untinker(item target)
