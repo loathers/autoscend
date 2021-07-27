@@ -33,6 +33,22 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	
 	string combatState = get_property("auto_combatHandler");
 	
+	//nanorhino familiar buff acquisition
+	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100)
+	{
+		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
+		{
+			if((it == $skill[Shieldbutt]) && !hasShieldEquipped())
+			{
+				continue;
+			}
+			if(canUse(it, false))
+			{
+				return useSkill(it, false);
+			}
+		}
+	}
+	
 	if(enemy == $monster[Your Shadow])
 	{
 		if(in_plumber())
