@@ -5763,7 +5763,7 @@ boolean canUntinker(item it)
 		return false;
 	}
 	
-	return it.pasteable;
+	return craft_type(it) == "Meatpasting";
 }
 
 boolean untinker(item target)
