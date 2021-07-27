@@ -381,7 +381,7 @@ boolean auto_getBattery(item target)
 			}
 			//all the batteries we had to begin with were smaller than target. They were just the wrong values to merge.
 			//so just break them apart until you are able to make target
-			else for i from 1 to item_amount(it)
+			else for i from 1 to min(6, item_amount(it))
 			{
 				untinker(it);
 				if (batteryCombine(target))
