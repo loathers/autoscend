@@ -483,6 +483,13 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Snokebomb];
 	}
+	
+	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.
+	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)
+	{
+		return "skill " + $skill[Unleash Nanites];
+	}
+	
 	if(auto_have_skill($skill[Beancannon]) && (get_property("_beancannonUses").to_int() < 5) && ((my_mp() - 20) >= mp_cost($skill[Beancannon])) && (!(used contains "beancannon")))
 	{
 		boolean haveBeans = false;

@@ -130,15 +130,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
 		set_property("auto_combatHandler", combatState + "(banishercheck)");
 	}
-	
-	//nanorhino banish. needs to be properly integrated above.
-	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)
-	{
-		if(enemy == $monster[Pygmy Janitor])
-		{
-			return useSkill($skill[Unleash Nanites]);
-		}
-	}
 
 	// Free run from monsters we want to banish but are unable to
 	if(auto_wantToBanish(enemy, my_location()))
