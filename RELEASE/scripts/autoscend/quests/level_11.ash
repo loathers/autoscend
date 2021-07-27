@@ -1268,8 +1268,6 @@ boolean L11_hiddenCity()
 		uneffect($effect[Thrice-Cursed]);
 	}
 
-
-
 	if (item_amount($item[Moss-Covered Stone Sphere]) == 0 && internalQuestStatus("questL11Business") < 1)
 	{
 		if(get_counters("Fortune Cookie", 0, 9) == "Fortune Cookie")
@@ -1367,14 +1365,6 @@ boolean L11_hiddenCity()
 			if(shouldForceElevatorAction)
 			{
 				elevatorAction = auto_forceNextNoncombat();
-
-				if(in_pokefam())
-				{
-					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
-					{
-						return autoAdv($location[The Hidden Apartment Building]);
-					}
-				}
 			}
 		}
 
@@ -1466,7 +1456,7 @@ boolean L11_hiddenCity()
 		{
 			return true;
 		}
-		auto_log_info("The idden osptial!! [sic]", "blue");
+		auto_log_info("The idden [sic] ospital!", "blue");
 
 		autoEquip($item[bloodied surgical dungarees]);
 		autoEquip($item[half-size scalpel]);

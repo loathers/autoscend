@@ -1879,6 +1879,11 @@ boolean L12_clearBattlefield()
 		return L12_koe_clearBattlefield();
 	}
 
+	if(in_pokefam())
+	{
+		return L12_pokefam_clearBattlefield();
+	}
+
 	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;

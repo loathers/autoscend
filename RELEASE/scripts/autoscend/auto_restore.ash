@@ -1707,8 +1707,15 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	// TODO: move this to general effectiveness method
 	if(my_maxmp() - my_mp() > 300)
 	{
-		auto_sausageEatEmUp(1);		//this involve outfit changes which can lower our maxMP to below what goal was. which would cause infinite loop
-		goal = min(goal, my_maxmp());
+		if (!auto_sausageBlocked())
+		{
+			if(item_amount($item[magical sausage]) < 1 && get_property("_sausagesMade").to_int() < 23)
+			{
+				auto_sausageGrind(1);
+			}
+			auto_sausageEatEmUp(1);		//this involve outfit changes which can lower our maxMP to below what goal was. which would cause infinite loop
+			goal = min(goal, my_maxmp());
+		}
 	}
 	__restore("mp", goal, meat_reserve, useFreeRests);
 	return (my_mp() >= goal);
@@ -1797,6 +1804,12 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		return false;
 	}
 	
+	// HP is irrelevant in Pocket Familiars, this removes the function to restore HP
+	if(in_pokefam())
+	{
+		return false;
+	}
+
 	//owning a hand in glove breaks maxHP tracking. need to check possession rather than equipped because unequipping it also breaks it. in fact it causes us to get stuck in an infinite loop of trying to restore hp when already at max HP.
 	//mafia devs think it is actually a kol bug so they won't fix it. https://kolmafia.us/showthread.php?25214
 	if(possessEquipment($item[Hand in Glove]))
