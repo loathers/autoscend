@@ -137,7 +137,6 @@ boolean auto_harvestBatteries()
 			cli_execute("choice.php?pwd&whichchoice=1448&option=1&pp=" + ( pp + 1 ));
 		}
 	}
-	
 	return true;
 }
 
