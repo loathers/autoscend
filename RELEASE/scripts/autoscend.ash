@@ -18,6 +18,7 @@ import <autoscend/auto_adventure.ash>
 import <autoscend/auto_bedtime.ash>
 import <autoscend/auto_consume.ash>
 import <autoscend/auto_settings.ash>
+import <autoscend/auto_craft.ash>
 import <autoscend/auto_equipment.ash>
 import <autoscend/auto_familiar.ash>
 import <autoscend/auto_list.ash>
