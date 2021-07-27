@@ -621,7 +621,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	}
 	// try to get Shocking Lick buff if we don't have it and user enabled battery usage
 	// can't put this in adjustForYellowRay since no way to determine if we can make 9-volt without actually making it
-	if (!inCombat && get_property("auto_useBatteries").to_boolean())
+	if (!inCombat)
 	{
 		if(auto_getBattery($item[battery (9-Volt)]))
 		{
