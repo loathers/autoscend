@@ -132,9 +132,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 	
 	//nanorhino banish. needs to be properly integrated above.
-	if(canUse($skill[Unleash Nanites]) && (have_effect($effect[Nanobrawny]) >= 40))
+	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)
 	{
-		#if appropriate enemy, then banish
 		if(enemy == $monster[Pygmy Janitor])
 		{
 			return useSkill($skill[Unleash Nanites]);
