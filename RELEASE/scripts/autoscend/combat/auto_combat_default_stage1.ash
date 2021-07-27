@@ -164,15 +164,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 	
 	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
-	//TODO: check monster danger instead of instakillable
 	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100 && !contains_text(combatState, "nanorhino_buffed") && canSurvive(4.0))
 	{
 		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
 		{
-			if((it == $skill[Shieldbutt]) && !hasShieldEquipped())
-			{
-				continue;
-			}
 			if(canUse(it, false))
 			{
 				set_property("auto_combatHandler", combatState + "(nanorhino_buffed)");

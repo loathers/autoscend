@@ -48,10 +48,14 @@ void markAsUsed(item it)
 boolean canUse(skill sk, boolean onlyOnce)
 {
 	if(onlyOnce && haveUsed(sk))
+	{
 		return false;
+	}
 
 	if(!auto_have_skill(sk))
+	{
 		return false;
+	}
 
 	if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
 		my_hp() <= hp_cost(sk) ||
@@ -60,9 +64,15 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
-		my_pp() < plumber_ppCost(sk)
-	)
+		my_pp() < plumber_ppCost(sk))
+	{
 		return false;
+	}
+	
+	if(sk == $skill[Shieldbutt] && !hasShieldEquipped())
+	{
+		return false;
+	}
 
 	record SkillSet
 	{
