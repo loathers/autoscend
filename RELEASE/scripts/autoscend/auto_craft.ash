@@ -55,6 +55,7 @@ boolean auto_fold(item target)
 
 boolean untinkerable(item target)
 {
+	//does the item target possess the untinkerable property. this does not care if we actually have it or can untinker. only the property.
 	//exceptions that can be untinkered even though they are no longer pasteable
 	if($items[31337 scroll] contains target)
 	{
@@ -70,9 +71,9 @@ boolean untinkerable(item target)
 	return craft_type(target) == "Meatpasting";
 }
 
-// Check to see if we can untinker.
 boolean canUntinker()
 {
+	//do we possess the means to untinker.
 	if(hasLegionKnife() && auto_is_valid($item[Loathing Legion universal screwdriver]))
 	{
 		return true;		//universal screwdriver can be used to untinker items
