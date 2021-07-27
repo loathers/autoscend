@@ -1392,34 +1392,42 @@ boolean asdonAutoFeed(int goal)
 		}
 	}
 
-	int meat_cutoff = 7000;
-	if((get_fuel() < goal) && (my_meat() > meat_cutoff) && isGeneralStoreAvailable() && !in_koe())
+	int meat_cutoff = max(3500, 2000 + meatReserve());
+	boolean can_buy_dough = npc_price($item[wad of dough]) > 0;
+	boolean can_buy_flower = npc_price($item[all-purpose flower]) > 0 && auto_is_valid($item[all-purpose flower]);
+	
+	//Dough prices: Madeline's Baking Supply is 40. other stores 50. flower ~50 meat per dough in batches of ~40.
+	//only use flower if direct buying of dough is not available.
+	if(get_fuel() < goal && my_meat() > meat_cutoff && isGeneralStoreAvailable() && !in_koe() && can_buy_flower && !can_buy_dough)
 	{
-		int want = ((goal + 5) - get_fuel()) / 6;
+		int want = (goal + 5 - get_fuel()) / 6;
 		want = min(3 + ((my_meat() - meat_cutoff) / 1000), want);
-		if(want > 0 && auto_is_valid($item[all-purpose flower]))
+		if(want > 0)
 		{
 			//flower drops 35 to 45 wads of dough per use. safeguard against inf loop. assume worst drop to let it run enough times.
 			int loop_count = ceil(want/35);
 			for i from 1 to loop_count
 			{
-				if(npc_price($item[wad of dough]) == 0 && my_meat() > meat_cutoff && item_amount($item[wad of dough]) < want)
+				if(my_meat() > meat_cutoff && item_amount($item[wad of dough]) < want)
 				{
-					use(1, $item[all-purpose flower]);
+					use(1, $item[all-purpose flower]);	//mafia will automatically buy it first
 				}
 			}
+			want = min(want, item_amount($item[wad of dough]));
 			create(want, $item[Loaf of Soda Bread]);
 			asdonFeed($item[Loaf of Soda Bread], want);
 			didOnce = true;
 		}
 	}
 
-	if((get_fuel() < goal) && (my_meat() > 3500) && (npc_price($item[wad of dough]) != 0) && isGeneralStoreAvailable() && !in_koe())
+	if(get_fuel() < goal && my_meat() > meat_cutoff && can_buy_dough && isGeneralStoreAvailable() && !in_koe())
 	{
-		int want = ((goal + 5) - get_fuel()) / 6;
+		int can_buy = (my_meat() - meat_cutoff) / npc_price($item[wad of dough]);
+		int want = (goal + 5 - get_fuel()) / 6;
+		want = min(want, can_buy);
 		if(want > 0)
 		{
-			cli_execute("make " + want + " " + $item[Loaf of Soda Bread]);
+			create(want, $item[Loaf of Soda Bread]);
 			asdonFeed($item[Loaf of Soda Bread], want);
 			didOnce = true;
 		}
