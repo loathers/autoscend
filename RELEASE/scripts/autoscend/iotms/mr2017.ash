@@ -1438,7 +1438,7 @@ boolean asdonAutoFeed(int goal)
 		cli_execute("refresh inv");
 	}
 
-	return true;
+	return get_fuel() >= goal;
 }
 
 boolean asdonFeed(item it, int qty)
