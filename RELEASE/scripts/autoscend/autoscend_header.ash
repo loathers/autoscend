@@ -314,6 +314,8 @@ int auto_sausageLeftToday();
 int auto_sausageUnitsNeededForSausage(int numSaus);
 int auto_sausageMeatPasteNeededForSausage(int numSaus);
 int auto_sausageFightsToday();
+boolean auto_sausageBlocked();
+boolean auto_sausageWanted();
 boolean auto_sausageGrind(int numSaus);
 boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll);
 boolean auto_sausageEatEmUp(int maxToEat);
@@ -735,11 +737,10 @@ boolean picky_buyskills();
 ########################################################################################################
 //Defined in autoscend/paths/pocket_familiars.ash
 boolean in_pokefam();
-void pokefam_initializeDay(int day);
 void pokefam_initializeSettings();
 string pokefam_defaultMaximizeStatement();
 boolean pokefam_makeTeam();
-boolean pokefam_autoAdv(int num, location loc, string option);
+boolean L12_pokefam_clearBattlefield();
 
 ########################################################################################################
 //Defined in autoscend/paths/quantum_terrarium.ash
@@ -1052,6 +1053,7 @@ boolean consumeMilkOfMagnesiumIfUnused();
 boolean canDrink(item toDrink);
 boolean canEat(item toEat);
 boolean canChew(item toChew);
+float consumptionProgress();
 void consumeStuff();
 boolean consumeFortune();
 void auto_printNightcap();
@@ -1321,21 +1323,12 @@ boolean canYellowRay(monster target);
 boolean canYellowRay();
 boolean[string] auto_banishesUsedAt(location loc);
 boolean auto_wantToBanish(monster enemy, location loc);
-string banisherCombatString(monster enemy, location loc, boolean inCombat);
-string banisherCombatString(monster enemy, location loc);
 boolean canBanish(monster enemy, location loc);
 boolean adjustForBanish(string combat_string);
 boolean adjustForBanishIfPossible(monster enemy, location loc);
-string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDrop);
-string yellowRayCombatString(monster target, boolean inCombat);
-string yellowRayCombatString(monster target);
-string yellowRayCombatString();
 boolean adjustForYellowRay(string combat_string);
 boolean adjustForYellowRayIfPossible(monster target);
 boolean adjustForYellowRayIfPossible();
-string replaceMonsterCombatString(monster target, boolean inCombat);
-string replaceMonsterCombatString(monster target);
-string replaceMonsterCombatString();
 boolean canReplace(monster target);
 boolean canReplace();
 boolean adjustForReplace(string combat_string);

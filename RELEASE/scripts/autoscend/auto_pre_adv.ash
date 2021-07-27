@@ -219,9 +219,9 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	// Use some instakills.
+	// Use some instakills.  Removing option from Pocket Familiars so it won't unnecessarily equip in third slot.
 	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
-	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19)
+	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())
 	{
 		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
 		autoEquip($slot[acc3], DOCTOR_BAG);
@@ -522,6 +522,13 @@ boolean auto_pre_adventure()
 		}
 		else abort("Trying to adv in [" +place+ "] while overdrunk... Stop it.");
 	}
+		
+	if(in_pokefam())
+	{
+		// Build the team at the beginning of each adventure.
+		pokefam_makeTeam();
+	}
+
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
 	
