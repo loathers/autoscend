@@ -1397,11 +1397,18 @@ boolean asdonAutoFeed(int goal)
 	{
 		int want = ((goal + 5) - get_fuel()) / 6;
 		want = min(3 + ((my_meat() - meat_cutoff) / 1000), want);
-		if(want > 0)
+		if(want > 0 && auto_is_valid($item[all-purpose flower]))
 		{
-			while((npc_price($item[wad of dough]) == 0) && my_meat() > meat_cutoff && item_amount($item[wad of dough]) < want)
-				use(1, $item[all-purpose flower]);
-			cli_execute("make " + want + " " + $item[Loaf of Soda Bread]);
+			//flower drops 35 to 45 wads of dough per use. safeguard against inf loop. assume worst drop to let it run enough times.
+			int loop_count = ceil(want/35);
+			for i from 1 to loop_count
+			{
+				if(npc_price($item[wad of dough]) == 0 && my_meat() > meat_cutoff && item_amount($item[wad of dough]) < want)
+				{
+					use(1, $item[all-purpose flower]);
+				}
+			}
+			create(want, $item[Loaf of Soda Bread]);
 			asdonFeed($item[Loaf of Soda Bread], want);
 			didOnce = true;
 		}
