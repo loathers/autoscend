@@ -164,15 +164,37 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 	
 	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
-	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100 && !contains_text(combatState, "nanorhino_buffed") && canSurvive(4.0))
+	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100 && !contains_text(combatState, "nanorhino_buffed"))
 	{
-		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
+		//currently hardcoded to always get the muscle buff.
+		skill target = $skill[none];
+		if(in_glover() && canUse($skill[Lunge Smack], false) && canSurvive(4.0))
 		{
-			if(canUse(it, false))
+			target = $skill[Lunge Smack];
+		}
+		if(target == $skill[none] && canUse($skill[Shell Up], false))
+		{
+			target = $skill[Shell Up];	//6MP. bonus based on blessing. blocks enemy this round even if they are immune to stagger
+		}
+		if(target == $skill[none] && stunnable(enemy) && canUse($skill[Club Foot], false) && my_class() == $class[Seal Clubber] && my_mp() > 25)
+		{
+			target = $skill[Club Foot];	//8MP. 3-5 enemy defense debuff. seal clubbers also stuns enemy
+		}
+		if(target == $skill[none] && canSurvive(4.0))		//choose the cheapest skill available
+		{
+			foreach sk in $skills[Toss, Clobber, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper]
 			{
-				set_property("auto_combatHandler", combatState + "(nanorhino_buffed)");
-				return useSkill(it, false);
+				if(canUse(sk, false))
+				{
+					target = sk;
+				}
 			}
+		}
+		
+		set_property("auto_combatHandler", combatState + "(nanorhino_buffed)");
+		if(target != $skill[none])
+		{
+			return useSkill(target, false);
 		}
 	}
 	
