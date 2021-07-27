@@ -71,3 +71,4 @@ post	6	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this as
 pre	0	auto_getSteelOrgan_initialize	boolean	When we initialize an ascension this will be copied to auto_getSteelOrgan
 
 sharing	0	auto_disableExcavator	boolean	When set to true will disable automatically sending spading data via the Extractor script
+
