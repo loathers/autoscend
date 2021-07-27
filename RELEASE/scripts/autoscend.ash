@@ -10,6 +10,7 @@ since r20793;	//min mafia revision needed to run this script. Last update: Add e
 
 
 import <autoscend/autoscend_header.ash>
+import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
 import <canadv.ash>
 
@@ -26,8 +27,6 @@ import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
-
-import <autoscend/combat/auto_combat.ash>
 
 import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
@@ -62,6 +61,7 @@ import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
 import <autoscend/paths/license_to_adventure.ash>
 import <autoscend/paths/live_ascend_repeat.ash>
+import <autoscend/paths/low_key_summer.ash>
 import <autoscend/paths/nuclear_autumn.ash>
 import <autoscend/paths/one_crazy_random_summer.ash>
 import <autoscend/paths/path_of_the_plumber.ash>
@@ -70,7 +70,7 @@ import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/quantum_terrarium.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
-import <autoscend/paths/low_key_summer.ash>
+
 
 import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>
@@ -1105,7 +1105,6 @@ void initializeDay(int day)
 	pete_initializeDay(day);
 	cs_initializeDay(day);
 	bond_initializeDay(day);
-	pokefam_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);
@@ -2117,10 +2116,16 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if((my_meat() > 7500) && (item_amount($item[Seal Tooth]) == 0))
+	if(item_amount($item[Seal Tooth]) == 0)
 	{
-		acquireHermitItem($item[Seal Tooth]);
+		//saucerors want to use sealtooth to delay so that mortar shell delivers final blow for weaksauce MP explosion
+		//TODO: add delaying for mortar for other classes in combat and then remove the sauceror requirement here.
+		if( my_meat() > 7500 || (my_class() == $class[Sauceror] && canUse($skill[Stuffed Mortar Shell])) )
+		{
+			acquireHermitItem($item[Seal Tooth]);
+		}
 	}
+	
 
 	if(my_class() == $class[Turtle Tamer])
 	{

@@ -104,12 +104,12 @@ desert_buff_record desertBuffs()
     return dbr;
 }
 
-int shenItemsReturned()
+int shenItemsReturnedOrInProgress()
 {
 	int progress = internalQuestStatus("questL11Shen");
-	if (progress < 3) return 0;
-	if (progress < 5) return 1;
-	else if (progress < 7) return 2;
+	if (progress < 1) return 0;
+	if (progress < 3) return 1;
+	else if (progress < 5) return 2;
 	else return 3;
 }
 
@@ -172,7 +172,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 	if (get_property("shenInitiationDay").to_int() > 0)
 	{
 		int day = get_property("shenInitiationDay").to_int();
-		int items_returned = shenItemsReturned();
+		int items_returned = shenItemsReturnedOrInProgress();
 		return shenSnakeLocations(day, items_returned);
 	}
 	else
@@ -1268,8 +1268,6 @@ boolean L11_hiddenCity()
 		uneffect($effect[Thrice-Cursed]);
 	}
 
-
-
 	if (item_amount($item[Moss-Covered Stone Sphere]) == 0 && internalQuestStatus("questL11Business") < 1)
 	{
 		if(get_counters("Fortune Cookie", 0, 9) == "Fortune Cookie")
@@ -1367,14 +1365,6 @@ boolean L11_hiddenCity()
 			if(shouldForceElevatorAction)
 			{
 				elevatorAction = auto_forceNextNoncombat();
-
-				if(in_pokefam())
-				{
-					if(get_property("relocatePygmyLawyer").to_int() != my_ascensions())
-					{
-						return autoAdv($location[The Hidden Apartment Building]);
-					}
-				}
 			}
 		}
 
@@ -1466,7 +1456,7 @@ boolean L11_hiddenCity()
 		{
 			return true;
 		}
-		auto_log_info("The idden osptial!! [sic]", "blue");
+		auto_log_info("The idden [sic] ospital!", "blue");
 
 		autoEquip($item[bloodied surgical dungarees]);
 		autoEquip($item[half-size scalpel]);
