@@ -514,11 +514,56 @@ boolean canChew(item toChew)
 	return true;
 }
 
+float consumptionProgress()
+{
+	// returns indicative ratio of adventure organs used
+	
+	// if not allowed to consume then consider maximum progress is already reached
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return 1;
+	}
+	
+	int organs_used;
+	int organs_max;
+	
+	if (can_eat())
+	{
+		organs_used += my_fullness();
+		organs_max += fullness_limit();
+	}
+	if (can_drink())
+	{
+		organs_used += my_inebriety();
+		organs_max += inebriety_limit();
+	}
+	
+	// don't consider spleen as a significant adventure organ in most paths
+	if (isActuallyEd() || my_path() == "Oxygenarian")
+	{
+		organs_used += my_spleen_use();
+		organs_max += spleen_limit();
+	}
+	// if(my_path() == "Community Service"), autoscend does try to use spleen for adventures but also for buffs
+	// if(my_path() == "Avatar of Sneaky Pete"), autoscend doesn't try to use molotov soda or create Hate to produce them
+	
+	if (organs_max == 0)
+	{
+		return 1;
+	}
+	else
+	{
+		float used_organ_ratio = min(organs_used / organs_max, 1);
+		return used_organ_ratio;
+	}
+}
+
 void consumeStuff()
 {
-	// grind and eat any sausage that you can
-	auto_sausageGrind(23 - get_property("_sausagesMade").to_int());
-	auto_sausageEatEmUp();
+	if (auto_haveKramcoSausageOMatic())
+	{
+		auto_sausageWanted();
+	}
 
 	if (get_property("auto_limitConsume").to_boolean())
 	{
