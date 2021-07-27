@@ -33,7 +33,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	
 	string combatState = get_property("auto_combatHandler");
 	
-	//nanorhino familiar buff acquisition
+	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
 	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100)
 	{
 		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
