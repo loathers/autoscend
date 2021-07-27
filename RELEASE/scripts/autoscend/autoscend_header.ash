@@ -1502,6 +1502,7 @@ int currentPoolSkill();
 int poolSkillPracticeGains();
 float npcStoreDiscountMulti();
 int meatReserve();
+boolean untinkerable(item target);
 boolean canUntinker();
 boolean canUntinker(item target);
 boolean untinker(item target);

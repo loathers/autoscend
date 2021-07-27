@@ -5698,6 +5698,23 @@ int meatReserve()
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
 }
 
+boolean untinkerable(item target)
+{
+	//exceptions that can be untinkered even though they are no longer pasteable
+	if($items[31337 scroll] contains target)
+	{
+		return true;
+	}	
+	//exceptions that can not be untinkered even though they are pasteable exist.
+	//most return craft_type of "Meatpasting (not untinkerable)" and as such need no special handling.
+	//this is special handling for those whom mafia incorrectly returns "Meatpasting" for
+	if($items[chaos popcorn, cold clusterbomb, hot clusterbomb, sleaze clusterbomb, spooky clusterbomb, stench clusterbomb] contains target)
+	{
+		return false;
+	}	
+	return craft_type(target) == "Meatpasting";
+}
+
 // Check to see if we can untinker.
 boolean canUntinker()
 {
@@ -5708,31 +5725,21 @@ boolean canUntinker()
 	return get_property("questM01Untinker") == "finished";
 }
 
+
+
 boolean canUntinker(item target)
 {
 	if(!canUntinker())
 	{
+		auto_log_debug("We can not untinker [" +target+ "] because we can not untinker anything right now");
 		return false;
 	}
 	if(item_amount(target) == 0)
 	{
+		auto_log_debug("We can not untinker [" +target+ "] because we do not have any");
 		return false;
 	}
-	
-	//exceptions that can be untinkered even though they are no longer pasteable
-	if($items[31337 scroll] contains target)
-	{
-		return true;
-	}
-	
-	//exceptions that can not be untinkered even though they are pasteable exist. most return craft_type of "Meatpasting (not untinkerable)".
-	//only items which return "Meatpasting" need to be handled here by us
-	if($items[chaos popcorn, cold clusterbomb, hot clusterbomb, sleaze clusterbomb, spooky clusterbomb, stench clusterbomb] contains target)
-	{
-		return false;
-	}
-	
-	return craft_type(target) == "Meatpasting";
+	return untinkerable(target);
 }
 
 boolean untinker(item target)
@@ -5742,14 +5749,8 @@ boolean untinker(item target)
 
 boolean untinker(int amount, item target)
 {
-	if(!canUntinker())
-	{
-		auto_log_warning("Attempted to untinker [" +target+ "] but we can not untinker anything right now");
-		return false;
-	}
 	if(!canUntinker(target))
 	{
-		auto_log_warning("Attempted to untinker [" +target+ "] but we can not untinker that item right now");
 		return false;
 	}
 	if(amount < 1)
@@ -5757,8 +5758,12 @@ boolean untinker(int amount, item target)
 		auto_log_debug("Attempted to untinker [" +target+ "] and detected an invalid desired untinker amount of " +amount);
 		return false;
 	}
+	if(item_amount(target) < amount)
+	{
+		auto_log_warning("Attempted to untinker " +amount+ " [" +target+ "] but we only have " +item_amount(target)+ ". which is how many we will untinker instead");
+		amount = item_amount(target);		//we can not untinker more than we have
+	}
 	
-	amount = min(amount, item_amount(target));		//we can not untinker more than we have
 	boolean untinker_all = amount == item_amount(target);
 	auto_log_debug("Attempted to untinker " +amount+ " [" +target+ "]");
 	int start_amt = item_amount(target);
