@@ -346,35 +346,45 @@ boolean can_get_battery(item target)
 	return batteryCombine(target, true);	//can not untinker. only check meatpasting by simulating batteryCombine
 }
 
-boolean auto_getBattery(item battery)
+boolean auto_getBattery(item target)
 {
-	// This function will ensure a battery is available before use, if possible.
-	if(batteryPoints(battery) == 0)		//0 means it is not a battery
+	// This function will ensure target battery is available before use, if possible.
+	if(batteryPoints(target) == 0)		//0 means target is not a battery
 	{
   		return false;
 	}
-	if (available_amount(battery) >= 1)
+	if (available_amount(target) >= 1)
 	{
-		return true;		//we already have the dresired battery. we are done here
+		return true;		//we already have the target. we are done here
 	}
 		
-	// We'll try to create the battery, if it works then great, if not, we keep going.
-	if (batteryCombine(battery))
+	//try to create target
+	if (batteryCombine(target))
 	{
 		return true;
 	}
 
-	// Make sure we have enough AAA value to craft the target battery, and that we can untinker.
-	if (totalBatteryPoints() > batteryPoints(battery) && canUntinker())
+	//try to use untinkering to get target or enough AAA to make target
+	if (totalBatteryPoints() >= batteryPoints(target) && canUntinker())
 	{
-		// We're going to break down each battery one at a time from largest to smallest, and attempt to craft.
 		foreach it in $items[battery (car), battery (lantern), battery (9-Volt), battery (D), battery (AA)]
 		{
-			for i from 1 to available_amount(it)
+			//Batteries always untinker into an [AAA] and an [X-1] battery. where X was previous battery value.
+			//so if we have a higher value battery just walk it down to the target.
+			if(batteryPoints(it) > batteryPoints(target))		//we have a higher tier battery we can untinker down to target
 			{
 				untinker(it);
-				
-				if (batteryCombine(battery))
+				if (batteryCombine(target))		//either we untinkered down to target. or we got enough AAA to make target now.
+				{
+					return true;
+				}
+			}
+			//all the batteries we had to begin with were smaller than target. They were just the wrong values to merge.
+			//so just break them apart until you are able to make target
+			else for i from 1 to item_amount(it)
+			{
+				untinker(it);
+				if (batteryCombine(target))
 				{
 					return true;
 				}
