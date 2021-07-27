@@ -615,8 +615,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	}
 	
 	// shocking lick doesn't cause everything looks yellow effect and limited only by how many batteries you have. Use all other sources first.
-	boolean simulateBatteryCombine = true; //if we don't have charges, see if a 9-volt can be made
-	if(inCombat ? have_skill($skill[Shocking Lick]) : (get_property("shockingLickCharges").to_int() > 0 || batteryCombine($item[battery (9-Volt)], simulateBatteryCombine)))
+	if(inCombat ? have_skill($skill[Shocking Lick]) : (get_property("shockingLickCharges").to_int() > 0 || can_get_battery($item[battery (9-Volt)))
 	{
 		return "skill " + $skill[Shocking Lick];
 	}
