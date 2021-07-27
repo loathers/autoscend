@@ -614,20 +614,11 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		}
 	}
 	
-	// if already have Shocking Lick, use it
-	if(inCombat ? have_skill($skill[Shocking Lick]) : get_property("shockingLickCharges").to_int() > 0)
+	// shocking lick doesn't cause everything looks yellow effect and limited only by how many batteries you have. Use all other sources first.
+	boolean simulateBatteryCombine = true; //if we don't have charges, see if a 9-volt can be made
+	if(inCombat ? have_skill($skill[Shocking Lick]) : (get_property("shockingLickCharges").to_int() > 0 || batteryCombine($item[battery (9-Volt)], simulateBatteryCombine)))
 	{
 		return "skill " + $skill[Shocking Lick];
-	}
-	// try to get Shocking Lick buff if we don't have it and user enabled battery usage
-	// can't put this in adjustForYellowRay since no way to determine if we can make 9-volt without actually making it
-	if (!inCombat)
-	{
-		if(auto_getBattery($item[battery (9-Volt)]))
-		{
-			use(1, $item[battery (9-Volt)]);
-			return "skill " + $skill[Shocking Lick];			
-		}
 	}
 
 	return "";

@@ -1068,6 +1068,18 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		auto_configureRetrocape("heck", "kiss");
 	}
+	// craft and consume 9-volt battery if we are using shocking lick and don't have any charges already
+	if(combat_string == ("skill " + $skill[Shocking Lick]) && get_property("shockingLickCharges").to_int() < 1)
+	{
+		if(auto_getBattery($item[battery (9-Volt)]))
+		{
+			use(1, $item[battery (9-Volt)]);		
+		}
+		else
+		{
+			auto_log_error("Thought we could craft 9-volt battery but couldn't", "red");
+		}
+	}
 	return true;
 }
 
