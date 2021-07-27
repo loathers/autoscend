@@ -369,6 +369,10 @@ boolean auto_getBattery(item target)
 	{
 		foreach it in $items[battery (car), battery (lantern), battery (9-Volt), battery (D), battery (AA)]
 		{
+			if(my_meat() < 10)
+			{
+				break;		//we ran out of meat and can no longer meatpaste
+			}
 			//Batteries always untinker into an [AAA] and an [X-1] battery. where X was previous battery value.
 			//so if we have a higher value battery just walk it down to the target.
 			if(batteryPoints(it) > batteryPoints(target))		//we have a higher tier battery we can untinker down to target
