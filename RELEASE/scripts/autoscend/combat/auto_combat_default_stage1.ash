@@ -33,23 +33,6 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	
 	string combatState = get_property("auto_combatHandler");
 	
-	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
-	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100 && !contains_text(combatState, "nanorhino_buffed") && !enemy.boss)
-	{
-		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
-		{
-			if((it == $skill[Shieldbutt]) && !hasShieldEquipped())
-			{
-				continue;
-			}
-			if(canUse(it, false))
-			{
-				set_property("auto_combatHandler", combatState + "(nanorhino_buffed)");
-				return useSkill(it, false);
-			}
-		}
-	}
-	
 	if(enemy == $monster[Your Shadow])
 	{
 		if(in_plumber())
@@ -177,6 +160,23 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		if(canUse($skill[Saucegeyser], false))
 		{
 			return useSkill($skill[Saucegeyser]);
+		}
+	}
+	
+	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
+	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100 && !contains_text(combatState, "nanorhino_buffed") && instakillable(enemy))
+	{
+		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
+		{
+			if((it == $skill[Shieldbutt]) && !hasShieldEquipped())
+			{
+				continue;
+			}
+			if(canUse(it, false))
+			{
+				set_property("auto_combatHandler", combatState + "(nanorhino_buffed)");
+				return useSkill(it, false);
+			}
 		}
 	}
 	
