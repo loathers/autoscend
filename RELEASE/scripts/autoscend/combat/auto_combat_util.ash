@@ -613,6 +613,22 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 			return auto_combatSaberYR();
 		}
 	}
+	
+	// if already have Shocking Lick, use it
+	if(inCombat ? have_skill($skill[Shocking Lick]) : get_property("shockingLickCharges").to_int() > 0)
+	{
+		return "skill " + $skill[Shocking Lick];
+	}
+	// try to get Shocking Lick buff if we don't have it and user enabled battery usage
+	// can't put this in adjustForYellowRay since no way to determine if we can make 9-volt without actually making it
+	if (!inCombat && get_property("auto_useBatteries").to_boolean())
+	{
+		if(auto_getBattery($item[battery (9-Volt)]))
+		{
+			use(1, $item[battery (9-Volt)]);
+			return "skill " + $skill[Shocking Lick];			
+		}
+	}
 
 	return "";
 }
