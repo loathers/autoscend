@@ -5725,40 +5725,9 @@ boolean canUntinker(item it)
 		return true;
 	}
 	
-	//exceptions that can not be untinkered even though they are pasteable
-	if($items[bitchin\' meatcar, pumpkin carriage, meat stack, peppermint parasol, candy cane candygram, Flaskfull of Hollow, Wand of Nagamar,
-	
-	//Amazing ideas
-	boxing-glove-in-a-box, creepy voodoo doll, innuendo, popcorn, the finger, chaos popcorn, giant diamond ring, mysterious present, s\'more gun, tiny black hole,
-	
-	//dreadsylvania clusterbombs
-	cold clusterbomb, hot clusterbomb, sleaze clusterbomb, spooky clusterbomb, stench clusterbomb,
-	
-	//Rough stuff. except sandpaper
-	A Beginner\'s Guide to Charming Snakes \(used\),
-	A Beginner\'s Guide to Charming Snakes \(used\),
-	A Crimbo Carol\, Ch. 1 \(used\),
-	A Crimbo Carol\, Ch. 2 \(used\),
-	A Crimbo Carol\, Ch. 3 \(used\),
-	A Crimbo Carol\, Ch. 4 \(used\),
-	A Crimbo Carol\, Ch. 5 \(used\),
-	A Crimbo Carol\, Ch. 6 \(used\),
-	Autobiography Of Dynamite Superman Jones \(used\),
-	CRIMBCO Employee Handbook \(chapter 1\) \(used\),
-	CRIMBCO Employee Handbook \(chapter 2\) \(used\),
-	CRIMBCO Employee Handbook \(chapter 3\) \(used\),
-	CRIMBCO Employee Handbook \(chapter 4\) \(used\),
-	CRIMBCO Employee Handbook \(chapter 5\) \(used\),
-	Ellsbury\'s journal \(used\),
-	Field Guide to Skeletal Anatomy \(shredded\),
-	Inigo\'s Incantation of Inspiration \(crumpled\),
-	Tales of a Kansas Toymaker \(used\),
-	The Art of Slapfighting \(used\),
-	The Joy of Wassailing \(used\),
-	The Necbronomicon \(used\),
-	Uncle Romulus \(used\),
-	Zu Mannk&auml;se Dienen \(used\)	
-	] contains it)
+	//exceptions that can not be untinkered even though they are pasteable exist. most return craft_type of "Meatpasting (not untinkerable)".
+	//only items which return "Meatpasting" need to be handled here by us
+	if($items[chaos popcorn, cold clusterbomb, hot clusterbomb, sleaze clusterbomb, spooky clusterbomb, stench clusterbomb] contains it)
 	{
 		return false;
 	}
