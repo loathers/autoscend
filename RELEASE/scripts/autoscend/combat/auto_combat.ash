@@ -91,7 +91,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	dd_combat_helper(round, enemy, text);		//disguise delimit mask identification
+	disguises_combat_helper(round, enemy, text);		//disguise delimit mask identification
 
 	if(get_property("auto_combatDirective") != "")
 	{
