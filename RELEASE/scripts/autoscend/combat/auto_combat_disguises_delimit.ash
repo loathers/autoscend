@@ -1,6 +1,6 @@
 //Path specific combat handling for disguises delimit
 
-void dd_combat_helper(int round, monster enemy, string text)
+void disguises_combat_helper(int round, monster enemy, string text)
 {
 	//identify mask worn during disguises delimit path
 	if(my_path() != "Disguises Delimit")
@@ -9,26 +9,26 @@ void dd_combat_helper(int round, monster enemy, string text)
 	}
 	//note that mafia has a function my_mask().
 	//TODO compare if it is more reliable than our own mask matcher to see if we should switch
-	int majora = -1;
+	int disguises = -1;
 	matcher maskMatch = create_matcher("mask(\\d+).png", text);
 	if(maskMatch.find())
 	{
-		majora = maskMatch.group(1).to_int();
+		disguises = maskMatch.group(1).to_int();
 		if(round == 0)
 		{
-			auto_log_info("Found mask: " + majora, "green");
+			auto_log_info("Found mask: " + disguises, "green");
 		}
 	}
 	else if(enemy == $monster[Your Shadow])	//matcher fails on your shadow and it always wears mask 1.
 	{
-		majora = 1;
+		disguises = 1;
 		auto_log_info("Found mask: 1", "green");
 	}
 	else
 	{
 		abort("Failed to identify the mask worn by the monster [" + enemy + "]. Finish this combat manually then run me again");
 	}
-	set_property("_auto_combatDisguisesDelimitMask", majora);
+	set_property("_auto_combatDisguisesDelimitMask", disguises);
 }
 
 string auto_combatDisguisesStage1(int round, monster enemy, string text)
@@ -40,14 +40,14 @@ string auto_combatDisguisesStage1(int round, monster enemy, string text)
 	}
 	
 	//some masks are treated like puzzle bosses. requiring either an immediate swap or special action handling
-	int majora = get_property("_auto_combatDisguisesDelimitMask").to_int();
+	int disguises = get_property("_auto_combatDisguisesDelimitMask").to_int();
 	//mask 7 = bandit mask = +300% enemy defense
-	if(majora == 7 && canUse($skill[Swap Mask]))
+	if(disguises == 7 && canUse($skill[Swap Mask]))
 	{
 		return useSkill($skill[Swap Mask]);
 	}
 	//mask 3 = protest mask = +30ML. can only attack with weapon or change mask. if changed can only use items or attack with weapon
-	if(majora == 3)
+	if(disguises == 3)
 	{
 		if(canSurvive(1.5))
 		{
@@ -72,8 +72,8 @@ string auto_combatDisguisesStage5(int round, monster enemy, string text)
 		return "";
 	}
 	
-	int majora = get_property("_auto_combatDisguisesDelimitMask").to_int();
-	if(majora == 13)	//welding mask
+	int disguises = get_property("_auto_combatDisguisesDelimitMask").to_int();
+	if(disguises == 13)	//welding mask
 	{
 		//reflect damage from spells back to player. kept if mask is changed
 		//some spells actually damage the monster too.
@@ -93,7 +93,7 @@ string auto_combatDisguisesStage5(int round, monster enemy, string text)
 		}
 		abort("Not sure how to handle welding mask.");
 	}
-	if(majora == 25)	//tiki mask
+	if(disguises == 25)	//tiki mask
 	{
 		//triples HP and hard caps damage at 10 per source. kept if mask is changed
 		//seal clubbers have ways to increase this damage but its overly complicated to calculate. simplified calculation is used.
