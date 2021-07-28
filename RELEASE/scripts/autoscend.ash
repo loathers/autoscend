@@ -216,7 +216,7 @@ void initializeSettings() {
 	fallout_initializeSettings();
 	pete_initializeSettings();
 	pokefam_initializeSettings();
-	majora_initializeSettings();
+	disguises_initializeSettings();
 	glover_initializeSettings();
 	bat_initializeSettings();
 	koe_initializeSettings();
@@ -2751,7 +2751,7 @@ boolean doTasks()
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
-	if(LM_majora())						return true;
+	if(LM_disguises())					return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
 	if(LM_canInteract()) 				return true;
