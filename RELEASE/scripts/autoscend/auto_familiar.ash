@@ -492,22 +492,7 @@ boolean autoChooseFamiliar(location place)
 	//Should take around 10 combats to grab enough on day 1 and on subsequent days you should already have them from previous days.
 	if(famChoice == $familiar[none])
 	{
-		int available_spleen_items_size = 0;
-		foreach it in $items[Agua De Vida, Grim Fairy Tale, Groose Grease, Powdered Gold, Unconscious Collective Dream Jar]
-		{
-			if (auto_is_valid(it))
-			{
-				available_spleen_items_size += 4 * item_amount(it);
-			}
-		}
-		foreach it in $items[beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste]
-		{
-			//count pastes from fairy-worn boots. excepting excessively expensive pastes.
-			if (auto_is_valid(it) && auto_mall_price(it) < 10000 + auto_mall_price($item[gooey paste]))
-			{
-				available_spleen_items_size += 4 * item_amount(it);
-			}
-		}
+		int available_spleen_items_size = 4 * auto_spleenFamiliarAdvItemsPossessed();
 		
 		if(spleen_left() >= (4 + available_spleen_items_size) && haveSpleenFamiliar())
 		{
