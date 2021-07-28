@@ -1480,6 +1480,23 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 	return true;
 }
 
+int auto_spleenFamiliarAdvItemsPossessed() 
+{
+	//returns how many size 4 items from spleen familiars in possession
+	
+	int spleenFamiliarAdvItemsCount = 0;
+	
+	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease, beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
+	{
+		if(auto_is_valid(it) && mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//even when not mallbuying them we do not want to use exceptionally expensive items
+		{
+			spleenFamiliarAdvItemsCount += item_amount(it);
+		}
+	}
+	
+	return spleenFamiliarAdvItemsCount;
+}
+
 boolean auto_chewAdventures()
 {
 	//tries to chew a size 4 familiar spleen item that gives adventures. All are IOTM derivatives with 1.875 adv/size
