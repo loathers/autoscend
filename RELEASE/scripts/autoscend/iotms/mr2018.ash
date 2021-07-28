@@ -415,7 +415,10 @@ void auto_setSongboom()
 		// Once we've started the war, we want to be able to micromanage songs
 		// for Gremlins and Nuns. Don't break this for them.
 	}
-	else if (!isActuallyEd() && !auto_havePillKeeper() && internalQuestStatus("questL07Cyrptic") < 1 && get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
+	else if (!isActuallyEd() && internalQuestStatus("questL07Cyrptic") < 1 && 
+	!(auto_havePillKeeper() && spleen_left() >= 3) && 
+	(spleen_left() > 4*min(auto_spleenFamiliarAdvItemsPossessed(),floor(spleen_left()/4))) &&	//only uses space than can't be filled with adv item
+	get_property("_boomBoxFights").to_int() == 10 && get_property("_boomBoxSongsLeft").to_int() > 3)
 	{
 		songboomSetting("nightmare");
 	}

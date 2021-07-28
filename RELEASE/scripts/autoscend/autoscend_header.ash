@@ -595,8 +595,9 @@ boolean LM_batpath();
 
 ########################################################################################################
 //Defined in autoscend/paths/disguises_delimit.ash
-void majora_initializeSettings();
-boolean LM_majora();
+boolean in_disguises();
+void disguises_initializeSettings();
+boolean LM_disguises();
 
 ########################################################################################################
 //Defined in autoscend/paths/g_lover.ash
@@ -1060,6 +1061,8 @@ void auto_printNightcap();
 void auto_drinkNightcap();
 boolean auto_autoConsumeOne(string type, boolean simulate);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
+int auto_spleenFamiliarAdvItemsPossessed();
+boolean auto_chewAdventures();
 boolean auto_breakfastCounterVisit();
 item still_targetToOrigin(item target);
 boolean stillReachable();
