@@ -597,8 +597,9 @@ boolean LM_batpath();
 
 ########################################################################################################
 //Defined in autoscend/paths/disguises_delimit.ash
-void majora_initializeSettings();
-boolean LM_majora();
+boolean in_disguises();
+void disguises_initializeSettings();
+boolean LM_disguises();
 
 ########################################################################################################
 //Defined in autoscend/paths/g_lover.ash
