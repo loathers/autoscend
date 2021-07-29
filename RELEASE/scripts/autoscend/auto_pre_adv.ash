@@ -5,7 +5,7 @@ void print_footer() {
 	if (my_class() == $class[Sauceror]) {
 		auto_log_info("Soulsauce: " + my_soulsauce(), "blue");
 	}
-	auto_log_info("Familiar: " + my_familiar().to_string() + " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs.", "blue");
+	auto_log_info("Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs.", "blue");
 	auto_log_info("ML: " + monster_level_adjustment() + " Encounter: " + combat_rate_modifier() + " Init: " + initiative_modifier(), "blue");
 	auto_log_info("Exp Bonus: " + experience_bonus() + " Meat Drop: " + meat_drop_modifier() + " Item Drop: " + item_drop_modifier(), "blue");
 	auto_log_info("Resists: " + numeric_modifier("Hot Resistance") + "/" + numeric_modifier("Cold Resistance") + "/" + numeric_modifier("Stench Resistance") + "/" + numeric_modifier("Spooky Resistance") + "/" + numeric_modifier("Sleaze Resistance"), "blue");
@@ -20,7 +20,7 @@ boolean auto_pre_adventure()
 		return true;
 	}
 	auto_log_info("Starting preadventure script...", "green");
-	auto_log_debug("Adventuring at " + place.to_string(), "green");
+	auto_log_debug("Adventuring at " +place, "green");
 	
 	preAdvUpdateFamiliar(place);
 	ed_handleAdventureServant(place);
