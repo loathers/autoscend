@@ -62,18 +62,18 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	auto_log_info("auto_combat initialized: path = [" +my_path()+
 	"]. class = [" +my_class()+
 	"]. familiar = [" +my_familiar()+
-	"]. round = " +round, "green");
+	"]. round = " +round, "blue");
 	
 	//enemy info
 	auto_log_info(enemy+ ": atk = " +monster_attack()+
 	". def = " +monster_defense()+
 	". HP = " +monster_hp()+
-	". MLA = " +monster_level_adjustment(), "green");
+	". MLA = " +monster_level_adjustment(), "blue");
 	
 	//player info
 	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+
 	". MP = " +my_mp()+ "/" +my_maxmp()+
-	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "green");
+	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "blue");
 	
 	//current equipment
 	string equip = "equipment: ";
@@ -88,7 +88,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 			equip += sl+ "=[" +equipped_item(sl)+ "]. ";
 		}
 	}
-	auto_log_info(equip, "green");
+	auto_log_info(equip, "blue");
 }
 
 string auto_combatHandler(int round, monster enemy, string text)
