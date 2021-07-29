@@ -168,6 +168,14 @@ void auto_settingsFix()
 	{
 		set_property("auto_save_adv_override", -1);		//values lower than -1 are not valid
 	}
+	if(get_property("auto_log_level").to_int() < 0)
+	{
+		set_property("auto_log_level", 0);		//values lower than 0 are not valid
+	}
+	if(get_property("auto_log_level").to_int() > 3)
+	{
+		set_property("auto_log_level", 3);		//values higher than 3 are not valid
+	}
 }
 
 void auto_settingsDelete()
