@@ -64,8 +64,6 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	"]. familiar = [" +my_familiar()+ "]. @ " +familiar_weight(my_familiar())+ " + " +weight_adjustment()+
 	"lbs. round = " +round, "blue");
 	
-	("Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs.", "blue");
-	
 	//enemy info
 	auto_log_info(enemy+ ": atk = " +monster_attack()+
 	". def = " +monster_defense()+
