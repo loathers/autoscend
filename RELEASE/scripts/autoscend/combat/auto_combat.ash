@@ -59,15 +59,17 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	
 	//log some important info. it looks good and makes it much easier to figure out problems when someone just sends us the log of a single combat.
 	//basic combat status. no need to log location as mafia does that already
-	auto_log_info("auto_combat initialized: path = [" +my_path()+
-	"]. class = [" +my_class()+
-	"]. familiar = [" +my_familiar()+ "] @ " +familiar_weight(my_familiar())+weight_adjustment(), "blue");
+	auto_log_info("auto_combat initialized: [" +my_class()+ "] at the path of [" +my_path()+
+	"]", "blue");
+	
+	int fam_lbs = familiar_weight(my_familiar())+weight_adjustment();
+	auto_log_info("familiar: [" +my_familiar()+ "] @ " +fam_lbs+ " lbs.", "blue");
 	
 	//enemy info
 	auto_log_info(enemy+ ": atk = " +monster_attack()+
 	". def = " +monster_defense()+
 	". HP = " +monster_hp()+
-	". MLA = " +monster_level_adjustment(), "blue");
+	". LA = " +monster_level_adjustment(), "blue");
 	
 	//player info
 	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+
