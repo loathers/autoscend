@@ -1036,7 +1036,7 @@ boolean LX_ghostBusting()
 	startGalaktikSubQuest();		//unlocks $location[The Overgrown Lot]
 	if($locations[The Skeleton Store, Madness Bakery, The Overgrown Lot] contains goal && !zone_available(goal))
 	{
-		auto_log_error("Failed to unlock the location [" +goal+ "]. skipping this ghost...", "red");
+		auto_log_error("Failed to unlock the location [" +goal+ "]. skipping this ghost...");
 		set_property("questPAGhost", "unstarted");
 		set_property("ghostLocation", "");
 		return false;

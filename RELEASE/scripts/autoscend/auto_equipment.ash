@@ -145,7 +145,7 @@ boolean tryAddItemToMaximize(slot s, item it)
 {
 	if(!($slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar] contains s))
 	{
-		auto_log_error("But " + s + " is an invalid equip slot... What?", "red");
+		auto_log_error("But " + s + " is an invalid equip slot... What?");
 		return false;
 	}
 	switch(s)

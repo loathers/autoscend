@@ -63,7 +63,7 @@ boolean autoscend_migrate(){
     }
 
     if(prop_conflicts > 0){
-      auto_log_error("Found " + prop_conflicts + " conflicting property values while migrating from sl_ascend properties to autoscend properties. Old property value will be ignored. Please do not use sl_ascend and autoscend at the same time.", "red");
+      auto_log_error("Found " + prop_conflicts + " conflicting property values while migrating from sl_ascend properties to autoscend properties. Old property value will be ignored. Please do not use sl_ascend and autoscend at the same time.");
       return false;
     }
     return true;
@@ -99,7 +99,7 @@ boolean autoscend_migrate(){
     }
 
     if(prop_conflicts > 0){
-      auto_log_error("Found " + prop_conflicts + " conflicting property values while migrating from sl_ascend properties to autoscend properties. Old property value will be ignored. Please do not use sl_ascend and autoscend at the same time.", "red");
+      auto_log_error("Found " + prop_conflicts + " conflicting property values while migrating from sl_ascend properties to autoscend properties. Old property value will be ignored. Please do not use sl_ascend and autoscend at the same time.");
       return false;
     }
     return true;

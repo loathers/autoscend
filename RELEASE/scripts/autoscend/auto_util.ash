@@ -1344,7 +1344,7 @@ boolean ovenHandle()
 	{
 		if (auto_get_campground() contains $item[Certificate of Participation] && isActuallyEd())
 		{
-			auto_log_error("Mafia reports we have an oven but we do not. Logging back in will resolve this.", "red");
+			auto_log_error("Mafia reports we have an oven but we do not. Logging back in will resolve this.");
 		}
 		else
 		{
@@ -4359,35 +4359,38 @@ boolean auto_log(string s, string color, int log_level)
 	return false;
 }
 
-boolean auto_log_error(string s, string color){
-	return auto_log(s, color, 0);
+void auto_log_error(string s)
+{
+	print(s, "red");
 }
 
-boolean auto_log_error(string s){
-	return auto_log(s, "red", 0);
-}
-
-boolean auto_log_warning(string s, string color){
+boolean auto_log_warning(string s, string color)
+{
 	return auto_log(s, color, 1);
 }
 
-boolean auto_log_warning(string s){
+boolean auto_log_warning(string s)
+{
 	return auto_log(s, "orange", 1);
 }
 
-boolean auto_log_info(string s, string color){
+boolean auto_log_info(string s, string color)
+{
 	return auto_log(s, color, 2);
 }
 
-boolean auto_log_info(string s){
+boolean auto_log_info(string s)
+{
 	return auto_log(s, "blue", 2);
 }
 
-boolean auto_log_debug(string s, string color){
+boolean auto_log_debug(string s, string color)
+{
 	return auto_log(s, color, 3);
 }
 
-boolean auto_log_debug(string s){
+boolean auto_log_debug(string s)
+{
 	return auto_log(s, "black", 3);
 }
 
@@ -4655,7 +4658,7 @@ boolean [monster] auto_getMonsters(string category)
 	boolean [monster] res;
 	string [string,int,string] monsters_text;
 	if(!file_to_map("autoscend_monsters.txt", monsters_text))
-		auto_log_error("Could not load autoscend_monsters.txt. This is bad!", "red");
+		auto_log_error("Could not load autoscend_monsters.txt. This is bad!");
 	foreach i,name,conds in monsters_text[category]
 	{
 		monster thisMonster = name.to_monster();
@@ -5077,7 +5080,7 @@ int auto_reserveAmount(item it)
 {
 	string [string,int,string] itemdata;
 	if(!file_to_map("autoscend_items.txt", itemdata))
-		auto_log_error("Could not load autoscend_items.txt! This is bad!", "red");
+		auto_log_error("Could not load autoscend_items.txt! This is bad!");
 	foreach i,counteditem,conds in itemdata["reserve"]
 	{
 		matcher m = create_matcher("(\\-?\\d+) (.+)", counteditem);

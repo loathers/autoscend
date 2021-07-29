@@ -584,13 +584,13 @@ boolean L13_towerNSContests()
 					}
 					else
 					{
-						auto_log_error("Error not recoverable (as not antipicipated) outside of The Source (Source Agents during NS Challenges), aborting.", "red");
+						auto_log_error("Error not recoverable (as not antipicipated) outside of The Source (Source Agents during NS Challenges), aborting.");
 						abort("questL13Final error in unexpected path.");
 					}
 				}
 				else
 				{
-					auto_log_error("Unresolvable error: Mafia thinks the NS challenges are complete but something is very wrong.", "red");
+					auto_log_error("Unresolvable error: Mafia thinks the NS challenges are complete but something is very wrong.");
 					abort("Unknown questL13Final state.");
 				}
 			}
@@ -694,7 +694,7 @@ boolean L13_towerNSHedge()
 		set_property("questL13Final", "step4");
 		if((have_effect($effect[Beaten Up]) > 0) || (my_hp() < 150))
 		{
-			auto_log_error("Hedge maze not solved, the mysteries are still there (correcting step5 -> step4)", "red");
+			auto_log_error("Hedge maze not solved, the mysteries are still there (correcting step5 -> step4)");
 			abort("Heal yourself and try again...");
 		}
 	}
