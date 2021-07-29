@@ -35,7 +35,7 @@ boolean trackingSplitterFixer(string oldSetting, int day, string newSetting)
 void auto_settingsUpgrade()
 {
 	//upgrade settings from old format to new format.
-	//do not forget to add each old setting to auto_settingsDelete so it can be deleted after the upgrade is done.
+	//do not forget to add each old setting to auto_settingsDelete() so it can be deleted after the upgrade is done.
 	
 	trackingSplitterFixer("auto_banishes_day1", 1, "auto_banishes");
 	trackingSplitterFixer("auto_banishes_day2", 2, "auto_banishes");
