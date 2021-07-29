@@ -58,18 +58,21 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	set_property("_auto_combatTracker_MortarRound", -1);		//tracks which round we used Stuffed Mortar Shell in.
 	
 	//log some important info. it looks good and makes it much easier to figure out problems when someone just sends us the log of a single combat.
+	//basic combat status. no need to log location as mafia does that already
 	auto_log_info("auto_combat initialized: path = [" +my_path()+
 	"]. class = [" +my_class()+
 	"]. round = " +round, "green");
 	
-	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+
-	". MP = " +my_mp()+ "/" +my_maxmp()+
-	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "green");
-	
+	//enemy info
 	auto_log_info(enemy+ ": atk = " +monster_attack()+
 	". def = " +monster_defense()+
 	". HP = " +monster_hp()+
 	". MLA = " +monster_level_adjustment(), "green");
+	
+	//player info
+	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+
+	". MP = " +my_mp()+ "/" +my_maxmp()+
+	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "green");
 }
 
 string auto_combatHandler(int round, monster enemy, string text)
