@@ -7,6 +7,21 @@ void print_footer()
 	string next_line = "HP: " +my_hp()+ "/" +my_maxhp()+ ", MP: " +my_mp()+ "/" +my_maxmp()+ ", Meat: " +my_meat();
 	switch(my_class())
 	{
+		case $class[Seal Clubber]:
+			next_line += ", Fury: " +my_fury()+ "/" +my_maxfury();
+			break;
+		case $class[Turtle Tamer]:
+			foreach ttbless in $effects[Blessing of the War Snapper, Grand Blessing of the War Snapper, Glorious Blessing of the War Snapper, Blessing of She-Who-Was, Grand Blessing of She-Who-Was, Glorious Blessing of She-Who-Was, Blessing of the Storm Tortoise, Grand Blessing of the Storm Tortoise, Glorious Blessing of the Storm Tortoise]
+			{
+				if(have_effect(ttbless) > 0)
+				{
+					next_line += ", Blessing: " +ttbless;
+				}
+			}
+			break;	
+		case $class[Pastamancer]:
+			next_line += ", Thrall: [" +my_thrall()+ "]";
+			break;
 		case $class[Sauceror]:
 			next_line += ", Soulsauce: " +my_soulsauce();
 			break;
