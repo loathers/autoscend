@@ -4359,14 +4359,6 @@ boolean auto_log(string s, string color, int log_level)
 	return false;
 }
 
-boolean auto_log_critical(string s, string color){
-	return auto_log(s, color, 0);
-}
-
-boolean auto_log_critical(string s){
-	return auto_log(s, "red", 0);
-}
-
 boolean auto_log_error(string s, string color){
 	return auto_log(s, color, 0);
 }

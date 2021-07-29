@@ -1017,7 +1017,7 @@ boolean L11_aridDesert()
 			visit_url("choice.php?whichchoice=805&option=1&pwd=");
 			if(item_amount($item[Worm-Riding Hooks]) == 0)
 			{
-				auto_log_critical("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
+				auto_log_error("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
 				abort("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
 			}
 			if(item_amount($item[Worm-Riding Manual Page]) >= 15)
@@ -2350,15 +2350,15 @@ boolean L11_palindome()
 		{
 			if(!get_property("auto_bruteForcePalindome").to_boolean())
 			{
-				auto_log_critical("Palindome failure:", "red");
-				auto_log_critical("You probably just need to get a Mega Gem to fix this.", "red");
+				auto_log_error("Palindome failure:", "red");
+				auto_log_error("You probably just need to get a Mega Gem to fix this.", "red");
 				abort("We have made too much progress in the Palindome and should not be here.");
 			}
 			else
 			{
-				auto_log_critical("We need wet stunt nut stew to get the Mega Gem, but I've been told to get it via the mercy adventure.", "red");
-				auto_log_critical("Set auto_bruteForcePalindome=false to try to get a stunt nut stew", "red");
-				auto_log_critical("(We typically only set this option in hardcore Kingdom of Exploathing, in which the White Forest isn't available)", "red");
+				auto_log_error("We need wet stunt nut stew to get the Mega Gem, but I've been told to get it via the mercy adventure.", "red");
+				auto_log_error("Set auto_bruteForcePalindome=false to try to get a stunt nut stew", "red");
+				auto_log_error("(We typically only set this option in hardcore Kingdom of Exploathing, in which the White Forest isn't available)", "red");
 			}
 		}
 
