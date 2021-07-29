@@ -273,8 +273,8 @@ familiar lookupFamiliarDatafile(string type)
 		{
 			if(name != "none")
 			{
-				auto_log_error("lookupFamiliarDatafile failed to convert string [" + name + "] to familiar", "red");
-				auto_log_error(type + "; " + i + "; " + conds, "red");
+				auto_log_error("lookupFamiliarDatafile failed to convert string [" + name + "] to familiar");
+				auto_log_error(type + "; " + i + "; " + conds);
 			}
 			continue;
 		}

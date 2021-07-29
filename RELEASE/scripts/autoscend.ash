@@ -2350,7 +2350,8 @@ boolean adventureFailureHandler()
 			}
 			else
 			{
-				auto_log_critical("You can set auto_newbieOverride = true to bypass this once.", "blue");
+				print("You can bypass this once by executing the gCLI command:", "blue");
+				print("set auto_newbieOverride = true", "blue");
 				abort("We have spent " + place.turns_spent + " turns at '" + place + "' and that is bad... aborting.");
 			}
 		}
@@ -2429,6 +2430,10 @@ boolean autosellCrap()
 	if(can_interact() && my_meat() > 20000)
 	{
 		return false;		//do not autosell stuff in casual or postronin unless you are very poor
+	}
+	if(my_path() == "Way of the Surprising Fist") 
+	{
+		return false;		//selling things in the way of the suprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
 	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
 	{
