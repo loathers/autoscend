@@ -1091,7 +1091,7 @@ boolean deck_useScheme(string action)
 		}
 		else
 		{
-			auto_log_critical("Could not draw card for some reason, we may be stuck in a choice adventure.");
+			auto_log_error("Could not draw card for some reason, we may be stuck in a choice adventure.");
 			abort("Failure when drawing cards, if any were drawn, the rest will NOT be drawn. Draw them and resume.");
 		}
 	}

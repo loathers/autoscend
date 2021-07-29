@@ -93,7 +93,7 @@ boolean LX_unlockThinknerdWarehouse(boolean spend_resources)
 		}
 		string temp = visit_url("inv_equip.php?pwd&which=2&action=equip&whichitem=" + target_shirt.to_int());
 		if(useLetter()) return true;
-		auto_log_error("For some reason LX_unlockThinknerdWarehouse failed when trying to use the shirt [" + target_shirt + "] to get [Letter for Melvign the Gnome] to start the quest", "red");
+		auto_log_error("For some reason LX_unlockThinknerdWarehouse failed when trying to use the shirt [" + target_shirt + "] to get [Letter for Melvign the Gnome] to start the quest");
 		return false;
 	}
 	void getShirtWhenHaveNone(item it)
