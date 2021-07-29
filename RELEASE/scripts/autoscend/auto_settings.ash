@@ -134,7 +134,7 @@ void auto_settingsUpgrade()
 	
 	if(get_property("auto_debug") == "true")
 	{
-		set_property("auto_log_level", 4);
+		set_property("auto_log_level", 3);
 	}
 	//migrate log level from the string property auto_logLevel to the int property auto_log_level
 	if(property_exists("auto_logLevel"))
@@ -145,17 +145,17 @@ void auto_settingsUpgrade()
 			case "crit":
 			case "error":
 			case "err":
-				set_property("auto_log_level", 1);
+				set_property("auto_log_level", 0);
 				break;
 			case "warning":
 			case "warn":
-				set_property("auto_log_level", 2);
+				set_property("auto_log_level", 1);
 				break;
 			case "info":
-				set_property("auto_log_level", 3);
+				set_property("auto_log_level", 2);
 				break;
 			case "debug":
-				set_property("auto_log_level", 4);
+				set_property("auto_log_level", 3);
 				break;
 		}
 	}

@@ -4360,43 +4360,43 @@ boolean auto_log(string s, string color, int log_level)
 }
 
 boolean auto_log_critical(string s, string color){
-	return auto_log(s, color, 1);
+	return auto_log(s, color, 0);
 }
 
 boolean auto_log_critical(string s){
-	return auto_log(s, "red", 1);
+	return auto_log(s, "red", 0);
 }
 
 boolean auto_log_error(string s, string color){
-	return auto_log(s, color, 1);
+	return auto_log(s, color, 0);
 }
 
 boolean auto_log_error(string s){
-	return auto_log(s, "red", 1);
+	return auto_log(s, "red", 0);
 }
 
 boolean auto_log_warning(string s, string color){
-	return auto_log(s, color, 2);
+	return auto_log(s, color, 1);
 }
 
 boolean auto_log_warning(string s){
-	return auto_log(s, "orange", 2);
+	return auto_log(s, "orange", 1);
 }
 
 boolean auto_log_info(string s, string color){
-	return auto_log(s, color, 3);
+	return auto_log(s, color, 2);
 }
 
 boolean auto_log_info(string s){
-	return auto_log(s, "blue", 3);
+	return auto_log(s, "blue", 2);
 }
 
 boolean auto_log_debug(string s, string color){
-	return auto_log(s, color, 4);
+	return auto_log(s, color, 3);
 }
 
 boolean auto_log_debug(string s){
-	return auto_log(s, "black", 4);
+	return auto_log(s, "black", 3);
 }
 
 boolean auto_can_equip(item it)
