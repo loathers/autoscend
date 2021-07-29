@@ -4366,8 +4366,7 @@ int auto_log_level(string level){
 		"warning": 3,
 		"warn": 3,
 		"info": 4,
-		"debug": 5,
-		"trace": 6
+		"debug": 5
 	};
 
 	level = level.to_lower_case();
@@ -4426,14 +4425,6 @@ boolean auto_log_debug(string s, string color){
 
 boolean auto_log_debug(string s){
 	return auto_log(s, "black", "debug");
-}
-
-boolean auto_log_trace(string s, string color){
-	return auto_log(s, color, "trace");
-}
-
-boolean auto_log_trace(string s){
-	return auto_log(s, "black", "trace");
 }
 
 boolean auto_can_equip(item it)

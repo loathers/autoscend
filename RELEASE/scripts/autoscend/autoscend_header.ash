@@ -1463,8 +1463,6 @@ boolean auto_log_info(string s, string color);
 boolean auto_log_info(string s);
 boolean auto_log_debug(string s, string color);
 boolean auto_log_debug(string s);
-boolean auto_log_trace(string s, string color);
-boolean auto_log_trace(string s);
 boolean auto_can_equip(item it);
 boolean auto_can_equip(item it, slot s);
 boolean auto_check_conditions(string conds);
