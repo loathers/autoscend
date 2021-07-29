@@ -59,7 +59,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	
 	//log some important info.
 	//some stuff is redundant to the pre_adventure function print_footer() so it will not be logged here
-	auto_log_info("auto_combat initialized: against [" +enemy+
+	auto_log_info("auto_combat initialized fighting [" +enemy+
 	"]: atk = " +monster_attack()+
 	". def = " +monster_defense()+
 	". HP = " +monster_hp()+
