@@ -303,7 +303,7 @@ void auto_settingsDefaults()
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");
-	defaultConfig("auto_log_level", "4");	
+	defaultConfig("auto_log_level", "2");	
 }
 
 void auto_settings()
