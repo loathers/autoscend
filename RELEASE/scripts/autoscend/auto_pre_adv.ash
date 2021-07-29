@@ -19,9 +19,6 @@ void print_footer()
 				}
 			}
 			break;	
-		case $class[Pastamancer]:
-			next_line += ", Thrall: [" +my_thrall()+ "]";
-			break;
 		case $class[Sauceror]:
 			next_line += ", Soulsauce: " +my_soulsauce();
 			break;
@@ -35,7 +32,25 @@ void print_footer()
 	". mys: " +my_basestat($stat[mysticality])+ " + " +bonus_mys+
 	". mox: " +my_basestat($stat[moxie])+ " + " +bonus_mox, "blue");
 	
-	auto_log_info("Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs.", "blue");
+	next_line = "";
+	if(pathHasFamiliar())
+	{
+		next_line += "Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs. ";
+	}
+	if(my_class() == $class[Pastamancer])
+	{
+		next_line += "Thrall: [" +my_thrall()+ "] @ level " +my_thrall().level;
+	}
+	if(isActuallyEd())
+	{
+		next_line += "Servant: [" +my_servant()+ "] @ level " +my_servant().level;
+	}
+	if(my_class() == $class[Avatar of Jarlsberg])
+	{
+		next_line += "Companion: [" +my_companion();
+	}
+	auto_log_info(next_line, "blue");
+	
 	auto_log_info("ML: " + monster_level_adjustment() + " Encounter: " + combat_rate_modifier() + " Init: " + initiative_modifier(), "blue");
 	auto_log_info("Exp Bonus: " + experience_bonus() + " Meat Drop: " + meat_drop_modifier() + " Item Drop: " + item_drop_modifier(), "blue");
 	auto_log_info("Resists: " + numeric_modifier("Hot Resistance") + "/" + numeric_modifier("Cold Resistance") + "/" + numeric_modifier("Stench Resistance") + "/" + numeric_modifier("Spooky Resistance") + "/" + numeric_modifier("Sleaze Resistance"), "blue");
