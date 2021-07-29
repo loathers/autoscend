@@ -91,7 +91,7 @@ void auto_settingsUpgrade()
 		set_property("auto_chasmBusted", false);
 	}
 
-	if(get_property("auto_edDelayTimer") != "")
+	if(property_exists("auto_edDelayTimer"))
 	{
 		set_property("auto_delayTimer", get_property("auto_edDelayTimer"));
 	}
@@ -126,11 +126,11 @@ void auto_settingsUpgrade()
 		auto_log_debug("lastTempleUnlock was changed to a boolean, fixing...", "red");
 		set_property("lastTempleUnlock", my_ascensions());
 	}
-	if(get_property("auto_consumeKeyLimePies") != "")
+	if(property_exists("auto_consumeKeyLimePies"))
 	{
 		set_property("auto_dontConsumeKeyLimePies", !get_property("auto_consumeKeyLimePies").to_boolean());
 	}
-	if(get_property("auto_alwaysGetSteelOrgan") != "")
+	if(property_exists("auto_alwaysGetSteelOrgan"))
 	{
 		set_property("auto_getSteelOrgan_initialize", get_property("auto_alwaysGetSteelOrgan"));
 	}
