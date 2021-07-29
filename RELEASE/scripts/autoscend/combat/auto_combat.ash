@@ -61,6 +61,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	//basic combat status. no need to log location as mafia does that already
 	auto_log_info("auto_combat initialized: path = [" +my_path()+
 	"]. class = [" +my_class()+
+	"]. familiar = [" +my_familiar()+
 	"]. round = " +round, "green");
 	
 	//enemy info
@@ -73,6 +74,20 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+
 	". MP = " +my_mp()+ "/" +my_maxmp()+
 	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "green");
+	
+	//current equipment
+	string wearing;
+	foreach sl in $slots[]
+	{
+		if($slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar] contains sl)		//we always want to print the core slots
+		{
+			wearing += sl+ "=[" +equipped_item(sl)+ "]. ";
+		}
+		else if(equipped_item(sl) != $item[none])		//other slots should only be printed if they contain something
+		{
+			wearing += sl+ "=[" +equipped_item(sl)+ "]. ";
+		}
+	}
 }
 
 string auto_combatHandler(int round, monster enemy, string text)
