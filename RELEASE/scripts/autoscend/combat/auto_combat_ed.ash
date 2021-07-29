@@ -11,7 +11,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if (round == 0)
 	{
-		auto_log_info("auto_combatHandler: " + round, "brown");
 		set_property("auto_combatHandler", "");
 		if (get_property("_edDefeats").to_int() == 0)
 		{
@@ -25,6 +24,13 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		{
 			set_property("auto_edStatus", "UNDYING!"); //  Undying means ressurect until it's not free any more
 		}
+		//log some important info.
+		//some stuff is redundant to the pre_adventure function print_footer() so it will not be logged here
+		auto_log_info("auto_combat initialized fighting [" +enemy+
+		"]: atk = " +monster_attack()+
+		". def = " +monster_defense()+
+		". HP = " +monster_hp()+
+		". LA = " +monster_level_adjustment(), "blue");
 	}
 	else
 	{
@@ -782,7 +788,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(round >= 29)
 	{
-		auto_log_error("About to UNDYING too much but have no other combat resolution. Please report this.", "red");
+		auto_log_error("About to UNDYING too much but have no other combat resolution. Please report this.");
 	}
 
 	if((fightStat > monster_defense()) && (round < 20) && canSurvive(1.1) && (get_property("auto_edStatus") == "dying"))

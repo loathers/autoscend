@@ -2353,7 +2353,8 @@ boolean adventureFailureHandler()
 			}
 			else
 			{
-				auto_log_critical("You can set auto_newbieOverride = true to bypass this once.", "blue");
+				print("You can bypass this once by executing the gCLI command:", "blue");
+				print("set auto_newbieOverride = true", "blue");
 				abort("We have spent " + place.turns_spent + " turns at '" + place + "' and that is bad... aborting.");
 			}
 		}

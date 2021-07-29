@@ -1188,8 +1188,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	auto_log_info("Loading " + filename, "blue");
 	if(!file_to_map(filename, cafe_stuff))
 	{
-		auto_log_error("Something went wrong while trying to load " + filename + ". Maybe run 'tcrs load'?", "red");
-		abort();
+		abort("Something went wrong while trying to load " + filename + ". Maybe run 'tcrs load'?");
 	}
 	foreach i, r in cafe_stuff
 	{
