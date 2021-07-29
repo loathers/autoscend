@@ -57,39 +57,13 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	set_property("auto_combatHandlerFingernailClippers", "0");
 	set_property("_auto_combatTracker_MortarRound", -1);		//tracks which round we used Stuffed Mortar Shell in.
 	
-	//log some important info. it looks good and makes it much easier to figure out problems when someone just sends us the log of a single combat.
-	//basic combat status. no need to log location as mafia does that already
-	auto_log_info("auto_combat initialized: [" +my_class()+ "] at the path of [" +my_path()+
-	"]", "blue");
-	
-	int fam_lbs = familiar_weight(my_familiar())+weight_adjustment();
-	auto_log_info("familiar: [" +my_familiar()+ "] @ " +fam_lbs+ " lbs.", "blue");
-	
-	//enemy info
+	//log some important info.
+	//some stuff is redundant to the pre_adventure function print_footer() so it will not be logged here
+	auto_log_info("auto_combat initialized:", "blue");
 	auto_log_info(enemy+ ": atk = " +monster_attack()+
 	". def = " +monster_defense()+
 	". HP = " +monster_hp()+
 	". LA = " +monster_level_adjustment(), "blue");
-	
-	//player info
-	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+
-	". MP = " +my_mp()+ "/" +my_maxmp()+
-	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "blue");
-	
-	//current equipment
-	string equip = "equipment: ";
-	foreach sl in $slots[]
-	{
-		if($slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar] contains sl)		//we always want to print the core slots
-		{
-			equip += sl+ "=[" +equipped_item(sl)+ "]. ";
-		}
-		else if(equipped_item(sl) != $item[none])		//other slots should only be printed if they contain something
-		{
-			equip += sl+ "=[" +equipped_item(sl)+ "]. ";
-		}
-	}
-	auto_log_info(equip, "blue");
 }
 
 string auto_combatHandler(int round, monster enemy, string text)
