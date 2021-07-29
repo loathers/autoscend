@@ -76,18 +76,19 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "green");
 	
 	//current equipment
-	string wearing;
+	string equip = "equipment: ";
 	foreach sl in $slots[]
 	{
 		if($slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar] contains sl)		//we always want to print the core slots
 		{
-			wearing += sl+ "=[" +equipped_item(sl)+ "]. ";
+			equip += sl+ "=[" +equipped_item(sl)+ "]. ";
 		}
 		else if(equipped_item(sl) != $item[none])		//other slots should only be printed if they contain something
 		{
-			wearing += sl+ "=[" +equipped_item(sl)+ "]. ";
+			equip += sl+ "=[" +equipped_item(sl)+ "]. ";
 		}
 	}
+	auto_log_info(equip, "green");
 }
 
 string auto_combatHandler(int round, monster enemy, string text)
