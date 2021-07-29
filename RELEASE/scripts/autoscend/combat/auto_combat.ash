@@ -61,8 +61,10 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	//basic combat status. no need to log location as mafia does that already
 	auto_log_info("auto_combat initialized: path = [" +my_path()+
 	"]. class = [" +my_class()+
-	"]. familiar = [" +my_familiar()+
-	"]. round = " +round, "blue");
+	"]. familiar = [" +my_familiar()+ "]. @ " +familiar_weight(my_familiar())+ " + " +weight_adjustment()+
+	"lbs. round = " +round, "blue");
+	
+	("Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs.", "blue");
 	
 	//enemy info
 	auto_log_info(enemy+ ": atk = " +monster_attack()+
