@@ -34,12 +34,9 @@ boolean trackingSplitterFixer(string oldSetting, int day, string newSetting)
 
 void auto_settingsUpgrade()
 {
-	//upgrade settings from old format to new format
-	if(get_property("auto_debug") == "true")
-	{
-		set_property("auto_logLevel", "debug");
-	}
-
+	//upgrade settings from old format to new format.
+	//do not forget to add each old setting to auto_settingsDelete so it can be deleted after the upgrade is done.
+	
 	trackingSplitterFixer("auto_banishes_day1", 1, "auto_banishes");
 	trackingSplitterFixer("auto_banishes_day2", 2, "auto_banishes");
 	trackingSplitterFixer("auto_banishes_day3", 3, "auto_banishes");
@@ -135,6 +132,10 @@ void auto_settingsUpgrade()
 		set_property("auto_getSteelOrgan_initialize", get_property("auto_alwaysGetSteelOrgan"));
 	}
 	
+	if(get_property("auto_debug") == "true")
+	{
+		set_property("auto_log_level", 4);
+	}
 	//migrate log level from the string property auto_logLevel to the int property auto_log_level
 	if(property_exists("auto_logLevel"))
 	{

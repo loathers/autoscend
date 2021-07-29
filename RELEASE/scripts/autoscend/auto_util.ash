@@ -4349,38 +4349,10 @@ boolean auto_is_valid(skill sk)
 	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && zelda_skillValid(sk) && is_unrestricted(sk);
 }
 
-string auto_log_level_threshold(){
-	static string logging_property = "auto_logLevel";
-	if(!property_exists(logging_property)){
-		set_property(logging_property, "info");
-	}
-	return get_property(logging_property);
-}
-
-int auto_log_level(string level){
-	static int[string] log_levels = {
-		"critical": 1,
-		"crit": 1,
-		"error": 2,
-		"err": 2,
-		"warning": 3,
-		"warn": 3,
-		"info": 4,
-		"debug": 5
-	};
-
-	level = level.to_lower_case();
-	if(log_levels contains level){
-		return log_levels[level];
-	} else{
-		return log_levels["info"];
-	}
-}
-
-boolean auto_log(string s, string color, string log_level){
-	int threshold = auto_log_level(auto_log_level_threshold());
-	int level = auto_log_level(log_level);
-	if(level <= threshold){
+boolean auto_log(string s, string color, int log_level)
+{
+	if(log_level <= get_property("auto_log_level").to_int())
+	{
 		print("["+log_level.to_upper_case()+"] - " + s, color);
 		return true;
 	}
@@ -4388,43 +4360,43 @@ boolean auto_log(string s, string color, string log_level){
 }
 
 boolean auto_log_critical(string s, string color){
-	return auto_log(s, color, "critical");
+	return auto_log(s, color, 1);
 }
 
 boolean auto_log_critical(string s){
-	return auto_log(s, "red", "critical");
+	return auto_log(s, "red", 1);
 }
 
 boolean auto_log_error(string s, string color){
-	return auto_log(s, color, "critical");
+	return auto_log(s, color, 1);
 }
 
 boolean auto_log_error(string s){
-	return auto_log(s, "red", "error");
+	return auto_log(s, "red", 1);
 }
 
 boolean auto_log_warning(string s, string color){
-	return auto_log(s, color, "warning");
+	return auto_log(s, color, 2);
 }
 
 boolean auto_log_warning(string s){
-	return auto_log(s, "orange", "warning");
+	return auto_log(s, "orange", 2);
 }
 
 boolean auto_log_info(string s, string color){
-	return auto_log(s, color, "info");
+	return auto_log(s, color, 3);
 }
 
 boolean auto_log_info(string s){
-	return auto_log(s, "blue", "info");
+	return auto_log(s, "blue", 3);
 }
 
 boolean auto_log_debug(string s, string color){
-	return auto_log(s, color, "debug");
+	return auto_log(s, color, 4);
 }
 
 boolean auto_log_debug(string s){
-	return auto_log(s, "black", "debug");
+	return auto_log(s, "black", 4);
 }
 
 boolean auto_can_equip(item it)
