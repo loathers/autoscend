@@ -4349,49 +4349,59 @@ boolean auto_is_valid(skill sk)
 	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && zelda_skillValid(sk) && is_unrestricted(sk);
 }
 
-boolean auto_log(string s, string color, int log_level)
+void auto_log(string s, string color, int log_level)
 {
-	if(log_level <= get_property("auto_log_level").to_int())
+	if(log_level > get_property("auto_log_level").to_int())
 	{
-		print("["+log_level.to_upper_case()+"] - " + s, color);
-		return true;
+		return;
 	}
-	return false;
+	switch(log_level)
+	{
+		case 1:
+			print("[WARNING] " + s, color);
+			break;
+		case 2:
+			print("[INFO] " + s, color);
+			break;
+		case 3:
+			print("[DEBUG] " + s, color);
+			break;
+	}
 }
 
 void auto_log_error(string s)
 {
-	print(s, "red");
+	print("[ERROR] " +s, "red");
 }
 
-boolean auto_log_warning(string s, string color)
+void auto_log_warning(string s, string color)
 {
-	return auto_log(s, color, 1);
+	auto_log(s, color, 1);
 }
 
-boolean auto_log_warning(string s)
+void auto_log_warning(string s)
 {
-	return auto_log(s, "orange", 1);
+	auto_log(s, "orange", 1);
 }
 
-boolean auto_log_info(string s, string color)
+void auto_log_info(string s, string color)
 {
-	return auto_log(s, color, 2);
+	auto_log(s, color, 2);
 }
 
-boolean auto_log_info(string s)
+void auto_log_info(string s)
 {
-	return auto_log(s, "blue", 2);
+	auto_log(s, "blue", 2);
 }
 
-boolean auto_log_debug(string s, string color)
+void auto_log_debug(string s, string color)
 {
-	return auto_log(s, color, 3);
+	auto_log(s, color, 3);
 }
 
-boolean auto_log_debug(string s)
+void auto_log_debug(string s)
 {
-	return auto_log(s, "black", 3);
+	auto_log(s, "black", 3);
 }
 
 boolean auto_can_equip(item it)
