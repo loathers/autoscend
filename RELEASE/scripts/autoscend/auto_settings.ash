@@ -134,6 +134,30 @@ void auto_settingsUpgrade()
 	{
 		set_property("auto_getSteelOrgan_initialize", get_property("auto_alwaysGetSteelOrgan"));
 	}
+	
+	//migrate log level from the string property auto_logLevel to the int property auto_log_level
+	if(property_exists("auto_logLevel"))
+	{
+		switch(get_property("auto_logLevel").to_lower_case())
+		{
+			case "critical":
+			case "crit":
+			case "error":
+			case "err":
+				set_property("auto_log_level", 1);
+				break;
+			case "warning":
+			case "warn":
+				set_property("auto_log_level", 2);
+				break;
+			case "info":
+				set_property("auto_log_level", 3);
+				break;
+			case "debug":
+				set_property("auto_log_level", 4);
+				break;
+		}
+	}
 }
 
 void auto_settingsFix()
@@ -249,12 +273,13 @@ void auto_settingsDelete()
 	remove_property("auto_choice1119");
 	remove_property("auto_useTatter");				//obsolete combat directive to use [Tattered Scrap Of Paper] to escape combat
 	remove_property("auto_alwaysGetSteelOrgan");	//renamed to auto_getSteelOrgan_initialize
+	remove_property("auto_logLevel");		//replaced string auto_logLevel with int auto_log_level
 }
 
 void defaultConfig(string prop, string val)
 {
 	//this function is used to configure default values. it only makes a change if the current value is nothing
-	if(get_property(prop) == "")			//property currently not set to anything.
+	if(!property_exists(prop))
 	{
 		auto_log_info(prop+ " has no value set. setting it to the default value of " +val);
 		set_property(prop,val);
@@ -269,6 +294,7 @@ void auto_settingsDefaults()
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");
+	defaultConfig("auto_log_level", "4");	
 }
 
 void auto_settings()
