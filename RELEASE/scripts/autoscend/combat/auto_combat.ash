@@ -57,10 +57,19 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	set_property("auto_combatHandlerFingernailClippers", "0");
 	set_property("_auto_combatTracker_MortarRound", -1);		//tracks which round we used Stuffed Mortar Shell in.
 	
-	auto_log_info("auto_combat initialized: path = [" +my_path()+ "]. class = [" +my_class()+ "]. round = " +round, "green");
-	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+ ". MP = " +my_mp()+ "/" +my_maxmp()+
+	//log some important info. it looks good and makes it much easier to figure out problems when someone just sends us the log of a single combat.
+	auto_log_info("auto_combat initialized: path = [" +my_path()+
+	"]. class = [" +my_class()+
+	"]. round = " +round, "green");
+	
+	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+
+	". MP = " +my_mp()+ "/" +my_maxmp()+
 	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "green");
-	auto_log_info(enemy+ ": atk = " +monster_attack()+ ". def = " +monster_defense()+ ". HP = " +monster_hp()+ ". MLA = " +monster_level_adjustment(), "green");
+	
+	auto_log_info(enemy+ ": atk = " +monster_attack()+
+	". def = " +monster_defense()+
+	". HP = " +monster_hp()+
+	". MLA = " +monster_level_adjustment(), "green");
 }
 
 string auto_combatHandler(int round, monster enemy, string text)
