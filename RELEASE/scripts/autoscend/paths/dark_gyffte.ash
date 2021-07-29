@@ -142,7 +142,7 @@ boolean bat_formPreAdventure()
 		bat_clearForms();
 		return true;
 	default:
-		auto_log_error("auto_bat_desiredForm was set to bad value: '" + desiredForm + "'. Should be '', 'wolf', 'mist', or 'bats'.", "red");
+		auto_log_error("auto_bat_desiredForm was set to bad value: '" + desiredForm + "'. Should be '', 'wolf', 'mist', or 'bats'.");
 		set_property("auto_bat_desiredForm", "");
 		return false;
 	}
