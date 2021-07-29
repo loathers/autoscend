@@ -60,7 +60,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	auto_log_info("auto_combat initialized: path = [" +my_path()+ "]. class = [" +my_class()+ "]. round = " +round, "green");
 	auto_log_info(my_name()+ ": HP = " +my_hp()+ "/" +my_maxhp()+ ". MP = " +my_mp()+ "/" +my_maxmp()+
 	". mus:mys:mox = " +my_buffedstat($stat[muscle])+ ":" +my_buffedstat($stat[mysticality])+ ":" +my_buffedstat($stat[moxie]), "green");
-	auto_log_info(enemy+ ": atk = " +monster_attack()+ ". def = " +monster_defense()+ ". MLA = " +monster_level_adjustment(), "green");
+	auto_log_info(enemy+ ": atk = " +monster_attack()+ ". def = " +monster_defense()+ ". HP = " +monster_hp()+ ". MLA = " +monster_level_adjustment(), "green");
 }
 
 string auto_combatHandler(int round, monster enemy, string text)
