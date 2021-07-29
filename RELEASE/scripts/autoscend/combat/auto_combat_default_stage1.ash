@@ -164,39 +164,9 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 	
 	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
-	if(my_familiar() == $familiar[Nanorhino] && get_property("_nanorhinoCharge").to_int() >= 100 && !contains_text(combatState, "nanorhino_buffed"))
-	{
-		//currently hardcoded to always get the muscle buff.
-		skill target = $skill[none];
-		if(in_glover() && canUse($skill[Lunge Smack], false) && canSurvive(4.0))
-		{
-			target = $skill[Lunge Smack];
-		}
-		if(target == $skill[none] && canUse($skill[Shell Up], false))
-		{
-			target = $skill[Shell Up];	//6MP. bonus based on blessing. blocks enemy this round even if they are immune to stagger
-		}
-		if(target == $skill[none] && stunnable(enemy) && canUse($skill[Club Foot], false) && my_class() == $class[Seal Clubber] && my_mp() > 25)
-		{
-			target = $skill[Club Foot];	//8MP. 3-5 enemy defense debuff. seal clubbers also stuns enemy
-		}
-		if(target == $skill[none] && canSurvive(4.0))		//choose the cheapest skill available
-		{
-			foreach sk in $skills[Toss, Clobber, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper]
-			{
-				if(canUse(sk, false))
-				{
-					target = sk;
-				}
-			}
-		}
-		
-		set_property("auto_combatHandler", combatState + "(nanorhino_buffed)");
-		if(target != $skill[none])
-		{
-			return useSkill(target, false);
-		}
-	}
+	//done after puzzle bosses. if puzzle bosses get a random buff that is ok, we would rather beat the puzzle boss.
+	retval = auto_combat_nanorhinoBuff(round, enemy, text);
+	if(retval != "") return retval;
 	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
 	if(!contains_text(combatState, "pickpocket") && ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class()) && contains_text(text, "value=\"Pick") && canSurvive(2.0))
