@@ -222,7 +222,7 @@ int changeClan(string clanName)
 
 	if(get_clan_id() == oldClan)
 	{
-		auto_log_error("Clan change failed", "red");
+		auto_log_error("Clan change failed");
 	}
 	return get_clan_id();
 }
@@ -254,7 +254,7 @@ int changeClan(int toClan)
 
 	if(get_clan_id() == oldClan)
 	{
-		auto_log_error("Clan change failed", "red");
+		auto_log_error("Clan change failed");
 	}
 	return get_clan_id();
 }

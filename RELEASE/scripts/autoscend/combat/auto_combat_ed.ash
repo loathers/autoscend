@@ -788,7 +788,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(round >= 29)
 	{
-		auto_log_error("About to UNDYING too much but have no other combat resolution. Please report this.", "red");
+		auto_log_error("About to UNDYING too much but have no other combat resolution. Please report this.");
 	}
 
 	if((fightStat > monster_defense()) && (round < 20) && canSurvive(1.1) && (get_property("auto_edStatus") == "dying"))
