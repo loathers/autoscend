@@ -217,7 +217,7 @@ boolean auto_post_adventure()
 	{
 		if ($location[The Shore\, Inc. Travel Agency] != my_location())
 		{
-			if (my_servant() != $servant[none] && my_servant().experience < 196)
+			if (my_servant() != $servant[none])
 			{
 				buffMaintain($effect[Purr of the Feline], 10, 1, 10);
 			}
