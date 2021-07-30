@@ -9,28 +9,38 @@ string auto_combatHandler(int round, monster enemy, string text);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_util.ash
-boolean haveUsed(skill sk);							
-boolean haveUsed(item it);							
-int usedCount(skill sk);							
-int usedCount(item it);								
-void markAsUsed(skill sk);							
-void markAsUsed(item it);							
-boolean canUse(skill sk, boolean onlyOnce);			
-boolean canUse(skill sk);							
-boolean canUse(item it, boolean onlyOnce);			
-boolean canUse(item it);							
-string useSkill(skill sk, boolean mark);			
-string useSkill(skill sk);							
-string useItem(item it, boolean mark);				
-string useItem(item it);							
-string useItems(item it1, item it2, boolean mark);	
-string useItems(item it1, item it2);				
-skill getStunner(monster enemy);				
-boolean enemyCanBlocksSkills();						
-boolean canSurvive(float mult, int add);			
-boolean canSurvive(float mult);						
+boolean haveUsed(skill sk);
+boolean haveUsed(item it);
+int usedCount(skill sk);
+int usedCount(item it);
+void markAsUsed(skill sk);
+void markAsUsed(item it);
+boolean canUse(skill sk, boolean onlyOnce);
+boolean canUse(skill sk);
+boolean canUse(item it, boolean onlyOnce);
+boolean canUse(item it);
+string useSkill(skill sk, boolean mark);
+string useSkill(skill sk);
+string useItem(item it, boolean mark);
+string useItem(item it);
+string useItems(item it1, item it2, boolean mark);
+string useItems(item it1, item it2);
+skill getStunner(monster enemy);
+boolean enemyCanBlocksSkills();
+boolean canSurvive(float mult, int add);
+boolean canSurvive(float mult);
+boolean hasClubEquipped();
 string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text);				
-string findBanisher(int round, monster enemy, string text);				
+string findBanisher(int round, monster enemy, string text);	
+string banisherCombatString(monster enemy, location loc, boolean inCombat);
+string banisherCombatString(monster enemy, location loc);
+string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDrop);
+string yellowRayCombatString(monster target, boolean inCombat);
+string yellowRayCombatString(monster target);
+string yellowRayCombatString();
+string replaceMonsterCombatString(monster target, boolean inCombat);
+string replaceMonsterCombatString(monster target);
+string replaceMonsterCombatString();			
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash
@@ -83,7 +93,7 @@ string auto_combatDarkGyffteStage2(int round, monster enemy, string text);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_disguises_delimit.ash
-void dd_combat_helper(int round, monster enemy, string text);
+void disguises_combat_helper(int round, monster enemy, string text);
 string auto_combatDisguisesStage1(int round, monster enemy, string text);
 string auto_combatDisguisesStage5(int round, monster enemy, string text);
 

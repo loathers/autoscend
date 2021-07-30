@@ -642,6 +642,12 @@ void consumeStuff()
 			}
 		}
 	}
+	
+	//if stomach and liver are full and out of adv then chew size 4 iotm derivative spleen items that give 1.875 adv/size.
+	if (auto_chewAdventures())
+	{
+		return;
+	}
 }
 
 boolean consumeFortune()
@@ -1182,8 +1188,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	auto_log_info("Loading " + filename, "blue");
 	if(!file_to_map(filename, cafe_stuff))
 	{
-		auto_log_error("Something went wrong while trying to load " + filename + ". Maybe run 'tcrs load'?", "red");
-		abort();
+		abort("Something went wrong while trying to load " + filename + ". Maybe run 'tcrs load'?");
 	}
 	foreach i, r in cafe_stuff
 	{
@@ -1472,6 +1477,80 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 
 	auto_log_info("Expected " + total_adv + " adventures, got " + (my_adventures() - pre_adventures), "blue");
 	return true;
+}
+
+int auto_spleenFamiliarAdvItemsPossessed() 
+{
+	//returns how many size 4 items from spleen familiars in possession
+	
+	int spleenFamiliarAdvItemsCount = 0;
+	
+	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease, beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
+	{
+		if(auto_is_valid(it) && mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//even when not mallbuying them we do not want to use exceptionally expensive items
+		{
+			spleenFamiliarAdvItemsCount += item_amount(it);
+		}
+	}
+	
+	return spleenFamiliarAdvItemsCount;
+}
+
+boolean auto_chewAdventures()
+{
+	//tries to chew a size 4 familiar spleen item that gives adventures. All are IOTM derivatives with 1.875 adv/size
+	boolean liver_check = my_inebriety() < inebriety_limit() && !in_kolhs();	//kolhs has special drinking. liver often unfilled
+	if(liver_check || my_fullness() < fullness_limit() || my_adventures() > 1+auto_advToReserve())
+	{
+		return false;	//1.875 A/S is bad. only chew if 1 adv remains
+	}
+	if(isActuallyEd())
+	{
+		return false;	//these consumables are very bad for ed, who has a path specific spleen consumable shop.
+	}
+	if(spleen_left() < 4)
+	{
+		return false;	//they are all size 4
+	}
+	
+	item target = $item[none];
+	int target_value = 0;
+	
+	void chooseCheapestTarget(item it)
+	{
+		if(item_amount(it) > 0 && auto_is_valid(it) &&
+		mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//do not chew very expensive items even if already in inv
+		{
+			if(target == $item[none] || mall_price(it) < target_value)
+			{
+				target = it;
+				target_value = mall_price(it);
+			}
+		}
+	}
+	
+	//first the ones without the level 4 requirement because they give more stats
+	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease]
+	{
+		chooseCheapestTarget(it);
+	}
+	if(my_level() >= 4 && target == $item[none])
+	{
+		foreach it in $items[beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
+		{
+			chooseCheapestTarget(it);
+		}
+	}
+	
+	int oldSpleenUse = my_spleen_use();
+	if(target != $item[none])
+	{
+		if(!autoChew(1, target))	//the actual chewing attempt
+		{
+			auto_log_warning("Mysteriously failed to chew [" +target+ "]", "red");
+		}
+	}
+	return oldSpleenUse != my_spleen_use();
 }
 
 boolean auto_breakfastCounterVisit() {

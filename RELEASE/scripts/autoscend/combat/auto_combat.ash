@@ -31,9 +31,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	{
 		return;
 	}
-	
-	auto_log_info("auto_combatHandler: " + round, "brown");
-	
+
 	switch(enemy)
 	{
 		case $monster[Government Agent]:
@@ -58,6 +56,14 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	set_property("auto_combatHandlerThunderBird", "0");
 	set_property("auto_combatHandlerFingernailClippers", "0");
 	set_property("_auto_combatTracker_MortarRound", -1);		//tracks which round we used Stuffed Mortar Shell in.
+	
+	//log some important info.
+	//some stuff is redundant to the pre_adventure function print_footer() so it will not be logged here
+	auto_log_info("auto_combat initialized fighting [" +enemy+
+	"]: atk = " +monster_attack()+
+	". def = " +monster_defense()+
+	". HP = " +monster_hp()+
+	". LA = " +monster_level_adjustment(), "blue");
 }
 
 string auto_combatHandler(int round, monster enemy, string text)
@@ -91,7 +97,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	dd_combat_helper(round, enemy, text);		//disguise delimit mask identification
+	disguises_combat_helper(round, enemy, text);		//disguise delimit mask identification
 
 	if(get_property("auto_combatDirective") != "")
 	{

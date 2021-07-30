@@ -686,7 +686,7 @@ boolean L12_preOutfit()
 	}
 	else
 	{
-		auto_log_critical("Please report this. L12 war pre outfit acquisition mysteriously failed... skipping", "red");
+		auto_log_error("Please report this. L12 war pre outfit acquisition mysteriously failed... skipping");
 		return false;
 	}
 }

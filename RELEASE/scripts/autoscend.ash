@@ -10,6 +10,7 @@ since r20793;	//min mafia revision needed to run this script. Last update: Add e
 
 
 import <autoscend/autoscend_header.ash>
+import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
 import <canadv.ash>
 
@@ -26,8 +27,6 @@ import <autoscend/auto_restore.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
-
-import <autoscend/combat/auto_combat.ash>
 
 import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
@@ -217,7 +216,7 @@ void initializeSettings() {
 	fallout_initializeSettings();
 	pete_initializeSettings();
 	pokefam_initializeSettings();
-	majora_initializeSettings();
+	disguises_initializeSettings();
 	glover_initializeSettings();
 	bat_initializeSettings();
 	koe_initializeSettings();
@@ -2351,7 +2350,8 @@ boolean adventureFailureHandler()
 			}
 			else
 			{
-				auto_log_critical("You can set auto_newbieOverride = true to bypass this once.", "blue");
+				print("You can bypass this once by executing the gCLI command:", "blue");
+				print("set auto_newbieOverride = true", "blue");
 				abort("We have spent " + place.turns_spent + " turns at '" + place + "' and that is bad... aborting.");
 			}
 		}
@@ -2430,6 +2430,10 @@ boolean autosellCrap()
 	if(can_interact() && my_meat() > 20000)
 	{
 		return false;		//do not autosell stuff in casual or postronin unless you are very poor
+	}
+	if(my_path() == "Way of the Surprising Fist") 
+	{
+		return false;		//selling things in the way of the suprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
 	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
 	{
@@ -2748,7 +2752,7 @@ boolean doTasks()
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
-	if(LM_majora())						return true;
+	if(LM_disguises())					return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
 	if(LM_canInteract()) 				return true;
