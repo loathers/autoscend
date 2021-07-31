@@ -2,12 +2,7 @@ boolean is_foldable(item target)
 {
 	//mafia does not provide an easy means of checking if an item possesses the foldable property.
 	//This function checks if the item possesses that property. It does not care if you actually have it
-	int count = 0;
-	foreach it in get_related(target, "fold")
-	{
-		count++;
-	}
-	return count > 1;
+	return count(get_related(target, "fold")) > 1;
 }
 
 int foldable_amount(item target)
