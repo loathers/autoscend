@@ -113,7 +113,7 @@ boolean untinker(int amount, item target)
 		amount = item_amount(target);		//we can not untinker more than we have
 	}
 	
-	boolean untinker_all = amount == item_amount(target);
+	boolean untinker_all = (amount == item_amount(target));
 	auto_log_debug("Attempted to untinker " +amount+ " [" +target+ "]");
 	int start_amt = item_amount(target);
 	item LLUS = $item[Loathing Legion universal screwdriver];
