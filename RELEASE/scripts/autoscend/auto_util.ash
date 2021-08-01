@@ -5670,9 +5670,3 @@ int meatReserve()
 	
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
 }
-
-// Check to see if we can untinker.
-boolean canUntinker()
-{
-   return get_property("questM01Untinker") == "finished";
-}
