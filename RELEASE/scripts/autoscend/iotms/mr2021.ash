@@ -175,7 +175,8 @@ boolean batteryCombine(item battery)
 boolean batteryCombine(item battery, boolean simulate)
 {
 	// Mafia's handling of the create() function only allows one single recipe for crafting batteries. This can result in situations where you can in fact craft a battery but it fails due to it not being the singular recipe supported by it.
-	// Mafia's can_create has the same issue. simulate is used instead of it to determine if we can create a battery (or already have it).
+	// Mafia's can_create has the same issue. use simulate in this function to determine if we can actually create a battery (or already have it).
+
 	// untinkering might be unavailable and it adds complexity. So this function only deals with combining.
 	// to actually get batteries use can_get_battery and auto_getBattery. which call both this function and untinkering functions as needed.
 	// This is very dense, apologies.
