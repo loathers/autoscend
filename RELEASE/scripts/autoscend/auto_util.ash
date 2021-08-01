@@ -5264,6 +5264,11 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // 24 >= U >= 10
 	UrKelCheck(ToML, 24, 10);
 
+// 20
+	if (isActuallyEd() && !get_property("auto_needLegs").to_boolean())
+	{
+		tryEffects($effects[Blessing of Serqet]);
+	}
 
 // 10
 	tryEffects($effects[Pride of the Puffin, Drescher's Annoying Noise]);
@@ -5664,10 +5669,4 @@ int meatReserve()
 	}
 	
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
-}
-
-// Check to see if we can untinker.
-boolean canUntinker()
-{
-   return get_property("questM01Untinker") == "finished";
 }
