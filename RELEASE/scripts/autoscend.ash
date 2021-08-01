@@ -18,6 +18,7 @@ import <autoscend/auto_adventure.ash>
 import <autoscend/auto_bedtime.ash>
 import <autoscend/auto_consume.ash>
 import <autoscend/auto_settings.ash>
+import <autoscend/auto_craft.ash>
 import <autoscend/auto_equipment.ash>
 import <autoscend/auto_familiar.ash>
 import <autoscend/auto_list.ash>
@@ -696,7 +697,7 @@ int handlePulls(int day)
 				}
 				else
 				{
-					cli_execute("fold " + $item[Sneaky Pete\'s Leather Jacket (Collar Popped)]);
+					auto_fold($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]);
 				}
 			}
 		}
@@ -802,6 +803,8 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
+		
+		pullLegionKnife();
 
 		if(my_class() == $class[Vampyre])
 		{

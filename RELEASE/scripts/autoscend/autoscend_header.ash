@@ -103,6 +103,8 @@ int[item] eudora_xiblaxian();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2011.ash
 boolean isClipartItem(item it);
+boolean hasLegionKnife();
+boolean pullLegionKnife();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2012.ash
@@ -1079,6 +1081,17 @@ void auto_settingsDefaults();
 void auto_settings();
 
 ########################################################################################################
+//Defined in autoscend/auto_craft.ash
+boolean is_foldable(item target);
+int foldable_amount(item target);
+boolean auto_fold(item target);
+boolean untinkerable(item target);
+boolean canUntinker();
+boolean canUntinker(item target);
+boolean untinker(item target);
+boolean untinker(int amount, item target);
+
+########################################################################################################
 //Defined in autoscend/auto_equipment.ash
 string getMaximizeSlotPref(slot s);
 boolean autoEquip(slot s, item it);
@@ -1492,4 +1505,3 @@ int currentPoolSkill();
 int poolSkillPracticeGains();
 float npcStoreDiscountMulti();
 int meatReserve();
-boolean canUntinker();
