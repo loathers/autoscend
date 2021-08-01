@@ -217,7 +217,7 @@ boolean auto_post_adventure()
 	{
 		if ($location[The Shore\, Inc. Travel Agency] != my_location())
 		{
-			if (my_servant() != $servant[none] && my_servant().experience < 196)
+			if (my_servant() != $servant[none])
 			{
 				buffMaintain($effect[Purr of the Feline], 10, 1, 10);
 			}
@@ -235,11 +235,6 @@ boolean auto_post_adventure()
 			if(!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, Pirates of the Garbage Barges, The Secret Government Laboratory] contains my_location()))
 			{
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
-			}
-
-			if ((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && my_level() > 3 && !get_property("auto_needLegs").to_boolean() && !($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Smut Orc Logging Camp] contains my_location()))
-			{
-				buffMaintain($effect[Blessing of Serqet], 10, 1, 10);
 			}
 
 			foreach ef in $effects[Prayer Of Seshat, Wisdom Of Thoth, Power of Heka, Hide Of Sobek, Bounty Of Renenutet]
