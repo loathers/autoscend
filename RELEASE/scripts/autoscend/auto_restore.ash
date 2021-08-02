@@ -1179,7 +1179,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 			}
 			else
 			{
-				auto_log_debug("Removed from consideration: " + to_string(T[Ti], true), 1);
+				auto_log_restore_debug("Removed from consideration: " + to_string(T[Ti], true), 1);
 			}
 			Ti++;
 		}
@@ -1193,7 +1193,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 			}
 			else
 			{
-				auto_log_debug("Removed from consideration: " + to_string(B[Bi], true), 1);
+				auto_log_restore_debug("Removed from consideration: " + to_string(B[Bi], true), 1);
 			}
 			Bi++;
 		}
@@ -1217,7 +1217,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 
 	__RestorationOptimization[int] ranked_optimization(__RestorationOptimization[int] p, int[string] value_ranks, boolean[string] maximize_keys, boolean[string] minimize_keys)
 	{
-		auto_log_debug("Beginning optimization of "+count(p)+" restoration options.", 1);
+		auto_log_restore_debug("Beginning optimization of "+count(p)+" restoration options.", 1);
 		if(count(p) == 0)
 		{
 			return p;
@@ -1225,11 +1225,11 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 
 		__RestorationOptimization[int] ranked = copy(p);
 		int[int] ranks = ordered_ranks(value_ranks);
-		auto_log_debug(count(ranked)+" options before optimization: " + to_string(ranked, false), 2);
+		auto_log_restore_debug(count(ranked)+" options before optimization: " + to_string(ranked, false), 2);
 		foreach _, rank in ranks
 		{
 			string desc = (__RANKED_GOAL_DESCRIPTIONS contains rank) ?  __RANKED_GOAL_DESCRIPTIONS[rank] : "whoops, someone changed things and didnt update the descriptions. Bad dev.";
-			auto_log_debug("Rank " + rank + " optimization, prefer to... " + desc, 1);
+			auto_log_restore_debug("Rank " + rank + " optimization, prefer to... " + desc, 1);
 			if(count(ranked) <= 1)
 			{
 				break;
@@ -1304,7 +1304,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 
 	void quick_sort_maximize(__RestorationOptimization[int] p, boolean[string] sort_keys, int[string] value_ranks)
 	{
-		auto_log_debug("Sorting "+count(p)+" options by primary objectives.", 1);
+		auto_log_restore_debug("Sorting "+count(p)+" options by primary objectives.", 1);
 		if(count(p) > 1)
 		{
 			quick_sort_maximize(p, sort_keys, value_ranks, 0, count(p)-1);
@@ -1314,7 +1314,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 	__RestorationOptimization[int] apply_constraints(__RestorationOptimization[int] p, boolean[string] constraint_keys)
 	{
 		int c = count(p);
-		auto_log_debug("Applying constraints to "+c+" objective values.", 1);
+		auto_log_restore_debug("Applying constraints to "+c+" objective values.", 1);
 
 		__RestorationOptimization[int] constrained;
 
@@ -1335,7 +1335,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 			}
 		}
 
-		auto_log_debug("Removed  "+(c-count(constrained))+" restore options from consideration.", 1);
+		auto_log_restore_debug("Removed  "+(c-count(constrained))+" restore options from consideration.", 1);
 
 		return constrained;
 	}
@@ -1344,7 +1344,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 	{
 		if(count(__restore_maximizer_cache) > 0)
 		{
-			auto_log_debug("Recalculating cached restore objective values.", 0);
+			auto_log_restore_debug("Recalculating cached restore objective values.", 0);
 			foreach i, o in __restore_maximizer_cache
 			{
 				__RestorationOptimization recalculated =
@@ -1353,7 +1353,7 @@ __RestorationOptimization[int] __maximize_restore_options(int hp_goal, int mp_go
 		}
 		else
 		{
-			auto_log_debug("Calculating restore objective values.", 0);
+			auto_log_restore_debug("Calculating restore objective values.", 0);
 			foreach name, metadata in __restoration_methods()
 			{
 				__RestorationOptimization o = __calculate_objective_values(hp_goal, mp_goal, meat_reserve, useFreeRests, metadata);
@@ -1832,11 +1832,11 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		cli_execute("refresh status");
 		if(initial_maxHP == my_maxhp())
 		{
-			auto_log_debug("I just refreshed status because I detected [Hand in Glove]. But it turned out to not have been necessary", 1);
+			auto_log_restore_debug("I just refreshed status because I detected [Hand in Glove]. But it turned out to not have been necessary", 1);
 		}
 		else
 		{
-			auto_log_debug("I just refreshed status because I detected [Hand in Glove] and it corrected my maxHP value. This prevented an infinite loop", 0);
+			auto_log_restore_debug("I just refreshed status because I detected [Hand in Glove] and it corrected my maxHP value. This prevented an infinite loop", 0);
 		}
 	}
 
