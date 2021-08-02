@@ -149,7 +149,7 @@ void auto_log_restore_debug(string s, int level)
 	{
 		return;		//regular debugging is off. so extra debugging is also off.
 	}
-	if(level get_property("auto_log_level_restore").to_int() >= level)
+	if(get_property("auto_log_level_restore").to_int() >= level)
 	{
 		auto_log_debug(s);
 	}
