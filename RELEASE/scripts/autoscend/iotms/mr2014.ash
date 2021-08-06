@@ -492,7 +492,6 @@ static boolean[monster] importantMonsters = $monsters[
 	dirty old lihc,
 	// L8:
 	dairy goat,
-	ninja snowman assassin,
 	// L9:
 	smut orc pervert,
 	bearpig topiary animal,
@@ -506,6 +505,7 @@ static boolean[monster] importantMonsters = $monsters[
 	baa-relief sheep,
 	pygmy bowler,
 	pygmy shaman,
+	pygmy janitor,
 	pygmy witch accountant,
 	pygmy witch surgeon,
 	// Spookyraven:
@@ -527,6 +527,11 @@ static boolean[monster] importantMonsters = $monsters[
 	banshee librarian,
 	blur,
 	tomb rat
+	// L12:
+	batwinged gremlin (tool),
+	erudite gremlin (tool),
+	spider gremlin (tool),
+	vegetable gremlin (tool)
 ];
 
 monster icehouseMonster()
