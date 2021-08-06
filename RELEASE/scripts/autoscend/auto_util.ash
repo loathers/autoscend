@@ -1077,7 +1077,7 @@ boolean adjustForYellowRay(string combat_string)
 		}
 		else
 		{
-			auto_log_error("Thought we could craft 9-volt battery but couldn't", "red");
+			auto_log_error("Failed to prepare a yellow ray. yellowRayCombatString thinks we can craft a 9-volt battery but we actually could not");
 		}
 	}
 	return true;
