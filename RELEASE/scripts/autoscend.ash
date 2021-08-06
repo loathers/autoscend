@@ -115,6 +115,8 @@ void initializeSettings() {
 
 	auto_spoonTuneConfirm();
 
+	icehouseUserErrorProtection();
+
 	string pool = visit_url("questlog.php?which=3");
 	matcher my_pool = create_matcher("a skill level of (\\d+) at shooting pool", pool);
 	if(my_pool.find() && (my_turncount() == 0))
