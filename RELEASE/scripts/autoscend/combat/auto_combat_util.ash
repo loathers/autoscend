@@ -613,6 +613,12 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 			return auto_combatSaberYR();
 		}
 	}
+	
+	// shocking lick doesn't cause everything looks yellow effect and limited only by how many batteries you have. Use all other sources first.
+	if(inCombat ? have_skill($skill[Shocking Lick]) : (get_property("shockingLickCharges").to_int() > 0 || can_get_battery($item[battery (9-Volt)])))
+	{
+		return "skill " + $skill[Shocking Lick];
+	}
 
 	return "";
 }
