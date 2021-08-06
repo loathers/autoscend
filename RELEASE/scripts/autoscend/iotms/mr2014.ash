@@ -526,7 +526,7 @@ static boolean[monster] importantMonsters = $monsters[
 	// Desert:
 	banshee librarian,
 	blur,
-	tomb rat
+	tomb rat,
 	// L12:
 	batwinged gremlin (tool),
 	erudite gremlin (tool),
