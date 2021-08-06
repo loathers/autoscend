@@ -1172,7 +1172,7 @@ boolean adjustEdHat(string goal)
 
 boolean resolveSixthDMT()
 {
-	//every sixth machine elf tunnels visit will be a noncombat. This prepares for it and executes it.
+	// In the Deep Machine Tunnels the sixth and every 50th visit after that in a single ascension will be a noncombat. This prepares for it and executes it.
 	if(in_koe())
 	{
 		return false;
@@ -1181,7 +1181,8 @@ boolean resolveSixthDMT()
 	{
 		return false;
 	}
-	if(get_property("_machineTunnelsAdv").to_int() != 5)
+	if ($location[The Deep Machine Tunnels].turns_spent != 5)
+	// need to figure out the exact schedule for 2nd and later occurences then add it here.
 	{
 		return false;
 	}

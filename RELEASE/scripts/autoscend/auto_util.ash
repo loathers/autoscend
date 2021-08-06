@@ -1068,6 +1068,18 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		auto_configureRetrocape("heck", "kiss");
 	}
+	// craft and consume 9-volt battery if we are using shocking lick and don't have any charges already
+	if(combat_string == ("skill " + $skill[Shocking Lick]) && get_property("shockingLickCharges").to_int() < 1)
+	{
+		if(auto_getBattery($item[battery (9-Volt)]))
+		{
+			use(1, $item[battery (9-Volt)]);		
+		}
+		else
+		{
+			auto_log_error("Failed to prepare a yellow ray. yellowRayCombatString thinks we can craft a 9-volt battery but we actually could not");
+		}
+	}
 	return true;
 }
 
@@ -5264,6 +5276,11 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // 24 >= U >= 10
 	UrKelCheck(ToML, 24, 10);
 
+// 20
+	if (isActuallyEd() && !get_property("auto_needLegs").to_boolean())
+	{
+		tryEffects($effects[Blessing of Serqet]);
+	}
 
 // 10
 	tryEffects($effects[Pride of the Puffin, Drescher's Annoying Noise]);
@@ -5664,10 +5681,4 @@ int meatReserve()
 	}
 	
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
-}
-
-// Check to see if we can untinker.
-boolean canUntinker()
-{
-   return get_property("questM01Untinker") == "finished";
 }

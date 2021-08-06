@@ -167,10 +167,17 @@ int totalBatteryPoints()
 	return totalPoints;
 }
 
-// Mafia's handling of the create() function is currently not flexible enough for crafting batteries.
-// This is very dense, apologies.
 boolean batteryCombine(item battery)
 {
+	return batteryCombine(battery, false);
+}
+
+boolean batteryCombine(item battery, boolean simulate)
+{
+	// Mafia's create() function only allows one single recipe for crafting batteries. This can result in situations where you can in fact craft a battery but it fails due to it not being the singular recipe supported by it.
+	// Mafia's can_create() has the same issue. use simulate in this function to determine if we can actually create a battery (or already have it).
+	// To get batteries use can_get_battery() and auto_getBattery(), which will be calling this function and untinker as necessary
+	// This is very dense, apologies.
 	if(batteryPoints(battery) == 0)	//0 means it is not a battery
 	{
   		return false;
@@ -188,6 +195,7 @@ boolean batteryCombine(item battery)
 		// There's only one way to craft a AA.
 		if (available_amount($item[battery (AAA)]) >= 2)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (AAA)], $item[battery (AAA)]);
 			return (available_amount($item[battery (AA)]) >= 1);
 		}
@@ -199,12 +207,14 @@ boolean batteryCombine(item battery)
 		// From here on out, we try to resolve the crafting in a single step if possible, starting with largest battery + smallest battery.
 		if (available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (AA)], $item[battery (AAA)]);
 			return (available_amount($item[battery (D)]) >= 1);
 		}
 		// If crafting requires multiple steps, we rely on recursion.
 		else if (available_amount($item[battery (AAA)]) >= 3)
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (AA)]);
 			craft("combine", 1, $item[battery (AA)], $item[battery (AAA)]);
 			return (available_amount($item[battery (D)]) >= 1);
@@ -217,12 +227,14 @@ boolean batteryCombine(item battery)
 		// Single step.
 		if (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AAA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (D)], $item[battery (AAA)]);
 			return (available_amount($item[battery (9-Volt)]) >= 1);
 		}
 		// Single step.
 		else if (available_amount($item[battery (AA)]) >= 2)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (AA)], $item[battery (AA)]);
 			return (available_amount($item[battery (9-Volt)]) >= 1);
 		}
@@ -230,6 +242,7 @@ boolean batteryCombine(item battery)
 		else if (available_amount($item[battery (AAA)]) >= 4 ||
 		 (available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 2))
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (D)]);
 			craft("combine", 1, $item[battery (D)], $item[battery (AAA)]);
 			return (available_amount($item[battery (9-Volt)]) >= 1);
@@ -242,12 +255,14 @@ boolean batteryCombine(item battery)
 		// Single step.
 		if (available_amount($item[battery (9-Volt)]) >= 1 && available_amount($item[battery (AAA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AAA)]);
 			return (available_amount($item[battery (lantern)]) >= 1);
 		}
 		// Single step.
 		else if (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (D)], $item[battery (AA)]);
 			return (available_amount($item[battery (lantern)]) >= 1);
 		}
@@ -257,6 +272,7 @@ boolean batteryCombine(item battery)
 		 (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AAA)]) >= 2) ||
 		 (available_amount($item[battery (AA)]) >= 2 && available_amount($item[battery (AAA)]) >= 1))
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (9-Volt)]);
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AAA)]);
 			return (available_amount($item[battery (lantern)]) >= 1);
@@ -269,24 +285,28 @@ boolean batteryCombine(item battery)
 		// Single step.
 		if (available_amount($item[battery (lantern)]) >= 1 && available_amount($item[battery (AAA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (lantern)], $item[battery (AAA)]);
 			return (available_amount($item[battery (car)]) >= 1);
 		}
 		// Single step.
 		else if (available_amount($item[battery (9-Volt)]) >= 1 && available_amount($item[battery (AA)]) >= 1)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AA)]);
 			return (available_amount($item[battery (car)]) >= 1);
 		}
 		// Single step.
 		else if (available_amount($item[battery (D)]) >= 2)
 		{
+			if(simulate) return true;
 			craft("combine", 1, $item[battery (D)], $item[battery (D)]);
 			return (available_amount($item[battery (car)]) >= 1);
 		}
 		// The only multi-step case that can't be resolved by the same function (can't turn AAs into a lantern without a AA or D)
 		else if (available_amount($item[battery (AA)]) >= 3)
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (9-volt)]);
 			craft("combine", 1, $item[battery (9-Volt)], $item[battery (AA)]);
 			return (available_amount($item[battery (car)]) >= 1);
@@ -299,6 +319,7 @@ boolean batteryCombine(item battery)
 		 (available_amount($item[battery (AA)]) >= 2 && available_amount($item[battery (AAA)]) >= 2) ||
 		 (available_amount($item[battery (D)]) >= 1 && available_amount($item[battery (AA)]) >= 1 && available_amount($item[battery (AAA)]) >= 1))
 		{
+			if(simulate) return true;
 			batteryCombine($item[battery (lantern)]);
 			craft("combine", 1, $item[battery (lantern)], $item[battery (AAA)]);
 			return (available_amount($item[battery (car)]) >= 1);
@@ -307,37 +328,66 @@ boolean batteryCombine(item battery)
 	return false;
 }
 
-// This function will ensure a battery is available before use, if possible.
-boolean auto_getBattery(item battery)
+boolean can_get_battery(item target)
 {
-	if(batteryPoints(battery) == 0)	//0 means it is not a battery
+	if(batteryPoints(target) == 0)		//0 means target is not a battery
 	{
   		return false;
 	}
-
-	// If we have the desired battery then we're done here.
-	if (available_amount(battery) >= 1)
+	if (available_amount(target) > 0)		//already have it
 	{
 		return true;
+	}
+	if(canUntinker())
+	{
+		return totalBatteryPoints() >= batteryPoints(target);	//we can untinker. so just count battery points
+	}
+	return batteryCombine(target, true);	//can not untinker. only check meatpasting by simulating batteryCombine
+}
+
+boolean auto_getBattery(item target)
+{
+	// This function will ensure target battery is available before use, if possible.
+	if(batteryPoints(target) == 0)		//0 means target is not a battery
+	{
+  		return false;
+	}
+	if (available_amount(target) >= 1)
+	{
+		return true;		//we already have the target. we are done here
 	}
 		
-	// We'll try to create the battery, if it works then great, if not, we keep going.
-	if (batteryCombine(battery))
+	//try to create target
+	if (batteryCombine(target))
 	{
 		return true;
 	}
 
-	// Make sure we have enough AAA value to craft the target battery, and that we can untinker.
-	if (totalBatteryPoints() > batteryPoints(battery) && canUntinker())
+	//try to use untinkering to get target or enough AAA to make target
+	if (totalBatteryPoints() >= batteryPoints(target) && canUntinker())
 	{
-		// We're going to break down each battery one at a time from largest to smallest, and attempt to craft.
 		foreach it in $items[battery (car), battery (lantern), battery (9-Volt), battery (D), battery (AA)]
 		{
-			for i from 1 to available_amount(it)
+			if(my_meat() < 10)
 			{
-				visit_url("place.php?whichplace=forestvillage&action=fv_untinker&pwd=&preaction=untinker&whichitem=" + it.to_int().to_string());
-				
-				if (batteryCombine(battery))
+				break;		//we ran out of meat and can no longer meatpaste
+			}
+			//Batteries always untinker into an [AAA] and an [X-1] battery. where X was previous battery value.
+			//so if we have a higher value battery just walk it down to the target.
+			if(batteryPoints(it) > batteryPoints(target))		//we have a higher tier battery we can untinker down to target
+			{
+				untinker(it);
+				if (batteryCombine(target))		//either we untinkered down to target. or we got enough AAA to make target now.
+				{
+					return true;
+				}
+			}
+			//all the batteries we had to begin with were smaller than target. They were just the wrong values to merge.
+			//so just break them apart until you are able to make target
+			else for i from 1 to min(6, item_amount(it))
+			{
+				untinker(it);
+				if (batteryCombine(target))
 				{
 					return true;
 				}
