@@ -483,17 +483,14 @@ int amountTurkeyBooze()
 
 static boolean[monster] importantMonsters = $monsters[
 	// L4:
-	screambat,
 	beanbat,
 	// L5:
 	knob goblin harem girl,
 	// L7:
-	modern zmobie,
 	dirty old lihc,
 	// L8:
 	dairy goat,
 	// L9:
-	smut orc pervert,
 	bearpig topiary animal,
 	elephant (meatcar?) topiary animal,
 	spider (duck?) topiary animal,
@@ -516,6 +513,7 @@ static boolean[monster] importantMonsters = $monsters[
 	monstrous boiler,
 	writing desk,
 	chalkdust wraith,
+	banshee librarian,
 	// Palindome:
 	whitesnake,
 	white lion,
@@ -524,7 +522,6 @@ static boolean[monster] importantMonsters = $monsters[
 	red butler,
 	red skeleton,
 	// Desert:
-	banshee librarian,
 	blur,
 	tomb rat,
 	// L12:
