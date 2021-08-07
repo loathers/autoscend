@@ -1235,7 +1235,7 @@ ConsumeAction auto_bestNightcap()
 			continue;
 		}
 
-		// This consumable is either more desirable or cheaper
+		// This consumable is either more desirable or equally desirable and cheaper
 		best = i;
 	}
 
