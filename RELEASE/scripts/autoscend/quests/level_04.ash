@@ -104,7 +104,7 @@ boolean L4_batCave()
 	int [element] resGoal;
 	resGoal[$element[stench]] = 1;
 	// try to get the stench res without equipment, but use equipment if we must
-	if(!provideResistances(resGoal, false) && !provideResistances(resGoal, true))
+	if(!provideResistances(resGoal, $location[Guano Junction], false) && !provideResistances(resGoal, $location[Guano Junction], true))
 	{
 		auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
 		return false;
