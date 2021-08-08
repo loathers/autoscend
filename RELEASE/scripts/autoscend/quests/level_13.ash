@@ -939,6 +939,7 @@ boolean L13_towerNSTower()
 			}
 			if(have_skill($skill[Belch the Rainbow]))
 			{
+				//todo: is this 5 or 6?
 				sourcesAttack = 6;
 			}
 			else if(autoEquip($item[Fourth of May Cosplay Saber]))
@@ -955,8 +956,9 @@ boolean L13_towerNSTower()
 					}
 				}
 			}
-			if(have_skill($skill[headbutt]))
+			if(have_skill($skill[headbutt]) && !have_skill($skill[Belch the Rainbow]))
 			{
+				//combat script only tries headbutt after Belch the Rainbow
 				sourcesAttack += 1;
 			}
 			
@@ -1168,16 +1170,16 @@ boolean L13_towerNSTower()
 						use_skill(1, $skill[Blessing of the War Snapper]);
 					}
 				}
-				damageSecured += 1 + sourcesFamiliar + sourcesPassive;	//reactive damage doesn't work on blocked hit
+				damageSecured += sourcesFamiliar + sourcesPassive;	//reactive damage doesn't work on blocked hit
 				if((have_effect($effect[Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Grand Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Glorious Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Blessing of She-Who-Was]) == 0) && (have_effect($effect[Grand Blessing of She-Who-Was]) == 0) && (have_effect($effect[Glorious Blessing of She-Who-Was]) == 0))
 				{
-					//Shell Up doesn't do damage with either of these blessings
-					damageSecured -= 1;
+					//Shell Up does damage if neither of these blessings is active
+					damageSecured += 1;
 				}
 			}
 			if(have_skill($skill[Sauceshell]))
 			{
-				damageSecured += 1 + sourcesFamiliar + sourcesPassive;	//reactive passive damage doesn't work on blocked hit
+				damageSecured += 1 + sourcesFamiliar + sourcesPassive;	//reactive damage doesn't work on blocked hit
 			}
 			
 			int damageMissing = damageNeed - damageSecured;
@@ -1215,7 +1217,7 @@ boolean L13_towerNSTower()
 				}
 				else
 				{
-					auto_log_warning("Need a beehive, buzz buzz. Have " + sources + " damage sources but the " + sourcesPassive + " passive sources won't work before dying on the last round", "red");
+					auto_log_warning("Need a beehive, buzz buzz. Have " + sources + " damage sources but only " + lastRoundDamage + " that would work before taking a hit on the last round", "red");
 				}
 			}
 		}
