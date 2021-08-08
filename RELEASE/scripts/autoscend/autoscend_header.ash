@@ -103,6 +103,8 @@ int[item] eudora_xiblaxian();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2011.ash
 boolean isClipartItem(item it);
+boolean hasLegionKnife();
+boolean pullLegionKnife();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2012.ash
@@ -435,7 +437,9 @@ boolean auto_harvestBatteries();
 int batteryPoints(item battery);
 int totalBatteryPoints();
 boolean batteryCombine(item battery);
-boolean auto_getBattery(item battery, int qty);
+boolean batteryCombine(item battery, boolean simulate);
+boolean can_get_battery(item target);
+boolean auto_getBattery(item target);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1082,6 +1086,17 @@ void auto_settingsDefaults();
 void auto_settings();
 
 ########################################################################################################
+//Defined in autoscend/auto_craft.ash
+boolean is_foldable(item target);
+int foldable_amount(item target);
+boolean auto_fold(item target);
+boolean untinkerable(item target);
+boolean canUntinker();
+boolean canUntinker(item target);
+boolean untinker(item target);
+boolean untinker(int amount, item target);
+
+########################################################################################################
 //Defined in autoscend/auto_equipment.ash
 string getMaximizeSlotPref(slot s);
 boolean autoEquip(slot s, item it);
@@ -1453,21 +1468,14 @@ boolean canBurnDelay(location loc);
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
 boolean auto_is_valid(skill sk);
-string auto_log_level_threshold();
-int auto_log_level(string level);
-boolean auto_log(string s, string color, string log_level);
-boolean auto_log_critical(string s, string color);
-boolean auto_log_critical(string s);
-boolean auto_log_error(string s, string color);
-boolean auto_log_error(string s);
-boolean auto_log_warning(string s, string color);
-boolean auto_log_warning(string s);
-boolean auto_log_info(string s, string color);
-boolean auto_log_info(string s);
-boolean auto_log_debug(string s, string color);
-boolean auto_log_debug(string s);
-boolean auto_log_trace(string s, string color);
-boolean auto_log_trace(string s);
+void auto_log(string s, string color, int log_level);
+void auto_log_error(string s);
+void auto_log_warning(string s, string color);
+void auto_log_warning(string s);
+void auto_log_info(string s, string color);
+void auto_log_info(string s);
+void auto_log_debug(string s, string color);
+void auto_log_debug(string s);
 boolean auto_can_equip(item it);
 boolean auto_can_equip(item it, slot s);
 boolean auto_check_conditions(string conds);
@@ -1502,4 +1510,3 @@ int currentPoolSkill();
 int poolSkillPracticeGains();
 float npcStoreDiscountMulti();
 int meatReserve();
-boolean canUntinker();

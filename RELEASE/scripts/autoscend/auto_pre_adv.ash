@@ -1,14 +1,74 @@
 import<autoscend.ash>
 
-void print_footer() {
-	auto_log_info("HP: " + my_hp() + "/" + my_maxhp() + ", MP: " + my_mp() + "/" + my_maxmp() + " Meat: " + my_meat(), "blue");
-	if (my_class() == $class[Sauceror]) {
-		auto_log_info("Soulsauce: " + my_soulsauce(), "blue");
+void print_footer()
+{
+	auto_log_info("[" +my_class()+ "] @ path of [" +my_path()+ "]", "blue");
+	
+	string next_line = "HP: " +my_hp()+ "/" +my_maxhp()+ ", MP: " +my_mp()+ "/" +my_maxmp()+ ", Meat: " +my_meat();
+	switch(my_class())
+	{
+		case $class[Seal Clubber]:
+			next_line += ", Fury: " +my_fury()+ "/" +my_maxfury();
+			break;
+		case $class[Turtle Tamer]:
+			foreach ttbless in $effects[Blessing of the War Snapper, Grand Blessing of the War Snapper, Glorious Blessing of the War Snapper, Blessing of She-Who-Was, Grand Blessing of She-Who-Was, Glorious Blessing of She-Who-Was, Blessing of the Storm Tortoise, Grand Blessing of the Storm Tortoise, Glorious Blessing of the Storm Tortoise]
+			{
+				if(have_effect(ttbless) > 0)
+				{
+					next_line += ", Blessing: " +ttbless;
+				}
+			}
+			break;	
+		case $class[Sauceror]:
+			next_line += ", Soulsauce: " +my_soulsauce();
+			break;
 	}
-	auto_log_info("Familiar: " + my_familiar().to_string() + " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs.", "blue");
+	auto_log_info(next_line, "blue");
+	
+	int bonus_mus = my_buffedstat($stat[muscle]) - my_basestat($stat[muscle]);
+	int bonus_mys = my_buffedstat($stat[mysticality]) - my_basestat($stat[mysticality]);
+	int bonus_mox = my_buffedstat($stat[moxie]) - my_basestat($stat[moxie]);
+	auto_log_info("mus: " +my_basestat($stat[muscle])+ " + " +bonus_mus+
+	". mys: " +my_basestat($stat[mysticality])+ " + " +bonus_mys+
+	". mox: " +my_basestat($stat[moxie])+ " + " +bonus_mox, "blue");
+	
+	next_line = "";
+	if(pathHasFamiliar())
+	{
+		next_line += "Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs. ";
+	}
+	if(my_class() == $class[Pastamancer])
+	{
+		next_line += "Thrall: [" +my_thrall()+ "] @ level " +my_thrall().level;
+	}
+	if(isActuallyEd())
+	{
+		next_line += "Servant: [" +my_servant()+ "] @ level " +my_servant().level;
+	}
+	if(my_class() == $class[Avatar of Jarlsberg])
+	{
+		next_line += "Companion: [" +my_companion();
+	}
+	auto_log_info(next_line, "blue");
+	
 	auto_log_info("ML: " + monster_level_adjustment() + " Encounter: " + combat_rate_modifier() + " Init: " + initiative_modifier(), "blue");
 	auto_log_info("Exp Bonus: " + experience_bonus() + " Meat Drop: " + meat_drop_modifier() + " Item Drop: " + item_drop_modifier(), "blue");
 	auto_log_info("Resists: " + numeric_modifier("Hot Resistance") + "/" + numeric_modifier("Cold Resistance") + "/" + numeric_modifier("Stench Resistance") + "/" + numeric_modifier("Spooky Resistance") + "/" + numeric_modifier("Sleaze Resistance"), "blue");
+	
+	//current equipment
+	next_line = "equipment: ";
+	foreach sl in $slots[]
+	{
+		if($slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar] contains sl)		//we always want to print the core slots
+		{
+			next_line += sl+ "=[" +equipped_item(sl)+ "]. ";
+		}
+		else if(equipped_item(sl) != $item[none])		//other slots should only be printed if they contain something
+		{
+			next_line += sl+ "=[" +equipped_item(sl)+ "]. ";
+		}
+	}
+	auto_log_info(next_line, "blue");
 }
 
 boolean auto_pre_adventure()
@@ -20,7 +80,7 @@ boolean auto_pre_adventure()
 		return true;
 	}
 	auto_log_info("Starting preadventure script...", "green");
-	auto_log_debug("Adventuring at " + place.to_string(), "green");
+	auto_log_debug("Adventuring at " +place, "green");
 	
 	preAdvUpdateFamiliar(place);
 	ed_handleAdventureServant(place);

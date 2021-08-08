@@ -1068,6 +1068,18 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		auto_configureRetrocape("heck", "kiss");
 	}
+	// craft and consume 9-volt battery if we are using shocking lick and don't have any charges already
+	if(combat_string == ("skill " + $skill[Shocking Lick]) && get_property("shockingLickCharges").to_int() < 1)
+	{
+		if(auto_getBattery($item[battery (9-Volt)]))
+		{
+			use(1, $item[battery (9-Volt)]);		
+		}
+		else
+		{
+			auto_log_error("Failed to prepare a yellow ray. yellowRayCombatString thinks we can craft a 9-volt battery but we actually could not");
+		}
+	}
 	return true;
 }
 
@@ -1344,7 +1356,7 @@ boolean ovenHandle()
 	{
 		if (auto_get_campground() contains $item[Certificate of Participation] && isActuallyEd())
 		{
-			auto_log_error("Mafia reports we have an oven but we do not. Logging back in will resolve this.", "red");
+			auto_log_error("Mafia reports we have an oven but we do not. Logging back in will resolve this.");
 		}
 		else
 		{
@@ -4349,91 +4361,59 @@ boolean auto_is_valid(skill sk)
 	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && zelda_skillValid(sk) && is_unrestricted(sk);
 }
 
-string auto_log_level_threshold(){
-	static string logging_property = "auto_logLevel";
-	if(!property_exists(logging_property)){
-		set_property(logging_property, "info");
+void auto_log(string s, string color, int log_level)
+{
+	if(log_level > get_property("auto_log_level").to_int())
+	{
+		return;
 	}
-	return get_property(logging_property);
-}
-
-int auto_log_level(string level){
-	static int[string] log_levels = {
-		"critical": 1,
-		"crit": 1,
-		"error": 2,
-		"err": 2,
-		"warning": 3,
-		"warn": 3,
-		"info": 4,
-		"debug": 5,
-		"trace": 6
-	};
-
-	level = level.to_lower_case();
-	if(log_levels contains level){
-		return log_levels[level];
-	} else{
-		return log_levels["info"];
+	switch(log_level)
+	{
+		case 1:
+			print("[WARNING] " + s, color);
+			break;
+		case 2:
+			print("[INFO] " + s, color);
+			break;
+		case 3:
+			print("[DEBUG] " + s, color);
+			break;
 	}
 }
 
-boolean auto_log(string s, string color, string log_level){
-	int threshold = auto_log_level(auto_log_level_threshold());
-	int level = auto_log_level(log_level);
-	if(level <= threshold){
-		print("["+log_level.to_upper_case()+"] - " + s, color);
-		return true;
-	}
-	return false;
+void auto_log_error(string s)
+{
+	print("[ERROR] " +s, "red");
 }
 
-boolean auto_log_critical(string s, string color){
-	return auto_log(s, color, "critical");
+void auto_log_warning(string s, string color)
+{
+	auto_log(s, color, 1);
 }
 
-boolean auto_log_critical(string s){
-	return auto_log(s, "red", "critical");
+void auto_log_warning(string s)
+{
+	auto_log(s, "orange", 1);
 }
 
-boolean auto_log_error(string s, string color){
-	return auto_log(s, color, "critical");
+void auto_log_info(string s, string color)
+{
+	auto_log(s, color, 2);
 }
 
-boolean auto_log_error(string s){
-	return auto_log(s, "red", "error");
+void auto_log_info(string s)
+{
+	auto_log(s, "blue", 2);
 }
 
-boolean auto_log_warning(string s, string color){
-	return auto_log(s, color, "warning");
+void auto_log_debug(string s, string color)
+{
+	auto_log(s, color, 3);
 }
 
-boolean auto_log_warning(string s){
-	return auto_log(s, "orange", "warning");
-}
-
-boolean auto_log_info(string s, string color){
-	return auto_log(s, color, "info");
-}
-
-boolean auto_log_info(string s){
-	return auto_log(s, "blue", "info");
-}
-
-boolean auto_log_debug(string s, string color){
-	return auto_log(s, color, "debug");
-}
-
-boolean auto_log_debug(string s){
-	return auto_log(s, "black", "debug");
-}
-
-boolean auto_log_trace(string s, string color){
-	return auto_log(s, color, "trace");
-}
-
-boolean auto_log_trace(string s){
-	return auto_log(s, "black", "trace");
+void auto_log_debug(string s)
+{
+	auto_log(s, "black", 3);
 }
 
 boolean auto_can_equip(item it)
@@ -4700,7 +4680,7 @@ boolean [monster] auto_getMonsters(string category)
 	boolean [monster] res;
 	string [string,int,string] monsters_text;
 	if(!file_to_map("autoscend_monsters.txt", monsters_text))
-		auto_log_error("Could not load autoscend_monsters.txt. This is bad!", "red");
+		auto_log_error("Could not load autoscend_monsters.txt. This is bad!");
 	foreach i,name,conds in monsters_text[category]
 	{
 		monster thisMonster = name.to_monster();
@@ -5122,7 +5102,7 @@ int auto_reserveAmount(item it)
 {
 	string [string,int,string] itemdata;
 	if(!file_to_map("autoscend_items.txt", itemdata))
-		auto_log_error("Could not load autoscend_items.txt! This is bad!", "red");
+		auto_log_error("Could not load autoscend_items.txt! This is bad!");
 	foreach i,counteditem,conds in itemdata["reserve"]
 	{
 		matcher m = create_matcher("(\\-?\\d+) (.+)", counteditem);
@@ -5296,6 +5276,11 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // 24 >= U >= 10
 	UrKelCheck(ToML, 24, 10);
 
+// 20
+	if (isActuallyEd() && !get_property("auto_needLegs").to_boolean())
+	{
+		tryEffects($effects[Blessing of Serqet]);
+	}
 
 // 10
 	tryEffects($effects[Pride of the Puffin, Drescher's Annoying Noise]);
@@ -5456,7 +5441,7 @@ int auto_predictAccordionTurns()
 	foreach squeezebox in accordions
 	{
 		// Verify that we have the accordion and that it is allowed to be use in path
-		if((item_amount(squeezebox) > 0) && (auto_is_valid(squeezebox)))
+		if((equipmentAmount(squeezebox) > 0) && (auto_is_valid(squeezebox)))
 		{
 			expTurns = numeric_modifier(squeezebox, "Song Duration");
 
@@ -5696,10 +5681,4 @@ int meatReserve()
 	}
 	
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
-}
-
-// Check to see if we can untinker.
-boolean canUntinker()
-{
-   return get_property("questM01Untinker") == "finished";
 }

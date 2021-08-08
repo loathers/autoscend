@@ -34,12 +34,9 @@ boolean trackingSplitterFixer(string oldSetting, int day, string newSetting)
 
 void auto_settingsUpgrade()
 {
-	//upgrade settings from old format to new format
-	if(get_property("auto_debug") == "true")
-	{
-		set_property("auto_logLevel", "debug");
-	}
-
+	//upgrade settings from old format to new format.
+	//do not forget to add each old setting to auto_settingsDelete() so it can be deleted after the upgrade is done.
+	
 	trackingSplitterFixer("auto_banishes_day1", 1, "auto_banishes");
 	trackingSplitterFixer("auto_banishes_day2", 2, "auto_banishes");
 	trackingSplitterFixer("auto_banishes_day3", 3, "auto_banishes");
@@ -91,7 +88,7 @@ void auto_settingsUpgrade()
 		set_property("auto_chasmBusted", false);
 	}
 
-	if(get_property("auto_edDelayTimer") != "")
+	if(property_exists("auto_edDelayTimer"))
 	{
 		set_property("auto_delayTimer", get_property("auto_edDelayTimer"));
 	}
@@ -126,13 +123,41 @@ void auto_settingsUpgrade()
 		auto_log_debug("lastTempleUnlock was changed to a boolean, fixing...", "red");
 		set_property("lastTempleUnlock", my_ascensions());
 	}
-	if(get_property("auto_consumeKeyLimePies") != "")
+	if(property_exists("auto_consumeKeyLimePies"))
 	{
 		set_property("auto_dontConsumeKeyLimePies", !get_property("auto_consumeKeyLimePies").to_boolean());
 	}
-	if(get_property("auto_alwaysGetSteelOrgan") != "")
+	if(property_exists("auto_alwaysGetSteelOrgan"))
 	{
 		set_property("auto_getSteelOrgan_initialize", get_property("auto_alwaysGetSteelOrgan"));
+	}
+	
+	if(get_property("auto_debug") == "true")
+	{
+		set_property("auto_log_level", 3);
+	}
+	//migrate log level from the string property auto_logLevel to the int property auto_log_level
+	if(property_exists("auto_logLevel"))
+	{
+		switch(get_property("auto_logLevel").to_lower_case())
+		{
+			case "critical":
+			case "crit":
+			case "error":
+			case "err":
+				set_property("auto_log_level", 0);
+				break;
+			case "warning":
+			case "warn":
+				set_property("auto_log_level", 1);
+				break;
+			case "info":
+				set_property("auto_log_level", 2);
+				break;
+			case "debug":
+				set_property("auto_log_level", 3);
+				break;
+		}
 	}
 }
 
@@ -142,6 +167,22 @@ void auto_settingsFix()
 	if(get_property("auto_save_adv_override").to_int() < -1)
 	{
 		set_property("auto_save_adv_override", -1);		//values lower than -1 are not valid
+	}
+	if(get_property("auto_log_level").to_int() < 0)
+	{
+		set_property("auto_log_level", 0);		//values lower than 0 are not valid
+	}
+	if(get_property("auto_log_level").to_int() > 3)
+	{
+		set_property("auto_log_level", 3);		//values higher than 3 are not valid
+	}
+	if(get_property("auto_log_level_restore").to_int() < 0)
+	{
+		set_property("auto_log_level_restore", 0);		//values lower than 0 are not valid
+	}
+	if(get_property("auto_log_level_restore").to_int() > 2)
+	{
+		set_property("auto_log_level_restore", 2);		//values higher than 2 are not valid
 	}
 }
 
@@ -249,12 +290,13 @@ void auto_settingsDelete()
 	remove_property("auto_choice1119");
 	remove_property("auto_useTatter");				//obsolete combat directive to use [Tattered Scrap Of Paper] to escape combat
 	remove_property("auto_alwaysGetSteelOrgan");	//renamed to auto_getSteelOrgan_initialize
+	remove_property("auto_logLevel");		//replaced string auto_logLevel with int auto_log_level
 }
 
 void defaultConfig(string prop, string val)
 {
 	//this function is used to configure default values. it only makes a change if the current value is nothing
-	if(get_property(prop) == "")			//property currently not set to anything.
+	if(!property_exists(prop))
 	{
 		auto_log_info(prop+ " has no value set. setting it to the default value of " +val);
 		set_property(prop,val);
@@ -269,6 +311,8 @@ void auto_settingsDefaults()
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");
+	defaultConfig("auto_log_level", "2");
+	defaultConfig("auto_log_level_restore", "0");
 }
 
 void auto_settings()
