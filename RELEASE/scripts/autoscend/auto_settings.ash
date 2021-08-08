@@ -176,6 +176,14 @@ void auto_settingsFix()
 	{
 		set_property("auto_log_level", 3);		//values higher than 3 are not valid
 	}
+	if(get_property("auto_log_level_restore").to_int() < 0)
+	{
+		set_property("auto_log_level_restore", 0);		//values lower than 0 are not valid
+	}
+	if(get_property("auto_log_level_restore").to_int() > 2)
+	{
+		set_property("auto_log_level_restore", 2);		//values higher than 2 are not valid
+	}
 }
 
 void auto_settingsDelete()
@@ -303,7 +311,8 @@ void auto_settingsDefaults()
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");
-	defaultConfig("auto_log_level", "2");	
+	defaultConfig("auto_log_level", "2");
+	defaultConfig("auto_log_level_restore", "0");
 }
 
 void auto_settings()
