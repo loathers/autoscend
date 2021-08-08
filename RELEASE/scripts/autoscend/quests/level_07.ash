@@ -61,7 +61,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Reanimated Reanimator]);
 		}
 
-		provideInitiative(850, true);
+		provideInitiative(850, $location[The Defiled Alcove], true);
 
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
