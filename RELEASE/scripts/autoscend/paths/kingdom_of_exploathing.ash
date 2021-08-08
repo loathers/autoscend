@@ -77,7 +77,7 @@ boolean LX_koeInvaderHandler()
 		autoEquip($slot[off-hand], $item[meteorb]);
 	}
 
-	simMaximizeWith("200 all res");
+	simMaximizeWith($location[none], "200 all res");
 
 	float damagePerRound = 0.0;
 	float baseDamage = 1.0 - 0.1 * my_daycount();
