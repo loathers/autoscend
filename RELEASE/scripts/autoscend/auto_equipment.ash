@@ -305,7 +305,7 @@ void addBonusToMaximize(item it, int amt)
 		addToMaximize("+" + amt + "bonus " + it);
 }
 
-void finalizeMaximize()
+void finalizeMaximize(location loc)
 {
 	if (possessEquipment($item[miniature crystal ball]))
 	{
@@ -358,6 +358,11 @@ void finalizeMaximize()
 		}
 	}
 }
+		 
+void finalizeMaximize()
+{
+	finalizeMaximize(my_location());
+}
 
 void addToMaximize(string add)
 {
@@ -407,23 +412,33 @@ boolean maximizeContains(string check)
 	return get_property("auto_maximize_current").contains_text(check);
 }
 
-boolean simMaximize()
+boolean simMaximize(location loc)
 {
 	string backup = get_property("auto_maximize_current");
-	finalizeMaximize();
+	finalizeMaximize(loc);
 	boolean res = autoMaximize(get_property("auto_maximize_current"), true);
+	set_property("auto_maximize_current", backup);
+	return res;
+}
+
+boolean simMaximize()
+{
+	return simMaximize(my_location());
+}
+
+boolean simMaximizeWith(location loc, string add)
+{
+	string backup = get_property("auto_maximize_current");
+	addToMaximize(add);
+	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
+	boolean res = simMaximize(loc);
 	set_property("auto_maximize_current", backup);
 	return res;
 }
 
 boolean simMaximizeWith(string add)
 {
-	string backup = get_property("auto_maximize_current");
-	addToMaximize(add);
-	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
-	boolean res = simMaximize();
-	set_property("auto_maximize_current", backup);
-	return res;
+	return simMaximizeWith(my_location(), add);
 }
 
 float simValue(string modifier)
