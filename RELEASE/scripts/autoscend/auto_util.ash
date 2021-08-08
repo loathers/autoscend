@@ -5441,7 +5441,7 @@ int auto_predictAccordionTurns()
 	foreach squeezebox in accordions
 	{
 		// Verify that we have the accordion and that it is allowed to be use in path
-		if((item_amount(squeezebox) > 0) && (auto_is_valid(squeezebox)))
+		if((equipmentAmount(squeezebox) > 0) && (auto_is_valid(squeezebox)))
 		{
 			expTurns = numeric_modifier(squeezebox, "Song Duration");
 
