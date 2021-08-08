@@ -1229,7 +1229,7 @@ ConsumeAction auto_bestNightcap()
 			continue;
 		}
 
-		if(desirability(i) == desirability(best) && mall_price(actions[i].it) >= mall_price(actions[best].it))
+		if(desirability(i) == desirability(best) && historical_price(actions[i].it) >= historical_price(actions[best].it))
 		{
 			// This consumable is just as desirable as the best consumable, but it is more expensive
 			continue;
