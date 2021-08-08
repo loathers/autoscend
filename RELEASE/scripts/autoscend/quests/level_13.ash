@@ -375,7 +375,7 @@ boolean L13_towerNSContests()
 
 				autoMaximize("initiative -equip snow suit", 1500, 0, false);
 
-				provideInitiative(400, true);
+				provideInitiative(400, $location[Noob Cave], true);
 
 				if(crowd1Insufficient() && (get_property("sidequestArenaCompleted") == "fratboy"))
 				{
@@ -424,7 +424,7 @@ boolean L13_towerNSContests()
 			}
 			int [stat] statGoal;
 			statGoal[crowd_stat] = 600;
-			provideStats(statGoal, true);
+			provideStats(statGoal, $location[Noob Cave], true);
 			switch(crowd_stat)
 			{
 			case $stat[moxie]:
@@ -678,7 +678,7 @@ void maximize_hedge()
 		resGoal[third] = 9;
 	}
 
-	provideResistances(resGoal, true);
+	provideResistances(resGoal, $location[Noob Cave], true);
 }
 
 boolean L13_towerNSHedge()
