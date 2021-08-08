@@ -302,6 +302,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	}
 
 	boolean retval = false;
+	boolean wasReadyToEat = false;
 	while(howMany > 0)
 	{
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, toEat.fullness);
@@ -309,6 +310,10 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		{
 			buyUpTo(1, $item[Mayoflex], 1000);
 			use(1, $item[Mayoflex]);
+		}
+		if(have_effect($effect[Ready to Eat]))
+		{
+			wasReadyToEat = true;
 		}
 		if(silent)
 		{
@@ -320,7 +325,15 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		}
 		if(retval)
 		{
-			handleTracker(toEat, "auto_eaten");
+			if(wasReadyToEat && !have_effect($effect[Ready to Eat]))
+			{
+				handleTracker(toEat,"Red Rocketed!", "auto_eaten");
+				wasReadyToEat = false;
+			}
+			else
+			{
+				handleTracker(toEat, "auto_eaten");
+			}		
 		}
 		howMany = howMany - 1;
 	}
