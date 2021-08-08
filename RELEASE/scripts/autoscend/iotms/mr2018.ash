@@ -739,7 +739,7 @@ int neverendingPartyRemainingFreeFights()
 		return 0;
 	}
 	//if path randomizes names then the free fights are not free
-	if(auto_my_path() == "One Crazy Random Summer")
+	if(auto_my_path() == "Disguises Delimit" || auto_my_path() == "One Crazy Random Summer")
 	{
 		return 0;
 	}
