@@ -311,7 +311,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 			buyUpTo(1, $item[Mayoflex], 1000);
 			use(1, $item[Mayoflex]);
 		}
-		if(have_effect($effect[Ready to Eat]))
+		if(have_effect($effect[Ready to Eat]) > 0)
 		{
 			wasReadyToEat = true;
 		}
@@ -325,7 +325,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		}
 		if(retval)
 		{
-			if(wasReadyToEat && !have_effect($effect[Ready to Eat]))
+			if(wasReadyToEat && have_effect($effect[Ready to Eat]) <= 0)
 			{
 				handleTracker(toEat,"Red Rocketed!", "auto_eaten");
 				wasReadyToEat = false;
