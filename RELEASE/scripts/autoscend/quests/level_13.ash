@@ -963,6 +963,11 @@ boolean L13_towerNSTower()
 			}
 			
 			boolean familiarEquipped = false;
+			boolean haveFamiliarWillAlwaysActEffect = false;
+			if(have_effect($effect[Shortly Stacked]) > 0 || have_effect($effect[Shortly Buttered]) > 0 || have_effect($effect[Shortly Hydrated]) > 0 || have_effect($effect[Shortly Wired]) > 0 || have_effect($effect[Shortly Drunk]) > 0)
+			{
+				haveFamiliarWillAlwaysActEffect = true;
+			}
 			if(canChangeToFamiliar($familiar[Shorter-Order Cook]) || qt_currentFamiliar($familiar[Shorter-Order Cook]))
 			{
 				handleFamiliar($familiar[Shorter-Order Cook]);
@@ -983,7 +988,7 @@ boolean L13_towerNSTower()
 				sourcesFamiliar += 2;
 				handleFamiliar($familiar[Warbear Drone]);
 				use_familiar($familiar[Warbear Drone]);
-				cli_execute("auto_pre_adv"); // TODO: can we remove this?
+				cli_execute("auto_pre_adv"); // TODO: can we remove this? //could probably instead call preAdvUpdateFamiliar(loc)
 				if(!possessEquipment($item[Warbear Drone Codes]))
 				{
 					pullXWhenHaveY($item[warbear drone codes], 1, 0);
@@ -1011,7 +1016,14 @@ boolean L13_towerNSTower()
 			{
 				//100% first round, then 20% chance of attack
 				handleFamiliar($familiar[Topiary Skunk]);
-				damageSecured += 1;
+				if(haveFamiliarWillAlwaysActEffect)
+				{
+					sourcesFamiliar += 1;
+				}
+				else
+				{
+					damageSecured += 1;
+				}
 			}
 			//no guaranteed damage familiar, try to use better than nothing
 			else
@@ -1020,9 +1032,13 @@ boolean L13_towerNSTower()
 				foreach fam in $familiars[BRICKO chick,Clockwork Grapefruit,Pair of Ragged Claws]
 				{
 					//50% chance of attack
-					if(canChangeToFamiliar(fam))
+					if(canChangeToFamiliar(fam) || qt_currentFamiliar(fam))
 					{
 						handleFamiliar(fam);
+						if(haveFamiliarWillAlwaysActEffect)
+						{
+							sourcesFamiliar += 1;
+						}
 						attackFamiliarPicked = true;
 						break;
 					}
@@ -1032,9 +1048,13 @@ boolean L13_towerNSTower()
 					foreach fam in $familiars[Star Starfish,Animated Macaroni Duck,Killer Bee,Flaming Gravy Fairy,Frozen Gravy Fairy,Stinky Gravy Fairy]
 					{
 						//33% chance of attack
-						if(canChangeToFamiliar(fam))
+						if(canChangeToFamiliar(fam) || qt_currentFamiliar(fam))
 						{
 							handleFamiliar(fam);
+							if(haveFamiliarWillAlwaysActEffect)
+							{
+								sourcesFamiliar += 1;
+							}
 							attackFamiliarPicked = true;
 							break;
 						}
@@ -1046,7 +1066,7 @@ boolean L13_towerNSTower()
 					{
 						if(isAttackFamiliar(fam))
 						{
-							if(canChangeToFamiliar(fam))
+							if(canChangeToFamiliar(fam) || qt_currentFamiliar(fam))
 							{
 								handleFamiliar(fam);
 								attackFamiliarPicked = true;
@@ -1055,6 +1075,12 @@ boolean L13_towerNSTower()
 						}
 					}
 				}
+			}
+
+			if(have_effect($effect[Shortly Wired]) > 0)
+			{
+				//familiar will act twice per round
+				sourcesFamiliar = sourcesFamiliar*2;
 			}
 
 			if(!familiarEquipped)
@@ -1159,7 +1185,7 @@ boolean L13_towerNSTower()
 			}
 			int lastRoundDamage = sources - sourcesReactive - sourcesPassive;	//passive sources only work after surviving a hit
 			//expect to survive 3 hits, hit damage still increases if the first hit is blocked
-			damageSecured = firstRoundDamage + 2*sources + lastRoundDamage;	
+			damageSecured += firstRoundDamage + 2*sources + lastRoundDamage;	
 
 			if(have_skill($skill[Shell Up]))
 			{
