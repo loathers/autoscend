@@ -560,7 +560,7 @@ boolean icehouseUserErrorProtection()
 	}
 	else if (importantMonsters contains icehouseMonster())
 	{
-		if(user_confirm("You have a " + icehouseMonster().to_string() + " frozen in your icehouse. Autoscend thinks it might cause problems, do you want us to melt it?"))
+		if(user_confirm("You have a " + icehouseMonster().to_string() + " frozen in your icehouse. Autoscend thinks it might cause problems, do you want us to melt it? Will default to 'Yes' in 15 seconds.", 15000, true))
 		{
 			visit_url("museum.php?action=icehouse");
 			run_choice(1);
