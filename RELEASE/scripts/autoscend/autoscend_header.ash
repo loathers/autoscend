@@ -436,7 +436,9 @@ boolean auto_harvestBatteries();
 int batteryPoints(item battery);
 int totalBatteryPoints();
 boolean batteryCombine(item battery);
-boolean auto_getBattery(item battery, int qty);
+boolean batteryCombine(item battery, boolean simulate);
+boolean can_get_battery(item target);
+boolean auto_getBattery(item target);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
