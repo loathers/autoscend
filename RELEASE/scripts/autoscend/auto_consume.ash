@@ -1380,7 +1380,7 @@ boolean auto_autoConsumeOne(string type, boolean simulate, item simulationOutput
 	}
 	else
 	{
-		simulationOutput = actions[best]; 
+		simulationOutput = actions[best].it; 
 		return true;
 	}
 }
