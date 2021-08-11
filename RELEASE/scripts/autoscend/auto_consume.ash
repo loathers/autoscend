@@ -1305,11 +1305,11 @@ void auto_drinkNightcap()
 boolean auto_autoConsumeOne(string type)
 {
 	//since not simulating output, ignore the simulationOutput
-	ConsumeAction simulationOutput;
+	item simulationOutput = $item[none];
 	return auto_autoConsumeOne(type, false, simulationOutput);
 }
 
-boolean auto_autoConsumeOne(string type, boolean simulate, ConsumeAction simulationOutput)
+boolean auto_autoConsumeOne(string type, boolean simulate, item simulationOutput)
 {
 	int organLeft()
 	{
