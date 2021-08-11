@@ -642,14 +642,14 @@ void consumeStuff()
 					shouldDrink = true;
 				}
 			}
-			if (shouldDrink && auto_autoConsumeOne("drink", false))
+			if (shouldDrink && auto_autoConsumeOne("drink"))
 			{
 				return;
 			}
 		}
 		if (fullness_left() > 0)
 		{
-			if (auto_autoConsumeOne("eat", false))
+			if (auto_autoConsumeOne("eat"))
 			{
 				return;
 			}
@@ -1286,7 +1286,7 @@ void auto_drinkNightcap()
 	}
 	
 	//fill up remaining liver first. such as stooper space.
-	while(inebriety_left() > 0 && auto_autoConsumeOne("drink", false));
+	while(inebriety_left() > 0 && auto_autoConsumeOne("drink"));
 	
 	//drink your nightcap to become overdrunk
 	ConsumeAction target = auto_bestNightcap();
@@ -1302,7 +1302,14 @@ void auto_drinkNightcap()
 	}
 }
 
-boolean auto_autoConsumeOne(string type, boolean simulate)
+boolean auto_autoConsumeOne(string type)
+{
+	//since not simulating output, ignore the simulationOutput
+	ConsumeAction simulationOutput;
+	return auto_autoConsumeOne(type, false, simulationOutput);
+}
+
+boolean auto_autoConsumeOne(string type, boolean simulate, ConsumeAction simulationOutput)
 {
 	int organLeft()
 	{
@@ -1373,6 +1380,7 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 	}
 	else
 	{
+		simulationOutput = actions[best]; 
 		return true;
 	}
 }
