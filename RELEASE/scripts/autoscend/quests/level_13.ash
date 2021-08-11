@@ -1066,7 +1066,7 @@ boolean L13_towerNSTower()
 					{
 						if(isAttackFamiliar(fam))
 						{
-							if(canChangeToFamiliar(fam) || qt_currentFamiliar(fam))
+							if(canChangeToFamiliar(fam))
 							{
 								handleFamiliar(fam);
 								attackFamiliarPicked = true;
@@ -1112,12 +1112,16 @@ boolean L13_towerNSTower()
 				}
 			}
 			
-			if(my_class() == $class[Turtle Tamer])
+			if(my_class() == $class[Turtle Tamer] && possessEquipment($item[Shocked Shell]))
 			{
 				if (autoEquip($slot[back], $item[Shocked Shell]))
 				{
 					sourcesPassive += 1;
 				}
+			}
+			else
+			{
+				handleBjornify($familiar[Hobo Monkey]);
 			}
 			if(autoEquip($slot[acc1], $item[hippy protest button]))
 			{
@@ -1156,7 +1160,6 @@ boolean L13_towerNSTower()
 				buffMaintain($effect[Psalm of Pointiness], 0, 1, 1);
 				sourcesReactive += 1;
 			}
-			handleBjornify($familiar[Hobo Monkey]);
 			autoEquip($slot[acc2], $item[world\'s best adventurer sash]);
 			autoEquip($slot[acc3], $item[Groll Doll]);
 			autoEquip($slot[acc3], $item[old school calculator watch]);
@@ -1209,7 +1212,7 @@ boolean L13_towerNSTower()
 			}
 			
 			int damageMissing = damageNeed - damageSecured;
-			if(damageMissing <= sourcesReactive && have_effect($effect[Blood Bubble]) > 0)
+			if(damageMissing <= sourcesReactive && damageMissing > 0 && have_effect($effect[Blood Bubble]) > 0)
 			{	//try to remove blocking effect to enable reactive sources
 				if(uneffect($effect[Blood Bubble]))
 				{
