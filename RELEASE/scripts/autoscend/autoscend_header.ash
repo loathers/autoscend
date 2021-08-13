@@ -132,6 +132,8 @@ boolean LX_ornateDowsingRod();
 boolean fancyOilPainting();
 int turkeyBooze();
 int amountTurkeyBooze();
+monster icehouseMonster();
+boolean icehouseUserErrorProtection();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2015.ash
