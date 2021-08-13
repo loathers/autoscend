@@ -1063,7 +1063,7 @@ void consumeStuff();
 boolean consumeFortune();
 void auto_printNightcap();
 void auto_drinkNightcap();
-boolean auto_autoConsumeOne(string type, boolean simulate);
+boolean auto_autoConsumeOne(string type);
 item auto_autoConsumeOneSimulation(string type);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
 int auto_spleenFamiliarAdvItemsPossessed();
