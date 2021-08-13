@@ -1366,7 +1366,7 @@ ConsumeAction auto_findBestConsumeAction(string type)
 boolean auto_autoConsumeOne(string type)
 {
 	
-	ConsuemAction bestAction = auto_findBestConsumeAction(type)
+	ConsumeAction bestAction = auto_findBestConsumeAction(type)
 
 	if (bestAction.it == $item[none])
 	{
