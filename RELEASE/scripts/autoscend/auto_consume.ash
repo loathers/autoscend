@@ -1393,7 +1393,7 @@ boolean auto_autoConsumeOne(string type)
 // For simulation, want to know what would be consumes instead of actually consuming it
 item auto_autoConsumeOneSimulation(string type)
 {
-	ConsuemAction bestAction = auto_findBestConsumeAction(type);
+	ConsumeAction bestAction = auto_findBestConsumeAction(type);
 	return bestAction.it;
 }
 
