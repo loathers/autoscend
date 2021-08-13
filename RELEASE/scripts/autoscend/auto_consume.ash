@@ -1302,14 +1302,7 @@ void auto_drinkNightcap()
 	}
 }
 
-boolean auto_autoConsumeOne(string type)
-{
-	//since not simulating output, ignore the simulationOutput
-	item simulationOutput = $item[none];
-	return auto_autoConsumeOne(type, false, simulationOutput);
-}
-
-boolean auto_autoConsumeOne(string type, boolean simulate, item simulationOutput)
+ConsumeAction auto_findBestConsumeAction(string type)
 {
 	int organLeft()
 	{
@@ -1329,7 +1322,7 @@ boolean auto_autoConsumeOne(string type, boolean simulate, item simulationOutput
 		abort("Unrecognized organ type: should be 'eat' or 'drink', was " + type);
 		return 0;
 	}
-	if (organLeft() == 0) return false;
+	if (organLeft() == 0) return MakeConsumeAction($item[none]);
 
 	ConsumeAction[int] actions;
 	loadConsumables(type, actions);
@@ -1360,29 +1353,48 @@ boolean auto_autoConsumeOne(string type, boolean simulate, item simulationOutput
 		}
 	}
 
-	if (best == -1)
+	if(best == -1)
+	{
+		return MakeConsumeAction($item[none]);
+	}
+	else
+	{
+		return actions[best];
+	}
+}
+
+boolean auto_autoConsumeOne(string type)
+{
+	
+	ConsuemAction bestAction = auto_findBestConsumeAction(type)
+
+	if (bestAction.it == $item[none])
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
 		return false;
 	}
 
-	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(actions[best]), "blue");
+	int best_adv_per_fill = bestAction.adventures / bestAction.size;
+	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(bestAction), "blue");
 	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
 	{
 		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFill " + get_property("auto_consumeMinAdvPerFill"));
 		return false;
 	}
 
-	if(!simulate)
+	if (!autoPrepConsume(actions[best])) 
 	{
-		if (!autoPrepConsume(actions[best])) return false;
-		return autoConsume(actions[best]);
+		return false;
 	}
-	else
-	{
-		simulationOutput = actions[best].it; 
-		return true;
-	}
+	return autoConsume(actions[best]);
+}
+
+// Need separate function to simulate since return type is different
+// For simulation, want to know what would be consumes instead of actually consuming it
+item auto_autoConsumeOneSimulation(string type)
+{
+	ConsuemAction bestAction = auto_findBestConsumeAction(type);
+	return bestAction.it;
 }
 
 boolean auto_knapsackAutoConsume(string type, boolean simulate)

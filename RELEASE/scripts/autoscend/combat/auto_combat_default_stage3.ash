@@ -132,13 +132,10 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		{
 			//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
 			//assume next food will be eaten within 100 turns
-			item simulationOutput = $item[none];
-			if (auto_autoConsumeOne("eat", true, simulationOutput))
+			item simulationOutput = auto_autoConsumeOneSimulation("eat");
+			if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
 			{
-				if(simulationOutput.fullness > 3)
-				{
-					return useItem($item[red rocket]);
-				}
+				return useItem($item[red rocket]);
 			}
 			
 		}
