@@ -1382,11 +1382,11 @@ boolean auto_autoConsumeOne(string type)
 		return false;
 	}
 
-	if (!autoPrepConsume(actions[best])) 
+	if (!autoPrepConsume(bestAction)) 
 	{
 		return false;
 	}
-	return autoConsume(actions[best]);
+	return autoConsume(bestAction);
 }
 
 // Need separate function to simulate since return type is different
