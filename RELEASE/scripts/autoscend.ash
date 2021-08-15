@@ -71,6 +71,7 @@ import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/quantum_terrarium.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
+import <autoscend/paths/wildfire.ash>
 
 
 import <autoscend/quests/level_01.ash>
