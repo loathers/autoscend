@@ -776,6 +776,10 @@ float tcrs_expectedAdvPerFill(string quality);
 boolean tcrs_maximize_with_items(string maximizerString);
 
 ########################################################################################################
+//Defined in autoscend/paths/wildfire.ash
+boolean in_wildfire();
+
+########################################################################################################
 //Defined in autoscend/quests/level_01.ash
 void tootOriole();
 void tootGetMeat();
