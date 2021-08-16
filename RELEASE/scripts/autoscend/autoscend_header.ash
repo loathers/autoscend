@@ -132,6 +132,8 @@ boolean LX_ornateDowsingRod();
 boolean fancyOilPainting();
 int turkeyBooze();
 int amountTurkeyBooze();
+monster icehouseMonster();
+boolean icehouseUserErrorProtection();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2015.ash
@@ -772,6 +774,10 @@ boolean LX_attemptPowerLevelTheSource();
 boolean in_tcrs();
 float tcrs_expectedAdvPerFill(string quality);
 boolean tcrs_maximize_with_items(string maximizerString);
+
+########################################################################################################
+//Defined in autoscend/paths/wildfire.ash
+boolean in_wildfire();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
