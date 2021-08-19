@@ -2820,6 +2820,11 @@ int auto_mall_price(item it)
 	{
 		return -1;	//speakeasy drinks are marked as tradeable but cannot be acquired as a physical item to trade.
 	}
+	if(available_choice_options() contains 0 || available_choice_options() contains 1)	//we are in a choice adventure.
+	{
+		//workaround to this issue https://kolmafia.us/threads/trying-to-use-mall_price-in-a-choice-adventure-stack-overflow.26286/
+		return historical_price(it);
+	}
 	if(is_tradeable(it))
 	{
 		int retval = mall_price(it);

@@ -360,7 +360,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
-			if(options contains 4 && auto_mall_price($item[Engorged Sausages and You]) > 1000) {
+			if(options contains 4) {
 				run_choice(4); // only shows up rarely. when this line was added it was worth 1.3 million in mall
 			} if (in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
 				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
