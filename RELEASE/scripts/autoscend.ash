@@ -365,7 +365,7 @@ boolean LX_burnDelay()
 
 boolean LX_calculateTheUniverse()
 {
-	if (possessOutfit("Frat Warrior Fatigues"))
+	if (possessOutfit("Frat Warrior Fatigues") || auto_warSide() == "hippy")
 	{
 		doNumberology("adventures3"); // want to return false here as all we're doing is generating 3 adventures.
 	}
