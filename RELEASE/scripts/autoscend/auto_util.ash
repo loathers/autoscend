@@ -2820,6 +2820,11 @@ int auto_mall_price(item it)
 	{
 		return -1;	//speakeasy drinks are marked as tradeable but cannot be acquired as a physical item to trade.
 	}
+	if(available_choice_options() contains 0 || available_choice_options() contains 1)	//we are in a choice adventure.
+	{
+		//mafia returns -1 if we check mall_price() while in a choice adv. better to use historical price even if it is outdated
+		return historical_price(it);
+	}
 	if(is_tradeable(it))
 	{
 		int retval = mall_price(it);
