@@ -1119,9 +1119,28 @@ boolean L13_towerNSTower()
 					sourcesPassive += 1;
 				}
 			}
-			else
+			else if(autoEquip($slot[back], $item[buddy bjorn]))
 			{
-				handleBjornify($familiar[Hobo Monkey]);
+				if(handleBjornify($familiar[Chocolate Lab]))
+				{
+					sourcesPassive += 1;
+				}
+				else if(handleBjornify($familiar[Restless Cow Skull]))
+				{
+					sourcesPassive += 1;
+				}
+				else if(have_familiar($familiar[Sludgepuppy]) && my_familiar() != $familiar[Sludgepuppy])
+				{	
+					//if not already chosen as damage familiar
+					if(handleBjornify($familiar[Sludgepuppy]))
+					{
+						sourcesPassive += 1;
+					}
+				}
+				else if(handleBjornify($familiar[Hobo Monkey]))
+				{
+					damageSecured += 3;	// First three rounds of combat
+				}
 			}
 			if(autoEquip($slot[acc1], $item[hippy protest button]))
 			{
