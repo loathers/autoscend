@@ -4779,6 +4779,27 @@ void auto_interruptCheck()
 		restoreAllSettings();
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
 	}
+	else if ((to_int(get_property("auto_interrupt_level")) > 0)
+			&& (to_int(get_property("auto_interrupt_level")) <= my_level()))
+	{
+		set_property("auto_interrupt_level", "");
+		restoreAllSettings();
+		abort("auto_interrupt_level reached and aborting, auto_interrupt_level disabled.");
+	}
+	else if ((to_int(get_property("auto_interrupt_adventure")) > 0)
+			&& (to_int(get_property("auto_interrupt_adventure")) <= my_turncount()))
+	{
+		set_property("auto_interrupt_adventure", "");
+		restoreAllSettings();
+		abort("auto_interrupt_adventure reached and aborting, auto_interrupt_adventure disabled.");
+	}
+	else if ((to_location(get_property("auto_interrupt_location")) == my_location())
+			&& (my_location() != $location[none]))
+	{
+		set_property("auto_interrupt_location", "");
+		restoreAllSettings();
+		abort("auto_interrupt_location reached and aborting, auto_interrupt_location disabled.");
+	}
 	else if (get_property("auto_debugging").to_boolean())
 	{
 		set_property("auto_interrupt", true);

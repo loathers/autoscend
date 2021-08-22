@@ -1,4 +1,7 @@
 auto_interrupt	boolean	Script will abort after the next action is finished (instead of mid turn which can cause problems). Will be reset to false after every time it is used.
+auto_interrupt_adventure	string	Script will abort when you reach the specified adventure number.  Preceding the number with a '+' means that number of adventures in the future.
+auto_interrupt_level	integer	Script will abort when you reach the given level.
+auto_interrupt_location	string	Script will abort when you adventure in the given location.
 auto_debugging	boolean	Every time you run the script it will perform one adventure and then stop by setting auto_interrupt = true
 auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
 auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.

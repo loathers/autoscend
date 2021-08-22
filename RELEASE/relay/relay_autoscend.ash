@@ -228,6 +228,30 @@ void main()
 			}
 			if(get_property(prop) != newSetting)
 			{
+				// auto_interrupt_adventure and auto_interrupt_location need extra handling
+				if (prop == "auto_interrupt_adventure") 
+				{
+					int plus = index_of(newSetting, "+");
+					if (plus >= 0) 
+					{
+						newSetting = to_string(my_turncount() + to_int(substring(newSetting, plus+1)));
+					}
+				}
+				else if (prop == "auto_interrupt_location") {
+					location loc = to_location(newSetting);
+					if (loc == $location[none])
+					{
+						if ((newSetting != "") && (newSetting != "none"))
+						{
+						    writeln("No match found for location " + newSetting + "<br>");
+						}
+						newSetting = "";
+					}
+					else 
+					{
+						newSetting = to_string(loc);
+					}
+				}
 				writeln("Changing setting " + prop + " to " + newSetting + "<br>");
 				set_property(prop, newSetting);
 			}

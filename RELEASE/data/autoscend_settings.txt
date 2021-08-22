@@ -4,10 +4,13 @@
 # variable timing, number, variable name, variable type, description
 
 action	0	auto_interrupt	boolean	Script will abort after the next action is finished (instead of mid turn which can cause problems). Will be reset to false after every time it is used.
-action	1	auto_debugging	boolean	Every time you run the script it will perform one adventure and then stop by setting auto_interrupt = true
-action	2	auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
-action	3	auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.
-action	4	auto_newbieOverride	boolean	If true will override newbie block once then set itself to false. Newbie block is enabled used when you fight a crate (please report crate fighting) or when you spent too many adventures in a zone
+action	1	auto_interrupt_adventure	string	Script will abort when you reach the specified adventure number.  Preceding the number with a '+' means that number of adventures in the future.
+action	2	auto_interrupt_level	integer	Script will abort when you reach the given level.
+action	3	auto_interrupt_location	string	Script will abort when you adventure in the given location.
+action	4	auto_debugging	boolean	Every time you run the script it will perform one adventure and then stop by setting auto_interrupt = true
+action	5	auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
+action	6	auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.
+action	7	auto_newbieOverride	boolean	If true will override newbie block once then set itself to false. Newbie block is enabled used when you fight a crate (please report crate fighting) or when you spent too many adventures in a zone
 
 any	0	auto_skipNEPOverride	boolean	If true will not use the Neverending Party even if mafia says it is available.
 any	1	auto_skipGuzzlrCocktailSet	boolean	If true will not accept and abandon a Platinum Guzzlr quest for the cocktail set.
