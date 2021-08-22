@@ -363,19 +363,15 @@ boolean LX_burnDelay()
 }
 
 
-boolean LX_universeFrat()
+boolean LX_calculateTheUniverse()
 {
-	if(my_daycount() >= 2)
+	if (possessOutfit("Frat Warrior Fatigues") || auto_warSide() == "hippy")
 	{
-		if(possessEquipment($item[Beer Helmet]) && possessEquipment($item[Distressed Denim Pants]) && possessEquipment($item[Bejeweled Pledge Pin]))
-		{
-			doNumberology("adventures3");
-		}
-		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && (doNumberology("battlefield", false) != -1) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
-		{
-			doNumberology("battlefield");
-			return true;
-		}
+		doNumberology("adventures3"); // want to return false here as all we're doing is generating 3 adventures.
+	}
+	else if(my_mp() >= mp_cost($skill[Calculate the Universe]) && doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
+	{
+		return (doNumberology("battlefield") != -1);
 	}
 	return false;
 }
@@ -2790,10 +2786,7 @@ boolean doTasks()
 	if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
 	if(LX_ghostBusting())				return true;
-
-
 	if(witchessFights())					return true;
-	if(my_daycount() != 2)				doNumberology("adventures3");
 
 	//
 	//Adventuring actually starts here.
@@ -2818,22 +2811,13 @@ boolean doTasks()
 	}
 
 	auto_voteSetup(0,0,0);
-
 	auto_setSongboom();
-
 	if(LM_bond())						return true;
-	if(LX_universeFrat())				return true;
-	handleJar();
+	if(LX_calculateTheUniverse())				return true;
 	adventureFailureHandler();
-
 	dna_sorceressTest();
 	dna_generic();
-
-	if(((my_hp() * 5) < my_maxhp()) && (my_mp() > 100))
-	{
-		acquireHP();
-	}
-
+	
 	if (process_tasks()) return true;
 
 	auto_log_info("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");

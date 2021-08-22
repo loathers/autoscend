@@ -1687,26 +1687,33 @@ boolean horsePreAdventure()
 	return getHorse(desiredHorse);
 }
 
-boolean shouldUseWishes(){
+boolean auto_shouldUseWishes()
+{
 	return get_property("auto_useWishes").to_boolean();
 }
 
-int wishesAvailable(){
+int auto_wishesAvailable()
+{
 	int retval = 0;
-	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]))
+	if (auto_shouldUseWishes())
 	{
-		retval += 3 - get_property("_genieWishesUsed").to_int();
-	}
-	if(auto_is_valid($item[pocket wish]))
-	{
-		retval += item_amount($item[pocket wish]);
+		if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]))
+		{
+			retval += 3 - get_property("_genieWishesUsed").to_int();
+		}
+		if(auto_is_valid($item[pocket wish]))
+		{
+			retval += item_amount($item[pocket wish]);
+		}
 	}
 	return retval;
 }
 
-boolean makeGenieWish(string wish){
-	int starting_wishes = wishesAvailable();
-	if(starting_wishes < 1){
+boolean makeGenieWish(string wish)
+{
+	int starting_wishes = auto_wishesAvailable();
+	if (starting_wishes < 1)
+	{
 		return false;
 	}
 
@@ -1721,14 +1728,15 @@ boolean makeGenieWish(string wish){
 	}
 	if(wish_provider == 0)
 	{
-		auto_log_warning("wishesAvailable() thinks I have remaining wishes but makeGenieWish(string wish) was unable to find a valid source for them. wishing failed", "red");
+		auto_log_warning("auto_wishesAvailable() thinks I have remaining wishes but makeGenieWish(string wish) was unable to find a valid source for them. wishing failed", "red");
 		return false;
 	}
 
 	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider, false);
 	page = visit_url("choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish);
 
-	if(wishesAvailable() == starting_wishes){
+	if (auto_wishesAvailable() == starting_wishes)
+	{
 		auto_log_warning("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
