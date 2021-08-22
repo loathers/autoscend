@@ -50,21 +50,6 @@ boolean handleBjornify(familiar fam)
 			}
 		}
 	}
-	if(my_familiar() == $familiar[none])
-	{
-		if(my_bjorned_familiar() == $familiar[Grimstone Golem])
-		{
-			handleFamiliar("stat");
-		}
-		else if(my_bjorned_familiar() == $familiar[Grim Brother])
-		{
-			handleFamiliar("item");
-		}
-		else
-		{
-			handleFamiliar("item");
-		}
-	}
 	return true;
 }
 
