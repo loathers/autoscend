@@ -906,7 +906,7 @@ boolean L13_towerNSTower()
 			int sourcesAttack = 0;		//damage sources when using weapon attack or skill
 			int sourcesFamiliar = 0;	//damage sources from familiar apply before getting hit
 			int sourcesReactive = 0;	//damage in reaction to being hit. "stinging damage" doesn't work without getting hit
-			int sourcesPassive = 0;		//other passive damage sources, only work after surviving a hit, doesn't include reactive/stinging sources
+			int sourcesPassive = 0;		//other passive damage sources, only work after surviving to end of round, doesn't include reactive/stinging sources
 			
 			int sourceNeed = 13;	//removed inaccurate uses of this value, it is now only used in informative log message
 			int damageNeed = 50;
@@ -1198,9 +1198,12 @@ boolean L13_towerNSTower()
 			{
 				sourcesReactive += 1;
 			}
-			if(have_skill($skill[Frigidalmatian]) && (my_mp() > 300))
+			if(have_skill($skill[Frigidalmatian]))	//1 turn, doesn't need remover
 			{
-				sourcesPassive += 1;
+				if(buffMaintain($effect[Frigidalmatian], 300, 1, 1))
+				{
+					sourcesPassive += 1;
+				}
 			}
 			
 			
