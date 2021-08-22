@@ -529,7 +529,7 @@ boolean L13_towerNSContests()
 
 			score = numeric_modifier(challenge + " damage");
 			score += numeric_modifier(challenge + " spell damage");
-			if((score < 80) && get_property("auto_useWishes").to_boolean())
+			if((score < 80) && auto_shouldUseWishes())
 			{
 				switch(challenge)
 				{

@@ -1,9 +1,9 @@
-//Path specific combat handling for disguises delimit
+//Path specific combat handling for Disguises Delimit
 
 void disguises_combat_helper(int round, monster enemy, string text)
 {
-	//identify mask worn during disguises delimit path
-	if(my_path() != "Disguises Delimit")
+	//identify mask worn during Disguises Delimit path
+	if(!in_disguises())
 	{
 		return;
 	}
@@ -34,7 +34,7 @@ void disguises_combat_helper(int round, monster enemy, string text)
 string auto_combatDisguisesStage1(int round, monster enemy, string text)
 {
 	// stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
-	if(my_path() != "Disguises Delimit")
+	if(!in_disguises())
 	{
 		return "";
 	}
@@ -67,7 +67,7 @@ string auto_combatDisguisesStage1(int round, monster enemy, string text)
 string auto_combatDisguisesStage5(int round, monster enemy, string text)
 {
 	// stage 5 = kill
-	if(my_path() != "Disguises Delimit")
+	if(!in_disguises())
 	{
 		return "";
 	}

@@ -149,7 +149,7 @@ boolean LX_unlockThinknerdWarehouse(boolean spend_resources)
 	getShirtWhenHaveNone($item[bat-ass leather jacket]);		//77 mus req
 
 	//wish for a shirt
-	if(spend_resources && wishesAvailable() > 0 && shouldUseWishes() && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
+	if(spend_resources && auto_wishesAvailable() > 0 && auto_shouldUseWishes() && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
 	{
 		makeGenieWish("for a blessed rustproof +2 gray dragon scale mail");
 		target_shirt = $item[blessed rustproof +2 gray dragon scale mail];
@@ -1040,33 +1040,44 @@ boolean LX_acquireEpicWeapon()
 {
 	if (internalQuestStatus("questG04Nemesis") > 4)
 	{
-		return false;	//already done with this part
+		return false;	// already done with this part
 	}
-	if(!isGuildClass() || !guild_store_available())
+	if (!isGuildClass() || !guild_store_available())
 	{
-		return false;	//no guild access. can't start this quest
+		return false;	// no guild access. can't start this quest
 	}
-	if(internalQuestStatus("questG04Nemesis") < 0)
+	if (internalQuestStatus("questG04Nemesis") < 0)
 	{
-		visit_url("guild.php?place=scg");	//start quest
+		visit_url("guild.php?place=scg");	// start quest
 		visit_url("guild.php?place=scg"); // No really, start the quest.
-		cli_execute("refresh quests");		//fixes buggy tracking. confirmed still in mafia r20143
+		cli_execute("refresh quests");		// fixes buggy tracking. confirmed still in mafia r20143
 		if (internalQuestStatus("questG04Nemesis") < 0)
 		{
 			abort("Failed to start Nemesis quest. Please start it manually then run me again");
 		}
 	}
 
-	if (item_amount(epicWeapons[my_class()]) > 0) { return false; }
+	if (item_amount(epicWeapons[my_class()]) > 0)
+	{
+		return false;
+	}
 
-	if (internalQuestStatus("questG04Nemesis") == 4) {
+	if (internalQuestStatus("questG04Nemesis") == 4)
+	{
 		visit_url("guild.php?place=scg");
 		return true;
 	}
 
-	if (shenShouldDelayZone($location[The Unquiet Garves])) {
+	if (shenShouldDelayZone($location[The Unquiet Garves]))
+	{
 		auto_log_debug("Delaying The Unquiet Garves in case of Shen.");
 		return false;
+	}
+
+	if (item_amount(starterWeapons[my_class()]) == 0)
+	{
+		// make sure we have a starter weapon for the swap.
+		acquireGumItem(starterWeapons[my_class()]);
 	}
 
 	addToMaximize("-equip " + starterWeapons[my_class()].to_string());
@@ -1077,7 +1088,10 @@ boolean LX_acquireEpicWeapon()
 // TODO: Add the rest of the Nemesis quest with a flag to enable doing it in-run?
 boolean LX_NemesisQuest()
 {
-	if (LX_guildUnlock() || LX_acquireEpicWeapon()) { return true; }
+	if (LX_guildUnlock() || LX_acquireEpicWeapon())
+	{
+		return true;
+	}
 	return false;
 }
 
