@@ -1288,7 +1288,7 @@ boolean L13_towerNSTower()
 							{
 								sourcesReactive += 1;
 								damageSecured += 3;
-								if(have_effect($effect[Blood Bubble]) > 0)
+								if(firstHitBlocked)
 								{
 									damageSecured -= 1;
 								}
