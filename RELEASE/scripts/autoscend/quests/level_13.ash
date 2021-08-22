@@ -1153,8 +1153,10 @@ boolean L13_towerNSTower()
 		//if we reached this spot we decided that we do not need a boning knife and intend to try to towerkill the wall of bones.
 		uneffect($effect[Scarysauce]);
 		uneffect($effect[Jalape&ntilde;o Saucesphere]);
-		uneffect($effect[Mayeaugh]);
 		uneffect($effect[Spiky Shell]);
+		uneffect($effect[Psalm of Pointiness]);
+		uneffect($effect[Mayeaugh]);
+		uneffect($effect[Feeling Nervous]);
 		buffMaintain($effect[Tomato Power], 0, 1, 1);
 		buffMaintain($effect[Seeing Colors], 0, 1, 1);
 		buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
