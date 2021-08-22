@@ -1135,11 +1135,41 @@ boolean L13_towerNSTower()
 			{
 				sourcesReactive += 1;
 			}
-			if(item_amount($item[glob of spoiled mayo]) > 0)
+			
+			//effects that aren't free to remove, if stuck with them against wall of bones you will need Electric Boning Knife
+			//count already active effects but don't get yet unless already have the boning knife or unless won't meet conditions to do without
+			int effectRemoversAvailable = item_amount($item[Soft Green Echo Eyedrop Antidote]) + item_amount($item[Ancient Cure-All]);
+			boolean willNeedToRemoveEffects = true;
+			if(item_amount($item[Electric Boning Knife]) > 0 ||
+			(my_class() != $class[Sauceror] && !have_skill($skill[Garbage Nova])) || 
+			(!canChangeFamiliar() && isAttackFamiliar(my_familiar())) ||
+			get_property("auto_getBoningKnife").to_boolean())
 			{
-				buffMaintain($effect[Mayeaugh], 0, 1, 1);
+				willNeedToRemoveEffects = false;
+			}
+			if(have_effect($effect[Mayeaugh]) > 0)
+			{
 				sourcesPassive += 1;
 			}
+			else if(!willNeedToRemoveEffects && item_amount($item[glob of spoiled mayo]) > 0)
+			{
+				if(buffMaintain($effect[Mayeaugh], 0, 1, 1))
+				{
+					sourcesPassive += 1;
+				}
+			}
+			if(have_effect($effect[Feeling Nervous]) > 0)
+			{
+				sourcesReactive += 1;
+			}
+			else if(!willNeedToRemoveEffects && auto_canFeelNervous())
+			{
+				if(buffMaintain($effect[Feeling Nervous], 0, 1, 1))
+				{
+					sourcesReactive += 1;
+				}
+			}
+			
 			if(have_skill($skill[Scarysauce]))
 			{
 				buffMaintain($effect[Scarysauce], 0, 1, 1);
@@ -1190,8 +1220,10 @@ boolean L13_towerNSTower()
 			//expect to survive 3 hits, hit damage still increases if the first hit is blocked
 			damageSecured += firstRoundDamage + 2*sources + lastRoundDamage;	
 
+			int extraRoundsFromBlocking = 0;
 			if(have_skill($skill[Shell Up]))
 			{
+				extraRoundsFromBlocking += 1;	//a person(Turtle Tamer?) with $item[wicker slicker] could have it pulled for more blocks?
 				if((have_effect($effect[Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Blessing of She-Who-Was]) > 0) || (have_effect($effect[Grand Blessing of She-Who-Was]) > 0) || (have_effect($effect[Glorious Blessing of She-Who-Was]) > 0))
 				{
 					if(have_skill($skill[Blessing of the War Snapper]) && (my_mp() > (2 * mp_cost($skill[Blessing of the War Snapper]))))
@@ -1208,20 +1240,56 @@ boolean L13_towerNSTower()
 			}
 			if(have_skill($skill[Sauceshell]))
 			{
+				extraRoundsFromBlocking += 1;
 				damageSecured += 1 + sourcesFamiliar + sourcesPassive;	//reactive damage doesn't work on blocked hit
 			}
 			
+			if(willNeedToRemoveEffects && effectRemoversAvailable > 0)
+			{
+				//damage effects not used yet because of wall of bones coming next
+				foreach ef in $effects[Mayeaugh,Feeling Nervous]
+				{
+					if(damageSecured < damageNeed && have_effect(ef) == 0 && effectRemoversAvailable > 0)
+					{
+						if(ef == $effect[Mayeaugh] && item_amount($item[glob of spoiled mayo]) > 0)
+						{
+							if(buffMaintain(ef, 0, 1, 1))
+							{
+								sourcesPassive += 1;
+								damageSecured += 3 + extraRoundsFromBlocking;
+								effectRemoversAvailable -= 1;
+							}
+						}
+						else if(ef == $effect[Feeling Nervous] && auto_canFeelNervous())
+						{
+							if(buffMaintain(ef, 0, 1, 1))
+							{
+								sourcesReactive += 1;
+								damageSecured += 3;
+								if(have_effect($effect[Blood Bubble]) > 0)
+								{
+									damageSecured -= 1;
+								}
+								effectRemoversAvailable -= 1;
+							}
+						}
+					}
+				}
+			}
+			
 			int damageMissing = damageNeed - damageSecured;
-			if(damageMissing <= sourcesReactive && damageMissing > 0 && have_effect($effect[Blood Bubble]) > 0)
+			if(damageMissing <= sourcesReactive && damageMissing > 0 && have_effect($effect[Blood Bubble]) > 0 && effectRemoversAvailable > 0)
 			{	//try to remove blocking effect to enable reactive sources
 				if(uneffect($effect[Blood Bubble]))
 				{
 					firstHitBlocked = false;
 					//what else can block the first hit?
 					damageSecured += sourcesReactive;
+					effectRemoversAvailable -= 1;
 				}
 			}
 			
+			sources = sourcesAttack + sourcesFamiliar + sourcesReactive + sourcesPassive;	//update for information
 			auto_log_info("I think I have " + sources + " sources of damage, let's do this!", "blue");
 			if(in_pokefam())
 			{
