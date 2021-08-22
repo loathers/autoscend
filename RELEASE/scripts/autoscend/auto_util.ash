@@ -1023,6 +1023,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[familiar scrapbook]);
 	}
+	if(combat_string == ("skill " + $skill[Use the Force]))
+	{
+		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
+	}
 	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
 	{
 		return autoEquip($item[Kremlin\'s Greatest Briefcase]);
@@ -2605,94 +2609,34 @@ int doNumberology(string goal, boolean doIt, string option)
 		return -1;
 	}
 
-	static int [string] signs;
-	signs["Mongoose"] = 1;
-	signs["Wallaby"] = 2;
-	signs["Vole"] = 3;
-	signs["Platypus"] = 4;
-	signs["Opossum"] = 5;
-	signs["Marmot"] = 6;
-	signs["Wombat"] = 7;
-	signs["Blender"] = 8;
-	signs["Packrat"] = 9;
-	signs["Bad Moon"] = 10; #Derp Mode? Derp Mode.
+	int numberwang = 69; // default to adventures3
+	if (goal == "battlefield") {
+		numberwang = 51;
+	}
 
-	static string [int] numberwang;
-	numberwang[0] = "meat";
-	numberwang[1] = "muscle";
-	numberwang[2] = "sleepy";
-	numberwang[3] = "confused";
-	numberwang[4] = "embarrassed";
-	numberwang[5] = "far out";
-	numberwang[6] = "wings";
-	numberwang[7] = "beaten up";
-	numberwang[8] = "poisoned";
-	numberwang[9] = "perfume";
-	numberwang[10] = "steroid";
-	numberwang[11] = "inebriety";
-	numberwang[12] = "gnoll";
-	numberwang[13] = "???";
-	numberwang[14] = "moxieweed";
-	numberwang[15] = "meat";
-	numberwang[16] = "magicalness-in-a-can";
-	numberwang[17] = "adventures";
-	numberwang[18] = "booze";
-	numberwang[19] = "+moxie";
-	numberwang[20] = "-moxie";
-	numberwang[21] = "fites";
-	numberwang[22] = "phone";
-	numberwang[23] = "muscle";
-	numberwang[27] = "moxie";
-	numberwang[30] = "ghuol";
-	numberwang[33] = "magicalness-in-a-can";
-	numberwang[34] = "+moxie";
-	numberwang[35] = "-muscle";
-	numberwang[36] = "adventures2";
-	numberwang[37] = "fites3";
-	numberwang[38] = "+myst";
-	numberwang[40] = "meat";
-	numberwang[44] = "booze";
-	numberwang[48] = "butt";
-	numberwang[51] = "battlefield";
-	numberwang[58] = "teleportitis";
-	numberwang[69] = "adventures3";
-	numberwang[75] = "booze";
-	numberwang[98] = "myst";
-	numberwang[99] = "booze";
+	int[int] numberology = reverse_numberology();
 
-	# seed + ascensions + moonsign * (spleen + level) + turns
-	int melancholy = my_spleen_use() + my_level();
-	int score = my_adventures() + (melancholy * (my_ascensions() + signs[my_sign()]));
-
-	score = score % 100;
-	int i=0;
-	while(i < 100)
-	{
-		int current = (score + (melancholy * i)) % 100;
-		if(numberwang[current] == goal)
+	if (numberology contains numberwang) {
+		auto_log_info("Found option for Numberology: " + numberwang + " (" + goal + ")" , "blue");
+		if(!doIt)
 		{
-			auto_log_info("Found option for Numberology: " + current + " (" + goal + ")" , "blue");
-			if(!doIt)
-			{
-				return i;
-			}
-
-			if(goal == "battlefield")
-			{
-				string[int] pages;
-				pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
-				pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + i;
-				autoAdvBypass(0, pages, $location[Noob Cave], option);
-				handleTracker($monster[War Frat 151st Infantryman], $skill[Calculate the Universe], "auto_copies");
-			}
-			else
-			{
-				visit_url("runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1", true);
-				visit_url("choice.php?whichchoice=1103&pwd=&option=1&num=" + i);
-			}
-			return i;
+			return numberology[numberwang];
 		}
-		i = i + 1;
+
+		if(goal == "battlefield")
+		{
+			string[int] pages;
+			pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
+			pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + numberology[numberwang];
+			autoAdvBypass(0, pages, $location[Noob Cave], option);
+			handleTracker($monster[War Frat 151st Infantryman], $skill[Calculate the Universe], "auto_copies");
+		}
+		else
+		{
+			visit_url("runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1", true);
+			visit_url("choice.php?whichchoice=1103&pwd=&option=1&num=" + numberology[numberwang]);
+		}
+		return numberology[numberwang];
 	}
 	return -1;
 }

@@ -1539,7 +1539,7 @@ boolean L12_themtharHills()
 	handleFamiliar("meat");
 	addToMaximize("200meat drop");
 
-	if(get_property("auto_useWishes").to_boolean())
+	if(auto_shouldUseWishes())
 	{
 		makeGenieWish($effect[Frosty]);
 	}

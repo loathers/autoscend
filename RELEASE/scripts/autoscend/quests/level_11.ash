@@ -1123,7 +1123,7 @@ boolean L11_wishForBaaBaaBuran()
 	{
 		return false;
 	}
-	if(!get_property("auto_useWishes").to_boolean())
+	if(!auto_shouldUseWishes())
 	{
 		auto_log_warning("Skipping wishing for Baa'baa'bu'ran because auto_useWishes=false", "red");
 	}
@@ -1855,7 +1855,7 @@ boolean L11_redZeppelin()
 
 	if(cloversAvailable() > 0 && get_property("zeppelinProtestors").to_int() < 75)
 	{
-		if(cloversAvailable() >= 3 && get_property("auto_useWishes").to_boolean())
+		if(cloversAvailable() >= 3 && auto_shouldUseWishes())
 		{
 			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
 			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
