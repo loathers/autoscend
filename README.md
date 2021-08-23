@@ -74,7 +74,7 @@ Your ascension may or may not break in spectacular ways! Sorry in advance if tha
 
 ## Issues?
 
-Please do create github issues for any problems you run in to. We make no promises about how fast
+Please do create github issues for any problems you run into. We make no promises about how fast
 we'll be to handle them, but we'll try to fix reasonable problems in a reasonable timeframe.
 
 You can also come discuss problems with the script on the [#autoscend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3), or just discuss the script in general!
