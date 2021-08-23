@@ -4,15 +4,15 @@ autoscend (formerly [sl_ascend](https://github.com/soolar/sl_ascend); formerly, 
 
 The script was moved to this more communal location and has tentative support from some much less experienced developers. Basic support is expected to continue but fixes and enhancements will likely be slow. Large feature support (such as new challenge paths) will probably not happen without more support from the community. Feel free to [pitch in](./docs/CONTRIBUTING.md).
 
-Seriously, we need and want the help. Want to learn how to code? Or maybe you know how to code but want to check out KoLMafia's ash scripting langauge? We are very friendly and happy to teach.
+Seriously, we need and want the help. Want to learn how to code? Or maybe you know how to code but want to check out KoLMafia's ash scripting language? We are very friendly and happy to teach.
 
 # autoscend
 
 autoscend is a script that will play through an entire ascension for you in the Kingdom of Loathing.
 It is built up from sl\_ascend and cc\_ascend before it.
 
-autoscend's goal is to be able to brute force an ascension for all paths of KoL, not to do it optimally, but within a couple of real-life days of the target. If you bear this in mind while you use it, you will have a much better experience.  
-If, however, you expect it to run absolutely bleeding edge ascensions with optimal day/turn counts you are in for a world of disappointment.  
+autoscend's goal is to be able to brute force an ascension for all paths of KoL, not to do it optimally, but within a couple of real-life days of the target. If you bear this in mind while you use it, you will have a much better experience. If, however, you expect it to run absolutely bleeding edge ascensions with optimal day/turn counts you are in for a world of disappointment.
+
 A general purpose ascension script, which supports accounts with any number of perms and/or Mr Store items from none to almost all, will not be optimally tuned to your specific situation. We suggest you adjust your expectations accordingly.
 
 ## License
