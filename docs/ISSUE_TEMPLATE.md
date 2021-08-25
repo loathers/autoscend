@@ -15,7 +15,6 @@ Please answer the following questions for yourself before submitting an issue. *
 * Run type (Casual/Normal/Hardcore/Aftercore):
 * Challenge Path (Standard/Path Name/None):
 * Number of Ascensions:
-* Are you using the beta version of autoscend?:
 
 # Expected/Desired Behavior
 
