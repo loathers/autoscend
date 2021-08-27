@@ -889,7 +889,7 @@ boolean fortuneCookieEvent()
 
 		location goal = $location[The Hidden Temple];
 
-		if((my_path() == $path[Community Service]) && (my_daycount() == 1))
+		if(my_path() == $path[Community Service] && my_daycount() == 1)
 		{
 			goal = $location[The Limerick Dungeon];
 		}
@@ -1073,7 +1073,7 @@ void initializeDay(int day)
 		}
 	}
 
-	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && (my_path() == $path[Community Service]))
+	if(item_amount($item[GameInformPowerDailyPro Magazine]) > 0 && my_daycount() == 2 && my_path() == $path[Community Service])
 	{
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
@@ -1514,7 +1514,7 @@ boolean LX_attemptPowerLevel()
 
 	if(LX_freeCombats(true)) return true;
 	
-	if(chateaumantegna_available() && haveFreeRestAvailable() && my_path() != "The Source")
+	if(chateaumantegna_available() && haveFreeRestAvailable() && my_path() != $path[The Source])
 	{
 		doFreeRest();
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
@@ -2298,7 +2298,7 @@ boolean adventureFailureHandler()
 			tooManyAdventures = false;
 		}
 
-		if(tooManyAdventures && (my_path() == "The Source"))
+		if(tooManyAdventures && (my_path() == $path[The Source]))
 		{
 			if($locations[The Haunted Ballroom, The Haunted Bathroom, The Haunted Bedroom, The Haunted Gallery] contains place)
 			{
