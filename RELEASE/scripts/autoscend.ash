@@ -771,7 +771,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 		}
 
-		if(!$paths[Heavy Rains, License to Adventure, ]$classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(!$paths[Heavy Rains, License to Adventure, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Actually Ed the Undying] contains my_path())
 		{
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
 			{
