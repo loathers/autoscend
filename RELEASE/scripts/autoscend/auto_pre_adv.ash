@@ -2,7 +2,7 @@ import<autoscend.ash>
 
 void print_footer()
 {
-	auto_log_info("[" +my_class()+ "] @ path of [" +my_path()+ "]", "blue");
+	auto_log_info("[" +my_class().to_string()+ "] @ path of [" +my_path().to_string()+ "]", "blue");
 	
 	string next_line = "HP: " +my_hp()+ "/" +my_maxhp()+ ", MP: " +my_mp()+ "/" +my_maxmp()+ ", Meat: " +my_meat();
 	switch(my_class())

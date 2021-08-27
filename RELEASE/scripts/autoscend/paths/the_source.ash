@@ -1,6 +1,6 @@
 boolean theSource_initializeSettings()
 {
-	if(my_path() == "The Source")
+	if(my_path() == $path[The Source])
 	{
 #		set_property("auto_lastSpoon", 0);
 		set_property("auto_getBeehive", true);
@@ -107,7 +107,7 @@ boolean L8_theSourceNinjaOracle()
 
 boolean LX_theSource()
 {
-	if(my_path() != "The Source")
+	if(my_path() != $path[The Source])
 	{
 		return false;
 	}
@@ -170,7 +170,7 @@ boolean LX_theSource()
 
 boolean theSource_oracle()
 {
-	if(my_path() != "The Source")
+	if(my_path() != $path[The Source])
 	{
 		return false;
 	}
@@ -205,7 +205,7 @@ boolean theSource_oracle()
 
 boolean LX_attemptPowerLevelTheSource()
 {
-	if(my_path() != "The Source")
+	if(my_path() != $path[The Source])
 	{
 		return false;
 	}

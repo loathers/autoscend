@@ -1,6 +1,6 @@
 boolean awol_initializeSettings()
 {
-	if(my_path() == "Avatar of West of Loathing")
+	if(my_path() == $path[Avatar of West of Loathing])
 	{
 		set_property("auto_awolLastSkill", 0);
 		set_property("auto_getBeehive", true);
@@ -10,7 +10,7 @@ boolean awol_initializeSettings()
 
 void awol_useStuff()
 {
-	if(my_path() == "Avatar of West of Loathing")
+	if(my_path() == $path[Avatar of West of Loathing])
 	{
 		if(have_skill($skill[Patent Medicine]))
 		{

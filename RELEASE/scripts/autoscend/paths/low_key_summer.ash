@@ -26,7 +26,7 @@ lowKeys[$item[Discarded bike lock key]] = $location[The Overgrown Lot];
 
 boolean in_lowkeysummer()
 {
-	return auto_my_path() == "Low Key Summer";
+	return my_path() == $path[Low Key Summer];
 }
 
 void lowkey_initializeSettings()

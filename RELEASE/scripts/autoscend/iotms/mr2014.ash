@@ -99,7 +99,7 @@ boolean dna_startAcquire()
 	{
 		return false;
 	}
-	if(my_path() == "Community Service")
+	if(my_path() == $path[Community Service])
 	{
 		return false;
 	}
@@ -168,7 +168,7 @@ boolean dna_generic()
 
 	boolean[phylum] potion;
 
-	if(auto_my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		switch(my_daycount())
 		{
@@ -178,7 +178,7 @@ boolean dna_generic()
 		default:		potion = $phylums[humanoid, construct, dude];		break;
 		}
 	}
-	else if(auto_my_path() == "Community Service")
+	else if(my_path() == $path[Community Service])
 	{
 		switch(my_daycount())
 		{

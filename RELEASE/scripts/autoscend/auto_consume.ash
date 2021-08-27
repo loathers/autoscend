@@ -399,11 +399,11 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	{
 		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
 	}
-	if((auto_my_path() == "Nuclear Autumn") && (toDrink.inebriety != 1))
+	if((my_path() == $path[Nuclear Autumn]) && (toDrink.inebriety != 1))
 	{
 		return false;
 	}
-	if((auto_my_path() == "Dark Gyffte") != ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink))
+	if((my_path() == $path[Dark Gyffte]) != ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink))
 	{
 		return false;
 	}
@@ -414,7 +414,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 			return false;
 		}
 	}
-	if(auto_my_path() == "License to Adventure")
+	if(my_path() == $path[License to Adventure])
 	{
 		item [int] martinis = bondDrinks();
 		boolean found = false;
@@ -463,20 +463,20 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
-	if((auto_my_path() == "Nuclear Autumn") && (toEat.fullness != 1))
+	if((my_path() == $path[Nuclear Autumn]) && (toEat.fullness != 1))
 	{
 		return false;
 	}
-	if((auto_my_path() == "Dark Gyffte") && (toEat == $item[magical sausage]))
+	if((my_path() == $path[Dark Gyffte]) && (toEat == $item[magical sausage]))
 	{
 		// the one thing you can eat as Vampyre AND other classes
 		return true;
 	}
-	if((auto_my_path() == "Dark Gyffte") != ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat))
+	if((my_path() == $path[Dark Gyffte]) != ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat))
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Slayer")
+	if(my_path() == $path[Zombie Slayer])
 	{
 		return ($items[crappy brain, decent brain, good brain, boss brain, hunter brain, brains casserole, fricasseed brains, steel lasagna] contains toEat);
 	}
@@ -539,13 +539,13 @@ float consumptionProgress()
 	}
 	
 	// don't consider spleen as a significant adventure organ in most paths
-	if (isActuallyEd() || my_path() == "Oxygenarian")
+	if ($paths[Oxygenarian, Actually Ed the Undying] contains my_path())
 	{
 		organs_used += my_spleen_use();
 		organs_max += spleen_limit();
 	}
-	// if(my_path() == "Community Service"), autoscend does try to use spleen for adventures but also for buffs
-	// if(my_path() == "Avatar of Sneaky Pete"), autoscend doesn't try to use molotov soda or create Hate to produce them
+	// if(my_path() == $path[Community Service]), autoscend does try to use spleen for adventures but also for buffs
+	// if(my_path() == $path[Avatar of Sneaky Pete]), autoscend doesn't try to use molotov soda or create Hate to produce them
 	
 	if (organs_max == 0)
 	{
@@ -578,7 +578,7 @@ void consumeStuff()
 	{
 		return;
 	}
-	if(auto_my_path() == "Community Service")
+	if(my_path() == $path[Community Service])
 	{
 		cs_eat_spleen();
 		return;
@@ -857,7 +857,7 @@ boolean autoConsume(ConsumeAction action)
 boolean loadConsumables(string _type, ConsumeAction[int] actions)
 {
 	// Just in case!
-	if(auto_my_path() == "Dark Gyffte")
+	if(my_path() == $path[Dark Gyffte])
 	{
 		abort("We shouldn't be calling loadConsumables() in Dark Gyffte. Please report this.");
 	}
@@ -1231,7 +1231,7 @@ ConsumeAction auto_bestNightcap()
 
 void auto_printNightcap()
 {
-	if(my_path() == "Dark Gyffte")
+	if(my_path() == $path[Dark Gyffte])
 	{
 		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}
@@ -1245,7 +1245,7 @@ void auto_drinkNightcap()
 	{
 		return;
 	}
-	if(my_path() == "Dark Gyffte")
+	if(my_path() == $path[Dark Gyffte])
 	{
 		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}

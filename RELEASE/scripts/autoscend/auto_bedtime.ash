@@ -264,7 +264,7 @@ boolean doBedtime()
 		string temp = visit_url("shop.php?action=bacta&whichshop=mayoclinic");
 	}
 
-	if((auto_my_path() == "Nuclear Autumn") && (get_property("falloutShelterLevel").to_int() >= 3) && !get_property("_falloutShelterSpaUsed").to_boolean())
+	if((my_path() == $path[Nuclear Autumn]) && (get_property("falloutShelterLevel").to_int() >= 3) && !get_property("_falloutShelterSpaUsed").to_boolean())
 	{
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault3");
 	}
@@ -495,7 +495,7 @@ boolean doBedtime()
 			}
 			int amt = count(extrudeChoice);
 			string acquire = "booze";
-			if(auto_my_path() == "Teetotaler")
+			if(my_path() == $path[Teetotaler])
 			{
 				acquire = "food";
 			}

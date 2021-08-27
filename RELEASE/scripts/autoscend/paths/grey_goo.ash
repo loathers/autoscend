@@ -1,6 +1,6 @@
 boolean in_ggoo()
 {
-	return auto_my_path() == "Grey Goo";
+	return my_path() == $path[Grey Goo];
 }
 
 void grey_goo_initializeSettings()

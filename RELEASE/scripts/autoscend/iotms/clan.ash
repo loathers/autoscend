@@ -489,7 +489,7 @@ boolean zataraClanmate(string who)
 	{
 		string temp = visit_url("clan_viplounge.php?preaction=lovetester", false);
 		string choices = "&q1=pizza&q2=batman&q3=thick";
-		if (get_property("auto_optimizeConsultsInRun").to_boolean() && my_path() != "None")
+		if (get_property("auto_optimizeConsultsInRun").to_boolean() && my_path() != $path[None])
 		{
 			choices = "&q1=cake&q2=wonderwoman&q3=thick";
 		}

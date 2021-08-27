@@ -1,13 +1,13 @@
 void bat_startAscension()
 {
-	if(my_path() == "Dark Gyffte") {
+	if(my_path() == $path[Dark Gyffte]) {
 		visit_url("choice.php?whichchoice=1343&option=1");
 		bat_reallyPickSkills(20);
 	}
 }
 void bat_initializeSettings()
 {
-	if(my_path() == "Dark Gyffte")
+	if(my_path() == $path[Dark Gyffte])
 	{
 		set_property("auto_getSteelOrgan", false);
 		set_property("auto_grimstoneFancyOilPainting", false);
@@ -172,7 +172,7 @@ void bat_terminateSession()
 
 void bat_initializeDay(int day)
 {
-	if(my_path() != "Dark Gyffte")
+	if(my_path() != $path[Dark Gyffte])
 	{
 		return;
 	}

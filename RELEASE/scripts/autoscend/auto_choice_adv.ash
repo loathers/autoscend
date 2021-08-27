@@ -62,14 +62,14 @@ boolean auto_run_choice(int choice, string page)
 			warChoiceHandler(choice);
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
-			if(auto_my_path() == "Live. Ascend. Repeat.")
+			if(my_path() == $path[Live. Ascend. Repeat.])
 			{
 				set_property("_LAR_skipNC163", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
 			}
 			run_choice(4); // skip
 			break;
 		case 178: // Hammering the Armory
-			if(auto_my_path() == "Live. Ascend. Repeat.")
+			if(my_path() == $path[Live. Ascend. Repeat.])
 			{
 				set_property("_LAR_skipNC178", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
 			}
@@ -326,7 +326,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 876: // One Simple Nightstand (The Haunted Bedroom)
-			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && auto_my_path() != "Way of the Surprising Fist")
+			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && my_path() != $path[Way of the Surprising Fist])
 			{
 				run_choice(1); //get old leather wallet worth ~500 meat
 			}
@@ -344,7 +344,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
 			boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
-			if (in_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
+			if ($paths[Way of the Surprising Fist, Nuclear Autumn, Avatar of Boris] contains my_path() && in_hardcore())) {
 				needSpectacles = false;
 			}
 			if (needSpectacles) {
@@ -499,7 +499,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1);
 			break;
 		case 1115: // VYKEA! (VYKEA)
-			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && auto_my_path() != "Community Service") {
+			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && my_path() != $path[Community Service]) {
 				run_choice(1); // get consumables
 			} else if (!get_property("_VYKEALoungeRaided").to_boolean()) {
 				run_choice(4); // get Wal-Mart gift certificates

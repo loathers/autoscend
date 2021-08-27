@@ -128,7 +128,7 @@ boolean mummifyFamiliar(familiar fam)
 boolean mummifyFamiliar()
 {
 	auto_hasMummingTrunk();
-	if (my_path() == "Community Service")
+	if (my_path() == $path[Community Service])
 	{
 		return false;
 	}
@@ -307,7 +307,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		loveEffect = 3;
 	}
-	if((auto_my_path() == "Actually Ed the Undying") && ((my_mp() < 20) || (my_turncount() < 10)))
+	if((my_path() == $path[Actually Ed the Undying]) && ((my_mp() < 20) || (my_turncount() < 10)))
 	{
 		return false;
 	}
@@ -1145,7 +1145,7 @@ boolean getSpaceJelly()
 	{
 		return false;
 	}
-	if(my_path() != "Standard")
+	if(my_path() != $path[Standard])
 	{
 		if(!inAftercore())
 		{
@@ -1848,7 +1848,7 @@ boolean makeGeniePocket()
 
 boolean spacegateVaccineAvailable()
 {
-	if(my_path() == "Kingdom of Exploathing") return false;
+	if(my_path() == $path[Kingdom of Exploathing]) return false;
 
 	if(!get_property("spacegateAlways").to_boolean() || get_property("_spacegateToday").to_boolean())
 	{

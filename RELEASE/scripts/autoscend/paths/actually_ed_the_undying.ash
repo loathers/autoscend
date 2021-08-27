@@ -1,6 +1,6 @@
 boolean isActuallyEd()
 {
-	return (my_class() == $class[Ed] || my_path() == "Actually Ed the Undying");
+	return (my_class() == $class[Ed] || my_path() == $path[Actually Ed the Undying]);
 }
 
 int ed_spleen_limit()

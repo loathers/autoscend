@@ -45,7 +45,7 @@ boolean auto_barrelPrayers()
 
 	boolean[string] prayers;
 
-	if(my_path() == "License to Adventure")
+	if(my_path() == $path[License to Adventure])
 	{
 		switch(my_daycount())
 		{
@@ -55,7 +55,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Nuclear Autumn")
+	else if(my_path() == $path[Nuclear Autumn])
 	{
 		switch(my_daycount())
 		{
@@ -65,7 +65,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Glamour, Vigor];					break;
 		}
 	}
-	else if(my_path() == "The Source")
+	else if(my_path() == $path[The Source])
 	{
 		switch(my_daycount())
 		{
@@ -75,7 +75,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Avatar of West of Loathing")
+	else if(my_path() == $path[Avatar of West of Loathing])
 	{
 		switch(my_daycount())
 		{
@@ -85,7 +85,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Community Service")
+	else if(my_path() == $path[Community Service])
 	{
 		switch(my_daycount())
 		{
@@ -105,7 +105,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Glamour, Vigor];					break;
 		}
 	}
-	else if(my_path() == "Avatar of Sneaky Pete")
+	else if(my_path() == $path[Avatar of Sneaky Pete])
 	{
 		switch(my_daycount())
 		{
@@ -125,7 +125,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Way of the Surprising Fist")
+	else if(my_path() == $path[Way of the Surprising Fist])
 	{
 		switch(my_daycount())
 		{
@@ -135,7 +135,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Glamour, Vigor];					break;
 		}
 	}
-	else if(my_path() == "Heavy Rains")
+	else if(my_path() == $path[Heavy Rains])
 	{
 		switch(my_daycount())
 		{
@@ -145,7 +145,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Glamour, Vigor];					break;
 		}
 	}
-	else if(my_path() == "Actually Ed the Undying")
+	else if(my_path() == $path[Actually Ed the Undying])
 	{
 		if((elementalPlanes_access($element[spooky])) && (get_property("edPoints").to_int() >= 2))
 		{
@@ -236,7 +236,7 @@ boolean auto_mayoItems()
 		case 4:				mayos = $items[Mayo Lance];							break;
 		}
 	}
-	else if(my_path() == "Community Service")
+	else if(my_path() == $path[Community Service])
 	{
 		switch(my_daycount())
 		{
@@ -246,7 +246,7 @@ boolean auto_mayoItems()
 		case 4:				mayos = $items[none];								break;
 		}
 	}
-	else if(my_path() == "Heavy Rains" && !in_hardcore())
+	else if(my_path() == $path[Heavy Rains] && !in_hardcore())
 	{
 		switch(my_daycount())
 		{
@@ -263,7 +263,7 @@ boolean auto_mayoItems()
 		default:			mayos = $items[none];								break;
 		}
 	}
-	else if(my_path() == "License to Adventure")
+	else if(my_path() == $path[License to Adventure])
 	{
 		switch(my_daycount())
 		{
@@ -575,7 +575,7 @@ boolean chateaumantegna_nightstandSet()
 boolean chateauPainting()
 {
 	int paintingLevel = 8;
-	if(auto_my_path() == "One Crazy Random Summer")
+	if(my_path() == $path[One Crazy Random Summer])
 	{
 		paintingLevel = 9;
 	}
@@ -991,11 +991,11 @@ boolean deck_useScheme(string action)
 			break;
 		}
 
-		if(my_path() == "Nuclear Autumn")
+		if(my_path() == $path[Nuclear Autumn])
 		{
 			cards["key"] = true;
 		}
-		if(my_path() == "License to Adventure")
+		if(my_path() == $path[License to Adventure])
 		{
 			cards["key"] = true;
 		}
@@ -1069,15 +1069,15 @@ boolean deck_useScheme(string action)
 				continue;
 			}
 		}
-		if((my_path() == "The Source") && (card == (my_primestat() + " stat")))
+		if((my_path() == $path[The Source]) && (card == (my_primestat() + " stat")))
 		{
 			continue;
 		}
-		if((my_path() == "Way of the Surprising Fist") && ($strings[Candlestick, Knife, Lead Pipe, Revolver, Rope, Wrench] contains card))
+		if((my_path() == $path[Way of the Surprising Fist]) && ($strings[Candlestick, Knife, Lead Pipe, Revolver, Rope, Wrench] contains card))
 		{
 			continue;
 		}
-		if((card == "1952 Mickey Mantle") && ((my_meat() >= 20000) || (my_path() == "Way of the Surprising Fist")))
+		if((card == "1952 Mickey Mantle") && ((my_meat() >= 20000) || (my_path() == $path[Way of the Surprising Fist])))
 		{
 			continue;
 		}

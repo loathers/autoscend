@@ -575,7 +575,7 @@ boolean L13_towerNSContests()
 			{
 				if(internalQuestStatus("questL13Final") == 2)
 				{
-					if(auto_my_path() == "The Source")
+					if(my_path() == $path[The Source])
 					{
 						//As of r17048, encountering a Source Agent on the Challenge line results in nsContestants being decremented twice.
 						//Since we were using Mafia\'s tracking here, we have to compensate for when it fails...
@@ -1292,7 +1292,7 @@ boolean L13_towerNSFinal()
 		auto_log_warning("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		return L13_towerFinalHeavyRains();
 	}
@@ -1302,12 +1302,12 @@ boolean L13_towerNSFinal()
 		return L13_bhy_towerFinal();
 	}
 	
-	if(auto_my_path() == "The Source")
+	if(my_path() == $path[The Source])
 	{
 		acquireMP(200, 0);
 	}
 	
-	if(!($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, The Source, Way of the Surprising Fist, Zombie Slayer] contains auto_my_path()))
+	if(!$paths[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, The Source, Way of the Surprising Fist, Zombie Slayer] contains my_path()))
 	{
 		//Only if the final boss does not unbuff us...
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
@@ -1427,7 +1427,7 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
-	if(auto_my_path() == "Disguises Delimit" && internalQuestStatus("questL13Final") == 12)
+	if(my_path() == $path[Disguises Delimit] && internalQuestStatus("questL13Final") == 12)
 	{
 		cli_execute("refresh quests");
 		if(internalQuestStatus("questL13Final") != 12)

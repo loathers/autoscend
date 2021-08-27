@@ -260,7 +260,7 @@ WarPlan auto_bestWarPlan()
 		considerArena = false;
 		considerJunkyard = false;
 	}
-	if(auto_my_path() == "Way of the Surprising Fist")
+	if(my_path() == $path[Way of the Surprising Fist])
 	{
 		considerNuns = false;
 	}
@@ -528,7 +528,7 @@ boolean L12_getOutfit()
 	}
 	
 	//heavy rains softcore pull handling
-	if(!in_hardcore() && (auto_my_path() == "Heavy Rains"))
+	if(!in_hardcore() && (my_path() == $path[Heavy Rains]))
 	{
 		// auto_warhippyspy indicates rainman was already used to copy a war hippy spy in heavy rains. if it failed to YR pull missing items
 		if(get_property("auto_warhippyspy") == "done" && get_property("auto_hippyInstead").to_boolean())
@@ -547,7 +547,7 @@ boolean L12_getOutfit()
 	}
 
 	//softcore pull handling for all other paths
-	if(!in_hardcore() && (auto_my_path() != "Heavy Rains"))
+	if(!in_hardcore() && (my_path() != $path[Heavy Rains]))
 	{
 		if(get_property("auto_hippyInstead").to_boolean())
 		{
@@ -718,7 +718,7 @@ boolean L12_startWar()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 	
-	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
+	if(my_path() != $path[Dark Gyffte] && my_mp() > 50 && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
 	}
@@ -860,7 +860,7 @@ boolean L12_filthworms()
 			januaryToteAcquire($item[Broken Champagne Bottle]);
 		}
 
-		if(auto_my_path() == "Live. Ascend. Repeat.")
+		if(my_path() == $path[Live. Ascend. Repeat.])
 		{
 			equipMaximizedGear();
 			if(item_drop_modifier() < 400.0)
@@ -1005,7 +1005,7 @@ boolean L12_gremlins()
 		else return true;
 	}
 
-	if(auto_my_path() == "Disguises Delimit")
+	if(my_path() == $path[Disguises Delimit])
 	{
 		abort("Do gremlins manually, sorry. Or set sidequestJunkyardCompleted=fratboy and we will just skip them");
 	}
@@ -1114,7 +1114,7 @@ boolean L12_sonofaBeach()
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
 
-	if(auto_my_path() != "Live. Ascend. Repeat.")
+	if(my_path() != $path[Live. Ascend. Repeat.])
 	{
 		if (providePlusCombat(25, true, true) < 0.0)
 		{
@@ -1228,7 +1228,7 @@ boolean L12_sonofaPrefix()
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
 
-	if(auto_my_path() != "Live. Ascend. Repeat.")
+	if(my_path() != $path[Live. Ascend. Repeat.])
 	{
 		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
 		{
@@ -1488,7 +1488,7 @@ boolean L12_themtharHills()
 		return false;
 	}
 
-	if (in_tcrs() || in_koe() || auto_my_path() == "Way of the Surprising Fist")
+	if ($paths[Two Crazy Random Summer, Kingdom of Exploathing, Way of the Surprising Fist] contains my_path())
 	{
 		return false;
 	}
@@ -1516,7 +1516,7 @@ boolean L12_themtharHills()
 	}
 
 	autoEquip($item[Half a Purse]);
-	if(auto_my_path() == "Heavy Rains")
+	if(my_path() == "Heavy Rains")
 	{
 		autoEquip($item[Thor\'s Pliers]);
 	}
@@ -1577,14 +1577,14 @@ boolean L12_themtharHills()
 	}
 	asdonBuff($effect[Driving Observantly]);
 
-	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (auto_my_path() != "Heavy Rains"))
+	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (my_path() != $path[Heavy Rains]))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
 		autoEquip($item[Li\'l Pirate Costume]);
 		handleFamiliar($familiar[Trick-or-Treating Tot]);
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
 	}

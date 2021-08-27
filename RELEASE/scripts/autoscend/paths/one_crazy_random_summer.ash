@@ -1,6 +1,6 @@
 boolean ocrs_postHelper()
 {
-	if(my_path() != "One Crazy Random Summer")
+	if(my_path() != $path[One Crazy Random Summer])
 	{
 		return false;
 	}
@@ -11,7 +11,7 @@ boolean ocrs_postHelper()
 
 boolean ocrs_postCombatResolve()
 {
-	if((have_effect($effect[Beaten Up]) > 0) && (auto_my_path() == "One Crazy Random Summer"))
+	if((have_effect($effect[Beaten Up]) > 0) && (my_path() == $path[One Crazy Random Summer]))
 	{
 		if(contains_text(get_property("auto_funPrefix"), "annoying") ||
 			contains_text(get_property("auto_funPrefix"), "phase-shifting") ||

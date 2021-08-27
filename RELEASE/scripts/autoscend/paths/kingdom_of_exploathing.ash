@@ -1,6 +1,6 @@
 boolean in_koe()
 {
-	return my_path() == "37" || my_path() == "Kingdom of Exploathing";
+	return my_path() == $path[Kingdom of Exploathing];
 }
 
 boolean koe_initializeSettings()

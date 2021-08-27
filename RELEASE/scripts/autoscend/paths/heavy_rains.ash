@@ -1,6 +1,6 @@
 void hr_initializeSettings()
 {
-	if(my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		#Rain Man (Heavy Rains) Related settings
 		set_property("auto_holeinthesky", false);
@@ -89,7 +89,7 @@ boolean routineRainManHandler()
 
 void hr_initializeDay(int day)
 {
-	if(my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		if((day == 1) && (get_property("auto_day1_skills") != "finished"))
 		{
@@ -155,7 +155,7 @@ void hr_doBedtime()
 
 boolean doHRSkills()
 {
-	if(my_path() != "Heavy Rains")
+	if(my_path() != $path[Heavy Rains])
 	{
 		return false;
 	}

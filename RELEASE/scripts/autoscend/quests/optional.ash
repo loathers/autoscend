@@ -213,7 +213,7 @@ boolean LX_steelOrgan()
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
-	if((auto_my_path() == "Nuclear Autumn") || (auto_my_path() == "License to Adventure"))
+	if($paths[Nuclear Autumn, License to Adventure] contains my_path())
 	{
 		auto_log_info("You could get a Steel Organ for aftercore, but why? We won't help with this deviant and perverse behavior. Turning off setting.", "blue");
 		set_property("auto_getSteelOrgan", false);
@@ -391,11 +391,11 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Nuclear Autumn" || in_pokefam())
+	if($paths[Nuclear Autumn, Pocket Familiars] contains my_path())
 	{
 		return false;
 	}
-	if (!($strings[Picky, Community Service, Low Key Summer] contains auto_my_path())
+	if (!($paths[Picky, Community Service, Low Key Summer] contains my_path())
 		&& get_property('auto_skipUnlockGuild').to_boolean())
 	{
 		return false;
@@ -475,7 +475,7 @@ boolean LX_guildUnlock()
 
 boolean startArmorySubQuest()
 {
-	if(in_koe() || auto_my_path() == "Nuclear Autumn")
+	if($paths[Kingdom of Exploathing, Nuclear Autumn] contains my_path())
 	{
 		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
@@ -540,7 +540,7 @@ boolean startMeatsmithSubQuest()
 	{
 		return false;	//quest already started
 	}
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		if(item_amount($item[Bone With a Price Tag On It]) > 0)
 		{
@@ -647,7 +647,7 @@ boolean startGalaktikSubQuest()
 	{
 		return false;	//quest already started
 	}
-	if(auto_my_path() == "Nuclear Autumn" || in_koe())
+	if($paths[Nuclear Autumn, Kingdom of Exploathing] contains my_path())
 	{
 		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
@@ -1098,7 +1098,7 @@ boolean LX_NemesisQuest()
 void houseUpgrade()
 {
 	//function for upgrading your dwelling.
-	if(isActuallyEd() || my_class() == $class[Vampyre] || auto_my_path() == "Nuclear Autumn")
+	if($paths[Actually Ed the Undying, Dark Gyffte,Nuclear Autumn] contains my_path())
 	{
 		return;		//paths where dwelling is locked
 	}

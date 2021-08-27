@@ -78,12 +78,12 @@ string auto_combatHandler(int round, monster enemy, string text)
 	set_property("auto_combatHP", my_hp());
 	set_property("auto_diag_round", round);
 
-	if(my_path() == "One Crazy Random Summer")
+	if(my_path() == $path[One Crazy Random Summer])
 	{
 		enemy = ocrs_combat_helper(text);
 		enemy = last_monster();
 	}
-	if(my_path() == "Avatar of West of Loathing")
+	if(my_path() == $path[Avatar of West of Loathing])
 	{
 		awol_combat_helper(text);
 	}

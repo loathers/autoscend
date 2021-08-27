@@ -111,10 +111,7 @@ boolean pathHasFamiliar()
 	
 	//path check for cases where the path bans familairs and does not use a unique class.
 	//since pokefam converts your familiars into pokefam, they are not actually familiars in that path and cannot be used as familiars.
-	if($strings[
-	License to Adventure,
-	Pocket Familiars
-	] contains auto_my_path())
+	if($paths[License to Adventure, Pocket Familiars] contains my_path())
 	{
 		return false;
 	}
@@ -681,7 +678,7 @@ void preAdvUpdateFamiliar(location place)
 	}
 	
 	//familiar equipment overrides
-	if(my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		if(famChoice != $familiar[Left-Hand Man])
 		{
@@ -725,7 +722,7 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 	
-	if(my_path() != "Community Service" && auto_checkFamiliarMummery(my_familiar()))
+	if(my_path() != $path[Community Service] && auto_checkFamiliarMummery(my_familiar()))
 	{
 		mummifyFamiliar();
 	}
@@ -738,7 +735,7 @@ boolean checkTerrarium()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Nuclear Autumn" || auto_my_path() == "You, Robot")
+	if($paths[Nuclear Autumn, You\, Robot] contains my_path())
 	{
 		return true;	//these paths use an alternative form of terrarium
 	}

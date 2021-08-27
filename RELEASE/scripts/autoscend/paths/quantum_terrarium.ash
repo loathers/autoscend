@@ -1,6 +1,6 @@
 boolean in_quantumTerrarium()
 {
-	return auto_my_path() == "Quantum Terrarium";
+	return my_path() == $path[Quantum Terrarium];
 }
 
 boolean qt_currentFamiliar(familiar fam)

@@ -104,7 +104,7 @@ boolean januaryToteAcquire(item it)
 
 	if(choice == 2)
 	{
-		if((auto_my_path() == "Way of the Surprising Fist") || in_boris())
+		if((my_path() == $path[Way of the Surprising Fist]) || in_boris())
 		{
 			return false;
 		}
@@ -739,7 +739,7 @@ int neverendingPartyRemainingFreeFights()
 		return 0;
 	}
 	//if path randomizes names then the free fights are not free
-	if(auto_my_path() == "Disguises Delimit" || auto_my_path() == "One Crazy Random Summer")
+	if($paths[Disguises Delimit, One Crazy Random Summer] contains my_path())
 	{
 		return 0;
 	}

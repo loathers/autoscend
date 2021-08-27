@@ -54,7 +54,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//TODO auto_doCombatCopy property is silly. get rid of it
-	if(!haveUsed($item[Rain-Doh black box]) && (my_path() != "Heavy Rains") && (get_property("_raindohCopiesMade").to_int() < 5))
+	if(!haveUsed($item[Rain-Doh black box]) && (my_path() != $path[Heavy Rains]) && (get_property("_raindohCopiesMade").to_int() < 5))
 	{
 		if((enemy == $monster[Modern Zmobie]) && (get_property("auto_modernzmobiecount").to_int() < 3))
 		{
@@ -299,7 +299,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//use latte iotm to restore 50% of max MP
-	if((!in_zelda() && my_class() != $class[Vampyre] && my_path() != "Zombie Slayer") &&	//paths that do not use MP
+	if((!$paths[Path of the Plumber, Dark Gyffte, Zombie Slayer] contains my_oath()) &&	//paths that do not use MP
 	canUse($skill[Gulp Latte]) &&
 	my_mp() * 2 < my_maxmp())		//gulp latte restores 50% of your MP. do not waste it.
 	{

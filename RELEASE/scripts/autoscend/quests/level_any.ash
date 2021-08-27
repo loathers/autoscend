@@ -92,7 +92,7 @@ boolean LX_unlockDesert()
 		return false;
 	}
 	
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -140,7 +140,7 @@ boolean LX_unlockDesert()
 
 boolean LX_desertAlternate()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		return LX_hippyBoatman();
 	}

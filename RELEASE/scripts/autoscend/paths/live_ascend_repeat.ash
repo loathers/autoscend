@@ -1,6 +1,6 @@
 boolean groundhogSafeguard()
 {
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(my_path() == $path[Live. Ascend. Repeat.])
 	{
 		string repeats = get_property("lastEncounter");
 		if((repeats == "Skull, Skull, Skull") || (repeats == "Urning Your Keep") || (repeats == "Turn Your Head and Coffin") || (repeats == "Curtains") || (repeats == "There's No Ability Like Possibility") || (repeats == "Putting Off Is Off-Putting") || (repeats == "Huzzah!"))
@@ -26,7 +26,7 @@ boolean groundhogSafeguard()
 
 boolean canGroundhog(location loc)
 {
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(my_path() == $path[Live. Ascend. Repeat.])
 	{
 		if($locations[The Castle In The Clouds In The Sky (Ground Floor), The Defiled Alcove, The Defiled Niche, The Defiled Nook, The Haunted Ballroom] contains loc)
 		{
@@ -43,7 +43,7 @@ boolean canGroundhog(location loc)
 
 boolean groundhogAbort(location loc)
 {
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(my_path() == $path[Live. Ascend. Repeat.])
 	{
 		generic_t itemNeed = zone_needItem(loc);
 		if(!itemNeed._boolean)
@@ -67,7 +67,7 @@ boolean groundhogAbort(location loc)
 boolean LM_groundhog()
 {
 	//Not best way but just do it...
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(my_path() == $path[Live. Ascend. Repeat.])
 	{
 		if(get_property("_sourceTerminalDigitizeUses").to_int() < 3)
 		{

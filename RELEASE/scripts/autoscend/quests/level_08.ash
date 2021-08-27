@@ -254,7 +254,7 @@ boolean L8_getMineOres()
 	}
 
 	//heavy rain copy handling.
-	if(auto_my_path() == "Heavy Rains" && have_skill($skill[Rain Man]))
+	if(my_path() == $path[Heavy Rains] && have_skill($skill[Rain Man]))
 	{
 		if(my_rain() < 50)
 		{
@@ -304,7 +304,7 @@ boolean L8_getMineOres()
 			numCloversKeep = 0;
 		}
 	}
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		if(cloversAvailable() <= numCloversKeep)
 		{
@@ -601,7 +601,7 @@ boolean L8_trapperGroar()
 	//error catching for if we are actually on step5 and mafia did not notice.
 	if(item_amount($item[Groar\'s Fur]) > 0 || item_amount($item[Winged Yeti Fur]) > 0)
 	{
-		auto_log_info("Quest tracking error detected. Mafia thinks we are in step4 of questL08Trapper but we are in fact in step5. Correcting. Current Path = " +my_path(), "red");
+		auto_log_info("Quest tracking error detected. Mafia thinks we are in step4 of questL08Trapper but we are in fact in step5. Correcting. Current Path = " +my_path().to_string(), "red");
 		set_property("questL08Trapper", "step5");
 		return true;
 	}

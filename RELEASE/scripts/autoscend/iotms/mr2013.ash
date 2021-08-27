@@ -133,7 +133,7 @@ void oldPeoplePlantStuff()
 		return;
 	}
 
-	if(my_path() == "Community Service")
+	if(my_path() == $path[Community Service])
 	{
 		if(my_location() == $location[The Velvet / Gold Mine])
 		{

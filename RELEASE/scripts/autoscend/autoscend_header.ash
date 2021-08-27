@@ -1452,7 +1452,6 @@ boolean careAboutDrops(monster mon);
 boolean[skill] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
-string auto_my_path();
 boolean acquireTransfunctioner();
 int [item] auto_get_campground();
 boolean buyUpTo(int num, item it);

@@ -395,7 +395,7 @@ int pullsNeeded(string data)
 	{
 		return 0;
 	}
-	if (isActuallyEd() || auto_my_path() == "Community Service")
+	if ($paths[Actually Ed the Undying, Community Service] contains my_path())
 	{
 		return 0;
 	}
@@ -472,7 +472,7 @@ int pullsNeeded(string data)
 		if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) == 0))
 		{
 			auto_log_warning("Need star chart", "red");
-			if((auto_my_path() == "Heavy Rains") && (my_rain() >= 50))
+			if((my_path() == $path[Heavy Rains]) && (my_rain() >= 50))
 			{
 				auto_log_info("You should rain man a star chart", "blue");
 			}
@@ -662,7 +662,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[Camp Scout Backpack], 1, 0);
 		}
 
-		if(my_path() == "Way of the Surprising Fist")
+		if(my_path() == $path[Way of the Surprising Fist])
 		{
 			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
 		}
@@ -701,7 +701,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if(((auto_my_path() == "Picky") || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
+		if(((my_path() == $path[Picky]) || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
 		{
 			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
 			{
@@ -721,7 +721,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) && (auto_my_path() != "Heavy Rains"))
+		if((my_primestat() == $stat[Muscle]) && (my_path() != $path[Heavy Rains]))
 		{
 			if((closet_amount($item[Fake Washboard]) == 0) && glover_usable($item[Fake Washboard]))
 			{
@@ -762,7 +762,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if(auto_my_path() == "Picky")
+		if(my_path() == $path[Picky])
 		{
 			pullXWhenHaveY($item[gumshoes], 1, 0);
 		}
@@ -771,7 +771,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 		}
 
-		if((auto_my_path() != "Heavy Rains") && (auto_my_path() != "License to Adventure") && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(!$paths[Heavy Rains, License to Adventure, ]$classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
 		{
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
 			{
@@ -855,7 +855,7 @@ boolean LX_doVacation()
 	int meat_needed = 500;
 	int adv_needed = 3;
 	int adv_budget = my_adventures() - auto_advToReserve();
-	if(my_path() == "Way of the Surprising Fist")
+	if(my_path() == $path[Way of the Surprising Fist])
 	{
 		meat_needed = 5;
 		adv_needed = 5;
@@ -889,7 +889,7 @@ boolean fortuneCookieEvent()
 
 		location goal = $location[The Hidden Temple];
 
-		if((my_path() == "Community Service") && (my_daycount() == 1))
+		if((my_path() == $path[Community Service]) && (my_daycount() == 1))
 		{
 			goal = $location[The Limerick Dungeon];
 		}
@@ -1073,7 +1073,7 @@ void initializeDay(int day)
 		}
 	}
 
-	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && (auto_my_path() == "Community Service"))
+	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && (my_path() == $path[Community Service]))
 	{
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
@@ -1210,7 +1210,7 @@ void initializeDay(int day)
 			auto_beachCombHead("exp");
 		}
 
-		if((get_property("lastCouncilVisit").to_int() < my_level()) && (auto_my_path() != "Community Service"))
+		if((get_property("lastCouncilVisit").to_int() < my_level()) && (my_path() != $path[Community Service]))
 		{
 			cli_execute("counters");
 			council();
@@ -1285,7 +1285,7 @@ void initializeDay(int day)
 				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
 		}
-		if (chateaumantegna_havePainting() && !isActuallyEd() && auto_my_path() != "Community Service")
+		if (chateaumantegna_havePainting() && !$paths[Community Service, Actually Ed the Undying] contains my_path())
 		{
 			if(auto_have_familiar($familiar[Reanimated Reanimator]))
 			{
@@ -1514,7 +1514,7 @@ boolean LX_attemptPowerLevel()
 
 	if(LX_freeCombats(true)) return true;
 	
-	if(chateaumantegna_available() && haveFreeRestAvailable() && auto_my_path() != "The Source")
+	if(chateaumantegna_available() && haveFreeRestAvailable() && my_path() != "The Source")
 	{
 		doFreeRest();
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
@@ -2230,7 +2230,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(auto_my_path() != "Community Service")
+	if(my_path() != $path[Community Service])
 	{
 		if(item_amount($item[Portable Pantogram]) > 0)
 		{
@@ -2252,7 +2252,7 @@ boolean LX_craftAcquireItems()
 
 boolean councilMaintenance()
 {
-	if (auto_my_path() == "Community Service" || in_koe())
+	if ($paths[Community Service, Kingdom of Exploathing] contains my_path())
 	{
 		return false;
 	}
@@ -2433,7 +2433,7 @@ boolean autosellCrap()
 	{
 		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	if(my_path() == "Way of the Surprising Fist") 
+	if(my_path() == $path[Way of the Surprising Fist]) 
 	{
 		return false;		//selling things in the way of the suprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
@@ -2526,7 +2526,7 @@ void print_header()
 	{
 		auto_log_info("Snow suit usage: " + get_property("_snowSuitCount") + " carrots: " + get_property("_carrotNoseDrops"), "blue");
 	}
-	if(auto_my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		auto_log_info("Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}
@@ -2607,7 +2607,7 @@ boolean process_tasks()
 		abort("Could not load /data/autoscend_task_order.txt");
 	}
 
-	string task_path = my_path();
+	string task_path = my_path().to_string();
 	if (!(task_order contains task_path))
 	{
 		task_path = "default";
@@ -2760,7 +2760,7 @@ boolean doTasks()
 	if(LM_kolhs()) 						return true;
 	if(LM_jarlsberg())					return true;
 
-	if(auto_my_path() != "Community Service")
+	if(my_path() != $path[Community Service])
 	{
 		cheeseWarMachine(0, 0, 0, 0);
 
@@ -2796,7 +2796,7 @@ boolean doTasks()
 	{
 		return true;
 	}
-	if(auto_my_path() == "Community Service")
+	if(my_path() == $path[Community Service])
 	{
 		abort("Should not have gotten here, aborted LA_cs_communityService method allowed return to caller. Uh oh.");
 	}
@@ -2871,7 +2871,7 @@ void auto_begin()
 	auto_log_info("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
-	auto_log_info("Current Ascension: " + auto_my_path());
+	auto_log_info("Current Ascension: " + my_path().to_string());
 
 	auto_settings();
 

@@ -2,7 +2,7 @@
 
 void picky_pulls()
 {
-	if(my_path() == "Picky")
+	if(my_path() == $path[Picky])
 	{
 		if(my_daycount() == 3)
 		{
@@ -173,7 +173,7 @@ boolean picky_buyskills()
 		}
 		break;
 	case $class[Sauceror]:
-		if((my_level() >= 1) && (my_meat() >= 1250) && !have_skill($skill[Simmer]) && (auto_my_path() == "Community Service"))
+		if((my_level() >= 1) && (my_meat() >= 1250) && !have_skill($skill[Simmer]) && (my_path() == $path[Community Service]))
 		{
 			visit_url("guild.php?action=buyskill&skillid=25", true);
 		}

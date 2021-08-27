@@ -201,7 +201,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 	
 	//duplicate turns the enemy from a single enemy into a mob containing 2 copies of this enemy. Doubling their stats and doubling their drops
-	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && (auto_my_path() != "Nuclear Autumn"))
+	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && (my_path() != $path[Nuclear Autumn]))
 	{
 		if($monsters[Dairy Goat] contains enemy)
 		{

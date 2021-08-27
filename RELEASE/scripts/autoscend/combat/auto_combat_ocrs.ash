@@ -2,7 +2,7 @@
 
 monster ocrs_combat_helper(string page)
 {
-	if(my_path() != "One Crazy Random Summer")
+	if(my_path() != $path[One Crazy Random Summer])
 	{
 		auto_log_error("Should not be in ocrs_combat_helper if not on the path!");
 	}

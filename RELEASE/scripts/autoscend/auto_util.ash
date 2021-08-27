@@ -38,7 +38,7 @@ void debugMaximize(string req, int meat)	//This function will be removed.
 		auto_log_debug("Added -tie to maximize", "red");
 	}
 	auto_log_info("Desired maximize: " + req, "blue");
-	string situation = " " + my_class() + " " + my_path() + " " + my_sign();
+	string situation = " " + my_class().to_string() + " " + my_path().to_string() + " " + my_sign();
 	if(in_hardcore())
 	{
 		situation = "Hardcore" + situation;
@@ -730,7 +730,7 @@ boolean summonMonster(string option)
 			bootyCalls++;
 		}
 	}
-	if(auto_my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		int rain = my_rain() + (turns_left * 0.85);
 		rainCalls = rain / 50;
@@ -1293,7 +1293,7 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin)
 
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition)
 {
-	if((!condition) || (my_meat() < meatMin) || (my_path() == "Way of the Surprising Fist"))
+	if((!condition) || (my_meat() < meatMin) || (my_path() == $path[Way of the Surprising Fist]))
 	{
 		return false;
 	}
@@ -1607,11 +1607,11 @@ boolean acquireHermitItem(item it)
 
 boolean isHermitAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(my_path() == $path[Zombie Master])
 	{
 		return false;
 	}
@@ -1624,11 +1624,11 @@ boolean isHermitAvailable()
 
 boolean isGalaktikAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(my_path() == $path[Zombie Master])
 	{
 		return false;
 	}
@@ -1641,11 +1641,11 @@ boolean isGalaktikAvailable()
 
 boolean isGeneralStoreAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(my_path() == $path[Zombie Master])
 	{
 		return false;
 	}
@@ -1654,11 +1654,11 @@ boolean isGeneralStoreAvailable()
 
 boolean isArmoryAndLeggeryStoreAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(my_path() == $path[Zombie Master])
 	{
 		return false;
 	}
@@ -1694,11 +1694,11 @@ boolean isMystGuildStoreAvailable() {
 
 boolean isArmoryAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(my_path() == $path[Zombie Master])
 	{
 		return false;
 	}
@@ -1711,11 +1711,11 @@ boolean isArmoryAvailable()
 
 boolean isUnclePAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(my_path() == $path[Zombie Master])
 	{
 		return false;
 	}
@@ -2501,7 +2501,7 @@ boolean auto_autosell(int quantity, item toSell)
 		return false;
 	}
 
-	if(my_path() != "Way of the Surprising Fist")
+	if(my_path() != $path[Way of the Surprising Fist])
 	{
 		return autosell(quantity, toSell);
 	}
@@ -2783,7 +2783,7 @@ int auto_mall_price(item it)
 
 boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 {
-	if(auto_my_path() == "Community Service")
+	if(my_path() == $path[Community Service])
 	{
 		return false;
 	}
@@ -3159,16 +3159,6 @@ void shrugAT(effect anticipated)
 	auto_log_info("I think we're good to go to apply " + anticipated, "blue");
 }
 
-
-string auto_my_path()
-{
-	// This is for handling the situation briefly after a new path is created so that we can
-	// attempt to use proper names.
-	// Most of the time, it is just a pointless wrapper.
-	// This is only needed in mainline files, path specific files have already been supported.
-	return my_path();
-}
-
 boolean acquireTransfunctioner()
 {
 	if(available_amount($item[Continuum Transfunctioner]) > 0)
@@ -3260,7 +3250,7 @@ int [item] auto_get_campground()
 	}
 
 	static boolean didCheck = false;
-	if((auto_my_path() == "Nuclear Autumn") && !didCheck)
+	if((my_path() == $path[Nuclear Autumn]) && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
@@ -3385,7 +3375,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		return false;
 	}
-	if((item_amount(source) < uses) && (my_path() != "Way of the Surprising Fist"))
+	if((item_amount(source) < uses) && (my_path() != $path[Way of the Surprising Fist]))
 	{
 		if(historical_price(source) < 2000)
 		{
@@ -3576,13 +3566,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Fireproof Lips]:					useItem = $item[SPF 451 lip balm];			break;
 	case $effect[Fire Inside]:					useItem = $item[Hot Coal];						break;
 	case $effect[Fishy\, Oily]:
-		if(auto_my_path() == "Heavy Rains")
+		if(my_path() == $path[Heavy Rains])
 		{
 			useItem = $item[Gourmet Gourami Oil];
 		}																						break;
 	case $effect[Fishy Fortification]:			useItem = $item[Fish-Liver Oil];				break;
 	case $effect[Fishy Whiskers]:
-		if(auto_my_path() == "Heavy Rains")
+		if(my_path() == $path[Heavy Rains])
 		{
 			useItem = $item[Catfish Whiskers];
 		}																						break;
@@ -4443,11 +4433,11 @@ boolean auto_check_conditions(string conds)
 				if(req_mainstat == $stat[none])
 					abort('"' + condition_data + '" does not properly convert to a stat!');
 				return req_mainstat == my_primestat();
-			// data: The text name of the path, as returned by my_path()
+			// data: The text name of the path, as returned by my_path().to_string()
 			// You must be currently on that path
 			// No safety checking possible here, so hopefully you don't misspell anything
 			case "path":
-				return condition_data == auto_my_path();
+				return condition_data == my_path().to_string();
 			// data: Text name of the skill, as used by to_skill()
 			// You must have the given skill
 			// As a precaution, autoscend aborts if to_skill returns $skill[none]
@@ -4823,7 +4813,7 @@ boolean autoFlavour(location place)
 			return setFlavour($element[none]);
 	}
 
-	if(auto_my_path() == "One Crazy Random Summer")
+	if(my_path() == $path[One Crazy Random Summer])
 	{
 		// monsters can randomly be any element in OCRS
 		setFlavour($element[none]);
@@ -5585,7 +5575,7 @@ int meatReserve()
 	//how much do we reserve for [your father's MacGuffin diary]?
 	if(item_amount($item[your father\'s MacGuffin diary]) == 0 &&		//you do not yet have diary
 	!in_koe() &&														//diary is given by council for free in kingdom of exploathing
-	my_path() != "Way of the Surprising Fist")							//costs 5 meat total in way of the surprising fist. no need to track that
+	my_path() != $path[Way of the Surprising Fist])							//costs 5 meat total in way of the surprising fist. no need to track that
 	{
 		reserve_diary += 500;		//1 vacation. no need to count script. we don't pull it or get it prematurely.
 		
@@ -5616,9 +5606,9 @@ int meatReserve()
 	if(get_property("lastIslandUnlock").to_int() < my_ascensions())		//need to unlock island
 	{
 		int price_vacation = 500;
-		if(my_path() == "Way of the Surprising Fist")
+		if(my_path() == $path[Way of the Surprising Fist])
 		{
-		price_vacation = 5;  //yes really. just 5 meat each
+			price_vacation = 5;  //yes really. just 5 meat each
 		}
 		//TODO: scrips. they may have been pulled manually, and one optional property does pull them
 		reserve_island += price_vacation * 3;	//3 vacations

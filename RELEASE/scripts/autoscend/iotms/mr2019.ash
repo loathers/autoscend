@@ -181,7 +181,7 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	int pastesNeeded = 0;
 	int pastesAvail = item_amount($item[meat paste]);
 	int meatToSave = 1000 + meatReserve();
-	if(auto_my_path() == "Community Service")
+	if(my_path() == $path[Community Service])
 		meatToSave = 500;
 	for i from 1 to numSaus
 	{

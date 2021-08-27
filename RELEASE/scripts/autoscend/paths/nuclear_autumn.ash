@@ -1,6 +1,6 @@
 void fallout_initializeSettings()
 {
-	if(my_path() == "Nuclear Autumn")
+	if(my_path() == $path[Nuclear Autumn])
 	{
 		set_property("auto_getBeehive", true);
 	}
@@ -9,7 +9,7 @@ void fallout_initializeSettings()
 
 void fallout_initializeDay(int day)
 {
-	if(my_path() != "Nuclear Autumn")
+	if(my_path() != $path[Nuclear Autumn])
 	{
 		return;
 	}
@@ -85,7 +85,7 @@ void fallout_initializeDay(int day)
 
 boolean fallout_buySkills()
 {
-	if(my_path() != "Nuclear Autumn")
+	if(my_path() != $path[Nuclear Autumn])
 	{
 		return false;
 	}
@@ -327,7 +327,7 @@ Missing: 858, 866
 
 boolean LM_fallout()
 {
-	if(my_path() != "Nuclear Autumn")
+	if(my_path() != $path[Nuclear Autumn])
 	{
 		return false;
 	}

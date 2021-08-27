@@ -1,6 +1,6 @@
 boolean in_zelda()
 {
-	return my_path() == "Path of the Plumber";
+	return my_path() == $path[Path of the Plumber];
 }
 
 boolean zelda_initializeSettings()

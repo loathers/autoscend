@@ -45,14 +45,14 @@ boolean snojoFightAvailable()
 			standard[2] = "Moxie";
 			standard[3] = "Mysticality";
 		}
-		if(my_path() == "Community Service")
+		if(my_path() == $path[Community Service])
 		{
 			standard[0] = "Mysticality";
 			standard[1] = "Moxie";
 			standard[2] = "Muscle";
 			standard[3] = "Mysticality";
 		}
-		if(my_path() == "License to Adventure")
+		if(my_path() == $path[License to Adventure])
 		{
 			standard[0] = "Mysticality";
 			standard[1] = "Moxie";
@@ -105,7 +105,7 @@ boolean auto_haveSourceTerminal()
 		return false;
 	}
 	static boolean didCheck = false;
-	if((auto_my_path() == "Nuclear Autumn") && !didCheck)
+	if((my_path() == $path[Nuclear Autumn]) && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
@@ -152,7 +152,7 @@ boolean auto_sourceTerminalRequest(string request)
 	//"campground.php?action=terminal&hack=enhance items.enh"
 	if(auto_haveSourceTerminal())
 	{
-		if(auto_my_path() == "Nuclear Autumn")
+		if(my_path() == $path[Nuclear Autumn])
 		{
 			string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
 		}
@@ -506,7 +506,7 @@ int auto_advWitchessTargets(string target)
 		return 1938;
 	}
 
-	if((target == 1942) && (auto_my_path() == "Teetotaler"))
+	if((target == 1942) && (my_path() == $path[Teetotaler]))
 	{
 		return 1936;
 	}
@@ -536,7 +536,7 @@ int auto_advWitchessTargets(string target)
 
 boolean witchessFights()
 {
-	if(my_path() == "Community Service")
+	if(my_path() == $path[Community Service])
 	{
 		return false;
 	}
@@ -558,7 +558,7 @@ boolean witchessFights()
 		return auto_advWitchess("ml");
 	}
 
-	if(auto_my_path() == "License to Adventure")
+	if(my_path() == $path[License to Adventure])
 	{
 		return auto_advWitchess("ml");
 	}
@@ -566,7 +566,7 @@ boolean witchessFights()
 	switch(my_daycount())
 	{
 	case 1:
-		if((item_amount($item[Greek Fire]) == 0) && (my_path() != "Community Service"))
+		if((item_amount($item[Greek Fire]) == 0) && (my_path() != $path[Community Service]))
 		{
 			return auto_advWitchess("ml");
 		}
@@ -1018,7 +1018,7 @@ boolean LX_ghostBusting()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Community Service" && my_daycount() == 1 && goal == $location[The Spooky Forest])
+	if(my_path() == $path[Community Service] && my_daycount() == 1 && goal == $location[The Spooky Forest])
 	{
 		return false;
 	}

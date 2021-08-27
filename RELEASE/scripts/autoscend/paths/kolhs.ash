@@ -1,6 +1,6 @@
 boolean in_kolhs()
 {
-	return auto_my_path() == "KOLHS";
+	return my_path() == $path[KOLHS];
 }
 
 boolean kolhs_mandatorySchool()

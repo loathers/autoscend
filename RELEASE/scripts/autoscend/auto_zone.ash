@@ -288,19 +288,19 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The Haunted Pantry]:
-		if((auto_my_path() == "Community Service") && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
+		if((my_path() == $path[Community Service]) && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
 		{
 			retval._float = 59.4;
 		}
 		break;
 	case $location[The Skeleton Store]:
-		if((auto_my_path() == "Community Service") && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
+		if((my_path() == $path[Community Service]) && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
 		{	//No idea, should spade this for great justice.
 			retval._float = 33.0;
 		}
 		break;
 	case $location[The Secret Government Laboratory]:
-		if((auto_my_path() == "Community Service") && (item_amount($item[Experimental Serum G-9]) < 2))
+		if((my_path() == $path[Community Service]) && (item_amount($item[Experimental Serum G-9]) < 2))
 		{	//No idea, assume it is low.
 			retval._float = 10.0;
 		}
@@ -321,7 +321,7 @@ generic_t zone_needItem(location loc)
 		retval._boolean = true;
 		retval._float = 10000.0/value;
 
-		if(auto_my_path() == "Live. Ascend. Repeat.")
+		if(my_path() == $path[Live. Ascend. Repeat.])
 		{
 			retval._float = 5000.0/value;
 		}
@@ -539,7 +539,7 @@ generic_t zone_combatMod(location loc)
 		break;
 	}
 
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(my_path() == $path[Live. Ascend. Repeat.])
 	{
 		value = 0;
 	}
@@ -742,7 +742,7 @@ boolean zone_available(location loc)
 		}
 		break;
 	case $location[Super Villain\'s Lair]:
-		if((auto_my_path() == "License to Adventure") && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
+		if((my_path() == $path[License to Adventure]) && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
 		{
 			retval = true;
 		}
