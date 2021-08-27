@@ -1516,7 +1516,7 @@ boolean L12_themtharHills()
 	}
 
 	autoEquip($item[Half a Purse]);
-	if(my_path() == "Heavy Rains")
+	if(my_path() == $path[Heavy Rains])
 	{
 		autoEquip($item[Thor\'s Pliers]);
 	}

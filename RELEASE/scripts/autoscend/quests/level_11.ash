@@ -1728,7 +1728,7 @@ boolean L11_mauriceSpookyraven()
 			autoCraft("cook", 1, $item[bottle of Chateau de Vinegar], $item[blasting soda]);
 			if(item_amount($item[Unstable Fulminate]) == 0)
 			{
-				if(my_path() == "Nuclear Autumn")
+				if(my_path() == $path[Nuclear Autumn])
 				{
 					auto_log_warning("Could not make an Unstable Fulminate, assuming we have no oven for realz...", "red");
 					return true;
