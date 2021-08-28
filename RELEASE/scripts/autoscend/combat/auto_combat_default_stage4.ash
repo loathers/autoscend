@@ -299,7 +299,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//use latte iotm to restore 50% of max MP
-	if((!$paths[Path of the Plumber, Dark Gyffte, Zombie Slayer] contains my_oath()) &&	//paths that do not use MP
+	if(!($paths[Path of the Plumber, Dark Gyffte, Zombie Slayer] contains my_path()) &&	//paths that do not use MP
 	canUse($skill[Gulp Latte]) &&
 	my_mp() * 2 < my_maxmp())		//gulp latte restores 50% of your MP. do not waste it.
 	{
