@@ -1055,6 +1055,12 @@ boolean doBedtime()
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
 
+	if(in_plumber() && fullness_left() > 0)
+	{
+		print("Plumber consumption is complicated. Please manually consume stuff then run me again.", "red");
+		return false;
+	}
+	
 	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
 	if(in_gnoob() || !can_drink() || out_of_blood)
 	{

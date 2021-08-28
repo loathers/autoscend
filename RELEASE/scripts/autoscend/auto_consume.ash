@@ -1354,9 +1354,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 {
 	// TODO: does not consider mime army shotglass
 
-	if(in_plumber())
+	if(in_plumber() && my_level() < 13)
 	{
-		auto_log_warning("Skipping eating, you'll have to do this manually.", "red");
 		return false;
 	}
 

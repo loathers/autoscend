@@ -747,6 +747,8 @@ int plumber_ppCost(skill sk);
 boolean plumber_canDealScalingDamage();
 boolean plumber_skillValid(skill sk);
 boolean plumber_equipTool(stat st);
+void plumber_eat_xp();
+boolean LM_plumber();
 
 ########################################################################################################
 //Defined in autoscend/paths/picky.ash
