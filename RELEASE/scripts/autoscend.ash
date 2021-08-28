@@ -225,7 +225,7 @@ void initializeSettings() {
 	bat_initializeSettings();
 	koe_initializeSettings();
 	kolhs_initializeSettings();
-	zelda_initializeSettings();
+	plumber_initializeSettings();
 	lowkey_initializeSettings();
 	bhy_initializeSettings();
 	grey_goo_initializeSettings();
@@ -312,7 +312,7 @@ boolean LX_burnDelay()
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
-	if(in_zelda() && !zelda_canDealScalingDamage())
+	if(in_plumber() && !plumber_canDealScalingDamage())
 	{
 		// unless we can still kill it in one hit, then it should probably be fine?
 		int predictedScalerHP = to_int(0.75 * (my_buffedstat($stat[Muscle]) + monster_level_adjustment()));
@@ -870,9 +870,9 @@ boolean LX_doVacation()
 		auto_log_info("I want to vacation but I do not have enough meat", "red");
 		return false;
 	}
-	if(in_zelda())	//avoid error for not having plumber gear equipped.
+	if(in_plumber())	//avoid error for not having plumber gear equipped.
 	{
-		zelda_equipTool($stat[moxie]);
+		plumber_equipTool($stat[moxie]);
 		equipMaximizedGear();
 	}
 
@@ -940,10 +940,10 @@ boolean fortuneCookieEvent()
 			goal = $location[The Haunted Pantry];
 		}
 		
-		if(in_zelda())
+		if(in_plumber())
 		{
 			//prevent plumber crash when it tries to adventure without plumber gear.
-			zelda_equipTool($stat[moxie]);
+			plumber_equipTool($stat[moxie]);
 			equipMaximizedGear();
 		}
 		
@@ -2534,7 +2534,7 @@ void print_header()
 	{
 		auto_log_info("Ka Coins: " + item_amount($item[Ka Coin]) + " Lashes used: " + get_property("_edLashCount"), "green");
 	}
-	if (in_zelda())
+	if (in_plumber())
 	{
 		auto_log_info("Coins: " + item_amount($item[Coin]), "green");
 	}
@@ -2716,7 +2716,7 @@ boolean doTasks()
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();
-	zelda_buyStuff();
+	plumber_buyStuff();
 	jarlsberg_buySkills();
 	boris_buySkills();
 	pete_buySkills();

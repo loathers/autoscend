@@ -201,7 +201,7 @@ string defaultMaximizeStatement()
 		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
 		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
 	}
-	else if(!in_zelda())
+	else if(!in_plumber())
 	{
 		if(my_primestat() == $stat[Mysticality])
 		{
@@ -221,7 +221,7 @@ string defaultMaximizeStatement()
 			res += ",5familiar exp";
 		}
 	}
-	if (in_zelda())
+	if (in_plumber())
 	{
 		res += ",plumber,-ml";
 	}
@@ -346,7 +346,7 @@ void finalizeMaximize()
 		// blocks first hit, but doesn't stack with blood bubble
 		addBonusToMaximize($item[Eight Days a Week Pill Keeper], 100);
 	}
-	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
+	if(!in_plumber() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		if (my_class() == $class[Seal Clubber] && in_glover())
 		{

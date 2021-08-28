@@ -128,7 +128,7 @@ boolean LX_unlockDesert()
 	}
 	
 	//plumbers should wait until they are rich enough to buy the desert pass. As they have few uses for meat.
-	if(in_zelda() && !isAboutToPowerlevel())
+	if(in_plumber() && !isAboutToPowerlevel())
 	{
 		auto_log_info("Plumbers have few uses for meat. Delaying desert unlock until we can buy a pass.", "blue");
 		return false;
