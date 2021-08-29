@@ -97,7 +97,7 @@ boolean auto_pre_adventure()
 		auto_is_valid($item[red rocket]) &&			// or if it's not valid
 		my_meat() > npc_price($item[red rocket]) + meatReserve())
 	{
-		cli_execute("acquire " + $item[red rocket]);
+		retrieve_item(1, $item[red rocket]);
 	}
 
 	if((get_property("_bittycar") == "") && (item_amount($item[Bittycar Meatcar]) > 0))
