@@ -127,19 +127,6 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			}
 		}
 
-		// use red rocket to get 5x stats from next food item consumed. Staggers on turn used.
-		if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0)
-		{
-			//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
-			//assume next food will be eaten within 100 turns
-			item simulationOutput = auto_autoConsumeOneSimulation("eat");
-			if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
-			{
-				return useItem($item[red rocket]);
-			}
-			
-		}
-
 		if (canUse($skill[Curse Of Weaksauce]) && my_class() == $class[Sauceror] && doWeaksauce)
 		{
 			return useSkill($skill[Curse Of Weaksauce]);
