@@ -1633,6 +1633,7 @@ boolean distill(item target)
 	}
 	int start_amount = item_amount(target);
 	create(1, target);			//use the still to create target
+	cli_execute("refresh inv");		//as of r20865 distilling using create command causes inventory desync
 	if(start_amount + 1 == item_amount(target))
 	{
 		return true;
