@@ -1233,7 +1233,7 @@ boolean L13_towerNSTower()
 		acquireHP();
 
 		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]);
-		if(in_zelda())
+		if(in_plumber())
 		{
 			n_healing_items = item_amount($item[super deluxe mushroom]);
 			if(n_healing_items < 5)

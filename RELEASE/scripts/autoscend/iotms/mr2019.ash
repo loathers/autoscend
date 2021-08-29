@@ -395,7 +395,7 @@ boolean auto_saberDailyUpgrade(int day)
 	}
 
 	// Maybe famweight is better, I don't know.
-	if (in_zelda())
+	if (in_plumber())
 	{
 		return auto_saberChoice("res");
 	}

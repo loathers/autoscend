@@ -798,7 +798,7 @@ boolean L11_aridDesert()
 	}
 
 	// Fix broken desert tracking. pocket familiars failing as of r19010. plumber as of r20019
-	if(in_zelda() || in_pokefam())
+	if(in_plumber() || in_pokefam())
 	{
 		visit_url("place.php?whichplace=desertbeach", false);
 	}
@@ -2611,7 +2611,7 @@ boolean L11_defeatEd()
 		autoForceEquip($item[low-pressure oxygen tank]);
 	}
 
-	zelda_equipTool($stat[moxie]);
+	plumber_equipTool($stat[moxie]);
 
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 

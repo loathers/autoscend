@@ -1761,7 +1761,7 @@ boolean is_ghost_in_zone(location loc)
 	}
 
 	// Special-case for King Boo.
-	if (in_zelda() && loc == $location[Summoning Chamber])
+	if (in_plumber() && loc == $location[Summoning Chamber])
 	{
 		return true;
 	}
