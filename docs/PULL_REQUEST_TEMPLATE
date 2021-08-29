@@ -1,6 +1,6 @@
 # Description
 
-Please include a summary of the change. Pull requests should generally be against the [beta branch](https://github.com/Loathing-Associates-Scripting-Society/autoscend/tree/beta) which will eventually be merged into master once beta changes are sufficiently vetted.
+Please include a summary of the change. Pull requests should always be against the [master branch](https://github.com/Loathing-Associates-Scripting-Society/autoscend/tree/master).
 
 If it addresses a particular issue, please put the issue numbers below (see also [Closing Issues Using Keywords](https://help.github.com/en/articles/closing-issues-using-keywords)).
 

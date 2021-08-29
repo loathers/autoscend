@@ -236,7 +236,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if(in_zelda())
+	if(in_plumber())
 	{
 		int pool_skill = speculative_pool_skill();
 		if (possessEquipment($item[Pool Cue]))
@@ -267,14 +267,14 @@ boolean auto_pre_adventure()
 		if ((is_ghost_in_zone(place) && !skip_equipping_flower)
 			|| (place == $location[The Smut Orc Logging Camp] && possessEquipment($item[frosty button])))
 		{
-			if(!zelda_equipTool($stat[mysticality]))
+			if(!plumber_equipTool($stat[mysticality]))
 			{
 				abort("I'm scared to adventure in a zone with ghosts without a fire flower. Please fight a bit and buy me a fire flower.");
 			}
 		}
 		else
 		{
-			zelda_equipTool($stat[moxie]);
+			plumber_equipTool($stat[moxie]);
 		}
 
 		// It is dangerous out there! Take this!
@@ -282,7 +282,7 @@ boolean auto_pre_adventure()
 		boolean have_pill_keeper = (possessEquipment($item[Eight Days a Week Pill Keeper])) &&
 			(is_unrestricted($item[Unopened Eight Days a Week Pill Keeper]));
 
-		if(0 < flyeredML && flyeredML < 10000 && in_zelda() && have_pill_keeper)
+		if(0 < flyeredML && flyeredML < 10000 && in_plumber() && have_pill_keeper)
 		{
 			auto_log_debug("I expect to be flyering, equipping Pill Keeper to skip the first hit.");
 			autoEquip($slot[acc3], $item[Eight Days a Week Pill Keeper]);
