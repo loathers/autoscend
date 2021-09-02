@@ -1,4 +1,4 @@
-since r20793;	//min mafia revision needed to run this script. Last update: Add explosive equipment to equipment.txt
+since r20870;	//min mafia revision needed to run this script. Last update: fixed inv desync on some create() command uses
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
