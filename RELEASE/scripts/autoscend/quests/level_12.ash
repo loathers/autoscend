@@ -647,17 +647,13 @@ boolean L12_preOutfit()
 	//use 1 wish if we can guarentee outfit drops via yellow ray
 	if(canGenieCombat() && auto_shouldUseWishes() && canYellowRay())
 	{
+		monster wishTarget = $monster[War Hippy Spy];
 		if(!get_property("auto_hippyInstead").to_boolean())
 		{
-			//want frat war outfit
-			auto_log_info("Trying to wish for a Orcish Frat Boy Spy, which we'll yellow ray for war outfit.");
-			return makeGenieCombat($monster[Orcish Frat Boy Spy]);
+			wishTarget = $monster[Orcish Frat Boy Spy];
 		}
-		else
-		{
-			// don't waste resources speeding up slower route of fighting for hippies. 
-		}
-		
+		auto_log_info(`Trying to wish for a {wishTarget}, which we'll yellow ray for war outfit.`);
+		return makeGenieCombat(wishTarget);		
 	}
 
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
