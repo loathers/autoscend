@@ -652,7 +652,7 @@ boolean L12_preOutfit()
 		{
 			wishTarget = $monster[Orcish Frat Boy Spy];
 		}
-		auto_log_info(`Trying to wish for a {wishTarget}, which we'll yellow ray for war outfit.`);
+		auto_log_info(`Trying to wish for a {wishTarget}, which we will yellow ray for war outfit.`);
 		return makeGenieCombat(wishTarget);		
 	}
 
