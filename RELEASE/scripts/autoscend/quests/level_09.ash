@@ -238,7 +238,7 @@ boolean L9_chasmBuild()
 		return true;
 	}
 
-	if (in_zelda() && possessEquipment($item[frosty button]))
+	if (in_plumber() && possessEquipment($item[frosty button]))
 	{
 		autoEquip($item[frosty button]);
 	}

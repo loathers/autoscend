@@ -2164,7 +2164,7 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 boolean basicAdjustML()
 {
 	if(in_boris()) return borisAdjustML();
-	if (in_zelda())
+	if (in_plumber())
 	{
 		// We don't get many stats from combat - no point running ML.
 		auto_change_mcd(0);
@@ -4307,7 +4307,7 @@ boolean auto_is_valid(familiar fam)
 boolean auto_is_valid(skill sk)
 {
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
-	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && zelda_skillValid(sk) && is_unrestricted(sk);
+	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
 }
 
 void auto_log(string s, string color, int log_level)

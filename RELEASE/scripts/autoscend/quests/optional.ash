@@ -614,7 +614,7 @@ void considerGalaktikSubQuest()
 	{
 		return;		//galaktik is unavailable in kingdom of exploathing
 	}
-	if(my_class() == $class[Vampyre] || in_zelda())
+	if(my_class() == $class[Vampyre] || in_plumber())
 	{
 		return;		//these classes cannot use galaktik restorers.
 	}
