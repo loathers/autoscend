@@ -644,6 +644,22 @@ boolean L12_preOutfit()
 		return false;
 	}
 
+	//use 1 wish if we can guarentee outfit drops via yellow ray
+	if(canGenieCombat() && auto_shouldUseWishes() && canYellowRay())
+	{
+		if(!get_property("auto_hippyInstead").to_boolean())
+		{
+			//want frat war outfit
+			auto_log_info("Trying to wish for a Orcish Frat Boy Spy, which we'll yellow ray for war outfit.");
+			return makeGenieCombat($monster[Orcish Frat Boy Spy]);
+		}
+		else
+		{
+			// don't waste resources speeding up slower route of fighting for hippies. 
+		}
+		
+	}
+
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Ink Gland]) && (item_amount($item[Shot of Granola Liqueur]) == 0))
