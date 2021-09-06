@@ -163,12 +163,14 @@ yellowray	28	filthy hippy	!outfit:Filthy Hippy Disguise;!class:Ed
 yellowray	29	filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
 yellowray	30	filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
 yellowray	31	zombie hippy	!outfit:Filthy Hippy Disguise
+# Want hippy war outfit if fighting for hippies. TODO: add monsters for Frat Boy Ensemble and War Hippy Fatigues outfits. Issue #900
+yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues
 # And we want filthworm glands, but not if we're gonna hugpocket them
-yellowray	32	larval filthworm	!familiar:XO Skeleton;!class:Ed
-yellowray	33	filthworm drone	!familiar:XO Skeleton;!class:Ed
-yellowray	34	filthworm royal guard	!familiar:XO Skeleton;!class:Ed
-yellowray	35	Knight (Snake)	class:Ed
-yellowray	36	bearpig topiary animal	familiar:Melodramedary
-yellowray	37	elephant (meatcar?) topiary animal	familiar:Melodramedary
-yellowray	38	spider (duck?) topiary animal	familiar:Melodramedary
+yellowray	33	larval filthworm	!familiar:XO Skeleton;!class:Ed
+yellowray	34	filthworm drone	!familiar:XO Skeleton;!class:Ed
+yellowray	35	filthworm royal guard	!familiar:XO Skeleton;!class:Ed
+yellowray	36	Knight (Snake)	class:Ed
+yellowray	37	bearpig topiary animal	familiar:Melodramedary
+yellowray	38	elephant (meatcar?) topiary animal	familiar:Melodramedary
+yellowray	39	spider (duck?) topiary animal	familiar:Melodramedary
 

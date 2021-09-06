@@ -644,6 +644,18 @@ boolean L12_preOutfit()
 		return false;
 	}
 
+	//use 1 wish if we can guarentee outfit drops via yellow ray
+	if(canGenieCombat() && auto_shouldUseWishes() && canYellowRay())
+	{
+		monster wishTarget = $monster[War Hippy Spy];
+		if(!get_property("auto_hippyInstead").to_boolean())
+		{
+			wishTarget = $monster[Orcish Frat Boy Spy];
+		}
+		auto_log_info(`Trying to wish for a {wishTarget}, which we will yellow ray for war outfit.`);
+		return makeGenieCombat(wishTarget);		
+	}
+
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Ink Gland]) && (item_amount($item[Shot of Granola Liqueur]) == 0))
