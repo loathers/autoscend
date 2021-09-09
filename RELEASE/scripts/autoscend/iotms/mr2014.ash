@@ -9,9 +9,14 @@ boolean handleBjornify(familiar fam)
 		return false;
 	}
 
-	if((equipped_item($slot[back]) != $item[buddy bjorn]) || (my_bjorned_familiar() == fam))
+	if(equipped_item($slot[back]) != $item[buddy bjorn])
 	{
 		return false;
+	}
+	
+	if(my_bjorned_familiar() == fam)
+	{
+		return true;
 	}
 
 	if(!canChangeFamiliar() && (fam == my_familiar()))
@@ -43,21 +48,6 @@ boolean handleBjornify(familiar fam)
 			{
 				return false;
 			}
-		}
-	}
-	if(my_familiar() == $familiar[none])
-	{
-		if(my_bjorned_familiar() == $familiar[Grimstone Golem])
-		{
-			handleFamiliar("stat");
-		}
-		else if(my_bjorned_familiar() == $familiar[Grim Brother])
-		{
-			handleFamiliar("item");
-		}
-		else
-		{
-			handleFamiliar("item");
 		}
 	}
 	return true;
@@ -479,4 +469,101 @@ int amountTurkeyBooze()
 		return item_amount($item[Agitated Turkey]) + item_amount($item[Ambitious Turkey]) + item_amount($item[Friendly Turkey]);
 	}
 	return 0;
+}
+
+static boolean[monster] importantMonsters = $monsters[
+	// L4:
+	beanbat,
+	// L5:
+	knob goblin harem girl,
+	// L7:
+	dirty old lihc,
+	// L8:
+	dairy goat,
+	// L9:
+	bearpig topiary animal,
+	elephant (meatcar?) topiary animal,
+	spider (duck?) topiary animal,
+	// L10:
+	Quiet Healer,
+	burly sidekick,
+	// L11:
+	// Hidden City:
+	baa-relief sheep,
+	pygmy bowler,
+	pygmy shaman,
+	pygmy janitor,
+	pygmy witch accountant,
+	pygmy witch surgeon,
+	// Spookyraven:
+	animated ornate nightstand,
+	elegant animated nightstand,
+	Cabinet of Dr. Limpieza,
+	possessed wine rack,
+	monstrous boiler,
+	writing desk,
+	chalkdust wraith,
+	banshee librarian,
+	// Palindome:
+	whitesnake,
+	white lion,
+	// Zeppelin:
+	man with the red buttons,
+	red butler,
+	red skeleton,
+	// Desert:
+	blur,
+	tomb rat,
+	// L12:
+	batwinged gremlin (tool),
+	erudite gremlin (tool),
+	spider gremlin (tool),
+	vegetable gremlin (tool)
+];
+
+monster icehouseMonster()
+{
+	visit_url("museum.php?action=icehouse");
+	if (!get_property("banishedMonsters").contains_text("ice house")) 
+	{
+		return $monster[none];
+	}
+	else
+	{
+		string [int] banishMap = split_string(get_property("banishedMonsters"), ":");
+		for (int i = 0; i < count(banishMap); i++)
+		{
+			if (banishMap[i] == "ice house")
+			{
+				return to_monster(banishMap[i-1]);
+			} 
+		}
+	}
+	return $monster[none];
+}
+
+boolean icehouseUserErrorProtection()
+{
+	if (icehouseMonster() == $monster[none])
+	{
+		return true;
+	}
+	else if (importantMonsters contains icehouseMonster())
+	{
+		if(user_confirm("You have a " + icehouseMonster().to_string() + " frozen in your icehouse. Autoscend thinks it might cause problems, do you want us to melt it? Will default to 'Yes' in 15 seconds.", 15000, true))
+		{
+			visit_url("museum.php?action=icehouse");
+			run_choice(1);
+			return true;
+		}
+		else
+		{
+			print("If autoscend runs into problems, it's on you!");
+			return false;
+		}
+	}
+	else
+	{
+		return true;
+	}
 }

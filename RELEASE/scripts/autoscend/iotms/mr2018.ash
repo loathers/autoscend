@@ -1291,7 +1291,7 @@ boolean fightClubSpa()
 {
 	int option = 4;
 	stat st = my_primestat();
-	if (in_zelda())
+	if (in_plumber())
 	{
 		// We deal 250% of our Moxie, so if our Muscle is too high we... die.
 		st = $stat[moxie];
