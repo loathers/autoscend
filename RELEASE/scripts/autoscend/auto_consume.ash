@@ -1223,7 +1223,20 @@ ConsumeAction auto_bestNightcap()
 	int best = 0;
 	for(int i=1; i < count(actions); i++)
 	{
-		if(desirability(i) > desirability(best)) best = i;
+		if(desirability(i) < desirability(best))
+		{
+			// This consumable is less desirable than the best consumable found so far
+			continue;
+		}
+
+		if(desirability(i) == desirability(best) && historical_price(actions[i].it) >= historical_price(actions[best].it))
+		{
+			// This consumable is just as desirable as the best consumable, but it is more expensive
+			continue;
+		}
+
+		// This consumable is either more desirable or equally desirable and cheaper
+		best = i;
 	}
 
 	return actions[best];
