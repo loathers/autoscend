@@ -798,7 +798,7 @@ boolean L11_aridDesert()
 	}
 
 	// Fix broken desert tracking. pocket familiars failing as of r19010. plumber as of r20019
-	if(in_zelda() || in_pokefam())
+	if(in_plumber() || in_pokefam())
 	{
 		visit_url("place.php?whichplace=desertbeach", false);
 	}
@@ -1277,10 +1277,15 @@ boolean L11_hiddenCity()
 	}
 	
 	//can we handle this zone?
-	if(!acquireHP())	//try to restore HP to max.
+	if(!in_pokefam())
 	{
-		return false;		//could not heal HP. we should go do something else first
+		if(!acquireHP())	//try to restore HP to max.
+		{
+			auto_log_warning("Delaying hidden city because we are unable to restore HP");
+			return false;		//could not heal HP. we should go do something else first
+		}
 	}
+	
 	int weapon_ghost_dmg = numeric_modifier("hot damage") + numeric_modifier("cold damage") + numeric_modifier("stench damage") + numeric_modifier("sleaze damage") + numeric_modifier("spooky damage");
 	if(weapon_ghost_dmg < 20 &&				//we can not rely on melee/ranged weapon to kill the ghost
 	!acquireMP(30))							//try getting some MP, relying on a spell to kill them instead. TODO verify we have a spell
@@ -2606,7 +2611,7 @@ boolean L11_defeatEd()
 		autoForceEquip($item[low-pressure oxygen tank]);
 	}
 
-	zelda_equipTool($stat[moxie]);
+	plumber_equipTool($stat[moxie]);
 
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 

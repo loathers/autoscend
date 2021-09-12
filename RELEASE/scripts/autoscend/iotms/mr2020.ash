@@ -167,7 +167,7 @@ boolean auto_wantToEquipPowerfulGlove()
 {
 	if (!auto_hasPowerfulGlove()) return false;
 
-	if (in_zelda() && !zelda_nothingToBuy()) return true;
+	if (in_plumber() && !plumber_nothingToBuy()) return true;
 
 	int pixels = whitePixelCount();
 	if (contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
@@ -219,7 +219,7 @@ void auto_burnPowerfulGloveCharges()
 
 boolean auto_canFightPiranhaPlant()
 {
-	int numMushroomFights = (in_zelda() ? 5 : 1);
+	int numMushroomFights = (in_plumber() ? 5 : 1);
 	if (auto_is_valid($item[packet of mushroom spores]) &&
 			get_campground() contains $item[packet of mushroom spores] &&
 			get_property("_mushroomGardenFights").to_int() < numMushroomFights)
@@ -244,7 +244,7 @@ int auto_piranhaPlantFightsRemaining()
 {
 	if (auto_canFightPiranhaPlant())
 	{
-		int numMushroomFights = (in_zelda() ? 5 : 1);
+		int numMushroomFights = (in_plumber() ? 5 : 1);
 		return (numMushroomFights - get_property("_mushroomGardenFights").to_int());
 	}
 	return 0;

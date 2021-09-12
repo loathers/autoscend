@@ -9,9 +9,14 @@ boolean handleBjornify(familiar fam)
 		return false;
 	}
 
-	if((equipped_item($slot[back]) != $item[buddy bjorn]) || (my_bjorned_familiar() == fam))
+	if(equipped_item($slot[back]) != $item[buddy bjorn])
 	{
 		return false;
+	}
+	
+	if(my_bjorned_familiar() == fam)
+	{
+		return true;
 	}
 
 	if(!canChangeFamiliar() && (fam == my_familiar()))
@@ -43,21 +48,6 @@ boolean handleBjornify(familiar fam)
 			{
 				return false;
 			}
-		}
-	}
-	if(my_familiar() == $familiar[none])
-	{
-		if(my_bjorned_familiar() == $familiar[Grimstone Golem])
-		{
-			handleFamiliar("stat");
-		}
-		else if(my_bjorned_familiar() == $familiar[Grim Brother])
-		{
-			handleFamiliar("item");
-		}
-		else
-		{
-			handleFamiliar("item");
 		}
 	}
 	return true;

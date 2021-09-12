@@ -715,24 +715,24 @@ boolean ocrs_postCombatResolve();
 
 ########################################################################################################
 //Defined in autoscend/paths/path_of_the_plumber.ash
-boolean in_zelda();
-boolean zelda_initializeSettings();
-boolean zelda_haveHammer();
-boolean zelda_equippedHammer();
-boolean zelda_haveFlower();
-boolean zelda_equippedFlower();
-boolean zelda_equippedBoots();
-int zelda_numBadgesBought();
-boolean zelda_buySkill(skill sk);
-boolean zelda_buyEquipment(item it);
-stat zelda_costume();
-boolean zelda_buyCostume(stat st);
-boolean zelda_nothingToBuy();
-boolean zelda_buyStuff();
-int zelda_ppCost(skill sk);
-boolean zelda_canDealScalingDamage();
-boolean zelda_skillValid(skill sk);
-boolean zelda_equipTool(stat st);
+boolean in_plumber();
+boolean plumber_initializeSettings();
+boolean plumber_haveHammer();
+boolean plumber_equippedHammer();
+boolean plumber_haveFlower();
+boolean plumber_equippedFlower();
+boolean plumber_equippedBoots();
+int plumber_numBadgesBought();
+boolean plumber_buySkill(skill sk);
+boolean plumber_buyEquipment(item it);
+stat plumber_costume();
+boolean plumber_buyCostume(stat st);
+boolean plumber_nothingToBuy();
+boolean plumber_buyStuff();
+int plumber_ppCost(skill sk);
+boolean plumber_canDealScalingDamage();
+boolean plumber_skillValid(skill sk);
+boolean plumber_equipTool(stat st);
 
 ########################################################################################################
 //Defined in autoscend/paths/picky.ash
