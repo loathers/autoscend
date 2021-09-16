@@ -211,7 +211,7 @@ void initializeSettings() {
 	beehiveConsider();
 
 	eudora_initializeSettings();
-	hr_initializeSettings();
+	heavy_rains_initializeSettings;
 	awol_initializeSettings();
 	theSource_initializeSettings();
 	ed_initializeSettings();
@@ -1161,7 +1161,7 @@ void initializeDay(int day)
 
 			tootGetMeat();
 
-			hr_initializeDay(day);
+			heavy_rains_initializeDay(day);
 			// It's nice to have a moxie weapon for Flock of Bats form
 			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
 			{
@@ -1250,7 +1250,7 @@ void initializeDay(int day)
 				use(1, $item[gym membership card]);
 			}
 
-			hr_initializeDay(day);
+			heavy_rains_initializeDay(day);
 
 			if(!in_hardcore() && (item_amount($item[Handful of Smithereens]) <= 5))
 			{
