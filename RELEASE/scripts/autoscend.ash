@@ -211,7 +211,7 @@ void initializeSettings() {
 	beehiveConsider();
 
 	eudora_initializeSettings();
-	heavy_rains_initializeSettings;
+	heavy_rains_initializeSettings();
 	awol_initializeSettings();
 	theSource_initializeSettings();
 	ed_initializeSettings();
@@ -2526,7 +2526,7 @@ void print_header()
 	{
 		auto_log_info("Snow suit usage: " + get_property("_snowSuitCount") + " carrots: " + get_property("_carrotNoseDrops"), "blue");
 	}
-	if(auto_my_path() == "Heavy Rains")
+	if (in_heavyrains())
 	{
 		auto_log_info("Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}
