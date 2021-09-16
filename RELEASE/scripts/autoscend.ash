@@ -721,7 +721,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) && (!in_heavyrains())
+		if((my_primestat() == $stat[Muscle]) && !in_heavyrains())
 		{
 			if((closet_amount($item[Fake Washboard]) == 0) && glover_usable($item[Fake Washboard]))
 			{
