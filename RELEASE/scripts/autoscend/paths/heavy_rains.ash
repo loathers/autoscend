@@ -1,6 +1,11 @@
-void hr_initializeSettings()
+boolean in_heavyrains()
 {
-	if(my_path() == "Heavy Rains")
+	return auto_my_path() == "Heavy Rains";
+}
+
+void heavy_rains_initializeSettings()
+{
+	if(in_heavyrains())
 	{
 		#Rain Man (Heavy Rains) Related settings
 		set_property("auto_holeinthesky", false);
@@ -87,9 +92,9 @@ boolean routineRainManHandler()
 
 
 
-void hr_initializeDay(int day)
+void heavy_rains_initializeDay(int day)
 {
-	if(my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		if((day == 1) && (get_property("auto_day1_skills") != "finished"))
 		{
@@ -134,7 +139,7 @@ void hr_initializeDay(int day)
 	}
 }
 
-void hr_doBedtime()
+void heavy_rains_doBedtime()
 {
 	if(my_inebriety() > inebriety_limit())
 	{
@@ -155,7 +160,7 @@ void hr_doBedtime()
 
 boolean doHRSkills()
 {
-	if(my_path() != "Heavy Rains")
+	if(!in_heavyrains())
 	{
 		return false;
 	}
