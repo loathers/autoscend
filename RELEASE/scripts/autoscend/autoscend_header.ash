@@ -633,10 +633,11 @@ boolean LA_grey_goo_tasks();
 
 ########################################################################################################
 //Defined in autoscend/paths/heavy_rains.ash
-void hr_initializeSettings();
+boolean in_heavyrains();
+void heavy_rains_initializeSettings();
 boolean routineRainManHandler();
-void hr_initializeDay(int day);
-void hr_doBedtime();
+void heavy_rains_initializeDay(int day);
+void heavy_rains_doBedtime();
 boolean doHRSkills();
 boolean rainManSummon(monster target, boolean copy, boolean wink);
 boolean L13_towerFinalHeavyRains();
