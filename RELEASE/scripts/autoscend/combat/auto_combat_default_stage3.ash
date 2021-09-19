@@ -29,38 +29,55 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		return useSkill($skill[Tunnel Downwards]);
 	}
 	
-	//iotm familiar specific skill. delevel by 10 and try to steal an item. can be used on any combat round, repeatedly until an item is stolen
-	if(canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
+	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
+	if((canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
+	|| (canUse($skill[Fire Extinguisher: Polar Vortex]) && auto_fireExtinguisherCharges > 10))
 	{
-		boolean dohug = false;
+		boolean forceDrop = false;
 		if($monsters[Filthworm Drone, Filthworm Royal Guard, Larval Filthworm] contains enemy)
 		{
-			dohug = true;
+			forceDrop = true;
 		}
 
+		// reserve enough resources to force filthworm drops
 		if(get_property("_xoHugsUsed").to_int() < 8)
 		{
 			// snatch a wig if we're lucky
 			if(enemy == $monster[Burly Sidekick] && !possessEquipment($item[Mohawk wig]))
-				dohug = true;
+				forceDrop = true;
 
 			// snatch a hedge trimmer if we're lucky
 			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
-				dohug = true;
+				forceDrop = true;
 
 			// snatch a killing jar if we're lucky
 			if(enemy == $monster[banshee librarian] && (0 == item_amount($item[Killing jar])))
-				dohug = true;
+				forceDrop = true;
 
 			// snatch a sonar-in-a-biscuit if we're lucky
 			if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (get_property("questL04Bat")) != "finished")
-				dohug = true;
+				forceDrop = true;
 		}
 
-		if(dohug)
+		// polar vortex is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
+		// only reasonable to vortex for hedge trimmers. Still reserve 30 charge for filth worms
+		if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy && auto_fireExtinguisherCharges > 30)
+				forceDrop = true;
+
+		if(forceDrop)
 		{
-			handleTracker(enemy, $skill[Hugs and Kisses!], "auto_otherstuff");
-			return useSkill($skill[Hugs and Kisses!]);
+			// prioritize XO skeleton skill to force drops. Extinguisher has other uses
+			if(canUse($skill[Hugs and Kisses!])
+			{
+				handleTracker(enemy, $skill[Hugs and Kisses!], "auto_otherstuff");
+				return useSkill($skill[Hugs and Kisses!]);
+			}
+			if(canUse($skill[Fire Extinguisher: Polar Vortex])
+			{
+				handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
+				return useSkill($skill[Fire Extinguisher: Polar Vortex]);
+			}
+			
 		}
 	}
 	

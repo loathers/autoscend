@@ -396,3 +396,62 @@ boolean auto_getBattery(item target)
 	}
 	return false;
 }
+
+boolean auto_haveFireExtinguisher()
+{
+	return possessEquipment($item[industrial fire extinguisher]) && auto_is_valid($item[industrial fire extinguisher]);
+}
+
+int auto_fireExtinguisherCharges()
+{
+	if (!auto_haveFireExtinguisher()) return 0;
+	return get_property("_fireExtinguisherCharge").to_int();
+}
+
+// returns zone specific skill if in usable zone and hasn't been used yet there this acension. Otherwise returns $skill[none]
+skill auto_FireExtinguisherCombatString(location place)
+{
+	if(auto_fireExtinguisherCharges < 20)
+	{
+		return $skill[none];
+	}
+
+	// once per acension uses
+	if($locations[Guano Junction, Batrat and Ratbat Burrow, Beanbat Chamber] contains place && !get_property("fireExtinguisherBatHoleUsed").to_boolean())
+	{
+		//sonar-in-a-biscuits are used before combat, if available. Knock a wall down if any are still standing
+		if(internalQuestStatus("questL04Bat") < 3)
+		{
+			return "skill " + $skill[Fire Extinguisher: Constricted Blast];
+		}
+		
+	}
+
+	if(place == $location[Cobb\'s Knob Harem] && !get_property("fireExtinguisherHaremUsed").to_boolean() && !possessOutfit("Knob Goblin Harem Girl Disguise"))
+	{
+			return "skill " + $skill[Fire Extinguisher: Foam the Place];
+	}
+
+	if(place == $location[The Defiled Niche] && !get_property("fireExtinguisherCyrptUsed").to_boolean())
+	{
+		return "skill " + $skill[Fire Extinguisher: Replace the Chill];
+	}
+
+	if(place == $location[The Smut Orc Logging Camp] && !get_property("fireExtinguisherChasmUsed").to_boolean() && get_property("chasmBridgeProgress").to_int() < 30)
+	{
+		return "skill " + $skill[Fire Extinguisher: Cool it Down];
+	}
+
+	if(place == $location[The Arid\, Extra-Dry Desert] && !get_property("fireExtinguisherDesertUsed").to_boolean())
+	{
+		return "skill " + $skill[Fire Extinguisher: Take a Drink];
+	}
+
+	return $skill[none];
+	
+}
+
+boolean auto_hasExtinguisherBeenRefilled()
+{
+	return auto_haveFireExtinguisher() && in_wildfire() && !get_property("_fireExtinguisherRefilled").to_boolean();
+}

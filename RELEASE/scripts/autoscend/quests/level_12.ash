@@ -833,6 +833,10 @@ boolean L12_filthworms()
 		auto_log_info("Will steal stench glands using [XO Skeleton]");
 		handleFamiliar($familiar[XO Skeleton]);
 	}
+	else if(auto_fireExtinguisherCharges > 10)
+	{
+		auto_log_info("Will steal stench glands using polar vortex ability of [Industrial Fire Extinguisher]");
+	}
 	//TODO add IOTM cat burglar stealing support here with another else if
 	// or if we're about to yellow ray
 	else if(canYellowRay())
