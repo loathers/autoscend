@@ -120,11 +120,10 @@ Quantum Terrarium	54	L11_defeatEd
 Quantum Terrarium	55	L5_slayTheGoblinKing
 Quantum Terrarium	56	L4_batCave
 Quantum Terrarium	57	L3_tavern
-Quantum Terrarium	58	LX_koeInvaderHandler
-Quantum Terrarium	59	setSoftblockDelay	allowSoftblockDelay
-Quantum Terrarium	60	setSoftblockShen	allowSoftblockShen
-Quantum Terrarium	61	L13_towerAscent
-Quantum Terrarium	62	LX_attemptPowerLevel
+Quantum Terrarium	58	setSoftblockDelay	allowSoftblockDelay
+Quantum Terrarium	59	setSoftblockShen	allowSoftblockShen
+Quantum Terrarium	60	L13_towerAscent
+Quantum Terrarium	61	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
 default	1	catBurglarHeist

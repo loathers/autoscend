@@ -37,6 +37,8 @@ filthy hippy	!outfit:Filthy Hippy Disguise;!class:Ed
 filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
 filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
 zombie hippy	!outfit:Filthy Hippy Disguise
+# Want hippy war outfit if fighting for hippies. TODO: add monsters for Frat Boy Ensemble and War Hippy Fatigues outfits. Issue #900
+War Hippy Spy	!outfit:War Hippy Fatigues
 # And we want filthworm glands, but not if we're gonna hugpocket them
 larval filthworm	!familiar:XO Skeleton;!class:Ed
 filthworm drone	!familiar:XO Skeleton;!class:Ed

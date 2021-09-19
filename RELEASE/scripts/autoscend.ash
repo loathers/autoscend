@@ -1,4 +1,4 @@
-since r20793;	//min mafia revision needed to run this script. Last update: Add explosive equipment to equipment.txt
+since r20870;	//min mafia revision needed to run this script. Last update: fixed inv desync on some create() command uses
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -211,7 +211,7 @@ void initializeSettings() {
 	beehiveConsider();
 
 	eudora_initializeSettings();
-	hr_initializeSettings();
+	heavy_rains_initializeSettings();
 	awol_initializeSettings();
 	theSource_initializeSettings();
 	ed_initializeSettings();
@@ -225,7 +225,7 @@ void initializeSettings() {
 	bat_initializeSettings();
 	koe_initializeSettings();
 	kolhs_initializeSettings();
-	zelda_initializeSettings();
+	plumber_initializeSettings();
 	lowkey_initializeSettings();
 	bhy_initializeSettings();
 	grey_goo_initializeSettings();
@@ -312,7 +312,7 @@ boolean LX_burnDelay()
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
-	if(in_zelda() && !zelda_canDealScalingDamage())
+	if(in_plumber() && !plumber_canDealScalingDamage())
 	{
 		// unless we can still kill it in one hit, then it should probably be fine?
 		int predictedScalerHP = to_int(0.75 * (my_buffedstat($stat[Muscle]) + monster_level_adjustment()));
@@ -363,19 +363,15 @@ boolean LX_burnDelay()
 }
 
 
-boolean LX_universeFrat()
+boolean LX_calculateTheUniverse()
 {
-	if(my_daycount() >= 2)
+	if (possessOutfit("Frat Warrior Fatigues") || auto_warSide() == "hippy")
 	{
-		if(possessEquipment($item[Beer Helmet]) && possessEquipment($item[Distressed Denim Pants]) && possessEquipment($item[Bejeweled Pledge Pin]))
-		{
-			doNumberology("adventures3");
-		}
-		else if((my_mp() >= mp_cost($skill[Calculate the Universe])) && (doNumberology("battlefield", false) != -1) && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
-		{
-			doNumberology("battlefield");
-			return true;
-		}
+		doNumberology("adventures3"); // want to return false here as all we're doing is generating 3 adventures.
+	}
+	else if(my_mp() >= mp_cost($skill[Calculate the Universe]) && doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
+	{
+		return (doNumberology("battlefield") != -1);
 	}
 	return false;
 }
@@ -476,7 +472,7 @@ int pullsNeeded(string data)
 		if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) == 0))
 		{
 			auto_log_warning("Need star chart", "red");
-			if((auto_my_path() == "Heavy Rains") && (my_rain() >= 50))
+			if(in_heavyrains() && (my_rain() >= 50))
 			{
 				auto_log_info("You should rain man a star chart", "blue");
 			}
@@ -725,7 +721,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) && (auto_my_path() != "Heavy Rains"))
+		if((my_primestat() == $stat[Muscle]) && !in_heavyrains())
 		{
 			if((closet_amount($item[Fake Washboard]) == 0) && glover_usable($item[Fake Washboard]))
 			{
@@ -775,7 +771,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 		}
 
-		if((auto_my_path() != "Heavy Rains") && (auto_my_path() != "License to Adventure") && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(!in_heavyrains() && (auto_my_path() != "License to Adventure") && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
 		{
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
 			{
@@ -874,9 +870,9 @@ boolean LX_doVacation()
 		auto_log_info("I want to vacation but I do not have enough meat", "red");
 		return false;
 	}
-	if(in_zelda())	//avoid error for not having plumber gear equipped.
+	if(in_plumber())	//avoid error for not having plumber gear equipped.
 	{
-		zelda_equipTool($stat[moxie]);
+		plumber_equipTool($stat[moxie]);
 		equipMaximizedGear();
 	}
 
@@ -944,10 +940,10 @@ boolean fortuneCookieEvent()
 			goal = $location[The Haunted Pantry];
 		}
 		
-		if(in_zelda())
+		if(in_plumber())
 		{
 			//prevent plumber crash when it tries to adventure without plumber gear.
-			zelda_equipTool($stat[moxie]);
+			plumber_equipTool($stat[moxie]);
 			equipMaximizedGear();
 		}
 		
@@ -1165,7 +1161,7 @@ void initializeDay(int day)
 
 			tootGetMeat();
 
-			hr_initializeDay(day);
+			heavy_rains_initializeDay(day);
 			// It's nice to have a moxie weapon for Flock of Bats form
 			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
 			{
@@ -1254,7 +1250,7 @@ void initializeDay(int day)
 				use(1, $item[gym membership card]);
 			}
 
-			hr_initializeDay(day);
+			heavy_rains_initializeDay(day);
 
 			if(!in_hardcore() && (item_amount($item[Handful of Smithereens]) <= 5))
 			{
@@ -2530,7 +2526,7 @@ void print_header()
 	{
 		auto_log_info("Snow suit usage: " + get_property("_snowSuitCount") + " carrots: " + get_property("_carrotNoseDrops"), "blue");
 	}
-	if(auto_my_path() == "Heavy Rains")
+	if (in_heavyrains())
 	{
 		auto_log_info("Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}
@@ -2538,7 +2534,7 @@ void print_header()
 	{
 		auto_log_info("Ka Coins: " + item_amount($item[Ka Coin]) + " Lashes used: " + get_property("_edLashCount"), "green");
 	}
-	if (in_zelda())
+	if (in_plumber())
 	{
 		auto_log_info("Coins: " + item_amount($item[Coin]), "green");
 	}
@@ -2720,7 +2716,7 @@ boolean doTasks()
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();
-	zelda_buyStuff();
+	plumber_buyStuff();
 	jarlsberg_buySkills();
 	boris_buySkills();
 	pete_buySkills();
@@ -2758,7 +2754,6 @@ boolean doTasks()
 	if(LM_jello())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
-	if(LM_disguises())					return true;
 	if(LM_batpath()) 					return true;
 	if(doHRSkills())					return true;
 	if(LM_canInteract()) 				return true;
@@ -2791,10 +2786,7 @@ boolean doTasks()
 	if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
 	if(LX_ghostBusting())				return true;
-
-
 	if(witchessFights())					return true;
-	if(my_daycount() != 2)				doNumberology("adventures3");
 
 	//
 	//Adventuring actually starts here.
@@ -2819,22 +2811,13 @@ boolean doTasks()
 	}
 
 	auto_voteSetup(0,0,0);
-
 	auto_setSongboom();
-
 	if(LM_bond())						return true;
-	if(LX_universeFrat())				return true;
-	handleJar();
+	if(LX_calculateTheUniverse())				return true;
 	adventureFailureHandler();
-
 	dna_sorceressTest();
 	dna_generic();
-
-	if(((my_hp() * 5) < my_maxhp()) && (my_mp() > 100))
-	{
-		acquireHP();
-	}
-
+	
 	if (process_tasks()) return true;
 
 	auto_log_info("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");

@@ -1,11 +1,11 @@
-boolean in_zelda()
+boolean in_plumber()
 {
 	return my_path() == "Path of the Plumber";
 }
 
-boolean zelda_initializeSettings()
+boolean plumber_initializeSettings()
 {
-	if(in_zelda())
+	if(in_plumber())
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_wandOfNagamar", false);
@@ -15,35 +15,35 @@ boolean zelda_initializeSettings()
 	return false;
 }
 
-boolean zelda_haveHammer()
+boolean plumber_haveHammer()
 {
 	return possessEquipment($item[hammer]) || possessEquipment($item[heavy hammer]);
 }
 
-boolean zelda_equippedHammer()
+boolean plumber_equippedHammer()
 {
 	return equipped_item($slot[weapon]) == $item[hammer]
 		|| equipped_item($slot[weapon]) == $item[heavy hammer];
 }
 
-boolean zelda_haveFlower()
+boolean plumber_haveFlower()
 {
 	return possessEquipment($item[[10462]fire flower]) || possessEquipment($item[bonfire flower]);
 }
 
-boolean zelda_equippedFlower()
+boolean plumber_equippedFlower()
 {
 	return equipped_item($slot[weapon]) == $item[[10462]fire flower]
 		|| equipped_item($slot[weapon]) == $item[bonfire flower];
 }
 
-boolean zelda_equippedBoots()
+boolean plumber_equippedBoots()
 {
 	return have_equipped($item[work boots])
 		|| have_equipped($item[fancy boots]);
 }
 
-int zelda_numBadgesBought()
+int plumber_numBadgesBought()
 {
 	return (have_skill($skill[[25001]Hammer Throw]).to_int() +
 		have_skill($skill[[25002]Ultra Smash]).to_int() +
@@ -62,11 +62,11 @@ int zelda_numBadgesBought()
 }
 
 
-boolean zelda_buySkill(skill sk)
+boolean plumber_buySkill(skill sk)
 {
 	if (have_skill(sk)) return false;
 
-	int cost = 50 + 25 * zelda_numBadgesBought();
+	int cost = 50 + 25 * plumber_numBadgesBought();
 	if (item_amount($item[coin]) < cost) return false;
 
 	visit_url("place.php?whichplace=mario&action=mush_badgeshop");
@@ -96,7 +96,7 @@ boolean zelda_buySkill(skill sk)
 	return have_skill(sk);
 }
 
-boolean zelda_buyEquipment(item it)
+boolean plumber_buyEquipment(item it)
 {
 	if (possessEquipment(it)) return false;
 
@@ -129,14 +129,14 @@ boolean zelda_buyEquipment(item it)
 	return true;
 }
 
-stat zelda_costume()
+stat plumber_costume()
 {
 	return get_property("plumberCostumeWorn").to_stat();
 }
 
-boolean zelda_buyCostume(stat st)
+boolean plumber_buyCostume(stat st)
 {
-	if (zelda_costume() == st) return false;
+	if (plumber_costume() == st) return false;
 
 	visit_url("place.php?whichplace=mario&action=mush_costumeshop");
 
@@ -160,137 +160,137 @@ boolean zelda_buyCostume(stat st)
 	return false;
 }
 
-record zelda_buyable {
+record plumber_buyable {
 	item it;
 	skill sk;
 	stat costume;
 };
 
-zelda_buyable zelda_buyableItem(item it)
+plumber_buyable plumber_buyableItem(item it)
 {
-	zelda_buyable res;
+	plumber_buyable res;
 	res.it = it;
 	return res;
 }
 
-zelda_buyable zelda_buyableSkill(skill sk)
+plumber_buyable plumber_buyableSkill(skill sk)
 {
-	zelda_buyable res;
+	plumber_buyable res;
 	res.sk = sk;
 	return res;
 }
 
-zelda_buyable zelda_buyableCostume(stat costume)
+plumber_buyable plumber_buyableCostume(stat costume)
 {
-	zelda_buyable res;
+	plumber_buyable res;
 	res.costume = costume;
 	return res;
 }
 
-boolean zelda_buyableIsNothing(zelda_buyable zb)
+boolean plumber_buyableIsNothing(plumber_buyable zb)
 {
 	return zb.it == $item[none] && zb.sk == $skill[none] && zb.costume == $stat[none];
 }
 
-zelda_buyable zelda_nextBuyable()
+plumber_buyable plumber_nextBuyable()
 {
 	if (!have_skill($skill[Lucky Buckle]))
 	{
-		return zelda_buyableSkill($skill[Lucky Buckle]);
+		return plumber_buyableSkill($skill[Lucky Buckle]);
 	}
 	else if (!possessEquipment($item[[10462]fire flower]))
 	{
-		return zelda_buyableItem($item[[10462]fire flower]);
+		return plumber_buyableItem($item[[10462]fire flower]);
 	}
 	else if (!have_skill($skill[Secret Eye]))
 	{
-		return zelda_buyableSkill($skill[Secret Eye]);
+		return plumber_buyableSkill($skill[Secret Eye]);
 	}
 	else if (!have_skill($skill[[25006]Multi-Bounce]))
 	{
-		return zelda_buyableSkill($skill[[25006]Multi-Bounce]);
+		return plumber_buyableSkill($skill[[25006]Multi-Bounce]);
 	}
 	else if (!have_skill($skill[Power Plus]))
 	{
-		return zelda_buyableSkill($skill[Power Plus]);
+		return plumber_buyableSkill($skill[Power Plus]);
 	}
 	else if (!possessEquipment($item[fancy boots]))
 	{
-		return zelda_buyableItem($item[fancy boots]);
+		return plumber_buyableItem($item[fancy boots]);
 	}
-	else if (zelda_costume() != $stat[moxie])
+	else if (plumber_costume() != $stat[moxie])
 	{
-		return zelda_buyableCostume($stat[moxie]);
+		return plumber_buyableCostume($stat[moxie]);
 	}
 	else if (!have_skill($skill[Lucky Pin]))
 	{
-		return zelda_buyableSkill($skill[Lucky Pin]);
+		return plumber_buyableSkill($skill[Lucky Pin]);
 	}
 	else if (!have_skill($skill[Lucky Brooch]))
 	{
-		return zelda_buyableSkill($skill[Lucky Brooch]);
+		return plumber_buyableSkill($skill[Lucky Brooch]);
 	}
 	else if (!have_skill($skill[Lucky Insignia]))
 	{
-		return zelda_buyableSkill($skill[Lucky Insignia]);
+		return plumber_buyableSkill($skill[Lucky Insignia]);
 	}
 	else if (!have_skill($skill[Rainbow Shield]))
 	{
-		return zelda_buyableSkill($skill[Rainbow Shield]);
+		return plumber_buyableSkill($skill[Rainbow Shield]);
 	}
 	else if (!have_skill($skill[[25004]Fireball Barrage]))
 	{
-		return zelda_buyableSkill($skill[[25004]Fireball Barrage]);
+		return plumber_buyableSkill($skill[[25004]Fireball Barrage]);
 	}
 	else if (!possessEquipment($item[frosty button]))
 	{
-		return zelda_buyableItem($item[frosty button]);
+		return plumber_buyableItem($item[frosty button]);
 	}
 	else if (!have_skill($skill[Health Symbol]))
 	{
-		return zelda_buyableSkill($skill[Health Symbol]);
+		return plumber_buyableSkill($skill[Health Symbol]);
 	}
 	else if (!have_skill($skill[[25003]Juggle Fireballs]))
 	{
-		return zelda_buyableSkill($skill[[25003]Juggle Fireballs]);
+		return plumber_buyableSkill($skill[[25003]Juggle Fireballs]);
 	}
 	else if (!possessEquipment($item[cape]))
 	{
-		return zelda_buyableItem($item[cape]);
+		return plumber_buyableItem($item[cape]);
 	}
 	else if (!possessEquipment($item[bony back shell]))
 	{
-		return zelda_buyableItem($item[bony back shell]);
+		return plumber_buyableItem($item[bony back shell]);
 	}
 	else if (!possessEquipment($item[bonfire flower]))
 	{
-		return zelda_buyableItem($item[bonfire flower]);
+		return plumber_buyableItem($item[bonfire flower]);
 	}
 
-	zelda_buyable nothing;
+	plumber_buyable nothing;
 	return nothing;
 }
 
-boolean zelda_nothingToBuy()
+boolean plumber_nothingToBuy()
 {
-	zelda_buyable next = zelda_nextBuyable();
-	return zelda_buyableIsNothing(next);
+	plumber_buyable next = plumber_nextBuyable();
+	return plumber_buyableIsNothing(next);
 }
 
-boolean zelda_buyStuff()
+boolean plumber_buyStuff()
 {
-	zelda_buyable next = zelda_nextBuyable();
+	plumber_buyable next = plumber_nextBuyable();
 	if(next.sk != $skill[none])
 	{
-		return zelda_buySkill(next.sk);
+		return plumber_buySkill(next.sk);
 	}
 	else if(next.it != $item[none])
 	{
-		return zelda_buyEquipment(next.it);
+		return plumber_buyEquipment(next.it);
 	}
 	else if (next.costume != $stat[none])
 	{
-		return zelda_buyCostume(next.costume);
+		return plumber_buyCostume(next.costume);
 	}
 	else
 	{
@@ -298,7 +298,7 @@ boolean zelda_buyStuff()
 	}
 }
 
-int zelda_ppCost(skill sk)
+int plumber_ppCost(skill sk)
 {
 	switch(sk)
 	{
@@ -315,7 +315,7 @@ int zelda_ppCost(skill sk)
 	}
 }
 
-boolean zelda_canDealScalingDamage()
+boolean plumber_canDealScalingDamage()
 {
 	item[stat] items_lv1 = {
 		$stat[moxie]: $item[work boots],
@@ -362,7 +362,7 @@ boolean zelda_canDealScalingDamage()
 		// Discard stats that are wildly lower than our max stat.
 		if (expected_scaler_hp >= 2 * my_buffedstat(st)) continue;
 
-		level += to_int(zelda_costume() == st);
+		level += to_int(plumber_costume() == st);
 
 		if ((my_maxpp() >= 2) && have_skill(attacks_2pp[st])) return true;
 		if (level >= 3 && have_skill(attacks_free[st])) return true;
@@ -371,32 +371,32 @@ boolean zelda_canDealScalingDamage()
 	return false;
 }
 
-boolean zelda_skillValid(skill sk)
+boolean plumber_skillValid(skill sk)
 {
-	if(!in_zelda())
+	if(!in_plumber())
 	{
 		return true;
 	}
 
 	if($skills[Jump Attack, [25005]Spin Jump, [25006]Multi-Bounce] contains sk)
 	{
-		return zelda_equippedBoots();
+		return plumber_equippedBoots();
 	}
 	else if($skills[Fireball Toss, [25003]Juggle Fireballs, [25004]Fireball Barrage] contains sk)
 	{
-		return zelda_equippedFlower();
+		return plumber_equippedFlower();
 	}
 	else if($skills[Hammer Smash, [25001]Hammer Throw, [25002]Ultra Smash] contains sk)
 	{
-		return zelda_equippedHammer();
+		return plumber_equippedHammer();
 	}
 
 	return true;
 }
 
-boolean zelda_equipTool(stat st)
+boolean plumber_equipTool(stat st)
 {
-	if (!in_zelda()) return false;
+	if (!in_plumber()) return false;
 
 	boolean equipWithFallback(item to_equip, item fallback_to_equip)
 	{

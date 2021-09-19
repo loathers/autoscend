@@ -360,12 +360,12 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
-			if(options contains 5 && auto_mall_price($item[Engorged Sausages and You]) > 1000) {
-				run_choice(5); // only shows up rarely. when this line was added it was worth 1.3 million in mall
+			if(options contains 4) {
+				run_choice(4); // only shows up rarely. when this line was added it was worth 1.3 million in mall
 			} if (in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
 				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
 			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie] && my_buffedstat($stat[moxie]) < 150) {
-				run_choice(4); // spend 1 ghost key for primestat, get ~200 moxie XP
+				run_choice(5); // spend 1 ghost key for primestat, get ~200 moxie XP
 			} else {
 				run_choice(1); // get moxie substats
 			}
