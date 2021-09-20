@@ -365,6 +365,14 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
+	//use industrial fire extinguisher zone specific skills
+	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
+	if(extinguisherSkill != "")
+	{
+		handleTracker(enemy, to_skill(substring(extinguisherSkill, 6)), "auto_otherstuff");
+		return extinguisherSkill;
+	}
+
 	if(!contains_text(combatState, "yellowray") && auto_wantToYellowRay(enemy, my_location()))
 	{
 		string combatAction = yellowRayCombatString(enemy, true);
@@ -469,14 +477,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		{
 			return useItem($item[Duskwalker Syringe]);
 		}
-	}
-
-	//use industrial fire extinguisher zone specific skills
-	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
-	if(extinguisherSkill != "")
-	{
-		handleTracker(enemy, to_skill(substring(extinguisherSkill, 6)), "auto_otherstuff");
-		return extinguisherSkill;
 	}
 
 	if (canUse($item[Cigarette Lighter]) && my_location() == $location[A Mob Of Zeppelin Protesters] && internalQuestStatus("questL11Ron") == 1 && get_property("auto_edStatus") == "dying")
