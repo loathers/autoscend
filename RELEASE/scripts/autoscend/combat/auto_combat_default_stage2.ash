@@ -11,7 +11,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 	//use industrial fire extinguisher zone specific skills
 	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
-	if(extinguisherSkill != $skill[none])
+	if(extinguisherSkill != "")
 	{
 		handleTracker(enemy, to_skill(substring(extinguisherSkill, 6)), "auto_otherstuff");
 		return extinguisherSkill;
