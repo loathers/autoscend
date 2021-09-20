@@ -226,7 +226,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if(auto_FireExtinguisherCombatString(place) != $skill[none] || $locations[Twin Peak, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
+	if(auto_FireExtinguisherCombatString(place) != "" || $locations[Twin Peak, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
 		autoEquip($item[industrial fire extinguisher]);
 	}

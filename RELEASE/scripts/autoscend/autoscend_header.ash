@@ -441,7 +441,7 @@ boolean can_get_battery(item target);
 boolean auto_getBattery(item target);
 boolean auto_haveFireExtinguisher();
 int auto_fireExtinguisherCharges();
-skill auto_FireExtinguisherCombatString(location place);
+string auto_FireExtinguisherCombatString(location place);
 boolean auto_hasExtinguisherBeenRefilled();
 
 ########################################################################################################
