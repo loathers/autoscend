@@ -903,6 +903,7 @@ boolean L11_defeatEd();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_12.ash
+void copy_warplan(WarPlan target, WarPlan source);
 string auto_warSide();
 int auto_warSideQuestsDone();
 WarPlan auto_warSideQuestsState();
