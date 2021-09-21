@@ -67,7 +67,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 				forceDrop = true;
 
 			// Number of times bowled is 1 less than hiddenBowlingAlleyProgress. Need 5 bowling balls total, 5+1 = 6 needed in this conditional
-			if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) < 6)
+			if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) < 6))
 				forceDrop = true;
 			
 			if(enemy == $monster[Dairy Goat] && item_amount($item[Goat Cheese]) < 3)
