@@ -228,7 +228,9 @@ boolean auto_pre_adventure()
 
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[Twin Peak, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
-		autoEquip($item[industrial fire extinguisher]);
+		// force extinguisher to be equiped to overrule Slay the Dead skill forcing of a sword
+		// Slay the Dead equipment call happens prior to this call, so extinguisher will be equiped instead
+		autoForceEquip($item[industrial fire extinguisher]);
 	}
 
 	if(in_plumber())
