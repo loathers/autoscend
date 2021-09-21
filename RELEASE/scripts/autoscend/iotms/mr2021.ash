@@ -429,7 +429,7 @@ string auto_FireExtinguisherCombatString(location place)
 
 	if(place == $location[Cobb\'s Knob Harem] && !get_property("fireExtinguisherHaremUsed").to_boolean() && !possessOutfit("Knob Goblin Harem Girl Disguise"))
 	{
-			return "skill " + $skill[Fire Extinguisher: Zone Specific];
+		return "skill " + $skill[Fire Extinguisher: Zone Specific];
 	}
 
 	if(place == $location[The Defiled Niche] && !get_property("fireExtinguisherCyrptUsed").to_boolean())
@@ -451,7 +451,7 @@ string auto_FireExtinguisherCombatString(location place)
 	
 }
 
-boolean auto_hasExtinguisherBeenRefilled()
+boolean auto_canExtinguisherBeRefilled()
 {
 	return auto_haveFireExtinguisher() && in_wildfire() && !get_property("_fireExtinguisherRefilled").to_boolean();
 }

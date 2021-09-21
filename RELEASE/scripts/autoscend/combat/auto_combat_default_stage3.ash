@@ -61,8 +61,19 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 		// polar vortex is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
 		// only reasonable to vortex for hedge trimmers. Still reserve 30 charge for filth worms
-		if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy && auto_fireExtinguisherCharges() > 30)
+		if(auto_fireExtinguisherCharges() > 30)
+		{
+			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
 				forceDrop = true;
+
+			// Number of times bowled is 1 less than hiddenBowlingAlleyProgress. Need 5 bowling balls total, 5+1 = 6 needed in this conditional
+			if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) < 6)
+				forceDrop = true;
+			
+			if(enemy == $monster[Dairy Goat] && item_amount($item[Goat Cheese]) < 3)
+				forceDrop = true;
+		}
+				
 
 		if(forceDrop)
 		{
