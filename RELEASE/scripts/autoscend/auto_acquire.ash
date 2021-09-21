@@ -485,3 +485,52 @@ boolean acquireHermitItem(item it)
 
 	return (have + 1) == item_amount(it);
 }
+
+boolean pull_meat(int target)
+{
+	//pulls meat to reach the desired target amount. preferentially will pull items and autosell them.
+	if(my_meat() >= target)
+	{
+		return true;	//already have target meat
+	}
+	if(pulls_remaining() < 1)		//hardcore returns 0. casual returns -1. both are < 1
+	{
+		return false;	//can not pull
+	}
+	if(my_path() == "Way of the Surprising Fist")
+	{
+		return false;	//can not pull meat & autoselling items just donates them
+	}
+	
+	//pull and autosell items
+	while(my_meat() < target && pulls_remaining() > 0)
+	{
+		boolean fail = true;		//if true an item was not pulled and sold this loop
+		foreach it in $items[1\,970 carat gold]
+		{
+			if(fail && storage_amount(it) > 0 && is_unrestricted(it))
+			{
+				if(pullXWhenHaveY(it, 1, 0) && autosell(1, it))		//pull and sell
+				{
+					fail = false;
+				}
+			}
+		}
+		if(fail) break;
+	}
+	
+	//pull meat directly
+	if(my_meat() < target && my_storage_meat() >= target)
+	{
+		float meat_pulls = target - my_meat();					//how much meat we need to pull. converted to float
+		meat_pulls = ceil(meat_pulls / 1000.0);					//how many pulls it will require to get.
+		meat_pulls = min(pulls_remaining(), meat_pulls);		//limit by remaining pulls
+		int meat_pull_int = meat_pulls * 1000;		//we want to round it up to nearest 1000
+		if(meat_pulls > 0)
+		{
+			cli_execute("pull " +meat_pull_int+ " meat");
+		}
+	}
+	
+	return my_meat() >= target;
+}

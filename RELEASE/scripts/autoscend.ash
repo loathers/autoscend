@@ -232,6 +232,7 @@ void initializeSettings() {
 	grey_goo_initializeSettings();
 	qt_initializeSettings();
 	jarlsberg_initializeSettings();
+	wildfire_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -2782,7 +2783,6 @@ boolean doTasks()
 		}
 	}
 
-
 	if(fortuneCookieEvent())			return true;
 	if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
@@ -2818,6 +2818,7 @@ boolean doTasks()
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();
+	if(LA_wildfire())					return true;
 	
 	if (process_tasks()) return true;
 

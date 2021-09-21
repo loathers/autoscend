@@ -778,6 +778,18 @@ boolean tcrs_maximize_with_items(string maximizerString);
 ########################################################################################################
 //Defined in autoscend/paths/wildfire.ash
 boolean in_wildfire();
+void wildfire_initializeSettings();
+void wildfire_rainbarrel();
+int wildfire_water_cost(string target);
+boolean LX_wildfire_grease_pump();
+boolean LX_wildfire_pump(int target);
+boolean LX_wildfire_dust();
+boolean LX_wildfire_frack();
+boolean LX_wildfire_sprinkle();
+boolean LX_wildfire_hose_once(location place);
+boolean LX_wildfire_hose(location place, int target_fire);
+boolean LX_wildfire_hose(location place);
+boolean LA_wildfire();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -1040,6 +1052,7 @@ float npcStoreDiscountMulti();
 boolean acquireGumItem(item it);
 boolean acquireTotem();
 boolean acquireHermitItem(item it);
+boolean pull_meat(int target);
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash

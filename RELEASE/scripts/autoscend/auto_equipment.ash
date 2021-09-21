@@ -182,8 +182,9 @@ string defaultMaximizeStatement()
 	
 	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
 	if(my_primestat() != $stat[Moxie])
+	{
 		res += ",mox";
-
+	}
 
 	if(my_class() == $class[Vampyre])
 	{
@@ -220,6 +221,10 @@ string defaultMaximizeStatement()
 		{
 			res += ",5familiar exp";
 		}
+	}
+	if(in_wildfire())
+	{
+		res += ",water,hot res";
 	}
 	if (in_plumber())
 	{
