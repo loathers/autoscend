@@ -30,8 +30,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	}
 	
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
-	if((canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
-	|| (canUse($skill[Fire Extinguisher: Polar Vortex]) && auto_fireExtinguisherCharges() > 10))
+	if(canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
 	{
 		boolean forceDrop = false;
 		if($monsters[Filthworm Drone, Filthworm Royal Guard, Larval Filthworm] contains enemy)
@@ -57,7 +56,25 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			// snatch a sonar-in-a-biscuit if we're lucky
 			if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (get_property("questL04Bat")) != "finished")
 				forceDrop = true;
+		}				
+
+		if(forceDrop)
+		{
+			handleTracker(enemy, $skill[Hugs and Kisses!], "auto_otherstuff");
+			return useSkill($skill[Hugs and Kisses!]);			
 		}
+	}
+
+	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
+	//prioritize XO over extinguisher since extinguisher has other uses
+	if(canUse($skill[Fire Extinguisher: Polar Vortex]) && auto_fireExtinguisherCharges() > 10)
+	{
+		boolean forceDrop = false;
+		if($monsters[Filthworm Drone, Filthworm Royal Guard, Larval Filthworm] contains enemy)
+		{
+			forceDrop = true;
+		}
+
 
 		// polar vortex is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
 		// only reasonable to vortex for hedge trimmers. Still reserve 30 charge for filth worms
@@ -77,18 +94,8 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 		if(forceDrop)
 		{
-			// prioritize XO skeleton skill to force drops. Extinguisher has other uses
-			if(canUse($skill[Hugs and Kisses!]))
-			{
-				handleTracker(enemy, $skill[Hugs and Kisses!], "auto_otherstuff");
-				return useSkill($skill[Hugs and Kisses!]);
-			}
-			if(canUse($skill[Fire Extinguisher: Polar Vortex]))
-			{
-				handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
-				return useSkill($skill[Fire Extinguisher: Polar Vortex]);
-			}
-			
+			handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
+			return useSkill($skill[Fire Extinguisher: Polar Vortex]);	
 		}
 	}
 	
