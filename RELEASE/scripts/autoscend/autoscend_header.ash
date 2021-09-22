@@ -1021,6 +1021,27 @@ boolean LX_NemesisQuest();
 void houseUpgrade();
 
 ########################################################################################################
+//Defined in autoscend/auto_acquire.ash
+boolean haveAny(boolean[item] array);
+boolean acquireOrPull(item it);
+boolean canPull(item it);
+void pullAll(item it);
+void pullAndUse(item it, int uses);
+int auto_mall_price(item it);
+boolean pullXWhenHaveY(item it, int howMany, int whenHave);
+boolean pulverizeThing(item it);
+boolean buyableMaintain(item toMaintain, int howMany);
+boolean buyableMaintain(item toMaintain, int howMany, int meatMin);
+boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);
+boolean buy_item(item it, int quantity, int maxprice);
+boolean buyUpTo(int num, item it);
+boolean buyUpTo(int num, item it, int maxprice);
+float npcStoreDiscountMulti();
+boolean acquireGumItem(item it);
+boolean acquireTotem();
+boolean acquireHermitItem(item it);
+
+########################################################################################################
 //Defined in autoscend/auto_adventure.ash
 boolean autoAdv(int num, location loc, string option);		//num is ignored
 boolean autoAdv(int num, location loc);						//num is ignored
@@ -1368,9 +1389,6 @@ float elemental_resist_value(int resistance);
 int elemental_resist(element goal);
 skill preferredLibram();
 boolean lastAdventureSpecialNC();
-boolean buyableMaintain(item toMaintain, int howMany);
-boolean buyableMaintain(item toMaintain, int howMany, int meatMin);
-boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);
 effect whatStatSmile();
 item whatHiMein();
 boolean ovenHandle();
@@ -1379,9 +1397,6 @@ boolean isProtonGhost(monster mon);
 int cloversAvailable();
 boolean cloverUsageInit();
 boolean cloverUsageFinish();
-boolean acquireGumItem(item it);
-boolean acquireTotem();
-boolean acquireHermitItem(item it);
 boolean isHermitAvailable();
 boolean isGalaktikAvailable();
 boolean isGeneralStoreAvailable();
@@ -1438,16 +1453,7 @@ int doNumberology(string goal, boolean doIt);
 int doNumberology(string goal, boolean doIt, string option);
 boolean auto_have_skill(skill sk);
 boolean have_skills(boolean[skill] array);
-boolean haveAny(boolean[item] array);
-boolean acquireOrPull(item it);
-boolean canPull(item it);
-void pullAll(item it);
-void pullAndUse(item it, int uses);
-int auto_mall_price(item it);
-boolean pullXWhenHaveY(item it, int howMany, int whenHave);
 void woods_questStart();
-boolean pulverizeThing(item it);
-boolean buy_item(item it, int quantity, int maxprice);
 int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
@@ -1457,8 +1463,6 @@ void shrugAT(effect anticipated);
 string auto_my_path();
 boolean acquireTransfunctioner();
 int [item] auto_get_campground();
-boolean buyUpTo(int num, item it);
-boolean buyUpTo(int num, item it, int maxprice);
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
@@ -1512,5 +1516,4 @@ boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);
 int currentPoolSkill();
 int poolSkillPracticeGains();
-float npcStoreDiscountMulti();
 int meatReserve();
