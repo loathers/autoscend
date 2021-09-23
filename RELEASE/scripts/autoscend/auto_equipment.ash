@@ -585,8 +585,10 @@ void equipRollover()
 	auto_log_info("Putting on pajamas...", "blue");
 
 	string to_max = "-tie,adv";
-	if(hippy_stone_broken())
-		to_max += ",0.3fites";
+	if(hippy_stone_broken() && get_property("auto_bedtime_pulls_pvp_multi").to_float() > 0)
+	{
+		to_max += "," +get_property("auto_bedtime_pulls_pvp_multi")+ "fites";
+	}
 	if(auto_have_familiar($familiar[Trick-or-Treating Tot]))
 		to_max += ",switch Trick-or-Treating Tot";
 	if(auto_have_familiar($familiar[Left-Hand Man]))
