@@ -120,7 +120,7 @@ boolean LX_wildfire_pump(int target)
 		return false;
 	}
 	int start_water = my_wildfire_water();
-	while(my_adventures() > 1+auto_advToReserve() && target > my_wildfire_water())
+	while(my_adventures() > 1+auto_advToReserve() && target > my_wildfire_water() && get_counters("", 0, 0) == "")
 	{
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_oldpump");
 		visit_url("charpane.php");		//r20942 must refresh charpane to update water
