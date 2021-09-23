@@ -142,11 +142,13 @@ boolean LX_wildfire_grease_pump()
 boolean LX_wildfire_pump(int target)
 {
 	//use the pump until we reach target water or run low on adv
+	//returns true if adv were spent. regardless of whether target was reached or not
 	if(!in_wildfire())
 	{
 		return false;
 	}
 	int start_water = my_wildfire_water();
+	int start_adv = my_adventures();
 	while(my_adventures() > 1+auto_advToReserve() && target > my_wildfire_water() && get_counters("", 0, 0) == "")
 	{
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_oldpump");
@@ -156,7 +158,7 @@ boolean LX_wildfire_pump(int target)
 			abort("Mafia failed to update your water level. Are you using the compact char pane? as of r20944 you must be using the full char pane for wildfire to work");
 		}
 	}
-	return my_wildfire_water() >= target;
+	return start_adv != my_adventures();
 }
 
 boolean LX_wildfire_dust()
@@ -171,7 +173,10 @@ boolean LX_wildfire_dust()
 		return false;	//already done
 	}
 
-	if(LX_wildfire_pump(wildfire_water_cost("dust")))
+	//pump water. restart loop if adv were spent
+	if(LX_wildfire_pump(wildfire_water_cost("dust"))) return true;
+	
+	if(wildfire_water_cost("dust") >= my_wildfire_water())
 	{
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_cropster");
 		run_choice(1);
@@ -194,8 +199,11 @@ boolean LX_wildfire_frack()
 	{
 		return false;	//already done
 	}
+	
+	//pump water. restart loop if adv were spent
+	if(LX_wildfire_pump(wildfire_water_cost("frack"))) return true;
 
-	if(LX_wildfire_pump(wildfire_water_cost("frack")))
+	if(wildfire_water_cost("frack") >= my_wildfire_water())
 	{
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_fracker");
 		run_choice(1);
@@ -218,8 +226,11 @@ boolean LX_wildfire_sprinkle()
 	{
 		return false;	//already done
 	}
+	
+	//pump water. restart loop if adv were spent
+	if(LX_wildfire_pump(wildfire_water_cost("sprinkle"))) return true;
 
-	if(LX_wildfire_pump(wildfire_water_cost("sprinkle")))
+	if(wildfire_water_cost("sprinkle") >= my_wildfire_water())
 	{
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_sprinklerjoe");
 		run_choice(1);
@@ -240,17 +251,19 @@ boolean LX_wildfire_hose_once(location place)
 	if(place.fire_level == 0)
 	{
 		auto_log_warning("I can not Hose down [" +place+ "] with fire captain hangk as it is already at fire level 0");
-		return true;
+		return false;
 	}
+	boolean retval = false;
 
 	int start_level = place.fire_level;
-	if(LX_wildfire_pump(wildfire_water_cost("hose")))	//get the water needed to hose down a place
+	if(wildfire_water_cost("hose") >= my_wildfire_water())
 	{
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_captain");
 		visit_url("choice.php?option=1&whichchoice=1451&pwd=&zid=" +place.to_url().split_string("=")[1]);
 		if((start_level - 1) == place.fire_level)
 		{
 			set_property("_auto_wildfire_hosed_today", 1+get_property("_auto_wildfire_hosed_today").to_int());
+			retval = true;	//success
 		}
 		else
 		{
@@ -259,15 +272,16 @@ boolean LX_wildfire_hose_once(location place)
 	}
 	else
 	{
-		auto_log_warning("I was unable to pump enough water to Hose down [" +place+ "] with fire captain hangk");
+		abort("LX_wildfire_hose_once() did not have enough water to Hose down [" +place+ "]. Report and run me again");
 	}
 	
-	return (start_level - 1) == place.fire_level;
+	return retval;
 }
 
 boolean LX_wildfire_hose(location place, int target_fire)
 {
 	//have cpt hangk send water hosers to hose loc down until fire level reaches target_fire
+	//only return true if the loop needs to be restarted. which only occurs if we adv were spent on pumping water
 	if(!in_wildfire())
 	{
 		return false;
@@ -278,8 +292,31 @@ boolean LX_wildfire_hose(location place, int target_fire)
 	}
 	if(place.fire_level <= target_fire)
 	{
-		return true;		//already done
+		return false;		//already done
 	}
+	
+	int hoses_needed = place.fire_level - target_fire;
+	int water_needed = wildfire_water_cost("hose");
+	switch(hoses_needed)
+	{
+		case 1:
+			break;
+		case 2:
+			water_needed = water_needed*2 +10;
+			break;
+		case 3:
+			water_needed = water_needed*3 +30;
+			break;
+		case 4:
+			water_needed = water_needed*4 +60;
+			break;
+		case 5:
+			water_needed = water_needed*5 +100;
+			break;
+	}
+	
+	//pump water. restart loop if adv were spent
+	if(LX_wildfire_pump(water_needed)) return true;
 	
 	for(int i=0; i<5; i++)		//loop a max of 5 times. the max number of times fire can be reduced
 	{
@@ -292,7 +329,7 @@ boolean LX_wildfire_hose(location place, int target_fire)
 		}
 		else break;		//we are done
 	}
-	return place.fire_level <= target_fire;
+	return false;	//we only return true during water pumping if adv was used
 }
 
 boolean LX_wildfire_hose(location place)
