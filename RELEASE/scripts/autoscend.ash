@@ -2202,12 +2202,18 @@ boolean adventureFailureHandler()
 		{
 			tooManyAdventures = false;		//if we do not have iotm powerlevel zones then we are forced to use haunted gallery or bedroom
 		}
+		
+		if(my_adventures() < get_property("_auto_override_tooManyAdv").to_int())
+		{
+			tooManyAdventures = false;		//currently in override for too many adv
+		}
 
 		if(tooManyAdventures)
 		{
 			if(get_property("auto_newbieOverride").to_boolean())
 			{
 				set_property("auto_newbieOverride", false);
+				set_property("_auto_override_tooManyAdv", my_adventures()+5);		//override 5 adv at a time
 				auto_log_warning("We have spent " + place.turns_spent + " turns at '" + place + "' and that is bad... override accepted.", "red");
 			}
 			else
