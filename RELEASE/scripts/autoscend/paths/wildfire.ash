@@ -295,25 +295,10 @@ boolean LX_wildfire_hose(location place, int target_fire)
 		return false;		//already done
 	}
 	
+	int[6] water_offset = {0, 0, 10, 30, 60, 100};		//an array of the extra costs of hosing due to price increase.
 	int hoses_needed = place.fire_level - target_fire;
 	int water_needed = wildfire_water_cost("hose");
-	switch(hoses_needed)
-	{
-		case 1:
-			break;
-		case 2:
-			water_needed = water_needed*2 +10;
-			break;
-		case 3:
-			water_needed = water_needed*3 +30;
-			break;
-		case 4:
-			water_needed = water_needed*4 +60;
-			break;
-		case 5:
-			water_needed = water_needed*5 +100;
-			break;
-	}
+	water_needed = water_offset[hoses_needed] + water_needed*hoses_needed;
 	
 	//pump water. restart loop if adv were spent
 	if(LX_wildfire_pump(water_needed)) return true;
