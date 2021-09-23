@@ -174,7 +174,7 @@ boolean LX_wildfire_dust()
 	}
 
 	//pump water. restart loop if adv were spent
-	if(LX_wildfire_pump(wildfire_water_cost("dust"))) return true;
+	boolean retval = LX_wildfire_pump(wildfire_water_cost("dust"));
 	
 	if(wildfire_water_cost("dust") >= my_wildfire_water())
 	{
@@ -185,7 +185,7 @@ boolean LX_wildfire_dust()
 			abort("Mysteriously failed to Dust with Cropduster Dusty. fix it and run me again");
 		}
 	}
-	return false;
+	return retval;
 }
 
 boolean LX_wildfire_frack()
@@ -201,7 +201,7 @@ boolean LX_wildfire_frack()
 	}
 	
 	//pump water. restart loop if adv were spent
-	if(LX_wildfire_pump(wildfire_water_cost("frack"))) return true;
+	boolean retval = LX_wildfire_pump(wildfire_water_cost("frack"));
 
 	if(wildfire_water_cost("frack") >= my_wildfire_water())
 	{
@@ -212,7 +212,7 @@ boolean LX_wildfire_frack()
 			abort("Mysteriously failed to Frack with Fracker Dan. fix it and run me again");
 		}
 	}
-	return false;
+	return retval;
 }
 
 boolean LX_wildfire_sprinkle()
@@ -228,7 +228,7 @@ boolean LX_wildfire_sprinkle()
 	}
 	
 	//pump water. restart loop if adv were spent
-	if(LX_wildfire_pump(wildfire_water_cost("sprinkle"))) return true;
+	boolean retval = LX_wildfire_pump(wildfire_water_cost("sprinkle"));
 
 	if(wildfire_water_cost("sprinkle") >= my_wildfire_water())
 	{
@@ -239,7 +239,7 @@ boolean LX_wildfire_sprinkle()
 			abort("Mysteriously failed to Sprinkle with Sprinkler Joe. fix it and run me again");
 		}
 	}
-	return false;
+	return retval;
 }
 
 boolean LX_wildfire_hose_once(location place)
@@ -301,7 +301,7 @@ boolean LX_wildfire_hose(location place, int target_fire)
 	water_needed = water_offset[hoses_needed] + water_needed*hoses_needed;
 	
 	//pump water. restart loop if adv were spent
-	if(LX_wildfire_pump(water_needed)) return true;
+	boolean retval = LX_wildfire_pump(water_needed);
 	
 	for(int i=0; i<5; i++)		//loop a max of 5 times. the max number of times fire can be reduced
 	{
@@ -314,7 +314,7 @@ boolean LX_wildfire_hose(location place, int target_fire)
 		}
 		else break;		//we are done
 	}
-	return false;	//we only return true during water pumping if adv was used
+	return retval;	//we only return true during water pumping if adv was used
 }
 
 boolean LX_wildfire_hose(location place)
