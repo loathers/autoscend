@@ -347,7 +347,7 @@ boolean LX_wildfire_water()
 	
 	if(get_property("auto_getSteelOrgan").to_boolean() &&		//we want steel margarita
 	get_property("questM10Azazel") != "finished" &&				//we do not yet have it
-	internalQuestStatus("questL06Friar") > 2)					//we can reach it
+	internalQuestStatus("questM10Azazel") > -1)					//can not hose these until quest is started
 	{
 		if(LX_wildfire_hose($location[The Laugh Floor])) return true;		//need [imp air]
 		if(LX_wildfire_hose($location[Infernal Rackets Backstage])) return true;		//need [bus pass]
