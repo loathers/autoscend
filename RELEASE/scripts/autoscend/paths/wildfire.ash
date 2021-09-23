@@ -147,6 +147,12 @@ boolean LX_wildfire_pump(int target)
 	{
 		return false;
 	}
+	if(target <= my_wildfire_water())
+	{
+		return false;	//already done
+	}
+	
+	auto_log_info("Attempting to pump water until we have " +target);
 	int start_water = my_wildfire_water();
 	int start_adv = my_adventures();
 	while(my_adventures() > 1+auto_advToReserve() && target > my_wildfire_water() && get_counters("", 0, 0) == "")
@@ -176,8 +182,9 @@ boolean LX_wildfire_dust()
 	//pump water. restart loop if adv were spent
 	boolean retval = LX_wildfire_pump(wildfire_water_cost("dust"));
 	
-	if(wildfire_water_cost("dust") >= my_wildfire_water())
+	if(wildfire_water_cost("dust") <= my_wildfire_water())
 	{
+		auto_log_info("Dusting with Cropduster Dusty");
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_cropster");
 		run_choice(1);
 		if(!get_property("wildfireDusted").to_boolean())
@@ -203,8 +210,9 @@ boolean LX_wildfire_frack()
 	//pump water. restart loop if adv were spent
 	boolean retval = LX_wildfire_pump(wildfire_water_cost("frack"));
 
-	if(wildfire_water_cost("frack") >= my_wildfire_water())
+	if(wildfire_water_cost("frack") <= my_wildfire_water())
 	{
+		auto_log_info("Fracking with Fracker Dan");
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_fracker");
 		run_choice(1);
 		if(!get_property("wildfireFracked").to_boolean())
@@ -230,8 +238,9 @@ boolean LX_wildfire_sprinkle()
 	//pump water. restart loop if adv were spent
 	boolean retval = LX_wildfire_pump(wildfire_water_cost("sprinkle"));
 
-	if(wildfire_water_cost("sprinkle") >= my_wildfire_water())
+	if(wildfire_water_cost("sprinkle") <= my_wildfire_water())
 	{
+		auto_log_info("Sprinkling with Sprinkler Joe");
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_sprinklerjoe");
 		run_choice(1);
 		if(!get_property("wildfireSprinkled").to_boolean())
@@ -256,8 +265,9 @@ boolean LX_wildfire_hose_once(location place)
 	boolean retval = false;
 
 	int start_level = place.fire_level;
-	if(wildfire_water_cost("hose") >= my_wildfire_water())
+	if(wildfire_water_cost("hose") <= my_wildfire_water())
 	{
+		auto_log_info("Hosing down [" +place+ "]");
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_captain");
 		visit_url("choice.php?option=1&whichchoice=1451&pwd=&zid=" +place.to_url().split_string("=")[1]);
 		if((start_level - 1) == place.fire_level)
