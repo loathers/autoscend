@@ -544,6 +544,21 @@ string banisherCombatString(monster enemy, location loc)
 
 string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDrop)
 {
+	if(in_wildfire() && inCombat && my_location().fire_level > 2)
+	{
+		//high fire level burns yellow ray items. except for saber's [use the force] as it leads to a noncombat
+		//we only want special handling if fire level is high. otherwise we can proceed to yellowray as per normal
+		if(have_equipped($item[Fourth of May cosplay saber]) && auto_saberChargesAvailable() > 0)
+		{
+			// can't use the force on uncopyable monsters
+			if(target == $monster[none] || (target.copyable && !noForceDrop))
+			{
+				return auto_combatSaberYR();
+			}
+		}
+		else return "";
+	}
+	
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
 		if((item_amount($item[Yellowcake Bomb]) > 0) && auto_is_valid($item[Yellowcake Bomb]))

@@ -367,15 +367,27 @@ boolean LX_burnDelay()
 
 boolean LX_calculateTheUniverse()
 {
-	if (possessOutfit("Frat Warrior Fatigues") || auto_warSide() == "hippy")
+	if(in_wildfire())
 	{
-		doNumberology("adventures3"); // want to return false here as all we're doing is generating 3 adventures.
+		return LX_wildfire_calculateTheUniverse();
 	}
-	else if(my_mp() >= mp_cost($skill[Calculate the Universe]) && doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
+	if(my_mp() < mp_cost($skill[Calculate the Universe]))
 	{
-		return (doNumberology("battlefield") != -1);
+		return false;
 	}
-	return false;
+	
+	//do we want to summon a [War Frat 151st Infantryman] for the frat warrior outfit?
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy")
+	{
+		if(doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
+		{
+			return (doNumberology("battlefield") != -1);
+		}
+		return false;	//we want 151 and can get it in general. but not right now. so save it for later
+	}
+	
+	doNumberology("adventures3");
+	return false;	//we do not want to restart the loop as all we're doing is generating 3 adventures
 }
 
 boolean LX_faxing()
