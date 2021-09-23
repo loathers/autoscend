@@ -349,14 +349,13 @@ boolean LX_wildfire_water()
 	}
 	
 	//mass watering. waters all areas of a certain type (outdoor, indoor, underground) reducing fire from 5 to 2
-	if(my_level() > 3 && get_property("wildfirePumpGreased").to_boolean())		//only pump and mass water if you greased the pump
+	if(get_property("wildfirePumpGreased").to_boolean())		//only pump and mass water if you greased the pump
 	{
-		if(get_property("auto_getSteelOrgan").to_boolean() && get_property("questM10Azazel") != "finished")
-		{
-			return false;		//delay dust and frack until after steel organ quest is finished
-		}
 		if(LX_wildfire_dust()) return true;
-		if(LX_wildfire_frack()) return true;
+		if(my_level() > 3)
+		{
+			if(LX_wildfire_frack()) return true;
+		}
 	}
 	
 	return false;
