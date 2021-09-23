@@ -272,6 +272,10 @@ boolean LX_wildfire_hose(location place, int target_fire)
 	{
 		return false;
 	}
+	if(!zone_available(place))
+	{
+		return false;
+	}
 	if(place.fire_level <= target_fire)
 	{
 		return true;		//already done
@@ -296,34 +300,27 @@ boolean LX_wildfire_hose(location place)
 	return LX_wildfire_hose(place, 2);
 }
 
-boolean LA_wildfire()
+boolean LX_wildfire_water()
 {
-	if(!in_wildfire())
+	//use water in a variety of ways to reduce fire levels. putting it in pre-adv is problematic since we need to spend adventures here
+	//individual location watering first
+	
+	//for stone wool. needed at level 11 but we acquire it early using [Baa'baa'bu'ran]. no qualifiers since this is always needed
+	if(LX_wildfire_hose($location[The Hidden Temple])) return true;
+	
+	if(!inKnollSign())		//knoll sign does not need to farm components for bitchin meatcar
 	{
-		return false;
+		if(LX_wildfire_hose($location[The Degrassi Knoll Garage])) return true;
 	}
 	
-	wildfire_rainbarrel();			//collect rainwater from barrel daily
-	if(LX_wildfire_grease_pump()) return true;		//improves pump water from 30/adv to 50/adv
-	
-	//individual location watering.
 	if(get_property("auto_getSteelOrgan").to_boolean() &&		//we want steel margarita
 	get_property("questM10Azazel") != "finished" &&				//we do not yet have it
 	internalQuestStatus("questL06Friar") > 2)					//we can reach it
 	{
-		if(zone_available($location[The Laugh Floor]))
-		{
-			LX_wildfire_hose($location[The Laugh Floor]);		//need [imp air]
-		}
-		if(zone_available($location[Infernal Rackets Backstage]))
-		{
-			LX_wildfire_hose($location[Infernal Rackets Backstage]);		//need [bus pass]
-		}
+		if(LX_wildfire_hose($location[The Laugh Floor])) return true;		//need [imp air]
+		if(LX_wildfire_hose($location[Infernal Rackets Backstage])) return true;		//need [bus pass]
 	}
-	if(zone_available($location[The Hidden Temple]))
-	{
-		LX_wildfire_hose($location[The Hidden Temple]);		//for stone wool. needed at level 11 but we acquire it early using [Baa'baa'bu'ran]
-	}
+
 	if(my_level() > 10 && zone_available($location[The Hidden Bowling Alley]))
 	{
 		LX_wildfire_hose($location[The Hidden Bowling Alley]);		//part of level 11 quest. potentially might want to go after NC instead
@@ -339,6 +336,20 @@ boolean LA_wildfire()
 		if(LX_wildfire_dust()) return true;
 		if(LX_wildfire_frack()) return true;
 	}
+	
+	return false;
+}
+
+boolean LA_wildfire()
+{
+	if(!in_wildfire())
+	{
+		return false;
+	}
+	
+	wildfire_rainbarrel();			//collect rainwater from barrel daily
+	if(LX_wildfire_grease_pump()) return true;		//improves pump water from 30/adv to 50/adv
+	if(LX_wildfire_water()) return true;		//use water to reduce fire levels.
 	
 	return false;
 }

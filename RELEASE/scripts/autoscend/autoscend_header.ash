@@ -789,6 +789,7 @@ boolean LX_wildfire_sprinkle();
 boolean LX_wildfire_hose_once(location place);
 boolean LX_wildfire_hose(location place, int target_fire);
 boolean LX_wildfire_hose(location place);
+boolean LX_wildfire_water();
 boolean LA_wildfire();
 
 ########################################################################################################
