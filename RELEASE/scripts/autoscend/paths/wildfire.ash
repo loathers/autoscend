@@ -147,6 +147,7 @@ boolean LX_wildfire_pump(int target)
 	{
 		return false;
 	}
+	visit_url("charpane.php");		//r20944 must refresh charpane to update water
 	if(target <= my_wildfire_water())
 	{
 		return false;	//already done
@@ -158,7 +159,7 @@ boolean LX_wildfire_pump(int target)
 	while(my_adventures() > 1+auto_advToReserve() && target > my_wildfire_water() && get_counters("", 0, 0) == "")
 	{
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_oldpump");
-		visit_url("charpane.php");		//r20942 must refresh charpane to update water
+		visit_url("charpane.php");		//r20944 must refresh charpane to update water
 		if(start_water == my_wildfire_water())
 		{
 			abort("Mafia failed to update your water level. Are you using the compact char pane? as of r20944 you must be using the full char pane for wildfire to work");
