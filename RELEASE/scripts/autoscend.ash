@@ -1,4 +1,4 @@
-since r20870;	//min mafia revision needed to run this script. Last update: fixed inv desync on some create() command uses
+since r20946;	//track hangk hosing in wildfire. fix water level desync in compact gui
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
