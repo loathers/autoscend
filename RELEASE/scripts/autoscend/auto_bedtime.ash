@@ -268,7 +268,7 @@ void bedtime_pulls()
 		return rollover_value(it) - rollover_value(equipped_item(sl));
 	}
 	
-	equipRollover();
+	equipRollover(true);
 	for(int i=0; i<20; i++)
 	{
 		if(pulls_remaining() == 0)
@@ -331,7 +331,7 @@ void bedtime_pulls()
 		}
 		auto_log_info("Pulling [" +very_best+ "] which improves desireability score by " +very_best_improvement);
 		pullXWhenHaveY(very_best, 1, 0);
-		equipRollover();
+		equipRollover(true);
 	}
 }
 
@@ -594,7 +594,7 @@ boolean doBedtime()
 		}
 	}
 
-	equipRollover();
+	equipRollover(false);
 	heavy_rains_doBedtime();
 
 	while(my_daycount() == 1 && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())

@@ -1171,7 +1171,7 @@ boolean possessOutfit(string outfit, boolean checkCanEquip);
 boolean possessOutfit(string outfit);
 void equipBaseline();
 void ensureSealClubs();
-void equipRollover();
+void equipRollover(boolean silent);
 boolean auto_forceEquipSword();
 
 ########################################################################################################
