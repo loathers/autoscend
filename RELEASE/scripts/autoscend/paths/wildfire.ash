@@ -91,7 +91,7 @@ int wildfire_water_cost(string target)
 	{
 		case "hose":
 			//how much does having cpt hangk send firefighers to hose down an area cost.
-			return 10 + (10 * get_property("_auto_wildfire_hosed_today").to_int());
+			return 10 + (10 * get_property("_captainHagnkUsed").to_int());
 		case "dust":
 			if(dusted) return 0;
 			if(fracked) count++;
@@ -292,7 +292,6 @@ boolean LX_wildfire_hose_once(location place)
 		visit_url("choice.php?option=1&whichchoice=1451&pwd=&zid=" +place.to_url().split_string("=")[1]);
 		if((start_level - 1) == place.fire_level)
 		{
-			set_property("_auto_wildfire_hosed_today", 1+get_property("_auto_wildfire_hosed_today").to_int());
 			retval = true;	//success
 		}
 		else
