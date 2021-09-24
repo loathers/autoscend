@@ -26,6 +26,7 @@ boolean wildfire_groar_check()
 	{
 		return true;	//we want to delay this until we are level 12. The more stats we have the easier the fight is.
 	}
+	setFlavour($element[sleaze]);		//deak extra damage against hot opponent
 	//TODO equip industrial fire hose
 	return false;
 }
