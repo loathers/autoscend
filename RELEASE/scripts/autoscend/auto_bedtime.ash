@@ -333,6 +333,36 @@ void bedtime_pulls()
 		pullXWhenHaveY(very_best, 1, 0);
 		equipRollover(true);
 	}
+	
+	//grab clovers with remaining pulls
+	void batch_pull(item it)		//pull from storage without buying any extras
+	{
+		int amt = min(storage_amount(it), pulls_remaining());
+		if(amt > 0)
+		{
+			pullXWhenHaveY(it, amt, item_amount(it));
+		}
+	}
+	if(!get_property("auto_bedtime_pulls_skip_clover").to_boolean() && pulls_remaining() > 0)
+	{
+		boolean pieces_forbidden = in_glover() || in_bhy();
+		if(!pieces_forbidden)
+		{
+			batch_pull($item[Disassembled Clover]);
+		}
+		batch_pull($item[Ten-Leaf Clover]);
+		
+		//buy and pull clovers if we still need any
+		item cheaper = $item[Disassembled Clover];
+		if(pieces_forbidden || mall_price($item[Disassembled Clover]) > mall_price($item[Ten-Leaf Clover]))
+		{
+			cheaper = $item[Ten-Leaf Clover];
+		}
+		if(pulls_remaining() > 0)
+		{
+			pullXWhenHaveY(cheaper, pulls_remaining() + item_amount(cheaper), item_amount(cheaper));
+		}
+	}
 }
 
 boolean doBedtime()
