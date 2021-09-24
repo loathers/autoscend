@@ -442,10 +442,11 @@ string auto_FireExtinguisherCombatString(location place)
 		return "skill " + $skill[Fire Extinguisher: Zone Specific];
 	}
 
-	if(place == $location[The Arid\, Extra-Dry Desert] && !get_property("fireExtinguisherDesertUsed").to_boolean())
+	if(place == $location[The Arid\, Extra-Dry Desert] && $location[The Arid\, Extra-Dry Desert].turns_spent > 0 && !get_property("fireExtinguisherDesertUsed").to_boolean())
 	{
 		return "skill " + $skill[Fire Extinguisher: Zone Specific];
 	}
+
 
 	return "";
 	
