@@ -779,6 +779,8 @@ boolean tcrs_maximize_with_items(string maximizerString);
 //Defined in autoscend/paths/wildfire.ash
 boolean in_wildfire();
 void wildfire_initializeSettings();
+boolean wildfire_groar_check();
+boolean LX_wildfire_calculateTheUniverse();
 void wildfire_rainbarrel();
 int wildfire_water_cost(string target);
 boolean LX_wildfire_grease_pump();

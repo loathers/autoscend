@@ -13,6 +13,23 @@ void wildfire_initializeSettings()
 	set_property("auto_getBeehive", true);			//fire cannot be reduced from 5 in tower making the fight too difficult without beehive
 }
 
+boolean wildfire_groar_check()
+{
+	//Prepare to fight [Groar, Except Hot] in wildfire path. Also check if we are ready for the fight.
+	//Return true if we are not ready and should delay this fight
+	//[Mist-Shrouded Peak] cannot reduced fire level from 5. Take 20-25% maxHP hot passive dmg per round. always lose initiative
+	if(!in_wildfire())
+	{
+		return false;	//since we are not in wildfire, we are considered "ready" so we do not block the quest in other paths
+	}
+	if(my_level() < 12)
+	{
+		return true;	//we want to delay this until we are level 12. The more stats we have the easier the fight is.
+	}
+	//TODO equip industrial fire hose
+	return false;
+}
+
 boolean LX_wildfire_calculateTheUniverse()
 {
 	//in wildfire calculate the universe always summons in a fire 5 zone which 100% burns all dropped items. unless conditional drops
