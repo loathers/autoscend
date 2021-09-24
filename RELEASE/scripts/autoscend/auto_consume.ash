@@ -1236,7 +1236,20 @@ ConsumeAction auto_bestNightcap()
 	int best = 0;
 	for(int i=1; i < count(actions); i++)
 	{
-		if(desirability(i) > desirability(best)) best = i;
+		if(desirability(i) < desirability(best))
+		{
+			// This consumable is less desirable than the best consumable found so far
+			continue;
+		}
+
+		if(desirability(i) == desirability(best) && historical_price(actions[i].it) >= historical_price(actions[best].it))
+		{
+			// This consumable is just as desirable as the best consumable, but it is more expensive
+			continue;
+		}
+
+		// This consumable is either more desirable or equally desirable and cheaper
+		best = i;
 	}
 
 	return actions[best];
@@ -1666,7 +1679,6 @@ boolean distill(item target)
 	}
 	int start_amount = item_amount(target);
 	create(1, target);			//use the still to create target
-	cli_execute("refresh inv");		//as of r20865 distilling using create command causes inventory desync
 	if(start_amount + 1 == item_amount(target))
 	{
 		return true;

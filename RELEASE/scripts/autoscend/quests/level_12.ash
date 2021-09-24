@@ -1,3 +1,17 @@
+void copy_warplan(WarPlan target, WarPlan source)
+{
+	//record A = B; does not copy the contents of B into record A, it instead copies memory references. Thus A merely becomes an alias for B and changing one changes the other as well.
+	//this function serves to copy the data from B to into A
+	//designed to be used with target.copy_warplan(source)
+	
+	target.do_arena = source.do_arena;
+	target.do_junkyard = source.do_junkyard;
+	target.do_lighthouse = source.do_lighthouse;
+	target.do_orchard = source.do_orchard;
+	target.do_nuns = source.do_nuns;
+	target.do_farm = source.do_farm;
+}
+
 string auto_warSide()
 {
 	//returns the side you are fighting for in the form of a string.
@@ -245,7 +259,7 @@ WarPlan auto_bestWarPlan()
 	}
 	
 	//if a sidequest is done already then consider it as planned.
-	WarPlan plan = auto_warSideQuestsState();
+	WarPlan retval = auto_warSideQuestsState();
 	
 	//Path specific blocks where a sidequest is not possible or really bad.
 	boolean considerArena = true;
@@ -273,6 +287,10 @@ WarPlan auto_bestWarPlan()
 	{
 		considerArena = false;
 	}
+	if(auto_warSide() == "hippy")		//arena not implemented for hippies yet. TODO implement it then remove this
+	{
+		considerArena = false;
+	}
 	
 	// Calculate the adventure cost of doing each sidequest.
 	int advCostArena = 0;		//Arena actual cost is 0 adventures... unless you mess it up. TODO: check if messed up.
@@ -285,94 +303,97 @@ WarPlan auto_bestWarPlan()
 	// Start with the sidequests already completed.
 	// Greedily add the sidequest that saves the most adventures, breaking
 	// early if no sidequest saves any adventures.
+	WarPlan prospective_plan;
+	WarPlan test;
 	for (int i=0; i<6; i++)
 	{
-		WarPlan bestPlan;
+		//every single loop we want a prospective plan that starts out the same as retval. and adds the best sidequest for that loop. unless all of the sidequests cause us to lose adv in which case it should remain as retval
+		prospective_plan.copy_warplan(retval);
 		int bestQuestProfit = 0;
 		int profit = 0;
 
 		if(considerFarm)
 		{
-			WarPlan plan_doing_farm;
-			plan_doing_farm.do_farm = true;
-			profit = auto_warTotalBattles(plan) - auto_warTotalBattles(plan_doing_farm) - advCostFarm;
+			test.copy_warplan(retval);
+			test.do_farm = true;
+			profit = auto_warTotalBattles(retval) - auto_warTotalBattles(test) - advCostFarm;
 			if(profit > bestQuestProfit)
 			{
 				bestQuestProfit = profit;
-				bestPlan = plan_doing_farm;
+				prospective_plan.copy_warplan(test);
 			}
 		}
 		
 		if(considerNuns)
 		{
-			WarPlan plan_doing_nuns;
-			plan_doing_nuns.do_nuns = true;
-			profit = auto_warTotalBattles(plan) - auto_warTotalBattles(plan_doing_nuns) - advCostNuns;
+			test.copy_warplan(retval);
+			test.do_nuns = true;
+			profit = auto_warTotalBattles(retval) - auto_warTotalBattles(test) - advCostNuns;
 			if(profit > bestQuestProfit)
 			{
 				bestQuestProfit = profit;
-				bestPlan = plan_doing_nuns;
+				prospective_plan.copy_warplan(test);
 			}
 		}
 
 		if(considerOrchard)
 		{
-			WarPlan plan_doing_orchard;
-			plan_doing_orchard.do_orchard = true;
-			profit = auto_warTotalBattles(plan) - auto_warTotalBattles(plan_doing_orchard) - advCostOrchard;
+			test.copy_warplan(retval);
+			test.do_orchard = true;
+			profit = auto_warTotalBattles(retval) - auto_warTotalBattles(test) - advCostOrchard;
 			if(profit > bestQuestProfit)
 			{
-				bestPlan = plan_doing_orchard;
 				bestQuestProfit = profit;
+				prospective_plan.copy_warplan(test);
 			}
 		}
 
 		if(considerLighthouse)
 		{
-			WarPlan plan_doing_lighthouse;
-			plan_doing_lighthouse.do_lighthouse = true;
-			profit = auto_warTotalBattles(plan) - auto_warTotalBattles(plan_doing_lighthouse) - advCostLighthouse;
+			test.copy_warplan(retval);
+			test.do_lighthouse = true;
+			profit = auto_warTotalBattles(retval) - auto_warTotalBattles(test) - advCostLighthouse;
 			if(profit > bestQuestProfit)
 			{
-				bestPlan = plan_doing_lighthouse;
 				bestQuestProfit = profit;
+				prospective_plan.copy_warplan(test);
 			}
 		}
 
 		if(considerJunkyard)
 		{
-			WarPlan plan_doing_junkyard;
-			plan_doing_junkyard.do_junkyard = true;
-			profit = auto_warTotalBattles(plan) - auto_warTotalBattles(plan_doing_junkyard) - advCostJunkyard;
+			test.copy_warplan(retval);
+			test.do_junkyard = true;
+			profit = auto_warTotalBattles(retval) - auto_warTotalBattles(test) - advCostJunkyard;
 			if(profit > bestQuestProfit)
 			{
-				bestPlan = plan_doing_junkyard;
 				bestQuestProfit = profit;
+				prospective_plan.copy_warplan(test);
 			}
 		}
 
-		// Currently not implemented properly for hippies.
-		// TODO(taltamir) implement it and then remove this guard
-		if(considerArena && auto_warSide() != "hippy")
+		if(considerArena)
 		{
-			WarPlan plan_doing_arena;
-			plan_doing_arena.do_arena = true;
-			profit = auto_warTotalBattles(plan) - auto_warTotalBattles(plan_doing_arena) - advCostArena;
+			test.copy_warplan(retval);
+			test.do_arena = true;
+			profit = auto_warTotalBattles(retval) - auto_warTotalBattles(test) - advCostArena;
 			if(profit > bestQuestProfit)
 			{
-				bestPlan = plan_doing_arena;
 				bestQuestProfit = profit;
+				prospective_plan.copy_warplan(test);
 			}
 		}
 
-		if(bestPlan == plan)
+		//quit the loop early if the prospective plan is the same as retval
+		//we want to compare the contents rather than the memory addresses so we are first converting it to bitmask integer value before testing
+		if(bitmask_from_warplan(retval) == bitmask_from_warplan(prospective_plan))
 		{
 			break;
 		}
-		plan = bestPlan;
+		retval.copy_warplan(prospective_plan);		//add a singular sidequest then go back to the start of the loop.
 	}
 
-	return plan;
+	return retval;
 }
 
 int __auto_warTotalBattles(int plan, int remaining)
@@ -642,6 +663,18 @@ boolean L12_preOutfit()
 	if(have_skill($skill[Calculate the Universe]) && my_daycount() == 1 && get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int())
 	{
 		return false;
+	}
+
+	//use 1 wish if we can guarentee outfit drops via yellow ray
+	if(canGenieCombat() && auto_shouldUseWishes() && canYellowRay())
+	{
+		monster wishTarget = $monster[War Hippy Spy];
+		if(!get_property("auto_hippyInstead").to_boolean())
+		{
+			wishTarget = $monster[Orcish Frat Boy Spy];
+		}
+		auto_log_info(`Trying to wish for a {wishTarget}, which we will yellow ray for war outfit.`);
+		return makeGenieCombat(wishTarget);		
 	}
 
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
