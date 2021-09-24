@@ -67,28 +67,58 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	//prioritize XO over extinguisher since extinguisher has other uses
-	if(canUse($skill[Fire Extinguisher: Polar Vortex]) && auto_fireExtinguisherCharges() > 10)
+	if(canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10)
 	{
 		boolean forceDrop = false;
-		if($monsters[Filthworm Drone, Filthworm Royal Guard, Larval Filthworm] contains enemy)
+		//only force 1 scent gland from each filthworm
+		if(enemy == $monster[Larval Filthworm] && item_amount($item[filthworm hatchling scent gland]) < 1)
 		{
 			forceDrop = true;
 		}
-
+		if(enemy == $monster[Filthworm Drone] && item_amount($item[filthworm drone scent gland]) < 1)
+		{
+			forceDrop = true;
+		}
+		if(enemy == $monster[Filthworm Royal Guard] && item_amount($item[filthworm royal guard scent gland]) < 1)
+		{
+			forceDrop = true;
+		}
 
 		// polar vortex is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
 		// only reasonable to vortex for hedge trimmers. Still reserve 30 charge for filth worms
 		if(auto_fireExtinguisherCharges() > 30)
 		{
 			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
-				forceDrop = true;
+			{
+					//copied following code from catBurglarHeistDesires
+					//TODO - create a common function for this instead
+					int twinPeakProgress = get_property("twinPeakProgress").to_int();
+					boolean needStench = ((twinPeakProgress & 1) == 0);
+					boolean needFood = ((twinPeakProgress & 2) == 0);
+					boolean needJar = ((twinPeakProgress & 4) == 0);
+					boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
+					int neededTrimmers = -item_amount($item[rusty hedge trimmers]);
+					if(needStench) neededTrimmers++;
+					if(needFood) neededTrimmers++;
+					if(needJar) neededTrimmers++;
+					if(needInit) neededTrimmers++;
+
+					if(neededTrimmers > 0)
+					{
+						forceDrop = true;
+					}
+			}
 
 			// Number of times bowled is 1 less than hiddenBowlingAlleyProgress. Need 5 bowling balls total, 5+1 = 6 needed in this conditional
 			if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) < 6))
+			{
 				forceDrop = true;
-			
+			}
+
 			if(enemy == $monster[Dairy Goat] && item_amount($item[Goat Cheese]) < 3)
+			{
 				forceDrop = true;
+			}	
 		}
 				
 
