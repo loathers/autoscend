@@ -232,6 +232,11 @@ boolean auto_pre_adventure()
 		// Slay the Dead equipment call happens prior to this call, so extinguisher will be equiped instead
 		autoForceEquip($item[industrial fire extinguisher]);
 	}
+	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
+	{
+		addBonusToMaximize($item[industrial fire extinguisher], 200); // extinguisher prevents per-round hot damage in wildfire path 
+	}
+
 
 	if(in_plumber())
 	{

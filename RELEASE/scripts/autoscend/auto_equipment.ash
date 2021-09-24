@@ -339,10 +339,6 @@ void finalizeMaximize()
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}
-	if(in_wildfire() && auto_haveFireExtinguisher())
-	{
-		addBonusToMaximize($item[industrial fire extinguisher], 200); // extinguisher prevents per-round hot damage in wildfire path 
-	}
 	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
 	addBonusToMaximize($item[Mr. Screege's spectacles], 100); // meat stuff
 	if(have_effect($effect[blood bubble]) == 0)
