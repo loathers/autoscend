@@ -114,8 +114,13 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Artistic Goth Kid]);
 		}
 		autoEquip($item[Gravy Boat]);
-		knockOffCapePrep();
 
+		//prioritize extinguisher over slay the dead in Defiled Niche if its available and unused in the crypt
+		if(auto_FireExtinguisherCombatString($location[The Defiled Niche]) == "")
+		{
+			knockOffCapePrep();
+		}
+		
 		if(auto_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
 			handleFamiliar($familiar[Space Jellyfish]);

@@ -226,6 +226,16 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
+	{
+		autoEquip($item[industrial fire extinguisher]);
+	}
+	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
+	{
+		addBonusToMaximize($item[industrial fire extinguisher], 200); // extinguisher prevents per-round hot damage in wildfire path 
+	}
+
+
 	if(in_plumber())
 	{
 		int pool_skill = speculative_pool_skill();
