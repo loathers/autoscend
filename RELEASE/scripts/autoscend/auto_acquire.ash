@@ -116,7 +116,33 @@ int auto_mall_price(item it)
 		int retval = mall_price(it);
 		if(retval == -1)
 		{
-			abort("Failed getting mall price for " + it + ", aborting to prevent problems");
+			//0 could be due to item not being tradeable.
+			//-1 could be due to tradeable item not found in the mall. Or due to an IO error during lookup
+			//-1 is non trivial to fix due to mafia anti abuse code
+			//historical price can never be -1. only 0 or a positive number
+			
+			if(historical_price(it) > 0)
+			{
+				auto_log_warning("Failed getting mall price for [" +it+ "]. We have historical price and that is good enough.");
+				return historical_price(it);	//just use the historical price. It will be good enough
+			}
+			
+			if(get_property("_auto_mallprice_error_list").contains_text(it))
+			{
+				return 0;
+			}
+			if(get_property("_auto_mallprice_skip_next_error").to_int() == my_adventures())
+			{
+				auto_log_debug("Failed getting mall price for [" +it+ "]. Per setting we will ignore it as unbuyable today");
+				set_property("_auto_mallprice_error_list", get_property("_auto_mallprice_error_list")+ "," +it);
+				return 0;
+			}
+			
+			print("Failed getting mall price for [" +it+ "].", "red");
+			print("If this is a critical item for the run manually buy it and run me again", "red");
+			print("Otherwise use the CLI command below then run me again to skip it:", "blue");
+			print(`ash set_property("_auto_mallprice_skip_next_error", my_adventures());`, "blue");
+			abort();
 		}
 		return retval;
 	}
