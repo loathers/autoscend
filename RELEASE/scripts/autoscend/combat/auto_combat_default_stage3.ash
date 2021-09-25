@@ -67,27 +67,38 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	//prioritize XO over extinguisher since extinguisher has other uses
+	//take into account if a yellow ray has been used. Must have been one that doesn't insta-kill
 	if(canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10)
 	{
 		boolean forceDrop = false;
 		//only force 1 scent gland from each filthworm
-		if(enemy == $monster[Larval Filthworm] && item_amount($item[filthworm hatchling scent gland]) < 1)
+		if(contains_text(combatState, "yellowray"))
 		{
-			forceDrop = true;
+			if(enemy == $monster[Larval Filthworm] && item_amount($item[filthworm hatchling scent gland]) < 1)
+			{
+				forceDrop = true;
+			}
+			if(enemy == $monster[Filthworm Drone] && item_amount($item[filthworm drone scent gland]) < 1)
+			{
+				forceDrop = true;
+			}
+			if(enemy == $monster[Filthworm Royal Guard] && item_amount($item[filthworm royal guard scent gland]) < 1)
+			{
+				forceDrop = true;
+			}
 		}
-		if(enemy == $monster[Filthworm Drone] && item_amount($item[filthworm drone scent gland]) < 1)
-		{
-			forceDrop = true;
-		}
-		if(enemy == $monster[Filthworm Royal Guard] && item_amount($item[filthworm royal guard scent gland]) < 1)
-		{
-			forceDrop = true;
-		}
+		
 
 		// polar vortex is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
-		// only reasonable to vortex for hedge trimmers. Still reserve 30 charge for filth worms
+		// reserve 30 charge for filth worms
 		if(auto_fireExtinguisherCharges() > 30)
 		{
+			int dropsFromYR = 0;
+			if(contains_text(combatState, "yellowray"))
+			{
+				dropsFromYR = 1;
+			}
+
 			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
 			{
 					//copied following code from catBurglarHeistDesires
@@ -97,7 +108,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 					boolean needFood = ((twinPeakProgress & 2) == 0);
 					boolean needJar = ((twinPeakProgress & 4) == 0);
 					boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
-					int neededTrimmers = -item_amount($item[rusty hedge trimmers]);
+					int neededTrimmers = -(item_amount($item[rusty hedge trimmers]) + dropsFromYR);
 					if(needStench) neededTrimmers++;
 					if(needFood) neededTrimmers++;
 					if(needJar) neededTrimmers++;
@@ -110,12 +121,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			}
 
 			// Number of times bowled is 1 less than hiddenBowlingAlleyProgress. Need 5 bowling balls total, 5+1 = 6 needed in this conditional
-			if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) < 6))
+			if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball] + dropsFromYR) < 6))
 			{
 				forceDrop = true;
 			}
 
-			if(enemy == $monster[Dairy Goat] && item_amount($item[Goat Cheese]) < 3)
+			if(enemy == $monster[Dairy Goat] && (item_amount($item[Goat Cheese]) + dropsFromYR) < 3)
 			{
 				forceDrop = true;
 			}	
