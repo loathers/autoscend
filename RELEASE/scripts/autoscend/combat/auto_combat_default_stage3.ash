@@ -73,7 +73,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		boolean forceDrop = false;
 		string combatState = get_property("auto_combatHandler");
 		//only force 1 scent gland from each filthworm
-		if(contains_text(combatState, "yellowray"))
+		if(!contains_text(combatState, "yellowray"))
 		{
 			if(enemy == $monster[Larval Filthworm] && item_amount($item[filthworm hatchling scent gland]) < 1)
 			{
