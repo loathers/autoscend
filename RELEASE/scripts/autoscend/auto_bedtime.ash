@@ -69,6 +69,160 @@ void bedtime_still()
 	}
 }
 
+int pullsNeeded(string data)
+{
+	if(inAftercore())
+	{
+		return 0;
+	}
+	if (isActuallyEd() || auto_my_path() == "Community Service")
+	{
+		return 0;
+	}
+
+	int count = 0;
+	int adv = 0;
+
+	int progress = 0;
+	if(internalQuestStatus("questL13Final") == 4)
+	{
+		progress = 1;
+	}
+	if(internalQuestStatus("questL13Final") == 5)
+	{
+		progress = 2;
+	}
+	if(internalQuestStatus("questL13Final") == 6)
+	{
+		progress = 3;
+	}
+	if(internalQuestStatus("questL13Final") == 11)
+	{
+		progress = 4;
+	}
+	visit_url("campground.php?action=telescopelow");
+
+	if(progress < 1)
+	{
+		int crowd1score = 0;
+		int crowd2score = 0;
+		int crowd3score = 0;
+
+//		Note: Maximizer gives concert White-boy angst, instead of concert 3 (consequently, it doesn\'t work).
+
+		switch(ns_crowd1())
+		{
+		case 1:					crowd1score = initiative_modifier()/40;							break;
+		}
+
+		switch(ns_crowd2())
+		{
+		case $stat[Moxie]:		crowd2score = (my_buffedstat($stat[Moxie]) - 150) / 40;			break;
+		case $stat[Muscle]:		crowd2score = (my_buffedstat($stat[Muscle]) - 150) / 40;		break;
+		case $stat[Mysticality]:crowd2score = (my_buffedstat($stat[Mysticality]) - 150) / 40;	break;
+		}
+
+		switch(ns_crowd3())
+		{
+		case $element[cold]:	crowd3score = numeric_modifier("cold damage") / 9;				break;
+		case $element[hot]:		crowd3score = numeric_modifier("hot damage") / 9;				break;
+		case $element[sleaze]:	crowd3score = numeric_modifier("sleaze damage") / 9;			break;
+		case $element[spooky]:	crowd3score = numeric_modifier("spooky damage") / 9;			break;
+		case $element[stench]:	crowd3score = numeric_modifier("stench damage") / 9;			break;
+		}
+
+		crowd1score = min(max(0, crowd1score), 9);
+		crowd2score = min(max(0, crowd2score), 9);
+		crowd3score = min(max(0, crowd3score), 9);
+		adv = adv + (10 - crowd1score) + (10 - crowd2score) + (10 - crowd3score);
+	}
+
+	if(progress < 2)
+	{
+		ns_hedge1();
+		ns_hedge2();
+		ns_hedge3();
+
+		auto_log_warning("Hedge time of 4 adventures. (Up to 10 without Elemental Resistances)", "red");
+		adv = adv + 4;
+	}
+
+	if(progress < 3)
+	{
+		if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) == 0))
+		{
+			auto_log_warning("Need star chart", "red");
+			if(in_heavyrains() && (my_rain() >= 50))
+			{
+				auto_log_info("You should rain man a star chart", "blue");
+			}
+			else
+			{
+				count = count + 1;
+			}
+		}
+
+		if(item_amount($item[Richard\'s Star Key]) == 0)
+		{
+			int stars = item_amount($item[star]);
+			int lines = item_amount($item[line]);
+
+			if(stars < 8)
+			{
+				auto_log_warning("Need " + (8-stars) + " stars.", "red");
+				count = count + (8-stars);
+			}
+			if(lines < 7)
+			{
+				auto_log_warning("Need " + (7-lines) + " lines.", "red");
+				count = count + (7-lines);
+			}
+		}
+
+		if(item_amount($item[Digital Key]) == 0 && whitePixelCount() < 30)
+		{
+			auto_log_warning("Need " + (30-whitePixelCount()) + " white pixels.", "red");
+			count = count + (30 - whitePixelCount());
+		}
+
+		if(item_amount($item[skeleton key]) == 0)
+		{
+			if((item_amount($item[skeleton bone]) > 0) && (item_amount($item[loose teeth]) > 0))
+			{
+				cli_execute("make skeleton key");
+			}
+		}
+		if(item_amount($item[skeleton key]) == 0)
+		{
+			auto_log_warning("Need a skeleton key or the ingredients (skeleton bone, loose teeth) for it.");
+		}
+	}
+
+	if(progress < 4)
+	{
+		adv = adv + 6;
+		if(get_property("auto_wandOfNagamar").to_boolean() && (item_amount($item[Wand Of Nagamar]) == 0) && (cloversAvailable() == 0))
+		{
+			auto_log_warning("Need a wand of nagamar (can be clovered).", "red");
+			count = count + 1;
+		}
+	}
+
+	if(adv > 0)
+	{
+		auto_log_info("Estimated adventure need (tower) is: " + adv + ".", "orange");
+		if(!in_hardcore())
+		{
+			auto_log_info("You need " + count + " pulls.", "orange");
+		}
+	}
+	if(pulls_remaining() > 0)
+	{
+		auto_log_info("You have " + pulls_remaining() + " pulls.", "orange");
+	}
+	return count;
+}
+
 boolean doBedtime()
 {
 	auto_log_info("Starting bedtime: Pulls Left: " + pulls_remaining(), "blue");
