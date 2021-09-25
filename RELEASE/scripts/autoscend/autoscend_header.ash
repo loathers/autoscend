@@ -24,7 +24,6 @@ boolean auto_unreservedAdvRemaining();
 boolean LX_burnDelay();
 boolean LX_universeFrat();
 boolean LX_faxing();
-int pullsNeeded(string data);
 boolean tophatMaker();
 int handlePulls(int day);
 boolean LX_doVacation();
@@ -1076,6 +1075,7 @@ boolean autoAdvBypass(string url, string option);
 ########################################################################################################
 //Defined in autoscend/auto_bedtime.ash
 void bedtime_still();
+int pullsNeeded(string data);
 boolean doBedtime();
 
 ########################################################################################################
