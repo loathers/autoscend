@@ -438,6 +438,10 @@ boolean batteryCombine(item battery);
 boolean batteryCombine(item battery, boolean simulate);
 boolean can_get_battery(item target);
 boolean auto_getBattery(item target);
+boolean auto_haveFireExtinguisher();
+int auto_fireExtinguisherCharges();
+string auto_FireExtinguisherCombatString(location place);
+boolean auto_canExtinguisherBeRefilled();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

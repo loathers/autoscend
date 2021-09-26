@@ -8,6 +8,14 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	if(retval != "") return retval;
 
 	string combatState = get_property("auto_combatHandler");
+
+	//use industrial fire extinguisher zone specific skills
+	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
+	if(extinguisherSkill != "")
+	{
+		handleTracker(enemy, to_skill(substring(extinguisherSkill, 6)), "auto_otherstuff");
+		return extinguisherSkill;
+	}
 	
 	//instakill enemies in [The Red Zeppelin]
 	if(canUse($item[Glark Cable], true) && (my_location() == $location[The Red Zeppelin]) && (get_property("questL11Ron") == "step3") && (get_property("_glarkCableUses").to_int() < 5))
