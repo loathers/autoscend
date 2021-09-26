@@ -1101,6 +1101,7 @@ boolean autoAdvBypass(string url, string option);
 //Defined in autoscend/auto_bedtime.ash
 void bedtime_still();
 int pullsNeeded(string data);
+void bedtime_pulls_rollover_equip();
 void bedtime_pulls();
 boolean doBedtime();
 
