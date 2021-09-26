@@ -329,8 +329,10 @@ void bedtime_pulls_rollover_equip()
 					}
 				}
 			}
-			else if($slot[weapon] == sl)	//weapon and off-hand slots might conflict and require special handling
+			else if($slot[weapon] == sl)
 			{
+				//weapon and off-hand slots might conflict and require special handling
+				//two or more handed weapons just need to make sure they are better than best weapon and off-hand combined
 				if(weapon_hands(it) > 1)
 				{
 					if(rollover_value(it) > rollover_value(best[$slot[weapon]]) + rollover_value(best[$slot[off-hand]]))	//for non conflicting slots. calculate normally
@@ -341,32 +343,39 @@ void bedtime_pulls_rollover_equip()
 				}
 				else if(weapon_hands(it) == 1)
 				{
-					if(rollover_value(it) > rollover_value(best[sl]))
+					//single handed weapons for the weapon slot
+					if(weapon_hands(best[sl]) > 1)
 					{
-						best[sl] = it;
-					}
-					if(have_skill($skill[Double-Fisted Skull Smashing]) &&		//we can use it off-hand
-					(!boolean_modifier(it, "Single Equip") || best[sl] != it))	//it is not our choice for mainhand. or it is not single equip
-					{
-						if(rollover_value(it) > rollover_value(best[sl]))
+						//the currently desired best weapon is 2 handed weapon. so we sum it value with best off-hand found thus far
+						if(rollover_value(it) + rollover_value(best[$slot[off-hand]]) > rollover_value(best[sl]))
 						{
 							best[sl] = it;
 						}
 					}
-					else
+					else if(rollover_value(it) > rollover_value(best[sl]))
 					{
-						
+						//the currently desired best weapon is 1 handed. So we just compare it to best weapon.
+						best[sl] = it;
+					}
+					
+					//single handed weapons for the off-hand slot
+					boolean weapon_offhand = have_skill($skill[Double-Fisted Skull Smashing]);
+					boolean conflict_mainhand = boolean_modifier(it, "Single Equip") && best[sl] == it;
+					boolean conflict_quantity = best[sl] == it && !canPull(it,true) && item_amount(it) + equipped_amount(it) < 2;
+					if(weapon_offhand && !conflict_mainhand && !conflict_quantity)
+					{
+						if(rollover_value(it) > rollover_value(best[$slot[off-hand]]))
+						{
+							best[$slot[off-hand]] = it;
+						}
 					}
 				}
 				else abort("[" +it+ "] listed as having " +weapon_hands(it)+ " hands while being a weapon");
 			}
-			else if($slot[off-hand] == sl)	//weapon and off-hand slots might conflict and require special handling
-			{
-				continue;	//placeholder. TODO resolve conflict
-			}
 			else if(rollover_value(it) > rollover_value(best[sl]))
 			{
-				//for non conflicting slots. calculate normally
+				//for non conflicting slots. calculate normally.
+				//off-hand might conflict but are resolved at the weapon slot in a way that still requires us to find the best offhand
 				best[sl] = it;
 			}
 		}
