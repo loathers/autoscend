@@ -241,10 +241,11 @@ void bedtime_pulls_rollover_equip()
 		return rollover_value(it) - rollover_value(equipped_item(sl));
 	}
 	
+	boolean extra_debug = get_property("_auto_extra_debug_bedtime_pulls").to_boolean();
 	equipRollover(true);
 	for(int i=0; i<20; i++)
 	{
-		if(pulls_remaining() == 0)
+		if(pulls_remaining() == 0 && !extra_debug)
 		{
 			break;	//we are out of pulls
 		}
@@ -383,7 +384,7 @@ void bedtime_pulls_rollover_equip()
 		//find the very best item
 		foreach sl in $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar]
 		{
-			if(get_property("_auto_extra_debug_bedtime_pulls").to_boolean())
+			if(extra_debug)
 			{
 				//prints out all the items we want. Too messy for normal runs even in debug mode.
 				auto_log_debug("[" +sl+ "] wanted [" +best[sl]+ "] val = " +rollover_value(best[sl])+ ". currently [" +equipped_item(sl)+ "] val = " +rollover_value(equipped_item(sl))+ ". improvement = " +rollover_improvement(best[sl], sl));
@@ -404,6 +405,7 @@ void bedtime_pulls_rollover_equip()
 			break;
 		}
 		auto_log_info("Pulling [" +very_best+ "] which improves desireability score by " +very_best_improvement);
+		if(extra_debug) break;
 		pullXWhenHaveY(very_best, 1, 0);
 		equipRollover(true);
 	}
