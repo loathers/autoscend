@@ -241,11 +241,10 @@ void bedtime_pulls_rollover_equip()
 		return rollover_value(it) - rollover_value(equipped_item(sl));
 	}
 	
-	boolean extra_debug = get_property("_auto_extra_debug_bedtime_pulls").to_boolean();
 	equipRollover(true);
-	for(int i=0; i<20; i++)
+	for(int i=0; i<10; i++)
 	{
-		if(pulls_remaining() == 0 && !extra_debug)
+		if(pulls_remaining() == 0)
 		{
 			break;	//we are out of pulls
 		}
@@ -259,8 +258,9 @@ void bedtime_pulls_rollover_equip()
 		slot a3 = $slot[acc3];
 		
 		//populate best with current equipment as a baseline
-		foreach sl in $slots[]
+		foreach sl in $slots[hat, back, shirt, pants, acc1, acc2, acc3, familiar]
 		{
+			//populating with current item as baseline is necessary for accessories. harmful for weapon/off-hand. and harmless elsewhere.
 			best[sl] = equipped_item(sl);
 		}
 		
@@ -382,6 +382,7 @@ void bedtime_pulls_rollover_equip()
 		}
 		
 		//find the very best item
+		boolean extra_debug = get_property("_auto_extra_debug_bedtime_pulls").to_boolean();
 		foreach sl in $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar]
 		{
 			if(extra_debug)
@@ -391,8 +392,12 @@ void bedtime_pulls_rollover_equip()
 			}
 			
 			//if we already pulled the best item for a slot but maximizer failed to equip our best item into it for some reason then we want to exclude that slot from further attempts.
-			boolean maximizer_fail = possessEquipment(best[sl]) && equipped_amount(best[sl]) == 0;
-			if(rollover_improvement(best[sl], sl) > very_best_val && !maximizer_fail)
+			boolean maximizer_fail = possessEquipment(best[sl]) && equipped_item(sl) != best[sl];
+			if(maximizer_fail)
+			{
+				auto_log_debug("Bedtime pulls: maximizer is not equipping [" +best[sl]+ "] into [" +sl+ "] for some reason. Skipping this slot");
+			}
+			else if(rollover_improvement(best[sl], sl) > very_best_val)
 			{
 				very_best = best[sl];
 				very_best_val = rollover_improvement(best[sl], sl);
