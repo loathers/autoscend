@@ -38,9 +38,9 @@ string auto_combatWildfireStage1(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Stuffed Mortar Shell]);
 		}
-		if(my_class() == $class[pastamancer] && canUse($skill[Weapon of the Pastalord]))
+		if(canUse($skill[Weapon of the Pastalord]) && mp_cost($skill[Weapon of the Pastalord]) < mp_cost($skill[Saucegeyser]))
 		{
-			return useSkill($skill[Weapon of the Pastalord], false);
+			return useSkill($skill[Weapon of the Pastalord], false);	//pastamancers can make it cheaper than saucegeyser
 		}
 		if(canUse($skill[Saucegeyser], false))
 		{
