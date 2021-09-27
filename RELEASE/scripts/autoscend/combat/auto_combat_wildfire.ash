@@ -11,9 +11,9 @@ string auto_combatWildfireStage1(int round, monster enemy, string text)
 	//always 5 fire. can not be reduced.
 	if($monster[Groar\, Except Hot] == enemy)
 	{
-		//weaksauce will recover 50 MP. Only use it if you have industrial fire extinguisher equipped to prevent passive damage
-		if(have_equipped($item[industrial fire extinguisher]) && canUse($skill[Curse of Weaksauce]) && have_skill($skill[Itchy Curse Finger]))
+		if(have_equipped($item[industrial fire extinguisher]) && canUse($skill[Curse of Weaksauce]) && have_skill($skill[Itchy Curse Finger]) && my_class() $class[sauceror])
 		{
+			//weaksauce will recover 50 MP. Only use it if you have industrial fire extinguisher equipped to prevent passive damage
 			return useSkill($skill[Curse of Weaksauce]);
 		}
 		if(canUse($skill[Stuffed Mortar Shell]))		//very cheap for massive damage. tuneable too for extra dmg.
