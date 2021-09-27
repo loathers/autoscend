@@ -6,6 +6,10 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	// Path = dark gyffte
 	retval = auto_combatDarkGyffteStage2(round, enemy, text);
 	if(retval != "") return retval;
+	
+	// Path = wildfire
+	retval = auto_combatWildfire2(round, enemy, text);
+	if(retval != "") return retval;
 
 	string combatState = get_property("auto_combatHandler");
 

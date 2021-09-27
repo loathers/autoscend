@@ -135,3 +135,7 @@ string auto_combatTheSourceStage4(int round, monster enemy, string text);
 #####################################################
 //defined in /autoscend/combat/auto_combat_bees_hate_you.ash
 string auto_combatBHYStage1(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_wildfire.ash
+string auto_combatWildfire2(int round, monster enemy, string text);

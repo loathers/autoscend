@@ -19,6 +19,7 @@ import <autoscend/combat/auto_combat_ocrs.ash>						//path = one crazy random su
 import <autoscend/combat/auto_combat_pete.ash>						//path = avatar of sneaky pete
 import <autoscend/combat/auto_combat_plumber.ash>					//path = path of the plumber
 import <autoscend/combat/auto_combat_the_source.ash>				//path = the source
+import <autoscend/combat/auto_combat_wildfire.ash>					//path = wildfire
 import <autoscend/combat/auto_combat_quest.ash>						//quest specific handling
 
 //	Advance combat round, nothing happens.
