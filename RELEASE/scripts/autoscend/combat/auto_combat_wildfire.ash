@@ -8,13 +8,19 @@ string auto_combatWildfireStage1(int round, monster enemy, string text)
 		return "";
 	}
 	
+	//always 5 fire. can not be reduced.
 	if($monster[Groar\, Except Hot] == enemy)
 	{
-		if(canUse($skill[Stuffed Mortar Shell]))
+		//weaksauce will recover 50 MP. Only use it if you have industrial fire extinguisher equipped to prevent passive damage
+		if(have_equipped($item[industrial fire extinguisher]) && canUse($skill[Curse of Weaksauce]) && have_skill($skill[Itchy Curse Finger]))
+		{
+			return useSkill($skill[Curse of Weaksauce]);
+		}
+		if(canUse($skill[Stuffed Mortar Shell]))		//very cheap for massive damage. tuneable too for extra dmg.
 		{
 			return useSkill($skill[Stuffed Mortar Shell]);
 		}
-		if($elements[sleaze, stench] contains currentFlavour() && canUse($skill[Weapon of the Pastalord]))
+		if($elements[sleaze, stench] contains currentFlavour() && canUse($skill[Weapon of the Pastalord]))		//extra dmg dealt
 		{
 			return useSkill($skill[Weapon of the Pastalord], false);
 		}
@@ -22,9 +28,10 @@ string auto_combatWildfireStage1(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Saucegeyser], false);
 		}
-		abort("We do not know what to do next in combat");
+		abort("We do not know what to do next against [" +enemy+ "].");
 	}
 	
+	//always 5 fire. can not be reduced.
 	if($monster[wall of meat] == enemy)
 	{
 		if(canUse($skill[Stuffed Mortar Shell]))
@@ -39,7 +46,7 @@ string auto_combatWildfireStage1(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Saucegeyser], false);
 		}
-		abort("We do not know what to do next in combat");
+		abort("We do not know what to do next against [" +enemy+ "].");
 	}
 	
 	return "";

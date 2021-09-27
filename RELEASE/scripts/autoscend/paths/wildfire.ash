@@ -26,7 +26,7 @@ boolean wildfire_groar_check()
 	{
 		return true;	//we want to delay this until we are level 13. The more stats we have the easier the fight is.
 	}
-	if(!acquireHP() || !acquireMP(100))
+	if(!acquireHP() || !acquireMP(150))
 	{
 		return true;	//killing groar requires lots of MP and full HP.
 	}
