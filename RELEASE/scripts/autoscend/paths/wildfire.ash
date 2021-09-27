@@ -72,6 +72,25 @@ void wildfire_rainbarrel()
 	visit_url("place.php?whichplace=wildfire_camp&action=wildfire_rainbarrel");
 }
 
+void wildfire_refillExtinguiser()
+{
+	//refill fire extinguisher if needed. Can only refill once per day
+	if(!in_wildfire())
+	{
+		return;
+	}
+	if(!auto_canExtinguisherBeRefilled())
+	{
+		return; 	//already refilled today
+	}	
+	if(auto_fireExtinguisherCharges() >= 20)
+	{
+		return;		//biggest skill uses 20 charge. No need to charge if we still have at least that much
+	}
+	visit_url("place.php?whichplace=wildfire_camp&action=wildfire_captain");
+	run_choice(3);
+}
+
 int wildfire_water_cost(string target)
 {
 	//return the cost in water to perform watering operations.
@@ -398,6 +417,7 @@ boolean LA_wildfire()
 	}
 	
 	wildfire_rainbarrel();			//collect rainwater from barrel daily
+	wildfire_refillExtinguiser();	//refill extinguisher once per day
 	if(LX_wildfire_grease_pump()) return true;		//improves pump water from 30/adv to 50/adv
 	if(LX_wildfire_water()) return true;		//use water to reduce fire levels.
 	

@@ -785,6 +785,7 @@ void wildfire_initializeSettings();
 boolean wildfire_groar_check();
 boolean LX_wildfire_calculateTheUniverse();
 void wildfire_rainbarrel();
+void wildfire_refillExtinguiser();
 int wildfire_water_cost(string target);
 boolean LX_wildfire_grease_pump();
 boolean LX_wildfire_pump(int target);
