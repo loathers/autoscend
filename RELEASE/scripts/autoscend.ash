@@ -1,4 +1,4 @@
-since r20946;	//track hangk hosing in wildfire. fix water level desync in compact gui
+since r25702;	//expose snarfblat zone id via $location[noob cave].id
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

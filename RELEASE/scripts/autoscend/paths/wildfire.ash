@@ -328,7 +328,7 @@ boolean LX_wildfire_hose_once(location place)
 	{
 		auto_log_info("Hosing down [" +place+ "]");
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_captain");
-		visit_url("choice.php?option=1&whichchoice=1451&pwd=&zid=" +place.to_url().split_string("=")[1]);
+		visit_url("choice.php?option=1&whichchoice=1451&pwd=&zid=" +place.id);
 		if((start_level - 1) == place.fire_level)
 		{
 			retval = true;	//success
