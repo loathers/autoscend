@@ -22,11 +22,15 @@ boolean wildfire_groar_check()
 	{
 		return false;	//since we are not in wildfire, we are considered "ready" so we do not block the quest in other paths
 	}
-	if(my_level() < 12)
+	if(my_level() < 13)
 	{
-		return true;	//we want to delay this until we are level 12. The more stats we have the easier the fight is.
+		return true;	//we want to delay this until we are level 13. The more stats we have the easier the fight is.
 	}
-	setFlavour($element[sleaze]);		//deak extra damage against hot opponent
+	if(!acquireHP() || !acquireMP(100))
+	{
+		return true;	//killing groar requires lots of MP and full HP.
+	}
+	setFlavour($element[sleaze]);		//deal extra damage against hot opponent
 	
 	return false;
 }
