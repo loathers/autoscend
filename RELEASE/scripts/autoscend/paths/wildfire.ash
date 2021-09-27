@@ -87,6 +87,7 @@ void wildfire_refillExtinguiser()
 	{
 		return;		//biggest skill uses 20 charge. No need to charge if we still have at least that much
 	}
+	auto_log_info("Refilling Industrial Fire Extinguisher with Fire Captain Hagnk.");
 	visit_url("place.php?whichplace=wildfire_camp&action=wildfire_captain");
 	run_choice(3);
 }
