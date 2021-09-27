@@ -87,9 +87,24 @@ void wildfire_refillExtinguiser()
 	{
 		return;		//biggest skill uses 20 charge. No need to charge if we still have at least that much
 	}
+
+	//need extinguisher equiped for it to be refilled
+	item old;
+	if (!have_equipped($item[industrial fire extinguisher]))
+	{
+		old = equipped_item($slot[weapon]);
+		equip($slot[weapon], $item[industrial fire extinguisher]);
+	}
+
 	auto_log_info("Refilling Industrial Fire Extinguisher with Fire Captain Hagnk.");
 	visit_url("place.php?whichplace=wildfire_camp&action=wildfire_captain");
 	run_choice(3);
+
+	//equip prior weapon
+	if (old != $item[none])
+	{
+		equip($slot[weapon], old);
+	}
 }
 
 int wildfire_water_cost(string target)
