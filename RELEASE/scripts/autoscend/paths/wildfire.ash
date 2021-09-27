@@ -35,6 +35,24 @@ boolean wildfire_groar_check()
 	return false;
 }
 
+boolean wildfire_warboss_check()
+{
+	//Prepare to fight [The Big Ignatowicz] or [The Man on Fire] in wildfire path. Also check if we are ready for the fight.
+	//Return true if we are not ready and should delay this fight
+	//[Hippy Camp] and [Frat House] cannot reduced fire level from 5. Take 20-25% maxHP hot passive dmg per round. always lose initiative
+	if(!in_wildfire())
+	{
+		return false;	//since we are not in wildfire, we are considered "ready" so we do not block the quest in other paths
+	}
+	if(!acquireHP() || !acquireMP(150))
+	{
+		return true;	//killing warboss requires lots of MP and full HP.
+	}
+	setFlavour($element[sleaze]);		//deal extra damage against hot opponent
+	
+	return false;
+}
+
 boolean LX_wildfire_calculateTheUniverse()
 {
 	//in wildfire calculate the universe always summons in a fire 5 zone which 100% burns all dropped items. unless conditional drops

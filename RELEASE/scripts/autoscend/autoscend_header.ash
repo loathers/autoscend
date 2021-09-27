@@ -783,6 +783,7 @@ boolean tcrs_maximize_with_items(string maximizerString);
 boolean in_wildfire();
 void wildfire_initializeSettings();
 boolean wildfire_groar_check();
+boolean wildfire_warboss_check();
 boolean LX_wildfire_calculateTheUniverse();
 void wildfire_rainbarrel();
 void wildfire_refillExtinguiser();
