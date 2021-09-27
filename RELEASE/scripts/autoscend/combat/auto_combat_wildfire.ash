@@ -31,7 +31,7 @@ string auto_combatWildfireStage1(int round, monster enemy, string text)
 		abort("We do not know what to do next against [" +enemy+ "].");
 	}
 	
-	//always 5 fire. can not be reduced.
+	//always 5 fire. can not be reduced. Does not become hot aligned so there is no elemental dmg boost.
 	if($monster[wall of meat] == enemy)
 	{
 		if(canUse($skill[Stuffed Mortar Shell]))
