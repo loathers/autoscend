@@ -66,9 +66,9 @@ boolean LX_wildfire_calculateTheUniverse()
 		return false;
 	}
 	
-	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy")
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && auto_saberChargesAvailable() > 0)
 	{
-		if(doNumberology("battlefield", false) != -1 && auto_saberChargesAvailable() > 0)
+		if(doNumberology("battlefield", false) != -1)
 		{
 			autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
 			return (doNumberology("battlefield") != -1);
