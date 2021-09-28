@@ -12,7 +12,7 @@ action	4	auto_newbieOverride	boolean	If true will override newbie block once the
 any	0	auto_skipNEPOverride	boolean	If true will not use the Neverending Party even if mafia says it is available.
 any	1	auto_skipGuzzlrCocktailSet	boolean	If true will not accept and abandon a Platinum Guzzlr quest for the cocktail set.
 any	2	auto_mushroomGardenGrowth	integer	Picks the mushroom when growth reaches the given value (or higher). Defaults to 1 to pick every day, capped at 11.
-any	3	auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? (Or in Ed, Even More Elemental Wards)?
+any	3	auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? Setting will situationally be ignored such as in Ed where we always delay for Even More Elemental Wards
 any	4	auto_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
 any	5	auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
 any	6	auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
