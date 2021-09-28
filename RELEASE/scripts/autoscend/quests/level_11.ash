@@ -278,9 +278,8 @@ boolean useILoveMeVolI()
 	return false;
 }
 
-boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay) {
-	// forceDelay will force the check for 9 hot res & 9 stench res to be used regardless of what
-	// auto_delayHauntedKitchen is set to.
+boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
+	// delayKitchen if true will force the check for 9 hot res & 9 stench res to be used
 	if (internalQuestStatus("questM20Necklace") != 0) {
 		return false;
 	}
@@ -293,7 +292,6 @@ boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay) {
 		return false;
 	}
 	
-	boolean delayKitchen = get_property("auto_delayHauntedKitchen").to_boolean() || forceDelay;
 	if (isAboutToPowerlevel()) {
 		// if we're at the point where we need to level up to get more quests other than this, we might as well just do this instead
 		delayKitchen = false;
@@ -326,7 +324,8 @@ boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay) {
 }
 
 boolean LX_unlockHauntedBilliardsRoom() {
-	return LX_unlockHauntedBilliardsRoom(false);
+	//auto_delayHauntedKitchen is a user configurable default state for delaying kitchen until we have 9 hot and 9 stench res.
+	return LX_unlockHauntedBilliardsRoom(get_property("auto_delayHauntedKitchen").to_boolean());
 }
 
 boolean LX_unlockHauntedLibrary()

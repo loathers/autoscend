@@ -886,7 +886,7 @@ boolean LX_unlockHiddenTemple();
 boolean hasSpookyravenLibraryKey();
 boolean hasILoveMeVolI();
 boolean useILoveMeVolI();
-boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay);
+boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen);
 boolean LX_unlockHauntedBilliardsRoom();
 boolean LX_unlockHauntedLibrary();
 boolean LX_unlockManorSecondFloor();

@@ -461,7 +461,7 @@ boolean LA_wildfire()
 	
 	if(my_level() > 2 && in_hardcore())
 	{
-		if(LX_spookyravenManorFirstFloor()) return true;		//hardcore needs to reach 2nd floor early to grease pump
+		if(LX_spookyravenManorFirstFloor(false)) return true;		//hardcore needs to reach 2nd floor early to grease pump
 	}
 	
 	return false;
