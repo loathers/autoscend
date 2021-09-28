@@ -459,9 +459,10 @@ boolean LA_wildfire()
 	if(LX_wildfire_grease_pump()) return true;		//improves pump water from 30/adv to 50/adv
 	if(LX_wildfire_water()) return true;		//use water to reduce fire levels.
 	
-	if(my_level() > 2 && in_hardcore())
+	if(my_level() > 1 && in_hardcore())
 	{
-		if(LX_spookyravenManorFirstFloor(false)) return true;		//hardcore needs to reach 2nd floor early to grease pump
+		//in hardcore force ignoring the delay (for 9 hot & 9 stench res) setting so we can reach second floor ASAP
+		if(LX_unlockHauntedBilliardsRoom(false)) return true;
 	}
 	
 	return false;
