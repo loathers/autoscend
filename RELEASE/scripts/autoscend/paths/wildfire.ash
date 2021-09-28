@@ -463,6 +463,7 @@ boolean LA_wildfire()
 	{
 		//in hardcore force ignoring the delay (for 9 hot & 9 stench res) setting so we can reach second floor ASAP
 		if(LX_unlockHauntedBilliardsRoom(false)) return true;
+		if(LX_spookyravenManorFirstFloor()) return true;
 	}
 	
 	return false;
