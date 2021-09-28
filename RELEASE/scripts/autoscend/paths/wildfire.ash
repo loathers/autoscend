@@ -380,6 +380,7 @@ boolean LX_wildfire_hose(location place, int target_fire)
 	{
 		return false;		//already done
 	}
+	auto_log_info("Trying to hose down [" +place+ "] from fire level " +place.fire_level+ " to fire level " +target_fire);
 	
 	int[6] water_offset = {0, 0, 10, 30, 60, 100};		//an array of the extra costs of hosing due to price increase.
 	int hoses_needed = place.fire_level - target_fire;
