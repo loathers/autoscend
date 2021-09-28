@@ -459,5 +459,10 @@ boolean LA_wildfire()
 	if(LX_wildfire_grease_pump()) return true;		//improves pump water from 30/adv to 50/adv
 	if(LX_wildfire_water()) return true;		//use water to reduce fire levels.
 	
+	if(my_level() > 2 && in_hardcore())
+	{
+		if(LX_spookyravenManorFirstFloor()) return true;		//hardcore needs to reach 2nd floor early to grease pump
+	}
+	
 	return false;
 }
