@@ -383,7 +383,8 @@ boolean LX_unlockHauntedLibrary()
 	}
 	
 	//inebrity handling. do not care if: auto succeed or can't drink or ran out of things to do.
-	if(expectPool < 18 && can_drink() && !isAboutToPowerlevel())
+	boolean wildfire_check = !(in_wildfire() && in_hardcore());		//hardcore wildfire ignore inebriety limits
+	if(expectPool < 18 && can_drink() && !isAboutToPowerlevel() && wildfire_check)
 	{
 		//paths with inebrity limit under 11 should wait until they are at max to do this
 		if(my_inebriety() < inebriety_limit() && inebriety_limit() < 11)

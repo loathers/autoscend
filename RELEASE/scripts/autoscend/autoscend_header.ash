@@ -797,6 +797,7 @@ boolean LX_wildfire_hose_once(location place);
 boolean LX_wildfire_hose(location place, int target_fire);
 boolean LX_wildfire_hose(location place);
 boolean LX_wildfire_water();
+boolean LX_wildfire_spookyravenManorFirstFloor();
 boolean LA_wildfire();
 
 ########################################################################################################

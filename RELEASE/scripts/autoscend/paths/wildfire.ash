@@ -447,6 +447,25 @@ boolean LX_wildfire_water()
 	return false;
 }
 
+boolean LX_wildfire_spookyravenManorFirstFloor()
+{
+	//in hardcore we need to reach the 2nd floor ASAP.
+	if(!in_wildfire() || !in_hardcore())
+	{
+		return false;
+	}
+	
+	if(my_level() > 1)
+	{
+		//force ignoring the delay for 9 hot & 9 stench res setting so we can get through the kitchen
+		if(LX_unlockHauntedBilliardsRoom(false)) return true;
+	}
+	//hand chalk does not burn up so fire level is not an issue there.
+	if(LX_spookyravenManorFirstFloor()) return true;
+	
+	return false;
+}
+
 boolean LA_wildfire()
 {
 	if(!in_wildfire())
@@ -458,13 +477,7 @@ boolean LA_wildfire()
 	wildfire_refillExtinguiser();	//refill extinguisher once per day
 	if(LX_wildfire_grease_pump()) return true;		//improves pump water from 30/adv to 50/adv
 	if(LX_wildfire_water()) return true;		//use water to reduce fire levels.
-	
-	if(my_level() > 1 && in_hardcore())
-	{
-		//in hardcore force ignoring the delay (for 9 hot & 9 stench res) setting so we can reach second floor ASAP
-		if(LX_unlockHauntedBilliardsRoom(false)) return true;
-		if(LX_spookyravenManorFirstFloor()) return true;
-	}
+	if(LX_wildfire_spookyravenManorFirstFloor()) return true;		//in hardcore we need to reach the 2nd floor ASAP.
 	
 	return false;
 }
