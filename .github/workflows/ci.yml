@@ -14,10 +14,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Java JDK
-      uses: actions/setup-java@v1.4.3
-      with:
-        java-version: 1.8
+    - name: Setup Java 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: "17"
 
     - name: Determine KoLmafia version
       id: mafia
