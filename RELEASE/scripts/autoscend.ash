@@ -2769,6 +2769,9 @@ void auto_begin()
 	backupSetting("logPreferenceChange", "true");
 	backupSetting("logPreferenceChangeFilter", "maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
+
+	string userForbidden = get_property("forbiddenStores");
+	backupSetting("forbiddenStores", userForbidden + ",3408540"); // forbid Dance Police
 	
 	backupSetting("choiceAdventure1107", 1);
 
