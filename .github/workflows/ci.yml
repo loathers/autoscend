@@ -15,10 +15,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Setup Java 17
-        uses: actions/setup-java@v2
-        with:
-          distribution: "temurin"
-          java-version: "17"
+      uses: actions/setup-java@v2
+      with:
+        distribution: "temurin"
+        java-version: "17"
 
     - name: Determine KoLmafia version
       id: mafia
