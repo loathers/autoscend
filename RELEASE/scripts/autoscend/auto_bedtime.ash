@@ -248,8 +248,15 @@ void bedtime_pulls()
 	}
 	if(internalQuestStatus("questL11Desert") < 1)
 	{
-		pullXWhenHaveY($item[drum machine], 1, 0);
-		pullXWhenHaveY($item[killing jar], 1, 0);
+		int gnasirProgress = get_property("gnasirProgress").to_int();
+		if ((gnasirProgress & 16) == 0)
+		{
+			pullXWhenHaveY($item[drum machine], 1, 0);
+		}
+		if ((gnasirProgress & 4) == 0)
+		{
+			pullXWhenHaveY($item[killing jar], 1, 0);
+		}
 	}
 	
 	//scan through all pullable items for items that have a better rollover adv gain than currently best equipped item.
