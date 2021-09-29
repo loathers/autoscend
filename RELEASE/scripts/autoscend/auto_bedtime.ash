@@ -238,7 +238,7 @@ void bedtime_pulls()
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
 	}
-	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]))
+	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
 	{
 		pullXWhenHaveY($item[wet stew], 1, 0);
 	}
