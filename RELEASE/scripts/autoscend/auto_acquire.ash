@@ -120,7 +120,6 @@ int auto_mall_price(item it)
 			//-1 could be due to tradeable item not found in the mall. Or due to an IO error during lookup
 			//-1 is non trivial to fix due to mafia anti abuse code
 			//historical price can never be -1. only 0 or a positive number
-			
 			//just use the historical price. It will be good enough. it never returns -1. and if it returns 0 it is because this mafia install never happened to look up that item before. which suggests an extreme edge case or that the item is really unavailable
 			return historical_price(it);
 		}
