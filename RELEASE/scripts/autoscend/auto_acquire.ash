@@ -121,28 +121,8 @@ int auto_mall_price(item it)
 			//-1 is non trivial to fix due to mafia anti abuse code
 			//historical price can never be -1. only 0 or a positive number
 			
-			if(historical_price(it) > 0)
-			{
-				auto_log_warning("Failed getting mall price for [" +it+ "]. We have historical price and that is good enough.");
-				return historical_price(it);	//just use the historical price. It will be good enough
-			}
-			
-			if(get_property("_auto_mallprice_error_list").contains_text(it))
-			{
-				return 0;
-			}
-			if(get_property("_auto_mallprice_skip_next_error").to_int() == my_adventures())
-			{
-				auto_log_debug("Failed getting mall price for [" +it+ "]. Per setting we will ignore it as unbuyable today");
-				set_property("_auto_mallprice_error_list", get_property("_auto_mallprice_error_list")+ "," +it);
-				return 0;
-			}
-			
-			print("Failed getting mall price for [" +it+ "].", "red");
-			print("If this is a critical item for the run manually buy it and run me again", "red");
-			print("Otherwise use the CLI command below then run me again to skip it:", "blue");
-			print(`ash set_property("_auto_mallprice_skip_next_error", my_adventures());`, "blue");
-			abort();
+			//just use the historical price. It will be good enough. it never returns -1. and if it returns 0 it is because this mafia install never happened to look up that item before. which suggests an extreme edge case or that the item is really unavailable
+			return historical_price(it);
 		}
 		return retval;
 	}
