@@ -2771,7 +2771,9 @@ void auto_begin()
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 
 	string userForbidden = get_property("forbiddenStores");
-	backupSetting("forbiddenStores", userForbidden + ",3408540"); // forbid Dance Police
+	if (!userForbidden.contains_text("3408540")) {
+		backupSetting("forbiddenStores", userForbidden + ",3408540"); // forbid Dance Police
+	}
 	
 	backupSetting("choiceAdventure1107", 1);
 
