@@ -2031,6 +2031,11 @@ boolean L12_finalizeWar()
 	{
 		return false;
 	}
+	
+	if(wildfire_warboss_check())
+	{
+		return false;
+	}
 
 	if(possessOutfit("War Hippy Fatigues"))
 	{

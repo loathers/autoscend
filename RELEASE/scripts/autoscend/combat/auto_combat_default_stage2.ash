@@ -179,17 +179,18 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 	
 	//convert enemy [Tomb rat] into [Tomb rat king]
-	if((enemy == $monster[Tomb Rat]) && (item_amount($item[Tangle Of Rat Tails]) > 0))
+	if(enemy == $monster[Tomb Rat] &&
+	item_amount($item[Tangle Of Rat Tails]) > 0 &&
+	(item_amount($item[Tomb Ratchet]) + item_amount($item[Crumbling Wooden Wheel])) < 10 &&		//actually need ratchets
+	$location[the middle chamber].fire_level < 3		//wildfire path. ratchets do not burn. king ratchets burn. fire == 0 in other paths
+	)
 	{
-		if((item_amount($item[Tomb Ratchet]) + item_amount($item[Crumbling Wooden Wheel])) < 10)
+		string res = "item " + $item[Tangle of Rat Tails];
+		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
-			string res = "item " + $item[Tangle of Rat Tails];
-			if(auto_have_skill($skill[Ambidextrous Funkslinging]))
-			{
-				res += ", none";
-			}
-			return res;
+			res += ", none";
 		}
+		return res;
 	}
 	
 	# Instakill handler

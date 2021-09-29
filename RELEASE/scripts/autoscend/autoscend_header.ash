@@ -781,6 +781,24 @@ boolean tcrs_maximize_with_items(string maximizerString);
 ########################################################################################################
 //Defined in autoscend/paths/wildfire.ash
 boolean in_wildfire();
+void wildfire_initializeSettings();
+boolean wildfire_groar_check();
+boolean wildfire_warboss_check();
+boolean LX_wildfire_calculateTheUniverse();
+void wildfire_rainbarrel();
+void wildfire_refillExtinguiser();
+int wildfire_water_cost(string target);
+boolean LX_wildfire_grease_pump();
+boolean LX_wildfire_pump(int target);
+boolean LX_wildfire_dust();
+boolean LX_wildfire_frack();
+boolean LX_wildfire_sprinkle();
+boolean LX_wildfire_hose_once(location place);
+boolean LX_wildfire_hose(location place, int target_fire);
+boolean LX_wildfire_hose(location place);
+boolean LX_wildfire_water();
+boolean LX_wildfire_spookyravenManorFirstFloor();
+boolean LA_wildfire();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -869,7 +887,7 @@ boolean LX_unlockHiddenTemple();
 boolean hasSpookyravenLibraryKey();
 boolean hasILoveMeVolI();
 boolean useILoveMeVolI();
-boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay);
+boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen);
 boolean LX_unlockHauntedBilliardsRoom();
 boolean LX_unlockHauntedLibrary();
 boolean LX_unlockManorSecondFloor();
@@ -1043,6 +1061,7 @@ float npcStoreDiscountMulti();
 boolean acquireGumItem(item it);
 boolean acquireTotem();
 boolean acquireHermitItem(item it);
+boolean pull_meat(int target);
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash

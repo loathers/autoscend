@@ -1,4 +1,4 @@
-since r20870;	//min mafia revision needed to run this script. Last update: fixed inv desync on some create() command uses
+since r25702;	//expose snarfblat zone id via $location[noob cave].id
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -232,6 +232,7 @@ void initializeSettings() {
 	grey_goo_initializeSettings();
 	qt_initializeSettings();
 	jarlsberg_initializeSettings();
+	wildfire_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -366,15 +367,27 @@ boolean LX_burnDelay()
 
 boolean LX_calculateTheUniverse()
 {
-	if (possessOutfit("Frat Warrior Fatigues") || auto_warSide() == "hippy")
+	if(in_wildfire())
 	{
-		doNumberology("adventures3"); // want to return false here as all we're doing is generating 3 adventures.
+		return LX_wildfire_calculateTheUniverse();
 	}
-	else if(my_mp() >= mp_cost($skill[Calculate the Universe]) && doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
+	if(my_mp() < mp_cost($skill[Calculate the Universe]))
 	{
-		return (doNumberology("battlefield") != -1);
+		return false;
 	}
-	return false;
+	
+	//do we want to summon a [War Frat 151st Infantryman] for the frat warrior outfit?
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy")
+	{
+		if(doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
+		{
+			return (doNumberology("battlefield") != -1);
+		}
+		return false;	//we want 151 and can get it in general. but not right now. so save it for later
+	}
+	
+	doNumberology("adventures3");
+	return false;	//we do not want to restart the loop as all we're doing is generating 3 adventures
 }
 
 boolean LX_faxing()
@@ -2628,7 +2641,6 @@ boolean doTasks()
 		}
 	}
 
-
 	if(fortuneCookieEvent())			return true;
 	if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
@@ -2664,6 +2676,7 @@ boolean doTasks()
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();
+	if(LA_wildfire())					return true;
 	
 	if (process_tasks()) return true;
 
