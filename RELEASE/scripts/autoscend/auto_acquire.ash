@@ -40,7 +40,7 @@ boolean acquireOrPull(item it)
 	return false;
 }
 
-boolean canPull(item it)
+boolean canPull(item it, boolean historical)
 {
 	if(in_hardcore())
 	{
@@ -61,7 +61,11 @@ boolean canPull(item it)
 	
 	if(storage_amount(it) > 0)
 	{
-		return true;
+		return true;	//we have it in storage so we can pull it
+	}
+	else if(!is_tradeable(it))
+	{
+		return false;	//we do not have it in storage and we can not trade for it. gifts currently not handled
 	}
 
 	int meat = my_storage_meat();
@@ -69,7 +73,15 @@ boolean canPull(item it)
 	{
 		meat = max(meat, my_meat() - 5000);
 	}
-	int curPrice = auto_mall_price(it);
+	int curPrice = historical_price(it);
+	if(!historical)
+	{
+		curPrice = auto_mall_price(it);
+	}
+	if(curPrice < 1)
+	{
+		return false;	//a 0 or a -1 indicates the item is not available.
+	}
 	if (curPrice > get_property("autoBuyPriceLimit").to_int())
 	{
 		return false;
@@ -80,6 +92,11 @@ boolean canPull(item it)
 	}
 	
 	return false;
+}
+
+boolean canPull(item it)
+{
+	return canPull(it, false);
 }
 
 void pullAll(item it)

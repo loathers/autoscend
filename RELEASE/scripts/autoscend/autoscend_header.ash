@@ -1045,6 +1045,7 @@ void houseUpgrade();
 //Defined in autoscend/auto_acquire.ash
 boolean haveAny(boolean[item] array);
 boolean acquireOrPull(item it);
+boolean canPull(item it, boolean update);
 boolean canPull(item it);
 void pullAll(item it);
 void pullAndUse(item it, int uses);
