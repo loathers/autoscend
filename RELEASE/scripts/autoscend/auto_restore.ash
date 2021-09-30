@@ -1596,8 +1596,8 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 				auto_log_error("Ignoring the error as per user instructions");
  				return false;
 			}
-			print("Aborting due to restore failure... you can override this setting for today by entering in gCLI:");
-			print("set _auto_ignoreRestoreFailureToday = true");
+			print("Aborting due to restore failure... you can override this setting for today by entering in gCLI:" ,"blue");
+			print("set _auto_ignoreRestoreFailureToday = true" ,"blue");
 			abort();
 		}
 

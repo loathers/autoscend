@@ -24,7 +24,6 @@ boolean auto_unreservedAdvRemaining();
 boolean LX_burnDelay();
 boolean LX_universeFrat();
 boolean LX_faxing();
-int pullsNeeded(string data);
 boolean tophatMaker();
 int handlePulls(int day);
 boolean LX_doVacation();
@@ -439,6 +438,10 @@ boolean batteryCombine(item battery);
 boolean batteryCombine(item battery, boolean simulate);
 boolean can_get_battery(item target);
 boolean auto_getBattery(item target);
+boolean auto_haveFireExtinguisher();
+int auto_fireExtinguisherCharges();
+string auto_FireExtinguisherCombatString(location place);
+boolean auto_canExtinguisherBeRefilled();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -778,6 +781,24 @@ boolean tcrs_maximize_with_items(string maximizerString);
 ########################################################################################################
 //Defined in autoscend/paths/wildfire.ash
 boolean in_wildfire();
+void wildfire_initializeSettings();
+boolean wildfire_groar_check();
+boolean wildfire_warboss_check();
+boolean LX_wildfire_calculateTheUniverse();
+void wildfire_rainbarrel();
+void wildfire_refillExtinguiser();
+int wildfire_water_cost(string target);
+boolean LX_wildfire_grease_pump();
+boolean LX_wildfire_pump(int target);
+boolean LX_wildfire_dust();
+boolean LX_wildfire_frack();
+boolean LX_wildfire_sprinkle();
+boolean LX_wildfire_hose_once(location place);
+boolean LX_wildfire_hose(location place, int target_fire);
+boolean LX_wildfire_hose(location place);
+boolean LX_wildfire_water();
+boolean LX_wildfire_spookyravenManorFirstFloor();
+boolean LA_wildfire();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -866,7 +887,7 @@ boolean LX_unlockHiddenTemple();
 boolean hasSpookyravenLibraryKey();
 boolean hasILoveMeVolI();
 boolean useILoveMeVolI();
-boolean LX_unlockHauntedBilliardsRoom(boolean forceDelay);
+boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen);
 boolean LX_unlockHauntedBilliardsRoom();
 boolean LX_unlockHauntedLibrary();
 boolean LX_unlockManorSecondFloor();
@@ -1024,6 +1045,7 @@ void houseUpgrade();
 //Defined in autoscend/auto_acquire.ash
 boolean haveAny(boolean[item] array);
 boolean acquireOrPull(item it);
+boolean canPull(item it, boolean update);
 boolean canPull(item it);
 void pullAll(item it);
 void pullAndUse(item it, int uses);
@@ -1040,6 +1062,7 @@ float npcStoreDiscountMulti();
 boolean acquireGumItem(item it);
 boolean acquireTotem();
 boolean acquireHermitItem(item it);
+boolean pull_meat(int target);
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash
@@ -1060,6 +1083,8 @@ boolean autoAdvBypass(string url, string option);
 ########################################################################################################
 //Defined in autoscend/auto_bedtime.ash
 void bedtime_still();
+int pullsNeeded(string data);
+void bedtime_pulls();
 boolean doBedtime();
 
 ########################################################################################################
@@ -1147,7 +1172,7 @@ boolean possessOutfit(string outfit, boolean checkCanEquip);
 boolean possessOutfit(string outfit);
 void equipBaseline();
 void ensureSealClubs();
-void equipRollover();
+void equipRollover(boolean silent);
 boolean auto_forceEquipSword();
 
 ########################################################################################################

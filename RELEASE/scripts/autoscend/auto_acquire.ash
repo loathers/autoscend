@@ -40,7 +40,7 @@ boolean acquireOrPull(item it)
 	return false;
 }
 
-boolean canPull(item it)
+boolean canPull(item it, boolean historical)
 {
 	if(in_hardcore())
 	{
@@ -61,7 +61,11 @@ boolean canPull(item it)
 	
 	if(storage_amount(it) > 0)
 	{
-		return true;
+		return true;	//we have it in storage so we can pull it
+	}
+	else if(!is_tradeable(it))
+	{
+		return false;	//we do not have it in storage and we can not trade for it. gifts currently not handled
 	}
 
 	int meat = my_storage_meat();
@@ -69,7 +73,15 @@ boolean canPull(item it)
 	{
 		meat = max(meat, my_meat() - 5000);
 	}
-	int curPrice = auto_mall_price(it);
+	int curPrice = historical_price(it);
+	if(!historical)
+	{
+		curPrice = auto_mall_price(it);
+	}
+	if(curPrice < 1)
+	{
+		return false;	//a 0 or a -1 indicates the item is not available.
+	}
 	if (curPrice > get_property("autoBuyPriceLimit").to_int())
 	{
 		return false;
@@ -80,6 +92,11 @@ boolean canPull(item it)
 	}
 	
 	return false;
+}
+
+boolean canPull(item it)
+{
+	return canPull(it, false);
 }
 
 void pullAll(item it)
@@ -116,7 +133,12 @@ int auto_mall_price(item it)
 		int retval = mall_price(it);
 		if(retval == -1)
 		{
-			abort("Failed getting mall price for " + it + ", aborting to prevent problems");
+			//0 could be due to item not being tradeable.
+			//-1 could be due to tradeable item not found in the mall. Or due to an IO error during lookup
+			//-1 is non trivial to fix due to mafia anti abuse code
+			//historical price can never be -1. only 0 or a positive number
+			//just use the historical price. It will be good enough. it never returns -1. and if it returns 0 it is because this mafia install never happened to look up that item before. which suggests an extreme edge case or that the item is really unavailable
+			return historical_price(it);
 		}
 		return retval;
 	}
@@ -484,4 +506,53 @@ boolean acquireHermitItem(item it)
 	}
 
 	return (have + 1) == item_amount(it);
+}
+
+boolean pull_meat(int target)
+{
+	//pulls meat to reach the desired target amount. preferentially will pull items and autosell them.
+	if(my_meat() >= target)
+	{
+		return true;	//already have target meat
+	}
+	if(pulls_remaining() < 1)		//hardcore returns 0. casual returns -1. both are < 1
+	{
+		return false;	//can not pull
+	}
+	if(my_path() == "Way of the Surprising Fist")
+	{
+		return false;	//can not pull meat & autoselling items just donates them
+	}
+	
+	//pull and autosell items
+	while(my_meat() < target && pulls_remaining() > 0)
+	{
+		boolean fail = true;		//if true an item was not pulled and sold this loop
+		foreach it in $items[1\,970 carat gold]
+		{
+			if(fail && storage_amount(it) > 0 && is_unrestricted(it))
+			{
+				if(pullXWhenHaveY(it, 1, 0) && autosell(1, it))		//pull and sell
+				{
+					fail = false;
+				}
+			}
+		}
+		if(fail) break;
+	}
+	
+	//pull meat directly
+	if(my_meat() < target && my_storage_meat() >= target)
+	{
+		float meat_pulls = target - my_meat();					//how much meat we need to pull. converted to float
+		meat_pulls = ceil(meat_pulls / 1000.0);					//how many pulls it will require to get.
+		meat_pulls = min(pulls_remaining(), meat_pulls);		//limit by remaining pulls
+		int meat_pull_int = meat_pulls * 1000;		//we want to round it up to nearest 1000
+		if(meat_pulls > 0)
+		{
+			cli_execute("pull " +meat_pull_int+ " meat");
+		}
+	}
+	
+	return my_meat() >= target;
 }

@@ -854,6 +854,10 @@ boolean L12_filthworms()
 		auto_log_info("Will steal stench glands using [XO Skeleton]");
 		handleFamiliar($familiar[XO Skeleton]);
 	}
+	else if(auto_fireExtinguisherCharges() > 10)
+	{
+		auto_log_info("Will steal stench glands using polar vortex ability of [Industrial Fire Extinguisher]");
+	}
 	//TODO add IOTM cat burglar stealing support here with another else if
 	// or if we're about to yellow ray
 	else if(canYellowRay())
@@ -2024,6 +2028,11 @@ boolean L12_finalizeWar()
 	}
 
 	if (get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000)
+	{
+		return false;
+	}
+	
+	if(wildfire_warboss_check())
 	{
 		return false;
 	}

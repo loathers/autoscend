@@ -5069,6 +5069,10 @@ int meatReserve()
 	{
 		reserve_extra += 100;
 	}
+	if(in_wildfire() && !get_property("wildfirePumpGreased").to_boolean() && item_amount($item[pump grease]) == 0)
+	{
+		reserve_extra += npc_price($item[pump grease]);
+	}
 	
 	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely
 	{
