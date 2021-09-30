@@ -237,13 +237,13 @@ boolean doHRSkills()
 			auto_log_info("Trying to use a lightning milk", "blue");
 			string page = visit_url("inv_use.php?which=3&whichitem=7646&pwd");
 			int skillChoice = 8;
-			if(get_property(_fireworksShop) && !have_skill($skill[Ball Lightning])){
+			if(get_property(_fireworksShop).to_boolean() && !have_skill($skill[Ball Lightning])){
 				skillChoice = 3;
 			}
 			if(!have_skill($skill[Lightning Rod])){
 				skillChoice = 6;
 			}
-			if(!have_skill($skill[Lightning Bolt])){
+			if(!have_skill($skill[[16025]Lightning Bolt])){
 				skillChoice = 5;
 			}
 			if(!have_skill($skill[Sheet Lightning])){
@@ -258,7 +258,7 @@ boolean doHRSkills()
 			if(!have_skill($skill[Lightning Strike])){
 				skillChoice = 1;
 			}
-			if(!get_property(_fireworksShop) && !have_skill($skill[Ball Lightning])){
+			if(!get_property(_fireworksShop).to_boolean() && !have_skill($skill[Ball Lightning])){
 				skillChoice = 3;
 			}
 
