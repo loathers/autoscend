@@ -570,7 +570,7 @@ void ensureSealClubs()
 	}
 }
 
-void equipRollover()
+void equipRollover(boolean silent)
 {
 	if(in_gnoob())
 	{
@@ -582,11 +582,16 @@ void equipRollover()
 		cli_execute("buy Li'l Unicorn Costume");
 	}
 
-	auto_log_info("Putting on pajamas...", "blue");
+	if(!silent)
+	{
+		auto_log_info("Putting on pajamas...", "blue");
+	}
 
 	string to_max = "-tie,adv";
-	if(hippy_stone_broken())
-		to_max += ",0.3fites";
+	if(hippy_stone_broken() && get_property("auto_bedtime_pulls_pvp_multi").to_float() > 0)
+	{
+		to_max += "," +get_property("auto_bedtime_pulls_pvp_multi")+ "fites";
+	}
 	if(auto_have_familiar($familiar[Trick-or-Treating Tot]))
 		to_max += ",switch Trick-or-Treating Tot";
 	if(auto_have_familiar($familiar[Left-Hand Man]))
@@ -596,7 +601,7 @@ void equipRollover()
 
 	maximize(to_max, false);
 
-	if(!in_hardcore())
+	if(!in_hardcore() && !silent)
 	{
 		auto_log_info("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
 	}
