@@ -235,20 +235,26 @@ boolean LX_wildfire_pump(int target)
 	while(target > my_wildfire_water() && get_counters("", 0, 0) == "")
 	{
 		//r25706. clicking in browser works properly. but visit url causes a desync on water quantity. and there is no mafia command to pump water while keeping water level synced. As such we must visit charpane.php after pumping water to update our water value.
+		int start_adv = my_adventures();
 		visit_url("place.php?whichplace=wildfire_camp&action=wildfire_oldpump");
 		visit_url("charpane.php");
+		if(start_adv == my_adventures())
+		{
+			abort("Tried to pump water but our adv count did not change. what went wrong?");
+		}
 		if(start_water == my_wildfire_water())
 		{
 			abort("Mafia failed to update your water level after pumping water");
 		}
 		boolean completely_full = stomach_left() < 1 && inebriety_left() < 1;
-		if(my_adventures() <= auto_advToReserve() && completely_full)
+		int adv_target = auto_advToReserve();
+		if(!completely_full)
+		{
+			adv_target++;
+		}
+		if(my_adventures() <= adv_target)
 		{
 			break;	//we are done for the day
-		}
-		if(my_adventures() == 1+auto_advToReserve() && !completely_full)
-		{
-			break;	//go do something else. like eat or drink
 		}
 	}
 	return start_adv != my_adventures();
