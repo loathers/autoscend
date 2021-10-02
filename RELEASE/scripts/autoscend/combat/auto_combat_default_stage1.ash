@@ -27,6 +27,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	retval = auto_combatDisguisesStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
+	// Path = wildfire
+	retval = auto_combatWildfireStage1(round, enemy, text);
+	if(retval != "") return retval;
+	
 	string combatState = get_property("auto_combatHandler");
 	
 	if(enemy == $monster[Your Shadow])

@@ -1,6 +1,11 @@
-void hr_initializeSettings()
+boolean in_heavyrains()
 {
-	if(my_path() == "Heavy Rains")
+	return auto_my_path() == "Heavy Rains";
+}
+
+void heavy_rains_initializeSettings()
+{
+	if(in_heavyrains())
 	{
 		#Rain Man (Heavy Rains) Related settings
 		set_property("auto_holeinthesky", false);
@@ -87,9 +92,9 @@ boolean routineRainManHandler()
 
 
 
-void hr_initializeDay(int day)
+void heavy_rains_initializeDay(int day)
 {
-	if(my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		if((day == 1) && (get_property("auto_day1_skills") != "finished"))
 		{
@@ -97,7 +102,7 @@ void hr_initializeDay(int day)
 			set_property("choiceAdventure968", "1");
 			set_property("choiceAdventure969", "3");
 
-			if(item_amount($item[thunder thigh]) > 0)
+			if(item_amount($item[thunder thigh]) > 0) //Thunder Clap, Thunder Bird, Thunder Strike
 			{
 				visit_url("inv_use.php?which=3&whichitem=7648&pwd");
 				visit_url("choice.php?pwd&whichchoice=967&option=1", true);
@@ -106,7 +111,7 @@ void hr_initializeDay(int day)
 				set_property("choiceAdventure967", "7");
 			}
 
-			if(item_amount($item[aquaconda brain]) > 0)
+			if(item_amount($item[aquaconda brain]) > 0) // Rain Man, Make it Rain, Rain Dance
 			{
 				visit_url("inv_use.php?which=3&whichitem=7647&pwd");
 				visit_url("choice.php?pwd&whichchoice=968&option=1", true);
@@ -115,7 +120,7 @@ void hr_initializeDay(int day)
 				set_property("choiceAdventure968", "2");
 			}
 
-			if(item_amount($item[lightning milk]) > 0)
+			if(item_amount($item[lightning milk]) > 0) // Ball Lightning, Lightning Strike, Riding the Lightning
 			{
 				visit_url("inv_use.php?which=3&whichitem=7646&pwd");
 				visit_url("choice.php?pwd&whichchoice=969&option=3", true);
@@ -134,7 +139,7 @@ void hr_initializeDay(int day)
 	}
 }
 
-void hr_doBedtime()
+void heavy_rains_doBedtime()
 {
 	if(my_inebriety() > inebriety_limit())
 	{
@@ -155,7 +160,7 @@ void hr_doBedtime()
 
 boolean doHRSkills()
 {
-	if(my_path() != "Heavy Rains")
+	if(!in_heavyrains())
 	{
 		return false;
 	}
@@ -165,35 +170,31 @@ boolean doHRSkills()
 		{
 			auto_log_info("Trying to use a thunder thigh", "blue");
 			string page = visit_url("inv_use.php?which=3&whichitem=7648&pwd");
+			int skillChoice = 8;
+			if(!have_skill($skill[Thunder Down Underwear])){
+				skillChoice = 6;
+			}
+			if(!have_skill($skill[Thundercloud])){
+				skillChoice = 2;
+			}
+			if(!have_skill($skill[Thunderheart])){
+				skillChoice = 4;
+			}
+			if(!have_skill($skill[Thunder Thighs])){
+				skillChoice = 7;
+			}
+			if(!have_skill($skill[Thunderstrike])){
+				skillChoice = 5;
+			}
+			if(!have_skill($skill[Thunder Bird])){
+				skillChoice = 3;
+			}
+			if(!have_skill($skill[Thunder Clap])){
+				skillChoice = 1;
+			}
+			
+			set_property("choiceAdventure968", skillChoice);
 			runChoice(page);
-			if(get_property("choiceAdventure967") == "1")
-			{
-				set_property("choiceAdventure967", "3");
-			}
-			else if(get_property("choiceAdventure967") == "3")
-			{
-				set_property("choiceAdventure967", "5");
-			}
-			else if(get_property("choiceAdventure967") == "5")
-			{
-				set_property("choiceAdventure967", "7");
-			}
-			else if(get_property("choiceAdventure967") == "7")
-			{
-				set_property("choiceAdventure967", "4");
-			}
-			else if(get_property("choiceAdventure967") == "4")
-			{
-				set_property("choiceAdventure967", "2");
-			}
-			else if(get_property("choiceAdventure967") == "2")
-			{
-				set_property("choiceAdventure967", "6");
-			}
-			else if(get_property("choiceAdventure967") == "6")
-			{
-				set_property("choiceAdventure967", "8");
-			}
 			visit_url("main.php");
 			return true;
 		}
@@ -202,35 +203,31 @@ boolean doHRSkills()
 		{
 			auto_log_info("Trying to use a aquaconda brain", "blue");
 			string page = visit_url("inv_use.php?which=3&whichitem=7647&pwd");
+			int skillChoice = 8;
+			if(!have_skill($skill[Rain Delay])){
+				skillChoice = 7;
+			}
+			if(!have_skill($skill[Rain Coat])){
+				skillChoice = 6;
+			}
+			if(!have_skill($skill[Rainbow])){
+				skillChoice = 5;
+			}
+			if(!have_skill($skill[Rainy Day])){
+				skillChoice = 2;
+			}
+			if(!have_skill($skill[Rain Dance])){
+				skillChoice = 4;
+			}
+			if(!have_skill($skill[Make it Rain])){
+				skillChoice = 3;
+			}
+			if(!have_skill($skill[Rain Man])){
+				skillChoice = 1;
+			}
+			
+			set_property("choiceAdventure968", skillChoice);
 			runChoice(page);
-			if(get_property("choiceAdventure968") == "1")
-			{
-				set_property("choiceAdventure968", "3");
-			}
-			else if(get_property("choiceAdventure968") == "3")
-			{
-				set_property("choiceAdventure968", "4");
-			}
-			else if(get_property("choiceAdventure968") == "4")
-			{
-				set_property("choiceAdventure968", "2");
-			}
-			else if(get_property("choiceAdventure968") == "2")
-			{
-				set_property("choiceAdventure968", "5");
-			}
-			else if(get_property("choiceAdventure968") == "5")
-			{
-				set_property("choiceAdventure968", "6");
-			}
-			else if(get_property("choiceAdventure968") == "6")
-			{
-				set_property("choiceAdventure968", "7");
-			}
-			else if(get_property("choiceAdventure968") == "7")
-			{
-				set_property("choiceAdventure968", "8");
-			}
 			visit_url("main.php");
 			return true;
 		}
@@ -239,35 +236,34 @@ boolean doHRSkills()
 		{
 			auto_log_info("Trying to use a lightning milk", "blue");
 			string page = visit_url("inv_use.php?which=3&whichitem=7646&pwd");
+			int skillChoice = 8;
+			if(get_property("_fireworksShop").to_boolean() && !have_skill($skill[Ball Lightning])){
+				skillChoice = 3;
+			}
+			if(!have_skill($skill[Lightning Rod])){
+				skillChoice = 6;
+			}
+			if(!have_skill($skill[[16025]Lightning Bolt])){
+				skillChoice = 5;
+			}
+			if(!have_skill($skill[Sheet Lightning])){
+				skillChoice = 4;
+			}
+			if(!have_skill($skill[Clean-Hair Lightning])){
+				skillChoice = 2;
+			}
+			if(!have_skill($skill[Riding the Lightning])){
+				skillChoice = 7;
+			}
+			if(!have_skill($skill[Lightning Strike])){
+				skillChoice = 1;
+			}
+			if(!get_property("_fireworksShop").to_boolean() && !have_skill($skill[Ball Lightning])){
+				skillChoice = 3;
+			}
+
+			set_property("choiceAdventure969", skillChoice);
 			runChoice(page);
-			if(get_property("choiceAdventure969") == "3")
-			{
-				set_property("choiceAdventure969", "1");
-			}
-			else if(get_property("choiceAdventure969") == "1")
-			{
-				set_property("choiceAdventure969", "7");
-			}
-			else if(get_property("choiceAdventure969") == "7")
-			{
-				set_property("choiceAdventure969", "2");
-			}
-			else if(get_property("choiceAdventure969") == "2")
-			{
-				set_property("choiceAdventure969", "4");
-			}
-			else if(get_property("choiceAdventure969") == "4")
-			{
-				set_property("choiceAdventure969", "5");
-			}
-			else if(get_property("choiceAdventure969") == "5")
-			{
-				set_property("choiceAdventure969", "6");
-			}
-			else if(get_property("choiceAdventure969") == "6")
-			{
-				set_property("choiceAdventure969", "8");
-			}
 			visit_url("main.php");
 			return true;
 		}

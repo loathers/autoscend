@@ -19,6 +19,7 @@ import <autoscend/combat/auto_combat_ocrs.ash>						//path = one crazy random su
 import <autoscend/combat/auto_combat_pete.ash>						//path = avatar of sneaky pete
 import <autoscend/combat/auto_combat_plumber.ash>					//path = path of the plumber
 import <autoscend/combat/auto_combat_the_source.ash>				//path = the source
+import <autoscend/combat/auto_combat_wildfire.ash>					//path = wildfire
 import <autoscend/combat/auto_combat_quest.ash>						//quest specific handling
 
 //	Advance combat round, nothing happens.
@@ -59,11 +60,16 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	
 	//log some important info.
 	//some stuff is redundant to the pre_adventure function print_footer() so it will not be logged here
-	auto_log_info("auto_combat initialized fighting [" +enemy+
+	string tolog = "auto_combat initialized fighting [" +enemy+
 	"]: atk = " +monster_attack()+
 	". def = " +monster_defense()+
 	". HP = " +monster_hp()+
-	". LA = " +monster_level_adjustment(), "blue");
+	". LA = " +monster_level_adjustment();
+	if(in_wildfire())
+	{
+		tolog += ". fire = " +my_location().fire_level;
+	}
+	auto_log_info(tolog, "blue");
 }
 
 string auto_combatHandler(int round, monster enemy, string text)

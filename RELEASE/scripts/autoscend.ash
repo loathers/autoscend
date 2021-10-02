@@ -1,4 +1,4 @@
-since r20870;	//min mafia revision needed to run this script. Last update: fixed inv desync on some create() command uses
+since r25702;	//expose snarfblat zone id via $location[noob cave].id
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -14,6 +14,7 @@ import <autoscend/combat/auto_combat.ash>		//this file contains its own header. 
 import <autoscend/autoscend_migration.ash>
 import <canadv.ash>
 
+import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
 import <autoscend/auto_bedtime.ash>
 import <autoscend/auto_consume.ash>
@@ -211,7 +212,7 @@ void initializeSettings() {
 	beehiveConsider();
 
 	eudora_initializeSettings();
-	hr_initializeSettings();
+	heavy_rains_initializeSettings();
 	awol_initializeSettings();
 	theSource_initializeSettings();
 	ed_initializeSettings();
@@ -231,6 +232,7 @@ void initializeSettings() {
 	grey_goo_initializeSettings();
 	qt_initializeSettings();
 	jarlsberg_initializeSettings();
+	wildfire_initializeSettings();
 
 	set_property("auto_doneInitialize", my_ascensions());
 }
@@ -365,15 +367,27 @@ boolean LX_burnDelay()
 
 boolean LX_calculateTheUniverse()
 {
-	if (possessOutfit("Frat Warrior Fatigues") || auto_warSide() == "hippy")
+	if(in_wildfire())
 	{
-		doNumberology("adventures3"); // want to return false here as all we're doing is generating 3 adventures.
+		return LX_wildfire_calculateTheUniverse();
 	}
-	else if(my_mp() >= mp_cost($skill[Calculate the Universe]) && doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
+	if(my_mp() < mp_cost($skill[Calculate the Universe]))
 	{
-		return (doNumberology("battlefield") != -1);
+		return false;
 	}
-	return false;
+	
+	//do we want to summon a [War Frat 151st Infantryman] for the frat warrior outfit?
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy")
+	{
+		if(doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
+		{
+			return (doNumberology("battlefield") != -1);
+		}
+		return false;	//we want 151 and can get it in general. but not right now. so save it for later
+	}
+	
+	doNumberology("adventures3");
+	return false;	//we do not want to restart the loop as all we're doing is generating 3 adventures
 }
 
 boolean LX_faxing()
@@ -387,160 +401,6 @@ boolean LX_faxing()
 		}
 	}
 	return false;
-}
-
-int pullsNeeded(string data)
-{
-	if(inAftercore())
-	{
-		return 0;
-	}
-	if (isActuallyEd() || auto_my_path() == "Community Service")
-	{
-		return 0;
-	}
-
-	int count = 0;
-	int adv = 0;
-
-	int progress = 0;
-	if(internalQuestStatus("questL13Final") == 4)
-	{
-		progress = 1;
-	}
-	if(internalQuestStatus("questL13Final") == 5)
-	{
-		progress = 2;
-	}
-	if(internalQuestStatus("questL13Final") == 6)
-	{
-		progress = 3;
-	}
-	if(internalQuestStatus("questL13Final") == 11)
-	{
-		progress = 4;
-	}
-	visit_url("campground.php?action=telescopelow");
-
-	if(progress < 1)
-	{
-		int crowd1score = 0;
-		int crowd2score = 0;
-		int crowd3score = 0;
-
-//		Note: Maximizer gives concert White-boy angst, instead of concert 3 (consequently, it doesn\'t work).
-
-		switch(ns_crowd1())
-		{
-		case 1:					crowd1score = initiative_modifier()/40;							break;
-		}
-
-		switch(ns_crowd2())
-		{
-		case $stat[Moxie]:		crowd2score = (my_buffedstat($stat[Moxie]) - 150) / 40;			break;
-		case $stat[Muscle]:		crowd2score = (my_buffedstat($stat[Muscle]) - 150) / 40;		break;
-		case $stat[Mysticality]:crowd2score = (my_buffedstat($stat[Mysticality]) - 150) / 40;	break;
-		}
-
-		switch(ns_crowd3())
-		{
-		case $element[cold]:	crowd3score = numeric_modifier("cold damage") / 9;				break;
-		case $element[hot]:		crowd3score = numeric_modifier("hot damage") / 9;				break;
-		case $element[sleaze]:	crowd3score = numeric_modifier("sleaze damage") / 9;			break;
-		case $element[spooky]:	crowd3score = numeric_modifier("spooky damage") / 9;			break;
-		case $element[stench]:	crowd3score = numeric_modifier("stench damage") / 9;			break;
-		}
-
-		crowd1score = min(max(0, crowd1score), 9);
-		crowd2score = min(max(0, crowd2score), 9);
-		crowd3score = min(max(0, crowd3score), 9);
-		adv = adv + (10 - crowd1score) + (10 - crowd2score) + (10 - crowd3score);
-	}
-
-	if(progress < 2)
-	{
-		ns_hedge1();
-		ns_hedge2();
-		ns_hedge3();
-
-		auto_log_warning("Hedge time of 4 adventures. (Up to 10 without Elemental Resistances)", "red");
-		adv = adv + 4;
-	}
-
-	if(progress < 3)
-	{
-		if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) == 0))
-		{
-			auto_log_warning("Need star chart", "red");
-			if((auto_my_path() == "Heavy Rains") && (my_rain() >= 50))
-			{
-				auto_log_info("You should rain man a star chart", "blue");
-			}
-			else
-			{
-				count = count + 1;
-			}
-		}
-
-		if(item_amount($item[Richard\'s Star Key]) == 0)
-		{
-			int stars = item_amount($item[star]);
-			int lines = item_amount($item[line]);
-
-			if(stars < 8)
-			{
-				auto_log_warning("Need " + (8-stars) + " stars.", "red");
-				count = count + (8-stars);
-			}
-			if(lines < 7)
-			{
-				auto_log_warning("Need " + (7-lines) + " lines.", "red");
-				count = count + (7-lines);
-			}
-		}
-
-		if(item_amount($item[Digital Key]) == 0 && whitePixelCount() < 30)
-		{
-			auto_log_warning("Need " + (30-whitePixelCount()) + " white pixels.", "red");
-			count = count + (30 - whitePixelCount());
-		}
-
-		if(item_amount($item[skeleton key]) == 0)
-		{
-			if((item_amount($item[skeleton bone]) > 0) && (item_amount($item[loose teeth]) > 0))
-			{
-				cli_execute("make skeleton key");
-			}
-		}
-		if(item_amount($item[skeleton key]) == 0)
-		{
-			auto_log_warning("Need a skeleton key or the ingredients (skeleton bone, loose teeth) for it.");
-		}
-	}
-
-	if(progress < 4)
-	{
-		adv = adv + 6;
-		if(get_property("auto_wandOfNagamar").to_boolean() && (item_amount($item[Wand Of Nagamar]) == 0) && (cloversAvailable() == 0))
-		{
-			auto_log_warning("Need a wand of nagamar (can be clovered).", "red");
-			count = count + 1;
-		}
-	}
-
-	if(adv > 0)
-	{
-		auto_log_info("Estimated adventure need (tower) is: " + adv + ".", "orange");
-		if(!in_hardcore())
-		{
-			auto_log_info("You need " + count + " pulls.", "orange");
-		}
-	}
-	if(pulls_remaining() > 0)
-	{
-		auto_log_info("You have " + pulls_remaining() + " pulls.", "orange");
-	}
-	return count;
 }
 
 boolean tophatMaker()
@@ -721,7 +581,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) && (auto_my_path() != "Heavy Rains"))
+		if((my_primestat() == $stat[Muscle]) && !in_heavyrains())
 		{
 			if((closet_amount($item[Fake Washboard]) == 0) && glover_usable($item[Fake Washboard]))
 			{
@@ -771,7 +631,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 		}
 
-		if((auto_my_path() != "Heavy Rains") && (auto_my_path() != "License to Adventure") && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(!in_heavyrains() && (auto_my_path() != "License to Adventure") && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
 		{
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
 			{
@@ -1161,7 +1021,7 @@ void initializeDay(int day)
 
 			tootGetMeat();
 
-			hr_initializeDay(day);
+			heavy_rains_initializeDay(day);
 			// It's nice to have a moxie weapon for Flock of Bats form
 			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
 			{
@@ -1250,7 +1110,7 @@ void initializeDay(int day)
 				use(1, $item[gym membership card]);
 			}
 
-			hr_initializeDay(day);
+			heavy_rains_initializeDay(day);
 
 			if(!in_hardcore() && (item_amount($item[Handful of Smithereens]) <= 5))
 			{
@@ -2342,12 +2202,18 @@ boolean adventureFailureHandler()
 		{
 			tooManyAdventures = false;		//if we do not have iotm powerlevel zones then we are forced to use haunted gallery or bedroom
 		}
+		
+		if(my_adventures() < get_property("_auto_override_tooManyAdv").to_int())
+		{
+			tooManyAdventures = false;		//currently in override for too many adv
+		}
 
 		if(tooManyAdventures)
 		{
 			if(get_property("auto_newbieOverride").to_boolean())
 			{
 				set_property("auto_newbieOverride", false);
+				set_property("_auto_override_tooManyAdv", my_adventures()+5);		//override 5 adv at a time
 				auto_log_warning("We have spent " + place.turns_spent + " turns at '" + place + "' and that is bad... override accepted.", "red");
 			}
 			else
@@ -2526,7 +2392,7 @@ void print_header()
 	{
 		auto_log_info("Snow suit usage: " + get_property("_snowSuitCount") + " carrots: " + get_property("_carrotNoseDrops"), "blue");
 	}
-	if(auto_my_path() == "Heavy Rains")
+	if (in_heavyrains())
 	{
 		auto_log_info("Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}
@@ -2781,7 +2647,6 @@ boolean doTasks()
 		}
 	}
 
-
 	if(fortuneCookieEvent())			return true;
 	if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
@@ -2817,6 +2682,7 @@ boolean doTasks()
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();
+	if(LA_wildfire())					return true;
 	
 	if (process_tasks()) return true;
 
@@ -2909,6 +2775,11 @@ void auto_begin()
 	backupSetting("logPreferenceChange", "true");
 	backupSetting("logPreferenceChangeFilter", "maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
+
+	string userForbidden = get_property("forbiddenStores");
+	if (!userForbidden.contains_text("3408540")) {
+		backupSetting("forbiddenStores", userForbidden + ",3408540"); // forbid Dance Police
+	}
 	
 	backupSetting("choiceAdventure1107", 1);
 
