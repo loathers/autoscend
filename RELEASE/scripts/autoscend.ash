@@ -1375,7 +1375,7 @@ boolean LX_attemptPowerLevel()
 
 	if(LX_freeCombats(true)) return true;
 	
-	if(chateaumantegna_available() && haveFreeRestAvailable() && auto_my_path() != "The Source")
+	if(chateaumantegna_available() && haveFreeRestAvailable() && !in_theSource())
 	{
 		doFreeRest();
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
@@ -2159,7 +2159,7 @@ boolean adventureFailureHandler()
 			tooManyAdventures = false;
 		}
 
-		if(tooManyAdventures && (my_path() == "The Source"))
+		if(tooManyAdventures && in_theSource())
 		{
 			if($locations[The Haunted Ballroom, The Haunted Bathroom, The Haunted Bedroom, The Haunted Gallery] contains place)
 			{

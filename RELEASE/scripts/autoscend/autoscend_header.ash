@@ -766,6 +766,7 @@ boolean qt_FamiliarSwap (familiar fam);
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash
+boolean in_theSource();
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();
 boolean L8_theSourceNinjaOracle();

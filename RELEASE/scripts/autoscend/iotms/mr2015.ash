@@ -65,7 +65,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Glamour, Vigor];					break;
 		}
 	}
-	else if(my_path() == "The Source")
+	else if(in_theSource())
 	{
 		switch(my_daycount())
 		{
@@ -1069,7 +1069,7 @@ boolean deck_useScheme(string action)
 				continue;
 			}
 		}
-		if((my_path() == "The Source") && (card == (my_primestat() + " stat")))
+		if((in_theSource()) && (card == (my_primestat() + " stat")))
 		{
 			continue;
 		}

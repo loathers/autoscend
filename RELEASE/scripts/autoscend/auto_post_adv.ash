@@ -100,7 +100,7 @@ boolean auto_post_adventure()
 	}
 
 	//We need to do this early, and even if postAdventure handling is done.
-	if(my_path() == "The Source")
+	if(in_theSource())
 	{
 		if(get_property("auto_diag_round").to_int() == 0)
 		{
@@ -402,7 +402,7 @@ boolean auto_post_adventure()
 		return true;
 	}
 
-	if(auto_my_path() == "The Source")
+	if(in_theSource())
 	{
 		if((get_property("sourceInterval").to_int() > 0) && (get_property("sourceInterval").to_int() <= 600) && (get_property("sourceAgentsDefeated").to_int() >= 9))
 		{
