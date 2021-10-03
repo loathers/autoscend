@@ -196,7 +196,7 @@ string defaultMaximizeStatement()
 	}
 
 	//weapon handling
-	if(in_boris())
+	if(is_boris())
 	{
 		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
 		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris

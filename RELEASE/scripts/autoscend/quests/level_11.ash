@@ -347,7 +347,7 @@ boolean LX_unlockHauntedLibrary()
 	item EdStaffOfFats = $item[7964];	//ed path version of staff of fats. +5 pool
 	item EdStaffOfEd = $item[7961];		//ed path version of staff of ed. +5 pool
 	
-	if(in_boris())
+	if(is_boris())
 	{
 		auto_log_info("Boris cannot equip a pool cue.", "blue");
 	}
@@ -495,7 +495,7 @@ boolean LX_getLadySpookyravensFinestGown() {
 		// of the macguffin quest if we got unlucky
 		boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
 		boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
-		if (in_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
+		if (is_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
 			needSpectacles = false;
 		}
 
@@ -1540,7 +1540,7 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean canUseMachete = !in_boris() && auto_my_path() != "Way of the Surprising Fist" && !in_pokefam();
+	boolean canUseMachete = !is_boris() && auto_my_path() != "Way of the Surprising Fist" && !in_pokefam();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && in_hardcore();
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
@@ -1675,7 +1675,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || in_boris() || (auto_my_path() == "Way of the Surprising Fist") || in_bhy() || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || (auto_my_path() == "Way of the Surprising Fist") || in_bhy() || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.

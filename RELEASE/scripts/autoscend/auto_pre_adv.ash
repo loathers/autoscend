@@ -107,7 +107,7 @@ boolean auto_pre_adventure()
 		uneffect($effect[Scarysauce]);
 	}
 
-	if(in_boris())
+	if(is_boris())
 	{
 		if((have_effect($effect[Song of Solitude]) == 0) && (have_effect($effect[Song of Battle]) == 0))
 		{

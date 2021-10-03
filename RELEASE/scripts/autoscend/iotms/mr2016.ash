@@ -38,7 +38,7 @@ boolean snojoFightAvailable()
 		standard[2] = "Muscle";
 		standard[3] = "Moxie";
 
-		if(in_boris() && (possessEquipment($item[Boris\'s Helm]) || possessEquipment($item[Boris\'s Helm (Askew)])))
+		if(is_boris() && (possessEquipment($item[Boris\'s Helm]) || possessEquipment($item[Boris\'s Helm (Askew)])))
 		{
 			standard[0] = "Muscle";
 			standard[1] = "Mysticality";

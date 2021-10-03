@@ -2163,7 +2163,7 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 
 boolean basicAdjustML()
 {
-	if(in_boris()) return borisAdjustML();
+	if(is_boris()) return borisAdjustML();
 	if (in_plumber())
 	{
 		// We don't get many stats from combat - no point running ML.
