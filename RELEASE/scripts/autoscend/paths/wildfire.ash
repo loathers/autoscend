@@ -451,6 +451,19 @@ boolean LX_wildfire_water()
 		LX_wildfire_hose($location[The Hidden Bowling Alley]);		//part of level 11 quest. potentially might want to go after NC instead
 	}
 	
+	if(in_hardcore() && !haveWarOutfit() && internalQuestStatus("questL12War") == 0)	//we need war outfit
+	{
+		abort("Due to tracking issues you need to manually acquire the necessary war outfit and run me again");
+		if(auto_warSide() == "fratboy")
+		{
+			LX_wildfire_hose($location[Frat House In Disguise]);
+		}
+		else
+		{
+			LX_wildfire_hose($location[Hippy Camp In Disguise]);
+		}
+	}
+	
 	//mass watering. waters all areas of a certain type (outdoor, indoor, underground) reducing fire from 5 to 2
 	if(get_property("wildfirePumpGreased").to_boolean())		//only pump and mass water if you greased the pump
 	{
