@@ -499,6 +499,7 @@ boolean LM_jarlsberg();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_sneaky_pete.ash
+boolean is_pete();
 void pete_initializeSettings();
 void pete_initializeDay(int day);
 void pete_buySkills();

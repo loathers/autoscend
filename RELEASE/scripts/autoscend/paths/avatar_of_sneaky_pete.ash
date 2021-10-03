@@ -1,6 +1,11 @@
+boolean is_pete()
+{
+	return (my_class() == $class[Avatar of Sneaky Pete] || my_path() == "Avatar of Sneaky Pete");
+}
+
 void pete_initializeSettings()
 {
-	if(my_path() == "Avatar of Sneaky Pete")
+	if(is_pete())
 	{
 		set_property("auto_peteSkills", -1);
 		set_property("auto_wandOfNagamar", false);
@@ -10,7 +15,7 @@ void pete_initializeSettings()
 
 void pete_initializeDay(int day)
 {
-	if(my_path() != "Avatar of Sneaky Pete")
+	if(!is_pete())
 	{
 		return;
 	}
@@ -66,7 +71,7 @@ void pete_initializeDay(int day)
 
 void pete_buySkills()
 {
-	if(my_class() != $class[Avatar of Sneaky Pete])
+	if(!is_pete())
 	{
 		return;
 	}
@@ -299,7 +304,7 @@ int pete_peelOutRemaining()
 
 boolean LM_pete()
 {
-	if(my_path() != "Avatar of Sneaky Pete")
+	if(!is_pete())
 	{
 		return false;
 	}
