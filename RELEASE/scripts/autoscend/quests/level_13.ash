@@ -575,7 +575,7 @@ boolean L13_towerNSContests()
 			{
 				if(internalQuestStatus("questL13Final") == 2)
 				{
-					if(auto_my_path() == "The Source")
+					if(in_theSource())
 					{
 						//As of r17048, encountering a Source Agent on the Challenge line results in nsContestants being decremented twice.
 						//Since we were using Mafia\'s tracking here, we have to compensate for when it fails...
@@ -1569,7 +1569,7 @@ boolean L13_towerNSFinal()
 		return L13_bhy_towerFinal();
 	}
 	
-	if(auto_my_path() == "The Source")
+	if(in_theSource())
 	{
 		acquireMP(200, 0);
 	}
