@@ -105,7 +105,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Glamour, Vigor];					break;
 		}
 	}
-	else if(my_path() == "Avatar of Sneaky Pete")
+	else if(is_pete())
 	{
 		switch(my_daycount())
 		{
