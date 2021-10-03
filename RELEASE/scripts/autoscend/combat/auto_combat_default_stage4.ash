@@ -314,6 +314,20 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			return useSkill($skill[Summon Love Stinkbug]);
 		}
 	}
+
+	// use red rocket from Clan VIP Lounge to get 5x stats from next food item consumed. Does not stagger on use
+	if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) &&
+		// consumeStuff fills liver first up to 10 or 15 before eating, pending if billiards room if completed. Gives confidence that we will eat within 100 turns.
+		my_inebriety() >= 10 && my_adventures() < 100)
+	{
+		//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
+		item simulationOutput = auto_autoConsumeOneSimulation("eat");
+		if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
+		{
+			return useItem($item[red rocket]);
+		}
+		
+	}
 	
 	return "";
 }
