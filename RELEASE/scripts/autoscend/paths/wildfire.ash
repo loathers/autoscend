@@ -478,6 +478,11 @@ boolean LX_wildfire_spookyravenManorFirstFloor()
 		if(LX_unlockHauntedBilliardsRoom(false)) return true;
 	}
 	//hand chalk does not burn up so fire level is not an issue there.
+	boolean doing_haunted_library = internalQuestStatus("questM20Necklace") == 3;
+	if(!auto_haveFireExtinguisher() && doing_haunted_library && get_property("auto_beatenUpLocations").contains_text("The Haunted Library"))
+	{
+		LX_wildfire_hose($location[The Haunted Library], 3);		//to make combat easier
+	}
 	if(LX_spookyravenManorFirstFloor()) return true;
 	
 	return false;
