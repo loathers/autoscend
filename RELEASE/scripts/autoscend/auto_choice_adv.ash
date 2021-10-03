@@ -344,7 +344,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
 			boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
-			if (in_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
+			if (is_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
 				needSpectacles = false;
 			}
 			if (needSpectacles) {
@@ -479,7 +479,7 @@ boolean auto_run_choice(int choice, string page)
 			{
 				run_choice(5); // get extra booze from map to a hidden booze cache
 			}
-			else if(can_drink() && !in_boris())		//prefer food in boris
+			else if(can_drink() && !is_boris())		//prefer food in boris
 			{
 				run_choice(3); // get booze
 			}

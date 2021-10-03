@@ -104,7 +104,7 @@ boolean januaryToteAcquire(item it)
 
 	if(choice == 2)
 	{
-		if((auto_my_path() == "Way of the Surprising Fist") || in_boris())
+		if((auto_my_path() == "Way of the Surprising Fist") || is_boris())
 		{
 			return false;
 		}

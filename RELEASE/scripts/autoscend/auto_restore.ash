@@ -1857,7 +1857,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		return true;
 	}
 
-	if(in_boris())
+	if(is_boris())
 	{
 		return borisAcquireHP(goal);
 	}
