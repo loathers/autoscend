@@ -1281,27 +1281,6 @@ boolean lastAdventureSpecialNC()
 	return false;
 }
 
-boolean buyableMaintain(item toMaintain, int howMany)
-{
-	return buyableMaintain(toMaintain, howMany, 0, true);
-}
-
-boolean buyableMaintain(item toMaintain, int howMany, int meatMin)
-{
-	return buyableMaintain(toMaintain, howMany, meatMin, true);
-}
-
-boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition)
-{
-	if((!condition) || (my_meat() < meatMin) || (my_path() == "Way of the Surprising Fist"))
-	{
-		return false;
-	}
-
-	return buyUpTo(howMany, toMaintain);
-}
-
-
 effect whatStatSmile()
 {
 	switch(my_class())
@@ -1478,131 +1457,6 @@ boolean cloverUsageFinish()
 		return false;
 	}
 	return true;
-}
-
-boolean acquireGumItem(item it)
-{
-	if(!isGeneralStoreAvailable())
-	{
-		return false;
-	}
-
-	if(!($items[Disco Ball, Disco Mask, Helmet Turtle, Hollandaise Helmet, Mariachi Hat, Old Sweatpants, Pasta Spoon, Ravioli Hat, Saucepan, Seal-Clubbing Club, Seal-Skull Helmet, Stolen Accordion, Turtle Totem, Worthless Gewgaw, Worthless Knick-Knack, Worthless Trinket] contains it))
-	{
-		return false;
-	}
-
-	int have = item_amount(it);
-	auto_log_info("Gum acquistion of: " + it, "green");
-	while((have == item_amount(it)) && (my_meat() >= npc_price($item[Chewing Gum on a String])))
-	{
-		buyUpTo(1, $item[Chewing Gum on a String]);
-		use(1, $item[Chewing Gum on a String]);
-	}
-
-	return (have + 1) == item_amount(it);
-}
-
-boolean acquireTotem()
-{
-	//this function checks if you have a valid totem for casting turtle tamer buffs with. Returning true if you do. If you don't, it will attempt to acquire one in a reasonable manner.
-
-	//check if there is a valid totem in inventory or equipped, return true if there is.
-	//check the closet from best to worst. If found in closet, uncloset 1 and return true
-	
-	foreach totem in $items[primitive alien totem, flail of the seven aspects, chelonian morningstar, mace of the tortoise, ouija board\, ouija board, turtle totem]
-	{
-		if (possessEquipment(totem))
-		{
-			return true;
-		}
-		if (0 < closet_amount(totem))
-		{
-			take_closet(1, totem);
-			return true;
-		}
-	}
-
-	//try fishing in the sewer for a turtle totem
-	
-	if(acquireGumItem($item[turtle totem]))
-	{
-		return true;
-	}
-	
-	//still could not get a totem. Give up
-	return false;
-}
-
-boolean acquireHermitItem(item it)
-{
-	if(!isHermitAvailable())
-	{
-		return false;
-	}
-	if((item_amount($item[Hermit Permit]) == 0) && (my_meat() >= npc_price($item[Hermit Permit])))
-	{
-		buyUpTo(1, $item[Hermit Permit]);
-	}
-	if(item_amount($item[Hermit Permit]) == 0)
-	{
-		return false;
-	}
-	if(it == $item[Disassembled Clover])
-	{
-		it = $item[Ten-leaf Clover];
-	}
-	if(!($items[Banjo Strings, Catsup, Chisel, Figurine of an Ancient Seal, Hot Buttered Roll, Jaba&ntilde;ero Pepper, Ketchup, Petrified Noodles, Seal Tooth, Ten-Leaf Clover, Volleyball, Wooden Figurine] contains it))
-	{
-		return false;
-	}
-	if((it == $item[Figurine of an Ancient Seal]) && (my_class() != $class[Seal Clubber]))
-	{
-		return false;
-	}
-	if(!isGeneralStoreAvailable())
-	{
-		return false;
-	}
-	int have = item_amount(it);
-	auto_log_info("Hermit acquistion of: " + it, "green");
-	while((have == item_amount(it)) && ((my_meat() >= npc_price($item[Chewing Gum on a String])) || ((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)))
-	{
-		if((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)
-		{
-			if(it == $item[Ten-Leaf Clover])
-			{
-				have = item_amount($item[Disassembled Clover]);
-			}
-			if(!hermit(1, it))
-			{
-				return false;
-			}
-			if(it == $item[Ten-Leaf Clover])
-			{
-				if(have == item_amount($item[Disassembled Clover]))
-				{
-					return false;
-				}
-				else if((have + 1) == item_amount($item[Disassembled Clover]))
-				{
-					return true;
-				}
-				else
-				{
-					auto_log_warning("Invalid clover count from hermit behavior, reporting failure.", "red");
-					return false;
-				}
-			}
-		}
-		else
-		{
-			buyUpTo(1, $item[Chewing Gum on a String]);
-			use(1, $item[Chewing Gum on a String]);
-		}
-	}
-
-	return (have + 1) == item_amount(it);
 }
 
 boolean isHermitAvailable()
@@ -2658,231 +2512,6 @@ boolean have_skills(boolean[skill] array)
 	return true;
 }
 
-boolean haveAny(boolean[item] array)
-{
-	foreach thing in array
-	{
-		if(item_amount(thing) > 0)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-boolean acquireOrPull(item it)
-{
-	//this function is for when you want to make sure you have 1 of an item
-	//if you have one it returns true. if you don't it will craft one. if it can't it will pull it.
-	
-	if(possessEquipment(it)) return true;
-	if(item_amount(it) > 0)  return true;
-	if(retrieve_item(1, it)) return true;
-	if(canPull(it))
-	{
-		if(pullXWhenHaveY(it, 1, 0)) return true;
-	}
-	
-	//special handling via pulling 1 ingredient to craft the item desired
-	if($items[asteroid belt, meteorb, shooting morning star, meteorite guard, meteortarboard, meteorthopedic shoes] contains it)
-	{
-		if(canPull($item[metal meteoroid]))
-		{
-			if(pullXWhenHaveY($item[metal meteoroid], 1, 0))
-			{
-				if(retrieve_item(1, it)) return true;
-			}
-		}
-	}
-	
-	return false;
-}
-
-boolean canPull(item it)
-{
-	if(in_hardcore())
-	{
-		return false;
-	}
-	if(it == $item[none])
-	{
-		return false;
-	}
-	if(!is_unrestricted(it))
-	{
-		return false;
-	}
-	if(pulls_remaining() == 0)
-	{
-		return false;
-	}
-	
-	if(storage_amount(it) > 0)
-	{
-		return true;
-	}
-
-	int meat = my_storage_meat();
-	if(can_interact())
-	{
-		meat = max(meat, my_meat() - 5000);
-	}
-	int curPrice = auto_mall_price(it);
-	if (curPrice > get_property("autoBuyPriceLimit").to_int())
-	{
-		return false;
-	}
-	else if (curPrice < meat)
-	{
-		return true;
-	}
-	
-	return false;
-}
-
-void pullAll(item it)
-{
-	if(storage_amount(it) > 0)
-	{
-		take_storage(storage_amount(it), it);
-	}
-}
-
-void pullAndUse(item it, int uses)
-{
-	pullAll(it);
-	while((item_amount(it) > 0) && (uses > 0))
-	{
-		use(1, it);
-		uses = uses - 1;
-	}
-}
-
-int auto_mall_price(item it)
-{
-	if(isSpeakeasyDrink(it))
-	{
-		return -1;	//speakeasy drinks are marked as tradeable but cannot be acquired as a physical item to trade.
-	}
-	if(available_choice_options() contains 0 || available_choice_options() contains 1)	//we are in a choice adventure.
-	{
-		//mafia returns -1 if we check mall_price() while in a choice adv. better to use historical price even if it is outdated
-		return historical_price(it);
-	}
-	if(is_tradeable(it))
-	{
-		int retval = mall_price(it);
-		if(retval == -1)
-		{
-			abort("Failed getting mall price for " + it + ", aborting to prevent problems");
-		}
-		return retval;
-	}
-	return -1;
-}
-
-boolean pullXWhenHaveY(item it, int howMany, int whenHave)
-{
-	if(auto_my_path() == "Community Service")
-	{
-		return false;
-	}
-	if(in_hardcore())
-	{
-		return false;
-	}
-	if(it == $item[none])
-	{
-		return false;
-	}
-	if(!is_unrestricted(it) && !inAftercore())
-	{
-		return false;
-	}
-	if(pulls_remaining() == 0)
-	{
-		return false;
-	}
-	if (!auto_is_valid(it))
-	{
-		return false;
-	}
-	if((item_amount(it) + equipped_amount(it)) == whenHave)
-	{
-		int lastStorage = storage_amount(it);
-		while(storage_amount(it) < howMany)
-		{
-			int oldPrice = historical_price(it) * 1.2;
-			int curPrice = auto_mall_price(it);
-			int meat = my_storage_meat();
-			boolean getFromStorage = true;
-			if(can_interact() && (meat < curPrice))
-			{
-				meat = my_meat() - 5000;
-				getFromStorage = false;
-			}
-			if (curPrice >= 30000)
-			{
-				auto_log_warning(it + " is too expensive at " + curPrice + " meat, we're gonna skip buying one in the mall.", "red");
-				break;
-			}
-			if((curPrice <= oldPrice) && (curPrice < 30000) && (meat >= curPrice))
-			{
-				if(getFromStorage)
-				{
-					buy_using_storage(howMany - storage_amount(it), it, curPrice);
-				}
-				else
-				{
-					howMany -= buy(howMany - storage_amount(it), it, curPrice);
-				}
-			}
-			else
-			{
-				if(curPrice > oldPrice)
-				{
-					auto_log_warning("Price of " + it + " may have been mall manipulated. Expected to pay at most: " + oldPrice, "red");
-				}
-				if(my_storage_meat() < curPrice)
-				{
-					auto_log_warning("Do not have enough meat in Hagnk's to buy " + it + ". Need " + curPrice + " have " + my_storage_meat() + ".", "blue");
-					if(curPrice > 10000000)
-					{
-						auto_log_warning("You must be a poor meatbag.", "green");
-					}
-				}
-			}
-			if(lastStorage == storage_amount(it))
-			{
-				break;
-			}
-			lastStorage = storage_amount(it);
-		}
-
-		if(storage_amount(it) < howMany)
-		{
-			auto_log_warning("Can not pull what we don't have. Sorry");
-			return false;
-		}
-
-		auto_log_info("Trying to pull " + howMany + " of " + it, "blue");
-		boolean retval = take_storage(howMany, it);
-		if(item_amount(it) != (howMany + whenHave))
-		{
-			auto_log_warning("Failed pulling " + howMany + " of " + it, "red");
-		}
-		else
-		{
-			for(int i = 0; i < howMany; ++i)
-			{
-				handleTracker(it, "auto_pulls");
-			}
-		}
-		return retval;
-	}
-	return false;
-}
-
 //From Bale\'s woods.ash relay script.
 void woods_questStart()
 {
@@ -2904,67 +2533,6 @@ void woods_questStart()
 	{
 		visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
 	}
-}
-
-
-boolean pulverizeThing(item it)
-{
-	if(!have_skill($skill[Pulverize]))
-	{
-		return false;
-	}
-	if(item_amount($item[Tenderizing Hammer]) == 0)
-	{
-		if(my_meat() < npc_price($item[Tenderizing Hammer]))
-		{
-			return false;
-		}
-	}
-
-	if(item_amount(it) == 0)
-	{
-		if(closet_amount(it) == 0)
-		{
-			return false;
-		}
-		take_closet(1, it);
-	}
-	if(item_amount(it) == 0)
-	{
-		return false;
-	}
-	cli_execute("pulverize 1 " + it);
-	return true;
-}
-
-boolean buy_item(item it, int quantity, int maxprice)
-{
-	take_closet(closet_amount(it), it);
-	if(inAftercore())
-	{
-		take_storage(storage_amount(it), it);
-	}
-	while((item_amount(it) < quantity) && (auto_mall_price(it) < maxprice))
-	{
-		if(auto_mall_price(it) > my_meat())
-		{
-			abort("Don't have enough meat to restock, big sad");
-		}
-		if(buy(1, it, maxprice) == 0)
-		{
-			auto_log_info("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
-			return false;
-		}
-	}
-	if(item_amount(it) < quantity)
-	{
-		if(auto_mall_price(it) >= maxprice)
-		{
-			auto_log_info("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
-		}
-		return false;
-	}
-	return true;
 }
 
 int howLongBeforeHoloWristDrop()
@@ -3280,43 +2848,6 @@ int [item] auto_get_campground()
 	}
 
 	return campItems;
-}
-
-boolean buyUpTo(int num, item it)
-{
-	return buyUpTo(num, it, 20000);
-}
-
-boolean buyUpTo(int num, item it, int maxprice)
-{
-	if(item_amount(it) >= num)
-	{
-		return true;	//we already have the target amount
-	}
-	if(($items[Ben-Gal&trade; Balm, Hair Spray] contains it) && !isGeneralStoreAvailable())
-	{
-		return false;
-	}
-	if(($items[Blood of the Wereseal, Cheap Wind-Up Clock, Turtle Pheromones] contains it) && !isMusGuildStoreAvailable())
-	{
-		return false;
-	}
-
-	int missing = num - item_amount(it);
-	if(can_interact() && shop_amount(it) > 0 && mall_price(it) < maxprice)	//prefer to buy from yourself
-	{
-		take_shop(min(missing, shop_amount(it)), it);
-		missing = num - item_amount(it);
-	}
-	if(missing > 0)
-	{
-		buy(missing, it, maxprice);
-		if(item_amount(it) < num)
-		{
-			auto_log_warning("Could not buyUpTo(" + num + ") of " + it + ". Maxprice: " + maxprice, "red");
-		}
-	}
-	return (item_amount(it) >= num);
 }
 
 boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative)
@@ -4713,8 +4244,6 @@ boolean auto_badassBelt()
 	}
 }
 
-
-
 void auto_interruptCheck()
 {
 	if(get_property("auto_interrupt").to_boolean())
@@ -5532,25 +5061,6 @@ int poolSkillPracticeGains()
 	return count;
 }
 
-float npcStoreDiscountMulti()
-{
-	//calculates a multiplier to be applied to store prices for our current discount for NPC stores.
-	//does not bother with sleaze jelly or Post-holiday sale coupon
-	
-	float retval = 1.0;
-	
-	if(auto_have_skill($skill[Five Finger Discount]))
-	{
-		retval -= 0.05;
-	}
-	if(possessEquipment($item[Travoltan trousers]) && auto_is_valid($item[Travoltan trousers]))
-	{
-		retval -= 0.05;
-	}
-	
-	return retval;
-}
-
 int meatReserve()
 {
 	//the amount of meat we want to reserve for quest usage when performing a restore
@@ -5558,6 +5068,10 @@ int meatReserve()
 	if(in_kolhs())
 	{
 		reserve_extra += 100;
+	}
+	if(in_wildfire() && !get_property("wildfirePumpGreased").to_boolean() && item_amount($item[pump grease]) == 0)
+	{
+		reserve_extra += npc_price($item[pump grease]);
 	}
 	
 	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely
