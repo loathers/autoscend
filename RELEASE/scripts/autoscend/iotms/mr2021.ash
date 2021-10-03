@@ -396,3 +396,63 @@ boolean auto_getBattery(item target)
 	}
 	return false;
 }
+
+boolean auto_haveFireExtinguisher()
+{
+	return possessEquipment($item[industrial fire extinguisher]) && auto_is_valid($item[industrial fire extinguisher]);
+}
+
+int auto_fireExtinguisherCharges()
+{
+	if (!auto_haveFireExtinguisher()) return 0;
+	return get_property("_fireExtinguisherCharge").to_int();
+}
+
+// returns zone specific skill if in usable zone and hasn't been used yet there this acension. Otherwise returns empty string
+string auto_FireExtinguisherCombatString(location place)
+{
+	if(auto_fireExtinguisherCharges() < 20)
+	{
+		return "";
+	}
+
+	// once per acension uses
+	if($locations[Guano Junction, The Batrat and Ratbat Burrow, The Beanbat Chamber] contains place && !get_property("fireExtinguisherBatHoleUsed").to_boolean())
+	{
+		//sonar-in-a-biscuits are used before combat, if available. Knock a wall down if any are still standing
+		if(internalQuestStatus("questL04Bat") < 3)
+		{
+			return "skill " + $skill[Fire Extinguisher: Zone Specific];
+		}
+		
+	}
+
+	if(place == $location[Cobb\'s Knob Harem] && !get_property("fireExtinguisherHaremUsed").to_boolean() && !possessOutfit("Knob Goblin Harem Girl Disguise"))
+	{
+		return "skill " + $skill[Fire Extinguisher: Zone Specific];
+	}
+
+	if(place == $location[The Defiled Niche] && !get_property("fireExtinguisherCyrptUsed").to_boolean())
+	{
+		return "skill " + $skill[Fire Extinguisher: Zone Specific];
+	}
+
+	if(place == $location[The Smut Orc Logging Camp] && !get_property("fireExtinguisherChasmUsed").to_boolean() && get_property("chasmBridgeProgress").to_int() < 30)
+	{
+		return "skill " + $skill[Fire Extinguisher: Zone Specific];
+	}
+
+	if(place == $location[The Arid\, Extra-Dry Desert] && $location[The Arid\, Extra-Dry Desert].turns_spent > 0 && !get_property("fireExtinguisherDesertUsed").to_boolean())
+	{
+		return "skill " + $skill[Fire Extinguisher: Zone Specific];
+	}
+
+
+	return "";
+	
+}
+
+boolean auto_canExtinguisherBeRefilled()
+{
+	return auto_haveFireExtinguisher() && in_wildfire() && !get_property("_fireExtinguisherRefilled").to_boolean();
+}

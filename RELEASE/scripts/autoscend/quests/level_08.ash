@@ -606,6 +606,12 @@ boolean L8_trapperGroar()
 		return true;
 	}
 	
+	if(wildfire_groar_check())
+	{
+		return false;
+	}
+	
+	//we need 5 cold res to be allowed to adventure in [Mist-shrouded Peak]
 	int [element] resGoal;
 	resGoal[$element[cold]] = 5;
 	// try getting resistance without equipment before bothering to change gear

@@ -90,6 +90,17 @@ boolean auto_pre_adventure()
 		buffMaintain($effect[Baited Hook], 0, 1, 1);
 	}
 
+	// be ready to use red rocket if we don't have one
+	if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
+		get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
+		item_amount($item[red rocket]) == 0 &&			// Don't buy if we already have one
+		auto_is_valid($item[red rocket]) &&				// or if it's not valid
+		can_eat() &&									// be in a path that can eat
+		my_meat() > npc_price($item[red rocket]) + meatReserve())
+	{
+		retrieve_item(1, $item[red rocket]);
+	}
+
 	if((get_property("_bittycar") == "") && (item_amount($item[Bittycar Meatcar]) > 0))
 	{
 		use(1, $item[Bittycar Meatcar]);
@@ -225,6 +236,16 @@ boolean auto_pre_adventure()
 			autoEquip($item[latte lovers member\'s mug]);
 		}
 	}
+
+	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
+	{
+		autoEquip($item[industrial fire extinguisher]);
+	}
+	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
+	{
+		addBonusToMaximize($item[industrial fire extinguisher], 200); // extinguisher prevents per-round hot damage in wildfire path 
+	}
+
 
 	if(in_plumber())
 	{

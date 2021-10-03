@@ -302,6 +302,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	}
 
 	boolean retval = false;
+	boolean wasReadyToEat = false;
 	while(howMany > 0)
 	{
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, toEat.fullness);
@@ -309,6 +310,10 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		{
 			buyUpTo(1, $item[Mayoflex], 1000);
 			use(1, $item[Mayoflex]);
+		}
+		if(have_effect($effect[Ready to Eat]) > 0)
+		{
+			wasReadyToEat = true;
 		}
 		if(silent)
 		{
@@ -320,7 +325,15 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		}
 		if(retval)
 		{
-			handleTracker(toEat, "auto_eaten");
+			if(wasReadyToEat && have_effect($effect[Ready to Eat]) <= 0)
+			{
+				handleTracker(toEat,"Red Rocketed!", "auto_eaten");
+				wasReadyToEat = false;
+			}
+			else
+			{
+				handleTracker(toEat, "auto_eaten");
+			}		
 		}
 		howMany = howMany - 1;
 	}
@@ -629,14 +642,14 @@ void consumeStuff()
 					shouldDrink = true;
 				}
 			}
-			if (shouldDrink && auto_autoConsumeOne("drink", false))
+			if (shouldDrink && auto_autoConsumeOne("drink"))
 			{
 				return;
 			}
 		}
 		if (fullness_left() > 0)
 		{
-			if (auto_autoConsumeOne("eat", false))
+			if (auto_autoConsumeOne("eat"))
 			{
 				return;
 			}
@@ -1286,7 +1299,7 @@ void auto_drinkNightcap()
 	}
 	
 	//fill up remaining liver first. such as stooper space.
-	while(inebriety_left() > 0 && auto_autoConsumeOne("drink", false));
+	while(inebriety_left() > 0 && auto_autoConsumeOne("drink"));
 	
 	//drink your nightcap to become overdrunk
 	ConsumeAction target = auto_bestNightcap();
@@ -1302,7 +1315,7 @@ void auto_drinkNightcap()
 	}
 }
 
-boolean auto_autoConsumeOne(string type, boolean simulate)
+ConsumeAction auto_findBestConsumeAction(string type)
 {
 	int organLeft()
 	{
@@ -1322,7 +1335,7 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 		abort("Unrecognized organ type: should be 'eat' or 'drink', was " + type);
 		return 0;
 	}
-	if (organLeft() == 0) return false;
+	if (organLeft() == 0) return MakeConsumeAction($item[none]);
 
 	ConsumeAction[int] actions;
 	loadConsumables(type, actions);
@@ -1353,28 +1366,48 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 		}
 	}
 
-	if (best == -1)
+	if(best == -1)
+	{
+		return MakeConsumeAction($item[none]);
+	}
+	else
+	{
+		return actions[best];
+	}
+}
+
+boolean auto_autoConsumeOne(string type)
+{
+	
+	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+
+	if (bestAction.it == $item[none])
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
 		return false;
 	}
 
-	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(actions[best]), "blue");
+	int best_adv_per_fill = bestAction.adventures / bestAction.size;
+	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(bestAction), "blue");
 	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
 	{
 		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFill " + get_property("auto_consumeMinAdvPerFill"));
 		return false;
 	}
 
-	if(!simulate)
+	if (!autoPrepConsume(bestAction)) 
 	{
-		if (!autoPrepConsume(actions[best])) return false;
-		return autoConsume(actions[best]);
+		return false;
 	}
-	else
-	{
-		return true;
-	}
+	return autoConsume(bestAction);
+}
+
+// Need separate function to simulate since return type is different
+// For simulation, want to know what would be consumes instead of actually consuming it
+item auto_autoConsumeOneSimulation(string type)
+{
+	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+	return bestAction.it;
 }
 
 boolean auto_knapsackAutoConsume(string type, boolean simulate)
