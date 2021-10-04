@@ -716,6 +716,7 @@ boolean LM_fallout();
 
 ########################################################################################################
 //Defined in autoscend/paths/one_crazy_random_summer.ash
+boolean in_ocrs();
 boolean ocrs_postHelper();
 boolean ocrs_postCombatResolve();
 

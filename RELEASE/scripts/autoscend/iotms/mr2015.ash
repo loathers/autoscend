@@ -575,7 +575,7 @@ boolean chateaumantegna_nightstandSet()
 boolean chateauPainting()
 {
 	int paintingLevel = 8;
-	if(auto_my_path() == "One Crazy Random Summer")
+	if(in_ocrs())
 	{
 		paintingLevel = 9;
 	}

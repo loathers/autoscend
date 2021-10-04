@@ -1434,7 +1434,7 @@ boolean L11_hiddenCity()
 			if(item_amount($item[Bowl Of Scorpions]) == 0)
 			{
 				buyUpTo(1, $item[Bowl Of Scorpions]);
-				if(auto_my_path() == "One Crazy Random Summer")
+				if(in_ocrs())
 				{
 					buyUpTo(3, $item[Bowl Of Scorpions]);
 				}

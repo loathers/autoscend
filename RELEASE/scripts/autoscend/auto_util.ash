@@ -4352,7 +4352,7 @@ boolean autoFlavour(location place)
 			return setFlavour($element[none]);
 	}
 
-	if(auto_my_path() == "One Crazy Random Summer")
+	if(in_ocrs())
 	{
 		// monsters can randomly be any element in OCRS
 		setFlavour($element[none]);
