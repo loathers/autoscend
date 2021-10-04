@@ -54,7 +54,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//TODO auto_doCombatCopy property is silly. get rid of it
-	if(!haveUsed($item[Rain-Doh black box]) && (my_path() != "Heavy Rains") && (get_property("_raindohCopiesMade").to_int() < 5))
+	if(!haveUsed($item[Rain-Doh black box]) && (!in_heavyrains()) && (get_property("_raindohCopiesMade").to_int() < 5))
 	{
 		if((enemy == $monster[Modern Zmobie]) && (get_property("auto_modernzmobiecount").to_int() < 3))
 		{

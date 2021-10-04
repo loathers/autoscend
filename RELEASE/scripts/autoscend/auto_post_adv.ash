@@ -979,7 +979,7 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if(my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		auto_log_info("Post adventure done: Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}

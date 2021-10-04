@@ -213,7 +213,7 @@ void initializeSettings() {
 	beehiveConsider();
 
 	eudora_initializeSettings();
-	heavy_rains_initializeSettings();
+	heavyrains_initializeSettings();
 	awol_initializeSettings();
 	theSource_initializeSettings();
 	ed_initializeSettings();
@@ -1022,7 +1022,7 @@ void initializeDay(int day)
 
 			tootGetMeat();
 
-			heavy_rains_initializeDay(day);
+			heavyrains_initializeDay(day);
 			// It's nice to have a moxie weapon for Flock of Bats form
 			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
 			{
@@ -1111,7 +1111,7 @@ void initializeDay(int day)
 				use(1, $item[gym membership card]);
 			}
 
-			heavy_rains_initializeDay(day);
+			heavyrains_initializeDay(day);
 
 			if(!in_hardcore() && (item_amount($item[Handful of Smithereens]) <= 5))
 			{
@@ -2618,11 +2618,11 @@ boolean doTasks()
 	if(dna_startAcquire())				return true;
 	if(LM_boris())						return true;
 	if(LM_pete())						return true;
-	if(LM_jello())						return true;
+	if(LM_gnoob())						return true;
 	if(LM_fallout())					return true;
 	if(LM_groundhog())					return true;
 	if(LM_batpath()) 					return true;
-	if(doHRSkills())					return true;
+	if(heavyrains_buySkills())			return true;
 	if(LM_canInteract()) 				return true;
 	if(LM_kolhs()) 						return true;
 	if(LM_jarlsberg())					return true;
@@ -2715,7 +2715,7 @@ void auto_begin()
 	}
 	else if(contains_text(page, "Welcome to the Kingdom, Gelatinous Noob"))
 	{
-		jello_startAscension(page);
+		gnoob_startAscension(page);
 	}
 	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you") || (get_property("lastAdventure") == "Intro: View of a Vampire"))
 	{

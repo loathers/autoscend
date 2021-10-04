@@ -168,7 +168,7 @@ boolean dna_generic()
 
 	boolean[phylum] potion;
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		switch(my_daycount())
 		{

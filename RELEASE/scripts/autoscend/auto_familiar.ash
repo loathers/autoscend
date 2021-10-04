@@ -681,7 +681,7 @@ void preAdvUpdateFamiliar(location place)
 	}
 	
 	//familiar equipment overrides
-	if(my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		if(famChoice != $familiar[Left-Hand Man])
 		{

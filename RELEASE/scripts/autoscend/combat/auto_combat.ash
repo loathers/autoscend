@@ -89,7 +89,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 		enemy = ocrs_combat_helper(text);
 		enemy = last_monster();
 	}
-	if(my_path() == "Avatar of West of Loathing")
+	if(in_awol())
 	{
 		awol_combat_helper(text);
 	}

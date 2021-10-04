@@ -730,7 +730,7 @@ boolean summonMonster(string option)
 			bootyCalls++;
 		}
 	}
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		int rain = my_rain() + (turns_left * 0.85);
 		rainCalls = rain / 50;
@@ -3107,13 +3107,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Fireproof Lips]:					useItem = $item[SPF 451 lip balm];			break;
 	case $effect[Fire Inside]:					useItem = $item[Hot Coal];						break;
 	case $effect[Fishy\, Oily]:
-		if(auto_my_path() == "Heavy Rains")
+		if(in_heavyrains())
 		{
 			useItem = $item[Gourmet Gourami Oil];
 		}																						break;
 	case $effect[Fishy Fortification]:			useItem = $item[Fish-Liver Oil];				break;
 	case $effect[Fishy Whiskers]:
-		if(auto_my_path() == "Heavy Rains")
+		if(in_heavyrains())
 		{
 			useItem = $item[Catfish Whiskers];
 		}																						break;

@@ -620,13 +620,13 @@ boolean LM_glover();
 ########################################################################################################
 //Defined in autoscend/paths/gelatinous_noob.ash
 boolean in_gnoob();
-void jello_startAscension(string page);
+void gnoob_startAscension(string page);
 int gnoobAbsorbCost(item it);
-void jello_buySkills();
-string[item] jello_lister(string goal);
-int jello_absorbsLeft();
-string[item] jello_lister();
-boolean LM_jello();
+void gnoob_buySkills();
+string[item] gnoob_lister(string goal);
+int gnoob_absorbsLeft();
+string[item] gnoob_lister();
+boolean LM_gnoob();
 
 ########################################################################################################
 //Defined in autoscend/paths/grey_goo.ash
@@ -638,13 +638,13 @@ boolean LA_grey_goo_tasks();
 ########################################################################################################
 //Defined in autoscend/paths/heavy_rains.ash
 boolean in_heavyrains();
-void heavy_rains_initializeSettings();
+void heavyrains_initializeSettings();
 boolean routineRainManHandler();
-void heavy_rains_initializeDay(int day);
-void heavy_rains_doBedtime();
-boolean doHRSkills();
+void heavyrains_initializeDay(int day);
+void heavyrains_doBedtime();
+boolean heavyrains_buySkills();
 boolean rainManSummon(monster target, boolean copy, boolean wink);
-boolean L13_towerFinalHeavyRains();
+boolean L13_heavyrains_towerFinal();
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash

@@ -826,7 +826,7 @@ boolean L11_aridDesert()
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
 	{
 		auto_log_info("Searching for the pyramid", "blue");
-		if(auto_my_path() == "Heavy Rains")
+		if(in_heavyrains())
 		{
 			autoEquip($item[Thor\'s Pliers]);
 		}
@@ -2586,7 +2586,7 @@ boolean L11_defeatEd()
 	}
 
 	int baseML = monster_level_adjustment();
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		baseML = baseML + 60;
 	}

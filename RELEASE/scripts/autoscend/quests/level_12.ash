@@ -549,7 +549,7 @@ boolean L12_getOutfit()
 	}
 	
 	//heavy rains softcore pull handling
-	if(!in_hardcore() && (auto_my_path() == "Heavy Rains"))
+	if(!in_hardcore() && (in_heavyrains()))
 	{
 		// auto_warhippyspy indicates rainman was already used to copy a war hippy spy in heavy rains. if it failed to YR pull missing items
 		if(get_property("auto_warhippyspy") == "done" && get_property("auto_hippyInstead").to_boolean())
@@ -568,7 +568,7 @@ boolean L12_getOutfit()
 	}
 
 	//softcore pull handling for all other paths
-	if(!in_hardcore() && (auto_my_path() != "Heavy Rains"))
+	if(!in_hardcore() && (!in_heavyrains()))
 	{
 		if(get_property("auto_hippyInstead").to_boolean())
 		{
@@ -1553,7 +1553,7 @@ boolean L12_themtharHills()
 	}
 
 	autoEquip($item[Half a Purse]);
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		autoEquip($item[Thor\'s Pliers]);
 	}
@@ -1614,14 +1614,14 @@ boolean L12_themtharHills()
 	}
 	asdonBuff($effect[Driving Observantly]);
 
-	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (auto_my_path() != "Heavy Rains"))
+	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (!in_heavyrains()))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
 		autoEquip($item[Li\'l Pirate Costume]);
 		handleFamiliar($familiar[Trick-or-Treating Tot]);
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
 	}

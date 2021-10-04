@@ -254,7 +254,7 @@ boolean L8_getMineOres()
 	}
 
 	//heavy rain copy handling.
-	if(auto_my_path() == "Heavy Rains" && have_skill($skill[Rain Man]))
+	if(in_heavyrains() && have_skill($skill[Rain Man]))
 	{
 		if(my_rain() < 50)
 		{

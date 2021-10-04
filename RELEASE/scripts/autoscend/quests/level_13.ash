@@ -1559,9 +1559,9 @@ boolean L13_towerNSFinal()
 		auto_log_warning("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
-		return L13_towerFinalHeavyRains();
+		return L13_heavyrains_towerFinal();
 	}
 	
 	if(in_bhy())
