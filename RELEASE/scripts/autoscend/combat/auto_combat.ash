@@ -89,10 +89,12 @@ string auto_combatHandler(int round, monster enemy, string text)
 		enemy = ocrs_combat_helper(text);
 		enemy = last_monster();
 	}
+
 	if(in_awol())
 	{
 		awol_combat_helper(text);
 	}
+	
 	if(in_pokefam())
 	{
 		if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
