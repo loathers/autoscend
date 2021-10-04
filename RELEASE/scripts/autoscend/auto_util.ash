@@ -5099,7 +5099,7 @@ int meatReserve()
 	//how much do we reserve for [your father's MacGuffin diary]?
 	if(item_amount($item[your father\'s MacGuffin diary]) == 0 &&		//you do not yet have diary
 	!in_koe() &&														//diary is given by council for free in kingdom of exploathing
-	!in_wotsf()															//costs 5 meat total in way of the surprising fist. no need to track that
+	!in_wotsf())															//costs 5 meat total in way of the surprising fist. no need to track that
 	{
 		reserve_diary += 500;		//1 vacation. no need to count script. we don't pull it or get it prematurely.
 		
