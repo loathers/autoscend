@@ -74,7 +74,7 @@ import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/way_of_the_surprising_fist.ash>
 import <autoscend/paths/wildfire.ash>
-
+import <autoscend/paths/you_robot.ash>
 
 import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>

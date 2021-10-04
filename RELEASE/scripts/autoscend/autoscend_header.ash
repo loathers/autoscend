@@ -811,6 +811,10 @@ boolean LX_wildfire_spookyravenManorFirstFloor();
 boolean LA_wildfire();
 
 ########################################################################################################
+//Defined in autoscend/paths/you_robot.ash
+boolean in_youRobot();
+
+########################################################################################################
 //Defined in autoscend/quests/level_01.ash
 void tootOriole();
 void tootGetMeat();
