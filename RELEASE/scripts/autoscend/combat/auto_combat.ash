@@ -84,15 +84,17 @@ string auto_combatHandler(int round, monster enemy, string text)
 	set_property("auto_combatHP", my_hp());
 	set_property("auto_diag_round", round);
 
-	if(my_path() == "One Crazy Random Summer")
+	if(in_ocrs())
 	{
 		enemy = ocrs_combat_helper(text);
 		enemy = last_monster();
 	}
-	if(my_path() == "Avatar of West of Loathing")
+
+	if(in_awol())
 	{
 		awol_combat_helper(text);
 	}
+
 	if(in_pokefam())
 	{
 		if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)

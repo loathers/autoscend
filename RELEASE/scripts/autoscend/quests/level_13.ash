@@ -86,7 +86,7 @@ boolean LX_getDigitalKey()
 		}
 		return false;
 	}
-	if (in_koe())
+	if(in_koe())
 	{
 		if(item_amount($item[Digital Key]) == 0 && internalQuestStatus("questL13Final") == 5)
 		{
@@ -763,7 +763,7 @@ boolean L13_sorceressDoor()
 	}
 
 	// Low Key Summer has an entirely different door.
-	if (in_lowkeysummer())
+	if(in_lowkeysummer())
 	{
 		return L13_sorceressDoorLowKey();
 	}
@@ -1559,9 +1559,9 @@ boolean L13_towerNSFinal()
 		auto_log_warning("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
-		return L13_towerFinalHeavyRains();
+		return L13_heavyrains_towerFinal();
 	}
 	
 	if(in_bhy())
@@ -1694,7 +1694,7 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
-	if(auto_my_path() == "Disguises Delimit" && internalQuestStatus("questL13Final") == 12)
+	if(in_disguises() && internalQuestStatus("questL13Final") == 12)
 	{
 		cli_execute("refresh quests");
 		if(internalQuestStatus("questL13Final") != 12)

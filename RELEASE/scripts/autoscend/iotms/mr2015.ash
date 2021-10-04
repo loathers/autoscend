@@ -55,7 +55,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Nuclear Autumn")
+	else if(in_nuclear())
 	{
 		switch(my_daycount())
 		{
@@ -75,7 +75,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Avatar of West of Loathing")
+	else if(in_awol())
 	{
 		switch(my_daycount())
 		{
@@ -125,7 +125,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Way of the Surprising Fist")
+	else if(in_wotsf())
 	{
 		switch(my_daycount())
 		{
@@ -135,7 +135,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Glamour, Vigor];					break;
 		}
 	}
-	else if(my_path() == "Heavy Rains")
+	else if(in_heavyrains())
 	{
 		switch(my_daycount())
 		{
@@ -246,7 +246,7 @@ boolean auto_mayoItems()
 		case 4:				mayos = $items[none];								break;
 		}
 	}
-	else if(my_path() == "Heavy Rains" && !in_hardcore())
+	else if(in_heavyrains() && !in_hardcore())
 	{
 		switch(my_daycount())
 		{
@@ -575,7 +575,7 @@ boolean chateaumantegna_nightstandSet()
 boolean chateauPainting()
 {
 	int paintingLevel = 8;
-	if(auto_my_path() == "One Crazy Random Summer")
+	if(in_ocrs())
 	{
 		paintingLevel = 9;
 	}
@@ -991,7 +991,7 @@ boolean deck_useScheme(string action)
 			break;
 		}
 
-		if(my_path() == "Nuclear Autumn")
+		if(in_nuclear())
 		{
 			cards["key"] = true;
 		}
@@ -1069,15 +1069,15 @@ boolean deck_useScheme(string action)
 				continue;
 			}
 		}
-		if((in_theSource()) && (card == (my_primestat() + " stat")))
+		if(in_theSource() && (card == (my_primestat() + " stat")))
 		{
 			continue;
 		}
-		if((my_path() == "Way of the Surprising Fist") && ($strings[Candlestick, Knife, Lead Pipe, Revolver, Rope, Wrench] contains card))
+		if(in_wotsf() && ($strings[Candlestick, Knife, Lead Pipe, Revolver, Rope, Wrench] contains card))
 		{
 			continue;
 		}
-		if((card == "1952 Mickey Mantle") && ((my_meat() >= 20000) || (my_path() == "Way of the Surprising Fist")))
+		if((card == "1952 Mickey Mantle") && ((my_meat() >= 20000) || in_wotsf()))
 		{
 			continue;
 		}

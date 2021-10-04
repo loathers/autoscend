@@ -567,7 +567,7 @@ boolean doBedtime()
 		string temp = visit_url("shop.php?action=bacta&whichshop=mayoclinic");
 	}
 
-	if((auto_my_path() == "Nuclear Autumn") && (get_property("falloutShelterLevel").to_int() >= 3) && !get_property("_falloutShelterSpaUsed").to_boolean())
+	if(in_nuclear() && (get_property("falloutShelterLevel").to_int() >= 3) && !get_property("_falloutShelterSpaUsed").to_boolean())
 	{
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault3");
 	}
@@ -632,7 +632,7 @@ boolean doBedtime()
 	}
 
 	equipRollover(false);
-	heavy_rains_doBedtime();
+	heavyrains_doBedtime();
 
 	while(my_daycount() == 1 && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())
 	{
@@ -640,7 +640,7 @@ boolean doBedtime()
 	}
 
 	// If in TCRS skip using freecrafts but alert user of how many they can manually use.
-	if((in_tcrs()) && (freeCrafts() > 0))
+	if(in_tcrs() && (freeCrafts() > 0))
 	{
 		auto_log_warning("In TCRS: Items are variable, skipping End Of Day crafting", "red");
 		auto_log_warning("Consider manually using your "+freeCrafts()+" free crafts", "red");

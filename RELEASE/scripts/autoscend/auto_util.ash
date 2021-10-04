@@ -730,7 +730,7 @@ boolean summonMonster(string option)
 			bootyCalls++;
 		}
 	}
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		int rain = my_rain() + (turns_left * 0.85);
 		rainCalls = rain / 50;
@@ -1461,7 +1461,7 @@ boolean cloverUsageFinish()
 
 boolean isHermitAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1478,7 +1478,7 @@ boolean isHermitAvailable()
 
 boolean isGalaktikAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1495,7 +1495,7 @@ boolean isGalaktikAvailable()
 
 boolean isGeneralStoreAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1508,7 +1508,7 @@ boolean isGeneralStoreAvailable()
 
 boolean isArmoryAndLeggeryStoreAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1548,7 +1548,7 @@ boolean isMystGuildStoreAvailable() {
 
 boolean isArmoryAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1565,7 +1565,7 @@ boolean isArmoryAvailable()
 
 boolean isUnclePAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -2018,7 +2018,7 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 boolean basicAdjustML()
 {
 	if(is_boris()) return borisAdjustML();
-	if (in_plumber())
+	if(in_plumber())
 	{
 		// We don't get many stats from combat - no point running ML.
 		auto_change_mcd(0);
@@ -2054,7 +2054,7 @@ boolean auto_change_mcd(int mcd)
 
 boolean auto_change_mcd(int mcd, boolean immediately)
 {
-	if (in_koe()) return false;
+	if(in_koe()) return false;
 
 	int best = 10;
 	if(knoll_available())
@@ -2355,7 +2355,7 @@ boolean auto_autosell(int quantity, item toSell)
 		return false;
 	}
 
-	if(my_path() != "Way of the Surprising Fist")
+	if(!in_wotsf())
 	{
 		return autosell(quantity, toSell);
 	}
@@ -2828,7 +2828,7 @@ int [item] auto_get_campground()
 	}
 
 	static boolean didCheck = false;
-	if((auto_my_path() == "Nuclear Autumn") && !didCheck)
+	if(in_nuclear() && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
@@ -2916,7 +2916,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		return false;
 	}
-	if((item_amount(source) < uses) && (my_path() != "Way of the Surprising Fist"))
+	if((item_amount(source) < uses) && (!in_wotsf()))
 	{
 		if(historical_price(source) < 2000)
 		{
@@ -3107,13 +3107,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Fireproof Lips]:					useItem = $item[SPF 451 lip balm];			break;
 	case $effect[Fire Inside]:					useItem = $item[Hot Coal];						break;
 	case $effect[Fishy\, Oily]:
-		if(auto_my_path() == "Heavy Rains")
+		if(in_heavyrains())
 		{
 			useItem = $item[Gourmet Gourami Oil];
 		}																						break;
 	case $effect[Fishy Fortification]:			useItem = $item[Fish-Liver Oil];				break;
 	case $effect[Fishy Whiskers]:
-		if(auto_my_path() == "Heavy Rains")
+		if(in_heavyrains())
 		{
 			useItem = $item[Catfish Whiskers];
 		}																						break;
@@ -4352,7 +4352,7 @@ boolean autoFlavour(location place)
 			return setFlavour($element[none]);
 	}
 
-	if(auto_my_path() == "One Crazy Random Summer")
+	if(in_ocrs())
 	{
 		// monsters can randomly be any element in OCRS
 		setFlavour($element[none]);
@@ -5099,7 +5099,7 @@ int meatReserve()
 	//how much do we reserve for [your father's MacGuffin diary]?
 	if(item_amount($item[your father\'s MacGuffin diary]) == 0 &&		//you do not yet have diary
 	!in_koe() &&														//diary is given by council for free in kingdom of exploathing
-	my_path() != "Way of the Surprising Fist")							//costs 5 meat total in way of the surprising fist. no need to track that
+	!in_wotsf())															//costs 5 meat total in way of the surprising fist. no need to track that
 	{
 		reserve_diary += 500;		//1 vacation. no need to count script. we don't pull it or get it prematurely.
 		
@@ -5130,7 +5130,7 @@ int meatReserve()
 	if(get_property("lastIslandUnlock").to_int() < my_ascensions())		//need to unlock island
 	{
 		int price_vacation = 500;
-		if(my_path() == "Way of the Surprising Fist")
+		if(in_wotsf())
 		{
 		price_vacation = 5;  //yes really. just 5 meat each
 		}

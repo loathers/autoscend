@@ -508,6 +508,7 @@ boolean LM_pete();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_west_of_loathing.ash
+boolean in_awol();
 boolean awol_initializeSettings();
 void awol_useStuff();
 effect awol_walkBuff();
@@ -620,13 +621,13 @@ boolean LM_glover();
 ########################################################################################################
 //Defined in autoscend/paths/gelatinous_noob.ash
 boolean in_gnoob();
-void jello_startAscension(string page);
+void gnoob_startAscension(string page);
 int gnoobAbsorbCost(item it);
-void jello_buySkills();
-string[item] jello_lister(string goal);
-int jello_absorbsLeft();
-string[item] jello_lister();
-boolean LM_jello();
+void gnoob_buySkills();
+string[item] gnoob_lister(string goal);
+int gnoob_absorbsLeft();
+string[item] gnoob_lister();
+boolean LM_gnoob();
 
 ########################################################################################################
 //Defined in autoscend/paths/grey_goo.ash
@@ -638,13 +639,13 @@ boolean LA_grey_goo_tasks();
 ########################################################################################################
 //Defined in autoscend/paths/heavy_rains.ash
 boolean in_heavyrains();
-void heavy_rains_initializeSettings();
+void heavyrains_initializeSettings();
 boolean routineRainManHandler();
-void heavy_rains_initializeDay(int day);
-void heavy_rains_doBedtime();
-boolean doHRSkills();
+void heavyrains_initializeDay(int day);
+void heavyrains_doBedtime();
+boolean heavyrains_buySkills();
 boolean rainManSummon(monster target, boolean copy, boolean wink);
-boolean L13_towerFinalHeavyRains();
+boolean L13_heavyrains_towerFinal();
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
@@ -708,13 +709,15 @@ boolean LX_lowkeySummer();
 
 ########################################################################################################
 //Defined in autoscend/paths/nuclear_autumn.ash
-void fallout_initializeSettings();
-void fallout_initializeDay(int day);
-boolean fallout_buySkills();
-boolean LM_fallout();
+boolean in_nuclear();
+void nuclear_initializeSettings();
+void nuclear_initializeDay(int day);
+boolean nuclear_buySkills();
+boolean LM_nuclear();
 
 ########################################################################################################
 //Defined in autoscend/paths/one_crazy_random_summer.ash
+boolean in_ocrs();
 boolean ocrs_postHelper();
 boolean ocrs_postCombatResolve();
 
@@ -741,6 +744,7 @@ boolean plumber_equipTool(stat st);
 
 ########################################################################################################
 //Defined in autoscend/paths/picky.ash
+boolean in_picky();
 void picky_pulls();
 void picky_startAscension();
 boolean picky_buyskills();
@@ -781,6 +785,10 @@ float tcrs_expectedAdvPerFill(string quality);
 boolean tcrs_maximize_with_items(string maximizerString);
 
 ########################################################################################################
+//Defined in autoscend/paths/way_of_the_surprising_fist.ash
+boolean in_wotsf();
+
+########################################################################################################
 //Defined in autoscend/paths/wildfire.ash
 boolean in_wildfire();
 void wildfire_initializeSettings();
@@ -801,6 +809,10 @@ boolean LX_wildfire_hose(location place);
 boolean LX_wildfire_water();
 boolean LX_wildfire_spookyravenManorFirstFloor();
 boolean LA_wildfire();
+
+########################################################################################################
+//Defined in autoscend/paths/you_robot.ash
+boolean in_youRobot();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash

@@ -238,7 +238,7 @@ boolean L9_chasmBuild()
 		return true;
 	}
 
-	if (in_plumber() && possessEquipment($item[frosty button]))
+	if(in_plumber() && possessEquipment($item[frosty button]))
 	{
 		autoEquip($item[frosty button]);
 	}
@@ -817,7 +817,7 @@ boolean L9_oilPeak()
 		}
 		else if (item_amount($item[Bubblin' Crude]) >= 12)
 		{
-			if (in_glover())
+			if(in_glover())
 			{
 				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
 				{

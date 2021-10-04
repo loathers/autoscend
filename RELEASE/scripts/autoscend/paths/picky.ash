@@ -1,8 +1,13 @@
 # Code here is supplementary handlers and specialized handlers
 
+boolean in_picky()
+{
+	return my_path() == "Picky";
+}
+
 void picky_pulls()
 {
-	if(my_path() == "Picky")
+	if(in_picky())
 	{
 		if(my_daycount() == 3)
 		{

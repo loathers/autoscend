@@ -193,7 +193,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
 		case 768: // The Littlest Identity Crisis (Mini-adventurer initialization)
-			if (in_quantumTerrarium()) {
+			if(in_quantumTerrarium()) {
 				if (my_location() == $location[The Themthar Hills]) {
 					run_choice(4); // Sauceror is a lep and starfish
 				}
@@ -212,7 +212,7 @@ boolean auto_run_choice(int choice, string page)
 			kolhsChoiceHandler(choice);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
-			if (in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
+			if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
 				run_choice(3); // relocate lawyers to park
 			} else if (have_effect($effect[Thrice-Cursed]) > 0) {
 				run_choice(1); // fight the spirit
@@ -326,7 +326,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 876: // One Simple Nightstand (The Haunted Bedroom)
-			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && auto_my_path() != "Way of the Surprising Fist")
+			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && !in_wotsf())
 			{
 				run_choice(1); //get old leather wallet worth ~500 meat
 			}
@@ -344,7 +344,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
 			boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
-			if (is_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
+			if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 				needSpectacles = false;
 			}
 			if (needSpectacles) {
@@ -362,7 +362,7 @@ boolean auto_run_choice(int choice, string page)
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
 			if(options contains 4) {
 				run_choice(4); // only shows up rarely. when this line was added it was worth 1.3 million in mall
-			} if (in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
+			} if(in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
 				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
 			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie] && my_buffedstat($stat[moxie]) < 150) {
 				run_choice(5); // spend 1 ghost key for primestat, get ~200 moxie XP

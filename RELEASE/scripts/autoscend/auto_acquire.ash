@@ -289,7 +289,7 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin)
 
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition)
 {
-	if((!condition) || (my_meat() < meatMin) || (my_path() == "Way of the Surprising Fist"))
+	if((!condition) || (my_meat() < meatMin) || in_wotsf())
 	{
 		return false;
 	}
@@ -519,7 +519,7 @@ boolean pull_meat(int target)
 	{
 		return false;	//can not pull
 	}
-	if(my_path() == "Way of the Surprising Fist")
+	if(in_wotsf())
 	{
 		return false;	//can not pull meat & autoselling items just donates them
 	}

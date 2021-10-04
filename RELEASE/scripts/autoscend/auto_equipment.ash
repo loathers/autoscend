@@ -226,7 +226,7 @@ string defaultMaximizeStatement()
 	{
 		res += ",water,hot res";
 	}
-	if (in_plumber())
+	if(in_plumber())
 	{
 		res += ",plumber,-ml";
 	}

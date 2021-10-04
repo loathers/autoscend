@@ -77,7 +77,7 @@ boolean L5_haremOutfit()
 		}
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	}

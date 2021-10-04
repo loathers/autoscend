@@ -167,7 +167,7 @@ boolean auto_wantToEquipPowerfulGlove()
 {
 	if (!auto_hasPowerfulGlove()) return false;
 
-	if (in_plumber() && !plumber_nothingToBuy()) return true;
+	if(in_plumber() && !plumber_nothingToBuy()) return true;
 
 	int pixels = whitePixelCount();
 	if (contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))

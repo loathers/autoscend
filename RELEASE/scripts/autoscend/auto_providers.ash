@@ -294,7 +294,7 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 
 	//blooper ink costs 15 coins without which it will error when trying to buy it, so that is the bare minimum we need to check for
 	//However we don't want to waste our early coins on it as they are precious. So require at least 400 coins before buying it.
-	if (in_plumber() && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400) {
+	if(in_plumber() && 0 == have_effect($effect[Blooper Inked]) && item_amount($item[coin]) > 400) {
 		if (!speculative) {
 			retrieve_item(1, $item[blooper ink]);
 		}

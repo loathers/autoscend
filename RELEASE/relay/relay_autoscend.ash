@@ -337,7 +337,7 @@ void main()
 		generateTrackingData("auto_renenutet");
 	}
 
-	if(my_path() == "One Crazy Random Summer")
+	if(in_ocrs())
 	{
 		writeln("<h2>One Crazy Random Summer Fun-o-meter!</h2>");
 		generateTrackingData("auto_funTracker");

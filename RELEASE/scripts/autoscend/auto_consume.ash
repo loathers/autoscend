@@ -412,7 +412,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	{
 		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
 	}
-	if((auto_my_path() == "Nuclear Autumn") && (toDrink.inebriety != 1))
+	if(in_nuclear() && (toDrink.inebriety != 1))
 	{
 		return false;
 	}
@@ -476,7 +476,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
-	if((auto_my_path() == "Nuclear Autumn") && (toEat.fullness != 1))
+	if(in_nuclear() && (toEat.fullness != 1))
 	{
 		return false;
 	}
@@ -1322,7 +1322,7 @@ ConsumeAction auto_findBestConsumeAction(string type)
 		if (type == "eat") return fullness_left();
 		if (type == "drink") 
 		{
-			if (in_quantumTerrarium() && my_familiar() == $familiar[Stooper])
+			if(in_quantumTerrarium() && my_familiar() == $familiar[Stooper])
 			{
 				// we can't change familiars so don't drink to full liver as we'll be overdrunk when it changes familiar.
 				return (my_inebriety() < inebriety_limit() ? inebriety_left() - 1 : 0);

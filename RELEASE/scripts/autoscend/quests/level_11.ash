@@ -140,7 +140,7 @@ boolean[location] shenSnakeLocations(int day, int n_items_returned)
 	boolean[location] frattle   = $locations[The Smut Orc Logging Camp];
 	boolean[location] snakleton = $locations[The Unquiet Garves, The VERY Unquiet Garves];
 
-	if (in_koe())
+	if(in_koe())
 	{
 		return union(ten_heads, frattle, frozen);
 	}
@@ -228,7 +228,7 @@ int[location] getShenZonesTurnsSpent()
 boolean LX_unlockHiddenTemple() {
 	// replaces L2_treeCoin(),  L2_spookyMap(),  L2_spookyFertilizer() & L2_spookySapling()
 
-	if (in_glover()) {
+	if(in_glover()) {
 		// Spooky Temple map ain't nuthin' but a 'G' Thang.
 		return false;
 	}
@@ -474,7 +474,7 @@ boolean LX_danceWithLadySpookyraven() {
 
 	auto_log_info("Finished Spookyraven, just dancing with the lady.", "blue");
 	if (autoAdv($location[The Haunted Ballroom])) {
-		if (in_lowkeysummer()) {
+		if(in_lowkeysummer()) {
 			// need to open the Haunted Nursery for the music box key.
 			visit_url("place.php?whichplace=manor3&action=manor3_ladys");
 		}
@@ -495,7 +495,7 @@ boolean LX_getLadySpookyravensFinestGown() {
 		// of the macguffin quest if we got unlucky
 		boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
 		boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
-		if (is_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
+		if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 			needSpectacles = false;
 		}
 
@@ -675,7 +675,7 @@ boolean L11_forgedDocuments()
 	}
 
 	auto_log_info("Getting the McMuffin Book", "blue");
-	if(auto_my_path() == "Way of the Surprising Fist")
+	if(in_wotsf())
 	{
 		// TODO: move this to WotSF path file if one is ever created.
 		string[int] pages;
@@ -698,7 +698,7 @@ boolean L11_mcmuffinDiary()
 	{
 		return false;
 	}
-	if (in_koe() && item_amount($item[Forged Identification Documents]) > 0)
+	if(in_koe() && item_amount($item[Forged Identification Documents]) > 0)
 	{
 		council(); // Shore doesn't exist in Exploathing so we acquire diary from the council
 	}
@@ -737,7 +737,7 @@ boolean L11_mcmuffinDiary()
 void auto_visit_gnasir()
 {
 	//Visits gnasir, can change based on path
-	if (in_koe())
+	if(in_koe())
 	{
 		visit_url("place.php?whichplace=exploathing_beach&action=expl_gnasir");
 	}
@@ -826,7 +826,7 @@ boolean L11_aridDesert()
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
 	{
 		auto_log_info("Searching for the pyramid", "blue");
-		if(auto_my_path() == "Heavy Rains")
+		if(in_heavyrains())
 		{
 			autoEquip($item[Thor\'s Pliers]);
 		}
@@ -938,7 +938,7 @@ boolean L11_aridDesert()
 		if(get_property("auto_gnasirUnlocked").to_boolean() && ((get_property("gnasirProgress").to_int() & 2) != 2))
 		{
 			boolean canBuyPaint = true;
-			if((auto_my_path() == "Way of the Surprising Fist") || (auto_my_path() == "Nuclear Autumn"))
+			if(in_wotsf() || in_nuclear())
 			{
 				canBuyPaint = false;
 			}
@@ -1434,7 +1434,7 @@ boolean L11_hiddenCity()
 			if(item_amount($item[Bowl Of Scorpions]) == 0)
 			{
 				buyUpTo(1, $item[Bowl Of Scorpions]);
-				if(auto_my_path() == "One Crazy Random Summer")
+				if(in_ocrs())
 				{
 					buyUpTo(3, $item[Bowl Of Scorpions]);
 				}
@@ -1540,7 +1540,7 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean canUseMachete = !is_boris() && auto_my_path() != "Way of the Surprising Fist" && !in_pokefam();
+	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && in_hardcore();
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
@@ -1675,7 +1675,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || (auto_my_path() == "Way of the Surprising Fist") || in_bhy() || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_wotsf() || in_bhy() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.
@@ -1728,7 +1728,7 @@ boolean L11_mauriceSpookyraven()
 			autoCraft("cook", 1, $item[bottle of Chateau de Vinegar], $item[blasting soda]);
 			if(item_amount($item[Unstable Fulminate]) == 0)
 			{
-				if(auto_my_path() == "Nuclear Autumn")
+				if(in_nuclear())
 				{
 					auto_log_warning("Could not make an Unstable Fulminate, assuming we have no oven for realz...", "red");
 					return true;
@@ -1778,7 +1778,7 @@ boolean L11_mauriceSpookyraven()
 		auto_MaxMLToCap(auto_convertDesiredML(82), true);
 		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
 
-		if((auto_my_path() == "Picky") && (item_amount($item[gumshoes]) > 0))
+		if(in_picky() && (item_amount($item[gumshoes]) > 0))
 		{
 			auto_change_mcd(0);
 			autoEquip($slot[acc2], $item[gumshoes]);
@@ -2411,7 +2411,7 @@ boolean L11_unlockPyramid()
 	}
 	
 	auto_log_info("Reveal the pyramid", "blue");
-	if (in_koe())
+	if(in_koe())
 	{
 		visit_url("place.php?whichplace=exploathing_beach&action=expl_pyramidpre");
 		cli_execute("refresh quests");
@@ -2586,7 +2586,7 @@ boolean L11_defeatEd()
 	}
 
 	int baseML = monster_level_adjustment();
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		baseML = baseML + 60;
 	}

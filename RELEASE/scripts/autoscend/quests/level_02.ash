@@ -14,7 +14,7 @@ boolean L2_mosquito()
 		if (internalQuestStatus("questL02Larva") > 0 || item_amount($item[mosquito larva]) > 0)
 		{
 			council();
-			if (in_koe())
+			if(in_koe())
 			{
 				cli_execute("refresh quests");
 			}

@@ -208,7 +208,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))
+	if(in_koe() && possessEquipment($item[low-pressure oxygen tank]))
 	{
 		autoEquip($item[low-pressure oxygen tank]);
 	}

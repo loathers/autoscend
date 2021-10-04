@@ -105,7 +105,7 @@ boolean auto_haveSourceTerminal()
 		return false;
 	}
 	static boolean didCheck = false;
-	if((auto_my_path() == "Nuclear Autumn") && !didCheck)
+	if(in_nuclear() && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
@@ -152,7 +152,7 @@ boolean auto_sourceTerminalRequest(string request)
 	//"campground.php?action=terminal&hack=enhance items.enh"
 	if(auto_haveSourceTerminal())
 	{
-		if(auto_my_path() == "Nuclear Autumn")
+		if(in_nuclear())
 		{
 			string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
 		}
