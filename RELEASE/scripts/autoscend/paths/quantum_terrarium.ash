@@ -66,7 +66,7 @@ boolean LX_quantumTerrarium()
 
 void qt_initializeSettings()
 {
-	if (in_quantumTerrarium())
+	if(in_quantumTerrarium())
 	{
 		set_property("auto_skipNuns", true);	//Remove when leprechaun swapping is supported at nuns.
 	}

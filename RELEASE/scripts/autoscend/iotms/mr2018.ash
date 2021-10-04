@@ -104,7 +104,7 @@ boolean januaryToteAcquire(item it)
 
 	if(choice == 2)
 	{
-		if((auto_my_path() == "Way of the Surprising Fist") || is_boris())
+		if(in_wotsf() || is_boris())
 		{
 			return false;
 		}
@@ -1291,7 +1291,7 @@ boolean fightClubSpa()
 {
 	int option = 4;
 	stat st = my_primestat();
-	if (in_plumber())
+	if(in_plumber())
 	{
 		// We deal 250% of our Moxie, so if our Muscle is too high we... die.
 		st = $stat[moxie];

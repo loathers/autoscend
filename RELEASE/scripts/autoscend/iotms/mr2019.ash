@@ -389,13 +389,13 @@ boolean auto_saberChoice(string choice)
 
 boolean auto_saberDailyUpgrade(int day)
 {
-	if (isActuallyEd())
+	if(isActuallyEd())
 	{
 		return auto_saberChoice("mp");
 	}
 
 	// Maybe famweight is better, I don't know.
-	if (in_plumber())
+	if(in_plumber())
 	{
 		return auto_saberChoice("res");
 	}

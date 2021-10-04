@@ -523,7 +523,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[Camp Scout Backpack], 1, 0);
 		}
 
-		if(my_path() == "Way of the Surprising Fist")
+		if(in_wotsf())
 		{
 			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
 		}
@@ -562,7 +562,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if(((in_picky()) || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
+		if((in_picky() || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
 		{
 			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
 			{
@@ -716,7 +716,7 @@ boolean LX_doVacation()
 	int meat_needed = 500;
 	int adv_needed = 3;
 	int adv_budget = my_adventures() - auto_advToReserve();
-	if(my_path() == "Way of the Surprising Fist")
+	if(in_wotsf())
 	{
 		meat_needed = 5;
 		adv_needed = 5;
@@ -2049,7 +2049,7 @@ boolean LX_craftAcquireItems()
 		//Demonskin Jacket, requires an adventure, knoll available doesn\'t matter here...
 	}
 
-	if (in_koe())
+	if(in_koe())
 	{
 		if ((creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion])) && auto_predictAccordionTurns() < 10)
 		{
@@ -2300,7 +2300,7 @@ boolean autosellCrap()
 	{
 		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	if(my_path() == "Way of the Surprising Fist") 
+	if(in_wotsf()) 
 	{
 		return false;		//selling things in the way of the suprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
@@ -2393,15 +2393,15 @@ void print_header()
 	{
 		auto_log_info("Snow suit usage: " + get_property("_snowSuitCount") + " carrots: " + get_property("_carrotNoseDrops"), "blue");
 	}
-	if (in_heavyrains())
+	if(in_heavyrains())
 	{
 		auto_log_info("Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}
-	if (isActuallyEd())
+	if(isActuallyEd())
 	{
 		auto_log_info("Ka Coins: " + item_amount($item[Ka Coin]) + " Lashes used: " + get_property("_edLashCount"), "green");
 	}
-	if (in_plumber())
+	if(in_plumber())
 	{
 		auto_log_info("Coins: " + item_amount($item[Coin]), "green");
 	}
@@ -2526,7 +2526,7 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
-	if (in_casual() && get_property("_casualAscension").to_int() != -1)
+	if(in_casual() && get_property("_casualAscension").to_int() != -1)
 	{
 		set_property("_casualAscension", my_ascensions());
 		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");

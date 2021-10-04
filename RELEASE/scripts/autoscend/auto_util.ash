@@ -2018,7 +2018,7 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 boolean basicAdjustML()
 {
 	if(is_boris()) return borisAdjustML();
-	if (in_plumber())
+	if(in_plumber())
 	{
 		// We don't get many stats from combat - no point running ML.
 		auto_change_mcd(0);
@@ -2054,7 +2054,7 @@ boolean auto_change_mcd(int mcd)
 
 boolean auto_change_mcd(int mcd, boolean immediately)
 {
-	if (in_koe()) return false;
+	if(in_koe()) return false;
 
 	int best = 10;
 	if(knoll_available())
@@ -2355,7 +2355,7 @@ boolean auto_autosell(int quantity, item toSell)
 		return false;
 	}
 
-	if(my_path() != "Way of the Surprising Fist")
+	if(!in_wotsf())
 	{
 		return autosell(quantity, toSell);
 	}
@@ -2916,7 +2916,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		return false;
 	}
-	if((item_amount(source) < uses) && (my_path() != "Way of the Surprising Fist"))
+	if((item_amount(source) < uses) && (!in_wotsf()))
 	{
 		if(historical_price(source) < 2000)
 		{
@@ -5099,7 +5099,7 @@ int meatReserve()
 	//how much do we reserve for [your father's MacGuffin diary]?
 	if(item_amount($item[your father\'s MacGuffin diary]) == 0 &&		//you do not yet have diary
 	!in_koe() &&														//diary is given by council for free in kingdom of exploathing
-	my_path() != "Way of the Surprising Fist")							//costs 5 meat total in way of the surprising fist. no need to track that
+	!in_wotsf()															//costs 5 meat total in way of the surprising fist. no need to track that
 	{
 		reserve_diary += 500;		//1 vacation. no need to count script. we don't pull it or get it prematurely.
 		
@@ -5130,7 +5130,7 @@ int meatReserve()
 	if(get_property("lastIslandUnlock").to_int() < my_ascensions())		//need to unlock island
 	{
 		int price_vacation = 500;
-		if(my_path() == "Way of the Surprising Fist")
+		if(in_wotsf())
 		{
 		price_vacation = 5;  //yes really. just 5 meat each
 		}

@@ -326,7 +326,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 876: // One Simple Nightstand (The Haunted Bedroom)
-			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && auto_my_path() != "Way of the Surprising Fist")
+			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && !in_wotsf())
 			{
 				run_choice(1); //get old leather wallet worth ~500 meat
 			}
@@ -344,7 +344,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
 			boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
-			if (is_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
+			if (is_boris() || in_wotsf() || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
 				needSpectacles = false;
 			}
 			if (needSpectacles) {
@@ -362,7 +362,7 @@ boolean auto_run_choice(int choice, string page)
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
 			if(options contains 4) {
 				run_choice(4); // only shows up rarely. when this line was added it was worth 1.3 million in mall
-			} if (in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
+			} if(in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
 				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
 			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie] && my_buffedstat($stat[moxie]) < 150) {
 				run_choice(5); // spend 1 ghost key for primestat, get ~200 moxie XP

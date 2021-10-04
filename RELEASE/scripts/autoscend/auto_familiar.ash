@@ -124,13 +124,13 @@ boolean pathHasFamiliar()
 
 boolean pathAllowsChangingFamiliar()
 {
-		if (!pathHasFamiliar())
+		if(!pathHasFamiliar())
 		{
 			return false;
 		}
 
 		// path check for case(s) where Path has familiars but forces you to use one of its choice
-		if (in_quantumTerrarium())
+		if(in_quantumTerrarium())
 		{
 			return false;
 		}

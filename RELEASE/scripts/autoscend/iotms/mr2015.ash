@@ -125,7 +125,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Way of the Surprising Fist")
+	else if(in_wotsf())
 	{
 		switch(my_daycount())
 		{
@@ -1069,15 +1069,15 @@ boolean deck_useScheme(string action)
 				continue;
 			}
 		}
-		if((in_theSource()) && (card == (my_primestat() + " stat")))
+		if(in_theSource() && (card == (my_primestat() + " stat")))
 		{
 			continue;
 		}
-		if((my_path() == "Way of the Surprising Fist") && ($strings[Candlestick, Knife, Lead Pipe, Revolver, Rope, Wrench] contains card))
+		if(in_wotsf() && ($strings[Candlestick, Knife, Lead Pipe, Revolver, Rope, Wrench] contains card))
 		{
 			continue;
 		}
-		if((card == "1952 Mickey Mantle") && ((my_meat() >= 20000) || (my_path() == "Way of the Surprising Fist")))
+		if((card == "1952 Mickey Mantle") && ((my_meat() >= 20000) || in_wotsf()))
 		{
 			continue;
 		}

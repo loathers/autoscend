@@ -311,7 +311,7 @@ boolean L10_topFloor()
 	if (internalQuestStatus("questL10Garbage") > 9)
 	{
 		council();
-		if (in_koe())
+		if(in_koe())
 		{
 			cli_execute("refresh quests");
 		}

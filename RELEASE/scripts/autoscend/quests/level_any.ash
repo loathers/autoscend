@@ -170,7 +170,8 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-	if (in_lowkeysummer()) {
+	if(in_lowkeysummer())
+	{
 		return LX_hippyBoatman();
 	}
 

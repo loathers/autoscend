@@ -784,6 +784,10 @@ float tcrs_expectedAdvPerFill(string quality);
 boolean tcrs_maximize_with_items(string maximizerString);
 
 ########################################################################################################
+//Defined in autoscend/paths/way_of_the_surprising_fist.ash
+boolean in_wotsf();
+
+########################################################################################################
 //Defined in autoscend/paths/wildfire.ash
 boolean in_wildfire();
 void wildfire_initializeSettings();

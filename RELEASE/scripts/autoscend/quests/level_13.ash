@@ -763,7 +763,7 @@ boolean L13_sorceressDoor()
 	}
 
 	// Low Key Summer has an entirely different door.
-	if (in_lowkeysummer())
+	if(in_lowkeysummer())
 	{
 		return L13_sorceressDoorLowKey();
 	}

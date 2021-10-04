@@ -274,7 +274,7 @@ WarPlan auto_bestWarPlan()
 		considerArena = false;
 		considerJunkyard = false;
 	}
-	if(auto_my_path() == "Way of the Surprising Fist")
+	if(in_wotsf())
 	{
 		considerNuns = false;
 	}
@@ -283,7 +283,7 @@ WarPlan auto_bestWarPlan()
 		considerNuns = false;
 		considerOrchard = false;
 	}
-	if (in_glover())
+	if(in_glover())
 	{
 		considerArena = false;
 	}
@@ -549,7 +549,7 @@ boolean L12_getOutfit()
 	}
 	
 	//heavy rains softcore pull handling
-	if(!in_hardcore() && (in_heavyrains()))
+	if(!in_hardcore() && in_heavyrains())
 	{
 		// auto_warhippyspy indicates rainman was already used to copy a war hippy spy in heavy rains. if it failed to YR pull missing items
 		if(get_property("auto_warhippyspy") == "done" && get_property("auto_hippyInstead").to_boolean())
@@ -731,7 +731,7 @@ boolean L12_startWar()
 		return false;
 	}
 
-	if (in_koe())
+	if(in_koe())
 	{
 		return false;
 	}
@@ -789,7 +789,7 @@ boolean L12_filthworms()
 	{
 		return false;
 	}
-	if (in_tcrs() || in_koe())
+	if(in_tcrs() || in_koe())
 	{
 		return false;
 	}
@@ -985,7 +985,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if (in_koe() || in_pokefam() || in_bhy())
+	if(in_koe() || in_pokefam() || in_bhy())
 	{
 		return false;
 	}
@@ -1092,7 +1092,7 @@ boolean L12_sonofaBeach()
 	{
 		return false;
 	}
-	if (in_koe())
+	if(in_koe())
 	{
 		return false;
 	}
@@ -1341,7 +1341,7 @@ boolean L12_sonofaFinish()
 	{
 		return false;
 	}
-	if (in_koe())
+	if(in_koe())
 	{
 		return false;
 	}
@@ -1525,7 +1525,7 @@ boolean L12_themtharHills()
 		return false;
 	}
 
-	if (in_tcrs() || in_koe() || auto_my_path() == "Way of the Surprising Fist")
+	if(in_tcrs() || in_koe() || in_wotsf())
 	{
 		return false;
 	}

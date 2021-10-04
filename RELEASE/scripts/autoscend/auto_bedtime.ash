@@ -640,7 +640,7 @@ boolean doBedtime()
 	}
 
 	// If in TCRS skip using freecrafts but alert user of how many they can manually use.
-	if((in_tcrs()) && (freeCrafts() > 0))
+	if(in_tcrs() && (freeCrafts() > 0))
 	{
 		auto_log_warning("In TCRS: Items are variable, skipping End Of Day crafting", "red");
 		auto_log_warning("Consider manually using your "+freeCrafts()+" free crafts", "red");
