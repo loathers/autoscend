@@ -1778,7 +1778,7 @@ boolean L11_mauriceSpookyraven()
 		auto_MaxMLToCap(auto_convertDesiredML(82), true);
 		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
 
-		if((auto_my_path() == "Picky") && (item_amount($item[gumshoes]) > 0))
+		if((in_picky()) && (item_amount($item[gumshoes]) > 0))
 		{
 			auto_change_mcd(0);
 			autoEquip($slot[acc2], $item[gumshoes]);

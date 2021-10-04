@@ -743,6 +743,7 @@ boolean plumber_equipTool(stat st);
 
 ########################################################################################################
 //Defined in autoscend/paths/picky.ash
+boolean in_picky();
 void picky_pulls();
 void picky_startAscension();
 boolean picky_buyskills();

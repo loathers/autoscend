@@ -562,7 +562,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if(((auto_my_path() == "Picky") || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
+		if(((in_picky()) || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
 		{
 			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
 			{
@@ -623,7 +623,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if(auto_my_path() == "Picky")
+		if(in_picky())
 		{
 			pullXWhenHaveY($item[gumshoes], 1, 0);
 		}
