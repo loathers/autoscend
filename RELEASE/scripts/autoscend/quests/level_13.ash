@@ -1694,7 +1694,7 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
-	if(auto_my_path() == "Disguises Delimit" && internalQuestStatus("questL13Final") == 12)
+	if(in_disguises() && internalQuestStatus("questL13Final") == 12)
 	{
 		cli_execute("refresh quests");
 		if(internalQuestStatus("questL13Final") != 12)

@@ -1042,7 +1042,7 @@ boolean L12_gremlins()
 		else return true;
 	}
 
-	if(auto_my_path() == "Disguises Delimit")
+	if(in_disguises())
 	{
 		abort("Do gremlins manually, sorry. Or set sidequestJunkyardCompleted=fratboy and we will just skip them");
 	}

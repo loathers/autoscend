@@ -11,7 +11,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatPlumberStage5(round, enemy, text);
 	if(retval != "") return retval;
 	
-	// Path = disguises deliimt
+	// Path = disguises delimit
 	retval = auto_combatDisguisesStage5(round, enemy, text);
 	if(retval != "") return retval;
 	
