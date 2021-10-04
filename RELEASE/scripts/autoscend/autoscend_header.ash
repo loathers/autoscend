@@ -508,6 +508,7 @@ boolean LM_pete();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_west_of_loathing.ash
+boolean in_awol();
 boolean awol_initializeSettings();
 void awol_useStuff();
 effect awol_walkBuff();
