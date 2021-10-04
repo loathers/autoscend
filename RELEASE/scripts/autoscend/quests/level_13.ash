@@ -86,7 +86,7 @@ boolean LX_getDigitalKey()
 		}
 		return false;
 	}
-	if (in_koe())
+	if in_koe())
 	{
 		if(item_amount($item[Digital Key]) == 0 && internalQuestStatus("questL13Final") == 5)
 		{

@@ -474,7 +474,7 @@ boolean LX_danceWithLadySpookyraven() {
 
 	auto_log_info("Finished Spookyraven, just dancing with the lady.", "blue");
 	if (autoAdv($location[The Haunted Ballroom])) {
-		if (in_lowkeysummer()) {
+		if(in_lowkeysummer()) {
 			// need to open the Haunted Nursery for the music box key.
 			visit_url("place.php?whichplace=manor3&action=manor3_ladys");
 		}

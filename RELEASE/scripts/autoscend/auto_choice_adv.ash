@@ -193,7 +193,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
 		case 768: // The Littlest Identity Crisis (Mini-adventurer initialization)
-			if (in_quantumTerrarium()) {
+			if(in_quantumTerrarium()) {
 				if (my_location() == $location[The Themthar Hills]) {
 					run_choice(4); // Sauceror is a lep and starfish
 				}
@@ -212,7 +212,7 @@ boolean auto_run_choice(int choice, string page)
 			kolhsChoiceHandler(choice);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
-			if (in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
+			if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
 				run_choice(3); // relocate lawyers to park
 			} else if (have_effect($effect[Thrice-Cursed]) > 0) {
 				run_choice(1); // fight the spirit
