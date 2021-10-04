@@ -213,7 +213,7 @@ boolean LX_steelOrgan()
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
-	if((auto_my_path() == "Nuclear Autumn") || (auto_my_path() == "License to Adventure"))
+	if(in_nuclear() || (auto_my_path() == "License to Adventure"))
 	{
 		auto_log_info("You could get a Steel Organ for aftercore, but why? We won't help with this deviant and perverse behavior. Turning off setting.", "blue");
 		set_property("auto_getSteelOrgan", false);
@@ -391,7 +391,7 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Nuclear Autumn" || in_pokefam())
+	if(in_nuclear() || in_pokefam())
 	{
 		return false;
 	}
@@ -475,7 +475,7 @@ boolean LX_guildUnlock()
 
 boolean startArmorySubQuest()
 {
-	if(in_koe() || auto_my_path() == "Nuclear Autumn")
+	if(in_koe() || in_nuclear())
 	{
 		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
@@ -540,7 +540,7 @@ boolean startMeatsmithSubQuest()
 	{
 		return false;	//quest already started
 	}
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		if(item_amount($item[Bone With a Price Tag On It]) > 0)
 		{
@@ -647,7 +647,7 @@ boolean startGalaktikSubQuest()
 	{
 		return false;	//quest already started
 	}
-	if(auto_my_path() == "Nuclear Autumn" || in_koe())
+	if(in_nuclear() || in_koe())
 	{
 		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
@@ -1098,7 +1098,7 @@ boolean LX_NemesisQuest()
 void houseUpgrade()
 {
 	//function for upgrading your dwelling.
-	if(isActuallyEd() || my_class() == $class[Vampyre] || auto_my_path() == "Nuclear Autumn")
+	if(isActuallyEd() || my_class() == $class[Vampyre] || in_nuclear())
 	{
 		return;		//paths where dwelling is locked
 	}

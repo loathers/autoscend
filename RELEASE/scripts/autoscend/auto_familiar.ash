@@ -738,7 +738,7 @@ boolean checkTerrarium()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Nuclear Autumn" || auto_my_path() == "You, Robot")
+	if(in_nuclear() || auto_my_path() == "You, Robot")
 	{
 		return true;	//these paths use an alternative form of terrarium
 	}

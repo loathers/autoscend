@@ -55,7 +55,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Nuclear Autumn")
+	else if(in_nuclear())
 	{
 		switch(my_daycount())
 		{
@@ -991,7 +991,7 @@ boolean deck_useScheme(string action)
 			break;
 		}
 
-		if(my_path() == "Nuclear Autumn")
+		if(in_nuclear())
 		{
 			cards["key"] = true;
 		}

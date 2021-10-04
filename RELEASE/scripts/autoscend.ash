@@ -72,6 +72,7 @@ import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/quantum_terrarium.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
+import <autoscend/paths/way_of_the_surprising_fist.ash>
 import <autoscend/paths/wildfire.ash>
 
 
@@ -219,7 +220,7 @@ void initializeSettings() {
 	ed_initializeSettings();
 	boris_initializeSettings();
 	bond_initializeSettings();
-	fallout_initializeSettings();
+	nuclear_initializeSettings();
 	pete_initializeSettings();
 	pokefam_initializeSettings();
 	disguises_initializeSettings();
@@ -964,7 +965,7 @@ void initializeDay(int day)
 
 	ed_initializeDay(day);
 	boris_initializeDay(day);
-	fallout_initializeDay(day);
+	nuclear_initializeDay(day);
 	pete_initializeDay(day);
 	cs_initializeDay(day);
 	bond_initializeDay(day);
@@ -2619,7 +2620,7 @@ boolean doTasks()
 	if(LM_boris())						return true;
 	if(LM_pete())						return true;
 	if(LM_gnoob())						return true;
-	if(LM_fallout())					return true;
+	if(LM_nuclear())					return true;
 	if(LM_groundhog())					return true;
 	if(LM_batpath()) 					return true;
 	if(heavyrains_buySkills())			return true;

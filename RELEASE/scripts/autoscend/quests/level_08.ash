@@ -304,7 +304,7 @@ boolean L8_getMineOres()
 			numCloversKeep = 0;
 		}
 	}
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		if(cloversAvailable() <= numCloversKeep)
 		{

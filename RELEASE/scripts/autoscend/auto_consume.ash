@@ -412,7 +412,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	{
 		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
 	}
-	if((auto_my_path() == "Nuclear Autumn") && (toDrink.inebriety != 1))
+	if(in_nuclear() && (toDrink.inebriety != 1))
 	{
 		return false;
 	}
@@ -476,7 +476,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
-	if((auto_my_path() == "Nuclear Autumn") && (toEat.fullness != 1))
+	if(in_nuclear() && (toEat.fullness != 1))
 	{
 		return false;
 	}

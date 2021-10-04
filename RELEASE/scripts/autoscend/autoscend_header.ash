@@ -709,10 +709,11 @@ boolean LX_lowkeySummer();
 
 ########################################################################################################
 //Defined in autoscend/paths/nuclear_autumn.ash
-void fallout_initializeSettings();
-void fallout_initializeDay(int day);
-boolean fallout_buySkills();
-boolean LM_fallout();
+boolean in_nuclear();
+void nuclear_initializeSettings();
+void nuclear_initializeDay(int day);
+boolean nuclear_buySkills();
+boolean LM_nuclear();
 
 ########################################################################################################
 //Defined in autoscend/paths/one_crazy_random_summer.ash

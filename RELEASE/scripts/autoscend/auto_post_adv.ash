@@ -235,7 +235,7 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if(my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		buffMaintain($effect[Juiced and Loose], 35, 1, 1);
 		buffMaintain($effect[Hardened Sweatshirt], 35, 1, 1);

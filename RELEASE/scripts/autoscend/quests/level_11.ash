@@ -495,7 +495,7 @@ boolean LX_getLadySpookyravensFinestGown() {
 		// of the macguffin quest if we got unlucky
 		boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
 		boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
-		if (is_boris() || in_wotsf() || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
+		if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 			needSpectacles = false;
 		}
 
@@ -938,7 +938,7 @@ boolean L11_aridDesert()
 		if(get_property("auto_gnasirUnlocked").to_boolean() && ((get_property("gnasirProgress").to_int() & 2) != 2))
 		{
 			boolean canBuyPaint = true;
-			if(in_wotsf() || (auto_my_path() == "Nuclear Autumn"))
+			if(in_wotsf() || in_nuclear())
 			{
 				canBuyPaint = false;
 			}
@@ -1675,7 +1675,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_wotsf() || in_bhy() || ((auto_my_path() == "Nuclear Autumn") && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_wotsf() || in_bhy() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.
@@ -1728,7 +1728,7 @@ boolean L11_mauriceSpookyraven()
 			autoCraft("cook", 1, $item[bottle of Chateau de Vinegar], $item[blasting soda]);
 			if(item_amount($item[Unstable Fulminate]) == 0)
 			{
-				if(auto_my_path() == "Nuclear Autumn")
+				if(in_nuclear())
 				{
 					auto_log_warning("Could not make an Unstable Fulminate, assuming we have no oven for realz...", "red");
 					return true;

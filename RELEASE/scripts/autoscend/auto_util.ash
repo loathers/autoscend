@@ -1461,7 +1461,7 @@ boolean cloverUsageFinish()
 
 boolean isHermitAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1478,7 +1478,7 @@ boolean isHermitAvailable()
 
 boolean isGalaktikAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1495,7 +1495,7 @@ boolean isGalaktikAvailable()
 
 boolean isGeneralStoreAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1508,7 +1508,7 @@ boolean isGeneralStoreAvailable()
 
 boolean isArmoryAndLeggeryStoreAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1548,7 +1548,7 @@ boolean isMystGuildStoreAvailable() {
 
 boolean isArmoryAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -1565,7 +1565,7 @@ boolean isArmoryAvailable()
 
 boolean isUnclePAvailable()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return false;
 	}
@@ -2828,7 +2828,7 @@ int [item] auto_get_campground()
 	}
 
 	static boolean didCheck = false;
-	if((auto_my_path() == "Nuclear Autumn") && !didCheck)
+	if(in_nuclear() && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
