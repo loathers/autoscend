@@ -193,7 +193,7 @@ boolean heavyrains_buySkills()
 				skillChoice = 1;
 			}
 			
-			set_property("choiceAdventure968", skillChoice);
+			set_property("choiceAdventure967", skillChoice);
 			runChoice(page);
 			visit_url("main.php");
 			return true;
