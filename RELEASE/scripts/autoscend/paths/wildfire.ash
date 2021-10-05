@@ -454,14 +454,16 @@ boolean LX_wildfire_water()
 	if(in_hardcore() && !haveWarOutfit() && internalQuestStatus("questL12War") == 0)	//we need war outfit
 	{
 		abort("Due to tracking issues you need to manually acquire the necessary war outfit and run me again");
-		if(auto_warSide() == "fratboy")
-		{
-			LX_wildfire_hose($location[Frat House In Disguise]);
-		}
-		else
-		{
-			LX_wildfire_hose($location[Hippy Camp In Disguise]);
-		}
+// below is code for automation that is not functional due to mafia not tracking fire levels correctly.
+//  https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/892#issuecomment-934059485
+//		if(auto_warSide() == "fratboy")
+//		{
+//			LX_wildfire_hose($location[Frat House In Disguise]);
+//		}
+//		else
+//		{
+//			LX_wildfire_hose($location[Hippy Camp In Disguise]);
+//		}
 	}
 	
 	//mass watering. waters all areas of a certain type (outdoor, indoor, underground) reducing fire from 5 to 2
