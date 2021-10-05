@@ -454,7 +454,7 @@ boolean LX_wildfire_water()
 	if(in_hardcore() && !haveWarOutfit() && internalQuestStatus("questL12War") == 0)	//we need war outfit
 	{
 		abort("Due to tracking issues you need to manually acquire the necessary war outfit and run me again");
-// below is code for automation that is not functional due to mafia not tracking fire levels correctly.
+// below is code for automation that is not functional due to mafia not tracking fire levels correctly. When fixed upstream remove the the abort and uncomment the code
 //  https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/892#issuecomment-934059485
 //		if(auto_warSide() == "fratboy")
 //		{
