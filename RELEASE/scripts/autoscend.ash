@@ -1712,6 +1712,11 @@ boolean LX_freeCombatsTask()
 		auto_log_debug("Only 1 non reserved adv remains for main loop so doing free combats");
 		return LX_freeCombats();
 	}
+	if(in_theSource() && my_adventures() < 10 && inebriety_left() == 0 && stomach_left() < 1)
+	{
+		auto_log_debug("Less than 10 adv remaining today. We should do free fights now in case any of them get replaced with a non free agent fight");
+		return LX_freeCombats();
+	}
 	return false;
 }
 
