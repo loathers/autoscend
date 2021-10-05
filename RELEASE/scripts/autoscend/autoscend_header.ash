@@ -39,7 +39,6 @@ boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
 boolean LX_freeCombatsTask();
 boolean Lsc_flyerSeals();
-boolean LX_hardcoreFoodFarm();
 boolean LX_craftAcquireItems();
 boolean councilMaintenance();
 boolean adventureFailureHandler();
