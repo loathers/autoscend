@@ -1,8 +1,7 @@
 // Functions designed for general utility in any path
 
-boolean auto_buySkills()
+boolean auto_buySkills()  // This handles skill acquisition for general paths
 {
-	// Note this was pulled out of picky.ash and put in general autoscend.ash for communal use
 	// TODO: Torso Awareness is worth obtaining in other cases too.
 	if((my_meat() >= 10000)
 	   && gnomads_available()
