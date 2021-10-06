@@ -315,7 +315,14 @@ void bedtime_pulls_rollover_equip()
 					}
 				}
 				
-				//TODO clock conflict check. we can only have 1 clock of any kind
+				if(is_watch(it))	//watches conflict with each other. only one watch of any kind can be used
+				{
+					if(equipped_amount(it) > 0 && !is_watch(best[worst_acc_slot]))
+					{
+						//we have a watch equipped but not in the worst slot. So exclude it from optimizing the worst slot.
+						continue;
+					}
+				}
 				
 				//can we even pull another copy of this accessory?
 				if(equipped_amount(it) > 0 && best[worst_acc_slot] != it && !canPull(it,true))
