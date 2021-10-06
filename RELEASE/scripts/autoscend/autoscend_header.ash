@@ -41,7 +41,6 @@ boolean LX_freeCombatsTask();
 boolean Lsc_flyerSeals();
 boolean LX_craftAcquireItems();
 boolean councilMaintenance();
-boolean auto_buySkills();
 boolean adventureFailureHandler();
 boolean beatenUpResolution();
 int speculative_pool_skill();
@@ -1292,6 +1291,10 @@ boolean hasHead(monster enemy);
 boolean hasLeg(monster enemy);
 boolean hasTail(monster enemy);
 boolean hasTorso(monster enemy);
+
+########################################################################################################
+//Defined in autoscend/auto_path_util.ash
+boolean auto_buySkills();
 
 ########################################################################################################
 //Defined in autoscend/auto_providers.ash
