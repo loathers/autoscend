@@ -490,7 +490,7 @@ boolean LM_boris();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_jarlsberg.ash
-boolean is_Jarlsberg();
+boolean is_jarlsberg();
 void jarlsberg_initializeSettings();
 void jarlsberg_initializeDay(int day);
 void jalrsberg_buySkills();
@@ -517,7 +517,7 @@ boolean awol_buySkills();
 //Defined in autoscend/paths/bees_hate_you.ash
 boolean in_bhy();
 void bhy_initializeSettings();
-boolean bees_hate_usable(string str);
+boolean bhy_usable(string str);
 boolean bhy_is_item_valid(item it);
 boolean LM_bhy();
 boolean L13_bhy_towerFinal();
@@ -684,10 +684,11 @@ item[int] bondDrinks();
 
 ########################################################################################################
 //Defined in autoscend/paths/live_ascend_repeat.ash
-boolean groundhogSafeguard();
-boolean canGroundhog(location loc);
-boolean groundhogAbort(location loc);
-boolean LM_groundhog();
+boolean in_lar();
+boolean lar_safeguard();
+boolean lar_repeat(location loc);
+boolean lar_abort(location loc);
+boolean LM_lar();
 
 ########################################################################################################
 //Defined in autoscend/paths/low_key_summer.ash
@@ -812,6 +813,10 @@ boolean LA_wildfire();
 ########################################################################################################
 //Defined in autoscend/paths/you_robot.ash
 boolean in_youRobot();
+
+########################################################################################################
+//Defined in autoscend/paths/zombie_slayer.ash
+boolean in_zombieSlayer();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash

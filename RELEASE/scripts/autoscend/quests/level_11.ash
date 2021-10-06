@@ -1607,7 +1607,7 @@ boolean L11_mauriceSpookyraven()
 	if (internalQuestStatus("questL11Manor") < 1)
 	{
 		auto_log_info("Searching for the basement of Spookyraven", "blue");
-		if(!cangroundHog($location[The Haunted Ballroom]))
+		if(!lar_repeat($location[The Haunted Ballroom]))
 		{
 			return false;
 		}

@@ -115,7 +115,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(is_Jarlsberg())
+	else if(is_jarlsberg())
 	{
 		switch(my_daycount())
 		{

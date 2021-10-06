@@ -594,7 +594,7 @@ boolean auto_pre_adventure()
 	{
 		auto_log_warning("We don't have a lot of MP but we are chugging along anyway", "red");
 	}
-	groundhogAbort(place);
+	lar_abort(place);
 	if (my_inebriety() > inebriety_limit())
 	{
 		if($locations[The Tunnel of L.O.V.E.] contains place)

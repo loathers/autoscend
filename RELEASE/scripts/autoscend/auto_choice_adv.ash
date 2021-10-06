@@ -62,14 +62,14 @@ boolean auto_run_choice(int choice, string page)
 			warChoiceHandler(choice);
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
-			if(auto_my_path() == "Live. Ascend. Repeat.")
+			if(in_lar())
 			{
 				set_property("_LAR_skipNC163", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
 			}
 			run_choice(4); // skip
 			break;
 		case 178: // Hammering the Armory
-			if(auto_my_path() == "Live. Ascend. Repeat.")
+			if(in_lar())
 			{
 				set_property("_LAR_skipNC178", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
 			}

@@ -321,7 +321,7 @@ generic_t zone_needItem(location loc)
 		retval._boolean = true;
 		retval._float = 10000.0/value;
 
-		if(auto_my_path() == "Live. Ascend. Repeat.")
+		if(in_lar())
 		{
 			retval._float = 5000.0/value;
 		}
@@ -539,7 +539,7 @@ generic_t zone_combatMod(location loc)
 		break;
 	}
 
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(in_lar())
 	{
 		value = 0;
 	}
