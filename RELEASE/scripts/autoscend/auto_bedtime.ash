@@ -415,6 +415,10 @@ void bedtime_pulls_rollover_equip()
 				very_best_val = rollover_improvement(best[sl], sl);
 			}
 		}
+		if(extra_debug)
+		{
+			auto_log_debug("Very best rollover pull is [" +very_best+ "] which improves desireability score by " +very_best_improvement, "blue");
+		}
 		
 		very_best_improvement = rollover_improvement(very_best, very_best.to_slot());
 		if(very_best_improvement < get_property("auto_bedtime_pulls_min_desirability").to_float())
