@@ -1816,67 +1816,6 @@ boolean Lsc_flyerSeals()
 	return false;
 }
 
-boolean LX_hardcoreFoodFarm()
-{
-	if(!in_hardcore() || !isGuildClass())
-	{
-		return false;
-	}
-	if(my_fullness() >= 11)
-	{
-		return false;
-	}
-
-	if(my_level() < 8)
-	{
-		return false;
-	}
-
-	// If we are in TCRS we don't know what food is good, we don't want to waste adv.
-	if(in_tcrs())
-	{
-		return false;
-	}
-
-	int possMeals = item_amount($item[Goat Cheese]);
-	possMeals = possMeals + item_amount($item[Bubblin\' Crude]);
-
-	if((my_fullness() >= 5) && (possMeals > 0))
-	{
-		return false;
-	}
-	if(possMeals > 1)
-	{
-		return false;
-	}
-
-	if((my_daycount() >= 3) && (my_adventures() > 15))
-	{
-		return false;
-	}
-	if(my_daycount() >= 4)
-	{
-		return false;
-	}
-
-	if (internalQuestStatus("questL09Topping") > 2)
-	{
-		autoAdv(1, $location[Oil Peak]);
-		return true;
-	}
-	if(my_level() >= 8)
-	{
-		if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
-		{
-			auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
-		}
-		autoAdv(1, $location[The Goatlet]);
-		auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
-	}
-
-	return false;
-}
-
 boolean LX_craftAcquireItems()
 {
 	if((item_amount($item[Ten-Leaf Clover]) > 0) && glover_usable($item[Ten-Leaf Clover]))
