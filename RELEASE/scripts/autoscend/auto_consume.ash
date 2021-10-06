@@ -489,7 +489,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Slayer")
+	if(in_zombieSlayer())
 	{
 		return ($items[crappy brain, decent brain, good brain, boss brain, hunter brain, brains casserole, fricasseed brains, steel lasagna] contains toEat);
 	}

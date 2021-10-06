@@ -59,7 +59,7 @@ boolean snojoFightAvailable()
 			standard[2] = "Muscle";
 			standard[3] = "Mysticality";
 		}
-		if(is_Jarlsberg())
+		if(is_jarlsberg())
 		{
 			standard[0] = "Mysticality";
 			standard[1] = "Moxie";

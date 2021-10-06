@@ -178,7 +178,7 @@ boolean picky_buyskills()
 		}
 		break;
 	case $class[Sauceror]:
-		if((my_level() >= 1) && (my_meat() >= 1250) && !have_skill($skill[Simmer]) && (auto_my_path() == "Community Service"))
+		if((my_level() >= 1) && (my_meat() >= 1250) && !have_skill($skill[Simmer]))
 		{
 			visit_url("guild.php?action=buyskill&skillid=25", true);
 		}
