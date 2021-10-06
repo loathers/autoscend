@@ -1195,6 +1195,7 @@ void equipBaseline();
 void ensureSealClubs();
 void equipRollover(boolean silent);
 boolean auto_forceEquipSword();
+boolean is_watch(item it);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
