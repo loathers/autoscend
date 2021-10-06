@@ -305,10 +305,11 @@ void bedtime_pulls_rollover_equip()
 				//all accessories always return acc1 from to_slot() function.
 				//since we are pulling one item at a time we only want to look at the worst slot each time
 				//we just need to make sure that equip conflicts do not arise.
+				sl = worst_acc_slot;
 				
 				if(boolean_modifier(it, "Single Equip"))
 				{
-					if(equipped_amount(it) > 0 && best[worst_acc_slot] != it)
+					if(equipped_amount(it) > 0 && best[sl] != it)
 					{
 						//we have it equipped but not in the worst slot. So exclude it from optimizing the worst slot.
 						continue;
@@ -317,7 +318,7 @@ void bedtime_pulls_rollover_equip()
 				
 				if(is_watch(it))	//watches conflict with each other. only one watch of any kind can be used
 				{
-					if(equipped_amount(it) > 0 && !is_watch(best[worst_acc_slot]))
+					if(equipped_amount(it) > 0 && !is_watch(best[sl]))
 					{
 						//we have a watch equipped but not in the worst slot. So exclude it from optimizing the worst slot.
 						continue;
@@ -325,14 +326,14 @@ void bedtime_pulls_rollover_equip()
 				}
 				
 				//can we even pull another copy of this accessory?
-				if(equipped_amount(it) > 0 && best[worst_acc_slot] != it && !canPull(it,true))
+				if(equipped_amount(it) > 0 && best[sl] != it && !canPull(it,true))
 				{
 					continue;
 				}
 				
-				if(rollover_value(it) > rollover_value(best[worst_acc_slot]))
+				if(rollover_value(it) > rollover_value(best[sl]))
 				{
-					best[worst_acc_slot] = it;
+					best[sl] = it;
 				}
 			}
 			else if($slot[weapon] == sl)
