@@ -223,23 +223,35 @@ int pullsNeeded(string data)
 	return count;
 }
 
+float rollover_value(item it)
+{
+	if(it == $item[none])
+	{
+		return 0.0;
+	}
+	float retval = numeric_modifier(it, "adventures");
+	if(hippy_stone_broken())
+	{
+		retval += get_property("auto_bedtime_pulls_pvp_multi").to_float() * numeric_modifier(it, "PvP Fights");
+	}
+	if(it == $item[your cowboy boots])		//your cowboy boot's add-ons are considered seperate items in their own slots
+	{
+		retval += rollover_value($slot[bootspur].equipped_item());
+		retval += rollover_value($slot[bootskin].equipped_item());
+	}
+	return retval;
+}
+
+float rollover_improvement(item it, slot sl)
+{
+	//some items can go in multiple slots so we need to specify which slot we want to compare it to.
+	//we can then compare such items to multiple slots and find the best slot for it
+	return rollover_value(it) - rollover_value(equipped_item(sl));
+}
+
 void bedtime_pulls_rollover_equip()
 {
 	//scan through all pullable items for items that have a better rollover adv gain than currently best equipped item.
-	float rollover_value(item it)
-	{
-		float retval = numeric_modifier(it, "adventures");
-		if(hippy_stone_broken())
-		{
-			retval += get_property("auto_bedtime_pulls_pvp_multi").to_float() * numeric_modifier(it, "PvP Fights");
-		}
-		return retval;
-	}
-	float rollover_improvement(item it, slot sl)
-	{
-		//need slot to not give bad results when slot is none
-		return rollover_value(it) - rollover_value(equipped_item(sl));
-	}
 	
 	equipRollover(true);
 	for(int i=0; i<10; i++)
