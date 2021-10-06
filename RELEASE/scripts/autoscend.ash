@@ -2556,7 +2556,7 @@ boolean doTasks()
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
-	groundhogSafeguard();
+	lar_safeguard();
 
 
 	//Early adventure options that we probably want
@@ -2565,7 +2565,7 @@ boolean doTasks()
 	if(LM_pete())						return true;
 	if(LM_gnoob())						return true;
 	if(LM_nuclear())					return true;
-	if(LM_groundhog())					return true;
+	if(LM_lar())						return true;
 	if(LM_batpath()) 					return true;
 	if(heavyrains_buySkills())			return true;
 	if(LM_canInteract()) 				return true;
