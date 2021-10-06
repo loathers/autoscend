@@ -1465,7 +1465,7 @@ boolean isHermitAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(in_zombieSlayer())
 	{
 		return false;
 	}
@@ -1482,7 +1482,7 @@ boolean isGalaktikAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(in_zombieSlayer())
 	{
 		return false;
 	}
@@ -1499,7 +1499,7 @@ boolean isGeneralStoreAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(in_zombieSlayer())
 	{
 		return false;
 	}
@@ -1512,7 +1512,7 @@ boolean isArmoryAndLeggeryStoreAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(in_zombieSlayer())
 	{
 		return false;
 	}
@@ -1552,7 +1552,7 @@ boolean isArmoryAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(in_zombieSlayer())
 	{
 		return false;
 	}
@@ -1569,7 +1569,7 @@ boolean isUnclePAvailable()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Master")
+	if(in_zombieSlayer())
 	{
 		return false;
 	}
@@ -3832,7 +3832,7 @@ boolean auto_is_valid(familiar fam)
 	if(is100FamRun()){
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
-	return bees_hate_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
+	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean auto_is_valid(skill sk)

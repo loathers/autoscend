@@ -209,17 +209,17 @@ boolean L10_basement()
 
 boolean L10_ground()
 {
-	if (internalQuestStatus("questL10Garbage") != 8)
+	if(internalQuestStatus("questL10Garbage") != 8)
 	{
 		return false;
 	}
 
-	if(!canGroundhog($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+	if(!lar_repeat($location[The Castle in the Clouds in the Sky (Ground Floor)]))
 	{
 		return false;
 	}
 
-	if (canBurnDelay($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+	if(canBurnDelay($location[The Castle in the Clouds in the Sky (Ground Floor)]))
 	{
 		return false;
 	}

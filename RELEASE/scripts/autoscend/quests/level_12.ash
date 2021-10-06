@@ -918,7 +918,7 @@ boolean L12_filthworms()
 			januaryToteAcquire($item[Broken Champagne Bottle]);
 		}
 
-		if(auto_my_path() == "Live. Ascend. Repeat.")
+		if(in_lar())
 		{
 			equipMaximizedGear();
 			if(item_drop_modifier() < 400.0)
@@ -1172,7 +1172,7 @@ boolean L12_sonofaBeach()
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
 
-	if(auto_my_path() != "Live. Ascend. Repeat.")
+	if(!in_lar())
 	{
 		if (providePlusCombat(25, true, true) < 0.0)
 		{
@@ -1286,7 +1286,7 @@ boolean L12_sonofaPrefix()
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
 
-	if(auto_my_path() != "Live. Ascend. Repeat.")
+	if(!in_lar())
 	{
 		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
 		{
