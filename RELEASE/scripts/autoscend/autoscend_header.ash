@@ -41,6 +41,7 @@ boolean LX_freeCombatsTask();
 boolean Lsc_flyerSeals();
 boolean LX_craftAcquireItems();
 boolean councilMaintenance();
+boolean auto_buySkills();
 boolean adventureFailureHandler();
 boolean beatenUpResolution();
 int speculative_pool_skill();
@@ -747,7 +748,6 @@ boolean plumber_equipTool(stat st);
 boolean in_picky();
 void picky_pulls();
 void picky_startAscension();
-boolean picky_buyskills();
 
 ########################################################################################################
 //Defined in autoscend/paths/pocket_familiars.ash
