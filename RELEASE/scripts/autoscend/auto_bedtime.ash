@@ -265,14 +265,30 @@ void bedtime_pulls_rollover_equip()
 		item very_best;
 		float very_best_val;
 		float very_best_improvement;
+		slot very_best_slot;
 		slot a1 = $slot[acc1];
 		slot a2 = $slot[acc2];
 		slot a3 = $slot[acc3];
 		
+		//we will need to know which accessory slot is the worst
+		slot worst_acc_slot = a1;
+		if(rollover_value(equipped_item(worst_acc_slot)) > rollover_value(equipped_item(a2)))
+		{
+			worst_acc_slot = $slot[acc2];
+		}
+		if(rollover_value(equipped_item(worst_acc_slot)) > rollover_value(equipped_item(a3)))
+		{
+			worst_acc_slot = $slot[acc3];
+		}
+		
 		//populate best with current equipment as a baseline
-		foreach sl in $slots[hat, back, shirt, pants, acc1, acc2, acc3, familiar]
+		foreach sl in $slots[hat, back, shirt, pants, acc1, familiar]
 		{
 			//populating with current item as baseline is necessary for accessories. harmful for weapon/off-hand. and harmless elsewhere.
+			if(sl == $slot[acc1])
+			{
+				sl = worst_acc_slot;
+			}
 			best[sl] = equipped_item(sl);
 		}
 		
@@ -280,66 +296,36 @@ void bedtime_pulls_rollover_equip()
 		foreach it in $items[]
 		{
 			slot sl = it.to_slot();
-			if(!($slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar] contains sl)) continue;	//exotic slot or not equip
+			if(!($slots[hat, weapon, off-hand, back, shirt, pants, acc1, familiar] contains sl)) continue;	//exotic slot or not equip
 			if(!possessEquipment(it) && !canPull(it,true)) continue;		//do not have it and can not pull it.
 			if(!auto_can_equip(it)) continue;		//we can not equip it
 			
-			if($slots[acc1, acc2, acc3] contains sl)
+			if($slot[acc1] == sl)
 			{
-				//all accessories always return acc1 from to_slot() function. so we need an additional for loop to do all 3 slots
-				foreach asl in $slots[acc1, acc2, acc3]
+				//all accessories always return acc1 from to_slot() function.
+				//since we are pulling one item at a time we only want to look at the worst slot each time
+				//we just need to make sure that equip conflicts do not arise.
+				
+				if(boolean_modifier(it, "Single Equip"))
 				{
-					//since we are pulling one item at a time, it does not matter if all 3 acc slots want us the same item.
-					//In fact it is desireable, as it ensures we pull the best item. And also we potentially want to pull duplicates
-					//we just need to make sure that Single Equip conflicts do not arise.
-					if(boolean_modifier(it, "Single Equip"))
+					if(equipped_amount(it) > 0 && best[worst_acc_slot] != it)
 					{
-						if(equipped_amount(it) > 0 && equipped_item(asl) != it)
-						{
-							//we have it equipped in a slot different than the one currently being optimized.
-							//So exclude it from this current slot optimization
-							continue;
-						}
-						if(best[a1] == it || best[a2] == it || best[a3] == it)
-						{
-							//it is currently the target to equip in one of our accessory slots. So do not consider a duplicate of it
-							continue;
-						}
-						
-						slot worst_slot = a1;
-						if(rollover_value(best[worst_slot]) > rollover_value(best[a2]))
-						{
-							worst_slot = $slot[acc2];
-						}
-						if(rollover_value(best[worst_slot]) > rollover_value(best[a3]))
-						{
-							worst_slot = $slot[acc3];
-						}
-						if(asl != worst_slot)
-						{
-							//single items should only attempt to go into the worst slot
-							continue;
-						}
+						//we have it equipped but not in the worst slot. So exclude it from optimizing the worst slot.
+						continue;
 					}
-					//handling quantity availability
-					if(!canPull(it,true))
-					{
-						//we pull 1 at a time. so if we can pull one more then it is fine to note it is the best for multiple slots
-						//if we can not pull any more. Then we must limit the best slots populating to the number we actually have.
-						int slots_assigned = 0;
-						foreach slot_for_count in $slots[acc1, acc2, acc3]
-						{
-							if(best[slot_for_count] == it) slots_assigned++;
-						}
-						if(item_amount(it) + equipped_amount(it) == slots_assigned)
-						{
-							continue;	//we already assigned all available copies to a slot. do not try to assign any more
-						}
-					}
-					if(rollover_value(it) > rollover_value(best[asl]))
-					{
-						best[asl] = it;
-					}
+				}
+				
+				//TODO clock conflict check. we can only have 1 clock of any kind
+				
+				//can we even pull another copy of this accessory?
+				if(equipped_amount(it) > 0 && best[worst_acc_slot] != it && !canPull(it,true))
+				{
+					continue;
+				}
+				
+				if(rollover_value(it) > rollover_value(best[worst_acc_slot]))
+				{
+					best[worst_acc_slot] = it;
 				}
 			}
 			else if($slot[weapon] == sl)
@@ -395,8 +381,13 @@ void bedtime_pulls_rollover_equip()
 		
 		//find the very best item
 		boolean extra_debug = get_property("_auto_extra_debug_bedtime_pulls").to_boolean();
-		foreach sl in $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar]
+		foreach sl in $slots[hat, weapon, off-hand, back, shirt, pants, acc1, familiar]
 		{
+			if(sl == $slot[acc1])
+			{
+				sl = worst_acc_slot;
+			}
+			
 			if(extra_debug)
 			{
 				//prints out all the items we want. Too messy for normal runs even in debug mode.
@@ -413,14 +404,11 @@ void bedtime_pulls_rollover_equip()
 			{
 				very_best = best[sl];
 				very_best_val = rollover_improvement(best[sl], sl);
+				very_best_slot = sl;
 			}
 		}
-		if(extra_debug)
-		{
-			auto_log_debug("Very best rollover pull is [" +very_best+ "] which improves desireability score by " +very_best_improvement, "blue");
-		}
-		
-		very_best_improvement = rollover_improvement(very_best, very_best.to_slot());
+
+		very_best_improvement = rollover_improvement(very_best, very_best_slot);
 		if(very_best_improvement < get_property("auto_bedtime_pulls_min_desirability").to_float())
 		{
 			break;
