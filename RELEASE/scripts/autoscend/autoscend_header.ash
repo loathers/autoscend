@@ -30,7 +30,6 @@ boolean fortuneCookieEvent();
 void initializeDay(int day);
 boolean dailyEvents();
 boolean Lsc_flyerSeals();
-boolean LX_craftAcquireItems();
 boolean councilMaintenance();
 boolean adventureFailureHandler();
 boolean beatenUpResolution();
@@ -1072,6 +1071,7 @@ boolean acquireTotem();
 boolean acquireHermitItem(item it);
 boolean pull_meat(int target);
 int handlePulls(int day);
+boolean LX_craftAcquireItems();
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash
