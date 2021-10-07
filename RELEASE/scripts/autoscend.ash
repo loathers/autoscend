@@ -23,7 +23,6 @@ import <autoscend/auto_equipment.ash>
 import <autoscend/auto_familiar.ash>
 import <autoscend/auto_list.ash>
 import <autoscend/auto_monsterparts.ash>
-import <autoscend/auto_path_util.ash>
 import <autoscend/auto_powerlevel.ash>
 import <autoscend/auto_providers.ash>
 import <autoscend/auto_restore.ash>
@@ -48,6 +47,7 @@ import <autoscend/iotms/mr2020.ash>
 import <autoscend/iotms/mr2021.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
+import <autoscend/paths/auto_path_util.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
