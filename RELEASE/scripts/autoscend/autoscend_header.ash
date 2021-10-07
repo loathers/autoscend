@@ -25,21 +25,11 @@ boolean LX_burnDelay();
 boolean LX_universeFrat();
 boolean LX_faxing();
 boolean tophatMaker();
-int handlePulls(int day);
 boolean LX_doVacation();
 boolean fortuneCookieEvent();
 void initializeDay(int day);
 boolean dailyEvents();
-boolean isAboutToPowerlevel();
-boolean LX_attemptPowerLevel();
-boolean disregardInstantKarma();
-int auto_freeCombatsRemaining();
-int auto_freeCombatsRemaining(boolean print_remaining_fights);
-boolean LX_freeCombats();
-boolean LX_freeCombats(boolean powerlevel);
-boolean LX_freeCombatsTask();
 boolean Lsc_flyerSeals();
-boolean LX_craftAcquireItems();
 boolean councilMaintenance();
 boolean adventureFailureHandler();
 boolean beatenUpResolution();
@@ -1080,6 +1070,8 @@ boolean acquireGumItem(item it);
 boolean acquireTotem();
 boolean acquireHermitItem(item it);
 boolean pull_meat(int target);
+int handlePulls(int day);
+boolean LX_craftAcquireItems();
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash
@@ -1295,6 +1287,17 @@ boolean hasTorso(monster enemy);
 ########################################################################################################
 //Defined in autoscend/auto_path_util.ash
 boolean auto_buySkills();
+
+########################################################################################################
+//Defined in autoscend/auto_powerlevel.ash
+boolean isAboutToPowerlevel();
+boolean LX_attemptPowerLevel();
+boolean disregardInstantKarma();
+int auto_freeCombatsRemaining();
+int auto_freeCombatsRemaining(boolean print_remaining_fights);
+boolean LX_freeCombats();
+boolean LX_freeCombats(boolean powerlevel);
+boolean LX_freeCombatsTask();
 
 ########################################################################################################
 //Defined in autoscend/auto_providers.ash
