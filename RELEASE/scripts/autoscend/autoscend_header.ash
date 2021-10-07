@@ -25,7 +25,6 @@ boolean LX_burnDelay();
 boolean LX_universeFrat();
 boolean LX_faxing();
 boolean tophatMaker();
-int handlePulls(int day);
 boolean LX_doVacation();
 boolean fortuneCookieEvent();
 void initializeDay(int day);
@@ -1072,6 +1071,7 @@ boolean acquireGumItem(item it);
 boolean acquireTotem();
 boolean acquireHermitItem(item it);
 boolean pull_meat(int target);
+int handlePulls(int day);
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash

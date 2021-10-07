@@ -556,3 +556,239 @@ boolean pull_meat(int target)
 	
 	return my_meat() >= target;
 }
+
+int handlePulls(int day)
+{
+	if(item_amount($item[Astral Six-Pack]) > 0)
+	{
+		use(1, $item[Astral Six-Pack]);
+	}
+	if(item_amount($item[Astral Hot Dog Dinner]) > 0)
+	{
+		use(1, $item[Astral Hot Dog Dinner]);
+	}
+
+	if(in_hardcore())
+	{
+		return 0;
+	}
+
+	if(day == 1)
+	{
+		set_property("lightsOutAutomation", "1");
+		# Do starting pulls:
+		if((pulls_remaining() != 20) && !in_hardcore() && (my_turncount() > 0))
+		{
+			auto_log_info("I assume you've handled your pulls yourself... who knows.");
+			return 0;
+		}
+
+		if((storage_amount($item[etched hourglass]) > 0) && auto_is_valid($item[etched hourglass]))
+		{
+			pullXWhenHaveY($item[etched hourglass], 1, 0);
+		}
+
+		if((storage_amount($item[mafia thumb ring]) > 0) && auto_is_valid($item[mafia thumb ring]))
+		{
+			pullXWhenHaveY($item[mafia thumb ring], 1, 0);
+		}
+
+		if((storage_amount($item[can of rain-doh]) > 0) && glover_usable($item[Can Of Rain-Doh]) && (pullXWhenHaveY($item[can of Rain-doh], 1, 0)))
+		{
+			if(item_amount($item[Can of Rain-doh]) > 0)
+			{
+				use(1, $item[can of Rain-doh]);
+				put_closet(1, $item[empty rain-doh can]);
+			}
+		}
+		if((storage_amount($item[Buddy Bjorn]) > 0) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		{
+			pullXWhenHaveY($item[Buddy Bjorn], 1, 0);
+		}
+		if((storage_amount($item[Camp Scout Backpack]) > 0) && !possessEquipment($item[Buddy Bjorn]) && glover_usable($item[Camp Scout Backpack]))
+		{
+			pullXWhenHaveY($item[Camp Scout Backpack], 1, 0);
+		}
+
+		if(in_wotsf())
+		{
+			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
+		}
+
+		if(!possessEquipment($item[Astral Shirt]))
+		{
+			boolean getPeteShirt = true;
+			if(!hasTorso())
+			{
+				getPeteShirt = false;
+			}
+			if((my_primestat() == $stat[Muscle]) && get_property("loveTunnelAvailable").to_boolean())
+			{
+				getPeteShirt = false;
+			}
+			if(in_glover())
+			{
+				getPeteShirt = false;
+			}
+			if (storage_amount($item[Sneaky Pete\'s Leather Jacket]) == 0 && storage_amount($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]) == 0)
+			{
+				getPeteShirt = false;
+			}
+
+			if(getPeteShirt)
+			{
+				pullXWhenHaveY($item[Sneaky Pete\'s Leather Jacket], 1, 0);
+				if(item_amount($item[Sneaky Pete\'s Leather Jacket]) == 0)
+				{
+					pullXWhenHaveY($item[Sneaky Pete\'s Leather Jacket (Collar Popped)], 1, 0);
+				}
+				else
+				{
+					auto_fold($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]);
+				}
+			}
+		}
+
+		if((in_picky() || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
+		{
+			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
+			{
+				pullXWhenHaveY($item[Boris\'s Key Lime Pie], 1, 0);
+			}
+			if((item_amount($item[Sneaky Pete\'s Key]) == 0) && canEat($item[Sneaky Pete\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
+			{
+				pullXWhenHaveY($item[Sneaky Pete\'s Key Lime Pie], 1, 0);
+			}
+			if((item_amount($item[Jarlsberg\'s Key]) == 0) && canEat($item[Jarlsberg\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
+			{
+				pullXWhenHaveY($item[Jarlsberg\'s Key Lime Pie], 1, 0);
+			}
+		}
+
+		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && glover_usable($item[Over-The-Shoulder Folder Holder]))
+		{
+			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
+		}
+		if((my_primestat() == $stat[Muscle]) && !in_heavyrains())
+		{
+			if((closet_amount($item[Fake Washboard]) == 0) && glover_usable($item[Fake Washboard]))
+			{
+				pullXWhenHaveY($item[Fake Washboard], 1, 0);
+			}
+			if((item_amount($item[Fake Washboard]) == 0) && (closet_amount($item[Fake Washboard]) == 0))
+			{
+				pullXWhenHaveY($item[numberwang], 1, 0);
+			}
+			else
+			{
+				if(get_property("barrelShrineUnlocked").to_boolean())
+				{
+					put_closet(item_amount($item[Fake Washboard]), $item[Fake Washboard]);
+				}
+			}
+		}
+		else
+		{
+			pullXWhenHaveY($item[Numberwang], 1, 0);
+		}
+		if(in_pokefam())
+		{
+			pullXWhenHaveY($item[Ring Of Detect Boring Doors], 1, 0);
+			pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
+			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+		}
+
+		if((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer]))
+		{
+			if((item_amount($item[Deck of Every Card]) == 0) && !auto_have_skill($skill[Summon Smithsness]))
+			{
+				pullXWhenHaveY($item[Thor\'s Pliers], 1, 0);
+			}
+			if(glover_usable($item[Basaltamander Buckler]))
+			{
+				pullXWhenHaveY($item[Basaltamander Buckler], 1, 0);
+			}
+		}
+
+		if(in_picky())
+		{
+			pullXWhenHaveY($item[gumshoes], 1, 0);
+		}
+		if(auto_have_skill($skill[Summon Smithsness]))
+		{
+			pullXWhenHaveY($item[hand in glove], 1, 0);
+		}
+
+		if(!in_heavyrains() && (auto_my_path() != "License to Adventure") && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		{
+			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
+			{
+				pullXWhenHaveY($item[snow suit], 1, 0);
+			}
+			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Filthy Child Leash]))
+			{
+				pullXWhenHaveY($item[Filthy Child Leash], 1, 0);
+			}
+		}
+
+		if(get_property("auto_dickstab").to_boolean())
+		{
+			pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 3, 0);
+		}
+
+		if(!in_glover())
+		{
+			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
+		}
+
+		if(is_unrestricted($item[Bastille Battalion control rig]))
+		{
+			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
+		}
+
+		if(!in_pokefam() && !in_glover())
+		{
+			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
+		}
+		
+		pullLegionKnife();
+
+		if(my_class() == $class[Vampyre])
+		{
+			auto_log_info("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
+			if((storage_amount($item[mime army shotglass]) > 0) && is_unrestricted($item[mime army shotglass]))
+			{
+				pullXWhenHaveY($item[mime army shotglass], 1, 0);
+			}
+			int available_bloodbags = 7;
+			if(item_amount($item[Vampyric cloake]) > 0)
+			{
+				available_bloodbags += 1;
+			}
+			if(item_amount($item[Lil\' Doctor&trade; Bag]) > 0)
+			{
+				available_bloodbags += 1;
+			}
+
+			int available_stomach = 5;
+			int available_drink = 5;
+			if(item_amount($item[mime army shotglass]) > 0)
+			{
+				available_drink += 1;
+			}
+
+			// assuming dieting pills
+			pullXWhenHaveY($item[gauze garter], (1+available_stomach)/2, 0);
+			pullXWhenHaveY($item[monstar energy beverage], available_drink, 0);
+		}
+	}
+	else if(day == 2)
+	{
+		if((closet_amount($item[Fake Washboard]) == 1) && get_property("barrelShrineUnlocked").to_boolean())
+		{
+			take_closet(1, $item[Fake Washboard]);
+		}
+	}
+
+	return pulls_remaining();
+}
