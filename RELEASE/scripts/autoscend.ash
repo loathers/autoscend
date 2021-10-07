@@ -18,14 +18,15 @@ import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
 import <autoscend/auto_bedtime.ash>
 import <autoscend/auto_consume.ash>
-import <autoscend/auto_settings.ash>
 import <autoscend/auto_craft.ash>
 import <autoscend/auto_equipment.ash>
 import <autoscend/auto_familiar.ash>
 import <autoscend/auto_list.ash>
 import <autoscend/auto_monsterparts.ash>
+import <autoscend/auto_path_util.ash>
 import <autoscend/auto_providers.ash>
 import <autoscend/auto_restore.ash>
+import <autoscend/auto_settings.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
@@ -2523,9 +2524,7 @@ boolean doTasks()
 	basicAdjustML();
 
 	councilMaintenance();
-	# This function buys missing skills in general, not just for Picky.
-	# It should be moved.
-	picky_buyskills();
+	auto_buySkills();		// formerly picky_buyskills() now moved here
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();

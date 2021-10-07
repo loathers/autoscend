@@ -747,7 +747,6 @@ boolean plumber_equipTool(stat st);
 boolean in_picky();
 void picky_pulls();
 void picky_startAscension();
-boolean picky_buyskills();
 
 ########################################################################################################
 //Defined in autoscend/paths/pocket_familiars.ash
@@ -1292,6 +1291,10 @@ boolean hasHead(monster enemy);
 boolean hasLeg(monster enemy);
 boolean hasTail(monster enemy);
 boolean hasTorso(monster enemy);
+
+########################################################################################################
+//Defined in autoscend/auto_path_util.ash
+boolean auto_buySkills();
 
 ########################################################################################################
 //Defined in autoscend/auto_providers.ash
