@@ -1,4 +1,4 @@
-since r25702;	//expose snarfblat zone id via $location[noob cave].id
+since r25759;	//fixes everything not working in you robot path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -238,6 +238,7 @@ void initializeSettings() {
 	grey_goo_initializeSettings();
 	qt_initializeSettings();
 	jarlsberg_initializeSettings();
+	robot_initializeSettings();
 	wildfire_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
@@ -1719,6 +1720,7 @@ boolean doTasks()
 	if(LM_canInteract()) 				return true;
 	if(LM_kolhs()) 						return true;
 	if(LM_jarlsberg())					return true;
+	if(LM_robot())						return true;
 
 	if(!in_community())
 	{
