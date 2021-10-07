@@ -45,6 +45,15 @@ boolean handleRainDoh()
 
 	monster enemy = to_monster(get_property("rainDohMonster"));
 	auto_log_info("Black boxing: " + enemy, "blue");
+	
+	void validate_rainDohBox()
+	{
+		if(enemy != $monster[Source Agent] &&	//special exclusion for path The Source where [source agent] might randomly replace our target
+		enemy != last_monster())	//general failure detection
+		{
+			abort("Not sure what exploded. tried to summon copy of " + enemy + " but got " + last_monster() + " instead.");
+		}
+	}
 
 	if(enemy == $monster[Ninja Snowman Assassin])
 	{
@@ -57,10 +66,7 @@ boolean handleRainDoh()
 			set_property("auto_doCombatCopy", "yes");
 		}
 		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		if(last_monster() != $monster[ninja snowman assassin])
-		{
-			abort("Now sure what exploded, tried to summon copy of " + enemy + " but got " + last_monster() + " instead.");
-		}
+		validate_rainDohBox();
 		set_property("auto_doCombatCopy", "no");
 		if(count == 3)
 		{
@@ -78,10 +84,7 @@ boolean handleRainDoh()
 			set_property("auto_doCombatCopy", "yes");
 		}
 		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		if(last_monster() != $monster[ghost])
-		{
-			abort("Now sure what exploded, tried to summon copy of " + enemy + " but got " + last_monster() + " instead.");
-		}
+		validate_rainDohBox();
 		set_property("auto_doCombatCopy", "no");
 		if(count > 20)
 		{
@@ -95,10 +98,7 @@ boolean handleRainDoh()
 			set_property("auto_doCombatCopy", "yes");
 		}
 		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		if(last_monster() != $monster[lobsterfrogman])
-		{
-			abort("Now sure what exploded, tried to summon copy of " + enemy + " but got " + last_monster() + " instead.");
-		}
+		validate_rainDohBox();
 		set_property("auto_doCombatCopy", "no");
 		return true;
 	}
@@ -112,10 +112,7 @@ boolean handleRainDoh()
 			set_property("auto_doCombatCopy", "yes");
 		}
 		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		if(last_monster() != $monster[skinflute])
-		{
-			abort("Now sure what exploded, tried to summon copy of " + enemy + " but got " + last_monster() + " instead.");
-		}
+		validate_rainDohBox();
 		set_property("auto_doCombatCopy", "no");
 		return true;
 	}
@@ -127,10 +124,7 @@ boolean handleRainDoh()
 	if(enemy != $monster[none])
 	{
 		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		if(last_monster() != enemy)
-		{
-			abort("Now sure what exploded, tried to summon copy of " + enemy + " but got " + last_monster() + " instead.");
-		}
+		validate_rainDohBox();
 		return true;
 	}
 
