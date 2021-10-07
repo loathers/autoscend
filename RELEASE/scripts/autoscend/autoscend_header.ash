@@ -811,8 +811,34 @@ boolean LA_wildfire();
 //Defined in autoscend/paths/you_robot.ash
 boolean in_robot();
 void robot_initializeSettings();
+string robot_defaultMaximizeStatement();
+boolean robot_top(int choice);
+boolean robot_left(int choice);
+boolean robot_right(int choice);
+boolean robot_bottom(int choice);
+boolean robot_cpu(int choice, boolean no_buy);
+boolean robot_cpu(int choice);
+void robot_skillbuy();
+int robot_energy_per_collect();
 boolean LX_robot_get_energy();
+boolean LX_robot_get_scrap_once();
+boolean LX_robot_get_scrap(int target);
+int robot_chronolith_cost();
+void robot_get_adv();
+int robot_statbot_cost();
+boolean robot_statbot(stat target);
+stat robot_stat_wanted();
+boolean LX_robot_level();
+boolean LX_robot_powerlevel();
+boolean robot_assemble();
+boolean robot_assemble_want_sniper();
+boolean robot_assemble_want_rocket_crotch();
+boolean robot_assemble_want_bird_cage();
+void robot_directive();
+boolean robot_directive_check(string check);
+boolean robot_delay(string check);
 boolean LM_robot();
+boolean LA_robot();
 
 ########################################################################################################
 //Defined in autoscend/paths/zombie_slayer.ash

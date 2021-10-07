@@ -82,6 +82,10 @@ void auto_ghost_prep(location place)
 	{
 		return;		//these paths either have their own ghost handling. or can always kill ghosts
 	}
+	if(get_property("youRobotBottom").to_int() == 2)
+	{
+		return;		//you robot with a rocket crotch. deals fire damage to kill ghosts.
+	}
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
 	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
 	Storm of the Scarab,		//actually ed the undying

@@ -112,6 +112,10 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
+	if(robot_delay("outfit"))
+	{
+		return false;	//delay for You, Robot path
+	}
 
 	auto_log_info("Death to the gobbo!!", "blue");
 	if(!autoOutfit("Knob Goblin Harem Girl Disguise"))

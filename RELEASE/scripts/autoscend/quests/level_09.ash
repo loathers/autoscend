@@ -150,6 +150,10 @@ boolean L9_chasmBuild()
 		auto_log_debug("Delaying Logging Camp in case of Shen.");
 		return false;
 	}
+	if(robot_delay("chasm"))
+	{
+		return false;	//delay for You, Robot path
+	}
 
 	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 
