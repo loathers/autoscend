@@ -451,6 +451,21 @@ boolean LX_wildfire_water()
 		LX_wildfire_hose($location[The Hidden Bowling Alley]);		//part of level 11 quest. potentially might want to go after NC instead
 	}
 	
+	if(in_hardcore() && !haveWarOutfit() && internalQuestStatus("questL12War") == 0)	//we need war outfit
+	{
+		abort("Due to tracking issues you need to manually acquire the necessary war outfit and run me again");
+// below is code for automation that is not functional due to mafia not tracking fire levels correctly. When fixed upstream remove the the abort and uncomment the code
+//  https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/892#issuecomment-934059485
+//		if(auto_warSide() == "fratboy")
+//		{
+//			LX_wildfire_hose($location[Frat House In Disguise]);
+//		}
+//		else
+//		{
+//			LX_wildfire_hose($location[Hippy Camp In Disguise]);
+//		}
+	}
+	
 	//mass watering. waters all areas of a certain type (outdoor, indoor, underground) reducing fire from 5 to 2
 	if(get_property("wildfirePumpGreased").to_boolean())		//only pump and mass water if you greased the pump
 	{

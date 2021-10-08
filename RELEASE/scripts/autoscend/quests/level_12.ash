@@ -1,3 +1,24 @@
+############################################
+/*
+Below are relevant locations for the war.
+war not started or finished with this side undefeated:
+[Frat House]
+[Frat House In Disguise]	//r25731 incorrectly identifies this as [Frat House] when encountered
+[Hippy Camp]
+[Hippy Camp In Disguise]	//r25731 incorrectly identifies this as [Wartime Hippy Camp (Frat Disguise)] when encountered
+
+War started:
+[Wartime Frat House]
+[Wartime Frat House (Hippy Disguise)]
+[Wartime Hippy Camp]
+[Wartime Hippy Camp (Frat Disguise)]
+
+War finished & side defeated:
+[The Orcish Frat House (Bombed Back to the Stone Age)]
+[The Hippy Camp (Bombed Back to the Stone Age)]
+*/
+############################################
+
 void copy_warplan(WarPlan target, WarPlan source)
 {
 	//record A = B; does not copy the contents of B into record A, it instead copies memory references. Thus A merely becomes an alias for B and changing one changes the other as well.
@@ -597,17 +618,17 @@ boolean L12_getOutfit()
 	}
 	
 	// if outfit could not be pulled and have a [Filthy Hippy Disguise] outfit then wear it and adventure in Frat House to get war outfit
-	if (!get_property("auto_hippyInstead").to_boolean() && possessOutfit("Filthy Hippy Disguise"))
+	if (auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		return autoAdv(1, $location[Wartime Frat House]);
+		return autoAdv($location[Frat House In Disguise]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
-	if (get_property("auto_hippyInstead").to_boolean() && possessOutfit("Frat Boy Ensemble"))
+	if (auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		return autoAdv(1, $location[Wartime Hippy Camp]);
+		return autoAdv($location[Hippy Camp In Disguise]);
 	}
 	
 	if(L12_preOutfit())
