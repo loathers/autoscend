@@ -1064,6 +1064,13 @@ boolean zone_available(location loc)
 			retval = true;
 		}
 		break;
+	case $location[Frat House]:
+	case $location[Hippy Camp]:
+		if(get_property("lastIslandUnlock").to_int() == my_ascensions())
+		{
+			retval = true;
+		}
+		break;
 	case $location[Frat House In Disguise]:
 	case $location[Hippy Camp In Disguise]:
 		if(internalQuestStatus("questL12War") == 0 &&		//if the quest is exactly at started step.
