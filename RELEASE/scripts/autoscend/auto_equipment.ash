@@ -526,6 +526,11 @@ boolean possessEquipment(item equipment)
 	return equipmentAmount(equipment) > 0;
 }
 
+boolean possessUnrestricted(item it)
+{
+	return possessEquipment(it) && is_unrestricted(it);
+}
+
 boolean possessOutfit(string outfitToCheck, boolean checkCanEquip) {
 	// have_outfit will report false if you're wearing some of the items
 	// it will only report true if you have all in inventory or are wearing the whole thing

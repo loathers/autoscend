@@ -1177,6 +1177,7 @@ void equipMaximizedGear();
 void equipOverrides();
 int equipmentAmount(item equipment);
 boolean possessEquipment(item equipment);
+boolean possessUnrestricted(item it);
 boolean possessOutfit(string outfit, boolean checkCanEquip);
 boolean possessOutfit(string outfit);
 void equipBaseline();

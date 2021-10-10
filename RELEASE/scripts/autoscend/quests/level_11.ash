@@ -12,11 +12,6 @@ desert_buff_record desertBuffs()
 
     dbr.progress = 1;
 
-	boolean possessUnrestricted(item it)
-	{
-		return possessEquipment(it) && is_unrestricted(it);
-	}
-
 	boolean compassValid = possessUnrestricted($item[UV-resistant compass]);
 	boolean lhmValid = canChangeToFamiliar($familiar[Left-Hand Man]);
 	boolean meloValid = canChangeToFamiliar($familiar[Melodramedary]);
