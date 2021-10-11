@@ -1769,6 +1769,12 @@ item[int] hugpocket_available()
 
 boolean is_ghost_in_zone(location loc)
 {
+	//special case for [ghost of Elizabeth Spookyraven] which only appears in [the haunted gallery] at the culmination of lights out quest
+	if(loc == $location[the haunted gallery])
+	{
+		//TODO implement doing the quest and then return true when the quest is at the right stage for her to appear
+		return false;
+	}
 	foreach idx, mob in get_monsters(loc)
 	{
 		if (mob.physical_resistance >= 80)
