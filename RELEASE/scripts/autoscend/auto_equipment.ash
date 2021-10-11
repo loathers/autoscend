@@ -180,7 +180,7 @@ string defaultMaximizeStatement()
 		return pokefam_defaultMaximizeStatement();
 	}
 	
-	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,-fumble";
 	if(my_primestat() != $stat[Moxie])
 	{
 		res += ",mox";
