@@ -145,8 +145,34 @@ int auto_mall_price(item it)
 	return -1;
 }
 
+boolean pullXWhenHaveYCasual(item it, int howMany, int whenHave)
+{
+	//we are either in a casual run. or in postronin. either way pull becomes mallbuy
+	if(!can_interact())
+	{
+		return false;
+	}
+	if(it == $item[none])
+	{
+		return false;
+	}
+	if (!auto_is_valid(it))
+	{
+		return false;
+	}
+	if((item_amount(it) + equipped_amount(it)) != whenHave)
+	{
+		return false;
+	}
+	return buy_item(it, howMany, 20000);
+}
+
 boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 {
+	if(can_interact())
+	{
+		return pullXWhenHaveYCasual(it, howMany, whenHave);
+	}
 	if(auto_my_path() == "Community Service")
 	{
 		return false;
