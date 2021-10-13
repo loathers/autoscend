@@ -140,7 +140,7 @@ int lumberCount()
 
 boolean L9_chasmBuild()
 {
-	if (internalQuestStatus("questL09Topping") < 0 || get_property("chasmBridgeProgress").to_int() >= 30 || internalQuestStatus("questL09Topping") > 0)
+	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= 30)
 	{
 		return false;
 	}

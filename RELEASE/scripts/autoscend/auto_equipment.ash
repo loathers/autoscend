@@ -180,7 +180,7 @@ string defaultMaximizeStatement()
 		return pokefam_defaultMaximizeStatement();
 	}
 	
-	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,-fumble";
 	if(my_primestat() != $stat[Moxie])
 	{
 		res += ",mox";
@@ -524,6 +524,11 @@ int equipmentAmount(item equipment)
 boolean possessEquipment(item equipment)
 {
 	return equipmentAmount(equipment) > 0;
+}
+
+boolean possessUnrestricted(item it)
+{
+	return possessEquipment(it) && is_unrestricted(it);
 }
 
 boolean possessOutfit(string outfitToCheck, boolean checkCanEquip) {
