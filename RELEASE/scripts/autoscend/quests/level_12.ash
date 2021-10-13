@@ -621,14 +621,16 @@ boolean L12_getOutfit()
 	if (auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		return autoAdv($location[Frat House In Disguise]);
+		//r25671 this should be [Frat House In Disguise] but due to mafia issue it currently needs to be as below
+		return autoAdv($location[Frat House]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
 	if (auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		return autoAdv($location[Hippy Camp In Disguise]);
+		//r25671 this should be [Hippy Camp In Disguise] but due to mafia issue it currently needs to be as below
+		return autoAdv($location[Hippy Camp]);
 	}
 	
 	if(L12_preOutfit())
