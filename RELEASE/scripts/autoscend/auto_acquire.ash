@@ -164,7 +164,7 @@ boolean pullXWhenHaveYCasual(item it, int howMany, int whenHave)
 	{
 		return false;
 	}
-	return buy_item(it, howMany, 20000);
+	return buy_item(it, howMany, get_property("autoBuyPriceLimit").to_int());
 }
 
 boolean pullXWhenHaveY(item it, int howMany, int whenHave)
