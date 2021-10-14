@@ -120,12 +120,12 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if((get_property("lastEncounter") == "Daily Briefing") && (auto_my_path() == "License to Adventure"))
+	if((get_property("lastEncounter") == "Daily Briefing") && in_lta())
 	{
 		set_property("_auto_bondBriefing", "started");
 	}
 
-	if((get_property("_villainLairProgress").to_int() < 999) && ((get_property("_villainLairColor") != "") || get_property("_villainLairColorChoiceUsed").to_boolean()) && (auto_my_path() == "License to Adventure") && (my_location() == $location[Super Villain\'s Lair]))
+	if((get_property("_villainLairProgress").to_int() < 999) && ((get_property("_villainLairColor") != "") || get_property("_villainLairColorChoiceUsed").to_boolean()) && in_lta() && (my_location() == $location[Super Villain\'s Lair]))
 	{
 		if(item_amount($item[Can Of Minions-Be-Gone]) > 0)
 		{
@@ -350,7 +350,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
 	}
 
-	if(my_path() == "Community Service")
+	if(in_community())
 	{
 		if(auto_have_skill($skill[Summon BRICKOs]) && (get_property("_brickoEyeSummons").to_int() < 3))
 		{

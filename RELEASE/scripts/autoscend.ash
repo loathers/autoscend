@@ -53,6 +53,7 @@ import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
+import <autoscend/paths/bugbear_invasion.ash>
 import <autoscend/paths/casual.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
@@ -518,7 +519,7 @@ boolean fortuneCookieEvent()
 
 		location goal = $location[The Hidden Temple];
 
-		if((my_path() == "Community Service") && (my_daycount() == 1))
+		if(in_community() && (my_daycount() == 1))
 		{
 			goal = $location[The Limerick Dungeon];
 		}
@@ -702,7 +703,7 @@ void initializeDay(int day)
 		}
 	}
 
-	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && (auto_my_path() == "Community Service"))
+	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && in_community())
 	{
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
@@ -792,7 +793,7 @@ void initializeDay(int day)
 
 			heavyrains_initializeDay(day);
 			// It's nice to have a moxie weapon for Flock of Bats form
-			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
+			if(in_darkGyffte() && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
 			{
 				acquireGumItem($item[disco ball]);
 			}
@@ -839,7 +840,7 @@ void initializeDay(int day)
 			auto_beachCombHead("exp");
 		}
 
-		if((get_property("lastCouncilVisit").to_int() < my_level()) && (auto_my_path() != "Community Service"))
+		if((get_property("lastCouncilVisit").to_int() < my_level()) && !in_community())
 		{
 			cli_execute("counters");
 			council();
@@ -914,7 +915,7 @@ void initializeDay(int day)
 				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
 		}
-		if (chateaumantegna_havePainting() && !isActuallyEd() && auto_my_path() != "Community Service")
+		if (chateaumantegna_havePainting() && !isActuallyEd() && !in_community())
 		{
 			if(auto_have_familiar($familiar[Reanimated Reanimator]))
 			{
@@ -1205,7 +1206,7 @@ boolean Lsc_flyerSeals()
 
 boolean councilMaintenance()
 {
-	if (auto_my_path() == "Community Service" || in_koe())
+	if (in_community() || in_koe())
 	{
 		return false;
 	}
@@ -1717,7 +1718,7 @@ boolean doTasks()
 	if(LM_kolhs()) 						return true;
 	if(LM_jarlsberg())					return true;
 
-	if(auto_my_path() != "Community Service")
+	if(!in_community())
 	{
 		cheeseWarMachine(0, 0, 0, 0);
 
@@ -1752,7 +1753,7 @@ boolean doTasks()
 	{
 		return true;
 	}
-	if(auto_my_path() == "Community Service")
+	if(in_community())
 	{
 		abort("Should not have gotten here, aborted LA_cs_communityService method allowed return to caller. Uh oh.");
 	}

@@ -1,6 +1,6 @@
 boolean in_lar()
 {
-	return auto_my_path() == "Live. Ascend. Repeat.";
+	return my_path() == "Live. Ascend. Repeat.";
 }
 
 boolean lar_safeguard()

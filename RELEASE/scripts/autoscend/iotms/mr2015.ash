@@ -45,7 +45,7 @@ boolean auto_barrelPrayers()
 
 	boolean[string] prayers;
 
-	if(my_path() == "License to Adventure")
+	if(in_lta())
 	{
 		switch(my_daycount())
 		{
@@ -85,7 +85,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(my_path() == "Community Service")
+	else if(in_community())
 	{
 		switch(my_daycount())
 		{
@@ -145,7 +145,7 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Glamour, Vigor];					break;
 		}
 	}
-	else if(my_path() == "Actually Ed the Undying")
+	else if(isActuallyEd())
 	{
 		if((elementalPlanes_access($element[spooky])) && (get_property("edPoints").to_int() >= 2))
 		{
@@ -236,7 +236,7 @@ boolean auto_mayoItems()
 		case 4:				mayos = $items[Mayo Lance];							break;
 		}
 	}
-	else if(my_path() == "Community Service")
+	else if(in_community())
 	{
 		switch(my_daycount())
 		{
@@ -263,7 +263,7 @@ boolean auto_mayoItems()
 		default:			mayos = $items[none];								break;
 		}
 	}
-	else if(my_path() == "License to Adventure")
+	else if(in_lta())
 	{
 		switch(my_daycount())
 		{
@@ -991,11 +991,7 @@ boolean deck_useScheme(string action)
 			break;
 		}
 
-		if(in_nuclear())
-		{
-			cards["key"] = true;
-		}
-		if(my_path() == "License to Adventure")
+		if(in_nuclear() || in_lta())
 		{
 			cards["key"] = true;
 		}

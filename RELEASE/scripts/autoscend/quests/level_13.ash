@@ -407,7 +407,7 @@ boolean L13_towerNSContests()
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
 			acquireMP(150); // only uses free rests or items on hand by default
-			if (my_class() == $class[Vampyre])
+			if (in_darkGyffte())
 			{
 				if(crowd_stat == $stat[muscle] && !have_skill($skill[Preternatural Strength]))
 				{
@@ -1473,7 +1473,7 @@ boolean L13_towerNSTower()
 		}
 		boolean confidence = get_property("auto_confidence").to_boolean();
 		// confidence really just means take the first choice, so it's necessary in vampyre
-		if(my_class() == $class[Vampyre])
+		if(in_darkGyffte())
 			confidence = true;
 		string choicenum = (confidence ? "1" : "2");
 		set_property("choiceAdventure1015", choicenum);
@@ -1574,7 +1574,7 @@ boolean L13_towerNSFinal()
 		acquireMP(200, 0);
 	}
 	
-	if(!($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, The Source, Way of the Surprising Fist, Zombie Slayer] contains auto_my_path()))
+	if(!(isActuallyEd() || is_boris() || is_jarlsberg() || is_pete() || in_bhy() || in_bugbear() || in_community() || in_theSource() || in_wotsf() || in_zombieSlayer()))
 	{
 		//Only if the final boss does not unbuff us...
 		cli_execute("scripts/autoscend/auto_post_adv.ash");

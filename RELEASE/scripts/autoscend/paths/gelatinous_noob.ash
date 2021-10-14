@@ -1,6 +1,6 @@
 boolean in_gnoob()
 {
-	return my_class() == $class[Gelatinous Noob];
+	return my_path() == "Gelatinous Noob";
 }
 
 void gnoob_startAscension(string page)

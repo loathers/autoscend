@@ -1,6 +1,6 @@
 boolean in_ocrs()
 {
-	return (auto_my_path() == "One Crazy Random Summer");
+	return my_path() == "One Crazy Random Summer";
 }
 
 boolean ocrs_postHelper()

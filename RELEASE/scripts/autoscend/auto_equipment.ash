@@ -186,7 +186,7 @@ string defaultMaximizeStatement()
 		res += ",mox";
 	}
 
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		res += ",0.8hp,3hp regen";
 	}
@@ -340,7 +340,7 @@ void finalizeMaximize()
 		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
 	}
 	// Vampyre autogenerates scraps because of some weird ensorcel interaction. Even without ensorcel active.
-	if(pathHasFamiliar() || my_class() == $class[Vampyre])
+	if(pathHasFamiliar() || in_darkGyffte())
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}

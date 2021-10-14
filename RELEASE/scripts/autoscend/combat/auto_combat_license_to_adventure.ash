@@ -5,7 +5,7 @@ string auto_combatLicenseToAdventureStage4(int round, monster enemy, string text
 	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	
 	//each of the 3 items reduces minion count by 3. does NOT auto defeat current minion you are fighting
-	if((my_location() == $location[Super Villain\'s Lair]) && (auto_my_path() == "License to Adventure") && canSurvive(2.0) && (enemy == $monster[Villainous Minion]))
+	if((my_location() == $location[Super Villain\'s Lair]) && in_lta() && canSurvive(2.0) && (enemy == $monster[Villainous Minion]))
 	{
 		if(!get_property("_villainLairCanLidUsed").to_boolean() && (item_amount($item[Razor-Sharp Can Lid]) > 0))
 		{

@@ -14,9 +14,14 @@
 
 static int[int] auto_cs_fastQuestList;
 
+boolean in_community()
+{
+	return my_path() == "Community Service";
+}
+
 boolean LA_cs_communityService()
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return false;
 	}
@@ -2829,7 +2834,7 @@ boolean LA_cs_communityService()
 
 boolean cs_witchess()
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return false;
 	}
@@ -2882,7 +2887,7 @@ boolean cs_witchess()
 
 void cs_initializeDay(int day)
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return;
 	}
@@ -3146,7 +3151,7 @@ boolean do_chateauGoat()
 
 boolean cs_spendRests()
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return false;
 	}
@@ -3331,7 +3336,7 @@ void cs_make_stuff(int curQuest)
 
 boolean cs_eat_spleen()
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return false;
 	}
@@ -3363,7 +3368,7 @@ boolean cs_eat_spleen()
 
 boolean cs_eat_stuff(int quest)
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return false;
 	}
@@ -3503,7 +3508,7 @@ boolean cs_eat_stuff(int quest)
 
 void cs_dnaPotions()
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return;
 	}
@@ -3653,7 +3658,7 @@ int estimate_cs_questCost(int quest)
 int [int] get_cs_questList()
 {
 	int [int] questList;
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return questList;
 	}
@@ -3679,7 +3684,7 @@ int [int] get_cs_questList()
 
 int expected_next_cs_quest()
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return 0;
 	}
@@ -3726,7 +3731,7 @@ string what_cs_quest(int quest)
 
 int expected_next_cs_quest_internal()
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return 0;
 	}
@@ -3749,7 +3754,7 @@ int expected_next_cs_quest_internal()
 
 boolean do_cs_quest(int quest)
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return false;
 	}
@@ -3820,7 +3825,7 @@ int get_cs_questCost(int quest)
 	{
 		abort("Invalid quest value specified");
 	}
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return -1;
 	}
@@ -3836,7 +3841,7 @@ int get_cs_questCost(string input)
 
 int get_cs_questNum(string input)
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return -1;
 	}
@@ -3901,7 +3906,7 @@ void set_cs_questListFast(int[int] fast)
 
 boolean cs_preTurnStuff(int curQuest)
 {
-	if(my_path() != "Community Service")
+	if(!in_community())
 	{
 		return false;
 	}
