@@ -774,7 +774,7 @@ boolean L12_startWar()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 	
-	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
+	if(!in_darkGyffte() && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
 	}
@@ -1654,7 +1654,7 @@ boolean L12_themtharHills()
 	{
 		meat_need = meat_need - 200;
 	}
-	if((my_class() == $class[Vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
+	if(in_darkGyffte() && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
 	{
 		meat_need = meat_need - 150;
 	}
@@ -2102,7 +2102,7 @@ boolean L12_finalizeWar()
 	}
 
 	// Just in case we need the extra turngen to complete this day
-	if (my_class() == $class[Vampyre])
+	if (in_darkGyffte())
 	{
 		int have = item_amount($item[monstar energy beverage]) + item_amount($item[carbonated soy milk]);
 		if(have < 5)

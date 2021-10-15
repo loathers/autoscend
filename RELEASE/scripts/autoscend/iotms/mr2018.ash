@@ -1062,7 +1062,7 @@ boolean auto_latteRefill(string want1, string want2, string want3, boolean force
 		return true;
 	}
 
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 		tryAddWant("healing");
 
 	if(!haveWant("combat"))

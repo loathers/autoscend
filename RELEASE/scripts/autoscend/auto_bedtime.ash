@@ -75,7 +75,7 @@ int pullsNeeded(string data)
 	{
 		return 0;
 	}
-	if (isActuallyEd() || auto_my_path() == "Community Service")
+	if (isActuallyEd() || in_community())
 	{
 		return 0;
 	}
@@ -393,7 +393,7 @@ boolean doBedtime()
 			}
 		}
 	}
-	boolean out_of_blood = (my_class() == $class[Vampyre] && item_amount($item[blood bag]) == 0);
+	boolean out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
 	if((fullness_left() > 0) && can_eat() && !out_of_blood)
 	{
 		return false;
@@ -535,7 +535,7 @@ boolean doBedtime()
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
-		if(in_pokefam() || my_class() == $class[Vampyre])
+		if(in_pokefam() || in_darkGyffte())
 		{
 			cli_execute("friars food");
 		}

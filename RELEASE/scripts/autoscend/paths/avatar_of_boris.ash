@@ -1,6 +1,6 @@
 boolean is_boris()
 {
-	return my_class() == $class[Avatar of Boris];
+	return my_path() == "Avatar of Boris";
 }
 
 void borisTrusty()

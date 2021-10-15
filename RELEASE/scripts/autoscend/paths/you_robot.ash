@@ -1,4 +1,4 @@
 boolean in_youRobot()
 {
-	return auto_my_path() == "You, Robot";
+	return my_path() == "You, Robot";
 }

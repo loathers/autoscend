@@ -1695,7 +1695,7 @@ boolean acquireMP(int goal, int meat_reserve)
 boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 {
 	//vampyres don't use MP
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		return false;
 	}
@@ -1813,7 +1813,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 
 	//vampyres can only be restored using blood bags, which are too valuable to waste on healing HP.
 	//better to make food/drink from them and then rest in your coffin
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		return false;
 	}

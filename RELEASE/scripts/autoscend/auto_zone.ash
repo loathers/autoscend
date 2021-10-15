@@ -288,19 +288,19 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The Haunted Pantry]:
-		if((auto_my_path() == "Community Service") && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
+		if(in_community() && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
 		{
 			retval._float = 59.4;
 		}
 		break;
 	case $location[The Skeleton Store]:
-		if((auto_my_path() == "Community Service") && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
+		if(in_community() && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
 		{	//No idea, should spade this for great justice.
 			retval._float = 33.0;
 		}
 		break;
 	case $location[The Secret Government Laboratory]:
-		if((auto_my_path() == "Community Service") && (item_amount($item[Experimental Serum G-9]) < 2))
+		if(in_community() && (item_amount($item[Experimental Serum G-9]) < 2))
 		{	//No idea, assume it is low.
 			retval._float = 10.0;
 		}
@@ -742,7 +742,7 @@ boolean zone_available(location loc)
 		}
 		break;
 	case $location[Super Villain\'s Lair]:
-		if((auto_my_path() == "License to Adventure") && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
+		if(in_lta() && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
 		{
 			retval = true;
 		}

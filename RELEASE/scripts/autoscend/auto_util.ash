@@ -4083,11 +4083,11 @@ boolean auto_check_conditions(string conds)
 					return true;
 				if(isActuallyEd() && get_property("stenchCursedMonster").to_monster() == check_sniffed)
 					return true;
-				if(my_class() == $class[Avatar of Sneaky Pete] && get_property("makeFriendsMonster").to_monster() == check_sniffed)
+				if(is_pete() && get_property("makeFriendsMonster").to_monster() == check_sniffed)
 					return true;
 				if($classes[Cow Puncher, Beanslinger, Snake Oiler] contains my_class() && get_property("longConMonster").to_monster() == check_sniffed)
 					return true;
-				if(my_class() == $class[Vampyre] && get_property("auto_bat_soulmonster").to_monster() == check_sniffed)
+				if(in_darkGyffte() && get_property("auto_bat_soulmonster").to_monster() == check_sniffed)
 					return true;
 				if(get_property("_gallapagosMonster").to_monster() == check_sniffed)
 					return true;

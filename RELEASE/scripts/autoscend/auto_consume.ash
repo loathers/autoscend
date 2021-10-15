@@ -408,7 +408,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	{
 		return false;
 	}
-	if (my_class() == $class[Avatar of Jarlsberg] && toDrink != $item[Steel Margarita])
+	if(is_jarlsberg() && toDrink != $item[Steel Margarita])
 	{
 		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
 	}
@@ -416,7 +416,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	{
 		return false;
 	}
-	if((auto_my_path() == "Dark Gyffte") != ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink))
+	if(in_darkGyffte() != ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink))
 	{
 		return false;
 	}
@@ -427,7 +427,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 			return false;
 		}
 	}
-	if(auto_my_path() == "License to Adventure")
+	if(in_lta())
 	{
 		item [int] martinis = bondDrinks();
 		boolean found = false;
@@ -472,7 +472,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return false;
 	}
-	if (my_class() == $class[Avatar of Jarlsberg])
+	if(is_jarlsberg())
 	{
 		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
@@ -480,12 +480,12 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return false;
 	}
-	if((auto_my_path() == "Dark Gyffte") && (toEat == $item[magical sausage]))
+	if(in_darkGyffte() && (toEat == $item[magical sausage]))
 	{
 		// the one thing you can eat as Vampyre AND other classes
 		return true;
 	}
-	if((auto_my_path() == "Dark Gyffte") != ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat))
+	if(in_darkGyffte() != ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat))
 	{
 		return false;
 	}
@@ -591,7 +591,7 @@ void consumeStuff()
 	{
 		return;
 	}
-	if(auto_my_path() == "Community Service")
+	if(in_community())
 	{
 		cs_eat_spleen();
 		return;
@@ -870,7 +870,7 @@ boolean autoConsume(ConsumeAction action)
 boolean loadConsumables(string _type, ConsumeAction[int] actions)
 {
 	// Just in case!
-	if(auto_my_path() == "Dark Gyffte")
+	if(in_darkGyffte())
 	{
 		abort("We shouldn't be calling loadConsumables() in Dark Gyffte. Please report this.");
 	}
@@ -1257,7 +1257,7 @@ ConsumeAction auto_bestNightcap()
 
 void auto_printNightcap()
 {
-	if(my_path() == "Dark Gyffte")
+	if(in_darkGyffte())
 	{
 		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}
@@ -1271,7 +1271,7 @@ void auto_drinkNightcap()
 	{
 		return;
 	}
-	if(my_path() == "Dark Gyffte")
+	if(in_darkGyffte())
 	{
 		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}

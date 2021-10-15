@@ -1,6 +1,12 @@
+boolean in_lta()
+{
+	return my_path() == "License to Adventure";
+}
+
+
 void bond_initializeSettings()
 {
-	if(my_path() == "License to Adventure")
+	if(in_lta())
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_wandOfNagamar", false);
@@ -74,7 +80,7 @@ void bond_initializeSettings()
 
 boolean bond_initializeDay(int day)
 {
-	if(my_path() != "License to Adventure")
+	if(!in_lta())
 	{
 		return false;
 	}
@@ -201,7 +207,7 @@ boolean bond_initializeDay(int day)
 
 boolean bond_buySkills()
 {
-	if(my_path() != "License to Adventure")
+	if(!in_lta())
 	{
 		return false;
 	}
@@ -344,7 +350,7 @@ boolean bond_buySkills()
 
 boolean LM_bond()
 {
-	if(my_path() != "License to Adventure")
+	if(!in_lta())
 	{
 		return false;
 	}

@@ -1,6 +1,6 @@
 boolean is_pete()
 {
-	return (my_class() == $class[Avatar of Sneaky Pete] || my_path() == "Avatar of Sneaky Pete");
+	return my_path() == "Avatar of Sneaky Pete";
 }
 
 void pete_initializeSettings()
