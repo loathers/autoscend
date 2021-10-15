@@ -921,6 +921,7 @@ boolean L11_aridDesert();
 boolean L11_wishForBaaBaaBuran();
 boolean L11_unlockHiddenCity();
 void hiddenTempleChoiceHandler(int choice, string page);
+boolean liana_cleared(location loc);
 boolean L11_hiddenTavernUnlock();
 boolean L11_hiddenTavernUnlock(boolean force);
 boolean L11_hiddenCity();

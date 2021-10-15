@@ -1205,6 +1205,22 @@ void hiddenTempleChoiceHandler(int choice, string page) {
 	}
 }
 
+boolean liana_cleared(location loc)
+{
+    //need to check the combat names due to wanderers
+	//we are assuming victory. you could have potentially fought liana without machete and then ran away. but you we are assuming you didn't
+    int dense_liana_defeated = 0;
+    string [int] area_combats_seen = loc.combat_queue.split_string("; ");
+    foreach key, s in area_combats_seen
+    {
+        if (s == "dense liana")
+		{
+			dense_liana_defeated += 1;
+		}
+    }
+    return dense_liana_defeated > 2;
+}
+
 boolean L11_hiddenTavernUnlock()
 {
 	return L11_hiddenTavernUnlock(false);
