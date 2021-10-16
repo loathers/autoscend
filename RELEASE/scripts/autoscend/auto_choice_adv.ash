@@ -343,7 +343,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // get half of a memo or old coin purse
 			break;
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
-			boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
+			boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
 			if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 				needSpectacles = false;
 			}

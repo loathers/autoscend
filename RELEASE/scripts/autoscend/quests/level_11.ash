@@ -488,7 +488,7 @@ boolean LX_getLadySpookyravensFinestGown() {
 	if (item_amount($item[Lady Spookyraven\'s Finest Gown]) > 0) {
 		// got the Bedroom item but we might still need items for other parts
 		// of the macguffin quest if we got unlucky
-		boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
+		boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
 		boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
 		if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 			needSpectacles = false;
