@@ -683,20 +683,19 @@ void maximize_hedge()
 
 boolean L13_towerNSHedge()
 {
-	if(internalQuestStatus("questL13Final") != 4)
-	{
-		return false;
-	}
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "hedgemaze"))
+	if(internalQuestStatus("questL13Final") == 5 && contains_text(visit_url("place.php?whichplace=nstower"), "hedgemaze"))
 	{
 		//If we got beaten up by the last hedgemaze, mafia might set questL13Final to step5 anyway. Fix that.
 		set_property("questL13Final", "step4");
-		if((have_effect($effect[Beaten Up]) > 0) || (my_hp() < 150))
+		if(have_effect($effect[Beaten Up]) > 0 || my_hp() < 150)
 		{
 			auto_log_error("Hedge maze not solved, the mysteries are still there (correcting step5 -> step4)");
 			abort("Heal yourself and try again...");
 		}
+	}
+	if(internalQuestStatus("questL13Final") != 4)
+	{
+		return false;
 	}
 
 	# Set this so it aborts if not enough adventures. Otherwise, well, we end up in a loop.
