@@ -274,7 +274,7 @@ boolean L8_getMineOres()
 	//in softcore we want to pull the ores.
 	if(!in_hardcore())
 	{
-		if(pulls_remaining() < (3 - item_amount(oreGoal)))
+		if(pulls_remaining() != -1 && pulls_remaining() < (3 - item_amount(oreGoal)))
 		{
 			return false;	//if not enough pulls left wait until tomorrow
 		}
