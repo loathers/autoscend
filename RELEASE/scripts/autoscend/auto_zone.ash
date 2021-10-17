@@ -1769,18 +1769,65 @@ item[int] hugpocket_available()
 
 boolean is_ghost_in_zone(location loc)
 {
-	foreach idx, mob in get_monsters(loc)
+	//special location handling
+	int totalTurnsSpent;
+	int delayForNextNoncombat;
+	switch(loc)
 	{
-		if (mob.physical_resistance >= 80)
+	case $location[the haunted gallery]:
+		//special case for [ghost of Elizabeth Spookyraven] which only appears in [the haunted gallery] at the culmination of lights out quest
+		//TODO implement doing the quest and then return true when the quest is at the right stage for her to appear
+		return false;
+		
+	case $location[Summoning Chamber]:
+		//special case for King Boo
+		return in_plumber();
+		
+	case $location[The Hidden Hospital]:
+		//if liana cleared then we can encounter ghost
+		return get_property("hiddenHospitalProgress") > 0 && get_property("hiddenHospitalProgress") < 7;
+		
+	case $location[The Hidden Office Building]:
+		boolean hasMcCluskyFile = $item[McClusky file (complete)].available_amount() > 0;
+		totalTurnsSpent = $location[the hidden office building].turns_spent;
+		delayForNextNoncombat = 4 - (totalTurnsSpent - 1) % 5;
+		if(auto_haveQueuedForcedNonCombat())
 		{
-			return true;
+			delayForNextNoncombat = 0;
 		}
-	}
-
-	// Special-case for King Boo.
-	if(in_plumber() && loc == $location[Summoning Chamber])
-	{
-		return true;
+		return hasMcCluskyFile && delayForNextNoncombat == 0;
+		
+	case $location[The Hidden Apartment Building]:
+		boolean cursed = have_effect($effect[Thrice-Cursed]) > 0;
+		totalTurnsSpent = $location[the hidden apartment building].turns_spent;
+		delayForNextNoncombat = 7 - (totalTurnsSpent - 9) % 8;
+		if(totalTurnsSpent < 9)
+		{
+			delayForNextNoncombat = 8 - totalTurnsSpent;
+		}
+		if(auto_haveQueuedForcedNonCombat())
+		{
+			delayForNextNoncombat = 0;
+		}
+		return cursed && delayForNextNoncombat == 0;
+		
+	case $location[The Hidden Bowling Alley]:
+		//if tracker is 6 we used just the right amount of bowling bowls
+		return get_property("hiddenBowlingAlleyProgress").to_int() == 6 && $item[bowling ball].available_amount() > 0;
+		
+	case $location[a massive ziggurat]:
+		//massive ziggurat
+		return $location[a massive Ziggurat].liana_cleared() && $item[stone triangle].available_amount() == 4;
+		
+	default:
+		//for all other zones
+		foreach idx, mob in get_monsters(loc)
+		{
+			if (mob.physical_resistance >= 80)
+			{
+				return true;
+			}
+		}
 	}
 
 	return false;
