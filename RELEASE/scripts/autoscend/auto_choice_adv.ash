@@ -405,14 +405,14 @@ boolean auto_run_choice(int choice, string page)
 		case 924: // You Found Your Thrill (The Black Forest)
 			if(get_property("auto_getBeehive").to_boolean() && my_adventures() > 3) {
 				run_choice(3); // go to Bee Persistent (#1018)
-			} else if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && my_class() != $class[Vampyre]) {
+			} else if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte()) {
 				run_choice(2); // go to The Blackberry Cobbler (#928)
 			} else {
 				run_choice(1); // Attack the bushes (fight blackberry bush)
 			}
 			break;
 		case 928: // You Found Your Thrill (The Black Forest)
-			if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && my_class() != $class[Vampyre]) {
+			if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte()) {
 				run_choice(4); // get Blackberry Galoshes
 			} else {
 				run_choice(5); // skip
@@ -499,7 +499,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1);
 			break;
 		case 1115: // VYKEA! (VYKEA)
-			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && auto_my_path() != "Community Service") {
+			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community()) {
 				run_choice(1); // get consumables
 			} else if (!get_property("_VYKEALoungeRaided").to_boolean()) {
 				run_choice(4); // get Wal-Mart gift certificates

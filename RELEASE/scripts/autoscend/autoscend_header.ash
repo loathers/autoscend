@@ -32,7 +32,7 @@ boolean dailyEvents();
 boolean Lsc_flyerSeals();
 boolean councilMaintenance();
 boolean adventureFailureHandler();
-boolean beatenUpResolution();
+void beatenUpResolution();
 int speculative_pool_skill();
 boolean autosellCrap();
 void print_header();
@@ -513,9 +513,14 @@ boolean LM_bhy();
 boolean L13_bhy_towerFinal();
 
 ########################################################################################################
+//Defined in autoscend/paths/bugbear_invasion.ash
+boolean in_bugbear();
+
+########################################################################################################
 //Defined in autoscend/paths/casual.ash
 boolean inAftercore();
 boolean inPostRonin();
+void casualCheck();
 boolean L8_slopeCasual();
 void acquireFamiliarRagamuffinImp();
 void acquireFamiliarsCasual();
@@ -524,6 +529,7 @@ boolean LM_canInteract();
 
 ########################################################################################################
 //Defined in autoscend/paths/community_service.ash
+boolean in_community();
 boolean LA_cs_communityService();
 boolean cs_witchess();
 void cs_initializeDay(int day);
@@ -557,6 +563,7 @@ boolean tryBeachHeadBuff(int quest);
 
 ########################################################################################################
 //Defined in autoscend/paths/dark_gyffte.ash
+boolean in_darkGyffte();
 void bat_startAscension();
 void bat_initializeSettings();
 boolean bat_wantHowl(location loc);
@@ -666,6 +673,7 @@ boolean LM_kolhs();
 
 ########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
+boolean in_lta();
 void bond_initializeSettings();
 boolean bond_initializeDay(int day);
 boolean bond_buySkills();
@@ -1289,6 +1297,7 @@ boolean hasTorso(monster enemy);
 ########################################################################################################
 //Defined in autoscend/auto_path_util.ash
 boolean auto_buySkills();
+void pathDroppedCheck();
 
 ########################################################################################################
 //Defined in autoscend/auto_powerlevel.ash

@@ -1,4 +1,4 @@
 boolean in_zombieSlayer()
 {
-	return auto_my_path() == "Zombie Slayer";
+	return my_path() == "Zombie Slayer";
 }

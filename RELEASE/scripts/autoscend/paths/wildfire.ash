@@ -1,6 +1,6 @@
 boolean in_wildfire()
 {
-	return auto_my_path() == "Wildfire";
+	return my_path() == "Wildfire";
 }
 
 void wildfire_initializeSettings()

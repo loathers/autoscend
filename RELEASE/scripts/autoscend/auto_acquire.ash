@@ -173,7 +173,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	{
 		return pullXWhenHaveYCasual(it, howMany, whenHave);
 	}
-	if(auto_my_path() == "Community Service")
+	if(in_community())
 	{
 		return false;
 	}
@@ -745,7 +745,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 		}
 
-		if(!in_heavyrains() && (auto_my_path() != "License to Adventure") && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(!in_heavyrains() && !in_lta() && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
 		{
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
 			{
@@ -779,7 +779,7 @@ int handlePulls(int day)
 		
 		pullLegionKnife();
 
-		if(my_class() == $class[Vampyre])
+		if(in_darkGyffte())
 		{
 			auto_log_info("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
 			if((storage_amount($item[mime army shotglass]) > 0) && is_unrestricted($item[mime army shotglass]))
@@ -1039,7 +1039,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(auto_my_path() != "Community Service")
+	if(!in_community())
 	{
 		if(item_amount($item[Portable Pantogram]) > 0)
 		{

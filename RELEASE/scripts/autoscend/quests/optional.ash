@@ -213,7 +213,7 @@ boolean LX_steelOrgan()
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
-	if(in_nuclear() || (auto_my_path() == "License to Adventure"))
+	if(in_nuclear() || in_lta())
 	{
 		auto_log_info("You could get a Steel Organ for aftercore, but why? We won't help with this deviant and perverse behavior. Turning off setting.", "blue");
 		set_property("auto_getSteelOrgan", false);
@@ -395,8 +395,7 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if (!($strings[Picky, Community Service, Low Key Summer] contains auto_my_path())
-		&& get_property('auto_skipUnlockGuild').to_boolean())
+	if(!(in_picky() || in_community() || in_lowkeysummer()) && get_property('auto_skipUnlockGuild').to_boolean())
 	{
 		return false;
 	}
@@ -614,7 +613,7 @@ void considerGalaktikSubQuest()
 	{
 		return;		//galaktik is unavailable in kingdom of exploathing
 	}
-	if(my_class() == $class[Vampyre] || in_plumber())
+	if(in_darkGyffte() || in_plumber())
 	{
 		return;		//these classes cannot use galaktik restorers.
 	}
@@ -1098,7 +1097,7 @@ boolean LX_NemesisQuest()
 void houseUpgrade()
 {
 	//function for upgrading your dwelling.
-	if(isActuallyEd() || my_class() == $class[Vampyre] || in_nuclear())
+	if(isActuallyEd() || in_darkGyffte() || in_nuclear())
 	{
 		return;		//paths where dwelling is locked
 	}

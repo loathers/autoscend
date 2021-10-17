@@ -1,6 +1,6 @@
 boolean in_awol()
 {
-	return (auto_my_path() == "Avatar of West of Loathing");
+	return my_path() == "Avatar of West of Loathing";
 }
 
 boolean awol_initializeSettings()

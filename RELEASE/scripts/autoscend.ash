@@ -53,6 +53,7 @@ import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
+import <autoscend/paths/bugbear_invasion.ash>
 import <autoscend/paths/casual.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
@@ -239,6 +240,7 @@ void initializeSettings() {
 	jarlsberg_initializeSettings();
 	wildfire_initializeSettings();
 
+	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
 }
 
@@ -518,7 +520,7 @@ boolean fortuneCookieEvent()
 
 		location goal = $location[The Hidden Temple];
 
-		if((my_path() == "Community Service") && (my_daycount() == 1))
+		if(in_community() && (my_daycount() == 1))
 		{
 			goal = $location[The Limerick Dungeon];
 		}
@@ -702,7 +704,7 @@ void initializeDay(int day)
 		}
 	}
 
-	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && (auto_my_path() == "Community Service"))
+	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && in_community())
 	{
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
@@ -792,7 +794,7 @@ void initializeDay(int day)
 
 			heavyrains_initializeDay(day);
 			// It's nice to have a moxie weapon for Flock of Bats form
-			if(my_class() == $class[Vampyre] && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
+			if(in_darkGyffte() && get_property("darkGyfftePoints").to_int() < 21 && !possessEquipment($item[disco ball]))
 			{
 				acquireGumItem($item[disco ball]);
 			}
@@ -839,7 +841,7 @@ void initializeDay(int day)
 			auto_beachCombHead("exp");
 		}
 
-		if((get_property("lastCouncilVisit").to_int() < my_level()) && (auto_my_path() != "Community Service"))
+		if((get_property("lastCouncilVisit").to_int() < my_level()) && !in_community())
 		{
 			cli_execute("counters");
 			council();
@@ -914,7 +916,7 @@ void initializeDay(int day)
 				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
 		}
-		if (chateaumantegna_havePainting() && !isActuallyEd() && auto_my_path() != "Community Service")
+		if (chateaumantegna_havePainting() && !isActuallyEd() && !in_community())
 		{
 			if(auto_have_familiar($familiar[Reanimated Reanimator]))
 			{
@@ -1205,7 +1207,7 @@ boolean Lsc_flyerSeals()
 
 boolean councilMaintenance()
 {
-	if (auto_my_path() == "Community Service" || in_koe())
+	if (in_community() || in_koe())
 	{
 		return false;
 	}
@@ -1336,19 +1338,25 @@ boolean adventureFailureHandler()
 	return false;
 }
 
-boolean beatenUpResolution(){
-
-	if(have_effect($effect[Beaten Up]) > 0){
-		if(get_property("auto_beatenUpCount").to_int() > 10){
+void beatenUpResolution()
+{
+	if(have_effect($effect[Beaten Up]) > 0)
+	{
+		if(get_property("auto_beatenUpCount").to_int() > 10)
+		{
 			abort("We are getting beaten up too much, this is not good. Aborting.");
 		}
 		acquireHP();
 	}
 
-	if(have_effect($effect[Beaten Up]) > 0){
+	if(have_effect($effect[Beaten Up]) > 0)
+	{
 		cli_execute("refresh all");
+		if(have_effect($effect[Beaten Up]) > 0)
+		{
+			abort("We failed to remove beaten up. Adventuring in the same place that we got beaten in with half stats will just result in us dying again");
+		}
 	}
-	return have_effect($effect[Beaten Up]) > 0;
 }
 
 int speculative_pool_skill()
@@ -1618,12 +1626,7 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
-	if(in_casual() && get_property("_casualAscension").to_int() != -1)
-	{
-		set_property("_casualAscension", my_ascensions());
-		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
-		return false;	
-	}
+	casualCheck();
 	
 	print_header();
 
@@ -1717,7 +1720,7 @@ boolean doTasks()
 	if(LM_kolhs()) 						return true;
 	if(LM_jarlsberg())					return true;
 
-	if(auto_my_path() != "Community Service")
+	if(!in_community())
 	{
 		cheeseWarMachine(0, 0, 0, 0);
 
@@ -1752,7 +1755,7 @@ boolean doTasks()
 	{
 		return true;
 	}
-	if(auto_my_path() == "Community Service")
+	if(in_community())
 	{
 		abort("Should not have gotten here, aborted LA_cs_communityService method allowed return to caller. Uh oh.");
 	}
@@ -1883,6 +1886,7 @@ void auto_begin()
 	}
 
 	initializeSettings(); // sets properties (once) for the entire run (all paths).
+	pathDroppedCheck();		//detects path changing. such as due to being dropped. and reinitialize appropriate settings
 
 	initializeSession(); // sets properties for the current session (should all be reset when we're done)
 

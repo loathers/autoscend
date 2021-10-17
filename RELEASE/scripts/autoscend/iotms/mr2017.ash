@@ -128,7 +128,7 @@ boolean mummifyFamiliar(familiar fam)
 boolean mummifyFamiliar()
 {
 	auto_hasMummingTrunk();
-	if (my_path() == "Community Service")
+	if (in_community())
 	{
 		return false;
 	}
@@ -307,7 +307,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		loveEffect = 3;
 	}
-	if((auto_my_path() == "Actually Ed the Undying") && ((my_mp() < 20) || (my_turncount() < 10)))
+	if(isActuallyEd() && ((my_mp() < 20) || (my_turncount() < 10)))
 	{
 		return false;
 	}
@@ -332,7 +332,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	int statValue = 4;
 	if(statItem == $stat[none])
 	{
-		if (my_class() == $class[Vampyre] && possessEquipment($item[Vampyric Cloake]))
+		if(in_darkGyffte() && possessEquipment($item[Vampyric Cloake]))
 		{
 			statItem = $stat[Muscle];
 		}
@@ -1848,7 +1848,7 @@ boolean makeGeniePocket()
 
 boolean spacegateVaccineAvailable()
 {
-	if(my_path() == "Kingdom of Exploathing") return false;
+	if(in_koe()) return false;
 
 	if(!get_property("spacegateAlways").to_boolean() || get_property("_spacegateToday").to_boolean())
 	{

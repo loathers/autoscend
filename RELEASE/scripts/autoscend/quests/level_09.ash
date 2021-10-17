@@ -595,7 +595,7 @@ boolean L9_aBooPeak()
 				}
 			}
 			acquireHP();
-			if ((my_hp() * 4) < my_maxhp() && item_amount($item[Scroll of Drastic Healing]) > 0 && (!isActuallyEd() || my_class() != $class[Vampyre]))
+			if ((my_hp() * 4) < my_maxhp() && item_amount($item[Scroll of Drastic Healing]) > 0 && (!isActuallyEd() || !in_darkGyffte()))
 			{
 				use(1, $item[Scroll of Drastic Healing]);
 			}

@@ -4,18 +4,13 @@ void auto_beaten_handler()
 {
 	if(have_effect($effect[Beaten Up]) == 0)
 	{
-		remove_property("_auto_beatenUpTracked");	//if we still have it by now then we were unable to restore it but it expired naturally.
-		return;
+		return;		//we are not beaten up. nothing to handle
 	}
-	if(!get_property("_auto_beatenUpTracked").to_boolean())		//we only want to track each instance of beaten up once
-	{
-		set_property("_auto_beatenUpTracked", true);
-		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
-		string loc = get_property("auto_beatenUpLocations");
-		if(loc != "") loc += ",";
-		loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
-		set_property("auto_beatenUpLocations", loc);
-	}
+	set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
+	string loc = get_property("auto_beatenUpLocations");
+	if(loc != "") loc += ",";
+	loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
+	set_property("auto_beatenUpLocations", loc);
 	
 	if(my_location() == $location[The X-32-F Combat Training Snowman])
 	{
@@ -35,7 +30,6 @@ void auto_beaten_handler()
 		use_skill(1, $skill[Tongue of the Walrus]);
 		if(have_effect($effect[Beaten Up]) == 0)
 		{
-			remove_property("_auto_beatenUpTracked");
 			return;
 		}
 		else
@@ -120,12 +114,12 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if((get_property("lastEncounter") == "Daily Briefing") && (auto_my_path() == "License to Adventure"))
+	if((get_property("lastEncounter") == "Daily Briefing") && in_lta())
 	{
 		set_property("_auto_bondBriefing", "started");
 	}
 
-	if((get_property("_villainLairProgress").to_int() < 999) && ((get_property("_villainLairColor") != "") || get_property("_villainLairColorChoiceUsed").to_boolean()) && (auto_my_path() == "License to Adventure") && (my_location() == $location[Super Villain\'s Lair]))
+	if((get_property("_villainLairProgress").to_int() < 999) && ((get_property("_villainLairColor") != "") || get_property("_villainLairColorChoiceUsed").to_boolean()) && in_lta() && (my_location() == $location[Super Villain\'s Lair]))
 	{
 		if(item_amount($item[Can Of Minions-Be-Gone]) > 0)
 		{
@@ -350,7 +344,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
 	}
 
-	if(my_path() == "Community Service")
+	if(in_community())
 	{
 		if(auto_have_skill($skill[Summon BRICKOs]) && (get_property("_brickoEyeSummons").to_int() < 3))
 		{
