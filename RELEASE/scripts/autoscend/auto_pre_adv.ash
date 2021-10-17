@@ -80,10 +80,12 @@ void auto_ghost_prep(location place)
 	}
 	if(in_plumber())
 	{
-		return;		//ghosts for these paths are handled elsewhere
+		return;		//these paths either have their own ghost handling. or can always kill ghosts
 	}
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
-	foreach sk in $skills[Saucestorm, saucegeyser, Storm of the Scarab]
+	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
+	Storm of the Scarab,		//actually ed the undying
+	Boil]		//avatar of jarlsberg
 	{
 		if(canUse(sk)) return;	//we can kill them with a spell
 	}
