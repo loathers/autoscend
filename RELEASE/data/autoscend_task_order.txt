@@ -4,6 +4,101 @@
 # Task ordering. Functions must be: boolean func()
 # If path name does not exist in data file, 'default' will be used
 # path name, index, function, condition_function (optional)
+Actually Ed the Undying	0	LX_freeCombatsTask
+Actually Ed the Undying	1	catBurglarHeist
+Actually Ed the Undying	2	auto_breakfastCounterVisit
+Actually Ed the Undying	3	chateauPainting
+Actually Ed the Undying	4	LX_faxing
+Actually Ed the Undying	5	LX_artistQuest
+Actually Ed the Undying	6	LX_galaktikSubQuest
+Actually Ed the Undying	7	LX_armorySideQuest
+Actually Ed the Undying	8	LX_meatsmithSubQuest
+Actually Ed the Undying	9	L9_leafletQuest
+Actually Ed the Undying	10	L5_findKnob
+Actually Ed the Undying	11	L12_sonofaPrefix
+Actually Ed the Undying	12	LX_burnDelay
+Actually Ed the Undying	13	LM_edTheUndying
+Actually Ed the Undying	14	resolveSixthDMT
+Actually Ed the Undying	15	LX_dinseylandfillFunbucks
+Actually Ed the Undying	16	L12_flyerFinish
+Actually Ed the Undying	17	L12_getOutfit
+Actually Ed the Undying	18	L12_startWar
+Actually Ed the Undying	19	LX_loggingHatchet
+Actually Ed the Undying	20	LX_guildUnlock
+Actually Ed the Undying	21	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+Actually Ed the Undying	22	LX_unlockDesert
+Actually Ed the Undying	23	LX_unlockPirateRealm
+Actually Ed the Undying	24	handleRainDoh
+Actually Ed the Undying	25	routineRainManHandler
+Actually Ed the Undying	26	LX_spookyravenManorFirstFloor
+Actually Ed the Undying	27	L6_friarsGetParts	LX_steelOrgan_condition_slow
+Actually Ed the Undying	28	LX_steelOrgan	LX_steelOrgan_condition_slow
+Actually Ed the Undying	29	L4_batCave
+Actually Ed the Undying	30	L2_mosquito
+Actually Ed the Undying	31	LX_unlockHiddenTemple
+Actually Ed the Undying	32	L6_dakotaFanning
+Actually Ed the Undying	33	LX_lockPicking
+Actually Ed the Undying	34	LX_fatLootToken
+Actually Ed the Undying	35	L5_slayTheGoblinKing
+Actually Ed the Undying	36	LX_islandAccess
+Actually Ed the Undying	37	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+Actually Ed the Undying	38	LX_spookyravenManorSecondFloor
+Actually Ed the Undying	39	L3_tavern
+Actually Ed the Undying	40	L6_friarsGetParts
+Actually Ed the Undying	41	LX_steelOrgan	in_hardcore
+Actually Ed the Undying	42	L7_crypt
+Actually Ed the Undying	43	fancyOilPainting
+Actually Ed the Undying	44	L8_trapperQuest
+Actually Ed the Undying	45	LX_steelOrgan
+Actually Ed the Undying	46	L10_plantThatBean
+Actually Ed the Undying	47	L12_preOutfit
+Actually Ed the Undying	48	L10_airship
+Actually Ed the Undying	49	L10_basement
+Actually Ed the Undying	50	L10_ground
+Actually Ed the Undying	51	L11_blackMarket
+Actually Ed the Undying	52	L11_forgedDocuments
+Actually Ed the Undying	53	L11_mcmuffinDiary
+Actually Ed the Undying	54	L10_topFloor
+Actually Ed the Undying	55	L10_holeInTheSkyUnlock
+Actually Ed the Undying	56	L9_chasmBuild
+Actually Ed the Undying	57	L9_highLandlord
+Actually Ed the Undying	58	L12_flyerBackup
+Actually Ed the Undying	59	Lsc_flyerSeals
+Actually Ed the Undying	60	L11_mauriceSpookyraven
+Actually Ed the Undying	61	L11_unlockHiddenCity
+Actually Ed the Undying	62	L11_hiddenCityZones
+Actually Ed the Undying	63	LX_ornateDowsingRod
+Actually Ed the Undying	64	L11_aridDesert
+Actually Ed the Undying	65	L11_hiddenCity
+Actually Ed the Undying	66	L11_talismanOfNam
+Actually Ed the Undying	67	L11_palindome
+Actually Ed the Undying	68	L11_unlockPyramid
+Actually Ed the Undying	69	L11_unlockEd
+Actually Ed the Undying	70	L11_defeatEd
+Actually Ed the Undying	71	L12_gremlins
+Actually Ed the Undying	72	L12_sonofaFinish
+Actually Ed the Undying	73	L12_sonofaBeach
+Actually Ed the Undying	74	L12_filthworms
+Actually Ed the Undying	75	L12_orchardFinalize
+Actually Ed the Undying	76	L12_themtharHills
+Actually Ed the Undying	77	L12_farm
+Actually Ed the Undying	78	L11_getBeehive
+Actually Ed the Undying	79	L12_finalizeWar
+Actually Ed the Undying	80	L12_clearBattlefield
+Actually Ed the Undying	81	LX_koeInvaderHandler
+Actually Ed the Undying	82	setSoftblockDelay	allowSoftblockDelay
+Actually Ed the Undying	83	setSoftblockShen	allowSoftblockShen
+Actually Ed the Undying	84	LX_getDigitalKey
+Actually Ed the Undying	85	LX_getStarKey
+Actually Ed the Undying	86	L12_lastDitchFlyer
+Actually Ed the Undying	87	L13_towerNSContests
+Actually Ed the Undying	88	L13_towerNSHedge
+Actually Ed the Undying	89	L13_sorceressDoor
+Actually Ed the Undying	90	L13_towerNSTower
+Actually Ed the Undying	91	L13_towerNSNagamar
+Actually Ed the Undying	92	L13_towerNSFinal
+Actually Ed the Undying	93	LX_attemptPowerLevel
+
 Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
 Avatar of Jarlsberg	2	auto_breakfastCounterVisit
@@ -61,6 +156,101 @@ Avatar of Jarlsberg	53	setSoftblockDelay	allowSoftblockDelay
 Avatar of Jarlsberg	54	setSoftblockShen	allowSoftblockShen
 Avatar of Jarlsberg	55	L13_towerAscent
 Avatar of Jarlsberg	56	LX_attemptPowerLevel
+
+Low Key Summer	0	LX_freeCombatsTask
+Low Key Summer	1	catBurglarHeist
+Low Key Summer	2	auto_breakfastCounterVisit
+Low Key Summer	3	chateauPainting
+Low Key Summer	4	LX_faxing
+Low Key Summer	5	LX_artistQuest
+Low Key Summer	6	LX_galaktikSubQuest
+Low Key Summer	7	LX_armorySideQuest
+Low Key Summer	8	LX_meatsmithSubQuest
+Low Key Summer	9	L9_leafletQuest
+Low Key Summer	10	L5_findKnob
+Low Key Summer	11	L12_sonofaPrefix
+Low Key Summer	12	LX_burnDelay
+Low Key Summer	13	LX_lowkeySummer
+Low Key Summer	14	resolveSixthDMT
+Low Key Summer	15	LX_dinseylandfillFunbucks
+Low Key Summer	16	L12_flyerFinish
+Low Key Summer	17	L12_getOutfit
+Low Key Summer	18	L12_startWar
+Low Key Summer	19	LX_loggingHatchet
+Low Key Summer	20	LX_guildUnlock
+Low Key Summer	21	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+Low Key Summer	22	LX_unlockDesert
+Low Key Summer	23	LX_unlockPirateRealm
+Low Key Summer	24	handleRainDoh
+Low Key Summer	25	routineRainManHandler
+Low Key Summer	26	LX_spookyravenManorFirstFloor
+Low Key Summer	27	L6_friarsGetParts	LX_steelOrgan_condition_slow
+Low Key Summer	28	LX_steelOrgan	LX_steelOrgan_condition_slow
+Low Key Summer	29	L4_batCave
+Low Key Summer	30	L2_mosquito
+Low Key Summer	31	LX_unlockHiddenTemple
+Low Key Summer	32	L6_dakotaFanning
+Low Key Summer	33	LX_lockPicking
+Low Key Summer	34	LX_fatLootToken
+Low Key Summer	35	L5_slayTheGoblinKing
+Low Key Summer	36	LX_islandAccess
+Low Key Summer	37	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+Low Key Summer	38	LX_spookyravenManorSecondFloor
+Low Key Summer	39	L3_tavern
+Low Key Summer	40	L6_friarsGetParts
+Low Key Summer	41	LX_steelOrgan	in_hardcore
+Low Key Summer	42	L7_crypt
+Low Key Summer	43	fancyOilPainting
+Low Key Summer	44	L8_trapperQuest
+Low Key Summer	45	LX_steelOrgan
+Low Key Summer	46	L10_plantThatBean
+Low Key Summer	47	L12_preOutfit
+Low Key Summer	48	L10_airship
+Low Key Summer	49	L10_basement
+Low Key Summer	50	L10_ground
+Low Key Summer	51	L11_blackMarket
+Low Key Summer	52	L11_forgedDocuments
+Low Key Summer	53	L11_mcmuffinDiary
+Low Key Summer	54	L10_topFloor
+Low Key Summer	55	L10_holeInTheSkyUnlock
+Low Key Summer	56	L9_chasmBuild
+Low Key Summer	57	L9_highLandlord
+Low Key Summer	58	L12_flyerBackup
+Low Key Summer	59	Lsc_flyerSeals
+Low Key Summer	60	L11_mauriceSpookyraven
+Low Key Summer	61	L11_unlockHiddenCity
+Low Key Summer	62	L11_hiddenCityZones
+Low Key Summer	63	LX_ornateDowsingRod
+Low Key Summer	64	L11_aridDesert
+Low Key Summer	65	L11_hiddenCity
+Low Key Summer	66	L11_talismanOfNam
+Low Key Summer	67	L11_palindome
+Low Key Summer	68	L11_unlockPyramid
+Low Key Summer	69	L11_unlockEd
+Low Key Summer	70	L11_defeatEd
+Low Key Summer	71	L12_gremlins
+Low Key Summer	72	L12_sonofaFinish
+Low Key Summer	73	L12_sonofaBeach
+Low Key Summer	74	L12_filthworms
+Low Key Summer	75	L12_orchardFinalize
+Low Key Summer	76	L12_themtharHills
+Low Key Summer	77	L12_farm
+Low Key Summer	78	L11_getBeehive
+Low Key Summer	79	L12_finalizeWar
+Low Key Summer	80	L12_clearBattlefield
+Low Key Summer	81	LX_koeInvaderHandler
+Low Key Summer	82	setSoftblockDelay	allowSoftblockDelay
+Low Key Summer	83	setSoftblockShen	allowSoftblockShen
+Low Key Summer	84	LX_getDigitalKey
+Low Key Summer	85	LX_getStarKey
+Low Key Summer	86	L12_lastDitchFlyer
+Low Key Summer	87	L13_towerNSContests
+Low Key Summer	88	L13_towerNSHedge
+Low Key Summer	89	L13_sorceressDoor
+Low Key Summer	90	L13_towerNSTower
+Low Key Summer	91	L13_towerNSNagamar
+Low Key Summer	92	L13_towerNSFinal
+Low Key Summer	93	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	catBurglarHeist
@@ -138,86 +328,84 @@ default	9	L9_leafletQuest
 default	10	L5_findKnob
 default	11	L12_sonofaPrefix
 default	12	LX_burnDelay
-default	13	LM_edTheUndying
-default	14	LX_lowkeySummer
-default	15	resolveSixthDMT
-default	16	LX_dinseylandfillFunbucks
-default	17	L12_flyerFinish
-default	18	L12_getOutfit
-default	19	L12_startWar
-default	20	LX_loggingHatchet
-default	21	LX_guildUnlock
-default	22	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
-default	23	LX_unlockDesert
-default	24	LX_unlockPirateRealm
-default	25	handleRainDoh
-default	26	routineRainManHandler
-default	27	LX_spookyravenManorFirstFloor
-default	28	L6_friarsGetParts	LX_steelOrgan_condition_slow
-default	29	LX_steelOrgan	LX_steelOrgan_condition_slow
-default	30	L4_batCave
-default	31	L2_mosquito
-default	32	LX_unlockHiddenTemple
-default	33	L6_dakotaFanning
-default	34	LX_lockPicking
-default	35	LX_fatLootToken
-default	36	L5_slayTheGoblinKing
-default	37	LX_islandAccess
-default	38	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
-default	39	LX_spookyravenManorSecondFloor
-default	40	L3_tavern
-default	41	L6_friarsGetParts
-default	42	LX_steelOrgan	in_hardcore
-default	43	L7_crypt
-default	44	fancyOilPainting
-default	45	L8_trapperQuest
-default	46	LX_steelOrgan
-default	47	L10_plantThatBean
-default	48	L12_preOutfit
-default	49	L10_airship
-default	50	L10_basement
-default	51	L10_ground
-default	52	L11_blackMarket
-default	53	L11_forgedDocuments
-default	54	L11_mcmuffinDiary
-default	55	L10_topFloor
-default	56	L10_holeInTheSkyUnlock
-default	57	L9_chasmBuild
-default	58	L9_highLandlord
-default	59	L12_flyerBackup
-default	60	Lsc_flyerSeals
-default	61	L11_mauriceSpookyraven
-default	62	L11_unlockHiddenCity
-default	63	L11_hiddenCityZones
-default	64	LX_ornateDowsingRod
-default	65	L11_aridDesert
-default	66	L11_hiddenCity
-default	67	L11_talismanOfNam
-default	68	L11_palindome
-default	69	L11_unlockPyramid
-default	70	L11_unlockEd
-default	71	L11_defeatEd
-default	72	L12_gremlins
-default	73	L12_sonofaFinish
-default	74	L12_sonofaBeach
-default	75	L12_filthworms
-default	76	L12_orchardFinalize
-default	77	L12_themtharHills
-default	78	L12_farm
-default	79	L11_getBeehive
-default	80	L12_finalizeWar
-default	81	L12_clearBattlefield
-default	82	LX_koeInvaderHandler
-default	83	setSoftblockDelay	allowSoftblockDelay
-default	84	setSoftblockShen	allowSoftblockShen
-default	85	LX_getDigitalKey
-default	86	LX_getStarKey
-default	87	L12_lastDitchFlyer
-default	88	L13_towerNSContests
-default	89	L13_towerNSHedge
-default	90	L13_sorceressDoor
-default	91	L13_towerNSTower
-default	92	L13_towerNSNagamar
-default	93	L13_towerNSFinal
-default	94	LX_attemptPowerLevel
+default	13	resolveSixthDMT
+default	14	LX_dinseylandfillFunbucks
+default	15	L12_flyerFinish
+default	16	L12_getOutfit
+default	17	L12_startWar
+default	18	LX_loggingHatchet
+default	19	LX_guildUnlock
+default	20	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+default	21	LX_unlockDesert
+default	22	LX_unlockPirateRealm
+default	23	handleRainDoh
+default	24	routineRainManHandler
+default	25	LX_spookyravenManorFirstFloor
+default	26	L6_friarsGetParts	LX_steelOrgan_condition_slow
+default	27	LX_steelOrgan	LX_steelOrgan_condition_slow
+default	28	L4_batCave
+default	29	L2_mosquito
+default	30	LX_unlockHiddenTemple
+default	31	L6_dakotaFanning
+default	32	LX_lockPicking
+default	33	LX_fatLootToken
+default	34	L5_slayTheGoblinKing
+default	35	LX_islandAccess
+default	36	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+default	37	LX_spookyravenManorSecondFloor
+default	38	L3_tavern
+default	39	L6_friarsGetParts
+default	40	LX_steelOrgan	in_hardcore
+default	41	L7_crypt
+default	42	fancyOilPainting
+default	43	L8_trapperQuest
+default	44	LX_steelOrgan
+default	45	L10_plantThatBean
+default	46	L12_preOutfit
+default	47	L10_airship
+default	48	L10_basement
+default	49	L10_ground
+default	50	L11_blackMarket
+default	51	L11_forgedDocuments
+default	52	L11_mcmuffinDiary
+default	53	L10_topFloor
+default	54	L10_holeInTheSkyUnlock
+default	55	L9_chasmBuild
+default	56	L9_highLandlord
+default	57	L12_flyerBackup
+default	58	Lsc_flyerSeals
+default	59	L11_mauriceSpookyraven
+default	60	L11_unlockHiddenCity
+default	61	L11_hiddenCityZones
+default	62	LX_ornateDowsingRod
+default	63	L11_aridDesert
+default	64	L11_hiddenCity
+default	65	L11_talismanOfNam
+default	66	L11_palindome
+default	67	L11_unlockPyramid
+default	68	L11_unlockEd
+default	69	L11_defeatEd
+default	70	L12_gremlins
+default	71	L12_sonofaFinish
+default	72	L12_sonofaBeach
+default	73	L12_filthworms
+default	74	L12_orchardFinalize
+default	75	L12_themtharHills
+default	76	L12_farm
+default	77	L11_getBeehive
+default	78	L12_finalizeWar
+default	79	L12_clearBattlefield
+default	80	LX_koeInvaderHandler
+default	81	setSoftblockDelay	allowSoftblockDelay
+default	82	setSoftblockShen	allowSoftblockShen
+default	83	LX_getDigitalKey
+default	84	LX_getStarKey
+default	85	L12_lastDitchFlyer
+default	86	L13_towerNSContests
+default	87	L13_towerNSHedge
+default	88	L13_sorceressDoor
+default	89	L13_towerNSTower
+default	90	L13_towerNSNagamar
+default	91	L13_towerNSFinal
+default	92	LX_attemptPowerLevel
 
