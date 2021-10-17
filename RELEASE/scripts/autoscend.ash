@@ -1625,12 +1625,7 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
-	if(in_casual() && get_property("_casualAscension").to_int() != -1)
-	{
-		set_property("_casualAscension", my_ascensions());
-		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
-		return false;	
-	}
+	casualCheck();
 	
 	print_header();
 

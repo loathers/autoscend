@@ -520,6 +520,7 @@ boolean in_bugbear();
 //Defined in autoscend/paths/casual.ash
 boolean inAftercore();
 boolean inPostRonin();
+void casualCheck();
 boolean L8_slopeCasual();
 void acquireFamiliarRagamuffinImp();
 void acquireFamiliarsCasual();

@@ -13,6 +13,22 @@ boolean inPostRonin()
 	return false;
 }
 
+void casualCheck()
+{
+	if(!in_casual())
+	{
+		return;
+	}
+	if(get_property("_casualAscension").to_int() != -1)
+	{
+		set_property("_casualAscension", my_ascensions());
+		auto_log_warning("I think I'm in a casual ascension and should not run. To override:", "red");
+		auto_log_warning("set _casualAscension = -1", "red");
+		abort();
+	}
+	//TODO track and fix configuration if we started in a path and then dropped into casual
+}
+
 boolean L8_slopeCasual()
 {
 	//casual and postronin should mallbuy everything needed to skip this zone
