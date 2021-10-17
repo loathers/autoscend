@@ -1103,6 +1103,9 @@ boolean autoAdvBypass(string url, string option);
 //Defined in autoscend/auto_bedtime.ash
 void bedtime_still();
 int pullsNeeded(string data);
+float rollover_value(item it);
+float rollover_improvement(item it, slot sl);
+void bedtime_pulls_rollover_equip();
 void bedtime_pulls();
 boolean doBedtime();
 
@@ -1194,6 +1197,7 @@ void equipBaseline();
 void ensureSealClubs();
 void equipRollover(boolean silent);
 boolean auto_forceEquipSword();
+boolean is_watch(item it);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
