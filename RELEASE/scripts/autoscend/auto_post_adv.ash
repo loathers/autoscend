@@ -4,18 +4,13 @@ void auto_beaten_handler()
 {
 	if(have_effect($effect[Beaten Up]) == 0)
 	{
-		remove_property("_auto_beatenUpTracked");	//if we still have it by now then we were unable to restore it but it expired naturally.
-		return;
+		return;		//we are not beaten up. nothing to handle
 	}
-	if(!get_property("_auto_beatenUpTracked").to_boolean())		//we only want to track each instance of beaten up once
-	{
-		set_property("_auto_beatenUpTracked", true);
-		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
-		string loc = get_property("auto_beatenUpLocations");
-		if(loc != "") loc += ",";
-		loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
-		set_property("auto_beatenUpLocations", loc);
-	}
+	set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
+	string loc = get_property("auto_beatenUpLocations");
+	if(loc != "") loc += ",";
+	loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
+	set_property("auto_beatenUpLocations", loc);
 	
 	if(my_location() == $location[The X-32-F Combat Training Snowman])
 	{
@@ -35,7 +30,6 @@ void auto_beaten_handler()
 		use_skill(1, $skill[Tongue of the Walrus]);
 		if(have_effect($effect[Beaten Up]) == 0)
 		{
-			remove_property("_auto_beatenUpTracked");
 			return;
 		}
 		else
