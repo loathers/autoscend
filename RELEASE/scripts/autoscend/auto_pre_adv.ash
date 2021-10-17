@@ -71,6 +71,50 @@ void print_footer()
 	auto_log_info(next_line, "blue");
 }
 
+void auto_ghost_prep(location place)
+{
+	//if place contains physically immune enemies then we need to be prepared to deal non physical damage.
+	if(!is_ghost_in_zone(place))
+	{
+		return;		//no ghosts no problem
+	}
+	if(in_plumber())
+	{
+		return;		//these paths either have their own ghost handling. or can always kill ghosts
+	}
+	//a few iconic spells per avatar is ok. no need to be too exhaustive
+	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
+	Storm of the Scarab,		//actually ed the undying
+	Boil]		//avatar of jarlsberg
+	{
+		if(canUse(sk)) return;	//we can kill them with a spell
+	}
+	
+	//try to maximize us some prismatic dmg
+	simMaximizeWith("3prismatic damage");
+	if(simValue("prismatic damage") > 2)
+	{
+		addToMaximize("3prismatic damage");
+		return;
+	}
+	//still failed? be more aggressive
+	simMaximizeWith("10prismatic damage");
+	if(simValue("prismatic damage") > 2)
+	{
+		addToMaximize("10prismatic damage");
+		return;
+	}
+	//still failed? go crazy with it
+	simMaximizeWith("100prismatic damage");
+	if(simValue("prismatic damage") > 2)
+	{
+		addToMaximize("100prismatic damage");
+		return;
+	}
+	
+	abort("I was about to head into [" +place+ "] which contains ghosts. I can not damage those");
+}
+
 boolean auto_pre_adventure()
 {
 	location place = my_location();
@@ -522,6 +566,7 @@ boolean auto_pre_adventure()
 	}
 
 	// EQUIP MAXIMIZED GEAR
+	auto_ghost_prep(place);
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	cli_execute("checkpoint clear");

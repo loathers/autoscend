@@ -2388,23 +2388,6 @@ string runChoice(string page_text)
 	return page_text;
 }
 
-boolean zoneNonCombat(location loc)
-{
-	return false;
-}
-boolean zoneCombat(location loc)
-{
-	return false;
-}
-boolean zoneMeat(location loc)
-{
-	return false;
-}
-boolean zoneItem(location loc)
-{
-	return false;
-}
-
 boolean set_property_ifempty(string setting, string change)
 {
 	if(get_property(setting) == "")

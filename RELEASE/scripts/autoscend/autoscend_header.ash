@@ -922,6 +922,7 @@ boolean L11_aridDesert();
 boolean L11_wishForBaaBaaBuran();
 boolean L11_unlockHiddenCity();
 void hiddenTempleChoiceHandler(int choice, string page);
+boolean liana_cleared(location loc);
 boolean L11_hiddenTavernUnlock();
 boolean L11_hiddenTavernUnlock(boolean force);
 boolean L11_hiddenCity();
@@ -1102,6 +1103,9 @@ boolean autoAdvBypass(string url, string option);
 //Defined in autoscend/auto_bedtime.ash
 void bedtime_still();
 int pullsNeeded(string data);
+float rollover_value(item it);
+float rollover_improvement(item it, slot sl);
+void bedtime_pulls_rollover_equip();
 void bedtime_pulls();
 boolean doBedtime();
 
@@ -1193,6 +1197,7 @@ void equipBaseline();
 void ensureSealClubs();
 void equipRollover(boolean silent);
 boolean auto_forceEquipSword();
+boolean is_watch(item it);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
@@ -1501,10 +1506,6 @@ boolean use_barrels();
 boolean forceEquip(slot sl, item it);
 boolean auto_autosell(int quantity, item toSell);
 string runChoice(string page_text);
-boolean zoneNonCombat(location loc);
-boolean zoneCombat(location loc);
-boolean zoneMeat(location loc);
-boolean zoneItem(location loc);
 boolean set_property_ifempty(string setting, string change);
 boolean restore_property(string setting, string source);
 boolean clear_property_if(string setting, string cond);

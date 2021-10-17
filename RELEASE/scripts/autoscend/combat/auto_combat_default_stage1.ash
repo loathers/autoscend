@@ -163,6 +163,11 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 	
+	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
+	//done after puzzle bosses. if puzzle bosses get a random buff that is ok, we would rather beat the puzzle boss.
+	retval = auto_combat_nanorhinoBuff(round, enemy, text);
+	if(retval != "") return retval;
+	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
 	if(!contains_text(combatState, "pickpocket") && ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class()) && contains_text(text, "value=\"Pick") && canSurvive(2.0))
 	{
