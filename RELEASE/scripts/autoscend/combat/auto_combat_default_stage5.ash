@@ -193,7 +193,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		break;
 	case $class[Turtle Tamer]:
 		attackMinor = "attack with weapon";
-		if((my_mp() > 150) && canUse($skill[Shieldbutt], false) && hasShieldEquipped())
+		if(my_mp() > 150 && canUse($skill[Shieldbutt], false))
 		{
 			attackMinor = useSkill($skill[Shieldbutt], false);
 			costMinor = mp_cost($skill[Shieldbutt]);
@@ -208,7 +208,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMajor = useSkill($skill[Kneebutt], false);
 			costMajor = mp_cost($skill[Kneebutt]);
 		}
-		if(canUse($skill[Shieldbutt], false) && hasShieldEquipped())
+		if(canUse($skill[Shieldbutt], false))
 		{
 			attackMajor = useSkill($skill[Shieldbutt], false);
 			costMajor = mp_cost($skill[Shieldbutt]);

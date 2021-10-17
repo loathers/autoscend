@@ -60,6 +60,10 @@ string cs_combatLTB(int round, monster enemy, string text);
 string auto_edCombatHandler(int round, monster enemy, string text);		
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_mr2012.ash
+string auto_combat_nanorhinoBuff(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_ocrs.ash
 monster ocrs_combat_helper(string page);					
 

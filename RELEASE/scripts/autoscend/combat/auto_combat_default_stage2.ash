@@ -127,10 +127,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			return banishAction;
 		}
+		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
 		set_property("auto_combatHandler", combatState + "(banishercheck)");
-		combatState += "(banishercheck)";
 	}
-
 
 	// Free run from monsters we want to banish but are unable to
 	if(auto_wantToBanish(enemy, my_location()))
