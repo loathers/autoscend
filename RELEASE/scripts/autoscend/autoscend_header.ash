@@ -1297,6 +1297,7 @@ boolean hasTorso(monster enemy);
 ########################################################################################################
 //Defined in autoscend/auto_path_util.ash
 boolean auto_buySkills();
+void pathDroppedCheck();
 
 ########################################################################################################
 //Defined in autoscend/auto_powerlevel.ash

@@ -228,3 +228,15 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 	}
 	return false;
 }
+
+void pathDroppedCheck()
+{
+	//detect path drops and reinitialize with settings appropriate for the new path
+	if(my_path() == get_property("auto_doneInitializePath"))
+	{
+		return;
+	}
+	print("Path change detected. You were previously " +get_property("auto_doneInitializePath")+ " and are now a " +my_path(), "red");
+	remove_property("auto_doneInitialize");
+	initializeSettings();
+}

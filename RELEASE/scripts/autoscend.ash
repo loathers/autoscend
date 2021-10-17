@@ -240,6 +240,7 @@ void initializeSettings() {
 	jarlsberg_initializeSettings();
 	wildfire_initializeSettings();
 
+	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
 }
 
@@ -1885,6 +1886,7 @@ void auto_begin()
 	}
 
 	initializeSettings(); // sets properties (once) for the entire run (all paths).
+	pathDroppedCheck();		//detects path changing. such as due to being dropped. and reinitialize appropriate settings
 
 	initializeSession(); // sets properties for the current session (should all be reset when we're done)
 
