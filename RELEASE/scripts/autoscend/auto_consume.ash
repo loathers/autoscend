@@ -927,7 +927,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
-	boolean[item] blacklist = $items[Cursed Punch, Unidentified Drink];
+	boolean[item] blacklist = $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead];
 	boolean[item] craftable_blacklist;
 
 	// If we have 2 sticks of firewood, the current knapsack-solver

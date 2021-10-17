@@ -26,7 +26,6 @@ void casualCheck()
 		auto_log_warning("set _casualAscension = -1", "red");
 		abort();
 	}
-	//TODO track and fix configuration if we started in a path and then dropped into casual
 }
 
 boolean L8_slopeCasual()

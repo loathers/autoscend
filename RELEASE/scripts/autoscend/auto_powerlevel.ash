@@ -81,7 +81,7 @@ boolean LX_attemptPowerLevel()
 
 	// use spare clovers to powerlevel
 	int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
-	if(my_level() >= 12 && internalQuestStatus("questL12War") > 1 && cloversAvailable() > cloverLimit)
+	if(my_level() == 12 && internalQuestStatus("questL12War") > 1 && cloversAvailable() > cloverLimit)
 	{
 		//Determine where to go for clover stats, do not worry about clover failures
 		location whereTo = $location[none];
