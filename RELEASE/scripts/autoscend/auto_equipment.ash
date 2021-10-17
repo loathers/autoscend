@@ -656,5 +656,5 @@ boolean auto_forceEquipSword() {
 boolean is_watch(item it)
 {
 	//watches are accessories that conflict with each other. you can only equip one watch total.
-	return $items[dead guy's memento, dead guy's watch, Counterclockwise Watch, glow-in-the-dark wristwatch, grandfather watch, imitation nice watch, wristwatch of the white knight, Crimbolex watch] contains it;
+	return $items[dead guy's memento, dead guy's watch, Counterclockwise Watch, glow-in-the-dark wristwatch, grandfather watch, imitation nice watch, wristwatch of the white knight, Crimbolex watch, Sasq&trade; watch] contains it;
 }
