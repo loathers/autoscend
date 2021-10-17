@@ -32,7 +32,7 @@ boolean dailyEvents();
 boolean Lsc_flyerSeals();
 boolean councilMaintenance();
 boolean adventureFailureHandler();
-boolean beatenUpResolution();
+void beatenUpResolution();
 int speculative_pool_skill();
 boolean autosellCrap();
 void print_header();
@@ -520,6 +520,7 @@ boolean in_bugbear();
 //Defined in autoscend/paths/casual.ash
 boolean inAftercore();
 boolean inPostRonin();
+void casualCheck();
 boolean L8_slopeCasual();
 void acquireFamiliarRagamuffinImp();
 void acquireFamiliarsCasual();
@@ -1300,6 +1301,7 @@ boolean hasTorso(monster enemy);
 ########################################################################################################
 //Defined in autoscend/auto_path_util.ash
 boolean auto_buySkills();
+void pathDroppedCheck();
 
 ########################################################################################################
 //Defined in autoscend/auto_powerlevel.ash
