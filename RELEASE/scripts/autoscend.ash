@@ -240,6 +240,7 @@ void initializeSettings() {
 	jarlsberg_initializeSettings();
 	wildfire_initializeSettings();
 
+	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
 }
 
@@ -1337,19 +1338,25 @@ boolean adventureFailureHandler()
 	return false;
 }
 
-boolean beatenUpResolution(){
-
-	if(have_effect($effect[Beaten Up]) > 0){
-		if(get_property("auto_beatenUpCount").to_int() > 10){
+void beatenUpResolution()
+{
+	if(have_effect($effect[Beaten Up]) > 0)
+	{
+		if(get_property("auto_beatenUpCount").to_int() > 10)
+		{
 			abort("We are getting beaten up too much, this is not good. Aborting.");
 		}
 		acquireHP();
 	}
 
-	if(have_effect($effect[Beaten Up]) > 0){
+	if(have_effect($effect[Beaten Up]) > 0)
+	{
 		cli_execute("refresh all");
+		if(have_effect($effect[Beaten Up]) > 0)
+		{
+			abort("We failed to remove beaten up. Adventuring in the same place that we got beaten in with half stats will just result in us dying again");
+		}
 	}
-	return have_effect($effect[Beaten Up]) > 0;
 }
 
 int speculative_pool_skill()
@@ -1619,12 +1626,7 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
-	if(in_casual() && get_property("_casualAscension").to_int() != -1)
-	{
-		set_property("_casualAscension", my_ascensions());
-		auto_log_warning("I think I'm in a casual ascension and should not run. To override: set _casualAscension = -1", "red");
-		return false;	
-	}
+	casualCheck();
 	
 	print_header();
 
@@ -1884,6 +1886,7 @@ void auto_begin()
 	}
 
 	initializeSettings(); // sets properties (once) for the entire run (all paths).
+	pathDroppedCheck();		//detects path changing. such as due to being dropped. and reinitialize appropriate settings
 
 	initializeSession(); // sets properties for the current session (should all be reset when we're done)
 
