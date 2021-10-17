@@ -1800,7 +1800,7 @@ boolean is_ghost_in_zone(location loc)
 	case $location[The Hidden Apartment Building]:
 		boolean cursed = have_effect($effect[Thrice-Cursed]) > 0;
 		totalTurnsSpent = $location[the hidden apartment building].turns_spent;
-		delayForNextNoncombat = delayForNextNoncombat = 7 - (totalTurnsSpent - 9) % 8;
+		delayForNextNoncombat = 7 - (totalTurnsSpent - 9) % 8;
 		if(totalTurnsSpent < 9)
 		{
 			delayForNextNoncombat = 8 - totalTurnsSpent;
