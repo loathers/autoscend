@@ -145,31 +145,6 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			return "item " + $item[Seal Tooth];
 		}
 	}
-	
-	//nanorhino familiar stuff
-	boolean nanorhino_charged = get_property("_nanorhinoCharge").to_int() >= 100;
-	if(my_familiar() == $familiar[Nanorhino] && nanorhino_charged && have_effect($effect[Nanobrawny]) + have_effect($effect[Nanobrainy]) + have_effect($effect[Nanoballsy]) == 0)
-	{
-		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
-		{
-			if((it == $skill[Shieldbutt]) && !hasShieldEquipped())
-			{
-				continue;
-			}
-			if(canUse(it, false))
-			{
-				return useSkill(it, false);
-			}
-		}
-	}
-	if(canUse($skill[Unleash Nanites]) && (have_effect($effect[Nanobrawny]) >= 40))
-	{
-		#if appropriate enemy, then banish
-		if(enemy == $monster[Pygmy Janitor])
-		{
-			return useSkill($skill[Unleash Nanites]);
-		}
-	}
 
 	//winking is a monster copier familiar skill. they share a daily counter
 	skill wink_skill = $skill[none];

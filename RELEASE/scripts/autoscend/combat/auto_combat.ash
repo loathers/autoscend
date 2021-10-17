@@ -21,6 +21,7 @@ import <autoscend/combat/auto_combat_plumber.ash>					//path = path of the plumb
 import <autoscend/combat/auto_combat_the_source.ash>				//path = the source
 import <autoscend/combat/auto_combat_wildfire.ash>					//path = wildfire
 import <autoscend/combat/auto_combat_quest.ash>						//quest specific handling
+import <autoscend/combat/auto_combat_mr2012.ash>					//2012 iotm and ioty handling
 
 //	Advance combat round, nothing happens.
 //	/goto fight.php?action=useitem&whichitem=1
