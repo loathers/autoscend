@@ -32,7 +32,7 @@ boolean dailyEvents();
 boolean Lsc_flyerSeals();
 boolean councilMaintenance();
 boolean adventureFailureHandler();
-boolean beatenUpResolution();
+void beatenUpResolution();
 int speculative_pool_skill();
 boolean autosellCrap();
 void print_header();
