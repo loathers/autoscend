@@ -1772,8 +1772,22 @@ boolean is_ghost_in_zone(location loc)
 	//special location handling
 	int totalTurnsSpent;
 	int delayForNextNoncombat;
+	if(get_property("_autoCloverNext").to_boolean())
+	{
+		return false;		//we are grabbing a semirare so we will not encounter a ghost unless it is a wandering monster
+	}
 	switch(loc)
 	{
+	case $location[A-Boo Peak]:
+		if(get_property("booPeakProgress").to_int() == 0 && !get_property("booPeakLit").to_boolean())
+		{
+			//forced noncombat of lighting the peak
+			return false;
+		}
+		//TODO track clue used but not encountered The Horror yet.
+		//see https://kolmafia.us/threads/track-a-boo-clue-active.26690/
+		return true;
+		
 	case $location[the haunted gallery]:
 		//special case for [ghost of Elizabeth Spookyraven] which only appears in [the haunted gallery] at the culmination of lights out quest
 		//TODO implement doing the quest and then return true when the quest is at the right stage for her to appear
