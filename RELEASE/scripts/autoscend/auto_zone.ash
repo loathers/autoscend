@@ -1784,8 +1784,11 @@ boolean is_ghost_in_zone(location loc)
 			//forced noncombat of lighting the peak
 			return false;
 		}
-		//TODO track clue used but not encountered The Horror yet.
-		//see https://kolmafia.us/threads/track-a-boo-clue-active.26690/
+		if(get_property("auto_aboopending").to_int() != 0)	//internal tracking by autoscend
+		{
+			//our next visit to the peak will be The Horror NC adventure
+			return false;
+		}
 		return true;
 		
 	case $location[the haunted gallery]:
