@@ -440,7 +440,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1023: // Like a Bat Into Hell (Actually Ed the Undying)
-		case 1024:  // Like a Bat out of Hell (Actually Ed the Undying)
+		case 1024: // Like a Bat out of Hell (Actually Ed the Undying)
 			edUnderworldChoiceHandler(choice);
 			break;
 		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
@@ -554,16 +554,17 @@ boolean auto_run_choice(int choice, string page)
 		case 1410: // The Mushy Center (Your Mushroom Garden)
 			mushroomGardenChoiceHandler(choice);
 			break;
-		case 1427: // Hidden Junction (Cartography)
-		case 1428: // Choice 1428 is Your Neck of the Woods (Cartography)
-		case 1429: // Choice 1429 is No Nook Unknown (Cartography)
-		case 1430: // Choice 1430 is Ghostly Memories (Cartography)
-		case 1431: // Choice 1431 is Here There Be Giants (Cartography)
-		case 1432: // Choice 1432 is Mob Maptality (Cartography)
-		case 1433: // Choice 1433 is Hippy camp verge of war Sneaky Sneaky (Cartography)
-		case 1434: // Choice 1434 is frat camp verge of war Sneaky Sneaky (Cartography)
+		case 1425: // Oh Yeah! (Cartography)
+		case 1427: // The Hidden Junction (Cartography)
+		case 1428: // Your Neck of the Woods (Cartography)
+		case 1429: // No Nook Unknown (Cartography)
+		case 1430: // Ghostly Memories (Cartography)
+		case 1431: // Here There Be Giants (Cartography)
+		case 1432: // Mob Maptality (Cartography)
+		case 1433: // Sneaky, Sneaky (The Hippy Camp (Verge of War)) (Cartography)
+		case 1434: // Sneaky, Sneaky (Orcish Frat House (Verge of War)) (Cartography)
 		case 1435: // Leading Yourself Right to Them (Map the Monsters)
-		case 1436: // Choice 1436 is Billiards Room Options (Cartography)
+		case 1436: // Billiards Room Options (Cartography)
 			cartographyChoiceHandler(choice);
 			break;
 		default:
