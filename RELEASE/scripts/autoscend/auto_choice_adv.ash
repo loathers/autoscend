@@ -48,17 +48,17 @@ boolean auto_run_choice(int choice, string page)
 		case 125: // No Visible Means of Support (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
-		case 139:
-		case 140:
+		case 139: // Bait and Switch
+		case 140: // The Thin Tie-Dyed Line
 		case 141: // Blockin' Out the Scenery (wearing Frat Boy Ensemble) 
 		case 142: // Blockin' Out the Scenery (wearing Frat Warrior Fatigues)
-		case 143:
-		case 144:
+		case 143: // Catching Some Zetas
+		case 144: // One Less Room Than In That Movie
 		case 145: // Fratacombs (wearing Filthy Hippy Disguise) 
 		case 146: // Fratacombs (wearing War Hippy Fatigues)
-		case 147:
-		case 148:
-		case 149:
+		case 147: // Cornered!
+		case 148: // Cornered Again!
+		case 149: // How Many Corners Does this Stupid Barn Have!?
 			warChoiceHandler(choice);
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
@@ -175,7 +175,7 @@ boolean auto_run_choice(int choice, string page)
 		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
 			auto_reagnimatedGetPart(choice);
 			break;
-		case 672: //There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
+		case 672: // There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
 			run_choice(3);
 			break;
 		case 673: // Putting Off Is Off-Putting (Castle in the Clouds in the Sky (Ground Floor))
@@ -305,7 +305,7 @@ boolean auto_run_choice(int choice, string page)
 		case 797: // Let's Workshop This a Little (The Old Landfill)
 			oldLandfillChoiceHandler(choice);
 			break;
-		case 829: // we all wear masks. (grimstone mask)
+		case 829: // We All Wear Masks (Grimstone Mask Choice)
 			run_choice(1);			//choose step mother. we want [Ornate Dowsing Rod]
 			break;
 		case 822: //The Prince's Ball (In the Restroom)
