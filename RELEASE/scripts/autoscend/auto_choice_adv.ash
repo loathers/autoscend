@@ -48,17 +48,17 @@ boolean auto_run_choice(int choice, string page)
 		case 125: // No Visible Means of Support (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
-		case 139: // Bait and Switch
-		case 140: // The Thin Tie-Dyed Line
-		case 141: // Blockin' Out the Scenery (wearing Frat Boy Ensemble) 
-		case 142: // Blockin' Out the Scenery (wearing Frat Warrior Fatigues)
-		case 143: // Catching Some Zetas
-		case 144: // One Less Room Than In That Movie
-		case 145: // Fratacombs (wearing Filthy Hippy Disguise) 
-		case 146: // Fratacombs (wearing War Hippy Fatigues)
-		case 147: // Cornered!
-		case 148: // Cornered Again!
-		case 149: // How Many Corners Does this Stupid Barn Have!?
+		case 139: // Bait and Switch (The Hippy Camp (Verge of War))
+		case 140: // The Thin Tie-Dyed Line (The Hippy Camp (Verge of War))
+		case 141: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Boy Ensemble) 
+		case 142: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Warrior Fatigues)
+		case 143: // Catching Some Zetas (Orcish Frat House (Verge of War))
+		case 144: // One Less Room Than In That Movie (Orcish Frat House (Verge of War))
+		case 145: // Fratacombs (Orcish Frat House (Verge of War) wearing Filthy Hippy Disguise) 
+		case 146: // Fratacombs (Orcish Frat House (Verge of War) wearing War Hippy Fatigues)
+		case 147: // Cornered! (McMillicancuddy's Barn)
+		case 148: // Cornered Again! (McMillicancuddy's Barn)
+		case 149: // How Many Corners Does this Stupid Barn Have!? (McMillicancuddy's Barn)
 			warChoiceHandler(choice);
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
@@ -68,7 +68,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			run_choice(4); // skip
 			break;
-		case 178: // Hammering the Armory
+		case 178: // Hammering the Armory (The Penultimate Fantasy Airship)
 			if(in_lar())
 			{
 				set_property("_LAR_skipNC178", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
