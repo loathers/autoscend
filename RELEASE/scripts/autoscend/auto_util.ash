@@ -1437,6 +1437,8 @@ boolean cloverUsageInit()
 	}
 	if(item_amount($item[Ten-Leaf Clover]) > 0)
 	{
+		auto_log_info("Clover usage initialized");
+		set_property("_autoCloverNext", true);
 		return true;
 	}
 	abort("We tried to initialize clover usage but do not appear to have a Ten-Leaf Clover");
@@ -1456,6 +1458,7 @@ boolean cloverUsageFinish()
 		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
 		return false;
 	}
+	remove_property("_autoCloverNext");
 	return true;
 }
 
