@@ -555,17 +555,17 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1023: // Like a Bat Into Hell (Actually Ed the Undying)
-		case 1024:  // Like a Bat out of Hell (Actually Ed the Undying)
+		case 1024: // Like a Bat out of Hell (Actually Ed the Undying)
 			edUnderworldChoiceHandler(choice);
 			break;
 		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
 			if (isActuallyEd() || in_pokefam()) //paths that don't require a boning Knife for the tower - possibly add Bugbear Invasion if we add support for it?
 			{
-				set_property("choiceAdventure1026", 3); //Skip
+				run_choice(3); // skip adventure
 			}
 			else
 			{
-				set_property("choiceAdventure1026", 2); // Get Electric Boning Knife then Skip
+				run_choice(2); // get Electric Boning Knife then skip adventure
 			}
 			break;
 
