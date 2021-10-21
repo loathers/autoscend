@@ -79,6 +79,7 @@ boolean auto_run_choice(int choice, string page)
 			if(item_amount($item[model airship]) == 0)
 			{
 				run_choice(4); // get the model airship
+			}
 			else
 			{
 				run_choice(1); // fight an opponent
