@@ -656,6 +656,9 @@ boolean auto_run_choice(int choice, string page)
 		case 1328: // Basement Urges (The Neverending Party)
 			neverendingPartyChoiceHandler(choice);
 			break;
+		case 1393: // The Invader
+			run_choice(1); // fight the invader
+			break;
 		case 1340: // Is There A Doctor In The House? (Lil' Doctor Bag™)
 			auto_log_info("Accepting doctor quest, it's our job!");
 			run_choice(1);
