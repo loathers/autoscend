@@ -40,7 +40,8 @@ string yellowRayCombatString(monster target);
 string yellowRayCombatString();
 string replaceMonsterCombatString(monster target, boolean inCombat);
 string replaceMonsterCombatString(monster target);
-string replaceMonsterCombatString();			
+string replaceMonsterCombatString();
+float turns_to_kill(float dmg);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash
@@ -143,3 +144,7 @@ string auto_combatBHYStage1(int round, monster enemy, string text);
 #####################################################
 //defined in /autoscend/combat/auto_combat_wildfire.ash
 string auto_combatWildfireStage1(int round, monster enemy, string text);
+
+#####################################################
+//defined in /autoscend/combat/auto_combat_you_robot.ash
+string auto_combat_robot_stage5(int round, monster enemy, string text);
