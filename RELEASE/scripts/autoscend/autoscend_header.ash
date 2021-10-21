@@ -809,7 +809,10 @@ boolean LA_wildfire();
 
 ########################################################################################################
 //Defined in autoscend/paths/you_robot.ash
-boolean in_youRobot();
+boolean in_robot();
+void robot_initializeSettings();
+boolean LX_robot_get_energy();
+boolean LM_robot();
 
 ########################################################################################################
 //Defined in autoscend/paths/zombie_slayer.ash

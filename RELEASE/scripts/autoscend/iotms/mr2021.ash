@@ -110,7 +110,7 @@ void auto_enableBackupCameraReverser()
 
 int auto_backupUsesLeft()
 {
-	return 11 + (in_youRobot() ? 5 : 0) - get_property("_backUpUses").to_int();
+	return 11 + (in_robot() ? 5 : 0) - get_property("_backUpUses").to_int();
 }
 
 boolean auto_havePowerPlant()
