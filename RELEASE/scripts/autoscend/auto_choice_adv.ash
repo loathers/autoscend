@@ -177,6 +177,7 @@ boolean auto_run_choice(int choice, string page)
 			{
 				run_choice(4); // fight swarm of ghuol whelps
 			}
+			break;
 		case 527: // The Haert of Darkness (The Cyrpt)
 			run_choice(1); // fight whichever version of the bonerdagon
 			break;
