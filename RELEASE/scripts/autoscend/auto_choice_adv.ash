@@ -226,6 +226,7 @@ boolean auto_run_choice(int choice, string page)
 			if(item_amount($item[Massive Dumbbell]) > 0)
 			{
 				run_choice(1); // with dumbbell, open the ground floor
+			}
 			else
 			{
 				run_choice(4); // without dumbbell, go to You Don't Mess Around with Gym
