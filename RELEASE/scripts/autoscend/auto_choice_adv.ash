@@ -169,7 +169,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 523: // Death Rattlin' (The Cyrpt)
-			if(in_darkGyffte() && if(item_amount($item[dieting pill]) < desired_pills))
+			if(in_darkGyffte()) // ADD BACK IN PILLS
 			{
 				run_choice(5); // skip adventure to farm more dieting pills in DG
 			}
@@ -570,7 +570,6 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(2); // get Electric Boning Knife then skip adventure
 			}
 			break;
-
 		case 1060: // Temporarily Out of Skeletons (The Skeleton Store)
 			if (item_amount($item[Skeleton Store office key]) == 0) {
 				run_choice(1); // Skeleton Store office key
