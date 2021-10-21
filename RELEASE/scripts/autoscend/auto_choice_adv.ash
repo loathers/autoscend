@@ -5,7 +5,7 @@ boolean auto_run_choice(int choice, string page)
 	auto_log_debug("Running auto_choice_adv.ash");
 	string[int] options = available_choice_options();
 	
-	switch (choice) {
+	switch (choice){
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
 		case 16: // Saint Beernard (The eXtreme Slope)
 		case 17: // Generic Teen Comedy Snowboarding Adventure (The eXtreme Slope)
@@ -74,6 +74,15 @@ boolean auto_run_choice(int choice, string page)
 				set_property("_LAR_skipNC178", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
 			}
 			run_choice(2); // skip
+			break;
+		case 182: // Random Lack of an Encounter (The Penultimate Fantasy Airship)
+			if(item_amount($item[model airship]) == 0)
+			{
+				run_choice(4); // get the model airship
+			else
+			{
+				run_choice(1); // fight an opponent
+			}
 			break;
 		case 184: // That Explains All The Eyepatches (Barrrney's Barrr)
 		case 185: // Yes, You're a Rock Starrr (Barrrney's Barrr)
@@ -158,6 +167,18 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(3); // skip
 			}
 			break;
+		case 523: // Death Rattlin' (The Cyrpt)
+			if(in_darkGyffte() && if(item_amount($item[dieting pill]) < desired_pills))
+			{
+				run_choice(5); // skip adventure to farm more dieting pills in DG
+			}
+			else
+			{
+				run_choice(4); // fight swarm of ghuol whelps
+			}
+		case 527: // The Haert of Darkness (The Cyrpt)
+			run_choice(1); // fight whichever version of the bonerdagon
+			break;
 		case 556: // More Locker Than Morlock (Itznotyerzitz Mine)
 			itznotyerzitzMineChoiceHandler(choice);
 			break;
@@ -175,14 +196,108 @@ boolean auto_run_choice(int choice, string page)
 		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
 			auto_reagnimatedGetPart(choice);
 			break;
-		case 672: //There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
-			run_choice(3);
+		case 669: // The Fast and the Furry-ous (The Castle in the Clouds in the Sky (Basement))
+			if(possessEquipment($item[Titanium Assault Umbrella]) && can_equip($item[Titanium Assault Umbrella]))
+			{
+				run_choice(4); // if have and can equip umbrella, come back to this choice after equipping
+			}
+			else
+			{
+				run_choice(1); // in any other cases, go to Out in the Open Source 
+			}
+			break;
+		case 670: // You Don't Mess Around with Gym (The Castle in the Clouds in the Sky (Basement))
+			if(possessEquipment($item[Amulet of Extreme Plot Significance]) && can_equip($item[Amulet of Extreme Plot Significance]))
+			{
+				run_choice(5); // if have and can equip amulet, come back to this choice after equipping
+			}
+			else if(internalQuestStatus("questL10Garbage") < 8 && equipped_amount($item[Amulet of Extreme Plot Significance]) == 1)
+			{
+				run_choice(4); // with amulet equipped, open the ground floor
+			}
+			else
+			{
+				run_choice(1); // with no amulet, grab the dumbbell. will skip adventure if already have dumbbell
+			}
+			break;
+		case 671: // Out in the Open Source (The Castle in the Clouds in the Sky (Basement))
+			if(item_amount($item[Massive Dumbbell]) > 0)
+			{
+				run_choice(1); // with dumbbell, open the ground floor
+			else
+			{
+				run_choice(4); // without dumbbell, go to You Don't Mess Around with Gym
+			}
+			break;
+		case 672: // There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
+			run_choice(3); // skip adventure
 			break;
 		case 673: // Putting Off Is Off-Putting (Castle in the Clouds in the Sky (Ground Floor))
-			run_choice(1); //Very Overdue Library Book then Skip
+			run_choice(1); // get very overdue library book then skip adventure
 			break;
 		case 674: // Huzzah! (Castle in the Clouds in the Sky (Ground Floor))
-			run_choice(3);
+			run_choice(3); // skip adventure
+			break;
+		case 675: // Melon Collie and the Infinite Lameness (The Castle in the Clouds in the Sky (Top Floor))
+			if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
+			{
+				run_choice(2); // if quest not done and have the record, complete the quest
+			}
+			else
+			{
+				run_choice(4); // moves to Copper Feel in all other scenarios
+			}
+			break;
+		case 676: // Flavor of a Raver (The Castle in the Clouds in the Sky (Top Floor))
+			if(internalQuestStatus("questL10Garbage") < 10 && possessEquipment($item[mohawk wig]))
+			{
+				run_choice(4); // if quest not done and have mohawk wig, move to Yeah, You're for Me, Punk Rock Giant
+			}	
+			else
+			{
+				run_choice(3); // if no mohawk wig, grab the drum n bass record. will skip adventure if already have record
+			}
+			break;
+		case 677: // Copper Feel (The Castle in the Clouds in the Sky (Top Floor))
+			if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[model airship]) > 0)
+			{
+				run_choice(1); // if quest not done and have model airship, complete quest
+			}
+			else if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
+			{
+				run_choice(4); // if quest not done and have the record, move to Copper Feel
+			}
+			else
+			{
+				run_choice(2); // grab steam-powered rocket ship.  will skip adventure if already have rocket
+			}
+			break;
+		case 678: // Yeah, You're for Me, Punk Rock Giant (The Castle in the Clouds in the Sky (Top Floor))
+			if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[mohawk wig]) == 1)
+			{
+				run_choice(1); // if quest not done and mohawk wig equipped, finish quest
+			}
+			else if(internalQuestStatus("questL10Garbage") < 10)
+			{
+				run_choice(4); // if wig not equipped and quest not done, go to Flavor of a Raver 
+			}
+			else
+			{
+				run_choice(3); // if quest is done, go to Copper Feel to guarantee skip adventure
+			}
+			break;
+		case 679: // Keep On Turnin' the Wheel in the Sky (The Castle in the Clouds in the Sky (Top Floor))
+			if(isActuallyEd())
+			{
+				run_choice(2); // ed advances via choice 2
+			}
+			else
+			{
+				run_choice(1); // everyone else advances via choice 1
+			}
+			break;
+		case 680: // Are you a Man or a Mouse? (The Castle in the Clouds in the Sky (Top Floor))
+			run_choice(1);
 			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)

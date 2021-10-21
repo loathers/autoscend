@@ -142,7 +142,6 @@ boolean L7_crypt()
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
 		auto_log_info("The Cranny!", "blue");
-		set_property("choiceAdventure523", "4");
 
 		if(my_mp() > 60)
 		{
@@ -176,7 +175,6 @@ boolean L7_crypt()
 				{
 					bat_formBats();
 				}
-				set_property("choiceAdventure523", "5");
 			}
 		}
 
@@ -197,7 +195,6 @@ boolean L7_crypt()
 		}
 
 		acquireHP();
-		set_property("choiceAdventure527", 1);
 		if(auto_have_familiar($familiar[Machine Elf]))
 		{
 			handleFamiliar($familiar[Machine Elf]);

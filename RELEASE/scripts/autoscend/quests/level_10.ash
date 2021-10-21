@@ -52,15 +52,6 @@ boolean L10_airship()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 
-	if(item_amount($item[Model Airship]) == 0)
-	{
-		set_property("choiceAdventure182", "4"); // Random Lack of an Encounter: Get Model Airship
-	}
-	else
-	{
-		set_property("choiceAdventure182", "1"); // Random Lack of an Encounter: Fight!
-	}
-
 	if((my_daycount() == 1) && (get_property("_hipsterAdv").to_int() < 7) && is_unrestricted($familiar[Artistic Goth Kid]) && auto_have_familiar($familiar[Artistic Goth Kid]))
 	{
 		auto_log_info("Hipster Adv: " + get_property("_hipsterAdv"), "blue");
@@ -80,7 +71,8 @@ boolean L10_airship()
 		visit_url("place.php?whichplace=beanstalk");	
 	}
 
-	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
+	if (handleFamiliar($familiar[Red-Nosed Snapper]))
+	{
 		auto_changeSnapperPhylum($phylum[dude]);
 	}
 	autoAdv($location[The Penultimate Fantasy Airship]);
@@ -105,16 +97,7 @@ boolean L10_basement()
 	}
 
 	auto_log_info("Basement Search", "blue");
-	set_property("choiceAdventure670", "5"); // You Don't Mess Around with Gym: Open Ground floor (with amulet)
-	if(item_amount($item[Massive Dumbbell]) > 0)
-	{
-		set_property("choiceAdventure671", "1"); // Out in the Open Source: Open Ground floor
-	}
-	else
-	{
-		set_property("choiceAdventure671", "4"); // Out in the Open Source: Go to Fitness Choice
-	}
-
+	
 	if(my_primestat() == $stat[Muscle])
 	{
 		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
@@ -122,15 +105,6 @@ boolean L10_basement()
 	}
 	buyUpTo(1, $item[Hair Spray]);
 	buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
-
-	if(possessEquipment($item[Titanium Assault Umbrella]) && can_equip($item[Titanium Assault Umbrella]))
-	{
-		set_property("choiceAdventure669", "4"); // The Fast and the Furry-ous: Skip (and ensure reoccurance)
-	}
-	else
-	{
-		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella) or Neckbeard Choice
-	}
 
 	if (possessEquipment($item[Amulet of Extreme Plot Significance]))
 	{
@@ -148,12 +122,10 @@ boolean L10_basement()
 	autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
 	resetMaximize();
 	
-
 	if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 	{
 		auto_log_info("We was fast and furry-ous!", "blue");
 		autoEquip($item[Titanium Assault Umbrella]);
-		set_property("choiceAdventure669", "1"); // The Fast and the Furry-ous: Open Ground floor (with Umbrella)
 		autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 		if(!contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
 		{
@@ -165,14 +137,12 @@ boolean L10_basement()
 		auto_log_info("Just messed with Gym", "blue");
 		if(!can_equip($item[Amulet of Extreme Plot Significance]) || (item_amount($item[Massive Dumbbell]) > 0))
 		{
-			auto_log_warning("Can't equip an Amulet of Extreme Plot Signifcance...", "red");
+			auto_log_warning("Can't equip an Amulet of Extreme Plot Significance...", "red");
 			auto_log_warning("I suppose we will try the Massive Dumbbell... Beefcake!", "red");
-			set_property("choiceAdventure670", "1"); // You Don't Mess Around with Gym: Get Massive Dumbbell then Skip
 			autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 			return true;
 		}
 
-		set_property("choiceAdventure670", "5"); // You Don't Mess Around with Gym: Open Ground floor (with amulet)
 		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]))
 		{
 			pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
@@ -182,7 +152,6 @@ boolean L10_basement()
 				{
 					auto_log_warning("Well, we don't seem to be able to find an Amulet...", "red");
 					auto_log_warning("I suppose we will get the Massive Dumbbell... Beefcake!", "red");
-					set_property("choiceAdventure670", "1"); // You Don't Mess Around with Gym: Get Massive Dumbbell then Skip
 					autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 				}
 				else
@@ -196,8 +165,7 @@ boolean L10_basement()
 				return true;
 			}
 		}
-		set_property("choiceAdventure670", "4"); // You Don't Mess Around with Gym: Open Ground floor (with amulet)
-
+		
 		if(!autoEquip($slot[acc3], $item[Amulet Of Extreme Plot Significance]))
 		{
 			abort("Unable to equip the Amulet when we wanted to...");
@@ -258,50 +226,10 @@ boolean L10_topFloor()
 	}
 
 	auto_log_info("Castle Top Floor", "blue");
-	set_property("choiceAdventure680", 1); // Mercy adventure: Are you a Man or a Mouse?
-	if(item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
-	{
-		auto_log_info("We have a drum 'n' bass record and are willing to use it!", "green");
-		// Copper Feel: Move to Mellon Collie
-		set_property("choiceAdventure677", 4);
-		// Mellon Collie: Turn in record, complete quest
-		set_property("choiceAdventure675", 2);
-	}
-	else
-	{
-		// Mellon Collie: Move to Gimme Steam
-		set_property("choiceAdventure675", 4);
-		// Copper feel: Turn in airship (will fight otherwise)
-		set_property("choiceAdventure677", 1);
-	}
+
 	if (!possessEquipment($item[mohawk wig]) && auto_can_equip($item[mohawk wig]) && !in_hardcore())
 	{
 		pullXWhenHaveY($item[Mohawk Wig], 1, 0);
-	}
-
-	if(!possessEquipment($item[mohawk wig]) && 0 == item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]))
-	{
-		auto_log_info("We don't have a mohawk wig, let's try to get a drum 'n' bass record...", "green");
-		// Yeah, You're for Me, Punk Rock Giant: Move to Flavor of a Raver (676)
-		set_property("choiceAdventure678", 4);
-		// Floor of a Raver: Acquire drum 'n' bass 'n' drum 'n' bass record
-		set_property("choiceAdventure676", 3);
-	}
-	else
-	{
-		// Floor of a Raver: Move to "Yeah, You're for Me, Punk Rock Giant (678)"
-		set_property("choiceAdventure676", 4);
-		// Yeah, You're for Me, Punk Rock Giant: Get the Punk's Attention, complete quest
-		set_property("choiceAdventure678", 1);
-	}
-
-	if (isActuallyEd())
-	{
-		set_property("choiceAdventure679", 2);
-	}
-	else
-	{
-		set_property("choiceAdventure679", 1);
 	}
 
 	auto_forceNextNoncombat();
@@ -354,10 +282,6 @@ boolean L10_holeInTheSkyUnlock()
 	}
 
 	auto_log_info("Castle Top Floor - Opening the Hole in the Sky", "blue");
-	set_property("choiceAdventure677", 2);
-	set_property("choiceAdventure675", 4);
-	set_property("choiceAdventure678", 3);
-	set_property("choiceAdventure676", 4);
 
 	auto_forceNextNoncombat();
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
