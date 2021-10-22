@@ -268,7 +268,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			{
 				return useSkill($skill[Northern Explosion], false);
 			}
-			else if($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class())
+			else if(!in_robot() && $classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class())
 			{
 				auto_log_warning("None of our preferred [cold] skills available against smut orcs. Engaging in Fisticuffs.", "red");
 			}

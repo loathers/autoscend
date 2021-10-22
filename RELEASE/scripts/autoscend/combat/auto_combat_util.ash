@@ -692,3 +692,9 @@ string replaceMonsterCombatString()
 {
 	return replaceMonsterCombatString($monster[none]);
 }
+
+float turns_to_kill(float dmg)
+{
+	//how long will it take us to kill the current enemy if we are able to deal dmg to it each round
+	return monster_hp().to_float() / dmg;
+}
