@@ -212,12 +212,7 @@ boolean L3_tavern()
 
 	boolean delayTavern = false;
 
-	if (isActuallyEd())
-	{
-		set_property("choiceAdventure1000", "1"); // Everything in Moderation: turn on the faucet (completes quest)
-		set_property("choiceAdventure1001", "2"); // Hot and Cold Dripping Rats: Leave it alone (don't fight a rat)
-	}
-	else if(!enoughElement || (my_mp() < mpNeed))
+	if(!enoughElement || (my_mp() < mpNeed))
 	{
 		if((my_daycount() <= 2) && (my_level() <= 11))
 		{

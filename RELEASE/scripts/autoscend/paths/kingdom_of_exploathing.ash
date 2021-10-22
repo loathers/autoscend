@@ -112,7 +112,6 @@ boolean LX_koeInvaderHandler()
 			// Use maximizer now that we are for sure fighting the Invader
 			addToMaximize("200 all res");
 
-			set_property("choiceAdventure1393", 1); // Take care of it...
 			boolean ret = autoAdv(1, $location[The Invader]);
 			if(have_effect($effect[Beaten Up]) > 0)
 			{
