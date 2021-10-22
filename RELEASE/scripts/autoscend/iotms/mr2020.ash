@@ -622,30 +622,7 @@ monster auto_monsterToMap(location loc)
 void cartographyChoiceHandler(int choice)
 {
 	auto_log_info("cartographyChoiceHandler Running choice " + choice, "blue");
-	if (choice == 1425)
-	{
-		if (item_amount($item[Orcish frat-paddle]) > 0)
-		{
-			run_choice(1); // choosing baseball cap + cargo shorts to complete outfit
-		}
-		else if (item_amount($item[Orcish baseball cap]) > 0)
-		{
-			run_choice(2); // choosing frat-paddle + cargo shorts to complete outfit
-		}
-		else if (item_amount($item[Orcish cargo shorts]) > 0)
-		{
-			run_choice(3); // choosing frat-paddle + baseball cap to complete outfit
-		}
-		else if (item_amount($item[Orcish frat-paddle]) > 0 && item_amount($item[Orcish baseball cap]) > 0 && item_amount($item[Orcish cargo shorts]) > 0)
-		{
-			run_choice(4); // if you have each outfit piece, just fight the orcs
-		}
-		else
-		{
-			run_choice(1); // if nothing, just grab the first option. could consider opt 4 and YR?
-		}
-	}
-	else if (choice == 1427) // The Hidden Junction (Guano Junction)
+	if (choice == 1427) // Hidden Junction (Guano Junction)
 	{
 		run_choice(1); // fight the screambat.
 	}
@@ -655,13 +632,13 @@ void cartographyChoiceHandler(int choice)
 	}
 	else if (choice == 1429) // No Nook Unknown (The Defiled Nook)
 	{
-		run_choice(1); // acquire 2 evil eyes
+			run_choice(1); // acquire 2 evil eyes
 	}
 	else if (choice == 1430) // Ghostly Memories (A-boo Peak)
 	{
 		run_choice(1); // If we are adventuring in the peak we are trying to clear the peak, go to the horror
 	}
-	else if (choice == 1431) // Here There Be Giants (Cartography)
+	else if (choice == 1431) // Choice 1431 is Here There Be Giants (Cartography)
 	{
 		if (internalQuestStatus("questL10Garbage") == 9)
 		{
@@ -710,11 +687,11 @@ void cartographyChoiceHandler(int choice)
 			run_choice(3);
 		}
 	}
-	else if (choice == 1433) // Sneaky, Sneaky (The Hippy Camp (Verge of War))
+	else if (choice == 1433) // Sneaky Sneaky (The Hippy Camp (Verge of War))
 	{
 		run_choice(3); // start the war
 	}
-	else if (choice == 1434) // Sneaky, Sneaky (Orcish Frat House (Verge of War))
+	else if (choice == 1434) // Sneaky Sneaky (Orcish Frat House (Verge of War))
 	{
 		run_choice(2); // start the war
 	}
