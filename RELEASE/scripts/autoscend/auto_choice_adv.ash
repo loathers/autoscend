@@ -5,8 +5,7 @@ boolean auto_run_choice(int choice, string page)
 	auto_log_debug("Running auto_choice_adv.ash");
 	string[int] options = available_choice_options();
 	
-	switch (choice)
-	{
+	switch (choice){
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
 		case 16: // Saint Beernard (The eXtreme Slope)
 		case 17: // Generic Teen Comedy Snowboarding Adventure (The eXtreme Slope)
