@@ -23,7 +23,7 @@ string robot_defaultMaximizeStatement()
 	string res = "5item,meat,0.5initiative,0.4hp,0.1da 1000max,dr,0.5all res,-fumble,-ml";
 	if(my_primestat() == $stat[Moxie])
 	{
-		res += ",1.5mox";
+		res += ",3mox";
 	}
 	else
 	{
@@ -31,7 +31,7 @@ string robot_defaultMaximizeStatement()
 	}
 	if(my_primestat() == $stat[Muscle])
 	{
-		res += ",1.5mus";
+		res += ",3mus";
 	}
 	if(my_primestat() == $stat[mysticality])
 	{
@@ -51,7 +51,7 @@ string robot_defaultMaximizeStatement()
 		}
 		else
 		{
-			res += ",1.5weapon damage,0.75weapon damage percent,1.5elemental damage";
+			res += ",0.3weapon damage,0.2weapon damage percent,0.5elemental damage";
 			if(my_primestat() == $stat[Muscle])
 			{
 				res += ",melee";
