@@ -1256,7 +1256,12 @@ void robot_directive()
 	boolean gob_ready = internalQuestStatus("questL05Goblin") == 1 && possessOutfit("Knob Goblin Harem Girl Disguise");
 	boolean gob_done = get_property("questL05Goblin") == "finished";
 	
-	boolean outfit_check_riders = (slope_ready || slope_done) && (gob_ready || gob_done);
+	boolean castle_ready = internalQuestStatus("questL10Garbage") == 9 || internalQuestStatus("questL10Garbage") == 10;
+	boolean castle_wig_route = possessEquipment($item[mohawk wig]) || !in_hardcore();
+	boolean castle_done = !castle_wig_route || get_property("questL10Garbage") == "finished";
+	
+	boolean outfit_riders_check = (slope_ready || slope_done) && (gob_ready || gob_done) && (castle_ready || castle_done);
+	boolean outfit_riders_done = slope_done && gob_done && castle_done;
 	
 	boolean island_access = get_property("lastIslandUnlock").to_int() >= my_ascensions();
 	boolean arena_done = get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() > 9999 ||
@@ -1273,12 +1278,12 @@ void robot_directive()
 	boolean war_ready3 = internalQuestStatus("questL12War") == 1 && war_can_kill_boss && war_battlefield_cleared;
 	boolean war_started = internalQuestStatus("questL12War") == 1;		//L12 war started. 0 is for war QUEST started but NOT the war itself
 	boolean war_finished = get_property("questL12War") == "finished";
-	if(directive == "outfit1" && slope_done && gob_done && (war_started || war_battlefield_cleared || war_finished))
+	if(directive == "outfit1" && outfit_riders_done && (war_started || war_battlefield_cleared || war_finished))
 	{
 		//we remove outfit1 and go do other quests while flyering for arena
 		remove_property("auto_robot_directive");
 	}
-	if(directive == "outfit2" && slope_done && gob_done && (war_battlefield_cleared || war_finished))
+	if(directive == "outfit2" && outfit_riders_done && (war_battlefield_cleared || war_finished))
 	{
 		//we cleared the battlefield so it is time to directly move directive from outfit2 (clear battlefield) to outfit3 (kill warboss)
 		//we want to make sure we are done with slope and gob as well since mys classes prefer not to do them using outfit3.
@@ -1288,15 +1293,15 @@ void robot_directive()
 	{
 		remove_property("auto_robot_directive");
 	}
-	if(directive == "" && war_ready1 && outfit_check_riders && island_access)
+	if(directive == "" && war_ready1 && outfit_riders_check && island_access)
 	{
 		set_property("auto_robot_directive", "outfit1");
 	}
-	if(directive == "" && war_ready2 && outfit_check_riders)
+	if(directive == "" && war_ready2 && outfit_riders_check)
 	{
 		set_property("auto_robot_directive", "outfit2");
 	}
-	if(directive == "" && war_ready3 && outfit_check_riders)
+	if(directive == "" && war_ready3 && outfit_riders_check)
 	{
 		set_property("auto_robot_directive", "outfit3");
 	}
@@ -1448,6 +1453,10 @@ boolean LA_robot()
 		//we are at portions of quests that need an outfit. first two are specific portions so they should be done first.
 		if(L5_slayTheGoblinKing()) return true;
 		if(L8_trapperSlope()) return true;
+		if(possessEquipment($item[mohawk wig]) || !in_hardcore())		//we are in the mohawk wig route
+		{
+			if(L10_topFloor()) return true;
+		}
 		//last one is the function for the entire quest.
 		//it will make as much progress as it needs to before the directive is cleared
 		if(L12_islandWar()) return true;
