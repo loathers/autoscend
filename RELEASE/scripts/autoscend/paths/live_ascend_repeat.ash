@@ -1,6 +1,11 @@
-boolean groundhogSafeguard()
+boolean in_lar()
 {
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	return my_path() == "Live. Ascend. Repeat.";
+}
+
+boolean lar_safeguard()
+{
+	if(in_lar())
 	{
 		string repeats = get_property("lastEncounter");
 		if((repeats == "Skull, Skull, Skull") || (repeats == "Urning Your Keep") || (repeats == "Turn Your Head and Coffin") || (repeats == "Curtains") || (repeats == "There's No Ability Like Possibility") || (repeats == "Putting Off Is Off-Putting") || (repeats == "Huzzah!"))
@@ -24,9 +29,9 @@ boolean groundhogSafeguard()
 	return false;
 }
 
-boolean canGroundhog(location loc)
+boolean lar_repeat(location loc)
 {
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(in_lar())
 	{
 		if($locations[The Castle In The Clouds In The Sky (Ground Floor), The Defiled Alcove, The Defiled Niche, The Defiled Nook, The Haunted Ballroom] contains loc)
 		{
@@ -41,9 +46,9 @@ boolean canGroundhog(location loc)
 
 
 
-boolean groundhogAbort(location loc)
+boolean lar_abort(location loc)
 {
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(in_lar())
 	{
 		generic_t itemNeed = zone_needItem(loc);
 		if(!itemNeed._boolean)
@@ -64,10 +69,10 @@ boolean groundhogAbort(location loc)
 }
 
 
-boolean LM_groundhog()
+boolean LM_lar()
 {
 	//Not best way but just do it...
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(in_lar())
 	{
 		if(get_property("_sourceTerminalDigitizeUses").to_int() < 3)
 		{

@@ -25,25 +25,14 @@ boolean LX_burnDelay();
 boolean LX_universeFrat();
 boolean LX_faxing();
 boolean tophatMaker();
-int handlePulls(int day);
 boolean LX_doVacation();
 boolean fortuneCookieEvent();
 void initializeDay(int day);
 boolean dailyEvents();
-boolean isAboutToPowerlevel();
-boolean LX_attemptPowerLevel();
-boolean disregardInstantKarma();
-int auto_freeCombatsRemaining();
-int auto_freeCombatsRemaining(boolean print_remaining_fights);
-boolean LX_freeCombats();
-boolean LX_freeCombats(boolean powerlevel);
-boolean LX_freeCombatsTask();
 boolean Lsc_flyerSeals();
-boolean LX_hardcoreFoodFarm();
-boolean LX_craftAcquireItems();
 boolean councilMaintenance();
 boolean adventureFailureHandler();
-boolean beatenUpResolution();
+void beatenUpResolution();
 int speculative_pool_skill();
 boolean autosellCrap();
 void print_header();
@@ -478,7 +467,7 @@ void edUnderworldChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
-boolean in_boris();
+boolean is_boris();
 void borisTrusty();
 boolean borisAdjustML();
 void boris_initializeSettings();
@@ -491,7 +480,7 @@ boolean LM_boris();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_jarlsberg.ash
-boolean is_Jarlsberg();
+boolean is_jarlsberg();
 void jarlsberg_initializeSettings();
 void jarlsberg_initializeDay(int day);
 void jalrsberg_buySkills();
@@ -499,6 +488,7 @@ boolean LM_jarlsberg();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_sneaky_pete.ash
+boolean is_pete();
 void pete_initializeSettings();
 void pete_initializeDay(int day);
 void pete_buySkills();
@@ -507,6 +497,7 @@ boolean LM_pete();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_west_of_loathing.ash
+boolean in_awol();
 boolean awol_initializeSettings();
 void awol_useStuff();
 effect awol_walkBuff();
@@ -516,15 +507,20 @@ boolean awol_buySkills();
 //Defined in autoscend/paths/bees_hate_you.ash
 boolean in_bhy();
 void bhy_initializeSettings();
-boolean bees_hate_usable(string str);
+boolean bhy_usable(string str);
 boolean bhy_is_item_valid(item it);
 boolean LM_bhy();
 boolean L13_bhy_towerFinal();
 
 ########################################################################################################
+//Defined in autoscend/paths/bugbear_invasion.ash
+boolean in_bugbear();
+
+########################################################################################################
 //Defined in autoscend/paths/casual.ash
 boolean inAftercore();
 boolean inPostRonin();
+void casualCheck();
 boolean L8_slopeCasual();
 void acquireFamiliarRagamuffinImp();
 void acquireFamiliarsCasual();
@@ -533,6 +529,7 @@ boolean LM_canInteract();
 
 ########################################################################################################
 //Defined in autoscend/paths/community_service.ash
+boolean in_community();
 boolean LA_cs_communityService();
 boolean cs_witchess();
 void cs_initializeDay(int day);
@@ -566,6 +563,7 @@ boolean tryBeachHeadBuff(int quest);
 
 ########################################################################################################
 //Defined in autoscend/paths/dark_gyffte.ash
+boolean in_darkGyffte();
 void bat_startAscension();
 void bat_initializeSettings();
 boolean bat_wantHowl(location loc);
@@ -619,13 +617,13 @@ boolean LM_glover();
 ########################################################################################################
 //Defined in autoscend/paths/gelatinous_noob.ash
 boolean in_gnoob();
-void jello_startAscension(string page);
+void gnoob_startAscension(string page);
 int gnoobAbsorbCost(item it);
-void jello_buySkills();
-string[item] jello_lister(string goal);
-int jello_absorbsLeft();
-string[item] jello_lister();
-boolean LM_jello();
+void gnoob_buySkills();
+string[item] gnoob_lister(string goal);
+int gnoob_absorbsLeft();
+string[item] gnoob_lister();
+boolean LM_gnoob();
 
 ########################################################################################################
 //Defined in autoscend/paths/grey_goo.ash
@@ -637,13 +635,13 @@ boolean LA_grey_goo_tasks();
 ########################################################################################################
 //Defined in autoscend/paths/heavy_rains.ash
 boolean in_heavyrains();
-void heavy_rains_initializeSettings();
+void heavyrains_initializeSettings();
 boolean routineRainManHandler();
-void heavy_rains_initializeDay(int day);
-void heavy_rains_doBedtime();
-boolean doHRSkills();
+void heavyrains_initializeDay(int day);
+void heavyrains_doBedtime();
+boolean heavyrains_buySkills();
 boolean rainManSummon(monster target, boolean copy, boolean wink);
-boolean L13_towerFinalHeavyRains();
+boolean L13_heavyrains_towerFinal();
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
@@ -675,6 +673,7 @@ boolean LM_kolhs();
 
 ########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
+boolean in_lta();
 void bond_initializeSettings();
 boolean bond_initializeDay(int day);
 boolean bond_buySkills();
@@ -683,10 +682,11 @@ item[int] bondDrinks();
 
 ########################################################################################################
 //Defined in autoscend/paths/live_ascend_repeat.ash
-boolean groundhogSafeguard();
-boolean canGroundhog(location loc);
-boolean groundhogAbort(location loc);
-boolean LM_groundhog();
+boolean in_lar();
+boolean lar_safeguard();
+boolean lar_repeat(location loc);
+boolean lar_abort(location loc);
+boolean LM_lar();
 
 ########################################################################################################
 //Defined in autoscend/paths/low_key_summer.ash
@@ -707,13 +707,15 @@ boolean LX_lowkeySummer();
 
 ########################################################################################################
 //Defined in autoscend/paths/nuclear_autumn.ash
-void fallout_initializeSettings();
-void fallout_initializeDay(int day);
-boolean fallout_buySkills();
-boolean LM_fallout();
+boolean in_nuclear();
+void nuclear_initializeSettings();
+void nuclear_initializeDay(int day);
+boolean nuclear_buySkills();
+boolean LM_nuclear();
 
 ########################################################################################################
 //Defined in autoscend/paths/one_crazy_random_summer.ash
+boolean in_ocrs();
 boolean ocrs_postHelper();
 boolean ocrs_postCombatResolve();
 
@@ -740,9 +742,9 @@ boolean plumber_equipTool(stat st);
 
 ########################################################################################################
 //Defined in autoscend/paths/picky.ash
+boolean in_picky();
 void picky_pulls();
 void picky_startAscension();
-boolean picky_buyskills();
 
 ########################################################################################################
 //Defined in autoscend/paths/pocket_familiars.ash
@@ -765,6 +767,7 @@ boolean qt_FamiliarSwap (familiar fam);
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash
+boolean in_theSource();
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();
 boolean L8_theSourceNinjaOracle();
@@ -777,6 +780,10 @@ boolean LX_attemptPowerLevelTheSource();
 boolean in_tcrs();
 float tcrs_expectedAdvPerFill(string quality);
 boolean tcrs_maximize_with_items(string maximizerString);
+
+########################################################################################################
+//Defined in autoscend/paths/way_of_the_surprising_fist.ash
+boolean in_wotsf();
 
 ########################################################################################################
 //Defined in autoscend/paths/wildfire.ash
@@ -799,6 +806,17 @@ boolean LX_wildfire_hose(location place);
 boolean LX_wildfire_water();
 boolean LX_wildfire_spookyravenManorFirstFloor();
 boolean LA_wildfire();
+
+########################################################################################################
+//Defined in autoscend/paths/you_robot.ash
+boolean in_robot();
+void robot_initializeSettings();
+boolean LX_robot_get_energy();
+boolean LM_robot();
+
+########################################################################################################
+//Defined in autoscend/paths/zombie_slayer.ash
+boolean in_zombieSlayer();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -907,6 +925,7 @@ boolean L11_aridDesert();
 boolean L11_wishForBaaBaaBuran();
 boolean L11_unlockHiddenCity();
 void hiddenTempleChoiceHandler(int choice, string page);
+boolean liana_cleared(location loc);
 boolean L11_hiddenTavernUnlock();
 boolean L11_hiddenTavernUnlock(boolean force);
 boolean L11_hiddenCity();
@@ -1050,6 +1069,7 @@ boolean canPull(item it);
 void pullAll(item it);
 void pullAndUse(item it, int uses);
 int auto_mall_price(item it);
+boolean pullXWhenHaveYCasual(item it, int howMany, int whenHave);
 boolean pullXWhenHaveY(item it, int howMany, int whenHave);
 boolean pulverizeThing(item it);
 boolean buyableMaintain(item toMaintain, int howMany);
@@ -1063,6 +1083,8 @@ boolean acquireGumItem(item it);
 boolean acquireTotem();
 boolean acquireHermitItem(item it);
 boolean pull_meat(int target);
+int handlePulls(int day);
+boolean LX_craftAcquireItems();
 
 ########################################################################################################
 //Defined in autoscend/auto_adventure.ash
@@ -1084,6 +1106,9 @@ boolean autoAdvBypass(string url, string option);
 //Defined in autoscend/auto_bedtime.ash
 void bedtime_still();
 int pullsNeeded(string data);
+float rollover_value(item it);
+float rollover_improvement(item it, slot sl);
+void bedtime_pulls_rollover_equip();
 void bedtime_pulls();
 boolean doBedtime();
 
@@ -1116,7 +1141,8 @@ void consumeStuff();
 boolean consumeFortune();
 void auto_printNightcap();
 void auto_drinkNightcap();
-boolean auto_autoConsumeOne(string type, boolean simulate);
+boolean auto_autoConsumeOne(string type);
+item auto_autoConsumeOneSimulation(string type);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
 int auto_spleenFamiliarAdvItemsPossessed();
 boolean auto_chewAdventures();
@@ -1167,12 +1193,14 @@ void equipMaximizedGear();
 void equipOverrides();
 int equipmentAmount(item equipment);
 boolean possessEquipment(item equipment);
+boolean possessUnrestricted(item it);
 boolean possessOutfit(string outfit, boolean checkCanEquip);
 boolean possessOutfit(string outfit);
 void equipBaseline();
 void ensureSealClubs();
 void equipRollover(boolean silent);
 boolean auto_forceEquipSword();
+boolean is_watch(item it);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
@@ -1273,6 +1301,22 @@ boolean hasHead(monster enemy);
 boolean hasLeg(monster enemy);
 boolean hasTail(monster enemy);
 boolean hasTorso(monster enemy);
+
+########################################################################################################
+//Defined in autoscend/auto_path_util.ash
+boolean auto_buySkills();
+void pathDroppedCheck();
+
+########################################################################################################
+//Defined in autoscend/auto_powerlevel.ash
+boolean isAboutToPowerlevel();
+boolean LX_attemptPowerLevel();
+boolean disregardInstantKarma();
+int auto_freeCombatsRemaining();
+int auto_freeCombatsRemaining(boolean print_remaining_fights);
+boolean LX_freeCombats();
+boolean LX_freeCombats(boolean powerlevel);
+boolean LX_freeCombatsTask();
 
 ########################################################################################################
 //Defined in autoscend/auto_providers.ash
@@ -1465,10 +1509,6 @@ boolean use_barrels();
 boolean forceEquip(slot sl, item it);
 boolean auto_autosell(int quantity, item toSell);
 string runChoice(string page_text);
-boolean zoneNonCombat(location loc);
-boolean zoneCombat(location loc);
-boolean zoneMeat(location loc);
-boolean zoneItem(location loc);
 boolean set_property_ifempty(string setting, string change);
 boolean restore_property(string setting, string source);
 boolean clear_property_if(string setting, string cond);

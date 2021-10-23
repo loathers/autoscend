@@ -48,28 +48,28 @@ boolean auto_run_choice(int choice, string page)
 		case 125: // No Visible Means of Support (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
-		case 139:
-		case 140:
-		case 141: // Blockin' Out the Scenery (wearing Frat Boy Ensemble) 
-		case 142: // Blockin' Out the Scenery (wearing Frat Warrior Fatigues)
-		case 143:
-		case 144:
-		case 145: // Fratacombs (wearing Filthy Hippy Disguise) 
-		case 146: // Fratacombs (wearing War Hippy Fatigues)
-		case 147:
-		case 148:
-		case 149:
+		case 139: // Bait and Switch (The Hippy Camp (Verge of War))
+		case 140: // The Thin Tie-Dyed Line (The Hippy Camp (Verge of War))
+		case 141: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Boy Ensemble) 
+		case 142: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Warrior Fatigues)
+		case 143: // Catching Some Zetas (Orcish Frat House (Verge of War))
+		case 144: // One Less Room Than In That Movie (Orcish Frat House (Verge of War))
+		case 145: // Fratacombs (Orcish Frat House (Verge of War) wearing Filthy Hippy Disguise) 
+		case 146: // Fratacombs (Orcish Frat House (Verge of War) wearing War Hippy Fatigues)
+		case 147: // Cornered! (McMillicancuddy's Barn)
+		case 148: // Cornered Again! (McMillicancuddy's Barn)
+		case 149: // How Many Corners Does this Stupid Barn Have!? (McMillicancuddy's Barn)
 			warChoiceHandler(choice);
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
-			if(auto_my_path() == "Live. Ascend. Repeat.")
+			if(in_lar())
 			{
 				set_property("_LAR_skipNC163", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
 			}
 			run_choice(4); // skip
 			break;
-		case 178: // Hammering the Armory
-			if(auto_my_path() == "Live. Ascend. Repeat.")
+		case 178: // Hammering the Armory (The Penultimate Fantasy Airship)
+			if(in_lar())
 			{
 				set_property("_LAR_skipNC178", my_turncount());	//NC in LAR path forced to reoccur if we skip it. Go do something else.
 			}
@@ -175,7 +175,7 @@ boolean auto_run_choice(int choice, string page)
 		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
 			auto_reagnimatedGetPart(choice);
 			break;
-		case 672: //There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
+		case 672: // There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
 			run_choice(3);
 			break;
 		case 673: // Putting Off Is Off-Putting (Castle in the Clouds in the Sky (Ground Floor))
@@ -193,7 +193,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
 		case 768: // The Littlest Identity Crisis (Mini-adventurer initialization)
-			if (in_quantumTerrarium()) {
+			if(in_quantumTerrarium()) {
 				if (my_location() == $location[The Themthar Hills]) {
 					run_choice(4); // Sauceror is a lep and starfish
 				}
@@ -212,7 +212,7 @@ boolean auto_run_choice(int choice, string page)
 			kolhsChoiceHandler(choice);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
-			if (in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
+			if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
 				run_choice(3); // relocate lawyers to park
 			} else if (have_effect($effect[Thrice-Cursed]) > 0) {
 				run_choice(1); // fight the spirit
@@ -305,7 +305,7 @@ boolean auto_run_choice(int choice, string page)
 		case 797: // Let's Workshop This a Little (The Old Landfill)
 			oldLandfillChoiceHandler(choice);
 			break;
-		case 829: // we all wear masks. (grimstone mask)
+		case 829: // We All Wear Masks (Grimstone Mask Choice)
 			run_choice(1);			//choose step mother. we want [Ornate Dowsing Rod]
 			break;
 		case 822: //The Prince's Ball (In the Restroom)
@@ -326,7 +326,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 876: // One Simple Nightstand (The Haunted Bedroom)
-			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && auto_my_path() != "Way of the Surprising Fist")
+			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && !in_wotsf())
 			{
 				run_choice(1); //get old leather wallet worth ~500 meat
 			}
@@ -343,8 +343,8 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // get half of a memo or old coin purse
 			break;
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
-			boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
-			if (in_boris() || auto_my_path() == "Way of the Surprising Fist" || (auto_my_path() == "Nuclear Autumn" && in_hardcore())) {
+			boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
+			if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 				needSpectacles = false;
 			}
 			if (needSpectacles) {
@@ -362,7 +362,7 @@ boolean auto_run_choice(int choice, string page)
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
 			if(options contains 4) {
 				run_choice(4); // only shows up rarely. when this line was added it was worth 1.3 million in mall
-			} if (in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
+			} if(in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
 				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
 			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie] && my_buffedstat($stat[moxie]) < 150) {
 				run_choice(5); // spend 1 ghost key for primestat, get ~200 moxie XP
@@ -405,14 +405,14 @@ boolean auto_run_choice(int choice, string page)
 		case 924: // You Found Your Thrill (The Black Forest)
 			if(get_property("auto_getBeehive").to_boolean() && my_adventures() > 3) {
 				run_choice(3); // go to Bee Persistent (#1018)
-			} else if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && my_class() != $class[Vampyre]) {
+			} else if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte()) {
 				run_choice(2); // go to The Blackberry Cobbler (#928)
 			} else {
 				run_choice(1); // Attack the bushes (fight blackberry bush)
 			}
 			break;
 		case 928: // You Found Your Thrill (The Black Forest)
-			if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && my_class() != $class[Vampyre]) {
+			if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte()) {
 				run_choice(4); // get Blackberry Galoshes
 			} else {
 				run_choice(5); // skip
@@ -440,7 +440,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1023: // Like a Bat Into Hell (Actually Ed the Undying)
-		case 1024:  // Like a Bat out of Hell (Actually Ed the Undying)
+		case 1024: // Like a Bat out of Hell (Actually Ed the Undying)
 			edUnderworldChoiceHandler(choice);
 			break;
 		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
@@ -479,7 +479,7 @@ boolean auto_run_choice(int choice, string page)
 			{
 				run_choice(5); // get extra booze from map to a hidden booze cache
 			}
-			else if(can_drink() && !in_boris())		//prefer food in boris
+			else if(can_drink() && !is_boris())		//prefer food in boris
 			{
 				run_choice(3); // get booze
 			}
@@ -499,7 +499,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1);
 			break;
 		case 1115: // VYKEA! (VYKEA)
-			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && auto_my_path() != "Community Service") {
+			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community()) {
 				run_choice(1); // get consumables
 			} else if (!get_property("_VYKEALoungeRaided").to_boolean()) {
 				run_choice(4); // get Wal-Mart gift certificates
@@ -554,16 +554,17 @@ boolean auto_run_choice(int choice, string page)
 		case 1410: // The Mushy Center (Your Mushroom Garden)
 			mushroomGardenChoiceHandler(choice);
 			break;
-		case 1427: // Hidden Junction (Cartography)
-		case 1428: // Choice 1428 is Your Neck of the Woods (Cartography)
-		case 1429: // Choice 1429 is No Nook Unknown (Cartography)
-		case 1430: // Choice 1430 is Ghostly Memories (Cartography)
-		case 1431: // Choice 1431 is Here There Be Giants (Cartography)
-		case 1432: // Choice 1432 is Mob Maptality (Cartography)
-		case 1433: // Choice 1433 is Hippy camp verge of war Sneaky Sneaky (Cartography)
-		case 1434: // Choice 1434 is frat camp verge of war Sneaky Sneaky (Cartography)
+		case 1425: // Oh Yeah! (Cartography)
+		case 1427: // The Hidden Junction (Cartography)
+		case 1428: // Your Neck of the Woods (Cartography)
+		case 1429: // No Nook Unknown (Cartography)
+		case 1430: // Ghostly Memories (Cartography)
+		case 1431: // Here There Be Giants (Cartography)
+		case 1432: // Mob Maptality (Cartography)
+		case 1433: // Sneaky, Sneaky (The Hippy Camp (Verge of War)) (Cartography)
+		case 1434: // Sneaky, Sneaky (Orcish Frat House (Verge of War)) (Cartography)
 		case 1435: // Leading Yourself Right to Them (Map the Monsters)
-		case 1436: // Choice 1436 is Billiards Room Options (Cartography)
+		case 1436: // Billiards Room Options (Cartography)
 			cartographyChoiceHandler(choice);
 			break;
 		default:

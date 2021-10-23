@@ -1,5 +1,44 @@
 import<autoscend.ash>
 
+void auto_beaten_handler()
+{
+	if(have_effect($effect[Beaten Up]) == 0)
+	{
+		return;		//we are not beaten up. nothing to handle
+	}
+	set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
+	string loc = get_property("auto_beatenUpLocations");
+	if(loc != "") loc += ",";
+	loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
+	set_property("auto_beatenUpLocations", loc);
+	
+	if(my_location() == $location[The X-32-F Combat Training Snowman])
+	{
+		auto_log_info("I got beaten up at the snojo, let's not keep going there and dying....", "red");
+		set_property("_snojoFreeFights", 10);
+	}
+	else if(last_monster() == $monster[ninja snowman assassin])
+	{
+		auto_log_info("I got beaten up by a [ninja snowman assassin]. disabling ninja route", "red");
+		set_property("auto_L8_ninjaAssassinFail", true);
+	}
+	else auto_log_warning("I got beaten up", "red");
+	
+	if(get_property("auto_beatenUpCount").to_int() <= 10 && my_mp() >= mp_cost($skill[Tongue of the Walrus]) && auto_have_skill($skill[Tongue of the Walrus]))
+	{
+		auto_log_info("trying to recover with [Tongue of the Walrus]", "red");
+		use_skill(1, $skill[Tongue of the Walrus]);
+		if(have_effect($effect[Beaten Up]) == 0)
+		{
+			return;
+		}
+		else
+		{
+			auto_log_warning("Mysteriously failed to recover beaten up with [Tongue of the Walrus]");
+		}
+	}
+}
+
 boolean auto_post_adventure()
 {
 	auto_log_debug("Running auto_post_adv.ash");
@@ -55,7 +94,7 @@ boolean auto_post_adventure()
 	}
 
 	//We need to do this early, and even if postAdventure handling is done.
-	if(my_path() == "The Source")
+	if(in_theSource())
 	{
 		if(get_property("auto_diag_round").to_int() == 0)
 		{
@@ -75,12 +114,12 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if((get_property("lastEncounter") == "Daily Briefing") && (auto_my_path() == "License to Adventure"))
+	if((get_property("lastEncounter") == "Daily Briefing") && in_lta())
 	{
 		set_property("_auto_bondBriefing", "started");
 	}
 
-	if((get_property("_villainLairProgress").to_int() < 999) && ((get_property("_villainLairColor") != "") || get_property("_villainLairColorChoiceUsed").to_boolean()) && (auto_my_path() == "License to Adventure") && (my_location() == $location[Super Villain\'s Lair]))
+	if((get_property("_villainLairProgress").to_int() < 999) && ((get_property("_villainLairColor") != "") || get_property("_villainLairColorChoiceUsed").to_boolean()) && in_lta() && (my_location() == $location[Super Villain\'s Lair]))
 	{
 		if(item_amount($item[Can Of Minions-Be-Gone]) > 0)
 		{
@@ -190,7 +229,7 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if(my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		buffMaintain($effect[Juiced and Loose], 35, 1, 1);
 		buffMaintain($effect[Hardened Sweatshirt], 35, 1, 1);
@@ -305,7 +344,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
 	}
 
-	if(my_path() == "Community Service")
+	if(in_community())
 	{
 		if(auto_have_skill($skill[Summon BRICKOs]) && (get_property("_brickoEyeSummons").to_int() < 3))
 		{
@@ -357,7 +396,7 @@ boolean auto_post_adventure()
 		return true;
 	}
 
-	if(auto_my_path() == "The Source")
+	if(in_theSource())
 	{
 		if((get_property("sourceInterval").to_int() > 0) && (get_property("sourceInterval").to_int() <= 600) && (get_property("sourceAgentsDefeated").to_int() >= 9))
 		{
@@ -934,7 +973,7 @@ boolean auto_post_adventure()
 		}
 	}
 
-	if(my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		auto_log_info("Post adventure done: Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
 	}
@@ -988,31 +1027,6 @@ boolean auto_post_adventure()
 
 	buyableMaintain($item[Turtle Pheromones], 1, 800, my_class() == $class[Turtle Tamer]);
 
-	if((get_property("auto_beatenUpCount").to_int() <= 10) && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
-	{
-		auto_log_warning("Owwie, was beaten up but trying to recover", "red");
-		if(my_location() == $location[The X-32-F Combat Training Snowman])
-		{
-			auto_log_info("At the snojo, let's not keep going there and dying....", "red");
-			set_property("_snojoFreeFights", 10);
-		}
-		if(last_monster() == $monster[ninja snowman assassin])
-		{
-			auto_log_info("We were beaten up by a [ninja snowman assassin]. disabling ninja route", "red");
-			set_property("auto_L8_ninjaAssassinFail", true);
-		}
-		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
-		use_skill(1, $skill[Tongue of the Walrus]);
-	}
-
-
-	# We only do this in aftercore because we don't want a spiralling death loop in-run.
-	if(inAftercore() && (have_effect($effect[Beaten Up]) > 0) && (my_mp() >= mp_cost($skill[Tongue of the Walrus])) && auto_have_skill($skill[Tongue of the Walrus]))
-	{
-		auto_log_warning("Owwie, was beaten up but trying to recover", "red");
-		use_skill(1, $skill[Tongue of the Walrus]);
-	}
-
 	#Should we create a separate function to track these? How many are we going to track?
 	if((last_monster() == $monster[Writing Desk]) && (get_property("lastEncounter") == $monster[Writing Desk]) && (have_effect($effect[Beaten Up]) == 0))
 	{
@@ -1023,6 +1037,8 @@ boolean auto_post_adventure()
 		set_property("auto_modernzmobiecount", "" + (get_property("auto_modernzmobiecount").to_int() + 1));
 		auto_log_info("Fought " + get_property("auto_modernzmobiecount") + " modern zmobies.", "blue");
 	}
+
+	auto_beaten_handler();
 
 	if (get_property("lastEncounter") == "Welcome to the Great Overlook Lodge")
 	{
@@ -1046,13 +1062,8 @@ boolean auto_post_adventure()
 		}
 	}
 
-	set_property("auto_combatDirective", "");
-	set_property("auto_digitizeDirective", "");
-
-	if(have_effect($effect[Beaten Up]) > 0)
-	{
-		set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
-	}
+	remove_property("auto_combatDirective");
+	remove_property("auto_digitizeDirective");
 	
 	auto_log_info("Post Adventure done, beep.", "purple");
 	return true;

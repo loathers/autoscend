@@ -1,3 +1,24 @@
+############################################
+/*
+Below are relevant locations for the war.
+war not started or finished with this side undefeated:
+[Frat House]
+[Frat House In Disguise]	//r25731 incorrectly identifies this as [Frat House] when encountered
+[Hippy Camp]
+[Hippy Camp In Disguise]	//r25731 incorrectly identifies this as [Wartime Hippy Camp (Frat Disguise)] when encountered
+
+War started:
+[Wartime Frat House]
+[Wartime Frat House (Hippy Disguise)]
+[Wartime Hippy Camp]
+[Wartime Hippy Camp (Frat Disguise)]
+
+War finished & side defeated:
+[The Orcish Frat House (Bombed Back to the Stone Age)]
+[The Hippy Camp (Bombed Back to the Stone Age)]
+*/
+############################################
+
 void copy_warplan(WarPlan target, WarPlan source)
 {
 	//record A = B; does not copy the contents of B into record A, it instead copies memory references. Thus A merely becomes an alias for B and changing one changes the other as well.
@@ -274,7 +295,7 @@ WarPlan auto_bestWarPlan()
 		considerArena = false;
 		considerJunkyard = false;
 	}
-	if(auto_my_path() == "Way of the Surprising Fist")
+	if(in_wotsf())
 	{
 		considerNuns = false;
 	}
@@ -283,7 +304,7 @@ WarPlan auto_bestWarPlan()
 		considerNuns = false;
 		considerOrchard = false;
 	}
-	if (in_glover())
+	if(in_glover())
 	{
 		considerArena = false;
 	}
@@ -549,7 +570,7 @@ boolean L12_getOutfit()
 	}
 	
 	//heavy rains softcore pull handling
-	if(!in_hardcore() && (auto_my_path() == "Heavy Rains"))
+	if(!in_hardcore() && in_heavyrains())
 	{
 		// auto_warhippyspy indicates rainman was already used to copy a war hippy spy in heavy rains. if it failed to YR pull missing items
 		if(get_property("auto_warhippyspy") == "done" && get_property("auto_hippyInstead").to_boolean())
@@ -568,7 +589,7 @@ boolean L12_getOutfit()
 	}
 
 	//softcore pull handling for all other paths
-	if(!in_hardcore() && (auto_my_path() != "Heavy Rains"))
+	if(!in_hardcore() && (!in_heavyrains()))
 	{
 		if(get_property("auto_hippyInstead").to_boolean())
 		{
@@ -597,17 +618,19 @@ boolean L12_getOutfit()
 	}
 	
 	// if outfit could not be pulled and have a [Filthy Hippy Disguise] outfit then wear it and adventure in Frat House to get war outfit
-	if (!get_property("auto_hippyInstead").to_boolean() && possessOutfit("Filthy Hippy Disguise"))
+	if (auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		return autoAdv(1, $location[Wartime Frat House]);
+		//r25671 this should be [Frat House In Disguise] but due to mafia issue it currently needs to be as below
+		return autoAdv($location[Frat House]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
-	if (get_property("auto_hippyInstead").to_boolean() && possessOutfit("Frat Boy Ensemble"))
+	if (auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		return autoAdv(1, $location[Wartime Hippy Camp]);
+		//r25671 this should be [Hippy Camp In Disguise] but due to mafia issue it currently needs to be as below
+		return autoAdv($location[Hippy Camp]);
 	}
 	
 	if(L12_preOutfit())
@@ -731,7 +754,7 @@ boolean L12_startWar()
 		return false;
 	}
 
-	if (in_koe())
+	if(in_koe())
 	{
 		return false;
 	}
@@ -751,7 +774,7 @@ boolean L12_startWar()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 	
-	if((my_path() != "Dark Gyffte") && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
+	if(!in_darkGyffte() && (my_mp() > 50) && have_skill($skill[Incredible Self-Esteem]) && !get_property("_incredibleSelfEsteemCast").to_boolean())
 	{
 		use_skill(1, $skill[Incredible Self-Esteem]);
 	}
@@ -789,7 +812,7 @@ boolean L12_filthworms()
 	{
 		return false;
 	}
-	if (in_tcrs() || in_koe())
+	if(in_tcrs() || in_koe())
 	{
 		return false;
 	}
@@ -897,7 +920,7 @@ boolean L12_filthworms()
 			januaryToteAcquire($item[Broken Champagne Bottle]);
 		}
 
-		if(auto_my_path() == "Live. Ascend. Repeat.")
+		if(in_lar())
 		{
 			equipMaximizedGear();
 			if(item_drop_modifier() < 400.0)
@@ -985,7 +1008,7 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if (in_koe() || in_pokefam() || in_bhy())
+	if(in_koe() || in_pokefam() || in_bhy())
 	{
 		return false;
 	}
@@ -1042,7 +1065,7 @@ boolean L12_gremlins()
 		else return true;
 	}
 
-	if(auto_my_path() == "Disguises Delimit")
+	if(in_disguises())
 	{
 		abort("Do gremlins manually, sorry. Or set sidequestJunkyardCompleted=fratboy and we will just skip them");
 	}
@@ -1092,7 +1115,7 @@ boolean L12_sonofaBeach()
 	{
 		return false;
 	}
-	if (in_koe())
+	if(in_koe())
 	{
 		return false;
 	}
@@ -1151,7 +1174,7 @@ boolean L12_sonofaBeach()
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
 
-	if(auto_my_path() != "Live. Ascend. Repeat.")
+	if(!in_lar())
 	{
 		if (providePlusCombat(25, true, true) < 0.0)
 		{
@@ -1265,7 +1288,7 @@ boolean L12_sonofaPrefix()
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
 
-	if(auto_my_path() != "Live. Ascend. Repeat.")
+	if(!in_lar())
 	{
 		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
 		{
@@ -1341,7 +1364,7 @@ boolean L12_sonofaFinish()
 	{
 		return false;
 	}
-	if (in_koe())
+	if(in_koe())
 	{
 		return false;
 	}
@@ -1525,7 +1548,7 @@ boolean L12_themtharHills()
 		return false;
 	}
 
-	if (in_tcrs() || in_koe() || auto_my_path() == "Way of the Surprising Fist")
+	if(in_tcrs() || in_koe() || in_wotsf())
 	{
 		return false;
 	}
@@ -1553,7 +1576,7 @@ boolean L12_themtharHills()
 	}
 
 	autoEquip($item[Half a Purse]);
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		autoEquip($item[Thor\'s Pliers]);
 	}
@@ -1614,14 +1637,14 @@ boolean L12_themtharHills()
 	}
 	asdonBuff($effect[Driving Observantly]);
 
-	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (auto_my_path() != "Heavy Rains"))
+	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (!in_heavyrains()))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
 		autoEquip($item[Li\'l Pirate Costume]);
 		handleFamiliar($familiar[Trick-or-Treating Tot]);
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
 	}
@@ -1631,7 +1654,7 @@ boolean L12_themtharHills()
 	{
 		meat_need = meat_need - 200;
 	}
-	if((my_class() == $class[Vampyre]) && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
+	if(in_darkGyffte() && have_skill($skill[Wolf Form]) && (0 == have_effect($effect[Wolf Form])))
 	{
 		meat_need = meat_need - 150;
 	}
@@ -2079,7 +2102,7 @@ boolean L12_finalizeWar()
 	}
 
 	// Just in case we need the extra turngen to complete this day
-	if (my_class() == $class[Vampyre])
+	if (in_darkGyffte())
 	{
 		int have = item_amount($item[monstar energy beverage]) + item_amount($item[carbonated soy milk]);
 		if(have < 5)

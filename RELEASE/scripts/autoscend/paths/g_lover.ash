@@ -1,6 +1,6 @@
 boolean in_glover()
 {
-	return auto_my_path() == "G-Lover";
+	return my_path() == "G-Lover";
 }
 
 void glover_initializeDay(int day)

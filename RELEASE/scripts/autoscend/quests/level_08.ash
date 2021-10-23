@@ -254,7 +254,7 @@ boolean L8_getMineOres()
 	}
 
 	//heavy rain copy handling.
-	if(auto_my_path() == "Heavy Rains" && have_skill($skill[Rain Man]))
+	if(in_heavyrains() && have_skill($skill[Rain Man]))
 	{
 		if(my_rain() < 50)
 		{
@@ -274,7 +274,7 @@ boolean L8_getMineOres()
 	//in softcore we want to pull the ores.
 	if(!in_hardcore())
 	{
-		if(pulls_remaining() < (3 - item_amount(oreGoal)))
+		if(pulls_remaining() != -1 && pulls_remaining() < (3 - item_amount(oreGoal)))
 		{
 			return false;	//if not enough pulls left wait until tomorrow
 		}
@@ -304,7 +304,7 @@ boolean L8_getMineOres()
 			numCloversKeep = 0;
 		}
 	}
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		if(cloversAvailable() <= numCloversKeep)
 		{
@@ -615,13 +615,27 @@ boolean L8_trapperGroar()
 	int [element] resGoal;
 	resGoal[$element[cold]] = 5;
 	// try getting resistance without equipment before bothering to change gear
+	boolean retval = false;
+	int initial_adv = my_session_adv();
 	if(provideResistances(resGoal, false) || provideResistances(resGoal, true))
 	{
 		auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 		equipMaximizedGear();
-		return autoAdv($location[Mist-shrouded Peak]);
+		retval = autoAdv($location[Mist-shrouded Peak]);
 	}
-	return false;
+	if(retval && initial_adv == my_session_adv())
+	{
+		//if mafia tracking failed to advance quest then it will get stuck in an inf loop of trying to adv in [Mist-shrouded Peak]
+		//which becomes an invalid zone after groar dies. being replaced with the new zone called [The Icy Peak]
+		int initial_step = internalQuestStatus("questL08Trapper");
+		auto_log_debug("Adventured without spending adv in [Mist-shrouded Peak]. checking quest status", "blue");
+		cli_execute("refresh quests");
+		if(initial_step == internalQuestStatus("questL08Trapper"))
+		{
+			auto_log_warning("questL08Trapper value was incorrect. This has been fixed", "blue");
+		}
+	}
+	return retval;
 }
 
 boolean L8_trapperPeak()

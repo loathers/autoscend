@@ -48,10 +48,14 @@ void markAsUsed(item it)
 boolean canUse(skill sk, boolean onlyOnce)
 {
 	if(onlyOnce && haveUsed(sk))
+	{
 		return false;
+	}
 
 	if(!auto_have_skill(sk))
+	{
 		return false;
+	}
 
 	if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
 		my_hp() <= hp_cost(sk) ||
@@ -60,9 +64,15 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
-		my_pp() < plumber_ppCost(sk)
-	)
+		my_pp() < plumber_ppCost(sk))
+	{
 		return false;
+	}
+	
+	if(sk == $skill[Shieldbutt] && !hasShieldEquipped())
+	{
+		return false;
+	}
 
 	record SkillSet
 	{
@@ -483,6 +493,13 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Snokebomb];
 	}
+	
+	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.
+	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)
+	{
+		return "skill " + $skill[Unleash Nanites];
+	}
+	
 	if(auto_have_skill($skill[Beancannon]) && (get_property("_beancannonUses").to_int() < 5) && ((my_mp() - 20) >= mp_cost($skill[Beancannon])) && (!(used contains "beancannon")))
 	{
 		boolean haveBeans = false;
@@ -674,4 +691,10 @@ string replaceMonsterCombatString(monster target)
 string replaceMonsterCombatString()
 {
 	return replaceMonsterCombatString($monster[none]);
+}
+
+float turns_to_kill(float dmg)
+{
+	//how long will it take us to kill the current enemy if we are able to deal dmg to it each round
+	return monster_hp().to_float() / dmg;
 }

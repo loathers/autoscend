@@ -302,6 +302,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	}
 
 	boolean retval = false;
+	boolean wasReadyToEat = false;
 	while(howMany > 0)
 	{
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, toEat.fullness);
@@ -309,6 +310,10 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		{
 			buyUpTo(1, $item[Mayoflex], 1000);
 			use(1, $item[Mayoflex]);
+		}
+		if(have_effect($effect[Ready to Eat]) > 0)
+		{
+			wasReadyToEat = true;
 		}
 		if(silent)
 		{
@@ -320,7 +325,15 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		}
 		if(retval)
 		{
-			handleTracker(toEat, "auto_eaten");
+			if(wasReadyToEat && have_effect($effect[Ready to Eat]) <= 0)
+			{
+				handleTracker(toEat,"Red Rocketed!", "auto_eaten");
+				wasReadyToEat = false;
+			}
+			else
+			{
+				handleTracker(toEat, "auto_eaten");
+			}		
 		}
 		howMany = howMany - 1;
 	}
@@ -395,15 +408,15 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	{
 		return false;
 	}
-	if (my_class() == $class[Avatar of Jarlsberg] && toDrink != $item[Steel Margarita])
+	if(is_jarlsberg() && toDrink != $item[Steel Margarita])
 	{
 		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
 	}
-	if((auto_my_path() == "Nuclear Autumn") && (toDrink.inebriety != 1))
+	if(in_nuclear() && (toDrink.inebriety != 1))
 	{
 		return false;
 	}
-	if((auto_my_path() == "Dark Gyffte") != ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink))
+	if(in_darkGyffte() != ($items[vampagne, dusty bottle of blood, Red Russian, mulled blood, bottle of Sanguiovese] contains toDrink))
 	{
 		return false;
 	}
@@ -414,7 +427,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 			return false;
 		}
 	}
-	if(auto_my_path() == "License to Adventure")
+	if(in_lta())
 	{
 		item [int] martinis = bondDrinks();
 		boolean found = false;
@@ -459,24 +472,24 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return false;
 	}
-	if (my_class() == $class[Avatar of Jarlsberg])
+	if(is_jarlsberg())
 	{
 		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
-	if((auto_my_path() == "Nuclear Autumn") && (toEat.fullness != 1))
+	if(in_nuclear() && (toEat.fullness != 1))
 	{
 		return false;
 	}
-	if((auto_my_path() == "Dark Gyffte") && (toEat == $item[magical sausage]))
+	if(in_darkGyffte() && (toEat == $item[magical sausage]))
 	{
 		// the one thing you can eat as Vampyre AND other classes
 		return true;
 	}
-	if((auto_my_path() == "Dark Gyffte") != ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat))
+	if(in_darkGyffte() != ($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, bloodstick] contains toEat))
 	{
 		return false;
 	}
-	if(auto_my_path() == "Zombie Slayer")
+	if(in_zombieSlayer())
 	{
 		return ($items[crappy brain, decent brain, good brain, boss brain, hunter brain, brains casserole, fricasseed brains, steel lasagna] contains toEat);
 	}
@@ -578,7 +591,7 @@ void consumeStuff()
 	{
 		return;
 	}
-	if(auto_my_path() == "Community Service")
+	if(in_community())
 	{
 		cs_eat_spleen();
 		return;
@@ -603,7 +616,7 @@ void consumeStuff()
 
 	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
 	
-	if (my_adventures() < 10 && fullness_left() > 0 && in_boris())
+	if (my_adventures() < 10 && fullness_left() > 0 && is_boris())
 	{
 		borisDemandSandwich(true);
 	}
@@ -629,14 +642,14 @@ void consumeStuff()
 					shouldDrink = true;
 				}
 			}
-			if (shouldDrink && auto_autoConsumeOne("drink", false))
+			if (shouldDrink && auto_autoConsumeOne("drink"))
 			{
 				return;
 			}
 		}
 		if (fullness_left() > 0)
 		{
-			if (auto_autoConsumeOne("eat", false))
+			if (auto_autoConsumeOne("eat"))
 			{
 				return;
 			}
@@ -857,7 +870,7 @@ boolean autoConsume(ConsumeAction action)
 boolean loadConsumables(string _type, ConsumeAction[int] actions)
 {
 	// Just in case!
-	if(auto_my_path() == "Dark Gyffte")
+	if(in_darkGyffte())
 	{
 		abort("We shouldn't be calling loadConsumables() in Dark Gyffte. Please report this.");
 	}
@@ -914,7 +927,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
-	boolean[item] blacklist = $items[Cursed Punch, Unidentified Drink];
+	boolean[item] blacklist = $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead];
 	boolean[item] craftable_blacklist;
 
 	// If we have 2 sticks of firewood, the current knapsack-solver
@@ -1244,7 +1257,7 @@ ConsumeAction auto_bestNightcap()
 
 void auto_printNightcap()
 {
-	if(my_path() == "Dark Gyffte")
+	if(in_darkGyffte())
 	{
 		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}
@@ -1258,7 +1271,7 @@ void auto_drinkNightcap()
 	{
 		return;
 	}
-	if(my_path() == "Dark Gyffte")
+	if(in_darkGyffte())
 	{
 		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}
@@ -1286,7 +1299,7 @@ void auto_drinkNightcap()
 	}
 	
 	//fill up remaining liver first. such as stooper space.
-	while(inebriety_left() > 0 && auto_autoConsumeOne("drink", false));
+	while(inebriety_left() > 0 && auto_autoConsumeOne("drink"));
 	
 	//drink your nightcap to become overdrunk
 	ConsumeAction target = auto_bestNightcap();
@@ -1302,14 +1315,14 @@ void auto_drinkNightcap()
 	}
 }
 
-boolean auto_autoConsumeOne(string type, boolean simulate)
+ConsumeAction auto_findBestConsumeAction(string type)
 {
 	int organLeft()
 	{
 		if (type == "eat") return fullness_left();
 		if (type == "drink") 
 		{
-			if (in_quantumTerrarium() && my_familiar() == $familiar[Stooper])
+			if(in_quantumTerrarium() && my_familiar() == $familiar[Stooper])
 			{
 				// we can't change familiars so don't drink to full liver as we'll be overdrunk when it changes familiar.
 				return (my_inebriety() < inebriety_limit() ? inebriety_left() - 1 : 0);
@@ -1322,7 +1335,7 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 		abort("Unrecognized organ type: should be 'eat' or 'drink', was " + type);
 		return 0;
 	}
-	if (organLeft() == 0) return false;
+	if (organLeft() == 0) return MakeConsumeAction($item[none]);
 
 	ConsumeAction[int] actions;
 	loadConsumables(type, actions);
@@ -1353,28 +1366,48 @@ boolean auto_autoConsumeOne(string type, boolean simulate)
 		}
 	}
 
-	if (best == -1)
+	if(best == -1)
+	{
+		return MakeConsumeAction($item[none]);
+	}
+	else
+	{
+		return actions[best];
+	}
+}
+
+boolean auto_autoConsumeOne(string type)
+{
+	
+	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+
+	if (bestAction.it == $item[none])
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
 		return false;
 	}
 
-	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(actions[best]), "blue");
+	int best_adv_per_fill = bestAction.adventures / bestAction.size;
+	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(bestAction), "blue");
 	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
 	{
 		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFill " + get_property("auto_consumeMinAdvPerFill"));
 		return false;
 	}
 
-	if(!simulate)
+	if (!autoPrepConsume(bestAction)) 
 	{
-		if (!autoPrepConsume(actions[best])) return false;
-		return autoConsume(actions[best]);
+		return false;
 	}
-	else
-	{
-		return true;
-	}
+	return autoConsume(bestAction);
+}
+
+// Need separate function to simulate since return type is different
+// For simulation, want to know what would be consumes instead of actually consuming it
+item auto_autoConsumeOneSimulation(string type)
+{
+	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+	return bestAction.it;
 }
 
 boolean auto_knapsackAutoConsume(string type, boolean simulate)

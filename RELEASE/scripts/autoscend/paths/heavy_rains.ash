@@ -1,9 +1,9 @@
 boolean in_heavyrains()
 {
-	return auto_my_path() == "Heavy Rains";
+	return my_path() == "Heavy Rains";
 }
 
-void heavy_rains_initializeSettings()
+void heavyrains_initializeSettings()
 {
 	if(in_heavyrains())
 	{
@@ -92,7 +92,7 @@ boolean routineRainManHandler()
 
 
 
-void heavy_rains_initializeDay(int day)
+void heavyrains_initializeDay(int day)
 {
 	if(in_heavyrains())
 	{
@@ -139,7 +139,7 @@ void heavy_rains_initializeDay(int day)
 	}
 }
 
-void heavy_rains_doBedtime()
+void heavyrains_doBedtime()
 {
 	if(my_inebriety() > inebriety_limit())
 	{
@@ -158,7 +158,7 @@ void heavy_rains_doBedtime()
 	}
 }
 
-boolean doHRSkills()
+boolean heavyrains_buySkills()
 {
 	if(!in_heavyrains())
 	{
@@ -193,7 +193,7 @@ boolean doHRSkills()
 				skillChoice = 1;
 			}
 			
-			set_property("choiceAdventure968", skillChoice);
+			set_property("choiceAdventure967", skillChoice);
 			runChoice(page);
 			visit_url("main.php");
 			return true;

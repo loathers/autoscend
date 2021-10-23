@@ -124,13 +124,13 @@ boolean pathHasFamiliar()
 
 boolean pathAllowsChangingFamiliar()
 {
-		if (!pathHasFamiliar())
+		if(!pathHasFamiliar())
 		{
 			return false;
 		}
 
 		// path check for case(s) where Path has familiars but forces you to use one of its choice
-		if (in_quantumTerrarium())
+		if(in_quantumTerrarium())
 		{
 			return false;
 		}
@@ -681,7 +681,7 @@ void preAdvUpdateFamiliar(location place)
 	}
 	
 	//familiar equipment overrides
-	if(my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		if(famChoice != $familiar[Left-Hand Man])
 		{
@@ -725,7 +725,7 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 	
-	if(my_path() != "Community Service" && auto_checkFamiliarMummery(my_familiar()))
+	if(!in_community() && auto_checkFamiliarMummery(my_familiar()))
 	{
 		mummifyFamiliar();
 	}
@@ -738,7 +738,7 @@ boolean checkTerrarium()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Nuclear Autumn" || auto_my_path() == "You, Robot")
+	if(in_nuclear() || in_robot())
 	{
 		return true;	//these paths use an alternative form of terrarium
 	}

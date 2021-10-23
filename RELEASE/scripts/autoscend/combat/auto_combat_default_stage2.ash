@@ -11,7 +11,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 	//use industrial fire extinguisher zone specific skills
 	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
-	if(extinguisherSkill != "")
+	if(extinguisherSkill != "" && have_equipped($item[industrial fire extinguisher]))
 	{
 		handleTracker(enemy, to_skill(substring(extinguisherSkill, 6)), "auto_otherstuff");
 		return extinguisherSkill;
@@ -127,10 +127,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			return banishAction;
 		}
+		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
 		set_property("auto_combatHandler", combatState + "(banishercheck)");
-		combatState += "(banishercheck)";
 	}
-
 
 	// Free run from monsters we want to banish but are unable to
 	if(auto_wantToBanish(enemy, my_location()))

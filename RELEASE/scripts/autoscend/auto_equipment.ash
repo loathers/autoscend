@@ -180,13 +180,13 @@ string defaultMaximizeStatement()
 		return pokefam_defaultMaximizeStatement();
 	}
 	
-	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,-fumble";
 	if(my_primestat() != $stat[Moxie])
 	{
 		res += ",mox";
 	}
 
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		res += ",0.8hp,3hp regen";
 	}
@@ -197,7 +197,7 @@ string defaultMaximizeStatement()
 	}
 
 	//weapon handling
-	if(in_boris())
+	if(is_boris())
 	{
 		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
 		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
@@ -226,7 +226,7 @@ string defaultMaximizeStatement()
 	{
 		res += ",water,hot res";
 	}
-	if (in_plumber())
+	if(in_plumber())
 	{
 		res += ",plumber,-ml";
 	}
@@ -340,7 +340,7 @@ void finalizeMaximize()
 		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
 	}
 	// Vampyre autogenerates scraps because of some weird ensorcel interaction. Even without ensorcel active.
-	if(pathHasFamiliar() || my_class() == $class[Vampyre])
+	if(pathHasFamiliar() || in_darkGyffte())
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}
@@ -526,6 +526,11 @@ boolean possessEquipment(item equipment)
 	return equipmentAmount(equipment) > 0;
 }
 
+boolean possessUnrestricted(item it)
+{
+	return possessEquipment(it) && is_unrestricted(it);
+}
+
 boolean possessOutfit(string outfitToCheck, boolean checkCanEquip) {
 	// have_outfit will report false if you're wearing some of the items
 	// it will only report true if you have all in inventory or are wearing the whole thing
@@ -646,4 +651,10 @@ boolean auto_forceEquipSword() {
 	}
 
 	return autoForceEquip($slot[weapon], swordToEquip);
+}
+
+boolean is_watch(item it)
+{
+	//watches are accessories that conflict with each other. you can only equip one watch total.
+	return $items[dead guy's memento, dead guy's watch, Counterclockwise Watch, glow-in-the-dark wristwatch, grandfather watch, imitation nice watch, wristwatch of the white knight, Crimbolex watch, Sasq&trade; watch] contains it;
 }

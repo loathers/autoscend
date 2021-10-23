@@ -1,15 +1,20 @@
-void fallout_initializeSettings()
+boolean in_nuclear()
 {
-	if(my_path() == "Nuclear Autumn")
+	return my_path() == "Nuclear Autumn";
+}
+
+void nuclear_initializeSettings()
+{
+	if(in_nuclear())
 	{
 		set_property("auto_getBeehive", true);
 	}
 }
 
 
-void fallout_initializeDay(int day)
+void nuclear_initializeDay(int day)
 {
-	if(my_path() != "Nuclear Autumn")
+	if(!in_nuclear())
 	{
 		return;
 	}
@@ -83,9 +88,9 @@ void fallout_initializeDay(int day)
 	}
 }
 
-boolean fallout_buySkills()
+boolean nuclear_buySkills()
 {
-	if(my_path() != "Nuclear Autumn")
+	if(!in_nuclear())
 	{
 		return false;
 	}
@@ -325,14 +330,14 @@ Missing: 858, 866
 }
 
 
-boolean LM_fallout()
+boolean LM_nuclear()
 {
-	if(my_path() != "Nuclear Autumn")
+	if(!in_nuclear())
 	{
 		return false;
 	}
 
-	fallout_buySkills();
+	nuclear_buySkills();
 
 	return false;
 }

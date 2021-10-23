@@ -168,7 +168,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	//use industrial fire extinguisher zone specific skills
 	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
-	if(extinguisherSkill != "")
+	if(extinguisherSkill != "" && have_equipped($item[industrial fire extinguisher]))
 	{
 		handleTracker(enemy, to_skill(substring(extinguisherSkill, 6)), "auto_otherstuff");
 		return extinguisherSkill;

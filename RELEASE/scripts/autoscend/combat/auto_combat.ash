@@ -20,7 +20,9 @@ import <autoscend/combat/auto_combat_pete.ash>						//path = avatar of sneaky pe
 import <autoscend/combat/auto_combat_plumber.ash>					//path = path of the plumber
 import <autoscend/combat/auto_combat_the_source.ash>				//path = the source
 import <autoscend/combat/auto_combat_wildfire.ash>					//path = wildfire
+import <autoscend/combat/auto_combat_you_robot.ash>					//path = you, robot
 import <autoscend/combat/auto_combat_quest.ash>						//quest specific handling
+import <autoscend/combat/auto_combat_mr2012.ash>					//2012 iotm and ioty handling
 
 //	Advance combat round, nothing happens.
 //	/goto fight.php?action=useitem&whichitem=1
@@ -84,15 +86,17 @@ string auto_combatHandler(int round, monster enemy, string text)
 	set_property("auto_combatHP", my_hp());
 	set_property("auto_diag_round", round);
 
-	if(my_path() == "One Crazy Random Summer")
+	if(in_ocrs())
 	{
 		enemy = ocrs_combat_helper(text);
 		enemy = last_monster();
 	}
-	if(my_path() == "Avatar of West of Loathing")
+
+	if(in_awol())
 	{
 		awol_combat_helper(text);
 	}
+
 	if(in_pokefam())
 	{
 		if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)

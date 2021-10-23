@@ -71,6 +71,50 @@ void print_footer()
 	auto_log_info(next_line, "blue");
 }
 
+void auto_ghost_prep(location place)
+{
+	//if place contains physically immune enemies then we need to be prepared to deal non physical damage.
+	if(!is_ghost_in_zone(place))
+	{
+		return;		//no ghosts no problem
+	}
+	if(in_plumber())
+	{
+		return;		//these paths either have their own ghost handling. or can always kill ghosts
+	}
+	//a few iconic spells per avatar is ok. no need to be too exhaustive
+	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
+	Storm of the Scarab,		//actually ed the undying
+	Boil]		//avatar of jarlsberg
+	{
+		if(canUse(sk)) return;	//we can kill them with a spell
+	}
+	
+	//try to maximize us some prismatic dmg
+	simMaximizeWith("3prismatic damage");
+	if(simValue("prismatic damage") > 2)
+	{
+		addToMaximize("3prismatic damage");
+		return;
+	}
+	//still failed? be more aggressive
+	simMaximizeWith("10prismatic damage");
+	if(simValue("prismatic damage") > 2)
+	{
+		addToMaximize("10prismatic damage");
+		return;
+	}
+	//still failed? go crazy with it
+	simMaximizeWith("100prismatic damage");
+	if(simValue("prismatic damage") > 2)
+	{
+		addToMaximize("100prismatic damage");
+		return;
+	}
+	
+	abort("I was about to head into [" +place+ "] which contains ghosts. I can not damage those");
+}
+
 boolean auto_pre_adventure()
 {
 	location place = my_location();
@@ -90,6 +134,17 @@ boolean auto_pre_adventure()
 		buffMaintain($effect[Baited Hook], 0, 1, 1);
 	}
 
+	// be ready to use red rocket if we don't have one
+	if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
+		get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
+		item_amount($item[red rocket]) == 0 &&			// Don't buy if we already have one
+		auto_is_valid($item[red rocket]) &&				// or if it's not valid
+		can_eat() &&									// be in a path that can eat
+		my_meat() > npc_price($item[red rocket]) + meatReserve())
+	{
+		retrieve_item(1, $item[red rocket]);
+	}
+
 	if((get_property("_bittycar") == "") && (item_amount($item[Bittycar Meatcar]) > 0))
 	{
 		use(1, $item[Bittycar Meatcar]);
@@ -107,7 +162,7 @@ boolean auto_pre_adventure()
 		uneffect($effect[Scarysauce]);
 	}
 
-	if(in_boris())
+	if(is_boris())
 	{
 		if((have_effect($effect[Song of Solitude]) == 0) && (have_effect($effect[Song of Battle]) == 0))
 		{
@@ -197,7 +252,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))
+	if(in_koe() && possessEquipment($item[low-pressure oxygen tank]))
 	{
 		autoEquip($item[low-pressure oxygen tank]);
 	}
@@ -511,6 +566,7 @@ boolean auto_pre_adventure()
 	}
 
 	// EQUIP MAXIMIZED GEAR
+	auto_ghost_prep(place);
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	cli_execute("checkpoint clear");
@@ -565,7 +621,7 @@ boolean auto_pre_adventure()
 	}
 
 	//my_mp is broken in Dark Gyffte
-	if (my_class() != $class[Vampyre])
+	if (!in_darkGyffte())
 	{
 		int wasted_mp = my_mp() + mp_regen() - my_maxmp();
 		if(wasted_mp > 0 && my_mp() > 400)
@@ -583,7 +639,7 @@ boolean auto_pre_adventure()
 	{
 		auto_log_warning("We don't have a lot of MP but we are chugging along anyway", "red");
 	}
-	groundhogAbort(place);
+	lar_abort(place);
 	if (my_inebriety() > inebriety_limit())
 	{
 		if($locations[The Tunnel of L.O.V.E.] contains place)

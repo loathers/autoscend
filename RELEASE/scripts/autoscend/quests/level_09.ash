@@ -140,7 +140,7 @@ int lumberCount()
 
 boolean L9_chasmBuild()
 {
-	if (internalQuestStatus("questL09Topping") < 0 || get_property("chasmBridgeProgress").to_int() >= 30 || internalQuestStatus("questL09Topping") > 0)
+	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= 30)
 	{
 		return false;
 	}
@@ -238,7 +238,7 @@ boolean L9_chasmBuild()
 		return true;
 	}
 
-	if (in_plumber() && possessEquipment($item[frosty button]))
+	if(in_plumber() && possessEquipment($item[frosty button]))
 	{
 		autoEquip($item[frosty button]);
 	}
@@ -595,7 +595,7 @@ boolean L9_aBooPeak()
 				}
 			}
 			acquireHP();
-			if ((my_hp() * 4) < my_maxhp() && item_amount($item[Scroll of Drastic Healing]) > 0 && (!isActuallyEd() || my_class() != $class[Vampyre]))
+			if ((my_hp() * 4) < my_maxhp() && item_amount($item[Scroll of Drastic Healing]) > 0 && (!isActuallyEd() || !in_darkGyffte()))
 			{
 				use(1, $item[Scroll of Drastic Healing]);
 			}
@@ -817,7 +817,7 @@ boolean L9_oilPeak()
 		}
 		else if (item_amount($item[Bubblin' Crude]) >= 12)
 		{
-			if (in_glover())
+			if(in_glover())
 			{
 				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
 				{

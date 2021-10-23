@@ -38,28 +38,28 @@ boolean snojoFightAvailable()
 		standard[2] = "Muscle";
 		standard[3] = "Moxie";
 
-		if(in_boris() && (possessEquipment($item[Boris\'s Helm]) || possessEquipment($item[Boris\'s Helm (Askew)])))
+		if(is_boris() && (possessEquipment($item[Boris\'s Helm]) || possessEquipment($item[Boris\'s Helm (Askew)])))
 		{
 			standard[0] = "Muscle";
 			standard[1] = "Mysticality";
 			standard[2] = "Moxie";
 			standard[3] = "Mysticality";
 		}
-		if(my_path() == "Community Service")
+		if(in_community())
 		{
 			standard[0] = "Mysticality";
 			standard[1] = "Moxie";
 			standard[2] = "Muscle";
 			standard[3] = "Mysticality";
 		}
-		if(my_path() == "License to Adventure")
+		if(in_lta())
 		{
 			standard[0] = "Mysticality";
 			standard[1] = "Moxie";
 			standard[2] = "Muscle";
 			standard[3] = "Mysticality";
 		}
-		if(is_Jarlsberg())
+		if(is_jarlsberg())
 		{
 			standard[0] = "Mysticality";
 			standard[1] = "Moxie";
@@ -105,7 +105,7 @@ boolean auto_haveSourceTerminal()
 		return false;
 	}
 	static boolean didCheck = false;
-	if((auto_my_path() == "Nuclear Autumn") && !didCheck)
+	if(in_nuclear() && !didCheck)
 	{
 		didCheck = true;
 		string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
@@ -152,7 +152,7 @@ boolean auto_sourceTerminalRequest(string request)
 	//"campground.php?action=terminal&hack=enhance items.enh"
 	if(auto_haveSourceTerminal())
 	{
-		if(auto_my_path() == "Nuclear Autumn")
+		if(in_nuclear())
 		{
 			string temp = visit_url("place.php?whichplace=falloutshelter&action=vault_term");
 		}
@@ -536,7 +536,7 @@ int auto_advWitchessTargets(string target)
 
 boolean witchessFights()
 {
-	if(my_path() == "Community Service")
+	if(in_community())
 	{
 		return false;
 	}
@@ -553,20 +553,15 @@ boolean witchessFights()
 		return false;
 	}
 
-	if(in_gnoob())
+	if(in_gnoob() || in_lta())
 	{
 		return auto_advWitchess("ml");
 	}
-
-	if(auto_my_path() == "License to Adventure")
-	{
-		return auto_advWitchess("ml");
-	}
-
+	
 	switch(my_daycount())
 	{
 	case 1:
-		if((item_amount($item[Greek Fire]) == 0) && (my_path() != "Community Service"))
+		if((item_amount($item[Greek Fire]) == 0) && !in_community())
 		{
 			return auto_advWitchess("ml");
 		}
@@ -1018,7 +1013,7 @@ boolean LX_ghostBusting()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Community Service" && my_daycount() == 1 && goal == $location[The Spooky Forest])
+	if(in_community() && my_daycount() == 1 && goal == $location[The Spooky Forest])
 	{
 		return false;
 	}
