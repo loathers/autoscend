@@ -1549,14 +1549,14 @@ boolean L13_towerNSFinal()
 	{
 		abort("auto_towerBreak set to abort here.");
 	}
-	if(in_robot())
-	{
-		abort("Automatic killing of nautomatic sauceress not implemented. Please kill her manually");
-	}
 	//state 11 means ready to fight sorceress. state 12 means lost to her due to lack of wand thus unlocking bear verb orgy
 	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 12)
 	{
 		return false;
+	}
+	if(in_robot())
+	{
+		abort("Automatic killing of nautomatic sauceress not implemented. Please kill her manually");
 	}
 	
 	//wand acquisition function is called before this function, it turns this propery to false once a wand is acquired.
