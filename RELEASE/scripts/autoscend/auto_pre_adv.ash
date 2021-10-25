@@ -82,7 +82,9 @@ void auto_ghost_prep(location place)
 	{
 		return;		//these paths either have their own ghost handling. or can always kill ghosts
 	}
+	
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
+	acquireMP(32, 1000);		//make sure we actually have the MP to cast spells
 	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
 	Storm of the Scarab,		//actually ed the undying
 	Boil]		//avatar of jarlsberg
