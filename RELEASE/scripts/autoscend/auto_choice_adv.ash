@@ -2,6 +2,8 @@ import<autoscend.ash>
 
 boolean auto_run_choice(int choice, string page)
 {
+	if(robot_choice_adv(choice, page)) return true;		//an override function for You, Robot path.
+	
 	auto_log_debug("Running auto_choice_adv.ash");
 	string[int] options = available_choice_options();
 	

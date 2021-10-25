@@ -391,7 +391,7 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if(in_nuclear() || in_pokefam())
+	if(in_nuclear() || in_pokefam() || in_robot())
 	{
 		return false;
 	}
