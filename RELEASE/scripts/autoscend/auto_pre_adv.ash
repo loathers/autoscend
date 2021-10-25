@@ -91,6 +91,10 @@ void auto_ghost_prep(location place)
 	Storm of the Scarab,		//actually ed the undying
 	Boil]		//avatar of jarlsberg
 	{
+		if(auto_have_skill(sk))
+		{
+			acquireMP(32, 1000);		//make sure we actually have the MP to cast spells
+		}
 		if(canUse(sk)) return;	//we can kill them with a spell
 	}
 	
