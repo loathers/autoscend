@@ -593,7 +593,7 @@ void equipRollover(boolean silent)
 	}
 
 	string to_max = "-tie,adv";
-	if(hippy_stone_broken() && get_property("auto_bedtime_pulls_pvp_multi").to_float() > 0)
+	if(hippy_stone_broken() && my_path() != "Oxygenarian" && get_property("auto_bedtime_pulls_pvp_multi").to_float() > 0)
 	{
 		to_max += "," +get_property("auto_bedtime_pulls_pvp_multi")+ "fites";
 	}
