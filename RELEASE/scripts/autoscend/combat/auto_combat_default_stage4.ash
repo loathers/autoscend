@@ -211,6 +211,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//this completes the quest Advertise for the Mysterious Island Arena which is a sidequest which accelerates the L12 frat-hippy war quest
+	//kol tracks each band flyering separately. mafia tracks them in a singular property as it assumes the player will not flyer for the wrong band. make sure to only flyer for the side we want to flyer for
 	item flyer = $item[Rock Band Flyers];
 	if(auto_warSide() == "hippy")
 	{
