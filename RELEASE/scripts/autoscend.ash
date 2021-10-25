@@ -1,4 +1,4 @@
-since r25759;	//fixes everything not working in you robot path
+since r25791;	//You Robot tracking fixes
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1286,6 +1286,14 @@ boolean adventureFailureHandler()
 				tooManyAdventures = false;
 			}
 		}
+		
+		if (tooManyAdventures && in_robot())
+		{
+			if ($locations[The Penultimate Fantasy Airship, The Smut Orc Logging Camp, The Haunted Bedroom, The Haunted Billiards Room] contains place)
+			{
+				tooManyAdventures = false;
+			}
+		}
 
 		if ($locations[The Haunted Gallery] contains place && place.turns_spent < 100)
 		{
@@ -1779,6 +1787,7 @@ boolean doTasks()
 	dna_sorceressTest();
 	dna_generic();
 	if(LA_wildfire())					return true;
+	if(LA_robot())						return true;
 	
 	if (process_tasks()) return true;
 

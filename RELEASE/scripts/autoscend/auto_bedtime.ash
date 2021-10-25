@@ -1074,6 +1074,12 @@ boolean doBedtime()
 			done = true;
 		}
 	}
+	if(in_robot())
+	{
+		//robots eat energy not food nor booze.
+		boolean chronolith_done = my_robot_energy() < robot_chronolith_cost() || robot_chronolith_cost() > 47;
+		done = chronolith_done && !auto_unreservedAdvRemaining();
+	}
 	if(!done)
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");

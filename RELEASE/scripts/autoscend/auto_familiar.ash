@@ -119,6 +119,12 @@ boolean pathHasFamiliar()
 		return false;
 	}
 	
+	//You, Robot has familiars... but only if your head attachment is set to birdcage.
+	if(in_robot() && get_property("youRobotTop").to_int() != 2)
+	{
+		return false;	//our top is not currently set to birdcage so familiars are disabled.
+	}
+	
 	return true;
 }
 

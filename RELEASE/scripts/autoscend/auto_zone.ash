@@ -1834,6 +1834,10 @@ boolean is_ghost_in_zone(location loc)
 		
 	case $location[a massive ziggurat]:
 		//massive ziggurat
+		if(in_robot())
+		{
+			return false;		//[Protector_S._P._E._C._T._R._E.] has 0 phys res and 100% all element res
+		}
 		return $location[a massive Ziggurat].liana_cleared() && $item[stone triangle].available_amount() == 4;
 		
 	default:

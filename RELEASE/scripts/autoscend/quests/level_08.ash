@@ -499,8 +499,9 @@ boolean L8_trapperSlopeSoftcore()
 	{
 		return true;	//successfully finished this part of the quest
 	}
-	else	//if we failed to unlock at this point it is because we do not have 5 cold res. So grab the outfit for that +5 cold res
+	else if(!in_robot())	//robots need too many bodyparts for outfit.
 	{
+		//if we failed to unlock at this point it is because we do not have 5 cold res. So grab the outfit for that +5 cold res
 		return L8_trapperExtreme();
 	}
 	return false;		//must have a return value. fallback option. should never actually be reached
@@ -661,6 +662,7 @@ boolean L8_trapperPeak()
 		{
 			//TODO get outfit
 			//TODO does TCRS have a problem with the outfit still not being enough? look into it
+			return false;		//we are unable to provide 5 cold res
 		}
 		
 		if(internalQuestStatus("questL08Trapper") == 3)
@@ -709,6 +711,10 @@ boolean L8_trapperSlope()
 		return true;
 	}
 	//hardcore handling
+	if(robot_delay("outfit"))
+	{
+		return false;	//delay for You, Robot path
+	}
 	if(get_property("auto_L8_extremeInstead").to_boolean())		//we decided we do not want to adventure in the ninja lair
 	{
 		if(L8_trapperExtreme()) return true;	//try to climb slope via extreme path

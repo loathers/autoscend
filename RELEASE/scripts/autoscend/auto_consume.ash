@@ -601,6 +601,11 @@ void consumeStuff()
 		kolhs_consume();
 		return;
 	}
+	if(in_robot())
+	{
+		robot_get_adv();
+		return;
+	}
 
 	// fills up spleen for Ed.
 	if (ed_eatStuff())

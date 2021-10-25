@@ -12,7 +12,12 @@ boolean LX_attemptPowerLevel()
 		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
 	}
 	
-	if (my_level() > 12) {
+	if(in_robot())
+	{
+		return LX_robot_powerlevel();		//leveling works very differently in You, Robot path
+	}
+	if (my_level() > 12)
+	{
 		return false;
 	}
 
