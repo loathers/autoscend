@@ -230,7 +230,7 @@ float rollover_value(item it)
 		return 0.0;
 	}
 	float retval = numeric_modifier(it, "adventures");
-	if(hippy_stone_broken())
+	if(hippy_stone_broken() && my_path() != "Oxygenarian")
 	{
 		retval += get_property("auto_bedtime_pulls_pvp_multi").to_float() * numeric_modifier(it, "PvP Fights");
 	}
@@ -1073,6 +1073,12 @@ boolean doBedtime()
 		{
 			done = true;
 		}
+	}
+	if(in_robot())
+	{
+		//robots eat energy not food nor booze.
+		boolean chronolith_done = my_robot_energy() < robot_chronolith_cost() || robot_chronolith_cost() > 47;
+		done = chronolith_done && !auto_unreservedAdvRemaining();
 	}
 	if(!done)
 	{

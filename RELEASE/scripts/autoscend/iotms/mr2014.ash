@@ -80,6 +80,14 @@ boolean considerGrimstoneGolem(boolean bjornCrown)
 		{
 			return false;
 		}
+		if(!auto_is_valid($item[Grimstone Mask]))
+		{
+			return false;
+		}
+		if(possessEquipment($item[Ornate Dowsing Rod]))
+		{
+			return false;
+		}
 	}
 
 	if(get_property("desertExploration").to_int() >= 70)
@@ -294,22 +302,21 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 	{
 		return false;
 	}
-
 	if (get_property("desertExploration").to_int() >= 100 || internalQuestStatus("questL11Desert") > 0)
 	{
 		// don't need a dowsing rod if we've finished the desert.
 		return false;
 	}
-
-	if(!auto_is_valid($item[Grimstone Mask]) || !auto_can_equip($item[Ornate Dowsing Rod]))
+	if(!auto_is_valid($item[Grimstone Mask]))
 	{
-		set_property("auto_grimstoneOrnateDowsingRod", false);	//mask or rod are not valid
+		return false;
+	}
+	if(!auto_can_equip($item[Ornate Dowsing Rod]) && !in_robot())
+	{
 		return false;
 	}
 	if(possessEquipment($item[Ornate Dowsing Rod]))
 	{
-		auto_log_info("Hey, we have the dowsing rod already, yippie!", "blue");
-		set_property("auto_grimstoneOrnateDowsingRod", false);
 		return false;
 	}
 	if(in_hardcore())		//will we be able to pull at any point in the run. not just right now (we might be out of pulls today)
@@ -385,7 +392,6 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 		autoAdv($location[The Prince\'s Restroom]);
 	}
 
-	set_property("auto_grimstoneOrnateDowsingRod", false);	//craft success = we done. fail = we ask user to make it
 	if(create(1, $item[Ornate Dowsing Rod]))
 	{
 		return true;

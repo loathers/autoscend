@@ -82,33 +82,80 @@ void auto_ghost_prep(location place)
 	{
 		return;		//these paths either have their own ghost handling. or can always kill ghosts
 	}
+	if(get_property("youRobotBottom").to_int() == 2)
+	{
+		return;		//you robot with a rocket crotch. deals fire damage to kill ghosts.
+	}
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
 	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
 	Storm of the Scarab,		//actually ed the undying
 	Boil]		//avatar of jarlsberg
 	{
+		if(auto_have_skill(sk))
+		{
+			acquireMP(32, 1000);		//make sure we actually have the MP to cast spells
+		}
 		if(canUse(sk)) return;	//we can kill them with a spell
 	}
 	
-	//try to maximize us some prismatic dmg
-	simMaximizeWith("3prismatic damage");
-	if(simValue("prismatic damage") > 2)
+	int m_hot = 1;
+	int m_cold = 1;
+	int m_spooky = 1;
+	int m_sleaze = 1;
+	int m_stench = 1;
+	foreach idx, mob in get_monsters(place)
 	{
-		addToMaximize("3prismatic damage");
-		return;
+		if(mob.physical_resistance >= 80)
+		{
+			switch(monster_element(mob))
+			{
+			case $element[hot]:
+				m_hot = 0;
+				m_sleaze = 2;
+				m_stench = 2;
+				break;
+			case $element[cold]:
+				m_cold = 0;
+				m_hot = 2;
+				m_spooky = 2;
+				break;
+			case $element[spooky]:
+				m_spooky = 0;
+				m_hot = 2;
+				m_stench = 2;
+				break;
+			case $element[sleaze]:
+				m_sleaze = 0;
+				m_cold = 2;
+				m_spooky = 2;
+				break;
+			case $element[stench]:
+				m_stench = 0;
+				m_sleaze = 2;
+				m_cold = 2;
+				break;
+			}
+		}
 	}
-	//still failed? be more aggressive
-	simMaximizeWith("10prismatic damage");
-	if(simValue("prismatic damage") > 2)
+	
+	string max_with;
+	int bonus;
+	if(m_hot != 0) max_with += "," +10*m_hot+ "hot dmg";
+	if(m_cold != 0) max_with += "," +10*m_cold+ "cold dmg";
+	if(m_spooky != 0) max_with += "," +10*m_spooky+ "spooky dmg";
+	if(m_sleaze != 0) max_with += "," +10*m_sleaze+ "sleaze dmg";
+	if(m_stench != 0) max_with += "," +10*m_stench+ "stench dmg";
+	
+	simMaximizeWith(max_with);
+	if(m_hot != 0) bonus += simValue("hot damage");
+	if(m_cold != 0) bonus += simValue("cold damage");
+	if(m_spooky != 0) bonus += simValue("spooky damage");
+	if(m_sleaze != 0) bonus += simValue("sleaze damage");
+	if(m_stench != 0) bonus += simValue("stench damage");
+	
+	if(bonus > 9)
 	{
-		addToMaximize("10prismatic damage");
-		return;
-	}
-	//still failed? go crazy with it
-	simMaximizeWith("100prismatic damage");
-	if(simValue("prismatic damage") > 2)
-	{
-		addToMaximize("100prismatic damage");
+		addToMaximize(max_with);
 		return;
 	}
 	

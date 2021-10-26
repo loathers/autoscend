@@ -1483,6 +1483,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_09_monster5"))
 	{
+		if(in_robot())
+		{
+			abort("Robot shadow not currently automated. Pleasae kill your shadow manually then run me again");
+		}
 		if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
 		{
 			abort("auto_towerBreak set to abort here.");
@@ -1549,6 +1553,10 @@ boolean L13_towerNSFinal()
 	if (internalQuestStatus("questL13Final") < 11 || internalQuestStatus("questL13Final") > 12)
 	{
 		return false;
+	}
+	if(in_robot())
+	{
+		abort("Automatic killing of nautomatic sauceress not implemented. Please kill her manually");
 	}
 	
 	//wand acquisition function is called before this function, it turns this propery to false once a wand is acquired.

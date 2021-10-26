@@ -1043,6 +1043,10 @@ boolean L12_gremlins()
 
 	if(item_amount($item[molybdenum magnet]) == 0)
 	{
+		if(robot_delay("outfit"))
+		{
+			return false;	//delay for You, Robot path
+		}
 		//if fighting for frat immediately grab it
 		if(!get_property("auto_hippyInstead").to_boolean())
 		{
@@ -1527,6 +1531,11 @@ boolean L12_flyerFinish()
 	{
 		return false;
 	}
+	if(robot_delay("outfit"))
+	{
+		return false;	//delay for You, Robot path
+	}
+	
 	auto_log_info("Done with this Flyer crap", "blue");
 	equipWarOutfit(false);
 	visit_url("bigisland.php?place=concert&pwd");
@@ -2059,6 +2068,10 @@ boolean L12_finalizeWar()
 	{
 		return false;
 	}
+	if(robot_delay("outfit3"))
+	{
+		return false;
+	}
 
 	if(possessOutfit("War Hippy Fatigues"))
 	{
@@ -2263,6 +2276,10 @@ boolean L12_islandWar()
 	if (internalQuestStatus("questL12War") == 0 && get_property("lastIslandUnlock").to_int() != my_ascensions())
 	{
 		return LX_islandAccess();
+	}
+	if(robot_delay("outfit"))
+	{
+		return false;	//delay for You, Robot path
 	}
 	if (L12_preOutfit() || L12_getOutfit() || L12_startWar())
 	{
