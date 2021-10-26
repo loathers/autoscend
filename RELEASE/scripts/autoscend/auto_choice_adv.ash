@@ -235,21 +235,10 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(2); // finish twin peak quest the long way
 			break;
 		case 669: // The Fast and the Furry-ous (The Castle in the Clouds in the Sky (Basement))
-			if(possessEquipment($item[Titanium Assault Umbrella]) && can_equip($item[Titanium Assault Umbrella]))
-			{
-				run_choice(4); // if have and can equip umbrella, come back to this choice after equipping
-			}
-			else
-			{
-				run_choice(1); // in any other cases, go to Out in the Open Source (#671)
-			}
+			run_choice(1); // if umbrella equipped finish quest. without, go to Out in the Open Source (#671)
 			break;
 		case 670: // You Don't Mess Around with Gym (The Castle in the Clouds in the Sky (Basement))
-			if(possessEquipment($item[Amulet of Extreme Plot Significance]) && can_equip($item[Amulet of Extreme Plot Significance]))
-			{
-				run_choice(5); // if have and can equip amulet, come back to this choice after equipping
-			}
-			else if(internalQuestStatus("questL10Garbage") < 8 && equipped_amount($item[Amulet of Extreme Plot Significance]) == 1)
+			if(internalQuestStatus("questL10Garbage") < 8 && equipped_amount($item[Amulet of Extreme Plot Significance]) > 0)
 			{
 				run_choice(4); // with amulet equipped, open the ground floor
 			}
@@ -288,9 +277,9 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 676: // Flavor of a Raver (The Castle in the Clouds in the Sky (Top Floor))
-			if(internalQuestStatus("questL10Garbage") < 10 && possessEquipment($item[mohawk wig]))
+			if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
 			{
-				run_choice(4); // if quest not done and have mohawk wig, move to Yeah, You're for Me (#678)
+				run_choice(4); // if quest not done and have mohawk wig on, move to Yeah, You're for Me (#678)
 			}	
 			else
 			{
@@ -298,7 +287,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 677: // Copper Feel (The Castle in the Clouds in the Sky (Top Floor))
-			 if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[model airship]) > 0)
+			 if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Model airship]) > 0)
 			{
 				run_choice(1); // if quest not done and have model airship, complete quest
 			}
@@ -312,7 +301,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 678: // Yeah, You're for Me, Punk Rock Giant (The Castle in the Clouds in the Sky (Top Floor))
-			if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[mohawk wig]) == 1)
+			if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
 			{
 				run_choice(1); // if quest not done and mohawk wig equipped, finish quest
 			}

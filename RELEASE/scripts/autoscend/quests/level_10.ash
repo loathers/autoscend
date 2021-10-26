@@ -13,7 +13,7 @@ boolean L10_plantThatBean()
 		set_property("questL10Garbage", "step1");
 		return true;
 	}
-	if (item_amount($item[Enchanted Bean]) > 0)
+	if(item_amount($item[Enchanted Bean]) > 0)
 	{
 		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;
@@ -21,7 +21,7 @@ boolean L10_plantThatBean()
 	else
 	{
 		// make sure we can get an enchanted bean to open the beanstalk with if we can't open it.
-		if (L4_batCave())
+		if(L4_batCave())
 		{
 			return true;
 		}
@@ -36,10 +36,11 @@ boolean L10_plantThatBean()
 
 boolean L10_airship()
 {
-	if (internalQuestStatus("questL10Garbage") < 1 || internalQuestStatus("questL10Garbage") > 6)
+	if(internalQuestStatus("questL10Garbage") < 1 || internalQuestStatus("questL10Garbage") > 6)
 	{
 		return false;
 	}
+
 	if(my_turncount() == get_property("_LAR_skipNC178").to_int())
 	{
 		auto_log_info("In LAR path NC178 is forced to reoccur if we skip it. Go do something else.");
@@ -63,7 +64,7 @@ boolean L10_airship()
 		bat_formBats();
 	}
 
-	if (isActuallyEd() && $location[The Penultimate Fantasy Airship].turns_spent < 1)	
+	if(isActuallyEd() && $location[The Penultimate Fantasy Airship].turns_spent < 1)	
 	{	
 		// temp workaround for mafia bug.	
 		// see https://kolmafia.us/showthread.php?24767-Quest-tracking-preferences-change-request(s)&p=156733&viewfull=1#post156733
@@ -71,7 +72,7 @@ boolean L10_airship()
 		visit_url("place.php?whichplace=beanstalk");	
 	}
 
-	if (handleFamiliar($familiar[Red-Nosed Snapper]))
+	if(handleFamiliar($familiar[Red-Nosed Snapper]))
 	{
 		auto_changeSnapperPhylum($phylum[dude]);
 	}
@@ -81,23 +82,33 @@ boolean L10_airship()
 
 boolean L10_basement()
 {
-	if (internalQuestStatus("questL10Garbage") != 7)
+	if(internalQuestStatus("questL10Garbage") != 7)
 	{
 		return false;
 	}
 
-	if (possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
+	if(possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
 	{
 		return false;
 	}
 
-	if (possessEquipment($item[Amulet of Extreme Plot Significance]) && !auto_can_equip($item[Amulet of Extreme Plot Significance]))
+	if(possessEquipment($item[Amulet of Extreme Plot Significance]) && !auto_can_equip($item[Amulet of Extreme Plot Significance]))
 	{
 		return false;
 	}
 
 	auto_log_info("Basement Search", "blue");
 	
+	if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]) && !in_hardcore())
+	{
+		pullXWhenHaveY($item[Titanium Assault Umbrella], 1, 0);
+	}
+
+	if(!possessEquipment($item[Amulet of Extreme Plot Significance]) && auto_can_equip($item[Amulet of Extreme Plot Significance]) && !in_hardcore())
+	{
+		pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
+	}
+
 	if(my_primestat() == $stat[Muscle])
 	{
 		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
@@ -106,11 +117,6 @@ boolean L10_basement()
 	buyUpTo(1, $item[Hair Spray]);
 	buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
 	
-	if (possessEquipment($item[Amulet of Extreme Plot Significance]))
-	{
-		auto_forceNextNoncombat();
-	}
-
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{
 		if(!have_skill($skill[Bendable Knees]) && (item_amount($item[Bottle of Gregnadigne]) == 0))
@@ -119,60 +125,12 @@ boolean L10_basement()
 		}
 	}
 
+	auto_forceNextNoncombat();
+	autoEquip($item[Titanium Assault Umbrella]);
+	autoEquip($item[Amulet of Extreme Plot Significance]);
 	autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
 	resetMaximize();
 	
-
-	if(contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
-	{
-		auto_log_info("We was fast and furry-ous!", "blue");
-		autoEquip($item[Titanium Assault Umbrella]);
-		autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
-		if(!contains_text(get_property("lastEncounter"), "The Fast and the Furry-ous"))
-		{
-			auto_log_warning("Got interrupted trying to unlock the Ground Floor of the Castle", "red");
-		}
-	}
-	else if(contains_text(get_property("lastEncounter"), "You Don\'t Mess Around with Gym"))
-	{
-		auto_log_info("Just messed with Gym", "blue");
-		if(!can_equip($item[Amulet of Extreme Plot Significance]) || (item_amount($item[Massive Dumbbell]) > 0))
-		{
-			auto_log_warning("Can't equip an Amulet of Extreme Plot Signifcance...", "red");
-			auto_log_warning("I suppose we will try the Massive Dumbbell... Beefcake!", "red");
-			autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
-			return true;
-		}
-
-		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]))
-		{
-			pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
-			if(!possessEquipment($item[Amulet of Extreme Plot Significance]))
-			{
-				if($location[The Penultimate Fantasy Airship].turns_spent >= 45 || in_koe())
-				{
-					auto_log_warning("Well, we don't seem to be able to find an Amulet...", "red");
-					auto_log_warning("I suppose we will get the Massive Dumbbell... Beefcake!", "red");
-					autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
-				}
-				else
-				{
-					auto_log_warning("Backfarming an Amulet of Extreme Plot Significance, sigh :(", "blue");
-					if (handleFamiliar($familiar[Red-Nosed Snapper])) {
-						auto_changeSnapperPhylum($phylum[dude]);
-					}
-					autoAdv(1, $location[The Penultimate Fantasy Airship]);
-				}
-				return true;
-			}
-		}
-
-		if(!autoEquip($slot[acc3], $item[Amulet Of Extreme Plot Significance]))
-		{
-			abort("Unable to equip the Amulet when we wanted to...");
-		}
-		autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
-	}
 	return true;
 }
 
@@ -210,33 +168,34 @@ boolean L10_ground()
 
 boolean L10_topFloor()
 {
-	if (internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL10Garbage") > 10)
+	if(internalQuestStatus("questL10Garbage") < 9 || internalQuestStatus("questL10Garbage") > 10)
 	{
 		return false;
 	}
 
-	if (possessEquipment($item[mohawk wig]) && !auto_can_equip($item[Mohawk Wig]))
+	if(possessEquipment($item[Mohawk wig]) && !auto_can_equip($item[Mohawk wig]))
 	{
 		return false;
 	}
 
-	if (shenShouldDelayZone($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	if(shenShouldDelayZone($location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		auto_log_debug("Delaying Top Floor in case of Shen.");
 		return false;
 	}
 
 	auto_log_info("Castle Top Floor", "blue");
-		if (!possessEquipment($item[mohawk wig]) && auto_can_equip($item[mohawk wig]) && !in_hardcore())
+	
+	if(!possessEquipment($item[Mohawk wig]) && auto_can_equip($item[Mohawk wig]) && !in_hardcore())
 	{
-		pullXWhenHaveY($item[Mohawk Wig], 1, 0);
+		pullXWhenHaveY($item[Mohawk wig], 1, 0);
 	}
 
 	auto_forceNextNoncombat();
-	autoEquip($item[mohawk wig]);
+	autoEquip($item[Mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
-	if (internalQuestStatus("questL10Garbage") > 9)
+	if(internalQuestStatus("questL10Garbage") > 9)
 	{
 		council();
 		if(in_koe())
@@ -250,7 +209,7 @@ boolean L10_topFloor()
 
 boolean L10_holeInTheSkyUnlock()
 {
-	if (internalQuestStatus("questL10Garbage") < 11)
+	if(internalQuestStatus("questL10Garbage") < 11)
 	{
 		//top floor opens at step9. but we want to finish the giant trash quest first before we do hole in the sky.
 		return false;
@@ -266,7 +225,7 @@ boolean L10_holeInTheSkyUnlock()
 	}
 	int day = get_property("shenInitiationDay").to_int();
 	boolean[location] shenLocs = shenSnakeLocations(day, 0);
-	if (!needStarKey() && !(shenLocs contains $location[The Hole in the Sky]))
+	if(!needStarKey() && !(shenLocs contains $location[The Hole in the Sky]))
 	{
 		// we force auto_holeinthesky to true in L11_shenCopperhead() as Ed if Shen sends us to the Hole in the Sky
 		// as otherwise the zone isn't required at all for Ed.
@@ -275,7 +234,7 @@ boolean L10_holeInTheSkyUnlock()
 		return false;
 	}
 
-	if (shenShouldDelayZone($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	if(shenShouldDelayZone($location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		auto_log_debug("Delaying unlocking Hole in the Sky in case of Shen.");
 		return false;
@@ -291,7 +250,7 @@ boolean L10_holeInTheSkyUnlock()
 
 boolean L10_rainOnThePlains()
 {
-	if (L10_plantThatBean() || L10_airship() || L10_basement() || L10_ground() || L10_topFloor() || L10_holeInTheSkyUnlock())
+	if(L10_plantThatBean() || L10_airship() || L10_basement() || L10_ground() || L10_topFloor() || L10_holeInTheSkyUnlock())
 	{
 		return true;
 	}
