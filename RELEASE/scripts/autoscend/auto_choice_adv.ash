@@ -649,6 +649,16 @@ boolean auto_run_choice(int choice, string page)
 		case 1083: // Cogito Ergot Sum (post-post-Cake Lord in Madness Bakery)
 			run_choice(1);
 			break;
+		case 1106 // Wooof! Wooooooof! (Ghost Dog)
+			if ((in_hardcore() && have_effect($effect[Adventurer\'s Best Friendship]) > 120) || ((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar()))
+			{
+				run_choice(3); // ghost dog chow
+			}
+			else
+			{
+				run_choice(2); // 30 turns of adventurer's best friendship
+			}
+			break;
 		case 1115: // VYKEA! (VYKEA)
 			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community()) {
 				run_choice(1); // get consumables
@@ -660,6 +670,16 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1119: // Blue Sideways In Time (Machine Elf)
 			run_choice(1); // acquire some abstractions
+			break;
+		case 1261: // Which Door? (Super Villain's Lair)
+			if(my_meat() > 1000)
+			{
+				run_choice(1); // spend 1000 meat to eliminate 10 minions
+			}
+			else
+			{
+				run_choice(4); // if can't afford door 1, choose none
+			}
 			break;
 		case 1310: // Granted a Boon (God Lobster)
 			int goal = get_property("_auto_lobsterChoice").to_int();

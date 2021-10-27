@@ -11,7 +11,6 @@ void bond_initializeSettings()
 		set_property("auto_getBeehive", true);
 		set_property("auto_wandOfNagamar", false);
 		set_property("choiceAdventure1258", 2);
-		set_property("choiceAdventure1261", 1);
 		set_property("auto_familiarChoice", "");
 	}
 	else
@@ -401,14 +400,6 @@ boolean LM_bond()
 			return retval;
 		}
 
-		if(my_meat() < 1000)
-		{
-			set_property("choiceAdventure1261", 4);
-		}
-		else
-		{
-			set_property("choiceAdventure1261", 1);
-		}
 		boolean retval = autoAdv($location[Super Villain\'s Lair]);
 		if(!retval)
 		{
