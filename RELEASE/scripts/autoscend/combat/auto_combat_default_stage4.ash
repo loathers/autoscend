@@ -2,6 +2,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
 	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	string retval;
+	string combatState = get_property("auto_combatHandler");
 	
 	// Path = The Source
 	retval = auto_combatTheSourceStage4(round, enemy, text);
@@ -210,29 +211,28 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//this completes the quest Advertise for the Mysterious Island Arena which is a sidequest which accelerates the L12 frat-hippy war quest
-	if((canUse($item[Rock Band Flyers]) || canUse($item[Jam Band Flyers])) && (get_property("flyeredML").to_int() < 10000) && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
+	//kol tracks each band flyering separately. mafia tracks them in a singular property as it assumes the player will not flyer for the wrong band. make sure to only flyer for the side we want to flyer for
+	item flyer = $item[Rock Band Flyers];
+	if(auto_warSide() == "hippy")
+	{
+		flyer = $item[Jam Band Flyers];
+	}
+	if(canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
 	{
 		skill stunner = getStunner(enemy);
-		if(stunner != $skill[none])
+		boolean stunned = contains_text(combatState, "stunned");
+		if(stunner != $skill[none] && !stunned)
 		{
+			set_property("auto_combatHandler", get_property("auto_combatHandler")+",stunned");
 			return useSkill(stunner);
 		}
-
-		if(canUse($item[Rock Band Flyers]))
+		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
-			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
-			{
-				return useItems($item[Rock Band Flyers], $item[Time-Spinner]);
-			}
-			return useItem($item[Rock Band Flyers]);
+			return useItems(flyer, $item[Time-Spinner]);
 		}
-		if(canUse($item[Jam Band Flyers]))
+		if(canSurvive(3.0) || stunned)
 		{
-			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
-			{
-				return useItems($item[Jam Band Flyers], $item[Time-Spinner]);
-			}
-			return useItem($item[Jam Band Flyers]);
+			return useItem(flyer);
 		}
 	}
 	
