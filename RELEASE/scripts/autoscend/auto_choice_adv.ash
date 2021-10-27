@@ -649,8 +649,8 @@ boolean auto_run_choice(int choice, string page)
 		case 1083: // Cogito Ergot Sum (post-post-Cake Lord in Madness Bakery)
 			run_choice(1);
 			break;
-		case 1106 // Wooof! Wooooooof! (Ghost Dog)
-			if ((in_hardcore() && have_effect($effect[Adventurer\'s Best Friendship]) > 120) || ((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar()))
+		case 1106: // Wooof! Wooooooof! (Ghost Dog)
+			if((in_hardcore() && have_effect($effect[Adventurer\'s Best Friendship]) > 120) || ((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar()))
 			{
 				run_choice(3); // ghost dog chow
 			}
