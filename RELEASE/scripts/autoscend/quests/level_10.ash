@@ -238,7 +238,7 @@ boolean L10_holeInTheSkyUnlock()
 		auto_log_debug("Delaying unlocking Hole in the Sky in case of Shen.");
 		return false;
 	}
-9
+
 	auto_log_info("Castle (Top Floor) - Opening the Hole in the Sky.", "blue");
 	
 	auto_forceNextNoncombat();
