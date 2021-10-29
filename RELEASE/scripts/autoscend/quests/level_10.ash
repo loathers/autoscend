@@ -5,11 +5,11 @@ boolean L10_plantThatBean()
 		return false;
 	}
 
-	auto_log_info("Planting me magic bean!", "blue");
+	auto_log_info("Planting enchanted bean to open the beanstalk and start L10 quest.", "blue");
 	string page = visit_url("place.php?whichplace=plains");
 	if(contains_text(page, "place.php?whichplace=beanstalk"))
 	{
-		auto_log_warning("I see the beanstalk has already been planted. fixing questL10Garbage to step1", "blue");
+		auto_log_warning("I see the beanstalk has already been planted. Fixing questL10Garbage to step1.", "blue");
 		set_property("questL10Garbage", "step1");
 		return true;
 	}
@@ -27,7 +27,7 @@ boolean L10_plantThatBean()
 		}
 		else
 		{
-			auto_log_info("I don't have a magic bean! Travesty!!", "blue");
+			auto_log_info("No enchanted bean. Getting one from The Beanbat Chamber.", "blue");
 			return autoAdv($location[The Beanbat Chamber]);
 		}
 	}
@@ -47,7 +47,7 @@ boolean L10_airship()
 		return false;
 	}
 
-	auto_log_info("Fantasy Airship Fly Fly time", "blue");
+	auto_log_info("The Penultimate Fantasy Airship - unlocking Castle.", "blue");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
 		handleBjornify($familiar[Grimstone Golem]);
@@ -97,7 +97,7 @@ boolean L10_basement()
 		return false;
 	}
 
-	auto_log_info("Basement Search", "blue");
+	auto_log_info("Castle (Basement) - Unlocking Ground Floor.", "blue");
 	
 	if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]) && !in_hardcore())
 	{
@@ -150,7 +150,7 @@ boolean L10_ground()
 		return false;
 	}
 
-	auto_log_info("Castle Ground Floor, boring!", "blue");
+	auto_log_info("Castle (Ground Floor) - Unlocking Top Floor.", "blue");
 
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
@@ -179,11 +179,11 @@ boolean L10_topFloor()
 
 	if(shenShouldDelayZone($location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
-		auto_log_debug("Delaying Top Floor in case of Shen.");
+		auto_log_debug("Delaying Castle (Top Floor) in case of Shen.");
 		return false;
 	}
 
-	auto_log_info("Castle Top Floor", "blue");
+	auto_log_info("Castle (Top Floor) - Finishing L10 Quest.", "blue");
 	
 	if(!possessEquipment($item[Mohawk wig]) && auto_can_equip($item[Mohawk wig]) && !in_hardcore())
 	{
@@ -238,8 +238,8 @@ boolean L10_holeInTheSkyUnlock()
 		auto_log_debug("Delaying unlocking Hole in the Sky in case of Shen.");
 		return false;
 	}
-
-	auto_log_info("Castle Top Floor - Opening the Hole in the Sky", "blue");
+9
+	auto_log_info("Castle (Top Floor) - Opening the Hole in the Sky.", "blue");
 	
 	auto_forceNextNoncombat();
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);

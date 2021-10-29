@@ -261,7 +261,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(3); // skip
 			break;
 		case 673: // Putting Off Is Off-Putting (Castle in the Clouds in the Sky (Ground Floor))
-			run_choice(1); // get very overdue library book then skip
+			run_choice(3); // skip
 			break;
 		case 674: // Huzzah! (Castle in the Clouds in the Sky (Ground Floor))
 			run_choice(3); // skip
