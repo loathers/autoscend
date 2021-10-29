@@ -856,7 +856,7 @@ void initializeDay(int day)
 			{
 				foreach fam in $familiars[ghost of crimbo carols, ghost of crimbo commerce, ghost of crimbo cheer]
 				{
-					if (have_familiar(fam))
+					if (have_familiar(fam) && !in_bhy())
 					{
 						use_familiar(fam);
 					}
