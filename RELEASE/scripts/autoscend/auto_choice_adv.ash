@@ -51,17 +51,37 @@ boolean auto_run_choice(int choice, string page)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
 		case 139: // Bait and Switch (The Hippy Camp (Verge of War))
+			run_choice(3); // fight a War Hippy (space) cadet for outfit pieces
+			break;
 		case 140: // The Thin Tie-Dyed Line (The Hippy Camp (Verge of War))
-		case 141: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Boy Ensemble) 
+			run_choice(3); // fight a War Hippy drill sergeant for outfit pieces
+			break;
+		case 141: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Boy Ensemble)
+			run_choice(1); // get 50 mysticality
+			break;
 		case 142: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Warrior Fatigues)
+			run_choice(3); // starts the war. skips adventure if already started.
+			break;
 		case 143: // Catching Some Zetas (Orcish Frat House (Verge of War))
+			run_choice(3); // fight a War Pledge for outfit pieces
+			break;
 		case 144: // One Less Room Than In That Movie (Orcish Frat House (Verge of War))
-		case 145: // Fratacombs (Orcish Frat House (Verge of War) wearing Filthy Hippy Disguise) 
+			run_choice(3); // fight a Frat Warrior drill sergeant for outfit pieces
+			break;
+		case 145: // Fratacombs (Orcish Frat House (Verge of War) wearing Filthy Hippy Disguise)
+			run_choice(1); // get 50 muscle
+			break;
 		case 146: // Fratacombs (Orcish Frat House (Verge of War) wearing War Hippy Fatigues)
+			run_choice(3); // starts the war. skips adventure if already started.
+			break;
 		case 147: // Cornered! (McMillicancuddy's Barn)
+			run_choice(3); // open the pond
+			break;
 		case 148: // Cornered Again! (McMillicancuddy's Barn)
+			run_choice(1); // open the back 40
+			break;
 		case 149: // How Many Corners Does this Stupid Barn Have!? (McMillicancuddy's Barn)
-			warChoiceHandler(choice);
+			run_choice(2); // open the other back 40
 			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
 			if(in_lar())

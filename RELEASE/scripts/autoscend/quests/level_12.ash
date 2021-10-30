@@ -2226,51 +2226,6 @@ boolean L12_finalizeWar()
 	return true;
 }
 
-void warChoiceHandler(int choice)
-{
-	auto_log_debug("void warChoiceHandler(int choice)");
-
-	switch (choice)
-	{
-		case 139:
-			run_choice(3);		//fight a War Hippy (space) cadet for outfit pieces
-			break;
-		case 140:
-			run_choice(3);		//fight a War Hippy drill sergeant for outfit pieces
-			break;
-		case 141: // Blockin' Out the Scenery (wearing Frat Boy Ensemble) 
-			run_choice(1);		//get 50 mysticality
-			break;
-		case 142: // Blockin' Out the Scenery (wearing Frat Warrior Fatigues)
-			run_choice(3);		//starts the war. skips adventure if already started.
-			break;
-		case 143:
-			run_choice(3);		//fight a War Pledgefor outfit pieces
-			break;
-		case 144:
-			run_choice(3);		//fight a Frat Warrior drill sergeant for outfit pieces
-			break;
-		case 145: // Fratacombs (wearing Filthy Hippy Disguise) 
-			run_choice(1);		//get 50 muscle
-			break;
-		case 146: // Fratacombs (wearing War Hippy Fatigues)
-			run_choice(3);		//starts the war. skips adventure if already started.
-			break;
-		case 147:
-			run_choice(3);		//open the pond
-			break;
-		case 148:
-			run_choice(1);		//open the back 40
-			break;
-		case 149:
-			run_choice(2);		//open the other back 40
-			break;
-		default:
-			auto_log_warning("void warChoiceHandler(int choice) somehow hit default. this should not happen");
-			break;
-	}
-}
-
 boolean L12_islandWar()
 {
 	if (internalQuestStatus("questL12War") == 0 && get_property("lastIslandUnlock").to_int() != my_ascensions())

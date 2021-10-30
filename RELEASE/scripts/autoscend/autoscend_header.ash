@@ -1007,7 +1007,6 @@ boolean LX_obtainChaosButterfly();
 boolean L12_farm();
 boolean L12_clearBattlefield();
 boolean L12_finalizeWar();
-void warChoiceHandler(int choice);
 boolean L12_islandWar();
 
 ########################################################################################################
