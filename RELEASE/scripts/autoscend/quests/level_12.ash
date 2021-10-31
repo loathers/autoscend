@@ -313,6 +313,10 @@ WarPlan auto_bestWarPlan()
 	{
 		considerArena = false;
 	}
+	if(get_property("auto_skipNuns").to_boolean())
+	{
+		considerNuns = false;
+	}
 	
 	// Calculate the adventure cost of doing each sidequest.
 	int advCostArena = 0;		//Arena actual cost is 0 adventures... unless you mess it up. TODO: check if messed up.
@@ -1953,110 +1957,101 @@ boolean L12_clearBattlefield()
 			cli_execute("garden pick");
 		}
 	}
-
 	if(in_koe())
 	{
 		return L12_koe_clearBattlefield();
 	}
-
 	if(in_pokefam())
 	{
 		return L12_pokefam_clearBattlefield();
 	}
-
-	if(internalQuestStatus("questL12War") != 1)
+	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
 	}
-
-	WarPlan sideQuests = auto_warSideQuestsState();
-	boolean nunsCheck = (get_property("auto_skipNuns").to_boolean() ? true : sideQuests.do_nuns);
-	// don't adventure on the battlefield if we haven't completed all 3 available sidequests.
-	// this may need some exceptions for paths added where certain sidequests are not possible.
+	int enemies_defeated = get_property("hippiesDefeated").to_int();
+	if(auto_warSide() == "hippy")
+	{
+		enemies_defeated = get_property("fratboysDefeated").to_int();
+	}
+	if(enemies_defeated >= 1000)
+	{
+		return false;	//already done
+	}
+	
+	WarPlan quest_done = auto_warSideQuestsState();
+	WarPlan quest_planned = auto_bestWarPlan();
+	//which sidequests have we reached already?
+	WarPlan quest_reached;
 	if(auto_warSide() == "fratboy")
 	{
-		if(!sideQuests.do_arena || !sideQuests.do_junkyard || !sideQuests.do_lighthouse)
+		quest_reached.do_arena = true;
+		quest_reached.do_junkyard = true;
+		quest_reached.do_lighthouse = true;
+		if(enemies_defeated >= 64)
 		{
-			return false;
+			quest_reached.do_orchard = true;
+		}
+		if(enemies_defeated >= 192)
+		{
+			quest_reached.do_nuns = true;
+		}
+		if(enemies_defeated >= 458)
+		{
+			quest_reached.do_farm = true;
 		}
 	}
 	else
 	{
-		if(!sideQuests.do_orchard || !nunsCheck || !sideQuests.do_farm)
+		quest_reached.do_farm = true;
+		quest_reached.do_nuns = true;
+		quest_reached.do_orchard = true;
+		if(enemies_defeated >= 64)
 		{
-			return false;
+			quest_reached.do_lighthouse = true;
+		}
+		if(enemies_defeated >= 192)
+		{
+			quest_reached.do_junkyard = true;
+		}
+		if(enemies_defeated >= 458)
+		{
+			quest_reached.do_arena = true;
 		}
 	}
-
-	if(get_property("hippiesDefeated").to_int() < 64 && get_property("fratboysDefeated").to_int() < 64)
+	
+	//should we wait for a sidequest to be done first before clearing out the battlefield?
+	boolean wait_for_arena = !quest_done.do_arena && quest_planned.do_arena && quest_reached.do_arena;
+	boolean wait_for_junkyard = !quest_done.do_junkyard && quest_planned.do_junkyard && quest_reached.do_junkyard;
+	boolean wait_for_lighthouse = !quest_done.do_lighthouse && quest_planned.do_lighthouse && quest_reached.do_lighthouse;
+	boolean wait_for_orchard = !quest_done.do_orchard && quest_planned.do_orchard && quest_reached.do_orchard;
+	boolean wait_for_nuns = !quest_done.do_nuns && quest_planned.do_nuns && quest_reached.do_nuns;
+	boolean wait_for_farm = !quest_done.do_farm && quest_planned.do_farm && quest_reached.do_farm;
+	if(wait_for_arena || wait_for_junkyard || wait_for_lighthouse || wait_for_orchard || wait_for_nuns || wait_for_farm)
 	{
-		auto_log_info("First 64 combats. To orchard/lighthouse", "blue");
-		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
+		return false;		//we are waiting for a sidequest to finish first
+	}
+
+	if(enemies_defeated < 64 && auto_is_valid($item[Stuffing Fluffer]))
+	{
+		if(item_amount($item[Stuffing Fluffer]) == 0 && item_amount($item[Cashew]) >= 3)
 		{
-			cli_execute("make 1 stuffing fluffer");
+			create(1, $item[stuffing fluffer]);
 		}
-		if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cornucopia]) > 0) && glover_usable($item[Cornucopia]))
+		if(item_amount($item[Stuffing Fluffer]) == 0 && item_amount($item[Cornucopia]) > 0 && auto_is_valid($item[Cornucopia]))
 		{
-			use(1, $item[Cornucopia]);
-			if((item_amount($item[Stuffing Fluffer]) == 0) && (item_amount($item[Cashew]) >= 3))
-			{
-				cli_execute("make 1 stuffing fluffer");
-			}
-			return true;
+			return use(1, $item[Cornucopia]);
 		}
 		if(item_amount($item[Stuffing Fluffer]) > 0)
 		{
-			use(1, $item[Stuffing Fluffer]);
-			return true;
-		}
-		equipWarOutfit();
-		return warAdventure();
-	}
-
-	if(auto_warSide() == "fratboy")
-	{
-		if(!sideQuests.do_orchard)
-		{
-			return false;
+			auto_log_info("Detonating a [Stuffing Fluffer] which should kill 36-46 soldiers on each side.", "blue");
+			return use(1, $item[Stuffing Fluffer]);
 		}
 	}
-	else
-	{
-		if(!sideQuests.do_lighthouse)
-		{
-			return false;
-		}
-	}
-
-	if(get_property("hippiesDefeated").to_int() < 192 && get_property("fratboysDefeated").to_int() < 192)
-	{
-		auto_log_info("Getting to the nunnery/junkyard", "blue");
-		equipWarOutfit();
-		return warAdventure();
-	}
-
-	if(auto_warSide() == "fratboy")
-	{
-		if(!nunsCheck)
-		{
-			return false;
-		}
-	}
-	else
-	{
-		if(!sideQuests.do_junkyard)
-		{
-			return false;
-		}
-	}
-
-	if(get_property("hippiesDefeated").to_int() < 1000 && get_property("fratboysDefeated").to_int() < 1000)
-	{
-		auto_log_info("Doing the wars.", "blue");
-		equipWarOutfit();
-		return warAdventure();
-	}
-	return false;
+	
+	auto_log_info("Doing the wars.", "blue");
+	equipWarOutfit();
+	return warAdventure();
 }
 
 boolean L12_finalizeWar()
