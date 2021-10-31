@@ -300,6 +300,14 @@ void bedtime_pulls_rollover_equip()
 			if(!possessEquipment(it) && !canPull(it,true)) continue;		//do not have it and can not pull it.
 			if(!auto_can_equip(it)) continue;		//we can not equip it
 			
+			if($slot[familiar] == sl && !pathHasFamiliar())
+			{
+				//in paths without familiar do not pull familiar equip.
+				if(!in_robot())
+				{
+					continue;
+				}
+			}
 			if($slot[acc1] == sl)
 			{
 				//all accessories always return acc1 from to_slot() function.

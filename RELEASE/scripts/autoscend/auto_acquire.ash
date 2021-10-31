@@ -627,7 +627,7 @@ int handlePulls(int day)
 				put_closet(1, $item[empty rain-doh can]);
 			}
 		}
-		if((storage_amount($item[Buddy Bjorn]) > 0) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(storage_amount($item[Buddy Bjorn]) > 0 && pathHasFamiliar())
 		{
 			pullXWhenHaveY($item[Buddy Bjorn], 1, 0);
 		}
@@ -745,7 +745,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 		}
 
-		if(!in_heavyrains() && !in_lta() && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(!in_heavyrains() && pathHasFamiliar())
 		{
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
 			{
