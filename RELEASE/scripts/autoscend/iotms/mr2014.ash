@@ -435,12 +435,7 @@ boolean fancyOilPainting()
 		return false;
 	}
 	auto_log_info("Acquiring a Fancy Oil Painting!", "blue");
-	set_property("choiceAdventure829", "1");
 	use(1, $item[grimstone mask]);
-	set_property("choiceAdventure823", "1");
-	set_property("choiceAdventure824", "1");
-	set_property("choiceAdventure825", "1");
-	set_property("choiceAdventure826", "1");
 
 	while(item_amount($item[odd silver coin]) < 1)
 	{

@@ -637,18 +637,7 @@ boolean L9_twinPeak()
 	{
 		return false;
 	}
-	
-	//set fixed NC values
-	set_property("choiceAdventure604", "1");	//welcome NC to twin peak step 1 = "continue"
-	set_property("choiceAdventure605", "1");	//welcome NC to twin peak step 2 = "everything goes black"
-	set_property("choiceAdventure607", "1");	//finish stench / room 237
-	set_property("choiceAdventure608", "1");	//finish food drop / pantry
-	set_property("choiceAdventure609", "1");	//do jar of oil / sound of music... goto 616
-	set_property("choiceAdventure616", "1");	//finish jar of oil / sound of music
-	set_property("choiceAdventure610", "1");	//do init / "who's that" / "to catch a killer"... goto 1056
-	set_property("choiceAdventure1056", "1");	//finish init / "now it's dark"
-	set_property("choiceAdventure618", "2");	//burn this hotel pity NC to skip the zone if you spent over 50 adventures there.
-	
+		
 	//main lodge NC. we swap around this value multiple times. initially set to 0 to prevent mistakes.
 	set_property("choiceAdventure606", "0");	
 

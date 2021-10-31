@@ -836,29 +836,6 @@ boolean LX_craftAcquireItems()
 
 	auto_floundryUse();
 
-	if(in_hardcore())
-	{
-		if(have_effect($effect[Adventurer\'s Best Friendship]) > 120)
-		{
-			set_property("choiceAdventure1106", 3);
-		}
-		else
-		{
-			set_property("choiceAdventure1106", 2);
-		}
-	}
-	else
-	{
-		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar())
-		{
-			set_property("choiceAdventure1106", 3);
-		}
-		else
-		{
-			set_property("choiceAdventure1106", 2);
-		}
-	}
-
 	// Snow Berries can be acquired out of standard by using Van Keys from NEP. We need to check to make sure they are usable.
 	if(auto_is_valid($item[snow berries]))
 	{
