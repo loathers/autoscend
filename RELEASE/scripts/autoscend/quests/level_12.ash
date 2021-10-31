@@ -178,7 +178,8 @@ int auto_estimatedAdventuresForChaosButterfly()
 	// during each execution of the script.
 
 	static float expectedItemDropMulti;
-	static {
+	static
+	{
 		auto_log_info("Estimating adventures needed to obtain chaos butterfly.", "green");
 		handleFamiliar("item");
 		simMaximizeWith("20 item");
@@ -526,7 +527,8 @@ boolean haveWarOutfit(boolean canWear)
 	return true;
 }
 
-boolean haveWarOutfit() {
+boolean haveWarOutfit()
+{
 	return haveWarOutfit(false);
 }
 
@@ -1041,7 +1043,8 @@ boolean L12_gremlins()
 		}
 	}
 
-	if(0 < have_effect($effect[Curse of the Black Pearl Onion])) {
+	if(0 < have_effect($effect[Curse of the Black Pearl Onion]))
+	{
 		uneffect($effect[Curse of the Black Pearl Onion]);
 	}
 
@@ -1679,7 +1682,8 @@ boolean L12_themtharHills()
 		meat_need = meat_need - 100;
 	}
 
-	if(canChangeFamiliar()) {
+	if(canChangeFamiliar())
+	{
 		// if we're in a 100% run, this property returns "none" which will unequip our familiar and ruin a 100% run.
 		use_familiar(to_familiar(get_property("auto_familiarChoice")));
 	}
