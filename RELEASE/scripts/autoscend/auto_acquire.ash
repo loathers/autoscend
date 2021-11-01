@@ -695,7 +695,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) && !in_heavyrains())
+		if((my_primestat() == $stat[Muscle]) && !in_heavyrains() && !in_wotsf()) // no need for shields in way of the surprising fist
 		{
 			if((closet_amount($item[Fake Washboard]) == 0) && glover_usable($item[Fake Washboard]))
 			{
@@ -724,7 +724,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
 		}
 
-		if((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer]))
+		if(((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer])) && !in_wotsf()) // no need for offhands in way of the surprising fist
 		{
 			if((item_amount($item[Deck of Every Card]) == 0) && !auto_have_skill($skill[Summon Smithsness]))
 			{
@@ -772,7 +772,7 @@ int handlePulls(int day)
 			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
 		}
 
-		if(!in_pokefam() && !in_glover())
+		if(!in_pokefam())
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
@@ -915,7 +915,7 @@ boolean LX_craftAcquireItems()
 	}
 	
 
-	if(my_class() == $class[Turtle Tamer])
+	if(my_class() == $class[Turtle Tamer] && !in_wotsf()) // no need for shields in way of the surprising fist
 	{
 		if(!possessEquipment($item[Turtle Wax Shield]) && (item_amount($item[Turtle Wax]) > 0))
 		{
