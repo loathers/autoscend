@@ -430,7 +430,7 @@ boolean rainManSummon(monster target, boolean copy, boolean wink)
 	return true;
 }
 
-boolean L13_towerFinalHeavyRains()
+boolean L13_heavyrains_towerFinal()
 {
 	//Prepare for and defeat the final boss for Heavy Rains run. Which has special rules for engagement.
 	if (internalQuestStatus("questL13Final") != 11)
