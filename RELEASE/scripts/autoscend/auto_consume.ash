@@ -1629,7 +1629,7 @@ boolean distill(item target)
 void prepare_food_xp_multi()
 {
 	//prepare as big an XP multi as possible for the next food item eaten
-	if(fullness_left() < 1)
+	if(fullness_left() < 1 || !can_eat())
 	{
 		return;
 	}
