@@ -15,7 +15,7 @@ Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
 # 1.1x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 # fairy that generates extra adventures
-Reagnimated Gnome
+Reagnimated Gnome	!path:Heavy Rains
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
 XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
@@ -29,6 +29,7 @@ God Lobster	item:God Lobster's Crown>0
 Pocket Professor
 Garbage Fire
 Dandy Lion
+Choctopus
 # Fairychauns
 Fist Turkey
 Cat Burglar

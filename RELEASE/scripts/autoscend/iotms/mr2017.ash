@@ -128,7 +128,7 @@ boolean mummifyFamiliar(familiar fam)
 boolean mummifyFamiliar()
 {
 	auto_hasMummingTrunk();
-	if (my_path() == "Community Service")
+	if (in_community())
 	{
 		return false;
 	}
@@ -307,7 +307,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		loveEffect = 3;
 	}
-	if((auto_my_path() == "Actually Ed the Undying") && ((my_mp() < 20) || (my_turncount() < 10)))
+	if(isActuallyEd() && ((my_mp() < 20) || (my_turncount() < 10)))
 	{
 		return false;
 	}
@@ -332,7 +332,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	int statValue = 4;
 	if(statItem == $stat[none])
 	{
-		if (my_class() == $class[Vampyre] && possessEquipment($item[Vampyric Cloake]))
+		if(in_darkGyffte() && possessEquipment($item[Vampyric Cloake]))
 		{
 			statItem = $stat[Muscle];
 		}
@@ -1687,26 +1687,33 @@ boolean horsePreAdventure()
 	return getHorse(desiredHorse);
 }
 
-boolean shouldUseWishes(){
+boolean auto_shouldUseWishes()
+{
 	return get_property("auto_useWishes").to_boolean();
 }
 
-int wishesAvailable(){
+int auto_wishesAvailable()
+{
 	int retval = 0;
-	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]))
+	if (auto_shouldUseWishes())
 	{
-		retval += 3 - get_property("_genieWishesUsed").to_int();
-	}
-	if(auto_is_valid($item[pocket wish]))
-	{
-		retval += item_amount($item[pocket wish]);
+		if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]))
+		{
+			retval += 3 - get_property("_genieWishesUsed").to_int();
+		}
+		if(auto_is_valid($item[pocket wish]))
+		{
+			retval += item_amount($item[pocket wish]);
+		}
 	}
 	return retval;
 }
 
-boolean makeGenieWish(string wish){
-	int starting_wishes = wishesAvailable();
-	if(starting_wishes < 1){
+boolean makeGenieWish(string wish)
+{
+	int starting_wishes = auto_wishesAvailable();
+	if (starting_wishes < 1)
+	{
 		return false;
 	}
 
@@ -1721,14 +1728,15 @@ boolean makeGenieWish(string wish){
 	}
 	if(wish_provider == 0)
 	{
-		auto_log_warning("wishesAvailable() thinks I have remaining wishes but makeGenieWish(string wish) was unable to find a valid source for them. wishing failed", "red");
+		auto_log_warning("auto_wishesAvailable() thinks I have remaining wishes but makeGenieWish(string wish) was unable to find a valid source for them. wishing failed", "red");
 		return false;
 	}
 
 	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem="+wish_provider, false);
 	page = visit_url("choice.php?pwd=&whichchoice=1267&option=1&wish=" + wish);
 
-	if(wishesAvailable() == starting_wishes){
+	if (auto_wishesAvailable() == starting_wishes)
+	{
 		auto_log_warning("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
@@ -1840,7 +1848,7 @@ boolean makeGeniePocket()
 
 boolean spacegateVaccineAvailable()
 {
-	if(my_path() == "Kingdom of Exploathing") return false;
+	if(in_koe()) return false;
 
 	if(!get_property("spacegateAlways").to_boolean() || get_property("_spacegateToday").to_boolean())
 	{

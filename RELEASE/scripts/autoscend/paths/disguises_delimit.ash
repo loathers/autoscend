@@ -1,6 +1,6 @@
 boolean in_disguises()
 {
-	return auto_my_path() == "Disguises Delimit";
+	return my_path() == "Disguises Delimit";
 }
 
 void disguises_initializeSettings()
@@ -11,12 +11,3 @@ void disguises_initializeSettings()
 		set_property("auto_getBoningKnife", true);
 	}
 }
-
-boolean LM_disguises()
-{
-	if(in_disguises())
-	{
-	}
-	return false;
-}
-

@@ -1,13 +1,19 @@
+boolean in_darkGyffte()
+{
+	return my_path() == "Dark Gyffte";
+}
+
 void bat_startAscension()
 {
-	if(my_path() == "Dark Gyffte") {
+	if(in_darkGyffte())
+	{
 		visit_url("choice.php?whichchoice=1343&option=1");
 		bat_reallyPickSkills(20);
 	}
 }
 void bat_initializeSettings()
 {
-	if(my_path() == "Dark Gyffte")
+	if(in_darkGyffte())
 	{
 		set_property("auto_getSteelOrgan", false);
 		set_property("auto_grimstoneFancyOilPainting", false);
@@ -45,7 +51,7 @@ boolean bat_wantHowl(location loc)
 
 boolean bat_formNone()
 {
-	if(my_class() != $class[Vampyre]) return false;
+	if(!in_darkGyffte()) return false;
 	if(get_property("auto_bat_desiredForm") != "")
 	{
 		set_property("auto_bat_desiredForm", "");
@@ -55,7 +61,7 @@ boolean bat_formNone()
 
 boolean bat_formWolf(boolean speculative)
 {
-	if(my_class() != $class[Vampyre]) return false;
+	if(!in_darkGyffte()) return false;
 	set_property("auto_bat_desiredForm", "wolf");
 	return bat_switchForm($effect[Wolf Form], speculative);
 }
@@ -67,7 +73,7 @@ boolean bat_formWolf()
 
 boolean bat_formMist(boolean speculative)
 {
-	if(my_class() != $class[Vampyre]) return false;
+	if(!in_darkGyffte()) return false;
 	set_property("auto_bat_desiredForm", "mist");
 	return bat_switchForm($effect[Mist Form], speculative);
 }
@@ -79,7 +85,7 @@ boolean bat_formMist()
 
 boolean bat_formBats(boolean speculative)
 {
-	if(my_class() != $class[Vampyre]) return false;
+	if(!in_darkGyffte()) return false;
 	set_property("auto_bat_desiredForm", "bats");
 	return bat_switchForm($effect[Bats Form], speculative);
 }
@@ -126,7 +132,7 @@ boolean bat_switchForm(effect form)
 
 boolean bat_formPreAdventure()
 {
-	if(my_class() != $class[Vampyre]) return false;
+	if(!in_darkGyffte()) return false;
 
 	string desiredForm = get_property("auto_bat_desiredForm");
 	effect form;
@@ -150,7 +156,7 @@ boolean bat_formPreAdventure()
 
 void bat_initializeSession()
 {
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		set_property("auto_mpAutoRecovery", get_property("mpAutoRecovery"));
 		set_property("auto_mpAutoRecoveryTarget", get_property("mpAutoRecoveryTarget"));
@@ -161,7 +167,7 @@ void bat_initializeSession()
 
 void bat_terminateSession()
 {
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		set_property("mpAutoRecovery", get_property("auto_mpAutoRecovery"));
 		set_property("auto_mpAutoRecovery", 0.0);
@@ -172,7 +178,7 @@ void bat_terminateSession()
 
 void bat_initializeDay(int day)
 {
-	if(my_path() != "Dark Gyffte")
+	if(!in_darkGyffte())
 	{
 		return;
 	}
@@ -324,7 +330,7 @@ void bat_reallyPickSkills(int hpLeft, boolean[skill] requiredSkills)
 {
 	// Why Astral Spirit? When entering a DG run, before exiting the initial
 	// noncombat and Torpor, that's what KoLmafia thinks you are.
-	if(my_class() != $class[Vampyre] && to_string(my_class()) != "Astral Spirit")
+	if(!in_darkGyffte() && to_string(my_class()) != "Astral Spirit")
 	{
 		return;
 	}
@@ -378,7 +384,7 @@ phylum bat_ensorceledMonster() //returns phylum of current Ensorceled Monster (i
 
 boolean bat_shouldEnsorcel(monster m)
 {
-	if(my_class() != $class[Vampyre] || !auto_have_skill($skill[Ensorcel]))
+	if(!in_darkGyffte() || !auto_have_skill($skill[Ensorcel]))
 		return false;
 
 	// until we have a way to tell what we already have as an ensorcelee, just ensorcel goblins
@@ -393,7 +399,7 @@ boolean bat_shouldEnsorcel(monster m)
 
 int bat_creatable_amount(item desired)
 {
-	if(my_class() != $class[Vampyre])
+	if(!in_darkGyffte())
 		return 0;
 	if(item_amount($item[blood bag]) == 0)
 		return 0;
@@ -422,7 +428,7 @@ int bat_creatable_amount(item desired)
 
 boolean bat_multicraft(string mode, boolean [item] options)
 {
-	if(my_class() != $class[Vampyre])
+	if(!in_darkGyffte())
 		return false;
 	if(item_amount($item[blood bag]) == 0)
 		return false;
@@ -441,7 +447,7 @@ boolean bat_multicraft(string mode, boolean [item] options)
 
 boolean bat_cook(item desired)
 {
-	if(my_class() != $class[Vampyre])
+	if(!in_darkGyffte())
 		return false;
 	if(item_amount($item[blood bag]) == 0)
 		return false;
@@ -470,7 +476,7 @@ boolean bat_cook(item desired)
 
 boolean bat_consumption()
 {
-	if(my_class() != $class[Vampyre])
+	if(!in_darkGyffte())
 		return false;
 
 	if(possessOutfit("War Hippy Fatigues") && is_accessible($coinmaster[Dimemaster]))
@@ -589,7 +595,7 @@ boolean bat_skillValid(skill sk)
 	if($skills[Piercing Gaze, Perceive Soul, Ensorcel, Spectral Awareness] contains sk && have_effect($effect[Wolf Form]) + have_effect($effect[Mist Form]) > 0)
 		return false;
 
-	if((mp_cost(sk) > 0) && (my_class() == $class[Vampyre]))
+	if((mp_cost(sk) > 0) && in_darkGyffte())
 		return false;
 
 	return true;
@@ -610,7 +616,7 @@ boolean bat_tryBloodBank()
 
 boolean LM_batpath()
 {
-	if(my_class() != $class[Vampyre])
+	if(!in_darkGyffte())
 		return false;
 
 	if(bat_remainingBaseHP() >= 70 && bat_shouldPickSkills(20))

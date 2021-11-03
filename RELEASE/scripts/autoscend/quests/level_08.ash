@@ -254,7 +254,7 @@ boolean L8_getMineOres()
 	}
 
 	//heavy rain copy handling.
-	if(auto_my_path() == "Heavy Rains" && have_skill($skill[Rain Man]))
+	if(in_heavyrains() && have_skill($skill[Rain Man]))
 	{
 		if(my_rain() < 50)
 		{
@@ -274,7 +274,7 @@ boolean L8_getMineOres()
 	//in softcore we want to pull the ores.
 	if(!in_hardcore())
 	{
-		if(pulls_remaining() < (3 - item_amount(oreGoal)))
+		if(pulls_remaining() != -1 && pulls_remaining() < (3 - item_amount(oreGoal)))
 		{
 			return false;	//if not enough pulls left wait until tomorrow
 		}
@@ -287,7 +287,7 @@ boolean L8_getMineOres()
 	}
 	
 	//use 1 wish if we can guarentee it will be enough via cat burglar
-	if(canGenieCombat() && get_property("auto_useWishes").to_boolean() && catBurglarHeistsLeft() > 1)
+	if(canGenieCombat() && auto_shouldUseWishes() && catBurglarHeistsLeft() > 1)
 	{
 		auto_log_info("Trying to wish for a mountain man, which the cat will then burgle, hopefully.");
 		handleFamiliar($familiar[cat burglar]);
@@ -304,7 +304,7 @@ boolean L8_getMineOres()
 			numCloversKeep = 0;
 		}
 	}
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		if(cloversAvailable() <= numCloversKeep)
 		{
@@ -499,8 +499,9 @@ boolean L8_trapperSlopeSoftcore()
 	{
 		return true;	//successfully finished this part of the quest
 	}
-	else	//if we failed to unlock at this point it is because we do not have 5 cold res. So grab the outfit for that +5 cold res
+	else if(!in_robot())	//robots need too many bodyparts for outfit.
 	{
+		//if we failed to unlock at this point it is because we do not have 5 cold res. So grab the outfit for that +5 cold res
 		return L8_trapperExtreme();
 	}
 	return false;		//must have a return value. fallback option. should never actually be reached
@@ -606,16 +607,36 @@ boolean L8_trapperGroar()
 		return true;
 	}
 	
+	if(wildfire_groar_check())
+	{
+		return false;
+	}
+	
+	//we need 5 cold res to be allowed to adventure in [Mist-shrouded Peak]
 	int [element] resGoal;
 	resGoal[$element[cold]] = 5;
 	// try getting resistance without equipment before bothering to change gear
+	boolean retval = false;
+	int initial_adv = my_session_adv();
 	if(provideResistances(resGoal, false) || provideResistances(resGoal, true))
 	{
 		auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 		equipMaximizedGear();
-		return autoAdv($location[Mist-shrouded Peak]);
+		retval = autoAdv($location[Mist-shrouded Peak]);
 	}
-	return false;
+	if(retval && initial_adv == my_session_adv())
+	{
+		//if mafia tracking failed to advance quest then it will get stuck in an inf loop of trying to adv in [Mist-shrouded Peak]
+		//which becomes an invalid zone after groar dies. being replaced with the new zone called [The Icy Peak]
+		int initial_step = internalQuestStatus("questL08Trapper");
+		auto_log_debug("Adventured without spending adv in [Mist-shrouded Peak]. checking quest status", "blue");
+		cli_execute("refresh quests");
+		if(initial_step == internalQuestStatus("questL08Trapper"))
+		{
+			auto_log_warning("questL08Trapper value was incorrect. This has been fixed", "blue");
+		}
+	}
+	return retval;
 }
 
 boolean L8_trapperPeak()
@@ -641,6 +662,7 @@ boolean L8_trapperPeak()
 		{
 			//TODO get outfit
 			//TODO does TCRS have a problem with the outfit still not being enough? look into it
+			return false;		//we are unable to provide 5 cold res
 		}
 		
 		if(internalQuestStatus("questL08Trapper") == 3)
@@ -689,6 +711,10 @@ boolean L8_trapperSlope()
 		return true;
 	}
 	//hardcore handling
+	if(robot_delay("outfit"))
+	{
+		return false;	//delay for You, Robot path
+	}
 	if(get_property("auto_L8_extremeInstead").to_boolean())		//we decided we do not want to adventure in the ninja lair
 	{
 		if(L8_trapperExtreme()) return true;	//try to climb slope via extreme path

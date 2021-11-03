@@ -9,9 +9,14 @@ boolean handleBjornify(familiar fam)
 		return false;
 	}
 
-	if((equipped_item($slot[back]) != $item[buddy bjorn]) || (my_bjorned_familiar() == fam))
+	if(equipped_item($slot[back]) != $item[buddy bjorn])
 	{
 		return false;
+	}
+	
+	if(my_bjorned_familiar() == fam)
+	{
+		return true;
 	}
 
 	if(!canChangeFamiliar() && (fam == my_familiar()))
@@ -45,21 +50,6 @@ boolean handleBjornify(familiar fam)
 			}
 		}
 	}
-	if(my_familiar() == $familiar[none])
-	{
-		if(my_bjorned_familiar() == $familiar[Grimstone Golem])
-		{
-			handleFamiliar("stat");
-		}
-		else if(my_bjorned_familiar() == $familiar[Grim Brother])
-		{
-			handleFamiliar("item");
-		}
-		else
-		{
-			handleFamiliar("item");
-		}
-	}
 	return true;
 }
 
@@ -90,6 +80,14 @@ boolean considerGrimstoneGolem(boolean bjornCrown)
 		{
 			return false;
 		}
+		if(!auto_is_valid($item[Grimstone Mask]))
+		{
+			return false;
+		}
+		if(possessEquipment($item[Ornate Dowsing Rod]))
+		{
+			return false;
+		}
 	}
 
 	if(get_property("desertExploration").to_int() >= 70)
@@ -109,7 +107,7 @@ boolean dna_startAcquire()
 	{
 		return false;
 	}
-	if(my_path() == "Community Service")
+	if(in_community())
 	{
 		return false;
 	}
@@ -178,7 +176,7 @@ boolean dna_generic()
 
 	boolean[phylum] potion;
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		switch(my_daycount())
 		{
@@ -188,7 +186,7 @@ boolean dna_generic()
 		default:		potion = $phylums[humanoid, construct, dude];		break;
 		}
 	}
-	else if(auto_my_path() == "Community Service")
+	else if(in_community())
 	{
 		switch(my_daycount())
 		{
@@ -304,22 +302,21 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 	{
 		return false;
 	}
-
 	if (get_property("desertExploration").to_int() >= 100 || internalQuestStatus("questL11Desert") > 0)
 	{
 		// don't need a dowsing rod if we've finished the desert.
 		return false;
 	}
-
-	if(!auto_is_valid($item[Grimstone Mask]) || !auto_can_equip($item[Ornate Dowsing Rod]))
+	if(!auto_is_valid($item[Grimstone Mask]))
 	{
-		set_property("auto_grimstoneOrnateDowsingRod", false);	//mask or rod are not valid
+		return false;
+	}
+	if(!auto_can_equip($item[Ornate Dowsing Rod]) && !in_robot())
+	{
 		return false;
 	}
 	if(possessEquipment($item[Ornate Dowsing Rod]))
 	{
-		auto_log_info("Hey, we have the dowsing rod already, yippie!", "blue");
-		set_property("auto_grimstoneOrnateDowsingRod", false);
 		return false;
 	}
 	if(in_hardcore())		//will we be able to pull at any point in the run. not just right now (we might be out of pulls today)
@@ -395,7 +392,6 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 		autoAdv($location[The Prince\'s Restroom]);
 	}
 
-	set_property("auto_grimstoneOrnateDowsingRod", false);	//craft success = we done. fail = we ask user to make it
 	if(create(1, $item[Ornate Dowsing Rod]))
 	{
 		return true;
@@ -439,12 +435,7 @@ boolean fancyOilPainting()
 		return false;
 	}
 	auto_log_info("Acquiring a Fancy Oil Painting!", "blue");
-	set_property("choiceAdventure829", "1");
 	use(1, $item[grimstone mask]);
-	set_property("choiceAdventure823", "1");
-	set_property("choiceAdventure824", "1");
-	set_property("choiceAdventure825", "1");
-	set_property("choiceAdventure826", "1");
 
 	while(item_amount($item[odd silver coin]) < 1)
 	{

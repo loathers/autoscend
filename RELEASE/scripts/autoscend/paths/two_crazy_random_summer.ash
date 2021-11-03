@@ -1,6 +1,6 @@
 boolean in_tcrs()
 {
-	return my_path() == "36" || my_path() == "Two Crazy Random Summer";
+	return my_path() == "Two Crazy Random Summer";
 }
 
 float tcrs_expectedAdvPerFill(string quality)

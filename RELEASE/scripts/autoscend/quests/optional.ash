@@ -149,7 +149,7 @@ boolean LX_unlockThinknerdWarehouse(boolean spend_resources)
 	getShirtWhenHaveNone($item[bat-ass leather jacket]);		//77 mus req
 
 	//wish for a shirt
-	if(spend_resources && wishesAvailable() > 0 && shouldUseWishes() && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
+	if(spend_resources && auto_wishesAvailable() > 0 && auto_shouldUseWishes() && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
 	{
 		makeGenieWish("for a blessed rustproof +2 gray dragon scale mail");
 		target_shirt = $item[blessed rustproof +2 gray dragon scale mail];
@@ -213,7 +213,7 @@ boolean LX_steelOrgan()
 		set_property("auto_getSteelOrgan", false);
 		return false;
 	}
-	if((auto_my_path() == "Nuclear Autumn") || (auto_my_path() == "License to Adventure"))
+	if(in_nuclear() || in_lta())
 	{
 		auto_log_info("You could get a Steel Organ for aftercore, but why? We won't help with this deviant and perverse behavior. Turning off setting.", "blue");
 		set_property("auto_getSteelOrgan", false);
@@ -391,12 +391,11 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if(auto_my_path() == "Nuclear Autumn" || in_pokefam())
+	if(in_nuclear() || in_pokefam() || in_robot())
 	{
 		return false;
 	}
-	if (!($strings[Picky, Community Service, Low Key Summer] contains auto_my_path())
-		&& get_property('auto_skipUnlockGuild').to_boolean())
+	if(!(in_picky() || in_community() || in_lowkeysummer()) && get_property('auto_skipUnlockGuild').to_boolean())
 	{
 		return false;
 	}
@@ -475,7 +474,7 @@ boolean LX_guildUnlock()
 
 boolean startArmorySubQuest()
 {
-	if(in_koe() || auto_my_path() == "Nuclear Autumn")
+	if(in_koe() || in_nuclear())
 	{
 		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Hypnotic Breadcrumbs]) > 0)
@@ -540,7 +539,7 @@ boolean startMeatsmithSubQuest()
 	{
 		return false;	//quest already started
 	}
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		if(item_amount($item[Bone With a Price Tag On It]) > 0)
 		{
@@ -614,7 +613,7 @@ void considerGalaktikSubQuest()
 	{
 		return;		//galaktik is unavailable in kingdom of exploathing
 	}
-	if(my_class() == $class[Vampyre] || in_zelda())
+	if(in_darkGyffte() || in_plumber())
 	{
 		return;		//these classes cannot use galaktik restorers.
 	}
@@ -647,7 +646,7 @@ boolean startGalaktikSubQuest()
 	{
 		return false;	//quest already started
 	}
-	if(auto_my_path() == "Nuclear Autumn" || in_koe())
+	if(in_nuclear() || in_koe())
 	{
 		//will unlock the zone but does not actually start the quest. also currently not tracked by mafia so we will think the zone is unavailable.
 		if(item_amount($item[Map to a Hidden Booze Cache]) > 0)
@@ -1040,33 +1039,44 @@ boolean LX_acquireEpicWeapon()
 {
 	if (internalQuestStatus("questG04Nemesis") > 4)
 	{
-		return false;	//already done with this part
+		return false;	// already done with this part
 	}
-	if(!isGuildClass() || !guild_store_available())
+	if (!isGuildClass() || !guild_store_available())
 	{
-		return false;	//no guild access. can't start this quest
+		return false;	// no guild access. can't start this quest
 	}
-	if(internalQuestStatus("questG04Nemesis") < 0)
+	if (internalQuestStatus("questG04Nemesis") < 0)
 	{
-		visit_url("guild.php?place=scg");	//start quest
+		visit_url("guild.php?place=scg");	// start quest
 		visit_url("guild.php?place=scg"); // No really, start the quest.
-		cli_execute("refresh quests");		//fixes buggy tracking. confirmed still in mafia r20143
+		cli_execute("refresh quests");		// fixes buggy tracking. confirmed still in mafia r20143
 		if (internalQuestStatus("questG04Nemesis") < 0)
 		{
 			abort("Failed to start Nemesis quest. Please start it manually then run me again");
 		}
 	}
 
-	if (item_amount(epicWeapons[my_class()]) > 0) { return false; }
+	if (item_amount(epicWeapons[my_class()]) > 0)
+	{
+		return false;
+	}
 
-	if (internalQuestStatus("questG04Nemesis") == 4) {
+	if (internalQuestStatus("questG04Nemesis") == 4)
+	{
 		visit_url("guild.php?place=scg");
 		return true;
 	}
 
-	if (shenShouldDelayZone($location[The Unquiet Garves])) {
+	if (shenShouldDelayZone($location[The Unquiet Garves]))
+	{
 		auto_log_debug("Delaying The Unquiet Garves in case of Shen.");
 		return false;
+	}
+
+	if (item_amount(starterWeapons[my_class()]) == 0)
+	{
+		// make sure we have a starter weapon for the swap.
+		acquireGumItem(starterWeapons[my_class()]);
 	}
 
 	addToMaximize("-equip " + starterWeapons[my_class()].to_string());
@@ -1077,14 +1087,17 @@ boolean LX_acquireEpicWeapon()
 // TODO: Add the rest of the Nemesis quest with a flag to enable doing it in-run?
 boolean LX_NemesisQuest()
 {
-	if (LX_guildUnlock() || LX_acquireEpicWeapon()) { return true; }
+	if (LX_guildUnlock() || LX_acquireEpicWeapon())
+	{
+		return true;
+	}
 	return false;
 }
 
 void houseUpgrade()
 {
 	//function for upgrading your dwelling.
-	if(isActuallyEd() || my_class() == $class[Vampyre] || auto_my_path() == "Nuclear Autumn")
+	if(isActuallyEd() || in_darkGyffte() || in_nuclear())
 	{
 		return;		//paths where dwelling is locked
 	}

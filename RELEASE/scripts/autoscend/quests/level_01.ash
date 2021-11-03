@@ -29,7 +29,7 @@ void tootOriole()
 
 void tootGetMeat()
 {
-	if(can_interact())		//avoid selling gems in casual
+	if(can_interact() || in_wotsf()) // avoid selling gems in casual and way of the surprising fist
 	{
 		return;
 	}

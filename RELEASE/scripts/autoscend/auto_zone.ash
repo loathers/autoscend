@@ -288,19 +288,19 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The Haunted Pantry]:
-		if((auto_my_path() == "Community Service") && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
+		if(in_community() && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
 		{
 			retval._float = 59.4;
 		}
 		break;
 	case $location[The Skeleton Store]:
-		if((auto_my_path() == "Community Service") && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
+		if(in_community() && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
 		{	//No idea, should spade this for great justice.
 			retval._float = 33.0;
 		}
 		break;
 	case $location[The Secret Government Laboratory]:
-		if((auto_my_path() == "Community Service") && (item_amount($item[Experimental Serum G-9]) < 2))
+		if(in_community() && (item_amount($item[Experimental Serum G-9]) < 2))
 		{	//No idea, assume it is low.
 			retval._float = 10.0;
 		}
@@ -321,7 +321,7 @@ generic_t zone_needItem(location loc)
 		retval._boolean = true;
 		retval._float = 10000.0/value;
 
-		if(auto_my_path() == "Live. Ascend. Repeat.")
+		if(in_lar())
 		{
 			retval._float = 5000.0/value;
 		}
@@ -539,7 +539,7 @@ generic_t zone_combatMod(location loc)
 		break;
 	}
 
-	if(auto_my_path() == "Live. Ascend. Repeat.")
+	if(in_lar())
 	{
 		value = 0;
 	}
@@ -742,7 +742,7 @@ boolean zone_available(location loc)
 		}
 		break;
 	case $location[Super Villain\'s Lair]:
-		if((auto_my_path() == "License to Adventure") && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
+		if(in_lta() && (get_property("_villainLairProgress").to_int() < 999) && (get_property("_auto_bondBriefing") == "started"))
 		{
 			retval = true;
 		}
@@ -1062,6 +1062,23 @@ boolean zone_available(location loc)
 		if(internalQuestStatus("questL09Topping") >= 1)
 		{
 			retval = true;
+		}
+		break;
+	case $location[Frat House]:
+	case $location[Hippy Camp]:
+		if(get_property("lastIslandUnlock").to_int() == my_ascensions())
+		{
+			retval = true;
+		}
+		break;
+	case $location[Frat House In Disguise]:
+	case $location[Hippy Camp In Disguise]:
+		if(internalQuestStatus("questL12War") == 0 &&		//if the quest is exactly at started step.
+		(have_outfit("Filthy Hippy Disguise") || have_outfit("Frat Boy Ensemble")) &&	//either outfit works for either zone
+		get_property("lastIslandUnlock").to_int() == my_ascensions())
+		{
+			//currently not working quite right due to mafia issue
+			//retval = true;
 		}
 		break;
 	case $location[Wartime Hippy Camp (Frat Disguise)]:
@@ -1752,18 +1769,86 @@ item[int] hugpocket_available()
 
 boolean is_ghost_in_zone(location loc)
 {
-	foreach idx, mob in get_monsters(loc)
+	//special location handling
+	int totalTurnsSpent;
+	int delayForNextNoncombat;
+	if(get_property("_autoCloverNext").to_boolean())
 	{
-		if (mob.physical_resistance >= 80)
-		{
-			return true;
-		}
+		return false;		//we are grabbing a semirare so we will not encounter a ghost unless it is a wandering monster
 	}
-
-	// Special-case for King Boo.
-	if (in_zelda() && loc == $location[Summoning Chamber])
+	switch(loc)
 	{
+	case $location[A-Boo Peak]:
+		if(get_property("booPeakProgress").to_int() == 0 && !get_property("booPeakLit").to_boolean())
+		{
+			//forced noncombat of lighting the peak
+			return false;
+		}
+		if(get_property("auto_aboopending").to_int() != 0)	//internal tracking by autoscend
+		{
+			//our next visit to the peak will be The Horror NC adventure
+			return false;
+		}
 		return true;
+		
+	case $location[the haunted gallery]:
+		//special case for [ghost of Elizabeth Spookyraven] which only appears in [the haunted gallery] at the culmination of lights out quest
+		//TODO implement doing the quest and then return true when the quest is at the right stage for her to appear
+		return false;
+		
+	case $location[Summoning Chamber]:
+		//special case for King Boo
+		return in_plumber();
+		
+	case $location[The Hidden Hospital]:
+		//if liana cleared then we can encounter ghost
+		return get_property("hiddenHospitalProgress") > 0 && get_property("hiddenHospitalProgress") < 7;
+		
+	case $location[The Hidden Office Building]:
+		boolean hasMcCluskyFile = $item[McClusky file (complete)].available_amount() > 0;
+		totalTurnsSpent = $location[the hidden office building].turns_spent;
+		delayForNextNoncombat = 4 - (totalTurnsSpent - 1) % 5;
+		if(auto_haveQueuedForcedNonCombat())
+		{
+			delayForNextNoncombat = 0;
+		}
+		return hasMcCluskyFile && delayForNextNoncombat == 0;
+		
+	case $location[The Hidden Apartment Building]:
+		boolean cursed = have_effect($effect[Thrice-Cursed]) > 0;
+		totalTurnsSpent = $location[the hidden apartment building].turns_spent;
+		delayForNextNoncombat = 7 - (totalTurnsSpent - 9) % 8;
+		if(totalTurnsSpent < 9)
+		{
+			delayForNextNoncombat = 8 - totalTurnsSpent;
+		}
+		if(auto_haveQueuedForcedNonCombat())
+		{
+			delayForNextNoncombat = 0;
+		}
+		return cursed && delayForNextNoncombat == 0;
+		
+	case $location[The Hidden Bowling Alley]:
+		//if tracker is 6 we used just the right amount of bowling bowls
+		return get_property("hiddenBowlingAlleyProgress").to_int() == 6 && $item[bowling ball].available_amount() > 0;
+		
+	case $location[a massive ziggurat]:
+		//massive ziggurat
+		if(in_robot())
+		{
+			return false;		//[Protector_S._P._E._C._T._R._E.] has 0 phys res and 100% all element res
+		}
+		return $location[a massive Ziggurat].liana_cleared() && $item[stone triangle].available_amount() == 4;
+		
+	default:
+		//for all other zones
+		foreach idx, mob in get_monsters(loc)
+		{
+			if (mob.physical_resistance >= 80)
+			{
+				return true;
+			}
+		}
 	}
 
 	return false;

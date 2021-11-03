@@ -86,7 +86,7 @@ boolean LX_getDigitalKey()
 		}
 		return false;
 	}
-	if (in_koe())
+	if(in_koe())
 	{
 		if(item_amount($item[Digital Key]) == 0 && internalQuestStatus("questL13Final") == 5)
 		{
@@ -407,7 +407,7 @@ boolean L13_towerNSContests()
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
 			acquireMP(150); // only uses free rests or items on hand by default
-			if (my_class() == $class[Vampyre])
+			if (in_darkGyffte())
 			{
 				if(crowd_stat == $stat[muscle] && !have_skill($skill[Preternatural Strength]))
 				{
@@ -529,7 +529,7 @@ boolean L13_towerNSContests()
 
 			score = numeric_modifier(challenge + " damage");
 			score += numeric_modifier(challenge + " spell damage");
-			if((score < 80) && get_property("auto_useWishes").to_boolean())
+			if((score < 80) && auto_shouldUseWishes())
 			{
 				switch(challenge)
 				{
@@ -575,7 +575,7 @@ boolean L13_towerNSContests()
 			{
 				if(internalQuestStatus("questL13Final") == 2)
 				{
-					if(auto_my_path() == "The Source")
+					if(in_theSource())
 					{
 						//As of r17048, encountering a Source Agent on the Challenge line results in nsContestants being decremented twice.
 						//Since we were using Mafia\'s tracking here, we have to compensate for when it fails...
@@ -683,20 +683,19 @@ void maximize_hedge()
 
 boolean L13_towerNSHedge()
 {
-	if(internalQuestStatus("questL13Final") != 4)
-	{
-		return false;
-	}
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "hedgemaze"))
+	if(internalQuestStatus("questL13Final") == 5 && contains_text(visit_url("place.php?whichplace=nstower"), "hedgemaze"))
 	{
 		//If we got beaten up by the last hedgemaze, mafia might set questL13Final to step5 anyway. Fix that.
 		set_property("questL13Final", "step4");
-		if((have_effect($effect[Beaten Up]) > 0) || (my_hp() < 150))
+		if(have_effect($effect[Beaten Up]) > 0 || my_hp() < 150)
 		{
 			auto_log_error("Hedge maze not solved, the mysteries are still there (correcting step5 -> step4)");
 			abort("Heal yourself and try again...");
 		}
+	}
+	if(internalQuestStatus("questL13Final") != 4)
+	{
+		return false;
 	}
 
 	# Set this so it aborts if not enough adventures. Otherwise, well, we end up in a loop.
@@ -763,7 +762,7 @@ boolean L13_sorceressDoor()
 	}
 
 	// Low Key Summer has an entirely different door.
-	if (in_lowkeysummer())
+	if(in_lowkeysummer())
 	{
 		return L13_sorceressDoorLowKey();
 	}
@@ -902,7 +901,17 @@ boolean L13_towerNSTower()
 			auto_change_mcd(0);
 			acquireMP(120, 0);
 
-			int sources = 0;
+			int sources = 0;			//total damage sources
+			int sourcesAttack = 0;		//damage sources when using weapon attack or skill
+			int sourcesFamiliar = 0;	//damage sources from familiar apply before getting hit
+			int sourcesReactive = 0;	//damage in reaction to being hit. "stinging damage" doesn't work without getting hit
+			int sourcesPassive = 0;		//other passive damage sources, only work after surviving to end of round, doesn't include reactive/stinging sources
+			
+			int sourceNeed = 13;	//removed inaccurate uses of this value, it is now only used in informative log message
+			int damageNeed = 50;
+			int damageSecured = 0;
+			
+			//want prismatic attack damage bonus
 			if(autoEquip($item[astral shirt]))
 			{
 				// nothing, just for else
@@ -915,6 +924,10 @@ boolean L13_towerNSTower()
 			{
 				use(1, $item[cigar box turtle]);
 			}
+			else if(item_amount($item[colorful toad]) > 0)
+			{
+				use(1, $item[colorful toad]);
+			}
 			else if(have_effect($effect[damage.enh]) == 0)
 			{
 				int enhances = auto_sourceTerminalEnhanceLeft();
@@ -923,18 +936,14 @@ boolean L13_towerNSTower()
 					auto_sourceTerminalEnhance("damage");
 				}
 			}
-
-			if(my_class() == $class[Turtle Tamer])
-			{
-				autoEquip($slot[shirt], $item[Shocked Shell]);
-			}
 			if(have_skill($skill[Belch the Rainbow]))
 			{
-				sources = 6;
+				//todo: is this 5 or 6?
+				sourcesAttack = 6;
 			}
 			else if(autoEquip($item[Fourth of May Cosplay Saber]))
 			{
-				sources = 6;
+				sourcesAttack = 6;
 			}
 			else
 			{
@@ -942,122 +951,372 @@ boolean L13_towerNSTower()
 				{
 					if(numeric_modifier(damage) > 0)
 					{
-						sources += 1;
+						sourcesAttack += 1;
 					}
 				}
 			}
-			if(have_skill($skill[headbutt]))
+			if(have_skill($skill[headbutt]) && !have_skill($skill[Belch the Rainbow]))
 			{
-				sources = sources + 1;
+				//combat script only tries headbutt after Belch the Rainbow
+				sourcesAttack += 1;
+			}
+			
+			boolean familiarEquipped = false;
+			boolean haveFamiliarWillAlwaysActEffect = false;
+			if(have_effect($effect[Shortly Stacked]) > 0 || have_effect($effect[Shortly Buttered]) > 0 || have_effect($effect[Shortly Hydrated]) > 0 || have_effect($effect[Shortly Wired]) > 0 || have_effect($effect[Shortly Drunk]) > 0)
+			{
+				haveFamiliarWillAlwaysActEffect = true;
 			}
 			if(canChangeToFamiliar($familiar[Shorter-Order Cook]) || qt_currentFamiliar($familiar[Shorter-Order Cook]))
 			{
 				handleFamiliar($familiar[Shorter-Order Cook]);
-				sources = sources + 6;
+				sourcesFamiliar += 6;
 			}		
 			else if(canChangeToFamiliar($familiar[Mu]) || qt_currentFamiliar($familiar[Mu]))
 			{
 				handleFamiliar($familiar[Mu]);
-				sources = sources + 5;
+				sourcesFamiliar += 5;
 			}
 			else if(canChangeToFamiliar($familiar[Imitation Crab]) || qt_currentFamiliar($familiar[Imitation Crab]))
 			{
 				handleFamiliar($familiar[Imitation Crab]);
-				sources = sources + 4;
+				sourcesFamiliar += 4;
 			}
 			else if(canChangeToFamiliar($familiar[warbear drone]) || qt_currentFamiliar($familiar[warbear drone]))
 			{
-				sources = sources + 2;
+				sourcesFamiliar += 2;
 				handleFamiliar($familiar[Warbear Drone]);
 				use_familiar($familiar[Warbear Drone]);
-				cli_execute("auto_pre_adv"); // TODO: can we remove this?
+				cli_execute("auto_pre_adv"); // TODO: can we remove this? //could probably instead call preAdvUpdateFamiliar(loc)
 				if(!possessEquipment($item[Warbear Drone Codes]))
 				{
 					pullXWhenHaveY($item[warbear drone codes], 1, 0);
 				}
 				if(possessEquipment($item[warbear drone codes]))
 				{
-					autoEquip($item[warbear drone codes]);
-					sources = sources + 2;
+					if(autoEquip($item[warbear drone codes]))
+					{
+						sourcesFamiliar += 2;
+						familiarEquipped = true;
+					}
 				}
 			}
 			else if(canChangeToFamiliar($familiar[Sludgepuppy]) || qt_currentFamiliar($familiar[Sludgepuppy]))
 			{
 				handleFamiliar($familiar[Sludgepuppy]);
-				sources = sources + 3;
+				sourcesFamiliar += 3;
+			}
+			else if(canChangeToFamiliar($familiar[Feral Kobold]) || qt_currentFamiliar($familiar[Feral Kobold]))
+			{
+				handleFamiliar($familiar[Feral Kobold]);
+				sourcesFamiliar += 1;
+			}
+			else if(canChangeToFamiliar($familiar[Topiary Skunk]) || qt_currentFamiliar($familiar[Topiary Skunk]))
+			{
+				//100% first round, then 20% chance of attack
+				handleFamiliar($familiar[Topiary Skunk]);
+				if(haveFamiliarWillAlwaysActEffect)
+				{
+					sourcesFamiliar += 1;
+				}
+				else
+				{
+					damageSecured += 1;
+				}
+			}
+			//no guaranteed damage familiar, try to use better than nothing
+			else
+			{
+				boolean attackFamiliarPicked = false;
+				foreach fam in $familiars[BRICKO chick,Clockwork Grapefruit,Pair of Ragged Claws]
+				{
+					//50% chance of attack
+					if(canChangeToFamiliar(fam) || qt_currentFamiliar(fam))
+					{
+						handleFamiliar(fam);
+						if(haveFamiliarWillAlwaysActEffect)
+						{
+							sourcesFamiliar += 1;
+						}
+						attackFamiliarPicked = true;
+						break;
+					}
+				}
+				if(!attackFamiliarPicked)
+				{
+					foreach fam in $familiars[Star Starfish,Animated Macaroni Duck,Killer Bee,Flaming Gravy Fairy,Frozen Gravy Fairy,Stinky Gravy Fairy]
+					{
+						//33% chance of attack
+						if(canChangeToFamiliar(fam) || qt_currentFamiliar(fam))
+						{
+							handleFamiliar(fam);
+							if(haveFamiliarWillAlwaysActEffect)
+							{
+								sourcesFamiliar += 1;
+							}
+							attackFamiliarPicked = true;
+							break;
+						}
+					}
+				}
+				if(!attackFamiliarPicked)
+				{
+					foreach fam in $familiars[]
+					{
+						if(isAttackFamiliar(fam))
+						{
+							if(canChangeToFamiliar(fam))
+							{
+								handleFamiliar(fam);
+								attackFamiliarPicked = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			if(have_effect($effect[Shortly Wired]) > 0)
+			{
+				//familiar will act twice per round
+				sourcesFamiliar = sourcesFamiliar*2;
+			}
+
+			if(!familiarEquipped)
+			{
+				if(autoEquip($item[tiny bowler]))
+				{
+					sourcesPassive += 1;	//todo: confirm this damage only counts after getting hit, not with familiar damage
+					familiarEquipped = true;
+				}
+				if(!familiarEquipped)
+				{
+					foreach it in $items[ant hoe,ant pick,ant pitchfork,ant rake,ant sickle]
+					{
+						if(autoEquip(it))
+						{
+							//attacks ~40% of the time?
+							familiarEquipped = true;
+							break;
+						}
+					}
+				}
+				if(!familiarEquipped)
+				{
+					if(autoEquip($item[plastic pumpkin bucket]))
+					{
+						//attacks ~35% of the time?
+						familiarEquipped = true;
+					}
+				}
+			}
+			
+			if(my_class() == $class[Turtle Tamer] && possessEquipment($item[Shocked Shell]))
+			{
+				if (autoEquip($slot[back], $item[Shocked Shell]))
+				{
+					sourcesPassive += 1;
+				}
+			}
+			else if(autoEquip($slot[back], $item[buddy bjorn]))
+			{
+				if(handleBjornify($familiar[Chocolate Lab]))
+				{
+					sourcesPassive += 1;
+				}
+				else if(handleBjornify($familiar[Restless Cow Skull]))
+				{
+					sourcesPassive += 1;
+				}
+				else if(have_familiar($familiar[Sludgepuppy]) && my_familiar() != $familiar[Sludgepuppy])
+				{	
+					//if not already chosen as damage familiar
+					if(handleBjornify($familiar[Sludgepuppy]))
+					{
+						sourcesPassive += 1;
+					}
+				}
+				else if(handleBjornify($familiar[Hobo Monkey]))
+				{
+					damageSecured += 3;	// First three rounds of combat
+				}
 			}
 			if(autoEquip($slot[acc1], $item[hippy protest button]))
 			{
-				sources = sources + 1;
-			}
-			if(item_amount($item[glob of spoiled mayo]) > 0)
-			{
-				buffMaintain($effect[Mayeaugh], 0, 1, 1);
-				sources = sources + 1;
+				sourcesReactive += 1;
 			}
 			if(autoEquip($item[smirking shrunken head]))
 			{
-				sources = sources + 1;
+				sourcesPassive += 1;
 			}
 			else if(autoEquip($item[hot plate]))
 			{
-				sources = sources + 1;
+				sourcesReactive += 1;
 			}
+			
+			//effects that aren't free to remove, if stuck with them against wall of bones you will need Electric Boning Knife
+			//count already active effects but don't get yet unless already have the boning knife or unless won't meet conditions to do without
+			int effectRemoversAvailable = item_amount($item[Soft Green Echo Eyedrop Antidote]) + item_amount($item[Ancient Cure-All]);
+			boolean willNeedToRemoveEffects = true;
+			if(item_amount($item[Electric Boning Knife]) > 0 ||
+			(my_class() != $class[Sauceror] && !have_skill($skill[Garbage Nova])) || 
+			(!canChangeFamiliar() && isAttackFamiliar(my_familiar())) ||
+			get_property("auto_getBoningKnife").to_boolean())
+			{
+				willNeedToRemoveEffects = false;
+			}
+			if(have_effect($effect[Mayeaugh]) > 0)
+			{
+				sourcesPassive += 1;
+			}
+			else if(!willNeedToRemoveEffects && item_amount($item[glob of spoiled mayo]) > 0)
+			{
+				if(buffMaintain($effect[Mayeaugh], 0, 1, 1))
+				{
+					sourcesPassive += 1;
+				}
+			}
+			if(have_effect($effect[Feeling Nervous]) > 0)
+			{
+				sourcesReactive += 1;
+			}
+			else if(!willNeedToRemoveEffects && auto_canFeelNervous())
+			{
+				if(buffMaintain($effect[Feeling Nervous], 0, 1, 1))
+				{
+					sourcesReactive += 1;
+				}
+			}
+			
 			if(have_skill($skill[Scarysauce]))
 			{
 				buffMaintain($effect[Scarysauce], 0, 1, 1);
-				sources = sources + 1;
+				sourcesReactive += 1;
 			}
 			if(have_skill($skill[Spiky Shell]))
 			{
 				buffMaintain($effect[Spiky Shell], 0, 1, 1);
-				sources = sources + 1;
+				sourcesReactive += 1;
 			}
 			if(have_skill($skill[Jalape&ntilde;o Saucesphere]))
 			{
-				sources = sources + 1;
 				buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);
+				sourcesReactive += 1;
 			}
 			if(have_skill($skill[The Psalm of Pointiness]))
 			{
 				buffMaintain($effect[Psalm of Pointiness], 0, 1, 1);
-				sources = sources + 1;
+				sourcesReactive += 1;
 			}
-			handleBjornify($familiar[Hobo Monkey]);
 			autoEquip($slot[acc2], $item[world\'s best adventurer sash]);
 			autoEquip($slot[acc3], $item[Groll Doll]);
 			autoEquip($slot[acc3], $item[old school calculator watch]);
 			autoEquip($slot[acc3], $item[Bottle Opener Belt Buckle]);
-			autoEquip($slot[acc3], $item[acid-squirting flower]);
-			if(have_skill($skill[Frigidalmatian]) && (my_mp() > 300))
+			if(autoEquip($slot[acc3], $item[acid-squirting flower]))
 			{
-				sources = sources + 1;
+				sourcesReactive += 1;
 			}
-			int sourceNeed = 13;
+			if(have_skill($skill[Frigidalmatian]))	//1 turn, doesn't need remover
+			{
+				if(buffMaintain($effect[Frigidalmatian], 300, 1, 1))
+				{
+					sourcesPassive += 1;
+				}
+			}
+			
+			
+			sources = sourcesAttack + sourcesFamiliar + sourcesReactive + sourcesPassive;
+			int firstRoundDamage = sources;
+			boolean firstHitBlocked = false;
+			if(have_effect($effect[Blood Bubble]) > 0)
+			{
+				firstHitBlocked = true;					//will try to remove it if needed after counting all damage
+				//what else can block the first hit?
+			}
+			if(firstHitBlocked)
+			{
+				firstRoundDamage -= sourcesReactive;	//reactive damage doesn't work on blocked hit
+			}
+			int lastRoundDamage = sources - sourcesReactive - sourcesPassive;	//passive sources only work after surviving a hit
+			//expect to survive 3 hits, hit damage still increases if the first hit is blocked
+			damageSecured += firstRoundDamage + 2*sources + lastRoundDamage;	
+
+			int extraRoundsFromBlocking = 0;
 			if(have_skill($skill[Shell Up]))
 			{
-				if((have_effect($effect[Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0))
+				extraRoundsFromBlocking += 1;	//a person(Turtle Tamer?) with $item[wicker slicker] could have it pulled for more blocks?
+				if((have_effect($effect[Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0) || (have_effect($effect[Blessing of She-Who-Was]) > 0) || (have_effect($effect[Grand Blessing of She-Who-Was]) > 0) || (have_effect($effect[Glorious Blessing of She-Who-Was]) > 0))
 				{
 					if(have_skill($skill[Blessing of the War Snapper]) && (my_mp() > (2 * mp_cost($skill[Blessing of the War Snapper]))))
 					{
 						use_skill(1, $skill[Blessing of the War Snapper]);
 					}
 				}
-				if((have_effect($effect[Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Grand Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Glorious Blessing of the Storm Tortoise]) == 0))
+				damageSecured += sourcesFamiliar + sourcesPassive;	//reactive damage doesn't work on blocked hit
+				if((have_effect($effect[Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Grand Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Glorious Blessing of the Storm Tortoise]) == 0) && (have_effect($effect[Blessing of She-Who-Was]) == 0) && (have_effect($effect[Grand Blessing of She-Who-Was]) == 0) && (have_effect($effect[Glorious Blessing of She-Who-Was]) == 0))
 				{
-					sourceNeed -= 2;
+					//Shell Up does damage if neither of these blessings is active
+					damageSecured += 1;
 				}
 			}
 			if(have_skill($skill[Sauceshell]))
 			{
-				sourceNeed -= 2;
+				extraRoundsFromBlocking += 1;
+				damageSecured += 1 + sourcesFamiliar + sourcesPassive;	//reactive damage doesn't work on blocked hit
 			}
+			
+			if(willNeedToRemoveEffects && effectRemoversAvailable > 0)
+			{
+				//damage effects not used yet because of wall of bones coming next
+				foreach ef in $effects[Mayeaugh,Feeling Nervous]
+				{
+					if(damageSecured < damageNeed && have_effect(ef) == 0 && effectRemoversAvailable > 0)
+					{
+						if(ef == $effect[Mayeaugh] && item_amount($item[glob of spoiled mayo]) > 0)
+						{
+							if(buffMaintain(ef, 0, 1, 1))
+							{
+								sourcesPassive += 1;
+								damageSecured += 3 + extraRoundsFromBlocking;
+								effectRemoversAvailable -= 1;
+							}
+						}
+						else if(ef == $effect[Feeling Nervous] && auto_canFeelNervous())
+						{
+							if(buffMaintain(ef, 0, 1, 1))
+							{
+								sourcesReactive += 1;
+								damageSecured += 3;
+								if(firstHitBlocked)
+								{
+									damageSecured -= 1;
+								}
+								effectRemoversAvailable -= 1;
+							}
+						}
+					}
+				}
+			}
+			
+			int damageMissing = damageNeed - damageSecured;
+			if(damageMissing <= sourcesReactive && damageMissing > 0 && have_effect($effect[Blood Bubble]) > 0 && effectRemoversAvailable > 0)
+			{	//try to remove blocking effect to enable reactive sources
+				if(uneffect($effect[Blood Bubble]))
+				{
+					firstHitBlocked = false;
+					//what else can block the first hit?
+					damageSecured += sourcesReactive;
+					effectRemoversAvailable -= 1;
+				}
+			}
+			
+			sources = sourcesAttack + sourcesFamiliar + sourcesReactive + sourcesPassive;	//update for information
 			auto_log_info("I think I have " + sources + " sources of damage, let's do this!", "blue");
 			if(in_pokefam())
 			{
-				sources = 9999;
+				damageSecured = 9999;
 			}
-			if(sources > sourceNeed)
+			if(damageSecured > damageNeed)
 			{
 				acquireHP();
 				autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
@@ -1070,7 +1329,14 @@ boolean L13_towerNSTower()
 			else
 			{
 				set_property("auto_getBeehive", true);
-				auto_log_warning("Need a beehive, buzz buzz. Only have " + sources + " damage sources and we want " + sourceNeed, "red");
+				if(sources < sourceNeed)
+				{
+					auto_log_warning("Need a beehive, buzz buzz. Only have " + sources + " damage sources and we want " + sourceNeed, "red");
+				}
+				else
+				{
+					auto_log_warning("Need a beehive, buzz buzz. Have " + sources + " damage sources but only " + lastRoundDamage + " that would work before taking a hit on the last round", "red");
+				}
 			}
 		}
 		return true;
@@ -1142,7 +1408,7 @@ boolean L13_towerNSTower()
 		
 		if(get_property("auto_getBoningKnife").to_boolean())	//grab boning knife if we deemed it necessary
 		{
-			if(canGroundhog($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+			if(lar_repeat($location[The Castle in the Clouds in the Sky (Ground Floor)]))
 			{
 				auto_log_info("Backfarming an Electric Boning Knife", "green");
 				return autoAdv($location[The Castle in the Clouds in the Sky (Ground Floor)]);
@@ -1153,8 +1419,10 @@ boolean L13_towerNSTower()
 		//if we reached this spot we decided that we do not need a boning knife and intend to try to towerkill the wall of bones.
 		uneffect($effect[Scarysauce]);
 		uneffect($effect[Jalape&ntilde;o Saucesphere]);
-		uneffect($effect[Mayeaugh]);
 		uneffect($effect[Spiky Shell]);
+		uneffect($effect[Psalm of Pointiness]);
+		uneffect($effect[Mayeaugh]);
+		uneffect($effect[Feeling Nervous]);
 		buffMaintain($effect[Tomato Power], 0, 1, 1);
 		buffMaintain($effect[Seeing Colors], 0, 1, 1);
 		buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
@@ -1204,7 +1472,7 @@ boolean L13_towerNSTower()
 		}
 		boolean confidence = get_property("auto_confidence").to_boolean();
 		// confidence really just means take the first choice, so it's necessary in vampyre
-		if(my_class() == $class[Vampyre])
+		if(in_darkGyffte())
 			confidence = true;
 		string choicenum = (confidence ? "1" : "2");
 		set_property("choiceAdventure1015", choicenum);
@@ -1215,6 +1483,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_09_monster5"))
 	{
+		if(in_robot())
+		{
+			abort("Robot shadow not currently automated. Pleasae kill your shadow manually then run me again");
+		}
 		if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
 		{
 			abort("auto_towerBreak set to abort here.");
@@ -1231,7 +1503,7 @@ boolean L13_towerNSTower()
 		acquireHP();
 
 		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]);
-		if(in_zelda())
+		if(in_plumber())
 		{
 			n_healing_items = item_amount($item[super deluxe mushroom]);
 			if(n_healing_items < 5)
@@ -1282,6 +1554,10 @@ boolean L13_towerNSFinal()
 	{
 		return false;
 	}
+	if(in_robot())
+	{
+		abort("Automatic killing of nautomatic sauceress not implemented. Please kill her manually");
+	}
 	
 	//wand acquisition function is called before this function, it turns this propery to false once a wand is acquired.
 	//it is also false on all paths that don't want a wand. Thus if it is true it means we do want a wand but didn't get one yet.
@@ -1290,9 +1566,9 @@ boolean L13_towerNSFinal()
 		auto_log_warning("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
-		return L13_towerFinalHeavyRains();
+		return L13_heavyrains_towerFinal();
 	}
 	
 	if(in_bhy())
@@ -1300,12 +1576,12 @@ boolean L13_towerNSFinal()
 		return L13_bhy_towerFinal();
 	}
 	
-	if(auto_my_path() == "The Source")
+	if(in_theSource())
 	{
 		acquireMP(200, 0);
 	}
 	
-	if(!($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, The Source, Way of the Surprising Fist, Zombie Slayer] contains auto_my_path()))
+	if(!(isActuallyEd() || is_boris() || is_jarlsberg() || is_pete() || in_bhy() || in_bugbear() || in_community() || in_theSource() || in_wotsf() || in_zombieSlayer()))
 	{
 		//Only if the final boss does not unbuff us...
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
@@ -1425,7 +1701,7 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
-	if(auto_my_path() == "Disguises Delimit" && internalQuestStatus("questL13Final") == 12)
+	if(in_disguises() && internalQuestStatus("questL13Final") == 12)
 	{
 		cli_execute("refresh quests");
 		if(internalQuestStatus("questL13Final") != 12)

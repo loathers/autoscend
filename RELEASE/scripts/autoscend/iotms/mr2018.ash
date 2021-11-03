@@ -2,7 +2,7 @@
 
 boolean isjanuaryToteAvailable()
 {
-	return item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[January\'s Garbage Tote]);
+	return item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[January\'s Garbage Tote]) && !in_bhy();
 }
 
 int januaryToteTurnsLeft(item it)
@@ -104,7 +104,7 @@ boolean januaryToteAcquire(item it)
 
 	if(choice == 2)
 	{
-		if((auto_my_path() == "Way of the Surprising Fist") || in_boris())
+		if(in_wotsf() || is_boris())
 		{
 			return false;
 		}
@@ -739,7 +739,7 @@ int neverendingPartyRemainingFreeFights()
 		return 0;
 	}
 	//if path randomizes names then the free fights are not free
-	if(auto_my_path() == "Disguises Delimit" || auto_my_path() == "One Crazy Random Summer")
+	if(in_disguises() || in_ocrs())
 	{
 		return 0;
 	}
@@ -1062,7 +1062,7 @@ boolean auto_latteRefill(string want1, string want2, string want3, boolean force
 		return true;
 	}
 
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 		tryAddWant("healing");
 
 	if(!haveWant("combat"))
@@ -1291,7 +1291,7 @@ boolean fightClubSpa()
 {
 	int option = 4;
 	stat st = my_primestat();
-	if (in_zelda())
+	if(in_plumber())
 	{
 		// We deal 250% of our Moxie, so if our Muscle is too high we... die.
 		st = $stat[moxie];

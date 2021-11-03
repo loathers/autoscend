@@ -109,7 +109,7 @@ boolean auto_sausageWanted()
 	int totalSausageToEat = ceil(progress * (totalSausageEstimated - sausageForBreakfast)) + sausageForBreakfast;
 	
 	// a reserve is kept for MP restoration
-	boolean noMP = my_class() == $class[Vampyre];
+	boolean noMP = in_darkGyffte();
 	int sausage_reserve_size = noMP ? 0 : 3;
 	
 	// no more reserve when close to full or when completely out of adventures
@@ -181,7 +181,7 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	int pastesNeeded = 0;
 	int pastesAvail = item_amount($item[meat paste]);
 	int meatToSave = 1000 + meatReserve();
-	if(auto_my_path() == "Community Service")
+	if(in_community())
 		meatToSave = 500;
 	for i from 1 to numSaus
 	{
@@ -224,7 +224,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 	if(item_amount($item[magical sausage]) < 1)
 		return false;
 
-	boolean noMP = my_class() == $class[Vampyre];
+	boolean noMP = in_darkGyffte();
 	int originalMp = my_maxmp();
 	if(!noMP)
 	{
@@ -389,13 +389,13 @@ boolean auto_saberChoice(string choice)
 
 boolean auto_saberDailyUpgrade(int day)
 {
-	if (isActuallyEd())
+	if(isActuallyEd())
 	{
 		return auto_saberChoice("mp");
 	}
 
 	// Maybe famweight is better, I don't know.
-	if (in_zelda())
+	if(in_plumber())
 	{
 		return auto_saberChoice("res");
 	}

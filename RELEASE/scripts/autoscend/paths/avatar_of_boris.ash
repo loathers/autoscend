@@ -1,12 +1,12 @@
-boolean in_boris()
+boolean is_boris()
 {
-	return my_class() == $class[Avatar of Boris];
+	return my_path() == "Avatar of Boris";
 }
 
 void borisTrusty()
 {
 	//the only time boris wants to take off trusty is if it is bedtime and he wants to wear a halo. Which is unaffected by this
-	if(!in_boris())
+	if(!is_boris())
 	{
 		return;
 	}
@@ -16,7 +16,7 @@ void borisTrusty()
 boolean borisAdjustML()
 {
 	//set target ML boosts for boris.
-	if(!in_boris())
+	if(!is_boris())
 	{
 		return false;
 	}
@@ -48,7 +48,7 @@ boolean borisAdjustML()
 
 void boris_initializeSettings()
 {
-	if(in_boris())
+	if(is_boris())
 	{
 		auto_log_info("Initializing Avatar of Boris settings", "blue");
 		set_property("auto_borisSkills", -1);
@@ -64,7 +64,7 @@ void boris_initializeSettings()
 
 void boris_initializeDay(int day)
 {
-	if(!in_boris())
+	if(!is_boris())
 	{
 		return;
 	}
@@ -120,7 +120,7 @@ void boris_initializeDay(int day)
 
 void boris_buySkills()
 {
-	if(!in_boris())
+	if(!is_boris())
 	{
 		return;
 	}
@@ -284,7 +284,7 @@ void boris_buySkills()
 boolean borisDemandSandwich(boolean immediately)
 {
 	//Boris can summon a sandwich 3 times per day at cost of 5 MP each
-	if(!in_boris())
+	if(!is_boris())
 	{
 		return false;
 	}
@@ -344,7 +344,7 @@ void borisWastedMP()
 {
 	//Check for wasted MP regeneration and use it up. primarily called towards the end of auto_pre_adv.ash
 	//Mostly the MP regen would come from clancy
-	if(!in_boris())
+	if(!is_boris())
 	{
 		return;
 	}
@@ -380,7 +380,7 @@ boolean borisAcquireHP(int goal)
 {
 	//boris cannot use the normal acquireHP function until it is modified allow multi using skills.
 	//that fix is nontrivial so until such a change is made here is a function that makes boris playable
-	if(!in_boris())
+	if(!is_boris())
 	{
 		return false;
 	}
@@ -421,7 +421,7 @@ boolean LM_boris()
 	//this function is called early once every loop of doTasks() in autoscend.ash
 	//if something in this function returns true then it will restart the loop and get called again.
 	
-	if(!in_boris())
+	if(!is_boris())
 	{
 		return false;
 	}

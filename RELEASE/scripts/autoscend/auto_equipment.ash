@@ -179,13 +179,18 @@ string defaultMaximizeStatement()
 	{
 		return pokefam_defaultMaximizeStatement();
 	}
+	if(in_robot())
+	{
+		return robot_defaultMaximizeStatement();
+	}
 	
-	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,mox,-fumble";
+	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,-fumble";
 	if(my_primestat() != $stat[Moxie])
+	{
 		res += ",mox";
+	}
 
-
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		res += ",0.8hp,3hp regen";
 	}
@@ -196,12 +201,12 @@ string defaultMaximizeStatement()
 	}
 
 	//weapon handling
-	if(in_boris())
+	if(is_boris())
 	{
 		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
 		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
 	}
-	else if(!in_zelda())
+	else if(!in_plumber())
 	{
 		if(my_primestat() == $stat[Mysticality])
 		{
@@ -221,7 +226,11 @@ string defaultMaximizeStatement()
 			res += ",5familiar exp";
 		}
 	}
-	if (in_zelda())
+	if(in_wildfire())
+	{
+		res += ",water,hot res";
+	}
+	if(in_plumber())
 	{
 		res += ",plumber,-ml";
 	}
@@ -330,7 +339,7 @@ void finalizeMaximize()
 		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
 	}
 	// Vampyre autogenerates scraps because of some weird ensorcel interaction. Even without ensorcel active.
-	if(pathHasFamiliar() || my_class() == $class[Vampyre])
+	if(pathHasFamiliar() || in_darkGyffte())
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}
@@ -341,7 +350,7 @@ void finalizeMaximize()
 		// blocks first hit, but doesn't stack with blood bubble
 		addBonusToMaximize($item[Eight Days a Week Pill Keeper], 100);
 	}
-	if(!in_zelda() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
+	if(!in_plumber() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		if (my_class() == $class[Seal Clubber] && in_glover())
 		{
@@ -516,6 +525,11 @@ boolean possessEquipment(item equipment)
 	return equipmentAmount(equipment) > 0;
 }
 
+boolean possessUnrestricted(item it)
+{
+	return possessEquipment(it) && is_unrestricted(it);
+}
+
 boolean possessOutfit(string outfitToCheck, boolean checkCanEquip) {
 	// have_outfit will report false if you're wearing some of the items
 	// it will only report true if you have all in inventory or are wearing the whole thing
@@ -560,7 +574,7 @@ void ensureSealClubs()
 	}
 }
 
-void equipRollover()
+void equipRollover(boolean silent)
 {
 	if(in_gnoob())
 	{
@@ -572,11 +586,16 @@ void equipRollover()
 		cli_execute("buy Li'l Unicorn Costume");
 	}
 
-	auto_log_info("Putting on pajamas...", "blue");
+	if(!silent)
+	{
+		auto_log_info("Putting on pajamas...", "blue");
+	}
 
 	string to_max = "-tie,adv";
-	if(hippy_stone_broken())
-		to_max += ",0.3fites";
+	if(hippy_stone_broken() && my_path() != "Oxygenarian" && get_property("auto_bedtime_pulls_pvp_multi").to_float() > 0)
+	{
+		to_max += "," +get_property("auto_bedtime_pulls_pvp_multi")+ "fites";
+	}
 	if(auto_have_familiar($familiar[Trick-or-Treating Tot]))
 		to_max += ",switch Trick-or-Treating Tot";
 	if(auto_have_familiar($familiar[Left-Hand Man]))
@@ -586,7 +605,7 @@ void equipRollover()
 
 	maximize(to_max, false);
 
-	if(!in_hardcore())
+	if(!in_hardcore() && !silent)
 	{
 		auto_log_info("Done putting on jammies, if you pulled anything with a rollover effect you might want to make sure it's equipped before you log out.", "red");
 	}
@@ -631,4 +650,10 @@ boolean auto_forceEquipSword() {
 	}
 
 	return autoForceEquip($slot[weapon], swordToEquip);
+}
+
+boolean is_watch(item it)
+{
+	//watches are accessories that conflict with each other. you can only equip one watch total.
+	return $items[dead guy's memento, dead guy's watch, Counterclockwise Watch, glow-in-the-dark wristwatch, grandfather watch, imitation nice watch, wristwatch of the white knight, Crimbolex watch, Sasq&trade; watch] contains it;
 }

@@ -120,11 +120,10 @@ Quantum Terrarium	54	L11_defeatEd
 Quantum Terrarium	55	L5_slayTheGoblinKing
 Quantum Terrarium	56	L4_batCave
 Quantum Terrarium	57	L3_tavern
-Quantum Terrarium	58	LX_koeInvaderHandler
-Quantum Terrarium	59	setSoftblockDelay	allowSoftblockDelay
-Quantum Terrarium	60	setSoftblockShen	allowSoftblockShen
-Quantum Terrarium	61	L13_towerAscent
-Quantum Terrarium	62	LX_attemptPowerLevel
+Quantum Terrarium	58	setSoftblockDelay	allowSoftblockDelay
+Quantum Terrarium	59	setSoftblockShen	allowSoftblockShen
+Quantum Terrarium	60	L13_towerAscent
+Quantum Terrarium	61	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
 default	1	catBurglarHeist
@@ -168,58 +167,57 @@ default	38	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
 default	39	LX_spookyravenManorSecondFloor
 default	40	L3_tavern
 default	41	L6_friarsGetParts
-default	42	LX_hardcoreFoodFarm
-default	43	LX_steelOrgan	in_hardcore
-default	44	L7_crypt
-default	45	fancyOilPainting
-default	46	L8_trapperQuest
-default	47	LX_steelOrgan
-default	48	L10_plantThatBean
-default	49	L12_preOutfit
-default	50	L10_airship
-default	51	L10_basement
-default	52	L10_ground
-default	53	L11_blackMarket
-default	54	L11_forgedDocuments
-default	55	L11_mcmuffinDiary
-default	56	L10_topFloor
-default	57	L10_holeInTheSkyUnlock
-default	58	L9_chasmBuild
-default	59	L9_highLandlord
-default	60	L12_flyerBackup
-default	61	Lsc_flyerSeals
-default	62	L11_mauriceSpookyraven
-default	63	L11_unlockHiddenCity
-default	64	L11_hiddenCityZones
-default	65	LX_ornateDowsingRod
-default	66	L11_aridDesert
-default	67	L11_hiddenCity
-default	68	L11_talismanOfNam
-default	69	L11_palindome
-default	70	L11_unlockPyramid
-default	71	L11_unlockEd
-default	72	L11_defeatEd
-default	73	L12_gremlins
-default	74	L12_sonofaFinish
-default	75	L12_sonofaBeach
-default	76	L12_filthworms
-default	77	L12_orchardFinalize
-default	78	L12_themtharHills
-default	79	L12_farm
-default	80	L11_getBeehive
-default	81	L12_finalizeWar
-default	82	L12_clearBattlefield
-default	83	LX_koeInvaderHandler
-default	84	setSoftblockDelay	allowSoftblockDelay
-default	85	setSoftblockShen	allowSoftblockShen
-default	86	LX_getDigitalKey
-default	87	LX_getStarKey
-default	88	L12_lastDitchFlyer
-default	89	L13_towerNSContests
-default	90	L13_towerNSHedge
-default	91	L13_sorceressDoor
-default	92	L13_towerNSTower
-default	93	L13_towerNSNagamar
-default	94	L13_towerNSFinal
-default	95	LX_attemptPowerLevel
+default	42	LX_steelOrgan	in_hardcore
+default	43	L7_crypt
+default	44	fancyOilPainting
+default	45	L8_trapperQuest
+default	46	LX_steelOrgan
+default	47	L10_plantThatBean
+default	48	L12_preOutfit
+default	49	L10_airship
+default	50	L10_basement
+default	51	L10_ground
+default	52	L11_blackMarket
+default	53	L11_forgedDocuments
+default	54	L11_mcmuffinDiary
+default	55	L10_topFloor
+default	56	L10_holeInTheSkyUnlock
+default	57	L9_chasmBuild
+default	58	L9_highLandlord
+default	59	L12_flyerBackup
+default	60	Lsc_flyerSeals
+default	61	L11_mauriceSpookyraven
+default	62	L11_unlockHiddenCity
+default	63	L11_hiddenCityZones
+default	64	LX_ornateDowsingRod
+default	65	L11_aridDesert
+default	66	L11_hiddenCity
+default	67	L11_talismanOfNam
+default	68	L11_palindome
+default	69	L11_unlockPyramid
+default	70	L11_unlockEd
+default	71	L11_defeatEd
+default	72	L12_gremlins
+default	73	L12_sonofaFinish
+default	74	L12_sonofaBeach
+default	75	L12_filthworms
+default	76	L12_orchardFinalize
+default	77	L12_themtharHills
+default	78	L12_farm
+default	79	L11_getBeehive
+default	80	L12_finalizeWar
+default	81	L12_clearBattlefield
+default	82	LX_koeInvaderHandler
+default	83	setSoftblockDelay	allowSoftblockDelay
+default	84	setSoftblockShen	allowSoftblockShen
+default	85	LX_getDigitalKey
+default	86	LX_getStarKey
+default	87	L12_lastDitchFlyer
+default	88	L13_towerNSContests
+default	89	L13_towerNSHedge
+default	90	L13_sorceressDoor
+default	91	L13_towerNSTower
+default	92	L13_towerNSNagamar
+default	93	L13_towerNSFinal
+default	94	LX_attemptPowerLevel
 

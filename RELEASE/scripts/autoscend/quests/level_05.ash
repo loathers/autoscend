@@ -77,7 +77,7 @@ boolean L5_haremOutfit()
 		}
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	}
@@ -112,6 +112,10 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
+	if(robot_delay("outfit"))
+	{
+		return false;	//delay for You, Robot path
+	}
 
 	auto_log_info("Death to the gobbo!!", "blue");
 	if(!autoOutfit("Knob Goblin Harem Girl Disguise"))
@@ -144,13 +148,13 @@ boolean L5_goblinKing()
 	}
 
 	// TODO: I died here, maybe we should heal a bit?
-	if (!in_zelda())
+	if (!in_plumber())
 	{
 		auto_change_mcd(10); // get the Crown from the Goblin King.
 	}
 	boolean advSpent = autoAdv($location[Throne Room]);
 
-	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_zelda())
+	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_plumber())
 	{
 		council();
 	}

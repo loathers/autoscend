@@ -1,7 +1,7 @@
 // This uses Ezandora's wonderful Helix Fossil script to handle building a team and combat.
 boolean in_pokefam()
 {
-	return auto_my_path() == "Pocket Familiars";
+	return my_path() == "Pocket Familiars";
 }
 
 void pokefam_initializeSettings()

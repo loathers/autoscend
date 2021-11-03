@@ -1,11 +1,11 @@
-boolean is_Jarlsberg()
+boolean is_jarlsberg()
 {
-	return (my_class() == $class[Avatar of Jarlsberg] || my_path() == "Avatar of Jarlsberg");
+	return my_path() == "Avatar of Jarlsberg";
 }
 
 void jarlsberg_initializeSettings()
 {
-    	if(is_Jarlsberg())
+    	if(is_jarlsberg())
 	{
 		auto_log_info("Initializing Avatar of Jarlsberg settings", "blue");
 		set_property("auto_wandOfNagamar", false);
@@ -14,7 +14,7 @@ void jarlsberg_initializeSettings()
 
 void jarlsberg_initializeDay(int day)
 {
-	if(!is_Jarlsberg())
+	if(!is_jarlsberg())
 	{
 		return;
 	}
@@ -69,7 +69,7 @@ void jarlsberg_initializeDay(int day)
 
 void jarlsberg_buySkills() //Not certain of Skill Priority Order. Current is a good start, will see how it goes.
 {
-	if(!is_Jarlsberg())
+	if(!is_jarlsberg())
 	{
 		return;
 	}
@@ -129,7 +129,7 @@ boolean LM_jarlsberg()
 	//this function is called early once every loop of doTasks() in autoscend.ash
 	//if something in this function returns true then it will restart the loop and get called again.
 	
-	if(!is_Jarlsberg())
+	if(!is_jarlsberg())
 	{
 		return false;
 	}

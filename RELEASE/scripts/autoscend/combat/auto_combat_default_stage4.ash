@@ -2,6 +2,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
 	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	string retval;
+	string combatState = get_property("auto_combatHandler");
 	
 	// Path = The Source
 	retval = auto_combatTheSourceStage4(round, enemy, text);
@@ -54,7 +55,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//TODO auto_doCombatCopy property is silly. get rid of it
-	if(!haveUsed($item[Rain-Doh black box]) && (my_path() != "Heavy Rains") && (get_property("_raindohCopiesMade").to_int() < 5))
+	if(!haveUsed($item[Rain-Doh black box]) && (!in_heavyrains()) && (get_property("_raindohCopiesMade").to_int() < 5))
 	{
 		if((enemy == $monster[Modern Zmobie]) && (get_property("auto_modernzmobiecount").to_int() < 3))
 		{
@@ -145,31 +146,6 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			return "item " + $item[Seal Tooth];
 		}
 	}
-	
-	//nanorhino familiar stuff
-	boolean nanorhino_charged = get_property("_nanorhinoCharge").to_int() >= 100;
-	if(my_familiar() == $familiar[Nanorhino] && nanorhino_charged && have_effect($effect[Nanobrawny]) + have_effect($effect[Nanobrainy]) + have_effect($effect[Nanoballsy]) == 0)
-	{
-		foreach it in $skills[Toss, Clobber, Shell Up, Lunge Smack, Thrust-Smack, Headbutt, Kneebutt, Lunging Thrust-Smack, Club Foot, Shieldbutt, Spirit Snap, Cavalcade Of Fury, Northern Explosion, Spectral Snapper, Harpoon!, Summon Leviatuga]
-		{
-			if((it == $skill[Shieldbutt]) && !hasShieldEquipped())
-			{
-				continue;
-			}
-			if(canUse(it, false))
-			{
-				return useSkill(it, false);
-			}
-		}
-	}
-	if(canUse($skill[Unleash Nanites]) && (have_effect($effect[Nanobrawny]) >= 40))
-	{
-		#if appropriate enemy, then banish
-		if(enemy == $monster[Pygmy Janitor])
-		{
-			return useSkill($skill[Unleash Nanites]);
-		}
-	}
 
 	//winking is a monster copier familiar skill. they share a daily counter
 	skill wink_skill = $skill[none];
@@ -235,29 +211,28 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//this completes the quest Advertise for the Mysterious Island Arena which is a sidequest which accelerates the L12 frat-hippy war quest
-	if((canUse($item[Rock Band Flyers]) || canUse($item[Jam Band Flyers])) && (get_property("flyeredML").to_int() < 10000) && (my_location() != $location[The Battlefield (Frat Uniform)]) && (my_location() != $location[The Battlefield (Hippy Uniform)]) && !get_property("auto_ignoreFlyer").to_boolean())
+	//kol tracks each band flyering separately. mafia tracks them in a singular property as it assumes the player will not flyer for the wrong band. make sure to only flyer for the side we want to flyer for
+	item flyer = $item[Rock Band Flyers];
+	if(auto_warSide() == "hippy")
+	{
+		flyer = $item[Jam Band Flyers];
+	}
+	if(canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
 	{
 		skill stunner = getStunner(enemy);
-		if(stunner != $skill[none])
+		boolean stunned = contains_text(combatState, "stunned");
+		if(stunner != $skill[none] && !stunned)
 		{
+			set_property("auto_combatHandler", get_property("auto_combatHandler")+",stunned");
 			return useSkill(stunner);
 		}
-
-		if(canUse($item[Rock Band Flyers]))
+		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
-			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
-			{
-				return useItems($item[Rock Band Flyers], $item[Time-Spinner]);
-			}
-			return useItem($item[Rock Band Flyers]);
+			return useItems(flyer, $item[Time-Spinner]);
 		}
-		if(canUse($item[Jam Band Flyers]))
+		if(canSurvive(3.0) || stunned)
 		{
-			if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
-			{
-				return useItems($item[Jam Band Flyers], $item[Time-Spinner]);
-			}
-			return useItem($item[Jam Band Flyers]);
+			return useItem(flyer);
 		}
 	}
 	
@@ -299,7 +274,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//use latte iotm to restore 50% of max MP
-	if((!in_zelda() && my_class() != $class[Vampyre] && my_path() != "Zombie Slayer") &&	//paths that do not use MP
+	if((!in_plumber() && !in_darkGyffte() && !in_zombieSlayer()) &&	//paths that do not use MP
 	canUse($skill[Gulp Latte]) &&
 	my_mp() * 2 < my_maxmp())		//gulp latte restores 50% of your MP. do not waste it.
 	{
@@ -313,6 +288,20 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Summon Love Stinkbug]);
 		}
+	}
+
+	// use red rocket from Clan VIP Lounge to get 5x stats from next food item consumed. Does not stagger on use
+	if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) &&
+		// consumeStuff fills liver first up to 10 or 15 before eating, pending if billiards room if completed. Gives confidence that we will eat within 100 turns.
+		my_inebriety() >= 10 && my_adventures() < 100)
+	{
+		//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
+		item simulationOutput = auto_autoConsumeOneSimulation("eat");
+		if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
+		{
+			return useItem($item[red rocket]);
+		}
+		
 	}
 	
 	return "";

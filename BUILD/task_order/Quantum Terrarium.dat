@@ -56,7 +56,6 @@ L11_defeatEd
 L5_slayTheGoblinKing
 L4_batCave
 L3_tavern
-LX_koeInvaderHandler
 setSoftblockDelay	allowSoftblockDelay
 setSoftblockShen	allowSoftblockShen
 L13_towerAscent
