@@ -113,7 +113,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 
 	// handle the initial combat or choice the easy way.
 	string combatPage = "<b>Combat";
-	if (in_pokefam()) {
+	if(in_pokefam()) {
 		combatPage = "<b>Fight!";
 	}
 	if (contains_text(page, combatPage)) {

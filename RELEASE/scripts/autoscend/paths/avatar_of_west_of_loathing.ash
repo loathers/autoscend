@@ -1,6 +1,11 @@
+boolean in_awol()
+{
+	return my_path() == "Avatar of West of Loathing";
+}
+
 boolean awol_initializeSettings()
 {
-	if(my_path() == "Avatar of West of Loathing")
+	if(in_awol())
 	{
 		set_property("auto_awolLastSkill", 0);
 		set_property("auto_getBeehive", true);
@@ -10,7 +15,7 @@ boolean awol_initializeSettings()
 
 void awol_useStuff()
 {
-	if(my_path() == "Avatar of West of Loathing")
+	if(in_awol())
 	{
 		if(have_skill($skill[Patent Medicine]))
 		{
@@ -58,7 +63,6 @@ void awol_useStuff()
 		}
 	}
 }
-
 
 effect awol_walkBuff()
 {

@@ -1,13 +1,13 @@
 boolean in_gnoob()
 {
-	return my_class() == $class[Gelatinous Noob];
+	return my_path() == "Gelatinous Noob";
 }
 
-void jello_startAscension(string page)
+void gnoob_startAscension(string page)
 {
 	if(contains_text(page, "Welcome to the Kingdom, Gelatinous Noob"))
 	{
-		auto_log_info("In starting Jello Adventure", "blue");
+		auto_log_info("Starting a new run as Gelatinous Noob", "blue");
 		matcher my_skillPoints = create_matcher("You can pick <span class=\"num\">(\\d\+)</span> more skill", page);
 		if(my_skillPoints.find())
 		{
@@ -83,7 +83,7 @@ int gnoobAbsorbCost(item it)
 	return retval;
 }
 
-void jello_buySkills()
+void gnoob_buySkills()
 {
 	//Need to consider skill orders, how to handle when we have starting skills.
 
@@ -98,7 +98,7 @@ void jello_buySkills()
 		blacklist[$item[Enchanted Bean]] = true;	//need to keep our only enchanted bean to be planted
 	}
 
-	string[item] available = jello_lister();
+	string[item] available = gnoob_lister();
 	int starting_absorb_count = my_absorbs();
 	int earlyTerm = max(5, get_property("_noobSkillCount").to_int() + ((my_daycount() - 1) * min(my_level()+2, 15))) + get_property("noobPoints").to_int() + 2;
 
@@ -111,10 +111,10 @@ void jello_buySkills()
 		earlyTerm --;
 		if(earlyTerm <= 0)
 		{
-			auto_log_debug("jello_buySkills checked too many skills without getting any. terminating loop early");
+			auto_log_debug("gnoob_buySkills checked too many skills without getting any. terminating loop early");
 			break;
 		}
-		if(jello_absorbsLeft() <= 0)
+		if(gnoob_absorbsLeft() <= 0)
 		{
 			break;
 		}
@@ -150,7 +150,7 @@ void jello_buySkills()
 				retrieve_item(1,possible[i]);
 				if(item_amount(possible[i]) == 0)
 				{
-					auto_log_info("Failed to acquire [" + possible[i] + "] for jello_buySkills");
+					auto_log_info("Failed to acquire [" + possible[i] + "] for gnoob_buySkills");
 					continue;
 				}
 			}
@@ -161,13 +161,13 @@ void jello_buySkills()
 			}
 			else
 			{
-				available = jello_lister();		//recheck item availability now that one was consumed. necessary for tome handling and NPC stores.
+				available = gnoob_lister();		//recheck item availability now that one was consumed. necessary for tome handling and NPC stores.
 			}
 		}
 	}
 	
 	//absorb potted cactus for adventures
-	if(jello_absorbsLeft() > 0 && my_adventures() <= 1 + auto_advToReserve() && my_level() >= 12)
+	if(gnoob_absorbsLeft() > 0 && my_adventures() <= 1 + auto_advToReserve() && my_level() >= 12)
 	{
 		buyUpTo(1, $item[Potted Cactus]);
 		if(item_amount($item[Potted Cactus]) > 0)
@@ -178,7 +178,7 @@ void jello_buySkills()
 }
 
 
-string[item] jello_lister(string goal)
+string[item] gnoob_lister(string goal)
 {
 	string[item] retval;
 	foreach it in $items[]
@@ -208,7 +208,7 @@ string[item] jello_lister(string goal)
 	return retval;
 }
 
-int jello_absorbsLeft()
+int gnoob_absorbsLeft()
 {
 	if(!in_gnoob())
 	{
@@ -218,17 +218,17 @@ int jello_absorbsLeft()
 	return absorbs - my_absorbs();
 }
 
-string[item] jello_lister()
+string[item] gnoob_lister()
 {
-	return jello_lister("");
+	return gnoob_lister("");
 }
 
-boolean LM_jello()
+boolean LM_gnoob()
 {
 	if(!in_gnoob())
 	{
 		return false;
 	}
-	jello_buySkills();
+	gnoob_buySkills();
 	return false;
 }

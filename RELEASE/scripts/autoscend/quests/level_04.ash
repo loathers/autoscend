@@ -48,7 +48,7 @@ boolean L4_batCave()
 			return autoAdv($location[The Beanbat Chamber]);
 		}
 		council();
-		if (in_koe())
+		if(in_koe())
 		{
 			cli_execute("refresh quests");
 		}

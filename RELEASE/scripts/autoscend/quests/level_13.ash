@@ -86,7 +86,7 @@ boolean LX_getDigitalKey()
 		}
 		return false;
 	}
-	if (in_koe())
+	if(in_koe())
 	{
 		if(item_amount($item[Digital Key]) == 0 && internalQuestStatus("questL13Final") == 5)
 		{
@@ -407,7 +407,7 @@ boolean L13_towerNSContests()
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
 			acquireMP(150); // only uses free rests or items on hand by default
-			if (my_class() == $class[Vampyre])
+			if (in_darkGyffte())
 			{
 				if(crowd_stat == $stat[muscle] && !have_skill($skill[Preternatural Strength]))
 				{
@@ -575,7 +575,7 @@ boolean L13_towerNSContests()
 			{
 				if(internalQuestStatus("questL13Final") == 2)
 				{
-					if(auto_my_path() == "The Source")
+					if(in_theSource())
 					{
 						//As of r17048, encountering a Source Agent on the Challenge line results in nsContestants being decremented twice.
 						//Since we were using Mafia\'s tracking here, we have to compensate for when it fails...
@@ -683,20 +683,19 @@ void maximize_hedge()
 
 boolean L13_towerNSHedge()
 {
-	if(internalQuestStatus("questL13Final") != 4)
-	{
-		return false;
-	}
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "hedgemaze"))
+	if(internalQuestStatus("questL13Final") == 5 && contains_text(visit_url("place.php?whichplace=nstower"), "hedgemaze"))
 	{
 		//If we got beaten up by the last hedgemaze, mafia might set questL13Final to step5 anyway. Fix that.
 		set_property("questL13Final", "step4");
-		if((have_effect($effect[Beaten Up]) > 0) || (my_hp() < 150))
+		if(have_effect($effect[Beaten Up]) > 0 || my_hp() < 150)
 		{
 			auto_log_error("Hedge maze not solved, the mysteries are still there (correcting step5 -> step4)");
 			abort("Heal yourself and try again...");
 		}
+	}
+	if(internalQuestStatus("questL13Final") != 4)
+	{
+		return false;
 	}
 
 	# Set this so it aborts if not enough adventures. Otherwise, well, we end up in a loop.
@@ -763,7 +762,7 @@ boolean L13_sorceressDoor()
 	}
 
 	// Low Key Summer has an entirely different door.
-	if (in_lowkeysummer())
+	if(in_lowkeysummer())
 	{
 		return L13_sorceressDoorLowKey();
 	}
@@ -1409,7 +1408,7 @@ boolean L13_towerNSTower()
 		
 		if(get_property("auto_getBoningKnife").to_boolean())	//grab boning knife if we deemed it necessary
 		{
-			if(canGroundhog($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+			if(lar_repeat($location[The Castle in the Clouds in the Sky (Ground Floor)]))
 			{
 				auto_log_info("Backfarming an Electric Boning Knife", "green");
 				return autoAdv($location[The Castle in the Clouds in the Sky (Ground Floor)]);
@@ -1473,7 +1472,7 @@ boolean L13_towerNSTower()
 		}
 		boolean confidence = get_property("auto_confidence").to_boolean();
 		// confidence really just means take the first choice, so it's necessary in vampyre
-		if(my_class() == $class[Vampyre])
+		if(in_darkGyffte())
 			confidence = true;
 		string choicenum = (confidence ? "1" : "2");
 		set_property("choiceAdventure1015", choicenum);
@@ -1484,6 +1483,10 @@ boolean L13_towerNSTower()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_09_monster5"))
 	{
+		if(in_robot())
+		{
+			abort("Robot shadow not currently automated. Pleasae kill your shadow manually then run me again");
+		}
 		if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
 		{
 			abort("auto_towerBreak set to abort here.");
@@ -1551,6 +1554,10 @@ boolean L13_towerNSFinal()
 	{
 		return false;
 	}
+	if(in_robot())
+	{
+		abort("Automatic killing of nautomatic sauceress not implemented. Please kill her manually");
+	}
 	
 	//wand acquisition function is called before this function, it turns this propery to false once a wand is acquired.
 	//it is also false on all paths that don't want a wand. Thus if it is true it means we do want a wand but didn't get one yet.
@@ -1559,9 +1566,9 @@ boolean L13_towerNSFinal()
 		auto_log_warning("We do not have a Wand of Nagamar but appear to need one. We must lose to the Sausage first...", "red");
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
-		return L13_towerFinalHeavyRains();
+		return L13_heavyrains_towerFinal();
 	}
 	
 	if(in_bhy())
@@ -1569,12 +1576,12 @@ boolean L13_towerNSFinal()
 		return L13_bhy_towerFinal();
 	}
 	
-	if(auto_my_path() == "The Source")
+	if(in_theSource())
 	{
 		acquireMP(200, 0);
 	}
 	
-	if(!($strings[Actually Ed the Undying, Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Bees Hate You, Bugbear Invasion, Community Service, The Source, Way of the Surprising Fist, Zombie Slayer] contains auto_my_path()))
+	if(!(isActuallyEd() || is_boris() || is_jarlsberg() || is_pete() || in_bhy() || in_bugbear() || in_community() || in_theSource() || in_wotsf() || in_zombieSlayer()))
 	{
 		//Only if the final boss does not unbuff us...
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
@@ -1694,7 +1701,7 @@ boolean L13_towerNSNagamar()
 		return false;
 	}
 	
-	if(auto_my_path() == "Disguises Delimit" && internalQuestStatus("questL13Final") == 12)
+	if(in_disguises() && internalQuestStatus("questL13Final") == 12)
 	{
 		cli_execute("refresh quests");
 		if(internalQuestStatus("questL13Final") != 12)

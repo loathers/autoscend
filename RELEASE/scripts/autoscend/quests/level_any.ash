@@ -92,7 +92,7 @@ boolean LX_unlockDesert()
 		return false;
 	}
 	
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -140,7 +140,7 @@ boolean LX_unlockDesert()
 
 boolean LX_desertAlternate()
 {
-	if(auto_my_path() == "Nuclear Autumn")
+	if(in_nuclear())
 	{
 		return LX_hippyBoatman();
 	}
@@ -170,7 +170,8 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-	if (in_lowkeysummer()) {
+	if(in_lowkeysummer())
+	{
 		return LX_hippyBoatman();
 	}
 

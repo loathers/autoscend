@@ -1596,8 +1596,8 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 				auto_log_error("Ignoring the error as per user instructions");
  				return false;
 			}
-			print("Aborting due to restore failure... you can override this setting for today by entering in gCLI:");
-			print("set _auto_ignoreRestoreFailureToday = true");
+			print("Aborting due to restore failure... you can override this setting for today by entering in gCLI:" ,"blue");
+			print("set _auto_ignoreRestoreFailureToday = true" ,"blue");
 			abort();
 		}
 
@@ -1695,7 +1695,7 @@ boolean acquireMP(int goal, int meat_reserve)
 boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 {
 	//vampyres don't use MP
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		return false;
 	}
@@ -1813,7 +1813,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 
 	//vampyres can only be restored using blood bags, which are too valuable to waste on healing HP.
 	//better to make food/drink from them and then rest in your coffin
-	if(my_class() == $class[Vampyre])
+	if(in_darkGyffte())
 	{
 		return false;
 	}
@@ -1857,7 +1857,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		return true;
 	}
 
-	if(in_boris())
+	if(is_boris())
 	{
 		return borisAcquireHP(goal);
 	}

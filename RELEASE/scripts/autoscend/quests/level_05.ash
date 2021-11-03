@@ -77,7 +77,7 @@ boolean L5_haremOutfit()
 		}
 	}
 
-	if(auto_my_path() == "Heavy Rains")
+	if(in_heavyrains())
 	{
 		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
 	}
@@ -111,6 +111,10 @@ boolean L5_goblinKing()
 	if(!possessOutfit("Knob Goblin Harem Girl Disguise"))
 	{
 		return false;
+	}
+	if(robot_delay("outfit"))
+	{
+		return false;	//delay for You, Robot path
 	}
 
 	auto_log_info("Death to the gobbo!!", "blue");

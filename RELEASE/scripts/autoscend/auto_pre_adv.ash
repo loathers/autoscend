@@ -71,6 +71,97 @@ void print_footer()
 	auto_log_info(next_line, "blue");
 }
 
+void auto_ghost_prep(location place)
+{
+	//if place contains physically immune enemies then we need to be prepared to deal non physical damage.
+	if(!is_ghost_in_zone(place))
+	{
+		return;		//no ghosts no problem
+	}
+	if(in_plumber())
+	{
+		return;		//these paths either have their own ghost handling. or can always kill ghosts
+	}
+	if(get_property("youRobotBottom").to_int() == 2)
+	{
+		return;		//you robot with a rocket crotch. deals fire damage to kill ghosts.
+	}
+	//a few iconic spells per avatar is ok. no need to be too exhaustive
+	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
+	Storm of the Scarab,		//actually ed the undying
+	Boil]		//avatar of jarlsberg
+	{
+		if(auto_have_skill(sk))
+		{
+			acquireMP(32, 1000);		//make sure we actually have the MP to cast spells
+		}
+		if(canUse(sk)) return;	//we can kill them with a spell
+	}
+	
+	int m_hot = 1;
+	int m_cold = 1;
+	int m_spooky = 1;
+	int m_sleaze = 1;
+	int m_stench = 1;
+	foreach idx, mob in get_monsters(place)
+	{
+		if(mob.physical_resistance >= 80)
+		{
+			switch(monster_element(mob))
+			{
+			case $element[hot]:
+				m_hot = 0;
+				m_sleaze = 2;
+				m_stench = 2;
+				break;
+			case $element[cold]:
+				m_cold = 0;
+				m_hot = 2;
+				m_spooky = 2;
+				break;
+			case $element[spooky]:
+				m_spooky = 0;
+				m_hot = 2;
+				m_stench = 2;
+				break;
+			case $element[sleaze]:
+				m_sleaze = 0;
+				m_cold = 2;
+				m_spooky = 2;
+				break;
+			case $element[stench]:
+				m_stench = 0;
+				m_sleaze = 2;
+				m_cold = 2;
+				break;
+			}
+		}
+	}
+	
+	string max_with;
+	int bonus;
+	if(m_hot != 0) max_with += "," +10*m_hot+ "hot dmg";
+	if(m_cold != 0) max_with += "," +10*m_cold+ "cold dmg";
+	if(m_spooky != 0) max_with += "," +10*m_spooky+ "spooky dmg";
+	if(m_sleaze != 0) max_with += "," +10*m_sleaze+ "sleaze dmg";
+	if(m_stench != 0) max_with += "," +10*m_stench+ "stench dmg";
+	
+	simMaximizeWith(max_with);
+	if(m_hot != 0) bonus += simValue("hot damage");
+	if(m_cold != 0) bonus += simValue("cold damage");
+	if(m_spooky != 0) bonus += simValue("spooky damage");
+	if(m_sleaze != 0) bonus += simValue("sleaze damage");
+	if(m_stench != 0) bonus += simValue("stench damage");
+	
+	if(bonus > 9)
+	{
+		addToMaximize(max_with);
+		return;
+	}
+	
+	abort("I was about to head into [" +place+ "] which contains ghosts. I can not damage those");
+}
+
 boolean auto_pre_adventure()
 {
 	location place = my_location();
@@ -90,6 +181,17 @@ boolean auto_pre_adventure()
 		buffMaintain($effect[Baited Hook], 0, 1, 1);
 	}
 
+	// be ready to use red rocket if we don't have one
+	if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
+		get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
+		item_amount($item[red rocket]) == 0 &&			// Don't buy if we already have one
+		auto_is_valid($item[red rocket]) &&				// or if it's not valid
+		can_eat() &&									// be in a path that can eat
+		my_meat() > npc_price($item[red rocket]) + meatReserve())
+	{
+		retrieve_item(1, $item[red rocket]);
+	}
+
 	if((get_property("_bittycar") == "") && (item_amount($item[Bittycar Meatcar]) > 0))
 	{
 		use(1, $item[Bittycar Meatcar]);
@@ -107,7 +209,7 @@ boolean auto_pre_adventure()
 		uneffect($effect[Scarysauce]);
 	}
 
-	if(in_boris())
+	if(is_boris())
 	{
 		if((have_effect($effect[Song of Solitude]) == 0) && (have_effect($effect[Song of Battle]) == 0))
 		{
@@ -197,7 +299,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if (in_koe() && possessEquipment($item[low-pressure oxygen tank]))
+	if(in_koe() && possessEquipment($item[low-pressure oxygen tank]))
 	{
 		autoEquip($item[low-pressure oxygen tank]);
 	}
@@ -225,6 +327,16 @@ boolean auto_pre_adventure()
 			autoEquip($item[latte lovers member\'s mug]);
 		}
 	}
+
+	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
+	{
+		autoEquip($item[industrial fire extinguisher]);
+	}
+	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
+	{
+		addBonusToMaximize($item[industrial fire extinguisher], 200); // extinguisher prevents per-round hot damage in wildfire path 
+	}
+
 
 	if(in_plumber())
 	{
@@ -501,6 +613,7 @@ boolean auto_pre_adventure()
 	}
 
 	// EQUIP MAXIMIZED GEAR
+	auto_ghost_prep(place);
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	cli_execute("checkpoint clear");
@@ -555,7 +668,7 @@ boolean auto_pre_adventure()
 	}
 
 	//my_mp is broken in Dark Gyffte
-	if (my_class() != $class[Vampyre])
+	if (!in_darkGyffte())
 	{
 		int wasted_mp = my_mp() + mp_regen() - my_maxmp();
 		if(wasted_mp > 0 && my_mp() > 400)
@@ -573,7 +686,7 @@ boolean auto_pre_adventure()
 	{
 		auto_log_warning("We don't have a lot of MP but we are chugging along anyway", "red");
 	}
-	groundhogAbort(place);
+	lar_abort(place);
 	if (my_inebriety() > inebriety_limit())
 	{
 		if($locations[The Tunnel of L.O.V.E.] contains place)

@@ -311,6 +311,9 @@ void main()
 
 	writeln("<h2>Instakills</h2>");
 	generateTrackingData("auto_instakill");
+	
+	writeln("<h2>Beaten Up</h2>");
+	writeln(get_property("auto_beatenUpLocations"));
 
 	writeln("<h2>Eated</h2>");
 	generateTrackingData("auto_eaten");
@@ -337,7 +340,7 @@ void main()
 		generateTrackingData("auto_renenutet");
 	}
 
-	if(my_path() == "One Crazy Random Summer")
+	if(in_ocrs())
 	{
 		writeln("<h2>One Crazy Random Summer Fun-o-meter!</h2>");
 		generateTrackingData("auto_funTracker");

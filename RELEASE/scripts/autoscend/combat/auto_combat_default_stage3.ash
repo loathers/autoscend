@@ -29,38 +29,115 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		return useSkill($skill[Tunnel Downwards]);
 	}
 	
-	//iotm familiar specific skill. delevel by 10 and try to steal an item. can be used on any combat round, repeatedly until an item is stolen
+	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	if(canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
 	{
-		boolean dohug = false;
+		boolean forceDrop = false;
 		if($monsters[Filthworm Drone, Filthworm Royal Guard, Larval Filthworm] contains enemy)
 		{
-			dohug = true;
+			forceDrop = true;
 		}
 
+		// reserve enough resources to force filthworm drops
 		if(get_property("_xoHugsUsed").to_int() < 8)
 		{
 			// snatch a wig if we're lucky
 			if(enemy == $monster[Burly Sidekick] && !possessEquipment($item[Mohawk wig]))
-				dohug = true;
+				forceDrop = true;
 
 			// snatch a hedge trimmer if we're lucky
 			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
-				dohug = true;
+				forceDrop = true;
 
 			// snatch a killing jar if we're lucky
 			if(enemy == $monster[banshee librarian] && (0 == item_amount($item[Killing jar])))
-				dohug = true;
+				forceDrop = true;
 
 			// snatch a sonar-in-a-biscuit if we're lucky
 			if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (get_property("questL04Bat")) != "finished")
-				dohug = true;
-		}
+				forceDrop = true;
+		}				
 
-		if(dohug)
+		if(forceDrop)
 		{
 			handleTracker(enemy, $skill[Hugs and Kisses!], "auto_otherstuff");
-			return useSkill($skill[Hugs and Kisses!]);
+			return useSkill($skill[Hugs and Kisses!]);			
+		}
+	}
+
+	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
+	//prioritize XO over extinguisher since extinguisher has other uses
+	//take into account if a yellow ray has been used. Must have been one that doesn't insta-kill
+	if(canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10)
+	{
+		boolean forceDrop = false;
+		string combatState = get_property("auto_combatHandler");
+		//only force 1 scent gland from each filthworm
+		if(!contains_text(combatState, "yellowray"))
+		{
+			if(enemy == $monster[Larval Filthworm] && item_amount($item[filthworm hatchling scent gland]) < 1)
+			{
+				forceDrop = true;
+			}
+			if(enemy == $monster[Filthworm Drone] && item_amount($item[filthworm drone scent gland]) < 1)
+			{
+				forceDrop = true;
+			}
+			if(enemy == $monster[Filthworm Royal Guard] && item_amount($item[filthworm royal guard scent gland]) < 1)
+			{
+				forceDrop = true;
+			}
+		}
+		
+
+		// polar vortex is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
+		// reserve 30 charge for filth worms
+		if(auto_fireExtinguisherCharges() > 30)
+		{
+			int dropsFromYR = 0;
+			if(contains_text(combatState, "yellowray"))
+			{
+				dropsFromYR = 1;
+			}
+
+			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
+			{
+					//copied following code from catBurglarHeistDesires
+					//TODO - create a common function for this instead
+					int twinPeakProgress = get_property("twinPeakProgress").to_int();
+					boolean needStench = ((twinPeakProgress & 1) == 0);
+					boolean needFood = ((twinPeakProgress & 2) == 0);
+					boolean needJar = ((twinPeakProgress & 4) == 0);
+					boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
+					int neededTrimmers = -(item_amount($item[rusty hedge trimmers]) + dropsFromYR);
+					if(needStench) neededTrimmers++;
+					if(needFood) neededTrimmers++;
+					if(needJar) neededTrimmers++;
+					if(needInit) neededTrimmers++;
+
+					if(neededTrimmers > 0)
+					{
+						forceDrop = true;
+					}
+			}
+
+			// Number of times bowled is 1 less than hiddenBowlingAlleyProgress. Need 5 bowling balls total, 5+1 = 6 needed in this conditional
+			if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) + dropsFromYR) < 6)
+			{
+				forceDrop = true;
+			}
+
+			if(enemy == $monster[Dairy Goat] && (item_amount($item[Goat Cheese]) + dropsFromYR) < 3)
+			{
+				forceDrop = true;
+			}	
+		}
+				
+
+		if(forceDrop)
+		{
+			handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
+			return useSkill($skill[Fire Extinguisher: Polar Vortex]);	
 		}
 	}
 	
@@ -191,7 +268,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			{
 				return useSkill($skill[Northern Explosion], false);
 			}
-			else if($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class())
+			else if(!in_robot() && $classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class())
 			{
 				auto_log_warning("None of our preferred [cold] skills available against smut orcs. Engaging in Fisticuffs.", "red");
 			}
@@ -306,7 +383,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		
 			//this is for increasing meat income. gain +25 meat per monster, at the cost of letting it act once. If healing is too costly this can be a net loss of meat. until a full cost calculator is made, limit to under 10 HP damage and no more than 20% of your remaining HP.
 			
-			if(canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && (expected_damage() < 10) && (auto_my_path() != "Way of the Surprising Fist"))
+			if(canSurvive(5.0) && (get_property("boomBoxSong") == "Total Eclipse of Your Meat") && (expected_damage() < 10) && !in_wotsf())
 			{
 				return useSkill($skill[Sing Along]);
 			}

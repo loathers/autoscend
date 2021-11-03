@@ -27,6 +27,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	retval = auto_combatDisguisesStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
+	// Path = wildfire
+	retval = auto_combatWildfireStage1(round, enemy, text);
+	if(retval != "") return retval;
+	
 	string combatState = get_property("auto_combatHandler");
 	
 	if(enemy == $monster[Your Shadow])
@@ -159,6 +163,11 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 	
+	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
+	//done after puzzle bosses. if puzzle bosses get a random buff that is ok, we would rather beat the puzzle boss.
+	retval = auto_combat_nanorhinoBuff(round, enemy, text);
+	if(retval != "") return retval;
+	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
 	if(!contains_text(combatState, "pickpocket") && ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class()) && contains_text(text, "value=\"Pick") && canSurvive(2.0))
 	{
@@ -201,7 +210,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 	
 	//duplicate turns the enemy from a single enemy into a mob containing 2 copies of this enemy. Doubling their stats and doubling their drops
-	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && (auto_my_path() != "Nuclear Autumn"))
+	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && !in_nuclear())
 	{
 		if($monsters[Dairy Goat] contains enemy)
 		{

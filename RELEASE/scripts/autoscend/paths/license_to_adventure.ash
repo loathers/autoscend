@@ -1,11 +1,16 @@
+boolean in_lta()
+{
+	return my_path() == "License to Adventure";
+}
+
+
 void bond_initializeSettings()
 {
-	if(my_path() == "License to Adventure")
+	if(in_lta())
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_wandOfNagamar", false);
 		set_property("choiceAdventure1258", 2);
-		set_property("choiceAdventure1261", 1);
 		set_property("auto_familiarChoice", "");
 	}
 	else
@@ -74,7 +79,7 @@ void bond_initializeSettings()
 
 boolean bond_initializeDay(int day)
 {
-	if(my_path() != "License to Adventure")
+	if(!in_lta())
 	{
 		return false;
 	}
@@ -201,7 +206,7 @@ boolean bond_initializeDay(int day)
 
 boolean bond_buySkills()
 {
-	if(my_path() != "License to Adventure")
+	if(!in_lta())
 	{
 		return false;
 	}
@@ -344,7 +349,7 @@ boolean bond_buySkills()
 
 boolean LM_bond()
 {
-	if(my_path() != "License to Adventure")
+	if(!in_lta())
 	{
 		return false;
 	}
@@ -395,14 +400,6 @@ boolean LM_bond()
 			return retval;
 		}
 
-		if(my_meat() < 1000)
-		{
-			set_property("choiceAdventure1261", 4);
-		}
-		else
-		{
-			set_property("choiceAdventure1261", 1);
-		}
 		boolean retval = autoAdv($location[Super Villain\'s Lair]);
 		if(!retval)
 		{

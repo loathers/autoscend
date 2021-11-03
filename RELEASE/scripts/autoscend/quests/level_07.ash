@@ -53,7 +53,7 @@ boolean L7_crypt()
 	visit_url("crypt.php");
 	use(1, $item[Evilometer]);
 
-	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && canGroundhog($location[The Defiled Alcove]))
+	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && lar_repeat($location[The Defiled Alcove]))
 	{
 
 		if((get_property("_badlyRomanticArrows").to_int() == 0) && auto_have_familiar($familiar[Reanimated Reanimator]) && (my_daycount() == 1))
@@ -87,7 +87,7 @@ boolean L7_crypt()
 
 	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12HippyFrat") != "finished";
 
-	if((get_property("cyrptNookEvilness").to_int() > 0) && canGroundhog($location[The Defiled Nook]) && !skip_in_koe)
+	if((get_property("cyrptNookEvilness").to_int() > 0) && lar_repeat($location[The Defiled Nook]) && !skip_in_koe)
 	{
 		auto_log_info("The Nook!", "blue");
 		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
@@ -107,15 +107,20 @@ boolean L7_crypt()
 		auto_log_debug("In Exploathing, skipping Defiled Nook until we get more evil eyes.");
 	}
 
-	if((get_property("cyrptNicheEvilness").to_int() > 0) && canGroundhog($location[The Defiled Niche]))
+	if((get_property("cyrptNicheEvilness").to_int() > 0) && lar_repeat($location[The Defiled Niche]))
 	{
 		if((my_daycount() == 1) && (get_property("_hipsterAdv").to_int() < 7) && is_unrestricted($familiar[Artistic Goth Kid]) && auto_have_familiar($familiar[Artistic Goth Kid]))
 		{
 			handleFamiliar($familiar[Artistic Goth Kid]);
 		}
 		autoEquip($item[Gravy Boat]);
-		knockOffCapePrep();
 
+		//prioritize extinguisher over slay the dead in Defiled Niche if its available and unused in the crypt
+		if(auto_FireExtinguisherCombatString($location[The Defiled Niche]) == "")
+		{
+			knockOffCapePrep();
+		}
+		
 		if(auto_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
 			handleFamiliar($familiar[Space Jellyfish]);
@@ -137,7 +142,6 @@ boolean L7_crypt()
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
 		auto_log_info("The Cranny!", "blue");
-		set_property("choiceAdventure523", "4");
 
 		if(my_mp() > 60)
 		{
@@ -159,22 +163,6 @@ boolean L7_crypt()
 			useNightmareFuelIfPossible();
 		}
 
-		// In Dark Gyffte: Each dieting pill gives about 23 adventures of turngen
-		if(have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
-		{
-			int desired_pills = in_hardcore() ? 6 : 4;
-			desired_pills -= my_fullness()/2;
-			auto_log_info("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
-			if(item_amount($item[dieting pill]) < desired_pills)
-			{
-				if(!bat_wantHowl($location[The Defiled Cranny]))
-				{
-					bat_formBats();
-				}
-				set_property("choiceAdventure523", "5");
-			}
-		}
-
 		auto_MaxMLToCap(auto_convertDesiredML(149), true);
 
 		addToMaximize("200ml " + auto_convertDesiredML(149) + "max");
@@ -192,7 +180,6 @@ boolean L7_crypt()
 		}
 
 		acquireHP();
-		set_property("choiceAdventure527", 1);
 		if(auto_have_familiar($familiar[Machine Elf]))
 		{
 			handleFamiliar($familiar[Machine Elf]);

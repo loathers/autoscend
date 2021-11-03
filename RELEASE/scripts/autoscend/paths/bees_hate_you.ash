@@ -1,6 +1,6 @@
 boolean in_bhy()
 {
-	return (auto_my_path() == "Bees Hate You");
+	return my_path() == "Bees Hate You";
 }
 
 
@@ -17,7 +17,7 @@ void bhy_initializeSettings()
 	}
 }
 
-boolean bees_hate_usable(string str)
+boolean bhy_usable(string str)
 {
 	if(!in_bhy())
 	{
@@ -71,7 +71,7 @@ boolean bhy_is_item_valid(item it)
 	}
 	//familiar hatchlings are always allowed. testing is too complicated and it does not really matter
 	//food, drink, combat items, and useable items are forbidden if contain the letter B in the name:
-	return bees_hate_usable(it.to_string()) && is_unrestricted(it);
+	return bhy_usable(it.to_string()) && is_unrestricted(it);
 }
 
 boolean LM_bhy()

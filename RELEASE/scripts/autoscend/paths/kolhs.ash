@@ -1,6 +1,6 @@
 boolean in_kolhs()
 {
-	return auto_my_path() == "KOLHS";
+	return my_path() == "KOLHS";
 }
 
 boolean kolhs_mandatorySchool()
@@ -99,7 +99,7 @@ void kolhs_consume()
 	{
 		if(my_adventures() < 10)
 		{
-			auto_autoConsumeOne("eat", false);
+			auto_autoConsumeOne("eat");
 			return;
 		}
 		else
@@ -110,7 +110,7 @@ void kolhs_consume()
 	if(my_adventures() < 10)	//phase 3. final drinking now that our stomach is full
 	{
 		//TODO replace it with specific manual handling. autoConsumeOne says it cannot find anything to consume.
-		auto_autoConsumeOne("drink", false);
+		auto_autoConsumeOne("drink");
 		return;
 	}
 	
