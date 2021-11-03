@@ -1411,7 +1411,7 @@ boolean autosellCrap()
 	}
 	if(in_wotsf()) 
 	{
-		return false;		//selling things in the way of the suprising fist only donates the money to charity, so we should not autosell anything automatically
+		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
 	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
 	{

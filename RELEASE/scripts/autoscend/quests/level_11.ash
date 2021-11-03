@@ -1847,7 +1847,10 @@ boolean L11_redZeppelin()
 	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
 	buffMaintain($effect[Musky], 0, 1, 1);
 	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
-	pullXWhenHaveY($item[deck of lewd playing cards], 1, 0);
+	if(!in_wotsf())
+	{
+		pullXWhenHaveY($item[deck of lewd playing cards], 1, 0);
+	}
 
 	if(item_amount($item[Flamin\' Whatshisname]) > 0)
 	{
@@ -1971,7 +1974,7 @@ boolean L11_ronCopperhead()
 
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
 	{
-		if (item_amount($item[Red Zeppelin Ticket]) < 1)
+		if (item_amount($item[Red Zeppelin Ticket]) < 1 && !in_wotsf()) // no black market in wotsf
 		{
 			// use the priceless diamond since we go to the effort of trying to get one in the Copperhead Club
 			// and it saves us 4.5k meat.
