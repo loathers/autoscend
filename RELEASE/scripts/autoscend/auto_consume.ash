@@ -1625,3 +1625,28 @@ boolean distill(item target)
 	auto_log_warning("distill(item target) mysteriously failed to create [" +target+ "]");
 	return false;
 }
+
+void prepare_food_xp_multi()
+{
+	//prepare as big an XP multi as possible for the next food item eaten
+	if(fullness_left() < 1)
+	{
+		return;
+	}
+	
+	//if you try to use shorthand it will instead give you stat % instead of stat XP %
+	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
+	
+	//TODO get effect [Ready to Eat] by using a red rocket from fireworks shop in VIP clan. +400% XP on next food item
+	
+	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	
+	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
+	
+	item milk = $item[gallon of milk];
+	if(creatable_amount(milk) > 0 || item_amount(milk) > 0 || canPull(milk))
+	{
+		acquireOrPull(milk);
+		autoEat(1, milk);
+	}
+}

@@ -429,31 +429,12 @@ boolean plumber_equipTool(stat st)
 void plumber_eat_xp()
 {
 	//eat stuff for XP.
-	if(!in_plumber() || fullness_left() == 0)
+	if(!in_plumber() || fullness_left() < 1)
 	{
 		return;
 	}
 	
-	void prepare_xp_multi()
-	{
-		//prepare as big an XP multi as possible for the next food item eaten
-		//if you try to use shorthand it will instead give you stat % instead of stat XP %
-		maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
-		
-		//TODO get effect [Ready to Eat] by using a red rocket from fireworks shop in VIP clan. +400% XP on next food item
-		
-		//TODO get [That's Just Cloud-Talk, Man] +25% all
-		
-		pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
-	}
-	
-	item milk = $item[gallon of milk];
-	if(15 <= fullness_left() && (creatable_amount(milk) > 0 || item_amount(milk) > 0 || canPull(milk)))
-	{
-		acquireOrPull(milk);
-		prepare_xp_multi();
-		autoEat(1, milk);
-	}
+	prepare_food_xp_multi();
 	
 	//TODO diabolic pizza oven with pie man was not meant to eat
 }
