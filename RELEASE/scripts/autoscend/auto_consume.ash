@@ -1634,7 +1634,7 @@ void prepare_food_xp_multi()
 		return;
 	}
 	
-	//if you try to use shorthand it will instead give you stat % instead of stat XP %
+	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
 	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
 	
 	//TODO get effect [Ready to Eat] by using a red rocket from fireworks shop in VIP clan. +400% XP on next food item
