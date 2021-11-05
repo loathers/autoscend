@@ -729,6 +729,12 @@ void initializeDay(int day)
 	{
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
+
+	// Get emotionally chipped if you have the item
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0)
+	{
+		use(1, $item[spinal-fluid-covered emotion chip]);
+	}
 	
 	//you must finish the Toot Oriole quest to unlock council quests.
 	tootOriole();
