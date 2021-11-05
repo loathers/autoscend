@@ -3970,7 +3970,7 @@ boolean auto_check_conditions(string conds)
 			// As a precaution, autoscend aborts if to_int returns 0
 			case "pathid":
 				int req_pathid = to_int(condition_data);
-				if(req_mainstat == 0)
+				if(req_pathid == 0)
 					abort('"' + condition_data + '" does not properly convert to a path id!');
 				return req_pathid == my_path_id();
 			// data: Text name of the skill, as used by to_skill()
