@@ -129,11 +129,17 @@ boolean auto_backupTarget()
 
     switch (get_property("lastCopyableMonster").to_monster()) {
         case $monster[lobsterfrogman]:
-            (item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none") ? return true : break;
+            if(item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none")
+				return true; 
+			break;
         case $monster[ninja snowman assassin]:
-            (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) ? return true : break;
+            if(item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1)
+				return true;
+			break;
         case $monster[modern zmobie]:
-            (get_property("cyrptAlcoveEvilness").to_int() > 25) ? return true : break;
+            if(get_property("cyrptAlcoveEvilness").to_int() > 25) 
+				return true;
+			break;
         case $monster[sausage goblin]:
             break; // Need some smart logic to determine when this is a good choice.
         case $monster[eldritch tentacle]:
