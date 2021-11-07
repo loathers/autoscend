@@ -373,7 +373,7 @@ boolean LX_burnDelay()
 			}
 		}
 	}
-	else if(wannaVote || wannaDigitize || wannaSausage)
+	else if(wannaVote || wannaDigitize || wannaSausage || wannaBackup)
 	{
 		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
 		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
