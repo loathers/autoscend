@@ -191,7 +191,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 
-	if(auto_backupTarget() && enemy != get_property("lastCopyableMonster").to_monster())
+	if(auto_backupTarget() && enemy != get_property("lastCopyableMonster").to_monster() && canUse($skill[Back-Up to your Last Enemy]))
 	{
 		handleTracker(enemy, $skill[Back-Up to your Last Enemy], "auto_otherstuff");
 		return useSkill($skill[Back-Up to your Last Enemy]);	
