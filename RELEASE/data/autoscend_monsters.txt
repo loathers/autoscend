@@ -53,7 +53,7 @@ banish	47	party skelteon
 banish	48	basic lihc
 
 replace	0	Banshee Librarian	item:Killing Jar>0
-replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber
+replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber,!pathid:41,!path:Wildfire
 replace	2	Knob Goblin Madam	item:Knob Goblin Perfume>0
 replace	3	Bookbat
 replace	4	Craven Carven Raven

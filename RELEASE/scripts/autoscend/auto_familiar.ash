@@ -510,12 +510,11 @@ boolean autoChooseFamiliar(location place)
 					spleenFamiliarsAvailable++;
 				}
 			}
-
-			int spleen_drops_need = (spleen_left() + 3)/4;
-			int bound = (spleen_drops_need + spleenFamiliarsAvailable - 1) / spleenFamiliarsAvailable;
 			
 			if(spleenFamiliarsAvailable > 0)
 			{
+				int spleen_drops_need = (spleen_left() + 3)/4;
+				int bound = (spleen_drops_need + spleenFamiliarsAvailable - 1) / spleenFamiliarsAvailable;
 				foreach fam in $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey]
 				{
 					if((fam.drops_today < bound) && canChangeToFamiliar(fam))
