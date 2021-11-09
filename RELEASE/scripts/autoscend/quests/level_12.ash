@@ -1253,6 +1253,13 @@ boolean L12_sonofaPrefix()
 		}
 	}
 
+	if(auto_backupTarget())
+	{
+		//going to use backup camera in next combat. Go to noob cave since available to all and 100% combat rate
+		boolean backupRetval = autoAdv($location[Noob Cave]);
+		return backupRetval;
+	}
+
 	if(!(auto_get_campground() contains $item[Source Terminal]))
 	{
 		if((auto_voteMonster() || auto_sausageGoblin()) && adjustForReplaceIfPossible())
