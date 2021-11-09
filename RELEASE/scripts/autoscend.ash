@@ -731,7 +731,7 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !in_boris())
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris())
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
