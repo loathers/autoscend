@@ -761,7 +761,7 @@ boolean doBedtime()
 			need = 4;
 		}
 		if (!haveAdvSmithing) {
-			print('No Super-Advanced Meatsmithing for chrome sword crafting!');
+			auto_log_info('No Super-Advanced Meatsmithing for chrome sword crafting!');
 		}
 		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable() && haveAdvSmithing)
 		{
