@@ -769,7 +769,7 @@ boolean doBedtime()
 		}
 		else
 		{
-			print('Did not make chrome sword');
+			auto_log_info('Did not make chrome sword');
 		}
 	}
 
