@@ -894,7 +894,7 @@ void neverendingPartyChoiceHandler(int choice)
 	}
 	else
 	{
-		abort("unhandled choice in mushroomGardenChoiceHandler");
+		abort("unhandled choice in neverendingPartyChoiceHandler");
 	}
 }
 
