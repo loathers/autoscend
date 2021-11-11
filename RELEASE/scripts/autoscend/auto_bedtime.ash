@@ -447,7 +447,7 @@ void bedtime_pulls()
 		return;
 	}
 	
-	if(item_amount($item[Muculent Machete]) == 0 && my_class() != $class[Avatar of Boris])
+	if(item_amount($item[Muculent Machete]) == 0 && (!is_boris() || !in_wotsf() || !in_pokefam())) // no need in paths where can't use machete
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
 	}
@@ -1139,7 +1139,7 @@ boolean doBedtime()
 			{
 				auto_log_info(yellowRay_str);
 			}
-			if(!get_property("_photocopyUsed").to_boolean() && (is_unrestricted($item[Deluxe Fax Machine])) && (my_adventures() > 0) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete] contains my_class()) && (item_amount($item[Clan VIP Lounge Key]) > 0))
+			if(!get_property("_photocopyUsed").to_boolean() && (is_unrestricted($item[Deluxe Fax Machine])) && (my_adventures() > 0) && !(is_boris() || is_jarlsberg() || is_pete()) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 			{
 				auto_log_info("You may have a fax that you can use. Check it out!", "blue");
 			}

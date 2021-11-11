@@ -2664,7 +2664,7 @@ void shrugAT()
 
 void shrugAT(effect anticipated)
 {
-	if ($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class())
+	if(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber())
 	{
 		return;
 	}
