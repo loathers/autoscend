@@ -1171,42 +1171,6 @@ boolean L11_unlockHiddenCity() {
 	return autoAdv($location[The Hidden Temple]);
 }
 
-void hiddenTempleChoiceHandler(int choice, string page) {
-	if (choice == 123) { // At Least It's Not Full Of Trash
-		run_choice(2); // Go to Beginning at the Beginning of Beginning
-		visit_url("choice.php");
-		cli_execute("dvorak"); // Solve puzzle and go to No Visible Means of Support (#125)
-	} else if (choice == 125) { // No Visible Means of Support
-		run_choice(3); // Unlock the Hidden City!
-	} else if (choice == 579) { // Such Great Heights
-		if (item_amount($item[The Nostril of the Serpent]) == 0 && internalQuestStatus("questL11Worship") < 3) {
-			run_choice(2); // Get The Nostril of the Serpent
-		} else {
-			run_choice(3); // +3 adventures and extend 10 effects (first time) or skip
-		}
-	} else if (choice == 580) { // The Hidden Heart of the Hidden Temple
-		if (!page.contains_text("The door is decorated with that little lightning-tailed guy from your father's diary.")) {
-			run_choice(2); // Go to Unconfusing Buttons (#584) or Confusing Buttons (#583)
-		} else {
-			run_choice(1); // Go to At Least It's Not Full Of Trash (#123)
-		}
-	} else if (choice == 581) { // Such Great Depths
-		run_choice(3); // Fight the Clan of cave bars
-	} else if (choice == 582) { // Fitting In
-		if (item_amount($item[The Nostril of the Serpent]) > 0 && internalQuestStatus("questL11Worship") < 3) {
-				run_choice(2); // Go to The Hidden Heart of the Hidden Temple (#580)
-		} else {
-			run_choice(1); // Go to Such Great Heights (#579)
-		}
-	} else if (choice == 583) { // Confusing Buttons
-		run_choice(1); // Randomly changes The Hidden Heart of the Hidden Temple
-	} else if (choice == 584) { // Unconfusing Buttons
-		run_choice(4); // Go to The Hidden Heart of the Hidden Temple (Pikachutlotal) (#580)
-	} else {
-		abort("unhandled choice in hiddenTempleChoiceHandler");
-	}
-}
-
 boolean liana_cleared(location loc)
 {
     //need to check the combat names due to wanderers

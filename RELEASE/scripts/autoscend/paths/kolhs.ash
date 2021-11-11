@@ -249,25 +249,6 @@ void kolhsChoiceHandler(int choice)
 	auto_log_debug("Running kolhsChoiceHandler");
 	switch (choice)
 	{
-		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
-			if(have_effect($effect[Jamming with the Jocks]) > 0)
-			{
-				run_choice(1); // get XP
-			}
-			else if(have_effect($effect[Nerd is the Word]) > 0)
-			{
-				run_choice(2); // get XP
-			}
-			else if(have_effect($effect[Greaser Lightnin\']) > 0)
-			{
-				run_choice(3); // get XP
-			}
-			else
-			{
-				auto_log_warning("I do not have the necessary intrinsic to gain xp in [Delirium in the Cafeterium]", "red");
-				run_choice(3); // lose HP
-			}
-			break;
 		case 772: // Saved by the Bell (KOLHS after school)
 			//we use directive property. it both tells us what to do, and helps pre-adv do stuff. for example ensure we are not wearing a familiar that is blocking us
 			int target = get_property("_NC772_directive").to_int();

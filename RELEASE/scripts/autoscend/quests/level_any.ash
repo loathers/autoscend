@@ -306,52 +306,6 @@ boolean LX_hippyBoatman() {
 	return autoAdv($location[The Old Landfill]);
 }
 
-void oldLandfillChoiceHandler(int choice) {
-	if (choice == 794) { // Once More Unto the Junk
-		if (item_amount($item[junk junk]) == 0) {
-			if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
-				run_choice(1); // go to The Bathroom of Ten Men (#795)
-			} else if(item_amount($item[Old Clothesline Pole]) == 0) {
-				run_choice(2); // go to The Den of Iquity (#796)
-			} else if(item_amount($item[Antique Cigar Sign]) == 0) {
-				run_choice(3); // go to Let's Workshop This a Little (#797)
-			} else {
-				run_choice(1); // go to The Bathroom of Ten Men (#795)
-			}
-		} else {
-			// TODO: Add handling to get the eternal car battery
-			// doesn't look like there's mafia tracking for it yet.
-			if (item_amount($item[tangle of copper wire]) == 0) {
-				run_choice(2); // go to The Den of Iquity (#796)
-			} else if (item_amount($item[Junk-Bond]) == 0) {
-				run_choice(3); // go to Let's Workshop This a Little (#797)
-			} else {
-				run_choice(1); // go to The Bathroom of Ten Men (#795)
-			}
-		}
-	} else if (choice == 795) { // The Bathroom of Ten Men
-		if (item_amount($item[Old Claw-Foot Bathtub]) == 0) {
-			run_choice(1); // get old claw-foot bathtub
-		} else {
-			run_choice(2); // fight a random enemy from the zone
-		}
-	} else if (choice == 796) { // The Den of Iquity
-		if(item_amount($item[Old Clothesline Pole]) == 0) {
-			run_choice(2); // get old clothesline pole
-		} else {
-			run_choice(3); // get tangle of copper wire
-		}
-	} else if (choice == 797) { // Let's Workshop This a Little
-		if(item_amount($item[Antique Cigar Sign]) == 0) {
-			run_choice(3); // get antique cigar sign
-		} else {
-			run_choice(1); // get Junk-Bond
-		}
-	} else {
-		abort("unhandled choice in oldLandfillChoiceHandler");
-	}
-}
-
 boolean LX_lockPicking()
 {
 	if(!auto_have_skill($skill[Lock Picking]))
@@ -540,71 +494,6 @@ boolean LX_dailyDungeonToken()
 	}
 
 	return autoAdv(1, $location[The Daily Dungeon]);
-}
-
-void dailyDungeonChoiceHandler(int choice, string[int] options)
-{
-	//noncombat choices handler for daily dungeon.
-	
-	switch (choice)
-	{
-		case 689: // The Final Reward (Daily Dungeon 15th room)
-			run_choice(1);	// Get fat loot token
-			break;
-		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
-		case 691: // Second Chest (Daily Dungeon 10th room)
-			if(options contains 2)
-			{
-				run_choice(2);	// skip 3 rooms using ring of Detect Boring Doors
-			} 
-			else
-			{
-				run_choice(3);	// skip 1 room
-			}
-			break;
-		case 692: // I Wanna Be a Door (Daily Dungeon)
-			if(options contains 3)
-			{
-				run_choice(3);	// use [Pick-O-Matic Lockpicks] to skip
-			}
-			else if(options contains 7)
-			{
-				run_choice(7);	// use [Platinum Yendorian Express Card] to skip
-			}
-			else if(item_amount($item[Skeleton Key]) > 1 ||
-			(item_amount($item[Skeleton Key]) > 0 && contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key])))
-			{
-				run_choice(2);	// use [Skeleton Key] to skip
-			}
-			else if(my_primestat() == $stat[Muscle] && my_buffedstat($stat[Muscle]) >= 30)
-			{
-				run_choice(4);	// spend adv and not guarenteed to work
-			}
-			else if(my_primestat() == $stat[Mysticality] && my_buffedstat($stat[Mysticality]) >= 30)
-			{
-				run_choice(5);	// spend adv and not guarenteed to work
-			}
-			else if(my_primestat() == $stat[Moxie] && my_buffedstat($stat[Moxie]) >= 30)
-			{
-				run_choice(6);	// spend adv and not guarenteed to work
-			}
-			else abort("I made an error and tried to adventure in the daily dungeon when I have no means of handling [I Wanna Be a Door]");
-			break;
-		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
-			if(options contains 2)
-			{
-				run_choice(2);	// use eleven-foot pole to skip
-			} 
-			else
-			{
-				run_choice(1);	// take damage to progress
-			}
-			break;
-		default:
-			abort("unhandled choice in dailyDungeonChoiceHandler");
-			break;
-
-	}
 }
 
 boolean LX_dolphinKingMap()

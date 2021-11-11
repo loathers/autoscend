@@ -7,26 +7,167 @@ boolean auto_run_choice(int choice, string page)
 	auto_log_debug("Running auto_choice_adv.ash");
 	string[int] options = available_choice_options();
 	
-	switch (choice) {
+	switch (choice)
+	{
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
+			if(possessEquipment($item[eXtreme mittens]))
+			{
+				if(possessEquipment($item[eXtreme scarf]))
+				{
+					run_choice(3); // get 200 Meat.
+				}
+				else
+				{
+					run_choice(2); // get eXtreme scarf
+				}
+			}
+			else
+			{
+				run_choice(1); // get eXtreme mittens
+			}
 		case 16: // Saint Beernard (The eXtreme Slope)
+			if(possessEquipment($item[snowboarder pants]))
+			{
+				if(possessEquipment($item[eXtreme scarf]))
+				{
+					run_choice(3); // get 200 Meat
+				}
+				else
+				{
+					run_choice(2); // get eXtreme scarf
+				}
+			}
+			else
+			{
+				run_choice(1); // get snowboarder pants
+			}
+			break;
 		case 17: // Generic Teen Comedy Snowboarding Adventure (The eXtreme Slope)
-			theeXtremeSlopeChoiceHandler(choice);
+			if(possessEquipment($item[eXtreme mittens]))
+			{
+				if(possessEquipment($item[snowboarder pants]))
+				{
+					run_choice(3); // get 200 Meat.
+				}
+				else
+				{
+					run_choice(2); // get snowboarder pants
+				}
+			}
+			else
+			{
+				run_choice(1); // get eXtreme mittens
+			}
 			break;
 		case 18: // A Flat Miner (Itznotyerzitz Mine)
+			if(possessEquipment($item[miner\'s pants]))
+			{
+				if(possessEquipment($item[7-Foot Dwarven mattock]))
+				{
+					run_choice(3); // get 100 Meat.
+				}
+				else
+				{
+					run_choice(2); // get 7-Foot Dwarven mattock
+				}
+			}
+			else
+			{
+				run_choice(1); // get miner's pants
+			}
+			break;
 		case 19: // 100% Legal (Itznotyerzitz Mine)
+			if(possessEquipment($item[miner\'s helmet]))
+			{
+				if(possessEquipment($item[miner\'s pants]))
+				{
+					run_choice(3); // get 100 Meat.
+				}
+				else
+				{
+					run_choice(2); // get miner's pants
+				}
+			}
+			else
+			{
+				run_choice(1); // get miner's helmet
+			}
+			break;
 		case 20: // See You Next Fall (Itznotyerzitz Mine)
-			itznotyerzitzMineChoiceHandler(choice);
+			if(possessEquipment($item[miner\'s helmet]))
+			{
+				if(possessEquipment($item[7-Foot Dwarven mattock]))
+				{
+					run_choice(3); // get 100 Meat.
+				}
+				else
+				{
+					run_choice(2); // get 7-Foot Dwarven mattock
+				}
+			}
+			else
+			{
+				run_choice(1); // get miner's helmet
+			}
 			break;
 		case 22: // The Arrrbitrator (The Obligatory Pirate's Cove)
+			if(possessEquipment($item[eyepatch]))
+			{
+				if(possessEquipment($item[swashbuckling pants]))
+				{
+					run_choice(3); // get 100 Meat.
+				}
+				else
+				{
+					run_choice(2); // get swashbuckling pants
+				}
+			}
+			else
+			{
+				run_choice(1); // get eyepatch
+			}
+			break;
 		case 23: // Barrie Me at Sea (The Obligatory Pirate's Cove)
+			if(possessEquipment($item[stuffed shoulder parrot]))
+			{
+				if(possessEquipment($item[swashbuckling pants]))
+				{
+					run_choice(3); // get 100 Meat.
+				}
+				else 
+				{
+				run_choice(2); // get swashbuckling pants
+				}
+			}
+			else
+			{
+				run_choice(1); // get stuffed shoulder parrot
+			}
+			break;
 		case 24: // Amatearrr Night (The Obligatory Pirate's Cove)
-			piratesCoveChoiceHandler(choice);
+			if(possessEquipment($item[stuffed shoulder parrot]))
+			{
+				if(possessEquipment($item[eyepatch]))
+				{
+					run_choice(2); // get 100 Meat.
+				}
+				else
+				{
+					run_choice(3); // get eyepatch
+				}
+			}
+			else
+			{
+				run_choice(1); // get stuffed shoulder parrot
+			}
 			break;
 		case 89: // Out in the Garden (The Haunted Gallery)
-			if (isActuallyEd() && (!possessEquipment($item[serpentine sword]) || !possessEquipment($item[snake shield]))) {
+			if(isActuallyEd() && (!possessEquipment($item[serpentine sword]) || !possessEquipment($item[snake shield])))
+			{
 				run_choice(2); // fight the snake knight (should non-Ed classes/paths do this too?)
-			} else {
+			}
+			else
+			{
 				run_choice(4); // ignore the NC & banish it for 10 adv
 			}
 			break;
@@ -34,9 +175,12 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(3); // skip;
 			break;
 		case 105: // Having a Medicine Ball (The Haunted Bathroom)
-			if (my_primestat() == $stat[Mysticality]) {
+			if(my_primestat() == $stat[Mysticality])
+			{
 				run_choice(1); // get mysticality substats
-			} else {
+			}
+			else
+			{
 				run_choice(2); // go to Bad Medicine is What You Need (#107)
 			}
 			break;
@@ -47,8 +191,12 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(4); // skip
 			break;
 		case 123: // At Least It's Not Full Of Trash (The Hidden Temple)
+			run_choice(2); // go to Beginning at the Beginning of Beginning
+			visit_url("choice.php");
+			cli_execute("dvorak"); // solve puzzle and go to No Visible Means of Support (#125)
+			break;
 		case 125: // No Visible Means of Support (The Hidden Temple)
-			hiddenTempleChoiceHandler(choice, page);
+			run_choice(3); // Unlock the Hidden City!
 			break;
 		case 139: // Bait and Switch (The Hippy Camp (Verge of War))
 			run_choice(3); // fight a War Hippy (space) cadet for outfit pieces
@@ -108,49 +256,102 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 184: // That Explains All The Eyepatches (Barrrney's Barrr)
-		case 185: // Yes, You're a Rock Starrr (Barrrney's Barrr)
-		case 186: // A Test of Testarrrsterone (Barrrney's Barrr)
-			barrrneysBarrrChoiceHandler(choice);
+			if(my_primestat() == $stat[mysticality])
+			{
+				run_choice(3); // get shot of rotgut
+			}
+			else
+			{
+				run_choice(1); // combat with tipsy pirate
+			}
 			break;
-			// Note: 187 is the Beer Pong NC and is currently handled differently.
+		case 185: // Yes, You're a Rock Starrr (Barrrney's Barrr)
+			run_choice(3); // combat with tetchy pirate at 0 drunkenness or stats otherwise
+			break;
+		case 186: // A Test of Testarrrsterone (Barrrney's Barrr)
+			if(my_primestat() == $stat[moxie])
+			{
+				run_choice(3); // moxie stats
+			}
+			else
+			{
+				run_choice(1); // stats
+			}
+			break;
+		// Note: 187 is the Beer Pong NC and is currently handled differently.
 		case 188: // The Infiltrationist (Orcish Frat House blueprints)
-			if (is_wearing_outfit("Frat Boy Ensemble")) {
+			if(is_wearing_outfit("Frat Boy Ensemble"))
+			{
 				run_choice(1);
-			} else if (equipped_amount($item[mullet wig]) == 1 && item_amount($item[briefcase]) > 0) {
+			}
+			else if(equipped_amount($item[mullet wig]) == 1 && item_amount($item[briefcase]) > 0)
+			{
 				run_choice(2);
-			} else if (equipped_amount($item[frilly skirt]) == 1 && item_amount($item[hot wing]) > 2) {
+			}
+			else if(equipped_amount($item[frilly skirt]) == 1 && item_amount($item[hot wing]) > 2)
+			{
 				run_choice(3);
-			} else abort("I tried to infiltrate the orcish frat house without being equipped for the job");
+			}
+			else abort("I tried to infiltrate the orcish frat house without being equipped for the job");
 			break;
 		case 189: // O Cap'm, My Cap'm (The Poop Deck)
 			run_choice(2); // skip
 			break;
 		case 191: // Chatterboxing (The F'c'le)
-			fcleChoiceHandler(choice);
+			if(item_amount($item[Valuable Trinket]) > 0)
+			{
+				run_choice(2); // with trinket, ignore adventure
+			}
+			else if(my_primestat() == $stat[Muscle])
+			{
+				run_choice(3); // muscle stats
+			}
+			else if(my_primestat() == $stat[Mysticality])
+			{
+				run_choice(4); // myst stats
+			}
+			else
+			{
+				run_choice(1); // moxie stats
+			}
 			break;
 		case 330: // A Shark's Chum (The Haunted Billiards Room, semi-rarely)
-			if (get_property("poolSharkCount").to_int() < 25) {
+			if(get_property("poolSharkCount").to_int() < 25)
+			{
 				run_choice(1); // train pool skill
-			} else {
+			}
+			else
+			{
 				run_choice(2); // fight hustled spectre for cube of billiard chalk
 			}
 			break;
 		case 502: // Arboreal Respite (The Spooky Forest)
-			if (internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0) {
+			if(internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0)
+			{
 				// need the mosquito larva
 				run_choice(2); // go to Consciousness of a Stream (#505)
-			} else if (!hidden_temple_unlocked()) {
-				if (item_amount($item[Tree-Holed Coin]) == 0 && item_amount($item[Spooky Temple map]) == 0) {
+			}
+			else if(!hidden_temple_unlocked())
+			{
+				if(item_amount($item[Tree-Holed Coin]) == 0 && item_amount($item[Spooky Temple map]) == 0)
+				{
+
 					// need the tree-holed coin
 					run_choice(2); // go to Consciousness of a Stream (#505)
-				} else if (item_amount($item[Spooky Temple map]) == 0 || item_amount($item[Spooky-Gro Fertilizer]) == 0) {
+				}
+				else if(item_amount($item[Spooky Temple map]) == 0 || item_amount($item[Spooky-Gro Fertilizer]) == 0)
+				{
 					// have the coin, need the spooky temple map and spooky-gro fertilizer
 					run_choice(3); // go to Through Thicket and Thinnet (#506)
-				} else {
+				}
+				else
+				{
 					// need the spooky sapling
 					run_choice(1); // go to The Road Less Traveled (#503)
 				}
-			} else {
+			}
+			else
+			{
 				auto_log_warning("In Arboreal Respite for some reason but we don't need a mosquito larva or to unlock the hidden temple!");
 				run_choice(2); // go to Consciousness of a Stream (#505)
 			}
@@ -159,34 +360,48 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(3); // go to Tree's Last Stand (#504)
 			break;
 		case 504: // Tree's Last Stand (The Spooky Forest)
-			if (item_amount($item[bar skin]) > 1) {
+			if(item_amount($item[bar skin]) > 1)
+			{
 				run_choice(2); // sell all bar skins (doesn't leave choice)
-			} else if (item_amount($item[bar skin]) == 1) {
+			}
+			else if(item_amount($item[bar skin]) == 1)
+			{
 				run_choice(1); // sell all bar skins (doesn't leave choice)
 			}
-			if (!hidden_temple_unlocked() && item_amount($item[Spooky Sapling]) == 0 && my_meat() > 100) {
+			if(!hidden_temple_unlocked() && item_amount($item[Spooky Sapling]) == 0 && my_meat() > 100)
+			{
 				run_choice(3); // get the spooky sapling (doesn't leave choice)
 			}
 			run_choice(4); // leave the choice (skip).
 			break;
 		case 505: // Consciousness of a Stream (The Spooky Forest)
-			if (internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0) {
+			if(internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0)
+			{
 				run_choice(1); // Get the mosquito larva
-			} else {
+			}
+			else
+			{
 				run_choice(2); // Get the tree-holed coin or skip
 			}
 			break;
 		case 506: // Through Thicket and Thinnet (The Spooky Forest)
-			if (!hidden_temple_unlocked() && item_amount($item[Spooky-Gro Fertilizer]) == 0) {
+			if(!hidden_temple_unlocked() && item_amount($item[Spooky-Gro Fertilizer]) == 0)
+			{
 				run_choice(2); // get the spooky-gro fertilizer
-			} else {
+			}
+			else
+			{
 				run_choice(3); // go to O Lith, Mon (#507)
 			}
 			break;
 		case 507: // O Lith, Mon (The Spooky Forest)
-			if (!hidden_temple_unlocked() && item_amount($item[Tree-Holed Coin]) > 0 && item_amount($item[Spooky Temple map]) == 0) {
+			if
+			(!hidden_temple_unlocked() && item_amount($item[Tree-Holed Coin]) > 0 && item_amount($item[Spooky Temple map]) == 0)
+			{
 				run_choice(1); // get the spooky temple map
-			} else {
+			}
+			else
+			{
 				run_choice(3); // skip
 			}
 			break;
@@ -214,18 +429,70 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // fight whichever version of the bonerdagon
 			break;
 		case 556: // More Locker Than Morlock (Itznotyerzitz Mine)
-			itznotyerzitzMineChoiceHandler(choice);
+			if(!possessOutfit("Mining Gear"))
+			{
+				run_choice(1); // get an outfit piece
+			}
+			else
+			{
+				run_choice(2); // skip
+			}
 			break;
 		case 575: // Duffel on the Double (The eXtreme Slope)
-			theeXtremeSlopeChoiceHandler(choice);
+			if(!possessOutfit("eXtreme Cold-Weather Gear"))
+			{
+				run_choice(1); // get an outfit piece
+			}
+			else
+			{
+				if(isActuallyEd()) // add other paths which don't want to waste spleen (if any) here.
+				{
+					run_choice(3); // skip
+				}
+				else
+				{
+					run_choice(4); // lucky Pill. (Clover for 1 spleen, worth?)
+				}
+			}
 			break;
 		case 579: // Such Great Heights (The Hidden Temple)
+			if(item_amount($item[The Nostril of the Serpent]) == 0 && internalQuestStatus("questL11Worship") < 3)
+			{
+				run_choice(2); // get The Nostril of the Serpent
+			}
+			else
+			{
+				run_choice(3); // +3 adventures and extend 10 effects (first time) or skip
+			}
+			break;
 		case 580: // The Hidden Heart of the Hidden Temple (The Hidden Temple)
+			if(!page.contains_text("The door is decorated with that little lightning-tailed guy from your father's diary."))
+			{
+				run_choice(2); // go to Unconfusing Buttons (#584) or Confusing Buttons (#583)
+			}
+			else
+			{
+				run_choice(1); // go to At Least It's Not Full Of Trash (#123)
+			}
+			break;
 		case 581: // Such Great Depths (The Hidden Temple)
+			run_choice(3); // fight the Clan of cave bars
+			break;
 		case 582: // Fitting In (The Hidden Temple)
+			if(item_amount($item[The Nostril of the Serpent]) > 0 && internalQuestStatus("questL11Worship") < 3)
+			{
+				run_choice(2); // Go to The Hidden Heart of the Hidden Temple (#580)
+			}
+			else
+			{
+				run_choice(1); // Go to Such Great Heights (#579)
+			}
+			break;
 		case 583: // Confusing Buttons (The Hidden Temple)
+			run_choice(1); // randomly changes The Hidden Heart of the Hidden Temple
+			break;
 		case 584: // Unconfusing Buttons (The Hidden Temple)
-			hiddenTempleChoiceHandler(choice, page);
+			run_choice(4); // go to The Hidden Heart of the Hidden Temple (Pikachutlotal) (#580)
 			break;
 		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
 			auto_reagnimatedGetPart(choice);
@@ -348,26 +615,94 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // go to finish quest the long way
 			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
+			run_choice(1);	// Get fat loot token
+			break;
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
+			if(options contains 2) // same option for both rooms
+			{
+				run_choice(2); // skip 3 rooms using ring of Detect Boring Doors
+			} 
+			else
+			{
+				run_choice(3); // skip 1 room
+			}
+			break;
 		case 692: // I Wanna Be a Door (Daily Dungeon)
+			if(options contains 3)
+			{
+				run_choice(3); // use [Pick-O-Matic Lockpicks] to skip
+			}
+			else if(options contains 7)
+			{
+				run_choice(7); // use [Platinum Yendorian Express Card] to skip
+			}
+			else if(item_amount($item[Skeleton Key]) > 1 ||
+			(item_amount($item[Skeleton Key]) > 0 && contains_text(get_property("nsTowerDoorKeysUsed"), $item[Skeleton Key])))
+			{
+				run_choice(2); // use [Skeleton Key] to skip
+			}
+			else if(my_primestat() == $stat[Muscle] && my_buffedstat($stat[Muscle]) >= 30)
+			{
+				run_choice(4); // spend adv and not guaranteed to work
+			}
+			else if(my_primestat() == $stat[Mysticality] && my_buffedstat($stat[Mysticality]) >= 30)
+			{
+				run_choice(5); // spend adv and not guaranteed to work
+			}
+			else if(my_primestat() == $stat[Moxie] && my_buffedstat($stat[Moxie]) >= 30)
+			{
+				run_choice(6); // spend adv and not guaranteed to work
+			}
+			else abort("I made an error and tried to adventure in the daily dungeon when I have no means of handling [I Wanna Be a Door]");
+			break;
 		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
-			dailyDungeonChoiceHandler(choice, options);
+			if(options contains 2)
+			{
+				run_choice(2); // use eleven-foot pole to skip
+			} 
+			else
+			{
+				run_choice(1); // take damage to progress
+			}
 			break;
 		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
+			if(have_effect($effect[Jamming with the Jocks]) > 0)
+			{
+				run_choice(1); // get XP
+			}
+			else if(have_effect($effect[Nerd is the Word]) > 0)
+			{
+				run_choice(2); // get XP
+			}
+			else if(have_effect($effect[Greaser Lightnin\']) > 0)
+			{
+				run_choice(3); // get XP
+			}
+			else
+			{
+				auto_log_warning("I do not have the necessary intrinsic to gain xp in [Delirium in the Cafeterium]", "red");
+				run_choice(3); // lose HP
+			}
+			break;
 		case 768: // The Littlest Identity Crisis (Mini-adventurer initialization)
-			if(in_quantumTerrarium()) {
-				if (my_location() == $location[The Themthar Hills]) {
+			if(in_quantumTerrarium())
+			{
+				if(my_location() == $location[The Themthar Hills])
+				{
 					run_choice(4); // Sauceror is a lep and starfish
 				}
-				else if (my_level() < 13) {
+				else if(my_level() < 13)
+				{
 					run_choice(2); // Turtle Tamer is a volleyball and a starfish at level 5
 				}
-				else {
+				else
+				{
 					run_choice(6); // Accordion Thief is a fairy and ghoul whelp, with some free buffs.
 				}
 			}
-			else {
+			else
+			{
 				run_choice(2); // Turtle Tamer is a decent fallback pick.
 			}
 			break;
@@ -375,29 +710,44 @@ boolean auto_run_choice(int choice, string page)
 			kolhsChoiceHandler(choice);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
-			if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
+			if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions())
+			{
 				run_choice(3); // relocate lawyers to park
-			} else if (have_effect($effect[Thrice-Cursed]) > 0) {
+			}
+			else if(have_effect($effect[Thrice-Cursed]) > 0)
+			{
 				run_choice(1); // fight the spirit
-			} else {
+			}
+			else
+			{
 				run_choice(2); // get cursed
 			}
 			break;
 		case 781: // Earthbound and Down (An Overgrown Shrine (Northwest))
-			if (get_property("hiddenApartmentProgress").to_int() == 0) {
+			if(get_property("hiddenApartmentProgress").to_int() == 0)
+			{
 				run_choice(1); // unlock the Hidden Apartment Building
-			} else if (item_amount($item[moss-covered stone sphere]) > 0) {
+			}
+			else if(item_amount($item[moss-covered stone sphere]) > 0)
+			{
 				run_choice(2); // get the stone triangle
-			} else {
+			}
+			else
+			{
 				run_choice(6); // skip
 			}
 			break;
 		case 783: // Water You Dune (An Overgrown Shrine (Southwest))
-			if (get_property("hiddenHospitalProgress").to_int() == 0) {
+			if(get_property("hiddenHospitalProgress").to_int() == 0)
+			{
 				run_choice(1); // unlock the Hidden Hospital
-			} else if (item_amount($item[dripping stone sphere]) > 0) {
+			}
+			else if(item_amount($item[dripping stone sphere]) > 0)
+			{
 				run_choice(2); // get the stone triangle
-			} else {
+			}
+			else
+			{
 				run_choice(6); // skip
 			}
 			break;
@@ -405,29 +755,44 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // fight the spirit
 			break;
 		case 785: // Air Apparent (An Overgrown Shrine (Northeast))
-			if (get_property("hiddenOfficeProgress").to_int() == 0) {
+			if(get_property("hiddenOfficeProgress").to_int() == 0)
+			{
 				run_choice(1); // unlock the Hidden Office Building
-			} else if (item_amount($item[crackling stone sphere]) > 0) {
+			}
+			else if(item_amount($item[crackling stone sphere]) > 0)
+			{
 				run_choice(2); // get the stone triangle
-			} else {
+			}
+			else
+			{
 				run_choice(6); // skip
 			}
 			break;
 		case 786: // Working Holiday (The Hidden Office Building)
-			if (item_amount($item[McClusky File (Complete)]) > 0) {
+			if(item_amount($item[McClusky File (Complete)]) > 0)
+			{
 				run_choice(1); // fight the spirit
-			} else if (item_amount($item[Boring Binder Clip]) == 0) {
+			}
+			else if(item_amount($item[Boring Binder Clip]) == 0)
+			{
 				run_choice(2); // get boring binder clip
-			} else {
+			}
+			else
+			{
 				run_choice(3); // fight an accountant
 			}
 			break;
 		case 787: // Fire When Ready (An Overgrown Shrine (Southeast))
-			if (get_property("hiddenBowlingAlleyProgress").to_int() == 0) {
+			if(get_property("hiddenBowlingAlleyProgress").to_int() == 0)
+			{
 				run_choice(1); // unlock the Hidden Bowling Alley
-			} else if (item_amount($item[scorched stone sphere]) > 0) {
+			}
+			else if(item_amount($item[scorched stone sphere]) > 0)
+			{
 				run_choice(2); // get the stone triangle
-			} else {
+			}
+			else
+			{
 				run_choice(6); // skip
 			}
 			break;
@@ -435,16 +800,22 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
 			break;
 		case 789: // Where Does The Lone Ranger Take His Garbagester? (The Hidden Park)
-			if (get_property("relocatePygmyJanitor").to_int() != my_ascensions()) {
+			if(get_property("relocatePygmyJanitor").to_int() != my_ascensions())
+			{
 				run_choice(2); // Relocate the Pygmy Janitor to the park
-			} else {
+			}
+			else
+			{
 				run_choice(1); // Get Hidden City zone items
 			}
 			break;
 		case 791: // Legend of the Temple in the Hidden City (A Massive Ziggurat)
-			if (item_amount($item[stone triangle]) == 4) {
+			if(item_amount($item[stone triangle]) == 4)
+			{
 				run_choice(1); // fight the Protector Spirit (or replacement)
-			} else {
+			}
+			else
+			{
 				run_choice(6); // skip
 			}
 			break;
@@ -463,10 +834,70 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 794: // Once More Unto the Junk (The Old Landfill)
+			if(item_amount($item[junk junk]) == 0)
+			{
+				if(item_amount($item[Old Claw-Foot Bathtub]) == 0)
+				{
+					run_choice(1); // go to The Bathroom of Ten Men (#795)
+				}
+				else if(item_amount($item[Old Clothesline Pole]) == 0)
+				{
+					run_choice(2); // go to The Den of Iquity (#796)
+				}
+				else if(item_amount($item[Antique Cigar Sign]) == 0)
+				{
+					run_choice(3); // go to Let's Workshop This a Little (#797)
+				}
+				else
+				{
+					run_choice(1); // go to The Bathroom of Ten Men (#795)
+				}
+			}
+			else // TODO: Add handling to get the eternal car battery (mafia tracking?)
+			{
+				if(item_amount($item[tangle of copper wire]) == 0)
+				{
+					run_choice(2); // go to The Den of Iquity (#796)
+				}
+				else if(item_amount($item[Junk-Bond]) == 0)
+				{
+					run_choice(3); // go to Let's Workshop This a Little (#797)
+				}
+				else
+				{
+					run_choice(1); // go to The Bathroom of Ten Men (#795)
+				}
+			}
+			break;
 		case 795: // The Bathroom of Ten Men (The Old Landfill)
+			if(item_amount($item[Old Claw-Foot Bathtub]) == 0)
+			{
+				run_choice(1); // get old claw-foot bathtub
+			}
+			else
+			{
+				run_choice(2); // fight a random enemy from the zone
+			}
+			break;
 		case 796: // The Den of Iquity (The Old Landfill)
+			if(item_amount($item[Old Clothesline Pole]) == 0)
+			{
+				run_choice(2); // get old clothesline pole
+			}
+			else
+			{
+				run_choice(3); // get tangle of copper wire
+			}
+			break;
 		case 797: // Let's Workshop This a Little (The Old Landfill)
-			oldLandfillChoiceHandler(choice);
+			if(item_amount($item[Antique Cigar Sign]) == 0)
+			{
+				run_choice(3); // get antique cigar sign
+			}
+			else
+			{
+				run_choice(1); // get Junk-Bond
+			}
 			break;
 		case 822: // The Prince's Ball (In the Restroom)
 		case 823: // The Prince's Ball (On the Dance Floor)
@@ -507,36 +938,56 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
 			boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
-			if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
+			if(is_boris() || in_wotsf() || (in_nuclear() && in_hardcore()))
+			{
 				needSpectacles = false;
 			}
-			if (needSpectacles) {
+			if(needSpectacles)
+			{
 				run_choice(3); // get Lord Spookyraven's spectacles
-			} else if (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1) {
+			}
+			else if(item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1)
+			{
 				run_choice(4); // get disposable instant camera
-			} else if (my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve()) {
+			}
+			else if(my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve())
+			{
 				run_choice(1); // get ~500 meat
-			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[mysticality] && my_buffedstat($stat[mysticality]) < 150) {
+			}
+			else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[mysticality] && my_buffedstat($stat[mysticality]) < 150)
+			{
 				run_choice(5); // spend 1 ghost key for primestat, get ~200 mysticality XP
-			} else {
+			}
+			else
+			{
 				run_choice(2); // get min(200,mys) of mys XP
 			}
 			break;
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
-			if(options contains 4) {
+			if(options contains 4)
+			{
 				run_choice(4); // only shows up rarely. when this line was added it was worth 1.3 million in mall
-			} if(in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
+			}
+			if(in_bhy() && item_amount($item[Antique Hand Mirror]) < 1)
+			{
 				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
-			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie] && my_buffedstat($stat[moxie]) < 150) {
+			}
+			else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie] && my_buffedstat($stat[moxie]) < 150)
+			{
 				run_choice(5); // spend 1 ghost key for primestat, get ~200 moxie XP
-			} else {
+			}
+			else
+			{
 				run_choice(1); // get moxie substats
 			}
 			break;
 		case 880: // One Elegant Nightstand (The Haunted Bedroom)
-			if (internalQuestStatus("questM21Dance") < 2 && item_amount($item[Lady Spookyraven\'s Finest Gown]) == 0) {
+			if(internalQuestStatus("questM21Dance") < 2 && item_amount($item[Lady Spookyraven\'s Finest Gown]) == 0)
+			{
 				run_choice(1); // get Lady Spookyraven's Gown
-			} else {
+			}
+			else
+			{
 				run_choice(2); // get elegant nightstick
 			}
 			break;
@@ -553,9 +1004,12 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(4); // skip
 			break;
 		case 889: // Take a Look, it's in a Book! (Fall) (The Haunted Library)
-			if (item_amount($item[dictionary]) == 0 && get_property("auto_getDictionary").to_boolean()) {
+			if(item_amount($item[dictionary]) == 0 && get_property("auto_getDictionary").to_boolean())
+			{
 				run_choice(4); // get the dictionary
-			} else {
+			}
+			else
+			{
 				run_choice(5); // skip
 			}
 			break;
@@ -566,18 +1020,26 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // go to You Found Your Thrill (#924)
 			break;
 		case 924: // You Found Your Thrill (The Black Forest)
-			if(get_property("auto_getBeehive").to_boolean() && my_adventures() > 3) {
+			if(get_property("auto_getBeehive").to_boolean() && my_adventures() > 3)
+			{
 				run_choice(3); // go to Bee Persistent (#1018)
-			} else if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte()) {
+			}
+			else if(!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte())
+			{
 				run_choice(2); // go to The Blackberry Cobbler (#928)
-			} else {
+			}
+			else
+			{
 				run_choice(1); // Attack the bushes (fight blackberry bush)
 			}
 			break;
 		case 928: // You Found Your Thrill (The Black Forest)
-			if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte()) {
+			if(!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte())
+			{
 				run_choice(4); // get Blackberry Galoshes
-			} else {
+			}
+			else
+			{
 				run_choice(5); // skip
 			}
 			break;
@@ -588,23 +1050,32 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(2); // choose to not fight a rat 
 			break;
 		case 1002: // Temple of the Legend in the Hidden City (A Massive Ziggurat/Actually Ed the Undying)
-			if (item_amount($item[stone triangle]) == 4) {
+			if(item_amount($item[stone triangle]) == 4)
+			{
 				run_choice(1); // Put the Ancient Amulet back
-			} else {
+			}
+			else
+			{
 				run_choice(6); // skip
 			}
 			break;
 		case 1018: // Bee Persistent (The Black Forest)
-			if (get_property("auto_getBeehive").to_boolean() && my_adventures() > 2) {
+			if(get_property("auto_getBeehive").to_boolean() && my_adventures() > 2)
+			{
 				run_choice(1); // go to Bee Rewarded (#1019)
-			} else {
+			}
+			else
+			{
 				run_choice(2); // skip
 			}
 			break;
 		case 1019: // Bee Rewarded (The Black Forest)
-			if (get_property("auto_getBeehive").to_boolean()) {
+			if(get_property("auto_getBeehive").to_boolean())
+			{
 				run_choice(1); // get the beehive
-			} else {
+			}
+			else
+			{
 				run_choice(2); // skip
 			}
 			break;
@@ -613,7 +1084,7 @@ boolean auto_run_choice(int choice, string page)
 			edUnderworldChoiceHandler(choice);
 			break;
 		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
-			if (isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
+			if(isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
 			{
 				run_choice(3); // skip
 			}
@@ -626,18 +1097,26 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // finish init portion of quest
 			break;
 		case 1060: // Temporarily Out of Skeletons (The Skeleton Store)
-			if (item_amount($item[Skeleton Store office key]) == 0) {
+			if(item_amount($item[Skeleton Store office key]) == 0)
+			{
 				run_choice(1); // Skeleton Store office key
-			} else if (internalQuestStatus("questM23Meatsmith") < 1) {
+			}
+			else if(internalQuestStatus("questM23Meatsmith") < 1)
+			{
 				run_choice(4); // fight The former owner of the Skeleton Store
-			} else {
+			}
+			else
+			{
 				run_choice(2); // get ring of telling skeletons what to do or 300 meat
 			}
 			break;
 		case 1061: // Heart of Madness (Madness Bakery Quest)
-			if(internalQuestStatus("questM25Armorer") <= 2) {
+			if(internalQuestStatus("questM25Armorer") <= 2)
+			{
 				run_choice(1);
-			} else {
+			}
+			else
+			{
 				run_choice(5);
 			}
 			break;
@@ -680,11 +1159,16 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1115: // VYKEA! (VYKEA)
-			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community()) {
+			if(!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community())
+			{
 				run_choice(1); // get consumables
-			} else if (!get_property("_VYKEALoungeRaided").to_boolean()) {
+			}
+			else if(!get_property("_VYKEALoungeRaided").to_boolean())
+			{
 				run_choice(4); // get Wal-Mart gift certificates
-			} else {
+			}
+			else
+			{
 				run_choice(6); // skip
 			}
 			break;
@@ -777,7 +1261,7 @@ void main(int choice, string page)
 	}
 	finally
 	{
-		if (!ret)
+		if(!ret)
 		{
 			auto_log_error("Error running auto_choice_adv.ash, setting auto_interrupt=true");
 			set_property("auto_interrupt", true);

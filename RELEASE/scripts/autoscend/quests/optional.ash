@@ -717,42 +717,6 @@ boolean LX_pirateOutfit() {
 	return autoAdv($location[The Obligatory Pirate\'s Cove]);
 }
 
-void piratesCoveChoiceHandler(int choice) {
-	if (choice == 22) { // The Arrrbitrator
-		if (possessEquipment($item[eyepatch])) {
-			if (possessEquipment($item[swashbuckling pants])) {
-				run_choice(3); // get 100 Meat.
-			} else {
-				run_choice(2); // get swashbuckling pants
-			}
-		} else {
-			run_choice(1); // get eyepatch
-		}
-	} else if (choice == 23) { // Barrie Me at Sea
-		if (possessEquipment($item[stuffed shoulder parrot])) {
-			if (possessEquipment($item[swashbuckling pants])) {
-				run_choice(3); // get 100 Meat.
-			} else {
-				run_choice(2); // get swashbuckling pants
-			}
-		} else {
-			run_choice(1); // get stuffed shoulder parrot
-		}
-	} else if (choice == 24) { // Amatearrr Night
-		if (possessEquipment($item[stuffed shoulder parrot])) {
-			if (possessEquipment($item[eyepatch])) {
-				run_choice(2); // get 100 Meat.
-			} else {
-				run_choice(3); // get eyepatch
-			}
-		} else {
-			run_choice(1); // get stuffed shoulder parrot
-		}
-	} else {
-		abort("unhandled choice in piratesCoveChoiceHandler");
-	}
-}
-
 string beerPong(string page)
 {
 	record r {
@@ -939,27 +903,6 @@ boolean LX_joinPirateCrew() {
 	return false;
 }
 
-void barrrneysBarrrChoiceHandler(int choice) {
-	auto_log_info("barrrneysBarrrChoiceHandler Running choice " + choice, "blue");
-	if (choice == 184) { // That Explains All The Eyepatches
-		if (my_primestat() == $stat[mysticality]) {
-			run_choice(3); // get shot of rotgut
-		} else {
-			run_choice(1); // combat with tipsy pirate
-		}
-	} else if (choice == 185) { // Yes, You're a Rock Starrr
-		run_choice(3); // combat with tetchy pirate at 0 drunkenness or stats otherwise
-	} else if (choice == 186) { // A Test of Testarrrsterone
-		if (my_primestat() == $stat[moxie]) {
-			run_choice(3); // moxie stats
-		} else {
-			run_choice(1); // stats
-		}
-	} else {
-		abort("unhandled choice in barrrneysBarrrChoiceHandler");
-	}
-}
-
 boolean LX_fledglingPirateIsYou() {
 	if (internalQuestStatus("questM12Pirate") != 5) {
 		return false;
@@ -972,28 +915,6 @@ boolean LX_fledglingPirateIsYou() {
 	auto_log_info("F'c'le t'me!", "blue");
 	autoOutfit("Swashbuckling Getup");
 	return autoAdv($location[The F\'c\'le]);
-}
-
-void fcleChoiceHandler(int choice) {
-	if (choice == 191) {
-		if(item_amount($item[Valuable Trinket]) > 0) {
-			run_choice(2);
-		} else {
-			switch(my_primestat()) {
-				case $stat[Muscle]:
-					run_choice(3);
-					break;
-				case $stat[Mysticality]:
-					run_choice(4);
-					break;
-				case $stat[Moxie]:
-					run_choice(1);
-					break;
-			}
-		}
-	} else {
-		abort("unhandled choice in fcleChoiceHandler");
-	}
 }
 
 boolean LX_unlockBelowdecks() {

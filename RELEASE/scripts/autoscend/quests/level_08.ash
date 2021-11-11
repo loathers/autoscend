@@ -344,49 +344,6 @@ boolean L8_getMineOres()
 	return false;
 }
 
-void itznotyerzitzMineChoiceHandler(int choice) {
-	auto_log_info("itznotyerzitzMineChoiceHandler Running choice " + choice, "blue");
-	if (choice == 18) { // A Flat Miner
-		if (possessEquipment($item[miner\'s pants])) {
-			if (possessEquipment($item[7-Foot Dwarven mattock])) {
-				run_choice(3); // get 100 Meat.
-			} else {
-				run_choice(2); // get 7-Foot Dwarven mattock
-			}
-		} else {
-			run_choice(1); // get miner's pants
-		}
-	} else if (choice == 19) { // 100% Legal
-		if (possessEquipment($item[miner\'s helmet])) {
-			if (possessEquipment($item[miner\'s pants])) {
-				run_choice(3); // get 100 Meat.
-			} else {
-				run_choice(2); // get miner's pants
-			}
-		} else {
-			run_choice(1); // get miner's helmet
-		}
-	} else if (choice == 20) { // See You Next Fall
-		if (possessEquipment($item[miner\'s helmet])) {
-			if (possessEquipment($item[7-Foot Dwarven mattock])) {
-				run_choice(3); // get 100 Meat.
-			} else {
-				run_choice(2); // get 7-Foot Dwarven mattock
-			}
-		} else {
-			run_choice(1); // get miner's helmet
-		}
-	} else if (choice == 556) { // More Locker Than Morlock
-		if (!possessOutfit("Mining Gear")) {
-			run_choice(1); // get an outfit piece
-		} else {
-			run_choice(2); // skip
-		}
-	} else {
-		abort("unhandled choice in itznotyerzitzMineChoiceHandler");
-	}
-}
-
 boolean L8_trapperExtreme()
 {
 	if(internalQuestStatus("questL08Trapper") != 2)
@@ -416,53 +373,6 @@ boolean L8_trapperExtreme()
 	//try to get extreme points
 	auto_log_info("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
 	return autoAdv($location[The eXtreme Slope]);
-}
-
-void theeXtremeSlopeChoiceHandler(int choice) {
-	auto_log_info("theeXtremeSlopeChoiceHandler Running choice " + choice, "blue");
-	if (choice == 15) { // Yeti Nother Hippy
-		if (possessEquipment($item[eXtreme mittens])) {
-			if (possessEquipment($item[eXtreme scarf])) {
-				run_choice(3); // get 200 Meat.
-			} else {
-				run_choice(2); // get eXtreme scarf
-			}
-		} else {
-			run_choice(1); // get eXtreme mittens
-		}
-	} else if (choice == 16)  { // Saint Beernard
-		if (possessEquipment($item[snowboarder pants])) {
-			if (possessEquipment($item[eXtreme scarf])) {
-				run_choice(3); // get 200 Meat.
-			} else {
-				run_choice(2); // get eXtreme scarf
-			}
-		} else {
-			run_choice(1); // get snowboarder pants
-		}
-	} else if (choice == 17) { // Generic Teen Comedy Snowboarding Adventure
-		if (possessEquipment($item[eXtreme mittens])) {
-			if (possessEquipment($item[snowboarder pants])) {
-				run_choice(3); // get 200 Meat.
-			} else {
-				run_choice(2); // get snowboarder pants
-			}
-		} else {
-			run_choice(1); // get eXtreme mittens
-		}
-	} else if (choice == 575) { // Duffel on the Double
-		if (!possessOutfit("eXtreme Cold-Weather Gear")) {
-			run_choice(1); // get an outfit piece
-		} else {
-			if (isActuallyEd()) { // add other paths which don't want to waste spleen (if any) here.
-				run_choice(3); // skip
-			} else {
-				run_choice(4); // Lucky Pill. (Clover for 1 spleen, worth?)
-			}
-		}
-	} else {
-		abort("unhandled choice in theeXtremeSlopeChoiceHandler");
-	}
 }
 
 boolean L8_trapperSlopeSoftcore()
