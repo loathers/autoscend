@@ -755,13 +755,21 @@ boolean doBedtime()
 	{
 		item oreGoal = to_item(get_property("trapperOre"));
 		int need = 1;
+		boolean haveAdvSmithing = have_skill($skill[Super-Advanced Meatsmithing]);
 		if(oreGoal == $item[Chrome Ore])
 		{
 			need = 4;
 		}
-		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable())
+		if (!haveAdvSmithing) {
+			auto_log_info('No Super-Advanced Meatsmithing for chrome sword crafting!');
+		}
+		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable() && haveAdvSmithing)
 		{
 			cli_execute("make " + $item[Chrome Sword]);
+		}
+		else
+		{
+			auto_log_info('Did not make chrome sword');
 		}
 	}
 
