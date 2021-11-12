@@ -436,8 +436,6 @@ boolean LX_wildfire_water()
 		if(LX_wildfire_hose($location[The Hidden Temple])) return true;
 	}
 	
-	if(internalQuestStatus("questL11Worship") < 3 && LX_wildfire_hose($location[The Hidden Temple])) return true;
-	
 	if(!inKnollSign())		//knoll sign does not need to farm components for bitchin meatcar
 	{
 		if(LX_wildfire_hose($location[The Degrassi Knoll Garage])) return true;
