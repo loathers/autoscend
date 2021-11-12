@@ -431,6 +431,11 @@ boolean LX_wildfire_water()
 	//individual location watering first
 	
 	//for stone wool. needed at level 11 but we acquire it early using [Baa'baa'bu'ran]. Skip if we've somehow already progressed past that stage
+	if(internalQuestStatus("questL11Worship") < 3)
+	{
+		if(LX_wildfire_hose($location[The Hidden Temple])) return true;
+	}
+	
 	if(internalQuestStatus("questL11Worship") < 3 && LX_wildfire_hose($location[The Hidden Temple])) return true;
 	
 	if(!inKnollSign())		//knoll sign does not need to farm components for bitchin meatcar
