@@ -296,7 +296,7 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		resGoals[$element[hot]] = 9;
 		resGoals[$element[stench]] = 9;
 		// check to see if we can acquire sufficient hot and stench res for the kitchen
-		int [element] resPossible = provideResistances(resGoals, true, true);
+		int [element] resPossible = provideResistances(resGoals, $location[The Haunted Kitchen], true, true);
 		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
 	}
 
@@ -309,7 +309,7 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		int [element] resGoal;
 		resGoal[$element[hot]] = 9;
 		resGoal[$element[stench]] = 9;
-		int [element] resPossible = provideResistances(resGoal, true, false);
+		int [element] resPossible = provideResistances(resGoal, $location[The Haunted Kitchen], true, false);
 		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + resPossible[$element[hot]] + "/" + resPossible[$element[stench]] + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
 		if (autoAdv($location[The Haunted Kitchen])) {
 			return true;
@@ -1661,7 +1661,7 @@ boolean L11_mauriceSpookyraven()
 		{
 			resGoal[ele] = 3;
 		}
-		provideResistances(resGoal, false);
+		provideResistances(resGoal, $location[Summoning Chamber], false);
 
 		# The autoAdvBypass case is probably suitable for Ed but we'd need to verify it.
 		if (isActuallyEd())

@@ -1214,6 +1214,8 @@ void addToMaximize(string add);
 void removeFromMaximize(string rem);
 boolean maximizeContains(string check);
 boolean simMaximize();
+boolean simMaximize(location loc);
+boolean simMaximizeWith(location loc, string add);
 boolean simMaximizeWith(string add);
 float simValue(string modifier);
 void equipMaximizedGear();
@@ -1347,23 +1349,41 @@ boolean LX_freeCombatsTask();
 
 ########################################################################################################
 //Defined in autoscend/auto_providers.ash
+float providePlusCombat(int amt, location loc, boolean doEquips, boolean speculative);
 float providePlusCombat(int amt, boolean doEquips, boolean speculative);
+boolean providePlusCombat(int amt, location loc, boolean doEquips);
 boolean providePlusCombat(int amt, boolean doEquips);
+boolean providePlusCombat(int amt, location loc);
 boolean providePlusCombat(int amt);
+float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean speculative);
 float providePlusNonCombat(int amt, boolean doEquips, boolean speculative);
+boolean providePlusNonCombat(int amt, location loc, boolean doEquips);
 boolean providePlusNonCombat(int amt, boolean doEquips);
+boolean providePlusNonCombat(int amt, location loc);
 boolean providePlusNonCombat(int amt);
+float provideInitiative(int amt, location loc, boolean doEquips, boolean speculative);
 float provideInitiative(int amt, boolean doEquips, boolean speculative);
+boolean provideInitiative(int amt, location loc, boolean doEquips);
 boolean provideInitiative(int amt, boolean doEquips);
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative);
 int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative);
+boolean provideResistances(int [element] amt, location loc, boolean doEquips);
 boolean provideResistances(int [element] amt, boolean doEquips);
+float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolean speculative);
 float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative);
+boolean provideStats(int [stat] amt, location loc, boolean doEquips);
 boolean provideStats(int [stat] amt, boolean doEquips);
+float provideMuscle(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMuscle(int amt, boolean doEquips, boolean speculative);
+boolean provideMuscle(int amt, location loc, boolean doEquips);
 boolean provideMuscle(int amt, boolean doEquips);
+float provideMysticality(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMysticality(int amt, boolean doEquips, boolean speculative);
+boolean provideMysticality(int amt, location loc, boolean doEquips);
 boolean provideMysticality(int amt, boolean doEquips);
+float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
+boolean provideMoxie(int amt, location loc, boolean doEquips);
 boolean provideMoxie(int amt, boolean doEquips);
 
 ########################################################################################################
