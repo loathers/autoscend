@@ -3,12 +3,7 @@
 boolean auto_buySkills()  // This handles skill acquisition for general paths
 {
 	// TODO: Torso Awareness is worth obtaining in other cases too.
-	int torsoPrice = 10000;
-	if(get_property("auto_torsoAcquirePrice").to_int() != 0)
-	{
-		torsoPrice = get_property("auto_torsoAcquirePrice").to_int();
-	}
-	if((my_meat() >= torsoPrice)
+	if((my_meat() >= get_property("auto_torsoAcquirePrice").to_int())
 	   && gnomads_available()
 	   && (!have_skill($skill[Torso Awareness]))
 	   && (item_amount($item[January\'s Garbage Tote]) != 0)

@@ -317,6 +317,7 @@ void auto_settingsDefaults()
 	defaultConfig("auto_bedtime_pulls_skip_clover", "false");
 	defaultConfig("auto_bedtime_pulls_pvp_multi", "0.3");
 	defaultConfig("auto_bedtime_pulls_min_desirability", "1.0");
+    defaultConfig("auto_torsoAcquirePrice", "10000");
 }
 
 void auto_settings()
