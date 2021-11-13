@@ -73,16 +73,17 @@ void L9_chasmMaximizeForNoncombat()
 {
 	auto_log_info("Let's assess our scores for blech house", "blue");
 	string best = "mus";
+	location loc = $location[The Smut Orc Logging Camp];
 	string mustry = "100muscle,100weapon damage,1000weapon damage percent";
 	string mystry = "100mysticality,100spell damage,1000 spell damage percent";
 	string moxtry = "100moxie,1000sleaze resistance";
-	simMaximizeWith(mustry);
+	simMaximizeWith(loc, mustry);
 	float musmus = simValue("Buffed Muscle");
 	float musflat = simValue("Weapon Damage");
 	float musperc = simValue("Weapon Damage Percent");
 	int musscore = floor(square_root((musmus + musflat)/15*(1+musperc/100)));
 	auto_log_info("Muscle score: " + musscore, "blue");
-	simMaximizeWith(mystry);
+	simMaximizeWith(loc, mystry);
 	float mysmys = simValue("Buffed Mysticality");
 	float mysflat = simValue("Spell Damage");
 	float mysperc = simValue("Spell Damage Percent");
@@ -92,7 +93,7 @@ void L9_chasmMaximizeForNoncombat()
 	{
 		best = "mys";
 	}
-	simMaximizeWith(moxtry);
+	simMaximizeWith(loc, moxtry);
 	float moxmox = simValue("Buffed Moxie");
 	float moxres = simValue("Sleaze Resistance");
 	int moxscore = floor(square_root(moxmox/30*(1+moxres*0.69)));
@@ -667,7 +668,7 @@ boolean L9_twinPeak()
 	boolean attempt = false;
 	if(!attempt && needInit)
 	{
-		if(provideInitiative(40,true))
+		if(provideInitiative(40, $location[Twin Peak], true))
 		{
 			set_property("choiceAdventure606", "4");
 			attempt = true;
@@ -729,10 +730,10 @@ boolean L9_twinPeak()
 		int [element] resGoal;
 		resGoal[$element[stench]] = 4;
 		// check if we can get enough stench res before we start applying anything
-		int [element] resPossible = provideResistances(resGoal, true, true);
+		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true);
 		if(resPossible[$element[stench]] >= 4)
 		{
-			provideResistances(resGoal, true);
+			provideResistances(resGoal, $location[Twin Peak], true);
 			set_property("choiceAdventure606", "1");
 			attempt = true;
 		}
@@ -860,7 +861,8 @@ boolean L9_oilPeak()
 	// Maximize Asdon usage
 	if((have_effect($effect[Driving Recklessly]) == 0) && (have_effect($effect[Driving Wastefully]) == 0))
 	{
-		if((((simMaximizeWith("1000ml 75min")) && (!simMaximizeWith("1000ml 100min"))) || ((simMaximizeWith("1000ml 25min")) && (!simMaximizeWith("1000ml 50min"))) || (!simMaximizeWith("1000ml 11min"))) && (have_effect($effect[Driving Wastefully]) == 0))
+		location loc = $location[Oil Peak];
+		if((((simMaximizeWith(loc, "1000ml 75min")) && (!simMaximizeWith(loc, "1000ml 100min"))) || ((simMaximizeWith(loc, "1000ml 25min")) && (!simMaximizeWith(loc, "1000ml 50min"))) || (!simMaximizeWith(loc, "1000ml 11min"))) && (have_effect($effect[Driving Wastefully]) == 0))
 		{
 			asdonBuff($effect[Driving Recklessly]);
 		}

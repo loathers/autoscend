@@ -447,7 +447,7 @@ void bedtime_pulls()
 		return;
 	}
 	
-	if(item_amount($item[Muculent Machete]) == 0 && my_class() != $class[Avatar of Boris])
+	if(item_amount($item[Muculent Machete]) == 0 && (!is_boris() || !in_wotsf() || !in_pokefam())) // no need in paths where can't use machete
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
 	}
@@ -755,13 +755,21 @@ boolean doBedtime()
 	{
 		item oreGoal = to_item(get_property("trapperOre"));
 		int need = 1;
+		boolean haveAdvSmithing = have_skill($skill[Super-Advanced Meatsmithing]);
 		if(oreGoal == $item[Chrome Ore])
 		{
 			need = 4;
 		}
-		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable())
+		if (!haveAdvSmithing) {
+			auto_log_info('No Super-Advanced Meatsmithing for chrome sword crafting!');
+		}
+		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable() && haveAdvSmithing)
 		{
 			cli_execute("make " + $item[Chrome Sword]);
+		}
+		else
+		{
+			auto_log_info('Did not make chrome sword');
 		}
 	}
 
@@ -1131,7 +1139,7 @@ boolean doBedtime()
 			{
 				auto_log_info(yellowRay_str);
 			}
-			if(!get_property("_photocopyUsed").to_boolean() && (is_unrestricted($item[Deluxe Fax Machine])) && (my_adventures() > 0) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete] contains my_class()) && (item_amount($item[Clan VIP Lounge Key]) > 0))
+			if(!get_property("_photocopyUsed").to_boolean() && (is_unrestricted($item[Deluxe Fax Machine])) && (my_adventures() > 0) && !(is_boris() || is_jarlsberg() || is_pete()) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 			{
 				auto_log_info("You may have a fax that you can use. Check it out!", "blue");
 			}

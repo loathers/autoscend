@@ -182,7 +182,7 @@ int auto_estimatedAdventuresForChaosButterfly()
 	{
 		auto_log_info("Estimating adventures needed to obtain chaos butterfly.", "green");
 		handleFamiliar("item");
-		simMaximizeWith("20 item");
+		simMaximizeWith($location[The Castle in the Clouds in the Sky (Ground Floor)], "20 item");
 		expectedItemDropMulti = 1 + simValue("Item Drop")/100;
 	}
 
@@ -1191,7 +1191,7 @@ boolean L12_sonofaBeach()
 
 	if(!in_lar())
 	{
-		if(providePlusCombat(25, true, true) < 0.0)
+		if(providePlusCombat(25, $location[Sonofa Beach], true, true) < 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
 			equipBaseline();
