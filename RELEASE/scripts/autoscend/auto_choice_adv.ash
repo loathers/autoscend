@@ -213,6 +213,15 @@ boolean auto_run_choice(int choice, string page)
 		case 527: // The Haert of Darkness (The Cyrpt)
 			run_choice(1); // fight whichever version of the bonerdagon
 			break;
+		case 542: // Now's Your Pants! I Mean... Your Chance! (The Sleazy Back Alley)
+			run_choice(1); // yoink pants to finish guild task
+			break;
+		case 543: // Up In Their Grill (Outskirts of Cobb's Knob)
+			run_choice(1); // grab sausage to finish guild task
+			break;
+		case 544: // A Sandwich Appears! (The Haunted Pantry)
+			run_choice(1); // sudo exorcise to finish guild task
+			break;
 		case 556: // More Locker Than Morlock (Itznotyerzitz Mine)
 			itznotyerzitzMineChoiceHandler(choice);
 			break;
@@ -255,27 +264,9 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(2); // finish twin peak quest the long way
 			break;
 		case 669: // The Fast and the Furry-ous (The Castle in the Clouds in the Sky (Basement))
-			run_choice(1); // if umbrella equipped finish quest. without, go to Out in the Open Source (#671)
-			break;
 		case 670: // You Don't Mess Around with Gym (The Castle in the Clouds in the Sky (Basement))
-			if(internalQuestStatus("questL10Garbage") < 8 && equipped_amount($item[Amulet of Extreme Plot Significance]) > 0)
-			{
-				run_choice(4); // with amulet equipped, open the ground floor
-			}
-			else
-			{
-				run_choice(1); // with no amulet, grab the dumbbell. will skip if already have dumbbell
-			}
-			break;
 		case 671: // Out in the Open Source (The Castle in the Clouds in the Sky (Basement))
-			if(item_amount($item[Massive Dumbbell]) > 0)
-			{
-				run_choice(1); // with dumbbell, open the ground floor
-			}
-			else
-			{
-				run_choice(4); // without dumbbell, go to You Don't Mess Around with Gym (#670)
-			}
+			castleBasementChoiceHandler(choice);
 			break;
 		case 672: // There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
 			run_choice(3); // skip
@@ -287,65 +278,12 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(3); // skip
 			break;
 		case 675: // Melon Collie and the Infinite Lameness (The Castle in the Clouds in the Sky (Top Floor))
-			if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
-			{
-				run_choice(2); // if quest not done and have the record, complete the quest
-			}
-			else
-			{
-				run_choice(4); // moves to Copper Feel (#677) in all other scenarios
-			}
-			break;
 		case 676: // Flavor of a Raver (The Castle in the Clouds in the Sky (Top Floor))
-			if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
-			{
-				run_choice(4); // if quest not done and have mohawk wig on, move to Yeah, You're for Me (#678)
-			}	
-			else
-			{
-				run_choice(3); // if no mohawk wig, grab the drum n bass record. will skip if already have record
-			}
-			break;
 		case 677: // Copper Feel (The Castle in the Clouds in the Sky (Top Floor))
-			 if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Model airship]) > 0)
-			{
-				run_choice(1); // if quest not done and have model airship, complete quest
-			}
-			else if((internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0) || in_koe())
-			{
-				run_choice(4); // if quest not done and have the record, move to Melon Collie (#675). HITS is open in KoE so no need to grab rocket
-			}
-			else
-			{
-				run_choice(2); // grab steam-powered rocket ship.  will skip if already have rocket
-			}
-			break;
 		case 678: // Yeah, You're for Me, Punk Rock Giant (The Castle in the Clouds in the Sky (Top Floor))
-			if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
-			{
-				run_choice(1); // if quest not done and mohawk wig equipped, finish quest
-			}
-			else if(internalQuestStatus("questL10Garbage") < 10)
-			{
-				run_choice(4); // if wig not equipped and quest not done, go to Flavor of a Raver (#676)
-			}
-			else
-			{
-				run_choice(3); // if quest is done, go to Copper Feel (#677) to skip
-			}
-			break;
 		case 679: // Keep On Turnin' the Wheel in the Sky (The Castle in the Clouds in the Sky (Top Floor))
-			if(isActuallyEd())
-			{
-				run_choice(2); // ed advances via choice 2
-			}
-			else
-			{
-				run_choice(1); // everyone else advances via choice 1
-			}
-			break;
 		case 680: // Are you a Man or a Mouse? (The Castle in the Clouds in the Sky (Top Floor))
-			run_choice(1); // go to finish quest the long way
+			castleTopFloorChoiceHandler(choice);
 			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
@@ -451,15 +389,15 @@ boolean auto_run_choice(int choice, string page)
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
 			if(my_primestat() == $stat[Muscle])
 			{
-				run_choice(1);
+				run_choice(1); // muscle stats
 			}
 			else if(my_primestat() == $stat[Mysticality])
 			{
-				run_choice(2);
+				run_choice(2); // myst stats
 			}
-			else	// if no prime stat we still want moxie
+			else // if no prime stat we still want moxie
 			{
-				run_choice(3);
+				run_choice(3); // moxie stats
 			}
 			break;
 		case 794: // Once More Unto the Junk (The Old Landfill)
@@ -613,7 +551,7 @@ boolean auto_run_choice(int choice, string page)
 			edUnderworldChoiceHandler(choice);
 			break;
 		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
-			if (isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
+			if(isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
 			{
 				run_choice(3); // skip
 			}
@@ -626,19 +564,27 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // finish init portion of quest
 			break;
 		case 1060: // Temporarily Out of Skeletons (The Skeleton Store)
-			if (item_amount($item[Skeleton Store office key]) == 0) {
+			if(item_amount($item[Skeleton Store office key]) == 0)
+			{
 				run_choice(1); // Skeleton Store office key
-			} else if (internalQuestStatus("questM23Meatsmith") < 1) {
+			}
+			else if(internalQuestStatus("questM23Meatsmith") < 1)
+			{
 				run_choice(4); // fight The former owner of the Skeleton Store
-			} else {
+			}
+			else
+			{
 				run_choice(2); // get ring of telling skeletons what to do or 300 meat
 			}
 			break;
 		case 1061: // Heart of Madness (Madness Bakery Quest)
-			if(internalQuestStatus("questM25Armorer") <= 2) {
-				run_choice(1);
-			} else {
-				run_choice(5);
+			if(internalQuestStatus("questM25Armorer") <= 2)
+			{
+				run_choice(1); // try to open door or open the door to fight Cake Lord
+			}
+			else
+			{
+				run_choice(5); // myst stats as best default option
 			}
 			break;
 		case 1062: // Lots of Options (The Overgrown Lot)
@@ -664,10 +610,10 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1082: // The "Rescue" (post-Cake Lord in Madness Bakery)
-			run_choice(1);
+			run_choice(1); // move to next part of quest
 			break;
 		case 1083: // Cogito Ergot Sum (post-post-Cake Lord in Madness Bakery)
-			run_choice(1);
+			run_choice(1); // get the no-handed pie and complete quest
 			break;
 		case 1106: // Wooof! Wooooooof! (Ghost Dog)
 			if((in_hardcore() && have_effect($effect[Adventurer\'s Best Friendship]) > 120) || ((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar()))
@@ -777,7 +723,7 @@ void main(int choice, string page)
 	}
 	finally
 	{
-		if (!ret)
+		if(!ret)
 		{
 			auto_log_error("Error running auto_choice_adv.ash, setting auto_interrupt=true");
 			set_property("auto_interrupt", true);

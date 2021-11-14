@@ -2897,7 +2897,6 @@ void cs_initializeDay(int day)
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
 	}
 
-	set_property("choiceAdventure1106", 2);
 	set_property("choiceAdventure1108", 3);
 
 	if(day == 1)

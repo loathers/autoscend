@@ -915,8 +915,10 @@ boolean L9_highLandlord();
 boolean L10_plantThatBean();
 boolean L10_airship();
 boolean L10_basement();
+void castleBasementChoiceHandler(int choice);
 boolean L10_ground();
 boolean L10_topFloor();
+void castleTopFloorChoiceHandler(int choice);
 boolean L10_holeInTheSkyUnlock();
 boolean L10_rainOnThePlains();
 
