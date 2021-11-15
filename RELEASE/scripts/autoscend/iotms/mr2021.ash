@@ -147,12 +147,14 @@ boolean auto_backupTarget()
         case $monster[sausage goblin]:
 			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie)
 				return true;
-            break; // Need some smart logic to determine when this is a good choice.
+            break;
         case $monster[eldritch tentacle]:
-            //use same logic as sausage goblin. Only use if we don't have goblins though
-			if(!auto_haveKramcoSausageOMatic() && !wantBackupLFM && !wantBackupNSA && !wantBackupZmobie)
+            //backup tentacles if power leveling or use all remaining charges if at end of day
+			if(isAboutToPowerlevel() && auto_backupUsesLeft() > 5)
 				return true;
-			return true;
+			if (my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
+				return true;
+			break;
         default: break;
     }
 

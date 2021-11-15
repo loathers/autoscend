@@ -1170,6 +1170,14 @@ boolean L12_sonofaBeach()
 		}
 	}
 
+	if(auto_backupTarget() && get_property("lastCopyableMonster").to_monster() == $monster[lobsterfrogman])
+	{
+		//going to use backup camera in next combat. Go to noob cave since available to all and 100% combat rate
+		//LX_burnDelay() is higher in the task order. So already know there is nowhere to burn delay
+		boolean backupRetval = autoAdv($location[Noob Cave]);
+		return backupRetval;
+	}
+
 	if(isActuallyEd() && item_amount($item[Talisman of Horus]) == 0 && have_effect($effect[Taunt of Horus]) == 0)
 	{
 		return false;
@@ -1253,11 +1261,11 @@ boolean L12_sonofaPrefix()
 		}
 	}
 
-	if(auto_backupTarget())
+	if(auto_backupTarget() && get_property("lastCopyableMonster").to_monster() == $monster[lobsterfrogman])
 	{
-		//going to use backup camera in next combat. Go to noob cave since available to all and 100% combat rate
-		boolean backupRetval = autoAdv($location[Noob Cave]);
-		return backupRetval;
+		//let LX_burnDelay() run prior to forcing backing up in noob cave
+		//see L12_sonofaBeach() above for where LFM is put into noob cave
+		return false;
 	}
 
 	if(!(auto_get_campground() contains $item[Source Terminal]))
