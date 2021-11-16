@@ -740,6 +740,12 @@ void initializeDay(int day)
 	{
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
+
+	// Get emotionally chipped if you have the item.  boris cannot use this skill so excluding.
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris())
+	{
+		use(1, $item[spinal-fluid-covered emotion chip]);
+	}
 	
 	//you must finish the Toot Oriole quest to unlock council quests.
 	tootOriole();
@@ -810,7 +816,7 @@ void initializeDay(int day)
 			{
 				acquireGumItem($item[disco ball]);
 			}
-			if(!($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class()))
+			if(!(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber()))
 			{
 				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
@@ -901,11 +907,11 @@ void initializeDay(int day)
 				pulverizeThing($item[Vicar\'s Tutu]);
 			}
 			while(acquireHermitItem($item[Ten-Leaf Clover]));
-			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class()) && !in_glover())
+			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber() || !in_glover()))
 			{
 				buyUpTo(1, $item[Antique Accordion]);
 			}
-			if(my_class() == $class[Avatar of Boris])
+			if(is_boris())
 			{
 				if((item_amount($item[Clancy\'s Crumhorn]) == 0) && (minstrel_instrument() != $item[Clancy\'s Crumhorn]))
 				{
@@ -1559,7 +1565,8 @@ void resetState() {
 
 	resetMaximize();
 
-	if (canChangeToFamiliar($familiar[Left-Hand Man]) && familiar_equipped_equipment($familiar[Left-Hand Man]) != $item[none]) {
+	if (canChangeToFamiliar($familiar[Left-Hand Man]) && familiar_equipped_equipment($familiar[Left-Hand Man]) != $item[none])
+	{
 		// Leaving something equipped on the Left-Hand man like the Latte is currently bugged in mafia
 		// as it will show any skills the equipment gives as available even when you have a completely different familiar
 		// see https://kolmafia.us/showthread.php?24780-April-2020-IOTM-sinistral-homunculus&p=158453&viewfull=1#post158453
