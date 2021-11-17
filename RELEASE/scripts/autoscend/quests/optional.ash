@@ -207,7 +207,7 @@ boolean LX_steelOrgan()
 	{
 		return false;
 	}
-	if($classes[Ed, Gelatinous Noob, Vampyre] contains my_class())
+	if($classes[Ed the Undying, Gelatinous Noob, Vampyre] contains my_class())
 	{
 		auto_log_info(my_class() + " can not use a Steel Organ, turning off setting.", "blue");
 		set_property("auto_getSteelOrgan", false);
