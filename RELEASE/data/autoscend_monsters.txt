@@ -6,28 +6,28 @@ banish	0	A.M.C. Gremlin
 banish	1	Animated Mahogany Nightstand
 banish	2	Animated Possessions
 banish	3	Animated Rustic Nightstand	!path:Bees Hate You
-banish	4	Bubblemint Twins	!class:Ed
+banish	4	Bubblemint Twins	!class:Ed the Undying
 banish	5	Bullet Bill
 banish	6	Burly Sidekick	item:Mohawk Wig>0;!familiar:Red-Nosed Snapper
 banish	7	Coaltergeist
 banish	8	Doughbat
 banish	9	Drunk Goat
-banish	10	Eagle	class:Ed
+banish	10	Eagle	class:Ed the Undying
 banish	11	Evil Olive
-banish	12	Empty suit of armor	class:Ed
+banish	12	Empty suit of armor	class:Ed the Undying
 banish	13	Flock Of Stab-Bats
 banish	14	Gluttonous Ghuol	class:Vampyre
 banish	15	Knob Goblin Harem Guard
 banish	16	Knob Goblin Madam	item:Knob Goblin Perfume>0
-banish	17	Mad Wino	!class:Ed
-banish	18	MagiMechTech MechaMech	class:Ed
-banish	19	Mob Penguin Capo	class:Ed
+banish	17	Mad Wino	!class:Ed the Undying
+banish	18	MagiMechTech MechaMech	class:Ed the Undying
+banish	19	Mob Penguin Capo	class:Ed the Undying
 banish	20	Mismatched Twins
 banish	21	Natural Spider
 banish	22	Plaid Ghost
 banish	23	Possessed Laundry Press
 banish	24	Procrastination Giant
-banish	25	Protagonist	!class:Ed;!familiar:Red-Nosed Snapper
+banish	25	Protagonist	!class:Ed the Undying;!familiar:Red-Nosed Snapper
 banish	26	Pygmy Headhunter
 banish	27	Pygmy Janitor	tavern:true
 banish	28	Pygmy Orderlies
@@ -39,14 +39,14 @@ banish	33	Sabre-Toothed Goat
 banish	34	Senile Lihc	loc:The Defiled Niche
 banish	35	Slick Lihc	loc:The Defiled Niche
 banish	36	Skeletal Sommelier
-banish	37	Spooky mummy	class:Ed
-banish	38	Spooky vampire	class:Ed
+banish	37	Spooky mummy	class:Ed the Undying
+banish	38	Spooky vampire	class:Ed the Undying
 banish	39	Steam Elemental
 banish	40	Taco Cat
 banish	41	Tan Gnat
 banish	42	Tomb Asp
 banish	43	Tomb Servant
-banish	44	Triffid	class:Ed
+banish	44	Triffid	class:Ed the Undying
 banish	45	Wardr&ouml;b Nightstand
 banish	46	Warehouse Janitor
 banish	47	party skelteon
@@ -110,7 +110,7 @@ sniff	11	Tomb Rat
 sniff	12	Blooper	loc:8-Bit Realm
 sniff	13	Bob Racecar	!sniffed:Racecar Bob
 sniff	14	Racecar Bob	!sniffed:Bob Racecar
-sniff	15	Government Scientist	class:Ed
+sniff	15	Government Scientist	class:Ed the Undying
 sniff	16	Green Ops Soldier	!path:Kingdom of Exploathing;prop:hippiesDefeated>399
 sniff	17	War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Homeopath
 sniff	18	War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Naturopathic Homeopath
@@ -153,23 +153,23 @@ yellowray	19	War Frat Wartender	!outfit:Frat Warrior Fatigues
 yellowray	20	War Pledge	!outfit:Frat Warrior Fatigues
 # We also want to dress up like a filthy hippy to get frat warrior fatigues
 yellowray	21	business hippy	!outfit:Filthy Hippy Disguise
-yellowray	22	crusty hippy	!outfit:Filthy Hippy Disguise;!class:Ed
-yellowray	23	crusty hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
-yellowray	24	crusty hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
-yellowray	25	dirty hippy	!outfit:Filthy Hippy Disguise;!class:Ed
-yellowray	26	dirty hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
-yellowray	27	dirty hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
-yellowray	28	filthy hippy	!outfit:Filthy Hippy Disguise;!class:Ed
-yellowray	29	filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed
-yellowray	30	filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed
+yellowray	22	crusty hippy	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
+yellowray	23	crusty hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
+yellowray	24	crusty hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
+yellowray	25	dirty hippy	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
+yellowray	26	dirty hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
+yellowray	27	dirty hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
+yellowray	28	filthy hippy	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
+yellowray	29	filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
+yellowray	30	filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
 yellowray	31	zombie hippy	!outfit:Filthy Hippy Disguise
 # Want hippy war outfit if fighting for hippies. TODO: add monsters for Frat Boy Ensemble and War Hippy Fatigues outfits. Issue #900
 yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues
 # And we want filthworm glands, but not if we're gonna hugpocket them
-yellowray	33	larval filthworm	!familiar:XO Skeleton;!class:Ed
-yellowray	34	filthworm drone	!familiar:XO Skeleton;!class:Ed
-yellowray	35	filthworm royal guard	!familiar:XO Skeleton;!class:Ed
-yellowray	36	Knight (Snake)	class:Ed
+yellowray	33	larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying
+yellowray	34	filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying
+yellowray	35	filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying
+yellowray	36	Knight (Snake)	class:Ed the Undying
 yellowray	37	bearpig topiary animal	familiar:Melodramedary
 yellowray	38	elephant (meatcar?) topiary animal	familiar:Melodramedary
 yellowray	39	spider (duck?) topiary animal	familiar:Melodramedary
