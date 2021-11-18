@@ -293,6 +293,8 @@ boolean auto_run_choice(int choice, string page)
 			dailyDungeonChoiceHandler(choice, options);
 			break;
 		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
+			kolhsChoiceHandler(choice);
+			break;
 		case 768: // The Littlest Identity Crisis (Mini-adventurer initialization)
 			if(in_quantumTerrarium()) {
 				if (my_location() == $location[The Themthar Hills]) {
