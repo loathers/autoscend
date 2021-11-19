@@ -1421,6 +1421,10 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
+	if(!auto_bestWarPlan().do_arena)
+	{
+		return false;		//we are not planning to do arena this ascension
+	}
 	if(internalQuestStatus("questL12War") != 1 || get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() >= 10000)
 	{
 		return false;
