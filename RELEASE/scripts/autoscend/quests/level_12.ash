@@ -1429,6 +1429,10 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
+	if(my_level() < 13 && !isAboutToPowerlevel())
+	{
+		return false;		//let the powerlevel lock release first so we can do quests that are waiting for optimal conditions.
+	}
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
 
