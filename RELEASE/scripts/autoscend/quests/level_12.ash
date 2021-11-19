@@ -1496,17 +1496,6 @@ boolean LX_attemptFlyering()
 	{
 		return neverendingPartyCombat();
 	}
-	else
-	{
-		int flyer = get_property("flyeredML").to_int();
-		boolean retval = autoAdv($location[Near an Abandoned Refrigerator]);
-		if(flyer == get_property("flyeredML").to_int())
-		{
-			abort("Trying to flyer but failed to flyer");
-		}
-		set_property("auto_newbieOverride", true);
-		return retval;
-	}
 	return false;
 }
 
