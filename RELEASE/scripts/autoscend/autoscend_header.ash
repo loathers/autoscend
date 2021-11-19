@@ -1014,7 +1014,6 @@ boolean L12_sonofaPrefix();
 boolean L12_sonofaFinish();
 boolean L12_flyerBackup();
 boolean L12_lastDitchFlyer();
-boolean LX_attemptFlyering();
 boolean L12_flyerFinish();
 boolean L12_themtharHills();
 boolean LX_obtainChaosButterfly();

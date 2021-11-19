@@ -1436,42 +1436,6 @@ boolean L12_lastDitchFlyer()
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
 
-	if(needStarKey())
-	{
-		if(!zone_isAvailable($location[The Hole in the Sky]))
-		{
-			return (L10_topFloor() || L10_holeInTheSkyUnlock());
-		}
-		else
-		{
-			if(LX_getStarKey())
-			{
-				return true;
-			}
-		}
-	}
-	else if(needDigitalKey())
-	{
-		if(LX_getDigitalKey())
-		{
-			return true;
-		}
-	}
-	else
-	{
-		auto_log_warning("Should not have so little flyer ML at this point", "red");
-		wait(1);
-		if(!LX_attemptFlyering())
-		{
-			abort("Need more flyer ML but don't know where to go :(");
-		}
-		return true;
-	}
-	return false;
-}
-
-boolean LX_attemptFlyering()
-{
 	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]))
 	{
 		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
