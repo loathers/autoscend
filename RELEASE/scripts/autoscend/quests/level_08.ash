@@ -499,8 +499,9 @@ boolean L8_trapperSlopeSoftcore()
 	{
 		return true;	//successfully finished this part of the quest
 	}
-	else	//if we failed to unlock at this point it is because we do not have 5 cold res. So grab the outfit for that +5 cold res
+	else if(!in_robot())	//robots need too many bodyparts for outfit.
 	{
+		//if we failed to unlock at this point it is because we do not have 5 cold res. So grab the outfit for that +5 cold res
 		return L8_trapperExtreme();
 	}
 	return false;		//must have a return value. fallback option. should never actually be reached
@@ -561,7 +562,7 @@ boolean L8_trapperNinjaLair()
 	}
 
 	//can we provide enough combat bonus to encounter snowman assassins?
-	if(providePlusCombat(25, true, true) <= 0.0)	//ninja snowman does not show up if +combat is not greater than 0
+	if(providePlusCombat(25, $location[Lair of the Ninja Snowmen], true, true) <= 0.0)	//ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -615,9 +616,10 @@ boolean L8_trapperGroar()
 	int [element] resGoal;
 	resGoal[$element[cold]] = 5;
 	// try getting resistance without equipment before bothering to change gear
+	
 	boolean retval = false;
 	int initial_adv = my_session_adv();
-	if(provideResistances(resGoal, false) || provideResistances(resGoal, true))
+	if(provideResistances(resGoal, $location[Mist-shrouded Peak], false) || provideResistances(resGoal, $location[Mist-shrouded Peak], true))
 	{
 		auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 		equipMaximizedGear();
@@ -651,7 +653,7 @@ boolean L8_trapperPeak()
 	{
 		int [element] resGoal;
 		resGoal[$element[cold]] = 5;
-		if(provideResistances(resGoal, true))
+		if(provideResistances(resGoal, $location[Mist-shrouded Peak], true))
 		{
 			equipMaximizedGear();
 			visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");	//unlock peak. advancing to step 4.
@@ -661,6 +663,7 @@ boolean L8_trapperPeak()
 		{
 			//TODO get outfit
 			//TODO does TCRS have a problem with the outfit still not being enough? look into it
+			return false;		//we are unable to provide 5 cold res
 		}
 		
 		if(internalQuestStatus("questL08Trapper") == 3)
@@ -709,6 +712,10 @@ boolean L8_trapperSlope()
 		return true;
 	}
 	//hardcore handling
+	if(robot_delay("outfit"))
+	{
+		return false;	//delay for You, Robot path
+	}
 	if(get_property("auto_L8_extremeInstead").to_boolean())		//we decided we do not want to adventure in the ninja lair
 	{
 		if(L8_trapperExtreme()) return true;	//try to climb slope via extreme path

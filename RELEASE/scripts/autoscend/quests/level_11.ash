@@ -296,7 +296,7 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		resGoals[$element[hot]] = 9;
 		resGoals[$element[stench]] = 9;
 		// check to see if we can acquire sufficient hot and stench res for the kitchen
-		int [element] resPossible = provideResistances(resGoals, true, true);
+		int [element] resPossible = provideResistances(resGoals, $location[The Haunted Kitchen], true, true);
 		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
 	}
 
@@ -309,7 +309,7 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		int [element] resGoal;
 		resGoal[$element[hot]] = 9;
 		resGoal[$element[stench]] = 9;
-		int [element] resPossible = provideResistances(resGoal, true, false);
+		int [element] resPossible = provideResistances(resGoal, $location[The Haunted Kitchen], true, false);
 		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + resPossible[$element[hot]] + "/" + resPossible[$element[stench]] + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
 		if (autoAdv($location[The Haunted Kitchen])) {
 			return true;
@@ -804,11 +804,13 @@ boolean L11_aridDesert()
 	
 	if(LX_ornateDowsingRod(true)) return true;		//spend adv trying to get [Ornate Dowsing Rod]. doing_desert_now = true.
 	if(L11_getUVCompass()) return true;				//spend adv trying to get [UV-resistant compass]
-
+	if(robot_delay("desert"))
+	{
+		return false;	//delay for You, Robot path
+	}
+	
 	desert_buff_record dbr = desertBuffs();
-
 	int progress = dbr.progress;
-
 	if(get_property("bondDesert").to_boolean())
 	{
 		progress += 2;
@@ -1296,9 +1298,14 @@ boolean L11_hiddenCity()
 			return false;		//could not heal HP. we should go do something else first
 		}
 	}
+	if(in_robot() && my_level() < 13)
+	{
+		return false;
+	}
 	
 	int weapon_ghost_dmg = numeric_modifier("hot damage") + numeric_modifier("cold damage") + numeric_modifier("stench damage") + numeric_modifier("sleaze damage") + numeric_modifier("spooky damage");
-	if(weapon_ghost_dmg < 20 &&				//we can not rely on melee/ranged weapon to kill the ghost
+	if(!in_robot() &&
+	weapon_ghost_dmg < 20 &&				//we can not rely on melee/ranged weapon to kill the ghost
 	!acquireMP(30))							//try getting some MP, relying on a spell to kill them instead. TODO verify we have a spell
 	{
 		auto_log_warning("We can not reliably kill Specters in hidden city due to a shortage of MP and elemental weapon dmg. Delaying zone", "red");
@@ -1614,6 +1621,10 @@ boolean L11_mauriceSpookyraven()
 	{
 		return true;
 	}
+	if(in_robot() && my_level() < 13)
+	{
+		return false;		//delay fight so we can make sure we are strong enough to beat him
+	}
 
 	if (internalQuestStatus("questL11Manor") < 1)
 	{
@@ -1650,7 +1661,7 @@ boolean L11_mauriceSpookyraven()
 		{
 			resGoal[ele] = 3;
 		}
-		provideResistances(resGoal, false);
+		provideResistances(resGoal, $location[Summoning Chamber], false);
 
 		# The autoAdvBypass case is probably suitable for Ed but we'd need to verify it.
 		if (isActuallyEd())
@@ -1686,7 +1697,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_wotsf() || in_bhy() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_wotsf() || in_bhy() || in_robot() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.
@@ -1836,7 +1847,10 @@ boolean L11_redZeppelin()
 	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
 	buffMaintain($effect[Musky], 0, 1, 1);
 	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
-	pullXWhenHaveY($item[deck of lewd playing cards], 1, 0);
+	if(!in_wotsf())
+	{
+		pullXWhenHaveY($item[deck of lewd playing cards], 1, 0);
+	}
 
 	if(item_amount($item[Flamin\' Whatshisname]) > 0)
 	{
@@ -1960,7 +1974,7 @@ boolean L11_ronCopperhead()
 
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
 	{
-		if (item_amount($item[Red Zeppelin Ticket]) < 1)
+		if (item_amount($item[Red Zeppelin Ticket]) < 1 && !in_wotsf()) // no black market in wotsf
 		{
 			// use the priceless diamond since we go to the effort of trying to get one in the Copperhead Club
 			// and it saves us 4.5k meat.

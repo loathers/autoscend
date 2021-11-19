@@ -179,6 +179,10 @@ string defaultMaximizeStatement()
 	{
 		return pokefam_defaultMaximizeStatement();
 	}
+	if(in_robot())
+	{
+		return robot_defaultMaximizeStatement();
+	}
 	
 	string res = "5item,meat,0.5initiative,0.1da 1000max,dr,0.5all res,1.5mainstat,-fumble";
 	if(my_primestat() != $stat[Moxie])
@@ -310,7 +314,7 @@ void addBonusToMaximize(item it, int amt)
 		addToMaximize("+" + amt + "bonus " + it);
 }
 
-void finalizeMaximize()
+void finalizeMaximize(boolean speculative)
 {
 	if (possessEquipment($item[miniature crystal ball]))
 	{
@@ -362,6 +366,11 @@ void finalizeMaximize()
 			addToMaximize("effective");
 		}
 	}
+}
+		 
+void finalizeMaximize()
+{
+	finalizeMaximize(false);
 }
 
 void addToMaximize(string add)
@@ -415,20 +424,43 @@ boolean maximizeContains(string check)
 boolean simMaximize()
 {
 	string backup = get_property("auto_maximize_current");
-	finalizeMaximize();
+	finalizeMaximize(true);
 	boolean res = autoMaximize(get_property("auto_maximize_current"), true);
+	set_property("auto_maximize_current", backup);
+	return res;
+}
+
+boolean simMaximize(location loc)
+{
+	boolean res;
+	if (my_location() != loc)
+	{
+		//set the simulated location while maximizing
+		location locCache = my_location();
+		set_location(loc);
+		res = simMaximize();
+		set_location(locCache);
+	}
+	else
+	{
+		res = simMaximize();
+	}
+	return res;
+}
+
+boolean simMaximizeWith(location loc, string add)
+{
+	string backup = get_property("auto_maximize_current");
+	addToMaximize(add);
+	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
+	boolean res = simMaximize(loc);
 	set_property("auto_maximize_current", backup);
 	return res;
 }
 
 boolean simMaximizeWith(string add)
 {
-	string backup = get_property("auto_maximize_current");
-	addToMaximize(add);
-	auto_log_debug("Simulating: " + get_property("auto_maximize_current"), "gold");
-	boolean res = simMaximize();
-	set_property("auto_maximize_current", backup);
-	return res;
+	return simMaximizeWith(my_location(), add);
 }
 
 float simValue(string modifier)
@@ -593,7 +625,7 @@ void equipRollover(boolean silent)
 	}
 
 	string to_max = "-tie,adv";
-	if(hippy_stone_broken() && get_property("auto_bedtime_pulls_pvp_multi").to_float() > 0)
+	if(hippy_stone_broken() && my_path() != "Oxygenarian" && get_property("auto_bedtime_pulls_pvp_multi").to_float() > 0)
 	{
 		to_max += "," +get_property("auto_bedtime_pulls_pvp_multi")+ "fites";
 	}

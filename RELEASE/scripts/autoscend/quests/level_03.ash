@@ -87,7 +87,7 @@ boolean auto_tavern()
 	{
 		// Tails are a better time saving investment
 		addToMaximize("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max");
-		simMaximize();
+		simMaximize($location[Noob Cave]);
 		maximized = true;
 	}
 	int [string] eleChoiceCombos = {
@@ -105,11 +105,11 @@ boolean auto_tavern()
 	}
 	if(capped >= 3)
 	{
-		providePlusNonCombat(25);
+		providePlusNonCombat(25, $location[Noob Cave]);
 	}
 	else
 	{
-		providePlusCombat(25);
+		providePlusCombat(25, $location[Noob Cave]);
 	}
 
 	string tavern = get_property("tavernLayout");
@@ -212,12 +212,7 @@ boolean L3_tavern()
 
 	boolean delayTavern = false;
 
-	if (isActuallyEd())
-	{
-		set_property("choiceAdventure1000", "1"); // Everything in Moderation: turn on the faucet (completes quest)
-		set_property("choiceAdventure1001", "2"); // Hot and Cold Dripping Rats: Leave it alone (don't fight a rat)
-	}
-	else if(!enoughElement || (my_mp() < mpNeed))
+	if(!enoughElement || (my_mp() < mpNeed))
 	{
 		if((my_daycount() <= 2) && (my_level() <= 11))
 		{

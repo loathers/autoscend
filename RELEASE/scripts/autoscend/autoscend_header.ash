@@ -811,8 +811,34 @@ boolean LA_wildfire();
 //Defined in autoscend/paths/you_robot.ash
 boolean in_robot();
 void robot_initializeSettings();
+string robot_defaultMaximizeStatement();
+boolean robot_top(int choice);
+boolean robot_left(int choice);
+boolean robot_right(int choice);
+boolean robot_bottom(int choice);
+boolean robot_cpu(int choice, boolean no_buy);
+boolean robot_cpu(int choice);
+void robot_skillbuy();
+int robot_energy_per_collect();
 boolean LX_robot_get_energy();
+boolean LX_robot_get_scrap_once();
+boolean LX_robot_get_scrap(int target);
+int robot_chronolith_cost();
+void robot_get_adv();
+int robot_statbot_cost();
+boolean robot_statbot(stat target);
+stat robot_stat_wanted();
+boolean LX_robot_level();
+boolean LX_robot_powerlevel();
+boolean robot_assemble();
+boolean robot_assemble_want_sniper();
+boolean robot_assemble_want_rocket_crotch();
+boolean robot_assemble_want_bird_cage();
+void robot_directive();
+boolean robot_directive_check(string check);
+boolean robot_delay(string check);
 boolean LM_robot();
+boolean LA_robot();
 
 ########################################################################################################
 //Defined in autoscend/paths/zombie_slayer.ash
@@ -889,8 +915,10 @@ boolean L9_highLandlord();
 boolean L10_plantThatBean();
 boolean L10_airship();
 boolean L10_basement();
+void castleBasementChoiceHandler(int choice);
 boolean L10_ground();
 boolean L10_topFloor();
+void castleTopFloorChoiceHandler(int choice);
 boolean L10_holeInTheSkyUnlock();
 boolean L10_rainOnThePlains();
 
@@ -981,7 +1009,6 @@ boolean LX_obtainChaosButterfly();
 boolean L12_farm();
 boolean L12_clearBattlefield();
 boolean L12_finalizeWar();
-void warChoiceHandler(int choice);
 boolean L12_islandWar();
 
 ########################################################################################################
@@ -1187,6 +1214,8 @@ void addToMaximize(string add);
 void removeFromMaximize(string rem);
 boolean maximizeContains(string check);
 boolean simMaximize();
+boolean simMaximize(location loc);
+boolean simMaximizeWith(location loc, string add);
 boolean simMaximizeWith(string add);
 float simValue(string modifier);
 void equipMaximizedGear();
@@ -1320,23 +1349,41 @@ boolean LX_freeCombatsTask();
 
 ########################################################################################################
 //Defined in autoscend/auto_providers.ash
+float providePlusCombat(int amt, location loc, boolean doEquips, boolean speculative);
 float providePlusCombat(int amt, boolean doEquips, boolean speculative);
+boolean providePlusCombat(int amt, location loc, boolean doEquips);
 boolean providePlusCombat(int amt, boolean doEquips);
+boolean providePlusCombat(int amt, location loc);
 boolean providePlusCombat(int amt);
+float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean speculative);
 float providePlusNonCombat(int amt, boolean doEquips, boolean speculative);
+boolean providePlusNonCombat(int amt, location loc, boolean doEquips);
 boolean providePlusNonCombat(int amt, boolean doEquips);
+boolean providePlusNonCombat(int amt, location loc);
 boolean providePlusNonCombat(int amt);
+float provideInitiative(int amt, location loc, boolean doEquips, boolean speculative);
 float provideInitiative(int amt, boolean doEquips, boolean speculative);
+boolean provideInitiative(int amt, location loc, boolean doEquips);
 boolean provideInitiative(int amt, boolean doEquips);
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative);
 int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative);
+boolean provideResistances(int [element] amt, location loc, boolean doEquips);
 boolean provideResistances(int [element] amt, boolean doEquips);
+float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolean speculative);
 float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative);
+boolean provideStats(int [stat] amt, location loc, boolean doEquips);
 boolean provideStats(int [stat] amt, boolean doEquips);
+float provideMuscle(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMuscle(int amt, boolean doEquips, boolean speculative);
+boolean provideMuscle(int amt, location loc, boolean doEquips);
 boolean provideMuscle(int amt, boolean doEquips);
+float provideMysticality(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMysticality(int amt, boolean doEquips, boolean speculative);
+boolean provideMysticality(int amt, location loc, boolean doEquips);
 boolean provideMysticality(int amt, boolean doEquips);
+float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
+boolean provideMoxie(int amt, location loc, boolean doEquips);
 boolean provideMoxie(int amt, boolean doEquips);
 
 ########################################################################################################

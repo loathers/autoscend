@@ -2,7 +2,7 @@
 
 boolean isjanuaryToteAvailable()
 {
-	return item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[January\'s Garbage Tote]);
+	return item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[January\'s Garbage Tote]) && !in_bhy();
 }
 
 int januaryToteTurnsLeft(item it)
@@ -894,7 +894,7 @@ void neverendingPartyChoiceHandler(int choice)
 	}
 	else
 	{
-		abort("unhandled choice in mushroomGardenChoiceHandler");
+		abort("unhandled choice in neverendingPartyChoiceHandler");
 	}
 }
 

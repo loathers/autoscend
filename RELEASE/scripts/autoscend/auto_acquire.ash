@@ -627,7 +627,7 @@ int handlePulls(int day)
 				put_closet(1, $item[empty rain-doh can]);
 			}
 		}
-		if((storage_amount($item[Buddy Bjorn]) > 0) && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(storage_amount($item[Buddy Bjorn]) > 0 && pathHasFamiliar())
 		{
 			pullXWhenHaveY($item[Buddy Bjorn], 1, 0);
 		}
@@ -695,7 +695,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) && !in_heavyrains())
+		if((my_primestat() == $stat[Muscle]) && !in_heavyrains() && !in_wotsf()) // no need for shields in way of the surprising fist
 		{
 			if((closet_amount($item[Fake Washboard]) == 0) && glover_usable($item[Fake Washboard]))
 			{
@@ -724,7 +724,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
 		}
 
-		if((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer]))
+		if(((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer])) && !in_wotsf()) // no need for offhands in way of the surprising fist
 		{
 			if((item_amount($item[Deck of Every Card]) == 0) && !auto_have_skill($skill[Summon Smithsness]))
 			{
@@ -745,7 +745,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 		}
 
-		if(!in_heavyrains() && !in_lta() && !($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed] contains my_class()))
+		if(!in_heavyrains() && pathHasFamiliar())
 		{
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
 			{
@@ -772,7 +772,7 @@ int handlePulls(int day)
 			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
 		}
 
-		if(!in_pokefam() && !in_glover())
+		if(!in_pokefam())
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
@@ -835,29 +835,6 @@ boolean LX_craftAcquireItems()
 	}
 
 	auto_floundryUse();
-
-	if(in_hardcore())
-	{
-		if(have_effect($effect[Adventurer\'s Best Friendship]) > 120)
-		{
-			set_property("choiceAdventure1106", 3);
-		}
-		else
-		{
-			set_property("choiceAdventure1106", 2);
-		}
-	}
-	else
-	{
-		if((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar())
-		{
-			set_property("choiceAdventure1106", 3);
-		}
-		else
-		{
-			set_property("choiceAdventure1106", 2);
-		}
-	}
 
 	// Snow Berries can be acquired out of standard by using Van Keys from NEP. We need to check to make sure they are usable.
 	if(auto_is_valid($item[snow berries]))
@@ -938,7 +915,7 @@ boolean LX_craftAcquireItems()
 	}
 	
 
-	if(my_class() == $class[Turtle Tamer])
+	if(my_class() == $class[Turtle Tamer] && !in_wotsf()) // no need for shields in way of the surprising fist
 	{
 		if(!possessEquipment($item[Turtle Wax Shield]) && (item_amount($item[Turtle Wax]) > 0))
 		{
