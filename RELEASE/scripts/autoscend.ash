@@ -373,12 +373,19 @@ boolean LX_burnDelay()
 			}
 		}
 	}
-	else if(wannaVote || wannaDigitize || wannaSausage || wannaBackup)
+	else if(wannaVote || wannaDigitize || wannaSausage)
 	{
 		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
 		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
 		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
-		if(wannaBackup) auto_log_warning("Want to backup monster but couldn't find a zone to burn delay", "red");
+	}
+	else if(wannaBackup)
+	{
+		auto_log_info("Couldn't find zone to burn delay. Using back-up camera at Noob Cave", "green");
+		if(autoAdv($location[noob cave]))
+		{
+			return true;
+		}	
 	}
 	return false;
 }
