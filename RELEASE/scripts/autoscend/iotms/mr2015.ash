@@ -982,7 +982,7 @@ boolean deck_useScheme(string action)
 			case 3:				cards["1952 Mickey Mantle"] = true;						break;
 			}
 			break;
-		case $class[Ed]:
+		case $class[Ed the Undying]:
 			switch(my_daycount())
 			{
 			case 1:				cards["ore"] = true;						break;
