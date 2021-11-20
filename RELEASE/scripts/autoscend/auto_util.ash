@@ -1322,7 +1322,7 @@ item whatHiMein()
 			return $item[Cold Hi Mein];
 		case $class[Sauceror]:
 		case $class[Pastamancer]:
-		case $class[Ed]:
+		case $class[Ed the Undying]:
 			return $item[Spooky Hi Mein];
 		case $class[Disco Bandit]:
 		case $class[Accordion Thief]:

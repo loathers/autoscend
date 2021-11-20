@@ -13,7 +13,7 @@ Tomb Rat
 Blooper	loc:8-Bit Realm
 Bob Racecar	!sniffed:Racecar Bob
 Racecar Bob	!sniffed:Bob Racecar
-Government Scientist	class:Ed
+Government Scientist	class:Ed the Undying
 Green Ops Soldier	!path:Kingdom of Exploathing;prop:hippiesDefeated>399
 War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Homeopath
 War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Naturopathic Homeopath

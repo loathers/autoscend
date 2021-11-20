@@ -80,6 +80,40 @@ boolean L10_airship()
 	return true;
 }
 
+void castleBasementChoiceHandler(int choice)
+{
+	if(choice == 669) // The Fast and the Furry-ous (The Castle in the Clouds in the Sky (Basement))
+	{
+		run_choice(1); // if umbrella equipped finish quest. without, go to Out in the Open Source (#671)
+	}
+	else if(choice == 670) // You Don't Mess Around with Gym (The Castle in the Clouds in the Sky (Basement))
+	{
+		if(internalQuestStatus("questL10Garbage") < 8 && equipped_amount($item[Amulet of Extreme Plot Significance]) > 0)
+		{
+			run_choice(4); // with amulet equipped, open the ground floor
+		}
+		else
+		{
+			run_choice(1); // with no amulet, grab the dumbbell. will skip if already have dumbbell
+		}
+	}
+	else if(choice == 671) // Out in the Open Source (The Castle in the Clouds in the Sky (Basement))
+	{
+		if(item_amount($item[Massive Dumbbell]) > 0)
+		{
+			run_choice(1); // with dumbbell, open the ground floor
+		}
+		else
+		{
+			run_choice(4); // without dumbbell, go to You Don't Mess Around with Gym (#670)
+		}
+	}
+	else
+	{
+		abort("unhandled choice in castleBasementChoiceHandler");
+	}
+}	
+
 boolean L10_basement()
 {
 	if(internalQuestStatus("questL10Garbage") != 7)
@@ -205,6 +239,81 @@ boolean L10_topFloor()
 
 	return true;
 }
+
+void castleTopFloorChoiceHandler(int choice)
+{
+	if(choice == 675) // Melon Collie and the Infinite Lameness (The Castle in the Clouds in the Sky (Top Floor))
+	{
+		if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
+		{
+			run_choice(2); // if quest not done and have the record, complete the quest
+		}
+		else
+		{
+			run_choice(4); // moves to Copper Feel (#677) in all other scenarios
+		}
+	}
+	else if(choice == 676) // Flavor of a Raver (The Castle in the Clouds in the Sky (Top Floor))
+	{	
+		if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
+		{
+			run_choice(4); // if quest not done and have mohawk wig on, move to Yeah, You're for Me (#678)
+		}	
+		else
+		{
+			run_choice(3); // if no mohawk wig, grab the drum n bass record. will skip if already have record
+		}
+	}
+	else if(choice == 677) // Copper Feel (The Castle in the Clouds in the Sky (Top Floor))
+	{
+		if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Model airship]) > 0)
+		{
+			run_choice(1); // if quest not done and have model airship, complete quest
+		}
+		else if((internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0) || in_koe())
+		{
+			run_choice(4); // if quest not done and have the record, move to Melon Collie (#675). HITS is open in KoE so no need to grab rocket
+		}
+		else
+		{
+			run_choice(2); // grab steam-powered rocket ship.  will skip if already have rocket
+		}
+	}
+	else if(choice == 678) // Yeah, You're for Me, Punk Rock Giant (The Castle in the Clouds in the Sky (Top Floor))
+	{
+		if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
+		{
+			run_choice(1); // if quest not done and mohawk wig equipped, finish quest
+		}
+		else if(internalQuestStatus("questL10Garbage") < 10)
+		{
+			run_choice(4); // if wig not equipped and quest not done, go to Flavor of a Raver (#676)
+		}
+		else
+		{
+			run_choice(3); // if quest is done, go to Copper Feel (#677) to skip
+		}
+	}
+	else if(choice == 679) // Keep On Turnin' the Wheel in the Sky (The Castle in the Clouds in the Sky (Top Floor))
+	{
+		if(isActuallyEd())
+		{
+			run_choice(2); // ed advances via choice 2
+		}
+		else
+		{
+			run_choice(1); // everyone else advances via choice 1
+		}
+	}
+	else if(choice == 680) // Are you a Man or a Mouse? (The Castle in the Clouds in the Sky (Top Floor))
+	{
+		run_choice(1); // go to finish quest the long way
+	}
+	else
+	{
+		abort("unhandled choice in castleTopFloorChoiceHandler");
+	}
+}	
 
 boolean L10_holeInTheSkyUnlock()
 {
