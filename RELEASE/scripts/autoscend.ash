@@ -1,4 +1,4 @@
-since r25791;	//You Robot tracking fixes
+since r25863;	//fix my_class() to work with Ed the Undying again
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

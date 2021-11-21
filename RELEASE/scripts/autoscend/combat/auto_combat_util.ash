@@ -355,6 +355,12 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "";
 	}
 
+	//If it's already banished, banishing it again isn't going to do much.
+	if(is_banished(enemy))
+	{
+		return "";
+	}
+
 	//Check that we actually want to banish this thing.
 	if(!auto_wantToBanish(enemy, loc))
 		return "";
