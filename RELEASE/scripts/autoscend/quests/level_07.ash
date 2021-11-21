@@ -1,6 +1,6 @@
 void cyrptChoiceHandler(int choice)
 {
-	if(choice = 153) // Turn Your Head and Coffin (The Defiled Alcove)
+	if(choice == 153) // Turn Your Head and Coffin (The Defiled Alcove)
 	{
 		if(my_meat() < 1000 + meatReserve())
 		{
