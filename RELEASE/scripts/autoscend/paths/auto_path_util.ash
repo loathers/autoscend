@@ -3,7 +3,8 @@
 boolean auto_buySkills()  // This handles skill acquisition for general paths
 {
 	// TODO: Torso Awareness is worth obtaining in other cases too.
-	if((my_meat() >= 10000)
+	//we need 5000 meat for the skill. and want to save an additional 1000 meat above meat reserve since torso awareness is somewhat low priority
+	if((my_meat() >= meatReserve() + 6000)
 	   && gnomads_available()
 	   && (!have_skill($skill[Torso Awareness]))
 	   && (item_amount($item[January\'s Garbage Tote]) != 0)
