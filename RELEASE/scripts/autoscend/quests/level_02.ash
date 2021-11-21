@@ -92,6 +92,7 @@ void spookyForestChoiceHandler(int choice)
 		abort("unhandled choice in spookyForestChoiceHandler");
 	}
 }
+
 boolean L2_mosquito()
 {
 	if(internalQuestStatus("questL02Larva") < 0 || internalQuestStatus("questL02Larva") > 1)
