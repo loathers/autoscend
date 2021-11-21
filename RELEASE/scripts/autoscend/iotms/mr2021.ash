@@ -131,34 +131,34 @@ boolean auto_backupTarget()
 	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean();
 	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > 25 && my_level() >= 6;
 
-    switch (get_property("lastCopyableMonster").to_monster()) {
-        case $monster[lobsterfrogman]:
-            if(wantBackupLFM)
+	switch (get_property("lastCopyableMonster").to_monster()) {
+		case $monster[lobsterfrogman]:
+			if(wantBackupLFM)
 				return true; 
 			break;
-        case $monster[ninja snowman assassin]:
-            if(wantBackupNSA)
+		case $monster[ninja snowman assassin]:
+			if(wantBackupNSA)
 				return true;
 			break;
-        case $monster[modern zmobie]:
-            if(wantBackupZmobie) 
+		case $monster[modern zmobie]:
+			if(wantBackupZmobie) 
 				return true;
 			break;
-        case $monster[sausage goblin]:
+		case $monster[sausage goblin]:
 			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie)
 				return true;
-            break;
-        case $monster[eldritch tentacle]:
-            //backup tentacles if power leveling or use all remaining charges if at end of day
+			break;
+		case $monster[eldritch tentacle]:
+			//backup tentacles if power leveling or use all remaining charges if at end of day
 			if(isAboutToPowerlevel() && auto_backupUsesLeft() > 5)
 				return true;
 			if (my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
 				return true;
 			break;
-        default: break;
+		default: break;
     }
 
-    return false;
+	return false;
 }
 
 boolean auto_havePowerPlant()
