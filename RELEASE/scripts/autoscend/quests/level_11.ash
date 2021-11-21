@@ -1165,7 +1165,7 @@ boolean L11_unlockHiddenCity() {
 			if(isAboutToPowerlevel())	//we ran out of other quests to do. stop waiting for optimal conditions
 			{
 				//TODO replace this abort with a function that adventures in the ziggurat for stone wool.
-				abort("We need [Stone Wool] to unlock the hidden city and were unable to get it via semirare. This is not currently automated. Please do it manually then run autoscend again.");
+				abort("We need [Stone Wool] to unlock the hidden city and were unable to get it via semirare. This scenario is not currently automated. Please manually acquire 2 [Stone Wool] then run autoscend again.");
 			}
 			else return false;	//go do other things while we keep waiting for semirare
 		}
