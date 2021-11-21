@@ -13,7 +13,7 @@ void cyrptChoiceHandler(int choice)
 	}
 	else if(choice == 155) // Skull, Skull, Skull (The Defiled Nook)
 	{
-		if(in_zombieSlayer() && (item_amount($item[talkative skull]) == 0 || !have_familiar($familiar[Hovering Skull]))
+		if(in_zombieSlayer() && (item_amount($item[talkative skull]) == 0 || !have_familiar($familiar[Hovering Skull])))
 		{
 			run_choice(1); // get talkative skull
 		}
