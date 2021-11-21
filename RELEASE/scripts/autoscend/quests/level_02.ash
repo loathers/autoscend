@@ -1,6 +1,6 @@
 void spookyForestChoiceHandler(int choice)
 {
-	if(choice = 502) // Arboreal Respite (The Spooky Forest)
+	if(choice == 502) // Arboreal Respite (The Spooky Forest)
 	{
 		if(internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0)
 		{
