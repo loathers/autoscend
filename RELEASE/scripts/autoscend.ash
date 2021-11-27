@@ -102,21 +102,26 @@ void initializeSettings() {
 	// should not handle anything other than intialising properties etc.
 	// all paths that have extra settings should call their path specific
 	// initialise function at the end of this function (may override properties set in here).
-
-	if(my_ascensions() == get_property("auto_doneInitialize").to_int())
+	
+	//if we detected a path drop we need to reinitialize. either due to dropping a path or breaking ronin in standard.
+	boolean reinitialize = get_property("_auto_reinitialize").to_boolean();
+	if(!reinitialize && my_ascensions() == get_property("auto_doneInitialize").to_int())
 	{
 		return;		//already initialized settings this ascension
 	}
 	set_location($location[none]);
 	invalidateRestoreOptionCache();
 
-	set_property("auto_100familiar", $familiar[none]);
-	if(my_familiar() != $familiar[none] && pathAllowsChangingFamiliar()) //If we can't control familiar changes, no point setting 100% familiar data
+	if(!reinitialize)
 	{
-		boolean userAnswer = user_confirm("Familiar already set, is this a 100% familiar run? Will default to 'No' in 15 seconds.", 15000, false);
-		if(userAnswer)
+		set_property("auto_100familiar", $familiar[none]);
+		if(my_familiar() != $familiar[none] && pathAllowsChangingFamiliar()) //If we can't control familiar changes, no point setting 100% familiar data
 		{
-			set_property("auto_100familiar", my_familiar());
+			boolean userAnswer = user_confirm("Familiar already set, is this a 100% familiar run? Will default to 'No' in 15 seconds.", 15000, false);
+			if(userAnswer)
+			{
+				set_property("auto_100familiar", my_familiar());
+			}
 		}
 	}
 
@@ -243,6 +248,7 @@ void initializeSettings() {
 
 	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
+	remove_property("_auto_reinitialize");
 }
 
 void initializeSession() {
