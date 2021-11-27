@@ -1526,6 +1526,8 @@ void resetState() {
 	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
 	//We use boolean instead of adventure count because of free combats.
 	
+	remove_property("auto_combatDirective");		//An action to execute at the start of next combat. resets every loop.
+	remove_property("auto_digitizeDirective");		//digitize a specified monster on the next combat.
 	set_property("auto_doCombatCopy", "no");
 	set_property("_auto_thisLoopHandleFamiliar", false); // have we called handleFamiliar this loop
 	set_property("auto_disableAdventureHandling", false); // used to stop auto_pre_adv and auto_post_adv from doing anything.
