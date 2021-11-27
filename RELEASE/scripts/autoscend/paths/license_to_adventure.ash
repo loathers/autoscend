@@ -576,7 +576,7 @@ boolean LM_bond()
 					auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 					set_property("auto_digitizeDirective", $monster[Blooper]);
 					autoAdv(1, $location[8-bit Realm]);
-					set_property("auto_digitizeDirective", "");
+					remove_property("auto_digitizeDirective");
 					return true;
 				}
 			}
