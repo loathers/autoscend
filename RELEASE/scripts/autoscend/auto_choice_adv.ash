@@ -289,78 +289,16 @@ boolean auto_run_choice(int choice, string page)
 			kolhsChoiceHandler(choice);
 			break;
 		case 780: // Action Elevator (The Hidden Apartment Building)
-			if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions()) {
-				run_choice(3); // relocate lawyers to park
-			} else if (have_effect($effect[Thrice-Cursed]) > 0) {
-				run_choice(1); // fight the spirit
-			} else {
-				run_choice(2); // get cursed
-			}
-			break;
 		case 781: // Earthbound and Down (An Overgrown Shrine (Northwest))
-			if (get_property("hiddenApartmentProgress").to_int() == 0) {
-				run_choice(1); // unlock the Hidden Apartment Building
-			} else if (item_amount($item[moss-covered stone sphere]) > 0) {
-				run_choice(2); // get the stone triangle
-			} else {
-				run_choice(6); // skip
-			}
-			break;
 		case 783: // Water You Dune (An Overgrown Shrine (Southwest))
-			if (get_property("hiddenHospitalProgress").to_int() == 0) {
-				run_choice(1); // unlock the Hidden Hospital
-			} else if (item_amount($item[dripping stone sphere]) > 0) {
-				run_choice(2); // get the stone triangle
-			} else {
-				run_choice(6); // skip
-			}
-			break;
 		case 784: // You, M. D. (The Hidden Hospital)
-			run_choice(1); // fight the spirit
-			break;
 		case 785: // Air Apparent (An Overgrown Shrine (Northeast))
-			if (get_property("hiddenOfficeProgress").to_int() == 0) {
-				run_choice(1); // unlock the Hidden Office Building
-			} else if (item_amount($item[crackling stone sphere]) > 0) {
-				run_choice(2); // get the stone triangle
-			} else {
-				run_choice(6); // skip
-			}
-			break;
 		case 786: // Working Holiday (The Hidden Office Building)
-			if (item_amount($item[McClusky File (Complete)]) > 0) {
-				run_choice(1); // fight the spirit
-			} else if (item_amount($item[Boring Binder Clip]) == 0) {
-				run_choice(2); // get boring binder clip
-			} else {
-				run_choice(3); // fight an accountant
-			}
-			break;
 		case 787: // Fire When Ready (An Overgrown Shrine (Southeast))
-			if (get_property("hiddenBowlingAlleyProgress").to_int() == 0) {
-				run_choice(1); // unlock the Hidden Bowling Alley
-			} else if (item_amount($item[scorched stone sphere]) > 0) {
-				run_choice(2); // get the stone triangle
-			} else {
-				run_choice(6); // skip
-			}
-			break;
 		case 788: // Life is Like a Cherry of Bowls (The Hidden Bowling Alley)
-			run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
-			break;
 		case 789: // Where Does The Lone Ranger Take His Garbagester? (The Hidden Park)
-			if (get_property("relocatePygmyJanitor").to_int() != my_ascensions()) {
-				run_choice(2); // Relocate the Pygmy Janitor to the park
-			} else {
-				run_choice(1); // Get Hidden City zone items
-			}
-			break;
 		case 791: // Legend of the Temple in the Hidden City (A Massive Ziggurat)
-			if (item_amount($item[stone triangle]) == 4) {
-				run_choice(1); // fight the Protector Spirit (or replacement)
-			} else {
-				run_choice(6); // skip
-			}
+			hiddenCityChoiceHandler(choice);
 			break;
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
 			if(my_primestat() == $stat[Muscle])
@@ -403,56 +341,11 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 876: // One Simple Nightstand (The Haunted Bedroom)
-			if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && !in_wotsf())
-			{
-				run_choice(1); // get old leather wallet worth ~500 meat
-			}
-			else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[muscle] && my_buffedstat($stat[muscle]) < 150)
-			{
-				run_choice(3); // spend 1 ghost key for primestat, get ~200 muscle XP
-			}
-			else
-			{
-				run_choice(2); // get min(200,muscle) of muscle XP
-			}
-			break;
 		case 877: // One Mahogany Nightstand (The Haunted Bedroom)
-			run_choice(1); // get half of a memo or old coin purse
-			break;
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
-			boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
-			if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
-				needSpectacles = false;
-			}
-			if (needSpectacles) {
-				run_choice(3); // get Lord Spookyraven's spectacles
-			} else if (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1) {
-				run_choice(4); // get disposable instant camera
-			} else if (my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve()) {
-				run_choice(1); // get ~500 meat
-			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[mysticality] && my_buffedstat($stat[mysticality]) < 150) {
-				run_choice(5); // spend 1 ghost key for primestat, get ~200 mysticality XP
-			} else {
-				run_choice(2); // get min(200,mys) of mys XP
-			}
-			break;
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
-			if(options contains 4) {
-				run_choice(4); // only shows up rarely. when this line was added it was worth 1.3 million in mall
-			} if(in_bhy() && item_amount($item[Antique Hand Mirror]) < 1) {
-				run_choice(3); // fight the remains of a jilted mistress for the antique hand mirror
-			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie] && my_buffedstat($stat[moxie]) < 150) {
-				run_choice(5); // spend 1 ghost key for primestat, get ~200 moxie XP
-			} else {
-				run_choice(1); // get moxie substats
-			}
-			break;
 		case 880: // One Elegant Nightstand (The Haunted Bedroom)
-			if (internalQuestStatus("questM21Dance") < 2 && item_amount($item[Lady Spookyraven\'s Finest Gown]) == 0) {
-				run_choice(1); // get Lady Spookyraven's Gown
-			} else {
-				run_choice(2); // get elegant nightstick
-			}
+			hauntedBedroomChoiceHandler(choice, options);
 			break;
 		case 881: // Never Gonna Make You Up (The Haunted Bathroom)
 			run_choice(1); // fight the cosmetics wraith
@@ -460,14 +353,16 @@ boolean auto_run_choice(int choice, string page)
 		case 882: // Off the Rack (The Haunted Bathroom)
 			run_choice(1); // take the towel
 			break;
+		case 884: // Chasin' Babies (Laboratory) (The Haunted Laboratory)
 		case 885: // Chasin' Babies (Nursery) (The Haunted Nursery)
+		case 886: // Chasin' Babies (Storage Room) (The Haunted Storage Room)
 			run_choice(6); // skip
 			break;
 		case 888: // Take a Look, it's in a Book! (Rise) (The Haunted Library)
 			run_choice(4); // skip
 			break;
 		case 889: // Take a Look, it's in a Book! (Fall) (The Haunted Library)
-			if (item_amount($item[dictionary]) == 0 && get_property("auto_getDictionary").to_boolean()) {
+			if(item_amount($item[dictionary]) == 0 && get_property("auto_getDictionary").to_boolean()) {
 				run_choice(4); // get the dictionary
 			} else {
 				run_choice(5); // skip
@@ -477,23 +372,15 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // unlock Spookyraven Manor Cellar 
 			break;
 		case 923: // All Over the Map (The Black Forest)
-			run_choice(1); // go to You Found Your Thrill (#924)
-			break;
 		case 924: // You Found Your Thrill (The Black Forest)
-			if(get_property("auto_getBeehive").to_boolean() && my_adventures() > 3) {
-				run_choice(3); // go to Bee Persistent (#1018)
-			} else if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte()) {
-				run_choice(2); // go to The Blackberry Cobbler (#928)
-			} else {
-				run_choice(1); // Attack the bushes (fight blackberry bush)
-			}
-			break;
+		case 925: // The Blackest Smith (The Black Forest)
+		case 926: // Be Mine (The Black Forest)
+		case 927: // Sunday Black Sunday (The Black Forest)
 		case 928: // You Found Your Thrill (The Black Forest)
-			if (!possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) >= 3 && !in_darkGyffte()) {
-				run_choice(4); // get Blackberry Galoshes
-			} else {
-				run_choice(5); // skip
-			}
+			blackForestChoiceHandler(choice);
+			break;
+		case 976: // Ed the Undrowning (Heavy Rains)
+			run_choice(1); // fight Ed in a Heavy Rains run
 			break;
 		case 1000: // Everything in Moderation (The Typical Tavern Cellar as Ed)
 			run_choice(1); // turn off the faucet as Ed, complete quest
@@ -502,25 +389,11 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(2); // choose to not fight a rat 
 			break;
 		case 1002: // Temple of the Legend in the Hidden City (A Massive Ziggurat/Actually Ed the Undying)
-			if (item_amount($item[stone triangle]) == 4) {
-				run_choice(1); // Put the Ancient Amulet back
-			} else {
-				run_choice(6); // skip
-			}
+			hiddenCityChoiceHandler(choice);
 			break;
 		case 1018: // Bee Persistent (The Black Forest)
-			if (get_property("auto_getBeehive").to_boolean() && my_adventures() > 2) {
-				run_choice(1); // go to Bee Rewarded (#1019)
-			} else {
-				run_choice(2); // skip
-			}
-			break;
 		case 1019: // Bee Rewarded (The Black Forest)
-			if (get_property("auto_getBeehive").to_boolean()) {
-				run_choice(1); // get the beehive
-			} else {
-				run_choice(2); // skip
-			}
+			blackForestChoiceHandler(choice);
 			break;
 		case 1023: // Like a Bat Into Hell (Actually Ed the Undying)
 		case 1024: // Like a Bat out of Hell (Actually Ed the Undying)
@@ -585,6 +458,9 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(4); // get 15 moxie substat
 			}
 			break;
+		case 1074: // Welcome to the Copperhead Club (The Copperhead Club)
+			run_choice(1); // approach Shen's table
+			break;
 		case 1082: // The "Rescue" (post-Cake Lord in Madness Bakery)
 			run_choice(1); // move to next part of quest
 			break;
@@ -592,14 +468,9 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // get the no-handed pie and complete quest
 			break;
 		case 1106: // Wooof! Wooooooof! (Ghost Dog)
-			if((in_hardcore() && have_effect($effect[Adventurer\'s Best Friendship]) > 120) || ((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar()))
-			{
-				run_choice(3); // ghost dog chow
-			}
-			else
-			{
-				run_choice(2); // 30 turns of adventurer's best friendship
-			}
+		case 1107: // Playing Fetch (Ghost Dog)
+		case 1108: // Your Dog Found Something Again (Ghost Dog)
+			doghouseChoiceHandler(choice);
 			break;
 		case 1115: // VYKEA! (VYKEA)
 			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community()) {
@@ -612,6 +483,9 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1119: // Blue Sideways In Time (Machine Elf)
 			run_choice(1); // acquire some abstractions
+			break;
+		case 1258: // Daily Briefing (License to Adventure)
+			run_choice(2); // visit LI-11 HQ
 			break;
 		case 1261: // Which Door? (Super Villain's Lair)
 			if(my_meat() > 1000)

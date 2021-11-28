@@ -1895,8 +1895,6 @@ void auto_begin()
 		backupSetting("forbiddenStores", userForbidden + ",3408540"); // forbid Dance Police
 	}
 	
-	backupSetting("choiceAdventure1107", 1);
-
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))
 	{
