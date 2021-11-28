@@ -269,19 +269,27 @@ boolean auto_run_choice(int choice, string page)
 		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
 			kolhsChoiceHandler(choice);
 			break;
+		case 763: // It's Kind of a Big Deal (BIG!)
+			run_choice(1); // approach the booth to get big pants
+			break;
 		case 768: // The Littlest Identity Crisis (Mini-adventurer initialization)
-			if(in_quantumTerrarium()) {
-				if (my_location() == $location[The Themthar Hills]) {
+			if(in_quantumTerrarium())
+			{
+				if(my_location() == $location[The Themthar Hills])
+				{
 					run_choice(4); // Sauceror is a lep and starfish
 				}
-				else if (my_level() < 13) {
+				else if(my_level() < 13)
+				{
 					run_choice(2); // Turtle Tamer is a volleyball and a starfish at level 5
 				}
-				else {
+				else
+				{
 					run_choice(6); // Accordion Thief is a fairy and ghoul whelp, with some free buffs.
 				}
 			}
-			else {
+			else
+			{
 				run_choice(2); // Turtle Tamer is a decent fallback pick.
 			}
 			break;
