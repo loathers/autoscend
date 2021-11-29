@@ -23,6 +23,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combat_robot_stage5(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = zombie slayer
+	retval = auto_combatZombieSlayerStage5(round, enemy, text);
+	if(retval != "") return retval;
+
 	string combatState = get_property("auto_combatHandler");
 	phylum type = monster_phylum(enemy);
 	string attackMinor = "attack with weapon";

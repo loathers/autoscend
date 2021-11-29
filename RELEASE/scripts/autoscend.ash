@@ -240,6 +240,7 @@ void initializeSettings() {
 	jarlsberg_initializeSettings();
 	robot_initializeSettings();
 	wildfire_initializeSettings();
+	zombieSlayer_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -730,8 +731,8 @@ void initializeDay(int day)
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
 
-	// Get emotionally chipped if you have the item.  boris cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris())
+	// Get emotionally chipped if you have the item.  boris\zombie slayer cannot use this skill so excluding.
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer())
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1698,6 +1699,7 @@ boolean doTasks()
 	jarlsberg_buySkills();
 	boris_buySkills();
 	pete_buySkills();
+	zombieSlayer_buySkills();
 
 	oldPeoplePlantStuff();
 	use_barrels();

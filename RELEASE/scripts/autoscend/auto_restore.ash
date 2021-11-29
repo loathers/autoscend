@@ -1699,6 +1699,10 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	{
 		return false;
 	}
+	else if (in_zombieSlayer()) // zombies have hordes not mp
+	{
+		return zombieSlayer_acquireMP(goal, meat_reserve);
+	}
 
 	boolean isMax = (goal == my_maxmp());
 
@@ -1860,6 +1864,10 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	if(is_boris())
 	{
 		return borisAcquireHP(goal);
+	}
+	if (in_zombieSlayer())
+	{
+		return zombieSlayer_acquireHP(goal);
 	}
 	if (my_class() == $class[Plumber])
 	{
