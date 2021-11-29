@@ -1191,10 +1191,11 @@ boolean L12_sonofaBeach()
 
 	if(!in_lar())
 	{
-		if(providePlusCombat(25, $location[Sonofa Beach], true, true) < 0.0)
+		float combat_bonus = providePlusCombat(25, $location[Sonofa Beach], true, true);
+		if(combat_bonus <= 0.0)
 		{
-			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
-			equipBaseline();
+			auto_log_warning("Something is keeping us from getting a suitable combat rate for [Lobsterfrogmen] in [Sonofa Beach]. we have: " +combat_bonus, "red");
+			resetState();
 			return false;
 		}
 	}
@@ -1311,32 +1312,11 @@ boolean L12_sonofaPrefix()
 
 	if(!in_lar())
 	{
-		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
+		float combat_bonus = providePlusCombat(25, $location[Sonofa Beach], true, true);
+		if(combat_bonus <= 0.0)
 		{
-			if((item_amount($item[Ass-Stompers of Violence]) > 0) && (equipped_item($slot[acc1]) != $item[Ass-Stompers of Violence]) && can_equip($item[Ass-Stompers of Violence]))
-			{
-				equip($slot[acc1], $item[Ass-Stompers of Violence]);
-			}
-			else
-			{
-				equip($slot[acc1], $item[bejeweled pledge pin]);
-			}
-		}
-		if(item_amount($item[portable cassette player]) > 0)
-		{
-			equip($slot[acc2], $item[portable cassette player]);
-		}
-		if(numeric_modifier("Combat Rate") <= 9.0)
-		{
-			if(possessEquipment($item[Carpe]))
-			{
-				equip($slot[Back], $item[Carpe]);
-			}
-		}
-		if(numeric_modifier("Combat Rate") < 0.0)
-		{
-			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
-			equipBaseline();
+			auto_log_warning("Something is keeping us from getting a suitable combat rate for [Lobsterfrogmen] in [Sonofa Beach]. we have: " +combat_bonus, "red");
+			resetState();
 			return false;
 		}
 	}
@@ -1348,7 +1328,7 @@ boolean L12_sonofaPrefix()
 
 	if((my_mp() < mp_cost($skill[Digitize])) && (auto_get_campground() contains $item[Source Terminal]) && is_unrestricted($item[Source Terminal]) && (get_property("_sourceTerminalDigitizeMonster") != $monster[Lobsterfrogman]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3))
 	{
-		equipBaseline();
+		resetState();
 		return false;
 	}
 
@@ -1371,11 +1351,12 @@ boolean L12_sonofaPrefix()
 	auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 
 	boolean retval = autoAdv($location[Sonofa Beach]);
-	
-	set_property("auto_combatDirective", "");
-	set_property("auto_doCombatCopy", "no");
+	if(!retval)
+	{
+		auto_log_error("Failed to adventure in [Sonofa Beach]");
+		resetState();
+	}
 	edAcquireHP();
-	
 	return retval;
 }
 

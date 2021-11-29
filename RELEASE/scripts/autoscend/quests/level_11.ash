@@ -1160,12 +1160,14 @@ boolean L11_unlockHiddenCity() {
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 		buffMaintain($effect[Stone-Faced], 0, 1, 1);
-		if (have_effect($effect[Stone-Faced]) == 0) {
-			if(isAboutToPowerlevel())	//we ran out of other things to do.
+		if (have_effect($effect[Stone-Faced]) == 0)
+		{
+			if(isAboutToPowerlevel())	//we ran out of other quests to do. stop waiting for optimal conditions
 			{
-				abort("We do not smell like Stone nor have the face of one. We currently donut farm Stone Wool. Please get some");
+				//TODO replace this abort with a function that adventures in the ziggurat for stone wool.
+				abort("We need [Stone Wool] to unlock the hidden city and were unable to get it via semirare. This scenario is not currently automated. Please manually acquire 2 [Stone Wool] then run autoscend again.");
 			}
-			else return false;	//try to do other things first.
+			else return false;	//go do other things while we keep waiting for semirare
 		}
 	}
 	return autoAdv($location[The Hidden Temple]);
