@@ -143,6 +143,7 @@ void initializeSettings() {
 	set_property("auto_banishes", "");
 	set_property("auto_batoomerangDay", 0);
 	set_property("auto_beatenUpCount", 0);
+	set_property("auto_beatenUpLastAdv", false);
 	remove_property("auto_beatenUpLocations");
 	set_property("auto_getBeehive", false);
 	set_property("auto_bruteForcePalindome", false);
@@ -245,6 +246,7 @@ void initializeSettings() {
 	jarlsberg_initializeSettings();
 	robot_initializeSettings();
 	wildfire_initializeSettings();
+	zombieSlayer_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -325,6 +327,7 @@ boolean LX_burnDelay()
 	boolean wannaVote = auto_voteMonster(true);
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
+	boolean wannaBackup = auto_backupTarget();
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -368,12 +371,28 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
+		if(wannaBackup)
+		{
+			auto_log_info("Burn some delay somewhere (backup camera), if we found a place!", "green");
+			if(autoAdv(burnZone))
+			{
+				return true;
+			}
+		}
 	}
 	else if(wannaVote || wannaDigitize || wannaSausage)
 	{
 		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
 		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
 		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
+	}
+	else if(wannaBackup)
+	{
+		auto_log_info("Couldn't find zone to burn delay. Using back-up camera at Noob Cave", "green");
+		if(autoAdv($location[noob cave]))
+		{
+			return true;
+		}	
 	}
 	return false;
 }
@@ -736,8 +755,8 @@ void initializeDay(int day)
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
 
-	// Get emotionally chipped if you have the item.  boris cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris())
+	// Get emotionally chipped if you have the item.  boris\zombie slayer cannot use this skill so excluding.
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer())
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1704,6 +1723,7 @@ boolean doTasks()
 	jarlsberg_buySkills();
 	boris_buySkills();
 	pete_buySkills();
+	zombieSlayer_buySkills();
 
 	oldPeoplePlantStuff();
 	use_barrels();

@@ -4,6 +4,7 @@ void auto_beaten_handler()
 {
 	if(have_effect($effect[Beaten Up]) == 0)
 	{
+		set_property("auto_beatenUpLastAdv", false);
 		return;		//we are not beaten up. nothing to handle
 	}
 	set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
@@ -11,6 +12,7 @@ void auto_beaten_handler()
 	if(loc != "") loc += ",";
 	loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
 	set_property("auto_beatenUpLocations", loc);
+	set_property("auto_beatenUpLastAdv", true);
 	
 	if(my_location() == $location[The X-32-F Combat Training Snowman])
 	{
