@@ -87,9 +87,12 @@ void auto_ghost_prep(location place)
 		return;		//you robot with a rocket crotch. deals fire damage to kill ghosts.
 	}
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
-	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
-	Storm of the Scarab,		//actually ed the undying
-	Boil]		//avatar of jarlsberg
+	foreach sk in $skills[
+		Saucestorm, saucegeyser,	//base classes
+		Storm of the Scarab,		//actually ed the undying
+		Boil,						//avatar of jarlsberg
+		Bilious Burst				//zombie slayer
+		]
 	{
 		if(auto_have_skill(sk))
 		{
@@ -158,7 +161,7 @@ void auto_ghost_prep(location place)
 		addToMaximize(max_with);
 		return;
 	}
-	
+
 	abort("I was about to head into [" +place+ "] which contains ghosts. I can not damage those");
 }
 
