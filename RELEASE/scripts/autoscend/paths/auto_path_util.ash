@@ -233,7 +233,7 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 void pathDroppedCheck()
 {
 	//detect path drops and reinitialize with settings appropriate for the new path
-	//this will also trigger when standard path changes to none after ronin is broken
+	//this will also trigger when some paths break ronin
 	if(my_path() == get_property("auto_doneInitializePath"))
 	{
 		return;		//our current path is the same one we last initialized as

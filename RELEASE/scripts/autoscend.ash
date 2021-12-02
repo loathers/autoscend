@@ -103,7 +103,7 @@ void initializeSettings() {
 	// all paths that have extra settings should call their path specific
 	// initialise function at the end of this function (may override properties set in here).
 	
-	//if we detected a path drop we need to reinitialize. either due to dropping a path or breaking ronin in standard.
+	//if we detected a path drop we need to reinitialize. either due to dropping a path or breaking ronin in some paths.
 	boolean reinitialize = get_property("_auto_reinitialize").to_boolean();
 	if(!reinitialize && my_ascensions() == get_property("auto_doneInitialize").to_int())
 	{
