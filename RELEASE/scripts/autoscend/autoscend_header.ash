@@ -421,6 +421,7 @@ boolean auto_canFeelPeaceful();
 boolean auto_haveBackupCamera();
 void auto_enableBackupCameraReverser();
 int auto_backupUsesLeft();
+boolean auto_backupTarget();
 boolean auto_harvestBatteries();
 int batteryPoints(item battery);
 int totalBatteryPoints();
@@ -844,6 +845,10 @@ boolean LA_robot();
 ########################################################################################################
 //Defined in autoscend/paths/zombie_slayer.ash
 boolean in_zombieSlayer();
+void zombieSlayer_initializeSettings();
+boolean zombieSlayer_buySkills();
+boolean zombieSlayer_acquireMP(int goal, int meat_reserve);
+boolean zombieSlayer_acquireHP(int goal);
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash

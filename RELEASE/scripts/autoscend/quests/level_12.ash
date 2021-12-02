@@ -1254,6 +1254,12 @@ boolean L12_sonofaPrefix()
 		}
 	}
 
+	if(auto_backupTarget() && get_property("lastCopyableMonster").to_monster() == $monster[lobsterfrogman])
+	{
+		//let LX_burnDelay() run prior to forcing backing up in noob cave
+		return false;
+	}
+
 	if(!(auto_get_campground() contains $item[Source Terminal]))
 	{
 		if((auto_voteMonster() || auto_sausageGoblin()) && adjustForReplaceIfPossible())

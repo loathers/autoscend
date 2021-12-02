@@ -87,9 +87,12 @@ void auto_ghost_prep(location place)
 		return;		//you robot with a rocket crotch. deals fire damage to kill ghosts.
 	}
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
-	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
-	Storm of the Scarab,		//actually ed the undying
-	Boil]		//avatar of jarlsberg
+	foreach sk in $skills[
+		Saucestorm, saucegeyser,	//base classes
+		Storm of the Scarab,		//actually ed the undying
+		Boil,						//avatar of jarlsberg
+		Bilious Burst				//zombie slayer
+		]
 	{
 		if(auto_have_skill(sk))
 		{
@@ -158,7 +161,7 @@ void auto_ghost_prep(location place)
 		addToMaximize(max_with);
 		return;
 	}
-	
+
 	abort("I was about to head into [" +place+ "] which contains ghosts. I can not damage those");
 }
 
@@ -270,7 +273,7 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin()) && place == solveDelayZone());
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
 	generic_t combatModifier = zone_combatMod(place);
 	if (combatModifier._boolean && !burningDelay && !auto_haveQueuedForcedNonCombat()) {
 		acquireCombatMods(combatModifier._int, true);
@@ -329,6 +332,11 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	if(auto_backupTarget())
+	{
+		autoEquip($slot[acc3], $item[backup camera]);
+	}
+	
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
 		autoEquip($item[industrial fire extinguisher]);
