@@ -305,6 +305,20 @@ generic_t zone_needItem(location loc)
 			retval._float = 10.0;
 		}
 		break;
+	// Bugbear Invasion Locations
+	case $location[Waste Processing]:
+		if (!possessEquipment($item[bugbear communicator badge]))
+		{
+			retval._float = 20.0;
+		}
+		break;
+	case $location[Science Lab]:
+		retval._float = 30.0;
+		break;
+	case $location[Engineering]:
+		retval._float = 50.0;
+		break;
+	// End Bugbear Invasion Locations
 	default:
 		retval._error = true;
 		break;
@@ -534,6 +548,17 @@ generic_t zone_combatMod(location loc)
 	case $location[The Ice Hotel]:
 		value = -85;
 		break;
+	// Bugbear Invasion Locations
+	case $location[Sonar]:
+		value = -70;
+		break;
+	case $location[Morgue]:
+		if (item_amount($item[bugbear autopsy tweezers]) > 0)
+		{
+			value = -70;
+		}
+		break;
+	// End Bugbear Invasion Locations
 	default:
 		retval._error = true;
 		break;

@@ -516,6 +516,9 @@ boolean L13_bhy_towerFinal();
 ########################################################################################################
 //Defined in autoscend/paths/bugbear_invasion.ash
 boolean in_bugbear();
+void bugbear_initializeSettings();
+boolean LX_bugbearInvasion();
+boolean LX_bugbearInvasionFinale();
 
 ########################################################################################################
 //Defined in autoscend/paths/casual.ash
