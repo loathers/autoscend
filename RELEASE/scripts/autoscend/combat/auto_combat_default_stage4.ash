@@ -12,46 +12,17 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	retval = auto_combatLicenseToAdventureStage4(round, enemy, text);
 	if(retval != "") return retval;
 	
-	//olfaction is used to spawn 2 more copies of the target at current location.
-	//as well as eliminate the special rule that reduces the odds of encountering the same enemy twice in a row.
-	if(auto_wantToSniff(enemy, my_location()))
+	//all sniffers eliminate the rule that reduces the odds of encountering the same enemy twice in a row.
+	//sniffers also increase the odds of encountering the monster by a variable amount.
+	skill sniffer = getSniffer(enemy);
+	if(auto_wantToSniff(enemy, my_location()) && sniffer != $skill[none])
 	{
-		if(canUse($skill[Transcendent Olfaction]) && (have_effect($effect[On The Trail]) == 0))
+		if(sniffer == $skill[Perceive Soul])		//mafia does not track the target of this skill so we must do so.
 		{
-			handleTracker(enemy, $skill[Transcendent Olfaction], "auto_sniffs");
-			return useSkill($skill[Transcendent Olfaction]);
-		}
-
-		if(canUse($skill[Make Friends]) && get_property("makeFriendsMonster") != enemy && my_audience() >= 20)
-		{
-			handleTracker(enemy, $skill[Make Friends], "auto_sniffs");
-			return useSkill($skill[Make Friends]);
-		}
-
-		if(!contains_text(get_property("longConMonster"), enemy) && canUse($skill[Long Con]) && (get_property("_longConUsed").to_int() < 5))
-		{
-			handleTracker(enemy, $skill[Long Con], "auto_sniffs");
-			return useSkill($skill[Long Con]);
-		}
-
-		if(canUse($skill[Perceive Soul]) && enemy != get_property("auto_bat_soulmonster").to_monster())
-		{
-			handleTracker(enemy, $skill[Perceive Soul], "auto_sniffs");
 			set_property("auto_bat_soulmonster", enemy);
-			return useSkill($skill[Perceive Soul]);
 		}
-
-		if(canUse($skill[Gallapagosian Mating Call]) && enemy != get_property("_gallapagosMonster").to_monster())
-		{
-			handleTracker(enemy, $skill[Gallapagosian Mating Call], "auto_sniffs");
-			return useSkill($skill[Gallapagosian Mating Call]);
-		}
-
-		if(canUse($skill[Offer Latte to Opponent]) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
-		{
-			handleTracker(enemy, $skill[Offer Latte to Opponent], "auto_sniffs");
-			return useSkill($skill[Offer Latte to Opponent]);
-		}
+		handleTracker(enemy, sniffer, "auto_sniffs");
+		return useSkill(sniffer);
 	}
 	
 	//TODO auto_doCombatCopy property is silly. get rid of it

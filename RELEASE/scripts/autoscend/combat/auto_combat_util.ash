@@ -174,6 +174,39 @@ string useItems(item it1, item it2)
 	return useItems(it1, it2, true);
 }
 
+skill getSniffer(monster enemy)
+{
+	//returns the skill we want to use to sniff the enemy
+	//all sniffers eliminate the rule that reduces the odds of encountering the same enemy twice in a row.
+	//sniffers also increase the odds of encountering the monster by a variable amount.
+	if(canUse($skill[Transcendent Olfaction]) && get_property("_olfactionsUsed").to_int() < 3 &&
+	!contains_text(get_property("olfactedMonster"), enemy))
+	{
+		return $skill[Transcendent Olfaction];
+	}
+	if(canUse($skill[Make Friends]) && get_property("makeFriendsMonster") != enemy && my_audience() >= 20)
+	{
+		return $skill[Make Friends];
+	}
+	if(!contains_text(get_property("longConMonster"), enemy) && canUse($skill[Long Con]) && get_property("_longConUsed").to_int() < 5)
+	{
+		return $skill[Long Con];
+	}
+	if(canUse($skill[Perceive Soul]) && enemy != get_property("auto_bat_soulmonster").to_monster())
+	{
+		return $skill[Perceive Soul];
+	}
+	if(canUse($skill[Gallapagosian Mating Call]) && enemy != get_property("_gallapagosMonster").to_monster())
+	{
+		return $skill[Gallapagosian Mating Call];
+	}
+	if(canUse($skill[Offer Latte to Opponent]) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
+	{
+		return $skill[Offer Latte to Opponent];
+	}	
+	return $skill[none];
+}
+
 skill getStunner(monster enemy)
 {
 	// Class specific

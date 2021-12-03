@@ -3,6 +3,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 	string retval;
 	
+	//if we want to olfact in stage 4 then we should delay using this for now until we have olfacted.
+	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
+	{
+		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
+		return "";
+	}
+	
 	// Path = dark gyffte
 	retval = auto_combatDarkGyffteStage2(round, enemy, text);
 	if(retval != "") return retval;
