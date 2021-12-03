@@ -121,8 +121,8 @@ boolean L10_basement()
 		return false;
 	}
 
-	if(possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
-	{
+	if(possessEquipment($item[Titanium Assault Umbrella]) && (!auto_can_equip($item[Titanium Assault Umbrella]) && (!in_wotsf() || !is_boris())))
+	{ // can't hold umbrella in WOTSF (without disembodied hand) or Boris
 		return false;
 	}
 
@@ -160,7 +160,10 @@ boolean L10_basement()
 	}
 
 	auto_forceNextNoncombat();
-	autoEquip($item[Titanium Assault Umbrella]);
+	if(!in_wotsf() || !is_boris()) // can't hold umbrella in WOTSF (without disembodied hand) or Boris
+	{
+		autoEquip($item[Titanium Assault Umbrella]);
+	}
 	autoEquip($item[Amulet of Extreme Plot Significance]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 	

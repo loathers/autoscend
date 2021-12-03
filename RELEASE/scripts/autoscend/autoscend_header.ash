@@ -785,6 +785,8 @@ boolean tcrs_maximize_with_items(string maximizerString);
 ########################################################################################################
 //Defined in autoscend/paths/way_of_the_surprising_fist.ash
 boolean in_wotsf();
+void wotsf_initializeSettings();
+boolean L11_wotsfForgedDocuments();
 
 ########################################################################################################
 //Defined in autoscend/paths/wildfire.ash

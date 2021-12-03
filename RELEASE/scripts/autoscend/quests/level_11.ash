@@ -628,7 +628,7 @@ boolean L11_blackMarket()
 
 boolean L11_getBeehive()
 {
-	if (!black_market_available() || !get_property("auto_getBeehive").to_boolean())
+	if(!black_market_available() || !get_property("auto_getBeehive").to_boolean())
 	{
 		return false;
 	}
@@ -652,15 +652,19 @@ boolean L11_getBeehive()
 
 boolean L11_forgedDocuments()
 {
-	if (internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 2 || !black_market_available())
+	if(internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 2 || !black_market_available())
 	{
 		return false;
 	}
-	if (item_amount($item[Forged Identification Documents]) > 0)
+	if(item_amount($item[Forged Identification Documents]) > 0)
 	{
 		return false;
 	}
-	if (my_meat() < npc_price($item[Forged Identification Documents]))
+	if(in_wotsf())
+	{
+		return L11_wotsfForgedDocuments();
+	}
+	if(my_meat() < npc_price($item[Forged Identification Documents]))
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -670,14 +674,6 @@ boolean L11_forgedDocuments()
 	}
 
 	auto_log_info("Getting the McMuffin Book", "blue");
-	if(in_wotsf())
-	{
-		// TODO: move this to WotSF path file if one is ever created.
-		string[int] pages;
-		pages[0] = "shop.php?whichshop=blackmarket";
-		pages[1] = "shop.php?whichshop=blackmarket&action=fightbmguy";
-		return autoAdvBypass(0, pages, $location[Noob Cave], "");
-	}
 	buyUpTo(1, $item[Forged Identification Documents]);
 	if(item_amount($item[Forged Identification Documents]) > 0)
 	{
@@ -689,7 +685,7 @@ boolean L11_forgedDocuments()
 
 boolean L11_mcmuffinDiary()
 {
-	if (internalQuestStatus("questL11MacGuffin") != 1 || internalQuestStatus("questL11Black") < 2)
+	if(internalQuestStatus("questL11MacGuffin") != 1 || internalQuestStatus("questL11Black") < 2)
 	{
 		return false;
 	}
@@ -707,7 +703,7 @@ boolean L11_mcmuffinDiary()
 		use(item_amount($item[Copy of a Jerk Adventurer\'s Father\'s Diary]), $item[Copy of a Jerk Adventurer\'s Father\'s Diary]);
 		return true;
 	}
-	if (my_adventures() < 4 || my_meat() < 500 || item_amount($item[Forged Identification Documents]) == 0)
+	if(my_adventures() < 4 || my_meat() < 500 || item_amount($item[Forged Identification Documents]) == 0)
 	{
 		if(isAboutToPowerlevel())
 		{
