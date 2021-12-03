@@ -3,14 +3,6 @@ boolean in_wotsf()
 	return my_path() == "Way of the Surprising Fist";
 }
 
-void wotsf_initializeSettings()
-{
-	if(in_wotsf())
-	{
-		set_property("auto_wandOfNagamar", false);
-	}
-}
-
 boolean L11_wotsfForgedDocuments()
 {
 	if(!in_wotsf())
