@@ -230,6 +230,7 @@ void initializeSettings() {
 	ed_initializeSettings();
 	boris_initializeSettings();
 	bond_initializeSettings();
+	bugbear_initializeSettings();
 	nuclear_initializeSettings();
 	pete_initializeSettings();
 	pokefam_initializeSettings();
