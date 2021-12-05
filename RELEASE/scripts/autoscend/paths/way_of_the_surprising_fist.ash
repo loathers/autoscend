@@ -10,6 +10,11 @@ boolean L11_wotsfForgedDocuments()
 		return false;
 	}
 
+	handleFamiliar("boss");
+	if(possessEquipment($item[Powerful Glove]) && !have_equipped($item[Powerful Glove]))
+	{
+		return autoEquip($slot[acc3], $item[Powerful Glove]);
+	}
 	string[int] pages;
 	pages[0] = "shop.php?whichshop=blackmarket";
 	pages[1] = "shop.php?whichshop=blackmarket&action=fightbmguy";

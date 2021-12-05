@@ -365,6 +365,7 @@ int auto_powerfulGloveCharges();
 boolean auto_powerfulGloveNoncombatSkill(skill sk);
 int auto_powerfulGloveReplacesAvailable(boolean inCombat);
 int auto_powerfulGloveReplacesAvailable();
+boolean auto_powerfulGloveDelevel();
 boolean auto_powerfulGloveNoncombat();
 boolean auto_powerfulGloveStats();
 boolean auto_wantToEquipPowerfulGlove();

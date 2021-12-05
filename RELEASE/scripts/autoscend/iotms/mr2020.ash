@@ -151,6 +151,11 @@ int auto_powerfulGloveReplacesAvailable()
 	return auto_powerfulGloveReplacesAvailable(false);
 }
 
+boolean auto_powerfulGloveDelevel()
+{
+	return auto_powerfulGloveNoncombatSkill($skill[CHEAT CODE: Shrink Enemy]);
+}
+
 boolean auto_powerfulGloveNoncombat()
 {
 	if (0 < have_effect($effect[Invisible Avatar])) return false;

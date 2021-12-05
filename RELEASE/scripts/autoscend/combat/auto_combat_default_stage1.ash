@@ -163,6 +163,50 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 	
+	if(in_wotsf())
+	{
+		if(enemy == $monster[Wu Tang the Betrayer]) // puzzle boss in WOTSF
+		{
+			if(canUse($skill[CHEAT CODE: Shrink Enemy]))
+			{
+				return useSkill($skill[CHEAT CODE: Shrink Enemy]); // delevel and hit HP by ~50%
+			}
+			if(canUse($skill[CHEAT CODE: Shrink Enemy]))
+			{
+				return useSkill($skill[CHEAT CODE: Shrink Enemy]); // do it again
+			}
+			if(canUse($skill[Curse Of Weaksauce]) && my_class() == $class[Sauceror] && doWeaksauce)
+			{
+				return useSkill($skill[Curse Of Weaksauce]); // persistent deleveling
+			}
+			if(canUse($skill[Micrometeorite]))
+			{
+				return useSkill($skill[Micrometeorite]); // delevel by ~25%
+			}
+			if(canUse($item[Rain-Doh indigo cup]))
+			{
+				return useItem($item[Rain-Doh Indigo Cup]); // delevel and restore HP
+			}
+			if(canUse($skill[Summon Love Mosquito]))
+			{
+				return useSkill($skill[Summon Love Mosquito]); // one-time deals damage
+			}
+			if(canUse($skill[Summon Love Stinkbug]))
+			{
+				return useSkill($skill[Summon Love Stinkbug]); // persistent damage
+			}
+			if(canUse($skill[Unleash The Greash]) && (have_effect($effect[Takin\' It Greasy]) > 100))
+			{
+				return useSkill($skill[Unleash The Greash]); // if available, strong sleaze damage
+			}
+			if(canUse($skill[Tango of Terror]))
+			{
+				return useSkill($skill[Tango of Terror]); // delevel and damage
+			}
+			return attackMinor;
+		}
+	}
+
 	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
 	//done after puzzle bosses. if puzzle bosses get a random buff that is ok, we would rather beat the puzzle boss.
 	retval = auto_combat_nanorhinoBuff(round, enemy, text);
