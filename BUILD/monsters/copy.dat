@@ -1,0 +1,22 @@
+# Copy should detect if you want 2 more. Priority is copier item, digitize, duplicate, backup (see backup.dat).
+# TODO: Duplicate
+# TODO: remove auto_digitizeDirective
+lobsterfrogman	item:barrel of gunpowder<4;quest:sidequestLighthouseCompleted=0
+modern zombie	prop:cyrptAlcoveEvilness>30
+ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1;item:ninja carabiner<1
+ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1;item:ninja crampons<1
+ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja carabiner<1;item:ninja crampons<1
+ghost	!prop_contains:nsTowerDoorKeysUsed=digital key;item:digital key=0;item:white pixel<25
+blooper	!prop_contains:nsTowerDoorKeysUsed=digital key;item:digital key=0;item:white pixel<27
+skinflute	!prop_boolean:auto_getStarKey;!prop_contains:nsTowerDoorKeysUsed=star key;item:Richard's star key<1;item:star<6
+skinflute	!prop_boolean:auto_getStarKey;!prop_contains:nsTowerDoorKeysUsed=star key;item:Richard's star key<1;item:line<5
+# Bugbear Invasion Wanderers
+scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared;prop:statusWasteProcessing<2
+hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared;prop:statusMedbay<2
+batbugbear	path:Bugbear Invasion;!loc:Sonar;!prop:statusSonar=unlocked;!prop:statusSonar=open;!prop:statusSonar=cleared;prop:questL04Bat=finished;prop:statusSonar<2
+bugbear scientist	path:Bugbear Invasion;!loc:Science Lab;!prop:statusScienceLab=unlocked;!prop:statusScienceLab=open;!prop:statusScienceLab=cleared;prop:statusScienceLab<5
+bugaboo	path:Bugbear Invasion;!loc:Morgue;!prop:statusMorgue=unlocked;!prop:statusMorgue=open;!prop:statusMorgue=cleared;prop:questL07Cyrptic=finished;prop:statusMorgue<5
+Black Ops Bugbear	path:Bugbear Invasion;!loc:Special Ops;!prop:statusSpecialOps=unlocked;!prop:statusSpecialOps=open;!prop:statusSpecialOps=cleared;prop:questL08Trapper=finished;prop:statusSpecialOps<5
+Battlesuit Bugbear Type	path:Bugbear Invasion;!loc:Engineering;!prop:statusEngineering=unlocked;!prop:statusEngineering=open;!prop:statusEngineering=cleared;prop:questL10Garbage=finished;prop:statusEngineering<8
+ancient unspeakable bugbear	path:Bugbear Invasion;!loc:Navigation;!prop:statusNavigation=unlocked;!prop:statusNavigation=open;!prop:statusNavigation=cleared;prop:questL11Manor=finished;prop:statusNavigation<8
+trendy bugbear chef	path:Bugbear Invasion;!loc:Galley;!prop:statusGalley=unlocked;!prop:statusGalley=open;!prop:statusGalley=cleared;prop:questL12War=finished;prop:statusGalley<8

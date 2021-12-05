@@ -2,6 +2,7 @@ LX_freeCombatsTask
 catBurglarHeist
 auto_breakfastCounterVisit
 chateauPainting
+LX_handleCopy
 LX_faxing
 LX_artistQuest
 LX_galaktikSubQuest
@@ -24,7 +25,6 @@ LX_guildUnlock
 LX_bitchinMeatcar	LX_bitchinMeatcar_condition
 LX_unlockDesert
 LX_unlockPirateRealm
-handleRainDoh
 routineRainManHandler
 LX_spookyravenManorFirstFloor
 L6_friarsGetParts	LX_steelOrgan_condition_slow

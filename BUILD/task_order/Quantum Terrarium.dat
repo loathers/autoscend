@@ -2,6 +2,7 @@ LX_freeCombatsTask
 catBurglarHeist
 auto_breakfastCounterVisit
 chateauPainting
+LX_handleCopy
 LX_faxing
 LX_artistQuest
 LX_galaktikSubQuest
@@ -14,7 +15,6 @@ LX_burnDelay
 resolveSixthDMT
 LX_dinseylandfillFunbucks
 LX_unlockPirateRealm
-handleRainDoh
 LX_quantumTerrarium
 fancyOilPainting
 LX_ornateDowsingRod

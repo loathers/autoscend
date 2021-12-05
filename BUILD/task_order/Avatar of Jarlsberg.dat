@@ -2,6 +2,8 @@ LM_jarlsberg
 LX_freeCombatsTask
 auto_breakfastCounterVisit
 chateauPainting
+LX_handleCopy
+LX_faxing
 LX_artistQuest
 LX_galaktikSubQuest
 LX_armorySideQuest
@@ -12,7 +14,6 @@ L12_sonofaPrefix
 LX_burnDelay
 LX_dinseylandfillFunbucks
 LX_unlockPirateRealm
-handleRainDoh
 L11_shenStartQuest
 LX_guildUnlock
 LX_unlockDesert

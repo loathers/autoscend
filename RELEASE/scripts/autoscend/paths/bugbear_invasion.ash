@@ -16,6 +16,11 @@ void bugbear_InitializeSettings()
 	}
 }
 
+boolean bugbear_IsWanderer(monster mon)
+{
+	return $monsters[scavenger bugbear, hypodermic bugbear, batbugbear, bugbear scientist, bugaboo, Black Ops Bugbear, Battlesuit Bugbear Type, ancient unspeakable bugbear, trendy bugbear chef] contains mon;
+}
+
 string bugbear_Status(location loc)
 {
 	if (loc.zone != "Mothership") abort("Invalid Mothership zone");

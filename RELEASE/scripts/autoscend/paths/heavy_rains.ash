@@ -410,11 +410,6 @@ boolean rainManSummon(monster target, boolean copy, boolean wink)
 		}
 	}
 
-	if(copy)
-	{
-		set_property("auto_doCombatCopy", "yes");
-	}
-
 	//use the rainman to summon a monster
 	auto_log_info("Rain Man will summon: " +target, "blue");
 	string[int] pages;
@@ -422,7 +417,7 @@ boolean rainManSummon(monster target, boolean copy, boolean wink)
 	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" +target.to_int()+ "&option=1&choice2=and+Fight%21";
 	autoAdvBypass(0, pages, $location[Noob Cave], "");
 
-	if(copy && item_amount($item[Rain-doh box full of monster]) == 0)
+	if(copy && !auto_hasAnyPendingCopy())
 	{
 		abort("Tried to make a copy but failed");
 	}

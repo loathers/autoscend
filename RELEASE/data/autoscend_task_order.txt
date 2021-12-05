@@ -8,87 +8,88 @@ Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
 Avatar of Jarlsberg	2	auto_breakfastCounterVisit
 Avatar of Jarlsberg	3	chateauPainting
-Avatar of Jarlsberg	4	LX_artistQuest
-Avatar of Jarlsberg	5	LX_galaktikSubQuest
-Avatar of Jarlsberg	6	LX_armorySideQuest
-Avatar of Jarlsberg	7	LX_meatsmithSubQuest
-Avatar of Jarlsberg	8	L9_leafletQuest
-Avatar of Jarlsberg	9	L5_findKnob
-Avatar of Jarlsberg	10	L12_sonofaPrefix
-Avatar of Jarlsberg	11	LX_burnDelay
-Avatar of Jarlsberg	12	LX_dinseylandfillFunbucks
-Avatar of Jarlsberg	13	LX_unlockPirateRealm
-Avatar of Jarlsberg	14	handleRainDoh
-Avatar of Jarlsberg	15	L11_shenStartQuest
-Avatar of Jarlsberg	16	LX_guildUnlock
-Avatar of Jarlsberg	17	LX_unlockDesert
-Avatar of Jarlsberg	18	LX_lockPicking
-Avatar of Jarlsberg	19	LX_fatLootToken
-Avatar of Jarlsberg	20	L5_getEncryptionKey
-Avatar of Jarlsberg	21	L5_findKnob
-Avatar of Jarlsberg	22	L2_mosquito
-Avatar of Jarlsberg	23	LX_unlockHiddenTemple
-Avatar of Jarlsberg	24	L6_dakotaFanning
-Avatar of Jarlsberg	25	LX_steelOrgan
-Avatar of Jarlsberg	26	L12_islandWar
-Avatar of Jarlsberg	27	LX_spookyravenManorFirstFloor
-Avatar of Jarlsberg	28	L11_blackMarket
-Avatar of Jarlsberg	29	L11_forgedDocuments
-Avatar of Jarlsberg	30	L11_mcmuffinDiary
-Avatar of Jarlsberg	31	L11_getBeehive
-Avatar of Jarlsberg	32	L11_unlockHiddenCity
-Avatar of Jarlsberg	33	L11_hiddenCityZones
-Avatar of Jarlsberg	34	L11_hiddenCity
-Avatar of Jarlsberg	35	LX_spookyravenManorSecondFloor
-Avatar of Jarlsberg	36	L11_mauriceSpookyraven
-Avatar of Jarlsberg	37	L11_talismanOfNam
-Avatar of Jarlsberg	38	L10_plantThatBean
-Avatar of Jarlsberg	39	L10_rainOnThePlains
-Avatar of Jarlsberg	40	L9_chasmBuild
-Avatar of Jarlsberg	41	L9_highLandlord
-Avatar of Jarlsberg	42	L8_trapperQuest
-Avatar of Jarlsberg	43	L6_friarsGetParts
-Avatar of Jarlsberg	44	L7_crypt
-Avatar of Jarlsberg	45	L11_palindome
-Avatar of Jarlsberg	46	L11_aridDesert
-Avatar of Jarlsberg	47	L11_unlockPyramid
-Avatar of Jarlsberg	48	L11_unlockEd
-Avatar of Jarlsberg	49	L11_defeatEd
-Avatar of Jarlsberg	50	L5_slayTheGoblinKing
-Avatar of Jarlsberg	51	L4_batCave
-Avatar of Jarlsberg	52	L3_tavern
-Avatar of Jarlsberg	53	setSoftblockDelay	allowSoftblockDelay
-Avatar of Jarlsberg	54	setSoftblockShen	allowSoftblockShen
-Avatar of Jarlsberg	55	L13_towerAscent
-Avatar of Jarlsberg	56	LX_attemptPowerLevel
+Avatar of Jarlsberg	4	LX_handleCopy
+Avatar of Jarlsberg	5	LX_faxing
+Avatar of Jarlsberg	6	LX_artistQuest
+Avatar of Jarlsberg	7	LX_galaktikSubQuest
+Avatar of Jarlsberg	8	LX_armorySideQuest
+Avatar of Jarlsberg	9	LX_meatsmithSubQuest
+Avatar of Jarlsberg	10	L9_leafletQuest
+Avatar of Jarlsberg	11	L5_findKnob
+Avatar of Jarlsberg	12	L12_sonofaPrefix
+Avatar of Jarlsberg	13	LX_burnDelay
+Avatar of Jarlsberg	14	LX_dinseylandfillFunbucks
+Avatar of Jarlsberg	15	LX_unlockPirateRealm
+Avatar of Jarlsberg	16	L11_shenStartQuest
+Avatar of Jarlsberg	17	LX_guildUnlock
+Avatar of Jarlsberg	18	LX_unlockDesert
+Avatar of Jarlsberg	19	LX_lockPicking
+Avatar of Jarlsberg	20	LX_fatLootToken
+Avatar of Jarlsberg	21	L5_getEncryptionKey
+Avatar of Jarlsberg	22	L5_findKnob
+Avatar of Jarlsberg	23	L2_mosquito
+Avatar of Jarlsberg	24	LX_unlockHiddenTemple
+Avatar of Jarlsberg	25	L6_dakotaFanning
+Avatar of Jarlsberg	26	LX_steelOrgan
+Avatar of Jarlsberg	27	L12_islandWar
+Avatar of Jarlsberg	28	LX_spookyravenManorFirstFloor
+Avatar of Jarlsberg	29	L11_blackMarket
+Avatar of Jarlsberg	30	L11_forgedDocuments
+Avatar of Jarlsberg	31	L11_mcmuffinDiary
+Avatar of Jarlsberg	32	L11_getBeehive
+Avatar of Jarlsberg	33	L11_unlockHiddenCity
+Avatar of Jarlsberg	34	L11_hiddenCityZones
+Avatar of Jarlsberg	35	L11_hiddenCity
+Avatar of Jarlsberg	36	LX_spookyravenManorSecondFloor
+Avatar of Jarlsberg	37	L11_mauriceSpookyraven
+Avatar of Jarlsberg	38	L11_talismanOfNam
+Avatar of Jarlsberg	39	L10_plantThatBean
+Avatar of Jarlsberg	40	L10_rainOnThePlains
+Avatar of Jarlsberg	41	L9_chasmBuild
+Avatar of Jarlsberg	42	L9_highLandlord
+Avatar of Jarlsberg	43	L8_trapperQuest
+Avatar of Jarlsberg	44	L6_friarsGetParts
+Avatar of Jarlsberg	45	L7_crypt
+Avatar of Jarlsberg	46	L11_palindome
+Avatar of Jarlsberg	47	L11_aridDesert
+Avatar of Jarlsberg	48	L11_unlockPyramid
+Avatar of Jarlsberg	49	L11_unlockEd
+Avatar of Jarlsberg	50	L11_defeatEd
+Avatar of Jarlsberg	51	L5_slayTheGoblinKing
+Avatar of Jarlsberg	52	L4_batCave
+Avatar of Jarlsberg	53	L3_tavern
+Avatar of Jarlsberg	54	setSoftblockDelay	allowSoftblockDelay
+Avatar of Jarlsberg	55	setSoftblockShen	allowSoftblockShen
+Avatar of Jarlsberg	56	L13_towerAscent
+Avatar of Jarlsberg	57	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
 default	1	catBurglarHeist
 default	2	auto_breakfastCounterVisit
 default	3	chateauPainting
-default	4	LX_faxing
-default	5	LX_artistQuest
-default	6	LX_galaktikSubQuest
-default	7	LX_armorySideQuest
-default	8	LX_meatsmithSubQuest
-default	9	L9_leafletQuest
-default	10	L5_findKnob
-default	11	L12_sonofaPrefix
-default	12	LX_burnDelay
-default	13	LM_edTheUndying
-default	14	LX_bugbearInvasion
-default	15	LX_lowkeySummer
-default	16	resolveSixthDMT
-default	17	LX_dinseylandfillFunbucks
-default	18	L12_flyerFinish
-default	19	L12_getOutfit
-default	20	L12_startWar
-default	21	LX_loggingHatchet
-default	22	LX_guildUnlock
-default	23	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
-default	24	LX_unlockDesert
-default	25	LX_unlockPirateRealm
-default	26	handleRainDoh
+default	4	LX_handleCopy
+default	5	LX_faxing
+default	6	LX_artistQuest
+default	7	LX_galaktikSubQuest
+default	8	LX_armorySideQuest
+default	9	LX_meatsmithSubQuest
+default	10	L9_leafletQuest
+default	11	L5_findKnob
+default	12	L12_sonofaPrefix
+default	13	LX_burnDelay
+default	14	LM_edTheUndying
+default	15	LX_bugbearInvasion
+default	16	LX_lowkeySummer
+default	17	resolveSixthDMT
+default	18	LX_dinseylandfillFunbucks
+default	19	L12_flyerFinish
+default	20	L12_getOutfit
+default	21	L12_startWar
+default	22	LX_loggingHatchet
+default	23	LX_guildUnlock
+default	24	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+default	25	LX_unlockDesert
+default	26	LX_unlockPirateRealm
 default	27	routineRainManHandler
 default	28	LX_spookyravenManorFirstFloor
 default	29	L6_friarsGetParts	LX_steelOrgan_condition_slow
@@ -164,19 +165,19 @@ Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	catBurglarHeist
 Quantum Terrarium	2	auto_breakfastCounterVisit
 Quantum Terrarium	3	chateauPainting
-Quantum Terrarium	4	LX_faxing
-Quantum Terrarium	5	LX_artistQuest
-Quantum Terrarium	6	LX_galaktikSubQuest
-Quantum Terrarium	7	LX_armorySideQuest
-Quantum Terrarium	8	LX_meatsmithSubQuest
-Quantum Terrarium	9	L9_leafletQuest
-Quantum Terrarium	10	L5_findKnob
-Quantum Terrarium	11	L12_sonofaPrefix
-Quantum Terrarium	12	LX_burnDelay
-Quantum Terrarium	13	resolveSixthDMT
-Quantum Terrarium	14	LX_dinseylandfillFunbucks
-Quantum Terrarium	15	LX_unlockPirateRealm
-Quantum Terrarium	16	handleRainDoh
+Quantum Terrarium	4	LX_handleCopy
+Quantum Terrarium	5	LX_faxing
+Quantum Terrarium	6	LX_artistQuest
+Quantum Terrarium	7	LX_galaktikSubQuest
+Quantum Terrarium	8	LX_armorySideQuest
+Quantum Terrarium	9	LX_meatsmithSubQuest
+Quantum Terrarium	10	L9_leafletQuest
+Quantum Terrarium	11	L5_findKnob
+Quantum Terrarium	12	L12_sonofaPrefix
+Quantum Terrarium	13	LX_burnDelay
+Quantum Terrarium	14	resolveSixthDMT
+Quantum Terrarium	15	LX_dinseylandfillFunbucks
+Quantum Terrarium	16	LX_unlockPirateRealm
 Quantum Terrarium	17	LX_quantumTerrarium
 Quantum Terrarium	18	fancyOilPainting
 Quantum Terrarium	19	LX_ornateDowsingRod

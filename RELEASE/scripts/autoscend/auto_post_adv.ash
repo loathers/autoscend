@@ -977,7 +977,7 @@ boolean auto_post_adventure()
 
 	if (in_bugbear() && item_amount($item[Key-o-tron]) > 0 && my_location().zone != "Mothership")
 	{
-		if ($monsters[scavenger bugbear, hypodermic bugbear, batbugbear, bugbear scientist, bugaboo, Black Ops Bugbear, Battlesuit Bugbear Type, ancient unspeakable bugbear, trendy bugbear chef] contains last_monster())
+		if (bugbear_IsWanderer(last_monster()))
 		{
 			use(1, $item[Key-o-tron]);
 		}

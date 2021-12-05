@@ -28,105 +28,27 @@ void auto_reagnimatedGetPart(int choice)
 	}
 }
 
-boolean handleRainDoh()
+boolean auto_rainDohCanCopy()
 {
-	if(item_amount($item[rain-doh box full of monster]) == 0)
-	{
-		return false;
-	}
-	if(my_level() <= 3)
-	{
-		return false;
-	}
-	if(have_effect($effect[ultrahydrated]) > 0)
+	if(item_amount($item[Rain-Doh black box]) == 0)
 	{
 		return false;
 	}
 
-	monster enemy = to_monster(get_property("rainDohMonster"));
-	auto_log_info("Black boxing: " + enemy, "blue");
-	
-	void validate_rainDohBox()
+	if(item_amount($item[Rain-Doh box full of monster]) > 0)
 	{
-		if(enemy != $monster[Source Agent] &&	//special exclusion for path The Source where [source agent] might randomly replace our target
-		enemy != last_monster())	//general failure detection
-		{
-			abort("Not sure what exploded. tried to summon copy of " + enemy + " but got " + last_monster() + " instead.");
-		}
+		return false;
 	}
 
-	if(enemy == $monster[Ninja Snowman Assassin])
+	if (get_property("_raindohCopiesMade").to_int() == 5)
 	{
-		int count = item_amount($item[ninja rope]);
-		count += item_amount($item[ninja crampons]);
-		count += item_amount($item[ninja carabiner]);
-
-		if((count <= 1) && (get_property("_raindohCopiesMade").to_int() < 5))
-		{
-			set_property("auto_doCombatCopy", "yes");
-		}
-		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		validate_rainDohBox();
-		set_property("auto_doCombatCopy", "no");
-		if(count == 3)
-		{
-			set_property("auto_ninjasnowmanassassin", true);
-		}
-		return true;
-	}
-	if(enemy == $monster[Ghost])
-	{
-		int count = whitePixelCount();
-		count += 30 * item_amount($item[digital key]);
-
-		if((count <= 20) && (get_property("_raindohCopiesMade").to_int() < 5))
-		{
-			set_property("auto_doCombatCopy", "yes");
-		}
-		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		validate_rainDohBox();
-		set_property("auto_doCombatCopy", "no");
-		if(count > 20)
-		{
-		}
-		return true;
-	}
-	if(enemy == $monster[Lobsterfrogman])
-	{
-		if(have_skill($skill[Rain Man]) && (item_amount($item[barrel of gunpowder]) < 4))
-		{
-			set_property("auto_doCombatCopy", "yes");
-		}
-		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		validate_rainDohBox();
-		set_property("auto_doCombatCopy", "no");
-		return true;
-	}
-	if(enemy == $monster[Skinflute])
-	{
-		int stars = item_amount($item[star]);
-		int lines = item_amount($item[line]);
-
-		if((stars < 7) && (lines < 6)  & (get_property("_raindohCopiesMade").to_int() < 5))
-		{
-			set_property("auto_doCombatCopy", "yes");
-		}
-		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		validate_rainDohBox();
-		set_property("auto_doCombatCopy", "no");
-		return true;
+		return false;
 	}
 
-	/*	Should we check for an acceptable monster or just empty the box in that case?
-	huge swarm of ghuol whelps, modern zmobie, mountain man
-	*/
-	//If doesn\'t match a special condition
-	if(enemy != $monster[none])
+	if (item_amount($item[spooky putty sheet]) > 0 || item_amount($item[spooky putty monster]) > 0)
 	{
-		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		validate_rainDohBox();
-		return true;
+		return (6 - get_property("spookyPuttyCopiesMade").to_int() + get_property("_raindohCopiesMade").to_int()) > 0;
 	}
 
-	return false;
+	return (5 - get_property("_raindohCopiesMade").to_int()) > 0;
 }

@@ -21,6 +21,7 @@ void initializeSettings();
 void initializeSession();
 int auto_advToReserve();
 boolean auto_unreservedAdvRemaining();
+boolean LX_handleCopy();
 boolean LX_burnDelay();
 boolean LX_universeFrat();
 boolean LX_faxing();
@@ -89,6 +90,10 @@ item eudora_current();
 int[item] eudora_xiblaxian();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2009.ash
+boolean auto_spookyPuttyCanCopy();
+
+########################################################################################################
 //Defined in autoscend/iotms/mr2011.ash
 boolean isClipartItem(item it);
 boolean hasLegionKnife();
@@ -97,7 +102,7 @@ boolean pullLegionKnife();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2012.ash
 void auto_reagnimatedGetPart(int choice);
-boolean handleRainDoh();
+boolean auto_rainDohCanCopy();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2013.ash
@@ -411,6 +416,7 @@ boolean auto_haveEmotionChipSkills();
 boolean auto_canFeelEnvy();
 boolean auto_canFeelHatred();
 boolean auto_canFeelNostalgic();
+boolean auto_canFeelNostalgic(monster currentEnemy);
 boolean auto_canFeelPride();
 boolean auto_canFeelSuperior();
 boolean auto_canFeelLonely();
@@ -517,6 +523,7 @@ boolean L13_bhy_towerFinal();
 //Defined in autoscend/paths/bugbear_invasion.ash
 boolean in_bugbear();
 void bugbear_initializeSettings();
+boolean bugbear_IsWanderer(monster mon);
 boolean LX_bugbearInvasion();
 boolean LX_bugbearInvasionFinale();
 
@@ -1613,6 +1620,10 @@ boolean [monster] auto_getMonsters(string category);
 boolean auto_wantToSniff(monster enemy, location loc);
 boolean auto_wantToYellowRay(monster enemy, location loc);
 boolean auto_wantToReplace(monster enemy, location loc);
+boolean auto_wantToCopy(monster enemy, location loc);
+boolean auto_hasPendingCopy(monster enemy);
+boolean auto_hasAnyPendingCopy();
+boolean auto_wantToBackup(monster enemy, location loc);
 int total_items(boolean [item] items);
 boolean auto_badassBelt();
 void auto_interruptCheck();

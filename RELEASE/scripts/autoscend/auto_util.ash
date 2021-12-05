@@ -1922,32 +1922,24 @@ boolean handleCopiedMonster(item itm)
 
 boolean handleCopiedMonster(item itm, string option)
 {
-	int id = 0;
+	if(item_amount(itm) == 0)
+	{
+		return false;
+	}
+
 	switch(itm)
 	{
-	case $item[Rain-Doh Black Box]:
-		return handleCopiedMonster($item[Rain-Doh Box Full of Monster], option);
-	case $item[Spooky Putty Sheet]:
-		return handleCopiedMonster($item[Spooky Putty Monster], option);
-	case $item[4-D Camera]:
-		return handleCopiedMonster($item[Shaking 4-D Camera], option);
-	case $item[Unfinished Ice Sculpture]:
-		return handleCopiedMonster($item[Ice Sculpture], option);
-	case $item[Print Screen Button]:
-		return handleCopiedMonster($item[Screencapped Monster], option);
 	case $item[Rain-Doh Box Full of Monster]:
 		if(get_property("rainDohMonster") == "")
 		{
 			abort(itm + " has no monster so we can't use it");
 		}
-		id = to_int(itm);
 		break;
 	case $item[Spooky Putty Monster]:
 		if(get_property("spookyPuttyMonster") == "")
 		{
 			abort(itm + " has no monster so we can't use it");
 		}
-		id = to_int(itm);
 		break;
 	case $item[Shaking 4-D Camera]:
 		if(get_property("cameraMonster") == "")
@@ -1958,13 +1950,8 @@ boolean handleCopiedMonster(item itm, string option)
 		{
 			abort(itm + " already used today. We can not continue");
 		}
-		id = to_int(itm);
 		break;
 	case $item[Ice Sculpture]:
-		if(item_amount(itm) == 0)
-		{
-			abort("We do not have any " + itm);
-		}
 		if(get_property("iceSculptureMonster") == "")
 		{
 			abort(itm + " has no monster so we can't use it");
@@ -1973,21 +1960,29 @@ boolean handleCopiedMonster(item itm, string option)
 		{
 			abort(itm + " already used today. We can not continue");
 		}
-		id = to_int(itm);
 		break;
 	case $item[Screencapped Monster]:
 		if(get_property("screencappedMonster") == "")
 		{
 			abort(itm + " has no monster so we can't use it");
 		}
-		id = to_int(itm);
 		break;
+	case $item[wax bugbear]:
+		if (get_property("waxMonster") == "")
+		{
+			abort(itm + " has no monster so we can't use it");
+		}
+		break;
+	default:
+		abort(itm + " unhandled copier");
 	}
-	if(id != 0)
+
+	if (item_amount(itm) == 0)
 	{
-		return autoAdvBypass("inv_use.php?pwd&which=3&whichitem=" + id, $location[Noob Cave], option);
+		return false;
 	}
-	return false;
+
+	return autoAdvBypass("inv_use.php?pwd&which=3&whichitem=" + itm.to_int(), $location[Noob Cave], option);
 }
 
 int maxSealSummons()
@@ -4056,6 +4051,12 @@ boolean auto_check_conditions(string conds)
 			// gets propname and converts to a boolean
 			case "prop_boolean":
 				return get_property(condition_data).to_boolean();
+			case "prop_contains":
+				matcher m7 = create_matcher("([^=]+)([=]+)(.+)", condition_data);
+				if(!m7.find())
+					abort('"' + condition_data + '" is not a proper prop condition format!');
+				string prop2 = get_property(m7.group(1));
+				return prop2.contains_text(m7.group(3));
 			// data: <questpropname><comparison operator><value>
 			// like prop, but with > and < and >= and <= and uses internalQuestStatus
 			// the value to compare to should always be an integer
@@ -4193,6 +4194,66 @@ boolean auto_wantToReplace(monster enemy, location loc)
 	location locCache = my_location();
 	set_location(loc);
 	boolean [monster] toReplace = auto_getMonsters("replace");
+	set_location(locCache);
+	return toReplace[enemy];
+}
+
+boolean auto_wantToCopy(monster enemy, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] toReplace = auto_getMonsters("copy");
+	set_location(locCache);
+	return toReplace[enemy];
+}
+
+boolean auto_hasPendingCopy(monster enemy)
+{
+	string[6] props = {
+		"_sourceTerminalDigitizeMonster",
+		"photocopyMonster",
+		"rainDohMonster",
+		"screencappedMonster",
+		"spookyPuttyMonster",
+		"waxMonster"
+	};
+
+	foreach i,prop in props
+	{
+		if (get_property(prop).to_monster() == enemy)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_hasAnyPendingCopy()
+{
+	string[6] props = {
+		"_sourceTerminalDigitizeMonster",
+		"photocopyMonster",
+		"rainDohMonster",
+		"screencappedMonster",
+		"spookyPuttyMonster",
+		"waxMonster"
+	};
+
+	foreach i,prop in props
+	{
+		if (get_property(prop).to_monster() != $monster[none])
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_wantToBackup(monster enemy, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] toReplace = auto_getMonsters("backup");
 	set_location(locCache);
 	return toReplace[enemy];
 }

@@ -1200,16 +1200,10 @@ boolean L12_sonofaBeach()
 		}
 	}
 
-	if(item_amount($item[barrel of gunpowder]) < 4)
-	{
-		set_property("auto_doCombatCopy", "yes");
-	}
-
 	boolean retval = autoAdv($location[Sonofa Beach]);
-	
-	set_property("auto_doCombatCopy", "no");
+
 	edAcquireHP();
-	
+
 	return retval;
 }
 
@@ -1264,27 +1258,15 @@ boolean L12_sonofaPrefix()
 	{
 		if((auto_voteMonster() || auto_sausageGoblin()) && adjustForReplaceIfPossible())
 		{
-			try
+			if(auto_voteMonster() && !auto_voteMonster(true))
 			{
-				if(item_amount($item[barrel of gunpowder]) < 4)
-				{
-					set_property("auto_doCombatCopy", "yes");
-				}
-				if(auto_voteMonster() && !auto_voteMonster(true))
-				{
-					auto_voteMonster(false, $location[Sonofa Beach], "");
-					return true;
-				}
-				else if(auto_sausageGoblin() && !auto_haveVotingBooth())
-				{
-					auto_sausageGoblin($location[Sonofa Beach], "");
-					return true;
-				}
+				auto_voteMonster(false, $location[Sonofa Beach], "");
+				return true;
 			}
-			finally
+			else if(auto_sausageGoblin() && !auto_haveVotingBooth())
 			{
-				set_property("auto_combatDirective", "");
-				set_property("auto_doCombatCopy", "no");
+				auto_sausageGoblin($location[Sonofa Beach], "");
+				return true;
 			}
 		}
 		return false;
@@ -1319,11 +1301,6 @@ boolean L12_sonofaPrefix()
 			resetState();
 			return false;
 		}
-	}
-
-	if(item_amount($item[barrel of gunpowder]) < 4)
-	{
-		set_property("auto_doCombatCopy", "yes");
 	}
 
 	if((my_mp() < mp_cost($skill[Digitize])) && (auto_get_campground() contains $item[Source Terminal]) && is_unrestricted($item[Source Terminal]) && (get_property("_sourceTerminalDigitizeMonster") != $monster[Lobsterfrogman]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3))

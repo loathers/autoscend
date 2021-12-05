@@ -35,6 +35,15 @@ boolean auto_canFeelNostalgic()
 	return auto_haveEmotionChipSkills() && get_property("_feelNostalgicUsed") < 3;
 }
 
+boolean auto_canFeelNostalgic(monster currentEnemy)
+{
+	monster lastCopyableMonster = get_property("lastCopyableMonster").to_monster();
+	return auto_canFeelNostalgic() &&
+		currentEnemy != lastCopyableMonster &&
+		!($monsters[ninja snowman assassin] contains lastCopyableMonster) &&
+		!bugbear_IsWanderer(lastCopyableMonster);
+}
+
 boolean auto_canFeelPride()
 {
 	// Combat Skill - Triples stat gain from the current fight.
@@ -133,26 +142,14 @@ boolean auto_backupTarget()
 		return false;
 	}
 
-	// determine if we want to backup
-	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12;
-	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean();
-	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > 25 && my_level() >= 6;
+	monster lastCopyableMonster = get_property("lastCopyableMonster").to_monster();
+	boolean wantBackup = auto_wantToBackup(lastCopyableMonster, my_location());
 
-	switch (get_property("lastCopyableMonster").to_monster()) {
-		case $monster[lobsterfrogman]:
-			if(wantBackupLFM)
-				return true; 
-			break;
-		case $monster[ninja snowman assassin]:
-			if(wantBackupNSA)
-				return true;
-			break;
-		case $monster[modern zmobie]:
-			if(wantBackupZmobie) 
-				return true;
-			break;
+	// TODO: Move sausage goblin & eldrich tentacle to data file, improve logic
+	switch (lastCopyableMonster) {
 		case $monster[sausage goblin]:
-			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie)
+			// use remaining charges at end of day
+			if(inebriety_left() == 0 && stomach_left() < 1 && !wantBackup)
 				return true;
 			break;
 		case $monster[eldritch tentacle]:
@@ -163,9 +160,9 @@ boolean auto_backupTarget()
 				return true;
 			break;
 		default: break;
-    }
+	}
 
-	return false;
+	return wantBackup;
 }
 
 boolean auto_havePowerPlant()

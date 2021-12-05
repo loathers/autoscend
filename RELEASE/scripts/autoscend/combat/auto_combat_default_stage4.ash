@@ -53,31 +53,68 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			return useSkill($skill[Offer Latte to Opponent]);
 		}
 	}
-	
-	//TODO auto_doCombatCopy property is silly. get rid of it
-	if(!haveUsed($item[Rain-Doh black box]) && (!in_heavyrains()) && (get_property("_raindohCopiesMade").to_int() < 5))
+
+	if (!auto_hasPendingCopy(enemy) && auto_wantToCopy(enemy, my_location()))
 	{
-		if((enemy == $monster[Modern Zmobie]) && (get_property("auto_modernzmobiecount").to_int() < 3))
+		int rainPuttyMade = get_property("spookyPuttyCopiesMade").to_int() + get_property("_raindohCopiesMade").to_int();
+		// TODO: remaining bugbears
+		if(in_bugbear() && canUse($item[crayon shavings]) && bugbear_IsWanderer(enemy))
 		{
-			set_property("auto_doCombatCopy", "yes");
+			handleTracker(enemy, $item[crayon shavings], "auto_copies");
+			return "item " + $item[crayon shavings];
 		}
-	}
-	if(canUse($item[Rain-Doh black box]) && (get_property("auto_doCombatCopy") == "yes") && (enemy != $monster[gourmet gourami]))
-	{
-		set_property("auto_doCombatCopy", "no");
-		markAsUsed($item[Rain-Doh black box]); // mark even if not used so we don't spam the error message
-		if(get_property("_raindohCopiesMade").to_int() < 5)
+		else if(canUse($item[spooky putty sheet]) && auto_spookyPuttyCanCopy())
+		{
+			handleTracker(enemy, $item[spooky putty sheet], "auto_copies");
+			return "item " + $item[spooky putty sheet];
+		}
+		else if(canUse($item[Rain-Doh black box]) && auto_rainDohCanCopy())
 		{
 			handleTracker(enemy, $item[Rain-Doh black box], "auto_copies");
 			return "item " + $item[Rain-Doh black box];
 		}
-		auto_log_warning("Can not issue copy directive because we have no copies left", "red");
+		else if(canUse($item[4-D Camera]) && !get_property("_cameraUsed").to_boolean())
+		{
+			handleTracker(enemy, $item[4-D Camera], "auto_copies");
+			return "item " + $item[4-D Camera];
+		}
+		else if(canUse($item[ice sculpture]) && !get_property("_iceSculptureUsed").to_boolean())
+		{
+			handleTracker(enemy, $item[ice sculpture], "auto_copies");
+			return "item " + $item[ice sculpture];
+		}
+		else if(canUse($item[print screen button]))
+		{
+			handleTracker(enemy, $item[print screen button], "auto_copies");
+			return "item " + $item[print screen button];
+		}
+		else if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0))
+		{
+			handleTracker(enemy, $skill[Digitize], "auto_copies");
+			return useSkill($skill[Digitize]);
+		}
+		// Duplicate needs special handling (no assassins)
+		else if (!($monsters[ninja snowman assassin] contains enemy))
+		{
+			if (canUse($skill[Duplicate]) && get_property("_sourceTerminalDuplicateUses").to_int() == 0)
+			{
+				handleTracker(enemy, $skill[Duplicate], "auto_copies");
+				return useSkill($skill[Duplicate]);
+			}
+		}
 	}
-	if(get_property("auto_doCombatCopy") == "yes")
+
+	if (canUse($skill[Feel Nostalgic]) && auto_canFeelNostalgic(enemy))
 	{
-		set_property("auto_doCombatCopy", "no");
+		monster lastCopyableMonster = get_property("lastCopyableMonster").to_monster();
+		if (!auto_hasPendingCopy(lastCopyableMonster) && auto_wantToCopy(lastCopyableMonster, my_location()))
+		{
+			handleTracker(enemy, $skill[Feel Nostalgic], "auto_copies");
+			return useSkill($skill[Feel Nostalgic]);
+		}
 	}
-	
+
+
 	//get 1 additional [fat loot token] per day
 	if(my_location() == $location[The Daily Dungeon])
 	{
@@ -90,31 +127,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			}
 		}
 	}
-	
-	//iotm monster copier that works by creating wandering copies of the targetted monster
-	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !inAftercore())
-	{
-		if($monsters[Ninja Snowman Assassin, Lobsterfrogman] contains enemy)
-		{
-			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
-			{
-				handleTracker(enemy, $skill[Digitize], "auto_copies");
-				return useSkill($skill[Digitize]);
-			}
-		}
-	}
-	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() < 3) && !inAftercore())
-	{
-		if(get_property("auto_digitizeDirective") == enemy)
-		{
-			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
-			{
-				handleTracker(enemy, $skill[Digitize], "auto_copies");
-				return useSkill($skill[Digitize]);
-			}
-		}
-	}
-	
+
 	//accordion thief mechanic. unlike pickpocket it can be done at any round
 	if(canUse($skill[Steal Accordion]) && (my_class() == $class[Accordion Thief]) && canSurvive(2.0))
 	{

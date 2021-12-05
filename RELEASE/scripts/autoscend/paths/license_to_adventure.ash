@@ -574,9 +574,7 @@ boolean LM_bond()
 					woods_questStart();
 					equip($slot[acc2], $item[Continuum Transfunctioner]);
 					auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-					set_property("auto_digitizeDirective", $monster[Blooper]);
 					autoAdv(1, $location[8-bit Realm]);
-					remove_property("auto_digitizeDirective");
 					return true;
 				}
 			}

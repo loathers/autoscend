@@ -34,6 +34,7 @@ import <autoscend/auto_zone.ash>
 import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
 import <autoscend/iotms/eudora.ash>
+import <autoscend/iotms/mr2009.ash>
 import <autoscend/iotms/mr2011.ash>
 import <autoscend/iotms/mr2012.ash>
 import <autoscend/iotms/mr2013.ash>
@@ -160,7 +161,7 @@ void initializeSettings() {
 	set_property("auto_day1_dna", "");
 	set_property("auto_debuffAsdonDelay", 0);
 	set_property("auto_disableAdventureHandling", false);
-	set_property("auto_doCombatCopy", "no");
+	remove_property("auto_doCombatCopy");
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
@@ -319,6 +320,33 @@ boolean auto_unreservedAdvRemaining()
 	{
 		return true;
 	}
+	return false;
+}
+
+boolean LX_handleCopy()
+{
+	foreach it in $items[Rain-Doh Box Full of Monster, Spooky Putty Monster, Shaking 4-D Camera, Ice Sculpture, Screencapped Monster, wax bugbear]
+	{
+		if (handleCopiedMonster(it)) return true;
+	}
+
+	// Check timespinner for a monster we want, use backup logic
+	if (timeSpinnerRemaining() >= 3)
+	{
+		// Look through all combat queues for something we want to fight
+		foreach place in $locations[]
+		{
+			foreach i,s in place.combat_queue.split_string("; ")
+			{
+				monster mon = s.to_monster();
+				if(auto_wantToBackup(mon, $location[Noob Cave]))
+				{
+					return timeSpinnerCombat(mon);
+				}
+			}
+		}
+	}
+
 	return false;
 }
 
@@ -1554,7 +1582,6 @@ void resetState() {
 	
 	remove_property("auto_combatDirective");		//An action to execute at the start of next combat. resets every loop.
 	remove_property("auto_digitizeDirective");		//digitize a specified monster on the next combat.
-	set_property("auto_doCombatCopy", "no");
 	set_property("_auto_thisLoopHandleFamiliar", false); // have we called handleFamiliar this loop
 	set_property("auto_disableAdventureHandling", false); // used to stop auto_pre_adv and auto_post_adv from doing anything.
 	set_property("auto_disableFamiliarChanging", false); // disable autoscend making changes to familiar
