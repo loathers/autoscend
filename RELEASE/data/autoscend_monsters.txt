@@ -3,7 +3,7 @@
 
 # See auto_check_conditions for conditional options
 backup	0	lobsterfrogman	item:barrel of gunpowder<5;quest:sidequestLighthouseCompleted=0
-backup	1	modern zombie	prop:cyrptAlcoveEvilness>25
+backup	1	modern zmobie	prop:cyrptAlcoveEvilness>25
 backup	2	ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1
 backup	3	ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja carabiner<1
 backup	4	ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja crampons<1
@@ -79,7 +79,7 @@ banish	53	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!snif
 
 # Copy should detect if you want 2 more. Priority is copier item, digitize, duplicate, + time-spinner & backup (see backup.dat).
 copy	0	lobsterfrogman	item:barrel of gunpowder<4;quest:sidequestLighthouseCompleted=0
-copy	1	modern zombie	prop:cyrptAlcoveEvilness>30
+copy	1	modern zmobie	prop:cyrptAlcoveEvilness>30
 copy	2	ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1;item:ninja carabiner<1
 copy	3	ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1;item:ninja crampons<1
 copy	4	ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja carabiner<1;item:ninja crampons<1

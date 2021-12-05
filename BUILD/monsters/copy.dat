@@ -1,6 +1,6 @@
 # Copy should detect if you want 2 more. Priority is copier item, digitize, duplicate, + time-spinner & backup (see backup.dat).
 lobsterfrogman	item:barrel of gunpowder<4;quest:sidequestLighthouseCompleted=0
-modern zombie	prop:cyrptAlcoveEvilness>30
+modern zmobie	prop:cyrptAlcoveEvilness>30
 ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1;item:ninja carabiner<1
 ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1;item:ninja crampons<1
 ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja carabiner<1;item:ninja crampons<1
