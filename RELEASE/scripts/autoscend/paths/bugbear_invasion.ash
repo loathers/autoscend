@@ -303,6 +303,11 @@ boolean LX_bugbearNavigation()
 	if (bugbear_UnlockMothership(loc)) return true;
 	if (bugbear_ZoneOpen(loc) == false || bugbear_ZoneCleared(loc)) return false;
 
+	if (have_effect($effect[N-Spatial vision]) > 0 && auto_have_skill($skill[disco nap]))
+	{
+		uneffect($effect[N-Spatial vision]);
+	}
+
 	if (have_effect($effect[N-Spatial vision]) > 0) return false;
 
 	auto_log_info("Clearing Bugbear Mothership - " + loc, "blue");
