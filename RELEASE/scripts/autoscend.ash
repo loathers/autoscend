@@ -1941,7 +1941,7 @@ void auto_begin()
 	backupSetting("currentMood", "apathetic");
 
 	backupSetting("logPreferenceChange", "true");
-	backupSetting("logPreferenceChangeFilter", "maximizerMRUList,testudinalTeachings,auto_maximize_current");
+	backupSetting("logPreferenceChangeFilter", "nextAdventure,maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 
 	string userForbidden = get_property("forbiddenStores");
