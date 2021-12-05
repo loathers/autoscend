@@ -4209,7 +4209,7 @@ boolean auto_wantToCopy(monster enemy, location loc)
 
 boolean auto_hasPendingCopy(monster enemy)
 {
-	string[6] props = {
+	string[7] props = {
 		"_sourceTerminalDigitizeMonster",
 		"romanticTarget",
 		"photocopyMonster",
@@ -4231,7 +4231,7 @@ boolean auto_hasPendingCopy(monster enemy)
 
 boolean auto_hasAnyPendingCopy()
 {
-	string[6] props = {
+	string[7] props = {
 		"_sourceTerminalDigitizeMonster",
 		"romanticTarget",
 		"photocopyMonster",
