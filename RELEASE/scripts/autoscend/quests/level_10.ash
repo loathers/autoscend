@@ -121,7 +121,7 @@ boolean L10_basement()
 		return false;
 	}
 
-	if(possessEquipment($item[Titanium Assault Umbrella]) && (!auto_can_equip($item[Titanium Assault Umbrella]) && (!in_wotsf() && !is_boris())))
+	if(possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]) && !in_wotsf() && !is_boris())
 	{ // can't hold umbrella in WOTSF (without disembodied hand) or Boris
 		return false;
 	}
