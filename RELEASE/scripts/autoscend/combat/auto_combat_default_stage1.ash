@@ -175,7 +175,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			{
 				return useSkill($skill[CHEAT CODE: Shrink Enemy]); // do it again
 			}
-			if(canUse($skill[Curse Of Weaksauce]) && my_class() == $class[Sauceror] && doWeaksauce)
+			if(canUse($skill[Curse of Weaksauce]))
 			{
 				return useSkill($skill[Curse Of Weaksauce]); // persistent deleveling
 			}
