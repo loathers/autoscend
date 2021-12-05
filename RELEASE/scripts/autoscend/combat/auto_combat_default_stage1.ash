@@ -203,7 +203,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			{
 				return useSkill($skill[Tango of Terror]); // delevel and damage
 			}
-			return attackMinor;
+			if(canUse($skill[Saucestorm]))
+			{
+				return useSkill($skill[Saucestorm]); // default attacking
+			}
 		}
 	}
 
