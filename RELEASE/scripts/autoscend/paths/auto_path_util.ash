@@ -3,7 +3,8 @@
 boolean auto_buySkills()  // This handles skill acquisition for general paths
 {
 	// TODO: Torso Awareness is worth obtaining in other cases too.
-	if((my_meat() >= 10000)
+	//we need 5000 meat for the skill. and want to save an additional 1000 meat above meat reserve since torso awareness is somewhat low priority
+	if((my_meat() >= meatReserve() + 6000)
 	   && gnomads_available()
 	   && (!have_skill($skill[Torso Awareness]))
 	   && (item_amount($item[January\'s Garbage Tote]) != 0)
@@ -232,17 +233,18 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 void pathDroppedCheck()
 {
 	//detect path drops and reinitialize with settings appropriate for the new path
+	//this will also trigger when some paths break ronin
 	if(my_path() == get_property("auto_doneInitializePath"))
 	{
 		return;		//our current path is the same one we last initialized as
 	}
 	if(get_property("auto_doneInitializePath") == "")
 	{
-		//this setting has not been set. this means the ran started with an older version of autoscend that did not have this setting
-		//a path of none would have returned "None" not "". this check can be deleted in a future PR after a week
+		//this setting has not been set. this means the run started with an older version of autoscend that did not have this setting
+		//a path of none would have returned "None" not "". This is only backwards support and can be deleted in the future.
 		return;
 	}
 	print("Path change detected. You were previously " +get_property("auto_doneInitializePath")+ " and are now a " +my_path(), "red");
-	remove_property("auto_doneInitialize");
+	set_property("_auto_reinitialize", true);
 	initializeSettings();
 }

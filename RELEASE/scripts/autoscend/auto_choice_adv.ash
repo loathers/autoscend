@@ -7,7 +7,8 @@ boolean auto_run_choice(int choice, string page)
 	auto_log_debug("Running auto_choice_adv.ash");
 	string[int] options = available_choice_options();
 	
-	switch (choice) {
+	switch (choice)
+	{
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
 		case 16: // Saint Beernard (The eXtreme Slope)
 		case 17: // Generic Teen Comedy Snowboarding Adventure (The eXtreme Slope)
@@ -18,25 +19,34 @@ boolean auto_run_choice(int choice, string page)
 		case 20: // See You Next Fall (Itznotyerzitz Mine)
 			itznotyerzitzMineChoiceHandler(choice);
 			break;
+		case 21: // Under the Knife
+			run_choice(2); // skip (The Sleazy Back Alley)
+			break;
 		case 22: // The Arrrbitrator (The Obligatory Pirate's Cove)
 		case 23: // Barrie Me at Sea (The Obligatory Pirate's Cove)
 		case 24: // Amatearrr Night (The Obligatory Pirate's Cove)
 			piratesCoveChoiceHandler(choice);
 			break;
 		case 89: // Out in the Garden (The Haunted Gallery)
-			if (isActuallyEd() && (!possessEquipment($item[serpentine sword]) || !possessEquipment($item[snake shield]))) {
+			if(isActuallyEd() && (!possessEquipment($item[serpentine sword]) || !possessEquipment($item[snake shield])))
+			{
 				run_choice(2); // fight the snake knight (should non-Ed classes/paths do this too?)
-			} else {
+			}
+			else
+			{
 				run_choice(4); // ignore the NC & banish it for 10 adv
 			}
 			break;
 		case 90: // Curtains (The Haunted Ballroom)
-			run_choice(3); // skip;
+			run_choice(3); // skip
 			break;
 		case 105: // Having a Medicine Ball (The Haunted Bathroom)
-			if (my_primestat() == $stat[Mysticality]) {
+			if(my_primestat() == $stat[Mysticality])
+			{
 				run_choice(1); // get mysticality substats
-			} else {
+			}
+			else
+			{
 				run_choice(2); // go to Bad Medicine is What You Need (#107)
 			}
 			break;
@@ -44,6 +54,42 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(3); // +5% item drops everywhere
 			break;
 		case 107: // Bad Medicine is What You Need (The Haunted Bathroom)
+			run_choice(4); // skip
+			break;
+		case 108: // Aww, Craps (The Sleazy Back Alley)
+			run_choice(4); // skip
+			break;
+		case 109: // Dumpster Diving (The Sleazy Back Alley)
+			run_choice(1); // fight a drunken half-orc hobo
+			break;
+		case 110: // The Entertainer (The Sleazy Back Alley)
+			run_choice(4); // skip
+			break;
+		case 111: // Malice in Chains (Outskirts of Cobb's Knob)
+			run_choice(3); // fight a sleeping Knob Goblin guard
+			break;
+		case 112: // Please, Hammer (The Sleazy Back Alley)
+			run_choice(2); // skip
+			break;
+		case 113: // Knob Gobin BBQ (Outskirts of Cobb's Knob)
+			run_choice(2); // fight a Knob Goblin Barbecue Team
+			break;
+		case 114: // The Baker's Dilemma (The Haunted Pantry)
+			run_choice(2); // skip
+			break;
+		case 115: // Oh No, Hobo (The Haunted Pantry)
+			run_choice(1); // fight a drunken half-orc hobo
+			break;
+		case 116: // The Singing Tree (Rustling) (The Haunted Pantry)
+			run_choice(4); // skip
+			break;
+		case 117: // Trespasser (The Haunted Pantry)
+			run_choice(1); // fight a Knob Goblin Assistant Chef
+			break;
+		case 118: // When Rocks Attack (Outskirts of Cobb's Knob)
+			run_choice(2); // skip
+			break;
+		case 120: // Ennui is Wasted on the Young  (Outskirts of Cobb's Knob)
 			run_choice(4); // skip
 			break;
 		case 123: // At Least It's Not Full Of Trash (The Hidden Temple)
@@ -83,6 +129,11 @@ boolean auto_run_choice(int choice, string page)
 		case 149: // How Many Corners Does this Stupid Barn Have!? (McMillicancuddy's Barn)
 			run_choice(2); // open the other back 40
 			break;
+		case 153: // Turn Your Head and Coffin (The Defiled Alcove)
+		case 155: // Skull, Skull, Skull (The Defiled Nook)
+		case 157: // Urning Your Keep (The Defiled Niche)
+			cyrptChoiceHandler(choice);
+			break;
 		case 163: // Melvil Dewey Would Be Ashamed (The Haunted Library)
 			if(in_lar())
 			{
@@ -112,15 +163,21 @@ boolean auto_run_choice(int choice, string page)
 		case 186: // A Test of Testarrrsterone (Barrrney's Barrr)
 			barrrneysBarrrChoiceHandler(choice);
 			break;
-			// Note: 187 is the Beer Pong NC and is currently handled differently.
+		// Note: 187 is the Beer Pong NC and is currently handled differently.
 		case 188: // The Infiltrationist (Orcish Frat House blueprints)
-			if (is_wearing_outfit("Frat Boy Ensemble")) {
+			if(is_wearing_outfit("Frat Boy Ensemble"))
+			{
 				run_choice(1);
-			} else if (equipped_amount($item[mullet wig]) == 1 && item_amount($item[briefcase]) > 0) {
+			}
+			else if(equipped_amount($item[mullet wig]) == 1 && item_amount($item[briefcase]) > 0)
+			{
 				run_choice(2);
-			} else if (equipped_amount($item[frilly skirt]) == 1 && item_amount($item[hot wing]) > 2) {
+			}
+			else if(equipped_amount($item[frilly skirt]) == 1 && item_amount($item[hot wing]) > 2)
+			{
 				run_choice(3);
-			} else abort("I tried to infiltrate the orcish frat house without being equipped for the job");
+			}
+			else abort("I tried to infiltrate the orcish frat house without being equipped for the job");
 			break;
 		case 189: // O Cap'm, My Cap'm (The Poop Deck)
 			run_choice(2); // skip
@@ -129,89 +186,31 @@ boolean auto_run_choice(int choice, string page)
 			fcleChoiceHandler(choice);
 			break;
 		case 330: // A Shark's Chum (The Haunted Billiards Room, semi-rarely)
-			if (get_property("poolSharkCount").to_int() < 25) {
+			if(get_property("poolSharkCount").to_int() < 25)
+			{
 				run_choice(1); // train pool skill
-			} else {
+			}
+			else
+			{
 				run_choice(2); // fight hustled spectre for cube of billiard chalk
 			}
 			break;
 		case 502: // Arboreal Respite (The Spooky Forest)
-			if (internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0) {
-				// need the mosquito larva
-				run_choice(2); // go to Consciousness of a Stream (#505)
-			} else if (!hidden_temple_unlocked()) {
-				if (item_amount($item[Tree-Holed Coin]) == 0 && item_amount($item[Spooky Temple map]) == 0) {
-					// need the tree-holed coin
-					run_choice(2); // go to Consciousness of a Stream (#505)
-				} else if (item_amount($item[Spooky Temple map]) == 0 || item_amount($item[Spooky-Gro Fertilizer]) == 0) {
-					// have the coin, need the spooky temple map and spooky-gro fertilizer
-					run_choice(3); // go to Through Thicket and Thinnet (#506)
-				} else {
-					// need the spooky sapling
-					run_choice(1); // go to The Road Less Traveled (#503)
-				}
-			} else {
-				auto_log_warning("In Arboreal Respite for some reason but we don't need a mosquito larva or to unlock the hidden temple!");
-				run_choice(2); // go to Consciousness of a Stream (#505)
-			}
-			break;
 		case 503: // The Road Less Traveled (The Spooky Forest)
-			run_choice(3); // go to Tree's Last Stand (#504)
-			break;
 		case 504: // Tree's Last Stand (The Spooky Forest)
-			if (item_amount($item[bar skin]) > 1) {
-				run_choice(2); // sell all bar skins (doesn't leave choice)
-			} else if (item_amount($item[bar skin]) == 1) {
-				run_choice(1); // sell all bar skins (doesn't leave choice)
-			}
-			if (!hidden_temple_unlocked() && item_amount($item[Spooky Sapling]) == 0 && my_meat() > 100) {
-				run_choice(3); // get the spooky sapling (doesn't leave choice)
-			}
-			run_choice(4); // leave the choice (skip).
-			break;
 		case 505: // Consciousness of a Stream (The Spooky Forest)
-			if (internalQuestStatus("questL02Larva") == 0 && item_amount($item[mosquito larva]) == 0) {
-				run_choice(1); // Get the mosquito larva
-			} else {
-				run_choice(2); // Get the tree-holed coin or skip
-			}
-			break;
 		case 506: // Through Thicket and Thinnet (The Spooky Forest)
-			if (!hidden_temple_unlocked() && item_amount($item[Spooky-Gro Fertilizer]) == 0) {
-				run_choice(2); // get the spooky-gro fertilizer
-			} else {
-				run_choice(3); // go to O Lith, Mon (#507)
-			}
-			break;
 		case 507: // O Lith, Mon (The Spooky Forest)
-			if (!hidden_temple_unlocked() && item_amount($item[Tree-Holed Coin]) > 0 && item_amount($item[Spooky Temple map]) == 0) {
-				run_choice(1); // get the spooky temple map
-			} else {
-				run_choice(3); // skip
-			}
+			spookyForestChoiceHandler(choice);
 			break;
-		case 523: // Death Rattlin' (The Cyrpt)
-			if(in_darkGyffte() && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
-			{
-				int desired_pills = in_hardcore() ? 6 : 4;
-				desired_pills -= my_fullness()/2;
-				auto_log_info("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
-				if(item_amount($item[dieting pill]) < desired_pills)
-				{
-					if(!bat_wantHowl($location[The Defiled Cranny]))
-					{
-						bat_formBats();
-					}
-				}
-				run_choice(5); // if desired, skip to farm more dieting pills in DG
-			}
-			else
-			{
-				run_choice(4); // fight swarm of ghuol whelps
-			}
-			break;
+		case 523: // Death Rattlin' (The Defiled Cranny)
 		case 527: // The Haert of Darkness (The Cyrpt)
-			run_choice(1); // fight whichever version of the bonerdagon
+			cyrptChoiceHandler(choice);
+			break;
+		case 542: // Now's Your Pants! I Mean... Your Chance! (The Sleazy Back Alley)
+		case 543: // Up In Their Grill (Outskirts of Cobb's Knob)
+		case 544: // A Sandwich Appears! (The Haunted Pantry)
+			run_choice(1); // always finish guild task via choice 1
 			break;
 		case 556: // More Locker Than Morlock (Itznotyerzitz Mine)
 			itznotyerzitzMineChoiceHandler(choice);
@@ -227,125 +226,85 @@ boolean auto_run_choice(int choice, string page)
 		case 584: // Unconfusing Buttons (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
+		case 588: // Machines! (Bugbear Mothership Sonar)
+			if (!page.contains_text("name=pingvalue size=5 value=2"))
+			{
+				run_choice(1, "pingvalue=2");
+			}
+			else if (!page.contains_text("name=whurmvalue size=5 value=4"))
+			{
+				run_choice(2, "whurmvalue=4");
+			}
+			else if (!page.contains_text("name=boomchuckvalue size=5 value=8"))
+			{
+				run_choice(3, "boomchuckvalue=8");
+			}
+			break;
+		case 589: // Autopsy Auturvy (Bugbear Mothership Morgue)
+			if (item_amount($item[bugbear autopsy tweezers]) > 0)
+			{
+				// choices 1-5, do these change? or get removed?
+				for i from 1 to 5
+				{
+					if (options contains i)
+					{
+						run_choice(i);
+						break;
+					}
+				}
+			}
+			else
+			{
+				run_choice(6);
+			}
+			break;
+		case 590: // Not Alone In The Dark (Bugbear Mothership Special Ops)
+			if (options contains 2)
+			{
+				run_choice(2);
+			}
+			else
+			{
+				run_choice(1);
+			}
+			break;
+		case 591: // The Beginning of the Beginning of the End (Bugbear Mothership Bridge)
+		case 592: // The Middle of the Beginning of the End (Bugbear Mothership Bridge)
+		case 593: // The End  of the Beginning of the End (Bugbear Mothership Bridge)
+			run_choice(1);
+			break;
 		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
 			auto_reagnimatedGetPart(choice);
 			break;
 		case 604: // Welcome to the Great Overlook Lodge (Twin Peak Part 1)
-			run_choice(1); // continue
-			break;
 		case 605: // Welcome to the Great Overlook Lodge (Twin Peak Part 2)
-			run_choice(1); // everything goes black
-			break;
 		case 607: // Room 237 (Lost in the Great Overlook Lodge)
-			run_choice(1); // finish stench portion of quest
-			break;
 		case 608: // Go Check It Out! (Lost in the Great Overlook Lodge)
-			run_choice(1); // finish food drop portion of quest
-			break;
 		case 609: // There's Always Music In the Air (Lost in the Great Overlook Lodge)
-			run_choice(1); // examine the painting for jar of oil portion of quest
-			break;
 		case 610: // To Catch a Killer (Lost in the Great Overlook Lodge)
-			run_choice(1); // pursue your double for init portion of quest
-			break;
 		case 616: // He Is the Arm, and He Sounds Like This (Lost in the Great Overlook Lodge)
-			run_choice(1); // finish jar of oil portion of quest
+			run_choice(1); // always advance to next option via choice 1
 			break;
 		case 618: // Cabin Fever (Twin Peak)
 			run_choice(2); // finish twin peak quest the long way
 			break;
 		case 669: // The Fast and the Furry-ous (The Castle in the Clouds in the Sky (Basement))
-			run_choice(1); // if umbrella equipped finish quest. without, go to Out in the Open Source (#671)
-			break;
 		case 670: // You Don't Mess Around with Gym (The Castle in the Clouds in the Sky (Basement))
-			if(internalQuestStatus("questL10Garbage") < 8 && equipped_amount($item[Amulet of Extreme Plot Significance]) > 0)
-			{
-				run_choice(4); // with amulet equipped, open the ground floor
-			}
-			else
-			{
-				run_choice(1); // with no amulet, grab the dumbbell. will skip if already have dumbbell
-			}
-			break;
 		case 671: // Out in the Open Source (The Castle in the Clouds in the Sky (Basement))
-			if(item_amount($item[Massive Dumbbell]) > 0)
-			{
-				run_choice(1); // with dumbbell, open the ground floor
-			}
-			else
-			{
-				run_choice(4); // without dumbbell, go to You Don't Mess Around with Gym (#670)
-			}
+			castleBasementChoiceHandler(choice);
 			break;
 		case 672: // There's No Ability Like Possibility (Castle in the Clouds in the Sky (Ground Floor))
-			run_choice(3); // skip
-			break;
 		case 673: // Putting Off Is Off-Putting (Castle in the Clouds in the Sky (Ground Floor))
-			run_choice(3); // skip
-			break;
 		case 674: // Huzzah! (Castle in the Clouds in the Sky (Ground Floor))
-			run_choice(3); // skip
+			run_choice(3); // always skip via choice 3
 			break;
 		case 675: // Melon Collie and the Infinite Lameness (The Castle in the Clouds in the Sky (Top Floor))
-			if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
-			{
-				run_choice(2); // if quest not done and have the record, complete the quest
-			}
-			else
-			{
-				run_choice(4); // moves to Copper Feel (#677) in all other scenarios
-			}
-			break;
 		case 676: // Flavor of a Raver (The Castle in the Clouds in the Sky (Top Floor))
-			if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
-			{
-				run_choice(4); // if quest not done and have mohawk wig on, move to Yeah, You're for Me (#678)
-			}	
-			else
-			{
-				run_choice(3); // if no mohawk wig, grab the drum n bass record. will skip if already have record
-			}
-			break;
 		case 677: // Copper Feel (The Castle in the Clouds in the Sky (Top Floor))
-			 if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Model airship]) > 0)
-			{
-				run_choice(1); // if quest not done and have model airship, complete quest
-			}
-			else if((internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0) || in_koe())
-			{
-				run_choice(4); // if quest not done and have the record, move to Melon Collie (#675). HITS is open in KoE so no need to grab rocket
-			}
-			else
-			{
-				run_choice(2); // grab steam-powered rocket ship.  will skip if already have rocket
-			}
-			break;
 		case 678: // Yeah, You're for Me, Punk Rock Giant (The Castle in the Clouds in the Sky (Top Floor))
-			if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
-			{
-				run_choice(1); // if quest not done and mohawk wig equipped, finish quest
-			}
-			else if(internalQuestStatus("questL10Garbage") < 10)
-			{
-				run_choice(4); // if wig not equipped and quest not done, go to Flavor of a Raver (#676)
-			}
-			else
-			{
-				run_choice(3); // if quest is done, go to Copper Feel (#677) to skip
-			}
-			break;
 		case 679: // Keep On Turnin' the Wheel in the Sky (The Castle in the Clouds in the Sky (Top Floor))
-			if(isActuallyEd())
-			{
-				run_choice(2); // ed advances via choice 2
-			}
-			else
-			{
-				run_choice(1); // everyone else advances via choice 1
-			}
-			break;
 		case 680: // Are you a Man or a Mouse? (The Castle in the Clouds in the Sky (Top Floor))
-			run_choice(1); // go to finish quest the long way
+			castleTopFloorChoiceHandler(choice);
 			break;
 		case 689: // The Final Reward (Daily Dungeon 15th room)
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
@@ -355,6 +314,8 @@ boolean auto_run_choice(int choice, string page)
 			dailyDungeonChoiceHandler(choice, options);
 			break;
 		case 700: // Delirium in the Cafeterium (KOLHS 22nd adventure every day)
+			kolhsChoiceHandler(choice);
+			break;
 		case 768: // The Littlest Identity Crisis (Mini-adventurer initialization)
 			if(in_quantumTerrarium()) {
 				if (my_location() == $location[The Themthar Hills]) {
@@ -451,15 +412,15 @@ boolean auto_run_choice(int choice, string page)
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
 			if(my_primestat() == $stat[Muscle])
 			{
-				run_choice(1);
+				run_choice(1); // muscle stats
 			}
 			else if(my_primestat() == $stat[Mysticality])
 			{
-				run_choice(2);
+				run_choice(2); // myst stats
 			}
-			else	// if no prime stat we still want moxie
+			else // if no prime stat we still want moxie
 			{
-				run_choice(3);
+				run_choice(3); // moxie stats
 			}
 			break;
 		case 794: // Once More Unto the Junk (The Old Landfill)
@@ -584,7 +545,7 @@ boolean auto_run_choice(int choice, string page)
 		case 1000: // Everything in Moderation (The Typical Tavern Cellar as Ed)
 			run_choice(1); // turn off the faucet as Ed, complete quest
 			break;
-		case 1001: // Hot and Cold Dripping Rats The Typical Tavern Cellar as Ed)
+		case 1001: // Hot and Cold Dripping Rats (The Typical Tavern Cellar as Ed)
 			run_choice(2); // choose to not fight a rat 
 			break;
 		case 1002: // Temple of the Legend in the Hidden City (A Massive Ziggurat/Actually Ed the Undying)
@@ -613,7 +574,7 @@ boolean auto_run_choice(int choice, string page)
 			edUnderworldChoiceHandler(choice);
 			break;
 		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
-			if (isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
+			if(isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
 			{
 				run_choice(3); // skip
 			}
@@ -626,19 +587,27 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // finish init portion of quest
 			break;
 		case 1060: // Temporarily Out of Skeletons (The Skeleton Store)
-			if (item_amount($item[Skeleton Store office key]) == 0) {
+			if(item_amount($item[Skeleton Store office key]) == 0)
+			{
 				run_choice(1); // Skeleton Store office key
-			} else if (internalQuestStatus("questM23Meatsmith") < 1) {
+			}
+			else if(internalQuestStatus("questM23Meatsmith") < 1)
+			{
 				run_choice(4); // fight The former owner of the Skeleton Store
-			} else {
+			}
+			else
+			{
 				run_choice(2); // get ring of telling skeletons what to do or 300 meat
 			}
 			break;
 		case 1061: // Heart of Madness (Madness Bakery Quest)
-			if(internalQuestStatus("questM25Armorer") <= 2) {
-				run_choice(1);
-			} else {
-				run_choice(5);
+			if(internalQuestStatus("questM25Armorer") <= 2)
+			{
+				run_choice(1); // try to open door or open the door to fight Cake Lord
+			}
+			else
+			{
+				run_choice(5); // myst stats as best default option
 			}
 			break;
 		case 1062: // Lots of Options (The Overgrown Lot)
@@ -664,10 +633,10 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1082: // The "Rescue" (post-Cake Lord in Madness Bakery)
-			run_choice(1);
+			run_choice(1); // move to next part of quest
 			break;
 		case 1083: // Cogito Ergot Sum (post-post-Cake Lord in Madness Bakery)
-			run_choice(1);
+			run_choice(1); // get the no-handed pie and complete quest
 			break;
 		case 1106: // Wooof! Wooooooof! (Ghost Dog)
 			if((in_hardcore() && have_effect($effect[Adventurer\'s Best Friendship]) > 120) || ((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar()))
@@ -777,7 +746,7 @@ void main(int choice, string page)
 	}
 	finally
 	{
-		if (!ret)
+		if(!ret)
 		{
 			auto_log_error("Error running auto_choice_adv.ash, setting auto_interrupt=true");
 			set_property("auto_interrupt", true);

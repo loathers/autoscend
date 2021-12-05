@@ -418,6 +418,61 @@ int auto_backupUsesLeft()
 	return 11 + (in_robot() ? 5 : 0) - get_property("_backUpUses").to_int();
 }
 
+boolean auto_backupTarget()
+{
+	// can't backup if we don't have camera or it isn't available
+    if (!auto_haveBackupCamera()) 
+	{
+        return false;
+    }
+
+	// can't backup if no more charges left
+	if (auto_backupUsesLeft() < 1) 
+	{
+        return false;
+    }
+
+	// don't backup into a fight we just lost. Prevent continuously getting beaten up
+	if(get_property("auto_beatenUpLastAdv").to_boolean())
+	{
+		return false;
+	}
+
+	// determine if we want to backup
+	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12;
+	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean();
+	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > 25 && my_level() >= 6;
+
+	switch (get_property("lastCopyableMonster").to_monster()) {
+		case $monster[lobsterfrogman]:
+			if(wantBackupLFM)
+				return true; 
+			break;
+		case $monster[ninja snowman assassin]:
+			if(wantBackupNSA)
+				return true;
+			break;
+		case $monster[modern zmobie]:
+			if(wantBackupZmobie) 
+				return true;
+			break;
+		case $monster[sausage goblin]:
+			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie)
+				return true;
+			break;
+		case $monster[eldritch tentacle]:
+			//backup tentacles if power leveling or use all remaining charges if at end of day
+			if(isAboutToPowerlevel() && auto_backupUsesLeft() > 5)
+				return true;
+			if (my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
+				return true;
+			break;
+		default: break;
+    }
+
+	return false;
+}
+
 boolean auto_havePowerPlant()
 {
 	return item_amount($item[potted power plant]) > 0 && auto_is_valid($item[potted power plant]);

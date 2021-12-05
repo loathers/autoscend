@@ -96,25 +96,9 @@ boolean isAttackFamiliar(familiar fam)
 	return false;
 }
 
-boolean pathHasFamiliar()
+boolean pathHasFamiliar() 	// check for cases where the path bans traditional familiars.
 {
-	if($classes[
-	Ed, 
-	Avatar of Boris,
-	Avatar of Jarlsberg,
-	Avatar of Sneaky Pete,
-	Vampyre
-	] contains my_class())
-	{
-		return false;
-	}
-	
-	//path check for cases where the path bans familairs and does not use a unique class.
-	//since pokefam converts your familiars into pokefam, they are not actually familiars in that path and cannot be used as familiars.
-	if($strings[
-	License to Adventure,
-	Pocket Familiars
-	] contains auto_my_path())
+	if(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_lta() || in_pokefam())
 	{
 		return false;
 	}
@@ -510,12 +494,11 @@ boolean autoChooseFamiliar(location place)
 					spleenFamiliarsAvailable++;
 				}
 			}
-
-			int spleen_drops_need = (spleen_left() + 3)/4;
-			int bound = (spleen_drops_need + spleenFamiliarsAvailable - 1) / spleenFamiliarsAvailable;
 			
 			if(spleenFamiliarsAvailable > 0)
 			{
+				int spleen_drops_need = (spleen_left() + 3)/4;
+				int bound = (spleen_drops_need + spleenFamiliarsAvailable - 1) / spleenFamiliarsAvailable;
 				foreach fam in $familiars[Baby Sandworm, Rogue Program, Pair of Stomping Boots, Bloovian Groose, Unconscious Collective, Grim Brother, Golden Monkey]
 				{
 					if((fam.drops_today < bound) && canChangeToFamiliar(fam))

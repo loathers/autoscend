@@ -562,7 +562,7 @@ boolean L8_trapperNinjaLair()
 	}
 
 	//can we provide enough combat bonus to encounter snowman assassins?
-	if(providePlusCombat(25, true, true) <= 0.0)	//ninja snowman does not show up if +combat is not greater than 0
+	if(providePlusCombat(25, $location[Lair of the Ninja Snowmen], true, true) <= 0.0)	//ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -616,9 +616,10 @@ boolean L8_trapperGroar()
 	int [element] resGoal;
 	resGoal[$element[cold]] = 5;
 	// try getting resistance without equipment before bothering to change gear
+	
 	boolean retval = false;
 	int initial_adv = my_session_adv();
-	if(provideResistances(resGoal, false) || provideResistances(resGoal, true))
+	if(provideResistances(resGoal, $location[Mist-shrouded Peak], false) || provideResistances(resGoal, $location[Mist-shrouded Peak], true))
 	{
 		auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 		equipMaximizedGear();
@@ -652,7 +653,7 @@ boolean L8_trapperPeak()
 	{
 		int [element] resGoal;
 		resGoal[$element[cold]] = 5;
-		if(provideResistances(resGoal, true))
+		if(provideResistances(resGoal, $location[Mist-shrouded Peak], true))
 		{
 			equipMaximizedGear();
 			visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");	//unlock peak. advancing to step 4.

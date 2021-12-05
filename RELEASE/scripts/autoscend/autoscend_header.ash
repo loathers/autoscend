@@ -423,6 +423,7 @@ boolean auto_canFeelPeaceful();
 boolean auto_haveBackupCamera();
 void auto_enableBackupCameraReverser();
 int auto_backupUsesLeft();
+boolean auto_backupTarget();
 boolean auto_harvestBatteries();
 int batteryPoints(item battery);
 int totalBatteryPoints();
@@ -518,6 +519,9 @@ boolean L13_bhy_towerFinal();
 ########################################################################################################
 //Defined in autoscend/paths/bugbear_invasion.ash
 boolean in_bugbear();
+void bugbear_initializeSettings();
+boolean LX_bugbearInvasion();
+boolean LX_bugbearInvasionFinale();
 
 ########################################################################################################
 //Defined in autoscend/paths/casual.ash
@@ -846,6 +850,10 @@ boolean LA_robot();
 ########################################################################################################
 //Defined in autoscend/paths/zombie_slayer.ash
 boolean in_zombieSlayer();
+void zombieSlayer_initializeSettings();
+boolean zombieSlayer_buySkills();
+boolean zombieSlayer_acquireMP(int goal, int meat_reserve);
+boolean zombieSlayer_acquireHP(int goal);
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -854,6 +862,7 @@ void tootGetMeat();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_02.ash
+void spookyForestChoiceHandler(int choice);
 boolean L2_mosquito();
 
 ########################################################################################################
@@ -881,6 +890,7 @@ boolean L6_dakotaFanning();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_07.ash
+void cyrptChoiceHandler(int choice);
 boolean L7_crypt();
 
 ########################################################################################################
@@ -918,8 +928,10 @@ boolean L9_highLandlord();
 boolean L10_plantThatBean();
 boolean L10_airship();
 boolean L10_basement();
+void castleBasementChoiceHandler(int choice);
 boolean L10_ground();
 boolean L10_topFloor();
+void castleTopFloorChoiceHandler(int choice);
 boolean L10_holeInTheSkyUnlock();
 boolean L10_rainOnThePlains();
 
@@ -1215,6 +1227,8 @@ void addToMaximize(string add);
 void removeFromMaximize(string rem);
 boolean maximizeContains(string check);
 boolean simMaximize();
+boolean simMaximize(location loc);
+boolean simMaximizeWith(location loc, string add);
 boolean simMaximizeWith(string add);
 float simValue(string modifier);
 void equipMaximizedGear();
@@ -1348,23 +1362,41 @@ boolean LX_freeCombatsTask();
 
 ########################################################################################################
 //Defined in autoscend/auto_providers.ash
+float providePlusCombat(int amt, location loc, boolean doEquips, boolean speculative);
 float providePlusCombat(int amt, boolean doEquips, boolean speculative);
+boolean providePlusCombat(int amt, location loc, boolean doEquips);
 boolean providePlusCombat(int amt, boolean doEquips);
+boolean providePlusCombat(int amt, location loc);
 boolean providePlusCombat(int amt);
+float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean speculative);
 float providePlusNonCombat(int amt, boolean doEquips, boolean speculative);
+boolean providePlusNonCombat(int amt, location loc, boolean doEquips);
 boolean providePlusNonCombat(int amt, boolean doEquips);
+boolean providePlusNonCombat(int amt, location loc);
 boolean providePlusNonCombat(int amt);
+float provideInitiative(int amt, location loc, boolean doEquips, boolean speculative);
 float provideInitiative(int amt, boolean doEquips, boolean speculative);
+boolean provideInitiative(int amt, location loc, boolean doEquips);
 boolean provideInitiative(int amt, boolean doEquips);
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative);
 int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative);
+boolean provideResistances(int [element] amt, location loc, boolean doEquips);
 boolean provideResistances(int [element] amt, boolean doEquips);
+float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolean speculative);
 float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative);
+boolean provideStats(int [stat] amt, location loc, boolean doEquips);
 boolean provideStats(int [stat] amt, boolean doEquips);
+float provideMuscle(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMuscle(int amt, boolean doEquips, boolean speculative);
+boolean provideMuscle(int amt, location loc, boolean doEquips);
 boolean provideMuscle(int amt, boolean doEquips);
+float provideMysticality(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMysticality(int amt, boolean doEquips, boolean speculative);
+boolean provideMysticality(int amt, location loc, boolean doEquips);
 boolean provideMysticality(int amt, boolean doEquips);
+float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative);
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
+boolean provideMoxie(int amt, location loc, boolean doEquips);
 boolean provideMoxie(int amt, boolean doEquips);
 
 ########################################################################################################

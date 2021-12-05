@@ -207,7 +207,7 @@ boolean LX_steelOrgan()
 	{
 		return false;
 	}
-	if($classes[Ed, Gelatinous Noob, Vampyre] contains my_class())
+	if($classes[Ed the Undying, Gelatinous Noob, Vampyre] contains my_class())
 	{
 		auto_log_info(my_class() + " can not use a Steel Organ, turning off setting.", "blue");
 		set_property("auto_getSteelOrgan", false);
@@ -410,36 +410,20 @@ boolean LX_guildUnlock()
 	item goal = $item[none];
 	switch(my_primestat())
 	{
-		case $stat[Muscle] :
-			set_property("choiceAdventure111", "3");//Malice in Chains -> Plot a cunning escape
-			set_property("choiceAdventure113", "2");//Knob Goblin BBQ -> Kick the chef
-			set_property("choiceAdventure118", "2");//When Rocks Attack -> "Sorry, gotta run."
-			set_property("choiceAdventure120", "4");//Ennui is Wasted on the Young -> "Since you\'re bored, you\'re boring. I\'m outta here."
-			set_property("choiceAdventure543", "1");//Up In Their Grill -> Grab the sausage, so to speak. I mean... literally.
+		case $stat[Muscle]:
 			pref = "questG09Muscle";
 			loc = $location[The Outskirts of Cobb\'s Knob];
 			goal = $item[11-Inch Knob Sausage];
 			break;
 		case $stat[Mysticality]:
-			set_property("choiceAdventure115", "1");//Oh No, Hobo -> Give him a beating
-			set_property("choiceAdventure116", "4");//The Singing Tree (Rustling) -> "No singing, thanks."
-			set_property("choiceAdventure117", "1");//Trespasser -> Tackle him
-			set_property("choiceAdventure114", "2");//The Baker\'s Dilemma -> "Sorry, I\'m busy right now."
-			set_property("choiceAdventure544", "1");//A Sandwich Appears! -> sudo exorcise me a sandwich
 			pref = "questG07Myst";
 			loc = $location[The Haunted Pantry];
 			goal = $item[Exorcised Sandwich];
 			break;
 		case $stat[Moxie]:
 			goal = equipped_item($slot[pants]);
-			set_property("choiceAdventure108", "4");//Aww, Craps -> Walk Away
-			set_property("choiceAdventure109", "1");//Dumpster Diving -> Punch the hobo
-			set_property("choiceAdventure110", "4");//The Entertainer -> Introduce them to avant-garde
-			set_property("choiceAdventure112", "2");//Please, Hammer -> "Sorry, no time."
-			set_property("choiceAdventure121", "2");//Under the Knife -> Umm, no thanks. Seriously.
-			set_property("choiceAdventure542", "1");//Now\'s Your Pants! I Mean... Your Chance! -> Yoink
 			pref = "questG08Moxie";
-			if (internalQuestStatus(pref) < 1)
+			if(internalQuestStatus(pref) < 1)
 			{
 				loc = $location[The Sleazy Back Alley];
 			}

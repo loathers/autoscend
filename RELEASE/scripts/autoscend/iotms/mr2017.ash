@@ -1295,7 +1295,7 @@ boolean asdonAutoFeed()
 
 boolean asdonAutoFeed(int goal)
 {
-	if(my_class() == $class[Ed])
+	if(my_class() == $class[Ed the Undying])
 	{
 		return false;
 	}

@@ -1322,7 +1322,7 @@ item whatHiMein()
 			return $item[Cold Hi Mein];
 		case $class[Sauceror]:
 		case $class[Pastamancer]:
-		case $class[Ed]:
+		case $class[Ed the Undying]:
 			return $item[Spooky Hi Mein];
 		case $class[Disco Bandit]:
 		case $class[Accordion Thief]:
@@ -2664,7 +2664,7 @@ void shrugAT()
 
 void shrugAT(effect anticipated)
 {
-	if ($classes[Avatar of Boris, Avatar of Jarlsberg, Avatar of Sneaky Pete, Ed, Vampyre, Plumber] contains my_class())
+	if(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber())
 	{
 		return;
 	}
@@ -3965,6 +3965,14 @@ boolean auto_check_conditions(string conds)
 			// No safety checking possible here, so hopefully you don't misspell anything
 			case "path":
 				return condition_data == auto_my_path();
+			// data: The int id name of the path, as returned by my_path_id()
+			// You must be currently on that path
+			// As a precaution, autoscend aborts if to_int returns 0
+			case "pathid":
+				int req_pathid = to_int(condition_data);
+				if(req_pathid == 0)
+					abort('"' + condition_data + '" does not properly convert to a path id!');
+				return req_pathid == my_path_id();
 			// data: Text name of the skill, as used by to_skill()
 			// You must have the given skill
 			// As a precaution, autoscend aborts if to_skill returns $skill[none]

@@ -1,5 +1,5 @@
 
-float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
+float providePlusCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
 	float alreadyHave = numeric_modifier("Combat Rate");
@@ -20,10 +20,10 @@ float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
 	if (doEquips) {
 		string max = "200combat " + amt + "max";
 		if (speculative) {
-			simMaximizeWith(max);
+			simMaximizeWith(loc, max);
 		} else {
 			addToMaximize(max);
-			simMaximize();
+			simMaximize(loc);
 		}
 		delta = simValue("Combat Rate") - numeric_modifier("Combat Rate");
 		auto_log_debug("With gear we can get to " + result());
@@ -131,17 +131,32 @@ float providePlusCombat(int amt, boolean doEquips, boolean speculative) {
 	return result();
 }
 
+float providePlusCombat(int amt, boolean doEquips, boolean speculative)
+{
+	return providePlusCombat(amt, my_location(), doEquips, speculative);
+}
+
+boolean providePlusCombat(int amt, location loc, boolean doEquips)
+{
+	return providePlusCombat(amt, loc, doEquips, false) >= amt;
+}
+
 boolean providePlusCombat(int amt, boolean doEquips)
 {
-	return providePlusCombat(amt, doEquips, false) >= amt;
+	return providePlusCombat(amt, my_location(), doEquips);
+}
+
+boolean providePlusCombat(int amt, location loc)
+{
+	return providePlusCombat(amt, loc, true);
 }
 
 boolean providePlusCombat(int amt)
 {
-	return providePlusCombat(amt, true);
+	return providePlusCombat(amt, my_location());
 }
 
-float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
+float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " negative combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
 	// numeric_modifier will return -combat as a negative value and +combat as a positive value
@@ -311,17 +326,32 @@ float providePlusNonCombat(int amt, boolean doEquips, boolean speculative) {
 	return result();
 }
 
+float providePlusNonCombat(int amt, boolean doEquips, boolean speculative)
+{
+	return providePlusNonCombat(amt, my_location(), doEquips, speculative);
+}
+
+boolean providePlusNonCombat(int amt, location loc, boolean doEquips)
+{
+	return providePlusNonCombat(amt, loc, doEquips, false) >= amt;
+}
+
 boolean providePlusNonCombat(int amt, boolean doEquips)
 {
-	return providePlusNonCombat(amt, doEquips, false) >= amt;
+	return providePlusNonCombat(amt, my_location(), doEquips);
+}
+
+boolean providePlusNonCombat(int amt, location loc)
+{
+	return providePlusNonCombat(amt, loc, true);
 }
 
 boolean providePlusNonCombat(int amt)
 {
-	return providePlusNonCombat(amt, true);
+	return providePlusNonCombat(amt, my_location());
 }
 
-float provideInitiative(int amt, boolean doEquips, boolean speculative)
+float provideInitiative(int amt, location loc, boolean doEquips, boolean speculative)
 {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " initiative, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
@@ -349,12 +379,12 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 		string max = "500initiative " + amt + "max";
 		if(speculative)
 		{
-			simMaximizeWith(max);
+			simMaximizeWith(loc, max);
 		}
 		else
 		{
 			addToMaximize(max);
-			simMaximize();
+			simMaximize(loc);
 		}
 		delta = simValue("Initiative") - numeric_modifier("Initiative");
 		auto_log_debug("With gear we can get to " + result());
@@ -496,12 +526,22 @@ float provideInitiative(int amt, boolean doEquips, boolean speculative)
 	return result();
 }
 
-boolean provideInitiative(int amt, boolean doEquips)
+float provideInitiative(int amt, boolean doEquips, boolean speculative)
 {
-	return provideInitiative(amt, doEquips, false) >= amt;
+	return provideInitiative(amt, my_location(), doEquips, speculative);
 }
 
-int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative)
+boolean provideInitiative(int amt, location loc, boolean doEquips)
+{
+	return provideInitiative(amt, loc, doEquips, false) >= amt;
+}
+
+boolean provideInitiative(int amt, boolean doEquips)
+{
+	return provideInitiative(amt, my_location(), doEquips);
+}
+
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative)
 {
 	string debugprint = "Trying to provide ";
 	foreach ele,goal in amt
@@ -596,7 +636,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 				}
 				max += "2000" + ele + " resistance " + goal + "max";
 			}
-			simMaximizeWith(max);
+			simMaximizeWith(loc, max);
 		}
 		else
 		{
@@ -604,7 +644,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 			{
 				addToMaximize("2000" + ele + " resistance " + goal + "max");
 			}
-			simMaximize();
+			simMaximize(loc);
 		}
 		foreach ele in amt
 		{
@@ -680,7 +720,7 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 				cli_execute("acquire 1 li'l candy corn costume");
 			}
 			// update maximizer scores with familiar
-			simMaximize();
+			simMaximize(loc);
 			foreach ele in amt
 			{
 				delta[ele] = simValue(ele + " Resistance") - numeric_modifier(ele + " Resistance");
@@ -718,7 +758,12 @@ int [element] provideResistances(int [element] amt, boolean doEquips, boolean sp
 	return result();
 }
 
-boolean provideResistances(int [element] amt, boolean doEquips)
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative)
+{
+	return provideResistances(amt, my_location(), doEquips, speculative);
+}
+
+boolean provideResistances(int [element] amt, location loc, boolean doEquips)
 {
 	int [element] res = provideResistances(amt, doEquips, false);
 	foreach ele, i in amt
@@ -729,7 +774,12 @@ boolean provideResistances(int [element] amt, boolean doEquips)
 	return true;
 }
 
-float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
+boolean provideResistances(int [element] amt, boolean doEquips)
+{
+	return provideResistances(amt, my_location(), doEquips);
+}
+
+float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolean speculative)
 {
 	string debugprint = "Trying to provide ";
 	foreach st,goal in amt
@@ -814,7 +864,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 				}
 				max += "200" + st + " " + goal + "max";
 			}
-			simMaximizeWith(max);
+			simMaximizeWith(loc, max);
 		}
 		else
 		{
@@ -822,7 +872,7 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 			{
 				addToMaximize("200" + st + " " + goal + "max");
 			}
-			simMaximize();
+			simMaximize(loc);
 		}
 		foreach st in amt
 		{
@@ -995,7 +1045,12 @@ float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
 	return result();
 }
 
-boolean provideStats(int [stat] amt, boolean doEquips)
+float [stat] provideStats(int [stat] amt, boolean doEquips, boolean speculative)
+{
+	return provideStats(amt, my_location(), doEquips, speculative);
+}
+
+boolean provideStats(int [stat] amt, location loc, boolean doEquips)
 {
 	float [stat] res = provideStats(amt, doEquips, false);
 	foreach st, i in amt
@@ -1008,42 +1063,77 @@ boolean provideStats(int [stat] amt, boolean doEquips)
 	return true;
 }
 
-float provideMuscle(int amt, boolean doEquips, boolean speculative)
+boolean provideStats(int [stat] amt, boolean doEquips)
+{
+	return provideStats(amt, my_location(), doEquips);
+}
+
+float provideMuscle(int amt, location loc, boolean doEquips, boolean speculative)
 {
 	int [stat] statsNeeded;
 	statsNeeded[$stat[muscle]] = amt;
-	float [stat] res = provideStats(statsNeeded, doEquips, speculative);
+	float [stat] res = provideStats(statsNeeded, loc, doEquips, speculative);
 	return res[$stat[muscle]];
+}
+
+float provideMuscle(int amt, boolean doEquips, boolean speculative)
+{
+	return provideMuscle(amt, my_location(), doEquips, speculative);
+}
+
+boolean provideMuscle(int amt, location loc, boolean doEquips)
+{
+	return provideMuscle(amt, loc, doEquips, false) >= amt;
 }
 
 boolean provideMuscle(int amt, boolean doEquips)
 {
-	return provideMuscle(amt, doEquips, false) >= amt;
+	return provideMuscle(amt, my_location(), doEquips);
+}
+
+float provideMysticality(int amt, location loc, boolean doEquips, boolean speculative)
+{
+	int [stat] statsNeeded;
+	statsNeeded[$stat[mysticality]] = amt;
+	float [stat] res = provideStats(statsNeeded, loc, doEquips, speculative);
+	return res[$stat[mysticality]];
 }
 
 float provideMysticality(int amt, boolean doEquips, boolean speculative)
 {
-	int [stat] statsNeeded;
-	statsNeeded[$stat[mysticality]] = amt;
-	float [stat] res = provideStats(statsNeeded, doEquips, speculative);
-	return res[$stat[mysticality]];
+	return provideMysticality(amt, my_location(), doEquips, speculative);
+}
+
+boolean provideMysticality(int amt, location loc, boolean doEquips)
+{
+	return provideMysticality(amt, loc, doEquips, false) >= amt;
 }
 
 boolean provideMysticality(int amt, boolean doEquips)
 {
-	return provideMysticality(amt, doEquips, false) >= amt;
+	return provideMysticality(amt, my_location(), doEquips);
+}
+
+float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative)
+{
+	int [stat] statsNeeded;
+	statsNeeded[$stat[moxie]] = amt;
+	float [stat] res = provideStats(statsNeeded, loc, doEquips, speculative);
+	return res[$stat[moxie]];
 }
 
 float provideMoxie(int amt, boolean doEquips, boolean speculative)
 {
-	int [stat] statsNeeded;
-	statsNeeded[$stat[moxie]] = amt;
-	float [stat] res = provideStats(statsNeeded, doEquips, speculative);
-	return res[$stat[moxie]];
+	return provideMoxie(amt, my_location(), doEquips, speculative);
+}
+
+boolean provideMoxie(int amt, location loc, boolean doEquips)
+{
+	return provideMoxie(amt, loc, doEquips, false) >= amt;
 }
 
 boolean provideMoxie(int amt, boolean doEquips)
 {
-	return provideMoxie(amt, doEquips, false) >= amt;
+	return provideMoxie(amt, my_location(), doEquips);
 }
 

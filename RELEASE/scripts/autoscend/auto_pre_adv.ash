@@ -87,9 +87,12 @@ void auto_ghost_prep(location place)
 		return;		//you robot with a rocket crotch. deals fire damage to kill ghosts.
 	}
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
-	foreach sk in $skills[Saucestorm, saucegeyser,		//base classes
-	Storm of the Scarab,		//actually ed the undying
-	Boil]		//avatar of jarlsberg
+	foreach sk in $skills[
+		Saucestorm, saucegeyser,	//base classes
+		Storm of the Scarab,		//actually ed the undying
+		Boil,						//avatar of jarlsberg
+		Bilious Burst				//zombie slayer
+		]
 	{
 		if(auto_have_skill(sk))
 		{
@@ -158,7 +161,7 @@ void auto_ghost_prep(location place)
 		addToMaximize(max_with);
 		return;
 	}
-	
+
 	abort("I was about to head into [" +place+ "] which contains ghosts. I can not damage those");
 }
 
@@ -270,7 +273,7 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin()) && place == solveDelayZone());
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
 	generic_t combatModifier = zone_combatMod(place);
 	if (combatModifier._boolean && !burningDelay && !auto_haveQueuedForcedNonCombat()) {
 		acquireCombatMods(combatModifier._int, true);
@@ -306,12 +309,13 @@ boolean auto_pre_adventure()
 
 	// Latte may conflict with certain quests. Ignore latte drops for the greater good.
 	boolean[location] IgnoreLatteDrop = $locations[The Haunted Boiler Room];
-	if (auto_latteDropWanted(place) && !(IgnoreLatteDrop contains place))
+	if(auto_latteDropWanted(place) && !(IgnoreLatteDrop contains place) && !is_boris())
+	// boris has no way to equip latte mug or Kramco (no offhand or familiar)
 	{
-		if (auto_sausageGoblin() && place == solveDelayZone())
+		if(auto_sausageGoblin() && place == solveDelayZone())
 		{
 			// Burning delay using a Sausage Goblin. Can't hold both the Kramco and the Latte, we only have one off-hand!
-			if (canChangeToFamiliar($familiar[Left-Hand Man]))
+			if(canChangeToFamiliar($familiar[Left-Hand Man]))
 			{
 				// If we can use the Left-Hand man, we can get a two-fer with both the Kramco and Latte
 				// Hurrah! We found an actual use for it, it's not useless after all!
@@ -328,6 +332,11 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	if(auto_backupTarget())
+	{
+		autoEquip($slot[acc3], $item[backup camera]);
+	}
+	
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
 		autoEquip($item[industrial fire extinguisher]);
