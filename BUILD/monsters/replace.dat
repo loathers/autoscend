@@ -41,3 +41,11 @@ Ancient Insane Monk	path:Community Service;loc:The Haiku Dungeon
 Ferocious Bugbear	path:Community Service;loc:The Haiku Dungeon
 Gelatinous Cube	path:Community Service;loc:The Haiku Dungeon
 Knob Goblin Poseur	path:Community Service;loc:The Haiku Dungeon
+# Bugbear Invasion Mothership
+scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing
+bugaboo	path:Bugbear Invasion;loc:Morgue;item:bugbear autopsy tweezers<1
+bugbear scientist	path:Bugbear Invasion;loc:Science Lab;item:quantum nanopolymer spider web<1
+liquid metal bugbear	path:Bugbear Invasion:loc:Engineering;item:drone self-destruct chip<1
+Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering
+ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation
+trendy bugbear chef	path:Bugbear Invasion;loc:Galley

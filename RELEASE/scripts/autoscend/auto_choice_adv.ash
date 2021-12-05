@@ -226,6 +226,53 @@ boolean auto_run_choice(int choice, string page)
 		case 584: // Unconfusing Buttons (The Hidden Temple)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
+		case 588: // Machines! (Bugbear Mothership Sonar)
+			if (!page.contains_text("name=pingvalue size=5 value=2"))
+			{
+				run_choice(1, "pingvalue=2");
+			}
+			else if (!page.contains_text("name=whurmvalue size=5 value=4"))
+			{
+				run_choice(2, "whurmvalue=4");
+			}
+			else if (!page.contains_text("name=boomchuckvalue size=5 value=8"))
+			{
+				run_choice(3, "boomchuckvalue=8");
+			}
+			break;
+		case 589: // Autopsy Auturvy (Bugbear Mothership Morgue)
+			if (item_amount($item[bugbear autopsy tweezers]) > 0)
+			{
+				// choices 1-5, do these change? or get removed?
+				for i from 1 to 5
+				{
+					if (options contains i)
+					{
+						run_choice(i);
+						break;
+					}
+				}
+			}
+			else
+			{
+				run_choice(6);
+			}
+			break;
+		case 590: // Not Alone In The Dark (Bugbear Mothership Special Ops)
+			if (options contains 2)
+			{
+				run_choice(2);
+			}
+			else
+			{
+				run_choice(1);
+			}
+			break;
+		case 591: // The Beginning of the Beginning of the End (Bugbear Mothership Bridge)
+		case 592: // The Middle of the Beginning of the End (Bugbear Mothership Bridge)
+		case 593: // The End  of the Beginning of the End (Bugbear Mothership Bridge)
+			run_choice(1);
+			break;
 		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
 			auto_reagnimatedGetPart(choice);
 			break;
