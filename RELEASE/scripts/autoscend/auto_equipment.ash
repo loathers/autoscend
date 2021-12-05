@@ -316,7 +316,7 @@ void addBonusToMaximize(item it, int amt)
 
 void finalizeMaximize(boolean speculative)
 {
-	auto_handleCrystalBall(my_location());
+	auto_handleCrystalBall(my_location(),speculative);
 
 	if (auto_haveKramcoSausageOMatic() && ((auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none]) || get_property("mappingMonsters").to_boolean()))
 	{
