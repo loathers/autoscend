@@ -4211,6 +4211,7 @@ boolean auto_hasPendingCopy(monster enemy)
 {
 	string[6] props = {
 		"_sourceTerminalDigitizeMonster",
+		"romanticTarget",
 		"photocopyMonster",
 		"rainDohMonster",
 		"screencappedMonster",
@@ -4232,6 +4233,7 @@ boolean auto_hasAnyPendingCopy()
 {
 	string[6] props = {
 		"_sourceTerminalDigitizeMonster",
+		"romanticTarget",
 		"photocopyMonster",
 		"rainDohMonster",
 		"screencappedMonster",
