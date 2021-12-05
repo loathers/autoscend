@@ -5,7 +5,7 @@ boolean auto_haveCrystalBall()
 	return possessEquipment($item[miniature crystal ball]) && auto_is_valid($item[miniature crystal ball]);
 }
 
-void auto_handleCrystalBall(location loc)
+void auto_handleCrystalBall(location loc, boolean speculative)
 {
 	if(!auto_haveCrystalBall())
 	{
@@ -17,7 +17,7 @@ void auto_handleCrystalBall(location loc)
 		return;
 	}
 	
-	if (auto_allowCrystalBall(loc))
+	if (auto_allowCrystalBall(loc,speculative))
 	{
 		// if equipping the crystal ball can't hurt
 		removeFromMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
@@ -27,19 +27,11 @@ void auto_handleCrystalBall(location loc)
 		// until we add support for this, we shouldn't allow the maximizer to equip it
 		// "I noticed it being worn in preference to the astral pet sweater which is a waste": is that because of base maximizer 0.5 score to initiative?
 		
-		// exception for the string used for the tower initative test (has no location)
-		if (maximizeContains("500initiative 400max"))
-		{
-			removeFromMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
-		}
-		else
-		{
-			addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
-		}
+		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
 	}
 }
 
-boolean auto_allowCrystalBall(location loc)
+boolean auto_allowCrystalBall(location loc, boolean speculative)
 {	
 	// track zone changes every adventure
 	boolean AllGoodSinceEnteringZone = false;
@@ -59,10 +51,8 @@ boolean auto_allowCrystalBall(location loc)
 		}
 	}
 	// only update the real tracking property if it's not a different location being simulated
-	if(loc == my_location())
+	if(!speculative)
 	{
-		// it's either the preadventure script calling this with the next location,
-		// or simulating the same location it was in so updating the property is fine
 		set_property("auto_crystalBall_AllGoodSinceEnteringZone",AllGoodSinceEnteringZone);
 	}
 	
@@ -81,7 +71,7 @@ boolean auto_allowCrystalBall(location loc)
 		}
 	}
 	
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin()) && loc == solveDelayZone());
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && loc == solveDelayZone());
 	if (burningDelay)
 	{
 		// if the next monster is forced anyway, no need to forbid the ball
@@ -269,7 +259,7 @@ boolean auto_allowCrystalBall(location loc)
 	case $location[Stinkiest Adventurer Contest]:
 		return true;
 	
-	// several non-adv.php combats like tavern cellar and tower levels also set location to Noob Cave, by property "nextAdventure", passed to my_location()
+	// several non-adv.php combats like tavern cellar and level 13 also set location to Noob Cave by maximizer or by property "nextAdventure", passed to my_location()
 	case $location[Noob Cave]:
 		return true;
 	}
