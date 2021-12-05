@@ -309,8 +309,8 @@ boolean auto_pre_adventure()
 
 	// Latte may conflict with certain quests. Ignore latte drops for the greater good.
 	boolean[location] IgnoreLatteDrop = $locations[The Haunted Boiler Room];
-	if(auto_latteDropWanted(place) && !(IgnoreLatteDrop contains place) && !is_boris())
-	// boris has no way to equip latte mug or Kramco (no offhand or familiar)
+	if(auto_latteDropWanted(place) && !(IgnoreLatteDrop contains place) && !is_boris() && !in_wotsf())
+	// boris can't use offhands. wotsf can't use offhands without LHM, but this probably isn't best use
 	{
 		if(auto_sausageGoblin() && place == solveDelayZone())
 		{
