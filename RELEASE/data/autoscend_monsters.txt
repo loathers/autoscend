@@ -178,15 +178,15 @@ sniff	25	Camel Toe	!sniffed:Skinflute
 sniff	26	Skinflute	!sniffed:Camel Toe
 sniff	27	Red Butler
 # Bugbear Invasion Wanderers
-sniff	28	scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
-sniff	29	hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
-sniff	30	batbugbear	path:Bugbear Invasion;!loc:Sonar;!prop:statusSonar=unlocked;!prop:statusSonar=open;!prop:statusSonar=cleared;prop:questL04Bat=finished
-sniff	31	bugbear scientist	path:Bugbear Invasion;!loc:Science Lab;!prop:statusScienceLab=unlocked;!prop:statusScienceLab=open;!prop:statusScienceLab=cleared
-sniff	32	bugaboo	path:Bugbear Invasion;!loc:Morgue;!prop:statusMorgue=unlocked;!prop:statusMorgue=open;!prop:statusMorgue=cleared;prop:questL07Cyrptic=finished
-sniff	33	Black Ops Bugbear	path:Bugbear Invasion;!loc:Special Ops;!prop:statusSpecialOps=unlocked;!prop:statusSpecialOps=open;!prop:statusSpecialOps=cleared;prop:questL08Trapper=finished
-sniff	34	Battlesuit Bugbear Type	path:Bugbear Invasion;!loc:Engineering;!prop:statusEngineering=unlocked;!prop:statusEngineering=open;!prop:statusEngineering=cleared;prop:questL10Garbage=finished
-sniff	35	ancient unspeakable bugbear	path:Bugbear Invasion;!loc:Navigation;!prop:statusNavigation=unlocked;!prop:statusNavigation=open;!prop:statusNavigation=cleared;prop:questL11Manor=finished
-sniff	36	trendy bugbear chef	path:Bugbear Invasion;!loc:Galley;!prop:statusGalley=unlocked;!prop:statusGalley=open;!prop:statusGalley=cleared;prop:questL12War=finished
+sniff	28	scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared;prop:statusWasteProcessing<2
+sniff	29	hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared;prop:statusMedbay<2
+sniff	30	batbugbear	path:Bugbear Invasion;!loc:Sonar;!prop:statusSonar=unlocked;!prop:statusSonar=open;!prop:statusSonar=cleared;prop:questL04Bat=finished;prop:statusSonar<2
+sniff	31	bugbear scientist	path:Bugbear Invasion;!loc:Science Lab;!prop:statusScienceLab=unlocked;!prop:statusScienceLab=open;!prop:statusScienceLab=cleared;prop:statusScienceLab<5
+sniff	32	bugaboo	path:Bugbear Invasion;!loc:Morgue;!prop:statusMorgue=unlocked;!prop:statusMorgue=open;!prop:statusMorgue=cleared;prop:questL07Cyrptic=finished;prop:statusMorgue<5
+sniff	33	Black Ops Bugbear	path:Bugbear Invasion;!loc:Special Ops;!prop:statusSpecialOps=unlocked;!prop:statusSpecialOps=open;!prop:statusSpecialOps=cleared;prop:questL08Trapper=finished;prop:statusSpecialOps<5
+sniff	34	Battlesuit Bugbear Type	path:Bugbear Invasion;!loc:Engineering;!prop:statusEngineering=unlocked;!prop:statusEngineering=open;!prop:statusEngineering=cleared;prop:questL10Garbage=finished;prop:statusEngineering<8
+sniff	35	ancient unspeakable bugbear	path:Bugbear Invasion;!loc:Navigation;!prop:statusNavigation=unlocked;!prop:statusNavigation=open;!prop:statusNavigation=cleared;prop:questL11Manor=finished;prop:statusNavigation<8
+sniff	36	trendy bugbear chef	path:Bugbear Invasion;!loc:Galley;!prop:statusGalley=unlocked;!prop:statusGalley=open;!prop:statusGalley=cleared;prop:questL12War=finished;prop:statusGalley<8
 # Bugbear Invasion Mothership
 sniff	37	creepy eye-stalk tentacle monster	path:Bugbear Invasion
 sniff	38	anesthesiologist bugbear	path:Bugbear Invasion
