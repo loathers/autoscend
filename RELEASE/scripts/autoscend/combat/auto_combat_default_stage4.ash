@@ -52,7 +52,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			return useSkill($skill[Digitize]);
 		}
 		// Duplicate needs special handling (no assassins)
-		else if (!($monsters[ninja snowman assassin] contains enemy))
+		else if (!($monsters[ninja snowman assassin] contains enemy) && !bugbear_IsWanderer(enemy))
 		{
 			if (canUse($skill[Duplicate]) && get_property("_sourceTerminalDuplicateUses").to_int() == 0)
 			{
