@@ -191,6 +191,19 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		return res;
 	}
+
+	// Bugbear Invasion
+	if (in_bugbear())
+	{
+		if (enemy == $monster[bugbear scientist] && item_amount($item[quantum nanopolymer spider web]) > 0)
+		{
+			return "item " + $item[quantum nanopolymer spider web];
+		}
+		if (enemy == $monster[liquid metal bugbear] && item_amount($item[drone self-destruct chip]) > 0)
+		{
+			return "item " + $item[drone self-destruct chip];
+		}
+	}
 	
 	# Instakill handler
 	boolean doInstaKill = true;
