@@ -77,9 +77,7 @@ banish	51	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed
 banish	52	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
 banish	53	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
 
-# Copy should detect if you want 2 more. Priority is copier item, digitize, duplicate, backup (see backup.dat).
-# TODO: Duplicate
-# TODO: remove auto_digitizeDirective
+# Copy should detect if you want 2 more. Priority is copier item, digitize, duplicate, + time-spinner & backup (see backup.dat).
 copy	0	lobsterfrogman	item:barrel of gunpowder<4;quest:sidequestLighthouseCompleted=0
 copy	1	modern zombie	prop:cyrptAlcoveEvilness>30
 copy	2	ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1;item:ninja carabiner<1
