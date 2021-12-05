@@ -420,6 +420,7 @@ boolean auto_canFeelPeaceful();
 boolean auto_haveBackupCamera();
 void auto_enableBackupCameraReverser();
 int auto_backupUsesLeft();
+boolean auto_backupTarget();
 boolean auto_harvestBatteries();
 int batteryPoints(item battery);
 int totalBatteryPoints();
@@ -515,6 +516,9 @@ boolean L13_bhy_towerFinal();
 ########################################################################################################
 //Defined in autoscend/paths/bugbear_invasion.ash
 boolean in_bugbear();
+void bugbear_initializeSettings();
+boolean LX_bugbearInvasion();
+boolean LX_bugbearInvasionFinale();
 
 ########################################################################################################
 //Defined in autoscend/paths/casual.ash
@@ -843,6 +847,10 @@ boolean LA_robot();
 ########################################################################################################
 //Defined in autoscend/paths/zombie_slayer.ash
 boolean in_zombieSlayer();
+void zombieSlayer_initializeSettings();
+boolean zombieSlayer_buySkills();
+boolean zombieSlayer_acquireMP(int goal, int meat_reserve);
+boolean zombieSlayer_acquireHP(int goal);
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -851,6 +859,7 @@ void tootGetMeat();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_02.ash
+void spookyForestChoiceHandler(int choice);
 boolean L2_mosquito();
 
 ########################################################################################################
@@ -878,6 +887,7 @@ boolean L6_dakotaFanning();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_07.ash
+void cyrptChoiceHandler(int choice);
 boolean L7_crypt();
 
 ########################################################################################################

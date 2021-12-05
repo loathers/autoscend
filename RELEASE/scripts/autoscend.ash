@@ -102,21 +102,26 @@ void initializeSettings() {
 	// should not handle anything other than intialising properties etc.
 	// all paths that have extra settings should call their path specific
 	// initialise function at the end of this function (may override properties set in here).
-
-	if(my_ascensions() == get_property("auto_doneInitialize").to_int())
+	
+	//if we detected a path drop we need to reinitialize. either due to dropping a path or breaking ronin in some paths.
+	boolean reinitialize = get_property("_auto_reinitialize").to_boolean();
+	if(!reinitialize && my_ascensions() == get_property("auto_doneInitialize").to_int())
 	{
 		return;		//already initialized settings this ascension
 	}
 	set_location($location[none]);
 	invalidateRestoreOptionCache();
 
-	set_property("auto_100familiar", $familiar[none]);
-	if(my_familiar() != $familiar[none] && pathAllowsChangingFamiliar()) //If we can't control familiar changes, no point setting 100% familiar data
+	if(!reinitialize)
 	{
-		boolean userAnswer = user_confirm("Familiar already set, is this a 100% familiar run? Will default to 'No' in 15 seconds.", 15000, false);
-		if(userAnswer)
+		set_property("auto_100familiar", $familiar[none]);
+		if(my_familiar() != $familiar[none] && pathAllowsChangingFamiliar()) //If we can't control familiar changes, no point setting 100% familiar data
 		{
-			set_property("auto_100familiar", my_familiar());
+			boolean userAnswer = user_confirm("Familiar already set, is this a 100% familiar run? Will default to 'No' in 15 seconds.", 15000, false);
+			if(userAnswer)
+			{
+				set_property("auto_100familiar", my_familiar());
+			}
 		}
 	}
 
@@ -138,6 +143,7 @@ void initializeSettings() {
 	set_property("auto_banishes", "");
 	set_property("auto_batoomerangDay", 0);
 	set_property("auto_beatenUpCount", 0);
+	set_property("auto_beatenUpLastAdv", false);
 	remove_property("auto_beatenUpLocations");
 	set_property("auto_getBeehive", false);
 	set_property("auto_bruteForcePalindome", false);
@@ -224,6 +230,7 @@ void initializeSettings() {
 	ed_initializeSettings();
 	boris_initializeSettings();
 	bond_initializeSettings();
+	bugbear_initializeSettings();
 	nuclear_initializeSettings();
 	pete_initializeSettings();
 	pokefam_initializeSettings();
@@ -240,9 +247,11 @@ void initializeSettings() {
 	jarlsberg_initializeSettings();
 	robot_initializeSettings();
 	wildfire_initializeSettings();
+	zombieSlayer_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
+	remove_property("_auto_reinitialize");
 }
 
 void initializeSession() {
@@ -319,6 +328,7 @@ boolean LX_burnDelay()
 	boolean wannaVote = auto_voteMonster(true);
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
+	boolean wannaBackup = auto_backupTarget();
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -362,12 +372,28 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
+		if(wannaBackup)
+		{
+			auto_log_info("Burn some delay somewhere (backup camera), if we found a place!", "green");
+			if(autoAdv(burnZone))
+			{
+				return true;
+			}
+		}
 	}
 	else if(wannaVote || wannaDigitize || wannaSausage)
 	{
 		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
 		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
 		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
+	}
+	else if(wannaBackup)
+	{
+		auto_log_info("Couldn't find zone to burn delay. Using back-up camera at Noob Cave", "green");
+		if(autoAdv($location[noob cave]))
+		{
+			return true;
+		}	
 	}
 	return false;
 }
@@ -730,8 +756,8 @@ void initializeDay(int day)
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
 
-	// Get emotionally chipped if you have the item.  boris cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris())
+	// Get emotionally chipped if you have the item.  boris\zombie slayer cannot use this skill so excluding.
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer())
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1526,6 +1552,8 @@ void resetState() {
 	//These settings should never persist into another turn, ever. They only track something for a single instance of the main loop.
 	//We use boolean instead of adventure count because of free combats.
 	
+	remove_property("auto_combatDirective");		//An action to execute at the start of next combat. resets every loop.
+	remove_property("auto_digitizeDirective");		//digitize a specified monster on the next combat.
 	set_property("auto_doCombatCopy", "no");
 	set_property("_auto_thisLoopHandleFamiliar", false); // have we called handleFamiliar this loop
 	set_property("auto_disableAdventureHandling", false); // used to stop auto_pre_adv and auto_post_adv from doing anything.
@@ -1696,6 +1724,7 @@ boolean doTasks()
 	jarlsberg_buySkills();
 	boris_buySkills();
 	pete_buySkills();
+	zombieSlayer_buySkills();
 
 	oldPeoplePlantStuff();
 	use_barrels();
