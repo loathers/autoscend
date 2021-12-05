@@ -46,7 +46,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			handleTracker(enemy, $item[print screen button], "auto_copies");
 			return "item " + $item[print screen button];
 		}
-		else if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0))
+		else if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !bugbear_IsWanderer(enemy))
 		{
 			handleTracker(enemy, $skill[Digitize], "auto_copies");
 			return useSkill($skill[Digitize]);
