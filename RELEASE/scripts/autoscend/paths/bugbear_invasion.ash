@@ -221,6 +221,8 @@ boolean LX_bugbearMorgue()
 	if (bugbear_ZoneOpen(loc) == false || bugbear_ZoneCleared(loc)) return false;
 
 	handleFamiliar("item");
+
+	auto_log_info("Clearing Bugbear Mothership - " + loc, "blue");
 	
 	return autoAdv(loc);
 }
