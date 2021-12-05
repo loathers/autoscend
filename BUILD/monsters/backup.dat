@@ -3,10 +3,10 @@ modern zmobie	prop:cyrptAlcoveEvilness>25
 ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja rope<1
 ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja carabiner<1
 ninja snowman assassin	!prop:auto_L8_extremeInstead=true;item:ninja crampons<1
-ghost	!prop_contains:digital key;item:digital key=0;item:white pixel<30
+ghost	!prop_contains:nsTowerDoorKeysUsed=digital key;item:digital key=0;item:white pixel<30
 blooper	!prop_contains:nsTowerDoorKeysUsed=digital key;item:digital key=0;item:white pixel<30
-skinflute	!prop_boolean:auto_getStarKey;!prop_contains:star key;item:Richard's star key<1;item:star<8
-skinflute	!prop_boolean:auto_getStarKey;!prop_contains:star key;item:Richard's star key<1;item:line<7
+skinflute	!prop_boolean:auto_getStarKey;!prop_contains:nsTowerDoorKeysUsed=star key;item:Richard's star key<1;item:star<8
+skinflute	!prop_boolean:auto_getStarKey;!prop_contains:nsTowerDoorKeysUsed=star key;item:Richard's star key<1;item:line<7
 # Bugbear Invasion Wanderers
 scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
 hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
