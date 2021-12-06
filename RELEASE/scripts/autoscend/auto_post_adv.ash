@@ -975,6 +975,11 @@ boolean auto_post_adventure()
 		}
 	}
 
+	if (in_bugbear() && item_amount($item[Key-o-tron]) == 0 && item_amount($item[BURT]) >= 5)
+	{
+		create(1, $item[Key-o-tron]);
+	}
+
 	if (in_bugbear() && item_amount($item[Key-o-tron]) > 0 && my_location().zone != "Mothership")
 	{
 		if (bugbear_IsWanderer(last_monster()))
