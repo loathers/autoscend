@@ -146,6 +146,10 @@ string auto_combatBHYStage1(int round, monster enemy, string text);
 string auto_combatWildfireStage1(int round, monster enemy, string text);
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_wotsf.ash
+string auto_combatWOTSFStage1(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_you_robot.ash
 string auto_combat_robot_stage5(int round, monster enemy, string text);
 
