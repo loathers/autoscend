@@ -19,6 +19,10 @@ string auto_combatWOTSFStage1(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Curse Of Vichyssoise]); // persistent cold damage
 		}
+		else if(canUse($skill[Curse of Marinara]))
+		{
+			return useSkill($skill[Curse Of Marinara ]); // persistent regular damage
+		}
 		if(canUse($skill[CHEAT CODE: Shrink Enemy]))
 		{
 			return useSkill($skill[CHEAT CODE: Shrink Enemy]); // hit them again with big HP knock
@@ -47,9 +51,13 @@ string auto_combatWOTSFStage1(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Tango of Terror]); // delevel and damage
 		}
-		if(canUse($skill[Saucestorm]))
+		if(canUse($skill[Stringozzi Serpent]))
 		{
-			return useSkill($skill[Saucestorm]); // default attacking
+			return useSkill($skill[Stringozzi Serpent]); // damage and add persistent damage
+		}
+		if(canUse($skill[Sing]))
+		{
+			return useSkill($skill[Sing]); // damage and add persistent damage
 		}
 	}
 	
