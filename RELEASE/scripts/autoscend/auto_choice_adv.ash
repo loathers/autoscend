@@ -19,8 +19,8 @@ boolean auto_run_choice(int choice, string page)
 		case 20: // See You Next Fall (Itznotyerzitz Mine)
 			itznotyerzitzMineChoiceHandler(choice);
 			break;
-		case 21: // Under the Knife
-			run_choice(2); // skip (The Sleazy Back Alley)
+		case 21: // Under the Knife (The Sleazy Back Alley)
+			run_choice(2); // skip
 			break;
 		case 22: // The Arrrbitrator (The Obligatory Pirate's Cove)
 		case 23: // Barrie Me at Sea (The Obligatory Pirate's Cove)
@@ -270,7 +270,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 591: // The Beginning of the Beginning of the End (Bugbear Mothership Bridge)
 		case 592: // The Middle of the Beginning of the End (Bugbear Mothership Bridge)
-		case 593: // The End  of the Beginning of the End (Bugbear Mothership Bridge)
+		case 593: // The End of the Beginning of the End (Bugbear Mothership Bridge)
 			run_choice(1);
 			break;
 		case 597: // When visiting the Cake-Shaped Arena with a Reagnimated Gnome
