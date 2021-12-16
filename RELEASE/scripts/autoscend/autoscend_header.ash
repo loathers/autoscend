@@ -146,6 +146,7 @@ boolean deck_useScheme(string action);
 boolean adjustEdHat(string goal);
 boolean resolveSixthDMT();
 boolean LX_dinseylandfillFunbucks();
+void doghouseChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2016.ash
@@ -949,10 +950,12 @@ boolean LX_unlockHauntedLibrary();
 boolean LX_unlockManorSecondFloor();
 boolean LX_spookyravenManorFirstFloor();
 boolean LX_danceWithLadySpookyraven();
+void hauntedBedroomChoiceHandler(int choice, string[int] options);
 boolean LX_getLadySpookyravensFinestGown();
 boolean LX_getLadySpookyravensDancingShoes();
 boolean LX_getLadySpookyravensPowderPuff();
 boolean LX_spookyravenManorSecondFloor();
+void blackForestChoiceHandler(int choice);
 boolean L11_blackMarket();
 boolean L11_getBeehive();
 boolean L11_forgedDocuments();
@@ -966,6 +969,7 @@ void hiddenTempleChoiceHandler(int choice, string page);
 boolean liana_cleared(location loc);
 boolean L11_hiddenTavernUnlock();
 boolean L11_hiddenTavernUnlock(boolean force);
+void hiddenCityChoiceHandler(int choice);
 boolean L11_hiddenCity();
 boolean L11_hiddenCityZones();
 boolean L11_mauriceSpookyraven();
