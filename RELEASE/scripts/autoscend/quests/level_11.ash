@@ -404,7 +404,7 @@ boolean LX_unlockHauntedLibrary()
 	}
 	
 	//+3 pool skill & +1 training gains. speculative_pool_skill() already assumed we would use it if we can.
-	buffMaintain($effect[Chalky Hand], 0, 1, 1);
+	buffMaintain($effect[Chalky Hand]);
 
 	if (internalQuestStatus("questM20Necklace") == 2)
 	{
@@ -994,13 +994,13 @@ boolean L11_aridDesert()
 		}
 
 		buyUpTo(1, $item[hair spray]);
-		buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
+		buffMaintain($effect[Butt-Rock Hair]);
 		if(my_primestat() == $stat[Muscle])
 		{
 			buyUpTo(1, $item[Ben-Gal&trade; Balm]);
-			buffMaintain($effect[Go Get \'Em, Tiger!], 0, 1, 1);
+			buffMaintain($effect[Go Get \'Em, Tiger!]);
 			buyUpTo(1, $item[Blood of the Wereseal]);
-			buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
+			buffMaintain($effect[Temporary Lycanthropy]);
 		}
 
 		if(my_mp() > 30 && my_hp() < (my_maxhp()*0.5))
@@ -1316,7 +1316,7 @@ boolean L11_unlockHiddenCity() {
 			L11_wishForBaaBaaBuran();
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
-		buffMaintain($effect[Stone-Faced], 0, 1, 1);
+		buffMaintain($effect[Stone-Faced]);
 		if (have_effect($effect[Stone-Faced]) == 0)
 		{
 			if(isAboutToPowerlevel())	//we ran out of other quests to do. stop waiting for optimal conditions
@@ -1757,7 +1757,7 @@ boolean L11_hiddenCity()
 			}
 		}
 
-		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
+		buffMaintain($effect[Fishy Whiskers]);
 		auto_log_info("Hidden Bowling Alley Progress: " + get_property("hiddenBowlingAlleyProgress"), "blue");
 		if (canSniff($monster[Pygmy Bowler], $location[The Hidden Bowling Alley]) && item_amount($item[bowling ball]) < 1 && auto_mapTheMonsters())
 		{
@@ -2106,7 +2106,7 @@ boolean L11_mauriceSpookyraven()
 		
 		if(monster_level_adjustment() < 57)
 		{
-			buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
+			buffMaintain($effect[Sweetbreads Flamb&eacute;]);
 		}
 		
 		if(!autoForceEquip($slot[off-hand], $item[Unstable Fulminate]))
@@ -2142,9 +2142,9 @@ boolean L11_redZeppelin()
 	set_property("choiceAdventure856", 1);
 	set_property("choiceAdventure857", 1);
 	set_property("choiceAdventure858", 1);
-	buffMaintain($effect[Greasy Peasy], 0, 1, 1);
-	buffMaintain($effect[Musky], 0, 1, 1);
-	buffMaintain($effect[Blood-Gorged], 0, 1, 1);
+	buffMaintain($effect[Greasy Peasy]);
+	buffMaintain($effect[Musky]);
+	buffMaintain($effect[Blood-Gorged]);
 	if(!in_wotsf())
 	{
 		pullXWhenHaveY($item[deck of lewd playing cards], 1, 0);
@@ -2842,25 +2842,25 @@ boolean L11_unlockEd()
 	}
 	if(total < 10)
 	{
-		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
-		buffMaintain($effect[One Very Clear Eye], 0, 1, 1);
-		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
-		buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
-		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
-		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
+		buffMaintain($effect[Joyful Resolve]);
+		buffMaintain($effect[One Very Clear Eye]);
+		buffMaintain($effect[Fishy Whiskers]);
+		buffMaintain($effect[Human-Fish Hybrid]);
+		buffMaintain($effect[Human-Human Hybrid]);
+		buffMaintain($effect[Unusual Perspective]);
 		if(!bat_wantHowl($location[The Middle Chamber]))
 		{
 			bat_formBats();
 		}
 		if(get_property("auto_dickstab").to_boolean())
 		{
-			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
-			buffMaintain($effect[Frosty], 0, 1, 1);
+			buffMaintain($effect[Wet and Greedy]);
+			buffMaintain($effect[Frosty]);
 		}
 		if((item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
 		{
 			cli_execute("make sugar fairy");
-			buffMaintain($effect[Dance of the Sugar Fairy], 0, 1, 1);
+			buffMaintain($effect[Dance of the Sugar Fairy]);
 		}
 		if(have_effect($effect[items.enh]) == 0)
 		{

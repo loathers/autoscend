@@ -246,7 +246,7 @@ boolean auto_post_adventure()
 
 		if((my_meat() > 5000) && ((my_turncount() >= 50) || get_property("falloutShelterChronoUsed").to_boolean()))
 		{
-			buffMaintain($effect[Rad-Pro Tected], 0, 1, 1);
+			buffMaintain($effect[Rad-Pro Tected]);
 		}
 	}
 
@@ -337,13 +337,13 @@ boolean auto_post_adventure()
 
 	if((my_class() == $class[Turtle Tamer]) && guild_store_available())
 	{
-		buffMaintain($effect[Eau de Tortue], 0, 1, 1);
+		buffMaintain($effect[Eau de Tortue]);
 	}
 
 	if((monster_level_adjustment() > 140) && !inAftercore())
 	{
-		buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
-		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+		buffMaintain($effect[Butt-Rock Hair]);
+		buffMaintain($effect[Go Get \'Em\, Tiger!]);
 	}
 
 	if(in_community())
@@ -1023,13 +1023,13 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Purple Reign], 0, 6, 10);
 		}
 
-		buffMaintain($effect[Gummi-Grin], 0, 1, 1);
-		buffMaintain($effect[Strong Resolve], 0, 1, 1);
-		buffMaintain($effect[Irresistible Resolve], 0, 1, 1);
-		buffMaintain($effect[Brilliant Resolve], 0, 1, 1);
-		buffMaintain($effect[From Nantucket], 0, 1, 1);
-		buffMaintain($effect[Squatting and Thrusting], 0, 1, 1);
-		buffMaintain($effect[You Read the Manual], 0, 1, 1);
+		buffMaintain($effect[Gummi-Grin]);
+		buffMaintain($effect[Strong Resolve]);
+		buffMaintain($effect[Irresistible Resolve]);
+		buffMaintain($effect[Brilliant Resolve]);
+		buffMaintain($effect[From Nantucket]);
+		buffMaintain($effect[Squatting and Thrusting]);
+		buffMaintain($effect[You Read the Manual]);
 		buyableMaintain($item[Hair Spray], 1, 200, my_class() != $class[Turtle Tamer]);
 		buyableMaintain($item[Blood of the Wereseal], 1, 3500, (monster_level_adjustment() > 135));
 		buyableMaintain($item[Ben-gal&trade; Balm], 1, 200);

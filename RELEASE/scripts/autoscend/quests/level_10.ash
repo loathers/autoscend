@@ -146,10 +146,10 @@ boolean L10_basement()
 	if(my_primestat() == $stat[Muscle])
 	{
 		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
-		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+		buffMaintain($effect[Go Get \'Em\, Tiger!]);
 	}
 	buyUpTo(1, $item[Hair Spray]);
-	buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
+	buffMaintain($effect[Butt-Rock Hair]);
 	
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 	{

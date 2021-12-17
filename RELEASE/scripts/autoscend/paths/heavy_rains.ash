@@ -463,10 +463,10 @@ boolean L13_heavyrains_towerFinal()
 	}
 	
 	//buff up before the boss
-	buffMaintain($effect[Benetton's Medley of Diversity], 0, 1, 1);			//15 prismatic weapon dmg.
-	buffMaintain($effect[Dirge of Dreadfulness], 0, 1, 1);					//12 spooky weapon dmg
-	buffMaintain($effect[Boner Battalion], 0, 1, 1);						//32-33 sleaze and spooky passive dmg
-	buffMaintain($effect[Frigidalmatian], 0, 1, 1);							//40 (due to cap) cold passive dmg
+	buffMaintain($effect[Benetton's Medley of Diversity]);			//15 prismatic weapon dmg.
+	buffMaintain($effect[Dirge of Dreadfulness]);					//12 spooky weapon dmg
+	buffMaintain($effect[Boner Battalion]);						//32-33 sleaze and spooky passive dmg
+	buffMaintain($effect[Frigidalmatian]);							//40 (due to cap) cold passive dmg
 	effectAblativeArmor(true);					//Unimportant effects protect your important one from being removed.
 	
 	//Calculate melee/ranged damage. Each element is capped at 40. assume you will be able to deal 40 physical damage.

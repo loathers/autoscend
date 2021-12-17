@@ -864,7 +864,7 @@ boolean auto_faceCheck(string face)
 
 	if(CanEmote)
 	{
-		buffMaintain(to_effect(face), 0, 1, 1);
+		buffMaintain(to_effect(face));
 	}
 	else
 	{

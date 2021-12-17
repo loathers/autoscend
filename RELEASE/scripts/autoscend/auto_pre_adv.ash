@@ -181,7 +181,7 @@ boolean auto_pre_adventure()
 
 	if(get_floundry_locations() contains place)
 	{
-		buffMaintain($effect[Baited Hook], 0, 1, 1);
+		buffMaintain($effect[Baited Hook]);
 	}
 
 	// be ready to use red rocket if we don't have one
@@ -510,7 +510,7 @@ boolean auto_pre_adventure()
 	//	Casting before ML variation ensures that this, the more important buff, is cast before ML.
 	if(auto_predictAccordionTurns() >= 8)
 	{
-		buffMaintain($effect[Paul\'s Passionate Pop Song], 0, 1, 1);
+		buffMaintain($effect[Paul\'s Passionate Pop Song]);
 	}
 
 	// ML adjustment zone section

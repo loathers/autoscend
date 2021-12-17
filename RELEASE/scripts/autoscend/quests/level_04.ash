@@ -11,7 +11,7 @@ boolean L4_batCave()
 	{
 		handleBjornify($familiar[Grimstone Golem]);
 	}
-	buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
+	buffMaintain($effect[Fishy Whiskers]);
 
 	int batStatus = internalQuestStatus("questL04Bat");
 	if (batStatus < 3)
