@@ -17,6 +17,7 @@ import <canadv.ash>
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
 import <autoscend/auto_bedtime.ash>
+import <autoscend/auto_buff.ash>
 import <autoscend/auto_consume.ash>
 import <autoscend/auto_craft.ash>
 import <autoscend/auto_equipment.ash>
