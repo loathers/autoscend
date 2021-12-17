@@ -1159,6 +1159,7 @@ boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns
 boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
+boolean buffMaintain(effect buff);
 boolean auto_faceCheck(string face);
 
 ########################################################################################################

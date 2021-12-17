@@ -842,6 +842,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
 	return buffMaintain(buff, mp_min, casts, turns, false);
 }
 
+boolean buffMaintain(effect buff)
+{
+	return buffMaintain(buff,0,1,1);
+}
+
 // Checks to see if we are already wearing a facial expression before using buffMaintain
 //	if an expression is REQUIRED force it using buffMaintain
 boolean auto_faceCheck(string face)
