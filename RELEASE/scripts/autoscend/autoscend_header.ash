@@ -1154,6 +1154,14 @@ void bedtime_pulls();
 boolean doBedtime();
 
 ########################################################################################################
+//Defined in autoscend/auto_buff.ash
+boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);
+boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
+boolean auto_faceCheck(string face);
+
+########################################################################################################
 //Defined in autoscend/auto_consume.ash
 int spleen_left();
 int stomach_left();
@@ -1589,11 +1597,6 @@ void shrugAT(effect anticipated);
 string auto_my_path();
 boolean acquireTransfunctioner();
 int [item] auto_get_campground();
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);
-boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
-boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
-boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
-boolean auto_faceCheck(string face);
 location solveDelayZone();
 boolean setSoftblockDelay();
 boolean allowSoftblockDelay();
