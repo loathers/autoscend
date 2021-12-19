@@ -1019,6 +1019,13 @@ starterWeapons[$class[Disco Bandit]] = $item[disco ball];
 starterWeapons[$class[Accordion Thief]] = $item[stolen accordion];
 // usage: item starterWeapon = starterWeapons[my_class()];
 
+boolean tomb_already_found()
+{
+	//the tomb only appears once when adv in the unquiet garves. afterwards it appears on the map instead
+	string page = visit_url("place.php?whichplace=cemetery");
+	return page.contains_text("place.php?whichplace=cemetery&action=cem_advtomb");
+}
+
 boolean LX_acquireEpicWeapon()
 {
 	if (internalQuestStatus("questG04Nemesis") > 4)
@@ -1064,6 +1071,10 @@ boolean LX_acquireEpicWeapon()
 	}
 
 	addToMaximize("-equip " + starterWeapons[my_class()].to_string());
+	if(tomb_already_found())
+	{
+		return autoAdvBypass("place.php?whichplace=cemetery&action=cem_advtomb");
+	}
 
 	return autoAdv($location[The Unquiet Garves]);
 }
