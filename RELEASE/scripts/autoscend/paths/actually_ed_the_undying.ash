@@ -1098,7 +1098,7 @@ boolean L1_ed_island()
 		cli_execute("auto_post_adv");
 	}
 
-	buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
+	buffMaintain($effect[Experimental Effect G-9]);
 	autoAdv($location[The Secret Government Laboratory]);
 	if(item_amount($item[Bottle-Opener Keycard]) > 0)
 	{

@@ -1215,7 +1215,7 @@ boolean LX_dinseylandfillFunbucks()
 		# We do this after the item check since we may have an extra bag and we should turn that in.
 		return false;
 	}
-	buffMaintain($effect[How to Scam Tourists], 0, 1, 1);
+	buffMaintain($effect[How to Scam Tourists]);
 	autoAdv(1, $location[Barf Mountain]);
 	return true;
 }

@@ -3846,7 +3846,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 		{
 			if(monster_level_adjustment() + numeric_modifier(eff, "Monster Level") <= auto_convertDesiredML(ToML))
 			{
-				buffMaintain(eff, 0, 1, 1);
+				buffMaintain(eff);
 			}
 		}
 	}
@@ -4097,69 +4097,69 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	//Passive damage
 	if(passive_dmg_allowed)
 	{
-		buffMaintain($effect[Spiky Shell], 0, 1, 1);					//8 MP
-		buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);	//5 MP
-		buffMaintain($effect[Scarysauce], 0, 1, 1);						//10 MP
+		buffMaintain($effect[Spiky Shell]);					//8 MP
+		buffMaintain($effect[Jalape&ntilde;o Saucesphere]);	//5 MP
+		buffMaintain($effect[Scarysauce]);						//10 MP
 	}
 	
 	//1MP Non-Combat skills from each class
-	buffMaintain($effect[Seal Clubbing Frenzy], 0, 1, 1);
-	buffMaintain($effect[Patience of the Tortoise], 0, 1, 1);
-	buffMaintain($effect[Pasta Oneness], 0, 1, 1);
-	buffMaintain($effect[Saucemastery], 0, 1, 1);
-	buffMaintain($effect[Disco State of Mind], 0, 1, 1);
-	buffMaintain($effect[Mariachi Mood], 0, 1, 1);
+	buffMaintain($effect[Seal Clubbing Frenzy]);
+	buffMaintain($effect[Patience of the Tortoise]);
+	buffMaintain($effect[Pasta Oneness]);
+	buffMaintain($effect[Saucemastery]);
+	buffMaintain($effect[Disco State of Mind]);
+	buffMaintain($effect[Mariachi Mood]);
 
 	//Seal clubber Non-Combat skills
-	buffMaintain($effect[Blubbered Up], 0, 1, 1);						//7 MP
-	buffMaintain($effect[Rage of the Reindeer], 0, 1, 1);				//10 MP
-	buffMaintain($effect[A Few Extra Pounds], 0, 1, 1);					//10 MP
+	buffMaintain($effect[Blubbered Up]);						//7 MP
+	buffMaintain($effect[Rage of the Reindeer]);				//10 MP
+	buffMaintain($effect[A Few Extra Pounds]);					//10 MP
 	
 	//Turtle Tamer Non-Combat skills
 	if(!hasTTBlessing())
 	{
-		buffMaintain($effect[Blessing of the War Snapper], 0, 1, 1);	//15 MP. other blessings too expensive.
+		buffMaintain($effect[Blessing of the War Snapper]);	//15 MP. other blessings too expensive.
 	}
 	
 	//Pastamancer Non-Combat skills
-	buffMaintain($effect[Springy Fusilli], 0, 1, 1);					//10 MP
-	buffMaintain($effect[Shield of the Pastalord], 0, 1, 1);			//20 MP
-	buffMaintain($effect[Leash of Linguini], 0, 1, 1);					//12 MP
+	buffMaintain($effect[Springy Fusilli]);					//10 MP
+	buffMaintain($effect[Shield of the Pastalord]);			//20 MP
+	buffMaintain($effect[Leash of Linguini]);					//12 MP
 	
 	//Sauceror Non-Combat skills
-	buffMaintain($effect[Sauce Monocle], 0, 1, 1);						//20 MP
+	buffMaintain($effect[Sauce Monocle]);						//20 MP
 
 	//Disco Bandit Non-Combat skills
-	buffMaintain($effect[Disco Fever], 0, 1, 1);						//10 MP
+	buffMaintain($effect[Disco Fever]);						//10 MP
 	
 	//Turtle Tamer Buffs
-	buffMaintain($effect[Ghostly Shell], 0, 1, 1);						//6 MP
-	buffMaintain($effect[Tenacity of the Snapper], 0, 1, 1);			//8 MP
-	buffMaintain($effect[Empathy], 0, 1, 1);							//15 MP
-	buffMaintain($effect[Reptilian Fortitude], 0, 1, 1);				//8 MP
-	buffMaintain($effect[Astral Shell], 0, 1, 1);						//10 MP
-	buffMaintain($effect[Jingle Jangle Jingle], 0, 1, 1);				//5 MP
-	buffMaintain($effect[Curiosity of Br\'er Tarrypin], 0, 1, 1);		//5 MP
+	buffMaintain($effect[Ghostly Shell]);						//6 MP
+	buffMaintain($effect[Tenacity of the Snapper]);			//8 MP
+	buffMaintain($effect[Empathy]);							//15 MP
+	buffMaintain($effect[Reptilian Fortitude]);				//8 MP
+	buffMaintain($effect[Astral Shell]);						//10 MP
+	buffMaintain($effect[Jingle Jangle Jingle]);				//5 MP
+	buffMaintain($effect[Curiosity of Br\'er Tarrypin]);		//5 MP
 	
 	//Sauceror Buffs
-	buffMaintain($effect[Elemental Saucesphere], 0, 1, 1);				//10 MP
-	buffMaintain($effect[Antibiotic Saucesphere], 0, 1, 1);				//15 MP
+	buffMaintain($effect[Elemental Saucesphere]);				//10 MP
+	buffMaintain($effect[Antibiotic Saucesphere]);				//15 MP
 	
 	//Accordion Thief Buffs. We are not shrugging so it will only apply new ones if we have space for them
-	buffMaintain($effect[The Moxious Madrigal], 0, 1, 1);				//2 MP
-	buffMaintain($effect[The Magical Mojomuscular Melody], 0, 1, 1);	//3 MP
-	buffMaintain($effect[Cletus\'s Canticle of Celerity], 0, 1, 1);		//4 MP
-	buffMaintain($effect[Power Ballad of the Arrowsmith], 0, 1, 1);		//5 MP
-	buffMaintain($effect[Polka of Plenty], 0, 1, 1);					//7 MP
+	buffMaintain($effect[The Moxious Madrigal]);				//2 MP
+	buffMaintain($effect[The Magical Mojomuscular Melody]);	//3 MP
+	buffMaintain($effect[Cletus\'s Canticle of Celerity]);		//4 MP
+	buffMaintain($effect[Power Ballad of the Arrowsmith]);		//5 MP
+	buffMaintain($effect[Polka of Plenty]);					//7 MP
 	
 	//Mutually exclusive effects
 	if(have_effect($effect[Musk of the Moose]) == 0 && have_effect($effect[Hippy Stench]) == 0)
 	{
-		buffMaintain($effect[Smooth Movements], 0, 1, 1);				//10 MP
+		buffMaintain($effect[Smooth Movements]);				//10 MP
 	}
 	if(have_effect($effect[Smooth Movements]) == 0 && have_effect($effect[Fresh Scent]) == 0)
 	{
-		buffMaintain($effect[Musk of the Moose], 0, 1, 1);				//10 MP
+		buffMaintain($effect[Musk of the Moose]);				//10 MP
 	}	
 	
 	//TODO facial expressions, need to check you are not wearing one first and which ones you have

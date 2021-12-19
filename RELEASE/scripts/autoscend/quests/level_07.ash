@@ -86,8 +86,8 @@ boolean L7_crypt()
 		handleBjornify($familiar[Grimstone Golem]);
 	}
 
-	buffMaintain($effect[Browbeaten], 0, 1, 1);
-	buffMaintain($effect[Rosewater Mark], 0, 1, 1);
+	buffMaintain($effect[Browbeaten]);
+	buffMaintain($effect[Rosewater Mark]);
 
 	boolean edAlcove = true;
 	if(isActuallyEd())
@@ -160,7 +160,7 @@ boolean L7_crypt()
 	if((get_property("cyrptNookEvilness").to_int() > 0) && lar_repeat($location[The Defiled Nook]) && !skip_in_koe)
 	{
 		auto_log_info("The Nook!", "blue");
-		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
+		buffMaintain($effect[Joyful Resolve]);
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
 
@@ -245,9 +245,9 @@ boolean L7_crypt()
 		if(my_primestat() == $stat[Muscle])
 		{
 			buyUpTo(1, $item[Ben-Gal&trade; Balm]);
-			buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+			buffMaintain($effect[Go Get \'Em\, Tiger!]);
 			buyUpTo(1, $item[Blood of the Wereseal]);
-			buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
+			buffMaintain($effect[Temporary Lycanthropy]);
 		}
 
 		acquireHP();
