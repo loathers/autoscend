@@ -688,6 +688,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		Astral Shell,
 		Hide of Sobek,
 		Spectral Awareness,
+		Scariersauce,
 		Scarysauce,
 		Blessing of the Bird,
 		Blessing of Your Favorite Bird,

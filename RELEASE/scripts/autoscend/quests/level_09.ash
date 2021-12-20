@@ -544,6 +544,7 @@ boolean L9_aBooPeak()
 
 			buffMaintain($effect[Astral Shell], 10, 1, 1);
 			buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
+			buffMaintain($effect[Scariersauce], 10, 1, 1);
 			buffMaintain($effect[Scarysauce], 10, 1, 1);
 			buffMaintain($effect[Spookypants]);
 			buffMaintain($effect[Hyphemariffic]);

@@ -4099,6 +4099,7 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	{
 		buffMaintain($effect[Spiky Shell]);					//8 MP
 		buffMaintain($effect[Jalape&ntilde;o Saucesphere]);	//5 MP
+		buffMaintain($effect[Scariersauce]);				//10 MP
 		buffMaintain($effect[Scarysauce]);						//10 MP
 	}
 	
