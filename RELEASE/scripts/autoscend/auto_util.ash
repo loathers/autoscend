@@ -2623,31 +2623,32 @@ cabinet of Dr. Limpieza
 	return false;
 }
 
-boolean[skill] ATSongList()
+boolean[effect] ATSongList()
 {
 	// This List contains ALL AT songs in order from Most to Least Important as to determine what effect to shrug off.
-	boolean[skill] songs = $skills[
+	boolean[effect] songs = $effects[
 		Inigo\'s Incantation of Inspiration,
 		The Ballad of Richie Thingfinder,
 		Chorale of Companionship,
-		The Ode to Booze,
+		Ode to Booze,
 		Ur-Kel\'s Aria of Annoyance,
 		Carlweather\'s Cantata of Confrontation,
 		The Sonata of Sneakiness,
 		Fat Leon\'s Phat Loot Lyric,
-		The Polka of Plenty,
-		The Psalm of Pointiness,
+		Polka of Plenty,
+		Psalm of Pointiness,
 		Aloysius\' Antiphon of Aptitude,
 		Paul\'s Passionate Pop Song,
 		Donho\'s Bubbly Ballad,
 		Prelude of Precision,
 		Elron\'s Explosive Etude,
 		Benetton\'s Medley of Diversity,
+		Dirge of Dreadfulness (Remastered),
 		Dirge of Dreadfulness,
 		Stevedave\'s Shanty of Superiority,
 		Brawnee\'s Anthem of Absorption,
 		Jackasses\' Symphony of Destruction,
-		The Power Ballad of the Arrowsmith,
+		Power Ballad of the Arrowsmith,
 		Cletus\'s Canticle of Celerity,
 		Cringle\'s Curative Carol,
 		The Magical Mojomuscular Melody,
@@ -2696,17 +2697,17 @@ void shrugAT(effect anticipated)
 	}
 
 	int count = 1;
-
+	
 	effect last = $effect[none];
 	foreach ATsong in ATSongList()
 	{
-		if(have_effect(to_effect(ATsong)) > 0)
+		if(have_effect(ATsong) > 0)
 		{
 			count += 1;
 			if(count > maxSongs)
 			{
 				auto_log_info("Shrugging song: " + ATsong, "blue");
-				uneffect(to_effect(ATsong));
+				uneffect(ATsong);
 			}
 		}
 	}
