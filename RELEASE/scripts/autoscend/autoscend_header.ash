@@ -1205,6 +1205,9 @@ boolean distill(item target);
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
 boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
+void cleanup_property(string target);
+void auto_rename_property(string oldprop, string newprop);
+void boolFix(string p);
 void auto_settingsUpgrade();
 void auto_settingsFix();
 void auto_settingsDelete();
