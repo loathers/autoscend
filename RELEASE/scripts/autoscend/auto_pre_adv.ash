@@ -204,12 +204,14 @@ boolean auto_pre_adventure()
 	{
 		uneffect($effect[Spiky Shell]);
 		uneffect($effect[Scarysauce]);
+		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
 	if($locations[Next to that Barrel with something Burning In It, Near an Abandoned Refrigerator, Over where the Old Tires Are, Out by that Rusted-Out Car] contains place)
 	{
 		uneffect($effect[Spiky Shell]);
 		uneffect($effect[Scarysauce]);
+		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
 	if(is_boris())

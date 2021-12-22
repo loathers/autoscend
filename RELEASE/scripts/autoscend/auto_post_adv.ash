@@ -889,24 +889,24 @@ boolean auto_post_adventure()
 		// +Stat expressions based on mainstat
 		if(my_primestat() == $stat[Muscle])
 		{
-			auto_faceCheck("Patient Smile");
+			auto_faceCheck($effect[Patient Smile]);
 		}
 		if(my_primestat() == $stat[Moxie])
 		{
-			auto_faceCheck("Knowing Smile");
+			auto_faceCheck($effect[Knowing Smile]);
 		}
 		if(my_primestat() == $stat[Mysticality])
 		{
 			// If Gaze succeeds Smile will fail the check and vice versa
-			auto_faceCheck("Inscrutable Gaze");
-			auto_faceCheck("Wry Smile");
+			auto_faceCheck($effect[Inscrutable Gaze]);
+			auto_faceCheck($effect[Wry Smile]);
 		}
 
 		// Catch-all Expressions in decending order of importance (in case we could not get a stat specific one)
-		auto_faceCheck("Inscrutable Gaze");
-		auto_faceCheck("Wry Smile");
-		auto_faceCheck("Patient Smile");
-		auto_faceCheck("Knowing Smile");
+		auto_faceCheck($effect[Inscrutable Gaze]);
+		auto_faceCheck($effect[Wry Smile]);
+		auto_faceCheck($effect[Patient Smile]);
+		auto_faceCheck($effect[Knowing Smile]);
 
 		if(my_meat() > meatReserve()+5000)		//these are only worth it if you have lots of excess meat
 		{
