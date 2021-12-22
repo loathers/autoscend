@@ -849,7 +849,7 @@ boolean buffMaintain(effect buff)
 
 // Checks to see if we are already wearing a facial expression before using buffMaintain
 //	if an expression is REQUIRED force it using buffMaintain
-boolean auto_faceCheck(string face)
+boolean auto_faceCheck(effect face)
 {
 	boolean[effect] FacialExpressions = $effects[Snarl of the Timberwolf, Scowl of the Auk, Stiff Upper Lip, Patient Smile, Quiet Determination, Arched Eyebrow of the Archmage, Wizard Squint, Quiet Judgement, Icy Glare, Wry Smile, Disco Leer, Disco Smirk, Suspicious Gaze, Knowing Smile, Quiet Desperation, Inscrutable Gaze];
 	boolean CanEmote = true;
@@ -864,7 +864,7 @@ boolean auto_faceCheck(string face)
 
 	if(CanEmote)
 	{
-		buffMaintain(to_effect(face));
+		buffMaintain(face);
 	}
 	else
 	{
