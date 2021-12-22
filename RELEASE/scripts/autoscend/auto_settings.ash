@@ -32,6 +32,40 @@ boolean trackingSplitterFixer(string oldSetting, int day, string newSetting)
 	return true;
 }
 
+void cleanup_property(string target)
+{
+	//we need to clear out empty property that exist with an empty value.
+	//aside from being messy they also cause problems such as rename_property refusing to work.
+	if(get_property(target) == "" && property_exists(target))
+	{
+		remove_property(target);
+	}
+}
+
+void auto_rename_property(string oldprop, string newprop)
+{
+	cleanup_property(oldprop);
+	cleanup_property(newprop);
+	if(!property_exists(oldprop) || property_exists(newprop))
+	{
+		return;
+	}
+	rename_property(oldprop,newprop);
+}
+
+void boolFix(string p)
+{
+	string p_val = get_property(p);
+	if(p_val == "need" || p_val == "yes")
+	{
+		set_property(p, true);
+	}
+	if(p_val == "no")
+	{
+		set_property(p, false);
+	}
+}
+
 void auto_settingsUpgrade()
 {
 	//upgrade settings from old format to new format.
@@ -71,43 +105,11 @@ void auto_settingsUpgrade()
 		set_property("auto_killingjar", "finished");
 	}
 	
-	if(get_property("auto_wandOfNagamar") == "yes")
-	{
-		set_property("auto_wandOfNagamar", true);
-	}
-	if(get_property("auto_wandOfNagamar") == "no")
-	{
-		set_property("auto_wandOfNagamar", false);
-	}
-	if(get_property("auto_chasmBusted") == "yes")
-	{
-		set_property("auto_chasmBusted", true);
-	}
-	if(get_property("auto_chasmBusted") == "no")
-	{
-		set_property("auto_chasmBusted", false);
-	}
-
-	if(property_exists("auto_edDelayTimer"))
-	{
-		set_property("auto_delayTimer", get_property("auto_edDelayTimer"));
-	}
-	if(get_property("auto_grimstoneFancyOilPainting") == "need")
-	{
-		set_property("auto_grimstoneFancyOilPainting", true);
-	}
-	if(get_property("auto_grimstoneFancyOilPainting") == "no")
-	{
-		set_property("auto_grimstoneFancyOilPainting", false);
-	}
-	if(get_property("auto_grimstoneOrnateDowsingRod") == "need")
-	{
-		set_property("auto_grimstoneOrnateDowsingRod", true);
-	}
-	if(get_property("auto_grimstoneOrnateDowsingRod") == "no")
-	{
-		set_property("auto_grimstoneOrnateDowsingRod", false);
-	}
+	boolFix("auto_wandOfNagamar");
+	boolFix("auto_chasmBusted");
+	auto_rename_property("auto_delayTimer", "auto_edDelayTimer");
+	boolFix("auto_grimstoneFancyOilPainting");
+	boolFix("auto_grimstoneOrnateDowsingRod");
 
 	if(get_property("auto_abooclover") == "used")
 	{
