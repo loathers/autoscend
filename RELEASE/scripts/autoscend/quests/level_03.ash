@@ -61,7 +61,9 @@ boolean auto_tavern()
 		}
 		else
 		{
+			buffMaintain($effect[Dirge of Dreadfulness (Remastered)]);
 			buffMaintain($effect[Dirge of Dreadfulness], 20, 1, 1);
+			buffMaintain($effect[Snarl of Three Timberwolves]);
 			buffMaintain($effect[Snarl of the Timberwolf], 20, 1, 1);
 		}
 	}

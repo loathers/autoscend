@@ -1161,7 +1161,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
 boolean buffMaintain(effect buff);
-boolean auto_faceCheck(string face);
+boolean auto_faceCheck(effect face);
 
 ########################################################################################################
 //Defined in autoscend/auto_consume.ash
@@ -1593,7 +1593,7 @@ void woods_questStart();
 int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
-boolean[skill] ATSongList();
+boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
 string auto_my_path();

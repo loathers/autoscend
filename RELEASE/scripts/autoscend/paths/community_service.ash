@@ -904,6 +904,7 @@ boolean LA_cs_communityService()
 						buffMaintain($effect[Spiky Shell], 40, 1, 1);
 						buffMaintain($effect[Song of Starch], 132, 1, 1);
 						buffMaintain($effect[Rage of the Reindeer], 42, 1, 1);
+						buffMaintain($effect[Scariersauce], 42, 1, 1);
 						buffMaintain($effect[Scarysauce], 42, 1, 1);
 						buffMaintain($effect[Disco Fever], 42, 1, 1);
 
