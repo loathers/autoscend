@@ -1097,6 +1097,7 @@ boolean LX_fledglingPirateIsYou();
 void fcleChoiceHandler(int choice);
 boolean LX_unlockBelowdecks();
 boolean LX_pirateQuest();
+boolean tomb_already_found();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
 void houseUpgrade();
