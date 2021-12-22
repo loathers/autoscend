@@ -1592,7 +1592,7 @@ void woods_questStart();
 int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
-boolean[skill] ATSongList();
+boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
 string auto_my_path();

@@ -84,6 +84,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 {
 	skill useSkill = $skill[none];
 	item useItem = $item[none];
+	item mustEquip = $item[none];
 
 	if(buff == $effect[none])
 	{
@@ -212,6 +213,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Digitally Converted]:			useItem = $item[Digital Underground Potion];	break;
 	case $effect[The Dinsey Look]:				useItem = $item[Dinsey Face Paint];				break;
 	case $effect[Dirge of Dreadfulness]:		useSkill = $skill[Dirge of Dreadfulness];		break;
+	case $effect[Dirge of Dreadfulness (Remastered)]:
+		mustEquip = $item[velour vaqueros];
+		useSkill = $skill[Dirge of Dreadfulness];
+		break;
 	case $effect[Disco Fever]:					useSkill = $skill[Disco Fever];					break;
 	case $effect[Disco Leer]:					useSkill = $skill[Disco Leer];					break;
 	case $effect[Disco Smirk]:					useSkill = $skill[Disco Smirk];					break;
@@ -520,6 +525,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Saucemastery]:					useSkill = $skill[Sauce Contemplation];			break;
 	case $effect[Sauce Monocle]:				useSkill = $skill[Sauce Monocle];				break;
 	case $effect[Savage Beast Inside]:			useItem = $item[jar of &quot;Creole Lady&quot; marrrmalade];break;
+	case $effect[Scariersauce]:
+		mustEquip = $item[velour viscometer];
+		useSkill = $skill[Scarysauce];
+		break;
 	case $effect[Scarysauce]:					useSkill = $skill[Scarysauce];					break;
 	case $effect[Scowl of the Auk]:				useSkill = $skill[Scowl of the Auk];			break;
 	case $effect[Screaming! \ SCREAMING! \ AAAAAAAH!]:useSkill = $skill[Powerful Vocal Chords];			break;
@@ -551,6 +560,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Smelly Pants]:					useItem = $item[Stench Powder];					break;
 	case $effect[Smooth Movements]:				useSkill = $skill[Smooth Movement];				break;
 	case $effect[Snarl of the Timberwolf]:		useSkill = $skill[Snarl of the Timberwolf];		break;
+	case $effect[Snarl of Three Timberwolves]:
+		mustEquip = $item[velour voulge];
+		useSkill = $skill[Snarl of the Timberwolf];
+		break;
 	case $effect[Snow Shoes]:					useItem = $item[Snow Cleats];					break;
 	case $effect[Somewhat Poisoned]:			useSkill = $skill[Disco Nap];					break;
 	case $effect[Song of Accompaniment]:		useSkill = $skill[Song of Accompaniment];		break;
@@ -823,6 +836,22 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			{
 				uneffect(ef);
 			}
+		}
+	}
+	
+	//handling for buffs that must equip something first
+	if(mustEquip != $item[none])
+	{
+		if(!possessEquipment(mustEquip) ||	//we can not wear what we do not have. this checks both inventory and already worn
+		!auto_is_valid(mustEquip) ||	//checks path limitations
+		!can_equip(mustEquip))	//checks if stats are high enough
+		{
+			return false;	//we can not wear this equipment
+		}
+		if(!speculative)
+		{
+			//wear it now before using the buff. do not use the auto_ functions here because we only want to wear it long enough to cast the buff. not change what we wear to the next adventure
+			equip(mustEquip);
 		}
 	}
 

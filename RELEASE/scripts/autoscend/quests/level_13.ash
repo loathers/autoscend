@@ -514,8 +514,10 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) auto_beachCombHead("spooky");
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Hands]);
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Weapon]);
+				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness (Remastered)]);
 				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Intimidating Mien], 15, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Snarl of Three Timberwolves]);
 				if(crowd3Insufficient()) buffMaintain($effect[Snarl of the Timberwolf], 10, 1, 1);
 				break;
 			}
@@ -1188,6 +1190,11 @@ boolean L13_towerNSTower()
 				}
 			}
 			
+			buffMaintain($effect[Scariersauce]);
+			if(have_effect($effect[Scariersauce]) > 0)
+			{
+				sourcesReactive += 1;
+			}
 			if(have_skill($skill[Scarysauce]))
 			{
 				buffMaintain($effect[Scarysauce]);
@@ -1404,6 +1411,11 @@ boolean L13_towerNSTower()
 		if(my_class() != $class[Sauceror] && !have_skill($skill[Garbage Nova]))
 		{
 			set_property("auto_getBoningKnife", true);		//can not towerkill. get boning knife instead
+		}
+		if(!uneffect($effect[Scariersauce]))
+		{
+			//passive dmg prevents tower kill. we can not uneffect it so get boning knife instead
+			set_property("auto_getBoningKnife", true);
 		}
 		
 		if(get_property("auto_getBoningKnife").to_boolean())	//grab boning knife if we deemed it necessary
