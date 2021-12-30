@@ -146,6 +146,7 @@ boolean deck_useScheme(string action);
 boolean adjustEdHat(string goal);
 boolean resolveSixthDMT();
 boolean LX_dinseylandfillFunbucks();
+void doghouseChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2016.ash
@@ -949,10 +950,12 @@ boolean LX_unlockHauntedLibrary();
 boolean LX_unlockManorSecondFloor();
 boolean LX_spookyravenManorFirstFloor();
 boolean LX_danceWithLadySpookyraven();
+void hauntedBedroomChoiceHandler(int choice, string[int] options);
 boolean LX_getLadySpookyravensFinestGown();
 boolean LX_getLadySpookyravensDancingShoes();
 boolean LX_getLadySpookyravensPowderPuff();
 boolean LX_spookyravenManorSecondFloor();
+void blackForestChoiceHandler(int choice);
 boolean L11_blackMarket();
 boolean L11_getBeehive();
 boolean L11_forgedDocuments();
@@ -966,6 +969,7 @@ void hiddenTempleChoiceHandler(int choice, string page);
 boolean liana_cleared(location loc);
 boolean L11_hiddenTavernUnlock();
 boolean L11_hiddenTavernUnlock(boolean force);
+void hiddenCityChoiceHandler(int choice);
 boolean L11_hiddenCity();
 boolean L11_hiddenCityZones();
 boolean L11_mauriceSpookyraven();
@@ -1093,6 +1097,7 @@ boolean LX_fledglingPirateIsYou();
 void fcleChoiceHandler(int choice);
 boolean LX_unlockBelowdecks();
 boolean LX_pirateQuest();
+boolean tomb_already_found();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
 void houseUpgrade();
@@ -1150,6 +1155,15 @@ void bedtime_pulls();
 boolean doBedtime();
 
 ########################################################################################################
+//Defined in autoscend/auto_buff.ash
+boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);
+boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
+boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
+boolean buffMaintain(effect buff);
+boolean auto_faceCheck(effect face);
+
+########################################################################################################
 //Defined in autoscend/auto_consume.ash
 int spleen_left();
 int stomach_left();
@@ -1191,6 +1205,9 @@ boolean distill(item target);
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
 boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
+void cleanup_property(string target);
+void auto_rename_property(string oldprop, string newprop);
+void boolFix(string p);
 void auto_settingsUpgrade();
 void auto_settingsFix();
 void auto_settingsDelete();
@@ -1579,17 +1596,12 @@ void woods_questStart();
 int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
-boolean[skill] ATSongList();
+boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
 string auto_my_path();
 boolean acquireTransfunctioner();
 int [item] auto_get_campground();
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);
-boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
-boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
-boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
-boolean auto_faceCheck(string face);
 location solveDelayZone();
 boolean setSoftblockDelay();
 boolean allowSoftblockDelay();

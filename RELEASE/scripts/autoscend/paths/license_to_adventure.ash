@@ -10,7 +10,6 @@ void bond_initializeSettings()
 	{
 		set_property("auto_getBeehive", true);
 		set_property("auto_wandOfNagamar", false);
-		set_property("choiceAdventure1258", 2);
 		set_property("auto_familiarChoice", "");
 	}
 	else

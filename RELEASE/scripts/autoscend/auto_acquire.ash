@@ -890,9 +890,9 @@ boolean LX_craftAcquireItems()
 	{
 		boolean buyAntiqueAccordion = false;
 
-	foreach SongCheck in ATSongList()
+		foreach SongCheck in ATSongList()
 		{
-			if(have_skill(SongCheck))
+			if(have_skill(SongCheck.to_skill()))
 			{
 				buyAntiqueAccordion = true;
 			}

@@ -1121,7 +1121,7 @@ boolean doBedtime()
 		if(have_skill($skill[The Ode to Booze]))
 		{
 			shrugAT($effect[Ode to Booze]);
-			buffMaintain($effect[Ode to Booze], 0, 1, 1);
+			buffMaintain($effect[Ode to Booze]);
 		}
 		return false;
 	}

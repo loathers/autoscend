@@ -79,7 +79,7 @@ boolean L5_haremOutfit()
 
 	if(in_heavyrains())
 	{
-		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
+		buffMaintain($effect[Fishy Whiskers]);
 	}
 	bat_formBats();
 
@@ -122,7 +122,7 @@ boolean L5_goblinKing()
 	{
 		abort("Could not put on Knob Goblin Harem Girl Disguise, aborting");
 	}
-	buffMaintain($effect[Knob Goblin Perfume], 0, 1, 1);
+	buffMaintain($effect[Knob Goblin Perfume]);
 	if(have_effect($effect[Knob Goblin Perfume]) == 0)
 	{
 		boolean advSpent = autoAdv($location[Cobb\'s Knob Harem]);
@@ -136,15 +136,15 @@ boolean L5_goblinKing()
 	if(my_primestat() == $stat[Muscle])
 	{
 		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
-		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+		buffMaintain($effect[Go Get \'Em\, Tiger!]);
 	}
 	buyUpTo(1, $item[Hair Spray]);
-	buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
+	buffMaintain($effect[Butt-Rock Hair]);
 
 	if((my_class() == $class[Seal Clubber]) || (my_class() == $class[Turtle Tamer]))
 	{
 		buyUpTo(1, $item[Blood of the Wereseal]);
-		buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
+		buffMaintain($effect[Temporary Lycanthropy]);
 	}
 
 	// TODO: I died here, maybe we should heal a bit?
