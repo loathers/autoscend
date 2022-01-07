@@ -177,6 +177,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Brilliant Resolve]:			useItem = $item[Resolution: Be Smarter];		break;
 	case $effect[Brooding]:						useSkill = $skill[Brood];						break;
 	case $effect[Browbeaten]:					useItem = $item[Old Eyebrow Pencil];			break;
+	case $effect[Burning Hands]:				useItem = $item[sticky lava globs];				break;
 	case $effect[Busy Bein\' Delicious]:		useItem = $item[Crimbo fudge];					break;
 	case $effect[Butt-Rock Hair]:				useItem = $item[Hair Spray];					break;
 	case $effect[Can\'t Smell Nothin\']:	useItem = $item[Dogsgotnonoz pills];	break;
@@ -333,6 +334,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Hide of Sobek]:				useSkill = $skill[Hide of Sobek];				break;
 	case $effect[High Colognic]:				useItem = $item[Musk Turtle];					break;
 	case $effect[Hippy Stench]:					useItem = $item[reodorant];						break;
+	case $effect[Hot Hands]:					useItem = $item[lotion of hotness];				break;
 	case $effect[How to Scam Tourists]:			useItem = $item[How to Avoid Scams];			break;
 	case $effect[Human-Beast Hybrid]:			useItem = $item[Gene Tonic: Beast];				break;
 	case $effect[Human-Constellation Hybrid]:	useItem = $item[Gene Tonic: Constellation];		break;
@@ -538,6 +540,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Sepia Tan]:					useItem = $item[Old Bronzer];					break;
 	case $effect[Serendipi Tea]:				useItem = $item[cuppa Serendipi tea];			break;
 	case $effect[Seriously Mutated]:			useItem = $item[Extra-Potent Gremlin Mutagen];	break;
+	case $effect[Shells of the Damned]:			useItem = $item[cyan seashell];					break;
 	case $effect[Shield of the Pastalord]:
 		useSkill = $skill[Shield of the Pastalord];
 		if(my_class() != $class[Pastamancer])

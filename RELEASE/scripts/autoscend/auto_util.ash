@@ -666,26 +666,6 @@ int internalQuestStatus(string prop)
 	return -1;
 }
 
-int solveCookie()
-{
-	if(!contains_text(get_counters("Fortune Cookie", 0, 250), "Fortune Cookie"))
-	{
-		return -1;
-	}
-	int i=0;
-	while(i < 250)
-	{
-		if(contains_text(get_counters("Fortune Cookie", 0, i), "Fortune Cookie"))
-		{
-			set_property("auto_cookie", my_turncount() + i);
-			break;
-		}
-		i = i + 1;
-	}
-
-	return get_property("auto_cookie").to_int();
-}
-
 int estimatedTurnsLeft()
 {
 	//Probably will try bother to try dealing with milk, glorious lunch, ode, at least not now.
