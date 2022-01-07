@@ -538,7 +538,9 @@ boolean LX_doVacation()
 	return autoAdv(1, $location[The Shore\, Inc. Travel Agency]);
 }
 
-boolean fortuneCookieEvent()
+
+// this block commented out for future reference when implementing 11-leaf clover / lucky!
+/* boolean fortuneCookieEvent()
 {
 	//Semi-rare Handler
 	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
@@ -610,7 +612,7 @@ boolean fortuneCookieEvent()
 		return retval;
 	}
 	return false;
-}
+} */
 
 void initializeDay(int day)
 {
@@ -901,8 +903,7 @@ void initializeDay(int day)
 	else if(day == 2)
 	{
 		equipBaseline();
-		fortuneCookieEvent();
-
+		
 		if(get_property("auto_day_init").to_int() < 2)
 		{
 			if((item_amount($item[Tonic Djinn]) > 0) && !get_property("_tonicDjinn").to_boolean())
@@ -1788,8 +1789,7 @@ boolean doTasks()
 		}
 	}
 
-	if(fortuneCookieEvent())			return true;
-	if(theSource_oracle())				return true;
+		if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
 	if(LX_ghostBusting())				return true;
 	if(witchessFights())					return true;
@@ -1962,11 +1962,6 @@ void auto_begin()
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
 	while(doTasks())
 	{
-		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
-		{
-			abort("Manually handle, because we have fortune cookie and rain man colliding at the end of our day and we don't know quite what to do here");
-		}
-		#We save the last adventure for a rain man, damn it.
 		consumeStuff();
 	}
 

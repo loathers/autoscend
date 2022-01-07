@@ -34,11 +34,6 @@ boolean LA_cs_communityService()
 
 	cs_preTurnStuff(curQuest);
 
-	if(fortuneCookieEvent())
-	{
-		return true;
-	}
-
 	equipBaseline();
 	forceEquip($slot[Off-hand], $item[Barrel Lid]);
 	forceEquip($slot[Shirt], $item[Tunac]);
@@ -272,7 +267,6 @@ boolean LA_cs_communityService()
 						abort("Speakeasy issue, could not resolve contents and use them. Try visiting Clan Speakeasy and run again, do not manually drink a Lucky Lindy");
 					}
 				}
-				solveCookie();
 			}
 
 			if((my_inebriety() == 0) && !(auto_get_clan_lounge() contains $item[Clan Speakeasy]))

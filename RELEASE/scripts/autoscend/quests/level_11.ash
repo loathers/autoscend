@@ -1273,7 +1273,7 @@ boolean L11_aridDesert()
 
 boolean L11_wishForBaaBaaBuran()
 {
-	if (!canGenieCombat() || canEat($item[fortune cookie]))
+	if (!canGenieCombat() )
 	{
 		return false;
 	}
@@ -1579,14 +1579,7 @@ boolean L11_hiddenCity()
 		uneffect($effect[Thrice-Cursed]);
 	}
 
-	if (item_amount($item[Moss-Covered Stone Sphere]) == 0 && internalQuestStatus("questL11Business") < 1)
-	{
-		if(get_counters("Fortune Cookie", 0, 9) == "Fortune Cookie")
-		{
-			return false;
-		}
-	}
-	
+
 	//can we handle this zone?
 	if(!in_pokefam())
 	{
@@ -1610,7 +1603,7 @@ boolean L11_hiddenCity()
 		return false;
 	}	
 
-	if (internalQuestStatus("questL11Curses") < 2 && get_counters("Fortune Cookie", 0, 9) != "Fortune Cookie" && have_effect($effect[Ancient Fortitude]) == 0)
+	if (internalQuestStatus("questL11Curses") < 2 && have_effect($effect[Ancient Fortitude]) == 0)
 	{
 		auto_log_info("The idden [sic] apartment!", "blue");
 
@@ -2811,10 +2804,6 @@ boolean L11_unlockEd()
 
 	if((total >= 10) && (my_adventures() >= 4) && get_property("controlRoomUnlock").to_boolean())
 	{
-		if (get_counters("Fortune Cookie", 0, 3) == "Fortune Cookie")
-		{
-			return false;
-		}
 
 		visit_url("place.php?whichplace=pyramid&action=pyramid_control");
 		int x = 0;
@@ -2896,10 +2885,6 @@ boolean L11_defeatEd()
 		return false;
 	}
 
-	if (get_counters("Fortune Cookie", 0, 6) == "Fortune Cookie")
-	{
-		return false;
-	}
 
 	if(item_amount($item[[2334]Holy MacGuffin]) == 1)
 	{
