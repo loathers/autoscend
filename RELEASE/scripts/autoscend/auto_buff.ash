@@ -51,6 +51,11 @@ boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int 
 		{
 			//wear it now before using the buff. do not use the auto_ functions here because we only want to wear it long enough to cast the buff. not change what we wear to the next adventure
 			equip(mustEquip);
+			if(equipped_amount(mustEquip) == 0)
+			{
+				auto_log_warning("buffMaintain failed to equip [" +mustEquip+ "] for some reason. which is necessary in order to apply [" +buff+ "] using the skill [" +source+ "].");
+				return false;
+			}
 		}
 	}
 	if(!speculative)
