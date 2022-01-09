@@ -37,7 +37,7 @@ void spookyForestChoiceHandler(int choice)
 	}
 	else if(choice == 504) // Tree's Last Stand (The Spooky Forest)
 	{
-		//when selling [bar skin] we must immediately queue up the next action(s).
+		//when selling [bar skin] or buying [spooky sapling] we must immediately queue up the next action(s).
 		//otherwise mafia will think our NC handling failed and fallback to the mafia handling.
 		if(item_amount($item[bar skin]) > 1)
 		{
