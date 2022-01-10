@@ -1121,6 +1121,7 @@ boolean buyUpTo(int num, item it, int maxprice);
 float npcStoreDiscountMulti();
 boolean acquireGumItem(item it);
 boolean acquireTotem();
+boolean auto_hermit(int amt, item it);
 boolean acquireHermitItem(item it);
 boolean pull_meat(int target);
 int handlePulls(int day);
