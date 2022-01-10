@@ -37,6 +37,8 @@ void spookyForestChoiceHandler(int choice)
 	}
 	else if(choice == 504) // Tree's Last Stand (The Spooky Forest)
 	{
+		//when selling [bar skin] or buying [spooky sapling] we must immediately queue up the next action(s).
+		//otherwise mafia will think our NC handling failed and fallback to the mafia handling.
 		if(item_amount($item[bar skin]) > 1)
 		{
 			run_choice(2); // sell all bar skins (doesn't leave choice)
@@ -45,14 +47,11 @@ void spookyForestChoiceHandler(int choice)
 		{
 			run_choice(1); // sell bar skin (doesn't leave choice)
 		}
-		else if(!hidden_temple_unlocked() && item_amount($item[Spooky Sapling]) == 0 && my_meat() > 100)
+		if(!hidden_temple_unlocked() && item_amount($item[Spooky Sapling]) == 0 && my_meat() > 100)
 		{
 			run_choice(3); // get the spooky sapling (doesn't leave choice)
 		}
-		else
-		{
-			run_choice(4); // leave the choice
-		}
+		run_choice(4); // leave the choice
 	}
 	else if(choice == 505) // Consciousness of a Stream (The Spooky Forest)
 	{
