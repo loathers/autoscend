@@ -477,11 +477,7 @@ boolean acquireHermitItem(item it)
 	{
 		return false;
 	}
-	if(it == $item[Disassembled Clover])
-	{
-		it = $item[Ten-leaf Clover];
-	}
-	if(!($items[Banjo Strings, Catsup, Chisel, Figurine of an Ancient Seal, Hot Buttered Roll, Jaba&ntilde;ero Pepper, Ketchup, Petrified Noodles, Seal Tooth, Ten-Leaf Clover, Volleyball, Wooden Figurine] contains it))
+	if(!($items[Banjo Strings, Catsup, Chisel, Figurine of an Ancient Seal, Hot Buttered Roll, Jaba&ntilde;ero Pepper, Ketchup, Petrified Noodles, Seal Tooth, 11-Leaf Clover, Volleyball, Wooden Figurine] contains it))
 	{
 		return false;
 	}
@@ -499,29 +495,9 @@ boolean acquireHermitItem(item it)
 	{
 		if((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)
 		{
-			if(it == $item[Ten-Leaf Clover])
-			{
-				have = item_amount($item[Disassembled Clover]);
-			}
 			if(!hermit(1, it))
 			{
 				return false;
-			}
-			if(it == $item[Ten-Leaf Clover])
-			{
-				if(have == item_amount($item[Disassembled Clover]))
-				{
-					return false;
-				}
-				else if((have + 1) == item_amount($item[Disassembled Clover]))
-				{
-					return true;
-				}
-				else
-				{
-					auto_log_warning("Invalid clover count from hermit behavior, reporting failure.", "red");
-					return false;
-				}
 			}
 		}
 		else

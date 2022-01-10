@@ -45,7 +45,7 @@ void pete_initializeDay(int day)
 			{
 				acquireHermitItem($item[Seal Tooth]);
 			}
-			while(acquireHermitItem($item[Ten-leaf Clover]));
+			while(acquireHermitItem($item[11-leaf Clover]));
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 			pullXWhenHaveY(whatHiMein(), 1, 0);
@@ -55,7 +55,7 @@ void pete_initializeDay(int day)
 	{
 		if(get_property("auto_day_init").to_int() < 3)
 		{
-			while(acquireHermitItem($item[Ten-leaf Clover]));
+			while(acquireHermitItem($item[11-leaf Clover]));
 			set_property("auto_day_init", 3);
 		}
 	}
@@ -63,7 +63,7 @@ void pete_initializeDay(int day)
 	{
 		if(get_property("auto_day_init").to_int() < 4)
 		{
-			while(acquireHermitItem($item[Ten-leaf Clover]));
+			while(acquireHermitItem($item[11-leaf Clover]));
 			set_property("auto_day_init", 4);
 		}
 	}
