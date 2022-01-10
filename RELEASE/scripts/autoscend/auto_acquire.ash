@@ -58,6 +58,10 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;
 	}
+	if(pulledToday(it))
+	{
+		return false;
+	}
 	
 	if(storage_amount(it) > 0)
 	{
@@ -99,22 +103,11 @@ boolean canPull(item it)
 	return canPull(it, false);
 }
 
-void pullAll(item it)
+boolean pulledToday(item it)
 {
-	if(storage_amount(it) > 0)
-	{
-		take_storage(storage_amount(it), it);
-	}
-}
-
-void pullAndUse(item it, int uses)
-{
-	pullAll(it);
-	while((item_amount(it) > 0) && (uses > 0))
-	{
-		use(1, it);
-		uses = uses - 1;
-	}
+	string allPulls = get_property("auto_pulls").to_string();
+	string formatedSearchString = "(" + my_daycount() + ":" + it;
+	return contains_text(allPulls,formatedSearchString);
 }
 
 int auto_mall_price(item it)
