@@ -460,6 +460,18 @@ boolean acquireTotem()
 	return false;
 }
 
+boolean auto_hermit(int amt, item it)
+{
+	//workaround for this bug https://kolmafia.us/threads/27105/
+	if(it != $item[11-Leaf Clover])
+	{
+		return hermit(amt, it);
+	}
+	int initial = item_amount(it);
+	hermit(amt, it);
+	return item_amount(it) == initial + amt;
+}
+
 boolean acquireHermitItem(item it)
 {
 	if(!isHermitAvailable())
@@ -492,7 +504,7 @@ boolean acquireHermitItem(item it)
 	{
 		if((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)
 		{
-			if(!hermit(1, it))
+			if(!auto_hermit(1, it))
 			{
 				return false;
 			}
