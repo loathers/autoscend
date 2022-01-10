@@ -186,6 +186,10 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	{
 		return false;
 	}
+	if(pulledToday(it))
+	{
+		return false;
+	}
 	if (!auto_is_valid(it))
 	{
 		return false;
