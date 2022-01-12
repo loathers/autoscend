@@ -316,7 +316,6 @@ void auto_settingsDefaults()
 	defaultConfig("auto_log_level", "2");
 	defaultConfig("auto_log_level_restore", "0");
 	defaultConfig("auto_bedtime_pulls_skip", "false");
-	defaultConfig("auto_bedtime_pulls_skip_clover", "false");
 	defaultConfig("auto_bedtime_pulls_pvp_multi", "0.3");
 	defaultConfig("auto_bedtime_pulls_min_desirability", "1.0");
 }

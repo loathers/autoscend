@@ -221,14 +221,6 @@ boolean LX_attemptPowerLevelTheSource()
 
 	if(get_property("barrelShrineUnlocked").to_boolean())
 	{
-		if(cloversAvailable() == 0)
-		{
-			handleBarrelFullOfBarrels(false);
-			string temp = visit_url("barrel.php");
-			temp = visit_url("choice.php?whichchoice=1099&pwd=&option=2");
-			handleBarrelFullOfBarrels(false);
-			return true;
-		}
 		stat myStat = my_primestat();
 		if(my_basestat(myStat) >= 148)
 		{
@@ -263,7 +255,6 @@ boolean LX_attemptPowerLevelTheSource()
 		
 		if (whereTo == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") > 3)
 		{
-			use(item_amount($item[ten-leaf clover]), $item[ten-leaf clover]);
 			autoAdv($location[The Haunted Bedroom]);
 			return true;
 		}

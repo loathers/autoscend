@@ -1359,22 +1359,20 @@ boolean isProtonGhost(monster mon)
 
 int cloversAvailable()
 {
-	int retval = item_amount($item[Disassembled Clover]);
-	retval += item_amount($item[Ten-Leaf Clover]);
-	retval += closet_amount($item[Ten-Leaf Clover]);
+	//count 11-leaf clovers
+	int retval = item_amount($item[11-Leaf Clover]);
+	retval += closet_amount($item[11-Leaf Clover]);
 
-	if(in_glover() || in_bhy())
+	if(in_glover())
 	{
-		retval -= item_amount($item[Disassembled Clover]);
+		retval = 0;
 	}
+	//count Astral Energy Drinks. Must specify ID since there are now 2 items with this name
+	retval += item_amount($item[[10883]Astral Energy Drink]);
+	retval += closet_amount($item[[10883]Astral Energy Drink]);
 
-	if(in_koe() && canChew($item[lucky pill]))
-	{
-		int pills = item_amount($item[rare Meat isotope])/20 - 2;
-		pills = max(0, pills);
-		pills = min(spleen_left(), pills);
-		retval += pills;
-	}
+	//other known sources which aren't counted here:
+	// Lucky Lindy, Optimal Dog, Pillkeeper
 
 	return retval;
 }
@@ -1385,60 +1383,68 @@ boolean cloverUsageInit()
 	{
 		abort("Called cloverUsageInit but have no clovers");
 	}
-
+	int haveIntrinsicConstant = 2147483647; 
 	backupSetting("cloverProtectActive", false); // maybe set this before we return?
-	if(item_amount($item[Ten-Leaf Clover]) > 0)
+	//do we already have Lucky!?
+	if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
 	{
 		return true;
 	}
 
-	if(item_amount($item[Disassembled Clover]) > 0)
+	//use a clover if we have one in inventory or closet
+	if(item_amount($item[11-Leaf Clover]) < 1 && closet_amount($item[11-Leaf Clover]) > 0)
 	{
-		if(!in_glover() && !in_bhy())
-		{
-			use(1, $item[Disassembled Clover]);
-		}
+		take_closet(1, $item[11-Leaf Clover]);		
 	}
-	if(item_amount($item[Ten-Leaf Clover]) > 0)
+	if(item_amount($item[11-Leaf Clover]) > 0)
 	{
-		return true;
+		use(1, $item[11-Leaf Clover]);
 	}
-
-	if(in_koe() && spleen_left() > 1 && canChew($item[lucky pill]) && item_amount($item[rare Meat isotope]) >= 60)
-	{
-		retrieve_item(1, $item[lucky pill]);
-		autoChew(1, $item[lucky pill]);
-		use(1, $item[Disassembled Clover]);
-	}
-
-	if(closet_amount($item[Ten-Leaf Clover]) > 0)
-	{
-		take_closet(1, $item[Ten-Leaf Clover]);
-	}
-	if(item_amount($item[Ten-Leaf Clover]) > 0)
+	if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
 	{
 		auto_log_info("Clover usage initialized");
-		set_property("_autoCloverNext", true);
 		return true;
 	}
-	abort("We tried to initialize clover usage but do not appear to have a Ten-Leaf Clover");
+	else
+	{
+		auto_log_warning("Did not acquire Lucky! after using an 11-Leaf Clover");
+	}
+
+	//use Astral Energy Drinks if we have room
+	if(spleen_left() > 5)
+	{
+		if(item_amount($item[[10883]Astral Energy Drink]) < 1 && closet_amount($item[[10883]Astral Energy Drink]) > 0)
+		{
+			take_closet(1, $item[[10883]Astral Energy Drink]);		
+		}
+		if(item_amount($item[[10883]Astral Energy Drink]) > 0)
+		{
+			use(1, $item[[10883]Astral Energy Drink]);
+		}
+		if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
+		{
+			auto_log_info("Clover usage initialized");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after drinking an Astral Energy Drink");
+		}
+	}
+
+
+	abort("We tried to initialize clover usage but was unable to get Lucky!");
 	return false;
 }
 
 boolean cloverUsageFinish()
 {
+	int haveIntrinsicConstant = 2147483647; 
 	restoreSetting("cloverProtectActive");
-	if(item_amount($item[Ten-Leaf Clover]) > 0)
+	if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
 	{
-		auto_log_debug("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
-		if(in_glover() || in_bhy())
-		{
-			put_closet(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
-		}
-		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
-		return false;
+		abort("Wandering adventure interrupted our clover adventure (" + my_location() + ").");
 	}
-	remove_property("_autoCloverNext");
 	return true;
 }
 

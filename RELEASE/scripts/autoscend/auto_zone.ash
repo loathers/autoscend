@@ -167,6 +167,7 @@ generic_t zone_needItem(location loc)
 		{
 			value = 10.0;
 		}
+		value = 10.0;
 		break;
 	case $location[A-Boo Peak]:
 		if(get_property("auto_aboopending").to_int() == 0)
@@ -189,7 +190,7 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[Itznotyerzitz Mine]:
-		if (!possessOutfit("Mining Gear") && item_amount($item[Ten-Leaf Clover]) == 0)
+		if (!possessOutfit("Mining Gear") && cloversAvailable() == 0)
 		{
 			value = 10.0;
 		}
@@ -450,7 +451,7 @@ generic_t zone_combatMod(location loc)
 		value = -95;
 		break;
 	case $location[Itznotyerzitz Mine]:
-		if (!possessOutfit("Mining Gear") && item_amount($item[Ten-Leaf Clover]) == 0) {
+		if (!possessOutfit("Mining Gear") && cloversAvailable() == 0) {
 			value = -90;
 		}
 		break;
@@ -1797,9 +1798,10 @@ boolean is_ghost_in_zone(location loc)
 	//special location handling
 	int totalTurnsSpent;
 	int delayForNextNoncombat;
-	if(get_property("_autoCloverNext").to_boolean())
+	int haveIntrinsicConstant = 2147483647; 
+	if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
 	{
-		return false;		//we are grabbing a semirare so we will not encounter a ghost unless it is a wandering monster
+		return false;		//we are grabbing a Lucky! so we will not encounter a ghost unless it is a wandering monster
 	}
 	switch(loc)
 	{

@@ -81,8 +81,7 @@ boolean LM_bhy()
 		return false;
 	}
 	// pension check keeps trying to be used
-	// we can't turn disassembled clovers back into ten-leaf ones
-	foreach it in $items[black pension check,ten-leaf clover]
+	foreach it in $items[black pension check]
 	{
 		if(item_amount(it) > 0)
 		{
