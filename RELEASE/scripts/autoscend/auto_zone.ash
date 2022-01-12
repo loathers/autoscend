@@ -163,10 +163,6 @@ generic_t zone_needItem(location loc)
 		value = 20.0;
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		if(item_amount($item[Ten-Leaf Clover]) == 0)
-		{
-			value = 10.0;
-		}
 		value = 10.0;
 		break;
 	case $location[A-Boo Peak]:
