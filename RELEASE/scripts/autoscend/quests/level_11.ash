@@ -1292,7 +1292,8 @@ boolean L11_wishForBaaBaaBuran()
 	return false;
 }
 
-boolean L11_unlockHiddenCity() {
+boolean L11_unlockHiddenCity() 
+{
 	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2) 
 	{
 		return false;
@@ -1303,7 +1304,8 @@ boolean L11_unlockHiddenCity() {
 	}
 
 	auto_log_info("Searching for the Hidden City", "blue");
-	if (!in_glover() && !in_tcrs()) {
+	if (!in_glover() && !in_tcrs()) 
+	{
 		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && cloversAvailable() > 0) 
 		{
 			//use clover to get 2x Stone Wool
@@ -1311,7 +1313,6 @@ boolean L11_unlockHiddenCity() {
 			boolean retval = autoAdv($location[The Hidden Temple]);
 			cloverUsageFinish();
 			return retval;
-			}
 		}
 		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
