@@ -1360,13 +1360,20 @@ boolean isProtonGhost(monster mon)
 int cloversAvailable()
 {
 	//count 11-leaf clovers
-	int retval = item_amount($item[11-Leaf Clover]);
-	retval += closet_amount($item[11-Leaf Clover]);
+	int retval = 0; 
 
-	if(in_glover())
+	if(!in_glover())
 	{
-		retval = 0;
+		retval += item_amount($item[11-Leaf Clover]);
+		retval += closet_amount($item[11-Leaf Clover]);
+		//if none on hand, try to buy from hermit
+		if(retval == 0)
+		{
+			acquireHermitItem($item[11-Leaf Clover]);
+			retval += item_amount($item[11-Leaf Clover]);
+		}
 	}
+
 	//count Astral Energy Drinks. Must specify ID since there are now 2 items with this name
 	retval += item_amount($item[[10883]Astral Energy Drink]);
 	retval += closet_amount($item[[10883]Astral Energy Drink]);
@@ -1411,7 +1418,7 @@ boolean cloverUsageInit()
 	}
 
 	//use Astral Energy Drinks if we have room
-	if(spleen_left() > 5)
+	if(spleen_left() >= 5)
 	{
 		if(item_amount($item[[10883]Astral Energy Drink]) < 1 && closet_amount($item[[10883]Astral Energy Drink]) > 0)
 		{
