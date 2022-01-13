@@ -1372,6 +1372,12 @@ int cloversAvailable()
 			acquireHermitItem($item[11-Leaf Clover]);
 			retval += item_amount($item[11-Leaf Clover]);
 		}
+		//if none at hermit, try to pull one
+		if(retval == 0)
+		{
+			pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
+			retval += item_amount($item[11-Leaf Clover]);
+		}
 	}
 
 	//count Astral Energy Drinks. Must specify ID since there are now 2 items with this name
