@@ -292,15 +292,6 @@ boolean bond_buySkills()
 				points -= 3;
 			}
 		}
-		else if(!get_property("bondSpleen").to_boolean() && ((item_amount($item[Astral Energy Drink]) >= 1) || (item_amount($item[Carton Of Astral Energy Drinks]) > 0)))
-		{
-			if(points >= 4)
-			{
-				auto_log_info("Getting bondSpleen", "blue");
-				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=17&w=s");
-				points -= 4;
-			}
-		}
 		else if(!get_property("bondDesert").to_boolean() && (get_property("desertExploration").to_int() < 100))
 		{
 			if(points >= 5)

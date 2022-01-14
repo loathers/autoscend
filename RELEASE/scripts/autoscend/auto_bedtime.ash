@@ -650,7 +650,7 @@ boolean doBedtime()
 
 	//We are committing to end of day now...
 	getSpaceJelly();
-	while(acquireHermitItem($item[Ten-leaf Clover]));
+	while(acquireHermitItem($item[11-leaf Clover]));
 
 	januaryToteAcquire($item[Makeshift Garbage Shirt]);		//doubles stat gains in the LOV tunnel. also keep leftover charges for tomorrow.
 	loveTunnelAcquire(true, $stat[none], true, 3, true, 1);
