@@ -1530,12 +1530,7 @@ boolean L13_towerNSTower()
 			int pulled_items = 0;
 			foreach it in $items[gauze garter, filthy poultice, red pixel potion]
 			{
-				while(pulled_items < pull_target && canPull(it))
-				{
-						take_storage(1, it);
-						pulled_items += 1;
-				}
-			
+				pullXWhenHaveY(it,1,item_amount(it));
 			}
 
 			int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
