@@ -75,7 +75,7 @@ boolean auto_allowCrystalBall(location loc, boolean speculative)
 	if (burningDelay)
 	{
 		// if the next monster is forced anyway, no need to forbid the ball
-		removeFromMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
+		return true;
 	}
 	
 	// probably not worth taking it on and off whenever auto_haveQueuedForcedNonCombat()
