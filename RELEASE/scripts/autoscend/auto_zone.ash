@@ -1794,8 +1794,7 @@ boolean is_ghost_in_zone(location loc)
 	//special location handling
 	int totalTurnsSpent;
 	int delayForNextNoncombat;
-	int haveIntrinsicConstant = 2147483647; 
-	if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
+	if(have_effect($effect[Lucky!]) > 0)
 	{
 		return false;		//we are grabbing a Lucky! so we will not encounter a ghost unless it is a wandering monster
 	}

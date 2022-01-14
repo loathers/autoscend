@@ -293,6 +293,8 @@ void auto_settingsDelete()
 	remove_property("auto_useTatter");				//obsolete combat directive to use [Tattered Scrap Of Paper] to escape combat
 	remove_property("auto_alwaysGetSteelOrgan");	//renamed to auto_getSteelOrgan_initialize
 	remove_property("auto_logLevel");		//replaced string auto_logLevel with int auto_log_level
+	remove_property("auto_bedtime_pulls_skip_clover"); //replaced option of pulling multiple ten-leaf clovers with always pulling an 11-leaf clover
+	remove_property("cloverProtectActive"); //obsolete with change to Lucky! adventures
 }
 
 void defaultConfig(string prop, string val)

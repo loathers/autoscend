@@ -1364,8 +1364,7 @@ int cloversAvailable()
 
 	if(!in_glover())
 	{
-		retval += item_amount($item[11-Leaf Clover]);
-		retval += closet_amount($item[11-Leaf Clover]);
+		retval += available_amount($item[11-Leaf Clover]);
 		//if none on hand, try to buy from hermit
 		if(retval == 0)
 		{
@@ -1396,24 +1395,23 @@ boolean cloverUsageInit()
 	{
 		abort("Called cloverUsageInit but have no clovers");
 	}
-	int haveIntrinsicConstant = 2147483647; 
-	backupSetting("cloverProtectActive", false); // maybe set this before we return?
 	//do we already have Lucky!?
-	if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
+	if(have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
 	}
 
 	//use a clover if we have one in inventory or closet
-	if(item_amount($item[11-Leaf Clover]) < 1 && closet_amount($item[11-Leaf Clover]) > 0)
+	if(item_amount($item[11-Leaf Clover]) < 1)
 	{
-		take_closet(1, $item[11-Leaf Clover]);		
+		//try to get one out of closet
+		retrieve_item(1, $item[11-Leaf Clover]);	
 	}
 	if(item_amount($item[11-Leaf Clover]) > 0)
 	{
 		use(1, $item[11-Leaf Clover]);
 	}
-	if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
+	if(have_effect($effect[Lucky!]) > 0)
 	{
 		auto_log_info("Clover usage initialized");
 		return true;
@@ -1426,15 +1424,16 @@ boolean cloverUsageInit()
 	//use Astral Energy Drinks if we have room
 	if(spleen_left() >= 5)
 	{
-		if(item_amount($item[[10883]Astral Energy Drink]) < 1 && closet_amount($item[[10883]Astral Energy Drink]) > 0)
+		if(item_amount($item[[10883]Astral Energy Drink]) < 1)
 		{
-			take_closet(1, $item[[10883]Astral Energy Drink]);		
+			//try to get one out of closet
+			retrieve_item(1, $item[[10883]Astral Energy Drink]);		
 		}
 		if(item_amount($item[[10883]Astral Energy Drink]) > 0)
 		{
 			use(1, $item[[10883]Astral Energy Drink]);
 		}
-		if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
+		if(have_effect($effect[Lucky!]) > 0)
 		{
 			auto_log_info("Clover usage initialized");
 			return true;
@@ -1452,9 +1451,7 @@ boolean cloverUsageInit()
 
 boolean cloverUsageFinish()
 {
-	int haveIntrinsicConstant = 2147483647; 
-	restoreSetting("cloverProtectActive");
-	if(have_effect($effect[Lucky!]) == haveIntrinsicConstant)
+	if(have_effect($effect[Lucky!]) > 0)
 	{
 		abort("Wandering adventure interrupted our clover adventure (" + my_location() + ").");
 	}

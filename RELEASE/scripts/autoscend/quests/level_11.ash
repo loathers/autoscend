@@ -1316,13 +1316,13 @@ boolean L11_unlockHiddenCity()
 		}
 		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
-				//couldn't clover for stone wool. Try to get with a wish
-				L11_wishForBaaBaaBuran();
+			//couldn't clover for stone wool. Try to get with a wish
+			L11_wishForBaaBaaBuran();
 		}
 		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
-				//couldn't wish for stone wool. Try to pull one
-				pullXWhenHaveY($item[Stone Wool], 1, 0);
+			//couldn't wish for stone wool. Try to pull one
+			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 
 		buffMaintain($effect[Stone-Faced]);

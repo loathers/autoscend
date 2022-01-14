@@ -1724,7 +1724,7 @@ boolean L12_themtharHills()
 		}
 	}
 
-	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1)
+	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0)
 	{
 		//use clover to get inhaler
 		cloverUsageInit();
