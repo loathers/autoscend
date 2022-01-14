@@ -63,7 +63,7 @@ boolean auto_allowCrystalBall(location loc, boolean speculative)
 	}
 
 	// next monster forced by clover so no need to forbid equipping crystal ball
-	if(have_effect($effect[Lucky!])
+	if(have_effect($effect[Lucky!] > 0)
 	{
 		if(loc == $location[The Hidden Temple])
 		{
