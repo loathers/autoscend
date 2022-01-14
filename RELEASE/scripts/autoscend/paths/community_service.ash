@@ -34,11 +34,6 @@ boolean LA_cs_communityService()
 
 	cs_preTurnStuff(curQuest);
 
-	if(fortuneCookieEvent())
-	{
-		return true;
-	}
-
 	equipBaseline();
 	forceEquip($slot[Off-hand], $item[Barrel Lid]);
 	forceEquip($slot[Shirt], $item[Tunac]);
@@ -187,12 +182,12 @@ boolean LA_cs_communityService()
 		}
 
 		handleFamiliar($familiar[Galloping Grill]);
-		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
-		buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
-		buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
-		buffMaintain($effect[Phorcefullness], 0, 1, 1);
-		buffMaintain($effect[Tomato Power], 0, 1, 1);
-		buffMaintain($effect[Expert Oiliness], 0, 1, 1);
+		buffMaintain($effect[Go Get \'Em\, Tiger!]);
+		buffMaintain($effect[Glittering Eyelashes]);
+		buffMaintain($effect[Butt-Rock Hair]);
+		buffMaintain($effect[Phorcefullness]);
+		buffMaintain($effect[Tomato Power]);
+		buffMaintain($effect[Expert Oiliness]);
 		buffMaintain($effect[Ruthlessly Efficient], 130, 1, 1);
 		buffMaintain($effect[Song of Starch], 240, 1, 1);
 		buffMaintain($effect[Frostbeard], 130, 1, 1);
@@ -272,7 +267,6 @@ boolean LA_cs_communityService()
 						abort("Speakeasy issue, could not resolve contents and use them. Try visiting Clan Speakeasy and run again, do not manually drink a Lucky Lindy");
 					}
 				}
-				solveCookie();
 			}
 
 			if((my_inebriety() == 0) && !(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
@@ -642,7 +636,7 @@ boolean LA_cs_communityService()
 		}
 		else if((curQuest == 7) && (item_amount($item[Emergency Margarita]) > 0))
 		{
-			buffMaintain($effect[Sweetbreads Flamb&eacute;], 0, 1, 1);
+			buffMaintain($effect[Sweetbreads Flamb&eacute;]);
 			if((have_effect($effect[substats.enh]) == 0) && (auto_sourceTerminalEnhanceLeft() >= 1))
 			{
 				auto_sourceTerminalEnhance("substats");
@@ -801,7 +795,7 @@ boolean LA_cs_communityService()
 			# Account for possible pixels from Snojo?
 			# Make sure for tryPowerLevel not to go too high in ML (75).
 
-			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
+			buffMaintain($effect[Glittering Eyelashes]);
 			buffMaintain($effect[Ur-Kel\'s Aria of Annoyance], 62, 1, 1);
 			buffMaintain($effect[Pride of the Puffin], 62, 1, 1);
 			buffMaintain($effect[Drescher\'s Annoying Noise], 72, 1, 1);
@@ -812,7 +806,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[The Magical Mojomuscular Melody], 12, 1, 1);
 			if(item_amount($item[Tomato Juice of Powerful Power]) > 4)
 			{
-				buffMaintain($effect[Tomato Power], 0, 1, 1);
+				buffMaintain($effect[Tomato Power]);
 			}
 			cs_healthMaintain();
 
@@ -882,9 +876,9 @@ boolean LA_cs_communityService()
 
 						buyUpTo(1, $item[Hair Spray]);
 						buyUpTo(1, $item[Ben-Gal&trade; Balm]);
-						buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
-						buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
-						buffMaintain($effect[Unrunnable Face], 0, 1, 1);
+						buffMaintain($effect[Go Get \'Em\, Tiger!]);
+						buffMaintain($effect[Butt-Rock Hair]);
+						buffMaintain($effect[Unrunnable Face]);
 
 						buffMaintain($effect[Astral Shell], 42, 1, 1);
 						buffMaintain($effect[Elemental Saucesphere], 42, 1, 1);
@@ -904,6 +898,7 @@ boolean LA_cs_communityService()
 						buffMaintain($effect[Spiky Shell], 40, 1, 1);
 						buffMaintain($effect[Song of Starch], 132, 1, 1);
 						buffMaintain($effect[Rage of the Reindeer], 42, 1, 1);
+						buffMaintain($effect[Scariersauce], 42, 1, 1);
 						buffMaintain($effect[Scarysauce], 42, 1, 1);
 						buffMaintain($effect[Disco Fever], 42, 1, 1);
 
@@ -1267,7 +1262,7 @@ boolean LA_cs_communityService()
 				{
 					abort("We have an emergency margarita but it seems really dumb to drink it right now (consider closeting the margarita and set auto_saveMargarita = true)...");
 				}
-				buffMaintain($effect[Simmering], 0, 1, 1);
+				buffMaintain($effect[Simmering]);
 				if((inebriety_left() == 0) && have_familiar($familiar[Stooper])){
 					stooperDrink();
 				}
@@ -1370,32 +1365,32 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Disdain of the War Snapper], 15, 1, 1);
 			buffMaintain($effect[A Few Extra Pounds], 10, 1, 1);
 
-			buffMaintain($effect[Lycanthropy\, Eh?], 0, 1, 1);
-			buffMaintain($effect[Expert Oiliness], 0, 1, 1);
-			buffMaintain($effect[Phorcefullness], 0, 1, 1);
-			buffMaintain($effect[Tomato Power], 0, 1, 1);
-			buffMaintain($effect[Puddingskin], 0, 1, 1);
-			buffMaintain($effect[Superheroic], 0, 1, 1);
-			buffMaintain($effect[Extra Backbone], 0, 1, 1);
-			buffMaintain($effect[Pill Power], 0, 1, 1);
-			buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+			buffMaintain($effect[Lycanthropy\, Eh?]);
+			buffMaintain($effect[Expert Oiliness]);
+			buffMaintain($effect[Phorcefullness]);
+			buffMaintain($effect[Tomato Power]);
+			buffMaintain($effect[Puddingskin]);
+			buffMaintain($effect[Superheroic]);
+			buffMaintain($effect[Extra Backbone]);
+			buffMaintain($effect[Pill Power]);
+			buffMaintain($effect[Go Get \'Em\, Tiger!]);
 
-			buffMaintain($effect[Frog in Your Throat], 0, 1, 1);
-			buffMaintain($effect[Feroci Tea], 0, 1, 1);
-			buffMaintain($effect[Vitali Tea], 0, 1, 1);
-			buffMaintain($effect[Twen Tea], 0, 1, 1);
+			buffMaintain($effect[Frog in Your Throat]);
+			buffMaintain($effect[Feroci Tea]);
+			buffMaintain($effect[Vitali Tea]);
+			buffMaintain($effect[Twen Tea]);
 			buffMaintain($effect[Peppermint Bite], 0, 1 , 1);
-			buffMaintain($effect[Barbecue Saucy], 0, 1, 1);
-			buffMaintain($effect[Graham Crackling], 0, 1, 1);
-			buffMaintain($effect[Berry Statistical], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Purity of Spirit], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Gr8ness], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Nigh-Invincible], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Phorcefullness], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Power Of LOV], 0, 1, 1);
+			buffMaintain($effect[Barbecue Saucy]);
+			buffMaintain($effect[Graham Crackling]);
+			buffMaintain($effect[Berry Statistical]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Purity of Spirit]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Human-Human Hybrid]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Gr8ness]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Nigh-Invincible]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Phorcefullness]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Power Of LOV]);
 
 			if(!get_property("_grimBuff").to_boolean() && have_familiar($familiar[Grim Brother]))
 			{
@@ -1556,33 +1551,33 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Power Ballad of the Arrowsmith], 10, 1, 1);
 			buffMaintain($effect[Disdain of the War Snapper], 15, 1, 1);
 
-			buffMaintain($effect[Expert Oiliness], 0, 1, 1);
+			buffMaintain($effect[Expert Oiliness]);
 			buffMaintain($effect[Orange Crusher], 0, 1, 50);
 			buffMaintain($effect[Orange Crusher], 0, 1, 50);
 			buffMaintain($effect[Orange Crusher], 0, 1, 50);
 			buffMaintain($effect[Orange Crusher], 0, 1, 50);
 			buffMaintain($effect[Orange Crusher], 0, 1, 50);
-			buffMaintain($effect[Phorcefullness], 0, 1, 1);
-			buffMaintain($effect[Tomato Power], 0, 1, 1);
-			buffMaintain($effect[Savage Beast Inside], 0, 1, 1);
-			buffMaintain($effect[Extra Backbone], 0, 1, 1);
+			buffMaintain($effect[Phorcefullness]);
+			buffMaintain($effect[Tomato Power]);
+			buffMaintain($effect[Savage Beast Inside]);
+			buffMaintain($effect[Extra Backbone]);
 
-			buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+			buffMaintain($effect[Go Get \'Em\, Tiger!]);
 			buffMaintain($effect[Seal Clubbing Frenzy], 1, 1, 1);
 			buffMaintain($effect[Patience of the Tortoise], 1, 1, 1);
-			buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
-			buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
-			buffMaintain($effect[Frog in Your Throat], 0, 1, 1);
-			buffMaintain($effect[Twen Tea], 0, 1, 1);
-			buffMaintain($effect[Feroci Tea], 0, 1, 1);
+			buffMaintain($effect[Human-Humanoid Hybrid]);
+			buffMaintain($effect[Human-Human Hybrid]);
+			buffMaintain($effect[Frog in Your Throat]);
+			buffMaintain($effect[Twen Tea]);
+			buffMaintain($effect[Feroci Tea]);
 			buffMaintain($effect[Peppermint Bite], 0, 1 , 1);
-			buffMaintain($effect[Berry Statistical], 0, 1, 1);
+			buffMaintain($effect[Berry Statistical]);
 
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Gr8ness], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power], 0, 1, 1);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Gr8ness]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power]);
 
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power], 0, 1, 1);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Pill Power]);
 
 			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
 				tryBeachHeadBuff(curQuest);
@@ -1648,13 +1643,13 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Disdain of She-Who-Was], 15, 1, 1);
 
 
-			buffMaintain($effect[Mystically Oiled], 0, 1, 1);
-			buffMaintain($effect[Tomato Power], 0, 1, 1);
-			buffMaintain($effect[Pill Power], 0, 1, 1);
-			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
-			buffMaintain($effect[Liquidy Smoky], 0, 1, 1);
-			buffMaintain($effect[Gr8ness], 0, 1, 1);
-			buffMaintain($effect[OMG WTF], 0, 1, 1);
+			buffMaintain($effect[Mystically Oiled]);
+			buffMaintain($effect[Tomato Power]);
+			buffMaintain($effect[Pill Power]);
+			buffMaintain($effect[Glittering Eyelashes]);
+			buffMaintain($effect[Liquidy Smoky]);
+			buffMaintain($effect[Gr8ness]);
+			buffMaintain($effect[OMG WTF]);
 			buffMaintain($effect[Purple Reign], 0, 1, 50);
 			buffMaintain($effect[Purple Reign], 0, 1, 50);
 			buffMaintain($effect[Purple Reign], 0, 1, 50);
@@ -1662,17 +1657,17 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Purple Reign], 0, 1, 50);
 			buffMaintain($effect[Saucemastery], 1, 1, 1);
 			buffMaintain($effect[Pasta Oneness], 1, 1, 1);
-			buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
-			buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
-			buffMaintain($effect[Salamander In Your Stomach], 0, 1, 1);
-			buffMaintain($effect[Twen Tea], 0, 1, 1);
-			buffMaintain($effect[Wit Tea], 0, 1, 1);
-			buffMaintain($effect[Sweet\, Nuts], 0, 1, 1);
-			buffMaintain($effect[Baconstoned], 0, 1, 1);
-			buffMaintain($effect[Berry Statistical], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Magic Of LOV], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Seriously Mutated], 0, 1, 1);
+			buffMaintain($effect[Human-Humanoid Hybrid]);
+			buffMaintain($effect[Human-Human Hybrid]);
+			buffMaintain($effect[Salamander In Your Stomach]);
+			buffMaintain($effect[Twen Tea]);
+			buffMaintain($effect[Wit Tea]);
+			buffMaintain($effect[Sweet\, Nuts]);
+			buffMaintain($effect[Baconstoned]);
+			buffMaintain($effect[Berry Statistical]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Magic Of LOV]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Seriously Mutated]);
 
 			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
 				tryBeachHeadBuff(curQuest);
@@ -1695,7 +1690,7 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			buffMaintain($effect[Nearly All-Natural], 0, 1, 1);
+			buffMaintain($effect[Nearly All-Natural]);
 			handleFamiliar($familiar[Machine Elf]);
 			cs_giant_growth();
 
@@ -1746,17 +1741,17 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Disco Fever], 10, 1, 1);
 			buffMaintain($effect[Blubbered Up], 10, 1, 1);
 
-			buffMaintain($effect[Expert Oiliness], 0, 1, 1);
-			buffMaintain($effect[Tomato Power], 0, 1, 1);
-			buffMaintain($effect[Pulchritudinous Pressure], 0, 1, 1);
-			buffMaintain($effect[Lycanthropy\, Eh?], 0, 1, 1);
-			buffMaintain($effect[Superhuman Sarcasm], 0, 1, 1);
-			buffMaintain($effect[Notably Lovely], 0, 1, 1);
-			buffMaintain($effect[Pill Power], 0, 1, 1);
-			buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
-			buffMaintain($effect[Gr8ness], 0, 1, 1);
-			buffMaintain($effect[Liquidy Smoky], 0, 1, 1);
-			buffMaintain($effect[Barbecue Saucy], 0, 1, 1);
+			buffMaintain($effect[Expert Oiliness]);
+			buffMaintain($effect[Tomato Power]);
+			buffMaintain($effect[Pulchritudinous Pressure]);
+			buffMaintain($effect[Lycanthropy\, Eh?]);
+			buffMaintain($effect[Superhuman Sarcasm]);
+			buffMaintain($effect[Notably Lovely]);
+			buffMaintain($effect[Pill Power]);
+			buffMaintain($effect[Butt-Rock Hair]);
+			buffMaintain($effect[Gr8ness]);
+			buffMaintain($effect[Liquidy Smoky]);
+			buffMaintain($effect[Barbecue Saucy]);
 			buffMaintain($effect[Cinnamon Challenger], 0, 1, 50);
 			buffMaintain($effect[Cinnamon Challenger], 0, 1, 50);
 			buffMaintain($effect[Cinnamon Challenger], 0, 1, 50);
@@ -1764,18 +1759,18 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Cinnamon Challenger], 0, 1, 50);
 			buffMaintain($effect[Disco State of Mind], 1, 1, 1);
 			buffMaintain($effect[Mariachi Mood], 1, 1, 1);
-			buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
-			buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
-			buffMaintain($effect[Newt Gets In Your Eyes], 0, 1, 1);
-			buffMaintain($effect[Twen Tea], 0, 1, 1);
-			buffMaintain($effect[Dexteri Tea], 0, 1, 1);
-			buffMaintain($effect[Busy Bein\' Delicious], 0, 1, 1);
-			buffMaintain($effect[Bandersnatched], 0, 1, 1);
-			buffMaintain($effect[Berry Statistical], 0, 1, 1);
+			buffMaintain($effect[Human-Humanoid Hybrid]);
+			buffMaintain($effect[Human-Human Hybrid]);
+			buffMaintain($effect[Newt Gets In Your Eyes]);
+			buffMaintain($effect[Twen Tea]);
+			buffMaintain($effect[Dexteri Tea]);
+			buffMaintain($effect[Busy Bein\' Delicious]);
+			buffMaintain($effect[Bandersnatched]);
+			buffMaintain($effect[Berry Statistical]);
 
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Moxie Of LOV], 0, 1, 1);
-			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Seriously Mutated], 0, 1, 1);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Experimental Effect G-9]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[The Moxie Of LOV]);
+			if(estimate_cs_questCost(curQuest) > 1)		buffMaintain($effect[Seriously Mutated]);
 
 			if(estimate_cs_questCost(curQuest) > 1 && beachHeadTurnSavings(curQuest) > 0){
 				tryBeachHeadBuff(curQuest);
@@ -1814,7 +1809,7 @@ boolean LA_cs_communityService()
 
 			if(get_cs_questCost(curQuest) > 5)
 			{
-				buffMaintain($effect[Amazing], 0, 1, 1);
+				buffMaintain($effect[Amazing]);
 			}
 
 
@@ -1882,8 +1877,8 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
 			buffMaintain($effect[Blue Swayed], 0, 1, 50);
-			buffMaintain($effect[Loyal Tea], 0, 1, 1);
-			buffMaintain($effect[Blood Bond], 0, 1, 1);
+			buffMaintain($effect[Loyal Tea]);
+			buffMaintain($effect[Blood Bond]);
 
 			if((spleen_left() > 0) && (item_amount($item[Abstraction: Joy]) > 0) && (have_effect($effect[Joy]) == 0))
 			{
@@ -2075,18 +2070,18 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Frenzied, Bloody], 10, 1, 1);
 			songboomSetting("weapon damage");
 
-			buffMaintain($effect[The Power Of LOV], 0, 1, 1);
+			buffMaintain($effect[The Power Of LOV]);
 
 			if((item_amount($item[Wasabi Marble Soda]) == 0) && (have_effect($effect[Wasabi With You]) == 0) && (item_amount($item[Ye Wizard\'s Shack snack voucher]) > 0))
 			{
 				cli_execute("make " + $item[Wasabi Marble Soda]);
-				buffMaintain($effect[Wasabi With You], 0, 1, 1);
+				buffMaintain($effect[Wasabi With You]);
 			}
 
-			buffMaintain($effect[Human-Beast Hybrid], 0, 1, 1);
-			buffMaintain($effect[Twinkly Weapon], 0, 1, 1);
-			buffMaintain($effect[This Is Where You\'re a Viking], 0, 1, 1);
-			buffMaintain($effect[Feeling Punchy], 0, 1, 1);
+			buffMaintain($effect[Human-Beast Hybrid]);
+			buffMaintain($effect[Twinkly Weapon]);
+			buffMaintain($effect[This Is Where You\'re a Viking]);
+			buffMaintain($effect[Feeling Punchy]);
 			if(is_unrestricted($item[Clan Pool Table]) && (have_effect($effect[Billiards Belligerence]) == 0))
 			{
 				visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
@@ -2263,10 +2258,10 @@ boolean LA_cs_communityService()
 				buffMaintain($effect[Bendin\' Hell], 100, 1, 1);
 				buffMaintain($effect[Arched Eyebrow of the Archmage], 10, 1, 1);
 				buffMaintain($effect[Jackasses\' Symphony of Destruction], 8, 1, 1);
-				buffMaintain($effect[Puzzle Fury], 0, 1, 1);
-				buffMaintain($effect[Be A Mind Master], 0, 1, 1);
-				buffMaintain($effect[Paging Betty], 0, 1, 1);
-				buffMaintain($effect[The Magic Of LOV], 0, 1, 1);
+				buffMaintain($effect[Puzzle Fury]);
+				buffMaintain($effect[Be A Mind Master]);
+				buffMaintain($effect[Paging Betty]);
+				buffMaintain($effect[The Magic Of LOV]);
 
 				if(is_unrestricted($item[Clan Pool Table]) && (have_effect($effect[Mental A-cue-ity]) == 0))
 				{
@@ -2276,7 +2271,7 @@ boolean LA_cs_communityService()
 				if((item_amount($item[Tobiko Marble Soda]) == 0) && (have_effect($effect[Pisces in the Skyces]) == 0) && (item_amount($item[Ye Wizard\'s Shack snack voucher]) > 0))
 				{
 					cli_execute("make " + $item[Tobiko Marble Soda]);
-					buffMaintain($effect[Pisces in the Skyces], 0, 1, 1);
+					buffMaintain($effect[Pisces in the Skyces]);
 				}
 
 				if(have_familiar($familiar[Disembodied Hand]))
@@ -2361,10 +2356,10 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			buffMaintain($effect[Snow Shoes], 0, 1, 1);
-			buffMaintain($effect[Obscuri Tea], 0, 1, 1);
-			buffMaintain($effect[Gummed Shoes], 0, 1, 1);
-			buffMaintain($effect[Become Superficially Interested], 0, 1, 1);
+			buffMaintain($effect[Snow Shoes]);
+			buffMaintain($effect[Obscuri Tea]);
+			buffMaintain($effect[Gummed Shoes]);
+			buffMaintain($effect[Become Superficially Interested]);
 			if(is_unrestricted($item[Olympic-sized Clan Crate]) && !get_property("_olympicSwimmingPool").to_boolean())
 			{
 				cli_execute("swim noncombat");
@@ -2402,20 +2397,20 @@ boolean LA_cs_communityService()
 			int questCost = get_cs_questCost(curQuest);
 			if(my_adventures() < questCost)
 			{
-				buffMaintain($effect[A Rose by Any Other Material], 0, 1, 1);
+				buffMaintain($effect[A Rose by Any Other Material]);
 				questCost = questCost - 12;
 			}
 			if(my_adventures() < questCost)
 			{
-				buffMaintain($effect[Throwing Some Shade], 0, 1, 1);
+				buffMaintain($effect[Throwing Some Shade]);
 			}
 			if((auto_mall_price($item[Shady Shades]) < 20000) && (questCost > 12))
 			{
-				buffMaintain($effect[Throwing Some Shade], 0, 1, 1);
+				buffMaintain($effect[Throwing Some Shade]);
 			}
 			if((auto_mall_price($item[Squeaky Toy Rose]) < 20000) && (questCost > 12))
 			{
-				buffMaintain($effect[A Rose by Any Other Material], 0, 1, 1);
+				buffMaintain($effect[A Rose by Any Other Material]);
 			}
 			getHorse("non-combat");
 
@@ -2520,7 +2515,7 @@ boolean LA_cs_communityService()
 			buffMaintain($effect[Leash of Linguini], 12, 1, 1);
 			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 11, 1, 1);
 			buffMaintain($effect[Steely-Eyed Squint], 101, 1, 1);
-			buffMaintain($effect[Heightened Senses], 0, 1, 1);
+			buffMaintain($effect[Heightened Senses]);
 			asdonBuff($effect[Driving Observantly]);
 
 			buffMaintain($effect[Spice Haze], 250, 1, 1);
@@ -2533,10 +2528,10 @@ boolean LA_cs_communityService()
 				}
 			}
 
-			buffMaintain($effect[Human-Pirate Hybrid], 0, 1, 1);
-			buffMaintain($effect[One Very Clear Eye], 0, 1, 1);
-			buffMaintain($effect[Sour Softshoe], 0, 1, 1);
-			buffMaintain($effect[Serendipi Tea], 0, 1, 1);
+			buffMaintain($effect[Human-Pirate Hybrid]);
+			buffMaintain($effect[One Very Clear Eye]);
+			buffMaintain($effect[Sour Softshoe]);
+			buffMaintain($effect[Serendipi Tea]);
 
 			if(have_effect($effect[Uncucumbered]) == 0)
 			{
@@ -2742,8 +2737,8 @@ boolean LA_cs_communityService()
 				string temp = visit_url("shop.php?action=bacta&whichshop=mayoclinic");
 			}
 
-			buffMaintain($effect[Protection from Bad Stuff], 0, 1, 1);
-			buffMaintain($effect[Human-Elemental Hybrid], 0, 1, 1);
+			buffMaintain($effect[Protection from Bad Stuff]);
+			buffMaintain($effect[Human-Elemental Hybrid]);
 			buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 			if((my_familiar() == $familiar[Exotic Parrot]) || (my_familiar() == $familiar[Mu]))
 			{
@@ -2751,14 +2746,14 @@ boolean LA_cs_communityService()
 				buffMaintain($effect[Empathy], 15, 1, 1);
 			}
 			buffMaintain($effect[Astral Shell], 10, 1, 1);
-			buffMaintain($effect[Sleazy Hands], 0, 1, 1);
-			buffMaintain($effect[Egged On], 0, 1, 1);
-			buffMaintain($effect[Flame-Retardant Trousers], 0, 1, 1);
-			buffMaintain($effect[Stinky Hands], 0, 1, 1);
-			buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
-			buffMaintain($effect[Frost Tea], 0, 1, 1);
-			buffMaintain($effect[Berry Elemental], 0, 1, 1);
-			buffMaintain($effect[Amazing], 0, 1, 1);
+			buffMaintain($effect[Sleazy Hands]);
+			buffMaintain($effect[Egged On]);
+			buffMaintain($effect[Flame-Retardant Trousers]);
+			buffMaintain($effect[Stinky Hands]);
+			buffMaintain($effect[Human-Machine Hybrid]);
+			buffMaintain($effect[Frost Tea]);
+			buffMaintain($effect[Berry Elemental]);
+			buffMaintain($effect[Amazing]);
 
 			spacegateVaccine($effect[Rainbow Vaccine]);
 
@@ -2776,7 +2771,7 @@ boolean LA_cs_communityService()
 
 			if(curCost >= 3)
 			{
-				buffMaintain($effect[Spiro Gyro], 0, 1, 1);
+				buffMaintain($effect[Spiro Gyro]);
 			}
 
 
@@ -2896,8 +2891,6 @@ void cs_initializeDay(int day)
 	{
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
 	}
-
-	set_property("choiceAdventure1108", 3);
 
 	if(day == 1)
 	{

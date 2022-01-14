@@ -613,12 +613,6 @@ void consumeStuff()
 		return;
 	}
 
-	// Try to get Fortune Cookie numbers
-	if (consumeFortune())
-	{
-		return;
-	}
-
 	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
 	
 	if (my_adventures() < 10 && fullness_left() > 0 && is_boris())
@@ -668,65 +662,6 @@ void consumeStuff()
 	}
 }
 
-boolean consumeFortune()
-{
-	if (contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
-	{
-		return false;
-	}
-
-	// Don't get lucky numbers for the first semi-rare if we still need to adventure in the outskirts
-	if (my_turncount() < 80 && (internalQuestStatus("questL05Goblin") < 1 && item_amount($item[Knob Goblin encryption key]) < 1) && !isActuallyEd())
-	{
-		return false;
-	}
-
-	// Try to consume a Lucky Lindy
-	if (inebriety_left() > 0 && canDrink($item[Lucky Lindy]) && my_meat() >= npc_price($item[Lucky Lindy]))
-	{
-		if (autoDrink(1, $item[Lucky Lindy]))
-		{
-			return true;
-		}
-	}
-	
-	// Try to consume a Fortune Cookie
-	if (fullness_left() > 0 && canEat($item[Fortune Cookie]) && my_meat() >= npc_price($item[Fortune Cookie]))
-	{
-		// Eat a spaghetti breakfast if still consumable
-		if (my_fullness() == 0)
-		{
-			if (canEat($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_level() >= 10)
-			{
-				if (!autoEat(1, $item[Spaghetti Breakfast]))
-				{
-					return false;
-				}
-			}
-			else
-			{
-				foreach muffin in $items[blueberry muffin, bran muffin, chocolate chip muffin]
-				{
-					if (canEat(muffin) && item_amount(muffin) > 0)
-					{
-						if (!autoEat(1, muffin))
-						{
-							return false;
-						}
-					}
-				}
-			}
-		}
-
-		buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
-		if (autoEat(1, $item[Fortune Cookie]))
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
 
 int AUTO_ORGAN_STOMACH = 1;
 int AUTO_ORGAN_LIVER   = 2;

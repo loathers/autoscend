@@ -895,24 +895,24 @@ boolean L12_filthworms()
 	}
 	else		//could not guarentee stealing. buff item drops instead
 	{
-		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
-		buffMaintain($effect[Kindly Resolve], 0, 1, 1);
-		buffMaintain($effect[Fortunate Resolve], 0, 1, 1);
-		buffMaintain($effect[One Very Clear Eye], 0, 1, 1);
-		buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
-		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
-		buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
-		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
-		buffMaintain($effect[Eagle Eyes], 0, 1, 1);
-		buffMaintain($effect[Heart of Lavender], 0, 1, 1);
+		buffMaintain($effect[Joyful Resolve]);
+		buffMaintain($effect[Kindly Resolve]);
+		buffMaintain($effect[Fortunate Resolve]);
+		buffMaintain($effect[One Very Clear Eye]);
+		buffMaintain($effect[Human-Fish Hybrid]);
+		buffMaintain($effect[Human-Human Hybrid]);
+		buffMaintain($effect[Human-Machine Hybrid]);
+		buffMaintain($effect[Unusual Perspective]);
+		buffMaintain($effect[Eagle Eyes]);
+		buffMaintain($effect[Heart of Lavender]);
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
 		if(get_property("auto_dickstab").to_boolean())
 		{
-			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
+			buffMaintain($effect[Wet and Greedy]);
 		}
-		buffMaintain($effect[Frosty], 0, 1, 1);
+		buffMaintain($effect[Frosty]);
 		
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
@@ -1613,21 +1613,21 @@ boolean L12_themtharHills()
 	{
 		makeGenieWish($effect[Frosty]);
 	}
-	buffMaintain($effect[Greedy Resolve], 0, 1, 1);
+	buffMaintain($effect[Greedy Resolve]);
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
 	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
 	#Handle for familiar weight change.
-	buffMaintain($effect[Kindly Resolve], 0, 1, 1);
-	buffMaintain($effect[Heightened Senses], 0, 1, 1);
-	buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
-	buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Constellation Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
-	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
-	buffMaintain($effect[Patent Avarice], 0, 1, 1);
-	buffMaintain($effect[Car-Charged], 0, 1, 1);
-	buffMaintain($effect[Heart of Pink], 0, 1, 1);
+	buffMaintain($effect[Kindly Resolve]);
+	buffMaintain($effect[Heightened Senses]);
+	buffMaintain($effect[Big Meat Big Prizes]);
+	buffMaintain($effect[Human-Machine Hybrid]);
+	buffMaintain($effect[Human-Constellation Hybrid]);
+	buffMaintain($effect[Human-Humanoid Hybrid]);
+	buffMaintain($effect[Human-Fish Hybrid]);
+	buffMaintain($effect[Cranberry Cordiality]);
+	buffMaintain($effect[Patent Avarice]);
+	buffMaintain($effect[Car-Charged]);
+	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
@@ -1656,7 +1656,7 @@ boolean L12_themtharHills()
 
 	if(in_heavyrains())
 	{
-		buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
+		buffMaintain($effect[Sinuses For Miles]);
 	}
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
@@ -1726,19 +1726,19 @@ boolean L12_themtharHills()
 
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
 	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
-	buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
-	buffMaintain($effect[Greedy Resolve], 0, 1, 1);
-	buffMaintain($effect[Kindly Resolve], 0, 1, 1);
-	buffMaintain($effect[Heightened Senses], 0, 1, 1);
-	buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
-	buffMaintain($effect[Fortunate Resolve], 0, 1, 1);
-	buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Constellation Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
-	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
-	buffMaintain($effect[Car-Charged], 0, 1, 1);
-	buffMaintain($effect[Heart of Pink], 0, 1, 1);
+	buffMaintain($effect[Sinuses For Miles]);
+	buffMaintain($effect[Greedy Resolve]);
+	buffMaintain($effect[Kindly Resolve]);
+	buffMaintain($effect[Heightened Senses]);
+	buffMaintain($effect[Big Meat Big Prizes]);
+	buffMaintain($effect[Fortunate Resolve]);
+	buffMaintain($effect[Human-Machine Hybrid]);
+	buffMaintain($effect[Human-Constellation Hybrid]);
+	buffMaintain($effect[Human-Humanoid Hybrid]);
+	buffMaintain($effect[Human-Fish Hybrid]);
+	buffMaintain($effect[Cranberry Cordiality]);
+	buffMaintain($effect[Car-Charged]);
+	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	bat_formWolf();
 	zataraSeaside("meat");

@@ -224,11 +224,7 @@ boolean LX_islandAccess()
 	{
 		return false;
 	}
-	if(get_counters("Fortune Cookie", 0, 9) == "Fortune Cookie")
-	{
-		//Just check the Fortune Cookie counter not any others.
-		return false;
-	}
+
 
 	auto_log_info("At the shore, la de da!", "blue");
 	if(item_amount($item[Dinghy Plans]) > 0)

@@ -58,6 +58,10 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;
 	}
+	if(pulledToday(it))
+	{
+		return false;
+	}
 	
 	if(storage_amount(it) > 0)
 	{
@@ -99,22 +103,11 @@ boolean canPull(item it)
 	return canPull(it, false);
 }
 
-void pullAll(item it)
+boolean pulledToday(item it)
 {
-	if(storage_amount(it) > 0)
-	{
-		take_storage(storage_amount(it), it);
-	}
-}
-
-void pullAndUse(item it, int uses)
-{
-	pullAll(it);
-	while((item_amount(it) > 0) && (uses > 0))
-	{
-		use(1, it);
-		uses = uses - 1;
-	}
+	string allPulls = get_property("auto_pulls").to_string();
+	string formatedSearchString = "(" + my_daycount() + ":" + it;
+	return contains_text(allPulls,formatedSearchString);
 }
 
 int auto_mall_price(item it)
@@ -190,6 +183,10 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 		return false;
 	}
 	if(pulls_remaining() == 0)
+	{
+		return false;
+	}
+	if(pulledToday(it))
 	{
 		return false;
 	}
@@ -463,6 +460,18 @@ boolean acquireTotem()
 	return false;
 }
 
+boolean auto_hermit(int amt, item it)
+{
+	//workaround for this bug https://kolmafia.us/threads/27105/
+	if(it != $item[11-Leaf Clover])
+	{
+		return hermit(amt, it);
+	}
+	int initial = item_amount(it);
+	hermit(amt, it);
+	return item_amount(it) == initial + amt;
+}
+
 boolean acquireHermitItem(item it)
 {
 	if(!isHermitAvailable())
@@ -477,11 +486,7 @@ boolean acquireHermitItem(item it)
 	{
 		return false;
 	}
-	if(it == $item[Disassembled Clover])
-	{
-		it = $item[Ten-leaf Clover];
-	}
-	if(!($items[Banjo Strings, Catsup, Chisel, Figurine of an Ancient Seal, Hot Buttered Roll, Jaba&ntilde;ero Pepper, Ketchup, Petrified Noodles, Seal Tooth, Ten-Leaf Clover, Volleyball, Wooden Figurine] contains it))
+	if(!($items[Banjo Strings, Catsup, Chisel, Figurine of an Ancient Seal, Hot Buttered Roll, Jaba&ntilde;ero Pepper, Ketchup, Petrified Noodles, Seal Tooth, 11-Leaf Clover, Volleyball, Wooden Figurine] contains it))
 	{
 		return false;
 	}
@@ -499,29 +504,9 @@ boolean acquireHermitItem(item it)
 	{
 		if((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)
 		{
-			if(it == $item[Ten-Leaf Clover])
-			{
-				have = item_amount($item[Disassembled Clover]);
-			}
-			if(!hermit(1, it))
+			if(!auto_hermit(1, it))
 			{
 				return false;
-			}
-			if(it == $item[Ten-Leaf Clover])
-			{
-				if(have == item_amount($item[Disassembled Clover]))
-				{
-					return false;
-				}
-				else if((have + 1) == item_amount($item[Disassembled Clover]))
-				{
-					return true;
-				}
-				else
-				{
-					auto_log_warning("Invalid clover count from hermit behavior, reporting failure.", "red");
-					return false;
-				}
 			}
 		}
 		else
@@ -890,9 +875,9 @@ boolean LX_craftAcquireItems()
 	{
 		boolean buyAntiqueAccordion = false;
 
-	foreach SongCheck in ATSongList()
+		foreach SongCheck in ATSongList()
 		{
-			if(have_skill(SongCheck))
+			if(have_skill(SongCheck.to_skill()))
 			{
 				buyAntiqueAccordion = true;
 			}
