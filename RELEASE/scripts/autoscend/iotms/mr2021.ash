@@ -62,8 +62,8 @@ boolean auto_allowCrystalBall(location loc, boolean speculative)
 		return true;
 	}
 
-	// next monster forced by semi rare so no need to forbid equipping crystal ball
-	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
+	// next monster forced by clover so no need to forbid equipping crystal ball
+	if(have_effect($effect[Lucky!])
 	{
 		if(loc == $location[The Hidden Temple])
 		{
