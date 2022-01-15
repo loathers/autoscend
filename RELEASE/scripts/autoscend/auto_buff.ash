@@ -39,6 +39,9 @@ boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int 
 		return false;
 	}
 	//handling for buffs that must equip something first
+	boolean equip_changed = false;
+	slot equip_slot = to_slot(mustEquip);
+	item equip_original = equipped_item(equip_slot);
 	if(mustEquip != $item[none])
 	{
 		if(!possessEquipment(mustEquip) ||	//we can not wear what we do not have. this checks both inventory and already worn
@@ -50,16 +53,24 @@ boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int 
 		if(!speculative)
 		{
 			//wear it now before using the buff. do not use the auto_ functions here because we only want to wear it long enough to cast the buff. not change what we wear to the next adventure
-			equip(mustEquip);
+			equip(equip_slot, mustEquip);
 			if(equipped_amount(mustEquip) == 0)
 			{
 				auto_log_warning("buffMaintain failed to equip [" +mustEquip+ "] for some reason. which is necessary in order to apply [" +buff+ "] using the skill [" +source+ "].");
 				return false;
 			}
+			equip_changed = true;
 		}
 	}
 	if(!speculative)
+	{
 		use_skill(casts, source);
+	}
+	
+	if(equip_changed)
+	{
+		equip(equip_slot, equip_original);		//return equipment to how it was originally
+	}
 	return true;
 }
 
