@@ -566,7 +566,7 @@ float consumptionProgress()
 	}
 	else
 	{
-		float used_organ_ratio = min(organs_used / organs_max, 1);
+		float used_organ_ratio = min(organs_used.to_float() / organs_max.to_float(), 1);
 		return used_organ_ratio;
 	}
 }
