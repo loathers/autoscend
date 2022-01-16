@@ -478,7 +478,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	else
 	{
 		//test code
-		abort("Looked for banish, but couldn't use bowling ball")
+		abort("Looked for banish, but couldn't use bowling ball");
 	}
 
 	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
