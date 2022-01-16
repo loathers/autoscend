@@ -1530,12 +1530,7 @@ boolean L13_towerNSTower()
 			int pulled_items = 0;
 			foreach it in $items[gauze garter, filthy poultice, red pixel potion]
 			{
-				while(pulled_items < pull_target && canPull(it))
-				{
-						take_storage(1, it);
-						pulled_items += 1;
-				}
-			
+				pullXWhenHaveY(it,1,item_amount(it));
 			}
 
 			int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
@@ -1718,7 +1713,7 @@ boolean L13_towerNSNagamar()
 		cli_execute("refresh quests");
 		if(internalQuestStatus("questL13Final") != 12)
 		{
-			abort("In this specific ascension [naughty sorceress \(3\)] is wearing a mask that makes kol base game fail to advance the quest to step 12. Which means that bear verb orgy is impossible for this specific run. Manually grab a [Ten-Leaf Clover] from [Barrel Full of Barrels] then use it to get a [Wand of Nagamar] manually and run me again");
+			abort("In this specific ascension [naughty sorceress \(3\)] is wearing a mask that makes kol base game fail to advance the quest to step 12. Which means that bear verb orgy is impossible for this specific run. Manually get the [Lucky!] effect then use it to get a [Wand of Nagamar] manually and run me again");
 		}
 	}
 	
@@ -1735,15 +1730,6 @@ boolean L13_towerNSNagamar()
 	if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12 && !in_koe())
 	{
 		return autoAdv($location[The VERY Unquiet Garves]);
-	}
-	
-	if(in_glover())
-	{
-		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
-	}
-	else
-	{
-		pullXWhenHaveY($item[Disassembled Clover], 1, 0);
 	}
 	
 	if(cloversAvailable() > 0)

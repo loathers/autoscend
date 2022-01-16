@@ -249,7 +249,7 @@ boolean LA_cs_communityService()
 			if((my_inebriety() == 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500))
 			{
 				autoDrink(1, $item[Lucky Lindy]);
-				if(my_inebriety() != 1)
+				if(my_inebriety() != $item[Lucky Lindy].inebriety)
 				{
 					if(auto_get_clan_lounge() contains $item[Lucky Lindy])
 					{

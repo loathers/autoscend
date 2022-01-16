@@ -1660,7 +1660,8 @@ boolean L12_themtharHills()
 	}
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
-	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0)
+	//count inhaler if we have one or if we have a clover to obtain one
+	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0)
 	{
 		meat_need = meat_need - 200;
 	}
@@ -1723,6 +1724,14 @@ boolean L12_themtharHills()
 		}
 	}
 
+	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0)
+	{
+		//use clover to get inhaler
+		cloverUsageInit();
+		boolean retval = autoAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+		cloverUsageFinish();
+		return retval;
+	}
 
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
 	buffMaintain($effect[Polka of Plenty], 8, 1, 1);

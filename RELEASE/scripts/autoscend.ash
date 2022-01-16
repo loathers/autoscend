@@ -330,6 +330,9 @@ boolean LX_burnDelay()
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
 	boolean wannaBackup = auto_backupTarget();
+	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
+	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
+	boolean voidMonsterNext = (get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13);
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -381,12 +384,21 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
+		if(voidMonsterNext)
+		{
+			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
+			if(autoAdv(burnZone))
+			{
+				return true;
+			}
+		}
 	}
-	else if(wannaVote || wannaDigitize || wannaSausage)
+	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)
 	{
 		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
 		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
 		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
+		if(voidMonsterNext) auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
 	}
 	else if(wannaBackup)
 	{
@@ -537,82 +549,6 @@ boolean LX_doVacation()
 
 	return autoAdv(1, $location[The Shore\, Inc. Travel Agency]);
 }
-
-
-// this block commented out for future reference when implementing 11-leaf clover / lucky!
-/* boolean fortuneCookieEvent()
-{
-	//Semi-rare Handler
-	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
-	{
-		auto_log_info("Semi rare time!", "blue");
-		cli_execute("counters");
-
-		location goal = $location[The Hidden Temple];
-
-		if(in_community() && (my_daycount() == 1))
-		{
-			goal = $location[The Limerick Dungeon];
-		}
-
-		if (goal == $location[The Hidden Temple] && (get_property("semirareLocation") == goal || item_amount($item[stone wool]) >= 2 || internalQuestStatus("questL11Worship") >= 3 || get_property("lastTempleUnlock").to_int() < my_ascensions()))
-		{
-			goal = $location[The Castle in the Clouds in the Sky (Top Floor)];
-		}
-
-		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean() || in_koe()))
-		{
-			goal = $location[The Limerick Dungeon];
-		}
-
-		if (goal == $location[The Limerick Dungeon] && (get_property("semirareLocation") == goal || item_amount($item[Cyclops Eyedrops]) > 0 || get_property("lastFilthClearance").to_int() >= my_ascensions() || get_property("sidequestOrchardCompleted") != "none" || get_property("currentHippyStore") != "none" || isActuallyEd() || in_koe() || item_amount($item[heart of the filthworm queen]) > 0))
-		{
-			goal = $location[The Copperhead Club];
-		}
-
-		if (goal == $location[The Copperhead Club] && (get_property("semirareLocation") == goal || internalQuestStatus("questL11Shen") < 0 || internalQuestStatus("questL11Ron") >= 2))
-		{
-			goal = $location[The Haunted Kitchen];
-		}
-
-		if (goal == $location[The Haunted Kitchen] && (get_property("semirareLocation") == goal || get_property("chasmBridgeProgress").to_int() >= 30 || internalQuestStatus("questL09Topping") >= 1 || isActuallyEd()))
-		{
-			goal = $location[The Outskirts of Cobb\'s Knob];
-		}
-
-		if (goal == $location[The Outskirts of Cobb\'s Knob] && (get_property("semirareLocation") == goal || internalQuestStatus("questL05Goblin") > 1 || item_amount($item[Knob Goblin encryption key]) > 0 || $location[The Outskirts of Cobb\'s Knob].turns_spent >= 10))
-		{
-			goal = $location[The Haunted Pantry];
-		}
-
-		if((goal == $location[The Haunted Pantry]) && (get_property("semirareLocation") == goal))
-		{
-			goal = $location[The Sleazy Back Alley];
-		}
-
-		if((goal == $location[The Sleazy Back Alley]) && (get_property("semirareLocation") == goal))
-		{
-			goal = $location[The Outskirts of Cobb\'s Knob];
-		}
-
-		if((goal == $location[The Outskirts of Cobb\'s Knob]) && (get_property("semirareLocation") == goal))
-		{
-			auto_log_warning("Do we not have access to either The Haunted Pantry or The Sleazy Back Alley?", "red");
-			goal = $location[The Haunted Pantry];
-		}
-		
-		if(in_plumber())
-		{
-			//prevent plumber crash when it tries to adventure without plumber gear.
-			plumber_equipTool($stat[moxie]);
-			equipMaximizedGear();
-		}
-		
-		boolean retval = autoAdv(goal);
-		return retval;
-	}
-	return false;
-} */
 
 void initializeDay(int day)
 {
