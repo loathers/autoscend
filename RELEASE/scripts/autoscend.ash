@@ -330,6 +330,9 @@ boolean LX_burnDelay()
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
 	boolean wannaBackup = auto_backupTarget();
+	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
+	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
+	boolean voidMonsterNext = (get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13);
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -381,12 +384,21 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
+		if(voidMonsterNext)
+		{
+			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
+			if(autoAdv(burnZone))
+			{
+				return true;
+			}
+		}
 	}
-	else if(wannaVote || wannaDigitize || wannaSausage)
+	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)
 	{
 		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
 		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
 		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
+		if(voidMonsterNext) auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
 	}
 	else if(wannaBackup)
 	{

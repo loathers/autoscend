@@ -290,7 +290,7 @@ void resetMaximize()
 			}
 		}
 	}
-	else if (item_amount($item[January's Garbage Tote]) > 0 && in_bhy())
+	else if (item_amount($item[January\'s Garbage Tote]) > 0 && in_bhy())
 	{
 		// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
 		foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt]
@@ -348,8 +348,13 @@ void finalizeMaximize(boolean speculative)
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}
+	// add bonus if next fight is a free void monster
+	if((get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13))
+	{
+		addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
+	}
 	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
-	addBonusToMaximize($item[Mr. Screege's spectacles], 100); // meat stuff
+	addBonusToMaximize($item[Mr. Screege\'s spectacles], 100); // meat stuff
 	if(have_effect($effect[blood bubble]) == 0)
 	{
 		// blocks first hit, but doesn't stack with blood bubble
