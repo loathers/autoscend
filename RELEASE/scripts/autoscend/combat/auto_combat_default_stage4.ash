@@ -320,7 +320,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		}
 
 		//increase item and meat bonus if not item capped in current zone
-		generic_t itemNeed = zone_needItem(place);
+		generic_t itemNeed = zone_needItem(my_location());
 		if(itemNeed._boolean)
 		{
 			if(item_drop_modifier() < itemNeed._float && canUse($skill[Bowl Straight Up]))
