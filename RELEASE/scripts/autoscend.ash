@@ -165,6 +165,7 @@ void initializeSettings() {
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
+	set_property("auto_farmingKaAsEd", false);
 	set_property("auto_forceTavern", false);
 	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");
