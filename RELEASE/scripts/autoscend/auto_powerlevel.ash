@@ -83,31 +83,6 @@ boolean LX_attemptPowerLevel()
 	if(timeSpinnerAdventure()) return true;
 	//do not use the scaling zone [The Thinknerd Warehouse] here.
 	//it has low stat caps on the scaling, resulting in <30 substats per adv
-
-	// use spare clovers to powerlevel
-	int cloverLimit = get_property("auto_wandOfNagamar").to_boolean() ? 1 : 0;
-	if(my_level() == 12 && internalQuestStatus("questL12War") > 1 && cloversAvailable() > cloverLimit)
-	{
-		//Determine where to go for clover stats, do not worry about clover failures
-		location whereTo = $location[none];
-		switch (my_primestat())
-		{
-			case $stat[Muscle]:
-				whereTo = $location[The Haunted Gallery];
-				break;
-			case $stat[Mysticality]:
-				whereTo = $location[The Haunted Bathroom];
-				break;
-			case $stat[Moxie]:
-				whereTo = $location[The Haunted Ballroom];
-				break;
-		}
-
-		cloverUsageInit();
-		boolean adv_spent = autoAdv(whereTo);
-		cloverUsageFinish();
-		if(adv_spent) return true;
-	}
 	
 	if (internalQuestStatus("questM21Dance") > 3)
 	{

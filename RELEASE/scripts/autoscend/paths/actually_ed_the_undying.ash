@@ -1244,27 +1244,6 @@ boolean L9_ed_chasmStart()
 	return false;
 }
 
-boolean L9_ed_chasmBuildClover(int need)
-{
-	if (isActuallyEd() && (need > 3) && (item_amount($item[Disassembled Clover]) > 2))
-	{
-		use(1, $item[disassembled clover]);
-		backupSetting("cloverProtectActive", false);
-		autoAdvBypass("adventure.php?snarfblat=295", $location[The Smut Orc Logging Camp]);
-		if(item_amount($item[Ten-Leaf Clover]) > 0)
-		{
-			auto_log_info("Wandering adventure in The Smut Orc Logging Camp, boo. Gonna have to do this again.");
-			use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
-			restoreSetting("cloverProtectActive");
-			return true;
-		}
-		restoreSetting("cloverProtectActive");
-		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-		return true;
-	}
-	return false;
-}
-
 boolean ed_DelayNC_DailyDungeon()
 {
 	//Ed will be doing daily dungeon if auto_forceFatLootToken == true

@@ -1252,20 +1252,10 @@ boolean L11_aridDesert()
 		int need = 100 - get_property("desertExploration").to_int();
 		auto_log_info("Getting some ultrahydrated, I suppose. Desert left: " + need, "blue");
 
-		if((need > (5 * progress)) && cloversAvailable() > 2 && !auto_haveLovebugs())
+		if(!autoAdv(1, $location[The Oasis]))
 		{
-			auto_log_info("Gonna clover this, yeah, it only saves 2 adventures. So?", "green");
-			cloverUsageInit();
-			autoAdvBypass("adventure.php?snarfblat=122", $location[The Oasis]);
-			cloverUsageFinish();
-		}
-		else
-		{
-			if(!autoAdv(1, $location[The Oasis]))
-			{
-				auto_log_warning("Could not visit the Oasis for some raisin, assuming desertExploration is incorrect.", "red");
-				set_property("desertExploration", 0);
-			}
+			auto_log_warning("Could not visit the Oasis for some reason, assuming desertExploration is incorrect.", "red");
+			set_property("desertExploration", 0);
 		}
 	}
 	return true;
@@ -1302,27 +1292,46 @@ boolean L11_wishForBaaBaaBuran()
 	return false;
 }
 
-boolean L11_unlockHiddenCity() {
-	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2) {
+boolean L11_unlockHiddenCity() 
+{
+	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2) 
+	{
 		return false;
 	}
-	if (my_adventures() - auto_advToReserve() <= 3) {
+	if (my_adventures() - auto_advToReserve() <= 3) 
+	{
 		return false;
 	}
 
 	auto_log_info("Searching for the Hidden City", "blue");
-	if (!in_glover() && !in_tcrs()) {
-		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0) {
+	if (!in_glover() && !in_tcrs()) 
+	{
+		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && cloversAvailable() > 0) 
+		{
+			//use clover to get 2x Stone Wool
+			cloverUsageInit();
+			boolean retval = autoAdv($location[The Hidden Temple]);
+			cloverUsageFinish();
+			return retval;
+		}
+		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
+		{
+			//couldn't clover for stone wool. Try to get with a wish
 			L11_wishForBaaBaaBuran();
+		}
+		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
+		{
+			//couldn't wish for stone wool. Try to pull one
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
+
 		buffMaintain($effect[Stone-Faced]);
 		if (have_effect($effect[Stone-Faced]) == 0)
 		{
 			if(isAboutToPowerlevel())	//we ran out of other quests to do. stop waiting for optimal conditions
 			{
 				//TODO replace this abort with a function that adventures in the ziggurat for stone wool.
-				abort("We need [Stone Wool] to unlock the hidden city and were unable to get it via semirare. This scenario is not currently automated. Please manually acquire 2 [Stone Wool] then run autoscend again.");
+				abort("We need [Stone Wool] to unlock the hidden city and were unable to get it via Lucky!. This scenario is not currently automated. Please manually acquire 2 [Stone Wool] then run autoscend again.");
 			}
 			else return false;	//go do other things while we keep waiting for semirare
 		}

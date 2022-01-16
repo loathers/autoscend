@@ -304,17 +304,6 @@ boolean L8_getMineOres()
 			numCloversKeep = 0;
 		}
 	}
-	if(in_nuclear())
-	{
-		if(cloversAvailable() <= numCloversKeep)
-		{
-			handleBarrelFullOfBarrels(false);
-			string temp = visit_url("barrel.php");
-			temp = visit_url("choice.php?whichchoice=1099&pwd=&option=2");
-			handleBarrelFullOfBarrels(false);
-			return true;
-		}
-	}
 	if(cloversAvailable() > numCloversKeep)
 	{
 		cloverUsageInit();

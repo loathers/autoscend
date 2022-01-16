@@ -456,7 +456,6 @@ void ed_handleAdventureServant(location loc);
 boolean L1_ed_island();
 boolean L1_ed_islandFallback();
 boolean L9_ed_chasmStart();
-boolean L9_ed_chasmBuildClover(int need);
 boolean ed_DelayNC_DailyDungeon();
 boolean ed_DelayNC(int potential_dmg);
 boolean ed_DelayNC(float potential_dmg_percent);

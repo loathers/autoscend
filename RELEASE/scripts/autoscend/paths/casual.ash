@@ -234,8 +234,8 @@ boolean LX_acquireFamiliarLeprechaun()
 				}
 				else if(zone_available($location[The Spooky Forest]))	//spend 1 adv and one clover to get it instead.
 				{
-					retrieve_item(1, $item[Ten-Leaf Clover]);
-					if(item_amount($item[Ten-Leaf Clover]) > 0)
+					retrieve_item(1, $item[11-Leaf Clover]);
+					if(item_amount($item[11-Leaf Clover]) > 0)
 					{
 						cloverUsageInit();
 						boolean adventure = autoAdv($location[The Spooky Forest]);

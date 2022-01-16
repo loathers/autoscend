@@ -639,32 +639,5 @@ boolean LX_meatMaid()
 		return true;
 	}
 
-	if(cloversAvailable() == 0)
-	{
-		return false;
-	}
-	if(my_meat() < 320)
-	{
-		return false;
-	}
-	auto_log_info("Well, we could make a Meat Maid and that seems raisinable.", "blue");
-
-	if((item_amount($item[Brainy Skull]) == 0) && (item_amount($item[Disembodied Brain]) == 0))
-	{
-		cloverUsageInit();
-		autoAdvBypass(58, $location[The VERY Unquiet Garves]);
-		cloverUsageFinish();
-		if(get_property("lastEncounter") == "Rolling the Bones")
-		{
-			auto_log_info("Got a brain, trying to make and use a meat maid now.", "blue");
-			cli_execute("make " + $item[Meat Maid]);
-			use(1, $item[Meat Maid]);
-		}
-		if(lastAdventureSpecialNC())
-		{
-			abort("May be stuck in an interrupting Non-Combat adventure, finish current adventure and resume");
-		}
-		return true;
-	}
 	return false;
 }

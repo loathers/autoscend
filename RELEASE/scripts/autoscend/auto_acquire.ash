@@ -806,11 +806,6 @@ int handlePulls(int day)
 
 boolean LX_craftAcquireItems()
 {
-	if((item_amount($item[Ten-Leaf Clover]) > 0) && glover_usable($item[Ten-Leaf Clover]))
-	{
-		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
-	}
-
 	if((get_property("lastGoofballBuy").to_int() != my_ascensions()) && (internalQuestStatus("questL03Rat") >= 0))
 	{
 		visit_url("place.php?whichplace=woods");

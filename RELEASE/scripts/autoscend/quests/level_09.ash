@@ -250,11 +250,6 @@ boolean L9_chasmBuild()
 
 	if(in_hardcore())
 	{
-		int need = (30 - get_property("chasmBridgeProgress").to_int());
-		if(L9_ed_chasmBuildClover(need))
-		{
-			return true;
-		}
 
 		if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
 		{
