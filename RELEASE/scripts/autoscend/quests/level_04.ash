@@ -20,9 +20,7 @@ boolean L4_batCave()
 		{
 			if (item_amount($item[Sonar-In-A-Biscuit]) == 0 && can_interact())
 			{
-				//if in post ronin or in casual, buy Sonar-In-A-Biscuit if cheaper than what it would cost to get with adventures and clovers.
-				int valueOfSonar = (get_property("valueOfAdventure").to_int() + min(mall_price($item[disassembled clover]), mall_price($item[ten-leaf clover]))) * 0.5;
-				buyUpTo(1, $item[Sonar-In-A-Biscuit], valueOfSonar);
+				buyUpTo(1, $item[Sonar-In-A-Biscuit], get_property("valueOfAdventure").to_int());
 			}
 			if (item_amount($item[Sonar-In-A-Biscuit]) > 0)
 			{
@@ -108,32 +106,6 @@ boolean L4_batCave()
 	{
 		auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
 		return false;
-	}
-
-	if (cloversAvailable() > 0 && batStatus <= 1 && !in_bhy())
-	{
-		if(my_hp() < 6)	//we will be taking 5 damage from this
-		{
-			if(my_maxhp() < 6)
-			{
-				auto_log_warning("How did I end up in [Guano Junction] with less than 6 max HP? skipping until maxHP > 5", "blue");
-				return false;
-			}
-			if(isActuallyEd())
-			{
-				auto_log_warning("Ed wanted to clover [Guano Junction] but does not have enough HP. skipping until HP > 5", "blue");
-				return false;
-			}
-			if(!acquireHP(6))	//try to restore HP to avoid beaten up
-			{
-				auto_log_warning("Tried to restore HP to 6 to clover [Guano Junction] but failed to do so. skipping until HP > 5", "blue");
-				return false;
-			}
-		}
-		cloverUsageInit();
-		autoAdvBypass(31, $location[Guano Junction]);
-		cloverUsageFinish();
-		return true;
 	}
 
 	bat_formBats();
