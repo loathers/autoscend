@@ -1409,17 +1409,17 @@ boolean cloverUsageInit()
 	if(item_amount($item[11-Leaf Clover]) > 0)
 	{
 		use(1, $item[11-Leaf Clover]);
+		if(have_effect($effect[Lucky!]) > 0)
+		{
+			auto_log_info("Clover usage initialized");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after using an 11-Leaf Clover");
+		}
 	}
-	if(have_effect($effect[Lucky!]) > 0)
-	{
-		auto_log_info("Clover usage initialized");
-		return true;
-	}
-	else
-	{
-		auto_log_warning("Did not acquire Lucky! after using an 11-Leaf Clover");
-	}
-
+	
 	//use Astral Energy Drinks if we have room
 	if(spleen_left() >= 5)
 	{
@@ -1431,18 +1431,17 @@ boolean cloverUsageInit()
 		if(item_amount($item[[10883]Astral Energy Drink]) > 0)
 		{
 			use(1, $item[[10883]Astral Energy Drink]);
-		}
-		if(have_effect($effect[Lucky!]) > 0)
-		{
-			auto_log_info("Clover usage initialized");
-			return true;
-		}
-		else
-		{
-			auto_log_warning("Did not acquire Lucky! after drinking an Astral Energy Drink");
+			if(have_effect($effect[Lucky!]) > 0)
+			{
+				auto_log_info("Clover usage initialized");
+				return true;
+			}
+			else
+			{
+				auto_log_warning("Did not acquire Lucky! after drinking an Astral Energy Drink");
+			}
 		}
 	}
-
 
 	abort("We tried to initialize clover usage but was unable to get Lucky!");
 	return false;
