@@ -16,7 +16,7 @@ string auto_bowlingBallCombatString(location place)
 	{
 		set_property("auto_bowledAtAlley", true);
 		return useItem($item[Cosmic Bowling Ball]);
-	})
+	}
 
 	// determine if we want more stats
 	if(canUse($skill[Bowl Sideways], false))
