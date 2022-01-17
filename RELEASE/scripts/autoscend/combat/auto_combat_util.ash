@@ -198,8 +198,7 @@ string useItems(item it1, item it2)
 skill getSniffer(monster enemy, boolean inCombat)
 {
 	//returns the skill we want to use to sniff the enemy
-	//all sniffers eliminate the rule that reduces the odds of encountering the same enemy twice in a row.
-	//sniffers also increase the odds of encountering the monster by a variable amount.
+	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
 	if(canUse($skill[Transcendent Olfaction], true , inCombat) && get_property("_olfactionsUsed").to_int() < 3 &&
 	!contains_text(get_property("olfactedMonster"), enemy))
 	{

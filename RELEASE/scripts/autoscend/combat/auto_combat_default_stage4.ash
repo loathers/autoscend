@@ -12,8 +12,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	retval = auto_combatLicenseToAdventureStage4(round, enemy, text);
 	if(retval != "") return retval;
 	
-	//all sniffers eliminate the rule that reduces the odds of encountering the same enemy twice in a row.
-	//sniffers also increase the odds of encountering the monster by a variable amount.
+	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
 	skill sniffer = getSniffer(enemy);
 	if(auto_wantToSniff(enemy, my_location()) && sniffer != $skill[none])
 	{
