@@ -148,7 +148,6 @@ void initializeSettings() {
 	set_property("auto_beatenUpLastAdv", false);
 	remove_property("auto_beatenUpLocations");
 	set_property("auto_getBeehive", false);
-	set_property("auto_bowledAtAlley", false);
 	set_property("auto_bruteForcePalindome", false);
 	set_property("auto_cabinetsencountered", 0);
 	set_property("auto_chasmBusted", true);
@@ -167,7 +166,6 @@ void initializeSettings() {
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
-	set_property("auto_farmingKaAsEd", false);
 	set_property("auto_forceTavern", false);
 	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");

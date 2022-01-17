@@ -436,7 +436,7 @@ boolean auto_canExtinguisherBeRefilled();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2021.ash
 boolean auto_haveCosmicBowlingBall();
-string auto_bowlingBallCombatString(location place);
+string auto_bowlingBallCombatString(location place, boolean speculation);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

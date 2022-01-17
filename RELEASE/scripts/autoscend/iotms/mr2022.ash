@@ -2,19 +2,24 @@
 
 boolean auto_haveCosmicBowlingBall()
 {
+	// returns true if CBB is available for use, not necessarily if the user has the CBB
 	return item_amount($item[Cosmic Bowling Ball]) > 0;
 }
 
-string auto_bowlingBallCombatString(location place)
+string auto_bowlingBallCombatString(location place, boolean speculation)
 {
 	if(!auto_haveCosmicBowlingBall())
 	{
 		return "";
 	}
 
-	if(auto_is_valid($item[Cosmic Bowling Ball]) && place == $location[The Hidden Bowling Alley] && !get_property("auto_bowledAtAlley").to_boolean())
+	if(auto_is_valid($item[Cosmic Bowling Ball]) && place == $location[The Hidden Bowling Alley] && get_property("auto_bowledAtAlley").to_int() != my_ascensions())
 	{
-		set_property("auto_bowledAtAlley", true);
+		if(!speculation)
+		{
+			set_property("auto_bowledAtAlley", my_ascensions());
+			auto_log_info("Cosmic Bowling Ball used at Hidden Bowling Alley to adavnce quest.");
+		}	
 		return useItem($item[Cosmic Bowling Ball]);
 	}
 
@@ -27,7 +32,7 @@ string auto_bowlingBallCombatString(location place)
 			return useSkill($skill[Bowl Sideways]);
 		}
 		//increase stats if we are farming Ka as Ed
-		if(get_property("auto_farmingKaAsEd").to_boolean())
+		if(get_property("_auto_farmingKaAsEd").to_boolean())
 		{
 			return useSkill($skill[Bowl Sideways]);
 		}

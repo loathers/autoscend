@@ -305,9 +305,9 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 
 	// use cosmic bowling ball iotm
-	if(auto_bowlingBallCombatString(my_location()) != "")
+	if(auto_bowlingBallCombatString(my_location(), true) != "")
 	{
-		return 	auto_bowlingBallCombatString(my_location());
+		return 	auto_bowlingBallCombatString(my_location(), false);
 	}
 	
 	return "";
