@@ -1439,30 +1439,41 @@ boolean L12_lastDitchFlyer()
 	}
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
+	if(LX_freeCombats(true)) return true;	//try to use free combats to make up the difference.
 
-	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]))
+	location scalezone = highestScalingZone();
+	float flyer_gains = my_buffedstat($stat[moxie]) + monster_level_adjustment();
+	switch(scalezone)
 	{
-		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
+		case $location[The Neverending Party]:
+			flyer_gains += 20; break;
+		case $location[VYKEA]:
+			flyer_gains += 6; break;
+		case $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]:
+		case $location[The Deep Dark Jungle]:
+		case $location[Sloppy Seconds Diner]:
+			flyer_gains += 5; break;
 	}
-	else if(elementalPlanes_access($element[spooky]))
+	float adv_needed = (10000.0 - get_property("flyeredML").to_float()) / flyer_gains;
+	
+	warPlan plan_do_arena = auto_bestWarPlan();
+	plan_do_arena.do_arena = true;
+	warPlan plan_no_arena = auto_bestWarPlan();
+	plan_no_arena.do_arena = false;
+	int adv_saved = auto_warTotalBattles(plan_no_arena) - auto_warTotalBattles(plan_do_arena);
+	
+	if(adv_needed > adv_saved)
 	{
-		return autoAdv(1, $location[The Deep Dark Jungle]);
+		return false;	//if we lose advs by doing last ditch flyering then do not do it
 	}
-	else if(elementalPlanes_access($element[cold]))
-	{
-		return autoAdv(1, $location[VYKEA]);
-	}
-	else if(elementalPlanes_access($element[stench]))
-	{
-		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
-	}
-	else if(elementalPlanes_access($element[sleaze]))
-	{
-		return autoAdv(1, $location[Sloppy Seconds Diner]);
-	}
-	else if(neverendingPartyAvailable())
+
+	if(scalezone == $location[The Neverending Party])
 	{
 		return neverendingPartyCombat();
+	}
+	if(scalezone != $location[none])
+	{
+		return autoAdv(scalezone);
 	}
 	return false;
 }

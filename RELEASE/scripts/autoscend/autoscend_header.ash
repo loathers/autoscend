@@ -1363,6 +1363,7 @@ void pathDroppedCheck();
 ########################################################################################################
 //Defined in autoscend/auto_powerlevel.ash
 boolean isAboutToPowerlevel();
+location highestScalingZone();
 boolean LX_attemptPowerLevel();
 boolean disregardInstantKarma();
 int auto_freeCombatsRemaining();
