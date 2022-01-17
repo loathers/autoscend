@@ -12,7 +12,7 @@ string auto_bowlingBallCombatString(location place)
 		return "";
 	}
 
-	if(auto_is_valid($item[Cosmic Bowling Ball] && place == $location[The Hidden Bowling Alley] && !get_property("auto_bowledAtAlley").to_boolean())
+	if(auto_is_valid($item[Cosmic Bowling Ball]) && place == $location[The Hidden Bowling Alley] && !get_property("auto_bowledAtAlley").to_boolean())
 	{
 		set_property("auto_bowledAtAlley", true);
 		return useItem($item[Cosmic Bowling Ball]);
