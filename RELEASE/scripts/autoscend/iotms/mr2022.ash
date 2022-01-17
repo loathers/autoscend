@@ -24,7 +24,7 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 	}
 
 	// determine if we want more stats
-	if(canUse($skill[Bowl Sideways], false))
+	if(canUse($skill[Bowl Sideways]))
 	{
 		//increase stats if we are power leveling
 		if(isAboutToPowerlevel())
@@ -39,7 +39,7 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 	}
 
 	// determine if we want more item or meat bonus
-	if(canUse($skill[Bowl Straight Up], false))
+	if(canUse($skill[Bowl Straight Up]))
 	{
 		//increase item bonus if not item capped in current zone
 		generic_t itemNeed = zone_needItem(place);
