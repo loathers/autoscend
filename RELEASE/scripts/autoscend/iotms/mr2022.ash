@@ -1,9 +1,19 @@
 # This is meant for items that have a date of 2022
 
-string bowlingBallCombatString(location place)
+boolean auto_haveCosmicBowlingBall()
 {
+	return item_amount($item[Cosmic Bowling Ball]) > 0;
+}
+
+string auto_bowlingBallCombatString(location place)
+{
+	if(!auto_haveCosmicBowlingBall())
+	{
+		return "";
+	}
+
 	// determine if we want more stats
-	if((inCombat ? auto_have_skill($skill[Bowl Sideways]) : item_amount($item[Cosmic Bowling Ball]) > 0) && canUse($skill[Bowl Sideways]))
+	if(canUse($skill[Bowl Sideways], false))
 	{
 		//increase stats if we are power leveling
 		if(isAboutToPowerlevel())
@@ -18,7 +28,7 @@ string bowlingBallCombatString(location place)
 	}
 
 	// determine if we want more item or meat bonus
-	if((inCombat ? auto_have_skill($skill[Bowl Straight Up]) : item_amount($item[Cosmic Bowling Ball]) > 0) && canUse($skill[Bowl Straight Up]))
+	if(canUse($skill[Bowl Straight Up], false))
 	{
 		//increase item bonus if not item capped in current zone
 		generic_t itemNeed = zone_needItem(place);

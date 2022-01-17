@@ -719,9 +719,9 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	}
 
 	// use cosmic bowling ball iotm
-	if(bowlingBallCombatString(my_location()) != "")
+	if(auto_bowlingBallCombatString(my_location()) != "")
 	{
-		return 	bowlingBallCombatString(my_location());
+		return 	auto_bowlingBallCombatString(my_location());
 	}
 
 	if(get_property("auto_edStatus") == "UNDYING!")
