@@ -433,8 +433,10 @@ void plumber_eat_xp()
 	{
 		return;
 	}
-	
-	prepare_food_xp_multi();
+	if(!prepare_food_xp_multi())
+	{
+		return;		//we are not prepared.
+	}
 	
 	//TODO diabolic pizza oven with pie man was not meant to eat
 	

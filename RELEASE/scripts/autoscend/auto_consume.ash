@@ -1634,12 +1634,27 @@ boolean prepare_food_xp_multi()
 		return false;
 	}
 	
-	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
-	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
-	
-	//TODO get effect [Ready to Eat] by using a red rocket from fireworks shop in VIP clan. +400% XP on next food item
+	//[Ready to Eat] is gotten by using a red rocket from fireworks shop in VIP clan. it gives +400% XP on next food item
+	if(have_fireworks_shop() &&
+	have_effect($effect[Everything Looks Red]) <= 0 &&
+	have_effect($effect[Ready to Eat]) <= 0 &&
+	auto_is_valid($item[red rocket]))
+	{
+		if(item_amount($item[red rocket]) == 0 && my_meat() > npc_price($item[red rocket]))
+		{
+			//this is a more aggressive buying function than the one in pre_adv
+			retrieve_item(1, $item[red rocket]);
+		}
+		if(item_amount($item[red rocket]) > 0)
+		{
+			return false;	//go use [red rocket] in combat before eating for XP
+		}
+	}
 	
 	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	
+	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
+	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
 	
 	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
 	return true;
