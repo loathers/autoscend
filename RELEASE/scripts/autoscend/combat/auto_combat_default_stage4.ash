@@ -304,36 +304,10 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		
 	}
 
-	// all cosmic bowling ball skills available if any are
-	if(auto_have_skill($skill[Bowl Straight Up]))
+	// use cosmic bowling ball iotm
+	if(bowlingBallCombatString(my_location()) != "")
 	{
-		//increase stats if we are power leveling
-		if(isAboutToPowerlevel() && canUse($skill[Bowl Sideways]))
-		{
-			return useSkill($skill[Bowl Sideways]);
-		}
-
-		//increase stats if we are farming Ka as Ed
-		if(get_property("auto_farmingKaAsEd").to_boolean() && canUse($skill[Bowl Sideways]))
-		{
-			return useSkill($skill[Bowl Sideways]);
-		}
-
-		//increase item and meat bonus if not item capped in current zone
-		generic_t itemNeed = zone_needItem(my_location());
-		if(itemNeed._boolean)
-		{
-			if(item_drop_modifier() < itemNeed._float && canUse($skill[Bowl Straight Up]))
-			{
-				return useSkill($skill[Bowl Straight Up]);
-			}
-		}
-
-		//increase item and meat bonus if doing nuns
-		if(my_location() == $location[The Themthar Hills] && canUse($skill[Bowl Straight Up]))
-		{
-			return useSkill($skill[Bowl Straight Up]);
-		}	
+		return 	bowlingBallCombatString(my_location());
 	}
 	
 	return "";

@@ -475,11 +475,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Bowl a Curveball];
 	}
-	else
-	{
-		//test code
-		abort("Looked for banish, but couldn't use bowling ball");
-	}
 
 	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
 	{

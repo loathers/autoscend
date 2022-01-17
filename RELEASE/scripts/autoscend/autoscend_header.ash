@@ -434,6 +434,10 @@ string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2021.ash
+string bowlingBallCombatString(location place);
+
+########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
 boolean isActuallyEd();
 int ed_spleen_limit();
