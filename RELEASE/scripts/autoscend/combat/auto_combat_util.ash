@@ -45,7 +45,7 @@ void markAsUsed(item it)
 	}
 }
 
-boolean canUse(skill sk, boolean onlyOnce)
+boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 {
 	if(onlyOnce && haveUsed(sk))
 	{
@@ -57,7 +57,9 @@ boolean canUse(skill sk, boolean onlyOnce)
 		return false;
 	}
 
-	if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
+	if(inCombat)
+	{
+		if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
 		my_hp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
 		my_lightning() < lightning_cost(sk) ||
@@ -65,8 +67,22 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
 		my_pp() < plumber_ppCost(sk))
+		{
+			return false;
+		}
+	}
+	else
 	{
-		return false;
+		if(my_maxmp() < mp_cost(sk) - combat_mana_cost_modifier() ||
+		my_maxhp() <= hp_cost(sk) ||
+		get_fuel() < fuel_cost(sk) ||
+		my_lightning() < lightning_cost(sk) ||
+		my_thunder() < thunder_cost(sk) ||
+		my_rain() < rain_cost(sk) ||
+		my_soulsauce() < soulsauce_cost(sk))
+		{
+			return false;
+		}
 	}
 	
 	if(sk == $skill[Shieldbutt] && !hasShieldEquipped())
@@ -108,6 +124,11 @@ boolean canUse(skill sk, boolean onlyOnce)
 	}
 
 	return true;
+}
+
+boolean canUse(skill sk, boolean onlyOnce)	//assume we are in combat unless specified otherwise
+{
+	return canUse(sk, onlyOnce, true);
 }
 
 boolean canUse(skill sk) // assume onlyOnce unless specified otherwise
@@ -174,37 +195,42 @@ string useItems(item it1, item it2)
 	return useItems(it1, it2, true);
 }
 
-skill getSniffer(monster enemy)
+skill getSniffer(monster enemy, boolean inCombat)
 {
 	//returns the skill we want to use to sniff the enemy
 	//all sniffers eliminate the rule that reduces the odds of encountering the same enemy twice in a row.
 	//sniffers also increase the odds of encountering the monster by a variable amount.
-	if(canUse($skill[Transcendent Olfaction]) && get_property("_olfactionsUsed").to_int() < 3 &&
+	if(canUse($skill[Transcendent Olfaction], true , inCombat) && get_property("_olfactionsUsed").to_int() < 3 &&
 	!contains_text(get_property("olfactedMonster"), enemy))
 	{
 		return $skill[Transcendent Olfaction];
 	}
-	if(canUse($skill[Make Friends]) && get_property("makeFriendsMonster") != enemy && my_audience() >= 20)
+	if(canUse($skill[Make Friends], true , inCombat) && get_property("makeFriendsMonster") != enemy && my_audience() >= 20)
 	{
 		return $skill[Make Friends];
 	}
-	if(!contains_text(get_property("longConMonster"), enemy) && canUse($skill[Long Con]) && get_property("_longConUsed").to_int() < 5)
+	if(!contains_text(get_property("longConMonster"), enemy) && canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5)
 	{
 		return $skill[Long Con];
 	}
-	if(canUse($skill[Perceive Soul]) && enemy != get_property("auto_bat_soulmonster").to_monster())
+	if(canUse($skill[Perceive Soul], true , inCombat) && enemy != get_property("auto_bat_soulmonster").to_monster())
 	{
 		return $skill[Perceive Soul];
 	}
-	if(canUse($skill[Gallapagosian Mating Call]) && enemy != get_property("_gallapagosMonster").to_monster())
+	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && enemy != get_property("_gallapagosMonster").to_monster())
 	{
 		return $skill[Gallapagosian Mating Call];
 	}
-	if(canUse($skill[Offer Latte to Opponent]) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
+	if(canUse($skill[Offer Latte to Opponent], true , inCombat) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
 	{
 		return $skill[Offer Latte to Opponent];
 	}	
 	return $skill[none];
+}
+
+skill getSniffer(monster enemy)
+{
+	return getSniffer(enemy, true);
 }
 
 skill getStunner(monster enemy)

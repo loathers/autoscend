@@ -1130,11 +1130,12 @@ boolean canSniff(monster enemy, location loc)
 	{
 		return false;
 	}
-	return getSniffer(enemy) != $skill[none];
+	return getSniffer(enemy, false) != $skill[none];
 }
 
 boolean adjustForSniffingIfPossible(monster target)
 {
+	
 	if (have_skill($skill[Transcendent Olfaction]) && auto_is_valid($skill[Transcendent Olfaction]))
 	{
 		if (get_property("olfactedMonster").to_monster() != target &&
