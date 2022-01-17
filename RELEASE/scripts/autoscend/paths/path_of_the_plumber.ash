@@ -437,6 +437,13 @@ void plumber_eat_xp()
 	prepare_food_xp_multi();
 	
 	//TODO diabolic pizza oven with pie man was not meant to eat
+	
+	item milk = $item[gallon of milk];
+	if(creatable_amount(milk) > 0 || item_amount(milk) > 0 || canPull(milk))
+	{
+		acquireOrPull(milk);
+		autoEat(1, milk);
+	}
 }
 
 boolean LM_plumber()

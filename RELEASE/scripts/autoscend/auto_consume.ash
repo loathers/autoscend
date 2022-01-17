@@ -1626,12 +1626,12 @@ boolean distill(item target)
 	return false;
 }
 
-void prepare_food_xp_multi()
+boolean prepare_food_xp_multi()
 {
 	//prepare as big an XP multi as possible for the next food item eaten
 	if(fullness_left() < 1 || !can_eat())
 	{
-		return;
+		return false;
 	}
 	
 	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
@@ -1642,11 +1642,5 @@ void prepare_food_xp_multi()
 	//TODO get [That's Just Cloud-Talk, Man] +25% all
 	
 	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
-	
-	item milk = $item[gallon of milk];
-	if(creatable_amount(milk) > 0 || item_amount(milk) > 0 || canPull(milk))
-	{
-		acquireOrPull(milk);
-		autoEat(1, milk);
-	}
+	return true;
 }

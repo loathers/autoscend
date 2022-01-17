@@ -1206,7 +1206,7 @@ boolean auto_breakfastCounterVisit();
 item still_targetToOrigin(item target);
 boolean stillReachable();
 boolean distill(item target);
-void prepare_food_xp_multi();
+boolean prepare_food_xp_multi();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
