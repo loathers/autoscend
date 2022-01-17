@@ -1126,14 +1126,11 @@ boolean adjustForReplaceIfPossible()
 
 boolean canSniff(monster enemy, location loc)
 {
-	if (have_skill($skill[Transcendent Olfaction]) &&
-	auto_is_valid($skill[Transcendent Olfaction]) &&
-	get_property("olfactedMonster").to_monster() != enemy &&
-	(have_effect($effect[On The Trail]) == 0 || item_amount($item[soft green echo eyedrop antidote]) > 0))
+	if(!auto_wantToSniff(enemy, loc))
 	{
-		return auto_wantToSniff(enemy, loc);
+		return false;
 	}
-	return false;
+	return getSniffer(enemy) != $skill[none];
 }
 
 boolean adjustForSniffingIfPossible(monster target)
