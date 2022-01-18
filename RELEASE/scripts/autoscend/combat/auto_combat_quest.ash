@@ -17,19 +17,16 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	if(round == 0)
 	{
 		set_property("auto_gremlinMoly", false);
-		set_property("auto_combatHandler", "");
+		remove_property("_auto_combatState");
 	}
-
-	string combatState = get_property("auto_combatHandler");
-	string edCombatState = get_property("auto_edCombatHandler");
 
 	if ($monsters[batwinged gremlin (tool), erudite gremlin (tool), spider gremlin (tool), vegetable gremlin (tool)] contains enemy) {
 		set_property("auto_gremlinMoly", true);
 	}
 
-	if (!contains_text(edCombatState, "gremlinNeedBanish") && !get_property("auto_gremlinMoly").to_boolean() && isActuallyEd())
+	if (!combat_status_check("gremlinNeedBanish") && !get_property("auto_gremlinMoly").to_boolean() && isActuallyEd())
 	{
-		set_property("auto_edCombatHandler", "(gremlinNeedBanish)");
+		combat_status_add("gremlinNeedBanish");
 	}
 
 	if(round >= 28)

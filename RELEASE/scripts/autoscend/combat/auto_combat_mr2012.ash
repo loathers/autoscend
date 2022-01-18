@@ -4,8 +4,7 @@ string auto_combat_nanorhinoBuff(int round, monster enemy, string text)
 {
 	//nanorhino familiar buff acquisition. Must be the first action taken in combat.
 	//done after puzzle bosses. if puzzle bosses get a random buff that is ok, we would rather beat the puzzle boss.
-	string combatState = get_property("auto_combatHandler");
-	if(my_familiar() != $familiar[Nanorhino] || contains_text(combatState, "nanorhino_buffed"))
+	if(my_familiar() != $familiar[Nanorhino] || combat_status_check("nanorhino_buffed"))
 	{
 		return "";
 	}
@@ -87,7 +86,7 @@ string auto_combat_nanorhinoBuff(int round, monster enemy, string text)
 	}
 	
 	//regardless of whether we found a suitable skill or not, we only want to try once per combat.
-	set_property("auto_combatHandler", combatState + "(nanorhino_buffed)");
+	combat_status_add("nanorhino_buffed");
 	if(target != $skill[none])
 	{
 		return useSkill(target, target_mark);
