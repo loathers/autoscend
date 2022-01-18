@@ -198,30 +198,31 @@ string useItems(item it1, item it2)
 boolean isSniffed(monster enemy, skill sk)
 {
 	//checks if the monster enemy is currently sniffed using the specific skill sk
+	boolean retval = false;
 	switch(sk)
 	{
 	case $skill[Transcendent Olfaction]:
-		return contains_text(get_property("olfactedMonster"), enemy);
+		retval = contains_text(get_property("olfactedMonster"), enemy);
 		break;
 	case $skill[Make Friends]:
-		return contains_text(get_property("makeFriendsMonster"), enemy);
+		retval = contains_text(get_property("makeFriendsMonster"), enemy);
 		break;
 	case $skill[Long Con]:
-		return contains_text(get_property("longConMonster"), enemy);
+		retval = contains_text(get_property("longConMonster"), enemy);
 		break;
 	case $skill[Perceive Soul]:
-		return contains_text(get_property("auto_bat_soulmonster"), enemy);
+		retval = contains_text(get_property("auto_bat_soulmonster"), enemy);
 		break;
 	case $skill[Gallapagosian Mating Call]:
-		return contains_text(get_property("_gallapagosMonster"), enemy);
+		retval = contains_text(get_property("_gallapagosMonster"), enemy);
 		break;
 	case $skill[Offer Latte to Opponent]:
-		return contains_text(get_property("_latteMonster"), enemy);
+		retval = contains_text(get_property("_latteMonster"), enemy);
 		break;
 	default:
 		abort("isSniffed was asked to check an unidentified skill: " +sk);
 	}
-	return false;
+	return retval;
 }
 
 boolean isSniffed(monster enemy)
