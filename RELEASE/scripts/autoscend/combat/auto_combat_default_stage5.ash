@@ -27,7 +27,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatZombieSlayerStage5(round, enemy, text);
 	if(retval != "") return retval;
 
-	string combatState = get_property("auto_combatHandler");
 	phylum type = monster_phylum(enemy);
 	string attackMinor = "attack with weapon";
 	string attackMajor = "attack with weapon";
@@ -76,10 +75,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			return useSkill(stunner);
 		}
 
-		if(canUse($skill[Shoot Ghost], false) && (my_mp() > mp_cost($skill[Shoot Ghost])) && !contains_text(combatState, "shootghost3") && !contains_text(combatState, "trapghost"))
+		if(canUse($skill[Shoot Ghost], false) && !combat_status_check("shootghost3"))
 		{
 			boolean shootGhost = true;
-			if(contains_text(combatState, "shootghost2"))
+			if(combat_status_check("shootghost2"))
 			{
 				if((damageReceived * 1.075) > my_hp())
 				{
@@ -87,10 +86,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				}
 				else
 				{
-					set_property("auto_combatHandler", combatState + "(shootghost3)");
+					combat_status_add("shootghost3");
 				}
 			}
-			else if(contains_text(combatState, "shootghost1"))
+			else if(combat_status_check("shootghost1"))
 			{
 				if((damageReceived * 2.05) > my_hp())
 				{
@@ -98,12 +97,12 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				}
 				else
 				{
-					set_property("auto_combatHandler", combatState + "(shootghost2)");
+					combat_status_add("shootghost2");
 				}
 			}
 			else
 			{
-				set_property("auto_combatHandler", combatState + "(shootghost1)");
+				combat_status_add("shootghost1");
 			}
 
 			if(shootGhost)
@@ -112,15 +111,13 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			}
 			else
 			{
-				combatState += "(trapghost)";
-				set_property("auto_combatHandler", combatState);
+				combat_status_add("trapghost");
 			}
 		}
-		if(!contains_text(combatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(combatState, "shootghost3"))
+		if(canUse($skill[Trap Ghost]) && combat_status_check("shootghost3"))
 		{
 			auto_log_info("Busting makes me feel good!!", "green");
-			set_property("auto_combatHandler", combatState + "(trapghost)");
-			return useSkill($skill[Trap Ghost], false);
+			return useSkill($skill[Trap Ghost]);
 		}
 	}
 	
@@ -683,11 +680,11 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Northern Explosion]);
 		}
-		if((!contains_text(combatState, "last attempt")) && (my_mp() >= costMajor))
+		if((!combat_status_check("last attempt")) && (my_mp() >= costMajor))
 		{
 			if(canSurvive(1.4))
 			{
-				set_property("auto_combatHandler", combatState + "(last attempt)");
+				combat_status_add("last attempt");
 				auto_log_warning("Uh oh, I'm having trouble in combat.", "red");
 			}
 			return attackMajor;

@@ -2,7 +2,6 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
 	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	string retval;
-	string combatState = get_property("auto_combatHandler");
 	
 	// Path = The Source
 	retval = auto_combatTheSourceStage4(round, enemy, text);
@@ -14,14 +13,14 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
 	skill sniffer = getSniffer(enemy);
-	if(!contains_text(combatState, "sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && sniffer != $skill[none])
+	if(!combat_status_check("sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && sniffer != $skill[none])
 	{
 		if(sniffer == $skill[Perceive Soul])		//mafia does not track the target of this skill so we must do so.
 		{
 			set_property("auto_bat_soulmonster", enemy);
 		}
 		handleTracker(enemy, sniffer, "auto_sniffs");
-		set_property("auto_combatHandler", combatState + "(sniffed)");
+		combat_status_add("sniffed");
 		return useSkill(sniffer);
 	}
 	
@@ -191,10 +190,10 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	if(canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
 	{
 		skill stunner = getStunner(enemy);
-		boolean stunned = contains_text(combatState, "stunned");
+		boolean stunned = combat_status_check("stunned");
 		if(stunner != $skill[none] && !stunned)
 		{
-			set_property("auto_combatHandler", get_property("auto_combatHandler")+",stunned");
+			combat_status_add("stunned");
 			return useSkill(stunner);
 		}
 		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))

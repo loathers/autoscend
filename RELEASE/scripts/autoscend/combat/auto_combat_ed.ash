@@ -11,7 +11,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if (round == 0)
 	{
-		set_property("auto_combatHandler", "");
+		remove_property("_auto_combatState");
 		if (get_property("_edDefeats").to_int() == 0)
 		{
 			set_property("auto_edCombatCount", 1 + get_property("auto_edCombatCount").to_int());
@@ -64,9 +64,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		abort("Somehow got to 60 rounds.... aborting");
 	}
 
-	string combatState = get_property("auto_combatHandler");
-	string edCombatState = get_property("auto_edCombatHandler");
-
 	if($monsters[LOV Enforcer, LOV Engineer, LOV Equivocator] contains enemy)
 	{
 		set_property("auto_edStatus", "dying");
@@ -118,17 +115,19 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
+	//iotm back item and the enemies it spawns (free fights) can be killed using special skills to get extra XP and item drops
 	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy))
 	{
-		if(canUse($skill[Summon Love Gnats]))
+		skill stunner = getStunner(enemy);
+		if(stunner != $skill[none])
 		{
-			return useSkill($skill[Summon Love Gnats]);
+			return useSkill(stunner);
 		}
 
-		if(auto_have_skill($skill[Shoot Ghost]) && (my_mp() > mp_cost($skill[Shoot Ghost])) && !contains_text(edCombatState, "shootghost3") && !contains_text(edCombatState, "trapghost"))
+		if(canUse($skill[Shoot Ghost], false) && !combat_status_check("shootghost3"))
 		{
 			boolean shootGhost = true;
-			if(contains_text(edCombatState, "shootghost2"))
+			if(combat_status_check("shootghost2"))
 			{
 				if((damageReceived * 1.075) > my_hp())
 				{
@@ -136,10 +135,10 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 				}
 				else
 				{
-					set_property("auto_edCombatHandler", edCombatState + "(shootghost3)");
+					combat_status_add("shootghost3");
 				}
 			}
-			else if(contains_text(edCombatState, "shootghost1"))
+			else if(combat_status_check("shootghost1"))
 			{
 				if((damageReceived * 2.05) > my_hp())
 				{
@@ -147,29 +146,27 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 				}
 				else
 				{
-					set_property("auto_edCombatHandler", edCombatState + "(shootghost2)");
+					combat_status_add("shootghost2");
 				}
 			}
 			else
 			{
-				set_property("auto_edCombatHandler", edCombatState + "(shootghost1)");
+				combat_status_add("shootghost1");
 			}
 
 			if(shootGhost)
 			{
-				return "skill " + $skill[Shoot Ghost];
+				return useSkill($skill[Shoot Ghost], false);
 			}
 			else
 			{
-				edCombatState += "(trapghost)(love stinkbug)";
-				set_property("auto_edCombatHandler", edCombatState);
+				combat_status_add("trapghost");
 			}
 		}
-		if(!contains_text(edCombatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(edCombatState, "shootghost3"))
+		if(canUse($skill[Trap Ghost]) && combat_status_check("shootghost3"))
 		{
 			auto_log_info("Busting makes me feel good!!", "green");
-			set_property("auto_edCombatHandler", edCombatState + "(trapghost)");
-			return "skill " + $skill[Trap Ghost];
+			return useSkill($skill[Trap Ghost]);
 		}
 	}
 
@@ -193,7 +190,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(instakillable(enemy) && !isFreeMonster(enemy) && doInstaKill)
 	{
-		if(!contains_text(combatState, "batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0))
+		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0))
 		{
 			if(get_property("auto_batoomerangDay").to_int() != my_daycount())
 			{
@@ -203,16 +200,16 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			if(get_property("auto_batoomerangUse").to_int() < 3)
 			{
 				set_property("auto_batoomerangUse", get_property("auto_batoomerangUse").to_int() + 1);
-				set_property("auto_combatHandler", combatState + "(batoomerang)");
+				combat_status_add("batoomerang");
 				handleTracker(enemy, $item[Replica Bat-oomerang], "auto_instakill");
 				loopHandlerDelayAll();
 				return "item " + $item[Replica Bat-oomerang];
 			}
 		}
 
-		if(!contains_text(combatState, "jokesterGun") && (equipped_item($slot[Weapon]) == $item[The Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean() && auto_have_skill($skill[Fire the Jokester\'s Gun]))
+		if(!combat_status_check("jokesterGun") && (equipped_item($slot[Weapon]) == $item[The Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean() && auto_have_skill($skill[Fire the Jokester\'s Gun]))
 		{
-			set_property("auto_combatHandler", combatState + "(jokesterGun)");
+			combat_status_add("jokesterGun");
 			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
 			loopHandlerDelayAll();
 			return "skill" + $skill[Fire the Jokester\'s Gun];
@@ -291,10 +288,10 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return useItem($item[chaos butterfly]);
 	}
 
-	if(enemy == $monster[dirty thieving brigand] && !contains_text(edCombatState, "curse of fortune")) {
+	if(enemy == $monster[dirty thieving brigand] && !combat_status_check("curse of fortune")) {
 		if (item_amount($item[Ka Coin]) > 0 && canUse($skill[Curse Of Fortune]) && my_hp() > expected_damage() + 15) {
 			// need to kill the monster without resurrecting to get the bonus meat drop so only use it if we have enough HP to survive a hit
-			set_property("auto_edCombatHandler", edCombatState + "(curse of fortune)");
+			combat_status_add("curse of fortune");
 			set_property("auto_edStatus", "dying");
 			return useSkill($skill[Curse Of Fortune]);
 		} else {
@@ -303,11 +300,11 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
+	if (!combat_status_check("curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 	{
 		if(auto_wantToSniff(enemy, my_location()))
 		{
-			set_property("auto_edCombatHandler", combatState + "(curseofstench)");
+			combat_status_add("curseofstench");
 			handleTracker(enemy, $skill[Curse Of Stench], "auto_sniffs");
 			return useSkill($skill[Curse Of Stench]);
 		}
@@ -315,7 +312,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(my_location() == $location[The Secret Council Warehouse])
 	{
-		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
+		if (!combat_status_check("curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			#	Rememeber, we are looking to see if we have enough of the opposite item here.
@@ -340,7 +337,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			}
 			if(doStench)
 			{
-				set_property("auto_edCombatHandler", combatState + "(curseofstench)");
+				combat_status_add("curseofstench");
 				handleTracker(enemy, $skill[Curse of Stench], "auto_sniffs");
 				return useSkill($skill[Curse Of Stench]);
 			}
@@ -349,7 +346,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(my_location() == $location[The Smut Orc Logging Camp])
 	{
-		if (!contains_text(edCombatState, "curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
+		if (!combat_status_check("curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			string stenched = to_lower_case(get_property("stenchCursedMonster"));
@@ -373,19 +370,19 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 			if(doStench)
 			{
-				set_property("auto_edCombatHandler", combatState + "(curseofstench)");
+				combat_status_add("curseofstench");
 				handleTracker(enemy, $skill[Curse of Stench], "auto_sniffs");
 				return useSkill($skill[Curse Of Stench]);
 			}
 		}
 	}
 
-	if(!contains_text(combatState, "yellowray") && auto_wantToYellowRay(enemy, my_location()))
+	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()))
 	{
 		string combatAction = yellowRayCombatString(enemy, true);
 		if(combatAction != "")
 		{
-			set_property("auto_combatHandler", combatState + "(yellowray)");
+			combat_status_add("yellowray");
 			if(index_of(combatAction, "skill") == 0)
 			{
 				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_yellowRays");
@@ -410,12 +407,12 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(!contains_text(combatState, "banishercheck") && auto_wantToBanish(enemy, my_location()))
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
 	{
 		string combatAction = banisherCombatString(enemy, my_location(), true);
 		if(combatAction != "")
 		{
-			set_property("auto_combatHandler", combatState + "(banisher)");
+			combat_status_add("banisher");
 			if(index_of(combatAction, "skill") == 0)
 			{
 				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_banishes");
@@ -430,16 +427,15 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			}
 			return combatAction;
 		}
-		set_property("auto_combatHandler", combatState + "(banishercheck)");
-		combatState += "(banishercheck)";
+		combat_status_add("banishercheck");
 	}
 
-	if (!contains_text(combatState, "replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
 	{
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")
 		{
-			set_property("auto_combatHandler", combatState + "(replacer)");
+			combat_status_add("replacer");
 			if(index_of(combatAction, "skill") == 0)
 			{
 				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])
@@ -462,8 +458,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		{
 			auto_log_warning("Wanted a replacer but we can not find one.", "red");
 		}
-		set_property("auto_combatHandler", combatState + "(replacercheck)");
-		combatState += "(replacercheck)";
+		combat_status_add("replacercheck");
 	}
 
 	if (canUse($item[Disposable Instant Camera]) && $monsters[Bob Racecar, Racecar Bob] contains enemy)
@@ -658,7 +653,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if (!contains_text(edCombatState, "talismanofrenenutet") && canUse($item[Talisman of Renenutet]))
+	if (!combat_status_check("talismanofrenenutet") && canUse($item[Talisman of Renenutet]))
 	{
 		boolean doRenenutet = false;
 		if((enemy == $monster[Cabinet of Dr. Limpieza]) && ($location[The Haunted Laundry Room].turns_spent > 2))
@@ -701,12 +696,12 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 		if(doRenenutet)
 		{
-			if (!contains_text(edCombatState, "curseofindecision") && canUse($skill[Curse Of Indecision]))
+			if (!combat_status_check("curseofindecision") && canUse($skill[Curse Of Indecision]))
 			{
-				set_property("auto_edCombatHandler", edCombatState + "(curseofindecision)");
+				combat_status_add("curseofindecision");
 				return useSkill($skill[Curse Of Indecision]);
 			}
-			set_property("auto_edCombatHandler", edCombatState + "(talismanofrenenutet)");
+			combat_status_add("talismanofrenenutet");
 			handleTracker(enemy, "auto_renenutet");
 			set_property("auto_edStatus", "dying");
 			return useItem($item[Talisman Of Renenutet]);
@@ -731,9 +726,9 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		{
 			if((item_amount($item[Rock Band Flyers]) == 0) && (item_amount($item[Jam Band Flyers]) == 0))
 			{
-				if((!contains_text(combatState, "love stinkbug")) && get_property("lovebugsUnlocked").to_boolean())
+				if((!combat_status_check("love stinkbug")) && get_property("lovebugsUnlocked").to_boolean())
 				{
-					set_property("auto_combatHandler", combatState + "(love stinkbug2)");
+					combat_status_add("love stinkbug2");
 					return "skill " + $skill[Summon Love Stinkbug];
 				}
 			}
