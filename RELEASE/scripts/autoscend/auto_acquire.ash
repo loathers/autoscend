@@ -578,6 +578,10 @@ int handlePulls(int day)
 	{
 		use(1, $item[Astral Hot Dog Dinner]);
 	}
+	if(item_amount($item[[10882]carton of astral energy drinks]) > 0)
+	{
+		use(1, $item[[10882]carton of astral energy drinks]);
+	}
 
 	if(in_hardcore())
 	{
