@@ -112,7 +112,7 @@ string cs_combatNormal(int round, monster enemy, string text)
 	}
 
 	skill sniffer = getSniffer(enemy);
-	if(sniffer != $skill[none])
+	if(sniffer != $skill[none] && !isSniffed(enemy))
 	{
 		boolean doSniff = false;
 		boolean noTimeSpinner = item_amount($item[Time-Spinner]) == 0 || get_property("_timeSpinnerMinutesUsed").to_int() >= 8;
