@@ -2,9 +2,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 {
 	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 	string retval;
+	string combatState = get_property("auto_combatHandler");
 	
-	//if we want to olfact in stage 4 then we should delay using this for now until we have olfacted.
-	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
+	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
+	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
+	if(!contains_text(combatState, "sniffed") && auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
 	{
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
 		return "";
@@ -13,8 +15,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	// Path = dark gyffte
 	retval = auto_combatDarkGyffteStage2(round, enemy, text);
 	if(retval != "") return retval;
-
-	string combatState = get_property("auto_combatHandler");
 
 	//use industrial fire extinguisher zone specific skills
 	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
