@@ -14,7 +14,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
 	skill sniffer = getSniffer(enemy);
-	if(!contains_text(combatState, "sniffed") && auto_wantToSniff(enemy, my_location()) && sniffer != $skill[none])
+	if(!contains_text(combatState, "sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && sniffer != $skill[none])
 	{
 		if(sniffer == $skill[Perceive Soul])		//mafia does not track the target of this skill so we must do so.
 		{

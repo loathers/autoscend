@@ -195,32 +195,70 @@ string useItems(item it1, item it2)
 	return useItems(it1, it2, true);
 }
 
+boolean isSniffed(monster enemy, skill sk)
+{
+	//checks if the monster enemy is currently sniffed using the specific skill sk
+	switch(sk)
+	{
+	case $skill[Transcendent Olfaction]:
+		return contains_text(get_property("olfactedMonster"), enemy);
+		break;
+	case $skill[Make Friends]:
+		return contains_text(get_property("makeFriendsMonster"), enemy);
+		break;
+	case $skill[Long Con]:
+		return contains_text(get_property("longConMonster"), enemy);
+		break;
+	case $skill[Perceive Soul]:
+		return contains_text(get_property("auto_bat_soulmonster"), enemy);
+		break;
+	case $skill[Gallapagosian Mating Call]:
+		return contains_text(get_property("_gallapagosMonster"), enemy);
+		break;
+	case $skill[Offer Latte to Opponent]:
+		return contains_text(get_property("_latteMonster"), enemy);
+		break;
+	default:
+		abort("isSniffed was asked to check an unidentified skill: " +sk);
+	}
+	return false;
+}
+
+boolean isSniffed(monster enemy)
+{
+	//checks if the monster enemy is currently sniffed using any of the sniff skills
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Offer Latte to Opponent]
+	{
+		if(isSniffed(enemy, sk)) return true;
+	}
+	return false;
+}
+
 skill getSniffer(monster enemy, boolean inCombat)
 {
 	//returns the skill we want to use to sniff the enemy
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
-	if(canUse($skill[Transcendent Olfaction], true , inCombat) && get_property("_olfactionsUsed").to_int() < 3 &&
-	!contains_text(get_property("olfactedMonster"), enemy))
+	if(canUse($skill[Transcendent Olfaction], true , inCombat) && get_property("_olfactionsUsed").to_int() < 3 && !isSniffed(enemy, $skill[Transcendent Olfaction]))
 	{
 		return $skill[Transcendent Olfaction];
 	}
-	if(canUse($skill[Make Friends], true , inCombat) && get_property("makeFriendsMonster") != enemy && my_audience() >= 20)
+	if(canUse($skill[Make Friends], true , inCombat) && my_audience() >= 20 && !isSniffed(enemy, $skill[Make Friends]))
 	{
-		return $skill[Make Friends];
+		return $skill[Make Friends];		//avatar of sneaky pete specific skill
 	}
-	if(!contains_text(get_property("longConMonster"), enemy) && canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5)
+	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
 	{
 		return $skill[Long Con];
 	}
-	if(canUse($skill[Perceive Soul], true , inCombat) && enemy != get_property("auto_bat_soulmonster").to_monster())
+	if(canUse($skill[Perceive Soul], true , inCombat) && !isSniffed(enemy, $skill[Perceive Soul]))
 	{
 		return $skill[Perceive Soul];
 	}
-	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && enemy != get_property("_gallapagosMonster").to_monster())
+	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && !isSniffed(enemy, $skill[Gallapagosian Mating Call]))
 	{
 		return $skill[Gallapagosian Mating Call];
 	}
-	if(canUse($skill[Offer Latte to Opponent], true , inCombat) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
+	if(canUse($skill[Offer Latte to Opponent], true , inCombat) && !get_property("_latteCopyUsed").to_boolean() && !isSniffed(enemy, $skill[Offer Latte to Opponent]))
 	{
 		return $skill[Offer Latte to Opponent];
 	}	

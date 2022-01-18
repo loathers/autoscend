@@ -26,6 +26,8 @@ string useItem(item it, boolean mark);
 string useItem(item it);
 string useItems(item it1, item it2, boolean mark);
 string useItems(item it1, item it2);
+boolean isSniffed(monster enemy, skill sk);
+boolean isSniffed(monster enemy);
 skill getSniffer(monster enemy, boolean inCombat);
 skill getSniffer(monster enemy);
 skill getStunner(monster enemy);
