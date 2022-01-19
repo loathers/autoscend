@@ -59,7 +59,7 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 
 	if(inCombat)
 	{
-		if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
+		if(my_mp() < mp_cost(sk) + combat_mana_cost_modifier() ||	//modifier returns a negative value so we add
 		my_hp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
 		my_lightning() < lightning_cost(sk) ||
@@ -73,7 +73,7 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 	}
 	else
 	{
-		if(my_maxmp() < mp_cost(sk) - combat_mana_cost_modifier() ||
+		if(my_maxmp() < mp_cost(sk) + combat_mana_cost_modifier() ||	//modifier returns a negative value so we add
 		my_maxhp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
 		my_lightning() < lightning_cost(sk) ||
