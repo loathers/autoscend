@@ -1035,7 +1035,7 @@ void ed_handleAdventureServant(location loc)
 boolean L1_ed_island()
 {
 	//reset tracking of Ka farming
-	set_property("_auto_farmingKaAsEd", false);
+	remove_property("_auto_farmingKaAsEd");
 
 	if(!elementalPlanes_access($element[spooky]))
 	{
