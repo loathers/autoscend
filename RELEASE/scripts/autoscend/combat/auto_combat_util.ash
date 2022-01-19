@@ -201,26 +201,26 @@ boolean isSniffed(monster enemy, skill sk)
 	boolean retval = false;
 	switch(sk)
 	{
-	case $skill[Transcendent Olfaction]:
-		retval = contains_text(get_property("olfactedMonster"), enemy);
-		break;
-	case $skill[Make Friends]:
-		retval = contains_text(get_property("makeFriendsMonster"), enemy);
-		break;
-	case $skill[Long Con]:
-		retval = contains_text(get_property("longConMonster"), enemy);
-		break;
-	case $skill[Perceive Soul]:
-		retval = contains_text(get_property("auto_bat_soulmonster"), enemy);
-		break;
-	case $skill[Gallapagosian Mating Call]:
-		retval = contains_text(get_property("_gallapagosMonster"), enemy);
-		break;
-	case $skill[Offer Latte to Opponent]:
-		retval = contains_text(get_property("_latteMonster"), enemy);
-		break;
-	default:
-		abort("isSniffed was asked to check an unidentified skill: " +sk);
+		case $skill[Transcendent Olfaction]:
+			retval = contains_text(get_property("olfactedMonster"), enemy);
+			break;
+		case $skill[Make Friends]:
+			retval = contains_text(get_property("makeFriendsMonster"), enemy);
+			break;
+		case $skill[Long Con]:
+			retval = contains_text(get_property("longConMonster"), enemy);
+			break;
+		case $skill[Perceive Soul]:
+			retval = contains_text(get_property("auto_bat_soulmonster"), enemy);
+			break;
+		case $skill[Gallapagosian Mating Call]:
+			retval = contains_text(get_property("_gallapagosMonster"), enemy);
+			break;
+		case $skill[Offer Latte to Opponent]:
+			retval = contains_text(get_property("_latteMonster"), enemy);
+			break;
+		default:
+			abort("isSniffed was asked to check an unidentified skill: " +sk);
 	}
 	return retval;
 }
