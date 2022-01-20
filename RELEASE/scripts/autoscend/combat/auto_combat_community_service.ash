@@ -111,23 +111,21 @@ string cs_combatNormal(int round, monster enemy, string text)
 		return "skill " + $skill[Summon Love Gnats];
 	}
 
-	if((have_effect($effect[On The Trail]) == 0) && have_skill($skill[Transcendent Olfaction]) && (my_mp() >= mp_cost($skill[Transcendent Olfaction])))
+	skill sniffer = getSniffer(enemy);
+	if(sniffer != $skill[none] && !isSniffed(enemy))
 	{
-		boolean doOlfaction = false;
-		if((item_amount($item[Time-Spinner]) == 0) || (get_property("_timeSpinnerMinutesUsed").to_int() >= 8))
+		boolean doSniff = false;
+		boolean noTimeSpinner = item_amount($item[Time-Spinner]) == 0 || get_property("_timeSpinnerMinutesUsed").to_int() >= 8;
+		if($monsters[Novelty Tropical Skeleton, Possessed Can of Tomatoes] contains enemy && noTimeSpinner)
 		{
-			if($monsters[Novelty Tropical Skeleton, Possessed Can of Tomatoes] contains enemy)
-			{
-				doOlfaction = true;
-			}
+			doSniff = true;
 		}
-
 		if(($monster[Government Scientist] == enemy) && (item_amount($item[Experimental Serum G-9]) < 2))
 		{
-			doOlfaction = true;
+			doSniff = true;
 		}
 
-		if(doOlfaction)
+		if(doSniff)
 		{
 			if(!contains_text(combatState, "weaksauce") && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 72))
 			{
@@ -139,55 +137,10 @@ string cs_combatNormal(int round, monster enemy, string text)
 				set_property("auto_combatHandler", combatState + "(soulbubble)");
 				return "skill " + $skill[Soul Bubble];
 			}
-
-			set_property("auto_combatHandler", combatState + "(olfaction)");
-			handleTracker(enemy, $skill[Transcendent Olfaction], "auto_sniffs");
-			return "skill " + $skill[Transcendent Olfaction];
+			handleTracker(enemy, sniffer, "auto_sniffs");
+			return useSkill(sniffer);
 		}
 	}
-
-	if(!contains_text(combatState, "(lattesniff)") && have_skill($skill[Offer Latte To Opponent]) && (my_mp() >= mp_cost($skill[Offer Latte To Opponent])) && !get_property("_latteCopyUsed").to_boolean())
-	{
-		if(($monster[Government Scientist] == enemy) && (get_property("_latteMonster") != enemy))
-		{
-			if((!contains_text(combatState, "weaksauce")) && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 72))
-			{
-				set_property("auto_combatHandler", combatState + "(weaksauce)");
-				return "skill " + $skill[Curse Of Weaksauce];
-			}
-			if(!contains_text(combatState, "soulbubble") && have_skill($skill[Soul Saucery]) && (my_soulsauce() >= soulsauce_cost($skill[Soul Bubble])))
-			{
-				set_property("auto_combatHandler", combatState + "(soulbubble)");
-				return "skill " + $skill[Soul Bubble];
-			}
-
-			set_property("auto_combatHandler", combatState + "(lattesniff)");
-			handleTracker(enemy, $skill[Offer Latte To Opponent], "auto_sniffs");
-			return "skill " + $skill[Offer Latte To Opponent];
-		}
-	}
-
-	if(((have_effect($effect[On The Trail]) < 40) || (contains_text(combatState, "(lattesniff)"))) && have_skill($skill[Gallapagosian Mating Call]) && (my_mp() >= mp_cost($skill[Gallapagosian Mating Call])) && !contains_text(combatState, "(matingcall)"))
-	{
-		if(($monster[Government Scientist] == enemy) && (get_property("_gallapagosMonster") != enemy))
-		{
-			if((!contains_text(combatState, "weaksauce")) && have_skill($skill[Curse Of Weaksauce]) && (my_mp() >= 72))
-			{
-				set_property("auto_combatHandler", combatState + "(weaksauce)");
-				return "skill " + $skill[Curse Of Weaksauce];
-			}
-			if(!contains_text(combatState, "soulbubble") && have_skill($skill[Soul Saucery]) && (my_soulsauce() >= soulsauce_cost($skill[Soul Bubble])))
-			{
-				set_property("auto_combatHandler", combatState + "(soulbubble)");
-				return "skill " + $skill[Soul Bubble];
-			}
-
-			set_property("auto_combatHandler", combatState + "(matingcall)");
-			handleTracker(enemy, $skill[Gallapagosian Mating Call], "auto_sniffs");
-			return "skill " + $skill[Gallapagosian Mating Call];
-		}
-	}
-
 
 	if(!contains_text(combatState, "cleesh") && have_skill($skill[Cleesh]) && (my_mp() > mp_cost($skill[Cleesh])) && ((enemy == $monster[creepy little girl]) || (enemy == $monster[lab monkey]) || (enemy == $monster[super-sized cola wars soldier])) && (item_amount($item[Experimental Serum G-9]) < 2))
 	{
