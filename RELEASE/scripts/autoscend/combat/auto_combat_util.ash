@@ -566,7 +566,13 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
-	
+
+	// bowling ball is only in inventory if it is availble to use in combat. While on cooldown, it is not in inventory
+	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && !(used contains "Bowl a Curveball"))
+	{
+		return "skill " + $skill[Bowl a Curveball];
+	}
+
 	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
 	{
 		return "skill " + $skill[Feel Hatred];
