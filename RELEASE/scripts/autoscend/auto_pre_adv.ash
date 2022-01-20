@@ -185,8 +185,7 @@ boolean auto_pre_adventure()
 	}
 
 	// be ready to use red rocket if we don't have one
-	if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
-		get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
+	if(have_fireworks_shop() &&							// in a clan that has the Underground Fireworks Shop
 		item_amount($item[red rocket]) == 0 &&			// Don't buy if we already have one
 		auto_is_valid($item[red rocket]) &&				// or if it's not valid
 		can_eat() &&									// be in a path that can eat

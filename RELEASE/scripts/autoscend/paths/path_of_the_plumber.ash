@@ -425,3 +425,43 @@ boolean plumber_equipTool(stat st)
 	}
 	return false;
 }
+
+void plumber_eat_xp()
+{
+	//eat stuff for XP.
+	if(!in_plumber() || fullness_left() < 1)
+	{
+		return;
+	}
+	if(!prepare_food_xp_multi())
+	{
+		return;		//we are not prepared.
+	}
+	
+	//TODO diabolic pizza oven with pie man was not meant to eat
+	
+	item milk = $item[gallon of milk];
+	boolean got_milk = creatable_amount(milk) > 0 || item_amount(milk) > 0 || canPull(milk);
+	if(got_milk && fullness_left() >= 15)
+	{
+		acquireOrPull(milk);
+		autoEat(1, milk);
+	}
+}
+
+boolean LM_plumber()
+{
+	//this function is called early once every loop of doTasks() in autoscend.ash
+	//if something in this function returns true then it will restart the loop and get called again.
+	if(!in_plumber())
+	{
+		return false;
+	}
+	plumber_buyStuff();
+	if(my_level() < 13)
+	{
+		plumber_eat_xp();
+	}
+	
+	return false;
+}

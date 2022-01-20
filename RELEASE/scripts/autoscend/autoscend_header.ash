@@ -428,6 +428,7 @@ boolean batteryCombine(item battery);
 boolean batteryCombine(item battery, boolean simulate);
 boolean can_get_battery(item target);
 boolean auto_getBattery(item target);
+boolean have_fireworks_shop();
 boolean auto_haveFireExtinguisher();
 int auto_fireExtinguisherCharges();
 string auto_FireExtinguisherCombatString(location place);
@@ -747,6 +748,8 @@ int plumber_ppCost(skill sk);
 boolean plumber_canDealScalingDamage();
 boolean plumber_skillValid(skill sk);
 boolean plumber_equipTool(stat st);
+void plumber_eat_xp();
+boolean LM_plumber();
 
 ########################################################################################################
 //Defined in autoscend/paths/picky.ash
@@ -1203,6 +1206,7 @@ boolean auto_breakfastCounterVisit();
 item still_targetToOrigin(item target);
 boolean stillReachable();
 boolean distill(item target);
+boolean prepare_food_xp_multi();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
