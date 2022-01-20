@@ -1022,7 +1022,6 @@ boolean L12_sonofaPrefix();
 boolean L12_sonofaFinish();
 boolean L12_flyerBackup();
 boolean L12_lastDitchFlyer();
-boolean LX_attemptFlyering();
 boolean L12_flyerFinish();
 boolean L12_themtharHills();
 boolean LX_obtainChaosButterfly();
@@ -1373,6 +1372,7 @@ void pathDroppedCheck();
 ########################################################################################################
 //Defined in autoscend/auto_powerlevel.ash
 boolean isAboutToPowerlevel();
+location highestScalingZone();
 boolean LX_attemptPowerLevel();
 boolean disregardInstantKarma();
 int auto_freeCombatsRemaining();
