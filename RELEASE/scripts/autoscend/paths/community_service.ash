@@ -502,10 +502,6 @@ boolean LA_cs_communityService()
 						return true;
 					}
 				}
-				if((have_effect($effect[On The Trail]) > 0) && (get_property("olfactedMonster") != to_string($monster[Novelty Tropical Skeleton])))
-				{
-					uneffect($effect[On The Trail]);
-				}
 				if(possessEquipment($item[Latte Lovers Member\'s Mug]))
 				{
 					if(get_property("_latteBanishUsed").to_boolean())
