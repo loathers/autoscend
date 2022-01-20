@@ -1659,7 +1659,6 @@ boolean doTasks()
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();
-	plumber_buyStuff();
 	jarlsberg_buySkills();
 	boris_buySkills();
 	pete_buySkills();
@@ -1704,6 +1703,7 @@ boolean doTasks()
 	if(LM_kolhs()) 						return true;
 	if(LM_jarlsberg())					return true;
 	if(LM_robot())						return true;
+	if(LM_plumber())					return true;
 
 	if(!in_community())
 	{
