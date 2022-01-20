@@ -452,6 +452,19 @@ boolean auto_getBattery(item target)
 	return false;
 }
 
+boolean have_fireworks_shop()
+{
+	if(item_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[clan underground fireworks shop]))
+	{
+		return false;
+	}
+	return get_property("_fireworksShop").to_boolean();
+}
+
 boolean auto_haveFireExtinguisher()
 {
 	return possessEquipment($item[industrial fire extinguisher]) && auto_is_valid($item[industrial fire extinguisher]);

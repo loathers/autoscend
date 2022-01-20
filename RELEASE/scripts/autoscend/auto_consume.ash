@@ -1354,9 +1354,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 {
 	// TODO: does not consider mime army shotglass
 
-	if(in_plumber())
+	if(in_plumber() && my_level() < 13)
 	{
-		auto_log_warning("Skipping eating, you'll have to do this manually.", "red");
 		return false;
 	}
 
@@ -1625,4 +1624,38 @@ boolean distill(item target)
 	}
 	auto_log_warning("distill(item target) mysteriously failed to create [" +target+ "]");
 	return false;
+}
+
+boolean prepare_food_xp_multi()
+{
+	//prepare as big an XP multi as possible for the next food item eaten
+	if(fullness_left() < 1 || !can_eat())
+	{
+		return false;
+	}
+	
+	//[Ready to Eat] is gotten by using a red rocket from fireworks shop in VIP clan. it gives +400% XP on next food item
+	if(have_fireworks_shop() &&
+	have_effect($effect[Everything Looks Red]) <= 0 &&
+	have_effect($effect[Ready to Eat]) <= 0 &&
+	auto_is_valid($item[red rocket]))
+	{
+		if(item_amount($item[red rocket]) == 0 && my_meat() > npc_price($item[red rocket]))
+		{
+			//this is a more aggressive buying function than the one in pre_adv
+			retrieve_item(1, $item[red rocket]);
+		}
+		if(item_amount($item[red rocket]) > 0)
+		{
+			return false;	//go use [red rocket] in combat before eating for XP
+		}
+	}
+	
+	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	
+	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
+	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
+	
+	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
+	return true;
 }
