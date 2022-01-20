@@ -441,7 +441,8 @@ void plumber_eat_xp()
 	//TODO diabolic pizza oven with pie man was not meant to eat
 	
 	item milk = $item[gallon of milk];
-	if(creatable_amount(milk) > 0 || item_amount(milk) > 0 || canPull(milk))
+	boolean got_milk = creatable_amount(milk) > 0 || item_amount(milk) > 0 || canPull(milk);
+	if(got_milk && fullness_left() >= 15)
 	{
 		acquireOrPull(milk);
 		autoEat(1, milk);
