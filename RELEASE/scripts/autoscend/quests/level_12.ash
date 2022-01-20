@@ -1460,7 +1460,7 @@ boolean L12_lastDitchFlyer()
 	plan_do_arena.do_arena = true;
 	warPlan plan_no_arena = auto_bestWarPlan();
 	plan_no_arena.do_arena = false;
-	int adv_saved = auto_warTotalBattles(plan_no_arena) - auto_warTotalBattles(plan_do_arena);
+	float adv_saved = auto_warTotalBattles(plan_no_arena) - auto_warTotalBattles(plan_do_arena);
 	
 	if(adv_needed > adv_saved)
 	{
