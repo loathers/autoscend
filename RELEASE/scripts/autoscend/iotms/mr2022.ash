@@ -20,7 +20,7 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 			set_property("auto_bowledAtAlley", my_ascensions());
 			auto_log_info("Cosmic Bowling Ball used at Hidden Bowling Alley to adavnce quest.");
 		}	
-		return useItem($item[Cosmic Bowling Ball]);
+		return useItem($item[Cosmic Bowling Ball],!speculation);
 	}
 
 	// determine if we want more stats
@@ -29,12 +29,12 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 		//increase stats if we are power leveling
 		if(isAboutToPowerlevel())
 		{
-			return useSkill($skill[Bowl Sideways]);
+			return useSkill($skill[Bowl Sideways],!speculation);
 		}
 		//increase stats if we are farming Ka as Ed
 		if(get_property("_auto_farmingKaAsEd").to_boolean())
 		{
-			return useSkill($skill[Bowl Sideways]);
+			return useSkill($skill[Bowl Sideways],!speculation);
 		}
 	}
 
@@ -47,14 +47,14 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 		{
 			if(item_drop_modifier() < itemNeed._float)
 			{
-				return useSkill($skill[Bowl Straight Up]);
+				return useSkill($skill[Bowl Straight Up],!speculation);
 			}
 		}
 
 		//increase meat bonus if doing nuns
 		if(place == $location[The Themthar Hills])
 		{
-			return useSkill($skill[Bowl Straight Up]);
+			return useSkill($skill[Bowl Straight Up],!speculation);
 		}	
 	}
 
