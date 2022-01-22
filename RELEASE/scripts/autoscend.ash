@@ -788,7 +788,10 @@ void initializeDay(int day)
 				}
 				if(!possessEquipment($item[Turtle Totem]))
 				{
-					acquireGumItem($item[Turtle Totem]);
+					if(have_skill($skill[Empathy of the Newt]) || have_skill($skill[Astral Shell]) || have_skill($skill[Ghostly Shell]) || have_skill($skill[Tenacity of the Snapper]) || have_skill($skill[Spiky Shell]) || have_skill($skill[Reptilian Fortitude]) || have_skill($skill[Jingle Bells]) || have_skill($skill[Curiosity of Br\'er Tarrypin]))
+					{
+						acquireGumItem($item[Turtle Totem]);
+					}
 				}
 				if(!possessEquipment($item[Saucepan]))
 				{
