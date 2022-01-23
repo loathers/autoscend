@@ -111,7 +111,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Ashen]:					useItem = $item[pile of ashes];						break;
 	case $effect[Ashen Burps]:					useItem = $item[ash soda];						break;
 	case $effect[Astral Shell]:
-		if(have_skill($skill[Astral Shell]) && acquireTotem())
+		if(auto_have_skill($skill[Astral Shell]) && acquireTotem())
 		{
 			useSkill = $skill[Astral Shell];
 		}																						break;
@@ -204,7 +204,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Contemptible Emanations]:		useItem = $item[Cologne of Contempt];			break;
 	case $effect[The Cupcake of Wrath]:			useItem = $item[Green-Frosted Astral Cupcake];	break;
 	case $effect[Curiosity of Br\'er Tarrypin]:
-		if(pathHasFamiliar() && have_skill($skill[Curiosity of Br\'er Tarrypin]) && acquireTotem())
+		if(pathHasFamiliar() && auto_have_skill($skill[Curiosity of Br\'er Tarrypin]) && acquireTotem())
 		{
 			useSkill = $skill[Curiosity of Br\'er Tarrypin];
 		}																						break;
@@ -236,7 +236,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
 	case $effect[Empathy]:
-		if(pathHasFamiliar() && have_skill($skill[Empathy of the Newt]) && acquireTotem())
+		if(pathHasFamiliar() && auto_have_skill($skill[Empathy of the Newt]) && acquireTotem())
 		{
 			useSkill = $skill[Empathy of the Newt];
 		}																						break;
@@ -302,7 +302,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Funky Coal Patina]:			useItem = $item[Coal Dust];						break;
 	case $effect[Gelded]:						useItem = $item[Chocolate Filthy Lucre];		break;
 	case $effect[Ghostly Shell]:
-		if(have_skill($skill[Ghostly Shell]) && acquireTotem())
+		if(auto_have_skill($skill[Ghostly Shell]) && acquireTotem())
 		{
 			useSkill = $skill[Ghostly Shell];
 		}																						break;
@@ -364,7 +364,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Jackasses\' Symphony of Destruction]:useSkill = $skill[Jackasses\' Symphony of Destruction];	break;
 	case $effect[Jalape&ntilde;o Saucesphere]:	useSkill = $skill[Jalape&ntilde;o Saucesphere];	break;
 	case $effect[Jingle Jangle Jingle]:
-		if(have_skill($skill[Jingle Bells]) && acquireTotem())
+		if(auto_have_skill($skill[Jingle Bells]) && acquireTotem())
 		{
 			useSkill = $skill[Jingle Bells];
 		}																						break;
@@ -511,7 +511,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Red Lettered]:					useItem = $item[Red Letter];					break;
 	case $effect[Red Door Syndrome]:			useItem = $item[Can of Black Paint];			break;
 	case $effect[Reptilian Fortitude]:
-		if(have_skill($skill[Reptilian Fortitude]) && acquireTotem())
+		if(auto_have_skill($skill[Reptilian Fortitude]) && acquireTotem())
 		{
 			useSkill = $skill[Reptilian Fortitude];
 		}																						break;
@@ -587,7 +587,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Spice Haze]:					useSkill = $skill[Bind Spice Ghost];			break;
 	case $effect[Spiky Hair]:					useItem = $item[Super-Spiky Hair Gel];			break;
 	case $effect[Spiky Shell]:
-		if(have_skill($skill[Spiky Shell]) && acquireTotem())
+		if(auto_have_skill($skill[Spiky Shell]) && acquireTotem())
 		{
 			useSkill = $skill[Spiky Shell];
 		}																						break;
@@ -630,7 +630,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Taunt of Horus]:				useItem = $item[Talisman of Horus];				break;
 	case $effect[Temporary Lycanthropy]:		useItem = $item[Blood of the Wereseal];			break;
 	case $effect[Tenacity of the Snapper]:
-		if(have_skill($skill[Tenacity of the Snapper]) && acquireTotem())
+		if(auto_have_skill($skill[Tenacity of the Snapper]) && acquireTotem())
 		{
 			useSkill = $skill[Tenacity of the Snapper];
 		}																						break;
