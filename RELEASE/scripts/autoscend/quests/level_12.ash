@@ -1421,6 +1421,10 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
+	if(!auto_bestWarPlan().do_arena)
+	{
+		return false;		//we are not planning to do arena this ascension
+	}
 	if(internalQuestStatus("questL12War") != 1 || get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() >= 10000)
 	{
 		return false;
@@ -1429,79 +1433,47 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
+	if(my_level() < 13 && !isAboutToPowerlevel())
+	{
+		return false;		//let the powerlevel lock release first so we can do quests that are waiting for optimal conditions.
+	}
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
+	if(LX_freeCombats(true)) return true;	//try to use free combats to make up the difference.
 
-	if(needStarKey())
+	location scalezone = highestScalingZone();
+	float flyer_gains = my_buffedstat($stat[moxie]) + monster_level_adjustment();
+	switch(scalezone)
 	{
-		if(!zone_isAvailable($location[The Hole in the Sky]))
-		{
-			return (L10_topFloor() || L10_holeInTheSkyUnlock());
-		}
-		else
-		{
-			if(LX_getStarKey())
-			{
-				return true;
-			}
-		}
+		case $location[The Neverending Party]:
+			flyer_gains += 20; break;
+		case $location[VYKEA]:
+			flyer_gains += 6; break;
+		case $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]:
+		case $location[The Deep Dark Jungle]:
+		case $location[Sloppy Seconds Diner]:
+			flyer_gains += 5; break;
 	}
-	else if(needDigitalKey())
+	float adv_needed = (10000.0 - get_property("flyeredML").to_float()) / flyer_gains;
+	
+	warPlan plan_do_arena = auto_bestWarPlan();
+	plan_do_arena.do_arena = true;
+	warPlan plan_no_arena = auto_bestWarPlan();
+	plan_no_arena.do_arena = false;
+	float adv_saved = auto_warTotalBattles(plan_no_arena) - auto_warTotalBattles(plan_do_arena);
+	
+	if(adv_needed > adv_saved)
 	{
-		if(LX_getDigitalKey())
-		{
-			return true;
-		}
+		return false;	//if we lose advs by doing last ditch flyering then do not do it
 	}
-	else
-	{
-		auto_log_warning("Should not have so little flyer ML at this point", "red");
-		wait(1);
-		if(!LX_attemptFlyering())
-		{
-			abort("Need more flyer ML but don't know where to go :(");
-		}
-		return true;
-	}
-	return false;
-}
 
-boolean LX_attemptFlyering()
-{
-	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]))
-	{
-		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
-	}
-	else if(elementalPlanes_access($element[spooky]))
-	{
-		return autoAdv(1, $location[The Deep Dark Jungle]);
-	}
-	else if(elementalPlanes_access($element[cold]))
-	{
-		return autoAdv(1, $location[VYKEA]);
-	}
-	else if(elementalPlanes_access($element[stench]))
-	{
-		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
-	}
-	else if(elementalPlanes_access($element[sleaze]))
-	{
-		return autoAdv(1, $location[Sloppy Seconds Diner]);
-	}
-	else if(neverendingPartyAvailable())
+	if(scalezone == $location[The Neverending Party])
 	{
 		return neverendingPartyCombat();
 	}
-	else
+	if(scalezone != $location[none])
 	{
-		int flyer = get_property("flyeredML").to_int();
-		boolean retval = autoAdv($location[Near an Abandoned Refrigerator]);
-		if(flyer == get_property("flyeredML").to_int())
-		{
-			abort("Trying to flyer but failed to flyer");
-		}
-		set_property("auto_newbieOverride", true);
-		return retval;
+		return autoAdv(scalezone);
 	}
 	return false;
 }

@@ -1034,6 +1034,9 @@ void ed_handleAdventureServant(location loc)
 
 boolean L1_ed_island()
 {
+	//reset tracking of Ka farming
+	remove_property("_auto_farmingKaAsEd");
+
 	if(!elementalPlanes_access($element[spooky]))
 	{
 		return false;
@@ -1099,6 +1102,8 @@ boolean L1_ed_island()
 	}
 
 	buffMaintain($effect[Experimental Effect G-9]);
+	//track that we are farming Ka as Ed
+	set_property("_auto_farmingKaAsEd", true);
 	autoAdv($location[The Secret Government Laboratory]);
 	if(item_amount($item[Bottle-Opener Keycard]) > 0)
 	{
@@ -1110,6 +1115,9 @@ boolean L1_ed_island()
 
 boolean L1_ed_islandFallback()
 {
+	//reset tracking of Ka farming
+	remove_property("_auto_farmingKaAsEd");
+
 	if(elementalPlanes_access($element[spooky]))
 	{
 		return false;
@@ -1122,6 +1130,9 @@ boolean L1_ed_islandFallback()
 			return false;
 		}
 	}
+
+	//track that we are farming Ka as Ed
+	set_property("_auto_farmingKaAsEd", true);
 
 	if (neverendingPartyAvailable())
 	{

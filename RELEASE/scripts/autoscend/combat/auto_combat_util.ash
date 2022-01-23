@@ -45,7 +45,7 @@ void markAsUsed(item it)
 	}
 }
 
-boolean canUse(skill sk, boolean onlyOnce)
+boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 {
 	if(onlyOnce && haveUsed(sk))
 	{
@@ -57,7 +57,9 @@ boolean canUse(skill sk, boolean onlyOnce)
 		return false;
 	}
 
-	if(my_mp() < mp_cost(sk) - combat_mana_cost_modifier() ||
+	if(inCombat)
+	{
+		if(my_mp() < mp_cost(sk) + combat_mana_cost_modifier() ||	//modifier returns a negative value so we add
 		my_hp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
 		my_lightning() < lightning_cost(sk) ||
@@ -65,8 +67,22 @@ boolean canUse(skill sk, boolean onlyOnce)
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
 		my_pp() < plumber_ppCost(sk))
+		{
+			return false;
+		}
+	}
+	else
 	{
-		return false;
+		if(my_maxmp() < mp_cost(sk) + combat_mana_cost_modifier() ||	//modifier returns a negative value so we add
+		my_maxhp() <= hp_cost(sk) ||
+		get_fuel() < fuel_cost(sk) ||
+		my_lightning() < lightning_cost(sk) ||
+		my_thunder() < thunder_cost(sk) ||
+		my_rain() < rain_cost(sk) ||
+		my_soulsauce() < soulsauce_cost(sk))
+		{
+			return false;
+		}
 	}
 	
 	if(sk == $skill[Shieldbutt] && !hasShieldEquipped())
@@ -108,6 +124,11 @@ boolean canUse(skill sk, boolean onlyOnce)
 	}
 
 	return true;
+}
+
+boolean canUse(skill sk, boolean onlyOnce)	//assume we are in combat unless specified otherwise
+{
+	return canUse(sk, onlyOnce, true);
 }
 
 boolean canUse(skill sk) // assume onlyOnce unless specified otherwise
@@ -172,6 +193,82 @@ string useItems(item it1, item it2, boolean mark)
 string useItems(item it1, item it2)
 {
 	return useItems(it1, it2, true);
+}
+
+boolean isSniffed(monster enemy, skill sk)
+{
+	//checks if the monster enemy is currently sniffed using the specific skill sk
+	boolean retval = false;
+	switch(sk)
+	{
+		case $skill[Transcendent Olfaction]:
+			retval = contains_text(get_property("olfactedMonster"), enemy);
+			break;
+		case $skill[Make Friends]:
+			retval = contains_text(get_property("makeFriendsMonster"), enemy);
+			break;
+		case $skill[Long Con]:
+			retval = contains_text(get_property("longConMonster"), enemy);
+			break;
+		case $skill[Perceive Soul]:
+			retval = contains_text(get_property("auto_bat_soulmonster"), enemy);
+			break;
+		case $skill[Gallapagosian Mating Call]:
+			retval = contains_text(get_property("_gallapagosMonster"), enemy);
+			break;
+		case $skill[Offer Latte to Opponent]:
+			retval = contains_text(get_property("_latteMonster"), enemy);
+			break;
+		default:
+			abort("isSniffed was asked to check an unidentified skill: " +sk);
+	}
+	return retval;
+}
+
+boolean isSniffed(monster enemy)
+{
+	//checks if the monster enemy is currently sniffed using any of the sniff skills
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Offer Latte to Opponent]
+	{
+		if(isSniffed(enemy, sk)) return true;
+	}
+	return false;
+}
+
+skill getSniffer(monster enemy, boolean inCombat)
+{
+	//returns the skill we want to use to sniff the enemy
+	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
+	if(canUse($skill[Transcendent Olfaction], true , inCombat) && get_property("_olfactionsUsed").to_int() < 3 && !isSniffed(enemy, $skill[Transcendent Olfaction]))
+	{
+		return $skill[Transcendent Olfaction];
+	}
+	if(canUse($skill[Make Friends], true , inCombat) && my_audience() >= 20 && !isSniffed(enemy, $skill[Make Friends]))
+	{
+		return $skill[Make Friends];		//avatar of sneaky pete specific skill
+	}
+	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
+	{
+		return $skill[Long Con];
+	}
+	if(canUse($skill[Perceive Soul], true , inCombat) && !isSniffed(enemy, $skill[Perceive Soul]))
+	{
+		return $skill[Perceive Soul];
+	}
+	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && !isSniffed(enemy, $skill[Gallapagosian Mating Call]))
+	{
+		return $skill[Gallapagosian Mating Call];
+	}
+	if(canUse($skill[Offer Latte to Opponent], true , inCombat) && !get_property("_latteCopyUsed").to_boolean() && !isSniffed(enemy, $skill[Offer Latte to Opponent]))
+	{
+		return $skill[Offer Latte to Opponent];
+	}	
+	return $skill[none];
+}
+
+skill getSniffer(monster enemy)
+{
+	return getSniffer(enemy, true);
 }
 
 skill getStunner(monster enemy)
@@ -469,7 +566,13 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
-	
+
+	// bowling ball is only in inventory if it is availble to use in combat. While on cooldown, it is not in inventory
+	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && !(used contains "Bowl a Curveball"))
+	{
+		return "skill " + $skill[Bowl a Curveball];
+	}
+
 	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
 	{
 		return "skill " + $skill[Feel Hatred];

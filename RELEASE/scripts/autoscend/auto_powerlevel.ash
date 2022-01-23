@@ -2,6 +2,43 @@ boolean isAboutToPowerlevel() {
 	return get_property("auto_powerLevelLastLevel").to_int() == my_level();
 }
 
+location highestScalingZone()
+{
+	//all scaling zones have monster level = my_buffedstat($stat[moxie]) + monster_level_adjustment() + enemy_value. up to a cap
+	//returns the zone with the highest enemy_value which we can adventure in
+	if(neverendingPartyAvailable())
+	{
+		//+20 enemy value
+		return $location[The Neverending Party];
+	}
+	if(elementalPlanes_access($element[cold]))
+	{
+		//+6 (male viking) or +10 (female viking) enemy value
+		return $location[VYKEA];
+	}
+	if(elementalPlanes_access($element[hot]))
+	{
+		//+1 zone bonus. +15 can appear after 20 fights today. +30 can appear after 40 fights today.
+		return $location[The SMOOCH Army HQ];
+	}
+	if(elementalPlanes_access($element[stench]))
+	{
+		//+5 enemy value
+		return $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice];
+	}
+	if(elementalPlanes_access($element[spooky]))
+	{
+		//+5 enemy value
+		return $location[The Deep Dark Jungle];
+	}
+	if(elementalPlanes_access($element[sleaze]))
+	{
+		//+5 enemy value
+		return $location[Sloppy Seconds Diner];
+	}
+	return $location[none];
+}
+
 boolean LX_attemptPowerLevel()
 {
 	if (!isAboutToPowerlevel())		//determined that the softblock on quests waiting for optimal conditions is still on
@@ -56,29 +93,15 @@ boolean LX_attemptPowerLevel()
 	}
 
 	//scaling damage zones
-	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]) && (get_property("auto_beatenUpCount").to_int() == 0))
+	//all scaling zones have monster level = my_buffedstat($stat[moxie]) + monster_level_adjustment() + enemy_value. up to a cap
+	location scalezone = highestScalingZone();
+	if(scalezone == $location[The Neverending Party])
 	{
-		if(autoAdv($location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice])) return true;
+		return neverendingPartyCombat();
 	}
-	if(elementalPlanes_access($element[spooky]))
+	if(scalezone != $location[none])
 	{
-		if(autoAdv($location[The Deep Dark Jungle])) return true;
-	}
-	if(elementalPlanes_access($element[cold]))
-	{
-		if(autoAdv($location[VYKEA])) return true;
-	}
-	if(elementalPlanes_access($element[sleaze]))
-	{
-		if(autoAdv($location[Sloppy Seconds Diner])) return true;
-	}
-	if (elementalPlanes_access($element[hot]))
-	{
-		if(autoAdv($location[The SMOOCH Army HQ])) return true;
-	}
-	if (neverendingPartyAvailable())
-	{
-		if(neverendingPartyCombat()) return true;
+		return autoAdv(scalezone);
 	}
 	if(timeSpinnerAdventure()) return true;
 	//do not use the scaling zone [The Thinknerd Warehouse] here.

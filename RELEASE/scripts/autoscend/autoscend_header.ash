@@ -428,10 +428,16 @@ boolean batteryCombine(item battery);
 boolean batteryCombine(item battery, boolean simulate);
 boolean can_get_battery(item target);
 boolean auto_getBattery(item target);
+boolean have_fireworks_shop();
 boolean auto_haveFireExtinguisher();
 int auto_fireExtinguisherCharges();
 string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
+
+########################################################################################################
+//Defined in autoscend/iotms/mr2021.ash
+boolean auto_haveCosmicBowlingBall();
+string auto_bowlingBallCombatString(location place, boolean speculation);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -742,6 +748,8 @@ int plumber_ppCost(skill sk);
 boolean plumber_canDealScalingDamage();
 boolean plumber_skillValid(skill sk);
 boolean plumber_equipTool(stat st);
+void plumber_eat_xp();
+boolean LM_plumber();
 
 ########################################################################################################
 //Defined in autoscend/paths/picky.ash
@@ -1014,7 +1022,6 @@ boolean L12_sonofaPrefix();
 boolean L12_sonofaFinish();
 boolean L12_flyerBackup();
 boolean L12_lastDitchFlyer();
-boolean LX_attemptFlyering();
 boolean L12_flyerFinish();
 boolean L12_themtharHills();
 boolean LX_obtainChaosButterfly();
@@ -1154,7 +1161,7 @@ boolean doBedtime();
 
 ########################################################################################################
 //Defined in autoscend/auto_buff.ash
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);
+boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
@@ -1199,6 +1206,7 @@ boolean auto_breakfastCounterVisit();
 item still_targetToOrigin(item target);
 boolean stillReachable();
 boolean distill(item target);
+boolean prepare_food_xp_multi();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
@@ -1364,6 +1372,7 @@ void pathDroppedCheck();
 ########################################################################################################
 //Defined in autoscend/auto_powerlevel.ash
 boolean isAboutToPowerlevel();
+location highestScalingZone();
 boolean LX_attemptPowerLevel();
 boolean disregardInstantKarma();
 int auto_freeCombatsRemaining();

@@ -718,6 +718,12 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return useItem($item[Short Writ of Habeas Corpus]);
 	}
 
+	// use cosmic bowling ball iotm
+	if(auto_bowlingBallCombatString(my_location(), true) != "")
+	{
+		return 	auto_bowlingBallCombatString(my_location(), false);
+	}
+
 	if(get_property("auto_edStatus") == "UNDYING!")
 	{
 		// We're taking a trip to the underworld. Either we want to abuse resurrection or we want to go shopping

@@ -1126,41 +1126,19 @@ boolean adjustForReplaceIfPossible()
 
 boolean canSniff(monster enemy, location loc)
 {
-	if (have_skill($skill[Transcendent Olfaction]) &&
-	auto_is_valid($skill[Transcendent Olfaction]) &&
-	get_property("olfactedMonster").to_monster() != enemy &&
-	(have_effect($effect[On The Trail]) == 0 || item_amount($item[soft green echo eyedrop antidote]) > 0))
+	if(!auto_wantToSniff(enemy, loc))
 	{
-		return auto_wantToSniff(enemy, loc);
+		return false;
 	}
-	return false;
+	return getSniffer(enemy, false) != $skill[none];
 }
 
 boolean adjustForSniffingIfPossible(monster target)
 {
-	if (have_skill($skill[Transcendent Olfaction]) && auto_is_valid($skill[Transcendent Olfaction]))
+	skill sniffer = getSniffer(target, false);
+	if(sniffer != $skill[none])
 	{
-		if (get_property("olfactedMonster").to_monster() != target &&
-				have_effect($effect[On the trail]) > 0 &&
-				item_amount($item[soft green echo eyedrop antidote]) > 0)
-		{
-			auto_log_info("Uneffecting On the trail to have Transcendent Olfaction available for " + target, "blue");
-			monster old_olfact = get_property("olfactedMonster").to_monster();
-			string output = cli_execute_output("uneffect On the trail");
-			if (output.contains_text("On the Trail removed."))
-			{
-				handleTracker($item[soft green echo eyedrop antidote], old_olfact, "auto_otherstuff");
-				return true;
-			}
-			else
-			{
-				auto_log_info("Failed to Uneffect On the trail for some reason?", "blue");
-			}
-		}
-		if (my_mp() < mp_cost($skill[Transcendent Olfaction]))
-		{
-			acquireMP(mp_cost($skill[Transcendent Olfaction]));
-		}
+		return acquireMP(sniffer.mp_cost());
 	}
 	return false;
 }

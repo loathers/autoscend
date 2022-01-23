@@ -46,6 +46,7 @@ import <autoscend/iotms/mr2018.ash>
 import <autoscend/iotms/mr2019.ash>
 import <autoscend/iotms/mr2020.ash>
 import <autoscend/iotms/mr2021.ash>
+import <autoscend/iotms/mr2022.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
@@ -1269,6 +1270,11 @@ boolean adventureFailureHandler()
 		{
 			tooManyAdventures = false;
 		}
+
+		if ($locations[The Daily Dungeon] contains place && get_property("auto_forceFatLootToken").to_boolean())
+		{
+			tooManyAdventures = false;
+		}
 		
 		boolean can_powerlevel_stench = elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]) && get_property("auto_beatenUpCount").to_int() == 0;
 		boolean has_powerlevel_iotm = can_powerlevel_stench || elementalPlanes_access($element[spooky]) || elementalPlanes_access($element[cold]) || elementalPlanes_access($element[sleaze]) || elementalPlanes_access($element[hot]) || neverendingPartyAvailable();
@@ -1658,7 +1664,6 @@ boolean doTasks()
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();
-	plumber_buyStuff();
 	jarlsberg_buySkills();
 	boris_buySkills();
 	pete_buySkills();
@@ -1703,6 +1708,7 @@ boolean doTasks()
 	if(LM_kolhs()) 						return true;
 	if(LM_jarlsberg())					return true;
 	if(LM_robot())						return true;
+	if(LM_plumber())					return true;
 
 	if(!in_community())
 	{
