@@ -1161,7 +1161,7 @@ boolean doBedtime();
 
 ########################################################################################################
 //Defined in autoscend/auto_buff.ash
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);
+boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);

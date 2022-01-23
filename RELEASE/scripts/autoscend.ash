@@ -1267,6 +1267,11 @@ boolean adventureFailureHandler()
 		{
 			tooManyAdventures = false;
 		}
+
+		if ($locations[The Daily Dungeon] contains place && get_property("auto_forceFatLootToken").to_boolean())
+		{
+			tooManyAdventures = false;
+		}
 		
 		boolean can_powerlevel_stench = elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]) && get_property("auto_beatenUpCount").to_int() == 0;
 		boolean has_powerlevel_iotm = can_powerlevel_stench || elementalPlanes_access($element[spooky]) || elementalPlanes_access($element[cold]) || elementalPlanes_access($element[sleaze]) || elementalPlanes_access($element[hot]) || neverendingPartyAvailable();
