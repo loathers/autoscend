@@ -88,7 +88,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		flyer = $item[Jam Band Flyers];
 	}
 	skill stunner = getStunner(enemy);
-	boolean stunned = contains_text(combatState, "stunned");
+	boolean stunned = combat_status_check("stunned");
 	
 	if (get_property("auto_gremlinMoly").to_boolean() && !canSurvive(20) && !stunned)		//don't flyer tool gremlins if it's dangerous to survive them for long
 	{
@@ -99,7 +99,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 			boolean gremlinTakesDamage = (isAttackFamiliar(my_familiar()) || (monster_hp() < (0.8*monster_hp(enemy))));
 			if(!gremlinTakesDamage && round < 10 && stunner != $skill[none])
 			{
-				set_property("auto_combatHandler", get_property("auto_combatHandler")+",stunned");
+				combat_status_add(",stunned");
 				return useSkill(stunner);
 			}
 		}
@@ -108,7 +108,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	{
 		if(stunner != $skill[none] && !stunned)
 		{
-			set_property("auto_combatHandler", get_property("auto_combatHandler")+",stunned");
+			combat_status_add(",stunned");
 			return useSkill(stunner);
 		}
 		if (isActuallyEd())
