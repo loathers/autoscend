@@ -786,13 +786,7 @@ void initializeDay(int day)
 						buyUpTo(1, $item[Toy Accordion]);
 					}
 				}
-				if(!possessEquipment($item[Turtle Totem]))
-				{
-					if(have_skill($skill[Empathy of the Newt]) || have_skill($skill[Astral Shell]) || have_skill($skill[Ghostly Shell]) || have_skill($skill[Tenacity of the Snapper]) || have_skill($skill[Spiky Shell]) || have_skill($skill[Reptilian Fortitude]) || have_skill($skill[Jingle Bells]) || have_skill($skill[Curiosity of Br\'er Tarrypin]))
-					{
-						acquireGumItem($item[Turtle Totem]);
-					}
-				}
+				acquireTotem();
 				if(!possessEquipment($item[Saucepan]))
 				{
 					acquireGumItem($item[Saucepan]);
