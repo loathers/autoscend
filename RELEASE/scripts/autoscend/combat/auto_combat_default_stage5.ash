@@ -67,54 +67,31 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	}
 	
 	//iotm back item and the enemies it spawns (free fights) can be killed using special skills to get extra XP and item drops
-	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy))
+	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy) && !combat_status_check("skipGhostbusting"))
 	{
+		//shoot ghost 3 times provoking retaliation, then trap ghost skill unlocks which instawins combat.
 		skill stunner = getStunner(enemy);
 		if(stunner != $skill[none])
 		{
 			return useSkill(stunner);
 		}
 
-		if(canUse($skill[Shoot Ghost], false) && !combat_status_check("shootghost3"))
+		//shots_takens tracks how many times we used [shoot ghost] skill this combat. it is reset in combat initialize
+		int shots_takens = usedCount($skill[Shoot Ghost]);
+		if(canUse($skill[Shoot Ghost], false) && shots_takens < 3)
 		{
-			boolean shootGhost = true;
-			if(combat_status_check("shootghost2"))
-			{
-				if((damageReceived * 1.075) > my_hp())
-				{
-					shootGhost = false;
-				}
-				else
-				{
-					combat_status_add("shootghost3");
-				}
-			}
-			else if(combat_status_check("shootghost1"))
-			{
-				if((damageReceived * 2.05) > my_hp())
-				{
-					shootGhost = false;
-				}
-				else
-				{
-					combat_status_add("shootghost2");
-				}
-			}
-			else
-			{
-				combat_status_add("shootghost1");
-			}
-
-			if(shootGhost)
+			float survive_needed = 3.05 - shots_takens.to_float();
+			if(canSurvive(survive_needed))
 			{
 				return useSkill($skill[Shoot Ghost], false);
 			}
 			else
 			{
-				combat_status_add("trapghost");
+				combat_status_add("skipGhostbusting");
 			}
 		}
-		if(canUse($skill[Trap Ghost]) && combat_status_check("shootghost3"))
+		
+		if(canUse($skill[Trap Ghost]) && shots_takens == 3)
 		{
 			auto_log_info("Busting makes me feel good!!", "green");
 			return useSkill($skill[Trap Ghost]);
