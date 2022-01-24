@@ -99,7 +99,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 			boolean gremlinTakesDamage = (isAttackFamiliar(my_familiar()) || (monster_hp() < (0.8*monster_hp(enemy))));
 			if(!gremlinTakesDamage && round < 10 && stunner != $skill[none])
 			{
-				combat_status_add(",stunned");
+				combat_status_add("stunned");
 				return useSkill(stunner);
 			}
 		}
@@ -108,7 +108,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	{
 		if(stunner != $skill[none] && !stunned)
 		{
-			combat_status_add(",stunned");
+			combat_status_add("stunned");
 			return useSkill(stunner);
 		}
 		if (isActuallyEd())
