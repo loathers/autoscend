@@ -207,11 +207,6 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 		{
 			visit_url("guild.php?action=buyskill&skillid=10", true);
 		}
-		if((my_level() >= 7) && (my_meat() >= 25000) && !have_skill($skill[Five Finger Discount]) &&
-		((my_level() < 11) || meatReserve() > 10000))	//useless discount if large store expenses already taken care of
-		{
-			visit_url("guild.php?action=buyskill&skillid=35", true);
-		}
 		if((my_level() >= 10) && (my_meat() >= 12500) && !have_skill($skill[Thief Among the Honorable]))
 		{
 			visit_url("guild.php?action=buyskill&skillid=38", true);
