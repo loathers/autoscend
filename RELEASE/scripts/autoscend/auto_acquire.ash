@@ -449,8 +449,15 @@ boolean acquireTotem()
 		}
 	}
 
-	if(auto_have_skill($skill[Empathy of the Newt]) || auto_have_skill($skill[Astral Shell]) || auto_have_skill($skill[Ghostly Shell]) || auto_have_skill($skill[Tenacity of the Snapper]) || 
-	auto_have_skill($skill[Spiky Shell]) || auto_have_skill($skill[Reptilian Fortitude]) || auto_have_skill($skill[Jingle Bells]) || auto_have_skill($skill[Curiosity of Br\'er Tarrypin]))
+	boolean want_totem = false;
+	foreach sk in $skills[Empathy of the Newt, Astral Shell, Ghostly Shell, Tenacity of the Snapper, Spiky Shell, Reptilian Fortitude, Jingle Bells, Curiosity of Br\'er Tarrypin]
+	{
+		if(auto_have_skill(sk))
+		{
+			want_totem = true;
+		}
+	}
+	if(want_totem)
 	{	
 		//try fishing in the sewer for a turtle totem
 		if(acquireGumItem($item[turtle totem]))
