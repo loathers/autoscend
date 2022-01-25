@@ -83,6 +83,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			float survive_needed = 3.05 - shots_takens.to_float();
 			if(canSurvive(survive_needed))
 			{
+				markAsUsed($skill[Shoot Ghost]);		//needs to be manually done for skills with a use limit that is not 1
 				return useSkill($skill[Shoot Ghost], false);
 			}
 			else
