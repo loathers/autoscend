@@ -2649,7 +2649,7 @@ void shrugAT(effect anticipated)
 		return;
 	}
 	
-	if(!have_skill(to_skill(anticipated)))
+	if(!auto_have_skill(to_skill(anticipated)))
 	{	//We don't know that song anyway
 		return;
 	}
