@@ -2,17 +2,17 @@
 
 boolean haveUsed(skill sk)
 {
-	return get_property("auto_combatHandler").contains_text("(sk" + sk.to_int().to_string() + ")");
+	return get_property("_auto_combatState").contains_text("(sk" + sk.to_int().to_string() + ")");
 }
 
 boolean haveUsed(item it)
 {
-	return get_property("auto_combatHandler").contains_text("(it" + it.to_int().to_string() + ")");
+	return get_property("_auto_combatState").contains_text("(it" + it.to_int().to_string() + ")");
 }
 
 int usedCount(skill sk)
 {
-	matcher m = create_matcher("(sk" + sk.to_int().to_string() + ")", get_property("auto_combatHandler"));
+	matcher m = create_matcher("(sk" + sk.to_int().to_string() + ")", get_property("_auto_combatState"));
 	int count = 0;
 	while(m.find())
 	{
@@ -23,7 +23,7 @@ int usedCount(skill sk)
 
 int usedCount(item it)
 {
-	matcher m = create_matcher("(it" + it.to_int().to_string() + ")", get_property("auto_combatHandler"));
+	matcher m = create_matcher("(it" + it.to_int().to_string() + ")", get_property("_auto_combatState"));
 	int count = 0;
 	while(m.find())
 	{
@@ -34,14 +34,14 @@ int usedCount(item it)
 
 void markAsUsed(skill sk)
 {
-	set_property("auto_combatHandler", get_property("auto_combatHandler") + "(sk" + sk.to_int().to_string() + ")");
+	set_property("_auto_combatState", get_property("_auto_combatState") + "(sk" + sk.to_int().to_string() + ")");
 }
 
 void markAsUsed(item it)
 {
 	if(it != $item[none])
 	{
-		set_property("auto_combatHandler", get_property("auto_combatHandler") + "(it" + it.to_int().to_string() + ")");
+		set_property("_auto_combatState", get_property("_auto_combatState") + "(it" + it.to_int().to_string() + ")");
 	}
 }
 
@@ -806,4 +806,19 @@ float turns_to_kill(float dmg)
 {
 	//how long will it take us to kill the current enemy if we are able to deal dmg to it each round
 	return monster_hp().to_float() / dmg;
+}
+
+boolean combat_status_check(string mark)
+{
+	return contains_text(get_property("_auto_combatState"), mark);
+}
+
+void combat_status_add(string mark)
+{
+	string st = get_property("_auto_combatState");
+	if(!combat_status_check(mark))
+	{
+		st = st+ "(" +mark+ ")";
+	}
+	set_property("_auto_combatState", st);
 }

@@ -1124,6 +1124,14 @@ boolean doBedtime()
 			}
 		}
 		
+		bedtime_still();	//quickly use up all remaining uses of Nash Crosby's Still during bedtime
+
+		if(get_workshed() == $item[spinning wheel] && is_unrestricted($item[spinning wheel]) && !get_property("_spinningWheel").to_boolean())
+		{
+			auto_log_info("Using the spinning wheel in your workshed", "blue");
+			visit_url("campground.php?action=spinningwheel");
+		}
+		
 		bedtime_pulls();
 		pullsNeeded("evaluate");
 
@@ -1146,8 +1154,6 @@ boolean doBedtime()
 		{
 			auto_log_info("You can still fight a Chateau Mangtegna Painting today.", "blue");
 		}
-
-		bedtime_still();	//quickly use up all remaining uses of Nash Crosby's Still during bedtime
 
 		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]))
 		{
@@ -1179,7 +1185,7 @@ boolean doBedtime()
 
 		if (get_property("spadingData") != "")
 		{
-			cli_execute("spade");
+			cli_execute("spade autoconfirm");
 		}
 
 		auto_log_info("You are probably done for today, beep.", "blue");

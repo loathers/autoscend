@@ -2,11 +2,10 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 {
 	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 	string retval;
-	string combatState = get_property("auto_combatHandler");
 	
 	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
 	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
-	if(!contains_text(combatState, "sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
+	if(!combat_status_check("sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
 	{
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
 		return "";
@@ -60,12 +59,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 	
 	//yellowray instantly kills the enemy and makes them drop all items they can drop.
-	if(!contains_text(combatState, "yellowray") && auto_wantToYellowRay(enemy, my_location()))
+	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()))
 	{
 		string combatAction = yellowRayCombatString(enemy, true);
 		if(combatAction != "")
 		{
-			set_property("auto_combatHandler", combatState + "(yellowray)");
+			combat_status_add("yellowray");
 			if(index_of(combatAction, "skill") == 0)
 			{
 				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_yellowRays");
@@ -115,13 +114,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!contains_text(combatState, "banishercheck") && auto_wantToBanish(enemy, my_location()))
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
 	{
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
 		{
 			auto_log_info("Looking at banishAction: " + banishAction, "green");
-			set_property("auto_combatHandler", combatState + "(banisher)");
+			combat_status_add("banisher");
 			if(index_of(banishAction, "skill") == 0)
 			{
 				handleTracker(enemy, to_skill(substring(banishAction, 6)), "auto_banishes");
@@ -137,7 +136,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return banishAction;
 		}
 		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
-		set_property("auto_combatHandler", combatState + "(banishercheck)");
+		combat_status_add("banishercheck");
 	}
 
 	// Free run from monsters we want to banish but are unable to
@@ -154,12 +153,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if (!contains_text(combatState, "replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
 	{
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")
 		{
-			set_property("auto_combatHandler", combatState + "(replacer)");
+			combat_status_add("replacer");
 			if(index_of(combatAction, "skill") == 0)
 			{
 				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])
@@ -182,8 +181,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		{
 			auto_log_warning("Wanted a replacer but we can not find one.", "red");
 		}
-		set_property("auto_combatHandler", combatState + "(replacercheck)");
-		combatState += "(replacercheck)";
+		combat_status_add("replacercheck");
 	}
 	
 	//convert enemy [Tomb rat] into [Tomb rat king]
@@ -263,7 +261,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 	//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
 	//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
-	//		if(!contains_text(combatState, "batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0) && (get_property("_usedReplicaBatoomerang").to_int() < 3))
+	//		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0) && (get_property("_usedReplicaBatoomerang").to_int() < 3))
 	//		THIS IS COPIED TO THE ED SECTION, IF IT IS FIXED, FIX IT THERE TOO!
 		if(canUse($item[Replica Bat-oomerang]))
 		{

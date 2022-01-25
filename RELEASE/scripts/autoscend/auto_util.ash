@@ -3344,7 +3344,7 @@ boolean auto_badassBelt()
 	}
 }
 
-void auto_interruptCheck()
+void auto_interruptCheck(boolean debug)
 {
 	if(get_property("auto_interrupt").to_boolean())
 	{
@@ -3352,11 +3352,17 @@ void auto_interruptCheck()
 		restoreAllSettings();
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
 	}
-	else if (get_property("auto_debugging").to_boolean())
+	else if (get_property("auto_debugging").to_boolean() && debug)
 	{
 		set_property("auto_interrupt", true);
 		auto_log_info("auto_debugging detected, auto_interrupt enabled.");
 	}
+}
+
+void auto_interruptCheck()
+{
+	//we check for interrupt at multiple locations. but we only want to set it once per loop in debug mode.
+	auto_interruptCheck(true);
 }
 
 element currentFlavour()
