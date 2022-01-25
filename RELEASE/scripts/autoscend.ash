@@ -1618,7 +1618,7 @@ boolean doTasks()
 	
 	print_header();
 
-	auto_interruptCheck();
+	auto_interruptCheck(false);
 
 	int delay = get_property("auto_delayTimer").to_int();
 	if(delay > 0)
