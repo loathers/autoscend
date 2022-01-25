@@ -1185,7 +1185,7 @@ boolean doBedtime()
 
 		if (get_property("spadingData") != "")
 		{
-			cli_execute("spade");
+			cli_execute("spade autoconfirm");
 		}
 
 		auto_log_info("You are probably done for today, beep.", "blue");

@@ -1161,7 +1161,7 @@ boolean doBedtime();
 
 ########################################################################################################
 //Defined in autoscend/auto_buff.ash
-boolean buffMaintain(skill source, effect buff, int mp_min, int casts, int turns, boolean speculative);
+boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(item source, effect buff, int uses, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean speculative);
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns);
@@ -1633,6 +1633,7 @@ boolean auto_wantToYellowRay(monster enemy, location loc);
 boolean auto_wantToReplace(monster enemy, location loc);
 int total_items(boolean [item] items);
 boolean auto_badassBelt();
+void auto_interruptCheck(boolean debug);
 void auto_interruptCheck();
 element currentFlavour();
 boolean setFlavour(element ele);
