@@ -295,6 +295,8 @@ void auto_settingsDelete()
 	remove_property("auto_logLevel");		//replaced string auto_logLevel with int auto_log_level
 	remove_property("auto_bedtime_pulls_skip_clover"); //replaced option of pulling multiple ten-leaf clovers with always pulling an 11-leaf clover
 	remove_property("cloverProtectActive"); //obsolete with change to Lucky! adventures
+	remove_property("auto_edCombatHandler");	//ed can use the same tracking preference as all other paths
+	remove_property("auto_combatHandler");		//replaced with _auto_combatState
 }
 
 void defaultConfig(string prop, string val)
