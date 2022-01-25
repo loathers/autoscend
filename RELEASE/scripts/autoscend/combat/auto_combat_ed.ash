@@ -265,23 +265,25 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return useItem($item[chaos butterfly]);
 	}
 
-	if(enemy == $monster[dirty thieving brigand] && !combat_status_check("curse of fortune")) {
-		if (item_amount($item[Ka Coin]) > 0 && canUse($skill[Curse Of Fortune]) && my_hp() > expected_damage() + 15) {
+	if(enemy == $monster[dirty thieving brigand] && canUse($skill[Curse Of Fortune]))
+	{
+		if (item_amount($item[Ka Coin]) > 0 && my_hp() > expected_damage() + 15)
+		{
 			// need to kill the monster without resurrecting to get the bonus meat drop so only use it if we have enough HP to survive a hit
-			combat_status_add("curse of fortune");
 			set_property("auto_edStatus", "dying");
 			return useSkill($skill[Curse Of Fortune]);
-		} else {
-			// get a full heal, maybe we can Curse and kill after resurrection
+		}
+		else if(get_property("_edDefeats").to_int() == 0 && my_maxhp() > expected_damage() + 15)
+		{
+			// suicide to get a full heal, maybe we can Curse and kill after resurrection
 			set_property("auto_edStatus", "UNDYING!");
 		}
 	}
 
-	if (!combat_status_check("curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
+	if (canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 	{
 		if(auto_wantToSniff(enemy, my_location()))
 		{
-			combat_status_add("curseofstench");
 			handleTracker(enemy, $skill[Curse Of Stench], "auto_sniffs");
 			return useSkill($skill[Curse Of Stench]);
 		}
@@ -289,7 +291,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(my_location() == $location[The Secret Council Warehouse])
 	{
-		if (!combat_status_check("curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
+		if (canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			#	Rememeber, we are looking to see if we have enough of the opposite item here.
@@ -314,7 +316,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			}
 			if(doStench)
 			{
-				combat_status_add("curseofstench");
 				handleTracker(enemy, $skill[Curse of Stench], "auto_sniffs");
 				return useSkill($skill[Curse Of Stench]);
 			}
@@ -323,7 +324,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(my_location() == $location[The Smut Orc Logging Camp])
 	{
-		if (!combat_status_check("curseofstench") && canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
+		if (canUse($skill[Curse Of Stench]) && get_property("stenchCursedMonster").to_monster() != enemy && get_property("_edDefeats").to_int() < 3)
 		{
 			boolean doStench = false;
 			string stenched = to_lower_case(get_property("stenchCursedMonster"));
@@ -347,7 +348,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 			if(doStench)
 			{
-				combat_status_add("curseofstench");
 				handleTracker(enemy, $skill[Curse of Stench], "auto_sniffs");
 				return useSkill($skill[Curse Of Stench]);
 			}
