@@ -2,12 +2,12 @@
 
 boolean haveUsed(skill sk)
 {
-	return get_property("_auto_combatState").contains_text("(sk" + sk.to_int().to_string() + ")");
+	return usedCount(sk) > 0;
 }
 
 boolean haveUsed(item it)
 {
-	return get_property("_auto_combatState").contains_text("(it" + it.to_int().to_string() + ")");
+	return usedCount(it) > 0;
 }
 
 int usedCount(skill sk)
