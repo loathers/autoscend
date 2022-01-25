@@ -153,7 +153,6 @@ void initializeSettings() {
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
 	set_property("auto_clanstuff", "0");
-	set_property("auto_combatHandler", "");
 	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
 	set_property("auto_crackpotjar", "");
