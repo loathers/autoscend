@@ -1633,6 +1633,7 @@ boolean auto_wantToYellowRay(monster enemy, location loc);
 boolean auto_wantToReplace(monster enemy, location loc);
 int total_items(boolean [item] items);
 boolean auto_badassBelt();
+void auto_interruptCheck(boolean debug);
 void auto_interruptCheck();
 element currentFlavour();
 boolean setFlavour(element ele);
