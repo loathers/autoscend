@@ -449,6 +449,22 @@ string auto_combatSaberYR()
 	return "skill " + $skill[Use the Force];
 }
 
+skill auto_spoonCombatSkill()
+{
+	switch(my_primestat())
+	{
+		case $stat[Muscle]:
+			return $skill[Dragoon Platoon];
+		case $stat[Mysticality]:
+			return $skill[Spittoon Monsoon];
+		case $stat[Moxie]:
+			return $skill[Festoon Buffoon];
+		default:
+			abort("Invalid mainstat, what?");
+			return "butts"; // needed or mafia complains about missing return value
+	}
+}
+
 string auto_spoonGetDesiredSign()
 {
 	string spoonsign = get_property("auto_spoonsign").to_lower_case();
