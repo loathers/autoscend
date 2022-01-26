@@ -700,7 +700,7 @@ boolean L8_trapperNinjaLair()
 
 boolean L8_trapperGroar()
 {
-	 do the peak portion of L8 trapper quest.
+	// do the peak portion of L8 trapper quest.
 	if(internalQuestStatus("questL08Trapper") < 3 || internalQuestStatus("questL08Trapper") > 4)
 	{
 		return false; // peak not yet unlocked or we are done with groar
