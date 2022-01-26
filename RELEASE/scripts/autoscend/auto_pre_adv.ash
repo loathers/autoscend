@@ -91,7 +91,8 @@ void auto_ghost_prep(location place)
 		Saucestorm, saucegeyser,	//base classes
 		Storm of the Scarab,		//actually ed the undying
 		Boil,						//avatar of jarlsberg
-		Bilious Burst				//zombie slayer
+		Bilious Burst,				//zombie slayer
+		Heroic Belch				//avatar of boris
 		]
 	{
 		if(auto_have_skill(sk))
