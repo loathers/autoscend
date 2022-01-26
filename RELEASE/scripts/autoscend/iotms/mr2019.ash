@@ -461,7 +461,7 @@ skill auto_spoonCombatSkill()
 			return $skill[Festoon Buffoon];
 		default:
 			abort("Invalid mainstat, what?");
-			return "butts"; // needed or mafia complains about missing return value
+			return $skill[none]; // needed or mafia complains about missing return value
 	}
 }
 
