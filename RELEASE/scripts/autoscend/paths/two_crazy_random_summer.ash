@@ -7,23 +7,23 @@ float tcrs_expectedAdvPerFill(string quality)
 {
 	switch(quality)
 	{
-	case "EPIC":    return 5;
-	case "awesome": return 4;
-	case "good":    return 3;
-	case "decent":  return 2;
-	case "crappy":  return 1;
-	default:        abort("could not calculate expected adventures for quality " + quality + " in 2CRS");
+	case "EPIC":	return 5;
+	case "awesome":	return 4;
+	case "good":	return 3;
+	case "decent":	return 2;
+	case "crappy":	return 1;
+	default:		abort("could not calculate expected adventures for quality " + quality + " in 2CRS");
 	}
 	return -1; // makes the compiler shut up
 }
 
 boolean tcrs_maximize_with_items(string maximizerString)
 {
-	if (!in_tcrs()) return false;
-
-	/* In TCRS, items give random effects. Instead of hard-coding a list of
-	 * effects for each path/class combination, we look at what we got.
-	 */
+	if(!in_tcrs())
+	{
+		return false;
+	}
+	// in TCRS, items give random effects. Instead of hard-coding a list of effects for each path/class combination, we look at what we got.
 	boolean used_anything = false;
 	foreach i, rec in maximize(maximizerString, 300, 0, true, false)
 	{
