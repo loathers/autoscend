@@ -276,7 +276,7 @@ void castleTopFloorChoiceHandler(int choice)
 		}
 		else
 		{
-			run_choice(2); // grab steam-powered rocket ship.  will skip if already have rocket
+			run_choice(2); // grab steam-powered rocket ship. will skip if already have rocket
 		}
 	}
 	else if(choice == 678) // Yeah, You're for Me, Punk Rock Giant (The Castle in the Clouds in the Sky (Top Floor))
