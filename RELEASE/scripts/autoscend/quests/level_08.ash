@@ -247,7 +247,8 @@ int getCellToMine(item oreGoal)
 	if(numPotentials == 1)
 	{
 		return potentialCells[0];
-	} else if(numPotentials == 0)
+	}
+	else if(numPotentials == 0)
 	{
 		abort("Glitch in the matrix. Please report this to the dev team (preferably with a log and screenshot of your mine");
 	}
@@ -770,7 +771,7 @@ boolean L8_trapperPeak()
 		{
 			// TODO get outfit
 			// TODO does TCRS have a problem with the outfit still not being enough? look into it
-			return false; // e are unable to provide 5 cold res
+			return false; // we are unable to provide 5 cold res
 		}
 		
 		if(internalQuestStatus("questL08Trapper") == 3)

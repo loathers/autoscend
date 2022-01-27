@@ -12,7 +12,7 @@ float tcrs_expectedAdvPerFill(string quality)
 	case "good":	return 3;
 	case "decent":	return 2;
 	case "crappy":	return 1;
-	default:		abort("could not calculate expected adventures for quality " + quality + " in 2CRS");
+	default:	abort("could not calculate expected adventures for quality " + quality + " in 2CRS");
 	}
 	return -1; // makes the compiler shut up
 }
