@@ -5,7 +5,7 @@ boolean L6_friarsGetParts_condition_hardcore()
 
 boolean L6_friarsGetParts()
 {
-	if (internalQuestStatus("questL06Friar") < 0 || internalQuestStatus("questL06Friar") > 2)
+	if(internalQuestStatus("questL06Friar") < 0 || internalQuestStatus("questL06Friar") > 2)
 	{
 		return false;
 	}
@@ -17,9 +17,10 @@ boolean L6_friarsGetParts()
 	if($location[The Dark Heart of the Woods].turns_spent == 0)
 	{
 		visit_url("friars.php?action=friars&pwd");
-		if (isActuallyEd()) {
+		if(isActuallyEd())
+		{
 			// mafia bug doesn't update the quest property when visiting the Friars as Ed
-			// See https://kolmafia.us/showthread.php?24912-minor-questL06Friar-isn-t-changed-to-step1-when-talking-to-the-Friars-as-Ed
+			// see https://kolmafia.us/showthread.php?24912-minor-questL06Friar-isn-t-changed-to-step1-when-talking-to-the-Friars-as-Ed
 			// not that it matters at all, the items we need and locations they're in are the same regardless.
 			// but we can force it to update from the quest log
 			cli_execute("refresh quests");
@@ -77,11 +78,11 @@ boolean L6_friarsGetParts()
 
 boolean L6_dakotaFanning()
 {
-	if (!get_property("auto_dakotaFanning").to_boolean() || hidden_temple_unlocked())
+	if(!get_property("auto_dakotaFanning").to_boolean() || hidden_temple_unlocked())
 	{
 		return false;
 	}
-	if (internalQuestStatus("questM16Temple") < 0)
+	if(internalQuestStatus("questM16Temple") < 0)
 	{
 		if(my_basestat(my_primestat()) < 35)
 		{
@@ -99,7 +100,7 @@ boolean L6_dakotaFanning()
 
 	if(item_amount($item[Heavy-Duty Bendy Straw]) == 0)
 	{
-		if (get_property("questL06Friar") != "finished")
+		if(get_property("questL06Friar") != "finished")
 		{
 			autoAdv(1, $location[The Dark Heart of the Woods]);
 		}
@@ -126,7 +127,7 @@ boolean L6_dakotaFanning()
 	visit_url("place.php?whichplace=woods&action=woods_dakota");
 	if(get_property("questM16Temple") != "finished")
 	{
-		abort("Elle FanninG quest gnot satisfied.");
+		abort("Could not finish Dakota Fanning quest, aborting.");
 	}
 	return true;
 }
