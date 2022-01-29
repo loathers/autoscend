@@ -354,7 +354,12 @@ void finalizeMaximize(boolean speculative)
 		addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
 	}
 	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
+	if(get_property("auto_MLSafetyLimit").to_int() >= 25)
+	{
+		addBonusToMaximize($item[carnivorous potted plant], 200); // free kills
+	}
 	addBonusToMaximize($item[Mr. Screege\'s spectacles], 100); // meat stuff
+	addBonusToMaximize($item[can of mixed everything], 100); // random stuff
 	if(have_effect($effect[blood bubble]) == 0)
 	{
 		// blocks first hit, but doesn't stack with blood bubble
