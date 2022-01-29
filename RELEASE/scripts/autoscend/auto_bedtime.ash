@@ -249,7 +249,7 @@ float rollover_improvement(item it, slot sl)
 	return rollover_value(it) - rollover_value(equipped_item(sl));
 }
 
-void bedtime_pulls_rollover_equip()
+void bedtime_pulls_rollover_equip(float desirability)
 {
 	//scan through all pullable items for items that have a better rollover adv gain than currently best equipped item.
 	
@@ -425,7 +425,7 @@ void bedtime_pulls_rollover_equip()
 		}
 
 		very_best_improvement = rollover_improvement(very_best, very_best_slot);
-		if(very_best_improvement < get_property("auto_bedtime_pulls_min_desirability").to_float())
+		if(very_best_improvement < desirability)
 		{
 			break;
 		}
@@ -434,6 +434,11 @@ void bedtime_pulls_rollover_equip()
 		pullXWhenHaveY(very_best, 1, 0);
 		equipRollover(true);
 	}
+}
+
+void bedtime_pulls_rollover_equip()
+{
+	bedtime_pulls_rollover_equip(get_property("auto_bedtime_pulls_min_desirability").to_float());
 }
 
 void bedtime_pulls()
@@ -447,6 +452,20 @@ void bedtime_pulls()
 		return;
 	}
 	
+	if(get_property("auto_bedtime_pulls_min_desirability").to_float() <= 5.0)
+	{
+		if(item_amount($item[potato alarm clock]) == 0 && storage_amount($item[potato alarm clock]) > 0)
+		{
+			pullXWhenHaveY($item[potato alarm clock], 1, 0);
+		}
+
+		if(my_daycount() == 1 && my_level() <= 8)
+		{
+			//this run looks like it will take a couple more days, give priority to good rollover equipment before level 11 quest pulls
+			bedtime_pulls_rollover_equip(5.0);
+		}
+	}
+
 	if(item_amount($item[Muculent Machete]) == 0 && (!is_boris() || !in_wotsf() || !in_pokefam())) // no need in paths where can't use machete
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
@@ -784,44 +803,47 @@ boolean doBedtime()
 	dailyEvents();
 	if((get_property("auto_clanstuff").to_int() < my_daycount()) && (get_clan_id() != -1))
 	{
-		if(is_unrestricted($item[Olympic-sized Clan Crate]) && !get_property("_olympicSwimmingPool").to_boolean())
-		{
-			cli_execute("swim noncombat");
-		}
-		if(is_unrestricted($item[Olympic-sized Clan Crate]) && !get_property("_olympicSwimmingPoolItemFound").to_boolean())
-		{
-			cli_execute("swim item");
-		}
 		if(get_property("_klawSummons").to_int() == 0 && get_clan_rumpus() contains 'Mr. Klaw "Skill" Crane Game')
 		{
 			cli_execute("clan_rumpus.php?action=click&spot=3&furni=3");
 			cli_execute("clan_rumpus.php?action=click&spot=3&furni=3");
 			cli_execute("clan_rumpus.php?action=click&spot=3&furni=3");
 		}
-		if(is_unrestricted($item[Clan Looking Glass]) && !get_property("_lookingGlass").to_boolean())
+		if(item_amount($item[Clan VIP Lounge Key]) > 0)
 		{
-			string temp = visit_url("clan_viplounge.php?action=lookingglass");
-		}
-		if(get_property("_deluxeKlawSummons").to_int() == 0)
-		{
-			cli_execute("clan_viplounge.php?action=klaw");
-			cli_execute("clan_viplounge.php?action=klaw");
-			cli_execute("clan_viplounge.php?action=klaw");
-		}
-		if(!get_property("_aprilShower").to_boolean())
-		{
-			if(inAftercore())
+			if(is_unrestricted($item[Olympic-sized Clan Crate]) && !get_property("_olympicSwimmingPool").to_boolean())
 			{
-				cli_execute("shower ice");
+				cli_execute("swim noncombat");
 			}
-			else
+			if(is_unrestricted($item[Olympic-sized Clan Crate]) && !get_property("_olympicSwimmingPoolItemFound").to_boolean())
 			{
-				cli_execute("shower " + my_primestat());
+				cli_execute("swim item");
 			}
-		}
-		if(is_unrestricted($item[Crimbough]) && !get_property("_crimboTree").to_boolean())
-		{
-			cli_execute("crimbotree get");
+			if(is_unrestricted($item[Clan Looking Glass]) && !get_property("_lookingGlass").to_boolean())
+			{
+				string temp = visit_url("clan_viplounge.php?action=lookingglass");
+			}
+			if(get_property("_deluxeKlawSummons").to_int() == 0)
+			{
+				cli_execute("clan_viplounge.php?action=klaw");
+				cli_execute("clan_viplounge.php?action=klaw");
+				cli_execute("clan_viplounge.php?action=klaw");
+			}
+			if(!get_property("_aprilShower").to_boolean())
+			{
+				if(inAftercore())
+				{
+					cli_execute("shower ice");
+				}
+				else
+				{
+					cli_execute("shower " + my_primestat());
+				}
+			}
+			if(is_unrestricted($item[Crimbough]) && !get_property("_crimboTree").to_boolean())
+			{
+				cli_execute("crimbotree get");
+			}
 		}
 		set_property("auto_clanstuff", ""+my_daycount());
 	}
