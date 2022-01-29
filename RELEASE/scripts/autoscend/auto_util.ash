@@ -2648,6 +2648,11 @@ void shrugAT(effect anticipated)
 		//We have the effect, we do not need to shrug it, just let it propagate.
 		return;
 	}
+	
+	if(!auto_have_skill(to_skill(anticipated)))
+	{	//We don't know that song anyway
+		return;
+	}
 
 	int maxSongs = 3;
 	if(have_equipped($item[Brimstone Beret]) || have_equipped($item[Operation Patriot Shield]) || have_equipped($item[Plexiglass Pendant]) || have_equipped($item[Scandalously Skimpy Bikini]) || have_equipped($item[Sombrero De Vida]) || have_equipped($item[Super-Sweet Boom Box]))
@@ -3339,7 +3344,7 @@ boolean auto_badassBelt()
 	}
 }
 
-void auto_interruptCheck()
+void auto_interruptCheck(boolean debug)
 {
 	if(get_property("auto_interrupt").to_boolean())
 	{
@@ -3368,11 +3373,17 @@ void auto_interruptCheck()
 		restoreAllSettings();
 		abort("auto_interrupt_location reached and aborting, auto_interrupt_location disabled.");
 	}
-	else if (get_property("auto_debugging").to_boolean())
+	else if (get_property("auto_debugging").to_boolean() && debug)
 	{
 		set_property("auto_interrupt", true);
 		auto_log_info("auto_debugging detected, auto_interrupt enabled.");
 	}
+}
+
+void auto_interruptCheck()
+{
+	//we check for interrupt at multiple locations. but we only want to set it once per loop in debug mode.
+	auto_interruptCheck(true);
 }
 
 element currentFlavour()

@@ -47,6 +47,8 @@ string replaceMonsterCombatString(monster target, boolean inCombat);
 string replaceMonsterCombatString(monster target);
 string replaceMonsterCombatString();
 float turns_to_kill(float dmg);
+boolean combat_status_check(string mark);
+void combat_status_add(string mark);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash

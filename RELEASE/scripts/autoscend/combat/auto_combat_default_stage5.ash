@@ -27,7 +27,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatZombieSlayerStage5(round, enemy, text);
 	if(retval != "") return retval;
 
-	string combatState = get_property("auto_combatHandler");
 	phylum type = monster_phylum(enemy);
 	string attackMinor = "attack with weapon";
 	string attackMajor = "attack with weapon";
@@ -68,59 +67,35 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	}
 	
 	//iotm back item and the enemies it spawns (free fights) can be killed using special skills to get extra XP and item drops
-	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy))
+	if(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy) && !combat_status_check("skipGhostbusting"))
 	{
+		//shoot ghost 3 times provoking retaliation, then trap ghost skill unlocks which instawins combat.
 		skill stunner = getStunner(enemy);
 		if(stunner != $skill[none])
 		{
 			return useSkill(stunner);
 		}
 
-		if(canUse($skill[Shoot Ghost], false) && (my_mp() > mp_cost($skill[Shoot Ghost])) && !contains_text(combatState, "shootghost3") && !contains_text(combatState, "trapghost"))
+		//shots_takens tracks how many times we used [shoot ghost] skill this combat. it is reset in combat initialize
+		int shots_takens = usedCount($skill[Shoot Ghost]);
+		if(canUse($skill[Shoot Ghost], false) && shots_takens < 3)
 		{
-			boolean shootGhost = true;
-			if(contains_text(combatState, "shootghost2"))
+			float survive_needed = 3.05 - shots_takens.to_float();
+			if(canSurvive(survive_needed))
 			{
-				if((damageReceived * 1.075) > my_hp())
-				{
-					shootGhost = false;
-				}
-				else
-				{
-					set_property("auto_combatHandler", combatState + "(shootghost3)");
-				}
-			}
-			else if(contains_text(combatState, "shootghost1"))
-			{
-				if((damageReceived * 2.05) > my_hp())
-				{
-					shootGhost = false;
-				}
-				else
-				{
-					set_property("auto_combatHandler", combatState + "(shootghost2)");
-				}
-			}
-			else
-			{
-				set_property("auto_combatHandler", combatState + "(shootghost1)");
-			}
-
-			if(shootGhost)
-			{
+				markAsUsed($skill[Shoot Ghost]);		//needs to be manually done for skills with a use limit that is not 1
 				return useSkill($skill[Shoot Ghost], false);
 			}
 			else
 			{
-				combatState += "(trapghost)";
-				set_property("auto_combatHandler", combatState);
+				combat_status_add("skipGhostbusting");
 			}
 		}
-		if(!contains_text(combatState, "trapghost") && auto_have_skill($skill[Trap Ghost]) && (my_mp() > mp_cost($skill[Trap Ghost])) && contains_text(combatState, "shootghost3"))
+		
+		if(canUse($skill[Trap Ghost]) && shots_takens == 3)
 		{
 			auto_log_info("Busting makes me feel good!!", "green");
-			set_property("auto_combatHandler", combatState + "(trapghost)");
-			return useSkill($skill[Trap Ghost], false);
+			return useSkill($skill[Trap Ghost]);
 		}
 	}
 	
@@ -300,7 +275,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stream of Sauce]);
 		}
 		
-		#let mortar deal the killing blow so we get more MP from the exploding curse of weaksauce
+		//let mortar deal the killing blow so we get more MP from the exploding curse of weaksauce
 		int mortar_round = get_property("_auto_combatTracker_MortarRound").to_int();
 		if(mortar_round > -1 &&		//mortar was used this combat
 		mortar_round == round-1 &&	//mortar will hit this round
@@ -683,11 +658,11 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Northern Explosion]);
 		}
-		if((!contains_text(combatState, "last attempt")) && (my_mp() >= costMajor))
+		if((!combat_status_check("last attempt")) && (my_mp() >= costMajor))
 		{
 			if(canSurvive(1.4))
 			{
-				set_property("auto_combatHandler", combatState + "(last attempt)");
+				combat_status_add("last attempt");
 				auto_log_warning("Uh oh, I'm having trouble in combat.", "red");
 			}
 			return attackMajor;

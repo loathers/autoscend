@@ -449,14 +449,24 @@ boolean acquireTotem()
 		}
 	}
 
-	//try fishing in the sewer for a turtle totem
-	
-	if(acquireGumItem($item[turtle totem]))
+	boolean want_totem = false;
+	foreach sk in $skills[Empathy of the Newt, Astral Shell, Ghostly Shell, Tenacity of the Snapper, Spiky Shell, Reptilian Fortitude, Jingle Bells, Curiosity of Br\'er Tarrypin]
 	{
-		return true;
+		if(auto_have_skill(sk))
+		{
+			want_totem = true;
+		}
+	}
+	if(want_totem)
+	{	
+		//try fishing in the sewer for a turtle totem
+		if(acquireGumItem($item[turtle totem]))
+		{
+			return true;
+		}
 	}
 	
-	//still could not get a totem. Give up
+	//did not get a totem. Give up
 	return false;
 }
 
@@ -468,7 +478,7 @@ boolean auto_hermit(int amt, item it)
 		return hermit(amt, it);
 	}
 	int initial = item_amount(it);
-	hermit(amt, it);
+	catch hermit(amt, it);
 	return item_amount(it) == initial + amt;
 }
 

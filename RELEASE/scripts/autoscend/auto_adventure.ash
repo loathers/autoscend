@@ -9,7 +9,7 @@ boolean autoAdv(int num, location loc, string option)
 		return false;
 	}
 
-	remove_property("auto_combatHandler");
+	remove_property("_auto_combatState");
 	set_property("auto_diag_round", 0);
 	set_property("nextAdventure", loc);
 	if(option == "")
@@ -17,7 +17,6 @@ boolean autoAdv(int num, location loc, string option)
 		if (isActuallyEd())
 		{
 			option = "auto_edCombatHandler";
-			remove_property("auto_edCombatHandler");
 		} else {
 			option = "auto_combatHandler";
 		}
@@ -77,7 +76,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	
 	set_property("nextAdventure", loc);
 	cli_execute("auto_pre_adv");
-	remove_property("auto_combatHandler");
+	remove_property("_auto_combatState");
 	set_property("auto_diag_round", 0);
 
 	if(option == "")
@@ -85,7 +84,6 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		if (isActuallyEd())
 		{
 			option = "auto_edCombatHandler";
-			remove_property("auto_edCombatHandler");
 		} else {
 			option = "auto_combatHandler";
 		}
