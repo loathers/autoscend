@@ -421,7 +421,12 @@ boolean auto_post_adventure()
 			use_skill(1, $skill[Soul Rotation]);
 		}
 		int missing = (my_maxmp() - my_mp()) / 15;		//soul food restores 15 MP per cast.
-		int casts = min(missing, my_soulsauce() / 5);	//soul food costs 5 soulsauce per cast.
+		int availableSauce = my_soulsauce();
+		if(availableSauce >= 5 && my_mp() > 100 && my_mp() > 0.8*my_maxmp())
+		{
+			availableSauce -= 5;	//keep 5 soulsauce for soul bubble if not missing much MP
+		}
+		int casts = min(missing, availableSauce / 5);	//soul food costs 5 soulsauce per cast.
 		if(casts > 0)
 		{
 			use_skill(casts, $skill[Soul Food]);
