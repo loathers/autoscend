@@ -17,19 +17,16 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	if(round == 0)
 	{
 		set_property("auto_gremlinMoly", false);
-		set_property("auto_combatHandler", "");
+		remove_property("_auto_combatState");
 	}
-
-	string combatState = get_property("auto_combatHandler");
-	string edCombatState = get_property("auto_edCombatHandler");
 
 	if ($monsters[batwinged gremlin (tool), erudite gremlin (tool), spider gremlin (tool), vegetable gremlin (tool)] contains enemy) {
 		set_property("auto_gremlinMoly", true);
 	}
 
-	if (!contains_text(edCombatState, "gremlinNeedBanish") && !get_property("auto_gremlinMoly").to_boolean() && isActuallyEd())
+	if (!combat_status_check("gremlinNeedBanish") && !get_property("auto_gremlinMoly").to_boolean() && isActuallyEd())
 	{
-		set_property("auto_edCombatHandler", "(gremlinNeedBanish)");
+		combat_status_add("gremlinNeedBanish");
 	}
 
 	if(round >= 28)
@@ -85,23 +82,46 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Good Medicine]);
 	}
 
-	if (my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
+	item flyer = $item[Rock Band Flyers];
+	if(auto_warSide() == "hippy")
 	{
-		if (canUse($item[Rock Band Flyers]) && get_property("flyeredML").to_int() < 10000)
+		flyer = $item[Jam Band Flyers];
+	}
+	skill stunner = getStunner(enemy);
+	boolean stunned = combat_status_check("stunned");
+	
+	if (get_property("auto_gremlinMoly").to_boolean() && !canSurvive(20) && !stunned)		//don't flyer tool gremlins if it's dangerous to survive them for long
+	{
+		if(monster_attack() > ( my_buffedstat($stat[moxie]) + 10) && !canSurvive(10) && haveUsed($skill[Curse Of Weaksauce]))
 		{
-			if (isActuallyEd())
+			//if after all deleveling it's still too strong to safely stasis let weaksauce delevel it more in exchange for a few turns
+			//except if stuck with an attack familiar or unforeseen passive damage effects that can kill the gremlin
+			boolean gremlinTakesDamage = (isAttackFamiliar(my_familiar()) || (monster_hp() < (0.8*monster_hp(enemy))));
+			if(!gremlinTakesDamage && round < 10 && stunner != $skill[none])
 			{
-				set_property("auto_edStatus", "UNDYING!");
+				combat_status_add("stunned");
+				return useSkill(stunner);
 			}
-			return useItem($item[Rock Band Flyers]);
 		}
-		if(canUse($item[Jam Band Flyers]) && get_property("flyeredML").to_int() < 10000)
+	}
+	else if (canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
+	{
+		if(stunner != $skill[none] && !stunned)
 		{
-			if (isActuallyEd())
-			{
-				set_property("auto_edStatus", "UNDYING!");
-			}
-			return useItem($item[Jam Band Flyers]);
+			combat_status_add("stunned");
+			return useSkill(stunner);
+		}
+		if (isActuallyEd())
+		{
+			set_property("auto_edStatus", "UNDYING!");
+		}
+		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
+		{
+			return useItems(flyer, $item[Time-Spinner]);
+		}
+		if(canSurvive(3.0) || stunned)
+		{
+			return useItem(flyer);
 		}
 	}
 

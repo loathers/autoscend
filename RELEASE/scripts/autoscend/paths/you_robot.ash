@@ -338,7 +338,7 @@ boolean robot_bottom(int choice)
 		return false;	//already equipped
 	}
 	
-    int scrap_cost;
+	int scrap_cost;
 	string name;
 	switch(choice)
 	{
@@ -415,7 +415,7 @@ boolean robot_cpu(int choice, boolean want_buy)
 	
 	string upgrade;		//url component and also mafia tracking string in youRobotCPUUpgrades property
 	string name;		//actual name of upgrade to log for the user to read
-    int energy_cost;
+	int energy_cost;
 	switch(choice)
 	{
 		case 1:
@@ -938,7 +938,7 @@ boolean LX_robot_powerlevel()
 		{
 			//Determine where to go for clover stats, do not worry about clover failures
 			location whereTo = $location[none];
-			switch (target)
+			switch(target)
 			{
 				case $stat[Muscle]:
 					whereTo = $location[The Haunted Gallery];
@@ -1172,7 +1172,7 @@ boolean robot_choice_adv(int choice, string page)
 	}
 	auto_log_debug("Running robot_choice_adv");
 	
-	switch (choice)
+	switch(choice)
 	{
 		case 876: // One Simple Nightstand (The Haunted Bedroom)
 			boolean robot_need_mus = my_primestat() == $stat[muscle] || my_basestat($stat[muscle]) < 62;
@@ -1192,25 +1192,39 @@ boolean robot_choice_adv(int choice, string page)
 		case 878: // One Ornate Nightstand (The Haunted Bedroom)
 			boolean robot_need_mys = my_primestat() == $stat[mysticality] || my_basestat($stat[mysticality]) < 70;
 			boolean needSpectacles = (item_amount($item[Lord Spookyraven\'s Spectacles]) == 0 && internalQuestStatus("questL11Manor") < 2);
-			if (needSpectacles) {
+			if(needSpectacles)
+			{
 				run_choice(3); // get Lord Spookyraven's spectacles
-			} else if (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1) {
+			}
+			else if(item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1)
+			{
 				run_choice(4); // get disposable instant camera
-			} else if (!robot_need_mys || my_meat() < 1000 + meatReserve()) {
+			}
+			else if(!robot_need_mys || my_meat() < 1000 + meatReserve())
+			{
 				run_choice(1); // get ~500 meat
-			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[mysticality]) {
+			}
+			else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[mysticality])
+			{
 				run_choice(5); // spend 1 ghost key for primestat, get ~200 mysticality XP
-			} else {
+			}
+			else
+			{
 				run_choice(2); // get min(200,mys) of mys XP
 			}
 			break;
 		case 879: // One Rustic Nightstand (The Haunted Bedroom)
 			string[int] options = available_choice_options();
-			if(options contains 4) {
+			if(options contains 4)
+			{
 				run_choice(4); // only shows up rarely. when this line was added it was worth 1.3 million in mall
-			} else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie]) {
+			}
+			else if(item_amount($item[ghost key]) > 0 && my_primestat() == $stat[moxie])
+			{
 				run_choice(5); // spend 1 ghost key for primestat, get ~200 moxie XP
-			} else {
+			}
+			else
+			{
 				run_choice(1); // get moxie substats
 			}
 			break;
