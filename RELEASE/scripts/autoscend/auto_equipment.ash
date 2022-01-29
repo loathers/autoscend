@@ -339,7 +339,7 @@ void finalizeMaximize(boolean speculative)
 				// don't equip when using Map the Monsters?
 				addToMaximize("-equip " + $item[Cursed Magnifying Glass].to_string());
 			}
-			else
+			else if(get_property("_voidFreeFights").to_int() < 5)
 			{
 				// add bonus if next fight is a free void monster
 				addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
