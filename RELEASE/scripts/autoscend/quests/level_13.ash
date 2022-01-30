@@ -206,11 +206,11 @@ boolean LX_getStarKey()
 		pullXWhenHaveY($item[Star Chart], 1, 0);
 		if (item_amount($item[Star]) < 8)
 		{
-			pullXWhenHaveY($item[Star], 8, item_amount($item[Star]));
+			pullXWhenHaveY($item[Star], (8 - item_amount($item[Star])), item_amount($item[Star]));
 		}
 		if (item_amount($item[Star]) < 7)
 		{
-			pullXWhenHaveY($item[line], 7, item_amount($item[line]));
+			pullXWhenHaveY($item[line], (7 - item_amount($item[line])), item_amount($item[line]));
 		}
 	}
 	
