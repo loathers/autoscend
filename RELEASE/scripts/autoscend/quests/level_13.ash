@@ -201,8 +201,22 @@ boolean LX_getStarKey()
 		return false;
 	}
 	
+	if (can_interact())
+	{	
+		pullXWhenHaveY($item[Star Chart], 1, 0);
+		if (item_amount($item[Star]) < 8)
+		{
+			pullXWhenHaveY($item[Star], 8, item_amount($item[Star]));
+		}
+		if (item_amount($item[Star]) < 7)
+		{
+			pullXWhenHaveY($item[line], 7, item_amount($item[line]));
+		}
+	}
+	
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
-	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key") && 
+	item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
 	{
 		pullXWhenHaveY($item[Star Chart], 1, 0);
 	}
