@@ -192,9 +192,9 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The Goatlet]:
-		boolean getMilk = (my_class() == $class[Sauceror] || have_skill($skill[Advanced Saucecrafting]));
+		boolean getMilk = (my_class() == $class[Sauceror] || have_skill($skill[Advanced Saucecrafting])) && fullness_limit() != 0;
 		int milksPerMilk = (my_class() == $class[Sauceror]) ? 3 : 1;
-		int milkUsed = get_property("_milkOfMagnesiumUsed").to_boolean() ? 1 : 0;
+		int milkUsed = (get_property("_milkOfMagnesiumUsed").to_boolean() || fullness_left() == 0) ? 1 : 0;
 		if((item_amount($item[Milk Of Magnesium]) + milksPerMilk * item_amount($item[Glass Of Goat\'s Milk]) + milkUsed) >= 3)
 		{	
 			getMilk = false;
@@ -407,9 +407,9 @@ generic_t zone_needItemFood(location loc)
 		}
 		break;
 	case $location[The Goatlet]:
-		boolean getMilk = (my_class() == $class[Sauceror] || have_skill($skill[Advanced Saucecrafting]));
+		boolean getMilk = (my_class() == $class[Sauceror] || have_skill($skill[Advanced Saucecrafting])) && fullness_limit() != 0;
 		int milksPerMilk = (my_class() == $class[Sauceror]) ? 3 : 1;
-		int milkUsed = get_property("_milkOfMagnesiumUsed").to_boolean() ? 1 : 0;
+		int milkUsed = (get_property("_milkOfMagnesiumUsed").to_boolean() || fullness_left() == 0) ? 1 : 0;
 		if((item_amount($item[Milk Of Magnesium]) + milksPerMilk * item_amount($item[Glass Of Goat\'s Milk]) + milkUsed) >= 3)
 		{	
 			getMilk = false;
