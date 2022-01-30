@@ -79,7 +79,8 @@ drop	24	Galloping Grill	prop:_hotAshesDrops<5
 gremlins	0	Nosy Nose
 gremlins	1	Plastic Pirate Skull
 gremlins	2	Space Jellyfish
-gremlins	3	Barrrnacle
+gremlins	3	Gelatinous Cubeling
+gremlins	4	Barrrnacle
 
 init	0	Xiblaxian Holo-Companion
 init	1	Cute Meteor
