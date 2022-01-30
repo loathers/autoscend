@@ -502,6 +502,28 @@ boolean auto_pre_adventure()
 		}
 		if(itemDrop < itemNeed._float)
 		{
+			//if general item modifier isn't enough check specific item drop bonus
+			generic_t itemFoodNeed = zone_needItemFood(place);
+			generic_t itemBoozeNeed = zone_needItemBooze(place);
+			if(itemFoodNeed._boolean)
+			{
+				auto_log_debug("Trying food drop supplements");
+				//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
+				addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
+				simMaximize();
+				itemDrop = simValue("Item Drop") + simValue("Food Drop");
+			}
+			if(itemBoozeNeed._boolean && itemDrop < itemNeed._float)
+			{
+				auto_log_debug("Trying booze drop supplements");
+				addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
+				simMaximize();
+				itemDrop = simValue("Item Drop") + simValue("Booze Drop");
+				itemDrop += !itemFoodNeed._boolean ? 0 : simValue("Food Drop");	//even though no zone yet needs both food and booze
+			}
+		}
+		if(itemDrop < itemNeed._float)
+		{
 			auto_log_debug("We can't cap this drop bear!", "purple");
 		}
 	}
