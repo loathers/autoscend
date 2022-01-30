@@ -120,7 +120,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 				staggeringFlyer = true;
 			}
 		}
-		if(staggeringFlyer && monster_level_adjustment() > 150))
+		if(staggeringFlyer && monster_level_adjustment() > 150)
 		{
 			staggeringFlyer = false;
 		}
