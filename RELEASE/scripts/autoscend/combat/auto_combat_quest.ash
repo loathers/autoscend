@@ -91,7 +91,39 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	boolean stunned = combat_status_check("stunned");
 	boolean gremlinTakesDamage = (isAttackFamiliar(my_familiar()) || (monster_hp() < (0.8*monster_hp(enemy))));
 	
-	if (get_property("auto_gremlinMoly").to_boolean() && !canSurvive(20) && !stunned)		//don't flyer tool gremlins if it's dangerous to survive them for long
+	if(auto_have_skill($skill[Ambidextrous Funkslinging]))
+	{	
+		if (canUse($item[Time-Spinner]))
+		{
+			flyerWith = $item[Time-Spinner];
+			staggeringFlyer = true;
+		}
+		else if (canUse($item[beehive]))
+		{
+			boolean canBeehiveGremlin;
+			if (get_property("auto_gremlinMoly").to_boolean())
+			{
+				//don't kill tool gremlin with beehive
+				canBeehiveGremlin = !gremlinTakesDamage && monster_hp() > (60 - round) && canUse($item[Seal Tooth], false);
+			}
+			else
+			{
+				//don't miss MP by killing weak monsters with beehive
+				canBeehiveGremlin = !(monster_hp() <= 30 && my_class() == $class[Sauceror] && haveUsed($skill[Curse Of Weaksauce]));
+			}
+			if (canBeehiveGremlin)
+			{
+				flyerWith = $item[beehive];
+				staggeringFlyer = true;
+			}
+		}
+		if(staggeringFlyer && monster_level_adjustment() > 150))
+		{
+			staggeringFlyer = false;
+		}
+	}
+	
+	if (get_property("auto_gremlinMoly").to_boolean() && !canSurvive(20) && !stunned && !staggeringFlyer)	//don't flyer tool gremlins if it's dangerous to survive them for long
 	{
 		if(monster_attack() > ( my_buffedstat($stat[moxie]) + 10) && !canSurvive(10) && haveUsed($skill[Curse Of Weaksauce]))
 		{
@@ -106,12 +138,10 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	}
 	else if (canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
 	{
-		if(stunnable(enemy))
-		{	if(stunner != $skill[none] && !stunned)
-			{
-				combat_status_add("stunned");
-				return useSkill(stunner);
-			}
+		if(stunner != $skill[none] && !stunned)
+		{
+			combat_status_add("stunned");
+			return useSkill(stunner);
 		}
 		boolean shouldFlyer = false;
 		boolean staggeringFlyer = false;
@@ -119,24 +149,6 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		if (isActuallyEd())
 		{
 			set_property("auto_edStatus", "UNDYING!");
-		}
-		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
-		{	
-			if (canUse($item[Time-Spinner]))
-			{
-				flyerWith = $item[Time-Spinner];
-				staggeringFlyer = true;
-			}
-			else if (canUse($item[beehive]) && 
-			!gremlinTakesDamage && monster_hp() > (60 - round) && canUse($item[Seal Tooth], false))	//don't kill gremlin with beehive
-			{
-				flyerWith = $item[beehive];
-				staggeringFlyer = true;
-			}
-			if(staggeringFlyer && (!stunnable(enemy) || monster_level_adjustment() > 150))
-			{
-				staggeringFlyer = false;
-			}
 		}
 		if(canSurvive(3.0) || stunned || staggeringFlyer)
 		{
