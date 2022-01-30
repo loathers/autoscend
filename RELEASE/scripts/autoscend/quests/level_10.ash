@@ -333,11 +333,13 @@ boolean L10_holeInTheSkyUnlock()
 	}
 	int day = get_property("shenInitiationDay").to_int();
 	boolean[location] shenLocs = shenSnakeLocations(day, 0);
-	if(!needStarKey() && !(shenLocs contains $location[The Hole in the Sky]))
+	if((!needStarKey() || (can_interact() && LX_getStarKey())) && 
+	!(shenLocs contains $location[The Hole in the Sky]))
 	{
 		// we force auto_holeinthesky to true in L11_shenCopperhead() as Ed if Shen sends us to the Hole in the Sky
 		// as otherwise the zone isn't required at all for Ed.
 		// Should also handle situations where the player manually got the star key before unlocking Shen.
+		// or can buy the star key ingredients out of ronin.
 		set_property("auto_holeinthesky", false);
 		return false;
 	}
