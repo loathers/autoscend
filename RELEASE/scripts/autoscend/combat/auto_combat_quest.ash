@@ -90,6 +90,9 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	skill stunner = getStunner(enemy);
 	boolean stunned = combat_status_check("stunned");
 	boolean gremlinTakesDamage = (isAttackFamiliar(my_familiar()) || (monster_hp() < (0.8*monster_hp(enemy))));
+	boolean shouldFlyer = false;
+	boolean staggeringFlyer = false;
+	item flyerWith;
 	
 	if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 	{	
@@ -143,9 +146,6 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 			combat_status_add("stunned");
 			return useSkill(stunner);
 		}
-		boolean shouldFlyer = false;
-		boolean staggeringFlyer = false;
-		item flyerWith;
 		if (isActuallyEd())
 		{
 			set_property("auto_edStatus", "UNDYING!");
