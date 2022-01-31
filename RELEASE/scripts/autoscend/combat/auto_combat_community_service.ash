@@ -229,7 +229,7 @@ string cs_combatNormal(int round, monster enemy, string text)
 		return useSkill(auto_spoonCombatSkill());
 	}
 
-	if(have_skill($skill[Saucegeyser]) && (my_mp() >= mp_cost($skill[Saucegeyser])) && (my_class() == $class[Sauceror]))
+	if(canUse($skill[Saucegeyser], false) && my_class() == $class[Sauceror])
 	{
 		return useSkill($skill[Saucegeyser], false);
 	}
