@@ -205,7 +205,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(in_bhy() || in_pokefam())
+	if(in_bhy() || in_pokefam() || in_glover())
 	{
 		return advCost;
 	}
@@ -1766,7 +1766,7 @@ boolean L12_themtharHills()
 
 boolean LX_obtainChaosButterfly()
 {
-	if(in_bhy() || in_pokefam())
+	if(in_bhy() || in_pokefam() || in_glover())
 	{
 		return false;
 	}
