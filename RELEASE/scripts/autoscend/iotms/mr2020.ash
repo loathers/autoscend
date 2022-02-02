@@ -837,7 +837,7 @@ boolean auto_handleRetrocape()
 boolean auto_buyCrimboCommerceMallItem()
 {
 
-	set_property("commerceGhostItem") = "";
+	set_property("commerceGhostItem", "");
 	//cli execute of "buy from mall" is currently broken - TODO remove the above line once this is fixed in mafia
 	if (!auto_is_valid($familiar[Ghost of Crimbo Commerce]))
 	{
