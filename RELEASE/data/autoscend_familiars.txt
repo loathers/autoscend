@@ -299,39 +299,39 @@ stat	5	Elf Operative
 stat	6	Optimistic Candle
 stat	7	Rockin' Robin
 # Volleychauns
-stat	8	Ghost of Crimbo Commerce
-stat	9	Golden Monkey
-stat	10	Bloovian Groose
-stat	11	Unconscious Collective
-stat	12	Grim Brother
-stat	13	Dramatic Hedgehog
-stat	14	Chauvinist Pig
-stat	15	Uniclops
-stat	16	Hunchbacked Minion
-stat	17	Nervous Tick
-stat	18	Cymbal-Playing Monkey
-stat	19	Cheshire Bat
+#Ghost of Crimbo Commerce - commented out until mafia bug with buy from mall is fixed
+stat	8	Golden Monkey
+stat	9	Bloovian Groose
+stat	10	Unconscious Collective
+stat	11	Grim Brother
+stat	12	Dramatic Hedgehog
+stat	13	Chauvinist Pig
+stat	14	Uniclops
+stat	15	Hunchbacked Minion
+stat	16	Nervous Tick
+stat	17	Cymbal-Playing Monkey
+stat	18	Cheshire Bat
 # VolleyWhelps
-stat	20	Melodramedary
+stat	19	Melodramedary
 # Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
-stat	21	Frumious Bandersnatch
+stat	20	Frumious Bandersnatch
 # Slightly special volleyballs
-stat	22	Ghost of Crimbo Cheer
-stat	23	Reanimated Reanimator
-stat	24	God Lobster
-stat	25	Party Mouse
-stat	26	Lil' Barrel Mimic
-stat	27	Piranha Plant
-stat	28	Antique Nutcracker
+stat	21	Ghost of Crimbo Cheer
+stat	22	Reanimated Reanimator
+stat	23	God Lobster
+stat	24	Party Mouse
+stat	25	Lil' Barrel Mimic
+stat	26	Piranha Plant
+stat	27	Antique Nutcracker
 # Fancy
-stat	29	Miniature Sword &amp; Martini Guy
+stat	28	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	30	Grinning Turtle
+stat	29	Grinning Turtle
 # His winning smile
-stat	31	Smiling Rat
+stat	30	Smiling Rat
 # The original
-stat	32	Blood-Faced Volleyball
+stat	31	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work
