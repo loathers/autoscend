@@ -338,6 +338,11 @@ boolean handleFamiliar(familiar fam)
 		fam = $familiar[Ms. Puck Man];
 	}
 	
+	if(!canChangeToFamiliar(fam))
+	{
+		return false;
+	}
+	
 	//bjorning has priority
 	if(my_bjorned_familiar() == fam)
 	{
