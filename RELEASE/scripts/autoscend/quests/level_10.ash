@@ -255,13 +255,13 @@ void castleTopFloorChoiceHandler(int choice)
 	}
 	else if(choice == 676) // Flavor of a Raver (The Castle in the Clouds in the Sky (Top Floor))
 	{	
-		if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
+		if(equipped_amount($item[Mohawk wig]) > 0 || internalQuestStatus("questL10Garbage") >= 10)
 		{
-			run_choice(4); // if quest not done and have mohawk wig on, move to Yeah, You're for Me (#678)
+			run_choice(4); // if quest not done and have mohawk wig on, or quest is done, move to Yeah, You're for Me (#678)
 		}	
 		else
 		{
-			run_choice(3); // if no mohawk wig, grab the drum n bass record. will skip if already have record
+			run_choice(3); // if no mohawk wig and quest not done, grab the drum n bass record. will skip if already have record
 		}
 	}
 	else if(choice == 677) // Copper Feel (The Castle in the Clouds in the Sky (Top Floor))
@@ -276,7 +276,7 @@ void castleTopFloorChoiceHandler(int choice)
 		}
 		else
 		{
-			run_choice(2); // grab steam-powered rocket ship.  will skip if already have rocket
+			run_choice(2); // grab steam-powered rocket ship. will skip if already have rocket
 		}
 	}
 	else if(choice == 678) // Yeah, You're for Me, Punk Rock Giant (The Castle in the Clouds in the Sky (Top Floor))
@@ -291,7 +291,7 @@ void castleTopFloorChoiceHandler(int choice)
 		}
 		else
 		{
-			run_choice(3); // if quest is done, go to Copper Feel (#677) to skip
+			run_choice(3); // if quest is done, go to Copper Feel (#677) to get rocket ship or skip
 		}
 	}
 	else if(choice == 679) // Keep On Turnin' the Wheel in the Sky (The Castle in the Clouds in the Sky (Top Floor))

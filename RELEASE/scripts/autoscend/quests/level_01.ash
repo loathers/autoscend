@@ -1,12 +1,12 @@
 void tootOriole()
 {
-	//Toot Oriole must be visited each ascension to unlock other quests from the council
+	// Toot Oriole must be visited each ascension to unlock other quests from the council
 	if(get_property("questM05Toot") == "finished")
 	{
 		return;
 	}
 	
-	//do quest
+	// do quest
 	visit_url("tutorial.php?action=toot");
 	if(isActuallyEd())
 	{
@@ -16,7 +16,7 @@ void tootOriole()
 	{
 		use(item_amount($item[Letter From King Ralph XI]), $item[Letter From King Ralph XI]);
 	}
-	//finishing toot quest is not correctly noticed by mafia. r20655 has workaround of correcting this by refreshing quests
+	// finishing toot quest is not correctly noticed by mafia. r20655 has workaround of correcting this by refreshing quests
 	cli_execute("refresh quests");
 	
 	if(get_property("questM05Toot") == "finished")

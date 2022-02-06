@@ -2648,6 +2648,11 @@ void shrugAT(effect anticipated)
 		//We have the effect, we do not need to shrug it, just let it propagate.
 		return;
 	}
+	
+	if(!auto_have_skill(to_skill(anticipated)))
+	{	//We don't know that song anyway
+		return;
+	}
 
 	int maxSongs = 3;
 	if(have_equipped($item[Brimstone Beret]) || have_equipped($item[Operation Patriot Shield]) || have_equipped($item[Plexiglass Pendant]) || have_equipped($item[Scandalously Skimpy Bikini]) || have_equipped($item[Sombrero De Vida]) || have_equipped($item[Super-Sweet Boom Box]))

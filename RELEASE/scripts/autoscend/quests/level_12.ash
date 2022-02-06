@@ -205,7 +205,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(in_bhy() || in_pokefam())
+	if(in_bhy() || in_pokefam() || in_glover())
 	{
 		return advCost;
 	}
@@ -1696,7 +1696,7 @@ boolean L12_themtharHills()
 		}
 	}
 
-	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		//use clover to get inhaler
 		cloverUsageInit();
@@ -1766,7 +1766,7 @@ boolean L12_themtharHills()
 
 boolean LX_obtainChaosButterfly()
 {
-	if(in_bhy() || in_pokefam())
+	if(in_bhy() || in_pokefam() || in_glover())
 	{
 		return false;
 	}

@@ -1,6 +1,6 @@
 boolean L4_batCave()
 {
-	if (internalQuestStatus("questL04Bat") < 0 || internalQuestStatus("questL04Bat") > 4)
+	if(internalQuestStatus("questL04Bat") < 0 || internalQuestStatus("questL04Bat") > 4)
 	{
 		return false;
 	}
@@ -14,17 +14,17 @@ boolean L4_batCave()
 	buffMaintain($effect[Fishy Whiskers]);
 
 	int batStatus = internalQuestStatus("questL04Bat");
-	if (batStatus < 3)
+	if(batStatus < 3)
 	{
-		if (auto_is_valid($item[Sonar-In-A-Biscuit]))
+		if(auto_is_valid($item[Sonar-In-A-Biscuit]))
 		{
-			if (item_amount($item[Sonar-In-A-Biscuit]) == 0 && can_interact())
+			if(item_amount($item[Sonar-In-A-Biscuit]) == 0 && can_interact())
 			{
 				buyUpTo(1, $item[Sonar-In-A-Biscuit], get_property("valueOfAdventure").to_int());
 			}
-			if (item_amount($item[Sonar-In-A-Biscuit]) > 0)
+			if(item_amount($item[Sonar-In-A-Biscuit]) > 0)
 			{
-				if (use(1, $item[Sonar-In-A-Biscuit]))
+				if(use(1, $item[Sonar-In-A-Biscuit]))
 				{
 					return true;
 				}
@@ -41,7 +41,7 @@ boolean L4_batCave()
 
 	if(batStatus >= 4)
 	{
-		if (item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 1 && !isActuallyEd())
+		if(item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 1 && !isActuallyEd())
 		{
 			return autoAdv($location[The Beanbat Chamber]);
 		}
@@ -67,19 +67,19 @@ boolean L4_batCave()
 			auto_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
 		}
 		// TODO: Mafia currently does not advance the quest tracker when the Plumber boss is defeated.
-		// This breaks that infinite loop, while "refresh quests" apparently doesn't. Who knows?
+		// this breaks that infinite loop, while "refresh quests" apparently doesn't. Who knows?
 		visit_url("place.php?whichplace=bathole");
 		return true;
 	}
 	if(batStatus >= 2)
 	{
 		bat_formBats();
-		if (item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2 && !isActuallyEd())
+		if(item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2 && !isActuallyEd())
 		{
 			autoAdv($location[The Beanbat Chamber]);
 			return true;
 		}
-		if (shenShouldDelayZone($location[The Batrat and Ratbat Burrow]))
+		if(shenShouldDelayZone($location[The Batrat and Ratbat Burrow]))
 		{
 			auto_log_debug("Delaying Batrat Burrow in case of Shen.");
 			return false;
@@ -89,7 +89,7 @@ boolean L4_batCave()
 	}
 	if(batStatus >= 1)
 	{
-		if (shenShouldDelayZone($location[The Batrat and Ratbat Burrow]))
+		if(shenShouldDelayZone($location[The Batrat and Ratbat Burrow]))
 		{
 			auto_log_debug("Delaying Batrat Burrow in case of Shen.");
 			return false;

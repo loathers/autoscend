@@ -785,10 +785,7 @@ void initializeDay(int day)
 						buyUpTo(1, $item[Toy Accordion]);
 					}
 				}
-				if(!possessEquipment($item[Turtle Totem]))
-				{
-					acquireGumItem($item[Turtle Totem]);
-				}
+				acquireTotem();
 				if(!possessEquipment($item[Saucepan]))
 				{
 					acquireGumItem($item[Saucepan]);
