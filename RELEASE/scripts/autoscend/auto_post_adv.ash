@@ -428,6 +428,7 @@ boolean auto_post_adventure()
 			availableSauce -= 5;	//keep 5 soulsauce for soul bubble if not missing much MP
 		}
 		int casts = min(missing, availableSauce / 5);	//soul food costs 5 soulsauce per cast.
+		//trying to fix github workflow. delete this later
 		if(casts > 0)
 		{
 			use_skill(casts, $skill[Soul Food]);
