@@ -350,13 +350,11 @@ void finalizeMaximize(boolean speculative)
 	}
 	// add bonus if next fight is a free void monster
 	if((get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13))
-	addBonusToMaximize($item[mafia thumb ring], 200); // 4% chance +1 adventure
-	if(get_property("auto_MLSafetyLimit").to_int() == "" || get_property("auto_MLSafetyLimit").to_int() >= 25)
 	{
-		addBonusToMaximize($item[carnivorous potted plant], 200); // 4% chance free kill but also 25 ML
+		addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
 	}
+	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
 	addBonusToMaximize($item[Mr. Screege\'s spectacles], 100); // meat stuff
-	addBonusToMaximize($item[can of mixed everything], 100); // random stuff
 	if(have_effect($effect[blood bubble]) == 0)
 	{
 		// blocks first hit, but doesn't stack with blood bubble
