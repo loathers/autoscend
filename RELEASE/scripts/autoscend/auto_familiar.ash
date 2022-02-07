@@ -307,17 +307,9 @@ boolean handleFamiliar(familiar fam)
 {
 	//This function takes a specific named familiar and sets it as our target familiar. To be changed during pre_adventure.
 
-	if(get_property("auto_disableFamiliarChanging").to_boolean())
-	{
-		return false;	//familiar changing temporarily disabled.
-	}
 	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return false;
-	}
-	if(is100FamRun() && get_property("auto_100familiar").to_familiar() != fam)
-	{
-		return false;	//do not break a 100% familiar run
 	}
 	if(fam == $familiar[none])
 	{
