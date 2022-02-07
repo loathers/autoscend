@@ -452,17 +452,18 @@ void bedtime_pulls()
 		return;
 	}
 	
+	if(my_daycount() == 1 && my_level() <= 8)
+	{
+		//this run looks like it will take a couple more days, give priority to good rollover equipment before other pulls
+		float desirability = max(5.0, get_property("auto_bedtime_pulls_min_desirability").to_float());
+		bedtime_pulls_rollover_equip(desirability);
+	}
+	
 	if(get_property("auto_bedtime_pulls_min_desirability").to_float() <= 5.0)
 	{
-		if(item_amount($item[potato alarm clock]) == 0 && storage_amount($item[potato alarm clock]) > 0)
+		if(storage_amount($item[potato alarm clock]) > 0)
 		{
 			pullXWhenHaveY($item[potato alarm clock], 1, 0);
-		}
-
-		if(my_daycount() == 1 && my_level() <= 8)
-		{
-			//this run looks like it will take a couple more days, give priority to good rollover equipment before level 11 quest pulls
-			bedtime_pulls_rollover_equip(5.0);
 		}
 	}
 
