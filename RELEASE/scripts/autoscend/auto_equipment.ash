@@ -370,8 +370,13 @@ void finalizeMaximize(boolean speculative)
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}
-	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
+	addBonusToMaximize($item[mafia thumb ring], 200); // 4% chance +1 adventure
+	if(get_property("auto_MLSafetyLimit").to_int() == "" || get_property("auto_MLSafetyLimit").to_int() >= 25)
+	{
+		addBonusToMaximize($item[carnivorous potted plant], 200); // 4% chance free kill but also 25 ML
+	}
 	addBonusToMaximize($item[Mr. Screege\'s spectacles], 100); // meat stuff
+	addBonusToMaximize($item[can of mixed everything], 100); // random stuff
 	if(have_effect($effect[blood bubble]) == 0)
 	{
 		// blocks first hit, but doesn't stack with blood bubble
