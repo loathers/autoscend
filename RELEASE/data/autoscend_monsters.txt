@@ -132,7 +132,7 @@ sniff	18	War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;
 sniff	19	Possessed Wine Rack
 sniff	20	Blue Oyster cultist
 sniff	21	Dirty Old Lihc	prop:cyrptNicheEvilness>28
-sniff	22	Possibility Giant	prop:chaosButterflyThrown=false;item:chaos butterfly<1
+sniff	22	Possibility Giant	!path:G-Lover;!path:Pocket Familiars;!path:Bees Hate You;prop:chaosButterflyThrown=false;item:chaos butterfly<1
 sniff	23	Serialbus	item:bus pass<5
 sniff	24	CH Imp	item:imp air<5
 sniff	25	Camel Toe	!sniffed:Skinflute
