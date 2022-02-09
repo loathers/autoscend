@@ -123,7 +123,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return useSkill($skill[Candyblast]);
 	}
 	
-	if(canUse(auto_spoonCombatSkill()))
+	if((my_class() != $class[Sauceror]) && canUse(auto_spoonCombatSkill()))
 	{
 		return useSkill(auto_spoonCombatSkill());
 	}

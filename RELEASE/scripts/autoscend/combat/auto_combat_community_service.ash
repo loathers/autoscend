@@ -224,7 +224,7 @@ string cs_combatNormal(int round, monster enemy, string text)
 		return useItem($item[Time-Spinner]);
 	}
 
-	if(canUse(auto_spoonCombatSkill()))
+	if((my_class() != $class[Sauceror]) && canUse(auto_spoonCombatSkill()))
 	{
 		return useSkill(auto_spoonCombatSkill());
 	}
