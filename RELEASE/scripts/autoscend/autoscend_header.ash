@@ -325,6 +325,7 @@ int auto_saberChargesAvailable();
 string auto_combatSaberBanish();
 string auto_combatSaberCopy();
 string auto_combatSaberYR();
+skill auto_spoonCombatSkill();
 string auto_spoonGetDesiredSign();
 void auto_spoonTuneConfirm();
 boolean auto_spoonReadyToTuneMoon();
