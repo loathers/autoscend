@@ -224,6 +224,11 @@ string cs_combatNormal(int round, monster enemy, string text)
 		return useItem($item[Time-Spinner]);
 	}
 
+	if((my_class() != $class[Sauceror]) && canUse(auto_spoonCombatSkill()))
+	{
+		return useSkill(auto_spoonCombatSkill());
+	}
+
 	if(canUse($skill[Saucegeyser], false) && my_class() == $class[Sauceror])
 	{
 		return useSkill($skill[Saucegeyser], false);

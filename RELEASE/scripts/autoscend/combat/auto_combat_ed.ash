@@ -721,6 +721,11 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	}
 
 	// Actually killing stuff starts here
+	if(canUse(auto_spoonCombatSkill()))
+	{
+		return useSkill(auto_spoonCombatSkill());
+	}
+    
 	if (my_location() == $location[The Secret Government Laboratory] && canUse($skill[Roar of the Lion], false))
 	{
 		if (canUse($skill[Storm Of The Scarab], false) && my_buffedstat($stat[Mysticality]) >= 60)
