@@ -1660,17 +1660,32 @@ boolean stunnable(monster mon)
 		// Standard
 			Wall of Skin,
 			Wall of Bones,
-			Naughty Sorceress,
+			Eldritch Tentacle,
+		// Cargo Cultist Shorts
+			Astrologer of Shub-Jigguwatt,
+			Burning Daughter,
+			Chosen of Yog-Urt,
+			Herald of Fridgr,
+			Tentacle of Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl,
 		// Vampyre
 			Your Lack of Reflection,
 			// The final boss is handled separately
+		// Heavy Rains
+			storm cow,
 		// Witchess Monsters
 			Witchess Witch,
 			Witchess Queen,
 			Witchess King,
 		// Other
 			Cyrus the Virus,
+			broctopus,
+			cocktail shrimp,
 	];
+	
+	if($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains mon && !get_property("auto_confidence").to_boolean())
+	{
+		return false;
+	}
 
 	// Vampyre final boss has your name reversed, which is dumb.
 	// I wonder if this will hit any unlucky people...
