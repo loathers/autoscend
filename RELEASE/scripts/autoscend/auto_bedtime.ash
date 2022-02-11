@@ -513,7 +513,7 @@ boolean doBedtime()
 	// Check if we're here because it's bedtime or if we're here for some other
 	// reason (maybe an interrupt or error).  
 	// If there are unreserved adventures left, it might not be bedtime
-	if(my_adventures() > max(4, get_property("auto_adv_save_override").to_int()))
+	if(my_adventures() > max(4, get_property("auto_save_adv_override").to_int()))
 	{
 		// If we're not overdrunk, it might not be bedtime
 		if(my_inebriety() <= inebriety_limit())

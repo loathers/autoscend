@@ -615,8 +615,8 @@ void consumeStuff()
 	
 	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
 	
-	// Our target adventure count is 10 or the auto_adv_save_override, whichever is higher
-	int target_adventures = max(10, get_property("auto_adv_save_override").to_int());
+	// Our target adventure count is 10 or the auto_save_adv_override, whichever is higher
+	int target_adventures = max(10, get_property("auto_save_adv_override").to_int());
 	
 	if ((my_adventures() < target_adventures) && fullness_left() > 0 && is_boris())
 	{
