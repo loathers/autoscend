@@ -490,16 +490,24 @@ boolean doBedtime()
 
 	auto_process_kmail("auto_deleteMail");
 
-	if(my_adventures() > 4)
+	// Check if we're here because it's bedtime or if we're here for some other
+	// reason (maybe an interrupt or error).  
+	// If there are unreserved adventures left, it might not be bedtime
+	if(my_adventures() > max(4, get_property("auto_adv_save_override").to_int()))
 	{
+		// If we're not overdrunk, it might not be bedtime
 		if(my_inebriety() <= inebriety_limit())
 		{
+			// If we have a liver and our familiar hasn't yet been changed 
+			// to Stooper, it's definitely not bedtime
 			if(!in_gnoob() && my_familiar() != $familiar[Stooper])
 			{
 				return false;
 			}
 		}
 	}
+
+	// If in Dark Gyffte and there is blood left to consume, it's not bedtime yet
 	boolean out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
 	if((fullness_left() > 0) && can_eat() && !out_of_blood)
 	{
@@ -509,6 +517,7 @@ boolean doBedtime()
 	{
 		return false;
 	}
+
 	int spleenlimit = spleen_limit();
 	if(!canChangeFamiliar())
 	{

@@ -612,15 +612,18 @@ void consumeStuff()
 	{
 		return;
 	}
-
+	
 	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
 	
-	if (my_adventures() < 10 && fullness_left() > 0 && is_boris())
+	// Our target adventure count is 10 or the auto_adv_save_override, whichever is higher
+	int target_adventures = max(10, get_property("auto_adv_save_override").to_int());
+	
+	if ((my_adventures() < target_adventures) && fullness_left() > 0 && is_boris())
 	{
 		borisDemandSandwich(true);
 	}
 
-	if (my_adventures() < 10 && !edSpleenCheck)
+	if ((my_adventures() < target_adventures) && !edSpleenCheck)
 	{
 		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
 		if (inebriety_left() > 0)
