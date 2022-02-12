@@ -206,8 +206,10 @@ boolean auto_pre_adventure()
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
+	boolean junkyardML;
 	if($locations[Next to that Barrel with something Burning In It, Near an Abandoned Refrigerator, Over where the Old Tires Are, Out by that Rusted-Out Car] contains place)
 	{
+		junkyardML = true;
 		uneffect($effect[Spiky Shell]);
 		uneffect($effect[Scarysauce]);
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
@@ -576,6 +578,13 @@ boolean auto_pre_adventure()
 		removeML = true;
 		purgeML = false;
 	}
+	// Gremlins specific. need to let them hit so avoid ML unless defense is very high
+	if(junkyardML && my_buffedstat($stat[moxie]) < (2*monster_attack($monster[erudite gremlin])))
+	{
+		doML = false;
+		removeML = true;
+		purgeML = false;
+	}
 
 	// Location Specific Conditions
 	if(lowMLZones contains place)
@@ -668,7 +677,7 @@ boolean auto_pre_adventure()
 	else
 	{
 		// Last minute MCD alterations if Limit set, otherwise trust maximizer
-		if(get_property("auto_MLSafetyLimit") != "")
+		if(get_property("auto_MLSafetyLimit") != "" && !removeML)
 		{
 			auto_setMCDToCap();
 		}
