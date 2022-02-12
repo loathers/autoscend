@@ -331,10 +331,13 @@ boolean L10_holeInTheSkyUnlock()
 		set_property("auto_holeinthesky", false);
 		return false;
 	}
+	if(can_interact())
+	{
+		LX_buyStarKey();
+	}
 	int day = get_property("shenInitiationDay").to_int();
 	boolean[location] shenLocs = shenSnakeLocations(day, 0);
-	if((!needStarKey() || (can_interact() && LX_getStarKey())) && 
-	!(shenLocs contains $location[The Hole in the Sky]))
+	if(!needStarKey() && !(shenLocs contains $location[The Hole in the Sky]))
 	{
 		// we force auto_holeinthesky to true in L11_shenCopperhead() as Ed if Shen sends us to the Hole in the Sky
 		// as otherwise the zone isn't required at all for Ed.
