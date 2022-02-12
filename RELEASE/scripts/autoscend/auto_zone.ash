@@ -400,6 +400,11 @@ generic_t zone_needItemFood(location loc)
 	case $location[The Haunted Laundry Room]:
 		value = 5.0 * (1.0 + get_property("auto_cabinetsencountered").to_float());
 		break;
+	case $location[Inside the Palindome]:
+		if (item_amount($item[Stunt Nuts]) == 0 && item_amount($item[Wet Stunt Nut Stew]) == 0) {
+			value = 30.0;
+		}
+		break;
 	case $location[Whitey\'s Grove]:
 		if(((item_amount($item[Lion Oil]) == 0) || (item_amount($item[Bird Rib]) == 0)) && (item_amount($item[Wet Stew]) == 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0) && (internalQuestStatus("questL11Palindome") < 5))
 		{
