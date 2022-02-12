@@ -447,6 +447,10 @@ void bedtime_pulls_rollover_equip(float desirability)
 			if((possessEquipment($item[time halo]) || canPull($item[time halo],true)) && auto_can_equip($item[time halo]))
 			{
 				best[worst_acc_slot] = $item[time halo];
+				//clearing weapon and off-hand here at least avoids pulling them after a time halo in the same rollover.
+				//should technically decide based on improvement value instead, but if the best of 3 slots together are beaten by 5 their improvement value would be low
+				best[$slot[weapon]] = $item[none];
+				best[$slot[off-hand]] = $item[none];
 			}
 		}
 		
