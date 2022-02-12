@@ -180,10 +180,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			{
 				tryIt = true;
 			}
-		}
-		if(tryIt && (drop.type != "p") && effectiveDropChance(drop.drop,drop.rate.to_float()) >= 100)
-		{
-			tryIt = false;	//don't need to pickpocket if capped drop chance
+			if(tryIt && (drop.type != "p") && effectiveDropChance(drop.drop,drop.rate.to_float()) >= 100)
+			{
+				tryIt = false;	//don't need to pickpocket if capped drop chance
+			}
 		}
 		if(tryIt)
 		{
