@@ -458,13 +458,14 @@ boolean auto_run_choice(int choice, string page)
 			edUnderworldChoiceHandler(choice);
 			break;
 		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
-			if(isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
+			if(item_amount($item[electric boning knife]) > 0 ||
+			isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
 			{
 				run_choice(3); // skip
 			}
 			else
 			{
-				run_choice(2); // get Electric Boning Knife then skip
+				run_choice(2); // get Electric Boning Knife
 			}
 			break;
 		case 1056: // Now It's Dark (Lost in the Great Overlook Lodge)

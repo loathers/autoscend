@@ -329,6 +329,28 @@ void finalizeMaximize(boolean speculative)
 		// also don't equip Kramco when using Map the Monsters as sausage goblins override the NC
 		addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
 	}
+	if (possessEquipment($item[Cursed Magnifying Glass]))
+	{
+		if (get_property("cursedMagnifyingGlassCount").to_int() == 13)
+		{
+			if(get_property("mappingMonsters").to_boolean() || (get_property("_voidFreeFights").to_int() >= 5 && !in_hardcore()))
+			{
+				// don't equip for non free fights in softcore? (pending allowed conditions like delay zone && none of the monsters in the zone is a sniff/YR target?)
+				// don't equip when using Map the Monsters?
+				addToMaximize("-equip " + $item[Cursed Magnifying Glass].to_string());
+			}
+			else if(get_property("_voidFreeFights").to_int() < 5)
+			{
+				// add bonus if next fight is a free void monster
+				addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
+			}
+		}
+		else if(get_property("_voidFreeFights").to_int() < 5 && solveDelayZone() != $location[none])
+		{
+			// add bonus to charge free fights
+			addBonusToMaximize($item[Cursed Magnifying Glass], 200);
+		}
+	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
 		string pref = getMaximizeSlotPref(s);
@@ -348,13 +370,13 @@ void finalizeMaximize(boolean speculative)
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}
-	// add bonus if next fight is a free void monster
-	if((get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13))
+	addBonusToMaximize($item[mafia thumb ring], 200); // 4% chance +1 adventure
+	if(get_property("auto_MLSafetyLimit") == "" || get_property("auto_MLSafetyLimit").to_int() >= 25)
 	{
-		addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
+		addBonusToMaximize($item[carnivorous potted plant], 200); // 4% chance free kill but also 25 ML
 	}
-	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
 	addBonusToMaximize($item[Mr. Screege\'s spectacles], 100); // meat stuff
+	addBonusToMaximize($item[can of mixed everything], 100); // random stuff
 	if(have_effect($effect[blood bubble]) == 0)
 	{
 		// blocks first hit, but doesn't stack with blood bubble
