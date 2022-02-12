@@ -618,12 +618,12 @@ void consumeStuff()
 	// Our target adventure count is 10 or the auto_save_adv_override, whichever is higher
 	int target_adventures = max(10, get_property("auto_save_adv_override").to_int());
 	
-	if ((my_adventures() < target_adventures) && fullness_left() > 0 && is_boris())
+	if ((my_adventures() <= target_adventures) && fullness_left() > 0 && is_boris())
 	{
 		borisDemandSandwich(true);
 	}
 
-	if ((my_adventures() < target_adventures) && !edSpleenCheck)
+	if ((my_adventures() <= target_adventures) && !edSpleenCheck)
 	{
 		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
 		if (inebriety_left() > 0)
