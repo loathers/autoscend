@@ -174,6 +174,24 @@ boolean LX_getDigitalKey()
 	return adv_spent;
 }
 
+boolean LX_buyStarKey()
+{
+	pullXWhenHaveY($item[Star Chart], 1, 0);
+	if (item_amount($item[Star]) < 8)
+	{
+		pullXWhenHaveY($item[Star], (8 - item_amount($item[Star])), item_amount($item[Star]));
+	}
+	if (item_amount($item[Star]) < 7)
+	{
+		pullXWhenHaveY($item[line], (7 - item_amount($item[line])), item_amount($item[line]));
+	}
+	if (item_amount($item[Star Chart]) >= 1 && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
+	{
+		return true;
+	}
+	return false;
+}
+
 boolean LX_getStarKey()
 {
 	if(!get_property("auto_getStarKey").to_boolean())
@@ -201,19 +219,11 @@ boolean LX_getStarKey()
 		return false;
 	}
 	
-	if (can_interact())
-	{	
-		pullXWhenHaveY($item[Star Chart], 1, 0);
-		if (item_amount($item[Star]) < 8)
-		{
-			pullXWhenHaveY($item[Star], (8 - item_amount($item[Star])), item_amount($item[Star]));
-		}
-		if (item_amount($item[Star]) < 7)
-		{
-			pullXWhenHaveY($item[line], (7 - item_amount($item[line])), item_amount($item[line]));
-		}
+	if(can_interact())
+	{
+		LX_buyStarKey();
 	}
-	
+
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
 	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key") && 
 	item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
