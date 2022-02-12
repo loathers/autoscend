@@ -163,7 +163,10 @@ generic_t zone_needItem(location loc)
 		value = 20.0;
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		value = 10.0;
+		if(get_property("chasmBridgeProgress").to_int() < 30)
+		{
+			value = 10.0;
+		}
 		break;
 	case $location[A-Boo Peak]:
 		if(get_property("auto_aboopending").to_int() == 0)
