@@ -167,7 +167,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	if(retval != "") return retval;
 	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
-	if(!combat_status_check("pickpocket") && ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class()) && contains_text(text, "value=\"Pick") && canSurvive(2.0))
+	if(!combat_status_check("pickpocket") && ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class()) && contains_text(text, "value=\"Pick") && canSurvive(4.0))
 	{
 		boolean tryIt = false;
 		foreach i, drop in item_drops_array(enemy)
@@ -186,6 +186,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			combat_status_add("pickpocket");
 			string attemptSteal = steal();
 			return "pickpocket";
+		}
+		if(tryIt && (drop.type != "p") && effectiveDropChance(drop.drop,drop.rate.to_float()) >= 100)
+		{
+			tryIt = false;	//don't need to pickpocket if capped drop chance
 		}
 	}
 
