@@ -1039,6 +1039,7 @@ int towerKeyCount();
 int towerKeyCount(boolean effective);
 int whitePixelCount();
 boolean LX_getDigitalKey();
+boolean LX_buyStarKey();
 boolean LX_getStarKey();
 boolean beehiveConsider();
 int ns_crowd1();
