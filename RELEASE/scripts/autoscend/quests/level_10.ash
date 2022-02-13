@@ -168,13 +168,9 @@ boolean L10_basement()
 	}
 
 	auto_forceNextNoncombat();
-	if(!possessEquipment($item[Amulet of Extreme Plot Significance]))
+	if(!autoEquip($item[Amulet of Extreme Plot Significance]))
 	{
 		autoEquip($item[Titanium Assault Umbrella]);
-	}
-	else
-	{
-		autoEquip($item[Amulet of Extreme Plot Significance]);
 	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 	
