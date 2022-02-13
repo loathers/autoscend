@@ -189,20 +189,52 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	if(canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
 	{
-		skill stunner = getStunner(enemy);
-		boolean stunned = combat_status_check("stunned");
-		if(stunner != $skill[none] && !stunned)
+		boolean stunned;
+		if(stunnable(enemy))
 		{
-			combat_status_add("stunned");
-			return useSkill(stunner);
+			skill stunner = getStunner(enemy);
+			stunned = combat_status_check("stunned");
+			if(stunner != $skill[none] && !stunned)
+			{
+				combat_status_add("stunned");
+				return useSkill(stunner);
+			}
 		}
-		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
+		boolean shouldFlyer = false;
+		boolean staggeringFlyer = false;
+		item flyerWith;
+		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
-			return useItems(flyer, $item[Time-Spinner]);
+			if (canUse($item[Time-Spinner]))
+			{
+				flyerWith = $item[Time-Spinner];
+				staggeringFlyer = true;
+			}
+			else if (canUse($item[beehive]) && 
+			!(monster_hp() <= 30 && my_class() == $class[Sauceror] && haveUsed($skill[Curse Of Weaksauce])))	//don't miss MP by killing weak monsters with beehive
+			{
+				flyerWith = $item[beehive];
+				staggeringFlyer = true;
+			}
+			if(staggeringFlyer && (!stunnable(enemy) || monster_level_adjustment() > 150))
+			{
+				staggeringFlyer = false;
+			}
 		}
-		if(canSurvive(3.0) || stunned)
+		if(canSurvive(3.0) || stunned || staggeringFlyer)
 		{
-			return useItem(flyer);
+			shouldFlyer = true;
+		}
+		if(shouldFlyer)
+		{
+			if(flyerWith != $item[none])
+			{
+				return useItems(flyer, flyerWith);
+			}
+			else
+			{
+				return useItem(flyer);
+			}
 		}
 	}
 	
