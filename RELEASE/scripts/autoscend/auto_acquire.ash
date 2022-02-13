@@ -478,8 +478,7 @@ boolean auto_hermit(int amt, item it)
 		return hermit(amt, it);
 	}
 	int initial = item_amount(it);
-	//store the result to avoid an error being thrown
-	boolean result = hermit(amt, it);
+	catch hermit(amt, it);
 	return item_amount(it) == initial + amt;
 }
 

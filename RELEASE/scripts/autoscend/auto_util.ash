@@ -1382,7 +1382,7 @@ boolean cloverUsageInit()
 	if(item_amount($item[11-Leaf Clover]) < 1)
 	{
 		//try to get one out of closet, store the result to avoid an error being thrown
-		boolean result = retrieve_item(1, $item[11-Leaf Clover]);	
+		catch retrieve_item(1, $item[11-Leaf Clover]);	
 	}
 	if(item_amount($item[11-Leaf Clover]) > 0)
 	{
