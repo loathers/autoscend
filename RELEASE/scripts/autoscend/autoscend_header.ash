@@ -1470,6 +1470,7 @@ generic_t zone_combatMod(location loc);
 generic_t zone_delay(location loc);
 boolean zone_available(location loc);
 generic_t zone_difficulty(location loc);
+boolean zone_hasLuckyAdventure(location loc);
 location[int] zones_available();
 monster[int] mobs_available();
 item[int] drops_available();
