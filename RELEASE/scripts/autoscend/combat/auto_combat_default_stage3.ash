@@ -248,7 +248,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			}
 		}
 
-		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0))
+		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < 30)
 		{
 			// Listed from Most to Least Damaging to hopefully cause Death on the turn when the Shell hits.
 			if(canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0)
