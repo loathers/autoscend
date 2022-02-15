@@ -861,7 +861,7 @@ void acquireFamiliars()
 	{
 		return;
 	}
-	if(!in_bhy()) // BHY can't use either barrel mimic or blood-faced volleyball
+	if(in_bhy()) // BHY can't use either barrel mimic or blood-faced volleyball
 	{
 		return;
 	}
