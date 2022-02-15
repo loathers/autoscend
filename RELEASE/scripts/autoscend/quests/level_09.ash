@@ -797,32 +797,32 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
+	if(contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean needJar = ((oilProgress & 4) == 0) && item_amount($item[Jar Of Oil]) == 0;
-		if (!needJar || in_bhy())
+		if(!needJar || in_bhy())
 		{
 			return false;
 		}
-		else if (item_amount($item[Bubblin' Crude]) >= 12)
+		else if(item_amount($item[Bubblin' Crude]) >= 12)
 		{
 			if(in_glover())
 			{
-				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
+				if(item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
 				{
 					buy($coinmaster[G-Mart], 1, $item[Crude Oil Congealer]);
 				}
-				if (item_amount($item[Crude Oil Congealer]) > 0)
+				if(item_amount($item[Crude Oil Congealer]) > 0)
 				{
 					use(1, $item[Crude Oil Congealer]);
 				}
 			}
-			else if (auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
+			else if(auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
 			{
 				create(1, $item[Jar Of Oil]);
 			}
-			if (item_amount($item[Jar Of Oil]) > 0)
+			if(item_amount($item[Jar Of Oil]) > 0)
 			{
 				return true;
 			}

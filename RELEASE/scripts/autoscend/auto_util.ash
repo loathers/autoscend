@@ -2936,7 +2936,8 @@ boolean auto_is_valid(item it)
 
 boolean auto_is_valid(familiar fam)
 {
-	if(is100FamRun()){
+	if(is100FamRun()
+	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
 	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
