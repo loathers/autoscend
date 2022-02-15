@@ -861,7 +861,11 @@ void acquireFamiliars()
 	{
 		return;
 	}
-	
+	if(!in_bhy()) // BHY can't use either barrel mimic or blood-faced volleyball
+	{
+		return;
+	}
+
 	//Very cheap and very useful IOTM derivative. MP/HP regen. drops lots of useful food and drink early on
 	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]))
 	{
