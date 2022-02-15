@@ -369,13 +369,19 @@ boolean autoChooseFamiliar(location place)
 
 	// Blackbird/Crow cut turns in the Black Forest but we only need to equip them
 	// if we don't have them in inventory.
-	if ($location[The Black Forest] == place) {
-		if (!in_bhy()) {
-			if (item_amount($item[Reassembled Blackbird]) == 0 && canChangeToFamiliar($familiar[Reassembled Blackbird])) {
+	if($location[The Black Forest] == place)
+	{
+		if(!in_bhy())
+		{
+			if(item_amount($item[Reassembled Blackbird]) == 0 && canChangeToFamiliar($familiar[Reassembled Blackbird]))
+			{
 				famChoice = $familiar[Reassembled Blackbird];
 			}
-		} else {
-			if (item_amount($item[Reconstituted Crow]) == 0 && canChangeToFamiliar($familiar[Reconstituted Crow])) {
+		}
+		else
+		{
+			if(item_amount($item[Reconstituted Crow]) == 0 && canChangeToFamiliar($familiar[Reconstituted Crow]))
+			{
 				famChoice = $familiar[Reconstituted Crow];
 			}
 		}
