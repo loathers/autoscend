@@ -662,9 +662,9 @@ boolean doBedtime()
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
-		if(in_pokefam() || in_darkGyffte())
+		if(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_lta() || in_pokefam())
 		{
-			cli_execute("friars food");
+			cli_execute("friars food"); // paths that do not have a familiar
 		}
 		else
 		{
