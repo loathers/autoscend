@@ -277,8 +277,9 @@ boolean auto_pre_adventure()
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
+	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !burningDelay && !auto_haveQueuedForcedNonCombat()) {
+	if (combatModifier._boolean && !burningDelay && !gettingLucky && !auto_haveQueuedForcedNonCombat()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
@@ -556,6 +557,15 @@ boolean auto_pre_adventure()
 		removeML = true;
 		purgeML = false;
 	}
+
+	// Backup Camera copies have double ML applied. Reduce ML to avoid getting beaten up
+	if(auto_backupTarget())
+	{
+		doML = false;
+		removeML = true;
+		purgeML = false;
+	}
+	
 	// Gremlins specific. need to let them hit so avoid ML unless defense is very high
 	if(junkyardML && my_buffedstat($stat[moxie]) < (2*monster_attack($monster[erudite gremlin])))
 	{
