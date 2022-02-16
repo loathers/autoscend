@@ -2936,7 +2936,7 @@ boolean auto_is_valid(item it)
 
 boolean auto_is_valid(familiar fam)
 {
-	if(is100FamRun()
+	if(is100FamRun())
 	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
