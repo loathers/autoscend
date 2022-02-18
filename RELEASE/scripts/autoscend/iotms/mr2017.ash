@@ -1766,7 +1766,7 @@ boolean makeGenieWish(effect eff)
 boolean canGenieCombat()
 {
 	if(item_amount($item[genie bottle]) == 0 && item_amount($item[pocket wish]) == 0 && !auto_is_valid($item[genie bottle]))
-	{ // can't use genie bottle in BHY
+	{
 		return false;
 	}
 	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
