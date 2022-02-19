@@ -579,14 +579,6 @@ boolean auto_pre_adventure()
 		purgeML = false;
 	}
 
-	// Item specific Conditions
-	if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
-	{
-		doML = false;
-		removeML = true;
-		purgeML = false;
-	}
-
 	// Backup Camera copies have double ML applied. Reduce ML to avoid getting beaten up
 	if(auto_backupTarget())
 	{
