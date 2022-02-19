@@ -331,10 +331,7 @@ boolean L10_holeInTheSkyUnlock()
 		set_property("auto_holeinthesky", false);
 		return false;
 	}
-	if(can_interact())
-	{
-		LX_buyStarKey();
-	}
+	LX_buyStarKeyParts();
 	int day = get_property("shenInitiationDay").to_int();
 	boolean[location] shenLocs = shenSnakeLocations(day, 0);
 	if(!needStarKey() && !(shenLocs contains $location[The Hole in the Sky]))
