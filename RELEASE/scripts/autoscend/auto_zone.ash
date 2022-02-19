@@ -163,7 +163,10 @@ generic_t zone_needItem(location loc)
 		value = 20.0;
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		value = 10.0;
+		if(get_property("chasmBridgeProgress").to_int() < 30)
+		{
+			value = 10.0;
+		}
 		break;
 	case $location[A-Boo Peak]:
 		if(get_property("auto_aboopending").to_int() == 0)
@@ -1836,6 +1839,28 @@ generic_t zone_difficulty(location loc)
 	}
 
 	return retval;
+}
+
+boolean zone_hasLuckyAdventure(location loc)
+{
+	if ($locations[8-Bit Realm,A Maze of Sewer Tunnels,A Mob of Zeppelin Protesters,A-Boo Peak,An Octopus's Garden,Art Class,
+	Battlefield (Cloaca Uniform),Battlefield (Dyspepsi Uniform),Battlefield (No Uniform),Burnbarrel Blvd.,Camp Logging Camp,Chemistry Class,
+	Cobb's Knob Barracks,Cobb's Knob Harem,Cobb's Knob Kitchens,Cobb's Knob Laboratory,Cobb's Knob Menagerie\, Level 2,Cobb's Knob Treasury,
+	Elf Alley,Exposure Esplanade,Frat House,Frat House In Disguise,Guano Junction,Hippy Camp,Hippy Camp In Disguise,Itznotyerzitz Mine,
+	Lair of the Ninja Snowmen,Lemon Party,Madness Reef,Oil Peak,Outskirts of Camp Logging Camp,Pandamonium Slums,Shop Class,South of the Border,
+	The "Fun" House,The Ancient Hobo Burial Ground,The Batrat and Ratbat Burrow,The Black Forest,The Brinier Deepers,The Briny Deeps,The Bugbear Pen,
+	The Castle in the Clouds in the Sky (Basement),The Castle in the Clouds in the Sky (Ground Floor),The Castle in the Clouds in the Sky (Top Floor),
+	The Copperhead Club,The Dark Elbow of the Woods,The Dark Heart of the Woods,The Dark Neck of the Woods,The Dive Bar,The Goatlet,The Hallowed Halls,
+	The Haunted Ballroom,The Haunted Billiards Room,The Haunted Boiler Room,The Haunted Conservatory,The Haunted Gallery,The Haunted Kitchen,
+	The Haunted Library,The Haunted Pantry,The Haunted Storage Room,The Heap,The Hidden Park,The Hidden Temple,The Icy Peak,The Knob Shaft,
+	The Limerick Dungeon,The Mer-Kin Outpost,The Oasis,The Obligatory Pirate's Cove,The Outskirts of Cobb's Knob,The Poker Room,The Primordial Soup,
+	The Purple Light District,The Red Zeppelin,The Roulette Tables,The Sleazy Back Alley,The Smut Orc Logging Camp,The Spectral Pickle Factory,
+	The Spooky Forest,The Spooky Gravy Burrow,The Unquiet Garves,The VERY Unquiet Garves,The Valley of Rof L'm Fao,The Wreck of the Edgar Fitzsimmons,
+	Thugnderdome,Tower Ruins,Twin Peak,Vanya's Castle Chapel,Whitey's Grove,Ye Olde Medievale Villagee] contains loc)
+	{
+		return true;
+	}
+	return false;
 }
 
 location[int] zones_available()
