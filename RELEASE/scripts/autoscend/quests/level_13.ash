@@ -174,22 +174,19 @@ boolean LX_getDigitalKey()
 	return adv_spent;
 }
 
-boolean LX_buyStarKey()
+void LX_buyStarKeyParts()
 {
-	pullXWhenHaveY($item[Star Chart], 1, 0);
-	if (item_amount($item[Star]) < 8)
+	if(item_amount($item[Richard\'s Star Key]) > 0 || get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
-		pullXWhenHaveY($item[Star], (8 - item_amount($item[Star])), item_amount($item[Star]));
+		return;	//already have it
 	}
-	if (item_amount($item[Star]) < 7)
+	if(!can_interact())
 	{
-		pullXWhenHaveY($item[line], (7 - item_amount($item[line])), item_amount($item[line]));
+		return;	//no unrestricted mall access
 	}
-	if (item_amount($item[Star Chart]) >= 1 && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
-	{
-		return true;
-	}
-	return false;
+	buyUpTo(1, $item[Star Chart], 1000);
+	buyUpTo(8, $item[Star], 1000);
+	buyUpTo(7, $item[line], 1000);
 }
 
 boolean LX_getStarKey()
