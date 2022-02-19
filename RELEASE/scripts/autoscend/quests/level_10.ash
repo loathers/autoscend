@@ -121,26 +121,34 @@ boolean L10_basement()
 		return false;
 	}
 
-	if(possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
+	if(possessEquipment($item[Amulet of Extreme Plot Significance]))
 	{
-		return false;
+		if(!auto_can_equip($item[Amulet of Extreme Plot Significance]))
+		{
+			return false;
+		}
 	}
-
-	if(possessEquipment($item[Amulet of Extreme Plot Significance]) && !auto_can_equip($item[Amulet of Extreme Plot Significance]))
+	else if(possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
 	{
 		return false;
 	}
 
 	auto_log_info("Castle (Basement) - Unlocking Ground Floor.", "blue");
-	
-	if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]) && !in_hardcore())
-	{
-		pullXWhenHaveY($item[Titanium Assault Umbrella], 1, 0);
-	}
 
-	if(!possessEquipment($item[Amulet of Extreme Plot Significance]) && auto_can_equip($item[Amulet of Extreme Plot Significance]) && !in_hardcore())
+	if(!in_hardcore())
 	{
-		pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
+		if(!possessEquipment($item[Amulet of Extreme Plot Significance]) && auto_can_equip($item[Amulet of Extreme Plot Significance]))
+		{
+			pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
+		}
+		
+		if(!possessEquipment($item[Amulet of Extreme Plot Significance]))			//only consider umbrella if getting amulet fails somehow
+		{
+			if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]))
+			{
+				pullXWhenHaveY($item[Titanium Assault Umbrella], 1, 0);
+			}
+		}
 	}
 
 	if(my_primestat() == $stat[Muscle])
@@ -160,8 +168,10 @@ boolean L10_basement()
 	}
 
 	auto_forceNextNoncombat();
-	autoEquip($item[Titanium Assault Umbrella]);
-	autoEquip($item[Amulet of Extreme Plot Significance]);
+	if(!autoEquip($item[Amulet of Extreme Plot Significance]))
+	{
+		autoEquip($item[Titanium Assault Umbrella]);
+	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 	
 	return true;
