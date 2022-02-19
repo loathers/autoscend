@@ -216,10 +216,7 @@ boolean LX_getStarKey()
 		return false;
 	}
 	
-	if(can_interact())
-	{
-		LX_buyStarKey();
-	}
+	LX_buyStarKeyParts();
 
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
 	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key") && 
