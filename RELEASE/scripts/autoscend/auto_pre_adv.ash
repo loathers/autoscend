@@ -557,6 +557,15 @@ boolean auto_pre_adventure()
 		removeML = true;
 		purgeML = false;
 	}
+
+	// Backup Camera copies have double ML applied. Reduce ML to avoid getting beaten up
+	if(auto_backupTarget())
+	{
+		doML = false;
+		removeML = true;
+		purgeML = false;
+	}
+	
 	// Gremlins specific. need to let them hit so avoid ML unless defense is very high
 	if(junkyardML && my_buffedstat($stat[moxie]) < (2*monster_attack($monster[erudite gremlin])))
 	{
