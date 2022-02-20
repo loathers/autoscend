@@ -831,14 +831,22 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	if ($effects[Feeling Lonely, Feeling Excited, Feeling Nervous, Feeling Peaceful] contains buff && auto_haveEmotionChipSkills())
 	{
 		skill feeling = buff.to_skill();
-		if (speculative)
+		//speculate to see if buff will be cast. Return false if it will not be
+		if(buffMaintain(feeling, buff, mustEquip, mp_min, casts, turns, true))
 		{
-			return feeling.timescast < feeling.dailylimit;
-		}
-		else if (feeling.timescast < feeling.dailylimit)
-		{
-			useSkill = buff.to_skill();
-			handleTracker(useSkill, "auto_otherstuff");
+			if (speculative)
+			{
+				return feeling.timescast < feeling.dailylimit;
+			}
+			else if (feeling.timescast < feeling.dailylimit)
+			{
+				useSkill = buff.to_skill();
+				handleTracker(useSkill, "auto_otherstuff");
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
