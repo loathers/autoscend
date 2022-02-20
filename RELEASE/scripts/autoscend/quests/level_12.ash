@@ -1022,6 +1022,10 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
+	if(auto_warEnemiesRemaining() == 0)
+	{
+		return false;
+	}
 	if(in_glover())
 	{
 		int need = 30 - item_amount($item[Doc Galaktik\'s Pungent Unguent]);
@@ -1140,6 +1144,10 @@ boolean L12_sonofaBeach()
 		{
 			return false;
 		}
+	}
+	if(auto_warEnemiesRemaining() == 0)
+	{
+		return false;
 	}
 	if((get_property("fratboysDefeated").to_int() < 64) && get_property("auto_hippyInstead").to_boolean())
 	{
@@ -1529,6 +1537,11 @@ boolean L12_themtharHills()
 	{
 		return false;
 	}
+	
+	if(auto_warEnemiesRemaining() == 0)
+	{
+		return false;
+	}
 
 	if(in_tcrs() || in_koe() || in_wotsf())
 	{
@@ -1838,6 +1851,10 @@ boolean L12_farm()
 	if(get_property("sidequestFarmCompleted") != "none")
 	{
 		set_property("auto_skipL12Farm", "true");
+		return false;
+	}
+	if(auto_warEnemiesRemaining() == 0 && get_property("auto_L12FarmStage").to_int() < 4)
+	{
 		return false;
 	}
 	if(internalQuestStatus("questL12War") != 1)
