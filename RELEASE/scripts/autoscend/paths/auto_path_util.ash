@@ -189,8 +189,8 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 		{
 			//safe flyering
 			boolean noStaggerItem = item_amount($item[beehive]) == 0 && item_amount($item[Time-Spinner]) == 0;
-			boolean needStagger = (noStaggerItem || !have_skill($skill[Ambidextrous Funkslinging]));
-			if(needStagger && auto_bestWarPlan().do_arena)
+			boolean cantStagger = noStaggerItem || !have_skill($skill[Ambidextrous Funkslinging]);
+			if(cantStagger && !get_property("auto_ignoreFlyer").to_boolean() && auto_bestWarPlan().do_arena)
 			{
 				//buy Deft hands = first item throw in the fight staggers
 				visit_url("guild.php?action=buyskill&skillid=25", true);
