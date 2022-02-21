@@ -192,24 +192,35 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		boolean shouldFlyer = false;
 		boolean staggeringFlyer = false;
 		item flyerWith;
-		if(my_class() == $class[Disco Bandit] && auto_have_skill($skill[Deft Hands]) && !(get_property("_auto_combatState").contains_text("(it")))
+		if(my_class() == $class[Disco Bandit] && auto_have_skill($skill[Deft Hands]) && !combat_status_check("(it"))
 		{
 			//first item throw in the fight staggers
 			staggeringFlyer = true;
 		}
 		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
-			int beehiveDamage = ceil(30*combatItemDamageMultiplier()*MLDamageToMonsterMultiplier());
 			if (canUse($item[Time-Spinner]))
 			{
 				flyerWith = $item[Time-Spinner];
 				staggeringFlyer = true;
 			}
-			else if (canUse($item[beehive]) && 
-			!(monster_hp() <= beehiveDamage && my_class() == $class[Sauceror] && haveUsed($skill[Curse Of Weaksauce])))	//don't miss MP by killing weak monsters with beehive
+			else if (canUse($item[beehive]))
 			{
-				flyerWith = $item[beehive];
-				staggeringFlyer = true;
+				if(my_class() == $class[Sauceror] && haveUsed($skill[Curse Of Weaksauce]))
+				{
+					//don't miss MP by killing weak monsters with beehive
+					int beehiveDamage = ceil(30*combatItemDamageMultiplier()*MLDamageToMonsterMultiplier());
+					if(monster_hp() > beehiveDamage)
+					{
+						flyerWith = $item[beehive];
+						staggeringFlyer = true;
+					}
+				}
+				else
+				{
+					flyerWith = $item[beehive];
+					staggeringFlyer = true;
+				}
 			}
 		}
 		if(staggeringFlyer && (!stunnable(enemy) || monster_level_adjustment() > 150))
