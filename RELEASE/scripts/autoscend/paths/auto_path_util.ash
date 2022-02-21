@@ -185,12 +185,14 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 		{
 			visit_url("guild.php?action=buyskill&skillid=6", true);
 		}
-		if((my_level() >= 12) && (my_meat() >= 500) && !have_skill($skill[Deft Hands]) && get_property("sidequestArenaCompleted") == "none")	//safe flyering
+		if((my_level() >= 12) && (my_meat() >= 500) && !have_skill($skill[Deft Hands]) && get_property("sidequestArenaCompleted") == "none")
 		{
+			//safe flyering
 			boolean noStaggerItem = item_amount($item[beehive]) == 0 && item_amount($item[Time-Spinner]) == 0;
 			boolean needStagger = (noStaggerItem || !have_skill($skill[Ambidextrous Funkslinging]));
 			if(needStagger && auto_bestWarPlan().do_arena)
 			{
+				//buy Deft hands = first item throw in the fight staggers
 				visit_url("guild.php?action=buyskill&skillid=25", true);
 			}
 		}
