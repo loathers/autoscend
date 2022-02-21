@@ -1015,7 +1015,7 @@ void gremlinsFamiliar()
 		strip_familiar = false;
 
 		//there is a limited list of harmful familiar equipment to forbid
-		foreach fameq in $items[tiny bowler,ant hoe,ant pick,ant pitchfork,ant rake,ant sickle,plastic pumpkin bucket,little box of fireworks]
+		foreach fameq in $items[tiny bowler,ant hoe,ant pick,ant pitchfork,ant rake,ant sickle,oversized fish scaler,filthy child leash,plastic pumpkin bucket,little box of fireworks,moveable feast]
 		{
 			if(possessEquipment(fameq))
 			{
