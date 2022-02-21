@@ -94,7 +94,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	boolean staggeringFlyer = false;
 	item flyerWith;
 	
-	if(my_class() == $class[Disco Bandit] && auto_have_skill($skill[Deft Hands]) && !(get_property("_auto_combatState").contains_text("(it")))
+	if(my_class() == $class[Disco Bandit] && auto_have_skill($skill[Deft Hands]) && !combat_status_check("(it"))
 	{
 		//first item throw in the fight staggers
 		staggeringFlyer = true;
@@ -145,7 +145,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 			}
 		}
 	}
-	else if (canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
+	else if (canUse(flyer) && get_property("flyeredML").to_int() < 10000 && !get_property("auto_ignoreFlyer").to_boolean())
 	{
 		if(!staggeringFlyer && stunner != $skill[none] && !stunned)
 		{
