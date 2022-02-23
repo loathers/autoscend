@@ -505,7 +505,36 @@ boolean auto_pre_adventure()
 		}
 		if(itemDrop < itemNeed._float)
 		{
-			auto_log_debug("We can't cap this drop bear!", "purple");
+			//if general item modifier isn't enough check specific item drop bonus
+			generic_t itemFoodNeed = zone_needItemFood(place);
+			generic_t itemBoozeNeed = zone_needItemBooze(place);
+			float itemDropFood = itemDrop + simValue("Food Drop");
+			float itemDropBooze = itemDrop + simValue("Booze Drop");
+			if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
+			{
+				auto_log_debug("Trying food drop supplements");
+				//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
+				addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
+				simMaximize();
+				itemDropFood = simValue("Item Drop") + simValue("Food Drop");
+			}
+			if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
+			{
+				auto_log_debug("Trying booze drop supplements");
+				addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
+				simMaximize();
+				itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
+				//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
+			}
+			if((itemFoodNeed._boolean && itemDropFood >= itemFoodNeed._float) ||
+			(itemBoozeNeed._boolean && itemDropBooze >= itemBoozeNeed._float))
+			{
+				//the needed item was Food/Booze and need has been met with specific bonus
+			}
+			else
+			{
+				auto_log_debug("We can't cap this drop bear!", "purple");
+			}
 		}
 	}
 
