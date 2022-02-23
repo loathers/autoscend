@@ -1774,7 +1774,7 @@ boolean canGenieCombat()
 	{
 		return false;
 	}
-	if(get_property("_genieFightsUsed").to_int() >= 3))
+	if(get_property("_genieFightsUsed").to_int() >= 3)
 	{
 		return false;  // max 3 fights per day
 	}
