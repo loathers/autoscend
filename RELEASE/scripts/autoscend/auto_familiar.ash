@@ -96,7 +96,6 @@ boolean isAttackFamiliar(familiar fam)
 	return false;
 }
 
-
 boolean pathHasFamiliar() 	// check for cases where the path bans traditional familiars.
 {
 	if(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_lta() || in_pokefam())
