@@ -1719,7 +1719,7 @@ float MLDamageToMonsterMultiplier()
 {
 	//Positive ML gives monsters damage resistance
 	//Negative ML increases the damage inflicted on monsters
-	float retval = 1 + 0.004*monster_level_adjustment();
+	float retval = 1 - 0.004*monster_level_adjustment();
 	if(retval < 0.5)
 	{
 		//damage resistance is capped at 50%
