@@ -91,7 +91,8 @@ void auto_ghost_prep(location place)
 		Saucestorm, saucegeyser,	//base classes
 		Storm of the Scarab,		//actually ed the undying
 		Boil,						//avatar of jarlsberg
-		Bilious Burst				//zombie slayer
+		Bilious Burst,				//zombie slayer
+		Heroic Belch				//avatar of boris
 		]
 	{
 		if(auto_have_skill(sk))
@@ -576,14 +577,6 @@ boolean auto_pre_adventure()
 	{
 		doML = true;
 		removeML = false;
-		purgeML = false;
-	}
-
-	// Item specific Conditions
-	if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
-	{
-		doML = false;
-		removeML = true;
 		purgeML = false;
 	}
 
