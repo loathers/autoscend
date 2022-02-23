@@ -1104,7 +1104,7 @@ boolean L13_towerNSTower()
 
 			if(!familiarEquipped)
 			{
-				foreach it in $items[tiny bowler,filthy child leash]
+				foreach it in $items[filthy child leash,tiny bowler]
 				{
 					if(autoEquip(it))
 					{
