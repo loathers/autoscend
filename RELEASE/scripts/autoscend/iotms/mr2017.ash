@@ -1765,21 +1765,22 @@ boolean makeGenieWish(effect eff)
 
 boolean canGenieCombat()
 {
-	if(item_amount($item[genie bottle]) == 0 && item_amount($item[pocket wish]) == 0 && !auto_is_valid($item[genie bottle]))
+	boolean haveBottle = item_amount($item[Genie Bottle]) > 0;
+	boolean bottleWishesLeft = get_property("_genieWishesUsed").to_int() < 3;
+	boolean canUseBottle = haveBottle && bottleWishesLeft && auto_is_valid($item[Genie Bottle]);
+	boolean havePocket = item_amount($item[pocket wish]) > 0;
+	boolean canUsePocket = havePocket && auto_is_valid($item[pocket wish]);
+	if(!canUseBottle && !canUsePocket)
 	{
 		return false;
 	}
-	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
+	if(get_property("_genieFightsUsed").to_int() >= 3))
 	{
-		return false;
-	}
-	if(get_property("_genieFightsUsed").to_int() >= 3)
-	{
-		return false;
+		return false;  // max 3 fights per day
 	}
 	if(my_adventures() == 0)
 	{
-		return false;
+		return false;  // cannot fight if no adv remaining
 	}
 	return true;
 }
