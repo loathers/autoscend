@@ -8,6 +8,8 @@ action	1	auto_debugging	boolean	Every time you run the script it will perform on
 action	2	auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
 action	3	auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.
 action	4	auto_newbieOverride	boolean	If true will override newbie block once then set itself to false. Newbie block is enabled used when you fight a crate (please report crate fighting) or when you spent too many adventures in a zone
+action	5	_auto_doneToday	boolean	If this and _auto_doneToday_confirm are true, script aborts after the next action and then perform bedtime actions.
+action	6	_auto_doneToday_confirm	boolean	See above.
 
 any	0	auto_skipNEPOverride	boolean	If true will not use the Neverending Party even if mafia says it is available.
 any	1	auto_skipGuzzlrCocktailSet	boolean	If true will not accept and abandon a Platinum Guzzlr quest for the cocktail set.

@@ -569,37 +569,44 @@ boolean doBedtime()
 
 	auto_process_kmail("auto_deleteMail");
 
-	if(my_adventures() > 4)
+	boolean out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
+	
+	if(! get_property("_auto_doneToday").to_boolean())
 	{
-		if(my_inebriety() <= inebriety_limit())
+		// we only care how many adv we have or how not-drunk we are if we're not going straight to bed
+		if(my_adventures() > 4)
 		{
-			if(!in_gnoob() && my_familiar() != $familiar[Stooper])
+			if(my_inebriety() <= inebriety_limit())
 			{
-				return false;
+				if(!in_gnoob() && my_familiar() != $familiar[Stooper])
+				{
+					return false;
+				}
 			}
 		}
-	}
-	boolean out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
-	if((fullness_left() > 0) && can_eat() && !out_of_blood)
-	{
-		return false;
-	}
-	if((inebriety_left() > 0) && can_drink() && !out_of_blood)
-	{
-		return false;
-	}
-	int spleenlimit = spleen_limit();
-	if(!canChangeFamiliar())
-	{
-		spleenlimit -= 3;
-	}
-	if(!haveSpleenFamiliar())
-	{
-		spleenlimit = 0;
-	}
-	if((my_spleen_use() < spleenlimit) && !in_hardcore() && (inebriety_left() > 0))
-	{
-		return false;
+
+		if((fullness_left() > 0) && can_eat() && !out_of_blood)
+		{
+			return false;
+		}
+		if((inebriety_left() > 0) && can_drink() && !out_of_blood)
+		{
+			return false;
+		}
+
+		int spleenlimit = spleen_limit();
+		if(!canChangeFamiliar())
+		{
+			spleenlimit -= 3;
+		}
+		if(!haveSpleenFamiliar())
+		{
+			spleenlimit = 0;
+		}
+		if((my_spleen_use() < spleenlimit) && !in_hardcore() && (inebriety_left() > 0))
+		{
+			return false;
+		}
 	}
 
 	ed_terminateSession();
