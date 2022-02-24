@@ -1381,8 +1381,8 @@ boolean cloverUsageInit()
 	//use a clover if we have one in inventory or closet
 	if(item_amount($item[11-Leaf Clover]) < 1)
 	{
-		//try to get one out of closet
-		retrieve_item(1, $item[11-Leaf Clover]);	
+		//try to get one out of closet, catch to avoid an error being thrown
+		catch retrieve_item(1, $item[11-Leaf Clover]);	
 	}
 	if(item_amount($item[11-Leaf Clover]) > 0)
 	{
@@ -1408,7 +1408,7 @@ boolean cloverUsageInit()
 		}
 		if(item_amount($item[[10883]Astral Energy Drink]) > 0)
 		{
-			use(1, $item[[10883]Astral Energy Drink]);
+			chew(1, $item[[10883]Astral Energy Drink]);
 			if(have_effect($effect[Lucky!]) > 0)
 			{
 				auto_log_info("Clover usage initialized");
