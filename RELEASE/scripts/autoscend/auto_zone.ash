@@ -90,7 +90,10 @@ generic_t zone_needItem(location loc)
 		value = 10.0;
 		break;
 	case $location[The Oasis]:
-		value = 30.0;
+		if(have_effect($effect[Ultrahydrated]) > 0)
+		{
+			value = 30.0;
+		}
 		break;
 	case $location[The Middle Chamber]:
 		value = 20.0;
