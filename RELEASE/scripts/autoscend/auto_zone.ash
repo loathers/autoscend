@@ -195,7 +195,21 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The Goatlet]:
-		value = 40.0;
+		boolean getMilk = (have_skill($skill[Advanced Saucecrafting]) || (my_class() == $class[Sauceror] && (guild_available() || !get_property('auto_skipUnlockGuild').to_boolean()))) && fullness_limit() != 0;
+		int milksPerMilk = (my_class() == $class[Sauceror]) ? 3 : 1;
+		int milkUsed = (get_property("_milkOfMagnesiumUsed").to_boolean() || fullness_left() == 0) ? 1 : 0;
+		if((item_amount($item[Milk Of Magnesium]) + milksPerMilk * item_amount($item[Glass Of Goat\'s Milk]) + milkUsed) >= 3)
+		{	
+			getMilk = false;
+		}
+		if(getMilk)
+		{
+			value = 20.0;
+		}
+		else
+		{
+			value = 40.0;
+		}
 		break;
 	case $location[The Extreme Slope]:
 		if(!possessOutfit("eXtreme Cold-Weather Gear"))
@@ -319,6 +333,116 @@ generic_t zone_needItem(location loc)
 		retval._float = 50.0;
 		break;
 	// End Bugbear Invasion Locations
+	default:
+		retval._error = true;
+		break;
+	}
+
+	if(expectGhostReport() && (loc == get_property("ghostLocation").to_location()) && (get_property("questPAGhost") == "started"))
+	{
+		value = 0.0;
+	}
+
+
+	if(value != 0.0)
+	{
+		retval._boolean = true;
+		retval._float = 10000.0/value;
+
+		if(in_lar())
+		{
+			retval._float = 5000.0/value;
+		}
+		retval._float -= 100.0;
+	}
+	return retval;
+}
+
+generic_t zone_needItemBooze(location loc)
+{
+	// these matching a location case in zone_needItem will be called if the general item bonus could not be reached
+	generic_t retval;
+	float value = 0.0;
+	switch(loc)
+	{
+	case $location[The Haunted Wine Cellar]:
+		value = 5.0 * (1.0 + get_property("auto_wineracksencountered").to_float());
+		break;
+	default:
+		retval._error = true;
+		break;
+	}
+
+	if(expectGhostReport() && (loc == get_property("ghostLocation").to_location()) && (get_property("questPAGhost") == "started"))
+	{
+		value = 0.0;
+	}
+
+
+	if(value != 0.0)
+	{
+		retval._boolean = true;
+		retval._float = 10000.0/value;
+
+		if(in_lar())
+		{
+			retval._float = 5000.0/value;
+		}
+		retval._float -= 100.0;
+	}
+	return retval;
+}
+
+generic_t zone_needItemFood(location loc)
+{
+	// these matching a location case in zone_needItem will be called if the general item bonus could not be reached
+	generic_t retval;
+	float value = 0.0;
+	switch(loc)
+	{
+	case $location[The Haunted Laundry Room]:
+		value = 5.0 * (1.0 + get_property("auto_cabinetsencountered").to_float());
+		break;
+	case $location[Inside the Palindome]:
+		if (item_amount($item[Stunt Nuts]) == 0 && item_amount($item[Wet Stunt Nut Stew]) == 0) {
+			value = 30.0;
+		}
+		break;
+	case $location[Whitey\'s Grove]:
+		if(((item_amount($item[Lion Oil]) == 0) || (item_amount($item[Bird Rib]) == 0)) && (item_amount($item[Wet Stew]) == 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0) && (internalQuestStatus("questL11Palindome") < 5))
+		{
+			value = 25.0;
+		}
+		break;
+	case $location[The Goatlet]:
+		boolean getMilk = (have_skill($skill[Advanced Saucecrafting]) || (my_class() == $class[Sauceror] && (guild_available() || !get_property('auto_skipUnlockGuild').to_boolean()))) && fullness_limit() != 0;
+		int milksPerMilk = (my_class() == $class[Sauceror]) ? 3 : 1;
+		int milkUsed = (get_property("_milkOfMagnesiumUsed").to_boolean() || fullness_left() == 0) ? 1 : 0;
+		if((item_amount($item[Milk Of Magnesium]) + milksPerMilk * item_amount($item[Glass Of Goat\'s Milk]) + milkUsed) >= 3)
+		{	
+			getMilk = false;
+		}
+		if(getMilk)
+		{
+			value = 20.0;
+		}
+		else
+		{
+			value = 40.0;
+		}
+		break;
+	case $location[The Haunted Pantry]:
+		if(in_community() && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
+		{
+			retval._float = 59.4;
+		}
+		break;
+	case $location[The Skeleton Store]:
+		if(in_community() && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
+		{	//No idea, should spade this for great justice.
+			retval._float = 33.0;
+		}
+		break;
 	default:
 		retval._error = true;
 		break;

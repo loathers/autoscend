@@ -2396,7 +2396,9 @@ boolean L11_shenCopperhead()
 			auto_changeSnapperPhylum($phylum[dude]);
 		}
 
+		// monster level increases zone damage
 		addToMaximize("-10ml");
+		uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
 		if (autoAdv($location[The Copperhead Club]))
 		{
 			if (get_property("lastEncounter").contains_text("Shen Copperhead, "))
