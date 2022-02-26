@@ -472,7 +472,7 @@ boolean auto_buyFireworksHat()
 		return false;
 	}
 
-	if(get_property("_fireworksShopHatBought"))
+	if(get_property("_fireworksShopHatBought").to_boolean())
 	{
 		return false;
 	}
@@ -485,15 +485,15 @@ boolean auto_buyFireworksHat()
 
 	// noncombat is most valuable hat
 	float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
-	if(simNonCombat < (float) 25.0)
+	if(simNonCombat < 25.0)
 	{
 		retrieve_item(1, $item[porkpie-mounted popper]);
 		return true;
 	}
 
 	// +combat hat is second most usefull
-	float simComabt = providePlusCombat(25, $location[noob cave], true, true);
-	if(simCombat < (float) 25.0)
+	float simCombat = providePlusCombat(25, $location[noob cave], true, true);
+	if(simCombat < 25.0)
 	{
 		retrieve_item(1, $item[sombrero-mounted sparkler]);
 		return true;
