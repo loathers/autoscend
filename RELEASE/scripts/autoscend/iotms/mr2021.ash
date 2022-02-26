@@ -465,6 +465,45 @@ boolean have_fireworks_shop()
 	return get_property("_fireworksShop").to_boolean();
 }
 
+boolean auto_buyFireworksHat()
+{
+	if(!have_fireworks_shop())
+	{
+		return false;
+	}
+
+	if(get_property("_fireworksShopHatBought"))
+	{
+		return false;
+	}
+
+	if(my_meat() < npc_price($item[porkpie-mounted popper]) + meatReserve())
+	{
+		auto_log_info("Want to buy a hat from the fireworks shop, but don't have enough meat. Will try again later.");
+		return false;
+	}
+
+	// noncombat is most valuable hat
+	float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
+	if(simNonCombat < (float) 25.0)
+	{
+		retrieve_item(1, $item[porkpie-mounted popper]);
+		return true;
+	}
+
+	// +combat hat is second most usefull
+	float simComabt = providePlusCombat(25, $location[noob cave], true, true);
+	if(simCombat < (float) 25.0)
+	{
+		retrieve_item(1, $item[sombrero-mounted sparkler]);
+		return true;
+	}
+
+	// buy ML hat if have enough -com and +com
+	retrieve_item(1, $item[fedora-mounted fountain]);
+	return true;
+}
+
 boolean auto_haveFireExtinguisher()
 {
 	return possessEquipment($item[industrial fire extinguisher]) && auto_is_valid($item[industrial fire extinguisher]);

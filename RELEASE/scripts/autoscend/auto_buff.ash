@@ -99,7 +99,16 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		if(historical_price(source) < 2000)
 		{
-			buy(uses - item_amount(source), source, 1000);
+			if(!speculative)
+			{
+				buy(uses - item_amount(source), source, 1000);
+			}
+			else
+			{
+				//if speculating, assume buy works
+				return true;
+			}
+			
 		}
 	}
 	if(item_amount(source) < uses)
