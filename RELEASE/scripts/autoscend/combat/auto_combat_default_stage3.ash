@@ -250,30 +250,127 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < 30)
 		{
+			boolean coldMortarShell = canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0;
+			skill coldSkillToUse;
 			// Listed from Most to Least Damaging to hopefully cause Death on the turn when the Shell hits.
-			if(canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0)
+			if(canUse($skill[Saucegeyser], false))
 			{
-				return useSkill($skill[Stuffed Mortar Shell]);
-			}
-			else if(canUse($skill[Saucegeyser], false))
-			{
-				return useSkill($skill[Saucegeyser], false);
+				coldSkillToUse = $skill[Saucegeyser];
 			}
 			else if(canUse($skill[Saucecicle], false))
 			{
-				return useSkill($skill[Saucecicle], false);
+				coldSkillToUse = $skill[Saucecicle];
 			}
 			else if(canUse($skill[Cannelloni Cannon], false) && have_effect($effect[Spirit of Peppermint]) != 0)
 			{
-				return useSkill($skill[Cannelloni Cannon], false);
+				coldSkillToUse = $skill[Cannelloni Cannon];
 			}
 			else if(canUse($skill[Northern Explosion], false))
 			{
-				return useSkill($skill[Northern Explosion], false);
+				coldSkillToUse = $skill[Northern Explosion];
+			}
+			
+			int MPreservedForColdSpells = coldMortarShell ? mp_cost($skill[Stuffed Mortar Shell]) : 0;
+			if(coldSkillToUse != $skill[none])	MPreservedForColdSpells += mp_cost(coldSkillToUse);
+			
+			// Mating Call has unlimited uses and a small effect so unlike other sniff skills there is no reason not to use it here to balance bridge parts except MP cost
+			if(canUse($skill[Gallapagosian Mating Call], false) && my_mp() >= (MPreservedForColdSpells + mp_cost($skill[Gallapagosian Mating Call])))
+			{
+				boolean useMiniSniff = false;
+				boolean sniffedLumber = (isSniffed($monster[Smut Orc Pipelayer]) || isSniffed($monster[Smut Orc Jacker]));
+				boolean sniffedFastener = (isSniffed($monster[Smut Orc Screwer]) || isSniffed($monster[Smut Orc Nailer]));
+				boolean haveLumberBias = (equipped_amount($item[Logging Hatchet]) > 0 && equipped_amount($item[Loadstone]) == 0);
+				boolean haveFastenerBias = (equipped_amount($item[Loadstone]) > 0 && equipped_amount($item[Logging Hatchet]) == 0);
+				
+				if(enemy == $monster[Smut Orc Pipelayer] || enemy == $monster[Smut Orc Jacker])
+				{
+					if(!sniffedLumber)
+					{
+						if(fastenerCount() >= 30 && lumberCount() < 29)
+						{	useMiniSniff = true;
+						}
+						else if(haveFastenerBias && fastenerCount() >= lumberCount())
+						{	useMiniSniff = true;	//will get more fastener from Loadstone
+						}
+						else if(fastenerCount() > (lumberCount() + 2))
+						{	useMiniSniff = true;	//have more fastener, try to make up for it
+						}
+						else if(sniffedFastener && !haveLumberBias && fastenerCount() > lumberCount())
+						{	useMiniSniff = true;	//may have sniffed fastener too hard
+						}
+					}
+				}
+				else if(enemy == $monster[Smut Orc Screwer] || enemy == $monster[Smut Orc Nailer])
+				{
+					if(!sniffedFastener)
+					{
+						if(lumberCount() >= 30 && fastenerCount() < 29)
+						{	useMiniSniff = true;
+						}
+						else if(haveLumberBias && lumberCount() >= fastenerCount())
+						{	useMiniSniff = true;	//will get more lumber from Logging Hatchet
+						}
+						else if(lumberCount() > (fastenerCount() + 2))
+						{	useMiniSniff = true;	//have more lumber, try to make up for it
+						}
+						else if(sniffedLumber && !haveFastenerBias && lumberCount() > fastenerCount())
+						{	useMiniSniff = true;	//may have sniffed lumber too hard
+						}
+					}
+				}
+				if(useMiniSniff)
+				{
+					handleTracker(enemy, $skill[Gallapagosian Mating Call], "auto_sniffs");
+					return useSkill($skill[Gallapagosian Mating Call], false);
+				}
+			}
+			
+			if(coldMortarShell)
+			{
+				return useSkill($skill[Stuffed Mortar Shell]);
+			}
+			else if(coldSkillToUse != $skill[none])
+			{
+				return useSkill(coldSkillToUse, false);
 			}
 			else if(!in_robot() && $classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class())
 			{
-				auto_log_warning("None of our preferred [cold] skills available against smut orcs. Engaging in Fisticuffs.", "red");
+				if(numeric_modifier("cold damage") > (69 + monster_level_adjustment()))
+				{
+					//if cold damage bonus > their health make sure an attack that uses elemental bonus gets to be used
+					if(my_class() == $class[Seal Clubber])
+					{
+						if(canUse($skill[Lunging Thrust-Smack], false))
+						{
+							return useSkill($skill[Lunging Thrust-Smack], false);	//triple elemental bonus
+						}
+						else if(canUse($skill[Thrust-Smack], false))
+						{
+							return useSkill($skill[Thrust-Smack], false);	//double elemental bonus
+						}
+						else if(canUse($skill[Lunge Smack], false))
+						{
+							return useSkill($skill[Lunge Smack], false);
+						}
+						else
+						{
+							return "attack with weapon";
+						}
+					}
+					else
+					{
+						return "attack with weapon";
+					}
+				}
+				else if(monster_level_adjustment() <= -25 && canUse($skill[Saucestorm], false))		//todo check predicted damage instead of arbitrary values
+				{
+					auto_log_warning("None of the best [cold] skills available against smut orcs but trying weaker alternative in view of the negative monster level.", "red");
+					return useSkill($skill[Saucestorm], false);
+				}
+				else
+				{
+					auto_log_warning("None of our preferred [cold] skills available against smut orcs. Engaging in Fisticuffs.", "red");
+				}
 			}
 		}
 
