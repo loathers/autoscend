@@ -176,8 +176,11 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		boolean[location] zones_to_avoid;
 		if (my_level() < 11)
 		{
-
-			for (int day=0; day<3; day++)
+			//if it's day 1, don't count this day's snakes since it's leaving it until day 2
+			int fromThisDay = (my_daycount() == 1) ? 1 : 0;
+			//if level 10, assume shen today or tomorrow, otherwise up to two days from now
+			int beforeThatDay = (my_level() >= 10) ? 2 : 3;
+			for (int day=fromThisDay; day<beforeThatDay; day++)
 			{
 				foreach z, _ in shenSnakeLocations(day+my_daycount(), 0)
 				{
