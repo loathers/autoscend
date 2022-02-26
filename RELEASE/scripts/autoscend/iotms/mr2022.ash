@@ -88,7 +88,7 @@ int auto_CombatLoversLocketCharges()
 boolean haveReminiscedMonster(monster mon)
 {
 	string[int] idList = split_string(get_property("_locketMonstersFought"),",");
-	foreach id in idList
+	foreach index, id in idList
 	{
 		if(to_monster(id) == mon)
 		{
@@ -100,7 +100,7 @@ boolean haveReminiscedMonster(monster mon)
 
 boolean fightLocketMonster(monster mon)
 {
-	if(auto_CombatLoversLocketCharges < 1)
+	if(auto_CombatLoversLocketCharges() < 1)
 	{
 		return false;
 	}
