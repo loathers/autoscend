@@ -938,10 +938,13 @@ void initializeDay(int day)
 
 	set_property("auto_forceNonCombatSource", "");
 
-	// Until KoL fix the utterly stupid bug that requires a manual visit to the fireworks shop
-	// before you can even buy anything from it, we will have to do this.
-	// Why is this so hard? Also why is this even a Clan VIP room item? It's just a shop which charges meat.
-	visit_url("clan_viplounge.php?action=fwshop");
+	if(have_fireworks_shop())
+	{
+		// Until KoL fix the utterly stupid bug that requires a manual visit to the fireworks shop
+		// before you can even buy anything from it, we will have to do this.
+		// Why is this so hard? Also why is this even a Clan VIP room item? It's just a shop which charges meat.
+		visit_url("clan_viplounge.php?action=fwshop");
+	}
 
 	set_property("auto_day_init", day);
 }
