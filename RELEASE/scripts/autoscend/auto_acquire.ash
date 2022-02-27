@@ -762,7 +762,10 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[snow suit], 1, 0);
 			}
-			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Filthy Child Leash]))
+			boolean famStatEq = possessEquipment($item[fuzzy polar bear ears]) || possessEquipment($item[miniature goose mask]) || possessEquipment($item[tiny glowing red nose]);
+			
+			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) &&
+			!famStatEq && glover_usable($item[Filthy Child Leash]))
 			{
 				pullXWhenHaveY($item[Filthy Child Leash], 1, 0);
 			}
