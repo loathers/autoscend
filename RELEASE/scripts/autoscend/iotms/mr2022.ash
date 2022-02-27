@@ -85,7 +85,7 @@ int auto_CombatLoversLocketCharges()
 	return 3 - count(split_string(locketMonstersFought, ","));
 }
 
-boolean haveReminiscedMonster(monster mon)
+boolean auto_haveReminiscedMonster(monster mon)
 {
 	string[int] idList = split_string(get_property("_locketMonstersFought"),",");
 	foreach index, id in idList
@@ -98,21 +98,38 @@ boolean haveReminiscedMonster(monster mon)
 	return false;
 }
 
-boolean fightLocketMonster(monster mon)
+boolean auto_monsterInLocket(monster mon)
+{
+	boolean[monster] captured = get_locket_monsters();
+	return captured contains mon;
+}
+
+boolean auto_fightLocketMonster(monster mon)
 {
 	if(auto_CombatLoversLocketCharges() < 1)
 	{
 		return false;
 	}
 
-	if(haveReminiscedMonster(mon))
+	if(!auto_monsterInLocket())
 	{
 		return false;
 	}
 
-	//cli_execute("reminisce " + mon.name);
+	if(auto_haveReminiscedMonster(mon))
+	{
+		return false;
+	}
 
-	if(!haveReminiscedMonster(mon))
+	string[int] pages;
+	pages[0] = "inventory.php?reminisce=1";
+	pages[1] = "choice.php?whichchoice=1463&pwd&option=1&mid=" + mon.id;
+	if(autoAdvBypass(1, pages, $location[Noob Cave], ""))
+	{
+		handleTracker(mon, $item[combat lover\'s locket], "auto_copies");
+	}
+
+	if(!auto_haveReminiscedMonster(mon))
 	{
 		auto_log_error("Attempted to fight " + mon.name + " by reminiscing with Combat Lover's Locket, but failed.");
 		return false;
