@@ -91,7 +91,8 @@ void auto_ghost_prep(location place)
 		Saucestorm, saucegeyser,	//base classes
 		Storm of the Scarab,		//actually ed the undying
 		Boil,						//avatar of jarlsberg
-		Bilious Burst				//zombie slayer
+		Bilious Burst,				//zombie slayer
+		Heroic Belch				//avatar of boris
 		]
 	{
 		if(auto_have_skill(sk))
@@ -277,8 +278,9 @@ boolean auto_pre_adventure()
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
+	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !burningDelay && !auto_haveQueuedForcedNonCombat()) {
+	if (combatModifier._boolean && !burningDelay && !gettingLucky && !auto_haveQueuedForcedNonCombat()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
@@ -504,7 +506,36 @@ boolean auto_pre_adventure()
 		}
 		if(itemDrop < itemNeed._float)
 		{
-			auto_log_debug("We can't cap this drop bear!", "purple");
+			//if general item modifier isn't enough check specific item drop bonus
+			generic_t itemFoodNeed = zone_needItemFood(place);
+			generic_t itemBoozeNeed = zone_needItemBooze(place);
+			float itemDropFood = itemDrop + simValue("Food Drop");
+			float itemDropBooze = itemDrop + simValue("Booze Drop");
+			if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
+			{
+				auto_log_debug("Trying food drop supplements");
+				//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
+				addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
+				simMaximize();
+				itemDropFood = simValue("Item Drop") + simValue("Food Drop");
+			}
+			if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
+			{
+				auto_log_debug("Trying booze drop supplements");
+				addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
+				simMaximize();
+				itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
+				//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
+			}
+			if((itemFoodNeed._boolean && itemDropFood >= itemFoodNeed._float) ||
+			(itemBoozeNeed._boolean && itemDropBooze >= itemBoozeNeed._float))
+			{
+				//the needed item was Food/Booze and need has been met with specific bonus
+			}
+			else
+			{
+				auto_log_debug("We can't cap this drop bear!", "purple");
+			}
 		}
 	}
 
@@ -549,13 +580,14 @@ boolean auto_pre_adventure()
 		purgeML = false;
 	}
 
-	// Item specific Conditions
-	if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
+	// Backup Camera copies have double ML applied. Reduce ML to avoid getting beaten up
+	if(auto_backupTarget())
 	{
 		doML = false;
 		removeML = true;
 		purgeML = false;
 	}
+	
 	// Gremlins specific. need to let them hit so avoid ML unless defense is very high
 	if(junkyardML && my_buffedstat($stat[moxie]) < (2*monster_attack($monster[erudite gremlin])))
 	{
