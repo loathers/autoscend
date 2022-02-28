@@ -111,7 +111,7 @@ boolean auto_fightLocketMonster(monster mon)
 		return false;
 	}
 
-	if(!auto_monsterInLocket())
+	if(!auto_monsterInLocket(mon))
 	{
 		return false;
 	}
