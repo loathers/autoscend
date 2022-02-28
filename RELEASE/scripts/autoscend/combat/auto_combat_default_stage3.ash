@@ -252,6 +252,20 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		{
 			boolean coldMortarShell = canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0;
 			skill coldSkillToUse;
+			int coldAttackDamageMultiplier = 1;
+			if(my_class() == $class[Seal Clubber])
+			{
+				if(canUse($skill[Lunging Thrust-Smack], false))
+				{
+					coldAttackDamageMultiplier = 3;	//triple elemental bonus
+				}
+				else if(canUse($skill[Thrust-Smack], false))
+				{
+					coldAttackDamageMultiplier = 2;	//double elemental bonus
+				}
+			}
+			int coldAttackDamage = numeric_modifier("cold damage")*coldAttackDamageMultiplier;	//todo add ML damage multiplier
+			
 			// Listed from Most to Least Damaging to hopefully cause Death on the turn when the Shell hits.
 			if(canUse($skill[Saucegeyser], false) && numeric_modifier("Cold Spell Damage") > numeric_modifier("Hot Spell Damage"))
 			{
@@ -269,6 +283,33 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			else if(canUse($skill[Northern Explosion], false))
 			{
 				coldSkillToUse = $skill[Northern Explosion];
+			}
+			else if(monster_level_adjustment() < -65 && canUse($skill[Saucestorm], false))
+			{
+				//in extreme case where orcs are reduced to few HP by -ML Saucestorm is better than 50% chance of cold Saucegeyser
+				//todo compare actual damage predictions instead
+				coldSkillToUse = $skill[Saucestorm];
+			}
+			else if(coldAttackDamage > 3*max(1,(69 + monster_level_adjustment())))
+			{
+				//cold bonus weapon attack can also be better than 50% chance of cold Saucegeyser
+				//todo compare actual damage predictions instead
+				if(my_class() == $class[Seal Clubber])
+				{
+					if(canUse($skill[Lunging Thrust-Smack], false))
+					{
+						coldSkillToUse = $skill[Lunging Thrust-Smack];	//triple elemental bonus
+					}
+					else if(canUse($skill[Thrust-Smack], false))
+					{
+						coldSkillToUse = $skill[Thrust-Smack];	//double elemental bonus
+					}
+					else if(canUse($skill[Lunge Smack], false))
+					{
+						coldSkillToUse = $skill[Lunge Smack];
+					}
+				}
+				//other classes default to regular attack later
 			}
 			else if(canUse($skill[Saucegeyser], false) && numeric_modifier("Cold Spell Damage") == numeric_modifier("Hot Spell Damage"))
 			{
@@ -341,7 +382,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			}
 			else if(!in_robot() && $classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class())
 			{
-				if(numeric_modifier("cold damage") > (69 + monster_level_adjustment()))
+				if(coldAttackDamage > (69 + monster_level_adjustment()) && coldAttackDamage > 0)
 				{
 					//if cold damage bonus > their health make sure an attack that uses elemental bonus gets to be used
 					if(my_class() == $class[Seal Clubber])
