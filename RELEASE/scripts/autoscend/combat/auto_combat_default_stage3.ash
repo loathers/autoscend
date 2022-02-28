@@ -253,8 +253,9 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			boolean coldMortarShell = canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0;
 			skill coldSkillToUse;
 			// Listed from Most to Least Damaging to hopefully cause Death on the turn when the Shell hits.
-			if(canUse($skill[Saucegeyser], false))
+			if(canUse($skill[Saucegeyser], false) && numeric_modifier("Cold Spell Damage") > numeric_modifier("Hot Spell Damage"))
 			{
+				//100% chance of cold Saucegeyser
 				coldSkillToUse = $skill[Saucegeyser];
 			}
 			else if(canUse($skill[Saucecicle], false))
@@ -268,6 +269,11 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			else if(canUse($skill[Northern Explosion], false))
 			{
 				coldSkillToUse = $skill[Northern Explosion];
+			}
+			else if(canUse($skill[Saucegeyser], false) && numeric_modifier("Cold Spell Damage") == numeric_modifier("Hot Spell Damage"))
+			{
+				//equal is 50% chance of cold Saucegeyser. "cold > hot" is used higher in priority. "cold < hot" is 100% hot Saucegeyser and not worth using
+				coldSkillToUse = $skill[Saucegeyser];
 			}
 			
 			int MPreservedForColdSpells = coldMortarShell ? mp_cost($skill[Stuffed Mortar Shell]) : 0;
