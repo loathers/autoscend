@@ -981,8 +981,6 @@ boolean L12_orchardFinalize()
 void gremlinsFamiliar()
 {
 	//when fighting gremlins we want to minimize the familiar ability to cause damage.
-	//maximizer will try to force an equip into familiar slot. So disable maximizer switching of familiar equipment
-	addToMaximize("-familiar");
 	
 	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 	boolean strip_familiar = true;
@@ -1000,11 +998,34 @@ void gremlinsFamiliar()
 		{
 			equip($slot[familiar], $item[little bitty bathysphere]);
 			strip_familiar = false;
+			//disable maximizer switching of familiar equipment
+			addToMaximize("-familiar");
+		}
+	}
+	else if(lookupFamiliarDatafile("gremlins") == $familiar[none])	//none of the desired familiars available
+	{
+		//don't know what familiar will be chosen or what its own equipment does
+		strip_familiar = true;
+		//maximizer will try to force an equip into familiar slot. So disable maximizer switching of familiar equipment
+		addToMaximize("-familiar");
+	}
+	else
+	{
+		//desired familiars will be available. their own equipment or generic weight boosting familiar equipment is beneficial
+		strip_familiar = false;
+
+		//there is a limited list of harmful familiar equipment to forbid
+		foreach fameq in $items[tiny bowler,ant hoe,ant pick,ant pitchfork,ant rake,ant sickle,oversized fish scaler,filthy child leash,plastic pumpkin bucket,little box of fireworks,moveable feast]
+		{
+			if(possessEquipment(fameq))
+			{
+				addToMaximize("-equip " + fameq.to_string());
+			}
 		}
 	}
 	if(strip_familiar)
 	{
-		equip($slot[familiar], $item[none]);	//strip familiar equipment if not in 100% run to avoid passive dmg
+		equip($slot[familiar], $item[none]);	//strip familiar equipment to avoid passive dmg
 	}
 }
 
@@ -1019,6 +1040,10 @@ boolean L12_gremlins()
 		return false;
 	}
 	if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 192))
+	{
+		return false;
+	}
+	if(auto_warEnemiesRemaining() == 0)
 	{
 		return false;
 	}
@@ -1140,6 +1165,10 @@ boolean L12_sonofaBeach()
 		{
 			return false;
 		}
+	}
+	if(auto_warEnemiesRemaining() == 0)
+	{
+		return false;
 	}
 	if((get_property("fratboysDefeated").to_int() < 64) && get_property("auto_hippyInstead").to_boolean())
 	{
@@ -1529,6 +1558,11 @@ boolean L12_themtharHills()
 	{
 		return false;
 	}
+	
+	if(auto_warEnemiesRemaining() == 0)
+	{
+		return false;
+	}
 
 	if(in_tcrs() || in_koe() || in_wotsf())
 	{
@@ -1838,6 +1872,10 @@ boolean L12_farm()
 	if(get_property("sidequestFarmCompleted") != "none")
 	{
 		set_property("auto_skipL12Farm", "true");
+		return false;
+	}
+	if(auto_warEnemiesRemaining() == 0 && get_property("auto_L12FarmStage").to_int() < 4)
+	{
 		return false;
 	}
 	if(internalQuestStatus("questL12War") != 1)

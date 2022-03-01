@@ -159,7 +159,7 @@ boolean auto_backupTarget()
 			//backup tentacles if power leveling or use all remaining charges if at end of day
 			if(isAboutToPowerlevel() && auto_backupUsesLeft() > 5)
 				return true;
-			if (my_adventures() == (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
+			if (my_adventures() <= (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
 				return true;
 			break;
 		default: break;
