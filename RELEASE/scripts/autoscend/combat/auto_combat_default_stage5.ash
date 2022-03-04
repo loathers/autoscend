@@ -302,6 +302,15 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		break;
 
 	case $class[Avatar of Boris]:
+		// If we're fighting a ghost, of course we want to use elemental damage!
+		if(canUse($skill[Heroic Belch], false) && (enemy.physical_resistance >= 80) && $element[stench] != monster_element(enemy))
+		{
+			attackMinor = useSkill($skill[Heroic Belch]);
+			attackMajor = useSkill($skill[Heroic Belch]);
+			costMinor = mp_cost($skill[Heroic Belch]);
+			costMajor = mp_cost($skill[Heroic Belch]);
+		}
+
 		// Mighty axing is better than attacking as it will never fumble and has no mp cost
 		if(canUse($skill[Mighty Axing], false))
 		{
