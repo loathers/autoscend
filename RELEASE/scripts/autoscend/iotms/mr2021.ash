@@ -467,6 +467,12 @@ boolean have_fireworks_shop()
 
 boolean auto_buyFireworksHat()
 {
+	// equipment doesn't give buffs in these paths
+	if(in_gnoob() || in_tcrs())
+	{
+		return false;
+	}
+
 	if(!have_fireworks_shop())
 	{
 		return false;
@@ -484,24 +490,39 @@ boolean auto_buyFireworksHat()
 	}
 
 	// noncombat is most valuable hat
-	float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
-	if(simNonCombat < 25.0)
+	if(auto_can_equip($item[porkpie-mounted popper]))
 	{
-		retrieve_item(1, $item[porkpie-mounted popper]);
-		return true;
+		float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
+		if(simNonCombat < 25.0)
+		{
+			retrieve_item(1, $item[porkpie-mounted popper]);
+			return true;
+		}
 	}
 
 	// +combat hat is second most usefull
-	float simCombat = providePlusCombat(25, $location[noob cave], true, true);
-	if(simCombat < 25.0)
+	if(auto_can_equip($item[sombrero-mounted sparkler]))
 	{
-		retrieve_item(1, $item[sombrero-mounted sparkler]);
-		return true;
+		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
+		if(simCombat < 25.0)
+		{
+			retrieve_item(1, $item[sombrero-mounted sparkler]);
+			return true;
+		}
 	}
 
-	// buy ML hat if have enough -com and +com
-	retrieve_item(1, $item[fedora-mounted fountain]);
-	return true;
+	// ML hat is least usefull
+	// todo: add functionality to simulate acquiring ML instead of just looking at current ML
+	if(auto_can_equip($item[fedora-mounted fountain]))
+	{
+		if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int())
+		{
+			retrieve_item(1, $item[fedora-mounted fountain]);
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 boolean auto_haveFireExtinguisher()
