@@ -122,9 +122,9 @@ void L9_chasmMaximizeForNoncombat()
 int fastenerCount()
 {
 	int base = get_property("chasmBridgeProgress").to_int();
-	base = base + item_amount($item[Morningwood Plank]);
-	base = base + item_amount($item[Raging Hardwood Plank]);
-	base = base + item_amount($item[Weirdwood Plank]);
+	base = base + item_amount($item[Thick Caulk]);
+	base = base + item_amount($item[Long Hard Screw]);
+	base = base + item_amount($item[Messy Butt Joint]);
 
 	return base;
 }
@@ -132,9 +132,9 @@ int fastenerCount()
 int lumberCount()
 {
 	int base = get_property("chasmBridgeProgress").to_int();
-	base = base + item_amount($item[Thick Caulk]);
-	base = base + item_amount($item[Long Hard Screw]);
-	base = base + item_amount($item[Messy Butt Joint]);
+	base = base + item_amount($item[Morningwood Plank]);
+	base = base + item_amount($item[Raging Hardwood Plank]);
+	base = base + item_amount($item[Weirdwood Plank]);
 
 	return base;
 }
@@ -259,9 +259,13 @@ boolean L9_chasmBuild()
 			}
 		}
 
-		foreach it in $items[Loadstone, Logging Hatchet]
+		if(fastenerCount() < 30)
 		{
-			autoEquip(it);
+			autoEquip($item[Loadstone]);
+		}
+		if(lumberCount() < 30)
+		{
+			autoEquip($item[Logging Hatchet]);
 		}
 
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
@@ -294,9 +298,13 @@ boolean L9_chasmBuild()
 
 	if (get_property("chasmBridgeProgress").to_int() < 30)
 	{
-		foreach it in $items[Loadstone, Logging Hatchet]
+		if(fastenerCount() < 30)
 		{
-			autoEquip(it);
+			autoEquip($item[Loadstone]);
+		}
+		if(lumberCount() < 30)
+		{
+			autoEquip($item[Logging Hatchet]);
 		}
 
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
