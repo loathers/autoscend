@@ -246,6 +246,21 @@ float rollover_improvement(item it, slot sl)
 {
 	//some items can go in multiple slots so we need to specify which slot we want to compare it to.
 	//we can then compare such items to multiple slots and find the best slot for it
+	if(sl == $slot[weapon] && weapon_hands(it) > 1 && weapon_hands(equipped_item(sl)) <= 1)
+	{
+		//2h weapon must compare to value of both hands
+		return rollover_value(it) - rollover_value(equipped_item(sl)) - rollover_value(equipped_item($slot[off-hand]));
+	}
+	if(sl == $slot[off-hand] && weapon_hands(equipped_item($slot[weapon])) > 1)
+	{
+		//offhand slot must compare to 2h weapon and not empty offhand. TODO ?would need averaged values with best owned or pullable 1h
+		return rollover_value(it) - rollover_value(equipped_item($slot[weapon]));
+	}
+	if(it == $item[time halo])
+	{
+		//time halo is special. cannot have any weapons or off-hand items equipped. TODO ?compare hand slots and replacement accessory against time halo
+		return rollover_value(it) - rollover_value(equipped_item(sl)) - rollover_value(equipped_item($slot[weapon])) - rollover_value(equipped_item($slot[off-hand]));
+	}
 	return rollover_value(it) - rollover_value(equipped_item(sl));
 }
 
@@ -262,6 +277,7 @@ void bedtime_pulls_rollover_equip(float desirability)
 		}
 		
 		item[slot] best;
+		item best1hweapon;
 		item very_best;
 		float very_best_val;
 		float very_best_improvement;
@@ -333,6 +349,11 @@ void bedtime_pulls_rollover_equip(float desirability)
 					}
 				}
 				
+				if(it == $item[time halo])	//needs special check later
+				{
+					continue;
+				}
+				
 				//can we even pull another copy of this accessory?
 				if(equipped_amount(it) > 0 && best[sl] != it && !canPull(it,true))
 				{
@@ -350,8 +371,18 @@ void bedtime_pulls_rollover_equip(float desirability)
 				//two or more handed weapons just need to make sure they are better than best weapon and off-hand combined
 				if(weapon_hands(it) > 1)
 				{
-					if(rollover_value(it) > rollover_value(best[$slot[weapon]]) + rollover_value(best[$slot[off-hand]]))	//for non conflicting slots. calculate normally
+					if(weapon_hands(best[$slot[weapon]]) > 1)
 					{
+						//if best weapon is already more than 1 handed, must not add off-hand to that weapon
+						if(rollover_value(it) > rollover_value(best[$slot[weapon]]) && rollover_value(it) > rollover_value(best[$slot[off-hand]]))
+						{
+							best[sl] = it;
+						}
+					}
+					else if(rollover_value(it) > rollover_value(best[$slot[weapon]]) + rollover_value(best[$slot[off-hand]]))	//for non conflicting slots. calculate normally
+					{
+						//remember best 1h to compare again when better off-hand slots are found
+						best1hweapon = best[$slot[weapon]];
 						//there is no need to change offhand target since we pull one item at a time. in fact we prefer offhand to retain an independent value
 						best[sl] = it;
 					}
@@ -371,6 +402,12 @@ void bedtime_pulls_rollover_equip(float desirability)
 					{
 						//the currently desired best weapon is 1 handed. So we just compare it to best weapon.
 						best[sl] = it;
+						best1hweapon = best[$slot[weapon]];
+					}
+					else if(rollover_value(it) > rollover_value(best1hweapon))
+					{
+						//keep best1hweapon updated even if not best weapon
+						best1hweapon = best[$slot[weapon]];
 					}
 					
 					//single handed weapons for the off-hand slot
@@ -392,6 +429,28 @@ void bedtime_pulls_rollover_equip(float desirability)
 				//for non conflicting slots. calculate normally.
 				//off-hand might conflict but are resolved at the weapon slot in a way that still requires us to find the best offhand
 				best[sl] = it;
+				
+				//best off-hand slot can make best remembered 1h weapon better than current best 2h weapon
+				if($slot[off-hand] == sl && weapon_hands(best[$slot[weapon]]) > 1)
+				{
+					if(rollover_value(it) + rollover_value(best1hweapon) > rollover_value(best[$slot[weapon]]))
+					{
+						best[$slot[weapon]] = best1hweapon;
+					}
+				}
+			}
+		}
+		
+		//time halo is special. cannot have any weapons or off-hand items equipped
+		if(rollover_value($item[time halo]) > rollover_value(best[worst_acc_slot]) + rollover_value(best[$slot[weapon]]) + rollover_value(best[$slot[off-hand]]))
+		{	
+			if((possessEquipment($item[time halo]) || canPull($item[time halo],true)) && auto_can_equip($item[time halo]))
+			{
+				best[worst_acc_slot] = $item[time halo];
+				//clearing weapon and off-hand here at least avoids pulling them after a time halo in the same rollover.
+				//should technically decide based on improvement value instead, but if the best of 3 slots together are beaten by 5 their improvement value would be low
+				best[$slot[weapon]] = $item[none];
+				best[$slot[off-hand]] = $item[none];
 			}
 		}
 		
