@@ -167,7 +167,8 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	if(retval != "") return retval;
 	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
-	if(!combat_status_check("pickpocket") && ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class()) && contains_text(text, "value=\"Pick") && canSurvive(2.0))
+	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin']) > 0);
+	if(!combat_status_check("pickpocket") && ableToPickpocket && contains_text(text, "value=\"Pick") && canSurvive(4.0))
 	{
 		boolean tryIt = false;
 		foreach i, drop in item_drops_array(enemy)
@@ -179,6 +180,21 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			if((drop.rate > 0) && (drop.type != "n") && (drop.type != "c") && (drop.type != "b"))
 			{
 				tryIt = true;
+			}
+			if(tryIt)
+			{
+				if(auto_have_skill($skill[Sticky Fingers]) && canSurvive(8.0))
+				{
+					//free meat, tryIt
+				}
+				else if((drop.type != "p") && effectiveDropChance(drop.drop,drop.rate.to_float()) >= 100)
+				{
+					tryIt = false;	//don't need to pickpocket if capped drop chance
+				}
+				if(tryIt)
+				{
+					break;
+				}
 			}
 		}
 		if(tryIt)
