@@ -147,12 +147,15 @@ void acquireFamiliarsCasual()
 	}
 	hatchFamiliar($familiar[hovering sombrero]);
 	
-	//delevel enemy cheaply
-	if(!have_familiar($familiar[barrrnacle]) && item_amount($item[Barrrnacle]) == 0 && auto_mall_price($item[Barrrnacle]) < 1000 && my_meat() > 10000)
+	if(!have_familiar($familiar[Gelatinous Cubeling]) && !have_familiar($familiar[Nosy Nose]))	//if none of the common better delevel familiars
 	{
-		retrieve_item(1, $item[Barrrnacle]);			//will mallbuy it
+		//delevel enemy cheaply
+		if(!have_familiar($familiar[barrrnacle]) && item_amount($item[Barrrnacle]) == 0 && auto_mall_price($item[Barrrnacle]) < 1000 && my_meat() > 10000)
+		{
+			retrieve_item(1, $item[Barrrnacle]);			//will mallbuy it
+		}
+		hatchFamiliar($familiar[Barrrnacle]);
 	}
-	hatchFamiliar($familiar[Barrrnacle]);
 	
 	//meat, MP/HP, confuse, or attack enemy. cheap
 	if(!have_familiar($familiar[Cocoabo]) && item_amount($item[cocoa egg]) == 0)
