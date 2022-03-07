@@ -505,7 +505,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 	case $class[Disco Bandit]:
 
-		if(auto_have_skill($skill[Disco State of Mind]) && auto_have_skill($skill[Flashy Dancer]) && auto_have_skill($skill[Disco Greed]) && auto_have_skill($skill[Disco Bravado]) && monster_level_adjustment() < 150)
+		if(auto_have_skill($skill[Disco State of Mind]) && auto_have_skill($skill[Flashy Dancer]) && auto_have_skill($skill[Disco Greed]) && auto_have_skill($skill[Disco Bravado]) && stunnable(enemy) && monster_level_adjustment() < 150)
 		{
 			float mpRegen = (numeric_modifier("MP Regen Min") + numeric_modifier("MP Regen Max")) / 2;
 			int netCost = 0;
