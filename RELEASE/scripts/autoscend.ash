@@ -719,8 +719,15 @@ void initializeDay(int day)
 	if(!in_hardcore() && get_property("auto_day_init").to_int() < day)
 	{
 		auto_log_info("Bulk caching mall prices for consumables");
-		mall_prices("food");
-		mall_prices("booze");
+		if(get_property("auto_last_mallcached") != today_to_string())
+		{
+			mall_prices("food");
+			mall_prices("booze");
+			set_property("auto_last_mallcached",today_to_string());	//should not cache food,booze again after starting a new ascension on the same day
+		}
+		//food,booze will explicitly request historical_price to avoid making individual mall searches, in case a new mafia session gets started
+		//hprestore and mprestore types corresponding with mall_prices search categories are not available. but it's not as many searches as food,booze
+		//so cache those again even in a new ascension in case it's getting started in a new session
 		mall_prices("hprestore");
 		mall_prices("mprestore");
 	}
@@ -930,11 +937,6 @@ void initializeDay(int day)
 	}
 
 	set_property("auto_forceNonCombatSource", "");
-
-	// Until KoL fix the utterly stupid bug that requires a manual visit to the fireworks shop
-	// before you can even buy anything from it, we will have to do this.
-	// Why is this so hard? Also why is this even a Clan VIP room item? It's just a shop which charges meat.
-	visit_url("clan_viplounge.php?action=fwshop");
 
 	set_property("auto_day_init", day);
 }
