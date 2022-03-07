@@ -1,4 +1,4 @@
-since r25863;	//fix my_class() to work with Ed the Undying again
+since r26239;	// combat lover's locket support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

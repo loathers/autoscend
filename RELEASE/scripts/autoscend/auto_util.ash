@@ -1696,6 +1696,37 @@ boolean stunnable(monster mon)
 
 	return !(unstunnable_monsters contains mon);
 }
+					    
+float combatItemDamageMultiplier()
+{
+	float retval = 1;
+	if(auto_have_skill($skill[Deft Hands]))
+	{
+		retval += 0.25;
+	}
+	if(have_effect($effect[Mathematically Precise]) > 0)
+	{
+		retval += 0.50;
+	}
+	if(have_equipped($item[V for Vivala mask]))
+	{
+		retval += 0.50;
+	}
+	return retval;
+}
+
+float MLDamageToMonsterMultiplier()
+{
+	//Positive ML gives monsters damage resistance
+	//Negative ML increases the damage inflicted on monsters
+	float retval = 1 - 0.004*monster_level_adjustment();
+	if(retval < 0.5)
+	{
+		//damage resistance is capped at 50%
+		retval = 0.5;
+	}
+	return retval;
+}
 
 int freeCrafts()
 {
@@ -2608,6 +2639,128 @@ possessed wine rack
 cabinet of Dr. Limpieza
 */
 	return false;
+}
+
+float effectiveDropChance(item it, float baseDropRate)
+{
+	//0 to 100 chance to drop at end of fight
+	float retval;
+	float item_modifier = item_drop_modifier();
+	
+	if(baseDropRate > 0)
+	{
+		if(it.item_type() == "food")
+		{
+			//todo? cooking ingredients
+			item_modifier += numeric_modifier("Food Drop");
+		}
+		if(it.item_type() == "booze")
+		{
+			//todo? cocktailcrafting ingredients
+			item_modifier += numeric_modifier("Booze Drop");
+		}
+		if(it.candy)
+		{
+			item_modifier += numeric_modifier("Candy Drop");
+		}
+		if(it.to_slot() != $slot[none] && $slots[hat,shirt,weapon,off-hand,pants,acc1,acc2,acc3,back] contains it.to_slot())
+		{
+			item_modifier += numeric_modifier("Gear Drop");
+			
+			if(it.to_slot() == $slot[hat])
+			{
+				item_modifier += numeric_modifier("Hat Drop");
+			}
+			if(it.to_slot() == $slot[shirt])
+			{
+				item_modifier += numeric_modifier("Shirt Drop");
+			}
+			if(it.to_slot() == $slot[weapon])
+			{
+				item_modifier += numeric_modifier("Weapon Drop");
+			}
+			if(it.to_slot() == $slot[off-hand])
+			{
+				item_modifier += numeric_modifier("Offhand Drop");
+			}
+			if(it.to_slot() == $slot[pants])
+			{
+				item_modifier += numeric_modifier("Pants Drop");
+			}
+			if($slots[acc1,acc2,acc3] contains it.to_slot())
+			{
+				item_modifier += numeric_modifier("Accessory Drop");
+			}
+		}
+	}
+	
+	retval = baseDropRate *  (100 + item_modifier) / 100.0;
+	retval = min(100,retval);		//final drop chance % before special modifiers
+	
+	if(retval > 0)
+	{
+		if(in_lar())
+		{
+			if(retval*2 >= 100)
+			{
+				retval = 100;
+			}
+			else
+			{
+				retval = 0;
+			}
+		}
+		
+		if(in_heavyrains())
+		{
+			int depth = my_location().water_level + numeric_modifier("Water Level");
+			depth = max(1,depth);
+			depth = min(6,depth);
+			float heavyrainsWashChance = (5.0*depth/100);
+			if(have_effect($effect[Fishy Whiskers]) > 0)
+			{
+				heavyrainsWashChance -= 0.1;
+			}
+			if(equipped_amount($item[fishbone catcher's mitt]) > 0)
+			{
+				//todo exact rate?
+				heavyrainsWashChance -= 0.1;
+			}
+			retval = retval * (1 - max(0,heavyrainsWashChance));
+		}
+		
+		if(in_wildfire())
+		{
+			float wildfireBurnChance;
+			switch(my_location().fire_level)
+			{
+				case 5:
+					wildfireBurnChance = 1;
+				case 4:
+					wildfireBurnChance = 0.768;
+				case 3:
+					wildfireBurnChance = 0.361;
+				case 2:
+					wildfireBurnChance = 0.109;
+				default:
+					wildfireBurnChance = 0;
+			}
+			retval = retval * (1 - wildfireBurnChance);
+		}
+		
+		if(my_familiar() == $familiar[Black Cat])
+		{
+			//todo actual chance to lose drop?
+			retval = retval * 0.75;
+		}
+		else if(my_familiar() == $familiar[O.A.F.])
+		{
+			//todo actual chance to lose drop?
+			retval = retval * 0.75;
+		}
+	}
+	
+	return max(0,retval);
 }
 
 boolean[effect] ATSongList()

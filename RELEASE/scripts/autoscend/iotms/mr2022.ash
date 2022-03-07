@@ -26,12 +26,12 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 	// determine if we want more stats
 	if(canUse($skill[Bowl Sideways]))
 	{
-		//increase stats if we are power leveling
+		// increase stats if we are power leveling
 		if(isAboutToPowerlevel())
 		{
 			return useSkill($skill[Bowl Sideways],!speculation);
 		}
-		//increase stats if we are farming Ka as Ed
+		// increase stats if we are farming Ka as Ed
 		if(get_property("_auto_farmingKaAsEd").to_boolean())
 		{
 			return useSkill($skill[Bowl Sideways],!speculation);
@@ -41,7 +41,7 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 	// determine if we want more item or meat bonus
 	if(canUse($skill[Bowl Straight Up]))
 	{
-		//increase item bonus if not item capped in current zone
+		// increase item bonus if not item capped in current zone
 		generic_t itemNeed = zone_needItem(place);
 		if(itemNeed._boolean)
 		{
@@ -51,7 +51,7 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 			}
 		}
 
-		//increase meat bonus if doing nuns
+		// increase meat bonus if doing nuns
 		if(place == $location[The Themthar Hills])
 		{
 			return useSkill($skill[Bowl Straight Up],!speculation);
@@ -59,4 +59,82 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 	}
 
 	return "";
+}
+
+boolean auto_haveCombatLoversLocket()
+{
+	return possessEquipment($item[combat lover\'s locket]) && auto_is_valid($item[combat lover\'s locket]);
+}
+
+int auto_CombatLoversLocketCharges()
+{
+	// can fight up to 3 unique monsters by reminiscing with the locket
+	if (!auto_haveCombatLoversLocket())
+	{
+		return 0;
+	}
+
+	string locketMonstersFought = get_property("_locketMonstersFought");
+
+	// check if we haven't found any yet
+	if(locketMonstersFought == "")
+	{
+		return 3;
+	}
+
+	return 3 - count(split_string(locketMonstersFought, ","));
+}
+
+boolean auto_haveReminiscedMonster(monster mon)
+{
+	string[int] idList = split_string(get_property("_locketMonstersFought"),",");
+	foreach index, id in idList
+	{
+		if(to_monster(id) == mon)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_monsterInLocket(monster mon)
+{
+	boolean[monster] captured = get_locket_monsters();
+	return captured contains mon;
+}
+
+boolean auto_fightLocketMonster(monster mon)
+{
+	if(auto_CombatLoversLocketCharges() < 1)
+	{
+		return false;
+	}
+
+	if(!auto_monsterInLocket(mon))
+	{
+		return false;
+	}
+
+	if(auto_haveReminiscedMonster(mon))
+	{
+		return false;
+	}
+
+	string[int] pages;
+	pages[0] = "inventory.php?reminisce=1";
+	pages[1] = "choice.php?whichchoice=1463&pwd&option=1&mid=" + mon.id;
+	if(autoAdvBypass(1, pages, $location[Noob Cave], ""))
+	{
+		handleTracker(mon, $item[combat lover\'s locket], "auto_copies");
+	}
+
+	if(!auto_haveReminiscedMonster(mon))
+	{
+		auto_log_error("Attempted to fight " + mon.name + " by reminiscing with Combat Lover's Locket, but failed.");
+		return false;
+	}
+
+	return true;
+
 }

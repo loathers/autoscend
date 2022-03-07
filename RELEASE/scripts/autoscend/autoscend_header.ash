@@ -436,9 +436,13 @@ string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
 
 ########################################################################################################
-//Defined in autoscend/iotms/mr2021.ash
+//Defined in autoscend/iotms/mr2022.ash
 boolean auto_haveCosmicBowlingBall();
 string auto_bowlingBallCombatString(location place, boolean speculation);
+boolean auto_haveCombatLoversLocket();
+int auto_CombatLoversLocketCharges();
+boolean haveReminiscedMonster(monster mon);
+boolean fightLocketMonster(monster mon);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1565,6 +1569,8 @@ boolean allowSoftblockShen();
 boolean setSoftblockShen();
 boolean instakillable(monster mon);
 boolean stunnable(monster mon);
+float combatItemDamageMultiplier();
+float MLDamageToMonsterMultiplier();
 int freeCrafts();
 boolean isFreeMonster(monster mon);
 boolean declineTrades();
@@ -1605,6 +1611,7 @@ void woods_questStart();
 int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
+float effectiveDropChance(item it, float baseDropRate);
 boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
