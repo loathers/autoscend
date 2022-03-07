@@ -1687,6 +1687,7 @@ boolean doTasks()
 	asdonAutoFeed();
 	LX_craftAcquireItems();
 	auto_spoonTuneMoon();
+	auto_buyFireworksHat();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
