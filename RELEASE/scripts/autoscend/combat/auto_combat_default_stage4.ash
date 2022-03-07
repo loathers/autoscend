@@ -189,20 +189,14 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	if(canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
 	{
-		boolean stunned;
-		if(stunnable(enemy))
-		{
-			skill stunner = getStunner(enemy);
-			stunned = combat_status_check("stunned");
-			if(stunner != $skill[none] && !stunned)
-			{
-				combat_status_add("stunned");
-				return useSkill(stunner);
-			}
-		}
 		boolean shouldFlyer = false;
 		boolean staggeringFlyer = false;
 		item flyerWith;
+		if(my_class() == $class[Disco Bandit] && auto_have_skill($skill[Deft Hands]) && !combat_status_check("(it"))
+		{
+			//first item throw in the fight staggers
+			staggeringFlyer = true;
+		}
 		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
 			if (canUse($item[Time-Spinner]))
@@ -210,15 +204,38 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 				flyerWith = $item[Time-Spinner];
 				staggeringFlyer = true;
 			}
-			else if (canUse($item[beehive]) && 
-			!(monster_hp() <= 30 && my_class() == $class[Sauceror] && haveUsed($skill[Curse Of Weaksauce])))	//don't miss MP by killing weak monsters with beehive
+			else if (canUse($item[beehive]))
 			{
-				flyerWith = $item[beehive];
-				staggeringFlyer = true;
+				if(my_class() == $class[Sauceror] && haveUsed($skill[Curse Of Weaksauce]))
+				{
+					//don't miss MP by killing weak monsters with beehive
+					int beehiveDamage = ceil(30*combatItemDamageMultiplier()*MLDamageToMonsterMultiplier());
+					if(monster_hp() > beehiveDamage)
+					{
+						flyerWith = $item[beehive];
+						staggeringFlyer = true;
+					}
+				}
+				else
+				{
+					flyerWith = $item[beehive];
+					staggeringFlyer = true;
+				}
 			}
-			if(staggeringFlyer && (!stunnable(enemy) || monster_level_adjustment() > 150))
+		}
+		if(staggeringFlyer && (!stunnable(enemy) || monster_level_adjustment() > 150))
+		{
+			staggeringFlyer = false;
+		}
+		boolean stunned;
+		if(!staggeringFlyer && stunnable(enemy))
+		{
+			skill stunner = getStunner(enemy);
+			stunned = combat_status_check("stunned");
+			if(stunner != $skill[none] && !stunned)
 			{
-				staggeringFlyer = false;
+				combat_status_add("stunned");
+				return useSkill(stunner);
 			}
 		}
 		if(canSurvive(3.0) || stunned || staggeringFlyer)

@@ -1565,6 +1565,8 @@ boolean allowSoftblockShen();
 boolean setSoftblockShen();
 boolean instakillable(monster mon);
 boolean stunnable(monster mon);
+float combatItemDamageMultiplier();
+float MLDamageToMonsterMultiplier();
 int freeCrafts();
 boolean isFreeMonster(monster mon);
 boolean declineTrades();

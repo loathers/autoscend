@@ -1696,6 +1696,37 @@ boolean stunnable(monster mon)
 
 	return !(unstunnable_monsters contains mon);
 }
+					    
+float combatItemDamageMultiplier()
+{
+	float retval = 1;
+	if(auto_have_skill($skill[Deft Hands]))
+	{
+		retval += 0.25;
+	}
+	if(have_effect($effect[Mathematically Precise]) > 0)
+	{
+		retval += 0.50;
+	}
+	if(have_equipped($item[V for Vivala mask]))
+	{
+		retval += 0.50;
+	}
+	return retval;
+}
+
+float MLDamageToMonsterMultiplier()
+{
+	//Positive ML gives monsters damage resistance
+	//Negative ML increases the damage inflicted on monsters
+	float retval = 1 - 0.004*monster_level_adjustment();
+	if(retval < 0.5)
+	{
+		//damage resistance is capped at 50%
+		retval = 0.5;
+	}
+	return retval;
+}
 
 int freeCrafts()
 {

@@ -185,6 +185,17 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 		{
 			visit_url("guild.php?action=buyskill&skillid=6", true);
 		}
+		if((my_level() >= 12) && (my_meat() >= 500) && !have_skill($skill[Deft Hands]) && get_property("sidequestArenaCompleted") == "none")
+		{
+			//safe flyering
+			boolean noStaggerItem = item_amount($item[beehive]) == 0 && item_amount($item[Time-Spinner]) == 0;
+			boolean cantStagger = noStaggerItem || !have_skill($skill[Ambidextrous Funkslinging]);
+			if(cantStagger && !get_property("auto_ignoreFlyer").to_boolean() && auto_bestWarPlan().do_arena)
+			{
+				//buy Deft hands = first item throw in the fight staggers
+				visit_url("guild.php?action=buyskill&skillid=25", true);
+			}
+		}
 		break;
 	case $class[Accordion Thief]:
 		if((my_level() >= 1) && (my_meat() >= 400) && !have_skill($skill[The Moxious Madrigal]))
