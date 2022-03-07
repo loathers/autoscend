@@ -1104,10 +1104,14 @@ boolean L13_towerNSTower()
 
 			if(!familiarEquipped)
 			{
-				if(autoEquip($item[tiny bowler]))
+				foreach it in $items[filthy child leash,tiny bowler]
 				{
-					sourcesPassive += 1;	//todo: confirm this damage only counts after getting hit, not with familiar damage
-					familiarEquipped = true;
+					if(autoEquip(it))
+					{
+						sourcesPassive += 1;	//todo: confirm this damage only counts after getting hit, not with familiar damage
+						familiarEquipped = true;
+						break;
+					}
 				}
 				if(!familiarEquipped)
 				{
@@ -1123,10 +1127,14 @@ boolean L13_towerNSTower()
 				}
 				if(!familiarEquipped)
 				{
-					if(autoEquip($item[plastic pumpkin bucket]))
+					foreach it in $items[plastic pumpkin bucket,moveable feast]
 					{
-						//attacks ~35% of the time?
-						familiarEquipped = true;
+						if(autoEquip(it))
+						{
+							//attacks ~35% of the time?
+							familiarEquipped = true;
+							break;
+						}
 					}
 				}
 			}

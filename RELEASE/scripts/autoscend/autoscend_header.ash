@@ -1607,6 +1607,7 @@ void woods_questStart();
 int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
+float effectiveDropChance(item it, float baseDropRate);
 boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);

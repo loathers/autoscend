@@ -105,9 +105,17 @@ boolean canPull(item it)
 
 boolean pulledToday(item it)
 {
-	string allPulls = get_property("auto_pulls").to_string();
-	string formatedSearchString = "(" + my_daycount() + ":" + it;
-	return contains_text(allPulls,formatedSearchString);
+	//autoscend property "auto_pulls" tracks pulls made by the script as "(" + my_daycount() + ":" + it
+	//kolmafia property "_roninStoragePulls" tracks all pulls made with kolmafia today since 2022 changed to daily limit of one pull for each item
+	string [int] allPulls = split_string(get_property("_roninStoragePulls"),",");
+	foreach i in allPulls
+	{
+		if(allPulls[i] == it.to_int())
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 int auto_mall_price(item it)
