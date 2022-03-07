@@ -436,9 +436,13 @@ string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
 
 ########################################################################################################
-//Defined in autoscend/iotms/mr2021.ash
+//Defined in autoscend/iotms/mr2022.ash
 boolean auto_haveCosmicBowlingBall();
 string auto_bowlingBallCombatString(location place, boolean speculation);
+boolean auto_haveCombatLoversLocket();
+int auto_CombatLoversLocketCharges();
+boolean haveReminiscedMonster(monster mon);
+boolean fightLocketMonster(monster mon);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
