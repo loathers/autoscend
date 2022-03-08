@@ -95,7 +95,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		return false;
 	}
-	if((item_amount(source) < uses) && !in_wotsf())
+	if((item_amount(source) < uses) && !in_wotsf() && can_interact() && !source.quest)
 	{
 		if(historical_price(source) < 2000)
 		{
