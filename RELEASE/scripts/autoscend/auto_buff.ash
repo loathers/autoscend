@@ -95,9 +95,36 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		return false;
 	}
-	if((item_amount(source) < uses) && !in_wotsf() && can_interact() && !source.quest)
+	if((item_amount(source) < uses) && !in_wotsf())
 	{
-		if(historical_price(source) < 2000)
+		// attempt to buy from NPC for meat
+		if(npc_price(source) != 0 && my_meat() > meatReserve() + npc_price(source))
+		{
+			if(!speculative)
+			{
+				buy(uses - item_amount(source), source);
+			}
+			else
+			{
+				//if speculating, assume buy works
+				return true;
+			}
+		}
+		// attempt to buy from NPC for coins
+		else if(is_accessible(source.seller) && source.seller.available_tokens > sell_price(source.seller, source))
+		{
+			if(!speculative)
+			{
+				buy(uses - item_amount(source), source);
+			}
+			else
+			{
+				//if speculating, assume buy works
+				return true;
+			}
+		}
+		// attempt to buy in mall
+		else if(can_interact() && historical_price(source) < 2000)
 		{
 			if(!speculative)
 			{
@@ -107,16 +134,17 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 			{
 				//if speculating, assume buy works
 				return true;
-			}
-			
-		}
+			}		
+		}		
 	}
 	if(item_amount(source) < uses)
 	{
 		return false;
 	}
 	if(!speculative)
+	{
 		use(uses, source);
+	}	
 	return true;
 }
 
