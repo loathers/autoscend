@@ -112,19 +112,6 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 				return true;
 			}
 		}
-		// attempt to buy from NPC for coins
-		else if(is_accessible(source.seller) && source.seller.available_tokens > sell_price(source.seller, source))
-		{
-			if(!speculative)
-			{
-				buy(numToBuy, source);
-			}
-			else
-			{
-				//if speculating, assume buy works
-				return true;
-			}
-		}
 		// attempt to buy in mall
 		else if(can_interact() && historical_price(source) != 0 && meatAvailableToBuy > historical_price(source))
 		{
