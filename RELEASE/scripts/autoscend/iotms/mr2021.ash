@@ -454,6 +454,11 @@ boolean auto_getBattery(item target)
 
 boolean have_fireworks_shop()
 {
+	if(in_koe())
+	{
+		// can't access fireworks shop in kindom of exploathing
+		return false;
+	}
 	if(item_amount($item[Clan VIP Lounge Key]) == 0)
 	{
 		return false;
