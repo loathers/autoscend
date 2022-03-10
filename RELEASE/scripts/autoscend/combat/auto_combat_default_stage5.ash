@@ -758,5 +758,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return useSkill($skill[Saucestorm], false);
 	}
 
+	if((attackMinor == "attack with weapon") && (buffed_hit_stat() - 20) < monster_defense() && canUse($skill[Saucestorm], false))
+	{
+		return useSkill($skill[Saucestorm], false);
+	}
+
 	return attackMinor;
 }
