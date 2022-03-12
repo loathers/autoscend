@@ -454,6 +454,11 @@ boolean auto_getBattery(item target)
 
 boolean have_fireworks_shop()
 {
+	if(in_koe())
+	{
+		// can't access fireworks shop in kindom of exploathing
+		return false;
+	}
 	if(item_amount($item[Clan VIP Lounge Key]) == 0)
 	{
 		return false;
@@ -463,6 +468,66 @@ boolean have_fireworks_shop()
 		return false;
 	}
 	return get_property("_fireworksShop").to_boolean();
+}
+
+boolean auto_buyFireworksHat()
+{
+	// equipment doesn't give buffs in these paths
+	if(in_gnoob() || in_tcrs())
+	{
+		return false;
+	}
+
+	if(!have_fireworks_shop())
+	{
+		return false;
+	}
+
+	if(get_property("_fireworksShopHatBought").to_boolean())
+	{
+		return false;
+	}
+
+	if(my_meat() < npc_price($item[porkpie-mounted popper]) + meatReserve())
+	{
+		auto_log_info("Want to buy a hat from the fireworks shop, but don't have enough meat. Will try again later.");
+		return false;
+	}
+
+	// noncombat is most valuable hat
+	if(auto_can_equip($item[porkpie-mounted popper]))
+	{
+		float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
+		if(simNonCombat < 25.0)
+		{
+			retrieve_item(1, $item[porkpie-mounted popper]);
+			return true;
+		}
+	}
+
+	// +combat hat is second most usefull
+	if(auto_can_equip($item[sombrero-mounted sparkler]))
+	{
+		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
+		if(simCombat < 25.0)
+		{
+			retrieve_item(1, $item[sombrero-mounted sparkler]);
+			return true;
+		}
+	}
+
+	// ML hat is least usefull
+	// todo: add functionality to simulate acquiring ML instead of just looking at current ML
+	if(auto_can_equip($item[fedora-mounted fountain]))
+	{
+		if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int())
+		{
+			retrieve_item(1, $item[fedora-mounted fountain]);
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 boolean auto_haveFireExtinguisher()

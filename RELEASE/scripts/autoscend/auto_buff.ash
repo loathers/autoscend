@@ -97,17 +97,43 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	}
 	if((item_amount(source) < uses) && !in_wotsf())
 	{
-		if(historical_price(source) < 2000)
+		int numToBuy = uses - item_amount(source);
+		int meatAvailableToBuy = my_meat() - meatReserve();
+		// attempt to buy from NPC for meat
+		if(npc_price(source) != 0 && meatAvailableToBuy > npc_price(source))
 		{
-			buy(uses - item_amount(source), source, 1000);
+			if(!speculative)
+			{
+				buy(numToBuy, source);
+			}
+			else
+			{
+				//if speculating, assume buy works
+				return true;
+			}
 		}
+		// attempt to buy in mall
+		else if(can_interact() && historical_price(source) != 0 && meatAvailableToBuy > historical_price(source))
+		{
+			if(!speculative)
+			{
+				buy(numToBuy, source, meatAvailableToBuy / numToBuy);
+			}
+			else
+			{
+				//if speculating, assume buy works
+				return true;
+			}		
+		}		
 	}
 	if(item_amount(source) < uses)
 	{
 		return false;
 	}
 	if(!speculative)
+	{
 		use(uses, source);
+	}	
 	return true;
 }
 
