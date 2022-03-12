@@ -1487,6 +1487,8 @@ boolean autoMaximize(string req, boolean simulate);
 boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate);
 aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);
 void debugMaximize(string req, int meat);
+float modifierAfterXTurns(string mod, int turns, boolean forceMaintainable);
+float modifierAfterXTurns(string mod, int turns);
 string trim(string input);
 string safeString(string input);
 string safeString(skill input);
