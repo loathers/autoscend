@@ -420,14 +420,25 @@ boolean auto_post_adventure()
 		{
 			use_skill(1, $skill[Soul Rotation]);
 		}
-		int missing = (my_maxmp() - my_mp()) / 15;		//soul food restores 15 MP per cast.
+		
+		int maxMPNextTurn;
+		int MPtoRestore = my_maxmp() - my_mp();
+		if(my_maxmp() > 150 && my_soulsauce() < 90)	//todo how much MP wanted for buffing before next turn?
+		{
+			maxMPNextTurn = modifierAfterXTurns("Buffed MP Maximum",1);
+			if(maxMPNextTurn > 100)	//todo how much MP wanted for combat?
+			{
+				//don't restore MP that will expire with effects
+				MPtoRestore = max(0,maxMPNextTurn - my_mp());
+			}
+		}
+		int casts = MPtoRestore / 15;		//soul food restores 15 MP per cast.
 		int availableSauce = my_soulsauce();
-		int minMPexpected = my_mp() + (availableSauce - 5) * 15; //mp expected after soul food if last 5 soulsauce is saved
-		if(availableSauce >= 5 && minMPexpected > 100 && minMPexpected > 0.8*my_maxmp())
+		if(availableSauce >= 5 && my_mp() > 100 && my_mp() > 0.8*my_maxmp())
 		{
 			availableSauce -= 5;	//keep 5 soulsauce for soul bubble if not missing much MP
 		}
-		int casts = min(missing, availableSauce / 5);	//soul food costs 5 soulsauce per cast.
+		casts = min(casts, availableSauce / 5);	//soul food costs 5 soulsauce per cast.
 		if(casts > 0)
 		{
 			use_skill(casts, $skill[Soul Food]);
