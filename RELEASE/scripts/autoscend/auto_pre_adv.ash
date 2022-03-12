@@ -721,7 +721,18 @@ boolean auto_pre_adventure()
 	//my_mp is broken in Dark Gyffte
 	if (!in_darkGyffte())
 	{
+		//TODO don't do this when next turn is free since that gives no effect from mp_regen()
 		int wasted_mp = my_mp() + mp_regen() - my_maxmp();
+		if(my_maxmp() > 400)	//todo how much MP wanted for combat? but for now there is no MP burning after this without 400 MP anyway so check 400
+		{
+			int maxMPNextTurn = modifierAfterXTurns("Buffed MP Maximum",1);
+			if(maxMPNextTurn != my_maxmp())
+			{
+				//count MP that will expire with effects next turn
+				maxMPNextTurn = max(100,maxMPNextTurn);	//todo how much MP wanted for combat?
+				wasted_mp = my_mp() + mp_regen() - maxMPNextTurn;
+			}
+		}
 		if(wasted_mp > 0 && my_mp() > 400)
 		{
 			auto_log_info("Burning " + wasted_mp + " MP...");
