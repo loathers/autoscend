@@ -718,6 +718,23 @@ boolean doBedtime()
 	{
 		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}
+	
+	if(item_amount($item[Infinite BACON Machine]) > 0 && !get_property("_internetViralVideoBought").to_boolean() && !can_interact())
+	{
+		if((item_amount($item[Clan VIP Lounge Key]) > 0 && get_property("_fireworksShop").to_boolean()) ||
+		possessEquipment($item[unwrapped knock-off retro superhero cape]) ||
+		(auto_have_skill($skill[Disintegrate]) && my_maxmp() >= 1.5*mp_cost($skill[Disintegrate])))	//will be limited by current mp, try to gauge if it will be available
+		{
+			//have a common unlimited source of YR, no need to make viral video
+		}
+		else if(auto_is_valid($item[Viral Video]) &&
+		item_amount($item[BACON]) >= (100*my_daycount() - 20*(my_daycount() - 1)) && 	//BACON hasn't been used for something else this ascension
+		!in_koe())	//bacon store is unreachable in kingdom of exploathing
+		{
+			//can only buy 1 per day and more than one a day might be wanted later so buy today's viral video
+			cli_execute("make " + $item[Viral Video]);
+		}
+	}
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
