@@ -250,6 +250,64 @@ void debugMaximize(string req, int meat)	//This function will be removed.
 
 }
 
+float modifierAfterXTurns(string mod, int turns, boolean forceMaintainable)
+{
+	//returns predicted value of modifier after X turns of effects have expired assuming no equipment change
+	//used for the special derivative modifiers "Buffed MP Maximum"
+	//any modifier works but some may need additions (item drop with broken champagne bottle, quantum terrarium familiar change,...)
+
+	string speculateString;
+	int [effect] currentEffects = my_effects();
+	foreach buff in currentEffects
+	{
+		if(have_effect(buff) <= turns)
+		{
+			//effect would expire after specified amount of turns
+			boolean substractEffect = true;
+			if(turns > 1)
+			{
+				//effects that can be maintained will not necessarily be maintained
+				if(forceMaintainable)
+				{
+					//force the assumption that maintainable effects will be maintained
+					if(buffMaintain(buff, 0, 1, (turns+1), true))	//speculative
+					{
+						substractEffect = false;
+					}
+				}
+				else
+				{
+					//if not expiring next turn assume that at least buffs from casting known skills will be maintained
+					//routine buff maintenance in post adv doesn't wait for buffs to be at 1 turn to maintain them if it can
+					skill effectSkill = to_skill(buff);
+					if (auto_have_skill(effectSkill))
+					{
+						substractEffect = false;
+					}
+					//are there other indefinitely maintained effects to count here?
+				}
+			}
+			if(substractEffect)
+			{
+				//not worth filtering effects here before speculating uneffect on them?
+				//for modifier "buffed hp maximum" effects can be any of numeric_modifier(buff,"maximum hp"), "maximum hp percent", "muscle", "muscle percent"
+				speculateString += " uneffect " + buff.to_string() + ";";
+			}
+		}
+	}
+
+	if(speculateString != "")
+	{
+		cli_execute("speculate quiet; " + speculateString);
+	}
+	return numeric_modifier("Generated:_spec", mod);
+}
+
+float modifierAfterXTurns(string mod, int turns)
+{
+	return modifierAfterXTurns(mod, turns, false);
+}
+
 string trim(string input)
 {
 	matcher whitespace = create_matcher("(\\A\\s+)|(\\s+\\z)", input);
