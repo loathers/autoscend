@@ -434,7 +434,8 @@ boolean auto_post_adventure()
 		}
 		int casts = MPtoRestore / 15;		//soul food restores 15 MP per cast.
 		int availableSauce = my_soulsauce();
-		if(availableSauce >= 5 && my_mp() > 100 && my_mp() > 0.8*my_maxmp())
+		int minMPexpected = my_mp() + (availableSauce - 5) * 15; //mp expected after soul food if last 5 soulsauce is saved
+		if(availableSauce >= 5 && minMPexpected > 100 && minMPexpected > 0.8*my_maxmp())
 		{
 			availableSauce -= 5;	//keep 5 soulsauce for soul bubble if not missing much MP
 		}
