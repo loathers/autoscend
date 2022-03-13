@@ -732,7 +732,7 @@ boolean doBedtime()
 		!in_koe())	//bacon store is unreachable in kingdom of exploathing
 		{
 			//can only buy 1 per day and more than one a day might be wanted later so buy today's viral video
-			cli_execute("make " + $item[Viral Video]);
+			create(1, $item[Viral Video]);
 		}
 	}
 
