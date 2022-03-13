@@ -695,8 +695,8 @@ void initializeDay(int day)
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
 
-	// Get emotionally chipped if you have the item.  boris\zombie slayer cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer())
+	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer() && !isActuallyEd())
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
