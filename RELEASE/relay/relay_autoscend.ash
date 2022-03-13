@@ -52,12 +52,6 @@ void handleSetting(string type, int x)
 
 	setting set = s[type][x];
 
-	// Some settings we don't want to appear in the big table, as they're used elsewhere
-	if ((set.name == "_auto_doneToday_confirm") || (set.name == "_auto_doneToday"))
-	{
-		return;
-	}
-
 	switch(set.type)
 	{
 	case "boolean":
@@ -185,13 +179,10 @@ void main()
 	
 	//button to go straight to bed
 	writeln("<center><form action='' method='post'>");
-	writeln("<table><tr><td bgcolor='#ff8888'>");
 	writeln("<input type='hidden' name='_auto_doneToday' value='true'/>");
 	writeln("<input type='hidden' name='_auto_doneToday_oldvalue' value='false'/>");
 	writeln("<input type='submit' name='' value='Emergency: Go Straight to Bed'/>");
-	writeln(" Confirm: <input type='checkbox' name='_auto_doneToday_confirm' value='true'>");
-	writeln("<input type='hidden' name='_auto_doneToday_confirm_oldvalue' value='false'/>");
-	writeln("</td></tr></table></form></center>");
+	writeln("</form></center>");
 	
 	//TODO add button to run autoscend
 	
@@ -245,8 +236,13 @@ void main()
 			}
 			if(get_property(prop) != newSetting)
 			{
-				writeln("Changing setting " + prop + " to " + newSetting + "<br>");
-				set_property(prop, newSetting);
+				if((prop != "_auto_doneToday")
+					|| user_confirm("If you go to bed now, you will probably overdrink "
+									+ "and be too drunk to do anything until rollover.  Are you sure?"))
+				{
+					writeln("Changing setting " + prop + " to " + newSetting + "<br>");
+					set_property(prop, newSetting);
+				}
 			}
 			
 			if(prop == "auto_dickstab")	//used to detect if we just enabled dickstab

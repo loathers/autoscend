@@ -3,5 +3,3 @@ auto_debugging	boolean	Every time you run the script it will perform one adventu
 auto_paranoia	integer	If quest tracking is broken enable this. It determines how often should we refresh quests. measured in adventures. -1 is never. 1 = every single adventure
 auto_inv_paranoia	boolean	If item drop tracking is broken enable this. It will refresh inventory every loop.
 auto_newbieOverride	boolean	If true will override newbie block once then set itself to false. Newbie block is enabled used when you fight a crate (please report crate fighting) or when you spent too many adventures in a zone
-_auto_doneToday	boolean	If this and _auto_doneToday_confirm are true, script aborts after the next action and then perform bedtime actions.
-_auto_doneToday_confirm	boolean	See above.
