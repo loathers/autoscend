@@ -115,21 +115,126 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		equip($slot[Acc3], $item[Mafia Pinky Ring]);
 	}
 
-	if(canOde(toDrink) && possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
+	if(expectedInebriety == 1 && howMany == 1 && item_amount($item[mime army shotglass]) > 0 && !get_property("_mimeArmyShotglassUsed").to_boolean() && !get_property("_auto_mimeArmyShotglassUsed").to_boolean() && my_mp() < 200)
 	{
-		if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
-		{
-			buyUpTo(1, $item[Drunk Uncles Holo-Record]);
-		}
-		buffMaintain($effect[Drunk and Avuncular], 0, 1, expectedInebriety);
+		set_property("_auto_mimeArmyShotglassUsed","true");	//in case the shotglass text didn't get tracked by mafia don't keep skipping ode
+		auto_log_debug("Not considering Ode to Booze effects for mime army shotglass drink");
 	}
-
-	if(canOde(toDrink) && auto_have_skill($skill[The Ode to Booze]))
+	else if(canOde(toDrink))
 	{
-		shrugAT($effect[Ode to Booze]);
-		// get enough turns of ode
-		while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
-			/*do nothing, the loop condition is doing the work*/;
+		if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
+		{
+			if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
+			{
+				buyUpTo(1, $item[Drunk Uncles Holo-Record]);
+			}
+			buffMaintain($effect[Drunk and Avuncular], 0, 1, expectedInebriety);
+		}
+
+		if(auto_have_skill($skill[The Ode to Booze]))
+		{
+			if(my_maxmp() < mp_cost($skill[The Ode to Booze]))
+			{
+				//ode is worth efforts to raise maxmp
+				//there could be a maxmp provider function but here we want exclusively maxmp to cast ode out of combat, not to add to other maximizer scores
+				//speculate with equipment and then a few effects available early
+				boolean pass()
+				{
+					int achievableMaxMP = simValue("Buffed MP Maximum");
+					int neededMaxMP = mp_cost($skill[The Ode to Booze]) - (simValue("Mana Cost") + simValue("Stackable Mana Cost") - mana_cost_modifier());
+					return (achievableMaxMP >= neededMaxMP);
+				}
+				simMaximizeWith(my_location(),"200mp, -200Mana Cost, -200Stackable Mana Cost");	//not capping to mp_cost() because restores that go over would be wasted
+				if(pass())
+				{
+					auto_log_info("Using gear to raise maximum MP for Ode to Booze", "blue");
+					equipMaximizedGear();
+				}
+				else
+				{
+					//equipment is not enough, try with buffs too
+					string speculateString;
+					boolean weaponPicked;
+					boolean offhandPicked;
+					
+					//list the equipment picked by maximizer into speculateString, need this to make mafia speculate max MP from all relevant modifiers with equipment + buffs
+					foreach i,entry in maximize("200mp, -200Mana Cost, -200Stackable Mana Cost",0,0,true,true)	//can't use autoMaximize "Aggregate reference expected"
+					{
+						if(i>15)
+						{
+							//there should not be more than 9 or 10 equipment slots and equipment entries come first. so equipment list is done
+							break;
+						}
+						item maximizerItem = entry.item;
+						if(maximizerItem == $item[none]) continue;
+						slot maximizerItemSlot = maximizerItem.to_slot();
+						if(maximizerItemSlot == $slot[none]) continue;
+						string specifySlot = "";
+						if(maximizerItemSlot == $slot[weapon])
+						{
+							if(weaponPicked && offhandPicked)
+							{
+								//this must be familiar weapon
+								specifySlot = "[familiar] ";
+							}
+							else if(weaponPicked)
+							{
+								//this must be offhand weapon
+								specifySlot = "[off-hand] ";
+								offhandPicked = true;
+							}
+							else
+							{
+								weaponPicked = true;
+							}
+						}
+						if(maximizerItemSlot == $slot[off-hand])
+						{
+							if(offhandPicked)
+							{
+								//this must be familiar offhand
+								specifySlot = "[familiar] ";
+							}
+							else
+							{
+								offhandPicked = true;
+							}
+						}
+						speculateString += " equip " + specifySlot + maximizerItem.to_string() + ";";
+					}
+					boolean [effect] effectsThatIncreaseMaxMP = $effects[The Magical Mojomuscular Melody,Feeling Excited,Triple-Sized,Glittering Eyelashes,Big];
+					foreach eff in effectsThatIncreaseMaxMP
+					{
+						if (buffMaintain(eff, 0, 1, 1, true))	//speculative
+						{
+							speculateString += " up " + eff + ";";
+						}
+					}
+					cli_execute("speculate quiet; " + speculateString);
+					if(pass())
+					{
+						auto_log_info("Using gear and buffs to raise maximum MP for Ode to Booze", "blue");
+						equipMaximizedGear();
+						foreach eff in effectsThatIncreaseMaxMP
+						{
+							if(my_maxmp() < mp_cost($skill[The Ode to Booze]))
+							{
+								buffMaintain(eff, 0, 1, 1, false);
+							}
+						}
+					}
+				}
+			}
+			shrugAT($effect[Ode to Booze]);
+			// get enough turns of ode
+			while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
+			{	///*do nothing, the loop condition is doing the work*/;
+				if(have_effect($effect[Ode to Booze]) >= expectedInebriety)
+				{	
+					break;	//but stop before the loop does an extra acquireMP
+				}
+			}
+		}
 	}
 
 	boolean retval = false;
