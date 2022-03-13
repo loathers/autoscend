@@ -1615,7 +1615,6 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
-
 	casualCheck();
 	
 	print_header();
