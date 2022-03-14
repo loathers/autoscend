@@ -442,8 +442,9 @@ boolean auto_haveCosmicBowlingBall();
 string auto_bowlingBallCombatString(location place, boolean speculation);
 boolean auto_haveCombatLoversLocket();
 int auto_CombatLoversLocketCharges();
-boolean haveReminiscedMonster(monster mon);
-boolean fightLocketMonster(monster mon);
+boolean auto_haveReminiscedMonster(monster mon);
+boolean auto_monsterInLocket(monster mon);
+boolean auto_fightLocketMonster(monster mon);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
