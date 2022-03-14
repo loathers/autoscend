@@ -1962,6 +1962,8 @@ boolean summonMonster(monster mon)
 	//todo
 	// add support for timeSpinnerCombat()
 	// add support for rainManSummon(). Look to routineRainManHandler()
+
+	return false;
 }
 
 boolean handleCopiedMonster(item itm)
