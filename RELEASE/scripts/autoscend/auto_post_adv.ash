@@ -423,7 +423,7 @@ boolean auto_post_adventure()
 		
 		int maxMPNextTurn;
 		int MPtoRestore = my_maxmp() - my_mp();
-		if(my_maxmp() > 150 && my_soulsauce() < 90)	//todo how much MP wanted for buffing before next turn?
+		if(MPtoRestore >= 15 && my_maxmp() > 150 && my_soulsauce() < 90)	//todo how much MP wanted for buffing before next turn?
 		{
 			maxMPNextTurn = modifierAfterXTurns("Buffed MP Maximum",1);
 			if(maxMPNextTurn > 100)	//todo how much MP wanted for combat?
