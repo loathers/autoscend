@@ -1791,6 +1791,7 @@ boolean makeGenieCombat(monster mon, string option)
 		return false;
 	}
 
+	auto_log_info("Using genie to summon " + mon.name, "blue");
 	string wish = "to fight a " + mon;
 	string[int] pages;
 	int wish_provider = $item[genie bottle].to_int();

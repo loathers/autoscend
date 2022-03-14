@@ -121,6 +121,7 @@ boolean auto_fightLocketMonster(monster mon)
 		return false;
 	}
 
+	auto_log_info("Using locket to summon " + mon.name, "blue");
 	string[int] pages;
 	pages[0] = "inventory.php?reminisce=1";
 	pages[1] = "choice.php?whichchoice=1463&pwd&option=1&mid=" + mon.id;
