@@ -45,7 +45,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		return false;
 	}
 
-	auto_log_info("Using fax machine to summon " + mon.name, "blue");
+	auto_log_info("Using fax machine to summon " + enemy.name, "blue");
 
 	if(item_amount($item[Photocopied Monster]) != 0)
 	{

@@ -1188,7 +1188,7 @@ boolean timeSpinnerCombat(monster goal, string option)
 	{
 		return false;
 	}
-	auto_log_info("Using time spinner to summon " + mon.name, "blue");
+	auto_log_info("Using time spinner to summon " + goal.name, "blue");
 	string[int] pages;
 	pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
 	pages[1] = "choice.php?pwd=&whichchoice=1195&option=1";
