@@ -1954,7 +1954,7 @@ boolean summonMonster(monster mon)
 	{
 		return true;
 	}
-	if(makeGenieCombat(mon))
+	if(auto_shouldUseWishes() && makeGenieCombat(mon))
 	{
 		return true;
 	}
