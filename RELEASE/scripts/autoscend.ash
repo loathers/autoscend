@@ -1387,7 +1387,7 @@ boolean autosellCrap()
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
-	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
+	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag, void stone]
 	{
 		if(item_amount(it) > 0)
 		{
