@@ -357,7 +357,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()))
 	{
-		string combatAction = yellowRayCombatString(enemy, true);
+		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
 		{
 			combat_status_add("yellowray");
