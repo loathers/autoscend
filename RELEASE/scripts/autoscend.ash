@@ -1387,7 +1387,9 @@ boolean autosellCrap()
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
-	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag, Void Stone]
+	foreach it in $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. if we ever need it we can freely recreate them at no loss.
+	Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
+	Void Stone] //???
 	{
 		if(item_amount(it) > 0)
 		{
