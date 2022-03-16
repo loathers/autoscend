@@ -709,6 +709,16 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Takin\' It Greasy], 50, 1, 5);
 			buffMaintain($effect[Intimidating Mien], 50, 1, 5);
 		}
+
+		if(my_maxmp() < 120 && have_effect($effect[The Magical Mojomuscular Melody]) > 0)
+		{
+			// The Magical Mojomuscular Melody gives at least 30 max MP and is maintained when under 80 max MP
+			// when the effect itself is raising max MP over 80, if not maintained longer here it would expire, waste any MP above max, then get cast again
+			if(my_maxmp() - my_mp() < 35)
+			{
+				buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
+			}
+		}
 	}
 	else
 	{
