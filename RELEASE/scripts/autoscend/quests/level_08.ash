@@ -530,13 +530,20 @@ boolean L8_trapperNinjaLair()
 	}
 	//we must use two variables because there are too many special cases. Maybe we can survie assassins but not encounter them due to +combat being too low. Copiers and pulls complicate matters. We could copy an assassin even if we cannot encounter it in the lair
 	
-	if(isActuallyEd())
+	//check if we can survive a hit or get the jump on NSA
+	if((my_maxhp() < expected_damage($monster[ninja snowman assassin])) && jump_chance($monster[ninja snowman assassin]) < 100 )
 	{
-		//we lack a function to determine if we will get instagibbed by assassins.
-		//if we had one ed could benefit from doing the slope when he does not get instagibbed by the assassins
-		auto_log_info("Ed assumed to not be able to survive ninja assassins", "blue");
-		set_property("auto_L8_ninjaAssassinFail", true);		//we assume ed cannot defeat assassins
-		return true;
+		if(isAboutToPowerlevel())
+		{
+			//if we can't survive and we are powerleveling, do extreme path
+			set_property("auto_L8_extremeInstead", true);
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Can't survive against ninja snowman assassin. Will delay and try again later", "red"); 
+			return false;
+		}
 	}
 
 	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
