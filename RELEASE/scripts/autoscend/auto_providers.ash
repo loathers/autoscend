@@ -481,6 +481,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		Adorable Lookout,
 		Alacri Tea,
 		All Fired Up,
+		Clear Ears, Can\'t Lose,
 		Fishy\, Oily,
 		The Glistening,
 		Human-Machine Hybrid,
