@@ -566,7 +566,7 @@ float consumptionProgress()
 	}
 	else
 	{
-		float used_organ_ratio = min(organs_used / organs_max, 1);
+		float used_organ_ratio = min(organs_used.to_float() / organs_max.to_float(), 1);
 		return used_organ_ratio;
 	}
 }
@@ -609,12 +609,6 @@ void consumeStuff()
 
 	// fills up spleen for Ed.
 	if (ed_eatStuff())
-	{
-		return;
-	}
-
-	// Try to get Fortune Cookie numbers
-	if (consumeFortune())
 	{
 		return;
 	}
@@ -668,65 +662,6 @@ void consumeStuff()
 	}
 }
 
-boolean consumeFortune()
-{
-	if (contains_text(get_counters("Fortune Cookie", 0, 200), "Fortune Cookie"))
-	{
-		return false;
-	}
-
-	// Don't get lucky numbers for the first semi-rare if we still need to adventure in the outskirts
-	if (my_turncount() < 80 && (internalQuestStatus("questL05Goblin") < 1 && item_amount($item[Knob Goblin encryption key]) < 1) && !isActuallyEd())
-	{
-		return false;
-	}
-
-	// Try to consume a Lucky Lindy
-	if (inebriety_left() > 0 && canDrink($item[Lucky Lindy]) && my_meat() >= npc_price($item[Lucky Lindy]))
-	{
-		if (autoDrink(1, $item[Lucky Lindy]))
-		{
-			return true;
-		}
-	}
-	
-	// Try to consume a Fortune Cookie
-	if (fullness_left() > 0 && canEat($item[Fortune Cookie]) && my_meat() >= npc_price($item[Fortune Cookie]))
-	{
-		// Eat a spaghetti breakfast if still consumable
-		if (my_fullness() == 0)
-		{
-			if (canEat($item[Spaghetti Breakfast]) && item_amount($item[Spaghetti Breakfast]) > 0 && my_level() >= 10)
-			{
-				if (!autoEat(1, $item[Spaghetti Breakfast]))
-				{
-					return false;
-				}
-			}
-			else
-			{
-				foreach muffin in $items[blueberry muffin, bran muffin, chocolate chip muffin]
-				{
-					if (canEat(muffin) && item_amount(muffin) > 0)
-					{
-						if (!autoEat(1, muffin))
-						{
-							return false;
-						}
-					}
-				}
-			}
-		}
-
-		buyUpTo(1, $item[Fortune Cookie], npc_price($item[Fortune Cookie]));
-		if (autoEat(1, $item[Fortune Cookie]))
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
 
 int AUTO_ORGAN_STOMACH = 1;
 int AUTO_ORGAN_LIVER   = 2;
@@ -1419,9 +1354,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 {
 	// TODO: does not consider mime army shotglass
 
-	if(in_plumber())
+	if(in_plumber() && my_level() < 13)
 	{
-		auto_log_warning("Skipping eating, you'll have to do this manually.", "red");
 		return false;
 	}
 
@@ -1538,7 +1472,7 @@ int auto_spleenFamiliarAdvItemsPossessed()
 	
 	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease, beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
 	{
-		if(auto_is_valid(it) && mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//even when not mallbuying them we do not want to use exceptionally expensive items
+		if(item_amount(it) > 0 && auto_is_valid(it) && mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//even when not mallbuying them we do not want to use exceptionally expensive items
 		{
 			spleenFamiliarAdvItemsCount += item_amount(it);
 		}
@@ -1690,4 +1624,38 @@ boolean distill(item target)
 	}
 	auto_log_warning("distill(item target) mysteriously failed to create [" +target+ "]");
 	return false;
+}
+
+boolean prepare_food_xp_multi()
+{
+	//prepare as big an XP multi as possible for the next food item eaten
+	if(fullness_left() < 1 || !can_eat())
+	{
+		return false;
+	}
+	
+	//[Ready to Eat] is gotten by using a red rocket from fireworks shop in VIP clan. it gives +400% XP on next food item
+	if(have_fireworks_shop() &&
+	have_effect($effect[Everything Looks Red]) <= 0 &&
+	have_effect($effect[Ready to Eat]) <= 0 &&
+	auto_is_valid($item[red rocket]))
+	{
+		if(item_amount($item[red rocket]) == 0 && my_meat() > npc_price($item[red rocket]))
+		{
+			//this is a more aggressive buying function than the one in pre_adv
+			retrieve_item(1, $item[red rocket]);
+		}
+		if(item_amount($item[red rocket]) > 0)
+		{
+			return false;	//go use [red rocket] in combat before eating for XP
+		}
+	}
+	
+	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	
+	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
+	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
+	
+	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
+	return true;
 }

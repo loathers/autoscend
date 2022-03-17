@@ -307,17 +307,9 @@ boolean handleFamiliar(familiar fam)
 {
 	//This function takes a specific named familiar and sets it as our target familiar. To be changed during pre_adventure.
 
-	if(get_property("auto_disableFamiliarChanging").to_boolean())
-	{
-		return false;	//familiar changing temporarily disabled.
-	}
 	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
 	{
 		return false;
-	}
-	if(is100FamRun() && get_property("auto_100familiar").to_familiar() != fam)
-	{
-		return false;	//do not break a 100% familiar run
 	}
 	if(fam == $familiar[none])
 	{
@@ -336,6 +328,11 @@ boolean handleFamiliar(familiar fam)
 	if((fam == $familiar[Puck Man]) && !auto_have_familiar($familiar[Puck Man]) && auto_have_familiar($familiar[Ms. Puck Man]))
 	{
 		fam = $familiar[Ms. Puck Man];
+	}
+	
+	if(!canChangeToFamiliar(fam))
+	{
+		return false;
 	}
 	
 	//bjorning has priority
@@ -392,11 +389,14 @@ boolean autoChooseFamiliar(location place)
 	// places where item drop is required to help save adventures.
 	if ($locations[The Typical Tavern Cellar, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
 	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Hospital, The Hidden Bowling Alley, The Haunted Wine Cellar,
-	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, The Red Zeppelin, Whitey's Grove, The Oasis, The Middle Chamber,
+	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, Whitey's Grove, The Oasis, The Middle Chamber,
 	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
 	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, 8-Bit Realm, The Degrassi Knoll Garage, The Old Landfill,
 	The Laugh Floor, Infernal Rackets Backstage] contains place) {
 		famChoice = lookupFamiliarDatafile("item");
+	}
+	if (place == $location[The Red Zeppelin] && internalQuestStatus("questL11Ron") < 4)	{
+		famChoice = lookupFamiliarDatafile("item");	//not useful for Ron Copperhead
 	}
 
 	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
@@ -533,8 +533,11 @@ boolean autoChooseFamiliar(location place)
 	}
 	
 	// places where meat drop is desirable due to high meat drop monsters.
-	if ($locations[The Boss Bat's Lair, Mist-Shrouded Peak, The Icy Peak, The Filthworm Queen's Chamber] contains place) {
+	if ($locations[The Boss Bat's Lair, The Icy Peak, The Filthworm Queen's Chamber] contains place) {
 		famChoice = lookupFamiliarDatafile("meat");
+	}
+	if (place == $location[Mist-Shrouded Peak] && place.turns_spent < 3) {
+		famChoice = lookupFamiliarDatafile("meat");	//not useful for Groar
 	}
 
 	//if critically low on MP and meat. use restore familiar to avoid going bankrupt

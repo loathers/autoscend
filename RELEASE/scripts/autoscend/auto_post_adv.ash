@@ -246,7 +246,7 @@ boolean auto_post_adventure()
 
 		if((my_meat() > 5000) && ((my_turncount() >= 50) || get_property("falloutShelterChronoUsed").to_boolean()))
 		{
-			buffMaintain($effect[Rad-Pro Tected], 0, 1, 1);
+			buffMaintain($effect[Rad-Pro Tected]);
 		}
 	}
 
@@ -337,13 +337,13 @@ boolean auto_post_adventure()
 
 	if((my_class() == $class[Turtle Tamer]) && guild_store_available())
 	{
-		buffMaintain($effect[Eau de Tortue], 0, 1, 1);
+		buffMaintain($effect[Eau de Tortue]);
 	}
 
 	if((monster_level_adjustment() > 140) && !inAftercore())
 	{
-		buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
-		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+		buffMaintain($effect[Butt-Rock Hair]);
+		buffMaintain($effect[Go Get \'Em\, Tiger!]);
 	}
 
 	if(in_community())
@@ -421,7 +421,13 @@ boolean auto_post_adventure()
 			use_skill(1, $skill[Soul Rotation]);
 		}
 		int missing = (my_maxmp() - my_mp()) / 15;		//soul food restores 15 MP per cast.
-		int casts = min(missing, my_soulsauce() / 5);	//soul food costs 5 soulsauce per cast.
+		int availableSauce = my_soulsauce();
+		int minMPexpected = my_mp() + (availableSauce - 5) * 15; //mp expected after soul food if last 5 soulsauce is saved
+		if(availableSauce >= 5 && minMPexpected > 100 && minMPexpected > 0.8*my_maxmp())
+		{
+			availableSauce -= 5;	//keep 5 soulsauce for soul bubble if not missing much MP
+		}
+		int casts = min(missing, availableSauce / 5);	//soul food costs 5 soulsauce per cast.
 		if(casts > 0)
 		{
 			use_skill(casts, $skill[Soul Food]);
@@ -889,24 +895,24 @@ boolean auto_post_adventure()
 		// +Stat expressions based on mainstat
 		if(my_primestat() == $stat[Muscle])
 		{
-			auto_faceCheck("Patient Smile");
+			auto_faceCheck($effect[Patient Smile]);
 		}
 		if(my_primestat() == $stat[Moxie])
 		{
-			auto_faceCheck("Knowing Smile");
+			auto_faceCheck($effect[Knowing Smile]);
 		}
 		if(my_primestat() == $stat[Mysticality])
 		{
 			// If Gaze succeeds Smile will fail the check and vice versa
-			auto_faceCheck("Inscrutable Gaze");
-			auto_faceCheck("Wry Smile");
+			auto_faceCheck($effect[Inscrutable Gaze]);
+			auto_faceCheck($effect[Wry Smile]);
 		}
 
 		// Catch-all Expressions in decending order of importance (in case we could not get a stat specific one)
-		auto_faceCheck("Inscrutable Gaze");
-		auto_faceCheck("Wry Smile");
-		auto_faceCheck("Patient Smile");
-		auto_faceCheck("Knowing Smile");
+		auto_faceCheck($effect[Inscrutable Gaze]);
+		auto_faceCheck($effect[Wry Smile]);
+		auto_faceCheck($effect[Patient Smile]);
+		auto_faceCheck($effect[Knowing Smile]);
 
 		if(my_meat() > meatReserve()+5000)		//these are only worth it if you have lots of excess meat
 		{
@@ -975,6 +981,14 @@ boolean auto_post_adventure()
 		}
 	}
 
+	if (in_bugbear() && item_amount($item[Key-o-tron]) > 0 && my_location().zone != "Mothership")
+	{
+		if ($monsters[scavenger bugbear, hypodermic bugbear, batbugbear, bugbear scientist, bugaboo, Black Ops Bugbear, Battlesuit Bugbear Type, ancient unspeakable bugbear, trendy bugbear chef] contains last_monster())
+		{
+			use(1, $item[Key-o-tron]);
+		}
+	}
+
 	if(in_heavyrains())
 	{
 		auto_log_info("Post adventure done: Thunder: " + my_thunder() + " Rain: " + my_rain() + " Lightning: " + my_lightning(), "green");
@@ -1015,13 +1029,13 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Purple Reign], 0, 6, 10);
 		}
 
-		buffMaintain($effect[Gummi-Grin], 0, 1, 1);
-		buffMaintain($effect[Strong Resolve], 0, 1, 1);
-		buffMaintain($effect[Irresistible Resolve], 0, 1, 1);
-		buffMaintain($effect[Brilliant Resolve], 0, 1, 1);
-		buffMaintain($effect[From Nantucket], 0, 1, 1);
-		buffMaintain($effect[Squatting and Thrusting], 0, 1, 1);
-		buffMaintain($effect[You Read the Manual], 0, 1, 1);
+		buffMaintain($effect[Gummi-Grin]);
+		buffMaintain($effect[Strong Resolve]);
+		buffMaintain($effect[Irresistible Resolve]);
+		buffMaintain($effect[Brilliant Resolve]);
+		buffMaintain($effect[From Nantucket]);
+		buffMaintain($effect[Squatting and Thrusting]);
+		buffMaintain($effect[You Read the Manual]);
 		buyableMaintain($item[Hair Spray], 1, 200, my_class() != $class[Turtle Tamer]);
 		buyableMaintain($item[Blood of the Wereseal], 1, 3500, (monster_level_adjustment() > 135));
 		buyableMaintain($item[Ben-gal&trade; Balm], 1, 200);

@@ -51,6 +51,12 @@ banish	45	Wardr&ouml;b Nightstand
 banish	46	Warehouse Janitor
 banish	47	party skelteon
 banish	48	basic lihc
+# Bugbear Invasion Mothership
+banish	49	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing;!sniffed:scavenger bugbear
+banish	50	bugaboo	path:Bugbear Invasion;loc:Morgue;!sniffed:bugaboo
+banish	51	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed:Battlesuit Bugbear Type
+banish	52	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
+banish	53	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
 
 replace	0	Banshee Librarian	item:Killing Jar>0
 replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber,!pathid:41,!path:Wildfire
@@ -94,6 +100,15 @@ replace	36	Swarm of Skulls	path:Community Service;loc:The Skeleton Store
 replace	37	Ancient Insane Monk	path:Community Service;loc:The Haiku Dungeon
 replace	38	Ferocious Bugbear	path:Community Service;loc:The Haiku Dungeon
 replace	39	Gelatinous Cube	path:Community Service;loc:The Haiku Dungeon
+replace	40	Knob Goblin Poseur	path:Community Service;loc:The Haiku Dungeon
+# Bugbear Invasion Mothership
+replace	41	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing
+replace	42	bugaboo	path:Bugbear Invasion;loc:Morgue;item:bugbear autopsy tweezers<1
+replace	43	bugbear scientist	path:Bugbear Invasion;loc:Science Lab;item:quantum nanopolymer spider web<1
+replace	44	liquid metal bugbear	path:Bugbear Invasion:loc:Engineering;item:drone self-destruct chip<1
+replace	45	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering
+replace	46	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation
+replace	47	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
 
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed
 sniff	1	Writing Desk	!prop:writingDesksDefeated=5
@@ -105,7 +120,7 @@ sniff	6	Pygmy Witch Surgeon
 sniff	7	pygmy witch accountant	loc:The Hidden Office Building
 sniff	8	pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
 sniff	9	Pygmy Janitor	loc:The Hidden Park;!tavern:true
-sniff	10	Quiet Healer
+sniff	10	Quiet Healer	!prop:questL10Garbage=finished
 sniff	11	Tomb Rat
 sniff	12	Blooper	loc:8-Bit Realm
 sniff	13	Bob Racecar	!sniffed:Racecar Bob
@@ -117,12 +132,28 @@ sniff	18	War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;
 sniff	19	Possessed Wine Rack
 sniff	20	Blue Oyster cultist
 sniff	21	Dirty Old Lihc	prop:cyrptNicheEvilness>28
-sniff	22	Possibility Giant	prop:chaosButterflyThrown=false;item:chaos butterfly<1
+sniff	22	Possibility Giant	!path:G-Lover;!path:Pocket Familiars;!path:Bees Hate You;prop:chaosButterflyThrown=false;item:chaos butterfly<1
 sniff	23	Serialbus	item:bus pass<5
 sniff	24	CH Imp	item:imp air<5
 sniff	25	Camel Toe	!sniffed:Skinflute
 sniff	26	Skinflute	!sniffed:Camel Toe
 sniff	27	Red Butler
+# Bugbear Invasion Wanderers
+sniff	28	scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
+sniff	29	hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
+sniff	30	batbugbear	path:Bugbear Invasion;!loc:Sonar;!prop:statusSonar=unlocked;!prop:statusSonar=open;!prop:statusSonar=cleared;prop:questL04Bat=finished
+sniff	31	bugbear scientist	path:Bugbear Invasion;!loc:Science Lab;!prop:statusScienceLab=unlocked;!prop:statusScienceLab=open;!prop:statusScienceLab=cleared
+sniff	32	bugaboo	path:Bugbear Invasion;!loc:Morgue;!prop:statusMorgue=unlocked;!prop:statusMorgue=open;!prop:statusMorgue=cleared;prop:questL07Cyrptic=finished
+sniff	33	Black Ops Bugbear	path:Bugbear Invasion;!loc:Special Ops;!prop:statusSpecialOps=unlocked;!prop:statusSpecialOps=open;!prop:statusSpecialOps=cleared;prop:questL08Trapper=finished
+sniff	34	Battlesuit Bugbear Type	path:Bugbear Invasion;!loc:Engineering;!prop:statusEngineering=unlocked;!prop:statusEngineering=open;!prop:statusEngineering=cleared;prop:questL10Garbage=finished
+sniff	35	ancient unspeakable bugbear	path:Bugbear Invasion;!loc:Navigation;!prop:statusNavigation=unlocked;!prop:statusNavigation=open;!prop:statusNavigation=cleared;prop:questL11Manor=finished
+sniff	36	trendy bugbear chef	path:Bugbear Invasion;!loc:Galley;!prop:statusGalley=unlocked;!prop:statusGalley=open;!prop:statusGalley=cleared;prop:questL12War=finished
+# Bugbear Invasion Mothership
+sniff	37	creepy eye-stalk tentacle monster	path:Bugbear Invasion
+sniff	38	anesthesiologist bugbear	path:Bugbear Invasion
+sniff	39	bugbear mortician	path:Bugbear Invasion
+sniff	40	N-space Virtual Assistant	path:Bugbear Invasion
+sniff	41	angry cavebugbear	path:Bugbear Invasion
 
 # Gotta get that wig
 yellowray	0	Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography

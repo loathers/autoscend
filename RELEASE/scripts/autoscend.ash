@@ -1,4 +1,4 @@
-since r25863;	//fix my_class() to work with Ed the Undying again
+since r26239;	// combat lover's locket support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -17,6 +17,7 @@ import <canadv.ash>
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
 import <autoscend/auto_bedtime.ash>
+import <autoscend/auto_buff.ash>
 import <autoscend/auto_consume.ash>
 import <autoscend/auto_craft.ash>
 import <autoscend/auto_equipment.ash>
@@ -45,6 +46,7 @@ import <autoscend/iotms/mr2018.ash>
 import <autoscend/iotms/mr2019.ash>
 import <autoscend/iotms/mr2020.ash>
 import <autoscend/iotms/mr2021.ash>
+import <autoscend/iotms/mr2022.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
@@ -151,7 +153,6 @@ void initializeSettings() {
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
 	set_property("auto_clanstuff", "0");
-	set_property("auto_combatHandler", "");
 	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
 	set_property("auto_crackpotjar", "");
@@ -230,6 +231,7 @@ void initializeSettings() {
 	ed_initializeSettings();
 	boris_initializeSettings();
 	bond_initializeSettings();
+	bugbear_initializeSettings();
 	nuclear_initializeSettings();
 	pete_initializeSettings();
 	pokefam_initializeSettings();
@@ -328,6 +330,9 @@ boolean LX_burnDelay()
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
 	boolean wannaBackup = auto_backupTarget();
+	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
+	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
+	boolean voidMonsterNext = (get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13);
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -379,12 +384,21 @@ boolean LX_burnDelay()
 				return true;
 			}
 		}
+		if(voidMonsterNext)
+		{
+			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
+			if(autoAdv(burnZone))
+			{
+				return true;
+			}
+		}
 	}
-	else if(wannaVote || wannaDigitize || wannaSausage)
+	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)
 	{
 		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
 		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
 		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
+		if(voidMonsterNext) auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
 	}
 	else if(wannaBackup)
 	{
@@ -536,80 +550,6 @@ boolean LX_doVacation()
 	return autoAdv(1, $location[The Shore\, Inc. Travel Agency]);
 }
 
-boolean fortuneCookieEvent()
-{
-	//Semi-rare Handler
-	if(get_counters("Fortune Cookie", 0, 0) == "Fortune Cookie")
-	{
-		auto_log_info("Semi rare time!", "blue");
-		cli_execute("counters");
-
-		location goal = $location[The Hidden Temple];
-
-		if(in_community() && (my_daycount() == 1))
-		{
-			goal = $location[The Limerick Dungeon];
-		}
-
-		if (goal == $location[The Hidden Temple] && (get_property("semirareLocation") == goal || item_amount($item[stone wool]) >= 2 || internalQuestStatus("questL11Worship") >= 3 || get_property("lastTempleUnlock").to_int() < my_ascensions()))
-		{
-			goal = $location[The Castle in the Clouds in the Sky (Top Floor)];
-		}
-
-		if (goal == $location[The Castle in the Clouds in the Sky (Top Floor)] && (get_property("semirareLocation") == goal || item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || internalQuestStatus("questL10Garbage") < 9 || get_property("lastCastleTopUnlock").to_int() < my_ascensions() || get_property("sidequestNunsCompleted") != "none" || get_property("auto_skipNuns").to_boolean() || in_koe()))
-		{
-			goal = $location[The Limerick Dungeon];
-		}
-
-		if (goal == $location[The Limerick Dungeon] && (get_property("semirareLocation") == goal || item_amount($item[Cyclops Eyedrops]) > 0 || get_property("lastFilthClearance").to_int() >= my_ascensions() || get_property("sidequestOrchardCompleted") != "none" || get_property("currentHippyStore") != "none" || isActuallyEd() || in_koe() || item_amount($item[heart of the filthworm queen]) > 0))
-		{
-			goal = $location[The Copperhead Club];
-		}
-
-		if (goal == $location[The Copperhead Club] && (get_property("semirareLocation") == goal || internalQuestStatus("questL11Shen") < 0 || internalQuestStatus("questL11Ron") >= 2))
-		{
-			goal = $location[The Haunted Kitchen];
-		}
-
-		if (goal == $location[The Haunted Kitchen] && (get_property("semirareLocation") == goal || get_property("chasmBridgeProgress").to_int() >= 30 || internalQuestStatus("questL09Topping") >= 1 || isActuallyEd()))
-		{
-			goal = $location[The Outskirts of Cobb\'s Knob];
-		}
-
-		if (goal == $location[The Outskirts of Cobb\'s Knob] && (get_property("semirareLocation") == goal || internalQuestStatus("questL05Goblin") > 1 || item_amount($item[Knob Goblin encryption key]) > 0 || $location[The Outskirts of Cobb\'s Knob].turns_spent >= 10))
-		{
-			goal = $location[The Haunted Pantry];
-		}
-
-		if((goal == $location[The Haunted Pantry]) && (get_property("semirareLocation") == goal))
-		{
-			goal = $location[The Sleazy Back Alley];
-		}
-
-		if((goal == $location[The Sleazy Back Alley]) && (get_property("semirareLocation") == goal))
-		{
-			goal = $location[The Outskirts of Cobb\'s Knob];
-		}
-
-		if((goal == $location[The Outskirts of Cobb\'s Knob]) && (get_property("semirareLocation") == goal))
-		{
-			auto_log_warning("Do we not have access to either The Haunted Pantry or The Sleazy Back Alley?", "red");
-			goal = $location[The Haunted Pantry];
-		}
-		
-		if(in_plumber())
-		{
-			//prevent plumber crash when it tries to adventure without plumber gear.
-			plumber_equipTool($stat[moxie]);
-			equipMaximizedGear();
-		}
-		
-		boolean retval = autoAdv(goal);
-		return retval;
-	}
-	return false;
-}
-
 void initializeDay(int day)
 {
 	if(inAftercore())
@@ -755,8 +695,8 @@ void initializeDay(int day)
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
 
-	// Get emotionally chipped if you have the item.  boris\zombie slayer cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer())
+	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer() && !isActuallyEd())
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -779,8 +719,15 @@ void initializeDay(int day)
 	if(!in_hardcore() && get_property("auto_day_init").to_int() < day)
 	{
 		auto_log_info("Bulk caching mall prices for consumables");
-		mall_prices("food");
-		mall_prices("booze");
+		if(get_property("auto_last_mallcached") != today_to_string())
+		{
+			mall_prices("food");
+			mall_prices("booze");
+			set_property("auto_last_mallcached",today_to_string());	//should not cache food,booze again after starting a new ascension on the same day
+		}
+		//food,booze will explicitly request historical_price to avoid making individual mall searches, in case a new mafia session gets started
+		//hprestore and mprestore types corresponding with mall_prices search categories are not available. but it's not as many searches as food,booze
+		//so cache those again even in a new ascension in case it's getting started in a new session
 		mall_prices("hprestore");
 		mall_prices("mprestore");
 	}
@@ -845,10 +792,7 @@ void initializeDay(int day)
 						buyUpTo(1, $item[Toy Accordion]);
 					}
 				}
-				if(!possessEquipment($item[Turtle Totem]))
-				{
-					acquireGumItem($item[Turtle Totem]);
-				}
+				acquireTotem();
 				if(!possessEquipment($item[Saucepan]))
 				{
 					acquireGumItem($item[Saucepan]);
@@ -899,8 +843,7 @@ void initializeDay(int day)
 	else if(day == 2)
 	{
 		equipBaseline();
-		fortuneCookieEvent();
-
+		
 		if(get_property("auto_day_init").to_int() < 2)
 		{
 			if((item_amount($item[Tonic Djinn]) > 0) && !get_property("_tonicDjinn").to_boolean())
@@ -920,7 +863,7 @@ void initializeDay(int day)
 				pulverizeThing($item[Hairpiece On Fire]);
 				pulverizeThing($item[Vicar\'s Tutu]);
 			}
-			while(acquireHermitItem($item[Ten-Leaf Clover]));
+			while(acquireHermitItem($item[11-Leaf Clover]));
 			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber() || !in_glover()))
 			{
 				buyUpTo(1, $item[Antique Accordion]);
@@ -962,7 +905,7 @@ void initializeDay(int day)
 	{
 		if(get_property("auto_day_init").to_int() < 3)
 		{
-			while(acquireHermitItem($item[Ten-leaf Clover]));
+			while(acquireHermitItem($item[11-leaf Clover]));
 
 			picky_pulls();
 		}
@@ -971,7 +914,7 @@ void initializeDay(int day)
 	{
 		if(get_property("auto_day_init").to_int() < 4)
 		{
-			while(acquireHermitItem($item[Ten-leaf Clover]));
+			while(acquireHermitItem($item[11-leaf Clover]));
 		}
 	}
 	if(day >= 2)
@@ -994,11 +937,6 @@ void initializeDay(int day)
 	}
 
 	set_property("auto_forceNonCombatSource", "");
-
-	// Until KoL fix the utterly stupid bug that requires a manual visit to the fireworks shop
-	// before you can even buy anything from it, we will have to do this.
-	// Why is this so hard? Also why is this even a Clan VIP room item? It's just a shop which charges meat.
-	visit_url("clan_viplounge.php?action=fwshop");
 
 	set_property("auto_day_init", day);
 }
@@ -1327,6 +1265,11 @@ boolean adventureFailureHandler()
 		}
 
 		if ($locations[The Haunted Gallery] contains place && place.turns_spent < 100)
+		{
+			tooManyAdventures = false;
+		}
+
+		if ($locations[The Daily Dungeon] contains place && get_property("auto_forceFatLootToken").to_boolean())
 		{
 			tooManyAdventures = false;
 		}
@@ -1673,7 +1616,7 @@ boolean doTasks()
 	
 	print_header();
 
-	auto_interruptCheck();
+	auto_interruptCheck(false);
 
 	int delay = get_property("auto_delayTimer").to_int();
 	if(delay > 0)
@@ -1719,7 +1662,6 @@ boolean doTasks()
 	awol_buySkills();
 	awol_useStuff();
 	theSource_buySkills();
-	plumber_buyStuff();
 	jarlsberg_buySkills();
 	boris_buySkills();
 	pete_buySkills();
@@ -1745,6 +1687,7 @@ boolean doTasks()
 	asdonAutoFeed();
 	LX_craftAcquireItems();
 	auto_spoonTuneMoon();
+	auto_buyFireworksHat();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -1764,6 +1707,7 @@ boolean doTasks()
 	if(LM_kolhs()) 						return true;
 	if(LM_jarlsberg())					return true;
 	if(LM_robot())						return true;
+	if(LM_plumber())					return true;
 
 	if(!in_community())
 	{
@@ -1786,8 +1730,7 @@ boolean doTasks()
 		}
 	}
 
-	if(fortuneCookieEvent())			return true;
-	if(theSource_oracle())				return true;
+		if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
 	if(LX_ghostBusting())				return true;
 	if(witchessFights())					return true;
@@ -1921,8 +1864,6 @@ void auto_begin()
 		backupSetting("forbiddenStores", userForbidden + ",3408540"); // forbid Dance Police
 	}
 	
-	backupSetting("choiceAdventure1107", 1);
-
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))
 	{
@@ -1962,11 +1903,6 @@ void auto_begin()
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
 	while(doTasks())
 	{
-		if((my_fullness() >= fullness_limit()) && (my_inebriety() >= inebriety_limit()) && (my_spleen_use() == spleen_limit()) && (my_adventures() < 4) && (my_rain() >= 50) && (get_counters("Fortune Cookie", 0, 4) == "Fortune Cookie"))
-		{
-			abort("Manually handle, because we have fortune cookie and rain man colliding at the end of our day and we don't know quite what to do here");
-		}
-		#We save the last adventure for a rain man, damn it.
 		consumeStuff();
 	}
 

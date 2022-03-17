@@ -58,6 +58,10 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;
 	}
+	if(pulledToday(it))
+	{
+		return false;
+	}
 	
 	if(storage_amount(it) > 0)
 	{
@@ -99,22 +103,19 @@ boolean canPull(item it)
 	return canPull(it, false);
 }
 
-void pullAll(item it)
+boolean pulledToday(item it)
 {
-	if(storage_amount(it) > 0)
+	//autoscend property "auto_pulls" tracks pulls made by the script as "(" + my_daycount() + ":" + it
+	//kolmafia property "_roninStoragePulls" tracks all pulls made with kolmafia today since 2022 changed to daily limit of one pull for each item
+	string [int] allPulls = split_string(get_property("_roninStoragePulls"),",");
+	foreach i in allPulls
 	{
-		take_storage(storage_amount(it), it);
+		if(allPulls[i] == it.to_int())
+		{
+			return true;
+		}
 	}
-}
-
-void pullAndUse(item it, int uses)
-{
-	pullAll(it);
-	while((item_amount(it) > 0) && (uses > 0))
-	{
-		use(1, it);
-		uses = uses - 1;
-	}
+	return false;
 }
 
 int auto_mall_price(item it)
@@ -130,7 +131,19 @@ int auto_mall_price(item it)
 	}
 	if(is_tradeable(it))
 	{
-		int retval = mall_price(it);
+		int retval;
+		string it_type = item_type(it);
+		if(it_type == "food" || it_type == "booze")
+		{
+			//autoscend does Bulk cache mall prices for food,booze,hprestore,mprestore so mafia will give historical_price when asked for mall_price
+			//directly ask for historical_price here because if mafia session has to be restarted mafia will forget it has already cached these prices
+			//hprestore and mprestore types corresponding with mall_prices search categories are not available
+			retval = historical_price(it);
+		}
+		else
+		{
+			retval = mall_price(it);
+		}
 		if(retval == -1)
 		{
 			//0 could be due to item not being tradeable.
@@ -190,6 +203,10 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 		return false;
 	}
 	if(pulls_remaining() == 0)
+	{
+		return false;
+	}
+	if(pulledToday(it))
 	{
 		return false;
 	}
@@ -452,15 +469,37 @@ boolean acquireTotem()
 		}
 	}
 
-	//try fishing in the sewer for a turtle totem
-	
-	if(acquireGumItem($item[turtle totem]))
+	boolean want_totem = false;
+	foreach sk in $skills[Empathy of the Newt, Astral Shell, Ghostly Shell, Tenacity of the Snapper, Spiky Shell, Reptilian Fortitude, Jingle Bells, Curiosity of Br\'er Tarrypin]
 	{
-		return true;
+		if(auto_have_skill(sk))
+		{
+			want_totem = true;
+		}
+	}
+	if(want_totem)
+	{	
+		//try fishing in the sewer for a turtle totem
+		if(acquireGumItem($item[turtle totem]))
+		{
+			return true;
+		}
 	}
 	
-	//still could not get a totem. Give up
+	//did not get a totem. Give up
 	return false;
+}
+
+boolean auto_hermit(int amt, item it)
+{
+	//workaround for this bug https://kolmafia.us/threads/27105/
+	if(it != $item[11-Leaf Clover])
+	{
+		return hermit(amt, it);
+	}
+	int initial = item_amount(it);
+	catch hermit(amt, it);
+	return item_amount(it) == initial + amt;
 }
 
 boolean acquireHermitItem(item it)
@@ -477,11 +516,7 @@ boolean acquireHermitItem(item it)
 	{
 		return false;
 	}
-	if(it == $item[Disassembled Clover])
-	{
-		it = $item[Ten-leaf Clover];
-	}
-	if(!($items[Banjo Strings, Catsup, Chisel, Figurine of an Ancient Seal, Hot Buttered Roll, Jaba&ntilde;ero Pepper, Ketchup, Petrified Noodles, Seal Tooth, Ten-Leaf Clover, Volleyball, Wooden Figurine] contains it))
+	if(!($items[Banjo Strings, Catsup, Chisel, Figurine of an Ancient Seal, Hot Buttered Roll, Jaba&ntilde;ero Pepper, Ketchup, Petrified Noodles, Seal Tooth, 11-Leaf Clover, Volleyball, Wooden Figurine] contains it))
 	{
 		return false;
 	}
@@ -499,29 +534,9 @@ boolean acquireHermitItem(item it)
 	{
 		if((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)
 		{
-			if(it == $item[Ten-Leaf Clover])
-			{
-				have = item_amount($item[Disassembled Clover]);
-			}
-			if(!hermit(1, it))
+			if(!auto_hermit(1, it))
 			{
 				return false;
-			}
-			if(it == $item[Ten-Leaf Clover])
-			{
-				if(have == item_amount($item[Disassembled Clover]))
-				{
-					return false;
-				}
-				else if((have + 1) == item_amount($item[Disassembled Clover]))
-				{
-					return true;
-				}
-				else
-				{
-					auto_log_warning("Invalid clover count from hermit behavior, reporting failure.", "red");
-					return false;
-				}
 			}
 		}
 		else
@@ -592,6 +607,10 @@ int handlePulls(int day)
 	if(item_amount($item[Astral Hot Dog Dinner]) > 0)
 	{
 		use(1, $item[Astral Hot Dog Dinner]);
+	}
+	if(item_amount($item[[10882]carton of astral energy drinks]) > 0)
+	{
+		use(1, $item[[10882]carton of astral energy drinks]);
 	}
 
 	if(in_hardcore())
@@ -751,7 +770,10 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[snow suit], 1, 0);
 			}
-			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Filthy Child Leash]))
+			boolean famStatEq = possessEquipment($item[fuzzy polar bear ears]) || possessEquipment($item[miniature goose mask]) || possessEquipment($item[tiny glowing red nose]);
+			
+			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) &&
+			!famStatEq && glover_usable($item[Filthy Child Leash]))
 			{
 				pullXWhenHaveY($item[Filthy Child Leash], 1, 0);
 			}
@@ -821,11 +843,6 @@ int handlePulls(int day)
 
 boolean LX_craftAcquireItems()
 {
-	if((item_amount($item[Ten-Leaf Clover]) > 0) && glover_usable($item[Ten-Leaf Clover]))
-	{
-		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
-	}
-
 	if((get_property("lastGoofballBuy").to_int() != my_ascensions()) && (internalQuestStatus("questL03Rat") >= 0))
 	{
 		visit_url("place.php?whichplace=woods");
@@ -890,9 +907,9 @@ boolean LX_craftAcquireItems()
 	{
 		boolean buyAntiqueAccordion = false;
 
-	foreach SongCheck in ATSongList()
+		foreach SongCheck in ATSongList()
 		{
-			if(have_skill(SongCheck))
+			if(have_skill(SongCheck.to_skill()))
 			{
 				buyAntiqueAccordion = true;
 			}

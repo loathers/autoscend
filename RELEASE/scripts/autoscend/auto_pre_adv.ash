@@ -91,7 +91,8 @@ void auto_ghost_prep(location place)
 		Saucestorm, saucegeyser,	//base classes
 		Storm of the Scarab,		//actually ed the undying
 		Boil,						//avatar of jarlsberg
-		Bilious Burst				//zombie slayer
+		Bilious Burst,				//zombie slayer
+		Heroic Belch				//avatar of boris
 		]
 	{
 		if(auto_have_skill(sk))
@@ -181,12 +182,11 @@ boolean auto_pre_adventure()
 
 	if(get_floundry_locations() contains place)
 	{
-		buffMaintain($effect[Baited Hook], 0, 1, 1);
+		buffMaintain($effect[Baited Hook]);
 	}
 
 	// be ready to use red rocket if we don't have one
-	if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
-		get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
+	if(have_fireworks_shop() &&							// in a clan that has the Underground Fireworks Shop
 		item_amount($item[red rocket]) == 0 &&			// Don't buy if we already have one
 		auto_is_valid($item[red rocket]) &&				// or if it's not valid
 		can_eat() &&									// be in a path that can eat
@@ -204,12 +204,16 @@ boolean auto_pre_adventure()
 	{
 		uneffect($effect[Spiky Shell]);
 		uneffect($effect[Scarysauce]);
+		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
+	boolean junkyardML;
 	if($locations[Next to that Barrel with something Burning In It, Near an Abandoned Refrigerator, Over where the Old Tires Are, Out by that Rusted-Out Car] contains place)
 	{
+		junkyardML = true;
 		uneffect($effect[Spiky Shell]);
 		uneffect($effect[Scarysauce]);
+		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
 	if(is_boris())
@@ -274,8 +278,9 @@ boolean auto_pre_adventure()
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
+	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !burningDelay && !auto_haveQueuedForcedNonCombat()) {
+	if (combatModifier._boolean && !burningDelay && !gettingLucky && !auto_haveQueuedForcedNonCombat()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
@@ -501,7 +506,36 @@ boolean auto_pre_adventure()
 		}
 		if(itemDrop < itemNeed._float)
 		{
-			auto_log_debug("We can't cap this drop bear!", "purple");
+			//if general item modifier isn't enough check specific item drop bonus
+			generic_t itemFoodNeed = zone_needItemFood(place);
+			generic_t itemBoozeNeed = zone_needItemBooze(place);
+			float itemDropFood = itemDrop + simValue("Food Drop");
+			float itemDropBooze = itemDrop + simValue("Booze Drop");
+			if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
+			{
+				auto_log_debug("Trying food drop supplements");
+				//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
+				addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
+				simMaximize();
+				itemDropFood = simValue("Item Drop") + simValue("Food Drop");
+			}
+			if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
+			{
+				auto_log_debug("Trying booze drop supplements");
+				addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
+				simMaximize();
+				itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
+				//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
+			}
+			if((itemFoodNeed._boolean && itemDropFood >= itemFoodNeed._float) ||
+			(itemBoozeNeed._boolean && itemDropBooze >= itemBoozeNeed._float))
+			{
+				//the needed item was Food/Booze and need has been met with specific bonus
+			}
+			else
+			{
+				auto_log_debug("We can't cap this drop bear!", "purple");
+			}
 		}
 	}
 
@@ -510,7 +544,7 @@ boolean auto_pre_adventure()
 	//	Casting before ML variation ensures that this, the more important buff, is cast before ML.
 	if(auto_predictAccordionTurns() >= 8)
 	{
-		buffMaintain($effect[Paul\'s Passionate Pop Song], 0, 1, 1);
+		buffMaintain($effect[Paul\'s Passionate Pop Song]);
 	}
 
 	// ML adjustment zone section
@@ -546,8 +580,16 @@ boolean auto_pre_adventure()
 		purgeML = false;
 	}
 
-	// Item specific Conditions
-	if((equipped_amount($item[Space Trip Safety Headphones]) > 0) || (equipped_amount($item[Red Badge]) > 0))
+	// Backup Camera copies have double ML applied. Reduce ML to avoid getting beaten up
+	if(auto_backupTarget())
+	{
+		doML = false;
+		removeML = true;
+		purgeML = false;
+	}
+	
+	// Gremlins specific. need to let them hit so avoid ML unless defense is very high
+	if(junkyardML && my_buffedstat($stat[moxie]) < (2*monster_attack($monster[erudite gremlin])))
 	{
 		doML = false;
 		removeML = true;
@@ -645,7 +687,7 @@ boolean auto_pre_adventure()
 	else
 	{
 		// Last minute MCD alterations if Limit set, otherwise trust maximizer
-		if(get_property("auto_MLSafetyLimit") != "")
+		if(get_property("auto_MLSafetyLimit") != "" && !removeML)
 		{
 			auto_setMCDToCap();
 		}

@@ -174,6 +174,21 @@ boolean LX_getDigitalKey()
 	return adv_spent;
 }
 
+void LX_buyStarKeyParts()
+{
+	if(item_amount($item[Richard\'s Star Key]) > 0 || get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	{
+		return;	//already have it
+	}
+	if(!can_interact())
+	{
+		return;	//no unrestricted mall access
+	}
+	buyUpTo(1, $item[Star Chart], 1000);
+	buyUpTo(8, $item[Star], 1000);
+	buyUpTo(7, $item[line], 1000);
+}
+
 boolean LX_getStarKey()
 {
 	if(!get_property("auto_getStarKey").to_boolean())
@@ -201,8 +216,11 @@ boolean LX_getStarKey()
 		return false;
 	}
 	
+	LX_buyStarKeyParts();
+
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
-	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key") && 
+	item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
 	{
 		pullXWhenHaveY($item[Star Chart], 1, 0);
 	}
@@ -474,13 +492,13 @@ boolean L13_towerNSContests()
 				autoMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
 			}
 
-			if(crowd3Insufficient()) buffMaintain($effect[All Glory To the Toad], 0, 1, 1);
+			if(crowd3Insufficient()) buffMaintain($effect[All Glory To the Toad]);
 			if(crowd3Insufficient()) buffMaintain($effect[Bendin\' Hell], 120, 1, 1);
 			switch(challenge)
 			{
 			case $element[cold]:
 				if(crowd3Insufficient()) auto_beachCombHead("cold");
-				if(crowd3Insufficient()) buffMaintain($effect[Cold Hard Skin], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Cold Hard Skin]);
 				if(crowd3Insufficient()) buffMaintain($effect[Frostbeard], 15, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Icy Glare], 10, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Song of the North], 100, 1, 1);
@@ -488,34 +506,36 @@ boolean L13_towerNSContests()
 			case $element[hot]:
 				if(crowd3Insufficient()) auto_beachCombHead("hot");
 				if(crowd3Insufficient()) buffMaintain($effect[Song of Sauce], 100, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Flamibili Tea], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Flaming Weapon], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Human-Demon Hybrid], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Lit Up], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Fire Inside], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Flamibili Tea]);
+				if(crowd3Insufficient()) buffMaintain($effect[Flaming Weapon]);
+				if(crowd3Insufficient()) buffMaintain($effect[Human-Demon Hybrid]);
+				if(crowd3Insufficient()) buffMaintain($effect[Lit Up]);
+				if(crowd3Insufficient()) buffMaintain($effect[Fire Inside]);
 				if(crowd3Insufficient()) buffMaintain($effect[Pyromania], 15, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Your Fifteen Minutes], 50, 1, 1);
 				break;
 			case $element[sleaze]:
 				if(crowd3Insufficient()) auto_beachCombHead("sleaze");
 				if(crowd3Insufficient()) buffMaintain($effect[Takin\' It Greasy], 15, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Blood-Gorged], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Greasy Peasy], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Blood-Gorged]);
+				if(crowd3Insufficient()) buffMaintain($effect[Greasy Peasy]);
 				break;
 			case $element[stench]:
 				if(crowd3Insufficient()) auto_beachCombHead("stench");
-				if(crowd3Insufficient()) buffMaintain($effect[Drenched With Filth], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Musky], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Stinky Hands], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Stinky Weapon], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Drenched With Filth]);
+				if(crowd3Insufficient()) buffMaintain($effect[Musky]);
+				if(crowd3Insufficient()) buffMaintain($effect[Stinky Hands]);
+				if(crowd3Insufficient()) buffMaintain($effect[Stinky Weapon]);
 				if(crowd3Insufficient()) buffMaintain($effect[Rotten Memories], 15, 1, 1);
 				break;
 			case $element[spooky]:
 				if(crowd3Insufficient()) auto_beachCombHead("spooky");
-				if(crowd3Insufficient()) buffMaintain($effect[Spooky Hands], 0, 1, 1);
-				if(crowd3Insufficient()) buffMaintain($effect[Spooky Weapon], 0, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Spooky Hands]);
+				if(crowd3Insufficient()) buffMaintain($effect[Spooky Weapon]);
+				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness (Remastered)]);
 				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Intimidating Mien], 15, 1, 1);
+				if(crowd3Insufficient()) buffMaintain($effect[Snarl of Three Timberwolves]);
 				if(crowd3Insufficient()) buffMaintain($effect[Snarl of the Timberwolf], 10, 1, 1);
 				break;
 			}
@@ -1084,10 +1104,14 @@ boolean L13_towerNSTower()
 
 			if(!familiarEquipped)
 			{
-				if(autoEquip($item[tiny bowler]))
+				foreach it in $items[filthy child leash,tiny bowler]
 				{
-					sourcesPassive += 1;	//todo: confirm this damage only counts after getting hit, not with familiar damage
-					familiarEquipped = true;
+					if(autoEquip(it))
+					{
+						sourcesPassive += 1;	//todo: confirm this damage only counts after getting hit, not with familiar damage
+						familiarEquipped = true;
+						break;
+					}
 				}
 				if(!familiarEquipped)
 				{
@@ -1103,10 +1127,14 @@ boolean L13_towerNSTower()
 				}
 				if(!familiarEquipped)
 				{
-					if(autoEquip($item[plastic pumpkin bucket]))
+					foreach it in $items[plastic pumpkin bucket,moveable feast]
 					{
-						//attacks ~35% of the time?
-						familiarEquipped = true;
+						if(autoEquip(it))
+						{
+							//attacks ~35% of the time?
+							familiarEquipped = true;
+							break;
+						}
 					}
 				}
 			}
@@ -1171,7 +1199,7 @@ boolean L13_towerNSTower()
 			}
 			else if(!willNeedToRemoveEffects && item_amount($item[glob of spoiled mayo]) > 0)
 			{
-				if(buffMaintain($effect[Mayeaugh], 0, 1, 1))
+				if(buffMaintain($effect[Mayeaugh]))
 				{
 					sourcesPassive += 1;
 				}
@@ -1182,30 +1210,35 @@ boolean L13_towerNSTower()
 			}
 			else if(!willNeedToRemoveEffects && auto_canFeelNervous())
 			{
-				if(buffMaintain($effect[Feeling Nervous], 0, 1, 1))
+				if(buffMaintain($effect[Feeling Nervous]))
 				{
 					sourcesReactive += 1;
 				}
 			}
 			
+			buffMaintain($effect[Scariersauce]);
+			if(have_effect($effect[Scariersauce]) > 0)
+			{
+				sourcesReactive += 1;
+			}
 			if(have_skill($skill[Scarysauce]))
 			{
-				buffMaintain($effect[Scarysauce], 0, 1, 1);
+				buffMaintain($effect[Scarysauce]);
 				sourcesReactive += 1;
 			}
 			if(have_skill($skill[Spiky Shell]))
 			{
-				buffMaintain($effect[Spiky Shell], 0, 1, 1);
+				buffMaintain($effect[Spiky Shell]);
 				sourcesReactive += 1;
 			}
 			if(have_skill($skill[Jalape&ntilde;o Saucesphere]))
 			{
-				buffMaintain($effect[Jalape&ntilde;o Saucesphere], 0, 1, 1);
+				buffMaintain($effect[Jalape&ntilde;o Saucesphere]);
 				sourcesReactive += 1;
 			}
 			if(have_skill($skill[The Psalm of Pointiness]))
 			{
-				buffMaintain($effect[Psalm of Pointiness], 0, 1, 1);
+				buffMaintain($effect[Psalm of Pointiness]);
 				sourcesReactive += 1;
 			}
 			autoEquip($slot[acc2], $item[world\'s best adventurer sash]);
@@ -1274,7 +1307,7 @@ boolean L13_towerNSTower()
 					{
 						if(ef == $effect[Mayeaugh] && item_amount($item[glob of spoiled mayo]) > 0)
 						{
-							if(buffMaintain(ef, 0, 1, 1))
+							if(buffMaintain(ef))
 							{
 								sourcesPassive += 1;
 								damageSecured += 3 + extraRoundsFromBlocking;
@@ -1283,7 +1316,7 @@ boolean L13_towerNSTower()
 						}
 						else if(ef == $effect[Feeling Nervous] && auto_canFeelNervous())
 						{
-							if(buffMaintain(ef, 0, 1, 1))
+							if(buffMaintain(ef))
 							{
 								sourcesReactive += 1;
 								damageSecured += 3;
@@ -1350,19 +1383,19 @@ boolean L13_towerNSTower()
 		}
 		equipBaseline();
 		shrugAT($effect[Polka of Plenty]);
-		buffMaintain($effect[Disco Leer], 0, 1, 1);
-		buffMaintain($effect[Polka of Plenty], 0, 1, 1);
-		buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
-		buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
-		buffMaintain($effect[Patent Avarice], 0, 1, 1);
+		buffMaintain($effect[Disco Leer]);
+		buffMaintain($effect[Polka of Plenty]);
+		buffMaintain($effect[Cranberry Cordiality]);
+		buffMaintain($effect[Big Meat Big Prizes]);
+		buffMaintain($effect[Patent Avarice]);
 		bat_formWolf();
 		if(auto_birdModifier("Meat Drop") > 0)
 		{
-			buffMaintain($effect[Blessing of the Bird], 0, 1, 1);
+			buffMaintain($effect[Blessing of the Bird]);
 		}
 		if(auto_favoriteBirdModifier("Meat Drop") > 0)
 		{
-			buffMaintain($effect[Blessing of Your Favorite Bird], 0, 1, 1);
+			buffMaintain($effect[Blessing of Your Favorite Bird]);
 		}
 		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 		{
@@ -1405,6 +1438,11 @@ boolean L13_towerNSTower()
 		{
 			set_property("auto_getBoningKnife", true);		//can not towerkill. get boning knife instead
 		}
+		if(!uneffect($effect[Scariersauce]))
+		{
+			//passive dmg prevents tower kill. we can not uneffect it so get boning knife instead
+			set_property("auto_getBoningKnife", true);
+		}
 		
 		if(get_property("auto_getBoningKnife").to_boolean())	//grab boning knife if we deemed it necessary
 		{
@@ -1423,13 +1461,13 @@ boolean L13_towerNSTower()
 		uneffect($effect[Psalm of Pointiness]);
 		uneffect($effect[Mayeaugh]);
 		uneffect($effect[Feeling Nervous]);
-		buffMaintain($effect[Tomato Power], 0, 1, 1);
-		buffMaintain($effect[Seeing Colors], 0, 1, 1);
-		buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
-		buffMaintain($effect[OMG WTF], 0, 1, 1);
-		buffMaintain($effect[There is a Spoon], 0, 1, 1);
-		buffMaintain($effect[Song of Sauce], 0, 1, 1);
-		buffMaintain($effect[Carol of the Hells], 0, 1, 1);
+		buffMaintain($effect[Tomato Power]);
+		buffMaintain($effect[Seeing Colors]);
+		buffMaintain($effect[Glittering Eyelashes]);
+		buffMaintain($effect[OMG WTF]);
+		buffMaintain($effect[There is a Spoon]);
+		buffMaintain($effect[Song of Sauce]);
+		buffMaintain($effect[Carol of the Hells]);
 		
 		// Maximizer tries to force familiar equipment. and prefers passive dmg a that. Avoid dealing damage from familiar and losing
 		if(canChangeFamiliar())
@@ -1493,11 +1531,11 @@ boolean L13_towerNSTower()
 		}
 		if(my_maxhp() < 800)
 		{
-			buffMaintain($effect[Industrial Strength Starch], 0, 1, 1);
-			buffMaintain($effect[Truly Gritty], 0, 1, 1);
-			buffMaintain($effect[Superheroic], 0, 1, 1);
-			buffMaintain($effect[Strong Grip], 0, 1, 1);
-			buffMaintain($effect[Spiky Hair], 0, 1, 1);
+			buffMaintain($effect[Industrial Strength Starch]);
+			buffMaintain($effect[Truly Gritty]);
+			buffMaintain($effect[Superheroic]);
+			buffMaintain($effect[Strong Grip]);
+			buffMaintain($effect[Spiky Hair]);
 		}
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
 		acquireHP();
@@ -1518,12 +1556,7 @@ boolean L13_towerNSTower()
 			int pulled_items = 0;
 			foreach it in $items[gauze garter, filthy poultice, red pixel potion]
 			{
-				while(pulled_items < pull_target && canPull(it))
-				{
-						take_storage(1, it);
-						pulled_items += 1;
-				}
-			
+				pullXWhenHaveY(it,1,item_amount(it));
 			}
 
 			int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
@@ -1706,7 +1739,7 @@ boolean L13_towerNSNagamar()
 		cli_execute("refresh quests");
 		if(internalQuestStatus("questL13Final") != 12)
 		{
-			abort("In this specific ascension [naughty sorceress \(3\)] is wearing a mask that makes kol base game fail to advance the quest to step 12. Which means that bear verb orgy is impossible for this specific run. Manually grab a [Ten-Leaf Clover] from [Barrel Full of Barrels] then use it to get a [Wand of Nagamar] manually and run me again");
+			abort("In this specific ascension [naughty sorceress \(3\)] is wearing a mask that makes kol base game fail to advance the quest to step 12. Which means that bear verb orgy is impossible for this specific run. Manually get the [Lucky!] effect then use it to get a [Wand of Nagamar] manually and run me again");
 		}
 	}
 	
@@ -1723,15 +1756,6 @@ boolean L13_towerNSNagamar()
 	if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12 && !in_koe())
 	{
 		return autoAdv($location[The VERY Unquiet Garves]);
-	}
-	
-	if(in_glover())
-	{
-		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
-	}
-	else
-	{
-		pullXWhenHaveY($item[Disassembled Clover], 1, 0);
 	}
 	
 	if(cloversAvailable() > 0)

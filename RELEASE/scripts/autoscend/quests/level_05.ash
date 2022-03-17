@@ -1,12 +1,12 @@
-//L5 quest progress notes:
-//unstarted
-//started == acquired [Cobb's Knob map] from council
-//step1 == used [Cobb's Knob map] with [Knob Goblin encryption key] to unlock internal zones.
-//finished == killed the king. you still need to visit council afterwards to get rewarded.
+// L5 quest progress notes:
+// unstarted
+// started == acquired [Cobb's Knob map] from council
+// step1 == used [Cobb's Knob map] with [Knob Goblin encryption key] to unlock internal zones.
+// finished == killed the king. you still need to visit council afterwards to get rewarded.
 
 boolean L5_getEncryptionKey()
 {
-	if (internalQuestStatus("questL05Goblin") != 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
+	if(internalQuestStatus("questL05Goblin") != 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
 	{
 		return false;
 	}
@@ -16,14 +16,8 @@ boolean L5_getEncryptionKey()
 		return true;
 	}
 
-	// Defer if we can line up with the first semi-rare window to get a lunchbox
-	// Only if we don't have a fortune cookie counter
-	if (my_turncount() < 70 && !contains_text(get_counters("Fortune Cookie", 0, 80 - my_turncount()), "Fortune Cookie") && $location[The Outskirts of Cobb's Knob].turns_spent < 10)
-	{
-		return false;
-	}
 
-	if (canBurnDelay($location[The Outskirts of Cobb's Knob]))
+	if(canBurnDelay($location[The Outskirts of Cobb's Knob]))
 	{
 		return false;
 	}
@@ -42,11 +36,11 @@ boolean L5_getEncryptionKey()
 
 boolean L5_findKnob()
 {
-	if (internalQuestStatus("questL05Goblin") != 0)
+	if(internalQuestStatus("questL05Goblin") != 0)
 	{
 		return false;
 	}
-	if (item_amount($item[Knob Goblin Encryption Key]) == 1)
+	if(item_amount($item[Knob Goblin Encryption Key]) == 1)
 	{
 		if(item_amount($item[Cobb\'s Knob Map]) == 0)
 		{
@@ -64,7 +58,7 @@ boolean L5_haremOutfit()
 	{
 		return false;
 	}
-	if (possessOutfit("Knob Goblin Harem Girl Disguise"))
+	if(possessOutfit("Knob Goblin Harem Girl Disguise"))
 	{
 		return false;
 	}
@@ -79,12 +73,13 @@ boolean L5_haremOutfit()
 
 	if(in_heavyrains())
 	{
-		buffMaintain($effect[Fishy Whiskers], 0, 1, 1);
+		buffMaintain($effect[Fishy Whiskers]);
 	}
 	bat_formBats();
 
 	auto_log_info("Looking for some sexy lingerie!", "blue");
-	if (autoAdv($location[Cobb\'s Knob Harem])) {
+	if(autoAdv($location[Cobb\'s Knob Harem]))
+	{
 		return true;
 	}
 	return false;
@@ -96,7 +91,7 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
-	if (my_level() < 8 && !isAboutToPowerlevel()) // needs to be changed to check if we'll survive
+	if(my_level() < 8 && !isAboutToPowerlevel()) // needs to be changed to check if we'll survive
 	{
 		return false;
 	}
@@ -104,17 +99,14 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
-	if(get_counters("Fortune Cookie", 0, 3) == "Fortune Cookie")
-	{
-		return false;
-	}
+
 	if(!possessOutfit("Knob Goblin Harem Girl Disguise"))
 	{
 		return false;
 	}
 	if(robot_delay("outfit"))
 	{
-		return false;	//delay for You, Robot path
+		return false; // delay for You, Robot path
 	}
 
 	auto_log_info("Death to the gobbo!!", "blue");
@@ -122,11 +114,11 @@ boolean L5_goblinKing()
 	{
 		abort("Could not put on Knob Goblin Harem Girl Disguise, aborting");
 	}
-	buffMaintain($effect[Knob Goblin Perfume], 0, 1, 1);
+	buffMaintain($effect[Knob Goblin Perfume]);
 	if(have_effect($effect[Knob Goblin Perfume]) == 0)
 	{
 		boolean advSpent = autoAdv($location[Cobb\'s Knob Harem]);
-		if (have_effect($effect[Knob Goblin Perfume]) == 0)
+		if(have_effect($effect[Knob Goblin Perfume]) == 0)
 		{
 			advSpent = autoAdv($location[Cobb\'s Knob Harem]);
 		}
@@ -136,19 +128,19 @@ boolean L5_goblinKing()
 	if(my_primestat() == $stat[Muscle])
 	{
 		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
-		buffMaintain($effect[Go Get \'Em\, Tiger!], 0, 1, 1);
+		buffMaintain($effect[Go Get \'Em\, Tiger!]);
 	}
 	buyUpTo(1, $item[Hair Spray]);
-	buffMaintain($effect[Butt-Rock Hair], 0, 1, 1);
+	buffMaintain($effect[Butt-Rock Hair]);
 
 	if((my_class() == $class[Seal Clubber]) || (my_class() == $class[Turtle Tamer]))
 	{
 		buyUpTo(1, $item[Blood of the Wereseal]);
-		buffMaintain($effect[Temporary Lycanthropy], 0, 1, 1);
+		buffMaintain($effect[Temporary Lycanthropy]);
 	}
 
 	// TODO: I died here, maybe we should heal a bit?
-	if (!in_plumber())
+	if(!in_plumber())
 	{
 		auto_change_mcd(10); // get the Crown from the Goblin King.
 	}
@@ -163,6 +155,9 @@ boolean L5_goblinKing()
 
 boolean L5_slayTheGoblinKing()
 {
-	if (L5_getEncryptionKey() || L5_findKnob() || L5_haremOutfit() || L5_goblinKing()) {  return true; }
+	if(L5_getEncryptionKey() || L5_findKnob() || L5_haremOutfit() || L5_goblinKing())
+	{
+		return true;
+	}
 	return false;
 }

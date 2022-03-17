@@ -579,7 +579,7 @@ boolean chateauPainting()
 	{
 		paintingLevel = 9;
 	}
-	if (my_level() >= paintingLevel && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && isActuallyEd() && my_daycount() <= 3)
+	if(my_level() >= paintingLevel && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && isActuallyEd() && my_daycount() <= 3)
 	{
 		if(canYellowRay())
 		{
@@ -591,7 +591,7 @@ boolean chateauPainting()
 		}
 	}
 
-	if (organsFull() && my_adventures() < 10 && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && my_daycount() == 1 && !isActuallyEd())
+	if(organsFull() && my_adventures() < 10 && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && my_daycount() == 1 && !isActuallyEd())
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 		if(chateaumantegna_usePainting())
@@ -599,7 +599,7 @@ boolean chateauPainting()
 			return true;
 		}
 	}
-	if (my_level() >= 8 && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && my_daycount() == 2 && !isActuallyEd())
+	if(my_level() >= 8 && chateaumantegna_havePainting() && !get_property("chateauMonsterFought").to_boolean() && my_daycount() == 2 && !isActuallyEd())
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
 		if(chateaumantegna_usePainting())
@@ -844,7 +844,7 @@ boolean deck_useScheme(string action)
 	else if(action == "turns")
 	{
 		cards = $strings[Ancestral Recall, Island];
-		if (needOre())
+		if(needOre())
 		{
 			cards = $strings[Ancestral Recall, Island, Mine];
 		}
@@ -1177,7 +1177,7 @@ boolean resolveSixthDMT()
 	{
 		return false;
 	}
-	if ($location[The Deep Machine Tunnels].turns_spent != 5)
+	if($location[The Deep Machine Tunnels].turns_spent != 5)
 	// need to figure out the exact schedule for 2nd and later occurences then add it here.
 	{
 		return false;
@@ -1215,7 +1215,34 @@ boolean LX_dinseylandfillFunbucks()
 		# We do this after the item check since we may have an extra bag and we should turn that in.
 		return false;
 	}
-	buffMaintain($effect[How to Scam Tourists], 0, 1, 1);
+	buffMaintain($effect[How to Scam Tourists]);
 	autoAdv(1, $location[Barf Mountain]);
 	return true;
+}
+
+void doghouseChoiceHandler(int choice)
+{
+	if(choice == 1106) // Wooof! Wooooooof! (Ghost Dog)
+	{
+		if((in_hardcore() && have_effect($effect[Adventurer\'s Best Friendship]) > 120) || ((have_effect($effect[Adventurer\'s Best Friendship]) > 30) && pathHasFamiliar()))
+		{
+			run_choice(3); // ghost dog chow
+		}
+		else
+		{
+			run_choice(2); // 30 turns of adventurer's best friendship
+		}
+	}
+	else if(choice == 1107) // Playing Fetch (Ghost Dog)
+	{
+		run_choice(1); // get tennis ball
+	}
+	else if(choice == 1108) // Your Dog Found Something Again (Ghost Dog)
+	{
+		run_choice(3); // get other stuff as recommended by ASS
+	}
+	else
+	{
+		abort("unhandled choice in doghouseChoiceHandler");
+	}
 }

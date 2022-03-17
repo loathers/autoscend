@@ -8,7 +8,6 @@ void awol_combat_helper(string page)
 		set_property("auto_noSnakeOil", 0);
 	}
 
-	string combatState = get_property("auto_combatHandler");
 	if(contains_text(page, "Your oil extractor is completely clogged up at this point"))
 	{
 		set_property("auto_noSnakeOil", my_daycount());
@@ -18,8 +17,8 @@ void awol_combat_helper(string page)
 		set_property("auto_noSnakeOil", my_daycount());
 	}
 
-	if((!contains_text(combatState, "extractSnakeOil")) && (get_property("auto_noSnakeOil").to_int() == my_daycount()))
+	if(!combat_status_check("extractSnakeOil") && (get_property("auto_noSnakeOil").to_int() == my_daycount()))
 	{
-		set_property("auto_combatHandler", combatState + "(extractSnakeOil)");
+		combat_status_add("extractSnakeOil");
 	}
 }

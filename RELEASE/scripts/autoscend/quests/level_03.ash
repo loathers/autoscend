@@ -1,6 +1,6 @@
 boolean auto_tavern()
 {
-	if (internalQuestStatus("questL03Rat") != 1)
+	if(internalQuestStatus("questL03Rat") != 1)
 	{
 		return false;
 	}
@@ -14,12 +14,12 @@ boolean auto_tavern()
 	auto_log_info("In the tavern! Layout: " + get_property("tavernLayout"), "blue");
 	boolean [int] locations = $ints[3, 2, 1, 0, 5, 10, 15, 20, 16, 21];
 
-	// Infrequent compunding issue, reset maximizer
+	// infrequent compounding issue, reset maximizer
 	resetMaximize();
 
 	boolean maximized = false;
-	//Sleaze is the only one we don't care about
-	if (possessEquipment($item[Kremlin\'s Greatest Briefcase]))
+	// sleaze is the only one we don't care about
+	if(possessEquipment($item[Kremlin\'s Greatest Briefcase]))
 	{
 		string mod = string_modifier($item[Kremlin\'s Greatest Briefcase], "Modifiers");
 		if(contains_text(mod, "Weapon Damage Percent"))
@@ -61,12 +61,14 @@ boolean auto_tavern()
 		}
 		else
 		{
+			buffMaintain($effect[Dirge of Dreadfulness (Remastered)]);
 			buffMaintain($effect[Dirge of Dreadfulness], 20, 1, 1);
+			buffMaintain($effect[Snarl of Three Timberwolves]);
 			buffMaintain($effect[Snarl of the Timberwolf], 20, 1, 1);
 		}
 	}
 
-	if (!isActuallyEd() && monster_level_adjustment() <= 299)
+	if(!isActuallyEd() && monster_level_adjustment() <= 299)
 	{
 		auto_MaxMLToCap(auto_convertDesiredML(150), true);
 	}
@@ -85,12 +87,13 @@ boolean auto_tavern()
 
 	if(!maximized)
 	{
-		// Tails are a better time saving investment
+		// tails are a better time saving investment
 		addToMaximize("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max");
 		simMaximize($location[Noob Cave]);
 		maximized = true;
 	}
-	int [string] eleChoiceCombos = {
+	int [string] eleChoiceCombos =
+	{
 		"Cold": 513,
 		"Hot": 496,
 		"Spooky": 515,
@@ -188,12 +191,12 @@ boolean auto_tavern()
 
 boolean L3_tavern()
 {
-	if (internalQuestStatus("questL03Rat") < 0 || internalQuestStatus("questL03Rat") > 2)
+	if(internalQuestStatus("questL03Rat") < 0 || internalQuestStatus("questL03Rat") > 2)
 	{
 		return false;
 	}
 
-	if (internalQuestStatus("questL03Rat") < 1)
+	if(internalQuestStatus("questL03Rat") < 1)
 	{
 		visit_url("tavern.php?place=barkeep");
 	}
@@ -244,12 +247,12 @@ boolean L3_tavern()
 
 	auto_setMCDToCap();
 
-	if (auto_tavern())
+	if(auto_tavern())
 	{
 		return true;
 	}
 
-	if (internalQuestStatus("questL03Rat") > 1)
+	if(internalQuestStatus("questL03Rat") > 1)
 	{
 		visit_url("tavern.php?place=barkeep");
 		council();

@@ -68,6 +68,7 @@ boolean LX_koeInvaderHandler()
 
 	buffMaintain($effect[Astral Shell], 10, 1, 1);
 	buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
+	buffMaintain($effect[Scariersauce], 10, 1, 1);
 	buffMaintain($effect[Scarysauce], 10, 1, 1);
 
 	resetMaximize();
@@ -106,7 +107,7 @@ boolean LX_koeInvaderHandler()
 			setFlavour($element[cold]);
 			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
 			buffMaintain($effect[Song of Sauce], 150, 1, 1);
-			buffMaintain($effect[Glittering Eyelashes], 0, 1, 1);
+			buffMaintain($effect[Glittering Eyelashes]);
 			acquireMP(100, 0);
 
 			// Use maximizer now that we are for sure fighting the Invader

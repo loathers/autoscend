@@ -205,7 +205,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(in_bhy() || in_pokefam())
+	if(in_bhy() || in_pokefam() || in_glover())
 	{
 		return advCost;
 	}
@@ -895,24 +895,24 @@ boolean L12_filthworms()
 	}
 	else		//could not guarentee stealing. buff item drops instead
 	{
-		buffMaintain($effect[Joyful Resolve], 0, 1, 1);
-		buffMaintain($effect[Kindly Resolve], 0, 1, 1);
-		buffMaintain($effect[Fortunate Resolve], 0, 1, 1);
-		buffMaintain($effect[One Very Clear Eye], 0, 1, 1);
-		buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
-		buffMaintain($effect[Human-Human Hybrid], 0, 1, 1);
-		buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
-		buffMaintain($effect[Unusual Perspective], 0, 1, 1);
-		buffMaintain($effect[Eagle Eyes], 0, 1, 1);
-		buffMaintain($effect[Heart of Lavender], 0, 1, 1);
+		buffMaintain($effect[Joyful Resolve]);
+		buffMaintain($effect[Kindly Resolve]);
+		buffMaintain($effect[Fortunate Resolve]);
+		buffMaintain($effect[One Very Clear Eye]);
+		buffMaintain($effect[Human-Fish Hybrid]);
+		buffMaintain($effect[Human-Human Hybrid]);
+		buffMaintain($effect[Human-Machine Hybrid]);
+		buffMaintain($effect[Unusual Perspective]);
+		buffMaintain($effect[Eagle Eyes]);
+		buffMaintain($effect[Heart of Lavender]);
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
 		if(get_property("auto_dickstab").to_boolean())
 		{
-			buffMaintain($effect[Wet and Greedy], 0, 1, 1);
+			buffMaintain($effect[Wet and Greedy]);
 		}
-		buffMaintain($effect[Frosty], 0, 1, 1);
+		buffMaintain($effect[Frosty]);
 		
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
@@ -981,8 +981,6 @@ boolean L12_orchardFinalize()
 void gremlinsFamiliar()
 {
 	//when fighting gremlins we want to minimize the familiar ability to cause damage.
-	//maximizer will try to force an equip into familiar slot. So disable maximizer switching of familiar equipment
-	addToMaximize("-familiar");
 	
 	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 	boolean strip_familiar = true;
@@ -1000,11 +998,34 @@ void gremlinsFamiliar()
 		{
 			equip($slot[familiar], $item[little bitty bathysphere]);
 			strip_familiar = false;
+			//disable maximizer switching of familiar equipment
+			addToMaximize("-familiar");
+		}
+	}
+	else if(lookupFamiliarDatafile("gremlins") == $familiar[none])	//none of the desired familiars available
+	{
+		//don't know what familiar will be chosen or what its own equipment does
+		strip_familiar = true;
+		//maximizer will try to force an equip into familiar slot. So disable maximizer switching of familiar equipment
+		addToMaximize("-familiar");
+	}
+	else
+	{
+		//desired familiars will be available. their own equipment or generic weight boosting familiar equipment is beneficial
+		strip_familiar = false;
+
+		//there is a limited list of harmful familiar equipment to forbid
+		foreach fameq in $items[tiny bowler,ant hoe,ant pick,ant pitchfork,ant rake,ant sickle,oversized fish scaler,filthy child leash,plastic pumpkin bucket,little box of fireworks,moveable feast]
+		{
+			if(possessEquipment(fameq))
+			{
+				addToMaximize("-equip " + fameq.to_string());
+			}
 		}
 	}
 	if(strip_familiar)
 	{
-		equip($slot[familiar], $item[none]);	//strip familiar equipment if not in 100% run to avoid passive dmg
+		equip($slot[familiar], $item[none]);	//strip familiar equipment to avoid passive dmg
 	}
 }
 
@@ -1019,6 +1040,10 @@ boolean L12_gremlins()
 		return false;
 	}
 	if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 192))
+	{
+		return false;
+	}
+	if(auto_warEnemiesRemaining() == 0)
 	{
 		return false;
 	}
@@ -1140,6 +1165,10 @@ boolean L12_sonofaBeach()
 		{
 			return false;
 		}
+	}
+	if(auto_warEnemiesRemaining() == 0)
+	{
+		return false;
 	}
 	if((get_property("fratboysDefeated").to_int() < 64) && get_property("auto_hippyInstead").to_boolean())
 	{
@@ -1421,6 +1450,10 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
+	if(!auto_bestWarPlan().do_arena)
+	{
+		return false;		//we are not planning to do arena this ascension
+	}
 	if(internalQuestStatus("questL12War") != 1 || get_property("sidequestArenaCompleted") != "none" || get_property("flyeredML").to_int() >= 10000)
 	{
 		return false;
@@ -1429,79 +1462,47 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;
 	}
+	if(my_level() < 13 && !isAboutToPowerlevel())
+	{
+		return false;		//let the powerlevel lock release first so we can do quests that are waiting for optimal conditions.
+	}
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
+	if(LX_freeCombats(true)) return true;	//try to use free combats to make up the difference.
 
-	if(needStarKey())
+	location scalezone = highestScalingZone();
+	float flyer_gains = my_buffedstat($stat[moxie]) + monster_level_adjustment();
+	switch(scalezone)
 	{
-		if(!zone_isAvailable($location[The Hole in the Sky]))
-		{
-			return (L10_topFloor() || L10_holeInTheSkyUnlock());
-		}
-		else
-		{
-			if(LX_getStarKey())
-			{
-				return true;
-			}
-		}
+		case $location[The Neverending Party]:
+			flyer_gains += 20; break;
+		case $location[VYKEA]:
+			flyer_gains += 6; break;
+		case $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]:
+		case $location[The Deep Dark Jungle]:
+		case $location[Sloppy Seconds Diner]:
+			flyer_gains += 5; break;
 	}
-	else if(needDigitalKey())
+	float adv_needed = (10000.0 - get_property("flyeredML").to_float()) / flyer_gains;
+	
+	warPlan plan_do_arena = auto_bestWarPlan();
+	plan_do_arena.do_arena = true;
+	warPlan plan_no_arena = auto_bestWarPlan();
+	plan_no_arena.do_arena = false;
+	float adv_saved = auto_warTotalBattles(plan_no_arena) - auto_warTotalBattles(plan_do_arena);
+	
+	if(adv_needed > adv_saved)
 	{
-		if(LX_getDigitalKey())
-		{
-			return true;
-		}
+		return false;	//if we lose advs by doing last ditch flyering then do not do it
 	}
-	else
-	{
-		auto_log_warning("Should not have so little flyer ML at this point", "red");
-		wait(1);
-		if(!LX_attemptFlyering())
-		{
-			abort("Need more flyer ML but don't know where to go :(");
-		}
-		return true;
-	}
-	return false;
-}
 
-boolean LX_attemptFlyering()
-{
-	if(elementalPlanes_access($element[stench]) && auto_have_skill($skill[Summon Smithsness]))
-	{
-		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
-	}
-	else if(elementalPlanes_access($element[spooky]))
-	{
-		return autoAdv(1, $location[The Deep Dark Jungle]);
-	}
-	else if(elementalPlanes_access($element[cold]))
-	{
-		return autoAdv(1, $location[VYKEA]);
-	}
-	else if(elementalPlanes_access($element[stench]))
-	{
-		return autoAdv(1, $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]);
-	}
-	else if(elementalPlanes_access($element[sleaze]))
-	{
-		return autoAdv(1, $location[Sloppy Seconds Diner]);
-	}
-	else if(neverendingPartyAvailable())
+	if(scalezone == $location[The Neverending Party])
 	{
 		return neverendingPartyCombat();
 	}
-	else
+	if(scalezone != $location[none])
 	{
-		int flyer = get_property("flyeredML").to_int();
-		boolean retval = autoAdv($location[Near an Abandoned Refrigerator]);
-		if(flyer == get_property("flyeredML").to_int())
-		{
-			abort("Trying to flyer but failed to flyer");
-		}
-		set_property("auto_newbieOverride", true);
-		return retval;
+		return autoAdv(scalezone);
 	}
 	return false;
 }
@@ -1554,6 +1555,11 @@ boolean L12_flyerFinish()
 boolean L12_themtharHills()
 {
 	if(internalQuestStatus("questL12War") != 1 || get_property("sidequestNunsCompleted") != "none")
+	{
+		return false;
+	}
+	
+	if(auto_warEnemiesRemaining() == 0)
 	{
 		return false;
 	}
@@ -1613,21 +1619,21 @@ boolean L12_themtharHills()
 	{
 		makeGenieWish($effect[Frosty]);
 	}
-	buffMaintain($effect[Greedy Resolve], 0, 1, 1);
+	buffMaintain($effect[Greedy Resolve]);
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
 	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
 	#Handle for familiar weight change.
-	buffMaintain($effect[Kindly Resolve], 0, 1, 1);
-	buffMaintain($effect[Heightened Senses], 0, 1, 1);
-	buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
-	buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Constellation Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
-	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
-	buffMaintain($effect[Patent Avarice], 0, 1, 1);
-	buffMaintain($effect[Car-Charged], 0, 1, 1);
-	buffMaintain($effect[Heart of Pink], 0, 1, 1);
+	buffMaintain($effect[Kindly Resolve]);
+	buffMaintain($effect[Heightened Senses]);
+	buffMaintain($effect[Big Meat Big Prizes]);
+	buffMaintain($effect[Human-Machine Hybrid]);
+	buffMaintain($effect[Human-Constellation Hybrid]);
+	buffMaintain($effect[Human-Humanoid Hybrid]);
+	buffMaintain($effect[Human-Fish Hybrid]);
+	buffMaintain($effect[Cranberry Cordiality]);
+	buffMaintain($effect[Patent Avarice]);
+	buffMaintain($effect[Car-Charged]);
+	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
@@ -1656,11 +1662,12 @@ boolean L12_themtharHills()
 
 	if(in_heavyrains())
 	{
-		buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
+		buffMaintain($effect[Sinuses For Miles]);
 	}
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
-	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0)
+	//count inhaler if we have one or if we have a clover to obtain one
+	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0)
 	{
 		meat_need = meat_need - 200;
 	}
@@ -1723,22 +1730,30 @@ boolean L12_themtharHills()
 		}
 	}
 
+	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	{
+		//use clover to get inhaler
+		cloverUsageInit();
+		boolean retval = autoAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+		cloverUsageFinish();
+		return retval;
+	}
 
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
 	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
-	buffMaintain($effect[Sinuses For Miles], 0, 1, 1);
-	buffMaintain($effect[Greedy Resolve], 0, 1, 1);
-	buffMaintain($effect[Kindly Resolve], 0, 1, 1);
-	buffMaintain($effect[Heightened Senses], 0, 1, 1);
-	buffMaintain($effect[Big Meat Big Prizes], 0, 1, 1);
-	buffMaintain($effect[Fortunate Resolve], 0, 1, 1);
-	buffMaintain($effect[Human-Machine Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Constellation Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Humanoid Hybrid], 0, 1, 1);
-	buffMaintain($effect[Human-Fish Hybrid], 0, 1, 1);
-	buffMaintain($effect[Cranberry Cordiality], 0, 1, 1);
-	buffMaintain($effect[Car-Charged], 0, 1, 1);
-	buffMaintain($effect[Heart of Pink], 0, 1, 1);
+	buffMaintain($effect[Sinuses For Miles]);
+	buffMaintain($effect[Greedy Resolve]);
+	buffMaintain($effect[Kindly Resolve]);
+	buffMaintain($effect[Heightened Senses]);
+	buffMaintain($effect[Big Meat Big Prizes]);
+	buffMaintain($effect[Fortunate Resolve]);
+	buffMaintain($effect[Human-Machine Hybrid]);
+	buffMaintain($effect[Human-Constellation Hybrid]);
+	buffMaintain($effect[Human-Humanoid Hybrid]);
+	buffMaintain($effect[Human-Fish Hybrid]);
+	buffMaintain($effect[Cranberry Cordiality]);
+	buffMaintain($effect[Car-Charged]);
+	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	bat_formWolf();
 	zataraSeaside("meat");
@@ -1785,7 +1800,7 @@ boolean L12_themtharHills()
 
 boolean LX_obtainChaosButterfly()
 {
-	if(in_bhy() || in_pokefam())
+	if(in_bhy() || in_pokefam() || in_glover())
 	{
 		return false;
 	}
@@ -1857,6 +1872,10 @@ boolean L12_farm()
 	if(get_property("sidequestFarmCompleted") != "none")
 	{
 		set_property("auto_skipL12Farm", "true");
+		return false;
+	}
+	if(auto_warEnemiesRemaining() == 0 && get_property("auto_L12FarmStage").to_int() < 4)
+	{
 		return false;
 	}
 	if(internalQuestStatus("questL12War") != 1)
