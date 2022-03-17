@@ -753,6 +753,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Hyphemariffic,
 			Sleaze-Resistant Trousers,
 			Hyperoffended,
+			Covered in the Rainbow,
 		]))
 			return result();
 	}
@@ -1018,6 +1019,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Unrunnable Face,
 
 			// all-stat effects
+			Confidence of the Votive,
 			Human-Human Hybrid,
 			Industrial Strength Starch,
 			Mutated,

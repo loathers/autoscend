@@ -2505,7 +2505,7 @@ boolean L11_palindome()
 		return false;
 	}
 
-	if (!possessEquipment($item[Talisman o' Namsilat])) {
+	if (!possessEquipment($item[Talisman o\' Namsilat])) {
 		return false;
 	}
 
@@ -2705,6 +2705,7 @@ boolean L11_palindome()
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Bob Racecar.");
 		}
+		buffMaintain($effect[Ew, The Humanity]);
 		boolean advSpent = autoAdv($location[Inside the Palindome]);
 		if($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && auto_is_valid($item[Disposable Instant Camera]))
 		{
