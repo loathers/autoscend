@@ -644,7 +644,7 @@ boolean L8_trapperNinjaLair()
 		if(isAboutToPowerlevel())
 		{
 			//if we can't survive and we are powerleveling, do extreme path
-			set_property("auto_L8_extremeInstead", true);
+			set_property("auto_L8_ninjaAssassinFail", true);
 			return true;
 		}
 		else
