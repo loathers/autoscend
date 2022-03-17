@@ -190,9 +190,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Bandersnatched]:				useItem = $item[Tonic O\' Banderas];			break;
 	case $effect[Barbecue Saucy]:				useItem = $item[Dollop of Barbecue Sauce];		break;
 	case $effect[Be A Mind Master]:				useItem = $item[Daily Affirmation: Be A Mind Master];	break;
+	case $effect[A Beastly Odor]:				useItem = $item[The Beast Within&trade; candle];break;
 	case $effect[Become Superficially Interested]:	useItem = $item[Daily Affirmation: Be Superficially Interested];	break;
-	case $effect[Bendin\' Hell]:					useSkill = $skill[Bend Hell];					break;
-	case $effect[Bent Knees]:					useSkill = $skill[Bendable Knees];					break;
+	case $effect[Bendin\' Hell]:				useSkill = $skill[Bend Hell];					break;
+	case $effect[Bent Knees]:					useSkill = $skill[Bendable Knees];				break;
 	case $effect[Benetton\'s Medley of Diversity]:	useSkill = $skill[Benetton\'s Medley of Diversity];		break;
 	case $effect[Berry Elemental]:				useItem = $item[Tapioc Berry];					break;
 	case $effect[Berry Statistical]:			useItem = $item[Snarf Berry];					break;
@@ -250,6 +251,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Celestial Sheen]:				useItem = $item[Celestial Olive Oil];			break;
 	case $effect[Celestial Vision]:				useItem = $item[Celestial Carrot Juice];		break;
 	case $effect[Cinnamon Challenger]:			useItem = $item[Pulled Red Taffy];				break;
+	case $effect[Clear Ears, Can\'t Lose]:		useItem = $item[Ear Candle];					break;
 	case $effect[Cletus\'s Canticle of Celerity]:	useSkill = $skill[Cletus\'s Canticle of Celerity];break;
 	case $effect[Cloak of Shadows]: 			useSkill = $skill[Blood Cloak]; 				break;
 	case $effect[Clyde\'s Blessing]:			useItem = $item[The Legendary Beat];			break;
@@ -258,7 +260,9 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Cranberry Cordiality]:			useItem = $item[Cranberry Cordial];				break;
 	case $effect[Coffeesphere]:					useSkill = $skill[Coffeesphere];				break;
 	case $effect[Cold Hard Skin]:				useItem = $item[Frost-Rimed Seal Hide];			break;
+	case $effect[Confidence of the Votive]:		useItem = $item[Votive of Confidence];			break;
 	case $effect[Contemptible Emanations]:		useItem = $item[Cologne of Contempt];			break;
+	case $effect[Covered in the Rainbow]:		useItem = $item[Rainbow Glitter Candle];		break;
 	case $effect[The Cupcake of Wrath]:			useItem = $item[Green-Frosted Astral Cupcake];	break;
 	case $effect[Curiosity of Br\'er Tarrypin]:
 		if(pathHasFamiliar() && auto_have_skill($skill[Curiosity of Br\'er Tarrypin]) && acquireTotem())
@@ -290,6 +294,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Eau D\'enmity]:				useItem = $item[Perfume of Prejudice];			break;
 	case $effect[Eau de Tortue]:				useItem = $item[Turtle Pheromones];				break;
 	case $effect[Egged On]:						useItem = $item[Robin\'s Egg];					break;
+	case $effect[El Aroma de Salsa]:			useItem = $item[Salsa Caliente&trade; candle];	break;
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
 	case $effect[Empathy]:
@@ -298,11 +303,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			useSkill = $skill[Empathy of the Newt];
 		}																						break;
 	case $effect[Erudite]:						useItem = $item[Black Sheepskin Diploma];		break;
+	case $effect[Ew, The Humanity]:				useItem = $item[Scent of a Human&trade; candle];break;
 	case $effect[Expert Oiliness]:				useItem = $item[Oil of Expertise];				break;
 	case $effect[Experimental Effect G-9]:		useItem = $item[Experimental Serum G-9];		break;
 	case $effect[Extended Toes]:				useSkill = $skill[Retractable Toes];			break;
 	case $effect[Extra Backbone]:				useItem = $item[Really Thick Spine];			break;
 	case $effect[Extreme Muscle Relaxation]:	useItem = $item[Mick\'s IcyVapoHotness Rub];	break;
+	case $effect[Everything Is Bananas]:		useItem = $item[Banana Candle];					break;
 	case $effect[Everything Must Go!]:			useItem = $item[Violent Pastilles];				break;
 	case $effect[Eyes All Black]:				useItem = $item[Delicious Candy];				break;
 	case $effect[Faboooo]:						useItem = $item[Fabiotion];						break;
@@ -366,6 +373,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[The Glistening]:				useItem = $item[Vial of the Glistening];		break;
 	case $effect[Glittering Eyelashes]:			useItem = $item[Glittery Mascara];				break;
 	case $effect[Go Get \'Em\, Tiger!]:			useItem = $item[Ben-gal&trade; Balm];			break;
+	case $effect[Good Things Are Coming, You Can Smell It]:	useItem = $item[Smoldering Clover&trade; candle];break;
 	case $effect[Got Milk]:						useItem = $item[Milk of Magnesium];				break;
 	case $effect[Gothy]:						useItem = $item[Spooky Eyeliner];				break;
 	case $effect[Gr8ness]:						useItem = $item[Potion of Temporary Gr8ness];	break;
@@ -486,6 +494,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Obscuri Tea]:					useItem = $item[cuppa Obscuri tea];				break;
 	case $effect[Ode to Booze]:					shrugAT($effect[Ode to Booze]);
 												useSkill = $skill[The Ode to Booze];			break;
+	case $effect[The Odour of Magick]:			useSkill = $skill[Natural Magick Candle];		break;
 	case $effect[Of Course It Looks Great]:		useSkill = $skill[Check Hair];					break;
 	case $effect[Oiled Skin]:					useItem = $item[Skin Oil];						break;
 	case $effect[Oiled-Up]:						useItem = $item[Pec Oil];						break;
@@ -590,6 +599,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		break;
 	case $effect[Scarysauce]:					useSkill = $skill[Scarysauce];					break;
 	case $effect[Scowl of the Auk]:				useSkill = $skill[Scowl of the Auk];			break;
+	case $effect[Scorched Earth]:				useSkill = $skill[Napalm In The Morning&trade; candle];break;
 	case $effect[Screaming! \ SCREAMING! \ AAAAAAAH!]:useSkill = $skill[Powerful Vocal Chords];			break;
 	case $effect[Seal Clubbing Frenzy]:			useSkill = $skill[Seal Clubbing Frenzy];		break;
 	case $effect[Sealed Brain]:					useItem = $item[Seal-Brain Elixir];				break;
