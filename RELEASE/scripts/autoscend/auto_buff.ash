@@ -411,7 +411,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Human-Machine Hybrid]:			useItem = $item[Gene Tonic: Construct];			break;
 	case $effect[Human-Mer-kin Hybrid]:			useItem = $item[Gene Tonic: Mer-kin];			break;
 	case $effect[Human-Pirate Hybrid]:			useItem = $item[Gene Tonic: Pirate];			break;
-	case $effect[Hyperoffended]:				seItem = $item[donkey flipbook];				break;
+	case $effect[Hyperoffended]:				useItem = $item[donkey flipbook];				break;
 	case $effect[Hyphemariffic]:				useItem = $item[Black Eyedrops];				break;
 	case $effect[Icy Glare]:					useSkill = $skill[Icy Glare];					break;
 	case $effect[Impeccable Coiffure]:			useSkill = $skill[Self-Combing Hair];			break;
@@ -494,7 +494,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Obscuri Tea]:					useItem = $item[cuppa Obscuri tea];				break;
 	case $effect[Ode to Booze]:					shrugAT($effect[Ode to Booze]);
 												useSkill = $skill[The Ode to Booze];			break;
-	case $effect[The Odour of Magick]:			useSkill = $skill[Natural Magick Candle];		break;
+	case $effect[The Odour of Magick]:			useItem = $item[Natural Magick Candle];			break;
 	case $effect[Of Course It Looks Great]:		useSkill = $skill[Check Hair];					break;
 	case $effect[Oiled Skin]:					useItem = $item[Skin Oil];						break;
 	case $effect[Oiled-Up]:						useItem = $item[Pec Oil];						break;
@@ -599,7 +599,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		break;
 	case $effect[Scarysauce]:					useSkill = $skill[Scarysauce];					break;
 	case $effect[Scowl of the Auk]:				useSkill = $skill[Scowl of the Auk];			break;
-	case $effect[Scorched Earth]:				useSkill = $skill[Napalm In The Morning&trade; candle];break;
+	case $effect[Scorched Earth]:				useItem = $item[Napalm In The Morning&trade; candle];break;
 	case $effect[Screaming! \ SCREAMING! \ AAAAAAAH!]:useSkill = $skill[Powerful Vocal Chords];			break;
 	case $effect[Seal Clubbing Frenzy]:			useSkill = $skill[Seal Clubbing Frenzy];		break;
 	case $effect[Sealed Brain]:					useItem = $item[Seal-Brain Elixir];				break;
