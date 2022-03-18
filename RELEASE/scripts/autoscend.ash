@@ -1688,6 +1688,7 @@ boolean doTasks()
 	LX_craftAcquireItems();
 	auto_spoonTuneMoon();
 	auto_buyFireworksHat();
+	auto_CMCconsult();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();

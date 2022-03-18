@@ -589,3 +589,111 @@ boolean auto_canExtinguisherBeRefilled()
 {
 	return auto_haveFireExtinguisher() && in_wildfire() && !get_property("_fireExtinguisherRefilled").to_boolean();
 }
+
+boolean auto_haveColdMedCabinet()
+{
+	return auto_get_campground() contains $item[cold medicine cabinet];
+}
+
+int auto_CMCconsultsLeft()
+{
+	if(!auto_haveColdMedCabinet())
+	{
+		return 0;
+	}
+	int consultsUsed = get_property("_coldMedicineConsults").to_int();
+	if(consultsUsed > 5)
+	{
+		auto_log_warning("Mafia's tracking of Cold Medicine Cabinet consults today errored (reported > 5 uses today). Reseting to 5.", "red");
+		consultsUsed = 5;
+	}
+	return 5 - consultsUsed;
+}
+
+boolean auto_CMCconsultAvailable()
+{
+	if(auto_CMCconsultsLeft() == 0)
+	{
+		return false;
+	}
+	int nextConsult = get_property("_nextColdMedicineConsult").to_int();
+	//prior to first use each day, prop value is 0
+	if(nextConsult == 0)
+	{
+		return true;
+	}
+	return total_turns_played() >= nextConsult;
+}
+
+void auto_CMCconsult()
+{
+	//consume previously bought items if conditions are right
+	//perhaps pill was bought yesterday with full spleen
+	if(item_amount($item[Breathitin&trade;]) > 0)
+	{
+		autoChew(1,$item[Breathitin&trade;]);
+	}
+	if(item_amount($item[Homebodyl&trade;]) > 0)
+	{
+		autoChew(1,$item[Homebodyl&trade;]);
+	}
+	if(item_amount($item[Fleshazole&trade;]) > 0 && my_meat() < meatReserve() && my_level() >= 5)
+	{
+		autoChew(1,$item[Fleshazole&trade;]);
+	}
+
+	if(!auto_CMCconsultAvailable())
+	{
+		return;
+	}
+
+	int bestOption = -1;
+	item consumableBought = $item[none];
+	string page = visit_url("campground.php?action=workshed");
+	if(contains_text(page, "Breathitin"))
+	{
+		auto_log_info("Buying Breathitin pill from CMC", "blue");
+		bestOption = 5;
+		consumableBought = $item[Breathitin&trade;];
+	}
+	else if(contains_text(page, "Homebodyl") && freeCrafts() < 5)
+	{
+		auto_log_info("Buying Homebodyl pill from CMC", "blue");
+		bestOption = 5;
+		consumableBought = $item[Homebodyl&trade;];
+	}
+	else if(contains_text(page, "ice crown"))
+	{
+		auto_log_info("Buying ice crown from CMC", "blue");
+		bestOption = 1;
+	}
+	else if(contains_text(page, "Fleshazole"))
+	{
+		auto_log_info("Buying Fleshazole pill from CMC", "blue");
+		bestOption = 5;
+		consumableBought = $item[Fleshazole&trade;];
+	}
+	else if(auto_CMCconsultsLeft() > 2)
+	{
+		//reserve the last 2 consults for something more valuable than booze
+		//consume logic will drink the booze later
+		auto_log_info("Buying booze from CMC", "blue");
+		bestOption = 3;
+	}
+
+	if(bestOption != -1)
+	{
+		visit_url("campground.php?action=workshed");
+		run_choice(bestOption);
+	}
+
+	if(consumableBought == $item[Breathitin&trade;] || consumableBought == $item[Homebodyl&trade;])
+	{
+		autoChew(1,consumableBought);
+	}
+
+	if(consumableBought == $item[Breathitin&trade;] || consumableBought == $item[Homebodyl&trade;])
+	{
+		autoChew(1,consumableBought);
+	}	
+}

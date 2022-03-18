@@ -435,6 +435,10 @@ boolean auto_haveFireExtinguisher();
 int auto_fireExtinguisherCharges();
 string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
+boolean auto_haveColdMedCabinet();
+int auto_CMCconsultsLeft();
+boolean auto_CMCconsultAvailable();
+void auto_CMCconsult();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2022.ash
