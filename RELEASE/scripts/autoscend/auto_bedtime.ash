@@ -679,7 +679,7 @@ boolean doBedtime()
 			{
 				auto_log_info("Pulls remaining: " + pulls_remaining(), "olive");
 			}
-			if(item_amount($item[beer helmet]) == 0)
+			if(!possessEquipment($item[beer helmet]))
 			{
 				auto_log_info("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 				if(canYellowRay())
@@ -714,7 +714,7 @@ boolean doBedtime()
 			makeGeniePocket();
 		}
 	}
-	if(canGenieCombat() && item_amount($item[beer helmet]) == 0)
+	if(canGenieCombat() && !possessEquipment($item[beer helmet]))
 	{
 		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}
@@ -1142,8 +1142,19 @@ boolean doBedtime()
 		print("Plumber consumption is complicated. Please manually consume stuff then run me again.", "red");
 		return false;
 	}
+
+	boolean canChangeToStooper()
+	{
+		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
+		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
+		my_familiar() != $familiar[Stooper])
+		{
+			return true;
+		}
+		return false;
+	}
 	
-	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
+	boolean done = (my_inebriety() > inebriety_limit() && !canChangeToStooper()) || (my_inebriety() > (inebriety_limit() + 1));
 	if(in_gnoob() || !can_drink() || out_of_blood)
 	{
 		if((my_adventures() <= 2) || (internalQuestStatus("questL13Final") >= 14))
@@ -1160,10 +1171,8 @@ boolean doBedtime()
 	if(!done)
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");
-		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
-		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
-		inebriety_left() == 0 &&	//stooper drinking is only useful when liver is exactly at max without a stooper equipped.
-		my_familiar() != $familiar[Stooper])
+		if(canChangeToStooper() &&
+		inebriety_left() == 0)	//stooper drinking is only useful when liver is exactly at max without a stooper equipped.
 		{
 			auto_log_info("You have a Stooper, you can increase liver by 1!", "blue");
 			use_familiar($familiar[Stooper]);
