@@ -2068,6 +2068,34 @@ boolean basicAdjustML()
 	return false;
 }
 
+int highest_available_mcd()
+{
+	if(in_koe()) return 0;
+	
+	if(knoll_available() && item_amount($item[Detuned Radio]) > 0)
+	{
+		if(in_glover())
+		{
+			return 0;
+		}
+		else
+		{
+			return 10;
+		}
+	}
+	else if(inGnomeSign() && gnomads_available())
+	{
+		return 10;
+	}
+	else if(canadia_available())
+	{
+		return 11;
+	}
+	//in_bad_moon() availability is special since it costs a turn and highest is 8 to 11 by RNG
+	
+	return current_mcd();
+}
+
 boolean auto_change_mcd(int mcd)
 {
 	return auto_change_mcd(mcd, false);
@@ -2075,28 +2103,7 @@ boolean auto_change_mcd(int mcd)
 
 boolean auto_change_mcd(int mcd, boolean immediately)
 {
-	if(in_koe()) return false;
-
-	int best = 10;
-	if(knoll_available())
-	{
-		if(item_amount($item[Detuned Radio]) == 0)
-		{
-			return false;
-		}
-		if(in_glover())
-		{
-			return false;
-		}
-	}
-	if(inGnomeSign() && !gnomads_available())
-	{
-		return false;
-	}
-	if(canadia_available())
-	{
-		best = 11;
-	}
+	int best = highest_available_mcd();
 	if(in_bad_moon())
 	{
 		best = 11;
