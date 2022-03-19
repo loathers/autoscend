@@ -1659,7 +1659,6 @@ int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
 boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit);
 boolean auto_MaxMLToCap(int ToML, boolean doAltML);
-boolean enforceMLInPreAdv();
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
 boolean auto_haveQueuedForcedNonCombat();
