@@ -653,9 +653,22 @@ boolean auto_pre_adventure()
 			uneffect($effect[Blessing of Serqet]);
 		}
 	}
-
-	// Here we enforce our ML restrictions if +/-ML is not specifically called in the current maximizer string
-	enforceMLInPreAdv();
+	
+	// Here we give a limited value to ML if +/-ML is not specifically called in the current maximizer string. This does not enforce the limit.
+	// if the limit setting has no value then ML has already been given a value indirectly by "exp" in the default maximizer statement
+	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
+	{
+		if(get_property("auto_MLSafetyLimit").to_int() <= highest_available_mcd())
+		{
+			//mcd can already fill all allowed ML without using equipment slots
+			//if the value is 0 adding ML with 0max is useless, it does not stop the maximizer from picking equipment with ML,
+			//0max would just tell the maximizer to add +0 value to ML over 0 which is the same as not giving any value for ML
+		}
+		else
+		{
+			addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
+		}
+	}
 	
 	// Last minute switching for garbage tote. But only if nothing called on januaryToteAcquire this turn.
 	if(!get_property("auto_januaryToteAcquireCalledThisTurn").to_boolean())
