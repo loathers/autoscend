@@ -1582,6 +1582,7 @@ int maxSealSummons();
 boolean acquireCombatMods(int amt);
 boolean acquireCombatMods(int amt, boolean doEquips);
 boolean basicAdjustML();
+int highest_available_mcd();
 boolean auto_change_mcd(int mcd);
 boolean auto_change_mcd(int mcd, boolean immediately);
 boolean evokeEldritchHorror(string option);
