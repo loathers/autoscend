@@ -4065,17 +4065,6 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 	return true;
 }
 
-// Called in PreAdv right before equipping to make sure that any ML Limit we have specified is in the maximize string IF +/-ML is not in string already
-boolean enforceMLInPreAdv()
-{
-	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
-	{
-		addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
-	}
-
-	return true;
-}
-
 
 
 // ADVENTURE FORCING FUNCTIONS
