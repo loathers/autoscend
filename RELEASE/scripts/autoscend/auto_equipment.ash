@@ -230,13 +230,47 @@ string defaultMaximizeStatement()
 	{
 		res += ",water,hot res";
 	}
+	
+	stat primeStat = my_primestat();
 	if(in_plumber())
 	{
 		res += ",plumber,-ml";
 	}
 	else if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
-		res += ",10exp,5" + my_primestat() + " experience percent";
+		//experience scores for the default maximizer statement
+		
+		if(get_property("auto_MLSafetyLimit") == "")
+		{
+			//"exp" includes bonus from "ml" sources and values mainstat experience with a score equivalent to ML: "10exp" = 1.65 score to mainstat experience from any source
+			//"exp" does not value offstat experience
+			res += ",10exp";
+			
+			//"(primeStat) experience" score does not include bonus from "ml"
+			//increase that score by 10% over the score given to mainstat experience by "exp"
+			//this way ~equivalent non-ML sources of mainstat exp will be preferred over ML sources, they give the same benefit without making fights harder
+			res += ",0.165" + primeStat + "experience";
+		}
+		else	//a value is given for ML safety limit
+		{
+			//so use the equivalent weight for stat experience instead of "exp" which includes bonus from "ml"
+			//the maximizer score for limited ML is added later by pre_adv
+			//pre_adv will tell the maximizer to not value ML over the safety limit (though enforcing that limit is not possible with the maximizer syntax and scoring system)
+			res += ",1.65" + primeStat + " experience";
+		}
+		res += ",5" + primeStat + " experience percent";	//TODO the score to give to experience VS percent depends on how much experience is expected from fights
+	}
+	if(my_basestat(primeStat) > 122)
+	{
+		//>= level 12 or almost there, more offstat experience may be needed for the war outfit (requires 70 mox and 70 mys)
+		if(my_basestat($stat[moxie]) < 70 && get_property("warProgress") != "finished")
+		{
+			res += "moxie experience,3moxie experience percent";
+		}
+		if(my_basestat($stat[mysticality]) < 70 && get_property("warProgress") != "finished")
+		{
+			res += "mysticality experience,3mysticality experience percent";
+		}
 	}
 
 	return res;
