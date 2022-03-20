@@ -639,7 +639,7 @@ boolean L8_trapperNinjaLair()
 	// we must use two variables because there are too many special cases. maybe we can survive assassins but not encounter them due to +combat being too low. Copiers and pulls complicate matters. We could copy an assassin even if we cannot encounter it in the lair
 	
 	//check if we can survive a hit or get the jump on NSA
-	if((my_maxhp() < expected_damage($monster[ninja snowman assassin])) && jump_chance($monster[ninja snowman assassin]) < 100 )
+	if((my_maxhp() <= expected_damage($monster[ninja snowman assassin])) && jump_chance($monster[ninja snowman assassin]) < 100 )
 	{
 		if(isAboutToPowerlevel())
 		{
