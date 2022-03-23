@@ -86,6 +86,12 @@ boolean autoForceEquip(slot s, item it)
 
 boolean autoForceEquip(item it)
 {
+	// Maximizer will put its preferred accessories in order acc1,acc2,acc3
+	// So for accessories, use acc3 for a force as that will get the best remaining maximizer score.
+	if (it.to_slot()==$slot[acc1])
+	{
+		return autoForceEquip($slot[acc3], it);
+	}
 	return autoForceEquip(it.to_slot(), it);
 }
 
