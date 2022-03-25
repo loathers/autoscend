@@ -610,9 +610,18 @@ int auto_CMCconsultsLeft()
 	return 5 - consultsUsed;
 }
 
+boolean auto_shouldUseCMC()
+{
+	return get_property("auto_doNotUseCMC").to_boolean();
+}
+
 boolean auto_CMCconsultAvailable()
 {
 	if(auto_CMCconsultsLeft() == 0)
+	{
+		return false;
+	}
+	if(auto_shouldUseCMC())
 	{
 		return false;
 	}

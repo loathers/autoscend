@@ -437,6 +437,7 @@ string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
 boolean auto_haveColdMedCabinet();
 int auto_CMCconsultsLeft();
+boolean auto_shouldUseCMC();
 boolean auto_CMCconsultAvailable();
 void auto_CMCconsult();
 
