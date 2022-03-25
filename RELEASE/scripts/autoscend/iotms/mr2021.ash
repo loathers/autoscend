@@ -633,15 +633,16 @@ void auto_CMCconsult()
 	{
 		autoChew(1,$item[Breathitin&trade;]);
 	}
-	if(item_amount($item[Homebodyl&trade;]) > 0)
+	if(item_amount($item[Homebodyl&trade;]) > 0 && freeCrafts() < 5)
 	{
 		autoChew(1,$item[Homebodyl&trade;]);
 	}
+	//use fleshazole if we don't have much meat
 	if(item_amount($item[Fleshazole&trade;]) > 0 && my_meat() < meatReserve() && my_level() >= 5)
 	{
 		autoChew(1,$item[Fleshazole&trade;]);
 	}
-
+	
 	if(!auto_CMCconsultAvailable())
 	{
 		return;
@@ -667,13 +668,13 @@ void auto_CMCconsult()
 		auto_log_info("Buying ice crown from CMC", "blue");
 		bestOption = 1;
 	}
-	else if(contains_text(page, "Fleshazole"))
+	else if(contains_text(page, "Fleshazole") && my_meat() < meatReserve())
 	{
 		auto_log_info("Buying Fleshazole pill from CMC", "blue");
 		bestOption = 5;
 		consumableBought = $item[Fleshazole&trade;];
 	}
-	else if(auto_CMCconsultsLeft() > 2)
+	else if(auto_CMCconsultsLeft() > 2 && !can_interact())
 	{
 		//reserve the last 2 consults for something more valuable than booze
 		//consume logic will drink the booze later
@@ -692,7 +693,7 @@ void auto_CMCconsult()
 		autoChew(1,consumableBought);
 	}
 
-	if(consumableBought == $item[Breathitin&trade;] || consumableBought == $item[Homebodyl&trade;])
+	if(consumableBought == $item[Fleshazole&trade;] && my_meat() < meatReserve() && my_level() >= 5)
 	{
 		autoChew(1,consumableBought);
 	}	
