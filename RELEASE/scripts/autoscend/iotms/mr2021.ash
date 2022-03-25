@@ -612,7 +612,7 @@ int auto_CMCconsultsLeft()
 
 boolean auto_shouldUseCMC()
 {
-	return get_property("auto_doNotUseCMC").to_boolean();
+	return !get_property("auto_doNotUseCMC").to_boolean();
 }
 
 boolean auto_CMCconsultAvailable()
