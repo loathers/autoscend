@@ -679,7 +679,7 @@ boolean doBedtime()
 			{
 				auto_log_info("Pulls remaining: " + pulls_remaining(), "olive");
 			}
-			if(!possessEquipment($item[beer helmet]))
+			if(!possessOutfit("frat warrior fatigues"))
 			{
 				auto_log_info("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 				if(canYellowRay())
@@ -714,7 +714,7 @@ boolean doBedtime()
 			makeGeniePocket();
 		}
 	}
-	if(canGenieCombat() && !possessEquipment($item[beer helmet]))
+	if(canGenieCombat() && !possessOutfit("frat warrior fatigues"))
 	{
 		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}
