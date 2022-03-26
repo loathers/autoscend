@@ -72,12 +72,11 @@ void qt_initializeSettings()
 	}
 }
 
-string qt_TerrariumPage = visit_url("qterrarium.php");
-
 boolean qt_FamiliarAvailable (familiar fam)
 {
 	//Check to see if target familiar can be forced.
 	string qt_FamiliarKey = "<option value=\"" + fam.to_int().to_string() + "\">";
+	string qt_TerrariumPage = visit_url("qterrarium.php");
 	matcher qt_FamiliarSearch = create_matcher(qt_FamiliarKey, qt_TerrariumPage);
 
 	if (qt_turnsToNextQuantumAlignment() > 1)
