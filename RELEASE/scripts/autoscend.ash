@@ -1387,7 +1387,9 @@ boolean autosellCrap()
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
-	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
+	foreach it in $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
+	Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
+	Void Stone] //dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
 	{
 		if(item_amount(it) > 0)
 		{
