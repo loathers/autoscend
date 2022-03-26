@@ -695,8 +695,8 @@ void initializeDay(int day)
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
 
-	// Get emotionally chipped if you have the item.  boris\zombie slayer cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer())
+	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer() && !isActuallyEd())
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1387,7 +1387,9 @@ boolean autosellCrap()
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
-	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
+	foreach it in $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
+	Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
+	Void Stone] //dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
 	{
 		if(item_amount(it) > 0)
 		{
