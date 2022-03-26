@@ -621,7 +621,7 @@ boolean auto_CMCconsultAvailable()
 	{
 		return false;
 	}
-	if(auto_shouldUseCMC())
+	if(!auto_shouldUseCMC())
 	{
 		return false;
 	}
