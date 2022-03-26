@@ -1143,6 +1143,11 @@ boolean doBedtime()
 		return false;
 	}
 
+	//There is a bug where Ed servant's can't be switched due to an issue in KoL itself
+	//Per Discord, work around is to never log out with a level 7 or greater Scribe
+	//Priest is always unlocked prior to Scribe. Just always attempt to switch to Priest at bedtime
+	handleServant($servant[Priest]);
+
 	boolean canChangeToStooper()
 	{
 		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
@@ -1153,7 +1158,7 @@ boolean doBedtime()
 		}
 		return false;
 	}
-	
+
 	boolean done = (my_inebriety() > inebriety_limit() && !canChangeToStooper()) || (my_inebriety() > (inebriety_limit() + 1));
 	if(in_gnoob() || !can_drink() || out_of_blood)
 	{
