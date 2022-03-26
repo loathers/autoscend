@@ -220,7 +220,27 @@ boolean handleServant(servant who)
 	}
 	if(!have_servant(who))
 	{
-		return false;
+		if(my_servant() == $servant[none])
+		{
+			//might have encounted bug in KoL. Try to work around it
+			//bug happens when level 7 or great scribe is active when logged out of KoL
+			//symptom is active servant is $servant[none] and can't change it
+			//priest is always unlocked prior to scribe. Try to switch to priest to clear bug
+			
+			//clear error
+			cli_execute("/servant priest");
+			//refresh mafia's servant info
+			visit_url("place.php?whichplace=edbase&action=edbase_door");
+			if(!have_servant(who))
+			{
+				//cleared bug. Must actually not have requested servant
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
 	}
 	if(my_servant() != who)
 	{
