@@ -647,7 +647,7 @@ void auto_CMCconsult()
 		autoChew(1,$item[Homebodyl&trade;]);
 	}
 	//use fleshazole if we don't have much meat
-	if(item_amount($item[Fleshazole&trade;]) > 0 && my_meat() < meatReserve() && my_level() >= 5)
+	if(item_amount($item[Fleshazole&trade;]) > 0 && my_meat() + 2000 < meatReserve() && my_level() >= 5)
 	{
 		autoChew(1,$item[Fleshazole&trade;]);
 	}
@@ -677,7 +677,7 @@ void auto_CMCconsult()
 		auto_log_info("Buying ice crown from CMC", "blue");
 		bestOption = 1;
 	}
-	else if(contains_text(page, "Fleshazole") && my_meat() < meatReserve())
+	else if(contains_text(page, "Fleshazole") && my_meat() + 2000 < meatReserve())
 	{
 		auto_log_info("Buying Fleshazole pill from CMC", "blue");
 		bestOption = 5;
@@ -685,10 +685,18 @@ void auto_CMCconsult()
 	}
 	else if(auto_CMCconsultsLeft() > 2 && !can_interact())
 	{
-		//reserve the last 2 consults for something more valuable than booze
-		//consume logic will drink the booze later
-		auto_log_info("Buying booze from CMC", "blue");
-		bestOption = 3;
+		//reserve the last 2 consults for something more valuable than booze/food
+		//consume logic will drink/eat later
+		if(inebriety_left() > 0)
+		{
+			auto_log_info("Buying booze from CMC", "blue");
+			bestOption = 3;
+		}
+		else if(fullness_left() > 0)
+		{
+			auto_log_info("Buying food from CMC", "blue");
+			bestOption = 2;
+		}
 	}
 
 	if(bestOption != -1)
