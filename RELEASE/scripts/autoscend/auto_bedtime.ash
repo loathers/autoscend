@@ -1143,6 +1143,11 @@ boolean doBedtime()
 		print("Plumber consumption is complicated. Please manually consume stuff then run me again.", "red");
 		return false;
 	}
+
+	//There is a bug where Ed servant's can't be switched due to an issue in KoL itself
+	//Per Discord, work around is to never log out with a level 7 or greater Scribe
+	//Priest is always unlocked prior to Scribe. Just always attempt to switch to Priest at bedtime
+	handleServant($servant[Priest]);
 	
 	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
 	if(in_gnoob() || !can_drink() || out_of_blood)
