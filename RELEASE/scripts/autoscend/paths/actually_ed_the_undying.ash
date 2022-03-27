@@ -588,13 +588,13 @@ skill ed_nextUpgrade()
 	{
 		return $skill[Another Extra Spleen]; // 10 Ka
 	}
-	else if (!have_skill($skill[Replacement Stomach]))
-	{
-		return $skill[Replacement Stomach]; // 30 Ka
-	}
 	else if (!have_skill($skill[Upgraded Legs]))
 	{
 		return $skill[Upgraded Legs]; // 10 Ka
+	}
+	else if (!have_skill($skill[Replacement Liver]))
+	{
+		return $skill[Replacement Liver]; // 30 Ka
 	}
 	else if (!have_skill($skill[More Legs]))
 	{
@@ -608,13 +608,13 @@ skill ed_nextUpgrade()
 	{
 		return $skill[Still Another Extra Spleen]; // 20 Ka
 	}
+	else if (!have_skill($skill[Replacement Stomach]))
+	{
+		return $skill[Replacement Stomach]; // 30 Ka
+	}
 	else if (!have_skill($skill[Just One More Extra Spleen]))
 	{
 		return $skill[Just One More Extra Spleen]; // 25 Ka
-	}
-	else if (!have_skill($skill[Replacement Liver]))
-	{
-		return $skill[Replacement Liver]; // 30 Ka
 	}
 	else if (!have_skill($skill[Elemental Wards]))
 	{
