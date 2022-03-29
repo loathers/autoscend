@@ -672,6 +672,31 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 				doRenenutet = true;
 			}
 		}
+		if ($monsters[Battlie Knight Ghost, Claybender Sorcerer Ghost, Dusken Raider Ghost, Space Tourist Explorer Ghost, Whatsian Commando Ghost] contains enemy)
+		{
+			if (item_amount($item[A-boo Clue]) < get_property("booPeakProgress").to_int()/30)
+			{
+				doRenenutet = true;
+			}
+		}
+		if ($monsters[toothy sklelton,spiny skelelton] contains enemy)
+		{
+			if (my_location() == $location[The Defiled Nook] )
+			{
+				doRenenutet = true;
+			}
+		}
+		if ($monsters[bearpig topiary animal,elephant (meatcar?) topiary animal,spider (duck?) topiary animal] contains enemy)
+		{
+			if (item_amount($item[rusty hedge trimmers])==0) // lash didn't get it
+			{
+				doRenenutet = true;
+			}
+		}
+		if ($monsters[blue oyster cultist] contains enemy)
+		{
+			doRenenutet = true;
+		}
 		if(doRenenutet)
 		{
 			if (!combat_status_check("curseofindecision") && canUse($skill[Curse Of Indecision]))
