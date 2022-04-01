@@ -224,6 +224,9 @@ boolean L9_chasmBuild()
 		}
 	}
 	
+	// This adds a tonne of damage and NC progress
+	buffMaintain($effect[Triple-Sized]);
+	
 	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
 	{
 		// If we think the non-com will hit NOW we clear maximizer to keep previous settings from carrying forward
