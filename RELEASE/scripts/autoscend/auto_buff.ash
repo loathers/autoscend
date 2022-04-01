@@ -147,6 +147,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	{
 		return false;
 	}
+	
+	if(have_effect(buff) >= turns)
+	{
+		return false;
+	}
 
 	switch(buff)
 	{
