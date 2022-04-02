@@ -1204,6 +1204,63 @@ void auto_printNightcap()
 	auto_log_info("Nightcap is: " + to_pretty_string(auto_bestNightcap()), "blue");
 }
 
+void auto_overdrinkGreenBeers()
+{
+	//called after nightcap, auto_drinkNightcap() needs to have already made the necessary checks
+	if(!contains_text(holiday(),"St\. Sneaky Pete's Day") || !canDrink($item[green beer], false))
+	{
+		return;
+	}
+	familiar start_fam = my_familiar();
+	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
+	&& start_fam != $familiar[Stooper] && pathAllowsChangingFamiliar()) //check if path allows changing familiar
+	{
+		use_familiar($familiar[Stooper]);
+	}
+	
+	int negativeLiver = inebriety_left();
+	if(negativeLiver >= -10 && negativeLiver < 0)
+	{
+		auto_log_info("It's St. Sneaky Pete's Day, can we sneak in any green beers?", "blue");
+		
+		if(gnomads_available())
+		{
+			if (daily_special() == $item[green beer])
+			{
+				ConsumeAction greenBeerAction = MakeConsumeAction(daily_special());
+				greenBeerAction.cafeId = daily_special().to_int();
+				greenBeerAction.it = $item[none];
+				int daily_special_limit = min(my_meat()/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
+				for (int i=0; i < daily_special_limit; i++)
+				{
+					autoConsume(greenBeerAction);
+				}
+			}
+		}
+		
+		//TODO craft green beer?
+		
+		int greenbeer_limit = min(item_amount($item[green beer]), (inebriety_left()+11)/($item[green beer].inebriety));
+		if(greenbeer_limit > 0)
+		{
+			autoDrink(greenbeer_limit, $item[green beer]);
+		}
+		
+		if(inebriety_left() == negativeLiver)
+		{
+			auto_log_info("Could not overdrink any green beer", "blue");
+		}
+		else if(inebriety_left() >= -10)
+		{
+			auto_log_info("Still have " + (11 + inebriety_left()) + " green beer liver space that could not be filled", "blue");
+		}
+	}
+	if(start_fam != my_familiar() && pathAllowsChangingFamiliar())
+	{
+		use_familiar(start_fam);
+	}
+}
+
 void auto_drinkNightcap()
 {
 	//function to overdrink a nightcap at the end of day
@@ -1221,15 +1278,26 @@ void auto_drinkNightcap()
 	}
 	if(auto_freeCombatsRemaining() > 0)
 	{
+		auto_log_info("Not drinking a nightcap because of " + auto_freeCombatsRemaining() + " remaining free fights", "blue");
 		return;		//do not overdrink if we still have free fights we want to do. undesireable free fights are not counted by that function
 	}
-	//you can't overdrink if already overdrunk. TODO account for green beer on cinco de mayo
-	if(auto_have_familiar($familiar[Stooper]))
+	boolean overdrunk()
 	{
-		if($familiar[Stooper] == my_familiar() && inebriety_left() < 0) return;		//stooper is current familiar and overdrunk
-		else if(inebriety_left() < -1) return;		//stooper not current familiar. but will be overdrunk even if switching to it
+		if(auto_have_familiar($familiar[Stooper]))
+		{
+			if($familiar[Stooper] == my_familiar() && inebriety_left() < 0) return true;		//stooper is current familiar and overdrunk
+			else if(inebriety_left() < -1) return true;		//stooper not current familiar. but will be overdrunk even if switching to it
+		}
+		else if(inebriety_left() < 0) return true;	//we can not use stooper and are overdrunk
+		return false;
 	}
-	else if(inebriety_left() < 0) return;	//we can not use stooper and are overdrunk
+	if(overdrunk())
+	{
+		//you can't overdrink if already overdrunk. except for green beer on cinco de mayo
+		auto_overdrinkGreenBeers();
+		return;
+	}
+	
 	
 	familiar start_fam = my_familiar();
 	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
@@ -1248,6 +1316,12 @@ void auto_drinkNightcap()
 		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
 	}
 	autoDrink(1, target.it, true); // added a silent flag to autoDrink to avoid the overdrink confirmation popup
+	
+	if(overdrunk())
+	{
+		//another round? (green beers)
+		auto_overdrinkGreenBeers();
+	}
 	
 	if(start_fam != my_familiar() && pathAllowsChangingFamiliar())	//familiar can change when crafting the drink in QT
 	{

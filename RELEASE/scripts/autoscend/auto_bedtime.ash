@@ -679,7 +679,7 @@ boolean doBedtime()
 			{
 				auto_log_info("Pulls remaining: " + pulls_remaining(), "olive");
 			}
-			if(item_amount($item[beer helmet]) == 0)
+			if(!possessOutfit("frat warrior fatigues"))
 			{
 				auto_log_info("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 				if(canYellowRay())
@@ -707,14 +707,15 @@ boolean doBedtime()
 	januaryToteAcquire($item[Makeshift Garbage Shirt]);		//doubles stat gains in the LOV tunnel. also keep leftover charges for tomorrow.
 	loveTunnelAcquire(true, $stat[none], true, 3, true, 1);
 
-	if(item_amount($item[Genie Bottle]) > 0)
+	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]))
 	{
+	//we are in bedtime so any wishes we planned to use today were already used. thus even if we can not use pocket wishes in this path we should still make them to avoid waste
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
 		{
 			makeGeniePocket();
 		}
 	}
-	if(canGenieCombat() && item_amount($item[beer helmet]) == 0)
+	if(canGenieCombat() && !possessOutfit("frat warrior fatigues"))
 	{
 		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}
@@ -736,13 +737,13 @@ boolean doBedtime()
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
-		if(in_pokefam() || in_darkGyffte())
+		if(pathHasFamiliar())
 		{
-			cli_execute("friars food");
+			cli_execute("friars familiar");
 		}
 		else
 		{
-			cli_execute("friars familiar");
+			cli_execute("friars food");
 		}
 	}
 
@@ -1162,8 +1163,19 @@ boolean doBedtime()
 	//Per Discord, work around is to never log out with a level 7 or greater Scribe
 	//Priest is always unlocked prior to Scribe. Just always attempt to switch to Priest at bedtime
 	handleServant($servant[Priest]);
-	
-	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
+
+	boolean canChangeToStooper()
+	{
+		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
+		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
+		my_familiar() != $familiar[Stooper])
+		{
+			return true;
+		}
+		return false;
+	}
+
+	boolean done = (my_inebriety() > inebriety_limit() && !canChangeToStooper()) || (my_inebriety() > (inebriety_limit() + 1));
 	if(in_gnoob() || !can_drink() || out_of_blood)
 	{
 		if((my_adventures() <= 2) || (internalQuestStatus("questL13Final") >= 14))
@@ -1180,10 +1192,8 @@ boolean doBedtime()
 	if(!done)
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");
-		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
-		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
-		inebriety_left() == 0 &&	//stooper drinking is only useful when liver is exactly at max without a stooper equipped.
-		my_familiar() != $familiar[Stooper])
+		if(canChangeToStooper() &&
+		inebriety_left() == 0)	//stooper drinking is only useful when liver is exactly at max without a stooper equipped.
 		{
 			auto_log_info("You have a Stooper, you can increase liver by 1!", "blue");
 			use_familiar($familiar[Stooper]);
