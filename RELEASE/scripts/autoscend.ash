@@ -1064,8 +1064,9 @@ boolean dailyEvents()
 
 	while(zataraClanmate(""));
 
-	if (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]) && !in_glover())
+	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]) && auto_is_valid($item[pocket wish]) && !in_glover())
 	{
+	//if bottle is valid and pocket wishes are not (such as in glover) then we should save the wishes for use and only convert leftovers into pocket wishes at bedtime
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
 		{
 			makeGeniePocket();
@@ -1387,7 +1388,9 @@ boolean autosellCrap()
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
-	foreach it in $items[dense meat stack, meat stack, Blue Money Bag, Red Money Bag, White Money Bag]
+	foreach it in $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
+	Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
+	Void Stone] //dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
 	{
 		if(item_amount(it) > 0)
 		{

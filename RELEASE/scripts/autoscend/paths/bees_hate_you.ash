@@ -3,7 +3,6 @@ boolean in_bhy()
 	return my_path() == "Bees Hate You";
 }
 
-
 void bhy_initializeSettings()
 {
 	if(in_bhy())
@@ -95,12 +94,12 @@ boolean LM_bhy()
 boolean L13_bhy_towerFinal()
 {
 	//Prepare for and defeat the final boss for a Bees hate You run. Which has special rules for engagement.
-	if (internalQuestStatus("questL13Final") != 11)
+	if(internalQuestStatus("questL13Final") != 11)
 	{
 		return false;
 	}
 	
-	if (item_amount($item[antique hand mirror]) < 1 )
+	if(item_amount($item[antique hand mirror]) < 1 )
 	{
 		abort("Need the [antique hand mirror] to defeat the guy made of bees. Please get one from the jewelry of the animated rustic nightstand and try again.");
 	}
