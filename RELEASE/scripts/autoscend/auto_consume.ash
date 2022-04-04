@@ -1242,12 +1242,31 @@ void auto_drinkNightcap()
 	while(inebriety_left() > 0 && auto_autoConsumeOne("drink"));
 	
 	//drink your nightcap to become overdrunk
-	ConsumeAction target = auto_bestNightcap();
-	if(!autoPrepConsume(target))
+	//in hardcore, assume Lucky Lindy is the best option if Speakeasy accessable
+	if(in_hardcore())
 	{
-		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
+		if(item_amount($item[Clan VIP Lounge Key])>0 && auto_get_clan_lounge() contains $item[Lucky Lindy] && my_meat() >= 950)
+		// 950 meat to allow for misc. purchases next day, e.g. 2 MMJ and 1 yellow rocket
+		{
+			auto_log_info("Drinking a Lucky Lindy at the Speakeasy.","blue");
+			visit_url("clan_viplounge.php?preaction=speakeasydrink&drink=4&pwd");
+			//should probably put an error catching-statement here
+		}
+		else 
+		{
+			auto_log_info("You are in HC but do not have access to a Lucky Lindy, using standard overdrink routine.","blue");
+			ConsumeAction target = auto_bestNightcap();
+		}
 	}
-	autoDrink(1, target.it, true); // added a silent flag to autoDrink to avoid the overdrink confirmation popup
+	else
+	{ 
+		ConsumeAction target = auto_bestNightcap();
+		if(!autoPrepConsume(target))
+		{
+			abort("Unexpectedly couldn't prep " + to_pretty_string(target));
+		}
+		autoDrink(1, target.it, true); // added a silent flag to autoDrink to avoid the overdrink confirmation popup
+	}
 	
 	if(start_fam != my_familiar() && pathAllowsChangingFamiliar())	//familiar can change when crafting the drink in QT
 	{
