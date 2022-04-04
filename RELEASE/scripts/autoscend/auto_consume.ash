@@ -175,12 +175,12 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 							if(weaponPicked && offhandPicked)
 							{
 								//this must be familiar weapon
-								specifySlot = "[familiar] ";
+								specifySlot = "familiar ";
 							}
 							else if(weaponPicked)
 							{
 								//this must be offhand weapon
-								specifySlot = "[off-hand] ";
+								specifySlot = "off-hand ";
 								offhandPicked = true;
 							}
 							else
@@ -188,16 +188,29 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 								weaponPicked = true;
 							}
 						}
-						if(maximizerItemSlot == $slot[off-hand])
+						else if(maximizerItemSlot == $slot[off-hand])
 						{
 							if(offhandPicked)
 							{
 								//this must be familiar offhand
-								specifySlot = "[familiar] ";
+								specifySlot = "familiar ";
 							}
 							else
 							{
 								offhandPicked = true;
+							}
+						}
+						else if(maximizerItemSlot == $slot[acc1])
+						{
+							//accessory to slot always returns acc1
+							specifySlot = "acc1 ";
+							if(contains_text(speculateString,"acc2"))
+							{
+								specifySlot = "acc3 ";
+							}
+							else if(contains_text(speculateString,"acc1"))
+							{
+								specifySlot = "acc2 ";
 							}
 						}
 						speculateString += " equip " + specifySlot + maximizerItem.to_string() + ";";
