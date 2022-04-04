@@ -2,12 +2,12 @@ import<autoscend.ash>
 
 boolean auto_run_choice(int choice, string page)
 {
-	if(robot_choice_adv(choice, page)) return true;		//an override function for You, Robot path.
+	if(robot_choice_adv(choice, page)) return true; // an override function for You, Robot path.
 	
 	auto_log_debug("Running auto_choice_adv.ash");
 	string[int] options = available_choice_options();
 	
-	switch (choice)
+	switch(choice)
 	{
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
 		case 16: // Saint Beernard (The eXtreme Slope)
@@ -89,7 +89,7 @@ boolean auto_run_choice(int choice, string page)
 		case 118: // When Rocks Attack (Outskirts of Cobb's Knob)
 			run_choice(2); // skip
 			break;
-		case 120: // Ennui is Wasted on the Young  (Outskirts of Cobb's Knob)
+		case 120: // Ennui is Wasted on the Young (Outskirts of Cobb's Knob)
 			run_choice(4); // skip
 			break;
 		case 123: // At Least It's Not Full Of Trash (The Hidden Temple)
@@ -227,26 +227,26 @@ boolean auto_run_choice(int choice, string page)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
 		case 588: // Machines! (Bugbear Mothership Sonar)
-			if (!page.contains_text("name=pingvalue size=5 value=2"))
+			if(!page.contains_text("name=pingvalue size=5 value=2"))
 			{
 				run_choice(1, "pingvalue=2");
 			}
-			else if (!page.contains_text("name=whurmvalue size=5 value=4"))
+			else if(!page.contains_text("name=whurmvalue size=5 value=4"))
 			{
 				run_choice(2, "whurmvalue=4");
 			}
-			else if (!page.contains_text("name=boomchuckvalue size=5 value=8"))
+			else if(!page.contains_text("name=boomchuckvalue size=5 value=8"))
 			{
 				run_choice(3, "boomchuckvalue=8");
 			}
 			break;
 		case 589: // Autopsy Auturvy (Bugbear Mothership Morgue)
-			if (item_amount($item[bugbear autopsy tweezers]) > 0)
+			if(item_amount($item[bugbear autopsy tweezers]) > 0)
 			{
 				// choices 1-5, do these change? or get removed?
 				for i from 1 to 5
 				{
-					if (options contains i)
+					if(options contains i)
 					{
 						run_choice(i);
 						break;
@@ -259,7 +259,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 590: // Not Alone In The Dark (Bugbear Mothership Special Ops)
-			if (options contains 2)
+			if(options contains 2)
 			{
 				run_choice(2);
 			}
@@ -417,9 +417,12 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(4); // skip
 			break;
 		case 889: // Take a Look, it's in a Book! (Fall) (The Haunted Library)
-			if(item_amount($item[dictionary]) == 0 && get_property("auto_getDictionary").to_boolean()) {
+			if(item_amount($item[dictionary]) == 0 && get_property("auto_getDictionary").to_boolean())
+			{
 				run_choice(4); // get the dictionary
-			} else {
+			}
+			else
+			{
 				run_choice(5); // skip
 			}
 			break;
@@ -455,13 +458,14 @@ boolean auto_run_choice(int choice, string page)
 			edUnderworldChoiceHandler(choice);
 			break;
 		case 1026: // Home on the Free Range (Castle in the Clouds in the Sky (Ground Floor))
-			if(isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
+			if(item_amount($item[electric boning knife]) > 0 ||
+			isActuallyEd() || in_bugbear() || in_pokefam()) // paths that don't require a boning knife for the tower
 			{
 				run_choice(3); // skip
 			}
 			else
 			{
-				run_choice(2); // get Electric Boning Knife then skip
+				run_choice(2); // get Electric Boning Knife
 			}
 			break;
 		case 1056: // Now It's Dark (Lost in the Great Overlook Lodge)
@@ -528,11 +532,16 @@ boolean auto_run_choice(int choice, string page)
 			doghouseChoiceHandler(choice);
 			break;
 		case 1115: // VYKEA! (VYKEA)
-			if (!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community()) {
+			if(!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community())
+			{
 				run_choice(1); // get consumables
-			} else if (!get_property("_VYKEALoungeRaided").to_boolean()) {
+			}
+			else if(!get_property("_VYKEALoungeRaided").to_boolean())
+			{
 				run_choice(4); // get Wal-Mart gift certificates
-			} else {
+			}
+			else
+			{
 				run_choice(6); // skip
 			}
 			break;

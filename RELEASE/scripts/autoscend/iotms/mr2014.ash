@@ -319,6 +319,10 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 	{
 		return false;
 	}
+	if(possessEquipment($item[UV-resistant compass]))
+	{
+		return false;		//already chose the other off-hand
+	}
 	if(in_hardcore())		//will we be able to pull at any point in the run. not just right now (we might be out of pulls today)
 	{
 		if(!canChangeToFamiliar($familiar[Grimstone Golem]))	//no golem, or not allowed in path
@@ -335,13 +339,19 @@ boolean LX_ornateDowsingRod(boolean doing_desert_now)
 	{
 		return false;
 	}
-	if(get_counters("", 0, 6) != "")
-	{
-		return false;	//do not waste a semirare
-	}
 	
 	if(item_amount($item[Grimstone Mask]) == 0 && !canChangeToFamiliar($familiar[Grimstone Golem]) && canPull($item[Grimstone Mask]))
 	{
+		if(canPull($item[Shore Inc. Ship Trip Scrip]) && storage_amount($item[Shore Inc. Ship Trip Scrip]) > 2)
+		{
+			//since drum machine and killing jar get pulled it's not useful to explore faster than compass just to need more fights gathering pages anyway
+			//not worth spending the 5 adv to acquire rod in addition to the pull if Trip Scrip aren't in short supply
+			return false;
+		}
+		// if(canChangeToFamiliar($familiar[Melodramedary]))
+		// {
+		// 	//with Melodramedary, drum machine, killing jar and no Scrip pull, pulling the mask saves 2 turns compared to vacationing for Scrip? is that good enough?
+		// }
 		pullXWhenHaveY($item[Grimstone Mask], 1, 0);		//pull the mask if you do not have it and cannot use the golem
 	}
 	if(item_amount($item[Grimstone Mask]) == 0)

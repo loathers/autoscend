@@ -79,7 +79,8 @@ drop	24	Galloping Grill	prop:_hotAshesDrops<5
 gremlins	0	Nosy Nose
 gremlins	1	Plastic Pirate Skull
 gremlins	2	Space Jellyfish
-gremlins	3	Barrrnacle
+gremlins	3	Gelatinous Cubeling
+gremlins	4	Barrrnacle
 
 init	0	Xiblaxian Holo-Companion
 init	1	Cute Meteor
@@ -136,34 +137,35 @@ item	27	Casagnova Gnome
 item	28	Psychedelic Bear
 item	29	Piano Cat
 # Slightly special fairies
-item	30	Ghost of Crimbo Carols
-item	31	Red-Nosed Snapper
-item	32	Pair of Stomping Boots	!path:G-Lover
-item	33	Gelatinous Cubeling
-item	34	Steam-Powered Cheerleader
-item	35	Obtuse Angel
-item	36	Green Pixie
+item	30	Grey Goose
+item	31	Ghost of Crimbo Carols
+item	32	Red-Nosed Snapper
+item	33	Pair of Stomping Boots	!path:G-Lover
+item	34	Gelatinous Cubeling
+item	35	Steam-Powered Cheerleader
+item	36	Obtuse Angel
+item	37	Green Pixie
 # Elemental fairies
-item	37	Sleazy Gravy Fairy
-item	38	Stinky Gravy Fairy
-item	39	Flaming Gravy Fairy
-item	40	Frozen Gravy Fairy
-item	41	Spooky Gravy Fairy
+item	38	Sleazy Gravy Fairy
+item	39	Stinky Gravy Fairy
+item	40	Flaming Gravy Fairy
+item	41	Frozen Gravy Fairy
+item	42	Spooky Gravy Fairy
 # Physical damage fairy
-item	42	Bowlet
+item	43	Bowlet
 # Barely special fairies
-item	43	Mechanical Songbird
-item	44	Grouper Groupie
-item	45	Peppermint Rhino
+item	44	Mechanical Songbird
+item	45	Grouper Groupie
+item	46	Peppermint Rhino
 # Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	46	Slimeling
+item	47	Slimeling
 # Turtles are cute
-item	47	Syncopated Turtle
+item	48	Syncopated Turtle
 # The original
-item	48	Baby Gravy Fairy
+item	49	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	49	Mutant Fire Ant
+item	50	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -298,39 +300,39 @@ stat	5	Elf Operative
 stat	6	Optimistic Candle
 stat	7	Rockin' Robin
 # Volleychauns
-stat	8	Ghost of Crimbo Commerce
-stat	9	Golden Monkey
-stat	10	Bloovian Groose
-stat	11	Unconscious Collective
-stat	12	Grim Brother
-stat	13	Dramatic Hedgehog
-stat	14	Chauvinist Pig
-stat	15	Uniclops
-stat	16	Hunchbacked Minion
-stat	17	Nervous Tick
-stat	18	Cymbal-Playing Monkey
-stat	19	Cheshire Bat
+#Ghost of Crimbo Commerce - commented out until mafia bug with buy from mall is fixed
+stat	8	Golden Monkey
+stat	9	Bloovian Groose
+stat	10	Unconscious Collective
+stat	11	Grim Brother
+stat	12	Dramatic Hedgehog
+stat	13	Chauvinist Pig
+stat	14	Uniclops
+stat	15	Hunchbacked Minion
+stat	16	Nervous Tick
+stat	17	Cymbal-Playing Monkey
+stat	18	Cheshire Bat
 # VolleyWhelps
-stat	20	Melodramedary
+stat	19	Melodramedary
 # Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
-stat	21	Frumious Bandersnatch
+stat	20	Frumious Bandersnatch
 # Slightly special volleyballs
-stat	22	Ghost of Crimbo Cheer
-stat	23	Reanimated Reanimator
-stat	24	God Lobster
-stat	25	Party Mouse
-stat	26	Lil' Barrel Mimic
-stat	27	Piranha Plant
-stat	28	Antique Nutcracker
+stat	21	Ghost of Crimbo Cheer
+stat	22	Reanimated Reanimator
+stat	23	God Lobster
+stat	24	Party Mouse
+stat	25	Lil' Barrel Mimic
+stat	26	Piranha Plant
+stat	27	Antique Nutcracker
 # Fancy
-stat	29	Miniature Sword &amp; Martini Guy
+stat	28	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	30	Grinning Turtle
+stat	29	Grinning Turtle
 # His winning smile
-stat	31	Smiling Rat
+stat	30	Smiling Rat
 # The original
-stat	32	Blood-Faced Volleyball
+stat	31	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work

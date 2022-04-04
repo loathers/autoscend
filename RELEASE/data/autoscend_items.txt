@@ -25,8 +25,8 @@ reserve	5	1 enchanted bean	quest:questL10Garbage<2
 reserve	6	12 bubblin' crude	prop:twinPeakProgress<4;item:jar of oil<1
 # Save for jelly toast
 reserve	7	11 toast	havefamiliar:Space Jellyfish
-# You won't have more than 1000 clovers in run. If you do somehow, enjoy your green beer, maybe.
-reserve	8	1000 ten-leaf clover
+# You won't have more than 1000 clovers in run.
+reserve	8	1000 11-leaf clover
 # Save for flamin' whatshisname
 # Technically could only save until the shen part is done, but eh, probably won't make a difference
 reserve	9	11 unnamed cocktail	quest:questL11Ron<2

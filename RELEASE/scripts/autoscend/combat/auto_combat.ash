@@ -54,7 +54,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 			break;
 	}
 
-	remove_property("auto_combatHandler");
+	remove_property("_auto_combatState");
 	remove_property("auto_funCombatHandler");				//ocrs specific tracker
 	remove_property("auto_funPrefix");						//ocrs specific tracker
 	set_property("auto_combatHandlerThunderBird", "0");
@@ -131,7 +131,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 			string doThis = actions[idx];
 			while(contains_text(doThis, "(") && contains_text(doThis, ")") && (idx < count(actions)))
 			{
-				set_property("auto_combatHandler", get_property("auto_combatHandler") + doThis);
+				combat_status_add(doThis);
 				idx++;
 				if(idx >= count(actions))
 				{

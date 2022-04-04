@@ -15,6 +15,7 @@ int usedCount(skill sk);
 int usedCount(item it);
 void markAsUsed(skill sk);
 void markAsUsed(item it);
+boolean canUse(skill sk, boolean onlyOnce, boolean inCombat);
 boolean canUse(skill sk, boolean onlyOnce);
 boolean canUse(skill sk);
 boolean canUse(item it, boolean onlyOnce);
@@ -25,6 +26,10 @@ string useItem(item it, boolean mark);
 string useItem(item it);
 string useItems(item it1, item it2, boolean mark);
 string useItems(item it1, item it2);
+boolean isSniffed(monster enemy, skill sk);
+boolean isSniffed(monster enemy);
+skill getSniffer(monster enemy, boolean inCombat);
+skill getSniffer(monster enemy);
 skill getStunner(monster enemy);
 boolean enemyCanBlocksSkills();
 boolean canSurvive(float mult, int add);
@@ -42,6 +47,8 @@ string replaceMonsterCombatString(monster target, boolean inCombat);
 string replaceMonsterCombatString(monster target);
 string replaceMonsterCombatString();
 float turns_to_kill(float dmg);
+boolean combat_status_check(string mark);
+void combat_status_add(string mark);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash

@@ -147,12 +147,15 @@ void acquireFamiliarsCasual()
 	}
 	hatchFamiliar($familiar[hovering sombrero]);
 	
-	//delevel enemy cheaply
-	if(!have_familiar($familiar[barrrnacle]) && item_amount($item[Barrrnacle]) == 0 && auto_mall_price($item[Barrrnacle]) < 1000 && my_meat() > 10000)
+	if(!have_familiar($familiar[Gelatinous Cubeling]) && !have_familiar($familiar[Nosy Nose]))	//if none of the common better delevel familiars
 	{
-		retrieve_item(1, $item[Barrrnacle]);			//will mallbuy it
+		//delevel enemy cheaply
+		if(!have_familiar($familiar[barrrnacle]) && item_amount($item[Barrrnacle]) == 0 && auto_mall_price($item[Barrrnacle]) < 1000 && my_meat() > 10000)
+		{
+			retrieve_item(1, $item[Barrrnacle]);			//will mallbuy it
+		}
+		hatchFamiliar($familiar[Barrrnacle]);
 	}
-	hatchFamiliar($familiar[Barrrnacle]);
 	
 	//meat, MP/HP, confuse, or attack enemy. cheap
 	if(!have_familiar($familiar[Cocoabo]) && item_amount($item[cocoa egg]) == 0)
@@ -234,8 +237,9 @@ boolean LX_acquireFamiliarLeprechaun()
 				}
 				else if(zone_available($location[The Spooky Forest]))	//spend 1 adv and one clover to get it instead.
 				{
-					retrieve_item(1, $item[Ten-Leaf Clover]);
-					if(item_amount($item[Ten-Leaf Clover]) > 0)
+					//catch to avoid an error being thrown
+					catch retrieve_item(1, $item[11-Leaf Clover]);
+					if(item_amount($item[11-Leaf Clover]) > 0)
 					{
 						cloverUsageInit();
 						boolean adventure = autoAdv($location[The Spooky Forest]);

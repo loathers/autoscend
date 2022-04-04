@@ -566,7 +566,7 @@ float consumptionProgress()
 	}
 	else
 	{
-		float used_organ_ratio = min(organs_used / organs_max, 1);
+		float used_organ_ratio = min(organs_used.to_float() / organs_max.to_float(), 1);
 		return used_organ_ratio;
 	}
 }
@@ -1204,6 +1204,63 @@ void auto_printNightcap()
 	auto_log_info("Nightcap is: " + to_pretty_string(auto_bestNightcap()), "blue");
 }
 
+void auto_overdrinkGreenBeers()
+{
+	//called after nightcap, auto_drinkNightcap() needs to have already made the necessary checks
+	if(!contains_text(holiday(),"St\. Sneaky Pete's Day") || !canDrink($item[green beer], false))
+	{
+		return;
+	}
+	familiar start_fam = my_familiar();
+	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
+	&& start_fam != $familiar[Stooper] && pathAllowsChangingFamiliar()) //check if path allows changing familiar
+	{
+		use_familiar($familiar[Stooper]);
+	}
+	
+	int negativeLiver = inebriety_left();
+	if(negativeLiver >= -10 && negativeLiver < 0)
+	{
+		auto_log_info("It's St. Sneaky Pete's Day, can we sneak in any green beers?", "blue");
+		
+		if(gnomads_available())
+		{
+			if (daily_special() == $item[green beer])
+			{
+				ConsumeAction greenBeerAction = MakeConsumeAction(daily_special());
+				greenBeerAction.cafeId = daily_special().to_int();
+				greenBeerAction.it = $item[none];
+				int daily_special_limit = min(my_meat()/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
+				for (int i=0; i < daily_special_limit; i++)
+				{
+					autoConsume(greenBeerAction);
+				}
+			}
+		}
+		
+		//TODO craft green beer?
+		
+		int greenbeer_limit = min(item_amount($item[green beer]), (inebriety_left()+11)/($item[green beer].inebriety));
+		if(greenbeer_limit > 0)
+		{
+			autoDrink(greenbeer_limit, $item[green beer]);
+		}
+		
+		if(inebriety_left() == negativeLiver)
+		{
+			auto_log_info("Could not overdrink any green beer", "blue");
+		}
+		else if(inebriety_left() >= -10)
+		{
+			auto_log_info("Still have " + (11 + inebriety_left()) + " green beer liver space that could not be filled", "blue");
+		}
+	}
+	if(start_fam != my_familiar() && pathAllowsChangingFamiliar())
+	{
+		use_familiar(start_fam);
+	}
+}
+
 void auto_drinkNightcap()
 {
 	//function to overdrink a nightcap at the end of day
@@ -1221,15 +1278,26 @@ void auto_drinkNightcap()
 	}
 	if(auto_freeCombatsRemaining() > 0)
 	{
+		auto_log_info("Not drinking a nightcap because of " + auto_freeCombatsRemaining() + " remaining free fights", "blue");
 		return;		//do not overdrink if we still have free fights we want to do. undesireable free fights are not counted by that function
 	}
-	//you can't overdrink if already overdrunk. TODO account for green beer on cinco de mayo
-	if(auto_have_familiar($familiar[Stooper]))
+	boolean overdrunk()
 	{
-		if($familiar[Stooper] == my_familiar() && inebriety_left() < 0) return;		//stooper is current familiar and overdrunk
-		else if(inebriety_left() < -1) return;		//stooper not current familiar. but will be overdrunk even if switching to it
+		if(auto_have_familiar($familiar[Stooper]))
+		{
+			if($familiar[Stooper] == my_familiar() && inebriety_left() < 0) return true;		//stooper is current familiar and overdrunk
+			else if(inebriety_left() < -1) return true;		//stooper not current familiar. but will be overdrunk even if switching to it
+		}
+		else if(inebriety_left() < 0) return true;	//we can not use stooper and are overdrunk
+		return false;
 	}
-	else if(inebriety_left() < 0) return;	//we can not use stooper and are overdrunk
+	if(overdrunk())
+	{
+		//you can't overdrink if already overdrunk. except for green beer on cinco de mayo
+		auto_overdrinkGreenBeers();
+		return;
+	}
+	
 	
 	familiar start_fam = my_familiar();
 	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
@@ -1248,6 +1316,12 @@ void auto_drinkNightcap()
 		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
 	}
 	autoDrink(1, target.it, true); // added a silent flag to autoDrink to avoid the overdrink confirmation popup
+	
+	if(overdrunk())
+	{
+		//another round? (green beers)
+		auto_overdrinkGreenBeers();
+	}
 	
 	if(start_fam != my_familiar() && pathAllowsChangingFamiliar())	//familiar can change when crafting the drink in QT
 	{
@@ -1354,9 +1428,8 @@ boolean auto_knapsackAutoConsume(string type, boolean simulate)
 {
 	// TODO: does not consider mime army shotglass
 
-	if(in_plumber())
+	if(in_plumber() && my_level() < 13)
 	{
-		auto_log_warning("Skipping eating, you'll have to do this manually.", "red");
 		return false;
 	}
 
@@ -1473,7 +1546,7 @@ int auto_spleenFamiliarAdvItemsPossessed()
 	
 	foreach it in $items[Unconscious Collective Dream Jar, Grim Fairy Tale, Powdered Gold, Groose Grease, beastly paste, bug paste, cosmic paste, oily paste, demonic paste, gooey paste, elemental paste, Crimbo paste, fishy paste, goblin paste, hippy paste, hobo paste, indescribably horrible paste, greasy paste, Mer-kin paste, orc paste, penguin paste, pirate paste, chlorophyll paste, slimy paste, ectoplasmic paste, strange paste, Agua De Vida]
 	{
-		if(auto_is_valid(it) && mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//even when not mallbuying them we do not want to use exceptionally expensive items
+		if(item_amount(it) > 0 && auto_is_valid(it) && mall_price(it) < get_property("autoBuyPriceLimit").to_int())	//even when not mallbuying them we do not want to use exceptionally expensive items
 		{
 			spleenFamiliarAdvItemsCount += item_amount(it);
 		}
@@ -1625,4 +1698,38 @@ boolean distill(item target)
 	}
 	auto_log_warning("distill(item target) mysteriously failed to create [" +target+ "]");
 	return false;
+}
+
+boolean prepare_food_xp_multi()
+{
+	//prepare as big an XP multi as possible for the next food item eaten
+	if(fullness_left() < 1 || !can_eat())
+	{
+		return false;
+	}
+	
+	//[Ready to Eat] is gotten by using a red rocket from fireworks shop in VIP clan. it gives +400% XP on next food item
+	if(have_fireworks_shop() &&
+	have_effect($effect[Everything Looks Red]) <= 0 &&
+	have_effect($effect[Ready to Eat]) <= 0 &&
+	auto_is_valid($item[red rocket]))
+	{
+		if(item_amount($item[red rocket]) == 0 && my_meat() > npc_price($item[red rocket]))
+		{
+			//this is a more aggressive buying function than the one in pre_adv
+			retrieve_item(1, $item[red rocket]);
+		}
+		if(item_amount($item[red rocket]) > 0)
+		{
+			return false;	//go use [red rocket] in combat before eating for XP
+		}
+	}
+	
+	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	
+	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
+	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
+	
+	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
+	return true;
 }

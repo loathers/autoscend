@@ -1126,41 +1126,19 @@ boolean adjustForReplaceIfPossible()
 
 boolean canSniff(monster enemy, location loc)
 {
-	if (have_skill($skill[Transcendent Olfaction]) &&
-	auto_is_valid($skill[Transcendent Olfaction]) &&
-	get_property("olfactedMonster").to_monster() != enemy &&
-	(have_effect($effect[On The Trail]) == 0 || item_amount($item[soft green echo eyedrop antidote]) > 0))
+	if(!auto_wantToSniff(enemy, loc))
 	{
-		return auto_wantToSniff(enemy, loc);
+		return false;
 	}
-	return false;
+	return getSniffer(enemy, false) != $skill[none];
 }
 
 boolean adjustForSniffingIfPossible(monster target)
 {
-	if (have_skill($skill[Transcendent Olfaction]) && auto_is_valid($skill[Transcendent Olfaction]))
+	skill sniffer = getSniffer(target, false);
+	if(sniffer != $skill[none])
 	{
-		if (get_property("olfactedMonster").to_monster() != target &&
-				have_effect($effect[On the trail]) > 0 &&
-				item_amount($item[soft green echo eyedrop antidote]) > 0)
-		{
-			auto_log_info("Uneffecting On the trail to have Transcendent Olfaction available for " + target, "blue");
-			monster old_olfact = get_property("olfactedMonster").to_monster();
-			string output = cli_execute_output("uneffect On the trail");
-			if (output.contains_text("On the Trail removed."))
-			{
-				handleTracker($item[soft green echo eyedrop antidote], old_olfact, "auto_otherstuff");
-				return true;
-			}
-			else
-			{
-				auto_log_info("Failed to Uneffect On the trail for some reason?", "blue");
-			}
-		}
-		if (my_mp() < mp_cost($skill[Transcendent Olfaction]))
-		{
-			acquireMP(mp_cost($skill[Transcendent Olfaction]));
-		}
+		return acquireMP(sniffer.mp_cost());
 	}
 	return false;
 }
@@ -1359,22 +1337,31 @@ boolean isProtonGhost(monster mon)
 
 int cloversAvailable()
 {
-	int retval = item_amount($item[Disassembled Clover]);
-	retval += item_amount($item[Ten-Leaf Clover]);
-	retval += closet_amount($item[Ten-Leaf Clover]);
+	//count 11-leaf clovers
+	int retval = 0; 
 
-	if(in_glover() || in_bhy())
+	if(!in_glover())
 	{
-		retval -= item_amount($item[Disassembled Clover]);
+		retval += available_amount($item[11-Leaf Clover]);
+		//if none on hand, try to buy from hermit
+		if(retval == 0)
+		{
+			acquireHermitItem($item[11-Leaf Clover]);
+			retval += item_amount($item[11-Leaf Clover]);
+		}
+		//if none at hermit, try to pull one
+		if(retval == 0)
+		{
+			pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
+			retval += item_amount($item[11-Leaf Clover]);
+		}
 	}
 
-	if(in_koe() && canChew($item[lucky pill]))
-	{
-		int pills = item_amount($item[rare Meat isotope])/20 - 2;
-		pills = max(0, pills);
-		pills = min(spleen_left(), pills);
-		retval += pills;
-	}
+	//count Astral Energy Drinks. Must specify ID since there are now 2 items with this name
+	retval += available_amount($item[[10883]Astral Energy Drink]);
+
+	//other known sources which aren't counted here:
+	// Lucky Lindy, Optimal Dog, Pillkeeper
 
 	return retval;
 }
@@ -1385,60 +1372,65 @@ boolean cloverUsageInit()
 	{
 		abort("Called cloverUsageInit but have no clovers");
 	}
-
-	backupSetting("cloverProtectActive", false); // maybe set this before we return?
-	if(item_amount($item[Ten-Leaf Clover]) > 0)
+	//do we already have Lucky!?
+	if(have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
 	}
 
-	if(item_amount($item[Disassembled Clover]) > 0)
+	//use a clover if we have one in inventory or closet
+	if(item_amount($item[11-Leaf Clover]) < 1)
 	{
-		if(!in_glover() && !in_bhy())
+		//try to get one out of closet, catch to avoid an error being thrown
+		catch retrieve_item(1, $item[11-Leaf Clover]);	
+	}
+	if(item_amount($item[11-Leaf Clover]) > 0)
+	{
+		use(1, $item[11-Leaf Clover]);
+		if(have_effect($effect[Lucky!]) > 0)
 		{
-			use(1, $item[Disassembled Clover]);
+			auto_log_info("Clover usage initialized");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after using an 11-Leaf Clover");
 		}
 	}
-	if(item_amount($item[Ten-Leaf Clover]) > 0)
+	
+	//use Astral Energy Drinks if we have room
+	if(spleen_left() >= 5)
 	{
-		return true;
+		if(item_amount($item[[10883]Astral Energy Drink]) < 1)
+		{
+			//try to get one out of closet
+			retrieve_item(1, $item[[10883]Astral Energy Drink]);		
+		}
+		if(item_amount($item[[10883]Astral Energy Drink]) > 0)
+		{
+			chew(1, $item[[10883]Astral Energy Drink]);
+			if(have_effect($effect[Lucky!]) > 0)
+			{
+				auto_log_info("Clover usage initialized");
+				return true;
+			}
+			else
+			{
+				auto_log_warning("Did not acquire Lucky! after drinking an Astral Energy Drink");
+			}
+		}
 	}
 
-	if(in_koe() && spleen_left() > 1 && canChew($item[lucky pill]) && item_amount($item[rare Meat isotope]) >= 60)
-	{
-		retrieve_item(1, $item[lucky pill]);
-		autoChew(1, $item[lucky pill]);
-		use(1, $item[Disassembled Clover]);
-	}
-
-	if(closet_amount($item[Ten-Leaf Clover]) > 0)
-	{
-		take_closet(1, $item[Ten-Leaf Clover]);
-	}
-	if(item_amount($item[Ten-Leaf Clover]) > 0)
-	{
-		auto_log_info("Clover usage initialized");
-		set_property("_autoCloverNext", true);
-		return true;
-	}
-	abort("We tried to initialize clover usage but do not appear to have a Ten-Leaf Clover");
+	abort("We tried to initialize clover usage but was unable to get Lucky!");
 	return false;
 }
 
 boolean cloverUsageFinish()
 {
-	restoreSetting("cloverProtectActive");
-	if(item_amount($item[Ten-Leaf Clover]) > 0)
+	if(have_effect($effect[Lucky!]) > 0)
 	{
-		auto_log_debug("Wandering adventure interrupted our clover adventure (" + my_location() + "), boo. Gonna have to do this again.");
-		if(in_glover() || in_bhy())
-		{
-			put_closet(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
-		}
-		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
-		return false;
+		abort("Wandering adventure interrupted our clover adventure (" + my_location() + ").");
 	}
-	remove_property("_autoCloverNext");
 	return true;
 }
 
@@ -1668,17 +1660,32 @@ boolean stunnable(monster mon)
 		// Standard
 			Wall of Skin,
 			Wall of Bones,
-			Naughty Sorceress,
+			Eldritch Tentacle,
+		// Cargo Cultist Shorts
+			Astrologer of Shub-Jigguwatt,
+			Burning Daughter,
+			Chosen of Yog-Urt,
+			Herald of Fridgr,
+			Tentacle of Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl,
 		// Vampyre
 			Your Lack of Reflection,
 			// The final boss is handled separately
+		// Heavy Rains
+			storm cow,
 		// Witchess Monsters
 			Witchess Witch,
 			Witchess Queen,
 			Witchess King,
 		// Other
 			Cyrus the Virus,
+			broctopus,
+			cocktail shrimp,
 	];
+	
+	if($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains mon && !get_property("auto_confidence").to_boolean())
+	{
+		return false;
+	}
 
 	// Vampyre final boss has your name reversed, which is dumb.
 	// I wonder if this will hit any unlucky people...
@@ -1688,6 +1695,37 @@ boolean stunnable(monster mon)
 	}
 
 	return !(unstunnable_monsters contains mon);
+}
+					    
+float combatItemDamageMultiplier()
+{
+	float retval = 1;
+	if(auto_have_skill($skill[Deft Hands]))
+	{
+		retval += 0.25;
+	}
+	if(have_effect($effect[Mathematically Precise]) > 0)
+	{
+		retval += 0.50;
+	}
+	if(have_equipped($item[V for Vivala mask]))
+	{
+		retval += 0.50;
+	}
+	return retval;
+}
+
+float MLDamageToMonsterMultiplier()
+{
+	//Positive ML gives monsters damage resistance
+	//Negative ML increases the damage inflicted on monsters
+	float retval = 1 - 0.004*monster_level_adjustment();
+	if(retval < 0.5)
+	{
+		//damage resistance is capped at 50%
+		retval = 0.5;
+	}
+	return retval;
 }
 
 int freeCrafts()
@@ -2603,6 +2641,128 @@ cabinet of Dr. Limpieza
 	return false;
 }
 
+float effectiveDropChance(item it, float baseDropRate)
+{
+	//0 to 100 chance to drop at end of fight
+	float retval;
+	float item_modifier = item_drop_modifier();
+	
+	if(baseDropRate > 0)
+	{
+		if(it.item_type() == "food")
+		{
+			//todo? cooking ingredients
+			item_modifier += numeric_modifier("Food Drop");
+		}
+		if(it.item_type() == "booze")
+		{
+			//todo? cocktailcrafting ingredients
+			item_modifier += numeric_modifier("Booze Drop");
+		}
+		if(it.candy)
+		{
+			item_modifier += numeric_modifier("Candy Drop");
+		}
+		if(it.to_slot() != $slot[none] && $slots[hat,shirt,weapon,off-hand,pants,acc1,acc2,acc3,back] contains it.to_slot())
+		{
+			item_modifier += numeric_modifier("Gear Drop");
+			
+			if(it.to_slot() == $slot[hat])
+			{
+				item_modifier += numeric_modifier("Hat Drop");
+			}
+			if(it.to_slot() == $slot[shirt])
+			{
+				item_modifier += numeric_modifier("Shirt Drop");
+			}
+			if(it.to_slot() == $slot[weapon])
+			{
+				item_modifier += numeric_modifier("Weapon Drop");
+			}
+			if(it.to_slot() == $slot[off-hand])
+			{
+				item_modifier += numeric_modifier("Offhand Drop");
+			}
+			if(it.to_slot() == $slot[pants])
+			{
+				item_modifier += numeric_modifier("Pants Drop");
+			}
+			if($slots[acc1,acc2,acc3] contains it.to_slot())
+			{
+				item_modifier += numeric_modifier("Accessory Drop");
+			}
+		}
+	}
+	
+	retval = baseDropRate *  (100 + item_modifier) / 100.0;
+	retval = min(100,retval);		//final drop chance % before special modifiers
+	
+	if(retval > 0)
+	{
+		if(in_lar())
+		{
+			if(retval*2 >= 100)
+			{
+				retval = 100;
+			}
+			else
+			{
+				retval = 0;
+			}
+		}
+		
+		if(in_heavyrains())
+		{
+			int depth = my_location().water_level + numeric_modifier("Water Level");
+			depth = max(1,depth);
+			depth = min(6,depth);
+			float heavyrainsWashChance = (5.0*depth/100);
+			if(have_effect($effect[Fishy Whiskers]) > 0)
+			{
+				heavyrainsWashChance -= 0.1;
+			}
+			if(equipped_amount($item[fishbone catcher's mitt]) > 0)
+			{
+				//todo exact rate?
+				heavyrainsWashChance -= 0.1;
+			}
+			retval = retval * (1 - max(0,heavyrainsWashChance));
+		}
+		
+		if(in_wildfire())
+		{
+			float wildfireBurnChance;
+			switch(my_location().fire_level)
+			{
+				case 5:
+					wildfireBurnChance = 1;
+				case 4:
+					wildfireBurnChance = 0.768;
+				case 3:
+					wildfireBurnChance = 0.361;
+				case 2:
+					wildfireBurnChance = 0.109;
+				default:
+					wildfireBurnChance = 0;
+			}
+			retval = retval * (1 - wildfireBurnChance);
+		}
+		
+		if(my_familiar() == $familiar[Black Cat])
+		{
+			//todo actual chance to lose drop?
+			retval = retval * 0.75;
+		}
+		else if(my_familiar() == $familiar[O.A.F.])
+		{
+			//todo actual chance to lose drop?
+			retval = retval * 0.75;
+		}
+	}
+	
+	return max(0,retval);
+}
+
 boolean[effect] ATSongList()
 {
 	// This List contains ALL AT songs in order from Most to Least Important as to determine what effect to shrug off.
@@ -2654,6 +2814,11 @@ void shrugAT(effect anticipated)
 	if(have_effect(anticipated) > 0)
 	{
 		//We have the effect, we do not need to shrug it, just let it propagate.
+		return;
+	}
+	
+	if(!auto_have_skill(to_skill(anticipated)))
+	{	//We don't know that song anyway
 		return;
 	}
 
@@ -2924,7 +3089,8 @@ boolean auto_is_valid(item it)
 
 boolean auto_is_valid(familiar fam)
 {
-	if(is100FamRun()){
+	if(is100FamRun())
+	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
 	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
@@ -3347,7 +3513,7 @@ boolean auto_badassBelt()
 	}
 }
 
-void auto_interruptCheck()
+void auto_interruptCheck(boolean debug)
 {
 	if(get_property("auto_interrupt").to_boolean())
 	{
@@ -3355,11 +3521,17 @@ void auto_interruptCheck()
 		restoreAllSettings();
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
 	}
-	else if (get_property("auto_debugging").to_boolean())
+	else if (get_property("auto_debugging").to_boolean() && debug)
 	{
 		set_property("auto_interrupt", true);
 		auto_log_info("auto_debugging detected, auto_interrupt enabled.");
 	}
+}
+
+void auto_interruptCheck()
+{
+	//we check for interrupt at multiple locations. but we only want to set it once per loop in debug mode.
+	auto_interruptCheck(true);
 }
 
 element currentFlavour()

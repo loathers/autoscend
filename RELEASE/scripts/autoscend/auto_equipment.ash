@@ -290,7 +290,7 @@ void resetMaximize()
 			}
 		}
 	}
-	else if (item_amount($item[January's Garbage Tote]) > 0 && in_bhy())
+	else if (item_amount($item[January\'s Garbage Tote]) > 0 && in_bhy())
 	{
 		// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
 		foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt]
@@ -323,11 +323,39 @@ void finalizeMaximize(boolean speculative)
 		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
 	}
 
-	if (auto_haveKramcoSausageOMatic() && ((auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none]) || get_property("mappingMonsters").to_boolean()))
+	if (auto_haveKramcoSausageOMatic())
 	{
 		// Save the first 8 sausage goblins for delay burning
+		boolean saveGoblinForDelay = (auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none]);
+		// don't interfere with backups unless they're equivalent or worse
+		boolean dontSausageBackups = auto_backupTarget() && !($monsters[sausage goblin,eldritch tentacle] contains get_property("lastCopyableMonster").to_monster());
 		// also don't equip Kramco when using Map the Monsters as sausage goblins override the NC
-		addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
+		if (saveGoblinForDelay || dontSausageBackups || get_property("mappingMonsters").to_boolean())
+		{
+			addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
+		}
+	}
+	if (possessEquipment($item[Cursed Magnifying Glass]))
+	{
+		if (get_property("cursedMagnifyingGlassCount").to_int() == 13)
+		{
+			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || (get_property("_voidFreeFights").to_int() >= 5 && !in_hardcore()))
+			{
+				// don't equip for non free fights in softcore? (pending allowed conditions like delay zone && none of the monsters in the zone is a sniff/YR target?)
+				// don't interfere with backups or Map the Monsters
+				addToMaximize("-equip " + $item[Cursed Magnifying Glass].to_string());
+			}
+			else if(get_property("_voidFreeFights").to_int() < 5)
+			{
+				// add bonus if next fight is a free void monster
+				addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
+			}
+		}
+		else if(get_property("_voidFreeFights").to_int() < 5 && solveDelayZone() != $location[none])
+		{
+			// add bonus to charge free fights
+			addBonusToMaximize($item[Cursed Magnifying Glass], 200);
+		}
 	}
 	foreach s in $slots[hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3, familiar]
 	{
@@ -348,8 +376,22 @@ void finalizeMaximize(boolean speculative)
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}
-	addBonusToMaximize($item[mafia thumb ring], 200); // adventures
-	addBonusToMaximize($item[Mr. Screege's spectacles], 100); // meat stuff
+	addBonusToMaximize($item[mafia thumb ring], 200); // 4% chance +1 adventure
+	if(possessEquipment($item[carnivorous potted plant]))
+	{
+		if(get_property("mappingMonsters").to_boolean() || auto_backupTarget())
+		{
+			// don't interfere with backups or Map the Monsters
+			// should also block equipping if support is added for Feel Nostalgic, Lecture on relativity, or fax for YR or other special combat actions
+			addToMaximize("-equip " + $item[carnivorous potted plant].to_string());
+		}
+		else if(get_property("auto_MLSafetyLimit") == "" || get_property("auto_MLSafetyLimit").to_int() >= 25)
+		{
+			addBonusToMaximize($item[carnivorous potted plant], 200); // 4% chance free kill but also 25 ML
+		}
+	}
+	addBonusToMaximize($item[Mr. Screege\'s spectacles], 100); // meat stuff
+	addBonusToMaximize($item[can of mixed everything], 100); // random stuff
 	if(have_effect($effect[blood bubble]) == 0)
 	{
 		// blocks first hit, but doesn't stack with blood bubble
