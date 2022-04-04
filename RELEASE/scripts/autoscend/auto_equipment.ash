@@ -535,7 +535,7 @@ void equipOverrides()
 		slot s;
 		if(slot_str == "acc")
 		{
-			s = $slot[acc1];
+			s = $slot[acc3];
 		}
 		else
 		{
@@ -556,13 +556,14 @@ void equipOverrides()
 				// if equipping to accessories, now move on to the next slot
 				// otherwise, stop equipping, since items are listed from highest
 				// to lowest priority
-				if(s == $slot[acc1])
+				// Run from acc3 to acc1, since maximizer prioritises the other way.
+				if(s == $slot[acc3])
 				{
 					s = $slot[acc2];
 				}
 				else if(s == $slot[acc2])
 				{
-					s = $slot[acc3];
+					s = $slot[acc1];
 				}
 				else
 				{
