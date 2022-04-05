@@ -641,7 +641,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 		if($monsters[toothy sklelton,spiny skelelton] contains enemy)
 		{
-			if(my_location() == $location[The Defiled Nook] )
+			if(my_location() == $location[The Defiled Nook] && item_amount($item[evil eye]) == 0) // lash didn't get it)
 			{
 				doRenenutet = true;
 			}
