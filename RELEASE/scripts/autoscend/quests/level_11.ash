@@ -2505,7 +2505,7 @@ boolean L11_palindome()
 		return false;
 	}
 
-	if (!possessEquipment($item[Talisman o' Namsilat])) {
+	if (!possessEquipment($item[Talisman o\' Namsilat])) {
 		return false;
 	}
 
