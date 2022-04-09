@@ -107,15 +107,7 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		return false;
 	}
 
-	equipStatgainIncreasersFor(toDrink);
-
 	int expectedInebriety = toDrink.inebriety * howMany;
-
-	item it = equipped_item($slot[Acc3]);
-	if((it != $item[Mafia Pinky Ring]) && (item_amount($item[Mafia Pinky Ring]) > 0) && ($items[Bucket of Wine, Psychotic Train Wine, Sacramento Wine, Stale Cheer Wine] contains toDrink) && can_equip($item[Mafia Pinky Ring]))
-	{
-		equip($slot[Acc3], $item[Mafia Pinky Ring]);
-	}
 
 	if(canOde(toDrink) && possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
@@ -132,6 +124,14 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		// get enough turns of ode
 		while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
 			/*do nothing, the loop condition is doing the work*/;
+	}
+
+	equipStatgainIncreasersFor(toDrink);
+
+	item it = equipped_item($slot[Acc3]);
+	if((it != $item[Mafia Pinky Ring]) && (item_amount($item[Mafia Pinky Ring]) > 0) && ($items[Bucket of Wine, Psychotic Train Wine, Sacramento Wine, Stale Cheer Wine] contains toDrink) && can_equip($item[Mafia Pinky Ring]))
+	{
+		equip($slot[Acc3], $item[Mafia Pinky Ring]);
 	}
 
 	boolean retval = false;
