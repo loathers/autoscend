@@ -58,6 +58,7 @@ boolean L9_leafletQuest()
 	auto_log_info("Got a leaflet to do", "blue");
 	if(disregardInstantKarma())		//checks a user setting as well as current level
 	{
+		equipStatgainIncreasers();
 		cli_execute("leaflet");		//also gain +200 substats for each stat
 	}
 	else
