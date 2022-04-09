@@ -154,66 +154,12 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 				{
 					//equipment is not enough, try with buffs too
 					string speculateString;
-					boolean weaponPicked;
-					boolean offhandPicked;
 					
 					//list the equipment picked by maximizer into speculateString, need this to make mafia speculate max MP from all relevant modifiers with equipment + buffs
-					foreach i,entry in maximize("200mp, -200Mana Cost, -200Stackable Mana Cost",0,0,true,true)	//can't use autoMaximize "Aggregate reference expected"
+					item[slot] MPequip = speculatedMaximizerEquipment("200mp, -200Mana Cost, -200Stackable Mana Cost");
+					foreach sl in MPequip
 					{
-						if(i>15)
-						{
-							//there should not be more than 9 or 10 equipment slots and equipment entries come first. so equipment list is done
-							break;
-						}
-						item maximizerItem = entry.item;
-						if(maximizerItem == $item[none]) continue;
-						slot maximizerItemSlot = maximizerItem.to_slot();
-						if(maximizerItemSlot == $slot[none]) continue;
-						string specifySlot = "";
-						if(maximizerItemSlot == $slot[weapon])
-						{
-							if(weaponPicked && offhandPicked)
-							{
-								//this must be familiar weapon
-								specifySlot = "familiar ";
-							}
-							else if(weaponPicked)
-							{
-								//this must be offhand weapon
-								specifySlot = "off-hand ";
-								offhandPicked = true;
-							}
-							else
-							{
-								weaponPicked = true;
-							}
-						}
-						else if(maximizerItemSlot == $slot[off-hand])
-						{
-							if(offhandPicked)
-							{
-								//this must be familiar offhand
-								specifySlot = "familiar ";
-							}
-							else
-							{
-								offhandPicked = true;
-							}
-						}
-						else if(maximizerItemSlot == $slot[acc1])
-						{
-							//accessory to slot always returns acc1
-							specifySlot = "acc1 ";
-							if(contains_text(speculateString,"acc2"))
-							{
-								specifySlot = "acc3 ";
-							}
-							else if(contains_text(speculateString,"acc1"))
-							{
-								specifySlot = "acc2 ";
-							}
-						}
-						speculateString += " equip " + specifySlot + maximizerItem.to_string() + ";";
+						speculateString += " equip " + sl.to_string() + " " + MPequip[sl].to_string() + ";";
 					}
 					boolean [effect] effectsThatIncreaseMaxMP = $effects[The Magical Mojomuscular Melody,Feeling Excited,Triple-Sized,Glittering Eyelashes,Big];
 					foreach eff in effectsThatIncreaseMaxMP
