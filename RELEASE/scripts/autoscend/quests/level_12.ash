@@ -1755,6 +1755,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Car-Charged]);
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
+	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
 	bat_formWolf();
 	zataraSeaside("meat");
 
