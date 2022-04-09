@@ -107,6 +107,8 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		return false;
 	}
 
+	equipStatgainIncreasersFor(toDrink);
+
 	int expectedInebriety = toDrink.inebriety * howMany;
 
 	item it = equipped_item($slot[Acc3]);
@@ -214,6 +216,8 @@ boolean autoDrinkCafe(int howmany, int id)
 	// we'll get from the drink.
 	if(!gnomads_available()) return false;
 
+	equipStatgainIncreasersFor(id.to_item());
+
 	string name = cafeDrinkName(id);
 	for (int i=0; i<howmany; i++)
 	{
@@ -228,6 +232,8 @@ boolean autoDrinkCafe(int howmany, int id)
 boolean autoEatCafe(int howmany, int id)
 {
 	if(!canadia_available()) return false;
+
+	equipStatgainIncreasersFor(id.to_item());
 
 	string name = cafeFoodName(id);
 	for (int i=0; i<howmany; i++)
@@ -287,6 +293,8 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	{
 		return false;
 	}
+
+	equipStatgainIncreasersFor(toEat);
 
 	int expectedFullness = toEat.fullness * howMany;
 	acquireMilkOfMagnesiumIfUnused(true);
