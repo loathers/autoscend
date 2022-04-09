@@ -481,6 +481,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		Adorable Lookout,
 		Alacri Tea,
 		All Fired Up,
+		Clear Ears\, Can't Lose,
 		Fishy\, Oily,
 		The Glistening,
 		Human-Machine Hybrid,
@@ -752,6 +753,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Hyphemariffic,
 			Sleaze-Resistant Trousers,
 			Hyperoffended,
+			Covered in the Rainbow,
 		]))
 			return result();
 	}
@@ -1017,6 +1019,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Unrunnable Face,
 
 			// all-stat effects
+			Confidence of the Votive,
 			Human-Human Hybrid,
 			Industrial Strength Starch,
 			Mutated,

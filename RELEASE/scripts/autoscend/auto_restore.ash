@@ -1721,6 +1721,10 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 		return true;
 	}
 
+	//since we need to restore, lets reduce MP cost of future skills
+	buffMaintain($effect[The Odour of Magick]);
+	buffMaintain($effect[Using Protection]);
+
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
 	// TODO: move this to general effectiveness method
 	if(my_maxmp() - my_mp() > 300)
