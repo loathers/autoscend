@@ -1290,6 +1290,7 @@ boolean possessOutfit(string outfit);
 void equipBaseline();
 void ensureSealClubs();
 void equipRollover(boolean silent);
+boolean auto_forceEquipSword(boolean speculative);
 boolean auto_forceEquipSword();
 boolean is_watch(item it);
 
