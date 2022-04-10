@@ -137,6 +137,8 @@ boolean L7_crypt()
 	visit_url("crypt.php");
 	use(1, $item[Evilometer]);
 
+	int evilBonus = cyrptEvilBonus();
+
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && lar_repeat($location[The Defiled Alcove]))
 	{
 
@@ -145,7 +147,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Reanimated Reanimator]);
 		}
 
-		if(get_property("cyrptAlcoveEvilness").to_int() > (26 + cyrptEvilBonus()))
+		if(get_property("cyrptAlcoveEvilness").to_int() > (26 + evilBonus))
 		{
 			provideInitiative(850, $location[The Defiled Alcove], true);
 			addToMaximize("100initiative 850max");
@@ -154,7 +156,7 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
 
-		if(get_property("cyrptAlcoveEvilness").to_int() >= (28 + cyrptEvilBonus()))
+		if(get_property("cyrptAlcoveEvilness").to_int() >= (28 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
@@ -180,7 +182,7 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
 
-		if(get_property("cyrptNookEvilness").to_int() > (26 + cyrptEvilBonus()) && auto_is_valid($item[Evil Eye]))
+		if(get_property("cyrptNookEvilness").to_int() > (26 + evilBonus) && auto_is_valid($item[Evil Eye]))
 		{
 			buffMaintain($effect[Joyful Resolve]);
 			bat_formBats();
@@ -213,13 +215,13 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
-		if(get_property("cyrptNicheEvilness").to_int() >= (28 + cyrptEvilBonus()))
+		if(get_property("cyrptNicheEvilness").to_int() >= (28 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
 
 		auto_log_info("The Niche!", "blue");
-		if(canSniff($monster[Dirty Old Lihc], $location[The Defiled Niche]) && get_property("cyrptNicheEvilness").to_int() >= (26 + cyrptEvilBonus()) && auto_mapTheMonsters())
+		if(canSniff($monster[Dirty Old Lihc], $location[The Defiled Niche]) && get_property("cyrptNicheEvilness").to_int() >= (26 + evilBonus) && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Dirty Old Lihc.");
 		}
@@ -248,7 +250,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
-		if(get_property("cyrptCrannyEvilness").to_int() >= (28 + cyrptEvilBonus()))
+		if(get_property("cyrptCrannyEvilness").to_int() >= (28 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
