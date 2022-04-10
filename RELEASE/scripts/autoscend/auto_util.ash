@@ -3204,6 +3204,9 @@ boolean auto_can_equip(item it, slot s)
 
 	if(s == $slot[off-hand] && it.to_slot() == $slot[weapon] && !auto_have_skill($skill[Double-Fisted Skull Smashing]))
 		return false;
+	
+	if((s == $slot[weapon] || s == $slot[off-hand]) && (in_wotsf() || (is_boris() && it != $item[Trusty])))
+		return false;
 
 	if(it.item_type() == "chefstaff" && (!(auto_have_skill($skill[Spirit of Rigatoni]) || (my_class() == $class[Sauceror] && equipped_amount($item[special sauce glove]) > 0) || my_class() == $class[Avatar of Jarlsberg]) || s != $slot[weapon]))
 		return false;
