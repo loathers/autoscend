@@ -918,6 +918,7 @@ boolean L6_dakotaFanning();
 //Defined in autoscend/quests/level_07.ash
 void cyrptChoiceHandler(int choice);
 boolean L7_crypt();
+boolean L7_override();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_08.ash
