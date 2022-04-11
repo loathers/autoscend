@@ -2,13 +2,17 @@
 
 boolean auto_buySkills()  // This handles skill acquisition for general paths
 {
-	// TODO: Torso Awareness is worth obtaining in other cases too.
+	// See if we have any shirts worth wearing
+	boolean have_useful_shirt = false;
+	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac]
+	{
+		have_useful_shirt = have_useful_shirt || (item_amount(it) != 0 && is_unrestricted(it));
+	}
 	//we need 5000 meat for the skill. and want to save an additional 1000 meat above meat reserve since torso awareness is somewhat low priority
 	if((my_meat() >= meatReserve() + 6000)
 	   && gnomads_available()
 	   && (!have_skill($skill[Torso Awareness]))
-	   && (item_amount($item[January\'s Garbage Tote]) != 0)
-	   && (is_unrestricted($item[January\'s Garbage Tote])))
+	   && have_useful_shirt)
 	{
 		visit_url("gnomes.php?action=trainskill&whichskill=12");
 	}
