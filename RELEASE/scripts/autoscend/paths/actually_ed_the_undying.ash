@@ -608,10 +608,6 @@ skill ed_nextUpgrade()
 	{
 		return $skill[Another Extra Spleen]; // 10 Ka
 	}
-	else if (!have_skill($skill[Replacement Stomach]))
-	{
-		return $skill[Replacement Stomach]; // 30 Ka
-	}
 	else if (!have_skill($skill[Upgraded Legs]))
 	{
 		return $skill[Upgraded Legs]; // 10 Ka
@@ -632,10 +628,6 @@ skill ed_nextUpgrade()
 	{
 		return $skill[Just One More Extra Spleen]; // 25 Ka
 	}
-	else if (!have_skill($skill[Replacement Liver]))
-	{
-		return $skill[Replacement Liver]; // 30 Ka
-	}
 	else if (!have_skill($skill[Elemental Wards]))
 	{
 		return $skill[Elemental Wards]; // 10 Ka
@@ -643,6 +635,14 @@ skill ed_nextUpgrade()
 	else if (!have_skill($skill[Okay Seriously, This is the Last Spleen]))
 	{
 		return $skill[Okay Seriously, This is the Last Spleen];  // 30 Ka
+	}
+	else if (!have_skill($skill[Replacement Liver]))
+	{
+		return $skill[Replacement Liver]; // 30 Ka
+	}
+	else if (!have_skill($skill[Replacement Stomach]))
+	{
+		return $skill[Replacement Stomach]; // 30 Ka
 	}
 	else if (!possessEquipment($item[The Crown of Ed the Undying]) && !have_skill($skill[Tougher Skin]))
 	{
