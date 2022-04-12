@@ -657,6 +657,21 @@ void auto_CMCconsult()
 		return;
 	}
 
+	if(get_property("_auto_coldMedicineLocked").to_boolean())
+	{
+		//haven't visited yet since it was last locked so always visit to update available consults
+		set_property("_auto_coldMedicineLocked","false");
+	}
+	else if(auto_CMCconsultsLeft() <= 2 && freeCrafts() >= 5 && possessEquipment($item[ice crown]) && my_meat() >= meatReserve())
+	{
+		//only looking for Breathitin from at least 11 fights spent underground
+		if(my_location().environment != "underground")
+		{
+			//if Breathitin was not available last turn and last location was not underground it will still not be available now so no visit needed
+			return;
+		}
+	}
+
 	int bestOption = -1;
 	item consumableBought = $item[none];
 	string page = visit_url("campground.php?action=workshed");
