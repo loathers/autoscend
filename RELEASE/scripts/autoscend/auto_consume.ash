@@ -261,6 +261,8 @@ boolean autoChew(int howMany, item toChew)
 		return false;
 	}
 
+	equipStatgainIncreasersFor(toChew);
+
 	boolean retval = chew(howMany, toChew);
 
 	if(retval)
@@ -1733,10 +1735,9 @@ boolean prepare_food_xp_multi()
 		}
 	}
 	
-	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	//get [That's Just Cloud-Talk, Man] +25% all stats experience is already done by dailyEvents()
 	
-	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
-	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
+	equipStatgainIncreasers($stats[muscle,mysticality,moxie],true);
 	
 	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
 	return true;
