@@ -432,7 +432,11 @@ void equipStatgainIncreasersFor(item it)
 	if(it.muscle != "" && excludedStat != $stat[muscle])			increaseThisStat[$stat[muscle]] = true;
 	if(it.mysticality != "" && excludedStat != $stat[mysticality])		increaseThisStat[$stat[mysticality]] = true;
 	if(it.moxie != "" && excludedStat != $stat[moxie])			increaseThisStat[$stat[moxie]] = true;
-	equipStatgainIncreasers(increaseThisStat,false);
+
+	if(count(increaseThisStat) != 0)
+	{
+		equipStatgainIncreasers(increaseThisStat,false);
+	}
 }
 
 string defaultMaximizeStatement()
