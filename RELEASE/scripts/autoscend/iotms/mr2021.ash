@@ -701,7 +701,6 @@ void auto_CMCconsult()
 
 	if(bestOption != -1)
 	{
-		visit_url("campground.php?action=workshed");
 		run_choice(bestOption);
 	}
 
