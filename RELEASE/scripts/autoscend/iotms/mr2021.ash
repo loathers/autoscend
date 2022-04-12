@@ -716,6 +716,7 @@ void auto_CMCconsult()
 
 	if(bestOption != -1)
 	{
+		set_property("_auto_coldMedicineLocked","true");	//when taking a consultation, set property as a reminder to always check again next time consultations are unlocked
 		run_choice(bestOption);
 	}
 
