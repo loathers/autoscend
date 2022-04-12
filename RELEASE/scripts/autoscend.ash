@@ -696,7 +696,7 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer() && !isActuallyEd())
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol()))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1064,8 +1064,9 @@ boolean dailyEvents()
 
 	while(zataraClanmate(""));
 
-	if (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]) && !in_glover())
+	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]) && auto_is_valid($item[pocket wish]) && !in_glover())
 	{
+	//if bottle is valid and pocket wishes are not (such as in glover) then we should save the wishes for use and only convert leftovers into pocket wishes at bedtime
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
 		{
 			makeGeniePocket();
