@@ -608,10 +608,6 @@ skill ed_nextUpgrade()
 	{
 		return $skill[Another Extra Spleen]; // 10 Ka
 	}
-	else if (!have_skill($skill[Replacement Stomach]))
-	{
-		return $skill[Replacement Stomach]; // 30 Ka
-	}
 	else if (!have_skill($skill[Upgraded Legs]))
 	{
 		return $skill[Upgraded Legs]; // 10 Ka
@@ -622,19 +618,19 @@ skill ed_nextUpgrade()
 	}
 	else if (!have_skill($skill[Yet Another Extra Spleen]) && have_skill($skill[Another Extra Spleen]))
 	{
-		return $skill[Yet Another Extra Spleen]; // 15 Ka
+		return $skill[Yet Another Extra Spleen]; // 15 Ka; with haunch (15 Ka) 0.87 adv/Ka
 	}
+	else if (!have_skill($skill[Replacement Liver]))
+	{
+		return $skill[Replacement Liver]; // 30 Ka; with 4 astral pilsners @L11 1.47 adv/Ka
+	}	
 	else if (!have_skill($skill[Still Another Extra Spleen]))
 	{
-		return $skill[Still Another Extra Spleen]; // 20 Ka
+		return $skill[Still Another Extra Spleen]; // 20 Ka; with haunch (15 Ka) 0.74 adv/Ka
 	}
 	else if (!have_skill($skill[Just One More Extra Spleen]))
 	{
 		return $skill[Just One More Extra Spleen]; // 25 Ka
-	}
-	else if (!have_skill($skill[Replacement Liver]))
-	{
-		return $skill[Replacement Liver]; // 30 Ka
 	}
 	else if (!have_skill($skill[Elemental Wards]))
 	{
@@ -651,6 +647,10 @@ skill ed_nextUpgrade()
 	else if (!have_skill($skill[More Elemental Wards]))
 	{
 		return $skill[More Elemental Wards]; // 20 Ka
+	}
+	else if (!have_skill($skill[Replacement Stomach]))
+	{
+		return $skill[Replacement Stomach]; // 30 Ka; with 3.5 adv/fullness foods, 0.58 adv/Ka
 	}
 	else if (!have_skill($skill[Even More Elemental Wards]))
 	{
