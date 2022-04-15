@@ -121,26 +121,34 @@ boolean L10_basement()
 		return false;
 	}
 
-	if(possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
+	if(possessEquipment($item[Amulet of Extreme Plot Significance]))
 	{
-		return false;
+		if(!auto_can_equip($item[Amulet of Extreme Plot Significance]))
+		{
+			return false;
+		}
 	}
-
-	if(possessEquipment($item[Amulet of Extreme Plot Significance]) && !auto_can_equip($item[Amulet of Extreme Plot Significance]))
+	else if(possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
 	{
 		return false;
 	}
 
 	auto_log_info("Castle (Basement) - Unlocking Ground Floor.", "blue");
-	
-	if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]) && !in_hardcore())
-	{
-		pullXWhenHaveY($item[Titanium Assault Umbrella], 1, 0);
-	}
 
-	if(!possessEquipment($item[Amulet of Extreme Plot Significance]) && auto_can_equip($item[Amulet of Extreme Plot Significance]) && !in_hardcore())
+	if(!in_hardcore())
 	{
-		pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
+		if(!possessEquipment($item[Amulet of Extreme Plot Significance]) && auto_can_equip($item[Amulet of Extreme Plot Significance]))
+		{
+			pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
+		}
+		
+		if(!possessEquipment($item[Amulet of Extreme Plot Significance]))			//only consider umbrella if getting amulet fails somehow
+		{
+			if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]))
+			{
+				pullXWhenHaveY($item[Titanium Assault Umbrella], 1, 0);
+			}
+		}
 	}
 
 	if(my_primestat() == $stat[Muscle])
@@ -160,8 +168,10 @@ boolean L10_basement()
 	}
 
 	auto_forceNextNoncombat();
-	autoEquip($item[Titanium Assault Umbrella]);
-	autoEquip($item[Amulet of Extreme Plot Significance]);
+	if(!autoEquip($item[Amulet of Extreme Plot Significance]))
+	{
+		autoEquip($item[Titanium Assault Umbrella]);
+	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 	
 	return true;
@@ -255,13 +265,13 @@ void castleTopFloorChoiceHandler(int choice)
 	}
 	else if(choice == 676) // Flavor of a Raver (The Castle in the Clouds in the Sky (Top Floor))
 	{	
-		if(internalQuestStatus("questL10Garbage") < 10 && equipped_amount($item[Mohawk wig]) > 0)
+		if(equipped_amount($item[Mohawk wig]) > 0 || internalQuestStatus("questL10Garbage") >= 10)
 		{
-			run_choice(4); // if quest not done and have mohawk wig on, move to Yeah, You're for Me (#678)
+			run_choice(4); // if quest not done and have mohawk wig on, or quest is done, move to Yeah, You're for Me (#678)
 		}	
 		else
 		{
-			run_choice(3); // if no mohawk wig, grab the drum n bass record. will skip if already have record
+			run_choice(3); // if no mohawk wig and quest not done, grab the drum n bass record. will skip if already have record
 		}
 	}
 	else if(choice == 677) // Copper Feel (The Castle in the Clouds in the Sky (Top Floor))
@@ -276,7 +286,7 @@ void castleTopFloorChoiceHandler(int choice)
 		}
 		else
 		{
-			run_choice(2); // grab steam-powered rocket ship.  will skip if already have rocket
+			run_choice(2); // grab steam-powered rocket ship. will skip if already have rocket
 		}
 	}
 	else if(choice == 678) // Yeah, You're for Me, Punk Rock Giant (The Castle in the Clouds in the Sky (Top Floor))
@@ -291,7 +301,7 @@ void castleTopFloorChoiceHandler(int choice)
 		}
 		else
 		{
-			run_choice(3); // if quest is done, go to Copper Feel (#677) to skip
+			run_choice(3); // if quest is done, go to Copper Feel (#677) to get rocket ship or skip
 		}
 	}
 	else if(choice == 679) // Keep On Turnin' the Wheel in the Sky (The Castle in the Clouds in the Sky (Top Floor))
@@ -331,6 +341,7 @@ boolean L10_holeInTheSkyUnlock()
 		set_property("auto_holeinthesky", false);
 		return false;
 	}
+	LX_buyStarKeyParts();
 	int day = get_property("shenInitiationDay").to_int();
 	boolean[location] shenLocs = shenSnakeLocations(day, 0);
 	if(!needStarKey() && !(shenLocs contains $location[The Hole in the Sky]))
@@ -338,6 +349,7 @@ boolean L10_holeInTheSkyUnlock()
 		// we force auto_holeinthesky to true in L11_shenCopperhead() as Ed if Shen sends us to the Hole in the Sky
 		// as otherwise the zone isn't required at all for Ed.
 		// Should also handle situations where the player manually got the star key before unlocking Shen.
+		// or can buy the star key ingredients out of ronin.
 		set_property("auto_holeinthesky", false);
 		return false;
 	}

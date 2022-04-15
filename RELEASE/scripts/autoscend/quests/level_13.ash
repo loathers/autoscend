@@ -174,6 +174,21 @@ boolean LX_getDigitalKey()
 	return adv_spent;
 }
 
+void LX_buyStarKeyParts()
+{
+	if(item_amount($item[Richard\'s Star Key]) > 0 || get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	{
+		return;	//already have it
+	}
+	if(!can_interact())
+	{
+		return;	//no unrestricted mall access
+	}
+	buyUpTo(1, $item[Star Chart], 1000);
+	buyUpTo(8, $item[Star], 1000);
+	buyUpTo(7, $item[line], 1000);
+}
+
 boolean LX_getStarKey()
 {
 	if(!get_property("auto_getStarKey").to_boolean())
@@ -201,8 +216,11 @@ boolean LX_getStarKey()
 		return false;
 	}
 	
+	LX_buyStarKeyParts();
+
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
-	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key") && 
+	item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
 	{
 		pullXWhenHaveY($item[Star Chart], 1, 0);
 	}
@@ -1086,10 +1104,14 @@ boolean L13_towerNSTower()
 
 			if(!familiarEquipped)
 			{
-				if(autoEquip($item[tiny bowler]))
+				foreach it in $items[filthy child leash,tiny bowler]
 				{
-					sourcesPassive += 1;	//todo: confirm this damage only counts after getting hit, not with familiar damage
-					familiarEquipped = true;
+					if(autoEquip(it))
+					{
+						sourcesPassive += 1;	//todo: confirm this damage only counts after getting hit, not with familiar damage
+						familiarEquipped = true;
+						break;
+					}
 				}
 				if(!familiarEquipped)
 				{
@@ -1105,10 +1127,14 @@ boolean L13_towerNSTower()
 				}
 				if(!familiarEquipped)
 				{
-					if(autoEquip($item[plastic pumpkin bucket]))
+					foreach it in $items[plastic pumpkin bucket,moveable feast]
 					{
-						//attacks ~35% of the time?
-						familiarEquipped = true;
+						if(autoEquip(it))
+						{
+							//attacks ~35% of the time?
+							familiarEquipped = true;
+							break;
+						}
 					}
 				}
 			}
@@ -1530,12 +1556,7 @@ boolean L13_towerNSTower()
 			int pulled_items = 0;
 			foreach it in $items[gauze garter, filthy poultice, red pixel potion]
 			{
-				while(pulled_items < pull_target && canPull(it))
-				{
-						take_storage(1, it);
-						pulled_items += 1;
-				}
-			
+				pullXWhenHaveY(it,1,item_amount(it));
 			}
 
 			int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
@@ -1718,7 +1739,7 @@ boolean L13_towerNSNagamar()
 		cli_execute("refresh quests");
 		if(internalQuestStatus("questL13Final") != 12)
 		{
-			abort("In this specific ascension [naughty sorceress \(3\)] is wearing a mask that makes kol base game fail to advance the quest to step 12. Which means that bear verb orgy is impossible for this specific run. Manually grab a [Ten-Leaf Clover] from [Barrel Full of Barrels] then use it to get a [Wand of Nagamar] manually and run me again");
+			abort("In this specific ascension [naughty sorceress \(3\)] is wearing a mask that makes kol base game fail to advance the quest to step 12. Which means that bear verb orgy is impossible for this specific run. Manually get the [Lucky!] effect then use it to get a [Wand of Nagamar] manually and run me again");
 		}
 	}
 	
@@ -1735,15 +1756,6 @@ boolean L13_towerNSNagamar()
 	if (item_amount($item[Wand of Nagamar]) == 0 && internalQuestStatus("questL13Final") == 12 && !in_koe())
 	{
 		return autoAdv($location[The VERY Unquiet Garves]);
-	}
-	
-	if(in_glover())
-	{
-		pullXWhenHaveY($item[Ten-Leaf Clover], 1, 0);
-	}
-	else
-	{
-		pullXWhenHaveY($item[Disassembled Clover], 1, 0);
 	}
 	
 	if(cloversAvailable() > 0)

@@ -2,7 +2,6 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
 	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	string retval;
-	string combatState = get_property("auto_combatHandler");
 	
 	// Path = The Source
 	retval = auto_combatTheSourceStage4(round, enemy, text);
@@ -12,46 +11,17 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	retval = auto_combatLicenseToAdventureStage4(round, enemy, text);
 	if(retval != "") return retval;
 	
-	//olfaction is used to spawn 2 more copies of the target at current location.
-	//as well as eliminate the special rule that reduces the odds of encountering the same enemy twice in a row.
-	if(auto_wantToSniff(enemy, my_location()))
+	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
+	skill sniffer = getSniffer(enemy);
+	if(!combat_status_check("sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && sniffer != $skill[none])
 	{
-		if(canUse($skill[Transcendent Olfaction]) && (have_effect($effect[On The Trail]) == 0))
+		if(sniffer == $skill[Perceive Soul])		//mafia does not track the target of this skill so we must do so.
 		{
-			handleTracker(enemy, $skill[Transcendent Olfaction], "auto_sniffs");
-			return useSkill($skill[Transcendent Olfaction]);
-		}
-
-		if(canUse($skill[Make Friends]) && get_property("makeFriendsMonster") != enemy && my_audience() >= 20)
-		{
-			handleTracker(enemy, $skill[Make Friends], "auto_sniffs");
-			return useSkill($skill[Make Friends]);
-		}
-
-		if(!contains_text(get_property("longConMonster"), enemy) && canUse($skill[Long Con]) && (get_property("_longConUsed").to_int() < 5))
-		{
-			handleTracker(enemy, $skill[Long Con], "auto_sniffs");
-			return useSkill($skill[Long Con]);
-		}
-
-		if(canUse($skill[Perceive Soul]) && enemy != get_property("auto_bat_soulmonster").to_monster())
-		{
-			handleTracker(enemy, $skill[Perceive Soul], "auto_sniffs");
 			set_property("auto_bat_soulmonster", enemy);
-			return useSkill($skill[Perceive Soul]);
 		}
-
-		if(canUse($skill[Gallapagosian Mating Call]) && enemy != get_property("_gallapagosMonster").to_monster())
-		{
-			handleTracker(enemy, $skill[Gallapagosian Mating Call], "auto_sniffs");
-			return useSkill($skill[Gallapagosian Mating Call]);
-		}
-
-		if(canUse($skill[Offer Latte to Opponent]) && enemy != get_property("_latteMonster").to_monster() && !get_property("_latteCopyUsed").to_boolean())
-		{
-			handleTracker(enemy, $skill[Offer Latte to Opponent], "auto_sniffs");
-			return useSkill($skill[Offer Latte to Opponent]);
-		}
+		handleTracker(enemy, sniffer, "auto_sniffs");
+		combat_status_add("sniffed");
+		return useSkill(sniffer);
 	}
 	
 	//TODO auto_doCombatCopy property is silly. get rid of it
@@ -219,20 +189,69 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	if(canUse(flyer) && get_property("flyeredML").to_int() < 10000 && my_location() != $location[The Battlefield (Frat Uniform)] && my_location() != $location[The Battlefield (Hippy Uniform)] && !get_property("auto_ignoreFlyer").to_boolean())
 	{
-		skill stunner = getStunner(enemy);
-		boolean stunned = contains_text(combatState, "stunned");
-		if(stunner != $skill[none] && !stunned)
+		boolean shouldFlyer = false;
+		boolean staggeringFlyer = false;
+		item flyerWith;
+		if(my_class() == $class[Disco Bandit] && auto_have_skill($skill[Deft Hands]) && !combat_status_check("(it"))
 		{
-			set_property("auto_combatHandler", get_property("auto_combatHandler")+",stunned");
-			return useSkill(stunner);
+			//first item throw in the fight staggers
+			staggeringFlyer = true;
 		}
-		if(canUse($item[Time-Spinner]) && auto_have_skill($skill[Ambidextrous Funkslinging]))
+		if(auto_have_skill($skill[Ambidextrous Funkslinging]))
 		{
-			return useItems(flyer, $item[Time-Spinner]);
+			if (canUse($item[Time-Spinner]))
+			{
+				flyerWith = $item[Time-Spinner];
+				staggeringFlyer = true;
+			}
+			else if (canUse($item[beehive]))
+			{
+				if(my_class() == $class[Sauceror] && haveUsed($skill[Curse Of Weaksauce]))
+				{
+					//don't miss MP by killing weak monsters with beehive
+					int beehiveDamage = ceil(30*combatItemDamageMultiplier()*MLDamageToMonsterMultiplier());
+					if(monster_hp() > beehiveDamage)
+					{
+						flyerWith = $item[beehive];
+						staggeringFlyer = true;
+					}
+				}
+				else
+				{
+					flyerWith = $item[beehive];
+					staggeringFlyer = true;
+				}
+			}
 		}
-		if(canSurvive(3.0) || stunned)
+		if(staggeringFlyer && (!stunnable(enemy) || monster_level_adjustment() > 150))
 		{
-			return useItem(flyer);
+			staggeringFlyer = false;
+		}
+		boolean stunned;
+		if(!staggeringFlyer && stunnable(enemy))
+		{
+			skill stunner = getStunner(enemy);
+			stunned = combat_status_check("stunned");
+			if(stunner != $skill[none] && !stunned)
+			{
+				combat_status_add("stunned");
+				return useSkill(stunner);
+			}
+		}
+		if(canSurvive(3.0) || stunned || staggeringFlyer)
+		{
+			shouldFlyer = true;
+		}
+		if(shouldFlyer)
+		{
+			if(flyerWith != $item[none])
+			{
+				return useItems(flyer, flyerWith);
+			}
+			else
+			{
+				return useItem(flyer);
+			}
 		}
 	}
 	
@@ -291,17 +310,27 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 
 	// use red rocket from Clan VIP Lounge to get 5x stats from next food item consumed. Does not stagger on use
-	if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) &&
-		// consumeStuff fills liver first up to 10 or 15 before eating, pending if billiards room if completed. Gives confidence that we will eat within 100 turns.
-		my_inebriety() >= 10 && my_adventures() < 100)
+	// consumeStuff fills liver first up to 10 or 15 before eating, pending if billiards room if completed. Gives confidence that we will eat within 100 turns.
+	boolean billiards_check = my_inebriety() >= 10 || !can_drink() || hasSpookyravenLibraryKey();
+	if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) && my_adventures() < 100 && billiards_check)
 	{
-		//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
-		item simulationOutput = auto_autoConsumeOneSimulation("eat");
-		if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
+		if(in_plumber())
 		{
 			return useItem($item[red rocket]);
 		}
-		
+		//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
+		//disabled until fix: https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/1053
+		//item simulationOutput = auto_autoConsumeOneSimulation("eat");
+		//if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
+		//{
+			return useItem($item[red rocket]);
+		//}
+	}
+
+	// use cosmic bowling ball iotm
+	if(auto_bowlingBallCombatString(my_location(), true) != "")
+	{
+		return 	auto_bowlingBallCombatString(my_location(), false);
 	}
 	
 	return "";

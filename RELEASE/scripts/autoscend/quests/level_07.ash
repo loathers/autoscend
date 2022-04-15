@@ -102,10 +102,10 @@ boolean L7_crypt()
 
 	void useNightmareFuelIfPossible()
 	{
-		//chews this when there are no guaranteed uses for spleen 
+		// chews this when there are no guaranteed uses for spleen 
 		if((spleen_left() > 0) && (item_amount($item[Nightmare Fuel]) > 0) && !isActuallyEd() && 
 		!(auto_havePillKeeper() && spleen_left() >= 3) && 
-		(spleen_left() > 4*min(auto_spleenFamiliarAdvItemsPossessed(),floor(spleen_left()/4))))	//only uses space than can't be filled with adv item
+		(spleen_left() > 4*min(auto_spleenFamiliarAdvItemsPossessed(),floor(spleen_left()/4)))) // only uses space than can't be filled with adv item
 		{
 			autoChew(1, $item[Nightmare Fuel]);
 		}
@@ -145,10 +145,10 @@ boolean L7_crypt()
 		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
 		return autoAdv($location[The Defiled Alcove]);
 	}
-	//current mafia bug causes us to lose track of the amount of Evil Eyes in inventory so adding a refresh here
+	// current mafia bug causes us to lose track of the amount of Evil Eyes in inventory so adding a refresh here
 	cli_execute("refresh inv");
-	// In KoE, skeleton astronauts are random encounters that drop Evil Eyes.
-	// We might be able to reach the Nook boss without adventuring.
+	// in KoE, skeleton astronauts are random encounters that drop Evil Eyes.
+	// we might be able to reach the Nook boss without adventuring.
 
 	while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
 	{
@@ -186,7 +186,7 @@ boolean L7_crypt()
 		}
 		autoEquip($item[Gravy Boat]);
 
-		//prioritize extinguisher over slay the dead in Defiled Niche if its available and unused in the cyrpt
+		// prioritize extinguisher over slay the dead in Defiled Niche if its available and unused in the cyrpt
 		if(auto_FireExtinguisherCombatString($location[The Defiled Niche]) == "")
 		{
 			knockOffCapePrep();

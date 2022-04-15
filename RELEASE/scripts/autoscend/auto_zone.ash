@@ -90,7 +90,10 @@ generic_t zone_needItem(location loc)
 		value = 10.0;
 		break;
 	case $location[The Oasis]:
-		value = 30.0;
+		if(have_effect($effect[Ultrahydrated]) > 0)
+		{
+			value = 30.0;
+		}
 		break;
 	case $location[The Middle Chamber]:
 		value = 20.0;
@@ -163,7 +166,7 @@ generic_t zone_needItem(location loc)
 		value = 20.0;
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		if(item_amount($item[Ten-Leaf Clover]) == 0)
+		if(get_property("chasmBridgeProgress").to_int() < 30)
 		{
 			value = 10.0;
 		}
@@ -189,13 +192,27 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[Itznotyerzitz Mine]:
-		if (!possessOutfit("Mining Gear") && item_amount($item[Ten-Leaf Clover]) == 0)
+		if (!possessOutfit("Mining Gear") && cloversAvailable() == 0)
 		{
 			value = 10.0;
 		}
 		break;
 	case $location[The Goatlet]:
-		value = 40.0;
+		boolean getMilk = (have_skill($skill[Advanced Saucecrafting]) || (my_class() == $class[Sauceror] && (guild_available() || !get_property('auto_skipUnlockGuild').to_boolean()))) && fullness_limit() != 0;
+		int milksPerMilk = (my_class() == $class[Sauceror]) ? 3 : 1;
+		int milkUsed = (get_property("_milkOfMagnesiumUsed").to_boolean() || fullness_left() == 0) ? 1 : 0;
+		if((item_amount($item[Milk Of Magnesium]) + milksPerMilk * item_amount($item[Glass Of Goat\'s Milk]) + milkUsed) >= 3)
+		{	
+			getMilk = false;
+		}
+		if(getMilk)
+		{
+			value = 20.0;
+		}
+		else
+		{
+			value = 40.0;
+		}
 		break;
 	case $location[The Extreme Slope]:
 		if(!possessOutfit("eXtreme Cold-Weather Gear"))
@@ -344,6 +361,116 @@ generic_t zone_needItem(location loc)
 	return retval;
 }
 
+generic_t zone_needItemBooze(location loc)
+{
+	// these matching a location case in zone_needItem will be called if the general item bonus could not be reached
+	generic_t retval;
+	float value = 0.0;
+	switch(loc)
+	{
+	case $location[The Haunted Wine Cellar]:
+		value = 5.0 * (1.0 + get_property("auto_wineracksencountered").to_float());
+		break;
+	default:
+		retval._error = true;
+		break;
+	}
+
+	if(expectGhostReport() && (loc == get_property("ghostLocation").to_location()) && (get_property("questPAGhost") == "started"))
+	{
+		value = 0.0;
+	}
+
+
+	if(value != 0.0)
+	{
+		retval._boolean = true;
+		retval._float = 10000.0/value;
+
+		if(in_lar())
+		{
+			retval._float = 5000.0/value;
+		}
+		retval._float -= 100.0;
+	}
+	return retval;
+}
+
+generic_t zone_needItemFood(location loc)
+{
+	// these matching a location case in zone_needItem will be called if the general item bonus could not be reached
+	generic_t retval;
+	float value = 0.0;
+	switch(loc)
+	{
+	case $location[The Haunted Laundry Room]:
+		value = 5.0 * (1.0 + get_property("auto_cabinetsencountered").to_float());
+		break;
+	case $location[Inside the Palindome]:
+		if (item_amount($item[Stunt Nuts]) == 0 && item_amount($item[Wet Stunt Nut Stew]) == 0) {
+			value = 30.0;
+		}
+		break;
+	case $location[Whitey\'s Grove]:
+		if(((item_amount($item[Lion Oil]) == 0) || (item_amount($item[Bird Rib]) == 0)) && (item_amount($item[Wet Stew]) == 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0) && (internalQuestStatus("questL11Palindome") < 5))
+		{
+			value = 25.0;
+		}
+		break;
+	case $location[The Goatlet]:
+		boolean getMilk = (have_skill($skill[Advanced Saucecrafting]) || (my_class() == $class[Sauceror] && (guild_available() || !get_property('auto_skipUnlockGuild').to_boolean()))) && fullness_limit() != 0;
+		int milksPerMilk = (my_class() == $class[Sauceror]) ? 3 : 1;
+		int milkUsed = (get_property("_milkOfMagnesiumUsed").to_boolean() || fullness_left() == 0) ? 1 : 0;
+		if((item_amount($item[Milk Of Magnesium]) + milksPerMilk * item_amount($item[Glass Of Goat\'s Milk]) + milkUsed) >= 3)
+		{	
+			getMilk = false;
+		}
+		if(getMilk)
+		{
+			value = 20.0;
+		}
+		else
+		{
+			value = 40.0;
+		}
+		break;
+	case $location[The Haunted Pantry]:
+		if(in_community() && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
+		{
+			retval._float = 59.4;
+		}
+		break;
+	case $location[The Skeleton Store]:
+		if(in_community() && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
+		{	//No idea, should spade this for great justice.
+			retval._float = 33.0;
+		}
+		break;
+	default:
+		retval._error = true;
+		break;
+	}
+
+	if(expectGhostReport() && (loc == get_property("ghostLocation").to_location()) && (get_property("questPAGhost") == "started"))
+	{
+		value = 0.0;
+	}
+
+
+	if(value != 0.0)
+	{
+		retval._boolean = true;
+		retval._float = 10000.0/value;
+
+		if(in_lar())
+		{
+			retval._float = 5000.0/value;
+		}
+		retval._float -= 100.0;
+	}
+	return retval;
+}
+
 generic_t zone_combatMod(location loc)
 {
 	// attempting to list these in descending order in relation to the quest they relate to
@@ -450,7 +577,7 @@ generic_t zone_combatMod(location loc)
 		value = -95;
 		break;
 	case $location[Itznotyerzitz Mine]:
-		if (!possessOutfit("Mining Gear") && item_amount($item[Ten-Leaf Clover]) == 0) {
+		if (!possessOutfit("Mining Gear") && cloversAvailable() == 0) {
 			value = -90;
 		}
 		break;
@@ -1717,6 +1844,28 @@ generic_t zone_difficulty(location loc)
 	return retval;
 }
 
+boolean zone_hasLuckyAdventure(location loc)
+{
+	if ($locations[8-Bit Realm,A Maze of Sewer Tunnels,A Mob of Zeppelin Protesters,A-Boo Peak,An Octopus's Garden,Art Class,
+	Battlefield (Cloaca Uniform),Battlefield (Dyspepsi Uniform),Battlefield (No Uniform),Burnbarrel Blvd.,Camp Logging Camp,Chemistry Class,
+	Cobb's Knob Barracks,Cobb's Knob Harem,Cobb's Knob Kitchens,Cobb's Knob Laboratory,Cobb's Knob Menagerie\, Level 2,Cobb's Knob Treasury,
+	Elf Alley,Exposure Esplanade,Frat House,Frat House In Disguise,Guano Junction,Hippy Camp,Hippy Camp In Disguise,Itznotyerzitz Mine,
+	Lair of the Ninja Snowmen,Lemon Party,Madness Reef,Oil Peak,Outskirts of Camp Logging Camp,Pandamonium Slums,Shop Class,South of the Border,
+	The "Fun" House,The Ancient Hobo Burial Ground,The Batrat and Ratbat Burrow,The Black Forest,The Brinier Deepers,The Briny Deeps,The Bugbear Pen,
+	The Castle in the Clouds in the Sky (Basement),The Castle in the Clouds in the Sky (Ground Floor),The Castle in the Clouds in the Sky (Top Floor),
+	The Copperhead Club,The Dark Elbow of the Woods,The Dark Heart of the Woods,The Dark Neck of the Woods,The Dive Bar,The Goatlet,The Hallowed Halls,
+	The Haunted Ballroom,The Haunted Billiards Room,The Haunted Boiler Room,The Haunted Conservatory,The Haunted Gallery,The Haunted Kitchen,
+	The Haunted Library,The Haunted Pantry,The Haunted Storage Room,The Heap,The Hidden Park,The Hidden Temple,The Icy Peak,The Knob Shaft,
+	The Limerick Dungeon,The Mer-Kin Outpost,The Oasis,The Obligatory Pirate's Cove,The Outskirts of Cobb's Knob,The Poker Room,The Primordial Soup,
+	The Purple Light District,The Red Zeppelin,The Roulette Tables,The Sleazy Back Alley,The Smut Orc Logging Camp,The Spectral Pickle Factory,
+	The Spooky Forest,The Spooky Gravy Burrow,The Unquiet Garves,The VERY Unquiet Garves,The Valley of Rof L'm Fao,The Wreck of the Edgar Fitzsimmons,
+	Thugnderdome,Tower Ruins,Twin Peak,Vanya's Castle Chapel,Whitey's Grove,Ye Olde Medievale Villagee] contains loc)
+	{
+		return true;
+	}
+	return false;
+}
+
 location[int] zones_available()
 {
 	location[int] retval;
@@ -1797,9 +1946,9 @@ boolean is_ghost_in_zone(location loc)
 	//special location handling
 	int totalTurnsSpent;
 	int delayForNextNoncombat;
-	if(get_property("_autoCloverNext").to_boolean())
+	if(have_effect($effect[Lucky!]) > 0)
 	{
-		return false;		//we are grabbing a semirare so we will not encounter a ghost unless it is a wandering monster
+		return false;		//we are grabbing a Lucky! so we will not encounter a ghost unless it is a wandering monster
 	}
 	switch(loc)
 	{

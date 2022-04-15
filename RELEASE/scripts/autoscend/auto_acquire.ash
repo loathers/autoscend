@@ -105,9 +105,17 @@ boolean canPull(item it)
 
 boolean pulledToday(item it)
 {
-	string allPulls = get_property("auto_pulls").to_string();
-	string formatedSearchString = "(" + my_daycount() + ":" + it;
-	return contains_text(allPulls,formatedSearchString);
+	//autoscend property "auto_pulls" tracks pulls made by the script as "(" + my_daycount() + ":" + it
+	//kolmafia property "_roninStoragePulls" tracks all pulls made with kolmafia today since 2022 changed to daily limit of one pull for each item
+	string [int] allPulls = split_string(get_property("_roninStoragePulls"),",");
+	foreach i in allPulls
+	{
+		if(allPulls[i] == it.to_int())
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 int auto_mall_price(item it)
@@ -123,7 +131,19 @@ int auto_mall_price(item it)
 	}
 	if(is_tradeable(it))
 	{
-		int retval = mall_price(it);
+		int retval;
+		string it_type = item_type(it);
+		if(it_type == "food" || it_type == "booze")
+		{
+			//autoscend does Bulk cache mall prices for food,booze,hprestore,mprestore so mafia will give historical_price when asked for mall_price
+			//directly ask for historical_price here because if mafia session has to be restarted mafia will forget it has already cached these prices
+			//hprestore and mprestore types corresponding with mall_prices search categories are not available
+			retval = historical_price(it);
+		}
+		else
+		{
+			retval = mall_price(it);
+		}
 		if(retval == -1)
 		{
 			//0 could be due to item not being tradeable.
@@ -449,14 +469,24 @@ boolean acquireTotem()
 		}
 	}
 
-	//try fishing in the sewer for a turtle totem
-	
-	if(acquireGumItem($item[turtle totem]))
+	boolean want_totem = false;
+	foreach sk in $skills[Empathy of the Newt, Astral Shell, Ghostly Shell, Tenacity of the Snapper, Spiky Shell, Reptilian Fortitude, Jingle Bells, Curiosity of Br\'er Tarrypin]
 	{
-		return true;
+		if(auto_have_skill(sk))
+		{
+			want_totem = true;
+		}
+	}
+	if(want_totem)
+	{	
+		//try fishing in the sewer for a turtle totem
+		if(acquireGumItem($item[turtle totem]))
+		{
+			return true;
+		}
 	}
 	
-	//still could not get a totem. Give up
+	//did not get a totem. Give up
 	return false;
 }
 
@@ -468,7 +498,7 @@ boolean auto_hermit(int amt, item it)
 		return hermit(amt, it);
 	}
 	int initial = item_amount(it);
-	hermit(amt, it);
+	catch hermit(amt, it);
 	return item_amount(it) == initial + amt;
 }
 
@@ -577,6 +607,10 @@ int handlePulls(int day)
 	if(item_amount($item[Astral Hot Dog Dinner]) > 0)
 	{
 		use(1, $item[Astral Hot Dog Dinner]);
+	}
+	if(item_amount($item[[10882]carton of astral energy drinks]) > 0)
+	{
+		use(1, $item[[10882]carton of astral energy drinks]);
 	}
 
 	if(in_hardcore())
@@ -736,7 +770,10 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[snow suit], 1, 0);
 			}
-			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Filthy Child Leash]))
+			boolean famStatEq = possessEquipment($item[fuzzy polar bear ears]) || possessEquipment($item[miniature goose mask]) || possessEquipment($item[tiny glowing red nose]);
+			
+			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) &&
+			!famStatEq && glover_usable($item[Filthy Child Leash]))
 			{
 				pullXWhenHaveY($item[Filthy Child Leash], 1, 0);
 			}
@@ -806,11 +843,6 @@ int handlePulls(int day)
 
 boolean LX_craftAcquireItems()
 {
-	if((item_amount($item[Ten-Leaf Clover]) > 0) && glover_usable($item[Ten-Leaf Clover]))
-	{
-		use(item_amount($item[Ten-Leaf Clover]), $item[Ten-Leaf Clover]);
-	}
-
 	if((get_property("lastGoofballBuy").to_int() != my_ascensions()) && (internalQuestStatus("questL03Rat") >= 0))
 	{
 		visit_url("place.php?whichplace=woods");

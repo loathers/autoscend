@@ -13,6 +13,9 @@ void auto_beaten_handler()
 	loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
 	set_property("auto_beatenUpLocations", loc);
 	set_property("auto_beatenUpLastAdv", true);
+
+	//try to avoid getting beaten up again
+	buffMaintain($effect[Everything Is Bananas]);
 	
 	if(my_location() == $location[The X-32-F Combat Training Snowman])
 	{
@@ -421,7 +424,13 @@ boolean auto_post_adventure()
 			use_skill(1, $skill[Soul Rotation]);
 		}
 		int missing = (my_maxmp() - my_mp()) / 15;		//soul food restores 15 MP per cast.
-		int casts = min(missing, my_soulsauce() / 5);	//soul food costs 5 soulsauce per cast.
+		int availableSauce = my_soulsauce();
+		int minMPexpected = my_mp() + (availableSauce - 5) * 15; //mp expected after soul food if last 5 soulsauce is saved
+		if(availableSauce >= 5 && minMPexpected > 100 && minMPexpected > 0.8*my_maxmp())
+		{
+			availableSauce -= 5;	//keep 5 soulsauce for soul bubble if not missing much MP
+		}
+		int casts = min(missing, availableSauce / 5);	//soul food costs 5 soulsauce per cast.
 		if(casts > 0)
 		{
 			use_skill(casts, $skill[Soul Food]);
@@ -913,6 +922,9 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Carol of the Thrills], 30, 1, 1);		//3MP/adv for non ATs. +3 XP/fight
 			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 40, 1, 1);	//4MP/adv for non ATs. +3 XP/fight split equally 1 per stat.
 		}
+
+		// items which give stats
+		buffMaintain($effect[Scorched Earth]);
 	}
 
 
