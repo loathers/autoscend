@@ -30,7 +30,7 @@ jobs:
           exit 1
         fi
         export GITHUB_BUILD=$(echo $GITHUB_RELEASE | jq --raw-output '.name')
-        export GITHUB_URL=$(echo $GITHUB_RELEASE | jq --raw-output '.assets[2].browser_download_url')
+        export GITHUB_URL=$(echo $GITHUB_RELEASE | jq --raw-output '.assets[] | select(.browser_download_url | contains(".jar")).browser_download_url')
         echo "::set-output name=github::$GITHUB_URL"
         echo "GitHub URL = ${GITHUB_URL}"
         echo "::set-output name=build::$GITHUB_BUILD"
