@@ -826,6 +826,10 @@ boolean L12_filthworms()
 	{
 		return false;
 	}
+	if(auto_warEnemiesRemaining() == 0)
+	{
+		return false;
+	}
 
 	auto_log_info("Doing the orchard.", "blue");
 	
@@ -868,6 +872,7 @@ boolean L12_filthworms()
 	}
 
 	//if we can guarentee stealing the stench gland then no point in buffing item drop
+	boolean glandGuaranteed = true;
 	if(auto_have_skill($skill[Lash of the Cobra]) && get_property("_edLashCount").to_int() < 30)
 	{
 		auto_log_info("Ed will steal stench glands using [Lash of the Cobra]");
@@ -934,6 +939,15 @@ boolean L12_filthworms()
 				abort("Can not handle item drop amount for the Filthworms, deja vu!! Either get us to +400% and rerun or do it yourself.");
 			}
 		}
+		if(item_drop_modifier() < 800.0)
+		{
+			glandGuaranteed = false;
+			if(possessEquipment($item[Retrospecs]))
+			{
+				//preadv would give a 50%item accessory a value of 2500 but when multiple fights are expected in each zone this accessory should be equivalent to 100%item?
+				addToMaximize("+2500bonus Retrospecs");
+			}
+		}
 	}
 
 	if(auto_cargoShortsOpenPocket(343)) // skip straight to the Royal Guard Chamber
@@ -944,6 +958,34 @@ boolean L12_filthworms()
 	boolean retval = false;
 	if(have_effect($effect[Filthworm Drone Stench]) > 0)
 	{
+		//last gland
+		if(have_effect($effect[Filthworm Drone Stench]) == 1 && !glandGuaranteed)
+		{
+			//running out of effect, failing on the last turn would mean having to start over from The Hatching Chamber
+			if(!get_property("auto_limitConsume").to_boolean())
+			{
+				if(canChew($item[spooky jelly]) && spleen_left() >= $item[spooky jelly].spleen && acquireOrPull($item[spooky jelly]) && autoChew(1, $item[spooky jelly]))
+				{
+					auto_log_info("Only one turn left in The Royal Guard Chamber, using spooky jelly emanations to avoid having to start over from the beginning");
+					glandGuaranteed = true;
+				}
+				else if(canEat($item[toast with spooky jelly]) && stomach_left() >= $item[toast with spooky jelly].fullness && acquireOrPull($item[toast with spooky jelly]) && autoEat(1, $item[toast with spooky jelly]))
+				{
+					//with values like 10 to 20 turns saved, not checking get_property("auto_consumeMinAdvPerFill").to_float()
+					auto_log_info("Only one turn left in The Royal Guard Chamber, using spooky jelly toast emanations to avoid having to start over from the beginning");
+					glandGuaranteed = true;
+				}
+			}
+			if(glandGuaranteed)
+			{
+				//gland that was not guaranteed is forced now
+				if(possessEquipment($item[Broken Champagne Bottle]) && januaryToteTurnsLeft($item[Broken Champagne Bottle]) > 0)
+				{
+					addToMaximize("-equip Broken Champagne Bottle");	//using this charge is no longer necessary, restore maximizer block that was removed
+				}
+			}
+			//todo if still not glandGuaranteed try to force the use of free kills in combat?
+		}
 		retval = autoAdv(1, $location[The Royal Guard Chamber]);
 	}
 	else if(have_effect($effect[Filthworm Larva Stench]) > 0)
