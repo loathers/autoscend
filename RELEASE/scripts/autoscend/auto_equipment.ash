@@ -246,14 +246,14 @@ string defaultMaximizeStatement()
 			//"exp" does not value offstat experience
 			res += ",10exp";
 			
-			//"(primeStat) experience" score does not include bonus from "ml"
+			//"(primeStat) experience" score does not include ML sources in the relevant situation (starts to include ML eventually, after breaking the prism?)
 			//increase that score by 10% over the score given to mainstat experience by "exp"
 			//this way ~equivalent non-ML sources of mainstat exp will be preferred over ML sources, they give the same benefit without making fights harder
 			res += ",0.165" + primeStat + "experience";
 		}
 		else	//a value is given for ML safety limit
 		{
-			//so use the equivalent weight for stat experience instead of "exp" which includes bonus from "ml"
+			//so use the equivalent weight for stat experience instead of "exp" which always gives value to ML sources if available
 			//the maximizer score for limited ML is added later by pre_adv
 			//pre_adv will tell the maximizer to not value ML over the safety limit (though enforcing that limit is not possible with the maximizer syntax and scoring system)
 			res += ",1.65" + primeStat + " experience";
