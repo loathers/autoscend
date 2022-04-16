@@ -1434,6 +1434,113 @@ boolean cloverUsageFinish()
 	return true;
 }
 
+boolean useRolloverLucky()
+//subroutine to use Lucky! intrinsic start of day
+//only called if Lucky! intrinsic is active
+{
+	if(have_effect($effect[Lucky!])<1)
+	{
+		//if Lucky! intrisic not active, return true to exit execution and continue 
+		auto_log_warning("Tried to use a Lucky! adventure; intrinsic not found, continuing...","red");
+		return true;
+	}
+	string cloverResult="";
+	if(in_hardcore())
+	{
+		auto_log_info("In hardcore and feeling \"Lucky!\", looking for best turn savings.", "blue");
+		//n.b.: Lucky! adventure can be superseeded by wanderers and hardcoded adventures
+		if(get_property("zeppelinProtestors").to_int()<65 && item_amount($item[Flamin' Whatshisname])<1 && zone_isAvailable($location[The Copperhead Club]))
+		//get 3 Flamin' Whatshisnames if the likely chance exists to use at least 2 of them at the mob
+		//using 1 FWHN should save up to 8 turns, second max. of 9
+		{
+			string cloverResult=visit_url("adventure.php?snarfblat=383");
+		}	
+		else if((contains_text(get_property("questL11Worship"),"unstarted") || contains_text(get_property("questL11Worship"),"started")) && item_amount($item[Stone Wool])<1 && zone_isAvailable($location[The Hidden Temple]))
+		//get stone wool IFF hidden city not unlocked and none in inventory
+		{
+			//todo: maximize item drop as prep
+			string cloverResult=visit_url("adventure.php?snarfblat=280");
+		}
+		else if((item_amount($item[A-Boo clue])<1 && get_property("booPeakProgress").to_int()>7) || (item_amount($item[A-Boo clue])==1 && get_property("booPeakProgress").to_int()>37) || (item_amount($item[A-Boo clue])==2 && get_property("booPeakProgress").to_int()>67) && zone_isAvailable($location[A-Boo Peak]) )
+		//Get clues at A-Boo Peak if it will save you ~5 turns. Somewhat arbitrary, but chances of getting one natural clue in 5 advs is non-zero.
+		//If saving less than 5 turns, Inhaler will be equally useful.
+		{
+			string cloverResult=visit_url("adventure.php?snarfblat=296");
+		}
+		else if(item_amount($item[Mick's IcyVapoHotness Inhaler])<1 && get_property("sidequestNunsCompleted")!="none" && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+		//getting an inhaler for Nun's sidequest saves 2-4 turns
+		//Which paths do not do the island war and should be excluded?
+		{
+			string cloverResult=visit_url("adventure.php?snarfblat=324");
+		}
+		else if(!zone_isAvailable($location[The eXtreme Slope]) && zone_isAvailable($location[itznotyerzitz mine]) && item_amount($item[chrome ore])==2 && item_amount($item[linoleum ore])==2 && item_amount($item[asbestos ore])==2)
+		{
+			//clover one of each ore if that is sufficient to ensure quest requirement can be fulfilled
+			string cloverResult=visit_url("adventure.php?snarfblat=270");
+		}
+		else if(item_amount($item[Cyclops Eyedrops])<1 && get_property("questL11Pyramid")!="finished")
+		//semi-arbitrary but useful for low-drop-rate quest items, e.g. ratchets
+		{
+			string cloverResult=visit_url("adventure.php?snarfblat=19");
+		}
+		else if(isAboutToPowerlevel() && zone_isAvailable($location[The Haunted Gallery]))
+		//universal option: ++mainstat in Spookyraven second floor if powerleveling
+		//all 3 zones unlock simultaneously so only check one of them
+		{
+			if(my_primestat() == $stat[Muscle])
+			{
+				string cloverResult=visit_url("adventure.php?snarfblat=394");
+			}
+			else if(my_primestat() == $stat[Mysticality])
+			{
+				string cloverResult=visit_url("adventure.php?snarfblat=392");
+			}
+			else if(my_primestat() == $stat[Moxie])
+			{
+				string cloverResult=visit_url("adventure.php?snarfblat=395");
+			}
+			else
+			{
+				auto_log_warning("Could not identify your class for Lucky! +stat adventure", "red");
+				return false;
+			}
+		}
+		else if(get_property("poolSkill").to_int()<10 && zone_isAvailable($location[The Haunted Billiards Room]))
+		//edge case but useful if pool skill not maxed out
+		{
+			string cloverResult=visit_url("adventure.php?snarfblat=391");
+		}
+		else
+		{
+			//final catch-all which is immediately useful if stomach or liver available
+			string cloverResult=visit_url("adventure.php?snarfblat=114");
+		}
+		if (contains_text(cloverResult, "You suddenly feel less lucky.")) 
+		{
+           return true;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+	else if(have_effect($effect[Lucky!])>0)
+	//for aftercore cases, best use might be KGE
+	{
+		auto_log_info("Not in hardcore and feeling \"Lucky!\", burning it in the Treasury.", "blue");
+		// adv1("Cobb's Knob Treasury");
+		string cloverResult=visit_url("adventure.php?snarfblat=260");
+	}
+	if (contains_text(cloverResult, "You suddenly feel less lucky.")) 
+	{
+		return true;
+	} 
+	else
+	{
+		return false;
+	}
+}
+
 boolean isHermitAvailable()
 {
 	if(in_nuclear())

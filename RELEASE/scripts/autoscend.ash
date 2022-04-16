@@ -948,7 +948,20 @@ boolean dailyEvents()
 	auto_birdOfTheDay();
 	while(auto_doPrecinct());
 	handleBarrelFullOfBarrels(true);
-
+	if(have_effect($effect[Lucky!])>0)
+	{
+		boolean useROLuckySuccess=useRolloverLucky();
+		if (!useROLuckySuccess)
+		{
+			//if first use attempt fails, try again, since the Lucky! adventure might be superseeded by a wanderer or a hardcoded adv
+			auto_log_info("First attempt to use rollover Lucky\! failed, retrying.", "blue");
+			useROLuckySuccess=useRolloverLucky();
+			if(!useROLuckySuccess)
+			{
+				abort("Two attempts to use rollover Lucky\! failed. Manually check intrinsic and restart.");
+			}
+		}
+	}
 	auto_campawayGrabBuffs();
 	kgb_getMartini();
 	fightClubNap();
