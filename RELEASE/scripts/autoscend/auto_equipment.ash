@@ -261,10 +261,11 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 	string maximizerStatement;
 	foreach st in increaseThisStat
 	{
+		if(!increaseThisStat[st])	continue;
 		string statWeight = "";
 		if(st == my_primestat())
 		{
-			if(my_level() < 13)
+			if(disregardInstantKarma())
 			{
 				statWeight = "2";
 			}
@@ -283,6 +284,7 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 	boolean canIncreaseStatgains = false;
 	foreach st in increaseThisStat
 	{
+		if(!increaseThisStat[st])	continue;
 		string modifierString = st.to_string() + " experience percent";
 		if(simValue(modifierString) > numeric_modifier(modifierString))
 		{
@@ -301,6 +303,7 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 	{
 		foreach st in increaseThisStat
 		{
+			if(!increaseThisStat[st])	continue;
 			if(numeric_modifier(simulatedEquipment[sl],st.to_string() + " experience percent") != 0)
 			{
 				statgainIncreasers[sl] = simulatedEquipment[sl];
@@ -325,9 +328,12 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 			continue;
 		}
 		speculateAllItems += speculateOneItem;	//otherwise speculate with all items that have been left out
-		cli_execute("speculate quiet; " + speculateAllItems);
-		HPlost = my_hp() - simValue("Buffed HP Maximum");
-		MPlost = my_mp() - simValue("Buffed MP Maximum");
+		if(speculateAllItems != speculateOneItem)
+		{
+			cli_execute("speculate quiet; " + speculateAllItems);
+			HPlost = my_hp() - simValue("Buffed HP Maximum");
+			MPlost = my_mp() - simValue("Buffed MP Maximum");
+		}
 		if(HPlost > mostHPlost)	mostHPlost = HPlost;
 		if(MPlost > mostMPlost)	mostMPlost = MPlost;
 	}
@@ -348,11 +354,11 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 		{
 			if(weapon_hands(statgainIncreasers[sl]) > 1)		maximizerStatement += "-off-hand,";
 			if(weapon_type(statgainIncreasers[sl]) == $stat[moxie])	maximizerStatement += "-melee,";
-			else							maximizerStatement += "+melee";
+			else							maximizerStatement += "+melee,";
 		}
 		if(sl == $slot[off-hand] && statgainIncreasers[$slot[weapon]] == $item[none])
 		{
-			maximizerStatement += "1handed";		//ignore incompatible weapons
+			maximizerStatement += "1handed,";		//ignore incompatible weapons
 		}
 	}
 	if(!maximize(maximizerStatement,true))
