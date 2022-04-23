@@ -1739,6 +1739,37 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 			goal = min(goal, my_maxmp());
 		}
 	}
+	
+	// 5 Soulsauce restores 15 MP and only has opportunity cost against its other uses as buff or combat stun
+	// unless objective value of combat stun exists there is no way to compare to other restore methods so it's always the best if available?
+	if(my_class() == $class[Sauceror])
+	{
+		int MPtoRestore = my_mp() - goal;
+		int casts = MPtoRestore / 15;		//soul food restores 15 MP per cast.
+		casts = min(casts, my_soulsauce() / 5);	//soul food costs 5 soulsauce per cast.
+		if(casts > 0)
+		{
+			int excessMP = my_mp() + 15*casts - my_maxmp();	//if some of the restored MP would be wasted over max
+			if(excessMP > 0)	//try to burn the excess on buffs
+			{
+				if(my_mp() < excessMP && casts > 1)	//can't burn MP we don't have yet
+				{
+					casts -= 1;
+					use_skill(1, $skill[Soul Food]);
+				}
+				if(my_mp() > 0)
+				{
+					catch cli_execute("burn " + min(excessMP,my_mp()));
+				}
+			}
+			use_skill(casts, $skill[Soul Food]);
+			if(my_mp() >= goal)
+			{
+				return true;
+			}
+		}
+	}
+	
 	__restore("mp", goal, meat_reserve, useFreeRests);
 	return (my_mp() >= goal);
 }
