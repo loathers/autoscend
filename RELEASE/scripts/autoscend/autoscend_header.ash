@@ -1076,6 +1076,7 @@ void oldLandfillChoiceHandler(int choice);
 boolean LX_lockPicking();
 float estimateDailyDungeonAdvNeeded();
 boolean LX_fatLootToken();
+void useTonicDjinn();
 boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
