@@ -483,20 +483,27 @@ void useTonicDjinn()
 		{
 			set_property("choiceAdventure778", "1");	// Wealth!
 		}
-		else if(my_primestat() == $stat[muscle])
+		else if(disregardInstantKarma())
 		{
-			set_property("choiceAdventure778", "2");
-			equipStatgainIncreasers($stat[muscle],false);	// Strength!
-		}
-		else if(my_primestat() == $stat[mysticality])
-		{
-			set_property("choiceAdventure778", "3");
-			equipStatgainIncreasers($stat[mysticality],false);	// Wisdom!
+			if(my_primestat() == $stat[muscle])
+			{
+				set_property("choiceAdventure778", "2");
+				equipStatgainIncreasers($stat[muscle],false);	// Strength!
+			}
+			else if(my_primestat() == $stat[mysticality])
+			{
+				set_property("choiceAdventure778", "3");
+				equipStatgainIncreasers($stat[mysticality],false);	// Wisdom!
+			}
+			else
+			{
+				set_property("choiceAdventure778", "4");
+				equipStatgainIncreasers($stat[moxie],false);	// Panache!
+			}
 		}
 		else
 		{
-			set_property("choiceAdventure778", "4");
-			equipStatgainIncreasers($stat[moxie],false);	// Panache!
+			set_property("choiceAdventure778", "1");	// Wealth!
 		}
 		use(1, $item[Tonic Djinn]);
 	}
