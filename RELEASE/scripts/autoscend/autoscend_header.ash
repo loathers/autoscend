@@ -49,6 +49,7 @@ boolean handleFaxMonster(monster enemy);
 boolean handleFaxMonster(monster enemy, string option);
 boolean handleFaxMonster(monster enemy, boolean fightIt);
 boolean handleFaxMonster(monster enemy, boolean fightIt, string option);
+boolean checkFax(monster enemy);
 boolean [location] get_floundry_locations();
 int changeClan(string clanName);
 int changeClan(int toClan);
