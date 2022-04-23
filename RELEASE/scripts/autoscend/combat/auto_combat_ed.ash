@@ -166,40 +166,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if(instakillable(enemy) && !isFreeMonster(enemy) && doInstaKill)
-	{
-		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0))
-		{
-			if(get_property("auto_batoomerangDay").to_int() != my_daycount())
-			{
-				set_property("auto_batoomerangDay", my_daycount());
-				set_property("auto_batoomerangUse", 0);
-			}
-			if(get_property("auto_batoomerangUse").to_int() < 3)
-			{
-				set_property("auto_batoomerangUse", get_property("auto_batoomerangUse").to_int() + 1);
-				combat_status_add("batoomerang");
-				handleTracker(enemy, $item[Replica Bat-oomerang], "auto_instakill");
-				loopHandlerDelayAll();
-				return "item " + $item[Replica Bat-oomerang];
-			}
-		}
-
-		if(!combat_status_check("jokesterGun") && (equipped_item($slot[Weapon]) == $item[The Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean() && auto_have_skill($skill[Fire the Jokester\'s Gun]))
-		{
-			combat_status_add("jokesterGun");
-			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
-			loopHandlerDelayAll();
-			return "skill" + $skill[Fire the Jokester\'s Gun];
-		}
-
-		if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])
-		{
-			// instakills Undead and reduces evilness in Cyrpt zones.
-			return useSkill($skill[Slay the Dead]);
-		}
-	}
-
 	if(get_property("auto_edStatus") == "UNDYING!")
 	{
 		if (canUse($skill[Summon Love Gnats]))
@@ -459,12 +425,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if (canUse($item[Cigarette Lighter]) && my_location() == $location[A Mob Of Zeppelin Protesters] && internalQuestStatus("questL11Ron") == 1 && get_property("auto_edStatus") == "dying")
-	{
-		return useItem($item[Cigarette Lighter]);
-		// insta-kills protestors and removes an additional 5-7 (optimal!)
-	}
-
 	if (canUse($item[Glark Cable]) && my_location() == $location[The Red Zeppelin] && internalQuestStatus("questL11Ron") == 3 && get_property("_glarkCableUses").to_int() < 5 && get_property("auto_edStatus") == "dying")
 	{
 		if($monsters[Man With The Red Buttons, Red Butler, Red Fox, Red Skeleton] contains enemy)
@@ -672,6 +632,31 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 				doRenenutet = true;
 			}
 		}
+		if($monsters[Battlie Knight Ghost, Claybender Sorcerer Ghost, Dusken Raider Ghost, Space Tourist Explorer Ghost, Whatsian Commando Ghost] contains enemy)
+		{
+			if(item_amount($item[A-boo Clue]) < get_property("booPeakProgress").to_int()/30)
+			{
+				doRenenutet = true;
+			}
+		}
+		if($monsters[toothy sklelton,spiny skelelton] contains enemy)
+		{
+			if(my_location() == $location[The Defiled Nook] && item_amount($item[evil eye]) == 0) // lash didn't get it)
+			{
+				doRenenutet = true;
+			}
+		}
+		if($monsters[bearpig topiary animal,elephant (meatcar?) topiary animal,spider (duck?) topiary animal] contains enemy)
+		{
+			if(item_amount($item[rusty hedge trimmers]) == 0) // lash didn't get it
+			{
+				doRenenutet = true;
+			}
+		}
+		if($monsters[blue oyster cultist] contains enemy)
+		{
+			doRenenutet = true;
+		}
 		if(doRenenutet)
 		{
 			if (!combat_status_check("curseofindecision") && canUse($skill[Curse Of Indecision]))
@@ -685,6 +670,12 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			return useItem($item[Talisman Of Renenutet]);
 		}
 	}
+	
+	if (canUse($item[Cigarette Lighter]) && my_location() == $location[A Mob Of Zeppelin Protesters] && internalQuestStatus("questL11Ron") == 1 && get_property("auto_edStatus") == "dying")
+	{
+		return useItem($item[Cigarette Lighter]);
+		// insta-kills protestors and removes an additional 5-7 (optimal!)
+	}
 
 	if(enemy == $monster[Pygmy Orderlies] && canUse($item[Short Writ of Habeas Corpus], false))
 	{
@@ -695,6 +686,40 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	if(auto_bowlingBallCombatString(my_location(), true) != "")
 	{
 		return 	auto_bowlingBallCombatString(my_location(), false);
+	}
+	
+	if(instakillable(enemy) && !isFreeMonster(enemy) && doInstaKill)
+	{
+		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0))
+		{
+			if(get_property("auto_batoomerangDay").to_int() != my_daycount())
+			{
+				set_property("auto_batoomerangDay", my_daycount());
+				set_property("auto_batoomerangUse", 0);
+			}
+			if(get_property("auto_batoomerangUse").to_int() < 3)
+			{
+				set_property("auto_batoomerangUse", get_property("auto_batoomerangUse").to_int() + 1);
+				combat_status_add("batoomerang");
+				handleTracker(enemy, $item[Replica Bat-oomerang], "auto_instakill");
+				loopHandlerDelayAll();
+				return "item " + $item[Replica Bat-oomerang];
+			}
+		}
+
+		if(!combat_status_check("jokesterGun") && (equipped_item($slot[Weapon]) == $item[The Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean() && auto_have_skill($skill[Fire the Jokester\'s Gun]))
+		{
+			combat_status_add("jokesterGun");
+			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
+			loopHandlerDelayAll();
+			return "skill" + $skill[Fire the Jokester\'s Gun];
+		}
+
+		if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])
+		{
+			// instakills Undead and reduces evilness in Cyrpt zones.
+			return useSkill($skill[Slay the Dead]);
+		}
 	}
 
 	if(get_property("auto_edStatus") == "UNDYING!")
