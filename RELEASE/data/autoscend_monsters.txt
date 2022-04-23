@@ -10,53 +10,52 @@ banish	4	Bubblemint Twins	!class:Ed the Undying
 banish	5	Bullet Bill
 banish	6	Burly Sidekick	item:Mohawk Wig>0;!familiar:Red-Nosed Snapper
 banish	7	Coaltergeist
-banish	8	Doughbat
-banish	9	Drunk Goat
-banish	10	Eagle	class:Ed the Undying
-banish	11	Evil Olive
-banish	12	Empty suit of armor	class:Ed the Undying
-banish	13	Flock Of Stab-Bats
-banish	14	Gluttonous Ghuol	class:Vampyre
-banish	15	Knob Goblin Harem Guard
-banish	16	Knob Goblin Madam	item:Knob Goblin Perfume>0
-banish	17	Mad Wino	!class:Ed the Undying
-banish	18	MagiMechTech MechaMech	class:Ed the Undying
-banish	19	Mob Penguin Capo	class:Ed the Undying
-banish	20	Mismatched Twins
-banish	21	Natural Spider
-banish	22	Plaid Ghost
-banish	23	Possessed Laundry Press
-banish	24	Procrastination Giant
-banish	25	Protagonist	!class:Ed the Undying;!familiar:Red-Nosed Snapper
-banish	26	Pygmy Headhunter
-banish	27	Pygmy Janitor	tavern:true
-banish	28	Pygmy Orderlies
-banish	29	Pygmy Witch Lawyer
-banish	30	Pygmy Witch Nurse
-banish	31	Red Herring
-banish	32	Red Snapper
-banish	33	Sabre-Toothed Goat
-banish	34	Senile Lihc	loc:The Defiled Niche
-banish	35	Slick Lihc	loc:The Defiled Niche
-banish	36	Skeletal Sommelier
-banish	37	Spooky mummy	class:Ed the Undying
-banish	38	Spooky vampire	class:Ed the Undying
-banish	39	Steam Elemental
-banish	40	Taco Cat
-banish	41	Tan Gnat
-banish	42	Tomb Asp
-banish	43	Tomb Servant
-banish	44	Triffid	class:Ed the Undying
-banish	45	Wardr&ouml;b Nightstand
-banish	46	Warehouse Janitor
-banish	47	party skelteon
-banish	48	basic lihc
+banish	8	Drunk Goat
+banish	9	Eagle	class:Ed the Undying
+banish	10	Evil Olive
+banish	11	Empty suit of armor	class:Ed the Undying
+banish	12	Flock Of Stab-Bats
+banish	13	Gluttonous Ghuol	class:Vampyre
+banish	14	Knob Goblin Harem Guard
+banish	15	Knob Goblin Madam	item:Knob Goblin Perfume>0
+banish	16	Mad Wino	!class:Ed the Undying
+banish	17	MagiMechTech MechaMech	class:Ed the Undying
+banish	18	Mob Penguin Capo	class:Ed the Undying
+banish	19	Mismatched Twins
+banish	20	Natural Spider
+banish	21	Plaid Ghost
+banish	22	Possessed Laundry Press
+banish	23	Procrastination Giant
+banish	24	Protagonist	!class:Ed the Undying;!familiar:Red-Nosed Snapper
+banish	25	Pygmy Headhunter
+banish	26	Pygmy Janitor	tavern:true
+banish	27	Pygmy Orderlies
+banish	28	Pygmy Witch Lawyer
+banish	29	Pygmy Witch Nurse
+banish	30	Red Herring
+banish	31	Red Snapper
+banish	32	Sabre-Toothed Goat
+banish	33	Senile Lihc	loc:The Defiled Niche
+banish	34	Slick Lihc	loc:The Defiled Niche
+banish	35	Skeletal Sommelier
+banish	36	Spooky mummy	class:Ed the Undying
+banish	37	Spooky vampire	class:Ed the Undying
+banish	38	Steam Elemental
+banish	39	Taco Cat
+banish	40	Tan Gnat
+banish	41	Tomb Asp
+banish	42	Tomb Servant
+banish	43	Triffid	class:Ed the Undying
+banish	44	Wardr&ouml;b Nightstand
+banish	45	Warehouse Janitor
+banish	46	party skelteon
+banish	47	basic lihc
 # Bugbear Invasion Mothership
-banish	49	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing;!sniffed:scavenger bugbear
-banish	50	bugaboo	path:Bugbear Invasion;loc:Morgue;!sniffed:bugaboo
-banish	51	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed:Battlesuit Bugbear Type
-banish	52	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
-banish	53	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
+banish	48	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing;!sniffed:scavenger bugbear
+banish	49	bugaboo	path:Bugbear Invasion;loc:Morgue;!sniffed:bugaboo
+banish	50	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed:Battlesuit Bugbear Type
+banish	51	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
+banish	52	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
 
 replace	0	Banshee Librarian	item:Killing Jar>0
 replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber,!pathid:41,!path:Wildfire
