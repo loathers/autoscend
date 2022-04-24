@@ -575,6 +575,8 @@ boolean LX_dailyDungeonToken()
 		return false;
 	}
 	
+	useTonicDjinn();
+	
 	// make sure we have enough adventures. since partial completion means wasted adventures.
 	int adv_budget = my_adventures() - auto_advToReserve();
 	if(adv_budget < 1 + ceil(estimateDailyDungeonAdvNeeded()))
