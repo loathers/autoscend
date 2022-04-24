@@ -1155,7 +1155,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				}
 				else if ($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it)
 				{
-					if (my_fullness() == 0 && my_level() < 13)
+					if (my_fullness() == 0 && my_level() < 13 && (get_property("auto_consumeMinAdvPerFill").to_float() <= actions[n].adventures/actions[n].size))
 					{
 						if(!in_hardcore() && my_level() >= 12 && auto_have_skill($skill[Saucemaven]))
 						{
