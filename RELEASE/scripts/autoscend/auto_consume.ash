@@ -911,8 +911,6 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 
 	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
 
-	boolean[item] KEY_LIME_PIES = $items[Boris's key lime pie, Jarlsberg's key lime pie, Sneaky Pete's key lime pie];
-
 	foreach it in $items[]
 	{
 		if (
@@ -920,13 +918,19 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			canConsume(it) &&
 			(organCost(it) > 0) &&
 			(it.fullness == 0 || it.inebriety == 0) &&
-			auto_is_valid(it) &&
-			historical_price(it) <= get_property("autoBuyPriceLimit").to_int())
+			auto_is_valid(it))
 		{
+			boolean value_allowed = (historical_price(it) <= get_property("autoBuyPriceLimit").to_int()) ||
+									($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it && item_amount(it) > 0 && //muffins are expensive but renewable
+									my_path() != "Grey You"); //Grey You should not even get to here if ever supported but it consumes the tin so blocked just in case
+									
+			if(!value_allowed)	continue;
 			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
 			if((it == $item[Spaghetti Breakfast]) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean())) continue;
 
-			int howmany = 1 + organLeft()/organCost(it);
+			int howmany = (it.inebriety > 0) ? 1 : 0;	//can consider a drink action past inebriety limit. but not food past fullness limit
+			howmany += organLeft()/organCost(it);
+			if(howmany < 1)	continue;
 			// Only one Spaghetti Breakfast can be eaten
 			if(it == $item[Spaghetti Breakfast]) howmany = 1;
 			if (item_amount(it) > 0 && organCost(it) <= 5)
@@ -953,30 +957,167 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
 			if (is_tradeable(it) && !isSpeakeasyDrink(it) && canPull(it))
 			{
-				if(KEY_LIME_PIES contains it)
+				if(!can_interact())
 				{
-					pullables[it] = 1;		//limit key lime pies to 1 pull only
+					pullables[it] = 1;
 				}
 				else
-				{
+				{	//pullable amount here was coded before the change to daily limit of 1 pull each
+					//now pulling more than 1 is only possible out of ronin. is storage ever not completely pulled already in this case?
 					pullables[it] = min(howmany, pulls_remaining());
 				}
 			}
 		}
 	}
 
+	float keyLimePieDesirabilityBonus;
+	string keyLimePieDesirabilityBonusType;
 	boolean wantBorisPie = false;
 	boolean wantJarlsbergPie = false;
 	boolean wantPetePie = false;
+	int missingHeroKeys = 3 - towerKeyCount();
+	int keysObtainableWithoutPie;
+	int keysObtainableFromDailyDungeon;
+	int dailyDungeonTurnEstimate;
+	int keyObtainableFromFR;
+	int fantasyRealmTurnEstimate;
 
-	if (towerKeyCount() < 3 && !get_property("auto_dontConsumeKeyLimePies").to_boolean())
+	if (missingHeroKeys > 0 && !get_property("auto_dontConsumeKeyLimePies").to_boolean())
 	{
-		if(item_amount($item[Boris\'s key]) == 0 && item_amount($item[fat loot token]) < 3)
+		//will add desirability to consumption and pulling of key lime pies
+		//missing at least 1 key/token, in case it will be only one first consider mainstat pie if possible
+		if(my_primestat() == $stat[muscle] && item_amount($item[Boris\'s key]) == 0)
 			wantBorisPie = true;
-		if(item_amount($item[Jarlsberg\'s key]) == 0 && item_amount($item[fat loot token]) < 2)
+		else if(my_primestat() == $stat[mysticality] && item_amount($item[Jarlsberg\'s key]) == 0)
 			wantJarlsbergPie = true;
-		if(item_amount($item[Sneaky Pete\'s key]) == 0 && item_amount($item[fat loot token]) < 1)
+		else if(my_primestat() == $stat[moxie] && item_amount($item[Sneaky Pete\'s key]) == 0)
 			wantPetePie = true;
+
+		if(item_amount($item[fat loot token]) < 2)		//will still be missing another key
+		{	if(!wantBorisPie && item_amount($item[Boris\'s key]) == 0)
+				wantBorisPie = true;
+			else if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0)
+				wantJarlsbergPie = true;
+		}
+
+		if(item_amount($item[fat loot token]) < 1)		//last key
+		{	if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0)
+				wantJarlsbergPie = true;
+			else if(!wantPetePie && item_amount($item[Sneaky Pete\'s key]) == 0)
+				wantPetePie = true;
+		}
+		
+		//estimate cost of obtaining keys
+		keysObtainableFromDailyDungeon = get_property("dailyDungeonDone").to_boolean() ? 0 : 1;
+		if(keysObtainableFromDailyDungeon > 0)
+		{
+			if((item_amount($item[Daily Dungeon Malware]) > 0) && !get_property("_dailyDungeonMalwareUsed").to_boolean() && (get_property("_lastDailyDungeonRoom").to_int() < 14) && (!in_pokefam()))
+			{
+				keysObtainableFromDailyDungeon += 1;
+			}
+			dailyDungeonTurnEstimate = estimateDailyDungeonAdvNeeded();
+		}
+		if(fantasyRealmAvailable())
+		{
+			keyObtainableFromFR = 1;
+			fantasyRealmTurnEstimate = 5;
+			if(contains_text(get_property("_frMonstersKilled"), "fantasy bandit"))
+			{
+				foreach idx, it in split_string(get_property("_frMonstersKilled"), ",")
+				{
+					if(contains_text(it, "fantasy bandit"))
+					{
+						int count = to_int(split_string(it, ":")[1]);
+						if(count >= 5)
+						{
+							keyObtainableFromFR = 0;
+						}
+						else
+						{
+							fantasyRealmTurnEstimate -= count;
+						}
+					}
+				}
+			}
+		}
+		keysObtainableWithoutPie = keysObtainableFromDailyDungeon + keyObtainableFromFR;
+		
+		//bonus desirability to give to key lime pie
+		if(my_daycount() > 1 && missingHeroKeys > keysObtainableWithoutPie)
+		{
+			keyLimePieDesirabilityBonusType = "full";
+		}
+		else if(missingHeroKeys == keysObtainableWithoutPie)
+		{
+			//all keys can be obtained today without pies so bonus value of pie is the turn cost it would otherwise take to get a key
+			if(missingHeroKeys == 1)
+			{
+				//for only 1 key missing the bonus value of pie is the smallest turn cost to obtain a key
+				keyLimePieDesirabilityBonusType = "min";
+			}
+			else	//missing 2 or 3 keys
+			{
+				if(keysObtainableFromDailyDungeon == 2)
+				{
+					dailyDungeonTurnEstimate = dailyDungeonTurnEstimate / 2.0;
+					keyLimePieDesirabilityBonus = dailyDungeonTurnEstimate;
+					if(missingHeroKeys == 3)
+					{
+						//only source for 3 keys is both DailyDungeon and FR so bonus value of pie is whichever source costs more turns
+						keyLimePieDesirabilityBonusType = "max";
+					}
+				}
+				else
+				{
+					//only source for 2 keys is both DailyDungeon and FR so bonus value of pie is whichever source costs more turns
+					keyLimePieDesirabilityBonusType = "max";
+				}
+			}
+		}
+		else if(my_daycount() == 1)
+		{
+			//first day and not all pies can be obtained
+			if(missingHeroKeys - keysObtainableWithoutPie >= 2)
+			{
+				//can only obtain one key a day without pie. use full desirability bonus for the first pie
+				keyLimePieDesirabilityBonusType = "full";
+			}
+			else
+			{
+				//remaining keys can be obtained by tomorrow without pie so bonus value of pie is whichever source costs more turns
+				keyLimePieDesirabilityBonusType = "max";
+			}
+		}
+		
+		if(keyLimePieDesirabilityBonusType == "full")
+		{
+			keyLimePieDesirabilityBonus = 25;		//keep existing arbitrary large bonus value
+		}
+		else
+		{
+			if(keysObtainableFromDailyDungeon > 0)
+			{
+				if(keyObtainableFromFR > 0)
+				{
+					if(keyLimePieDesirabilityBonusType == "min")
+					{
+						keyLimePieDesirabilityBonus = min(dailyDungeonTurnEstimate,fantasyRealmTurnEstimate);
+					}
+					if(keyLimePieDesirabilityBonusType == "max")
+					{
+						keyLimePieDesirabilityBonus = max(dailyDungeonTurnEstimate,fantasyRealmTurnEstimate);
+					}
+				}
+				else
+				{
+					keyLimePieDesirabilityBonus = dailyDungeonTurnEstimate;
+				}
+			}
+			else if(keyObtainableFromFR > 0)
+			{
+				keyLimePieDesirabilityBonus = fantasyRealmTurnEstimate;
+			}
+		}
 	}
 
 	void add(item it, int obtain_mode, int howmany)
@@ -998,14 +1139,6 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				actions[n].desirability += min(1.0, item_amount($item[special seasoning]).to_float() * it.fullness / fullness_left());
 			}
-			if ((obtain_mode == AUTO_OBTAIN_PULL) && (i == 0) &&
-					((it == $item[Boris\'s key lime pie] && wantBorisPie) ||
-					(it == $item[Jarlsberg\'s key lime pie] && wantJarlsbergPie) ||
-					(it == $item[Sneaky Pete\'s key lime pie] && wantPetePie)))
-			{
-				auto_log_info("If we pulled and ate a " + it + " we could skip getting a fat loot token...");
-				actions[n].desirability += 25;
-			}
 			if (obtain_mode == AUTO_OBTAIN_NULL)
 			{
 				if (it == $item[Spaghetti Breakfast])
@@ -1024,8 +1157,15 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				{
 					if (my_fullness() == 0 && my_level() < 13)
 					{
-						auto_log_info(`{it.to_string()} available, we should eat that first.`);
-						actions[n].desirability += 50;
+						if(!in_hardcore() && my_level() >= 12 && auto_have_skill($skill[Saucemaven]))
+						{
+							//eating it at 12 would probably mean having to pull something smaller than a hi mein and missing out on Saucemaven?
+						}
+						else
+						{
+							auto_log_info(`{it.to_string()} available, we should eat that first.`);
+							actions[n].desirability += 50;
+						}
 					}
 				}
 			}
@@ -1033,6 +1173,17 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				int turns_to_craft = creatable_turns(it, i + 1, false) - creatable_turns(it, i, false);
 				actions[n].desirability -= turns_to_craft;
+			}
+			else
+			{
+				if ( (i == 0) &&
+					((it == $item[Boris\'s key lime pie] && wantBorisPie) ||
+					(it == $item[Jarlsberg\'s key lime pie] && wantJarlsbergPie) ||
+					(it == $item[Sneaky Pete\'s key lime pie] && wantPetePie)))
+				{
+					auto_log_info("If we ate a " + it + " we could skip getting a fat loot token...");
+					actions[n].desirability += keyLimePieDesirabilityBonus;
+				}
 			}
 			actions[n].howToGet = obtain_mode;
 		}
@@ -1402,6 +1553,13 @@ boolean auto_autoConsumeOne(string type)
 	}
 
 	int best_adv_per_fill = bestAction.adventures / bestAction.size;
+	if($items[Boris\'s key lime pie,Jarlsberg\'s key lime pie,Sneaky Pete\'s key lime pie] contains bestAction.it)
+	{
+		//the turn value of key lime pie is an exception so use its desirability instead of base adventures, after cancelling any effects of obtention method
+		if (bestAction.howToGet == AUTO_OBTAIN_PULL)	best_adv_per_fill = (bestAction.desirability + 5) / bestAction.size;
+		else if (bestAction.howToGet == AUTO_OBTAIN_CRAFT)	best_adv_per_fill = (bestAction.desirability + 1) / bestAction.size;
+		else	best_adv_per_fill = bestAction.desirability / bestAction.size;
+	}
 	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(bestAction), "blue");
 	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
 	{
