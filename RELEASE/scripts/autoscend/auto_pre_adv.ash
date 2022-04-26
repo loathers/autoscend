@@ -673,7 +673,7 @@ boolean auto_pre_adventure()
 	{
 		equipStatgainIncreasers();	//guaranteed non combat that gives stats
 	}
-	else if(place == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") == 2)
+	else if(place == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") == 3)
 	{
 		equipStatgainIncreasers();	//guaranteed non combat that gives stats
 	}
