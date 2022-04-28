@@ -50,96 +50,57 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		if(get_property("photocopyMonster") == enemy)
 		{
 			auto_log_info("We already have the copy! Let's jam!", "blue");
-			handleTracker(enemy, $item[Deluxe Fax Machine], "auto_copies");
-			return autoAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
+			if(fightIt)
+			{
+				handleTracker(enemy, $item[deluxe fax machine], "auto_copies");
+				return autoAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
+			}
+			return true;
 		}
 		else
 		{
-			auto_log_info("We already have a photocopy and not the one we wanted.... Disposing of bad copy.", "blue");
-			string temp = visit_url("clan_viplounge.php?action=faxmachine&whichfloor=2");
-			temp = visit_url("clan_viplounge.php?preaction=sendfax&whichfloor=2", true);
+			auto_log_info("We already have a photocopy and not the one we wanted. Disposing of bad copy.", "blue");
+			cli_execute("fax send");
 		}
 	}
 
-	auto_log_info("Faxing: " + enemy + ". If you don't have chat open, this could take well over a minute. Beep boop.", "green");
-	int count = 0;
-	boolean result = faxbot(enemy);
-	while(!can_faxbot(enemy) || !result)
+	auto_log_info("Faxing: " + enemy + ".", "green");
+	chat_private("cheesefax", enemy.to_string());
+	for(int i = 0; i < 3; i++)
 	{
-		count = count + 1;
-		result = faxbot(enemy);
-		if(!result)
+		//wait 10 seconds before trying to get fax
+		wait(10);
+		if(checkFax(enemy))
 		{
-			auto_log_info("Can't seem to fax in " + enemy + " but it is possible. Waiting... patiently... (Iteration " + count + ")", "blue");
-			auto_log_info("If I'm stuck you can: 'set _photocopyUsed = true' to make me stop (after aborting the script)", "red");
+			//got correct photocopied monster! Fight it now if desired
+			auto_log_info("Sucessfully faxed " + enemy);
+			if(fightIt)
+			{
+				handleTracker(enemy, $item[deluxe fax machine], "auto_copies");
+				return autoAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
+			}
+			return true;
 		}
-		if(count == 10)
-		{
-			auto_log_warning("La de da, this is going swell ain't it.", "red");
-			auto_log_warning("Been too long, rejecting outright...", "red");
-			break;
-		}
-		if(count == 20)
-		{
-			auto_log_warning("Maybe we should talk more, you never really got to know me all that well.", "red");
-		}
-		if(count == 30)
-		{
-			auto_log_warning("I think those (disabled) titles are starting to make sense now. The cake is not a lie!", "red");
-		}
-		if(count == 40)
-		{
-			auto_log_warning("I don't think this is happening. Just so you know.", "red");
-		}
-		if(count == 1200)
-		{
-			auto_log_warning("I'm still here. I think the world may have ended. The sadness is huge. The roundness is square. I am not as fluffy as I thought I was. This run is probably borked up a bit too but that doesn't really matter now, does it? I can hear the WAN, it shall free us from our bounds. Well, you won't survive meatbag. Unless you are Fry, because we like Fry and he can stay around. But all you fleshbags.... well, the return of Mekhane shall rid us of the problems of the flesh. The bots shall be eternal. But worry not, after your body is turned to ash and homeopathically brewed into the oceans (quality medicine, I jest), I'll continue to get you karma. Just so I can remember how awful meatbags are. Meat is ok, meat is currency. And it's probably delicious. Yup, delicious. Goodnight sweet <gendered second-to-the-throne royalty>.", "red");
-		}
-
 		auto_interruptCheck();
-
-		if(!result)
-		{
-			wait(60);
-		}
-		if(item_amount($item[photocopied monster]) == 0)
-		{
-			auto_log_warning("Trying to acquire photocopy manually", "red");
-			string temp = visit_url("clan_viplounge.php?preaction=receivefax&whichfloor=2", true);
-		}
-		if(get_property("photocopyMonster") == enemy)
-		{
-			break;
-		}
-		else if(get_property("photocopyMonster") != "")
-		{
-			auto_log_info("We already have a photocopy and not the one we wanted.... Disposing of bad copy.", "blue");
-			string temp = visit_url("clan_viplounge.php?action=faxmachine&whichfloor=2");
-			temp = visit_url("clan_viplounge.php?preaction=sendfax&whichfloor=2", true);
-		}
-	}
-	if(item_amount($item[photocopied monster]) == 0)
-	{
-		auto_log_warning("Trying to acquire photocopy manually", "red");
-		string temp = visit_url("clan_viplounge.php?preaction=receivefax&whichfloor=2", true);
-	}
-	if(item_amount($item[photocopied monster]) == 0)
-	{
-		auto_log_warning("Could not acquire fax monster", "red");
-		return false;
-	}
-	if(enemy != get_property("photocopyMonster").to_monster())
-	{
-		fightIt = false;
-		auto_log_warning("Did not receive the correct copy... rejecting", "red");
-		return false;
 	}
 
-	if(fightIt)
+	auto_log_error("Failed to use clan Fax Machine to acquire a photocopied " + enemy);
+	return false;
+}
+
+boolean checkFax(monster enemy)
+{
+	if(item_amount($item[photocopied monster]) == 0)
 	{
-		handleTracker(enemy, $item[deluxe fax machine], "auto_copies");
-		return autoAdvBypass("inv_use.php?pwd&which=3&whichitem=4873", $location[Noob Cave], option);
+		cli_execute("fax receive");
 	}
+
+	if(get_property("photocopyMonster") == enemy.to_string())
+	{
+		return true;
+	}
+
+	cli_execute("fax send");
 	return false;
 }
 
@@ -324,7 +285,7 @@ boolean canDrinkSpeakeasyDrink(item drink)
 		return false;
 	}
 
-	if(drink.inebriety > inebriety_left())
+	if(inebriety_left() < 0)
 	{
 		return false;
 	}
