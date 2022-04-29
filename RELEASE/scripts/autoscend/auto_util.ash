@@ -1357,8 +1357,8 @@ int cloversAvailable()
 		}
 	}
 
-	//count Astral Energy Drinks. Must specify ID since there are now 2 items with this name
-	retval += available_amount($item[[10883]Astral Energy Drink]);
+	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
+	retval += min(available_amount($item[[10883]Astral Energy Drink]), floor(spleen_left() / 5));
 
 	//other known sources which aren't counted here:
 	// Lucky Lindy, Optimal Dog, Pillkeeper
