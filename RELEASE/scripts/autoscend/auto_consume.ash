@@ -109,12 +109,6 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 
 	int expectedInebriety = toDrink.inebriety * howMany;
 
-	item it = equipped_item($slot[Acc3]);
-	if((it != $item[Mafia Pinky Ring]) && (item_amount($item[Mafia Pinky Ring]) > 0) && ($items[Bucket of Wine, Psychotic Train Wine, Sacramento Wine, Stale Cheer Wine] contains toDrink) && can_equip($item[Mafia Pinky Ring]))
-	{
-		equip($slot[Acc3], $item[Mafia Pinky Ring]);
-	}
-
 	if(expectedInebriety == 1 && howMany == 1 && item_amount($item[mime army shotglass]) > 0 && !get_property("_mimeArmyShotglassUsed").to_boolean() && !get_property("_auto_mimeArmyShotglassUsed").to_boolean() && my_mp() < 200)
 	{
 		set_property("_auto_mimeArmyShotglassUsed","true");	//in case the shotglass text didn't get tracked by mafia don't keep skipping ode
@@ -194,6 +188,14 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 				}
 			}
 		}
+	}
+
+	equipStatgainIncreasersFor(toDrink);
+
+	item it = equipped_item($slot[Acc3]);
+	if((it != $item[Mafia Pinky Ring]) && (item_amount($item[Mafia Pinky Ring]) > 0) && ($items[Bucket of Wine, Psychotic Train Wine, Sacramento Wine, Stale Cheer Wine] contains toDrink) && can_equip($item[Mafia Pinky Ring]))
+	{
+		equip($slot[Acc3], $item[Mafia Pinky Ring]);
 	}
 
 	boolean retval = false;
@@ -278,6 +280,8 @@ boolean autoDrinkCafe(int howmany, int id)
 	// we'll get from the drink.
 	if(!gnomads_available()) return false;
 
+	equipStatgainIncreasersFor(id.to_item());
+
 	string name = cafeDrinkName(id);
 	for (int i=0; i<howmany; i++)
 	{
@@ -292,6 +296,8 @@ boolean autoDrinkCafe(int howmany, int id)
 boolean autoEatCafe(int howmany, int id)
 {
 	if(!canadia_available()) return false;
+
+	equipStatgainIncreasersFor(id.to_item());
 
 	string name = cafeFoodName(id);
 	for (int i=0; i<howmany; i++)
@@ -318,6 +324,8 @@ boolean autoChew(int howMany, item toChew)
 	{
 		return false;
 	}
+
+	equipStatgainIncreasersFor(toChew);
 
 	boolean retval = chew(howMany, toChew);
 
@@ -351,6 +359,8 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	{
 		return false;
 	}
+
+	equipStatgainIncreasersFor(toEat);
 
 	int expectedFullness = toEat.fullness * howMany;
 	acquireMilkOfMagnesiumIfUnused(true);
@@ -1370,6 +1380,17 @@ void auto_drinkNightcap()
 		use_familiar($familiar[Stooper]);
 	}
 	
+	if(item_amount($item[Steel Margarita]) > 0)
+	{
+		//LX_steelOrgan may wait to drink the Steel Margarita for Billiards, if drunkenness never went over 12 it could have been skipped
+		//this should only be possible in Avatar of West of Loathing?
+		boolean wontBeOverdrunk = inebriety_left() >= $item[Steel Margarita].inebriety - 5;
+		if(wontBeOverdrunk)
+		{
+			autoDrink(1, $item[Steel Margarita]);
+		}
+	}
+	
 	//fill up remaining liver first. such as stooper space.
 	while(inebriety_left() > 0 && auto_autoConsumeOne("drink"));
 	
@@ -1789,10 +1810,9 @@ boolean prepare_food_xp_multi()
 		}
 	}
 	
-	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	//get [That's Just Cloud-Talk, Man] +25% all stats experience is already done by dailyEvents()
 	
-	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
-	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
+	equipStatgainIncreasers($stats[muscle,mysticality,moxie],true);
 	
 	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
 	return true;
