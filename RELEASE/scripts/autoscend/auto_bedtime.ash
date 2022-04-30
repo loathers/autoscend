@@ -1232,6 +1232,9 @@ boolean doBedtime()
 		bedtime_pulls();
 		pullsNeeded("evaluate");
 
+		acquireMilkOfMagnesiumIfUnused(true);
+		consumeMilkOfMagnesiumIfUnused();
+
 		if(have_skill($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
 		{
 			auto_log_info("You can still Calculate the Universe!", "blue");
