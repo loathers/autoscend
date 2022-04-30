@@ -1316,6 +1316,17 @@ void auto_drinkNightcap()
 		use_familiar($familiar[Stooper]);
 	}
 	
+	if(item_amount($item[Steel Margarita]) > 0)
+	{
+		//LX_steelOrgan may wait to drink the Steel Margarita for Billiards, if drunkenness never went over 12 it could have been skipped
+		//this should only be possible in Avatar of West of Loathing?
+		boolean wontBeOverdrunk = inebriety_left() >= $item[Steel Margarita].inebriety - 5;
+		if(wontBeOverdrunk)
+		{
+			autoDrink(1, $item[Steel Margarita]);
+		}
+	}
+	
 	//fill up remaining liver first. such as stooper space.
 	while(inebriety_left() > 0 && auto_autoConsumeOne("drink"));
 	
