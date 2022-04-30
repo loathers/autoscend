@@ -107,7 +107,7 @@ void auto_settingsUpgrade()
 	
 	boolFix("auto_wandOfNagamar");
 	boolFix("auto_chasmBusted");
-	auto_rename_property("auto_delayTimer", "auto_edDelayTimer");
+	auto_rename_property("auto_edDelayTimer", "auto_delayTimer");
 	boolFix("auto_grimstoneFancyOilPainting");
 	boolFix("auto_grimstoneOrnateDowsingRod");
 
