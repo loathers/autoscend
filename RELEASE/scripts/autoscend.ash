@@ -846,13 +846,11 @@ void initializeDay(int day)
 		
 		if(get_property("auto_day_init").to_int() < 2)
 		{
-			if((item_amount($item[Tonic Djinn]) > 0) && !get_property("_tonicDjinn").to_boolean())
-			{
-				set_property("choiceAdventure778", "2");
-				use(1, $item[Tonic Djinn]);
-			}
+			useTonicDjinn();
+			
 			if(item_amount($item[gym membership card]) > 0)
 			{
+				equipStatgainIncreasers();
 				use(1, $item[gym membership card]);
 			}
 
