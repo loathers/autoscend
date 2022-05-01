@@ -285,7 +285,7 @@ boolean canDrinkSpeakeasyDrink(item drink)
 		return false;
 	}
 
-	if(drink.inebriety > inebriety_left())
+	if(inebriety_left() < 0)
 	{
 		return false;
 	}

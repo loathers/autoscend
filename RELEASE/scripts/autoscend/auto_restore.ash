@@ -1994,26 +1994,14 @@ int doRest()
 		case $stat[Muscle]:
 			replace = equipped_item($slot[off-hand]);
 			grab = $item[Fake Washboard];
-			if(can_equip($item[LOV Eardigan]) && (item_amount($item[LOV Eardigan]) > 0))
-			{
-				equip($slot[shirt], $item[LOV Eardigan]);
-			}
 			break;
 		case $stat[Mysticality]:
 			replace = equipped_item($slot[off-hand]);
 			grab = $item[Basaltamander Buckler];
-			if(can_equip($item[LOV Epaulettes]) && (item_amount($item[LOV Epaulettes]) > 0))
-			{
-				equip($slot[back], $item[LOV Epaulettes]);
-			}
 			break;
 		case $stat[Moxie]:
 			replace = equipped_item($slot[weapon]);
 			grab = $item[Backwoods Banjo];
-			if(can_equip($item[LOV Earrings]) && (item_amount($item[LOV Earrings]) > 0))
-			{
-				equip($slot[acc1], $item[LOV Earrings]);
-			}
 			break;
 		}
 
@@ -2027,6 +2015,8 @@ int doRest()
 			take_closet(1, grab);
 			equip(grab);
 		}
+
+		equipStatgainIncreasers(bonus, true);
 
 		visit_url("place.php?whichplace=chateau&action=chateau_restbox");
 
