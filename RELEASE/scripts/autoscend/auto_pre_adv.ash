@@ -669,6 +669,15 @@ boolean auto_pre_adventure()
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	cli_execute("checkpoint clear");
 
+	if(place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5)
+	{
+		equipStatgainIncreasers();	//guaranteed non combat that gives stats
+	}
+	else if(place == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") == 3)
+	{
+		equipStatgainIncreasers();	//guaranteed non combat that gives stats
+	}
+
 	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
 		equip($slot[Pants], $item[None]);
 		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
