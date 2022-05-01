@@ -405,9 +405,9 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	// Use some instakills.  Removing option from Pocket Familiars so it won't unnecessarily equip in third slot.
+	// Use some instakills. Can't use Chest X-Ray in Pocket Familiars.
 	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
-	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())
+	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && auto_is_valid($skill[Chest X-Ray]) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())
 	{
 		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
 		autoEquip($slot[acc3], DOCTOR_BAG);
