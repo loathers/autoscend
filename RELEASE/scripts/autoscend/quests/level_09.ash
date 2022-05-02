@@ -695,23 +695,23 @@ boolean L9_twinPeak()
 
 	if(!attempt && needFood)
 	{
-		float food_drop = item_drop_modifier();
-		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()), equipped_item($slot[familiar]));
+		float food_drop = item_drop_modifier() + numeric_modifier("Food Drop");
+		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight"), equipped_item($slot[familiar]));
 		
 		if(my_servant() == $servant[Cat])
 		{
 			food_drop -= numeric_modifier($familiar[Baby Gravy Fairy], "Item Drop", $servant[Cat].level, $item[none]);
 		}
-		if((food_drop < 50) && (food_drop >= 20))
+		if((food_drop < 50) && (food_drop >= 20) && have_effect($effect[Brother Flying Burrito\'s Blessing]) == 0)
 		{
 			if(friars_available() && (!get_property("friarsBlessingReceived").to_boolean()))
 			{
 				cli_execute("friars food");
 			}
-		}
-		if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
-		{
-			food_drop = food_drop + 30;
+			if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
+			{
+				food_drop = food_drop + 30;
+			}
 		}
 		if((food_drop < 50.0) && (item_amount($item[Eagle Feather]) > 0) && (have_effect($effect[Eagle Eyes]) == 0))
 		{
