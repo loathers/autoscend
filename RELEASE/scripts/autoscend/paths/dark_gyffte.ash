@@ -594,7 +594,7 @@ boolean bat_consumption()
 	}
 
 	//buy best consumable mats from NPC if we can
-	if(!get_property("auto_hippyInstead").to_boolean())
+	if(auto_warSide() == "fratboy")
 	{
 		if ((fullness_left() > 0) && (item_amount($item[gauze garter]) == 0) && $coinmaster[Quartersmaster].available_tokens >= 2)
 		{
@@ -638,14 +638,19 @@ boolean bat_consumption()
 			return true;
 		}
 	}
-	if (item_amount($item[blood bag]) > 0)
+
+	// attempt to fill organs with best consumables all the time, don't wait to be at low adventure count
+	if (inebriety_left() > 0)
 	{
-		if (inebriety_left() > 0)
-		{
-			if(consume_first($items[vampagne]))
-				return true;
-		}
+		if(consume_first($items[vampagne]))
+			return true;
 	}
+	if (fullness_left() > 0)
+	{
+		if(consume_first($items[blood-soaked sponge cake]))
+			return true;
+	}
+
 	if (my_adventures() <= 8)
 	{
 		// if both organs have space, prioritize high value items instead of the usual booze before food algorithm
