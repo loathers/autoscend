@@ -461,7 +461,7 @@ int bat_creatable_amount(item desired)
 			}
 			return min(item_amount($item[blood bag]), total_items($items[batgut, ratgut]));
 		case $item[blood-soaked sponge cake]:
-			foreach it in $items[filthy poultice, gauze garter]
+			foreach it in $items[gauze garter, filthy poultice]
 			{
 				if(item_amount(it) == 0)
 				{
@@ -469,7 +469,7 @@ int bat_creatable_amount(item desired)
 						break;
 				}
 			}
-			return min(item_amount($item[blood bag]), total_items($items[filthy poultice, gauze garter]));
+			return min(item_amount($item[blood bag]), total_items($items[gauze garter, filthy poultice]));
 		case $item[dusty bottle of blood]:
 			foreach it in $items[dusty bottle of Merlot, dusty bottle of Port, dusty bottle of Pinot Noir, dusty bottle of Zinfandel, dusty bottle of Marsala, dusty bottle of Muscat]
 			{
@@ -593,14 +593,35 @@ boolean bat_consumption()
 		return false;
 	}
 
-	if ((fullness_left() > 0) && (get_property("availableQuarters").to_int() < 2))
+	//buy best consumable mats from NPC if we can
+	if(!get_property("auto_hippyInstead").to_boolean())
 	{
-		pullXWhenHaveY($item[gauze garter], 1, 0);
+		if ((fullness_left() > 0) && (item_amount($item[gauze garter]) == 0) && $coinmaster[Quartersmaster].available_tokens >= 2)
+		{
+			cli_execute("make 1 gauze garter");
+		}
+		if ((inebriety_left() > 0) && (item_amount($item[monstar energy beverage]) == 0) && $coinmaster[Quartersmaster].available_tokens >= 3)
+		{
+			cli_execute("make 1 monstar energy beverage");
+		}
 	}
+	else
+	{
+		if ((fullness_left() > 0) && (item_amount($item[filthy poultice]) == 0) && $coinmaster[Dimemaster].available_tokens >= 2)
+		{
+			cli_execute("make 1 filthy poultice");
+		}
+		if ((inebriety_left() > 0) && (item_amount($item[carbonated soy milk]) == 0) && $coinmaster[Dimemaster].available_tokens >= 3)
+		{
+			cli_execute("make 1 carbonated soy milk");
+		}
+	}
+
 	if (fullness_left() > 0)
 	{
 		pullXWhenHaveY($item[dieting pill], 1, 0);
 	}
+
 	if ((my_level() >= 7) &&
 		(spleen_left() >= 3) &&
 		(fullness_left() >= 2) &&
@@ -627,20 +648,24 @@ boolean bat_consumption()
 	}
 	if (my_adventures() <= 8)
 	{
-		if (inebriety_left() > 0)
+		// if both organs have space, prioritize high value items instead of the usual booze before food algorithm
+		// don't auto consume bottle of Sanguiovese or bloodstick unless we're down to one adventure
+		if (inebriety_left() > 0 && fullness_left() > 0)
 		{
-			if (get_property("availableQuarters").to_int() < 3)
-			{
-				pullXWhenHaveY($item[monstar energy beverage], 1, 0);
-			}
-			// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
+			if(consume_first($items[vampagne, blood-soaked sponge cake,
+									 dusty bottle of blood, blood roll-up,
+									 Red Russian, blood snowcone, 
+									 mulled blood, actual blood sausage]))
+				return true;
+		}
+		else if (inebriety_left() > 0)
+		{
 			if(consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
 				return true;
 		}
-		if (fullness_left() > 0)
+		else if (fullness_left() > 0)
 		{
-			// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
-			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
+			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage]))
 				return true;
 		}
 	}
