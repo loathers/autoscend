@@ -955,6 +955,10 @@ boolean[string] auto_banishesUsedAt(location loc)
 
 boolean auto_wantToBanish(monster enemy, location loc)
 {
+	if(appearance_rates(loc,true)[enemy] <= 0)
+	{
+		return false;
+	}
 	location locCache = my_location();
 	set_location(loc);
 	boolean [monster] monstersToBanish = auto_getMonsters("banish");

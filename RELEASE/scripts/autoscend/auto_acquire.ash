@@ -439,7 +439,7 @@ boolean acquireGumItem(item it)
 	}
 
 	int have = item_amount(it);
-	auto_log_info("Gum acquistion of: " + it, "green");
+	auto_log_info("Gum acquisition of: " + it, "green");
 	while((have == item_amount(it)) && (my_meat() >= npc_price($item[Chewing Gum on a String])))
 	{
 		buyUpTo(1, $item[Chewing Gum on a String]);
@@ -529,7 +529,7 @@ boolean acquireHermitItem(item it)
 		return false;
 	}
 	int have = item_amount(it);
-	auto_log_info("Hermit acquistion of: " + it, "green");
+	auto_log_info("Hermit acquisition of: " + it, "green");
 	while((have == item_amount(it)) && ((my_meat() >= npc_price($item[Chewing Gum on a String])) || ((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)))
 	{
 		if((item_amount($item[Worthless Trinket]) + item_amount($item[Worthless Gewgaw]) + item_amount($item[Worthless Knick-knack])) > 0)
