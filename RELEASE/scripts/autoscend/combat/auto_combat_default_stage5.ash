@@ -619,10 +619,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			if(canUse(sk, false) && my_hp() > hp_cost(sk))
 			{
 				attackMajor = useSkill(sk, false);
-				if(my_hp() > 3 * hp_cost(sk))
-				{
-					attackMinor = useSkill(sk, false);
-				}
+				attackMinor = useSkill(sk, false);
 				break;
 			}
 		}

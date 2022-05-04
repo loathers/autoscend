@@ -1673,7 +1673,7 @@ boolean stunnable(monster mon)
 			Tentacle of Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl,
 		// Vampyre
 			Your Lack of Reflection,
-			// The final boss is handled separately
+			%alucard%,
 		// Heavy Rains
 			storm cow,
 		// Witchess Monsters
@@ -1687,13 +1687,6 @@ boolean stunnable(monster mon)
 	];
 	
 	if($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains mon && !get_property("auto_confidence").to_boolean())
-	{
-		return false;
-	}
-
-	// Vampyre final boss has your name reversed, which is dumb.
-	// I wonder if this will hit any unlucky people...
-	if(reverse(my_name()) == mon.to_string())
 	{
 		return false;
 	}
