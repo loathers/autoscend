@@ -808,26 +808,6 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[mime army shotglass], 1, 0);
 			}
-			int available_bloodbags = 7;
-			if(item_amount($item[Vampyric cloake]) > 0)
-			{
-				available_bloodbags += 1;
-			}
-			if(item_amount($item[Lil\' Doctor&trade; Bag]) > 0)
-			{
-				available_bloodbags += 1;
-			}
-
-			int available_stomach = 5;
-			int available_drink = 5;
-			if(item_amount($item[mime army shotglass]) > 0)
-			{
-				available_drink += 1;
-			}
-
-			// assuming dieting pills
-			pullXWhenHaveY($item[gauze garter], (1+available_stomach)/2, 0);
-			pullXWhenHaveY($item[monstar energy beverage], available_drink, 0);
 		}
 	}
 	else if(day == 2)

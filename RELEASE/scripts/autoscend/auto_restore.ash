@@ -1823,6 +1823,12 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	//better to make food/drink from them and then rest in your coffin
 	if(in_darkGyffte())
 	{
+		if(my_hp() == 0)
+		{
+			//if currently at 0, can't adventure. Use an adventure to rest in your coffin. Might as well check for skill changes
+			bat_reallyPickSkills(20);
+			return true;
+		}
 		return false;
 	}
 	

@@ -1361,8 +1361,8 @@ int cloversAvailable()
 		}
 	}
 
-	//count Astral Energy Drinks. Must specify ID since there are now 2 items with this name
-	retval += available_amount($item[[10883]Astral Energy Drink]);
+	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
+	retval += min(available_amount($item[[10883]Astral Energy Drink]), floor(spleen_left() / 5));
 
 	//other known sources which aren't counted here:
 	// Lucky Lindy, Optimal Dog, Pillkeeper
@@ -1673,7 +1673,7 @@ boolean stunnable(monster mon)
 			Tentacle of Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl,
 		// Vampyre
 			Your Lack of Reflection,
-			// The final boss is handled separately
+			%alucard%,
 		// Heavy Rains
 			storm cow,
 		// Witchess Monsters
@@ -1687,13 +1687,6 @@ boolean stunnable(monster mon)
 	];
 	
 	if($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains mon && !get_property("auto_confidence").to_boolean())
-	{
-		return false;
-	}
-
-	// Vampyre final boss has your name reversed, which is dumb.
-	// I wonder if this will hit any unlucky people...
-	if(reverse(my_name()) == mon.to_string())
 	{
 		return false;
 	}
