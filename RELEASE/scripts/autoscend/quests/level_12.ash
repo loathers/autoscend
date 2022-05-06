@@ -1759,7 +1759,7 @@ boolean L12_themtharHills()
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
 	//count inhaler if we have one or if we have a clover to obtain one and can use one
-	if(item_amount(($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]))
+	if((item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]))
 	{
 		meat_need = meat_need - 200;
 	}
