@@ -164,7 +164,7 @@ boolean L9_chasmBuild()
 	// make sure our progress count is correct before we do anything.
 	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
-	if (!in_glover() && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
+	if (auto_is_valid($item[Smut Orc Keepsake Box]) && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
 	{
  		// fight Smut Orc Pervert from Cargo Shorts for a Smut Orc Keepsake Box
  		use(1, $item[Smut Orc Keepsake Box]);
@@ -271,12 +271,9 @@ boolean L9_chasmBuild()
 
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
 
-		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
+		if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
 		{
-			if(!in_glover())
-			{
-				use(1, $item[Smut Orc Keepsake Box]);
-			}
+			use(1, $item[Smut Orc Keepsake Box]);
 		}
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		if(get_property("chasmBridgeProgress").to_int() >= 30)
@@ -309,12 +306,9 @@ boolean L9_chasmBuild()
 		}
 
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
-		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
+		if(item_amount($item[Smut Orc Keepsake Box]) > 0  && auto_is_valid($item[Smut Orc Keepsake Box]))
 		{
-			if(!in_glover())
-			{
-				use(1, $item[Smut Orc Keepsake Box]);
-			}
+			use(1, $item[Smut Orc Keepsake Box]);
 		}
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		return true;

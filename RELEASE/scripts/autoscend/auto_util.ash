@@ -3100,6 +3100,11 @@ boolean auto_is_valid(skill sk)
 	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
 }
 
+boolean auto_is_valid(effect eff)
+{
+	return glover_usable(eff.to_string());
+}
+
 void auto_log(string s, string color, int log_level)
 {
 	if(log_level > get_property("auto_log_level").to_int())

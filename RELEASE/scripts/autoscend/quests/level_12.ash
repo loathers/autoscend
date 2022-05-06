@@ -1758,8 +1758,8 @@ boolean L12_themtharHills()
 	}
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
-	//count inhaler if we have one or if we have a clover to obtain one
-	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0)
+	//count inhaler if we have one or if we have a clover to obtain one and can use one
+	if(item_amount(($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]))
 	{
 		meat_need = meat_need - 200;
 	}
@@ -1767,7 +1767,7 @@ boolean L12_themtharHills()
 	{
 		meat_need = meat_need - 150;
 	}
-	if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])))
+	if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])) & auto_is_valid($effect[Meet the Meat]))
 	{
 		meat_need = meat_need - 100;
 	}
@@ -1822,7 +1822,7 @@ boolean L12_themtharHills()
 		}
 	}
 
-	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		//use clover to get inhaler
 		cloverUsageInit();
