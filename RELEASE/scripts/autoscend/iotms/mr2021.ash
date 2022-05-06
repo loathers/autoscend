@@ -592,7 +592,7 @@ boolean auto_canExtinguisherBeRefilled()
 
 boolean auto_haveColdMedCabinet()
 {
-	return auto_get_campground() contains $item[cold medicine cabinet];
+	return auto_get_campground() contains $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]);
 }
 
 int auto_CMCconsultsLeft()
