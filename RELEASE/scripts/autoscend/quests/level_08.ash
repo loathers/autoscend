@@ -320,19 +320,14 @@ boolean L8_getMineOres()
 		return rainManSummon($monster[mountain man], false, false);
 	}
 	
-	// in softcore we want to pull the ores.
+	// in softcore we want to pull an ore
 	if(!in_hardcore())
 	{
-		if(pulls_remaining() != -1 && pulls_remaining() < (3 - item_amount(oreGoal)))
-		{
-			return false; // if not enough pulls left wait until tomorrow
-		}
-		pullXWhenHaveY(oreGoal, 3 - item_amount(oreGoal), item_amount(oreGoal));
+		pullXWhenHaveY(oreGoal, 1, item_amount(oreGoal));
 		if(item_amount(oreGoal) == 3)
 		{
-			return true;// pulled successfully.
+			return true;// pulled successfully the last ore
 		}
-		// do not return false if failed to pull despite having enough pulls left. It suggests there is some other issue preventing us from pulling so we should go forwards and acquire them.
 	}
 	
 	// use 1 wish if we can guarentee it will be enough via cat burglar

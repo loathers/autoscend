@@ -534,6 +534,11 @@ boolean L9_aBooPeak()
 		{
 			doThisBoo = true;
 		}
+		//do clue if it is one of the last things to do
+		if(isAboutToPowerlevel() && my_level() >= 13)
+		{
+			doThisBoo = true;
+		}
 
 		if(doThisBoo)
 		{
