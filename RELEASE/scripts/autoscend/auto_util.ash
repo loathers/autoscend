@@ -1737,6 +1737,7 @@ int freeCrafts()
 		retval += 5 - get_property("_expertCornerCutterUsed").to_int();
 	}
 	retval += have_effect($effect[Inigo\'s Incantation Of Inspiration]) / 5;
+	retval += get_property("homebodylCharges").to_int();
 #	if(have_skill($skill[Inigo\'s Incantation Of Inspiration]))
 #	{
 #		if(my_mp() > mp_cost($skill[Inigo\'s Incantation Of Inspiration]))
