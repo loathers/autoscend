@@ -1240,23 +1240,47 @@ ConsumeAction auto_bestNightcap()
 	loadConsumables("drink", actions);
 
 	boolean have_ode = auto_have_skill($skill[The Ode to Booze]);
+	int greenBeersDrinkable;
+	int greenBeerAdv;
+	if(contains_text(holiday(),"St\. Sneaky Pete's Day") && gnomads_available() && daily_special() == $item[green beer])
+	{
+		int disposableBeerMeat = max(0,my_meat()-meatReserve());
+		greenBeersDrinkable = min(ceil(10.0/$item[green beer].inebriety), disposableBeerMeat/get_property("_dailySpecialPrice").to_int());
+		if (greenBeersDrinkable > 0)
+		{
+			auto_log_info("May pick a smaller nightcap tonight since we could balance up to " + greenBeersDrinkable + " green beers on top of it", "blue");
+			greenBeerAdv = expectedAdventuresFrom($item[green beer]) + (have_ode ? $item[green beer].inebriety : 0);
+		}
+	}
+	
 	float desirability(int i)
 	{
 		float ret = actions[i].desirability;
 		if (have_ode) ret += actions[i].size;
+		if (greenBeersDrinkable > 0)
+		{
+			//on Sneaky Pete's Day smaller drink action leaves more space for green beers
+			int greenBeerabilityBonus = greenBeerAdv * min(greenBeersDrinkable, max(0,10 - actions[i].size));
+			ret += greenBeerabilityBonus;
+			if(actions[i].it == $item[astral pilsner])
+			{	//astral pilsner's extra advs could make it barely beat larger pulls today due to beers but would still have as much value tomorrow
+				ret -= min(5,greenBeerabilityBonus);
+			}
+		}
 		return ret;
 	}
 
 	int best = 0;
+	float current_best_desirability;
 	for(int i=1; i < count(actions); i++)
 	{
-		if(desirability(i) < desirability(best))
+		if(desirability(i) < current_best_desirability)
 		{
 			// This consumable is less desirable than the best consumable found so far
 			continue;
 		}
 
-		if(desirability(i) == desirability(best) && historical_price(actions[i].it) >= historical_price(actions[best].it))
+		if(desirability(i) == current_best_desirability && historical_price(actions[i].it) >= historical_price(actions[best].it))
 		{
 			// This consumable is just as desirable as the best consumable, but it is more expensive
 			continue;
@@ -1264,6 +1288,7 @@ ConsumeAction auto_bestNightcap()
 
 		// This consumable is either more desirable or equally desirable and cheaper
 		best = i;
+		current_best_desirability = desirability(best);
 	}
 
 	return actions[best];
