@@ -826,7 +826,6 @@ boolean doBedtime()
 		}
 	}
 
-	equipRollover(false);
 	heavyrains_doBedtime();
 
 	while(my_daycount() == 1 && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())
@@ -1137,6 +1136,7 @@ boolean doBedtime()
 
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
+	equipRollover(false);
 
 	if(in_plumber() && fullness_left() > 0)
 	{
@@ -1232,7 +1232,7 @@ boolean doBedtime()
 		bedtime_pulls();
 		pullsNeeded("evaluate");
 
-		if(have_skill($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
+		if(have_skill($skill[Calculate the Universe]) && auto_is_valid($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
 		{
 			auto_log_info("You can still Calculate the Universe!", "blue");
 		}
