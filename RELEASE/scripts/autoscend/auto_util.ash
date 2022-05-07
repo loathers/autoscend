@@ -3102,7 +3102,7 @@ boolean auto_is_valid(skill sk)
 
 boolean auto_is_valid(effect eff)
 {
-	return glover_usable(eff.to_string());
+	return glover_usable(eff.to_string()) && is_unrestricted(eff);
 }
 
 void auto_log(string s, string color, int log_level)
