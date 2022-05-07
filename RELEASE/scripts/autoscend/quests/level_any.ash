@@ -474,6 +474,41 @@ boolean LX_fatLootToken()
 	return false;
 }
 
+void useTonicDjinn()
+{
+	//configure and use Tonic Djinn if one was found in the daily dungeon
+	if(item_amount($item[Tonic Djinn]) > 0 && !get_property("_tonicDjinn").to_boolean() && auto_is_valid($item[Tonic Djinn]))
+	{
+		if(my_meat() < 500 + meatReserve())
+		{
+			set_property("choiceAdventure778", "1");	// Wealth!
+		}
+		else if(disregardInstantKarma())
+		{
+			if(my_primestat() == $stat[muscle])
+			{
+				set_property("choiceAdventure778", "2");
+				equipStatgainIncreasers($stat[muscle],false);	// Strength!
+			}
+			else if(my_primestat() == $stat[mysticality])
+			{
+				set_property("choiceAdventure778", "3");
+				equipStatgainIncreasers($stat[mysticality],false);	// Wisdom!
+			}
+			else
+			{
+				set_property("choiceAdventure778", "4");
+				equipStatgainIncreasers($stat[moxie],false);	// Panache!
+			}
+		}
+		else
+		{
+			set_property("choiceAdventure778", "1");	// Wealth!
+		}
+		use(1, $item[Tonic Djinn]);
+	}
+}
+
 boolean LX_dailyDungeonToken()
 {
 	if(get_property("dailyDungeonDone").to_boolean())
@@ -539,6 +574,8 @@ boolean LX_dailyDungeonToken()
 	{
 		return false;
 	}
+	
+	useTonicDjinn();
 	
 	// make sure we have enough adventures. since partial completion means wasted adventures.
 	int adv_budget = my_adventures() - auto_advToReserve();

@@ -1593,7 +1593,7 @@ boolean L11_hiddenCity()
 
 
 	//can we handle this zone?
-	if(!in_pokefam())
+	if(!in_pokefam() && !in_darkGyffte())
 	{
 		if(!acquireHP())	//try to restore HP to max.
 		{
@@ -1608,6 +1608,7 @@ boolean L11_hiddenCity()
 	
 	int weapon_ghost_dmg = numeric_modifier("hot damage") + numeric_modifier("cold damage") + numeric_modifier("stench damage") + numeric_modifier("sleaze damage") + numeric_modifier("spooky damage");
 	if(!in_robot() &&
+	!in_darkGyffte() &&
 	weapon_ghost_dmg < 20 &&				//we can not rely on melee/ranged weapon to kill the ghost
 	!acquireMP(30))							//try getting some MP, relying on a spell to kill them instead. TODO verify we have a spell
 	{

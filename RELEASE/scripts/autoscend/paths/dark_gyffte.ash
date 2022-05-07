@@ -407,19 +407,88 @@ int bat_creatable_amount(item desired)
 	switch(desired)
 	{
 		case $item[bloodstick]:
+			if(item_amount($item[wad of dough]) == 0)
+			{
+				pullXWhenHaveY($item[wad of dough],1,0);
+			}	
+			if(item_amount($item[wad of dough]) == 0)
+			{
+				buyUpTo(1, $item[wad of dough]);
+			}	
+			return creatable_amount(desired);
 		case $item[blood snowcone]:
+			if(item_amount($item[plain snowcone]) == 0)
+			{
+				pullXWhenHaveY($item[plain snowcone],1,0);
+			}	
+			if(item_amount($item[plain snowcone]) == 0)
+			{
+				buyUpTo(1, $item[plain snowcone]);
+			}
+			return creatable_amount(desired);
 		case $item[blood roll-up]:
+			if(item_amount($item[blackberry]) == 0)
+			{
+				pullXWhenHaveY($item[blackberry],1,0);
+			}	
+			return creatable_amount(desired);
 		case $item[bottle of Sanguiovese]:
+			if(item_amount($item[fermenting powder]) == 0)
+			{
+				pullXWhenHaveY($item[fermenting powder],1,0);
+			}	
+			return creatable_amount(desired);
 		case $item[mulled blood]:
+			if(item_amount($item[spices]) == 0)
+			{
+				pullXWhenHaveY($item[spices],1,0);
+			}	
+			return creatable_amount(desired);
 		case $item[Red Russian]:
+			if(item_amount($item[glass of goat\'s milk]) == 0)
+			{
+				pullXWhenHaveY($item[glass of goat\'s milk],1,0);
+			}	
 			return creatable_amount(desired);
 		case $item[actual blood sausage]:
+			foreach it in $items[batgut, ratgut]
+			{
+				if(item_amount(it) == 0)
+				{
+					if(pullXWhenHaveY(it,1,0))
+						break;
+				}
+			}
 			return min(item_amount($item[blood bag]), total_items($items[batgut, ratgut]));
 		case $item[blood-soaked sponge cake]:
-			return min(item_amount($item[blood bag]), total_items($items[filthy poultice, gauze garter]));
+			foreach it in $items[gauze garter, filthy poultice]
+			{
+				if(item_amount(it) == 0)
+				{
+					if(pullXWhenHaveY(it,1,0))
+						break;
+				}
+			}
+			return min(item_amount($item[blood bag]), total_items($items[gauze garter, filthy poultice]));
 		case $item[dusty bottle of blood]:
+			foreach it in $items[dusty bottle of Merlot, dusty bottle of Port, dusty bottle of Pinot Noir, dusty bottle of Zinfandel, dusty bottle of Marsala, dusty bottle of Muscat]
+			{
+				if(item_amount(it) == 0)
+				{
+					if(pullXWhenHaveY(it,1,0))
+						break;
+				}
+			}
 			return min(item_amount($item[blood bag]), total_items($items[dusty bottle of Merlot, dusty bottle of Port, dusty bottle of Pinot Noir, dusty bottle of Zinfandel, dusty bottle of Marsala, dusty bottle of Muscat]));
 		case $item[vampagne]:
+			foreach it in $items[carbonated soy milk, monstar energy beverage]
+			{
+				if(item_amount(it) == 0)
+				{
+					if(pullXWhenHaveY(it,1,0))
+						break;
+				}
+			}
 			return min(item_amount($item[blood bag]), total_items($items[carbonated soy milk, monstar energy beverage]));
 	}
 	auto_log_warning("Hmm, " + desired + " isn't a Vampyre consumable", "red");
@@ -498,9 +567,14 @@ boolean bat_consumption()
 	{
 		foreach it in its
 		{
-			if(bat_creatable_amount(it) > 0 || available_amount(it) > 0)
+			if(available_amount(it) == 0)
 			{
-				if (available_amount(it) == 0)
+				//try to pull it if we don't have any on hand. Preferable to crafting when possible
+				pullXWhenHaveY(it,1,0);
+			}
+			if(available_amount(it) > 0 || bat_creatable_amount(it) > 0)
+			{
+				if(available_amount(it) == 0)
 					bat_cook(it);
 				if(it.fullness > 0)
 					autoEat(1, it);
@@ -519,10 +593,35 @@ boolean bat_consumption()
 		return false;
 	}
 
-	if ((fullness_left() > 0) && (get_property("availableQuarters").to_int() < 2))
+	//buy best consumable mats from NPC if we can
+	if(auto_warSide() == "fratboy")
 	{
-		pullXWhenHaveY($item[gauze garter], 1, 0);
+		if ((fullness_left() > 0) && (item_amount($item[gauze garter]) == 0) && $coinmaster[Quartersmaster].available_tokens >= 2)
+		{
+			cli_execute("make 1 gauze garter");
+		}
+		if ((inebriety_left() > 0) && (item_amount($item[monstar energy beverage]) == 0) && $coinmaster[Quartersmaster].available_tokens >= 3)
+		{
+			cli_execute("make 1 monstar energy beverage");
+		}
 	}
+	else
+	{
+		if ((fullness_left() > 0) && (item_amount($item[filthy poultice]) == 0) && $coinmaster[Dimemaster].available_tokens >= 2)
+		{
+			cli_execute("make 1 filthy poultice");
+		}
+		if ((inebriety_left() > 0) && (item_amount($item[carbonated soy milk]) == 0) && $coinmaster[Dimemaster].available_tokens >= 3)
+		{
+			cli_execute("make 1 carbonated soy milk");
+		}
+	}
+
+	if (fullness_left() > 0)
+	{
+		pullXWhenHaveY($item[dieting pill], 1, 0);
+	}
+
 	if ((my_level() >= 7) &&
 		(spleen_left() >= 3) &&
 		(fullness_left() >= 2) &&
@@ -539,30 +638,39 @@ boolean bat_consumption()
 			return true;
 		}
 	}
-	if (item_amount($item[blood bag]) > 0)
+
+	// attempt to fill organs with best consumables all the time, don't wait to be at low adventure count
+	if (inebriety_left() > 0)
 	{
-		if (inebriety_left() > 0)
+		if(consume_first($items[vampagne]))
+			return true;
+	}
+	if (fullness_left() > 0)
+	{
+		if(consume_first($items[blood-soaked sponge cake]))
+			return true;
+	}
+
+	if (my_adventures() <= 8)
+	{
+		// if both organs have space, prioritize high value items instead of the usual booze before food algorithm
+		// don't auto consume bottle of Sanguiovese or bloodstick unless we're down to one adventure
+		if (inebriety_left() > 0 && fullness_left() > 0)
 		{
-			if(consume_first($items[vampagne]))
+			if(consume_first($items[vampagne, blood-soaked sponge cake,
+									 dusty bottle of blood, blood roll-up,
+									 Red Russian, blood snowcone, 
+									 mulled blood, actual blood sausage]))
 				return true;
 		}
-	}
-	if (my_adventures() <= 8 && item_amount($item[blood bag]) > 0)
-	{
-		if (inebriety_left() > 0)
+		else if (inebriety_left() > 0)
 		{
-			if (get_property("availableQuarters").to_int() < 3)
-			{
-				pullXWhenHaveY($item[monstar energy beverage], 1, 0);
-			}
-			// don't auto consume bottle of Sanguiovese, only drink those if we're down to one adventure
 			if(consume_first($items[vampagne, dusty bottle of blood, Red Russian, mulled blood]))
 				return true;
 		}
-		if (fullness_left() > 0)
+		else if (fullness_left() > 0)
 		{
-			// don't auto consume bloodstick, only eat those if we're down to one adventure AFTER booze
-			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage, ]))
+			if(consume_first($items[blood-soaked sponge cake, blood roll-up, blood snowcone, actual blood sausage]))
 				return true;
 		}
 	}
