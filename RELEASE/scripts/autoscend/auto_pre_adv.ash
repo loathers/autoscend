@@ -405,9 +405,9 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	// Use some instakills.  Removing option from Pocket Familiars so it won't unnecessarily equip in third slot.
+	// Use some instakills. Can't use Chest X-Ray in Pocket Familiars.
 	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
-	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())
+	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && auto_is_valid($skill[Chest X-Ray]) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())
 	{
 		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
 		autoEquip($slot[acc3], DOCTOR_BAG);
@@ -681,6 +681,15 @@ boolean auto_pre_adventure()
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	cli_execute("checkpoint clear");
+
+	if(place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5)
+	{
+		equipStatgainIncreasers();	//guaranteed non combat that gives stats
+	}
+	else if(place == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") == 3)
+	{
+		equipStatgainIncreasers();	//guaranteed non combat that gives stats
+	}
 
 	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
 		equip($slot[Pants], $item[None]);

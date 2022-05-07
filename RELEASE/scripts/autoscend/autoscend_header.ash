@@ -436,6 +436,11 @@ boolean auto_haveFireExtinguisher();
 int auto_fireExtinguisherCharges();
 string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
+boolean auto_haveColdMedCabinet();
+int auto_CMCconsultsLeft();
+boolean auto_shouldUseCMC();
+boolean auto_CMCconsultAvailable();
+void auto_CMCconsult();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2022.ash
@@ -1076,6 +1081,7 @@ void oldLandfillChoiceHandler(int choice);
 boolean LX_lockPicking();
 float estimateDailyDungeonAdvNeeded();
 boolean LX_fatLootToken();
+void useTonicDjinn();
 boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
@@ -1250,6 +1256,11 @@ boolean autoForceEquip(item it);
 boolean autoOutfit(string toWear);
 boolean autoStripOutfit(string toRemove);
 boolean tryAddItemToMaximize(slot s, item it);
+item[slot] speculatedMaximizerEquipment(string statement);
+void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip);
+void equipStatgainIncreasers(stat increaseThisStat, boolean alwaysEquip);
+void equipStatgainIncreasers();
+void equipStatgainIncreasersFor(item it);
 void resetMaximize();
 void addToMaximize(string add);
 void removeFromMaximize(string rem);
