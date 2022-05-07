@@ -1235,7 +1235,7 @@ boolean doBedtime()
 		acquireMilkOfMagnesiumIfUnused(true);
 		consumeMilkOfMagnesiumIfUnused();
 
-		if(have_skill($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
+		if(have_skill($skill[Calculate the Universe]) && auto_is_valid($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
 		{
 			auto_log_info("You can still Calculate the Universe!", "blue");
 		}

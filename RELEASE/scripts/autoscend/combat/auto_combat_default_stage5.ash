@@ -73,6 +73,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		skill stunner = getStunner(enemy);
 		if(stunner != $skill[none])
 		{
+			combat_status_add("stunned");
 			return useSkill(stunner);
 		}
 
@@ -615,7 +616,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			if(sk == $skill[Chill of the Tomb] && enemy.monster_element() == $element[cold])
 				continue;
-			if(canUse(sk, false) && my_hp() > 3 * hp_cost(sk))
+			if(canUse(sk, false) && my_hp() > hp_cost(sk))
 			{
 				attackMajor = useSkill(sk, false);
 				attackMinor = useSkill(sk, false);
@@ -634,9 +635,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		// intentionally not setting costMinor or costMajor since they don't cost mp...
 
 		// If we're in a form or something, a beehive is probably better than just attacking
-		if(attackMajor == "attack with weapon" && !have_skill($skill[Preternatural Strength]) && canUse($item[beehive]) && ($stat[moxie] != weapon_type(equipped_item($slot[Weapon]))))
+		if(attackMinor == "attack with weapon" && !have_skill($skill[Preternatural Strength]) && canUse($item[beehive]) && ($stat[moxie] != weapon_type(equipped_item($slot[Weapon]))))
 		{
-			attackMajor = useItem($item[beehive], false);
 			attackMinor = useItem($item[beehive], false);
 		}
 		break;
