@@ -696,7 +696,7 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol()))
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_darkGyffte()))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -846,13 +846,11 @@ void initializeDay(int day)
 		
 		if(get_property("auto_day_init").to_int() < 2)
 		{
-			if((item_amount($item[Tonic Djinn]) > 0) && !get_property("_tonicDjinn").to_boolean())
-			{
-				set_property("choiceAdventure778", "2");
-				use(1, $item[Tonic Djinn]);
-			}
+			useTonicDjinn();
+			
 			if(item_amount($item[gym membership card]) > 0)
 			{
+				equipStatgainIncreasers();
 				use(1, $item[gym membership card]);
 			}
 
@@ -1691,6 +1689,7 @@ boolean doTasks()
 	LX_craftAcquireItems();
 	auto_spoonTuneMoon();
 	auto_buyFireworksHat();
+	auto_CMCconsult();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
