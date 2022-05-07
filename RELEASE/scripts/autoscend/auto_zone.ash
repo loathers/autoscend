@@ -73,13 +73,17 @@ generic_t zone_needItem(location loc)
 			value = 5.0;
 		break;
 	case $location[Wartime Frat House]:
-		if (!possessOutfit("Frat Warrior Fatigues")) {
+		if (!possessOutfit("Frat Warrior Fatigues")
+		&& !is_wearing_outfit("War Hippy Fatigues")) {	//already in the other war outfit means only there to start the war
 			value = 5.0;
 		}
+		break;
 	case $location[Wartime Hippy Camp]:
-		if (!possessOutfit("War Hippy Fatigues")) {
+		if (!possessOutfit("War Hippy Fatigues")
+		&& !is_wearing_outfit("Frat Warrior Fatigues")) {	//already in the other war outfit means only there to start the war
 			value = 5.0;
 		}
+		break;
 	case $location[The Battlefield (Frat Uniform)]:
 	case $location[The Battlefield (Hippy Uniform)]:
 			value = 5.0;
@@ -499,9 +503,6 @@ generic_t zone_combatMod(location loc)
 	case $location[The Haunted Billiards Room]:
 		value = -85;
 		break;
-	case $location[The Haunted Library]:
-		value = 25;
-		break;
 	case $location[The Haunted Gallery]:
 		if((delay._int == 0) || (!contains_text(get_property("relayCounters"), "Garden Banished")))
 		{
@@ -582,7 +583,11 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[Lair of the Ninja Snowmen]:
-		value = 80;
+		if(internalQuestStatus("questL08Trapper") < 3 &&
+		(item_amount($item[Ninja Carabiner]) == 0 || item_amount($item[Ninja Crampons]) == 0 || item_amount($item[Ninja Rope]) == 0))
+		{
+			value = 80;
+		}
 		break;
 	case $location[The Dark Neck of the Woods]:
 	case $location[The Dark Heart of the Woods]:
@@ -599,7 +604,7 @@ generic_t zone_combatMod(location loc)
 	case $location[The Typical Tavern Cellar]:
 		//We could cut it off early if the Rat Faucet is the last one
 		//And marginally if we know the 3rd/6th square are forced events.
-		value = -75;
+		//actual desired value for combat or non combat is decided by level_03.ash based on elemental damage bonus
 		break;
 	case $location[The Spooky Forest]:
 		if(delay._int == 0)
