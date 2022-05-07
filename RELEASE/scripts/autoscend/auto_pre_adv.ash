@@ -279,8 +279,9 @@ boolean auto_pre_adventure()
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
 	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !burningDelay && !gettingLucky && !auto_haveQueuedForcedNonCombat()) {
+	if (combatModifier._boolean && !burningDelay && !gettingLucky && !forcedNonCombat) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
@@ -480,8 +481,18 @@ boolean auto_pre_adventure()
 	auto_snapperPreAdventure(place);
 	sweatpantsPreAdventure();
 
+	boolean mayNeedItem = true;
+	if (burningDelay || forcedNonCombat) {
+		//when delay burning if the monster wants item drop it would not be the zone based value that follows
+		//none of the uses of auto_forceNextNoncombat() will need item drop
+		mayNeedItem = false;
+	}
+	else if (gettingLucky && !($locations[The Hidden Temple, The Red Zeppelin, A Maze of Sewer Tunnels] contains place)) {
+		//Baa'baa'bu'ran is probably the only Lucky adventure that will need item drop
+		mayNeedItem = false;
+	}
 	generic_t itemNeed = zone_needItem(place);
-	if(itemNeed._boolean)
+	if(mayNeedItem && itemNeed._boolean)
 	{
 		addToMaximize("50item " + (ceil(itemNeed._float) + 100.0) + "max"); // maximizer treats item drop as 100 higher than it actually is for some reason.
 		simMaximize();
