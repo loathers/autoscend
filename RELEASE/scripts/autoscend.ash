@@ -1333,10 +1333,23 @@ void beatenUpResolution()
 
 	if(have_effect($effect[Beaten Up]) > 0)
 	{
-		cli_execute("refresh all");
-		if(have_effect($effect[Beaten Up]) > 0)
+		if(have_effect($effect[Beaten Up]) == 2 && get_property("lastEncounter") == "Dr. Awkward" && internalQuestStatus("questL11Palindome") > 5)
 		{
-			abort("We failed to remove beaten up. Adventuring in the same place that we got beaten in with half stats will just result in us dying again");
+			//beaten up by the quest item when unlocking Dr. Awkward, not by failing a fight
+			set_property("_auto_AwkwardBeatenUp",my_turncount().to_string());
+			auto_log_info("We must have failed to remove beaten up before defeating Dr. Awkward and that hasn't stopped us so far...");
+		}
+		else if(have_effect($effect[Beaten Up]) == 1 && get_property("_auto_AwkwardBeatenUp").to_int() != 0 && my_turncount() - get_property("_auto_AwkwardBeatenUp").to_int() <= 1)
+		{
+			auto_log_info("This should be the last turn of beaten up from Dr. Awkward");
+		}
+		else
+		{
+			cli_execute("refresh all");
+			if(have_effect($effect[Beaten Up]) > 0)
+			{
+				abort("We failed to remove beaten up. Adventuring in the same place that we got beaten in with half stats will just result in us dying again");
+			}
 		}
 	}
 }
@@ -1423,7 +1436,7 @@ boolean autosellCrap()
 		return false;
 	}
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
 	{
 		if(item_amount(it) > 0)
 		{
@@ -1433,6 +1446,10 @@ boolean autosellCrap()
 	if(item_amount($item[hot wing]) > 3)
 	{
 		auto_autosell(item_amount($item[hot wing]) - 3, $item[hot wing]);
+	}
+	if(item_amount($item[Chaos Butterfly]) > 1)
+	{
+		auto_autosell(item_amount($item[Chaos Butterfly]) - 1, $item[Chaos Butterfly]);
 	}
 	return true;
 }
