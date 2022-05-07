@@ -2566,9 +2566,9 @@ boolean careAboutDrops(monster mon)
 		//We could refine this to get rid of all the all stars / lines mobs but meh.
 		if(($monster[Astronomer] != mon) && ((item_amount($item[Star]) < 8) || (item_amount($item[Line]) < 7)))
 		{
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	if($monsters[Blooper, Ghost] contains mon)
