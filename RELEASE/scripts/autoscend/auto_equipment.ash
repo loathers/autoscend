@@ -179,6 +179,272 @@ boolean tryAddItemToMaximize(slot s, item it)
 	return true;
 }
 
+item[slot] speculatedMaximizerEquipment(string statement)
+{
+	//make maximizer simulate with the given statement then return the list of equipment it has chosen
+	item [slot] res;
+	boolean weaponPicked;
+	boolean offhandPicked;
+	foreach i,entry in maximize(statement,0,0,true,true)	//can't use autoMaximize "Aggregate reference expected"
+	{
+		if(i>15)
+		{
+			//there should not be more than 9 or 10 equipment slots and equipment entries come first. so equipment list is done
+			break;
+		}
+		item maximizerItem = entry.item;
+		if(maximizerItem == $item[none]) continue;
+		slot maximizerItemSlot = maximizerItem.to_slot();
+		if(maximizerItemSlot == $slot[none]) continue;
+		slot overrideSlot;
+		if(maximizerItemSlot == $slot[weapon])
+		{
+			if(weaponPicked && offhandPicked)
+			{
+				//this must be familiar weapon
+				overrideSlot = $slot[familiar];
+			}
+			else if(weaponPicked)
+			{
+				//this must be offhand weapon
+				overrideSlot = $slot[off-hand];
+				offhandPicked = true;
+			}
+			else
+			{
+				weaponPicked = true;
+				if(weapon_hands(maximizerItem) > 1)	offhandPicked = true;
+			}
+		}
+		else if(maximizerItemSlot == $slot[off-hand])
+		{
+			if(offhandPicked)
+			{
+				//this must be familiar offhand
+				overrideSlot = $slot[familiar];
+			}
+			else
+			{
+				offhandPicked = true;
+			}
+		}
+		else if(maximizerItemSlot == $slot[acc1] && res[$slot[acc1]] != $item[none])
+		{
+			//accessory to slot always returns acc1 and has to be switched if more than one, go from 1 to 3 because that is the equip order the maximizer will use
+			if(res[$slot[acc2]] != $item[none])
+			{
+				overrideSlot = $slot[acc3];
+			}
+			else
+			{
+				overrideSlot = $slot[acc2];
+			}
+		}
+		if(overrideSlot != $slot[none])
+		{
+			maximizerItemSlot = overrideSlot;
+		}
+		if(res[maximizerItemSlot] != $item[none])
+		{
+			auto_log_debug("Duplicate entry skipped for slot " + maximizerItemSlot.to_string() + " in speculatedMaximizerEquipment, something must be wrong", "gold");
+			continue;
+		}
+		res[maximizerItemSlot] = maximizerItem;
+	}
+	return res;
+}
+
+void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip)
+{
+	//want to equip best equipment that increases specified stat gains including out of combat
+	//should be frequently called by consume actions so try not to lose HP or MP, but will equip anyway if argument alwaysEquip is true
+	string maximizerStatement;
+	foreach st in increaseThisStat
+	{
+		if(!increaseThisStat[st])	continue;
+		string statWeight = "";
+		if(st == my_primestat())
+		{
+			if(disregardInstantKarma())
+			{
+				statWeight = "2";
+			}
+		}
+		else if(my_basestat(my_primestat()) > 122 && my_basestat(st) < 70)
+		{
+			//>= level 12 or almost there, more offstat experience may be needed for the war outfit (requires 70 mox and 70 mys)
+			if(st == $stat[mysticality] || st == $stat[moxie])
+			{
+				statWeight = "3";
+			}
+		}
+		maximizerStatement += statWeight + st.to_string() + " experience percent,";
+	}
+	item [slot] simulatedEquipment = speculatedMaximizerEquipment(maximizerStatement);	//simulate and get list of relevant equipment
+	boolean canIncreaseStatgains = false;
+	foreach st in increaseThisStat
+	{
+		if(!increaseThisStat[st])	continue;
+		string modifierString = st.to_string() + " experience percent";
+		if(simValue(modifierString) > numeric_modifier(modifierString))
+		{
+			canIncreaseStatgains = true;
+			break;
+		}
+	}
+	if(!canIncreaseStatgains)
+	{
+		return;
+	}
+	
+	//list only the maximized equipment that increases statgain
+	item [slot] statgainIncreasers;
+	foreach sl in simulatedEquipment
+	{
+		foreach st in increaseThisStat
+		{
+			if(!increaseThisStat[st])	continue;
+			if(numeric_modifier(simulatedEquipment[sl],st.to_string() + " experience percent") != 0)
+			{
+				statgainIncreasers[sl] = simulatedEquipment[sl];
+				break;
+			}
+		}
+	}
+	
+	//equipment would be equipped in the order it was listed. check if HP or MP would be lost by equipping
+	int HPlost;	int mostHPlost;
+	int MPlost;	int mostMPlost;
+	string speculateOneItem;
+	string speculateAllItems;
+	foreach sl in statgainIncreasers
+	{
+		speculateOneItem = "equip " + sl.to_string() + " " + statgainIncreasers[sl].to_string() + "; ";
+		cli_execute("speculate quiet; " + speculateOneItem);
+		HPlost = my_hp() - simValue("Buffed HP Maximum");
+		MPlost = my_mp() - simValue("Buffed MP Maximum");
+		if(HPlost <= 0 && MPlost <= 0)
+		{	equip(statgainIncreasers[sl],sl);	//causes no loss so it can be equipped right now
+			continue;
+		}
+		speculateAllItems += speculateOneItem;	//otherwise speculate with all items that have been left out
+		if(speculateAllItems != speculateOneItem)
+		{
+			cli_execute("speculate quiet; " + speculateAllItems);
+			HPlost = my_hp() - simValue("Buffed HP Maximum");
+			MPlost = my_mp() - simValue("Buffed MP Maximum");
+		}
+		if(HPlost > mostHPlost)	mostHPlost = HPlost;
+		if(MPlost > mostMPlost)	mostMPlost = MPlost;
+	}
+	if(mostHPlost == 0 && mostMPlost == 0)
+	{
+		auto_log_debug("Done increasing incoming stat gains using equipment", "gold");
+		return;
+	}
+
+	//else try to prevent the HP or MP loss by increasing max HP and MP first using remaining slots
+	int targetedHP = my_hp()+mostHPlost;
+	int targetedMP = my_mp()+mostMPlost;
+	maximizerStatement = "HP " + targetedHP + "min " + targetedHP + "max, MP " + targetedMP + "min " + targetedMP + "max,";
+	foreach sl in statgainIncreasers
+	{
+		maximizerStatement += "-" + sl.to_string() + ",";	//ignore slots where statgain increasers should be equipped
+		if(statgainIncreasers[sl].to_slot() == $slot[weapon])	//ignore slots that will be incompatible
+		{
+			if(weapon_hands(statgainIncreasers[sl]) > 1)		maximizerStatement += "-off-hand,";
+			if(weapon_type(statgainIncreasers[sl]) == $stat[moxie])	maximizerStatement += "-melee,";
+			else							maximizerStatement += "+melee,";
+		}
+		if(sl == $slot[off-hand] && statgainIncreasers[$slot[weapon]] == $item[none])
+		{
+			maximizerStatement += "1handed,";		//ignore incompatible weapons
+		}
+	}
+	if(!maximize(maximizerStatement,true))
+	{
+		if(!alwaysEquip)
+		{	//can't do it, give up
+			return;
+		}
+	}
+	auto_log_info("Trying to put on some more equipment first to avoid losing HP or MP before equipping to increase incoming statgains", "blue");
+	clear(simulatedEquipment);
+	simulatedEquipment = speculatedMaximizerEquipment(maximizerStatement);
+	foreach sl in simulatedEquipment
+	{
+		speculateOneItem = "equip " + sl.to_string() + " " + simulatedEquipment[sl].to_string() + "; ";
+		cli_execute("speculate quiet; " + speculateOneItem);
+		if(simValue("Buffed HP Maximum") < my_hp())	continue;	//skip on collateral loss
+		if(simValue("Buffed MP Maximum") < my_mp())	continue;
+		equip(simulatedEquipment[sl],sl);
+	}
+	boolean doEquips;
+	if(my_maxhp() >= targetedHP && my_maxmp() >= targetedMP)
+	{
+		//finished raising max HP and MP so can now equip all statgain equipment hopefully with no HP or MP loss
+		doEquips = true;
+	}
+	else if(alwaysEquip)
+	{
+		catch cli_execute("burn " + (targetedMP - my_maxmp()));
+		doEquips = true;
+	}
+	
+	if(doEquips)
+	{
+		foreach sl in statgainIncreasers
+		{
+			equip(statgainIncreasers[sl],sl);
+		}
+	}
+}
+
+void equipStatgainIncreasers(stat increaseThisStat, boolean alwaysEquip)
+{
+	boolean[stat] increaseThisStatAggregate;
+	increaseThisStatAggregate[increaseThisStat] = true;
+	equipStatgainIncreasers(increaseThisStatAggregate, alwaysEquip);
+}
+
+void equipStatgainIncreasers()
+{
+	if(!disregardInstantKarma())	//exclude primestat if level 13
+	{
+		if(my_primestat() == $stat[muscle])
+		{
+			equipStatgainIncreasers($stats[mysticality,moxie],false);
+			return;
+		}
+		else if(my_primestat() == $stat[mysticality])
+		{
+			equipStatgainIncreasers($stats[muscle,moxie],false);
+			return;
+		}
+		else if(my_primestat() == $stat[moxie])
+		{
+			equipStatgainIncreasers($stats[muscle,mysticality],false);
+			return;
+		}
+	}
+	equipStatgainIncreasers($stats[muscle,mysticality,moxie],false);
+}
+
+void equipStatgainIncreasersFor(item it)
+{
+	//check what stats a consumable will give and equip increasers for it
+	boolean [stat] increaseThisStat;
+	stat excludedStat = disregardInstantKarma() ? $stat[none] : my_primestat();	//exclude primestat if level 13
+	if(it.muscle != "" && excludedStat != $stat[muscle])			increaseThisStat[$stat[muscle]] = true;
+	if(it.mysticality != "" && excludedStat != $stat[mysticality])		increaseThisStat[$stat[mysticality]] = true;
+	if(it.moxie != "" && excludedStat != $stat[moxie])			increaseThisStat[$stat[moxie]] = true;
+
+	if(count(increaseThisStat) != 0)
+	{
+		equipStatgainIncreasers(increaseThisStat,false);
+	}
+}
+
 string defaultMaximizeStatement()
 {
 	if(in_pokefam())
@@ -377,8 +643,8 @@ void finalizeMaximize(boolean speculative)
 	{
 		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
 	}
-	// Vampyre autogenerates scraps because of some weird ensorcel interaction. Even without ensorcel active.
-	if(pathHasFamiliar() || in_darkGyffte())
+	
+	if(pathHasFamiliar())
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}

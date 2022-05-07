@@ -122,6 +122,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		skill stunner = getStunner(enemy);
 		if(stunner != $skill[none])
 		{
+			combat_status_add("stunned");
 			return useSkill(stunner);
 		}
 
