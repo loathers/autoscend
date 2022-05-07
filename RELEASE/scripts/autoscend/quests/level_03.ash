@@ -91,9 +91,8 @@ boolean auto_tavern()
 
 	if(!maximized)
 	{
-		// tails are a better time saving investment
-		addToMaximize("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max");
-		simMaximize($location[Noob Cave]);
+		// Tails are a better time saving investment
+		simMaximizeWith("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max");
 		maximized = true;
 	}
 	int [string] eleChoiceCombos =
@@ -108,8 +107,15 @@ boolean auto_tavern()
 	{
 		boolean passed = simValue(ele + " Damage") >= 20.0;
 		set_property("choiceAdventure" + choicenum, passed ? "2" : "1");
-		if(passed) ++capped;
+		if(passed)
+		{
+			++capped;
+			//adding a 20min argument does not yield better combinations nor avoid giving value to failed elements
+			addToMaximize("80" + ele + " Damage 20max");	//only give value to elements that will pass
+		}
 	}
+	addToMaximize("500ml " + auto_convertDesiredML(150) + "max");
+	
 	if(capped >= 3)
 	{
 		providePlusNonCombat(25, $location[Noob Cave]);
@@ -138,7 +144,7 @@ boolean auto_tavern()
 			int actual = loc + 1;
 			boolean needReset = false;
 
-			if(autoAdvBypass("cellar.php?action=explore&whichspot=" + actual, $location[Noob Cave]))
+			if(autoAdvBypass("cellar.php?action=explore&whichspot=" + actual, $location[The Typical Tavern Cellar]))
 			{
 				return true;
 			}
