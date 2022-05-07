@@ -246,32 +246,20 @@ boolean LA_cs_communityService()
 		auto_log_info("Beginning early quest actions (" + curQuest + ")", "green");
 		if(curQuest != 7)
 		{
-			if((my_inebriety() == 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]) && (item_amount($item[Clan VIP Lounge Key]) > 0) && (my_meat() >= 500))
+			if((item_amount($item[Clan VIP Lounge Key]) > 0) && (auto_get_clan_lounge() contains $item[Clan Speakeasy]))
 			{
-				autoDrink(1, $item[Lucky Lindy]);
-				if(my_inebriety() != $item[Lucky Lindy].inebriety)
+				//this used to start by drinking a Lucky Lindy when it was size 1 and semi rares existed
+				//now Lucky Lindy is size 6 so should no longer do this, only leaving the url visit on error in case later drinks relied on it
+				if(!(auto_get_clan_lounge() contains $item[Lucky Lindy]))
 				{
-					if(auto_get_clan_lounge() contains $item[Lucky Lindy])
-					{
-						auto_log_warning("Confused!! Mafia reports Lucky Lindy but we couldn't drink it?", "red");
-					}
-					auto_log_warning("Mafia knows we have a speakeasy but could not drink a Lucky Lindy", "red");
-					string temp = visit_url("clan_viplounge.php?whichfloor=2&action=speakeasy");
+					auto_log_warning("Confused!! Mafia reports a Speakeasy but we see no Lucky Lindy?", "red");
+					visit_url("clan_viplounge.php?whichfloor=2&action=speakeasy");
 					if(auto_get_clan_lounge() contains $item[Lucky Lindy])
 					{
 						auto_log_info("Mafia now knows we have a Lucky Lindy", "green");
 						return true;
 					}
-					else
-					{
-						abort("Speakeasy issue, could not resolve contents and use them. Try visiting Clan Speakeasy and run again, do not manually drink a Lucky Lindy");
-					}
 				}
-			}
-
-			if((my_inebriety() == 0) && !(auto_get_clan_lounge() contains $item[Clan Speakeasy]))
-			{
-				abort("Your clan does not have a Clan Speakeasy or mafia doesn't understand that you do. Change clans and try again");
 			}
 
 			if((item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() == 0))

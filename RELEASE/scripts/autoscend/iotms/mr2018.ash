@@ -649,6 +649,7 @@ boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 	{
 		return false;
 	}
+	equipStatgainIncreasers(my_primestat(), true);
 	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9928", false);
 
 	matcher first = create_matcher("/bbatt/barb(\\d).png", page);

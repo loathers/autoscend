@@ -109,12 +109,6 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 
 	int expectedInebriety = toDrink.inebriety * howMany;
 
-	item it = equipped_item($slot[Acc3]);
-	if((it != $item[Mafia Pinky Ring]) && (item_amount($item[Mafia Pinky Ring]) > 0) && ($items[Bucket of Wine, Psychotic Train Wine, Sacramento Wine, Stale Cheer Wine] contains toDrink) && can_equip($item[Mafia Pinky Ring]))
-	{
-		equip($slot[Acc3], $item[Mafia Pinky Ring]);
-	}
-
 	if(canOde(toDrink) && possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
 		if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
@@ -130,6 +124,14 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		// get enough turns of ode
 		while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
 			/*do nothing, the loop condition is doing the work*/;
+	}
+
+	equipStatgainIncreasersFor(toDrink);
+
+	item it = equipped_item($slot[Acc3]);
+	if((it != $item[Mafia Pinky Ring]) && (item_amount($item[Mafia Pinky Ring]) > 0) && ($items[Bucket of Wine, Psychotic Train Wine, Sacramento Wine, Stale Cheer Wine] contains toDrink) && can_equip($item[Mafia Pinky Ring]))
+	{
+		equip($slot[Acc3], $item[Mafia Pinky Ring]);
 	}
 
 	boolean retval = false;
@@ -214,6 +216,8 @@ boolean autoDrinkCafe(int howmany, int id)
 	// we'll get from the drink.
 	if(!gnomads_available()) return false;
 
+	equipStatgainIncreasersFor(id.to_item());
+
 	string name = cafeDrinkName(id);
 	for (int i=0; i<howmany; i++)
 	{
@@ -228,6 +232,8 @@ boolean autoDrinkCafe(int howmany, int id)
 boolean autoEatCafe(int howmany, int id)
 {
 	if(!canadia_available()) return false;
+
+	equipStatgainIncreasersFor(id.to_item());
 
 	string name = cafeFoodName(id);
 	for (int i=0; i<howmany; i++)
@@ -254,6 +260,8 @@ boolean autoChew(int howMany, item toChew)
 	{
 		return false;
 	}
+
+	equipStatgainIncreasersFor(toChew);
 
 	boolean retval = chew(howMany, toChew);
 
@@ -287,6 +295,8 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	{
 		return false;
 	}
+
+	equipStatgainIncreasersFor(toEat);
 
 	int expectedFullness = toEat.fullness * howMany;
 	acquireMilkOfMagnesiumIfUnused(true);
@@ -1166,23 +1176,47 @@ ConsumeAction auto_bestNightcap()
 	loadConsumables("drink", actions);
 
 	boolean have_ode = auto_have_skill($skill[The Ode to Booze]);
+	int greenBeersDrinkable;
+	int greenBeerAdv;
+	if(contains_text(holiday(),"St\. Sneaky Pete's Day") && gnomads_available() && daily_special() == $item[green beer])
+	{
+		int disposableBeerMeat = max(0,my_meat()-meatReserve());
+		greenBeersDrinkable = min(ceil(10.0/$item[green beer].inebriety), disposableBeerMeat/get_property("_dailySpecialPrice").to_int());
+		if (greenBeersDrinkable > 0)
+		{
+			auto_log_info("May pick a smaller nightcap tonight since we could balance up to " + greenBeersDrinkable + " green beers on top of it", "blue");
+			greenBeerAdv = expectedAdventuresFrom($item[green beer]) + (have_ode ? $item[green beer].inebriety : 0);
+		}
+	}
+	
 	float desirability(int i)
 	{
 		float ret = actions[i].desirability;
 		if (have_ode) ret += actions[i].size;
+		if (greenBeersDrinkable > 0)
+		{
+			//on Sneaky Pete's Day smaller drink action leaves more space for green beers
+			int greenBeerabilityBonus = greenBeerAdv * min(greenBeersDrinkable, max(0,10 - actions[i].size));
+			ret += greenBeerabilityBonus;
+			if(actions[i].it == $item[astral pilsner])
+			{	//astral pilsner's extra advs could make it barely beat larger pulls today due to beers but would still have as much value tomorrow
+				ret -= min(5,greenBeerabilityBonus);
+			}
+		}
 		return ret;
 	}
 
 	int best = 0;
+	float current_best_desirability;
 	for(int i=1; i < count(actions); i++)
 	{
-		if(desirability(i) < desirability(best))
+		if(desirability(i) < current_best_desirability)
 		{
 			// This consumable is less desirable than the best consumable found so far
 			continue;
 		}
 
-		if(desirability(i) == desirability(best) && historical_price(actions[i].it) >= historical_price(actions[best].it))
+		if(desirability(i) == current_best_desirability && historical_price(actions[i].it) >= historical_price(actions[best].it))
 		{
 			// This consumable is just as desirable as the best consumable, but it is more expensive
 			continue;
@@ -1190,6 +1224,7 @@ ConsumeAction auto_bestNightcap()
 
 		// This consumable is either more desirable or equally desirable and cheaper
 		best = i;
+		current_best_desirability = desirability(best);
 	}
 
 	return actions[best];
@@ -1304,6 +1339,17 @@ void auto_drinkNightcap()
 	&& start_fam != $familiar[Stooper] && pathAllowsChangingFamiliar()) //check if path allows changing familiar
 	{
 		use_familiar($familiar[Stooper]);
+	}
+	
+	if(item_amount($item[Steel Margarita]) > 0)
+	{
+		//LX_steelOrgan may wait to drink the Steel Margarita for Billiards, if drunkenness never went over 12 it could have been skipped
+		//this should only be possible in Avatar of West of Loathing?
+		boolean wontBeOverdrunk = inebriety_left() >= $item[Steel Margarita].inebriety - 5;
+		if(wontBeOverdrunk)
+		{
+			autoDrink(1, $item[Steel Margarita]);
+		}
 	}
 	
 	//fill up remaining liver first. such as stooper space.
@@ -1725,10 +1771,9 @@ boolean prepare_food_xp_multi()
 		}
 	}
 	
-	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	//get [That's Just Cloud-Talk, Man] +25% all stats experience is already done by dailyEvents()
 	
-	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
-	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
+	equipStatgainIncreasers($stats[muscle,mysticality,moxie],true);
 	
 	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
 	return true;
