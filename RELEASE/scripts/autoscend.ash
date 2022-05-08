@@ -569,7 +569,10 @@ void initializeDay(int day)
 		#}
 	}
 
-	auto_saberDailyUpgrade(day);
+	if(auto_is_valid($item[Fourth of May cosplay saber]))
+	{
+		auto_saberDailyUpgrade(day);
+	}
 
 	if((item_amount($item[cursed microwave]) >= 1) && !get_property("_cursedMicrowaveUsed").to_boolean())
 	{

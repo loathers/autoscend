@@ -420,7 +420,7 @@ boolean L13_towerNSContests()
 		if(get_property("nsContestants2").to_int() == -1)
 		{
 			resetMaximize();
-			if(!get_property("_lyleFavored").to_boolean())
+			if(!get_property("_lyleFavored").to_boolean() && auto_is_valid($effect[Favored by Lyle]))
 			{
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
