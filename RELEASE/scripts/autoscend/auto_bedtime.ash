@@ -541,7 +541,7 @@ void bedtime_pulls()
 	if(internalQuestStatus("questL11Desert") < 1)
 	{
 		int gnasirProgress = get_property("gnasirProgress").to_int();
-		if ((gnasirProgress & 16) == 0)
+		if ((gnasirProgress & 16) == 0 && auto_is_valid($item[drum machine]))
 		{
 			pullXWhenHaveY($item[drum machine], 1, 0);
 		}
@@ -778,7 +778,11 @@ boolean doBedtime()
 	{
 		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
 		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
-		visit_url("clan_viplounge.php?preaction=poolgame&stance=3");
+		if(auto_is_valid($effect[Hustlin\']))
+		{
+			visit_url("clan_viplounge.php?preaction=poolgame&stance=3");
+		}
+		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");		
 	}
 	if(is_unrestricted($item[Colorful Plastic Ball]) && !get_property("_ballpit").to_boolean() && (get_clan_id() != -1))
 	{
