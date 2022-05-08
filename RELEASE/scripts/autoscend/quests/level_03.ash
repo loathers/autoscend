@@ -83,7 +83,7 @@ boolean auto_tavern()
 		{
 			if(in_glover())
 			{
-				auto_beachCombHead(stench); // the only one that works in g-lover
+				auto_beachCombHead("stench"); // the only one that works in g-lover
 			}
 			else
 			{
