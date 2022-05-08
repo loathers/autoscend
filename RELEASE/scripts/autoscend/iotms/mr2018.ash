@@ -787,7 +787,7 @@ boolean neverendingPartyCombat()
 	fightClubSpa();
 	//May need to actually have 1 adventure left.
 
-	if (hasTorso() && januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0)
+	if(hasTorso() && januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0 && auto_is_valid($item[Makeshift Garbage Shirt]))
 	{
 		januaryToteAcquire($item[Makeshift Garbage Shirt]);
 		autoEquip($slot[shirt], $item[Makeshift Garbage Shirt]);
@@ -821,7 +821,11 @@ void neverendingPartyChoiceHandler(int choice)
 				buff = $effect[The Best Hair You've Ever Had];
 				break;
 		}
-		if (buff != $effect[none] && have_effect(buff) < 9)
+		if(in_glover()) // Can't use any of the buffs, may as well fight
+		{
+			run_choice(5); // Pick a fight (fight a random monster from the zone)
+		}
+		else if (buff != $effect[none] && have_effect(buff) < 9)
 		{
 			// Get the +mainstat% buff if we don't have enough turns of it to get us to the next scheduled NC.
 			switch (my_primestat())
@@ -852,7 +856,9 @@ void neverendingPartyChoiceHandler(int choice)
 			{
 				run_choice(5); // Pick a fight (fight a random monster from the zone)
 			}
-		} else {
+		}
+		else
+		{
 			run_choice(5); // Pick a fight (fight a random monster from the zone)
 		}
 	}

@@ -786,7 +786,7 @@ boolean doBedtime()
 	}
 	if (get_property("telescopeUpgrades").to_int() > 0 && internalQuestStatus("questL13Final") < 0)
 	{
-		if(get_property("telescopeLookedHigh") == "false")
+		if(get_property("telescopeLookedHigh") == "false" && auto_is_valid($effect[Starry-Eyed]))
 		{
 			cli_execute("telescope high");
 		}
@@ -804,7 +804,7 @@ boolean doBedtime()
 		}
 	}
 
-	if((my_daycount() == 1) && (possessEquipment($item[Thor\'s Pliers]) || (freeCrafts() > 0)) && !possessEquipment($item[Chrome Sword]) && !inAftercore() && !in_tcrs())
+	if((my_daycount() == 1) && (possessEquipment($item[Thor\'s Pliers]) || (freeCrafts() > 0)) && !possessEquipment($item[Chrome Sword]) && auto_is_valid($item[chrome sword]) && !inAftercore() && !in_tcrs())
 	{
 		item oreGoal = to_item(get_property("trapperOre"));
 		int need = 1;
@@ -813,7 +813,8 @@ boolean doBedtime()
 		{
 			need = 4;
 		}
-		if (!haveAdvSmithing) {
+		if (!haveAdvSmithing)
+		{
 			auto_log_info('No Super-Advanced Meatsmithing for chrome sword crafting!');
 		}
 		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable() && haveAdvSmithing)
@@ -973,9 +974,19 @@ boolean doBedtime()
 	}
 
 	// Is +50% to all stats the best choice here? I don't know!
-	spacegateVaccine($effect[Broad-Spectrum Vaccine]);
+	if(auto_is_valid($effect[Broad-Spectrum Vaccine]))
+	{
+		spacegateVaccine($effect[Broad-Spectrum Vaccine]);
+	}
 
-	zataraSeaside("item");
+	if(!auto_is_valid($effect[There\'s No N In Love]))
+	{
+		zataraSeaside("familiar");
+	}
+	else
+	{
+		zataraSeaside("item");
+	}
 
 	if(is_unrestricted($item[Source Terminal]) && (get_campground() contains $item[Source Terminal]))
 	{
@@ -1106,7 +1117,7 @@ boolean doBedtime()
 		use(1, $item[School of Hard Knocks Diploma]);
 	}
 
-	if(!get_property("_lyleFavored").to_boolean())
+	if(!get_property("_lyleFavored").to_boolean() && auto_is_valid($effect[Favored by Lyle]))
 	{
 		string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 	}
@@ -1252,7 +1263,7 @@ boolean doBedtime()
 			auto_log_info("You can still fight a Chateau Mangtegna Painting today.", "blue");
 		}
 
-		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]))
+		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]) && auto_is_valid($effect[Total Protonic Reversal]))
 		{
 			cli_execute("crossstreams");
 		}

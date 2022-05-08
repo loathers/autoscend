@@ -1849,7 +1849,10 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
 	bat_formWolf();
-	zataraSeaside("meat");
+	if(auto_is_valid($effect[Meet the Meat]))
+	{
+		zataraSeaside("meat");
+	}
 
 	{
 		equipWarOutfit();
