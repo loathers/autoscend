@@ -381,7 +381,7 @@ boolean L13_towerNSContests()
 			{
 				cli_execute("grim init");
 			}
-			if((get_property("telescopeUpgrades").to_int() > 0) && (!get_property("telescopeLookedHigh").to_boolean()))
+			if((get_property("telescopeUpgrades").to_int() > 0) && (!get_property("telescopeLookedHigh").to_boolean()) && auto_is_valid($effect[Starry-Eyed]))
 			{
 				cli_execute("telescope high");
 			}
