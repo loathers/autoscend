@@ -2166,7 +2166,11 @@ boolean L11_redZeppelin()
 	}
 
 	addToMaximize("100sleaze damage,100sleaze spell damage");
-	auto_beachCombHead("sleaze");
+	if(auto_is_valid($effect[Oiled, Slick]))
+	{
+		auto_beachCombHead("sleaze");
+	}
+
 	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
 	{
 		if(possessEquipment(it) && auto_can_equip(it) &&

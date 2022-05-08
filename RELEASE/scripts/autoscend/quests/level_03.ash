@@ -81,7 +81,14 @@ boolean auto_tavern()
 	{
 		if(numeric_modifier(element_type + " Damage") < 20.0)
 		{
-			auto_beachCombHead(element_type);
+			if(in_glover())
+			{
+				auto_beachCombHead(stench); // the only one that works in g-lover
+			}
+			else
+			{
+				auto_beachCombHead(element_type);	
+			}
 		}
 	}
 
