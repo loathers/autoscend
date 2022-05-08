@@ -556,8 +556,14 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Red Door Syndrome]);
 			buffMaintain($effect[Well-Oiled]);
 
-			auto_beachCombHead("cold");
-			auto_beachCombHead("spooky");
+			if(auto_is_valid($effect[Cold as Nice]))
+			{
+				auto_beachCombHead("cold");
+			}
+			if(auto_is_valid($effect[Does It Have a Skull In There??]))			
+			{
+				auto_beachCombHead("spooky");
+			}
 
 			set_property("choiceAdventure611", "1");
 			
