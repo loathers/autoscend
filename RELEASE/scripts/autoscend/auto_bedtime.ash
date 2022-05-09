@@ -900,7 +900,7 @@ boolean doBedtime()
 				{
 					cli_execute("shower ice");
 				}
-				else if(in_glover())
+				if(in_glover())
 				{
 					cli_execute("shower mp") // can't use the effects or the ice
 				}
