@@ -784,7 +784,10 @@ boolean neverendingPartyCombat()
 		return false;
 	}
 
-	fightClubSpa();
+	if(!in_glover()) // no benefit to stats in G-Lover
+	{
+		fightClubSpa();
+	}
 	//May need to actually have 1 adventure left.
 
 	if(hasTorso() && januaryToteTurnsLeft($item[Makeshift Garbage Shirt]) > 0 && auto_is_valid($item[Makeshift Garbage Shirt]))
