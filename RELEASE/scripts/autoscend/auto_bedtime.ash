@@ -900,6 +900,10 @@ boolean doBedtime()
 				{
 					cli_execute("shower ice");
 				}
+				else if(in_glover())
+				{
+					cli_execute("shower mp") // can't use the effects or the ice
+				}
 				else
 				{
 					cli_execute("shower " + my_primestat());
