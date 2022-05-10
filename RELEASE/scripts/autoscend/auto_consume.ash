@@ -1441,7 +1441,7 @@ boolean auto_autoConsumeOne(string type)
 	
 	ConsumeAction bestAction = auto_findBestConsumeAction(type);
 
-	if (bestAction.it == $item[none] && bestAction.cafeId.to_item() == $item[none])
+	if (bestAction.it == $item[none] && bestAction.cafeId == 0)
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
 		return false;
