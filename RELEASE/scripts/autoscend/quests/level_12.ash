@@ -1732,7 +1732,7 @@ boolean L12_themtharHills()
 	{
 		autoChew(1, $item[body spradium]);
 	}
-	if(have_effect($effect[meat.enh]) == 0)
+	if(have_effect($effect[meat.enh]) == 0 && auto_is_valid($effect[meat.enh]))
 	{
 		if(auto_sourceTerminalEnhanceLeft() > 0)
 		{

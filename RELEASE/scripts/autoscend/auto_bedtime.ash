@@ -975,9 +975,17 @@ boolean doBedtime()
 		int enhances = auto_sourceTerminalEnhanceLeft();
 		while(enhances > 0)
 		{
-			auto_sourceTerminalEnhance("items");
-			auto_sourceTerminalEnhance("meat");
-			enhances -= 2;
+			if(in_glover())
+			{
+				auto_sourceTerminalEnhance("damage");
+				enhances -= 1;				
+			}
+			else
+			{
+				auto_sourceTerminalEnhance("items");
+				auto_sourceTerminalEnhance("meat");
+				enhances -= 2;
+			}
 		}
 	}
 

@@ -2870,7 +2870,7 @@ boolean L11_unlockEd()
 			cli_execute("make sugar fairy");
 			buffMaintain($effect[Dance of the Sugar Fairy]);
 		}
-		if(have_effect($effect[items.enh]) == 0)
+		if(have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
 		{
 			auto_sourceTerminalEnhance("items");
 		}
