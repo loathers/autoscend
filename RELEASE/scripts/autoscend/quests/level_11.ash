@@ -1767,7 +1767,7 @@ boolean L11_hiddenCity()
 		}
 	}
 
-	if (internalQuestStatus("questL11Business") < 2 && my_adventures() >= 11)
+	if (internalQuestStatus("questL11Business") < 2 && (my_adventures() + $location[The Hidden Office Building].turns_spent) >= 11)
 	{
 		auto_log_info("The idden [sic] office!", "blue");
 
