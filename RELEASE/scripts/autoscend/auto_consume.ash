@@ -1592,7 +1592,7 @@ boolean auto_autoConsumeOne(string type)
 	
 	ConsumeAction bestAction = auto_findBestConsumeAction(type);
 
-	if (bestAction.it == $item[none])
+	if (bestAction.it == $item[none] && bestAction.cafeId == 0)
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
 		return false;
@@ -1625,6 +1625,7 @@ boolean auto_autoConsumeOne(string type)
 item auto_autoConsumeOneSimulation(string type)
 {
 	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+	if(bestAction.it == $item[none]) return bestAction.cafeId.to_item();	//this can only find an existing item for daily specials
 	return bestAction.it;
 }
 
