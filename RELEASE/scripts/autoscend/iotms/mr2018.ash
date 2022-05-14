@@ -784,7 +784,11 @@ boolean neverendingPartyCombat()
 		return false;
 	}
 
-	if(!in_glover()) // no benefit to stats in G-Lover
+	if(in_glover()) // only non stat effect is valid in G-Lover
+	{
+		fightClubSpa($effect[Flagrantly Fragrant]);
+	}
+	else
 	{
 		fightClubSpa();
 	}
