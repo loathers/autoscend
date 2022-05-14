@@ -346,7 +346,7 @@ void chateaumantegna_useDesk()
 
 boolean chateaumantegna_havePainting()
 {
-	if(chateaumantegna_available())
+	if(chateaumantegna_available() && !contains_text(visit_url("place.php?whichplace=chateau"), "chateau_paintingnone"))
 	{
 		return !get_property("_chateauMonsterFought").to_boolean();
 	}
