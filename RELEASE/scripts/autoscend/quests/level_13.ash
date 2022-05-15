@@ -381,7 +381,7 @@ boolean L13_towerNSContests()
 			{
 				cli_execute("grim init");
 			}
-			if((get_property("telescopeUpgrades").to_int() > 0) && (!get_property("telescopeLookedHigh").to_boolean()))
+			if((get_property("telescopeUpgrades").to_int() > 0) && (!get_property("telescopeLookedHigh").to_boolean()) && auto_is_valid($effect[Starry-Eyed]))
 			{
 				cli_execute("telescope high");
 			}
@@ -420,7 +420,7 @@ boolean L13_towerNSContests()
 		if(get_property("nsContestants2").to_int() == -1)
 		{
 			resetMaximize();
-			if(!get_property("_lyleFavored").to_boolean())
+			if(!get_property("_lyleFavored").to_boolean() && auto_is_valid($effect[Favored by Lyle]))
 			{
 				string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 			}
@@ -448,7 +448,7 @@ boolean L13_towerNSContests()
 			case $stat[moxie]:
 				autoMaximize("moxie -equip snow suit", 1500, 0, false);
 
-				if(have_effect($effect[Ten out of Ten]) == 0)
+				if(have_effect($effect[Ten out of Ten]) == 0 && auto_is_valid($effect[Ten out of Ten]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Ten out of Ten]);
 				}
@@ -456,7 +456,7 @@ boolean L13_towerNSContests()
 			case $stat[muscle]:
 				autoMaximize("muscle -equip snow suit", 1500, 0, false);
 
-				if(have_effect($effect[Muddled]) == 0)
+				if(have_effect($effect[Muddled]) == 0 && auto_is_valid($effect[Muddled]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Muddled]);
 				}
@@ -464,7 +464,7 @@ boolean L13_towerNSContests()
 			case $stat[mysticality]:
 				autoMaximize("myst -equip snow suit", 1500, 0, false);
 
-				if(have_effect($effect[Uncucumbered]) == 0)
+				if(have_effect($effect[Uncucumbered]) == 0 && auto_is_valid($effect[Uncucumbered]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
 				}
