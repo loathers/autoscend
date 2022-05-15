@@ -494,7 +494,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	]))
 		return result();
 
-	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0)
+	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0 && auto_is_valid($effect[init.enh]))
 	{
 		if(!speculative)
 			auto_sourceTerminalEnhance("init");

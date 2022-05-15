@@ -350,14 +350,19 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 
 	if(!have_skill($skill[Torso Awareness]) && !have_skill($skill[Best Dressed]) && (statValue == 1))
 	{
-		if(possessEquipment($item[Protonic Accelerator Pack]) || possessEquipment($item[Vampyric Cloake]))
-		{
-			statValue = 3;
-		}
-		else
+		if(!(possessEquipment($item[Protonic Accelerator Pack]) || possessEquipment($item[Vampyric Cloake])) && auto_is_valid($item[LOV Epaulettes]))
 		{
 			statValue = 2;
 		}
+		else
+		{
+			statValue = 3;
+		}
+	}
+
+	if(!auto_is_valid($item[LOV Epaulettes]) && (statValue == 2))  // if myst and in G-Lover
+	{
+		statValue = 3; // Resistance and Meat seems better than ML
 	}
 
 	backupSetting("choiceAdventure1224", to_string(statValue)); // L.O.V. Equipment Room
