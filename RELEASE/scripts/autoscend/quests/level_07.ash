@@ -223,7 +223,10 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
 
-		spacegateVaccine($effect[Emotional Vaccine]);
+		if(auto_is_valid($effect[Emotional Vaccine]))
+		{
+			spacegateVaccine($effect[Emotional Vaccine]);
+		}
 
 		if(auto_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
