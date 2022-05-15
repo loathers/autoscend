@@ -238,7 +238,7 @@ boolean LX_steelOrgan()
 		auto_log_info("I am hungry for some steel.", "blue");
 	}
 
-	if(have_effect($effect[items.enh]) == 0)
+	if(have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
 	{
 		auto_sourceTerminalEnhance("items");
 	}
