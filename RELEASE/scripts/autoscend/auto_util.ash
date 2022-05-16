@@ -4067,7 +4067,17 @@ boolean enforceMLInPreAdv()
 {
 	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
 	{
-		addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
+		if(get_property("auto_MLSafetyLimit").to_int() == 0)
+		{
+			// prevent all ML being equiped if limit is 0
+			addToMaximize("-1000ml");
+		}
+		else
+		{
+			// note: maximizer will allow to go above the max value, ML just won't contribute to the total score after the max value
+			addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
+		}
+		
 	}
 
 	return true;
