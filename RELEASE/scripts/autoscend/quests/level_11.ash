@@ -1307,9 +1307,9 @@ boolean L11_unlockHiddenCity()
 	}
 
 	auto_log_info("Searching for the Hidden City", "blue");
-	if (!in_glover() && !in_tcrs()) 
+	if(!in_glover() && !in_tcrs()) 
 	{
-		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && cloversAvailable() > 0) 
+		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && cloversAvailable() > 0) 
 		{
 			//use clover to get 2x Stone Wool
 			cloverUsageInit();
@@ -1317,19 +1317,19 @@ boolean L11_unlockHiddenCity()
 			cloverUsageFinish();
 			return retval;
 		}
-		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
+		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
 			//couldn't clover for stone wool. Try to get with a wish
 			L11_wishForBaaBaaBuran();
 		}
-		if (item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
+		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
 			//couldn't wish for stone wool. Try to pull one
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 
 		buffMaintain($effect[Stone-Faced]);
-		if (have_effect($effect[Stone-Faced]) == 0)
+		if(have_effect($effect[Stone-Faced]) == 0)
 		{
 			if(isAboutToPowerlevel())	//we ran out of other quests to do. stop waiting for optimal conditions
 			{
@@ -1338,6 +1338,14 @@ boolean L11_unlockHiddenCity()
 			}
 			else return false;	//go do other things while we keep waiting for semirare
 		}
+	}
+	else if(in_glover())
+	{
+		if(auto_shouldUseWishes() && have_effect($effect[Stone-Faced]) == 0)
+		{
+			makeGenieWish($effect[Stone-Faced]);
+		}
+		else return false;
 	}
 	return autoAdv($location[The Hidden Temple]);
 }

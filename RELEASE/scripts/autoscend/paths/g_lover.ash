@@ -49,7 +49,9 @@ boolean glover_usable(string it)
 		return true;
 	}
 	item checkItem = it.to_item();
-	if(checkItem != $item[none] && $items[ninja Carabiner, ninja Crampons, ninja Rope,
+	if(checkItem != $item[none] && $items[SpinMaster&trade; lathe, // it works since there's no "use" link
+	&quot;I voted!&quot; sticker, // free fights still work for I voted! sticker
+	ninja Carabiner, ninja Crampons, ninja Rope,
 	eXtreme scarf, snowboarder pants, eXtreme mittens, linoleum ore, chrome ore, asbestos ore,
 	loadstone, amulet of extreme plot significance, titanium assault umbrella, antique machete,
 	half-size scalpel, head mirror, wet stew, UV-resistant compass, Talisman o' Namsilat, Unstable Fulminate,
