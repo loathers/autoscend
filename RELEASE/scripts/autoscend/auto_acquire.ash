@@ -135,10 +135,14 @@ int auto_mall_price(item it)
 		string it_type = item_type(it);
 		if(it_type == "food" || it_type == "booze")
 		{
-			//autoscend does Bulk cache mall prices for food,booze,hprestore,mprestore so mafia will give historical_price when asked for mall_price
-			//directly ask for historical_price here because if mafia session has to be restarted mafia will forget it has already cached these prices
+			//autoscend does Bulk cache mall prices for food,booze,hprestore,mprestore so that when asking for mall_price it gets a cached mafia session price
+			//directly ask for historical_price here if it exists because if mafia session has to be restarted mafia will do another search despite recent price
 			//hprestore and mprestore types corresponding with mall_prices search categories are not available
 			retval = historical_price(it);
+			if(retval == 0)
+			{
+				retval = mall_price(it);
+			}
 		}
 		else
 		{
